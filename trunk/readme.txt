@@ -105,7 +105,7 @@ Press the publish button and you're done. You'll now have a photo gallery page.
 
 You can also create a custom page template by dropping the following code into a page:
 
-<?php wppa_albums(); ?>
+`<?php wppa_albums(); ?>`
 
 In order to work properly, this tag needs to be within the WordPress loop ( http://codex.wordpress.org/The_Loop ) 
 For more information on creating custom page templates, visit http://codex.wordpress.org/Pages#Creating_your_own_Page_Templates
