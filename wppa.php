@@ -2,10 +2,9 @@
 /*
 Plugin Name: WP Photo Album Plus
 Description: Easily manage and display your photo albums and slideshows within your WordPress site.
-Version: 1.6
-Author: J.N. Breetvelt
+Version: 1.6.1
+Author: J.N. Breetvelt / Rubin J. Kaplan (up to version 1.5.1)
 Author URI: http://www.opajaap.nl/
-Original Author: Rubin J. Kaplan
 */
 
 
@@ -990,6 +989,7 @@ function wppa_crumb_ancestors($sep, $alb) {
     return;
 }
 
+// Get the albums parent
 function wppa_get_parentalbumid($alb) {
     global $wpdb;
     
@@ -1240,6 +1240,13 @@ function wppa_get_fullsize($id = '') {
 	return $result;
 }
 
+// get slide info
+function wppa_get_slide_info($index, $id) {
+    $result = "'" . $index . "','" . wppa_photo_url($id, TRUE) . "','" . wppa_get_fullsize($id) . "','" . esc_attr(wppa_photo_name($id, TRUE)) . "','" . esc_attr(wppa_photo_desc($id, TRUE)) . "'";
+    return $result;                                                        
+}
+
+
 /* LOW LEVEL UTILITY ROUTINES */
 
 // set last album 
@@ -1318,12 +1325,6 @@ function wppa_get_photo_order($id) {
     }
     if (get_option('wppa_list_photos_desc') == 'yes') $result .= ' DESC';
     return $result;
-}
-
-// get slide info
-function wppa_get_slide_info($index, $id) {
-    $result = "'" . $index . "','" . wppa_photo_url($id, TRUE) . "','" . wppa_get_fullsize($id) . "','" . esc_attr(wppa_photo_name($id, TRUE)) . "','" . esc_attr(wppa_photo_desc($id, TRUE)) . "'";
-    return $result;                                                        
 }
 
 // display usefull message
