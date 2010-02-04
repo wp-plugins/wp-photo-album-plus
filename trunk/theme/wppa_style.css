@@ -1,19 +1,15 @@
-.album
-{
+.album {
 	margin: 7px 0;
 	padding: 7px;
 	border: 1px #bbdd99 solid;
 }
 
-.album .image 
-{
+.album .image {
 	float: right; 
 	margin-left: 5px;
 }
 
-
-.album h2.name
-{
+.album h2.name {
 	font-size: 1.2em;
 	font-weight: bold;
 	margin: 0;
@@ -24,14 +20,18 @@
     clear: both;
     margin: 0;
     padding: 0;
-    }
-.clear { clear: both; }
+}
 
-.thumbswide {
+.clear { 
+    clear: both; 
+}
+
+#thumbswide {
 	text-align: left;	
     width: 750px;
 }
-.thumbsnarrow {
+
+#thumbsnarrow {
     text-align: left;
     width: 450px;
 }
@@ -39,8 +39,8 @@
 .description {
     height: 38px;
 }
-.thumbs img
-{
+
+.thumbs img {
 	margin: 5px;
 	padding: 0px;
 	border: 2px solid #bbdd99;
@@ -49,29 +49,26 @@
 #imagetitle {
     text-align: center;
     font-size: 1.4em;
-    }
+}
     
 #imagedesc {
     text-align: center;
     font-size: 1.4em;
-    }
+}
     
-#thumbs {
-   
-    }
     
 #albumlist div {
     padding: 10px 10px 10px 10px;
     margin-bottom: 15px;
-    }
+}
     
 #albumlist .alt, #albumlist .alt div {
-    background-color: #d5eabf; /*#cce6b3; */
-    }
+    background-color: #d5eabf;
+}
 
 #albumlist .even, #albumlist .even div {
-    background-color: #e6f2d9; /*#cce6b3; /*#eef7e6;*/
-    }
+    background-color: #e6f2d9;
+}
 
 #albumlist a img {
 	border: 2px solid #bbdd99; 
@@ -92,7 +89,7 @@
     margin: -30px auto 20px auto;
     padding: 0;
     width: 490px;
-    }
+}
     
 #prev-arrow, #next-arrow {
     background-color: #eef7e6;
@@ -103,6 +100,7 @@
     top: 350px;
     font-size: 4.0em;
 }
+
 #prev-arrow a:link, #next-arrow a:link { border-style: none; }
 #prev-arrow a:visited, #next-arrow a:visited { border-style: none; }
 #prev-arrow a:hover, #next-arrow a:hover { text-decoration: none; }

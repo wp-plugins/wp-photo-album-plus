@@ -1,12 +1,16 @@
 <?php 
 global $allow_sidebars;
-/* Dutch 
+/* Dutch
+$faster = 'Sneller';
+$slower = 'Trager';
 $view = 'Bekijk het album';
 $vw = 'Bekijk ';
 $ph = ' foto&#039;s';
 $and = ' en ';
 $slideshow = 'Diavoorstelling';
-/* English */
+/* English  */
+$faster = 'Faster';
+$slower = 'Slower';
 $view = 'View the album';
 $vw = 'View ';
 $ph = ' photos';
@@ -48,7 +52,7 @@ if (wppa_page('albums')) :
     $thumbs = wppa_get_thumbs();
     if (count($thumbs) > 1) :
     if ($allow_sidebars) echo '<div class="thumbs thumbsnarrow" id="thumbs">';
-    else echo '<div class="thumbs thumbswide" id="thumbs">';
+    else echo '<div class="thumbs thumbswide" id="thumbswide">';
         foreach ($thumbs as $tt) :  global $thumb; $thumb = $tt; 
 			echo '<a href="' . wppa_get_photo_page_url() . '" class="img"><img src="' . wppa_get_thumb_url() . '" alt="*" title="" /></a>';
 		endforeach;
@@ -65,9 +69,9 @@ elseif (wppa_page('single')) :
 elseif (wppa_page('slide')) :
     echo '<div id="prevnext">'; wppa_breadcrumb();
     echo '<p style="text-align: center">
-    <a href="#" id="speed0" onclick="wppa_speed(false)">Trager</a> |
+    <a href="#" id="speed0" onclick="wppa_speed(false)">' . $slower . '</a> |
     <a href="#" id="startstop" onclick="wppa_startstop()">Start</a> |
-    <a href="#" id="speed1" onclick="wppa_speed(true)">Sneller</a></p></div>'; 
+    <a href="#" id="speed1" onclick="wppa_speed(true)">' . $faster . '</a></p></div>'; 
     $minheight = get_option('wppa_fullsize') * 3 / 4;
     echo '<p id="theslide" style="min-height: ' . $minheight . 'px; text-align: center;">';
     echo '<p id="imagedesc" class="imagedesc"></p><p id="imagetitle" class="imagetitle"></p>';
