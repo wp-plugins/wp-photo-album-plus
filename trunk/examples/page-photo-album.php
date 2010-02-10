@@ -10,7 +10,7 @@ if (class_exists('MyCaptcha')) { $MyCaptcha->initialize(); }
 /* The next three lines make it possible to show the sidebar(s) if you don't need the space for the phots and you like them to come up */
 global $allow_sidebars;
 $thumbs = wppa_get_thumbs();
-if (wppa_page('albums') &&  (count($thumbs) < 30)) $allow_sidebars = TRUE; else $allow_sidebars = FALSE;
+if (wppa_page('albums') &&  (count($thumbs) < 30)) $allow_sidebars = '1'; else $allow_sidebars = '0';
 
 /* Here starts the 'normal' page.php code */
 get_header(); 
@@ -36,7 +36,7 @@ get_header();
             
 	</div>
 
-    <?php if ($allow_sidebars) {
+    <?php if ($allow_sidebars == '1') {
         /* Adjust for your own sidebar(s) */
         get_sidebar('left');
         get_sidebar('right'); 

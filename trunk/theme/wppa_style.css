@@ -86,9 +86,9 @@
 
 #prevnext {
     background-color: #eef7e6;
-    margin: -30px auto 20px auto;
+    margin: 10px auto 20px auto;
     padding: 0;
-    width: 490px;
+/*    width: 490px; */
 }
     
 #prev-arrow, #next-arrow {

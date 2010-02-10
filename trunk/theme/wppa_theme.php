@@ -1,6 +1,7 @@
 <?php 
 global $allow_sidebars;
-/* Dutch
+if ($allow_sidebars == '') $allow_sidebars = '1';
+/* Dutch  
 $faster = 'Sneller';
 $slower = 'Trager';
 $view = 'Bekijk het album';
@@ -8,7 +9,7 @@ $vw = 'Bekijk ';
 $ph = ' foto&#039;s';
 $and = ' en ';
 $slideshow = 'Diavoorstelling';
-/* English  */
+/* English */
 $faster = 'Faster';
 $slower = 'Slower';
 $view = 'View the album';
@@ -51,7 +52,7 @@ if (wppa_page('albums')) :
  
     $thumbs = wppa_get_thumbs();
     if (count($thumbs) > 1) :
-    if ($allow_sidebars) echo '<div class="thumbs thumbsnarrow" id="thumbs">';
+    if ($allow_sidebars) echo '<div class="thumbs thumbsnarrow" id="thumbsnarrow">';
     else echo '<div class="thumbs thumbswide" id="thumbswide">';
         foreach ($thumbs as $tt) :  global $thumb; $thumb = $tt; 
 			echo '<a href="' . wppa_get_photo_page_url() . '" class="img"><img src="' . wppa_get_thumb_url() . '" alt="*" title="" /></a>';
