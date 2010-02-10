@@ -1,7 +1,7 @@
 === WP Photo Album Plus ===
 Contributors: opajaap
 Tags: photo, album, gallery, slideshow
-Version: 1.6.1
+Version: 1.7
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -61,6 +61,11 @@ The sort order information will have no longer effect.
 
 == Changelog ==
 
+= 1.7 =
+* Slideshow did not work when having non-standard permalink structure.
+* Fixed a layout issue around page header and breadcrumb.
+* Added functionality: You can have a single album in a post or page.
+
 = 1.6.1 =
 * Minor cosmetic corrections.
 * Updated tags.txt to reflect new and changed tags as per version 1.6.
@@ -99,6 +104,13 @@ Create a page like you normally would in WordPress. In my example, we'll give it
 section add the following code:
 
 %%wppa%%
+
+If you want to display the **contents** of a specific album add the following line (e.g. for album number 19, replace 19 by the album number you wish):
+
+%%album=19%%
+	
+If you want to display the **cover** of album #19, create a new album, use his number and make album 19's parent that album number.
+Upload **one** photo to the parent album. This photo will be used as the cover photo, and not displayed inside the album.
 
 Also, make sure under 'Page Template' you are using 'Default Template' as some WordPress themes have an archives template.  
 Press the publish button and you're done. You'll now have a photo gallery page. 

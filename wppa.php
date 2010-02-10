@@ -2,9 +2,10 @@
 /*
 Plugin Name: WP Photo Album Plus
 Description: Easily manage and display your photo albums and slideshows within your WordPress site.
-Version: 1.6.1
+Version: 1.7
 Author: J.N. Breetvelt / Rubin J. Kaplan (up to version 1.5.1)
 Author URI: http://www.opajaap.nl/
+Plugin URI: http://wordpress.org/extend/plugins/wp-photo-album-plus/
 */
 
 
@@ -509,7 +510,7 @@ function wppa_page_help() {
         <li>The existing database and albums and photos will be preserved.<br/>
             YOU DO NOT NEED TO RE-UPLOAD YOUR PHOTOS</li>
         <li>The database tables will be upgraded automatically to hold the extra data for the new features.</li>
-        <li>You will need to use the newly supplied default theme file \'wppa_theme_php\' and/or modify
+        <li>You will need to use the newly supplied default theme file \'wppa_theme.php\' and/or modify
             your current theme file as the callable functions (tags) are changed with respect to WP Photo Album.</li>
         <li>You can use existing albums to make sub-albums, simply by specifying in which album they belong.</li>
         </ol>
@@ -526,11 +527,18 @@ function wppa_page_help() {
 		<h3>Creating Photo Album Page</h3>
 		<p>Create a page like you normally would in WordPress. In my example, we\'ll give it the page title of "Photo Gallery". In the Page Content section add the following code: <br />
 		<tt>%%wppa%%</tt><br />
-		Also, make sure under \'Page Template\' you are using \'Default Template\' as some WordPress themes have an archives template.  <br />
+        Additionally, if you want to display the <b>contents</b> of a specific album add the following line (e.g. for album number 19, replace 19 by the album number you wish) <b>after</b> <tt>%%wppa%%</tt>:<br/>
+        <tt>%%album=19%%</tt><br />
+        If you want to display the <b>cover</b> of album #19, create a new album, use his number and make album 19\'s parent that album number.<br />
+        Upload <b>one</b> photo to the parent album. This photo will be used as the cover photo, and not displayed inside the album.<br/>
+
+		Also, make sure under \'Page Template\' you are using \'Default Template\' as some WordPress themes have an archives template.<br />
 		Press the publish button and you\'re done. You\'ll now have a photo gallery page. </p>
 
 		<p>You can also create a custom page template by dropping the following code into a page:<br />
 		<tt>&lt;?php wppa_albums(); ?&gt;</tt><br />
+        Alternatively, you can specify a single album in the template by passing the album number as argument (e.g. for album # 19:<br />
+        <tt>&lt;?php wppa_albums(19); ?&gt;</tt><br />
 		In order to work properly, this tag needs to be within the <a href="http://codex.wordpress.org/The_Loop">WordPress loop</a>. 
 
 For more information on creating custom page templates, click <a href="http://codex.wordpress.org/Pages#Creating_your_own_Page_Templates">here</a>.</p>
@@ -922,15 +930,35 @@ add_filter('the_content', 'wppa_albums_filter', 1);
 }
 
 function wppa_albums_filter($post) {
+    global $startalbum;
 	if (substr_count($post, '%%wppa%%') > 0) {
+	
+        $albpos = strpos($post, '%%album=');
+        if ($albpos) {
+            $albpos += 8;
+            $len = 1;
+            $alb = substr($post, $albpos, $len);
+            while (is_numeric($alb) && $len < 5) {
+                $startalbum = $alb;
+                $len++;
+                $alb = substr($post, $albpos, $len);
+            } 
+            $post = str_replace('%%album=' . $alb . '%', '', $post);  // remove from content
+        }
+        
 		$post = str_replace('%%wppa%%', wppa_albums(), $post);
-	}
+
+    }
 	return $post;
 }
 
 // get the albums
-function wppa_albums() {
+function wppa_albums($xalb = '') {
 	global $wpdb;
+    global $startalbum;
+    
+    if (is_numeric($xalb)) $startalbum = $xalb;
+    
 	$templatefile = ABSPATH . 'wp-content/themes/' . get_option('template') . '/wppa_theme.php';
 	
 	// check for user template before using default template
@@ -1055,10 +1083,13 @@ function wppa_image_url($return = FALSE) {
 // loop album
 function wppa_get_albums() {
 	global $wpdb;
-    
-    if (isset($_GET['album'])) $parent = $_GET['album']; else $parent = 0;
-	$albums = $wpdb->get_results("SELECT * FROM " . ALBUM_TABLE . " WHERE a_parent={$parent} " . wppa_get_album_order(),'ARRAY_A');
-	return $albums;
+    global $startalbum;
+
+    if (isset($_GET['album'])) $parent = $_GET['album'];
+    elseif (is_numeric($startalbum)) $parent=$startalbum;
+    else $parent = 0;
+    $albums = $wpdb->get_results("SELECT * FROM " . ALBUM_TABLE . " WHERE a_parent={$parent} " . wppa_get_album_order(),'ARRAY_A');
+    return $albums;
 }
 
 // get link to album by id
@@ -1112,7 +1143,7 @@ function wppa_the_album_desc($return = FALSE) {
 // get link to slideshow (in loop)
 function wppa_slideshow_url($return = FALSE) {
 	global $album;
-	$link = get_permalink() . wppa_sep() . 'album=' . $album['id'] . wppa_sep() . 'slide=true';
+	$link = get_permalink() . wppa_sep() . 'album=' . $album['id'] . '&amp;' . 'slide=true';
 	
 	if ($return) return $link; else echo $link;	
 }
@@ -1120,8 +1151,11 @@ function wppa_slideshow_url($return = FALSE) {
 // loop thumbs
 function wppa_get_thumbs() {
 	global $wpdb;
+    global $startalbum;
     
-	$album = $_GET['album'];
+    if (isset($_GET['album'])) $album = $_GET['album'];
+    elseif (is_numeric($startalbum)) $album = $startalbum; 
+    else $album = 0;
 	if (is_numeric($album)) $thumbs = $wpdb->get_results("SELECT * FROM " . PHOTO_TABLE . " WHERE album=$album " . wppa_get_photo_order($album), 'ARRAY_A'); 
 	return $thumbs;
 }
