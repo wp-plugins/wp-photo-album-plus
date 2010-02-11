@@ -1,5 +1,6 @@
 === WP Photo Album Plus ===
 Contributors: opajaap
+Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD
 Tags: photo, album, gallery, slideshow
 Version: 1.7
 Stable tag: trunk
