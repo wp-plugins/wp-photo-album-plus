@@ -2,7 +2,7 @@
 /*
 Plugin Name: WP Photo Album Plus
 Description: Easily manage and display your photo albums and slideshows within your WordPress site.
-Version: 1.7
+Version: 1.7.1
 Author: J.N. Breetvelt / Rubin J. Kaplan (up to version 1.5.1)
 Author URI: http://www.opajaap.nl/
 Plugin URI: http://wordpress.org/extend/plugins/wp-photo-album-plus/
@@ -34,6 +34,8 @@ register_activation_hook( __FILE__, 'wppa_setup' );
 function wppa_setup() {
 	global $wpdb;
 	
+	if (get_option('wppa_revision', '100') < '170') {
+		
 	$create_albums = "CREATE TABLE " . ALBUM_TABLE . " (
                     id bigint(20) NOT NULL auto_increment, 
                     name text NOT NULL, 
@@ -61,6 +63,9 @@ function wppa_setup() {
     dbDelta($create_photos);
 	
 	if (!is_numeric(get_option('wppa_thumbsize', 'nil'))) update_option('wppa_thumbsize', '130');
+	
+	update_option('wppa_revision', '170');
+	}
 }
 
 /* ADMIN MENU */
@@ -82,10 +87,18 @@ function wppa_admin() {
 	global $wpdb;
 	
 	// warn if the uploads directory is no writable
-	if (!is_writable(ABSPATH . 'wp-content/uploads')) { echo '<div id="error" class="error"><p><strong>Warning:</strong> The uploads directory does not exist or is not writable by the server. Please make sure that <tt>wp-content/uploads/</tt> is writeable by the server</p></div>'; }
+	if (!is_writable(ABSPATH . 'wp-content/uploads')) { ?>
+		<div id="error" class="error">
+			<p>
+				<strong>Warning:</strong> 
+				The uploads directory does not exist or is not writable by the server. 
+				Please make sure that <tt>wp-content/uploads/</tt> is writeable by the server
+			</p>
+		</div>
+<?php }
 		
 	// album edit page
-	 if ($_GET['tab'] == 'edit'){
+	if ($_GET['tab'] == 'edit'){
 	
 		// updates the details
 		if (isset($_POST['wppa-ea-submit'])) {
@@ -101,117 +114,92 @@ function wppa_admin() {
 			unlink(ABSPATH . 'wp-content/uploads/wppa/thumbs/' . $_GET['photo_del'] . '.' . $ext);
 			
 			$wpdb->query("DELETE FROM " . PHOTO_TABLE . " WHERE id={$_GET['photo_del']} LIMIT 1");
-			
-			echo '<div id="message" class="updated fade"><p><strong>Photo Deleted.</strong></p></div>';
+?>			
+			<div id="message" class="updated fade"><p><strong>Photo Deleted.</strong></p></div>
+<?php
 		}		
 		
 		$albuminfo = $wpdb->get_row("SELECT * FROM " . ALBUM_TABLE . " WHERE id={$_GET['edit_id']} ", 'ARRAY_A');
-				
-		echo '<div class="wrap">';
+?>				
+		<div class="wrap">
+			<h2>Edit Ablum Information</h2>
+			<form action="<?php echo(get_option('siteurl')) ?>/wp-admin/admin.php?page=<?php echo(PLUGIN_PATH) ?>/wppa.php&amp;tab=edit&amp;edit_id=<?php echo($_GET['edit_id']) ?>" method="post">
+			<?php wppa_nonce_field('$wppa_nonce', WPPA_NONCE); ?>
+				<p>
+					<label for="wppa-name">Name: </label><br />
+					<input type="text" name="wppa-name" id="wppa-name" value="<?php echo($albuminfo['name']) ?>" />
+				</p>
+				<p>
+					<label for="wppa-description">Description: </label><br />
+					<textarea rows="5" cols="40" name="wppa-desc" id="wppa-desc"><?php echo($albuminfo['description']) ?></textarea>
+				</p>
+				<p>
+					<label for="wppa-order">Sort order #: </label><br />
+					<input type="text" name="wppa-order" id="wppa-order" value="<?php echo($albuminfo['a_order']) ?>" />
+				</p>
+				<p>
+					<label for="wppa-parent">Parent album: </label><br />
+					<?php if (wppa_get_album_count($albuminfo["id"])) { ?>
+						You can not change the parent of an album that contains sub albums. <small>This is to prevent circular references. Change the sub albums parent id first.</small>
+					<?php } else { ?>
+						<select name="wppa-parent"><?php echo(wppa_album_select("", $albuminfo["a_parent"], TRUE, TRUE)) ?></select>
+					<?php } ?>
+				</p>
+				<p>
+					<?php $order = $albuminfo['p_order_by']; ?>
+					<label for="wppa-list-photos-by">Photo order: </label>
+					<select name="wppa-list-photos-by"><?php wppa_order_options($order, '--- default ---') ?></select>
+					<small>Specify the way the photos should be ordered in this album.<br/>
+						The default setting can be changed in the Options page.
+					</small>
+				</p>
+				<p>
+					<label for="wppa-main">Main Photo: </label><br />
+					<?php echo(wppa_main_photo($albuminfo['main_photo'])) ?>
+				</p>
+				<p>
+					<input type="submit" name="wppa-ea-submit" value="Save Changes" />
+				</p>
+				<br />
+		
+				<h2>Manage Photos</h2>
+				<p>
+					<input type="submit" name="wppa-ea-submit" value="Save Changes" />
+				</p>
 			
-		echo '<h2>Edit Ablum Information</h2>';
-        
-		echo '<form action="' . get_option('siteurl') . '/wp-admin/admin.php?page=' . PLUGIN_PATH . '/wppa.php&amp;tab=edit&amp;edit_id=' . $_GET['edit_id'] . '" method="post">';
+				<?php wppa_album_photos($_GET['edit_id']) ?>
 		
-		wppa_nonce_field('$wppa_nonce', WPPA_NONCE);
+				<p>
+					<input type="submit" name="wppa-ea-submit" value="Save Changes" />
+				</p>
 		
-		echo '<p>
-				<label for="wppa-name">Name: </label><br />
-				<input type="text" name="wppa-name" id="wppa-name" value="' . $albuminfo['name'] .'" />
-			</p>
-		
-			<p>
-				<label for="wppa-description">Description: </label><br />
-				<textarea rows="5" cols="40" name="wppa-desc" id="wppa-desc">' . $albuminfo['description'] . '</textarea>
-			</p>
-			<p>
-				<label for="wppa-order">Order: </label><br />
-				<input type="text" name="wppa-order" id="wppa-order" value="' . $albuminfo['a_order'] .'" />
-			</p>
-            <p>
-                <label for="wppa-parent">Parent album: </label><br />';
-                if (wppa_get_album_count($albuminfo["id"])) echo 'You can not change the parent of an album that contains sub albums. <small>This is to prevent circular references. Change the sub albums parent id first.</small>';
-                else echo '<select name="wppa-parent">' . wppa_album_select("", $albuminfo["a_parent"], TRUE) . '</select>';
-                echo '
-            </p>
-            
-            <p>';
-                $order = $albuminfo['p_order_by'];
-                echo '<label for="wppa-list-photos-by">Photo order: </label>
-                <select name="wppa-list-photos-by">';
-                    wppa_order_options($order, $nil);
-                echo '</select>
-                <small>Specify the way the photos should be ordered in this album.<br/>
-                The default setting can be changed in the Options page.</small>
-            </p>
-
-			<p>
-				<label for="wppa-main">Main Photo: </label><br />
-				' . wppa_main_photo($albuminfo['main_photo']) . '
-			</p>
-			
-			<p>
-				<input type="submit" name="wppa-ea-submit" value="Save Changes" />
-			</p>
-			
-		';
-			
-		echo '<br />';
-		
-		echo '<h2>Manage Photos</h2>';
-		
-		
-		echo '<p>
-				<input type="submit" name="wppa-ea-submit" value="Save Changes" />
-			</p>';
-			
-		echo wppa_album_photos($_GET['edit_id']);
-		
-		echo '<p>
-				<input type="submit" name="wppa-ea-submit" value="Save Changes" />
-			</p>';
-		
-		echo '</form>';
-		
-		echo '</div>';
-	
-	// styles page
-		
-
-		
-	// help page
-	
-		
-	
+			</form>
+		</div>
+<?php	
 	// album delete confirm page
-	} else if ($_GET['tab'] == 'del'){
+	} else if ($_GET['tab'] == 'del'){ ?>
 		
-		echo '<div class="wrap">
+		<div class="wrap">
 			<h2>Delete Album</h2>
-			<p>Are you sure you want to delete the album "' . wppa_album_name($_GET['id'], TRUE) . '" ?<br />
-			Press Delete to continue, and Cancel to go back.</p>';
-			
-		echo '<form name="wppa-del-form" action="' . get_option('siteurl') . '/wp-admin/admin.php?page=' . PLUGIN_PATH . '/wppa.php" method="post">';
-			
-		wppa_nonce_field('$wppa_nonce', WPPA_NONCE);
-
-		echo '<p>
-				What would you like to do with photos currently in the album?<br />
-				<input type="radio" name="wppa-del-photos" value="delete" checked="checked" /> Delete <br />
-				<input type="radio" name="wppa-del-photos" value="move" /> Move to: 
-				<select name="wppa-move-album">' . wppa_album_select($_GET['id']) . '</select>
+			<p>Are you sure you want to delete the album <b><?php wppa_album_name($_GET['id']) ?></b>?<br />
+				Press Delete to continue, and Cancel to go back.
 			</p>
+			<form name="wppa-del-form" action="<?php echo(get_option('siteurl')) ?>/wp-admin/admin.php?page=<?php echo(PLUGIN_PATH) ?>/wppa.php" method="post">
+				<?php wppa_nonce_field('$wppa_nonce', WPPA_NONCE) ?>
+				<p>
+					What would you like to do with photos currently in the album?<br />
+					<input type="radio" name="wppa-del-photos" value="delete" checked="checked" /> Delete <br />
+					<input type="radio" name="wppa-del-photos" value="move" /> Move to: 
+					<select name="wppa-move-album"><?php echo(wppa_album_select($_GET['id'])) ?></select>
+				</p>
 			
-			<input type="hidden" name="wppa-del-id" value="' . $_GET['id'] . '" />
-			<input type="button" value="Cancel" onclick="window.location = \'' . get_option('siteurl') . '/wp-admin/admin.php?page=' . PLUGIN_PATH . '/wppa.php\'" />
-			<input type="submit" name="wppa-del-confirm" value="Delete" />
-	
-		</form>';
+				<input type="hidden" name="wppa-del-id" value="<?php echo($_GET['id']) ?>" />
+				<input type="button" value="Cancel" onclick="parent.history.back()" />
+				<input type="submit" name="wppa-del-confirm" value="Delete" />
+			</form>
+		</div>
 
-			
-		echo '</div>';
-
-	
+<?php	
 	// default, album manage page.
 	} else {
 		
@@ -230,65 +218,47 @@ function wppa_admin() {
 			} else {
 				$move = '';
 			}
-			
 			wppa_del_album($_POST['wppa-del-id'], $move);
 		}
-		
-
-		echo '<div class="wrap">';
-	
-		echo "<h2>Manage Albums</h2><br />";
-		
-		wppa_admin_albums();
-		
-		echo '<br /><h2>Create New Album</h2>';
-		
-		echo '<form action="' . get_option('siteurl') . '/wp-admin/admin.php?page=' . PLUGIN_PATH . '/wppa.php" method="post">';
-
-		wppa_nonce_field('$wppa_nonce', WPPA_NONCE);
-
-		echo '<p>
-				<label for="wppa-name">Name: </label>
-                <input type="text" name="wppa-name" id="wppa-name" />
-                <small>Type the name of the new album. Do not leave this empty.</small>
-			</p>
-		
-			<p>
-				<label for="wppa-description">Description: </label><br />
-				<textarea rows="5" cols="40" name="wppa-desc" id="wppa-desc"></textarea>
-			</p>
-			
-			<p>
-				<label for="wppa-name">Order #: </label>
-                <input type="text" name="wppa-order" id="wppa-order" />
-                <small>If you want to sort the albums by order #, enter the order number here.</small>
-			</p>
-            
-            <p>
-                <label for="wppa-parent">Parent album: </label>
-                <select name="wppa-parent">' . wppa_album_select('', '', TRUE) . '</select>
-                <small>If this is a sub album, select the album in which this album will appear.</small>
-            </p>
-            
-            <p>
-                <label for="wppa-photo-order-by">Order photos by: </label>
-                <select name="wppa-photo-order-by">';
-                wppa_order_options('0', '--- default ---');
-                echo '</select>
-                <small>If you want to sort the photos in this album different from the system setting, select the order method here.</small>
-            </p>
-			
-			<p>
-				<input type="submit" name="wppa-na-submit" value="Create Album!" />
-                <small>You can change all these settings later by clicking the \'Edit\' link in the above table.</small>
-			</p>
-			
-		</form>';
-	
-		echo '</div>';
-	
+?>		
+		<div class="wrap">
+			<h2>Manage Albums</h2>
+			<?php wppa_admin_albums() ?>
+			<h2>Create New Album</h2>
+			<form action="<?php echo(get_option('siteurl')) ?>/wp-admin/admin.php?page=<?php echo(PLUGIN_PATH) ?>/wppa.php" method="post">
+			<?php wppa_nonce_field('$wppa_nonce', WPPA_NONCE) ?>
+				<p>
+					<label for="wppa-name">Name: </label>
+					<input type="text" name="wppa-name" id="wppa-name" />
+					<small>Type the name of the new album. Do not leave this empty.</small>
+				</p>
+				<p>
+					<label for="wppa-description">Description: </label><br />
+					<textarea rows="5" cols="40" name="wppa-desc" id="wppa-desc"></textarea>
+				</p>
+				<p>
+					<label for="wppa-name">Order #: </label>
+					<input type="text" name="wppa-order" id="wppa-order" />
+					<small>If you want to sort the albums by order #, enter the order number here.</small>
+				</p>
+                <p>
+					<label for="wppa-parent">Parent album: </label>
+					<select name="wppa-parent"><?php echo(wppa_album_select('', '', TRUE, TRUE)) ?></select>
+					<small>If this is a sub album, select the album in which this album will appear.</small>
+				</p>
+                <p>
+					<label for="wppa-photo-order-by">Order photos by: </label>
+					<select name="wppa-photo-order-by"><?php wppa_order_options('0', '--- default ---') ?></select>
+					<small>If you want to sort the photos in this album different from the system setting, select the order method here.</small>
+				</p>
+				<p>
+					<input type="submit" name="wppa-na-submit" value="Create Album!" />
+					<small>You can change all these settings later by clicking the \'Edit\' link in the table above.</small>
+				</p>
+			</form>	
+		</div>
+<?php	
 	}
-	
 }
 
 function wppa_page_upload() {
@@ -299,53 +269,37 @@ function wppa_page_upload() {
             
 			wppa_upload_photos();
 		}
-
-		echo '<div class="wrap">';
-	
-		echo "<h2>Upload Photos</h2><br />";
-		
-		// chek if albums exist before allowing upload
-		
-		if(wppa_has_albums()) {
-
-			echo '
-			<form enctype="multipart/form-data" action="' . get_option('siteurl') . '/wp-admin/admin.php?page=upload_photos" method="post">
-			';
-			
-			wppa_nonce_field('$wppa_nonce', WPPA_NONCE);
-			
-			echo '
-			<input id="my_file_element" type="file" name="file_1" />
-		
-			<div id="files_list">
-				<h3>Selected Files: <small>You can upload up to 15 photos at once</small></h3>
-			</div>';
-		
-			
-			echo '<p>
-			<label for="wppa-album">Album: </label>
-			<select name="wppa-album" id="wppa-album">';
-	
-			echo wppa_album_select();
-			
-			echo '</select></p>';
-
-		
-			echo '<input type="submit" name="wppa-upload" value="Upload Photos" />
-			</form>
-		<br />
-		<script type="text/javascript">
-			<!-- Create an instance of the multiSelector class, pass it the output target and the max number of files -->
-			var multi_selector = new MultiSelector( document.getElementById( \'files_list\' ), 15 );
-			<!-- Pass in the file element -->
-			multi_selector.addElement( document.getElementById( \'my_file_element\' ) );
-		</script>';
-		
-		} else {
-			echo '<p>No albums exist. You must <a href="admin.php?page=' . PLUGIN_PATH . '/wppa.php">create one</a> beofre you can upload your photos.</p>';
-		}
-	
-		echo '</div>';
+?>
+		<div class="wrap">
+			<h2>Upload Photos</h2><br />
+			<?php		
+			// chek if albums exist before allowing upload
+			if(wppa_has_albums()) { ?>
+				<form enctype="multipart/form-data" action="<?php echo(get_option('siteurl')) ?>/wp-admin/admin.php?page=upload_photos" method="post">
+				<?php wppa_nonce_field('$wppa_nonce', WPPA_NONCE); ?>
+					<input id="my_file_element" type="file" name="file_1" />
+					<div id="files_list">
+						<h3>Selected Files: <small>You can upload up to 15 photos at once</small></h3>
+					</div>
+					<p>
+						<label for="wppa-album">Album: </label>
+						<select name="wppa-album" id="wppa-album"><?php echo(wppa_album_select()); ?></select>
+					</p>
+					<input type="submit" name="wppa-upload" value="Upload Photos" />
+				</form>
+				<br />
+				<script type="text/javascript">
+				<!-- Create an instance of the multiSelector class, pass it the output target and the max number of files -->
+					var multi_selector = new MultiSelector( document.getElementById( 'files_list' ), 15 );
+				<!-- Pass in the file element -->
+					multi_selector.addElement( document.getElementById( 'my_file_element' ) );
+				</script>
+			<?php } 
+			else { ?>
+				<p>No albums exist. You must <a href="admin.php?page=<?php echo(PLUGIN_PATH) ?>/wppa.php">create one</a> beofre you can upload your photos.</p>
+<?php } ?>
+		</div>
+<?php
 }
 
 function wppa_page_options() {
@@ -354,12 +308,30 @@ function wppa_page_options() {
 
 			if (($_POST['wppa-thumbsize'] != get_option('wppa_thumbsize')) && is_numeric($_POST['wppa-thumbsize'])) {
 				update_option('wppa_thumbsize', $_POST['wppa-thumbsize']);
-                echo '<div id="message" class="updated fade"><p><strong>Regenerating thumbnails, please wait.</strong></p></div>';
+                update_option('wppa_lastthumb', '-1');
+            }
+            $start = get_option('wppa_lastthumb', '-2');
+            if ($start != '-2') {
+                $start++; ?>
+				<div id="message" class="updated fade">
+					<p>
+						<strong>Regenerating thumbnail images, starting at id=<?php echo($start) ?>. please wait.</strong><br/>
+						If the line of dots stops growing and you do not get a <strong>READY</strong> message, please continue this action by clicking 
+						<a href="<?php echo(get_option('siteurl')) ?>/wp-admin/admin.php?page=options">HERE</a> and click "Save Changes" again.
+					</p>
+				</div>
                
-				wppa_regenerate_thumbs();
+				<?php wppa_regenerate_thumbs(); ?>
+                
+                <div id="message" class="updated fade"><p><strong>READY regenerating thumbnail images.</strong></p></div>
+				
+                <?php update_option('wppa_lastthumb', '-2');
 			}
 			
 			update_option('wppa_fullsize', $_POST['wppa-fullsize']);
+			
+			if (isset($_POST['wppa-enlarge'])) update_option('wppa_enlarge', 'yes');
+			else update_option('wppa_enlarge', 'no');
             
             if (isset($_POST['wppa-list-albums-by'])) update_option('wppa_list_albums_by', $_POST['wppa-list-albums-by']);
             if (isset($_POST['wppa-list-albums-desc'])) update_option('wppa_list_albums_desc', 'yes');
@@ -370,96 +342,106 @@ function wppa_page_options() {
             else update_option('wppa_list_photos_desc', 'no');
 		
 			update_option('wppa-accesslevel', $_POST['wppa-accesslevel']);
-			
-			echo '<div id="message" class="updated fade"><p><strong>Changes Saved</strong></p></div>';
+?>			
+			<div id="message" class="updated fade"><p><strong>Changes Saved</strong></p></div>
+<?php
 		}
+        else {
+            if (get_option('wppa_lastthumb', '-2') != '-2') {
+?>
+                <div id="message" class="error"><p><strong>Regeneration of thumbnail images interrupted. Please press "Save Changes"</strong></p></div>
+<?php
+            }
+        } ?>
 		
-		echo '<div class="wrap">';
-			
-		echo '<h2>WP Photo Album Options</h2>';
+		<div class="wrap">
+			<h2>WP Photo Album Options</h2>
+			<p>Database revision: <?php echo(get_option('wppa_revision', '100')) ?>.</p><br/>
+			<form action="<?php echo(get_option('siteurl')) ?>/wp-admin/admin.php?page=options" method="post">
 		
-		echo '<form action="' . get_option('siteurl') . '/wp-admin/admin.php?page=options" method="post">';
-		
-		wppa_nonce_field('$wppa_nonce', WPPA_NONCE);
+				<?php wppa_nonce_field('$wppa_nonce', WPPA_NONCE); ?>
 
-		echo '<p>
-				<label for="wppa-thumbsize">Thumbnail Size: <small>Changing the thumbnail size will result in all thumbnails being regenerated. this may take a while.</small></label><br />
-				<input type="text" name="wppa-thumbsize" id="wppa-tumbsize" value="' . get_option('wppa_thumbsize') .'" />
-			</p>';
-		
-		echo '<p>
-				<label for="wppa-fullsize">Full size: <small>The size of the full images is controled with html, the photo itself will not be resized.</small></label><br />
-				<input type="text" name="wppa-fullsize" id="wppa-fullsize" value="' . get_option('wppa_fullsize') .'" />
-			</p>';
- 
-        echo '<p>';
-                $order = get_option('wppa_list_albums_by');
-                echo '<label for="wppa-list-albums-by">Album order: </label>
-                <select name="wppa-list-albums-by">';
-                    wppa_order_options($order, '--- none ---');
-                echo '            
-                </select>
-                <small>Specify the way the albums should be ordered.</small>
-            </p>';
-
-        echo '<p>
-                <input type="checkbox" name="wppa-list-albums-desc" id="wppa-list-albums-desc"'; if (get_option('wppa_list_albums_desc') == 'yes') echo ' checked="checked"'; echo ' />
-                <label for="wppa-list-albums-desc">Descending. i.e. largest first.</label>
-            </p>';  
-
-        echo '<p>';
-                $order = get_option('wppa_list_photos_by');
-                echo '<label for="wppa-list-photos-by">Photo order: </label>
-                <select name="wppa-list-photos-by">';
-                    wppa_order_options($order, '--- none ---');
-                echo '              
-                </select>
-                <small>Specify the way the photos should be ordered. This is the default setting. You can overrule the default sorting order on a per album basis.</small>
-            </p>';
+				<p>
+					<label for="wppa-thumbsize">Thumbnail Size: </label>
+					<input type="text" name="wppa-thumbsize" id="wppa-tumbsize" value="<?php echo(get_option('wppa_thumbsize')) ?>" style="width: 50px;" />
+					<small>Changing the thumbnail size will result in all thumbnails being regenerated. this may take a while.</small>
+				</p>
 			
-        echo '<p>
-                <input type="checkbox" name="wppa-list-photos-desc" id="wppa-list-photos-desc"'; if (get_option('wppa_list_photos_desc') == 'yes') echo ' checked="checked"'; echo ' />
-                <label for="wppa-list-photos-desc">Descending. i.e. largest first.<small>This is a system wide setting.</small></label>        
-            </p>';
-			
-		$level = get_option('wppa-accesslevel');
+				<p>
+					<label for="wppa-fullsize">Full Size: </label>
+					<input type="text" name="wppa-fullsize" id="wppa-fullsize" value="<?php echo(get_option('wppa_fullsize')) ?>" style="width: 50px;" />
+					<small>The size of the full images is controled with html, the photo itself will not be resized.</small>
+				</p>
+				
+				<p>
+					<input type="checkbox" name="wppa-enlarge" id="wppa-enlarge" <?php if (get_option('wppa_enlarge', 'yes') == 'yes') echo ('checked="checked"') ?> />
+					<label for="wppa-enlarge">Enlarge if needed. <small>Fullsize images will be enlarged to the Full Size if needed. Leaving unchecked is recommended. It is better to upload photos that fit well the sizes you use!</small></label>
+				</p>
+	 
+				<p>
+					<?php $order = get_option('wppa_list_albums_by'); ?>
+					<label for="wppa-list-albums-by">Album order: </label>
+					<select name="wppa-list-albums-by"><?php wppa_order_options($order, '--- none ---') ?></select>
+					<small>Specify the way the albums should be ordered.</small>
+				</p>
 
-		switch ($level) {
-			case "level_10":
-				$l10 = ' selected="selected"';
-				break;
-			case "level_7":
-				$l7 = ' selected="selected"';
-				break;
-			case "level_2":
-				$l2 = ' selected="selected"';
-				break;
-			case "level_1":
-				$l1 = ' selected="selected"';
-				break;
-		}
+				<p>
+					<input type="checkbox" name="wppa-list-albums-desc" id="wppa-list-albums-desc" <?php if (get_option('wppa_list_albums_desc') == 'yes') echo('checked="checked"') ?> />
+					<label for="wppa-list-albums-desc">Descending. i.e. largest first.</label>
+				</p>
+				
+				<p>
+					<?php $order = get_option('wppa_list_photos_by'); ?>
+					<label for="wppa-list-photos-by">Photo order: </label>
+					<select name="wppa-list-photos-by"><?php wppa_order_options($order, '--- none ---') ?></select>
+					<small>Specify the way the photos should be ordered. This is the default setting. You can overrule the default sorting order on a per album basis.</small>
+				</p>
+				
+				<p>
+					<input type="checkbox" name="wppa-list-photos-desc" id="wppa-list-photos-desc" <?php if (get_option('wppa_list_photos_desc') == 'yes') echo (' checked="checked"') ?> />
+					<label for="wppa-list-photos-desc">Descending. i.e. largest first. <small>This is a system wide setting.</small></label>        
+				</p>
+				
+				<?php $level = get_option('wppa-accesslevel');
+
+				switch ($level) {
+					case "level_10":
+						$l10 = ' selected="selected"';
+						break;
+					case "level_7":
+						$l7 = ' selected="selected"';
+						break;
+					case "level_2":
+						$l2 = ' selected="selected"';
+						break;
+					case "level_1":
+						$l1 = ' selected="selected"';
+						break;
+				}
+				?>
 		
-		echo '<p>
-			<label for="wppa-accesslevel">Access Level: <small>The user levels that can access the photo album admin</small></label><br />
-			<select name="wppa-accesslevel">
-				<option value="level_10"' . $l10 . '>Administrator</option> 
-				<option value="level_7"' . $l7 . '>Editor</option>
-				<option value="level_2"' . $l2 . '>Author</option>
-				<option value="level_1"' . $l1 . '>Contributor</option>				
-			</select>
-			';
-			
-		echo '<p>
-				<input type="submit" name="wppa-set-submit" value="Save Changes" />
-			</p>';
-		echo '</form>';
-		
-		echo '</div>';
-}
+				<p>
+					<label for="wppa-accesslevel">Access Level:</label>
+					<select name="wppa-accesslevel">
+						<option value="level_10"' . $l10 . '>Administrator</option> 
+						<option value="level_7"' . $l7 . '>Editor</option>
+						<option value="level_2"' . $l2 . '>Author</option>
+						<option value="level_1"' . $l1 . '>Contributor</option>				
+					</select>
+					<small>The user levels that can access the photo album admin.</small><br />
+				</p>
+					
+				<p>
+					<input type="submit" name="wppa-set-submit" value="Save Changes" />
+				</p>
+			</form>
+		</div>
+<?php }
 
 function wppa_page_help() {
 
-		echo '<div class="wrap">
+?>
+	<div class="wrap">
 		
 		<h2>Help and Information</h2>
 		
@@ -471,8 +453,7 @@ function wppa_page_help() {
             The only restriction is that the top-level album can only contain albums. This is exactly as it was before.<br/>
             Besides a system wide setting for the ordering of albums and photos, the photo sorting method
             can be set specifically for each album.<br/>
-            Currently available sorting methods are: sort by Order #, 
-            sort by Name, and sort Randomly.		
+            Currently available sorting methods are: sort by Id (upload order), Order #, sort by Name, and sort Randomly.		
         </p>
 
 		<h3>About and credits</h3>
@@ -502,6 +483,7 @@ function wppa_page_help() {
         <li>The photo order seleced is used both in the admin pages as well as in the theme</li>
         <li>The capability of running a slide show has been added</li>
         </ol>
+		For more details about the ongoing process if improvement of this plugin, please read the changelog section of the readme.txt file.
 
         <h3>Upgrading from WP Photo Album</h3>
         <p>When upgrading from WP Photo Album to WP Photo Album Plus be aware of:</p>
@@ -531,32 +513,42 @@ function wppa_page_help() {
         <tt>%%album=19%%</tt><br />
         If you want to display the <b>cover</b> of album #19, create a new album, use his number and make album 19\'s parent that album number.<br />
         Upload <b>one</b> photo to the parent album. This photo will be used as the cover photo, and not displayed inside the album.<br/>
+		If you set the parent of this new album to --- separate ---, the breadcrumb will be displayed correctly, and the album will not be listed in the generic album display.<br/>
+		If you want to display the photos and slideshow using a non-default full size of e.g. 300, add the following to the post/page:<br/>
+		<tt>%%size=300%%</tt><br/>
+		You may combine the above to: <tt>%%wppa%%%%album=19%%%%size=300%%</tt><br/>
 
 		Also, make sure under \'Page Template\' you are using \'Default Template\' as some WordPress themes have an archives template.<br />
 		Press the publish button and you\'re done. You\'ll now have a photo gallery page. </p>
 
 		<p>You can also create a custom page template by dropping the following code into a page:<br />
 		<tt>&lt;?php wppa_albums(); ?&gt;</tt><br />
-        Alternatively, you can specify a single album in the template by passing the album number as argument (e.g. for album # 19:<br />
+        Alternatively, you can specify a single album in the template by passing the album number as argument e.g. for album # 19:<br />
         <tt>&lt;?php wppa_albums(19); ?&gt;</tt><br />
-		In order to work properly, this tag needs to be within the <a href="http://codex.wordpress.org/The_Loop">WordPress loop</a>. 
+		In order to work properly, this tag needs to be within the <a href="http://codex.wordpress.org/The_Loop">WordPress loop</a>.<br/>
+		For more information on creating custom page templates, click <a href="http://codex.wordpress.org/Pages#Creating_your_own_Page_Templates">here</a>.<br/>
+		If you want to display the photos and slideshow using a non-default full size of e.g. 300, add the following to the page template <b>before</b> the call to wppa_albums():<br/>
 
-For more information on creating custom page templates, click <a href="http://codex.wordpress.org/Pages#Creating_your_own_Page_Templates">here</a>.</p>
-
+		<tt>&lt;?php global $wppa_fullsize; ?&gt;<br/>
+		&lt;?php $wppa_fullsize = 300; ?&gt;</tt><br/>
+		</p>
 		<h3>Adjusting CSS and Template Styling</h3>
 		<p>WP Photo Album comes with a default layout and theme. To change the style and layout of the photo album, copy them/edit wppa_theme.php and theme/wppa_style.css to your active theme\'s folder, and edit them. 
 
-WPPA uses a system of tags similar to the WordPress theme system. To view a list of available tags, please read tags.txt
+		WPPA uses a system of tags similar to the WordPress theme system. To view a list of available tags, please read tags.txt
 
 
 		<h3>Plugin Support And Feature Request</h3>
 		<p>If you\'ve read over this readme carefully and are still having issues, if you\'ve discovered a bug, 
         or have a feature request, please contact me via my <a href="mailto:opajaap@opajaap.nl?subject=WP%20Photo%20Album%20Plus">E-mail</a>.</p>
+        <p>If you love this plugin, please buy me a <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD">
+        Heineken.</a></p>
 		
 		<h3>Licence</h3>
 		<p>WP Photo Album is released under the <a href="http://www.gnu.org/copyleft/gpl.html">GNU GPL</a> licence.</p>
 		
-		</div>';
+		</div>
+<?php
 }
 
 /* get the albums */
@@ -565,31 +557,41 @@ function wppa_admin_albums() {
 	$albums = $wpdb->get_results("SELECT * FROM " . ALBUM_TABLE . " " . wppa_get_album_order(), 'ARRAY_A');
 	
 	if (!empty($albums)) {
-	
-		echo '<table class="widefat">
+?>	
+		<table class="widefat">
 			<thead>
 			<tr>
-				<th scope="col">ID</th>
-                <th scope="col">Parent</th>
 				<th scope="col">Name</th>
 				<th scope="col">Description</th>
+				<th scope="col">ID</th>
+                <th scope="col">Order</th>
+                <th scope="col">Parent</th>
 				<th scope="col">Edit</th>
 				<th scope="col">Delete</th>	
-                <th scope="col">Order</th>
 			</tr>
-			</thead>';
+			</thead>
 			
-			$alt = ' class="alternate" ';
+			<?php $alt = ' class="alternate" '; ?>
 			
-			foreach ($albums as $album) {
-				echo '<tr' . $alt . '><td>' . $album['id'] . '</td><td>' . $album['a_parent'] . '</td><td>' . $album['name'] . '</td><td><small>' . $album['description'] . '</small></td><td><a href="admin.php&#63;page=' . PLUGIN_PATH . '/wppa.php&amp;tab=edit&amp;edit_id=' . $album['id'] . '" class="edit">Edit</a></td><td><a href="admin.php?page=' . PLUGIN_PATH . '/wppa.php&amp;tab=del&amp;id=' . $album['id'] . '" class="delete">Delete</a></td><td>' . $album['a_order'] . '</td></tr>';			
-				if ($alt == '') { $alt = ' class="alternate" '; } else { $alt = '';}
+			<?php foreach ($albums as $album) { ?>
+				<tr <?php echo($alt) ?>>
+					<td><?php echo($album['name']) ?></td>
+					<td><small><?php echo($album['description']) ?></small></td>
+					<td><?php echo($album['id']) ?></td>
+					<td><?php echo($album['a_order']) ?></td>
+					<td><?php wppa_album_name($album['a_parent']) ?></td>
+					<td><a href="admin.php&#63;page=<?php echo(PLUGIN_PATH) ?>/wppa.php&amp;tab=edit&amp;edit_id=<?php echo($album['id']) ?>" class="edit">Edit</a></td>
+					<td><a href="admin.php?page=<?php echo(PLUGIN_PATH) ?>/wppa.php&amp;tab=del&amp;id=<?php echo($album['id']) ?>" class="delete">Delete</a></td>
+				</tr>		
+<?php			if ($alt == '') { $alt = ' class="alternate" '; } else { $alt = '';}
 			}
-			
-		echo '</table>';
-	
+?>			
+		</table>
+<?php	
 	} else { 
-		echo "No albums yet."; 
+?>
+	No albums yet.
+<?php
 	}
 }
 
@@ -598,22 +600,25 @@ function wppa_album_photos($id) {
 	global $wpdb;
 	$photos = $wpdb->get_results("SELECT * FROM " . PHOTO_TABLE . " WHERE album=$id " . wppa_get_photo_order($id), 'ARRAY_A');
 	if (empty($photos)) {
-		return "<p>No photos yet in this album.</p>";
+?>
+	<p>No photos yet in this album.</p>
+<?php
 	} else {
 		foreach ($photos as $photo) {
-			echo '<div class="photoitem">';
-			echo '<img src="' . get_bloginfo('wpurl') . '/wp-content/uploads/wppa/thumbs/' . $photo['id'] . '.' . $photo['ext'] . '" alt="' . $photo['name'] . '" />';
-			echo '<div class="details">';
-				echo '<p>Name: <input type="text" name="photos[' . $photo['id'] . '][name]" value="' . $photo['name'] . '" /></p>';
-				echo '<p>Album: <select name="photos[' . $photo['id'] . '][album]">' . wppa_album_select('', $id) . '</select></p>';
-				echo '<input type="hidden" name="photos[' . $photo['id'] . '][id]" value="' . $photo['id'] . '" />';
-                echo '<p>Order: <input type="text" name="photos[' . $photo['id'] . '][p_order]" value="' . $photo['p_order'] . '" /></p>';
-				echo '<p><a href="' . get_option('siteurl') . '/wp-admin/admin.php?page=' . PLUGIN_PATH . '/wppa.php&amp;tab=edit&amp;edit_id=' . $_GET['edit_id'] . '&amp;photo_del=' . $photo['id'] . '" class="deletelink" onclick="return confirm(\'Are you sure you want to delete this photo?\')">Delete</a></p>';
-			echo '</div>';
-			echo '<div class="desc">Description:<br /><textarea cols="40" rows="4" name="photos[' . $photo['id'] . '][description]">' . $photo['description'] . '</textarea></div>';
-			echo '<div class="clear"></div>';
-			echo '</div>';
-		}
+?>
+			<div class="photoitem">
+				<img src="<?php echo(get_bloginfo('wpurl')) ?>/wp-content/uploads/wppa/thumbs/<?php echo($photo['id'] . '.' . $photo['ext']) ?>" alt="<?php echo($photo['name']) ?>" />
+				<div class="details">
+					<p>Name: <input type="text" name="<?php echo('photos[' . $photo['id'] . '][name]') ?>" value="<?php echo($photo['name']) ?>" /></p>
+					<p>Album: <select name="<?php echo('photos[' . $photo['id'] . '][album]') ?>"><?php echo(wppa_album_select('', $id)) ?></select></p>
+					<input type="hidden" name="<?php echo('photos[' . $photo['id'] . '][id]') ?>" value="<?php echo($photo['id']) ?>" />
+					<p>Order: <input type="text" name="<?php echo('photos[' . $photo['id'] . '][p_order]') ?>" value="<?php echo($photo['p_order']) ?>" /></p>
+					<p><a href="<?php echo(get_option('siteurl')) ?>/wp-admin/admin.php?page=<?php echo(PLUGIN_PATH) ?>/wppa.php&amp;tab=edit&amp;edit_id=<?php echo($_GET['edit_id']) ?>&amp;photo_del=<?php echo($photo['id']) ?>" class="deletelink" onclick="return confirm('Are you sure you want to delete this photo?')">Delete</a></p>
+				</div>
+				<div class="desc">Description:<br /><textarea cols="40" rows="4" name="photos[<?php echo($photo['id']) ?>][description]"><?php echo($photo['description']) ?></textarea></div>
+				<div class="clear"></div>
+			</div>
+<?php	}
 	}
 }
 
@@ -629,12 +634,12 @@ function wppa_has_albums() {
 }
 
 // get select form element listing albums 
-function wppa_album_select($exc = '', $sel = '', $addnone = FALSE) {
+function wppa_album_select($exc = '', $sel = '', $addnone = FALSE, $addseparate = FALSE) {
 	global $wpdb;
 	$albums = $wpdb->get_results("SELECT * FROM " . ALBUM_TABLE, 'ARRAY_A');
 	
     if ($sel == '') {
-        $s = wppa_get_last_album(TRUE);
+        $s = wppa_get_last_album();
         if ($s != $exc) $sel = $s;
     }
     
@@ -650,6 +655,9 @@ function wppa_album_select($exc = '', $sel = '', $addnone = FALSE) {
 			$result .= '<option value="' . $album['id'] . '"' . $selected . '>' . $album['name'] . '</option>';
 		}
 	}
+    
+    if ($sel == -1) $selected = ' selected="selected" '; else $selected = '';
+    if ($addseparate) $result .= '<option value="-1"' . $selected . '>--- separate ---</option>';
 	return $result;
 }
 
@@ -813,13 +821,16 @@ function wppa_regenerate_thumbs() {
 	global $wpdb;
 	$thumbsize = get_option('wppa_thumbsize');
 	$wppa_dir = ABSPATH . 'wp-content/uploads/wppa/';
+    
+    $start = get_option('wppa_lastthumb', '-1');
 
-	$photos = $wpdb->get_results("SELECT * FROM " . PHOTO_TABLE , 'ARRAY_A');
+	$photos = $wpdb->get_results("SELECT * FROM " . PHOTO_TABLE . " WHERE id>" . $start . " ORDER BY id", 'ARRAY_A');
 	
 	if (!empty($photos)) {
 		foreach ($photos as $photo) {
 			$newimage = $wppa_dir . $photo['id'] . '.' . $photo['ext'];
 			wppa_create_thumbnail($newimage, $thumbsize, '' );
+            update_option('wppa_lastthumb', $photo['id']);
             echo '.';
 		}
 	}		
@@ -926,12 +937,19 @@ function wppa_create_thumbnail( $file, $max_side, $effect = '' ) {
 add_action('init', 'wppa_do_filter');
 
 function wppa_do_filter() {
-add_filter('the_content', 'wppa_albums_filter', 1);
+add_filter('the_content', 'wppa_albums_filter', 99);
 }
 
 function wppa_albums_filter($post) {
     global $startalbum;
+    global $wppa_fullsize;
+	global $before_album;
+    
 	if (substr_count($post, '%%wppa%%') > 0) {
+	
+		$wppapos = strpos($post, '%%wppa%%');
+		$before_album = substr($post, 0, $wppapos);
+		$post = substr($post, $wppapos);
 	
         $albpos = strpos($post, '%%album=');
         if ($albpos) {
@@ -942,11 +960,29 @@ function wppa_albums_filter($post) {
                 $startalbum = $alb;
                 $len++;
                 $alb = substr($post, $albpos, $len);
-            } 
-            $post = str_replace('%%album=' . $alb . '%', '', $post);  // remove from content
+            }
+			$rmv = '%%album=' . $alb . '%';
+            $post = substr_replace($post, '', strpos($post, $rmv), strlen($rmv)); 
+			/*str_replace('%%album=' . $alb . '%', '', $post);  // remove from content */
         }
         
-		$post = str_replace('%%wppa%%', wppa_albums(), $post);
+        $sizepos = strpos($post, '%%size=');
+        if ($sizepos) {
+            $sizepos += 7;
+            $len = 1;
+            $size = substr($post, $sizepos, $len);
+            while (is_numeric($size) && $len < 5) {
+                $wppa_fullsize = $size;
+                $len++;
+                $size = substr($post, $sizepos, $len);
+            }
+			$rmv = '%%size=' . $size . '%';
+			$post = substr_replace($post, '', strpos($post, $rmv), strlen($rmv));
+            /*$post = str_replace('%%size=' . $size . '%', '', $post);*/
+        }
+        
+		$post = substr_replace($post, wppa_albums(), strpos($post, '%%wppa%%'), 8); 
+		/* str_replace('%%wppa%%', wppa_albums(), $post); */
 
     }
 	return $post;
@@ -963,9 +999,9 @@ function wppa_albums($xalb = '') {
 	
 	// check for user template before using default template
 	if (is_file($templatefile)) {
-		include_once($templatefile);
+		include($templatefile);
 	} else {
-		include_once(ABSPATH . 'wp-content/plugins/' . PLUGIN_PATH . '/theme/wppa_theme.php');
+		include(ABSPATH . 'wp-content/plugins/' . PLUGIN_PATH . '/theme/wppa_theme.php');
 	}
 }
 
@@ -988,22 +1024,28 @@ function wppa_add_style() {
 
 // shows the breadcrumb navigation
 function wppa_breadcrumb($xsep = '&raquo;') {
+	global $startalbum;
     $sep = '&nbsp;' . $xsep . '&nbsp;';
     $home = 'Home';
     echo '<a href="' . get_bloginfo('url') . '" class="backlink">' . $home . '</a>' . $sep;
-    if (isset($_GET['album'])) $alb = $_GET['album']; else $alb = 0;
+    if (isset($_GET['album'])) $alb = $_GET['album']; 
+	elseif (is_numeric($startalbum)) $alb = $startalbum;
+	else $alb = 0;
+	$separate = wppa_is_separate($alb);
+	
 	if ($alb == 0) {
-        the_title();
-	/*	echo 'Foto album';  */
+        if (!$separate) the_title();
 		return;
 	} else {
-		echo '<a href="' . get_permalink()  . '" class="backlink">'; the_title(); echo '</a>' . $sep;
+		if (!$separate) {
+			echo '<a href="' . get_permalink()  . '" class="backlink">'; the_title(); echo '</a>' . $sep;
+		}
         wppa_crumb_ancestors($sep, $alb);
 		if (!isset($_GET['photo'])) {
-			echo wppa_album_name($_GET['album'], TRUE);
+			echo wppa_album_name($alb, TRUE); //$_GET['album'], TRUE);
 			return;
 		} else {
-			echo '<a href="' . get_permalink() . wppa_sep() . 'album=' . $_GET['album'] . '" class="backlink">' . wppa_album_name($_GET['album'], TRUE) . '</a>' . $sep;
+			echo '<a href="' . get_permalink() . wppa_sep() . 'album=' . $alb . '" class="backlink">' . wppa_album_name($alb, TRUE) . '</a>' . $sep;
 			echo wppa_photo_name($_GET['photo']);
 		}
 	}
@@ -1011,8 +1053,10 @@ function wppa_breadcrumb($xsep = '&raquo;') {
 
 function wppa_crumb_ancestors($sep, $alb) {
     $parent = wppa_get_parentalbumid($alb);
-    if ($parent == 0) return;
+    if ($parent < 1) return;
+    
     wppa_crumb_ancestors($sep, $parent);
+   
     echo '<a href="' . get_permalink() . wppa_sep() . 'album=' . $parent . '" class="backlink">' . wppa_album_name($parent, TRUE) . '</a>' . $sep;
     return;
 }
@@ -1023,21 +1067,44 @@ function wppa_get_parentalbumid($alb) {
     
     $query = "SELECT a_parent FROM " . ALBUM_TABLE . " WHERE id=$alb";
     $result = $wpdb->get_var($query);
+    if (!is_numeric($result)) $result = 0;
     return $result;
 }
 
+// See if an album is in a separate tree
+function wppa_is_separate($xalb) {
+	if (!is_numeric($xalb)) return FALSE;	// should never happen
+		
+	$alb = wppa_get_parentalbumid($xalb);
+	if ($alb == 0) return FALSE;
+	if ($alb == -1) return TRUE;
+	return (wppa_is_separate($alb));
+}
+
 // get album title by id
+function wppa_get_album_name($id = '') {
+	return wppa_album_name($id = '', TRUE);
+}
+
 function wppa_album_name($id = '', $return = FALSE) {
 	global $wpdb;
     
-	if ($id == '') $id = $_GET['album'];
-	$id = $wpdb->escape($id);	
-	if (is_numeric($id)) $name = $wpdb->get_var("SELECT name FROM " . ALBUM_TABLE . " WHERE id=$id");
+    if ($id == '0') $name = '--- none ---';
+    elseif ($id == '-1') $name = '--- separate ---';
+    else {
+        if ($id == '') $id = $_GET['album'];
+        $id = $wpdb->escape($id);	
+        if (is_numeric($id)) $name = $wpdb->get_var("SELECT name FROM " . ALBUM_TABLE . " WHERE id=$id");
+    }
 	
 	if ($return) return $name; else echo $name;
 }
 
 // get album id by title
+function wppa_get_album_id($name = '') {
+	return wppa_album_id($name, TRUE);
+}
+
 function wppa_album_id($name = '', $return = FALSE) {
 	global $wpdb;
     
@@ -1065,6 +1132,10 @@ function wppa_page($page) {
 }
 
 // get url of current album image
+function wppa_get_image_url() {
+	return wppa_image_url(TRUE);
+}
+
 function wppa_image_url($return = FALSE) {
 	global $wpdb, $album;
 		
@@ -1092,8 +1163,11 @@ function wppa_get_albums() {
     return $albums;
 }
 
-// get link to album by id
-function wppa_get_album_url($id) {
+// get link to album by id or in loop
+function wppa_get_album_url($xid = '') {
+	global $album;
+	if ($xid != '') $id = $xid;
+	else $id = $album['id'];
     $link = get_permalink() . wppa_sep() . 'album=' . $id;
     return $link;
 }
@@ -1127,6 +1201,12 @@ function wppa_get_album_count($xid = '') {
 }
 
 // get album name
+function wppa_get_the_album_name() {
+	global $album;
+	
+	return $album['name'];
+}
+
 function wppa_the_album_name($return = FALSE) {
 	global $album;
 	
@@ -1141,6 +1221,9 @@ function wppa_the_album_desc($return = FALSE) {
 }
 
 // get link to slideshow (in loop)
+function wppa_get_slideshow_url() {
+	return wppa_slideshow_url(TRUE);
+}
 function wppa_slideshow_url($return = FALSE) {
 	global $album;
 	$link = get_permalink() . wppa_sep() . 'album=' . $album['id'] . '&amp;' . 'slide=true';
@@ -1251,26 +1334,36 @@ function wppa_prev_next($prev = '&laquo;<a href="%link%">Previous Photo</a> ', $
 // get height or width limit
 function wppa_get_fullsize($id = '') {
 	global $wpdb;
-	if (empty($id)) { $id = $_GET['photo']; }
-	$id = $wpdb->escape($id);
+    global $wppa_fullsize;
+	global $wppa_no_enlarge;
 	
-	if (is_numeric($id)) {
-		$ext = $wpdb->get_var("SELECT ext FROM " . PHOTO_TABLE . " WHERE id=$id");
+	if (!is_numeric($wppa_fullsize)) $wppa_fullsize = get_option('wppa_fullsize');
+	if (!is_numeric($wppa_fullsize)) $wppa_fullsize = '450';
+
+	if ($wppa_enlarge == '') $wppa_enlarge = get_option('wppa_enlarge', 'true');
+	
+	if ($wppa_enlarge != 'true') {
+		$result = 'style="max-width: ' . $wppa_fullsize . 'px; max-height: ' . $wppa_fullsize . 'px;"';
 	}
-	$img_path = ABSPATH . 'wp-content/uploads/wppa/' . $id . '.' . $ext;
-	if(is_file($img_path)) {
-		$size = getimagesize($img_path);
-	}
-	
-	$fullsize = get_option('wppa_fullsize');
-	
-	if (is_numeric($fullsize)) {
+	else {
+		if (empty($id)) $id = $_GET['photo'];
+			
+		if (is_numeric($id)) {
+			$ext = $wpdb->get_var("SELECT ext FROM " . PHOTO_TABLE . " WHERE id=$id");
+		}
+		$img_path = ABSPATH . 'wp-content/uploads/wppa/' . $id . '.' . $ext;
+		if(is_file($img_path)) {
+			$size = getimagesize($img_path);
+		}
+		
 		if ($size[0] >= $size[1]) {
-			$result = 'width="' . $fullsize . '"';
-		} else {
-			$result = 'height="' . $fullsize . '"';
+			$result = 'width="' . $wppa_fullsize . '"';
+		} 
+		else {
+			$result = 'height="' . $wppa_fullsize . '"';
 		}
 	}
+	
 	return $result;
 }
 
@@ -1292,7 +1385,7 @@ function wppa_set_last_album($id = '') {
 }
 
 // get last album
-function wppa_get_last_album( $return = FALSE) {
+function wppa_get_last_album() {
     global $albumid;
     
     if (is_numeric($albumid)) $result = $albumid;
@@ -1300,7 +1393,7 @@ function wppa_get_last_album( $return = FALSE) {
     if (!is_numeric($result)) $result = '';
     else $albumid = $result;
 
-	if ($return) return $result; else echo $result;
+	return $result; 
 }
 
 // display order options
