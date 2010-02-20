@@ -70,5 +70,25 @@ ul.wppa_nav
 	text-decoration: none;
 	border: none;
 	color: red;
-	text-weight: bold;
+	font-weight: bold;
+}
+
+tt {
+    font-weight: bold;
+    font-family: Consolas,Monaco,"Courier New",Courier,monospace;
+    background-color: #e0e0e0;
+}
+
+.edit {
+	font-weight: bold;
+	color: green;
+}
+
+.delete {
+	font-weight: bold;
+	color: red;
+}
+
+.alternate {
+	background-color: #f5f5f5;
 }

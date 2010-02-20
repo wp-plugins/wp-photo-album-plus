@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD
 Tags: photo, album, gallery, slideshow
-Version: 1.7
+Version: 1.7.1
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -62,6 +62,16 @@ The sort order information will have no longer effect.
 
 == Changelog ==
 
+= 1.7.1 =
+* There is now a simple self-explaining way to recover from an interrupted regeneration of thumbnail images.
+* Fixed a typo in admin_styles.css.
+* Parent album Names rather than Id's are listed in the Manage Albums table.
+* Parent Id's can be --- separate ---. They do not appear in the generic album where all albums are listed with a parent set to --- none ---, and are especially ment for use as parent albums (covers) for single albums in posts or pages with correct breadcrumb display.
+* When displaying a blog with more than one post using an album, only the first album was displayed. This has been fixed. You can still have only one album per page/post.
+* When displaying an album in a page or post, you can now overrule the default full size.
+* You can now set the order of photos in an album to the default setting from the Options page.
+* You can now specify whether photos may be enlarged to meet the Full Size crteria. Turning off this feature (recommended) will speed up the start of slideshows with hundreds of photos.
+
 = 1.7 =
 * Slideshow did not work when having non-standard permalink structure.
 * Fixed a layout issue around page header and breadcrumb.
@@ -104,24 +114,40 @@ you should upgrade your WP Photo Album to **WP Photo Album Plus**, or if you are
 Create a page like you normally would in WordPress. In my example, we'll give it the page title of "Photo Gallery". In the Page Content 
 section add the following code:
 
-%%wppa%%
+`%%wppa%%`
 
 If you want to display the **contents** of a specific album add the following line (e.g. for album number 19, replace 19 by the album number you wish):
 
-%%album=19%%
+`%%album=19%%`
 	
 If you want to display the **cover** of album #19, create a new album, use his number and make album 19's parent that album number.
 Upload **one** photo to the parent album. This photo will be used as the cover photo, and not displayed inside the album.
+If you set the parent of this new album to --- separate ---, the breadcrumb will be displayed correctly.
+
+If you want to display the photos and slideshow using a non-default full size of e.g. 300, add the following to the post/page:
+
+`%%size=300%%`
+
+You may combine the above to: `%%wppa%%%%album=19%%%%size=300%%`
 
 Also, make sure under 'Page Template' you are using 'Default Template' as some WordPress themes have an archives template.  
 Press the publish button and you're done. You'll now have a photo gallery page. 
 
-You can also create a custom page template by dropping the following code into a page:
+You can also create a custom page template by dropping the following code into a page template:
 
 `<?php wppa_albums(); ?>`
 
+If you want to display the **contents** of a specific album: e.g. for album number 19, replace 19 by the album number you wish):
+
+`<?php wppa_albums(19); ?>`
+
 In order to work properly, this tag needs to be within the WordPress loop ( http://codex.wordpress.org/The_Loop ) 
 For more information on creating custom page templates, visit http://codex.wordpress.org/Pages#Creating_your_own_Page_Templates
+
+If you want to display the photos and slideshow using a non-default full size of e.g. 300, add the following to the page template *before* the call to wppa_albums():
+
+`<?php global $wppa_fullsize; ?>`
+`<?php $wppa_fullsize = 300; ?>`
 
 
 == Adjusting CSS and Template Styling ==

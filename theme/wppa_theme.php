@@ -1,5 +1,6 @@
 <?php 
 global $allow_sidebars;
+global $wppa_fullsize;
 if ($allow_sidebars == '') $allow_sidebars = '1';
 /* Dutch  
 $faster = 'Sneller';
@@ -19,6 +20,9 @@ $and = ' and ';
 $slideshow = 'Slideshow';
 /**/
 
+global $before_album;
+echo ($before_album);
+
 if (wppa_page('albums')) :
     echo '<div id="prevnext">'; wppa_breadcrumb(); echo '</div>';
     $albums = wppa_get_albums(); 
@@ -28,15 +32,15 @@ if (wppa_page('albums')) :
         foreach ($albums as $ta) :  global $album; $album = $ta;
             $albumname = $album['name'];
             $albumdesc = $album['description'];
-            $albumurl = wppa_album_url(TRUE);
+            $albumurl = wppa_get_album_url();
             $photocount = wppa_get_photo_count();
             $albumcount = wppa_get_album_count();
  			echo '<div class="album ' . $alt . '">';
             echo '<a href="' . $albumurl . '" title="' . $view . ' ' . $albumname . '">
-                    <img src="' . wppa_image_url(TRUE) . '" alt="' . $view . ' ' . $albumname . '" class="image" /></a>';
+                    <img src="' . wppa_get_image_url() . '" alt="' . $view . ' ' . $albumname . '" class="image" /></a>';
             echo '<h2 class="name"><a href="' . $albumurl . '" title="' . $view . ' ' . $albumname . '">' . $albumname . '</a></h2>';
             echo '<p class="description">' . $albumdesc . '</p>';
-                if ($photocount > 1) echo '<a href="' . wppa_slideshow_url(TRUE) . '" title="' . $slideshow . '" >' . $slideshow . '</a>';
+                if ($photocount > 1) echo '<a href="' . wppa_get_slideshow_url() . '" title="' . $slideshow . '" >' . $slideshow . '</a>';
                 echo '<br/>';
                 if ($photocount > 1 || $albumcount) echo '<a href="' . $albumurl . '" title="' . $view . '" >' . $vw; 
                 if ($albumcount) echo $albumcount . ' albums';
@@ -73,7 +77,8 @@ elseif (wppa_page('slide')) :
     <a href="#" id="speed0" onclick="wppa_speed(false)">' . $slower . '</a> |
     <a href="#" id="startstop" onclick="wppa_startstop()">Start</a> |
     <a href="#" id="speed1" onclick="wppa_speed(true)">' . $faster . '</a></p></div>'; 
-    $minheight = get_option('wppa_fullsize') * 3 / 4;
+	if (is_numeric($wppa_fullsize)) $minheight = $wppa_fullsize * 3 / 4;
+	else $minheight = get_option('wppa_fullsize') * 3 / 4;
     echo '<p id="theslide" style="min-height: ' . $minheight . 'px; text-align: center;">';
     echo '<p id="imagedesc" class="imagedesc"></p><p id="imagetitle" class="imagetitle"></p>';
     echo '<script type="text/javascript" src="' . get_bloginfo('wpurl') .'/wp-content/plugins/' . PLUGIN_PATH . '/theme/wppa_slideshow.js"></script>'; 
