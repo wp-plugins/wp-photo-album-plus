@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD
 Tags: photo, album, gallery, slideshow
-Version: 1.7.1
+Version: 1.7.2
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -61,6 +61,9 @@ You will see the sub albums you created appear as normal albums.
 The sort order information will have no longer effect.
 
 == Changelog ==
+
+= 1.7.2 =
+* Fixed the problem that in IE the accesslevel could not be changed and the options could not be saved.
 
 = 1.7.1 =
 * There is now a simple self-explaining way to recover from an interrupted regeneration of thumbnail images.

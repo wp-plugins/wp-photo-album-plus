@@ -2,7 +2,7 @@
 /*
 Plugin Name: WP Photo Album Plus
 Description: Easily manage and display your photo albums and slideshows within your WordPress site.
-Version: 1.7.1
+Version: 1.7.2
 Author: J.N. Breetvelt / Rubin J. Kaplan (up to version 1.5.1)
 Author URI: http://www.opajaap.nl/
 Plugin URI: http://wordpress.org/extend/plugins/wp-photo-album-plus/
@@ -423,10 +423,10 @@ function wppa_page_options() {
 				<p>
 					<label for="wppa-accesslevel">Access Level:</label>
 					<select name="wppa-accesslevel">
-						<option value="level_10"' . $l10 . '>Administrator</option> 
-						<option value="level_7"' . $l7 . '>Editor</option>
-						<option value="level_2"' . $l2 . '>Author</option>
-						<option value="level_1"' . $l1 . '>Contributor</option>				
+						<option value="level_10" <?php echo($l10); ?>><?php _e('Administrator', 'wppa'); ?></option> 
+						<option value="level_7" <?php echo($l7); ?>><?php _e('Editor', 'wppa'); ?></option>
+						<option value="level_2" <?php echo($l2); ?>><?php _e('Author', 'wppa'); ?></option>
+						<option value="level_1" <?php echo($l1); ?>><?php _e('Contributor', 'wppa'); ?></option>				
 					</select>
 					<small>The user levels that can access the photo album admin.</small><br />
 				</p>
