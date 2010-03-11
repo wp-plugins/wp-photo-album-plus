@@ -844,8 +844,10 @@ function wppa_sidebar_page_options() {
 								<option value="2" <?php if ($method == '2') echo($sel); ?>><?php _e('Random', 'wppa'); ?></option>
 								<option value="3" <?php if ($method == '3') echo($sel); ?>><?php _e('Last upload', 'wppa'); ?></option>
 								<option value="4" <?php if ($method == '4') echo($sel); ?>><?php _e('Change every', 'wppa'); ?></option>
+	<?php /*
 								<option value="5" <?php if ($method == '5') echo($sel); ?>><?php _e('Slideshow', 'wppa'); ?></option>
-								<option value="6" <?php if ($method == '6') echo($sel); ?>><?php _e('Scrollable', 'wppa'); ?></option>				
+								<option value="6" <?php if ($method == '6') echo($sel); ?>><?php _e('Scrollable', 'wppa'); ?></option>
+	*/ ?>
 							</select>
 							<?php $period = get_option('wppa_widget_period', '168'); ?>
 							<select name="wppa-widget-period" id="wppa-wp" >
