@@ -17,6 +17,23 @@
 	font-size: 1.2em;
 }
 
+.wppa-help-ul {
+	list-style-type: disc;
+	list-style-position: outside;
+	margin-left: 2em;
+}
+
+.wppa-help-ol {
+	list-style-type: decimal;
+	list-style-position: outside;
+	margin-left: 2em;
+}
+
+.wppa-help-ol li, .wppa-help-ul li {
+	line-height: 100%;
+	padding-bottom: 0px;
+}
+
 ul.wppa_nav
 {
 	margin: 15px 0 0 60px;
@@ -48,21 +65,25 @@ ul.wppa_nav
 
 .wppa_nav li a:hover, .wppa_nav li a.active { background-color: #dfdfdf; }
 
-.photoitem
+.photoitem, .albumtable
 {
 	margin: 7px 0;
 	padding: 5px;
 	border: 1px #ccc solid;
 }
 
+.albumtable label, .phototable label { font-weight: bold; }
+
 .photoitem img { float: right; }
 .photoitem .clear { clear: both; }
 .photoitem .details { float: left; }
+.photoitem .details label {float: left; }
 
 .photoitem .desc
 {
 	float: left;
 	margin-left: 10px;
+	font-weight: bold;
 }
 
 .photoitem .deletelink
@@ -71,6 +92,20 @@ ul.wppa_nav
 	border: none;
 	color: red;
 	font-weight: bold;
+	float: left;
+}
+
+.photoselect {
+	position: relative;
+	margin: 7px;
+	padding: 5px;
+	border: 1px #ccc solid;
+	display: block;
+	float: left;
+}
+
+.photoselect input {
+	float: right;
 }
 
 tt {
@@ -79,12 +114,12 @@ tt {
     background-color: #e0e0e0;
 }
 
-.edit {
+.wppaedit {
 	font-weight: bold;
 	color: green;
 }
 
-.delete {
+.wppadelete {
 	font-weight: bold;
 	color: red;
 }

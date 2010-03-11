@@ -16,22 +16,21 @@ if (wppa_page('albums') &&  (count($thumbs) < 30)) $allow_sidebars = '1'; else $
 get_header(); 
 
     /* We use the $allow_sidebars var to define the width of the space we need (class widecolumn or narrowcolumn */
-	if ($allow_sidebars) echo '<div id="content" class="narrowcolumn" role="main">';
-    else echo '<div id="content" class="widecolumn" role="main">'; ?>
+	if ($allow_sidebars) $wide = 'narrow'; else $wide = 'wide'; ?>
+	<div id="content" class="<?php echo($wide)?>column" role="main">
 
 		<?php if (have_posts()) : while (have_posts()) : the_post(); ?>
 		<div class="post" id="post-<?php the_ID(); ?>">
             <h2></h2><?php /* Note: we need no title, we have breadcrumbs, but we leave the space */ ?>
-            <?php if ($allow_sidebars) echo '<div class="entry">'; /* same as avove */
-            else echo '<div class="entry wideentry">'; ?>
-            <?php wppa_albums();  /* Here comes wppa_theme.php in, don't bother, all by itsself */	?>
+			<div class="entry <?php echo($wide); ?>entry">
+                <?php wppa_albums();  /* Here comes wppa_theme.php in, don't bother, all by itsself */	?>
 			</div>
 		</div>
         <?php if (!isset($_GET['album'])) comments_template(); /* Only comments on top-level photo album please */ ?>
 		<?php endwhile; endif; ?>
   
         <div class="navigation">  
-            <a href="<?php bloginfo('url') ?>">Beginpagina</a><!-- I.E. Home -->
+            <a href="<?php bloginfo('url') ?>"><?php _e('Homepage', 'wppa'); ?></a><!-- I.E. Home -->
         </div>
             
 	</div>
