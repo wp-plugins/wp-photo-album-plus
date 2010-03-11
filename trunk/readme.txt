@@ -36,7 +36,7 @@ You can find the plugin admin section under Menu Photo Albums on the admin scree
 * Upload photos: To upload photos to an album you created.
 * Settings: To control the various settings to customize your needs.
 * Sidebar Widget: To specify the behaviour for an optional sidebar widget.
-* Help & Info: The screen you are watching now.
+* Help & Info: The screen you are watching now **And much more**
 
 == Installation ==
 
