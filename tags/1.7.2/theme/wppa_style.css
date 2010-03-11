@@ -2,10 +2,6 @@
 	margin: 7px 0;
 	padding: 7px;
 	border: 1px #bbdd99 solid;
-    -moz-border-radius: 6px;
-	-khtml-border-radius: 6px;
-	-webkit-border-radius: 6px;
-	border-radius: 6px;
 }
 
 .album .image {
@@ -40,16 +36,12 @@
     width: 450px;
 }
 
-.wppa-widget {
-padding: 5px 0 0 5px;
-}
-
 .description {
     height: 38px;
 }
 
 .thumbs img {
-	margin: 3px;
+	margin: 5px;
 	padding: 0px;
 	border: 2px solid #bbdd99;
 }
@@ -105,7 +97,7 @@ padding: 5px 0 0 5px;
     padding: 0;
     width: 40px;
     position: relative;
-    top: 250px;
+    top: 350px;
     font-size: 4.0em;
 }
 
