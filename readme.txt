@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD
 Tags: photo, album, gallery, slideshow, sidebar widget, photo widget, phtoblog
-Version: 1.8
+Version: 1.8.1
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -65,6 +65,9 @@ You will see the sub albums you created appear as normal albums.
 The sort order information will have no longer effect.
 
 == Changelog ==
+
+= 1.8.1 =
+* Fixed a fatal error after regeneration of thumbnails *
 
 = 1.8 =
 * An optional Sidebar Widget has been added.

@@ -2,7 +2,7 @@
 /*
 Plugin Name: WP Photo Album Plus
 Description: Easily manage and display your photo albums and slideshows within your WordPress site.
-Version: 1.8
+Version: 1.8.1
 Author: J.N. Breetvelt a.k.a OpaJaap
 Author URI: http://www.opajaap.nl/
 Plugin URI: http://wordpress.org/extend/plugins/wp-photo-album-plus/
@@ -556,7 +556,7 @@ function wppa_page_options() {
 			</div>
 <?php 			
 			wppa_regenerate_thumbs(); 
-			wppa_updat_message(__('READY regenerating thumbnail images.', 'wppa')); 				
+			wppa_update_message(__('READY regenerating thumbnail images.', 'wppa')); 				
 			update_option('wppa_lastthumb', '-2');
 		}
 		
