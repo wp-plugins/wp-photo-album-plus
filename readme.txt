@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD
 Tags: photo, album, gallery, slideshow, sidebar widget, photo widget, phtoblog
-Version: 1.8.1
+Version: 1.8.2
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -66,8 +66,13 @@ The sort order information will have no longer effect.
 
 == Changelog ==
 
+= 1.8.2 =
+* You can now configure a link to a page from the sidebar widget photo.
+* The widget will now display the correct subtitle in all cases.
+* Security issue: Silence is golden index.php added to all directories.
+
 = 1.8.1 =
-* Fixed a fatal error after regeneration of thumbnails *
+* Fixed a fatal error after regeneration of thumbnails
 
 = 1.8 =
 * An optional Sidebar Widget has been added.
