@@ -2,7 +2,7 @@
 /*
 Plugin Name: WP Photo Album Plus
 Description: Easily manage and display your photo albums and slideshows within your WordPress site.
-Version: 1.8.2
+Version: 1.8.1
 Author: J.N. Breetvelt a.k.a OpaJaap
 Author URI: http://www.opajaap.nl/
 Plugin URI: http://wordpress.org/extend/plugins/wp-photo-album-plus/
@@ -94,23 +94,48 @@ function show_wppa_widget($args) {
 	global $wpdb;
 	extract($args);
 	
-	// get the title
 	$widget_title = get_option('wppa_widgettitle', __('Photo of the day', 'wppa'));
-			
-	// get the photo  ($image)
+	
+	$wid = get_option('wppa_widget_width', '150');
+	// get the photo id
 	switch (get_option('wppa_widget_method', '1')) 
 	{
 	case '1':	// Fixed photo
 		$id = get_option('wppa_widget_photo', '');
-		if ($id != '') $image = $wpdb->get_row('SELECT * FROM ' . PHOTO_TABLE . ' WHERE id=' . $id . ' LIMIT 0,1', 'ARRAY_A');
+		if ($id != '') {
+			// get the photo
+			$image = $wpdb->get_row("SELECT * FROM " . PHOTO_TABLE . " WHERE id=$id LIMIT 0,1", 'ARRAY_A');
+			if (!empty($image)) {
+				$imgurl = get_bloginfo('wpurl') . '/wp-content/uploads/wppa/' . $image['id'] . '.' . $image['ext'];
+				$widget_content = '<div class="wppa-widget"><img src="' . $imgurl . '" style="width: ' . $wid . 'px;" ></div>';
+				}
+			else $widget_content = __('Photo not found (1)');
+		}
+		else $widget_content = __('Unknown photo (1)');
 		break;
 	case '2':	// Random
 		$album = get_option('wppa_widget_album', '');
-		if ($album != '') $image = $wpdb->get_row('SELECT * FROM ' . PHOTO_TABLE . ' WHERE album=' . $album . ' ORDER BY RAND() LIMIT 0,1', 'ARRAY_A');
+		if ($album != '') {
+			$image = $wpdb->get_row("SELECT * FROM " . PHOTO_TABLE . " WHERE album=$album  ORDER BY RAND() LIMIT 0,1", 'ARRAY_A');
+			if (!empty($image)) {
+				$imgurl = get_bloginfo('wpurl') . '/wp-content/uploads/wppa/' . $image['id'] . '.' . $image['ext'];
+				$widget_content = '<div class="wppa-widget"><img src="' . $imgurl . '" style="width: ' . $wid . 'px;" ></div>';
+				}
+			else $widget_content = __('Photo not found (2)');
+		}
+		else $widget_content = __('Unknown album (2)');
 		break;
 	case '3':	// Last upload
 		$album = get_option('wppa_widget_album', '');
-		if ($album != '') $image = $wpdb->get_row('SELECT * FROM ' . PHOTO_TABLE . ' WHERE album=' . $album . ' ORDER BY id DESC LIMIT 0,1', 'ARRAY_A');
+		if ($album != '') {
+			$image = $wpdb->get_row("SELECT * FROM " . PHOTO_TABLE . " WHERE album=$album  ORDER BY id DESC LIMIT 0,1", 'ARRAY_A');
+			if (!empty($image)) {
+				$imgurl = get_bloginfo('wpurl') . '/wp-content/uploads/wppa/' . $image['id'] . '.' . $image['ext'];
+				$widget_content = '<div class="wppa-widget"><img src="' . $imgurl . '" style="width: ' . $wid . 'px;" ></div>';
+				}
+			else $widget_content = __('Photo not found (3)');
+		}
+		else $widget_content = __('Unknown album (3)');
 		break;
 	case '4':	// Change every
 		$album = get_option('wppa_widget_album', '');
@@ -123,49 +148,32 @@ function show_wppa_widget($args) {
 			$p = wppa_get_photo_count($album);
 			if (!is_numeric($p) || $p < 1) $p = '1'; // make sure we dont get overflow in the next line
 			$idn = fmod($u, $p);
-			$photos = $wpdb->get_results('SELECT * FROM ' . PHOTO_TABLE . ' WHERE album=' . $album . ' ' . wppa_get_photo_order($album), 'ARRAY_A');
+			$photos = $wpdb->get_results("SELECT * FROM " . PHOTO_TABLE . " WHERE album=$album  " . wppa_get_photo_order($album), 'ARRAY_A');
 			$i = 0;
-			foreach ($photos as $photo) {
+			foreach ($photos as $image) {
 				if ($i == $idn) {	// found the idn'th out of p
-					$image = $photo;
+					$id = $image['id'];
+					$ext = $image['ext'];
 				}
 				$i++;
 			}
-		} else {
-			$image = '';
+			if (is_numeric($id)) {
+				$imgurl = get_bloginfo('wpurl') . '/wp-content/uploads/wppa/' . $id . '.' . $ext;
+				$widget_content = '<div class="wppa-widget"><img src="' . $imgurl . '" style="width: ' . $wid . 'px;" ></div>';
+				}
+			else {
+				$widget_content = __('Photo not found (4)');
+			}
 		}
+		else $widget_content = __('Unknown album (4)');
 		break;
 	case '5':	// Slideshow
 			$widget_content = __('Not implemented yet (5)');
-			$image = '';
 		break;
 	case '6':	// Scrollable
 			$widget_content = __('Not implemented yet (6)');
-			$image = '';
 		break;	
 	}
-	
-	// Make the HTML for current picture
-	$widget_content = '<div class="wppa-widget">';
-	if ($image) {
-		// make image url
-		$imgurl = get_bloginfo('wpurl') . '/wp-content/uploads/wppa/' . $image['id'] . '.' . $image['ext'];
-		// Find link page if any, if we find a title, there is a valid page to link to
-		$pid = get_option('wppa_widget_linkpage', '0');
-		$page_title = $wpdb->get_var("SELECT post_title FROM " . $wpdb->posts . " WHERE post_type = 'page' AND post_status = 'publish' AND ID=" . $pid);
-		if ($page_title) { 			// Yep, Linkpage found
-			$title = __('Link to', 'wppa') . ' ' . $page_title;
-			$widget_content .= '<a href="' . get_page_link($pid) . '">';
-		} else {
-			$title = $widget_title;
-		}
-		$widget_content .= '<img src="' . $imgurl . '" style="width: ' . get_option('wppa_widget_width', '150') . 'px;" title="' . $title . '" alt="' . $title . '">';
-		if ($page_title) $widget_content .= '</a>';
-	} else {	// No image
-		$widget_content .= __('Photo not found.');
-	}
-	$widget_content .= '</div>';
-	// Add subtitle, if any		
 	switch (get_option('wppa_widget_subtitle', 'none'))
 	{
 		case 'none': 
@@ -735,7 +743,6 @@ function wppa_sidebar_page_options() {
 		if (isset($_POST['wppa-widget-method'])) update_option('wppa_widget_method', $_POST['wppa-widget-method']);
 		if (isset($_POST['wppa-widget-period'])) update_option('wppa_widget_period', $_POST['wppa-widget-period']);
 		if (isset($_POST['wppa-widget-subtitle'])) update_option('wppa_widget_subtitle', $_POST['wppa-widget-subtitle']);
-		if (isset($_POST['wppa-widget-linkpage'])) update_option('wppa_widget_linkpage', $_POST['wppa-widget-linkpage']);
 		
 		if (!$options_error) wppa_update_message(__('Changes Saved. Don\'t forget to activate the widget!', 'wppa')); 
 	}
@@ -852,34 +859,6 @@ function wppa_sidebar_page_options() {
 								<br/><?php _e('Select how the widget should display.', 'wppa'); ?>
 							</span>	
 							
-						</td>
-					</tr>
-					<tr>
-						<th scope="row">
-							<label for="wppa-widget-linkpage"><?php _e('Link to:', 'wppa'); ?></label/
-						</th>
-						<td>
-<?php
-							$query = "SELECT ID, post_title FROM " . $wpdb->posts . " WHERE post_type = 'page' AND post_status = 'publish' ORDER BY post_title ASC";
-							$pages = $wpdb->get_results ($query, 'ARRAY_A');
-							if (empty($pages)) {
-								_e('There are no pages (yet) to link to.', 'wppa');
-							} else {
-								$linkpage = get_option('wppa_widget_linkpage', '0');
-?>
-								<select name="wppa-widget-linkpage" id="wppa-wlp" >
-									<option value="0" <?php if ($linkpage == '0') echo($sel); ?>><?php _e('--- none ---', 'wppa'); ?></option>
-<?php
-									foreach ($pages as $page) { ?>
-										<option value="<?php echo($page['ID']); ?>" <?php if ($linkpage == $page['ID']) echo($sel); ?>><?php echo($page['post_title']); ?></option>
-									<?php } ?>
-								</select>
-								<span class="description">
-									<br/><?php _e('Select the page the photo links to.', 'wppa'); ?>
-								</span>
-<?php
-							}							
-?>
 						</td>
 					</tr>
 					<tr>
