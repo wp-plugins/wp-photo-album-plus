@@ -856,7 +856,7 @@ function wppa_sidebar_page_options() {
 					</tr>
 					<tr>
 						<th scope="row">
-							<label for="wppa-widget-linkpage"><?php _e('Link to:', 'wppa'); ?></label/
+							<label for="wppa-widget-linkpage"><?php _e('Link to:', 'wppa'); ?></label>
 						</th>
 						<td>
 <?php
