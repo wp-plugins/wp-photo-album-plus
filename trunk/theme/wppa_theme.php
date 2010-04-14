@@ -108,11 +108,11 @@ elseif (wppa_page('single')) { ?>
 			}
 			else return; // Should never get here
 				
-			if (window.pageXOffset != 0) X = window.pageXOffset;
+			if (window.pageXOffset) if (window.pageXOffset != 0) X = window.pageXOffset;
 			if (document.body.scrollLeft != 0) X = document.body.scrollLeft; /* IE */
-			if (window.pageYOffset != 0) Y = window.pageYOffset;
+			if (window.pageYOffset) if (window.pageYOffset != 0) Y = window.pageYOffset;
 			if (document.body.scrollTop != 0) Y = document.body.scrollTop; /* IE */
-			
+												  
 			document.getElementById(id).href = the_href + '&scrollx=' + X + '&scrolly=' + Y;
 		}
 	/* ]]> */
