@@ -119,3 +119,7 @@ padding: 5px 0 0 5px;
 #prev-arrow { text-align: left; }
 #next-arrow { text-align: right; }
 
+.big {
+display: block;
+margin: 0 auto;
+}
