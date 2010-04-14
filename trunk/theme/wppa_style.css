@@ -45,7 +45,7 @@ padding: 5px 0 0 5px;
 }
 
 .description {
-    height: 38px;
+    min-height: 38px;
 }
 
 .thumbs img {
@@ -56,7 +56,7 @@ padding: 5px 0 0 5px;
 
 #imagetitle {
     text-align: center;
-    font-size: 1.4em;
+    font-size: 1em;
 }
     
 #imagedesc {
@@ -80,6 +80,8 @@ padding: 5px 0 0 5px;
 
 #albumlist a img {
 	border: 2px solid #bbdd99; 
+	display: inline;
+	position: relative;
 }
 
 .prev {
@@ -100,13 +102,14 @@ padding: 5px 0 0 5px;
 }
     
 #prev-arrow, #next-arrow {
-    background-color: #eef7e6;
+	background-color: transparent;	
     margin: 0 -20px;
     padding: 0;
     width: 40px;
     position: relative;
     top: 250px;
     font-size: 4.0em;
+	line-height: 1em;
 }
 
 #prev-arrow a:link, #next-arrow a:link { border-style: none; }
