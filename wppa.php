@@ -2,7 +2,7 @@
 /*
 Plugin Name: WP Photo Album Plus
 Description: Easily manage and display your photo albums and slideshows within your WordPress site.
-Version: 1.8.3
+Version: 1.8.4
 Author: J.N. Breetvelt a.k.a OpaJaap
 Author URI: http://www.opajaap.nl/
 Plugin URI: http://wordpress.org/extend/plugins/wp-photo-album-plus/
@@ -171,9 +171,9 @@ function show_wppa_widget($args) {
 	{
 		case 'none': 
 			break;
-		case 'name': if ($image && $image['name'] != '') $widget_content .= '<div style="text-align: center;">' . $image['name'] . '</div>';
+		case 'name': if ($image && $image['name'] != '') $widget_content .= '<div class="wppa-widget-text">' . $image['name'] . '</div>';
 			break;
-		case 'desc': if ($image && $image['description'] != '') $widget_content .= '<div style="text-align: center;">' . $image['description'] . '</div>'; 
+		case 'desc': if ($image && $image['description'] != '') $widget_content .= '<div class="wppa-widget-text">' . $image['description'] . '</div>'; 
 			break;
 	}
 	// Display the widget
@@ -508,7 +508,7 @@ function wppa_page_upload() {
 						<label for="wppa-album"><?php _e('Album:', 'wppa'); ?> </label>
 						<select name="wppa-album" id="wppa-album"><?php echo(wppa_album_select()); ?></select>
 					</p>
-					<input type="submit" name="wppa-upload" value="Upload Photos" />
+					<input type="submit" class="button-primary" name="wppa-upload" value="<?php _e('Upload Photos', 'wppa') ?>" />
 				</form>
 				<br />
 				<script type="text/javascript">
@@ -1261,7 +1261,7 @@ function wppa_add_album() {
 		else {
             $id = wppa_album_id($name, TRUE);
             wppa_set_last_album($id);
-			wppa_update_message(__('Album #') . ' ' . $id . ' ' . __('Added.'));
+			wppa_update_message(__('Album #', 'wppa') . ' ' . $id . ' ' . __('Added.', 'wppa'));
         }
 	} 
     else wppa_error_message(__('Album Name cannot be empty.', 'wppa'));
@@ -1614,10 +1614,18 @@ function wppa_albums($xalb = '') {
 }
 
 // add  styling to header
-add_action('wp_head', 'wppa_add_style');
+add_action('wp_print_styles', 'wppa_add_style');
 
 function wppa_add_style() {
 	$userstyle = ABSPATH . 'wp-content/themes/' . get_option('template') . '/wppa_style.css';
+	if (is_file($userstyle)) {
+		wp_register_style('wppa_style', '/wp-content/themes/' . get_option('template')  . '/wppa_style.css');
+		wp_enqueue_style('wppa_style');
+	} else {
+		wp_register_style('wppa_style', '/wp-content/plugins/' . PLUGIN_PATH . '/theme/wppa_style.css');
+		wp_enqueue_style('wppa_style');
+	}
+/*	
 	if (is_file($userstyle)) {
 		echo '<link rel="stylesheet" href="' . get_bloginfo('wpurl') . '/wp-content/themes/' . get_option('template')  . '/wppa_style.css" type="text/css" media="screen" />
 		';
@@ -1625,6 +1633,7 @@ function wppa_add_style() {
 		echo '<link rel="stylesheet" href="' . get_bloginfo('wpurl') . '/wp-content/plugins/' . PLUGIN_PATH . '/theme/wppa_style.css" type="text/css" media="screen" />
 		';
 	}
+*/
 }
 
 
@@ -1650,10 +1659,10 @@ function wppa_breadcrumb($xsep = '&raquo;') {
         wppa_crumb_ancestors($sep, $alb);
 		if (isset($_GET['photo'])) {
 			echo '<a href="' . get_permalink() . wppa_sep() . 'album=' . $alb . '&cover=0" class="backlink">' . wppa_album_name($alb, TRUE) . '</a>' . $sep;
-			echo wppa_photo_name($_GET['photo']);
+			echo '<a id="bc-pname" >' . wppa_photo_name($_GET['photo'], true) . '</a>';
 		} elseif (isset($_GET['slide'])) {
 			echo '<a href="' . get_permalink() . wppa_sep() . 'album=' . $alb . '&cover=0" class="backlink">' . wppa_album_name($alb, TRUE) . '</a>' . $sep;
-			_e('Slideshow', 'wppa');
+			echo '<a id="bc-pname" >' . __('Slideshow', 'wppa') . '</a>';
 		} else {
 			echo wppa_album_name($alb, TRUE); 
 			return;
@@ -1783,20 +1792,41 @@ function wppa_image_page_url($return = FALSE) {
 }
 
 // loop album
-function wppa_get_albums() {
+function wppa_get_albums($album = false, $type = '') {
 	global $wpdb;
     global $startalbum;
 	global $is_cover;
-	
-	if (isset($_GET['cover'])) $is_cover = $_GET['cover'];
 
-    if (isset($_GET['album'])) $parent = $_GET['album'];
-    elseif (is_numeric($startalbum)) $parent=$startalbum;
-    else $parent = 0;
+	// Check if parameters set
+	if (is_numeric($album)) {
+	echo($album);
+		$id = $album;
+		if ($type == 'album') $is_cover = '0';
+		if ($type == 'cover') $is_cover = '1';
+	}
+	// Check if querystring given
+	elseif (isset($_GET['album'])) {
+		$id = $_GET['album'];
+		if (isset($_GET['cover'])) $is_cover = $_GET['cover'];
+	}
+	// Check if globals set
+	elseif (is_numeric($startalbum)) {
+		$id = $startalbum;
+	}
+	// The default: all albums with parent = 0;
+	else $id = '0';
 	
-	if ($is_cover) $albums = $wpdb->get_results("SELECT * FROM " . ALBUM_TABLE . " WHERE id={$parent} ", 'ARRAY_A');
-	else $albums = $wpdb->get_results("SELECT * FROM " . ALBUM_TABLE . " WHERE a_parent={$parent} " . wppa_get_album_order(),'ARRAY_A');
-    return $albums;
+	// Top-level album has no cover
+	if ($id == '0') $is_cover = '0';
+	
+	// Do the query
+	if (is_numeric($id)) {
+	    if ($is_cover) $q = $wpdb->prepare('SELECT * FROM ' . ALBUM_TABLE . ' WHERE id= %d', $id);
+        else $q = $wpdb->prepare('SELECT * FROM ' . ALBUM_TABLE . ' WHERE a_parent= %d '. wppa_get_album_order(), $id);
+		$albums = $wpdb->get_results($q, 'ARRAY_A');
+	}
+	else $albums = false;
+	return $albums;
 }
 
 // get link to album by id or in loop
@@ -2027,7 +2057,7 @@ function wppa_get_fullsize($id = '') {
 
 // get slide info
 function wppa_get_slide_info($index, $id) {
-    $result = "'" . $index . "','" . wppa_get_photo_url($id) . "','" . wppa_get_fullsize($id) . "','" . esc_attr(wppa_photo_name($id, TRUE)) . "','" . esc_attr(wppa_photo_desc($id, TRUE)) . "'";
+    $result = "'" . $index . "','" . wppa_get_photo_url($id) . "','" . wppa_get_fullsize($id) . "','" . js_escape(wppa_photo_name($id, TRUE)) . "','" . js_escape(wppa_photo_desc($id, TRUE)) . "'";
     return $result;                                                        
 }
 

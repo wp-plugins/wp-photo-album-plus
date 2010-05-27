@@ -84,57 +84,13 @@ if (wppa_page('albums')) {
 	</div>
     <?php }
 }
-elseif (wppa_page('single')) { ?>
-	<script type="text/javascript">
-	/* <![CDATA[ */
-		var prev_href = '';
-		var next_href = '';
-		
-		function wppa_add_scroll(xid) {
-			var the_href;
-			var X = 0;
-			var Y = 0;
-			var id;
-			
-			if (xid == 0) id = 'p-a'; else id = 'n-a';
-			
-			if (id == 'p-a') {
-				if (prev_href == '') prev_href = document.getElementById('p-a').href;
-				the_href = prev_href;
-			}
-			else if (id == 'n-a') {
-				if (next_href == '') next_href = document.getElementById('n-a').href;
-				the_href = next_href;
-			}
-			else return; // Should never get here
-				
-			if (window.pageXOffset) if (window.pageXOffset != 0) X = window.pageXOffset;
-			if (X == 0) if (document.body.scrollLeft != 0) X = document.body.scrollLeft; /* IE qrqs */
-			if (X == 0) if (document.documentElement.scrollLeft != 0) X = document.documentElement.scrollLeft; /* IE std */
-			
-			if (window.pageYOffset) if (window.pageYOffset != 0) Y = window.pageYOffset;
-			if (Y == 0) if (document.body.scrollTop != 0) Y = document.body.scrollTop; /* IE */
-			if (Y == 0) if (document.documentElement.scrollTop != 0) Y = document.documentElement.scrollTop; 
-												  
-			document.getElementById(id).href = the_href + '&scrollx=' + X + '&scrolly=' + Y;
-		}
-	/* ]]> */
-	</script>
-<?php
-	wppa_prev_next('<div id="prev-arrow" class="prev"><a id="p-a" href="%link%" onmouseover="wppa_add_scroll(0)">&laquo;</a></div>', '<div id="next-arrow" class="next"><a id="n-a" href="%link%" onmouseover="wppa_add_scroll(1)">&raquo;</a></div>'); 
-?>
-    <img src="<?php wppa_photo_url() ?>" alt="<?php wppa_photo_name() ?>" class="big" <?php wppa_fullsize(); ?> />
-    <p id="imagedesc" class="imagedesc"><?php wppa_photo_desc(); ?></p>
-	<p id="imagetitle" class="imagetitle"><?php wppa_photo_name(); ?></p>
-<?php
-}
-elseif (wppa_page('slide')) {
+else { /*if (wppa_page('slide')) {*/
 ?>
     <div id="prevnext">
 		<p style="text-align: center">
-			<a href="#" id="speed0" onclick="wppa_speed(false)"><?php _e('Slower', 'wppa'); ?></a> |
-			<a href="#" id="startstop" onclick="wppa_startstop()"><?php _e('Start', 'wppa'); ?></a> |
-			<a href="#" id="speed1" onclick="wppa_speed(true)"><?php _e('Faster', 'wppa'); ?></a>
+			<a id="speed0" onclick="wppa_speed(false)"><?php _e('Slower', 'wppa'); ?></a> |
+			<a id="startstop" onclick="wppa_startstop(-1)"><?php _e('Start', 'wppa'); ?></a> |
+			<a id="speed1" onclick="wppa_speed(true)"><?php _e('Faster', 'wppa'); ?></a>
 		</p>
 	</div>
 <?php 
@@ -142,18 +98,24 @@ elseif (wppa_page('slide')) {
 	else $minheight = get_option('wppa_fullsize') * 3 / 4;
 	$minheight = ceil($minheight);
 ?>
+	<div id="prev-arrow" class="prev"><a id="p-a" onclick="wppa_prev()">&laquo;</a></div><div id="next-arrow" class="next"><a id="n-a" onclick="wppa_next()">&raquo;</a></div>
     <p id="theslide" style="min-height: <?php echo($minheight); ?>px; text-align: center;">
 	<p id="imagedesc" class="imagedesc"></p>
 	<p id="imagetitle" class="imagetitle"></p>
 	<script type="text/javascript" src="<?php echo(get_bloginfo('wpurl')); ?>/wp-content/plugins/<?php echo(PLUGIN_PATH); ?>/theme/wppa_slideshow.js"></script>
+	<script type="text/javascript" >wppa_slideshow = "<?php _e('Slideshow', 'wppa'); ?>";</script>
 <?php
     $index = 0;
+	$startindex = -1;
+	if (isset($_GET['photo'])) $startid = $_GET['photo'];
+	else $startid = -1;
     $alb = $_GET['album'];
     foreach (wppa_get_thumbs($alb) as $tt) : $id = $tt['id'];
         echo '<script type="text/javascript">wppa_store_slideinfo(' . wppa_get_slide_info($index, $id) . ');</script>';
+		if ($startid == $id) $startindex = $index;
         $index++;
     endforeach;
 ?>
-    <script type="text/javascript"><?php echo('wppa_startstop()'); ?></script>
+    <script type="text/javascript">wppa_startstop(<?php echo($startindex) ?>);</script>
 <?php    
 } ?>
