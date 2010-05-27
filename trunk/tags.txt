@@ -83,15 +83,17 @@ Description: Prints (or returns) the url to 1 image to represent the album in th
 Parameters: 1. return. if is TRUE, the result will be returned insted of printed
 
 
-=== wppa_get_albums() ===
+=== wppa_get_albums('album', 'type') ===
 
 Works on: Albums page
 
 Description: loops through the albums in ythe current album. to be used with foreach()
 
-Parameters: None
+Parameters: 1. album. The requested album. 
+2. type, can be 'album' to find the child albums of the given album, or 'cover' to get the albumdata itsself. Defaults to: unchanged.
+Corresponds to %%album=..%% and %%cover=..%%
 
-Remarks: changed in version 1.6 to loop through the current albums sub albums only
+Remarks: see on-screen help for more info
 
 
 === wppa_get_album_url(id) ===

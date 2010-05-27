@@ -2,11 +2,11 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD
 Tags: photo, album, gallery, slideshow, sidebar widget, photo widget, phtoblog
-Version: 1.8.3
+Version: 1.8.4
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
-Requires at least: 2.1
+Requires at least: 2.8
 Tested up to: 2.9.1
 
 This plugin is designed to easily manage and display your photo albums and slideshows within your WordPress site. 
@@ -43,6 +43,9 @@ You can find the plugin admin section under Menu Photo Albums on the admin scree
 * Unzip and upload the wppa plugin folder to wp-content/plugins/
 * Make sure that the folder wp-content/uploads/ exists and is writable by the server (CHMOD 755)
 * Activate the plugin in WP Admin -> Plugins.
+* If, after installation, you are unable to upload photos, check the existance and rights (CHMOD 755)
+of the folders wp-content/uploads/wppa/ and wp-content/uploads/wppa/thumbs/. 
+In rare cases you will need to create them manually.
 
 == Frequently Asked Questions ==
 
@@ -65,6 +68,8 @@ You will see the sub albums you created appear as normal albums.
 The sort order information will have no longer effect.
 
 = How can i implement auto scroll back when browsing full scale images? =
+
+This topic is obsolete as per version 1.8.4
 
 Find the php file in your theme's directory where the `<body >` tag is defined.
 In the default theme this is header.php.
@@ -102,6 +107,13 @@ After modification:
 
 
 == Changelog ==
+
+= 1.8.4 =
+* Browsing photos and the slideshow are merged. You can now easily switch between them. This also fixes the scrolling issue.
+* Fix to prevent loading stylesheet more than once.
+* Fixed an HTML error where photo description or name contained newline characters.
+* Added optional parameters to wppa_get_albums() to make its use more flexible. See: tags.txt.
+* Improved security of wppa_get_albums()
 
 = 1.8.3 =
 * You can now link a album title and coverphoto to a WP page as opposed to the album's content. The album's content will still be reacheable by the View- and Slideshow links.
