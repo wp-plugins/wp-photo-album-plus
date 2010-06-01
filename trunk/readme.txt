@@ -46,8 +46,21 @@ You can find the plugin admin section under Menu Photo Albums on the admin scree
 * If, after installation, you are unable to upload photos, check the existance and rights (CHMOD 755)
 of the folders wp-content/uploads/wppa/ and wp-content/uploads/wppa/thumbs/. 
 In rare cases you will need to create them manually.
+* If you upgraded from WP Photo Album (without plus) and you had copied wppa_theme.php and/or wppa_style.css 
+to your theme directory, you must remove them or replace them with the newly supplied versions.
+This might also be the case after an update to a newer version to take advantage of all new features.
 
 == Frequently Asked Questions ==
+
+= How can i translate the plugin into my language? =
+
+* Find on internet the free program POEDIT, and learn how it works.
+* Use the file wppa.pot that is located in wp-photo-album-plus/langs to create or update
+wppa-[your languagecode].po and wppa-[your languagecode].mo.
+* Place these file in the langs subdir.
+* If everything is ok, mail me the files and i will distribute them so other users can use it too.
+* For more information on POT files, domains, gettext and i18n have a look at the I18n for 
+WordPress developers Codex page and more specifically at the section about themes and plugins.
 
 = Do i have to upload my photos again? =
 
