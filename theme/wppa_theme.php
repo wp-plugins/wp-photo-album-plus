@@ -9,36 +9,59 @@ echo ($before_album);
 
 $mincount = get_option('wppa_min_thumbs', '1');
 
-if (wppa_page('albums')) { ?>
-
-    <div id="prevnext"><?php wppa_breadcrumb(); ?></div>
-<?php
+wppa_breadcrumb();
+echo('<br />&nbsp;');
+if (wppa_page('albums')) { 
     $albums = wppa_get_albums(); 
-    if ($albums) { ?>
+    if ($albums) { 
+?>
     <div id="albumlist">
 <?php
         $alt = 'even';
         foreach ($albums as $ta) :  global $album; $album = $ta;
             $photocount = wppa_get_photo_count();
             $albumcount = wppa_get_album_count();
+			if (is_numeric($album['cover_linkpage']) && $album['cover_linkpage'] > 0) {
+				$page_data = get_page($album['cover_linkpage']);
+				if (!empty($page_data) && $page_data->post_status == 'publish') {
+					$href = get_page_link($album['cover_linkpage']);
+					$title = __('Link to', 'wppa');
+					$title .= ' ' . $page_data->post_title;
+				} else {
+					$href = '#';
+					$title = __('Page is not available.');
+				}
+			} else {
+				if ($photocount != '0' && $photocount <= $mincount) {
+					$href = wppa_get_image_page_url(); 
+					$title = __('View the cover photo', 'wppa'); 
+						if ($photocount > 1) $title .= __('s', 'wppa');
+				} else {
+					$href = wppa_get_album_url(); 
+					$title = __('View the album', 'wppa') . ' ' . $album['name'];
+				}
+			}
+			$src = wppa_get_image_url();	
 ?>
  			<div class="album <?php echo($alt); ?>">
-				<a href="<?php if ($photocount <= $mincount) wppa_image_page_url(); else wppa_album_url(); ?>" title="<?php if ($photocount <= $mincount) { _e('View the cover photo', 'wppa'); if ($photocount > 1) _e('s', 'wppa'); } else { _e('View the album', 'wppa'); echo(' ' . $album['name']); } ?>">
-                    <img src="<?php wppa_image_url(); ?>" alt="<?php _e('View the album', 'wppa'); echo(' ' . $album['name']); ?>" class="image" />
-				</a>
+				<?php if ($src != '') { ?>
+					<a href="<?php echo($href); ?>" title="<?php echo($title); ?>">
+						<img src="<?php echo($src); ?>" alt="<?php echo($title); ?>" class="image" />
+					</a>
+				<?php } ?>
 				<h2 class="name">
-					<a href="<?php wppa_album_url(); ?>" title="<?php _e('View the album', 'wppa'); echo(' ' . $album['name']); ?>"><?php echo($album['name']); ?></a>
+					<a href="<?php echo($href); ?>" title="<?php echo($title); ?>"><?php echo($album['name']); ?></a>
 				</h2>
 				<p class="description"><?php wppa_the_album_desc(); ?></p>
 				<?php if ($photocount > $mincount) { ?>
 					<a href="<?php wppa_slideshow_url(); ?>" title="<?php _e('Slideshow', 'wppa'); ?>" ><?php _e('Slideshow', 'wppa'); ?></a>
 				<?php } ?>
 				<br/>
-				<?php if ($photocount > 1 || $albumcount) { ?>
-					<a href="<?php wppa_album_url(); ?>" title="<?php _e('View the album', 'wppa'); echo(' ' . $album['name']); ?>" ><?php _e('View', 'wppa'); ?>&nbsp;
-						<?php if ($albumcount) { echo($albumcount . ' '); _e('albums', 'wppa'); } ?>
+				<?php if ($photocount > $mincount || $albumcount) { ?>
+					<a href="<?php wppa_album_url(); ?>" title="<?php _e('View the album', 'wppa'); echo(' ' . $album['name']); ?>" ><?php _e('View', 'wppa'); ?>
+						<?php if ($albumcount) { echo(' ' . $albumcount . ' '); _e('albums', 'wppa'); } ?>
 						<?php if ($photocount > $mincount && $albumcount) _e('and', 'wppa'); ?>
-						<?php if ($photocount > $mincount) { echo($photocount . ' '); _e('photos', 'wppa'); } ?>
+						<?php if ($photocount > $mincount) { echo(' ' . $photocount . ' '); _e('photos', 'wppa'); } ?>
 					</a>
 				<?php } ?>
                 <div id="clear"></div>
@@ -61,22 +84,13 @@ if (wppa_page('albums')) { ?>
 	</div>
     <?php }
 }
-elseif (wppa_page('single')) { ?>
-    <div id="prevnext"><?php wppa_breadcrumb(); ?></div>
-	<?php wppa_prev_next('<div id="prev-arrow" class="prev"><a href="%link%">&laquo;</a></div>', '<div id="next-arrow" class="next"><a href="%link%">&raquo;</a></div>'); ?>
-    <img src="<?php wppa_photo_url() ?>" alt="<?php wppa_photo_name() ?>" class="big" <?php wppa_fullsize(); ?> />
-    <p id="imagedesc" class="imagedesc"><?php wppa_photo_desc(); ?></p>
-	<p id="imagetitle" class="imagetitle"><?php wppa_photo_name(); ?></p>
-<?php
-}
-elseif (wppa_page('slide')) {
+else { /*if (wppa_page('slide')) {*/
 ?>
     <div id="prevnext">
-		<?php wppa_breadcrumb(); ?>
 		<p style="text-align: center">
-			<a href="#" id="speed0" onclick="wppa_speed(false)"><?php _e('Slower', 'wppa'); ?></a> |
-			<a href="#" id="startstop" onclick="wppa_startstop()"><?php _e('Start', 'wppa'); ?></a> |
-			<a href="#" id="speed1" onclick="wppa_speed(true)"><?php _e('Faster', 'wppa'); ?></a>
+			<a id="speed0" onclick="wppa_speed(false)"><?php _e('Slower', 'wppa'); ?></a> |
+			<a id="startstop" onclick="wppa_startstop(-1)"><?php _e('Start', 'wppa'); ?></a> |
+			<a id="speed1" onclick="wppa_speed(true)"><?php _e('Faster', 'wppa'); ?></a>
 		</p>
 	</div>
 <?php 
@@ -84,18 +98,24 @@ elseif (wppa_page('slide')) {
 	else $minheight = get_option('wppa_fullsize') * 3 / 4;
 	$minheight = ceil($minheight);
 ?>
+	<div id="prev-arrow" class="prev"><a id="p-a" onclick="wppa_prev()">&laquo;</a></div><div id="next-arrow" class="next"><a id="n-a" onclick="wppa_next()">&raquo;</a></div>
     <p id="theslide" style="min-height: <?php echo($minheight); ?>px; text-align: center;">
 	<p id="imagedesc" class="imagedesc"></p>
 	<p id="imagetitle" class="imagetitle"></p>
 	<script type="text/javascript" src="<?php echo(get_bloginfo('wpurl')); ?>/wp-content/plugins/<?php echo(PLUGIN_PATH); ?>/theme/wppa_slideshow.js"></script>
+	<script type="text/javascript" >wppa_slideshow = "<?php _e('Slideshow', 'wppa'); ?>";</script>
 <?php
     $index = 0;
+	$startindex = -1;
+	if (isset($_GET['photo'])) $startid = $_GET['photo'];
+	else $startid = -1;
     $alb = $_GET['album'];
     foreach (wppa_get_thumbs($alb) as $tt) : $id = $tt['id'];
         echo '<script type="text/javascript">wppa_store_slideinfo(' . wppa_get_slide_info($index, $id) . ');</script>';
+		if ($startid == $id) $startindex = $index;
         $index++;
     endforeach;
 ?>
-    <script type="text/javascript"><?php echo('wppa_startstop()'); ?></script>
+    <script type="text/javascript">wppa_startstop(<?php echo($startindex) ?>);</script>
 <?php    
 } ?>

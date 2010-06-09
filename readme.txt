@@ -2,11 +2,11 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD
 Tags: photo, album, gallery, slideshow, sidebar widget, photo widget, phtoblog
-Version: 1.8
+Version: 1.8.4
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
-Requires at least: 2.1
+Requires at least: 2.8
 Tested up to: 2.9.1
 
 This plugin is designed to easily manage and display your photo albums and slideshows within your WordPress site. 
@@ -36,15 +36,31 @@ You can find the plugin admin section under Menu Photo Albums on the admin scree
 * Upload photos: To upload photos to an album you created.
 * Settings: To control the various settings to customize your needs.
 * Sidebar Widget: To specify the behaviour for an optional sidebar widget.
-* Help & Info: The screen you are watching now.
+* Help & Info: The screen you are watching now **And much more**
 
 == Installation ==
 
 * Unzip and upload the wppa plugin folder to wp-content/plugins/
 * Make sure that the folder wp-content/uploads/ exists and is writable by the server (CHMOD 755)
 * Activate the plugin in WP Admin -> Plugins.
+* If, after installation, you are unable to upload photos, check the existance and rights (CHMOD 755)
+of the folders wp-content/uploads/wppa/ and wp-content/uploads/wppa/thumbs/. 
+In rare cases you will need to create them manually.
+* If you upgraded from WP Photo Album (without plus) and you had copied wppa_theme.php and/or wppa_style.css 
+to your theme directory, you must remove them or replace them with the newly supplied versions.
+This might also be the case after an update to a newer version to take advantage of all new features.
 
 == Frequently Asked Questions ==
+
+= How can i translate the plugin into my language? =
+
+* Find on internet the free program POEDIT, and learn how it works.
+* Use the file wppa.pot that is located in wp-photo-album-plus/langs to create or update
+wppa-[your languagecode].po and wppa-[your languagecode].mo.
+* Place these file in the langs subdir.
+* If everything is ok, mail me the files and i will distribute them so other users can use it too.
+* For more information on POT files, domains, gettext and i18n have a look at the I18n for 
+WordPress developers Codex page and more specifically at the section about themes and plugins.
 
 = Do i have to upload my photos again? =
 
@@ -64,7 +80,70 @@ but remember: **You can not run both versions at the same time.**
 You will see the sub albums you created appear as normal albums.
 The sort order information will have no longer effect.
 
+= How can i implement auto scroll back when browsing full scale images? =
+
+This topic is obsolete as per version 1.8.4
+
+Find the php file in your theme's directory where the `<body >` tag is defined.
+In the default theme this is header.php.
+Just before this line insert the following code:
+
+`
+<?php
+	if (isset($_GET['scrollx'])) $X = $_GET['scrollx']; else $X = 0;
+	if (isset($_GET['scrolly'])) $Y = $_GET['scrolly']; else $Y = 0;
+?>
+`
+
+add the 'onload' event attribute of the body-tag to read:
+
+`onload="window.scrollTo(<?php echo($X . ', ' . $Y) ?>)"`
+
+if there is already an 'onload' attribute, modify it like:
+
+`onload="window.scrollTo(<?php echo($X . ', ' . $Y) ?>); yourfunction()"`
+
+Complete example:
+
+Before modification:
+`
+<body <?php body_class(); ?> onload="startheader()" onunload="stopheader()">
+`
+After modification:
+`
+<?php
+	if (isset($_GET['scrollx'])) $X = $_GET['scrollx']; else $X = 0;
+	if (isset($_GET['scrolly'])) $Y = $_GET['scrolly']; else $Y = 0;
+?>
+<body <?php body_class(); ?> onload="window.scrollTo(<?php echo($X . ', ' . $Y) ?>); startheader()" onunload="stopheader()">
+`
+
+
 == Changelog ==
+
+= 1.8.4 =
+* Browsing photos and the slideshow are merged. You can now easily switch between them. This also fixes the scrolling issue.
+* Fix to prevent loading stylesheet more than once.
+* Fixed an HTML error where photo description or name contained newline characters.
+* Added optional parameters to wppa_get_albums() to make its use more flexible. See: tags.txt.
+* Improved security of wppa_get_albums()
+
+= 1.8.3 =
+* You can now link a album title and coverphoto to a WP page as opposed to the album's content. The album's content will still be reacheable by the View- and Slideshow links.
+* You can now decide not to include a homelink in the breadcrumb navigation.
+* Fixed some incomplete / erroneous links.
+* While browsing full size images, the double arrow brackets will now have a transparent background.
+* Minor fixes and improved error handling.
+* There is now a way to automatically scroll back to the desired position when browsing full scale images. For more info: See the section Frequently asked questions.
+If you made a copy of wppa_theme.php or wppa_style.css into your theme directory and you want to make full use of the new improvements, please redo your modifications (if still needed) using a fresh copy of the original files.
+
+= 1.8.2 =
+* You can now configure a link to a page from the sidebar widget photo.
+* The widget will now display the correct subtitle in all cases.
+* Security issue: Silence is golden index.php added to all directories.
+
+= 1.8.1 =
+* Fixed a fatal error after regeneration of thumbnails
 
 = 1.8 =
 * An optional Sidebar Widget has been added.

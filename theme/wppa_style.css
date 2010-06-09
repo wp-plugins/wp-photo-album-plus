@@ -44,19 +44,24 @@
 padding: 5px 0 0 5px;
 }
 
+.wppa-widget-text {
+margin: 5px;
+text-align: left;
+}
+
 .description {
-    height: 38px;
+    min-height: 38px;
 }
 
 .thumbs img {
-	margin: 3px;
+	margin: 2px;
 	padding: 0px;
 	border: 2px solid #bbdd99;
 }
 
 #imagetitle {
     text-align: center;
-    font-size: 1.4em;
+    font-size: 1em;
 }
     
 #imagedesc {
@@ -80,6 +85,8 @@ padding: 5px 0 0 5px;
 
 #albumlist a img {
 	border: 2px solid #bbdd99; 
+	display: inline;
+	position: relative;
 }
 
 .prev {
@@ -92,6 +99,12 @@ padding: 5px 0 0 5px;
     text-align: right;
 }
 
+#bc-pname {
+	font-weight: normal;
+	color: inherit;
+	text-decoration: none;
+}
+
 #prevnext {
     background-color: #eef7e6;
     margin: 10px auto 20px auto;
@@ -100,13 +113,14 @@ padding: 5px 0 0 5px;
 }
     
 #prev-arrow, #next-arrow {
-    background-color: #eef7e6;
+	background-color: transparent;	
     margin: 0 -20px;
     padding: 0;
     width: 40px;
     position: relative;
     top: 250px;
     font-size: 4.0em;
+	line-height: 1em;
 }
 
 #prev-arrow a:link, #next-arrow a:link { border-style: none; }
@@ -116,3 +130,7 @@ padding: 5px 0 0 5px;
 #prev-arrow { text-align: left; }
 #next-arrow { text-align: right; }
 
+.big {
+display: block;
+margin: 0 auto;
+}
