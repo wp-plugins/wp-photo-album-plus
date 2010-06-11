@@ -8,6 +8,7 @@ if ($allow_sidebars == '') $allow_sidebars = '1';
 //echo ($before_album);
 
 global $wppa_occur;
+if (!is_numeric($wppa_occur)) $wppa_occur = '0';
 
 $mincount = get_option('wppa_min_thumbs', '1');
 $coversize = get_option('wppa_smallsize');
