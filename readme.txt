@@ -7,7 +7,7 @@ Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
 Requires at least: 2.8
-Tested up to: 2.9.1
+Tested up to: 2.9.2
 
 This plugin is designed to easily manage and display your photo albums and slideshows within your WordPress site. 
 

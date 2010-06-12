@@ -105,7 +105,7 @@ else { /*if (wppa_page('slide')) {*/
 	$minheight = ceil($minheight);
 ?>
 	<div id="prev-arrow" class="prev"><a id="p-a" onclick="wppa_prev()">&laquo;</a></div><div id="next-arrow" class="next"><a id="n-a" onclick="wppa_next()">&raquo;</a></div>
-    <p id="theslide" style="min-height: <?php echo($minheight); ?>px; text-align: center;">
+    <p id="theslide" style="min-height: <?php echo($minheight); ?>px; text-align: center;"></p>
 	<p id="imagedesc" class="imagedesc"></p>
 	<p id="imagetitle" class="imagetitle"></p>
 	<script type="text/javascript" src="<?php echo(get_bloginfo('wpurl')); ?>/wp-content/plugins/<?php echo(PLUGIN_PATH); ?>/theme/wppa_slideshow.js"></script>
