@@ -19,6 +19,8 @@ wppa_breadcrumb();
 echo('<br />&nbsp;');
 if (wppa_page('albums')) { 
     $albums = wppa_get_albums(); 
+	$thumbs = wppa_get_thumbs(); 
+	
     if ($albums) { 
 ?>
     <div id="albumlist">
@@ -78,7 +80,7 @@ if (wppa_page('albums')) {
 <?php
     }
  
-	$thumbs = wppa_get_thumbs(); 
+//	$thumbs = wppa_get_thumbs(); 
     if (count($thumbs) > $mincount && $is_cover == '0') { 
 		if ($allow_sidebars) $w = 'narrow'; else $w = 'wide'; ?>
 		<div class="thumbs thumbs<?php echo($w); ?>" id="thumbs<?php echo($w)?>">

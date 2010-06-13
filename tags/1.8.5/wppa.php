@@ -1025,7 +1025,7 @@ function wppa_page_help() {
 			<?php _e('or have a feature request, please contact me via my', 'wppa'); ?> <a href="mailto:opajaap@opajaap.nl?subject=WP%20Photo%20Album%20Plus">E-mail</a>.
 		</p>
         <p>
-			<?php _e('If you love this plugin, please buy me a', 'wppa'); ?> <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD">Heineken.</a>
+			<?php _e('If you love this plugin, I would appreciate a', 'wppa'); ?> <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD"><?php _e('donation', 'wppa'); ?>.</a>
 		</p>
 
 		<h3><?php _e('About and credits', 'wppa'); ?></h3>
@@ -1467,7 +1467,7 @@ function wppa_albums($xalb = '', $type='', $siz = '') {
 	global $wppa_fullsize;
     
     if (is_numeric($xalb)) $startalbum = $xalb;
-	if (!is_numeric($occur)) $occur = '0'; //else $occur++;
+	if (!is_numeric($occur)) $occur = '0'; else $occur++;
 	if ($type == 'album') $is_cover = '0';
 	elseif ($type == 'cover') $is_cover = '1';
 	if (is_numeric($siz)) $wppa_fullsize = $siz;
@@ -1481,7 +1481,7 @@ function wppa_albums($xalb = '', $type='', $siz = '') {
 		include(ABSPATH . 'wp-content/plugins/' . PLUGIN_PATH . '/theme/wppa_theme.php');
 	}
 	
-	$occur++;	/* experimental */
+	//$occur++;	/* experimental */
 }
 
 // add  styling to header
