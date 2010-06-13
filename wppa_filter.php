@@ -26,42 +26,42 @@ function wppa_albums_filter($post) {
 			$cover_pos = strpos($post_old, '%%cover=');					// Is there a cover given?
 			$size_pos = strpos($post_old, '%%size=');					// Is there a size given?
 			$wppa_pos = strpos($post_old, '%%wppa%%');					// Is there another occurrence?
+			// Invalidate positions if they belong to a later occurance
+			if (is_numeric($wppa_pos)) {								// Yes there is another occurance
+				if (is_numeric($album_pos) && $album_pos > $wppa_pos) $album_pos = 'nil';
+				if (is_numeric($cover_pos) && $cover_pos > $wppa_pos) $cover_pos = 'nil';
+				if (is_numeric($size_pos) && $size_pos > $wppa_pos) $size_pos = 'nil';
+			}
 			// set defaults
 			$album_number = '';
 			$is_cover = '';
-			$size = '';
+			$size = '0';
 			// examine album number
-			if (is_numeric($album_pos)) {
-				if (!is_numeric($wppa_pos) || (is_numeric($wppa_pos) && ($album_pos < $wppa_pos))) {
-					$post_old = substr($post_old, $album_pos + 8);		// shift up to and including %%album= out
-					$album_number = wppa_atoi($post_old);				// get album #
-					$iscover = '0';
-					$post_old = substr($post_old, strpos($post_old, '%%') + 2);	// shift album # and trailing %% out
-				}	
+			if (is_numeric($album_pos)) {				
+				$post_old = substr($post_old, $album_pos + 8);				// shift up to and including %%album= out
+				$album_number = wppa_atoi($post_old);						// get album #
+				$iscover = '0';
+				$post_old = substr($post_old, strpos($post_old, '%%') + 2);	// shift album # and trailing %% out
 			}
 			elseif (is_numeric($cover_pos)) {
-				if (!is_numeric($wppa_pos) || (is_numeric($wppa_pos) && ($cover_pos < $wppa_pos))) {
-					$post_old = substr($post_old, $cover_pos + 8);		// shift up to and including %%cover= out
-					$album_number = wppa_atoi($post_old);				// get album #
-					$iscover = '1';
-					$post_old = substr($post_old, strpos($post_old, '%%') + 2);	// shift album # and trailing %% out
-				}
+				$post_old = substr($post_old, $cover_pos + 8);				// shift up to and including %%cover= out
+				$album_number = wppa_atoi($post_old);						// get album #
+				$iscover = '1';
+				$post_old = substr($post_old, strpos($post_old, '%%') + 2);	// shift album # and trailing %% out
 			}
-			$size_pos = strpos($post_old, '%%size=');					// Refresh 
+			$size_pos = strpos($post_old, '%%size=');						// Refresh 
 			if (is_numeric($size_pos)) {
-				if (!is_numeric($wppa_pos) || (is_numeric($wppa_pos) && ($size_pos < $wppa_pos))) {
-					$post_old = substr($post_old, $size_pos + 7);		// shift up to and including %%size= out
-					$size = wppa_atoi($post_old);						// get size #
-					$post_old = substr($post_old, strpos($post_old, '%%') + 2); // shift size # and trailing %% out
-				}
+				$post_old = substr($post_old, $size_pos + 7);				// shift up to and including %%size= out
+				$size = wppa_atoi($post_old);								// get size #
+				$post_old = substr($post_old, strpos($post_old, '%%') + 2); // shift size # and trailing %% out
 			}
 			
 			$post_new .= wppa_set_album($album_number);
 			$post_new .= wppa_set_cover($iscover);
 			$post_new .= wppa_set_occur($occur);
-			if ($size) $post_new .= wppa_set_fullsize($size);
+			if (is_numeric($size) && $size > '0') $post_new .= wppa_set_fullsize($size);
 			$post_new .= wppa_albums();		
-			$wppa_pos = strpos($post_old, '%%wppa%%');
+			$wppa_pos = strpos($post_old, '%%wppa%%');						// Refresh
 			$occur++;	
 		}
 	}

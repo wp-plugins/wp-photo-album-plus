@@ -178,23 +178,22 @@ function wppa_get_albums($album = false, $type = '') {
 	global $is_cover;
 	global $wppa_occur;
 	
+//	if (!is_numeric($wppa_occur)) $wppa_occur = '0';
+	
 	$occur = '0';
 	if (is_numeric($_GET['occur'])) $occur = $_GET['occur'];
 	
+	// Check if querystring given This has the highest priority in case of matching occurrance
+	// Obey querystring only if the global occurence matches the occurence in the querystring, or no query occurrence given.
+	if (($occur == $wppa_occur) && (isset($_GET['album']))) {
+		$id = $_GET['album'];
+		if (isset($_GET['cover'])) $is_cover = $_GET['cover'];
+	}
 	// Check if parameters set
-	if (is_numeric($album)) {
-	echo($album);
+	elseif (is_numeric($album)) {
 		$id = $album;
 		if ($type == 'album') $is_cover = '0';
 		if ($type == 'cover') $is_cover = '1';
-	}
-	// Check if querystring given
-	// Obey querystring only if the global occurence matches the occurence in the querystring, or no query occurrence given.
-	elseif (isset($_GET['album'])) {
-		if ($occur == $wppa_occur) {
-			$id = $_GET['album'];
-			if (isset($_GET['cover'])) $is_cover = $_GET['cover'];
-		}
 	}
 	// Check if globals set
 	elseif (is_numeric($startalbum)) {
