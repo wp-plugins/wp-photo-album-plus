@@ -290,11 +290,25 @@ function wppa_slideshow_url($return = FALSE) {
 function wppa_get_thumbs() {
 	global $wpdb;
     global $startalbum;
+	global $wppa_occur;
+
+	$occur = '0';
+	if (is_numeric($_GET['occur'])) $occur = $_GET['occur'];
+	
+	// Obey querystring only if the global occurence matches the occurence in the querystring, or no query occurrence given.
+	if (($occur == $wppa_occur) && (isset($_GET['album']))) {
+		$id = $_GET['album'];
+	}
     
-    if (isset($_GET['album'])) $album = $_GET['album'];
-    elseif (is_numeric($startalbum)) $album = $startalbum; 
-    else $album = 0;
-	if (is_numeric($album)) $thumbs = $wpdb->get_results("SELECT * FROM " . PHOTO_TABLE . " WHERE album=$album " . wppa_get_photo_order($album), 'ARRAY_A'); 
+//    if (isset($_GET['album'])) $album = $_GET['album'];
+    elseif (is_numeric($startalbum)) $id = $startalbum; 
+    else $id = 0;
+	if (is_numeric($id)) {
+		$thumbs = $wpdb->get_results("SELECT * FROM " . PHOTO_TABLE . " WHERE album=$id " . wppa_get_photo_order($id), 'ARRAY_A'); 
+	}
+	else {
+		$thumbs = false;
+	}
 	return $thumbs;
 }
 

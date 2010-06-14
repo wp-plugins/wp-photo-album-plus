@@ -4,9 +4,6 @@ global $wppa_fullsize;
 global $is_cover;
 if ($allow_sidebars == '') $allow_sidebars = '1';
 
-//global $before_album;
-//echo ($before_album);
-
 global $wppa_occur;
 if (!is_numeric($wppa_occur)) $wppa_occur = '0';
 
@@ -81,16 +78,18 @@ if (wppa_page('albums')) {
     }
  
 //	$thumbs = wppa_get_thumbs(); 
-    if (count($thumbs) > $mincount && $is_cover == '0') { 
-		if ($allow_sidebars) $w = 'narrow'; else $w = 'wide'; ?>
-		<div class="thumbs thumbs<?php echo($w); ?>" id="thumbs<?php echo($w)?>">
-		<?php foreach ($thumbs as $tt) :  global $thumb; $thumb = $tt; ?>
-			<a href="<?php wppa_photo_page_url(); echo($occ); ?>" class="img">
-				<img src="<?php wppa_thumb_url(); ?>" alt="<?php echo($thumb['name']); ?>" title="<?php echo($thumb['name']); ?>" style="max-width:<?php echo($thumbsize); ?>px; max-height:<?php echo($thumbsize); ?>px;" />
-			</a>
-		<?php endforeach; ?>
-	</div>
-    <?php }
+	if ($thumbs) {
+		if (count($thumbs) > $mincount && $is_cover == '0') { 
+			if ($allow_sidebars) $w = 'narrow'; else $w = 'wide'; ?>
+			<div class="thumbs thumbs<?php echo($w); ?>" id="thumbs<?php echo($w)?>">
+			<?php foreach ($thumbs as $tt) :  global $thumb; $thumb = $tt; ?>
+				<a href="<?php wppa_photo_page_url(); echo($occ); ?>" class="img">
+					<img src="<?php wppa_thumb_url(); ?>" alt="<?php echo($thumb['name']); ?>" title="<?php echo($thumb['name']); ?>" style="max-width:<?php echo($thumbsize); ?>px; max-height:<?php echo($thumbsize); ?>px;" />
+				</a>
+			<?php endforeach; ?>
+			</div>
+<?php 	}
+	}
 }
 else { /*if (wppa_page('slide')) {*/
 ?>
