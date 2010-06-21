@@ -9,6 +9,7 @@
 
 // shows the breadcrumb navigation
 function wppa_breadcrumb($xsep = '&raquo;') {
+global $wppa_occur;
 	global $startalbum;
     $sep = '&nbsp;' . $xsep . '&nbsp;';
 	if (get_option('wppa_show_home', 'yes') == 'yes') echo '<a href="' . get_bloginfo('url') . '" class="backlink">' . __('Home', 'wppa') . '</a>' . $sep;
@@ -22,14 +23,14 @@ function wppa_breadcrumb($xsep = '&raquo;') {
 		return;
 	} else {
 		if (!$separate) {
-			echo '<a href="' . get_permalink()  . '" class="backlink">'; the_title(); echo '</a>' . $sep;
+			echo '<a href="' . get_permalink() . '&occur=' . $wppa_occur . '" class="backlink">'; the_title(); echo '</a>' . $sep;
 		}
         wppa_crumb_ancestors($sep, $alb);
 		if (isset($_GET['photo'])) {
-			echo '<a href="' . get_permalink() . wppa_sep() . 'album=' . $alb . '&cover=0" class="backlink">' . wppa_album_name($alb, TRUE) . '</a>' . $sep;
+			echo '<a href="' . get_permalink() . wppa_sep() . 'album=' . $alb . '&cover=0&occur=' . $wppa_occur . '" class="backlink">' . wppa_album_name($alb, TRUE) . '</a>' . $sep;
 			echo '<a id="bc-pname" >' . wppa_photo_name($_GET['photo'], true) . '</a>';
 		} elseif (isset($_GET['slide'])) {
-			echo '<a href="' . get_permalink() . wppa_sep() . 'album=' . $alb . '&cover=0" class="backlink">' . wppa_album_name($alb, TRUE) . '</a>' . $sep;
+			echo '<a href="' . get_permalink() . wppa_sep() . 'album=' . $alb . '&cover=0&occur=' . $wppa_occur . '" class="backlink">' . wppa_album_name($alb, TRUE) . '</a>' . $sep;
 			echo '<a id="bc-pname" >' . __('Slideshow', 'wppa') . '</a>';
 		} else {
 			echo wppa_album_name($alb, TRUE); 
@@ -39,12 +40,13 @@ function wppa_breadcrumb($xsep = '&raquo;') {
 }
 
 function wppa_crumb_ancestors($sep, $alb) {
+global $wppa_occur;
     $parent = wppa_get_parentalbumid($alb);
     if ($parent < 1) return;
     
     wppa_crumb_ancestors($sep, $parent);
    
-    echo '<a href="' . get_permalink() . wppa_sep() . 'album=' . $parent . '" class="backlink">' . wppa_album_name($parent, TRUE) . '</a>' . $sep;
+    echo '<a href="' . get_permalink() . wppa_sep() . 'album=' . $parent . '&cover=0&occur=' . $wppa_occur . '" class="backlink">' . wppa_album_name($parent, TRUE) . '</a>' . $sep;
     return;
 }
 
@@ -56,6 +58,20 @@ function wppa_get_parentalbumid($alb) {
     $result = $wpdb->get_var($query);
     if (!is_numeric($result)) $result = 0;
     return $result;
+}
+
+// See if an album is another albums ancestor
+function wppa_is_ancestor($anc, $xchild) {
+	$child = $xchild;
+	if (is_numeric($anc) && is_numeric($child)) {
+		$parent = wppa_get_parentalbumid($child);
+		while ($parent != '0') {
+			if ($anc == $parent) return true;
+			$child = $parent;
+			$parent = wppa_get_parentalbumid($child);
+		}
+	}
+	return false;
 }
 
 // See if an album is in a separate tree
@@ -113,8 +129,6 @@ function wppa_sep() {
 function wppa_page($page) {
 	global $wppa_occur;
 
-	if (!is_numeric($wppa_occur)) $wppa_occur = '0';	/* experimental */
-	
 	$occur = '0';
 	if (is_numeric($_GET['occur'])) $occur = $_GET['occur'];
 
@@ -177,9 +191,7 @@ function wppa_get_albums($album = false, $type = '') {
     global $startalbum;
 	global $is_cover;
 	global $wppa_occur;
-	
-//	if (!is_numeric($wppa_occur)) $wppa_occur = '0';
-	
+		
 	$occur = '0';
 	if (is_numeric($_GET['occur'])) $occur = $_GET['occur'];
 	
@@ -329,7 +341,7 @@ function wppa_thumb_url() {
 }
 function wppa_get_thumb_url() {
 	global $thumb;
-    
+
 	$url = get_bloginfo('wpurl') . '/wp-content/uploads/wppa/thumbs/' . $thumb['id'] . '.' . $thumb['ext'];
 	return $url; 
 }
@@ -427,31 +439,16 @@ function wppa_get_fullsize($id = '') {
 	global $wppa_no_enlarge;
 	
 	if (!is_numeric($wppa_fullsize)) $wppa_fullsize = get_option('wppa_fullsize');
-	if (!is_numeric($wppa_fullsize)) $wppa_fullsize = '450';
+	if (!is_numeric($wppa_fullsize)) $wppa_fullsize = '800';
 
-	$wppa_enlarge = get_option('wppa_enlarge', 'true');
+	$wppa_enlarge = get_option('wppa_enlarge', 'yes');
 	
-	if ($wppa_enlarge != 'true') {
-		$result = 'style="max-width: ' . $wppa_fullsize . 'px; max-height: ' . $wppa_fullsize . 'px;"';
+	if (empty($id)) $id = $_GET['photo'];
+	if (is_numeric($id)) {
+		$ext = $wpdb->get_var("SELECT ext FROM " . PHOTO_TABLE . " WHERE id=$id");
 	}
-	else {
-		if (empty($id)) $id = $_GET['photo'];
-			
-		if (is_numeric($id)) {
-			$ext = $wpdb->get_var("SELECT ext FROM " . PHOTO_TABLE . " WHERE id=$id");
-		}
-		$img_path = ABSPATH . 'wp-content/uploads/wppa/' . $id . '.' . $ext;
-		if(is_file($img_path)) {
-			$size = getimagesize($img_path);
-		}
-		
-		if ($size[0] >= $size[1]) {
-			$result = 'width="' . $wppa_fullsize . '"';
-		} 
-		else {
-			$result = 'height="' . $wppa_fullsize . '"';
-		}
-	}
+	$img_path = ABSPATH . 'wp-content/uploads/wppa/' . $id . '.' . $ext;
+	$result = wppa_get_imgstyle($img_path, $wppa_fullsize);
 	return $result;
 }
 
@@ -572,6 +569,31 @@ function wppa_get_minisize() {
 	if (is_numeric($tmp) && $tmp > $result) $result = $tmp;
 
 	$result = ceil($tmp / 25) * 25;
+	return $result;
+}
+
+function wppa_get_imgstyle($file, $max_size) {	
+	if($file == '') return '';					// no image: no dimensions
+	$image_attr = getimagesize( $file );
+	// figure out the longest side
+	if ( $image_attr[0] > $image_attr[1] ) {	//width is > height
+		$width = $max_size;
+		$height = round($max_size * $image_attr[1] / $image_attr[0]);
+	} else {									//height > width
+		$height = $max_size;
+		$width = round($max_size * $image_attr[0] / $image_attr[1]);
+	}
+	// figure out if a too smaal img must be shown as is
+	if ($image_attr[0] < $max_size && $image_attr[1] < $max_size) $too_small = true;
+	else $too_small = false;
+	if ($too_small) $stretch = get_option('wppa_enlarge', 'no');
+	else $stretch = 'yes';
+	if ($stretch == 'no') {
+		$width = $image_attr[0];
+		$height = $image_attr[1];
+	}
+	// compose the final result
+	$result = ' width:' . $width . 'px; height:' . $height . 'px; ';
 	return $result;
 }
 ?>

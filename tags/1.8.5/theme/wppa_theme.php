@@ -5,7 +5,6 @@ global $is_cover;
 if ($allow_sidebars == '') $allow_sidebars = '1';
 
 global $wppa_occur;
-if (!is_numeric($wppa_occur)) $wppa_occur = '0';
 
 $mincount = get_option('wppa_min_thumbs', '1');
 $coversize = get_option('wppa_smallsize');
@@ -13,10 +12,9 @@ $thumbsize = get_option('wppa_thumbsize');
 $occ = '&occur=' . $wppa_occur;
 
 wppa_breadcrumb();
-echo('<br />&nbsp;');
+// echo('<br />&nbsp;');
 if (wppa_page('albums')) { 
     $albums = wppa_get_albums(); 
-	$thumbs = wppa_get_thumbs(); 
 	
     if ($albums) { 
 ?>
@@ -47,11 +45,17 @@ if (wppa_page('albums')) {
 				}
 			}
 			$src = wppa_get_image_url();	
+			$imgattr = wppa_get_imgstyle($src, $coversize);
 ?>
  			<div class="album <?php echo($alt); ?>">
 				<?php if ($src != '') { ?>
 					<a href="<?php echo($href); ?>" title="<?php echo($title); ?>">
+					
+<?php /*					
 						<img src="<?php echo($src); ?>" alt="<?php echo($title); ?>" class="image" style="max-width:<?php echo($coversize); ?>px; max-height:<?php echo($coversize); ?>px;" />
+*/ ?>
+						<img src="<?php echo($src); ?>" alt="<?php echo($title); ?>" class="image" style="<?php echo($imgattr); ?>" />
+						
 					</a>
 				<?php } ?>
 				<h2 class="name">
@@ -77,14 +81,17 @@ if (wppa_page('albums')) {
 <?php
     }
  
-//	$thumbs = wppa_get_thumbs(); 
+	if ($is_cover == '0') $thumbs = wppa_get_thumbs(); 
+	else $thumbs = false;
 	if ($thumbs) {
-		if (count($thumbs) > $mincount && $is_cover == '0') { 
+		if (count($thumbs) > $mincount) { 
 			if ($allow_sidebars) $w = 'narrow'; else $w = 'wide'; ?>
 			<div class="thumbs thumbs<?php echo($w); ?>" id="thumbs<?php echo($w)?>">
 			<?php foreach ($thumbs as $tt) :  global $thumb; $thumb = $tt; ?>
+				<?php $src = wppa_get_thumb_url(); ?>
+				<?php $imgattr = wppa_get_imgstyle($src, $thumbsize); ?>
 				<a href="<?php wppa_photo_page_url(); echo($occ); ?>" class="img">
-					<img src="<?php wppa_thumb_url(); ?>" alt="<?php echo($thumb['name']); ?>" title="<?php echo($thumb['name']); ?>" style="max-width:<?php echo($thumbsize); ?>px; max-height:<?php echo($thumbsize); ?>px;" />
+					<img src="<?php echo($src); ?>" alt="<?php echo($thumb['name']); ?>" title="<?php echo($thumb['name']); ?>" style="<?php echo($imgattr); ?>" />
 				</a>
 			<?php endforeach; ?>
 			</div>
@@ -106,7 +113,7 @@ else { /*if (wppa_page('slide')) {*/
 	$minheight = ceil($minheight);
 ?>
 	<div id="prev-arrow" class="prev"><a id="p-a" onclick="wppa_prev()">&laquo;</a></div><div id="next-arrow" class="next"><a id="n-a" onclick="wppa_next()">&raquo;</a></div>
-    <p id="theslide" style="min-height: <?php echo($minheight); ?>px; text-align: center;"></p>
+    <p id="theslide" style="min-height: <?php echo($minheight) ?>px; text-align: center;"></p>
 	<p id="imagedesc" class="imagedesc"></p>
 	<p id="imagetitle" class="imagetitle"></p>
 	<script type="text/javascript" src="<?php echo(get_bloginfo('wpurl')); ?>/wp-content/plugins/<?php echo(PLUGIN_PATH); ?>/theme/wppa_slideshow.js"></script>
