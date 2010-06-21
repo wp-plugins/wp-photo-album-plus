@@ -58,7 +58,6 @@ function wppa_albums_filter($post) {
 			
 			$post_new .= wppa_set_album($album_number);
 			$post_new .= wppa_set_cover($iscover);
-			$post_new .= wppa_set_occur($occur);
 			if (is_numeric($size) && $size > '0') $post_new .= wppa_set_fullsize($size);
 			$post_new .= wppa_albums();		
 			$wppa_pos = strpos($post_old, '%%wppa%%');						// Refresh
@@ -82,11 +81,6 @@ function wppa_set_album($alb) {
 function wppa_set_cover($iscov) {
 	global $is_cover;
 	$is_cover = $iscov;
-}
-
-function wppa_set_occur($occur) {
-	global $wppa_occur;
-	$wppa_occur = $occur;
 }
 
 function wppa_set_fullsize($siz) {

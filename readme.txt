@@ -124,7 +124,46 @@ After modification:
 = 1.8.5 =
 * You can now have multiple sequences of `%%wppa.. %%cover'.. %%size=..` tags.
 * You need no longer put the tags on one line, all information inside a tag sequence will be removed. Between the tag sequenses as well as before the first and after the last there may be content that will be displayed.
-* You can now have different sizes for thumbnail images and cover photos.
+* You can also call the album more then once in a page template.
+Example#1 text in Post or Page:
+
+`
+	Text Before
+	%%wppa%%
+	%%cover=10%%
+	%%size=150%%
+	Text Between 1
+	%%wppa%%
+	%%album=19%%
+	%%size=350%%
+	Text Between 2
+	%%wppa%%
+	%%cover=1%%
+	Text After	
+`
+
+Example#2 php code in page template:
+
+`
+<?php 
+	if (function_exists('wppa_albums')) {
+	echo('Text Before<br />');
+	wppa_albums(10, 'cover', 150);
+	echo('<br />Text Between 1<br />');
+	wppa_albums(19, 'album', 350); 
+	echo('<br />Text Between 2<br />');
+	wppa_albums(1, 'cover');
+	echo('<br />Text After<br />');
+	} 
+	else echo('Photo software currently unavailable, sorry'); 
+?>
+`
+
+As nothing in life is permanent, this enhancement reveals the previously announced permanent restriction of having only one occurence of an album or cover in a page or post.
+* You can now have different sizes for thumbnail images and cover photos. The regeneration of thumbnails now only occurs when the largest of the two enters a diffrent range of 25 pixels.
+* Fix for sizing problem in IE6 by removing max-width and max-height from the style attributes.
+* Fixed rounding error in calculating thumbnail size. This may result in new thumbnails being one pixel larger. Regeneration of thumbnails will overcome this.
+* The 'Enlarge fullsize photos' switch in the admin settings page now functions as expected.
 
 = 1.8.4 =
 * Browsing photos and the slideshow are merged. You can now easily switch between them. This also fixes the scrolling issue.
