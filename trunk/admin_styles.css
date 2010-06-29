@@ -136,3 +136,12 @@ h6 {
 	margin: 0;
 	font-size: 1em;
 }
+
+hr {
+	height: 0px;
+	border-color: #ccc;
+	color: #ccc;
+	margin: 0;
+	border-width: 1px;
+	background-color: #f7f6f1;
+}
