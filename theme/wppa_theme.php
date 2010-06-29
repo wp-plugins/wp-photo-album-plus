@@ -4,15 +4,18 @@ global $wppa_fullsize;
 global $is_cover;
 if ($allow_sidebars == '') $allow_sidebars = '1';
 
-global $before_album;
-echo ($before_album);
+global $wppa_occur;
 
 $mincount = get_option('wppa_min_thumbs', '1');
+$coversize = get_option('wppa_smallsize');
+$thumbsize = get_option('wppa_thumbsize');
+$occ = '&occur=' . $wppa_occur;
 
-wppa_breadcrumb();
-echo('<br />&nbsp;');
+wppa_breadcrumb('&raquo;', 'optional');		// Display breadcrumb navigation only if it is set in the settings page
+
 if (wppa_page('albums')) { 
     $albums = wppa_get_albums(); 
+	
     if ($albums) { 
 ?>
     <div id="albumlist">
@@ -24,7 +27,7 @@ if (wppa_page('albums')) {
 			if (is_numeric($album['cover_linkpage']) && $album['cover_linkpage'] > 0) {
 				$page_data = get_page($album['cover_linkpage']);
 				if (!empty($page_data) && $page_data->post_status == 'publish') {
-					$href = get_page_link($album['cover_linkpage']);
+					$href = get_page_link($album['cover_linkpage']) . $occ;
 					$title = __('Link to', 'wppa');
 					$title .= ' ' . $page_data->post_title;
 				} else {
@@ -33,38 +36,44 @@ if (wppa_page('albums')) {
 				}
 			} else {
 				if ($photocount != '0' && $photocount <= $mincount) {
-					$href = wppa_get_image_page_url(); 
+					$href = wppa_get_image_page_url() . $occ; 
 					$title = __('View the cover photo', 'wppa'); 
 						if ($photocount > 1) $title .= __('s', 'wppa');
 				} else {
-					$href = wppa_get_album_url(); 
+					$href = wppa_get_album_url() . $occ; 
 					$title = __('View the album', 'wppa') . ' ' . $album['name'];
 				}
 			}
 			$src = wppa_get_image_url();	
+			$imgattr = wppa_get_imgstyle($src, $coversize);
 ?>
  			<div class="album <?php echo($alt); ?>">
 				<?php if ($src != '') { ?>
-					<a href="<?php echo($href); ?>" title="<?php echo($title); ?>">
-						<img src="<?php echo($src); ?>" alt="<?php echo($title); ?>" class="image" />
-					</a>
+					<div id="coverphoto_frame">
+						<a href="<?php echo($href); ?>" title="<?php echo($title); ?>">
+							<img src="<?php echo($src); ?>" alt="<?php echo($title); ?>" class="image" style="<?php echo($imgattr); ?>" />
+						</a>
+					</div>
 				<?php } ?>
 				<h2 class="name">
 					<a href="<?php echo($href); ?>" title="<?php echo($title); ?>"><?php echo($album['name']); ?></a>
 				</h2>
 				<p class="description"><?php wppa_the_album_desc(); ?></p>
-				<?php if ($photocount > $mincount) { ?>
-					<a href="<?php wppa_slideshow_url(); ?>" title="<?php _e('Slideshow', 'wppa'); ?>" ><?php _e('Slideshow', 'wppa'); ?></a>
-				<?php } ?>
-				<br/>
-				<?php if ($photocount > $mincount || $albumcount) { ?>
-					<a href="<?php wppa_album_url(); ?>" title="<?php _e('View the album', 'wppa'); echo(' ' . $album['name']); ?>" ><?php _e('View', 'wppa'); ?>
-						<?php if ($albumcount) { echo(' ' . $albumcount . ' '); _e('albums', 'wppa'); } ?>
-						<?php if ($photocount > $mincount && $albumcount) _e('and', 'wppa'); ?>
-						<?php if ($photocount > $mincount) { echo(' ' . $photocount . ' '); _e('photos', 'wppa'); } ?>
-					</a>
-				<?php } ?>
-                <div id="clear"></div>
+				<div class="info">
+					<?php if ($photocount > $mincount) { ?>
+						<a href="<?php wppa_slideshow_url(); echo($occ); ?>" title="<?php _e('Slideshow', 'wppa'); ?>" ><?php _e('Slideshow', 'wppa'); ?></a>
+					<?php } ?>
+				</div>
+				<div class="info">
+					<?php if ($photocount > $mincount || $albumcount) { ?>
+						<a href="<?php wppa_album_url(); echo($occ); ?>" title="<?php _e('View the album', 'wppa'); echo(' ' . $album['name']); ?>" ><?php _e('View', 'wppa'); ?>
+							<?php if ($albumcount) { echo(' ' . $albumcount . ' '); _e('albums', 'wppa'); } ?>
+							<?php if ($photocount > $mincount && $albumcount) _e('and', 'wppa'); ?>
+							<?php if ($photocount > $mincount) { echo(' ' . $photocount . ' '); _e('photos', 'wppa'); } ?>
+						</a>
+					<?php } ?>
+				</div>
+                <div class="clear"></div>		
             </div>
 			<?php if ($alt == 'even') $alt = 'alt'; else $alt = 'even'; ?>
         <?php endforeach; ?>
@@ -72,19 +81,27 @@ if (wppa_page('albums')) {
 <?php
     }
  
-	$thumbs = wppa_get_thumbs(); 
-    if (count($thumbs) > $mincount && $is_cover == '0') { 
-		if ($allow_sidebars) $w = 'narrow'; else $w = 'wide'; ?>
-		<div class="thumbs thumbs<?php echo($w); ?>" id="thumbs<?php echo($w)?>">
-		<?php foreach ($thumbs as $tt) :  global $thumb; $thumb = $tt; ?>
-			<a href="<?php wppa_photo_page_url(); ?>" class="img">
-				<img src="<?php wppa_thumb_url(); ?>" alt="<?php echo($thumb['name']); ?>" title="<?php echo($thumb['name']); ?>" />
-			</a>
-		<?php endforeach; ?>
-	</div>
-    <?php }
+	if ($is_cover == '0') $thumbs = wppa_get_thumbs(); 
+	else $thumbs = false;
+	if ($thumbs) {
+		if (count($thumbs) > $mincount) { 
+			if ($allow_sidebars) $w = 'narrow'; else $w = 'wide'; ?>
+			<div class="thumbs thumbs<?php echo($w); ?>" id="thumbs<?php echo($w)?>">
+			<?php foreach ($thumbs as $tt) :  global $thumb; $thumb = $tt; ?>
+				<?php $src = wppa_get_thumb_url(); ?>
+				<?php $imgattr = wppa_get_imgstyle($src, $thumbsize, 'optional'); ?>
+				<div id="thumbnail_frame">
+					<a href="<?php wppa_photo_page_url(); echo($occ); ?>" class="img">
+						<img src="<?php echo($src); ?>" alt="<?php echo($thumb['name']); ?>" title="<?php echo($thumb['name']); ?>" style="<?php echo($imgattr); ?>" />
+					</a>
+				</div>
+			<?php endforeach; ?>
+			<div class="clear"></div>
+			</div>
+<?php 	}
+	}
 }
-else { /*if (wppa_page('slide')) {*/
+else {
 ?>
     <div id="prevnext">
 		<p style="text-align: center">
@@ -99,7 +116,7 @@ else { /*if (wppa_page('slide')) {*/
 	$minheight = ceil($minheight);
 ?>
 	<div id="prev-arrow" class="prev"><a id="p-a" onclick="wppa_prev()">&laquo;</a></div><div id="next-arrow" class="next"><a id="n-a" onclick="wppa_next()">&raquo;</a></div>
-    <p id="theslide" style="min-height: <?php echo($minheight); ?>px; text-align: center;">
+    <p id="theslide" style="min-height: <?php echo($minheight) ?>px; text-align: center;"></p>
 	<p id="imagedesc" class="imagedesc"></p>
 	<p id="imagetitle" class="imagetitle"></p>
 	<script type="text/javascript" src="<?php echo(get_bloginfo('wpurl')); ?>/wp-content/plugins/<?php echo(PLUGIN_PATH); ?>/theme/wppa_slideshow.js"></script>

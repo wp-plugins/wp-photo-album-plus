@@ -30,6 +30,11 @@
     clear: both; 
 }
 
+#thumbnail_frame {
+	height: 100px;
+	float: left;
+	}
+	
 #thumbswide {
 	text-align: left;	
     width: 750px;
@@ -46,17 +51,17 @@ padding: 5px 0 0 5px;
 
 .wppa-widget-text {
 margin: 5px;
-text-align: left;
+text-align: center;
 }
 
 .description {
-    min-height: 38px;
+    min-height: 45px;
 }
 
 .thumbs img {
 	margin: 2px;
 	padding: 0px;
-	border: 2px solid #bbdd99;
+/*	border: 2px solid #bbdd99;	*/
 }
 
 #imagetitle {
@@ -74,6 +79,11 @@ text-align: left;
     padding: 10px 10px 10px 10px;
     margin-bottom: 15px;
 }
+
+#albumlist div div {
+	padding: 0;
+	margin-bottom: 0;
+}
     
 #albumlist .alt, #albumlist .alt div {
     background-color: #d5eabf;
@@ -84,10 +94,31 @@ text-align: left;
 }
 
 #albumlist a img {
-	border: 2px solid #bbdd99; 
-	display: inline;
-	position: relative;
+	background-color: #eef7e6;
+	border: 1px solid #bbdd99;
+	padding: 4px;
+	margin: 0;
+	float: right;
+	-moz-border-radius: 3px;
+	-khtml-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
 }
+
+/*
+#albumlist div #coverphoto_frame {
+	background-color: #eef7e6;
+	border: 1px solid #bbdd99;
+	padding: 4px;
+	width: 150px;
+	height: 113px;
+	float: right;
+	-moz-border-radius: 3px;
+	-khtml-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+}
+*/
 
 .prev {
 	float: left;
@@ -119,7 +150,7 @@ text-align: left;
     width: 40px;
     position: relative;
     top: 250px;
-    font-size: 4.0em;
+    font-size: 3.0em;
 	line-height: 1em;
 }
 

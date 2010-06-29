@@ -11,7 +11,7 @@ var wppa_timeron = false;
 var wppa_slideshow;
     
 function wppa_store_slideinfo(id, url, size, name, desc) {
-    wppa_slides[id] = '<img src="' + url + '" alt="' + name + '" class="big" ' + size + '/>';
+    wppa_slides[id] = '<img src="' + url + '" alt="' + name + '" class="big" ' + ' style="' + size + '" >';
     wppa_names[id] = name;
     wppa_descs[id] = desc;
 }
