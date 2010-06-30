@@ -169,7 +169,7 @@ As nothing in life is permanent, this enhancement revokes the previously announc
 * Fixed rounding error in calculating thumbnail size. This may result in new thumbnails being one pixel larger. Regeneration of thumbnails will overcome this.
 * The 'Enlarge fullsize photos' switch in the admin settings page now functions as expected.
 * Various small fixes.
-* Adder wrappers for coverphoto and thumbnails.
+* Added wrappers for coverphoto and thumbnails.
 * You can now align thumbnails at top, center or bottom.
 * Split up the code in functional pieces.
 * Added functions: wppa_get_total_album_count(), wppa_get_youngest_album_id() and wppa_get_youngest_album_name() that are simple but not yet documented. For more info see the sourcecode: wppa_functions.php
