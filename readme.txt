@@ -162,6 +162,8 @@ Example#2 php code in page template:
 `
 
 As nothing in life is permanent, this enhancement revokes the previously announced permanent restriction of having only one occurence of an album or cover in a page or post.
+
+= More in 1.9 =
 * You can now have different sizes for thumbnail images and cover photos. The regeneration of thumbnails now only occurs when the largest of the two enters a diffrent range of 25 pixels.
 * Fix for sizing problem in IE6 by removing max-width and max-height from the style attributes.
 * Fixed rounding error in calculating thumbnail size. This may result in new thumbnails being one pixel larger. Regeneration of thumbnails will overcome this.
