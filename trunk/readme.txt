@@ -123,9 +123,9 @@ After modification:
 
 = 1.9 =
 * IF YOU COPIED/MODIFIED WPPA_THEME.PHP AND WPPA_STYLE.CSS Please study the files that come with this version and review your modifications!
-* You can now have multiple sequences of `%%wppa.. %%cover'.. %%size=..` tags.
-* You need no longer put the tags on one line, all information inside a tag sequence will be removed. Between the tag sequenses as well as before the first and after the last there may be content that will be displayed.
-* You can also call the album more then once in a page template.
+* You can now have multiple sequences of `%%wppa.. %%cover.. %%size=..` tags.
+You need no longer put the tags on one line, all information inside a tag sequence will be removed. Between the tag sequenses as well as before the first and after the last there may be content that will be displayed.
+You can also call the album more then once in a page template.
 
 Example#1 text in Post or Page:
 
