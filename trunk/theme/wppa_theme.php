@@ -45,13 +45,14 @@ if (wppa_page('albums')) {
 				}
 			}
 			$src = wppa_get_image_url();	
-			$imgattr = wppa_get_imgstyle($src, $coversize);
+			$imgattr = wppa_get_imgstyle($src, $coversize, '', 'cover');
+			$events = wppa_get_imgevents('cover');
 ?>
  			<div class="album <?php echo($alt); ?>">
 				<?php if ($src != '') { ?>
 					<div id="coverphoto_frame">
 						<a href="<?php echo($href); ?>" title="<?php echo($title); ?>">
-							<img src="<?php echo($src); ?>" alt="<?php echo($title); ?>" class="image" style="<?php echo($imgattr); ?>" />
+							<img src="<?php echo($src); ?>" alt="<?php echo($title); ?>" class="image" style="<?php echo($imgattr); ?>" <?php echo($events) ?>/>
 						</a>
 					</div>
 				<?php } ?>
@@ -88,11 +89,13 @@ if (wppa_page('albums')) {
 			if ($allow_sidebars) $w = 'narrow'; else $w = 'wide'; ?>
 			<div class="thumbs thumbs<?php echo($w); ?>" id="thumbs<?php echo($w)?>">
 			<?php foreach ($thumbs as $tt) :  global $thumb; $thumb = $tt; ?>
+				<?php $src = wppa_get_thumb_path(); ?>
+				<?php $imgattr = wppa_get_imgstyle($src, $thumbsize, 'optional', 'thumb'); ?>
 				<?php $src = wppa_get_thumb_url(); ?>
-				<?php $imgattr = wppa_get_imgstyle($src, $thumbsize, 'optional'); ?>
+				<?php $events = wppa_get_imgevents('thumb'); ?>
 				<div id="thumbnail_frame">
 					<a href="<?php wppa_photo_page_url(); echo($occ); ?>" class="img">
-						<img src="<?php echo($src); ?>" alt="<?php echo($thumb['name']); ?>" title="<?php echo($thumb['name']); ?>" style="<?php echo($imgattr); ?>" />
+						<img src="<?php echo($src); ?>" alt="<?php echo($thumb['name']); ?>" title="<?php echo($thumb['name']); ?>" style="<?php echo($imgattr); ?>" <?php echo($events) ?>/>
 					</a>
 				</div>
 			<?php endforeach; ?>

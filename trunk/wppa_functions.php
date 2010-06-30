@@ -381,6 +381,13 @@ function wppa_get_thumb_url() {
 	return $url; 
 }
 
+function wppa_get_thumb_path() {
+	global $thumb;
+	
+	$path = ABSPATH . 'wp-content/uploads/wppa/thumbs/' . $thumb['id'] . '.' . $thumb['ext'];
+	return $path; 
+}
+
 // get url of a full sized image
 function wppa_get_photo_url($id = '') {
 	return wppa_photo_url($id, TRUE);
@@ -589,9 +596,15 @@ function wppa_error_message($msg) {
 <?php
 }
 
-function wppa_check_numeric($value, $minval, $target) {
-	if (is_numeric($value) && $value >= $minval) return true;
-	wppa_error_message(__('Please supply a numeric value greater than or equal to', 'wppa') . ' ' . $minval . ' ' . __('for', 'wppa') . ' ' . $target);
+function wppa_check_numeric($value, $minval, $target, $maxval = '') {
+	if ($maxval == '') {
+		if (is_numeric($value) && $value >= $minval) return true;
+		wppa_error_message(__('Please supply a numeric value greater than or equal to', 'wppa') . ' ' . $minval . ' ' . __('for', 'wppa') . ' ' . $target);
+	}
+	else {
+		if (is_numeric($value) && $value >= $minval && $value <= $maxval) return true;
+		wppa_error_message(__('Please supply a numeric value greater than or equal to', 'wppa') . ' ' . $minval . ' ' . __('and less than or equal to', 'wppa') . ' ' . $maxval . ' ' . __('for', 'wppa') . ' ' . $target);
+	}
 	return false;
 }
 
@@ -607,7 +620,7 @@ function wppa_get_minisize() {
 	return $result;
 }
 
-function wppa_get_imgstyle($file, $max_size, $xvalign = '') {	
+function wppa_get_imgstyle($file, $max_size, $xvalign = '', $type = '') {	
 	if($file == '') return '';					// no image: no dimensions
 	$image_attr = getimagesize( $file );
 	// figure out the longest side
@@ -630,7 +643,6 @@ function wppa_get_imgstyle($file, $max_size, $xvalign = '') {
 	// compose the size result
 	if ($image_attr[0] > $image_attr[1]) $result = ' width: ' . $width . 'px; ';
 	else $result = ' height: ' . $height . 'px; ';
-//	$result = ' width:' . $width . 'px; height:' . $height . 'px; ';
 	// see if valign required
 	if ($xvalign == 'optional') $valign = get_option('wppa_valign', '');
 	else $valign = $xvalign;
@@ -647,6 +659,33 @@ function wppa_get_imgstyle($file, $max_size, $xvalign = '') {
 		if ($delta < '0') $delta = '0';
 		$result .= ' margin-top: ' . $delta . 'px; ';
 	}
+	// see if hover effect enabled
+	if ($type == 'thumb') {
+		if (get_option('wppa_use_thumb_opacity', 'no') == 'yes') {
+			$opac = get_option('wppa_thumb_opacity', '80');
+			$result .= ' opacity:' . $opac/100 . '; filter:alpha(opacity=' . $opac . ')';
+		}
+	} elseif ($type == 'cover') {
+		if (get_option('wppa_use_cover_opacity', 'no') == 'yes') {
+			$opac = get_option('wppa_cover_opacity', '80');
+			$result .= ' opacity:' . $opac/100 . '; filter:alpha(opacity=' . $opac . ')';
+		}
+	}
 	return $result;
 }
+
+function wppa_get_imgevents($type = '') {
+	if ($type == 'thumb') {
+		if (get_option('wppa_use_thumb_opacity', 'no') == 'no') return '';
+		$perc = get_option('wppa_thumb_opacity', '80');
+	}
+	elseif ($type == 'cover') {
+		if (get_option('wppa_use_cover_opacity', 'no') == 'no') return '';
+		$perc = get_option('wppa_cover_opacity', '80');
+	}
+	else return '';
+	$result = 'onmouseover="this.style.opacity=1;this.filters.alpha.opacity=100" onmouseout="this.style.opacity=' . $perc/100 . ';this.filters.alpha.opacity=' . $perc . '" ';
+	return $result;
+}
+
 ?>
