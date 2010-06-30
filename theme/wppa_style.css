@@ -158,8 +158,8 @@ text-align: center;
 #prev-arrow a:visited, #next-arrow a:visited { border-style: none; }
 #prev-arrow a:hover, #next-arrow a:hover { text-decoration: none; }
 #prev-arrow a:active, #next-arrow a:active { border-style: none; }
-#prev-arrow { text-align: left; }
-#next-arrow { text-align: right; }
+#prev-arrow { text-align: left; float: left; }
+#next-arrow { text-align: right; float: right; }
 
 .big {
 display: block;
