@@ -64,8 +64,8 @@ function wppa_setup() {
     dbDelta($create_photos);
 	
 	if (!is_numeric(get_option('wppa_fullsize', 'nil'))) update_option('wppa_fullsize', '800');
-	if (!is_numeric(get_option('wppa_thumbsize', 'nil'))) update_option('wppa_thumbsize', '130');
-	if (!is_numeric(get_option('wppa_smallsize', 'nil'))) update_option('wppa_smallsize', get_option('wppa_thumbsize'));
+	if (!is_numeric(get_option('wppa_thumbsize', 'nil'))) update_option('wppa_thumbsize', '150');
+	if (!is_numeric(get_option('wppa_smallsize', 'nil'))) update_option('wppa_smallsize', '95');
 	if (get_option('wppa_show_bread', 'nil') == 'nil') update_option('wppa_show_bread', 'yes');
 	
 	update_option('wppa_revision', '183');
