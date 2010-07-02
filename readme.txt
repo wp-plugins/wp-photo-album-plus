@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, gallery, slideshow, sidebar widget, photo widget, phtoblog
-Version: 1.9
+Version: 1.9.1
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -120,6 +120,18 @@ After modification:
 
 
 == Changelog ==
+
+= 1.9.1 =
+** New Features **
+* You can now add mouseover effect to coverphotos and thumbnail images.
+
+** Bug Fixes **
+Fix for Warning: URL file-access is disabled in the server configuration in ../wp-content/plugins/wp-photo-album-plus/wppa_functions.php on line 612
+
+** Enhancements **
+* Security enhancement for the sidebar widget.
+* Improved documentation of wppa_style.css.
+* Improved error/warning reporting.
 
 = 1.9 =
 * IF YOU COPIED/MODIFIED WPPA_THEME.PHP AND WPPA_STYLE.CSS Please study the files that come with this version and review your modifications!

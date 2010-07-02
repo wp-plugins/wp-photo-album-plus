@@ -19,14 +19,15 @@ if (isset($_GET['tab'])) {
 		
 		// deletes the image
 		if (isset($_GET['photo_del'])) {
-			$ext = $wpdb->get_var("SELECT ext FROM " . PHOTO_TABLE . " WHERE id={$_GET['photo_del']}");
+			$ext = $wpdb->get_var($wpdb->prepare('SELECT `ext` FROM `' . PHOTO_TABLE . '` WHERE `id` = %d', $_GET['photo_del']));
 			unlink(ABSPATH . 'wp-content/uploads/wppa/' . $_GET['photo_del'] . '.' . $ext);
 			unlink(ABSPATH . 'wp-content/uploads/wppa/thumbs/' . $_GET['photo_del'] . '.' . $ext);
-			$wpdb->query("DELETE FROM " . PHOTO_TABLE . " WHERE id={$_GET['photo_del']} LIMIT 1");
+			$wpdb->query($wpdb->prepare('DELETE FROM `' . PHOTO_TABLE . '` WHERE `id` = %d LIMIT 1', $_GET['photo_del']));
+
 			wppa_update_message(__('Photo Deleted.', 'wppa'));
 		}		
 		
-		$albuminfo = $wpdb->get_row("SELECT * FROM " . ALBUM_TABLE . " WHERE id={$_GET['edit_id']} ", 'ARRAY_A');
+		$albuminfo = $wpdb->get_row($wpdb->prepare('SELECT * FROM `' . ALBUM_TABLE . '` WHERE `id` = %d', $_GET['edit_id']), 'ARRAY_A');
 ?>				
 		<div class="wrap">
 			<h2><?php _e('Edit Ablum Information', 'wppa'); ?></h2>
@@ -102,8 +103,8 @@ if (isset($_GET['tab'])) {
 							</th>
 							<td>
 <?php
-								$query = "SELECT ID, post_title FROM " . $wpdb->posts . " WHERE post_type = 'page' AND post_status = 'publish' ORDER BY post_title ASC";
-								$pages = $wpdb->get_results ($query, 'ARRAY_A');
+	$query = 'SELECT `ID`, `post_title` FROM `' . $wpdb->posts . '` WHERE `post_type` = \'page\' AND `post_status` = \'publish\' ORDER BY `post_title` ASC';
+	$pages = $wpdb->get_results ($query, 'ARRAY_A');
 								if (empty($pages)) {
 									_e('There are no pages (yet) to link to.', 'wppa');
 								} else {
@@ -393,6 +394,22 @@ function wppa_page_options() {
 			$options_error = true;
 		}
 		
+		if (isset($_POST['wppa-use-thumb-opacity'])) update_option('wppa_use_thumb_opacity', 'yes');
+		else update_option('wppa_use_thumb_opacity', 'no');
+		if (wppa_check_numeric($_POST['wppa-thumb-opacity'], '0', __('Opacity.'), '100')) {
+			update_option('wppa_thumb_opacity', $_POST['wppa-thumb-opacity']);
+		} else {
+			$options_error = true;
+		}
+		
+		if (isset($_POST['wppa-use-cover-opacity'])) update_option('wppa_use_cover_opacity', 'yes');
+		else update_option('wppa_use_cover_opacity', 'no');
+		if (wppa_check_numeric($_POST['wppa-cover-opacity'], '0', __('Opacity.'), '100')) {
+			update_option('wppa_cover_opacity', $_POST['wppa-cover-opacity']);
+		} else {
+			$options_error = true;
+		}
+
 		if (isset($_POST['wppa-enlarge'])) update_option('wppa_enlarge', 'yes');
 		else update_option('wppa_enlarge', 'no');
 		
@@ -434,7 +451,7 @@ function wppa_page_options() {
 							<label ><?php _e('Full Size:', 'wppa'); ?></label>
 						</th>
 						<td>
-							<input type="text" name="wppa-fullsize" id="wppa-fullsize" value="<?php echo(get_option('wppa_fullsize')) ?>" style="width: 50px;" />
+							<input type="text" name="wppa-fullsize" id="wppa-fullsize" value="<?php echo(get_option('wppa_fullsize')) ?>" style="width: 50px;" />pixels.
 							<span class="description"><br/><?php _e('The size of the full images is controled with html, the photo itself will not be resized.', 'wppa'); ?></span>
 						</td>
 					</tr>
@@ -447,13 +464,22 @@ function wppa_page_options() {
 							<span class="description"><br/><?php _e('Fullsize images will be enlarged to the Full Size if needed. Leaving unchecked is recommended. It is better to upload photos that fit well the sizes you use!', 'wppa'); ?></span>
 						</td>
 					</tr>
+					<tr valign="top">
+						<th scope="row">
+							<label ><?php _e('Photocount treshold:', 'wppa'); ?></label>
+						</th>
+						<td>
+							<input type="text" name="wppa-min-thumbs" id="wppa-min-thumbs" value="<?php echo(get_option('wppa_min_thumbs', '1')) ?>" style="width: 50px;" />
+							<span class="description"><br/><?php _e('Photos do not show up in the album unless there are more than this number of photos in the album. This allows you to have cover photos on an album that contains only sub albums without seeing them in the list of sub albums. Usually set to 0 (always show) or 1 (for one cover photo).', 'wppa'); ?></span>
+						</td>
+					</tr>
 					<tr><th><hr/></th><td><hr/></td></tr>
 					<tr valign="top">
 						<th scope="row">
 							<label ><?php _e('Thumbnail Size:', 'wppa'); ?></label>
 						</th>
 						<td>
-							<input type="text" name="wppa-thumbsize" id="wppa-thumbsize" value="<?php echo(get_option('wppa_thumbsize', '130')) ?>" style="width: 50px;" />
+							<input type="text" name="wppa-thumbsize" id="wppa-thumbsize" value="<?php echo(get_option('wppa_thumbsize', '130')) ?>" style="width: 50px;" />pixels.
 							<span class="description"><br/><?php _e('Changing the thumbnail size may result in all thumbnails being regenerated. this may take a while.', 'wppa'); ?></span>
 						</td>
 					</tr>
@@ -474,6 +500,25 @@ function wppa_page_options() {
 					</tr>
 					<tr valign="top">
 						<th scope="row">
+							<label><?php _e('Apply mouseover effect:', 'wppa'); ?></label>
+						</th>
+						<td>
+							<input type="checkbox" name="wppa-use-thumb-opacity" id="wppa-use-thumb-opacity" <?php if (get_option('wppa_use_thumb_opacity', 'no') == 'yes') echo('checked="checked"') ?> />
+							<span class="description"><br/><?php _e('Use mouseover effect on thumbnail images.', 'wppa') ?></span>
+						</td>
+					</tr>
+					<tr valign="top">
+						<th scope="row">
+							<label><?php _e('Opacity value:', 'wppa'); ?></label>
+						</th>
+						<td>
+							<input type="text" name="wppa-thumb-opacity" id="wppa-thumb-opacity" value="<?php echo(get_option('wppa_thumb_opacity', '80')) ?>" style="width: 50px;" />%.
+							<span class="description"><br/><?php _e('Percentage of opacity. 100% is opaque, 0% is transparant', 'wppa') ?></span>
+						</td>
+					</tr>							
+					<tr><th><hr/></th><td><hr/></td></tr>
+					<tr valign="top">
+						<th scope="row">
 							<label ><?php _e('Coverphoto Size:', 'wppa'); ?></label>
 						</th>
 						<td>
@@ -483,13 +528,22 @@ function wppa_page_options() {
 					</tr>
 					<tr valign="top">
 						<th scope="row">
-							<label ><?php _e('Photocount treshold:', 'wppa'); ?></label>
+							<label><?php _e('Apply mouseover effect:', 'wppa'); ?></label>
 						</th>
 						<td>
-							<input type="text" name="wppa-min-thumbs" id="wppa-min-thumbs" value="<?php echo(get_option('wppa_min_thumbs', '1')) ?>" style="width: 50px;" />
-							<span class="description"><br/><?php _e('Photos do not show up in the album unless there are more than this number of photos in the album. This allows you to have cover photos on an album that contains only sub albums without seeing them in the list of sub albums. Usually set to 0 (always show) or 1 (for one cover photo).', 'wppa'); ?></span>
+							<input type="checkbox" name="wppa-use-cover-opacity" id="wppa-use-cover-opacity" <?php if (get_option('wppa_use_cover_opacity', 'no') == 'yes') echo('checked="checked"') ?> />
+							<span class="description"><br/><?php _e('Use mouseover effect on cover images.', 'wppa') ?></span>
 						</td>
 					</tr>
+					<tr valign="top">
+						<th scope="row">
+							<label><?php _e('Opacity value:', 'wppa'); ?></label>
+						</th>
+						<td>
+							<input type="text" name="wppa-cover-opacity" id="wppa-cover-opacity" value="<?php echo(get_option('wppa_cover_opacity', '80')) ?>" style="width: 50px;" />%.
+							<span class="description"><br/><?php _e('Percentage of opacity. 100% is opaque, 0% is transparant', 'wppa') ?></span>
+						</td>
+					</tr>							
 					<tr><th><hr/></th><td><hr/></td></tr>
 					<tr valign="top">
 						<th scope="row">
@@ -957,6 +1011,8 @@ function wppa_page_help() {
 		<p>
 			<?php _e('If you\'ve read over this readme carefully and are still having issues, if you\'ve discovered a bug,', 'wppa'); ?>
 			<?php _e('or have a feature request, please contact me via my', 'wppa'); ?> <a href="mailto:opajaap@opajaap.nl?subject=WP%20Photo%20Album%20Plus">E-mail</a>.
+			<br/>
+			<?php _e('You may also check the', 'wppa'); ?> <a href="http://wordpress.org/tags/wp-photo-album-plus">forum</a> <?php _e('for this plugin and/or leave a question there.', 'wppa'); ?>
 		</p>
         <p>
 			<?php _e('If you love this plugin, I would appreciate a donation, either in', 'wppa'); ?>
@@ -970,6 +1026,7 @@ function wppa_page_help() {
 			<?php _e('WP Photo Album Plus is extended with many new features and is maintained by J.N. Breetvelt, a.k.a.', 'wppa'); ?>
 			<a href="http://www.opajaap.nl/"> (OpaJaap)</a><br />
 			<?php _e('Thanx to R.J. Kaplan for WP Photo Album 1.5.1.', 'wppa'); ?><br/>
+			<?php _e('Thanx to E.S. Rosenberg for programming tips on security issues.', 'wppa'); ?><br/>
 		</p>
 		
 		<h3><?php _e('Licence', 'wppa'); ?></h3>
@@ -1028,7 +1085,9 @@ function wppa_admin_albums() {
 // get photo edit list for albums
 function wppa_album_photos($id) {
 	global $wpdb;
-	$photos = $wpdb->get_results("SELECT * FROM " . PHOTO_TABLE . " WHERE album=$id " . wppa_get_photo_order($id), 'ARRAY_A');
+	
+	$photos = $wpdb->get_results($wpdb->prepare('SELECT * FROM `' . PHOTO_TABLE . '` WHERE `album` = %d ' . wppa_get_photo_order($id), $id), 'ARRAY_A');
+
 	if (empty($photos)) {
 ?>
 	<p><?php _e('No photos yet in this album.', 'wppa'); ?></p>
@@ -1038,7 +1097,8 @@ function wppa_album_photos($id) {
 ?>
 			<div class="photoitem">
 					<?php $src = get_bloginfo('wpurl') . '/wp-content/uploads/wppa/thumbs/' . $photo['id'] . '.' . $photo['ext']; ?> 
-					<img src="<?php echo($src) ?>" alt="<?php echo($photo['name']) ?>" style="<?php echo(wppa_get_imgstyle($src, '135')); ?>" />
+					<?php $path = ABSPATH . 'wp-content/uploads/wppa/thumbs/' . $photo['id'] . '.' . $photo['ext']; ?>
+					<img src="<?php echo($src) ?>" alt="<?php echo($photo['name']) ?>" style="<?php echo(wppa_get_imgstyle($path, '135')); ?>" />
 					<table class="details phototable">
 						<tr valign="top">
 							<th scope="row">
@@ -1133,7 +1193,7 @@ function wppa_add_album() {
     $porder = $_POST['wppa-photo-order-by']; if (!is_numeric($porder)) $porder = 0;
 	
 	if (!empty($name)) {
-        $query = "INSERT INTO " . ALBUM_TABLE . " (id, name, description, a_order, a_parent, p_order_by) VALUES (0, '$name', '$desc', '$order', '$parent', '$porder')";
+		$query = $wpdb->prepare('INSERT INTO `' . ALBUM_TABLE . '` (`id`, `name`, `description`, `a_order`, `a_parent`, `p_order_by`) VALUES (0, %s, %s, %d, %d, %d)', $name, $desc, $order, $parent, $porder);
 		$iret = $wpdb->query($query);
         if ($iret === FALSE) wppa_error_message(__('Could not create album.', 'wppa'));
 		else {
@@ -1243,9 +1303,16 @@ function wppa_upload_photos() {
 	// check if thumbs dir exists 
 	if (!is_dir($wppa_dir . '/thumbs')) mkdir($wppa_dir . '/thumbs');
 	
+	$warning_given = false;
+	
 	foreach ($_FILES as $file) {
     if ($file['tmp_name'] != '')
-		if (getimagesize($file['tmp_name'])) {
+		$img_size = getimagesize($file['tmp_name']);
+		if ($img_size) { //getimagesize($file['tmp_name'])) {
+			if (!$warning_given && ($img_size['0'] > 1280 || $img_size['1'] > 1280)) {
+				wppa_error_message(__('WARNING You are uploading very large photos, this may result in server problems! The recommended size is: not larger than 1024 x 768 pixels (up to approx. 250 kB).', 'wppa'));
+				$warning_given = true;
+			}
 			$ext = substr(strrchr($file['name'], "."), 1);
 		
 			$query = "INSERT INTO " . PHOTO_TABLE . " (id, album, ext, name, description) VALUES (0, {$_POST['wppa-album']}, '$ext', '{$file['name']}', '')";
