@@ -122,13 +122,13 @@ After modification:
 == Changelog ==
 
 = 1.9.1 =
-** New Features **
+**New Features**
 * You can now add mouseover effect to coverphotos and thumbnail images.
 
-** Bug Fixes **
+**Bug Fixes**
 Fix for Warning: URL file-access is disabled in the server configuration in ../wp-content/plugins/wp-photo-album-plus/wppa_functions.php on line 612
 
-** Enhancements **
+**Enhancements**
 * Security enhancement for the sidebar widget.
 * Improved documentation of wppa_style.css.
 * Improved error/warning reporting.
