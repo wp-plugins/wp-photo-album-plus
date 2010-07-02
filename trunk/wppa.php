@@ -2,7 +2,7 @@
 /*
 Plugin Name: WP Photo Album Plus
 Description: Easily manage and display your photo albums and slideshows within your WordPress site.
-Version: 1.9
+Version: 1.9.1
 Author: J.N. Breetvelt a.k.a OpaJaap
 Author URI: http://www.opajaap.nl/
 Plugin URI: http://wordpress.org/extend/plugins/wp-photo-album-plus/
@@ -67,6 +67,10 @@ function wppa_setup() {
 	if (!is_numeric(get_option('wppa_thumbsize', 'nil'))) update_option('wppa_thumbsize', '150');
 	if (!is_numeric(get_option('wppa_smallsize', 'nil'))) update_option('wppa_smallsize', '95');
 	if (get_option('wppa_show_bread', 'nil') == 'nil') update_option('wppa_show_bread', 'yes');
+	if (get_option('wppa_use_thumb_opacity', 'nil') =='nil') update_option('wppa_use_thumb_opacity', 'no');
+	if (!is_numeric(get_option('wppa_thumb_opacity', 'nil'))) update_option('wppa_thumb_opacity', '60');
+	if (get_option('wppa_use_cover_opacity', 'nil') =='nil') update_option('wppa_use_cover_opacity', 'no');
+	if (!is_numeric(get_option('wppa_cover_opacity', 'nil'))) update_option('wppa_cover_opacity', '60');
 	
 	update_option('wppa_revision', '183');
 	}
@@ -95,10 +99,9 @@ function wppa_add_admin() {
 add_action('admin_menu', 'wppa_add_admin');
 
 /* ADMIN PAGES */
-
 if (is_admin()) require_once('wppa_admin.php');
 
-
+/* NON ADMIN PAGES */
 if (!is_admin()) require_once('wppa_filter.php');
 
 /* LISTING FUNCTIONS */
@@ -125,8 +128,6 @@ function wppa_albums($xalb = '', $type='', $siz = '') {
 	} else {
 		include(ABSPATH . 'wp-content/plugins/' . PLUGIN_PATH . '/theme/wppa_theme.php');
 	}
-	
-	//$occur++;	/* experimental */
 }
 
 // add  styling to header
