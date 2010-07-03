@@ -45,7 +45,8 @@ if (wppa_page('albums')) {
 				}
 			}
 			$src = wppa_get_image_url();	
-			$imgattr = wppa_get_imgstyle($src, $coversize, '', 'cover');
+			$path = wppa_get_image_path();
+			$imgattr = wppa_get_imgstyle($path, $coversize, '', 'cover');
 			$events = wppa_get_imgevents('cover');
 ?>
  			<div class="album <?php echo($alt); ?>">
