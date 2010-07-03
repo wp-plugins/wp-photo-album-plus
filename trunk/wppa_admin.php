@@ -1015,7 +1015,7 @@ function wppa_page_help() {
 			<br/>
 			<?php _e('You may also check the', 'wppa'); ?> <a href="http://wordpress.org/tags/wp-photo-album-plus">forum</a> <?php _e('for this plugin and/or leave a question there.', 'wppa'); ?>
 			<br/>
-			<?php _e('For hot fixes check the', 'wppa'); ?> <a href="">development log</a> <?php _e('for this plugin.', 'wppa'); ?>
+			<?php _e('For hot fixes check the', 'wppa'); ?> <a href="http://plugins.trac.wordpress.org/log/wp-photo-album-plus/">development log</a> <?php _e('for this plugin.', 'wppa'); ?>
 		</p>
         <p>
 			<?php _e('If you love this plugin, I would appreciate a donation, either in', 'wppa'); ?>
