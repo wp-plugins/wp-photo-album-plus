@@ -174,6 +174,21 @@ function wppa_image_url($return = FALSE) {
 		
 	if ($return) return $imgurl; else echo $imgurl;
 }
+function wppa_get_image_path() {
+	global $wpdb, $album;
+		
+	// cehck if a main photo is set
+	if (empty($album['main_photo'])) {
+		$image = $wpdb->get_row("SELECT * FROM " . PHOTO_TABLE . " WHERE album={$album['id']} ORDER BY RAND() LIMIT 0,1", 'ARRAY_A');
+	} else {
+		$image = $wpdb->get_row("SELECT * FROM " . PHOTO_TABLE . " WHERE id={$album['main_photo']} LIMIT 0,1", 'ARRAY_A');
+	}
+	
+	if (!empty($image)) $imgurl = ABSPATH . 'wp-content/uploads/wppa/thumbs/' . $image['id'] . '.' . $image['ext'];
+	else $imgurl = '';
+		
+	return $imgurl;
+}
 
 function wppa_get_image_page_url() {
 	return wppa_image_page_url(TRUE);
