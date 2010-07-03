@@ -1005,7 +1005,8 @@ function wppa_page_help() {
 			<li><?php _e('Keep the sequence intact: 1. <tt>%%wppa%%</tt>, 2. <tt>%%album=</tt> or <tt>%%cover=</tt>, 3. <tt>%%size=</tt>. (2. being optional even when using 3.).', 'wppa'); ?></li>
 			<li><?php _e('Use the default page template, or create one yourself. In this case, study the example (actually the version i use myself): <tt>...wp-content/plugins/wp-photo-album-plus/examples/page-photo-album.php</tt>', 'wppa'); ?></li>
 			<li><?php _e('WPPA uses a system of tags similar to the WordPress theme system. To view a list of available tags, please read tags.txt', 'wppa'); ?></li>
-		</ul>
+			<li><?php _e('You can remove the plugin and re-install the latest version always. This will not affect your photos or albums.', 'wppa'); ?></li>
+			</ul>
 	
 		<h3><?php _e('Plugin Support And Feature Request', 'wppa'); ?></h3>
 		<p>
@@ -1013,6 +1014,8 @@ function wppa_page_help() {
 			<?php _e('or have a feature request, please contact me via my', 'wppa'); ?> <a href="mailto:opajaap@opajaap.nl?subject=WP%20Photo%20Album%20Plus">E-mail</a>.
 			<br/>
 			<?php _e('You may also check the', 'wppa'); ?> <a href="http://wordpress.org/tags/wp-photo-album-plus">forum</a> <?php _e('for this plugin and/or leave a question there.', 'wppa'); ?>
+			<br/>
+			<?php _e('For hot fixes check the', 'wppa'); ?> <a href="">development log</a> <?php _e('for this plugin.', 'wppa'); ?>
 		</p>
         <p>
 			<?php _e('If you love this plugin, I would appreciate a donation, either in', 'wppa'); ?>
