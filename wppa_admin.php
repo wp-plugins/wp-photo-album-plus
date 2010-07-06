@@ -1,4 +1,23 @@
 <?php 
+
+/* Add admin style */
+add_action('admin_init', 'wppa_admin_styles');
+
+function wppa_admin_styles() {
+	wp_register_style('wppa_admin_style', '/wp-content/plugins/' . PLUGIN_PATH . '/admin_styles.css');
+	wp_enqueue_style('wppa_admin_style');
+}
+
+/* Add java scripts */
+add_action('admin_init', 'wppa_admin_scripts');
+
+function wppa_admin_scripts() {
+	wp_register_script('wppa_upload_script', '/wp-content/plugins/' . PLUGIN_PATH . '/multifile_compressed.js');
+	wp_enqueue_script('wppa_upload_script');
+	wp_register_script('wppa_admin_script', '/wp-content/plugins/' . PLUGIN_PATH . '/admin_scripts.js');
+	wp_enqueue_script('wppa_admin_script');
+}
+
 function wppa_admin() {
 	global $wpdb;
 	
@@ -19,12 +38,29 @@ if (isset($_GET['tab'])) {
 		
 		// deletes the image
 		if (isset($_GET['photo_del'])) {
-			$ext = $wpdb->get_var($wpdb->prepare('SELECT `ext` FROM `' . PHOTO_TABLE . '` WHERE `id` = %d', $_GET['photo_del']));
-			unlink(ABSPATH . 'wp-content/uploads/wppa/' . $_GET['photo_del'] . '.' . $ext);
-			unlink(ABSPATH . 'wp-content/uploads/wppa/thumbs/' . $_GET['photo_del'] . '.' . $ext);
+			$message = __('Photo Deleted.', 'wppa');
+			
+			$ext = $wpdb->get_var($wpdb->prepare('SELECT `ext` FROM `' . PHOTO_TABLE . '` WHERE `id` = %d', $_GET['photo_del'])); 
+			
+			$file = ABSPATH . 'wp-content/uploads/wppa/' . $_GET['photo_del'] . '.' . $ext;
+			if (file_exists($file)) {
+				unlink($file);
+			}
+			else {
+				$message .= ' ' . __('Fullsize image did not exist.', 'wppa');
+			}
+			
+			$file = ABSPATH . 'wp-content/uploads/wppa/thumbs/' . $_GET['photo_del'] . '.' . $ext;
+			if (file_exists($file)) {
+				unlink($file);
+			}
+			else {
+				$message .= ' ' . __('Thumbnail image did not exist.', 'wppa');
+			}
+			
 			$wpdb->query($wpdb->prepare('DELETE FROM `' . PHOTO_TABLE . '` WHERE `id` = %d LIMIT 1', $_GET['photo_del']));
 
-			wppa_update_message(__('Photo Deleted.', 'wppa'));
+			wppa_update_message($message);
 		}		
 		
 		$albuminfo = $wpdb->get_row($wpdb->prepare('SELECT * FROM `' . ALBUM_TABLE . '` WHERE `id` = %d', $_GET['edit_id']), 'ARRAY_A');
@@ -712,38 +748,8 @@ function wppa_sidebar_page_options() {
 						</th>
 						<td>
 							<?php $sel = 'selected="selected"'; ?>
-							<script type="text/javascript">
-							/* <![CDATA[ */
-							function wppaCheckWm() {
-								var ph;
-								var i;
-								if (document.getElementById("wppa-wm").value=="4") {
-									document.getElementById("wppa-wp").style.visibility="visible";
-								}
-								else {
-									document.getElementById("wppa-wp").style.visibility="hidden";
-								}
-								if (document.getElementById("wppa-wm").value=="1") {
-									ph=document.getElementsByName("wppa-widget-photo");
-									i=0;
-									while (i<ph.length) {
-										ph[i].style.visibility="visible";
-										i++;	
-									}
-								}
-								else {
-									ph=document.getElementsByName("wppa-widget-photo");
-									i=0;
-									while (i<ph.length) {
-										ph[i].style.visibility="hidden";
-										i++;
-									}
-								}
-							}
-							/* ]]> */
-							</script>
 							<?php $method = get_option('wppa_widget_method', '1'); ?>
-							<select name="wppa-widget-method" id="wppa-wm" onchange="wppaCheckWm()" >
+							<select name="wppa-widget-method" id="wppa-wm" onchange="wppaCheckWidgetMethod()" >
 								<option value="1" <?php if ($method == '1') echo($sel); ?>><?php _e('Fixed photo', 'wppa'); ?></option> 
 								<option value="2" <?php if ($method == '2') echo($sel); ?>><?php _e('Random', 'wppa'); ?></option>
 								<option value="3" <?php if ($method == '3') echo($sel); ?>><?php _e('Last upload', 'wppa'); ?></option>
@@ -793,44 +799,8 @@ function wppa_sidebar_page_options() {
 							<label ><?php _e('Subtitle:', 'wppa'); ?></label>
 						</th>
 						<td>
-							<script type="text/javascript">
-							/* <![CDATA[ */
-							function wppaCheckWs() {
-								var subtitle = document.getElementById('wppa-st').value;
-								var stn, std;
-								var i;
-								stn = document.getElementsByTagName('h4');
-								std = document.getElementsByTagName('h6');
-								i = 0;
-								switch (subtitle)
-								{
-								case 'none':
-									while (i < stn.length) {
-										stn[i].style.visibility = "hidden";
-										std[i].style.visibility = "hidden";
-										i++;
-									}
-									break;
-								case 'name':
-									while (i < stn.length) {
-										stn[i].style.visibility = "visible";
-										std[i].style.visibility = "hidden";
-										i++;
-									}
-									break;
-								case 'desc':
-									while (i < stn.length) {
-										stn[i].style.visibility = "hidden";
-										std[i].style.visibility = "visible";
-										i++;
-									}
-									break;
-								}
-							}
-							/* ]]> */
-							</script>
 							<?php $subtit = get_option('wppa_widget_subtitle', 'none'); ?>
-							<select name="wppa-widget-subtitle" id="wppa-st" onchange="wppaCheckWs()" >
+							<select name="wppa-widget-subtitle" id="wppa-st" onchange="wppaCheckWidgetSubtitle()" >
 								<option value="none" <?php if ($subtit == 'none') echo($sel); ?>><?php _e('--- none ---', 'wppa'); ?></option>
 								<option value="name" <?php if ($subtit == 'name') echo($sel); ?>><?php _e('Photo Name', 'wppa'); ?></option>
 								<option value="desc" <?php if ($subtit == 'desc') echo($sel); ?>><?php _e('Description', 'wppa'); ?></option>
@@ -870,8 +840,8 @@ function wppa_sidebar_page_options() {
 <?php
 			}
 ?>
-			<script type="text/javascript">wppaCheckWm();</script>
-			<script type="text/javascript">wppaCheckWs();</script>
+			<script type="text/javascript">wppaCheckWidgetMethod();</script>
+			<script type="text/javascript">wppaCheckWidgetSubtitle();</script>
 			<br />
 			<p>
 				<input type="submit" class="button-primary" name="wppa-set-submit" value="<?php _e('Save Changes', 'wppa'); ?>" />
@@ -1189,12 +1159,17 @@ function wppa_album_select($exc = '', $sel = '', $addnone = FALSE, $addseparate 
 // add an album 
 function wppa_add_album() {
 	global $wpdb;
-	$name = $_POST['wppa-name']; $name = esc_attr($name);
-	$desc = $_POST['wppa-desc']; $desc = esc_attr($desc);
-	$order = $_POST['wppa-order']; if (!is_numeric($order)) $order = 0;
-    $parent = $_POST['wppa-parent']; if (!is_numeric($parent)) $parent = 0;
-    $porder = $_POST['wppa-photo-order-by']; if (!is_numeric($porder)) $porder = 0;
 	
+	$name = $_POST['wppa-name']; 
+	$name = esc_attr($name);
+	
+	$desc = $_POST['wppa-desc']; 
+	$desc = esc_attr($desc);
+	
+	$order = (is_numeric($_POST['wppa-order']) ? $_POST['wppa-order'] : 0);
+	$parent = (is_numeric($_POST['wppa-parent']) ? $_POST['wppa-parent'] : 0);
+	$porder = (is_numeric($_POST['wppa-photo-order-by']) ? $_POST['wppa-photo-order-by'] : 0);
+
 	if (!empty($name)) {
 		$query = $wpdb->prepare('INSERT INTO `' . ALBUM_TABLE . '` (`id`, `name`, `description`, `a_order`, `a_parent`, `p_order_by`) VALUES (0, %s, %s, %d, %d, %d)', $name, $desc, $order, $parent, $porder);
 		$iret = $wpdb->query($query);
@@ -1211,24 +1186,36 @@ function wppa_add_album() {
 // edit an album 
 function wppa_edit_album() {
 	global $wpdb;
+	
     $first = TRUE;
+	
 	$name = $_POST['wppa-name'];
+	$name = esc_attr($name);
+	
 	$desc = $_POST['wppa-desc'];
+	$desc = esc_attr($desc);
+	
 	$main = $_POST['wppa-main'];
-    $order = $_POST['wppa-order']; if (!is_numeric($order)) $order = 0;
-	if (isset($_POST['wppa-parent'])) $parent = $_POST['wppa-parent']; 
-	else $parent = 0;
+	
+    $order = (is_numeric($_POST['wppa-order']) ? $_POST['wppa-order'] : 0);
+	
+	$parent = (isset($_POST['wppa-parent']) ? $_POST['wppa-parent'] : 0);
 	if ($parent == -3) $parent = 0;	// selected an unselectable item (IE < 8 ?)
-    $orderphotos = $_POST['wppa-list-photos-by']; if (!is_numeric($orderphotos)) $orderphotos = 0;
+	
+    $orderphotos = (is_numeric($_POST['wppa-list-photos-by']) ? $_POST['wppa-list-photos-by'] : 0);
+	
 	$link = $_POST['cover-linkpage'];
 	
     // update the photo information
     if (isset($_POST['photos']))
 	foreach ($_POST['photos'] as $photo) {
         $photo['name'] = esc_attr($photo['name']);
+		
         if (!is_numeric($photo['p_order'])) $photo['p_order'] = 0;
-		$query = "UPDATE " . PHOTO_TABLE . " SET name='{$photo['name']}', album={$photo['album']}, description='{$photo['description']}', p_order={$photo['p_order']} WHERE id={$photo['id']} LIMIT 1";
+		
+		$query = $wpdb->prepare('UPDATE `' . PHOTO_TABLE . '` SET `name` = %s, `album` = %s, `description` = %s, `p_order` = %d WHERE `id` = %d LIMIT 1', $photo['name'], $photo['album'], $photo['description'], $photo['p_order'], $photo['id']);
 		$iret = $wpdb->query($query);
+
         if ($iret === FALSE) {
             if ($first) { 
 				wppa_error_message(__('Could not update photo.', 'wppa'));
@@ -1239,9 +1226,16 @@ function wppa_edit_album() {
 	
 	// update the album information
 	if (!empty($name)) {
-        $iret = $wpdb->query("UPDATE " . ALBUM_TABLE . " SET name='$name', description='$desc', main_photo='$main', a_order='$order', a_parent='$parent', p_order_by='$orderphotos', cover_linkpage='$link' WHERE id={$_GET['edit_id']}");
-        if ($iret === FALSE) wppa_error_message(__('Album could not be updated.', 'wppa'));
-		else wppa_update_message(__('Album information edited.', 'wppa') . ' ' . '<a href="admin.php?page=' . PLUGIN_PATH . '/wppa.php">' . __('Back to album management.', 'wppa') . '</a>');
+		$query = $wpdb->prepare('UPDATE `' . ALBUM_TABLE . '` SET `name` = %s, `description` = %s, `main_photo` = %s, `a_order` = %d, `a_parent` = %d, `p_order_by` = %s, `cover_linkpage` = %s WHERE `id` = %d', $name, $desc, $main, $order, $parent, $orderphotos, $link, $_GET['edit_id']);
+		$iret = $wpdb->query($query);
+		
+        if ($iret === FALSE) {
+			wppa_error_message(__('Album could not be updated.', 'wppa'));
+		}
+		else {
+			wppa_update_message(__('Album information edited.', 'wppa') . ' ' . '<a href="admin.php?page=' . PLUGIN_PATH . '/wppa.php">' . __('Back to album management.', 'wppa') . '</a>');
+		}
+		
 		wppa_set_last_album($_GET['edit_id']);
 	} else { 
 		wppa_error_message(__('Album Name cannot be empty.', 'wppa'));
@@ -1251,10 +1245,12 @@ function wppa_edit_album() {
 // delete an album 
 function wppa_del_album($id, $move = '') {
 	global $wpdb;
-	$wpdb->query("DELETE FROM " . ALBUM_TABLE . " WHERE id=$id LIMIT 1");
 	
+	$wpdb->query('DELETE FROM `' . ALBUM_TABLE . '` WHERE `id` = %d LIMIT 1', $id);
+
 	if (empty($move)) { // will delete all the album's photos
-		$photos = $wpdb->get_results("SELECT * FROM " . PHOTO_TABLE . " WHERE album=$id", 'ARRAY_A');
+		$photos = $wpdb->get_results($wpdb->prepare('SELECT * FROM `' . PHOTO_TABLE . '` WHERE `album` = %d', $id), 'ARRAY_A');
+
 		if (is_array($photos)) {
 			foreach ($photos as $photo) {
 				// remove the photos and thumbs
@@ -1262,19 +1258,22 @@ function wppa_del_album($id, $move = '') {
 				unlink(ABSPATH . 'wp-content/uploads/wppa/thumbs/' . $photo['id'] . '.' . $photo['ext']);
 			} 
 		}
+		
 		// remove the database entries
-		$wpdb->query("DELETE FROM " . PHOTO_TABLE . " WHERE album=$id");
+		$wpdb->query($wpdb->prepare('DELETE FROM `' . PHOTO_TABLE . '` WHERE `album` = %d', $id));
 	} else {
-		$wpdb->query("UPDATE " . PHOTO_TABLE . " SET album=$move WHERE album=$id");
+		$wpdb->query($wpdb->prepare('UPDATE `' . PHOTO_TABLE . '` SET `album` = %d WHERE `album` = %d', $move, $id));
 	}
+	
 	wppa_update_message(__('Album Deleted.', 'wppa'));
 }
 
 // select main photo
 function wppa_main_photo($cur = '') {
 	global $wpdb;
+	
     $a_id = $_GET['edit_id'];
-	$photos = $wpdb->get_results("SELECT * FROM " . PHOTO_TABLE . " WHERE album=$a_id " . wppa_get_photo_order($a_id), 'ARRAY_A');
+	$photos = $wpdb->get_results($wpdb->prepare('SELECT * FROM `' . PHOTO_TABLE . '` WHERE `album` = %d ' . wppa_get_photo_order($a_id), $a_id), 'ARRAY_A');
 	
 	$output = '';
 	if (!empty($photos)) {
@@ -1282,9 +1281,13 @@ function wppa_main_photo($cur = '') {
 		$output .= '<option value="">' . __('--- random ---', 'wppa') . '</option>';
 
 		foreach($photos as $photo) {
-			if ($cur == $photo['id']) { $selected = 'selected="selected"'; } else { $selected = ''; }
-			$output .= '<option value="' . $photo['id'] . '" ' . $selected . '>' . $photo['name'] . '</option>
-			';
+			if ($cur == $photo['id']) { 
+				$selected = 'selected="selected"'; 
+			} 
+			else { 
+				$selected = ''; 
+			}
+			$output .= '<option value="' . $photo['id'] . '" ' . $selected . '>' . $photo['name'] . '</option>';
 		}
 		
 		$output .= '</select>';
@@ -1301,36 +1304,41 @@ function wppa_upload_photos() {
 	$wppa_dir = ABSPATH . 'wp-content/uploads/wppa';
 	
 	// check if wppa dir exists
-	if (!is_dir($wppa_dir)) mkdir($wppa_dir);	
+	if (!is_dir($wppa_dir)) {
+		mkdir($wppa_dir);	
+	}
 	
 	// check if thumbs dir exists 
-	if (!is_dir($wppa_dir . '/thumbs')) mkdir($wppa_dir . '/thumbs');
+	if (!is_dir($wppa_dir . '/thumbs')) {
+		mkdir($wppa_dir . '/thumbs');
+	}
 	
 	$warning_given = false;
 	
 	foreach ($_FILES as $file) {
-    if ($file['tmp_name'] != '')
-		$img_size = getimagesize($file['tmp_name']);
-		if ($img_size) { //getimagesize($file['tmp_name'])) {
-			if (!$warning_given && ($img_size['0'] > 1280 || $img_size['1'] > 1280)) {
-				wppa_error_message(__('WARNING You are uploading very large photos, this may result in server problems! The recommended size is: not larger than 1024 x 768 pixels (up to approx. 250 kB).', 'wppa'));
-				$warning_given = true;
-			}
-			$ext = substr(strrchr($file['name'], "."), 1);
-		
-			$query = "INSERT INTO " . PHOTO_TABLE . " (id, album, ext, name, description) VALUES (0, {$_POST['wppa-album']}, '$ext', '{$file['name']}', '')";
-			$wpdb->query($query);
-			//echo $query;
-			$image_id = $wpdb->get_var("SELECT LAST_INSERT_ID()");
+		if ($file['tmp_name'] != '') {
+			$img_size = getimagesize($file['tmp_name']);
+			if ($img_size) { 
+				if (!$warning_given && ($img_size['0'] > 1280 || $img_size['1'] > 1280)) {
+					wppa_error_message(__('WARNING You are uploading very large photos, this may result in server problems! The recommended size is: not larger than 1024 x 768 pixels (up to approx. 250 kB).', 'wppa'));
+					$warning_given = true;
+				}
+				$ext = substr(strrchr($file['name'], "."), 1);
 			
-			$newimage = $wppa_dir . '/' . $image_id . '.' . $ext;
-			copy($file['tmp_name'], $newimage);
+				$query = $wpdb->prepare('INSERT INTO `' . PHOTO_TABLE . '` (`id`, `album`, `ext`, `name`, `description`) VALUES (0, %d, %s, %s, \'\')', $_POST['wppa-album'], $ext, $file['name']);
+				$wpdb->query($query);
 
-			if (is_file ($newimage)) {
-				$uploaded_a_file = TRUE;
-				$thumbsize = wppa_get_minisize();
-				wppa_create_thumbnail($newimage, $thumbsize, '' );
-			} 
+				$image_id = $wpdb->get_var("SELECT LAST_INSERT_ID()");
+				
+				$newimage = $wppa_dir . '/' . $image_id . '.' . $ext;
+				copy($file['tmp_name'], $newimage);
+
+				if (is_file ($newimage)) {
+					$uploaded_a_file = TRUE;
+					$thumbsize = wppa_get_minisize();
+					wppa_create_thumbnail($newimage, $thumbsize, '' );
+				} 
+			}
 		}
 	}
 	
@@ -1340,14 +1348,7 @@ function wppa_upload_photos() {
     }
 }
 
-/* Add Javascript to page head */
-add_action('admin_head', 'wppa_admin_head');
 
-function wppa_admin_head() { ?>
- 	<script type="text/javascript" src="<?php echo(get_bloginfo('wpurl')); ?>/wp-content/plugins/<?php echo(PLUGIN_PATH); ?>/multifile_compressed.js"></script>
- 	<link rel="stylesheet" href="<?php echo(get_bloginfo('wpurl')); ?>/wp-content/plugins/<?php echo(PLUGIN_PATH); ?>/admin_styles.css" type="text/css" media="screen" />
-<?php
-}
 
 // update all thumbs 
 function wppa_regenerate_thumbs() {
@@ -1358,7 +1359,7 @@ function wppa_regenerate_thumbs() {
     
     $start = get_option('wppa_lastthumb', '-1');
 
-	$photos = $wpdb->get_results("SELECT * FROM " . PHOTO_TABLE . " WHERE id>" . $start . " ORDER BY id", 'ARRAY_A');
+	$photos = $wpdb->get_results($wpdb->prepare('SELECT * FROM `' . PHOTO_TABLE . '` WHERE `id` > %d ORDER BY `id`', $start), 'ARRAY_A');
 	
 	if (!empty($photos)) {
 		foreach ($photos as $photo) {
