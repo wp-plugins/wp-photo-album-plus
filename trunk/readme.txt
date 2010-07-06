@@ -133,6 +133,10 @@ Fix for Warning: URL file-access is disabled in the server configuration in ../w
 * Improved documentation of wppa_style.css.
 * Improved error/warning reporting.
 
+= Known issues =
+* There seems to be a conflict with the plugin called "n3rdskwat-mp3player".
+* There seems to be a conflict with the theme called "Thesis" revision 7.
+
 = 1.9 =
 * IF YOU COPIED/MODIFIED WPPA_THEME.PHP AND WPPA_STYLE.CSS Please study the files that come with this version and review your modifications!
 * You can now have multiple sequences of `%%wppa.. %%cover.. %%size=..` tags.
