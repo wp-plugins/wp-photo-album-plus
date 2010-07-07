@@ -121,6 +121,10 @@
     text-align: right;
 }
 
+#speed0, #startstop, #speed1, #prev-arrow, #next-arrow {
+	cursor: pointer;
+}
+
 #prevnext {
     background-color: #eef7e6;
     margin: 10px auto 20px auto;
