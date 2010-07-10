@@ -1246,7 +1246,7 @@ function wppa_edit_album() {
 function wppa_del_album($id, $move = '') {
 	global $wpdb;
 	
-	$wpdb->query('DELETE FROM `' . ALBUM_TABLE . '` WHERE `id` = %d LIMIT 1', $id);
+	$wpdb->query($wpdb->prepare('DELETE FROM `' . ALBUM_TABLE . '` WHERE `id` = %d LIMIT 1', $id));
 
 	if (empty($move)) { // will delete all the album's photos
 		$photos = $wpdb->get_results($wpdb->prepare('SELECT * FROM `' . PHOTO_TABLE . '` WHERE `album` = %d', $id), 'ARRAY_A');
