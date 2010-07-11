@@ -27,7 +27,7 @@ if (wppa_page('albums')) {
 			if (is_numeric($album['cover_linkpage']) && $album['cover_linkpage'] > 0) {
 				$page_data = get_page($album['cover_linkpage']);
 				if (!empty($page_data) && $page_data->post_status == 'publish') {
-					$href = get_page_link($album['cover_linkpage']) . $occ;
+					$href = get_page_link($album['cover_linkpage']); // . $occ;
 					$title = __('Link to', 'wppa');
 					$title .= ' ' . $page_data->post_title;
 				} else {
