@@ -104,12 +104,12 @@ function show_wppa_widget($args) {
 			break;
 		case 'name': 
 			if ($image && $image['name'] != '') {
-				$widget_content .= '<div class="wppa-widget-text">' . $image['name'] . '</div>';
+				$widget_content .= '<div class="wppa-widget-text">' . stripslashes($image['name']) . '</div>';
 			}
 			break;
 		case 'desc': 
 			if ($image && $image['description'] != '') {
-				$widget_content .= '<div class="wppa-widget-text">' . $image['description'] . '</div>'; 
+				$widget_content .= '<div class="wppa-widget-text">' . stripslashes($image['description']) . '</div>'; 
 			}
 			break;
 	}
