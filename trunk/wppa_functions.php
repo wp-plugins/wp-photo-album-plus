@@ -110,7 +110,7 @@ function wppa_album_name($id = '', $return = FALSE) {
         $id = $wpdb->escape($id);	
         if (is_numeric($id)) $name = $wpdb->get_var("SELECT name FROM " . ALBUM_TABLE . " WHERE id=$id");
     }
-	
+	$name = stripslashes($name);
 	if ($return) return $name; else echo $name;
 }
 
@@ -311,30 +311,30 @@ function wppa_get_youngest_album_name() {
 	global $wpdb;
 	
 	$result = $wpdb->get_var("SELECT name FROM " . ALBUM_TABLE . " ORDER BY id DESC LIMIT 1");
-	return $result;
+	return stripslashes($result);
 }
 
 // get album name
 function wppa_get_the_album_name() {
 	global $album;
 	
-	return $album['name'];
+	return stripslashes($album['name']);
 }
 
 function wppa_the_album_name($return = FALSE) {
 	global $album;
 	
-	if ($return) return $album['name']; else echo $album['name'];	
+	if ($return) return stripslashes($album['name']); else echo stripslashes($album['name']);	
 }
 
 // get album decription
 function wppa_get_the_album_desc() {
-	return $album['description'];
+	return stripslashes($album['description']);
 }
 function wppa_the_album_desc($return = FALSE) {
 	global $album;
 	
-	if ($return) return $album['description']; else echo $album['description'];	
+	if ($return) return stripslashes($album['description']); else echo stripslashes($album['description']);	
 }
 
 // get link to slideshow (in loop)
