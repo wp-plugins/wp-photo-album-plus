@@ -58,7 +58,7 @@ if (wppa_page('albums')) {
 					</div>
 				<?php } ?>
 				<h2 class="name">
-					<a href="<?php echo($href); ?>" title="<?php echo($title); ?>"><?php echo($album['name']); ?></a>
+					<a href="<?php echo($href); ?>" title="<?php echo($title); ?>"><?php echo(stripslashes($album['name'])); ?></a>
 				</h2>
 				<p class="description"><?php wppa_the_album_desc(); ?></p>
 				<div class="info">

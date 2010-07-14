@@ -78,7 +78,7 @@ if (isset($_GET['tab'])) {
 								<label ><?php _e('Name:', 'wppa'); ?></label>
 							</th>
 							<td>
-								<input type="text" name="wppa-name" id="wppa-name" style="width: 300px;" value="<?php echo($albuminfo['name']) ?>" />
+								<input type="text" name="wppa-name" id="wppa-name" style="width: 300px;" value="<?php echo(stripslashes($albuminfo['name'])) ?>" />
 								<span class="description"><br/><?php _e('Type the name of the album. Do not leave this empty.', 'wppa'); ?></span>
 							</td>
 						</tr>
@@ -87,7 +87,7 @@ if (isset($_GET['tab'])) {
 								<label ><?php _e('Description:', 'wppa'); ?></label>
 							</th>
 							<td>
-								<textarea rows="5" cols="40" name="wppa-desc" id="wppa-desc"><?php echo($albuminfo['description']) ?></textarea>
+								<textarea rows="5" cols="40" name="wppa-desc" id="wppa-desc"><?php echo(stripslashes($albuminfo['description'])) ?></textarea>
 								<span class="description"><br/><?php _e('Enter / modify the description for this album.', 'wppa'); ?></span>
 							</td>
 						</tr>
@@ -1035,8 +1035,8 @@ function wppa_admin_albums() {
 			
 			<?php foreach ($albums as $album) { ?>
 				<tr <?php echo($alt) ?>>
-					<td><?php echo($album['name']) ?></td>
-					<td><small><?php echo($album['description']) ?></small></td>
+					<td><?php echo(stripslashes($album['name'])) ?></td>
+					<td><small><?php echo(stripslashes($album['description'])) ?></small></td>
 					<td><?php echo($album['id']) ?></td>
 					<td><?php echo($album['a_order']) ?></td>
 					<td><?php wppa_album_name($album['a_parent']) ?></td>
@@ -1078,7 +1078,7 @@ function wppa_album_photos($id) {
 								<label for="<?php echo('photos[' . $photo['id'] . '][name]') ?>"><?php _e('Name:', 'wppa'); ?></label>
 							</th>
 							<td>
-								<input type="text" name="<?php echo('photos[' . $photo['id'] . '][name]') ?>" value="<?php echo($photo['name']) ?>" />
+								<input type="text" name="<?php echo('photos[' . $photo['id'] . '][name]') ?>" value="<?php echo(stripslashes($photo['name'])) ?>" />
 							</td>
 						</tr>
 						<tr valign="top">
@@ -1106,7 +1106,7 @@ function wppa_album_photos($id) {
 						</tr>
 					</table>
 					<input type="hidden" name="<?php echo('photos[' . $photo['id'] . '][id]') ?>" value="<?php echo($photo['id']) ?>" />
-					<div class="desc"><?php _e('Description:', 'wppa'); ?><br /><textarea cols="40" rows="4" name="photos[<?php echo($photo['id']) ?>][description]"><?php echo($photo['description']) ?></textarea></div>
+					<div class="desc"><?php _e('Description:', 'wppa'); ?><br /><textarea cols="40" rows="4" name="photos[<?php echo($photo['id']) ?>][description]"><?php echo(stripslashes($photo['description'])) ?></textarea></div>
 					<div class="clear"></div>
 				
 			</div>
@@ -1144,10 +1144,10 @@ function wppa_album_select($exc = '', $sel = '', $addnone = FALSE, $addseparate 
         } 
         else { $selected = ''; }
 		if ($album['id'] != $exc && (!$checkancestors || !wppa_is_ancestor($exc, $album['id']))) {
-			$result .= '<option value="' . $album['id'] . '"' . $selected . '>' . $album['name'] . '</option>';
+			$result .= '<option value="' . $album['id'] . '"' . $selected . '>' . stripslashes($album['name']) . '</option>';
 		}
 		else {
-			$result .= '<option disabled="disabled" value="-3">' . $album['name'] . '</option>';
+			$result .= '<option disabled="disabled" value="-3">' . stripslashes($album['name']) . '</option>';
 		}
 	}
     
