@@ -37,7 +37,7 @@ register_activation_hook( __FILE__, 'wppa_setup' );
 function wppa_setup() {
 	global $wpdb;
 	
-	if (get_option('wppa_revision', '100') < '190') {
+	if (get_option('wppa_revision', '100') <= '191') {
 		
 	$create_albums = "CREATE TABLE " . ALBUM_TABLE . " (
                     id bigint(20) NOT NULL auto_increment, 
@@ -75,7 +75,7 @@ function wppa_setup() {
 	if (get_option('wppa_use_cover_opacity', 'nil') =='nil') update_option('wppa_use_cover_opacity', 'no');
 	if (!is_numeric(get_option('wppa_cover_opacity', 'nil'))) update_option('wppa_cover_opacity', '60');
 	
-	update_option('wppa_revision', '190');
+	update_option('wppa_revision', '191');
 	}
 }
 
