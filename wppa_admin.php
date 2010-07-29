@@ -1171,7 +1171,7 @@ function wppa_add_album() {
 	$porder = (is_numeric($_POST['wppa-photo-order-by']) ? $_POST['wppa-photo-order-by'] : 0);
 
 	if (!empty($name)) {
-		$query = $wpdb->prepare('INSERT INTO `' . ALBUM_TABLE . '` (`id`, `name`, `description`, `a_order`, `a_parent`, `p_order_by`) VALUES (0, %s, %s, %d, %d, %d)', $name, $desc, $order, $parent, $porder);
+		$query = $wpdb->prepare('INSERT INTO `' . ALBUM_TABLE . '` (`id`, `name`, `description`, `a_order`, `a_parent`, `p_order_by`, `main_photo`, `cover_linkpage`) VALUES (0, %s, %s, %d, %d, %d, %d, %d)', $name, $desc, $order, $parent, $porder, 0, 0);
 		$iret = $wpdb->query($query);
         if ($iret === FALSE) wppa_error_message(__('Could not create album.', 'wppa'));
 		else {
@@ -1325,7 +1325,7 @@ function wppa_upload_photos() {
 				}
 				$ext = substr(strrchr($file['name'], "."), 1);
 			
-				$query = $wpdb->prepare('INSERT INTO `' . PHOTO_TABLE . '` (`id`, `album`, `ext`, `name`, `description`) VALUES (0, %d, %s, %s, \'\')', $_POST['wppa-album'], $ext, $file['name']);
+				$query = $wpdb->prepare('INSERT INTO `' . PHOTO_TABLE . '` (`id`, `album`, `ext`, `name`, `p_order`, `description`) VALUES (0, %d, %s, %s, 0, \'\')', $_POST['wppa-album'], $ext, $file['name']);
 				$wpdb->query($query);
 
 				$image_id = $wpdb->get_var("SELECT LAST_INSERT_ID()");
