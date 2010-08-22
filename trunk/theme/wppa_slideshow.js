@@ -196,7 +196,7 @@ function wppa_popup(elm, id, occ) {
 	var puA;
 	var puImg;
 	// Stop if still running
-	if (wppa_last_occ > 0) {
+	if (wppa_last_occ == occ) {
 		clearTimeout(wppa_timer);	// due to callback bug, see below
 		jQuery('#wppa-popup-'+wppa_last_occ).stop(true,true);
 		jQuery('#wppa-img-'+wppa_last_occ).stop(true,true);
@@ -239,8 +239,7 @@ function wppa_popdown(elm, occ) {	//	return; //debug
 	jQuery('#wppa-popup-'+occ).stop().animate({"marginLeft":leftDivSmall+"px","marginTop":topDivSmall+"px"}, 300); //, 'linear', wppa_popaway());
 	jQuery('#wppa-img-'+occ).stop().animate({"width":widthImgSmall+"px","height":heightImgSmall+"px"}, 300);
 	
-//	wppa_timer = 
-	setTimeout('wppa_popaway('+occ+')', 500);
+	wppa_timer = setTimeout('wppa_popaway('+occ+')', 300);
 }
 function wppa_popaway(occ) {
 	// This function is called unfortunately directly, not after completion of the animation i.e. 300 ms as documented in the jquery docs
