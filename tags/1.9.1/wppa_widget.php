@@ -3,13 +3,13 @@
 * Package: wp-photo-album-plus
 *
 * display the widget
-* Version 2.0.0
+* Version 1.9.1
 */
 
 add_action('plugins_loaded', 'init_wppa_widget');
 
 function init_wppa_widget() {
-	wp_register_sidebar_widget('wppa-widget', 'Photo Album Widget', 'show_wppa_widget');
+	register_sidebar_widget('Photo Album Widget', 'show_wppa_widget');
 }
 
 function show_wppa_widget($args) {

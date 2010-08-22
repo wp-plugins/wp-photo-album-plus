@@ -3,7 +3,6 @@
 * Pachkage: wp-photo-album-plus
 *
 * get the albums via filter
-* version 2.0.0
 */
 
 add_action('init', 'wppa_do_filter');
@@ -16,7 +15,6 @@ function wppa_albums_filter($post) {
 	$post_old = $post;
 	$post_new = '';
 	$occur = '0';
-	$iscover = '0';
 	
 	if (substr_count($post, '%%wppa%%') > 0) {
 		$wppa_pos = strpos($post_old, '%%wppa%%');
