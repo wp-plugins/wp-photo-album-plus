@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, gallery, slideshow, sidebar widget, photo widget, phtoblog
-Version: 1.9.1
+Version: 2.0.0
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -36,10 +36,17 @@ You can find the plugin admin section under Menu Photo Albums on the admin scree
 * Upload photos: To upload photos to an album you created.
 * Settings: To control the various settings to customize your needs.
 * Sidebar Widget: To specify the behaviour for an optional sidebar widget.
-* Help & Info: The screen you are watching now **And much more**
+* Help & Info: Much information about how to...
 
 == Installation ==
 
+= Upgrade notice =
+If you are upgrading from a previous version, note that:
+* If you modified wppa_theme.php, you will have to use the newly supplied version. The previous version is NOT compatible.
+* If you set the userlevel to anything else than 'administrator' you may have to set it again. Note that changing the userlevel can be done by the administrator only!
+* You will have to activate the sidebar widget again.
+
+= Standard installation when not from the wp plugins page =
 * Unzip and upload the wppa plugin folder to wp-content/plugins/
 * Make sure that the folder wp-content/uploads/ exists and is writable by the server (CHMOD 755)
 * Activate the plugin in WP Admin -> Plugins.
@@ -121,6 +128,40 @@ After modification:
 
 == Changelog ==
 
+= 2.0.0 =
+= New Features =
+= Important notice if you changed wppa_theme.php: You will need to use the new wppa_theme.php and modify as desired. =
+* You can now decide to allow HTML in album and photo descriptions. This is intented for links and linebreaks.
+* You can now use fading effects in the slideshow and browse full size images.
+* You can select an alternative way to display thumbnails. They will appear like album covers.
+
+= Bug Fixes =
+* Fix for "Unable to create album" for some server configurations.
+* Fix for intermittant too large coverphoto when coverphoto random and both landscape and portrait images in album.
+
+= Enhancements =
+* Changed some CSS and defaults to get seemless integration with theme TwentyTen.
+* Various security, performance and cosmetic enhancements.
+* Uses role/capabilities rather than userlevel.
+* French language support added.
+
+= Known issues =
+* There is a conflict with the plugin called "n3rdskwat-mp3player", it destroys the slideshow javascript data.
+* Althoug I tested it and could not reproduce it, some users report a conflict with the theme called "Thesis" revision 7. It displays the albums prior to the main body (in a deviant format) as well as inside the body.
+Same with "Coral" and "Montezuma".
+* Althoug I tested it and could not reproduce it, some users report that the theme TwentyTen 1.0 (by the Wordpress team) as well as the theme Thesis should screws up the form security in this plugin in a way that nobody is allowed to save any changes.
+There is a workaround available by copying the file wppa_no_nonce.txt from the plugins theme directory to the users theme directory. Warning: This will affect form scurity.
+* There are layout issues for thumbnails and thumbnail popups in IE6 and IE7.
+* When activating the plugin, you may see the warning message: "The plugin generated 255 characters of unexpected output during activation. (etc)".
+This message seems to be a WP issue rather than a wppa issue and can be ignored.
+
+= Pending enhancement requests =
+* The ability to SELECT multiple files to upload. Currently selection must be done one by one, upload can be done in batches of up to 15 files.
+* Additional animation effects in slideshows and browse full-size images.
+* Implementation of direct slideshow. I.e. `%%slide=nn%%` like `%%album=nn%%` and `%%cover=nn%%`
+* The ability to give upload rights to selected roles/users.
+* The ability to use a single photo in a post or page, just like the normal media.
+
 = 1.9.1 =
 = New Features =
 * You can now add mouseover effect to coverphotos and thumbnail images.
@@ -132,10 +173,6 @@ Fix for Warning: URL file-access is disabled in the server configuration in ../w
 * Security enhancement for the sidebar widget.
 * Improved documentation of wppa_style.css.
 * Improved error/warning reporting.
-
-= Known issues =
-* There seems to be a conflict with the plugin called "n3rdskwat-mp3player".
-* There seems to be a conflict with the theme called "Thesis" revision 7.
 
 = 1.9 =
 * IF YOU COPIED/MODIFIED WPPA_THEME.PHP AND WPPA_STYLE.CSS Please study the files that come with this version and review your modifications!

@@ -3,41 +3,26 @@
 /* The copy in your theme's directory has precedense over the original version in wp-photo-album-pls/theme
 /* This assures that your version is not overwritten after an upgrade of the plugin.
 /* You may always look into a newer version of this file to see what new classes and id's come with an upgrade
+*/
 
-/* Wrapper for albums */
-#albumlist div {
-    padding: 10px 10px 10px 10px;
-    margin-bottom: 15px;
+/* breadcrumb */
+.backlink {
+	clear: both;
 }
-#albumlist div div {
-	padding: 0;
-	margin-bottom: 0;
-}
-#albumlist .alt, #albumlist .alt div {
+
+/* Wrapper for albums, and thumbnails when display is like albums */
+.albumlist, .thumblist {
+	clear: both;
+} 
+.albumlist .alt, .albumlist .alt div, .thumbnail_area_alt, .thumblist .alt, .thumblist .alt  div {
     background-color: #d5eabf;
 }
-#albumlist .even, #albumlist .even div {
+.albumlist .even, .albumlist .even div, .thumbnail_area_even , .thumblist .even, .thumblist .even div {
     background-color: #e6f2d9;
 }
-#albumlist a img {
-	/* background-color: #333333; */
-	border: 1px solid #bbdd99;
-	padding: 4px;
-	margin: 0;
-	float: right;
-	-moz-border-radius: 3px;
-	-khtml-border-radius: 3px;
-	-webkit-border-radius: 3px;
-	border-radius: 3px;
-}
-#albumlist div #clear {
-    clear: both;
-    margin: 0;
-    padding: 0;
-}
 
-/* Wrapper for album */
-.album {
+/* Wrapper for album etc */
+.albumlist .album, .thumblist .thumb {
 	margin: 7px 0;
 	padding: 7px;
 	border: 1px #bbdd99 solid;
@@ -48,48 +33,84 @@
 }
 
 /* Album name */
-.album h2.name {
+.album h2.name, .thumb h2.name {
 	font-size: 1.2em;
 	font-weight: bold;
 	margin: 0;
 	padding: 0;
+	clear: none;
 }
 
 /* Description of album */
-.description {
+.album .description {
     min-height: 45px;
+	margin-bottom: 16px;
 }
 
 /* Wrapper for coverphoto background */
-#coverphoto_frame {
+.coverphoto_frame, .thumbphoto_frame {
 }
 
 /* Coverphoto */
-#coverphoto_frame .image { /* .album .image { */
-	float: right; 
-	margin-left: 5px;
+.coverphoto_frame a .image, .thumbphoto_frame a .image { 
+	position: relative;
+	float: right; 		/* Change this to float: left; if you want the coverphoto left */
+	margin-left: 5px;	/* and this to margin-right: 5px; */
 	background-color: #eef7e6;
+	border: 1px #bbdd99 solid;
+	padding: 4px;
+	-moz-border-radius: 3px;
+	-khtml-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+}
+
+/* Wrapper for thumbnail area */
+.thumbnail_area {
+	margin: 7px 0; 
+	padding: 7px;
+	border: 1px #bbdd99 solid;
+    -moz-border-radius: 6px;
+	-khtml-border-radius: 6px;
+	-webkit-border-radius: 6px;
+	border-radius: 6px;
+	position: relative;
 }
 
 /* Wrapper for thumbnail background */
-#thumbnail_frame {
+.thumbnail_frame {
 	height: 100px;	/* Increase this value if you changed the thumbnail size and experience that rows of thumbnails overlap */
+	width: 100px;	/* You may want to change this also */
 	float: left;
-	}
-	
-#thumbswide {
-	text-align: left;	
-    width: 750px;
-}
-
-#thumbsnarrow {
-    text-align: left;
-    width: 450px;	/* Change or remove this value if the row of thumnail images is too short or too long */
-}
-
-.thumbs img {
 	margin: 2px;
-	padding: 0px;
+	background-color: transparent;
+}
+
+.thumbs {
+	position: relative;
+}
+.thumbs img {
+	margin: 0;
+	padding: 0;
+}
+
+/* The popup small image */
+.wppa-popup {
+	position: absolute;
+}
+#wppa-a {
+}
+.wppa-popup .wppa-img {
+	padding: 4px;
+	border-left: 1px solid #ccc;
+	border-top: 1px solid #ccc;
+	border-right: 1px solid #888;
+	border-bottom: 1px solid #888;
+	background-color: white; /*#eef7e6; */
+/*	-moz-border-radius: 3px;
+	-khtml-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border-radius: 3px; */
 }
 
 /* Full size photo */
@@ -101,6 +122,39 @@
 #imagedesc {
     text-align: center;
     font-size: 1.4em;
+}
+
+/* Slideshow */
+#slide_frame {
+	width: 100%;
+}
+
+.wideentry #slide_frame {
+	padding: 0;
+	background-color: #eef7e6; 
+}
+
+#theslide0, #theslide1 {
+	position: absolute;
+/*	margin: 0 auto; */
+	background-color: transparent;
+}
+
+.theslide {
+}
+
+#theimg0, #theimg1 {
+	display: block;
+}
+
+.theimg {
+}
+
+#spinner {
+	width: 16px;
+	height: 16px;
+	position: relative;
+	background-color: transparent;
 }
 
 /* Photo name in breadcrumb */
@@ -140,6 +194,7 @@
     top: 250px;
     font-size: 3.0em;
 	line-height: 1em;
+	z-index: 1000;
 }
 
 #prev-arrow a:link, #next-arrow a:link { border-style: none; }

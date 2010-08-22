@@ -1,7 +1,12 @@
 /* admin_scripts.js */
-/*	
-/* Various js routines used in admin pages		
+/* Package: wp-photo-album-plus
 /*
+/* Version 2.0.0
+/* Various js routines used in admin pages		
+*/
+
+jQuery(document).ready(function(){jQuery(".fade").fadeTo(10000, 0.1)});
+
 /* Adjust visibility of selection radiobutton if fixed photo is chosen or not */				
 function wppaCheckWidgetMethod() {
 	var ph;
