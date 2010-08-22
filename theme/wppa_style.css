@@ -1,3 +1,42 @@
+/* This is the standard wppa_style.css file. See http://www.opajaap.nl/ where it is used
+/* It you want to modify the layout make a copy of this file and place it in your theme's directory
+/* The copy in your theme's directory has precedense over the original version in wp-photo-album-pls/theme
+/* This assures that your version is not overwritten after an upgrade of the plugin.
+/* You may always look into a newer version of this file to see what new classes and id's come with an upgrade
+
+/* Wrapper for albums */
+#albumlist div {
+    padding: 10px 10px 10px 10px;
+    margin-bottom: 15px;
+}
+#albumlist div div {
+	padding: 0;
+	margin-bottom: 0;
+}
+#albumlist .alt, #albumlist .alt div {
+    background-color: #d5eabf;
+}
+#albumlist .even, #albumlist .even div {
+    background-color: #e6f2d9;
+}
+#albumlist a img {
+	/* background-color: #333333; */
+	border: 1px solid #bbdd99;
+	padding: 4px;
+	margin: 0;
+	float: right;
+	-moz-border-radius: 3px;
+	-khtml-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+}
+#albumlist div #clear {
+    clear: both;
+    margin: 0;
+    padding: 0;
+}
+
+/* Wrapper for album */
 .album {
 	margin: 7px 0;
 	padding: 7px;
@@ -8,11 +47,7 @@
 	border-radius: 6px;
 }
 
-.album .image {
-	float: right; 
-	margin-left: 5px;
-}
-
+/* Album name */
 .album h2.name {
 	font-size: 1.2em;
 	font-weight: bold;
@@ -20,16 +55,28 @@
 	padding: 0;
 }
 
-#albumlist div #clear {
-    clear: both;
-    margin: 0;
-    padding: 0;
+/* Description of album */
+.description {
+    min-height: 45px;
 }
 
-.clear { 
-    clear: both; 
+/* Wrapper for coverphoto background */
+#coverphoto_frame {
 }
 
+/* Coverphoto */
+#coverphoto_frame .image { /* .album .image { */
+	float: right; 
+	margin-left: 5px;
+	background-color: #eef7e6;
+}
+
+/* Wrapper for thumbnail background */
+#thumbnail_frame {
+	height: 100px;	/* Increase this value if you changed the thumbnail size and experience that rows of thumbnails overlap */
+	float: left;
+	}
+	
 #thumbswide {
 	text-align: left;	
     width: 750px;
@@ -37,51 +84,33 @@
 
 #thumbsnarrow {
     text-align: left;
-    width: 450px;
-}
-
-.wppa-widget {
-padding: 5px 0 0 5px;
-}
-
-.description {
-    height: 38px;
+    width: 450px;	/* Change or remove this value if the row of thumnail images is too short or too long */
 }
 
 .thumbs img {
-	margin: 3px;
+	margin: 2px;
 	padding: 0px;
-	border: 2px solid #bbdd99;
 }
 
+/* Full size photo */
 #imagetitle {
     text-align: center;
-    font-size: 1.4em;
+    font-size: 1em;
 }
     
 #imagedesc {
     text-align: center;
     font-size: 1.4em;
 }
-    
-    
-#albumlist div {
-    padding: 10px 10px 10px 10px;
-    margin-bottom: 15px;
-}
-    
-#albumlist .alt, #albumlist .alt div {
-    background-color: #d5eabf;
+
+/* Photo name in breadcrumb */
+#bc-pname {
+	font-weight: normal;
+	color: inherit;
+	text-decoration: none;
 }
 
-#albumlist .even, #albumlist .even div {
-    background-color: #e6f2d9;
-}
-
-#albumlist a img {
-	border: 2px solid #bbdd99; 
-}
-
+/* Navigation */
 .prev {
 	float: left;
     text-align: left;
@@ -92,27 +121,50 @@ padding: 5px 0 0 5px;
     text-align: right;
 }
 
+#speed0, #startstop, #speed1, #prev-arrow, #next-arrow {
+	cursor: pointer;
+}
+
 #prevnext {
     background-color: #eef7e6;
     margin: 10px auto 20px auto;
     padding: 0;
-/*    width: 490px; */
 }
     
 #prev-arrow, #next-arrow {
-    background-color: #eef7e6;
+	background-color: transparent;	
     margin: 0 -20px;
     padding: 0;
     width: 40px;
     position: relative;
     top: 250px;
-    font-size: 4.0em;
+    font-size: 3.0em;
+	line-height: 1em;
 }
 
 #prev-arrow a:link, #next-arrow a:link { border-style: none; }
 #prev-arrow a:visited, #next-arrow a:visited { border-style: none; }
 #prev-arrow a:hover, #next-arrow a:hover { text-decoration: none; }
 #prev-arrow a:active, #next-arrow a:active { border-style: none; }
-#prev-arrow { text-align: left; }
-#next-arrow { text-align: right; }
+#prev-arrow { text-align: left; float: left; }
+#next-arrow { text-align: right; float: right; }
 
+/* Sidebar widget */
+.wppa-widget {
+padding: 5px 0 0 5px;
+}
+
+.wppa-widget-text {
+margin: 5px;
+text-align: center;
+}
+
+/* General purpose classes */
+.big {
+display: block;
+margin: 0 auto;
+}
+
+.clear { 
+    clear: both; 
+}

@@ -1,13 +1,13 @@
 === WP Photo Album Plus ===
 Contributors: opajaap
-Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD
+Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, gallery, slideshow, sidebar widget, photo widget, phtoblog
-Version: 1.8
+Version: 1.9.1
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
-Requires at least: 2.1
-Tested up to: 2.9.1
+Requires at least: 2.8
+Tested up to: 3.0
 
 This plugin is designed to easily manage and display your photo albums and slideshows within your WordPress site. 
 
@@ -36,15 +36,31 @@ You can find the plugin admin section under Menu Photo Albums on the admin scree
 * Upload photos: To upload photos to an album you created.
 * Settings: To control the various settings to customize your needs.
 * Sidebar Widget: To specify the behaviour for an optional sidebar widget.
-* Help & Info: The screen you are watching now.
+* Help & Info: The screen you are watching now **And much more**
 
 == Installation ==
 
 * Unzip and upload the wppa plugin folder to wp-content/plugins/
 * Make sure that the folder wp-content/uploads/ exists and is writable by the server (CHMOD 755)
 * Activate the plugin in WP Admin -> Plugins.
+* If, after installation, you are unable to upload photos, check the existance and rights (CHMOD 755)
+of the folders wp-content/uploads/wppa/ and wp-content/uploads/wppa/thumbs/. 
+In rare cases you will need to create them manually.
+* If you upgraded from WP Photo Album (without plus) and you had copied wppa_theme.php and/or wppa_style.css 
+to your theme directory, you must remove them or replace them with the newly supplied versions.
+This might also be the case after an update to a newer version to take advantage of all new features.
 
 == Frequently Asked Questions ==
+
+= How can i translate the plugin into my language? =
+
+* Find on internet the free program POEDIT, and learn how it works.
+* Use the file wppa.pot that is located in wp-photo-album-plus/langs to create or update
+wppa-[your languagecode].po and wppa-[your languagecode].mo.
+* Place these file in the langs subdir.
+* If everything is ok, mail me the files and i will distribute them so other users can use it too.
+* For more information on POT files, domains, gettext and i18n have a look at the I18n for 
+WordPress developers Codex page and more specifically at the section about themes and plugins.
 
 = Do i have to upload my photos again? =
 
@@ -64,7 +80,142 @@ but remember: **You can not run both versions at the same time.**
 You will see the sub albums you created appear as normal albums.
 The sort order information will have no longer effect.
 
+= How can i implement auto scroll back when browsing full scale images? =
+
+This topic is obsolete as per version 1.8.4
+
+Find the php file in your theme's directory where the `<body >` tag is defined.
+In the default theme this is header.php.
+Just before this line insert the following code:
+
+`
+<?php
+	if (isset($_GET['scrollx'])) $X = $_GET['scrollx']; else $X = 0;
+	if (isset($_GET['scrolly'])) $Y = $_GET['scrolly']; else $Y = 0;
+?>
+`
+
+add the 'onload' event attribute of the body-tag to read:
+
+`onload="window.scrollTo(<?php echo($X . ', ' . $Y) ?>)"`
+
+if there is already an 'onload' attribute, modify it like:
+
+`onload="window.scrollTo(<?php echo($X . ', ' . $Y) ?>); yourfunction()"`
+
+Complete example:
+
+Before modification:
+`
+<body <?php body_class(); ?> onload="startheader()" onunload="stopheader()">
+`
+After modification:
+`
+<?php
+	if (isset($_GET['scrollx'])) $X = $_GET['scrollx']; else $X = 0;
+	if (isset($_GET['scrolly'])) $Y = $_GET['scrolly']; else $Y = 0;
+?>
+<body <?php body_class(); ?> onload="window.scrollTo(<?php echo($X . ', ' . $Y) ?>); startheader()" onunload="stopheader()">
+`
+
+
 == Changelog ==
+
+= 1.9.1 =
+= New Features =
+* You can now add mouseover effect to coverphotos and thumbnail images.
+
+= Bug Fixes =
+Fix for Warning: URL file-access is disabled in the server configuration in ../wp-content/plugins/wp-photo-album-plus/wppa_functions.php on line 612
+
+= Enhancements =
+* Security enhancement for the sidebar widget.
+* Improved documentation of wppa_style.css.
+* Improved error/warning reporting.
+
+= Known issues =
+* There seems to be a conflict with the plugin called "n3rdskwat-mp3player".
+* There seems to be a conflict with the theme called "Thesis" revision 7.
+
+= 1.9 =
+* IF YOU COPIED/MODIFIED WPPA_THEME.PHP AND WPPA_STYLE.CSS Please study the files that come with this version and review your modifications!
+* You can now have multiple sequences of `%%wppa.. %%cover.. %%size=..` tags.
+You need no longer put the tags on one line, all information inside a tag sequence will be removed. Between the tag sequenses as well as before the first and after the last there may be content that will be displayed.
+You can also call the album more then once in a page template.
+
+Example#1 text in Post or Page:
+
+`
+	Text Before
+	%%wppa%%
+	%%cover=10%%
+	%%size=150%%
+	Text Between 1
+	%%wppa%%
+	%%album=19%%
+	%%size=350%%
+	Text Between 2
+	%%wppa%%
+	%%cover=1%%
+	Text After	
+`
+
+Example#2 php code in page template:
+
+`
+<?php 
+	if (function_exists('wppa_albums')) {
+	echo('Text Before<br />');
+	wppa_albums(10, 'cover', 150);
+	echo('<br />Text Between 1<br />');
+	wppa_albums(19, 'album', 350); 
+	echo('<br />Text Between 2<br />');
+	wppa_albums(1, 'cover');
+	echo('<br />Text After<br />');
+	} 
+	else echo('Photo software currently unavailable, sorry'); 
+?>
+`
+
+As nothing in life is permanent, this enhancement revokes the previously announced permanent restriction of having only one occurence of an album or cover in a page or post.
+
+= More in 1.9 =
+* You can now have different sizes for thumbnail images and cover photos. The regeneration of thumbnails now only occurs when the largest of the two enters a diffrent range of 25 pixels.
+* Fix for sizing problem in IE6 by removing max-width and max-height from the style attributes.
+* Fixed rounding error in calculating thumbnail size. This may result in new thumbnails being one pixel larger. Regeneration of thumbnails will overcome this.
+* The 'Enlarge fullsize photos' switch in the admin settings page now functions as expected.
+* Various small fixes.
+* Added wrappers for coverphoto and thumbnails.
+* You can now align thumbnails at top, center or bottom.
+* Split up the code in functional pieces.
+* Added functions: wppa_get_total_album_count(), wppa_get_youngest_album_id() and wppa_get_youngest_album_name() that are simple but not yet documented. For more info see the sourcecode: wppa_functions.php
+
+= 1.8.5 =
+* This is an intermediate version that never was released.
+
+= 1.8.4 =
+* Browsing photos and the slideshow are merged. You can now easily switch between them. This also fixes the scrolling issue.
+* Fix to prevent loading stylesheet more than once.
+* Fixed an HTML error where photo description or name contained newline characters.
+* Added optional parameters to wppa_get_albums() to make its use more flexible. See: tags.txt.
+* Improved security of wppa_get_albums()
+
+= 1.8.3 =
+* You can now link a album title and coverphoto to a WP page as opposed to the album's content. The album's content will still be reacheable by the View- and Slideshow links.
+* You can now decide not to include a homelink in the breadcrumb navigation.
+* Fixed some incomplete / erroneous links.
+* While browsing full size images, the double arrow brackets will now have a transparent background.
+* Minor fixes and improved error handling.
+* There is now a way to automatically scroll back to the desired position when browsing full scale images. For more info: See the section Frequently asked questions.
+If you made a copy of wppa_theme.php or wppa_style.css into your theme directory and you want to make full use of the new improvements, please redo your modifications (if still needed) using a fresh copy of the original files.
+
+= 1.8.2 =
+* You can now configure a link to a page from the sidebar widget photo.
+* The widget will now display the correct subtitle in all cases.
+* Security issue: Silence is golden index.php added to all directories.
+
+= 1.8.1 =
+* Fixed a fatal error after regeneration of thumbnails
 
 = 1.8 =
 * An optional Sidebar Widget has been added.
