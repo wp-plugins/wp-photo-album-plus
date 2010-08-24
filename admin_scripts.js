@@ -69,4 +69,37 @@ function wppaCheckWidgetSubtitle() {
 	}
 }
 
+/* Enables or disables popup thumbnail settings according to availability */
+function wppaCheckTt() {
+	var ttype = document.getElementById('wppa-thumbtype').value;
+	if (ttype == 'default') {
+		document.getElementById('wppa-utp').style.visibility = "visible";
+	}
+	if (ttype == 'ascovers') {
+		document.getElementById('wppa-utp').style.visibility = "collapse";
+	}
+}
+
+/* Enables or disables thumb opacity dependant on whether feature is selected */
+function wppaCheckUto() {
+	var topac = document.getElementById('wppa-use-thumb-opacity').checked;
+	if (topac) {
+		document.getElementById('wppa-to').style.visibility = "visible";
+	}
+	else {
+		document.getElementById('wppa-to').style.visibility = "collapse";
+	}
+}
+
+/* Enables or disables coverphoto opacity dependant on whether feature is selected */
+function wppaCheckUco() {
+	var copac = document.getElementById('wppa-use-cover-opacity').checked;
+	if (copac) {
+		document.getElementById('wppa-co').style.visibility = "visible";
+	}
+	else {
+		document.getElementById('wppa-co').style.visibility = "collapse";
+	}
+}
+
 /**/
