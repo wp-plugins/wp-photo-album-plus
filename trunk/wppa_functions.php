@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions and API modules
-* Version 2.0.0
+* Version 2.0.1
 */
 
 /* TEMPLATE FUNCTIONS (TAGS) */
@@ -747,8 +747,10 @@ global $wppa_occur;
 		}
 	}
 	elseif ($type == 'cover') {
-		if (get_option('wppa_use_cover_opacity', 'no') == 'yes') $perc = get_option('wppa_cover_opacity', '80');
-		$result = ' onmouseover="jQuery(this).fadeTo(400, 1.0)" onmouseout="jQuery(this).fadeTo(400, ' . $perc/100 . ')" ';
+		if (get_option('wppa_use_cover_opacity', 'no') == 'yes') {
+			$perc = get_option('wppa_cover_opacity', '80');
+			$result = ' onmouseover="jQuery(this).fadeTo(400, 1.0)" onmouseout="jQuery(this).fadeTo(400, ' . $perc/100 . ')" ';
+		}
 	}		
 	return $result;
 }

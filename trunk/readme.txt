@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, gallery, slideshow, sidebar widget, photo widget, phtoblog
-Version: 2.0.0
+Version: 2.0.1
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -127,6 +127,34 @@ After modification:
 
 
 == Changelog ==
+
+= 2.0.1 =
+= New Features =
+
+= Bug fixes =
+* When mouseover effect on coverphotos was switched off, the photo disappears after mouseover. Fixed.
+
+= Enhancements =
+* Japanese language support added.
+* Options that do not have effect are now hidden in the settings screen.
+
+= Known issues =
+* There is a conflict with the plugin called "n3rdskwat-mp3player", it destroys the slideshow javascript data.
+* Althoug I tested it and could not reproduce it, some users report a conflict with the theme called "Thesis" revision 7. It displays the albums prior to the main body (in a deviant format) as well as inside the body.
+Same with "Coral" and "Montezuma".
+* Althoug I tested it and could not reproduce it, some users report that the theme TwentyTen 1.0 (by the Wordpress team) as well as the theme Thesis should screws up the form security in this plugin in a way that nobody is allowed to save any changes.
+There is a workaround available by copying the file wppa_no_nonce.txt from the plugins theme directory to the users theme directory. Warning: This will affect form scurity.
+* There are layout issues for thumbnails and thumbnail popups in IE6 and IE7.
+* When activating the plugin, you may see the warning message: "The plugin generated 255 characters of unexpected output during activation. (etc)".
+This message seems to be a WP issue rather than a wppa issue and can be ignored.
+
+= Pending enhancement requests =
+* The ability to SELECT multiple files to upload. Currently selection must be done one by one, upload can be done in batches of up to 15 files.
+* Additional animation effects in slideshows and browse full-size images.
+* Implementation of direct slideshow. I.e. `%%slide=nn%%` like `%%album=nn%%` and `%%cover=nn%%`
+* The ability to give upload rights to selected roles/users.
+* The ability to use a single photo in a post or page, just like the normal media.
+* Turkish character support.
 
 = 2.0.0 =
 = New Features =

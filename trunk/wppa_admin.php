@@ -594,7 +594,7 @@ function wppa_page_options() {
 						</th>
 						<td>
 							<?php $thumbtype = get_option('wppa_thumbtype', 'default'); ?>
-							<select name="wppa-thumbtype">
+							<select name="wppa-thumbtype" id="wppa-thumbtype" onchange="wppaCheckTt()" >
 								<option value="default" <?php if ($thumbtype == 'default') echo(' selected '); ?>><?php _e('--- default ---', 'wppa'); ?></option>
 								<option value="ascovers" <?php if ($thumbtype == 'ascovers') echo(' selected '); ?>><?php _e('like album covers', 'wppa'); ?></option>
 							</select>
@@ -621,11 +621,11 @@ function wppa_page_options() {
 							<label><?php _e('Apply mouseover effect:', 'wppa'); ?></label>
 						</th>
 						<td>
-							<input type="checkbox" name="wppa-use-thumb-opacity" id="wppa-use-thumb-opacity" <?php if (get_option('wppa_use_thumb_opacity', 'no') == 'yes') echo('checked="checked"') ?> />
+							<input type="checkbox" name="wppa-use-thumb-opacity" id="wppa-use-thumb-opacity" onchange="wppaCheckUto()"<?php if (get_option('wppa_use_thumb_opacity', 'no') == 'yes') echo('checked="checked"') ?> />
 							<span class="description"><br/><?php _e('Use mouseover effect on thumbnail images.', 'wppa') ?></span>
 						</td>
 					</tr>
-					<tr valign="top">
+					<tr valign="top" id="wppa-to">
 						<th scope="row">
 							<label><?php _e('Opacity value:', 'wppa'); ?></label>
 						</th>
@@ -634,7 +634,8 @@ function wppa_page_options() {
 							<span class="description"><br/><?php _e('Percentage of opacity. 100% is opaque, 0% is transparant', 'wppa') ?></span>
 						</td>
 					</tr>
-					<tr valign="top">
+					<script type="text/javascript">wppaCheckUto();</script>
+					<tr valign="top" id="wppa-utp">
 						<th scope="row">
 							<label><?php _e('Apply popup effect:', 'wppa'); ?></label>
 						</th>
@@ -643,6 +644,7 @@ function wppa_page_options() {
 							<span class="description"><br/><?php _e('Use popup effect on thumbnail images.', 'wppa') ?></span>
 						</td>
 					</tr>
+					<script type="text/javascript">wppaCheckTt();</script>
 					<tr><th><hr/></th><td><hr/></td></tr>
 					<tr><th><small><?php _e('Album covers:', 'wppa'); ?></small></th></tr>
 					<tr valign="top">
@@ -659,11 +661,11 @@ function wppa_page_options() {
 							<label><?php _e('Apply mouseover effect:', 'wppa'); ?></label>
 						</th>
 						<td>
-							<input type="checkbox" name="wppa-use-cover-opacity" id="wppa-use-cover-opacity" <?php if (get_option('wppa_use_cover_opacity', 'no') == 'yes') echo('checked="checked"') ?> />
+							<input type="checkbox" name="wppa-use-cover-opacity" id="wppa-use-cover-opacity" onchange="wppaCheckUco()" <?php if (get_option('wppa_use_cover_opacity', 'no') == 'yes') echo('checked="checked"') ?> />
 							<span class="description"><br/><?php _e('Use mouseover effect on cover images.', 'wppa') ?></span>
 						</td>
 					</tr>
-					<tr valign="top">
+					<tr valign="top" id="wppa-co">
 						<th scope="row">
 							<label><?php _e('Opacity value:', 'wppa'); ?></label>
 						</th>
@@ -672,6 +674,7 @@ function wppa_page_options() {
 							<span class="description"><br/><?php _e('Percentage of opacity. 100% is opaque, 0% is transparant', 'wppa') ?></span>
 						</td>
 					</tr>							
+					<script type="text/javascript">wppaCheckUco();</script>
 					<tr><th><hr/></th><td><hr/></td></tr>
 					<tr><th><small><?php _e('Order settings:', 'wppa'); ?></small></th></tr>
 					<tr valign="top">
