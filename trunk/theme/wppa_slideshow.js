@@ -1,5 +1,5 @@
 ﻿// Slide show variables and functions
-// This is wppa_slideshow.js version 2.0.0
+// This is wppa_slideshow.js version 2.0.1
 //
 
 var wppa_slides = new Array();
@@ -20,7 +20,7 @@ var wppa_first = true;
 var wppa_last_occ = 0;
     
 function wppa_store_slideinfo(id, url, size, name, desc) {
-    wppa_slides[id] = ' src="' + url + '" alt="' + name + '" class="theimg big" ' + ' style="' + size + ';">'; // opacity:0; filter:alpha(opacity=0);" >';
+    wppa_slides[id] = ' src="' + url + '" alt="' + name + '" class="theimg big" ' + ' style="' + size + '; display:block;">'; // opacity:0; filter:alpha(opacity=0);" >';
     wppa_names[id] = name;
     wppa_descs[id] = desc;
 }
@@ -105,8 +105,11 @@ function wppa_fade_fade() {
 
 	clearTimeout(wppa_timer);
 
-	jQuery("#theimg" + bg).fadeTo(wppa_animation_speed, 0); //animate({opacity:0}, wppa_animation_speed);	// Req'd for change in portrait/landscape vv
-	jQuery("#theimg" + fg).fadeTo(wppa_animation_speed, 1, wppa_after_fade()); //animate({opacity:1}, wppa_animation_speed, wppa_after_fade());
+//	jQuery("#theimg" + bg).fadeTo(wppa_animation_speed, 0); //animate({opacity:0}, wppa_animation_speed);	// Req'd for change in portrait/landscape vv
+//	jQuery("#theimg" + fg).fadeTo(wppa_animation_speed, 1, wppa_after_fade()); //animate({opacity:1}, wppa_animation_speed, wppa_after_fade());
+	
+	jQuery("#theimg" + bg).fadeOut(wppa_animation_speed); //animate({opacity:0}, wppa_animation_speed);	// Req'd for change in portrait/landscape vv
+	jQuery("#theimg" + fg).fadeIn(wppa_animation_speed, wppa_after_fade()); //animate({opacity:1}, wppa_animation_speed, wppa_after_fade());
 }
 
 function wppa_after_fade() {
