@@ -10,7 +10,7 @@
 add_action('admin_init', 'wppa_admin_styles');
 
 function wppa_admin_styles() {
-	wp_register_style('wppa_admin_style', '/wp-content/plugins/' . PLUGIN_PATH . '/admin_styles.css');
+	wp_register_style('wppa_admin_style', '/wp-content/plugins/' . WPPA_PLUGIN_PATH . '/admin_styles.css');
 	wp_enqueue_style('wppa_admin_style');
 }
 
@@ -18,9 +18,9 @@ function wppa_admin_styles() {
 add_action('admin_init', 'wppa_admin_scripts');
 
 function wppa_admin_scripts() {
-	wp_register_script('wppa_upload_script', '/wp-content/plugins/' . PLUGIN_PATH . '/multifile_compressed.js');
+	wp_register_script('wppa_upload_script', '/wp-content/plugins/' . WPPA_PLUGIN_PATH . '/multifile_compressed.js');
 	wp_enqueue_script('wppa_upload_script');
-	wp_register_script('wppa_admin_script', '/wp-content/plugins/' . PLUGIN_PATH . '/admin_scripts.js');
+	wp_register_script('wppa_admin_script', '/wp-content/plugins/' . WPPA_PLUGIN_PATH . '/admin_scripts.js');
 	wp_enqueue_script('wppa_admin_script');
 	wp_enqueue_script('jquery');
 }
@@ -78,7 +78,7 @@ if (isset($_GET['tab'])) {
 		<div class="wrap">
 			<h2><?php _e('Edit Ablum Information', 'wppa'); ?></h2>
 			<p><?php _e('Album number:', 'wppa'); echo(' ' . $_GET['edit_id'] . '.'); ?></p>
-			<form action="<?php echo(get_option('siteurl')) ?>/wp-admin/admin.php?page=<?php echo(PLUGIN_PATH) ?>/wppa.php&amp;tab=edit&amp;edit_id=<?php echo($_GET['edit_id']) ?>" method="post">
+			<form action="<?php echo(get_option('siteurl')) ?>/wp-admin/admin.php?page=<?php echo(WPPA_PLUGIN_PATH) ?>/wppa.php&amp;tab=edit&amp;edit_id=<?php echo($_GET['edit_id']) ?>" method="post">
 			<?php wppa_nonce_field('$wppa_nonce', WPPA_NONCE); ?>
 
 				<table class="form-table albumtable">
@@ -201,7 +201,7 @@ if (isset($_GET['tab'])) {
 	} else if ($_GET['tab'] == 'del'){ ?>
 		
 		<div class="wrap">
-			<?php $iconurl = get_bloginfo('wpurl') . '/wp-content/plugins/' . PLUGIN_PATH . '/images/albumdel32.png'; ?>
+			<?php $iconurl = get_bloginfo('wpurl') . '/wp-content/plugins/' . WPPA_PLUGIN_PATH . '/images/albumdel32.png'; ?>
 			<div id="icon-albumdel" class="icon32" style="background: transparent url(<?php echo($iconurl); ?>) no-repeat">
 				<br />
 			</div>
@@ -212,7 +212,7 @@ if (isset($_GET['tab'])) {
 			<p><?php _e('Are you sure you want to delete this album?', 'wppa'); ?><br />
 				<?php _e('Press Delete to continue, and Cancel to go back.', 'wppa'); ?>
 			</p>
-			<form name="wppa-del-form" action="<?php echo(get_option('siteurl')) ?>/wp-admin/admin.php?page=<?php echo(PLUGIN_PATH) ?>/wppa.php" method="post">
+			<form name="wppa-del-form" action="<?php echo(get_option('siteurl')) ?>/wp-admin/admin.php?page=<?php echo(WPPA_PLUGIN_PATH) ?>/wppa.php" method="post">
 				<?php wppa_nonce_field('$wppa_nonce', WPPA_NONCE) ?>
 				<p>
 					<?php _e('What would you like to do with photos currently in the album?', 'wppa'); ?><br />
@@ -251,7 +251,7 @@ if (isset($_GET['tab'])) {
 		}
 ?>		
 		<div class="wrap">
-			<?php $iconurl = get_bloginfo('wpurl') . '/wp-content/plugins/' . PLUGIN_PATH . '/images/album32.png'; ?>
+			<?php $iconurl = get_bloginfo('wpurl') . '/wp-content/plugins/' . WPPA_PLUGIN_PATH . '/images/album32.png'; ?>
 			<div id="icon-album" class="icon32" style="background: transparent url(<?php echo($iconurl); ?>) no-repeat">
 				<br />
 			</div>
@@ -259,13 +259,13 @@ if (isset($_GET['tab'])) {
 			<h2><?php _e('Manage Albums', 'wppa'); ?></h2>
 			<?php wppa_admin_albums() ?>
 			
-			<?php $iconurl = get_bloginfo('wpurl') . '/wp-content/plugins/' . PLUGIN_PATH . '/images/albumnew32.png'; ?>
+			<?php $iconurl = get_bloginfo('wpurl') . '/wp-content/plugins/' . WPPA_PLUGIN_PATH . '/images/albumnew32.png'; ?>
 			<div id="icon-albumnew" class="icon32" style="background: transparent url(<?php echo($iconurl); ?>) no-repeat">
 				<br />
 			</div>
 
 			<h2><?php _e('Create New Album', 'wppa'); ?></h2>
-			<form action="<?php echo(get_option('siteurl')) ?>/wp-admin/admin.php?page=<?php echo(PLUGIN_PATH) ?>/wppa.php" method="post">
+			<form action="<?php echo(get_option('siteurl')) ?>/wp-admin/admin.php?page=<?php echo(WPPA_PLUGIN_PATH) ?>/wppa.php" method="post">
 			<?php wppa_nonce_field('$wppa_nonce', WPPA_NONCE) ?>
 				<table class="form-table albumtable">
 					<tbody>
@@ -343,14 +343,14 @@ function wppa_page_upload() {
 		}
 ?>
 		<div class="wrap">
-			<?php $iconurl = get_bloginfo('wpurl') . '/wp-content/plugins/' . PLUGIN_PATH . '/images/camera32.png'; ?>
+			<?php $iconurl = get_bloginfo('wpurl') . '/wp-content/plugins/' . WPPA_PLUGIN_PATH . '/images/camera32.png'; ?>
 			<div id="icon-camera" class="icon32" style="background: transparent url(<?php echo($iconurl); ?>) no-repeat">
 				
 			</div>
-			<?php $iconurl = get_bloginfo('wpurl') . '/wp-content/plugins/' . PLUGIN_PATH . '/images/arrow32.png'; ?>
+			<?php $iconurl = get_bloginfo('wpurl') . '/wp-content/plugins/' . WPPA_PLUGIN_PATH . '/images/arrow32.png'; ?>
 			<div id="icon-arrow" class="icon32" style="background: transparent url(<?php echo($iconurl); ?>) no-repeat">
 			</div>
-			<?php $iconurl = get_bloginfo('wpurl') . '/wp-content/plugins/' . PLUGIN_PATH . '/images/album32.png'; ?>
+			<?php $iconurl = get_bloginfo('wpurl') . '/wp-content/plugins/' . WPPA_PLUGIN_PATH . '/images/album32.png'; ?>
 			<div id="icon-album" class="icon32" style="background: transparent url(<?php echo($iconurl); ?>) no-repeat">
 				<br />
 			</div>
@@ -380,7 +380,7 @@ function wppa_page_upload() {
 				</script>
 			<?php } 
 			else { ?>
-				<p><?php _e('No albums exist. You must', 'wppa'); ?> <a href="admin.php?page=<?php echo(PLUGIN_PATH) ?>/wppa.php"><?php _e('create one', 'wppa'); ?></a> <?php _e('beofre you can upload your photos.', 'wppa'); ?></p>
+				<p><?php _e('No albums exist. You must', 'wppa'); ?> <a href="admin.php?page=<?php echo(WPPA_PLUGIN_PATH) ?>/wppa.php"><?php _e('create one', 'wppa'); ?></a> <?php _e('beofre you can upload your photos.', 'wppa'); ?></p>
 <?php } ?>
 		</div>
 <?php
@@ -500,7 +500,7 @@ function wppa_page_options() {
     elseif (get_option('wppa_lastthumb', '-2') != '-2') wppa_error_message(__('Regeneration of thumbnail images interrupted. Please press "Save Changes"', 'wppa')); 
 ?>		
 	<div class="wrap">
-		<?php $iconurl = get_bloginfo('wpurl') . '/wp-content/plugins/' . PLUGIN_PATH . '/images/settings32.png'; ?>
+		<?php $iconurl = get_bloginfo('wpurl') . '/wp-content/plugins/' . WPPA_PLUGIN_PATH . '/images/settings32.png'; ?>
 		<div id="icon-album" class="icon32" style="background: transparent url(<?php echo($iconurl); ?>) no-repeat">
 			<br />
 		</div>
@@ -808,7 +808,7 @@ function wppa_sidebar_page_options() {
 
 ?>
 	<div class="wrap">
-		<?php $iconurl = get_bloginfo('wpurl') . '/wp-content/plugins/' . PLUGIN_PATH . '/images/settings32.png'; ?>
+		<?php $iconurl = get_bloginfo('wpurl') . '/wp-content/plugins/' . WPPA_PLUGIN_PATH . '/images/settings32.png'; ?>
 		<div id="icon-album" class="icon32" style="background: transparent url(<?php echo($iconurl); ?>) no-repeat">
 			<br />
 		</div>
@@ -1156,8 +1156,8 @@ function wppa_admin_albums() {
 					<td><?php echo($album['id']) ?></td>
 					<td><?php echo($album['a_order']) ?></td>
 					<td><?php wppa_album_name($album['a_parent']) ?></td>
-					<td><a href="admin.php?page=<?php echo(PLUGIN_PATH) ?>/wppa.php&amp;tab=edit&amp;edit_id=<?php echo($album['id']) ?>" class="wppaedit"><?php _e('Edit', 'wppa'); ?></a></td>
-					<td><a href="admin.php?page=<?php echo(PLUGIN_PATH) ?>/wppa.php&amp;tab=del&amp;id=<?php echo($album['id']) ?>" class="wppadelete"><?php _e('Delete', 'wppa'); ?></a></td>
+					<td><a href="admin.php?page=<?php echo(WPPA_PLUGIN_PATH) ?>/wppa.php&amp;tab=edit&amp;edit_id=<?php echo($album['id']) ?>" class="wppaedit"><?php _e('Edit', 'wppa'); ?></a></td>
+					<td><a href="admin.php?page=<?php echo(WPPA_PLUGIN_PATH) ?>/wppa.php&amp;tab=del&amp;id=<?php echo($album['id']) ?>" class="wppadelete"><?php _e('Delete', 'wppa'); ?></a></td>
 				</tr>		
 <?php			if ($alt == '') { $alt = ' class="alternate" '; } else { $alt = '';}
 			}
@@ -1215,7 +1215,7 @@ function wppa_album_photos($id) {
 						</tr>
 						<tr valign="top">
 							<th scope="row">
-								<a href="<?php echo(get_option('siteurl')) ?>/wp-admin/admin.php?page=<?php echo(PLUGIN_PATH) ?>/wppa.php&amp;tab=edit&amp;edit_id=<?php echo($_GET['edit_id']) ?>&amp;photo_del=<?php echo($photo['id']) ?>" class="deletelink" onclick="return confirm('Are you sure you want to delete this photo?')"><?php _e('Delete', 'wppa'); ?></a>
+								<a href="<?php echo(get_option('siteurl')) ?>/wp-admin/admin.php?page=<?php echo(WPPA_PLUGIN_PATH) ?>/wppa.php&amp;tab=edit&amp;edit_id=<?php echo($_GET['edit_id']) ?>&amp;photo_del=<?php echo($photo['id']) ?>" class="deletelink" onclick="return confirm('Are you sure you want to delete this photo?')"><?php _e('Delete', 'wppa'); ?></a>
 							</th>
 							<td>
 							</td>
@@ -1329,7 +1329,11 @@ function wppa_edit_album() {
 		
         if (!is_numeric($photo['p_order'])) $photo['p_order'] = 0;
 		
-		$query = $wpdb->prepare('UPDATE `' . PHOTO_TABLE . '` SET `name` = %s, `album` = %s, `description` = %s, `p_order` = %d WHERE `id` = %d LIMIT 1', $photo['name'], $photo['album'], $photo['description'], $photo['p_order'], $photo['id']);
+//		$charset = get_bloginfo('charset');
+		$photo_desc = $photo['description'];
+//		$photo_desc = htmlentities($photo_desc, ENT_NOQUOTES, $charset, false);
+		
+		$query = $wpdb->prepare('UPDATE `' . PHOTO_TABLE . '` SET `name` = %s, `album` = %s, `description` = %s, `p_order` = %d WHERE `id` = %d LIMIT 1', $photo['name'], $photo['album'], $photo_desc, $photo['p_order'], $photo['id']);
 		$iret = $wpdb->query($query);
 
         if ($iret === FALSE) {
@@ -1349,7 +1353,7 @@ function wppa_edit_album() {
 			wppa_error_message(__('Album could not be updated.', 'wppa'));
 		}
 		else {
-			wppa_update_message(__('Album information edited.', 'wppa') . ' ' . '<a href="admin.php?page=' . PLUGIN_PATH . '/wppa.php">' . __('Back to album management.', 'wppa') . '</a>');
+			wppa_update_message(__('Album information edited.', 'wppa') . ' ' . '<a href="admin.php?page=' . WPPA_PLUGIN_PATH . '/wppa.php">' . __('Back to album management.', 'wppa') . '</a>');
 		}
 		
 		wppa_set_last_album($_GET['edit_id']);

@@ -2,7 +2,7 @@
 /*
 Plugin Name: WP Photo Album Plus
 Description: Easily manage and display your photo albums and slideshows within your WordPress site.
-Version: 2.0.1
+Version: 2.0.2
 Author: J.N. Breetvelt a.k.a OpaJaap
 Author URI: http://www.opajaap.nl/
 Plugin URI: http://wordpress.org/extend/plugins/wp-photo-album-plus/
@@ -16,7 +16,7 @@ global $wp_roles;
 
 define('ALBUM_TABLE', $wpdb->prefix . 'wppa_albums');
 define('PHOTO_TABLE', $wpdb->prefix . 'wppa_photos');
-define('PLUGIN_PATH', 'wp-photo-album-plus');
+define('WPPA_PLUGIN_PATH', 'wp-photo-album-plus');
 
 global $wppa_occur;
 $wppa_occur = 0;
@@ -126,7 +126,7 @@ function wppa_add_admin() {
 		$wp_roles->add_cap('administrator', 'wppa_admin');
 	}
 
-	$iconurl = get_bloginfo('wpurl') . '/wp-content/plugins/' . PLUGIN_PATH . '/images/camera16.png';
+	$iconurl = get_bloginfo('wpurl') . '/wp-content/plugins/' . WPPA_PLUGIN_PATH . '/images/camera16.png';
 	add_menu_page('WP Photo Album', __('Photo Albums', 'wppa'), 'wppa_admin', __FILE__, 'wppa_admin', $iconurl);
 	
     add_submenu_page(__FILE__, __('Upload Photos', 'wppa'), __('Upload Photos', 'wppa'), 'wppa_admin', 'upload_photos', 'wppa_page_upload');
@@ -150,7 +150,7 @@ function wppa_add_style() {
 		wp_register_style('wppa_style', '/wp-content/themes/' . get_option('template')  . '/wppa_style.css');
 		wp_enqueue_style('wppa_style');
 	} else {
-		wp_register_style('wppa_style', '/wp-content/plugins/' . PLUGIN_PATH . '/theme/wppa_style.css');
+		wp_register_style('wppa_style', '/wp-content/plugins/' . WPPA_PLUGIN_PATH . '/theme/wppa_style.css');
 		wp_enqueue_style('wppa_style');
 	}
 }
@@ -159,7 +159,7 @@ function wppa_add_style() {
 if (!is_admin()) add_action('init', 'wppa_add_slideshow');
 
 function wppa_add_slideshow() {
-	wp_register_script('wppa_slideshow', '/wp-content/plugins/' . PLUGIN_PATH . '/theme/wppa_slideshow.js');
+	wp_register_script('wppa_slideshow', '/wp-content/plugins/' . WPPA_PLUGIN_PATH . '/theme/wppa_slideshow.js');
 	wp_enqueue_script('jquery');
 	wp_enqueue_script('wppa_slideshow');
 }
@@ -187,7 +187,7 @@ function wppa_albums($xalb = '', $type='', $siz = '') {
 	if (is_file($templatefile)) {
 		include($templatefile);
 	} else {
-		include(ABSPATH . 'wp-content/plugins/' . PLUGIN_PATH . '/theme/wppa_theme.php');
+		include(ABSPATH . 'wp-content/plugins/' . WPPA_PLUGIN_PATH . '/theme/wppa_theme.php');
 	}
 }
 
