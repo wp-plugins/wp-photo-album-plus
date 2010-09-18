@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, gallery, slideshow, sidebar widget, photo widget, phtoblog
-Version: 2.0.2
+Version: 2.1.0
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -41,10 +41,11 @@ You can find the plugin admin section under Menu Photo Albums on the admin scree
 == Installation ==
 
 = Upgrade notice =
-If you are upgrading from a previous version, note that:
-* If you modified wppa_theme.php, you will have to use the newly supplied version. The previous version is NOT compatible.
+This version is: Major rev# 2, Minor rev# 1, Fix rev# 0.
+If you are upgrading from a previous Major or Minor version, note that:
+* If you modified wppa_theme.php and/or wppa_style.css, you will have to use the newly supplied versions. The previous versions are NOT compatible.
 * If you set the userlevel to anything else than 'administrator' you may have to set it again. Note that changing the userlevel can be done by the administrator only!
-* You will have to activate the sidebar widget again.
+* You may have to activate the sidebar widget again.
 
 = Standard installation when not from the wp plugins page =
 * Unzip and upload the wppa plugin folder to wp-content/plugins/
@@ -85,48 +86,40 @@ First of all: I bet you won't. But if you really want to go back,
 simply de-activate WP Photo Album Plus and re-activate WP Photo ALbum. 
 but remember: **You can not run both versions at the same time.**
 You will see the sub albums you created appear as normal albums.
-The sort order information will have no longer effect.
-
-= How can i implement auto scroll back when browsing full scale images? =
-
-This topic is obsolete as per version 1.8.4
-
-Find the php file in your theme's directory where the `<body >` tag is defined.
-In the default theme this is header.php.
-Just before this line insert the following code:
-
-`
-<?php
-	if (isset($_GET['scrollx'])) $X = $_GET['scrollx']; else $X = 0;
-	if (isset($_GET['scrolly'])) $Y = $_GET['scrolly']; else $Y = 0;
-?>
-`
-
-add the 'onload' event attribute of the body-tag to read:
-
-`onload="window.scrollTo(<?php echo($X . ', ' . $Y) ?>)"`
-
-if there is already an 'onload' attribute, modify it like:
-
-`onload="window.scrollTo(<?php echo($X . ', ' . $Y) ?>); yourfunction()"`
-
-Complete example:
-
-Before modification:
-`
-<body <?php body_class(); ?> onload="startheader()" onunload="stopheader()">
-`
-After modification:
-`
-<?php
-	if (isset($_GET['scrollx'])) $X = $_GET['scrollx']; else $X = 0;
-	if (isset($_GET['scrolly'])) $Y = $_GET['scrolly']; else $Y = 0;
-?>
-<body <?php body_class(); ?> onload="window.scrollTo(<?php echo($X . ', ' . $Y) ?>); startheader()" onunload="stopheader()">
-`
+The sort order information as well as all features introduced with WP Photo Album Plus will no longer have effect.
 
 
 == Changelog ==
+
+= 2.1.0 =
+= New Features =
+* Pagination of album covers and thumbnail images can be configured.
+* In order to reduce the need for editing wppa_style.css after almost every update, the most of the appearance attributes can now be set in the albums settings admin page. New file: wppa_theme.js.
+* Implementation of direct slideshow. I.e. `%%slide=nn%%` like `%%album=nn%%` and `%%cover=nn%%`
+* The ability to use a single photo in a post or page. I.e. `%%photo=nn%%` The appropriate insertion codes can be retrieved from the edit album admin page.
+* There is the ability to convert the wppa database tables to UTF-8 characters. This enables a.o. Turkish character support.
+
+= Bug fixes =
+
+= Enhancements =
+* Thumbnail images will now be displayed together with name and description when pop-up is enabled.
+* There is a new select option for the vertical alignment of fullsize images: 'fit' that leaves no superfluous space before or after full size images.
+* You can now - systemwide - decide wheter or not to start the slideshow to run at invocation.
+* Breadcrumb display will now include nested pages.
+
+= Known issues =
+* There is a conflict with the plugin called "n3rdskwat-mp3player".
+* There may be conflicts with the themes: "Thesis" revision 7, "Coral" and "Montezuma".
+* There are layout issues for thumbnails and thumbnail popups in IE6 and IE7.
+* When activating the plugin, you may see the warning message: "The plugin generated 255 characters of unexpected output during activation. (etc)".
+This message seems to be a WP issue rather than a wppa issue and can be ignored.
+
+= Pending enhancement requests =
+* The ability to SELECT multiple files to upload. Currently selection must be done one by one, upload can be done in batches of up to 15 files.
+* Additional animation effects in slideshows and browse full-size images.
+* The ability to give upload rights to selected roles/users.
+* A display alternative to have fullsize images together with a list of thumbnail images.
+* The possibility to include one or more sub-albums to be used in the sidebar widget.
 
 = 2.0.2 =
 = New Features =

@@ -1,39 +1,61 @@
 /* This is the standard wppa_style.css file. See http://www.opajaap.nl/ where it is used
-/* It you want to modify the layout make a copy of this file and place it in your theme's directory
+/* If you want to modify the layout make a copy of this file and place it in your theme's directory
 /* The copy in your theme's directory has precedense over the original version in wp-photo-album-pls/theme
 /* This assures that your version is not overwritten after an upgrade of the plugin.
+/* 
+/* NOTE: As per version 2.1.0 most of the settings you would like to change are now configurable in the wppa admin settings screen.
+/* It is strongly reccomended that you try to achieve the appearance you like by those settings as they will be independant of future updates.
+/*
 /* You may always look into a newer version of this file to see what new classes and id's come with an upgrade
+/*
+/* This is version 2.1.0
 */
 
-/* breadcrumb */
-.backlink {
+/* Navigation */
+.prev {
+	float: left;
+    text-align: left;
+}
+.next {
+	float: right;
+    text-align: right;
+}
+.speed0, .startstop, .speed1, .prev-arrow, .next-arrow, .arrow {
+	cursor: pointer;
+}
+/* Admin settings page defines background and border color */
+.wppa-nav {
 	clear: both;
+    margin: 10px auto 16px auto;
+    padding: 2px;
+}
+/* All boxes. Admin settings page defines border thickness and border radius */
+.wppa-box {
+}
+.wppa-mini-box {
+}
+/* Boxes in a list like album covers. Admin settings page defines background and border color */
+.wppa-even {
+}
+.wppa-alt {
+}
+/* Cover and popup photo. Admin settings page defines background color */
+.wppa-img {
 }
 
 /* Wrapper for albums, and thumbnails when display is like albums */
 .albumlist, .thumblist {
 	clear: both;
 } 
-.albumlist .alt, .albumlist .alt div, .thumbnail_area_alt, .thumblist .alt, .thumblist .alt  div {
-    background-color: #d5eabf;
-}
-.albumlist .even, .albumlist .even div, .thumbnail_area_even , .thumblist .even, .thumblist .even div {
-    background-color: #e6f2d9;
-}
 
 /* Wrapper for album etc */
 .albumlist .album, .thumblist .thumb {
 	margin: 7px 0;
 	padding: 7px;
-	border: 1px #bbdd99 solid;
-    -moz-border-radius: 6px;
-	-khtml-border-radius: 6px;
-	-webkit-border-radius: 6px;
-	border-radius: 6px;
 }
 
 /* Album name */
-.album h2.name, .thumb h2.name {
+.wppa-title {
 	font-size: 1.2em;
 	font-weight: bold;
 	margin: 0;
@@ -47,6 +69,26 @@
 	margin-bottom: 16px;
 }
 
+/* fonts used in wppa boxes */
+.wppa-box-text {
+}
+.wppa-nav-text {
+}
+.wppa-title {
+}
+.wppa-fulldesc {
+}
+.wppa-fulltitle {
+}
+
+/* default text attributes */
+.wppa-black {
+	font-weight:normal; 
+	color:black; 
+	cursor:default; 
+	text-decoration:none;
+}
+
 /* Wrapper for coverphoto background */
 .coverphoto_frame, .thumbphoto_frame {
 }
@@ -56,7 +98,6 @@
 	position: relative;
 	float: right; 		/* Change this to float: left; if you want the coverphoto left */
 	margin-left: 5px;	/* and this to margin-right: 5px; */
-	background-color: #eef7e6;
 	border: 1px #bbdd99 solid;
 	padding: 4px;
 	-moz-border-radius: 3px;
@@ -97,60 +138,48 @@
 /* The popup small image */
 .wppa-popup {
 	position: absolute;
-}
-#wppa-a {
-}
-.wppa-popup .wppa-img {
-	padding: 4px;
+	padding: 5px;
 	border-left: 1px solid #ccc;
 	border-top: 1px solid #ccc;
 	border-right: 1px solid #888;
 	border-bottom: 1px solid #888;
-	background-color: white; /*#eef7e6; */
-/*	-moz-border-radius: 3px;
-	-khtml-border-radius: 3px;
-	-webkit-border-radius: 3px;
-	border-radius: 3px; */
+	background-color: white; 
+	font-size: 10px;
+	line-height: 12px;
 }
 
 /* Full size photo */
-#imagetitle {
+.imagetitle {
     text-align: center;
     font-size: 1em;
 }
     
-#imagedesc {
+.imagedesc {
     text-align: center;
     font-size: 1.4em;
 }
 
 /* Slideshow */
-#slide_frame {
+.slide_frame {
+	position: relative;
 	width: 100%;
 }
 
-.wideentry #slide_frame {
+.wideentry .slide_frame {
 	padding: 0;
 	background-color: #eef7e6; 
 }
 
-#theslide0, #theslide1 {
+.theslide {
 	position: absolute;
-/*	margin: 0 auto; */
 	background-color: transparent;
 }
 
-.theslide {
-}
-
-#theimg0, #theimg1 {
+.theimg {
 	display: block;
 }
 
-.theimg {
-}
-
-#spinner {
+.spinner {
 	width: 16px;
 	height: 16px;
 	position: relative;
@@ -158,51 +187,11 @@
 }
 
 /* Photo name in breadcrumb */
-#bc-pname {
+.bc-pname {
 	font-weight: normal;
 	color: inherit;
 	text-decoration: none;
 }
-
-/* Navigation */
-.prev {
-	float: left;
-    text-align: left;
-}
-
-.next {
-	float: right;
-    text-align: right;
-}
-
-#speed0, #startstop, #speed1, #prev-arrow, #next-arrow {
-	cursor: pointer;
-}
-
-#prevnext {
-    background-color: #eef7e6;
-    margin: 10px auto 20px auto;
-    padding: 0;
-}
-    
-#prev-arrow, #next-arrow {
-	background-color: transparent;	
-    margin: 0 -20px;
-    padding: 0;
-    width: 40px;
-    position: relative;
-    top: 250px;
-    font-size: 3.0em;
-	line-height: 1em;
-	z-index: 1000;
-}
-
-#prev-arrow a:link, #next-arrow a:link { border-style: none; }
-#prev-arrow a:visited, #next-arrow a:visited { border-style: none; }
-#prev-arrow a:hover, #next-arrow a:hover { text-decoration: none; }
-#prev-arrow a:active, #next-arrow a:active { border-style: none; }
-#prev-arrow { text-align: left; float: left; }
-#next-arrow { text-align: right; float: right; }
 
 /* Sidebar widget */
 .wppa-widget {

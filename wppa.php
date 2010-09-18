@@ -2,7 +2,7 @@
 /*
 Plugin Name: WP Photo Album Plus
 Description: Easily manage and display your photo albums and slideshows within your WordPress site.
-Version: 2.0.2
+Version: 2.1.0
 Author: J.N. Breetvelt a.k.a OpaJaap
 Author URI: http://www.opajaap.nl/
 Plugin URI: http://wordpress.org/extend/plugins/wp-photo-album-plus/
@@ -13,13 +13,15 @@ load_plugin_textdomain('wppa', 'wp-content/plugins/wp-photo-album-plus/langs/', 
 /* GLOBAL SETTINGS */
 global $wpdb;
 global $wp_roles;
+global $wppa_occur;
+global $wppa_master_occur;
 
 define('ALBUM_TABLE', $wpdb->prefix . 'wppa_albums');
 define('PHOTO_TABLE', $wpdb->prefix . 'wppa_photos');
 define('WPPA_PLUGIN_PATH', 'wp-photo-album-plus');
 
-global $wppa_occur;
 $wppa_occur = 0;
+$wppa_master_occur = 0;
 
 /* FORM SECURITY */
 global $wppa_no_nonce;
@@ -53,7 +55,7 @@ function wppa_setup() {
 	global $wpdb;
 	
 	$old_rev = get_option('wppa_revision', '100');
-	if ($old_rev <= '200') {
+	if ($old_rev <= '201') {
 		
 	$create_albums = "CREATE TABLE " . ALBUM_TABLE . " (
                     id bigint(20) NOT NULL auto_increment, 
@@ -65,7 +67,7 @@ function wppa_setup() {
                     p_order_by int unsigned NOT NULL,
 					cover_linkpage bigint(20) NOT NULL,
                     PRIMARY KEY  (id) 
-                    );";
+                    );"; // ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='WP Photo Album Plus';";
                     
 	$create_photos = "CREATE TABLE " . PHOTO_TABLE . " (
                     id bigint(20) NOT NULL auto_increment, 
@@ -75,13 +77,13 @@ function wppa_setup() {
                     description longtext NOT NULL, 
                     p_order smallint(5) unsigned NOT NULL,
                     PRIMARY KEY  (id) 
-                    );";
+                    );"; // ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='WP Photo Album Plus';";
 
     require_once(ABSPATH . 'wp-admin/upgrade-functions.php');
 
     dbDelta($create_albums);
     dbDelta($create_photos);
-	
+		
 	delete_option('wppa-accesslevel');	/* pre rev 2 version */
 	delete_option('wppa_accesslevel');	/* reset at activation */
 	
@@ -109,7 +111,7 @@ function wppa_setup() {
 		update_option('wppa_update_key', $key);
 		}
 	
-	update_option('wppa_revision', '200');
+	update_option('wppa_revision', '201');
 	}
 }
 	
@@ -155,16 +157,16 @@ function wppa_add_style() {
 	}
 }
 
-/* LOAD SLIDESHOW */
-if (!is_admin()) add_action('init', 'wppa_add_slideshow');
+/* LOAD SLIDESHOW and DYNAMIC STYLES */
+if (!is_admin()) add_action('init', 'wppa_add_javascripts');
 
-function wppa_add_slideshow() {
+function wppa_add_javascripts() {
 	wp_register_script('wppa_slideshow', '/wp-content/plugins/' . WPPA_PLUGIN_PATH . '/theme/wppa_slideshow.js');
+	wp_register_script('wppa_theme_js', '/wp-content/plugins/' . WPPA_PLUGIN_PATH . '/theme/wppa_theme.js');
 	wp_enqueue_script('jquery');
 	wp_enqueue_script('wppa_slideshow');
+	wp_enqueue_script('wppa_theme_js');
 }
-
-
 
 /* LISTING FUNCTIONS */
 // get the albums
@@ -172,11 +174,13 @@ function wppa_albums($xalb = '', $type='', $siz = '') {
 	global $wpdb;
     global $startalbum;
 	global $wppa_occur;
+	global $wppa_master_occur;
 	global $is_cover;
 	global $wppa_fullsize;
     
     if (is_numeric($xalb)) $startalbum = $xalb;
-	if (!is_numeric($wppa_occur)) $wppa_occur = '0'; else $wppa_occur++;
+	$wppa_occur++;
+	$wppa_master_occur++;
 	if ($type == 'album') $is_cover = '0';
 	elseif ($type == 'cover') $is_cover = '1';
 	if (is_numeric($siz)) $wppa_fullsize = $siz;
