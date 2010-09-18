@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the admin pages
-* Version 2.1.0
+* Version 2.0.0
 */
 
 /* Add admin style */
@@ -449,21 +449,6 @@ function wppa_page_options() {
 			$options_error = true;
 		}
 		
-		if (isset($_POST['wppa-start-slide'])) update_option('wppa_start_slide', 'yes');
-		else update_option('wppa_start_slide', 'no');
-		
-		if (wppa_check_numeric($_POST['wppa-album-page-size'], '0', __('Album page size.'))) {
-			update_option('wppa_album_page_size', $_POST['wppa-album-page-size']);
-		} else {
-			$options_error = true;
-		}
-		
-		if (wppa_check_numeric($_POST['wppa-thumb-page-size'], '0', __('Thumb page size.'))) {
-			update_option('wppa_thumb_page_size', $_POST['wppa-thumb-page-size']);
-		} else {
-			$options_error = true;
-		}
-
 		if (isset($_POST['wppa-animation-speed'])) update_option('wppa_animation_speed', $_POST['wppa-animation-speed']);
 		
 		if (isset($_POST['wppa-use-thumb-opacity'])) update_option('wppa_use_thumb_opacity', 'yes');
@@ -510,39 +495,6 @@ function wppa_page_options() {
 		if (isset($_POST['wppa-html'])) update_option('wppa_html', 'yes');
 		else update_option('wppa_html', 'no');
 		
-		if (isset($_POST['wppa-bgcolor-even'])) update_option('wppa_bgcolor_even', $_POST['wppa-bgcolor-even']);
-		if (isset($_POST['wppa-bgcolor-alt'])) update_option('wppa_bgcolor_alt', $_POST['wppa-bgcolor-alt']);
-		if (isset($_POST['wppa-bgcolor-nav'])) update_option('wppa_bgcolor_nav', $_POST['wppa-bgcolor-nav']);
-		if (isset($_POST['wppa-bcolor-even'])) update_option('wppa_bcolor_even', $_POST['wppa-bcolor-even']);
-		if (isset($_POST['wppa-bcolor-alt'])) update_option('wppa_bcolor_alt', $_POST['wppa-bcolor-alt']);
-		if (isset($_POST['wppa-bcolor-nav'])) update_option('wppa_bcolor_nav', $_POST['wppa-bcolor-nav']);
-		if (isset($_POST['wppa-bgcolor-img'])) update_option('wppa_bgcolor_img', $_POST['wppa-bgcolor-img']);
-		if (isset($_POST['wppa-bwidth'])) update_option('wppa_bwidth', $_POST['wppa-bwidth']);
-		if (isset($_POST['wppa-bradius'])) update_option('wppa_bradius', $_POST['wppa-bradius']);
-		if (isset($_POST['wppa-fontfamily-title'])) update_option('wppa_fontfamily_title', $_POST['wppa-fontfamily-title']);
-		if (isset($_POST['wppa-fontsize-title'])) update_option('wppa_fontsize_title', $_POST['wppa-fontsize-title']);
-		if (isset($_POST['wppa-fontfamily-fulldesc'])) update_option('wppa_fontfamily_fulldesc', $_POST['wppa-fontfamily-fulldesc']);
-		if (isset($_POST['wppa-fontsize-fulldesc'])) update_option('wppa_fontsize_fulldesc', $_POST['wppa-fontsize-fulldesc']);
-		if (isset($_POST['wppa-fontfamily-fulltitle'])) update_option('wppa_fontfamily_fulltitle', $_POST['wppa-fontfamily-fulltitle']);
-		if (isset($_POST['wppa-fontsize-fulltitle'])) update_option('wppa_fontsize_fulltitle', $_POST['wppa-fontsize-fulltitle']);
-		if (isset($_POST['wppa-fontfamily-nav'])) update_option('wppa_fontfamily_nav', $_POST['wppa-fontfamily-nav']);
-		if (isset($_POST['wppa-fontsize-nav'])) update_option('wppa_fontsize_nav', $_POST['wppa-fontsize-nav']);
-		if (isset($_POST['wppa-fontfamily-box'])) update_option('wppa_fontfamily_box', $_POST['wppa-fontfamily-box']);
-		if (isset($_POST['wppa-fontsize-box'])) update_option('wppa_fontsize_box', $_POST['wppa-fontsize-box']);
-		if (isset($_POST['wppa-black'])) update_option('wppa_black', $_POST['wppa-black']);
-		
-		if (isset($_POST['wppa-charset']) && get_option('wppa_charset', '') != 'UTF-8') {
-			if (!options_error) {
-				global $wpdb;
-				if ($wpdb->query("ALTER TABLE " . ALBUM_TABLE . " MODIFY name text CHARACTER SET utf8") === false) $options_error = true;
-				if ($wpdb->query("ALTER TABLE " . PHOTO_TABLE . " MODIFY name text CHARACTER SET utf8") === false) $options_error = true;
-				if ($wpdb->query("ALTER TABLE " . ALBUM_TABLE . " MODIFY description text CHARACTER SET utf8") === false) $options_error = true;
-				if ($wpdb->query("ALTER TABLE " . PHOTO_TABLE . " MODIFY description longtext CHARACTER SET utf8") === false) $options_error = true;
-				if ($options_error) wppa_error_message(__('Error converting to UTF-8', 'wppa'));
-				else update_option('wppa_charset', 'UTF-8');
-			}
-		}
-		
 		if (!$options_error) wppa_update_message(__('Changes Saved', 'wppa')); 
 	}
     elseif (get_option('wppa_lastthumb', '-2') != '-2') wppa_error_message(__('Regeneration of thumbnail images interrupted. Please press "Save Changes"', 'wppa')); 
@@ -553,7 +505,7 @@ function wppa_page_options() {
 			<br />
 		</div>
 		<h2><?php _e('WP Photo Album Plus Settings', 'wppa'); ?></h2>
-		<p><?php _e('Database revision:', 'wppa'); ?> <?php echo(get_option('wppa_revision', '100')) ?>. <?php _e('WP Charset:', 'wppa'); ?> <?php echo(get_bloginfo('charset')); ?>. <?php _e('WPPA Charset:', 'wppa'); ?> <?php echo(get_option('wppa_charset')); ?>.</p><br/>
+		<p><?php _e('Database revision:', 'wppa'); ?> <?php echo(get_option('wppa_revision', '100')) ?>.</p><br/>
 		<form action="<?php echo(get_option('siteurl')) ?>/wp-admin/admin.php?page=options" method="post">
 	
 			<?php wppa_nonce_field('$wppa_nonce', WPPA_NONCE); ?>
@@ -595,7 +547,6 @@ function wppa_page_options() {
 								<option value="top" <?php if ($valign == 'top') echo(' selected '); ?>><?php _e('top', 'wppa'); ?></option>
 								<option value="center" <?php if ($valign == 'center') echo(' selected '); ?>><?php _e('center', 'wppa'); ?></option>
 								<option value="bottom" <?php if ($valign == 'bottom') echo(' selected '); ?>><?php _e('bottom', 'wppa'); ?></option>
-								<option value="fit" <?php if ($valign == 'fit') echo(' selected '); ?>><?php _e('fit', 'wppa'); ?></option>	
 							</select>
 							<span class="description"><br/><?php _e('Specify the vertical alignment of fullsize images. Use this setting only when albums contain both portrait and landscape photos.', 'wppa'); ?></span>
 						</td>
@@ -616,16 +567,7 @@ function wppa_page_options() {
 							</select>
 							<span class="description"><br/><?php _e('Specify the animation speed to be used in slideshows.', 'wppa'); ?></span>
 						</td>
-					</tr>	
-					<tr valign="top">
-						<th scope="row">
-							<label><?php _e('Start running slideshow:', 'wppa'); ?></label>
-						</th>
-						<td>
-							<input type="checkbox" name="wppa-start-slide" id="wppa-start-slide" <?php if (get_option('wppa_start_slide', 'no') == 'yes') echo('checked="checked"'); ?> />
-							<span class="description"><br/><?php _e('If checked, the slideshow will start running immediately, if unchecked the first photo will be displayed in browse mode.', 'wppa'); ?></span>
-						</td>
-					</tr>
+					</tr>					
 					<tr><th><hr/></th><td><hr/></td></tr>
 					<tr><th><small><?php _e('Thumbnails:', 'wppa'); ?></small></th></tr>
 					<tr valign="top">
@@ -703,15 +645,6 @@ function wppa_page_options() {
 						</td>
 					</tr>
 					<script type="text/javascript">wppaCheckTt();</script>
-					<tr valign="top">
-						<th scope="row">
-							<label><?php _e('Max thumbnails per page:', 'wppa'); ?></label>
-						</th>
-						<td>
-							<input type="text" name="wppa-thumb-page-size" id="wppa-thumb-page-size" value="<?php echo(get_option('wppa_thumb_page_size', '0')) ?>" style="width: 50px;" />
-							<span class="description"><br/><?php _e('Enter the maximum number of thumbnail images per page. A value of 0 indicates no pagination.', 'wppa') ?></span>
-						</td>
-					</tr>
 					<tr><th><hr/></th><td><hr/></td></tr>
 					<tr><th><small><?php _e('Album covers:', 'wppa'); ?></small></th></tr>
 					<tr valign="top">
@@ -742,15 +675,6 @@ function wppa_page_options() {
 						</td>
 					</tr>							
 					<script type="text/javascript">wppaCheckUco();</script>
-					<tr valign="top">
-						<th scope="row">
-							<label><?php _e('Max covers per page:', 'wppa'); ?></label>
-						</th>
-						<td>
-							<input type="text" name="wppa-album-page-size" id="wppa-album-page-size" value="<?php echo(get_option('wppa_album_page_size', '0')) ?>" style="width: 50px;" />
-							<span class="description"><br/><?php _e('Enter the maximum number of album covers per page. A value of 0 indicates no pagination.', 'wppa') ?></span>
-						</td>
-					</tr>
 					<tr><th><hr/></th><td><hr/></td></tr>
 					<tr><th><small><?php _e('Order settings:', 'wppa'); ?></small></th></tr>
 					<tr valign="top">
@@ -792,130 +716,6 @@ function wppa_page_options() {
 						</td>
 					</tr>
 					<tr><th><hr/></th><td><hr/></td></tr>
-					<tr><th><small><?php _e('Appearance:', 'wppa'); ?></small></th></tr>
-					<tr valign="top">
-						<th scope="row">
-							<label ><?php _e('Explanation:', 'wppa'); ?></label>
-						</th>
-						<td>
-							<span class="description">
-								<?php _e('The settings in this chapter may be left blank. When blank, the theme\'s defaults are used or the settings in wppa_style.css.', 'wppa'); ?>
-								<br/><?php _e('It is strongly recommended that you try these settings to achieve your desired appearance before editing the css file.', 'wppa'); ?>
-								<br/><?php _e('Note: these settings - if not blank - have precednce over css settings or any hard coded attributes.', 'wppa'); ?>
-								<br/><?php _e('The css classes that these settings act upon are indicated in the descriptions as follows (for example \'wppa-class\'):', 'wppa'); ?> <b>(.wppa-class)</b>
-							</span>
-						</td>
-					</tr>
-					<tr valign="top">
-						<th scope="row">
-							<label><?php _e('Even background:', 'wppa'); ?></label>
-						</th>
-						<td>
-							<?php _e('Background Color:', 'wppa') ?> <input type="text" name="wppa-bgcolor-even" id="wppa-bgcolor-even" value="<?php echo(get_option('wppa_bgcolor_even', '#e6f2d9')) ?>" style="width: 100px;" />
-							<?php _e('Border Color:', 'wppa') ?> <input type="text" name="wppa-bcolor-even" id="wppa-bcolor-even" value="<?php echo(get_option('wppa_bcolor_even', '#e6f2d9')) ?>" style="width: 100px;" />
-							<span class="description"><br/><?php _e('Enter valid CSS colors for even numbered backgrounds and borders of album covers and thumbnail displays \'As covers\'.', 'wppa'); ?> <b>(.wppa-even)</b></span>						
-						</td>
-					</tr>
-					<tr valign="top">
-						<th scope="row">
-							<label><?php _e('Odd background:', 'wppa'); ?></label>
-						</th>
-						<td>
-							<?php _e('Background Color:', 'wppa') ?> <input type="text" name="wppa-bgcolor-alt" id="wppa-bgcolor-alt" value="<?php echo(get_option('wppa_bgcolor_alt', '#d5eabf')) ?>" style="width: 100px;" />
-							<?php _e('Border Color:', 'wppa') ?> <input type="text" name="wppa-bcolor-alt" id="wppa-bcolor-alt" value="<?php echo(get_option('wppa_bcolor_alt', '#e6f2d9')) ?>" style="width: 100px;" />
-							<span class="description"><br/><?php _e('Enter valid CSS colors for odd numbered backgrounds and borders of album covers and thumbnail displays \'As covers\'.', 'wppa'); ?> <b>(.wppa-alt)</b></span>						
-						</td>
-					</tr>
-					<tr valign="top">
-						<th scope="row">
-							<label><?php _e('Navigation bars:', 'wppa'); ?></label>
-						</th>
-						<td>
-							<?php _e('Background Color:', 'wppa') ?> <input type="text" name="wppa-bgcolor-nav" id="wppa-bgcolor-nav" value="<?php echo(get_option('wppa_bgcolor_nav', '#d5eabf')) ?>" style="width: 100px;" />
-							<?php _e('Border Color:', 'wppa') ?> <input type="text" name="wppa-bcolor-nav" id="wppa-bcolor-nav" value="<?php echo(get_option('wppa_bcolor_nav', '#d5eabf')) ?>" style="width: 100px;" />
-							<span class="description"><br/><?php _e('Enter valid CSS colors for navigation backgrounds and borders.', 'wppa'); ?> <b>(.wppa-nav)</b></span>						
-						</td>
-					</tr>
-					<tr valign="top">
-						<th scope="row">
-							<label><?php _e('Borders:', 'wppa'); ?></label>
-						</th>
-						<td>
-							<?php _e('Border thickness:', 'wppa') ?> <input type="text" name="wppa-bwidth" id="wppa-bwidth" value="<?php echo(get_option('wppa_bwidth', '1')) ?>" style="width: 50px;" />px.&nbsp;
-							<?php _e('Border radius:', 'wppa') ?> <input type="text" name="wppa-bradius" id="wppa-bradius" value="<?php echo(get_option('wppa_bradius', '6')) ?>" style="width: 50px;" />px.
-							<span class="description"><br/><?php _e('Enter thicknes and corner radius for the backgrounds above. A number of 0 means: no.', 'wppa'); ?> <b>(.wppa-box, .wppa-mini-box)</b>
-							<br/><?php _e('Note that rounded corners are only supported by modern browsers.', 'wppa'); ?></span>						
-						</td>
-					</tr>
-					<tr valign="top">
-						<th scope="row">
-							<label><?php _e('Popup and Cover Photos:', 'wppa'); ?></label>
-						</th>
-						<td>
-							<?php _e('Background Color:', 'wppa') ?> <input type="text" name="wppa-bgcolor-img" id="wppa-bgcolor-img" value="<?php echo(get_option('wppa_bgcolor_img', '#eef7e6')) ?>" style="width: 100px;" />
-							<span class="description"><br/><?php _e('Enter a valid CSS color for image backgrounds.', 'wppa'); ?> <b>(.wppa-img)</b></span>
-						</td>
-					</tr>
-					<tr valign="top">
-						<th scope="row">
-							<label><?php _e('Font for album titles:', 'wppa'); ?></label>
-						</th>
-						<td>
-							<?php _e('Font family:', 'wppa') ?> <input type="text" name="wppa-fontfamily-title" id="wppa-fontfamily-title" value="<?php echo(get_option('wppa_fontfamily_title', '')) ?>" style="width: 200px;" />&nbsp;
-							<?php _e('Size:', 'wppa') ?> <input type="text" name="wppa-fontsize-title" id="wppa-fontsize-title" value="<?php echo(get_option('wppa_fontsize_title', '')) ?>" style="width: 50px;" />px.
-							<span class="description"><br/><?php _e('Enter font name and size for album cover titles.', 'wppa'); ?> <b>(.wppa-title)</b></span>
-						</td>
-					</tr>
-					<tr valign="top">
-						<th scope="row">
-							<label><?php _e('Font for fullsize photo descriptios:', 'wppa'); ?></label>
-						</th>
-						<td>
-							<?php _e('Font family:', 'wppa') ?> <input type="text" name="wppa-fontfamily-fulldesc" id="wppa-fontfamily-fulldesc" value="<?php echo(get_option('wppa_fontfamily_fulldesc', '')) ?>" style="width: 200px;" />&nbsp;
-							<?php _e('Size:', 'wppa') ?> <input type="text" name="wppa-fontsize-fulldesc" id="wppa-fontsize-fulldesc" value="<?php echo(get_option('wppa_fontsize_fulldesc', '')) ?>" style="width: 50px;" />px.
-							<span class="description"><br/><?php _e('Enter font name and size for album cover titles.', 'wppa'); ?> <b>(.wppa-fulldesc)</b></span>
-						</td>
-					</tr>
-					<tr valign="top">
-						<th scope="row">
-							<label><?php _e('Font for fullsize photo names:', 'wppa'); ?></label>
-						</th>
-						<td>
-							<?php _e('Font family:', 'wppa') ?> <input type="text" name="wppa-fontfamily-fulltitle" id="wppa-fontfamily-fulltitle" value="<?php echo(get_option('wppa_fontfamily_fulltitle', '')) ?>" style="width: 200px;" />&nbsp;
-							<?php _e('Size:', 'wppa') ?> <input type="text" name="wppa-fontsize-fulltitle" id="wppa-fontsize-fulltitle" value="<?php echo(get_option('wppa_fontsize_fulltitle', '')) ?>" style="width: 50px;" />px.
-							<span class="description"><br/><?php _e('Enter font name and size for album cover titles.', 'wppa'); ?> <b>(.wppa-fulltitle)</b></span>
-						</td>
-					</tr>
-					<tr valign="top">
-						<th scope="row">
-							<label><?php _e('Font for navigations:', 'wppa'); ?></label>
-						</th>
-						<td>
-							<?php _e('Font family:', 'wppa') ?> <input type="text" name="wppa-fontfamily-nav" id="wppa-fontfamily-nav" value="<?php echo(get_option('wppa_fontfamily_nav', '')) ?>" style="width: 200px;" />&nbsp;
-							<?php _e('Size:', 'wppa') ?> <input type="text" name="wppa-fontsize-nav" id="wppa-fontsize-nav" value="<?php echo(get_option('wppa_fontsize_nav', '')) ?>" style="width: 50px;" />px.
-							<span class="description"><br/><?php _e('Enter font name and size for navigation items.', 'wppa'); ?> <b>(.wppa-nav-text)</b></span>
-						</td>
-					</tr>
-					<tr valign="top">
-						<th scope="row">
-							<label><?php _e('General font in wppa boxes:', 'wppa'); ?></label>
-						</th>
-						<td>
-							<?php _e('Font family:', 'wppa') ?> <input type="text" name="wppa-fontfamily-box" id="wppa-fontfamily-box" value="<?php echo(get_option('wppa_fontfamily_box', '')) ?>" style="width: 200px;" />&nbsp;
-							<?php _e('Size:', 'wppa') ?> <input type="text" name="wppa-fontsize-box" id="wppa-fontsize-box" value="<?php echo(get_option('wppa_fontsize_box', '')) ?>" style="width: 50px;" />px.
-							<span class="description"><br/><?php _e('Enter font name and size for all other items.', 'wppa'); ?> <b>(.wppa-nav-text)</b></span>
-						</td>
-					</tr>
-					<tr valign="top">
-						<th scope="row">
-							<label><?php _e('Default text color:', 'wppa'); ?></label>
-						</th>
-						<td>
-							<?php _e('Color:', 'wppa') ?> <input type="text" name="wppa-black" id="wppa-black" value="<?php echo(get_option('wppa_black', 'black')) ?>" style="width: 100px;" />
-							<span class="description"><br/><?php _e('Enter your sites default text color.', 'wppa'); ?> <b>(.wppa-black)</b></span>
-						</td>
-					</tr>
-					<tr><th><hr/></th><td><hr/></td></tr>
 					<tr><th><small><?php _e('Miscelanious:', 'wppa'); ?></small></th></tr>
 					<tr valign="top">
 						<th scope="row">
@@ -953,6 +753,7 @@ function wppa_page_options() {
 						</td>
 					</tr>
 <?php } ?>					
+<?php if (function_exists('html_entity_decode')) { ?>
 					<tr valign="top">
 						<th scope="row">
 							<label ><?php _e('Allow HTML in album and photo descriptions:', 'wppa'); ?></label>
@@ -961,17 +762,7 @@ function wppa_page_options() {
 							<input type="checkbox" name="wppa-html" id="wppa-html" <?php if (get_option('wppa_html', 'yes') == 'yes') echo (' checked="checked"') ?> />
 							<span class="description"><br/><?php _e('If checked: html is allowed. WARNING: No checks on syntax, it is your own responsability to close tags properly!', 'wppa'); ?></span>
 						</td>
-					</tr>
-<?php if (get_bloginfo('charset') == 'UTF-8') { ?>
-					<tr valign="top">
-						<th scope="row">
-							<label ><?php _e('Set Character set to UTF-8:', 'wppa'); ?></label>
-						</th>
-						<td>
-							<input <?php if (get_option('wppa_charset') == 'UTF-8') echo('disabled="disabled"'); ?> type="checkbox" name="wppa-charset" id="wppa-charset" <?php if (get_option('wppa_charset', '') == 'UTF-8') echo(' checked="checked"') ?> />
-							<span class="description"><br/><?php _e('If checked: Converts the wppa database tables to UTF-8 This allows the use of certain characters - like Turkish - in photo and album names and descriptions.', 'wppa'); ?></span>
-						</td>
-					</tr>
+					</tr>	
 <?php } ?>					
 				</tbody>
 			</table>
@@ -1429,11 +1220,6 @@ function wppa_album_photos($id) {
 							<td>
 							</td>
 						</tr>
-						<tr valign="top">
-							<th scope="row">
-								<input type="button" class="button-secondary" onclick="prompt('<?php _e('Insert code for single image in Page or Post:\nYou may change the size if you like.', 'wppa') ?>', '%%wppa%% %%photo=<?php echo($photo['id']); ?>%% %%size=<?php echo(get_option('wppa_fullsize')); ?>%%')" value="<?php _e('Get insertion Code', 'wppa'); ?>" />
-							</th>
-						</tr>
 					</table>
 					<input type="hidden" name="<?php echo('photos[' . $photo['id'] . '][id]') ?>" value="<?php echo($photo['id']) ?>" />
 					<div class="desc"><?php _e('Description:', 'wppa'); ?><br /><textarea cols="40" rows="4" name="photos[<?php echo($photo['id']) ?>][description]"><?php echo(stripslashes($photo['description'])) ?></textarea></div>
@@ -1524,9 +1310,8 @@ function wppa_edit_album() {
 	
 	$desc = $_POST['wppa-desc'];
 	$desc = esc_attr($desc);
-
-	if (isset($_POST['wppa-main'])) $main = $_POST['wppa-main'];
-	else $main = -1;
+	
+	$main = $_POST['wppa-main'];
 	
     $order = (is_numeric($_POST['wppa-order']) ? $_POST['wppa-order'] : 0);
 	
@@ -1544,7 +1329,9 @@ function wppa_edit_album() {
 		
         if (!is_numeric($photo['p_order'])) $photo['p_order'] = 0;
 		
+//		$charset = get_bloginfo('charset');
 		$photo_desc = $photo['description'];
+//		$photo_desc = htmlentities($photo_desc, ENT_NOQUOTES, $charset, false);
 		
 		$query = $wpdb->prepare('UPDATE `' . PHOTO_TABLE . '` SET `name` = %s, `album` = %s, `description` = %s, `p_order` = %d WHERE `id` = %d LIMIT 1', $photo['name'], $photo['album'], $photo_desc, $photo['p_order'], $photo['id']);
 		$iret = $wpdb->query($query);
