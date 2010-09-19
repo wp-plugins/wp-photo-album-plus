@@ -55,7 +55,7 @@ function wppa_setup() {
 	global $wpdb;
 	
 	$old_rev = get_option('wppa_revision', '100');
-	if ($old_rev <= '201') {
+	if ($old_rev <= '210') {
 		
 	$create_albums = "CREATE TABLE " . ALBUM_TABLE . " (
                     id bigint(20) NOT NULL auto_increment, 
@@ -101,8 +101,15 @@ function wppa_setup() {
 	if (get_option('wppa_use_cover_opacity', 'nil') == 'nil') update_option('wppa_use_cover_opacity', 'no');
 	if (!is_numeric(get_option('wppa_cover_opacity', 'nil'))) update_option('wppa_cover_opacity', '85');
 	if (!is_numeric(get_option('wppa_animation_speed', 'nil'))) update_option('wppa_animation_speed', '600');
+	if (get_option('wppa_bgcolor_even', 'nil') == 'nil') update_option('wppa_bgcolor_even', '#eeeeee');
+	if (get_option('wppa_bgcolor_alt', 'nil') == 'nil') update_option('wppa_bgcolor_alt', '#dddddd');
+	if (get_option('wppa_bgcolor_nav', 'nil') == 'nil') update_option('wppa_bgcolor_nav', '#dddddd');
+	if (get_option('wppa_bgcolor_img', 'nil') == 'nil') update_option('wppa_bgcolor_img', '#eeeeee');
+	if (get_option('wppa_bcolor_even', 'nil') == 'nil') update_option('wppa_bcolor_even', '#cccccc');
+	if (get_option('wppa_bcolor_alt', 'nil') == 'nil') update_option('wppa_bcolor_alt', '#bbbbbb');
+	if (get_option('wppa_bcolor_nav', 'nil') == 'nil') update_option('wppa_bcolor_nav', '#bbbbbb');
 	
-	if ($old_rev < '200') {
+	if ($old_rev < '210') {
 		$key = '0';
 		$userstyle = ABSPATH . 'wp-content/themes/' . get_option('template') . '/wppa_style.css';
 		$usertheme = ABSPATH . 'wp-content/themes/' . get_option('template') . '/wppa_theme.php';
@@ -111,7 +118,7 @@ function wppa_setup() {
 		update_option('wppa_update_key', $key);
 		}
 	
-	update_option('wppa_revision', '201');
+	update_option('wppa_revision', '210');
 	}
 }
 	
