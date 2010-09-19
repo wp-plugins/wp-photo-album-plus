@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, gallery, slideshow, sidebar widget, photo widget, phtoblog
-Version: 2.0.2
+Version: 2.0.1
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -128,12 +128,11 @@ After modification:
 
 == Changelog ==
 
-= 2.0.2 =
+= 2.0.1 =
 = New Features =
 
 = Bug fixes =
-* (2.0.2) Definition of PLUGIN_PATH changed to WPPA_PLUGIN_PATH for compatibiity reasons with other plugins that use PLUGIN_PATH
-* (2.0.1) When mouseover effect on coverphotos was switched off, the photo disappears after mouseover. Fixed.
+* When mouseover effect on coverphotos was switched off, the photo disappears after mouseover. Fixed.
 
 = Enhancements =
 * Japanese language support added.

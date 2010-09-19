@@ -766,7 +766,7 @@ function wppa_html($str) {
 }
 
 function wppa_get_imgdir() {
-	$result = get_bloginfo('wpurl') . '/wp-content/plugins/' . WPPA_PLUGIN_PATH . '/images/';
+	$result = get_bloginfo('wpurl') . '/wp-content/plugins/' . PLUGIN_PATH . '/images/';
 	return $result;
 }
 
