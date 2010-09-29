@@ -1,5 +1,5 @@
 // Theme variables and functions
-// This is wppa_theme.js version 2.2.0
+// This is wppa_theme.js version 2.1.0
 //
 
 // Style variables
@@ -84,7 +84,7 @@ var temp;
 		temp = parseInt(wppa_fontsize_box);
 		jQuery(".wppa-box-text").css('font-size', temp+'px');
 	}
-	if (wppa_black != '') jQuery(".wppa-black").css('color', wppa_black);
+	if (wppa_black != '') jQuery(".wppa-black").css('color', 'black');
 });
 
 // Popup of thumbnail images 

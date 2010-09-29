@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, gallery, slideshow, sidebar widget, photo widget, phtoblog
-Version: 2.2.0
+Version: 2.1.0
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -90,31 +90,6 @@ The sort order information as well as all features introduced with WP Photo Albu
 
 
 == Changelog ==
-
-= 2.2.0 =
-= New Features =
-
-* The ability to give manage albums rights to selected roles.
-* The ability to give upload rights to selected roles.
-* The ability to give manage sidebar widget rights to selected roles.
-* The settings admin page can only be managed by administrators.
-* You can now decide to resize photos at upload time to the currently specified full size.
-* You can now bulk upload photos. Use an FTP program to upload files and use the new tab 'Import photos' to import them to wppa.
-* A link to ---nothing--- for album cover photo and title.
-* The ability to disable slideshows.
-* You can now decide to show photo name and description under the (standard) thumbnail images
-
-= Bug fixes =
-* Added "clear:none" to H2 album title and thumb title when in display thumbs like covers mode. This repairs the cover layout in some themes.
-
-= Known issues =
-* See: 2.1.0
-
-= Pending enhancement requests =
-* A nuber of thumbnails in the sidebar widget with links to full images.
-* Additional animation effects in slideshows and browse full-size images.* A display alternative to have fullsize images together with a list of thumbnail images.
-* The possibility to include one or more sub-albums to be used in the sidebar widget.
-* Search the photo names and descriptions.
 
 = 2.1.0 =
 = New Features =

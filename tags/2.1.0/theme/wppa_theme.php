@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the albums/photos/slideshow in a page or post
-* Version 2.2.0
+* Version 2.1.0
 */
 global $wppa_fullsize;
 global $is_cover;
@@ -61,9 +61,6 @@ if (wppa_page('albums')) {
 						$href = '#';
 						$title = __('Page is not available.');
 					}
-				} elseif (is_numeric($album['cover_linkpage']) && $album['cover_linkpage'] == -1) {
-					$href = '';
-					$title = '';
 				} else {
 					if ($photocount != '0' && $photocount <= $mincount) {
 						$href = wppa_get_image_page_url() . $occ; 
@@ -82,29 +79,21 @@ if (wppa_page('albums')) {
 				<div class="album wppa-box wppa-<?php echo($alt); ?>">
 					<?php if ($src != '') { ?>
 						<div id="coverphoto_frame_<?php echo($album['id'].'_'.$wppa_occur) ?>" class="coverphoto_frame">
-						<?php if ($href != '') {?>
 							<a href="<?php echo($href); ?>" title="<?php echo($title); ?>">
 								<img src="<?php echo($src); ?>" alt="<?php echo($title); ?>" class="image wppa-img" style="<?php echo($imgattr); ?>" <?php echo($events) ?>/>
 							</a>
-						<?php } else { ?>
-							<img src="<?php echo($src); ?>" alt="<?php echo($title); ?>" class="image wppa-img" style="<?php echo($imgattr); ?>" <?php echo($events) ?>/>
-						<?php } ?>
 						</div>
 					<?php } ?>
-					<h2 class="wppa-title name" style="clear:none;">
-						<?php if ($href != '') { ?>
+					<h2 class="wppa-title name">
 						<a href="<?php echo($href); ?>" title="<?php echo($title); ?>"><?php echo(stripslashes($album['name'])); ?></a>
-						<?php } else { 
-							echo(stripslashes($album['name'])); 
-						} ?>
 					</h2>
-					<p class="wppa-box-text wppa-black description"><?php echo(wppa_html(wppa_get_the_album_desc())); ?></p>
+					<p class="wppa-box-text description"><?php echo(wppa_html(wppa_get_the_album_desc())); ?></p>
 					<div class="wppa-box-text info">
-						<?php if ($photocount > $mincount && get_option('wppa_hide_slideshow', 'no') == 'no') { ?>
+						<?php if ($photocount > $mincount) { ?>
 							<a href="<?php wppa_slideshow_url(); echo($occ); ?>" title="<?php _e('Slideshow', 'wppa'); ?>" ><?php _e('Slideshow', 'wppa'); ?></a>
 						<?php } else echo('&nbsp;'); ?>
 					</div>
-					<div class="wppa-box-text wppa-black info">
+					<div class="wppa-box-text info">
 						<?php if ($photocount > $mincount || $albumcount) { ?>
 							<a href="<?php wppa_album_url(); echo($occ); ?>" title="<?php _e('View the album', 'wppa'); echo(' ' . $album['name']); ?>" ><?php _e('View', 'wppa'); ?>
 								<?php if ($albumcount) { echo(' ' . $albumcount . ' '); _e('albums', 'wppa'); } ?>
@@ -162,7 +151,7 @@ if (wppa_page('albums')) {
 											</a>
 										</div>
 									<?php } ?>
-										<h2 class="wppa-title name" style="clear:none;">
+										<h2 class="wppa-title name">
 											<a href="<?php echo($href); ?>" title="<?php echo($title); ?>"><?php echo(stripslashes($thumb['name'])); ?></a>
 										</h2>
 										<p class="description"><?php echo(wppa_html(stripslashes($thumb['description']))); ?></p>
@@ -192,11 +181,7 @@ if (wppa_page('albums')) {
 								if (get_option('wppa_use_thumb_popup') == 'yes') $title = esc_attr(stripslashes($thumb['description']));
 								else $title = esc_js(wppa_get_photo_name($thumb['id'])); ?>
 								<div id="thumbnail_frame_<?php echo($thumb['id'].'_'.$wppa_occur) ?>" class="thumbnail_frame" >
-									<a href="<?php wppa_photo_page_url(); echo($occ); ?>" class="thumb-img" id="a-<?php echo($thumb['id'].'-'.$wppa_master_occur) ?>"><img src="<?php echo($src); ?>" alt="<?php echo(esc_attr($thumb['name'])); ?>" title="<?php echo(esc_attr($title)); ?>" style="<?php echo($imgattr); ?>" <?php echo($events) ?>/></a>
-									<?php if (get_option('wppa_thumb_text', 'no') == 'yes') { ?>
-										<div class="thumb-text" ><?php echo(stripslashes($thumb['name'])); ?></div>
-										<div class="thumb-text" ><?php echo(stripslashes($thumb['description'])); ?></div>
-									<?php } ?>
+									<a href="<?php wppa_photo_page_url(); echo($occ); ?>" class="img" id="a-<?php echo($thumb['id'].'-'.$wppa_master_occur) ?>"><img src="<?php echo($src); ?>" alt="<?php echo($thumb['name']); ?>" title="<?php echo($title); ?>" style="<?php echo($imgattr); ?>" <?php echo($events) ?>/></a>
 								</div><!-- #thumbnail_frame_<?php echo($thumb['id'].'_'.$wppa_occur) ?> -->
 							<?php }	// End if on page
 							else {	// Not on page, there may be previous and/or next pages
@@ -222,7 +207,7 @@ if (wppa_page('albums')) {
 }
 else {	// Slideshow page or single
 	if (!wppa_page('oneofone')) { ?>
-    <div id="prevnext1-<?php echo($wppa_master_occur) ?>" class="wppa-box wppa-nav" <?php if (get_option('wppa_hide_slideshow', 'no') == 'yes') echo('style="display:none;"'); ?>>
+    <div id="prevnext1-<?php echo($wppa_master_occur) ?>" class="wppa-box wppa-nav">
 		<p style="text-align: center; margin:0">
 			<a id="speed0-<?php echo($wppa_master_occur) ?>" class="speed0" onclick="wppa_speed(<?php echo($wppa_master_occur); ?>, false)"><?php _e('Slower', 'wppa'); ?></a> |
 			<a id="startstop-<?php echo($wppa_master_occur) ?>" class="startstop" onclick="wppa_startstop(<?php echo($wppa_master_occur) ?>, -1)"><?php _e('Start', 'wppa'); ?></a> |
@@ -275,7 +260,7 @@ else {	// Slideshow page or single
 	else {		// Slideshow or single
 		if (isset($_GET['photo'])) $startid = $_GET['photo'];
 		else {
-			if (get_option('wppa_start_slide', 'no') == 'yes' && get_option('wppa_hide_slideshow', 'no') == 'no') $startid = -1;
+			if (get_option('wppa_start_slide', 'no') == 'yes') $startid = -1;
 			else $startid = -2;
 		}
 		if (isset($_GET['album'])) $alb = $_GET['album'];

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the admin pages
-* Version 2.2.0
+* Version 2.1.0
 */
 
 /* Add admin style */
@@ -164,7 +164,6 @@ if (isset($_GET['tab'])) {
 										foreach ($pages as $page) { ?>
 											<option value="<?php echo($page['ID']); ?>" <?php if ($linkpage == $page['ID']) echo($sel); ?>><?php echo($page['post_title']); ?></option>
 										<?php } ?>
-										<option value="-1" <?php if ($linkpage == '-1') echo($sel); ?>><?php _e('--- no link at all ---', 'wppa'); ?></option>
 									</select>
 									<span class="description">
 										<br/><?php _e('If you want, you can link the title and the coverphoto to a WP page in stead of the album\'s content. If so, select the page the cover photo links to.', 'wppa'); ?>
@@ -370,7 +369,7 @@ function wppa_page_upload() {
 						<label for="wppa-album"><?php _e('Album:', 'wppa'); ?> </label>
 						<select name="wppa-album" id="wppa-album"><?php echo(wppa_album_select()); ?></select>
 					</p>
-					<input type="submit" class="button-primary" name="wppa-upload" value="<?php _e('Upload Photos', 'wppa') ?>" />					
+					<input type="submit" class="button-primary" name="wppa-upload" value="<?php _e('Upload Photos', 'wppa') ?>" />
 				</form>
 				<br />
 				<script type="text/javascript">
@@ -384,105 +383,6 @@ function wppa_page_upload() {
 				<p><?php _e('No albums exist. You must', 'wppa'); ?> <a href="admin.php?page=<?php echo(WPPA_PLUGIN_PATH) ?>/wppa.php"><?php _e('create one', 'wppa'); ?></a> <?php _e('beofre you can upload your photos.', 'wppa'); ?></p>
 <?php } ?>
 		</div>
-<?php
-}
-
-function wppa_page_import() {
-	// import images
-        
-	// Check if a message is required
-	wppa_check_update();
-
-	if (isset($_POST['wppa-import-submit'])) {
-		wppa_check_admin_referer( '$wppa_nonce', WPPA_NONCE );
-        if (isset($_POST['del-after'])) $del = true; else $del = false; 
-		wppa_import_photos($del);
-	}
-?>
-	<div class="wrap">
-		<?php $iconurl = get_bloginfo('wpurl') . '/wp-content/plugins/' . WPPA_PLUGIN_PATH . '/images/camera32.png'; ?>
-		<div id="icon-camera" class="icon32" style="background: transparent url(<?php echo($iconurl); ?>) no-repeat"></div>
-		<?php $iconurl = get_bloginfo('wpurl') . '/wp-content/plugins/' . WPPA_PLUGIN_PATH . '/images/arrow32.png'; ?>
-		<div id="icon-arrow" class="icon32" style="background: transparent url(<?php echo($iconurl); ?>) no-repeat"></div>
-		<?php $iconurl = get_bloginfo('wpurl') . '/wp-content/plugins/' . WPPA_PLUGIN_PATH . '/images/album32.png'; ?>
-		<div id="icon-album" class="icon32" style="background: transparent url(<?php echo($iconurl); ?>) no-repeat"><br /></div>
-		
-		<h2><?php _e('Import Photos', 'wppa'); ?></h2><br />
-<?php		
-		// chek if albums exist before allowing upload
-		if(wppa_has_albums()) { 
-
-		$depot = ABSPATH . 'wp-content/wppa-depot';
-		$depoturl = get_bloginfo('url').'/wp-content/wppa-depot';
-		
-		if (!is_dir($depot)) {
-			if (!mkdir($depot)) wppa_error_message(__('Unable to create depot directory', 'wppa').'<br>'.__('Create', 'wppa').' '.$depot.' '.__('with an ftp program and place the photos there.', 'wppa'));
-			else wppa_ok_message(__('Place your photos to be imported in:', 'wppa').' '.$depoturl.'/ '.__('using an FTP program and try again.', 'wppa'));
-		}
-		$paths = ABSPATH . 'wp-content/wppa-depot/*.*';
-		$files = glob($paths);
-	
-		if (count($files) > 2) {
-			$idx = '0';
-?>
-			<form action="<?php echo(get_option('siteurl')) ?>/wp-admin/admin.php?page=import_photos" method="post">
-			<?php wppa_nonce_field('$wppa_nonce', WPPA_NONCE); ?>
-			<p>There are <?php echo(count($files) - 2); ?> photos in the depot.</p>
-			
-				<label for="wppa-album"><?php _e('Import photos to album:', 'wppa'); ?> </label>
-				<select name="wppa-album" id="wppa-album"><?php echo(wppa_album_select()); ?></select>
-				<label for="del-after"><?php _e('Delete after successfull import:', 'wppa'); ?> </label>
-				<input type="checkbox" name="del-after" checked="checked" />
-			</p>
-
-			<p>
-				<input type="submit" class="button-primary" name="wppa-import-submit" value="<?php _e('Import', 'wppa'); ?>" />
-			</p>
-			<br />
-				<table class="form-table albumtable">
-					<thead>
-					</thead>
-					<tbody>
-						<tr>
-<?php
-							$ct = 0;
-							foreach ($files as $file) {
-								if ($idx > '1') {
-									$ext = strtolower(substr(strrchr($file, "."), 1));
-									if ($ext == 'jpg' || $ext == 'png' || $ext == 'gif') {
-?>
-										<td>
-											<input type="checkbox" name="file-<?php echo($idx); ?>" checked="checked" />&nbsp;&nbsp;<?php echo(basename($file)); ?>
-										</td>
-<?php 									if ($ct == 4) {
-											echo('</tr><tr>'); 
-											$ct = 0;
-										}
-										else {
-											$ct++;
-										}
-									}
-								}
-								$idx++;
-							}
-?>
-						</tr>
-					</tbody>
-				</table>
-			<p>
-				<input type="submit" class="button-primary" name="wppa-import-submit" value="<?php _e('Import', 'wppa'); ?>" />
-			</p>
-			</form>
-<?php
-		}
-		else {
-			wppa_ok_message(__('There are no photos in depot:', 'wppa').' '.$depoturl);
-		}
-	}
-	else { ?>
-				<p><?php _e('No albums exist. You must', 'wppa'); ?> <a href="admin.php?page=<?php echo(WPPA_PLUGIN_PATH) ?>/wppa.php"><?php _e('create one', 'wppa'); ?></a> <?php _e('beofre you can upload your photos.', 'wppa'); ?></p>
-<?php } ?>
-	</div>
 <?php
 }
 
@@ -518,17 +418,21 @@ function wppa_page_options() {
 		$start = get_option('wppa_lastthumb', '-2');
 		if ($start != '-2') {
 			$start++; 
-			wppa_ok_message(__('Regenerating thumbnail images, starting at id=', 'wppa').$start.'. Please wait... '.__('If the line of dots stops growing or you browser reports Ready but you did NOT get a \'READY regenerating thumbnail images\' message, your server has given up. In that case: continue this action by clicking', 'wppa').' <a href="'.get_option('siteurl').'/wp-admin/admin.php?page=options">'.__('here', 'wppa').'</a>'.' '.__('and click "Save Changes" again.', 'wppa'));
-		
+?>
+			<div id="message" class="updated fade">
+				<p>
+					<strong><?php _e('Regenerating thumbnail images, starting at', 'wppa'); ?> id=<?php echo($start) ?>. <?php _e('please wait.', 'wppa'); ?></strong><br/>
+					<?php _e('If the line of dots stops growing and you do not get a <strong>READY</strong> message, please continue this action by clicking', 'wppa'); ?>
+					<a href="<?php echo(get_option('siteurl')) ?>/wp-admin/admin.php?page=options"> <?php _e('HERE', 'wppa'); ?></a> <?php _e('and click "Save Changes" again.', 'wppa'); ?>
+				</p>
+			</div>
+<?php 			
 			wppa_regenerate_thumbs(); 
 			wppa_update_message(__('READY regenerating thumbnail images.', 'wppa')); 				
 			update_option('wppa_lastthumb', '-2');
 		}
 		
 		if (isset($_POST['wppa-thumbtype'])) update_option('wppa_thumbtype', $_POST['wppa-thumbtype']);
-		
-		if (isset($_POST['wppa-thumb-text'])) update_option('wppa_thumb_text', 'yes');
-		else update_option('wppa_thumb_text', 'no');
 		
 		update_option('wppa_valign', $_POST['wppa-valign']);
 		update_option('wppa_fullvalign', $_POST['wppa-fullvalign']);
@@ -544,11 +448,6 @@ function wppa_page_options() {
 		} else {
 			$options_error = true;
 		}
-		if (isset($_POST['wppa-resize-on-upload'])) update_option('wppa_resize_on_upload', 'yes');
-		else update_option('wppa_resize_on_upload', 'no');
-		
-		if (isset($_POST['wppa-hide-slideshow'])) update_option('wppa_hide_slideshow', 'no');
-		else update_option('wppa_hide_slideshow', 'yes');
 		
 		if (isset($_POST['wppa-start-slide'])) update_option('wppa_start_slide', 'yes');
 		else update_option('wppa_start_slide', 'no');
@@ -603,27 +502,11 @@ function wppa_page_options() {
 		if (isset($_POST['wppa-show-home'])) update_option('wppa_show_home', 'yes');
 		else update_option('wppa_show_home', 'no');
 	
-		$need_update = false;
 		if (isset($_POST['wppa-accesslevel'])) {
-			if (get_option('wppa_accesslevel', '') != $_POST['wppa-accesslevel']) {
-				update_option('wppa_accesslevel', $_POST['wppa-accesslevel']);
-				$need_update = true;
-			}
+			update_option('wppa_accesslevel', $_POST['wppa-accesslevel']);
+			wppa_set_caps();
 		}
-		if (isset($_POST['wppa-accesslevel-upload'])) {
-			if (get_option('wppa_accesslevel_upload', '') != $_POST['wppa-accesslevel-upload']) {
-				update_option('wppa_accesslevel_upload', $_POST['wppa-accesslevel-upload']);
-				$need_update = true;
-			}
-		}
-		if (isset($_POST['wppa-accesslevel-sidebar'])) {
-			if (get_option('wppa_accesslevel_sidebar', '') != $_POST['wppa-accesslevel-sidebar']) {
-				update_option('wppa_accesslevel_sidebar', $_POST['wppa-accesslevel-sidebar']);
-				$need_update = true;
-			}
-		}
-		if ($need_update) wppa_set_caps();
-				
+		
 		if (isset($_POST['wppa-html'])) update_option('wppa_html', 'yes');
 		else update_option('wppa_html', 'no');
 		
@@ -688,24 +571,17 @@ function wppa_page_options() {
 							<label ><?php _e('Full Size:', 'wppa'); ?></label>
 						</th>
 						<td>
-							<input type="text" name="wppa-fullsize" id="wppa-fullsize" value="<?php echo(get_option('wppa_fullsize')) ?>" style="width: 50px;" /><?php _e('pixels wide or high, whichever is the largest.', 'wppa'); ?>
+							<input type="text" name="wppa-fullsize" id="wppa-fullsize" value="<?php echo(get_option('wppa_fullsize')) ?>" style="width: 50px;" />pixels.
+							<span class="description"><br/><?php _e('The size of the full images is controled with html, the photo itself will not be resized.', 'wppa'); ?></span>
 						</td>
 					</tr>
-					<tr valign="top">
-						<th scope="row">
-							<label ><?php _e('Resize on Upload:', 'wppa'); ?></label>
-						</th>
-						<td>
-							<input type="checkbox" name="wppa-resize-on-upload" id="wppa-resize-on-upload" <?php if (get_option('wppa_resize_on_upload', 'no') == 'yes') echo('checked="checked"') ?> />
-							<span class="description"><br/><?php _e('The size of the full images is controled with html, the photo itself will not be resized unless you check the \'Resize on Upload\' box.', 'wppa'); ?></span>
-						</td>
 					<tr valign="top">
 						<th scope="row">
 							<label ><?php _e('Stretch if needed:', 'wppa'); ?></label>
 						</th>
 						<td>
 							<input type="checkbox" name="wppa-enlarge" id="wppa-enlarge" <?php if (get_option('wppa_enlarge', 'yes') == 'yes') echo ('checked="checked"') ?> />
-							<span class="description"><br/><?php _e('Fullsize images will be stretched to the Full Size at display time if they are smaller. Leaving unchecked is recommended. It is better to upload photos that fit well the sizes you use!', 'wppa'); ?></span>
+							<span class="description"><br/><?php _e('Fullsize images will be stretched to the Full Size if needed. Leaving unchecked is recommended. It is better to upload photos that fit well the sizes you use!', 'wppa'); ?></span>
 						</td>
 					</tr>
 					<tr valign="top">
@@ -726,15 +602,6 @@ function wppa_page_options() {
 					</tr>
 					<tr valign="top">
 						<th scope="row">
-							<label><?php _e('Enable slideshow:', 'wppa'); ?></label>
-						</th>
-						<td>
-							<input type="checkbox" name="wppa-hide-slideshow" id="wppa-hide-slideshow" onchange="wppaCheckHs()" <?php if (get_option('wppa_hide_slideshow', 'no') == 'no') echo('checked="checked"'); ?> />
-							<span class="description"><br/><?php _e('If you do not want slideshows: uncheck this box. Browsing full size images will remain possible.', 'wppa'); ?></span>
-						</td>
-					</tr>
-					<tr valign="top" class="wppa-ss">
-						<th scope="row">
 							<label><?php _e('Slideshow animation speed:', 'wppa'); ?></label>
 						</th>
 						<td>
@@ -750,7 +617,7 @@ function wppa_page_options() {
 							<span class="description"><br/><?php _e('Specify the animation speed to be used in slideshows.', 'wppa'); ?></span>
 						</td>
 					</tr>	
-					<tr valign="top" class="wppa-ss">
+					<tr valign="top">
 						<th scope="row">
 							<label><?php _e('Start running slideshow:', 'wppa'); ?></label>
 						</th>
@@ -759,7 +626,6 @@ function wppa_page_options() {
 							<span class="description"><br/><?php _e('If checked, the slideshow will start running immediately, if unchecked the first photo will be displayed in browse mode.', 'wppa'); ?></span>
 						</td>
 					</tr>
-					<script type="text/javascript">wppaCheckHs();</script>
 					<tr><th><hr/></th><td><hr/></td></tr>
 					<tr><th><small><?php _e('Thumbnails:', 'wppa'); ?></small></th></tr>
 					<tr valign="top">
@@ -834,15 +700,6 @@ function wppa_page_options() {
 						<td>
 							<input type="checkbox" name="wppa-use-thumb-popup" id="wppa-use-thumb-popup" <?php if (get_option('wppa_use_thumb_popup', 'no') == 'yes') echo('checked="checked"') ?> />
 							<span class="description"><br/><?php _e('Use popup effect on thumbnail images.', 'wppa') ?></span>
-						</td>
-					</tr>
-					<tr valign="top" id="wppa-tt">
-						<th scope="row">
-							<label><?php _e('Thumbnail text:', 'wppa'); ?></label>
-						</th>
-						<td>
-							<input type="checkbox" name="wppa-thumb-text" id="wppa-thumb-text" <?php if (get_option('wppa_thumb_text', 'no') == 'yes') echo('checked="checked"') ?> />
-							<span class="description"><br/><?php _e('Display name and description under thumbnails.', 'wppa') ?></span>
 						</td>
 					</tr>
 					<script type="text/javascript">wppaCheckTt();</script>
@@ -1011,7 +868,7 @@ function wppa_page_options() {
 					</tr>
 					<tr valign="top">
 						<th scope="row">
-							<label><?php _e('Font for fullsize photo descriptions:', 'wppa'); ?></label>
+							<label><?php _e('Font for fullsize photo descriptios:', 'wppa'); ?></label>
 						</th>
 						<td>
 							<?php _e('Font family:', 'wppa') ?> <input type="text" name="wppa-fontfamily-fulldesc" id="wppa-fontfamily-fulldesc" value="<?php echo(get_option('wppa_fontfamily_fulldesc', '')) ?>" style="width: 200px;" />&nbsp;
@@ -1081,7 +938,7 @@ function wppa_page_options() {
 <?php if (current_user_can('administrator')) { ?>
 					<tr valign="top">
 						<th scope="row">
-							<label ><?php _e('Albums Access Level:', 'wppa'); ?></label>
+							<label ><?php _e('Access Level:', 'wppa'); ?></label>
 						</th>
 						<td>
 							<?php $level = get_option('wppa_accesslevel'); ?>
@@ -1092,40 +949,7 @@ function wppa_page_options() {
 								<option value="author" <?php if ($level == 'author') echo($sel); ?>><?php _e('Author', 'wppa'); ?></option>
 								<option value="contributor" <?php if ($level == 'contributor') echo($sel); ?>><?php _e('Contributor', 'wppa'); ?></option>				
 							</select>
-							<span class="description"><br/><?php _e('The minmum user level that can access the photo album admin (i.e. Manage Albums and Upload Photos).', 'wppa'); ?></span>
-						</td>
-					</tr>
-					<tr valign="top">
-						<th scope="row">
-							<label ><?php _e('Upload Access Level:', 'wppa'); ?></label>
-						</th>
-						<td>
-							<?php $level = get_option('wppa_accesslevel_upload'); ?>
-							<?php $sel = 'selected="selected"'; ?>
-							<select name="wppa-accesslevel-upload">
-								<option value="administrator" <?php if ($level == 'administrator') echo($sel); ?>><?php _e('Administrator', 'wppa'); ?></option> 
-								<option value="editor" <?php if ($level == 'editor') echo($sel); ?>><?php _e('Editor', 'wppa'); ?></option>
-								<option value="author" <?php if ($level == 'author') echo($sel); ?>><?php _e('Author', 'wppa'); ?></option>
-								<option value="contributor" <?php if ($level == 'contributor') echo($sel); ?>><?php _e('Contributor', 'wppa'); ?></option>				
-							</select>
-							<span class="description"><br/><?php _e('The minmum user level that can upload photos.', 'wppa'); ?>
-						</td>
-					</tr>
-					<tr valign="top">
-						<th scope="row">
-							<label ><?php _e('Sidebar Access Level:', 'wppa'); ?></label>
-						</th>
-						<td>
-							<?php $level = get_option('wppa_accesslevel_sidebar'); ?>
-							<?php $sel = 'selected="selected"'; ?>
-							<select name="wppa-accesslevel-sidebar">
-								<option value="administrator" <?php if ($level == 'administrator') echo($sel); ?>><?php _e('Administrator', 'wppa'); ?></option> 
-								<option value="editor" <?php if ($level == 'editor') echo($sel); ?>><?php _e('Editor', 'wppa'); ?></option>
-								<option value="author" <?php if ($level == 'author') echo($sel); ?>><?php _e('Author', 'wppa'); ?></option>
-								<option value="contributor" <?php if ($level == 'contributor') echo($sel); ?>><?php _e('Contributor', 'wppa'); ?></option>				
-							</select>
-							<span class="description"><br/><?php _e('The minmum user level that can access the photo album sidebar widget admin.', 'wppa'); ?>
-							<br/><br/><?php _e('NOTE: Accessing this page - Settings - is always priviledged to Administrators.', 'wppa'); ?></span>
+							<span class="description"><br/><?php _e('The minmum user level that can access the photo album admin.', 'wppa'); ?></span>
 						</td>
 					</tr>
 <?php } ?>					
@@ -1634,7 +1458,7 @@ function wppa_has_albums() {
 // get select form element listing albums 
 function wppa_album_select($exc = '', $sel = '', $addnone = FALSE, $addseparate = FALSE, $checkancestors = FALSE) {
 	global $wpdb;
-	$albums = $wpdb->get_results("SELECT * FROM " . ALBUM_TABLE . " ORDER BY name", 'ARRAY_A');
+	$albums = $wpdb->get_results("SELECT * FROM " . ALBUM_TABLE, 'ARRAY_A');
 	
     if ($sel == '') {
         $s = wppa_get_last_album();
@@ -1819,11 +1643,6 @@ function wppa_main_photo($cur = '') {
 // Upload photos 
 function wppa_upload_photos() {
 	global $wpdb;
-	global $warning_given;
-
-	wppa_cleanup_photos();
-	
-	$warning_given = false;
 
 	$wppa_dir = ABSPATH . 'wp-content/uploads/wppa';
 	
@@ -1836,15 +1655,15 @@ function wppa_upload_photos() {
 	if (!is_dir($wppa_dir . '/thumbs')) {
 		mkdir($wppa_dir . '/thumbs');
 	}
-		
+	
+	$warning_given = false;
+	
 	foreach ($_FILES as $file) {
 		if ($file['tmp_name'] != '') {
 			$img_size = getimagesize($file['tmp_name']);
 			if ($img_size) { 
 				if (!$warning_given && ($img_size['0'] > 1280 || $img_size['1'] > 1280)) {
-					if (get_option('wppa_resize_on_upload', 'no') == 'no') {
-						wppa_warning_message(__('WARNING You are uploading very large photos, this may result in server problems and excessive download times for your website visitors.', 'wppa') . '<br/>' . __('Check the \'Resize on upload\' checkbox, and/or resize the photos before uploading. The recommended size is: not larger than 1024 x 768 pixels (up to approx. 250 kB).', 'wppa'));
-					}
+					wppa_error_message(__('WARNING You are uploading very large photos, this may result in server problems! The recommended size is: not larger than 1024 x 768 pixels (up to approx. 250 kB).', 'wppa'));
 					$warning_given = true;
 				}
 				$ext = substr(strrchr($file['name'], "."), 1);
@@ -1855,17 +1674,7 @@ function wppa_upload_photos() {
 				$image_id = $wpdb->get_var("SELECT LAST_INSERT_ID()");
 				
 				$newimage = $wppa_dir . '/' . $image_id . '.' . $ext;
-				
-				if (get_option('wppa_resize_on_upload', 'no') == 'yes') {
-					require_once('wppa_class_resize.php');
-					$dir = $img_size[0] > $img_size[1] ? 'W' : 'H';
-					$siz = get_option('wppa_fullsize', '800');
-					
-					$objResize = new wppa_ImageResize($file['tmp_name'], $newimage, $dir, $siz);
-				}
-				else {
-					copy($file['tmp_name'], $newimage);
-				}
+				copy($file['tmp_name'], $newimage);
 
 				if (is_file ($newimage)) {
 					$uploaded_a_file = TRUE;
@@ -1882,100 +1691,7 @@ function wppa_upload_photos() {
     }
 }
 
-function wppa_import_photos($del_after_import = false) {
-	global $warning_given;
-	
-	wppa_cleanup_photos();
-	
-	$warning_given = false;
-	$paths = ABSPATH . 'wp-content/wppa-depot/*.*';
-	$files = glob($paths);
-	$idx='0';
-	if (isset($_POST['wppa-album'])) $album = $_POST['wppa-album']; else $album = '0';
-	if ($album > '0') {
-		$count = '0';
-		wppa_ok_message(__('Processing files, please wait...', 'wppa').' '.__('If the line of dots stops growing or you browser reports Ready, your server has given up. In that case: try again', 'wppa').' <a href="'.get_option('siteurl').'/wp-admin/admin.php?page=import_photos">'.__('here.', 'wppa').'</a>');
-		foreach ($files as $file) {
-			if (isset($_POST['file-'.$idx])) {
-				if (wppa_insert_photo($file, $album)) {
-					$count++;
-					if ($del_after_import) {
-						unlink($file);
-					}
-				}
-				else {
-					wppa_error_message(__('Error inserting photo', 'wppa') . ' ' . basename($file) . '.');
-				}
-			}
-			$idx++;
-		}
-		if ($count == '0') {
-			wppa_error_message(__('No files to import.', 'wppa'));
-		}
-		else {
-			wppa_update_message($count . ' ' . __('files imported to album number', 'wppa') . ' ' . $album); 
-			wppa_set_last_album($album);
-		}
-	}
-	else {
-		wppa_error_message(__('No known valid album id to import photos to.', 'wppa'));
-	}
-}
 
-function wppa_insert_photo ($file = '', $album = '') {
-	global $wpdb;
-	global $warning_given;
-	
-	if ($file != '' && $album != '' ) {
-		$img_size = getimagesize($file);
-		if ($img_size) { 
-			if (!$warning_given && ($img_size['0'] > 1280 || $img_size['1'] > 1280)) {
-				if (get_option('wppa_resize_on_upload', 'no') == 'yes') {
-					wppa_ok_message(__('Although the photos are resized during the upload process, you may encounter \'Out of memory\'errors.', 'wppa') . '<br/>' . __('In that case: make sure you set the memory limit to 64M and make sure your hosting provider allows you the use of 64 Mb.', 'wppa'));
-				}
-				else {
-					wppa_warning_message(__('WARNING You are uploading very large photos, this may result in server problems and excessive download times for your website visitors.', 'wppa') . '<br/>' . __('Check the \'Resize on upload\' checkbox, and/or resize the photos before uploading. The recommended size is: not larger than 1024 x 768 pixels (up to approx. 250 kB).', 'wppa'));
-				}
-				$warning_given = true;
-			}
-		}
-		$ext = substr(strrchr($file, "."), 1);
-			
-		$query = $wpdb->prepare('INSERT INTO `' . PHOTO_TABLE . '` (`id`, `album`, `ext`, `name`, `p_order`, `description`) VALUES (0, %d, %s, %s, 0, \'\')', $album, $ext, basename($file));
-		$wpdb->query($query);
-
-		$image_id = $wpdb->get_var("SELECT LAST_INSERT_ID()");
-				
-		$newimage = ABSPATH . 'wp-content/uploads/wppa/' . $image_id . '.' . $ext;
-			
-		if (get_option('wppa_resize_on_upload', 'no') == 'yes') {
-			require_once('wppa_class_resize.php');
-			$dir = $img_size[0] > $img_size[1] ? 'W' : 'H';
-			$siz = get_option('wppa_fullsize', '800');
-			$s = $img_size[0] > $img_size[1] ? $img_size[0] : $img_size[1];
-			if ($s > $siz) {	
-				$objResize = new wppa_ImageResize($file, $newimage, $dir, $siz);
-			}
-			else {
-				copy($file, $newimage);
-			}
-		}
-		else {
-			copy($file, $newimage);
-		}
-
-		if (is_file ($newimage)) {
-			$thumbsize = wppa_get_minisize();
-			wppa_create_thumbnail($newimage, $thumbsize, '' );
-		} 
-		else {
-			return false;
-		}
-		echo('.');
-		return true;
-	}
-	else return false;
-}
 
 // update all thumbs 
 function wppa_regenerate_thumbs() {
@@ -1998,48 +1714,99 @@ function wppa_regenerate_thumbs() {
 	}		
 }
 
-function wppa_create_thumbnail( $file, $max_side, $effect = '') {
-	if (file_exists($file)) {
-		$img_size = getimagesize( $file );
-		$dir = $img_size[0] > $img_size[1] ? 'W' : 'H';
-		$thumb = 'thumbs/' . basename( $file );
-		$thumbpath = str_replace( basename( $file ), $thumb, $file );
+/* create thubmnail - slightly modified  and renamed wordpress core function */
+function wppa_create_thumbnail( $file, $max_side, $effect = '' ) {
 
-		require_once('wppa_class_resize.php');
-		
-		$objResize = new wppa_ImageResize($file, $thumbpath, $dir, $max_side);
-	}
-	else {
-		return false;
-	}
-}
+		// 1 = GIF, 2 = JPEG, 3 = PNG
 
-// Remove db photo entries that have no fullsize image 
-function wppa_cleanup_photos($alb = '') {
-	global $wpdb;
-	if ($alb == '') $alb = wppa_get_last_album();
-	if (!is_numeric($alb)) return;
-	
-	if ($alb == '0') wppa_ok_message(__('Checking database, please wait...', 'wppa'));
-	$count = 0;
-	if ($alb == '0') $entries = $wpdb->get_results('SELECT id, ext FROM '.PHOTO_TABLE, ARRAY_A);
-	else $entries = $wpdb->get_results('SELECT id, ext FROM '.PHOTO_TABLE.' WHERE album = '.$alb, ARRAY_A);
-	if ($entries) {
-		foreach ($entries as $entry) {
-			$thumbpath = ABSPATH.'wp-content/uploads/wppa/thumbs/'.$entry['id'].'.'.$entry['ext'];
-			$imagepath = ABSPATH.'wp-content/uploads/wppa/'.$entry['id'].'.'.$entry['ext'];
-			if (!is_file($thumbpath)) {	// No thumb: delete fullimage
-				if (is_file($imagepath)) unlink($imagepath);
+	if ( file_exists( $file ) ) {
+		$type = getimagesize( $file );
+		// if the associated function doesn't exist - then it's not
+		// handle. duh. i hope.
+
+		if (!function_exists( 'imagegif' ) && $type[2] == 1 ) {
+			$error = __( 'Filetype not supported. Thumbnail not created.', 'wppa' );
+		}
+		elseif (!function_exists( 'imagejpeg' ) && $type[2] == 2 ) {
+			$error = __( 'Filetype not supported. Thumbnail not created.', 'wppa' );
+		}
+		elseif (!function_exists( 'imagepng' ) && $type[2] == 3 ) {
+			$error = __( 'Filetype not supported. Thumbnail not created.', 'wppa' );
+		} else {
+
+			// create the initial copy from the original file
+			if ( $type[2] == 1 ) {
+				$image = imagecreatefromgif( $file );
 			}
-			if (!is_file($imagepath)) { // No fullimage: delete db entry
-				if ($wpdb->query($wpdb->prepare('DELETE FROM `'.PHOTO_TABLE.'` WHERE `id` = %d LIMIT 1', $entry['id']))) {
-					$count++;
+			elseif ( $type[2] == 2 ) {
+				$image = imagecreatefromjpeg( $file );
+			}
+			elseif ( $type[2] == 3 ) {
+				$image = imagecreatefrompng( $file );
+			}
+
+			if ( function_exists( 'imageantialias' ))
+				imageantialias( $image, TRUE );
+
+			$image_attr = getimagesize( $file );
+
+			// figure out the longest side
+
+			if ( $image_attr[0] > $image_attr[1] ) {
+				$image_width = $image_attr[0];
+				$image_height = $image_attr[1];
+				$image_new_width = $max_side;
+
+				$image_ratio = $image_width / $image_new_width;
+				$image_new_height = round($image_height / $image_ratio);
+				//width is > height
+			} else {
+				$image_width = $image_attr[0];
+				$image_height = $image_attr[1];
+				$image_new_height = $max_side;
+
+				$image_ratio = $image_height / $image_new_height;
+				$image_new_width = round($image_width / $image_ratio);
+				//height > width
+			}
+
+			$thumbnail = imagecreatetruecolor( $image_new_width, $image_new_height);
+//			$thumbnail = imagecreate( $image_new_width, $image_new_height);
+			@ imagecopyresampled( $thumbnail, $image, 0, 0, 0, 0, $image_new_width, $image_new_height, $image_attr[0], $image_attr[1] );
+
+			// If no filters change the filename, we'll do a default transformation.
+			if ( basename( $file ) == $thumb = apply_filters( 'thumbnail_filename', basename( $file ) ) )
+				$thumb = 'thumbs/' . basename( $file );
+				//$thumb = preg_replace( '!(\.[^.]+)?$!', '.thumbnail' . '$1', basename( $file ), 1 );
+
+			$thumbpath = str_replace( basename( $file ), $thumb, $file );
+
+			// move the thumbnail to its final destination
+			if ( $type[2] == 1 ) {
+				if (!imagegif( $thumbnail, $thumbpath ) ) {
+					$error = __( "Thumbnail path invalid", 'wppa' );
 				}
 			}
+			elseif ( $type[2] == 2 ) {
+				if (!imagejpeg( $thumbnail, $thumbpath ) ) {
+					$error = __( "Thumbnail path invalid", 'wppa' );
+				}
+			}
+			elseif ( $type[2] == 3 ) {
+				if (!imagepng( $thumbnail, $thumbpath ) ) {
+					$error = __( "Thumbnail path invalid", 'wppa' );
+				}
+			}
+
 		}
+	} else {
+		$error = __( 'File not found', 'wppa' );
 	}
-	if ($count > 0){
-		wppa_ok_message(__('Database fixed for', 'wppa').' '.$count.' '.__('invalid entries.', 'wppa'));
+
+	if (!empty ( $error ) ) {
+		return $error;
+	} else {
+		return apply_filters( 'wp_create_thumbnail', $thumbpath );
 	}
 }
 
@@ -2061,9 +1828,6 @@ function wppa_set_caps() {
 
 	if (current_user_can('administrator')) {
 		$wp_roles->add_cap('administrator', 'wppa_admin');
-		$wp_roles->add_cap('administrator', 'wppa_sidebar_admin');
-		$wp_roles->add_cap('administrator', 'wppa_upload');
-		/* album admin and upload */
 		$level = get_option('wppa_accesslevel', 'administrator');
 		if ($level == 'contributor') {
 			$wp_roles->remove_cap('subscriber', 'wppa_admin');		
@@ -2088,58 +1852,6 @@ function wppa_set_caps() {
 			$wp_roles->remove_cap('contibutor', 'wppa_admin');
 			$wp_roles->remove_cap('author', 'wppa_admin');
 			$wp_roles->remove_cap('editor', 'wppa_admin');		
-		}
-		/* upload photos */
-		$level = get_option('wppa_accesslevel_upload', 'administrator');
-		if ($level == 'contributor') {
-			$wp_roles->remove_cap('subscriber', 'wppa_upload');		
-			$wp_roles->add_cap('contibutor', 'wppa_upload');
-			$wp_roles->add_cap('author', 'wppa_upload');
-			$wp_roles->add_cap('editor', 'wppa_upload');	
-		}
-		if ($level == 'author') {
-			$wp_roles->remove_cap('subscriber', 'wppa_upload');		
-			$wp_roles->remove_cap('contibutor', 'wppa_upload');
-			$wp_roles->add_cap('author', 'wppa_upload');
-			$wp_roles->add_cap('editor', 'wppa_upload');		
-		}
-		if ($level == 'editor') {
-			$wp_roles->remove_cap('subscriber', 'wppa_upload');		
-			$wp_roles->remove_cap('contibutor', 'wppa_upload');
-			$wp_roles->remove_cap('author', 'wppa_upload');
-			$wp_roles->add_cap('editor', 'wppa_upload');		
-		}
-		if ($level == 'administrator') {
-			$wp_roles->remove_cap('subscriber', 'wppa_upload');		
-			$wp_roles->remove_cap('contibutor', 'wppa_upload');
-			$wp_roles->remove_cap('author', 'wppa_upload');
-			$wp_roles->remove_cap('editor', 'wppa_upload');		
-		}
-		/* sidebar widget admin */
-		$level = get_option('wppa_accesslevel_sidebar', 'administrator');
-		if ($level == 'contributor') {
-			$wp_roles->remove_cap('subscriber', 'wppa_sidebar_admin');		
-			$wp_roles->add_cap('contibutor', 'wppa_sidebar_admin');
-			$wp_roles->add_cap('author', 'wppa_sidebar_admin');
-			$wp_roles->add_cap('editor', 'wppa_sidebar_admin');	
-		}
-		if ($level == 'author') {
-			$wp_roles->remove_cap('subscriber', 'wppa_sidebar_admin');		
-			$wp_roles->remove_cap('contibutor', 'wppa_sidebar_admin');
-			$wp_roles->add_cap('author', 'wppa_sidebar_admin');
-			$wp_roles->add_cap('editor', 'wppa_sidebar_admin');		
-		}
-		if ($level == 'editor') {
-			$wp_roles->remove_cap('subscriber', 'wppa_sidebar_admin');		
-			$wp_roles->remove_cap('contibutor', 'wppa_sidebar_admin');
-			$wp_roles->remove_cap('author', 'wppa_sidebar_admin');
-			$wp_roles->add_cap('editor', 'wppa_sidebar_admin');		
-		}
-		if ($level == 'administrator') {
-			$wp_roles->remove_cap('subscriber', 'wppa_sidebar_admin');		
-			$wp_roles->remove_cap('contibutor', 'wppa_sidebar_admin');
-			$wp_roles->remove_cap('author', 'wppa_sidebar_admin');
-			$wp_roles->remove_cap('editor', 'wppa_sidebar_admin');		
 		}
 	}
 }			

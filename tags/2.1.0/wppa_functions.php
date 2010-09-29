@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions and API modules
-* Version 2.2.0
+* Version 2.1.0
 */
 
 /* TEMPLATE FUNCTIONS (TAGS) */
@@ -697,18 +697,6 @@ function wppa_error_message($msg) {
 	<div id="error" class="error"><p><strong><?php echo($msg); ?></strong></p></div>
 <?php
 }
-// display warning message
-function wppa_warning_message($msg) {
-?>
-	<div id="warning" class="updated"><p><strong><?php echo($msg); ?></strong></p></div>
-<?php
-}
-// display ok message
-function wppa_ok_message($msg) {
-?>
-	<div id="warning" class="updated" style="background-color: #e0ffe0; border-color: #55ee55;" ><p><strong><?php echo($msg); ?></strong></p></div>
-<?php
-}
 
 function wppa_check_numeric($value, $minval, $target, $maxval = '') {
 	if ($maxval == '') {
@@ -906,7 +894,7 @@ function wppa_page_links($npages = '1', $curpage = '1') {
 		if ($from > '1') echo('.&nbsp;.&nbsp;.&nbsp;');
 		for ($i=$from; $i<=$to; $i++) { 
 			if ($curpage == $i) { ?>
-				<div class="wppa-mini-box wppa-alt " style="display:inline; text-align:center; color:<?php echo(get_option('wppa_black', 'black')) ?>; text-decoration: none; cursor: default; font-weight:normal;" ><a style="font-weight:normal; text-decoration: none; cursor: default; color:<?php echo(get_option('wppa_black', 'black')) ?>;">&nbsp;<?php echo($i) ?>&nbsp;</a></div>
+				<div class="wppa-mini-box wppa-alt " style="display:inline; text-align:center; color:black; text-decoration: none; cursor: default; font-weight:normal;" ><a style="font-weight:normal; text-decoration: none; cursor: default; color:black;">&nbsp;<?php echo($i) ?>&nbsp;</a></div>
 	<?php		}
 			else { ?>
 				<div class="wppa-mini-box wppa-even " style="display:inline; text-align:center;" ><a href="<?php echo($pnu . '&page=' . $i) ?>">&nbsp;<?php echo($i) ?>&nbsp;</a></div>

@@ -1,7 +1,7 @@
 /* admin_scripts.js */
 /* Package: wp-photo-album-plus
 /*
-/* Version 2.2.0
+/* Version 2.0.0
 /* Various js routines used in admin pages		
 */
 
@@ -74,11 +74,9 @@ function wppaCheckTt() {
 	var ttype = document.getElementById('wppa-thumbtype').value;
 	if (ttype == 'default') {
 		document.getElementById('wppa-utp').style.visibility = "visible";
-		document.getElementById('wppa-tt').style.visibility = "visible";
 	}
 	if (ttype == 'ascovers') {
 		document.getElementById('wppa-utp').style.visibility = "collapse";
-		document.getElementById('wppa-tt').style.visibility = "collapse";
 	}
 }
 
@@ -104,9 +102,4 @@ function wppaCheckUco() {
 	}
 }
 
-function wppaCheckHs() {
-	var Hs = document.getElementById('wppa-hide-slideshow').checked;
-	if (Hs) jQuery(".wppa-ss").css('visibility', 'visible');
-	else jQuery(".wppa-ss").css('visibility', 'collapse');
-}
 /**/
