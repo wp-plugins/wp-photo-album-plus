@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: WP Photo Album Plus 2.0.0\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/wp-photo-album-plus\n"
 "POT-Creation-Date: 2010-08-22 09:46+0000\n"
-"PO-Revision-Date: 2010-08-22 22:52+0900\n"
+"PO-Revision-Date: 2010-09-21 15:02+0900\n"
 "Last-Translator: BNG NET <webmaster@bng.net>\n"
 "Language-Team: BNG NET <webmaster@bng.net>\n"
 "MIME-Version: 1.0\n"
@@ -18,6 +18,210 @@ msgstr ""
 "X-Poedit-Country: JAPAN\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-Bookmarks: -1,157,-1,-1,-1,-1,-1,-1,-1,-1\n"
+
+#: Added on 2010/09/21
+msgid "of"
+msgstr "/"
+
+#: Added on 2010/09/21
+msgid "Photo"
+msgstr "写真"
+
+#: Added on 2010/09/21
+msgid "Next photo"
+msgstr "次の写真"
+
+#: Added on 2010/09/21
+msgid "Previous photo"
+msgstr "前の写真"
+
+#: Added on 2010/09/21
+msgid "Next page"
+msgstr "次のページ"
+
+#: Added on 2010/09/21
+msgid "Previous page"
+msgstr "前のページ"
+
+#: Added on 2010/09/21
+msgid "If checked: Converts the wppa database tables to UTF-8 This allows the use of certain characters - like Turkish - in photo and album names and descriptions."
+msgstr "チェックをすると: wppaデータベーステーブルをUTF-8に変換します。こうすることで、特定の文字 - トルコ語など - を写真やアルバムの名前や説明に使うことができるようになります。"
+
+#: Added on 2010/09/21
+msgid "Set Character set to UTF-8:"
+msgstr "キャラクターセットをUTF-8にする:"
+
+#: Added on 2010/09/21
+msgid "Color:"
+msgstr "色:"
+
+#: Added on 2010/09/21
+msgid "Enter your sites default text color."
+msgstr "サイトのデフォルトのテキスト色を入力してください。"
+
+#: Added on 2010/09/21
+msgid "Enter font name and size for all other items."
+msgstr "その他すべての要素に適用するフォント名とサイズを入力してください。"
+
+#: Added on 2010/09/21
+msgid "Enter font name and size for navigation items."
+msgstr "ナビゲーション要素のフォント名とサイズを入力してください。"
+
+#: Added on 2010/09/21
+msgid "Font family:"
+msgstr "フォントファミリー:"
+
+#: Added on 2010/09/21
+msgid "Size:"
+msgstr "サイズ:"
+
+#: Added on 2010/09/21
+msgid "Enter font name and size for album cover titles."
+msgstr "アルバムカバータイトルのフォント名とサイズを入力してください。"
+
+#: Added on 2010/09/21
+msgid "Enter a valid CSS color for image backgrounds."
+msgstr "画像背景のCSS色を入力してください。"
+
+#: Added on 2010/09/21
+msgid "Border radius:"
+msgstr "ボーダーの半径"
+
+#: Added on 2010/09/21
+msgid "Border thickness:"
+msgstr "ボーダーの厚み"
+
+#: Added on 2010/09/21
+msgid "Note that rounded corners are only supported by modern browsers."
+msgstr "丸みをもたせたコーナーが表示できるのは、最近のブラウザのみです。"
+
+#: Added on 2010/09/21
+msgid "Enter thicknes and corner radius for the backgrounds above. A number of 0 means: no."
+msgstr "上記の各背景の厚さとコーナー半径を入力してください。0 にすると無効。"
+
+#: Added on 2010/09/21
+msgid "Enter valid CSS colors for navigation backgrounds and borders."
+msgstr "ナビゲーションの背景とボーダーのCSS色を入力してください。"
+
+#: Added on 2010/09/21
+msgid "Enter valid CSS colors for odd numbered backgrounds and borders of album covers and thumbnail displays 'As covers'."
+msgstr "'カバー'として表示されるアルバムカバーやサムネイルの奇数番目の背景とボーダーのCSS色を入力してください。"
+
+#: Added on 2010/09/21
+msgid "Enter valid CSS colors for even numbered backgrounds and borders of album covers and thumbnail displays 'As covers'."
+msgstr "'カバー'として表示されるアルバムカバーやサムネイルの偶数番目の背景とボーダーのCSS色を入力してください。"
+
+#: Added on 2010/09/21
+msgid "Border Color:"
+msgstr "ボーダー色:"
+
+#: Added on 2010/09/21
+msgid "Background Color:"
+msgstr "背景色:"
+
+#: Added on 2010/09/21
+msgid "The css classes that these settings act upon are indicated in the descriptions as follows (for example 'wppa-class'):"
+msgstr "この章の設定が適用されるcssクラスは以下の説明を参照してください (例：'wppa-class'):"
+
+#: Added on 2010/09/21
+msgid "Note: these settings - if not blank - have precednce over css settings or any hard coded attributes."
+msgstr "注意: この章の設定（ブランクにしなかった場合）は、cssの設定やハードコーディングされた属性よりも優先されます。"
+
+#: Added on 2010/09/21
+msgid "It is strongly recommended that you try these settings to achieve your desired appearance before editing the css file."
+msgstr "外見を自分の好みにするには、cssファイルを編集する前に、この章の設定を試してみることを強くお勧めします。"
+
+#: Added on 2010/09/21
+msgid "The settings in this chapter may be left blank. When blank, the theme's defaults are used or the settings in wppa_style.css."
+msgstr "この章の設定はブランクのままでも構いません。ブランクのままにした場合は、テーマのデフォルトまたはwppa_style.cssの設定が適用されます。"
+
+#: Added on 2010/09/21
+msgid "Appearance:"
+msgstr "外観:"
+
+#: Added on 2010/09/21
+msgid "Explanation:"
+msgstr "説明:"
+
+#: Added on 2010/09/21
+msgid "Even background:"
+msgstr "偶数番目の背景:"
+
+#: Added on 2010/09/21
+msgid "Odd background:"
+msgstr "奇数番目の背景:"
+
+#: Added on 2010/09/21
+msgid "Navigation bars:"
+msgstr "ナビゲーションバー:"
+
+#: Added on 2010/09/21
+msgid "Borders:"
+msgstr "ボーダー:"
+
+#: Added on 2010/09/21
+msgid "Popup and Cover Photos:"
+msgstr "ポップアップとカバーフォト:"
+
+#: Added on 2010/09/21
+msgid "Font for album titles:"
+msgstr "アルバムタイトルのフォント:"
+
+#: Added on 2010/09/21
+msgid "Font for fullsize photo descriptions:"
+msgstr "フルサイズの写真の説明のフォント:"
+
+#: Added on 2010/09/21
+msgid "Font for fullsize photo names:"
+msgstr "フルサイズの写真の名前のフォント:"
+
+#: Added on 2010/09/21
+msgid "Font for navigations:"
+msgstr "ナビゲーションのフォント:"
+
+#: Added on 2010/09/21
+msgid "General font in wppa boxes:"
+msgstr "wppaボックスの一般的なフォント:"
+
+#: Added on 2010/09/21
+msgid "Default text color:"
+msgstr "デフォルトのテキスト色:"
+
+#: Added on 2010/09/21
+msgid ""
+"Insert code for single image in Page or Post:\n"
+"You may change the size if you like."
+msgstr ""
+"ページまたは記事にこの画像を表示したい時に挿入するコード:\n"
+"好みのサイズに変更できます。"
+
+#: Added on 2010/09/21
+msgid "Get insertion Code"
+msgstr "挿入コードの取得"
+
+#: Added on 2010/09/21
+msgid "Enter the maximum number of album covers per page. A value of 0 indicates no pagination."
+msgstr "１ページあたりのカバー最大数を入力してください。0 にするとページ付けを行いません。"
+
+#: Added on 2010/09/21
+msgid "Max covers per page:"
+msgstr "１ページあたり最大カバー数:"
+
+#: Added on 2010/09/21
+msgid "Enter the maximum number of thumbnail images per page. A value of 0 indicates no pagination."
+msgstr "１ページあたりのサムネイル最大数を入力してください。0 にするとページ付けを行いません。"
+
+#: Added on 2010/09/21
+msgid "Max thumbnails per page:"
+msgstr "１ページあたり最大サムネイル数:"
+
+#: Added on 2010/09/21
+msgid "If checked, the slideshow will start running immediately, if unchecked the first photo will be displayed in browse mode."
+msgstr "チェックすると、ただちにスライドショーが開始されます。チェックを外した状態では、ブラウズモードで最初の写真が表示されます。"
+
+#: Added on 2010/09/21
+msgid "Start running slideshow:"
+msgstr "スライドショーの開始:"
 
 #: extra/twentyten/loop.php:26
 #: extra/twentyten/loop.php:176

@@ -2,7 +2,7 @@
 /*
 Plugin Name: WP Photo Album Plus
 Description: Easily manage and display your photo albums and slideshows within your WordPress site.
-Version: 2.1.0
+Version: 2.2.0
 Author: J.N. Breetvelt a.k.a OpaJaap
 Author URI: http://www.opajaap.nl/
 Plugin URI: http://wordpress.org/extend/plugins/wp-photo-album-plus/
@@ -32,7 +32,9 @@ if (file_exists($path) || !function_exists('wp_nonce_field') ) {
         $wppa_nonce = -1;
 		$wppa_no_nonce = true;
 } else {
-		function wppa_nonce_field($action = -1,$name = 'wppa-update-check') { return wp_nonce_field($action,$name); }
+		function wppa_nonce_field($action = -1,$name = 'wppa-update-check') { 
+			return wp_nonce_field($action,$name); 
+		}
 		define('WPPA_NONCE' , 'wppa-update-check');
 }
 function wppa_check_admin_referer($arg1, $arg2) {
@@ -55,7 +57,7 @@ function wppa_setup() {
 	global $wpdb;
 	
 	$old_rev = get_option('wppa_revision', '100');
-	if ($old_rev <= '210') {
+	if ($old_rev <= '220') {
 		
 	$create_albums = "CREATE TABLE " . ALBUM_TABLE . " (
                     id bigint(20) NOT NULL auto_increment, 
@@ -109,7 +111,7 @@ function wppa_setup() {
 	if (get_option('wppa_bcolor_alt', 'nil') == 'nil') update_option('wppa_bcolor_alt', '#bbbbbb');
 	if (get_option('wppa_bcolor_nav', 'nil') == 'nil') update_option('wppa_bcolor_nav', '#bbbbbb');
 	
-	if ($old_rev < '210') {
+	if ($old_rev < '220') {
 		$key = '0';
 		$userstyle = ABSPATH . 'wp-content/themes/' . get_option('template') . '/wppa_style.css';
 		$usertheme = ABSPATH . 'wp-content/themes/' . get_option('template') . '/wppa_theme.php';
@@ -118,7 +120,7 @@ function wppa_setup() {
 		update_option('wppa_update_key', $key);
 		}
 	
-	update_option('wppa_revision', '210');
+	update_option('wppa_revision', '220');
 	}
 }
 	
@@ -133,14 +135,17 @@ function wppa_add_admin() {
 
 	if (current_user_can('administrator')) {	// Make sure admin has access rights
 		$wp_roles->add_cap('administrator', 'wppa_admin');
+		$wp_roles->add_cap('administrator', 'wppa_upload');
+		$wp_roles->add_cap('administrator', 'wppa_sidebar_admin');
 	}
 
 	$iconurl = get_bloginfo('wpurl') . '/wp-content/plugins/' . WPPA_PLUGIN_PATH . '/images/camera16.png';
 	add_menu_page('WP Photo Album', __('Photo Albums', 'wppa'), 'wppa_admin', __FILE__, 'wppa_admin', $iconurl);
 	
-    add_submenu_page(__FILE__, __('Upload Photos', 'wppa'), __('Upload Photos', 'wppa'), 'wppa_admin', 'upload_photos', 'wppa_page_upload');
-    add_submenu_page(__FILE__, __('Settings', 'wppa'), __('Settings', 'wppa'), 'wppa_admin', 'options', 'wppa_page_options');
-	add_submenu_page(__FILE__, __('Sidebar Widget', 'wppa'), __('Sidebar Widget', 'wppa'), 'wppa_admin', 'wppa_sidebar_options', 'wppa_sidebar_page_options');
+    add_submenu_page(__FILE__, __('Upload Photos', 'wppa'), __('Upload Photos', 'wppa'), 'wppa_upload', 'upload_photos', 'wppa_page_upload');
+	add_submenu_page(__FILE__, __('Import Photos', 'wppa'), __('Import Photos', 'wppa'), 'wppa_upload', 'import_photos', 'wppa_page_import');
+    add_submenu_page(__FILE__, __('Settings', 'wppa'), __('Settings', 'wppa'), 'administrator', 'options', 'wppa_page_options');
+	add_submenu_page(__FILE__, __('Sidebar Widget', 'wppa'), __('Sidebar Widget', 'wppa'), 'wppa_sidebar_admin', 'wppa_sidebar_options', 'wppa_sidebar_page_options');
     add_submenu_page(__FILE__, __('Help &amp; Info', 'wppa'), __('Help &amp; Info', 'wppa'), 'wppa_admin', 'wppa_help', 'wppa_page_help');
 }
 
