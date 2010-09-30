@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: WP Photo Album Plus 2.0.0\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/wp-photo-album-plus\n"
 "POT-Creation-Date: 2010-08-22 09:46+0000\n"
-"PO-Revision-Date: 2010-09-21 15:02+0900\n"
+"PO-Revision-Date: 2010-09-30 05:17+0900\n"
 "Last-Translator: BNG NET <webmaster@bng.net>\n"
 "Language-Team: BNG NET <webmaster@bng.net>\n"
 "MIME-Version: 1.0\n"
@@ -18,6 +18,98 @@ msgstr ""
 "X-Poedit-Country: JAPAN\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-Bookmarks: -1,157,-1,-1,-1,-1,-1,-1,-1,-1\n"
+
+#: Added on 2010/09/30
+msgid "WPPA Charset:"
+msgstr "フォトアルバムの文字コード:"
+
+#: Added on 2010/09/30
+msgid "WP Charset:"
+msgstr "WordPressの文字コード:"
+
+#: Added on 2010/09/30
+msgid "NOTE: Accessing this page - Settings - is always priviledged to Administrators."
+msgstr "注意: 管理者には、常にこの「設定」のページへのアクセス権があります。"
+
+#: Added on 2010/09/30
+msgid "The minmum user level that can access the photo album sidebar widget admin."
+msgstr "フォトアルバムのサイドバーウィジェット管理にアクセスできる最小ユーザレベル。"
+
+#: Added on 2010/09/30
+msgid "Sidebar Access Level:"
+msgstr "サイドバーアクセス権:"
+
+#: Added on 2010/09/30
+msgid "The minmum user level that can upload photos."
+msgstr "写真がアップロードできる最小ユーザレベル。"
+
+#: Added on 2010/09/30
+msgid "Upload Access Level:"
+msgstr "アップロードアクセス権:"
+
+#: Added on 2010/09/30
+msgid "The minmum user level that can access the photo album admin (i.e. Manage Albums and Upload Photos)."
+msgstr "フォトアルバムの管理 (アルバムの管理や写真のアップロードなど) にアクセスできる最小ユーザレベル。"
+
+#: Added on 2010/09/30
+msgid "fit"
+msgstr "フィット"
+
+#: Added on 2010/09/30
+msgid "Albums Access Level:"
+msgstr "アルバムへのアクセス権:"
+
+#: Added on 2010/09/30
+msgid "Display name and description under thumbnails."
+msgstr "サムネイルの下に名称と説明を表示する。"
+
+#: Added on 2010/09/30
+msgid "Thumbnail text:"
+msgstr "サムネイルのテキスト:"
+
+#: Added on 2010/09/30
+msgid "If you do not want slideshows: uncheck this box. Browsing full size images will remain possible."
+msgstr "スライドショーが不要ならチェックしないでください。フルサイズ画像のブラウジングが可能です。"
+
+#: Added on 2010/09/30
+msgid "Enable slideshow:"
+msgstr "スライドショーを有効にする:"
+
+#: Added on 2010/09/30
+msgid "Fullsize images will be stretched to the Full Size at display time if they are smaller. Leaving unchecked is recommended. It is better to upload photos that fit well the sizes you use!"
+msgstr "画像のフルサイズが上で指定した「フルサイズ」よりも小さい時は、表示する際に指定したフルサイズにまで引き伸ばされます。この設定にはチェックしないことをお勧めします。使用するサイズに見合った画像をアップロードしたほうがいいでしょう！"
+
+#: Added on 2010/09/30
+msgid "The size of the full images is controled with html, the photo itself will not be resized unless you check the 'Resize on Upload' box."
+msgstr "画像のフルサイズは HTML で制御しており、写真のサイズそのものが調整されるわけではありません。写真のサイズを直接調整したい時は、「アップロード時にサイズを調整する」をチェックしてください。"
+
+#: Added on 2010/09/30
+msgid "Resize on Upload:"
+msgstr "アップロード時にサイズを調整する:"
+
+#: Added on 2010/09/30
+msgid "pixels wide or high, whichever is the largest."
+msgstr "ピクセル（幅または高さのうちいずれか大きいほう）"
+
+#: Added on 2010/09/30
+msgid "There are no photos in depot:"
+msgstr "次のデポ用ディレクトリには写真がありません:"
+
+#: Added on 2010/09/30
+msgid "Create"
+msgstr "FTPソフトなどを使って"
+
+#: Added on 2010/09/30
+msgid "with an ftp program and place the photos there."
+msgstr "を作成し、そこへ写真をアップロードしてください。"
+
+#: Added on 2010/09/30
+msgid "Unable to create depot directory"
+msgstr "デポ用ディレクトリが作成できません"
+
+#: Added on 2010/09/30
+msgid "Import Photos"
+msgstr "写真のインポート"
 
 #: Added on 2010/09/21
 msgid "of"
