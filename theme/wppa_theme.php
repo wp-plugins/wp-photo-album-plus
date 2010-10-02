@@ -40,8 +40,17 @@ if (wppa_page('albums')) {
     $albums = wppa_get_albums(); 
 
     if ($albums) { 
-	if ($albumpagesize != '0') $nofalbumpages = ceil(count($albums) / $albumpagesize); else $nofalbumpages = '1';
-
+		if ($albumpagesize != '0') {
+			$nofalbumpages = ceil(count($albums) / $albumpagesize); 
+		} 
+		else {
+			if ($thumbpagesize != '0') {
+				$nofalbumpages = '1';
+			} 
+			else {
+				$nofalbumpages = '0';
+			}
+		}    
 ?>
     <div id="albumlist_<?php echo($wppa_occur) ?>" class="albumlist">
 <?php
