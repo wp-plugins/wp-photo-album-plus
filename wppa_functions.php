@@ -723,14 +723,14 @@ function wppa_check_numeric($value, $minval, $target, $maxval = '') {
 }
 
 function wppa_get_minisize() {
-	$result = '300';
+	$result = '100';
 	
 	$tmp = get_option('wppa_thumbsize', 'nil');
 	if (is_numeric($tmp) && $tmp > $result) $result = $tmp;
 	$tmp = get_option('wppa_smallsize', 'nil');
 	if (is_numeric($tmp) && $tmp > $result) $result = $tmp;
 
-	$result = ceil($tmp / 25) * 25;
+	$result = ceil($result / 25) * 25;
 	return $result;
 }
 
