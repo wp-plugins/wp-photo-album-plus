@@ -3,13 +3,13 @@
 * Package: wp-photo-album-plus
 *
 * display the widget
-* Version 2.3.0
+* Version 2.0.0
 */
 
 add_action('plugins_loaded', 'init_wppa_widget');
 
 function init_wppa_widget() {
-	wp_register_sidebar_widget('wppa-widget', __('Photo Album Widget', 'wppa'), 'show_wppa_widget');
+	wp_register_sidebar_widget('wppa-widget', 'Photo Album Widget', 'show_wppa_widget');
 }
 
 function show_wppa_widget($args) {
@@ -83,7 +83,7 @@ function show_wppa_widget($args) {
 		$page_title = $wpdb->get_var("SELECT post_title FROM " . $wpdb->posts . " WHERE post_type = 'page' AND post_status = 'publish' AND ID=" . $pid);
 		if ($page_title) { 			// Yep, Linkpage found
 			$title = __('Link to', 'wppa') . ' ' . $page_title;
-			$widget_content .= '<a href="' . get_page_link($pid) . wppa_sep() . 'album=' . $album . '&cover=0&occur=1">';
+			$widget_content .= '<a href="' . get_page_link($pid) . '">';
 		} 
 		else {
 			$title = $widget_title;

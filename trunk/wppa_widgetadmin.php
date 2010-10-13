@@ -1,0 +1,195 @@
+<?php
+/* wppa_widgetadmin.php
+* Pachkage: wp-photo-album-plus
+*
+* admin sidebar widget
+* version 2.3.0
+*/
+
+function wppa_sidebar_page_options() {
+	global $wpdb;
+	
+	// Check if a message is required
+	wppa_check_update();
+
+	$options_error = false;
+	
+	if (isset($_GET['walbum'])) update_option('wppa_widget_album', $_GET['walbum']);
+		
+	if (isset($_POST['wppa-set-submit'])) {
+		wppa_check_admin_referer( '$wppa_nonce', WPPA_NONCE );
+		
+		update_option('wppa_widgettitle', $_POST['wppa-widgettitle']);
+		
+		if (wppa_check_numeric($_POST['wppa-widget-width'], '100', __('Widget Photo Width.'))) {
+			update_option('wppa_widget_width', $_POST['wppa-widget-width']);
+		} else {
+			$options_error = true;
+		}
+		if (isset($_POST['wppa-widget-album'])) update_option('wppa_widget_album', $_POST['wppa-widget-album']);
+		if (isset($_POST['wppa-widget-photo'])) update_option('wppa_widget_photo', $_POST['wppa-widget-photo']);
+		if (isset($_POST['wppa-widget-method'])) update_option('wppa_widget_method', $_POST['wppa-widget-method']);
+		if (isset($_POST['wppa-widget-period'])) update_option('wppa_widget_period', $_POST['wppa-widget-period']);
+		if (isset($_POST['wppa-widget-subtitle'])) update_option('wppa_widget_subtitle', $_POST['wppa-widget-subtitle']);
+		if (isset($_POST['wppa-widget-linkpage'])) update_option('wppa_widget_linkpage', $_POST['wppa-widget-linkpage']);
+		
+		if (!$options_error) wppa_update_message(__('Changes Saved. Don\'t forget to activate the widget!', 'wppa')); 
+	}
+
+?>
+	<div class="wrap">
+		<?php $iconurl = get_bloginfo('wpurl') . '/wp-content/plugins/' . WPPA_PLUGIN_PATH . '/images/settings32.png'; ?>
+		<div id="icon-album" class="icon32" style="background: transparent url(<?php echo($iconurl); ?>) no-repeat">
+			<br />
+		</div>
+		<h2><?php _e('WP Photo Album Plus Sidebar Widget Settings', 'wppa'); ?></h2>
+		
+		<form action="<?php echo(get_option('siteurl')) ?>/wp-admin/admin.php?page=wppa_sidebar_options" method="post">
+			<?php wppa_nonce_field('$wppa_nonce', WPPA_NONCE); ?>
+
+			<table class="form-table albumtable">
+				<tbody>
+					<tr valign="top">
+						<th scope="row">
+							<label ><?php _e('Widget Title:', 'wppa'); ?></label>
+						</th>
+						<td>
+							<input type="text" name="wppa-widgettitle" id="wppa-widgettitle" value="<?php echo(get_option('wppa_widgettitle', __('Photo of the day', 'wppa'))); ?>" />
+							<span class="description"><br/><?php _e('Enter the caption to be displayed for the widget.', 'wppa'); ?></span>
+						</td>
+					</tr>				
+					<tr valign="top">
+						<th scope="row">
+							<label ><?php _e('Widget Photo Width:', 'wppa'); ?></label>
+						</th>
+						<td>
+							<input type="text" name="wppa-widget-width" id="wppa-widget-width" value="<?php echo(get_option('wppa_widget_width', '150')); ?>" style="width: 50px;" />
+							<span class="description"><br/><?php _e('Enter the desired display width of the photo in the sidebar.', 'wppa'); ?></span>
+						</td>
+					</tr>
+					<tr valign="top">
+						<th scope="row">
+							<label ><?php _e('Use album:', 'wppa'); ?></label>
+						</th>
+						<td>
+							<script type="text/javascript">
+							/* <![CDATA[ */
+							function wppaCheckWa() {
+								var album = document.getElementById('wppa-wa').value;
+								var url = "<?php echo(get_option('siteurl')) ?>/wp-admin/admin.php?page=wppa_sidebar_options&walbum=" + album;
+								document.location.href = url;
+							}
+							/* ]]> */
+							</script>
+							<select name="wppa-widget-album" id="wppa-wa" onchange="wppaCheckWa()" ><?php echo(wppa_album_select('', get_option('wppa_widget_album', ''))) ?></select>
+							<span class="description"><br/><?php _e('Select the album that contains the widget photos.', 'wppa'); ?></span>
+						</td>
+					</tr>
+					<tr valign="top">
+						<th scope="row">
+							<label ><?php _e('Display method:', 'wppa'); ?></label>
+						</th>
+						<td>
+							<?php $sel = 'selected="selected"'; ?>
+							<?php $method = get_option('wppa_widget_method', '1'); ?>
+							<select name="wppa-widget-method" id="wppa-wm" onchange="wppaCheckWidgetMethod()" >
+								<option value="1" <?php if ($method == '1') echo($sel); ?>><?php _e('Fixed photo', 'wppa'); ?></option> 
+								<option value="2" <?php if ($method == '2') echo($sel); ?>><?php _e('Random', 'wppa'); ?></option>
+								<option value="3" <?php if ($method == '3') echo($sel); ?>><?php _e('Last upload', 'wppa'); ?></option>
+								<option value="4" <?php if ($method == '4') echo($sel); ?>><?php _e('Change every', 'wppa'); ?></option>
+	<?php /*
+								<option value="5" <?php if ($method == '5') echo($sel); ?>><?php _e('Slideshow', 'wppa'); ?></option>
+								<option value="6" <?php if ($method == '6') echo($sel); ?>><?php _e('Scrollable', 'wppa'); ?></option>
+	*/ ?>
+							</select>
+							<?php $period = get_option('wppa_widget_period', '168'); ?>
+							<select name="wppa-widget-period" id="wppa-wp" >
+								<option value="1" <?php if ($period == '1') echo($sel); ?>><?php _e('hour.', 'wppa'); ?></option>
+								<option value="24" <?php if ($period == '24') echo($sel); ?>><?php _e('day.', 'wppa'); ?></option>
+								<option value="168" <?php if ($period == '168') echo($sel); ?>><?php _e('week.', 'wppa'); ?></option>
+							</select>
+							<span class="description"><br/><?php _e('Select how the widget should display.', 'wppa'); ?></span>								
+						</td>
+					</tr>
+					<tr>
+						<th scope="row">
+							<label ><?php _e('Link to:', 'wppa'); ?></label>
+						</th>
+						<td>
+<?php
+							$query = "SELECT ID, post_title FROM " . $wpdb->posts . " WHERE post_type = 'page' AND post_status = 'publish' ORDER BY post_title ASC";
+							$pages = $wpdb->get_results ($query, 'ARRAY_A');
+							if (empty($pages)) {
+								_e('There are no pages (yet) to link to.', 'wppa');
+							} else {
+								$linkpage = get_option('wppa_widget_linkpage', '0');
+?>
+								<select name="wppa-widget-linkpage" id="wppa-wlp" >
+									<option value="0" <?php if ($linkpage == '0') echo($sel); ?>><?php _e('--- none ---', 'wppa'); ?></option>
+<?php
+									foreach ($pages as $page) { ?>
+										<option value="<?php echo($page['ID']); ?>" <?php if ($linkpage == $page['ID']) echo($sel); ?>><?php echo($page['post_title']); ?></option>
+									<?php } ?>
+								</select>
+								<span class="description"><br/><?php _e('Select the page the photo links to.', 'wppa'); ?></span>
+<?php
+							}							
+?>
+						</td>
+					</tr>
+					<tr>
+						<th scope="row">
+							<label ><?php _e('Subtitle:', 'wppa'); ?></label>
+						</th>
+						<td>
+							<?php $subtit = get_option('wppa_widget_subtitle', 'none'); ?>
+							<select name="wppa-widget-subtitle" id="wppa-st" onchange="wppaCheckWidgetSubtitle()" >
+								<option value="none" <?php if ($subtit == 'none') echo($sel); ?>><?php _e('--- none ---', 'wppa'); ?></option>
+								<option value="name" <?php if ($subtit == 'name') echo($sel); ?>><?php _e('Photo Name', 'wppa'); ?></option>
+								<option value="desc" <?php if ($subtit == 'desc') echo($sel); ?>><?php _e('Description', 'wppa'); ?></option>
+							</select>
+							<span class="description"><br/><?php _e('Select the content of the subtitle.', 'wppa'); ?></span>	
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<p>
+				<input type="submit" class="button-primary" name="wppa-set-submit" value="<?php _e('Save Changes', 'wppa'); ?>" />
+			</p>
+<?php
+			$alb = get_option('wppa_widget_album', '0');
+			$photos = $wpdb->get_results("SELECT * FROM " . PHOTO_TABLE . " WHERE album=" . $alb . " " . wppa_get_photo_order($alb), 'ARRAY_A');
+			if (empty($photos)) {
+?>
+			<p><?php _e('No photos yet in this album.', 'wppa'); ?></p>
+<?php
+			} else {
+				$id = get_option('wppa_widget_photo', '');
+//				$wi = get_option('wppa_thumbsize', '130') + 24;
+				$wi = wppa_get_minisize() + 24;
+				foreach ($photos as $photo) {
+?>
+					<div class="photoselect" style="width: <?php echo(get_option('wppa_widget_width', '150')); ?>px; height: <?php echo($wi); ?>px;" >
+						<img src="<?php echo(get_bloginfo('wpurl') . '/wp-content/uploads/wppa/thumbs/' . $photo['id'] . '.' . $photo['ext']); ?>" alt="<?php echo($photo['name']); ?>"></img>
+						<input type="radio" name="wppa-widget-photo" id="wppa-widget-photo<?php echo($photo['id']); ?>" value="<?php echo($photo['id']) ?>" <?php if ($photo['id'] == $id) echo('checked="checked"'); ?>/>
+						<div class="clear"></div>
+						<h4 style="position: absolute; top:<?php echo( $wi - 12 ); ?>px;"><?php echo(stripslashes($photo['name'])) ?></h4>
+						<h6 style="position: absolute; top:<?php echo( $wi - 12 ); ?>px;"><?php echo(stripslashes($photo['description'])); ?></h6>
+					</div>
+<?php		
+				}
+?>
+					<div class="clear"></div>
+<?php
+			}
+?>
+			<script type="text/javascript">wppaCheckWidgetMethod();</script>
+			<script type="text/javascript">wppaCheckWidgetSubtitle();</script>
+			<br />
+			<p>
+				<input type="submit" class="button-primary" name="wppa-set-submit" value="<?php _e('Save Changes', 'wppa'); ?>" />
+			</p>
+		</form>
+	</div>
+<?php
+}

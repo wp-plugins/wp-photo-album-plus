@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, gallery, slideshow, sidebar widget, photo widget, phtoblog
-Version: 2.3.0
+Version: 2.2.0
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -26,7 +26,6 @@ This plugin is designed to easily manage and display your photo albums and slide
 * The visitor can see an overview of thumbnail images of the photos in album.
 * The visitor can browse through the photos in each album you decide to publish.
 * You can add a Sidebar Widget that displays a photo which can be changed every hour, day or week.
-* You can add a Search Sidebar Widget which enables the visitors to search albums and photos for certain words in names and descriptions.
 
 
 Plugin Admin Features:
@@ -35,7 +34,6 @@ You can find the plugin admin section under Menu Photo Albums on the admin scree
 
 * Photo Albums: Create and manage Albums.
 * Upload photos: To upload photos to an album you created.
-* Import photos: To bulk import photos to an album that are previously been ftp'd.
 * Settings: To control the various settings to customize your needs.
 * Sidebar Widget: To specify the behaviour for an optional sidebar widget.
 * Help & Info: Much information about how to...
@@ -43,7 +41,7 @@ You can find the plugin admin section under Menu Photo Albums on the admin scree
 == Installation ==
 
 = Upgrade notice =
-This version is: Major rev# 2, Minor rev# 3, Fix rev# 0.
+This version is: Major rev# 2, Minor rev# 1, Fix rev# 0.
 If you are upgrading from a previous Major or Minor version, note that:
 * If you modified wppa_theme.php and/or wppa_style.css, you will have to use the newly supplied versions. The previous versions are NOT compatible.
 * If you set the userlevel to anything else than 'administrator' you may have to set it again. Note that changing the userlevel can be done by the administrator only!
@@ -58,33 +56,9 @@ of the folders wp-content/uploads/wppa/ and wp-content/uploads/wppa/thumbs/.
 In rare cases you will need to create them manually.
 * If you upgraded from WP Photo Album (without plus) and you had copied wppa_theme.php and/or wppa_style.css 
 to your theme directory, you must remove them or replace them with the newly supplied versions.
+This might also be the case after an update to a newer version to take advantage of all new features.
 
 == Frequently Asked Questions ==
-
-= What to do if i get errors during upload or import photos? =
-
-* It is always the best to downsize your photos to the Full Size before uploading. It is the fastest and safest way to add photos tou your photo albums.
-Photos that are way too large take unnessesary long time to download, so your visitors will expierience a slow website. 
-Therefor the photos should not be larger (in terms of pixelsizes) than the largest size you are going to display them on the screen.
-WP-photo-album-plus is capable to downsize the photos for you, but very often this fails because of configuration problems. 
-Here is explained why:
-Modern cameras produce photos of 7 megapixels or even more. To downsize the photos to either an automaticly downsized photo or
-even a thumbnail image, the server has to create internally a fullsize fullcolor image of the photo you are uploading/importing.
-This will require one byte of memory for each color (Red, Green, Blue) and for every pixel. 
-So, apart form the memory required for the server's program and the resized image, you will need 21 MB (or even more) of memory just for the intermediate image.
-As most hosting providers do not allow you more than 32 MB, you will get 'Out of memory' errormessages when you try to upload large pictures.
-You can configure WP to use 64 MB (That would be enough in most cases) by specifying `define(‘WP_MEMORY_LIMIT’, ‘64M’);` in wp-config.php, 
-but, as explained earlier, this does not help when your hosting provider does not allows the use of that much memory.
-If you have control over the server yourself: configure it to allow the use of enough memory.
-Oh, just Google on 'picture resizer' and you will find a bunch of free programs that will easily perform the resizing task for you.
-
-= How does the search widget work? =
-
-* A space between words means AND, a comma between words means OR.
-Example: search for 'one two, three four, five' gives a result when either 'one' AND 'two' appears in the same (combination of) name and description. 
-If it matches the name and description of an album, you get the album, and photo vice versa.
-OR this might apply for ('three' AND 'four') OR 'five'. Albums and photos are returned on one page, regardless of pagination settings, if any. 
-That's the way it is designed.
 
 = How can i translate the plugin into my language? =
 
@@ -96,28 +70,26 @@ wppa-[your languagecode].po and wppa-[your languagecode].mo.
 * For more information on POT files, domains, gettext and i18n have a look at the I18n for 
 WordPress developers Codex page and more specifically at the section about themes and plugins.
 
+= Do i have to upload my photos again? =
+
+No, if you had WP Photo Album before, you can simply take advantage of the new features 
+that WP Photo Album Plus provides to you.
+
+= Do i have to remake the albums? =
+
+No, you will still have the albums you had. Now you can place them inside an other existing album,
+that even may contain photos itself, or use it with the embedded sidebar widget.
+
+= What if i regret the upgrade, can i downgrade back to WP Photo Album version 1.5.1? =
+
+First of all: I bet you won't. But if you really want to go back, 
+simply de-activate WP Photo Album Plus and re-activate WP Photo ALbum. 
+but remember: **You can not run both versions at the same time.**
+You will see the sub albums you created appear as normal albums.
+The sort order information as well as all features introduced with WP Photo Album Plus will no longer have effect.
+
+
 == Changelog ==
-
-= 2.3.0 =
-
-= New Features =
-* There is now a search widget to search for words in album and photo names and decriptions.
-* Full size photos may be smaller than the theme's display column. You can horizontally align them in that case to left, center or right.
-
-= Enhancements =
-* Even more configurable settings in the Settings panel. There is a very good chance that you do no longer need to customize wppa_style.css.
-* Even the overlapping of thumbnail images can be avoided by the use of settings in the settings page!
-* Better automatic repair of failed uploads and imports.
-* Further split up code into functional parts (more files).
-* Better error handling and reporting.
-* Small cosmetic changes in admin and theme displays.
-
-= Bug fixes =
-* Thumbnail images will now be created correctly even when coverphoto is smaller than thumbnail image. Smallest size will be 100 px. (Hotfix 2.2.0)
-* Fix for 'Album could not be updated' error message for certain sql configurations when coverphoto was 'random'.
-* You will no longer get error message on not existing thumbnail when looking for image attributes.
-* Only image files and all of them will be shown in 'import photos' regardless of the servers php implementation of glob('*.*').
-* Thumbnails will be displayed even when pagination is switched off for both albums and thumbnails (!)
 
 = 2.2.0 =
 = New Features =

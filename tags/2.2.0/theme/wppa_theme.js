@@ -1,5 +1,5 @@
 // Theme variables and functions
-// This is wppa_theme.js version 2.3.0
+// This is wppa_theme.js version 2.2.0
 //
 
 // Style variables
@@ -137,4 +137,5 @@ function wppa_popready(mocc) {
 }
 function wppa_popdown(mocc) {	//	return; //debug
 	jQuery('#wppa-popup-'+mocc).html("");
+	//wppa_saved_id = 0;
 }
