@@ -1,13 +1,13 @@
 === WP Photo Album Plus ===
 Contributors: opajaap
-Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD
+Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, gallery, slideshow, sidebar widget, photo widget, phtoblog
-Version: 1.8
+Version: 2.2.0
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
-Requires at least: 2.1
-Tested up to: 2.9.1
+Requires at least: 2.8
+Tested up to: 3.0
 
 This plugin is designed to easily manage and display your photo albums and slideshows within your WordPress site. 
 
@@ -36,15 +36,39 @@ You can find the plugin admin section under Menu Photo Albums on the admin scree
 * Upload photos: To upload photos to an album you created.
 * Settings: To control the various settings to customize your needs.
 * Sidebar Widget: To specify the behaviour for an optional sidebar widget.
-* Help & Info: The screen you are watching now.
+* Help & Info: Much information about how to...
 
 == Installation ==
 
+= Upgrade notice =
+This version is: Major rev# 2, Minor rev# 1, Fix rev# 0.
+If you are upgrading from a previous Major or Minor version, note that:
+* If you modified wppa_theme.php and/or wppa_style.css, you will have to use the newly supplied versions. The previous versions are NOT compatible.
+* If you set the userlevel to anything else than 'administrator' you may have to set it again. Note that changing the userlevel can be done by the administrator only!
+* You may have to activate the sidebar widget again.
+
+= Standard installation when not from the wp plugins page =
 * Unzip and upload the wppa plugin folder to wp-content/plugins/
 * Make sure that the folder wp-content/uploads/ exists and is writable by the server (CHMOD 755)
 * Activate the plugin in WP Admin -> Plugins.
+* If, after installation, you are unable to upload photos, check the existance and rights (CHMOD 755)
+of the folders wp-content/uploads/wppa/ and wp-content/uploads/wppa/thumbs/. 
+In rare cases you will need to create them manually.
+* If you upgraded from WP Photo Album (without plus) and you had copied wppa_theme.php and/or wppa_style.css 
+to your theme directory, you must remove them or replace them with the newly supplied versions.
+This might also be the case after an update to a newer version to take advantage of all new features.
 
 == Frequently Asked Questions ==
+
+= How can i translate the plugin into my language? =
+
+* Find on internet the free program POEDIT, and learn how it works.
+* Use the file wppa.pot that is located in wp-photo-album-plus/langs to create or update
+wppa-[your languagecode].po and wppa-[your languagecode].mo.
+* Place these file in the langs subdir.
+* If everything is ok, mail me the files and i will distribute them so other users can use it too.
+* For more information on POT files, domains, gettext and i18n have a look at the I18n for 
+WordPress developers Codex page and more specifically at the section about themes and plugins.
 
 = Do i have to upload my photos again? =
 
@@ -62,9 +86,220 @@ First of all: I bet you won't. But if you really want to go back,
 simply de-activate WP Photo Album Plus and re-activate WP Photo ALbum. 
 but remember: **You can not run both versions at the same time.**
 You will see the sub albums you created appear as normal albums.
-The sort order information will have no longer effect.
+The sort order information as well as all features introduced with WP Photo Album Plus will no longer have effect.
+
 
 == Changelog ==
+
+= 2.2.0 =
+= New Features =
+
+* The ability to give manage albums rights to selected roles.
+* The ability to give upload rights to selected roles.
+* The ability to give manage sidebar widget rights to selected roles.
+* The settings admin page can only be managed by administrators.
+* You can now decide to resize photos at upload time to the currently specified full size.
+* You can now bulk upload photos. Use an FTP program to upload files and use the new tab 'Import photos' to import them to wppa.
+* A link to ---nothing--- for album cover photo and title.
+* The ability to disable slideshows.
+* You can now decide to show photo name and description under the (standard) thumbnail images
+
+= Bug fixes =
+* Added "clear:none" to H2 album title and thumb title when in display thumbs like covers mode. This repairs the cover layout in some themes.
+
+= Known issues =
+* See: 2.1.0
+
+= Pending enhancement requests =
+* A nuber of thumbnails in the sidebar widget with links to full images.
+* Additional animation effects in slideshows and browse full-size images.* A display alternative to have fullsize images together with a list of thumbnail images.
+* The possibility to include one or more sub-albums to be used in the sidebar widget.
+* Search the photo names and descriptions.
+
+= 2.1.0 =
+= New Features =
+* Pagination of album covers and thumbnail images can be configured.
+* In order to reduce the need for editing wppa_style.css after almost every update, the most of the appearance attributes can now be set in the albums settings admin page. New file: wppa_theme.js.
+* Implementation of direct slideshow. I.e. `%%slide=nn%%` like `%%album=nn%%` and `%%cover=nn%%`
+* The ability to use a single photo in a post or page. I.e. `%%photo=nn%%` The appropriate insertion codes can be retrieved from the edit album admin page.
+* There is the ability to convert the wppa database tables to UTF-8 characters. This enables a.o. Turkish character support.
+
+= Bug fixes =
+
+= Enhancements =
+* Thumbnail images will now be displayed together with name and description when pop-up is enabled.
+* There is a new select option for the vertical alignment of fullsize images: 'fit' that leaves no superfluous space before or after full size images.
+* You can now - systemwide - decide wheter or not to start the slideshow to run at invocation.
+* Breadcrumb display will now include nested pages.
+
+= Known issues =
+* There is a conflict with the plugin called "n3rdskwat-mp3player".
+* There may be conflicts with the themes: "Thesis" revision 7, "Coral" and "Montezuma".
+* There are layout issues for thumbnails and thumbnail popups in IE6 and IE7.
+* When activating the plugin, you may see the warning message: "The plugin generated 255 characters of unexpected output during activation. (etc)".
+This message seems to be a WP issue rather than a wppa issue and can be ignored.
+
+= Pending enhancement requests =
+* The ability to SELECT multiple files to upload. Currently selection must be done one by one, upload can be done in batches of up to 15 files.
+* Additional animation effects in slideshows and browse full-size images.
+* The ability to give upload rights to selected roles/users.
+* A display alternative to have fullsize images together with a list of thumbnail images.
+* The possibility to include one or more sub-albums to be used in the sidebar widget.
+
+= 2.0.2 =
+= New Features =
+
+= Bug fixes =
+* (2.0.2) Definition of PLUGIN_PATH changed to WPPA_PLUGIN_PATH for compatibiity reasons with other plugins that use PLUGIN_PATH
+* (2.0.1) When mouseover effect on coverphotos was switched off, the photo disappears after mouseover. Fixed.
+
+= Enhancements =
+* Japanese language support added.
+* Options that do not have effect are now hidden in the settings screen.
+
+= Known issues =
+* There is a conflict with the plugin called "n3rdskwat-mp3player", it destroys the slideshow javascript data.
+* Althoug I tested it and could not reproduce it, some users report a conflict with the theme called "Thesis" revision 7. It displays the albums prior to the main body (in a deviant format) as well as inside the body.
+Same with "Coral" and "Montezuma".
+* Althoug I tested it and could not reproduce it, some users report that the theme TwentyTen 1.0 (by the Wordpress team) as well as the theme Thesis should screws up the form security in this plugin in a way that nobody is allowed to save any changes.
+There is a workaround available by copying the file wppa_no_nonce.txt from the plugins theme directory to the users theme directory. Warning: This will affect form scurity.
+* There are layout issues for thumbnails and thumbnail popups in IE6 and IE7.
+* When activating the plugin, you may see the warning message: "The plugin generated 255 characters of unexpected output during activation. (etc)".
+This message seems to be a WP issue rather than a wppa issue and can be ignored.
+
+= Pending enhancement requests =
+* The ability to SELECT multiple files to upload. Currently selection must be done one by one, upload can be done in batches of up to 15 files.
+* Additional animation effects in slideshows and browse full-size images.
+* Implementation of direct slideshow. I.e. `%%slide=nn%%` like `%%album=nn%%` and `%%cover=nn%%`
+* The ability to give upload rights to selected roles/users.
+* The ability to use a single photo in a post or page, just like the normal media.
+* Turkish character support.
+
+= 2.0.0 =
+= New Features =
+= Important notice if you changed wppa_theme.php: You will need to use the new wppa_theme.php and modify as desired. =
+* You can now decide to allow HTML in album and photo descriptions. This is intented for links and linebreaks.
+* You can now use fading effects in the slideshow and browse full size images.
+* You can select an alternative way to display thumbnails. They will appear like album covers.
+
+= Bug Fixes =
+* Fix for "Unable to create album" for some server configurations.
+* Fix for intermittant too large coverphoto when coverphoto random and both landscape and portrait images in album.
+
+= Enhancements =
+* Changed some CSS and defaults to get seemless integration with theme TwentyTen.
+* Various security, performance and cosmetic enhancements.
+* Uses role/capabilities rather than userlevel.
+* French language support added.
+
+= Known issues =
+* There is a conflict with the plugin called "n3rdskwat-mp3player", it destroys the slideshow javascript data.
+* Althoug I tested it and could not reproduce it, some users report a conflict with the theme called "Thesis" revision 7. It displays the albums prior to the main body (in a deviant format) as well as inside the body.
+Same with "Coral" and "Montezuma".
+* Althoug I tested it and could not reproduce it, some users report that the theme TwentyTen 1.0 (by the Wordpress team) as well as the theme Thesis should screws up the form security in this plugin in a way that nobody is allowed to save any changes.
+There is a workaround available by copying the file wppa_no_nonce.txt from the plugins theme directory to the users theme directory. Warning: This will affect form scurity.
+* There are layout issues for thumbnails and thumbnail popups in IE6 and IE7.
+* When activating the plugin, you may see the warning message: "The plugin generated 255 characters of unexpected output during activation. (etc)".
+This message seems to be a WP issue rather than a wppa issue and can be ignored.
+
+= Pending enhancement requests =
+* The ability to SELECT multiple files to upload. Currently selection must be done one by one, upload can be done in batches of up to 15 files.
+* Additional animation effects in slideshows and browse full-size images.
+* Implementation of direct slideshow. I.e. `%%slide=nn%%` like `%%album=nn%%` and `%%cover=nn%%`
+* The ability to give upload rights to selected roles/users.
+* The ability to use a single photo in a post or page, just like the normal media.
+
+= 1.9.1 =
+= New Features =
+* You can now add mouseover effect to coverphotos and thumbnail images.
+
+= Bug Fixes =
+Fix for Warning: URL file-access is disabled in the server configuration in ../wp-content/plugins/wp-photo-album-plus/wppa_functions.php on line 612
+
+= Enhancements =
+* Security enhancement for the sidebar widget.
+* Improved documentation of wppa_style.css.
+* Improved error/warning reporting.
+
+= 1.9 =
+* IF YOU COPIED/MODIFIED WPPA_THEME.PHP AND WPPA_STYLE.CSS Please study the files that come with this version and review your modifications!
+* You can now have multiple sequences of `%%wppa.. %%cover.. %%size=..` tags.
+You need no longer put the tags on one line, all information inside a tag sequence will be removed. Between the tag sequenses as well as before the first and after the last there may be content that will be displayed.
+You can also call the album more then once in a page template.
+
+Example#1 text in Post or Page:
+
+`
+	Text Before
+	%%wppa%%
+	%%cover=10%%
+	%%size=150%%
+	Text Between 1
+	%%wppa%%
+	%%album=19%%
+	%%size=350%%
+	Text Between 2
+	%%wppa%%
+	%%cover=1%%
+	Text After	
+`
+
+Example#2 php code in page template:
+
+`
+<?php 
+	if (function_exists('wppa_albums')) {
+	echo('Text Before<br />');
+	wppa_albums(10, 'cover', 150);
+	echo('<br />Text Between 1<br />');
+	wppa_albums(19, 'album', 350); 
+	echo('<br />Text Between 2<br />');
+	wppa_albums(1, 'cover');
+	echo('<br />Text After<br />');
+	} 
+	else echo('Photo software currently unavailable, sorry'); 
+?>
+`
+
+As nothing in life is permanent, this enhancement revokes the previously announced permanent restriction of having only one occurence of an album or cover in a page or post.
+
+= More in 1.9 =
+* You can now have different sizes for thumbnail images and cover photos. The regeneration of thumbnails now only occurs when the largest of the two enters a diffrent range of 25 pixels.
+* Fix for sizing problem in IE6 by removing max-width and max-height from the style attributes.
+* Fixed rounding error in calculating thumbnail size. This may result in new thumbnails being one pixel larger. Regeneration of thumbnails will overcome this.
+* The 'Enlarge fullsize photos' switch in the admin settings page now functions as expected.
+* Various small fixes.
+* Added wrappers for coverphoto and thumbnails.
+* You can now align thumbnails at top, center or bottom.
+* Split up the code in functional pieces.
+* Added functions: wppa_get_total_album_count(), wppa_get_youngest_album_id() and wppa_get_youngest_album_name() that are simple but not yet documented. For more info see the sourcecode: wppa_functions.php
+
+= 1.8.5 =
+* This is an intermediate version that never was released.
+
+= 1.8.4 =
+* Browsing photos and the slideshow are merged. You can now easily switch between them. This also fixes the scrolling issue.
+* Fix to prevent loading stylesheet more than once.
+* Fixed an HTML error where photo description or name contained newline characters.
+* Added optional parameters to wppa_get_albums() to make its use more flexible. See: tags.txt.
+* Improved security of wppa_get_albums()
+
+= 1.8.3 =
+* You can now link a album title and coverphoto to a WP page as opposed to the album's content. The album's content will still be reacheable by the View- and Slideshow links.
+* You can now decide not to include a homelink in the breadcrumb navigation.
+* Fixed some incomplete / erroneous links.
+* While browsing full size images, the double arrow brackets will now have a transparent background.
+* Minor fixes and improved error handling.
+* There is now a way to automatically scroll back to the desired position when browsing full scale images. For more info: See the section Frequently asked questions.
+If you made a copy of wppa_theme.php or wppa_style.css into your theme directory and you want to make full use of the new improvements, please redo your modifications (if still needed) using a fresh copy of the original files.
+
+= 1.8.2 =
+* You can now configure a link to a page from the sidebar widget photo.
+* The widget will now display the correct subtitle in all cases.
+* Security issue: Silence is golden index.php added to all directories.
+
+= 1.8.1 =
+* Fixed a fatal error after regeneration of thumbnails
 
 = 1.8 =
 * An optional Sidebar Widget has been added.
