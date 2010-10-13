@@ -1,12 +1,22 @@
 /* admin_scripts.js */
 /* Package: wp-photo-album-plus
 /*
-/* Version 2.2.0
+/* Version 2.3.0
 /* Various js routines used in admin pages		
 */
 
-jQuery(document).ready(function(){jQuery(".fade").fadeTo(10000, 0.1)});
+jQuery(document).ready(function() {
+	jQuery(".fade").fadeTo(10000, 0.1)
+	});
 
+/* This functions does the init after loading settings page. do not put this code in the document.ready function!!! */
+function wppaInitSettings() {
+	wppaCheckFullHalign();
+	wppaCheckUseThumbOpacity();
+	wppaCheckUseCoverOpacity();
+	wppaCheckThumbType();
+}
+	
 /* Adjust visibility of selection radiobutton if fixed photo is chosen or not */				
 function wppaCheckWidgetMethod() {
 	var ph;
@@ -69,38 +79,49 @@ function wppaCheckWidgetSubtitle() {
 	}
 }
 
+/* Enables or disables the setting of full size horizontal alignment. Only when fullsize is unequal to column width */
+function wppaCheckFullHalign() {
+	var fs = document.getElementById('wppa-fullsize').value;
+	var cs = document.getElementById('wppa-colwidth').value;
+	if (fs != cs) {
+		jQuery('.wppa-ha').css('visibility', 'visible');
+	}
+	else {
+		jQuery('.wppa-ha').css('visibility', 'collapse');
+	}
+}
+
 /* Enables or disables popup thumbnail settings according to availability */
-function wppaCheckTt() {
+function wppaCheckThumbType() {
 	var ttype = document.getElementById('wppa-thumbtype').value;
 	if (ttype == 'default') {
-		document.getElementById('wppa-utp').style.visibility = "visible";
-		document.getElementById('wppa-tt').style.visibility = "visible";
+		jQuery('.tt-normal').css('visibility', 'visible');
+		wppaCheckUseThumbOpacity();
 	}
 	if (ttype == 'ascovers') {
-		document.getElementById('wppa-utp').style.visibility = "collapse";
-		document.getElementById('wppa-tt').style.visibility = "collapse";
+		jQuery('.tt-normal').css('visibility', 'collapse');
 	}
 }
 
 /* Enables or disables thumb opacity dependant on whether feature is selected */
-function wppaCheckUto() {
+function wppaCheckUseThumbOpacity() {
 	var topac = document.getElementById('wppa-use-thumb-opacity').checked;
 	if (topac) {
-		document.getElementById('wppa-to').style.visibility = "visible";
+		jQuery('.thumb-opacity').css('visibility', 'visible');
 	}
 	else {
-		document.getElementById('wppa-to').style.visibility = "collapse";
+		jQuery('.thumb-opacity').css('visibility', 'collapse');
 	}
 }
 
 /* Enables or disables coverphoto opacity dependant on whether feature is selected */
-function wppaCheckUco() {
+function wppaCheckUseCoverOpacity() {
 	var copac = document.getElementById('wppa-use-cover-opacity').checked;
 	if (copac) {
-		document.getElementById('wppa-co').style.visibility = "visible";
+		jQuery('.cover-opacity').css('visibility', 'visible');
 	}
 	else {
-		document.getElementById('wppa-co').style.visibility = "collapse";
+		jQuery('.cover-opacity').css('visibility', 'collapse');
 	}
 }
 

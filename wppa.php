@@ -2,7 +2,7 @@
 /*
 Plugin Name: WP Photo Album Plus
 Description: Easily manage and display your photo albums and slideshows within your WordPress site.
-Version: 2.2.0
+Version: 2.3.0
 Author: J.N. Breetvelt a.k.a OpaJaap
 Author URI: http://www.opajaap.nl/
 Plugin URI: http://wordpress.org/extend/plugins/wp-photo-album-plus/
@@ -15,37 +15,27 @@ global $wpdb;
 global $wp_roles;
 global $wppa_occur;
 global $wppa_master_occur;
+global $is_cover;
+global $wppa_src;
 
 define('ALBUM_TABLE', $wpdb->prefix . 'wppa_albums');
 define('PHOTO_TABLE', $wpdb->prefix . 'wppa_photos');
 define('WPPA_PLUGIN_PATH', 'wp-photo-album-plus');
+define('WPPA_NONCE' , 'wppa-update-check');
 
 $wppa_occur = 0;
 $wppa_master_occur = 0;
+$is_cover = '0';
+$wppa_src = false;
+if (isset($_POST['wppa-searchstring'])) $wppa_src = true;
+if (isset($_GET['wppa_src'])) $wppa_src = true;
 
 /* FORM SECURITY */
-global $wppa_no_nonce;
-$wppa_no_nonce = false;
-$path = ABSPATH . 'wp-content/themes/' . get_option('template')  . '/wppa_no_nonce.txt';
-if (file_exists($path) || !function_exists('wp_nonce_field') ) {
-        function wppa_nonce_field($action = -1) { return; }
-        $wppa_nonce = -1;
-		$wppa_no_nonce = true;
-} else {
-		function wppa_nonce_field($action = -1,$name = 'wppa-update-check') { 
-			return wp_nonce_field($action,$name); 
-		}
-		define('WPPA_NONCE' , 'wppa-update-check');
+function wppa_nonce_field($action = -1, $name = 'wppa-update-check') { 
+	return wp_nonce_field($action, $name); 
 }
 function wppa_check_admin_referer($arg1, $arg2) {
-global $wppa_no_nonce;
-	if ($wppa_no_nonce) {
-		if (is_admin()) return;
-		die('You must be on an admin page to do this');
-	}
-	else {
-		check_admin_referer($arg1, $arg2);
-	}
+	check_admin_referer($arg1, $arg2);
 }
 
 /* SETUP */
@@ -57,7 +47,7 @@ function wppa_setup() {
 	global $wpdb;
 	
 	$old_rev = get_option('wppa_revision', '100');
-	if ($old_rev <= '220') {
+	if ($old_rev <= '230') {
 		
 	$create_albums = "CREATE TABLE " . ALBUM_TABLE . " (
                     id bigint(20) NOT NULL auto_increment, 
@@ -85,16 +75,19 @@ function wppa_setup() {
 
     dbDelta($create_albums);
     dbDelta($create_photos);
-		
-	delete_option('wppa-accesslevel');	/* pre rev 2 version */
+	
 	delete_option('wppa_accesslevel');	/* reset at activation */
 	
 	if (!is_numeric(get_option('wppa_fullsize', 'nil'))) update_option('wppa_fullsize', '640');
+	if (!is_numeric(get_option('wppa_colwidth', 'nil'))) update_option('wppa_colwidth', get_option('wppa_fullsize'));
 	if (get_option('wppa_enlarge', 'nil') == 'nil') update_option('wppa_enlarge', 'yes');
 	if (get_option('wppa_fullvalign', 'nil') == 'nil') update_option('wppa_fullvalign', 'default');
 	if (!is_numeric(get_option('wppa_min_thumbs', 'nil'))) update_option('wppa_min_thumbs', '1');
 	if (get_option('wppa_valign', 'nil') == 'nil') update_option('wppa_valign', 'default');
 	if (!is_numeric(get_option('wppa_thumbsize', 'nil'))) update_option('wppa_thumbsize', '150');
+	if (!is_numeric(get_option('wppa_tf_width', 'nil'))) update_option('wppa_tf_width', get_option('wppa_thumbsize'));
+	if (!is_numeric(get_option('wppa_tf_height', 'nil'))) update_option('wppa_tf_height', get_option('wppa_thumbsize') + '10');
+	if (!is_numeric(get_option('wppa-tn-margin', 'nil'))) update_option('wppa_tn_margin', '4');
 	if (!is_numeric(get_option('wppa_smallsize', 'nil'))) update_option('wppa_smallsize', '100');
 	if (get_option('wppa_show_bread', 'nil') == 'nil') update_option('wppa_show_bread', 'yes');
 	if (get_option('wppa_use_thumb_opacity', 'nil') == 'nil') update_option('wppa_use_thumb_opacity', 'yes');
@@ -111,7 +104,7 @@ function wppa_setup() {
 	if (get_option('wppa_bcolor_alt', 'nil') == 'nil') update_option('wppa_bcolor_alt', '#bbbbbb');
 	if (get_option('wppa_bcolor_nav', 'nil') == 'nil') update_option('wppa_bcolor_nav', '#bbbbbb');
 	
-	if ($old_rev < '220') {
+	if ($old_rev < '230') {
 		$key = '0';
 		$userstyle = ABSPATH . 'wp-content/themes/' . get_option('template') . '/wppa_style.css';
 		$usertheme = ABSPATH . 'wp-content/themes/' . get_option('template') . '/wppa_theme.php';
@@ -120,12 +113,13 @@ function wppa_setup() {
 		update_option('wppa_update_key', $key);
 		}
 	
-	update_option('wppa_revision', '220');
+	update_option('wppa_revision', '230');
 	}
 }
 	
-/* LOAD SIDEBAR WIDGET */
+/* LOAD SIDEBAR WIDGETS */
 require_once('wppa_widget.php');
+require_once('wppa_searchwidget.php');
 
 /* ADMIN MENU */
 add_action('admin_menu', 'wppa_add_admin');
@@ -180,34 +174,6 @@ function wppa_add_javascripts() {
 	wp_enqueue_script('wppa_theme_js');
 }
 
-/* LISTING FUNCTIONS */
-// get the albums
-function wppa_albums($xalb = '', $type='', $siz = '') {
-	global $wpdb;
-    global $startalbum;
-	global $wppa_occur;
-	global $wppa_master_occur;
-	global $is_cover;
-	global $wppa_fullsize;
-    
-    if (is_numeric($xalb)) $startalbum = $xalb;
-	$wppa_occur++;
-	$wppa_master_occur++;
-	if ($type == 'album') $is_cover = '0';
-	elseif ($type == 'cover') $is_cover = '1';
-	if (is_numeric($siz)) $wppa_fullsize = $siz;
-    
-	$templatefile = ABSPATH . 'wp-content/themes/' . get_option('template') . '/wppa_theme.php';
-	
-	// check for user template before using default template
-	if (is_file($templatefile)) {
-		include($templatefile);
-	} else {
-		include(ABSPATH . 'wp-content/plugins/' . WPPA_PLUGIN_PATH . '/theme/wppa_theme.php');
-	}
-}
-
-
+/* LOAD API and LOW LEVEL FUNCTIONS */
 require_once('wppa_functions.php');
-
 ?>

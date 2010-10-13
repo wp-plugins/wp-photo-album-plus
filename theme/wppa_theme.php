@@ -3,37 +3,37 @@
 * Package: wp-photo-album-plus
 *
 * display the albums/photos/slideshow in a page or post
-* Version 2.2.0
+* Version 2.3.0
 */
 global $wppa_fullsize;
 global $is_cover;
 global $wppa_occur;
 global $wppa_master_occur;
 global $single_photo;
+global $wppa_src;
 
 $alt = 'even';
-$mincount = get_option('wppa_min_thumbs', '1');
+$mincount = $wppa_src ? '0' : get_option('wppa_min_thumbs', '1');
 $coversize = get_option('wppa_smallsize');
 $thumbsize = get_option('wppa_thumbsize');
-$albumpagesize = get_option('wppa_album_page_size', '0');
-$thumbpagesize = get_option('wppa_thumb_page_size', '0');
+$albumpagesize = wppa_get_pagesize('albums');
+$thumbpagesize = wppa_get_pagesize('thumbs');
 if (isset($_GET['occur'])) $oc = $_GET['occur']; else $oc = '1';
 if (isset($_GET['page']) && $wppa_occur == $oc) $curpage = $_GET['page']; else $curpage = '1';
 $counter = '0';
 $occ = '&occur=' . $wppa_occur;
 
 $didsome = false;
-$isprev = false;
-$isnext = false;
 
 $nofalbumpages = '0';
 $nofthumbpages = '0';
+
+echo('</p>');	// Close wpautop generated paragraph
 
 if (!wppa_page('oneofone')) {	// NOT for very single photos
 	wppa_breadcrumb('&raquo;', 'optional');		// Display breadcrumb navigation only if it is set in the settings page
 }
 
-echo('</p>');	// Close wpautop generated paragraph
 if ($wppa_master_occur == '1') wppa_set_runtimestyle();		// Import colors, borders and fonts from settings page
 if (wppa_page('albums')) { 
 
@@ -50,7 +50,7 @@ if (wppa_page('albums')) {
 			else {
 				$nofalbumpages = '0';
 			}
-		}    
+		}
 ?>
     <div id="albumlist_<?php echo($wppa_occur) ?>" class="albumlist">
 <?php
@@ -58,6 +58,7 @@ if (wppa_page('albums')) {
 			$counter++;
 			if (wppa_onpage($counter, $curpage, $albumpagesize)) {
 				$didsome = true;
+				$coverphoto = wppa_get_coverphoto_id();
 				$photocount = wppa_get_photo_count();
 				$albumcount = wppa_get_album_count();
 				if (is_numeric($album['cover_linkpage']) && $album['cover_linkpage'] > 0) {
@@ -74,8 +75,8 @@ if (wppa_page('albums')) {
 					$href = '';
 					$title = '';
 				} else {
-					if ($photocount != '0' && $photocount <= $mincount) {
-						$href = wppa_get_image_page_url() . $occ; 
+					if ($photocount != '0' && $photocount) {
+						$href = wppa_get_image_page_url_by_id($coverphoto) . $occ; 
 						$title = __('View the cover photo', 'wppa'); 
 							if ($photocount > 1) $title .= __('s', 'wppa');
 					} else {
@@ -83,8 +84,8 @@ if (wppa_page('albums')) {
 						$title = __('View the album', 'wppa') . ' ' . $album['name'];
 					}
 				}
-				$src = wppa_get_image_url('save_id');	
-				$path = wppa_get_image_path('use_id');
+				$src = wppa_get_thumb_url_by_id($coverphoto);	
+				$path = wppa_get_thumb_path_by_id($coverphoto);
 				$imgattr = wppa_get_imgstyle($path, $coversize, '', 'cover');
 				$events = wppa_get_imgevents('cover');
 	?>
@@ -126,12 +127,7 @@ if (wppa_page('albums')) {
 				</div>
 				<?php if ($alt == 'even') $alt = 'alt'; else $alt = 'even'; ?>
 			<?php } // End if on page
-			else {	// Not on page, there may be previous and/or next pages
-				if ($counter == '1') $isprev = true;
-				if ($counter > $albumpagesize * $curpage) $isnext = true;
-			}
-?>
-        <?php endforeach; ?>
+        endforeach; ?>
     </div><!-- #albumlist<?php echo($wppa_occur) ?>-->
 <?php
     }	// If albums
@@ -148,12 +144,13 @@ if (wppa_page('albums')) {
 			}
 		}
 		if (($thumbpagesize == '0' && $albumpagesize == '0') || !$didsome) { // Either no pagination on thumbs OR thru with the albums
-			if (count($thumbs) > $mincount) { 
+			if (count($thumbs) > $mincount) {
+				$didsome = true;
 				$counter = '0';
 				if (get_option('wppa_thumbtype', 'default') == 'ascovers') {
 	?>
 					<div id="thumblist_<?php echo($wppa_occur) ?>" class="thumblist">
-						<?php foreach ($thumbs as $tt) :  global $thumb; $thumb = $tt; 
+<?php 					foreach ($thumbs as $tt) :  global $thumb; $thumb = $tt; 
 							$counter++;
 							if (wppa_onpage($counter, $curpage - $nofalbumpages, $thumbpagesize)) {
 								$src = wppa_get_thumb_path(); 
@@ -179,19 +176,14 @@ if (wppa_page('albums')) {
 								</div>
 								<?php if ($alt == 'even') $alt = 'alt'; else $alt = 'even'; ?>
 							<?php } // End if on page
-							else {	// Not on page, there may be previous and/or next pages
-								if ($counter == '1') $isprev = true;
-								if ($counter > $thumbpagesize * ($curpage - $nofalbumpages)) $isnext = true;
-							}
-?>
-						<?php endforeach; ?>
+						endforeach; ?>
 					</div><!-- #thumblist_<?php echo($wppa_occur) ?>-->
 <?php
 				}
 				else {
 ?>
 					<div id="thumbnail_area_<?php echo($wppa_occur) ?>" class="thumbs thumbnail_area wppa-box wppa-<?php echo($alt); ?>" onclick="wppa_popdown(<?php echo($wppa_occur); ?>)" >
-						<?php foreach ($thumbs as $tt) :  global $thumb; $thumb = $tt; 
+<?php 					foreach ($thumbs as $tt) :  global $thumb; $thumb = $tt; 
 							$counter++;
 							if (wppa_onpage($counter, $curpage - $nofalbumpages, $thumbpagesize)) {
 								$src = wppa_get_thumb_path(); 
@@ -200,20 +192,18 @@ if (wppa_page('albums')) {
 								$events = wppa_get_imgevents('thumb', $thumb['id']); 
 								if (get_option('wppa_use_thumb_popup') == 'yes') $title = esc_attr(stripslashes($thumb['description']));
 								else $title = esc_js(wppa_get_photo_name($thumb['id'])); ?>
-								<div id="thumbnail_frame_<?php echo($thumb['id'].'_'.$wppa_occur) ?>" class="thumbnail_frame" >
+								<div id="thumbnail_frame_<?php echo($thumb['id'].'_'.$wppa_occur) ?>" class="thumbnail_frame" style="<?php echo(wppa_get_thumb_frame_style()); ?>" >
 									<a href="<?php wppa_photo_page_url(); echo($occ); ?>" class="thumb-img" id="a-<?php echo($thumb['id'].'-'.$wppa_master_occur) ?>"><img src="<?php echo($src); ?>" alt="<?php echo(esc_attr($thumb['name'])); ?>" title="<?php echo(esc_attr($title)); ?>" style="<?php echo($imgattr); ?>" <?php echo($events) ?>/></a>
+									<?php if ($wppa_src) { ?>
+										<div class="thumb-text" ><?php echo('(<a href="'.wppa_get_album_url($thumb['album']).$occ.'">'.stripslashes(wppa_get_album_name($thumb['album'])).'</a>)'); ?></div>
+									<?php } ?>
 									<?php if (get_option('wppa_thumb_text', 'no') == 'yes') { ?>
 										<div class="thumb-text" ><?php echo(stripslashes($thumb['name'])); ?></div>
 										<div class="thumb-text" ><?php echo(stripslashes($thumb['description'])); ?></div>
 									<?php } ?>
 								</div><!-- #thumbnail_frame_<?php echo($thumb['id'].'_'.$wppa_occur) ?> -->
 							<?php }	// End if on page
-							else {	// Not on page, there may be previous and/or next pages
-								if ($counter == '1') $isprev = true;
-								if ($counter > $thumbpagesize * ($curpage - $nofalbumpages)) $isnext = true;
-							}
-?>
-						<?php endforeach; ?>
+						endforeach; ?>
 						<div id="wppa-popup-<?php echo($wppa_master_occur) ?>" class="wppa-popup-frame" ></div>
 						<div class="clear"></div>
 					</div><!-- #thumbnail_area_<?php echo($wppa_occur) ?> -->
@@ -228,6 +218,12 @@ if (wppa_page('albums')) {
 	else $totpag = $nofalbumpages + $nofthumbpages;
 
 	wppa_page_links($totpag, $curpage);
+	
+	if (!$didsome && $wppa_src) {
+?>
+	<div class="center"><?php _e('No albums or photos found matching your search criteria.', 'wppa'); ?></div>
+<?php
+	}
 }
 else {	// Slideshow page or single
 	if (!wppa_page('oneofone')) { ?>
@@ -238,11 +234,8 @@ else {	// Slideshow page or single
 			<a id="speed1-<?php echo($wppa_master_occur) ?>" class="speed1" onclick="wppa_speed(<?php echo($wppa_master_occur); ?>, true)"><?php _e('Faster', 'wppa'); ?></a>
 		</p>
 	</div><!-- #prevnext -->
-<?php }
-	if (is_numeric($wppa_fullsize)) $fullsize = $wppa_fullsize;
-	else $fullsize = get_option('wppa_fullsize');
-?>
-	<div id="slide_frame-<?php echo($wppa_master_occur) ?>" class="slide_frame" style="<?php if (get_option('wppa_fullvalign', 'default') == 'default' || wppa_page('oneofone')) echo('min-height: ' . $fullsize * 3/4 . 'px;'); else echo('height: ' . $fullsize .'px;') ?> width: <?php echo($fullsize) ?>px;">
+<?php } ?>
+	<div id="slide_frame-<?php echo($wppa_master_occur) ?>" class="slide_frame" style="<?php echo(wppa_get_slide_frame_style()); ?>">
 		<div id="theslide0-<?php echo($wppa_master_occur) ?>" class="theslide"></div>
 		<div id="theslide1-<?php echo($wppa_master_occur) ?>" class="theslide"></div>
 		<div id="spinner-<?php echo($wppa_master_occur) ?>" class="spinner"><img id="spinnerimg-<?php echo($wppa_master_occur) ?>" src="" /></div>
@@ -255,9 +248,9 @@ else {	// Slideshow page or single
 <?php if (!wppa_page('oneofone')) { ?>
 	<div id="prevnext2-<?php echo($wppa_master_occur) ?>" class="wppa-box wppa-nav">
 		<p style="text-align: center; margin:0;">
-			<a id="prev-arrow-<?php echo($wppa_master_occur) ?>" class="prev arrow arrow-<?php echo($wppa_master_occur) ?>" onclick="wppa_prev(<?php echo($wppa_master_occur) ?>)"></a>
-			<a id="counter-<?php echo($wppa_master_occur) ?>" class="wppa-black" style="text-align:center; "></a>
-			<a id="next-arrow-<?php echo($wppa_master_occur) ?>" class="next arrow arrow-<?php echo($wppa_master_occur) ?>" onclick="wppa_next(<?php echo($wppa_master_occur) ?>)"></a>
+			<span id="p-a-<?php echo($wppa_master_occur) ?>" class="wppa-black prev">&laquo;&nbsp;</span><a id="prev-arrow-<?php echo($wppa_master_occur) ?>" class="prev arrow arrow-<?php echo($wppa_master_occur) ?>" onclick="wppa_prev(<?php echo($wppa_master_occur) ?>)"></a>
+			<span id="counter-<?php echo($wppa_master_occur) ?>" class="wppa-black" style="text-align:center; "></span>
+			<span id="n-a-<?php echo($wppa_master_occur) ?>" class="wppa-black next">&nbsp;&raquo;</span><a id="next-arrow-<?php echo($wppa_master_occur) ?>" class="next arrow arrow-<?php echo($wppa_master_occur) ?>" onclick="wppa_next(<?php echo($wppa_master_occur) ?>)"></a>
 		</p>
 	</div>
 <?php } ?> 

@@ -8,7 +8,7 @@
 /*
 /* You may always look into a newer version of this file to see what new classes and id's come with an upgrade
 /*
-/* This is version 2.2.0
+/* This is version 2.3.0, a further improvement
 */
 
 /* Navigation */
@@ -25,12 +25,12 @@
 }
 /* Admin settings page defines background and border color */
 .wppa-nav {
-	clear: both;
-    margin: 10px auto 16px auto;
-    padding: 2px;
 }
 /* All boxes. Admin settings page defines border thickness and border radius */
 .wppa-box {
+	clear: both;
+	margin: 8px auto 10px auto;
+	padding: 2px 6px 2px 6px;
 }
 .wppa-mini-box {
 }
@@ -50,7 +50,6 @@
 
 /* Wrapper for album etc */
 .albumlist .album, .thumblist .thumb {
-	margin: 7px 0;
 	padding: 7px;
 }
 
@@ -82,7 +81,7 @@
 }
 
 /* default text attributes */
-.wppa-black {
+.wppa-black, .wppa-black:hover {
 	font-weight:normal; 
 	color:black; 
 	cursor:default; 
@@ -108,7 +107,7 @@
 
 /* Wrapper for thumbnail area */
 .thumbnail_area {
-	margin: 7px 0; 
+/*	margin: 7px 0; */
 	padding: 7px 0 7px 7px;
 	border: 1px #bbdd99 solid;
     -moz-border-radius: 6px;
@@ -120,12 +119,10 @@
 
 /* Wrapper for thumbnail background */
 .thumbnail_frame {
-	height: 100px;	/* Increase this value if you changed the thumbnail size and experience that rows of thumbnails overlap or you enabled text under thumbnails */
-	width: 100px;	/* You may want to change this also */
 	float: left;
-	margin: 2px;
 	background-color: transparent;
 	display: inline;
+	overflow: hidden;
 }
 .thumb-text {
 	font-size: 10px;
@@ -160,11 +157,13 @@
 .imagetitle {
     text-align: center;
     font-size: 1em;
+	cursor: default;
 }
     
 .imagedesc {
     text-align: center;
     font-size: 1.4em;
+	cursor: default;
 }
 
 /* Slideshow */

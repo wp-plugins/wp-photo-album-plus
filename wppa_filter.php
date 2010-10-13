@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 * get the albums via filter
-* version 2.1.0
+* version 2.3.0
 */
 
 add_action('init', 'wppa_do_filter');
@@ -79,7 +79,7 @@ function wppa_albums_filter($post) {
 			$post_new .= wppa_set_slide($is_slide);
 			$post_new .= wppa_set_photo($photo_number);
 			if (is_numeric($size) && $size > '0') $post_new .= wppa_set_fullsize($size);
-			$post_new .= wppa_albums();		
+			$post_new .= wppa_albums();										// Insert the theme template
 			$wppa_pos = strpos($post_old, '%%wppa%%');						// Refresh
 		}
 	}
