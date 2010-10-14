@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: WP Photo Album Plus 2.0.0\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/wp-photo-album-plus\n"
 "POT-Creation-Date: 2010-08-22 09:46+0000\n"
-"PO-Revision-Date: 2010-09-21 15:02+0900\n"
+"PO-Revision-Date: 2010-10-14 06:48+0900\n"
 "Last-Translator: BNG NET <webmaster@bng.net>\n"
 "Language-Team: BNG NET <webmaster@bng.net>\n"
 "MIME-Version: 1.0\n"
@@ -18,6 +18,190 @@ msgstr ""
 "X-Poedit-Country: JAPAN\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-Bookmarks: -1,157,-1,-1,-1,-1,-1,-1,-1,-1\n"
+
+#: Added on 2010/10/14
+msgid "Check this box to use mouseover effect on thumbnail images."
+msgstr "ここをチェックすると、サムネイル画像にマウスオーバーした時にエフェクトを実行します。"
+
+#: Added on 2010/10/14
+msgid "There are no photos in depot:"
+msgstr "次の「デポ」に写真がありません:"
+
+#: Added on 2010/10/14
+msgid "Import Photos"
+msgstr "写真のインポート"
+
+#: Added on 2010/10/14
+msgid "NOTE: Accessing this page - Settings - is always priviledged to Administrators."
+msgstr "注意: この「設定」のページに対するアクセス権は、常に管理者にのみ限られます。"
+
+#: Added on 2010/10/14
+msgid "The minmum user level that can access the photo album sidebar widget admin."
+msgstr "フォトアルバムのサイドバーウィジェット管理にアクセスできる最低ユーザレベル。"
+
+#: Added on 2010/10/14
+msgid "Sidebar Access Level:"
+msgstr "サイドバーアクセス権:"
+
+#: Added on 2010/10/14
+msgid "The minmum user level that can upload photos."
+msgstr "写真がアップロードできる最低ユーザレベル。"
+
+#: Added on 2010/10/14
+msgid "Upload Access Level:"
+msgstr "アップロードアクセス権:"
+
+#: Added on 2010/10/14
+msgid "The minmum user level that can access the photo album admin (i.e. Manage Albums and Upload Photos)."
+msgstr "フォトアルバムの管理（アルバムの管理と写真のアップロード）にアクセスできる最低ユーザレベル。"
+
+#: Added on 2010/10/14
+msgid "Albums Access Level:"
+msgstr "アルバムアクセス権:"
+
+#: Added on 2010/10/14
+msgid "When checked, albums (and photos in them) that have the parent set to --- separate --- will be excluded from being searched."
+msgstr "チェックすると、「--- セパレート ---」にセットした親を持つアルバム（およびアルバムに含まれている写真）を検索対象から外します。"
+
+#: Added on 2010/10/14
+msgid "Exclude separate:"
+msgstr "セパレートの除外:"
+
+#: Added on 2010/10/14
+msgid "Or you may use the standard page on which you display the generic album."
+msgstr "あるいは、アルバムを表示する基本のページをそのまま利用しても構いません。"
+
+#: Added on 2010/10/14
+msgid "Or you ou may use the standard page on which you display the generic album."
+msgstr "あるいは、アルバムを表示する基本のページをそのまま利用しても構いません。"
+
+#: Added on 2010/10/14
+msgid "You may give it the title \"Search results\" or something alike."
+msgstr "ページのタイトルは「検索結果」などわかりやすいものにすることができます。"
+
+#: Added on 2010/10/14
+msgid "Select the page to be used to display search results. The page MUST contain %%wppa%%."
+msgstr "検索結果の表示に使用するページを選択してください。ページには %%wppa%% と記入されていなければなりません。"
+
+#: Added on 2010/10/14
+msgid "Search page:"
+msgstr "検索ページ:"
+
+#: Added on 2010/10/14
+msgid "Enter percentage of opacity. 100% is opaque, 0% is transparant"
+msgstr "不透明度を入力してください。100%で不透明、0%で透明"
+
+#: Added on 2010/10/14
+msgid "Check this box to use mouseover effect on cover images."
+msgstr "ここをチェックすると、カバー画像にマウスオーバーした時にエフェクトを実行します。"
+
+#: Added on 2010/10/14
+msgid "Display name and description under thumbnails."
+msgstr "サムネイルの下に表示する名称と説明。"
+
+#: Added on 2010/10/14
+msgid "Thumbnail text:"
+msgstr "サムネイルテキスト:"
+
+#: Added on 2010/10/14
+msgid "These sizes should be large enough for a thumbnail image and - optionally - the text under it."
+msgstr "これらのサイズはサムネイル画像や場合によってはその下に表示されるテキストにとって充分な大きさにしてください。"
+
+#: Added on 2010/10/14
+msgid "Set width, height and spacing for the thumbnail frames."
+msgstr "サムネイルフレームの幅、高さ、余白を設定してください。"
+
+#: Added on 2010/10/14
+msgid "Width:"
+msgstr "幅:"
+
+#: Added on 2010/10/14
+msgid "pixels, Height:"
+msgstr "ピクセル 高さ:"
+
+#: Added on 2010/10/14
+msgid "pixels, Spacing:"
+msgstr "ピクセル 余白:"
+
+#: Added on 2010/10/14
+msgid "Thumbnail Framesize:"
+msgstr "サムネイルのフレームサイズ:"
+
+#: Added on 2010/10/14
+msgid "extremely slow"
+msgstr "非常に遅い"
+
+#: Added on 2010/10/14
+msgid "Start slideshow running:"
+msgstr "スライドショーの開始:"
+
+#: Added on 2010/10/14
+msgid "If you do not want slideshows: uncheck this box. Browsing full size images will remain possible."
+msgstr "スライドショーが不要な場合: このボックスからチェックを外してください。フルサイズ画像のブラウジングは引き続き可能です。"
+
+#: Added on 2010/10/14
+msgid "Enable slideshow:"
+msgstr "スライドショーの有効化:"
+
+#: Added on 2010/10/14
+msgid "default"
+msgstr "デフォルト"
+
+#: Added on 2010/10/14
+msgid "WPPA Charset:"
+msgstr "このプラグインの文字コード:"
+
+#: Added on 2010/10/14
+msgid "WP Charset:"
+msgstr "ワードプレスの文字コード:"
+
+#: Added on 2010/10/14
+msgid "fit"
+msgstr "フィット"
+
+#: Added on 2010/10/14
+msgid "Fullsize images will be stretched to the Full Size at display time if they are smaller. Leaving unchecked is recommended. It is better to upload photos that fit well the sizes you use!"
+msgstr "フルサイズよりも小さい写真を表示時にフルサイズまで拡大します。チェックしないことをお勧めします。最初から使用するサイズに見合った画像をアップロードしましょう！"
+
+#: Added on 2010/10/14
+msgid "The photos will never be enlarged if they are smaller than the Full Size."
+msgstr "フルサイズより小さい写真は拡大されません。"
+
+#: Added on 2010/10/14
+msgid "If you check this item, the size of the photos will be reduced to the Full Size during the upload/import process."
+msgstr "ここをチェックすると、アップロード/インポート時に写真のサイズがフルサイズにまで縮小されます。"
+
+#: Added on 2010/10/14
+msgid "Resize on Upload:"
+msgstr "アップロード時にサイズ調整:"
+
+#: Added on 2010/10/14
+msgid "You should set this value correctly to make sure the fullsize images are properly aligned horizontally."
+msgstr "正確な数値を入力し、フルサイズ画像が水平方向に正しく並ぶようにしてください。"
+
+#: Added on 2010/10/14
+msgid "This is usually the same as the Full Size, but it may differ."
+msgstr "通常、フルサイズと同じはずですが、たまに異なることがあります。"
+
+#: Added on 2010/10/14
+msgid "Enter the width of the main column in your theme's display area."
+msgstr "使用テーマの表示エリアのメインカラムの幅を入力してください。"
+
+#: Added on 2010/10/14
+msgid "pixels."
+msgstr "ピクセル"
+
+#: Added on 2010/10/14
+msgid "Column Width:"
+msgstr "カラム幅:"
+
+#: Added on 2010/10/14
+msgid "Enter the largest size in pixels as how you want your photos to be displayed."
+msgstr "表示する写真の最大サイズをピクセルで入力してください。"
+
+#: Added on 2010/10/14
+msgid "pixels wide or high, whichever is the largest."
+msgstr "ピクセル（幅または高さ、いずれか大きい方）"
 
 #: Added on 2010/09/21
 msgid "of"
@@ -731,7 +915,7 @@ msgstr "--- オフ ---"
 
 #: wppa_admin.php:562
 msgid "very fast"
-msgstr "非常に速い"
+msgstr "かなり速い"
 
 #: wppa_admin.php:563
 msgid "fast"
@@ -747,7 +931,7 @@ msgstr "遅い"
 
 #: wppa_admin.php:566
 msgid "very slow"
-msgstr "非常に遅い"
+msgstr "かなり遅い"
 
 #: wppa_admin.php:568
 msgid "Specify the animation speed to be used in slideshows."
