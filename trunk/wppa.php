@@ -23,6 +23,7 @@ define('PHOTO_TABLE', $wpdb->prefix . 'wppa_photos');
 define('WPPA_PLUGIN_PATH', 'wp-photo-album-plus');
 define('WPPA_NONCE' , 'wppa-update-check');
 
+
 $wppa_occur = 0;
 $wppa_master_occur = 0;
 $is_cover = '0';
