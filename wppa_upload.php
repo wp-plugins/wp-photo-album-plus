@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the upload/import pages and functions
-* Version 2.3.0
+* Version 2.3.1
 */
 
 function wppa_page_upload() {
@@ -265,7 +265,9 @@ function wppa_insert_photo ($file = '', $album = '', $name = '') {
 				$warning_given = true;
 			}
 		}
-		$ext = substr(strrchr($file, "."), 1);
+		else return false;
+		
+		$ext = substr(strrchr($name, "."), 1);
 			
 		$query = $wpdb->prepare('INSERT INTO `' . PHOTO_TABLE . '` (`id`, `album`, `ext`, `name`, `p_order`, `description`) VALUES (0, %d, %s, %s, 0, \'\')', $album, $ext, $name);
 		$wpdb->query($query);
@@ -338,6 +340,42 @@ function wppa_cleanup_photos($alb = '') {
 			}
 		}
 	}
+	// Now fix missing exts for upload bug in 2.3.0
+	$entries = $wpdb->get_results('SELECT id, ext, name FROM '.PHOTO_TABLE.' WHERE ext = ""', ARRAY_A);
+	if ($entries) {
+		wppa_ok_message(__('Trying to fix '.count($entries).' entries with missing file extension, Please wait.', 'wppa'));
+		foreach ($entries as $entry) {
+			$tp = ABSPATH.'wp-content/uploads/wppa/'.$entry['id'].'.';
+			$ext = substr(strrchr($entry['name'], "."), 1);
+			
+			if ($ext == 'jpg' || $ext == 'JPG' || $ext == 'png' || $ext == 'PNG' || $ext == 'gif' || $ext == 'GIF') {
+				
+				if ($wpdb->query('UPDATE '.PHOTO_TABLE.' SET ext = "'.$ext.'" WHERE id = '.$entry['id'])) {
+					$oldimg = ABSPATH.'wp-content/uploads/wppa/'.$entry['id'].'.';
+					$newimg = ABSPATH.'wp-content/uploads/wppa/'.$entry['id'].'.'.$ext;
+					if (is_file($oldimg)) {
+						copy($oldimg, $newimg);
+						unlink($oldimg);
+					}
+					$oldimg = ABSPATH.'wp-content/uploads/wppa/thumbs/'.$entry['id'].'.';
+					$newimg = ABSPATH.'wp-content/uploads/wppa/thumbs/'.$entry['id'].'.'.$ext;
+					if (is_file($oldimg)) {
+						copy($oldimg, $newimg);
+						unlink($oldimg);
+					}
+					$count++;
+					wppa_ok_message(__('Fixed extension for ', 'wppa').$entry['name']);
+				}
+				else {
+					wppa_error_message(__('Unable to fix extension for ', 'wppa').$entry['name']);
+				}
+			}
+			else {
+				wppa_error_message(__('Unknown extension for photo ', 'wppa').$entry['name'].'. '.__('Please change the name to something with the proper extension and try again!', 'wppa'));
+			}
+		}	
+	}
+	// End ext fix
 	if ($count > 0){
 		wppa_ok_message(__('Database fixed for', 'wppa').' '.$count.' '.__('invalid entries:', 'wppa').$no_photos);
 	}

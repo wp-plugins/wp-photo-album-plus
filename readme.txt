@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, gallery, slideshow, sidebar widget, photo widget, phtoblog
-Version: 2.3.0
+Version: 2.4.0
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -97,6 +97,17 @@ wppa-[your languagecode].po and wppa-[your languagecode].mo.
 WordPress developers Codex page and more specifically at the section about themes and plugins.
 
 == Changelog ==
+
+= 2.4.0 =
+
+= New Features =
+* You can decide to hide the display of name and description under the full size images and slideshows.
+* You can decide to hide the navigation bars over and under the full size images and slideshows.
+* You can set the initial timeout time for slideshows.
+
+= Bug fixes =
+* Hotfix since first release of 2.3.0: Popup on top (z-index: 1000) to avoid truncation.
+* The thumbnail images in the standard layout are shown properly, even in IE 6 and 7. The popup window is still on the wrong place and damages the layout area a little, but it's much better now.
 
 = 2.3.0 =
 
