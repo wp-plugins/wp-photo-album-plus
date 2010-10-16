@@ -3,13 +3,13 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the upload/import pages and functions
-* Version 2.3.1
+* Version 2.3.1a
 */
 
 function wppa_page_upload() {
 		// upload images
         // sanitize system
-		wppa_cleanup_photos();
+		wppa_cleanup_photos('0');
 		// Check if a message is required
 		wppa_check_update();
 
@@ -66,7 +66,7 @@ function wppa_page_upload() {
 function wppa_page_import() {
 	// import images
 	// sanitize system
-    wppa_cleanup_photos();
+    wppa_cleanup_photos('0');
 	// Check if a message is required
 	wppa_check_update();
 
@@ -254,6 +254,7 @@ function wppa_insert_photo ($file = '', $album = '', $name = '') {
 	if ($name == '') $name = basename($file);
 	if ($file != '' && $album != '' ) {
 		$img_size = getimagesize($file);
+	print_r($img_size);
 		if ($img_size) { 
 			if (!$warning_given && ($img_size['0'] > 1280 || $img_size['1'] > 1280)) {
 				if (get_option('wppa_resize_on_upload', 'no') == 'yes') {
@@ -319,7 +320,7 @@ function wppa_cleanup_photos($alb = '') {
 	global $wpdb;
 	if ($alb == '') $alb = wppa_get_last_album();
 	if (!is_numeric($alb)) return;
-	
+
 	$no_photos = '';
 	if ($alb == '0') wppa_ok_message(__('Checking database, please wait...', 'wppa'));
 	$count = 0;
@@ -346,8 +347,15 @@ function wppa_cleanup_photos($alb = '') {
 		wppa_ok_message(__('Trying to fix '.count($entries).' entries with missing file extension, Please wait.', 'wppa'));
 		foreach ($entries as $entry) {
 			$tp = ABSPATH.'wp-content/uploads/wppa/'.$entry['id'].'.';
+			// Try the name
 			$ext = substr(strrchr($entry['name'], "."), 1);
-			
+			if ($ext == '' && is_file($tp)) {
+			// Try the type from the file
+				$img = getimagesize($tp);
+				if ($img[2] == 1) $ext = 'gif';
+				if ($img[2] == 2) $ext = 'jpg';
+				if ($img[2] == 4) $ext = 'png';
+			}
 			if ($ext == 'jpg' || $ext == 'JPG' || $ext == 'png' || $ext == 'PNG' || $ext == 'gif' || $ext == 'GIF') {
 				
 				if ($wpdb->query('UPDATE '.PHOTO_TABLE.' SET ext = "'.$ext.'" WHERE id = '.$entry['id'])) {
