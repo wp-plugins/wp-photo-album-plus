@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the admin pages
-* Version 2.3.0
+* Version 2.3.2
 */
 
 /* Add admin style */

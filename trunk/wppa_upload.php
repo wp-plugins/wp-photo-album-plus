@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the upload/import pages and functions
-* Version 2.3.1a
+* Version 2.3.2
 */
 
 function wppa_page_upload() {
@@ -166,7 +166,7 @@ function wppa_upload_photos() {
 	global $wpdb;
 	global $warning_given;
 
-	wppa_cleanup_photos();
+	wppa_cleanup_photos('0');
 	
 	$warning_given = false;
 
@@ -207,7 +207,7 @@ function wppa_upload_photos() {
 function wppa_import_photos($del_after_import = false) {
 	global $warning_given;
 	
-	wppa_cleanup_photos();
+	wppa_cleanup_photos('0');
 	
 	$warning_given = false;
 	$paths = ABSPATH . 'wp-content/wppa-depot/*.*';
@@ -323,7 +323,7 @@ function wppa_cleanup_photos($alb = '') {
 
 	$no_photos = '';
 	if ($alb == '0') wppa_ok_message(__('Checking database, please wait...', 'wppa'));
-	$count = 0;
+	$delcount = 0;
 	if ($alb == '0') $entries = $wpdb->get_results('SELECT id, ext FROM '.PHOTO_TABLE, ARRAY_A);
 	else $entries = $wpdb->get_results('SELECT id, ext, name FROM '.PHOTO_TABLE.' WHERE album = '.$alb, ARRAY_A);
 	if ($entries) {
@@ -336,12 +336,13 @@ function wppa_cleanup_photos($alb = '') {
 			}
 			if (!is_file($imagepath)) { // No fullimage: delete db entry
 				if ($wpdb->query($wpdb->prepare('DELETE FROM `'.PHOTO_TABLE.'` WHERE `id` = %d LIMIT 1', $entry['id']))) {
-					$count++;
+					$delcount++;
 				}
 			}
 		}
 	}
 	// Now fix missing exts for upload bug in 2.3.0
+	$fixcount = 0;
 	$entries = $wpdb->get_results('SELECT id, ext, name FROM '.PHOTO_TABLE.' WHERE ext = ""', ARRAY_A);
 	if ($entries) {
 		wppa_ok_message(__('Trying to fix '.count($entries).' entries with missing file extension, Please wait.', 'wppa'));
@@ -349,6 +350,9 @@ function wppa_cleanup_photos($alb = '') {
 			$tp = ABSPATH.'wp-content/uploads/wppa/'.$entry['id'].'.';
 			// Try the name
 			$ext = substr(strrchr($entry['name'], "."), 1);
+			if (!($ext == 'jpg' || $ext == 'JPG' || $ext == 'png' || $ext == 'PNG' || $ext == 'gif' || $ext == 'GIF')) {
+				$ext = '';
+			}
 			if ($ext == '' && is_file($tp)) {
 			// Try the type from the file
 				$img = getimagesize($tp);
@@ -371,7 +375,7 @@ function wppa_cleanup_photos($alb = '') {
 						copy($oldimg, $newimg);
 						unlink($oldimg);
 					}
-					$count++;
+					$fixcount++;
 					wppa_ok_message(__('Fixed extension for ', 'wppa').$entry['name']);
 				}
 				else {
@@ -384,8 +388,11 @@ function wppa_cleanup_photos($alb = '') {
 		}	
 	}
 	// End ext fix
-	if ($count > 0){
-		wppa_ok_message(__('Database fixed for', 'wppa').' '.$count.' '.__('invalid entries:', 'wppa').$no_photos);
+	if ($delcount > 0){
+		wppa_ok_message(__('Database fixed.', 'wppa').' '.$delcount.' '.__('invalid entries remooved:', 'wppa').$no_photos);
+	}
+	if ($fixcount > 0) {
+		wppa_ok_message(__('Database fixed.', 'wppa').' '.$fixcount.' '.__('missing file extensions recovered.', 'wppa'));
 	}
 }
 
