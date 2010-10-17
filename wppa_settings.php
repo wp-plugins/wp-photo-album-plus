@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all optins
-* Version 2.3.0
+* Version 2.3.2
 */
 
 function wppa_page_options() {

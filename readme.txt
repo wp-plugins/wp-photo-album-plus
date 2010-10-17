@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, gallery, slideshow, sidebar widget, photo widget, phtoblog
-Version: 2.3.1
+Version: 2.3.2
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -97,13 +97,14 @@ wppa-[your languagecode].po and wppa-[your languagecode].mo.
 WordPress developers Codex page and more specifically at the section about themes and plugins.
 
 == Changelog ==
+= 2.3.2 =
+* This release is there because 2.3.1 was not correctly packed.
 
 = 2.3.1 =
 
 = Bug fixes =
 * IMPORTANT FIX RELEASE
 Fix for missing file extensions. Go to upload or import page to fix it.
-
 
 = 2.3.0 =
 

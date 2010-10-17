@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions and API modules
-* Version 2.3.0
+* Version 2.3.2
 */
 
 /* TEMPLATE FUNCTIONS (TAGS) */

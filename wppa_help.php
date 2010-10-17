@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 * admin help page
-* version 2.3.0
+* version 2.3.2
 */
 
 function wppa_page_help() {

@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 * get the albums via filter
-* version 2.3.0
+* version 2.3.2
 */
 
 add_action('init', 'wppa_do_filter');

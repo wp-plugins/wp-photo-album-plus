@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the search widget
-* Version 2.3.0
+* Version 2.3.2
 */
 
 add_action('plugins_loaded', 'init_wppa_searchwidget');

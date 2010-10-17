@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 * create, edit and delete albums
-* version 2.3.0
+* version 2.3.2
 */
 
 function wppa_admin() {
