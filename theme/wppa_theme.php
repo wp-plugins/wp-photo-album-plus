@@ -249,8 +249,8 @@ else {	// Slideshow page or single
 	<div id="prevnext2-<?php echo($wppa_master_occur) ?>" class="wppa-box wppa-nav">
 		<p style="text-align: center; margin:0;">
 			<span id="p-a-<?php echo($wppa_master_occur) ?>" class="wppa-black prev">&laquo;&nbsp;</span><a id="prev-arrow-<?php echo($wppa_master_occur) ?>" class="prev arrow arrow-<?php echo($wppa_master_occur) ?>" onclick="wppa_prev(<?php echo($wppa_master_occur) ?>)"></a>
-			<span id="counter-<?php echo($wppa_master_occur) ?>" class="wppa-black" style="text-align:center; "></span>
 			<span id="n-a-<?php echo($wppa_master_occur) ?>" class="wppa-black next">&nbsp;&raquo;</span><a id="next-arrow-<?php echo($wppa_master_occur) ?>" class="next arrow arrow-<?php echo($wppa_master_occur) ?>" onclick="wppa_next(<?php echo($wppa_master_occur) ?>)"></a>
+			<span id="counter-<?php echo($wppa_master_occur) ?>" class="wppa-black" style="text-align:center; "></span>
 		</p>
 	</div>
 <?php } ?> 
