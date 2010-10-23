@@ -394,6 +394,9 @@ function wppa_cleanup_photos($alb = '') {
 	if ($fixcount > 0) {
 		wppa_ok_message(__('Database fixed.', 'wppa').' '.$fixcount.' '.__('missing file extensions recovered.', 'wppa'));
 	}
+	if ($alb == '0' && $delcount == 0 && $fixcount == 0) {
+		wppa_ok_message(__('Done. No errors found. Have a nice upload!', 'wppa'));
+	}
 }
 
 ?>
