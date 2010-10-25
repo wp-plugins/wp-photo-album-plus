@@ -254,7 +254,6 @@ function wppa_insert_photo ($file = '', $album = '', $name = '') {
 	if ($name == '') $name = basename($file);
 	if ($file != '' && $album != '' ) {
 		$img_size = getimagesize($file);
-	print_r($img_size);
 		if ($img_size) { 
 			if (!$warning_given && ($img_size['0'] > 1280 || $img_size['1'] > 1280)) {
 				if (get_option('wppa_resize_on_upload', 'no') == 'yes') {
