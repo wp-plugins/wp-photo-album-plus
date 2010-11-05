@@ -44,7 +44,7 @@ function wppa_breadcrumb($xsep = '&raquo;', $opt = '') {
 		if (is_page()) wppa_page_breadcrumb($sep);	
 	
 		if ($alb == 0) {
-			if (!$separate) echo('<span class="wppa-black"; >'); the_title(); echo('</span>');
+			if (!$separate) echo('<span class="wppa-black" >'); the_title(); echo('</span>');
 		} else {	/* $alb != 0 */
 			if (!$separate) {
 ?>
