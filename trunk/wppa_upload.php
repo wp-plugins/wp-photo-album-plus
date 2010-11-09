@@ -3,13 +3,13 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the upload/import pages and functions
-* Version 2.3.2
+* Version 2.4.0
 */
 
 function wppa_page_upload() {
 		// upload images
         // sanitize system
-		wppa_cleanup_photos('0');
+		wppa_cleanup_photos();
 		// Check if a message is required
 		wppa_check_update();
 
@@ -66,7 +66,7 @@ function wppa_page_upload() {
 function wppa_page_import() {
 	// import images
 	// sanitize system
-    wppa_cleanup_photos('0');
+    wppa_cleanup_photos();
 	// Check if a message is required
 	wppa_check_update();
 
@@ -166,7 +166,7 @@ function wppa_upload_photos() {
 	global $wpdb;
 	global $warning_given;
 
-	wppa_cleanup_photos('0');
+	wppa_cleanup_photos();
 	
 	$warning_given = false;
 
@@ -207,7 +207,7 @@ function wppa_upload_photos() {
 function wppa_import_photos($del_after_import = false) {
 	global $warning_given;
 	
-	wppa_cleanup_photos('0');
+	wppa_cleanup_photos();
 	
 	$warning_given = false;
 	$paths = ABSPATH . 'wp-content/wppa-depot/*.*';
@@ -393,9 +393,8 @@ function wppa_cleanup_photos($alb = '') {
 	if ($fixcount > 0) {
 		wppa_ok_message(__('Database fixed.', 'wppa').' '.$fixcount.' '.__('missing file extensions recovered.', 'wppa'));
 	}
-	if ($alb == '0' && $delcount == 0 && $fixcount == 0) {
+		if ($alb == '0' && $delcount == 0 && $fixcount == 0) {
 		wppa_ok_message(__('Done. No errors found. Have a nice upload!', 'wppa'));
 	}
 }
 
-?>

@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 * admin sidebar widget
-* version 2.3.2
+* version 2.4.0
 */
 
 function wppa_sidebar_page_options() {
@@ -26,6 +26,13 @@ function wppa_sidebar_page_options() {
 		} else {
 			$options_error = true;
 		}
+
+		if (wppa_check_numeric($_POST['wppa-widget-padding'], '0', __('Widget Photo Padding.'))) {
+			update_option('wppa_widget_padding', $_POST['wppa-widget-padding']);
+		} else {
+			$options_error = true;
+		}
+
 		if (isset($_POST['wppa-widget-album'])) update_option('wppa_widget_album', $_POST['wppa-widget-album']);
 		if (isset($_POST['wppa-widget-photo'])) update_option('wppa_widget_photo', $_POST['wppa-widget-photo']);
 		if (isset($_POST['wppa-widget-method'])) update_option('wppa_widget_method', $_POST['wppa-widget-method']);
@@ -64,6 +71,9 @@ function wppa_sidebar_page_options() {
 						</th>
 						<td>
 							<input type="text" name="wppa-widget-width" id="wppa-widget-width" value="<?php echo(get_option('wppa_widget_width', '150')); ?>" style="width: 50px;" />
+							<?php _e('pixels.', 'wppa'); echo(' '); _e('Padding top/left:', 'wppa'); ?>
+							<input type="text" name="wppa-widget-padding" id="wppa-widget-padding" value="<?php echo(get_option('wppa_widget_padding', '5')); ?>" style="width: 50px;" />
+							<?php _e('pixels.', 'wppa'); ?>
 							<span class="description"><br/><?php _e('Enter the desired display width of the photo in the sidebar.', 'wppa'); ?></span>
 						</td>
 					</tr>

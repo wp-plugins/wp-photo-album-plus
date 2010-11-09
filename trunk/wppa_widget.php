@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the widget
-* Version 2.3.2
+* Version 2.4.0
 */
 
 add_action('plugins_loaded', 'init_wppa_widget');
@@ -115,5 +115,6 @@ function show_wppa_widget($args) {
 	}
 	// Display the widget
 	echo $before_widget . $before_title . $widget_title . $after_title . $widget_content . $after_widget;
+	// Set padding
+	wppa_set_runtimestyle();
 }
-?>

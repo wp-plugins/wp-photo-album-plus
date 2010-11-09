@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 * gp admin functions
-* version 2.3.2
+* version 2.3.0
 */
 
 // update all thumbs 
@@ -147,4 +147,3 @@ function wppa_set_caps() {
 		}
 	}
 }
-?>

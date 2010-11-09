@@ -3,10 +3,11 @@
 * Pachkage: wp-photo-album-plus
 *
 * admin help page
-* version 2.3.2
+* version 2.4.0
 */
 
 function wppa_page_help() {
+global $wppa_revno;
 
 	// Check if a message is required
 	wppa_check_update();
@@ -35,6 +36,7 @@ function wppa_page_help() {
 				<li><?php _e('The visitor can see an overview of thumbnail images of the photos in album.', 'wppa'); ?></li>
 				<li><?php _e('The visitor can browse through the photos in each album you decide to publish.', 'wppa'); ?></li>
 				<li><?php _e('You can add a Sidebar Widget that displays a photo which can be changed every hour, day or week.', 'wppa'); ?></li>
+				<li><?php _e('You can add a Sidebar Search Widget that enables the visitor to search for albums and photos witch certan words in the name or description.', 'wppa'); ?></li>
 			</ul>
 		
 		<h3><?php _e('Plugin Admin Features', 'wppa'); ?></h3>
@@ -43,30 +45,30 @@ function wppa_page_help() {
 			<ul class="wppa-help-ul">
 				<li><?php _e('Photo Albums: Create and manage Albums.', 'wppa'); ?></li>
 				<li><?php _e('Upload photos: To upload photos to an album you created.', 'wppa'); ?></li>
+				<li><?php _e('Import photos: To bulk import photos that have been uploaded by an ftp program.', 'wppa'); ?></li>
 				<li><?php _e('Settings: To control the various settings to customize your needs.', 'wppa'); ?></li>
 				<li><?php _e('Sidebar Widget: To specify the behaviour for an optional sidebar widget.', 'wppa'); ?></li>
 				<li><?php _e('Help & Info: The screen you are watching now.', 'wppa'); ?></li>
 			</ul>
 
 		<h3><?php _e('Installation', 'wppa'); ?></h3>
+		<ul>
+			<li><?php _e('You can install the plugin via the standard WP plugins admin page.', 'wppa'); ?></li>
+			<li><?php _e('If you want to do it manually, follow the next steps:', 'wppa'); ?></li>
+		</ul>
         <ol class="wppa-help-ol">
 			<li><?php _e('Unzip and upload the wppa plugin folder to', 'wppa'); ?> <tt>wp-content/plugins/</tt></li>
 			<li><?php _e('Make sure that the folder', 'wppa'); ?> <tt>wp-content/uploads/</tt> <?php _e('exists and is writable by the server (CHMOD 755)', 'wppa'); ?></li>
 			<li><?php _e('Activate the plugin in WP Admin -> Plugins.', 'wppa'); ?></li>
 		</ol>
 
-        <h3><?php _e('Upgrading from WP Photo Album', 'wppa'); ?></h3>
-        <p><?php _e('When upgrading from WP Photo Album to WP Photo Album Plus be aware of:', 'wppa'); ?></p>
-        <ol class="wppa-help-ol">
-			<li><?php _e('First de-activate WP Photo Album before activating WP Photo Album Plus!!', 'wppa'); ?><br/>
-				<?php _e('YOU CAN NOT RUN BOTH VERSIONS AT THE SAME TIME!!', 'wppa'); ?>
-			</li>
-			<li><?php _e('The existing database and albums and photos will be preserved.', 'wppa'); ?><br/>
-				<?php _e('YOU DO NOT NEED TO RE-UPLOAD YOUR PHOTOS', 'wppa'); ?>
-			</li>
-			<li><?php _e('You will need to use (and probably modify) the newly supplied default theme file "wppa_theme.php".', 'wppa'); ?></li>
-			<li><?php _e('You can use existing albums to make sub-albums, simply by specifying in which album they belong.', 'wppa'); ?></li>
-        </ol>
+        <h3><?php _e('Upgrading WP Photo Album Plus', 'wppa'); ?></h3>
+        <p><?php _e('When upgrading WP Photo Album Plus be aware of:', 'wppa'); ?></p>
+        <ul class="wppa-help-ul">
+			<li><?php _e('The revision number consists of 3 parts, Major, minor and fix revision. The current version is:', 'wppa'); echo(' '.$wppa_revno); ?><br/></li>
+			<li><?php _e('When an update implies a major or minor version change and you have copied wppa_theme.php or wppa_style.css to your themes directory, you will have to remove them and make new copies and/or alterations if that should still be needed.', 'wppa'); ?><br/>
+				<?php _e('You will get a one-time reminder after upgrading, the first time you open a wppa admin page.', 'wppa'); ?></li>
+		</ul>
             
 		<h3><?php _e('How to start', 'wppa'); ?></h3>
         <ol class="wppa-help-ol">
@@ -86,13 +88,11 @@ function wppa_page_help() {
 			<?php _e('This will result in a gallery of all Albums that have their parent set to "--- none ---".', 'wppa'); ?><br /><br />
 			<?php _e('If you want to display a single album - say album number 19 - in a WP page or WP post (they act exactly the same), add a second line like this:', 'wppa'); ?><br />
 			<tt>%%album=19%%</tt><br />
-			<?php _e('This will result in the display of the', 'wppa'); ?><b> <?php _e('contents', 'wppa'); ?> </b><?php _e('of album nr 19.', 'wppa'); ?><br /><br />
-			<?php _e('If you want to display the', 'wppa'); ?><b> <?php _e('"cover"', 'wppa'); ?> </b><?php _e('of the album, i.e. like one of the albums in the "Photo Gallery" as used above, add (instead of "%%album=...") a second line like this:', 'wppa'); ?><br />
+			<?php _e('This will result in the display of the <b>contents</b> of album nr 19.', 'wppa'); ?><br /><br />
+			<?php _e('If you want to display the <b>cover</b> of the album, i.e. like one of the albums in the "Photo Gallery" as used above, add (instead of "%%album=...") a second line like this:', 'wppa'); ?><br />
 			<tt>%%cover=19%%</tt><br /><br />
-			<?php _e('Alternatively, you can create an extra album (say it has number 22) and set the "parent" property of album 19 to this new album. Then your second line should read:', 'wppa'); ?><br />
-			<tt>%%album=22%%</tt><br />
-			<?php _e('This method enables you to add more than one album to a specific page or post as long as they have the same parent.', 'wppa'); ?><br /><br />
-			<?php _e('Additionally, if you set the parent of this album (nr 22 in this example) to "--- separate ---", it will not be listed in the "generic" photo gallery and the breadcrumb will display the best.', 'wppa'); ?><br /><br />
+			<?php _e('If you want to display the <b>slideshow</b> directly, use:', 'wppa'); ?><br/>
+			<tt>%%slide=19%%</tt><br /><br />
 			<?php _e('You can add a third line if you want the photos to be displayed at a different size than normal. You can "overrule" the "Full size" setting by adding the line (for e.g. 300px):', 'wppa'); ?><br />
 			<tt>%%size=300%%</tt><br /><br />
 			<?php _e('Note: all information between the %% tags including newlines will be lost.', 'wppa'); ?><br />
@@ -102,17 +102,14 @@ function wppa_page_help() {
 			<?php _e('You can also create a custom page template by dropping the following code into a page template:', 'wppa'); ?><br />
 			<tt>&lt;?php wppa_albums(); ?&gt;</tt><br /><br />
 			<?php _e('If you want to display the <b>contents</b> of a single album in the template - say album number 19 - the code would be:', 'wppa'); ?><br />
-			<tt>&lt;?php wppa_albums(19); ?&gt;</tt><br />
-			<?php _e('If you want the <b>cover</b> to be displayed instead, add the following code:', 'wppa'); ?><br />
-			<tt>&lt;?php global $is_cover; ?&gt;</tt><br />
-			<tt>&lt;?php $is_cover = '1'; ?&gt;</tt><br /><br />
-			<?php _e('If you want to specify a size, add the following code:', 'wppa'); ?><br />
-			<tt>&lt;?php global $wppa_fullsize; ?&gt;<br/>
-			&lt;?php $wppa_fullsize = 300; ?&gt;</tt><br/><br />
-			<?php _e('You can combine the above as follows: (example)', 'wppa'); ?><br />
-			<tt>&lt;?php wppa_albums(19, 'album', 300); ?&gt;</tt><br />
-			<?php _e('or as:', 'wppa'); ?><br />
-			<tt>&lt;?php wppa_albums(19, 'cover', 300); ?&gt;</tt><br /><br />
+			<tt>&lt;?php wppa_albums(19); ?&gt;</tt> or <tt>&lt;?php wppa_albums(19, 'album'); ?&gt;</tt><br />
+			<?php _e('If you want the <b>cover</b> to be displayed instead, use the following code:', 'wppa'); ?><br />
+			<tt>&lt;?php wppa_albums(19, 'cover'); ?&gt;</tt><br />
+			<?php _e('And to display the <b>slideshow</b> it would be:', 'wppa'); ?><br />
+			<tt>&lt;?php wppa_albums(19, 'slide'); ?&gt;</tt><br /><br />
+			<?php _e('If you want to specify a size, add another argument:', 'wppa'); ?><br />
+			<tt>&lt;?php wppa_albums(19, 'album', 300); ?&gt;</tt><br /><br />
+			<?php _e('For more information on usable php routines see the', 'wppa'); ?> <a href="http://wppa.opajaap.nl/">Docs & Demos</a> website.<br/>
 			<?php _e('In order to work properly, the wppa_albums() tag needs to be within the', 'wppa'); ?> <a href="http://codex.wordpress.org/The_Loop">WordPress loop</a>.<br/>
 			<?php _e('For more information on creating custom page templates, click', 'wppa'); ?> <a href="http://codex.wordpress.org/Pages#Creating_your_own_Page_Templates"><?php _e('here', 'wppa'); ?></a>.<br/>
 		</p>
@@ -125,15 +122,15 @@ function wppa_page_help() {
 		
 		<h3><?php _e('Facts to remember', 'wppa'); ?></h3>
 		<ul class="wppa-help-ul">
-			<li><?php _e('An album can have only <b>ONE</b> parent.', 'wppa'); ?></li>
 			<li><?php _e('If the number of photos in an album is less than or equal to the treshold value, they will not display in the album. They will be used for the cover only.', 'wppa'); ?></li>
 			<li><?php _e('An album that has it\'s parent set to "--- separate ---" will not be displayed in the "generic" gallery. This enables you to have albums for use solely for single posts or pages.', 'wppa'); ?>
 			<li><?php _e('Specifying <tt>%%album=...</tt> causes the <b>content</b> of the album to be displayed.', 'wppa'); ?></li>
 			<li><?php _e('Specifying <tt>%%cover=...</tt> causes the <b>cover</b> of the album to be displayed.', 'wppa'); ?></li>
-			<li><?php _e('Keep the sequence intact: 1. <tt>%%wppa%%</tt>, 2. <tt>%%album=</tt> or <tt>%%cover=</tt>, 3. <tt>%%size=</tt>. (2. being optional even when using 3.).', 'wppa'); ?></li>
-			<li><?php _e('Use the default page template, or create one yourself. In this case, study the example (actually the version i use myself): <tt>...wp-content/plugins/wp-photo-album-plus/examples/page-photo-album.php</tt>', 'wppa'); ?></li>
-			<li><?php _e('WPPA uses a system of tags similar to the WordPress theme system. To view a list of available tags, please read tags.txt', 'wppa'); ?></li>
+			<li><?php _e('Specifying <tt>%%slide=...</tt> causes the <b>slideshow</b> of the album to be displayed.', 'wppa'); ?></li>
+			<li><?php _e('Keep the sequence intact: 1. <tt>%%wppa%%</tt>, 2. <tt>%%album=</tt> or <tt>%%cover=</tt> or <tt>%%slide=</tt>, 3. <tt>%%size=</tt>. (2. being optional even when using 3.).', 'wppa'); ?></li>
+			<li><?php _e('Use the default page template, or create one yourself.', 'wppa'); ?></li>
 			<li><?php _e('You can remove the plugin and re-install the latest version always. This will not affect your photos or albums.', 'wppa'); ?></li>
+			<li><?php _e('You may combine %% items on one line like: <tt>%%wppa%% %%cover=13%% %%size=250%%</tt>', 'wppa'); ?></li>
 			</ul>
 	
 		<h3><?php _e('Plugin Support And Feature Request', 'wppa'); ?></h3>
@@ -144,6 +141,8 @@ function wppa_page_help() {
 			<?php _e('You may also check the', 'wppa'); ?> <a href="http://wordpress.org/tags/wp-photo-album-plus">forum</a> <?php _e('for this plugin and/or leave a question there.', 'wppa'); ?>
 			<br/>
 			<?php _e('For hot fixes check the', 'wppa'); ?> <a href="http://plugins.trac.wordpress.org/log/wp-photo-album-plus/">development log</a> <?php _e('for this plugin.', 'wppa'); ?>
+			<br/>
+			<?php _e('You may also visit the', 'wppa'); ?> <a href="http://wppa.opajaap.nl/" target="_blank">WPPA+ Docs & Demos site</a> <?php _e('that also contains the', 'wppa'); ?> <a href="http://wppa.opajaap.nl/?page_id=39" target="_blank">WPPA+ Tutorial</a>.
 		</p>
         <p>
 			<?php _e('If you love this plugin, I would appreciate a donation, either in', 'wppa'); ?>
@@ -168,4 +167,3 @@ function wppa_page_help() {
 	</div>
 <?php
 }
-?>

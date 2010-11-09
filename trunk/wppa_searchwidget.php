@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the search widget
-* Version 2.3.2
+* Version 2.4.0
 */
 
 add_action('plugins_loaded', 'init_wppa_searchwidget');
@@ -14,6 +14,8 @@ function init_wppa_searchwidget() {
 
 function show_wppa_searchwidget($args) {
 	global $wpdb;
+	global $wppa_searchstring;
+	
 	extract($args);
 	
 	// get the title
@@ -28,7 +30,7 @@ function show_wppa_searchwidget($args) {
 	else {
 	$pagelink = get_page_link($page);
 ?>
-		<form id="searchform" action="<?php echo($pagelink) ?>" method="post">
+		<form id="searchform" action="<?php echo($pagelink) ?>" method="post" class="widget_search">
 			<div>
 				<input type="text" name="wppa-searchstring" id="s" value="<?php echo($wppa_searchstring) ?>" />
 				<input id = "searchsubmit" type="submit" value="<?php _e('Search', 'wppa'); ?>" />
@@ -38,4 +40,3 @@ function show_wppa_searchwidget($args) {
 	}
 	echo $after_widget;
 }
-?>

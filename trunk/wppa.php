@@ -2,13 +2,13 @@
 /*
 Plugin Name: WP Photo Album Plus
 Description: Easily manage and display your photo albums and slideshows within your WordPress site.
-Version: 2.3.2
+Version: 2.4.0
 Author: J.N. Breetvelt a.k.a OpaJaap
 Author URI: http://www.opajaap.nl/
 Plugin URI: http://wordpress.org/extend/plugins/wp-photo-album-plus/
 */
 
-load_plugin_textdomain('wppa', 'wp-content/plugins/wp-photo-album-plus/langs/', 'wp-photo-album-plus/langs/');
+load_plugin_textdomain('wppa', false, 'wp-photo-album-plus/langs/');
 
 /* GLOBAL SETTINGS */
 global $wpdb;
@@ -17,12 +17,14 @@ global $wppa_occur;
 global $wppa_master_occur;
 global $is_cover;
 global $wppa_src;
+global $wppa_revno;
 
 define('ALBUM_TABLE', $wpdb->prefix . 'wppa_albums');
 define('PHOTO_TABLE', $wpdb->prefix . 'wppa_photos');
 define('WPPA_PLUGIN_PATH', 'wp-photo-album-plus');
 define('WPPA_NONCE' , 'wppa-update-check');
 
+$wppa_revno = '2.4.0';
 $wppa_occur = 0;
 $wppa_master_occur = 0;
 $is_cover = '0';
@@ -47,7 +49,7 @@ function wppa_setup() {
 	global $wpdb;
 	
 	$old_rev = get_option('wppa_revision', '100');
-	if ($old_rev <= '230') {
+	if ($old_rev <= '240') {
 		
 	$create_albums = "CREATE TABLE " . ALBUM_TABLE . " (
                     id bigint(20) NOT NULL auto_increment, 
@@ -81,13 +83,13 @@ function wppa_setup() {
 	if (!is_numeric(get_option('wppa_fullsize', 'nil'))) update_option('wppa_fullsize', '640');
 	if (!is_numeric(get_option('wppa_colwidth', 'nil'))) update_option('wppa_colwidth', get_option('wppa_fullsize'));
 	if (get_option('wppa_enlarge', 'nil') == 'nil') update_option('wppa_enlarge', 'yes');
-	if (get_option('wppa_fullvalign', 'nil') == 'nil') update_option('wppa_fullvalign', 'default');
+	if (get_option('wppa_fullvalign', 'nil') == 'nil') update_option('wppa_fullvalign', 'fit');
 	if (!is_numeric(get_option('wppa_min_thumbs', 'nil'))) update_option('wppa_min_thumbs', '1');
 	if (get_option('wppa_valign', 'nil') == 'nil') update_option('wppa_valign', 'default');
 	if (!is_numeric(get_option('wppa_thumbsize', 'nil'))) update_option('wppa_thumbsize', '150');
 	if (!is_numeric(get_option('wppa_tf_width', 'nil'))) update_option('wppa_tf_width', get_option('wppa_thumbsize'));
 	if (!is_numeric(get_option('wppa_tf_height', 'nil'))) update_option('wppa_tf_height', get_option('wppa_thumbsize') + '10');
-	if (!is_numeric(get_option('wppa-tn-margin', 'nil'))) update_option('wppa_tn_margin', '4');
+	if (!is_numeric(get_option('wppa_tn_margin', 'nil'))) update_option('wppa_tn_margin', '4');
 	if (!is_numeric(get_option('wppa_smallsize', 'nil'))) update_option('wppa_smallsize', '100');
 	if (get_option('wppa_show_bread', 'nil') == 'nil') update_option('wppa_show_bread', 'yes');
 	if (get_option('wppa_use_thumb_opacity', 'nil') == 'nil') update_option('wppa_use_thumb_opacity', 'yes');
@@ -104,7 +106,7 @@ function wppa_setup() {
 	if (get_option('wppa_bcolor_alt', 'nil') == 'nil') update_option('wppa_bcolor_alt', '#bbbbbb');
 	if (get_option('wppa_bcolor_nav', 'nil') == 'nil') update_option('wppa_bcolor_nav', '#bbbbbb');
 	
-	if ($old_rev < '230') {
+	if ($old_rev < '240') {
 		$key = '0';
 		$userstyle = ABSPATH . 'wp-content/themes/' . get_option('template') . '/wppa_style.css';
 		$usertheme = ABSPATH . 'wp-content/themes/' . get_option('template') . '/wppa_theme.php';
@@ -113,7 +115,7 @@ function wppa_setup() {
 		update_option('wppa_update_key', $key);
 		}
 	
-	update_option('wppa_revision', '230');
+	update_option('wppa_revision', '240');
 	}
 }
 	
@@ -140,7 +142,7 @@ function wppa_add_admin() {
 	add_submenu_page(__FILE__, __('Import Photos', 'wppa'), __('Import Photos', 'wppa'), 'wppa_upload', 'import_photos', 'wppa_page_import');
     add_submenu_page(__FILE__, __('Settings', 'wppa'), __('Settings', 'wppa'), 'administrator', 'options', 'wppa_page_options');
 	add_submenu_page(__FILE__, __('Sidebar Widget', 'wppa'), __('Sidebar Widget', 'wppa'), 'wppa_sidebar_admin', 'wppa_sidebar_options', 'wppa_sidebar_page_options');
-    add_submenu_page(__FILE__, __('Help &amp; Info', 'wppa'), __('Help &amp; Info', 'wppa'), 'wppa_admin', 'wppa_help', 'wppa_page_help');
+    add_submenu_page(__FILE__, __('Help &amp; Info', 'wppa'), __('Help &amp; Info', 'wppa'), 'edit_posts', 'wppa_help', 'wppa_page_help');
 }
 
 /* ADMIN PAGES */
@@ -176,4 +178,3 @@ function wppa_add_javascripts() {
 
 /* LOAD API and LOW LEVEL FUNCTIONS */
 require_once('wppa_functions.php');
-?>
