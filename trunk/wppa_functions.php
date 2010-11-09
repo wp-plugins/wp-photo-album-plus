@@ -7,7 +7,9 @@
 */
 
 global $wppa_api_version;
-$wppa_api_version = '2-4-0-001';
+$wppa_api_version = '2-4-0-002';
+/* build 002:fixed filmstrip dimensions for thumbnail sizes other than 100
+/* 
 /* TEMPLATE FUNCTIONS (TAGS) */
 
 /* show system statistics */
@@ -1158,6 +1160,7 @@ global $wppa_auto_colwidth;
 			wppa_preambule = <?php echo wppa_get_preambule() ?>;
 			wppa_thumbnail_pitch = <?php echo (get_option('wppa_tf_width', '100') + get_option('wppa_tn_margin', '0')); ?>;
 			wppa_filmstrip_length = <?php echo (wppa_get_container_width() - 60); ?>;
+			wppa_filmstrip_margin = <?php echo (get_option('wppa_tn_margin', '0') / 2); ?>;
 
 		/* ]]> */
 		</script>
@@ -1719,14 +1722,15 @@ global $thumb;
 	else $alb = '';	// Album id is in $startalbum
 	$thumbs = wppa_get_thumbs($alb);
 	$preambule = wppa_get_preambule();
-	$width = '104' * (count($thumbs) + 2 * $preambule);
-	$topmarg = get_option('wppa_thumbsize') / 2 - 12 + 10;
+		
+	$width = (get_option('wppa_tf_width') + get_option('wppa_tn_margin')) * (count($thumbs) + 2 * $preambule);
+	$topmarg = get_option('wppa_thumbsize') / 2 - 12 + 7;
 
-	echo('<div class="wppa-box wppa-nav" style="height:120px;">');
+	echo('<div class="wppa-box wppa-nav" style="height:'.(get_option('wppa_thumbsize') + get_option('wppa_tn_margin')).'px;">');
 		echo('<div class="prev arrow" style="margin-top: '.$topmarg.'px; width: 23px; font-size: 24px;"><a id="prev-film-arrow-'.$wppa_master_occur.'" onclick="wppa_prev('.$wppa_master_occur.')">&laquo;</a></div>');
 		echo('<div class="next arrow" style="margin-top: '.$topmarg.'px; width: 23px; font-size: 24px;"><a id="next-film-arrow-'.$wppa_master_occur.'" onclick="wppa_prev('.$wppa_master_occur.')">&raquo;</a></div>');
-		echo('<div style="display: block; height: 100px; margin: 8px 20px 0 20px; overflow:hidden;">');
-			echo('<div id="wppa-filmstrip-'.$wppa_master_occur.'" style="height: 100px; width:'.$width.'px; margin-left: -100px;">');
+		echo('<div style="display: block; height: '.(get_option('wppa_thumbsize') + get_option('wppa_tn_margin')).'px; margin: 0 20px 0 20px; overflow:hidden;">');
+			echo('<div id="wppa-filmstrip-'.$wppa_master_occur.'" style="height: '.get_option('wppa_thumbsize').'px; width:'.$width.'px; margin-left: -100px;">');
 				$start = count($thumbs) - $preambule;
 				$end = count($thumbs);
 				$idx = $start;
