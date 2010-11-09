@@ -1,5 +1,5 @@
 // Theme variables and functions
-// This is wppa_theme.js version 2.3.0
+// This is wppa_theme.js version 2.4.0
 //
 
 // Style variables
@@ -24,6 +24,9 @@ var wppa_fontsize_nav = '';
 var wppa_fontfamily_box = '';
 var wppa_fontsize_box = '';
 var wppa_black = '';
+var wppa_widget_padding = 0;
+var wppa_timer = new Array();
+var wppa_saved_id = new Array();
 
 // Adapt style
 jQuery(document).ready(function(){
@@ -85,6 +88,9 @@ var temp;
 		jQuery(".wppa-box-text").css('font-size', temp+'px');
 	}
 	if (wppa_black != '') jQuery(".wppa-black").css('color', wppa_black);
+	
+	jQuery(".wppa-widget").css('padding-left', wppa_widget_padding);
+	jQuery(".wppa-widget").css('padding-top', wppa_widget_padding);
 });
 
 // Popup of thumbnail images 
@@ -101,12 +107,14 @@ function wppa_popup(mocc, elm, id) {
 	// stop if running 
 	clearTimeout(wppa_timer[mocc]);
 	
-	// Give this' occurrances popup its content 
-	jQuery('#wppa-popup-'+mocc).html('<div><div class="wppa-popup" style="background-color:'+wppa_bgcolor_img+'; text-align:center;"><a id="wppa-a" href="'+document.getElementById('a-'+id+'-'+mocc).href+'"><img id="wppa-img-'+mocc+'" src="'+elm.src+'" title="" /></a><div id="wppa-name-'+mocc+'" style="display:none; padding:2px;" class="wppa_pu_info">'+elm.alt+'</div><div id="wppa-desc-'+mocc+'" style="clear:both; display:none;" class="wppa_pu_info">'+elm.title+'</div></div></div>');
+	// Give this' occurrances popup its content (div eromheen weggehald)
+	if (document.getElementById('a-'+id+'-'+mocc))
+		jQuery('#wppa-popup-'+mocc).html('<div class="wppa-popup" style="background-color:'+wppa_bgcolor_img+'; text-align:center;"><a id="wppa-a" href="'+document.getElementById('a-'+id+'-'+mocc).href+'"><img id="wppa-img-'+mocc+'" src="'+elm.src+'" title="" /></a><div id="wppa-name-'+mocc+'" style="display:none; padding:2px;" class="wppa_pu_info">'+elm.alt+'</div><div id="wppa-desc-'+mocc+'" style="clear:both; display:none;" class="wppa_pu_info">'+elm.title+'</div></div>');
 	// Find handle to the popup image 
 	puImg = document.getElementById('wppa-img-'+mocc);
 	// Set width of text fields to width of a landscape image	
-	jQuery(".wppa_pu_info").css('width', ((puImg.clientWidth > puImg.clientHeight ? puImg.clientWidth : puImg.clientHeight) - 8)+'px');
+	if (puImg)
+		jQuery(".wppa_pu_info").css('width', ((puImg.clientWidth > puImg.clientHeight ? puImg.clientWidth : puImg.clientHeight) - 8)+'px');
 	
 	// Compute starting coords
 	leftDivSmall = parseInt(elm.offsetLeft) - 7 - 5 - 1; // thumbnail_area:padding, wppa-img:padding, wppa-border; jQuery().css("padding") does not work for padding in css file, only when litaral in the tag

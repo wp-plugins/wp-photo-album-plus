@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 * create, edit and delete albums
-* version 2.3.2
+* version 2.4.0
 */
 
 function wppa_admin() {
@@ -484,7 +484,7 @@ function wppa_add_album() {
 		$iret = $wpdb->query($query);
         if ($iret === FALSE) wppa_error_message(__('Could not create album.', 'wppa'));
 		else {
-            $id = wppa_album_id($name, TRUE);
+            $id = wppa_get_album_id($name);
             wppa_set_last_album($id);
 			wppa_update_message(__('Album #', 'wppa') . ' ' . $id . ' ' . __('Added.', 'wppa'));
         }
@@ -618,5 +618,3 @@ function wppa_main_photo($cur = '') {
 	}
 	return $output;
 }
-
-?>

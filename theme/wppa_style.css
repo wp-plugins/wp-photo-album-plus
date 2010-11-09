@@ -8,7 +8,7 @@
 /*
 /* You may always look into a newer version of this file to see what new classes and id's come with an upgrade
 /*
-/* This is version 2.3.0, a further improvement
+/* This is version 2.4.0
 */
 
 /* Navigation */
@@ -55,8 +55,8 @@
 
 /* Album name */
 .wppa-title {
-	font-size: 1.2em;
-	font-weight: bold;
+/*	font-size: 1.2em;
+	font-weight: bold;*/
 	margin: 0;
 	padding: 0;
 	clear: none;
@@ -89,15 +89,15 @@
 }
 
 /* Wrapper for coverphoto background */
-.coverphoto_frame, .thumbphoto_frame {
+.coverphoto-frame, .thumbphoto-frame {
 }
 
 /* Coverphoto */
-.coverphoto_frame .image, .thumbphoto_frame .image { 
+.coverphoto-frame .image, .thumbphoto-frame .image { 
 	position: relative;
 	float: right; 		/* Change this to float: left; if you want the coverphoto left */
 	margin-left: 5px;	/* and this to margin-right: 5px; */
-	border: 1px #bbdd99 solid;
+	border: none; /*1px #bbdd99 solid;*/
 	padding: 4px;
 	-moz-border-radius: 3px;
 	-khtml-border-radius: 3px;
@@ -106,7 +106,7 @@
 }
 
 /* Wrapper for thumbnail area */
-.thumbnail_area {
+.thumbnail-area {
 /*	margin: 7px 0; */
 	padding: 7px 0 7px 7px;
 	border: 1px #bbdd99 solid;
@@ -118,12 +118,14 @@
 }
 
 /* Wrapper for thumbnail background */
-.thumbnail_frame {
+.thumbnail-frame {
 	float: left;
 	background-color: transparent;
 	display: inline;
 	overflow: hidden;
 }
+
+/* Text under thumbnail images */
 .thumb-text {
 	font-size: 10px;
 	line-height: 12px;
@@ -131,16 +133,11 @@
 	width: 100px;
 }
 
-.thumbs {
-	position: relative;
-}
-.thumbs img {
-	margin: 0;
-	padding: 0;
-}
-
-
 /* The popup small image */
+.wppa-popup-frame {
+position: absolute;
+}
+
 .wppa-popup {
 	position: absolute;
 	padding: 5px;
@@ -168,12 +165,12 @@
 }
 
 /* Slideshow */
-.slide_frame {
+.slide-frame {
 	position: relative;
 	width: 100%;
 }
 
-.wideentry .slide_frame {
+.wideentry .slide-frame {
 	padding: 0;
 	background-color: #eef7e6; 
 }
@@ -203,7 +200,7 @@
 
 /* Sidebar widget */
 .wppa-widget {
-padding: 5px 0 0 5px;
+/* padding: 5px 0 0 5px; */
 }
 
 .wppa-widget-text {

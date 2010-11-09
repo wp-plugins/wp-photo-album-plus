@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, gallery, slideshow, sidebar widget, photo widget, phtoblog
-Version: 2.3.2
+Version: 2.4.0
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -27,6 +27,7 @@ This plugin is designed to easily manage and display your photo albums and slide
 * The visitor can browse through the photos in each album you decide to publish.
 * You can add a Sidebar Widget that displays a photo which can be changed every hour, day or week.
 * You can add a Search Sidebar Widget which enables the visitors to search albums and photos for certain words in names and descriptions.
+* Almost all appearance settings can be done in the settings admin page. No php, html or css knowledge is required to customize the appearence of the photo display.
 
 
 Plugin Admin Features:
@@ -97,14 +98,32 @@ wppa-[your languagecode].po and wppa-[your languagecode].mo.
 WordPress developers Codex page and more specifically at the section about themes and plugins.
 
 == Changelog ==
-= 2.3.2 =
-* This release is there because 2.3.1 was not correctly packed.
 
-= 2.3.1 =
+= 2.4.0 =
+
+= New Features =
+* There is a filmstrip-navigation bar.
+* You can decide to hide the display of name and description under the full size images and slideshows.
+* You can decide to hide the navigation bars over and under the full size images and slideshows.
+* You can set the initial timeout time for slideshows.
+* You can set the fading to fadein after fadeout as opposed to fadein and fadeout simultanuously.
+* You can specify padding for the picture of the day widget in the widget settings page.
+* You can align a photo, slideshow, cover or thumbnail display which is amaller than the display column, 
+including the navigation bars and descriptions to left, center or right.
 
 = Bug fixes =
-* IMPORTANT FIX RELEASE
-Fix for missing file extensions. Go to upload or import page to fix it.
+* Hotfix since first release of 2.3.0: Popup on top (z-index: 1000) to avoid truncation.
+* The thumbnail images in the standard layout are shown properly, even in IE 6 and 7. The popup window is still on the wrong place and damages the layout area a little, but it's much better now.
+* Fixed another IE<8 incompatibility issue: next photo link is now on the same line as previous photo link. Same for next page link.
+* Fixed a layout problem for fullsize images when vertical align was not 'fit' and when %%size= %% used.
+* Fixed a horizontal alignment problem where photos wer smaller than the Full Size and stretching was off.
+
+= Other changes =
+* Changed the names of the Dutch language files to the new standard (wppa-nl.mo wppa-nl.po)
+* Dropped tags.txt. The documentation and a tutorial is on http://wppa.opajaap.nl/
+
+= 2.3.2 =
+* IMPORTANT FIX for missing file extensions.
 
 = 2.3.0 =
 

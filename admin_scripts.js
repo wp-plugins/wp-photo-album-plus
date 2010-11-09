@@ -1,7 +1,7 @@
 /* admin_scripts.js */
 /* Package: wp-photo-album-plus
 /*
-/* Version 2.3.2
+/* Version 2.4.0
 /* Various js routines used in admin pages		
 */
 
@@ -80,10 +80,12 @@ function wppaCheckWidgetSubtitle() {
 }
 
 /* Enables or disables the setting of full size horizontal alignment. Only when fullsize is unequal to column width */
+/* also no hor align if vertical align is ---default-- */
 function wppaCheckFullHalign() {
 	var fs = document.getElementById('wppa-fullsize').value;
 	var cs = document.getElementById('wppa-colwidth').value;
-	if (fs != cs) {
+	var va = document.getElementById('wppa-fullvalign').value;
+	if ((fs != cs) && (va != 'default')) {
 		jQuery('.wppa-ha').css('visibility', 'visible');
 	}
 	else {
