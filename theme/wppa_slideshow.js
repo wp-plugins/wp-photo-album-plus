@@ -1,5 +1,5 @@
 ﻿// Slide show variables and functions
-// This is wppa_slideshow.js version 2.4.0
+// This is wppa_slideshow.js version 2.4.0, build 002
 //
 
 var wppa_slides = new Array();
@@ -29,6 +29,7 @@ var wppa_auto_colwidth = false;
 var wppa_thumbnail_area_delta;
 var wppa_thumbnail_pitch;
 var wppa_filmstrip_length;
+var wppa_filmstrip_margin = 0;
 var wppa_preambule;
 
 jQuery(document).ready(function(){
@@ -177,7 +178,7 @@ var xoffset;
 //preambule = 4;
 //var wppa_thumbnail_pitch = 104;
 //var wppa_filmstrip_length = 390;
-xoffset = wppa_filmstrip_length / 2 - (wppa_id[mocc] + 0.5 + wppa_preambule) * wppa_thumbnail_pitch;
+xoffset = wppa_filmstrip_length / 2 - (wppa_id[mocc] + 0.5 + wppa_preambule) * wppa_thumbnail_pitch - wppa_filmstrip_margin;
 //if (xoffset > 0) xoffset = 0;
 //xmin = wppa_filmstrip_length - wppa_slides[mocc].length * wppa_thumbnail_pitch;
 //if (xoffset < (xmin)) xoffset = xmin;
