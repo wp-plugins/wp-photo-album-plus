@@ -109,7 +109,7 @@ function wppa_fade(mocc) {
 	// Remove spinner
 	wppa_unload_spinner(mocc);
 	// Do autocol if required
-if (wppa_auto_colwidth) wppa_do_autocol();
+if (wppa_auto_colwidth) wppa_do_autocol(mocc);
 	// Hide subtitles
 if (wppa_ss_running[mocc] != -1) {	// not stop in progress
 	jQuery("#imagedesc-"+mocc).html('&nbsp;&nbsp;');
@@ -152,6 +152,7 @@ if (wppa_ss_running[mocc] == -1) { // stop in progress
 }
 else {
 	// set height to fit if reqd
+//	if (!wppa_auto_colwidth)
 	if (wppa_fullvalign_fit[mocc]) {
 		h = document.getElementById('theimg'+wppa_foreground[mocc]+'-'+mocc).style.height;
 		if (h) document.getElementById('slide_frame-'+mocc).style.height = parseInt(h)+'px';

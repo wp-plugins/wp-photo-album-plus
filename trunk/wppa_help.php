@@ -36,7 +36,7 @@ global $wppa_revno;
 				<li><?php _e('The visitor can see an overview of thumbnail images of the photos in album.', 'wppa'); ?></li>
 				<li><?php _e('The visitor can browse through the photos in each album you decide to publish.', 'wppa'); ?></li>
 				<li><?php _e('You can add a Sidebar Widget that displays a photo which can be changed every hour, day or week.', 'wppa'); ?></li>
-				<li><?php _e('You can add a Sidebar Search Widget that enables the visitor to search for albums and photos witch certan words in the name or description.', 'wppa'); ?></li>
+				<li><?php _e('You can add a Sidebar Search Widget that enables the visitor to search for albums and photos with certan words in the name or description.', 'wppa'); ?></li>
 			</ul>
 		
 		<h3><?php _e('Plugin Admin Features', 'wppa'); ?></h3>
@@ -109,8 +109,8 @@ global $wppa_revno;
 			<tt>&lt;?php wppa_albums(19, 'slide'); ?&gt;</tt><br /><br />
 			<?php _e('If you want to specify a size, add another argument:', 'wppa'); ?><br />
 			<tt>&lt;?php wppa_albums(19, 'album', 300); ?&gt;</tt><br /><br />
-			<?php _e('For more information on usable php routines see the', 'wppa'); ?> <a href="http://wppa.opajaap.nl/">Docs & Demos</a> website.<br/>
-			<?php _e('In order to work properly, the wppa_albums() tag needs to be within the', 'wppa'); ?> <a href="http://codex.wordpress.org/The_Loop">WordPress loop</a>.<br/>
+			<?php _e('For more information on usable php routines see the <a href="http://wppa.opajaap.nl/">Docs & Demos</a> website.', 'wppa'); ?><br/>
+			<?php _e('In order to work properly, the wppa_albums() tag needs to be within the <a href="http://codex.wordpress.org/The_Loop" target="_blank">WordPress loop</a>.', 'wppa'); ?><br/>
 			<?php _e('For more information on creating custom page templates, click', 'wppa'); ?> <a href="http://codex.wordpress.org/Pages#Creating_your_own_Page_Templates"><?php _e('here', 'wppa'); ?></a>.<br/>
 		</p>
 		
@@ -136,25 +136,21 @@ global $wppa_revno;
 		<h3><?php _e('Plugin Support And Feature Request', 'wppa'); ?></h3>
 		<p>
 			<?php _e('If you\'ve read over this readme carefully and are still having issues, if you\'ve discovered a bug,', 'wppa'); ?>
-			<?php _e('or have a feature request, please contact me via my', 'wppa'); ?> <a href="mailto:opajaap@opajaap.nl?subject=WP%20Photo%20Album%20Plus">E-mail</a>.
+			<?php _e('or have a feature request, please contact me via my <a href="mailto:opajaap@opajaap.nl?subject=WP%20Photo%20Album%20Plus">E-mail</a>.', 'wppa'); ?>
 			<br/>
-			<?php _e('You may also check the', 'wppa'); ?> <a href="http://wordpress.org/tags/wp-photo-album-plus">forum</a> <?php _e('for this plugin and/or leave a question there.', 'wppa'); ?>
+			<?php _e('You may also check the <a href="http://wordpress.org/tags/wp-photo-album-plus">forum</a> for this plugin and/or leave a question there.', 'wppa'); ?>
 			<br/>
-			<?php _e('For hot fixes check the', 'wppa'); ?> <a href="http://plugins.trac.wordpress.org/log/wp-photo-album-plus/">development log</a> <?php _e('for this plugin.', 'wppa'); ?>
+			<?php _e('For hot fixes check the <a href="http://plugins.trac.wordpress.org/log/wp-photo-album-plus/">development log</a> for this plugin.', 'wppa'); ?>
 			<br/>
-			<?php _e('You may also visit the', 'wppa'); ?> <a href="http://wppa.opajaap.nl/" target="_blank">WPPA+ Docs & Demos site</a> <?php _e('that also contains the', 'wppa'); ?> <a href="http://wppa.opajaap.nl/?page_id=39" target="_blank">WPPA+ Tutorial</a>.
+			<?php _e('You may also visit the <a href="http://wppa.opajaap.nl/" target="_blank">WPPA+ Docs & Demos site</a> that also contains the <a href="http://wppa.opajaap.nl/?page_id=39" target="_blank">WPPA+ Tutorial</a>.', 'wppa'); ?>
 		</p>
         <p>
-			<?php _e('If you love this plugin, I would appreciate a donation, either in', 'wppa'); ?>
-				<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US">USD</a>&nbsp;
-				<?php _e('or in', 'wppa'); ?>&nbsp;
-				<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=EUR&lc=US">EURO.</a>
+			<?php _e('If you love this plugin, I would appreciate a donation, either in <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US">USD</a> or in <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=EUR&lc=US">EURO</a>.', 'wppa'); ?>
 		</p>
 
 		<h3><?php _e('About and credits', 'wppa'); ?></h3>
 		<p>
-			<?php _e('WP Photo Album Plus is extended with many new features and is maintained by J.N. Breetvelt, a.k.a.', 'wppa'); ?>
-			<a href="http://www.opajaap.nl/"> (OpaJaap)</a><br />
+			<?php _e('WP Photo Album Plus is extended with many new features and is maintained by J.N. Breetvelt, a.k.a. (<a href="http://www.opajaap.nl/">OpaJaap</a>)', 'wppa'); ?><br />
 			<?php _e('Thanx to R.J. Kaplan for WP Photo Album 1.5.1.', 'wppa'); ?><br/>
 			<?php _e('Thanx to E.S. Rosenberg for programming tips on security issues.', 'wppa'); ?><br/>
 		</p>

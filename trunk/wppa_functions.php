@@ -7,8 +7,9 @@
 */
 
 global $wppa_api_version;
-$wppa_api_version = '2-4-0-002';
+$wppa_api_version = '2-4-0-003';
 /* build 002:fixed filmstrip dimensions for thumbnail sizes other than 100
+/* build 003:fixed height in autocolwidth when valign = fit, thumb topmargin fix when in autocolwidth
 /* 
 /* TEMPLATE FUNCTIONS (TAGS) */
 
@@ -950,7 +951,8 @@ global $wppa_auto_colwidth;
 	}
 	else $valign = $xvalign;
 	// compose the size result
-	if ($valign == 'fit') {
+	if ($valign == 'fit' && (!$wppa_auto_colwidth || $type != 'fullsize')) {
+//	if ($valign == 'fit') {
 		$result = ' height: ' . $height . 'px; width: ' . $width . 'px; ';
 	}
 	else {
@@ -958,7 +960,7 @@ global $wppa_auto_colwidth;
 		else $result = ' height: ' . $height . 'px; ';
 	}
 	// compose the top margin
-	if ($valign == 'top' || $valign == 'fit' || wppa_page('oneofone') || $wppa_auto_colwidth) {
+	if ($valign == 'top' || $valign == 'fit' || wppa_page('oneofone') || ($wppa_auto_colwidth && $type == 'fullsize')) {
 		$result .= ' margin-top: 0px; ';
 	}
 	elseif ($valign == 'center') {
