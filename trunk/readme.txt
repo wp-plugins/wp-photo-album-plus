@@ -103,12 +103,13 @@ WordPress developers Codex page and more specifically at the section about theme
 
 = New Features =
 * There is a filmstrip-navigation bar.
+* You can set the column width to 'auto' for themes with floating main columns.
 * You can decide to hide the display of name and description under the full size images and slideshows.
 * You can decide to hide the navigation bars over and under the full size images and slideshows.
 * You can set the initial timeout time for slideshows.
 * You can set the fading to fadein after fadeout as opposed to fadein and fadeout simultanuously.
 * You can specify padding for the picture of the day widget in the widget settings page.
-* You can align a photo, slideshow, cover or thumbnail display which is amaller than the display column, 
+* You can align a photo, slideshow, cover or thumbnail display which is smaller than the display column, 
 including the navigation bars and descriptions to left, center or right.
 
 = Bug fixes =
