@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wp-photo-album-plus\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-11-09 12:46+0100\n"
-"PO-Revision-Date: 2010-11-09 12:49+0100\n"
+"POT-Creation-Date: 2010-11-10 08:12+0100\n"
+"PO-Revision-Date: 2010-11-10 08:30+0100\n"
 "Last-Translator: J.N. Breetvelt <opajaap@opajaap.nl>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -269,7 +269,7 @@ msgid "You can change all these settings later by clicking the \"Edit\" link in 
 msgstr "U kunt al deze instellingen later veranderen door op \"Bewerk\" te klikken in bovenstaande tabel."
 
 #: wppa_albumadmin.php:326
-#: wppa_functions.php:817
+#: wppa_functions.php:819
 msgid "Name"
 msgstr "Naam"
 
@@ -321,7 +321,7 @@ msgid "Get insertion Code"
 msgstr "Geef invoeg code"
 
 #: wppa_albumadmin.php:448
-#: wppa_functions.php:260
+#: wppa_functions.php:262
 #: wppa_settings.php:587
 #: wppa_settings.php:606
 #: wppa_widgetadmin.php:138
@@ -330,7 +330,7 @@ msgid "--- none ---"
 msgstr "--- geen ---"
 
 #: wppa_albumadmin.php:464
-#: wppa_functions.php:261
+#: wppa_functions.php:263
 msgid "--- separate ---"
 msgstr "--- afzonderlijk ---"
 
@@ -379,127 +379,127 @@ msgstr "--- willekeurig ---"
 msgid "No photos yet"
 msgstr "Nog geen foto's."
 
-#: wppa_functions.php:25
+#: wppa_functions.php:27
 #: wppa_upload.php:108
 msgid "There are"
 msgstr "Er zijn"
 
-#: wppa_functions.php:25
+#: wppa_functions.php:27
 msgid "photo albums. The last album added is"
 msgstr "foto albums. Het laatst toegevoegde album is"
 
-#: wppa_functions.php:29
+#: wppa_functions.php:31
 msgid ", a subalbum of"
 msgstr ", een sub-album van"
 
-#: wppa_functions.php:67
+#: wppa_functions.php:69
 msgid "Home"
 msgstr "Beginpagina"
 
-#: wppa_functions.php:102
-#: wppa_functions.php:1149
-#: wppa_functions.php:1514
+#: wppa_functions.php:104
+#: wppa_functions.php:1151
+#: wppa_functions.php:1517
 msgid "Slideshow"
 msgstr "Diavoorstelling"
 
-#: wppa_functions.php:108
+#: wppa_functions.php:110
 msgid "Searchstring:"
 msgstr "Zoeken naar:"
 
-#: wppa_functions.php:816
+#: wppa_functions.php:818
 msgid "Order #"
 msgstr "Volgorde nummer:"
 
-#: wppa_functions.php:818
+#: wppa_functions.php:820
 #: wppa_widgetadmin.php:107
 msgid "Random"
 msgstr "Willekeurig"
 
-#: wppa_functions.php:898
-#: wppa_functions.php:902
+#: wppa_functions.php:900
+#: wppa_functions.php:904
 msgid "Please supply a numeric value greater than or equal to"
 msgstr "Geef a.u.b. een getal op groter of gelijk aan"
 
-#: wppa_functions.php:898
-#: wppa_functions.php:902
+#: wppa_functions.php:900
+#: wppa_functions.php:904
 msgid "for"
 msgstr "voor"
 
-#: wppa_functions.php:902
+#: wppa_functions.php:904
 msgid "and less than or equal to"
 msgstr "en kleiner of gelijk aan"
 
-#: wppa_functions.php:1092
+#: wppa_functions.php:1094
 msgid "Previous page"
 msgstr "Vorige pagina"
 
-#: wppa_functions.php:1095
+#: wppa_functions.php:1097
 msgid "Next page"
 msgstr "Volgende pagina"
 
-#: wppa_functions.php:1150
+#: wppa_functions.php:1152
 msgid "Photo"
 msgstr "Foto"
 
-#: wppa_functions.php:1151
+#: wppa_functions.php:1153
 msgid "of"
 msgstr "van"
 
-#: wppa_functions.php:1152
+#: wppa_functions.php:1154
 msgid "Previous photo"
 msgstr "Vorige foto"
 
-#: wppa_functions.php:1153
+#: wppa_functions.php:1155
 msgid "Next photo"
 msgstr "Volgende foto"
 
-#: wppa_functions.php:1459
+#: wppa_functions.php:1462
 #: wppa_widget.php:85
 msgid "Link to"
 msgstr "Link naar"
 
-#: wppa_functions.php:1463
+#: wppa_functions.php:1466
 msgid "Page is not available."
 msgstr "Pagina is niet beschikbaar."
 
-#: wppa_functions.php:1471
+#: wppa_functions.php:1474
 msgid "View the cover photo"
 msgstr "Bekijk de omslagfoto"
 
-#: wppa_functions.php:1472
+#: wppa_functions.php:1475
 msgid "s"
 msgstr "'s"
 
-#: wppa_functions.php:1475
-#: wppa_functions.php:1521
+#: wppa_functions.php:1478
+#: wppa_functions.php:1524
 msgid "View the album"
 msgstr "Bekijk het album"
 
-#: wppa_functions.php:1522
+#: wppa_functions.php:1525
 msgid "View"
 msgstr "Bekijk"
 
-#: wppa_functions.php:1524
+#: wppa_functions.php:1527
 msgid "albums"
 msgstr "albums"
 
-#: wppa_functions.php:1527
+#: wppa_functions.php:1530
 msgid "and"
 msgstr "en"
 
-#: wppa_functions.php:1531
+#: wppa_functions.php:1534
 msgid "photos"
 msgstr "foto's"
 
-#: wppa_functions.php:1622
+#: wppa_functions.php:1625
 msgid "Slower"
 msgstr "Trager"
 
-#: wppa_functions.php:1623
+#: wppa_functions.php:1626
 msgid "Start"
 msgstr "Start"
 
-#: wppa_functions.php:1624
+#: wppa_functions.php:1627
 msgid "Faster"
 msgstr "Sneller"
 
@@ -560,7 +560,7 @@ msgid "You can add a Sidebar Widget that displays a photo which can be changed e
 msgstr "U kunt een zijkolom widget toevoegen die desgewenst elk uur, dag of week een andere foto laat zien."
 
 #: wppa_help.php:39
-msgid "You can add a Sidebar Search Widget that enables the visitor to search for albums and photos witch certan words in the name or description."
+msgid "You can add a Sidebar Search Widget that enables the visitor to search for albums and photos with certan words in the name or description."
 msgstr "U kunt een zijkolom widget toevoegen die het de bezoeker mogelijk maakt albums en foto's te zoeken waarbij bepaalde woorden in de naam of de beschrijving voorkomen."
 
 #: wppa_help.php:42
@@ -746,12 +746,12 @@ msgid "If you want to specify a size, add another argument:"
 msgstr "Als u de afmeting wilt aangeven, voeg dan nog een argument toe:"
 
 #: wppa_help.php:112
-msgid "For more information on usable php routines see the"
-msgstr "Voor meer informatie over bruikbare php routines zie de"
+msgid "For more information on usable php routines see the <a href=\"http://wppa.opajaap.nl/\">Docs & Demos</a> website."
+msgstr "Voor meer informatie over bruikbare php routines zie de <a href=\"http://wppa.opajaap.nl/\">Docs & Demos</a> website."
 
 #: wppa_help.php:113
-msgid "In order to work properly, the wppa_albums() tag needs to be within the"
-msgstr "Om goed te werken is het nodig dat de wppa_albums() tag zich bevindt binnen de"
+msgid "In order to work properly, the wppa_albums() tag needs to be within the <a href=\"http://codex.wordpress.org/The_Loop\" target=\"_blank\">WordPress loop</a>."
+msgstr "Om goed te werken is het nodig dat de wppa_albums() tag zich bevindt binnen de <a href=\"http://codex.wordpress.org/The_Loop\" target=\"_blank\">WordPress loop</a>."
 
 #: wppa_help.php:114
 msgid "For more information on creating custom page templates, click"
@@ -828,66 +828,50 @@ msgid "If you've read over this readme carefully and are still having issues, if
 msgstr "Als u deze uitleg aandachtig hebt gelezen en u nog vragen heeft of als u een fout heeft ontdekt,"
 
 #: wppa_help.php:139
-msgid "or have a feature request, please contact me via my"
-msgstr "of als u een verzoek voor nieuwe functionaliteit heeft, neem dan svp contact met mij op via mijn"
+msgid "or have a feature request, please contact me via my <a href=\"mailto:opajaap@opajaap.nl?subject=WP%20Photo%20Album%20Plus\">E-mail</a>."
+msgstr "of een verzoek tot uitbreiding heeft, kunt u mij bereiken via mijn <a href=\"mailto:opajaap@opajaap.nl?subject=WP%20Photo%20Album%20Plus\">E-mail</a>."
 
 #: wppa_help.php:141
-msgid "You may also check the"
-msgstr "U kunt ook het"
-
-#: wppa_help.php:141
-msgid "for this plugin and/or leave a question there."
-msgstr "voor deze plugin bekijken en/of er een vraag achter laten."
+msgid "You may also check the <a href=\"http://wordpress.org/tags/wp-photo-album-plus\">forum</a> for this plugin and/or leave a question there."
+msgstr "U kunt ook het <a href=\"http://wordpress.org/tags/wp-photo-album-plus\">forum</a> raadplegen en er een vraag of opmerking achterlaten."
 
 #: wppa_help.php:143
-msgid "For hot fixes check the"
-msgstr "Voor de laatste wijzigingen zie de"
-
-#: wppa_help.php:143
-msgid "for this plugin."
-msgstr "voor deze plugin."
+msgid "For hot fixes check the <a href=\"http://plugins.trac.wordpress.org/log/wp-photo-album-plus/\">development log</a> for this plugin."
+msgstr "Voor 'hot fixes' check het <a href=\"http://plugins.trac.wordpress.org/log/wp-photo-album-plus/\">development log</a> voor deze plugin."
 
 #: wppa_help.php:145
-msgid "You may also visit the"
-msgstr "U kunt ook bezoeken:"
-
-#: wppa_help.php:145
-msgid "that also contains the"
-msgstr ". Tevens vindt u hier de"
+msgid "You may also visit the <a href=\"http://wppa.opajaap.nl/\" target=\"_blank\">WPPA+ Docs & Demos site</a> that also contains the <a href=\"http://wppa.opajaap.nl/?page_id=39\" target=\"_blank\">WPPA+ Tutorial</a>."
+msgstr "U kunt ook de <a href=\"http://wppa.opajaap.nl/\" target=\"_blank\">WPPA+ Docs & Demos site</a> bezoeken die ook de <a href=\"http://wppa.opajaap.nl/?page_id=39\" target=\"_blank\">WPPA+ Tutorial</a> bevat."
 
 #: wppa_help.php:148
-msgid "If you love this plugin, I would appreciate a donation, either in"
-msgstr "Als u deze plugin waardeert, dan ontvang ik gaarne een donatie in"
+msgid "If you love this plugin, I would appreciate a donation, either in <a href=\"https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US\">USD</a> or in <a href=\"https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=EUR&lc=US\">EURO</a>."
+msgstr "Als u deze plugin waardeert, kunt u dat tot uitdrukking brengen door middel van een donatie, in <a href=\"https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US\">USD</a> of in <a href=\"https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=EUR&lc=US\">EURO</a>."
 
-#: wppa_help.php:150
-msgid "or in"
-msgstr "of in"
-
-#: wppa_help.php:154
+#: wppa_help.php:151
 msgid "About and credits"
 msgstr "Over en dank aan"
 
-#: wppa_help.php:156
-msgid "WP Photo Album Plus is extended with many new features and is maintained by J.N. Breetvelt, a.k.a."
-msgstr "WP Photo Album Plus is met vele nieuwe functies uitgebreid en wordt onderhouden door J.N. Breetvelt, alias"
+#: wppa_help.php:153
+msgid "WP Photo Album Plus is extended with many new features and is maintained by J.N. Breetvelt, a.k.a. (<a href=\"http://www.opajaap.nl/\">OpaJaap</a>)"
+msgstr "WP Photo Album Plus is met vele nieuwe functies uitgebreid en wordt onderhouden door J.N. Breetvelt, alias (<a href=\"http://www.opajaap.nl/\">OpaJaap</a>)"
 
-#: wppa_help.php:158
+#: wppa_help.php:154
 msgid "Thanx to R.J. Kaplan for WP Photo Album 1.5.1."
 msgstr "Dank aan R.J. Kaplan voor WP Photo Album 1.5.1."
 
-#: wppa_help.php:159
+#: wppa_help.php:155
 msgid "Thanx to E.S. Rosenberg for programming tips on security issues."
 msgstr "Dank aan E.S. Rosenberg voor programmeer adviezen m.b.t. beveiliging."
 
-#: wppa_help.php:162
+#: wppa_help.php:158
 msgid "Licence"
 msgstr "Licentie"
 
-#: wppa_help.php:164
+#: wppa_help.php:160
 msgid "WP Photo Album is released under the"
 msgstr "WP Photo Album Plus wordt beschikbaar gesteld onder de"
 
-#: wppa_help.php:164
+#: wppa_help.php:160
 msgid "licence."
 msgstr "licentie."
 
@@ -1970,6 +1954,35 @@ msgstr "Foto Naam"
 #: wppa_widgetadmin.php:161
 msgid "Select the content of the subtitle."
 msgstr "Selecteer de inhoud van de ondertitel."
+
+#~ msgid "or have a feature request, please contact me via my"
+#~ msgstr ""
+#~ "of als u een verzoek voor nieuwe functionaliteit heeft, neem dan svp "
+#~ "contact met mij op via mijn"
+
+#~ msgid "You may also check the"
+#~ msgstr "U kunt ook het"
+
+#~ msgid "for this plugin and/or leave a question there."
+#~ msgstr "voor deze plugin bekijken en/of er een vraag achter laten."
+
+#~ msgid "For hot fixes check the"
+#~ msgstr "Voor de laatste wijzigingen zie de"
+
+#~ msgid "for this plugin."
+#~ msgstr "voor deze plugin."
+
+#~ msgid "You may also visit the"
+#~ msgstr "U kunt ook bezoeken:"
+
+#~ msgid "that also contains the"
+#~ msgstr ". Tevens vindt u hier de"
+
+#~ msgid "If you love this plugin, I would appreciate a donation, either in"
+#~ msgstr "Als u deze plugin waardeert, dan ontvang ik gaarne een donatie in"
+
+#~ msgid "or in"
+#~ msgstr "of in"
 
 #~ msgid ""
 #~ "Specify the vertical alignment of fullsize images. Use this setting only "
