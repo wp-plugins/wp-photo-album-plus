@@ -7,10 +7,11 @@
 */
 
 global $wppa_api_version;
-$wppa_api_version = '2-4-0-003';
+$wppa_api_version = '2-4-0-004';
 /* build 002:fixed filmstrip dimensions for thumbnail sizes other than 100
 /* build 003:fixed height in autocolwidth when valign = fit, thumb topmargin fix when in autocolwidth
-/* 
+/* build 004:fixed an old bug that came back. Wrong thumbnailsize (wppa_get_minisize()).
+/*
 /* TEMPLATE FUNCTIONS (TAGS) */
 
 /* show system statistics */
@@ -914,7 +915,7 @@ function wppa_get_minisize() {
 	if (is_numeric($tmp) && $tmp > $result) $result = $tmp;
 	$tmp = get_option('wppa_smallsize', 'nil');
 	if (is_numeric($tmp) && $tmp > $result) $result = $tmp;
-	$result = ceil($tmp / 25) * 25;
+	$result = ceil($result / 25) * 25;
 	return $result;
 }
 
