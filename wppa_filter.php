@@ -3,8 +3,8 @@
 * Pachkage: wp-photo-album-plus
 *
 * get the albums via filter
-* version 2.4.0, build 002
-* 002: Fix for substr_count wrong parameter
+* version 2.4.0, build 005
+* 005: Fix for substr_count wrong parameter
 */
 
 add_action('init', 'wppa_do_filter');
