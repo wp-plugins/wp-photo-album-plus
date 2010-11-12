@@ -7,11 +7,12 @@
 */
 
 global $wppa_api_version;
-$wppa_api_version = '2-4-0-005';
+$wppa_api_version = '2-4-0-006';
 /* build 002:fixed filmstrip dimensions for thumbnail sizes other than 100
 /* build 003:fixed height in autocolwidth when valign = fit, thumb topmargin fix when in autocolwidth
 /* build 004:fixed an old bug that came back. Wrong thumbnailsize (wppa_get_minisize()).
 /* build 005:fix in filter.php
+/* build 006:fix for occurrencies
 /*
 /* TEMPLATE FUNCTIONS (TAGS) */
 
@@ -53,7 +54,9 @@ function wppa_breadcrumb($xsep = '&raquo;', $opt = '') {
 	
 	/* Do some preparations */
 	$sep = '&nbsp;' . $xsep . '&nbsp;';
-	if ($wppa_master_occur > '0') $wppa_local_occur = $wppa_master_occur; else $wppa_local_occur = '1'; /* default for call outside the loop */
+//	if ($wppa_master_occur > '0') $wppa_local_occur = $wppa_master_occur; else $wppa_local_occur = '1'; 
+	if ($wppa_master_occur == '0') $wppa_local_occur = '1'; /* default for call outside the loop */
+	else $wppa_local_occur = $wppa_occur;
 	
 	if (isset($_GET['occur'])) $occur = $_GET['occur'];
 	else $occur = '1';
