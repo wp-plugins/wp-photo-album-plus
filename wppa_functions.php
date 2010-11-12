@@ -7,12 +7,13 @@
 */
 
 global $wppa_api_version;
-$wppa_api_version = '2-4-0-006';
+$wppa_api_version = '2-4-0-007';
 /* build 002:fixed filmstrip dimensions for thumbnail sizes other than 100
 /* build 003:fixed height in autocolwidth when valign = fit, thumb topmargin fix when in autocolwidth
 /* build 004:fixed an old bug that came back. Wrong thumbnailsize (wppa_get_minisize()).
 /* build 005:fix in filter.php
 /* build 006:fix for occurrencies
+/* build 007:fix remove spinner entirely (wppa_slideshow.js)
 /*
 /* TEMPLATE FUNCTIONS (TAGS) */
 
@@ -1618,7 +1619,7 @@ global $wppa_master_occur;
 	<div id="slide_frame-<?php echo($wppa_master_occur) ?>" class="slide-frame" style="<?php echo(wppa_get_slide_frame_style()); ?>">
 		<div id="theslide0-<?php echo($wppa_master_occur) ?>" class="theslide"></div>
 		<div id="theslide1-<?php echo($wppa_master_occur) ?>" class="theslide"></div>
-		<div id="spinner-<?php echo($wppa_master_occur) ?>" class="spinner"><img id="spinnerimg-<?php echo($wppa_master_occur) ?>" src="" /></div>
+		<div id="spinner-<?php echo($wppa_master_occur) ?>" class="spinner"></div>
 	</div>
 	<?php
 }
