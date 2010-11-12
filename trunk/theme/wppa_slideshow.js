@@ -1,5 +1,6 @@
 ﻿// Slide show variables and functions
 // This is wppa_slideshow.js version 2.4.0, build 002
+// Build 007 remove spinner totally
 //
 
 var wppa_slides = new Array();
@@ -11,7 +12,7 @@ var wppa_timeout = new Array();
 //var wppa_timer = new Array();
 var wppa_ss_running = new Array();
 var wppa_foreground = new Array();
-var wppa_first_spinner = new Array();
+//var wppa_first_spinner = new Array();
 var wppa_busy = new Array();
 var wppa_first = new Array();
 var wppa_saved_id = new Array();
@@ -46,7 +47,7 @@ function wppa_store_slideinfo(mocc, id, url, size, name, desc) {
 		wppa_timeout[mocc] = wppa_ss_timeout;
 		wppa_ss_running[mocc] = 0;
 		wppa_foreground[mocc] = 0;
-		wppa_first_spinner[mocc] = true;
+//		wppa_first_spinner[mocc] = true;
 		wppa_busy[mocc] = false;
 		wppa_first[mocc] = true;
 		wppa_fullvalign_fit[mocc] = false;
@@ -280,7 +281,8 @@ function wppa_load_spinner(mocc) {
 	var lft;
 	var elm;
 	
-	if (wppa_first_spinner[mocc]) {
+//	if (wppa_first_spinner[mocc])
+	{
 		elm = document.getElementById('slide_frame-'+mocc);
 		top = parseInt(elm.style.height);
 		if (top > 0) {
@@ -297,14 +299,18 @@ function wppa_load_spinner(mocc) {
 			
 		document.getElementById('spinner-'+mocc).style.top = top;
 		document.getElementById('spinner-'+mocc).style.left = lft;
-		wppa_first_spinner[mocc] = false;
+		document.getElementById('spinner-'+mocc).innerHTML = '<img id="spinnerimg-'+mocc+'" src="'+wppa_imgdir+'wpspin.gif" />';
+//		wppa_first_spinner[mocc] = false;
 	}
-	document.getElementById('spinnerimg-'+mocc).src = wppa_imgdir + 'wpspin.gif';
+//	document.getElementById('spinnerimg-'+mocc).src = wppa_imgdir + 'wpspin.gif';
 	
 }
 
 function wppa_unload_spinner(mocc) {
-	document.getElementById('spinnerimg-'+mocc).src = '';
+	if (document.getElementById('spinnerimg-'+mocc)) {
+		document.getElementById('spinnerimg-'+mocc).src = '';
+		document.getElementById('spinner-'+mocc).innerHTML = '';
+	}
 }
 
 function wppa_do_autocol(mocc) {
