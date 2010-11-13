@@ -7,13 +7,14 @@
 */
 
 global $wppa_api_version;
-$wppa_api_version = '2-4-0-007';
+$wppa_api_version = '2-4-0-008';
 /* build 002:fixed filmstrip dimensions for thumbnail sizes other than 100
 /* build 003:fixed height in autocolwidth when valign = fit, thumb topmargin fix when in autocolwidth
 /* build 004:fixed an old bug that came back. Wrong thumbnailsize (wppa_get_minisize()).
 /* build 005:fix in filter.php
 /* build 006:fix for occurrencies
 /* build 007:fix remove spinner entirely (wppa_slideshow.js)
+/* build 008:fixed broken rss due to the use of a cdata block
 /*
 /* TEMPLATE FUNCTIONS (TAGS) */
 
@@ -1127,51 +1128,48 @@ global $wppa_master_occur;
 global $wppa_auto_colwidth;
 
 	if ($wppa_master_occur < '2') {	// Widget only: 0, else 1
-?>
-		<script type="text/javascript" >
-		/* <![CDATA[ */
-			// This goes into wppa_theme.js
-			wppa_bgcolor_even = "<?php echo(get_option('wppa_bgcolor_even', '#eeeeee')); ?>";
-			wppa_bgcolor_alt = "<?php echo(get_option('wppa_bgcolor_alt', '#dddddd')); ?>";
-			wppa_bgcolor_nav = "<?php echo(get_option('wppa_bgcolor_nav', '#dddddd')); ?>";
-			wppa_bgcolor_img = "<?php echo(get_option('wppa_bgcolor_img', '#eeeeee')); ?>";
-			wppa_bcolor_even = "<?php echo(get_option('wppa_bcolor_even', '#cccccc')); ?>";
-			wppa_bcolor_alt = "<?php echo(get_option('wppa_bcolor_alt', '#bbbbbb')); ?>";
-			wppa_bcolor_nav = "<?php echo(get_option('wppa_bcolor_nav', '#bbbbbb')); ?>";
-			wppa_bwidth = "<?php echo(get_option('wppa_bwidth', '2')); ?>";
-			wppa_bradius = "<?php echo(get_option('wppa_bradius', '6')); ?>";
-			wppa_fontfamily_title = "<?php echo(get_option('wppa_fontfamily_title', '')); ?>";
-			wppa_fontsize_title = "<?php echo(get_option('wppa_fontsize_title', '')); ?>";
-			wppa_fontfamily_fulldesc = "<?php echo(get_option('wppa_fontfamily_fulldesc', '')); ?>";
-			wppa_fontsize_fulldesc = "<?php echo(get_option('wppa_fontsize_fulldesc', '')); ?>";
-			wppa_fontfamily_fulltitle = "<?php echo(get_option('wppa_fontfamily_fulltitle', '')); ?>";
-			wppa_fontsize_fulltitle = "<?php echo(get_option('wppa_fontsize_fulltitle', '')); ?>";
-			wppa_fontfamily_nav = "<?php echo(get_option('wppa_fontfamily_nav', '')); ?>";
-			wppa_fontsize_nav = "<?php echo(get_option('wppa_fontsize_nav', '')); ?>";
-			wppa_fontfamily_box = "<?php echo(get_option('wppa_fontfamily_box', '')); ?>";
-			wppa_fontsize_box = "<?php echo(get_option('wppa_fontsize_box', '')); ?>";
-			wppa_black = "<?php echo(get_option('wppa_black', 'black')); ?>";
-			<?php if (get_option('wppa_fadein_after_fadeout', 'no') == 'yes') echo('wppa_fadein_after_fadeout = true;'); ?>
-			wppa_widget_padding = <?php echo(get_option('wppa_widget_padding', '5')); ?>;
-			// This goes into wppa_slideshow.js
-			wppa_thumbnail_area_delta = <?php echo wppa_get_thumbnail_area_delta(); ?>;
-			wppa_auto_colwidth = <?php if ($wppa_auto_colwidth) echo('true'); else echo('false'); ?>;
-			wppa_slideshow = "<?php _e('Slideshow', 'wppa'); ?>";
-			wppa_photo = "<?php _e('Photo', 'wppa'); ?>";
-			wppa_of = "<?php _e('of', 'wppa'); ?>";
-			wppa_prevphoto = "<?php _e('Previous photo', 'wppa'); ?>";
-			wppa_nextphoto = "<?php _e('Next photo', 'wppa'); ?>";
-			/* And some data */
-			wppa_animation_speed = <?php echo get_option('wppa_animation_speed', 400) ?>;
-			wppa_imgdir = "<?php echo wppa_get_imgdir() ?>";
-			wppa_ss_timeout = <?php echo get_option('wppa_slideshow_timeout', 2500) ?>;
-			wppa_preambule = <?php echo wppa_get_preambule() ?>;
-			wppa_thumbnail_pitch = <?php echo (get_option('wppa_tf_width', '100') + get_option('wppa_tn_margin', '0')); ?>;
-			wppa_filmstrip_length = <?php echo (wppa_get_container_width() - 60); ?>;
-			wppa_filmstrip_margin = <?php echo (get_option('wppa_tn_margin', '0') / 2); ?>;
-
-		/* ]]> */
-		</script>
+		/* If you simplify this by making a cdata block, you will break rss feeds */
+		/* rss attempts to create a nested cdata block that causes the loss of the script tag */
+		/* The errormessage will say that the /script tag is not matched while it is. */
+		/* This goes into wppa_theme.js */ ?>
+		<script type="text/javascript">wppa_bgcolor_even = "<?php echo(get_option('wppa_bgcolor_even', '#eeeeee')); ?>";</script>
+		<script type="text/javascript">wppa_bgcolor_alt = "<?php echo(get_option('wppa_bgcolor_alt', '#dddddd')); ?>";</script>
+		<script type="text/javascript">wppa_bgcolor_nav = "<?php echo(get_option('wppa_bgcolor_nav', '#dddddd')); ?>";</script>
+		<script type="text/javascript">wppa_bgcolor_img = "<?php echo(get_option('wppa_bgcolor_img', '#eeeeee')); ?>";</script>
+		<script type="text/javascript">wppa_bcolor_even = "<?php echo(get_option('wppa_bcolor_even', '#cccccc')); ?>";</script>
+		<script type="text/javascript">wppa_bcolor_alt = "<?php echo(get_option('wppa_bcolor_alt', '#bbbbbb')); ?>";</script>
+		<script type="text/javascript">wppa_bcolor_nav = "<?php echo(get_option('wppa_bcolor_nav', '#bbbbbb')); ?>";</script>
+		<script type="text/javascript">wppa_bwidth = "<?php echo(get_option('wppa_bwidth', '2')); ?>";</script>
+		<script type="text/javascript">wppa_bradius = "<?php echo(get_option('wppa_bradius', '6')); ?>";</script>
+		<script type="text/javascript">wppa_fontfamily_title = "<?php echo(get_option('wppa_fontfamily_title', '')); ?>";</script>
+		<script type="text/javascript">wppa_fontsize_title = "<?php echo(get_option('wppa_fontsize_title', '')); ?>";</script>
+		<script type="text/javascript">wppa_fontfamily_fulldesc = "<?php echo(get_option('wppa_fontfamily_fulldesc', '')); ?>";</script>
+		<script type="text/javascript">wppa_fontsize_fulldesc = "<?php echo(get_option('wppa_fontsize_fulldesc', '')); ?>";</script>
+		<script type="text/javascript">wppa_fontfamily_fulltitle = "<?php echo(get_option('wppa_fontfamily_fulltitle', '')); ?>";</script>
+		<script type="text/javascript">wppa_fontsize_fulltitle = "<?php echo(get_option('wppa_fontsize_fulltitle', '')); ?>";</script>
+		<script type="text/javascript">wppa_fontfamily_nav = "<?php echo(get_option('wppa_fontfamily_nav', '')); ?>";</script>
+		<script type="text/javascript">wppa_fontsize_nav = "<?php echo(get_option('wppa_fontsize_nav', '')); ?>";</script>
+		<script type="text/javascript">wppa_fontfamily_box = "<?php echo(get_option('wppa_fontfamily_box', '')); ?>";</script>
+		<script type="text/javascript">wppa_fontsize_box = "<?php echo(get_option('wppa_fontsize_box', '')); ?>";</script>
+		<script type="text/javascript">wppa_black = "<?php echo(get_option('wppa_black', 'black')); ?>";</script>
+		<script type="text/javascript"><?php if (get_option('wppa_fadein_after_fadeout', 'no') == 'yes') echo('wppa_fadein_after_fadeout = true;'); ?></script>
+		<script type="text/javascript">wppa_widget_padding = <?php echo(get_option('wppa_widget_padding', '5')); ?>;</script>
+<?php 	/* This goes into wppa_slideshow.js */ ?>
+		<script type="text/javascript">wppa_thumbnail_area_delta = <?php echo wppa_get_thumbnail_area_delta(); ?>;</script>
+		<script type="text/javascript">wppa_auto_colwidth = <?php if ($wppa_auto_colwidth) echo('true'); else echo('false'); ?>;</script>
+		<script type="text/javascript">wppa_slideshow = "<?php _e('Slideshow', 'wppa'); ?>";</script>
+		<script type="text/javascript">wppa_photo = "<?php _e('Photo', 'wppa'); ?>";</script>
+		<script type="text/javascript">wppa_of = "<?php _e('of', 'wppa'); ?>";</script>
+		<script type="text/javascript">wppa_prevphoto = "<?php _e('Previous photo', 'wppa'); ?>";</script>
+		<script type="text/javascript">wppa_nextphoto = "<?php _e('Next photo', 'wppa'); ?>";</script>
+<?php	/* And some data */ ?>
+		<script type="text/javascript">wppa_animation_speed = <?php echo get_option('wppa_animation_speed', 400) ?>;</script>
+		<script type="text/javascript">wppa_imgdir = "<?php echo wppa_get_imgdir() ?>";</script>
+		<script type="text/javascript">wppa_ss_timeout = <?php echo get_option('wppa_slideshow_timeout', 2500) ?>;</script>
+		<script type="text/javascript">wppa_preambule = <?php echo wppa_get_preambule() ?>;</script>
+		<script type="text/javascript">wppa_thumbnail_pitch = <?php echo (get_option('wppa_tf_width', '100') + get_option('wppa_tn_margin', '0')); ?>;</script>
+		<script type="text/javascript">wppa_filmstrip_length = <?php echo (wppa_get_container_width() - 60); ?>;</script>
+		<script type="text/javascript">wppa_filmstrip_margin = <?php echo (get_option('wppa_tn_margin', '0') / 2); ?>;</script>
 <?php }
 }
 
