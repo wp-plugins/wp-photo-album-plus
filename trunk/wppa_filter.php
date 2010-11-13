@@ -5,6 +5,7 @@
 * get the albums via filter
 * version 2.4.0, build 005
 * 005: Fix for substr_count wrong parameter
+* 009: 2nd attempt for fix
 */
 
 add_action('init', 'wppa_do_filter');
@@ -18,10 +19,13 @@ function wppa_albums_filter($post) {
 	$post_new = '';
 	$iscover = '0';
 	
-	if (substr_count($post, '%%wppa%%') > 0) {
+	if (substr_count($post_old, '%%wppa%%') > 0) {
 		$wppa_pos = strpos($post_old, '%%wppa%%');
 		while (is_numeric($wppa_pos)) {
-			$in_p = substr_count($post,'<p>',0,$wppa_pos) > substr_count($post,'</p>',0,$wppa_pos) ? true : false;
+			$in_p = false;
+			if ($wppa_pos > '0' && (substr_count($post_old,'<p>','0',$wppa_pos) > substr_count($post_old,'</p>','0',$wppa_pos))) {
+				$in_p = true;
+			}
 			$post_new .= wppa_disp(substr($post_old, 0, $wppa_pos));	// Copy BEFORE part to new post
 			$post_old = substr($post_old, $wppa_pos);					// Shift BEFORE part out
 			$post_old = substr($post_old, 8);							// Shift %%wppa%% out

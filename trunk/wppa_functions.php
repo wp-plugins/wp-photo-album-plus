@@ -7,7 +7,7 @@
 */
 
 global $wppa_api_version;
-$wppa_api_version = '2-4-0-008';
+$wppa_api_version = '2-4-0-009';
 /* build 002:fixed filmstrip dimensions for thumbnail sizes other than 100
 /* build 003:fixed height in autocolwidth when valign = fit, thumb topmargin fix when in autocolwidth
 /* build 004:fixed an old bug that came back. Wrong thumbnailsize (wppa_get_minisize()).
@@ -15,6 +15,7 @@ $wppa_api_version = '2-4-0-008';
 /* build 006:fix for occurrencies
 /* build 007:fix remove spinner entirely (wppa_slideshow.js)
 /* build 008:fixed broken rss due to the use of a cdata block
+/* build 009:2nd attempt for fix for substr_count wrong parameter in wppa_filter.php
 /*
 /* TEMPLATE FUNCTIONS (TAGS) */
 
