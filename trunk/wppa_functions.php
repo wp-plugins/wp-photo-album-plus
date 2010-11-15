@@ -1489,12 +1489,19 @@ global $wppa_alt;
 	$path = wppa_get_thumb_path_by_id($coverphoto);
 	$imgattr = wppa_get_imgstyle($path, get_option('wppa_smallsize'), '', 'cover');
 	$events = wppa_get_imgevents('cover');
+	$photo_left = get_option('wppa_coverphoto_left', 'no') == 'yes';
 	
 	?>
 	<div id="album-<?php echo($album['id'].'-'.$wppa_master_occur) ?>" class="album wppa-box wppa-<?php echo($wppa_alt); ?>"><?php 
 		if ($src != '') { 
+			if ($photo_left) {
+				$photoframestyle = 'style="float:left;"';
+			}
+			else {
+				$photoframestyle = '';
+			}
 			?>
-			<div id="coverphoto_frame_<?php echo($album['id'].'_'.$wppa_master_occur) ?>" class="coverphoto-frame"><?php 
+			<div id="coverphoto_frame_<?php echo($album['id'].'_'.$wppa_master_occur) ?>" class="coverphoto-frame" <?php echo($photoframestyle) ?>><?php 
 			if ($href != '') {
 				?>
 				<a href="<?php echo($href); ?>" title="<?php echo($title); ?>">
@@ -1507,7 +1514,15 @@ global $wppa_alt;
 			?>
 			</div><!-- #coverphoto_frame_ <?php echo($album['id'].$wppa_master_occur) ?> --><?php 
 		} 
+		
+		if ($photo_left) {
+			$textframestyle = 'style="margin-left:'.(get_option('wppa_smallsize', '100')+17).'px;"';
+		}
+		else {
+			$textframestyle = '';
+		}
 		?>
+<div id="covertext_frame_<?php echo($album['id'].'_'.$wppa_master_occur) ?>" class="covertext-frame" <?php echo($textframestyle) ?>>
 		<h2 class="wppa-title name" style="clear:none;"><?php 
 			if ($href != '') { 
 				?>
@@ -1545,6 +1560,7 @@ global $wppa_alt;
 			} 
 		?>
 		</div>
+</div>
 		<div class="clear"></div>		
 	</div><!-- #album-<?php echo($album['id'].'-'.$wppa_master_occur) ?> --><?php
 	if ($wppa_alt == 'even') $wppa_alt = 'alt'; else $wppa_alt = 'even';
@@ -1560,22 +1576,37 @@ global $wppa_alt;
 	$events = wppa_get_imgevents('cover'); 
 	$title = esc_js(wppa_get_photo_name($thumb['id'])); 
 	$href = wppa_get_photo_page_url();
+	$photo_left = get_option('wppa_thumbphoto_left', 'no') == 'yes';
 	
 	?>
 	<div id="thumb-<?php echo($thumb['id'].'-'.$wppa_master_occur) ?>" class="thumb wppa-box wppa-<?php echo($wppa_alt); ?>"><?php 
 		if ($src != '') { 
+			if ($photo_left) {
+				$photoframestyle = 'style="float:left;"';
+			}
+			else {
+				$photoframestyle = '';
+			}
 		?>
-		<div id="thumbphoto_frame_<?php echo($thumb['id'].'_'.$wppa_master_occur) ?>" class="thumbphoto-frame">
+		<div id="thumbphoto_frame_<?php echo($thumb['id'].'_'.$wppa_master_occur) ?>" class="thumbphoto-frame" <?php echo($photoframestyle) ?>>
 			<a href="<?php echo($href); ?>" title="<?php echo($title); ?>">
 				<img src="<?php echo($src); ?>" alt="<?php echo($title); ?>" class="image wppa-img" style="<?php echo($imgattr); ?>" <?php echo($events) ?>/>
 			</a>
 		</div><?php 
 		} 
+		if ($photo_left) {
+			$textframestyle = 'style="margin-left:'.(get_option('wppa_smallsize', '100')+17).'px;"';
+		}
+		else {
+			$textframestyle = '';
+		}
 		?>
+<div id="thumbtext_frame_<?php echo($thumb['id'].'_'.$wppa_master_occur) ?>" class="thumbtext-frame" <?php echo($textframestyle) ?>>
 		<h2 class="wppa-title name" style="clear:none;">
 			<a href="<?php echo($href); ?>" title="<?php echo($title); ?>"><?php echo(stripslashes($thumb['name'])); ?></a>
 		</h2>
 		<p class="description"><?php echo(wppa_html(stripslashes($thumb['description']))); ?></p>
+</div>
 		<div class="clear"></div>		
 	</div><!-- thumb-<?php echo($thumb['id'].'-'.$wppa_master_occur) ?> --><?php
 	if ($wppa_alt == 'even') $wppa_alt = 'alt'; else $wppa_alt = 'even';
@@ -1719,7 +1750,7 @@ global $wppa_src;
 function wppa_slide_custom($opt = '') {
 }
 
-// Show Filmstrip		// Reserved for future use
+// Show Filmstrip	
 function wppa_slide_filmstrip($opt = '') {
 global $wppa_master_occur;
 global $thumb;
@@ -1735,7 +1766,7 @@ global $thumb;
 
 	echo('<div class="wppa-box wppa-nav" style="height:'.(get_option('wppa_thumbsize') + get_option('wppa_tn_margin')).'px;">');
 		echo('<div class="prev arrow" style="margin-top: '.$topmarg.'px; width: 23px; font-size: 24px;"><a id="prev-film-arrow-'.$wppa_master_occur.'" onclick="wppa_prev('.$wppa_master_occur.')">&laquo;</a></div>');
-		echo('<div class="next arrow" style="margin-top: '.$topmarg.'px; width: 23px; font-size: 24px;"><a id="next-film-arrow-'.$wppa_master_occur.'" onclick="wppa_prev('.$wppa_master_occur.')">&raquo;</a></div>');
+		echo('<div class="next arrow" style="margin-top: '.$topmarg.'px; width: 23px; font-size: 24px;"><a id="next-film-arrow-'.$wppa_master_occur.'" onclick="wppa_next('.$wppa_master_occur.')">&raquo;</a></div>');
 		echo('<div style="display: block; height: '.(get_option('wppa_thumbsize') + get_option('wppa_tn_margin')).'px; margin: 0 20px 0 20px; overflow:hidden;">');
 			echo('<div id="wppa-filmstrip-'.$wppa_master_occur.'" style="height: '.get_option('wppa_thumbsize').'px; width:'.$width.'px; margin-left: -100px;">');
 				$start = count($thumbs) - $preambule;

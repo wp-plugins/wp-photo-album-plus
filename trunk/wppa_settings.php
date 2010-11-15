@@ -140,6 +140,10 @@ function wppa_page_options() {
 			$options_error = true;
 		}
 		
+		if (isset($_POST['wppa-coverphoto-left'])) update_option('wppa_coverphoto_left', $_POST['wppa-coverphoto-left']);
+		
+		if (isset($_POST['wppa-thumbphoto-left'])) update_option('wppa_thumbphoto_left', $_POST['wppa-thumbphoto-left']);
+		
 		if (isset($_POST['wppa-use-thumb-popup'])) update_option('wppa_use_thumb_popup', 'yes');
 		else update_option('wppa_use_thumb_popup', 'no');
 		
@@ -466,6 +470,17 @@ function wppa_page_options() {
 							<span class="description"><br/><?php _e('You may select an altenative display method for thumbnails. Note that some of the thumbnail settings do not apply to all available display methods.', 'wppa'); ?></span>
 						</td>
 					</tr>
+					<tr valign="top" class="tt-ascovers">
+						<th scope="row">
+							<label><?php _e('Placement:', 'wppa'); ?></label>
+						</th>
+						<td>
+							<?php $left = (get_option('wppa_thumbphoto_left', 'no') == 'yes'); ?>
+							<input type="radio" name="wppa-thumbphoto-left" value="yes" <?php if ($left) echo('checked="checked"') ?>/><?php _e('Left', 'wppa') ?><br/>
+							<input type="radio" name="wppa-thumbphoto-left" value="no" <?php if(!$left) echo('checked="checked"') ?>/><?php _e('Right', 'wppa') ?>
+							<span class="description"><br/><?php _e('Indicate the placement position of the thumbnailphoto you wish.', 'wppa') ?></span>
+						</td>
+					</tr>
 					<tr valign="top" class="tt-normal">
 						<th scope="row">
 							<label ><?php _e('Thumbnail Size:', 'wppa'); ?></label>
@@ -548,11 +563,22 @@ function wppa_page_options() {
 					<tr><th><h3><?php _e('Album covers:', 'wppa'); ?></h3></th></tr>
 					<tr valign="top">
 						<th scope="row">
-							<label ><?php _e('Coverphoto Size:', 'wppa'); ?></label>
+							<label><?php _e('Coverphoto Size:', 'wppa'); ?></label>
 						</th>
 						<td>
 							<input type="text" name="wppa-smallsize" id="wppa-smallsize" value="<?php echo(get_option('wppa_smallsize', '130')) ?>" style="width: 50px;" />
 							<span class="description"><br/><?php _e('Changing the coverphoto size may result in all thumbnails being regenerated. this may take a while.', 'wppa'); ?></span>
+						</td>
+					</tr>
+					<tr valign="top">
+						<th scope="row">
+							<label><?php _e('Placement:', 'wppa'); ?></label>
+						</th>
+						<td>
+							<?php $left = (get_option('wppa_coverphoto_left', 'no') == 'yes'); ?>
+							<input type="radio" name="wppa-coverphoto-left" value="yes" <?php if ($left) echo('checked="checked"') ?>/><?php _e('Left', 'wppa') ?><br/>
+							<input type="radio" name="wppa-coverphoto-left" value="no" <?php if(!$left) echo('checked="checked"') ?>/><?php _e('Right', 'wppa') ?>
+							<span class="description"><br/><?php _e('Indicate the placement position of the coverphoto you wish.', 'wppa') ?></span>
 						</td>
 					</tr>
 					<tr valign="top">

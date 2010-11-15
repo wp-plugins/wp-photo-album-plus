@@ -105,6 +105,10 @@
 	border-radius: 3px;
 }
 
+/* Wrapper for covertext */
+.covertext-frame {
+}
+
 /* Wrapper for thumbnail area */
 .thumbnail-area {
 /*	margin: 7px 0; */

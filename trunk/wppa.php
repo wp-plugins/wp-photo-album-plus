@@ -86,11 +86,11 @@ function wppa_setup() {
 	if (get_option('wppa_fullvalign', 'nil') == 'nil') update_option('wppa_fullvalign', 'fit');
 	if (!is_numeric(get_option('wppa_min_thumbs', 'nil'))) update_option('wppa_min_thumbs', '1');
 	if (get_option('wppa_valign', 'nil') == 'nil') update_option('wppa_valign', 'default');
-	if (!is_numeric(get_option('wppa_thumbsize', 'nil'))) update_option('wppa_thumbsize', '150');
+	if (!is_numeric(get_option('wppa_thumbsize', 'nil'))) update_option('wppa_thumbsize', '100');
 	if (!is_numeric(get_option('wppa_tf_width', 'nil'))) update_option('wppa_tf_width', get_option('wppa_thumbsize'));
 	if (!is_numeric(get_option('wppa_tf_height', 'nil'))) update_option('wppa_tf_height', get_option('wppa_thumbsize') + '10');
 	if (!is_numeric(get_option('wppa_tn_margin', 'nil'))) update_option('wppa_tn_margin', '4');
-	if (!is_numeric(get_option('wppa_smallsize', 'nil'))) update_option('wppa_smallsize', '100');
+	if (!is_numeric(get_option('wppa_smallsize', 'nil'))) update_option('wppa_smallsize', '150');
 	if (get_option('wppa_show_bread', 'nil') == 'nil') update_option('wppa_show_bread', 'yes');
 	if (get_option('wppa_use_thumb_opacity', 'nil') == 'nil') update_option('wppa_use_thumb_opacity', 'yes');
 	if (!is_numeric(get_option('wppa_thumb_opacity', 'nil'))) update_option('wppa_thumb_opacity', '80');

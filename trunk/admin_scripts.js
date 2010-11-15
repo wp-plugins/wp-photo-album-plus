@@ -98,10 +98,12 @@ function wppaCheckThumbType() {
 	var ttype = document.getElementById('wppa-thumbtype').value;
 	if (ttype == 'default') {
 		jQuery('.tt-normal').css('visibility', 'visible');
+		jQuery('.tt-ascovers').css('visibility', 'collapse');
 		wppaCheckUseThumbOpacity();
 	}
 	if (ttype == 'ascovers') {
 		jQuery('.tt-normal').css('visibility', 'collapse');
+		jQuery('.tt-ascovers').css('visibility', 'visible');
 	}
 }
 
