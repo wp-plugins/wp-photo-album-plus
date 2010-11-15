@@ -12,7 +12,6 @@ var wppa_timeout = new Array();
 //var wppa_timer = new Array();
 var wppa_ss_running = new Array();
 var wppa_foreground = new Array();
-//var wppa_first_spinner = new Array();
 var wppa_busy = new Array();
 var wppa_first = new Array();
 var wppa_saved_id = new Array();
@@ -47,7 +46,6 @@ function wppa_store_slideinfo(mocc, id, url, size, name, desc) {
 		wppa_timeout[mocc] = wppa_ss_timeout;
 		wppa_ss_running[mocc] = 0;
 		wppa_foreground[mocc] = 0;
-//		wppa_first_spinner[mocc] = true;
 		wppa_busy[mocc] = false;
 		wppa_first[mocc] = true;
 		wppa_fullvalign_fit[mocc] = false;
@@ -92,7 +90,7 @@ function wppa_next_slide(mocc) {
 	wppa_first[mocc] = false;
     // Next is now current
     wppa_id[mocc] = wppa_next_id[mocc];
-if (wppa_auto_colwidth) wppa_do_autocol(mocc);
+	if (wppa_auto_colwidth) wppa_do_autocol(mocc);
 //	wppa_timer[mocc] = 
 	setTimeout('wppa_fade('+mocc+')', 10);
 }
@@ -110,12 +108,12 @@ function wppa_fade(mocc) {
 	// Remove spinner
 	wppa_unload_spinner(mocc);
 	// Do autocol if required
-if (wppa_auto_colwidth) wppa_do_autocol(mocc);
+	if (wppa_auto_colwidth) wppa_do_autocol(mocc);
 	// Hide subtitles
-if (wppa_ss_running[mocc] != -1) {	// not stop in progress
-	jQuery("#imagedesc-"+mocc).html('&nbsp;&nbsp;');
-	jQuery("#imagetitle-"+mocc).html('&nbsp;&nbsp;');	
-}
+	if (wppa_ss_running[mocc] != -1) {	// not stop in progress
+		jQuery("#imagedesc-"+mocc).html('&nbsp;&nbsp;');
+		jQuery("#imagetitle-"+mocc).html('&nbsp;&nbsp;');	
+	}
 	// change foreground
 	wppa_foreground[mocc] = 1 - wppa_foreground[mocc];
 	fg = wppa_foreground[mocc];
@@ -132,10 +130,7 @@ function wppa_fade_fade(mocc) {
 	bg = 1 - fg;
 
 	// Do the actual fade. Fadeout only if not stop in progress
-	if (wppa_ss_running[mocc] == -1) {	// stop in progress
-//		wppa_ss_running[mocc] = 0;
-	}
-	else {
+	if (!wppa_ss_running[mocc] == -1) {	// stop not in progress
 		jQuery("#theimg"+bg+"-"+mocc).fadeOut(wppa_animation_speed); 					// Req'd for change in portrait/landscape vv
 	}
 	// Fadein new image
@@ -148,44 +143,37 @@ function wppa_fade_fade(mocc) {
 }
 
 function wppa_after_fade(mocc) {
-if (wppa_ss_running[mocc] == -1) { // stop in progress
-	wppa_ss_running[mocc] = 0;
-}
-else {
-	// set height to fit if reqd
-//	if (!wppa_auto_colwidth)
-	if (wppa_fullvalign_fit[mocc]) {
-		h = document.getElementById('theimg'+wppa_foreground[mocc]+'-'+mocc).style.height;
-		if (h) document.getElementById('slide_frame-'+mocc).style.height = parseInt(h)+'px';
-		document.getElementById('slide_frame-'+mocc).style.minHeight = '0px';
+	if (wppa_ss_running[mocc] == -1) { // stop in progress
+		wppa_ss_running[mocc] = 0;
 	}
-	// Display counter and arrow texts
-	if (document.getElementById('counter-'+mocc)) {
-		document.getElementById('counter-'+mocc).innerHTML = wppa_photo+' '+(wppa_id[mocc]+1)+' '+wppa_of+' '+wppa_slides[mocc].length;
-		document.getElementById('prev-arrow-'+mocc).innerHTML = wppa_prevphoto;
-		document.getElementById('next-arrow-'+mocc).innerHTML = wppa_nextphoto;
+	else {
+		// set height to fit if reqd
+		if (wppa_fullvalign_fit[mocc]) {
+			h = jQuery('#theimg'+wppa_foreground[mocc]+'-'+mocc).css('height');
+			if (h) {
+				jQuery('#slide_frame-'+mocc).css('height', parseInt(h)+'px');
+			}
+			jQuery('#slide_frame-'+mocc).css('minHeight', '0px');
+		}
+		// Display counter and arrow texts
+		if (document.getElementById('counter-'+mocc)) {
+			document.getElementById('counter-'+mocc).innerHTML = wppa_photo+' '+(wppa_id[mocc]+1)+' '+wppa_of+' '+wppa_slides[mocc].length;
+			document.getElementById('prev-arrow-'+mocc).innerHTML = wppa_prevphoto;
+			document.getElementById('next-arrow-'+mocc).innerHTML = wppa_nextphoto;
+		}
+		// Restore subtitles
+		if (document.getElementById('imagedesc-'+mocc)) document.getElementById('imagedesc-'+mocc).innerHTML = '&nbsp;' + wppa_descs[mocc][wppa_id[mocc]] + '&nbsp;';
+		if (document.getElementById('imagetitle-'+mocc)) document.getElementById('imagetitle-'+mocc).innerHTML = '&nbsp;' + wppa_names[mocc][wppa_id[mocc]] + '&nbsp;';
+		
+		// Update breadcrumb
+		if (document.getElementById('bc-pname-'+mocc)) document.getElementById('bc-pname-'+mocc).innerHTML = wppa_names[mocc][wppa_id[mocc]];
 	}
-	// Restore subtitles
-	if (document.getElementById('imagedesc-'+mocc)) document.getElementById('imagedesc-'+mocc).innerHTML = '&nbsp;' + wppa_descs[mocc][wppa_id[mocc]] + '&nbsp;';
-	if (document.getElementById('imagetitle-'+mocc)) document.getElementById('imagetitle-'+mocc).innerHTML = '&nbsp;' + wppa_names[mocc][wppa_id[mocc]] + '&nbsp;';
-	
-	// Update breadcrumb
-	if (document.getElementById('bc-pname-'+mocc)) document.getElementById('bc-pname-'+mocc).innerHTML = wppa_names[mocc][wppa_id[mocc]];
-}
 
+	// Adjust filmstrip
+	var xoffset;
 
-// Adjust filmstrip
-var xoffset;
-
-//preambule = 4;
-//var wppa_thumbnail_pitch = 104;
-//var wppa_filmstrip_length = 390;
-xoffset = wppa_filmstrip_length / 2 - (wppa_id[mocc] + 0.5 + wppa_preambule) * wppa_thumbnail_pitch - wppa_filmstrip_margin;
-//if (xoffset > 0) xoffset = 0;
-//xmin = wppa_filmstrip_length - wppa_slides[mocc].length * wppa_thumbnail_pitch;
-//if (xoffset < (xmin)) xoffset = xmin;
-//jQuery('#wppa-filmstrip-'+mocc).css('margin-left', xoffset);
-jQuery('#wppa-filmstrip-'+mocc).animate({marginLeft: xoffset+'px'});
+	xoffset = wppa_filmstrip_length / 2 - (wppa_id[mocc] + 0.5 + wppa_preambule) * wppa_thumbnail_pitch - wppa_filmstrip_margin;
+	jQuery('#wppa-filmstrip-'+mocc).animate({marginLeft: xoffset+'px'});
 	
 	// Wait for next slide
 	if (wppa_ss_running[mocc] == 1) {
@@ -225,11 +213,11 @@ function wppa_goto(mocc, idx) {
 }
 
 function wppa_startstop(mocc, idx) {
-//alert('startstop called with '+mocc+' '+idx);
 	if (idx != -1) {	// Init still
-if (document.getElementById('startstop-'+mocc)) document.getElementById('startstop-'+mocc).innerHTML='Start'+' '+wppa_slideshow; 
-if (document.getElementById('speed0-'+mocc)) document.getElementById('speed0-'+mocc).style.visibility="hidden";
-if (document.getElementById('speed1-'+mocc)) document.getElementById('speed1-'+mocc).style.visibility="hidden";
+		jQuery('#startstop-'+mocc).html('Start'+' '+wppa_slideshow);
+//		if (document.getElementById('startstop-'+mocc)) document.getElementById('startstop-'+mocc).innerHTML='Start'+' '+wppa_slideshow; 
+		if (document.getElementById('speed0-'+mocc)) document.getElementById('speed0-'+mocc).style.visibility="hidden";
+		if (document.getElementById('speed1-'+mocc)) document.getElementById('speed1-'+mocc).style.visibility="hidden";
 		wppa_next_id[mocc] = idx;
 		wppa_id[mocc] = idx;
 		wppa_next_slide(mocc);
@@ -281,29 +269,23 @@ function wppa_load_spinner(mocc) {
 	var lft;
 	var elm;
 	
-//	if (wppa_first_spinner[mocc])
-	{
-		elm = document.getElementById('slide_frame-'+mocc);
-		top = parseInt(elm.style.height);
+	elm = document.getElementById('slide_frame-'+mocc);
+	top = parseInt(elm.style.height);
+	if (top > 0) {
+		top = parseInt(parseInt(top/2) - 4)+'px';
+	}
+	else {
+		top = parseInt(elm.style.minHeight);
 		if (top > 0) {
 			top = parseInt(parseInt(top/2) - 4)+'px';
 		}
-		else {
-			top = parseInt(elm.style.minHeight);
-			if (top > 0) {
-				top = parseInt(parseInt(top/2) - 4)+'px';
-			}
-			else top = '150px';
-		}
-		lft = parseInt((parseInt(elm.style.width) / 2) - 4)+'px';
-			
-		document.getElementById('spinner-'+mocc).style.top = top;
-		document.getElementById('spinner-'+mocc).style.left = lft;
-		document.getElementById('spinner-'+mocc).innerHTML = '<img id="spinnerimg-'+mocc+'" src="'+wppa_imgdir+'wpspin.gif" />';
-//		wppa_first_spinner[mocc] = false;
+		else top = '150px';
 	}
-//	document.getElementById('spinnerimg-'+mocc).src = wppa_imgdir + 'wpspin.gif';
-	
+	lft = parseInt((parseInt(elm.style.width) / 2) - 4)+'px';
+			
+	document.getElementById('spinner-'+mocc).style.top = top;
+	document.getElementById('spinner-'+mocc).style.left = lft;
+	document.getElementById('spinner-'+mocc).innerHTML = '<img id="spinnerimg-'+mocc+'" src="'+wppa_imgdir+'wpspin.gif" />';
 }
 
 function wppa_unload_spinner(mocc) {
@@ -343,7 +325,3 @@ function wppa_do_autocol(mocc) {
 		}
 	}
 }
-/*
-	var dbg = document.getElementById('wppa-debug');
-	dbg.innerHTML = '<small>padding='+puImg.style.padding+'.</small>';
-*/
