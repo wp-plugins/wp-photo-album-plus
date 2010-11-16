@@ -3,19 +3,12 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions and API modules
-* Version 2.4.0
+* Version 2.4.1
 */
 
 global $wppa_api_version;
-$wppa_api_version = '2-4-0-009';
-/* build 002:fixed filmstrip dimensions for thumbnail sizes other than 100
-/* build 003:fixed height in autocolwidth when valign = fit, thumb topmargin fix when in autocolwidth
-/* build 004:fixed an old bug that came back. Wrong thumbnailsize (wppa_get_minisize()).
-/* build 005:fix in filter.php
-/* build 006:fix for occurrencies
-/* build 007:fix remove spinner entirely (wppa_slideshow.js)
-/* build 008:fixed broken rss due to the use of a cdata block
-/* build 009:2nd attempt for fix for substr_count wrong parameter in wppa_filter.php
+$wppa_api_version = '2-4-1-000';
+
 /*
 /* TEMPLATE FUNCTIONS (TAGS) */
 
@@ -1156,21 +1149,21 @@ global $wppa_auto_colwidth;
 		<script type="text/javascript"><?php if (get_option('wppa_fadein_after_fadeout', 'no') == 'yes') echo('wppa_fadein_after_fadeout = true;'); ?></script>
 		<script type="text/javascript">wppa_widget_padding = <?php echo(get_option('wppa_widget_padding', '5')); ?>;</script>
 <?php 	/* This goes into wppa_slideshow.js */ ?>
-		<script type="text/javascript">wppa_thumbnail_area_delta = <?php echo wppa_get_thumbnail_area_delta(); ?>;</script>
+		<script type="text/javascript">wppa_animation_speed = <?php echo get_option('wppa_animation_speed', 400) ?>;</script>
+		<script type="text/javascript">wppa_imgdir = "<?php echo wppa_get_imgdir() ?>";</script>
 		<script type="text/javascript">wppa_auto_colwidth = <?php if ($wppa_auto_colwidth) echo('true'); else echo('false'); ?>;</script>
+		<script type="text/javascript">wppa_thumbnail_area_delta = <?php echo wppa_get_thumbnail_area_delta(); ?>;</script>
+		<script type="text/javascript">wppa_ss_timeout = <?php echo get_option('wppa_slideshow_timeout', 2500) ?>;</script>
+		<script type="text/javascript">wppa_fadein_after_fadeout = <?php if (get_option('wppa_fadein_after_fadeout', 'no') == 'yes') echo('true'); else echo('false'); ?>;</script>
+		<script type="text/javascript">wppa_preambule = <?php echo wppa_get_preambule() ?>;</script>
+		<script type="text/javascript">wppa_thumbnail_pitch = <?php echo (get_option('wppa_tf_width', '100') + get_option('wppa_tn_margin', '0')); ?>;</script>
+		<script type="text/javascript">wppa_filmstrip_length = <?php echo (wppa_get_container_width() - 60); ?>;</script>
+		<script type="text/javascript">wppa_filmstrip_margin = <?php echo (get_option('wppa_tn_margin', '0') / 2); ?>;</script>
 		<script type="text/javascript">wppa_slideshow = "<?php _e('Slideshow', 'wppa'); ?>";</script>
 		<script type="text/javascript">wppa_photo = "<?php _e('Photo', 'wppa'); ?>";</script>
 		<script type="text/javascript">wppa_of = "<?php _e('of', 'wppa'); ?>";</script>
 		<script type="text/javascript">wppa_prevphoto = "<?php _e('Previous photo', 'wppa'); ?>";</script>
 		<script type="text/javascript">wppa_nextphoto = "<?php _e('Next photo', 'wppa'); ?>";</script>
-<?php	/* And some data */ ?>
-		<script type="text/javascript">wppa_animation_speed = <?php echo get_option('wppa_animation_speed', 400) ?>;</script>
-		<script type="text/javascript">wppa_imgdir = "<?php echo wppa_get_imgdir() ?>";</script>
-		<script type="text/javascript">wppa_ss_timeout = <?php echo get_option('wppa_slideshow_timeout', 2500) ?>;</script>
-		<script type="text/javascript">wppa_preambule = <?php echo wppa_get_preambule() ?>;</script>
-		<script type="text/javascript">wppa_thumbnail_pitch = <?php echo (get_option('wppa_tf_width', '100') + get_option('wppa_tn_margin', '0')); ?>;</script>
-		<script type="text/javascript">wppa_filmstrip_length = <?php echo (wppa_get_container_width() - 60); ?>;</script>
-		<script type="text/javascript">wppa_filmstrip_margin = <?php echo (get_option('wppa_tn_margin', '0') / 2); ?>;</script>
 <?php }
 }
 
@@ -1495,10 +1488,10 @@ global $wppa_alt;
 	<div id="album-<?php echo($album['id'].'-'.$wppa_master_occur) ?>" class="album wppa-box wppa-<?php echo($wppa_alt); ?>"><?php 
 		if ($src != '') { 
 			if ($photo_left) {
-				$photoframestyle = 'style="float:left;"';
+				$photoframestyle = 'style="float:left; margin-right:5px;"';
 			}
 			else {
-				$photoframestyle = '';
+				$photoframestyle = 'style="float:right; margin-left:5px;"';
 			}
 			?>
 			<div id="coverphoto_frame_<?php echo($album['id'].'_'.$wppa_master_occur) ?>" class="coverphoto-frame" <?php echo($photoframestyle) ?>><?php 
@@ -1582,10 +1575,10 @@ global $wppa_alt;
 	<div id="thumb-<?php echo($thumb['id'].'-'.$wppa_master_occur) ?>" class="thumb wppa-box wppa-<?php echo($wppa_alt); ?>"><?php 
 		if ($src != '') { 
 			if ($photo_left) {
-				$photoframestyle = 'style="float:left;"';
+				$photoframestyle = 'style="float:left; margin-right:5px;"';
 			}
 			else {
-				$photoframestyle = '';
+				$photoframestyle = 'style="float:right; margin-left:5px;"';
 			}
 		?>
 		<div id="thumbphoto_frame_<?php echo($thumb['id'].'_'.$wppa_master_occur) ?>" class="thumbphoto-frame" <?php echo($photoframestyle) ?>>

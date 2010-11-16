@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, gallery, slideshow, sidebar widget, photo widget, phtoblog
-Version: 2.4.0
+Version: 2.4.1
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -98,6 +98,14 @@ wppa-[your languagecode].po and wppa-[your languagecode].mo.
 WordPress developers Codex page and more specifically at the section about themes and plugins.
 
 == Changelog ==
+
+= 2.4.1 =
+
+= New features =
+* You can set the location of the coverphotos and the thumbnail images when set to 'as covers' independently to the left hand side or the (default) right hand side on the settings page.
+
+= Bug fixes =
+* Various minor fixes in behaviour and lay-out.
 
 = 2.4.0 =
 

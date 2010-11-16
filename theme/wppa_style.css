@@ -95,8 +95,8 @@
 /* Coverphoto */
 .coverphoto-frame .image, .thumbphoto-frame .image { 
 	position: relative;
-	float: right; 		/* Change this to float: left; if you want the coverphoto left */
-	margin-left: 5px;	/* and this to margin-right: 5px; */
+/*	float: right; 		/* Change this to float: left; if you want the coverphoto left */
+/*	margin-left: 5px;	/* and this to margin-right: 5px; */
 	border: none; /*1px #bbdd99 solid;*/
 	padding: 4px;
 	-moz-border-radius: 3px;
