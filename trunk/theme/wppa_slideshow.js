@@ -1,6 +1,5 @@
 ﻿// Slide show variables and functions
-// This is wppa_slideshow.js version 2.4.0, build 002
-// Build 007 remove spinner totally
+// This is wppa_slideshow.js version 2.4.1
 //
 
 var wppa_slides = new Array();
@@ -15,22 +14,26 @@ var wppa_foreground = new Array();
 var wppa_busy = new Array();
 var wppa_first = new Array();
 var wppa_saved_id = new Array();
+
+var wppa_fullvalign_fit = new Array();
+
+var wppa_animation_speed;
+var wppa_imgdir;
+var wppa_auto_colwidth = false;
+var wppa_thumbnail_area_delta;
+var wppa_ss_timeout = 2500;
+var wppa_fadein_after_fadeout = false;
+
+var wppa_preambule;
+var wppa_thumbnail_pitch;
+var wppa_filmstrip_length;
+var wppa_filmstrip_margin = 0;
+
 var wppa_slideshow;			// = 'Slideshow' or its translation
 var wppa_photo;				// = 'Photo' or its translation
 var wppa_of;				// = 'of' or its translation
 var wppa_nextphoto;			// = 'Next photo' or its translation
 var wppa_prevphoto;			// = 'Previous photo' or its translation
-var wppa_animation_speed;
-var wppa_imgdir;
-var wppa_fullvalign_fit = new Array();
-var wppa_ss_timeout = 2500;
-var wppa_fadein_after_fadeout = false;
-var wppa_auto_colwidth = false;
-var wppa_thumbnail_area_delta;
-var wppa_thumbnail_pitch;
-var wppa_filmstrip_length;
-var wppa_filmstrip_margin = 0;
-var wppa_preambule;
 
 jQuery(document).ready(function(){
 	if (wppa_auto_colwidth) wppa_do_autocol(0);
@@ -130,7 +133,7 @@ function wppa_fade_fade(mocc) {
 	bg = 1 - fg;
 
 	// Do the actual fade. Fadeout only if not stop in progress
-	if (!wppa_ss_running[mocc] == -1) {	// stop not in progress
+	if (wppa_ss_running[mocc] != -1 || (wppa_id[mocc] != wppa_next_id[mocc])) {	// stop not in progress or fg != bg
 		jQuery("#theimg"+bg+"-"+mocc).fadeOut(wppa_animation_speed); 					// Req'd for change in portrait/landscape vv
 	}
 	// Fadein new image
@@ -146,7 +149,7 @@ function wppa_after_fade(mocc) {
 	if (wppa_ss_running[mocc] == -1) { // stop in progress
 		wppa_ss_running[mocc] = 0;
 	}
-	else {
+//	else {
 		// set height to fit if reqd
 		if (wppa_fullvalign_fit[mocc]) {
 			h = jQuery('#theimg'+wppa_foreground[mocc]+'-'+mocc).css('height');
@@ -167,7 +170,7 @@ function wppa_after_fade(mocc) {
 		
 		// Update breadcrumb
 		if (document.getElementById('bc-pname-'+mocc)) document.getElementById('bc-pname-'+mocc).innerHTML = wppa_names[mocc][wppa_id[mocc]];
-	}
+//	}
 
 	// Adjust filmstrip
 	var xoffset;

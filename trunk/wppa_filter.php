@@ -3,10 +3,8 @@
 * Pachkage: wp-photo-album-plus
 *
 * get the albums via filter
-* version 2.4.0, build 005
-* 005: Fix for substr_count wrong parameter
-* 009: 2nd attempt for fix
-* 010: 3rd
+* version 2.4.1
+*
 */
 
 add_action('init', 'wppa_do_filter');
@@ -22,12 +20,11 @@ function wppa_albums_filter($post) {
 	
 	if (substr_count($post_old, '%%wppa%%') > 0) {
 		$wppa_pos = strpos($post_old, '%%wppa%%');
-		while ($wppa_pos > 0) {
-			$in_p = false;
-			if ((strlen($post_old) >= $wppa_pos) && (substr_count($post_old,'<p>',0,$wppa_pos) > substr_count($post_old,'</p>',0,$wppa_pos))) {
-				$in_p = true;
-			}
-			$post_new .= wppa_disp(substr($post_old, 0, $wppa_pos));	// Copy BEFORE part to new post
+		while ($wppa_pos !== false) {
+			$chunk = substr($post_old, 0, $wppa_pos);
+			$in_p = substr_count($chunk, '<p>') > substr_count($chunk, '</p>') ? true : false;
+
+			$post_new .= wppa_disp($chunk);								// Copy BEFORE part to new post
 			$post_old = substr($post_old, $wppa_pos);					// Shift BEFORE part out
 			$post_old = substr($post_old, 8);							// Shift %%wppa%% out
 			$album_pos = strpos($post_old, '%%album=');					// Is there an album given?
