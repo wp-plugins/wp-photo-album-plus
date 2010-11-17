@@ -169,6 +169,7 @@ function wppa_upload_photos() {
 	wppa_cleanup_photos();
 	
 	$warning_given = false;
+	$uploaded_a_file = false;
 
 	$wppa_dir = ABSPATH . 'wp-content/uploads/wppa';
 	
@@ -260,8 +261,12 @@ function wppa_insert_photo ($file = '', $album = '', $name = '') {
 					wppa_ok_message(__('Although the photos are resized during the upload/import process, you may encounter \'Out of memory\'errors.', 'wppa') . '<br/>' . __('In that case: make sure you set the memory limit to 64M and make sure your hosting provider allows you the use of 64 Mb.', 'wppa'));
 				}
 				else {
-					wppa_warning_message(__('WARNING You are uploading very large photos, this may result in server problems and excessive download times for your website visitors.', 'wppa') . '<br/>' . __('Check the \'Resize on upload\' checkbox, and/or resize the photos before uploading. The recommended size is: not larger than 1024 x 768 pixels (up to approx. 250 kB).', 'wppa'));
+					wppa_warning_message(__('WARNING: You are uploading very large photos, this may result in server problems and excessive download times for your website visitors.', 'wppa') . '<br/>' . __('Check the \'Resize on upload\' checkbox, and/or resize the photos before uploading. The recommended size is: not larger than 1024 x 768 pixels (up to approx. 250 kB).', 'wppa'));
 				}
+				$warning_given = true;
+			}
+			if (!$warning_given && ($img_size['0'] < wppa_get_minisize() || $img_size['1'] < wppa_get_minisize())) {
+				wppa_warning_message(__('WARNING: You are uploading photos that are too small. Photos must be larger than the thumbnail size and larger than the coverphotosize.', 'wppa'));
 				$warning_given = true;
 			}
 		}
@@ -325,7 +330,7 @@ function wppa_cleanup_photos($alb = '') {
 	$no_photos = '';
 	if ($alb == '0') wppa_ok_message(__('Checking database, please wait...', 'wppa'));
 	$delcount = 0;
-	if ($alb == '0') $entries = $wpdb->get_results('SELECT id, ext FROM '.PHOTO_TABLE, ARRAY_A);
+	if ($alb == '0') $entries = $wpdb->get_results('SELECT id, ext, name FROM '.PHOTO_TABLE, ARRAY_A);
 	else $entries = $wpdb->get_results('SELECT id, ext, name FROM '.PHOTO_TABLE.' WHERE album = '.$alb, ARRAY_A);
 	if ($entries) {
 		foreach ($entries as $entry) {
@@ -390,7 +395,7 @@ function wppa_cleanup_photos($alb = '') {
 	}
 	// End ext fix
 	if ($delcount > 0){
-		wppa_ok_message(__('Database fixed.', 'wppa').' '.$delcount.' '.__('invalid entries remooved:', 'wppa').$no_photos);
+		wppa_ok_message(__('Database fixed.', 'wppa').' '.$delcount.' '.__('invalid entries removed:', 'wppa').$no_photos);
 	}
 	if ($fixcount > 0) {
 		wppa_ok_message(__('Database fixed.', 'wppa').' '.$fixcount.' '.__('missing file extensions recovered.', 'wppa'));

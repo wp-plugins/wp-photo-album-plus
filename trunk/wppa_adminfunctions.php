@@ -37,8 +37,7 @@ function wppa_create_thumbnail( $file, $max_side, $effect = '') {
 		$thumb = 'thumbs/' . basename( $file );
 		$thumbpath = str_replace( basename( $file ), $thumb, $file );
 
-		require_once('wppa_class_resize.php');
-		
+		require_once('wppa_class_resize.php');		
 		$objResize = new wppa_ImageResize($file, $thumbpath, $dir, $max_side);
 	}
 	else {
