@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the upload/import pages and functions
-* Version 2.4.0
+* Version 2.4.1
 */
 
 function wppa_page_upload() {
@@ -307,9 +307,11 @@ function wppa_insert_photo ($file = '', $album = '', $name = '') {
 
 function wppa_get_photocount($files) {
 	$result = 0;
-	foreach ($files as $file) {
-		$ext = strtolower(substr(strrchr($file, "."), 1));
-		if ($ext == 'jpg' || $ext == 'png' || $ext == 'gif') $result++;
+	if ($files) {
+		foreach ($files as $file) {
+			$ext = strtolower(substr(strrchr($file, "."), 1));
+			if ($ext == 'jpg' || $ext == 'png' || $ext == 'gif') $result++;
+		}
 	}
 	return $result;
 }
