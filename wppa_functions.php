@@ -4,10 +4,11 @@
 *
 * Various funcions and API modules
 * Version 2.4.1
+* Build 001: Warning added when uploads smaller than thumbs
 */
 
 global $wppa_api_version;
-$wppa_api_version = '2-4-1-000';
+$wppa_api_version = '2-4-1-001';
 
 /*
 /* TEMPLATE FUNCTIONS (TAGS) */

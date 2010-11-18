@@ -250,24 +250,25 @@ function wppa_import_photos($del_after_import = false) {
 
 function wppa_insert_photo ($file = '', $album = '', $name = '') {
 	global $wpdb;
-	global $warning_given;
+	global $warning_given_small;
+	global $warning_given_big;
 	
 	if ($name == '') $name = basename($file);
 	if ($file != '' && $album != '' ) {
 		$img_size = getimagesize($file);
 		if ($img_size) { 
-			if (!$warning_given && ($img_size['0'] > 1280 || $img_size['1'] > 1280)) {
+			if (!$warning_given_big && ($img_size['0'] > 1280 || $img_size['1'] > 1280)) {
 				if (get_option('wppa_resize_on_upload', 'no') == 'yes') {
 					wppa_ok_message(__('Although the photos are resized during the upload/import process, you may encounter \'Out of memory\'errors.', 'wppa') . '<br/>' . __('In that case: make sure you set the memory limit to 64M and make sure your hosting provider allows you the use of 64 Mb.', 'wppa'));
 				}
 				else {
 					wppa_warning_message(__('WARNING: You are uploading very large photos, this may result in server problems and excessive download times for your website visitors.', 'wppa') . '<br/>' . __('Check the \'Resize on upload\' checkbox, and/or resize the photos before uploading. The recommended size is: not larger than 1024 x 768 pixels (up to approx. 250 kB).', 'wppa'));
 				}
-				$warning_given = true;
+				$warning_given_big = true;
 			}
-			if (!$warning_given && ($img_size['0'] < wppa_get_minisize() || $img_size['1'] < wppa_get_minisize())) {
+			if (!$warning_given_small && ($img_size['0'] < wppa_get_minisize() && $img_size['1'] < wppa_get_minisize())) {
 				wppa_warning_message(__('WARNING: You are uploading photos that are too small. Photos must be larger than the thumbnail size and larger than the coverphotosize.', 'wppa'));
-				$warning_given = true;
+				$warning_given_small = true;
 			}
 		}
 		else return false;
