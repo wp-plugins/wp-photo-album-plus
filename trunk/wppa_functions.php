@@ -5,10 +5,11 @@
 * Various funcions and API modules
 * Version 2.4.1
 * Build 001: Warning added when uploads smaller than thumbs
+* Build 002: More class defs to workaround unwanted tt tags
 */
 
 global $wppa_api_version;
-$wppa_api_version = '2-4-1-001';
+$wppa_api_version = '2-4-1-002';
 
 /*
 /* TEMPLATE FUNCTIONS (TAGS) */
@@ -69,7 +70,7 @@ function wppa_breadcrumb($xsep = '&raquo;', $opt = '') {
 <?php
 		if (get_option('wppa_show_home', 'yes') == 'yes') {
 ?>
-			<a href="<?php echo(get_bloginfo('url')); ?>" style="float: left" ><?php _e('Home', 'wppa'); ?></a><span style="float: left" ><?php echo($sep); ?></span>
+			<a href="<?php echo(get_bloginfo('url')); ?>" class="wppa-nav-text" style="float: left" ><?php _e('Home', 'wppa'); ?></a><span class="wppa-nav-text" style="float: left" ><?php echo($sep); ?></span>
 <?php	
 		}
 		
@@ -80,7 +81,7 @@ function wppa_breadcrumb($xsep = '&raquo;', $opt = '') {
 		} else {	/* $alb != 0 */
 			if (!$separate) {
 ?>
-				<a href="<?php echo(get_permalink() . wppa_sep()); ?>occur=<?php echo($wppa_local_occur); ?>" class= "b2" style="float: left" ><?php the_title(); ?></a><span class="b3" style="float: left" ><?php echo($sep); ?></span>
+				<a href="<?php echo(get_permalink() . wppa_sep()); ?>occur=<?php echo($wppa_local_occur); ?>" class="wppa-nav-text b2" style="float: left" ><?php the_title(); ?></a><span class="wppa-nav-text b3" style="float: left" ><?php echo($sep); ?></span>
 <?php
 			}
 		    wppa_crumb_ancestors($sep, $alb);
@@ -110,7 +111,7 @@ function wppa_breadcrumb($xsep = '&raquo;', $opt = '') {
 			} 
 		}
 		if (isset($_POST['wppa-searchstring'])) {
-			echo('<span class="b11" ><b>&nbsp;'.__('Searchstring:', 'wppa').'&nbsp;'.$_POST['wppa-searchstring'].'</b></span>');
+			echo('<span class="wppa-nav-text b11" ><b>&nbsp;'.__('Searchstring:', 'wppa').'&nbsp;'.$_POST['wppa-searchstring'].'</b></span>');
 		}
 ?>
 	</div>
@@ -125,7 +126,7 @@ function wppa_crumb_ancestors($sep, $alb) {
     wppa_crumb_ancestors($sep, $parent);
    
     echo '<a href="' . get_permalink() . wppa_sep() . 'album=' . $parent . '&cover=0&occur=' . $wppa_local_occur . '" class="wppa-nav-text b20" style="float: left" >' . wppa_get_album_name($parent) . '</a>';
-	echo '<span style="float: left">' . $sep . '</span>';
+	echo '<span class="wppa-nav-text" style="float: left">' . $sep . '</span>';
     return;
 }
 function wppa_page_breadcrumb($sep) {
@@ -147,11 +148,11 @@ function wppa_crumb_page_ancestors($sep, $page = '0') {
 	if (!$title) {
 		$title = '****';		// Page exists but is not publish
 ?>
-	<a href="#" class="wppa-nav-text b30" style="float: left" ></a><span class="b31" style="float: left;" ><?php echo($title); ?><?php echo($sep); ?></span>
+	<a href="#" class="wppa-nav-text b30" style="float: left" ></a><span class="wppa-nav-text b31" style="float: left;" ><?php echo($title); ?><?php echo($sep); ?></span>
 <?php
 	} else {
 ?>
-	<a href="<?php echo(get_page_link($parent)); ?>" class="wppa-nav-text b32" style="float: left;" ><?php echo($title); ?></a><span class="b32" style="float: left;" ><?php echo($sep); ?></span>
+	<a href="<?php echo(get_page_link($parent)); ?>" class="wppa-nav-text b32" style="float: left;" ><?php echo($title); ?></a><span class="wppa-nav-text b32" style="float: left;" ><?php echo($sep); ?></span>
 <?php
 	}
 }
@@ -1599,7 +1600,7 @@ global $wppa_alt;
 		<h2 class="wppa-title name" style="clear:none;">
 			<a href="<?php echo($href); ?>" title="<?php echo($title); ?>"><?php echo(stripslashes($thumb['name'])); ?></a>
 		</h2>
-		<p class="description"><?php echo(wppa_html(stripslashes($thumb['description']))); ?></p>
+		<p class="wppa-box-text wppa-black description"><?php echo(wppa_html(stripslashes($thumb['description']))); ?></p>
 </div>
 		<div class="clear"></div>		
 	</div><!-- thumb-<?php echo($thumb['id'].'-'.$wppa_master_occur) ?> --><?php
@@ -1654,9 +1655,9 @@ global $wppa_master_occur;
 		?>
 		<div id="prevnext1-<?php echo($wppa_master_occur) ?>" class="wppa-box wppa-nav wppa-nav-text" <?php if (get_option('wppa_hide_slideshow', 'no') == 'yes') echo('style="display:none;"'); ?>>
 			<p style="text-align: center; margin:0">
-				<a id="speed0-<?php echo($wppa_master_occur) ?>" class="speed0" onclick="wppa_speed(<?php echo($wppa_master_occur); ?>, false)"><?php _e('Slower', 'wppa'); ?></a> |
-				<a id="startstop-<?php echo($wppa_master_occur) ?>" class="startstop" onclick="wppa_startstop(<?php echo($wppa_master_occur) ?>, -1)"><?php _e('Start', 'wppa'); ?></a> |
-				<a id="speed1-<?php echo($wppa_master_occur) ?>" class="speed1" onclick="wppa_speed(<?php echo($wppa_master_occur); ?>, true)"><?php _e('Faster', 'wppa'); ?></a>
+				<a id="speed0-<?php echo($wppa_master_occur) ?>" class="wppa-nav-text speed0" onclick="wppa_speed(<?php echo($wppa_master_occur); ?>, false)"><?php _e('Slower', 'wppa'); ?></a> |
+				<a id="startstop-<?php echo($wppa_master_occur) ?>" class="wppa-nav-text startstop" onclick="wppa_startstop(<?php echo($wppa_master_occur) ?>, -1)"><?php _e('Start', 'wppa'); ?></a> |
+				<a id="speed1-<?php echo($wppa_master_occur) ?>" class="wppa-nav-text speed1" onclick="wppa_speed(<?php echo($wppa_master_occur); ?>, true)"><?php _e('Faster', 'wppa'); ?></a>
 			</p>
 		</div><!-- #prevnext1 --><?php 
 	}
@@ -1668,9 +1669,9 @@ global $wppa_master_occur;
 		?>
 		<div id="prevnext2-<?php echo($wppa_master_occur) ?>" class="wppa-box wppa-nav wppa-nav-text">
 			<p style="text-align: center; margin:0">
-				<span id="p-a-<?php echo($wppa_master_occur) ?>" class="wppa-black prev">&laquo;&nbsp;</span><a id="prev-arrow-<?php echo($wppa_master_occur) ?>" class="wppa-nav-text prev arrow arrow-<?php echo($wppa_master_occur) ?>" onclick="wppa_prev(<?php echo($wppa_master_occur) ?>)"></a>
-				<span id="n-a-<?php echo($wppa_master_occur) ?>" class="wppa-black next">&nbsp;&raquo;</span><a id="next-arrow-<?php echo($wppa_master_occur) ?>" class="wppa-nav-text next arrow arrow-<?php echo($wppa_master_occur) ?>" onclick="wppa_next(<?php echo($wppa_master_occur) ?>)"></a>
-				<span id="counter-<?php echo($wppa_master_occur) ?>" class="wppa-black" style="text-align:center; "></span>		
+				<span id="p-a-<?php echo($wppa_master_occur) ?>" class="wppa-nav-text wppa-black prev">&laquo;&nbsp;</span><a id="prev-arrow-<?php echo($wppa_master_occur) ?>" class="wppa-nav-text prev arrow arrow-<?php echo($wppa_master_occur) ?>" onclick="wppa_prev(<?php echo($wppa_master_occur) ?>)"></a>
+				<span id="n-a-<?php echo($wppa_master_occur) ?>" class="wppa-nav-text wppa-black next">&nbsp;&raquo;</span><a id="next-arrow-<?php echo($wppa_master_occur) ?>" class="wppa-nav-text next arrow arrow-<?php echo($wppa_master_occur) ?>" onclick="wppa_next(<?php echo($wppa_master_occur) ?>)"></a>
+				<span id="counter-<?php echo($wppa_master_occur) ?>" class="wppa-nav-text wppa-black" style="text-align:center; "></span>		
 			</p>
 		</div><!-- #prevnext2 --><?php 
 	}

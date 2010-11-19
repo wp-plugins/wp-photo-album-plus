@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wp-photo-album-plus\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-11-16 12:04+0100\n"
-"PO-Revision-Date: 2010-11-16 12:06+0100\n"
+"POT-Creation-Date: 2010-11-18 11:19+0100\n"
+"PO-Revision-Date: 2010-11-18 11:21+0100\n"
 "Last-Translator: J.N. Breetvelt <opajaap@opajaap.nl>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -47,15 +47,15 @@ msgstr "Zijkolom Widget"
 msgid "Help &amp; Info"
 msgstr "Help en Info"
 
-#: wppa_adminfunctions.php:53
+#: wppa_adminfunctions.php:52
 msgid "IMPORTANT UPGRADE NOTICE"
 msgstr "BELANGRIJKE MEDEDELING INZAKE UPDATE"
 
-#: wppa_adminfunctions.php:54
+#: wppa_adminfunctions.php:53
 msgid "Please CHECK your customized WPPA_STYLE.CSS file against the newly supplied one. You may wish to add or modify some attributes. Be aware of the fact that most settings can now be set in the admin settings page."
 msgstr "VERGELIJK a.u.b uw gemodificeerde WPPA_STYLE.CSS met de nieuwe versie. U zou enkele attributen kunnen willen aanvullen en/of wijzigen. De meeste instellingen zijn thans te doen in de Foto Albums Instellingen menu pagina."
 
-#: wppa_adminfunctions.php:55
+#: wppa_adminfunctions.php:54
 msgid "Please REPLACE your customized WPPA_THEME.PHP file by the newly supplied one, or just remove it from your theme directory. You may modify it later if you wish. Your current customized version is NOT compatible with this version of the plugin software."
 msgstr "VERVANG a.u.b. uw gewijzigde WPPA_THEME.PHP door de nieuwe versie, of verwijder deze uit uw thema directory. U kunt later eventueel een gemodificeerde versie herplaatse. Uw huidige aangepaste versie is NIET compatibel met deze versie van de plugin software."
 
@@ -269,7 +269,7 @@ msgid "You can change all these settings later by clicking the \"Edit\" link in 
 msgstr "U kunt al deze instellingen later veranderen door op \"Bewerk\" te klikken in bovenstaande tabel."
 
 #: wppa_albumadmin.php:326
-#: wppa_functions.php:821
+#: wppa_functions.php:822
 msgid "Name"
 msgstr "Naam"
 
@@ -321,7 +321,7 @@ msgid "Get insertion Code"
 msgstr "Geef invoeg code"
 
 #: wppa_albumadmin.php:448
-#: wppa_functions.php:264
+#: wppa_functions.php:265
 #: wppa_settings.php:613
 #: wppa_settings.php:632
 #: wppa_widgetadmin.php:138
@@ -330,7 +330,7 @@ msgid "--- none ---"
 msgstr "--- geen ---"
 
 #: wppa_albumadmin.php:464
-#: wppa_functions.php:265
+#: wppa_functions.php:266
 msgid "--- separate ---"
 msgstr "--- afzonderlijk ---"
 
@@ -379,127 +379,127 @@ msgstr "--- willekeurig ---"
 msgid "No photos yet"
 msgstr "Nog geen foto's."
 
-#: wppa_functions.php:27
+#: wppa_functions.php:28
 #: wppa_upload.php:108
 msgid "There are"
 msgstr "Er zijn"
 
-#: wppa_functions.php:27
+#: wppa_functions.php:28
 msgid "photo albums. The last album added is"
 msgstr "foto albums. Het laatst toegevoegde album is"
 
-#: wppa_functions.php:31
+#: wppa_functions.php:32
 msgid ", a subalbum of"
 msgstr ", een sub-album van"
 
-#: wppa_functions.php:71
+#: wppa_functions.php:72
 msgid "Home"
 msgstr "Beginpagina"
 
-#: wppa_functions.php:106
-#: wppa_functions.php:1162
-#: wppa_functions.php:1532
+#: wppa_functions.php:107
+#: wppa_functions.php:1163
+#: wppa_functions.php:1533
 msgid "Slideshow"
 msgstr "Diavoorstelling"
 
-#: wppa_functions.php:112
+#: wppa_functions.php:113
 msgid "Searchstring:"
 msgstr "Zoeken naar:"
 
-#: wppa_functions.php:820
+#: wppa_functions.php:821
 msgid "Order #"
 msgstr "Volgorde nummer:"
 
-#: wppa_functions.php:822
+#: wppa_functions.php:823
 #: wppa_widgetadmin.php:107
 msgid "Random"
 msgstr "Willekeurig"
 
-#: wppa_functions.php:902
-#: wppa_functions.php:906
+#: wppa_functions.php:903
+#: wppa_functions.php:907
 msgid "Please supply a numeric value greater than or equal to"
 msgstr "Geef a.u.b. een getal op groter of gelijk aan"
 
-#: wppa_functions.php:902
-#: wppa_functions.php:906
+#: wppa_functions.php:903
+#: wppa_functions.php:907
 msgid "for"
 msgstr "voor"
 
-#: wppa_functions.php:906
+#: wppa_functions.php:907
 msgid "and less than or equal to"
 msgstr "en kleiner of gelijk aan"
 
-#: wppa_functions.php:1097
+#: wppa_functions.php:1098
 msgid "Previous page"
 msgstr "Vorige pagina"
 
-#: wppa_functions.php:1100
+#: wppa_functions.php:1101
 msgid "Next page"
 msgstr "Volgende pagina"
 
-#: wppa_functions.php:1163
+#: wppa_functions.php:1164
 msgid "Photo"
 msgstr "Foto"
 
-#: wppa_functions.php:1164
+#: wppa_functions.php:1165
 msgid "of"
 msgstr "van"
 
-#: wppa_functions.php:1165
+#: wppa_functions.php:1166
 msgid "Previous photo"
 msgstr "Vorige foto"
 
-#: wppa_functions.php:1166
+#: wppa_functions.php:1167
 msgid "Next photo"
 msgstr "Volgende foto"
 
-#: wppa_functions.php:1462
+#: wppa_functions.php:1463
 #: wppa_widget.php:85
 msgid "Link to"
 msgstr "Link naar"
 
-#: wppa_functions.php:1466
+#: wppa_functions.php:1467
 msgid "Page is not available."
 msgstr "Pagina is niet beschikbaar."
 
-#: wppa_functions.php:1474
+#: wppa_functions.php:1475
 msgid "View the cover photo"
 msgstr "Bekijk de omslagfoto"
 
-#: wppa_functions.php:1475
+#: wppa_functions.php:1476
 msgid "s"
 msgstr "'s"
 
-#: wppa_functions.php:1478
-#: wppa_functions.php:1539
+#: wppa_functions.php:1479
+#: wppa_functions.php:1540
 msgid "View the album"
 msgstr "Bekijk het album"
 
-#: wppa_functions.php:1540
+#: wppa_functions.php:1541
 msgid "View"
 msgstr "Bekijk"
 
-#: wppa_functions.php:1542
+#: wppa_functions.php:1543
 msgid "albums"
 msgstr "albums"
 
-#: wppa_functions.php:1545
+#: wppa_functions.php:1546
 msgid "and"
 msgstr "en"
 
-#: wppa_functions.php:1549
+#: wppa_functions.php:1550
 msgid "photos"
 msgstr "foto's"
 
-#: wppa_functions.php:1656
+#: wppa_functions.php:1657
 msgid "Slower"
 msgstr "Trager"
 
-#: wppa_functions.php:1657
+#: wppa_functions.php:1658
 msgid "Start"
 msgstr "Start"
 
-#: wppa_functions.php:1658
+#: wppa_functions.php:1659
 msgid "Faster"
 msgstr "Sneller"
 
@@ -1775,93 +1775,97 @@ msgstr "Importeer"
 msgid "There are no photos in depot:"
 msgstr "Er zijn geen foto's in depot:"
 
-#: wppa_upload.php:195
-#: wppa_upload.php:232
+#: wppa_upload.php:196
+#: wppa_upload.php:233
 msgid "Error inserting photo"
 msgstr "Fout bij het invoegen van foto"
 
-#: wppa_upload.php:202
+#: wppa_upload.php:203
 msgid "Photos Uploaded in album nr"
 msgstr "Foto's ge-upload naar album nr"
 
-#: wppa_upload.php:222
+#: wppa_upload.php:223
 msgid "Processing files, please wait..."
 msgstr "Bestanden verwerken, even geduld a.u.b...."
 
-#: wppa_upload.php:222
+#: wppa_upload.php:223
 msgid "If the line of dots stops growing or you browser reports Ready, your server has given up. In that case: try again"
 msgstr "Wanneer de lijn puntjes niet meer langer wordt of de browser gereed is, dan heeft de server het opgegeven. In dat geval: probeer opnieuw"
 
-#: wppa_upload.php:222
+#: wppa_upload.php:223
 msgid "here."
 msgstr "hier."
 
-#: wppa_upload.php:238
+#: wppa_upload.php:239
 msgid "No files to import."
 msgstr "Geen bestanden om te importeren."
 
-#: wppa_upload.php:241
+#: wppa_upload.php:242
 msgid "files imported to album number"
 msgstr "bestanden geïmporteerd naar album nummer"
 
-#: wppa_upload.php:246
+#: wppa_upload.php:247
 msgid "No known valid album id to import photos to."
 msgstr "Geen geldige album id om foto's in te importeren."
 
-#: wppa_upload.php:260
+#: wppa_upload.php:262
 msgid "Although the photos are resized during the upload/import process, you may encounter 'Out of memory'errors."
 msgstr "Aloewel de foto's verkleind worden tijdens het upload proces kunt u 'Out of memory' foutmeldingen krijgen."
 
-#: wppa_upload.php:260
+#: wppa_upload.php:262
 msgid "In that case: make sure you set the memory limit to 64M and make sure your hosting provider allows you the use of 64 Mb."
 msgstr "In dat geval: zet de geheugenlimiet op 64M en zorg ervoor dat uw hosting provider u toestaat om 64 MB te gebruiken."
 
-#: wppa_upload.php:263
-msgid "WARNING You are uploading very large photos, this may result in server problems and excessive download times for your website visitors."
-msgstr "WAARSCHUWING U bent zeer grote foto's aan het uploaden, dit kan tot problemen met de server en tot lange downloadtijden voor uw bezoekers leiden!"
+#: wppa_upload.php:265
+msgid "WARNING: You are uploading very large photos, this may result in server problems and excessive download times for your website visitors."
+msgstr "WAARSCHUWING: U bent zeer grote foto's aan het uploaden, dit kan tot problemen met de server en tot lange downloadtijden voor uw bezoekers leiden!"
 
-#: wppa_upload.php:263
+#: wppa_upload.php:265
 msgid "Check the 'Resize on upload' checkbox, and/or resize the photos before uploading. The recommended size is: not larger than 1024 x 768 pixels (up to approx. 250 kB)."
 msgstr "Vink de 'Tijdens upload verkleinen' checkbox aan en/of verklein de foto's alvorens ze te uploaden. De aanbevolen grootte is niet meer dan 1024 x 768 pixels (tot ca. 250 kB)."
 
-#: wppa_upload.php:324
+#: wppa_upload.php:270
+msgid "WARNING: You are uploading photos that are too small. Photos must be larger than the thumbnail size and larger than the coverphotosize."
+msgstr "WAARSCHUWING: U bent te kleine goto's aan het uploaden. Foto's moeten groter zijn dan de miniatuurgrootte en groter dan de omslagfoto's."
+
+#: wppa_upload.php:332
 msgid "Checking database, please wait..."
 msgstr "Database kontroleren, even geduld a.u.b...."
 
-#: wppa_upload.php:347
+#: wppa_upload.php:355
 msgid "Trying to fix "
 msgstr "Probeer te repareren"
 
-#: wppa_upload.php:378
+#: wppa_upload.php:386
 msgid "Fixed extension for "
 msgstr "Bestandsextensie gerepareerd voor"
 
-#: wppa_upload.php:381
+#: wppa_upload.php:389
 msgid "Unable to fix extension for "
 msgstr "Kan de bestandsextensie niet repareren voor"
 
-#: wppa_upload.php:385
+#: wppa_upload.php:393
 msgid "Unknown extension for photo "
 msgstr "Onbekende bestandsextensie voor foto"
 
-#: wppa_upload.php:385
+#: wppa_upload.php:393
 msgid "Please change the name to something with the proper extension and try again!"
 msgstr "Verander a.u.b. de naam naar iets met de juiste bestandsextensie en probeer opnieuw!"
 
-#: wppa_upload.php:391
-#: wppa_upload.php:394
+#: wppa_upload.php:399
+#: wppa_upload.php:402
 msgid "Database fixed."
 msgstr "Database hersteld."
 
-#: wppa_upload.php:391
-msgid "invalid entries remooved:"
+#: wppa_upload.php:399
+msgid "invalid entries removed:"
 msgstr "ongeldige items verwijderd:"
 
-#: wppa_upload.php:394
+#: wppa_upload.php:402
 msgid "missing file extensions recovered."
 msgstr "ontbrekende bestandsextensies gereconstrueerd."
 
-#: wppa_upload.php:397
+#: wppa_upload.php:405
 msgid "Done. No errors found. Have a nice upload!"
 msgstr "Klaar. Geen fouten gevonden. Veel plezier met uploaden!"
 
@@ -1977,6 +1981,10 @@ msgstr "Foto Naam"
 #: wppa_widgetadmin.php:161
 msgid "Select the content of the subtitle."
 msgstr "Selecteer de inhoud van de ondertitel."
+
+#: extra/twentyten/photo-album-page.php:30
+msgid "Pages:"
+msgstr "Pagina's:"
 
 #~ msgid "or have a feature request, please contact me via my"
 #~ msgstr ""
