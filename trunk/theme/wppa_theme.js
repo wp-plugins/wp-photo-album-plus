@@ -1,97 +1,16 @@
 // Theme variables and functions
-// This is wppa_theme.js version 2.4.0
+// This is wppa_theme.js version 2.4.2
 //
 
-// Style variables
-
-var wppa_bgcolor_even = '';
-var wppa_bgcolor_alt = '';
-var wppa_bgcolor_nav = '';
 var wppa_bgcolor_img = '';
-var wppa_bcolor_even = '';
-var wppa_bcolor_alt = '';
-var wppa_bcolor_nav = '';
-var wppa_bwidth = '';
-var wppa_bradius = '';
-var wppa_fontfamily_title = '';
-var wppa_fontsize_title = '';
-var wppa_fontfamily_fulldesc = '';
-var wppa_fontsize_fulldesc = '';
-var wppa_fontfamily_fulltitle = '';
-var wppa_fontsize_fulltitle = '';
-var wppa_fontfamily_nav = '';
-var wppa_fontsize_nav = '';
-var wppa_fontfamily_box = '';
-var wppa_fontsize_box = '';
-var wppa_black = '';
-var wppa_widget_padding = 0;
 var wppa_timer = new Array();
 var wppa_saved_id = new Array();
+var wppa_popup_nolink = false;
 
 // Adapt style
-jQuery(document).ready(function(){
-var temp;
-	// Background colors
-	if (wppa_bgcolor_even != '') jQuery(".wppa-even").css('background-color', wppa_bgcolor_even);
-	if (wppa_bgcolor_alt != '') jQuery(".wppa-alt").css('background-color', wppa_bgcolor_alt);
-	if (wppa_bgcolor_nav != '') jQuery(".wppa-nav").css('background-color', wppa_bgcolor_nav);
-	if (wppa_bgcolor_img != '') jQuery(".wppa-img").css('background-color', wppa_bgcolor_img);
-	// Border yes/no
-	if (wppa_bwidth != '') {
-		temp = parseInt(wppa_bwidth);
-		if (temp > 0) {
-			jQuery(".wppa-box").css({'border-style': 'solid', 'border-width': temp+'px'});
-			jQuery(".wppa-mini-box").css({'border-style': 'solid', 'border-width': parseInt((temp + 2) / 3)+'px'});
-		}
-	}
-	// Border color
-	if (wppa_bcolor_even != '') jQuery(".wppa-even").css('border-color', wppa_bcolor_even);
-	if (wppa_bcolor_alt != '') jQuery(".wppa-alt").css('border-color', wppa_bcolor_alt);
-	if (wppa_bcolor_nav != '') jQuery(".wppa-nav").css('border-color', wppa_bcolor_nav);
-	// Border radius
-	if (wppa_bradius != '') {
-		temp = wppa_bradius+'px';
-		jQuery(".wppa-box").css('-moz-border-radius', temp);
-		jQuery(".wppa-box").css('-khtml-border-radius', temp);
-		jQuery(".wppa-box").css('-webkit-border-radius', temp);
-		jQuery(".wppa-box").css('border-radius', temp);
-		temp = parseInt((parseInt(wppa_bradius) + 2) / 3)+'px';
-		jQuery(".wppa-mini-box").css('-moz-border-radius', temp);
-		jQuery(".wppa-mini-box").css('-khtml-border-radius', temp);
-		jQuery(".wppa-mini-box").css('-webkit-border-radius', temp);
-		jQuery(".wppa-mini-box").css('border-radius', temp);
-	}
-	// Fonts
-	if (wppa_fontfamily_title != '') jQuery(".wppa-title").css('font-family', wppa_fontfamily_title);
-	if (wppa_fontsize_title != '') {
-		temp = parseInt(wppa_fontsize_title);
-		jQuery(".wppa-title").css('font-size', temp+'px');
-	}
-	if (wppa_fontfamily_fulldesc != '') jQuery(".wppa-fulldesc").css('font-family', wppa_fontfamily_fulldesc);
-	if (wppa_fontsize_fulldesc != '') {
-		temp = parseInt(wppa_fontsize_fulldesc);
-		jQuery(".wppa-fulldesc").css('font-size', temp+'px');
-	}
-	if (wppa_fontfamily_fulltitle != '') jQuery(".wppa-fulltitle").css('font-family', wppa_fontfamily_fulltitle);
-	if (wppa_fontsize_fulltitle != '') {
-		temp = parseInt(wppa_fontsize_fulltitle);
-		jQuery(".wppa-fulltitle").css('font-size', temp+'px');
-	}
-	if (wppa_fontfamily_nav != '') jQuery(".wppa-nav-text").css('font-family', wppa_fontfamily_nav);
-	if (wppa_fontsize_nav != '') {
-		temp = parseInt(wppa_fontsize_nav);
-		jQuery(".wppa-nav-text").css('font-size', temp+'px');
-	}
-	if (wppa_fontfamily_box != '') jQuery(".wppa-box-text").css('font-family', wppa_fontfamily_box);
-	if (wppa_fontsize_box != '') {
-		temp = parseInt(wppa_fontsize_box);
-		jQuery(".wppa-box-text").css('font-size', temp+'px');
-	}
-	if (wppa_black != '') jQuery(".wppa-black").css('color', wppa_black);
-	
-	jQuery(".wppa-widget").css('padding-left', wppa_widget_padding);
-	jQuery(".wppa-widget").css('padding-top', wppa_widget_padding);
-});
+//jQuery(document).ready(function(){
+//
+//});
 
 // Popup of thumbnail images 
 function wppa_popup(mocc, elm, id) {
@@ -108,8 +27,14 @@ function wppa_popup(mocc, elm, id) {
 	clearTimeout(wppa_timer[mocc]);
 	
 	// Give this' occurrances popup its content (div eromheen weggehald)
-	if (document.getElementById('a-'+id+'-'+mocc))
-		jQuery('#wppa-popup-'+mocc).html('<div class="wppa-popup" style="background-color:'+wppa_bgcolor_img+'; text-align:center;"><a id="wppa-a" href="'+document.getElementById('a-'+id+'-'+mocc).href+'"><img id="wppa-img-'+mocc+'" src="'+elm.src+'" title="" /></a><div id="wppa-name-'+mocc+'" style="display:none; padding:2px;" class="wppa_pu_info">'+elm.alt+'</div><div id="wppa-desc-'+mocc+'" style="clear:both; display:none;" class="wppa_pu_info">'+elm.title+'</div></div>');
+	if (document.getElementById('a-'+id+'-'+mocc)) {
+		if (wppa_popup_nolink) {
+			jQuery('#wppa-popup-'+mocc).html('<div class="wppa-popup" style="background-color:'+wppa_bgcolor_img+'; text-align:center;"><a id="wppa-a"><img id="wppa-img-'+mocc+'" src="'+elm.src+'" title="" /></a><div id="wppa-name-'+mocc+'" style="display:none; padding:2px;" class="wppa_pu_info">'+elm.alt+'</div><div id="wppa-desc-'+mocc+'" style="clear:both; display:none;" class="wppa_pu_info">'+elm.title+'</div></div>');
+		}
+		else {
+			jQuery('#wppa-popup-'+mocc).html('<div class="wppa-popup" style="background-color:'+wppa_bgcolor_img+'; text-align:center;"><a id="wppa-a" href="'+document.getElementById('a-'+id+'-'+mocc).href+'"><img id="wppa-img-'+mocc+'" src="'+elm.src+'" title="" /></a><div id="wppa-name-'+mocc+'" style="display:none; padding:2px;" class="wppa_pu_info">'+elm.alt+'</div><div id="wppa-desc-'+mocc+'" style="clear:both; display:none;" class="wppa_pu_info">'+elm.title+'</div></div>');
+		}
+	}
 	// Find handle to the popup image 
 	puImg = document.getElementById('wppa-img-'+mocc);
 	// Set width of text fields to width of a landscape image	

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all optins
-* Version 2.4.2
+* Version 2.4.1
 */
 
 function wppa_page_options() {
@@ -61,10 +61,8 @@ function wppa_page_options() {
 		
 		if (isset($_POST['wppa-thumbtype'])) update_option('wppa_thumbtype', $_POST['wppa-thumbtype']);
 		
-		if (isset($_POST['wppa-thumb-text-name'])) update_option('wppa_thumb_text_name', 'yes');
-		else update_option('wppa_thumb_text_name', 'no');
-		if (isset($_POST['wppa-thumb-text-desc'])) update_option('wppa_thumb_text_desc', 'yes');
-		else update_option('wppa_thumb_text_desc', 'no');
+		if (isset($_POST['wppa-thumb-text'])) update_option('wppa_thumb_text', 'yes');
+		else update_option('wppa_thumb_text', 'no');
 		
 		update_option('wppa_valign', $_POST['wppa-valign']);
 		update_option('wppa_fullvalign', $_POST['wppa-fullvalign']);
@@ -133,8 +131,6 @@ function wppa_page_options() {
 		
 		if (isset($_POST['wppa-filmstrip'])) update_option('wppa_filmstrip', 'yes');
 		else update_option('wppa_filmstrip', 'no');
-		if (isset($_POST['wppa-film-show-glue'])) update_option('wppa_film_show_glue', 'yes');
-		else update_option('wppa_film_show_glue', 'no');
 		
 		if (isset($_POST['wppa-use-thumb-opacity'])) update_option('wppa_use_thumb_opacity', 'yes');
 		else update_option('wppa_use_thumb_opacity', 'no');
@@ -150,9 +146,6 @@ function wppa_page_options() {
 		
 		if (isset($_POST['wppa-use-thumb-popup'])) update_option('wppa_use_thumb_popup', 'yes');
 		else update_option('wppa_use_thumb_popup', 'no');
-		
-		if (isset($_POST['wppa-no-thumb-links'])) update_option('wppa_no_thumb_links', 'yes');
-		else update_option('wppa_no_thumb_links', 'no');
 		
 		if (isset($_POST['wppa-use-cover-opacity'])) update_option('wppa_use_cover_opacity', 'yes');
 		else update_option('wppa_use_cover_opacity', 'no');
@@ -388,9 +381,7 @@ function wppa_page_options() {
 							<?php _e('Start/stop slideshow bar:', 'wppa'); ?><input type="checkbox" name="wppa-show-startstop-navigation" id="wppa-show-startstop-navigation" <?php if (get_option('wppa_show_startstop_navigation', 'yes') == 'yes') echo('checked="checked"'); ?> />
 							<?php echo(', '); _e('Browse photos bar:', 'wppa'); ?><input type="checkbox" name="wppa-show-browse-navigation"id="wppa-show-browse-navigation" <?php if (get_option('wppa_show_browse_navigation', 'yes') == 'yes') echo('checked="checked"'); ?> />
 							<?php echo(', '); _e('Filmstrip navigator:', 'wppa'); ?><input type="checkbox" name="wppa-filmstrip" id="wppa-filmstrip" <?php if (get_option('wppa_filmstrip', 'no') == 'yes') echo('checked="checked"'); ?> />
-							<?php echo(', '); _e('Show seam between end and start of film:', 'wppa'); ?><input type="checkbox" name="wppa-film-show-glue" id="wppa-film-show-glue" <?php if (get_option('wppa_film_show_glue', 'yes') == 'yes') echo('checked="checked"'); ?> />
 							<span class="description"><br/><?php _e('If checked: display navigation bars and/or a filmstrip over and under the full-size images and slideshow.', 'wppa'); ?></span>
-							<span class="description"><br/><?php _e('Additionaly indicate if you want the wrap-around point to be visible in the filmstrip.', 'wppa'); ?></span>
 						</td>
 					</tr>
 					<tr valign="top">
@@ -459,7 +450,7 @@ function wppa_page_options() {
 					<tr><th><h3><?php _e('Thumbnails:', 'wppa'); ?></h3></th></tr>
 					<tr valign="top">
 						<th scope="row">
-							<label ><?php _e('Photocount threshold:', 'wppa'); ?></label>
+							<label ><?php _e('Photocount treshold:', 'wppa'); ?></label>
 						</th>
 						<td>
 							<input type="text" name="wppa-min-thumbs" id="wppa-min-thumbs" value="<?php echo(get_option('wppa_min_thumbs', '1')) ?>" style="width: 50px;" />
@@ -555,8 +546,7 @@ function wppa_page_options() {
 							<label><?php _e('Thumbnail text:', 'wppa'); ?></label>
 						</th>
 						<td>
-							<?php _e('Name:', 'wppa'); ?><input type="checkbox" name="wppa-thumb-text-name" id="wppa-thumb-text-name" <?php if (get_option('wppa_thumb_text_name', get_option('wppa_thumb_text', 'no')) == 'yes') echo('checked="checked"') ?> />,&nbsp;
-							<?php _e('Description:', 'wppa'); ?><input type="checkbox" name="wppa-thumb-text-desc" id="wppa-thumb-text-desc" <?php if (get_option('wppa_thumb_text_desc', get_option('wppa_thumb_text', 'no')) == 'yes') echo('checked="checked"') ?> />.
+							<input type="checkbox" name="wppa-thumb-text" id="wppa-thumb-text" <?php if (get_option('wppa_thumb_text', 'no') == 'yes') echo('checked="checked"') ?> />
 							<span class="description"><br/><?php _e('Display name and description under thumbnails.', 'wppa') ?></span>
 						</td>
 					</tr>
@@ -567,15 +557,6 @@ function wppa_page_options() {
 						<td>
 							<input type="text" name="wppa-thumb-page-size" id="wppa-thumb-page-size" value="<?php echo(get_option('wppa_thumb_page_size', '0')) ?>" style="width: 50px;" />
 							<span class="description"><br/><?php _e('Enter the maximum number of thumbnail images per page. A value of 0 indicates no pagination.', 'wppa') ?></span>
-						</td>
-					</tr>
-					<tr valign="top">
-						<th scope="row">
-							<label><?php _e('No links:', 'wppa'); ?></label>
-						</th>
-						<td>
-							<input type="checkbox" name="wppa-no-thumb-links" id="wppa-no-thumb-links" <?php if (get_option('wppa_no_thumb_links', 'no') == 'yes') echo('checked="checked"'); ?> />
-							<span class="description"><br/><?php _e('Check this if you do NOT want to link the thumbnails to fullsize images.', 'wppa'); ?></span>
 						</td>
 					</tr>
 					<tr><th><hr/></th><td><hr/></td></tr>
@@ -692,7 +673,7 @@ function wppa_page_options() {
 						</th>
 						<td>
 							<?php _e('Background Color:', 'wppa') ?> <input type="text" name="wppa-bgcolor-alt" id="wppa-bgcolor-alt" value="<?php echo(get_option('wppa_bgcolor_alt', '#d5eabf')) ?>" style="width: 100px;" />
-							<?php _e('Border Color:', 'wppa') ?> <input type="text" name="wppa-bcolor-alt" id="wppa-bcolor-alt" value="<?php echo(get_option('wppa_bcolor_alt', '#d5eabf')) ?>" style="width: 100px;" />
+							<?php _e('Border Color:', 'wppa') ?> <input type="text" name="wppa-bcolor-alt" id="wppa-bcolor-alt" value="<?php echo(get_option('wppa_bcolor_alt', '#e6f2d9')) ?>" style="width: 100px;" />
 							<span class="description"><br/><?php _e('Enter valid CSS colors for odd numbered backgrounds and borders of album covers and thumbnail displays \'As covers\'.', 'wppa'); ?> <b>(.wppa-alt)</b></span>						
 						</td>
 					</tr>
@@ -786,7 +767,7 @@ function wppa_page_options() {
 						</td>
 					</tr>
 					<tr><th><hr/></th><td><hr/></td></tr>
-					<tr><th><h3><?php _e('Miscellaneous:', 'wppa'); ?></h3></th></tr>
+					<tr><th><h3><?php _e('Miscelanious:', 'wppa'); ?></h3></th></tr>
 					<tr valign="top">
 						<th scope="row">
 							<label ><?php _e('Search page:', 'wppa'); ?></label>

@@ -57,7 +57,7 @@ function wppa_admin() {
 			$albuminfo = $wpdb->get_row($wpdb->prepare('SELECT * FROM `' . ALBUM_TABLE . '` WHERE `id` = %d', $_GET['edit_id']), 'ARRAY_A');
 	?>				
 			<div class="wrap">
-				<h2><?php _e('Edit Album Information', 'wppa'); ?></h2>
+				<h2><?php _e('Edit Ablum Information', 'wppa'); ?></h2>
 				<p><?php _e('Album number:', 'wppa'); echo(' ' . $_GET['edit_id'] . '.'); ?></p>
 				<form action="<?php echo(get_option('siteurl')) ?>/wp-admin/admin.php?page=<?php echo(WPPA_PLUGIN_PATH) ?>/wppa.php&amp;tab=edit&amp;edit_id=<?php echo($_GET['edit_id']) ?>" method="post">
 				<?php wppa_nonce_field('$wppa_nonce', WPPA_NONCE); ?>

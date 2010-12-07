@@ -8,13 +8,17 @@
 /*
 /* You may always look into a newer version of this file to see what new classes and id's come with an upgrade
 /*
-/* This is version 2.4.2
+/* This is version 2.4.0
 */
 
 /* Navigation */
 .prev {
+	float: left;
+    text-align: left;
 }
 .next {
+	float: right;
+    text-align: right;
 }
 .speed0, .startstop, .speed1, .prev-arrow, .next-arrow, .arrow {
 	cursor: pointer;
