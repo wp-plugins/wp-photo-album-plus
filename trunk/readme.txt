@@ -100,6 +100,7 @@ WordPress developers Codex page and more specifically at the section about theme
 == Changelog ==
 
 = 2.4.2 =
+
 * You can set the display of name and description under a thumbnail now independently.
 * Fixed typographic issue on album cover display: View .. albumsand .. photos
 * Dramatically improvement of rss feeds to mail programs
