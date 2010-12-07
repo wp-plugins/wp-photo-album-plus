@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the widget
-* Version 2.4.0
+* Version 2.4.2
 */
 
 add_action('plugins_loaded', 'init_wppa_widget');
@@ -73,7 +73,7 @@ function show_wppa_widget($args) {
 	}
 	
 	// Make the HTML for current picture
-	$widget_content = '<div class="wppa-widget">';
+	$widget_content = '<div class="wppa-widget" style="'.__wcs('wppa-widget').'">';
 	if ($image) {
 		// make image url
 		$imgurl = get_bloginfo('wpurl') . '/wp-content/uploads/wppa/' . $image['id'] . '.' . $image['ext'];
@@ -116,5 +116,5 @@ function show_wppa_widget($args) {
 	// Display the widget
 	echo $before_widget . $before_title . $widget_title . $after_title . $widget_content . $after_widget;
 	// Set padding
-	wppa_set_runtimestyle();
+//	wppa_set_runtimestyle();
 }

@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 * gp admin functions
-* version 2.3.0
+* version 2.4.2
 */
 
 // update all thumbs 
@@ -146,3 +146,91 @@ function wppa_set_caps() {
 		}
 	}
 }
+
+// Moved here from wppa_functions.php:
+
+// The following routines belong perhaps in wppa_adminfunctions.php
+// set last album 
+function wppa_set_last_album($id = '') {
+    global $albumid;
+    
+    if (is_numeric($id)) $albumid = $id; else $albumid = '';
+    update_option('wppa_last_album_used', $albumid);
+}
+
+// get last album
+function wppa_get_last_album() {
+    global $albumid;
+    
+    if (is_numeric($albumid)) $result = $albumid;
+    else $result = get_option('wppa_last_album_used');
+    if (!is_numeric($result)) $result = '';
+    else $albumid = $result;
+
+	return $result; 
+}
+
+// display order options
+function wppa_order_options($order, $nil) {
+    if ($nil != '') { ?>
+        <option value="0"<?php if ($order == "" || $order == "0") echo (' selected="selected"'); ?>><?php echo($nil); ?></option>
+<?php }
+?>
+    <option value="1"<?php if ($order == "1") echo(' selected="selected"'); ?>><?php _e('Order #', 'wppa'); ?></option>
+    <option value="2"<?php if ($order == "2") echo(' selected="selected"'); ?>><?php _e('Name', 'wppa'); ?></option>
+    <option value="3"<?php if ($order == "3") echo(' selected="selected"'); ?>><?php _e('Random', 'wppa'); ?></option>  
+<?php
+}
+
+// These also in admin?
+// display usefull message
+function wppa_update_message($msg) {
+?>
+    <div id="message" class="updated fade"><p><strong><?php echo($msg); ?></strong></p></div>
+<?php
+}
+
+// display error message
+function wppa_error_message($msg) {
+?>
+	<div id="error" class="error"><p><strong><?php echo($msg); ?></strong></p></div>
+<?php
+}
+// display warning message
+function wppa_warning_message($msg) {
+?>
+	<div id="warning" class="updated"><p><strong><?php echo($msg); ?></strong></p></div>
+<?php
+}
+// display ok message
+function wppa_ok_message($msg) {
+?>
+	<div id="warning" class="updated" style="background-color: #e0ffe0; border-color: #55ee55;" ><p><strong><?php echo($msg); ?></strong></p></div>
+<?php
+}
+
+function wppa_check_numeric($value, $minval, $target, $maxval = '') {
+	if ($maxval == '') {
+		if (is_numeric($value) && $value >= $minval) return true;
+		wppa_error_message(__('Please supply a numeric value greater than or equal to', 'wppa') . ' ' . $minval . ' ' . __('for', 'wppa') . ' ' . $target);
+	}
+	else {
+		if (is_numeric($value) && $value >= $minval && $value <= $maxval) return true;
+		wppa_error_message(__('Please supply a numeric value greater than or equal to', 'wppa') . ' ' . $minval . ' ' . __('and less than or equal to', 'wppa') . ' ' . $maxval . ' ' . __('for', 'wppa') . ' ' . $target);
+	}
+	return false;
+}
+
+function wppa_get_minisize() {
+	$result = '100';
+	
+	$tmp = get_option('wppa_thumbsize', 'nil');
+	if (is_numeric($tmp) && $tmp > $result) $result = $tmp;
+	$tmp = get_option('wppa_smallsize', 'nil');
+	if (is_numeric($tmp) && $tmp > $result) $result = $tmp;
+	$result = ceil($result / 25) * 25;
+	return $result;
+}
+
+// End in admin?
+

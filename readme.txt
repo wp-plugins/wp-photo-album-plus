@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, gallery, slideshow, sidebar widget, photo widget, phtoblog
-Version: 2.4.1
+Version: 2.4.2
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -98,6 +98,14 @@ wppa-[your languagecode].po and wppa-[your languagecode].mo.
 WordPress developers Codex page and more specifically at the section about themes and plugins.
 
 == Changelog ==
+
+= 2.4.2 =
+* You can set the display of name and description under a thumbnail now independently.
+* Fixed typographic issue on album cover display: View .. albumsand .. photos
+* Dramatically improvement of rss feeds to mail programs
+* You can switch off the links from thumbnails to fullsize images
+* Performance improvements at client side
+* More detailed hard-coded style information generated to cope with themes that exhibit the 'unwanted tt-tag phenomenon' as described in this support-topic: http://wordpress.org/support/topic/unwanted-tt-tags?replies=1
 
 = 2.4.1 =
 

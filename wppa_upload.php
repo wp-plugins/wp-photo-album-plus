@@ -108,7 +108,7 @@ function wppa_page_import() {
 			<p><?php _e('There are', 'wppa'); echo(' '.$photocount.' '); _e('photos in the depot.', 'wppa'); if (get_option('wppa_resize_on_upload', 'no') == 'yes') { echo(' '); _e('Photos will be downsized during import.', 'wppa'); } ?></p>
 				<label for="wppa-album"><?php _e('Import photos to album:', 'wppa'); ?> </label>
 				<select name="wppa-album" id="wppa-album"><?php echo(wppa_album_select()); ?></select>
-				<label for="del-after"><?php _e('Delete after successfull import:', 'wppa'); ?> </label>
+				<label for="del-after"><?php _e('Delete after successful import:', 'wppa'); ?> </label>
 				<input type="checkbox" name="del-after" checked="checked" />
 			</p>
 			<p>
