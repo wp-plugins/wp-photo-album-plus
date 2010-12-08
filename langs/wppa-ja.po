@@ -5,10 +5,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: WP Photo Album Plus 2.4.0\n"
+"Project-Id-Version: WP Photo Album Plus 2.4.2\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/wp-photo-album-plus\n"
 "POT-Creation-Date: 2010-08-22 09:46+0000\n"
-"PO-Revision-Date: 2010-11-16 22:46+0900\n"
+"PO-Revision-Date: 2010-12-08 14:34+0900\n"
 "Last-Translator: BNG NET <webmaster@bng.net>\n"
 "Language-Team: BNG NET <webmaster@bng.net>\n"
 "MIME-Version: 1.0\n"
@@ -18,6 +18,46 @@ msgstr ""
 "X-Poedit-Country: JAPAN\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-Bookmarks: -1,157,-1,-1,-1,-1,-1,-1,-1,-1\n"
+
+#: Added on 2010/11/16
+msgid "Edit Album Information"
+msgstr "アルバム情報の編集"
+
+#: Added on 2010/11/16
+msgid "--- no link at all ---"
+msgstr "--- リンクなし ---"
+
+#: Added on 2010/11/16
+msgid "Miscellaneous:"
+msgstr "その他:"
+
+#: Added on 2010/11/16
+msgid "Check this if you do NOT want to link the thumbnails to fullsize images."
+msgstr "サムネイルをフルサイズの画像へリンクしたく<b>ない</b>ときにチェックしてください。"
+
+#: Added on 2010/11/16
+msgid "No links:"
+msgstr "リンクなし:"
+
+#: Added on 2010/11/16
+msgid "Photocount threshold:"
+msgstr "フォトカウントしきい値"
+
+#: Added on 2010/11/16
+msgid "very slow (2 s.)"
+msgstr "非常に遅い(2 s.)"
+
+#: Added on 2010/11/16
+msgid "short (1.5 s.)"
+msgstr "短い(1.5 s.)"
+
+#: Added on 2010/11/16
+msgid "Additionaly indicate if you want the wrap-around point to be visible in the filmstrip."
+msgstr "また、フィルムストリップの周りにあるラップアラウンドを表示するかどうかを指定します。"
+
+#: Added on 2010/11/16
+msgid "Show seam between end and start of film:"
+msgstr "フィルムの最初と最後の間につなぎ目を表示する"
 
 #: Added on 2010/11/16
 msgid "Indicate the placement position of the coverphoto you wish."
