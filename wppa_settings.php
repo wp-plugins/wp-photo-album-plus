@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all optins
-* Version 2.4.2
+* Version 2.4.3
 */
 
 function wppa_page_options() {
@@ -82,6 +82,12 @@ function wppa_page_options() {
 			$options_error = true;
 		}
 		
+		if (wppa_check_numeric($_POST['wppa-maxheight'], '100', __('Max height.'))) {
+			update_option('wppa_maxheight', $_POST['wppa-maxheight']);
+		} else {
+			$options_error = true;
+		}
+
 		if ($_POST['wppa-colwidth'] == 'auto') update_option('wppa_colwidth', 'auto');
 		else {
 			if (wppa_check_numeric($_POST['wppa-colwidth'], '100', __('Column width.'))) {
@@ -179,6 +185,9 @@ function wppa_page_options() {
 		if (isset($_POST['wppa-show-home'])) update_option('wppa_show_home', 'yes');
 		else update_option('wppa_show_home', 'no');
 	
+		if (isset($_POST['wppa-owner-only'])) update_option('wppa_owner_only', 'yes');
+		else update_option('wppa_owner_only', 'no');
+		
 		if (isset($_POST['wppa-set-access-by'])) update_option('wppa_set_access_by', $_POST['wppa-set-access-by']);	
 
 		$need_update = false;
@@ -291,7 +300,8 @@ function wppa_page_options() {
 							<label ><?php _e('Full Size:', 'wppa'); ?></label>
 						</th>
 						<td>
-							<input type="text" name="wppa-fullsize" id="wppa-fullsize" onchange="wppaCheckFullHalign()" value="<?php echo(get_option('wppa_fullsize')) ?>" style="width: 50px;" /><?php _e('pixels wide or high, whichever is the largest.', 'wppa'); ?>
+							<input type="text" name="wppa-fullsize" id="wppa-fullsize" onchange="wppaCheckFullHalign()" value="<?php echo(get_option('wppa_fullsize', '640')) ?>" style="width: 50px;" /><?php _e('pixels wide,', 'wppa'); ?>
+							<input type="text" name="wppa-maxheight" id="wppa-maxheight" value="<?php echo(get_option('wppa_maxheight', get_option('wppa_fullsize', '640'))) ?>" style="width: 50px;"/><?php _e('pixels high.', 'wppa'); ?>
 							<span class="description"><br/><?php _e('Enter the largest size in pixels as how you want your photos to be displayed.', 'wppa');
 								echo(' '); _e('This is usually the same as the Column Width, but it may differ.', 'wppa');  ?>
 							</span>
@@ -344,14 +354,14 @@ function wppa_page_options() {
 						<td>
 							<?php $valign = get_option('wppa_fullvalign', 'default'); ?>
 							<select name="wppa-fullvalign" id="wppa-fullvalign" onchange="wppaCheckFullHalign()">
-								<option value="default" <?php if ($valign == 'default') echo(' selected '); ?>><?php _e('--- default ---', 'wppa'); ?></option>
+								<option value="default" <?php if ($valign == 'default') echo(' selected '); ?>><?php _e('--- none ---', 'wppa'); ?></option>
 								<option value="top" <?php if ($valign == 'top') echo(' selected '); ?>><?php _e('top', 'wppa'); ?></option>
 								<option value="center" <?php if ($valign == 'center') echo(' selected '); ?>><?php _e('center', 'wppa'); ?></option>
 								<option value="bottom" <?php if ($valign == 'bottom') echo(' selected '); ?>><?php _e('bottom', 'wppa'); ?></option>
 								<option value="fit" <?php if ($valign == 'fit') echo(' selected '); ?>><?php _e('fit', 'wppa'); ?></option>	
 							</select>
 							<span class="description"><br/><?php _e('Specify the vertical alignment of fullsize images.', 'wppa'); 
-								echo(' '); _e('If you select --- default ---, the photos will not be centered horizontally either.', 'wppa'); ?>
+								echo(' '); _e('If you select --- none ---, the photos will not be centered horizontally either.', 'wppa'); ?>
 							</span>
 						</td>
 					</tr>
@@ -851,7 +861,19 @@ function wppa_page_options() {
 					<tr><th><h3><?php _e('Access settings:', 'wppa'); ?></h3></th></tr>
 					<tr valign="top">
 						<th scope="row">
-							<label ><?php _e('Explanation:', 'wppa'); ?></label>
+							<label ><?php _e('Album access:', 'wppa'); ?></label>
+						</th>
+						<td>
+							<input type="checkbox" name="wppa-owner-only" <?php if (get_option('wppa_owner_only', 'no') == 'yes') echo('checked="checked"');?> />
+							<?php _e('Limit album access to album owners only.', 'wppa'); ?>
+							<span class="description"><br/><?php _e('If checked, users who can edit albums and upload/import photos can do that with their own albums only.', 'wppa'); ?>&nbsp;
+							<?php _e('Users can give their albums to another user. Administrators can change ownership and access all albums always.', 'wppa'); ?>
+							</span>
+						</td>
+					</tr>
+					<tr valign="top">
+						<th scope="row">
+							<label ><?php _e('Admin pages access:', 'wppa'); ?></label>
 						</th>
 						<td>
 							<span class="description">

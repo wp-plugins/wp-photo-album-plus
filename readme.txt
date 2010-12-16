@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, gallery, slideshow, sidebar widget, photo widget, phtoblog
-Version: 2.4.2
+Version: 2.4.3
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -98,6 +98,23 @@ wppa-[your languagecode].po and wppa-[your languagecode].mo.
 WordPress developers Codex page and more specifically at the section about themes and plugins.
 
 == Changelog ==
+
+= 2.4.3 =
+
+* You can now set Width and Height for FullSize images independantly.
+* All albums have an owner (by user name). If the administrator enables 'Restrict album access to owners only' 
+the albums can only be edited, uploaded to and imported to by their owner and by an administrator. 
+An owner of an album can give it away to an other user.
+An administrator can change the owner of an album.
+On upgrading to this rev, the user that performs the upgrade will become the owner of the existing albums.
+* The import depot is now setup on a per username basis. 
+E.g.: Joe will find his upload directory as .../wp-content/wppa-depot/Joe to be created at his first attempt to import.
+This is to prevent the import of another users photos while importing photos at the same time. 
+* The Last Album Used is remembered on a per username basis.
+* You can setup the sidebar widget to use photos from any combination of albums. 
+You can select multiple albums to any available number, select All albums, 
+All albums with the parent set to -separate- or All albums except the separate ones.
+* If the linkpage of the sidebar widget is set to ---none--- clicking the image opens a new browser window with the full size image.
 
 = 2.4.2 =
 

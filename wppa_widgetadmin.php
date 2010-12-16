@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 * admin sidebar widget
-* version 2.4.0
+* version 2.4.3
 */
 
 function wppa_sidebar_page_options() {
@@ -14,7 +14,7 @@ function wppa_sidebar_page_options() {
 
 	$options_error = false;
 	
-	if (isset($_GET['walbum'])) update_option('wppa_widget_album', $_GET['walbum']);
+	if (isset($_GET['walbum'])) update_option('wppa_widget_album', wppa_walbum_sanitize($_GET['walbum']));
 		
 	if (isset($_POST['wppa-set-submit'])) {
 		wppa_check_admin_referer( '$wppa_nonce', WPPA_NONCE );
@@ -33,7 +33,7 @@ function wppa_sidebar_page_options() {
 			$options_error = true;
 		}
 
-		if (isset($_POST['wppa-widget-album'])) update_option('wppa_widget_album', $_POST['wppa-widget-album']);
+		if (isset($_POST['wppa-widget-albums'])) update_option('wppa_widget_album', wppa_walbum_sanitize($_POST['wppa-widget-albums']));
 		if (isset($_POST['wppa-widget-photo'])) update_option('wppa_widget_photo', $_POST['wppa-widget-photo']);
 		if (isset($_POST['wppa-widget-method'])) update_option('wppa_widget_method', $_POST['wppa-widget-method']);
 		if (isset($_POST['wppa-widget-period'])) update_option('wppa_widget_period', $_POST['wppa-widget-period']);
@@ -79,20 +79,27 @@ function wppa_sidebar_page_options() {
 					</tr>
 					<tr valign="top">
 						<th scope="row">
-							<label ><?php _e('Use album:', 'wppa'); ?></label>
+							<label ><?php _e('Use album(s):', 'wppa'); ?></label>
 						</th>
 						<td>
 							<script type="text/javascript">
 							/* <![CDATA[ */
 							function wppaCheckWa() {
+								document.getElementById('wppa-spin').style.visibility = 'visible';
+								document.getElementById('wppa-upd').style.visibility = 'hidden';
 								var album = document.getElementById('wppa-wa').value;
+								if (album != 'all' && album != 'sep' && album != 'all-sep')
+									album = document.getElementById('wppa-was').value + ',' + album;
 								var url = "<?php echo(get_option('siteurl')) ?>/wp-admin/admin.php?page=wppa_sidebar_options&walbum=" + album;
 								document.location.href = url;
 							}
 							/* ]]> */
 							</script>
-							<select name="wppa-widget-album" id="wppa-wa" onchange="wppaCheckWa()" ><?php echo(wppa_album_select('', get_option('wppa_widget_album', ''))) ?></select>
-							<span class="description"><br/><?php _e('Select the album that contains the widget photos.', 'wppa'); ?></span>
+							<?php _e('Select:', 'wppa'); ?><select name="wppa-widget-album" id="wppa-wa" onchange="wppaCheckWa()" ><?php echo(wppa_walbum_select(get_option('wppa_widget_album', ''))) ?></select>
+							<img id="wppa-spin" src="<?php echo(wppa_get_imgdir()); ?>wpspin.gif" style="visibility:hidden;"/>
+							<?php _e('Or Edit:', 'wppa'); ?><input type="text" name="wppa-widget-albums" id="wppa-was" value="<?php echo(get_option('wppa_widget_album', '')); ?>" />
+							<input class="button-primary" name="wppa-upd" id="wppa-upd" value="<?php _e('Update thumbnails', 'wppa'); ?>" onclick="wppaCheckWa()" />
+							<span class="description"><br/><?php _e('Select or edit the album(s) you want to use the photos of for the widget.', 'wppa'); ?></span>
 						</td>
 					</tr>
 					<tr valign="top">
@@ -168,7 +175,9 @@ function wppa_sidebar_page_options() {
 			</p>
 <?php
 			$alb = get_option('wppa_widget_album', '0');
-			$photos = $wpdb->get_results("SELECT * FROM " . PHOTO_TABLE . " WHERE album=" . $alb . " " . wppa_get_photo_order($alb), 'ARRAY_A');
+			
+			$photos = wppa_get_widgetphotos($alb);
+	//		$photos = $wpdb->get_results("SELECT * FROM " . PHOTO_TABLE . " WHERE album=" . $alb . " " . wppa_get_photo_order($alb), 'ARRAY_A');
 			if (empty($photos)) {
 ?>
 			<p><?php _e('No photos yet in this album.', 'wppa'); ?></p>
@@ -203,3 +212,5 @@ function wppa_sidebar_page_options() {
 	</div>
 <?php
 }
+
+require_once ('wppa_widgetfunctions.php');

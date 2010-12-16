@@ -3,12 +3,12 @@
 * Pachkage: wp-photo-album-plus
 *
 * create, edit and delete albums
-* version 2.4.0
+* version 2.4.3
 */
 
 function wppa_admin() {
 	global $wpdb;
-	
+
 	// Check if a message is required
 	wppa_check_update();
 	
@@ -20,6 +20,8 @@ function wppa_admin() {
 	if (isset($_GET['tab'])) {		
 		// album edit page
 		if ($_GET['tab'] == 'edit'){
+		
+			if (!wppa_have_access($_GET['edit_id'])) wp_die('You do not have the rights to edit this album.');
 		
 			// updates the details
 			if (isset($_POST['wppa-ea-submit'])) {
@@ -73,6 +75,19 @@ function wppa_admin() {
 									<span class="description"><br/><?php _e('Type the name of the album. Do not leave this empty.', 'wppa'); ?></span>
 								</td>
 							</tr>
+<?php if (get_option('wppa_owner_only', 'no') == 'yes') { ?>
+							<tr valign="top">
+								<th scope="row">
+									<label ><?php _e('Owned by:', 'wppa'); ?></label>
+								</th>
+								<td>
+									<select name="wppa-owner"><?php wppa_user_select($albuminfo['owner']); ?></select>
+<?php if (!current_user_can('administrator')) { ?>
+									<span class="description" style="color:orange;" ><br/><?php _e('WARNING If you change the owner, you will no longer be able to modify this album and upload or import photos to it!', 'wppa'); ?></span>
+<?php } ?>
+								</td>
+							</tr>
+<?php } ?>
 							<tr valign="top">
 								<th>
 									<label ><?php _e('Description:', 'wppa'); ?></label>
@@ -326,6 +341,9 @@ function wppa_admin_albums() {
 				<th scope="col"><?php _e('Name', 'wppa'); ?></th>
 				<th scope="col"><?php _e('Description', 'wppa'); ?></th>
 				<th scope="col"><?php _e('ID', 'wppa'); ?></th>
+<?php if (current_user_can('administrator')) { ?>
+				<th scope="col"><?php _e('Owner', 'wppa'); ?></th>
+<?php } ?>
                 <th scope="col"><?php _e('Order', 'wppa'); ?></th>
                 <th scope="col" style="width: 120px;"><?php _e('Parent', 'wppa'); ?></th>
 				<th scope="col"><?php _e('Edit', 'wppa'); ?></th>
@@ -335,11 +353,14 @@ function wppa_admin_albums() {
 			
 			<?php $alt = ' class="alternate" '; ?>
 		
-			<?php foreach ($albums as $album) { ?>
+			<?php foreach ($albums as $album) if(wppa_have_access($album)) { ?>
 				<tr <?php echo($alt) ?>>
 					<td><?php echo(stripslashes($album['name'])) ?></td>
 					<td><small><?php echo(stripslashes($album['description'])) ?></small></td>
 					<td><?php echo($album['id']) ?></td>
+<?php if (current_user_can('administrator')) { ?>
+					<td><?php echo($album['owner']); ?></td>
+<?php } ?>
 					<td><?php echo($album['a_order']) ?></td>
 					<td><?php wppa_album_name($album['a_parent']) ?></td>
 					<td><a href="admin.php?page=<?php echo(WPPA_PLUGIN_PATH) ?>/wppa.php&amp;tab=edit&amp;edit_id=<?php echo($album['id']) ?>" class="wppaedit"><?php _e('Edit', 'wppa'); ?></a></td>
@@ -425,13 +446,14 @@ function wppa_album_photos($id) {
 
 // check if albums exist
 function wppa_has_albums() {
-	global $wpdb;	
-	$albums = $wpdb->get_results("SELECT * FROM " . ALBUM_TABLE, 'ARRAY_A');
-	if (empty($albums)) {
-		return FALSE;
-	} else {
-		return TRUE;
-	}
+	return wppa_have_access('any');
+//	global $wpdb;	
+//	$albums = $wpdb->get_results("SELECT * FROM " . ALBUM_TABLE, 'ARRAY_A');
+//	if (empty($albums)) {
+//		return FALSE;
+//	} else {
+//		return TRUE;
+//	}
 }
 
 // get select form element listing albums 
@@ -447,7 +469,7 @@ function wppa_album_select($exc = '', $sel = '', $addnone = FALSE, $addseparate 
     $result = '';
     if ($addnone) $result .= '<option value="0">' . __('--- none ---', 'wppa') . '</option>';
     
-	foreach ($albums as $album) {
+	foreach ($albums as $album) if (wppa_have_access($album)) {
 		if ($sel == $album['id']) { 
             $selected = ' selected="selected" '; 
         } 
@@ -478,9 +500,11 @@ function wppa_add_album() {
 	$order = (is_numeric($_POST['wppa-order']) ? $_POST['wppa-order'] : 0);
 	$parent = (is_numeric($_POST['wppa-parent']) ? $_POST['wppa-parent'] : 0);
 	$porder = (is_numeric($_POST['wppa-photo-order-by']) ? $_POST['wppa-photo-order-by'] : 0);
+	
+	$owner = wppa_get_user();
 
 	if (!empty($name)) {
-		$query = $wpdb->prepare('INSERT INTO `' . ALBUM_TABLE . '` (`id`, `name`, `description`, `a_order`, `a_parent`, `p_order_by`, `main_photo`, `cover_linkpage`) VALUES (0, %s, %s, %d, %d, %d, %d, %d)', $name, $desc, $order, $parent, $porder, 0, 0);
+		$query = $wpdb->prepare('INSERT INTO `' . ALBUM_TABLE . '` (`id`, `name`, `description`, `a_order`, `a_parent`, `p_order_by`, `main_photo`, `cover_linkpage`, `owner`) VALUES (0, %s, %s, %d, %d, %d, %d, %d, %s)', $name, $desc, $order, $parent, $porder, 0, 0, $owner);
 		$iret = $wpdb->query($query);
         if ($iret === FALSE) wppa_error_message(__('Could not create album.', 'wppa'));
 		else {
@@ -516,6 +540,8 @@ function wppa_edit_album() {
 	
 	$link = $_POST['cover-linkpage'];
 	
+	$owner = (isset($_POST['wppa-owner']) ? $_POST['wppa-owner'] : '');
+	
     // update the photo information
     if (isset($_POST['photos']))
 	foreach ($_POST['photos'] as $photo) {
@@ -538,7 +564,8 @@ function wppa_edit_album() {
 	
 	// update the album information
 	if (!empty($name)) {
-		$query = $wpdb->prepare('UPDATE `' . ALBUM_TABLE . '` SET `name` = %s, `description` = %s, `main_photo` = %s, `a_order` = %d, `a_parent` = %d, `p_order_by` = %s, `cover_linkpage` = %s WHERE `id` = %d', $name, $desc, $main, $order, $parent, $orderphotos, $link, $_GET['edit_id']);
+		if ($owner == '') $query = $wpdb->prepare('UPDATE `' . ALBUM_TABLE . '` SET `name` = %s, `description` = %s, `main_photo` = %s, `a_order` = %d, `a_parent` = %d, `p_order_by` = %s, `cover_linkpage` = %s WHERE `id` = %d', $name, $desc, $main, $order, $parent, $orderphotos, $link, $_GET['edit_id']);
+		else $query = $wpdb->prepare('UPDATE `' . ALBUM_TABLE . '` SET `name` = %s, `description` = %s, `main_photo` = %s, `a_order` = %d, `a_parent` = %d, `p_order_by` = %s, `cover_linkpage` = %s, `owner` = %s WHERE `id` = %d', $name, $desc, $main, $order, $parent, $orderphotos, $link, $owner, $_GET['edit_id']);
 		$iret = $wpdb->query($query);
 		
         if ($iret === FALSE) {
