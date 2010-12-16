@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the upload/import pages and functions
-* Version 2.4.3
+* Version 2.4.1
 */
 
 function wppa_page_upload() {
@@ -64,10 +64,6 @@ function wppa_page_upload() {
 }
 
 function wppa_page_import() {
-	global $current_user;
-	
-	get_currentuserinfo();
-
 	// import images
 	// sanitize system
     wppa_cleanup_photos();
@@ -94,18 +90,13 @@ function wppa_page_import() {
 		if(wppa_has_albums()) { 
 
 		$depot = ABSPATH . 'wp-content/wppa-depot';
-		if (!is_dir($depot)) {
-			if (!mkdir($depot)) wppa_error_message(__('Unable to create depot directory', 'wppa').'<br>'.__('Create', 'wppa').' '.$depot.' '.__('with an ftp program and try again.', 'wppa'));
-		}
-		
-		$depot = ABSPATH . 'wp-content/wppa-depot/'.$current_user->user_login;
-		$depoturl = get_bloginfo('url').'/wp-content/wppa-depot/'.$current_user->user_login;
+		$depoturl = get_bloginfo('url').'/wp-content/wppa-depot';
 		
 		if (!is_dir($depot)) {
 			if (!mkdir($depot)) wppa_error_message(__('Unable to create depot directory', 'wppa').'<br>'.__('Create', 'wppa').' '.$depot.' '.__('with an ftp program and place the photos there.', 'wppa'));
 			else wppa_ok_message(__('Place your photos to be imported in:', 'wppa').' '.$depoturl.'/ '.__('using an FTP program and try again.', 'wppa'));
 		}
-		$paths = ABSPATH . 'wp-content/wppa-depot/'.$current_user->user_login.'/*.*';
+		$paths = ABSPATH . 'wp-content/wppa-depot/*.*';
 		$files = glob($paths);
 		$photocount = wppa_get_photocount($files);
 	
@@ -216,14 +207,11 @@ function wppa_upload_photos() {
 
 function wppa_import_photos($del_after_import = false) {
 	global $warning_given;
-	global $current_user;
-	
-	get_currentuserinfo();
 	
 	wppa_cleanup_photos();
 	
 	$warning_given = false;
-	$paths = ABSPATH . 'wp-content/wppa-depot/'.$current_user->user_login.'/*.*';
+	$paths = ABSPATH . 'wp-content/wppa-depot/*.*';
 	
 	if (!defined('WP_DEBUG')) define('WP_DEBUG', true);	
 	
@@ -296,19 +284,9 @@ function wppa_insert_photo ($file = '', $album = '', $name = '') {
 			
 		if (get_option('wppa_resize_on_upload', 'no') == 'yes') {
 			require_once('wppa_class_resize.php');
-			if (wppa_is_wider($img_size[0], $img_size[1])) {
-				$dir = 'W';
-				$siz = get_option('wppa_fullsize', '640');
-				$s = $img_size[0];
-			}
-			else {
-				$dir = 'H';
-				$siz = get_option('wppa_maxheight', get_option('wppa_fullsize', '640'));
-				$s = $img_size[1];
-			}
-//			$dir = $img_size[0] > $img_size[1] ? 'W' : 'H';
-//			$siz = get_option('wppa_fullsize', '640');
-//			$s = $img_size[0] > $img_size[1] ? $img_size[0] : $img_size[1];
+			$dir = $img_size[0] > $img_size[1] ? 'W' : 'H';
+			$siz = get_option('wppa_fullsize', '800');
+			$s = $img_size[0] > $img_size[1] ? $img_size[0] : $img_size[1];
 			if ($s > $siz) {	
 				$objResize = new wppa_ImageResize($file, $newimage, $dir, $siz);
 			}

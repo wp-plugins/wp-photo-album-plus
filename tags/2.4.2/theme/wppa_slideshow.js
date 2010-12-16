@@ -1,5 +1,5 @@
 ﻿// Slide show variables and functions
-// This is wppa_slideshow.js version 2.4.3
+// This is wppa_slideshow.js version 2.4.2
 //
 
 var wppa_slides = new Array();
@@ -20,7 +20,6 @@ var wppa_fullvalign_fit = new Array();
 var wppa_animation_speed;
 var wppa_imgdir;
 var wppa_auto_colwidth = false;
-var wppa_oldcolw = 0;
 var wppa_thumbnail_area_delta;
 var wppa_ss_timeout = 2500;
 var wppa_fadein_after_fadeout = false;
@@ -106,7 +105,7 @@ function wppa_next_slide(mocc) {
     // Next is now current
     wppa_id[mocc] = wppa_next_id[mocc];
 	if (wppa_auto_colwidth) wppa_do_autocol(mocc);
-
+//	wppa_timer[mocc] = 
 	setTimeout('wppa_fade('+mocc+')', 10);
 }
 
@@ -144,8 +143,10 @@ function wppa_fade_fade(mocc) {
 	fg = wppa_foreground[mocc];
 	bg = 1 - fg;
 
-	jQuery("#theimg"+bg+"-"+mocc).fadeOut(wppa_animation_speed); 					// Req'd for change in portrait/landscape vv
-
+	// Do the actual fade. Fadeout only if not stop in progress
+//	if (wppa_ss_running[mocc] != -1 || (wppa_id[mocc] != wppa_next_id[mocc])) {	// stop not in progress or fg != bg
+		jQuery("#theimg"+bg+"-"+mocc).fadeOut(wppa_animation_speed); 					// Req'd for change in portrait/landscape vv
+//	}
 	// Fadein new image
 	if (wppa_fadein_after_fadeout) {
 		jQuery("#theimg"+fg+"-"+mocc).delay(wppa_animation_speed).fadeIn(wppa_animation_speed, wppa_after_fade(mocc)); 
@@ -234,6 +235,7 @@ function wppa_startstop(mocc, idx) {
 	}
     if (wppa_ss_running[mocc] == 1) { // stop it
 		wppa_ss_running[mocc] = -1;	// stop in progress
+ //       clearTimeout(wppa_timer[mocc]);
         document.getElementById('startstop-'+mocc).innerHTML='Start'+' '+wppa_slideshow;  
 		jQuery('#prev-arrow-'+mocc).css('visibility', 'visible');
 		jQuery('#next-arrow-'+mocc).css('visibility', 'visible');
@@ -246,6 +248,7 @@ function wppa_startstop(mocc, idx) {
 		jQuery('#bc-pname-'+mocc).html(wppa_names[mocc][wppa_id[mocc]]);
     }
     else if (idx == -1) {
+//wppa_next_id[mocc] = wppa_id[mocc];
         wppa_ss_running[mocc] = 1;
         wppa_next_slide(mocc);
 		if (document.getElementById('startstop-'+mocc)) {
@@ -290,11 +293,10 @@ function wppa_load_spinner(mocc) {
 		else top = '150px';
 	}
 	lft = parseInt((parseInt(elm.style.width) / 2) - 4)+'px';
-
+			
 	document.getElementById('spinner-'+mocc).style.top = top;
 	document.getElementById('spinner-'+mocc).style.left = lft;
 	document.getElementById('spinner-'+mocc).innerHTML = '<img id="spinnerimg-'+mocc+'" src="'+wppa_imgdir+'wpspin.gif" />';
-	
 }
 
 function wppa_unload_spinner(mocc) {
@@ -310,7 +312,6 @@ function wppa_do_autocol(mocc) {
 	if (!wppa_auto_colwidth) return;
 	
 	w = document.getElementById('wppa-container-1').parentNode.clientWidth;
-	
 	jQuery(".wppa-container").css('width',w);
 	jQuery(".theimg").css('width',w);
 	jQuery(".thumbnail-area").css('width',w-wppa_thumbnail_area_delta);
@@ -353,7 +354,7 @@ function wppa_check_rewind(mocc) {
 	
 	if (n_diff >= ((n_images + 1) / 2)) {
 		l_substrate = wppa_thumbnail_pitch * wppa_slides[mocc].length;
-		if (wppa_film_show_glue) l_substrate += (2 + 2 * wppa_filmstrip_margin);
+		if (wppa_film_show_glue) l_substrate += (2 + wppa_filmstrip_margin);
 		
 		x_marg = parseInt(jQuery('#wppa-filmstrip-'+mocc).css('margin-left'));
 

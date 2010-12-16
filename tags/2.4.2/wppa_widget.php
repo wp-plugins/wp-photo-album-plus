@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the widget
-* Version 2.4.3
+* Version 2.4.2
 */
 
 add_action('plugins_loaded', 'init_wppa_widget');
@@ -30,17 +30,13 @@ function show_wppa_widget($args) {
 		case '2':	// Random
 			$album = get_option('wppa_widget_album', '');
 			if ($album != '') {
-				$images = wppa_get_widgetphotos($album, 'ORDER BY RAND() LIMIT 0,1');
-				$image = $images[0];
-//				$image = $wpdb->get_row($wpdb->prepare('SELECT * FROM `' . PHOTO_TABLE . '` WHERE `album` = %d ORDER BY RAND() LIMIT 0,1', $album), 'ARRAY_A');
+				$image = $wpdb->get_row($wpdb->prepare('SELECT * FROM `' . PHOTO_TABLE . '` WHERE `album` = %d ORDER BY RAND() LIMIT 0,1', $album), 'ARRAY_A');
 			}
 			break;
 		case '3':	// Last upload
 			$album = get_option('wppa_widget_album', '');
 			if ($album != '') {
-				$images = wppa_get_widgetphotos($album, 'ORDER BY id DESC LIMIT 0,1');
-				$image = $images[0];
-//				$image = $wpdb->get_row($wpdb->prepare('SELECT * FROM `' . PHOTO_TABLE . '` WHERE `album` = %d ORDER BY `id` DESC LIMIT 0,1', $album), 'ARRAY_A');
+				$image = $wpdb->get_row($wpdb->prepare('SELECT * FROM `' . PHOTO_TABLE . '` WHERE `album` = %d ORDER BY `id` DESC LIMIT 0,1', $album), 'ARRAY_A');
 			}
 			break;
 		case '4':	// Change every
@@ -51,11 +47,10 @@ function show_wppa_widget($args) {
 				$u = floor($u);
 				$u /= get_option('wppa_widget_period', '168');
 				$u = floor($u);
-				$photos = wppa_get_widgetphotos($album);
-				$p = count($photos); //wppa_get_photo_count($album);
+				$p = wppa_get_photo_count($album);
 				if (!is_numeric($p) || $p < 1) $p = '1'; // make sure we dont get overflow in the next line
 				$idn = fmod($u, $p);
-//				$photos = $wpdb->get_results($wpdb->prepare('SELECT * FROM `' . PHOTO_TABLE . '` WHERE `album` = %d ' . wppa_get_photo_order($album), $album), 'ARRAY_A');
+				$photos = $wpdb->get_results($wpdb->prepare('SELECT * FROM `' . PHOTO_TABLE . '` WHERE `album` = %d ' . wppa_get_photo_order($album), $album), 'ARRAY_A');
 				$i = 0;
 				foreach ($photos as $photo) {
 					if ($i == $idn) {	// found the idn'th out of p
@@ -88,16 +83,15 @@ function show_wppa_widget($args) {
 		$page_title = $wpdb->get_var("SELECT post_title FROM " . $wpdb->posts . " WHERE post_type = 'page' AND post_status = 'publish' AND ID=" . $pid);
 		if ($page_title) { 			// Yep, Linkpage found
 			$title = __('Link to', 'wppa') . ' ' . $page_title;
-			$widget_content .= '<a href="' . get_page_link($pid) . wppa_sep() . 'album=' . $image['album'] . '&cover=0&occur=1">';
+			$widget_content .= '<a href="' . get_page_link($pid) . wppa_sep() . 'album=' . $album . '&cover=0&occur=1">';
 		} 
 		else {
 			$title = $widget_title;
-			$widget_content .= '<a href = "'.$imgurl.'" target="_blank">';
 		}
 		
 		$widget_content .= '<img src="' . $imgurl . '" style="width: ' . get_option('wppa_widget_width', '150') . 'px;" title="' . $title . '" alt="' . $title . '">';
 
-		$widget_content .= '</a>';
+		if ($page_title) $widget_content .= '</a>';
 	} 
 	else {	// No image
 		$widget_content .= __('Photo not found.');
@@ -121,6 +115,6 @@ function show_wppa_widget($args) {
 	}
 	// Display the widget
 	echo $before_widget . $before_title . $widget_title . $after_title . $widget_content . $after_widget;
+	// Set padding
+//	wppa_set_runtimestyle();
 }
-
-require_once ('wppa_widgetfunctions.php');

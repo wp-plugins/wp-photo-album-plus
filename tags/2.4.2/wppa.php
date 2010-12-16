@@ -2,7 +2,7 @@
 /*
 Plugin Name: WP Photo Album Plus
 Description: Easily manage and display your photo albums and slideshows within your WordPress site.
-Version: 2.4.3
+Version: 2.4.2
 Author: J.N. Breetvelt a.k.a OpaJaap
 Author URI: http://www.opajaap.nl/
 Plugin URI: http://wordpress.org/extend/plugins/wp-photo-album-plus/
@@ -24,7 +24,7 @@ define('PHOTO_TABLE', $wpdb->prefix . 'wppa_photos');
 define('WPPA_PLUGIN_PATH', 'wp-photo-album-plus');
 define('WPPA_NONCE' , 'wppa-update-check');
 
-$wppa_revno = '2.4.3';
+$wppa_revno = '2.4.1';
 $wppa_occur = 0;
 $wppa_master_occur = 0;
 $is_cover = '0';
@@ -49,7 +49,7 @@ function wppa_setup() {
 	global $wpdb;
 	
 	$old_rev = get_option('wppa_revision', '100');
-	if ($old_rev <= '243') {
+	if ($old_rev <= '240') {
 		
 	$create_albums = "CREATE TABLE " . ALBUM_TABLE . " (
                     id bigint(20) NOT NULL auto_increment, 
@@ -60,7 +60,6 @@ function wppa_setup() {
                     a_parent bigint(20) NOT NULL,
                     p_order_by int unsigned NOT NULL,
 					cover_linkpage bigint(20) NOT NULL,
-					owner text NOT NULL,
                     PRIMARY KEY  (id) 
                     );"; // ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='WP Photo Album Plus';";
                     
@@ -83,7 +82,7 @@ function wppa_setup() {
 	
 	if (!is_numeric(get_option('wppa_fullsize', 'nil'))) update_option('wppa_fullsize', '640');
 	if (!is_numeric(get_option('wppa_colwidth', 'nil'))) update_option('wppa_colwidth', get_option('wppa_fullsize'));
-	if (get_option('wppa_enlarge', 'nil') == 'nil') update_option('wppa_enlarge', 'no');
+	if (get_option('wppa_enlarge', 'nil') == 'nil') update_option('wppa_enlarge', 'yes');
 	if (get_option('wppa_fullvalign', 'nil') == 'nil') update_option('wppa_fullvalign', 'fit');
 	if (!is_numeric(get_option('wppa_min_thumbs', 'nil'))) update_option('wppa_min_thumbs', '1');
 	if (get_option('wppa_valign', 'nil') == 'nil') update_option('wppa_valign', 'default');
@@ -116,12 +115,7 @@ function wppa_setup() {
 		update_option('wppa_update_key', $key);
 		}
 	
-	global $current_user;
-	get_currentuserinfo();
-	$user = $current_user->user_login;
-	$query = $wpdb->prepare('UPDATE `' . ALBUM_TABLE . '` SET `owner` = %s WHERE `owner` = %s', $user, '');
-	$iret = $wpdb->query($query);
-	if ($iret) update_option('wppa_revision', '243');
+	update_option('wppa_revision', '240');
 	}
 }
 	
