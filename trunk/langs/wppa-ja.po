@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: WP Photo Album Plus 2.4.2\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/wp-photo-album-plus\n"
 "POT-Creation-Date: 2010-08-22 09:46+0000\n"
-"PO-Revision-Date: 2010-12-08 14:34+0900\n"
+"PO-Revision-Date: 2010-12-17 12:23+0900\n"
 "Last-Translator: BNG NET <webmaster@bng.net>\n"
 "Language-Team: BNG NET <webmaster@bng.net>\n"
 "MIME-Version: 1.0\n"
@@ -18,6 +18,74 @@ msgstr ""
 "X-Poedit-Country: JAPAN\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-Bookmarks: -1,157,-1,-1,-1,-1,-1,-1,-1,-1\n"
+
+#: Added on 2010/12/17
+msgid "Admin pages access:"
+msgstr "管理ページアクセス権:"
+
+#: Added on 2010/12/17
+msgid "Users can give their albums to another user. Administrators can change ownership and access all albums always."
+msgstr "ユーザは他のユーザにアルバムを渡すことができます。管理者は所有権を変更することができるほか、いつでも全てのアルバムにアクセスできます。"
+
+#: Added on 2010/12/17
+msgid "If checked, users who can edit albums and upload/import photos can do that with their own albums only."
+msgstr "チェックすると、アルバムの編集や写真のアップロード／インポートが許可されているユーザに対し、そのような操作を自分の所有するアルバムに限定します。"
+
+#: Added on 2010/12/17
+msgid "Limit album access to album owners only."
+msgstr "アルバムアクセス権をアルバム所有者に限定する。"
+
+#: Added on 2010/12/17
+msgid "Album access:"
+msgstr "アルバムアクセス権:"
+
+#: Added on 2010/12/17
+msgid "If you select --- none ---, the photos will not be centered horizontally either.'"
+msgstr "--- なし --- を選択すると、水平方向に対しても中央寄せにはなりません。"
+
+#: Added on 2010/12/17
+msgid "pixels high."
+msgstr "ピクセルの高さ"
+
+#: Added on 2010/12/17
+msgid "pixels wide,"
+msgstr "ピクセルの幅"
+
+#: Added on 2010/12/17
+msgid "- all albums except -separate-"
+msgstr "- アルバムのうち - セパレート - 以外全て -"
+
+#: Added on 2010/12/17
+msgid "- all -separate- albums -"
+msgstr "- アルバムのうち - セパレート - 全て -"
+
+#: Added on 2010/12/17
+msgid "- all albums -"
+msgstr "- 全アルバム -"
+
+#: Added on 2010/12/17
+msgid "- select album(s) -"
+msgstr "- アルバムの選択 -"
+
+#: Added on 2010/12/17
+msgid "Select or edit the album(s) you want to use the photos of for the widget."
+msgstr "ウィジェット用に使用する写真のアルバムを選択または編集してください。"
+
+#: Added on 2010/12/17
+msgid "Update thumbnails"
+msgstr "サムネイル更新"
+
+#: Added on 2010/12/17
+msgid "Or Edit:"
+msgstr "または編集:"
+
+#: Added on 2010/12/17
+msgid "Select:"
+msgstr "選択:"
+
+#: Added on 2010/12/17
+msgid "Use album(s):"
+msgstr "使用するアルバム"
 
 #: Added on 2010/11/16
 msgid "Edit Album Information"
@@ -65,7 +133,7 @@ msgstr "カバーフォトの配置場所を指定してください。"
 
 #: Added on 2010/11/16
 msgid "Indicate the placement position of the thumbnailphoto you wish."
-msgstr "サムネール画像の配置場所を指定してください。"
+msgstr "サムネイル画像の配置場所を指定してください。"
 
 #: Added on 2010/11/16
 msgid "Left"
