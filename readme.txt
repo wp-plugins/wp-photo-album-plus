@@ -1,13 +1,13 @@
 === WP Photo Album Plus ===
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
-Tags: photo, album, gallery, slideshow, sidebar widget, photo widget, phtoblog
+Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photo widget, phtoblog
 Version: 2.4.3
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
 Requires at least: 2.8
-Tested up to: 3.0
+Tested up to: 3.0.3
 
 This plugin is designed to easily manage and display your photo albums and slideshows within your WordPress site. 
 
@@ -28,7 +28,7 @@ This plugin is designed to easily manage and display your photo albums and slide
 * You can add a Sidebar Widget that displays a photo which can be changed every hour, day or week.
 * You can add a Search Sidebar Widget which enables the visitors to search albums and photos for certain words in names and descriptions.
 * Almost all appearance settings can be done in the settings admin page. No php, html or css knowledge is required to customize the appearence of the photo display.
-
+* International language support. Currently included foreign languages files: Dutch, Japanese, French(outdated), Spanish.
 
 Plugin Admin Features:
 

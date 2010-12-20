@@ -121,7 +121,7 @@ function wppa_setup() {
 	$user = $current_user->user_login;
 	$query = $wpdb->prepare('UPDATE `' . ALBUM_TABLE . '` SET `owner` = %s WHERE `owner` = %s', $user, '');
 	$iret = $wpdb->query($query);
-	if ($iret) update_option('wppa_revision', '243');
+	if (is_numeric($iret)) update_option('wppa_revision', '243');
 	}
 }
 	
