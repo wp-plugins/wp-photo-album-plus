@@ -2,12 +2,12 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photo widget, phtoblog
-Version: 2.4.4
+Version: 2.4.3
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
 Requires at least: 2.8
-Tested up to: 3.0.4
+Tested up to: 3.0.3
 
 This plugin is designed to easily manage and display your photo albums and slideshows within your WordPress site. 
 
@@ -44,7 +44,7 @@ You can find the plugin admin section under Menu Photo Albums on the admin scree
 == Installation ==
 
 = Upgrade notice =
-This version is: Major rev# 2, Minor rev# 4, Fix rev# 4.
+This version is: Major rev# 2, Minor rev# 3, Fix rev# 0.
 If you are upgrading from a previous Major or Minor version, note that:
 * If you modified wppa_theme.php and/or wppa_style.css, you will have to use the newly supplied versions. The previous versions are NOT compatible.
 * If you set the userlevel to anything else than 'administrator' you may have to set it again. Note that changing the userlevel can be done by the administrator only!
@@ -98,19 +98,6 @@ wppa-[your languagecode].po and wppa-[your languagecode].mo.
 WordPress developers Codex page and more specifically at the section about themes and plugins.
 
 == Changelog ==
-
-= 2.4.4 =
-
-* Improved RSS behaviour.
-* Less 'Out of memory' errors when uploading or importing photos.
-* Improved error messages and error handling.
-* Improved performance.
-* You need no longer modify the loop. Corresponding files are removed.
-* You can now configure a custom breadcrumb separator, either select a pre-defined one, a html sequence or an image.
-* Conversion to utf-8 was broken. Fixed.
-* The albumlinks under the thumbnails in the search results did not work. Fixed.
-* In a virgin new wp installation it is no longer needed to upload anything throug a core wp procedure before you can use wppa+, the plugin will attempt to create the uploads directory.
-
 
 = 2.4.3 =
 

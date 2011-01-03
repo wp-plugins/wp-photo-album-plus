@@ -1,9 +1,9 @@
 <?php
 /* wppa_filter.php
-* Package: wp-photo-album-plus
+* Pachkage: wp-photo-album-plus
 *
 * get the albums via filter
-* version 2.4.4
+* version 2.4.1
 *
 */
 
@@ -19,8 +19,6 @@ function wppa_albums_filter($post) {
 	$iscover = '0';
 	
 	if (substr_count($post_old, '%%wppa%%') > 0) {
-		//	if (is_feed()) 
-		$post_new .= wppa_init_occur();					// For non-feeds, reset happens now also here in stead of previously in loop.php
 		$wppa_pos = strpos($post_old, '%%wppa%%');
 		while ($wppa_pos !== false) {
 			$chunk = substr($post_old, 0, $wppa_pos);
@@ -110,11 +108,6 @@ function wppa_albums_filter($post) {
 }
 
 /* If you simplify the following small routines, by coding it inline in the filter, the sky will fall upon you */
-function wppa_init_occur() {
-	global $wppa_occur;
-	$wppa_occur = '0';
-}
-
 function wppa_disp($var) {
 	echo($var);
 }
@@ -173,3 +166,4 @@ function wppa_atoi($var) {
 	}
 	return $result;
 }
+

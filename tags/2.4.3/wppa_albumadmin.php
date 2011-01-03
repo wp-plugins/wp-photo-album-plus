@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 * create, edit and delete albums
-* version 2.4.4
+* version 2.4.3
 */
 
 function wppa_admin() {
@@ -504,7 +504,6 @@ function wppa_add_album() {
 	$owner = wppa_get_user();
 
 	if (!empty($name)) {
-		@define('WP_DEBUG', true);
 		$query = $wpdb->prepare('INSERT INTO `' . ALBUM_TABLE . '` (`id`, `name`, `description`, `a_order`, `a_parent`, `p_order_by`, `main_photo`, `cover_linkpage`, `owner`) VALUES (0, %s, %s, %d, %d, %d, %d, %d, %s)', $name, $desc, $order, $parent, $porder, 0, 0, $owner);
 		$iret = $wpdb->query($query);
         if ($iret === FALSE) wppa_error_message(__('Could not create album.', 'wppa'));
@@ -520,8 +519,6 @@ function wppa_add_album() {
 // edit an album 
 function wppa_edit_album() {
 	global $wpdb;
-	
-	@define('WP_DEBUG', true);
 	
     $first = TRUE;
 	
