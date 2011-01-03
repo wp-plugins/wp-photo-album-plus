@@ -10,6 +10,9 @@
  * @package WordPress
  * @subpackage Twenty_Ten
  * @since Twenty Ten 1.0
+ *
+ * Modified version for wp-photo-album-plus
+ *
  */
 global $wppa_show_statistics;
 

@@ -3,74 +3,84 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the upload/import pages and functions
-* Version 2.4.3
+* Version 2.4.4
 */
 
 function wppa_page_upload() {
-		// upload images
-        // sanitize system
-		wppa_cleanup_photos();
-		// Check if a message is required
-		wppa_check_update();
+	// upload images admin page
 
-		if (isset($_POST['wppa-upload'])) {
-			wppa_check_admin_referer( '$wppa_nonce', WPPA_NONCE );
-            
-			wppa_upload_photos();
-		}
+	// Check the existence of required directories
+	if (!wppa_check_dirs()) return;
+
+    // sanitize system
+	wppa_cleanup_photos();
+	
+	// Check if an update message is required
+	wppa_check_update();
+
+	// Do the upload if requested
+	if (isset($_POST['wppa-upload'])) {
+		wppa_check_admin_referer( '$wppa_nonce', WPPA_NONCE );
+		wppa_upload_photos();
+	}
 ?>
-		<div class="wrap">
-			<?php $iconurl = get_bloginfo('wpurl') . '/wp-content/plugins/' . WPPA_PLUGIN_PATH . '/images/camera32.png'; ?>
-			<div id="icon-camera" class="icon32" style="background: transparent url(<?php echo($iconurl); ?>) no-repeat">
-				
-			</div>
-			<?php $iconurl = get_bloginfo('wpurl') . '/wp-content/plugins/' . WPPA_PLUGIN_PATH . '/images/arrow32.png'; ?>
-			<div id="icon-arrow" class="icon32" style="background: transparent url(<?php echo($iconurl); ?>) no-repeat">
-			</div>
-			<?php $iconurl = get_bloginfo('wpurl') . '/wp-content/plugins/' . WPPA_PLUGIN_PATH . '/images/album32.png'; ?>
-			<div id="icon-album" class="icon32" style="background: transparent url(<?php echo($iconurl); ?>) no-repeat">
-				<br />
-			</div>
-		
-			<h2><?php _e('Upload Photos', 'wppa'); ?></h2><br />
-			<?php		
-			// chek if albums exist before allowing upload
-			if(wppa_has_albums()) { ?>
-				<form enctype="multipart/form-data" action="<?php echo(get_option('siteurl')) ?>/wp-admin/admin.php?page=upload_photos" method="post">
-				<?php wppa_nonce_field('$wppa_nonce', WPPA_NONCE); ?>
-					<input id="my_file_element" type="file" name="file_1" />
-					<div id="files_list">
-						<h3><?php _e('Selected Files:', 'wppa'); ?> <small><?php _e('You can upload up to 15 photos at once.', 'wppa'); ?></small></h3>
-					</div>
-					<p>
-						<label for="wppa-album"><?php _e('Album:', 'wppa'); ?> </label>
-						<select name="wppa-album" id="wppa-album"><?php echo(wppa_album_select()); ?></select>
-					</p>
-					<input type="submit" class="button-primary" name="wppa-upload" value="<?php _e('Upload Photos', 'wppa') ?>" />					
-				</form>
-				<br />
-				<script type="text/javascript">
-				<!-- Create an instance of the multiSelector class, pass it the output target and the max number of files -->
-					var multi_selector = new MultiSelector( document.getElementById( 'files_list' ), 15 );
-				<!-- Pass in the file element -->
-					multi_selector.addElement( document.getElementById( 'my_file_element' ) );
-				</script>
-			<?php } 
-			else { ?>
-				<p><?php _e('No albums exist. You must', 'wppa'); ?> <a href="admin.php?page=<?php echo(WPPA_PLUGIN_PATH) ?>/wppa.php"><?php _e('create one', 'wppa'); ?></a> <?php _e('beofre you can upload your photos.', 'wppa'); ?></p>
-<?php } ?>
+	<div class="wrap">
+		<?php $iconurl = get_bloginfo('wpurl') . '/wp-content/plugins/' . WPPA_PLUGIN_PATH . '/images/camera32.png'; ?>
+		<div id="icon-camera" class="icon32" style="background: transparent url(<?php echo($iconurl); ?>) no-repeat">
+			
 		</div>
+		<?php $iconurl = get_bloginfo('wpurl') . '/wp-content/plugins/' . WPPA_PLUGIN_PATH . '/images/arrow32.png'; ?>
+		<div id="icon-arrow" class="icon32" style="background: transparent url(<?php echo($iconurl); ?>) no-repeat">
+		</div>
+		<?php $iconurl = get_bloginfo('wpurl') . '/wp-content/plugins/' . WPPA_PLUGIN_PATH . '/images/album32.png'; ?>
+		<div id="icon-album" class="icon32" style="background: transparent url(<?php echo($iconurl); ?>) no-repeat">
+			<br />
+		</div>
+	
+		<h2><?php _e('Upload Photos', 'wppa'); ?></h2><br />
+		<?php		
+		// chek if albums exist before allowing upload
+		if(wppa_has_albums()) { ?>
+			<form enctype="multipart/form-data" action="<?php echo(get_option('siteurl')) ?>/wp-admin/admin.php?page=upload_photos" method="post">
+			<?php wppa_nonce_field('$wppa_nonce', WPPA_NONCE); ?>
+				<input id="my_file_element" type="file" name="file_1" />
+				<div id="files_list">
+					<h3><?php _e('Selected Files:', 'wppa'); ?> <small><?php _e('You can upload up to 15 photos at once.', 'wppa'); ?></small></h3>
+				</div>
+				<p>
+					<label for="wppa-album"><?php _e('Album:', 'wppa'); ?> </label>
+					<select name="wppa-album" id="wppa-album"><?php echo(wppa_album_select()); ?></select>
+				</p>
+				<input type="submit" class="button-primary" name="wppa-upload" value="<?php _e('Upload Photos', 'wppa') ?>" />					
+			</form>
+			<br />
+			<script type="text/javascript">
+			<!-- Create an instance of the multiSelector class, pass it the output target and the max number of files -->
+				var multi_selector = new MultiSelector( document.getElementById( 'files_list' ), 15 );
+			<!-- Pass in the file element -->
+				multi_selector.addElement( document.getElementById( 'my_file_element' ) );
+			</script>
+		<?php } 
+		else { ?>
+			<p><?php _e('No albums exist. You must', 'wppa'); ?> <a href="admin.php?page=<?php echo(WPPA_PLUGIN_PATH) ?>/wppa.php"><?php _e('create one', 'wppa'); ?></a> <?php _e('beofre you can upload your photos.', 'wppa'); ?></p>
+<?php } ?>
+	</div>
 <?php
 }
 
 function wppa_page_import() {
-	global $current_user;
+	// import images admin page
 	
+	// Who am I?
+	global $current_user;
 	get_currentuserinfo();
-
-	// import images
+	
+	// Check the existence of required directories
+	if (!wppa_check_dirs()) return;
+	
 	// sanitize system
     wppa_cleanup_photos();
+	
 	// Check if a message is required
 	wppa_check_update();
 
@@ -95,16 +105,27 @@ function wppa_page_import() {
 
 		$depot = ABSPATH . 'wp-content/wppa-depot';
 		if (!is_dir($depot)) {
-			if (!mkdir($depot)) wppa_error_message(__('Unable to create depot directory', 'wppa').'<br>'.__('Create', 'wppa').' '.$depot.' '.__('with an ftp program and try again.', 'wppa'));
+			if (!mkdir($depot)) {
+				wppa_error_message(__('Unable to create depot directory', 'wppa').'<br>'.__('Create', 'wppa').' '.$depot.' '.__('with an ftp program and try again.', 'wppa'));
+			}
+			else {
+				@chmod($depot, 0755);
+			}
 		}
 		
 		$depot = ABSPATH . 'wp-content/wppa-depot/'.$current_user->user_login;
 		$depoturl = get_bloginfo('url').'/wp-content/wppa-depot/'.$current_user->user_login;
 		
 		if (!is_dir($depot)) {
-			if (!mkdir($depot)) wppa_error_message(__('Unable to create depot directory', 'wppa').'<br>'.__('Create', 'wppa').' '.$depot.' '.__('with an ftp program and place the photos there.', 'wppa'));
-			else wppa_ok_message(__('Place your photos to be imported in:', 'wppa').' '.$depoturl.'/ '.__('using an FTP program and try again.', 'wppa'));
+			if (!mkdir($depot)) {
+				wppa_error_message(__('Unable to create depot directory', 'wppa').'<br>'.__('Create', 'wppa').' '.$depot.' '.__('with an ftp program and place the photos there.', 'wppa'));
+			}
+			else {
+				@chmod($depot, 0755);
+				wppa_ok_message(__('Place your photos to be imported in:', 'wppa').' '.$depoturl.'/ '.__('using an FTP program and try again.', 'wppa'));
+			}
 		}
+		
 		$paths = ABSPATH . 'wp-content/wppa-depot/'.$current_user->user_login.'/*.*';
 		$files = glob($paths);
 		$photocount = wppa_get_photocount($files);
@@ -163,7 +184,7 @@ function wppa_page_import() {
 		}
 	}
 	else { ?>
-				<p><?php _e('No albums exist. You must', 'wppa'); ?> <a href="admin.php?page=<?php echo(WPPA_PLUGIN_PATH) ?>/wppa.php"><?php _e('create one', 'wppa'); ?></a> <?php _e('beofre you can upload your photos.', 'wppa'); ?></p>
+		<p><?php _e('No albums exist. You must', 'wppa'); ?> <a href="admin.php?page=<?php echo(WPPA_PLUGIN_PATH) ?>/wppa.php"><?php _e('create one', 'wppa'); ?></a> <?php _e('beofre you can upload your photos.', 'wppa'); ?></p>
 <?php } ?>
 	</div>
 <?php
@@ -175,24 +196,8 @@ function wppa_upload_photos() {
 	global $wpdb;
 	global $warning_given;
 
-	wppa_cleanup_photos();
-	
 	$warning_given = false;
 	$uploaded_a_file = false;
-
-	$wppa_dir = ABSPATH . 'wp-content/uploads/wppa';
-	
-	if (!defined('WP_DEBUG')) define('WP_DEBUG', true);	
-
-	// check if wppa dir exists
-	if (!is_dir($wppa_dir)) {
-		mkdir($wppa_dir);	
-	}
-	
-	// check if thumbs dir exists 
-	if (!is_dir($wppa_dir . '/thumbs')) {
-		mkdir($wppa_dir . '/thumbs');
-	}
 	
 	$count = '0';
 	foreach ($_FILES as $file) {
@@ -217,15 +222,11 @@ function wppa_upload_photos() {
 function wppa_import_photos($del_after_import = false) {
 	global $warning_given;
 	global $current_user;
-	
+
 	get_currentuserinfo();
 	
-	wppa_cleanup_photos();
-	
 	$warning_given = false;
-	$paths = ABSPATH . 'wp-content/wppa-depot/'.$current_user->user_login.'/*.*';
-	
-	if (!defined('WP_DEBUG')) define('WP_DEBUG', true);	
+	$paths = ABSPATH . 'wp-content/wppa-depot/'.$current_user->user_login.'/*.*';	
 	
 	$files = glob($paths);
 	$idx='0';
@@ -283,7 +284,10 @@ function wppa_insert_photo ($file = '', $album = '', $name = '') {
 				$warning_given_small = true;
 			}
 		}
-		else return false;
+		else {
+			wppa_error_message(__('ERROR: Unable to retrieve immage size of', 'wppa').' '.$name);
+			return false;
+		}
 		
 		$ext = substr(strrchr($name, "."), 1);
 			
@@ -296,6 +300,7 @@ function wppa_insert_photo ($file = '', $album = '', $name = '') {
 			
 		if (get_option('wppa_resize_on_upload', 'no') == 'yes') {
 			require_once('wppa_class_resize.php');
+			
 			if (wppa_is_wider($img_size[0], $img_size[1])) {
 				$dir = 'W';
 				$siz = get_option('wppa_fullsize', '640');
@@ -306,9 +311,7 @@ function wppa_insert_photo ($file = '', $album = '', $name = '') {
 				$siz = get_option('wppa_maxheight', get_option('wppa_fullsize', '640'));
 				$s = $img_size[1];
 			}
-//			$dir = $img_size[0] > $img_size[1] ? 'W' : 'H';
-//			$siz = get_option('wppa_fullsize', '640');
-//			$s = $img_size[0] > $img_size[1] ? $img_size[0] : $img_size[1];
+
 			if ($s > $siz) {	
 				$objResize = new wppa_ImageResize($file, $newimage, $dir, $siz);
 			}
@@ -325,12 +328,16 @@ function wppa_insert_photo ($file = '', $album = '', $name = '') {
 			wppa_create_thumbnail($newimage, $thumbsize, '' );
 		} 
 		else {
+			wppa_error_message(__('ERROR: Resized or copied image could not be created.', 'wppa'));
 			return false;
 		}
 		echo('.');
 		return true;
 	}
-	else return false;
+	else {
+		wppa_error_message(__('ERROR: Unknown file or album.', 'wppa'));
+		return false;
+	}
 }
 
 function wppa_get_photocount($files) {
@@ -428,3 +435,53 @@ function wppa_cleanup_photos($alb = '') {
 	}
 }
 
+
+// Check if the required directories exist, if not, try to create them and report it
+function wppa_check_dirs() {
+
+	@define('WP_DEBUG', true);	
+
+	// check if uploads dir exists
+	$dir = ABSPATH . 'wp-content/uploads';
+	if (!is_dir($dir)) {
+		mkdir($dir);
+		if (!is_dir($dir)) {
+			wppa_error_message(__('The uploads directory does not exist, please do a regular WP upload first.', 'wppa'));
+			return false;
+		}
+		else {
+			chmod($dir, 0755);
+			wppa_ok_message(__('Successfully created uploads directory.', 'wppa'));
+		}
+	}	
+
+	// check if wppa dir exists
+	$dir = ABSPATH . 'wp-content/uploads/wppa';
+	if (!is_dir($dir)) {
+		mkdir($dir);
+		if (!is_dir($dir)) {
+			wppa_error_message(__('Could not create the wppa directory.', 'wppa'));
+			return false;
+		}
+		else {
+			chmod($dir, 0755);
+			wppa_ok_message(__('Successfully created wppa directory.', 'wppa'));
+		}
+	}
+	
+	// check if thumbs dir exists 
+	$dir = ABSPATH . 'wp-content/uploads/wppa/thumbs';
+	if (!is_dir($dir)) {
+		mkdir($dir);
+		if (!is_dir($dir)) {
+			wppa_error_message(__('Could not create the wppa thumbs directory.', 'wppa'));
+			return false;
+		}
+		else {
+			chmod($dir, 0755);
+			wppa_ok_message(__('Successfully created wppa thumbs directory.', 'wppa'));
+		}
+	}
+	
+	return true;
+}

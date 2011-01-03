@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 * gp admin functions
-* version 2.4.3
+* version 2.4.4
 */
 
 // update all thumbs 
@@ -13,7 +13,7 @@ function wppa_regenerate_thumbs() {
 	$thumbsize = wppa_get_minisize();
 	$wppa_dir = ABSPATH . 'wp-content/uploads/wppa/';
 
-	if (!defined('WP_DEBUG')) define('WP_DEBUG', true);	
+	@define('WP_DEBUG', true);	
 	
     $start = get_option('wppa_lastthumb', '-1');
 
@@ -46,6 +46,12 @@ function wppa_create_thumbnail( $file, $max_side, $effect = '') {
 }
 
 function wppa_check_update() {
+global $wppa_revno;
+	if (get_option('wppa_revision', '100') < $wppa_revno) {
+		wppa_error_message(__('PLEASE DE-ACTIVATE the plugin WP-PHOTO-ALBUM-PLUS and ACTIVATE AGAIN before you continue!', 'wppa'));
+		wp_die(__('The wppa database tables are not yet at the required revision level.', 'wppa').' '.__('Current=', 'wppa').get_option('wppa_revision', '100').' '.__('New=', 'wppa').$wppa_revno);
+		return;
+	}
 	$key = get_option('wppa_update_key', '0');
 	if ($key == '0') return;
 	
@@ -147,8 +153,6 @@ function wppa_set_caps() {
 	}
 }
 
-// Moved here from wppa_functions.php:
-
 // set last album 
 function wppa_set_last_album($id = '') {
     global $albumid;
@@ -191,7 +195,6 @@ function wppa_order_options($order, $nil) {
 <?php
 }
 
-// These also in admin?
 // display usefull message
 function wppa_update_message($msg) {
 ?>
@@ -240,8 +243,6 @@ function wppa_get_minisize() {
 	$result = ceil($result / 25) * 25;
 	return $result;
 }
-
-// End in admin?
 
 // See if an album or any album is accessable for the current user
 function wppa_have_access($alb) {

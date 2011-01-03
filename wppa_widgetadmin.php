@@ -186,14 +186,15 @@ function wppa_sidebar_page_options() {
 				$id = get_option('wppa_widget_photo', '');
 //				$wi = get_option('wppa_thumbsize', '130') + 24;
 				$wi = wppa_get_minisize() + 24;
+				$hi = $wi + 24;
 				foreach ($photos as $photo) {
 ?>
-					<div class="photoselect" style="width: <?php echo(get_option('wppa_widget_width', '150')); ?>px; height: <?php echo($wi); ?>px;" >
+					<div class="photoselect" style="width: <?php echo(get_option('wppa_widget_width', '150')); ?>px; height: <?php echo($hi); ?>px;" >
 						<img src="<?php echo(get_bloginfo('wpurl') . '/wp-content/uploads/wppa/thumbs/' . $photo['id'] . '.' . $photo['ext']); ?>" alt="<?php echo($photo['name']); ?>"></img>
 						<input type="radio" name="wppa-widget-photo" id="wppa-widget-photo<?php echo($photo['id']); ?>" value="<?php echo($photo['id']) ?>" <?php if ($photo['id'] == $id) echo('checked="checked"'); ?>/>
 						<div class="clear"></div>
 						<h4 style="position: absolute; top:<?php echo( $wi - 12 ); ?>px;"><?php echo(stripslashes($photo['name'])) ?></h4>
-						<h6 style="position: absolute; top:<?php echo( $wi - 12 ); ?>px;"><?php echo(stripslashes($photo['description'])); ?></h6>
+						<h6 style="position: absolute; top:<?php echo( $wi - 12 ); ?>px; font-size:9px; line-height:10px;"><?php echo(stripslashes($photo['description'])); ?></h6>
 					</div>
 <?php		
 				}

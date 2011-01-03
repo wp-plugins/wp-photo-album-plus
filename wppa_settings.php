@@ -184,7 +184,11 @@ function wppa_page_options() {
 		
 		if (isset($_POST['wppa-show-home'])) update_option('wppa_show_home', 'yes');
 		else update_option('wppa_show_home', 'no');
-	
+
+		if (isset($_POST['wppa-bc-separator'])) update_option('wppa_bc_separator', $_POST['wppa-bc-separator']);
+		if (isset($_POST['wppa-bc-txt'])) update_option('wppa_bc_txt', htmlspecialchars(stripslashes($_POST['wppa-bc-txt']), ENT_QUOTES));
+		if (isset($_POST['wppa-bc-url'])) update_option('wppa_bc_url', $_POST['wppa-bc-url']);
+
 		if (isset($_POST['wppa-owner-only'])) update_option('wppa_owner_only', 'yes');
 		else update_option('wppa_owner_only', 'no');
 		
@@ -248,7 +252,7 @@ function wppa_page_options() {
 		else update_option('wppa_excl_sep', 'no');
 		
 		if (isset($_POST['wppa-charset']) && get_option('wppa_charset', '') != 'UTF-8') {
-			if (!options_error) {
+			if (!$options_error) {
 				global $wpdb;
 				if ($wpdb->query("ALTER TABLE " . ALBUM_TABLE . " MODIFY name text CHARACTER SET utf8") === false) $options_error = true;
 				if ($wpdb->query("ALTER TABLE " . PHOTO_TABLE . " MODIFY name text CHARACTER SET utf8") === false) $options_error = true;
@@ -343,6 +347,29 @@ function wppa_page_options() {
 						<td>
 							<input type="checkbox" name="wppa-show-home" id="wppa-show-home" <?php if (get_option('wppa_show_home', 'yes') == 'yes') echo (' checked="checked"') ?> />
 							<span class="description"><br/><?php _e('Indicate whether the breadcrumb navigation should start with a "Home"-link', 'wppa'); ?></span>
+						</td>
+					</tr>
+					<?php
+					$value = get_option('wppa_bc_separator', 'raquo');
+					$bc_url = get_option('wppa_bc_url', wppa_get_imgdir().'arrow.gif');
+					$bc_txt = get_option('wppa_bc_txt', htmlspecialchars('<span style="color:red; font-size:24px;">&bull;</span>'));
+					?>
+					<tr valign="top">
+						<th scope="row">
+							<label ><?php _e('Separator:', 'wppa'); ?></label>
+						</th>
+						<td>
+							<input type="radio" name="wppa-bc-separator" id="wppa-bc-separator" value="raquo" <?php if ($value == 'raquo') echo('checked="checked"') ?>><span style="font-size:16px;">&raquo;</span></input><br/>
+							<input type="radio" name="wppa-bc-separator" id="wppa-bc-separator" value="rsaquo" <?php if ($value == 'rsaquo') echo('checked="checked"') ?>><span style="font-size:16px;">&rsaquo;</span></input><br/>
+							<input type="radio" name="wppa-bc-separator" id="wppa-bc-separator" value="gt" <?php if ($value == 'gt') echo('checked="checked"') ?>><span style="font-size:16px;">&gt;</span></input><br/>
+							<input type="radio" name="wppa-bc-separator" id="wppa-bc-separator" value="bull" <?php if ($value == 'bull') echo('checked="checked"') ?>><span style="font-size:16px;">&bull;</span></input><br/>
+							<input type="radio" name="wppa-bc-separator" id="wppa-bc-separator" value="txt" <?php if ($value == 'txt') echo('checked="checked"') ?>><?php _e('Text (html):', 'wppa') ?></input>
+							<input type="text" name="wppa-bc-txt" id="wppa-bc-txt" style="width:80%;" value="<?php echo($bc_txt) ?>"/><br/>
+							<input type="radio" name="wppa-bc-separator" id="wppa-bc-separator" value="url" <?php if ($value == 'url') echo('checked="checked"') ?>><?php _e('Image (url):', 'wppa') ?></input>
+							<input type="text" name="wppa-bc-url" id="wppa-bc-url" style="width:80%;" value="<?php echo($bc_url) ?>"/>
+							<span class="description"><br/><?php _e('Select the desired breadcrumb separator element.', 'wppa') ?><br/>
+								<?php _e('A text string may contain valid html.', 'wppa') ?></br>
+								<?php _e('An image will be scaled automatically if you set the navigation font size.', 'wppa') ?></span>
 						</td>
 					</tr>
 					<tr><th><hr/></th><td><hr/></td></tr>

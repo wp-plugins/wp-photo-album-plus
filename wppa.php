@@ -2,7 +2,7 @@
 /*
 Plugin Name: WP Photo Album Plus
 Description: Easily manage and display your photo albums and slideshows within your WordPress site.
-Version: 2.4.3
+Version: 2.4.4
 Author: J.N. Breetvelt a.k.a OpaJaap
 Author URI: http://www.opajaap.nl/
 Plugin URI: http://wordpress.org/extend/plugins/wp-photo-album-plus/
@@ -24,7 +24,7 @@ define('PHOTO_TABLE', $wpdb->prefix . 'wppa_photos');
 define('WPPA_PLUGIN_PATH', 'wp-photo-album-plus');
 define('WPPA_NONCE' , 'wppa-update-check');
 
-$wppa_revno = '2.4.3';
+$wppa_revno = '244';
 $wppa_occur = 0;
 $wppa_master_occur = 0;
 $is_cover = '0';
@@ -47,9 +47,10 @@ register_activation_hook( __FILE__, 'wppa_setup' );
 // does the initial setup
 function wppa_setup() {
 	global $wpdb;
+	global $wppa_revno;
 	
 	$old_rev = get_option('wppa_revision', '100');
-	if ($old_rev <= '243') {
+	if ($old_rev <= $wppa_revno) {
 		
 	$create_albums = "CREATE TABLE " . ALBUM_TABLE . " (
                     id bigint(20) NOT NULL auto_increment, 
@@ -62,7 +63,7 @@ function wppa_setup() {
 					cover_linkpage bigint(20) NOT NULL,
 					owner text NOT NULL,
                     PRIMARY KEY  (id) 
-                    );"; // ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='WP Photo Album Plus';";
+                    );";
                     
 	$create_photos = "CREATE TABLE " . PHOTO_TABLE . " (
                     id bigint(20) NOT NULL auto_increment, 
@@ -72,14 +73,12 @@ function wppa_setup() {
                     description longtext NOT NULL, 
                     p_order smallint(5) unsigned NOT NULL,
                     PRIMARY KEY  (id) 
-                    );"; // ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='WP Photo Album Plus';";
+                    );";
 
     require_once(ABSPATH . 'wp-admin/upgrade-functions.php');
 
     dbDelta($create_albums);
     dbDelta($create_photos);
-	
-	delete_option('wppa_accesslevel');	/* reset at activation */
 	
 	if (!is_numeric(get_option('wppa_fullsize', 'nil'))) update_option('wppa_fullsize', '640');
 	if (!is_numeric(get_option('wppa_colwidth', 'nil'))) update_option('wppa_colwidth', get_option('wppa_fullsize'));
@@ -107,6 +106,8 @@ function wppa_setup() {
 	if (get_option('wppa_bcolor_alt', 'nil') == 'nil') update_option('wppa_bcolor_alt', '#bbbbbb');
 	if (get_option('wppa_bcolor_nav', 'nil') == 'nil') update_option('wppa_bcolor_nav', '#bbbbbb');
 	
+	$iret = true;
+	
 	if ($old_rev < '240') {
 		$key = '0';
 		$userstyle = ABSPATH . 'wp-content/themes/' . get_option('template') . '/wppa_style.css';
@@ -116,12 +117,16 @@ function wppa_setup() {
 		update_option('wppa_update_key', $key);
 		}
 	
-	global $current_user;
-	get_currentuserinfo();
-	$user = $current_user->user_login;
-	$query = $wpdb->prepare('UPDATE `' . ALBUM_TABLE . '` SET `owner` = %s WHERE `owner` = %s', $user, '');
-	$iret = $wpdb->query($query);
-	if (is_numeric($iret)) update_option('wppa_revision', '243');
+	if ($old_rev < '243') {
+		global $current_user;
+		get_currentuserinfo();
+		$user = $current_user->user_login;
+		$query = $wpdb->prepare('UPDATE `' . ALBUM_TABLE . '` SET `owner` = %s WHERE `owner` = %s', $user, '');
+		$iret = $wpdb->query($query);
+		}
+		
+	if ($iret !== false) update_option('wppa_revision', $wppa_revno);
+	
 	}
 }
 	
