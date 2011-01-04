@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: WP Photo Album Plus 2.4.2\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/wp-photo-album-plus\n"
 "POT-Creation-Date: 2010-08-22 09:46+0000\n"
-"PO-Revision-Date: 2010-12-17 12:23+0900\n"
+"PO-Revision-Date: 2011-01-04 23:38+0900\n"
 "Last-Translator: BNG NET <webmaster@bng.net>\n"
 "Language-Team: BNG NET <webmaster@bng.net>\n"
 "MIME-Version: 1.0\n"
@@ -18,6 +18,34 @@ msgstr ""
 "X-Poedit-Country: JAPAN\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-Bookmarks: -1,157,-1,-1,-1,-1,-1,-1,-1,-1\n"
+
+#: Added on 2011/01/04
+msgid "If you select --- none ---, the photos will not be centered horizontally either."
+msgstr "--- なし --- を選択すると、画像は横方向に対しても中央揃えにはなりません。"
+
+#: Added on 2011/01/04
+msgid "An image will be scaled automatically if you set the navigation font size."
+msgstr "ナビゲーションのフォントサイズを設定すれば、画像は自動的にサイズ調整されます。"
+
+#: Added on 2011/01/04
+msgid "A text string may contain valid html."
+msgstr "テキストにはHTMLが使えます。"
+
+#: Added on 2011/01/04
+msgid "Select the desired breadcrumb separator element."
+msgstr "パンくずのセパレータにしたいものを選択してください。"
+
+#: Added on 2011/01/04
+msgid "Image (url):"
+msgstr "画像(url):"
+
+#: Added on 2011/01/04
+msgid "Text (html):"
+msgstr "テキスト(html):"
+
+#: Added on 2011/01/04
+msgid "Separator:"
+msgstr "セパレータ:"
 
 #: Added on 2010/12/17
 msgid "Admin pages access:"
