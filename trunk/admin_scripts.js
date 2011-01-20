@@ -1,7 +1,7 @@
 /* admin_scripts.js */
 /* Package: wp-photo-album-plus
 /*
-/* Version 2.4.0
+/* Version 2.5.0
 /* Various js routines used in admin pages		
 */
 
@@ -134,4 +134,34 @@ function wppaCheckHs() {
 	if (Hs) jQuery(".wppa-ss").css('visibility', 'visible');
 	else jQuery(".wppa-ss").css('visibility', 'collapse');
 }
-/**/
+
+/* Enables or disables secundairy breadcrumb settings */
+function wppaCheckBreadcrumb() {
+	var Bc = document.getElementById('wppa-show-bread').checked;
+	if (Bc) {
+		jQuery('.wppa-bc').css('visibility', 'visible');
+	}
+	else {
+		jQuery('.wppa-bc').css('visibility', 'collapse');
+	}
+}
+
+/* Enables or disables rating system settings */
+function wppaCheckRating() {
+	var Rt = document.getElementById('wppa-rating-on').checked;
+	if (Rt) {
+		jQuery('.wppa-rating').css('visibility', 'visible');
+	}
+	else {
+		jQuery('.wppa-rating').css('visibility', 'collapse');
+	}
+}
+
+function wppaCheckWidgetLink() { 
+	if (document.getElementById('wppa-wlp').value == '-1') {
+		jQuery('.wppa-wlu').css('visibility', 'visible'); 
+	}
+	else {
+		jQuery('.wppa-wlu').css('visibility', 'collapse'); 
+	}
+}

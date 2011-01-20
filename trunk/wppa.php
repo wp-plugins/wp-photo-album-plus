@@ -2,7 +2,7 @@
 /*
 Plugin Name: WP Photo Album Plus
 Description: Easily manage and display your photo albums and slideshows within your WordPress site.
-Version: 2.4.4
+Version: 2.5.0
 Author: J.N. Breetvelt a.k.a OpaJaap
 Author URI: http://www.opajaap.nl/
 Plugin URI: http://wordpress.org/extend/plugins/wp-photo-album-plus/
@@ -19,12 +19,22 @@ global $is_cover;
 global $wppa_src;
 global $wppa_revno;
 
+// Check for php version
+// PHP_VERSION_ID is available as of PHP 5.2.7, if our 
+// version is lower than that, then emulate it
+if (!defined('PHP_VERSION_ID')) {
+	$version = explode('.', PHP_VERSION);
+
+	define('PHP_VERSION_ID', ($version[0] * 10000 + $version[1] * 100 + $version[2]));
+}
+
 define('ALBUM_TABLE', $wpdb->prefix . 'wppa_albums');
 define('PHOTO_TABLE', $wpdb->prefix . 'wppa_photos');
+define('WPPA_RATING', $wpdb->prefix . 'wppa_rating');
 define('WPPA_PLUGIN_PATH', 'wp-photo-album-plus');
 define('WPPA_NONCE' , 'wppa-update-check');
 
-$wppa_revno = '244';
+$wppa_revno = '250';
 $wppa_occur = 0;
 $wppa_master_occur = 0;
 $is_cover = '0';
@@ -72,14 +82,24 @@ function wppa_setup() {
                     name text NOT NULL, 
                     description longtext NOT NULL, 
                     p_order smallint(5) unsigned NOT NULL,
+					mean_rating tinytext NOT NULL,
                     PRIMARY KEY  (id) 
                     );";
 
-    require_once(ABSPATH . 'wp-admin/upgrade-functions.php');
+	$create_rating = "CREATE TABLE " . WPPA_RATING . " (
+					id bigint(20) NOT NULL auto_increment,
+					photo bigint(20) NOT NULL,
+					value smallint(5) NOT NULL,
+					user text NOT NULL,
+					PRIMARY KEY  (id)
+					);";
+					
+	require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
 
     dbDelta($create_albums);
     dbDelta($create_photos);
-	
+	dbDelta($create_rating);
+		
 	if (!is_numeric(get_option('wppa_fullsize', 'nil'))) update_option('wppa_fullsize', '640');
 	if (!is_numeric(get_option('wppa_colwidth', 'nil'))) update_option('wppa_colwidth', get_option('wppa_fullsize'));
 	if (get_option('wppa_enlarge', 'nil') == 'nil') update_option('wppa_enlarge', 'no');
@@ -108,7 +128,7 @@ function wppa_setup() {
 	
 	$iret = true;
 	
-	if ($old_rev < '240') {
+	if ($old_rev < '250') {		// theme and/or css changed since...
 		$key = '0';
 		$userstyle = ABSPATH . 'wp-content/themes/' . get_option('template') . '/wppa_style.css';
 		$usertheme = ABSPATH . 'wp-content/themes/' . get_option('template') . '/wppa_theme.php';
@@ -117,7 +137,7 @@ function wppa_setup() {
 		update_option('wppa_update_key', $key);
 		}
 	
-	if ($old_rev < '243') {
+	if ($old_rev < '243') {		// ownerfield added in...
 		global $current_user;
 		get_currentuserinfo();
 		$user = $current_user->user_login;
@@ -133,6 +153,7 @@ function wppa_setup() {
 /* LOAD SIDEBAR WIDGETS */
 require_once('wppa_widget.php');
 require_once('wppa_searchwidget.php');
+require_once('wppa_toptenwidget.php');
 
 /* ADMIN MENU */
 add_action('admin_menu', 'wppa_add_admin');
@@ -151,6 +172,7 @@ function wppa_add_admin() {
 	
     add_submenu_page(__FILE__, __('Upload Photos', 'wppa'), __('Upload Photos', 'wppa'), 'wppa_upload', 'upload_photos', 'wppa_page_upload');
 	add_submenu_page(__FILE__, __('Import Photos', 'wppa'), __('Import Photos', 'wppa'), 'wppa_upload', 'import_photos', 'wppa_page_import');
+	add_submenu_page(__FILE__, __('Export Photos', 'wppa'), __('Export Photos', 'wppa'), 'administrator', 'export_photos', 'wppa_page_export');
     add_submenu_page(__FILE__, __('Settings', 'wppa'), __('Settings', 'wppa'), 'administrator', 'options', 'wppa_page_options');
 	add_submenu_page(__FILE__, __('Sidebar Widget', 'wppa'), __('Sidebar Widget', 'wppa'), 'wppa_sidebar_admin', 'wppa_sidebar_options', 'wppa_sidebar_page_options');
     add_submenu_page(__FILE__, __('Help &amp; Info', 'wppa'), __('Help &amp; Info', 'wppa'), 'edit_posts', 'wppa_help', 'wppa_page_help');

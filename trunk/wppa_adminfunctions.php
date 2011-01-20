@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 * gp admin functions
-* version 2.4.4
+* version 2.5.0
 */
 
 // update all thumbs 
@@ -48,9 +48,16 @@ function wppa_create_thumbnail( $file, $max_side, $effect = '') {
 function wppa_check_update() {
 global $wppa_revno;
 	if (get_option('wppa_revision', '100') < $wppa_revno) {
-		wppa_error_message(__('PLEASE DE-ACTIVATE the plugin WP-PHOTO-ALBUM-PLUS and ACTIVATE AGAIN before you continue!', 'wppa'));
-		wp_die(__('The wppa database tables are not yet at the required revision level.', 'wppa').' '.__('Current=', 'wppa').get_option('wppa_revision', '100').' '.__('New=', 'wppa').$wppa_revno);
-		return;
+		wppa_error_message(__('The wppa database tables are not yet at the required revision level.', 'wppa').' '.__('Current=', 'wppa').get_option('wppa_revision', '100').' '.__('New=', 'wppa').$wppa_revno);
+		wppa_setup();
+		if (get_option('wppa_revision', '100') < $wppa_revno) {
+			wppa_error_message(__('PLEASE DE-ACTIVATE the plugin WP-PHOTO-ALBUM-PLUS and ACTIVATE AGAIN before you continue!', 'wppa'));
+			wp_die(__('Failed to fix this.', 'wppa').' '.__('Current=', 'wppa').get_option('wppa_revision', '100').' '.__('New=', 'wppa').$wppa_revno);
+			return;
+		}
+		else {
+			wppa_ok_message(__('I fixed this for you......', 'wppa'));
+		}
 	}
 	$key = get_option('wppa_update_key', '0');
 	if ($key == '0') return;
@@ -184,15 +191,22 @@ function wppa_get_last_album() {
 }
 
 // display order options
-function wppa_order_options($order, $nil) {
-    if ($nil != '') { ?>
-        <option value="0"<?php if ($order == "" || $order == "0") echo (' selected="selected"'); ?>><?php echo($nil); ?></option>
-<?php }
+function wppa_order_options($order, $nil, $rat) {
+    if ($nil != '') { 
+?>
+    <option value="0"<?php if ($order == "" || $order == "0") echo (' selected="selected"'); ?>><?php echo($nil); ?></option>
+<?php 
+	}
 ?>
     <option value="1"<?php if ($order == "1") echo(' selected="selected"'); ?>><?php _e('Order #', 'wppa'); ?></option>
     <option value="2"<?php if ($order == "2") echo(' selected="selected"'); ?>><?php _e('Name', 'wppa'); ?></option>
     <option value="3"<?php if ($order == "3") echo(' selected="selected"'); ?>><?php _e('Random', 'wppa'); ?></option>  
 <?php
+	if ($rat != '') {
+?>
+	<option value="4"<?php if ($order == "4") echo(' selected="selected"'); if (get_option('wppa_rating_on', 'yes') == 'no') echo ('disabled="disabled"') ?>><?php echo($rat); ?></option>
+<?php
+	}
 }
 
 // display usefull message
@@ -285,13 +299,6 @@ global $current_user;
 		if ($current_user->user_login == $owner) return true;
 		else return false;
 	}
-}
-
-function wppa_get_user() {
-global $current_user;
-	get_currentuserinfo();
-	$user = $current_user->user_login;
-	return $user;
 }
 
 function wppa_get_users() {

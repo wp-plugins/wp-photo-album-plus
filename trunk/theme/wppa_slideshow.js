@@ -1,5 +1,5 @@
 ﻿// Slide show variables and functions
-// This is wppa_slideshow.js version 2.4.3
+// This is wppa_slideshow.js version 2.5.0
 //
 
 var wppa_slides = new Array();
@@ -38,11 +38,20 @@ var wppa_of;				// = 'of' or its translation
 var wppa_nextphoto;			// = 'Next photo' or its translation
 var wppa_prevphoto;			// = 'Previous photo' or its translation
 
+var wppa_photo_ids = new Array();
+var wppa_photo_avg = new Array();
+var wppa_photo_myr = new Array();
+var wppa_photo_rur = new Array();
+
+var wppa_rating_once = true;
+
+var wppa_username;
+
 jQuery(document).ready(function(){
 	if (wppa_auto_colwidth) wppa_do_autocol(0);
 });
 
-function wppa_store_slideinfo(mocc, id, url, size, name, desc) {
+function wppa_store_slideinfo(mocc, id, url, size, name, desc, photoid, avgrat, myrat, rateurl) {
 	if (!wppa_slides[mocc]) {
 		wppa_slides[mocc] = new Array();
 		wppa_names[mocc] = new Array();
@@ -55,10 +64,18 @@ function wppa_store_slideinfo(mocc, id, url, size, name, desc) {
 		wppa_busy[mocc] = false;
 		wppa_first[mocc] = true;
 		wppa_fullvalign_fit[mocc] = false;
+		wppa_photo_ids[mocc] = new Array();
+		wppa_photo_avg[mocc] = new Array();
+		wppa_photo_myr[mocc] = new Array();
+		wppa_photo_rur[mocc] = new Array();
 	}
     wppa_slides[mocc][id] = ' src="' + url + '" alt="' + name + '" class="theimg big" ' + ' style="' + size + '; display:block;">';
     wppa_names[mocc][id] = name;
     wppa_descs[mocc][id] = desc;
+	wppa_photo_ids[mocc][id] = photoid;		// reqd for rating
+	wppa_photo_avg[mocc][id] = avgrat;		// avg ratig value
+	wppa_photo_myr[mocc][id] = myrat;		// my rating
+	wppa_photo_rur[mocc][id] = rateurl;		// url that performs the vote and returns to the page
 }
 
 function wppa_next_slide(mocc) {
@@ -67,6 +84,7 @@ function wppa_next_slide(mocc) {
 	// stop in progress??
 	if (wppa_ss_running[mocc] == -1) { 
 		wppa_ss_running[mocc] = 0;
+		wppa_set_rating_display(mocc); // Update after all
 		return;
 	}
 	// Find index of next slide if in auto mode and not stop in progress
@@ -185,6 +203,9 @@ function wppa_after_fade(mocc) {
 	if (wppa_film_show_glue) xoffset -= (wppa_filmstrip_margin * 2 + 2);	// Glue
 	jQuery('#wppa-filmstrip-'+mocc).animate({marginLeft: xoffset+'px'});
 	
+	// Set rating mechanism
+	wppa_set_rating_display(mocc);
+	
 	// Wait for next slide
 	if (wppa_ss_running[mocc] == 1) {
 		setTimeout('wppa_next_slide('+mocc+')', wppa_timeout[mocc]); 
@@ -261,6 +282,7 @@ function wppa_startstop(mocc, idx) {
 		}
 		jQuery('#bc-pname-'+mocc).html(wppa_slideshow);
     }
+	wppa_set_rating_display(mocc);
 }
     
 function wppa_speed(mocc, faster) {
@@ -294,7 +316,6 @@ function wppa_load_spinner(mocc) {
 	document.getElementById('spinner-'+mocc).style.top = top;
 	document.getElementById('spinner-'+mocc).style.left = lft;
 	document.getElementById('spinner-'+mocc).innerHTML = '<img id="spinnerimg-'+mocc+'" src="'+wppa_imgdir+'wpspin.gif" />';
-	
 }
 
 function wppa_unload_spinner(mocc) {
@@ -367,3 +388,79 @@ function wppa_check_rewind(mocc) {
 		jQuery('#wppa-filmstrip-'+mocc).css('margin-left', x_marg+'px');
 	}
 }
+
+function wppa_set_rating_display(mocc) {
+var idx, avg, myr;
+	if (!document.getElementById('wppa-rating-'+mocc)) return; 	// No rating bar
+	if (wppa_ss_running[mocc] == -1) return; 					// Stop in progress, do nothing now
+	
+	avg = wppa_photo_avg[mocc][wppa_id[mocc]];
+	wppa_set_rd(mocc, avg, '#wppa-avg-');
+	
+	if (wppa_username != '') {									// user logged in
+		myr = wppa_photo_myr[mocc][wppa_id[mocc]];
+		wppa_set_rd(mocc, myr, '#wppa-rate-');
+	}
+}
+		
+function wppa_set_rd(mocc, avg, where) {
+		
+	var idx1 = parseInt(avg);
+	var idx2 = idx1 + 1;
+	var frac = avg - idx1;
+	var opac = 0.2 + frac * 0.8;
+	var ilow = 1;
+	var ihigh = 5;
+	
+	for (idx=ilow;idx<=ihigh;idx++) {
+		if (idx <= idx1) {
+			jQuery(where+mocc+'-'+idx).stop().fadeTo(100, 1.0);
+		}
+		else if (idx == idx2) {
+			jQuery(where+mocc+'-'+idx).stop().fadeTo(100, opac); 
+		}
+		else {
+			jQuery(where+mocc+'-'+idx).stop().fadeTo(100, 0.2);
+		}
+	}
+}
+
+var wppa_vote_in_progress = false;
+
+function wppa_follow_me(mocc, idx) {
+	if (wppa_ss_running[mocc] == 1) return;				// Do not rate on a running show, what only works properly in Firefox								
+
+	if (wppa_photo_myr[mocc][wppa_id[mocc]] != 0 && wppa_rating_once) return;	// Already rated
+	if (wppa_vote_in_progress) return;
+	wppa_set_rd(mocc, idx, '#wppa-rate-');
+}
+function wppa_leave_me(mocc, idx) {
+	if (wppa_ss_running[mocc] == 1) return;				// Do not rate on a running show, what only works properly in Firefox	
+
+	if (wppa_photo_myr[mocc][wppa_id[mocc]] != 0 && wppa_rating_once) return;	// Already rated
+	if (wppa_vote_in_progress) return;
+	wppa_set_rd(mocc, wppa_photo_myr[mocc][wppa_id[mocc]], '#wppa-rate-');
+}
+
+function wppa_rate_it(mocc, value) {
+	var photoid = wppa_photo_ids[mocc][wppa_id[mocc]];
+	var oldval = wppa_photo_myr[mocc][wppa_id[mocc]];
+	var url = wppa_photo_rur[mocc][wppa_id[mocc]]+value;
+
+	if (oldval != 0 && wppa_rating_once) return;							// Already rated, and once allowed only
+//	if (wppa_ss_running[mocc] == 1) wppa_startstop(mocc, -1);				// Stop the show, this is NOT a showstopper, however....
+																			// this only works in Firefox, so we disable voting while show is running:
+	if (wppa_ss_running[mocc] == 1) return;										
+																			
+	wppa_vote_in_progress = true;											// Keeps opacity as it is now
+	
+	document.getElementById('wppa-rate-'+mocc+'-'+value).src = wppa_imgdir+'tick.png';				// Set icon
+	jQuery('#wppa-rate-'+mocc+'-'+value).stop().fadeTo(100, 1.0);
+	
+	setTimeout('wppa_go("'+url+'")', 2000);		
+}
+
+function wppa_go(url) {
+	document.location = url;	// Go!
+}
+

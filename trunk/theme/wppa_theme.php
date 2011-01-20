@@ -3,9 +3,9 @@
 * Package: wp-photo-album-plus
 *
 * display the albums/photos/slideshow in a page or post
-* Version 2.4.0
+* Version 2.5.0
 */
-global $wppa_version; $wppa_version = '2-4-0';		// The version number of this file, please change if you modify this file
+global $wppa_version; $wppa_version = '2-5-0';		// The version number of this file, please change if you modify this file
 global $wppa_src;
 global $wppa_show_statistics;						// Can be set to true by a custom page template
 
@@ -90,6 +90,7 @@ wppa_container('open');																// Open container
 		wppa_startstop('optional');				// The 'Slower | start/stop | Faster' bar
 		wppa_slide_frame();						// The photo / slide
 		wppa_slide_custom('optional');			// Custom box			// Reserved for future use
+		wppa_slide_rating('optional');			// Rating box
 		wppa_slide_filmstrip('optional');		// Show Filmstrip
 		wppa_slide_description('optional');		// The description of the photo
 		wppa_slide_name('optional');			// The name of the photo

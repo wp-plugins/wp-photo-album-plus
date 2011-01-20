@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the admin pages
-* Version 2.4.0
+* Version 2.5.0
 */
 
 /* Add admin style */
@@ -31,4 +31,5 @@ require_once('wppa_settings.php');
 require_once('wppa_widgetadmin.php');
 require_once('wppa_help.php');
 require_once('wppa_adminfunctions.php');
+require_once('wppa_export.php');
 	
