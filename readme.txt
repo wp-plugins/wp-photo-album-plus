@@ -109,8 +109,8 @@ WordPress developers Codex page and more specifically at the section about theme
 * You can enter a custom url and title for the link from the Photo of the day.
 * There is a new module: Export. This enables you to transfer entire treestructures of albums with photos from one WP installlation to another.
 It is also usefull for backup purposes. If your php version is at least 5.2.7, a zip-file will be created that contains all the required information and photos.
-If your php version is older, a bunch of files is created, *.pmf being 'photo meta file', containing name and description of the photo and the album it belongs to.
-*.amf being 'album meta files' that hold the album name and description. *.jpg/*.png/*.gif being the pictures.
+If your php version is older, a bunch of files is created, `*.pmf` being 'photo meta file', containing name and description of the photo and the album it belongs to.
+`*.amf` being 'album meta files' that hold the album name and description. `*.jpg/*.png/*.gif` being the pictures.
 Because it is allowed for a photo to not have a name, and it is allowed for multiple photos to have the same name within an album, 
 it is not possible to check for duplicate photos.
 So, be carefull not to import transferred photos more than once or you will end up with duplicate pictures.
