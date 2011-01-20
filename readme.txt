@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photo widget, phtoblog
-Version: 2.4.4
+Version: 2.5.0
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -10,6 +10,7 @@ Requires at least: 2.8
 Tested up to: 3.0.4
 
 This plugin is designed to easily manage and display your photo albums and slideshows within your WordPress site. 
+Additionally there are three widgets: Photo of the day, a Search Photos widget and a Top Ten Rated photo widget.
 
 
 == Description ==
@@ -25,8 +26,9 @@ This plugin is designed to easily manage and display your photo albums and slide
 * The visitor of your site can run a slideshow from the photos in an album by a single mouseclick.
 * The visitor can see an overview of thumbnail images of the photos in album.
 * The visitor can browse through the photos in each album you decide to publish.
-* You can add a Sidebar Widget that displays a photo which can be changed every hour, day or week.
+* You can add a Photo of the day Sidebar Widget that displays a photo which can be changed every hour, day or week.
 * You can add a Search Sidebar Widget which enables the visitors to search albums and photos for certain words in names and descriptions.
+* You can enable a rating system and a supporting Top Ten Photos Sidebar Widget that can hold a configurable number of high rated photos.
 * Almost all appearance settings can be done in the settings admin page. No php, html or css knowledge is required to customize the appearence of the photo display.
 * International language support. Currently included foreign languages files: Dutch, Japanese, French(outdated), Spanish.
 
@@ -98,6 +100,34 @@ wppa-[your languagecode].po and wppa-[your languagecode].mo.
 WordPress developers Codex page and more specifically at the section about themes and plugins.
 
 == Changelog ==
+
+= 2.5.0 =
+
+= New Features =
+* A rating system has been implemented.
+* A TopTen Sidebar Widget has been added.
+* You can enter a custom url and title for the link from the Photo of the day.
+* There is a new module: Export. This enables you to transfer entire treestructures of albums with photos from one WP installlation to another.
+It is also usefull for backup purposes. If your php version is at least 5.2.7, a zip-file will be created that contains all the required information and photos.
+If your php version is older, a bunch of files is created, *.pmf being 'photo meta file', containing name and description of the photo and the album it belongs to.
+*.amf being 'album meta files' that hold the album name and description. *.jpg/*.png/*.gif being the pictures.
+Because it is allowed for a photo to not have a name, and it is allowed for multiple photos to have the same name within an album, 
+it is not possible to check for duplicate photos.
+So, be carefull not to import transferred photos more than once or you will end up with duplicate pictures.
+A spin off of this module is that you can now upload a zip-file that contains photos only that can be imported.
+The import of zip files is done in two passes, in the first pass you can select the zipfiles to be extracted, 
+the second pass enables you to select the photos and albums you want to import.
+
+= Enhancements =
+* All three widgets are now dynamic. You will need to re-activate the Photo of the Day and the Search widget after upgrade.
+* An attempt will be made to recover from a manually performed update without de- and re-activation.
+* Added thumbnail text font-family and size settable in the Settings screen.
+
+= Bug Fixes =
+* Fixed an errormessage on activation of the plugin in debug mode.
+* Fixed W3C Validator errors and warnings.
+* Fixed a bug where thumbnail text did not recognize html while html allowed in descriptions.
+
 
 = 2.4.4 =
 

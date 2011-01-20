@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 * admin help page
-* version 2.4.0
+* version 2.5.0
 */
 
 function wppa_page_help() {
@@ -153,6 +153,7 @@ global $wppa_revno;
 			<?php _e('WP Photo Album Plus is extended with many new features and is maintained by J.N. Breetvelt, a.k.a. (<a href="http://www.opajaap.nl/">OpaJaap</a>)', 'wppa'); ?><br />
 			<?php _e('Thanx to R.J. Kaplan for WP Photo Album 1.5.1.', 'wppa'); ?><br/>
 			<?php _e('Thanx to E.S. Rosenberg for programming tips on security issues.', 'wppa'); ?><br/>
+			<?php _e('Thanx to the users who reported bugs and asked for enhancements. Without them WPPA should not have been what it is now!', 'wppa'); ?>
 		</p>
 		
 		<h3><?php _e('Licence', 'wppa'); ?></h3>

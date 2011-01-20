@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 * create, edit and delete albums
-* version 2.4.4
+* version 2.5.0
 */
 
 function wppa_admin() {
@@ -52,6 +52,7 @@ function wppa_admin() {
 				}
 				
 				$wpdb->query($wpdb->prepare('DELETE FROM `' . PHOTO_TABLE . '` WHERE `id` = %d LIMIT 1', $_GET['photo_del']));
+				$wpdb->query($wpdb->prepare('DELETE FROM `' . WPPA_RATING . '` WHERE `photo` = %d', $_GET['photo_del']));
 
 				wppa_update_message($message);
 			}		
@@ -103,6 +104,15 @@ function wppa_admin() {
 								</th>
 								<td>
 									<input type="text" name="wppa-order" id="wppa-order" value="<?php echo($albuminfo['a_order']) ?>" style="width: 50px;"/>
+<?php  
+									if (get_option('wppa_list_albums_by', '0') != '1' && $albuminfo['a_order'] != '0') { 
+?>
+									<span class="description" style="color:red">
+									<?php _e('Album order # has only effect if you set the album sort order method to <b>Order #</b> in the Photo Albums -> Settings screen.', 'wppa') ?>
+									</span>
+<?php
+									}
+?>
 									<span class="description"><br/><?php _e('If you want to sort the albums by order #, enter / modify the order number here.', 'wppa'); ?></span>
 								</td>
 							</tr>
@@ -123,7 +133,7 @@ function wppa_admin() {
 									<label ><?php _e('Photo order:', 'wppa'); ?></label>
 								</th>
 								<td>
-									<select name="wppa-list-photos-by"><?php wppa_order_options($order, __('--- default ---', 'wppa')) ?></select>
+									<select name="wppa-list-photos-by"><?php wppa_order_options($order, __('--- default ---', 'wppa'), __('Rating', 'wppa')) ?></select>
 									<span class="description">
 										<br/><?php _e('Specify the way the photos should be ordered in this album.', 'wppa'); ?>
 										<br/><?php _e('The default setting can be changed in the Options page.', 'wppa'); ?>
@@ -170,6 +180,21 @@ function wppa_admin() {
 	?>
 								</td>
 							</tr>
+<?php
+						if (get_option('wppa_rating_on', 'yes') == 'yes') {
+?>
+							<tr valign="top">
+								<th scope="row">
+									<label><?php _e('Reset ratings:', 'wppa') ?></label>
+								</th>
+								<td>
+									<input type="checkbox" name="clear-rating" id="clear-rating" />
+									<span style="color:red;"><?php _e('WARNING: If checked, this will clear all ratings in this album!', 'wppa') ?></span>
+								</td>
+							</tr>
+<?php
+						}
+?>
 
 							
 						</tbody>
@@ -307,7 +332,7 @@ function wppa_admin() {
 								<label ><?php _e('Order photos by:', 'wppa'); ?></label>
 							</th>
 							<td>
-								<select name="wppa-photo-order-by"><?php wppa_order_options('0', __('--- default ---', 'wppa')) ?></select>
+								<select name="wppa-photo-order-by"><?php wppa_order_options('0', __('--- default ---', 'wppa'), __('Rating', 'wppa')) ?></select>
 								<span class="description"><br/><?php _e('If you want to sort the photos in this album different from the system setting, select the order method here.', 'wppa'); ?></span>
 							</td>
 						</tr>
@@ -424,7 +449,15 @@ function wppa_album_photos($id) {
 						</tr>
 						<tr valign="top">
 							<th scope="row">
-								<a href="<?php echo(get_option('siteurl')) ?>/wp-admin/admin.php?page=<?php echo(WPPA_PLUGIN_PATH) ?>/wppa.php&amp;tab=edit&amp;edit_id=<?php echo($_GET['edit_id']) ?>&amp;photo_del=<?php echo($photo['id']) ?>" class="deletelink" onclick="return confirm('Are you sure you want to delete this photo?')"><?php _e('Delete', 'wppa'); ?></a>
+								<label ><?php _e('Rating:', 'wppa') ?></label>
+							</th>
+							<td>
+								<?php _e('Entries:', 'wppa'); echo(' '); wppa_rating_count_by_id($photo['id']); echo('.<br/>'); _e('Mean value:', 'wppa'); echo(' '.wppa_get_rating_by_id($photo['id'], 'nolabel').'.'); ?>
+							</td>
+						</tr>
+						<tr valign="top">
+							<th scope="row">
+								<a href="<?php echo(get_option('siteurl')) ?>/wp-admin/admin.php?page=<?php echo(WPPA_PLUGIN_PATH) ?>/wppa.php&amp;tab=edit&amp;edit_id=<?php echo($_GET['edit_id']) ?>&amp;photo_del=<?php echo($photo['id']) ?>" class="deletelink" onclick="return confirm('Are you sure you want to delete this photo?')"><?php _e('Delete photo', 'wppa'); ?></a>
 							</th>
 							<td>
 							</td>
@@ -436,6 +469,7 @@ function wppa_album_photos($id) {
 						</tr>
 					</table>
 					<input type="hidden" name="<?php echo('photos[' . $photo['id'] . '][id]') ?>" value="<?php echo($photo['id']) ?>" />
+					<input type="hidden" name="<?php echo('photos[' . $photo['id'] . '][mean_rating]') ?>" value="<?php echo($photo['mean_rating']) ?>" />
 					<div class="desc"><?php _e('Description:', 'wppa'); ?><br /><textarea cols="40" rows="4" name="photos[<?php echo($photo['id']) ?>][description]"><?php echo(stripslashes($photo['description'])) ?></textarea></div>
 					<div class="clear"></div>
 				
@@ -548,13 +582,21 @@ function wppa_edit_album() {
     // update the photo information
     if (isset($_POST['photos']))
 	foreach ($_POST['photos'] as $photo) {
+
+		$mean_rating = $photo['mean_rating'];
+		
+		if (isset($_POST['clear-rating'])) {
+			$wpdb->query($wpdb->prepare('DELETE FROM `'.WPPA_RATING.'` WHERE `photo` = %d', $photo['id']));
+			$mean_rating = '0';
+		}
+
         $photo['name'] = esc_attr($photo['name']);
 		
         if (!is_numeric($photo['p_order'])) $photo['p_order'] = 0;
 		
 		$photo_desc = $photo['description'];
 		
-		$query = $wpdb->prepare('UPDATE `' . PHOTO_TABLE . '` SET `name` = %s, `album` = %s, `description` = %s, `p_order` = %d WHERE `id` = %d LIMIT 1', $photo['name'], $photo['album'], $photo_desc, $photo['p_order'], $photo['id']);
+		$query = $wpdb->prepare('UPDATE `' . PHOTO_TABLE . '` SET `name` = %s, `album` = %s, `description` = %s, `p_order` = %d, `mean_rating` = %s WHERE `id` = %d LIMIT 1', $photo['name'], $photo['album'], $photo_desc, $photo['p_order'], $mean_rating, $photo['id']);
 		$iret = $wpdb->query($query);
 
         if ($iret === FALSE) {
@@ -577,7 +619,7 @@ function wppa_edit_album() {
 		else {
 			wppa_update_message(__('Album information edited.', 'wppa') . ' ' . '<a href="admin.php?page=' . WPPA_PLUGIN_PATH . '/wppa.php">' . __('Back to album management.', 'wppa') . '</a>');
 		}
-		
+				
 		wppa_set_last_album($_GET['edit_id']);
 	} else { 
 		wppa_error_message(__('Album Name cannot be empty.', 'wppa'));
@@ -608,6 +650,8 @@ function wppa_del_album($id, $move = '') {
 					unlink($file);
 				}
 				/* else: silence */
+				// remove the photo's ratings
+				$wpdb->query($wpdb->prepare('DELETE FROM `' . WPPA_RATING . '` WHERE `photo` = %d', $photo['id']));
 			} 
 		}
 		

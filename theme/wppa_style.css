@@ -8,7 +8,7 @@
 /*
 /* You may always look into a newer version of this file to see what new classes and id's come with an upgrade
 /*
-/* This is version 2.4.2
+/* This is version 2.5.0
 */
 
 /* Navigation */
@@ -38,21 +38,16 @@
 /* Cover and popup photo. Admin settings page defines background color */
 .wppa-img {
 }
-
 /* Wrapper for albums, and thumbnails when display is like albums */
 .albumlist, .thumblist {
 	clear: both;
 } 
-
 /* Wrapper for album etc */
 .albumlist .album, .thumblist .thumb {
 	padding: 7px;
 }
-
 /* Album name */
 .wppa-title {
-/*	font-size: 1.2em;
-	font-weight: bold;*/
 	margin: 0;
 	padding: 0;
 	clear: none;
@@ -91,9 +86,7 @@
 /* Coverphoto */
 .coverphoto-frame .image, .thumbphoto-frame .image { 
 	position: relative;
-/*	float: right; 		/* Change this to float: left; if you want the coverphoto left */
-/*	margin-left: 5px;	/* and this to margin-right: 5px; */
-	border: none; /*1px #bbdd99 solid;*/
+	border: none; 
 	padding: 4px;
 	-moz-border-radius: 3px;
 	-khtml-border-radius: 3px;
@@ -126,16 +119,15 @@
 }
 
 /* Text under thumbnail images */
-.thumb-text {
+.wppa-thumb-text {
 	font-size: 10px;
-	line-height: 12px;
+/*	line-height: 12px; */
 	text-align: center;
-	width: 100px;
 }
 
-/* The popup small image */
+/* The popup small image, here is still a problem with IE6 */
 .wppa-popup-frame {
-position: absolute;
+	position: absolute;
 }
 
 .wppa-popup {
@@ -172,7 +164,6 @@ position: absolute;
 
 .wideentry .slide-frame {
 	padding: 0;
-	background-color: #eef7e6; 
 }
 
 .theslide {
@@ -200,7 +191,6 @@ position: absolute;
 
 /* Sidebar widget */
 .wppa-widget {
-/* padding: 5px 0 0 5px; */
 }
 
 .wppa-widget-text {

@@ -1,5 +1,5 @@
 // Theme variables and functions
-// This is wppa_theme.js version 2.4.2
+// This is wppa_theme.js version 2.5.0
 //
 
 var wppa_bgcolor_img = '';
@@ -13,7 +13,7 @@ var wppa_popup_nolink = false;
 //});
 
 // Popup of thumbnail images 
-function wppa_popup(mocc, elm, id) {
+function wppa_popup(mocc, elm, id, rating) {
 	var topDivBig, topDivSmall, leftDivBig, leftDivSmall;
 	var heightImgBig, heightImgSmall, widthImgBig, widthImgSmall, widthImgBigSpace;
 	var puImg;
@@ -29,10 +29,10 @@ function wppa_popup(mocc, elm, id) {
 	// Give this' occurrances popup its content (div eromheen weggehald)
 	if (document.getElementById('a-'+id+'-'+mocc)) {
 		if (wppa_popup_nolink) {
-			jQuery('#wppa-popup-'+mocc).html('<div class="wppa-popup" style="background-color:'+wppa_bgcolor_img+'; text-align:center;"><a id="wppa-a"><img id="wppa-img-'+mocc+'" src="'+elm.src+'" title="" /></a><div id="wppa-name-'+mocc+'" style="display:none; padding:2px;" class="wppa_pu_info">'+elm.alt+'</div><div id="wppa-desc-'+mocc+'" style="clear:both; display:none;" class="wppa_pu_info">'+elm.title+'</div></div>');
+			jQuery('#wppa-popup-'+mocc).html('<div class="wppa-popup" style="background-color:'+wppa_bgcolor_img+'; text-align:center;"><a id="wppa-a"><img id="wppa-img-'+mocc+'" src="'+elm.src+'" title="" /></a><div id="wppa-name-'+mocc+'" style="display:none; padding:2px;" class="wppa_pu_info">'+elm.alt+'</div><div id="wppa-desc-'+mocc+'" style="clear:both; display:none;" class="wppa_pu_info">'+elm.title+'</div><div id="wppa-rat-'+mocc+'" style="clear:both; display:none;" class="wppa_pu_info">'+rating+'</div></div>');
 		}
 		else {
-			jQuery('#wppa-popup-'+mocc).html('<div class="wppa-popup" style="background-color:'+wppa_bgcolor_img+'; text-align:center;"><a id="wppa-a" href="'+document.getElementById('a-'+id+'-'+mocc).href+'"><img id="wppa-img-'+mocc+'" src="'+elm.src+'" title="" /></a><div id="wppa-name-'+mocc+'" style="display:none; padding:2px;" class="wppa_pu_info">'+elm.alt+'</div><div id="wppa-desc-'+mocc+'" style="clear:both; display:none;" class="wppa_pu_info">'+elm.title+'</div></div>');
+			jQuery('#wppa-popup-'+mocc).html('<div class="wppa-popup" style="background-color:'+wppa_bgcolor_img+'; text-align:center;"><a id="wppa-a" href="'+document.getElementById('a-'+id+'-'+mocc).href+'"><img id="wppa-img-'+mocc+'" src="'+elm.src+'" title="" /></a><div id="wppa-name-'+mocc+'" style="display:none; padding:2px;" class="wppa_pu_info">'+elm.alt+'</div><div id="wppa-desc-'+mocc+'" style="clear:both; display:none;" class="wppa_pu_info">'+elm.title+'</div><div id="wppa-rat-'+mocc+'" style="clear:both; display:none;" class="wppa_pu_info">'+rating+'</div></div>');
 		}
 	}
 	// Find handle to the popup image 
@@ -67,6 +67,7 @@ function wppa_popup(mocc, elm, id) {
 function wppa_popready(mocc) {
 	jQuery("#wppa-name-"+mocc).show();
 	jQuery("#wppa-desc-"+mocc).show();
+	jQuery("#wppa-rat-"+mocc).show();
 }
 function wppa_popdown(mocc) {	//	return; //debug
 	jQuery('#wppa-popup-'+mocc).html("");
