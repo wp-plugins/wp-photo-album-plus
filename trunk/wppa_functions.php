@@ -4,10 +4,13 @@
 *
 * Various funcions and API modules
 * Version 2.5.0
+*
+* 001: Fix empty thumbnail page when n <= treshold
+* 002: Fix parse error during installation due to conflict with other plugin (?)
 */
 
 global $wppa_api_version;
-$wppa_api_version = '2-5-0-000';
+$wppa_api_version = '2-5-0-001';
 
 /* show system statistics */
 function wppa_statistics() {
@@ -1531,14 +1534,17 @@ global $is_cover;
 		}
 	}
 	elseif ($type == 'thumbs') {
-		if ($is_cover == '1') {
+		if ($is_cover == '1') {		// Cover has no thumbs: 0 pages
 			$result = '0';
 		} 
+		elseif (count($array) <= get_option('wppa_min_thumbs', '1')) {	// Less than treshold: 0
+			$result = '0';
+		}
 		elseif ($tps != '0') {
-			$result = ceil(count($array) / $tps);
+			$result = ceil(count($array) / $tps);	// Pag on: compute
 		}
 		else {
-			$result = '1';
+			$result = '1';								// Pag off: all fits on 1
 		}
 	}
 	return $result;

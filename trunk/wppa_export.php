@@ -96,7 +96,7 @@ global $wppa_temp_idx;
 		$zipid++;
 		update_option('wppa_last_zip', $zipid);
 		$zipfile = ABSPATH.'wp-content/wppa-depot/'.wppa_get_user().'/wppa-'.$zipid.'.zip';
-		if ($wppa_zip->open($zipfile, ZipArchive::CREATE) === TRUE) {
+		if ($wppa_zip->open($zipfile, 1) === TRUE) { //ZipArchive::CREATE) === TRUE) {
 			_e('ok, <br/>Filling', 'wppa'); echo(' '.basename($zipfile));
 		} else {
 			_e('failed<br/>', 'wppa');

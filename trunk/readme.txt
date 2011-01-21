@@ -120,13 +120,17 @@ the second pass enables you to select the photos and albums you want to import.
 
 = Enhancements =
 * All three widgets are now dynamic. You will need to re-activate the Photo of the Day and the Search widget after upgrade.
-* An attempt will be made to recover from a manually performed update without de- and re-activation.
+* An attempt will be made to recover from a manually performed update without de- and re-activation the first time you enter a WPPA+ addmin page.
 * Added thumbnail text font-family and size settable in the Settings screen.
 
 = Bug Fixes =
 * Fixed an errormessage on activation of the plugin in debug mode.
 * Fixed W3C Validator errors and warnings.
 * Fixed a bug where thumbnail text did not recognize html while html allowed in descriptions.
+
+= Hot fixes after initial release =
+* Fixed empty thumbnail page where number of thumbnails was not bigger than treshold value.
+* Changed ZipArchive::CREATE to 1 to avoid parse error during installation (possible conflict with other plugin).
 
 
 = 2.4.4 =
