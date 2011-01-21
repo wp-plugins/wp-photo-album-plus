@@ -303,8 +303,8 @@ function wppa_page_options() {
     elseif (get_option('wppa_lastthumb', '-2') != '-2') wppa_error_message(__('Regeneration of thumbnail images interrupted. Please press "Save Changes"', 'wppa')); 
 
 	// Check ratings for empty votes
-	// $i = $wpdb->query('DELETE FROM '.WPPA_RATING.' WHERE value = 0');
-	// if ($i) wppa_ok_message($i.' invalid ratings cleared.');
+	 $i = $wpdb->query('DELETE FROM '.WPPA_RATING.' WHERE value = 0');
+	 if ($i) wppa_ok_message($i.' invalid ratings cleared.');
 ?>		
 	<div class="wrap">
 		<?php $iconurl = get_bloginfo('wpurl') . '/wp-content/plugins/' . WPPA_PLUGIN_PATH . '/images/settings32.png'; ?>
