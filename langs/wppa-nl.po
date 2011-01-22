@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wp-photo-album-plus\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-01-19 09:42+0100\n"
-"PO-Revision-Date: 2011-01-19 09:44+0100\n"
+"POT-Creation-Date: 2011-01-22 15:32+0100\n"
+"PO-Revision-Date: 2011-01-22 15:34+0100\n"
 "Last-Translator: J.N. Breetvelt <OpaJaap@OpaJaap.nl>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -124,6 +124,10 @@ msgstr "voor"
 msgid "and less than or equal to"
 msgstr "en kleiner of gelijk aan"
 
+#: wppa_adminfunctions.php:355
+msgid "Unsupported value in _wppa_chmod_ :"
+msgstr "Niet ondersteunde waarde in _wppa_chmod_ :"
+
 #: wppa_albumadmin.php:17
 msgid "Warning:"
 msgstr "Waarschuwing:"
@@ -155,8 +159,8 @@ msgstr "Album nummer:"
 #: wppa_albumadmin.php:72
 #: wppa_albumadmin.php:296
 #: wppa_albumadmin.php:428
-#: wppa_settings.php:452
-#: wppa_settings.php:723
+#: wppa_settings.php:461
+#: wppa_settings.php:732
 msgid "Name:"
 msgstr "Naam:"
 
@@ -175,8 +179,8 @@ msgstr "WAARSCHUWING Als u de eigenaar wijzigt, kunt u dit album niet langer wij
 #: wppa_albumadmin.php:94
 #: wppa_albumadmin.php:305
 #: wppa_albumadmin.php:473
-#: wppa_settings.php:453
-#: wppa_settings.php:724
+#: wppa_settings.php:462
+#: wppa_settings.php:733
 msgid "Description:"
 msgstr "Beschrijving:"
 
@@ -207,21 +211,21 @@ msgid "If this is a sub album, select the album in which this album will appear.
 msgstr "Als dit een sub-album is, selecteer dan het album waar het in is opgenomen."
 
 #: wppa_albumadmin.php:133
-#: wppa_settings.php:813
+#: wppa_settings.php:822
 msgid "Photo order:"
 msgstr "Foto volgorde:"
 
 #: wppa_albumadmin.php:136
 #: wppa_albumadmin.php:335
-#: wppa_settings.php:439
-#: wppa_settings.php:641
-#: wppa_settings.php:690
+#: wppa_settings.php:448
+#: wppa_settings.php:650
+#: wppa_settings.php:699
 msgid "--- default ---"
 msgstr "--- standaard ---"
 
 #: wppa_albumadmin.php:136
 #: wppa_albumadmin.php:335
-#: wppa_settings.php:817
+#: wppa_settings.php:826
 msgid "Rating"
 msgstr "Waardering"
 
@@ -242,13 +246,13 @@ msgid "Select the photo you want to appear on the cover of this album."
 msgstr "Selecteer de foto voor de omslag van het album."
 
 #: wppa_albumadmin.php:154
-#: wppa_settings.php:598
+#: wppa_settings.php:607
 msgid "Link to:"
 msgstr "Link naar:"
 
 #: wppa_albumadmin.php:161
-#: wppa_settings.php:605
-#: wppa_settings.php:975
+#: wppa_settings.php:614
+#: wppa_settings.php:984
 msgid "There are no pages (yet) to link to."
 msgstr "Er zijn (nog) geen pagina's om naar te linken."
 
@@ -275,8 +279,8 @@ msgstr "WAARSCHUWING: Indien aangevinkt worden alle waarderingen uit dit album g
 #: wppa_albumadmin.php:204
 #: wppa_albumadmin.php:210
 #: wppa_albumadmin.php:216
-#: wppa_settings.php:318
-#: wppa_settings.php:1123
+#: wppa_settings.php:327
+#: wppa_settings.php:1145
 msgid "Save Changes"
 msgstr "Wijzigingen opslaan"
 
@@ -417,16 +421,16 @@ msgid "Get insertion Code"
 msgstr "Geef invoeg code"
 
 #: wppa_albumadmin.php:504
-#: wppa_functions.php:307
-#: wppa_settings.php:421
-#: wppa_settings.php:610
-#: wppa_settings.php:798
-#: wppa_settings.php:817
+#: wppa_functions.php:311
+#: wppa_settings.php:430
+#: wppa_settings.php:619
+#: wppa_settings.php:807
+#: wppa_settings.php:826
 msgid "--- none ---"
 msgstr "--- geen ---"
 
 #: wppa_albumadmin.php:520
-#: wppa_functions.php:308
+#: wppa_functions.php:312
 msgid "--- separate ---"
 msgstr "--- afzonderlijk ---"
 
@@ -549,164 +553,164 @@ msgstr "Kan het foto uitvoer bestand niet aanmaken."
 msgid "Could not read photo data."
 msgstr "Kan de foto gegevens niet lezen."
 
-#: wppa_functions.php:24
+#: wppa_functions.php:28
 msgid "There are"
 msgstr "Er zijn"
 
-#: wppa_functions.php:24
+#: wppa_functions.php:28
 msgid "photo albums. The last album added is"
 msgstr "foto albums. Het laatst toegevoegde album is"
 
-#: wppa_functions.php:28
+#: wppa_functions.php:32
 msgid ", a subalbum of"
 msgstr ", een sub-album van"
 
-#: wppa_functions.php:90
+#: wppa_functions.php:94
 msgid "Home"
 msgstr "Beginpagina"
 
-#: wppa_functions.php:136
-#: wppa_functions.php:1245
-#: wppa_functions.php:1646
+#: wppa_functions.php:140
+#: wppa_functions.php:1249
+#: wppa_functions.php:1653
 msgid "Slideshow"
 msgstr "Diavoorstelling"
 
-#: wppa_functions.php:146
+#: wppa_functions.php:150
 msgid "Searchstring:"
 msgstr "Zoeken naar:"
 
-#: wppa_functions.php:151
+#: wppa_functions.php:155
 msgid "Top rated photos"
 msgstr "Top waarderingen"
 
-#: wppa_functions.php:1183
+#: wppa_functions.php:1187
 msgid "Prev.&nbsp;page"
 msgstr "Vorige&nbsp;pagina"
 
-#: wppa_functions.php:1186
+#: wppa_functions.php:1190
 msgid "Next&nbsp;page"
 msgstr "Volgende&nbsp;pagina"
 
-#: wppa_functions.php:1246
+#: wppa_functions.php:1250
 msgid "Photo"
 msgstr "Foto"
 
-#: wppa_functions.php:1247
+#: wppa_functions.php:1251
 msgid "of"
 msgstr "van"
 
-#: wppa_functions.php:1248
+#: wppa_functions.php:1252
 msgid "Prev.&nbsp;photo"
 msgstr "Vorige&nbsp;foto"
 
-#: wppa_functions.php:1249
+#: wppa_functions.php:1253
 msgid "Next&nbsp;photo"
 msgstr "Volgende&nbsp;foto"
 
-#: wppa_functions.php:1560
+#: wppa_functions.php:1567
 #: wppa_toptenwidget.php:44
 msgid "Link to"
 msgstr "Link naar"
 
-#: wppa_functions.php:1564
+#: wppa_functions.php:1571
 msgid "Page is not available."
 msgstr "Pagina is niet beschikbaar."
 
-#: wppa_functions.php:1580
+#: wppa_functions.php:1587
 msgid "View the cover photo"
 msgstr "Bekijk de omslagfoto"
 
-#: wppa_functions.php:1581
+#: wppa_functions.php:1588
 msgid "s"
 msgstr "'s"
 
-#: wppa_functions.php:1584
-#: wppa_functions.php:1587
-#: wppa_functions.php:1653
+#: wppa_functions.php:1591
+#: wppa_functions.php:1594
+#: wppa_functions.php:1660
 msgid "View the album"
 msgstr "Bekijk het album"
 
-#: wppa_functions.php:1654
+#: wppa_functions.php:1661
 msgid "View"
 msgstr "Bekijk"
 
-#: wppa_functions.php:1657
+#: wppa_functions.php:1664
 msgid "album"
 msgstr "album"
 
-#: wppa_functions.php:1661
+#: wppa_functions.php:1668
 msgid "albums"
 msgstr "albums"
 
-#: wppa_functions.php:1666
+#: wppa_functions.php:1673
 msgid "and"
 msgstr "en"
 
-#: wppa_functions.php:1670
+#: wppa_functions.php:1677
 msgid "photo"
 msgstr "foto"
 
-#: wppa_functions.php:1674
+#: wppa_functions.php:1681
 msgid "photos"
 msgstr "foto's"
 
-#: wppa_functions.php:1824
+#: wppa_functions.php:1831
 msgid "Slower"
 msgstr "Trager"
 
-#: wppa_functions.php:1825
+#: wppa_functions.php:1832
 msgid "Start"
 msgstr "Start"
 
-#: wppa_functions.php:1826
+#: wppa_functions.php:1833
 msgid "Faster"
 msgstr "Sneller"
 
-#: wppa_functions.php:2153
+#: wppa_functions.php:2160
 msgid "- - - Rating enabled - - -"
 msgstr "- - - Waarderingssysteem geactiveerd - - -"
 
-#: wppa_functions.php:2162
+#: wppa_functions.php:2169
 msgid "very low"
 msgstr "zeer laag"
 
-#: wppa_functions.php:2163
+#: wppa_functions.php:2170
 msgid "low"
 msgstr "laag"
 
-#: wppa_functions.php:2164
+#: wppa_functions.php:2171
 msgid "average"
 msgstr "gemiddeld"
 
-#: wppa_functions.php:2165
+#: wppa_functions.php:2172
 msgid "high"
 msgstr "hoog"
 
-#: wppa_functions.php:2166
+#: wppa_functions.php:2173
 msgid "very high"
 msgstr "zeer hoog"
 
-#: wppa_functions.php:2171
+#: wppa_functions.php:2178
 msgid "Average&nbsp;rating"
 msgstr "Gem.&nbsp;waardering"
 
-#: wppa_functions.php:2177
+#: wppa_functions.php:2184
 msgid "Avarage&nbsp;rating:"
 msgstr "Gem.&nbsp;waardering"
 
-#: wppa_functions.php:2186
+#: wppa_functions.php:2193
 msgid "My&nbsp;rating:"
 msgstr "Mijn&nbsp;waardering:"
 
-#: wppa_functions.php:2190
+#: wppa_functions.php:2197
 msgid "My&nbsp;rating"
 msgstr "Mijn&nbsp;waardering"
 
-#: wppa_functions.php:2193
+#: wppa_functions.php:2200
 msgid "You must login to vote"
 msgstr "U moet ingelogd zijn om te stemmen"
 
-#: wppa_functions.php:2222
+#: wppa_functions.php:2229
 #, php-format
 msgid "Rating: %s"
 msgstr "%s punten"
@@ -1197,908 +1201,920 @@ msgstr "Aantal Top Tien foto's"
 msgid "Widget image thumbnail size"
 msgstr "Widget foto grootte"
 
-#: wppa_settings.php:295
+#: wppa_settings.php:300
 msgid "Error converting to UTF-8"
 msgstr "Fout bij het converteren naar UTF-8"
 
-#: wppa_settings.php:299
+#: wppa_settings.php:304
 msgid "Other changes saved"
 msgstr "Andere wijzigingen opgeslagen"
 
-#: wppa_settings.php:300
+#: wppa_settings.php:305
 msgid "Changes Saved"
 msgstr "Wijzigingen opgeslagen"
 
-#: wppa_settings.php:303
+#: wppa_settings.php:308
 msgid "Regeneration of thumbnail images interrupted. Please press \"Save Changes\""
 msgstr "Het opnieuw aanmaken van miniatuur afbeeldingen is onderbroken. Klik a.u.b. op \"Wijzigingen opslaan\""
 
-#: wppa_settings.php:310
+#: wppa_settings.php:319
 msgid "WP Photo Album Plus Settings"
 msgstr "WP Photo Album Plus Instellingen"
 
-#: wppa_settings.php:311
+#: wppa_settings.php:320
 msgid "Database revision:"
 msgstr "Database revisie:"
 
-#: wppa_settings.php:311
+#: wppa_settings.php:320
 msgid "WP Charset:"
 msgstr "WP Karakterset:"
 
-#: wppa_settings.php:311
+#: wppa_settings.php:320
 msgid "WPPA Charset:"
 msgstr "WPPA Karakterset:"
 
-#: wppa_settings.php:311
+#: wppa_settings.php:320
 msgid "default"
 msgstr "standaard"
 
-#: wppa_settings.php:325
+#: wppa_settings.php:334
 msgid "General settings:"
 msgstr "Algemene instellingen:"
 
-#: wppa_settings.php:328
+#: wppa_settings.php:337
 msgid "Column Width:"
 msgstr "Kolom Breedte:"
 
-#: wppa_settings.php:331
-#: wppa_settings.php:591
-#: wppa_settings.php:664
-#: wppa_settings.php:676
+#: wppa_settings.php:340
+#: wppa_settings.php:600
+#: wppa_settings.php:673
+#: wppa_settings.php:685
 msgid "pixels."
 msgstr "pixels."
 
-#: wppa_settings.php:332
+#: wppa_settings.php:341
 msgid "Enter the width of the main column in your theme's display area."
 msgstr "Voer de breedte in van de hoofdkolom van uw thema."
 
-#: wppa_settings.php:333
+#: wppa_settings.php:342
 msgid "You should set this value correctly to make sure the fullsize images are properly aligned horizontally."
 msgstr "U dient de waarde juist op te geven om er zeker van te zijn dat de foto's correct horizontaal worden uitgelijnd."
 
-#: wppa_settings.php:334
+#: wppa_settings.php:343
 msgid "You may enter <b>auto</b> for use in themes that have a floating content column."
 msgstr "U kunt <b>auto</b> invullen voor gebruik in thema's die een variabele hoofdkolom hebben."
 
-#: wppa_settings.php:340
+#: wppa_settings.php:349
 msgid "Full Size:"
 msgstr "Volledige grootte:"
 
-#: wppa_settings.php:343
+#: wppa_settings.php:352
 msgid "pixels wide,"
 msgstr "pixels breed,"
 
-#: wppa_settings.php:344
+#: wppa_settings.php:353
 msgid "pixels high."
 msgstr "pixels hoog."
 
-#: wppa_settings.php:345
+#: wppa_settings.php:354
 msgid "Enter the largest size in pixels as how you want your photos to be displayed."
 msgstr "Voer de grootste maat (in pixels) in hoe u de foto's wilt weergeven."
 
-#: wppa_settings.php:346
+#: wppa_settings.php:355
 msgid "This is usually the same as the Column Width, but it may differ."
 msgstr "Dit is meestal hetzelfde als de Kolom breedte, maar het kan hiervan verschillen."
 
-#: wppa_settings.php:352
+#: wppa_settings.php:361
 msgid "Resize on Upload:"
 msgstr "Tijdens upload verkleinen:"
 
-#: wppa_settings.php:356
+#: wppa_settings.php:365
 msgid "If you check this item, the size of the photos will be reduced to the Full Size during the upload/import process."
 msgstr "Als u dit aanvinkt, zullen de foto's verkleind worden tot de Volledig Grootte tijdens het upload/import proces."
 
-#: wppa_settings.php:357
+#: wppa_settings.php:366
 msgid "The photos will never be enlarged if they are smaller than the Full Size."
 msgstr "De foto's zullen nooit vergroot worden als ze kleiner zijn dan de Volledige Grootte."
 
-#: wppa_settings.php:363
+#: wppa_settings.php:372
 msgid "Stretch to fit:"
 msgstr "Vergroot als te klein:"
 
-#: wppa_settings.php:367
+#: wppa_settings.php:376
 msgid "Fullsize images will be stretched to the Full Size at display time if they are smaller. Leaving unchecked is recommended. It is better to upload photos that fit well the sizes you use!"
 msgstr "Foto's worden vergroot tot de opgegeven volledige grootte als se kleiner zijn. Dit wordt afgeraden. Het is beter foto's te uploaden die van zichzelf groot genoeg zijn!"
 
-#: wppa_settings.php:372
+#: wppa_settings.php:381
 msgid "Show breadcrumb:"
 msgstr "Toon broodkruimelnavigatie:"
 
-#: wppa_settings.php:376
+#: wppa_settings.php:385
 msgid "Indicate whether a breadcrumb navigation should be displayed"
 msgstr "Geef aan of de broodkruimelnavigatie moet worden weergegeven"
 
-#: wppa_settings.php:381
+#: wppa_settings.php:390
 msgid "Show \"Home\" in breadcrumb:"
 msgstr "Toon \"Beginpagina\" in de broodkruimelnavigatie:"
 
-#: wppa_settings.php:385
+#: wppa_settings.php:394
 msgid "Indicate whether the breadcrumb navigation should start with a \"Home\"-link"
 msgstr "Geef aan of de broodkruimelnavigatie met een \"Beginpagina\"-verwijzing moet beginnen"
 
-#: wppa_settings.php:395
+#: wppa_settings.php:404
 msgid "Separator:"
 msgstr "Scheidingsteken:"
 
-#: wppa_settings.php:402
+#: wppa_settings.php:411
 msgid "Text (html):"
 msgstr "Tekst (html):"
 
-#: wppa_settings.php:404
+#: wppa_settings.php:413
 msgid "Image (url):"
 msgstr "Afbeelding (url):"
 
-#: wppa_settings.php:406
+#: wppa_settings.php:415
 msgid "Select the desired breadcrumb separator element."
 msgstr "Selecteer het gewenste broodkruimelnavigatiescheidingselement."
 
-#: wppa_settings.php:407
+#: wppa_settings.php:416
 msgid "A text string may contain valid html."
 msgstr "Een tekst mag html code bevatten."
 
-#: wppa_settings.php:408
+#: wppa_settings.php:417
 msgid "An image will be scaled automatically if you set the navigation font size."
 msgstr "Een afbeelding wordt automatisch geschaald indien de navigatie fontgrootte is ingesteld."
 
-#: wppa_settings.php:413
+#: wppa_settings.php:422
 msgid "Full-size & Slideshow:"
 msgstr "Volle grootte foto's en Diavoorstellingen:"
 
-#: wppa_settings.php:416
-#: wppa_settings.php:685
+#: wppa_settings.php:425
+#: wppa_settings.php:694
 msgid "Vertical alignment:"
 msgstr "Verticale uitlijning:"
 
-#: wppa_settings.php:422
-#: wppa_settings.php:691
+#: wppa_settings.php:431
+#: wppa_settings.php:700
 msgid "top"
 msgstr "boven"
 
-#: wppa_settings.php:423
-#: wppa_settings.php:441
-#: wppa_settings.php:692
+#: wppa_settings.php:432
+#: wppa_settings.php:450
+#: wppa_settings.php:701
 msgid "center"
 msgstr "midden"
 
-#: wppa_settings.php:424
-#: wppa_settings.php:693
+#: wppa_settings.php:433
+#: wppa_settings.php:702
 msgid "bottom"
 msgstr "onder"
 
-#: wppa_settings.php:425
+#: wppa_settings.php:434
 msgid "fit"
 msgstr "passend"
 
-#: wppa_settings.php:427
+#: wppa_settings.php:436
 msgid "Specify the vertical alignment of fullsize images."
 msgstr "Geef de verticale uitlijning voor foto's van volledige grootte op."
 
-#: wppa_settings.php:428
+#: wppa_settings.php:437
 msgid "If you select --- none ---, the photos will not be centered horizontally either."
 msgstr "Als u --- geen --- opgeeft, worden de foto's ook niet horizontaal gecentreerd."
 
-#: wppa_settings.php:434
+#: wppa_settings.php:443
 msgid "Horizontal alignment:"
 msgstr "Horizontale uitlijning:"
 
-#: wppa_settings.php:440
+#: wppa_settings.php:449
 msgid "left"
 msgstr "links"
 
-#: wppa_settings.php:442
+#: wppa_settings.php:451
 msgid "right"
 msgstr "rechts"
 
-#: wppa_settings.php:444
+#: wppa_settings.php:453
 msgid "Specify the horizontal alignment of fullsize images. If you specify --- default --- , no horizontal alignment will take place."
 msgstr "Geef de gewenste horizontale uitlijning op. Indien u --- standaard --- kiest, vindt er geen horizontale uitlijning plaats."
 
-#: wppa_settings.php:449
+#: wppa_settings.php:458
 msgid "Name and description:"
 msgstr "Naam en Beschrijving:"
 
-#: wppa_settings.php:454
+#: wppa_settings.php:463
 msgid "If checked: display name and description under the full-size images and slideshow."
 msgstr "Indien aangevinkt: toon naam en beschrijving onder de volledige grootte foto's en diavoorstelling."
 
-#: wppa_settings.php:459
-#: wppa_settings.php:867
+#: wppa_settings.php:468
+#: wppa_settings.php:876
 msgid "Navigation bars:"
 msgstr "Navigatie balken:"
 
-#: wppa_settings.php:462
+#: wppa_settings.php:471
 msgid "Start/stop slideshow bar:"
 msgstr "Start/stop diavoorstelling balk:"
 
-#: wppa_settings.php:463
+#: wppa_settings.php:472
 msgid "Browse photos bar:"
 msgstr "Door foto's bladeren balk:"
 
-#: wppa_settings.php:464
+#: wppa_settings.php:473
 msgid "Filmstrip navigator:"
 msgstr "Filmstrip navigatiebalk:"
 
-#: wppa_settings.php:465
+#: wppa_settings.php:474
 msgid "Show seam between end and start of film:"
 msgstr "Toon de naad tussen begin en eind van de film:"
 
-#: wppa_settings.php:466
+#: wppa_settings.php:475
 msgid "If checked: display navigation bars and/or a filmstrip over and under the full-size images and slideshow."
 msgstr "Indien aangevinkt: toon navigatiebalken en/of filmstrip boven en onder de volledige grootte foto's en diavoorstelling."
 
-#: wppa_settings.php:467
+#: wppa_settings.php:476
 msgid "Additionaly indicate if you want the wrap-around point to be visible in the filmstrip."
 msgstr "Geef ook aan of u het punt waar het eind en het begin van de filmstrp samenkomen zichtbaar wilt maken."
 
-#: wppa_settings.php:472
+#: wppa_settings.php:481
 msgid "Enable slideshow:"
 msgstr "Diavoorstelling aan:"
 
-#: wppa_settings.php:476
+#: wppa_settings.php:485
 msgid "If you do not want slideshows: uncheck this box. Browsing full size images will remain possible."
 msgstr "Als u geen diavoorstellingen wilt: haal dit vinkje weg. Door foto's bladeren blijft mogelijk."
 
-#: wppa_settings.php:481
+#: wppa_settings.php:490
 msgid "Start slideshow running:"
 msgstr "Start diavoorstelling draaiend:"
 
-#: wppa_settings.php:485
+#: wppa_settings.php:494
 msgid "If checked, the slideshow will start running immediately, if unchecked the first photo will be displayed in browse mode."
 msgstr "Indien aangevinkt zal de diavoorstelling meteen beginnen te draaien, indien niet aangevinkt verschijnt de eerste foto in de blader modus."
 
-#: wppa_settings.php:490
+#: wppa_settings.php:499
 msgid "Fade-in after fade-out:"
 msgstr "Fade-in na fade-uit:"
 
-#: wppa_settings.php:494
+#: wppa_settings.php:503
 msgid "If checked: slides are faded out and in after each other. If unchecked: fadin and fadeout overlap."
 msgstr "Indien aangevinkt: in- en uit-faden gebeurt na elkaar in plaatst van tegelijkertijd."
 
-#: wppa_settings.php:499
+#: wppa_settings.php:508
 msgid "Slideshow timeout:"
 msgstr "Diavoorstelling timeout:"
 
-#: wppa_settings.php:504
+#: wppa_settings.php:513
 msgid "very short (1 s.)"
 msgstr "zeer kort (1 s.)"
 
-#: wppa_settings.php:505
+#: wppa_settings.php:514
 msgid "short (1.5 s.)"
 msgstr "kort (1.5 s.)"
 
-#: wppa_settings.php:506
+#: wppa_settings.php:515
 msgid "normal (2.5 s.)"
 msgstr "normaal (2.5 s.)"
 
-#: wppa_settings.php:507
+#: wppa_settings.php:516
 msgid "long (4 s.)"
 msgstr "lang (4 s.)"
 
-#: wppa_settings.php:508
+#: wppa_settings.php:517
 msgid "very long (6 s.)"
 msgstr "zeer lang (6 s.)"
 
-#: wppa_settings.php:510
+#: wppa_settings.php:519
 msgid "Select the time a single slide will be visible when the slideshow is started."
 msgstr "Kies de tijd dat een enkele dia zichtbaar is wanneer de diavoorstelling gestart wodt."
 
-#: wppa_settings.php:515
+#: wppa_settings.php:524
 msgid "Slideshow animation speed:"
 msgstr "Animatie diavoorstelling:"
 
-#: wppa_settings.php:520
+#: wppa_settings.php:529
 msgid "--- off ---"
 msgstr "--- uit ---"
 
-#: wppa_settings.php:521
+#: wppa_settings.php:530
 msgid "very fast (200 ms.)"
 msgstr "zeer snel (200 ms.)"
 
-#: wppa_settings.php:522
+#: wppa_settings.php:531
 msgid "fast (400 ms.)"
 msgstr "snel (400 ms.)"
 
-#: wppa_settings.php:523
+#: wppa_settings.php:532
 msgid "normal (800 ms.)"
 msgstr "normaal (800 ms.)"
 
-#: wppa_settings.php:524
+#: wppa_settings.php:533
 msgid "slow (1.2 s.)"
 msgstr "langzaam (1.2 s.)"
 
-#: wppa_settings.php:525
+#: wppa_settings.php:534
 msgid "very slow (2 s.)"
 msgstr "zeer langzaam (2 s.)"
 
-#: wppa_settings.php:526
+#: wppa_settings.php:535
 msgid "extremely slow (4 s.)"
 msgstr "extreem langzaam (4 s.)"
 
-#: wppa_settings.php:528
+#: wppa_settings.php:537
 msgid "Specify the animation speed to be used in slideshows."
 msgstr "Geef de overvloeisnelheid op voor de diavoorstellingen."
 
-#: wppa_settings.php:533
+#: wppa_settings.php:542
 msgid "Rating system"
 msgstr "Waarderings systeem"
 
-#: wppa_settings.php:536
+#: wppa_settings.php:545
 msgid "Enable rating system:"
 msgstr "Waarderings systeem aan:"
 
-#: wppa_settings.php:540
+#: wppa_settings.php:549
 msgid "If checked, the photo rating system will be enabled."
 msgstr "Indien aangevinkt, wordt het foto waarderings systeem aangezet."
 
-#: wppa_settings.php:545
+#: wppa_settings.php:554
 msgid "Rating options:"
 msgstr "Waarderings instellingen:"
 
-#: wppa_settings.php:549
+#: wppa_settings.php:558
 msgid "Users must login to rate photos."
 msgstr "Bezoekers moeten ingelogd zijn om foto's te kunnen waaderen."
 
-#: wppa_settings.php:551
+#: wppa_settings.php:560
 msgid "Users may change their ratings."
 msgstr "Bezoekers mogen hun waarderingen wijzigen."
 
-#: wppa_settings.php:553
+#: wppa_settings.php:562
 msgid "Users may give multiple votes. (This has no effect when users may change their votes.)"
 msgstr "Bezoekers mogen meerdere keren stemmen. (Dit heeft geen effect als ze mogen wijzigen.)"
 
-#: wppa_settings.php:554
+#: wppa_settings.php:563
 msgid "Please supply additional settings for the rating system."
 msgstr "Geef a.u.b. verdere instellingen voor het waarderingssysteem op."
 
-#: wppa_settings.php:559
+#: wppa_settings.php:568
 msgid "Reset all ratings:"
 msgstr "Verwijder alle waarderingen:"
 
-#: wppa_settings.php:563
+#: wppa_settings.php:572
 msgid "WARNING: If checked, this will clear all ratings in the system!"
 msgstr "WAARSCHUWING: Indien aangevinkt worden alle waarderingen uit het systeem gewist!"
 
-#: wppa_settings.php:567
+#: wppa_settings.php:576
 msgid "Top Ten Widget:"
 msgstr "Top Tien Widget:"
 
-#: wppa_settings.php:570
+#: wppa_settings.php:579
 msgid "Widget title"
 msgstr "Wiget Titel"
 
-#: wppa_settings.php:573
+#: wppa_settings.php:582
 #: wppa_toptenwidget.php:23
 msgid "Top Ten Rated Photos"
 msgstr "Top Tien gewaardeerde foto's"
 
-#: wppa_settings.php:574
+#: wppa_settings.php:583
 msgid "Enter/modify the title for the widget. This is a default and can be overriden at widget activation."
 msgstr "Geef de titel van de widget op. Dit is een standaard koptekst en kan overschreven worden bij het activeren van de widget."
 
-#: wppa_settings.php:579
+#: wppa_settings.php:588
 msgid "Number of photos in widget:"
 msgstr "Aantal foto's in de widget:"
 
-#: wppa_settings.php:583
+#: wppa_settings.php:592
 msgid "Enter the maximum number of rated photos in the TopTen widget."
 msgstr "Geef het maximaal weer te geven aantal gewaardeerde foto's voor de widget op."
 
-#: wppa_settings.php:588
+#: wppa_settings.php:597
 msgid "Widget thumbnail size:"
 msgstr "Widget miniatuur grootte:"
 
-#: wppa_settings.php:592
+#: wppa_settings.php:601
 msgid "Enter the size for the mini photos in the TopTen widget."
 msgstr "Geef de grootte op van de miniatuur foto's in de TopTien widget."
 
-#: wppa_settings.php:593
+#: wppa_settings.php:602
 msgid "Recommended values: 86 for a two column and 55 for a three column display."
 msgstr "Aanbevolen waarden: 86 voor twee en 55 voor drie kolommen weergave."
 
-#: wppa_settings.php:616
+#: wppa_settings.php:625
 msgid "Select the page the top ten photos links to."
 msgstr "Selecteer de pagina waar de foto's naar moet verwijzen."
 
-#: wppa_settings.php:624
+#: wppa_settings.php:633
 msgid "Thumbnails:"
 msgstr "Miniatuur afbeeldingen:"
 
-#: wppa_settings.php:627
+#: wppa_settings.php:636
 msgid "Photocount threshold:"
 msgstr "Drempelwaarde foto aantal:"
 
-#: wppa_settings.php:631
+#: wppa_settings.php:640
 msgid "Photos do not show up in the album unless there are more than this number of photos in the album. This allows you to have cover photos on an album that contains only sub albums without seeing them in the list of sub albums. Usually set to 0 (always show) or 1 (for one cover photo)."
 msgstr "U ziet de foto's niet in het album tenzij er meer dan dit aantal in het album zitten. Dit maakt het mogelijk om omslagfoto's te hebben op albums die verder alleen sub-albums bevatten zonder dat men ze in de lijst van sub-albums ziet. Gebruikelijke waarde 0 (laat alles zien) of 1 (voor één omslagfoto)."
 
-#: wppa_settings.php:636
+#: wppa_settings.php:645
 msgid "Display type:"
 msgstr "Afbeeldings methode:"
 
-#: wppa_settings.php:642
+#: wppa_settings.php:651
 msgid "like album covers"
 msgstr "als album omslagen"
 
-#: wppa_settings.php:644
+#: wppa_settings.php:653
 msgid "You may select an altenative display method for thumbnails. Note that some of the thumbnail settings do not apply to all available display methods."
 msgstr "U kunt een alternatieve weergavemethode voor miniatuur afbeeldingen kiezen. Merk op dat niet alle instellingen op alle weergave methodes van toepassing zijn."
 
-#: wppa_settings.php:649
-#: wppa_settings.php:760
+#: wppa_settings.php:658
+#: wppa_settings.php:769
 msgid "Placement:"
 msgstr "Plaatsing:"
 
-#: wppa_settings.php:653
-#: wppa_settings.php:764
+#: wppa_settings.php:662
+#: wppa_settings.php:773
 msgid "Left"
 msgstr "Links"
 
-#: wppa_settings.php:654
-#: wppa_settings.php:765
+#: wppa_settings.php:663
+#: wppa_settings.php:774
 msgid "Right"
 msgstr "Rechts"
 
-#: wppa_settings.php:655
+#: wppa_settings.php:664
 msgid "Indicate the placement position of the thumbnailphoto you wish."
 msgstr "Geef de plaats aan waar u de miniatuur wilt zien."
 
-#: wppa_settings.php:660
+#: wppa_settings.php:669
 msgid "Thumbnail Size:"
 msgstr "Miniatuur grootte:"
 
-#: wppa_settings.php:665
+#: wppa_settings.php:674
 msgid "Changing the thumbnail size may result in all thumbnails being regenerated. this may take a while."
 msgstr "Het veranderen van de grootte kan er toe leiden dat alle miniaturen opnieuw worden aangemaakt. Dit kan geruime tijd duren."
 
-#: wppa_settings.php:670
+#: wppa_settings.php:679
 msgid "Thumbnail Framesize:"
 msgstr "Miniatuur framegrootte:"
 
-#: wppa_settings.php:673
+#: wppa_settings.php:682
 msgid "Width:"
 msgstr "Breedte:"
 
-#: wppa_settings.php:674
+#: wppa_settings.php:683
 msgid "pixels, Height:"
 msgstr "pixels, Hoogte:"
 
-#: wppa_settings.php:675
+#: wppa_settings.php:684
 msgid "pixels, Spacing:"
 msgstr "pixels, Tussenruimte:"
 
-#: wppa_settings.php:678
+#: wppa_settings.php:687
 msgid "Set width, height and spacing for the thumbnail frames."
 msgstr "Geef gewenste breedte, hoogte en tussenruimte op voor de frames van de miniaturen."
 
-#: wppa_settings.php:679
+#: wppa_settings.php:688
 msgid "These sizes should be large enough for a thumbnail image and - optionally - the text under it."
 msgstr "Deze maten moeten groot genoeg zijn om de miniatuur en - eventueel - de tekst er onder te kunnen omvatten."
 
-#: wppa_settings.php:695
+#: wppa_settings.php:704
 msgid "Specify the vertical alignment of thumbnail images. Use this setting only when albums contain both portrait and landscape photos."
 msgstr "Geef de verticale uitlijningsmethode aan. Gebruik deze instelling alleen wanneer albums zowel liggende als staande foto's bevatten."
 
-#: wppa_settings.php:700
-#: wppa_settings.php:771
+#: wppa_settings.php:709
+#: wppa_settings.php:780
 msgid "Apply mouseover effect:"
 msgstr "Pas het 'muis over' effect toe:"
 
-#: wppa_settings.php:704
-#: wppa_settings.php:775
+#: wppa_settings.php:713
+#: wppa_settings.php:784
 msgid "Opacity value:"
 msgstr "Ondoorschijnendheidswaarde:"
 
-#: wppa_settings.php:705
+#: wppa_settings.php:714
 msgid "Check this box to use mouseover effect on thumbnail images."
 msgstr "Pas het 'muis over' effect toe op miniatuur afbeeldingen."
 
-#: wppa_settings.php:706
-#: wppa_settings.php:778
+#: wppa_settings.php:715
+#: wppa_settings.php:787
 msgid "Enter percentage of opacity. 100% is opaque, 0% is transparant"
 msgstr "Percentage van ondoorschijnendheid. 100% is geheel ondoorschijnend, 0% is volledig doorschijnend."
 
-#: wppa_settings.php:711
+#: wppa_settings.php:720
 msgid "Apply popup effect:"
 msgstr "Pas het 'pop-up' effect toe:"
 
-#: wppa_settings.php:715
+#: wppa_settings.php:724
 msgid "Use popup effect on thumbnail images."
 msgstr "Pas het 'pop-up' effect toe op miniatuur afbeeldingen."
 
-#: wppa_settings.php:720
+#: wppa_settings.php:729
 msgid "Thumbnail text:"
 msgstr "Text voor miniaturen:"
 
-#: wppa_settings.php:725
+#: wppa_settings.php:734
 msgid "Photo rating:"
 msgstr "Foto waardering:"
 
-#: wppa_settings.php:726
+#: wppa_settings.php:735
 msgid "Display name, description and rating under thumbnails."
 msgstr "Toon naam, beschrijving en waardering onder de miniaturen."
 
-#: wppa_settings.php:731
+#: wppa_settings.php:740
 msgid "Max thumbnails per page:"
 msgstr "Maximum aantal miniatuur afbeeldingen per pagina:"
 
-#: wppa_settings.php:735
+#: wppa_settings.php:744
 msgid "Enter the maximum number of thumbnail images per page. A value of 0 indicates no pagination."
 msgstr "Geef het maximum aantal miniaturen per pagina op. De waarde 0 betekent: geen paginering."
 
-#: wppa_settings.php:740
+#: wppa_settings.php:749
 msgid "No links:"
 msgstr "Geen koppelingen:"
 
-#: wppa_settings.php:744
+#: wppa_settings.php:753
 msgid "Check this if you do NOT want to link the thumbnails to fullsize images."
 msgstr "Vink dit aan indien u NIET wilt dat de miniaturen naar grote foto's linken."
 
-#: wppa_settings.php:748
+#: wppa_settings.php:757
 msgid "Album covers:"
 msgstr "Album omslagen:"
 
-#: wppa_settings.php:751
+#: wppa_settings.php:760
 msgid "Coverphoto Size:"
 msgstr "Omslag foto grootte:"
 
-#: wppa_settings.php:755
+#: wppa_settings.php:764
 msgid "Changing the coverphoto size may result in all thumbnails being regenerated. this may take a while."
 msgstr "Het veranderen van de grootte kan er toe leiden dat alle miniaturen opnieuw worden aangemaakt. Dit kan geruime tijd duren."
 
-#: wppa_settings.php:766
+#: wppa_settings.php:775
 msgid "Indicate the placement position of the coverphoto you wish."
 msgstr "Geef de plaats aan waar u de omslagfoto wilt zien."
 
-#: wppa_settings.php:777
+#: wppa_settings.php:786
 msgid "Check this box to use mouseover effect on cover images."
 msgstr "Pas het 'muis over' effect toe op omslagfoto's."
 
-#: wppa_settings.php:783
+#: wppa_settings.php:792
 msgid "Max covers per page:"
 msgstr "Maximum aantal album omslagen per pagina:"
 
-#: wppa_settings.php:787
+#: wppa_settings.php:796
 msgid "Enter the maximum number of album covers per page. A value of 0 indicates no pagination."
 msgstr "Geef het maximum aantal album omslagen per pagina op. De waarde 0 betekent: geen paginering."
 
-#: wppa_settings.php:791
+#: wppa_settings.php:800
 msgid "Order settings:"
 msgstr "Volgorde instellingen:"
 
-#: wppa_settings.php:794
+#: wppa_settings.php:803
 msgid "Album order:"
 msgstr "Album volgorde:"
 
-#: wppa_settings.php:799
+#: wppa_settings.php:808
 msgid "Specify the way the albums should be ordered."
 msgstr "Geef de sorteer methode op voor albums."
 
-#: wppa_settings.php:804
-#: wppa_settings.php:823
+#: wppa_settings.php:813
+#: wppa_settings.php:832
 msgid "Descending:"
 msgstr "Aflopend:"
 
-#: wppa_settings.php:808
+#: wppa_settings.php:817
 msgid "If checked: largest first"
 msgstr "Als aangevinkt: Grootste eerst."
 
-#: wppa_settings.php:818
+#: wppa_settings.php:827
 msgid "Specify the way the photos should be ordered. This is the default setting. You can overrule the default sorting order on a per album basis."
 msgstr "Geef de methode op waarop de volgorde van de foto's moet worden bepaald. Dit is de standaard instelling. U kunt per album een andere methode opgeven."
 
-#: wppa_settings.php:827
+#: wppa_settings.php:836
 msgid "This is a system wide setting."
 msgstr "Deze instelling geldt voor het gehele systeem."
 
-#: wppa_settings.php:831
+#: wppa_settings.php:840
 msgid "Appearance:"
 msgstr "Opmaak:"
 
-#: wppa_settings.php:834
+#: wppa_settings.php:843
 msgid "Explanation:"
 msgstr "Toelichting:"
 
-#: wppa_settings.php:838
+#: wppa_settings.php:847
 msgid "The settings in this chapter may be left blank. When blank, the theme's defaults are used or the settings in wppa_style.css."
 msgstr "De instellingen in deze sectie mogen leeg gelaten worden. In dat geval worden de standaardwaarden van het thema of - indien aanwezig - de instellingen in wppa_style.css gebruikt."
 
-#: wppa_settings.php:839
+#: wppa_settings.php:848
 msgid "It is strongly recommended that you try these settings to achieve your desired appearance before editing the css file."
 msgstr "Het wordt sterk aanbevolen om te proberen met deze instellingen het gewenste resultaat te bereiken alvorens het css bestand te bewerken."
 
-#: wppa_settings.php:840
+#: wppa_settings.php:849
 msgid "Note: these settings - if not blank - have precednce over css settings or any hard coded attributes."
 msgstr "Opmerking: deze instellingen - indien ingevuld - hebben prioriteit boven de css of geprogrammeerde attribuu waarden."
 
-#: wppa_settings.php:841
+#: wppa_settings.php:850
 msgid "The css classes that these settings act upon are indicated in the descriptions as follows (for example 'wppa-class'):"
 msgstr "De stijlklassen waar deze instellingen betrekking op hebben zijn als volgt aangegeven (bijvoorbeeld 'wppa-class'):"
 
-#: wppa_settings.php:847
+#: wppa_settings.php:856
 msgid "Even background:"
 msgstr "Even achtergrond:"
 
-#: wppa_settings.php:850
-#: wppa_settings.php:860
-#: wppa_settings.php:870
-#: wppa_settings.php:891
+#: wppa_settings.php:859
+#: wppa_settings.php:869
+#: wppa_settings.php:879
+#: wppa_settings.php:900
 msgid "Background Color:"
 msgstr "Achtergrondkleur:"
 
-#: wppa_settings.php:851
-#: wppa_settings.php:861
-#: wppa_settings.php:871
+#: wppa_settings.php:860
+#: wppa_settings.php:870
+#: wppa_settings.php:880
 msgid "Border Color:"
 msgstr "Randkleur:"
 
-#: wppa_settings.php:852
+#: wppa_settings.php:861
 msgid "Enter valid CSS colors for even numbered backgrounds and borders of album covers and thumbnail displays 'As covers'."
 msgstr "Voer geldige CSS kleuren in voor even genummerde achtergronden en randen van album omslagen en miniatuur weergaven 'Als omslagen'."
 
-#: wppa_settings.php:857
+#: wppa_settings.php:866
 msgid "Odd background:"
 msgstr "Oneven achtergrond:"
 
-#: wppa_settings.php:862
+#: wppa_settings.php:871
 msgid "Enter valid CSS colors for odd numbered backgrounds and borders of album covers and thumbnail displays 'As covers'."
 msgstr "Voer geldige CSS kleuren in voor on-even genummerde achtergronden en randen van album omslagen en miniatuur weergaven 'Als omslagen'."
 
-#: wppa_settings.php:872
+#: wppa_settings.php:881
 msgid "Enter valid CSS colors for navigation backgrounds and borders."
 msgstr "Voer geldige CSS kleuren in voor achtergronden en randen van navigatiebalken."
 
-#: wppa_settings.php:877
+#: wppa_settings.php:886
 msgid "Borders:"
 msgstr "Randen:"
 
-#: wppa_settings.php:880
+#: wppa_settings.php:889
 msgid "Border thickness:"
 msgstr "Randdikte:"
 
-#: wppa_settings.php:881
+#: wppa_settings.php:890
 msgid "Border radius:"
 msgstr "Afrondingsstraal:"
 
-#: wppa_settings.php:882
+#: wppa_settings.php:891
 msgid "Enter thicknes and corner radius for the backgrounds above. A number of 0 means: no."
 msgstr "Voer de breedte en de afrondingsstraal in voor de bovenstaande achtergronden. Het getal 0 betekent: geen."
 
-#: wppa_settings.php:883
+#: wppa_settings.php:892
 msgid "Note that rounded corners are only supported by modern browsers."
 msgstr "Merk op dat afgeronde randen alleen door moderne browsers wordt ondersteund."
 
-#: wppa_settings.php:888
+#: wppa_settings.php:897
 msgid "Popup and Cover Photos:"
 msgstr "Popup en omslagfoto's:"
 
-#: wppa_settings.php:892
+#: wppa_settings.php:901
 msgid "Enter a valid CSS color for image backgrounds."
 msgstr "Voer een geldige CSS kleur in voor de achtergrond van afbeeldingen."
 
-#: wppa_settings.php:897
+#: wppa_settings.php:906
 msgid "Font for album titles:"
 msgstr "Lettertype voor album titels:"
 
-#: wppa_settings.php:900
+#: wppa_settings.php:909
+#: wppa_settings.php:919
+#: wppa_settings.php:929
+#: wppa_settings.php:939
+#: wppa_settings.php:949
+#: wppa_settings.php:959
+msgid "Font family:"
+msgstr "Lettertype:"
+
 #: wppa_settings.php:910
 #: wppa_settings.php:920
 #: wppa_settings.php:930
 #: wppa_settings.php:940
 #: wppa_settings.php:950
-msgid "Font family:"
-msgstr "Lettertype:"
-
-#: wppa_settings.php:901
-#: wppa_settings.php:911
-#: wppa_settings.php:921
-#: wppa_settings.php:931
-#: wppa_settings.php:941
-#: wppa_settings.php:951
+#: wppa_settings.php:960
 msgid "Size:"
 msgstr "Grootte:"
 
-#: wppa_settings.php:902
-#: wppa_settings.php:912
-#: wppa_settings.php:922
+#: wppa_settings.php:911
+#: wppa_settings.php:921
+#: wppa_settings.php:931
 msgid "Enter font name and size for album cover titles."
 msgstr "Voer de naam van het lettertype en de grootte voor album omslag titels."
 
-#: wppa_settings.php:907
+#: wppa_settings.php:916
 msgid "Font for fullsize photo descriptions:"
 msgstr "Lettertype voor de beschrijving van foto's van volledige grootte:"
 
-#: wppa_settings.php:917
+#: wppa_settings.php:926
 msgid "Font for fullsize photo names:"
 msgstr "Lettertype voor de naam van foto's van volledige grootte:"
 
-#: wppa_settings.php:927
+#: wppa_settings.php:936
 msgid "Font for navigations:"
 msgstr "Lettertype voor navigaties:"
 
-#: wppa_settings.php:932
+#: wppa_settings.php:941
 msgid "Enter font name and size for navigation items."
 msgstr "Voer de naam van het lettertype en de grootte voor navigaties."
 
-#: wppa_settings.php:937
+#: wppa_settings.php:946
 msgid "General font in wppa boxes:"
 msgstr "Algemeen lettertype in wppa boxen:"
 
-#: wppa_settings.php:942
-#: wppa_settings.php:952
+#: wppa_settings.php:951
+#: wppa_settings.php:961
 msgid "Enter font name and size for all other items."
 msgstr "Voer de naam van het lettertype en de grootte voor alle andere doeleinden."
 
-#: wppa_settings.php:947
+#: wppa_settings.php:956
 msgid "Font for text under thumbnails:"
 msgstr "Lettertype voor tekst onder miniaturen:"
 
-#: wppa_settings.php:957
+#: wppa_settings.php:966
 msgid "Default text color:"
 msgstr "Standaard tekstkleur:"
 
-#: wppa_settings.php:960
+#: wppa_settings.php:969
 msgid "Color:"
 msgstr "Kleur:"
 
-#: wppa_settings.php:961
+#: wppa_settings.php:970
 msgid "Enter your sites default text color."
 msgstr "Voer de standaard tekstkleur van uw website in."
 
-#: wppa_settings.php:965
+#: wppa_settings.php:974
 msgid "Miscellaneous:"
 msgstr "Diversen:"
 
-#: wppa_settings.php:968
+#: wppa_settings.php:977
 msgid "Search page:"
 msgstr "Zoekpagina:"
 
-#: wppa_settings.php:987
+#: wppa_settings.php:996
 #, php-format
 msgid "Select the page to be used to display search results. The page MUST contain %%wppa%%."
 msgstr "Selecteer de pagina die u wilt gebruiken om de zoekresultaten te tonen. De pagina MOET %%wppa%% bevatten."
 
-#: wppa_settings.php:988
+#: wppa_settings.php:997
 msgid "You may give it the title \"Search results\" or something alike."
 msgstr "U kunt het de titel \"Zoekresultaten\" of iets dergelijks geven."
 
-#: wppa_settings.php:989
+#: wppa_settings.php:998
 msgid "Or you ou may use the standard page on which you display the generic album."
 msgstr "U kunt ook bijvoorbeeld de standaard fotoalbum pagina gebruiken."
 
-#: wppa_settings.php:996
+#: wppa_settings.php:1005
 msgid "Exclude separate:"
 msgstr "Afzonderlijk uitsluiten:"
 
-#: wppa_settings.php:1000
+#: wppa_settings.php:1009
 msgid "When checked, albums (and photos in them) that have the parent set to --- separate --- will be excluded from being searched."
 msgstr "Indien aangevinkt, dan worden albums (en de foto's er in) uitgesloten die hun moeder op --- afzonderlijk --- hebeen staan."
 
-#: wppa_settings.php:1005
+#: wppa_settings.php:1014
 msgid "Allow HTML in album and photo descriptions:"
 msgstr "Sta het gebruik van HTML toe in de beschrijvingen van albums en foto's:"
 
-#: wppa_settings.php:1009
+#: wppa_settings.php:1018
 msgid "If checked: html is allowed. WARNING: No checks on syntax, it is your own responsability to close tags properly!"
 msgstr "Indien aangevinkt wordt html geïnterpreteerd. Waarschuwing: Er vindt geen syntaxcontrole plaats, het is uw eigen verantwoordelijkheid de juiste tags te gebruiken en af te sluiten!"
 
-#: wppa_settings.php:1016
+#: wppa_settings.php:1025
 msgid "Set Character set to UTF-8:"
 msgstr "Zet karakterset op UTF-8:"
 
-#: wppa_settings.php:1020
+#: wppa_settings.php:1029
 msgid "If checked: Converts the wppa database tables to UTF-8 This allows the use of certain characters - like Turkish - in photo and album names and descriptions."
 msgstr "Indien aangevinkt: Converteert de wppa database tabellen naar UTF-8. Dit maakt het gebruik van sommige letters - zoals Turkse - in foto en album namen en beschrijvingen mogelijk."
 
-#: wppa_settings.php:1027
-#: wppa_settings.php:1057
+#: wppa_settings.php:1036
+#: wppa_settings.php:1079
 msgid "Access settings:"
 msgstr "Toegangsrechten:"
 
-#: wppa_settings.php:1030
+#: wppa_settings.php:1039
+msgid "Directory access (CHMOD):"
+msgstr "Mappen toegang (CHMOD):"
+
+#: wppa_settings.php:1042
+msgid "Leave unchanged."
+msgstr "Ongewijzigd laten."
+
+#: wppa_settings.php:1047
+msgid "In rare cases you might need to change this setting. If you do not know what this means, leave it unchanged."
+msgstr "In uitzonderlijke gevallen kan het nodig zijn deze instelling te wijzigen. Als u dit niets zegt, laat het dan onveranderd."
+
+#: wppa_settings.php:1052
 msgid "Album access:"
 msgstr "Album toegang:"
 
-#: wppa_settings.php:1034
+#: wppa_settings.php:1056
 msgid "Limit album access to album owners only."
 msgstr "Beperk de toegang tot albums tot alleen de eigenaars."
 
-#: wppa_settings.php:1035
+#: wppa_settings.php:1057
 msgid "If checked, users who can edit albums and upload/import photos can do that with their own albums only."
 msgstr "Indien aangevinkt kunnen gebruikers die albums kunnen aanmaken en foto's kunnen uploaden/importeren dat alleen nog met albums waarvan ze de eigenaar zijn."
 
-#: wppa_settings.php:1036
+#: wppa_settings.php:1058
 msgid "Users can give their albums to another user. Administrators can change ownership and access all albums always."
 msgstr "Gebruikers kunnen hun albums aan andere gebruikers geven. Administrateurs kunnen ten alle tijde de eigenaar wijzigen."
 
-#: wppa_settings.php:1042
+#: wppa_settings.php:1064
 msgid "Admin pages access:"
 msgstr "Toegang tot admin pagina's:"
 
-#: wppa_settings.php:1046
+#: wppa_settings.php:1068
 msgid "Here you can set the capabilities that are specific for <strong>WPPA+.</strong>"
 msgstr "Hier kunt u de toegangsrechten opgeven die specifiek zijn voor <strong>WPPA+.</strong>"
 
-#: wppa_settings.php:1047
+#: wppa_settings.php:1069
 msgid "If you set them here, the classical userlevel is imitated, but implemented by the modern Roles and Capabilities system."
 msgstr "Als u ze hier zet, dan worden de klassieke gebruikers niveaus geïmiteerd met behulp van het moderne Roles en Capabilities systeem."
 
-#: wppa_settings.php:1048
+#: wppa_settings.php:1070
 msgid "That means that any higher userlevel (role) will automaticly get the capabilities that you give to a certain (lower) level."
 msgstr "Dat betekent dat elk hoger gebruikersniveau (role) automatisch de capabilities krijgt die u aan een zeker (lager) niveau geeft."
 
-#: wppa_settings.php:1049
+#: wppa_settings.php:1071
 msgid "If you want to give a capability to a specific user or role, you can set it using an other plugin, such as <strong>Capability Manager</strong>."
 msgstr "Als u een toegangsrecht (capability) aan een specifieke gebruiker of gebruikerssoort (role) wilt geven, dan kunt u dat doen met een andere plugin zoals <strong>Capability Manager</strong>."
 
-#: wppa_settings.php:1050
+#: wppa_settings.php:1072
 msgid "Possible capabilities are: <strong>wppa_admin</strong> (for the Photo Albums page), <strong>wppa_sidebar_admin</strong> (for the Sidebar Widget page) and <strong>wppa_upload</strong> (for the Upload and Import pages)."
 msgstr "Mogelijke capabilities zijn: <strong>wppa_admin</strong> (voor de Foto Albums pagina), <strong>wppa_sidebar_admin</strong> (voor de Zijkolom Widget pagina) en <strong>wppa_upload</strong> (voor de Upload en Import pagina's)."
 
-#: wppa_settings.php:1051
+#: wppa_settings.php:1073
 msgid "The Help page is available to users with the capability <strong>edit_posts</strong>, the <strong>Settings</strong> page (the page you are on right now) is limited to the role of administrator."
 msgstr "De Help pagina is beschikbaar voor gebruikers met het recht <strong>edit_posts</strong>, de <strong>Instellingen</strong> pagina (de pagina waar u nu naar kijkt) is voorbehouden aan de rol van adminstrator."
 
-#: wppa_settings.php:1061
+#: wppa_settings.php:1083
 msgid "Accesslevels are set here."
 msgstr "Toegangsrechten worden hier gezet."
 
-#: wppa_settings.php:1063
+#: wppa_settings.php:1085
 msgid "Accesslevels are set by an other program."
 msgstr "Toegangsrechten worden door een ander programma gezet."
 
-#: wppa_settings.php:1064
+#: wppa_settings.php:1086
 msgid "Indicate whether the accesslevels must be set by this admin page or by an other program."
 msgstr "Geef aan of de toegangsrechten op deze admin pagina moeten worden ingesteld, of dat u dat met een ander programma doet."
 
-#: wppa_settings.php:1069
+#: wppa_settings.php:1091
 msgid "Albums Access Level:"
 msgstr "Toegangs niveau voor albums:"
 
-#: wppa_settings.php:1075
-#: wppa_settings.php:1091
-#: wppa_settings.php:1107
+#: wppa_settings.php:1097
+#: wppa_settings.php:1113
+#: wppa_settings.php:1129
 msgid "Administrator"
 msgstr "Administrateur"
 
-#: wppa_settings.php:1076
-#: wppa_settings.php:1092
-#: wppa_settings.php:1108
+#: wppa_settings.php:1098
+#: wppa_settings.php:1114
+#: wppa_settings.php:1130
 msgid "Editor"
 msgstr "Bewerker"
 
-#: wppa_settings.php:1077
-#: wppa_settings.php:1093
-#: wppa_settings.php:1109
+#: wppa_settings.php:1099
+#: wppa_settings.php:1115
+#: wppa_settings.php:1131
 msgid "Author"
 msgstr "Auteur"
 
-#: wppa_settings.php:1078
-#: wppa_settings.php:1094
-#: wppa_settings.php:1110
+#: wppa_settings.php:1100
+#: wppa_settings.php:1116
+#: wppa_settings.php:1132
 msgid "Contributor"
 msgstr "Bijdrager"
 
-#: wppa_settings.php:1080
+#: wppa_settings.php:1102
 msgid "The minmum user level that can access the photo album admin (i.e. Manage Albums and Upload Photos)."
 msgstr "Het minimale gebrukersniveau dat het foto album mag beheren (d.i. Album beheer en Upload foto's)."
 
-#: wppa_settings.php:1085
+#: wppa_settings.php:1107
 msgid "Upload Access Level:"
 msgstr "Toegangs niveau voor uploaden en importeren:"
 
-#: wppa_settings.php:1096
+#: wppa_settings.php:1118
 msgid "The minmum user level that can upload photos."
 msgstr "Het minimale gebrukersniveau dat foto's kan toevoegen."
 
-#: wppa_settings.php:1101
+#: wppa_settings.php:1123
 msgid "Sidebar Access Level:"
 msgstr "Zijkolom widget toegangs niveau:"
 
-#: wppa_settings.php:1112
+#: wppa_settings.php:1134
 msgid "The minmum user level that can access the photo album sidebar widget admin."
 msgstr "Het minimale gebrukersniveau dat de zijkolom widget mag beheren"
 
-#: wppa_settings.php:1113
+#: wppa_settings.php:1135
 msgid "NOTE: Accessing this page - WP Photo Album Plus Settings - is always priviledged to Administrators."
 msgstr "OPMERKING: Deze pagina - Instellingen - is altijd voorbehouden aan uitsluitend Adminstrateurs."
 

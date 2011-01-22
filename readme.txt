@@ -130,6 +130,7 @@ the second pass enables you to select the photos and albums you want to import.
 = Hot fixes after initial release =
 * Fixed empty thumbnail page where number of thumbnails was not bigger than treshold value.
 * Changed ZipArchive::CREATE to 1 to avoid parse error during installation (possible conflict with other plugin).
+* Added CHMOD support in Photo Albums -> Settings panel for wppa+ directories.
 
 
 = 2.4.4 =
