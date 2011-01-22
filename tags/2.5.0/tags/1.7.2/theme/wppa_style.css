@@ -1,0 +1,110 @@
+.album {
+	margin: 7px 0;
+	padding: 7px;
+	border: 1px #bbdd99 solid;
+}
+
+.album .image {
+	float: right; 
+	margin-left: 5px;
+}
+
+.album h2.name {
+	font-size: 1.2em;
+	font-weight: bold;
+	margin: 0;
+	padding: 0;
+}
+
+#albumlist div #clear {
+    clear: both;
+    margin: 0;
+    padding: 0;
+}
+
+.clear { 
+    clear: both; 
+}
+
+#thumbswide {
+	text-align: left;	
+    width: 750px;
+}
+
+#thumbsnarrow {
+    text-align: left;
+    width: 450px;
+}
+
+.description {
+    height: 38px;
+}
+
+.thumbs img {
+	margin: 5px;
+	padding: 0px;
+	border: 2px solid #bbdd99;
+}
+
+#imagetitle {
+    text-align: center;
+    font-size: 1.4em;
+}
+    
+#imagedesc {
+    text-align: center;
+    font-size: 1.4em;
+}
+    
+    
+#albumlist div {
+    padding: 10px 10px 10px 10px;
+    margin-bottom: 15px;
+}
+    
+#albumlist .alt, #albumlist .alt div {
+    background-color: #d5eabf;
+}
+
+#albumlist .even, #albumlist .even div {
+    background-color: #e6f2d9;
+}
+
+#albumlist a img {
+	border: 2px solid #bbdd99; 
+}
+
+.prev {
+	float: left;
+    text-align: left;
+}
+
+.next {
+	float: right;
+    text-align: right;
+}
+
+#prevnext {
+    background-color: #eef7e6;
+    margin: 10px auto 20px auto;
+    padding: 0;
+/*    width: 490px; */
+}
+    
+#prev-arrow, #next-arrow {
+    background-color: #eef7e6;
+    margin: 0 -20px;
+    padding: 0;
+    width: 40px;
+    position: relative;
+    top: 350px;
+    font-size: 4.0em;
+}
+
+#prev-arrow a:link, #next-arrow a:link { border-style: none; }
+#prev-arrow a:visited, #next-arrow a:visited { border-style: none; }
+#prev-arrow a:hover, #next-arrow a:hover { text-decoration: none; }
+#prev-arrow a:active, #next-arrow a:active { border-style: none; }
+#prev-arrow { text-align: left; }
+#next-arrow { text-align: right; }
+
