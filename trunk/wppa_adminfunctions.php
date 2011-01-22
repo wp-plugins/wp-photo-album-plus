@@ -321,3 +321,37 @@ function wppa_user_select($select = '') {
 	}	
 	echo ($result);
 }
+
+function wppa_chmod($chmod) {
+	_wppa_chmod_(ABSPATH.'wp-content/uploads/wppa', $chmod);
+	_wppa_chmod_(ABSPATH.'wp-content/uploads/wppa/thumbs', $chmod);
+	_wppa_chmod_(ABSPATH.'wp-content/wppa-depot', $chmod);
+	$users = wppa_get_users();
+	if ($users) foreach($users as $user) {
+		_wppa_chmod_(ABSPATH.'wp-content/wppa-depot/'.$user['display_name'], $chmod);
+	}
+}
+
+function _wppa_chmod_($file, $chmod) {
+	if ($chmod == '0') return;	// Unchange
+	switch ($chmod) {
+		case '750':
+			if (is_dir($file)) chmod($file, 0750);
+			if (is_file($file)) chmod($file, 0640);
+			break;
+		case '755':
+			if (is_dir($file)) chmod($file, 0755);
+			if (is_file($file)) chmod($file, 0644);
+			break;
+		case '775':
+			if (is_dir($file)) chmod($file, 0775);
+			if (is_file($file)) chmod($file, 0664);
+			break;
+		case '777':
+			if (is_dir($file)) chmod($file, 0777);
+			if (is_file($file)) chmod($file, 0666);
+			break;
+		default:
+		wppa_error_message(__('Unsupported value in _wppa_chmod_ :', 'wppa').' '.$chmod);
+	}
+}

@@ -285,6 +285,11 @@ function wppa_page_options() {
 			update_option('wppa_topten_size', $_POST['wppa-topten-size']);
 		}
 		
+		if (isset($_POST['wppa-chmod'])) {
+			$chmod = $_POST['wppa-chmod'];
+			wppa_chmod($chmod);
+		}
+		
 		if (isset($_POST['wppa-charset']) && get_option('wppa_charset', '') != 'UTF-8') {
 			if (!$options_error) {
 				global $wpdb;
@@ -1029,6 +1034,19 @@ function wppa_page_options() {
 <?php if (current_user_can('administrator')) { ?>
 					<tr><th><hr/></th><td><hr/></td></tr>
 					<tr><th><h3><?php _e('Access settings:', 'wppa'); ?></h3></th></tr>
+					<tr valign="top">
+						<th scope="row">
+							<label ><?php _e('Directory access (CHMOD):', 'wppa'); ?></label>
+						</th>
+						<td>
+							<input type="radio" name="wppa-chmod" checked="checked" value="0">&nbsp;<?php _e('Leave unchanged.', 'wppa') ?><br/>
+							<input type="radio" name="wppa-chmod" value="750">&nbsp;750.<br/>
+							<input type="radio" name="wppa-chmod" value="755">&nbsp;755.<br/>
+							<input type="radio" name="wppa-chmod" value="775">&nbsp;775.<br/>
+							<input type="radio" name="wppa-chmod" value="777">&nbsp;777.
+							<span class="description"><br/><?php _e('In rare cases you might need to change this setting. If you do not know what this means, leave it unchanged.', 'wppa') ?></span>
+						</td>
+					</tr>
 					<tr valign="top">
 						<th scope="row">
 							<label ><?php _e('Album access:', 'wppa'); ?></label>

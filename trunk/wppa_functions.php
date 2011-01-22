@@ -7,10 +7,11 @@
 *
 * 001: Fix empty thumbnail page when n <= treshold
 * 002: Fix parse error during installation due to conflict with other plugin (?)
+* 003: Added chmod support in settings page
 */
 
 global $wppa_api_version;
-$wppa_api_version = '2-5-0-001';
+$wppa_api_version = '2-5-0-003';
 
 /* show system statistics */
 function wppa_statistics() {
