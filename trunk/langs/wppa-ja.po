@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: WP Photo Album Plus 2.4.2\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/wp-photo-album-plus\n"
 "POT-Creation-Date: 2010-08-22 09:46+0000\n"
-"PO-Revision-Date: 2011-01-04 23:38+0900\n"
+"PO-Revision-Date: 2011-01-24 22:05+0900\n"
 "Last-Translator: BNG NET <webmaster@bng.net>\n"
 "Language-Team: BNG NET <webmaster@bng.net>\n"
 "MIME-Version: 1.0\n"
@@ -18,6 +18,210 @@ msgstr ""
 "X-Poedit-Country: JAPAN\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-Bookmarks: -1,157,-1,-1,-1,-1,-1,-1,-1,-1\n"
+
+#: Added on 2011/01/24
+msgid "Widget title"
+msgstr "ウィジェットのタイトル"
+
+#: Added on 2011/01/24
+msgid "Reset all ratings:"
+msgstr "全投票のリセット:"
+
+#: Added on 2011/01/24
+msgid "Enter the title and the url. Do'nt forget the HTTP://"
+msgstr "タイトルとURlを入力してください。HTTP://をお忘れなく"
+
+#: Added on 2011/01/24
+msgid "Type your custom url here"
+msgstr "カスタムURLを入力してください"
+
+#: Added on 2011/01/24
+msgid "Url:"
+msgstr "URL:"
+
+#: Added on 2011/01/24
+msgid "Type the title here"
+msgstr "タイトルを入力してください"
+
+#: Added on 2011/01/24
+msgid "Title:"
+msgstr "タイトル:"
+
+#: Added on 2011/01/24
+msgid "Custom link:"
+msgstr "カスタムリンク:"
+
+#: Added on 2011/01/24
+msgid "Select --- url --- to enter a custom link."
+msgstr "カスタムリンク先を指定するには、「--- url ---」を選択してください。"
+
+#: Added on 2011/01/24
+msgid "--- url ---"
+msgstr "--- url ---"
+
+#: Added on 2011/01/24
+msgid "In rare cases you might need to change this setting. If you do not know what this means, leave it unchanged."
+msgstr "稀にこの設定の変更が必要な場合があります。意味がよくわからなければ「現状のまま変更しない」をチェックしておいてください。"
+
+#: Added on 2011/01/24
+msgid "Leave unchanged."
+msgstr "現状のまま変更しない。"
+
+#: Added on 2011/01/24
+msgid "Directory access (CHMOD):"
+msgstr "ディレクトリのアクセス権 (CHMOD):"
+
+#: Added on 2011/01/24
+msgid "Font for text under thumbnails:"
+msgstr "サムネイルの下に表示するテキストのフォント"
+
+#: Added on 2011/01/24
+msgid "Display name, description and rating under thumbnails."
+msgstr "サムネイルの下に名称、説明、評価を表示する"
+
+#: Added on 2011/01/24
+msgid "Photo rating:"
+msgstr "写真評価:"
+
+#: Added on 2011/01/24
+msgid "Select the page the top ten photos links to."
+msgstr "トップ10写真のリンク先ページを選択してください。"
+
+#: Added on 2011/01/24
+msgid "Recommended values: 86 for a two column and 55 for a three column display."
+msgstr "推奨値: 2コラム表示の場合は86、3コラムの場合は55。"
+
+#: Added on 2011/01/24
+msgid "Enter the size for the mini photos in the TopTen widget."
+msgstr "トップ10ウィジェットに表示するミニ写真のサイズを入力してください。"
+
+#: Added on 2011/01/24
+msgid "Widget thumbnail size:"
+msgstr "ウィジェットのサムネイルサイズ:"
+
+#: Added on 2011/01/24
+msgid "Enter the maximum number of rated photos in the TopTen widget."
+msgstr "トップ10ウィジェットに表示する写真の最大数を入力してください。"
+
+#: Added on 2011/01/24
+msgid "Number of photos in widget:"
+msgstr "ウィジェットに表示する写真の数:"
+
+#: Added on 2011/01/24
+msgid "Enter/modify the title for the widget. This is a default and can be overriden at widget activation."
+msgstr "ウィジェットのタイトルを入力／変更してください。入力値はデフォルトとしてウィジェット有効時に適用されます。"
+
+#: Added on 2011/01/24
+msgid "Top Ten Rated Photos"
+msgstr "評価の高い写真トップ10"
+
+#: Added on 2011/01/24
+msgid "Top Ten Widget:"
+msgstr "トップ10ウィジェット:"
+
+#: Added on 2011/01/24
+msgid "WARNING: If checked, this will clear all ratings in the system!"
+msgstr "警告: チェックすると全ての投票結果が消去されます！"
+
+#: Added on 2011/01/24
+msgid "Please supply additional settings for the rating system."
+msgstr "投票システムに適用する設定を選んでください。"
+
+#: Added on 2011/01/24
+msgid "Users may give multiple votes. (This has no effect when users may change their votes.)"
+msgstr "複数回投票できる。（あとから変更可能な場合は意味なし）"
+
+#: Added on 2011/01/24
+msgid "Users may change their ratings."
+msgstr "投票内容はあとから変更できる。"
+
+#: Added on 2011/01/24
+msgid "Users must login to rate photos."
+msgstr "写真の投票にはログインが必須。"
+
+#: Added on 2011/01/24
+msgid "Rating options:"
+msgstr "投票オプション:"
+
+#: Added on 2011/01/24
+msgid "If checked, the photo rating system will be enabled."
+msgstr "チェックすると写真の投票システムが有効になります。"
+
+#: Added on 2011/01/24
+msgid "Enable rating system:"
+msgstr "投票システムの有効化:"
+
+#: Added on 2011/01/24
+msgid "Rating system"
+msgstr "投票システム"
+
+#: Added on 2011/01/24
+msgid "Export Photos"
+msgstr "写真のエクスポート"
+
+#: Added on 2011/01/24
+msgid "Successfully created wppa user depot directory."
+msgstr "wppaのユーザ用「デポ」ディレクトリを作成しました。"
+
+#: Added on 2011/01/24
+msgid "Unable to create user depot directory"
+msgstr "ユーザ用「デポ」ディレクトリは作成できませんでした。"
+
+#: Added on 2011/01/24
+msgid "Could not create the wppa thumbs directory."
+msgstr "「wppa/thumbs」ディレクトリは作成できませんでした。"
+
+#: Added on 2011/01/24
+msgid "Could not create the wppa directory."
+msgstr "「wppa」ディレクトリは作成できませんでした。"
+
+#: Added on 2011/01/24
+msgid "The uploads directory does not exist, please do a regular WP upload first."
+msgstr "「uploads」ディレクトリが存在しません。まず最初に通常のアップロード方法をお試しください。"
+
+#: Added on 2011/01/24
+msgid "Could not recover orphanized photos."
+msgstr "オーファンフォトは回復できませんでした。"
+
+#: Added on 2011/01/24
+msgid "Orphan Photos"
+msgstr "オーファンフォト"
+
+#: Added on 2011/01/24
+msgid "Could not create album: Orphan Photos"
+msgstr "アルバムが作成できませんでした: オーファンフォト"
+
+#: Added on 2011/01/24
+msgid "ERROR: Unknown file or album."
+msgstr "【エラー】不明なファイルまたはアルバムです。"
+
+#: Added on 2011/01/24
+msgid "ERROR: Resized or copied image could not be created."
+msgstr "【エラー】サイズを調整したか、または、コピーした画像を作成できませんでした。"
+
+#: Added on 2011/01/24
+msgid "Could not insert photo. query="
+msgstr "写真が挿入できません。query="
+
+#: Added on 2011/01/24
+msgid "Unsupported mime type encountered:"
+msgstr "サポート外のmimeタイプです:"
+
+#: Added on 2011/01/24
+msgid "ERROR: Unable to retrieve immage size of"
+msgstr "【エラー】次の画像のサイズが取得できません："
+
+#: Added on 2011/01/24
+msgid "Error inserting photo, album %1s does not exist for photo %2s. Either create the album or remove %3s."
+msgstr "写真の挿入中にエラー。写真「%2s」用のアルバム「%1s」が存在しません。アルバムを作成するか、%3sを削除してください。"
+
+#: Added on 2011/01/24
+msgid "Failed to extract"
+msgstr "抽出失敗"
+
+#: Added on 2011/01/24
+msgid "Rating"
+msgstr "投票"
 
 #: Added on 2011/01/04
 msgid "If you select --- none ---, the photos will not be centered horizontally either."
@@ -1580,7 +1784,7 @@ msgstr "チェックすると大きい順になります"
 
 #: wppa_admin.php:703
 msgid "Specify the way the photos should be ordered. This is the default setting. You can overrule the default sorting order on a per album basis."
-msgstr "写真の名ｒ日方を指定してください。これはデフォルト設定です。各アルバム毎に設定は変更できます。"
+msgstr "写真の並び方を指定してください。これはデフォルト設定です。各アルバム毎に設定は変更できます。"
 
 #: wppa_admin.php:712
 msgid "This is a system wide setting."
