@@ -5,14 +5,16 @@
 * Various funcions and API modules
 * Version 2.5.0
 *
-* 001: Fix empty thumbnail page when n <= treshold
-* 002: Fix parse error during installation due to conflict with other plugin (?)
-* 003: Added chmod support in settings page
+* 001: Fix empty thumbnail page when n <= treshold.
+* 002: Fix parse error during installation due to conflict with other plugin (?).
+* 003: Added chmod support in settings page.
 * 004: Do not set default rights on creation of dirs, use settings page instead.
+* 005: Slideonly defined.
+* 006: Patch for IE, give calculated width to textframe in covers, float and position
 */
 
 global $wppa_api_version;
-$wppa_api_version = '2-5-0-004';
+$wppa_api_version = '2-5-0-006';
 
 /* show system statistics */
 function wppa_statistics() {
@@ -46,9 +48,11 @@ function wppa_breadcrumb($xsep = '', $opt = '') {
 	global $wppa_local_occur;
 	global $startalbum;
 	global $single_photo;
+	global $is_slideonly;
 
 	if ($opt == 'optional' && get_option('wppa_show_bread', 'yes') == 'no') return;	/* Nothing to do here */
 	if (wppa_page('oneofone')) return; /* Never at a single image */
+	if ($is_slideonly == '1') return;	/* Not when slideony */
 	if (is_feed()) {
 //		wppa_dummy_bar(__('- - - Breadcrumb navigation bar - - -', 'wppa'));	
 		return;
@@ -210,6 +214,7 @@ function wppa_albums($xid = '', $typ='', $siz = '', $ali = '') {
     global $startalbum;
 	global $is_cover;
 	global $is_slide;
+	global $is_slideonly;
 	global $wppa_fullsize;
 	global $wppa_auto_colwidth;
 	global $single_photo;
@@ -221,19 +226,28 @@ function wppa_albums($xid = '', $typ='', $siz = '', $ali = '') {
 	if ($typ == 'album') {
 		$is_cover = '0';
 		$is_slide = '0';
+		$is_slideonly = '0';
 	}
 	elseif ($typ == 'cover') {
 		$is_cover = '1';
 		$is_slide = '0';
+		$is_slideonly = '0';
 	}
 	elseif ($typ == 'slide') {
 		$is_cover = '0';
 		$is_slide = '1';
+		$is_slideonly = '0';
+	}
+	elseif ($typ == 'slideonly') {
+		$is_cover = '0';
+		$is_slide = '0';
+		$is_slideonly = '1';
 	}
 	
 	if ($typ == 'photo') {
 		$is_cover = '0';
 		$is_slide = '0';
+		$is_slideonly = '0';
 		if (is_numeric($xid)) {
 			$single_photo = $xid;
 		}
@@ -357,12 +371,14 @@ function wppa_sep($opt = '') {
 function wppa_page($page) {
 	global $wppa_occur;
 	global $is_slide;
+	global $is_slideonly;
 	global $single_photo;
 
 	$occur = '0';
 	if (isset($_GET['occur'])) if (is_numeric($_GET['occur'])) $occur = $_GET['occur'];
 
 	if ($is_slide == '1') $cur_page = 'slide';			// Do slide or single when explixitly on
+	elseif ($is_slideonly == '1') $cur_page = 'slide';		// Slideonly is a subset of slide
 //	elseif (isset($_GET['topten'])) $cur_page = 'slide';	// Do slide for topten selection
 	elseif (is_numeric($single_photo)) $cur_page = 'oneofone';
 	elseif ($occur == $wppa_occur) {					// Interprete $_GET only if occur is current
@@ -371,7 +387,7 @@ function wppa_page($page) {
 		else $cur_page = 'albums';
 	}
 	else $cur_page = 'albums';	
-
+//echo('Page='.$cur_page);
 	if ($cur_page == $page) return TRUE; else return FALSE;
 }
 
@@ -1629,13 +1645,7 @@ global $wppa_alt;
 			?>
 			</div><!-- #coverphoto_frame_ <?php echo($album['id'].$wppa_master_occur) ?> --><?php 
 		} 
-		
-		if ($photo_left) {
-			$textframestyle = 'style="margin-left:'.(get_option('wppa_smallsize', '100')+17).'px;"';
-		}
-		else {
-			$textframestyle = '';
-		}
+		$textframestyle = wppa_get_text_frame_style($photo_left);
 		?>
 <div id="covertext_frame_<?php echo($album['id'].'_'.$wppa_master_occur) ?>" class="covertext-frame" <?php echo($textframestyle) ?>>
 		<h2 class="wppa-title" style="clear:none; <?php _wcs('wppa-title'); ?>"><?php 
@@ -1725,13 +1735,8 @@ global $wppa_alt;
 				<img src="<?php echo($src); ?>" alt="<?php echo($title); ?>" class="image wppa-img" style="<?php _wcs('wppa-img'); echo($imgattr); ?>" <?php echo($events) ?>/>
 			</a>
 		</div><?php 
-		} 
-		if ($photo_left) {
-			$textframestyle = 'style="margin-left:'.(get_option('wppa_smallsize', '100')+17).'px;"';
 		}
-		else {
-			$textframestyle = '';
-		}
+		$textframestyle = wppa_get_text_frame_style($photo_left);
 		?>
 <div id="thumbtext_frame_<?php echo($thumb['id'].'_'.$wppa_master_occur) ?>" class="thumbtext-frame" <?php echo($textframestyle) ?>>
 		<h2 class="wppa-title" style="clear:none;">
@@ -1821,11 +1826,13 @@ global $wppa_master_occur;
 
 function wppa_startstop($opt = '') {
 global $wppa_master_occur;
+global $is_slideonly;
 	if (is_feed()) {
 //		wppa_dummy_bar(__('- - - Start/stop slideshow navigation bar - - -', 'wppa'));
 		return;
 	}
 	if (($opt == 'optional') && (get_option('wppa_show_startstop_navigation', 'yes') == 'no')) return;
+	if ($is_slideonly == '1') return;	/* Not when slideonly */
 ?>
 	<div id="prevnext1-<?php echo($wppa_master_occur) ?>" class="wppa-box wppa-nav wppa-nav-text" style="<?php _wcs('wppa-box'); _wcs('wppa-nav'); _wcs('wppa-nav-text'); if (get_option('wppa_hide_slideshow', 'no') == 'yes') echo('display:none; '); ?>">
 		<p id="startstoptext-<?php echo($wppa_master_occur) ?>" style="text-align: center; margin:0">
@@ -1839,11 +1846,13 @@ global $wppa_master_occur;
 
 function wppa_browsebar($opt = '') {
 global $wppa_master_occur;
+global $is_slideonly;
 	if (is_feed()) {
 //		wppa_dummy_bar(__('- - - Browse navigation bar - - -', 'wppa'));
 		return;
 	}
 	if (($opt == 'optional') && (get_option('wppa_show_browse_navigation', 'yes') == 'no')) return;
+	if ($is_slideonly == '1') return;	/* Not when slideonly */
 ?>
 	<div id="prevnext2-<?php echo($wppa_master_occur) ?>" class="wppa-box wppa-nav wppa-nav-text" style="<?php _wcs('wppa-box'); _wcs('wppa-nav'); _wcs('wppa-nav-text'); ?>">
 		<p id="browsetext-<?php echo($wppa_master_occur) ?>" style="text-align: center; margin:0">
@@ -1859,13 +1868,17 @@ global $wppa_master_occur;
 
 function wppa_slide_description($opt = '') {
 global $wppa_master_occur;
+global $is_slideonly;
 	if (($opt == 'optional') && (get_option('wppa_show_full_desc', 'yes') == 'no')) return;
+	if ($is_slideonly == '1') return;	/* Not when slideonly */
 	echo('<p id="imagedesc-'.$wppa_master_occur.'" class="wppa-fulldesc imagedesc"></p>');
 }
 
 function wppa_slide_name($opt = '') {
 global $wppa_master_occur;
+global $is_slideonly;
 	if (($opt == 'optional') && (get_option('wppa_show_full_name', 'yes') == 'no')) return;
+	if ($is_slideonly == '1') return;	/* Not when slideonly */
 	echo('<p id="imagetitle-'.$wppa_master_occur.'" class="wppa-fulltitle imagetitle"></p>');
 }	
 
@@ -1878,6 +1891,7 @@ global $wppa_master_occur;
 function wppa_run_slidecontainer($type = '') {
 global $wppa_master_occur;
 global $single_photo;
+global $is_slideonly;
 	if ($type == 'single') {
 		if (is_feed()) {
 			echo('<a href="'.get_permalink().'"><img src="'.wppa_get_image_url_by_id($single_photo).'" style="'.wppa_get_fullimgstyle($single_photo).'"/></a>');
@@ -1911,6 +1925,8 @@ global $single_photo;
 			$index++;
 		endforeach;
 		if ($startindex != -1) $first = $startid;
+		
+		if ($is_slideonly) $startindex = -1;	// Start running, overrules everything
 	
 		if (get_option('wppa_fullvalign', 'default') == 'fit') { 
 			echo('<script type="text/javascript" >wppa_fullvalign_fit['.$wppa_master_occur.'] = true;</script>');
@@ -1935,6 +1951,7 @@ function wppa_slide_custom($opt = '') {
 // Show Filmstrip	
 function wppa_slide_filmstrip($opt = '') {
 global $wppa_master_occur;
+global $is_slideonly;
 global $thumb;
 	if ($opt == 'optional' && get_option('wppa_filmstrip', 'yes') == 'no' && !is_feed()) return;
 	
@@ -1942,7 +1959,8 @@ global $thumb;
 //		wppa_dummy_bar(__('- - - Filmstrip - - -', 'wppa'));
 //		return;
 //	}
-	
+	if ($is_slideonly == '1') return;	/* Not when slideonly */
+
 	if (isset($_GET['album'])) $alb = $_GET['album'];
 	else $alb = '';	// Album id is in $startalbum
 	$thumbs = wppa_get_thumbs($alb);
@@ -2156,7 +2174,9 @@ function wppa_is_wider($x, $y) {
 
 function wppa_slide_rating($opt = '') {
 global $wppa_master_occur;
+global $is_slideonly;
 	if ($opt == 'optional' && get_option('wppa_rating_on', 'yes') == 'no') return;
+	if ($is_slideonly == '1') return;	/* Not when slideonly */
 	if (is_feed()) {
 		wppa_dummy_bar(__('- - - Rating enabled - - -', 'wppa'));
 		return;
@@ -2229,6 +2249,20 @@ global $wpdb;
 			if ($opt == 'nolabel') $result = round($rating * 1000) / 1000;
 			else $result = sprintf(__('Rating: %s', 'wppa'), round($rating * 1000) / 1000);
 		}
+	}
+	return $result;
+}
+
+function wppa_get_text_frame_style($photo_left) {
+	$width = wppa_get_container_width();
+	$width -= get_option('wppa_smallsize', '100');
+	$width -= (2 * (7 + get_option('wppa_bwidth', '1') + 4) + 5);	// 2 * (padding + border + photopadding) + margin
+	
+	if ($photo_left) {
+		$result = 'style="width:'.$width.'px; float:right;"';
+	}
+	else {
+		$result = 'style="width:'.$width.'px; float:left;"';// position:absolute;"';
 	}
 	return $result;
 }
