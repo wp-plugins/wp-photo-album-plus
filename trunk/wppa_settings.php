@@ -7,7 +7,8 @@
 */
 
 function wppa_page_options() {
-	global $wpdb;
+global $wpdb;
+global $wppa_api_version;
 //wppa_setup();	// Test activation hook	
 	$options_error = false;
 	
@@ -317,7 +318,7 @@ function wppa_page_options() {
 			<br />
 		</div>
 		<h2><?php _e('WP Photo Album Plus Settings', 'wppa'); ?></h2>
-		<?php _e('Database revision:', 'wppa'); ?> <?php echo(get_option('wppa_revision', '100')) ?>. <?php _e('WP Charset:', 'wppa'); ?> <?php echo(get_bloginfo('charset')); ?>. <?php _e('WPPA Charset:', 'wppa'); ?> <?php echo(get_option('wppa_charset', __('default', 'wppa'))); ?>. <?php echo 'Current PHP version: ' . phpversion() ?>
+		<?php _e('Database revision:', 'wppa'); ?> <?php echo(get_option('wppa_revision', '100')) ?>. <?php _e('WP Charset:', 'wppa'); ?> <?php echo(get_bloginfo('charset')); ?>. <?php _e('WPPA Charset:', 'wppa'); ?> <?php echo(get_option('wppa_charset', __('default', 'wppa'))); ?>. <?php echo 'Current PHP version: ' . phpversion() ?>. <?php echo 'WPPA+ API Version: '.$wppa_api_version ?>.
 
 		<form action="<?php echo(get_option('siteurl')) ?>/wp-admin/admin.php?page=options" method="post">
 	

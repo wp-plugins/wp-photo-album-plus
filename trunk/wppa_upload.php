@@ -727,7 +727,7 @@ function wppa_check_dirs() {
 			return false;
 		}
 		else {
-			@chmod($dir, 0755);
+//			@chmod($dir, 0755);
 			wppa_ok_message(__('Successfully created uploads directory.', 'wppa'));
 		}
 	}	
@@ -741,7 +741,7 @@ function wppa_check_dirs() {
 			return false;
 		}
 		else {
-			@chmod($dir, 0755);
+//			@chmod($dir, 0755);
 			wppa_ok_message(__('Successfully created wppa directory.', 'wppa'));
 		}
 	}
@@ -755,7 +755,7 @@ function wppa_check_dirs() {
 			return false;
 		}
 		else {
-			@chmod($dir, 0755);
+//			@chmod($dir, 0755);
 			wppa_ok_message(__('Successfully created wppa thumbs directory.', 'wppa'));
 		}
 	}
@@ -769,7 +769,7 @@ function wppa_check_dirs() {
 			return false;
 		}
 		else {
-			@chmod($dir, 0755);
+//			@chmod($dir, 0755);
 			wppa_ok_message(__('Successfully created wppa master depot directory.', 'wppa'));
 		}
 	}
@@ -783,7 +783,7 @@ function wppa_check_dirs() {
 			return false;
 		}
 		else {
-			@chmod($depot, 0755);
+//			@chmod($depot, 0755);
 			wppa_ok_message(__('Successfully created wppa user depot directory.', 'wppa'));
 		}
 	}
