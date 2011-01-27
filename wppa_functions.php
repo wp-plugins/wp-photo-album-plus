@@ -10,11 +10,16 @@
 * 003: Added chmod support in settings page.
 * 004: Do not set default rights on creation of dirs, use settings page instead.
 * 005: Slideonly defined.
-* 006: Patch for IE, give calculated width to textframe in covers, float and position
+* 006: Patch for IE, give calculated width to textframe in covers, float and position.
+* 007: Patch to work patch 006 in variable column width.
+* 008: You can display covers in 2 or 3 columns if the display area is wider than given numbers of pixels.
+* 009: Fixed a warning in import photos where .pmf files do not exist. Added margin:0 for cover images for patch 006 to work in certain themes.
+* 010: Protect rating system with nonce field. Moved 2 sec delay from js to php, to work in refresh page.
+* 011: Fixed slashes in thumbnail popup descriptions.
 */
 
 global $wppa_api_version;
-$wppa_api_version = '2-5-0-006';
+$wppa_api_version = '2-5-0-011';
 
 /* show system statistics */
 function wppa_statistics() {
@@ -492,6 +497,7 @@ function wppa_get_albums($album = false, $type = '') {
 	global $is_cover;
 	global $wppa_occur;
 	global $wppa_src;
+	global $wppa_album_count;
 
 	$src = '';
 	if (isset($_POST['wppa-searchstring'])) {
@@ -545,6 +551,7 @@ function wppa_get_albums($album = false, $type = '') {
 		}
 		else $albums = false;
 	}
+	$wppa_album_count = count($albums);
 	return $albums;
 }
 
@@ -649,6 +656,7 @@ function wppa_get_thumbs() {
     global $startalbum;
 	global $wppa_occur;
 	global $wppa_src;
+	global $wppa_thumb_count;
 
 	$src = '';
 	if (isset($_POST['wppa-searchstring'])) {
@@ -694,6 +702,7 @@ function wppa_get_thumbs() {
 			$thumbs = false;
 		}
 	}
+	$wppa_thumb_count = count($thumbs);
 	return $thumbs;
 }
 
@@ -822,6 +831,8 @@ global $wpdb;
 	
 	if ($rating_request && $rating_on && $rating_allowed) { // Rating request
 		$rating = $_GET['rating'];
+		
+		if ($rating != '1' && $rating != '2' && $rating != '3' && $rating != '4' && $rating != '5') die(__('<b>ERROR: Attempt to enter an invalid rating.</b>', 'wppa'));
 
 		$my_oldrat = $wpdb->get_var($wpdb->prepare('SELECT * FROM `'.WPPA_RATING.'` WHERE `photo` = %d AND `user` = %s LIMIT 1', $id, $user)); 
 
@@ -909,7 +920,7 @@ global $wpdb;
 	$url .= 'photo=' . $id . '&rating=';
 	
 	// Produce final result
-    $result = "'" . $wppa_master_occur . "','" . $index . "','" . wppa_get_photo_url($id) . "','" . wppa_get_fullimgstyle($id) . "','" . esc_js(wppa_get_photo_name($id)) . "','" . wppa_html(esc_js(wppa_photo_desc($id,true))) . "','" .$id. "','" .$avgrat. "','" .$myrat. "','" .$url. "'";
+    $result = "'" . $wppa_master_occur . "','" . $index . "','" . wppa_get_photo_url($id) . "','" . wppa_get_fullimgstyle($id) . "','" . esc_js(wppa_get_photo_name($id)) . "','" . wppa_html(esc_js(stripslashes(wppa_photo_desc($id,true)))) . "','" .$id. "','" .$avgrat. "','" .$myrat. "','" .$url. "'";
     return $result;                                                        
 }
 
@@ -1198,7 +1209,7 @@ function wppa_page_links($npages = '1', $curpage = '1') {
 	}
 
 ?>
-	<div id="prevnext-a-<?php echo($wppa_master_occur); ?>" class="wppa-nav-text wppa-box wppa-nav" style="text-align:center; <?php _wcs('wppa-box'); _wcs('wppa-nav'); ?>" >
+	<div id="prevnext-a-<?php echo($wppa_master_occur); ?>" class="wppa-nav-text wppa-box wppa-nav" style="clear:both; text-align:center; <?php _wcs('wppa-box'); _wcs('wppa-nav'); ?>" >
 		<div id="prev-page" style="float:left; text-align:left; <?php if ($curpage == '1') echo('visibility: hidden;'); ?>">
 			<span style="cursor: default;">&laquo;&nbsp;</span>
 			<a id="p-p" href="<?php echo($prevurl); ?>" ><?php _e('Prev.&nbsp;page', 'wppa'); ?></a>
@@ -1241,6 +1252,14 @@ global $wppa_master_occur;
 global $wppa_auto_colwidth;
 
 	if ($wppa_master_occur == '1') {	// First time only
+		/* Nonce field for rating security */
+		if (isset($_GET['rating'])) {
+			if (isset($_GET['wppa_nonce'])) $nonce = $_GET['wppa_nonce']; else $nonce = '';
+			$ok = wp_verify_nonce($nonce, 'wppa-check');
+			if ($ok) sleep(2);
+			else die(__('<b>ERROR: Illegal attempt to enter a rating.</b>', 'wppa'));
+		}
+		wp_nonce_field('wppa-check' , 'wppa_nonce', false);
 		/* If you simplify this by making a cdata block, you will break rss feeds */
 		/* rss attempts to create a nested cdata block that causes the loss of the script tag */
 		/* The errormessage will say that the /script tag is not matched while it is. */
@@ -1255,6 +1274,8 @@ global $wppa_auto_colwidth;
 		<script type="text/javascript">wppa_imgdir = "<?php echo wppa_get_imgdir() ?>";</script>
 		<script type="text/javascript">wppa_auto_colwidth = <?php if ($wppa_auto_colwidth) echo('true'); else echo('false'); ?>;</script>
 		<script type="text/javascript">wppa_thumbnail_area_delta = <?php echo wppa_get_thumbnail_area_delta(); ?>;</script>
+		<script type="text/javascript">wppa_textframe_delta = <?php echo wppa_get_textframe_delta(); ?>;</script>
+		<script type="text/javascript">wppa_box_delta = <?php echo wppa_get_box_delta(); ?>;</script>
 		<script type="text/javascript">wppa_ss_timeout = <?php echo get_option('wppa_slideshow_timeout', 2500) ?>;</script>
 		<script type="text/javascript">wppa_fadein_after_fadeout = <?php if (get_option('wppa_fadein_after_fadeout', 'no') == 'yes') echo('true'); else echo('false'); ?>;</script>
 		<script type="text/javascript">wppa_preambule = <?php echo wppa_get_preambule() ?>;</script>
@@ -1494,7 +1515,9 @@ global $wppa_alt;
 
 function wppa_album_list($action) {
 global $wppa_master_occur;
+global $cover_count;
 	if ($action == 'open') {
+		$cover_count = '0';
 		echo('<div id="wppa-albumlist-'.$wppa_master_occur.'" class="albumlist">');
 	}
 	elseif ($action == 'close') {
@@ -1507,7 +1530,9 @@ global $wppa_master_occur;
 
 function wppa_thumb_list($action) {
 global $wppa_master_occur;
+global $cover_count;
 	if ($action == 'open') {
+		$cover_count = '0';
 		echo('<div id="wppa-thumblist-'.$wppa_master_occur.'" class="thumblist">');
 	}
 	elseif ($action == 'close') {
@@ -1572,6 +1597,7 @@ function wppa_album_cover() {
 global $album;
 global $wppa_master_occur;
 global $wppa_alt;
+global $cover_count;
 
 	$coverphoto = wppa_get_coverphoto_id();
 	$photocount = wppa_get_photo_count();
@@ -1625,8 +1651,12 @@ global $wppa_alt;
 	$style =  __wcs('wppa-box').__wcs('wppa-'.$wppa_alt);
 	if (is_feed()) $style .= ' padding:7px;';
 	
+	$wid = wppa_get_cover_width('cover');
+	$style .= 'width: '.$wid.'px;';	
+	if ($cover_count != '0') $style .= 'margin-left: 8px;';
+	wppa_step_covercount('cover');
 ?>
-		<div id="album-<?php echo($album['id'].'-'.$wppa_master_occur) ?>" class="album wppa-box wppa-<?php echo($wppa_alt); ?>" style="<?php echo($style) ?>" >
+		<div id="album-<?php echo($album['id'].'-'.$wppa_master_occur) ?>" class="album wppa-box wppa-cover-box wppa-<?php echo($wppa_alt); ?>" style="<?php echo($style) ?>" >
 <?php 
 		if ($src != '') { 
 			$photoframestyle = $photo_left ? 'style="float:left; margin-right:5px;"' : 'style="float:right; margin-left:5px;"';
@@ -1645,9 +1675,9 @@ global $wppa_alt;
 			?>
 			</div><!-- #coverphoto_frame_ <?php echo($album['id'].$wppa_master_occur) ?> --><?php 
 		} 
-		$textframestyle = wppa_get_text_frame_style($photo_left);
+		$textframestyle = wppa_get_text_frame_style($photo_left, 'cover');
 		?>
-<div id="covertext_frame_<?php echo($album['id'].'_'.$wppa_master_occur) ?>" class="covertext-frame" <?php echo($textframestyle) ?>>
+<div id="covertext_frame_<?php echo($album['id'].'_'.$wppa_master_occur) ?>" class="wppa-text-frame covertext-frame" <?php echo($textframestyle) ?>>
 		<h2 class="wppa-title" style="clear:none; <?php _wcs('wppa-title'); ?>"><?php 
 			if ($href_t != '') { 
 				?>
@@ -1707,6 +1737,7 @@ function wppa_thumb_ascover() {
 global $thumb;
 global $wppa_master_occur;
 global $wppa_alt;
+global $cover_count;
 	$path = wppa_get_thumb_path(); 
 	$imgattr = wppa_get_imgstyle($path, get_option('wppa_smallsize'), '', 'cover'); 
 	if (is_feed()) {
@@ -1724,8 +1755,12 @@ global $wppa_alt;
 	$style = __wcs('wppa-box').__wcs('wppa-'.$wppa_alt);
 	if (is_feed()) $style .= ' padding:7px;';
 	
+	$wid = wppa_get_cover_width('thumb');
+	$style .= 'width: '.$wid.'px;';	
+	if ($cover_count != '0') $style .= 'margin-left: 8px;';
+	wppa_step_covercount('thumb');
 ?>
-	<div id="thumb-<?php echo($thumb['id'].'-'.$wppa_master_occur) ?>" class="thumb wppa-box wppa-<?php echo($wppa_alt); ?>" style="<?php echo($style) ?>" >
+	<div id="thumb-<?php echo($thumb['id'].'-'.$wppa_master_occur) ?>" class="thumb wppa-box wppa-cover-box wppa-<?php echo($wppa_alt); ?>" style="<?php echo($style) ?>" >
 <?php 
 		if ($src != '') { 
 			$photoframestyle = $photo_left ? 'style="float:left; margin-right:5px;"' : 'style="float:right; margin-left:5px;"';
@@ -1736,9 +1771,9 @@ global $wppa_alt;
 			</a>
 		</div><?php 
 		}
-		$textframestyle = wppa_get_text_frame_style($photo_left);
+		$textframestyle = wppa_get_text_frame_style($photo_left, 'thumb');
 		?>
-<div id="thumbtext_frame_<?php echo($thumb['id'].'_'.$wppa_master_occur) ?>" class="thumbtext-frame" <?php echo($textframestyle) ?>>
+<div id="thumbtext_frame_<?php echo($thumb['id'].'_'.$wppa_master_occur) ?>" class="wppa-text-frame thumbtext-frame" <?php echo($textframestyle) ?>>
 		<h2 class="wppa-title" style="clear:none;">
 			<a href="<?php echo($href); ?>" title="<?php echo($title); ?>" style="<?php _wcs('wppa-title'); ?>" ><?php echo(stripslashes($thumb['name'])); ?></a>
 		</h2>
@@ -1758,7 +1793,7 @@ global $wppa_src;
 	$url = wppa_get_thumb_url(); 
 	$events = wppa_get_imgevents('thumb', $thumb['id']); 
 
-	if (get_option('wppa_use_thumb_popup') == 'yes') $title = esc_js(stripslashes($thumb['description']));
+	if (get_option('wppa_use_thumb_popup') == 'yes') $title = esc_attr(stripslashes($thumb['description']));
 	else $title = esc_js(wppa_get_photo_name($thumb['id']));
 	
 	if (is_feed()) {
@@ -2253,10 +2288,30 @@ global $wpdb;
 	return $result;
 }
 
-function wppa_get_text_frame_style($photo_left) {
-	$width = wppa_get_container_width();
+function wppa_get_cover_width($type) {
+	$conwidth = wppa_get_container_width();
+	$cols = wppa_get_cover_cols($type);
+	
+	switch ($cols) {
+		case '1':
+			$result = $conwidth;
+			break;
+		case '2':
+			$result = floor(($conwidth - 8) / 2);
+			break;
+		case '3':
+			$result = floor(($conwidth - 16) / 3);
+			break;
+		
+	}
+	$result -= (2 * (7 + get_option('wppa_bwidth', '1')));	// 2 * (padding + border)
+	return $result;
+}
+
+function wppa_get_text_frame_style($photo_left, $type) {
+	$width = wppa_get_cover_width($type); // - wppa_get_textframe_delta($type);
 	$width -= get_option('wppa_smallsize', '100');
-	$width -= (2 * (7 + get_option('wppa_bwidth', '1') + 4) + 5);	// 2 * (padding + border + photopadding) + margin
+	$width -= 13;	// margin
 	
 	if ($photo_left) {
 		$result = 'style="width:'.$width.'px; float:right;"';
@@ -2265,4 +2320,54 @@ function wppa_get_text_frame_style($photo_left) {
 		$result = 'style="width:'.$width.'px; float:left;"';// position:absolute;"';
 	}
 	return $result;
+}
+
+function wppa_get_textframe_delta() {
+	$delta = get_option('wppa_smallsize', '100');
+	$delta += (2 * (7 + get_option('wppa_bwidth', '1') + 4) + 5);	// 2 * (padding + border + photopadding) + margin
+	return $delta;
+}
+
+function wppa_step_covercount($type) {
+global $cover_count;
+
+	$cols = wppa_get_cover_cols($type);
+	switch ($cols) {
+		case 1:
+		break;
+		case 2:
+			$cover_count++;
+			if ($cover_count == '2') $cover_count = '0';
+		break;
+		case 3:
+			$cover_count++;
+			if ($cover_count == '3') $cover_count = '0';
+			break;
+	}
+}
+
+function wppa_get_cover_cols($type) {
+global $wppa_auto_colwidth;
+global $wppa_album_count;
+global $wppa_thumb_count;
+	$conwidth = wppa_get_container_width();
+	$cols = '1';
+	if ($conwidth >= get_option('wppa_2col_treshold', '640')) $cols = '2';
+	if ($conwidth >= get_option('wppa_3col_treshold', '800')) $cols = '3';
+	
+	if ($wppa_auto_colwidth) $cols = '1';
+	if (($type == 'cover') && ($wppa_album_count < '2')) $cols = '1';
+	if (($type == 'thumb') && ($wppa_thumb_count < '2')) $cols = '1';
+	return $cols;
+}
+
+function wppa_get_box_width() {
+	$result = wppa_get_container_width();
+	$result -= 14;	// 2 * padding
+	$result -= 2 * get_option('wppa_bwidth', '1');
+	return $result;
+}
+
+function wppa_get_box_delta() {
+	return wppa_get_container_width() - wppa_get_box_width();
 }

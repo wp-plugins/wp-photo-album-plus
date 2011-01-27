@@ -128,10 +128,17 @@ the second pass enables you to select the photos and albums you want to import.
 * Fixed a bug where thumbnail text did not recognize html while html allowed in descriptions.
 
 = Hot fixes after initial release =
-* Fixed empty thumbnail page where number of thumbnails was not bigger than treshold value.
-* Changed ZipArchive::CREATE to 1 to avoid parse error during installation (possible conflict with other plugin).
-* Added CHMOD support in Photo Albums -> Settings panel for wppa+ directories.
-
+* 001: Fix empty thumbnail page when n <= treshold.
+* 002: Fix parse error during installation due to conflict with other plugin or theme changed ZipArchive::CREATE to 1.
+* 003: Added CHMOD support in settings page.
+* 004: Do not set default rights on creation of dirs, use settings page instead.
+* 005: Slideonly defined. %%slideonly=.. is like %%slide=.. but without nav bars and always running.
+* 006: Patch for IE, give calculated width to textframe in covers, float and position.
+* 007: Patch to work patch 006 in variable column width.
+* 008: You can display covers in 2 or 3 columns if the display area is wider than given numbers of pixels.
+* 009: Fixed a warning in import photos where .pmf files do not exist. Added margin:0 for cover images for patch 006 to work in certain themes.
+* 010: Protect rating system with nonce field. Moved 2 sec delay from js to php, to work in refresh page.
+* 011: Fixed slashes in thumbnail popup descriptions.
 
 = 2.4.4 =
 

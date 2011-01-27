@@ -409,7 +409,7 @@ global $wpdb;
 							$pcount++;
 							if ($delp) {
 								unlink($file);
-								unlink($meta);
+								if (is_file($meta)) unlink($meta);
 							}
 						}
 						else {

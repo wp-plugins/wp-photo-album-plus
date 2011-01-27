@@ -24,8 +24,9 @@
 }
 /* All boxes. Admin settings page defines border thickness and border radius */
 .wppa-box {
-	clear: both;
-	margin: 8px auto 10px auto;
+/*	clear: both;
+	margin: 8px auto 10px auto; */
+	margin: 8px 0 10px 0;
 	padding: 2px 6px 2px 6px;
 }
 .wppa-mini-box {
@@ -45,6 +46,7 @@
 /* Wrapper for album etc */
 .albumlist .album, .thumblist .thumb {
 	padding: 7px;
+float:left;
 }
 /* Album name */
 .wppa-title {
@@ -87,6 +89,7 @@
 .coverphoto-frame .image, .thumbphoto-frame .image { 
 	position: relative;
 	border: none; 
+	margin: 0;
 	padding: 4px;
 	-moz-border-radius: 3px;
 	-khtml-border-radius: 3px;

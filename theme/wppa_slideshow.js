@@ -25,6 +25,9 @@ var wppa_thumbnail_area_delta;
 var wppa_ss_timeout = 2500;
 var wppa_fadein_after_fadeout = false;
 
+var wppa_textframe_delta = 0;
+var wppa_box_delta = 0;
+
 var wppa_preambule;
 var wppa_thumbnail_pitch;
 var wppa_filmstrip_length;
@@ -334,10 +337,13 @@ function wppa_do_autocol(mocc) {
 	
 	jQuery(".wppa-container").css('width',w);
 	jQuery(".theimg").css('width',w);
-	jQuery(".thumbnail-area").css('width',w-wppa_thumbnail_area_delta);
-	wppa_filmstrip_length = w-wppa_filmstrip_area_delta;
+	jQuery(".thumbnail-area").css('width',w - wppa_thumbnail_area_delta);
+	wppa_filmstrip_length = w - wppa_filmstrip_area_delta;
 	jQuery(".filmwindow").css('width',wppa_filmstrip_length);
 
+	jQuery(".wppa-text-frame").css('width',w - wppa_textframe_delta);
+	jQuery(".wppa-cover-box").css('width',w - wppa_box_delta);
+	
 	// See if there are slideframe images
 	h = 0;
 	if (mocc > 0) {
@@ -446,6 +452,8 @@ function wppa_rate_it(mocc, value) {
 	var photoid = wppa_photo_ids[mocc][wppa_id[mocc]];
 	var oldval = wppa_photo_myr[mocc][wppa_id[mocc]];
 	var url = wppa_photo_rur[mocc][wppa_id[mocc]]+value;
+	
+	if (document.getElementById('wppa_nonce')) url += '&wppa_nonce='+document.getElementById('wppa_nonce').value;
 
 	if (oldval != 0 && wppa_rating_once) return;							// Already rated, and once allowed only
 //	if (wppa_ss_running[mocc] == 1) wppa_startstop(mocc, -1);				// Stop the show, this is NOT a showstopper, however....
@@ -457,7 +465,7 @@ function wppa_rate_it(mocc, value) {
 	document.getElementById('wppa-rate-'+mocc+'-'+value).src = wppa_imgdir+'tick.png';				// Set icon
 	jQuery('#wppa-rate-'+mocc+'-'+value).stop().fadeTo(100, 1.0);
 	
-	setTimeout('wppa_go("'+url+'")', 2000);		
+	setTimeout('wppa_go("'+url+'")', 200);	// 200 ms to display tick
 }
 
 function wppa_go(url) {
