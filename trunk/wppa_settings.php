@@ -255,6 +255,9 @@ global $wppa_api_version;
 		if (isset($_POST['wppa-excl-sep'])) update_option('wppa_excl_sep', 'yes');
 		else update_option('wppa_excl_sep', 'no');
 
+		if (isset($_POST['wppa-2col-treshold'])) update_option('wppa_2col_treshold', $_POST['wppa-2col-treshold']);
+		if (isset($_POST['wppa-3col-treshold'])) update_option('wppa_3col_treshold', $_POST['wppa-3col-treshold']);
+		
 		if (isset($_POST['wppa-rating-on'])) update_option('wppa_rating_on', 'yes');
 		else update_option('wppa_rating_on', 'no');
 		
@@ -600,7 +603,7 @@ global $wppa_api_version;
 						<td>
 							<input type="text" name="wppa-topten-size" id="wppa-topten-size" value="<?php echo(get_option('wppa_topten_size', '86')) ?>" style="width: 50px;" /><?php _e('pixels.', 'wppa'); ?>
 							<span class="description"><br/><?php _e('Enter the size for the mini photos in the TopTen widget.', 'wppa') ?>
-							<br/><?php _e('Recommended values: 86 for a two column and 55 for a three column display.', 'wppa') ?></span>
+							<br/><?php _e('Recommended values: 86 for a two column and 56 for a three column display.', 'wppa') ?></span>
 						</td>
 					</tr>
 					<tr valign="top" class="wppa-rating">
@@ -797,6 +800,17 @@ global $wppa_api_version;
 							<span class="description"><br/><?php _e('Enter the maximum number of album covers per page. A value of 0 indicates no pagination.', 'wppa') ?></span>
 						</td>
 					</tr>
+					<tr valign="top">
+						<th scope="row">
+							<label><?php _e('Columns:', 'wppa') ?></label>
+						</th>
+						<td>
+							<?php _e('Minimum width for 2 columns:', 'wppa') ?>&nbsp;<input type="text" name="wppa-2col-treshold" value="<?php echo(get_option('wppa_2col_treshold', '640')) ?>" style="width: 50px;" /><?php _e('pixels.', 'wppa') ?><br/>
+							<?php _e('Minimum width for 3 columns:', 'wppa') ?>&nbsp;<input type="text" name="wppa-3col-treshold" value="<?php echo(get_option('wppa_3col_treshold', '800')) ?>" style="width: 50px;" /><?php _e('pixels.', 'wppa') ?>
+							<span class="description"><br/><?php _e('Display covers in 2 or 3 columns if the display area is wider or equal to the number of pixels entered.', 'wppa') ?>
+							<br/><?php _e('This also applies for \'thumbnails as covers\', and will NOT apply to single items.', 'wppa') ?></span>
+						</td>
+					</tr>
 					<tr><th><hr/></th><td><hr/></td></tr>
 					<tr><th><h3><?php _e('Order settings:', 'wppa'); ?></h3></th></tr>
 					<tr valign="top">
@@ -907,7 +921,7 @@ global $wppa_api_version;
 							<label><?php _e('Font for album titles:', 'wppa'); ?></label>
 						</th>
 						<td>
-							<?php _e('Font family:', 'wppa') ?> <input type="text" name="wppa-fontfamily-title" id="wppa-fontfamily-title" value="<?php echo(get_option('wppa_fontfamily_title', '')) ?>" style="width: 200px;" />&nbsp;
+							<?php _e('Font family:', 'wppa') ?> <input type="text" name="wppa-fontfamily-title" id="wppa-fontfamily-title" value="<?php echo(stripslashes(get_option('wppa_fontfamily_title', ''))) ?>" style="width: 300px;" />&nbsp;
 							<?php _e('Size:', 'wppa') ?> <input type="text" name="wppa-fontsize-title" id="wppa-fontsize-title" value="<?php echo(get_option('wppa_fontsize_title', '')) ?>" style="width: 50px;" />px.
 							<span class="description"><br/><?php _e('Enter font name and size for album cover titles.', 'wppa'); ?> <b>(.wppa-title)</b></span>
 						</td>
@@ -917,7 +931,7 @@ global $wppa_api_version;
 							<label><?php _e('Font for fullsize photo descriptions:', 'wppa'); ?></label>
 						</th>
 						<td>
-							<?php _e('Font family:', 'wppa') ?> <input type="text" name="wppa-fontfamily-fulldesc" id="wppa-fontfamily-fulldesc" value="<?php echo(get_option('wppa_fontfamily_fulldesc', '')) ?>" style="width: 200px;" />&nbsp;
+							<?php _e('Font family:', 'wppa') ?> <input type="text" name="wppa-fontfamily-fulldesc" id="wppa-fontfamily-fulldesc" value="<?php echo(stripslashes(get_option('wppa_fontfamily_fulldesc', ''))) ?>" style="width: 300px;" />&nbsp;
 							<?php _e('Size:', 'wppa') ?> <input type="text" name="wppa-fontsize-fulldesc" id="wppa-fontsize-fulldesc" value="<?php echo(get_option('wppa_fontsize_fulldesc', '')) ?>" style="width: 50px;" />px.
 							<span class="description"><br/><?php _e('Enter font name and size for album cover titles.', 'wppa'); ?> <b>(.wppa-fulldesc)</b></span>
 						</td>
@@ -927,7 +941,7 @@ global $wppa_api_version;
 							<label><?php _e('Font for fullsize photo names:', 'wppa'); ?></label>
 						</th>
 						<td>
-							<?php _e('Font family:', 'wppa') ?> <input type="text" name="wppa-fontfamily-fulltitle" id="wppa-fontfamily-fulltitle" value="<?php echo(get_option('wppa_fontfamily_fulltitle', '')) ?>" style="width: 200px;" />&nbsp;
+							<?php _e('Font family:', 'wppa') ?> <input type="text" name="wppa-fontfamily-fulltitle" id="wppa-fontfamily-fulltitle" value="<?php echo(stripslashes(get_option('wppa_fontfamily_fulltitle', ''))) ?>" style="width: 300px;" />&nbsp;
 							<?php _e('Size:', 'wppa') ?> <input type="text" name="wppa-fontsize-fulltitle" id="wppa-fontsize-fulltitle" value="<?php echo(get_option('wppa_fontsize_fulltitle', '')) ?>" style="width: 50px;" />px.
 							<span class="description"><br/><?php _e('Enter font name and size for album cover titles.', 'wppa'); ?> <b>(.wppa-fulltitle)</b></span>
 						</td>
@@ -937,7 +951,7 @@ global $wppa_api_version;
 							<label><?php _e('Font for navigations:', 'wppa'); ?></label>
 						</th>
 						<td>
-							<?php _e('Font family:', 'wppa') ?> <input type="text" name="wppa-fontfamily-nav" id="wppa-fontfamily-nav" value="<?php echo(get_option('wppa_fontfamily_nav', '')) ?>" style="width: 200px;" />&nbsp;
+							<?php _e('Font family:', 'wppa') ?> <input type="text" name="wppa-fontfamily-nav" id="wppa-fontfamily-nav" value="<?php echo(stripslashes(get_option('wppa_fontfamily_nav', ''))) ?>" style="width: 300px;" />&nbsp;
 							<?php _e('Size:', 'wppa') ?> <input type="text" name="wppa-fontsize-nav" id="wppa-fontsize-nav" value="<?php echo(get_option('wppa_fontsize_nav', '')) ?>" style="width: 50px;" />px.
 							<span class="description"><br/><?php _e('Enter font name and size for navigation items.', 'wppa'); ?> <b>(.wppa-nav-text)</b></span>
 						</td>
@@ -947,7 +961,7 @@ global $wppa_api_version;
 							<label><?php _e('General font in wppa boxes:', 'wppa'); ?></label>
 						</th>
 						<td>
-							<?php _e('Font family:', 'wppa') ?> <input type="text" name="wppa-fontfamily-box" id="wppa-fontfamily-box" value="<?php echo(get_option('wppa_fontfamily_box', '')) ?>" style="width: 200px;" />&nbsp;
+							<?php _e('Font family:', 'wppa') ?> <input type="text" name="wppa-fontfamily-box" id="wppa-fontfamily-box" value="<?php echo(stripslashes(get_option('wppa_fontfamily_box', ''))) ?>" style="width: 300px;" />&nbsp;
 							<?php _e('Size:', 'wppa') ?> <input type="text" name="wppa-fontsize-box" id="wppa-fontsize-box" value="<?php echo(get_option('wppa_fontsize_box', '')) ?>" style="width: 50px;" />px.
 							<span class="description"><br/><?php _e('Enter font name and size for all other items.', 'wppa'); ?> <b>(.wppa-box-text)</b></span>
 						</td>
@@ -957,7 +971,7 @@ global $wppa_api_version;
 							<label><?php _e('Font for text under thumbnails:', 'wppa'); ?></label>
 						</th>
 						<td>
-							<?php _e('Font family:', 'wppa') ?> <input type="text" name="wppa-fontfamily-thumb" id="wppa-fontfamily-thumb" value="<?php echo(get_option('wppa_fontfamily_thumb', '')) ?>" style="width: 200px;" />&nbsp;
+							<?php _e('Font family:', 'wppa') ?> <input type="text" name="wppa-fontfamily-thumb" id="wppa-fontfamily-thumb" value="<?php echo(stripslashes(get_option('wppa_fontfamily_thumb', ''))) ?>" style="width: 300px;" />&nbsp;
 							<?php _e('Size:', 'wppa') ?> <input type="text" name="wppa-fontsize-thumb" id="wppa-fontsize-thumb" value="<?php echo(get_option('wppa_fontsize_thumb', '')) ?>" style="width: 50px;" />px.
 							<span class="description"><br/><?php _e('Enter font name and size for all other items.', 'wppa'); ?> <b>(.wppa-thumb-text)</b></span>
 						</td>

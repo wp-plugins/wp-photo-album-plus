@@ -59,7 +59,7 @@ class TopTenWidget extends WP_Widget {
 			else {	// No image
 				$widget_content .= __('Photo not found.');
 			}
-			$widget_content .= '<span style="font-size:8px;">'.wppa_get_rating_by_id($image['id']).'</span>';
+			$widget_content .= '<span style="font-size:9px;">'.wppa_get_rating_by_id($image['id']).'</span>';
 			$widget_content .= '</div>';
 		}	
 		else $widget_content .= 'There are no rated photos (yet).';
