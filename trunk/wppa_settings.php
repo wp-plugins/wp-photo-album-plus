@@ -43,6 +43,9 @@ global $wppa_api_version;
 				update_option('wppa_smallsize', $_POST['wppa-smallsize']);			
 			}
 		} else $options_error = true;
+	
+		if (isset($_POST['wppa-thumb-auto'])) update_option('wppa_thumb_auto', 'yes');
+		else update_option('wppa_thumb_auto', 'no');
 		
 		if (!$options_error) {
 			$new_minisize = wppa_get_minisize();
@@ -686,7 +689,8 @@ global $wppa_api_version;
 							<?php _e('Width:', 'wppa'); ?><input type="text" name="wppa-tf-width" id="wppa-tf-width" value="<?php echo(get_option('wppa_tf_width')); ?>" style="width: 50px;" />
 							<?php _e('pixels, Height:', 'wppa'); ?><input type="text" name="wppa-tf-height" id="wppa-tf-height" value="<?php echo(get_option('wppa_tf_height')); ?>" style="width: 50px;" />
 							<?php _e('pixels, Spacing:', 'wppa'); ?><input type="text" name="wppa-tn-margin" id="wppa-tn-margin" value="<?php echo(get_option('wppa_tn_margin')); ?>" style="width: 25px;" />
-							<?php _e('pixels.', 'wppa'); ?>
+							<?php _e('pixels.', 'wppa'); ?><input type="checkbox" name="wppa-thumb-auto" <?php if (get_option('wppa_thumb_auto', 'no') == 'yes') echo('checked="checked"') ?> />				
+							<?php _e('this is a minimum. Space them equally.', 'wppa') ?>
 							<span class="description"><br/><?php 
 										   _e('Set width, height and spacing for the thumbnail frames.', 'wppa');
 								echo(' '); _e('These sizes should be large enough for a thumbnail image and - optionally - the text under it.', 'wppa'); ?>

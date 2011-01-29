@@ -139,6 +139,8 @@ the second pass enables you to select the photos and albums you want to import.
 * 009: Fixed a warning in import photos where .pmf files do not exist. Added margin:0 for cover images for patch 006 to work in certain themes.
 * 010: Protect rating system with nonce field. Moved 2 sec delay from js to php, to work in refresh page.
 * 011: Fixed slashes in thumbnail popup descriptions.
+* 012: Thumbnails can now be auto spaced while margin is a minimum.
+* 013: You can now import photos from any (sub)directory starting at wp-content/uploads, hence from the wp media dir.
 
 = 2.4.4 =
 

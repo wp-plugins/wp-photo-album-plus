@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the export functions
-* Version 2.5.0
+* Version 2.5.0.013
 */
 
 function wppa_page_export() {
@@ -42,6 +42,7 @@ global $wpdb;
 
 		<form action="<?php echo(get_option('siteurl')) ?>/wp-admin/admin.php?page=export_photos" method="post">
 			<?php wppa_nonce_field('$wppa_nonce', WPPA_NONCE); ?>
+			<?php echo(sprintf(__('Photos will be exported to: <b>%s</b>.', 'wppa'), 'wp-content/wppa-depot/'.wppa_get_user())) ?>
 			<h2><?php _e('Export photos from album <span style="font-size:12px;">(Including Album information)</span>:', 'wppa'); ?></h2>
 <?php
 			$albums = $wpdb->get_results('SELECT * FROM ' . ALBUM_TABLE . ' ' . wppa_get_album_order(), 'ARRAY_A');
@@ -169,8 +170,8 @@ global $wppa_temp_idx;
 		$file = fopen($fname, 'wb');
 		$err = false;
 		if ($file) {
-			if (fwrite($file, "name=".esc_js($album['name'])."\n") !== FALSE) {
-				if (fwrite($file, "desc=".esc_js($album['description'])."\n") !== FALSE) {
+			if (fwrite($file, "name=".$album['name']."\n") !== FALSE) {
+				if (fwrite($file, "desc=".$album['description']."\n") !== FALSE) {
 					if (fwrite($file, "aord=".$album['a_order']."\n") !== FALSE) {
 						if (fwrite($file, "prnt=".wppa_get_album_name($album['a_parent'])."\n") !== FALSE) {
 							if (fwrite($file, "pord=".$album['p_order_by']."\n") !== FALSE) {

@@ -1,5 +1,5 @@
 // Theme variables and functions
-// This is wppa_theme.js version 2.5.0
+// This is wppa_theme.js version 2.5.0.011
 //
 
 var wppa_bgcolor_img = '';

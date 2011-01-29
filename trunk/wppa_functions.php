@@ -16,10 +16,12 @@
 * 009: Fixed a warning in import photos where .pmf files do not exist. Added margin:0 for cover images for patch 006 to work in certain themes.
 * 010: Protect rating system with nonce field. Moved 2 sec delay from js to php, to work in refresh page.
 * 011: Fixed slashes in thumbnail popup descriptions.
+* 012: Thumbnails can now be auto spaced while margin is a minimum.
+* 013: You can now import photos from any (sub)directory starting at wp-content/uploads, hence from the wp media dir.
 */
 
 global $wppa_api_version;
-$wppa_api_version = '2-5-0-011';
+$wppa_api_version = '2-5-0-013';
 
 /* show system statistics */
 function wppa_statistics() {
@@ -351,15 +353,14 @@ function wppa_album_id($name = '') {
 function wppa_get_album_id($name = '') {
 	global $wpdb;
     
-	if ($name == '') return '';
-    $name = $wpdb->escape($name);
-    $id = $wpdb->get_var("SELECT id FROM " . ALBUM_TABLE . " WHERE name='" . $name . "'");
-    if ($id) {
-		return $id;
+	if ($name == '') return '';	// No name, no match
+
+	$nam = stripslashes($name);
+	$albs = $wpdb->get_results("SELECT id, name FROM ".ALBUM_TABLE, 'ARRAY_A');
+	if ($albs) foreach($albs as $alb) {
+		if ($nam == stripslashes($alb['name'])) return $alb['id'];
 	}
-	else {
-		return '';
-	}
+	return '';
 }
 
 // get the seperator (& or ?, depending on permalink structure)
@@ -1396,11 +1397,16 @@ function wppa_get_slide_frame_style() {
 	return $result;
 }
 
-function wppa_get_thumb_frame_style($glue = false) {
+function wppa_get_thumb_frame_style($glue = false, $film = '') {
 	$tfw = get_option('wppa_tf_width');
 	$tfh = get_option('wppa_tf_height');
 	$mgl = get_option('wppa_tn_margin');
 	$mgl2 = floor($mgl / '2');
+	if ($film == '' && get_option('wppa_thumb_auto', 'no') == 'yes') {
+		$area = wppa_get_box_width() + $tfw;	// Area for n+1 thumbs
+		$n_1 = floor($area / ($tfw + $mgl));
+		$mgl = floor($area / $n_1) - $tfw;	
+	}
 	if (is_numeric($tfw) && is_numeric($tfh)) {
 		$result = 'width: '.$tfw.'px; height: '.$tfh.'px; margin-left: '.$mgl.'px; margin-top: '.$mgl2.'px; margin-bottom: '.$mgl2.'px;';
 		if ($glue && (get_option('wppa_film_show_glue', 'yes') == 'yes')) {
@@ -2080,7 +2086,7 @@ global $thumb;
 	} else {
 	// If !$do_for_feed: pre-or post-ambule. To avoid dup id change it in that case
 ?>
-	<div id="<?php if ($do_for_feed) echo('film'); else echo('pre'); ?>_thumbnail_frame_<?php echo($thumb['id'].'_'.$wppa_master_occur) ?>" class="thumbnail-frame" style="<?php echo(wppa_get_thumb_frame_style($glue)); ?>" >
+	<div id="<?php if ($do_for_feed) echo('film'); else echo('pre'); ?>_thumbnail_frame_<?php echo($thumb['id'].'_'.$wppa_master_occur) ?>" class="thumbnail-frame" style="<?php echo(wppa_get_thumb_frame_style($glue, 'film')); ?>" >
 		<img src="<?php echo($url); ?>" alt="<?php echo(esc_attr($thumb['name'])); ?>" title="<?php echo(esc_attr($thumb['name'])); ?>" style="<?php echo($imgattr); ?>" <?php echo($events) ?>/>
 	</div><!-- #thumbnail_frame_<?php echo($thumb['id'].'_'.$wppa_master_occur) ?> -->
 <?php
