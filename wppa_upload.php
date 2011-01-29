@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the upload/import pages and functions
-* Version 2.5.0
+* Version 2.5.0.013
 */
 
 function wppa_page_upload() {
@@ -70,7 +70,7 @@ function wppa_page_upload() {
 
 function wppa_page_import() {
 	// import images admin page
-	
+//print_r($_POST);	
 	// Check the existence of required directories
 	if (!wppa_check_dirs()) return;
 	
@@ -80,7 +80,13 @@ function wppa_page_import() {
 	// Check if a message is required
 	wppa_check_update();
 
-	if (isset($_POST['wppa-import-submit'])) {
+	$user = wppa_get_user();
+			
+	if (isset($_POST['wppa-import-set-source'])) {
+		wppa_check_admin_referer( '$wppa_nonce', WPPA_NONCE );
+		update_option('wppa_import_source_'.$user, $_POST['wppa-source']);
+	}
+	elseif (isset($_POST['wppa-import-submit'])) {
 		wppa_check_admin_referer( '$wppa_nonce', WPPA_NONCE );
         if (isset($_POST['del-after-p'])) $delp = true; else $delp = false;
 		if (isset($_POST['del-after-a'])) $dela = true; else $dela = false;	
@@ -98,18 +104,33 @@ function wppa_page_import() {
 		
 		<h2><?php _e('Import Photos', 'wppa'); ?></h2><br />
 <?php		
-		$depot = ABSPATH . 'wp-content/wppa-depot/'.wppa_get_user();
-		$depoturl = get_bloginfo('url').'/wp-content/wppa-depot/'.wppa_get_user();
+		// Get this users current source directory setting
+		$source = get_option('wppa_import_source_'.$user, 'wp-content/wppa-depot/'.$user);
 
-		// See what's in  there
-		$paths = ABSPATH . 'wp-content/wppa-depot/'.wppa_get_user().'/*.*';
+		$depot = ABSPATH . $source;	// Filesystem
+		$depoturl = get_bloginfo('url').'/'.$source;	// url
+
+		// See what's in there
+		$paths = $depot.'/*.*';
 		$files = glob($paths);
 		$zipcount = wppa_get_zipcount($files);
 		$albumcount = wppa_get_albumcount($files);
 		$photocount = wppa_get_photocount($files);
+		$is_depot = ($source == 'wp-content/wppa-depot/'.$user);
+?>
+		<form action="<?php echo(get_option('siteurl')) ?>/wp-admin/admin.php?page=import_photos" method="post">
+		<?php wppa_nonce_field('$wppa_nonce', WPPA_NONCE); ?>
+		<?php _e('Import photos from:', 'wppa'); ?>
+			<select name="wppa-source">
+				<option value="wp-content/wppa-depot/<?php echo($user) ?>" <?php if ($is_depot) echo('selected="selected"') ?>><?php _e('Your depot', 'wppa') ?></option>
+				<?php wppa_walktree('wp-content/uploads', $source) ?>	
+			</select>
+			<input type="submit" class="button-secundary" name="wppa-import-set-source" value="<?php _e('Set source directory', 'wppa'); ?>" />
+		</form>
+<?php
 		
 		// chek if albums exist or will be made before allowing upload
-		if(wppa_has_albums() || $albumcount > '0' || $zipcount >'0') { 
+	if(wppa_has_albums() || $albumcount > '0' || $zipcount >'0') { 
 	
 		if ($photocount > '0' || $albumcount > '0' || $zipcount >'0') {
 
@@ -117,7 +138,7 @@ function wppa_page_import() {
 			<form action="<?php echo(get_option('siteurl')) ?>/wp-admin/admin.php?page=import_photos" method="post">
 			<?php wppa_nonce_field('$wppa_nonce', WPPA_NONCE); ?>
 <?php		
-			if (PHP_VERSION_ID >= 50207) {	
+			if (PHP_VERSION_ID >= 50207 && $zipcount > '0') {	
 ?>		
 			<p>
 				<?php _e('There are', 'wppa'); echo(' '.$zipcount.' '); _e('zipfiles in the depot.', 'wppa') ?><br/>
@@ -151,10 +172,11 @@ function wppa_page_import() {
 			</table>
 <?php
 			}
+			if ($albumcount > '0') {
 ?>
 			<p>
 				<?php _e('There are', 'wppa'); echo(' '.$albumcount.' '); _e('albumdefinitions in the depot.', 'wppa') ?><br/>
-				<input type="checkbox" name="del-after-a" checked="checked" />&nbsp;&nbsp;<?php _e('Delete after successful import.', 'wppa'); ?>
+				<input type="checkbox" name="del-after-a" checked="checked" />&nbsp;&nbsp;<?php _e('Delete after successful import, or if the album already exits.', 'wppa'); ?>
 			</p>
 			<table class="form-table albumtable">
 				<tr>
@@ -182,10 +204,14 @@ function wppa_page_import() {
 ?>
 				</tr>
 			</table>
-
+<?php		}
+			if ($photocount > '0') {
+?>
 			<p>
 				<?php _e('There are', 'wppa'); echo(' '.$photocount.' '); _e('photos in the depot.', 'wppa'); if (get_option('wppa_resize_on_upload', 'no') == 'yes') { echo(' '); _e('Photos will be downsized during import.', 'wppa'); } ?><br/>
-				<input type="checkbox" name="del-after-p" checked="checked" />&nbsp;&nbsp;<?php _e('Delete after successful import.', 'wppa'); ?>
+				<?php if ($is_depot) { ?>
+					<input type="checkbox" name="del-after-p" checked="checked" />&nbsp;&nbsp;<?php _e('Delete after successful import.', 'wppa'); ?>
+				<?php } ?>
 			</p>
 			<p>
 				<?php _e('Default album for import:', 'wppa'); ?><select name="wppa-album" id="wppa-album"><?php echo(wppa_album_select()); ?></select>
@@ -203,7 +229,7 @@ function wppa_page_import() {
 						if ($ext == 'jpg' || $ext == 'png' || $ext == 'gif') {
 ?>
 							<td>
-								<input type="checkbox" name="file-<?php echo($idx); ?>" checked="checked" />&nbsp;&nbsp;<?php echo(basename($file)); ?>&nbsp;<?php echo(wppa_get_meta_name($meta, '(')) ?><?php echo(wppa_get_meta_album($meta, '[')) ?>
+								<input type="checkbox" name="file-<?php echo($idx); ?>" <?php if ($is_depot) echo('checked="checked"') ?> />&nbsp;&nbsp;<?php echo(basename($file)); ?>&nbsp;<?php echo(wppa_get_meta_name($meta, '(')) ?><?php echo(wppa_get_meta_album($meta, '[')) ?>
 							</td>
 <?php 						if ($ct == 3) {
 								echo('</tr><tr>'); 
@@ -218,6 +244,9 @@ function wppa_page_import() {
 ?>
 				</tr>
 			</table>
+<?php
+			}
+?>
 			<p>
 				<input type="submit" class="button-primary" name="wppa-import-submit" value="<?php _e('Import', 'wppa'); ?>" />
 			</p>
@@ -226,10 +255,10 @@ function wppa_page_import() {
 		}
 		else {
 			if (PHP_VERSION_ID >= 50207) {
-				wppa_ok_message(__('There are no archives, albums or photos in depot:', 'wppa').' '.$depoturl);
+				wppa_ok_message(__('There are no archives, albums or photos in directory:', 'wppa').' '.$depoturl);
 			}
 			else {
-				wppa_ok_message(__('There are no albums or photos in depot:', 'wppa').' '.$depoturl);
+				wppa_ok_message(__('There are no albums or photos in directory:', 'wppa').' '.$depoturl);
 			}
 		}
 	}
@@ -270,12 +299,19 @@ function wppa_upload_photos() {
 
 function wppa_import_photos($delp = false, $dela = false, $delz = false) {
 global $wpdb;
-	global $warning_given;
+global $warning_given;
 
 	$warning_given = false;
 	
-	$paths = ABSPATH . 'wp-content/wppa-depot/'.wppa_get_user().'/*.*';	
-	
+	// Get this users current source directory setting
+	$user = wppa_get_user();
+	$source = get_option('wppa_import_source_'.$user, 'wp-content/wppa-depot/'.$user);
+
+	$depot = ABSPATH . $source;	// Filesystem
+	$depoturl = get_bloginfo('url').'/'.$source;	// url
+
+	// See what's in there
+	$paths = $depot.'/*.*';
 	$files = glob($paths);
 
 	// First extract zips if our php version is ok
@@ -357,7 +393,8 @@ global $wpdb;
 					} // while !foef
 					fclose($handle);
 					if (wppa_get_album_id($name) != '') {
-						wppa_warning_message('Album already exists '.$name);
+						wppa_warning_message('Album already exists '.stripslashes($name));
+						if ($dela) unlink($album);
 					}
 					else {
 						$query = $wpdb->prepare('INSERT INTO `' . ALBUM_TABLE . '` (`id`, `name`, `description`, `a_order`, `a_parent`, `p_order_by`, `main_photo`, `cover_linkpage`, `owner`) VALUES (0, %s, %s, %d, %d, %d, %d, %d, %s)', $name, $desc, $aord, $parent, $porder, 0, 0, $owner);
@@ -382,51 +419,46 @@ global $wpdb;
 	$idx='0';
 	$pcount = '0';
 	if (isset($_POST['wppa-album'])) $album = $_POST['wppa-album']; else $album = '0';
-	if ($album > '0') {
-		wppa_ok_message(__('Processing files, please wait...', 'wppa').' '.__('If the line of dots stops growing or you browser reports Ready, your server has given up. In that case: try again', 'wppa').' <a href="'.get_option('siteurl').'/wp-admin/admin.php?page=import_photos">'.__('here.', 'wppa').'</a>');
-		foreach ($files as $file) {
-			if (isset($_POST['file-'.$idx])) {
-				$ext = strtolower(substr(strrchr($file, "."), 1));
-				if ($ext == 'jpg' || $ext == 'png' || $ext == 'gif') {
-					// See if a metafile exists
-					$meta = substr($file, 0, strlen($file) - 3).'pmf';
-					// find all data: name, desc, porder form metafile
-					if (is_file($meta)) {
-						$alb = wppa_get_album_id($wpdb->escape(wppa_get_meta_album($meta)));
-						$name = wppa_get_meta_name($meta);
-						$desc = wppa_get_meta_desc($meta);
-						$porder = wppa_get_meta_porder($meta);
-					}
-					else {
-						$alb = $album;	// default album
-						$name = '';		// default name
-						$desc = '';		// default description
-						$porder = '0';	// default p_order
-					}
-					// Insert the photo
-					if (is_numeric($alb) && $alb != '0') {
-						if (wppa_insert_photo($file, $alb, $name, $desc, $porder)) {
-							$pcount++;
-							if ($delp) {
-								unlink($file);
-								if (is_file($meta)) unlink($meta);
-							}
-						}
-						else {
-							wppa_error_message(__('Error inserting photo', 'wppa') . ' ' . basename($file) . '.');
-						}
-					}
-					else {
-						wppa_error_message(sprintf(__('Error inserting photo, album %1s does not exist for photo %2s. Either create the album or remove %3s.', 'wppa'), wppa_get_meta_album($meta), basename($file), basename($meta)));
-					} 
+	wppa_ok_message(__('Processing files, please wait...', 'wppa').' '.__('If the line of dots stops growing or you browser reports Ready, your server has given up. In that case: try again', 'wppa').' <a href="'.get_option('siteurl').'/wp-admin/admin.php?page=import_photos">'.__('here.', 'wppa').'</a>');
+	foreach ($files as $file) {
+		if (isset($_POST['file-'.$idx])) {
+			$ext = strtolower(substr(strrchr($file, "."), 1));
+			if ($ext == 'jpg' || $ext == 'png' || $ext == 'gif') {
+				// See if a metafile exists
+				$meta = substr($file, 0, strlen($file) - 3).'pmf';
+				// find all data: name, desc, porder form metafile
+				if (is_file($meta)) {
+					$alb = wppa_get_album_id(wppa_get_meta_album($meta));
+					$name = wppa_get_meta_name($meta);
+					$desc = wppa_get_meta_desc($meta);
+					$porder = wppa_get_meta_porder($meta);
 				}
+				else {
+					$alb = $album;	// default album
+					$name = '';		// default name
+					$desc = '';		// default description
+					$porder = '0';	// default p_order
+				}
+				// Insert the photo
+				if (is_numeric($alb) && $alb != '0') {
+					if (wppa_insert_photo($file, $alb, $name, $desc, $porder)) {
+						$pcount++;
+						if ($delp) {
+							unlink($file);
+							if (is_file($meta)) unlink($meta);
+						}
+					}
+					else {
+						wppa_error_message(__('Error inserting photo', 'wppa') . ' ' . basename($file) . '.');
+					}
+				}
+				else {
+					wppa_error_message(sprintf(__('Error inserting photo, album %1s does not exist for photo %2s. Either create the album or remove %3s.', 'wppa'), wppa_get_meta_album($meta), basename($file), basename($meta)));
+				} 
 			}
-			$idx++;
-		} // if isset
-	}
-	else {
-		wppa_error_message(__('No known valid album id to import photos to.', 'wppa'));
-	}
+		}
+		$idx++;
+	} // foreach $files
 	
 	if ($pcount == '0' && $acount == '0' && $zcount == '0') {
 		wppa_error_message(__('No files to import.', 'wppa'));
@@ -588,7 +620,7 @@ function wppa_get_meta_data($file, $item, $opt) {
 		if ($handle) {
 			while (($buffer = fgets($handle, 4096)) !== false) {
 				if (substr($buffer, 0, 5) == $item.'=') {
-					$result = html_entity_decode(stripslashes($opt.substr($buffer, 5, strlen($buffer)-6).$opt2), ENT_QUOTES);
+					$result = stripslashes($opt.substr($buffer, 5, strlen($buffer)-6).$opt2);
 				}
 			}
 			if (!feof($handle)) {
@@ -789,4 +821,22 @@ function wppa_check_dirs() {
 	}
 	
 	return true;
+}
+
+function wppa_walktree($relroot, $source) {
+
+	if ($relroot == $source) $sel=' selected="selected"'; else $sel = ' ';
+	echo('<option value="'.$relroot.'"'.$sel.'>'.$relroot.'</option>');
+	
+	if ($handle = opendir(ABSPATH.$relroot)) {
+		while (false !== ($file = readdir($handle))) {
+			if (($file) != "." && ($file) != ".." && ($file) != "wppa") {
+				$newroot = $relroot.'/'.$file;
+				if (is_dir(ABSPATH.$newroot)) {	
+					wppa_walktree($newroot, $source);
+				}
+			}
+		}
+		closedir($handle);
+	}
 }
