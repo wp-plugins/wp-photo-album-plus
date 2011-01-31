@@ -141,7 +141,10 @@ the second pass enables you to select the photos and albums you want to import.
 * 011: Fixed slashes in thumbnail popup descriptions.
 * 012: Thumbnails can now be auto spaced while margin is a minimum.
 * 013: You can now import photos from any (sub)directory starting at wp-content/uploads, hence from the wp media dir.
-
+* 014: Fixed Album not found err during import when there are quotes in the album and the parents album name. 
+       Import will now attempt to use old album and photo id's when previously exported. 
+       This improves the usability of the export/import mechanism as a backup tool.
+	   
 = 2.4.4 =
 
 * Improved RSS behaviour.

@@ -119,6 +119,7 @@ global $wppa_temp_idx;
 				_e('<br/>Processing album', 'wppa'); echo(' '.$id.'....');
 				wppa_write_album_file_by_id($id);
 				$photos = $wpdb->get_results('SELECT * FROM ' . PHOTO_TABLE . ' WHERE album = ' . $id, 'ARRAY_A');
+				$cnt = 0;
 				foreach($photos as $photo) {
 					// Copy the photo
 					$from = ABSPATH.'wp-content/uploads/wppa/'.$photo['id'].'.'.$photo['ext'];
@@ -173,7 +174,7 @@ global $wppa_temp_idx;
 			if (fwrite($file, "name=".$album['name']."\n") !== FALSE) {
 				if (fwrite($file, "desc=".$album['description']."\n") !== FALSE) {
 					if (fwrite($file, "aord=".$album['a_order']."\n") !== FALSE) {
-						if (fwrite($file, "prnt=".wppa_get_album_name($album['a_parent'])."\n") !== FALSE) {
+						if (fwrite($file, "prnt=".wppa_get_album_name($album['a_parent'], 'raw')."\n") !== FALSE) {
 							if (fwrite($file, "pord=".$album['p_order_by']."\n") !== FALSE) {
 								if (fwrite($file, "ownr=".$album['owner']."\n") !== FALSE) {
 								}
@@ -223,10 +224,10 @@ global $wppa_temp_idx;
 		$file = fopen($fname, 'wb');
 		$err = false;
 		if ($file) {
-			if (fwrite($file, "name=".esc_js($photo['name'])."\n") !== FALSE) {
-				if (fwrite($file, "desc=".esc_js($photo['description'])."\n") !== FALSE) {
+			if (fwrite($file, "name=".$photo['name']."\n") !== FALSE) {
+				if (fwrite($file, "desc=".$photo['description']."\n") !== FALSE) {
 					if (fwrite($file, "pord=".$photo['p_order']."\n") !== FALSE) {
-						if (fwrite($file, "albm=".wppa_get_album_name($photo['album'])."\n") !== FALSE) {
+						if (fwrite($file, "albm=".wppa_get_album_name($photo['album'], 'raw')."\n") !== FALSE) {
 //							if (fwrite($file, ".ext=".$photo['ext']."\n") !== FALSE) {
 //							}
 //							else $err = true;

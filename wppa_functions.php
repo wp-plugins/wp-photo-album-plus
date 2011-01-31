@@ -18,6 +18,9 @@
 * 011: Fixed slashes in thumbnail popup descriptions.
 * 012: Thumbnails can now be auto spaced while margin is a minimum.
 * 013: You can now import photos from any (sub)directory starting at wp-content/uploads, hence from the wp media dir.
+* 014: Fixed Album not found err during import when there are quotes in the album name. 
+       Import will now attempt to use old album and photo id's when previously exported. 
+       This improves the usability of the export/import mechanism as a backup tool.
 */
 
 global $wppa_api_version;
@@ -327,7 +330,7 @@ function wppa_is_separate($xalb) {
 function wppa_album_name($id = '') {
 	echo(wppa_get_album_name($id));
 }
-function wppa_get_album_name($id = '') {
+function wppa_get_album_name($id = '', $raw = '') {
 	global $wpdb;
     
     if ($id == '0') $name = __('--- none ---', 'wppa');
@@ -338,7 +341,7 @@ function wppa_get_album_name($id = '') {
         if (is_numeric($id)) $name = $wpdb->get_var("SELECT name FROM " . ALBUM_TABLE . " WHERE id=$id");
     }
 	if ($name) {
-		$name = stripslashes($name);
+		if ($raw != 'raw') $name = stripslashes($name);
 	}
 	else {
 		$name = '';
@@ -352,7 +355,7 @@ function wppa_album_id($name = '') {
 }
 function wppa_get_album_id($name = '') {
 	global $wpdb;
-    
+/*    
 	if ($name == '') return '';	// No name, no match
 
 	$nam = stripslashes($name);
@@ -361,6 +364,17 @@ function wppa_get_album_id($name = '') {
 		if ($nam == stripslashes($alb['name'])) return $alb['id'];
 	}
 	return '';
+}
+*/
+	if ($name == '') return '';
+    $name = $wpdb->escape($name);
+    $id = $wpdb->get_var("SELECT id FROM " . ALBUM_TABLE . " WHERE name='" . $name . "'");
+    if ($id) {
+		return $id;
+	}
+	else {
+		return '';
+	}
 }
 
 // get the seperator (& or ?, depending on permalink structure)

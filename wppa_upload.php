@@ -189,7 +189,7 @@ function wppa_page_import() {
 						if ($ext == 'amf') {
 ?>
 							<td>
-								<input type="checkbox" name="file-<?php echo($idx); ?>" checked="checked" />&nbsp;&nbsp;<?php echo(basename($file)); ?>&nbsp;<?php echo(wppa_get_meta_name($file, '(')) ?>
+								<input type="checkbox" name="file-<?php echo($idx); ?>" checked="checked" />&nbsp;&nbsp;<?php echo(basename($file)); ?>&nbsp;<?php echo(stripslashes(wppa_get_meta_name($file, '('))) ?>
 							</td>
 <?php 						if ($ct == 3) {
 								echo('</tr><tr>'); 
@@ -229,7 +229,7 @@ function wppa_page_import() {
 						if ($ext == 'jpg' || $ext == 'png' || $ext == 'gif') {
 ?>
 							<td>
-								<input type="checkbox" name="file-<?php echo($idx); ?>" <?php if ($is_depot) echo('checked="checked"') ?> />&nbsp;&nbsp;<?php echo(basename($file)); ?>&nbsp;<?php echo(wppa_get_meta_name($meta, '(')) ?><?php echo(wppa_get_meta_album($meta, '[')) ?>
+								<input type="checkbox" name="file-<?php echo($idx); ?>" <?php if ($is_depot) echo('checked="checked"') ?> />&nbsp;&nbsp;<?php echo(basename($file)); ?>&nbsp;<?php echo(stripslashes(wppa_get_meta_name($meta, '('))) ?><?php echo(stripslashes(wppa_get_meta_album($meta, '['))) ?>
 							</td>
 <?php 						if ($ct == 3) {
 								echo('</tr><tr>'); 
@@ -397,7 +397,10 @@ global $warning_given;
 						if ($dela) unlink($album);
 					}
 					else {
-						$query = $wpdb->prepare('INSERT INTO `' . ALBUM_TABLE . '` (`id`, `name`, `description`, `a_order`, `a_parent`, `p_order_by`, `main_photo`, `cover_linkpage`, `owner`) VALUES (0, %s, %s, %d, %d, %d, %d, %d, %s)', $name, $desc, $aord, $parent, $porder, 0, 0, $owner);
+						$id = basename($album);
+						$id = substr($id, 0, strpos($id, '.'));
+						if (!wppa_is_id_free('album', $id)) $id = 0;
+						$query = $wpdb->prepare('INSERT INTO `' . ALBUM_TABLE . '` (`id`, `name`, `description`, `a_order`, `a_parent`, `p_order_by`, `main_photo`, `cover_linkpage`, `owner`) VALUES (%d, %s, %s, %d, %d, %d, %d, %d, %s)', $id, stripslashes($name), stripslashes($desc), $aord, $parent, $porder, 0, 0, $owner);
 						$iret = $wpdb->query($query);
 
 						if ($iret === FALSE) wppa_error_message(__('Could not create album.', 'wppa'));
@@ -441,7 +444,10 @@ global $warning_given;
 				}
 				// Insert the photo
 				if (is_numeric($alb) && $alb != '0') {
-					if (wppa_insert_photo($file, $alb, $name, $desc, $porder)) {
+					$id = basename($file);
+					$id = substr($id, 0, strpos($id, '.'));
+					if (!is_numeric($id) || !wppa_is_id_free('photo', $id)) $id = 0;
+					if (wppa_insert_photo($file, $alb, stripslashes($name), stripslashes($desc), $porder, $id)) {
 						$pcount++;
 						if ($delp) {
 							unlink($file);
@@ -453,12 +459,13 @@ global $warning_given;
 					}
 				}
 				else {
-					wppa_error_message(sprintf(__('Error inserting photo, album %1s does not exist for photo %2s. Either create the album or remove %3s.', 'wppa'), wppa_get_meta_album($meta), basename($file), basename($meta)));
+					wppa_error_message(sprintf(__('Error inserting photo, album %1s does not exist for photo %2s. Either create the album or remove %3s.', 'wppa'), stripslashes(wppa_get_meta_album($meta)), basename($file), basename($meta)));
 				} 
 			}
 		}
 		$idx++;
 	} // foreach $files
+	wppa_ok_message(__('Done processing files.', 'wppa'));
 	
 	if ($pcount == '0' && $acount == '0' && $zcount == '0') {
 		wppa_error_message(__('No files to import.', 'wppa'));
@@ -473,7 +480,7 @@ global $warning_given;
 	}
 }
 
-function wppa_insert_photo ($file = '', $album = '', $name = '', $desc = '', $porder = '0') {
+function wppa_insert_photo ($file = '', $album = '', $name = '', $desc = '', $porder = '0', $id = '0') {
 	global $wpdb;
 	global $warning_given_small;
 	global $warning_given_big;
@@ -512,12 +519,13 @@ function wppa_insert_photo ($file = '', $album = '', $name = '', $desc = '', $po
 				return false;
 		}
 			
-		$query = $wpdb->prepare('INSERT INTO `' . PHOTO_TABLE . '` (`id`, `album`, `ext`, `name`, `p_order`, `description`, `mean_rating`) VALUES (0, %d, %s, %s, %d, %s, \'\')', $album, $ext, $name, $porder, $desc);
+		$query = $wpdb->prepare('INSERT INTO `' . PHOTO_TABLE . '` (`id`, `album`, `ext`, `name`, `p_order`, `description`, `mean_rating`) VALUES (%d, %d, %s, %s, %d, %s, \'\')', $id, $album, $ext, $name, $porder, $desc);
 		if ($wpdb->query($query) === false) {
 			wppa_error_message(__('Could not insert photo. query=', 'wppa').$query);
 		}
 
-		$image_id = $wpdb->get_var("SELECT LAST_INSERT_ID()");
+		if ($id == '0') $image_id = $wpdb->get_var("SELECT LAST_INSERT_ID()");
+		else $image_id = $id;
 				
 		$newimage = ABSPATH . 'wp-content/uploads/wppa/' . $image_id . '.' . $ext;
 			
@@ -620,7 +628,7 @@ function wppa_get_meta_data($file, $item, $opt) {
 		if ($handle) {
 			while (($buffer = fgets($handle, 4096)) !== false) {
 				if (substr($buffer, 0, 5) == $item.'=') {
-					$result = stripslashes($opt.substr($buffer, 5, strlen($buffer)-6).$opt2);
+					$result = $opt.substr($buffer, 5, strlen($buffer)-6).$opt2;
 				}
 			}
 			if (!feof($handle)) {
@@ -839,4 +847,21 @@ function wppa_walktree($relroot, $source) {
 		}
 		closedir($handle);
 	}
+}
+
+function wppa_is_id_free($type, $id) {
+global $wpdb;
+	if (!is_numeric($id)) return false;
+	if ($id == '0') return false;
+	
+	$table = '';
+	if ($type == 'album') $table = ALBUM_TABLE;
+	if ($type == 'photo') $table = PHOTO_TABLE;
+	if ($table == '') {
+		echo('Unexpected error in wppa_is_id_free()');
+		return false;
+	}
+	$res = $wpdb->get_row('SELECT * FROM '.$table.' WHERE id = '.$id, 'ARRAY_A');
+	if ($res) return false;
+	return true;
 }
