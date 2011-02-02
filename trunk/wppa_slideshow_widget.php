@@ -1,11 +1,9 @@
 <?php
-/*
-Plugin Name: Slideshow Widget
-Description: 
-Version: 2.5.0.016
-Author: J.N. Breetvelt a.k.a OpaJaap
-Author URI: http://www.opajaap.nl/
-Plugin URI: http://wordpress.org/extend/plugins/
+/* wppa_slideshow_widget.php
+* Package: wp-photo-album-plus
+*
+* display a slideshow in the sidebar
+* Version 2.5.0
 */
 
 /* load_plugin_textdomain('wppa', 'wp-content/plugins/lege-widget/langs/', 'lege-widget/langs/');
