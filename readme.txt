@@ -29,6 +29,7 @@ This plugin is designed to easily manage and display your photo albums and slide
 * You can add a Photo of the day Sidebar Widget that displays a photo which can be changed every hour, day or week.
 * You can add a Search Sidebar Widget which enables the visitors to search albums and photos for certain words in names and descriptions.
 * You can enable a rating system and a supporting Top Ten Photos Sidebar Widget that can hold a configurable number of high rated photos.
+* Apart from the full-size slideshows you can add a Sidebar Widget that displays a mini slideshow.
 * Almost all appearance settings can be done in the settings admin page. No php, html or css knowledge is required to customize the appearence of the photo display.
 * International language support. Currently included foreign languages files: Dutch, Japanese, French(outdated), Spanish.
 
