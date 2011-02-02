@@ -10,7 +10,7 @@ class PhotoOfTheDay extends WP_Widget {
     /** constructor */
     function PhotoOfTheDay() {
         parent::WP_Widget(false, $name = 'Photo Of The Day');	
-		$widget_ops = array('classname' => 'wppa_widget', 'description' => __( 'Photo Of The Day Widget', 'wppa') );	//
+		$widget_ops = array('classname' => 'wppa_widget', 'description' => __( 'WPPA+ Photo Of The Day', 'wppa') );	//
 		$this->WP_Widget('wppa_widget', __('Photo Of The Day', 'wppa'), $widget_ops);															//
     }
 

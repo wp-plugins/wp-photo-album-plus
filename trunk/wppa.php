@@ -18,6 +18,8 @@ global $wppa_master_occur;
 global $is_cover;
 global $wppa_src;
 global $wppa_revno;
+global $wppa_in_ss_widget;
+global $wppa_portrait_only;
 
 // Check for php version
 // PHP_VERSION_ID is available as of PHP 5.2.7, if our 
@@ -41,6 +43,8 @@ $is_cover = '0';
 $wppa_src = false;
 if (isset($_POST['wppa-searchstring'])) $wppa_src = true;
 if (isset($_GET['wppa_src'])) $wppa_src = true;
+$wppa_in_ss_widget = false;
+$wppa_portrait_only = false;
 
 /* FORM SECURITY */
 function wppa_nonce_field($action = -1, $name = 'wppa-update-check') { 
@@ -154,6 +158,7 @@ function wppa_setup() {
 require_once('wppa_widget.php');
 require_once('wppa_searchwidget.php');
 require_once('wppa_toptenwidget.php');
+require_once('wppa_slideshow_widget.php');
 
 /* ADMIN MENU */
 add_action('admin_menu', 'wppa_add_admin');
