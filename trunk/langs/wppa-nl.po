@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wp-photo-album-plus\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-01-31 10:55+0100\n"
-"PO-Revision-Date: 2011-01-31 10:55+0100\n"
+"POT-Creation-Date: 2011-02-02 16:22+0100\n"
+"PO-Revision-Date: 2011-02-02 16:26+0100\n"
 "Last-Translator: J.N. Breetvelt <OpaJaap@OpaJaap.nl>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -30,32 +30,32 @@ msgstr "Bewerk"
 msgid "No albums or photos found matching your search criteria."
 msgstr "Er zijn geen albums of foto's gevonden die voldoen aan uw zoekopdracht."
 
-#: wppa.php:171
+#: wppa.php:176
 msgid "Photo Albums"
 msgstr "Foto Albums"
 
-#: wppa.php:173
+#: wppa.php:178
 msgid "Upload Photos"
 msgstr "Foto's Uploaden"
 
-#: wppa.php:174
+#: wppa.php:179
 msgid "Import Photos"
 msgstr "Foto's Importeren"
 
-#: wppa.php:175
+#: wppa.php:180
 #: wppa_export.php:41
 msgid "Export Photos"
 msgstr "Foto's Exporteren"
 
-#: wppa.php:176
+#: wppa.php:181
 msgid "Settings"
 msgstr "Instellingen"
 
-#: wppa.php:177
+#: wppa.php:182
 msgid "Sidebar Widget"
 msgstr "Zijkolom Widget"
 
-#: wppa.php:178
+#: wppa.php:183
 msgid "Help &amp; Info"
 msgstr "Help en Info"
 
@@ -294,6 +294,7 @@ msgstr "Album verwijderen"
 
 #: wppa_albumadmin.php:233
 #: wppa_albumadmin.php:436
+#: wppa_slideshow_widget.php:80
 msgid "Album:"
 msgstr "Album:"
 
@@ -421,7 +422,7 @@ msgid "Get insertion Code"
 msgstr "Geef invoeg code"
 
 #: wppa_albumadmin.php:504
-#: wppa_functions.php:336
+#: wppa_functions.php:338
 #: wppa_settings.php:437
 #: wppa_settings.php:626
 #: wppa_settings.php:826
@@ -430,7 +431,7 @@ msgid "--- none ---"
 msgstr "--- geen ---"
 
 #: wppa_albumadmin.php:520
-#: wppa_functions.php:337
+#: wppa_functions.php:339
 msgid "--- separate ---"
 msgstr "--- afzonderlijk ---"
 
@@ -558,172 +559,171 @@ msgstr "Kan het foto uitvoer bestand niet aanmaken."
 msgid "Could not read photo data."
 msgstr "Kan de foto gegevens niet lezen."
 
-#: wppa_functions.php:41
+#: wppa_functions.php:43
 msgid "There are"
 msgstr "Er zijn"
 
-#: wppa_functions.php:41
+#: wppa_functions.php:43
 msgid "photo albums. The last album added is"
 msgstr "foto albums. Het laatst toegevoegde album is"
 
-#: wppa_functions.php:45
+#: wppa_functions.php:47
 msgid ", a subalbum of"
 msgstr ", een sub-album van"
 
-#: wppa_functions.php:109
+#: wppa_functions.php:111
 msgid "Home"
 msgstr "Beginpagina"
 
-#: wppa_functions.php:155
-#: wppa_functions.php:1302
-#: wppa_functions.php:1714
+#: wppa_functions.php:157
+#: wppa_functions.php:1324
+#: wppa_functions.php:1743
 msgid "Slideshow"
 msgstr "Diavoorstelling"
 
-#: wppa_functions.php:165
+#: wppa_functions.php:167
 msgid "Searchstring:"
 msgstr "Zoeken naar:"
 
-#: wppa_functions.php:170
+#: wppa_functions.php:172
 msgid "Top rated photos"
 msgstr "Top waarderingen"
 
-#: wppa_functions.php:850
+#: wppa_functions.php:852
 msgid "<b>ERROR: Attempt to enter an invalid rating.</b>"
 msgstr "<b>FOUT: Poging een ongeldige waardering in te voeren.</b>"
 
-#: wppa_functions.php:1230
+#: wppa_functions.php:1252
 msgid "Prev.&nbsp;page"
 msgstr "Vorige&nbsp;pagina"
 
-#: wppa_functions.php:1233
+#: wppa_functions.php:1255
 msgid "Next&nbsp;page"
 msgstr "Volgende&nbsp;pagina"
 
-#: wppa_functions.php:1275
+#: wppa_functions.php:1297
 msgid "<b>ERROR: Illegal attempt to enter a rating.</b>"
 msgstr "<b>FOUT: Verboden poging een waardering in te voeren.</b>"
 
-#: wppa_functions.php:1303
+#: wppa_functions.php:1325
 msgid "Photo"
 msgstr "Foto"
 
-#: wppa_functions.php:1304
+#: wppa_functions.php:1326
 msgid "of"
 msgstr "van"
 
-#: wppa_functions.php:1305
+#: wppa_functions.php:1327
 msgid "Prev.&nbsp;photo"
 msgstr "Vorige&nbsp;foto"
 
-#: wppa_functions.php:1306
+#: wppa_functions.php:1328
 msgid "Next&nbsp;photo"
 msgstr "Volgende&nbsp;foto"
 
-#: wppa_functions.php:1630
-#: wppa_toptenwidget.php:44
+#: wppa_functions.php:1659
 msgid "Link to"
 msgstr "Link naar"
 
-#: wppa_functions.php:1634
+#: wppa_functions.php:1663
 msgid "Page is not available."
 msgstr "Pagina is niet beschikbaar."
 
-#: wppa_functions.php:1650
+#: wppa_functions.php:1679
 msgid "View the cover photo"
 msgstr "Bekijk de omslagfoto"
 
-#: wppa_functions.php:1651
+#: wppa_functions.php:1680
 msgid "s"
 msgstr "'s"
 
-#: wppa_functions.php:1654
-#: wppa_functions.php:1657
-#: wppa_functions.php:1721
+#: wppa_functions.php:1683
+#: wppa_functions.php:1686
+#: wppa_functions.php:1750
 msgid "View the album"
 msgstr "Bekijk het album"
 
-#: wppa_functions.php:1722
+#: wppa_functions.php:1751
 msgid "View"
 msgstr "Bekijk"
 
-#: wppa_functions.php:1725
+#: wppa_functions.php:1754
 msgid "album"
 msgstr "album"
 
-#: wppa_functions.php:1729
+#: wppa_functions.php:1758
 msgid "albums"
 msgstr "albums"
 
-#: wppa_functions.php:1734
+#: wppa_functions.php:1763
 msgid "and"
 msgstr "en"
 
-#: wppa_functions.php:1738
+#: wppa_functions.php:1767
 msgid "photo"
 msgstr "foto"
 
-#: wppa_functions.php:1742
+#: wppa_functions.php:1771
 msgid "photos"
 msgstr "foto's"
 
-#: wppa_functions.php:1894
+#: wppa_functions.php:1923
 msgid "Slower"
 msgstr "Trager"
 
-#: wppa_functions.php:1895
+#: wppa_functions.php:1924
 msgid "Start"
 msgstr "Start"
 
-#: wppa_functions.php:1896
+#: wppa_functions.php:1925
 msgid "Faster"
 msgstr "Sneller"
 
-#: wppa_functions.php:2236
+#: wppa_functions.php:2270
 msgid "- - - Rating enabled - - -"
 msgstr "- - - Waarderingssysteem geactiveerd - - -"
 
-#: wppa_functions.php:2245
+#: wppa_functions.php:2279
 msgid "very low"
 msgstr "zeer laag"
 
-#: wppa_functions.php:2246
+#: wppa_functions.php:2280
 msgid "low"
 msgstr "laag"
 
-#: wppa_functions.php:2247
+#: wppa_functions.php:2281
 msgid "average"
 msgstr "gemiddeld"
 
-#: wppa_functions.php:2248
+#: wppa_functions.php:2282
 msgid "high"
 msgstr "hoog"
 
-#: wppa_functions.php:2249
+#: wppa_functions.php:2283
 msgid "very high"
 msgstr "zeer hoog"
 
-#: wppa_functions.php:2254
+#: wppa_functions.php:2288
 msgid "Average&nbsp;rating"
 msgstr "Gem.&nbsp;waardering"
 
-#: wppa_functions.php:2260
+#: wppa_functions.php:2294
 msgid "Avarage&nbsp;rating:"
 msgstr "Gem.&nbsp;waardering"
 
-#: wppa_functions.php:2269
+#: wppa_functions.php:2303
 msgid "My&nbsp;rating:"
 msgstr "Mijn&nbsp;waardering:"
 
-#: wppa_functions.php:2273
+#: wppa_functions.php:2307
 msgid "My&nbsp;rating"
 msgstr "Mijn&nbsp;waardering"
 
-#: wppa_functions.php:2276
+#: wppa_functions.php:2310
 msgid "You must login to vote"
 msgstr "U moet ingelogd zijn om te stemmen"
 
-#: wppa_functions.php:2305
+#: wppa_functions.php:2339
 #, php-format
 msgid "Rating: %s"
 msgstr "%s punten"
@@ -1105,8 +1105,8 @@ msgid "licence."
 msgstr "licentie."
 
 #: wppa_searchwidget.php:12
-msgid "Search Photos widget"
-msgstr "Foto's zoeken"
+msgid "WPPA+ Search Photos"
+msgstr "WPPA+ Foto's zoeken"
 
 #: wppa_searchwidget.php:13
 msgid "Search Photos"
@@ -1125,7 +1125,7 @@ msgid "Search"
 msgstr "Zoeken"
 
 #: wppa_searchwidget.php:61
-#: wppa_toptenwidget.php:84
+#: wppa_slideshow_widget.php:79
 msgid "Title:"
 msgstr "Titel:"
 
@@ -1264,6 +1264,7 @@ msgstr "Kolom Breedte:"
 #: wppa_settings.php:692
 #: wppa_settings.php:812
 #: wppa_settings.php:813
+#: wppa_slideshow_widget.php:81
 msgid "pixels."
 msgstr "pixels."
 
@@ -1586,7 +1587,6 @@ msgid "Widget title"
 msgstr "Wiget Titel"
 
 #: wppa_settings.php:589
-#: wppa_toptenwidget.php:23
 msgid "Top Ten Rated Photos"
 msgstr "Top Tien gewaardeerde foto's"
 
@@ -1674,6 +1674,7 @@ msgid "Thumbnail Framesize:"
 msgstr "Miniatuur framegrootte:"
 
 #: wppa_settings.php:689
+#: wppa_slideshow_widget.php:81
 msgid "Width:"
 msgstr "Breedte:"
 
@@ -2157,15 +2158,46 @@ msgstr "Het minimale gebrukersniveau dat de zijkolom widget mag beheren"
 msgid "NOTE: Accessing this page - WP Photo Album Plus Settings - is always priviledged to Administrators."
 msgstr "OPMERKING: Deze pagina - Instellingen - is altijd voorbehouden aan uitsluitend Adminstrateurs."
 
+#: wppa_slideshow_widget.php:19
+msgid "WPPA+ Sidebar Slideshow"
+msgstr "WPPA+ Zijkolom Diavoorstelling"
+
+#: wppa_slideshow_widget.php:20
+#: wppa_slideshow_widget.php:33
+msgid "Sidebar Slideshow"
+msgstr "Zijkolom Diavoorstelling"
+
+#: wppa_slideshow_widget.php:51
+msgid "No album defined yet."
+msgstr "Er is nog geen album ingesteld."
+
+#: wppa_slideshow_widget.php:83
+msgid "Portrait only:"
+msgstr "Alleen staand:"
+
+#: wppa_slideshow_widget.php:85
+msgid "no."
+msgstr "nee."
+
+#: wppa_slideshow_widget.php:86
+msgid "yes."
+msgstr "ja."
+
+#: wppa_slideshow_widget.php:87
+msgid "Set to 'yes' if there are only portrait images in the album and you want the photos to fill the full width of the widget.<br/>Set to 'no' otherwise."
+msgstr "Zet op 'ja' als er alleen staande foto's in het album zijn en u de gehele breedte van de widget wilt vullen.<br/>Zet anders op 'nee'."
+
 #: wppa_toptenwidget.php:12
-msgid "TopTen Rated Photos"
-msgstr "TopTien gewaardeerde foto's"
+msgid "WPPA+ Top Ten Rated Photos"
+msgstr "WPPA+ Top Tien gewaardeerde foto's"
 
 #: wppa_toptenwidget.php:13
-msgid "TopTen Widget"
-msgstr "TopTien Widget"
+#: wppa_toptenwidget.php:23
+msgid "Top Ten Photos"
+msgstr "Top Tien foto's"
 
 #: wppa_toptenwidget.php:60
+#: wppa_widget.php:107
 msgid "Photo not found."
 msgstr "Foto niet gevonden."
 
@@ -2451,8 +2483,8 @@ msgid "Successfully created wppa user depot directory."
 msgstr "De wppa gebruikers depot map is succesvol aangemaakt."
 
 #: wppa_widget.php:13
-msgid "Photo Of The Day Widget"
-msgstr "Foto van de dag widget"
+msgid "WPPA+ Photo Of The Day"
+msgstr "WPPA+ Foto van de dag"
 
 #: wppa_widget.php:14
 #: wppa_widget.php:24
@@ -2606,6 +2638,18 @@ msgstr "- alle -afzonderlijke- albums -"
 #: wppa_widgetfunctions.php:121
 msgid "- all albums except -separate-"
 msgstr "- alle albums behalve -afzonderlijk-"
+
+#~ msgid "Search Photos widget"
+#~ msgstr "Foto's zoeken"
+
+#~ msgid "TopTen Rated Photos"
+#~ msgstr "TopTien gewaardeerde foto's"
+
+#~ msgid "TopTen Widget"
+#~ msgstr "TopTien Widget"
+
+#~ msgid "Photo Of The Day Widget"
+#~ msgstr "Foto van de dag widget"
 
 #~ msgid "No known valid album id to import photos to."
 #~ msgstr "Geen geldige album id om foto's in te importeren."
