@@ -25,6 +25,7 @@ class SlideshowWidget extends WP_Widget {
 		global $widget_content;
 		global $wppa_in_ss_widget;
 		global $wppa_portrait_only;
+		global $wppa_inp;
 
         extract( $args );
         
@@ -35,7 +36,8 @@ class SlideshowWidget extends WP_Widget {
 		
 		if (is_numeric($album)) {
 			echo $before_widget . $before_title . $title . $after_title;
-			echo '<div class="textwidget" style="padding-bottom:4px;">';
+			echo '<div class="textwidget" style="padding-top:2px; padding-bottom:4px;">';
+			$wppa_inp = false;
 			$wppa_in_ss_widget = true;
 			$wppa_portrait_only = ($ponly == 'yes');
 			wppa_albums($album, 'slideonly', $width, 'center');
