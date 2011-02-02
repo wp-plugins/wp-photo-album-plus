@@ -1,5 +1,5 @@
 ﻿// Slide show variables and functions
-// This is wppa_slideshow.js version 2.5.0.010
+// This is wppa_slideshow.js version 2.5.0.016
 //
 
 var wppa_slides = new Array();
@@ -50,6 +50,8 @@ var wppa_rating_once = true;
 
 var wppa_username;
 
+var wppa_portrait_only = new Array();
+
 jQuery(document).ready(function(){
 	if (wppa_auto_colwidth) wppa_do_autocol(0);
 });
@@ -71,6 +73,7 @@ function wppa_store_slideinfo(mocc, id, url, size, name, desc, photoid, avgrat, 
 		wppa_photo_avg[mocc] = new Array();
 		wppa_photo_myr[mocc] = new Array();
 		wppa_photo_rur[mocc] = new Array();
+		wppa_portrait_only[mocc] = false;
 	}
     wppa_slides[mocc][id] = ' src="' + url + '" alt="' + name + '" class="theimg big" ' + ' style="' + size + '; display:block;">';
     wppa_names[mocc][id] = name;
@@ -178,7 +181,11 @@ function wppa_fade_fade(mocc) {
 
 function wppa_after_fade(mocc) {
 	// set height to fit if reqd
-	if (wppa_fullvalign_fit[mocc]) {
+	if (wppa_portrait_only[mocc]) {
+		h = jQuery('#theimg'+wppa_foreground[mocc]+'-'+mocc).css('height');
+		jQuery('#slide_frame-'+mocc).css('height', parseInt(h)+'px');
+	}
+	else if (wppa_fullvalign_fit[mocc]) {
 		h = jQuery('#theimg'+wppa_foreground[mocc]+'-'+mocc).css('height');
 		if (h != 'auto') {
 			jQuery('#slide_frame-'+mocc).css('height', parseInt(h)+'px');

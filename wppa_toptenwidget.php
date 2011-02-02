@@ -8,9 +8,9 @@
 class TopTenWidget extends WP_Widget {
     /** constructor */
     function TopTenWidget() {
-        parent::WP_Widget(false, $name = 'TopTen Widget');	
-		$widget_ops = array('classname' => 'wppa_topten_widget', 'description' => __( 'TopTen Rated Photos', 'wppa') );	//
-		$this->WP_Widget('wppa_topten_widget', __('TopTen Widget', 'wppa'), $widget_ops);															//
+        parent::WP_Widget(false, $name = 'Top Ten Photos');	
+		$widget_ops = array('classname' => 'wppa_topten_widget', 'description' => __( 'WPPA+ Top Ten Rated Photos', 'wppa') );	//
+		$this->WP_Widget('wppa_topten_widget', __('Top Ten Photos', 'wppa'), $widget_ops);															//
     }
 
 	/** @see WP_Widget::widget */
@@ -20,7 +20,7 @@ class TopTenWidget extends WP_Widget {
 
         extract( $args );
         
- 		$widget_title = apply_filters('widget_title', empty( $instance['title'] ) ? get_option('wppa_toptenwidgettitle', __('Top Ten Rated Photos', 'wppa')) : $instance['title']);
+ 		$widget_title = apply_filters('widget_title', empty( $instance['title'] ) ? get_option('wppa_toptenwidgettitle', __('Top Ten Photos', 'wppa')) : $instance['title']);
 
 		$page = get_option('wppa_topten_widget_linkpage', '0');
 		$max = get_option('wppa_topten_count', '10');

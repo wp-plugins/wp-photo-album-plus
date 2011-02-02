@@ -21,10 +21,12 @@
 * 014: Fixed Album not found err during import when there are quotes in the album name. 
        Import will now attempt to use old album and photo id's when previously exported. 
        This improves the usability of the export/import mechanism as a backup tool.
+* 015: Fixed missing slideonly in RSS.
+* 016: New widget added: Slideshow Widget. For clearity: all WPPA+ widgets have 'WPPA+' in their description.
 */
 
 global $wppa_api_version;
-$wppa_api_version = '2-5-0-013';
+$wppa_api_version = '2-5-0-016';
 
 /* show system statistics */
 function wppa_statistics() {
@@ -1009,29 +1011,37 @@ function wppa_get_photo_order($id) {
 
 function wppa_get_imgstyle($file, $max_size, $xvalign = '', $type = '') {
 global $wppa_auto_colwidth;
+global $wppa_portrait_only;
+global $is_slideonly;
+
 	if($file == '') return '';					// no image: no dimensions
 	if (!is_file($file)) return '';				// no file: no dimensions (2.3.0)
 	$result = '';
 	$image_attr = getimagesize( $file );
 	
 	if ($type == 'fullsize') {
-		$ratioref = get_option('wppa_maxheight', get_option('wppa_fullsize', '640')) / get_option('wppa_fullsize', '640');
-		$max_height = round($max_size * $ratioref);
-		if (wppa_is_wider($image_attr[0], $image_attr[1])) {
+		if ($wppa_portrait_only) {
 			$width = $max_size;
 			$height = round($width * $image_attr[1] / $image_attr[0]);
 		}
 		else {
-			$height = round($ratioref * $max_size);
-			$width = round($height * $image_attr[0] / $image_attr[1]);
-		}
-		if ($image_attr[0] < $width && $image_attr[1] < $height) {
-			if (get_option('wppa_enlarge', 'no') == 'no') {
-				$width = $image_attr[0];
-				$height = $image_attr[1];
+			$ratioref = get_option('wppa_maxheight', get_option('wppa_fullsize', '640')) / get_option('wppa_fullsize', '640');
+			$max_height = round($max_size * $ratioref);
+			if (wppa_is_wider($image_attr[0], $image_attr[1])) {
+				$width = $max_size;
+				$height = round($width * $image_attr[1] / $image_attr[0]);
+			}
+			else {
+				$height = round($ratioref * $max_size);
+				$width = round($height * $image_attr[0] / $image_attr[1]);
+			}
+			if ($image_attr[0] < $width && $image_attr[1] < $height) {
+				if (get_option('wppa_enlarge', 'no') == 'no') {
+					$width = $image_attr[0];
+					$height = $image_attr[1];
+				}
 			}
 		}
-
 	}
 	else {
 		if (wppa_is_landscape($image_attr)) {
@@ -1089,9 +1099,21 @@ global $wppa_auto_colwidth;
 			break;
 		case 'fullsize':
 			$result .= ' width:' . $width . 'px;';
-			if (!$wppa_auto_colwidth) $result .= 'height:' . $height . 'px;';
-			if ($xvalign == 'optional') $valign = get_option('wppa_fullvalign', '');
-			else $valign = $xvalign;
+			
+			if (!$wppa_auto_colwidth) {
+				$result .= 'height:' . $height . 'px;';
+			}
+			
+			if ($is_slideonly == '1') {
+				$valign = 'fit';
+			}
+			elseif ($xvalign == 'optional') {
+				$valign = get_option('wppa_fullvalign', '');
+			}
+			else {
+				$valign = $xvalign;
+			}
+			
 			if ($valign != 'default') {
 				// Center horizontally
 				$delta = round(($max_size - $width) / 2);
@@ -1363,6 +1385,9 @@ function wppa_get_slide_frame_style() {
 	global $wppa_fullsize;
 	global $single_photo;
 	global $wppa_auto_colwidth;
+	global $wppa_in_ss_widget;
+	global $wppa_portrait_only;
+	
 	$fs = get_option('wppa_fullsize', '640');
 	$cs = get_option('wppa_colwidth', $fs);
 	if ($cs == 'auto') {
@@ -1374,29 +1399,33 @@ function wppa_get_slide_frame_style() {
 	
 	$gfh = floor($gfs * get_option('wppa_maxheight', get_option('wppa_fullsize', '640')) / get_option('wppa_fullsize', '640'));
 
-	if (wppa_page('oneofone')) {
-		$imgattr = getimagesize(wppa_get_image_path_by_id($single_photo));
-		$h = floor($gfs * $imgattr[1] / $imgattr[0]);
-		$result .= 'height: ' . $h . 'px;';
-	}
-	elseif ($wppa_auto_colwidth) {
-		$result .= ' height: ' . $gfh . 'px;';
-	}
-	elseif (get_option('wppa_fullvalign', 'default') == 'default') {
-		$result .= 'min-height: ' . $gfh . 'px;'; 
+	if ($wppa_in_ss_widget && $wppa_portrait_only) {
+		$result = 'width: ' . $gfs . 'px;';	// No height
 	}
 	else {
-		$result .= 'height: ' . $gfh . 'px;'; 
+		if (wppa_page('oneofone')) {
+			$imgattr = getimagesize(wppa_get_image_path_by_id($single_photo));
+			$h = floor($gfs * $imgattr[1] / $imgattr[0]);
+			$result .= 'height: ' . $h . 'px;';
+		}
+		elseif ($wppa_auto_colwidth) {
+			$result .= ' height: ' . $gfh . 'px;';
+		}
+		elseif (get_option('wppa_fullvalign', 'default') == 'default') {
+			$result .= 'min-height: ' . $gfh . 'px;'; 
+		}
+		else {
+			$result .= 'height: ' . $gfh . 'px;'; 
+		}
+		$result .= 'width: ' . $gfs . 'px;';
 	}
-
-	$result .= 'width: ' . $gfs . 'px;';
 	
 	$hor = get_option('wppa_fullhalign', 'center');
 	if ($gfs == $fs) {
 		if ($fs != $cs) {
 			switch ($hor) {
 			case 'left':
-				$result .= 'margun-left: 0px;';
+				$result .= 'margin-left: 0px;';
 				break;
 			case 'center':
 				$result .= 'margin-left: ' . floor(($cs - $fs) / 2) . 'px;';
@@ -1525,7 +1554,7 @@ global $wppa_alt;
 	}
 	elseif ($action == 'close')	{
 		echo('</div><!-- wppa-container-'.$wppa_master_occur.' -->');
-//		if ($wppa_inp) 
+		if ($wppa_inp) 
 						echo('<p>');					// Re-open paragraph
 	}
 	else {
@@ -1947,6 +1976,8 @@ function wppa_run_slidecontainer($type = '') {
 global $wppa_master_occur;
 global $single_photo;
 global $is_slideonly;
+global $wppa_portrait_only;
+
 	if ($type == 'single') {
 		if (is_feed()) {
 			echo('<a href="'.get_permalink().'"><img src="'.wppa_get_image_url_by_id($single_photo).'" style="'.wppa_get_fullimgstyle($single_photo).'"/></a>');
@@ -1983,8 +2014,11 @@ global $is_slideonly;
 		
 		if ($is_slideonly) $startindex = -1;	// Start running, overrules everything
 	
-		if (get_option('wppa_fullvalign', 'default') == 'fit') { 
+		if (get_option('wppa_fullvalign', 'default') == 'fit' || $is_slideonly == '1') { 
 			echo('<script type="text/javascript" >wppa_fullvalign_fit['.$wppa_master_occur.'] = true;</script>');
+		}
+		if ($wppa_portrait_only) {
+			echo('<script type="text/javascript" >wppa_portrait_only['.$wppa_master_occur.'] = true;</script>');
 		}
 		echo('<script type="text/javascript">wppa_startstop('.$wppa_master_occur.', '.$startindex.');</script>');
 	}
@@ -2014,7 +2048,7 @@ global $thumb;
 //		wppa_dummy_bar(__('- - - Filmstrip - - -', 'wppa'));
 //		return;
 //	}
-	if ($is_slideonly == '1') return;	/* Not when slideonly */
+	if ($is_slideonly == '1' && !is_feed()) return;	/* Not when slideonly */
 
 	if (isset($_GET['album'])) $alb = $_GET['album'];
 	else $alb = '';	// Album id is in $startalbum

@@ -144,6 +144,8 @@ the second pass enables you to select the photos and albums you want to import.
 * 014: Fixed Album not found err during import when there are quotes in the album and the parents album name. 
        Import will now attempt to use old album and photo id's when previously exported. 
        This improves the usability of the export/import mechanism as a backup tool.
+* 015: Fixed missing slideonly in RSS.
+* 016: New widget added: Slideshow Widget. For clearity: all WPPA+ widgets have 'WPPA+' in their description.
 	   
 = 2.4.4 =
 

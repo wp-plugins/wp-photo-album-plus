@@ -9,7 +9,7 @@ class SearchPhotos extends WP_Widget {
     /** constructor */
     function SearchPhotos() {
         parent::WP_Widget(false, $name = 'Search Photos');	
-		$widget_ops = array('classname' => 'wppa_search_photos', 'description' => __( 'Search Photos widget', 'wppa') );	//
+		$widget_ops = array('classname' => 'wppa_search_photos', 'description' => __( 'WPPA+ Search Photos', 'wppa') );	//
 		$this->WP_Widget('wppa_search_photos', __('Search Photos', 'wppa'), $widget_ops);															//
     }
 
