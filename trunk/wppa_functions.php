@@ -28,7 +28,7 @@
 */
 
 global $wppa_api_version;
-$wppa_api_version = '2-5-0-016';
+$wppa_api_version = '2-5-0-017';
 
 /* show system statistics */
 function wppa_statistics() {
