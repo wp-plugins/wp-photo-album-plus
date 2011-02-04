@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * get the albums via filter
-* version 2.5.0.005
+* version 2.5.0.017
 *
 */
 
@@ -24,7 +24,7 @@ function wppa_albums_filter($post) {
 		$wppa_pos = strpos($post_old, '%%wppa%%');
 		while ($wppa_pos !== false) {
 			$chunk = substr($post_old, 0, $wppa_pos);
-			$in_p = substr_count($chunk, '<p>') > substr_count($chunk, '</p>') ? true : false;
+			//$in_p = false; // substr_count($chunk, '<p>') > substr_count($chunk, '</p>') ? true : false;
 
 			$post_new .= wppa_disp($chunk);								// Copy BEFORE part to new post
 			$post_old = substr($post_old, $wppa_pos);					// Shift BEFORE part out
@@ -102,7 +102,7 @@ function wppa_albums_filter($post) {
 				$post_old = substr($post_old, strpos($post_old, '%%') + 2); // shift position and trailing %% out
 			}
 			
-			$post_new .= wppa_set_inp($in_p);
+//			$post_new .= wppa_set_inp($in_p);
 			$post_new .= wppa_set_album($album_number);
 			$post_new .= wppa_set_cover($is_cover);
 			$post_new .= wppa_set_slide($is_slide);
@@ -129,10 +129,12 @@ function wppa_disp($var) {
 	echo($var);
 }
 
+/*
 function wppa_set_inp($inp) {
 	global $wppa_inp;
 	$wppa_inp = $inp;
 }
+*/
 
 function wppa_set_album($alb) {
 	global $startalbum;
