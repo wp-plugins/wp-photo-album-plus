@@ -1,5 +1,5 @@
 ﻿// Slide show variables and functions
-// This is wppa_slideshow.js version 2.5.0.016
+// This is wppa_slideshow.js version 2.5.0.017
 //
 
 var wppa_slides = new Array();
@@ -51,19 +51,22 @@ var wppa_rating_once = true;
 var wppa_username;
 
 var wppa_portrait_only = new Array();
+var wppa_in_widget_linkurl = new Array();
+var wppa_in_widget_linktitle = new Array();
 
 jQuery(document).ready(function(){
 	if (wppa_auto_colwidth) wppa_do_autocol(0);
 });
 
-function wppa_store_slideinfo(mocc, id, url, size, name, desc, photoid, avgrat, myrat, rateurl) {
+function wppa_store_slideinfo(mocc, id, url, size, name, desc, photoid, avgrat, myrat, rateurl, iwlinkurl, iwlinktitle, iwtimeout) {
 	if (!wppa_slides[mocc]) {
 		wppa_slides[mocc] = new Array();
 		wppa_names[mocc] = new Array();
 		wppa_descs[mocc] = new Array();
 		wppa_id[mocc] = -1;
 		wppa_next_id[mocc] = 0;
-		wppa_timeout[mocc] = wppa_ss_timeout;
+		if (parseInt(iwtimeout) > 0) wppa_timeout[mocc] = parseInt(iwtimeout);
+		else wppa_timeout[mocc] = wppa_ss_timeout;
 		wppa_ss_running[mocc] = 0;
 		wppa_foreground[mocc] = 0;
 		wppa_busy[mocc] = false;
@@ -74,6 +77,8 @@ function wppa_store_slideinfo(mocc, id, url, size, name, desc, photoid, avgrat, 
 		wppa_photo_myr[mocc] = new Array();
 		wppa_photo_rur[mocc] = new Array();
 		wppa_portrait_only[mocc] = false;
+		wppa_in_widget_linkurl[mocc] = iwlinkurl;
+		wppa_in_widget_linktitle[mocc] = iwlinktitle;
 	}
     wppa_slides[mocc][id] = ' src="' + url + '" alt="' + name + '" class="theimg big" ' + ' style="' + size + '; display:block;">';
     wppa_names[mocc][id] = name;
@@ -101,11 +106,17 @@ function wppa_next_slide(mocc) {
     // first:
     if (wppa_first[mocc]) {
 	    if (wppa_id[mocc] != -1) {
-			jQuery("#theslide0-"+mocc).html('<img id="theimg0-'+mocc+'" '+wppa_slides[mocc][wppa_id[mocc]]);
+			if (wppa_in_widget_linkurl[mocc] != '') jQuery("#theslide0-"+mocc).html('<a href="'+wppa_in_widget_linkurl[mocc]+'" title="'+wppa_in_widget_linktitle[mocc]+'"><img id="theimg0-'+mocc+'" '+wppa_slides[mocc][wppa_id[mocc]]+'</a>');
+			else jQuery("#theslide0-"+mocc).html('<img id="theimg0-'+mocc+'" '+wppa_slides[mocc][wppa_id[mocc]]);
 			jQuery("#theimg0-"+mocc).hide();
 			jQuery("#theslide0-"+mocc).css('zIndex','901');
 		}
-		jQuery("#theslide1-"+mocc).html('<img id="theimg1-'+mocc+'" '+wppa_slides[mocc][wppa_next_id[mocc]]);
+		if (wppa_in_widget_linkurl[mocc] != '') {
+			jQuery("#theslide1-"+mocc).html('<a href="'+wppa_in_widget_linkurl[mocc]+'" title="'+wppa_in_widget_linktitle[mocc]+'"><img id="theimg1-'+mocc+'" '+wppa_slides[mocc][wppa_next_id[mocc]]+'</a>');
+		}
+		else {
+			jQuery("#theslide1-"+mocc).html('<img id="theimg1-'+mocc+'" '+wppa_slides[mocc][wppa_next_id[mocc]]);
+		}
 		jQuery("#theimg1-"+mocc).hide();	      
 		jQuery("#theslide1-"+mocc).css('zIndex','900');
 	
@@ -117,7 +128,8 @@ function wppa_next_slide(mocc) {
     // end first
     else {
     	// load next img (backg)
-		jQuery("#theslide"+bg+"-"+mocc).html('<img id="theimg'+bg+'-'+mocc+'" '+wppa_slides[mocc][wppa_next_id[mocc]]);
+		if (wppa_in_widget_linkurl[mocc] != '') jQuery("#theslide"+bg+"-"+mocc).html('<a href="'+wppa_in_widget_linkurl[mocc]+'" title="'+wppa_in_widget_linktitle[mocc]+'"><img id="theimg'+bg+'-'+mocc+'" '+wppa_slides[mocc][wppa_next_id[mocc]]+'</a>');
+		else jQuery("#theslide"+bg+"-"+mocc).html('<img id="theimg'+bg+'-'+mocc+'" '+wppa_slides[mocc][wppa_next_id[mocc]]);
 		jQuery("#theslide"+bg+"-"+mocc).css('zIndex', '900');
 		jQuery("#theslide"+fg+"-"+mocc).css('zIndex', '901');
 		jQuery("#theimg"+bg+"-"+mocc).hide();

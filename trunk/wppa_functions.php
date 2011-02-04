@@ -23,6 +23,8 @@
        This improves the usability of the export/import mechanism as a backup tool.
 * 015: Fixed missing slideonly in RSS.
 * 016: New widget added: Slideshow Widget. For clearity: all WPPA+ widgets have 'WPPA+' in their description.
+* 017: The slideshow widget is expanded width: link url, tooltip text, own timeout timer and subtitle.
+
 */
 
 global $wppa_api_version;
@@ -834,6 +836,9 @@ function wppa_get_slide_info($index, $id) {
 global $wpdb;
 	global $wppa_master_occur;
 	global $wppa_occur;
+	global $wppa_in_widget_linkurl;
+	global $wppa_in_widget_linktitle;
+	global $wppa_in_widget_timeout;
 
 	$user = wppa_get_user();
 	
@@ -937,7 +942,7 @@ global $wpdb;
 	$url .= 'photo=' . $id . '&rating=';
 	
 	// Produce final result
-    $result = "'" . $wppa_master_occur . "','" . $index . "','" . wppa_get_photo_url($id) . "','" . wppa_get_fullimgstyle($id) . "','" . esc_js(wppa_get_photo_name($id)) . "','" . wppa_html(esc_js(stripslashes(wppa_photo_desc($id,true)))) . "','" .$id. "','" .$avgrat. "','" .$myrat. "','" .$url. "'";
+    $result = "'" . $wppa_master_occur . "','" . $index . "','" . wppa_get_photo_url($id) . "','" . wppa_get_fullimgstyle($id) . "','" . esc_js(wppa_get_photo_name($id)) . "','" . wppa_html(esc_js(stripslashes(wppa_photo_desc($id,true)))) . "','" .$id. "','" .$avgrat. "','" .$myrat. "','" .$url. "','" .$wppa_in_widget_linkurl. "','" .$wppa_in_widget_linktitle. "','" .$wppa_in_widget_timeout. "'";
     return $result;                                                        
 }
 
@@ -1519,7 +1524,8 @@ global $wppa_auto_colwidth;
 		$result .= 'width:'.$ctw.'px;';
 	}
 	
-	if ($wppa_align == '' || $wppa_align == 'left') {
+//	if ($wppa_align == '' || 
+	if ($wppa_align == 'left') {
 		$result .= 'float: left;';
 		if ($marg) $result .= 'margin-right: '.$marg;
 	}
@@ -1544,17 +1550,19 @@ global $wppa_revno;				// The official version (wppa.php and readme.txt)
 global $wppa_version;			// The theme version (wppa_theme.php)
 global $wppa_api_version;		// The API version (this files version)
 global $wppa_master_occur;
-global $wppa_inp;
+global $wppa_in_widget;
 global $wppa_alt;
+
 	if (is_feed()) return;		// Need no container in RSS feeds
 	if ($action == 'open') {
 		$wppa_alt = 'alt';
-		if ($wppa_inp) echo('</p>');				// Close wpautop generated paragraph if we're in
+//		if ($wppa_inp) echo('</p>');				// Close wpautop generated paragraph if we're in
 		echo('<div id="wppa-container-'.$wppa_master_occur.'" style="'.wppa_get_container_style().'" class="wppa-container wppa-rev-'.$wppa_revno.' wppa-theme-'.$wppa_version.' wppa-api-'.$wppa_api_version.'" >');
 	}
 	elseif ($action == 'close')	{
+		echo('<div style="clear:both;"></div>');
 		echo('</div><!-- wppa-container-'.$wppa_master_occur.' -->');
-		if ($wppa_inp) 
+		if (!$wppa_in_widget) 
 						echo('<p>');					// Re-open paragraph
 	}
 	else {

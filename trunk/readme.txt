@@ -10,8 +10,7 @@ Requires at least: 2.8
 Tested up to: 3.0.4
 
 This plugin is designed to easily manage and display your photo albums and slideshows within your WordPress site. 
-Additionally there are three widgets: Photo of the day, a Search Photos widget and a Top Ten Rated photo widget.
-
+Additionally there are four widgets: Photo of the day, a Search Photos widget, a Top Ten Rated photo widget and a Mini slideshow widget.
 
 == Description ==
 
@@ -147,6 +146,8 @@ the second pass enables you to select the photos and albums you want to import.
        This improves the usability of the export/import mechanism as a backup tool.
 * 015: Fixed missing slideonly in RSS.
 * 016: New widget added: Slideshow Widget. For clearity: all WPPA+ widgets have 'WPPA+' in their description.
+* 017: The slideshow widget is expanded width: link url, tooltip text, own timeout timer and subtitle.
+       Fixed a w3c validation errror.
 	   
 = 2.4.4 =
 
