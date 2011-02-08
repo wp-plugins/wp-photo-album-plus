@@ -148,6 +148,7 @@ the second pass enables you to select the photos and albums you want to import.
 * 016: New widget added: Slideshow Widget. For clearity: all WPPA+ widgets have 'WPPA+' in their description.
 * 017: The slideshow widget is expanded width: link url, tooltip text, own timeout timer and subtitle.
        Fixed a w3c validation errror.
+* 018: Appearence setting did not work on fullsize name and description. Fixed.
 	   
 = 2.4.4 =
 

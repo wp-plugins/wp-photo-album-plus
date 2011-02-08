@@ -34,7 +34,7 @@ class WppaGpWidget extends WP_Widget {
 		if ( !empty( $title ) ) { echo $before_title . $title . $after_title; } 
 		
 		?>
-			<div class="wppa-gp-widget" style="margin-top:2px; margin-left:2px;" ><?php wppa_albums_filter($instance['text']); ?></div>
+			<div class="wppa-gp-widget" style="margin-top:2px; margin-left:2px;" ><?php echo wppa_albums_filter($instance['text']); ?></div>
 		<?php
 		
 		echo $after_widget;
