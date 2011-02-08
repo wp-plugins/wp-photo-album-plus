@@ -24,11 +24,12 @@
 * 015: Fixed missing slideonly in RSS.
 * 016: New widget added: Slideshow Widget. For clearity: all WPPA+ widgets have 'WPPA+' in their description.
 * 017: The slideshow widget is expanded width: link url, tooltip text, own timeout timer and subtitle.
+* 018: Appearence setting did not work on fullsize name and description. Fixed.
 
 */
 
 global $wppa_api_version;
-$wppa_api_version = '2-5-0-017';
+$wppa_api_version = '2-5-0-018';
 
 /* show system statistics */
 function wppa_statistics() {
@@ -63,10 +64,12 @@ function wppa_breadcrumb($xsep = '', $opt = '') {
 	global $startalbum;
 	global $single_photo;
 	global $is_slideonly;
+	global $wppa_in_widget;
 
 	if ($opt == 'optional' && get_option('wppa_show_bread', 'yes') == 'no') return;	/* Nothing to do here */
 	if (wppa_page('oneofone')) return; /* Never at a single image */
 	if ($is_slideonly == '1') return;	/* Not when slideony */
+	if ($wppa_in_widget) return; /* Not in a widget */
 	if (is_feed()) {
 //		wppa_dummy_bar(__('- - - Breadcrumb navigation bar - - -', 'wppa'));	
 		return;
@@ -225,6 +228,8 @@ function wppa_crumb_page_ancestors($sep, $page = '0') {
 function wppa_albums($xid = '', $typ='', $siz = '', $ali = '') {
 	global $wppa_occur;
 	global $wppa_master_occur;
+	global $wppa_widget_occur;
+	global $wppa_in_widget;
     global $startalbum;
 	global $is_cover;
 	global $is_slide;
@@ -236,7 +241,8 @@ function wppa_albums($xid = '', $typ='', $siz = '', $ali = '') {
     
 	$wppa_occur++;
 	$wppa_master_occur++;
-		
+	if ($wppa_in_widget) $wppa_widget_occur++;
+	
 	if ($typ == 'album') {
 		$is_cover = '0';
 		$is_slide = '0';
@@ -394,18 +400,28 @@ function wppa_sep($opt = '') {
 // determine page
 function wppa_page($page) {
 	global $wppa_occur;
+	global $wppa_master_occur;
+	global $wppa_widget_occur;
+	global $wppa_in_widget;
 	global $is_slide;
 	global $is_slideonly;
 	global $single_photo;
 
 	$occur = '0';
-	if (isset($_GET['occur'])) if (is_numeric($_GET['occur'])) $occur = $_GET['occur'];
+	if ($wppa_in_widget) {
+		if (isset($_GET['woccur'])) if (is_numeric($_GET['woccur'])) $occur = $_GET['woccur'];
+	}
+	else {
+		if (isset($_GET['occur'])) if (is_numeric($_GET['occur'])) $occur = $_GET['occur'];
+	}
 
+	$ref_occur = $wppa_in_widget ? $wppa_widget_occur : $wppa_occur;
+	
 	if ($is_slide == '1') $cur_page = 'slide';			// Do slide or single when explixitly on
 	elseif ($is_slideonly == '1') $cur_page = 'slide';		// Slideonly is a subset of slide
 //	elseif (isset($_GET['topten'])) $cur_page = 'slide';	// Do slide for topten selection
 	elseif (is_numeric($single_photo)) $cur_page = 'oneofone';
-	elseif ($occur == $wppa_occur) {					// Interprete $_GET only if occur is current
+	elseif ($occur == $ref_occur) {					// Interprete $_GET only if occur is current
 		if (isset($_GET['slide'])) $cur_page = 'slide';	
 		elseif (isset($_GET['photo'])) $cur_page = 'single';
 		else $cur_page = 'albums';
@@ -501,10 +517,15 @@ function wppa_get_image_path_by_id($id = false) {
 function wppa_get_image_page_url_by_id($id = false) {
 	global $wpdb; //, $album;
 	global $wppa_occur;
+	global $wppa_master_occur;
+	global $wppa_widget_occur;
+	global $wppa_in_widget;
 	
 	if ($id == false) return '';
+	$occur = $wppa_in_widget ? $wppa_widget_occur : $wppa_occur;
+	$w = $wppa_in_widget ? 'w' : '';
 	$image = $wpdb->get_row("SELECT * FROM " . PHOTO_TABLE . " WHERE id={$id} LIMIT 1", 'ARRAY_A');
-	if ($image) $imgurl = get_permalink()  . wppa_sep() . 'album=' . $image['album'] . '&amp;photo=' . $image['id'] . '&amp;cover=0&amp;occur=' . $wppa_occur;	
+	if ($image) $imgurl = get_permalink()  . wppa_sep() . 'album=' . $image['album'] . '&amp;photo=' . $image['id'] . '&amp;cover=0&amp;'.$w.'occur=' . $occur;	
 	else $imgurl = '';
 	return $imgurl;
 }
@@ -515,6 +536,9 @@ function wppa_get_albums($album = false, $type = '') {
     global $startalbum;
 	global $is_cover;
 	global $wppa_occur;
+	global $wppa_master_occur;
+	global $wppa_widget_occur;
+	global $wppa_in_widget;
 	global $wppa_src;
 	global $wppa_album_count;
 
@@ -538,11 +562,17 @@ function wppa_get_albums($album = false, $type = '') {
 	else {
 		if ($wppa_src) return false;	// empty search string
 		$occur = '0';
-		if (isset($_GET['occur'])) if (is_numeric($_GET['occur'])) $occur = $_GET['occur'];
+		if ($wppa_in_widget) {
+			if (isset($_GET['woccur'])) if (is_numeric($_GET['woccur'])) $occur = $_GET['woccur'];
+		}
+		else {
+			if (isset($_GET['occur'])) if (is_numeric($_GET['occur'])) $occur = $_GET['occur'];
+		}
 		
 		// Check if querystring given This has the highest priority in case of matching occurrance
 		// Obey querystring only if the global occurence matches the occurence in the querystring, or no query occurrence given.
-		if (($occur == $wppa_occur) && (isset($_GET['album']))) {
+		$ref_occur = $wppa_in_widget ? $wppa_widget_occur : $wppa_occur;
+		if (($occur == $ref_occur) && (isset($_GET['album']))) {
 			$id = $_GET['album'];
 			if (isset($_GET['cover'])) $is_cover = $_GET['cover'];
 		}
@@ -581,12 +611,19 @@ function wppa_album_url($xid = '') {
 function wppa_get_album_url($xid = '') {
 	global $album;
 	global $wppa_occur;
+	global $wppa_master_occur;
+	global $wppa_widget_occur;
+	global $wppa_in_widget;
+	
+	$occur = $wppa_in_widget ? $wppa_widget_occur : $wppa_occur;
+	$w = $wppa_in_widget ? 'w' : '';
+	
 	if ($xid != '') $id = $xid;
 	elseif (isset($album['id'])) {
 		$id = $album['id'];
 	}
 	if ($id != '') {
-		$link = get_permalink() . wppa_sep() . 'album=' . $id . '&amp;cover=0&amp;occur='.$wppa_occur;
+		$link = get_permalink() . wppa_sep() . 'album=' . $id . '&amp;cover=0&amp;'.$w.'occur='.$occur;
 	}
 	else $link = '';
     return $link;
@@ -663,8 +700,13 @@ function wppa_slideshow_url() {
 function wppa_get_slideshow_url() {
 	global $album;
 	global $wppa_occur;
+	global $wppa_master_occur;
+	global $wppa_widget_occur;
+	global $wppa_in_widget;
 	
-	$link = get_permalink() . wppa_sep() . 'album=' . $album['id'] . '&amp;slide=true' . '&amp;occur=' . $wppa_occur;
+	$occur = $wppa_in_widget ? $wppa_widget_occur : $wppa_occur;
+	$w = $wppa_in_widget ? 'w' : '';
+	$link = get_permalink() . wppa_sep() . 'album=' . $album['id'] . '&amp;slide=true' . '&amp;'.$w.'occur=' . $occur;
 	
 	return $link;	
 }
@@ -674,6 +716,9 @@ function wppa_get_thumbs() {
 	global $wpdb;
     global $startalbum;
 	global $wppa_occur;
+	global $wppa_master_occur;
+	global $wppa_widget_occur;
+	global $wppa_in_widget;
 	global $wppa_src;
 	global $wppa_thumb_count;
 
@@ -706,10 +751,16 @@ function wppa_get_thumbs() {
 	else {
 		if ($wppa_src) return false; 	// empty search string
 		$occur = '0';
-		if (isset($_GET['occur'])) if (is_numeric($_GET['occur'])) $occur = $_GET['occur'];
+		if ($wppa_in_widget) {
+			if (isset($_GET['woccur'])) if (is_numeric($_GET['woccur'])) $occur = $_GET['woccur'];
+		}
+		else {
+			if (isset($_GET['occur'])) if (is_numeric($_GET['occur'])) $occur = $_GET['occur'];
+		}
 		
 		// Obey querystring only if the global occurence matches the occurence in the querystring, or no query occurrence given.
-		if (($occur == $wppa_occur) && (isset($_GET['album']))) {
+		$ref_occur = $wppa_in_widget ? $wppa_widget_occur : $wppa_occur;
+		if (($occur == $ref_occur) && (isset($_GET['album']))) {
 			$id = $_GET['album'];
 		}
 		elseif (is_numeric($startalbum)) $id = $startalbum; 
@@ -732,6 +783,9 @@ function wppa_photo_page_url() {
 function wppa_get_photo_page_url() {
 	global $thumb;
 	global $wppa_occur;
+	global $wppa_master_occur;
+	global $wppa_widget_occur;
+	global $wppa_in_widget;
 	
     if (isset($_GET['album'])) {
 		$url = get_permalink()  . wppa_sep() . 'album=' . $_GET['album'] . '&amp;photo=' . $thumb['id'];
@@ -742,7 +796,9 @@ function wppa_get_photo_page_url() {
 			$url .= '&amp;wppa_src=' . $_POST['wppa-searchstring'];
 		}
 	}
-	$url .= '&amp;occur=' . $wppa_occur;
+	$occur = $wppa_in_widget ? $wppa_widget_occur : $wppa_occur;
+	$w = $wppa_in_widget ? 'w' : '';
+	$url .= '&amp;'.$w.'occur=' . $occur;
 	return $url; 
 }
 
@@ -835,7 +891,9 @@ function wppa_get_fullimgstyle($id = '') {
 function wppa_get_slide_info($index, $id) {
 global $wpdb;
 	global $wppa_master_occur;
+	global $wppa_widget_occur;
 	global $wppa_occur;
+	global $wppa_in_widget;
 	global $wppa_in_widget_linkurl;
 	global $wppa_in_widget_linktitle;
 	global $wppa_in_widget_timeout;
@@ -937,7 +995,12 @@ global $wpdb;
 	if (isset($_GET['cover'])) $url .= 'cover='.$_GET['cover'].'&';
 	if (isset($_GET['slide'])) $url .= 'slide='.$_GET['slide'].'&';
 //	if (isset($_GET['occur'])) $url .= 'occur='.$_GET['occur'].'&';
-							   $url .= 'occur='.$wppa_occur.'&';
+	if ($wppa_in_widget) {
+		$url .= 'woccur='.$wppa_widget_occur.'&';
+	}
+	else {
+	   $url .= 'occur='.$wppa_occur.'&';
+	}
 	if (isset($_GET['topten'])) $url .= 'topten='.$_GET['topten'].'&';
 	$url .= 'photo=' . $id . '&rating=';
 	
@@ -1216,6 +1279,8 @@ function wppa_page_links($npages = '1', $curpage = '1') {
 	global $is_cover;
 	global $wppa_occur;
 	global $wppa_master_occur;
+	global $wppa_widget_occur;
+	global $wppa_in_widget;
 	
 	if ($npages < '2') return;	// Nothing to display
 	if (is_feed()) {
@@ -1231,7 +1296,9 @@ function wppa_page_links($npages = '1', $curpage = '1') {
 	$pnu = get_permalink() . wppa_sep() . 'cover=' . $ic;
 	if (isset($_GET['album'])) $pnu .= '&amp;album=' . $_GET['album'];
 	if (isset($_GET['photo'])) $pnu .= '&amp;photo=' . $_GET['photo'];
-	$pnu .= '&amp;occur=' . $wppa_occur;
+	$occur = $wppa_in_widget ? $wppa_master_occur : $wppa_occur;
+	$w = $wppa_in_widget ? 'w' : '';
+	$pnu .= '&amp;'.$w.'occur=' . $occur;
 	$prevurl = $pnu . '&amp;page=' . ($curpage - 1);	
 	$nexturl = $pnu . '&amp;page=' . ($curpage + 1);
 	
@@ -1540,7 +1607,14 @@ global $wppa_auto_colwidth;
 
 function wppa_get_curpage() {
 global $wppa_master_occur;
-	if (isset($_GET['occur'])) $oc = $_GET['occur']; else $oc = '1';
+global $wppa_in_widget;
+
+	if ($wppa_in_widget) {
+		if (isset($_GET['woccur'])) $oc = $_GET['woccur']; else $oc = '1';
+	}
+	else {
+		if (isset($_GET['occur'])) $oc = $_GET['occur']; else $oc = '1';
+	}
 	if (isset($_GET['page']) && $wppa_master_occur == $oc) $curpage = $_GET['page']; else $curpage = '1';
 	return $curpage;
 }
@@ -1573,6 +1647,7 @@ global $wppa_alt;
 function wppa_album_list($action) {
 global $wppa_master_occur;
 global $cover_count;
+
 	if ($action == 'open') {
 		$cover_count = '0';
 		echo('<div id="wppa-albumlist-'.$wppa_master_occur.'" class="albumlist">');
@@ -1588,6 +1663,7 @@ global $cover_count;
 function wppa_thumb_list($action) {
 global $wppa_master_occur;
 global $cover_count;
+
 	if ($action == 'open') {
 		$cover_count = '0';
 		echo('<div id="wppa-thumblist-'.$wppa_master_occur.'" class="thumblist">');
@@ -1603,6 +1679,7 @@ global $cover_count;
 function wppa_thumb_area($action) {
 global $wppa_master_occur;
 global $wppa_alt;
+
 	if ($action == 'open') {
 		if (is_feed()) {
 			echo('<div id="wppa-thumbarea-'.$wppa_master_occur.'" style="'.__wcs('wppa-box').__wcs('wppa-'.$wppa_alt).'">');
@@ -1963,7 +2040,7 @@ global $wppa_master_occur;
 global $is_slideonly;
 	if (($opt == 'optional') && (get_option('wppa_show_full_desc', 'yes') == 'no')) return;
 	if ($is_slideonly == '1') return;	/* Not when slideonly */
-	echo('<p id="imagedesc-'.$wppa_master_occur.'" class="wppa-fulldesc imagedesc"></p>');
+	echo('<p id="imagedesc-'.$wppa_master_occur.'" class="wppa-fulldesc imagedesc" style="'.__wcs('wppa-fulldesc').'"></p>');
 }
 
 function wppa_slide_name($opt = '') {
@@ -1971,7 +2048,7 @@ global $wppa_master_occur;
 global $is_slideonly;
 	if (($opt == 'optional') && (get_option('wppa_show_full_name', 'yes') == 'no')) return;
 	if ($is_slideonly == '1') return;	/* Not when slideonly */
-	echo('<p id="imagetitle-'.$wppa_master_occur.'" class="wppa-fulltitle imagetitle"></p>');
+	echo('<p id="imagetitle-'.$wppa_master_occur.'" class="wppa-fulltitle imagetitle" style="'.__wcs('wppa-fulltitle').'"></p>');
 }	
 
 function wppa_popup() {
@@ -2231,19 +2308,19 @@ function __wcs($class = '') {
 			$opt = get_option('wppa_fontfamily_title', '');
 			if ($opt != '') $result .= 'font-family:'.$opt.'; ';
 			$opt = get_option('wppa_fontsize_title', '');
-			if ($opt != '') $result .= 'font-size:'.$opt.'; ';
+			if ($opt != '') $result .= 'font-size:'.$opt.'px; ';
 			break;
 		case 'wppa-fulldesc':
 			$opt = get_option('wppa_fontfamily_fulldesc', '');
 			if ($opt != '') $result .= 'font-family:'.$opt.'; ';
 			$opt = get_option('wppa_fontsize_fulldesc', '');
-			if ($opt != '') $result .= 'font-size:'.$opt.'; ';
+			if ($opt != '') $result .= 'font-size:'.$opt.'px; ';
 			break;
 		case 'wppa-fulltitle':
 			$opt = get_option('wppa_fontfamily_fulltitle', '');
 			if ($opt != '') $result .= 'font-family:'.$opt.'; ';
 			$opt = get_option('wppa_fontsize_fulltitle', '');
-			if ($opt != '') $result .= 'font-size:'.$opt.'; ';
+			if ($opt != '') $result .= 'font-size:'.$opt.'px; ';
 			break;
 		case 'wppa-black':
 			$opt = get_option('wppa_black', 'black');
