@@ -149,7 +149,9 @@ the second pass enables you to select the photos and albums you want to import.
 * 017: The slideshow widget is expanded width: link url, tooltip text, own timeout timer and subtitle.
        Fixed a w3c validation errror.
 * 018: Appearence setting did not work on fullsize name and description. Fixed.
-	   
+* 019: %%wppa%% %%photo=..%% %%size=..%% %%align=..%% now also works as expected for single portrait images. size = width when single photo.
+* 020: Fixed a layout problem in RSS that was a side effect of a patch for IE.
+   
 = 2.4.4 =
 
 * Improved RSS behaviour.

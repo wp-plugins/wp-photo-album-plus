@@ -25,11 +25,13 @@
 * 016: New widget added: Slideshow Widget. For clearity: all WPPA+ widgets have 'WPPA+' in their description.
 * 017: The slideshow widget is expanded width: link url, tooltip text, own timeout timer and subtitle.
 * 018: Appearence setting did not work on fullsize name and description. Fixed.
+* 019: %%wppa%% %%photo=..%% %%size=..%% %%align=..%% now also works as expected for single portrait images. size = width when single photo.
+* 020: Fixed a layout problem in RSS that was a side effect of a patch for IE.
 
 */
 
 global $wppa_api_version;
-$wppa_api_version = '2-5-0-018';
+$wppa_api_version = '2-5-0-020';
 
 /* show system statistics */
 function wppa_statistics() {
@@ -109,7 +111,7 @@ function wppa_breadcrumb($xsep = '', $opt = '') {
 	else $alb = 0;
 	$separate = wppa_is_separate($alb);
 ?>
-	<div class="wppa-nav wppa-box wppa-nav-text" style="<?php _wcs('wppa-nav'); _wcs('wppa-box'); _wcs('wppa-nav-text'); ?>">
+	<div id="wppa-bc-<?php echo $wppa_master_occur ?>" class="wppa-nav wppa-box wppa-nav-text" style="<?php _wcs('wppa-nav'); _wcs('wppa-box'); _wcs('wppa-nav-text'); ?>">
 <?php
 		if (get_option('wppa_show_home', 'yes') == 'yes') {
 ?>
@@ -1471,7 +1473,8 @@ function wppa_get_slide_frame_style() {
 	
 	$gfh = floor($gfs * get_option('wppa_maxheight', get_option('wppa_fullsize', '640')) / get_option('wppa_fullsize', '640'));
 
-	if ($wppa_in_ss_widget && $wppa_portrait_only) {
+//	if ($wppa_in_ss_widget && $wppa_portrait_only) {
+	if ($wppa_portrait_only) {
 		$result = 'width: ' . $gfs . 'px;';	// No height
 	}
 	else {
@@ -1626,14 +1629,17 @@ global $wppa_api_version;		// The API version (this files version)
 global $wppa_master_occur;
 global $wppa_in_widget;
 global $wppa_alt;
+global $wppa_portrait_only;
 
 	if (is_feed()) return;		// Need no container in RSS feeds
 	if ($action == 'open') {
+		if (wppa_page('oneofone')) $wppa_portrait_only = true;
 		$wppa_alt = 'alt';
 //		if ($wppa_inp) echo('</p>');				// Close wpautop generated paragraph if we're in
 		echo('<div id="wppa-container-'.$wppa_master_occur.'" style="'.wppa_get_container_style().'" class="wppa-container wppa-rev-'.$wppa_revno.' wppa-theme-'.$wppa_version.' wppa-api-'.$wppa_api_version.'" >');
 	}
 	elseif ($action == 'close')	{
+		if (wppa_page('oneofone')) $wppa_portrait_only = false;
 		echo('<div style="clear:both;"></div>');
 		echo('</div><!-- wppa-container-'.$wppa_master_occur.' -->');
 		if (!$wppa_in_widget) 
@@ -1774,7 +1780,7 @@ global $cover_count;
 	$path = wppa_get_thumb_path_by_id($coverphoto);
 	$imgattr = wppa_get_imgstyle($path, get_option('wppa_smallsize'), '', 'cover');
 	if (is_feed()) {
-		$imgattr .= 'margin:4px;';
+//		$imgattr .= 'margin:4px;';
 		$events = '';
 	}
 	else {
@@ -1862,7 +1868,7 @@ global $cover_count;
 		?>
 		</div>
 </div>
-		<div class="clear"></div>		
+		<div style="clear:both;"></div>		
 	</div><!-- #album-<?php echo($album['id'].'-'.$wppa_master_occur) ?> --><?php
 	if ($wppa_alt == 'even') $wppa_alt = 'alt'; else $wppa_alt = 'even';
 }
@@ -1875,7 +1881,7 @@ global $cover_count;
 	$path = wppa_get_thumb_path(); 
 	$imgattr = wppa_get_imgstyle($path, get_option('wppa_smallsize'), '', 'cover'); 
 	if (is_feed()) {
-		$imgattr .= 'margin:4px;';
+//		$imgattr .= 'margin:4px;';
 		$events = '';
 	}
 	else {
@@ -1913,7 +1919,7 @@ global $cover_count;
 		</h2>
 		<p class="wppa-box-text wppa-black" style="<?php _wcs('wppa-box-text'); _wcs('wppa-black'); ?>" ><?php echo(wppa_html(stripslashes($thumb['description']))); ?></p>
 </div>
-		<div class="clear"></div>		
+		<div style="clear:both;"></div>		
 	</div><!-- thumb-<?php echo($thumb['id'].'-'.$wppa_master_occur) ?> --><?php
 	if ($wppa_alt == 'even') $wppa_alt = 'alt'; else $wppa_alt = 'even';
 }
@@ -2054,7 +2060,7 @@ global $is_slideonly;
 function wppa_popup() {
 global $wppa_master_occur;
 	echo('<div id="wppa-popup-'.$wppa_master_occur.'" class="wppa-popup-frame wppa-thumb-text" style="'.__wcs('wppa-thumb-text').'" ></div>');
-	echo('<div class="clear"></div>');
+	echo('<div style="clear:both;"></div>');
 }
 
 function wppa_run_slidecontainer($type = '') {
