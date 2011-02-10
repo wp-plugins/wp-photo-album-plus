@@ -175,7 +175,7 @@ class wppa_ImageResize {
       //get the image details
       $arrDetails = $this->findResourceDetails($strImagePath);
 @ini_set('memory_limit', '256M');  
-set_time_limit(120);   
+@set_time_limit(120);   
 //echo('*');   
       //choose the correct function for the image type  
       switch($arrDetails['mime']){
