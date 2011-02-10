@@ -27,11 +27,12 @@
 * 018: Appearence setting did not work on fullsize name and description. Fixed.
 * 019: %%wppa%% %%photo=..%% %%size=..%% %%align=..%% now also works as expected for single portrait images. size = width when single photo.
 * 020: Fixed a layout problem in RSS that was a side effect of a patch for IE.
+* 021: Suppressed a warning message when the php config does not allow you to change the time limit.
 
 */
 
 global $wppa_api_version;
-$wppa_api_version = '2-5-0-020';
+$wppa_api_version = '2-5-0-021';
 
 /* show system statistics */
 function wppa_statistics() {
