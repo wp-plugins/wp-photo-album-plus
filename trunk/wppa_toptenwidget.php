@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the top rated photos
-* Version 2.5.0
+* Version 2.5.1
 */
 class TopTenWidget extends WP_Widget {
     /** constructor */
@@ -79,9 +79,11 @@ class TopTenWidget extends WP_Widget {
     function form($instance) {				
 		//Defaults
 		$instance = wp_parse_args( (array) $instance, array( 'sortby' => 'post_title', 'title' => '') );
-		$title = esc_attr( $instance['title'] );
+ 		$widget_title = apply_filters('widget_title', empty( $instance['title'] ) ? get_option('wppa_toptenwidgettitle', __('Top Ten Photos', 'wppa')) : $instance['title']);
+//		$title = esc_attr( $instance['title'] );
 ?>
-		<p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:', 'wppa'); ?></label> <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $title; ?>" /></p>
+		<p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:', 'wppa'); ?></label> <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $widget_title; ?>" /></p>
+		<p><?php _e('You can set the content and the behaviour of this widget in the <b>Photo Albums -> Settings</b> admin page.', 'wppa'); ?></p>
 <?php
     }
 

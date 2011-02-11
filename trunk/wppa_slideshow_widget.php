@@ -33,7 +33,7 @@ class SlideshowWidget extends WP_Widget {
         
  		$title = apply_filters('widget_title', empty( $instance['title'] ) ? __( 'Sidebar Slideshow', 'wppa' ) : $instance['title']);
 
-	$instance = wp_parse_args( (array) $instance, array( 'title' => '', 'album' => '', 'width' => get_option('wppa_widget_width', '150'), 'ponly' => 'no', 'linkurl' => '', 'linktitle' => '', 'subtext' => '', 'timeout' => '4' ) );
+	$instance = wp_parse_args( (array) $instance, array( 'title' => '', 'album' => '', 'width' => get_option('wppa_widget_width', '190'), 'ponly' => 'no', 'linkurl' => '', 'linktitle' => '', 'subtext' => '', 'timeout' => '4' ) );
 
 		$album = $instance['album'];
 		$width = $instance['width'];
@@ -94,7 +94,7 @@ class SlideshowWidget extends WP_Widget {
     /** @see WP_Widget::form */
     function form($instance) {				
 		//Defaults
-		$instance = wp_parse_args( (array) $instance, array( 'title' => '', 'album' => '', 'width' => get_option('wppa_widget_width', '150'), 'ponly' => 'no', 'linkurl' => '', 'linktitle' => '', 'subtext' => '', 'timeout' => '4' ) );
+		$instance = wp_parse_args( (array) $instance, array( 'title' => '', 'album' => '', 'width' => get_option('wppa_widget_width', '190'), 'ponly' => 'no', 'linkurl' => '', 'linktitle' => '', 'subtext' => '', 'timeout' => '4' ) );
 		$title = esc_attr( $instance['title'] );
 		$album = $instance['album'];
 		$width = $instance['width'];
