@@ -6,9 +6,8 @@
 *
 * A text widget that hooks the wppa+ filter
 *
-* Version 2.5.0
+* Version 2.5.1
 */
-
 
 class WppaGpWidget extends WP_Widget {
 
@@ -25,16 +24,13 @@ class WppaGpWidget extends WP_Widget {
  		$title = apply_filters('widget_title', empty( $instance['title'] ) ? '' : $instance['title']);
 
 		$wppa_in_widget = true;
-		
-//		$text = apply_filters( 'wppa_albums_filter', $instance['text'], $instance );
-		
-//		$text = wppa_albums_filter($instance['text']);
-		
+				
 		echo $before_widget;
 		if ( !empty( $title ) ) { echo $before_title . $title . $after_title; } 
 		
+		$text = $instance['filter'] ? wpautop($instance['text']) : $instance['text'];
 		?>
-			<div class="wppa-gp-widget" style="margin-top:2px; margin-left:2px;" ><?php echo wppa_albums_filter($instance['text']); ?></div>
+			<div class="wppa-gp-widget" style="margin-top:2px; margin-left:2px;" ><?php echo wppa_albums_filter($text); ?></div>
 		<?php
 		
 		echo $after_widget;
@@ -60,6 +56,8 @@ class WppaGpWidget extends WP_Widget {
 ?>
 		<p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:'); ?></label>
 		<input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo esc_attr($title); ?>" /></p>
+		<p><?php _e('Enter the content just like a normal text widget. This widget will interprete %%wppa%% script commands.', 'wppa'); ?></p>
+		<p><?php _e('Don\'t forget %%size=', 'wppa'); echo get_option('wppa_widget_width', '190'); ?>&#37;&#37;</p>
 
 		<textarea class="widefat" rows="16" cols="20" id="<?php echo $this->get_field_id('text'); ?>" name="<?php echo $this->get_field_name('text'); ?>"><?php echo $text; ?></textarea>
 
@@ -68,6 +66,4 @@ class WppaGpWidget extends WP_Widget {
 	}
 }
 // register WppaGpWidget widget
-// This widget is not yet released
-// To activate it however, remove the // from the next line:
-//add_action('widgets_init', create_function('', 'return register_widget("WppaGpWidget");'));
+add_action('widgets_init', create_function('', 'return register_widget("WppaGpWidget");'));

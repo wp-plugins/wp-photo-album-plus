@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the widget
-* Version 2.5.0
+* Version 2.5.1
 */
 
 class PhotoOfTheDay extends WP_Widget {
@@ -21,7 +21,7 @@ class PhotoOfTheDay extends WP_Widget {
 
         extract( $args );
         
- 		$widget_title = apply_filters('widget_title', empty( $instance['title'] ) ? __( 'Photo Of The Day', 'wppa' ) : $instance['title']);
+ 		$widget_title = apply_filters('widget_title', empty( $instance['title'] ) ? get_option('wppa_widgettitle', __( 'Photo Of The Day', 'wppa' )) : $instance['title']);
 
 		// get the photo  ($image)
 		switch (get_option('wppa_widget_method', '1')) {
@@ -99,7 +99,7 @@ class PhotoOfTheDay extends WP_Widget {
 				$widget_content .= '<a href = "'.$imgurl.'" target="_blank">';
 			}
 			
-			$widget_content .= '<img src="' . $imgurl . '" style="width: ' . get_option('wppa_widget_width', '150') . 'px;" title="' . $title . '" alt="' . $title . '">';
+			$widget_content .= '<img src="' . $imgurl . '" style="width: ' . get_option('wppa_widget_width', '190') . 'px;" title="' . $title . '" alt="' . $title . '">';
 
 			$widget_content .= '</a>';
 		} 
@@ -139,10 +139,12 @@ class PhotoOfTheDay extends WP_Widget {
     function form($instance) {				
 		//Defaults
 		$instance = wp_parse_args( (array) $instance, array(  'title' => '') );
-		$title = esc_attr( $instance['title'] );
-	?>
-		<p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:', 'wppa'); ?></label> <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $title; ?>" /></p>
+		$widget_title = apply_filters('widget_title', empty( $instance['title'] ) ? get_option('wppa_widgettitle', __( 'Photo Of The Day', 'wppa' )) : $instance['title']);
 
+//		$title = esc_attr( $instance['title'] );
+	?>
+		<p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:', 'wppa'); ?></label> <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $widget_title; ?>" /></p>
+		<p><?php _e('You can set the content and the behaviour of this widget in the <b>Photo Albums -> Sidebar Widget</b> admin page.', 'wppa'); ?></p>
 <?php
     }
 

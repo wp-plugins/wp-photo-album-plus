@@ -2,12 +2,12 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photo widget, phtoblog
-Version: 2.5.0
+Version: 2.5.1
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
 Requires at least: 2.8
-Tested up to: 3.0.4
+Tested up to: 3.0.5
 
 This plugin is designed to easily manage and display your photo albums and slideshows within your WordPress site. 
 Additionally there are four widgets: Photo of the day, a Search Photos widget, a Top Ten Rated photo widget and a Mini slideshow widget.
@@ -29,6 +29,7 @@ This plugin is designed to easily manage and display your photo albums and slide
 * You can add a Search Sidebar Widget which enables the visitors to search albums and photos for certain words in names and descriptions.
 * You can enable a rating system and a supporting Top Ten Photos Sidebar Widget that can hold a configurable number of high rated photos.
 * Apart from the full-size slideshows you can add a Sidebar Widget that displays a mini slideshow.
+* There is a General Purpose widget that is a text widget wherein you can use wppa+ script commands.
 * Almost all appearance settings can be done in the settings admin page. No php, html or css knowledge is required to customize the appearence of the photo display.
 * International language support. Currently included foreign languages files: Dutch, Japanese, French(outdated), Spanish.
 
@@ -100,6 +101,14 @@ wppa-[your languagecode].po and wppa-[your languagecode].mo.
 WordPress developers Codex page and more specifically at the section about themes and plugins.
 
 == Changelog ==
+
+= 2.5.1 =
+
+= New features =
+* A 'General purpose' Sidebar Widget has been added. It is a text widget wherein you can use wppa+ script commands just like in pages or posts.
+
+= Bug Fixes =
+* This version includes all 21 hot fixes released after the initial release of version 2.5.0 and some minor cosmetic ccorrections.
 
 = 2.5.0 =
 

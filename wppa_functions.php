@@ -3,36 +3,13 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions and API modules
-* Version 2.5.0
+* Version 2.5.1
 *
-* 001: Fix empty thumbnail page when n <= treshold.
-* 002: Fix parse error during installation due to conflict with other plugin (?).
-* 003: Added chmod support in settings page.
-* 004: Do not set default rights on creation of dirs, use settings page instead.
-* 005: Slideonly defined.
-* 006: Patch for IE, give calculated width to textframe in covers, float and position.
-* 007: Patch to work patch 006 in variable column width.
-* 008: You can display covers in 2 or 3 columns if the display area is wider than given numbers of pixels.
-* 009: Fixed a warning in import photos where .pmf files do not exist. Added margin:0 for cover images for patch 006 to work in certain themes.
-* 010: Protect rating system with nonce field. Moved 2 sec delay from js to php, to work in refresh page.
-* 011: Fixed slashes in thumbnail popup descriptions.
-* 012: Thumbnails can now be auto spaced while margin is a minimum.
-* 013: You can now import photos from any (sub)directory starting at wp-content/uploads, hence from the wp media dir.
-* 014: Fixed Album not found err during import when there are quotes in the album name. 
-       Import will now attempt to use old album and photo id's when previously exported. 
-       This improves the usability of the export/import mechanism as a backup tool.
-* 015: Fixed missing slideonly in RSS.
-* 016: New widget added: Slideshow Widget. For clearity: all WPPA+ widgets have 'WPPA+' in their description.
-* 017: The slideshow widget is expanded width: link url, tooltip text, own timeout timer and subtitle.
-* 018: Appearence setting did not work on fullsize name and description. Fixed.
-* 019: %%wppa%% %%photo=..%% %%size=..%% %%align=..%% now also works as expected for single portrait images. size = width when single photo.
-* 020: Fixed a layout problem in RSS that was a side effect of a patch for IE.
-* 021: Suppressed a warning message when the php config does not allow you to change the time limit.
 
 */
 
 global $wppa_api_version;
-$wppa_api_version = '2-5-0-021';
+$wppa_api_version = '2-5-1-000';
 
 /* show system statistics */
 function wppa_statistics() {
@@ -1573,6 +1550,10 @@ function wppa_get_container_style() {
 global $wppa_align;
 global $wppa_fullsize;
 global $wppa_auto_colwidth;
+global $wppa_in_widget;
+
+	$result = '';
+	
 	// See if there is space for a margin
 	$marg = false;
 	if (is_numeric($wppa_fullsize)) {
@@ -1584,7 +1565,7 @@ global $wppa_auto_colwidth;
 		}
 	}
 	
-	$result = 'clear: both; ';
+	if (!$wppa_in_widget) $result .= 'clear: both; ';
 	$ctw = wppa_get_container_width();
 	if ($wppa_auto_colwidth) {
 		if (is_feed()) {
@@ -1641,7 +1622,7 @@ global $wppa_portrait_only;
 	}
 	elseif ($action == 'close')	{
 		if (wppa_page('oneofone')) $wppa_portrait_only = false;
-		echo('<div style="clear:both;"></div>');
+		if (!$wppa_in_widget) echo('<div style="clear:both;"></div>');
 		echo('</div><!-- wppa-container-'.$wppa_master_occur.' -->');
 		if (!$wppa_in_widget) 
 						echo('<p>');					// Re-open paragraph
