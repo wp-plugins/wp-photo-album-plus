@@ -20,6 +20,7 @@ class WppaGpWidget extends WP_Widget {
 
 	function widget( $args, $instance ) {
 		global $wppa_in_widget;
+		global $wppa_fullsize;
 		extract($args);
  		$title = apply_filters('widget_title', empty( $instance['title'] ) ? '' : $instance['title']);
 
@@ -36,6 +37,8 @@ class WppaGpWidget extends WP_Widget {
 		echo $after_widget;
 		
 		$wppa_in_widget = false;
+		$wppa_fullsize = '';	// Reset to prevent inheritage of wrong size in case widget is rendered before main column
+
 	}
 
 	function update( $new_instance, $old_instance ) {

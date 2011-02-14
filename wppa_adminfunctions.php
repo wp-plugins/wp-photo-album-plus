@@ -6,6 +6,52 @@
 * version 2.5.0
 */
 
+// Set default option values
+function wppa_set_defaults($force = false) {
+	$defaults = array ( 'wppa_revision' => '100',
+						'wppa_fullsize' => '640',
+						'wppa_colwidth' => get_option('wppa_fullsize', '640'),
+						'wppa-maxheight' => get_option('wppa_fullsize', '640'),
+						'wppa_enlarge' => 'no',
+						'wppa_resize_on_upload' => 'no',
+						'wppa_fullvalign' => 'fit',
+						'wppa_min_thumbs' => '1',
+						'wppa_valign' => 'center',
+						'wppa_thumbsize' => '100',
+						'wppa_tf_width' => get_option('wppa_thumbsize', '100'),
+						'wppa_tf_height' => (get_option('wppa_thumbsize', '100') + '10'),
+						'wppa_tn_margin' => '4',
+						'wppa_smallsize' => '150',
+						'wppa_show_bread' => 'yes',
+						'wppa_show_home' => 'yes',
+						'wppa_bc_separator' => 'raquo',
+						'wppa_use_thumb_opacity' => 'yes',
+						'wppa_thumb_opacity' => '85',
+						'wppa_use_thumb_popup' => 'yes',
+						'wppa_use_cover_opacity' => 'yes',
+						'wppa_cover_opacity' => '85',
+						'wppa_animation_speed' => '600',
+						'wppa_bgcolor_even' => '#eeeeee',
+						'wppa_bgcolor_alt' => '#dddddd',
+						'wppa_bgcolor_nav' => '#dddddd',
+						'wppa_bgcolor_img' => '#eeeeee',
+						'wppa_bcolor_even' => '#cccccc',
+						'wppa_bcolor_alt' => '#bbbbbb',
+						'wppa_bcolor_nav' => '#bbbbbb'
+						);
+	
+	array_walk($defaults, 'wppa_set_default', $force);
+}
+function wppa_set_default($value, $key, $force) {
+	if ($force) {
+		update_option($key, $value);
+	}
+	else {
+//echo "Checking ".$key." to be ".$value."<br/>";
+		if (get_option($key, 'nil') == 'nil') update_option($key, $value);
+	}
+}
+
 // update all thumbs 
 function wppa_regenerate_thumbs() {
 	global $wpdb;

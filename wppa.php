@@ -24,6 +24,7 @@ global $wppa_portrait_only;
 global $wppa_in_widget_linkurl;
 global $wppa_in_widget_linktitle;
 global $wppa_in_widget_timeout;
+global $wppa_ss_widget_valign;
 
 // Check for php version
 // PHP_VERSION_ID is available as of PHP 5.2.7, if our 
@@ -53,6 +54,7 @@ $wppa_portrait_only = false;
 $wppa_in_widget_linkurl = '';
 $wppa_in_widget_linktitle = '';
 $wppa_in_widget_timeout = '0';
+$wppa_ss_widget_valign = '';
 
 /* FORM SECURITY */
 function wppa_nonce_field($action = -1, $name = 'wppa-update-check') { 
@@ -111,33 +113,9 @@ function wppa_setup() {
     dbDelta($create_albums);
     dbDelta($create_photos);
 	dbDelta($create_rating);
-		
-	if (!is_numeric(get_option('wppa_fullsize', 'nil'))) update_option('wppa_fullsize', '640');
-	if (!is_numeric(get_option('wppa_colwidth', 'nil'))) update_option('wppa_colwidth', get_option('wppa_fullsize'));
-	if (get_option('wppa_enlarge', 'nil') == 'nil') update_option('wppa_enlarge', 'no');
-	if (get_option('wppa_fullvalign', 'nil') == 'nil') update_option('wppa_fullvalign', 'fit');
-	if (!is_numeric(get_option('wppa_min_thumbs', 'nil'))) update_option('wppa_min_thumbs', '1');
-	if (get_option('wppa_valign', 'nil') == 'nil') update_option('wppa_valign', 'default');
-	if (!is_numeric(get_option('wppa_thumbsize', 'nil'))) update_option('wppa_thumbsize', '100');
-	if (!is_numeric(get_option('wppa_tf_width', 'nil'))) update_option('wppa_tf_width', get_option('wppa_thumbsize'));
-	if (!is_numeric(get_option('wppa_tf_height', 'nil'))) update_option('wppa_tf_height', get_option('wppa_thumbsize') + '10');
-	if (!is_numeric(get_option('wppa_tn_margin', 'nil'))) update_option('wppa_tn_margin', '4');
-	if (!is_numeric(get_option('wppa_smallsize', 'nil'))) update_option('wppa_smallsize', '150');
-	if (get_option('wppa_show_bread', 'nil') == 'nil') update_option('wppa_show_bread', 'yes');
-	if (get_option('wppa_use_thumb_opacity', 'nil') == 'nil') update_option('wppa_use_thumb_opacity', 'yes');
-	if (!is_numeric(get_option('wppa_thumb_opacity', 'nil'))) update_option('wppa_thumb_opacity', '80');
-	if (get_option('wppa_use_thumb_popup', 'nil') == 'nil') update_option('wppa_use_thumb_popup', 'yes');
-	if (get_option('wppa_use_cover_opacity', 'nil') == 'nil') update_option('wppa_use_cover_opacity', 'no');
-	if (!is_numeric(get_option('wppa_cover_opacity', 'nil'))) update_option('wppa_cover_opacity', '85');
-	if (!is_numeric(get_option('wppa_animation_speed', 'nil'))) update_option('wppa_animation_speed', '600');
-	if (get_option('wppa_bgcolor_even', 'nil') == 'nil') update_option('wppa_bgcolor_even', '#eeeeee');
-	if (get_option('wppa_bgcolor_alt', 'nil') == 'nil') update_option('wppa_bgcolor_alt', '#dddddd');
-	if (get_option('wppa_bgcolor_nav', 'nil') == 'nil') update_option('wppa_bgcolor_nav', '#dddddd');
-	if (get_option('wppa_bgcolor_img', 'nil') == 'nil') update_option('wppa_bgcolor_img', '#eeeeee');
-	if (get_option('wppa_bcolor_even', 'nil') == 'nil') update_option('wppa_bcolor_even', '#cccccc');
-	if (get_option('wppa_bcolor_alt', 'nil') == 'nil') update_option('wppa_bcolor_alt', '#bbbbbb');
-	if (get_option('wppa_bcolor_nav', 'nil') == 'nil') update_option('wppa_bcolor_nav', '#bbbbbb');
 	
+	wppa_set_defaults();
+
 	$iret = true;
 	
 	if ($old_rev < '250') {		// theme and/or css changed since...

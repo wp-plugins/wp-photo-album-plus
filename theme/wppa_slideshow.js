@@ -1,5 +1,5 @@
 ﻿// Slide show variables and functions
-// This is wppa_slideshow.js version 2.5.0.017
+// This is wppa_slideshow.js version 2.5.1.004
 //
 
 var wppa_slides = new Array();
@@ -40,6 +40,8 @@ var wppa_photo;				// = 'Photo' or its translation
 var wppa_of;				// = 'of' or its translation
 var wppa_nextphoto;			// = 'Next photo' or its translation
 var wppa_prevphoto;			// = 'Previous photo' or its translation
+var wppa_start = 'Start';	// defaults
+var wppa_stop = 'Stop';		//
 
 var wppa_photo_ids = new Array();
 var wppa_photo_avg = new Array();
@@ -268,7 +270,7 @@ function wppa_goto(mocc, idx) {
 function wppa_startstop(mocc, idx) {
 	if (idx != -1) {	// Init still
 //		jQuery('#startstop-'+mocc).html('Start'+' '+wppa_slideshow);
-		if (document.getElementById('startstop-'+mocc)) document.getElementById('startstop-'+mocc).innerHTML='Start'+' '+wppa_slideshow; 
+		if (document.getElementById('startstop-'+mocc)) document.getElementById('startstop-'+mocc).innerHTML=wppa_start+' '+wppa_slideshow; 
 		if (document.getElementById('speed0-'+mocc)) document.getElementById('speed0-'+mocc).style.visibility="hidden";
 		if (document.getElementById('speed1-'+mocc)) document.getElementById('speed1-'+mocc).style.visibility="hidden";
 		wppa_next_id[mocc] = idx;
@@ -277,7 +279,7 @@ function wppa_startstop(mocc, idx) {
 	}
     if (wppa_ss_running[mocc] == 1) { // stop it
 		wppa_ss_running[mocc] = -1;	// stop in progress
-        document.getElementById('startstop-'+mocc).innerHTML='Start'+' '+wppa_slideshow;  
+        document.getElementById('startstop-'+mocc).innerHTML=wppa_start+' '+wppa_slideshow;  
 		jQuery('#prev-arrow-'+mocc).css('visibility', 'visible');
 		jQuery('#next-arrow-'+mocc).css('visibility', 'visible');
 		jQuery('#prev-film-arrow-'+mocc).css('visibility', 'visible');
@@ -292,7 +294,7 @@ function wppa_startstop(mocc, idx) {
         wppa_ss_running[mocc] = 1;
         wppa_next_slide(mocc);
 		if (document.getElementById('startstop-'+mocc)) {
-			document.getElementById('startstop-'+mocc).innerHTML='Stop';
+			document.getElementById('startstop-'+mocc).innerHTML=wppa_stop;
 			jQuery('#prev-arrow-'+mocc).css('visibility', 'hidden');
 			jQuery('#next-arrow-'+mocc).css('visibility', 'hidden');
 			jQuery('#prev-film-arrow-'+mocc).css('visibility', 'hidden');

@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wppa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-02-11 13:36+0100\n"
-"PO-Revision-Date: 2011-02-11 13:36+0100\n"
+"POT-Creation-Date: 2011-02-14 15:56+0100\n"
+"PO-Revision-Date: 2011-02-14 15:56+0100\n"
 "Last-Translator: J.N. Breetvelt <OpaJaap@OpaJaap.nl>\n"
 "Language-Team: OpaJaap <OpaJaap@OpaJaap.nl>\n"
 "MIME-Version: 1.0\n"
@@ -19,104 +19,104 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPath-1: theme\n"
 
-#: wppa.php:185
+#: wppa.php:189
 msgid "Photo Albums"
 msgstr ""
 
-#: wppa.php:187
+#: wppa.php:191
 #: wppa_upload.php:40
 #: wppa_upload.php:54
 msgid "Upload Photos"
 msgstr ""
 
-#: wppa.php:188
+#: wppa.php:192
 #: wppa_upload.php:105
 msgid "Import Photos"
 msgstr ""
 
-#: wppa.php:189
+#: wppa.php:193
 #: wppa_export.php:41
 msgid "Export Photos"
 msgstr ""
 
-#: wppa.php:190
+#: wppa.php:194
 msgid "Settings"
 msgstr ""
 
-#: wppa.php:191
+#: wppa.php:195
 msgid "Sidebar Widget"
 msgstr ""
 
-#: wppa.php:192
+#: wppa.php:196
 msgid "Help &amp; Info"
 msgstr ""
 
-#: wppa_adminfunctions.php:51
+#: wppa_adminfunctions.php:97
 msgid "The wppa database tables are not yet at the required revision level."
 msgstr ""
 
-#: wppa_adminfunctions.php:51
-#: wppa_adminfunctions.php:55
+#: wppa_adminfunctions.php:97
+#: wppa_adminfunctions.php:101
 msgid "Current="
 msgstr ""
 
-#: wppa_adminfunctions.php:51
-#: wppa_adminfunctions.php:55
+#: wppa_adminfunctions.php:97
+#: wppa_adminfunctions.php:101
 msgid "New="
 msgstr ""
 
-#: wppa_adminfunctions.php:54
+#: wppa_adminfunctions.php:100
 msgid "PLEASE DE-ACTIVATE the plugin WP-PHOTO-ALBUM-PLUS and ACTIVATE AGAIN before you continue!"
 msgstr ""
 
-#: wppa_adminfunctions.php:55
+#: wppa_adminfunctions.php:101
 msgid "Failed to fix this."
 msgstr ""
 
-#: wppa_adminfunctions.php:59
+#: wppa_adminfunctions.php:105
 msgid "I fixed this for you......"
 msgstr ""
 
-#: wppa_adminfunctions.php:65
+#: wppa_adminfunctions.php:111
 msgid "IMPORTANT UPGRADE NOTICE"
 msgstr ""
 
-#: wppa_adminfunctions.php:66
+#: wppa_adminfunctions.php:112
 msgid "Please CHECK your customized WPPA_STYLE.CSS file against the newly supplied one. You may wish to add or modify some attributes. Be aware of the fact that most settings can now be set in the admin settings page."
 msgstr ""
 
-#: wppa_adminfunctions.php:67
+#: wppa_adminfunctions.php:113
 msgid "Please REPLACE your customized WPPA_THEME.PHP file by the newly supplied one, or just remove it from your theme directory. You may modify it later if you wish. Your current customized version is NOT compatible with this version of the plugin software."
 msgstr ""
 
-#: wppa_adminfunctions.php:201
+#: wppa_adminfunctions.php:247
 msgid "Order #"
 msgstr ""
 
-#: wppa_adminfunctions.php:202
+#: wppa_adminfunctions.php:248
 #: wppa_albumadmin.php:366
 msgid "Name"
 msgstr ""
 
-#: wppa_adminfunctions.php:203
+#: wppa_adminfunctions.php:249
 msgid "Random"
 msgstr ""
 
-#: wppa_adminfunctions.php:241
-#: wppa_adminfunctions.php:245
+#: wppa_adminfunctions.php:287
+#: wppa_adminfunctions.php:291
 msgid "Please supply a numeric value greater than or equal to"
 msgstr ""
 
-#: wppa_adminfunctions.php:241
-#: wppa_adminfunctions.php:245
+#: wppa_adminfunctions.php:287
+#: wppa_adminfunctions.php:291
 msgid "for"
 msgstr ""
 
-#: wppa_adminfunctions.php:245
+#: wppa_adminfunctions.php:291
 msgid "and less than or equal to"
 msgstr ""
 
-#: wppa_adminfunctions.php:355
+#: wppa_adminfunctions.php:401
 msgid "Unsupported value in _wppa_chmod_ :"
 msgstr ""
 
@@ -239,7 +239,7 @@ msgstr ""
 
 #: wppa_albumadmin.php:154
 #: wppa_settings.php:614
-#: wppa_slideshow_widget.php:118
+#: wppa_slideshow_widget.php:147
 msgid "Link to:"
 msgstr ""
 
@@ -287,7 +287,7 @@ msgstr ""
 
 #: wppa_albumadmin.php:233
 #: wppa_albumadmin.php:436
-#: wppa_slideshow_widget.php:109
+#: wppa_slideshow_widget.php:128
 #: wppa_upload.php:51
 msgid "Album:"
 msgstr ""
@@ -419,7 +419,7 @@ msgid "Get insertion Code"
 msgstr ""
 
 #: wppa_albumadmin.php:504
-#: wppa_functions.php:326
+#: wppa_functions.php:330
 #: wppa_settings.php:437
 #: wppa_settings.php:626
 #: wppa_settings.php:826
@@ -429,7 +429,7 @@ msgid "--- none ---"
 msgstr ""
 
 #: wppa_albumadmin.php:520
-#: wppa_functions.php:327
+#: wppa_functions.php:331
 #: wppa_upload.php:373
 msgid "--- separate ---"
 msgstr ""
@@ -561,175 +561,180 @@ msgstr ""
 msgid "Could not read photo data."
 msgstr ""
 
-#: wppa_functions.php:26
+#: wppa_functions.php:30
 #: wppa_upload.php:144
 #: wppa_upload.php:178
 #: wppa_upload.php:211
 msgid "There are"
 msgstr ""
 
-#: wppa_functions.php:26
+#: wppa_functions.php:30
 msgid "photo albums. The last album added is"
 msgstr ""
 
-#: wppa_functions.php:30
+#: wppa_functions.php:34
 msgid ", a subalbum of"
 msgstr ""
 
-#: wppa_functions.php:96
+#: wppa_functions.php:100
 msgid "Home"
 msgstr ""
 
-#: wppa_functions.php:142
-#: wppa_functions.php:1376
-#: wppa_functions.php:1812
+#: wppa_functions.php:146
+#: wppa_functions.php:1383
+#: wppa_functions.php:1829
 msgid "Slideshow"
 msgstr ""
 
-#: wppa_functions.php:152
+#: wppa_functions.php:156
 msgid "Searchstring:"
 msgstr ""
 
-#: wppa_functions.php:157
+#: wppa_functions.php:161
 msgid "Top rated photos"
 msgstr ""
 
-#: wppa_functions.php:895
+#: wppa_functions.php:899
 msgid "<b>ERROR: Attempt to enter an invalid rating.</b>"
 msgstr ""
 
-#: wppa_functions.php:1304
+#: wppa_functions.php:1311
 msgid "Prev.&nbsp;page"
 msgstr ""
 
-#: wppa_functions.php:1307
+#: wppa_functions.php:1314
 msgid "Next&nbsp;page"
 msgstr ""
 
-#: wppa_functions.php:1349
+#: wppa_functions.php:1356
 msgid "<b>ERROR: Illegal attempt to enter a rating.</b>"
 msgstr ""
 
-#: wppa_functions.php:1377
+#: wppa_functions.php:1384
+#: wppa_functions.php:2010
+msgid "Start"
+msgstr ""
+
+#: wppa_functions.php:1385
+msgid "Stop"
+msgstr ""
+
+#: wppa_functions.php:1386
 msgid "Photo"
 msgstr ""
 
-#: wppa_functions.php:1378
+#: wppa_functions.php:1387
 msgid "of"
 msgstr ""
 
-#: wppa_functions.php:1379
+#: wppa_functions.php:1388
 msgid "Prev.&nbsp;photo"
 msgstr ""
 
-#: wppa_functions.php:1380
+#: wppa_functions.php:1389
 msgid "Next&nbsp;photo"
 msgstr ""
 
-#: wppa_functions.php:1728
+#: wppa_functions.php:1745
 #: wppa_toptenwidget.php:44
 msgid "Link to"
 msgstr ""
 
-#: wppa_functions.php:1732
+#: wppa_functions.php:1749
 msgid "Page is not available."
 msgstr ""
 
-#: wppa_functions.php:1748
+#: wppa_functions.php:1765
 msgid "View the cover photo"
 msgstr ""
 
-#: wppa_functions.php:1749
+#: wppa_functions.php:1766
 msgid "s"
 msgstr ""
 
-#: wppa_functions.php:1752
-#: wppa_functions.php:1755
-#: wppa_functions.php:1819
+#: wppa_functions.php:1769
+#: wppa_functions.php:1772
+#: wppa_functions.php:1836
 msgid "View the album"
 msgstr ""
 
-#: wppa_functions.php:1820
+#: wppa_functions.php:1837
 msgid "View"
 msgstr ""
 
-#: wppa_functions.php:1823
+#: wppa_functions.php:1840
 msgid "album"
 msgstr ""
 
-#: wppa_functions.php:1827
+#: wppa_functions.php:1844
 msgid "albums"
 msgstr ""
 
-#: wppa_functions.php:1832
+#: wppa_functions.php:1849
 msgid "and"
 msgstr ""
 
-#: wppa_functions.php:1836
+#: wppa_functions.php:1853
 msgid "photo"
 msgstr ""
 
-#: wppa_functions.php:1840
+#: wppa_functions.php:1857
 msgid "photos"
 msgstr ""
 
-#: wppa_functions.php:1992
+#: wppa_functions.php:2009
 msgid "Slower"
 msgstr ""
 
-#: wppa_functions.php:1993
-msgid "Start"
-msgstr ""
-
-#: wppa_functions.php:1994
+#: wppa_functions.php:2011
 msgid "Faster"
 msgstr ""
 
-#: wppa_functions.php:2339
+#: wppa_functions.php:2360
 msgid "- - - Rating enabled - - -"
 msgstr ""
 
-#: wppa_functions.php:2348
+#: wppa_functions.php:2369
 msgid "very low"
 msgstr ""
 
-#: wppa_functions.php:2349
+#: wppa_functions.php:2370
 msgid "low"
 msgstr ""
 
-#: wppa_functions.php:2350
+#: wppa_functions.php:2371
 msgid "average"
 msgstr ""
 
-#: wppa_functions.php:2351
+#: wppa_functions.php:2372
 msgid "high"
 msgstr ""
 
-#: wppa_functions.php:2352
+#: wppa_functions.php:2373
 msgid "very high"
 msgstr ""
 
-#: wppa_functions.php:2357
+#: wppa_functions.php:2378
 msgid "Average&nbsp;rating"
 msgstr ""
 
-#: wppa_functions.php:2363
+#: wppa_functions.php:2384
 msgid "Avarage&nbsp;rating:"
 msgstr ""
 
-#: wppa_functions.php:2372
+#: wppa_functions.php:2393
 msgid "My&nbsp;rating:"
 msgstr ""
 
-#: wppa_functions.php:2376
+#: wppa_functions.php:2397
 msgid "My&nbsp;rating"
 msgstr ""
 
-#: wppa_functions.php:2379
+#: wppa_functions.php:2400
 msgid "You must login to vote"
 msgstr ""
 
-#: wppa_functions.php:2408
+#: wppa_functions.php:2429
 #, php-format
 msgid "Rating: %s"
 msgstr ""
@@ -742,24 +747,24 @@ msgstr ""
 msgid "WPPA+ Text"
 msgstr ""
 
-#: wppa_gp_widget.php:57
+#: wppa_gp_widget.php:60
 #: wppa_searchwidget.php:61
-#: wppa_slideshow_widget.php:108
+#: wppa_slideshow_widget.php:127
 #: wppa_toptenwidget.php:85
 msgid "Title:"
 msgstr ""
 
-#: wppa_gp_widget.php:59
+#: wppa_gp_widget.php:62
 #, php-format
 msgid "Enter the content just like a normal text widget. This widget will interprete %%wppa%% script commands."
 msgstr ""
 
-#: wppa_gp_widget.php:60
+#: wppa_gp_widget.php:63
 #, php-format
 msgid "Don't forget %%size="
 msgstr ""
 
-#: wppa_gp_widget.php:64
+#: wppa_gp_widget.php:67
 msgid "Automatically add paragraphs"
 msgstr ""
 
@@ -1294,7 +1299,7 @@ msgstr ""
 #: wppa_settings.php:692
 #: wppa_settings.php:812
 #: wppa_settings.php:813
-#: wppa_slideshow_widget.php:110
+#: wppa_slideshow_widget.php:129
 msgid "pixels."
 msgstr ""
 
@@ -1396,26 +1401,31 @@ msgstr ""
 
 #: wppa_settings.php:432
 #: wppa_settings.php:702
+#: wppa_slideshow_widget.php:139
 msgid "Vertical alignment:"
 msgstr ""
 
 #: wppa_settings.php:438
 #: wppa_settings.php:708
+#: wppa_slideshow_widget.php:141
 msgid "top"
 msgstr ""
 
 #: wppa_settings.php:439
 #: wppa_settings.php:457
 #: wppa_settings.php:709
+#: wppa_slideshow_widget.php:142
 msgid "center"
 msgstr ""
 
 #: wppa_settings.php:440
 #: wppa_settings.php:710
+#: wppa_slideshow_widget.php:143
 msgid "bottom"
 msgstr ""
 
 #: wppa_settings.php:441
+#: wppa_slideshow_widget.php:144
 msgid "fit"
 msgstr ""
 
@@ -1505,7 +1515,7 @@ msgid "If checked: slides are faded out and in after each other. If unchecked: f
 msgstr ""
 
 #: wppa_settings.php:515
-#: wppa_slideshow_widget.php:121
+#: wppa_slideshow_widget.php:151
 msgid "Slideshow timeout:"
 msgstr ""
 
@@ -1705,7 +1715,7 @@ msgid "Thumbnail Framesize:"
 msgstr ""
 
 #: wppa_settings.php:689
-#: wppa_slideshow_widget.php:110
+#: wppa_slideshow_widget.php:129
 msgid "Width:"
 msgstr ""
 
@@ -2194,39 +2204,51 @@ msgid "WPPA+ Sidebar Slideshow"
 msgstr ""
 
 #: wppa_slideshow_widget.php:18
-#: wppa_slideshow_widget.php:34
+#: wppa_slideshow_widget.php:36
 msgid "Sidebar Slideshow"
 msgstr ""
 
-#: wppa_slideshow_widget.php:72
+#: wppa_slideshow_widget.php:82
 msgid "No album defined yet."
 msgstr ""
 
-#: wppa_slideshow_widget.php:112
+#: wppa_slideshow_widget.php:131
 msgid "Portrait only:"
 msgstr ""
 
-#: wppa_slideshow_widget.php:114
+#: wppa_slideshow_widget.php:133
 msgid "no."
 msgstr ""
 
-#: wppa_slideshow_widget.php:115
+#: wppa_slideshow_widget.php:134
 msgid "yes."
 msgstr ""
 
-#: wppa_slideshow_widget.php:116
+#: wppa_slideshow_widget.php:135
 msgid "Set to 'yes' if there are only portrait images in the album and you want the photos to fill the full width of the widget.<br/>Set to 'no' otherwise."
 msgstr ""
 
-#: wppa_slideshow_widget.php:119
+#: wppa_slideshow_widget.php:136
+msgid "If set to 'yes', Vertical alignment will be forced to 'fit'."
+msgstr ""
+
+#: wppa_slideshow_widget.php:145
+msgid "Set the desired vertical alignment method."
+msgstr ""
+
+#: wppa_slideshow_widget.php:148
 msgid "Tooltip text:"
 msgstr ""
 
-#: wppa_slideshow_widget.php:120
-msgid "Sub title:"
+#: wppa_slideshow_widget.php:149
+msgid "Text above photos:"
 msgstr ""
 
-#: wppa_slideshow_widget.php:121
+#: wppa_slideshow_widget.php:150
+msgid "Text below photos:"
+msgstr ""
+
+#: wppa_slideshow_widget.php:151
 msgid "sec."
 msgstr ""
 
