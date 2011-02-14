@@ -110,6 +110,12 @@ WordPress developers Codex page and more specifically at the section about theme
 = Bug Fixes =
 * This version includes all 21 hot fixes released after the initial release of version 2.5.0 and some minor cosmetic ccorrections.
 
+= Hot fixes after initial release =
+* 001: Changed the way new settings get their default values during plugin activation.
+* 002: Reset %%size=.. at end of widget code to prevent inheritage of wrong size in case widget is rendered before main column.
+* 003: Added vertical alignment and text above photos in slideshow widget.
+* 004: The words Start and Stop are now translatable.
+
 = 2.5.0 =
 
 = New Features =

@@ -5,11 +5,15 @@
 * Various funcions and API modules
 * Version 2.5.1
 *
-
+* 001: Changed the way new settings get their default values during plugin activation.
+* 002: Reset %%size=.. at end of widget code to prevent inheritage of wrong size in case widget is rendered before main column.
+* 003: Added vertical alignment and text above photos in slideshow widget.
+* 004: The words Start and Stop are now translatable.
+*
 */
 
 global $wppa_api_version;
-$wppa_api_version = '2-5-1-000';
+$wppa_api_version = '2-5-1-001';
 
 /* show system statistics */
 function wppa_statistics() {
@@ -1061,20 +1065,22 @@ function wppa_get_imgstyle($file, $max_size, $xvalign = '', $type = '') {
 global $wppa_auto_colwidth;
 global $wppa_portrait_only;
 global $is_slideonly;
+global $wppa_ss_widget_valign;
 
 	if($file == '') return '';					// no image: no dimensions
 	if (!is_file($file)) return '';				// no file: no dimensions (2.3.0)
 	$result = '';
 	$image_attr = getimagesize( $file );
 	
+	$ratioref = get_option('wppa_maxheight', get_option('wppa_fullsize', '640')) / get_option('wppa_fullsize', '640');
+	$max_height = round($max_size * $ratioref);
+
 	if ($type == 'fullsize') {
 		if ($wppa_portrait_only) {
 			$width = $max_size;
 			$height = round($width * $image_attr[1] / $image_attr[0]);
 		}
 		else {
-			$ratioref = get_option('wppa_maxheight', get_option('wppa_fullsize', '640')) / get_option('wppa_fullsize', '640');
-			$max_height = round($max_size * $ratioref);
 			if (wppa_is_wider($image_attr[0], $image_attr[1])) {
 				$width = $max_size;
 				$height = round($width * $image_attr[1] / $image_attr[0]);
@@ -1153,7 +1159,8 @@ global $is_slideonly;
 			}
 			
 			if ($is_slideonly == '1') {
-				$valign = 'fit';
+				if ($wppa_ss_widget_valign != '') $valign = $wppa_ss_widget_valign;
+				else $valign = 'fit';
 			}
 			elseif ($xvalign == 'optional') {
 				$valign = get_option('wppa_fullvalign', '');
@@ -1374,6 +1381,8 @@ global $wppa_auto_colwidth;
 		<script type="text/javascript">wppa_filmstrip_area_delta = <?php echo ( 2*6 + 2*23 + 2*get_option('wppa_bwidth', '1')) ?>;</script>
 		<script type="text/javascript">wppa_film_show_glue = <?php if (get_option('wppa_film_show_glue', 'yes') == 'yes') echo('true'); else echo('false'); ?>;</script>
 		<script type="text/javascript">wppa_slideshow = "<?php _e('Slideshow', 'wppa'); ?>";</script>
+		<script type="text/javascript">wppa_start = "<?php _e('Start', 'wppa'); ?>";</script>
+		<script type="text/javascript">wppa_stop = "<?php _e('Stop', 'wppa'); ?>";</script>
 		<script type="text/javascript">wppa_photo = "<?php _e('Photo', 'wppa'); ?>";</script>
 		<script type="text/javascript">wppa_of = "<?php _e('of', 'wppa'); ?>";</script>
 		<script type="text/javascript">wppa_prevphoto = "<?php _e('Prev.&nbsp;photo', 'wppa'); ?>";</script>
@@ -1439,6 +1448,7 @@ function wppa_get_slide_frame_style() {
 	global $wppa_auto_colwidth;
 	global $wppa_in_ss_widget;
 	global $wppa_portrait_only;
+	global $wppa_ss_widget_valign;	//?
 	
 	$fs = get_option('wppa_fullsize', '640');
 	$cs = get_option('wppa_colwidth', $fs);
@@ -1463,6 +1473,9 @@ function wppa_get_slide_frame_style() {
 		}
 		elseif ($wppa_auto_colwidth) {
 			$result .= ' height: ' . $gfh . 'px;';
+		}
+		elseif ($wppa_ss_widget_valign != '' && $wppa_ss_widget_valign != 'fit') {
+			$result .= ' height: ' . $gfh . 'px;'; 
 		}
 		elseif (get_option('wppa_fullvalign', 'default') == 'default') {
 			$result .= 'min-height: ' . $gfh . 'px;'; 
@@ -2050,6 +2063,7 @@ global $wppa_master_occur;
 global $single_photo;
 global $is_slideonly;
 global $wppa_portrait_only;
+global $wppa_ss_widget_valign;
 
 	if ($type == 'single') {
 		if (is_feed()) {
@@ -2087,9 +2101,12 @@ global $wppa_portrait_only;
 		
 		if ($is_slideonly) $startindex = -1;	// Start running, overrules everything
 	
-		if (get_option('wppa_fullvalign', 'default') == 'fit' || $is_slideonly == '1') { 
+		if ($wppa_ss_widget_valign != '' && $wppa_ss_widget_valign != 'fit') {
+		}
+		elseif (get_option('wppa_fullvalign', 'default') == 'fit' || $is_slideonly == '1' ) { 
 			echo('<script type="text/javascript" >wppa_fullvalign_fit['.$wppa_master_occur.'] = true;</script>');
 		}
+		
 		if ($wppa_portrait_only) {
 			echo('<script type="text/javascript" >wppa_portrait_only['.$wppa_master_occur.'] = true;</script>');
 		}
