@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: WP Photo Album Plus 2.4.2\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/wp-photo-album-plus\n"
 "POT-Creation-Date: 2010-08-22 09:46+0000\n"
-"PO-Revision-Date: 2011-01-24 22:05+0900\n"
+"PO-Revision-Date: 2011-02-18 03:22+0900\n"
 "Last-Translator: BNG NET <webmaster@bng.net>\n"
 "Language-Team: BNG NET <webmaster@bng.net>\n"
 "MIME-Version: 1.0\n"
@@ -18,6 +18,34 @@ msgstr ""
 "X-Poedit-Country: JAPAN\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-Bookmarks: -1,157,-1,-1,-1,-1,-1,-1,-1,-1\n"
+
+#: Added on 2011/02/18
+msgid "Recommended values: 86 for a two column and 56 for a three column display."
+msgstr "推奨値: 2 カラム表示の場合は 86、3 カラムなら 56。"
+
+#: Added on 2011/02/18
+msgid "this is a minimum. Space them equally."
+msgstr "最小にします。全て同じ間隔にする。"
+
+#: Added on 2011/02/18
+msgid "This also applies for 'thumbnails as covers', and will NOT apply to single items."
+msgstr "これは「カバーのサムネイル」にも適用されますが、単一アイテムには適用しません。"
+
+#: Added on 2011/02/18
+msgid "Display covers in 2 or 3 columns if the display area is wider or equal to the number of pixels entered."
+msgstr "表示エリアが入力したピクセル値と同等以上なら 2 または 3 カラムでカバーを表示します。"
+
+#: Added on 2011/02/18
+msgid "Minimum width for 3 columns:"
+msgstr "3 カラムの場合の最小幅:"
+
+#: Added on 2011/02/18
+msgid "Minimum width for 2 columns:"
+msgstr "2 カラムの場合の最小幅:"
+
+#: Added on 2011/02/18
+msgid "Columns:"
+msgstr "カラム"
 
 #: Added on 2011/01/24
 msgid "Widget title"
