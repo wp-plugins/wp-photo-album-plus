@@ -47,7 +47,8 @@ global $wppa_api_version;
 		if (isset($_POST['wppa-thumb-auto'])) update_option('wppa_thumb_auto', 'yes');
 		else update_option('wppa_thumb_auto', 'no');
 		
-		if (!$options_error) {
+		//	if (!$options_error) 
+		{
 			$new_minisize = wppa_get_minisize();
 			if ($old_minisize != $new_minisize) update_option('wppa_lastthumb', '-1');	// restart making thumbnails
 		}

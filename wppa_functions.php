@@ -9,11 +9,12 @@
 * 002: Reset %%size=.. at end of widget code to prevent inheritage of wrong size in case widget is rendered before main column.
 * 003: Added vertical alignment and text above photos in slideshow widget.
 * 004: The words Start and Stop are now translatable.
+* 005: Under some circumstances (a wrong size error(warning) elsewhere in the settings) the regeneration of thumbnails was not triggered, fixed
 *
 */
 
 global $wppa_api_version;
-$wppa_api_version = '2-5-1-004';
+$wppa_api_version = '2-5-1-005';
 
 /* show system statistics */
 function wppa_statistics() {
