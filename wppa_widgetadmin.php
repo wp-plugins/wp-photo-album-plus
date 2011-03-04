@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 * admin sidebar widget
-* version 2.5.0
+* version 3.0.0
 */
 
 function wppa_sidebar_page_options() {
@@ -43,6 +43,7 @@ function wppa_sidebar_page_options() {
 			if (isset($_POST['wppa-widget-linkurl'])) update_option('wppa_widget_linkurl', $_POST['wppa-widget-linkurl']);
 			if (isset($_POST['wppa-widget-linktitle'])) update_option('wppa_widget_linktitle', $_POST['wppa-widget-linktitle']);
 		}
+		if (isset($_POST['wppa-widget-linktype'])) update_option('wppa_widget_linktype', $_POST['wppa-widget-linktype']);
 		if (!$options_error) wppa_update_message(__('Changes Saved. Don\'t forget to activate the widget!', 'wppa')); 
 	}
 
@@ -139,6 +140,7 @@ function wppa_sidebar_page_options() {
 								_e('There are no pages (yet) to link to.', 'wppa');
 							} else {
 								$linkpage = get_option('wppa_widget_linkpage', '0');
+								$linktype = get_option('wppa_widget_linktype', 'album');
 ?>
 
 								<select name="wppa-widget-linkpage" id="wppa-wlp" onchange="wppaCheckWidgetLink()" >
@@ -148,6 +150,12 @@ function wppa_sidebar_page_options() {
 										<option value="<?php echo($page['ID']); ?>" <?php if ($linkpage == $page['ID']) echo($sel); ?>><?php echo($page['post_title']); ?></option>
 									<?php } ?>
 									<option value="-1" <?php if ($linkpage == '-1') echo($sel); ?>><?php _e('--- url ---', 'wppa'); ?></option>
+								</select>
+								<span class="wppa-wlt"><?php _e('Link type:', 'wppa'); ?></span>
+								<select name="wppa-widget-linktype" id="wppa-wlt" class="wppa-wlt">
+									<option value="album" <?php if ($linktype == 'album') echo($sel) ?>><?php _e('the content of the album as thumnails.', 'wppa') ?></option>
+									<option value="photo" <?php if ($linktype == 'photo') echo($sel) ?>><?php _e('the full size photo in a slideshow.', 'wppa') ?></option>
+									<option value="single" <?php if ($linktype == 'single') echo($sel) ?>><?php _e('the fullsize photo on its own.', 'wppa') ?></option>
 								</select>
 								<span class="description"><br/><?php _e('Select the page the photo links to.', 'wppa'); echo(' '); _e('Select --- url --- to enter a custom link.', 'wppa'); ?></span>
 <?php

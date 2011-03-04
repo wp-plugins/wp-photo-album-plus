@@ -1,7 +1,7 @@
 /* admin_scripts.js */
 /* Package: wp-photo-album-plus
 /*
-/* Version 2.5.0
+/* Version 3.0.0
 /* Various js routines used in admin pages		
 */
 
@@ -15,6 +15,7 @@ function wppaInitSettings() {
 	wppaCheckUseThumbOpacity();
 	wppaCheckUseCoverOpacity();
 	wppaCheckThumbType();
+	wppaCheckThumbLink();
 }
 	
 /* Adjust visibility of selection radiobutton if fixed photo is chosen or not */				
@@ -99,11 +100,18 @@ function wppaCheckThumbType() {
 	if (ttype == 'default') {
 		jQuery('.tt-normal').css('visibility', 'visible');
 		jQuery('.tt-ascovers').css('visibility', 'collapse');
+		jQuery('.tt-always').css('visibility', 'visible');
 		wppaCheckUseThumbOpacity();
 	}
 	if (ttype == 'ascovers') {
 		jQuery('.tt-normal').css('visibility', 'collapse');
 		jQuery('.tt-ascovers').css('visibility', 'visible');
+		jQuery('.tt-always').css('visibility', 'visible');
+	}
+	if (ttype == 'none') {
+		jQuery('.tt-normal').css('visibility', 'collapse');
+		jQuery('.tt-ascovers').css('visibility', 'collapse');
+		jQuery('.tt-always').css('visibility', 'collapse');
 	}
 }
 
@@ -160,8 +168,19 @@ function wppaCheckRating() {
 function wppaCheckWidgetLink() { 
 	if (document.getElementById('wppa-wlp').value == '-1') {
 		jQuery('.wppa-wlu').css('visibility', 'visible'); 
+		jQuery('.wppa-wlt').css('visibility', 'hidden');
 	}
 	else {
 		jQuery('.wppa-wlu').css('visibility', 'collapse'); 
+		jQuery('.wppa-wlt').css('visibility', 'visible');
+	}
+}
+
+function wppaCheckThumbLink() { 
+	if (document.getElementById('wppa-tlt').value == 'none') {
+		jQuery('.wppa-tlp').css('visibility', 'hidden');
+	}
+	else {
+		jQuery('.wppa-tlp').css('visibility', 'visible');
 	}
 }

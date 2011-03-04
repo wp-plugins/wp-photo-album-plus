@@ -2,9 +2,10 @@
 /* wppa_widgetfunctions.php
 /* Package: wp-photo-album-plus
 /*
-/* Version 2.4.3
+/* Version 3.0.0
 /*
 */
+
 function wppa_get_widgetphotos($alb, $option = '') {
 	global $wpdb;
 	

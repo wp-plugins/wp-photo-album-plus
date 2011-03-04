@@ -3,10 +3,9 @@
 * Package: wp-photo-album-plus
 *
 * display a slideshow in the sidebar
-* Version 2.5.1.003
+* Version 3.0.0
 */
 
-/* load_plugin_textdomain('wppa', 'wp-content/plugins/lege-widget/langs/', 'lege-widget/langs/');
 /**
  * SlideshowWidget Class
  */
@@ -22,14 +21,7 @@ class SlideshowWidget extends WP_Widget {
 	/** @see WP_Widget::widget */
     function widget($args, $instance) {		
 		global $wpdb;
-		global $widget_content;
-		global $wppa_in_widget;
-		global $wppa_portrait_only;
-		global $wppa_in_widget_linkurl;
-		global $wppa_in_widget_linktitle;
-		global $wppa_in_widget_timeout;
-		global $wppa_ss_widget_valign;
-		global $wppa_fullsize;
+		global $wppa; 
 
         extract( $args );
         
@@ -50,27 +42,27 @@ class SlideshowWidget extends WP_Widget {
 		if (is_numeric($album)) {
 			echo $before_widget . $before_title . $title . $after_title;
 				if ($linkurl != '') {
-					$wppa_in_widget_linkurl = $linkurl;
-					$wppa_in_widget_linktitle = $linktitle;
+					$wppa['in_widget_linkurl'] = $linkurl;
+					$wppa['in_widget_linktitle'] = $linktitle;
 				}
 				if ($supertext != '') {
 					echo '<div style="padding-top:2px; padding-bottom:4px; text-align:center">'.$supertext.'</div>';
 				}
 				echo '<div style="padding-top:2px; padding-bottom:4px;" >';
-					$wppa_in_widget = true;
-						$wppa_in_widget_timeout = $timeout;
-						$wppa_portrait_only = ($ponly == 'yes');
-							$wppa_ss_widget_valign = $valign;
-								wppa_albums($album, 'slideonly', $width, 'center');
-							$wppa_ss_widget_valign = '';
-						$wppa_portrait_only = false;
-						$wppa_in_widget_timeout = '0';
-					$wppa_in_widget = false;
-					$wppa_fullsize = '';	// Reset to prevent inheritage of wrong size in case widget is rendered before main column
+					$wppa['in_widget'] = true;
+						$wppa['in_widget_timeout'] = $timeout;
+						$wppa['portrait_only'] = ($ponly == 'yes');
+							$wppa['ss_widget_valign'] = $valign;
+								echo wppa_albums($album, 'slideonly', $width, 'center');
+							$wppa['ss_widget_valign'] = '';
+						$wppa['portrait_only'] = false;
+						$wppa['in_widget_timeout'] = '0';
+					$wppa['in_widget'] = false;
+					$wppa['fullsize'] = '';	// Reset to prevent inheritage of wrong size in case widget is rendered before main column
 				echo '</div>';
 				if ($linkurl != '') {
-					$wppa_in_widget_linkurl = '';
-					$wppa_in_widget_linktitle = '';
+					$wppa['in_widget_linkurl'] = '';
+					$wppa['in_widget_linktitle'] = '';
 				}
 				if ($subtext != '') {
 					echo '<div style="padding-top:2px; padding-bottom:0px; text-align:center">'.$subtext.'</div>';

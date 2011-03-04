@@ -3,39 +3,44 @@
 * Package: wp-photo-album-plus
 *
 * get the albums via filter
-* version 2.5.0.017
+* version 3.0.0
 *
 */
 
 add_action('init', 'wppa_do_filter');
 
 function wppa_do_filter() {
-	add_filter('the_content', 'wppa_albums_filter', 99);
+	add_filter('the_content', 'wppa_albums_filter', 10);
 }
 
 function wppa_albums_filter($post) {
+global $wppa;
+
+	wppa_initialize_runtime();
+
 	$post_old = $post;
 	$post_new = '';
-	$iscover = '0';
 	
-	if (substr_count($post_old, '%%wppa%%') > 0) {
-		//	if (is_feed()) 
-		$post_new .= wppa_init_occur();					// For non-feeds, reset happens now also here in stead of previously in loop.php
-		$wppa_pos = strpos($post_old, '%%wppa%%');
+	if (substr_count($post_old, '%%wppa%%') > 0) {						// Yes, there is something to do here
+		$wppa['occur'] = '0';											// Init this occurance
+		$wppa_pos = strpos($post_old, '%%wppa%%');						// Where in the post is the invocation
 		while ($wppa_pos !== false) {
-			$chunk = substr($post_old, 0, $wppa_pos);
-			//$in_p = false; // substr_count($chunk, '<p>') > substr_count($chunk, '</p>') ? true : false;
+		
+			$text_chunk = substr($post_old, 0, $wppa_pos);
+			$post_new .= wppa_force_balance_pee($text_chunk);				// Copy BEFORE part to new post
+			
+			$post_old = substr($post_old, $wppa_pos);					// Shift BEFORE part out of old post
+			$post_old = substr($post_old, 8);							// Shift %%wppa%% out of old post
 
-			$post_new .= wppa_disp($chunk);								// Copy BEFORE part to new post
-			$post_old = substr($post_old, $wppa_pos);					// Shift BEFORE part out
-			$post_old = substr($post_old, 8);							// Shift %%wppa%% out
 			$album_pos = strpos($post_old, '%%album=');					// Is there an album given?
 			$cover_pos = strpos($post_old, '%%cover=');					// Is there a cover given?
 			$slide_pos = strpos($post_old, '%%slide=');					// Is there a slidealbum given?
 			$slideonly_pos = strpos($post_old, '%%slideonly=');			// Is there a slideonly album given?
 			$photo_pos = strpos($post_old, '%%photo=');					// Is there a photo id given?
+			$mphoto_pos = strpos($post_old, '%%mphoto=');
 			$size_pos = strpos($post_old, '%%size=');					// Is there a size given?
 			$align_pos = strpos($post_old, '%%align=');					// Is there an align given?
+			
 			$wppa_pos = strpos($post_old, '%%wppa%%');					// Is there another occurrence?
 			// Invalidate positions if they belong to a later occurance
 			if (is_numeric($wppa_pos)) {								// Yes there is another occurance
@@ -44,44 +49,52 @@ function wppa_albums_filter($post) {
 				if (is_numeric($slide_pos) && $slide_pos > $wppa_pos) $slide_pos = 'nil';
 				if (is_numeric($slideonly_pos) && $slideonly_pos > $wppa_pos) $slideonly_pos = 'nil';
 				if (is_numeric($photo_pos) && $photo_pos > $wppa_pos) $photo_pos = 'nil';
+			if (is_numeric($mphoto_pos) && $mphoto_pos > $wppa_pos) $mphoto_pos = 'nil';
 				if (is_numeric($size_pos) && $size_pos > $wppa_pos) $size_pos = 'nil';
 				if (is_numeric($align_pos) && $align_pos > $wppa_pos) $align_pos = 'nil';
 			}
 			// set defaults
-			$album_number = '';
-			$is_cover = '0';
-			$is_slide = '0';
-			$is_slideonly = '0';
-			$photo_number = '';
+			$wppa['start_album'] = '';
+			$wppa['is_cover'] = '0';
+			$wppa['is_slide'] = '0';
+			$wppa['is_slideonly'] = '0';
+			$wppa['single_photo'] = '';
+			$wppa['is_mphoto'] = '0';
 			$size = '';
 			$align = '';
 			// examine album number
 			if (is_numeric($album_pos)) {				
 				$post_old = substr($post_old, $album_pos + 8);				// shift up to and including %%album= out
-				$album_number = wppa_atoi($post_old);						// get album #
+				$wppa['start_album'] = wppa_atoi($post_old);				// get album #
 				$post_old = substr($post_old, strpos($post_old, '%%') + 2);	// shift album # and trailing %% out
 			}
 			elseif (is_numeric($cover_pos)) {
 				$post_old = substr($post_old, $cover_pos + 8);				// shift up to and including %%cover= out
-				$album_number = wppa_atoi($post_old);						// get album #
-				$is_cover = '1';
+				$wppa['start_album'] = wppa_atoi($post_old);				// get album #
+				$wppa['is_cover'] = '1';
 				$post_old = substr($post_old, strpos($post_old, '%%') + 2);	// shift album # and trailing %% out
 			}
 			elseif (is_numeric($slide_pos)) {
 				$post_old = substr($post_old, $slide_pos + 8);				// shift up to and including %%slide= out
-				$album_number = wppa_atoi($post_old);						// get album #
-				$is_slide = '1';
+				$wppa['start_album'] = wppa_atoi($post_old);				// get album #
+				$wppa['is_slide'] = '1';
 				$post_old = substr($post_old, strpos($post_old, '%%') + 2);	// shift album # and trailing %% out
 			}
 			elseif (is_numeric($slideonly_pos)) {
 				$post_old = substr($post_old, $slideonly_pos + 12);			// shift up to and including %%slideonly= out
-				$album_number = wppa_atoi($post_old);						// get album #
-				$is_slideonly = '1';
+				$wppa['start_album'] = wppa_atoi($post_old);				// get album #
+				$wppa['is_slideonly'] = '1';
 				$post_old = substr($post_old, strpos($post_old, '%%') + 2);	// shift album # and trailing %% out
 			}
 			elseif (is_numeric($photo_pos)) {
 				$post_old = substr($post_old, $photo_pos + 8);				// shift up to and including %%photo= out
-				$photo_number = wppa_atoi($post_old);						// get photo #
+				$wppa['single_photo'] = wppa_atoi($post_old);				// get photo #
+				$post_old = substr($post_old, strpos($post_old, '%%') + 2);	// shift photo # and trailing %% out
+			}
+			elseif (is_numeric($mphoto_pos)) {
+				$post_old = substr($post_old, $mphoto_pos + 9);				// shift up to and including %%mphoto= out
+				$wppa['single_photo'] = wppa_atoi($post_old);				// get photo #
+				$wppa['is_mphoto'] = '1';
 				$post_old = substr($post_old, strpos($post_old, '%%') + 2);	// shift photo # and trailing %% out
 			}
 			// see if a size is given and get it
@@ -90,7 +103,16 @@ function wppa_albums_filter($post) {
 				$post_old = substr($post_old, $size_pos + 7);				// shift up to and including %%size= out
 				$size = wppa_atoi($post_old);								// get size #
 				if (substr_compare($post_old, 'auto', 0, 4) == 0) $size = 'auto';
+
 				$post_old = substr($post_old, strpos($post_old, '%%') + 2); // shift size # and trailing %% out
+				if ($size == 'auto') {
+					$wppa['auto_colwidth'] = true;
+					$wppa['fullsize'] = '';
+				}
+				else {
+					$wppa['auto_colwidth'] = false;
+					$wppa['fullsize'] = $size;
+				}
 			}
 			// see if alignment is given and get it
 			if (is_numeric($align_pos)) {
@@ -100,83 +122,16 @@ function wppa_albums_filter($post) {
 				elseif (substr_compare($post_old, 'center', 0, 6) == 0) $align = 'center';
 				elseif (substr_compare($post_old, 'right', 0, 5) == 0) $align = 'right';
 				$post_old = substr($post_old, strpos($post_old, '%%') + 2); // shift position and trailing %% out
+				$wppa['align'] = $align;
 			}
 			
-//			$post_new .= wppa_set_inp($in_p);
-			$post_new .= wppa_set_album($album_number);
-			$post_new .= wppa_set_cover($is_cover);
-			$post_new .= wppa_set_slide($is_slide);
-			$post_new .= wppa_set_slideonly($is_slideonly);
-			$post_new .= wppa_set_photo($photo_number);
-			if ((is_numeric($size) && $size > '0') || $size == 'auto')
-				$post_new .= wppa_set_fullsize($size);
-			$post_new .= wppa_set_align($align);
-			$post_new .= wppa_albums();										// Insert the theme template
-			$wppa_pos = strpos($post_old, '%%wppa%%');						// Refresh
+			$post_new .= wppa_albums();										// Insert the html
+			
+			$wppa_pos = strpos($post_old, '%%wppa%%');						// Refresh the next invocation position, if any
 		}
 	}
-	$post_new .= $post_old;
+	$post_new .= wppa_force_balance_pee($post_old);							// Copy the rest of the post/page
 	return $post_new;
-}
-
-/* If you simplify the following small routines, by coding it inline in the filter, the sky will fall upon you */
-function wppa_init_occur() {
-	global $wppa_occur;
-	$wppa_occur = '0';
-}
-
-function wppa_disp($var) {
-	echo($var);
-}
-
-/*
-function wppa_set_inp($inp) {
-	global $wppa_inp;
-	$wppa_inp = $inp;
-}
-*/
-
-function wppa_set_album($alb) {
-	global $startalbum;
-	$startalbum = $alb;
-}
-
-function wppa_set_cover($iscov) {
-	global $is_cover;
-	$is_cover = $iscov;
-}
-
-function wppa_set_slide($isslide) {
-	global $is_slide;
-	$is_slide = $isslide;
-}
-
-function wppa_set_slideonly($isslideonly) {
-	global $is_slideonly;
-	$is_slideonly = $isslideonly;
-}
-
-function wppa_set_photo($photo) {
-	global $single_photo;
-	$single_photo = $photo;
-}
-
-function wppa_set_fullsize($siz) {
-	global $wppa_fullsize;
-	global $wppa_auto_colwidth;
-	if ($siz == 'auto') {
-		$wppa_auto_colwidth = true;
-		$wppa_fullsize = '';
-	}
-	else {
-		$wppa_auto_colwidth = false;
-		$wppa_fullsize = $siz;
-	}
-}
-
-function wppa_set_align($align) {
-	global $wppa_align;
-	$wppa_align = $align;
 }
 
 function wppa_atoi($var) {

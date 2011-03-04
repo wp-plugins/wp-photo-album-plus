@@ -3,18 +3,19 @@
 * Package: wp-photo-album-plus
 *
 * display the albums/photos/slideshow in a page or post
-* Version 2.5.0
+* Version 3.0.0
 */
-global $wppa_version; $wppa_version = '2-5-0';		// The version number of this file, please change if you modify this file
-global $wppa_src;
+function wppa_theme() {
+
+global $wppa_version; $wppa_version = '3-0-0';		// The version number of this file, please change if you modify this file
+global $wppa;
+global $wppa_opt;
 global $wppa_show_statistics;						// Can be set to true by a custom page template
 
 $curpage = wppa_get_curpage();						// Get the page # we are on when pagination is on, or 1
 $didsome = false;									// Required initializations for pagination
 $n_album_pages = '0';								// "
 $n_thumb_pages = '0';								// "
-
-wppa_set_runtimestyle();							// Import colors, borders and fonts from settings page
 
 wppa_container('open');																// Open container
 	if ($wppa_show_statistics) wppa_statistics();									// Show statistics if set so by the page template
@@ -35,7 +36,9 @@ wppa_container('open');																// Open container
 			wppa_album_list('close');												// Close Albums sub-container
 		}	// If albums
  
-		$thumbs = wppa_get_thumbs();												// Get the Thumbs
+		if ($wppa_opt['wppa_thumbtype'] != 'none') {
+			$thumbs = wppa_get_thumbs();											// Get the Thumbs
+		} else $thumbs = false;
 		$n_thumb_pages = wppa_get_npages('thumbs', $thumbs);						// How many pages of thumbs will there be?
 		if ($n_thumb_pages == '0') $thumbs = false;									// No pages: no thumbs. Maybe want covers only
 		if ($didsome && wppa_is_pagination()) $thumbs = false;						// Pag on and didsome: pagebreak
@@ -73,8 +76,8 @@ wppa_container('open');																// Open container
 
 		wppa_page_links($totpag, $curpage);											// Show pages navigaion bar if needed
 	
-		if (!$didsome && $wppa_src) {
-			echo('<div class="center">'.__('No albums or photos found matching your search criteria.', 'wppa').'</div>');
+		if (!$didsome && $wppa['src']) {
+			$wppa['out'] .= '<div class="center">'.__a('No albums or photos found matching your search criteria.', 'wppa_theme').'</div>';
 		}
 	} // wppa_page('albums')
 	
@@ -99,3 +102,4 @@ wppa_container('open');																// Open container
 		wppa_run_slidecontainer('slideshow');	// Fill in the photo array and display it
 	} // wppa_page('slide')
 wppa_container('close');
+}

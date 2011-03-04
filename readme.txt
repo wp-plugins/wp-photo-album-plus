@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photo widget, phtoblog
-Version: 2.5.1
+Version: 3.0.0
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -93,14 +93,43 @@ That's the way it is designed.
 = How can i translate the plugin into my language? =
 
 * Find on internet the free program POEDIT, and learn how it works.
-* Use the file wppa.pot that is located in wp-photo-album-plus/langs to create or update
-wppa-[your languagecode].po and wppa-[your languagecode].mo.
-* Place these file in the langs subdir.
-* If everything is ok, mail me the files and i will distribute them so other users can use it too.
+* Use the file wppa_theme.pot and wppa.pot that is located in wp-photo-album-plus/langs to create or update
+wppa-[your languagecode].po, wppa-[your languagecode].mo, wppa_theme-[your languagecode].po and wppa_theme-[your languagecode].mo.
+If you want to translate the frontend only (the theme part, only approx. 50 words) you only need to make the wppa_theme-[your languagecode] - files.
+* Place these files in the langs subdir.
+* If everything is ok, mail me the files and i will distribute them so other users can use your translation too.
 * For more information on POT files, domains, gettext and i18n have a look at the I18n for 
 WordPress developers Codex page and more specifically at the section about themes and plugins.
 
 == Changelog ==
+
+= 3.0.0 =
+
+= New features =
+
+* You can link thumbnails to different (selectable) page, either to a full-size photo on its own or in a slideshow/browseable.
+* You can link the photo of the day to a full-size photo on its own or in a slideshow/browseable or to the current photos album contents display (thumbnails).
+* You can set the thumbnail display type to --- none ---. This removes the 'View .. photos' link on album covers, while keeping the 'View .. albums' link.
+* When the Slideshow is disabled and there are more than the photocount treshold photos, the 'Slideshow'-link is changed to 'Browse photos' with the corresponding action.
+* The front end (theme) is now seperately translatable. Only 43 words/small sentences need translation. A potfile is included (wppa_theme.pot).
+* You can now easy copy a single photo to an other album in the Photo Albums -> Edit album admin page.
+* There is a new script command: %%mphoto=..%%. This is an alternative for %%photo=..%% and displays the single photo with the same style as normal media photos with background and caption. No associated links yet.
+
+= Bug fixes =
+
+* The 'Slideshow' and 'Browse photos' link now also point to the page selected in the edit album form.
+
+= Pending enhancement requests =
+
+* Multisite support
+* More than one photo of the day
+
+= Notes =
+
+* Due to internal changes, there is a speed-up of apprix 30% with respect to earlier versions.
+* Due to internal changes, you will have to re-modify wppa_theme.php if you used a modified one. wppa_theme is now a function.
+* Due to internal changes, it is most likely that this problem will be fixed: http://wordpress.org/support/topic/plugin-wp-photo-album-plus-page-drops-when-activated-on-page?replies=24#post-1965780
+* If you had set *No Links* for thumbnails, you will have to set it again.
 
 = 2.5.1 =
 
