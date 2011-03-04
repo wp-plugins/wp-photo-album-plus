@@ -1,5 +1,5 @@
 ﻿// Slide show variables and functions
-// This is wppa_slideshow.js version 2.5.1.004
+// This is wppa_slideshow.js version 3.0.0
 //
 
 var wppa_slides = new Array();
@@ -30,7 +30,7 @@ var wppa_box_delta = 0;
 
 var wppa_preambule;
 var wppa_thumbnail_pitch;
-var wppa_filmstrip_length;
+var wppa_filmstrip_length = new Array();
 var wppa_filmstrip_margin = 0;
 var wppa_filmstrip_area_delta;
 var wppa_film_show_glue;
@@ -192,7 +192,7 @@ function wppa_fade_fade(mocc) {
 		jQuery("#theimg"+fg+"-"+mocc).fadeIn(wppa_animation_speed, wppa_after_fade(mocc)); 
 	}
 }
-
+//var once =0;
 function wppa_after_fade(mocc) {
 	// set height to fit if reqd
 	if (wppa_portrait_only[mocc]) {
@@ -223,7 +223,9 @@ function wppa_after_fade(mocc) {
 
 	// Adjust filmstrip
 	var xoffset;
-	xoffset = wppa_filmstrip_length / 2 - (wppa_id[mocc] + 0.5 + wppa_preambule) * wppa_thumbnail_pitch - wppa_filmstrip_margin;
+//if (!once) alert(wppa_filmstrip_length[mocc]+","+wppa_id[mocc]+","+wppa_preambule+","+wppa_thumbnail_pitch+","+wppa_filmstrip_margin);
+//once=1;
+	xoffset = wppa_filmstrip_length[mocc] / 2 - (wppa_id[mocc] + 0.5 + wppa_preambule) * wppa_thumbnail_pitch - wppa_filmstrip_margin;
 	if (wppa_film_show_glue) xoffset -= (wppa_filmstrip_margin * 2 + 2);	// Glue
 	jQuery('#wppa-filmstrip-'+mocc).animate({marginLeft: xoffset+'px'});
 	
@@ -355,12 +357,12 @@ function wppa_do_autocol(mocc) {
 	if (!wppa_auto_colwidth) return;
 	
 	w = document.getElementById('wppa-container-1').parentNode.clientWidth;
-	
+//alert('w='+w);	
 	jQuery(".wppa-container").css('width',w);
 	jQuery(".theimg").css('width',w);
 	jQuery(".thumbnail-area").css('width',w - wppa_thumbnail_area_delta);
-	wppa_filmstrip_length = w - wppa_filmstrip_area_delta;
-	jQuery(".filmwindow").css('width',wppa_filmstrip_length);
+	wppa_filmstrip_length[mocc] = w - wppa_filmstrip_area_delta;
+	jQuery(".filmwindow").css('width',wppa_filmstrip_length[mocc]);
 
 	jQuery(".wppa-text-frame").css('width',w - wppa_textframe_delta);
 	jQuery(".wppa-cover-box").css('width',w - wppa_box_delta);
@@ -397,7 +399,7 @@ function wppa_check_rewind(mocc) {
 	n_diff = Math.abs(wppa_id[mocc] - wppa_next_id[mocc]);
 	if (n_diff < 2) return;
 	
-	var n_images = wppa_filmstrip_length / wppa_thumbnail_pitch;
+	var n_images = wppa_filmstrip_length[mocc] / wppa_thumbnail_pitch;
 	
 	if (n_diff >= ((n_images + 1) / 2)) {
 		l_substrate = wppa_thumbnail_pitch * wppa_slides[mocc].length;

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the widget
-* Version 2.5.1
+* Version 3.0.0
 */
 
 class PhotoOfTheDay extends WP_Widget {
@@ -84,7 +84,15 @@ class PhotoOfTheDay extends WP_Widget {
 				$page_title = $wpdb->get_var("SELECT post_title FROM " . $wpdb->posts . " WHERE post_type = 'page' AND post_status = 'publish' AND ID=" . $pid);
 				if ($page_title) { 			// Yep, Linkpage found
 					$title = __('Link to', 'wppa') . ' ' . $page_title;
-					$widget_content .= '<a href="' . get_page_link($pid) . wppa_sep() . 'album=' . $image['album'] . '&amp;cover=0&amp;occur=1">';
+					if (get_option('wppa_widget_linktype', 'album') == 'album') {
+						$widget_content .= '<a href="'.wppa_get_permalink($pid).'album='.$image['album'].'&amp;cover=0&amp;occur=1">';
+					}
+					elseif (get_option('wppa_widget_linktype') == 'photo') {
+						$widget_content .= '<a href="'.wppa_get_permalink($pid).'album='.$image['album'].'&amp;photo='.$image['id'].'&amp;occur=1">';
+					}
+					elseif (get_option('wppa_widget_linktype') == 'single') {
+						$widget_content .= '<a href="'.wppa_get_permalink($pid).'photo='.$image['id'].'&amp;occur=1">';
+					}
 				} 
 				else $pid = '0';
 			}

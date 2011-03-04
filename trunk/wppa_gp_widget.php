@@ -6,7 +6,7 @@
 *
 * A text widget that hooks the wppa+ filter
 *
-* Version 2.5.1
+* Version 3.0.0
 */
 
 class WppaGpWidget extends WP_Widget {
@@ -19,25 +19,30 @@ class WppaGpWidget extends WP_Widget {
 	}
 
 	function widget( $args, $instance ) {
-		global $wppa_in_widget;
-		global $wppa_fullsize;
+		global $wppa; 
+
+		wppa_initialize_runtime();	// Just in case we are the first
+		
 		extract($args);
  		$title = apply_filters('widget_title', empty( $instance['title'] ) ? '' : $instance['title']);
 
-		$wppa_in_widget = true;
+		$wppa['in_widget'] = true;
 				
 		echo $before_widget;
 		if ( !empty( $title ) ) { echo $before_title . $title . $after_title; } 
 		
-		$text = $instance['filter'] ? wpautop($instance['text']) : $instance['text'];
-		?>
-			<div class="wppa-gp-widget" style="margin-top:2px; margin-left:2px;" ><?php echo wppa_albums_filter($text); ?></div>
-		<?php
+		$text = $instance['text'];
+		
+		if ($instance['filter']) $text = wpautop($text);
+
+		$text = '<div class="wppa-gp-widget" style="margin-top:2px; margin-left:2px;" >'.wppa_albums_filter($text).'</div>';
+		
+		echo $text;
 		
 		echo $after_widget;
 		
-		$wppa_in_widget = false;
-		$wppa_fullsize = '';	// Reset to prevent inheritage of wrong size in case widget is rendered before main column
+		$wppa['in_widget'] = false;
+		$wppa['fullsize'] = '';	// Reset to prevent inheritage of wrong size in case widget is rendered before main column
 
 	}
 

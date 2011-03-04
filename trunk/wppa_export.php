@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the export functions
-* Version 2.5.0.013
+* Version 3.0.0
 */
 
 function wppa_page_export() {

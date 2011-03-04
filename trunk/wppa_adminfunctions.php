@@ -3,23 +3,25 @@
 * Pachkage: wp-photo-album-plus
 *
 * gp admin functions
-* version 2.5.0
+* version 3.0.0
 */
 
 // Set default option values
 function wppa_set_defaults($force = false) {
 	$defaults = array ( 'wppa_revision' => '100',
 						'wppa_fullsize' => '640',
-						'wppa_colwidth' => get_option('wppa_fullsize', '640'),
-						'wppa-maxheight' => get_option('wppa_fullsize', '640'),
+						'wppa_colwidth' => '640',
+						'wppa_maxheight' => '640',
 						'wppa_enlarge' => 'no',
 						'wppa_resize_on_upload' => 'no',
 						'wppa_fullvalign' => 'fit',
+						'wppa_fullhalign' => 'center',
 						'wppa_min_thumbs' => '1',
+						'wppa_thumbtype' => 'default',
 						'wppa_valign' => 'center',
 						'wppa_thumbsize' => '100',
-						'wppa_tf_width' => get_option('wppa_thumbsize', '100'),
-						'wppa_tf_height' => (get_option('wppa_thumbsize', '100') + '10'),
+						'wppa_tf_width' => '100',
+						'wppa_tf_height' => '110',
 						'wppa_tn_margin' => '4',
 						'wppa_smallsize' => '150',
 						'wppa_show_bread' => 'yes',
@@ -31,13 +33,70 @@ function wppa_set_defaults($force = false) {
 						'wppa_use_cover_opacity' => 'yes',
 						'wppa_cover_opacity' => '85',
 						'wppa_animation_speed' => '600',
+						'wppa_slideshow_timeout' => '2500',
 						'wppa_bgcolor_even' => '#eeeeee',
 						'wppa_bgcolor_alt' => '#dddddd',
 						'wppa_bgcolor_nav' => '#dddddd',
 						'wppa_bgcolor_img' => '#eeeeee',
 						'wppa_bcolor_even' => '#cccccc',
 						'wppa_bcolor_alt' => '#bbbbbb',
-						'wppa_bcolor_nav' => '#bbbbbb'
+						'wppa_bcolor_nav' => '#bbbbbb',
+						'wppa_bwidth' => '1',
+						'wppa_bradius' => '6',
+						'wppa_fontfamily_thumb' => '',
+						'wppa_fontsize_thumb' => '',
+						'wppa_fontfamily_box' => '',
+						'wppa_fontsize_box' => '',
+						'wppa_fontfamily_nav' => '',
+						'wppa_fontsize_nav' => '',
+						'wppa_fontfamily_title' => '',
+						'wppa_fontsize_title' => '',
+						'wppa_fontfamily_fulldesc' => '',
+						'wppa_fontsize_fulldesc' => '',
+						'wppa_fontfamily_fulltitle' => '',
+						'wppa_fontsize_fulltitle' => '',
+						'wppa_black' => 'black',
+						'wppa_arrow_color' => 'black',
+						'wppa_widget_padding' => '5',
+						'wppa_2col_treshold' => '640',
+						'wppa_3col_treshold' => '800',
+						'wppa_film_show_glue' => 'yes',
+						'wppa_album_page_size' => '0',
+						'wppa_thumb_page_size' => '0',
+						'wppa_thumb_auto' => 'yes',
+						'wppa_coverphoto_left' => 'no',
+						'wppa_thumbphoto_left' => 'no',
+						'wppa_hide_slideshow' => 'no',
+//						'wppa_no_thumb_links' => 'no',
+						'wppa_thumb_text_name' => 'yes',
+						'wppa_thumb_text_desc' => 'yes',
+						'wppa_thumb_text_rating' => 'yes',
+						'wppa_show_startstop_navigation' => 'yes',
+						'wppa_show_browse_navigation' => 'yes',
+						'wppa_show_full_desc' => 'yes',
+						'wppa_show_full_name' => 'yes',
+						'wppa_start_slide' => 'yes',
+						'wppa_hide_slideshow' => 'no',
+						'wppa_filmstrip' => 'yes',
+						'wppa_bc_url' => 'nil',
+						'wppa_bc_txt' => '-&gt;',
+						'wppa_topten_count' => '10',
+						'wppa_excl_sep' => 'no',
+						'wppa_rating_on' => 'yes',
+						'wppa_rating_login' => 'yes',
+						'wppa_rating_change' => 'yes',
+						'wppa_rating_multi' => 'no',
+						'wppa_list_albums_by' => '0',
+						'wppa_list_albums_desc' => 'no',
+						'wppa_list_photos_by' => '0',
+						'wppa_list_photos_desc' => 'no',
+						'wppa_html' => 'no',
+//						'wppa_no_thumb_links' => 'no',	//obsolete
+						'wppa_thumb_linkpage' => '0',
+						'wppa_thumb_linktype' => 'photo',
+						'wppa_fadein_after_fadeout' => 'no',
+						'wppa_widget_linkpage' => '0',
+						'wppa_widget_linktype' => 'album'
 						);
 	
 	array_walk($defaults, 'wppa_set_default', $force);
@@ -237,7 +296,7 @@ function wppa_get_last_album() {
 }
 
 // display order options
-function wppa_order_options($order, $nil, $rat) {
+function wppa_order_options($order, $nil, $rat = '') {
     if ($nil != '') { 
 ?>
     <option value="0"<?php if ($order == "" || $order == "0") echo (' selected="selected"'); ?>><?php echo($nil); ?></option>
@@ -400,4 +459,45 @@ function _wppa_chmod_($file, $chmod) {
 		default:
 		wppa_error_message(__('Unsupported value in _wppa_chmod_ :', 'wppa').' '.$chmod);
 	}
+}
+
+function wppa_copy_photo($photoid, $albumto) {
+global $wpdb;
+
+	$err = '1';
+	// Check args
+	if (!is_numeric($photoid) || !is_numeric($albumto)) return $err;
+	
+	$err = '2';
+	// Find photo details
+	$photo = $wpdb->get_row('SELECT * FROM '.PHOTO_TABLE.' WHERE id = '.$photoid, 'ARRAY_A');
+	if (!$photo) return $err;
+	$id = '0';
+	$album = $albumto;
+	$ext = $photo['ext'];
+	$name = $photo['name'];
+	$porder = '0';
+	$desc = $photo['description'];
+	$oldimage = ABSPATH.'wp-content/uploads/wppa/'.$photo['id'].'.'.$ext;
+	$oldthumb = ABSPATH.'wp-content/uploads/wppa/thumbs/'.$photo['id'].'.'.$ext;
+	
+	$err = '3';
+	// Make new db table entry
+	$query = $wpdb->prepare('INSERT INTO `' . PHOTO_TABLE . '` (`id`, `album`, `ext`, `name`, `p_order`, `description`, `mean_rating`) VALUES (%d, %d, %s, %s, %d, %s, \'\')', $id, $album, $ext, $name, $porder, $desc);
+	if ($wpdb->query($query) === false) return $err;
+
+	$err = '4';
+	// Find copied photo details
+	$image_id = $wpdb->get_var("SELECT LAST_INSERT_ID()");					
+	$newimage = ABSPATH.'wp-content/uploads/wppa/'.$image_id.'.'.$ext;
+	$newthumb = ABSPATH.'wp-content/uploads/wppa/thumbs/'.$image_id.'.'.$ext;
+	if (!$image_id) return $err;
+	
+	$err = '5';
+	// Do the filsystem copy
+	if (!copy($oldimage, $newimage)) return $err;
+	$err = '6';
+	if (!copy($oldthumb, $newthumb)) return $err;
+	
+	return false;	// No error
 }

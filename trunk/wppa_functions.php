@@ -3,24 +3,22 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions and API modules
-* Version 2.5.1
+* Version 3.0.0
 *
-* 001: Changed the way new settings get their default values during plugin activation.
-* 002: Reset %%size=.. at end of widget code to prevent inheritage of wrong size in case widget is rendered before main column.
-* 003: Added vertical alignment and text above photos in slideshow widget.
-* 004: The words Start and Stop are now translatable.
-* 005: Under some circumstances (a wrong size error(warning) elsewhere in the settings) the regeneration of thumbnails was not triggered, fixed
 *
 */
 
 global $wppa_api_version;
-$wppa_api_version = '2-5-1-005';
+$wppa_api_version = '3-0-0-000';
 
 /* show system statistics */
 function wppa_statistics() {
-	echo(wppa_get_statistics());
+global $wppa;
+
+	$wppa['out'] .= wppa_get_statistics();
 }
 function wppa_get_statistics() {
+
 	$count = wppa_get_total_album_count();
 	$y_id = wppa_get_youngest_album_id();
 	$y_name = wppa_get_album_name($y_id);
@@ -28,12 +26,12 @@ function wppa_get_statistics() {
 	$p_name = wppa_get_album_name($p_id);
 	
 	$result = '<div class="wppa-box wppa-nav" style="text-align: center; '.__wcs('wppa-box').__wcs('wppa-nav').'">';
-	$result .= __('There are', 'wppa').' '.$count.' '.__('photo albums. The last album added is', 'wppa').' ';
-	$result .= '<a href="'.get_permalink().wppa_sep().'album='.$y_id.'&amp;cover=0&amp;occur=1">'.$y_name.'</a>';
+	$result .= __a('There are', 'wppa_theme').' '.$count.' '.__a('photo albums. The last album added is', 'wppa_theme').' ';
+	$result .= '<a href="'.wppa_get_permalink().'album='.$y_id.'&amp;cover=0&amp;occur=1">'.$y_name.'</a>';
 
 	if ($p_id > '0') {
-		$result .= __(', a subalbum of', 'wppa').' '; 
-		$result .= '<a href="'.get_permalink().wppa_sep().'album='.$p_id.'&amp;cover=0&amp;occur=1">'.$p_name.'</a>';
+		$result .= __a(', a subalbum of', 'wppa_theme').' '; 
+		$result .= '<a href="'.wppa_get_permalink().'album='.$p_id.'&amp;cover=0&amp;occur=1">'.$p_name.'</a>';
 	}
 	
 	$result .= '.</div>';
@@ -42,85 +40,67 @@ function wppa_get_statistics() {
 }
 
 /* shows the breadcrumb navigation */
-function wppa_breadcrumb($xsep = '', $opt = '') {
-	global $wppa_occur;
-	global $wppa_master_occur;
-	global $wppa_local_occur;
-	global $startalbum;
-	global $single_photo;
-	global $is_slideonly;
-	global $wppa_in_widget;
+function wppa_breadcrumb($opt = '') {
+global $wppa;
+global $wppa_opt;
 
-	if ($opt == 'optional' && get_option('wppa_show_bread', 'yes') == 'no') return;	/* Nothing to do here */
+	wppa_initialize_runtime();
+
+	/* See if they need us */
+	if ($opt == 'optional' && !$wppa_opt['wppa_show_bread']) return;	/* Nothing to do here */
 	if (wppa_page('oneofone')) return; /* Never at a single image */
-	if ($is_slideonly == '1') return;	/* Not when slideony */
-	if ($wppa_in_widget) return; /* Not in a widget */
-	if (is_feed()) {
-//		wppa_dummy_bar(__('- - - Breadcrumb navigation bar - - -', 'wppa'));	
-		return;
-	}
+	if ($wppa['is_slideonly'] == '1') return;	/* Not when slideony */
+	if ($wppa['in_widget']) return; /* Not in a widget */
+	if (is_feed()) return;	/* Not in a feed */
 	
-	/* Do some preparations */
-	if ($xsep != '' && $xsep != '&raquo;') {					// Caller supplied separator &raquo; for compatibility with thema rev < 2.4.4
-		$sep = '&nbsp'.$xsep.'&nbsp;';
-	}
-	else {		
-		$temp = get_option('wppa_bc_separator', 'raquo');
-		switch ($temp) {
-			case 'url':
-				$size = get_option('wppa_fontsize_nav', '');
-				if ($size != '') $style = 'height:'.$size.'px;';
-				else $style = '';
-				$sep = '&nbsp;<img src="'.get_option('wppa_bc_url', wppa_get_imgdir().'arrow.png').'" class="no-shadow" style="'.$style.'" />&nbsp;';
-				break;
-			case 'txt':
-				$sep = '&nbsp;'.html_entity_decode(stripslashes(get_option('wppa_bc_txt', '-&gt;')), ENT_QUOTES).'&nbsp;';
-				break;
-			default:
-				$sep = '&nbsp;&' . $temp . ';&nbsp;';
-		}
+	/* Compute the seperator */
+	$temp = $wppa_opt['wppa_bc_separator'];
+	switch ($temp) {
+		case 'url':
+			$size = $wppa_opt['wppa_fontsize_nav'];
+			if ($size != '') $style = 'height:'.$size.'px;';
+			else $style = '';
+			$sep = ' <img src="'.$wppa_opt['wppa_bc_url'].'" class="no-shadow" style="'.$style.'" /> ';
+			break;
+		case 'txt':
+			$sep = ' '.html_entity_decode(stripslashes($wppa_opt['wppa_bc_txt']), ENT_QUOTES).' ';
+			break;
+		default:
+			$sep = ' &' . $temp . ' ';
 	}
 
-	if ($wppa_master_occur == '0') $wppa_local_occur = '1'; /* default for call outside the loop */
-	else $wppa_local_occur = $wppa_occur;
-	
-	if (isset($_GET['occur'])) $occur = $_GET['occur'];
-	else $occur = '1';
-	if ($occur == $wppa_local_occur) $this_occur = true; 
-	else $this_occur = false;
+	$occur = isset($_GET['occur']) ? $_GET['occur'] : '1';
+	$this_occur = ($occur == $wppa['occur']);
 	
     if (isset($_GET['album']) && $this_occur) $alb = $_GET['album']; 
-	elseif (is_numeric($startalbum)) $alb = $startalbum;
+	elseif (is_numeric($wppa['start_album'])) $alb = $wppa['start_album'];
 	else $alb = 0;
 	$separate = wppa_is_separate($alb);
-?>
-	<div id="wppa-bc-<?php echo $wppa_master_occur ?>" class="wppa-nav wppa-box wppa-nav-text" style="<?php _wcs('wppa-nav'); _wcs('wppa-box'); _wcs('wppa-nav-text'); ?>">
-<?php
-		if (get_option('wppa_show_home', 'yes') == 'yes') {
-?>
-			<a href="<?php echo(get_bloginfo('url')); ?>" class="wppa-nav-text" style="<?php _wcs('wppa-nav-text'); ?>" ><?php _e('Home', 'wppa'); ?></a>
-			<span class="wppa-nav-text" style="<?php _wcs('wppa-nav-text'); ?>" ><?php echo($sep); ?></span>
-<?php	
+
+	// See if we link to covers or to contents
+	$to_cover = $wppa_opt['wppa_thumbtype'] == 'none' ? '1' : '0';
+	
+	$wppa['out'] .= '<div id="wppa-bc-'.$wppa['master_occur'].'" class="wppa-nav wppa-box wppa-nav-text" style="'.__wcs('wppa-nav').__wcs('wppa-box').__wcs('wppa-nav-text').'">';
+
+		if ($wppa_opt['wppa_show_home']) {
+			$wppa['out'] .= '<a href="'.get_bloginfo('url').'" class="wppa-nav-text" style="'.__wcs('wppa-nav-text').'" >'.__a('Home', 'wppa_theme').'</a>';
+			$wppa['out'] .= '<span class="wppa-nav-text" style="'.__wcs('wppa-nav-text').'" >'.$sep.'</span>';	
 		}
 		
 		if (is_page()) wppa_page_breadcrumb($sep);	
 	
 		if ($alb == 0) {
 			if (!$separate) {
-?>
-				<span class="wppa-nav-text wppa-black b1" style="<?php _wcs('wppa-nav-text'); _wcs('wppa-black'); ?>" ><?php the_title(); ?></span>
-<?php
+				$wppa['out'] .= '<span class="wppa-nav-text wppa-black b1" style="'.__wcs('wppa-nav-text').__wcs('wppa-black').'" >'.the_title('', '', false).'</span>';
 			}
 		} else {	/* $alb != 0 */
 			if (!$separate) {
-?>
-				<a href="<?php echo(get_permalink() . wppa_sep()); ?>occur=<?php echo($wppa_local_occur); ?>" class="wppa-nav-text b2" style="<?php _wcs('wppa-nav-text'); ?>" ><?php the_title(); ?></a>
-				<span class="wppa-nav-text b3" style="<?php _wcs('wppa-nav-text'); ?>" ><?php echo($sep); ?></span>
-<?php
+				$wppa['out'] .= '<a href="'.wppa_get_permalink().'occur='.$wppa['occur'].'" class="wppa-nav-text b2" style="'.__wcs('wppa-nav-text').'" >'.the_title('', '', false).'</a>';
+				$wppa['out'] .= '<span class="wppa-nav-text b3" style="'.__wcs('wppa-nav-text').'" >'.$sep.'</span>';
 			}
-		    wppa_crumb_ancestors($sep, $alb);
+		    wppa_crumb_ancestors($sep, $alb, $wppa['occur'], $to_cover);
 			if (wppa_page('oneofone')) {
-				$photo = $single_photo;
+				$photo = $wppa['single_photo'];
 			}
 			elseif (wppa_page('single')) {
 				if (isset($_GET['photo'])) {
@@ -135,60 +115,48 @@ function wppa_breadcrumb($xsep = '', $opt = '') {
 			}
 		
 			if (is_numeric($photo) && $this_occur) {
-?>
-				<a href="<?php echo(get_permalink() . wppa_sep() . 'album=' . $alb . '&amp;cover=0&amp;occur=' . $wppa_local_occur); ?>" class="wppa-nav-text b4" style="<?php _wcs('wppa-nav-text'); ?>" ><?php wppa_album_name($alb); ?></a>
-				<span class="b5" ><?php echo($sep); ?></span>
-				<span id="bc-pname-<?php echo($wppa_local_occur); ?>" class="wppa-nav-text wppa-black b8" style="<?php _wcs('wppa-nav-text'); _wcs('wppa-black'); ?>" ><?php echo(wppa_get_photo_name($photo)); ?></span>
-<?php
+				$wppa['out'] .= '<a href="'.wppa_get_permalink().'album='.$alb.'&amp;cover='.$to_cover.'&amp;occur='.$wppa['occur'].'" class="wppa-nav-text b4" style="'.__wcs('wppa-nav-text').'" >'.wppa_get_album_name($alb).'</a>';
+				$wppa['out'] .= '<span class="b5" >'.$sep.'</span>';
+				$wppa['out'] .= '<span id="bc-pname-'.$wppa['occur'].'" class="wppa-nav-text wppa-black b8" style="'.__wcs('wppa-nav-text').__wcs('wppa-black').'" >'.wppa_get_photo_name($photo).'</span>';
 			} elseif ($this_occur && !wppa_page('albums')) {
-?>
-				<a href="<?php echo(get_permalink() . wppa_sep() . 'album=' . $alb . '&amp;cover=0&amp;occur=' . $wppa_local_occur); ?>" class="wppa-nav-text b6" style="<?php _wcs('wppa-nav-text'); ?>" ><?php wppa_album_name($alb); ?></a>
-				<span class="b7" ><?php echo($sep); ?></span>
-				<span id="bc-pname-<?php echo($wppa_local_occur); ?>" class="wppa-nav-text wppa-black b9" style="<?php _wcs('wppa-nav-text'); _wcs('wppa-black'); ?>" ><?php _e("Slideshow", "wppa"); ?></span>
-<?php
+				$wppa['out'] .= '<a href="'.wppa_get_permalink().'album='.$alb.'&amp;cover='.$to_cover.'&amp;occur='.$wppa['occur'].'" class="wppa-nav-text b6" style="'.__wcs('wppa-nav-text').'" >'.wppa_get_album_name($alb).'</a>';
+				$wppa['out'] .= '<span class="b7" >'.$sep.'</span>';
+				$wppa['out'] .= '<span id="bc-pname-'.$wppa['occur'].'" class="wppa-nav-text wppa-black b9" style="'.__wcs('wppa-nav-text').__wcs('wppa-black').'" >'.__a('Slideshow', 'wppa_theme').'</span>';
 			} else {	// NOT This occurance OR album
-?>
-				<span class="wppa-nav-text wppa-black b10" style="<?php _wcs('wppa-nav-text'); _wcs('wppa-black'); ?>" ><?php wppa_album_name($alb); ?></span>
-<?php
+				$wppa['out'] .= '<span class="wppa-nav-text wppa-black b10" style="'.__wcs('wppa-nav-text').__wcs('wppa-black').'" >'.wppa_get_album_name($alb).'</span>';
 			} 
 		}
 		if (isset($_POST['wppa-searchstring'])) {
-?>
-			<span class="wppa-nav-text b11" style="<?php _wcs('wppa-nav-text'); _wcs('wppa-black'); ?>" ><b>&nbsp;<?php _e('Searchstring:', 'wppa'); ?>&nbsp;<?php echo($_POST['wppa-searchstring']); ?></b></span>
-<?php
+			$wppa['out'] .= '<span class="wppa-nav-text b11" style="'.__wcs('wppa-nav-text').__wcs('wppa-black').'" ><b>&nbsp;'.__a('Searchstring:', 'wppa_theme').'&nbsp;'.$_POST['wppa-searchstring'].'</b></span>';
 		}
 		elseif (isset($_GET['topten'])) {
-?>
-			<span class="wppa-nav-text b11" style="<?php _wcs('wppa-nav-text'); _wcs('wppa-black'); ?>" ><b>&nbsp;<?php _e('Top rated photos', 'wppa'); ?></b></span>
-<?php
+			$wppa['out'] .= '<span class="wppa-nav-text b11" style="'.__wcs('wppa-nav-text').__wcs('wppa-black').'" ><b>&nbsp;'.__a('Top rated photos', 'wppa_theme').'</b></span>';
 		}
-?>
-	</div>
-<?php
+	$wppa['out'] .= '</div>';
 }
-function wppa_crumb_ancestors($sep, $alb) {
-	global $wppa_local_occur;
+function wppa_crumb_ancestors($sep, $alb, $occur, $to_cover) {
+global $wppa;
 	
     $parent = wppa_get_parentalbumid($alb);
     if ($parent < 1) return;
     
-    wppa_crumb_ancestors($sep, $parent);
-?>
-    <a href="<?php echo(get_permalink() . wppa_sep()); ?>album=<?php echo($parent); ?>&amp;cover=0&amp;occur=<?php echo($wppa_local_occur); ?>" class="wppa-nav-text b20" style="<?php _wcs('wppa-nav-text'); ?>" ><?php wppa_album_name($parent); ?></a>
-	<span class="wppa-nav-text" style="<?php _wcs('wppa-nav-text'); ?>"><?php echo($sep); ?></span>
-<?php
+    wppa_crumb_ancestors($sep, $parent, $wppa['occur'], $to_cover);
+    $wppa['out'] .= '<a href="'.wppa_get_permalink().'album='.$parent.'&amp;cover='.$to_cover.'&amp;occur='.$occur.'" class="wppa-nav-text b20" style="'.__wcs('wppa-nav-text').'" >'.wppa_get_album_name($parent).'</a>';
+	$wppa['out'] .= '<span class="wppa-nav-text" style="'.__wcs('wppa-nav-text').'">'.$sep.'</span>';
     return;
 }
 function wppa_page_breadcrumb($sep) {
-	global $wpdb;
+global $wpdb;
 	
-		if (isset($_REQUEST['page_id'])) $page = $_REQUEST['page_id'];
-		else $page = '0';
+	if (isset($_REQUEST['page_id'])) $page = $_REQUEST['page_id'];
+	else $page = '0';
 
-		wppa_crumb_page_ancestors($sep, $page); 
+	wppa_crumb_page_ancestors($sep, $page); 
 }
 function wppa_crumb_page_ancestors($sep, $page = '0') {
-	global $wpdb;
+global $wpdb;
+global $wppa;
+	
 	$query = "SELECT post_parent FROM " . $wpdb->posts . " WHERE post_type = 'page' AND post_status = 'publish' AND id = " . $page . " LIMIT 0,1";
 	$parent = $wpdb->get_var($query);
 	if (!is_numeric($parent) || $parent == '0') return;
@@ -197,122 +165,90 @@ function wppa_crumb_page_ancestors($sep, $page = '0') {
 	$title = $wpdb->get_var($query);
 	if (!$title) {
 		$title = '****';		// Page exists but is not publish
-?>
-	<a href="#" class="wppa-nav-text b30" style="<?php _wcs('wppa-nav-text'); ?>" ></a>
-	<span class="wppa-nav-text b31" style="<?php _wcs('wppa-nav-text'); ?>" ><?php echo($title . $sep); ?></span>
-<?php
+		$wppa['out'] .= '<a href="#" class="wppa-nav-text b30" style="'.__wcs('wppa-nav-text').'" ></a>';
+		$wppa['out'] .= '<span class="wppa-nav-text b31" style="'.__wcs('wppa-nav-text').'" >'.$title.$sep.'</span>';
 	} else {
-?>
-	<a href="<?php echo(get_page_link($parent)); ?>" class="wppa-nav-text b32" style="<?php _wcs('wppa-nav-text'); ?>" ><?php echo($title); ?></a>
-	<span class="wppa-nav-text b32" style="<?php _wcs('wppa-nav-text'); ?>" ><?php echo($sep); ?></span>
-<?php
+		$wppa['out'] .= '<a href="'.get_page_link($parent).'" class="wppa-nav-text b32" style="'.__wcs('wppa-nav-text').'" >'.$title.'</a>';
+		$wppa['out'] .= '<span class="wppa-nav-text b32" style="'.__wcs('wppa-nav-text').'" >'.$sep.'</span>';
 	}
 }
 
-// get the albums by inserting the theme template and do some parameter processing
+// Get the albums by calling the theme module and do some parameter processing
+// This is the main entrypoint for the wppa+ invocation, either 'by hand' or through the filter.
+// As of version 3.0.0 this routine returns the entire html created by the invocation.
 function wppa_albums($xid = '', $typ='', $siz = '', $ali = '') {
-	global $wppa_occur;
-	global $wppa_master_occur;
-	global $wppa_widget_occur;
-	global $wppa_in_widget;
-    global $startalbum;
-	global $is_cover;
-	global $is_slide;
-	global $is_slideonly;
-	global $wppa_fullsize;
-	global $wppa_auto_colwidth;
-	global $single_photo;
-	global $wppa_align;
+global $wppa;
+
+	wppa_initialize_runtime();	// Don't be afraid, init will take place only once, nobody can expect from where, maybe here
     
-	$wppa_occur++;
-	$wppa_master_occur++;
-	if ($wppa_in_widget) $wppa_widget_occur++;
+	$wppa['out'] = '';
+	
+	$wppa['occur']++;
+	$wppa['master_occur']++;
+	if ($wppa['in_widget']) $wppa['widget_occur']++;
 	
 	if ($typ == 'album') {
-		$is_cover = '0';
-		$is_slide = '0';
-		$is_slideonly = '0';
+		$wppa['is_cover'] = '0';
+		$wppa['is_slide'] = '0';
+		$wppa['is_slideonly'] = '0';
 	}
 	elseif ($typ == 'cover') {
-		$is_cover = '1';
-		$is_slide = '0';
-		$is_slideonly = '0';
+		$wppa['is_cover'] = '1';
+		$wppa['is_slide'] = '0';
+		$wppa['is_slideonly'] = '0';
 	}
 	elseif ($typ == 'slide') {
-		$is_cover = '0';
-		$is_slide = '1';
-		$is_slideonly = '0';
+		$wppa['is_cover'] = '0';
+		$wppa['is_slide'] = '1';
+		$wppa['is_slideonly'] = '0';
 	}
 	elseif ($typ == 'slideonly') {
-		$is_cover = '0';
-		$is_slide = '0';
-		$is_slideonly = '1';
+		$wppa['is_cover'] = '0';
+		$wppa['is_slide'] = '0';
+		$wppa['is_slideonly'] = '1';
 	}
 	
 	if ($typ == 'photo') {
-		$is_cover = '0';
-		$is_slide = '0';
-		$is_slideonly = '0';
+		$wppa['is_cover'] = '0';
+		$wppa['is_slide'] = '0';
+		$wppa['is_slideonly'] = '0';
 		if (is_numeric($xid)) {
-			$single_photo = $xid;
+			$wppa['single_photo'] = $xid;
 		}
 	}
 	else {
 		if (is_numeric($xid)) {
-			$startalbum = $xid;
+			$wppa['start_album'] = $xid;
 		}
 	}
 	
 	if (is_numeric($siz)) {
-		$wppa_fullsize = $siz;
+		$wppa['fullsize'] = $siz;
 	}
 	elseif ($siz == 'auto') {
-		$wppa_auto_colwidth = true;
+		$wppa['auto_colwidth'] = true;
 	}
     
 	if ($ali == 'left' || $ali == 'center' || $ali == 'right') {
-		$wppa_align = $ali;
+		$wppa['align'] = $ali;
 	}
 	
-	$templatefile = ABSPATH . 'wp-content/themes/' . get_option('template') . '/wppa_theme.php';
-	
-	// check for user template before using default template
-	if (is_file($templatefile)) {
-		include($templatefile);
-	} else {
-		include(ABSPATH . 'wp-content/plugins/' . WPPA_PLUGIN_PATH . '/theme/wppa_theme.php');
+	if ($wppa['is_mphoto'] == '1') {
+		wppa_mphoto();
+		$wppa['is_mphoto'] = '0';
+		$wppa['single_photo'] = '';
 	}
+	else {
+		if (function_exists('wppa_theme')) wppa_theme();	// Call the theme module
+		else $wppa['out'] = '<span style="color:red">ERROR: Missing function wppa_theme(), check the installation of WPPA+. Remove customized wppa_theme.php</span>';
+	}
+	return $wppa['out'];
 }
 
-// Get the albums parent
-function wppa_get_parentalbumid($alb) {
-    global $wpdb;
-    
-	$query = $wpdb->prepare('SELECT `a_parent` FROM `' . ALBUM_TABLE . '` WHERE `id` = %d', $alb);
-	$result = $wpdb->get_var($query);
-	
-    if (!is_numeric($result)) {
-		$result = 0;
-	}
-    return $result;
-}
-
-// See if an album is another albums ancestor
-function wppa_is_ancestor($anc, $xchild) {
-	$child = $xchild;
-	if (is_numeric($anc) && is_numeric($child)) {
-		$parent = wppa_get_parentalbumid($child);
-		while ($parent > '0') {
-			if ($anc == $parent) return true;
-			$child = $parent;
-			$parent = wppa_get_parentalbumid($child);
-		}
-	}
-	return false;
-}
 
 // See if an album is in a separate tree
 function wppa_is_separate($xalb) {
+
 	if (!is_numeric($xalb)) return false;
 		
 	$alb = wppa_get_parentalbumid($xalb);
@@ -321,104 +257,45 @@ function wppa_is_separate($xalb) {
 	return (wppa_is_separate($alb));
 }
 
-// Get album title by id
-function wppa_album_name($id = '') {
-	echo(wppa_get_album_name($id));
-}
-function wppa_get_album_name($id = '', $raw = '') {
-	global $wpdb;
-    
-    if ($id == '0') $name = __('--- none ---', 'wppa');
-    elseif ($id == '-1') $name = __('--- separate ---', 'wppa');
-    else {
-        if ($id == '') if (isset($_GET['album'])) $id = $_GET['album'];
-        $id = $wpdb->escape($id);	
-        if (is_numeric($id)) $name = $wpdb->get_var("SELECT name FROM " . ALBUM_TABLE . " WHERE id=$id");
-    }
-	if ($name) {
-		if ($raw != 'raw') $name = stripslashes($name);
-	}
-	else {
-		$name = '';
-	}
-	return $name;
-}
-
-// get album id by title
-function wppa_album_id($name = '') {
-	echo(wppa_get_album_id($name));
-}
-function wppa_get_album_id($name = '') {
-	global $wpdb;
-/*    
-	if ($name == '') return '';	// No name, no match
-
-	$nam = stripslashes($name);
-	$albs = $wpdb->get_results("SELECT id, name FROM ".ALBUM_TABLE, 'ARRAY_A');
-	if ($albs) foreach($albs as $alb) {
-		if ($nam == stripslashes($alb['name'])) return $alb['id'];
-	}
-	return '';
-}
-*/
-	if ($name == '') return '';
-    $name = $wpdb->escape($name);
-    $id = $wpdb->get_var("SELECT id FROM " . ALBUM_TABLE . " WHERE name='" . $name . "'");
-    if ($id) {
-		return $id;
-	}
-	else {
-		return '';
-	}
-}
-
-// get the seperator (& or ?, depending on permalink structure)
-function wppa_sep($opt = '') {
-	if (get_option('permalink_structure') == '') {
-		if ($opt == 'js') $sep = '&';
-		else $sep = '&amp;';
-	}
-    else $sep = '?';
-	return $sep;
-}
-
 // determine page
 function wppa_page($page) {
-	global $wppa_occur;
-	global $wppa_master_occur;
-	global $wppa_widget_occur;
-	global $wppa_in_widget;
-	global $is_slide;
-	global $is_slideonly;
-	global $single_photo;
+global $wppa;
 
 	$occur = '0';
-	if ($wppa_in_widget) {
+	if ($wppa['in_widget']) {
 		if (isset($_GET['woccur'])) if (is_numeric($_GET['woccur'])) $occur = $_GET['woccur'];
 	}
 	else {
 		if (isset($_GET['occur'])) if (is_numeric($_GET['occur'])) $occur = $_GET['occur'];
 	}
 
-	$ref_occur = $wppa_in_widget ? $wppa_widget_occur : $wppa_occur;
+	$ref_occur = $wppa['in_widget'] ? $wppa['widget_occur'] : $wppa['occur'];
 	
-	if ($is_slide == '1') $cur_page = 'slide';			// Do slide or single when explixitly on
-	elseif ($is_slideonly == '1') $cur_page = 'slide';		// Slideonly is a subset of slide
-//	elseif (isset($_GET['topten'])) $cur_page = 'slide';	// Do slide for topten selection
-	elseif (is_numeric($single_photo)) $cur_page = 'oneofone';
+	if ($wppa['is_slide'] == '1') $cur_page = 'slide';			// Do slide or single when explixitly on
+	elseif ($wppa['is_slideonly'] == '1') $cur_page = 'slide';		// Slideonly is a subset of slide
+	elseif (is_numeric($wppa['single_photo'])) $cur_page = 'oneofone';
 	elseif ($occur == $ref_occur) {					// Interprete $_GET only if occur is current
 		if (isset($_GET['slide'])) $cur_page = 'slide';	
-		elseif (isset($_GET['photo'])) $cur_page = 'single';
+		elseif (isset($_GET['photo'])) {
+			if (isset($_GET['album'])) {
+				$cur_page = 'single';
+			}
+			else {
+				$cur_page = 'oneofone';
+				$wppa['single_photo'] = $_GET['photo'];
+			}
+		}
 		else $cur_page = 'albums';
 	}
 	else $cur_page = 'albums';	
-//echo('Page='.$cur_page);
-	if ($cur_page == $page) return TRUE; else return FALSE;
+
+	if ($cur_page == $page) return true; else return false;
 }
 
 // get id of coverphoto. does all testing
 function wppa_get_coverphoto_id($xalb = '') {
-	global $wpdb, $album;
+global $wpdb;
+global $album;
 	
 	if ($xalb == '') {				// default album
 		if (isset($album['id'])) $alb = $album['id'];
@@ -444,7 +321,8 @@ function wppa_get_coverphoto_id($xalb = '') {
 
 // get thumb url
 function wppa_get_thumb_url_by_id($id = false) {
-	global $wpdb;
+global $wpdb;
+
 	if ($id == false) return '';	// no id: no url
 	$ext = $wpdb->get_var("SELECT ext FROM " . PHOTO_TABLE . " WHERE id = " . $id);
 	if ($ext) {
@@ -458,7 +336,8 @@ function wppa_get_thumb_url_by_id($id = false) {
 
 // get thumb path
 function wppa_get_thumb_path_by_id($id = false) {
-	global $wpdb;
+global $wpdb;
+
 	if ($id == false) return '';	// no id: no path
 	$ext = $wpdb->get_var("SELECT ext FROM " . PHOTO_TABLE . " WHERE id = " . $id);
 	if ($ext) {
@@ -472,7 +351,8 @@ function wppa_get_thumb_path_by_id($id = false) {
 
 // get image url
 function wppa_get_image_url_by_id($id = false) {
-	global $wpdb;
+global $wpdb;
+
 	if ($id == false) return '';	// no id: no url
 	$ext = $wpdb->get_var("SELECT ext FROM " . PHOTO_TABLE . " WHERE id = " . $id);
 	if ($ext) {
@@ -486,7 +366,8 @@ function wppa_get_image_url_by_id($id = false) {
 
 // get image path
 function wppa_get_image_path_by_id($id = false) {
-	global $wpdb;
+global $wpdb;
+
 	if ($id == false) return '';	// no id: no path
 	$ext = $wpdb->get_var("SELECT ext FROM " . PHOTO_TABLE . " WHERE id = " . $id);
 	if ($ext) {
@@ -500,32 +381,23 @@ function wppa_get_image_path_by_id($id = false) {
 
 // get page url of current album image
 function wppa_get_image_page_url_by_id($id = false) {
-	global $wpdb; //, $album;
-	global $wppa_occur;
-	global $wppa_master_occur;
-	global $wppa_widget_occur;
-	global $wppa_in_widget;
+global $wpdb;
+global $wppa;
 	
 	if ($id == false) return '';
-	$occur = $wppa_in_widget ? $wppa_widget_occur : $wppa_occur;
-	$w = $wppa_in_widget ? 'w' : '';
+	$occur = $wppa['in_widget'] ? $wppa['widget_occur'] : $wppa['occur'];
+	$w = $wppa['in_widget'] ? 'w' : '';
 	$image = $wpdb->get_row("SELECT * FROM " . PHOTO_TABLE . " WHERE id={$id} LIMIT 1", 'ARRAY_A');
-	if ($image) $imgurl = get_permalink()  . wppa_sep() . 'album=' . $image['album'] . '&amp;photo=' . $image['id'] . '&amp;cover=0&amp;'.$w.'occur=' . $occur;	
+	if ($image) $imgurl = wppa_get_permalink().'album='.$image['album'].'&amp;photo='.$image['id'].'&amp;cover=0&amp;'.$w.'occur='.$occur;	
 	else $imgurl = '';
 	return $imgurl;
 }
 
 // loop album
 function wppa_get_albums($album = false, $type = '') {
-	global $wpdb;
-    global $startalbum;
-	global $is_cover;
-	global $wppa_occur;
-	global $wppa_master_occur;
-	global $wppa_widget_occur;
-	global $wppa_in_widget;
-	global $wppa_src;
-	global $wppa_album_count;
+global $wpdb;
+global $wppa;
+global $wppa_opt;
 
 	$src = '';
 	if (isset($_POST['wppa-searchstring'])) {
@@ -533,11 +405,10 @@ function wppa_get_albums($album = false, $type = '') {
 	}
 	
 	if (strlen($src)) {
-		$skipsep = (get_option('wppa_excl_sep', 'no') == 'yes');
 		$albs = $wpdb->get_results('SELECT * FROM ' . ALBUM_TABLE . ' ' . wppa_get_album_order(), 'ARRAY_A');
 		$albums = '';
 		$idx = '0';
-		foreach ($albs as $album) if (!$skipsep || $album['a_parent'] != '-1') {
+		foreach ($albs as $album) if (!$wppa_opt['wppa_excl_sep'] || $album['a_parent'] != '-1') {
 			if (wppa_deep_stristr($album['name'].' '.$album['description'], $src)) {
 				$albums[$idx] = $album;
 				$idx++;
@@ -545,9 +416,9 @@ function wppa_get_albums($album = false, $type = '') {
 		}
 	}
 	else {
-		if ($wppa_src) return false;	// empty search string
+		if ($wppa['src']) return false;	// empty search string
 		$occur = '0';
-		if ($wppa_in_widget) {
+		if ($wppa['in_widget']) {
 			if (isset($_GET['woccur'])) if (is_numeric($_GET['woccur'])) $occur = $_GET['woccur'];
 		}
 		else {
@@ -556,59 +427,53 @@ function wppa_get_albums($album = false, $type = '') {
 		
 		// Check if querystring given This has the highest priority in case of matching occurrance
 		// Obey querystring only if the global occurence matches the occurence in the querystring, or no query occurrence given.
-		$ref_occur = $wppa_in_widget ? $wppa_widget_occur : $wppa_occur;
+		$ref_occur = $wppa['in_widget'] ? $wppa['widget_occur'] : $wppa['occur'];
 		if (($occur == $ref_occur) && (isset($_GET['album']))) {
 			$id = $_GET['album'];
-			if (isset($_GET['cover'])) $is_cover = $_GET['cover'];
+			if (isset($_GET['cover'])) $wppa['is_cover'] = $_GET['cover'];
 		}
 		// Check if parameters set
 		elseif (is_numeric($album)) {
 			$id = $album;
-			if ($type == 'album') $is_cover = '0';
-			if ($type == 'cover') $is_cover = '1';
+			if ($type == 'album') $wppa['is_cover'] = '0';
+			if ($type == 'cover') $wppa['is_cover'] = '1';
 		}
 		// Check if globals set
-		elseif (is_numeric($startalbum)) {
-			$id = $startalbum;
+		elseif (is_numeric($wppa['start_album'])) {
+			$id = $wppa['start_album'];
 		}
 		// The default: all albums with parent = 0;
 		else $id = '0';
 		
 		// Top-level album has no cover
-		if ($id == '0') $is_cover = '0';
+		if ($id == '0') $wppa['is_cover'] = '0';
 		
 		// Do the query
 		if (is_numeric($id)) {
-			if ($is_cover) $q = $wpdb->prepare('SELECT * FROM ' . ALBUM_TABLE . ' WHERE id= %d', $id);
+			if ($wppa['is_cover']) $q = $wpdb->prepare('SELECT * FROM ' . ALBUM_TABLE . ' WHERE id= %d', $id);
 			else $q = $wpdb->prepare('SELECT * FROM ' . ALBUM_TABLE . ' WHERE a_parent= %d '. wppa_get_album_order(), $id);
 			$albums = $wpdb->get_results($q, 'ARRAY_A');
 		}
 		else $albums = false;
 	}
-	$wppa_album_count = count($albums);
+	$wppa['album_count'] = count($albums);
 	return $albums;
 }
 
 // get link to album by id or in loop
-function wppa_album_url($xid = '') {
-	echo(wppa_get_album_url($xid));
-}
-function wppa_get_album_url($xid = '') {
-	global $album;
-	global $wppa_occur;
-	global $wppa_master_occur;
-	global $wppa_widget_occur;
-	global $wppa_in_widget;
+function wppa_get_album_url($xid = '', $pag = '') {
+global $album;
+global $wppa;
 	
-	$occur = $wppa_in_widget ? $wppa_widget_occur : $wppa_occur;
-	$w = $wppa_in_widget ? 'w' : '';
+	$occur = $wppa['in_widget'] ? $wppa['widget_occur'] : $wppa['occur'];
+	$w = $wppa['in_widget'] ? 'w' : '';
 	
 	if ($xid != '') $id = $xid;
 	elseif (isset($album['id'])) {
 		$id = $album['id'];
 	}
 	if ($id != '') {
-		$link = get_permalink() . wppa_sep() . 'album=' . $id . '&amp;cover=0&amp;'.$w.'occur='.$occur;
+		$link = wppa_get_permalink($pag).'album='.$id.'&amp;cover=0&amp;'.$w.'occur='.$occur;
 	}
 	else $link = '';
     return $link;
@@ -616,8 +481,8 @@ function wppa_get_album_url($xid = '') {
 
 // get number of photos in album 
 function wppa_get_photo_count($xid = '') {
-    global $wpdb;
-    global $album;
+global $wpdb;
+global $album;
     
     if (is_numeric($xid)) $id = $xid; else $id = $album['id'];
     $count = $wpdb->query("SELECT * FROM " . PHOTO_TABLE . " WHERE album=".$id);
@@ -626,8 +491,8 @@ function wppa_get_photo_count($xid = '') {
 
 // get number of albums in album 
 function wppa_get_album_count($xid = '') {
-    global $wpdb;
-    global $album;
+global $wpdb;
+global $album;
     
     if (is_numeric($xid)) $id = $xid; else $id = $album['id'];
     $count = $wpdb->query("SELECT * FROM " . ALBUM_TABLE . " WHERE a_parent=".$id);
@@ -636,7 +501,7 @@ function wppa_get_album_count($xid = '') {
 
 // get number of albums in system
 function wppa_get_total_album_count() {
-	global $wpdb;
+global $wpdb;
 	
 	$count = $wpdb->query("SELECT * FROM " . ALBUM_TABLE);
 	return $count;
@@ -644,7 +509,7 @@ function wppa_get_total_album_count() {
 
 // get youngest album id
 function wppa_get_youngest_album_id() {
-	global $wpdb;
+global $wpdb;
 	
 	$result = $wpdb->get_var("SELECT id FROM " . ALBUM_TABLE . " ORDER BY id DESC LIMIT 1");
 	return $result;
@@ -652,60 +517,43 @@ function wppa_get_youngest_album_id() {
 
 // get youngest album name
 function wppa_get_youngest_album_name() {
-	global $wpdb;
+global $wpdb;
 	
 	$result = $wpdb->get_var("SELECT name FROM " . ALBUM_TABLE . " ORDER BY id DESC LIMIT 1");
 	return stripslashes($result);
 }
 
 // get album name
-function wppa_the_album_name() {
-	echo(wppa_get_the_album_name());
-}
 function wppa_get_the_album_name() {
-	global $album;
+global $album;
 	
 	return stripslashes($album['name']);
 }
 
 // get album decription
-function wppa_the_album_desc() {
-	echo(wppa_get_the_album_desc());
-}
 function wppa_get_the_album_desc() {
-	global $album;
+global $album;
 	
 	return stripslashes($album['description']);
 }
 
 // get link to slideshow (in loop)
-function wppa_slideshow_url() {
-	echo(wppa_get_slideshow_url());
-}
-function wppa_get_slideshow_url() {
-	global $album;
-	global $wppa_occur;
-	global $wppa_master_occur;
-	global $wppa_widget_occur;
-	global $wppa_in_widget;
+function wppa_get_slideshow_url($page = '') {
+global $album;
+global $wppa;
 	
-	$occur = $wppa_in_widget ? $wppa_widget_occur : $wppa_occur;
-	$w = $wppa_in_widget ? 'w' : '';
-	$link = get_permalink() . wppa_sep() . 'album=' . $album['id'] . '&amp;slide=true' . '&amp;'.$w.'occur=' . $occur;
+	$occur = $wppa['in_widget'] ? $wppa['widget_occur'] : $wppa['occur'];
+	$w = $wppa['in_widget'] ? 'w' : '';
+	$link = wppa_get_permalink($page).'album='.$album['id'].'&amp;slide=true'.'&amp;'.$w.'occur='.$occur;
 	
 	return $link;	
 }
 
 // loop thumbs
 function wppa_get_thumbs() {
-	global $wpdb;
-    global $startalbum;
-	global $wppa_occur;
-	global $wppa_master_occur;
-	global $wppa_widget_occur;
-	global $wppa_in_widget;
-	global $wppa_src;
-	global $wppa_thumb_count;
+global $wpdb;
+global $wppa;
+global $wppa_opt;
 
 	$src = '';
 	if (isset($_POST['wppa-searchstring'])) {
@@ -716,17 +564,16 @@ function wppa_get_thumbs() {
 	}
 	
 	if (isset($_GET['topten'])) {
-		$max = get_option('wppa_topten_count', '10');
+		$max = $wppa_opt['wppa_topten_count'];
 		$thumbs = $wpdb->get_results('SELECT * FROM '.PHOTO_TABLE.' WHERE mean_rating > 0 ORDER BY mean_rating DESC LIMIT '.$max, 'ARRAY_A');
 	}
 	elseif (strlen($src)) {
-		$skipsep = (get_option('wppa_excl_sep', 'no') == 'yes');
-		$tmbs = $wpdb->get_results('SELECT * FROM ' . PHOTO_TABLE . ' ' . wppa_get_photo_order('0'), 'ARRAY_A');
+		$tmbs = $wpdb->get_results('SELECT * FROM '.PHOTO_TABLE.' '.wppa_get_photo_order('0'), 'ARRAY_A');
 		$thumbs = '';
 		$idx = '0';
 		foreach ($tmbs as $thumb) {
 			if (wppa_deep_stristr($thumb['name'].' '.$thumb['description'], $src)) {
-				if (!$skipsep || (wppa_get_parentalbumid($thumb['album']) != '-1')) {
+				if (!$wppa_opt['wppa_excl_sep'] || (wppa_get_parentalbumid($thumb['album']) != '-1')) {
 					$thumbs[$idx] = $thumb;
 					$idx++;
 				}
@@ -734,9 +581,9 @@ function wppa_get_thumbs() {
 		}
 	}
 	else {
-		if ($wppa_src) return false; 	// empty search string
+		if ($wppa['src']) return false; 	// empty search string
 		$occur = '0';
-		if ($wppa_in_widget) {
+		if ($wppa['in_widget']) {
 			if (isset($_GET['woccur'])) if (is_numeric($_GET['woccur'])) $occur = $_GET['woccur'];
 		}
 		else {
@@ -744,55 +591,71 @@ function wppa_get_thumbs() {
 		}
 		
 		// Obey querystring only if the global occurence matches the occurence in the querystring, or no query occurrence given.
-		$ref_occur = $wppa_in_widget ? $wppa_widget_occur : $wppa_occur;
+		$ref_occur = $wppa['in_widget'] ? $wppa['widget_occur'] : $wppa['occur'];
 		if (($occur == $ref_occur) && (isset($_GET['album']))) {
 			$id = $_GET['album'];
 		}
-		elseif (is_numeric($startalbum)) $id = $startalbum; 
+		elseif (is_numeric($wppa['start_album'])) $id = $wppa['start_album']; 
 		else $id = 0;
 		if (is_numeric($id)) {
-			$thumbs = $wpdb->get_results("SELECT * FROM " . PHOTO_TABLE . " WHERE album=$id " . wppa_get_photo_order($id), 'ARRAY_A'); 
+			$thumbs = $wpdb->get_results("SELECT * FROM ".PHOTO_TABLE." WHERE album=$id ".wppa_get_photo_order($id), 'ARRAY_A'); 
 		}
 		else {
 			$thumbs = false;
 		}
 	}
-	$wppa_thumb_count = count($thumbs);
+	$wppa['thumb_count'] = count($thumbs);
 	return $thumbs;
 }
 
-// get link to photo
-function wppa_photo_page_url() {
-	echo(wppa_get_photo_page_url());
-}
+// get link from a thumbnail to photo
 function wppa_get_photo_page_url() {
-	global $thumb;
-	global $wppa_occur;
-	global $wppa_master_occur;
-	global $wppa_widget_occur;
-	global $wppa_in_widget;
+global $thumb;
+global $wppa;
+global $wppa_opt;
 	
+	$pid = $wppa_opt['wppa_thumb_linkpage'];
     if (isset($_GET['album'])) {
-		$url = get_permalink()  . wppa_sep() . 'album=' . $_GET['album'] . '&amp;photo=' . $thumb['id'];
+		if ($wppa_opt['wppa_thumb_linktype'] == 'photo') {
+			if ($pid == '0' ) {
+				$url = wppa_get_permalink().'album='.$_GET['album'].'&amp;photo='.$thumb['id'];
+			}
+			else {
+				$url = wppa_get_permalink($pid).'album='.$_GET['album'].'&amp;photo='.$thumb['id'];
+			}
+		}
+		elseif ($wppa_opt['wppa_thumb_linktype'] == 'single') {
+			if ($pid == '0' ) {
+				$url = wppa_get_permalink().'photo='.$thumb['id'];
+			}
+			else {
+				$url = wppa_get_permalink($pid).'photo='.$thumb['id'];
+			}
+		}
+		else return ''; // assume linktype = 'none'
 	}
 	else {
-		$url = get_permalink()  . wppa_sep() . 'photo=' . $thumb['id'];
+		$url = wppa_get_permalink().'photo='.$thumb['id'];
 		if (isset($_POST['wppa-searchstring'])) {
-			$url .= '&amp;wppa_src=' . $_POST['wppa-searchstring'];
+			$url .= '&amp;wppa_src='.$_POST['wppa-searchstring'];
 		}
 	}
-	$occur = $wppa_in_widget ? $wppa_widget_occur : $wppa_occur;
-	$w = $wppa_in_widget ? 'w' : '';
-	$url .= '&amp;'.$w.'occur=' . $occur;
+	if ($pid != '0') {	// on a different page
+		$occur = '1';
+		$w = '';
+	}
+	else {				// on the same page, post or widget
+		$occur = $wppa['in_widget'] ? $wppa['widget_occur'] : $wppa['occur'];
+		$w = $wppa['in_widget'] ? 'w' : '';
+	}
+	$url .= '&amp;'.$w.'occur='.$occur;
+//$url .= '&amp;test=4711';
 	return $url; 
 }
 
 // get url of thumb
-function wppa_thumb_url() {
-	echo(wppa_get_thumb_url());
-}
 function wppa_get_thumb_url() {
-	global $thumb;
+global $thumb;
 
 	$url = get_bloginfo('wpurl') . '/wp-content/uploads/wppa/thumbs/' . $thumb['id'] . '.' . $thumb['ext'];
 	return $url; 
@@ -800,88 +663,75 @@ function wppa_get_thumb_url() {
 
 // get path of thumb
 function wppa_get_thumb_path() {
-	global $thumb;
+global $thumb;
 	
-	$path = ABSPATH . 'wp-content/uploads/wppa/thumbs/' . $thumb['id'] . '.' . $thumb['ext'];
+	$path = ABSPATH.'wp-content/uploads/wppa/thumbs/'.$thumb['id'].'.'.$thumb['ext'];
 	return $path; 
 }
 
 // get url of a full sized image
 function wppa_get_photo_url($id = '') {
-	return wppa_photo_url($id, TRUE);
-}
-function wppa_photo_url($id = '', $return = FALSE) {
-	global $wpdb;
+global $wpdb;
+
     if ($id == '') $id = $_GET['photo'];    
     $id = $wpdb->escape($id);
     
-	if (is_numeric($id)) $ext = $wpdb->get_var("SELECT ext FROM " . PHOTO_TABLE . " WHERE id=$id");
-	$url = get_bloginfo('wpurl') . '/wp-content/uploads/wppa/' . $id . '.' . $ext;
+	if (is_numeric($id)) $ext = $wpdb->get_var("SELECT ext FROM ".PHOTO_TABLE." WHERE id=$id");
+	$url = get_bloginfo('wpurl').'/wp-content/uploads/wppa/'.$id.'.'.$ext;
 	
-	if ($return) return $url; else echo $url;
+	return $url;
 }
 
 // get the name of a full sized image
 function wppa_get_photo_name($id = '') {
-	return wppa_photo_name($id, TRUE);
-}
-function wppa_photo_name($id = '', $return = FALSE) {
-	global $wpdb;
+global $wpdb;
+
 	if ($id == '') $id = $_GET['photo'];	
 	$id = $wpdb->escape($id);
 		
-	if (is_numeric($id)) $name = $wpdb->get_var("SELECT name FROM " . PHOTO_TABLE . " WHERE id=$id");
+	if (is_numeric($id)) $name = $wpdb->get_var("SELECT name FROM ".PHOTO_TABLE." WHERE id=$id");
 	else $name = '';
 	
-	if ($return) return $name; else echo $name;
+	return $name;
 }
 
 // get the description of a full sized image
 function wppa_get_photo_desc($id = '') {
-	return wppa_photo_desc($id, TRUE);
-}
-function wppa_photo_desc($id = '', $return = FALSE) {
-	global $wpdb;
+global $wpdb;
+
 	if ($id == '') $id = $_GET['photo'];
 	$id = $wpdb->escape($id);
 	
-	if (is_numeric($id)) $desc = $wpdb->get_var("SELECT description FROM " . PHOTO_TABLE . " WHERE id=$id");
+	if (is_numeric($id)) $desc = $wpdb->get_var("SELECT description FROM ".PHOTO_TABLE." WHERE id=$id");
 	else $desc = '';
 	
-	if ($return) return $desc; else echo $desc;
+	return $desc;
 }
 
 // get full img style
-function wppa_fullimgstyle($id = '') {
-	echo wppa_get_fullimgstyle($id);
-}
 function wppa_get_fullimgstyle($id = '') {
-	global $wpdb;
-    global $wppa_fullsize;
-	
-	if (!is_numeric($wppa_fullsize) || $wppa_fullsize == '0') $wppa_fullsize = get_option('wppa_fullsize', '640');
+global $wpdb;
+global $wppa;
+global $wppa_opt;
 
-	$wppa_enlarge = get_option('wppa_enlarge', 'no');
+	if (!is_numeric($wppa['fullsize']) || $wppa['fullsize'] == '0') $wppa['fullsize'] = $wppa_opt['wppa_fullsize'];
+
+	$wppa['enlarge'] = $wppa_opt['wppa_enlarge'];
 	
-	if (empty($id)) $id = $_GET['photo'];
+	if (empty($id)) /* if (isset($_GET['photo'])) */ $id = $_GET['photo'];
 	if (is_numeric($id)) {
-		$ext = $wpdb->get_var("SELECT ext FROM " . PHOTO_TABLE . " WHERE id=$id");
+		$ext = $wpdb->get_var("SELECT ext FROM ".PHOTO_TABLE." WHERE id=$id");
 	}
-	$img_path = ABSPATH . 'wp-content/uploads/wppa/' . $id . '.' . $ext;
-	$result = wppa_get_imgstyle($img_path, $wppa_fullsize, 'optional', 'fullsize');
+	$img_path = ABSPATH.'wp-content/uploads/wppa/'.$id.'.'.$ext;
+	$result = wppa_get_imgstyle($img_path, $wppa['fullsize'], 'optional', 'fullsize');
 	return $result;
 }
 
 // get slide info
 function wppa_get_slide_info($index, $id) {
 global $wpdb;
-	global $wppa_master_occur;
-	global $wppa_widget_occur;
-	global $wppa_occur;
-	global $wppa_in_widget;
-	global $wppa_in_widget_linkurl;
-	global $wppa_in_widget_linktitle;
-	global $wppa_in_widget_timeout;
+global $wppa;
+global $wppa_opt;
 
 	$user = wppa_get_user();
 	
@@ -891,40 +741,39 @@ global $wpdb;
 	else $photo = '0';
 
 	$rating_request = (isset($_GET['rating']) && ($id == $photo));
-	$rating_on = (get_option('wppa_rating_on', 'yes') == 'yes');
-	$rating_allowed = (get_option('wppa_rating_login', 'yes') == 'no' || is_user_logged_in());
+	$rating_allowed = (!$wppa_opt['wppa_rating_login'] || is_user_logged_in());
 	
-	if ($rating_request && $rating_on && $rating_allowed) { // Rating request
+	if ($rating_request && $wppa_opt['wppa_rating_on'] && $rating_allowed) { // Rating request
 		$rating = $_GET['rating'];
 		
-		if ($rating != '1' && $rating != '2' && $rating != '3' && $rating != '4' && $rating != '5') die(__('<b>ERROR: Attempt to enter an invalid rating.</b>', 'wppa'));
+		if ($rating != '1' && $rating != '2' && $rating != '3' && $rating != '4' && $rating != '5') die(__a('<b>ERROR: Attempt to enter an invalid rating.</b>', 'wppa_theme'));
 
 		$my_oldrat = $wpdb->get_var($wpdb->prepare('SELECT * FROM `'.WPPA_RATING.'` WHERE `photo` = %d AND `user` = %s LIMIT 1', $id, $user)); 
 
 		if ($my_oldrat) {
-			if (get_option('wppa_rating_change', 'no') == 'yes') {	// Modify my vote
+			if ($wppa_opt['wppa_rating_change']) {	// Modify my vote
 				$query = $wpdb->prepare('UPDATE `'.WPPA_RATING.'` SET `value` = %d WHERE `photo` = %d AND `user` = %s LIMIT 1', $rating, $id, $user);
 				$iret = $wpdb->query($query);
 				if (!$iret) {
-//					if (defined('WP_DEBUG')) echo('Unable to update rating. Query = '.$query);
+//					if (defined('WP_DEBUG')) $wppa['out'] .= ('Unable to update rating. Query = '.$query);
 					$myrat = $my_oldrat['value'];
 				}
 				else {
 					$myrat = $rating;
 				}
 			}
-			else if (get_option('wppa_rating_multi', 'no') == 'yes') {	// Add another vote from me
+			else if ($wppa_opt['wppa_rating_multi']) {	// Add another vote from me
 				$query = $wpdb->prepare('INSERT INTO `'.WPPA_RATING. '` (`id`, `photo`, `value`, `user`) VALUES (0, %d, %s, %s)', $id, $rating, $user);
 				$iret = $wpdb->query($query);
 				if (!$iret) {
-//					if (defined('WP_DEBUG')) echo('Unable to add a rating. Query = '.$query);
+//					if (defined('WP_DEBUG')) $wppa['out'] .= ('Unable to add a rating. Query = '.$query);
 					$myrat = $my_oldrat['value'];
 				}
 				else {
 					$query = $wpdb->prepare('SELECT * FROM `'.WPPA_RATING.'`  WHERE `photo` = %d AND `user` = %s', $id, $user);
 					$myrats = $wpdb->get_results($query, 'ARRAY_A');
 					if (!$myrats) {
-						if (defined('WP_DEBUG')) echo('Unable to retrieve ratings. Query = '.$query);
+						if (defined('WP_DEBUG')) $wppa['out'] .= ('Unable to retrieve ratings. Query = '.$query);
 						$myrat = $my_oldrat['value'];
 					}
 					else {
@@ -942,7 +791,7 @@ global $wpdb;
 		else {	// This is the first and only rating for this photo/user combi
 			$iret = $wpdb->query($wpdb->prepare('INSERT INTO `'.WPPA_RATING. '` (`id`, `photo`, `value`, `user`) VALUES (0, %d, %s, %s)', $id, $rating, $user));
 //			if (!$iret) {
-//				if (defined('WP_DEBUG')) echo('Unable to save rating.');
+//				if (defined('WP_DEBUG')) $wppa['out'] .= ('Unable to save rating.');
 //			}
 			$myrat = $rating;
 		}
@@ -960,10 +809,10 @@ global $wpdb;
 		}
 		else $avgrat = '0';
 		// Store it
-		// if (defined('WP_DEBUG')) echo('Trying to store '.$avgrat.' to photo #'.$id);
+		// if (defined('WP_DEBUG')) $wppa['out'] .= ('Trying to store '.$avgrat.' to photo #'.$id);
 		$query = $wpdb->prepare('UPDATE `'.PHOTO_TABLE. '` SET `mean_rating` = %s WHERE `id` = %d LIMIT 1', $avgrat, $id);
 		$iret = $wpdb->query($query);
-//		if (!$iret) if (defined('WP_DEBUG')) echo('Error, could not update avg rating for photo '.$id.'. Query = '.$query);
+//		if (!$iret) if (defined('WP_DEBUG')) $wppa['out'] .= ('Error, could not update avg rating for photo '.$id.'. Query = '.$query);
 	}
 	else {	// No rating request
 		$myrat = $wpdb->get_var($wpdb->prepare('SELECT `value` FROM `'.WPPA_RATING.'` WHERE `photo` = %d AND `user` = %s LIMIT 1', $id, $user)); 
@@ -975,109 +824,39 @@ global $wpdb;
 	if (!$avgrat) $avgrat = '0';
 	
 	// Compose the rating request url
-	$url = get_permalink() . wppa_sep('js');
+	$url = wppa_get_permalink('js');
 	if (isset($_GET['album'])) $url .= 'album='.$_GET['album'].'&';
 	if (isset($_GET['cover'])) $url .= 'cover='.$_GET['cover'].'&';
 	if (isset($_GET['slide'])) $url .= 'slide='.$_GET['slide'].'&';
 //	if (isset($_GET['occur'])) $url .= 'occur='.$_GET['occur'].'&';
-	if ($wppa_in_widget) {
-		$url .= 'woccur='.$wppa_widget_occur.'&';
+	if ($wppa['in_widget']) {
+		$url .= 'woccur='.$wppa['widget_occur'].'&';
 	}
 	else {
-	   $url .= 'occur='.$wppa_occur.'&';
+	   $url .= 'occur='.$wppa['occur'].'&';
 	}
 	if (isset($_GET['topten'])) $url .= 'topten='.$_GET['topten'].'&';
 	$url .= 'photo=' . $id . '&rating=';
 	
 	// Produce final result
-    $result = "'" . $wppa_master_occur . "','" . $index . "','" . wppa_get_photo_url($id) . "','" . wppa_get_fullimgstyle($id) . "','" . esc_js(wppa_get_photo_name($id)) . "','" . wppa_html(esc_js(stripslashes(wppa_photo_desc($id,true)))) . "','" .$id. "','" .$avgrat. "','" .$myrat. "','" .$url. "','" .$wppa_in_widget_linkurl. "','" .$wppa_in_widget_linktitle. "','" .$wppa_in_widget_timeout. "'";
+    $result = "'".$wppa['master_occur']."','".$index."','".wppa_get_photo_url($id)."','".wppa_get_fullimgstyle($id)."','".esc_js(wppa_get_photo_name($id))."','".wppa_html(esc_js(stripslashes(wppa_get_photo_desc($id))))."','".$id."','".$avgrat."','".$myrat."','".$url."','".$wppa['in_widget_linkurl']."','".$wppa['in_widget_linktitle']."','".$wppa['in_widget_timeout']."'";
     return $result;                                                        
 }
 
-// get user
-function wppa_get_user() {
-global $current_user;
-	if (is_user_logged_in()) {
-		get_currentuserinfo();
-		$user = $current_user->user_login;
-		return $user;
-	}
-	else {
-		if (is_admin()) {
-			wpa_die('It is not allowed to run admin pages while you are not logged in.');
-		}
-		else {
-			return $_SERVER['REMOTE_ADDR'];
-		}
-	}
-}
-
-// get album order
-function wppa_get_album_order() {
-    $result = '';
-    $order = get_option('wppa_list_albums_by');
-    switch ($order)
-    {
-    case '1':
-        $result = 'ORDER BY a_order';
-        break;
-    case '2':
-        $result = 'ORDER BY name';
-        break;  
-    case '3':
-        $result = 'ORDER BY RAND()';
-        break;
-    default:
-        $result = 'ORDER BY id';
-    }
-    if (get_option('wppa_list_albums_desc') == 'yes') $result .= ' DESC';
-    return $result;
-}
-
-// get photo order
-function wppa_get_photo_order($id) {
-    global $wpdb;
-    
-	if ($id == 0) $order=0;
-	else $order = $wpdb->get_var("SELECT p_order_by FROM " . ALBUM_TABLE . " WHERE id=$id");
-    if ($order == '0') $order = get_option('wppa_list_photos_by');
-    switch ($order)
-    {
-    case '1':
-        $result = 'ORDER BY p_order';
-        break;
-    case '2':
-        $result = 'ORDER BY name';
-        break;
-    case '3':
-        $result = 'ORDER BY RAND()';
-        break;
-	case '4':
-		$result = 'ORDER BY mean_rating';
-		break;
-    default:
-        $result = 'ORDER BY id';
-    }
-    if (get_option('wppa_list_photos_desc') == 'yes') $result .= ' DESC';
-    return $result;
-}
-
 function wppa_get_imgstyle($file, $max_size, $xvalign = '', $type = '') {
-global $wppa_auto_colwidth;
-global $wppa_portrait_only;
-global $is_slideonly;
-global $wppa_ss_widget_valign;
+global $wppa;
+global $wppa_opt;
 
 	if($file == '') return '';					// no image: no dimensions
 	if (!is_file($file)) return '';				// no file: no dimensions (2.3.0)
 	$result = '';
 	$image_attr = getimagesize( $file );
 	
-	$ratioref = get_option('wppa_maxheight', get_option('wppa_fullsize', '640')) / get_option('wppa_fullsize', '640');
+	$ratioref = $wppa_opt['wppa_maxheight'] / $wppa_opt['wppa_fullsize'];
 	$max_height = round($max_size * $ratioref);
 
 	if ($type == 'fullsize') {
-		if ($wppa_portrait_only) {
+		if ($wppa['portrait_only']) {
 			$width = $max_size;
 			$height = round($width * $image_attr[1] / $image_attr[0]);
 		}
@@ -1091,7 +870,7 @@ global $wppa_ss_widget_valign;
 				$width = round($height * $image_attr[0] / $image_attr[1]);
 			}
 			if ($image_attr[0] < $width && $image_attr[1] < $height) {
-				if (get_option('wppa_enlarge', 'no') == 'no') {
+				if (!$wppa['enlarge']) {
 					$width = $image_attr[0];
 					$height = $image_attr[1];
 				}
@@ -1112,14 +891,14 @@ global $wppa_ss_widget_valign;
 	switch ($type) {
 		case 'cover':
 			$result .= ' width:' . $width . 'px; height:' . $height . 'px;';
-			if ((get_option('wppa_use_cover_opacity', 'no') == 'yes') && !is_feed()) {
-				$opac = get_option('wppa_cover_opacity', '80');
+			if ($wppa_opt['wppa_use_cover_opacity'] && !is_feed()) {
+				$opac = $wppa_opt['wppa_cover_opacity'];
 				$result .= ' opacity:' . $opac/100 . '; filter:alpha(opacity=' . $opac . ');';
 			}
 			break;
 		case 'thumb':
 			$result .= ' width:' . $width . 'px; height:' . $height . 'px;';
-			if ($xvalign == 'optional') $valign = get_option('wppa_valign', '');
+			if ($xvalign == 'optional') $valign = $wppa_opt['wppa_valign'];
 			else $valign = $xvalign;
 			if ($valign != 'default') {	// Center horizontally
 				$delta = floor(($max_size - $width) / 2);
@@ -1147,24 +926,24 @@ global $wppa_ss_widget_valign;
 						$result .= ' margin-top: '.$delta.'px; margin-bottom: '.$delta.'px;';
 					}
 			}
-			if ((get_option('wppa_use_thumb_opacity', 'no') == 'yes') && !is_feed()) {
-				$opac = get_option('wppa_thumb_opacity', '80');
+			if ($wppa_opt['wppa_use_thumb_opacity'] && !is_feed()) {
+				$opac = $wppa_opt['wppa_thumb_opacity'];
 				$result .= ' opacity:' . $opac/100 . '; filter:alpha(opacity=' . $opac . ');';
 			}
 			break;
 		case 'fullsize':
 			$result .= ' width:' . $width . 'px;';
 			
-			if (!$wppa_auto_colwidth) {
+			if (!$wppa['auto_colwidth']) {
 				$result .= 'height:' . $height . 'px;';
 			}
 			
-			if ($is_slideonly == '1') {
-				if ($wppa_ss_widget_valign != '') $valign = $wppa_ss_widget_valign;
+			if ($wppa['is_slideonly'] == '1') {
+				if ($wppa['ss_widget_valign'] != '') $valign = $wppa['ss_widget_valign'];
 				else $valign = 'fit';
 			}
 			elseif ($xvalign == 'optional') {
-				$valign = get_option('wppa_fullvalign', '');
+				$valign = $wppa_opt['wppa_fullvalign'];
 			}
 			else {
 				$valign = $xvalign;
@@ -1177,7 +956,7 @@ global $wppa_ss_widget_valign;
 				$result .= ' margin-left:' . $delta . 'px;';
 				// Position vertically
 				$delta = '0';
-				if (!$wppa_auto_colwidth && !wppa_page('oneofone')) {
+				if (!$wppa['auto_colwidth'] && !wppa_page('oneofone')) {
 					switch ($valign) {
 						case 'top':
 						case 'fit':
@@ -1197,7 +976,7 @@ global $wppa_ss_widget_valign;
 			}
 			break;
 		default:
-			echo ('Error wrong "$type" argument: '.$type.' in wppa_get_imgstyle');
+			$wppa['out'] .=  ('Error wrong "$type" argument: '.$type.' in wppa_get_imgstyle');
 	}
 	return $result;
 }
@@ -1207,29 +986,30 @@ function wppa_is_landscape($img_attr) {
 }
 
 function wppa_get_imgevents($type = '', $id = '', $no_popup = false) {
-global $wppa_occur;
-global $wppa_master_occur;
+global $wppa;
+global $wppa_opt;
+
 	$result = '';
 	$perc = '';
 	if ($type == 'thumb') {
-		if ((get_option('wppa_use_thumb_opacity', 'no') == 'yes') || (get_option('wppa_use_thumb_popup', 'no') == 'yes')) {
+		if ($wppa_opt['wppa_use_thumb_opacity'] || $wppa_opt['wppa_use_thumb_popup']) {
 			
-			if (get_option('wppa_use_thumb_opacity', 'no') == 'yes') {
-				$perc = get_option('wppa_thumb_opacity', '80');
+			if ($wppa_opt['wppa_use_thumb_opacity']) {
+				$perc = $wppa_opt['wppa_thumb_opacity'];
 				$result = ' onmouseout="jQuery(this).fadeTo(400, ' . $perc/100 . ')" onmouseover="jQuery(this).fadeTo(400, 1.0);';
 			} else {
 				$result = ' onmouseover="';
 			}
-			if (!$no_popup && get_option('wppa_use_thumb_popup', 'no') == 'yes') {
+			if (!$no_popup && $wppa_opt['wppa_use_thumb_popup']) {
 				$rating = wppa_get_rating_by_id($id);
-				$result .= 'wppa_popup(' . $wppa_master_occur . ', this, ' . $id . ', \''.$rating.'\');';
+				$result .= 'wppa_popup(' . $wppa['master_occur'] . ', this, ' . $id . ', \''.$rating.'\');';
 			}
 			$result .= '" ';
 		}
 	}
 	elseif ($type == 'cover') {
-		if (get_option('wppa_use_cover_opacity', 'no') == 'yes') {
-			$perc = get_option('wppa_cover_opacity', '80');
+		if ($wppa_opt['wppa_use_cover_opacity']) {
+			$perc = $wppa_opt['wppa_cover_opacity'];
 			$result = ' onmouseover="jQuery(this).fadeTo(400, 1.0)" onmouseout="jQuery(this).fadeTo(400, ' . $perc/100 . ')" ';
 		}
 	}		
@@ -1237,17 +1017,14 @@ global $wppa_master_occur;
 }
 
 function wppa_html($str) {
-	if (get_option('wppa_html', 'no') == 'yes') {
+global $wppa_opt;
+
+	if ($wppa_opt['wppa_html']) {
 		$result = html_entity_decode($str);
 	}
 	else {
 		$result = $str;
 	}
-	return $result;
-}
-
-function wppa_get_imgdir() {
-	$result = get_bloginfo('wpurl') . '/wp-content/plugins/' . WPPA_PLUGIN_PATH . '/images/';
 	return $result;
 }
 
@@ -1264,28 +1041,24 @@ function wppa_onpage($type = '', $counter, $curpage) {
 }
 
 function wppa_page_links($npages = '1', $curpage = '1') {
-	global $is_cover;
-	global $wppa_occur;
-	global $wppa_master_occur;
-	global $wppa_widget_occur;
-	global $wppa_in_widget;
+global $wppa;
 	
 	if ($npages < '2') return;	// Nothing to display
 	if (is_feed()) {
-//		wppa_dummy_bar(__('- - - Pagelinks - - -', 'wppa'));
+//		wppa_dummy_bar(__('- - - Pagelinks - - -', 'wppa_theme'));
 		return;
 	}
 	
 	// Compose the Previous and Next Page urls
 	if (isset($_GET['cover'])) $ic = $_GET['cover'];
 	else {
-		if ($is_cover == '1') $ic = '1'; else $ic = '0';
+		if ($wppa['is_cover'] == '1') $ic = '1'; else $ic = '0';
 	}
-	$pnu = get_permalink() . wppa_sep() . 'cover=' . $ic;
+	$pnu = wppa_get_permalink().'cover='.$ic;
 	if (isset($_GET['album'])) $pnu .= '&amp;album=' . $_GET['album'];
 	if (isset($_GET['photo'])) $pnu .= '&amp;photo=' . $_GET['photo'];
-	$occur = $wppa_in_widget ? $wppa_master_occur : $wppa_occur;
-	$w = $wppa_in_widget ? 'w' : '';
+	$occur = $wppa['in_widget'] ? $wppa['widget_occur'] : $wppa['occur'];
+	$w = $wppa['in_widget'] ? 'w' : '';
 	$pnu .= '&amp;'.$w.'occur=' . $occur;
 	$prevurl = $pnu . '&amp;page=' . ($curpage - 1);	
 	$nexturl = $pnu . '&amp;page=' . ($curpage + 1);
@@ -1305,98 +1078,106 @@ function wppa_page_links($npages = '1', $curpage = '1') {
 		}
 	}
 
-?>
-	<div id="prevnext-a-<?php echo($wppa_master_occur); ?>" class="wppa-nav-text wppa-box wppa-nav" style="clear:both; text-align:center; <?php _wcs('wppa-box'); _wcs('wppa-nav'); ?>" >
-		<div id="prev-page" style="float:left; text-align:left; <?php if ($curpage == '1') echo('visibility: hidden;'); ?>">
-			<span style="cursor: default;">&laquo;&nbsp;</span>
-			<a id="p-p" href="<?php echo($prevurl); ?>" ><?php _e('Prev.&nbsp;page', 'wppa'); ?></a>
-		</div><!-- #prev-page -->
-		<div id="next-page" style="float:right; text-align:right; <?php if ($curpage == $npages) echo('visibility: hidden;'); ?>">
-			<a id="n-p" href="<?php echo($nexturl); ?>" ><?php _e('Next&nbsp;page', 'wppa'); ?></a>
-			<span style="cursor: default;">&nbsp;&raquo;</span>
-		</div><!-- #next-page -->
+	$wppa['out'] .= '<div id="prevnext-a-'.$wppa['master_occur'].'" class="wppa-nav-text wppa-box wppa-nav" style="clear:both; text-align:center; '.__wcs('wppa-box').__wcs('wppa-nav').'" >';
+		$vis = $curpage == '1' ? 'visibility: hidden;' : '';
+		$wppa['out'] .= '<div id="prev-page" style="float:left; text-align:left; '.$vis.'">';
+			$wppa['out'] .= '<span class="wppa-arrow" style="'.__wcs('wppa-arrow').'cursor: default;">&laquo;&nbsp;</span>';
+			$wppa['out'] .= '<a id="p-p" href="'.$prevurl.'" >'.__a('Prev.&nbsp;page', 'wppa_theme').'</a>';
+		$wppa['out'] .= '</div><!-- #prev-page -->';
+		$vis = $curpage == $npages ? 'visibility: hidden;' : '';
+		$wppa['out'] .= '<div id="next-page" style="float:right; text-align:right; '.$vis.'">';
+			$wppa['out'] .= '<a id="n-p" href="'.$nexturl.'" >'.__a('Next&nbsp;page', 'wppa_theme').'</a>';
+			$wppa['out'] .= '<span class="wppa-arrow" style="'.__wcs('wppa-arrow').'cursor: default;">&nbsp;&raquo;</span>';
+		$wppa['out'] .= '</div><!-- #next-page -->';
 		
-<?php
 		if ($from > '1') {
-			echo('.&nbsp;.&nbsp;.&nbsp;');
+			$wppa['out'] .= ('.&nbsp;.&nbsp;.&nbsp;');
 		}
 		for ($i=$from; $i<=$to; $i++) {
 			if ($curpage == $i) { 
-?>
-				<div class="wppa-mini-box wppa-alt wppa-black" style="display:inline; text-align:center; <?php _wcs('wppa-mini-box'); _wcs('wppa-alt'); _wcs('wppa-black'); ?> text-decoration: none; cursor: default; font-weight:normal; " >
-					<a style="font-weight:normal; text-decoration: none; cursor: default; <?php _wcs('wppa-black') ?>;">&nbsp;<?php echo($i) ?>&nbsp;</a>
-				</div>
-<?php
+				$wppa['out'] .= '<div class="wppa-mini-box wppa-alt wppa-black" style="display:inline; text-align:center; '.__wcs('wppa-mini-box').__wcs('wppa-alt').__wcs('wppa-black').' text-decoration: none; cursor: default; font-weight:normal; " >';
+					$wppa['out'] .= '<a style="font-weight:normal; text-decoration: none; cursor: default; '.__wcs('wppa-black').'">&nbsp;'.$i.'&nbsp;</a>';
+				$wppa['out'] .= '</div>';
 			}
 			else { 
-?>
-				<div class="wppa-mini-box wppa-even" style="display:inline; text-align:center; <?php _wcs('wppa-mini-box'); _wcs('wppa-even'); ?>" >
-					<a href="<?php echo($pnu . '&amp;page=' . $i) ?>">&nbsp;<?php echo($i) ?>&nbsp;</a>
-				</div>
-<?php		
+				$wppa['out'] .= '<div class="wppa-mini-box wppa-even" style="display:inline; text-align:center; '.__wcs('wppa-mini-box').__wcs('wppa-even').'" >';
+					$wppa['out'] .= '<a href="'.$pnu.'&amp;page='.$i.'">&nbsp;'.$i.'&nbsp;</a>';
+				$wppa['out'] .= '</div>';	
 			}
 		}
 		if ($to < $npages) {
-			echo('&nbsp;.&nbsp;.&nbsp;.');
+			$wppa['out'] .= ('&nbsp;.&nbsp;.&nbsp;.');
 		}
-?>
-	</div><!-- #prevnext-a-<?php echo($wppa_master_occur); ?> -->
-<?php
+	$wppa['out'] .= '</div><!-- #prevnext-a-'.$wppa['master_occur'].' -->';
 }
 	
 function wppa_set_runtimestyle() { 
-global $wppa_master_occur;
-global $wppa_auto_colwidth;
+global $wppa;
+global $wppa_opt;
 
-	if ($wppa_master_occur == '1') {	// First time only
-		/* Nonce field for rating security */
-		if (isset($_GET['rating'])) {
-			if (isset($_GET['wppa_nonce'])) $nonce = $_GET['wppa_nonce']; else $nonce = '';
-			$ok = wp_verify_nonce($nonce, 'wppa-check');
-			if ($ok) sleep(2);
-			else die(__('<b>ERROR: Illegal attempt to enter a rating.</b>', 'wppa'));
-		}
-		wp_nonce_field('wppa-check' , 'wppa_nonce', false);
-		/* If you simplify this by making a cdata block, you will break rss feeds */
-		/* rss attempts to create a nested cdata block that causes the loss of the script tag */
-		/* The errormessage will say that the /script tag is not matched while it is. */
-		
-		/* This goes into wppa_theme.js */ ?>
-		<script type="text/javascript">wppa_bgcolor_img = "<?php echo(get_option('wppa_bgcolor_img', '#eeeeee')); ?>";</script>
-		<script type="text/javascript">wppa_popup_nolink = <?php if (get_option('wppa_no_thumb_links', 'no') == 'yes') echo('true'); else echo('false'); ?>;</script>
-
-<?php	/* This goes into wppa_slideshow.js */ ?>
-		<script type="text/javascript"><?php if (get_option('wppa_fadein_after_fadeout', 'no') == 'yes') echo('wppa_fadein_after_fadeout = true;'); ?></script>
-		<script type="text/javascript">wppa_animation_speed = <?php echo get_option('wppa_animation_speed', 400) ?>;</script>
-		<script type="text/javascript">wppa_imgdir = "<?php echo wppa_get_imgdir() ?>";</script>
-		<script type="text/javascript">wppa_auto_colwidth = <?php if ($wppa_auto_colwidth) echo('true'); else echo('false'); ?>;</script>
-		<script type="text/javascript">wppa_thumbnail_area_delta = <?php echo wppa_get_thumbnail_area_delta(); ?>;</script>
-		<script type="text/javascript">wppa_textframe_delta = <?php echo wppa_get_textframe_delta(); ?>;</script>
-		<script type="text/javascript">wppa_box_delta = <?php echo wppa_get_box_delta(); ?>;</script>
-		<script type="text/javascript">wppa_ss_timeout = <?php echo get_option('wppa_slideshow_timeout', 2500) ?>;</script>
-		<script type="text/javascript">wppa_fadein_after_fadeout = <?php if (get_option('wppa_fadein_after_fadeout', 'no') == 'yes') echo('true'); else echo('false'); ?>;</script>
-		<script type="text/javascript">wppa_preambule = <?php echo wppa_get_preambule() ?>;</script>
-		<script type="text/javascript">wppa_thumbnail_pitch = <?php echo (get_option('wppa_tf_width', '100') + get_option('wppa_tn_margin', '0')); ?>;</script>
-		<script type="text/javascript">wppa_filmstrip_length = <?php echo (wppa_get_container_width() - ( 2*6 + 2*23 + 2*get_option('wppa_bwidth', '1'))); ?>;</script>
-		<script type="text/javascript">wppa_filmstrip_margin = <?php echo (get_option('wppa_tn_margin', '0') / 2); ?>;</script>
-		<script type="text/javascript">wppa_filmstrip_area_delta = <?php echo ( 2*6 + 2*23 + 2*get_option('wppa_bwidth', '1')) ?>;</script>
-		<script type="text/javascript">wppa_film_show_glue = <?php if (get_option('wppa_film_show_glue', 'yes') == 'yes') echo('true'); else echo('false'); ?>;</script>
-		<script type="text/javascript">wppa_slideshow = "<?php _e('Slideshow', 'wppa'); ?>";</script>
-		<script type="text/javascript">wppa_start = "<?php _e('Start', 'wppa'); ?>";</script>
-		<script type="text/javascript">wppa_stop = "<?php _e('Stop', 'wppa'); ?>";</script>
-		<script type="text/javascript">wppa_photo = "<?php _e('Photo', 'wppa'); ?>";</script>
-		<script type="text/javascript">wppa_of = "<?php _e('of', 'wppa'); ?>";</script>
-		<script type="text/javascript">wppa_prevphoto = "<?php _e('Prev.&nbsp;photo', 'wppa'); ?>";</script>
-		<script type="text/javascript">wppa_nextphoto = "<?php _e('Next&nbsp;photo', 'wppa'); ?>";</script>
-		<script type="text/javascript">wppa_username = "<?php echo(wppa_get_user()) ?>";</script>
-		<script type="text/javascript">wppa_rating_once = <?php if (get_option('wppa_rating_change', 'no') == 'yes' || get_option('wppa_rating_multi', 'no') == 'yes') echo('false'); else echo('true'); ?>;</script>
-<?php }
+	/* Nonce field for rating security */
+	if (isset($_GET['rating'])) {
+		if (isset($_GET['wppa_nonce'])) $nonce = $_GET['wppa_nonce']; else $nonce = '';
+		$ok = wp_verify_nonce($nonce, 'wppa-check');
+		if ($ok) sleep(2);
+		else die(__('<b>ERROR: Illegal attempt to enter a rating.</b>', 'wppa_theme'));
+	}
+	wp_nonce_field('wppa-check' , 'wppa_nonce', false);
+	/* If you simplify this by making a cdata block, you will break rss feeds */
+	/* rss attempts to create a nested cdata block that causes the loss of the script tag */
+	/* The errormessage will say that the /script tag is not matched while it is. */
+	
+	/* This goes into wppa_theme.js */ 
+	$wppa['out'] .= '<script type="text/javascript">';
+	$wppa['out'] .= 'wppa_bgcolor_img = "'.$wppa_opt['wppa_bgcolor_img'].'";';
+	if ($wppa_opt['wppa_thumb_linktype'] == 'none') $wppa['out'] .= 'wppa_popup_nolink = true;'; 
+	else $wppa['out'] .= 'wppa_popup_nolink = false;';
+	
+	/* This goes into wppa_slideshow.js */ 
+	if ($wppa_opt['wppa_fadein_after_fadeout']) $wppa['out'] .= 'wppa_fadein_after_fadeout = true;';
+	else $wppa['out'] .= 'wppa_fadein_after_fadeout = false;';
+	$wppa['out'] .= 'wppa_animation_speed = '.$wppa_opt['wppa_animation_speed'].';';
+	$wppa['out'] .= 'wppa_imgdir = "'.wppa_get_imgdir().'";';
+	if ($wppa['auto_colwidth']) $wppa['out'] .= 'wppa_auto_colwidth = true;';
+	else $wppa['out'] .= 'wppa_auto_colwidth = false;';
+	$wppa['out'] .= 'wppa_thumbnail_area_delta = '.wppa_get_thumbnail_area_delta().';';
+	$wppa['out'] .= 'wppa_textframe_delta = '.wppa_get_textframe_delta().';';
+	$wppa['out'] .= 'wppa_box_delta = '.wppa_get_box_delta().';';
+	$wppa['out'] .= 'wppa_ss_timeout = '.$wppa_opt['wppa_slideshow_timeout'].';';
+	$wppa['out'] .= 'wppa_preambule = '.wppa_get_preambule().';';
+	$temp = $wppa_opt['wppa_tf_width'] + $wppa_opt['wppa_tn_margin'];
+	$wppa['out'] .= 'wppa_thumbnail_pitch = '.$temp.';';
+//	$temp = wppa_get_container_width() - ( 2*6 + 2*23 + 2*$wppa_opt['wppa_bwidth']);	// may be too early, see las minute changes in wppa_container()
+//	$wppa['out'] .= 'wppa_filmstrip_length = '.$temp.';';								// "
+	$temp = $wppa_opt['wppa_tn_margin'] / 2;
+	$wppa['out'] .= 'wppa_filmstrip_margin = '.$temp.';';
+	$temp = 2*6 + 2*23 + 2*$wppa_opt['wppa_bwidth'];
+	$wppa['out'] .= 'wppa_filmstrip_area_delta = '.$temp.';';
+	if ($wppa_opt['wppa_film_show_glue'] == 'yes') $wppa['out'] .= 'wppa_film_show_glue = true;';
+	else $wppa['out'] .= 'wppa_film_show_glue = true';
+	$wppa['out'] .= 'wppa_slideshow = "'.__a('Slideshow', 'wppa_theme').'";';
+	$wppa['out'] .= 'wppa_start = "'.__a('Start', 'wppa_theme').'";';
+	$wppa['out'] .= 'wppa_stop = "'.__a('Stop', 'wppa_theme').'";';
+	$wppa['out'] .= 'wppa_photo = "'.__a('Photo', 'wppa_theme').'";';
+	$wppa['out'] .= 'wppa_of = "'.__a('of', 'wppa_theme').'";';
+	$wppa['out'] .= 'wppa_prevphoto = "'.__a('Prev.&nbsp;photo', 'wppa_theme').'";';
+	$wppa['out'] .= 'wppa_nextphoto = "'.__a('Next&nbsp;photo', 'wppa_theme').'";';
+	$wppa['out'] .= 'wppa_username = "'.wppa_get_user().'";';
+	if ($wppa_opt['wppa_rating_change'] || $wppa_opt['wppa_rating_multi']) $wppa['out'] .= 'wppa_rating_once = false;';
+	else $wppa['out'] .= 'wppa_rating_once = true;';
+	$wppa['out'] .= '</script>';
+	
+	echo $wppa['out'];
+	
+	$wppa['out'] = '';
 }
 
 function wppa_get_pagesize($type = '') {
+global $wppa_opt;
+
 	if (isset($_POST['wppa-searchstring'])) return '0';
-	if ($type == 'albums') return get_option('wppa_album_page_size', '0');
-	if ($type == 'thumbs') return get_option('wppa_thumb_page_size', '0');
+	if ($type == 'albums') return $wppa_opt['wppa_album_page_size'];
+	if ($type == 'thumbs') return $wppa_opt['wppa_thumb_page_size'];
 	return '0';
 }
 
@@ -1417,7 +1198,7 @@ global $wppa_stree;
 		else {
 			$wppa_stree[0] = $tokens;
 		}
-		// botoom level explode
+		// bottom level explode
 		for ($idx = 0; $idx < count($wppa_stree); $idx++) {
 			if (strstr($wppa_stree[$idx], ' ')) {
 				$wppa_stree[$idx] = explode(' ', $wppa_stree[$idx]);
@@ -1444,41 +1225,37 @@ function wppa_and_stristr($string, $branch) {
 }
 
 function wppa_get_slide_frame_style() {
-	global $wppa_fullsize;
-	global $single_photo;
-	global $wppa_auto_colwidth;
-	global $wppa_in_ss_widget;
-	global $wppa_portrait_only;
-	global $wppa_ss_widget_valign;	//?
+global $wppa;
+global $wppa_opt;
 	
-	$fs = get_option('wppa_fullsize', '640');
-	$cs = get_option('wppa_colwidth', $fs);
+	$fs = $wppa_opt['wppa_fullsize'];
+	$cs = $wppa_opt['wppa_colwidth'];
 	if ($cs == 'auto') {
 		$cs = $fs;
-		$wppa_auto_colwidth = true;
+		$wppa['auto_colwidth'] = true;
 	}
 	$result = '';
-	$gfs = (is_numeric($wppa_fullsize) && $wppa_fullsize > '0') ? $wppa_fullsize : $fs;
+	$gfs = (is_numeric($wppa['fullsize']) && $wppa['fullsize'] > '0') ? $wppa['fullsize'] : $fs;
 	
-	$gfh = floor($gfs * get_option('wppa_maxheight', get_option('wppa_fullsize', '640')) / get_option('wppa_fullsize', '640'));
+	$gfh = floor($gfs * $wppa_opt['wppa_maxheight'] / $wppa_opt['wppa_fullsize']);
 
-//	if ($wppa_in_ss_widget && $wppa_portrait_only) {
-	if ($wppa_portrait_only) {
+//	if ($wppa['in_ss_widget'] && $wppa['portrait_only']) {
+	if ($wppa['portrait_only']) {
 		$result = 'width: ' . $gfs . 'px;';	// No height
 	}
 	else {
 		if (wppa_page('oneofone')) {
-			$imgattr = getimagesize(wppa_get_image_path_by_id($single_photo));
+			$imgattr = getimagesize(wppa_get_image_path_by_id($wppa['single_photo']));
 			$h = floor($gfs * $imgattr[1] / $imgattr[0]);
 			$result .= 'height: ' . $h . 'px;';
 		}
-		elseif ($wppa_auto_colwidth) {
+		elseif ($wppa['auto_colwidth']) {
 			$result .= ' height: ' . $gfh . 'px;';
 		}
-		elseif ($wppa_ss_widget_valign != '' && $wppa_ss_widget_valign != 'fit') {
+		elseif ($wppa['ss_widget_valign'] != '' && $wppa['ss_widget_valign'] != 'fit') {
 			$result .= ' height: ' . $gfh . 'px;'; 
 		}
-		elseif (get_option('wppa_fullvalign', 'default') == 'default') {
+		elseif ($wppa_opt['wppa_fullvalign'] == 'default') {
 			$result .= 'min-height: ' . $gfh . 'px;'; 
 		}
 		else {
@@ -1487,7 +1264,7 @@ function wppa_get_slide_frame_style() {
 		$result .= 'width: ' . $gfs . 'px;';
 	}
 	
-	$hor = get_option('wppa_fullhalign', 'center');
+	$hor = $wppa_opt['wppa_fullhalign'];
 	if ($gfs == $fs) {
 		if ($fs != $cs) {
 			switch ($hor) {
@@ -1508,18 +1285,20 @@ function wppa_get_slide_frame_style() {
 }
 
 function wppa_get_thumb_frame_style($glue = false, $film = '') {
-	$tfw = get_option('wppa_tf_width');
-	$tfh = get_option('wppa_tf_height');
-	$mgl = get_option('wppa_tn_margin');
+global $wppa_opt;
+
+	$tfw = $wppa_opt['wppa_tf_width'];
+	$tfh = $wppa_opt['wppa_tf_height'];
+	$mgl = $wppa_opt['wppa_tn_margin'];
 	$mgl2 = floor($mgl / '2');
-	if ($film == '' && get_option('wppa_thumb_auto', 'no') == 'yes') {
+	if ($film == '' && $wppa_opt['wppa_thumb_auto']) {
 		$area = wppa_get_box_width() + $tfw;	// Area for n+1 thumbs
 		$n_1 = floor($area / ($tfw + $mgl));
 		$mgl = floor($area / $n_1) - $tfw;	
 	}
 	if (is_numeric($tfw) && is_numeric($tfh)) {
 		$result = 'width: '.$tfw.'px; height: '.$tfh.'px; margin-left: '.$mgl.'px; margin-top: '.$mgl2.'px; margin-bottom: '.$mgl2.'px;';
-		if ($glue && (get_option('wppa_film_show_glue', 'yes') == 'yes')) {
+		if ($glue && $wppa_opt['wppa_film_show_glue']) {
 			$result .= 'padding-right:'.$mgl.'px; border-right: 2px dotted gray;';
 		}
 	}
@@ -1528,24 +1307,22 @@ function wppa_get_thumb_frame_style($glue = false, $film = '') {
 }
 
 function wppa_get_container_width() {
-global $wppa_fullsize;
-global $wppa_auto_colwidth;
-	if (is_numeric($wppa_fullsize) && $wppa_fullsize > '0') {
-		$result = $wppa_fullsize;
+global $wppa;
+global $wppa_opt;
+
+	if (is_numeric($wppa['fullsize']) && $wppa['fullsize'] > '0') {
+		$result = $wppa['fullsize'];
 	}
 	else {
-		$result = get_option('wppa_colwidth', '640');
+		$result = $wppa_opt['wppa_colwidth'];
 		if ($result == 'auto') {
 			$result = '640';
-			$wppa_auto_colwidth = true;
+			$wppa['auto_colwidth'] = true;
 		}
 	}
 	return $result;
 }
 
-function wppa_thumbnail_area_width() {
-	echo (wppa_get_thumbnail_area_width());
-}
 function wppa_get_thumbnail_area_width() {
 	$result = wppa_get_container_width();
 	$result -= wppa_get_thumbnail_area_delta();
@@ -1553,35 +1330,32 @@ function wppa_get_thumbnail_area_width() {
 }
 
 function wppa_get_thumbnail_area_delta() {
-	$result = 7 + 2 * get_option('wppa_bwidth', '1');	// 7 = .thumbnail_area padding-left
+global $wppa_opt;
+
+	$result = 7 + 2 * $wppa_opt['wppa_bwidth'];	// 7 = .thumbnail_area padding-left
 	return $result;
 }
 
-function wppa_container_style() {
-	echo(wppa_get_container_style());
-}
 function wppa_get_container_style() {
-global $wppa_align;
-global $wppa_fullsize;
-global $wppa_auto_colwidth;
-global $wppa_in_widget;
+global $wppa;
+global $wppa_opt;
 
 	$result = '';
 	
 	// See if there is space for a margin
 	$marg = false;
-	if (is_numeric($wppa_fullsize)) {
-		$cw = get_option('wppa_colwidth', '640');
+	if (is_numeric($wppa['fullsize'])) {
+		$cw = $wppa_opt['wppa_colwidth'];
 		if (is_numeric($cw)) {
-			if ($cw > ($wppa_fullsize + 10)) {
+			if ($cw > ($wppa['fullsize'] + 10)) {
 				$marg = '10px;';
 			}
 		}
 	}
 	
-	if (!$wppa_in_widget) $result .= 'clear: both; ';
+	if (!$wppa['in_widget']) $result .= 'clear: both; ';
 	$ctw = wppa_get_container_width();
-	if ($wppa_auto_colwidth) {
+	if ($wppa['auto_colwidth']) {
 		if (is_feed()) {
 			$result .= 'width:'.$ctw.'px;';
 		}
@@ -1590,13 +1364,13 @@ global $wppa_in_widget;
 		$result .= 'width:'.$ctw.'px;';
 	}
 	
-//	if ($wppa_align == '' || 
-	if ($wppa_align == 'left') {
+//	if ($wppa['align'] == '' || 
+	if ($wppa['align'] == 'left') {
 		$result .= 'float: left;';
 		if ($marg) $result .= 'margin-right: '.$marg;
 	}
-	elseif ($wppa_align == 'center') $result .= 'display: block; margin-left: auto; margin-right: auto;'; 
-	elseif ($wppa_align == 'right') {
+	elseif ($wppa['align'] == 'center') $result .= 'display: block; margin-left: auto; margin-right: auto;'; 
+	elseif ($wppa['align'] == 'right') {
 		$result .= 'float: right;';
 		if ($marg) $result .= 'margin-left: '.$marg;
 	}
@@ -1605,102 +1379,130 @@ global $wppa_in_widget;
 }
 
 function wppa_get_curpage() {
-global $wppa_master_occur;
-global $wppa_in_widget;
+global $wppa;
 
-	if ($wppa_in_widget) {
-		if (isset($_GET['woccur'])) $oc = $_GET['woccur']; else $oc = '1';
+	if (isset($_GET['page'])) {
+		if ($wppa['in_widget']) {
+			$oc = isset($_GET['woccur']) ? $_GET['woccur'] : '1';
+			$curpage = $wppa['widget_occur'] == $oc ? $_GET['page'] : '1';
+		}
+		else {
+			$oc = isset($_GET['occur']) ? $_GET['occur'] : '1';
+			$curpage = $wppa['occur'] == $oc ? $_GET['page'] : '1';
+		}
 	}
-	else {
-		if (isset($_GET['occur'])) $oc = $_GET['occur']; else $oc = '1';
-	}
-	if (isset($_GET['page']) && $wppa_master_occur == $oc) $curpage = $_GET['page']; else $curpage = '1';
+	else $curpage = '1';
 	return $curpage;
 }
 
 function wppa_container($action) {
-global $wppa_revno;				// The official version (wppa.php and readme.txt)
+global $wppa;	
+global $wppa_opt;			
 global $wppa_version;			// The theme version (wppa_theme.php)
-global $wppa_api_version;		// The API version (this files version)
-global $wppa_master_occur;
-global $wppa_in_widget;
 global $wppa_alt;
-global $wppa_portrait_only;
+global $wppa_microtime;
+global $wppa_microtime_cum;
+
+	$wppa_debug = false;		// reserved for future use
 
 	if (is_feed()) return;		// Need no container in RSS feeds
 	if ($action == 'open') {
-		if (wppa_page('oneofone')) $wppa_portrait_only = true;
+
+		if ($wppa_debug) $wppa_microtime = microtime(true);
+		
+		if (wppa_page('oneofone')) $wppa['portrait_only'] = true;
 		$wppa_alt = 'alt';
-//		if ($wppa_inp) echo('</p>');				// Close wpautop generated paragraph if we're in
-		echo('<div id="wppa-container-'.$wppa_master_occur.'" style="'.wppa_get_container_style().'" class="wppa-container wppa-rev-'.$wppa_revno.' wppa-theme-'.$wppa_version.' wppa-api-'.$wppa_api_version.'" >');
+
+		// last minute change: script %%size=auto%% or reset
+		if ($wppa_opt['wppa_colwidth'] == 'auto' && !$wppa['auto_colwidth']) {	
+			$wppa['out'] .= '<script type="text/javascript">wppa_auto_colwidth = false;</script>';
+		}
+		if ($wppa_opt['wppa_colwidth'] != 'auto' && $wppa['auto_colwidth']) {	
+			$wppa['out'] .= '<script type="text/javascript">wppa_auto_colwidth = true;</script>';
+		}
+		// last minute change: script %%size != default colwidth
+		$temp = wppa_get_container_width() - ( 2*6 + 2*23 + 2*$wppa_opt['wppa_bwidth']);
+		$wppa['out'] .= '<script type="text/javascript">wppa_filmstrip_length['.$wppa['master_occur'].'] = '.$temp.';</script>'; // array van maken per mocc!!!!
+		
+		// Open the container
+		$wppa['out'] .= ('<div id="wppa-container-'.$wppa['master_occur'].'" style="'.wppa_get_container_style().'" class="wppa-container wppa-rev-'.$wppa['revno'].' wppa-theme-'.$wppa_version.' wppa-api-'.$wppa['api_version'].'" >');
 	}
 	elseif ($action == 'close')	{
-		if (wppa_page('oneofone')) $wppa_portrait_only = false;
-		if (!$wppa_in_widget) echo('<div style="clear:both;"></div>');
-		echo('</div><!-- wppa-container-'.$wppa_master_occur.' -->');
-		if (!$wppa_in_widget) 
-						echo('<p>');					// Re-open paragraph
+		if (wppa_page('oneofone')) $wppa['portrait_only'] = false;
+		if (!$wppa['in_widget']) $wppa['out'] .= ('<div style="clear:both;"></div>');
+		$wppa['out'] .= ('</div><!-- wppa-container-'.$wppa['master_occur'].' -->');
+		if (!$wppa['in_widget']) 
+						$wppa['out'] .= ('<p>');					// Re-open paragraph
+						
+		if ($wppa_debug) {
+			$laptim = microtime(true) - $wppa_microtime;
+			if (!is_numeric($wppa_microtime_cum)) $wppa_mcrotime_cum = '0';
+			$wppa_microtime_cum += $laptim;
+			echo('<span style="color:blue;"><small>Time elapsed occ '.$wppa['master_occur'].':'.substr($laptim, 0, 5).'s. Tot:'.substr($wppa_microtime_cum, 0, 5).'s.</small></span><br/>');
+		}
 	}
 	else {
-		echo('<span style="color:red;">Error, wppa_container() called with wrong argument: '.$action.'. Possible values: \'open\' or \'close\'</span>');
+		$wppa['out'] .= ('<span style="color:red;">Error, wppa_container() called with wrong argument: '.$action.'. Possible values: \'open\' or \'close\'</span>');
 	}
 }
 
 function wppa_album_list($action) {
-global $wppa_master_occur;
+global $wppa;
 global $cover_count;
 
 	if ($action == 'open') {
 		$cover_count = '0';
-		echo('<div id="wppa-albumlist-'.$wppa_master_occur.'" class="albumlist">');
+		$wppa['out'] .= ('<div id="wppa-albumlist-'.$wppa['master_occur'].'" class="albumlist">');
 	}
 	elseif ($action == 'close') {
-		echo('</div><!-- wppa-albumlist-'.$wppa_master_occur.' -->');
+		$wppa['out'] .= ('</div><!-- wppa-albumlist-'.$wppa['master_occur'].' -->');
 	}
 	else {
-		echo('<span style="color:red;">Error, wppa_albumlist() called with wrong argument: '.$action.'. Possible values: \'open\' or \'close\'</span>');
+		$wppa['out'] .= ('<span style="color:red;">Error, wppa_albumlist() called with wrong argument: '.$action.'. Possible values: \'open\' or \'close\'</span>');
 	}
 }
 
 function wppa_thumb_list($action) {
-global $wppa_master_occur;
+global $wppa;
 global $cover_count;
 
 	if ($action == 'open') {
 		$cover_count = '0';
-		echo('<div id="wppa-thumblist-'.$wppa_master_occur.'" class="thumblist">');
+		$wppa['out'] .= ('<div id="wppa-thumblist-'.$wppa['master_occur'].'" class="thumblist">');
 	}
 	elseif ($action == 'close') {
-		echo('</div><!-- wppa-thumblist-'.$wppa_master_occur.' -->');
+		$wppa['out'] .= ('</div><!-- wppa-thumblist-'.$wppa['master_occur'].' -->');
 	}
 	else {
-		echo('<span style="color:red;">Error, wppa_thumblist() called with wrong argument: '.$action.'. Possible values: \'open\' or \'close\'</span>');
+		$wppa['out'] .= ('<span style="color:red;">Error, wppa_thumblist() called with wrong argument: '.$action.'. Possible values: \'open\' or \'close\'</span>');
 	}
 }
 
 function wppa_thumb_area($action) {
-global $wppa_master_occur;
+global $wppa;
 global $wppa_alt;
 
 	if ($action == 'open') {
 		if (is_feed()) {
-			echo('<div id="wppa-thumbarea-'.$wppa_master_occur.'" style="'.__wcs('wppa-box').__wcs('wppa-'.$wppa_alt).'">');
+			$wppa['out'] .= ('<div id="wppa-thumbarea-'.$wppa['master_occur'].'" style="'.__wcs('wppa-box').__wcs('wppa-'.$wppa_alt).'">');
 		}
 		else {
-			echo('<div id="wppa-thumbarea-'.$wppa_master_occur.'" style="'.__wcs('wppa-box').__wcs('wppa-'.$wppa_alt).'width: '.wppa_get_thumbnail_area_width().'px;" class="thumbnail-area wppa-box wppa-'.$wppa_alt.'" onclick="wppa_popdown('.$wppa_master_occur.')" >');
+			$wppa['out'] .= ('<div id="wppa-thumbarea-'.$wppa['master_occur'].'" style="'.__wcs('wppa-box').__wcs('wppa-'.$wppa_alt).'width: '.wppa_get_thumbnail_area_width().'px;" class="thumbnail-area wppa-box wppa-'.$wppa_alt.'" onclick="wppa_popdown('.$wppa['master_occur'].')" >');
 		}		
 		if ($wppa_alt == 'even') $wppa_alt = 'alt'; else $wppa_alt = 'even';
 	}
 	elseif ($action == 'close') {
-		echo('</div><!-- wppa-thumbarea-'.$wppa_master_occur.' -->');
+		$wppa['out'] .= ('</div><!-- wppa-thumbarea-'.$wppa['master_occur'].' -->');
 	}
 	else {
-		echo('<span style="color:red;">Error, wppa_thumb_area() called with wrong argument: '.$action.'. Possible values: \'open\' or \'close\'</span>');
+		$wppa['out'] .= ('<span style="color:red;">Error, wppa_thumb_area() called with wrong argument: '.$action.'. Possible values: \'open\' or \'close\'</span>');
 	}
 }
 
 function wppa_get_npages($type, $array) {
-global $is_cover;
+global $wppa;
+global $wppa_opt;
+
 	$aps = wppa_get_pagesize('albums');	
 	$tps = wppa_get_pagesize('thumbs'); 
 	$result = '0';
@@ -1713,10 +1515,10 @@ global $is_cover;
 		}
 	}
 	elseif ($type == 'thumbs') {
-		if ($is_cover == '1') {		// Cover has no thumbs: 0 pages
+		if ($wppa['is_cover'] == '1') {		// Cover has no thumbs: 0 pages
 			$result = '0';
 		} 
-		elseif (count($array) <= get_option('wppa_min_thumbs', '1')) {	// Less than treshold: 0
+		elseif (count($array) <= $wppa_opt['wppa_min_thumbs']) {	// Less than treshold: 0
 			$result = '0';
 		}
 		elseif ($tps != '0') {
@@ -1731,7 +1533,8 @@ global $is_cover;
 
 function wppa_album_cover() {
 global $album;
-global $wppa_master_occur;
+global $wppa;
+global $wppa_opt;
 global $wppa_alt;
 global $cover_count;
 
@@ -1739,50 +1542,58 @@ global $cover_count;
 	$photocount = wppa_get_photo_count();
 	$albumcount = wppa_get_album_count();
 	$mincount = wppa_get_mincount();
-	if (is_numeric($album['cover_linkpage']) && $album['cover_linkpage'] > 0) {
+	$href = '';
+	$title = '';
+	// See if there is substantial content to the album
+	$has_content = ($albumcount > '0') || ($photocount > $mincount);
+	// Is there a page the album should point to?
+	$linkpage = '';
+	if ($album['cover_linkpage'] > 0) {	// a page is given
 		$page_data = get_page($album['cover_linkpage']);
 		if (!empty($page_data) && $page_data->post_status == 'publish') {
-			$href = get_page_link($album['cover_linkpage']);
-			$title = __('Link to', 'wppa');
+			// Yes a page is asked for and it exists
+			if ($has_content) {	// make url with querystring for content
+				$linkpage = $album['cover_linkpage'];
+				$href = wppa_get_album_url($album['id'], $linkpage);
+			}
+			else {				// make plain link url
+				$href = get_page_link($album['cover_linkpage']);
+			}
+			$title = __a('Link to', 'wppa_theme');
 			$title .= ' ' . $page_data->post_title;
 		} else {
 			$href = '#';
-			$title = __('Page is not available.');
+			$title = __a('Page is not available.', 'wppa_theme');
 		}
-		$href_p = $href;
-		$href_t = $href;
-		$title_p = $title;
-		$title_t = $title;
-	} elseif (is_numeric($album['cover_linkpage']) && $album['cover_linkpage'] == -1) {
-		$href = '';
-		$title = '';
-		$href_p = $href;
-		$href_t = $href;
-		$title_p = $title;
-		$title_t = $title;
-	} else {
-		if ($photocount != '0' && $photocount) {
-			$href_p = wppa_get_image_page_url_by_id($coverphoto); 
-			$title_p = __('View the cover photo', 'wppa'); 
-			if ($photocount > 1) $title_p .= __('s', 'wppa');
-		} else {
-			$href_p = wppa_get_album_url(); 
-			$title_p = __('View the album', 'wppa') . ' ' . $album['name'];
+	} elseif ($album['cover_linkpage'] == -1) {	// no link at all
+	} else {						// link to the same page/post
+		if ($has_content) {				// The very most normal situation
+			$href = wppa_get_album_url($album['id'], $linkpage); 
+			$title = __a('View the album', 'wppa_theme').' '.stripslashes($album['name']);
 		}
-		$href_t = wppa_get_album_url();
-		$title_t = __('View the album', 'wppa') . ' ' . $album['name'];
+		else {
+			if ($photocount > '0') {	// coverphotos only
+				$href = wppa_get_image_page_url_by_id($coverphoto); 
+				if ($photocount == '1') $title = __a('View the cover photo', 'wppa_theme'); 
+				else $title = __a('View the cover photos', 'wppa_theme');
+			}
+			else {						// nothing at all
+				$href = '';
+				$title = '';
+			}
+		}
 	}
+	// Find the coverphoto details
 	$src = wppa_get_thumb_url_by_id($coverphoto);	
 	$path = wppa_get_thumb_path_by_id($coverphoto);
-	$imgattr = wppa_get_imgstyle($path, get_option('wppa_smallsize'), '', 'cover');
+	$imgattr = wppa_get_imgstyle($path, $wppa_opt['wppa_smallsize'], '', 'cover');
 	if (is_feed()) {
-//		$imgattr .= 'margin:4px;';
 		$events = '';
 	}
 	else {
 		$events = wppa_get_imgevents('cover');
 	}
-	$photo_left = get_option('wppa_coverphoto_left', 'no') == 'yes';
+	$photo_left = $wppa_opt['wppa_coverphoto_left'];
 	
 	$style =  __wcs('wppa-box').__wcs('wppa-'.$wppa_alt);
 	if (is_feed()) $style .= ' padding:7px;';
@@ -1791,102 +1602,85 @@ global $cover_count;
 	$style .= 'width: '.$wid.'px;';	
 	if ($cover_count != '0') $style .= 'margin-left: 8px;';
 	wppa_step_covercount('cover');
-?>
-		<div id="album-<?php echo($album['id'].'-'.$wppa_master_occur) ?>" class="album wppa-box wppa-cover-box wppa-<?php echo($wppa_alt); ?>" style="<?php echo($style) ?>" >
-<?php 
+	
+	$wppa['out'] .= '<div id="album-'.$album['id'].'-'.$wppa['master_occur'].'" class="album wppa-box wppa-cover-box wppa-'.$wppa_alt.'" style="'.$style.'" >';
 		if ($src != '') { 
 			$photoframestyle = $photo_left ? 'style="float:left; margin-right:5px;"' : 'style="float:right; margin-left:5px;"';
-?>
-			<div id="coverphoto_frame_<?php echo($album['id'].'_'.$wppa_master_occur) ?>" class="coverphoto-frame" <?php echo($photoframestyle) ?>>
-<?php 
-			if ($href_p != '') {
-				?>
-				<a href="<?php echo($href_p); ?>" title="<?php echo($title_p); ?>">
-					<img src="<?php echo($src); ?>" alt="<?php echo($title_p); ?>" class="image wppa-img" style="<?php _wcs('wppa-img'); echo($imgattr); ?>" <?php echo($events) ?>/>
-				</a><?php 
+			$wppa['out'] .= '<div id="coverphoto_frame_'.$album['id'].'_'.$wppa['master_occur'].'" class="coverphoto-frame" '.$photoframestyle.'>';
+			if ($href != '') {
+				$wppa['out'] .= '<a href="'.$href.'" title="'.$title.'">';
+					$wppa['out'] .= '<img src="'.$src.'" alt="'.$title.'" class="image wppa-img" style="'.__wcs('wppa-img').$imgattr.'" '.$events.'/>';
+				$wppa['out'] .= '</a>'; 
 			} else { 
-				?>
-				<img src="<?php echo($src); ?>" alt="<?php echo($title_p); ?>" class="image wppa-img" style="<?php _wcs('wppa-img'); echo($imgattr); ?>" <?php echo($events) ?>/><?php 
+				$wppa['out'] .= '<img src="'.$src.'" alt="'.$title.'" class="image wppa-img" style="'.__wcs('wppa-img').$imgattr.'" '.$events.'/>';
 			} 
-			?>
-			</div><!-- #coverphoto_frame_ <?php echo($album['id'].$wppa_master_occur) ?> --><?php 
+			$wppa['out'] .= '</div><!-- #coverphoto_frame_'.$album['id'].'_'.$wppa['master_occur'].' -->'; 
 		} 
 		$textframestyle = wppa_get_text_frame_style($photo_left, 'cover');
-		?>
-<div id="covertext_frame_<?php echo($album['id'].'_'.$wppa_master_occur) ?>" class="wppa-text-frame covertext-frame" <?php echo($textframestyle) ?>>
-		<h2 class="wppa-title" style="clear:none; <?php _wcs('wppa-title'); ?>"><?php 
-			if ($href_t != '') { 
-				?>
-				<a href="<?php echo($href_t); ?>" title="<?php echo($title_t); ?>" class="wppa-title" style="<?php _wcs('wppa-title'); ?>"><?php echo(stripslashes($album['name'])); ?></a><?php
-			} else { 
-				echo(stripslashes($album['name'])); 
-			} 
-		?>
-		</h2>
-		<p class="wppa-box-text wppa-black" style="<?php _wcs('wppa-box-text'); _wcs('wppa-black'); ?>"><?php echo(wppa_html(wppa_get_the_album_desc())); ?></p>
-		<div class="wppa-box-text wppa-black wppa-info"><?php 
-			if ($photocount > $mincount && get_option('wppa_hide_slideshow', 'no') == 'no') { 
-				?>
-				<a href="<?php wppa_slideshow_url(); ?>" title="<?php _e('Slideshow', 'wppa'); ?>" style="<?php _wcs('wppa-box-text'); ?>" ><?php _e('Slideshow', 'wppa'); ?></a><?php 
-			} else echo('&nbsp;'); 
-		?>
-		</div>
-		<div class="wppa-box-text wppa-black wppa-info"><?php 
-			if ($photocount > $mincount || $albumcount) { 
-				?>
-				<a href="<?php wppa_album_url(); ?>" title="<?php _e('View the album', 'wppa'); echo(' ' . $album['name']); ?>" style="<?php _wcs('wppa-box-text'); ?>" ><?php 
-				_e('View', 'wppa'); 
-				if ($albumcount) { 
-					if ($albumcount == '1') {
-						echo(' 1 '); _e('album', 'wppa'); 
-					}
-					else {
-						echo(' ' . $albumcount . ' ');
-						_e('albums', 'wppa');
-					}
-				}
-				if ($photocount > $mincount && $albumcount) {
-					echo(' ');
-					_e('and', 'wppa'); 
-				}
+		$wppa['out'] .= '<div id="covertext_frame_'.$album['id'].'_'.$wppa['master_occur'].'" class="wppa-text-frame covertext-frame" '.$textframestyle.'>';
+			$wppa['out'] .= '<h2 class="wppa-title" style="clear:none; '.__wcs('wppa-title').'">';
+				if ($href != '') { 
+					$wppa['out'] .= '<a href="'.$href.'" title="'.$title.'" class="wppa-title" style="'.__wcs('wppa-title').'">'.stripslashes($album['name']).'</a>';
+				} else { 
+					$wppa['out'] .= stripslashes($album['name']); 
+				} 
+			$wppa['out'] .= '</h2>';
+			$wppa['out'] .= '<p class="wppa-box-text wppa-black" style="'.__wcs('wppa-box-text').__wcs('wppa-black').'">'.wppa_html(wppa_get_the_album_desc()).'</p>';
+			$wppa['out'] .= '<div class="wppa-box-text wppa-black wppa-info">';
 				if ($photocount > $mincount) { 
-					if ($photocount == '1') {
-						echo(' 1 '); _e('photo', 'wppa');
-					}
-					else {
-						echo(' ' . $photocount . ' '); 
-						_e('photos', 'wppa'); 
+					$label = $wppa_opt['wppa_hide_slideshow'] ? __a('Browse photos', 'wppa_theme') : __a('Slideshow', 'wppa_theme');
+					$wppa['out'] .= '<a href="'.wppa_get_slideshow_url($linkpage).'" title="'.$label.'" style="'.__wcs('wppa-box-text').'" >'.$label.'</a>';
+				} else $wppa['out'] .= '&nbsp;'; 
+			$wppa['out'] .= '</div>';
+			$wppa['out'] .= '<div class="wppa-box-text wppa-black wppa-info">';
+				if ($has_content) {
+					if ($wppa_opt['wppa_thumbtype'] == 'none') $photocount = '0'; 	// Fake photocount to prevent link to empty page
+					if ($photocount > $mincount || $albumcount) {					// Stll has content
+						$wppa['out'] .= '<a href="'.wppa_get_album_url($album['id'], $linkpage).'" title="'.__a('View the album', 'wppa_theme').' '.stripslashes($album['name']).'" style="'.__wcs('wppa-box-text').'" >';
+						$wppa['out'] .= __a('View', 'wppa_theme');
+						if ($albumcount) { 
+							if ($albumcount == '1') {
+								$wppa['out'] .= ' 1 '.__a('album', 'wppa_theme'); 
+							}
+							else {
+								$wppa['out'] .= ' '.$albumcount.' '.__a('albums', 'wppa_theme');
+							}
+						}
+						if ($photocount > $mincount && $albumcount) {
+							$wppa['out'] .= ' '.__a('and', 'wppa_theme'); 
+						}
+						if ($photocount > $mincount) { 
+							if ($photocount == '1') {
+								$wppa['out'] .= ' 1 '.__a('photo', 'wppa_theme');
+							}
+							else {
+								$wppa['out'] .= ' '.$photocount.' '.__a('photos', 'wppa_theme'); 
+							}
+						} 
+						$wppa['out'] .= '</a>'; 
 					}
 				} 
-				?>
-				</a><?php 
-			} 
-		?>
-		</div>
-</div>
-		<div style="clear:both;"></div>		
-	</div><!-- #album-<?php echo($album['id'].'-'.$wppa_master_occur) ?> --><?php
+			$wppa['out'] .= '</div>';
+		$wppa['out'] .= '</div>';
+		$wppa['out'] .= '<div style="clear:both;"></div>';		
+	$wppa['out'] .= '</div><!-- #album-'.$album['id'].'-'.$wppa['master_occur'].' -->';
 	if ($wppa_alt == 'even') $wppa_alt = 'alt'; else $wppa_alt = 'even';
 }
 
 function wppa_thumb_ascover() {
 global $thumb;
-global $wppa_master_occur;
+global $wppa;
+global $wppa_opt;
 global $wppa_alt;
 global $cover_count;
+
 	$path = wppa_get_thumb_path(); 
-	$imgattr = wppa_get_imgstyle($path, get_option('wppa_smallsize'), '', 'cover'); 
-	if (is_feed()) {
-//		$imgattr .= 'margin:4px;';
-		$events = '';
-	}
-	else {
-		$events = wppa_get_imgevents('cover'); 
-	}
+	$imgattr = wppa_get_imgstyle($path, $wppa_opt['wppa_smallsize'], '', 'cover'); 
+	$events = is_feed() ? '' : wppa_get_imgevents('cover'); 
 	$src = wppa_get_thumb_url(); 
 	$title = esc_js(wppa_get_photo_name($thumb['id'])); 
 	$href = wppa_get_photo_page_url();
-	$photo_left = get_option('wppa_thumbphoto_left', 'no') == 'yes';
+	$photo_left = $wppa_opt['wppa_thumbphoto_left'];
 	
 	$style = __wcs('wppa-box').__wcs('wppa-'.$wppa_alt);
 	if (is_feed()) $style .= ' padding:7px;';
@@ -1895,232 +1689,223 @@ global $cover_count;
 	$style .= 'width: '.$wid.'px;';	
 	if ($cover_count != '0') $style .= 'margin-left: 8px;';
 	wppa_step_covercount('thumb');
-?>
-	<div id="thumb-<?php echo($thumb['id'].'-'.$wppa_master_occur) ?>" class="thumb wppa-box wppa-cover-box wppa-<?php echo($wppa_alt); ?>" style="<?php echo($style) ?>" >
-<?php 
+
+	$wppa['out'] .= '<div id="thumb-'.$thumb['id'].'-'.$wppa['master_occur'].'" class="thumb wppa-box wppa-cover-box wppa-'.$wppa_alt.'" style="'.$style.'" >';
 		if ($src != '') { 
 			$photoframestyle = $photo_left ? 'style="float:left; margin-right:5px;"' : 'style="float:right; margin-left:5px;"';
-?>
-			<div id="thumbphoto_frame_<?php echo($thumb['id'].'_'.$wppa_master_occur) ?>" class="thumbphoto-frame" <?php echo($photoframestyle) ?>>
-			<a href="<?php echo($href); ?>" title="<?php echo($title); ?>">
-				<img src="<?php echo($src); ?>" alt="<?php echo($title); ?>" class="image wppa-img" style="<?php _wcs('wppa-img'); echo($imgattr); ?>" <?php echo($events) ?>/>
-			</a>
-		</div><?php 
+			$wppa['out'] .= '<div id="thumbphoto_frame_'.$thumb['id'].'_'.$wppa['master_occur'].'" class="thumbphoto-frame" '.$photoframestyle.'>';
+				$wppa['out'] .= '<a href="'.$href.'" title="'.$title.'">';
+					$wppa['out'] .= '<img src="'.$src.'" alt="'.$title.'" class="image wppa-img" style="'.__wcs('wppa-img').$imgattr.'" '.$events.'/>';
+				$wppa['out'] .= '</a>';
+			$wppa['out'] .= '</div>';
 		}
 		$textframestyle = wppa_get_text_frame_style($photo_left, 'thumb');
-		?>
-<div id="thumbtext_frame_<?php echo($thumb['id'].'_'.$wppa_master_occur) ?>" class="wppa-text-frame thumbtext-frame" <?php echo($textframestyle) ?>>
-		<h2 class="wppa-title" style="clear:none;">
-			<a href="<?php echo($href); ?>" title="<?php echo($title); ?>" style="<?php _wcs('wppa-title'); ?>" ><?php echo(stripslashes($thumb['name'])); ?></a>
-		</h2>
-		<p class="wppa-box-text wppa-black" style="<?php _wcs('wppa-box-text'); _wcs('wppa-black'); ?>" ><?php echo(wppa_html(stripslashes($thumb['description']))); ?></p>
-</div>
-		<div style="clear:both;"></div>		
-	</div><!-- thumb-<?php echo($thumb['id'].'-'.$wppa_master_occur) ?> --><?php
+		$wppa['out'] .= '<div id="thumbtext_frame_'.$thumb['id'].'_'.$wppa['master_occur'].'" class="wppa-text-frame thumbtext-frame" '.$textframestyle.'>';
+			$wppa['out'] .= '<h2 class="wppa-title" style="clear:none;">';
+				$wppa['out'] .= '<a href="'.$href.'" title="'.$title.'" style="'.__wcs('wppa-title').'" >'.stripslashes($thumb['name']).'</a>';
+			$wppa['out'] .= '</h2>';
+			$wppa['out'] .= '<p class="wppa-box-text wppa-black" style="'.__wcs('wppa-box-text').__wcs('wppa-black').'" >'.wppa_html(stripslashes($thumb['description'])).'</p>';
+		$wppa['out'] .= '</div>';
+		$wppa['out'] .= '<div style="clear:both;"></div>';
+	$wppa['out'] .= '</div><!-- thumb-'.$thumb['id'].'-'.$wppa['master_occur'].' -->';
 	if ($wppa_alt == 'even') $wppa_alt = 'alt'; else $wppa_alt = 'even';
 }
 
 function wppa_thumb_default() {
 global $thumb;
-global $wppa_master_occur;
-global $wppa_src;
+global $wppa;
+global $wppa_opt;
+
 	$src = wppa_get_thumb_path(); 
-	$imgattr = wppa_get_imgstyle($src, get_option('wppa_thumbsize'), 'optional', 'thumb'); 
+	$imgattr = wppa_get_imgstyle($src, $wppa_opt['wppa_thumbsize'], 'optional', 'thumb'); 
 	$url = wppa_get_thumb_url(); 
 	$events = wppa_get_imgevents('thumb', $thumb['id']); 
 
-	if (get_option('wppa_use_thumb_popup') == 'yes') $title = esc_attr(stripslashes($thumb['description']));
+	if ($wppa_opt['wppa_use_thumb_popup'] == 'yes') $title = esc_attr(stripslashes($thumb['description']));
 	else $title = esc_js(wppa_get_photo_name($thumb['id']));
 	
 	if (is_feed()) {
-?>
-		<a href="<?php echo(get_permalink()) ?>"><img src="<?php echo($url) ?>" alt="<?php echo(esc_attr($thumb['name'])) ?>" title="<?php echo(esc_attr($thumb['name'])); ?>" style="<?php echo(wppa_get_imgstyle($src, '100', '4', 'thumb')) ?>" /></a>
-<?php
+		$wppa['out'] .= '<a href="'.get_permalink().'><img src="'.$url.'" alt="'.esc_attr($thumb['name']).'" title="'.esc_attr($thumb['name']).'" style="'.wppa_get_imgstyle($src, '100', '4', 'thumb').'" /></a>';
 		return;
 	}
-	
-?>
-	<div id="thumbnail_frame_<?php echo($thumb['id'].'_'.$wppa_master_occur) ?>" class="thumbnail-frame" style="<?php echo(wppa_get_thumb_frame_style()); ?>" >
-<?php
-	if (get_option('wppa_no_thumb_links', 'no') == 'no') {
-?>
-		<a href="<?php wppa_photo_page_url(); ?>" class="thumb-img" id="a-<?php echo($thumb['id'].'-'.$wppa_master_occur) ?>"><img src="<?php echo($url); ?>" alt="<?php echo(esc_attr($thumb['name'])); ?>" title="<?php echo(esc_attr($title)); ?>" style="<?php echo($imgattr); ?>" <?php echo($events) ?>/></a>
-<?php 
-	}
-	else {
-?>
-		<a id="a-<?php echo($thumb['id'].'-'.$wppa_master_occur) ?>"><img src="<?php echo($url); ?>" alt="<?php echo(esc_attr($thumb['name'])); ?>" title="<?php echo(esc_attr($title)); ?>" style="<?php echo($imgattr); ?>" <?php echo($events) ?>/></a>
-<?php
-	}
-	if ($wppa_src || isset($_GET['topten'])) { 
-?>
-	<div class="wppa-thumb-text" style="<?php _wcs('wppa-thumb-text') ?>" ><?php echo('(<a href="'.wppa_get_album_url($thumb['album']).'">'.stripslashes(wppa_get_album_name($thumb['album'])).'</a>)'); ?></div>
-<?php } ?>
-	<?php if (get_option('wppa_thumb_text_name', get_option('wppa_thumb_text', 'no')) == 'yes') { ?>
-	<div class="wppa-thumb-text" style="<?php _wcs('wppa-thumb-text') ?>" ><?php echo(stripslashes($thumb['name'])); ?></div>
-	<?php } ?>
-	<?php if (get_option('wppa_thumb_text_desc', get_option('wppa_thumb_text', 'no')) == 'yes') { ?>
-	<div class="wppa-thumb-text" style="<?php _wcs('wppa-thumb-text') ?>" ><?php echo(wppa_html(stripslashes($thumb['description']))); ?></div>
-	<?php } ?>
-	<?php if (get_option('wppa_thumb_text_rating', get_option('wppa_thumb_text', 'no')) == 'yes') { ?>
-	<div class="wppa-thumb-text" style="<?php _wcs('wppa-thumb-text') ?>" ><?php echo(wppa_get_rating_by_id($thumb['id'])) ?></div>
-	<?php } ?>
-	</div><!-- #thumbnail_frame_<?php echo($thumb['id'].'_'.$wppa_master_occur) ?> -->
-<?php	
+	$wppa['out'] .= '<div id="thumbnail_frame_'.$thumb['id'].'_'.$wppa['master_occur'].'" class="thumbnail-frame" style="'.wppa_get_thumb_frame_style().'" >';
+		if ($wppa_opt['wppa_thumb_linktype'] != 'none') {
+			$wppa['out'] .= '<a href="'.wppa_get_photo_page_url().'" class="thumb-img" id="a-'.$thumb['id'].'-'.$wppa['master_occur'].'"><img src="'.$url.'" alt="'.esc_attr($thumb['name']).'" title="'.esc_attr($title).'" style="'.$imgattr.'" '.$events.' /></a>';
+		}
+		else {
+			$wppa['out'] .= '<a id="a-'.$thumb['id'].'-'.$wppa['master_occur'].'"><img src="'.$url.'" alt="'.esc_attr($thumb['name']).'" title="'.esc_attr($title).'" style="'.$imgattr.'" '.$events.' /></a>';
+		}
+		if ($wppa['src'] || isset($_GET['topten'])) { 
+			$wppa['out'] .= '<div class="wppa-thumb-text" style="'.__wcs('wppa-thumb-text').'" >(<a href="'.wppa_get_album_url($thumb['album']).'">'.stripslashes(wppa_get_album_name($thumb['album'])).'</a>)</div>';
+		}
+		if ($wppa_opt['wppa_thumb_text_name']) {
+			$wppa['out'] .= '<div class="wppa-thumb-text" style="'.__wcs('wppa-thumb-text').'" >'.stripslashes($thumb['name']).'</div>';
+		}
+		if ($wppa_opt['wppa_thumb_text_desc']) {
+			$wppa['out'] .= '<div class="wppa-thumb-text" style="'.__wcs('wppa-thumb-text').'" >'.wppa_html(stripslashes($thumb['description'])).'</div>';
+		}
+		if ($wppa_opt['wppa_thumb_text_rating']) {
+			$wppa['out'] .= '<div class="wppa-thumb-text" style="'.__wcs('wppa-thumb-text').'" >'.wppa_get_rating_by_id($thumb['id']).'</div>';
+		}
+	$wppa['out'] .= '</div><!-- #thumbnail_frame_'.$thumb['id'].'_'.$wppa['master_occur'].' -->';
 }	
 
 function wppa_get_mincount() {
-global $wppa_src;
-	$result = $wppa_src ? '0' : get_option('wppa_min_thumbs', '1');	// Showing thumbs as searchresult has no minimum
+global $wppa;
+global $wppa_opt;
+
+	$result = $wppa['src'] ? '0' : $wppa_opt['wppa_min_thumbs'];	// Showing thumbs as searchresult has no minimum
 	return $result;
 }
 
 function wppa_slide_frame() {
-global $wppa_master_occur;
+global $wppa;
+
 	if (is_feed()) {
 		if (wppa_page('oneofone')) {
-//			wppa_dummy_bar(__('- - - Single photo - - -', 'wppa'));
+//			wppa_dummy_bar(__('- - - Single photo - - -', 'wppa_theme'));
 		}
 		else {
-//			wppa_dummy_bar(__('- - - Slideshow - - -', 'wppa'));
+//			wppa_dummy_bar(__('- - - Slideshow - - -', 'wppa_theme'));
 		}
 		return;
 	}
-?>
-	<div id="slide_frame-<?php echo($wppa_master_occur); ?>" class="slide-frame" style="<?php echo(wppa_get_slide_frame_style()); ?>">
-		<div id="theslide0-<?php echo($wppa_master_occur); ?>" class="theslide"></div>
-		<div id="theslide1-<?php echo($wppa_master_occur); ?>" class="theslide"></div>
-		<div id="spinner-<?php echo($wppa_master_occur); ?>" class="spinner"></div>
-	</div>
-<?php
+	$wppa['out'] .= '<div id="slide_frame-'.$wppa['master_occur'].'" class="slide-frame" style="'.wppa_get_slide_frame_style().'">';
+		$wppa['out'] .= '<div id="theslide0-'.$wppa['master_occur'].'" class="theslide"></div>';
+		$wppa['out'] .= '<div id="theslide1-'.$wppa['master_occur'].'" class="theslide"></div>';
+		$wppa['out'] .= '<div id="spinner-'.$wppa['master_occur'].'" class="spinner"></div>';
+	$wppa['out'] .= '</div>';
 }
 
 function wppa_startstop($opt = '') {
-global $wppa_master_occur;
-global $is_slideonly;
+global $wppa;
+global $wppa_opt;
+
 	if (is_feed()) {
-//		wppa_dummy_bar(__('- - - Start/stop slideshow navigation bar - - -', 'wppa'));
+//		wppa_dummy_bar(__('- - - Start/stop slideshow navigation bar - - -', 'wppa_theme'));
 		return;
 	}
-	if (($opt == 'optional') && (get_option('wppa_show_startstop_navigation', 'yes') == 'no')) return;
-	if ($is_slideonly == '1') return;	/* Not when slideonly */
-?>
-	<div id="prevnext1-<?php echo($wppa_master_occur) ?>" class="wppa-box wppa-nav wppa-nav-text" style="<?php _wcs('wppa-box'); _wcs('wppa-nav'); _wcs('wppa-nav-text'); if (get_option('wppa_hide_slideshow', 'no') == 'yes') echo('display:none; '); ?>">
-		<p id="startstoptext-<?php echo($wppa_master_occur) ?>" style="text-align: center; margin:0">
-			<a id="speed0-<?php echo($wppa_master_occur) ?>" class="wppa-nav-text speed0" style="<?php _wcs('wppa-nav-text'); ?>" onclick="wppa_speed(<?php echo($wppa_master_occur); ?>, false)"><?php _e('Slower', 'wppa'); ?></a> |
-			<a id="startstop-<?php echo($wppa_master_occur) ?>" class="wppa-nav-text startstop" style="<?php _wcs('wppa-nav-text'); ?>" onclick="wppa_startstop(<?php echo($wppa_master_occur) ?>, -1)"><?php _e('Start', 'wppa'); ?></a> |
-			<a id="speed1-<?php echo($wppa_master_occur) ?>" class="wppa-nav-text speed1" style="<?php _wcs('wppa-nav-text'); ?>" onclick="wppa_speed(<?php echo($wppa_master_occur); ?>, true)"><?php _e('Faster', 'wppa'); ?></a>
-		</p><!-- #startstoptext -->
-	</div><!-- #prevnext1 -->
-<?php 
+	if (($opt == 'optional') && !$wppa_opt['wppa_show_startstop_navigation']) return;
+	if ($wppa['is_slideonly'] == '1') return;	/* Not when slideonly */
+	
+	$hide = $wppa_opt['wppa_hide_slideshow'] ? 'display:none; ' : '';
+
+	$wppa['out'] .= '<div id="prevnext1-'.$wppa['master_occur'].'" class="wppa-box wppa-nav wppa-nav-text" style="'.__wcs('wppa-box').__wcs('wppa-nav').__wcs('wppa-nav-text').$hide.'">';
+		$wppa['out'] .= '<p id="startstoptext-'.$wppa['master_occur'].'" style="text-align: center; margin:0">';
+			$wppa['out'] .= '<a id="speed0-'.$wppa['master_occur'].'" class="wppa-nav-text speed0" style="'.__wcs('wppa-nav-text').'" onclick="wppa_speed('.$wppa['master_occur'].', false)">'.__a('Slower', 'wppa_theme').'</a> | ';
+			$wppa['out'] .= '<a id="startstop-'.$wppa['master_occur'].'" class="wppa-nav-text startstop" style="'.__wcs('wppa-nav-text').'" onclick="wppa_startstop('.$wppa['master_occur'].', -1)">'.__a('Start', 'wppa_theme').'</a> | ';
+			$wppa['out'] .= '<a id="speed1-'.$wppa['master_occur'].'" class="wppa-nav-text speed1" style="'.__wcs('wppa-nav-text').'" onclick="wppa_speed('.$wppa['master_occur'].', true)">'.__a('Faster', 'wppa_theme').'</a>';
+		$wppa['out'] .= '</p><!-- #startstoptext -->';
+	$wppa['out'] .= '</div><!-- #prevnext1 -->';
 }
 
 function wppa_browsebar($opt = '') {
-global $wppa_master_occur;
-global $is_slideonly;
+global $wppa;
+global $wppa_opt;
+
 	if (is_feed()) {
-//		wppa_dummy_bar(__('- - - Browse navigation bar - - -', 'wppa'));
+//		wppa_dummy_bar(__('- - - Browse navigation bar - - -', 'wppa_theme'));
 		return;
 	}
-	if (($opt == 'optional') && (get_option('wppa_show_browse_navigation', 'yes') == 'no')) return;
-	if ($is_slideonly == '1') return;	/* Not when slideonly */
-?>
-	<div id="prevnext2-<?php echo($wppa_master_occur) ?>" class="wppa-box wppa-nav wppa-nav-text" style="<?php _wcs('wppa-box'); _wcs('wppa-nav'); _wcs('wppa-nav-text'); ?>">
-		<p id="browsetext-<?php echo($wppa_master_occur) ?>" style="text-align: center; margin:0">
-			<span id="p-a-<?php echo($wppa_master_occur) ?>" class="wppa-nav-text wppa-black" style="float:left; text-align:left; <?php _wcs('wppa-nav-text'); _wcs('wppa-black'); ?>">&laquo;&nbsp;</span>
-			<a id="prev-arrow-<?php echo($wppa_master_occur) ?>" class="wppa-nav-text arrow-<?php echo($wppa_master_occur) ?>" style="float:left; text-align:left; cursor:pointer; <?php _wcs('wppa-nav-text'); ?>" onclick="wppa_prev(<?php echo($wppa_master_occur) ?>)"></a>
-			<span id="n-a-<?php echo($wppa_master_occur) ?>" class="wppa-nav-text wppa-black" style="float:right; text-align:right; <?php _wcs('wppa-nav-text'); _wcs('wppa-black'); ?>">&nbsp;&raquo;</span>
-			<a id="next-arrow-<?php echo($wppa_master_occur) ?>" class="wppa-nav-text arrow-<?php echo($wppa_master_occur) ?>" style="float:right; text-align:right; cursor:pointer; <?php _wcs('wppa-nav-text'); ?>" onclick="wppa_next(<?php echo($wppa_master_occur) ?>)"></a>
-			<span id="counter-<?php echo($wppa_master_occur) ?>" class="wppa-nav-text wppa-black" style="text-align:center; <?php _wcs('wppa-nav-text'); ?>"></span>
-		</p><!-- #browsetext -->
-	</div><!-- #prevnext2 -->
-<?php 
+	if (($opt == 'optional') && !$wppa_opt['wppa_show_browse_navigation']) return;
+	if ($wppa['is_slideonly'] == '1') return;	/* Not when slideonly */
+
+	$wppa['out'] .= '<div id="prevnext2-'.$wppa['master_occur'].'" class="wppa-box wppa-nav wppa-nav-text" style="'.__wcs('wppa-box').__wcs('wppa-nav').__wcs('wppa-nav-text').'">';
+		$wppa['out'] .= '<p id="browsetext-'.$wppa['master_occur'].'" style="text-align: center; margin:0">';
+			$wppa['out'] .= '<span id="p-a-'.$wppa['master_occur'].'" class="wppa-nav-text wppa-arrow" style="float:left; text-align:left; '.__wcs('wppa-nav-text').__wcs('wppa-arrow').'">&laquo;&nbsp;</span>';
+			$wppa['out'] .= '<a id="prev-arrow-'.$wppa['master_occur'].'" class="wppa-nav-text arrow-'.$wppa['master_occur'].'" style="float:left; text-align:left; cursor:pointer; '.__wcs('wppa-nav-text').'" onclick="wppa_prev('.$wppa['master_occur'].')" ></a>';
+			$wppa['out'] .= '<span id="n-a-'.$wppa['master_occur'].'" class="wppa-nav-text wppa-arrow" style="float:right; text-align:right; '.__wcs('wppa-nav-text').__wcs('wppa-arrow').'">&nbsp;&raquo;</span>';
+			$wppa['out'] .= '<a id="next-arrow-'.$wppa['master_occur'].'" class="wppa-nav-text arrow-'.$wppa['master_occur'].'" style="float:right; text-align:right; cursor:pointer; '.__wcs('wppa-nav-text').'" onclick="wppa_next('.$wppa['master_occur'].')"></a>';
+			$wppa['out'] .= '<span id="counter-'.$wppa['master_occur'].'" class="wppa-nav-text wppa-black" style="text-align:center; '.__wcs('wppa-nav-text').'"></span>';
+		$wppa['out'] .= '</p><!-- #browsetext -->';
+	$wppa['out'] .= '</div><!-- #prevnext2 -->';
 }
 
 function wppa_slide_description($opt = '') {
-global $wppa_master_occur;
-global $is_slideonly;
-	if (($opt == 'optional') && (get_option('wppa_show_full_desc', 'yes') == 'no')) return;
-	if ($is_slideonly == '1') return;	/* Not when slideonly */
-	echo('<p id="imagedesc-'.$wppa_master_occur.'" class="wppa-fulldesc imagedesc" style="'.__wcs('wppa-fulldesc').'"></p>');
+global $wppa;
+global $wppa_opt;
+
+	if (($opt == 'optional') && !$wppa_opt['wppa_show_full_desc']) return;
+	if ($wppa['is_slideonly'] == '1') return;	/* Not when slideonly */
+	$wppa['out'] .= '<p id="imagedesc-'.$wppa['master_occur'].'" class="wppa-fulldesc imagedesc" style="'.__wcs('wppa-fulldesc').'"></p>';
 }
 
 function wppa_slide_name($opt = '') {
-global $wppa_master_occur;
-global $is_slideonly;
-	if (($opt == 'optional') && (get_option('wppa_show_full_name', 'yes') == 'no')) return;
-	if ($is_slideonly == '1') return;	/* Not when slideonly */
-	echo('<p id="imagetitle-'.$wppa_master_occur.'" class="wppa-fulltitle imagetitle" style="'.__wcs('wppa-fulltitle').'"></p>');
+global $wppa;
+global $wppa_opt;
+
+	if (($opt == 'optional') && !$wppa_opt['wppa_show_full_name']) return;
+	if ($wppa['is_slideonly'] == '1') return;	/* Not when slideonly */
+	$wppa['out'] .= '<p id="imagetitle-'.$wppa['master_occur'].'" class="wppa-fulltitle imagetitle" style="'.__wcs('wppa-fulltitle').'"></p>';
 }	
 
 function wppa_popup() {
-global $wppa_master_occur;
-	echo('<div id="wppa-popup-'.$wppa_master_occur.'" class="wppa-popup-frame wppa-thumb-text" style="'.__wcs('wppa-thumb-text').'" ></div>');
-	echo('<div style="clear:both;"></div>');
+global $wppa;
+
+	$wppa['out'] .= '<div id="wppa-popup-'.$wppa['master_occur'].'" class="wppa-popup-frame wppa-thumb-text" style="'.__wcs('wppa-thumb-text').'" ></div>';
+	$wppa['out'] .= '<div style="clear:both;"></div>';
 }
 
 function wppa_run_slidecontainer($type = '') {
-global $wppa_master_occur;
-global $single_photo;
-global $is_slideonly;
-global $wppa_portrait_only;
-global $wppa_ss_widget_valign;
+global $wppa;
+global $wppa_opt;
 
 	if ($type == 'single') {
 		if (is_feed()) {
-			echo('<a href="'.get_permalink().'"><img src="'.wppa_get_image_url_by_id($single_photo).'" style="'.wppa_get_fullimgstyle($single_photo).'"/></a>');
+			$wppa['out'] .= '<a href="'.get_permalink().'"><img src="'.wppa_get_image_url_by_id($wppa['single_photo']).'" style="'.wppa_get_fullimgstyle($wppa['single_photo']).'"/></a>';
 			return;
 		} else {
-			echo('<script type="text/javascript">wppa_store_slideinfo('.wppa_get_slide_info(0, $single_photo).');</script>');
-			echo('<script type="text/javascript">wppa_fullvalign_fit['.$wppa_master_occur.'] = true;</script>');
-			echo('<script type="text/javascript">wppa_startstop('.$wppa_master_occur.', 0);</script>');
+			$wppa['out'] .= '<script type="text/javascript">wppa_store_slideinfo('.wppa_get_slide_info(0, $wppa['single_photo']).');</script>';
+			$wppa['out'] .= '<script type="text/javascript">wppa_fullvalign_fit['.$wppa['master_occur'].'] = true;</script>';
+			$wppa['out'] .= '<script type="text/javascript">wppa_startstop('.$wppa['master_occur'].', 0);</script>';
 		}
 	}
 	elseif ($type == 'slideshow') {
 		$index = 0;
 		$startindex = -1;
-		$first = -1;
+//		$first = -1;
 
 		if (isset($_GET['photo'])) $startid = $_GET['photo'];	// Still slideshow at photo id $startid
 		else {
-			if (get_option('wppa_start_slide', 'no') == 'yes' && get_option('wppa_hide_slideshow', 'no') == 'no') {
+			if ($wppa_opt['wppa_start_slide'] && !$wppa_opt['wppa_hide_slideshow']) {
 				$startid = -1;					// Start running
 			}
 			else $startid = -2;					// Start still at first photo
 		}
 		if (isset($_GET['album'])) $alb = $_GET['album'];
-		else $alb = '';	// Album id is in $startalbum
+		else $alb = '';	// Album id is in $wppa['start_album']
 		$thumbs = wppa_get_thumbs($alb);
 		foreach ($thumbs as $tt) : $id = $tt['id'];
-			echo '<script type="text/javascript">wppa_store_slideinfo(' . wppa_get_slide_info($index, $id) . ');</script>';
-			if ($index == 0) $first = $id;
+			$wppa['out'] .=  '<script type="text/javascript">wppa_store_slideinfo(' . wppa_get_slide_info($index, $id) . ');</script>';
+//			if ($index == 0) $first = $id;
 			if ($startid == -2) $startid = $id;
 			if ($startid == $id) $startindex = $index;
 			$index++;
 		endforeach;
-		if ($startindex != -1) $first = $startid;
+//		if ($startindex != -1) $first = $startid;
 		
-		if ($is_slideonly) $startindex = -1;	// Start running, overrules everything
+		if ($wppa['is_slideonly']) $startindex = -1;	// Start running, overrules everything
 	
-		if ($wppa_ss_widget_valign != '' && $wppa_ss_widget_valign != 'fit') {
+		if ($wppa['ss_widget_valign'] != '' && $wppa['ss_widget_valign'] != 'fit') {
 		}
-		elseif (get_option('wppa_fullvalign', 'default') == 'fit' || $is_slideonly == '1' ) { 
-			echo('<script type="text/javascript" >wppa_fullvalign_fit['.$wppa_master_occur.'] = true;</script>');
+		elseif ($wppa_opt['wppa_fullvalign'] == 'fit' || $wppa['is_slideonly'] == '1' ) { 
+			$wppa['out'] .= '<script type="text/javascript" >wppa_fullvalign_fit['.$wppa['master_occur'].'] = true;</script>';
 		}
 		
-		if ($wppa_portrait_only) {
-			echo('<script type="text/javascript" >wppa_portrait_only['.$wppa_master_occur.'] = true;</script>');
+		if ($wppa['portrait_only']) {
+			$wppa['out'] .= '<script type="text/javascript" >wppa_portrait_only['.$wppa['master_occur'].'] = true;</script>';
 		}
-		echo('<script type="text/javascript">wppa_startstop('.$wppa_master_occur.', '.$startindex.');</script>');
+		$wppa['out'] .= '<script type="text/javascript">wppa_startstop('.$wppa['master_occur'].', '.$startindex.');</script>';
 	}
 	else {
-		echo('<span style="color:red;">Error, wppa_run_slidecontainer() called with wrong argument: '.$type.'. Possible values: \'single\' or \'slideshow\'</span>');
+		$wppa['out'] .= '<span style="color:red;">Error, wppa_run_slidecontainer() called with wrong argument: '.$type.'. Possible values: \'single\' or \'slideshow\'</span>';
 	}
 }
 
 function wppa_is_pagination() {
-global $wppa_src;
-	if ((wppa_get_pagesize('albums') == '0'&& wppa_get_pagesize('thumbs') == '0') || $wppa_src) return false;
+global $wppa;
+
+	if ((wppa_get_pagesize('albums') == '0' && wppa_get_pagesize('thumbs') == '0') || $wppa['src']) return false;
 	else return true;
 }
 
@@ -2130,137 +1915,137 @@ function wppa_slide_custom($opt = '') {
 
 // Show Filmstrip	
 function wppa_slide_filmstrip($opt = '') {
-global $wppa_master_occur;
-global $is_slideonly;
+global $wppa;
+global $wppa_opt;
 global $thumb;
-	if ($opt == 'optional' && get_option('wppa_filmstrip', 'yes') == 'no' && !is_feed()) return;
+
+	if ($opt == 'optional' && !$wppa_opt['wppa_filmstrip'] && !is_feed()) return;
 	
 //	if (is_feed()) {
-//		wppa_dummy_bar(__('- - - Filmstrip - - -', 'wppa'));
+//		wppa_dummy_bar(__('- - - Filmstrip - - -', 'wppa_theme'));
 //		return;
 //	}
-	if ($is_slideonly == '1' && !is_feed()) return;	/* Not when slideonly */
+	if ($wppa['is_slideonly'] == '1' && !is_feed()) return;	/* Not when slideonly */
 
 	if (isset($_GET['album'])) $alb = $_GET['album'];
-	else $alb = '';	// Album id is in $startalbum
+	else $alb = '';	// Album id is in $wppa['start_album']
 	$thumbs = wppa_get_thumbs($alb);
 	if (!$thumbs || count($thumbs) < 1) return;
 	
 	$preambule = wppa_get_preambule();
 		
-	$width = (get_option('wppa_tf_width') + get_option('wppa_tn_margin')) * (count($thumbs) + 2 * $preambule);
-	$width += get_option('wppa_tn_margin') + 2;
-	$topmarg = get_option('wppa_thumbsize') / 2 - 12 + 7;
+	$width = ($wppa_opt['wppa_tf_width'] + $wppa_opt['wppa_tn_margin']) * (count($thumbs) + 2 * $preambule);
+	$width += $wppa_opt['wppa_tn_margin'] + 2;
+	$topmarg = $wppa_opt['wppa_thumbsize'] / 2 - 12 + 7;
 
-	$w = wppa_get_container_width() - ( 2*6 + 2*23 + 2*get_option('wppa_bwidth', '1')); /* 2*padding + 2*arrow + 2*border */
+	$w = wppa_get_container_width() - ( 2*6 + 2*23 + 2*$wppa_opt['wppa_bwidth']); /* 2*padding + 2*arrow + 2*border */
 	$IE6 = 'width: '.$w.'px;';
 	
 	if (is_feed()) {
-		echo('<div style="'.__wcs('wppa-box').__wcs('wppa-nav').'">');
+		$wppa['out'] .= '<div style="'.__wcs('wppa-box').__wcs('wppa-nav').'">';
 	} 
 	else {
-?>
-	<div class="wppa-box wppa-nav" style="<?php _wcs('wppa-box'); _wcs('wppa-nav'); ?>height:<?php echo(get_option("wppa_thumbsize") + get_option("wppa_tn_margin")); ?>px;">
-		<div style="float:left; text-align:left; cursor:pointer; margin-top:<?php echo($topmarg); ?>px; width: 23px; font-size: 24px;"><a id="prev-film-arrow-<?php echo($wppa_master_occur); ?>" onclick="wppa_prev(<?php echo($wppa_master_occur); ?>);">&laquo;</a></div>
-		<div style="float:right; text-align:right; cursor:pointer; margin-top:<?php echo($topmarg); ?>px; width: 23px; font-size: 24px;"><a id="next-film-arrow-<?php echo($wppa_master_occur); ?>" onclick="wppa_next(<?php echo($wppa_master_occur); ?>);">&raquo;</a></div>
-		<div class="filmwindow" style="<?php echo($IE6) ?> display: block; height:<?php echo(get_option('wppa_thumbsize') + get_option('wppa_tn_margin')); ?>px; margin: 0 20px 0 20px; overflow:hidden;">
-			<div id="wppa-filmstrip-<?php echo($wppa_master_occur); ?>" style="height:<?php echo(get_option("wppa_thumbsize")); ?>px; width:<?php echo($width); ?>px; margin-left: -100px;">
-<?php
-		}
-				$cnt = count($thumbs);
-				$start = $cnt - $preambule;
-				$end = $cnt;
-				$idx = $start;
-				while ($idx < $end) {
-					$glue = $cnt == ($idx + 1) ? true : false;
-					$ix = $idx;
-					while ($ix < 0) $ix += $cnt;
-					$thumb = $thumbs[$ix];
-					wppa_do_filmthumb($ix, false, $glue);
-					$idx++;
-				}
-				$idx = 0;
-				foreach ($thumbs as $tt) : $thumb = $tt;
-					$glue = $cnt == ($idx + 1) ? true : false;
-					wppa_do_filmthumb($idx, true, $glue);
-					$idx++;
-				endforeach;
-				$start = '0';
-				$end = $preambule;
-				$idx = $start;
-				while ($idx < $end) {
-					$ix = $idx;
-					while ($ix >= $cnt) $ix -= $cnt;
-					$thumb = $thumbs[$ix];
-					wppa_do_filmthumb($ix, false);
-					$idx++;
-				}
+
+	$wppa['out'] .= '<div class="wppa-box wppa-nav" style="'.__wcs('wppa-box').__wcs('wppa-nav').'height:'.($wppa_opt['wppa_thumbsize']+$wppa_opt['wppa_tn_margin']).'px;">';
+		$wppa['out'] .= '<div style="float:left; text-align:left; cursor:pointer; margin-top:'.$topmarg.'px; width: 23px; font-size: 24px;"><a class="wppa-arrow" style="'.__wcs('wppa-arrow').'" id="prev-film-arrow-'.$wppa['master_occur'].'" onclick="wppa_prev('.$wppa['master_occur'].');" >&laquo;</a></div>';
+		$wppa['out'] .= '<div style="float:right; text-align:right; cursor:pointer; margin-top:'.$topmarg.'px; width: 23px; font-size: 24px;"><a class="wppa-arrow" style="'.__wcs('wppa-arrow').'" id="next-film-arrow-'.$wppa['master_occur'].'" onclick="wppa_next('.$wppa['master_occur'].');">&raquo;</a></div>';
+		$wppa['out'] .= '<div class="filmwindow" style="'.$IE6.' display: block; height:'.($wppa_opt['wppa_thumbsize']+$wppa_opt['wppa_tn_margin']).'px; margin: 0 20px 0 20px; overflow:hidden;">';
+			$wppa['out'] .= '<div id="wppa-filmstrip-'.$wppa['master_occur'].'" style="height:'.$wppa_opt['wppa_thumbsize'].'px; width:'.$width.'px; margin-left: -100px;">';
+	}
+	
+	$cnt = count($thumbs);
+	$start = $cnt - $preambule;
+	$end = $cnt;
+	$idx = $start;
+	while ($idx < $end) {
+		$glue = $cnt == ($idx + 1) ? true : false;
+		$ix = $idx;
+		while ($ix < 0) $ix += $cnt;
+		$thumb = $thumbs[$ix];
+		wppa_do_filmthumb($ix, false, $glue);
+		$idx++;
+	}
+	$idx = 0;
+	foreach ($thumbs as $tt) : $thumb = $tt;
+		$glue = $cnt == ($idx + 1) ? true : false;
+		wppa_do_filmthumb($idx, true, $glue);
+		$idx++;
+	endforeach;
+	$start = '0';
+	$end = $preambule;
+	$idx = $start;
+	while ($idx < $end) {
+		$ix = $idx;
+		while ($ix >= $cnt) $ix -= $cnt;
+		$thumb = $thumbs[$ix];
+		wppa_do_filmthumb($ix, false);
+		$idx++;
+	}
+	
 	if (is_feed()) {
-		echo('</div>');
+		$wppa['out'] .= '</div>';
 	}
 	else {
-?>
-			</div>
-		</div>
-	</div>
-<?php
+			$wppa['out'] .= '</div>';
+		$wppa['out'] .= '</div>';
+	$wppa['out'] .= '</div>';
 	}
 }
 
 function wppa_do_filmthumb($idx, $do_for_feed = false, $glue = false) {
-global $wppa_master_occur;
+global $wppa;
+global $wppa_opt;
 global $thumb;
+
 	$src = wppa_get_thumb_path(); 
-	$imgattr = wppa_get_imgstyle($src, get_option('wppa_thumbsize'), 'optional', 'thumb'); 
+	$imgattr = wppa_get_imgstyle($src, $wppa_opt['wppa_thumbsize'], 'optional', 'thumb'); 
 	$url = wppa_get_thumb_url(); 
 	$events = wppa_get_imgevents('thumb', $thumb['id'], 'nopopup'); 
-	$events .= ' onclick="wppa_goto('.$wppa_master_occur.', '.$idx.')"';
+	$events .= ' onclick="wppa_goto('.$wppa['master_occur'].', '.$idx.')"';
 	
 	if (is_feed()) {
 		if ($do_for_feed) {
-?>
-			<a href="<?php echo(get_permalink()) ?>"><img src="<?php echo($url); ?>" alt="<?php echo(esc_attr($thumb['name'])); ?>" title="<?php echo(esc_attr($thumb['name'])); ?>" style="<?php echo(wppa_get_imgstyle($src, '100', '4', 'thumb')) ?>"/></a>
-<?php
+			$wppa['out'] .= '<a href="'.get_permalink().'"><img src="'.$url.'" alt="'.esc_attr($thumb['name']).'" title="'.esc_attr($thumb['name']).'" style="'.wppa_get_imgstyle($src, '100', '4', 'thumb').'"/></a>';
 		}
 	} else {
 	// If !$do_for_feed: pre-or post-ambule. To avoid dup id change it in that case
-?>
-	<div id="<?php if ($do_for_feed) echo('film'); else echo('pre'); ?>_thumbnail_frame_<?php echo($thumb['id'].'_'.$wppa_master_occur) ?>" class="thumbnail-frame" style="<?php echo(wppa_get_thumb_frame_style($glue, 'film')); ?>" >
-		<img src="<?php echo($url); ?>" alt="<?php echo(esc_attr($thumb['name'])); ?>" title="<?php echo(esc_attr($thumb['name'])); ?>" style="<?php echo($imgattr); ?>" <?php echo($events) ?>/>
-	</div><!-- #thumbnail_frame_<?php echo($thumb['id'].'_'.$wppa_master_occur) ?> -->
-<?php
+	$tmp = $do_for_feed ? 'film' : 'pre';
+	$wppa['out'] .= '<div id="'.$tmp.'_thumbnail_frame_'.$thumb['id'].'_'.$wppa['master_occur'].'" class="thumbnail-frame" style="'.wppa_get_thumb_frame_style($glue, 'film').'" >';
+		$wppa['out'] .= '<img src="'.$url.'" alt="'.esc_attr($thumb['name']).'" title="'.esc_attr($thumb['name']).'" style="'.$imgattr.'" '.$events.'/>';
+	$wppa['out'] .= '</div><!-- #thumbnail_frame_'.$thumb['id'].'_'.$wppa['master_occur'].' -->';
 	}
 }
 
 function wppa_get_preambule() {
-	$result = is_numeric(get_option('wppa_colwidth', '640')) ? get_option('wppa_colwidth', '640') : get_option('wppa_fullsize', '640');
-	$result = ceil(ceil($result / get_option('wppa_thumbsize')) / 2 );
+global $wppa_opt;
+
+	$result = is_numeric($wppa_opt['wppa_colwidth']) ? $wppa_opt['wppa_colwidth'] : $wppa_opt['wppa_fullsize'];
+	$result = ceil(ceil($result / $wppa_opt['wppa_thumbsize']) / 2 );
 	return $result;
 }
 
-function _wcs($class = '') {
-	echo(__wcs($class));
-}
 function __wcs($class = '') {
+global $wppa_opt;
+
 	$opt = '';
 	$result = '';
 	switch ($class) {
 		case 'wppa-box':
-			$opt = get_option('wppa_bwidth', '1');
+			$opt = $wppa_opt['wppa_bwidth'];
 			if ($opt > '0') $result .= 'border-style: solid; border-width:'.$opt.'px; ';
-			$opt = get_option('wppa_bradius', '6');
+			$opt = $wppa_opt['wppa_bradius'];
 			if ($opt > '0') {
 			/*	$result .= 'border-radius:'.$opt.'px; ';	*/ /* Reserved for css3 */
 				$result .= '-moz-border-radius:'.$opt.'px; -khtml-border-radius:'.$opt.'px; -webkit-border-radius:'.$opt.'px; ';
 			}
 			break;
 		case 'wppa-mini-box':
-			$opt = get_option('wppa_bwidth', '1');
+			$opt = $wppa_opt['wppa_bwidth'];
 			if ($opt > '0') {
 				$opt = floor(($opt + 2) / 3);
 				$result .= 'border-style: solid; border-width:'.$opt.'px; ';
 			}
-			$opt = get_option('wppa_bradius', '6');
+			$opt = $wppa_opt['wppa_bradius'];
 			if ($opt > '0') {
 				$opt = floor(($opt + 2) / 3);
 			/*	$result .= 'border-radius:'.$opt.'px; ';	*/ /* Reserved for css3 */
@@ -2268,172 +2053,155 @@ function __wcs($class = '') {
 			}
 			break;
 		case 'wppa-thumb-text':
-			$opt = get_option('wppa_fontfamily_thumb', '');
+			$opt = $wppa_opt['wppa_fontfamily_thumb'];
 			if ($opt != '') $result .= 'font-family:'.$opt.'; ';
-			$opt = get_option('wppa_fontsize_thumb', '');
+			$opt = $wppa_opt['wppa_fontsize_thumb'];
 			if ($opt != '') {
 				$ls = floor($opt * 1.29);
 				$result .= 'font-size:'.$opt.'px; line-height:'.$ls.'px; ';
 			}
 			break;
 		case 'wppa-box-text':
-			$opt = get_option('wppa_fontfamily_box', '');
+			$opt = $wppa_opt['wppa_fontfamily_box'];
 			if ($opt != '') $result .= 'font-family:'.$opt.'; ';
-			$opt = get_option('wppa_fontsize_box', '');
+			$opt = $wppa_opt['wppa_fontsize_box'];
 			if ($opt != '') $result .= 'font-size:'.$opt.'px; ';
 			break;
 		case 'wppa-nav':
-			$opt = get_option('wppa_bgcolor_nav', '#d5eabf');
+			$opt = $wppa_opt['wppa_bgcolor_nav'];
 			if ($opt != '') $result .= 'background-color:'.$opt.'; ';
-			$opt = get_option('wppa_bcolor_nav', '#d5eabf');
+			$opt = $wppa_opt['wppa_bcolor_nav'];
 			if ($opt != '') $result .= 'border-color:'.$opt.'; ';
 			break;
 		case 'wppa-nav-text':
-			$opt = get_option('wppa_fontfamily_nav', '');
+			$opt = $wppa_opt['wppa_fontfamily_nav'];
 			if ($opt != '') $result .= 'font-family:'.$opt.'; ';
-			$opt = get_option('wppa_fontsize_nav', '');
+			$opt = $wppa_opt['wppa_fontsize_nav'];
 			if ($opt != '') $result .= 'font-size:'.$opt.'px; ';
 			break;
 		case 'wppa-even':
-			$opt = get_option('wppa_bgcolor_even', '#e6f2d9');
+			$opt = $wppa_opt['wppa_bgcolor_even'];
 			if ($opt != '') $result .= 'background-color:'.$opt.'; ';
-			$opt = get_option('wppa_bcolor_even', '#e6f2d9');
+			$opt = $wppa_opt['wppa_bcolor_even'];
 			if ($opt != '') $result .= 'border-color:'.$opt.'; ';
 			break;
 		case 'wppa-alt':
-			$opt = get_option('wppa_bgcolor_alt', '#d5eabf');
+			$opt = $wppa_opt['wppa_bgcolor_alt'];
 			if ($opt != '') $result .= 'background-color:'.$opt.'; ';
-			$opt = get_option('wppa_bcolor_alt', '#d5eabf');
+			$opt = $wppa_opt['wppa_bcolor_alt'];
 			if ($opt != '') $result .= 'border-color:'.$opt.'; ';
 			break;
 		case 'wppa-img':
-			$opt = get_option('wppa_bgcolor_img', '#eef7e6');
+			$opt = $wppa_opt['wppa_bgcolor_img'];
 			if ($opt != '') $result .= 'background-color:'.$opt.'; ';
 			break;
 		case 'wppa-title':
-			$opt = get_option('wppa_fontfamily_title', '');
+			$opt = $wppa_opt['wppa_fontfamily_title'];
 			if ($opt != '') $result .= 'font-family:'.$opt.'; ';
-			$opt = get_option('wppa_fontsize_title', '');
+			$opt = $wppa_opt['wppa_fontsize_title'];
 			if ($opt != '') $result .= 'font-size:'.$opt.'px; ';
 			break;
 		case 'wppa-fulldesc':
-			$opt = get_option('wppa_fontfamily_fulldesc', '');
+			$opt = $wppa_opt['wppa_fontfamily_fulldesc'];
 			if ($opt != '') $result .= 'font-family:'.$opt.'; ';
-			$opt = get_option('wppa_fontsize_fulldesc', '');
+			$opt = $wppa_opt['wppa_fontsize_fulldesc'];
 			if ($opt != '') $result .= 'font-size:'.$opt.'px; ';
 			break;
 		case 'wppa-fulltitle':
-			$opt = get_option('wppa_fontfamily_fulltitle', '');
+			$opt = $wppa_opt['wppa_fontfamily_fulltitle'];
 			if ($opt != '') $result .= 'font-family:'.$opt.'; ';
-			$opt = get_option('wppa_fontsize_fulltitle', '');
+			$opt = $wppa_opt['wppa_fontsize_fulltitle'];
 			if ($opt != '') $result .= 'font-size:'.$opt.'px; ';
 			break;
 		case 'wppa-black':
-			$opt = get_option('wppa_black', 'black');
+			$opt = $wppa_opt['wppa_black'];
 			if ($opt != '') $result .= 'color:'.$opt.'; ';
 			break;
 		case 'wppa-widget':
-			$opt = get_option('wppa_widget_padding', '5');
+			$opt = $wppa_opt['wppa_widget_padding'];
 			if ($opt != '') $result .= 'padding-top:'.$opt.'px; padding-left:'.$opt.'px; ';
+			break;
+		case 'wppa-arrow':
+			$opt = $wppa_opt['wppa_arrow_color'];
+			if ($opt != '') $result .= 'color:'.$opt.'; ';
 			break;
 	}
 	return $result;
 }
 
 function wppa_dummy_bar($msg = '') {
-?>
-	<div style="margin:4px 0; <?php _wcs('wppa-box'); _wcs('wppa-nav'); ?>text-align:center;"><?php echo($msg); ?></div>
-<?php
+global $wppa;
+
+	$wppa['out'] .= '<div style="margin:4px 0; '.__wcs('wppa-box').__wcs('wppa-nav').'text-align:center;">'.$msg.'</div>';
 }
 
-function wppa_is_wider($x, $y) {
-	$ratioref = get_option('wppa_fullsize', '640') / get_option('wppa_maxheight', get_option('wppa_fullsize', '640'));
-	$ratio = $x / $y;
-	return ($ratio > $ratioref);
-}
 
 function wppa_slide_rating($opt = '') {
-global $wppa_master_occur;
-global $is_slideonly;
-	if ($opt == 'optional' && get_option('wppa_rating_on', 'yes') == 'no') return;
-	if ($is_slideonly == '1') return;	/* Not when slideonly */
+global $wppa;
+global $wppa_opt;
+
+	if ($opt == 'optional' && !$wppa_opt['wppa_rating_on']) return;
+	if ($wppa['is_slideonly'] == '1') return;	/* Not when slideonly */
 	if (is_feed()) {
-		wppa_dummy_bar(__('- - - Rating enabled - - -', 'wppa'));
+		wppa_dummy_bar(__a('- - - Rating enabled - - -', 'wppa_theme'));
 		return;
 	}
-	$fs = get_option('wppa_fontsize_nav', '12');	
+	$fs = $wppa_opt['wppa_fontsize_nav'];	
 	$dh = $fs + '6';
 	$size = 'font-size:'.$fs.'px;';
-?>	
-	<div id="wppa-rating-<?php echo($wppa_master_occur) ?>" class="wppa-box wppa-nav wppa-nav-text" style="<?php _wcs('wppa-box'); _wcs('wppa-nav'); _wcs('wppa-nav-text'); echo($size) ?> text-align:center;">
-<?php
-	$r['1'] = __('very low', 'wppa');
-	$r['2'] = __('low', 'wppa');
-	$r['3'] = __('average', 'wppa');
-	$r['4'] = __('high', 'wppa');
-	$r['5'] = __('very high', 'wppa');
+	
+	$wppa['out'] .= '<div id="wppa-rating-'.$wppa['master_occur'].'" class="wppa-box wppa-nav wppa-nav-text" style="'.__wcs('wppa-box').__wcs('wppa-nav').__wcs('wppa-nav-text').$size.' text-align:center;">';
+
+	$r['1'] = __a('very low', 'wppa_theme');
+	$r['2'] = __a('low', 'wppa_theme');
+	$r['3'] = __a('average', 'wppa_theme');
+	$r['4'] = __a('high', 'wppa_theme');
+	$r['5'] = __a('very high', 'wppa_theme');
 
 	if ($fs != '') $fs += 3; else $fs = '15';	// iconsize = fontsize+3, Default to 15
 	$size = 'style="height:'.$fs.'px; margin-bottom:-3px;"';
 
-	_e('Average&nbsp;rating', 'wppa');
-	echo('&nbsp;');
+	$wppa['out'] .= __a('Average&nbsp;rating', 'wppa_theme').'&nbsp;';
 	
 	$icon = 'star.png';
 	$i = '1';
 	while ($i < '6') {
-		echo('<img id="wppa-avg-'.$wppa_master_occur.'-'.$i.'" class="wppa-avg-'.$wppa_master_occur.' no-shadow" '.$size.' src="'.wppa_get_imgdir().$icon.'" alt="'.$i.'" title="'.__('Avarage&nbsp;rating:', 'wppa').' '.$r[$i].'" />');
+		$wppa['out'] .= '<img id="wppa-avg-'.$wppa['master_occur'].'-'.$i.'" class="wppa-avg-'.$wppa['master_occur'].' no-shadow" '.$size.' src="'.wppa_get_imgdir().$icon.'" alt="'.$i.'" title="'.__a('Average&nbsp;rating', 'wppa_theme').': '.$r[$i].'" />';
 		$i++;
 	}
 	
-	echo('&nbsp;&nbsp;');
+	$wppa['out'] .= '&nbsp;&nbsp;';
 
-	if (get_option('wppa_rating_login', 'yes') == 'no' || is_user_logged_in()) {
+	if (!$wppa_opt['wppa_rating_login'] || is_user_logged_in()) {
 		$i = '1';
 		while ($i < '6') {
-			echo('<img id="wppa-rate-'.$wppa_master_occur.'-'.$i.'" class="wppa-rate-'.$wppa_master_occur.' no-shadow" '.$size.' src="'.wppa_get_imgdir().$icon.'" alt="'.$i.'" title="'.__('My&nbsp;rating:', 'wppa').' '.$r[$i].'" onmouseover="wppa_follow_me('.$wppa_master_occur.', '.$i.')" onmouseout="wppa_leave_me('.$wppa_master_occur.', '.$i.')" onclick="wppa_rate_it('.$wppa_master_occur.', '.$i.')" />');
+			$wppa['out'] .= '<img id="wppa-rate-'.$wppa['master_occur'].'-'.$i.'" class="wppa-rate-'.$wppa['master_occur'].' no-shadow" '.$size.' src="'.wppa_get_imgdir().$icon.'" alt="'.$i.'" title="'.__a('My&nbsp;rating', 'wppa_theme').': '.$r[$i].'" onmouseover="wppa_follow_me('.$wppa['master_occur'].', '.$i.')" onmouseout="wppa_leave_me('.$wppa['master_occur'].', '.$i.')" onclick="wppa_rate_it('.$wppa['master_occur'].', '.$i.')" />';
 			$i++;
 		}
-		echo('&nbsp;');
-		_e('My&nbsp;rating', 'wppa');
+		$wppa['out'] .= '&nbsp;'.__a('My&nbsp;rating', 'wppa_theme');
 	}
 	else {
-		_e('You must login to vote', 'wppa');
+		$wppa['out'] .= __a('You must login to vote', 'wppa_theme');
 	}
-?>
-	</div>
-<?php
+	$wppa['out'] .= '</div>';
 }
 
 function wppa_rating_count_by_id($id = '') {
-	echo(wppa_get_rating_count_by_id($id));
-}
-function wppa_get_rating_count_by_id($id = '') {
-global $wpdb;
-	if (!is_numeric($id)) return '';
-	$query = 'SELECT * FROM '.WPPA_RATING.' WHERE photo = '.$id;
-	$ratings = $wpdb->get_results($query, 'ARRAY_A');
-	if ($ratings) return count($ratings);
-	else return '0';
+global $wppa;
+
+	$wppa['out'] .= wppa_get_rating_count_by_id($id);
 }
 
+
 function wppa_rating_by_id($id = '', $opt = '') {
-	echo(wppa_get_rating_by_id($id, $opt));
-}
-function wppa_get_rating_by_id($id = '', $opt = '') {
-global $wpdb;
-	$result = '';
-	if (is_numeric($id)) {
-		$rating = $wpdb->get_var("SELECT mean_rating FROM ".PHOTO_TABLE." WHERE id=$id");
-		if ($rating) {
-			if ($opt == 'nolabel') $result = round($rating * 1000) / 1000;
-			else $result = sprintf(__('Rating: %s', 'wppa'), round($rating * 1000) / 1000);
-		}
-	}
-	return $result;
+global $wppa;
+
+	$wppa['out'] .= wppa_get_rating_by_id($id, $opt);
 }
 
 function wppa_get_cover_width($type) {
+global $wppa_opt;
+
 	$conwidth = wppa_get_container_width();
 	$cols = wppa_get_cover_cols($type);
 	
@@ -2449,13 +2217,15 @@ function wppa_get_cover_width($type) {
 			break;
 		
 	}
-	$result -= (2 * (7 + get_option('wppa_bwidth', '1')));	// 2 * (padding + border)
+	$result -= (2 * (7 + $wppa_opt['wppa_bwidth']));	// 2 * (padding + border)
 	return $result;
 }
 
 function wppa_get_text_frame_style($photo_left, $type) {
+global $wppa_opt;
+
 	$width = wppa_get_cover_width($type); // - wppa_get_textframe_delta($type);
-	$width -= get_option('wppa_smallsize', '100');
+	$width -= $wppa_opt['wppa_smallsize'];
 	$width -= 13;	// margin
 	
 	if ($photo_left) {
@@ -2468,8 +2238,10 @@ function wppa_get_text_frame_style($photo_left, $type) {
 }
 
 function wppa_get_textframe_delta() {
-	$delta = get_option('wppa_smallsize', '100');
-	$delta += (2 * (7 + get_option('wppa_bwidth', '1') + 4) + 5);	// 2 * (padding + border + photopadding) + margin
+global $wppa_opt;
+
+	$delta = $wppa_opt['wppa_smallsize'];
+	$delta += (2 * (7 + $wppa_opt['wppa_bwidth'] + 4) + 5);	// 2 * (padding + border + photopadding) + margin
 	return $delta;
 }
 
@@ -2492,27 +2264,123 @@ global $cover_count;
 }
 
 function wppa_get_cover_cols($type) {
-global $wppa_auto_colwidth;
-global $wppa_album_count;
-global $wppa_thumb_count;
+global $wppa;
+global $wppa_opt;
+
 	$conwidth = wppa_get_container_width();
 	$cols = '1';
-	if ($conwidth >= get_option('wppa_2col_treshold', '640')) $cols = '2';
-	if ($conwidth >= get_option('wppa_3col_treshold', '800')) $cols = '3';
+	if ($conwidth >= $wppa_opt['wppa_2col_treshold']) $cols = '2';
+	if ($conwidth >= $wppa_opt['wppa_3col_treshold']) $cols = '3';
 	
-	if ($wppa_auto_colwidth) $cols = '1';
-	if (($type == 'cover') && ($wppa_album_count < '2')) $cols = '1';
-	if (($type == 'thumb') && ($wppa_thumb_count < '2')) $cols = '1';
+	if ($wppa['auto_colwidth']) $cols = '1';
+	if (($type == 'cover') && ($wppa['album_count'] < '2')) $cols = '1';
+	if (($type == 'thumb') && ($wppa['thumb_count'] < '2')) $cols = '1';
 	return $cols;
 }
 
 function wppa_get_box_width() {
+global $wppa_opt;
+
 	$result = wppa_get_container_width();
 	$result -= 14;	// 2 * padding
-	$result -= 2 * get_option('wppa_bwidth', '1');
+	$result -= 2 * $wppa_opt['wppa_bwidth'];
 	return $result;
 }
 
 function wppa_get_box_delta() {
 	return wppa_get_container_width() - wppa_get_box_width();
 }
+
+function __a($txt, $dom) {
+	return __($txt, $dom);
+}
+
+// get permalink plus ? or &
+function wppa_get_permalink($key = '') {
+global $wppa;
+	
+	switch ($key) {
+		case '0':
+		case '':	// normal permalink
+			if ($wppa['permalink'] == '') {	// not in cache
+				$pl = get_permalink();
+				if (strpos($pl, '?')) $pl .= '&amp;';
+				else $pl .= '?';
+				$wppa['permalink'] = $pl;	// cache it
+			}
+			else {
+				$pl = $wppa['permalink'];
+			}
+			break;
+		case 'js':	// normal permalink for js use
+			$pl = get_permalink();
+			if (strpos($pl, '?')) $pl .= '&';
+			else $pl .= '?';
+			break;
+		default:	// pagelink
+			$pl = get_page_link($key);
+			if (strpos($pl, '?')) $pl .= '&amp;';
+			else $pl .= '?';
+			break;
+	}
+	return $pl;
+}
+
+function wppa_force_balance_pee($xtext) {
+// we can only correct one missing <p> or </p> because they are not nestable
+// this should be enough, it's only to correct an page/post that is interrupted by a %%wppa%% script
+	$text = $xtext;	// Make a local copy
+	$done = false;
+	$temp = strtolower($text);
+	$opens = substr_count($temp, '<p');
+	$close = substr_count($temp, '</p');
+	if ($opens > $close) {	// append a close
+		$text .= '</p>';	
+	}
+	if ($close > $opens) {	// prepend an open
+		$text = '<p>'.$text;
+	}
+	return $text;
+}
+
+// This is a nice simple function
+function wppa_output($txt) {
+global $wppa;
+
+	$wppa['out'] .= $txt;
+	return;
+}
+	
+function wppa_mphoto() {
+global $wppa;
+
+	$width = wppa_get_container_width();
+	$height = floor($width / wppa_get_ratio($wppa['single_photo']));
+	
+	$wppa['out'] .= '[caption id="wppa_'.$wppa['single_photo'].'" ';
+	if ($wppa['align'] != '') $wppa['out'] .= 'align="align'.$wppa['align'].'" ';
+	$wppa['out'] .= 'width="'.$width.'" ';
+	$wppa['out'] .= 'caption="'.stripslashes(wppa_get_photo_desc($wppa['single_photo'])).'"]';
+//	$wppa['out'] .= '<a href="">';
+	$wppa['out'] .= '<img src="'.wppa_get_image_url_by_id($wppa['single_photo']).'" alt="" title="test" width="'.$width.'" height="'.$height.'" />';
+//	$wppa['out'] .= '</a>';
+	$wppa['out'] .= '[/caption]';
+}
+
+// returns aspect ratio (w/h), or 1 on error
+function wppa_get_ratio($id = '') {
+global $wpdb;
+
+	if (!is_numeric($id)) return '1';	// Not 0 to prevent divide by zero
+	
+	$photo = $wpdb->get_row("SELECT * FROM " . PHOTO_TABLE . " WHERE id={$id} LIMIT 1", 'ARRAY_A');
+	if (!$photo) return '1';
+	
+	$file = ABSPATH.'/wp-content/uploads/wppa/'.$id.'.'.$photo['ext'];
+	if (is_file($file)) $image_attr = getimagesize($file);
+	else return '1';
+	
+	if ($image_attr[1] != 0) return $image_attr[0]/$image_attr[1];	// width/height
+	return '1';
+}
+	

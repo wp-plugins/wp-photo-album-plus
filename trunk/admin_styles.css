@@ -99,6 +99,15 @@ ul.wppa_nav
 	float: left;
 }
 
+.photoitem .copylink
+{
+	text-decoration: none;
+	border: none;
+	color: blue;
+	font-weight: bold;
+	float: left;
+}
+
 .photoselect {
 	position: relative;
 	margin: 7px;

@@ -2,59 +2,34 @@
 /*
 Plugin Name: WP Photo Album Plus
 Description: Easily manage and display your photo albums and slideshows within your WordPress site.
-Version: 2.5.1
+Version: 3.0.0
 Author: J.N. Breetvelt a.k.a OpaJaap
 Author URI: http://www.opajaap.nl/
 Plugin URI: http://wordpress.org/extend/plugins/wp-photo-album-plus/
 */
 
-load_plugin_textdomain('wppa', false, 'wp-photo-album-plus/langs/');
+$domain = is_admin() ? 'wppa' : 'wppa_theme';
+load_plugin_textdomain($domain, false, dirname( plugin_basename( __FILE__ ) ) . '/langs/');
 
-/* GLOBAL SETTINGS */
+global $wppa_revno; $wppa_revno = '300';
 global $wpdb;
-global $wp_roles;
-global $wppa_occur;
-global $wppa_master_occur;
-global $wppa_widget_occur;
-global $is_cover;
-global $wppa_src;
-global $wppa_revno;
-global $wppa_in_widget;
-global $wppa_portrait_only;
-global $wppa_in_widget_linkurl;
-global $wppa_in_widget_linktitle;
-global $wppa_in_widget_timeout;
-global $wppa_ss_widget_valign;
 
-// Check for php version
-// PHP_VERSION_ID is available as of PHP 5.2.7, if our 
-// version is lower than that, then emulate it
+/* DEFINES 
+/*
+/* Check for php version
+/* PHP_VERSION_ID is available as of PHP 5.2.7, if our 
+/* version is lower than that, then emulate it
+*/
 if (!defined('PHP_VERSION_ID')) {
 	$version = explode('.', PHP_VERSION);
 
 	define('PHP_VERSION_ID', ($version[0] * 10000 + $version[1] * 100 + $version[2]));
 }
-
 define('ALBUM_TABLE', $wpdb->prefix . 'wppa_albums');
 define('PHOTO_TABLE', $wpdb->prefix . 'wppa_photos');
 define('WPPA_RATING', $wpdb->prefix . 'wppa_rating');
 define('WPPA_PLUGIN_PATH', 'wp-photo-album-plus');
 define('WPPA_NONCE' , 'wppa-update-check');
-
-$wppa_revno = '250';
-$wppa_occur = 0;
-$wppa_master_occur = 0;
-$wppa_widget_occur = 0;
-$is_cover = '0';
-$wppa_src = false;
-if (isset($_POST['wppa-searchstring'])) $wppa_src = true;
-if (isset($_GET['wppa_src'])) $wppa_src = true;
-$wppa_in_widget = false;
-$wppa_portrait_only = false;
-$wppa_in_widget_linkurl = '';
-$wppa_in_widget_linktitle = '';
-$wppa_in_widget_timeout = '0';
-$wppa_ss_widget_valign = '';
 
 /* FORM SECURITY */
 function wppa_nonce_field($action = -1, $name = 'wppa-update-check') { 
@@ -118,7 +93,7 @@ function wppa_setup() {
 
 	$iret = true;
 	
-	if ($old_rev < '250') {		// theme and/or css changed since...
+	if ($old_rev < '300') {		// theme and/or css changed since...
 		$key = '0';
 		$userstyle = ABSPATH . 'wp-content/themes/' . get_option('template') . '/wppa_style.css';
 		$usertheme = ABSPATH . 'wp-content/themes/' . get_option('template') . '/wppa_theme.php';
@@ -173,8 +148,14 @@ function wppa_add_admin() {
 /* ADMIN PAGES */
 if (is_admin()) require_once('wppa_admin.php');
 
-/* API FILTER */
-if (!is_admin()) require_once('wppa_filter.php');
+/* API FILTER and FUNCTIONS */
+if (!is_admin()) {
+	require_once('wppa_filter.php');
+	require_once('wppa_functions.php');
+}
+
+/* COMMON FUNCTIONS */
+require_once('wppa_commonfunctions.php');
 
 /* LOAD STYLESHEET */
 if (!is_admin()) add_action('wp_print_styles', 'wppa_add_style');
@@ -201,5 +182,14 @@ function wppa_add_javascripts() {
 	wp_enqueue_script('wppa_theme_js');
 }
 
-/* LOAD API and LOW LEVEL FUNCTIONS */
-require_once('wppa_functions.php');
+/* LOAD WPPA+ THEME */
+if (!is_admin()) add_action('init', 'wppa_load_theme');
+
+function wppa_load_theme() {
+	$templatefile = ABSPATH.'wp-content/themes/'.get_option('template').'/wppa_theme.php';
+	if (is_file($templatefile)) {
+		require_once($templatefile);
+	} else {
+		require_once(ABSPATH.'wp-content/plugins/'.WPPA_PLUGIN_PATH.'/theme/wppa_theme.php');
+	}
+}

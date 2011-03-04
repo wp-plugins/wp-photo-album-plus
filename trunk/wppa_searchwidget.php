@@ -3,8 +3,9 @@
 * Package: wp-photo-album-plus
 *
 * display the search widget
-* Version 2.5.0
+* Version 3.0.0
 */
+
 class SearchPhotos extends WP_Widget {
     /** constructor */
     function SearchPhotos() {

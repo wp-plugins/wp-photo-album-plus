@@ -2,14 +2,16 @@
 /* wppa_settings.php
 * Package: wp-photo-album-plus
 *
-* manage all optins
-* Version 2.5.1
+* manage all options
+* Version 3.0.0
 */
 
 function wppa_page_options() {
 global $wpdb;
-global $wppa_api_version;
+global $wppa;
+global $blog_id; 
 //wppa_setup();	// Test activation hook	
+	wppa_initialize_runtime();
 	$options_error = false;
 	
 	// Check if a message is required
@@ -47,11 +49,8 @@ global $wppa_api_version;
 		if (isset($_POST['wppa-thumb-auto'])) update_option('wppa_thumb_auto', 'yes');
 		else update_option('wppa_thumb_auto', 'no');
 		
-		//	if (!$options_error) 
-		{
-			$new_minisize = wppa_get_minisize();
-			if ($old_minisize != $new_minisize) update_option('wppa_lastthumb', '-1');	// restart making thumbnails
-		}
+		$new_minisize = wppa_get_minisize();
+		if ($old_minisize != $new_minisize) update_option('wppa_lastthumb', '-1');	// restart making thumbnails
 
 		$start = get_option('wppa_lastthumb', '-2');
 		if ($start != '-2') {
@@ -163,8 +162,8 @@ global $wppa_api_version;
 		if (isset($_POST['wppa-use-thumb-popup'])) update_option('wppa_use_thumb_popup', 'yes');
 		else update_option('wppa_use_thumb_popup', 'no');
 		
-		if (isset($_POST['wppa-no-thumb-links'])) update_option('wppa_no_thumb_links', 'yes');
-		else update_option('wppa_no_thumb_links', 'no');
+		if (isset($_POST['wppa-thumb-linkpage'])) update_option('wppa_thumb_linkpage', $_POST['wppa-thumb-linkpage']);
+		if (isset($_POST['wppa-thumb-linktype'])) update_option('wppa_thumb_linktype', $_POST['wppa-thumb-linktype']);
 		
 		if (isset($_POST['wppa-use-cover-opacity'])) update_option('wppa_use_cover_opacity', 'yes');
 		else update_option('wppa_use_cover_opacity', 'no');
@@ -253,6 +252,7 @@ global $wppa_api_version;
 		if (isset($_POST['wppa-fontfamily-thumb'])) update_option('wppa_fontfamily_thumb', $_POST['wppa-fontfamily-thumb']);
 		if (isset($_POST['wppa-fontsize-thumb'])) update_option('wppa_fontsize_thumb', $_POST['wppa-fontsize-thumb']);
 		if (isset($_POST['wppa-black'])) update_option('wppa_black', $_POST['wppa-black']);
+		if (isset($_POST['wppa-arrow-color'])) update_option('wppa_arrow_color', $_POST['wppa-arrow-color']);
 		
 		if (isset($_POST['wppa-search-linkpage'])) update_option('wppa_search_linkpage', $_POST['wppa-search-linkpage']);
 
@@ -325,8 +325,12 @@ global $wppa_api_version;
 			<br />
 		</div>
 		<h2><?php _e('WP Photo Album Plus Settings', 'wppa'); ?></h2>
-		<?php _e('Database revision:', 'wppa'); ?> <?php echo(get_option('wppa_revision', '100')) ?>. <?php _e('WP Charset:', 'wppa'); ?> <?php echo(get_bloginfo('charset')); ?>. <?php _e('WPPA Charset:', 'wppa'); ?> <?php echo(get_option('wppa_charset', __('default', 'wppa'))); ?>. <?php echo 'Current PHP version: ' . phpversion() ?>. <?php echo 'WPPA+ API Version: '.$wppa_api_version ?>.
-
+		<?php _e('Database revision:', 'wppa'); ?> <?php echo(get_option('wppa_revision', '100')) ?>. <?php _e('WP Charset:', 'wppa'); ?> <?php echo(get_bloginfo('charset')); ?>. <?php _e('WPPA Charset:', 'wppa'); ?> <?php echo(get_option('wppa_charset', __('default', 'wppa'))); ?>. <?php echo 'Current PHP version: ' . phpversion() ?>. <?php echo 'WPPA+ API Version: '.$wppa['api_version'] ?>.
+		<br/><?php if (is_multisite()) { 
+			echo('Multisite enabled. '); 
+			echo('Blogid = '.$blog_id);
+		}
+?>
 		<form action="<?php echo(get_option('siteurl')) ?>/wp-admin/admin.php?page=options" method="post">
 	
 			<?php wppa_nonce_field('$wppa_nonce', WPPA_NONCE); ?>
@@ -405,6 +409,7 @@ global $wppa_api_version;
 					<?php
 					$value = get_option('wppa_bc_separator', 'raquo');
 					$bc_url = get_option('wppa_bc_url', wppa_get_imgdir().'arrow.gif');
+					if ($bc_url == 'nil') $bc_url = wppa_get_imgdir().'arrow.gif';
 					$bc_txt = get_option('wppa_bc_txt', htmlspecialchars('<span style="color:red; font-size:24px;">&bull;</span>'));
 					?>
 					<tr valign="top" class="wppa-bc">
@@ -657,6 +662,7 @@ global $wppa_api_version;
 							<select name="wppa-thumbtype" id="wppa-thumbtype" onchange="wppaCheckThumbType()" >
 								<option value="default" <?php if ($thumbtype == 'default') echo(' selected '); ?>><?php _e('--- default ---', 'wppa'); ?></option>
 								<option value="ascovers" <?php if ($thumbtype == 'ascovers') echo(' selected '); ?>><?php _e('like album covers', 'wppa'); ?></option>
+								<option value="none" <?php if ($thumbtype == 'none') echo('selected '); ?>><?php _e('--- none ---', 'wppa'); ?></option>
 							</select>
 							<span class="description"><br/><?php _e('You may select an altenative display method for thumbnails. Note that some of the thumbnail settings do not apply to all available display methods.', 'wppa'); ?></span>
 						</td>
@@ -744,7 +750,7 @@ global $wppa_api_version;
 							<span class="description"><br/><?php _e('Display name, description and rating under thumbnails.', 'wppa') ?></span>
 						</td>
 					</tr>
-					<tr valign="top">
+					<tr valign="top" class="tt-always">
 						<th scope="row">
 							<label><?php _e('Max thumbnails per page:', 'wppa'); ?></label>
 						</th>
@@ -753,13 +759,36 @@ global $wppa_api_version;
 							<span class="description"><br/><?php _e('Enter the maximum number of thumbnail images per page. A value of 0 indicates no pagination.', 'wppa') ?></span>
 						</td>
 					</tr>
-					<tr valign="top">
+					<tr valign="top" class="tt-always">
 						<th scope="row">
-							<label><?php _e('No links:', 'wppa'); ?></label>
+							<label><?php _e('Link type:', 'wppa'); ?></label>
 						</th>
 						<td>
-							<input type="checkbox" name="wppa-no-thumb-links" id="wppa-no-thumb-links" <?php if (get_option('wppa_no_thumb_links', 'no') == 'yes') echo('checked="checked"'); ?> />
-							<span class="description"><br/><?php _e('Check this if you do NOT want to link the thumbnails to fullsize images.', 'wppa'); ?></span>
+<?php
+							$query = "SELECT ID, post_title FROM " . $wpdb->posts . " WHERE post_type = 'page' AND post_status = 'publish' ORDER BY post_title ASC";
+							$pages = $wpdb->get_results ($query, 'ARRAY_A');
+
+							$linkpage = get_option('wppa_thumb_linkpage', '0');
+							$linktype = get_option('wppa_thumb_linktype', 'photo'); 
+							
+							$sel = 'selected="selected"'; 
+?>
+							<select name="wppa-thumb-linktype" id="wppa-tlt" class="wppa-tlt" onchange="wppaCheckThumbLink()" >
+								<option value="none" <?php if ($linktype == 'none') echo($sel) ?>><?php _e('no link at all.', 'wppa') ?></option>
+								<option value="photo" <?php if ($linktype == 'photo') echo($sel) ?>><?php _e('the full size photo in a slideshow.', 'wppa') ?></option>
+								<option value="single" <?php if ($linktype == 'single') echo($sel) ?>><?php _e('the fullsize photo on its own.', 'wppa') ?></option>
+							</select>
+							<span class="wppa-tlp"><?php _e('Link to:', 'wppa'); ?></span>
+							<select name="wppa-thumb-linkpage" id="wppa-tlp" class="wppa-tlp" >
+								<option value="0" <?php if ($linkpage == '0') echo($sel); ?>><?php _e('--- The same post or page ---', 'wppa'); ?></option>
+								<?php if ($pages) foreach ($pages as $page) { ?>
+									<option value="<?php echo($page['ID']); ?>" <?php if ($linkpage == $page['ID']) echo($sel); ?>><?php echo($page['post_title']); ?></option>
+								<?php } ?>
+							</select>
+							<span class="description"><br/><?php _e('Select the type of link you want, or no link at all.', 'wppa'); ?>&nbsp;
+							<?php _e('If you select the fullsize photo on its own, it will be stretched to fit, regardless of that setting.', 'wppa');
+							/* oneofone is treated as portrait only */ ?>
+							<?php echo(' '); _e('Note that a page must have at least %%wppa%% in its content to show up the photo(s).', 'wppa'); ?></span>
 						</td>
 					</tr>
 					<tr><th><hr/></th><td><hr/></td></tr>
@@ -988,6 +1017,15 @@ global $wppa_api_version;
 						<td>
 							<?php _e('Color:', 'wppa') ?> <input type="text" name="wppa-black" id="wppa-black" value="<?php echo(get_option('wppa_black', 'black')) ?>" style="width: 100px;" />
 							<span class="description"><br/><?php _e('Enter your sites default text color.', 'wppa'); ?> <b>(.wppa-black)</b></span>
+						</td>
+					</tr>
+					<tr valign="top">
+						<th scope="row">
+							<label><?php _e('Left/right arrow color:', 'wppa'); ?></label>
+						</th>
+						<td>
+							<?php _e('Color:', 'wppa') ?> <input type="text" name="wppa-arrow-color" id="wppa-arrow-color" value="<?php echo(get_option('wppa_arrow_color', 'black')) ?>" style="width: 100px;" />
+							<span class="description"><br/><?php _e('Enter the color of the navigation arrows.', 'wppa'); ?> <b>(.wppa-arrow)</b></span>
 						</td>
 					</tr>
 					<tr><th><hr/></th><td><hr/></td></tr>

@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 * create, edit and delete albums
-* version 2.5.0
+* version 3.0.0
 */
 
 function wppa_admin() {
@@ -55,7 +55,17 @@ function wppa_admin() {
 				$wpdb->query($wpdb->prepare('DELETE FROM `' . WPPA_RATING . '` WHERE `photo` = %d', $_GET['photo_del']));
 
 				wppa_update_message($message);
-			}		
+			}
+			// copies the image
+			if (isset($_GET['photo_copy']) && isset($_GET['album_to'])) {
+				$err = wppa_copy_photo($_GET['photo_copy'], $_GET['album_to']);
+				if (!$err) {
+					wppa_update_message(__('Photo copied', 'wppa'));
+				}
+				else {
+					wppa_error_message(__('Unable to copy photo, error:', 'wppa').' '.$err);
+				}
+			}
 			
 			$albuminfo = $wpdb->get_row($wpdb->prepare('SELECT * FROM `' . ALBUM_TABLE . '` WHERE `id` = %d', $_GET['edit_id']), 'ARRAY_A');
 	?>				
@@ -121,7 +131,7 @@ function wppa_admin() {
 									<label ><?php _e('Parent album:', 'wppa'); ?> </label>
 								</th>
 								<td>
-									<select name="wppa-parent"><?php echo(wppa_album_select($albuminfo["id"], $albuminfo["a_parent"], TRUE, TRUE, TRUE)) ?></select>
+									<select name="wppa-parent"><?php echo(wppa_album_select($albuminfo['id'], $albuminfo['a_parent'], true, true, true)) /*$albuminfo["id"], $albuminfo["a_parent"], TRUE, TRUE, TRUE)) */?></select>
 									<span class="description">
 										<br/><?php _e('If this is a sub album, select the album in which this album will appear.', 'wppa'); ?>
 									</span>					
@@ -230,7 +240,7 @@ function wppa_admin() {
 
 				<h2><?php _e('Delete Album', 'wppa'); ?></h2>
 				
-				<p><?php _e('Album:', 'wppa'); ?> <b><?php wppa_album_name($_GET['id']); ?>.</b></p>
+				<p><?php _e('Album:', 'wppa'); ?> <b><?php echo wppa_get_album_name($_GET['id']); ?>.</b></p>
 				<p><?php _e('Are you sure you want to delete this album?', 'wppa'); ?><br />
 					<?php _e('Press Delete to continue, and Cancel to go back.', 'wppa'); ?>
 				</p>
@@ -387,7 +397,7 @@ function wppa_admin_albums() {
 					<td><?php echo($album['owner']); ?></td>
 <?php } ?>
 					<td><?php echo($album['a_order']) ?></td>
-					<td><?php wppa_album_name($album['a_parent']) ?></td>
+					<td><?php echo wppa_get_album_name($album['a_parent']) ?></td>
 					<td><a href="admin.php?page=<?php echo(WPPA_PLUGIN_PATH) ?>/wppa.php&amp;tab=edit&amp;edit_id=<?php echo($album['id']) ?>" class="wppaedit"><?php _e('Edit', 'wppa'); ?></a></td>
 					<td><a href="admin.php?page=<?php echo(WPPA_PLUGIN_PATH) ?>/wppa.php&amp;tab=del&amp;id=<?php echo($album['id']) ?>" class="wppadelete"><?php _e('Delete', 'wppa'); ?></a></td>
 				</tr>		
@@ -421,7 +431,7 @@ function wppa_album_photos($id) {
 			<div class="photoitem">
 					<?php $src = get_bloginfo('wpurl') . '/wp-content/uploads/wppa/thumbs/' . $photo['id'] . '.' . $photo['ext']; ?> 
 					<?php $path = ABSPATH . 'wp-content/uploads/wppa/thumbs/' . $photo['id'] . '.' . $photo['ext']; ?>
-					<img src="<?php echo($src) ?>" alt="<?php echo($photo['name']) ?>" style="<?php echo(wppa_get_imgstyle($path, '135')); ?>" />
+					<img src="<?php echo($src) ?>" alt="<?php echo($photo['name']) ?>" style="" />
 					<table class="details phototable">
 						<tr valign="top">
 							<th scope="row">
@@ -452,7 +462,15 @@ function wppa_album_photos($id) {
 								<label ><?php _e('Rating:', 'wppa') ?></label>
 							</th>
 							<td>
-								<?php _e('Entries:', 'wppa'); echo(' '); wppa_rating_count_by_id($photo['id']); echo('.<br/>'); _e('Mean value:', 'wppa'); echo(' '.wppa_get_rating_by_id($photo['id'], 'nolabel').'.'); ?>
+								<?php _e('Entries:', 'wppa'); echo(' '); echo wppa_get_rating_count_by_id($photo['id']); echo('.<br/>'); _e('Mean value:', 'wppa'); echo(' '.wppa_get_rating_by_id($photo['id'], 'nolabel').'.'); ?>
+							</td>
+						</tr>
+						<tr valign="top">
+							<th scope="row">
+								<a href="#" class="copylink" id="photo-<?php echo($photo['id']) ?>" onclick="if (document.getElementById('albsel-<?php echo($photo['id']) ?>').value != 0) { return confirm('Are you sure you want to copy this photo?') } else { alert('Please select an album to copy the photo to first.'); return false;}"><?php _e('Copy photo to:', 'wppa') ?></a>
+							</th>
+							<td>
+								<select id="albsel-<?php echo($photo['id']) ?>"name="copy-photo" onchange="document.getElementById('photo-<?php echo($photo['id']) ?>').href='<?php echo(get_option('siteurl')) ?>/wp-admin/admin.php?page=<?php echo(WPPA_PLUGIN_PATH) ?>/wppa.php&amp;tab=edit&amp;edit_id=<?php echo($_GET['edit_id']) ?>&amp;photo_copy=<?php echo($photo['id']) ?>&amp;album_to='+this.value; "><?php echo(wppa_album_select($id, '0', true)) ?></select>
 							</td>
 						</tr>
 						<tr valign="top">
@@ -470,7 +488,7 @@ function wppa_album_photos($id) {
 					</table>
 					<input type="hidden" name="<?php echo('photos[' . $photo['id'] . '][id]') ?>" value="<?php echo($photo['id']) ?>" />
 					<input type="hidden" name="<?php echo('photos[' . $photo['id'] . '][mean_rating]') ?>" value="<?php echo($photo['mean_rating']) ?>" />
-					<div class="desc"><?php _e('Description:', 'wppa'); ?><br /><textarea cols="40" rows="4" name="photos[<?php echo($photo['id']) ?>][description]"><?php echo(stripslashes($photo['description'])) ?></textarea></div>
+					<div class="desc"><?php _e('Description:', 'wppa'); ?><br /><textarea cols="60" rows="6" name="photos[<?php echo($photo['id']) ?>][description]"><?php echo(stripslashes($photo['description'])) ?></textarea></div>
 					<div class="clear"></div>
 				
 			</div>
