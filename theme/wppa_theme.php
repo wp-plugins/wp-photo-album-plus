@@ -19,7 +19,7 @@ $n_thumb_pages = '0';								// "
 
 wppa_container('open');																// Open container
 	if ($wppa_show_statistics) wppa_statistics();									// Show statistics if set so by the page template
-	wppa_breadcrumb('&raquo;', 'optional');											// Display breadcrumb navigation only if it is set in the settings page
+	wppa_breadcrumb('optional');													// Display breadcrumb navigation only if it is set in the settings page
 	if (wppa_page('albums')) {														// Page 'Albums' requested
 		$albums = wppa_get_albums();												// Get the albums
 		if ($albums) {

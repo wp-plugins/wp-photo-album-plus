@@ -3,13 +3,14 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions and API modules
-* Version 3.0.1
+* Version 3.0.2
 *
 * 001: [caption] is not allowed to have html (wp restriction), tags are now removed from photo description for use with [caption]
+* 002: Fixed a breadcrumb nav that did not want to hide itself
 */
 
 global $wppa_api_version;
-$wppa_api_version = '3-0-0-001';
+$wppa_api_version = '3-0-0-002';
 
 /* show system statistics */
 function wppa_statistics() {
