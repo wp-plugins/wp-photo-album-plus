@@ -7,7 +7,7 @@
 */
 function wppa_theme() {
 
-global $wppa_version; $wppa_version = '3-0-2';		// The version number of this file, please change if you modify this file
+global $wppa_version; $wppa_version = '3-0-0.002';	// The version number of this file, please change if you modify this file
 global $wppa;
 global $wppa_opt;
 global $wppa_show_statistics;						// Can be set to true by a custom page template
