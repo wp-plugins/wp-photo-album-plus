@@ -5,7 +5,7 @@
 * Various funcions and API modules
 * Version 3.0.0
 *
-*
+* 001: [caption] is not allowed to have html (wp restriction), tags are now removed from photo description for use with [caption]
 */
 
 global $wppa_api_version;
@@ -2360,7 +2360,7 @@ global $wppa;
 	$wppa['out'] .= '[caption id="wppa_'.$wppa['single_photo'].'" ';
 	if ($wppa['align'] != '') $wppa['out'] .= 'align="align'.$wppa['align'].'" ';
 	$wppa['out'] .= 'width="'.$width.'" ';
-	$wppa['out'] .= 'caption="'.stripslashes(wppa_get_photo_desc($wppa['single_photo'])).'"]';
+	$wppa['out'] .= 'caption="'.strip_tags(stripslashes(wppa_get_photo_desc($wppa['single_photo']))).'"]';
 //	$wppa['out'] .= '<a href="">';
 	$wppa['out'] .= '<img src="'.wppa_get_image_url_by_id($wppa['single_photo']).'" alt="" title="test" width="'.$width.'" height="'.$height.'" />';
 //	$wppa['out'] .= '</a>';
