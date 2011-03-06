@@ -7,10 +7,11 @@
 *
 * 001: [caption] is not allowed to have html (wp restriction), tags are now removed from photo description for use with [caption]
 * 002: Fixed a breadcrumb nav that did not want to hide itself
+* 003: You can now import media photos from the upload directory you specified in the wp media settings page also when it is not the default dir.
 */
 
 global $wppa_api_version;
-$wppa_api_version = '3-0-0-002';
+$wppa_api_version = '3-0-0-003';
 
 /* show system statistics */
 function wppa_statistics() {

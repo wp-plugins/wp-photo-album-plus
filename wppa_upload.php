@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the upload/import pages and functions
-* Version 3.0.0
+* Version 3.0.0.003
 */
 
 function wppa_page_upload() {
@@ -123,7 +123,9 @@ function wppa_page_import() {
 		<?php _e('Import photos from:', 'wppa'); ?>
 			<select name="wppa-source">
 				<option value="wp-content/wppa-depot/<?php echo($user) ?>" <?php if ($is_depot) echo('selected="selected"') ?>><?php _e('Your depot', 'wppa') ?></option>
-				<?php wppa_walktree('wp-content/uploads', $source) ?>	
+				<?php $uplpat = get_option('upload_path', 'wp-content/uploads');
+						if ($uplpat == '') $uplpat = 'wp-content/uploads'; ?>
+				<?php wppa_walktree($uplpat, $source) ?>	
 			</select>
 			<input type="submit" class="button-secundary" name="wppa-import-set-source" value="<?php _e('Set source directory', 'wppa'); ?>" />
 		</form>
