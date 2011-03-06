@@ -119,8 +119,14 @@ WordPress developers Codex page and more specifically at the section about theme
 
 * The 'Slideshow' and 'Browse photos' link now also point to the page selected in the edit album form.
 
+= Hot fixes after initial release =
+
+* 001: [caption] is not allowed to have html (wp restriction), tags are now removed from photo description for use with [caption]
+* 002: Fixed a breadcrumb nav that did not want to hide itself when Display breadcrumb was unchecked
+
 = Pending enhancement requests =
 
+* Multi language site support (qTranslate)
 * Multisite support
 * More than one photo of the day
 
