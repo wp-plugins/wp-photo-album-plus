@@ -1,0 +1,200 @@
+# Translation of the WordPress plugin   by .
+# Copyright (C) 2010
+# This file is distributed under the same license as the  package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2010.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: wppa\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-03-02 10:54+0100\n"
+"PO-Revision-Date: 2011-03-02 10:54+0100\n"
+"Last-Translator: J.N. Breetvelt <OpaJaap@OpaJaap.nl>\n"
+"Language-Team: OpaJaap <OpaJaap@OpaJaap.nl>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-KeywordsList: __a\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPath-1: theme\n"
+
+#: wppa_commonfunctions.php:240
+#, php-format
+msgid "Rating: %s"
+msgstr ""
+
+#: wppa_commonfunctions.php:310
+msgid "--- none ---"
+msgstr ""
+
+#: wppa_commonfunctions.php:311
+msgid "--- separate ---"
+msgstr ""
+
+#: wppa_functions.php:29
+msgid "There are"
+msgstr ""
+
+#: wppa_functions.php:29
+msgid "photo albums. The last album added is"
+msgstr ""
+
+#: wppa_functions.php:33
+msgid ", a subalbum of"
+msgstr ""
+
+#: wppa_functions.php:86
+msgid "Home"
+msgstr ""
+
+#: wppa_functions.php:124
+#: wppa_functions.php:1152
+#: wppa_functions.php:1625
+msgid "Slideshow"
+msgstr ""
+
+#: wppa_functions.php:130
+msgid "Searchstring:"
+msgstr ""
+
+#: wppa_functions.php:133
+msgid "Top rated photos"
+msgstr ""
+
+#: wppa_functions.php:743
+msgid "<b>ERROR: Attempt to enter an invalid rating.</b>"
+msgstr ""
+
+#: wppa_functions.php:1079
+msgid "Prev.&nbsp;page"
+msgstr ""
+
+#: wppa_functions.php:1083
+msgid "Next&nbsp;page"
+msgstr ""
+
+#: wppa_functions.php:1153
+#: wppa_functions.php:1790
+msgid "Start"
+msgstr ""
+
+#: wppa_functions.php:1154
+msgid "Stop"
+msgstr ""
+
+#: wppa_functions.php:1155
+msgid "Photo"
+msgstr ""
+
+#: wppa_functions.php:1156
+msgid "of"
+msgstr ""
+
+#: wppa_functions.php:1157
+msgid "Prev.&nbsp;photo"
+msgstr ""
+
+#: wppa_functions.php:1158
+msgid "Next&nbsp;photo"
+msgstr ""
+
+#: wppa_functions.php:1556
+msgid "Link to"
+msgstr ""
+
+#: wppa_functions.php:1560
+msgid "Page is not available."
+msgstr ""
+
+#: wppa_functions.php:1566
+#: wppa_functions.php:1633
+msgid "View the album"
+msgstr ""
+
+#: wppa_functions.php:1571
+msgid "View the cover photo"
+msgstr ""
+
+#: wppa_functions.php:1572
+msgid "View the cover photos"
+msgstr ""
+
+#: wppa_functions.php:1625
+msgid "Browse photos"
+msgstr ""
+
+#: wppa_functions.php:1634
+msgid "View"
+msgstr ""
+
+#: wppa_functions.php:1637
+msgid "album"
+msgstr ""
+
+#: wppa_functions.php:1640
+msgid "albums"
+msgstr ""
+
+#: wppa_functions.php:1644
+msgid "and"
+msgstr ""
+
+#: wppa_functions.php:1648
+msgid "photo"
+msgstr ""
+
+#: wppa_functions.php:1651
+msgid "photos"
+msgstr ""
+
+#: wppa_functions.php:1789
+msgid "Slower"
+msgstr ""
+
+#: wppa_functions.php:1791
+msgid "Faster"
+msgstr ""
+
+#: wppa_functions.php:2140
+msgid "- - - Rating enabled - - -"
+msgstr ""
+
+#: wppa_functions.php:2149
+msgid "very low"
+msgstr ""
+
+#: wppa_functions.php:2150
+msgid "low"
+msgstr ""
+
+#: wppa_functions.php:2151
+msgid "average"
+msgstr ""
+
+#: wppa_functions.php:2152
+msgid "high"
+msgstr ""
+
+#: wppa_functions.php:2153
+msgid "very high"
+msgstr ""
+
+#: wppa_functions.php:2158
+#: wppa_functions.php:2163
+msgid "Average&nbsp;rating"
+msgstr ""
+
+#: wppa_functions.php:2172
+#: wppa_functions.php:2175
+msgid "My&nbsp;rating"
+msgstr ""
+
+#: wppa_functions.php:2178
+msgid "You must login to vote"
+msgstr ""
+
+#: theme/wppa_theme.php:80
+msgid "No albums or photos found matching your search criteria."
+msgstr ""
+
