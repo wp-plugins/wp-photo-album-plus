@@ -125,6 +125,7 @@ WordPress developers Codex page and more specifically at the section about theme
 * 002: Fixed a breadcrumb nav that did not want to hide itself when Display breadcrumb was unchecked
 * 003: You can now import media photos from the upload directory you specified in the wp media settings page also when it is not the default dir.
 * 004: Fixed a problem where, when pagination os off, in a mixed display of covers and thumbs, the covers were not shown.
+* 005: added class size-medium to mphotos ([caption])
 
 = Pending enhancement requests =
 

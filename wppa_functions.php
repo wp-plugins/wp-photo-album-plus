@@ -9,10 +9,11 @@
 * 002: Fixed a breadcrumb nav that did not want to hide itself
 * 003: You can now import media photos from the upload directory you specified in the wp media settings page also when it is not the default dir.
 * 004: Fixed a problem where, when pagination os off, in a mixed display of covers and thumbs, the covers were not shown.
+* 005: added class size-medium to mphotos
 */
 
 global $wppa_api_version;
-$wppa_api_version = '3-0-0-004';
+$wppa_api_version = '3-0-0-005';
 
 /* show system statistics */
 function wppa_statistics() {
@@ -2365,7 +2366,7 @@ global $wppa;
 	$wppa['out'] .= 'width="'.$width.'" ';
 	$wppa['out'] .= 'caption="'.strip_tags(stripslashes(wppa_get_photo_desc($wppa['single_photo']))).'"]';
 //	$wppa['out'] .= '<a href="">';
-	$wppa['out'] .= '<img src="'.wppa_get_image_url_by_id($wppa['single_photo']).'" alt="" title="test" width="'.$width.'" height="'.$height.'" />';
+	$wppa['out'] .= '<img src="'.wppa_get_image_url_by_id($wppa['single_photo']).'" alt="" class="size-medium" title="'.esc_attr(stripslashes(wppa_get_photo_name($wppa['single_photo']))).'" width="'.$width.'" height="'.$height.'" />';
 //	$wppa['out'] .= '</a>';
 	$wppa['out'] .= '[/caption]';
 }
