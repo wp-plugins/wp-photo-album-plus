@@ -124,6 +124,7 @@ WordPress developers Codex page and more specifically at the section about theme
 * 001: [caption] is not allowed to have html (wp restriction), tags are now removed from photo description for use with [caption]
 * 002: Fixed a breadcrumb nav that did not want to hide itself when Display breadcrumb was unchecked
 * 003: You can now import media photos from the upload directory you specified in the wp media settings page also when it is not the default dir.
+* 004: Fixed a problem where, when pagination os off, in a mixed display of covers and thumbs, the covers were not shown.
 
 = Pending enhancement requests =
 

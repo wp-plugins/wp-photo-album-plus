@@ -3,15 +3,16 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions and API modules
-* Version 3.0.2
+* Version 3.0.0
 *
 * 001: [caption] is not allowed to have html (wp restriction), tags are now removed from photo description for use with [caption]
 * 002: Fixed a breadcrumb nav that did not want to hide itself
 * 003: You can now import media photos from the upload directory you specified in the wp media settings page also when it is not the default dir.
+* 004: Fixed a problem where, when pagination os off, in a mixed display of covers and thumbs, the covers were not shown.
 */
 
 global $wppa_api_version;
-$wppa_api_version = '3-0-0-003';
+$wppa_api_version = '3-0-0-004';
 
 /* show system statistics */
 function wppa_statistics() {
