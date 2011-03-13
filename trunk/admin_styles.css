@@ -88,6 +88,10 @@ ul.wppa_nav
 	line-height: 20px;
 }
 
+.phototable th {
+	width: 150px;
+}
+
 .albumtable label, .phototable label { font-weight: bold; }
 
 /* .photoitem img { float: right; } */
