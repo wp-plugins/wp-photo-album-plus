@@ -519,7 +519,7 @@ function wppa_album_photos($id) {
 	else {
 		foreach ($photos as $photo) { ?>
 			<div class="photoitem">
-				<table class="form-table phototable" style="width: 49%; clear:none;"><!--325-->
+				<table class="form-table phototable" style="width: 45%; clear:none;"><!--325-->
 					<tbody>
 					
 						<tr valign="top">
@@ -563,7 +563,7 @@ function wppa_album_photos($id) {
 						<tr valign="top">
 							<th scope="row">
 								<a href="#" id="copy-photo-<?php echo($photo['id']) ?>"></a>
-								<input type="button" class="button-secondary" style="font-weight:bold; color:blue; width:80%" onclick="if (document.getElementById('albsel-<?php echo($photo['id']) ?>').value != 0) { if (confirm('<?php _e('Are you sure you want to copy this photo?', 'wppa') ?>')) document.location = document.getElementById('copy-photo-<?php echo($photo['id']) ?>').href; } else { alert('<?php _e('Please select an album to copy the photo to first.', 'wppa') ?>'); return false;}" value="<?php _e('Copy photo to', 'wppa') ?>" />
+								<input type="button" class="button-secondary" style="font-weight:bold; color:blue; width:90%" onclick="if (document.getElementById('albsel-<?php echo($photo['id']) ?>').value != 0) { if (confirm('<?php _e('Are you sure you want to copy this photo?', 'wppa') ?>')) document.location = document.getElementById('copy-photo-<?php echo($photo['id']) ?>').href; } else { alert('<?php _e('Please select an album to copy the photo to first.', 'wppa') ?>'); return false;}" value="<?php _e('Copy photo to', 'wppa') ?>" />
 							</th>
 							<td>
 								<select id="albsel-<?php echo($photo['id']) ?>"name="copy-photo" onchange="document.getElementById('copy-photo-<?php echo($photo['id']) ?>').href='<?php echo(get_option('siteurl')) ?>/wp-admin/admin.php?page=<?php echo(WPPA_PLUGIN_PATH) ?>/wppa.php&amp;tab=edit&amp;edit_id=<?php echo($_GET['edit_id']) ?>&amp;photo_copy=<?php echo($photo['id']) ?>&amp;album_to='+this.value; "><?php echo(wppa_album_select($id, '0', true)) ?></select>
@@ -573,7 +573,7 @@ function wppa_album_photos($id) {
 						<tr valign="top">
 							<th scope="row">
 								<a href="<?php echo(get_option('siteurl')) ?>/wp-admin/admin.php?page=<?php echo(WPPA_PLUGIN_PATH) ?>/wppa.php&amp;tab=edit&amp;edit_id=<?php echo($_GET['edit_id']) ?>&amp;photo_del=<?php echo($photo['id']) ?>" id="del-photo-<?php echo($photo['id']) ?>"></a>
-								<input type="button" class="button-secondary" style="font-weight:bold; color:red; width:80%" onclick="if (confirm('<?php _e('Are you sure you want to delete this photo?', 'wppa') ?>')) document.location = document.getElementById('del-photo-<?php echo($photo['id']) ?>').href;" value="<?php _e('Delete photo', 'wppa'); ?>" />
+								<input type="button" class="button-secondary" style="font-weight:bold; color:red; width:90%" onclick="if (confirm('<?php _e('Are you sure you want to delete this photo?', 'wppa') ?>')) document.location = document.getElementById('del-photo-<?php echo($photo['id']) ?>').href;" value="<?php _e('Delete photo', 'wppa'); ?>" />
 							</th>
 							<td>
 							</td>
@@ -581,14 +581,14 @@ function wppa_album_photos($id) {
 						
 						<tr valign="top">
 							<th scope="row">
-								<input type="button" class="button-secondary" style="font-weight:bold; width:80%" onclick="prompt('<?php _e('Insert code for single image in Page or Post:\nYou may change the size if you like.', 'wppa') ?>', '%%wppa%% %%photo=<?php echo($photo['id']); ?>%% %%size=<?php echo(get_option('wppa_fullsize')); ?>%%')" value="<?php _e('Insertion Code', 'wppa'); ?>" />
+								<input type="button" class="button-secondary" style="font-weight:bold; width:90%" onclick="prompt('<?php _e('Insert code for single image in Page or Post:\nYou may change the size if you like.', 'wppa') ?>', '%%wppa%% %%photo=<?php echo($photo['id']); ?>%% %%size=<?php echo(get_option('wppa_fullsize')); ?>%%')" value="<?php _e('Insertion Code', 'wppa'); ?>" />
 							</th>
 						</tr>
 						
 					</tbody>
 				</table>
 				
-				<table class="form-table phototable" style="width: 49%; clear: none;"><!--425-->
+				<table class="form-table phototable" style="width: 45%; clear: none;"><!--425-->
 					<tbody>
 						<?php if (!is_array($q_config)) { ?>					
 							<tr valign="top">
@@ -596,7 +596,7 @@ function wppa_album_photos($id) {
 									<label for="<?php echo('photos[' . $photo['id'] . '][name]') ?>"><?php _e('Name:', 'wppa'); ?></label>
 								</th>
 								<td>
-									<input type="text" style="width:300px;"name="<?php echo('photos[' . $photo['id'] . '][name]') ?>" value="<?php echo(stripslashes($photo['name'])) ?>" />
+									<input type="text" style="width:280px;"name="<?php echo('photos[' . $photo['id'] . '][name]') ?>" value="<?php echo(stripslashes($photo['name'])) ?>" />
 									<span class="description"><br/><?php _e('Type/alter the name of the photo. It is NOT a filename and needs no file extension like .jpg.', 'wppa'); ?></span>
 								</td>
 							</tr>
@@ -613,7 +613,7 @@ function wppa_album_photos($id) {
 									</th>
 									<td>
 										<b><?php echo($lname) ?></b><br/>
-										<input type="text" style="width:300px;" name="<?php echo('photos['.$photo['id'].'][name]['.$lcode.']') ?>" value="<?php echo(wppa_qtrans(stripslashes($photo['name']), $lcode)) ?>" />
+										<input type="text" style="width:280px;" name="<?php echo('photos['.$photo['id'].'][name]['.$lcode.']') ?>" value="<?php echo(wppa_qtrans(stripslashes($photo['name']), $lcode)) ?>" />
 										<?php if ($idx == $last) { ?>
 											<span class="description"><br/><?php _e('Type/alter the name of the photo. It is NOT a filename and needs no file extension like .jpg.', 'wppa'); ?></span>
 										<?php } ?>
@@ -629,7 +629,7 @@ function wppa_album_photos($id) {
 									<label><?php _e('Description:', 'wppa'); ?></label>
 								</th>
 								<td>
-									<textarea style="width: 300px; height:160px;" name="photos[<?php echo($photo['id']) ?>][description]"><?php echo(stripslashes($photo['description'])) ?></textarea>
+									<textarea style="width: 280px; height:160px;" name="photos[<?php echo($photo['id']) ?>][description]"><?php echo(stripslashes($photo['description'])) ?></textarea>
 								</td>
 							</tr>
 						<?php }
@@ -645,7 +645,7 @@ function wppa_album_photos($id) {
 									</th>
 									<td>
 										<b><?php echo($lname) ?></b><br/>
-										<textarea style="width: 300px; height: 80px;" name="photos[<?php echo($photo['id']) ?>][description][<?php echo($lcode) ?>]"><?php echo(wppa_qtrans(stripslashes($photo['description']), $lcode)) ?></textarea>
+										<textarea style="width: 280px; height: 80px;" name="photos[<?php echo($photo['id']) ?>][description][<?php echo($lcode) ?>]"><?php echo(wppa_qtrans(stripslashes($photo['description']), $lcode)) ?></textarea>
 									</td>
 								</tr>
 							<?php }
