@@ -37,7 +37,7 @@ global $wppa;
 			$slide_pos = strpos($post_old, '%%slide=');					// Is there a slidealbum given?
 			$slideonly_pos = strpos($post_old, '%%slideonly=');			// Is there a slideonly album given?
 			$photo_pos = strpos($post_old, '%%photo=');					// Is there a photo id given?
-			$mphoto_pos = strpos($post_old, '%%mphoto=');
+		$mphoto_pos = strpos($post_old, '%%mphoto=');
 			$size_pos = strpos($post_old, '%%size=');					// Is there a size given?
 			$align_pos = strpos($post_old, '%%align=');					// Is there an align given?
 			
@@ -59,7 +59,7 @@ global $wppa;
 			$wppa['is_slide'] = '0';
 			$wppa['is_slideonly'] = '0';
 			$wppa['single_photo'] = '';
-			$wppa['is_mphoto'] = '0';
+		$wppa['is_mphoto'] = '0';
 			$size = '';
 			$align = '';
 			// examine album number
@@ -91,12 +91,12 @@ global $wppa;
 				$wppa['single_photo'] = wppa_atoi($post_old);				// get photo #
 				$post_old = substr($post_old, strpos($post_old, '%%') + 2);	// shift photo # and trailing %% out
 			}
-			elseif (is_numeric($mphoto_pos)) {
-				$post_old = substr($post_old, $mphoto_pos + 9);				// shift up to and including %%mphoto= out
-				$wppa['single_photo'] = wppa_atoi($post_old);				// get photo #
-				$wppa['is_mphoto'] = '1';
-				$post_old = substr($post_old, strpos($post_old, '%%') + 2);	// shift photo # and trailing %% out
-			}
+		elseif (is_numeric($mphoto_pos)) {
+			$post_old = substr($post_old, $mphoto_pos + 9);				// shift up to and including %%mphoto= out
+			$wppa['single_photo'] = wppa_atoi($post_old);				// get photo #
+			$wppa['is_mphoto'] = '1';
+			$post_old = substr($post_old, strpos($post_old, '%%') + 2);	// shift photo # and trailing %% out
+		}
 			// see if a size is given and get it
 			if (is_numeric($size_pos)) {
 				$size_pos = strpos($post_old, '%%size=');					// refresh position due to out-shifting above

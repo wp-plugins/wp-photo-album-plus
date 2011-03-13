@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display a slideshow in the sidebar
-* Version 3.0.0
+* Version 3.0.1
 */
 
 /**
@@ -25,7 +25,7 @@ class SlideshowWidget extends WP_Widget {
 
         extract( $args );
         
- 		$title = apply_filters('widget_title', empty( $instance['title'] ) ? __( 'Sidebar Slideshow', 'wppa' ) : $instance['title']);
+ 		$title = apply_filters('widget_title', empty( $instance['title'] ) ? __a( 'Sidebar Slideshow', 'wppa_theme' ) : $instance['title']);
 
 		$instance = wp_parse_args( (array) $instance, array( 'title' => '', 'album' => '', 'width' => get_option('wppa_widget_width', '190'), 'ponly' => 'no', 'linkurl' => '', 'linktitle' => '', 'subtext' => '', 'supertext' => '', 'valign' => 'fit', 'timeout' => '4' ) );
 
@@ -34,8 +34,8 @@ class SlideshowWidget extends WP_Widget {
 		$ponly = $instance['ponly'];
 		$linkurl = $instance['linkurl'];
 		$linktitle = $instance['linktitle'];
-		$supertext = $instance['supertext'];
-		$subtext = $instance['subtext'];
+		$supertext = wppa_qtrans($instance['supertext']);
+		$subtext = wppa_qtrans($instance['subtext']);
 		$valign = $instance['valign'];
 		$timeout = $instance['timeout'] * 1000;
 		
@@ -43,7 +43,7 @@ class SlideshowWidget extends WP_Widget {
 			echo $before_widget . $before_title . $title . $after_title;
 				if ($linkurl != '') {
 					$wppa['in_widget_linkurl'] = $linkurl;
-					$wppa['in_widget_linktitle'] = $linktitle;
+					$wppa['in_widget_linktitle'] = wppa_qtrans($linktitle);
 				}
 				if ($supertext != '') {
 					echo '<div style="padding-top:2px; padding-bottom:4px; text-align:center">'.$supertext.'</div>';
@@ -71,7 +71,7 @@ class SlideshowWidget extends WP_Widget {
 		}
 		else {
 			echo $before_widget . $before_title . $title . $after_title;
-			echo __('No album defined yet.', 'wppa');
+			echo __a('No album defined yet.', 'wppa_theme');
 			echo $after_widget;
 		}
 
@@ -136,11 +136,12 @@ class SlideshowWidget extends WP_Widget {
 				<option value="fit" <?php if ($valign == 'fit') echo(' selected '); ?>><?php _e('fit', 'wppa'); ?></option>	
 			</select><br/><?php _e('Set the desired vertical alignment method.', 'wppa'); ?>
 		</p>
+		<p><label for="<?php echo $this->get_field_id('timeout'); ?>"><?php _e('Slideshow timeout:', 'wppa'); ?></label> <input class="widefat" style="width:15%;" id="<?php echo $this->get_field_id('timeout'); ?>" name="<?php echo $this->get_field_name('timeout'); ?>" type="text" value="<?php echo $timeout; ?>" />&nbsp;<?php _e('sec.', 'wppa'); ?></p>
 		<p><label for="<?php echo $this->get_field_id('linkurl'); ?>"><?php _e('Link to:', 'wppa'); ?></label> <input class="widefat" id="<?php echo $this->get_field_id('linkurl'); ?>" name="<?php echo $this->get_field_name('linkurl'); ?>" type="text" value="<?php echo $linkurl; ?>" /></p>
+		<p><span style="color:blue"><small><?php _e('The following text fields support qTranslate', 'wppa') ?></small></span></p>
 		<p><label for="<?php echo $this->get_field_id('linktitle'); ?>"><?php _e('Tooltip text:', 'wppa'); ?></label> <input class="widefat" id="<?php echo $this->get_field_id('linktitle'); ?>" name="<?php echo $this->get_field_name('linktitle'); ?>" type="text" value="<?php echo $linktitle; ?>" /></p>
 		<p><label for="<?php echo $this->get_field_id('supertext'); ?>"><?php _e('Text above photos:', 'wppa'); ?></label> <input class="widefat" id="<?php echo $this->get_field_id('supertext'); ?>" name="<?php echo $this->get_field_name('supertext'); ?>" type="text" value="<?php echo $supertext; ?>" /></p>
 		<p><label for="<?php echo $this->get_field_id('subtext'); ?>"><?php _e('Text below photos:', 'wppa'); ?></label> <input class="widefat" id="<?php echo $this->get_field_id('subtext'); ?>" name="<?php echo $this->get_field_name('subtext'); ?>" type="text" value="<?php echo $subtext; ?>" /></p>
-		<p><label for="<?php echo $this->get_field_id('timeout'); ?>"><?php _e('Slideshow timeout:', 'wppa'); ?></label> <input class="widefat" style="width:15%;" id="<?php echo $this->get_field_id('timeout'); ?>" name="<?php echo $this->get_field_name('timeout'); ?>" type="text" value="<?php echo $timeout; ?>" />&nbsp;<?php _e('sec.', 'wppa'); ?></p>
 <?php
     }
 

@@ -3,11 +3,11 @@
 * Package: wp-photo-album-plus
 *
 * display the albums/photos/slideshow in a page or post
-* Version 3.0.0
+* Version 3.0.1
 */
 function wppa_theme() {
 
-global $wppa_version; $wppa_version = '3-0-0.002';	// The version number of this file, please change if you modify this file
+global $wppa_version; $wppa_version = '3-0-1';		// The version number of this file, please change if you modify this file
 global $wppa;
 global $wppa_opt;
 global $wppa_show_statistics;						// Can be set to true by a custom page template

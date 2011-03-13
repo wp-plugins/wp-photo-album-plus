@@ -2,7 +2,7 @@
 /* wppa_commonfinctions.php
 *
 * Functions used in admin and in themes
-* version 3.0.0
+* version 3.0.1
 */
 
 // Initialize globals and option settings
@@ -11,9 +11,18 @@ global $wppa;
 global $wppa_opt;
 global $wppa_revno;
 global $wppa_api_version;
+global $wppa_locale;
 
 	if (!is_array($wppa)) {
-
+	
+		if ($wppa_locale != 'loaded') {
+			$domain = is_admin() ? 'wppa' : 'wppa_theme';
+			$mofile = ABSPATH.'wp-content/plugins/'.dirname( plugin_basename( __FILE__ ) ) . '/langs/'.$domain.'-'.get_locale().'.mo';
+			$bret = load_plugin_textdomain($domain, false, dirname( plugin_basename( __FILE__ ) ) . '/langs/');
+			$wppa_locale = 'loaded';
+//if ($bret) echo('<span style="color:blue"><small>'.get_locale().'</small></span><br/>');	// Diagnostic
+		}
+		
 		$wppa = array (
 			'revno' => $wppa_revno,				// set in wppa.php
 			'api_version' => $wppa_api_version,	// set in wppa_functions.php
@@ -27,7 +36,7 @@ global $wppa_api_version;
 			'is_slide' => '0',
 			'is_slideonly' => '0',
 			'single_photo' => '',
-		'is_mphoto' => '0',
+			'is_mphoto' => '0',
 			'start_album' => '',
 			'align' => '',
 			'src' => false,
@@ -136,6 +145,8 @@ global $wppa_api_version;
 //			'wppa_no_thumb_links' => '',	// obsolete
 			'wppa_thumb_linkpage' => '',
 			'wppa_thumb_linktype' => '',
+			'wppa_mphoto_linkpage' => '',
+			'wppa_mphoto_linktype' => '',
 			'wppa_fadein_after_fadeout' => '',
 			'wppa_widget_linkpage' => '',
 			'wppa_widget_linktype' => '',
@@ -144,7 +155,7 @@ global $wppa_api_version;
 			);
 							
 		array_walk($wppa_opt, 'wppa_set_options');
-		
+	
 		if (!is_admin()) wppa_set_runtimestyle();
 	}
 }
@@ -322,6 +333,7 @@ global $wpdb;
 	else {
 		$name = '';
 	}
+	if (!is_admin()) $name = wppa_qtrans($name);
 	return $name;
 }
 
@@ -330,4 +342,18 @@ function wppa_is_wider($x, $y) {
 	$ratioref = get_option('wppa_fullsize') / get_option('wppa_maxheight');
 	$ratio = $x / $y;
 	return ($ratio > $ratioref);
+}
+
+// qtrans hook for multi language support of content
+function wppa_qtrans($output, $lang = '') {
+	if ($lang == '') {
+		if (function_exists('qtrans_useCurrentLanguageIfNotFoundUseDefaultLanguage')) {
+			$output = qtrans_useCurrentLanguageIfNotFoundUseDefaultLanguage($output);
+		}
+	} else {
+		if (function_exists('qtrans_use')) {
+			$output = qtrans_use($lang, $output, false);
+		}
+	}
+	return $output;
 }

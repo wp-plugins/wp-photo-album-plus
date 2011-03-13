@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the top rated photos
-* Version 3.0.0
+* Version 3.0.1
 */
 class TopTenWidget extends WP_Widget {
     /** constructor */
@@ -41,7 +41,7 @@ class TopTenWidget extends WP_Widget {
 				$pid = get_option('wppa_topten_widget_linkpage', '0');
 				$page_title = $wpdb->get_var("SELECT post_title FROM " . $wpdb->posts . " WHERE post_type = 'page' AND post_status = 'publish' AND ID=" . $pid);
 				if ($page_title) { 			// Yep, Linkpage found
-					$title = __('Link to', 'wppa') . ' ' . $page_title;
+					$title = __a('Link to', 'wppa_theme') . ' ' . wppa_qtrans($page_title);
 					$widget_content .= '<a href="'.wppa_get_permalink($pid).'topten=10&amp;slide=true&amp;photo='.$image['id'].'&amp;cover=0&amp;occur=1">';
 				} 
 				else {
@@ -57,7 +57,7 @@ class TopTenWidget extends WP_Widget {
 				$widget_content .= '</a>';
 			} 
 			else {	// No image
-				$widget_content .= __('Photo not found.');
+				$widget_content .= __a('Photo not found.', 'wppa_theme');
 			}
 			$widget_content .= '<span style="font-size:9px;">'.wppa_get_rating_by_id($image['id']).'</span>';
 			$widget_content .= '</div>';

@@ -6,7 +6,7 @@
 *
 * A text widget that hooks the wppa+ filter
 *
-* Version 3.0.0
+* Version 3.0.1
 */
 
 class WppaGpWidget extends WP_Widget {
@@ -31,7 +31,7 @@ class WppaGpWidget extends WP_Widget {
 		echo $before_widget;
 		if ( !empty( $title ) ) { echo $before_title . $title . $after_title; } 
 		
-		$text = $instance['text'];
+		$text = wppa_qtrans($instance['text']);
 		
 		if ($instance['filter']) $text = wpautop($text);
 

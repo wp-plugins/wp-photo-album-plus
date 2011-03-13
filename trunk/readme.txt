@@ -1,8 +1,8 @@
 === WP Photo Album Plus ===
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
-Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photo widget, phtoblog
-Version: 3.0.0
+Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate
+Version: 3.0.1
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -31,7 +31,8 @@ This plugin is designed to easily manage and display your photo albums and slide
 * Apart from the full-size slideshows you can add a Sidebar Widget that displays a mini slideshow.
 * There is a General Purpose widget that is a text widget wherein you can use wppa+ script commands.
 * Almost all appearance settings can be done in the settings admin page. No php, html or css knowledge is required to customize the appearence of the photo display.
-* International language support. Currently included foreign languages files: Dutch, Japanese, French(outdated), Spanish.
+* International language support for static text: Currently included foreign languages files: Dutch, Japanese, French(outdated), Spanish.
+* Inrernational language support for dynamic text: Album and photo names and descriptions fully support the qTranslate multilanguage rules and have separate edit fields for all qTranslate activated languages.
 
 Plugin Admin Features:
 
@@ -103,6 +104,28 @@ WordPress developers Codex page and more specifically at the section about theme
 
 == Changelog ==
 
+= 3.0.1 =
+
+= New features =
+
+* WPPA+ Now supports Multi language sites that use qTranslate. 
+Both album and photo names and descriptions follow the qTranslate multilanguage rules.
+In the Album Admin page all fields that are multilingual have separate edit fields for each activated language.
+For more information on multilanguage sites, see the documentation of the qTranslate plugin.
+
+= Enhancements =
+
+* You can link media-like photos (those made with %%mphoto=..%%) to a different (selectable) page, either to a full-size photo on its own or in a slideshow/browseable.
+* You will now get a warning message inclusive an uncheck of the box if your jQuery version does not support delay and therefor not the fadein after fadeout feature.
+* Improved consistency in the layout of the different types of navigation bars.
+
+= Pending enhancement requests =
+
+* Multisite support
+* More than one photo of the day
+* Fullscreen slideshow
+* Rotate images
+
 = 3.0.0 =
 
 = New features =
@@ -124,14 +147,8 @@ WordPress developers Codex page and more specifically at the section about theme
 * 001: [caption] is not allowed to have html (wp restriction), tags are now removed from photo description for use with [caption]
 * 002: Fixed a breadcrumb nav that did not want to hide itself when Display breadcrumb was unchecked
 * 003: You can now import media photos from the upload directory you specified in the wp media settings page also when it is not the default dir.
-* 004: Fixed a problem where, when pagination os off, in a mixed display of covers and thumbs, the covers were not shown.
+* 004: Fixed a problem where, when pagination is off, in a mixed display of covers and thumbs, the covers were not shown.
 * 005: added class size-medium to mphotos ([caption])
-
-= Pending enhancement requests =
-
-* Multi language site support (qTranslate)
-* Multisite support
-* More than one photo of the day
 
 = Notes =
 
