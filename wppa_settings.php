@@ -3,13 +3,16 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 3.0.0
+* Version 3.0.1
 */
 
 function wppa_page_options() {
 global $wpdb;
 global $wppa;
 global $blog_id; 
+
+//	global $q_config;
+//	print_r($q_config);
 //wppa_setup();	// Test activation hook	
 	wppa_initialize_runtime();
 	$options_error = false;
@@ -164,6 +167,9 @@ global $blog_id;
 		
 		if (isset($_POST['wppa-thumb-linkpage'])) update_option('wppa_thumb_linkpage', $_POST['wppa-thumb-linkpage']);
 		if (isset($_POST['wppa-thumb-linktype'])) update_option('wppa_thumb_linktype', $_POST['wppa-thumb-linktype']);
+
+		if (isset($_POST['wppa-mphoto-linkpage'])) update_option('wppa_mphoto_linkpage', $_POST['wppa-mphoto-linkpage']);
+		if (isset($_POST['wppa-mphoto-linktype'])) update_option('wppa_mphoto_linktype', $_POST['wppa-mphoto-linktype']);
 		
 		if (isset($_POST['wppa-use-cover-opacity'])) update_option('wppa_use_cover_opacity', 'yes');
 		else update_option('wppa_use_cover_opacity', 'no');
@@ -512,8 +518,11 @@ global $blog_id;
 							<label><?php _e('Fade-in after fade-out:', 'wppa'); ?></label>
 						</th>
 						<td>
-							<input type="checkbox" name="wppa-fadein-after-fadeout" id="wppa-fadein-after-fadeout" <?php if (get_option('wppa_fadein_after_fadeout', 'no') == 'yes') echo('checked="checked"'); ?> />
+							<input type="checkbox" name="wppa-fadein-after-fadeout" id="wppa-fadein-after-fadeout" <?php if (get_option('wppa_fadein_after_fadeout', 'no') == 'yes') echo('checked="checked"'); ?> onchange="checkjQueryRev('<?php _e('Fade-in after fade-out:', 'wppa')?>', this, 1.4)"/>
 							<span class="description"><br/><?php _e('If checked: slides are faded out and in after each other. If unchecked: fadin and fadeout overlap.', 'wppa'); ?></span>
+							<span class="description"><br/><?php _e('The version of the jQuery library must be 1.4 or greater for this feature!', 'wppa') ?></span>
+							<script type="text/javascript">checkjQueryRev('<?php _e('Fade-in after fade-out:', 'wppa') ?>', document.getElementById('wppa-fadein-after-fadeout'), 1.4)</script>
+							
 						</td>
 					</tr>
 					<tr valign="top" class="wppa-ss">
@@ -551,6 +560,42 @@ global $blog_id;
 						</td>
 					</tr>	
 					<script type="text/javascript">wppaCheckHs();</script>
+					
+					
+					<tr valign="top">
+						<th scope="row">
+							<label><?php _e('Media-like photo link:', 'wppa'); ?></label>
+						</th>
+						<td>
+<?php
+							$query = "SELECT ID, post_title FROM " . $wpdb->posts . " WHERE post_type = 'page' AND post_status = 'publish' ORDER BY post_title ASC";
+							$pages = $wpdb->get_results ($query, 'ARRAY_A');
+
+							$linkpage = get_option('wppa_mphoto_linkpage', '0');
+							$linktype = get_option('wppa_mphoto_linktype', 'photo'); 
+							
+							$sel = 'selected="selected"'; 
+?>
+							<select name="wppa-mphoto-linktype" id="wppa-mlt" class="wppa-mlt" onchange="wppaCheckMphotoLink()">
+								<option value="none" <?php if ($linktype == 'none') echo($sel) ?>><?php _e('no link at all.', 'wppa') ?></option>
+								<option value="photo" <?php if ($linktype == 'photo') echo($sel) ?>><?php _e('the full size photo in a slideshow.', 'wppa') ?></option>
+								<option value="single" <?php if ($linktype == 'single') echo($sel) ?>><?php _e('the fullsize photo on its own.', 'wppa') ?></option>
+							</select>
+							<span class="wppa-mlp"><?php _e('Link to:', 'wppa'); ?></span>
+							<select name="wppa-mphoto-linkpage" id="wppa-mlp" class="wppa-mlp" >
+								<option value="0" <?php if ($linkpage == '0') echo($sel); ?>><?php _e('--- The same post or page ---', 'wppa'); ?></option>
+								<?php if ($pages) foreach ($pages as $page) { ?>
+									<option value="<?php echo($page['ID']); ?>" <?php if ($linkpage == $page['ID']) echo($sel); ?>><?php echo($page['post_title']); ?></option>
+								<?php } ?>
+							</select>
+							<span class="description"><br/><?php _e('Select the type of link you want, or no link at all.', 'wppa'); ?>&nbsp;
+							<?php _e('If you select the fullsize photo on its own, it will be stretched to fit, regardless of that setting.', 'wppa');
+							/* oneofone is treated as portrait only */ ?>
+							<?php echo(' '); _e('Note that a page must have at least %%wppa%% in its content to show up the photo(s).', 'wppa'); ?></span>
+						</td>
+					</tr>
+					
+					
 					<tr><th><hr/></th><td><hr/></td></tr>
 					<tr><th><h3><?php _e('Rating system', 'wppa') ?></h3></th></tr>
 					<tr valign="top">

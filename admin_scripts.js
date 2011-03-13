@@ -1,14 +1,27 @@
 /* admin_scripts.js */
 /* Package: wp-photo-album-plus
 /*
-/* Version 3.0.0
+/* Version 3.0.1
 /* Various js routines used in admin pages		
 */
 
 jQuery(document).ready(function() {
+/* alert( 'You are running jQuery version: ' + jQuery.fn.jquery ); */
+
 	jQuery(".fade").fadeTo(10000, 0.1)
 	});
 
+/* Check if jQuery library revision is high enough, othewise give a message and uncheck checkbox elm */
+function checkjQueryRev(msg, elm, rev){
+	var version = parseFloat(jQuery.fn.jquery);
+	if (elm.checked) {
+		if (version < rev) {
+			alert (msg+'\nThe version of your jQuery library: '+version+' is too low for this feature. It requires version '+rev);
+			elm.checked = '';
+		}
+	}
+}
+	
 /* This functions does the init after loading settings page. do not put this code in the document.ready function!!! */
 function wppaInitSettings() {
 	wppaCheckFullHalign();
@@ -16,6 +29,7 @@ function wppaInitSettings() {
 	wppaCheckUseCoverOpacity();
 	wppaCheckThumbType();
 	wppaCheckThumbLink();
+	wppaCheckMphotoLink();
 }
 	
 /* Adjust visibility of selection radiobutton if fixed photo is chosen or not */				
@@ -137,6 +151,7 @@ function wppaCheckUseCoverOpacity() {
 	}
 }
 
+/* if the slideshow is disabled its useless to ask if it should initially run */
 function wppaCheckHs() {
 	var Hs = document.getElementById('wppa-hide-slideshow').checked;
 	if (Hs) jQuery(".wppa-ss").css('visibility', 'visible');
@@ -182,5 +197,14 @@ function wppaCheckThumbLink() {
 	}
 	else {
 		jQuery('.wppa-tlp').css('visibility', 'visible');
+	}
+}
+
+function wppaCheckMphotoLink() { 
+	if (document.getElementById('wppa-mlt').value == 'none') {
+		jQuery('.wppa-mlp').css('visibility', 'hidden');
+	}
+	else {
+		jQuery('.wppa-mlp').css('visibility', 'visible');
 	}
 }

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the export functions
-* Version 3.0.0
+* Version 3.0.1
 */
 
 function wppa_page_export() {
@@ -24,8 +24,7 @@ global $wpdb;
 	if (isset($_POST['wppa-export-submit'])) {
 		wppa_check_admin_referer( '$wppa_nonce', WPPA_NONCE );
 		wppa_export_photos();
-	}
-?>
+	} ?>
 	<div class="wrap">
 		<?php $iconurl = get_bloginfo('wpurl') . '/wp-content/plugins/' . WPPA_PLUGIN_PATH . '/images/album32.png'; ?>
 		<div id="icon-camera" class="icon32" style="background: transparent url(<?php echo($iconurl); ?>) no-repeat">		
@@ -44,33 +43,31 @@ global $wpdb;
 			<?php wppa_nonce_field('$wppa_nonce', WPPA_NONCE); ?>
 			<?php echo(sprintf(__('Photos will be exported to: <b>%s</b>.', 'wppa'), 'wp-content/wppa-depot/'.wppa_get_user())) ?>
 			<h2><?php _e('Export photos from album <span style="font-size:12px;">(Including Album information)</span>:', 'wppa'); ?></h2>
-<?php
-			$albums = $wpdb->get_results('SELECT * FROM ' . ALBUM_TABLE . ' ' . wppa_get_album_order(), 'ARRAY_A');
-			$high = '0';
-?>
+			<?php $albums = $wpdb->get_results('SELECT * FROM ' . ALBUM_TABLE . ' ' . wppa_get_album_order(), 'ARRAY_A');
+			$high = '0'; ?>
+			
 			<table class="form-table albumtable">
-					<thead>
-					</thead>
+				<thead>
+				</thead>
+				<tbody>
 				<tr>
-<?php
-					$ct = 0;
+					<?php $ct = 0;
 					foreach($albums as $album) {
-						$line = '&nbsp;'.$album['id'].':&nbsp;'.stripslashes($album['name']);
-						if ($album['id'] > $high) $high = $album['id'];
-?>
-					<td>
-						<input type="checkbox" name="album-<?php echo($album['id']) ?>" />&nbsp;<?php echo($line) ?>
-					</td>
-<?php					if ($ct == 4) {
+						$line = '&nbsp;'.$album['id'].':&nbsp;'.wppa_qtrans(stripslashes($album['name']));
+						if ($album['id'] > $high) $high = $album['id']; ?>
+						<td>
+							<input type="checkbox" name="album-<?php echo($album['id']) ?>" />&nbsp;<?php echo($line) ?>
+						</td>
+						<?php if ($ct == 4) {	// Wrap to newline
 							echo('</tr><tr>'); 
 							$ct = 0;
 						}
 						else {
 							$ct++;
 						}
-					}
-?>
+					} ?>
 				</tr>
+				</tbody>
 			</table>
 			<input type="hidden" name="high" value="<?php echo($high) ?>" />
 			<p>

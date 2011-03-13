@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wppa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-03-02 10:55+0100\n"
-"PO-Revision-Date: 2011-03-02 10:56+0100\n"
+"POT-Creation-Date: 2011-03-12 17:02+0100\n"
+"PO-Revision-Date: 2011-03-12 17:02+0100\n"
 "Last-Translator: J.N. Breetvelt <OpaJaap@OpaJaap.nl>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -20,193 +20,213 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPath-1: theme\n"
 
-#: wppa_commonfunctions.php:240
+#: wppa_commonfunctions.php:253
 #, php-format
 msgid "Rating: %s"
 msgstr ""
 
-#: wppa_commonfunctions.php:310
+#: wppa_commonfunctions.php:323
 msgid "--- none ---"
 msgstr "--- ninguno ---"
 
-#: wppa_commonfunctions.php:311
+#: wppa_commonfunctions.php:324
 msgid "--- separate ---"
 msgstr "--- separar ---"
 
-#: wppa_functions.php:29
+#: wppa_functions.php:32
 msgid "There are"
 msgstr "Existen"
 
-#: wppa_functions.php:29
+#: wppa_functions.php:32
 msgid "photo albums. The last album added is"
 msgstr "álbumes. El último álbum añadido es"
 
-#: wppa_functions.php:33
+#: wppa_functions.php:36
 msgid ", a subalbum of"
 msgstr ", un sub álbum de"
 
-#: wppa_functions.php:86
+#: wppa_functions.php:89
 msgid "Home"
 msgstr "Inicio"
 
-#: wppa_functions.php:124
-#: wppa_functions.php:1152
-#: wppa_functions.php:1625
+#: wppa_functions.php:127
+#: wppa_functions.php:1174
+#: wppa_functions.php:1647
 msgid "Slideshow"
 msgstr "Presentación"
 
-#: wppa_functions.php:130
+#: wppa_functions.php:133
 msgid "Searchstring:"
 msgstr "Cadena de Búsqueda:"
 
-#: wppa_functions.php:133
+#: wppa_functions.php:136
 #, fuzzy
 msgid "Top rated photos"
 msgstr "Subir fotos"
 
-#: wppa_functions.php:743
+#: wppa_functions.php:763
 msgid "<b>ERROR: Attempt to enter an invalid rating.</b>"
 msgstr ""
 
-#: wppa_functions.php:1079
+#: wppa_functions.php:1101
 #, fuzzy
 msgid "Prev.&nbsp;page"
 msgstr "Anterior"
 
-#: wppa_functions.php:1083
+#: wppa_functions.php:1105
 #, fuzzy
 msgid "Next&nbsp;page"
 msgstr "Siguiente"
 
-#: wppa_functions.php:1153
-#: wppa_functions.php:1790
+#: wppa_functions.php:1175
+#: wppa_functions.php:1819
 msgid "Start"
 msgstr "Comenzar"
 
-#: wppa_functions.php:1154
+#: wppa_functions.php:1176
 #, fuzzy
 msgid "Stop"
 msgstr "arriba"
 
-#: wppa_functions.php:1155
+#: wppa_functions.php:1177
 msgid "Photo"
 msgstr "Foto"
 
-#: wppa_functions.php:1156
+#: wppa_functions.php:1178
 msgid "of"
 msgstr "de"
 
-#: wppa_functions.php:1157
+#: wppa_functions.php:1179
 #, fuzzy
 msgid "Prev.&nbsp;photo"
 msgstr "Anterior"
 
-#: wppa_functions.php:1158
+#: wppa_functions.php:1180
 #, fuzzy
 msgid "Next&nbsp;photo"
 msgstr "Siguiente"
 
-#: wppa_functions.php:1556
+#: wppa_functions.php:1578
+#: wppa_toptenwidget.php:44
 msgid "Link to"
 msgstr "Enlace a"
 
-#: wppa_functions.php:1560
+#: wppa_functions.php:1582
 msgid "Page is not available."
 msgstr "La página no está disponible."
 
-#: wppa_functions.php:1566
-#: wppa_functions.php:1633
+#: wppa_functions.php:1588
+#: wppa_functions.php:1655
 msgid "View the album"
 msgstr "Ver el álbum"
 
-#: wppa_functions.php:1571
+#: wppa_functions.php:1593
 msgid "View the cover photo"
 msgstr "Ver la foto de portada"
 
-#: wppa_functions.php:1572
+#: wppa_functions.php:1594
 #, fuzzy
 msgid "View the cover photos"
 msgstr "Ver la foto de portada"
 
-#: wppa_functions.php:1625
+#: wppa_functions.php:1647
 #, fuzzy
 msgid "Browse photos"
 msgstr "Barra de Navegación de fotos:"
 
-#: wppa_functions.php:1634
+#: wppa_functions.php:1656
 msgid "View"
 msgstr "Ver"
 
-#: wppa_functions.php:1637
+#: wppa_functions.php:1659
 msgid "album"
 msgstr "el álbum"
 
-#: wppa_functions.php:1640
+#: wppa_functions.php:1662
 msgid "albums"
 msgstr "los álbumes"
 
-#: wppa_functions.php:1644
+#: wppa_functions.php:1666
 msgid "and"
 msgstr "y"
 
-#: wppa_functions.php:1648
+#: wppa_functions.php:1670
 msgid "photo"
 msgstr "la foto"
 
-#: wppa_functions.php:1651
+#: wppa_functions.php:1673
 msgid "photos"
 msgstr "las fotos"
 
-#: wppa_functions.php:1789
+#: wppa_functions.php:1818
 msgid "Slower"
 msgstr "Más lento"
 
-#: wppa_functions.php:1791
+#: wppa_functions.php:1820
 msgid "Faster"
 msgstr "Más rápido"
 
-#: wppa_functions.php:2140
+#: wppa_functions.php:2167
 #, fuzzy
 msgid "- - - Rating enabled - - -"
 msgstr "- - - Enlaces de páginas - - -"
 
-#: wppa_functions.php:2149
+#: wppa_functions.php:2176
 #, fuzzy
 msgid "very low"
 msgstr "muy lento (2 s.)"
 
-#: wppa_functions.php:2150
+#: wppa_functions.php:2177
 #, fuzzy
 msgid "low"
 msgstr "Más lento"
 
-#: wppa_functions.php:2151
+#: wppa_functions.php:2178
 #, fuzzy
 msgid "average"
 msgstr "Guardar Cambios"
 
-#: wppa_functions.php:2152
+#: wppa_functions.php:2179
 #, fuzzy
 msgid "high"
 msgstr "derecha"
 
-#: wppa_functions.php:2153
+#: wppa_functions.php:2180
 msgid "very high"
 msgstr ""
 
-#: wppa_functions.php:2158
-#: wppa_functions.php:2163
+#: wppa_functions.php:2185
+#: wppa_functions.php:2190
 msgid "Average&nbsp;rating"
 msgstr ""
 
-#: wppa_functions.php:2172
-#: wppa_functions.php:2175
+#: wppa_functions.php:2199
+#: wppa_functions.php:2202
 msgid "My&nbsp;rating"
 msgstr ""
 
-#: wppa_functions.php:2178
+#: wppa_functions.php:2205
 msgid "You must login to vote"
 msgstr ""
+
+#: wppa_slideshow_widget.php:28
+#, fuzzy
+msgid "Sidebar Slideshow"
+msgstr "Sidebar Widget"
+
+#: wppa_slideshow_widget.php:74
+#, fuzzy
+msgid "No album defined yet."
+msgstr "No hay álbumes."
+
+#: wppa_toptenwidget.php:60
+msgid "Photo not found."
+msgstr "Foto no encontrada."
+
+#: wppa_widget.php:24
+#, fuzzy
+msgid "Photo Of The Day"
+msgstr "Foto del día"
 
 #: theme/wppa_theme.php:80
 msgid "No albums or photos found matching your search criteria."
@@ -227,9 +247,6 @@ msgstr "No se encontraron álbumes o fotos con su búsqueda."
 
 #~ msgid "Settings"
 #~ msgstr "Configuración"
-
-#~ msgid "Sidebar Widget"
-#~ msgstr "Sidebar Widget"
 
 #~ msgid "Help &amp; Info"
 #~ msgstr "Ayuda &amp; Info"
@@ -465,9 +482,6 @@ msgstr "No se encontraron álbumes o fotos con su búsqueda."
 
 #~ msgid "Edit"
 #~ msgstr "Editar"
-
-#~ msgid "No albums yet."
-#~ msgstr "No hay álbumes."
 
 #~ msgid "No photos yet in this album."
 #~ msgstr "No hay fotos en este álbum."
@@ -2067,17 +2081,11 @@ msgstr "No se encontraron álbumes o fotos con su búsqueda."
 #~ msgid "Photo Album Widget"
 #~ msgstr "Widget de Álbum de Fotos"
 
-#~ msgid "Photo of the day"
-#~ msgstr "Foto del día"
-
 #~ msgid "Not implemented yet (5)"
 #~ msgstr "No implementado aún (5)"
 
 #~ msgid "Not implemented yet (6)"
 #~ msgstr "No implementado aún (6)"
-
-#~ msgid "Photo not found."
-#~ msgstr "Foto no encontrada."
 
 #~ msgid "Widget Photo Width."
 #~ msgstr "Tamaño del Foto Widget."

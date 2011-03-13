@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the widget
-* Version 3.0.0
+* Version 3.0.1
 */
 
 class PhotoOfTheDay extends WP_Widget {
@@ -21,7 +21,7 @@ class PhotoOfTheDay extends WP_Widget {
 
         extract( $args );
         
- 		$widget_title = apply_filters('widget_title', empty( $instance['title'] ) ? get_option('wppa_widgettitle', __( 'Photo Of The Day', 'wppa' )) : $instance['title']);
+ 		$widget_title = apply_filters('widget_title', empty( $instance['title'] ) ? get_option('wppa_widgettitle', __a( 'Photo Of The Day', 'wppa_theme' )) : $instance['title']);
 
 		// get the photo  ($image)
 		switch (get_option('wppa_widget_method', '1')) {
@@ -83,7 +83,7 @@ class PhotoOfTheDay extends WP_Widget {
 			if ($pid > '0') {
 				$page_title = $wpdb->get_var("SELECT post_title FROM " . $wpdb->posts . " WHERE post_type = 'page' AND post_status = 'publish' AND ID=" . $pid);
 				if ($page_title) { 			// Yep, Linkpage found
-					$title = __('Link to', 'wppa') . ' ' . $page_title;
+					$title = __a('Link to', 'wppa_theme') . ' ' . wppa_qtrans($page_title);
 					if (get_option('wppa_widget_linktype', 'album') == 'album') {
 						$widget_content .= '<a href="'.wppa_get_permalink($pid).'album='.$image['album'].'&amp;cover=0&amp;occur=1">';
 					}
@@ -98,12 +98,12 @@ class PhotoOfTheDay extends WP_Widget {
 			}
 			if ($pid == '-1') {
 				// custom link
-				$title = esc_attr(get_option('wppa_widget_linktitle', ''));
+				$title = wppa_qtrans(esc_attr(get_option('wppa_widget_linktitle', '')));
 				$custlink = esc_attr(get_option('wppa_widget_linkurl', '#'));
 				$widget_content .= '<a href="' . $custlink . '">';
 			}
 			if ($pid == '0'){
-				$title = $widget_title;
+				$title = wppa_qtrans($widget_title);
 				$widget_content .= '<a href = "'.$imgurl.'" target="_blank">';
 			}
 			
@@ -112,7 +112,7 @@ class PhotoOfTheDay extends WP_Widget {
 			$widget_content .= '</a>';
 		} 
 		else {	// No image
-			$widget_content .= __('Photo not found.');
+			$widget_content .= __a('Photo not found.', 'wppa_theme');
 		}
 		$widget_content .= '</div>';
 		// Add subtitle, if any		
@@ -122,12 +122,12 @@ class PhotoOfTheDay extends WP_Widget {
 				break;
 			case 'name': 
 				if ($image && $image['name'] != '') {
-					$widget_content .= '<div class="wppa-widget-text">' . stripslashes($image['name']) . '</div>';
+					$widget_content .= '<div class="wppa-widget-text">' . wppa_qtrans(stripslashes($image['name'])) . '</div>';
 				}
 				break;
 			case 'desc': 
 				if ($image && $image['description'] != '') {
-					$widget_content .= '<div class="wppa-widget-text">' . stripslashes($image['description']) . '</div>'; 
+					$widget_content .= '<div class="wppa-widget-text">' . wppa_qtrans(stripslashes($image['description'])) . '</div>'; 
 				}
 				break;
 		}

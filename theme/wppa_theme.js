@@ -1,16 +1,11 @@
 // Theme variables and functions
-// This is wppa_theme.js version 3.0.0
+// This is wppa_theme.js version 3.0.1
 //
 
 var wppa_bgcolor_img = '';
 var wppa_timer = new Array();
 var wppa_saved_id = new Array();
 var wppa_popup_nolink = false;
-
-// Adapt style
-//jQuery(document).ready(function(){
-//
-//});
 
 // Popup of thumbnail images 
 function wppa_popup(mocc, elm, id, rating) {
@@ -26,17 +21,19 @@ function wppa_popup(mocc, elm, id, rating) {
 	// stop if running 
 	clearTimeout(wppa_timer[mocc]);
 	
-	// Give this' occurrances popup its content (div eromheen weggehald)
-	if (document.getElementById('a-'+id+'-'+mocc)) {
+	// Give this' occurrances popup its content
+	if (document.getElementById('x-'+id+'-'+mocc)) {
 		if (wppa_popup_nolink) {
-			jQuery('#wppa-popup-'+mocc).html('<div class="wppa-popup" style="background-color:'+wppa_bgcolor_img+'; text-align:center;"><a id="wppa-a"><img id="wppa-img-'+mocc+'" src="'+elm.src+'" title="" /></a><div id="wppa-name-'+mocc+'" style="display:none; padding:2px;" class="wppa_pu_info">'+elm.alt+'</div><div id="wppa-desc-'+mocc+'" style="clear:both; display:none;" class="wppa_pu_info">'+elm.title+'</div><div id="wppa-rat-'+mocc+'" style="clear:both; display:none;" class="wppa_pu_info">'+rating+'</div></div>');
+			jQuery('#wppa-popup-'+mocc).html('<div class="wppa-popup" style="background-color:'+wppa_bgcolor_img+'; text-align:center;"><img id="wppa-img-'+mocc+'" src="'+elm.src+'" title="" style="border-width: 0px;" /><div id="wppa-name-'+mocc+'" style="display:none; padding:2px;" class="wppa_pu_info">'+elm.alt+'</div><div id="wppa-desc-'+mocc+'" style="clear:both; display:none;" class="wppa_pu_info">'+elm.title+'</div><div id="wppa-rat-'+mocc+'" style="clear:both; display:none;" class="wppa_pu_info">'+rating+'</div></div>');
 		}
 		else {
-			jQuery('#wppa-popup-'+mocc).html('<div class="wppa-popup" style="background-color:'+wppa_bgcolor_img+'; text-align:center;"><a id="wppa-a" href="'+document.getElementById('a-'+id+'-'+mocc).href+'"><img id="wppa-img-'+mocc+'" src="'+elm.src+'" title="" /></a><div id="wppa-name-'+mocc+'" style="display:none; padding:2px;" class="wppa_pu_info">'+elm.alt+'</div><div id="wppa-desc-'+mocc+'" style="clear:both; display:none;" class="wppa_pu_info">'+elm.title+'</div><div id="wppa-rat-'+mocc+'" style="clear:both; display:none;" class="wppa_pu_info">'+rating+'</div></div>');
+			jQuery('#wppa-popup-'+mocc).html('<div class="wppa-popup" style="background-color:'+wppa_bgcolor_img+'; text-align:center;"><a id="wppa-a" href="'+document.getElementById('x-'+id+'-'+mocc).href+'"><img id="wppa-img-'+mocc+'" src="'+elm.src+'" title="" style="border-width: 0px;" /></a><div id="wppa-name-'+mocc+'" style="display:none; padding:2px;" class="wppa_pu_info">'+elm.alt+'</div><div id="wppa-desc-'+mocc+'" style="clear:both; display:none;" class="wppa_pu_info">'+elm.title+'</div><div id="wppa-rat-'+mocc+'" style="clear:both; display:none;" class="wppa_pu_info">'+rating+'</div></div>');
 		}
 	}
+	
 	// Find handle to the popup image 
 	puImg = document.getElementById('wppa-img-'+mocc);
+	
 	// Set width of text fields to width of a landscape image	
 	if (puImg)
 		jQuery(".wppa_pu_info").css('width', ((puImg.clientWidth > puImg.clientHeight ? puImg.clientWidth : puImg.clientHeight) - 8)+'px');

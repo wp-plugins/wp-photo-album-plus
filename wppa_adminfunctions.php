@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 * gp admin functions
-* version 3.0.0
+* version 3.0.1
 */
 
 // Set default option values
@@ -91,9 +91,10 @@ function wppa_set_defaults($force = false) {
 						'wppa_list_photos_by' => '0',
 						'wppa_list_photos_desc' => 'no',
 						'wppa_html' => 'no',
-//						'wppa_no_thumb_links' => 'no',	//obsolete
 						'wppa_thumb_linkpage' => '0',
 						'wppa_thumb_linktype' => 'photo',
+						'wppa_mphoto_linkpage' => '0',
+						'wppa_mphoto_linktype' => 'photo',
 						'wppa_fadein_after_fadeout' => 'no',
 						'wppa_widget_linkpage' => '0',
 						'wppa_widget_linktype' => 'album'

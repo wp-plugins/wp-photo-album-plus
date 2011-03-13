@@ -76,20 +76,36 @@ ul.wppa_nav
 	border: 1px #ccc solid;
 }
 
+.phototable {
+	margin-bottom: 0px;
+	margin-top: 0.5em;
+	float: left;
+/*	width: 45%;*/
+}
+
+.phototable td {
+	font-size: 11px;
+	line-height: 20px;
+}
+
 .albumtable label, .phototable label { font-weight: bold; }
 
-.photoitem img { float: right; }
+/* .photoitem img { float: right; } */
 .photoitem .clear { clear: both; }
 .photoitem .details { float: left; }
 .photoitem .details label {float: left; }
 
+.photoitem td {
+	margin-left: 10px;
+}
+/*
 .photoitem .desc
 {
 	float: left;
 	margin-left: 10px;
 	font-weight: bold;
 }
-
+*/
 .photoitem .deletelink
 {
 	text-decoration: none;
