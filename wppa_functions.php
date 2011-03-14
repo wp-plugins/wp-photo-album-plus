@@ -6,6 +6,7 @@
 * Version 3.0.1
 *
 * 001: HTML in photo of the day widget fixed
+* 002: Fixed 'Start undefined'
 */
 
 global $wppa_api_version;
@@ -1167,7 +1168,7 @@ global $wppa_opt;
 	$temp = 2*6 + 2*23 + 2*$wppa_opt['wppa_bwidth'];
 	$wppa['out'] .= 'wppa_filmstrip_area_delta = '.$temp.';';
 	if ($wppa_opt['wppa_film_show_glue'] == 'yes') $wppa['out'] .= 'wppa_film_show_glue = true;';
-	else $wppa['out'] .= 'wppa_film_show_glue = true';
+	else $wppa['out'] .= 'wppa_film_show_glue = false;';
 	$wppa['out'] .= 'wppa_slideshow = "'.__a('Slideshow', 'wppa_theme').'";';
 	$wppa['out'] .= 'wppa_start = "'.__a('Start', 'wppa_theme').'";';
 	$wppa['out'] .= 'wppa_stop = "'.__a('Stop', 'wppa_theme').'";';
