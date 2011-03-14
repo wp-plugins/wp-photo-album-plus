@@ -122,12 +122,12 @@ class PhotoOfTheDay extends WP_Widget {
 				break;
 			case 'name': 
 				if ($image && $image['name'] != '') {
-					$widget_content .= '<div class="wppa-widget-text">' . wppa_qtrans(stripslashes($image['name'])) . '</div>';
+					$widget_content .= '<div class="wppa-widget-text">' . wppa_qtrans(wppa_html(stripslashes($image['name']))) . '</div>';
 				}
 				break;
 			case 'desc': 
 				if ($image && $image['description'] != '') {
-					$widget_content .= '<div class="wppa-widget-text">' . wppa_qtrans(stripslashes($image['description'])) . '</div>'; 
+					$widget_content .= '<div class="wppa-widget-text">' . wppa_qtrans(wppa_html(stripslashes($image['description']))) . '</div>'; 
 				}
 				break;
 		}
