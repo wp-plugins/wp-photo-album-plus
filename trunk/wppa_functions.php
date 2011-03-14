@@ -5,14 +5,11 @@
 * Various funcions and API modules
 * Version 3.0.1
 *
-* 001: [caption] is not allowed to have html (wp restriction), tags are now removed from photo description for use with [caption]
-* 002: Fixed a breadcrumb nav that did not want to hide itself
-* 003: You can now import media photos from the upload directory you specified in the wp media settings page also when it is not the default dir.
-* 004: Fixed a problem where, when pagination os off, in a mixed display of covers and thumbs, the covers were not shown.
+* 001: HTML in photo of the day widget fixed
 */
 
 global $wppa_api_version;
-$wppa_api_version = '3-0-1-000';
+$wppa_api_version = '3-0-1-001';
 
 /* show system statistics */
 function wppa_statistics() {
