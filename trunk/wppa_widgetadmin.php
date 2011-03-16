@@ -27,8 +27,14 @@ function wppa_sidebar_page_options() {
 			$options_error = true;
 		}
 
-		if (wppa_check_numeric($_POST['wppa-widget-padding'], '0', __('Widget Photo Padding.'))) {
-			update_option('wppa_widget_padding', $_POST['wppa-widget-padding']);
+		if (wppa_check_numeric($_POST['wppa-widget-padding-top'], '0', __('Widget Photo Padding.'))) {
+			update_option('wppa_widget_padding_top', $_POST['wppa-widget-padding-top']);
+		} else {
+			$options_error = true;
+		}
+
+		if (wppa_check_numeric($_POST['wppa-widget-padding-left'], '0', __('Widget Photo Padding.'))) {
+			update_option('wppa_widget_padding_left', $_POST['wppa-widget-padding-left']);
 		} else {
 			$options_error = true;
 		}
@@ -75,8 +81,10 @@ function wppa_sidebar_page_options() {
 						</th>
 						<td>
 							<input type="text" name="wppa-widget-width" id="wppa-widget-width" value="<?php echo(get_option('wppa_widget_width', '150')); ?>" style="width: 50px;" />
-							<?php _e('pixels.', 'wppa'); echo(' '); _e('Padding top/left:', 'wppa'); ?>
-							<input type="text" name="wppa-widget-padding" id="wppa-widget-padding" value="<?php echo(get_option('wppa_widget_padding', '5')); ?>" style="width: 50px;" />
+							<?php _e('pixels.', 'wppa'); echo(' '); _e('Padding top:', 'wppa'); ?>
+							<input type="text" name="wppa-widget-padding-top" id="wppa-widget-padding-top" value="<?php echo(get_option('wppa_widget_padding_top', '5')); ?>" style="width: 50px;" />
+							<?php _e('pixels.', 'wppa'); echo(' '); _e('Padding left:', 'wppa'); ?>
+							<input type="text" name="wppa-widget-padding-left" id="wppa-widget-padding-left" value="<?php echo(get_option('wppa_widget_padding_left', '5')); ?>" style="width: 50px;" />
 							<?php _e('pixels.', 'wppa'); ?>
 							<span class="description"><br/><?php _e('Enter the desired display width of the photo in the sidebar.', 'wppa'); ?></span>
 						</td>
@@ -121,6 +129,7 @@ function wppa_sidebar_page_options() {
 							</select>
 							<?php $period = get_option('wppa_widget_period', '168'); ?>
 							<select name="wppa-widget-period" id="wppa-wp" >
+								<option value="0" <?php if ($period == '0') echo($sel); ?>><?php _e('pageview.', 'wppa'); ?></option>
 								<option value="1" <?php if ($period == '1') echo($sel); ?>><?php _e('hour.', 'wppa'); ?></option>
 								<option value="24" <?php if ($period == '24') echo($sel); ?>><?php _e('day.', 'wppa'); ?></option>
 								<option value="168" <?php if ($period == '168') echo($sel); ?>><?php _e('week.', 'wppa'); ?></option>

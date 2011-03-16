@@ -124,7 +124,12 @@ For more information on multilanguage sites, see the documentation of the qTrans
 * Multisite support
 * More than one photo of the day
 * Fullscreen slideshow
-* Rotate images
+
+* 001: HTML in photo of the day widget fixed
+* 002: Fixed 'Start undefined'
+* 003: You can now rotate images when they are already uploaded
+* 004: Photo of the day option change every pageview added
+* 005: Photo of the day split padding top and left
 
 = 3.0.0 =
 
@@ -149,6 +154,7 @@ For more information on multilanguage sites, see the documentation of the qTrans
 * 003: You can now import media photos from the upload directory you specified in the wp media settings page also when it is not the default dir.
 * 004: Fixed a problem where, when pagination is off, in a mixed display of covers and thumbs, the covers were not shown.
 * 005: added class size-medium to mphotos ([caption])
+
 
 = Notes =
 

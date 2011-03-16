@@ -69,6 +69,23 @@ function wppa_admin() {
 				}
 			}
 			
+			// rotates the image
+			if (isset($_POST['rotate'])) {
+				if (isset($_POST['photo_rotate']) && isset($_POST['photo_angle'])) {
+					$err = wppa_rotate($_POST['photo_rotate'], $_POST['photo_angle']);
+					if (!$err) {
+						wppa_update_message(__('Photo rotated', 'wppa'));
+						clearstatcache();
+					}
+					else {
+						wppa_error_message(__('Unable to rotate photo, error:', 'wppa').' '.$err);
+					}
+				}
+				else {
+					wppa_error_message(__('Internal fatal error while getting rotation data', 'wppa'));
+				}
+			}
+			
 			// Get the album information
 			$albuminfo = $wpdb->get_row($wpdb->prepare('SELECT * FROM `' . ALBUM_TABLE . '` WHERE `id` = %d', $_GET['edit_id']), 'ARRAY_A'); ?>	
 			
@@ -516,8 +533,10 @@ function wppa_album_photos($id) {
 	if (empty($photos)) { ?>
 		<p><?php _e('No photos yet in this album.', 'wppa'); ?></p>
 	<?php } 
-	else {
-		foreach ($photos as $photo) { ?>
+	else { ?>
+		<input type="hidden" name="photo_rotate" id="photo_rotate" value=""/>
+		<input type="hidden" name="photo_angle"  id="photo_angle" value=""/>
+		<?php foreach ($photos as $photo) { ?>
 			<div class="photoitem">
 				<table class="form-table phototable" style="width: 45%; clear:none;"><!--325-->
 					<tbody>
@@ -525,11 +544,16 @@ function wppa_album_photos($id) {
 						<tr valign="top">
 							<th scope="row">
 								<label ><?php _e('Preview:', 'wppa'); ?></label>
-							</th>
-							<td>
+								<br/>
+								<input type="submit" name="rotate" class="button-secondary" style="font-weight:bold; width:90%" onclick="if (confirm('<?php _e('Are you sure you want to rotate this photo?', 'wppa') ?>')) { document.getElementById('photo_rotate').value='<?php echo($photo['id']) ?>'; document.getElementById('photo_angle').value='90'; return true; } else return false;" value="<?php _e('Rotate left', 'wppa'); ?>" />
+								<br/>
+								<input type="submit" name="rotate" class="button-secondary" style="font-weight:bold; width:90%" onclick="if (confirm('<?php _e('Are you sure you want to rotate this photo?', 'wppa') ?>')) { document.getElementById('photo_rotate').value='<?php echo($photo['id']) ?>'; document.getElementById('photo_angle').value='270'; return true; } else return false;" value="<?php _e('Rotate right', 'wppa'); ?>" />
+								<br/><span style="font-size: 9px; line-height: 10px;"><?php _e('If it says \'Photo rotated\', the photo is rotated. If you do not see it happen here, clear your browser cache.', 'wppa') ?></span>
+								</th>
+							<td style=>
 								<?php $src = get_bloginfo('wpurl') . '/wp-content/uploads/wppa/thumbs/' . $photo['id'] . '.' . $photo['ext']; ?> 
 								<?php $path = ABSPATH . 'wp-content/uploads/wppa/thumbs/' . $photo['id'] . '.' . $photo['ext']; ?>
-								<img src="<?php echo($src) ?>" alt="<?php echo($photo['name']) ?>" style="" />
+								<img src="<?php echo($src) ?>" alt="<?php echo($photo['name']) ?>" style="max-width: 160px;" />
 							</td>	
 						</tr>
 						
@@ -564,27 +588,17 @@ function wppa_album_photos($id) {
 							<th scope="row">
 								<a href="#" id="copy-photo-<?php echo($photo['id']) ?>"></a>
 								<input type="button" class="button-secondary" style="font-weight:bold; color:blue; width:90%" onclick="if (document.getElementById('albsel-<?php echo($photo['id']) ?>').value != 0) { if (confirm('<?php _e('Are you sure you want to copy this photo?', 'wppa') ?>')) document.location = document.getElementById('copy-photo-<?php echo($photo['id']) ?>').href; } else { alert('<?php _e('Please select an album to copy the photo to first.', 'wppa') ?>'); return false;}" value="<?php _e('Copy photo to', 'wppa') ?>" />
+								
+								<br/><a href="<?php echo(get_option('siteurl')) ?>/wp-admin/admin.php?page=<?php echo(WPPA_PLUGIN_PATH) ?>/wppa.php&amp;tab=edit&amp;edit_id=<?php echo($_GET['edit_id']) ?>&amp;photo_del=<?php echo($photo['id']) ?>" id="del-photo-<?php echo($photo['id']) ?>"></a>
+								<input type="button" class="button-secondary" style="font-weight:bold; color:red; width:90%" onclick="if (confirm('<?php _e('Are you sure you want to delete this photo?', 'wppa') ?>')) document.location = document.getElementById('del-photo-<?php echo($photo['id']) ?>').href;" value="<?php _e('Delete photo', 'wppa'); ?>" />
+								
+								<br/><input type="button" class="button-secondary" style="font-weight:bold; width:90%" onclick="prompt('<?php _e('Insert code for single image in Page or Post:\nYou may change the size if you like.', 'wppa') ?>', '%%wppa%% %%photo=<?php echo($photo['id']); ?>%% %%size=<?php echo(get_option('wppa_fullsize')); ?>%%')" value="<?php _e('Insertion Code', 'wppa'); ?>" />
 							</th>
 							<td>
 								<select id="albsel-<?php echo($photo['id']) ?>"name="copy-photo" onchange="document.getElementById('copy-photo-<?php echo($photo['id']) ?>').href='<?php echo(get_option('siteurl')) ?>/wp-admin/admin.php?page=<?php echo(WPPA_PLUGIN_PATH) ?>/wppa.php&amp;tab=edit&amp;edit_id=<?php echo($_GET['edit_id']) ?>&amp;photo_copy=<?php echo($photo['id']) ?>&amp;album_to='+this.value; "><?php echo(wppa_album_select($id, '0', true)) ?></select>
 							</td>
 						</tr>
-						
-						<tr valign="top">
-							<th scope="row">
-								<a href="<?php echo(get_option('siteurl')) ?>/wp-admin/admin.php?page=<?php echo(WPPA_PLUGIN_PATH) ?>/wppa.php&amp;tab=edit&amp;edit_id=<?php echo($_GET['edit_id']) ?>&amp;photo_del=<?php echo($photo['id']) ?>" id="del-photo-<?php echo($photo['id']) ?>"></a>
-								<input type="button" class="button-secondary" style="font-weight:bold; color:red; width:90%" onclick="if (confirm('<?php _e('Are you sure you want to delete this photo?', 'wppa') ?>')) document.location = document.getElementById('del-photo-<?php echo($photo['id']) ?>').href;" value="<?php _e('Delete photo', 'wppa'); ?>" />
-							</th>
-							<td>
-							</td>
-						</tr>
-						
-						<tr valign="top">
-							<th scope="row">
-								<input type="button" class="button-secondary" style="font-weight:bold; width:90%" onclick="prompt('<?php _e('Insert code for single image in Page or Post:\nYou may change the size if you like.', 'wppa') ?>', '%%wppa%% %%photo=<?php echo($photo['id']); ?>%% %%size=<?php echo(get_option('wppa_fullsize')); ?>%%')" value="<?php _e('Insertion Code', 'wppa'); ?>" />
-							</th>
-						</tr>
-						
+				
 					</tbody>
 				</table>
 				
