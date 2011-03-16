@@ -48,21 +48,36 @@ class PhotoOfTheDay extends WP_Widget {
 			case '4':	// Change every
 				$album = get_option('wppa_widget_album', '');
 				if ($album != '') {
-					$u = date("U"); // Seconds since 1-1-1970
-					$u /= 3600;		//  hours since
-					$u = floor($u);
-					$u /= get_option('wppa_widget_period', '168');
-					$u = floor($u);
+					$per = get_option('wppa_widget_period', '168');
 					$photos = wppa_get_widgetphotos($album);
-					$p = count($photos); //wppa_get_photo_count($album);
-					if (!is_numeric($p) || $p < 1) $p = '1'; // make sure we dont get overflow in the next line
-					$idn = fmod($u, $p);
-					$i = 0;
-					foreach ($photos as $photo) {
-						if ($i == $idn) {	// found the idn'th out of p
-							$image = $photo;
+					if ($per == '0') {
+						if ($photos) {
+							$image = $photos[rand(0, count($photos)-1)];
 						}
-						$i++;
+						else $image = '';
+					}
+					else {
+						$u = date("U"); // Seconds since 1-1-1970
+						$u /= 3600;		//  hours since
+						$u = floor($u);
+						$u /= $per;
+						$u = floor($u);
+						if ($photos) {
+							$p = count($photos); //wppa_get_photo_count($album);
+//							if (!is_numeric($p) || $p < 1) $p = '1'; // make sure we dont get overflow in the next line
+							$idn = fmod($u, $p);
+							$i = 0;
+						$image = $photos[$idn];
+//							foreach ($photos as $photo) {
+//								if ($i == $idn) {	// found the idn'th out of p
+//									$image = $photo;
+//								}
+//								$i++;
+//							}
+						}
+						else {
+							$image = '';
+						}
 					}
 				} else {
 					$image = '';

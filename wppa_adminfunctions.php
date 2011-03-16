@@ -57,7 +57,8 @@ function wppa_set_defaults($force = false) {
 						'wppa_fontsize_fulltitle' => '',
 						'wppa_black' => 'black',
 						'wppa_arrow_color' => 'black',
-						'wppa_widget_padding' => '5',
+						'wppa_widget_padding_top' => '5',
+						'wppa_widget_padding_left' => '5',
 						'wppa_2col_treshold' => '640',
 						'wppa_3col_treshold' => '800',
 						'wppa_film_show_glue' => 'yes',
@@ -145,10 +146,13 @@ function wppa_create_thumbnail( $file, $max_side, $effect = '') {
 
 		require_once('wppa_class_resize.php');		
 		$objResize = new wppa_ImageResize($file, $thumbpath, $dir, $max_side);
+		$objResize->destroyImage($objResize->resOriginalImage);
+		$objResize->destroyImage($objResize->resResizedImage);
 	}
 	else {
 		return false;
 	}
+	return true;
 }
 
 function wppa_check_update() {
@@ -501,4 +505,86 @@ global $wpdb;
 	if (!copy($oldthumb, $newthumb)) return $err;
 	
 	return false;	// No error
+}
+
+function wppa_rotate($id, $ang) {
+global $wpdb;
+
+	// Check args
+	$err = '1';
+	if (!is_numeric($id) || !is_numeric($ang)) return $err;
+	
+	// Get the ext
+	$err = '2';
+	$ext = $wpdb->get_var('SELECT ext FROM '.PHOTO_TABLE.' WHERE id = '.$id);
+	if (!$ext) return $err;
+	
+	// Get the image
+	$err = '3';
+	$file = ABSPATH.'wp-content/uploads/wppa/'.$id.'.'.$ext;
+	if (!is_file($file)) return $err;
+	
+	// Get the imgdetails
+	$err = '4';
+	$img = getimagesize($file);
+	if (!$img) return $err;
+	
+	// Get the image
+	switch ($img[2]) {
+		case 1:	// gif
+			$err = '5';
+			$source = imagecreatefromgif($file);
+			break;
+		case 2: // jpg
+			$err = '6';
+			$source = imagecreatefromjpeg($file);
+			break;
+		case 3: // png
+			$err = '7';
+			$source = imagecreatefrompng($file);
+			break;
+		default: // unsupported mimetype
+			$err = '10';
+			$source = false;	
+	}
+	if (!$source) return $err;
+
+	// Rotate the image
+	$err = '11';
+	$rotate = imagerotate($source, $ang, 0);
+	if (!$rotate) return $err;
+	
+	// Save the image
+	switch ($img[2]) {
+		case 1:
+			$err = '15';
+			$bret = imagegif($rotate, $file, 95);
+			break;
+		case 2:
+			$err = '16';
+			$bret = imagejpeg($rotate, $file);
+			break;
+		case 3:
+			$err = '17';
+			$bret = imagepng($rotate, $file);
+			break;
+		default:
+			$err = '20';
+			$bret = false;
+	}
+	if (!$bret) return $err;
+	
+	// Destroy the source
+	imagedestroy($source);
+	// Destroy the result
+	imagedestroy($rotate);
+
+	// Recreate the thumbnail
+	$err = '30';
+	$thumbsize = wppa_get_minisize();
+	$bret = wppa_create_thumbnail($file, $thumbsize, '' );
+	if (!$bret) return $err;
+	
+	// Return success
+	return false;
 }

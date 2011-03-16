@@ -7,10 +7,14 @@
 *
 * 001: HTML in photo of the day widget fixed
 * 002: Fixed 'Start undefined'
+* 003: You can now rotate images when they are already uploaded
+* 004: Photo of the day option change every pageview added
+* 005: Photo of the day split padding top and left
+*
 */
 
 global $wppa_api_version;
-$wppa_api_version = '3-0-1-001';
+$wppa_api_version = '3-0-1-005';
 
 /* show system statistics */
 function wppa_statistics() {
@@ -2137,8 +2141,10 @@ global $wppa_opt;
 			if ($opt != '') $result .= 'color:'.$opt.'; ';
 			break;
 		case 'wppa-widget':
-			$opt = $wppa_opt['wppa_widget_padding'];
-			if ($opt != '') $result .= 'padding-top:'.$opt.'px; padding-left:'.$opt.'px; ';
+			$opt = $wppa_opt['wppa_widget_padding_top'];
+			if ($opt != '') $result .= 'padding-top:'.$opt.'px; ';
+			$opt = $wppa_opt['wppa_widget_padding_left'];
+			if ($opt != '') $result .= 'padding-left:'.$opt.'px; ';
 			break;
 		case 'wppa-arrow':
 			$opt = $wppa_opt['wppa_arrow_color'];

@@ -532,6 +532,8 @@ function wppa_insert_photo ($file = '', $album = '', $name = '', $desc = '', $po
 
 			if ($s > $siz) {	
 				$objResize = new wppa_ImageResize($file, $newimage, $dir, $siz);
+		$objResize->destroyImage($objResize->resOriginalImage);
+		$objResize->destroyImage($objResize->resResizedImage);
 			}
 			else {
 				copy($file, $newimage);
