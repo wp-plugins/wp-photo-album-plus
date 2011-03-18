@@ -10,6 +10,7 @@
 * 003: You can now rotate images when they are already uploaded
 * 004: Photo of the day option change every pageview added
 * 005: Photo of the day split padding top and left
+* 006: If Filmstrip is off you can overrule display filmstrip by using %%slidef=.. and %%slideonlyf=..
 *
 */
 
@@ -1941,14 +1942,21 @@ global $wppa;
 global $wppa_opt;
 global $thumb;
 
-	if ($opt == 'optional' && !$wppa_opt['wppa_filmstrip'] && !is_feed()) return;
+	$do_it = false;												// Init
+	if (is_feed()) $do_it = true;								// feed -> do it to indicate that there is a slideshow
+	else {														// Not a feed
+		if ($opt != 'optional') $do_it = true;						// not optional -> do it
+		else {														// optional
+			if ($wppa_opt['wppa_filmstrip']) {							// optional and option on
+				if (!$wppa['is_slideonly']) $do_it = true;					// always except slideonly
+			}
+			else {														// optional and option off
+				if ($wppa['film_on']) $do_it = true;						// explicitly turned on
+			}
+		}
+	}
+	if (!$do_it) return;										// Don't do it
 	
-//	if (is_feed()) {
-//		wppa_dummy_bar(__('- - - Filmstrip - - -', 'wppa_theme'));
-//		return;
-//	}
-	if ($wppa['is_slideonly'] == '1' && !is_feed()) return;	/* Not when slideonly */
-
 	if (isset($_GET['album'])) $alb = $_GET['album'];
 	else $alb = '';	// Album id is in $wppa['start_album']
 	$thumbs = wppa_get_thumbs($alb);

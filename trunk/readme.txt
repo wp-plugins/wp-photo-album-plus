@@ -125,11 +125,14 @@ For more information on multilanguage sites, see the documentation of the qTrans
 * More than one photo of the day
 * Fullscreen slideshow
 
+= Hot fixes since the initial release =
+
 * 001: HTML in photo of the day widget fixed
 * 002: Fixed 'Start undefined'
 * 003: You can now rotate images when they are already uploaded
 * 004: Photo of the day option change every pageview added
 * 005: Photo of the day split padding top and left
+* 006: If Filmstrip is off you can overrule display filmstrip by using %%slidef=.. and %%slideonlyf=..
 
 = 3.0.0 =
 

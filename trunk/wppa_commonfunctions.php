@@ -35,6 +35,7 @@ global $wppa_locale;
 			'is_cover' => '0',
 			'is_slide' => '0',
 			'is_slideonly' => '0',
+			'film_on' => '0',
 			'single_photo' => '',
 			'is_mphoto' => '0',
 			'start_album' => '',
