@@ -11,6 +11,7 @@
 * 004: Photo of the day option change every pageview added
 * 005: Photo of the day split padding top and left
 * 006: If Filmstrip is off you can overrule display filmstrip by using %%slidef=.. and %%slideonlyf=..
+* 007: Clear:both added to thumbnail area
 *
 */
 
@@ -1503,10 +1504,10 @@ global $wppa_alt;
 
 	if ($action == 'open') {
 		if (is_feed()) {
-			$wppa['out'] .= ('<div id="wppa-thumbarea-'.$wppa['master_occur'].'" style="'.__wcs('wppa-box').__wcs('wppa-'.$wppa_alt).'">');
+			$wppa['out'] .= ('<div id="wppa-thumbarea-'.$wppa['master_occur'].'" style="clear: both: '.__wcs('wppa-box').__wcs('wppa-'.$wppa_alt).'">');
 		}
 		else {
-			$wppa['out'] .= ('<div id="wppa-thumbarea-'.$wppa['master_occur'].'" style="'.__wcs('wppa-box').__wcs('wppa-'.$wppa_alt).'width: '.wppa_get_thumbnail_area_width().'px;" class="thumbnail-area wppa-box wppa-'.$wppa_alt.'" onclick="wppa_popdown('.$wppa['master_occur'].')" >');
+			$wppa['out'] .= ('<div id="wppa-thumbarea-'.$wppa['master_occur'].'" style="clear: both; '.__wcs('wppa-box').__wcs('wppa-'.$wppa_alt).'width: '.wppa_get_thumbnail_area_width().'px;" class="thumbnail-area wppa-box wppa-'.$wppa_alt.'" onclick="wppa_popdown('.$wppa['master_occur'].')" >');
 		}		
 		if ($wppa_alt == 'even') $wppa_alt = 'alt'; else $wppa_alt = 'even';
 	}
