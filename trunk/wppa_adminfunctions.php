@@ -8,7 +8,9 @@
 
 // Set default option values
 function wppa_set_defaults($force = false) {
-	$defaults = array ( 'wppa_revision' => '100',
+global $wppa_defaults;
+
+	$wppa_defaults = array ( 'wppa_revision' => '100',
 						'wppa_fullsize' => '640',
 						'wppa_colwidth' => '640',
 						'wppa_maxheight' => '640',
@@ -101,7 +103,7 @@ function wppa_set_defaults($force = false) {
 						'wppa_widget_linktype' => 'album'
 						);
 	
-	array_walk($defaults, 'wppa_set_default', $force);
+	array_walk($wppa_defaults, 'wppa_set_default', $force);
 }
 function wppa_set_default($value, $key, $force) {
 	if ($force) {
