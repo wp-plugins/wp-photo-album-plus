@@ -31,7 +31,7 @@ This plugin is designed to easily manage and display your photo albums and slide
 * Apart from the full-size slideshows you can add a Sidebar Widget that displays a mini slideshow.
 * There is a General Purpose widget that is a text widget wherein you can use wppa+ script commands.
 * Almost all appearance settings can be done in the settings admin page. No php, html or css knowledge is required to customize the appearence of the photo display.
-* International language support for static text: Currently included foreign languages files: Dutch, Japanese, French(outdated), Spanish.
+* International language support for static text: Currently included foreign languages files: Dutch, Japanese, French(outdated), Spanish, German.
 * Inrernational language support for dynamic text: Album and photo names and descriptions fully support the qTranslate multilanguage rules and have separate edit fields for all qTranslate activated languages.
 
 Plugin Admin Features:
@@ -124,6 +124,7 @@ For more information on multilanguage sites, see the documentation of the qTrans
 * Multisite support
 * More than one photo of the day
 * Fullscreen slideshow
+* Zipfile upload for multiple images
 
 = Hot fixes since the initial release =
 
@@ -133,6 +134,8 @@ For more information on multilanguage sites, see the documentation of the qTrans
 * 004: Photo of the day option change every pageview added
 * 005: Photo of the day split padding top and left
 * 006: If Filmstrip is off you can overrule display filmstrip by using %%slidef=.. and %%slideonlyf=..
+* 007: Clear:both added to thumbnail area
+* 008: Fixed a problem where photos were not found if the number of found photos was less than or equal to the photocount treshold value
 
 = 3.0.0 =
 
