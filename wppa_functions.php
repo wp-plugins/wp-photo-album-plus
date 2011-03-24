@@ -12,11 +12,12 @@
 * 005: Photo of the day split padding top and left
 * 006: If Filmstrip is off you can overrule display filmstrip by using %%slidef=.. and %%slideonlyf=..
 * 007: Clear:both added to thumbnail area
+* 008: Fixed a problem where photos were not found if the number of found photos was less than or equal to the photocount treshold value
 *
 */
 
 global $wppa_api_version;
-$wppa_api_version = '3-0-1-007';
+$wppa_api_version = '3-0-1-008';
 
 /* show system statistics */
 function wppa_statistics() {
@@ -406,10 +407,7 @@ global $wpdb;
 global $wppa;
 global $wppa_opt;
 
-	$src = '';
-	if (isset($_POST['wppa-searchstring'])) {
-		$src = $_POST['wppa-searchstring'];
-	}
+	$src = wppa_get_searchstring();
 	
 	if (strlen($src)) {
 		$albs = $wpdb->get_results('SELECT * FROM ' . ALBUM_TABLE . ' ' . wppa_get_album_order(), 'ARRAY_A');
@@ -562,14 +560,8 @@ global $wpdb;
 global $wppa;
 global $wppa_opt;
 
-	$src = '';
-	if (isset($_POST['wppa-searchstring'])) {
-		$src = $_POST['wppa-searchstring'];
-	}
-	elseif (isset($_GET['wppa_src'])) {
-		$src = $_GET['wppa_src'];
-	}
-	
+	$src = wppa_get_searchstring();
+		
 	if (isset($_GET['topten'])) {
 		$max = $wppa_opt['wppa_topten_count'];
 		$thumbs = $wpdb->get_results('SELECT * FROM '.PHOTO_TABLE.' WHERE mean_rating > 0 ORDER BY mean_rating DESC LIMIT '.$max, 'ARRAY_A');
@@ -579,7 +571,7 @@ global $wppa_opt;
 		$thumbs = '';
 		$idx = '0';
 		foreach ($tmbs as $thumb) {
-			if (wppa_deep_stristr($thumb['name'].' '.$thumb['description'], $src)) {
+			if (wppa_deep_stristr(wppa_qtrans($thumb['name']).' '.wppa_qtrans($thumb['description']), $src)) {
 				if (!$wppa_opt['wppa_excl_sep'] || (wppa_get_parentalbumid($thumb['album']) != '-1')) {
 					$thumbs[$idx] = $thumb;
 					$idx++;
@@ -1049,6 +1041,9 @@ global $wppa_opt;
 }
 
 function wppa_onpage($type = '', $counter, $curpage) {
+global $wppa;
+
+	if ($wppa['src']) return true;	//?
 	$pagesize = wppa_get_pagesize($type);
 	if ($pagesize == '0') {			// Pagination off
 		if ($curpage == '1') return true;	
@@ -1538,7 +1533,7 @@ global $wppa_opt;
 		if ($wppa['is_cover'] == '1') {		// Cover has no thumbs: 0 pages
 			$result = '0';
 		} 
-		elseif (count($array) <= $wppa_opt['wppa_min_thumbs']) {	// Less than treshold: 0
+		elseif ((count($array) <= $wppa_opt['wppa_min_thumbs']) && (!$wppa['src'])) {	// Less than treshold and not searching: 0
 			$result = '0';
 		}
 		elseif ($tps != '0') {
@@ -2428,4 +2423,15 @@ global $wpdb;
 
 	if (is_numeric($photo)) $album = $wpdb->get_var("SELECT album FROM ".PHOTO_TABLE." WHERE id={$photo} LIMIT 1");
 	return $album;
+}
+
+function wppa_get_searchstring() {
+	$src = '';
+	if (isset($_POST['wppa-searchstring'])) {
+		$src = $_POST['wppa-searchstring'];
+	}
+	elseif (isset($_GET['wppa_src'])) {
+		$src = $_GET['wppa_src'];
+	}
+	return $src;
 }
