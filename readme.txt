@@ -136,6 +136,7 @@ For more information on multilanguage sites, see the documentation of the qTrans
 * 006: If Filmstrip is off you can overrule display filmstrip by using %%slidef=.. and %%slideonlyf=..
 * 007: Clear:both added to thumbnail area
 * 008: Fixed a problem where photos were not found if the number of found photos was less than or equal to the photocount treshold value
+* 009: You can now upload zipfiles with photos if your php version is at least 5.2.7.
 
 = 3.0.0 =
 

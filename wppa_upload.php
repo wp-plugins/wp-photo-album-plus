@@ -3,26 +3,47 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the upload/import pages and functions
-* Version 3.0.1
+* Version 3.0.2
 */
 
 function wppa_page_upload() {
+global $target;
+
 	// upload images admin page
 
 	// Check the existence of required directories
 	if (!wppa_check_dirs()) return;
 
-    // sanitize system
-	wppa_cleanup_photos();
-	
 	// Check if an update message is required
 	wppa_check_update();
+
+    // sanitize system
+	$user = wppa_get_user();
+	wppa_cleanup_photos();
+	wppa_sanitize_files($user);
+
+	@set_time_limit(300); 
 
 	// Do the upload if requested
 	if (isset($_POST['wppa-upload'])) {
 		wppa_check_admin_referer( '$wppa_nonce', WPPA_NONCE );
 		wppa_upload_photos();
-	} ?>
+	} 
+	if (isset($_POST['wppa-upload-zip'])) {
+		wppa_check_admin_referer( '$wppa_nonce', WPPA_NONCE );
+		$err = wppa_upload_zip();
+		if (isset($_POST['wppa-go-import']) && $err == '0') { 
+			wppa_ok_message(__('Connecting to your depot...', 'wppa'));
+			update_option('wppa_import_source_'.$user, 'wp-content/wppa-depot/'.$user); ?>
+			<script type="text/javascript">document.location = '<?php echo get_option('siteurl') ?>/wp-admin/admin.php?page=import_photos&zip=<?php echo $target ?>';</script>
+		<?php }
+	} 
+	
+	// sanitize system again
+	wppa_cleanup_photos();
+	wppa_sanitize_files($user);
+
+	?>
 	
 	<div class="wrap">
 		<?php $iconurl = get_bloginfo('wpurl') . '/wp-content/plugins/' . WPPA_PLUGIN_PATH . '/images/camera32.png'; ?>
@@ -36,52 +57,79 @@ function wppa_page_upload() {
 		<div id="icon-album" class="icon32" style="background: transparent url(<?php echo($iconurl); ?>) no-repeat">
 			<br />
 		</div>
-	
 		<h2><?php _e('Upload Photos', 'wppa'); ?></h2><br />
+
 		<?php		
 		// chek if albums exist before allowing upload
 		if(wppa_has_albums()) { ?>
-			<form enctype="multipart/form-data" action="<?php echo(get_option('siteurl')) ?>/wp-admin/admin.php?page=upload_photos" method="post">
-			<?php wppa_nonce_field('$wppa_nonce', WPPA_NONCE); ?>
-				<input id="my_file_element" type="file" name="file_1" />
-				<div id="files_list">
-					<h3><?php _e('Selected Files:', 'wppa'); ?> <small><?php _e('You can upload up to 15 photos at once.', 'wppa'); ?></small></h3>
+			<div style="border:1px solid #ccc; padding:10px; margin-bottom:10px; width: 600px;">
+				<h3 style="margin-top:0px;"><?php _e('Single Photos', 'wppa'); ?></h3><br />
+				<?php _e('You can select up to 15 photos one by one and upload them at once.', 'wppa'); ?>
+				<form enctype="multipart/form-data" action="<?php echo(get_option('siteurl')) ?>/wp-admin/admin.php?page=upload_photos" method="post">
+				<?php wppa_nonce_field('$wppa_nonce', WPPA_NONCE); ?>
+					<input id="my_file_element" type="file" name="file_1" />
+					<div id="files_list">
+						<h3><?php _e('Selected Files:', 'wppa'); ?></h3>
+						
+					</div>
+					<p>
+						<label for="wppa-album"><?php _e('Album:', 'wppa'); ?> </label>
+						<select name="wppa-album" id="wppa-album"><?php echo(wppa_album_select()); ?></select>
+					</p>
+					<input type="submit" class="button-primary" name="wppa-upload" value="<?php _e('Upload Single Photos', 'wppa') ?>" />					
+				</form>
+				<script type="text/javascript">
+				<!-- Create an instance of the multiSelector class, pass it the output target and the max number of files -->
+					var multi_selector = new MultiSelector( document.getElementById( 'files_list' ), 15 );
+				<!-- Pass in the file element -->
+					multi_selector.addElement( document.getElementById( 'my_file_element' ) );
+				</script>
+			</div>
+			<?php if (PHP_VERSION_ID >= 50207) { ?>
+				<div style="border:1px solid #ccc; padding:10px; width: 600px;">
+					<h3 style="margin-top:0px;"><?php _e('Zipped Photos', 'wppa'); ?></h3><br />
+					<?php _e('You can upload one zipfile at once. It will be placed in your personal wppa-depot.<br/>Once uploaded, use <b>Import Photos</b> to unzip the file and place the photos in any album.', 'wppa') ?>
+					<form enctype="multipart/form-data" action="<?php echo(get_option('siteurl')) ?>/wp-admin/admin.php?page=upload_photos" method="post">
+					<?php wppa_nonce_field('$wppa_nonce', WPPA_NONCE); ?>
+						<input id="my_zipfile_element" type="file" name="file_zip" /><br/><br/>
+						<input type="submit" class="button-primary" name="wppa-upload-zip" value="<?php _e('Upload Zipped Photos', 'wppa') ?>" />
+						<input type="checkbox" name="wppa-go-import" checked="checked"><?php _e('After upload: Go to the <b>Import Photos</b> page.', 'wppa') ?></input>
+					</form>
 				</div>
-				<p>
-					<label for="wppa-album"><?php _e('Album:', 'wppa'); ?> </label>
-					<select name="wppa-album" id="wppa-album"><?php echo(wppa_album_select()); ?></select>
-				</p>
-				<input type="submit" class="button-primary" name="wppa-upload" value="<?php _e('Upload Photos', 'wppa') ?>" />					
-			</form>
-			<br />
-			<script type="text/javascript">
-			<!-- Create an instance of the multiSelector class, pass it the output target and the max number of files -->
-				var multi_selector = new MultiSelector( document.getElementById( 'files_list' ), 15 );
-			<!-- Pass in the file element -->
-				multi_selector.addElement( document.getElementById( 'my_file_element' ) );
-			</script>
-		<?php } 
-		else { ?>
+			<?php }
+			else { ?>
+				<div style="border:1px solid #ccc; padding:10px; width: 600px;">
+				<?php _e('<small>Ask your administrator to upgrade php to version 5.2.7 or later. This will enable you to upload zipped photos.</small>', 'wppa') ?>
+				</div>
+			<?php }
+		}
+	else { ?>
 			<p><?php _e('No albums exist. You must', 'wppa'); ?> <a href="admin.php?page=<?php echo(WPPA_PLUGIN_PATH) ?>/wppa.php"><?php _e('create one', 'wppa'); ?></a> <?php _e('beofre you can upload your photos.', 'wppa'); ?></p>
 <?php } ?>
 	</div>
 <?php
 }
 
+// import images admin page
 function wppa_page_import() {
-	// import images admin page
-//print_r($_POST);	
-	// Check the existence of required directories
-	if (!wppa_check_dirs()) return;
-	
-	// sanitize system
-    wppa_cleanup_photos('0');
-	
+
 	// Check if a message is required
 	wppa_check_update();
 
+	// Check the existence of required directories
+	if (!wppa_check_dirs()) return;
+	
+	// Sanitize system
+    wppa_cleanup_photos('0');
 	$user = wppa_get_user();
-			
+	$count = wppa_sanitize_files($user);
+	if ($count) wppa_error_message($count.' '.__('illegal files deleted.', 'wppa'));
+	
+	// Do the dirty work
+	if (isset($_GET['zip'])) {
+	//	wppa_check_admin_referer( '$wppa_nonce', WPPA_NONCE );
+		wppa_extract($_GET['zip'], true);
+	}
 	if (isset($_POST['wppa-import-set-source'])) {
 		wppa_check_admin_referer( '$wppa_nonce', WPPA_NONCE );
 		update_option('wppa_import_source_'.$user, $_POST['wppa-source']);
@@ -92,7 +140,11 @@ function wppa_page_import() {
 		if (isset($_POST['del-after-a'])) $dela = true; else $dela = false;	
 		if (isset($_POST['del-after-z'])) $delz = true; else $delz = false;
 		wppa_import_photos($delp, $dela, $delz);
-	} ?>
+	} 
+	// Sanitize again
+	$count = wppa_sanitize_files($user);
+	if ($count) wppa_error_message($count.' '.__('illegal files deleted.', 'wppa'));
+?>
 	
 	<div class="wrap">
 		<?php $iconurl = get_bloginfo('wpurl') . '/wp-content/plugins/' . WPPA_PLUGIN_PATH . '/images/camera32.png'; ?>
@@ -284,6 +336,28 @@ function wppa_upload_photos() {
     }
 }
 
+function wppa_upload_zip() {
+global $target;
+
+	$file = $_FILES['file_zip'];
+	$name = $file['name'];
+	$type = $file['type'];
+	$error = $file['error'];
+	$size = $file['size'];
+	$temp = $file['tmp_name'];
+	
+	$user = wppa_get_user();
+	
+	$target = ABSPATH . 'wp-content/wppa-depot/'.wppa_get_user().'/'.$name;
+	
+	copy($temp, $target);
+	
+	if ($error == '0') wppa_ok_message(__('Zipfile', 'wppa').' '.$name.' '.__('sucessfully uploaded.', 'wppa'));
+	else wppa_error_message(__('Error', 'wppa').' '.$error.' '.__('during upload.', 'wppa'));
+	
+	return $error;
+}
+
 function wppa_import_photos($delp = false, $dela = false, $delz = false) {
 global $wpdb;
 global $warning_given;
@@ -308,8 +382,12 @@ global $warning_given;
 		foreach($files as $zipfile) {
 			if (isset($_POST['file-'.$idx])) {
 				$ext = strtolower(substr(strrchr($zipfile, "."), 1));
+				
 				if ($ext == 'zip') {
-					$zip = new ZipArchive;
+					$err = wppa_extract($zipfile, $delz);
+					if ($err == '0') $zcount++;
+				
+/*					$zip = new ZipArchive;
 					if ($zip->open($zipfile) === TRUE) {
 						$zip->extractTo(ABSPATH . 'wp-content/wppa-depot/'.wppa_get_user().'/');
 						$zip->close();
@@ -319,7 +397,9 @@ global $warning_given;
 					} else {
 						wppa_error_message(__('Failed to extract', 'wppa').' '.$zipfile);
 					}
+*/
 				} // if zip
+				
 			} // if isset
 			$idx++;
 		} // foreach
@@ -491,7 +571,7 @@ function wppa_insert_photo ($file = '', $album = '', $name = '', $desc = '', $po
 			}
 		}
 		else {
-			wppa_error_message(__('ERROR: Unable to retrieve immage size of', 'wppa').' '.$name);
+			wppa_error_message(__('ERROR: Unable to retrieve immage size of', 'wppa').' '.$name.' '.__('Are you sure it is a photo?', 'wppa'));
 			return false;
 		}
 		
@@ -855,3 +935,75 @@ global $wpdb;
 	if ($res) return false;
 	return true;
 }
+
+function wppa_sanitize_files($user) {
+
+	// Get this users depot directory
+	$depot = ABSPATH.'wp-content/wppa-depot/'.$user;
+	// See what's in there
+	$paths = $depot.'/*.*';
+	$files = glob($paths);
+	$allowed_types = array('zip', 'jpg', 'png', 'gif', 'amf', 'pmf');
+
+	$count = '0';
+	foreach ($files as $file) {
+		if (is_file($file)) {
+			$ext = strtolower(substr(strrchr($file, "."), 1));
+			if (!in_array($ext, $allowed_types)) {
+				unlink($file);
+				wppa_error_message(sprintf(__('File %s is of an unsupported filetype and has been removed.', 'wppa'), basename($file)));
+//echo($file); echo('<br>');
+				$count++;
+			}
+		}
+	}
+	return $count;
+}
+
+function wppa_extract($path, $delz) {
+// There are two reasons that we do not allow the directory structure from the zipfile to be restored.
+// 1. we may have no create dir access rights.
+// 2. we can not reach the pictures as we only glob the users depot and not lower.
+// We extract all files to the users depot. 
+// The illegal files will be deleted there by the wppa_sanitize_files routine, 
+// so there is no chance a depot/subdir/destroy.php or the like will get a chance to be created.
+// dus...
+
+	$err = '0';
+	$ext = strtolower(substr(strrchr($path, "."), 1));
+	if ($ext == 'zip') {
+		$zip = new ZipArchive;
+		if ($zip->open($path) === true) {
+// 			this for-loop replaces the $zip->extractTo() line
+		    for($i = 0; $i < $zip->numFiles; $i++) {
+				$filename = $zip->getNameIndex($i);
+				$fileinfo = pathinfo($filename);
+				copy("zip://".$path."#".$filename, ABSPATH."wp-content/wppa-depot/".wppa_get_user()."/".$fileinfo['basename']);
+			}                  
+//			$zip->extractTo(ABSPATH . 'wp-content/wppa-depot/'.wppa_get_user().'/');
+			$zip->close();
+			wppa_ok_message(__('Zipfile', 'wppa').' '.basename($path).' '.__('extracted.', 'wppa'));
+			if ($delz) unlink($path);
+		} else {
+			wppa_error_message(__('Failed to extract', 'wppa').' '.$path);
+			$err = '1';
+		}
+	}
+	else $err = '2';
+	
+	return $err;
+}
+
+/*
+$path = 'zipfile.zip'
+
+$zip = new ZipArchive;
+if ($zip->open($path) === true) {
+    for($i = 0; $i < $zip->numFiles; $i++) {
+        $filename = $zip->getNameIndex($i);
+        $fileinfo = pathinfo($filename);
+        copy("zip://".$path."#".$filename, "/your/new/destination/".$fileinfo['basename']);
+    }                  
+    $zip->close();                  
+}
+*/
