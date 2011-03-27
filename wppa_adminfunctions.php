@@ -70,6 +70,7 @@ global $wppa_defaults;
 						'wppa_coverphoto_left' => 'no',
 						'wppa_thumbphoto_left' => 'no',
 						'wppa_hide_slideshow' => 'no',
+						'wppa_enable_slideshow' => get_option('wppa_hide_slideshow', 'no') == 'no' ? 'yes' : 'no',
 //						'wppa_no_thumb_links' => 'no',
 						'wppa_thumb_text_name' => 'yes',
 						'wppa_thumb_text_desc' => 'yes',
