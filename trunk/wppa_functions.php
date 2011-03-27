@@ -15,6 +15,7 @@
 * 008: Fixed a problem where photos were not found if the number of found photos was less than or equal to the photocount treshold value
 * 009: You can now upload zipfiles with photos if your php version is at least 5.2.7.
 * 010: Fixed a Invalid argument supplied for foreach() warning in upload.
+* 011: Fixed a wrong link from thumbnail to slideshow.
 *
 */
 
@@ -625,7 +626,7 @@ global $wppa_opt;
 	
 	$album = '0';
 	if (isset($_GET['album'])) $album = $_GET['album'];
-	elseif ($type == 'mphoto') $album = wppa_get_album_id_by_photo_id($photo);
+	else if (!$wppa['src']) $album = wppa_get_album_id_by_photo_id($photo);
 	
     if ($album != '0') {
 		if ($wppa_opt['wppa_'.$type.'_linktype'] == 'photo') {
