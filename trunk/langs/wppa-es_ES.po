@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wppa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-03-13 16:19+0100\n"
-"PO-Revision-Date: 2011-03-13 16:19+0100\n"
+"POT-Creation-Date: 2011-03-26 14:20+0100\n"
+"PO-Revision-Date: 2011-03-26 14:20+0100\n"
 "Last-Translator: J.N. Breetvelt <OpaJaap@OpaJaap.nl>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -50,72 +50,72 @@ msgstr "Sidebar Widget"
 msgid "Help &amp; Info"
 msgstr "Ayuda &amp; Info"
 
-#: wppa_adminfunctions.php:157
+#: wppa_adminfunctions.php:163
 msgid "The wppa database tables are not yet at the required revision level."
 msgstr ""
 
-#: wppa_adminfunctions.php:157
-#: wppa_adminfunctions.php:161
+#: wppa_adminfunctions.php:163
+#: wppa_adminfunctions.php:167
 msgid "Current="
 msgstr ""
 
-#: wppa_adminfunctions.php:157
-#: wppa_adminfunctions.php:161
+#: wppa_adminfunctions.php:163
+#: wppa_adminfunctions.php:167
 msgid "New="
 msgstr ""
 
-#: wppa_adminfunctions.php:160
+#: wppa_adminfunctions.php:166
 msgid "PLEASE DE-ACTIVATE the plugin WP-PHOTO-ALBUM-PLUS and ACTIVATE AGAIN before you continue!"
 msgstr ""
 
-#: wppa_adminfunctions.php:161
+#: wppa_adminfunctions.php:167
 msgid "Failed to fix this."
 msgstr ""
 
-#: wppa_adminfunctions.php:165
+#: wppa_adminfunctions.php:171
 msgid "I fixed this for you......"
 msgstr ""
 
-#: wppa_adminfunctions.php:171
+#: wppa_adminfunctions.php:177
 msgid "IMPORTANT UPGRADE NOTICE"
 msgstr "NOTICIA IMPORTANTE DE ACTUALIZACIÓN"
 
-#: wppa_adminfunctions.php:172
+#: wppa_adminfunctions.php:178
 msgid "Please CHECK your customized WPPA_STYLE.CSS file against the newly supplied one. You may wish to add or modify some attributes. Be aware of the fact that most settings can now be set in the admin settings page."
 msgstr "Por favor SELECCIONE su WPPA_STYLE.CSS personalizado en vez del nuevo obtenido. Puede que quiera cambiar algunos atributos. Entienda que muchos de las configuraciones pueden ser activadas desde la sección de Opciones del administrador."
 
-#: wppa_adminfunctions.php:173
+#: wppa_adminfunctions.php:179
 msgid "Please REPLACE your customized WPPA_THEME.PHP file by the newly supplied one, or just remove it from your theme directory. You may modify it later if you wish. Your current customized version is NOT compatible with this version of the plugin software."
 msgstr "Por favor, REEMPLACE su WPPA_THEME.PHP perrsonalizado por el nuevo, o sólo bórrelo del directorio de la plantilla (theme). Lo puede modificar luego, si desea. La versión personalizada que creó NO es compatible con la versión actual del plugin."
 
-#: wppa_adminfunctions.php:307
+#: wppa_adminfunctions.php:313
 msgid "Order #"
 msgstr "Orden #"
 
-#: wppa_adminfunctions.php:308
-#: wppa_albumadmin.php:467
+#: wppa_adminfunctions.php:314
+#: wppa_albumadmin.php:484
 msgid "Name"
 msgstr "Nombre"
 
-#: wppa_adminfunctions.php:309
+#: wppa_adminfunctions.php:315
 msgid "Random"
 msgstr "Al azar"
 
-#: wppa_adminfunctions.php:347
-#: wppa_adminfunctions.php:351
+#: wppa_adminfunctions.php:353
+#: wppa_adminfunctions.php:357
 msgid "Please supply a numeric value greater than or equal to"
 msgstr "Por favor escriba un valor numérico mayor o igual a"
 
-#: wppa_adminfunctions.php:347
-#: wppa_adminfunctions.php:351
+#: wppa_adminfunctions.php:353
+#: wppa_adminfunctions.php:357
 msgid "for"
 msgstr "para"
 
-#: wppa_adminfunctions.php:351
+#: wppa_adminfunctions.php:357
 msgid "and less than or equal to"
 msgstr "y menor o igual a"
 
-#: wppa_adminfunctions.php:461
+#: wppa_adminfunctions.php:467
 msgid "Unsupported value in _wppa_chmod_ :"
 msgstr ""
 
@@ -149,112 +149,126 @@ msgstr "Orden de fotos:"
 msgid "Unable to copy photo, error:"
 msgstr "No se pudo crear el directorio de subidas"
 
-#: wppa_albumadmin.php:76
+#: wppa_albumadmin.php:77
+#, fuzzy
+msgid "Photo rotated"
+msgstr "Orden de fotos:"
+
+#: wppa_albumadmin.php:81
+#, fuzzy
+msgid "Unable to rotate photo, error:"
+msgstr "No se pudo crear el directorio de subidas"
+
+#: wppa_albumadmin.php:85
+msgid "Internal fatal error while getting rotation data"
+msgstr ""
+
+#: wppa_albumadmin.php:93
 msgid "Edit Album Information"
 msgstr "Editar información del álbum"
 
-#: wppa_albumadmin.php:77
+#: wppa_albumadmin.php:94
 msgid "Album number:"
 msgstr "Álbum número:"
 
-#: wppa_albumadmin.php:86
-#: wppa_albumadmin.php:102
-#: wppa_albumadmin.php:342
+#: wppa_albumadmin.php:103
+#: wppa_albumadmin.php:119
 #: wppa_albumadmin.php:359
-#: wppa_albumadmin.php:596
-#: wppa_albumadmin.php:612
+#: wppa_albumadmin.php:376
+#: wppa_albumadmin.php:610
+#: wppa_albumadmin.php:626
 #: wppa_settings.php:480
 #: wppa_settings.php:792
 msgid "Name:"
 msgstr "Nombre:"
 
-#: wppa_albumadmin.php:90
-#: wppa_albumadmin.php:108
+#: wppa_albumadmin.php:107
+#: wppa_albumadmin.php:125
 msgid "Type the name of the album. Do not leave this empty."
 msgstr "Escriba el nombre del álbum. No lo deje vacío."
 
-#: wppa_albumadmin.php:119
-#: wppa_albumadmin.php:135
-#: wppa_albumadmin.php:379
+#: wppa_albumadmin.php:136
+#: wppa_albumadmin.php:152
 #: wppa_albumadmin.php:396
-#: wppa_albumadmin.php:629
-#: wppa_albumadmin.php:644
+#: wppa_albumadmin.php:413
+#: wppa_albumadmin.php:643
+#: wppa_albumadmin.php:658
 #: wppa_settings.php:481
 #: wppa_settings.php:793
 msgid "Description:"
 msgstr "Descripción:"
 
-#: wppa_albumadmin.php:123
-#: wppa_albumadmin.php:141
+#: wppa_albumadmin.php:140
+#: wppa_albumadmin.php:158
 msgid "Enter / modify the description for this album."
 msgstr "Escribir / modificar la descripción de éste álbum."
 
-#: wppa_albumadmin.php:152
+#: wppa_albumadmin.php:169
 msgid "Owned by:"
 msgstr "Administrado por:"
 
-#: wppa_albumadmin.php:157
+#: wppa_albumadmin.php:174
 msgid "WARNING If you change the owner, you will no longer be able to modify this album and upload or import photos to it!"
 msgstr "CUIDADO, si cambia el administrador, no podrá modificar este álbum, subir o importar fotos."
 
-#: wppa_albumadmin.php:165
+#: wppa_albumadmin.php:182
 msgid "Sort order #:"
 msgstr "Orden #:"
 
-#: wppa_albumadmin.php:171
+#: wppa_albumadmin.php:188
 msgid "Album order # has only effect if you set the album sort order method to <b>Order #</b> in the Photo Albums -> Settings screen."
 msgstr ""
 
-#: wppa_albumadmin.php:174
+#: wppa_albumadmin.php:191
 msgid "If you want to sort the albums by order #, enter / modify the order number here."
 msgstr "Si quiere organizar los álbumes por orden numérico, escriba / modifique el orden numérico acá."
 
-#: wppa_albumadmin.php:180
-#: wppa_albumadmin.php:424
+#: wppa_albumadmin.php:197
+#: wppa_albumadmin.php:441
 msgid "Parent album:"
 msgstr "Álbum superior:"
 
-#: wppa_albumadmin.php:185
-#: wppa_albumadmin.php:428
+#: wppa_albumadmin.php:202
+#: wppa_albumadmin.php:445
 msgid "If this is a sub album, select the album in which this album will appear."
 msgstr "Este es un sub álbum, seleccione el álbum en el cual éste debe aparecer."
 
-#: wppa_albumadmin.php:193
+#: wppa_albumadmin.php:210
 #: wppa_settings.php:916
 msgid "Photo order:"
 msgstr "Orden de fotos:"
 
-#: wppa_albumadmin.php:196
-#: wppa_albumadmin.php:436
+#: wppa_albumadmin.php:213
+#: wppa_albumadmin.php:453
 #: wppa_settings.php:467
 #: wppa_settings.php:708
 #: wppa_settings.php:759
 msgid "--- default ---"
 msgstr "--- predeterminado ---"
 
-#: wppa_albumadmin.php:196
-#: wppa_albumadmin.php:436
+#: wppa_albumadmin.php:213
+#: wppa_albumadmin.php:453
 #: wppa_settings.php:920
 msgid "Rating"
 msgstr ""
 
-#: wppa_albumadmin.php:198
+#: wppa_albumadmin.php:215
 msgid "Specify the way the photos should be ordered in this album."
 msgstr "Especifique la forma en la cual la fotos deben ser ordenadas en éste álbum."
 
-#: wppa_albumadmin.php:199
+#: wppa_albumadmin.php:216
 msgid "The default setting can be changed in the Options page."
 msgstr "La configuración genérica puede ser cambiada en la página de Opciones."
 
-#: wppa_albumadmin.php:206
+#: wppa_albumadmin.php:223
 msgid "Cover Photo:"
 msgstr "Foto de Portada:"
 
-#: wppa_albumadmin.php:210
+#: wppa_albumadmin.php:227
 msgid "Select the photo you want to appear on the cover of this album."
 msgstr "Seleccione la foto que quiere que aparezca como portada del álbum."
 
-#: wppa_albumadmin.php:216
+#: wppa_albumadmin.php:233
 #: wppa_settings.php:584
 #: wppa_settings.php:665
 #: wppa_settings.php:826
@@ -262,205 +276,223 @@ msgstr "Seleccione la foto que quiere que aparezca como portada del álbum."
 msgid "Link to:"
 msgstr "Enlace a:"
 
-#: wppa_albumadmin.php:222
+#: wppa_albumadmin.php:239
 #: wppa_settings.php:672
 #: wppa_settings.php:1087
 msgid "There are no pages (yet) to link to."
 msgstr "No hay páginas para enlazar."
 
-#: wppa_albumadmin.php:228
+#: wppa_albumadmin.php:245
 msgid "--- the album's content ---"
 msgstr "--- el contenido del álbum ---"
 
-#: wppa_albumadmin.php:232
+#: wppa_albumadmin.php:249
 msgid "--- no link at all ---"
 msgstr "--- ningún enlace ---"
 
-#: wppa_albumadmin.php:235
+#: wppa_albumadmin.php:252
 msgid "If you want, you can link the title and the coverphoto to a WP page in stead of the album's content. If so, select the page the cover photo links to."
 msgstr "Si desea, puede enlazar el título y la foto de portada a una página de WP, en vez de abrir el contenido del álbum. Si lo hace, seleeccione la página a la que enlaza la foto de portada."
 
-#: wppa_albumadmin.php:244
+#: wppa_albumadmin.php:261
 #, fuzzy
 msgid "Reset ratings:"
 msgstr "Configuración del orden:"
 
-#: wppa_albumadmin.php:248
+#: wppa_albumadmin.php:265
 msgid "WARNING: If checked, this will clear all ratings in this album!"
 msgstr ""
 
-#: wppa_albumadmin.php:255
-#: wppa_albumadmin.php:259
-#: wppa_albumadmin.php:263
+#: wppa_albumadmin.php:272
+#: wppa_albumadmin.php:276
+#: wppa_albumadmin.php:280
 #: wppa_settings.php:345
 #: wppa_settings.php:1248
 msgid "Save Changes"
 msgstr "Guardar Cambios"
 
-#: wppa_albumadmin.php:257
+#: wppa_albumadmin.php:274
 msgid "Manage Photos"
 msgstr "Administrar Fotos"
 
-#: wppa_albumadmin.php:277
+#: wppa_albumadmin.php:294
 msgid "Delete Album"
 msgstr "Eliminar Álbum"
 
-#: wppa_albumadmin.php:279
-#: wppa_albumadmin.php:538
+#: wppa_albumadmin.php:296
+#: wppa_albumadmin.php:562
 #: wppa_slideshow_widget.php:120
 msgid "Album:"
 msgstr "Álbum:"
 
-#: wppa_albumadmin.php:280
+#: wppa_albumadmin.php:297
 msgid "Are you sure you want to delete this album?"
 msgstr "Está seguro que quiere eliminar este álbum?"
 
-#: wppa_albumadmin.php:281
+#: wppa_albumadmin.php:298
 msgid "Press Delete to continue, and Cancel to go back."
 msgstr "Seleccione Eliminar para continuar, o Cancelar para regresar."
 
-#: wppa_albumadmin.php:286
+#: wppa_albumadmin.php:303
 msgid "What would you like to do with photos currently in the album?"
 msgstr "Qué quiere hacer con las fotos del álbum?"
 
-#: wppa_albumadmin.php:287
-#: wppa_albumadmin.php:294
-#: wppa_albumadmin.php:476
+#: wppa_albumadmin.php:304
+#: wppa_albumadmin.php:311
 #: wppa_albumadmin.php:493
+#: wppa_albumadmin.php:510
 msgid "Delete"
 msgstr "Eliminar"
 
-#: wppa_albumadmin.php:288
+#: wppa_albumadmin.php:305
 msgid "Move to:"
 msgstr "Mover a:"
 
-#: wppa_albumadmin.php:293
+#: wppa_albumadmin.php:310
 msgid "Cancel"
 msgstr "Cancelar"
 
-#: wppa_albumadmin.php:326
+#: wppa_albumadmin.php:343
 msgid "Manage Albums"
 msgstr "Administrar Álbumes"
 
-#: wppa_albumadmin.php:334
+#: wppa_albumadmin.php:351
 msgid "Create New Album"
 msgstr "Crear Nuevo Álbum"
 
-#: wppa_albumadmin.php:346
-#: wppa_albumadmin.php:365
+#: wppa_albumadmin.php:363
+#: wppa_albumadmin.php:382
 msgid "Type the name of the new album. Do not leave this empty."
 msgstr "Escribir el nombre del nuevo álbum. No dejar vacío."
 
-#: wppa_albumadmin.php:383
-#: wppa_albumadmin.php:402
+#: wppa_albumadmin.php:400
+#: wppa_albumadmin.php:419
 #, fuzzy
 msgid "Enter the description for this album."
 msgstr "Escribir / modificar la descripción de éste álbum."
 
-#: wppa_albumadmin.php:415
+#: wppa_albumadmin.php:432
 msgid "Order #:"
 msgstr "Orden #:"
 
-#: wppa_albumadmin.php:419
+#: wppa_albumadmin.php:436
 msgid "If you want to sort the albums by order #, enter the order number here."
 msgstr "Si desea organizar los álbumes por #, escriba el orden numérico aquí."
 
-#: wppa_albumadmin.php:433
+#: wppa_albumadmin.php:450
 msgid "Order photos by:"
 msgstr "Organizar fotos por:"
 
-#: wppa_albumadmin.php:437
+#: wppa_albumadmin.php:454
 msgid "If you want to sort the photos in this album different from the system setting, select the order method here."
 msgstr "Si quiere ordenar las fotos de éste álbum distinto a la configuración del sistema, seleccione el método de ordenado aquí:"
 
-#: wppa_albumadmin.php:442
+#: wppa_albumadmin.php:459
 msgid "Create Album!"
 msgstr "Crear Álbum!"
 
-#: wppa_albumadmin.php:445
+#: wppa_albumadmin.php:462
 msgid "You can change all these settings later by clicking the \"Edit\" link in the table above."
 msgstr "Usted puede cambiar ésta configuración luego, seleccionando \"Edit\" en la tabla de arriba."
 
-#: wppa_albumadmin.php:468
+#: wppa_albumadmin.php:485
 msgid "Description"
 msgstr "Descripción"
 
-#: wppa_albumadmin.php:469
+#: wppa_albumadmin.php:486
 msgid "ID"
 msgstr "ID"
 
-#: wppa_albumadmin.php:471
+#: wppa_albumadmin.php:488
 msgid "Owner"
 msgstr "Administrador"
 
-#: wppa_albumadmin.php:473
+#: wppa_albumadmin.php:490
 msgid "Order"
 msgstr "Orden"
 
-#: wppa_albumadmin.php:474
+#: wppa_albumadmin.php:491
 msgid "Parent"
 msgstr "Álbum Superior"
 
-#: wppa_albumadmin.php:475
 #: wppa_albumadmin.php:492
+#: wppa_albumadmin.php:509
 msgid "Edit"
 msgstr "Editar"
 
-#: wppa_albumadmin.php:504
+#: wppa_albumadmin.php:521
 msgid "No albums yet."
 msgstr "No hay álbumes."
 
-#: wppa_albumadmin.php:517
+#: wppa_albumadmin.php:534
 msgid "No photos yet in this album."
 msgstr "No hay fotos en este álbum."
 
-#: wppa_albumadmin.php:527
+#: wppa_albumadmin.php:546
 msgid "Preview:"
 msgstr ""
 
-#: wppa_albumadmin.php:547
+#: wppa_albumadmin.php:548
+#: wppa_albumadmin.php:550
+#, fuzzy
+msgid "Are you sure you want to rotate this photo?"
+msgstr "Está seguro que quiere eliminar este álbum?"
+
+#: wppa_albumadmin.php:548
+msgid "Rotate left"
+msgstr ""
+
+#: wppa_albumadmin.php:550
+msgid "Rotate right"
+msgstr ""
+
+#: wppa_albumadmin.php:551
+msgid "If it says 'Photo rotated', the photo is rotated. If you do not see it happen here, clear your browser cache."
+msgstr ""
+
+#: wppa_albumadmin.php:571
 msgid "Order:"
 msgstr "Orden:"
 
-#: wppa_albumadmin.php:556
+#: wppa_albumadmin.php:580
 #, fuzzy
 msgid "Rating:"
 msgstr "Advertencia:"
 
-#: wppa_albumadmin.php:559
+#: wppa_albumadmin.php:583
 msgid "Entries:"
 msgstr ""
 
-#: wppa_albumadmin.php:559
+#: wppa_albumadmin.php:583
 #, fuzzy
 msgid "Mean value:"
 msgstr "Valor de opacidad:"
 
-#: wppa_albumadmin.php:566
+#: wppa_albumadmin.php:590
 #, fuzzy
 msgid "Are you sure you want to copy this photo?"
 msgstr "Está seguro que quiere eliminar este álbum?"
 
-#: wppa_albumadmin.php:566
+#: wppa_albumadmin.php:590
 msgid "Please select an album to copy the photo to first."
 msgstr ""
 
-#: wppa_albumadmin.php:566
+#: wppa_albumadmin.php:590
 #, fuzzy
 msgid "Copy photo to"
 msgstr "No hay fotos todavía"
 
-#: wppa_albumadmin.php:576
+#: wppa_albumadmin.php:593
 #, fuzzy
 msgid "Are you sure you want to delete this photo?"
 msgstr "Está seguro que quiere eliminar este álbum?"
 
-#: wppa_albumadmin.php:576
+#: wppa_albumadmin.php:593
 #, fuzzy
 msgid "Delete photo"
 msgstr "Siguiente"
 
-#: wppa_albumadmin.php:584
+#: wppa_albumadmin.php:595
 msgid ""
 "Insert code for single image in Page or Post:\\n"
 "You may change the size if you like."
@@ -468,18 +500,18 @@ msgstr ""
 "Inserte el código de cada imagen en la Página o Entrada:\\n"
 "Cambie el tamaño si desea."
 
-#: wppa_albumadmin.php:584
+#: wppa_albumadmin.php:595
 #, fuzzy
 msgid "Insertion Code"
 msgstr "Obtener 'embed code'."
 
-#: wppa_albumadmin.php:600
-#: wppa_albumadmin.php:618
+#: wppa_albumadmin.php:614
+#: wppa_albumadmin.php:632
 msgid "Type/alter the name of the photo. It is NOT a filename and needs no file extension like .jpg."
 msgstr ""
 
-#: wppa_albumadmin.php:688
-#: wppa_commonfunctions.php:323
+#: wppa_albumadmin.php:702
+#: wppa_commonfunctions.php:325
 #: wppa_settings.php:449
 #: wppa_settings.php:677
 #: wppa_settings.php:710
@@ -488,53 +520,53 @@ msgstr ""
 msgid "--- none ---"
 msgstr "--- ninguno ---"
 
-#: wppa_albumadmin.php:704
-#: wppa_commonfunctions.php:324
+#: wppa_albumadmin.php:718
+#: wppa_commonfunctions.php:326
 msgid "--- separate ---"
 msgstr "--- separar ---"
 
-#: wppa_albumadmin.php:747
+#: wppa_albumadmin.php:761
 msgid "Could not create album."
 msgstr "No se pudo crear el álbum."
 
-#: wppa_albumadmin.php:751
+#: wppa_albumadmin.php:765
 msgid "Album #"
 msgstr "Álbum #"
 
-#: wppa_albumadmin.php:751
+#: wppa_albumadmin.php:765
 msgid "Added."
 msgstr "Agregado."
 
-#: wppa_albumadmin.php:754
-#: wppa_albumadmin.php:861
+#: wppa_albumadmin.php:768
+#: wppa_albumadmin.php:875
 msgid "Album Name cannot be empty."
 msgstr "El nombre del álbum no puede estar vacío."
 
-#: wppa_albumadmin.php:840
+#: wppa_albumadmin.php:854
 msgid "Could not update photo."
 msgstr "No se pudo actualizar la foto."
 
-#: wppa_albumadmin.php:853
+#: wppa_albumadmin.php:867
 msgid "Album could not be updated."
 msgstr "El álbum no pudo ser actualizado."
 
-#: wppa_albumadmin.php:856
+#: wppa_albumadmin.php:870
 msgid "Album information edited."
 msgstr "Información del álbum editada."
 
-#: wppa_albumadmin.php:856
+#: wppa_albumadmin.php:870
 msgid "Back to album management."
 msgstr "Volver a la administración del álbum."
 
-#: wppa_albumadmin.php:900
+#: wppa_albumadmin.php:914
 msgid "Album Deleted."
 msgstr "Álbum eliminado."
 
-#: wppa_albumadmin.php:913
+#: wppa_albumadmin.php:927
 msgid "--- random ---"
 msgstr "--- al azar ---"
 
-#: wppa_albumadmin.php:927
+#: wppa_albumadmin.php:941
 msgid "No photos yet"
 msgstr "No hay fotos todavía"
 
@@ -2235,311 +2267,376 @@ msgstr "Foto de Portada:"
 msgid "You can set the content and the behaviour of this widget in the <b>Photo Albums -> Settings</b> admin page."
 msgstr ""
 
-#: wppa_upload.php:48
+#: wppa_upload.php:36
+msgid "Connecting to your depot..."
+msgstr ""
+
+#: wppa_upload.php:66
+#, fuzzy
+msgid "Single Photos"
+msgstr "Administrar Fotos"
+
+#: wppa_upload.php:67
+#, fuzzy
+msgid "You can select up to 15 photos one by one and upload them at once."
+msgstr "Puede subir 15 fotos a la vez."
+
+#: wppa_upload.php:72
 msgid "Selected Files:"
 msgstr "Archivos seleccionados:"
 
-#: wppa_upload.php:48
-msgid "You can upload up to 15 photos at once."
-msgstr "Puede subir 15 fotos a la vez."
+#: wppa_upload.php:79
+#, fuzzy
+msgid "Upload Single Photos"
+msgstr "Subir fotos"
 
-#: wppa_upload.php:65
-#: wppa_upload.php:253
+#: wppa_upload.php:90
+#, fuzzy
+msgid "Zipped Photos"
+msgstr "Subir fotos"
+
+#: wppa_upload.php:91
+msgid "You can upload one zipfile at once. It will be placed in your personal wppa-depot.<br/>Once uploaded, use <b>Import Photos</b> to unzip the file and place the photos in any album."
+msgstr ""
+
+#: wppa_upload.php:95
+#, fuzzy
+msgid "Upload Zipped Photos"
+msgstr "Subir fotos"
+
+#: wppa_upload.php:96
+msgid "After upload: Go to the <b>Import Photos</b> page."
+msgstr ""
+
+#: wppa_upload.php:102
+msgid "<small>Ask your administrator to upgrade php to version 5.2.7 or later. This will enable you to upload zipped photos.</small>"
+msgstr ""
+
+#: wppa_upload.php:107
+#: wppa_upload.php:305
 msgid "No albums exist. You must"
 msgstr "No existe ningún álbum. Usted debe"
 
-#: wppa_upload.php:65
-#: wppa_upload.php:253
+#: wppa_upload.php:107
+#: wppa_upload.php:305
 msgid "create one"
 msgstr "crear uno"
 
-#: wppa_upload.php:65
-#: wppa_upload.php:253
+#: wppa_upload.php:107
+#: wppa_upload.php:305
 msgid "beofre you can upload your photos."
 msgstr "antes de subir fotos."
 
-#: wppa_upload.php:123
+#: wppa_upload.php:126
+#: wppa_upload.php:146
+msgid "illegal files deleted."
+msgstr ""
+
+#: wppa_upload.php:175
 #, fuzzy
 msgid "Import photos from:"
 msgstr "Importar fotos a álbum:"
 
-#: wppa_upload.php:125
+#: wppa_upload.php:177
 msgid "Your depot"
 msgstr ""
 
-#: wppa_upload.php:130
+#: wppa_upload.php:182
 msgid "Set source directory"
 msgstr ""
 
-#: wppa_upload.php:144
-#: wppa_upload.php:174
-#: wppa_upload.php:203
+#: wppa_upload.php:196
+#: wppa_upload.php:226
+#: wppa_upload.php:255
 msgid "There are"
 msgstr "Existen"
 
-#: wppa_upload.php:144
+#: wppa_upload.php:196
 #, fuzzy
 msgid "zipfiles in the depot."
 msgstr "fotos en el depósito de subida."
 
-#: wppa_upload.php:145
+#: wppa_upload.php:197
 #, fuzzy
 msgid "Delete after successful extraction."
 msgstr "Eliminar la importación satisfactoria:"
 
-#: wppa_upload.php:174
+#: wppa_upload.php:226
 #, fuzzy
 msgid "albumdefinitions in the depot."
 msgstr "fotos en el depósito de subida."
 
-#: wppa_upload.php:175
+#: wppa_upload.php:227
 #, fuzzy
 msgid "Delete after successful import, or if the album already exits."
 msgstr "Eliminar la importación satisfactoria:"
 
-#: wppa_upload.php:203
+#: wppa_upload.php:255
 msgid "photos in the depot."
 msgstr "fotos en el depósito de subida."
 
-#: wppa_upload.php:203
+#: wppa_upload.php:255
 msgid "Photos will be downsized during import."
 msgstr "Las fotos serán reducidas (peso) durante el importado."
 
-#: wppa_upload.php:205
+#: wppa_upload.php:257
 #, fuzzy
 msgid "Delete after successful import."
 msgstr "Eliminar la importación satisfactoria:"
 
-#: wppa_upload.php:209
+#: wppa_upload.php:261
 msgid "Default album for import:"
 msgstr ""
 
-#: wppa_upload.php:210
+#: wppa_upload.php:262
 msgid "Photos that have (<em>name</em>)[<em>album</em>] will be imported by that <em>name</em> in that <em>album</em>."
 msgstr ""
 
-#: wppa_upload.php:239
+#: wppa_upload.php:291
 msgid "Import"
 msgstr "Importar"
 
-#: wppa_upload.php:245
+#: wppa_upload.php:297
 #, fuzzy
 msgid "There are no archives, albums or photos in directory:"
 msgstr "No hay fotos en el depósito:"
 
-#: wppa_upload.php:248
+#: wppa_upload.php:300
 #, fuzzy
 msgid "There are no albums or photos in directory:"
 msgstr "No hay fotos en el depósito:"
 
-#: wppa_upload.php:275
-#: wppa_upload.php:445
+#: wppa_upload.php:327
+#: wppa_upload.php:525
 msgid "Error inserting photo"
 msgstr "Error al insertar la foto"
 
-#: wppa_upload.php:282
+#: wppa_upload.php:334
 msgid "Photos Uploaded in album nr"
 msgstr "Las fotos subidas en el álbum No."
 
-#: wppa_upload.php:316
+#: wppa_upload.php:355
+#: wppa_upload.php:985
 msgid "Zipfile"
 msgstr ""
 
-#: wppa_upload.php:316
-msgid "extracted."
+#: wppa_upload.php:355
+msgid "sucessfully uploaded."
 msgstr ""
 
-#: wppa_upload.php:320
-msgid "Failed to extract"
+#: wppa_upload.php:356
+msgid "Error"
 msgstr ""
 
-#: wppa_upload.php:368
+#: wppa_upload.php:356
+msgid "during upload."
+msgstr ""
+
+#: wppa_upload.php:448
 #, fuzzy
 msgid "Unknown parent album:"
 msgstr "Álbum superior:"
 
-#: wppa_upload.php:368
+#: wppa_upload.php:448
 #, fuzzy
 msgid "--- none --- used."
 msgstr "--- ninguno ---"
 
-#: wppa_upload.php:412
+#: wppa_upload.php:492
 msgid "Processing files, please wait..."
 msgstr "Procesando archivos, por favor espere..."
 
-#: wppa_upload.php:412
+#: wppa_upload.php:492
 msgid "If the line of dots stops growing or you browser reports Ready, your server has given up. In that case: try again"
 msgstr "Si la línea de puntos deja de cargar o su navegador anuncia que ha terminado, su servidor ha fallado. En ese caso: intente de nuevo"
 
-#: wppa_upload.php:412
+#: wppa_upload.php:492
 msgid "here."
 msgstr "aquí."
 
-#: wppa_upload.php:449
+#: wppa_upload.php:529
 #, php-format
 msgid "Error inserting photo, album %1s does not exist for photo %2s. Either create the album or remove %3s."
 msgstr ""
 
-#: wppa_upload.php:455
+#: wppa_upload.php:535
 msgid "Done processing files."
 msgstr ""
 
-#: wppa_upload.php:458
+#: wppa_upload.php:538
 msgid "No files to import."
 msgstr "No hay archivos para importar."
 
-#: wppa_upload.php:462
+#: wppa_upload.php:542
 msgid "Zipfiles extracted."
 msgstr ""
 
-#: wppa_upload.php:463
+#: wppa_upload.php:543
 #, fuzzy
 msgid "Albums created."
 msgstr "Álbum eliminado."
 
-#: wppa_upload.php:464
+#: wppa_upload.php:544
 #, fuzzy
 msgid "Photos imported."
 msgstr "Foto eliminada."
 
-#: wppa_upload.php:481
+#: wppa_upload.php:561
 msgid "Although the photos are resized during the upload/import process, you may encounter 'Out of memory'errors."
 msgstr "Aunque las fotos son redimensionadas durante el proceso de subida/importación, usted puede encontrarse con errores de 'Fuera de memoria'."
 
-#: wppa_upload.php:481
+#: wppa_upload.php:561
 msgid "In that case: make sure you set the memory limit to 64M and make sure your hosting provider allows you the use of 64 Mb."
 msgstr "En ese caso: asegúrese de configurar el límite de memoria en 64M y asegúrese de que su proveedor de hosting le permite usar 64Mb."
 
-#: wppa_upload.php:484
+#: wppa_upload.php:564
 msgid "WARNING: You are uploading very large photos, this may result in server problems and excessive download times for your website visitors."
 msgstr "ADVERTENCIA: Usted está subiendo fotos demasiado grandes, esto puede causar problemas en el servidor por descargas excesivas de sus visitantes."
 
-#: wppa_upload.php:484
+#: wppa_upload.php:564
 msgid "Check the 'Resize on upload' checkbox, and/or resize the photos before uploading. The recommended size is: not larger than 1024 x 768 pixels (up to approx. 250 kB)."
 msgstr "Revise la opción de 'Redimensionar al subir', y/o agrande las fotos antes de subirlas. El tamaño recomendado es menor a 1024x768 pixeles (aprox. 250kB)."
 
-#: wppa_upload.php:489
+#: wppa_upload.php:569
 msgid "WARNING: You are uploading photos that are too small. Photos must be larger than the thumbnail size and larger than the coverphotosize."
 msgstr "ADVERTENCIA: Usted está subiendo fotos que son demasiado pequeñas. Las fotos deben ser mayores que el tamaño de la miniatura y la portada del álbum."
 
-#: wppa_upload.php:494
+#: wppa_upload.php:574
 msgid "ERROR: Unable to retrieve immage size of"
 msgstr ""
 
-#: wppa_upload.php:505
+#: wppa_upload.php:574
+#, fuzzy
+msgid "Are you sure it is a photo?"
+msgstr "Está seguro que quiere eliminar este álbum?"
+
+#: wppa_upload.php:585
 msgid "Unsupported mime type encountered:"
 msgstr ""
 
-#: wppa_upload.php:511
+#: wppa_upload.php:591
 #, fuzzy
 msgid "Could not insert photo. query="
 msgstr "No se pudo actualizar la foto."
 
-#: wppa_upload.php:549
+#: wppa_upload.php:631
 msgid "ERROR: Resized or copied image could not be created."
 msgstr ""
 
-#: wppa_upload.php:556
+#: wppa_upload.php:638
 msgid "ERROR: Unknown file or album."
 msgstr ""
 
-#: wppa_upload.php:623
+#: wppa_upload.php:705
 msgid "Error: unexpected fgets() fail in wppa_get_meta_data()."
 msgstr ""
 
-#: wppa_upload.php:661
+#: wppa_upload.php:743
 msgid "Trying to fix "
 msgstr "Intentando arreglar"
 
-#: wppa_upload.php:692
+#: wppa_upload.php:774
 msgid "Fixed extension for "
 msgstr "Extensión corregida de"
 
-#: wppa_upload.php:695
+#: wppa_upload.php:777
 msgid "Unable to fix extension for "
 msgstr "No es posible arreglar la extensión de"
 
-#: wppa_upload.php:699
+#: wppa_upload.php:781
 msgid "Unknown extension for photo "
 msgstr "Extensión de foto desconocida"
 
-#: wppa_upload.php:699
+#: wppa_upload.php:781
 msgid "Please change the name to something with the proper extension and try again!"
 msgstr "Por favor, cambie el nombre a algo con la extensión adecuada e intente de nuevo!"
 
-#: wppa_upload.php:708
-#: wppa_upload.php:710
-#: wppa_upload.php:718
+#: wppa_upload.php:790
+#: wppa_upload.php:792
+#: wppa_upload.php:800
 #, fuzzy
 msgid "Orphan Photos"
 msgstr "Subir fotos"
 
-#: wppa_upload.php:724
+#: wppa_upload.php:806
 #, fuzzy
 msgid "Could not recover orphanized photos."
 msgstr "No se pudo actualizar la foto."
 
-#: wppa_upload.php:730
-#: wppa_upload.php:733
-#: wppa_upload.php:736
+#: wppa_upload.php:812
+#: wppa_upload.php:815
+#: wppa_upload.php:818
 msgid "Database fixed."
 msgstr "Base de datos arreglada."
 
-#: wppa_upload.php:730
+#: wppa_upload.php:812
 msgid "orphanized photos recovered."
 msgstr ""
 
-#: wppa_upload.php:733
+#: wppa_upload.php:815
 msgid "invalid entries removed:"
 msgstr "entrada inválida removida."
 
-#: wppa_upload.php:736
+#: wppa_upload.php:818
 msgid "missing file extensions recovered."
 msgstr "archivo de extensión perdido, ahora encontrado."
 
-#: wppa_upload.php:754
+#: wppa_upload.php:836
 msgid "The uploads directory does not exist, please do a regular WP upload first."
 msgstr ""
 
-#: wppa_upload.php:759
+#: wppa_upload.php:841
 msgid "Successfully created uploads directory."
 msgstr ""
 
-#: wppa_upload.php:768
+#: wppa_upload.php:850
 #, fuzzy
 msgid "Could not create the wppa directory."
 msgstr "No se pudo crear el directorio de subidas"
 
-#: wppa_upload.php:773
+#: wppa_upload.php:855
 msgid "Successfully created wppa directory."
 msgstr ""
 
-#: wppa_upload.php:782
+#: wppa_upload.php:864
 #, fuzzy
 msgid "Could not create the wppa thumbs directory."
 msgstr "No se pudo crear el directorio de subidas"
 
-#: wppa_upload.php:787
+#: wppa_upload.php:869
 msgid "Successfully created wppa thumbs directory."
 msgstr ""
 
-#: wppa_upload.php:796
+#: wppa_upload.php:878
 msgid "Unable to create depot directory"
 msgstr "No se pudo crear el directorio de subidas"
 
-#: wppa_upload.php:801
+#: wppa_upload.php:883
 msgid "Successfully created wppa master depot directory."
 msgstr ""
 
-#: wppa_upload.php:810
+#: wppa_upload.php:892
 #, fuzzy
 msgid "Unable to create user depot directory"
 msgstr "No se pudo crear el directorio de subidas"
 
-#: wppa_upload.php:815
+#: wppa_upload.php:897
 #, fuzzy
 msgid "Successfully created wppa user depot directory."
 msgstr "No se pudo crear el directorio de subidas"
+
+#: wppa_upload.php:954
+#, php-format
+msgid "File %s is of an unsupported filetype and has been removed."
+msgstr ""
+
+#: wppa_upload.php:985
+msgid "extracted."
+msgstr ""
+
+#: wppa_upload.php:988
+msgid "Failed to extract"
+msgstr ""
 
 #: wppa_widget.php:13
 #, fuzzy
@@ -2547,12 +2644,12 @@ msgid "WPPA+ Photo Of The Day"
 msgstr "Foto del día"
 
 #: wppa_widget.php:14
-#: wppa_widget.php:150
+#: wppa_widget.php:165
 #, fuzzy
 msgid "Photo Of The Day"
 msgstr "Foto del día"
 
-#: wppa_widget.php:155
+#: wppa_widget.php:170
 msgid "You can set the content and the behaviour of this widget in the <b>Photo Albums -> Sidebar Widget</b> admin page."
 msgstr ""
 
@@ -2561,137 +2658,148 @@ msgid "Widget Photo Width."
 msgstr "Tamaño del Foto Widget."
 
 #: wppa_widgetadmin.php:30
+#: wppa_widgetadmin.php:36
 msgid "Widget Photo Padding."
 msgstr "Padding del Foto Widget."
 
-#: wppa_widgetadmin.php:47
+#: wppa_widgetadmin.php:53
 msgid "Changes Saved. Don't forget to activate the widget!"
 msgstr "Cambios guardados. No se olvide de activar el Widget!"
 
-#: wppa_widgetadmin.php:56
+#: wppa_widgetadmin.php:62
 msgid "WP Photo Album Plus Sidebar Widget Settings"
 msgstr "Configuración del Widget de WP Foto Álbum Plus del Sidebar"
 
-#: wppa_widgetadmin.php:65
+#: wppa_widgetadmin.php:71
 msgid "Widget Title:"
 msgstr "Título del Widget:"
 
-#: wppa_widgetadmin.php:68
+#: wppa_widgetadmin.php:74
 msgid "Photo of the day"
 msgstr "Foto del día"
 
-#: wppa_widgetadmin.php:74
+#: wppa_widgetadmin.php:80
 msgid "Widget Photo Width:"
 msgstr "Tamaño del Foto Widget:"
 
-#: wppa_widgetadmin.php:78
-msgid "Padding top/left:"
+#: wppa_widgetadmin.php:84
+#, fuzzy
+msgid "Padding top:"
 msgstr "Padding de arriba/izquierda:"
 
-#: wppa_widgetadmin.php:81
+#: wppa_widgetadmin.php:86
+#, fuzzy
+msgid "Padding left:"
+msgstr "Padding de arriba/izquierda:"
+
+#: wppa_widgetadmin.php:89
 msgid "Enter the desired display width of the photo in the sidebar."
 msgstr "Escriba el tamaño deseado de visualización de la foto en el Sidebar."
 
-#: wppa_widgetadmin.php:86
+#: wppa_widgetadmin.php:94
 msgid "Use album(s):"
 msgstr "Usar álbum(es):"
 
-#: wppa_widgetadmin.php:102
+#: wppa_widgetadmin.php:110
 msgid "Select:"
 msgstr "Seleccionar:"
 
-#: wppa_widgetadmin.php:104
+#: wppa_widgetadmin.php:112
 msgid "Or Edit:"
 msgstr "O Editar:"
 
-#: wppa_widgetadmin.php:105
+#: wppa_widgetadmin.php:113
 msgid "Update thumbnails"
 msgstr "Actualizar miniaturas"
 
-#: wppa_widgetadmin.php:106
+#: wppa_widgetadmin.php:114
 msgid "Select or edit the album(s) you want to use the photos of for the widget."
 msgstr "Seleccionar o editar el álbum(es) que quiere que aparezca en el widget."
 
-#: wppa_widgetadmin.php:111
+#: wppa_widgetadmin.php:119
 msgid "Display method:"
 msgstr "Método de visualización:"
 
-#: wppa_widgetadmin.php:117
+#: wppa_widgetadmin.php:125
 msgid "Fixed photo"
 msgstr "Foto corregida"
 
-#: wppa_widgetadmin.php:119
+#: wppa_widgetadmin.php:127
 msgid "Last upload"
 msgstr "Última subida"
 
-#: wppa_widgetadmin.php:120
+#: wppa_widgetadmin.php:128
 msgid "Change every"
 msgstr "Cambiar cada"
 
-#: wppa_widgetadmin.php:124
+#: wppa_widgetadmin.php:132
+msgid "pageview."
+msgstr ""
+
+#: wppa_widgetadmin.php:133
 msgid "hour."
 msgstr "hora."
 
-#: wppa_widgetadmin.php:125
+#: wppa_widgetadmin.php:134
 msgid "day."
 msgstr "día."
 
-#: wppa_widgetadmin.php:126
+#: wppa_widgetadmin.php:135
 msgid "week."
 msgstr "semana."
 
-#: wppa_widgetadmin.php:128
+#: wppa_widgetadmin.php:137
 msgid "Select how the widget should display."
 msgstr "Seleccionar cómo debe ser mostrado el widget."
 
-#: wppa_widgetadmin.php:152
+#: wppa_widgetadmin.php:161
 #, fuzzy
 msgid "--- url ---"
 msgstr "--- predeterminado ---"
 
-#: wppa_widgetadmin.php:156
+#: wppa_widgetadmin.php:165
 #, fuzzy
 msgid "the content of the album as thumnails."
 msgstr "Seleccionar el contenido del subtítulo."
 
-#: wppa_widgetadmin.php:160
+#: wppa_widgetadmin.php:169
 msgid "Select the page the photo links to."
 msgstr "Seleccionar la página a la que la foto lleva."
 
-#: wppa_widgetadmin.php:160
+#: wppa_widgetadmin.php:169
 msgid "Select --- url --- to enter a custom link."
 msgstr ""
 
-#: wppa_widgetadmin.php:168
+#: wppa_widgetadmin.php:177
 #, fuzzy
 msgid "Custom link:"
 msgstr "Sin links:"
 
-#: wppa_widgetadmin.php:172
+#: wppa_widgetadmin.php:181
 msgid "Type the title here"
 msgstr ""
 
-#: wppa_widgetadmin.php:173
+#: wppa_widgetadmin.php:182
 msgid "Url:"
 msgstr ""
 
-#: wppa_widgetadmin.php:174
+#: wppa_widgetadmin.php:183
 msgid "Type your custom url here"
 msgstr ""
 
-#: wppa_widgetadmin.php:175
+#: wppa_widgetadmin.php:184
 msgid "Enter the title and the url. Do'nt forget the HTTP://"
 msgstr ""
 
-#: wppa_widgetadmin.php:181
+#: wppa_widgetadmin.php:190
 msgid "Subtitle:"
 msgstr "Subtítulo"
 
-#: wppa_widgetadmin.php:187
+#: wppa_widgetadmin.php:196
 msgid "Photo Name"
 msgstr "Nombre de la foto"
 
-#: wppa_widgetadmin.php:190
+#: wppa_widgetadmin.php:199
 msgid "Select the content of the subtitle."
 msgstr "Seleccionar el contenido del subtítulo."
 

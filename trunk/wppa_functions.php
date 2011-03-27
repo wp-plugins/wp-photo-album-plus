@@ -14,6 +14,7 @@
 * 007: Clear:both added to thumbnail area
 * 008: Fixed a problem where photos were not found if the number of found photos was less than or equal to the photocount treshold value
 * 009: You can now upload zipfiles with photos if your php version is at least 5.2.7.
+* 010: Fixed a Invalid argument supplied for foreach() warning in upload.
 *
 */
 

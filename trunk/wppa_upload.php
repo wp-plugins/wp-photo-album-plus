@@ -946,7 +946,7 @@ function wppa_sanitize_files($user) {
 	$allowed_types = array('zip', 'jpg', 'png', 'gif', 'amf', 'pmf');
 
 	$count = '0';
-	foreach ($files as $file) {
+	if ($files) foreach ($files as $file) {
 		if (is_file($file)) {
 			$ext = strtolower(substr(strrchr($file, "."), 1));
 			if (!in_array($ext, $allowed_types)) {
