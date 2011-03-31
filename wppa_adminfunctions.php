@@ -70,7 +70,7 @@ global $wppa_defaults;
 						'wppa_coverphoto_left' => 'no',
 						'wppa_thumbphoto_left' => 'no',
 						'wppa_hide_slideshow' => 'no',
-						'wppa_enable_slideshow' => get_option('wppa_hide_slideshow', 'no') == 'no' ? 'yes' : 'no',
+						'wppa_enable_slideshow' => 'yes',
 //						'wppa_no_thumb_links' => 'no',
 						'wppa_thumb_text_name' => 'yes',
 						'wppa_thumb_text_desc' => 'yes',
@@ -82,8 +82,8 @@ global $wppa_defaults;
 						'wppa_start_slide' => 'yes',
 						'wppa_hide_slideshow' => 'no',
 						'wppa_filmstrip' => 'yes',
-						'wppa_bc_url' => 'nil',
-						'wppa_bc_txt' => '-&gt;',
+						'wppa_bc_url' => wppa_get_imgdir().'arrow.gif',
+						'wppa_bc_txt' => htmlspecialchars('<span style="color:red; font_size:24px;">&bull;</span>'),
 						'wppa_topten_count' => '10',
 						'wppa_excl_sep' => 'no',
 						'wppa_rating_on' => 'yes',
@@ -101,7 +101,8 @@ global $wppa_defaults;
 						'wppa_mphoto_linktype' => 'photo',
 						'wppa_fadein_after_fadeout' => 'no',
 						'wppa_widget_linkpage' => '0',
-						'wppa_widget_linktype' => 'album'
+						'wppa_widget_linktype' => 'album',
+						'wppa_topten_widget_linkpage' => '0'
 						);
 	
 	array_walk($wppa_defaults, 'wppa_set_default', $force);

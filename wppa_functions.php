@@ -16,11 +16,12 @@
 * 009: You can now upload zipfiles with photos if your php version is at least 5.2.7.
 * 010: Fixed a Invalid argument supplied for foreach() warning in upload.
 * 011: Fixed a wrong link from thumbnail to slideshow.
+* 012: Changed the check for minimal size of thumbnail frame
 *
 */
 
 global $wppa_api_version;
-$wppa_api_version = '3-0-1-008';
+$wppa_api_version = '3-0-1-012';
 
 /* show system statistics */
 function wppa_statistics() {

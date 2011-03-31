@@ -31,11 +31,11 @@ global $blog_id;
 			}
 		} else $options_error = true;
 		
-		if (wppa_check_numeric($_POST['wppa-tf-width'], get_option('wppa_thumbsize'), __('Thumbnail frame width', 'wppa'))) {
+		if (wppa_check_numeric($_POST['wppa-tf-width'], '50', __('Thumbnail frame width', 'wppa'))) {
 			update_option('wppa_tf_width', $_POST['wppa-tf-width']);
 		} else $options_error = true; 
 		
-		if (wppa_check_numeric($_POST['wppa-tf-height'], get_option('wppa_thumbsize'), __('Thumbnail frame height', 'wppa'))) {
+		if (wppa_check_numeric($_POST['wppa-tf-height'], '50', __('Thumbnail frame height', 'wppa'))) {
 			update_option('wppa_tf_height', $_POST['wppa-tf-height']);
 		} else $options_error = true; 
 		
