@@ -16,7 +16,8 @@
 * 009: You can now upload zipfiles with photos if your php version is at least 5.2.7.
 * 010: Fixed a Invalid argument supplied for foreach() warning in upload.
 * 011: Fixed a wrong link from thumbnail to slideshow.
-* 012: Changed the check for minimal size of thumbnail frame
+* 012: Changed the check for minimal size of thumbnail frame.
+* 013: Fixed a problem where a bullet was displayed as &bull in some browsers.
 *
 */
 
@@ -78,7 +79,7 @@ global $wppa_opt;
 			$sep = ' '.html_entity_decode(stripslashes($wppa_opt['wppa_bc_txt']), ENT_QUOTES).' ';
 			break;
 		default:
-			$sep = ' &' . $temp . ' ';
+			$sep = ' &' . $temp . '; ';
 	}
 
 	$occur = isset($_GET['occur']) ? $_GET['occur'] : '1';

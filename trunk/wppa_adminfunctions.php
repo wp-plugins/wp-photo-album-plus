@@ -85,6 +85,7 @@ global $wppa_defaults;
 						'wppa_bc_url' => wppa_get_imgdir().'arrow.gif',
 						'wppa_bc_txt' => htmlspecialchars('<span style="color:red; font_size:24px;">&bull;</span>'),
 						'wppa_topten_count' => '10',
+						'wppa_topten_size' => '86',
 						'wppa_excl_sep' => 'no',
 						'wppa_rating_on' => 'yes',
 						'wppa_rating_login' => 'yes',
