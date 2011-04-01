@@ -134,6 +134,7 @@ global $wppa_locale;
 			'wppa_bc_url' => '',
 			'wppa_bc_txt' => '',
 			'wppa_topten_count' => '',
+			'wppa_topten_size' => '',
 			'wppa_excl_sep' => '',
 			'wppa_rating_on' => '',
 			'wppa_rating_login' => '',

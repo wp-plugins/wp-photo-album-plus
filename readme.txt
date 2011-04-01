@@ -140,6 +140,7 @@ For more information on multilanguage sites, see the documentation of the qTrans
 * 010: Fixed a Invalid argument supplied for foreach() warning in upload.
 * 011: Fixed a wrong link from thumbnail to slideshow.
 * 012: Changed the check for minimal size of thumbnail frame.
+* 013: Fixed a problem where a bullet was displayed as &bull in some browsers.
 
 
 = 3.0.0 =
