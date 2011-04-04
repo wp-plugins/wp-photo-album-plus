@@ -261,7 +261,10 @@ function wppa_prev(mocc) {
 }
 
 function wppa_goto(mocc, idx) {
-	if (wppa_ss_running[mocc] != 0) return;
+	if (wppa_ss_running[mocc] != 0) {
+//		wppa_startstop(mocc, idx);	//ok
+		return;
+	}
 	if (wppa_busy[mocc]) return;
 	wppa_busy[mocc] = true;
 	wppa_next_id[mocc] = idx;
@@ -293,10 +296,13 @@ function wppa_startstop(mocc, idx) {
 		jQuery('#bc-pname-'+mocc).html(wppa_names[mocc][wppa_id[mocc]]);
     }
     else if (idx == -1) {
+if (wppa_ss_running[mocc]) return; 	// already running or stop in progresss
+//if (wppa_busy[mocc]) return;		// one thing at a time
         wppa_ss_running[mocc] = 1;
         wppa_next_slide(mocc);
 		if (document.getElementById('startstop-'+mocc)) {
 			document.getElementById('startstop-'+mocc).innerHTML=wppa_stop;
+}
 			jQuery('#prev-arrow-'+mocc).css('visibility', 'hidden');
 			jQuery('#next-arrow-'+mocc).css('visibility', 'hidden');
 			jQuery('#prev-film-arrow-'+mocc).css('visibility', 'hidden');
@@ -305,7 +311,7 @@ function wppa_startstop(mocc, idx) {
 			jQuery('#n-a-'+mocc).css('visibility', 'hidden');
 			jQuery('#speed0-'+mocc).css('visibility', 'visible');
 			jQuery('#speed1-'+mocc).css('visibility', 'visible');
-		}
+//		}
 		jQuery('#bc-pname-'+mocc).html(wppa_slideshow);
     }
 	wppa_set_rating_display(mocc);
