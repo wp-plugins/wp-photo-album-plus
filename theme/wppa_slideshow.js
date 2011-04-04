@@ -11,6 +11,7 @@ var wppa_timeout = new Array();
 //var wppa_timer = new Array();
 var wppa_ss_running = new Array();
 var wppa_foreground = new Array();
+var wppa_toggle_pending = new Array();
 var wppa_busy = new Array();
 var wppa_first = new Array();
 var wppa_saved_id = new Array();
@@ -70,6 +71,7 @@ function wppa_store_slideinfo(mocc, id, url, size, name, desc, photoid, avgrat, 
 		if (parseInt(iwtimeout) > 0) wppa_timeout[mocc] = parseInt(iwtimeout);
 		else wppa_timeout[mocc] = wppa_ss_timeout;
 		wppa_ss_running[mocc] = 0;
+		wppa_toggle_pending[mocc] = false;
 		wppa_foreground[mocc] = 0;
 		wppa_busy[mocc] = false;
 		wppa_first[mocc] = true;
@@ -239,6 +241,10 @@ function wppa_after_fade(mocc) {
 	else {
 		jQuery(".arrow-"+mocc).stop().fadeTo(400,1);
 		wppa_busy[mocc] = false;
+		if (wppa_toggle_pending[mocc]) {
+			wppa_toggle_pending[mocc] = false;
+			wppa_startstop(mocc, -1);
+		}
 	}
 }
  
@@ -262,7 +268,7 @@ function wppa_prev(mocc) {
 
 function wppa_goto(mocc, idx) {
 	if (wppa_ss_running[mocc] != 0) {
-//		wppa_startstop(mocc, idx);	//ok
+//		if (wppa_ss_running[mocc] == 1) wppa_startstop(mocc, idx);	// If you click on a filmthumb the show stops
 		return;
 	}
 	if (wppa_busy[mocc]) return;
@@ -297,7 +303,10 @@ function wppa_startstop(mocc, idx) {
     }
     else if (idx == -1) {
 if (wppa_ss_running[mocc]) return; 	// already running or stop in progresss
-//if (wppa_busy[mocc]) return;		// one thing at a time
+if (wppa_busy[mocc]) {				// Currently performing a goto
+	wppa_toggle_pending[mocc] = true;
+	return;		// one thing at a time
+}
         wppa_ss_running[mocc] = 1;
         wppa_next_slide(mocc);
 		if (document.getElementById('startstop-'+mocc)) {

@@ -19,11 +19,12 @@
 * 012: Changed the check for minimal size of thumbnail frame.
 * 013: Fixed a problem where a bullet was displayed as &bull in some browsers.
 * 014: Fixed a problem where the navigation arrows in the filmstrip were not hidden if the startstop bar was disabled.
+* 015: New feature: If slideshow is enabled, double clicks on filmthumbs toggles Start/stop running slideshow. Tooltip documents it.
 *
 */
 
 global $wppa_api_version;
-$wppa_api_version = '3-0-1-012';
+$wppa_api_version = '3-0-1-015';
 
 /* show system statistics */
 function wppa_statistics() {
@@ -2034,8 +2035,12 @@ global $thumb;
 	$url = wppa_get_thumb_url(); 
 	$events = wppa_get_imgevents('thumb', $thumb['id'], 'nopopup'); 
 	$events .= ' onclick="wppa_goto('.$wppa['master_occur'].', '.$idx.')"';
-//	if (!$wppa_opt['wppa_hide_slideshow']) $events .= ' ondblclick="wppa_startstop('.$wppa['master_occur'].', -1)"';
 	$thumbname = esc_attr(wppa_qtrans($thumb['name']));
+	$title = $thumbname;
+	if (!$wppa_opt['wppa_hide_slideshow']) {
+		$events .= ' ondblclick="wppa_startstop('.$wppa['master_occur'].', -1)"';
+		$title = esc_attr(__a('Duble click to start/stop slideshow running', 'wppa_theme'));
+	}
 	
 	if (is_feed()) {
 		if ($do_for_feed) {
@@ -2045,7 +2050,7 @@ global $thumb;
 	// If !$do_for_feed: pre-or post-ambule. To avoid dup id change it in that case
 	$tmp = $do_for_feed ? 'film' : 'pre';
 	$wppa['out'] .= '<div id="'.$tmp.'_thumbnail_frame_'.$thumb['id'].'_'.$wppa['master_occur'].'" class="thumbnail-frame" style="'.wppa_get_thumb_frame_style($glue, 'film').'" >';
-		$wppa['out'] .= '<img src="'.$url.'" alt="'.$thumbname.'" title="'.$thumbname.'" style="'.$imgattr.'" '.$events.'/>';
+		$wppa['out'] .= '<img src="'.$url.'" alt="'.$thumbname.'" title="'.$title.'" style="'.$imgattr.'" '.$events.'/>';
 	$wppa['out'] .= '</div><!-- #thumbnail_frame_'.$thumb['id'].'_'.$wppa['master_occur'].' -->';
 	}
 }
