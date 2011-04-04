@@ -127,7 +127,7 @@ For more information on multilanguage sites, see the documentation of the qTrans
 
 = Known bugs =
 
-* When the photo order is random, the sequence in the filmstrip differs from the sequence in the slideshow itsself.
+* None, if you find one, please let me know and i will fix 'm
 
 = Hot fixes since the initial release =
 
@@ -146,6 +146,7 @@ For more information on multilanguage sites, see the documentation of the qTrans
 * 013: Fixed a problem where a bullet was displayed as &bull in some browsers.
 * 014: Fixed a problem where the navigation arrows in the filmstrip were not hidden if the startstop bar was disabled.
 * 015: New feature: If slideshow is enabled, double clicks on filmthumbs toggles Start/stop running slideshow. Tooltip documents it.
+* 016: Slides and filmthumbs have the same sequence now when ordering is Random.
 
 = 3.0.0 =
 
