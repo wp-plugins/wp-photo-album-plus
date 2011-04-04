@@ -18,6 +18,7 @@
 * 011: Fixed a wrong link from thumbnail to slideshow.
 * 012: Changed the check for minimal size of thumbnail frame.
 * 013: Fixed a problem where a bullet was displayed as &bull in some browsers.
+* 014: Fixed a problem where the navigation arrows in the filmstrip were not hidden if the startstop bar was disabled.
 *
 */
 
@@ -2033,6 +2034,7 @@ global $thumb;
 	$url = wppa_get_thumb_url(); 
 	$events = wppa_get_imgevents('thumb', $thumb['id'], 'nopopup'); 
 	$events .= ' onclick="wppa_goto('.$wppa['master_occur'].', '.$idx.')"';
+//	if (!$wppa_opt['wppa_hide_slideshow']) $events .= ' ondblclick="wppa_startstop('.$wppa['master_occur'].', -1)"';
 	$thumbname = esc_attr(wppa_qtrans($thumb['name']));
 	
 	if (is_feed()) {

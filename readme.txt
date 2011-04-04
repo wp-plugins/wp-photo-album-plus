@@ -141,6 +141,7 @@ For more information on multilanguage sites, see the documentation of the qTrans
 * 011: Fixed a wrong link from thumbnail to slideshow.
 * 012: Changed the check for minimal size of thumbnail frame.
 * 013: Fixed a problem where a bullet was displayed as &bull in some browsers.
+* 014: Fixed a problem where the navigation arrows in the filmstrip were not hidden if the startstop bar was disabled.
 
 
 = 3.0.0 =
