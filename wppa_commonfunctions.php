@@ -50,7 +50,8 @@ global $wppa_locale;
 			'thumb_count' => '0',
 			'out' => '',
 			'auto_colwidth' => false,
-			'permalink' => ''
+			'permalink' => '',
+			'randseed' => time() % '4711'
 		);
 
 		if (isset($_POST['wppa-searchstring'])) $wppa['src'] = true;
@@ -186,6 +187,7 @@ function wppa_get_imgdir() {
 
 // get album order
 function wppa_get_album_order() {
+global $wppa;
 
     $result = '';
     $order = get_option('wppa_list_albums_by');
@@ -198,7 +200,7 @@ function wppa_get_album_order() {
         $result = 'ORDER BY name';
         break;  
     case '3':
-        $result = 'ORDER BY RAND()';
+        $result = 'ORDER BY RAND('.$wppa['randseed'].')';
         break;
     default:
         $result = 'ORDER BY id';
@@ -210,6 +212,7 @@ function wppa_get_album_order() {
 // get photo order
 function wppa_get_photo_order($id) {
 global $wpdb;
+global $wppa;
     
 	if ($id == 0) $order=0;
 	else $order = $wpdb->get_var("SELECT p_order_by FROM " . ALBUM_TABLE . " WHERE id=$id");
@@ -223,7 +226,7 @@ global $wpdb;
         $result = 'ORDER BY name';
         break;
     case '3':
-        $result = 'ORDER BY RAND()';
+        $result = 'ORDER BY RAND('.$wppa['randseed'].')';
         break;
 	case '4':
 		$result = 'ORDER BY mean_rating';
