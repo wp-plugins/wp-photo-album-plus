@@ -124,7 +124,10 @@ For more information on multilanguage sites, see the documentation of the qTrans
 * Multisite support
 * More than one photo of the day
 * Fullscreen slideshow
-* Zipfile upload for multiple images
+
+= Known bugs =
+
+* When the photo order is random, the sequence in the filmstrip differs from the sequence in the slideshow itsself.
 
 = Hot fixes since the initial release =
 
@@ -142,7 +145,7 @@ For more information on multilanguage sites, see the documentation of the qTrans
 * 012: Changed the check for minimal size of thumbnail frame.
 * 013: Fixed a problem where a bullet was displayed as &bull in some browsers.
 * 014: Fixed a problem where the navigation arrows in the filmstrip were not hidden if the startstop bar was disabled.
-
+* 015: New feature: If slideshow is enabled, double clicks on filmthumbs toggles Start/stop running slideshow. Tooltip documents it.
 
 = 3.0.0 =
 
