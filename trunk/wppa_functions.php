@@ -20,12 +20,12 @@
 * 013: Fixed a problem where a bullet was displayed as &bull in some browsers.
 * 014: Fixed a problem where the navigation arrows in the filmstrip were not hidden if the startstop bar was disabled.
 * 015: New feature: If slideshow is enabled, double clicks on filmthumbs toggles Start/stop running slideshow. Tooltip documents it.
-* 016: Slides and filmthumbs have the same sequence now when ordering is Random.
+* 017: Some people do not read the settings page and get in panic when they see two or three colums of album covers after an upgrade, so i changed the defaults for the columns tresholds to 1024.
 *
 */
 
 global $wppa_api_version;
-$wppa_api_version = '3-0-1-016';
+$wppa_api_version = '3-0-1-017';
 
 /* show system statistics */
 function wppa_statistics() {
