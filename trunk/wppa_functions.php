@@ -22,7 +22,7 @@
 * 015: New feature: If slideshow is enabled, double clicks on filmthumbs toggles Start/stop running slideshow. Tooltip documents it.
 * 017: Some people do not read the settings page and get in panic when they see two or three colums of album covers after an upgrade, so i changed the defaults for the columns tresholds to 1024.
 * 018: TopTen widget initializes runtime also now, just in case it is the first.
-*
+* 019: Fixed alignment problem in multi column, unequal cover heights.
 */
 
 global $wppa_api_version;
@@ -1624,7 +1624,12 @@ global $cover_count;
 	
 	$wid = wppa_get_cover_width('cover');
 	$style .= 'width: '.$wid.'px;';	
-	if ($cover_count != '0') $style .= 'margin-left: 8px;';
+	if ($cover_count == '0') {
+		$style .= 'clear:both;';	// Fix 3.0.1.019: alignment problem multi column, unequal cover heights
+	}
+	else {
+		$style .= 'margin-left: 8px;';
+	}
 	wppa_step_covercount('cover');
 	
 	$wppa['out'] .= '<div id="album-'.$album['id'].'-'.$wppa['master_occur'].'" class="album wppa-box wppa-cover-box wppa-'.$wppa_alt.'" style="'.$style.'" >';
@@ -1711,7 +1716,13 @@ global $cover_count;
 	
 	$wid = wppa_get_cover_width('thumb');
 	$style .= 'width: '.$wid.'px;';	
-	if ($cover_count != '0') $style .= 'margin-left: 8px;';
+//	if ($cover_count != '0') $style .= 'margin-left: 8px;';
+	if ($cover_count == '0') {
+		$style .= 'clear:both;';	// Fix 3.0.1.019: alignment problem multi column, unequal cover heights
+	}
+	else {
+		$style .= 'margin-left: 8px;';
+	}
 	wppa_step_covercount('thumb');
 
 	$wppa['out'] .= '<div id="thumb-'.$thumb['id'].'-'.$wppa['master_occur'].'" class="thumb wppa-box wppa-cover-box wppa-'.$wppa_alt.'" style="'.$style.'" >';
