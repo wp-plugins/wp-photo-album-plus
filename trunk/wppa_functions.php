@@ -23,6 +23,7 @@
 * 017: Some people do not read the settings page and get in panic when they see two or three colums of album covers after an upgrade, so i changed the defaults for the columns tresholds to 1024.
 * 018: TopTen widget initializes runtime also now, just in case it is the first.
 * 019: Fixed alignment problem in multi column, unequal cover heights.
+* 020: Photo of the day widget now also initializes runtime.
 */
 
 global $wppa_api_version;

@@ -20,6 +20,8 @@ class PhotoOfTheDay extends WP_Widget {
 		global $widget_content;
 
         extract( $args );
+		
+		wppa_initialize_runtime();	// Just in case we are the first
         
  		$widget_title = apply_filters('widget_title', empty( $instance['title'] ) ? get_option('wppa_widgettitle', __a( 'Photo Of The Day', 'wppa_theme' )) : $instance['title']);
 
