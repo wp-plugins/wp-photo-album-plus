@@ -151,6 +151,7 @@ For more information on multilanguage sites, see the documentation of the qTrans
 * 018: TopTen widget initializes runtime also now, just in case it is the first.
 * 019: Fixed alignment problem in multi column, unequal cover heights.
 * 020: Photo of the day widget now also initializes runtime.
+* 021: Fix for pre-rendering themes like thesis.
 
 = 3.0.0 =
 
