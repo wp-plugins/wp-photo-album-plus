@@ -24,10 +24,11 @@
 * 018: TopTen widget initializes runtime also now, just in case it is the first.
 * 019: Fixed alignment problem in multi column, unequal cover heights.
 * 020: Photo of the day widget now also initializes runtime.
+* 021: Fix for pre-rendering themes like thesis.
 */
 
 global $wppa_api_version;
-$wppa_api_version = '3-0-1-017';
+$wppa_api_version = '3-0-1-021';
 
 /* show system statistics */
 function wppa_statistics() {
@@ -199,7 +200,7 @@ global $wppa;
 
 	wppa_initialize_runtime();	// Don't be afraid, init will take place only once, nobody can expect from where, maybe here
     
-	$wppa['out'] = '';
+//	$wppa['out'] = '';
 	
 	$wppa['occur']++;
 	$wppa['master_occur']++;
@@ -260,7 +261,10 @@ global $wppa;
 		if (function_exists('wppa_theme')) wppa_theme();	// Call the theme module
 		else $wppa['out'] = '<span style="color:red">ERROR: Missing function wppa_theme(), check the installation of WPPA+. Remove customized wppa_theme.php</span>';
 	}
-	return $wppa['out'];
+	
+	$out = $wppa['out'];
+	$wppa['out'] = '';
+	return $out;
 }
 
 
@@ -1147,7 +1151,8 @@ global $wppa_opt;
 		if ($ok) sleep(2);
 		else die(__('<b>ERROR: Illegal attempt to enter a rating.</b>', 'wppa_theme'));
 	}
-	wp_nonce_field('wppa-check' , 'wppa_nonce', false);
+//	wp_nonce_field('wppa-check' , 'wppa_nonce', false);
+	$wppa['out'] .= wp_nonce_field('wppa-check' , 'wppa_nonce', false, false);
 	/* If you simplify this by making a cdata block, you will break rss feeds */
 	/* rss attempts to create a nested cdata block that causes the loss of the script tag */
 	/* The errormessage will say that the /script tag is not matched while it is. */
@@ -1192,9 +1197,9 @@ global $wppa_opt;
 	else $wppa['out'] .= 'wppa_rating_once = true;';
 	$wppa['out'] .= '</script>';
 	
-	echo $wppa['out'];
+//	echo $wppa['out'];
 	
-	$wppa['out'] = '';
+//	$wppa['out'] = '';
 }
 
 function wppa_get_pagesize($type = '') {
