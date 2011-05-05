@@ -1,0 +1,4 @@
+wppa_no_nonce.txt
+
+Place this file in your theme directory if you experience an insufficient rights message on all administrstive actions.
+
