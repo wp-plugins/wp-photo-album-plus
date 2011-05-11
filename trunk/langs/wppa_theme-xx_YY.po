@@ -8,155 +8,154 @@ msgstr ""
 "Project-Id-Version: wppa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-05-10 13:36+0100\n"
-"PO-Revision-Date: 2011-05-10 13:36+0100\n"
+"PO-Revision-Date: 2011-05-11 13:16+0100\n"
 "Last-Translator: J.N. Breetvelt <OpaJaap@OpaJaap.nl>\n"
-"Language-Team: \n"
+"Language-Team: OpaJaap <OpaJaap@OpaJaap.nl>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-KeywordsList: __a\n"
 "X-Poedit-Basepath: ..\n"
-"X-Poedit-Language: German\n"
-"X-Poedit-Country: GERMANY\n"
+"X-Poedit-SourceCharset: utf-8\n"
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPath-1: theme\n"
 
 #: wppa_commonfunctions.php:272
 #, php-format
 msgid "Rating: %s"
-msgstr "Bewertung: %s"
+msgstr ""
 
 #: wppa_commonfunctions.php:342
 msgid "--- none ---"
-msgstr "--- keine ---"
+msgstr ""
 
 #: wppa_commonfunctions.php:343
 msgid "--- separate ---"
-msgstr "--- separat ---"
+msgstr ""
 
 #: wppa_functions.php:29
 msgid "There are"
-msgstr "Hier sind"
+msgstr ""
 
 #: wppa_functions.php:29
 msgid "photo albums. The last album added is"
-msgstr "Fotoalben. Das letzte hinzugefügte Album ist"
+msgstr ""
 
 #: wppa_functions.php:33
 msgid ", a subalbum of"
-msgstr ", ein Unter-Album von"
+msgstr ""
 
 #: wppa_functions.php:86
 msgid "Home"
-msgstr "Startseite"
+msgstr ""
 
 #: wppa_functions.php:124
 #: wppa_functions.php:1201
 #: wppa_functions.php:1692
 msgid "Slideshow"
-msgstr "Diaschau"
+msgstr ""
 
 #: wppa_functions.php:130
 msgid "Searchstring:"
-msgstr "Suchtext:"
+msgstr ""
 
 #: wppa_functions.php:133
 msgid "Top rated photos"
-msgstr "Hoch bewertete Fotos"
+msgstr ""
 
 #: wppa_functions.php:765
 msgid "<b>ERROR: Attempt to enter an invalid rating.</b>"
-msgstr "<b>FEHLER: Sie haben versucht eine ungültige Bewertung einzutragen</b>"
+msgstr ""
 
 #: wppa_functions.php:1128
 msgid "Prev.&nbsp;page"
-msgstr "Vorherige&nbsp;Seite"
+msgstr ""
 
 #: wppa_functions.php:1132
 msgid "Next&nbsp;page"
-msgstr "Nächste&nbsp;Seite"
+msgstr ""
 
 #: wppa_functions.php:1202
 #: wppa_functions.php:1885
 msgid "Start"
-msgstr "Starte"
+msgstr ""
 
 #: wppa_functions.php:1203
 msgid "Stop"
-msgstr "Beenden"
+msgstr ""
 
 #: wppa_functions.php:1204
 msgid "Photo"
-msgstr "Foto"
+msgstr ""
 
 #: wppa_functions.php:1205
 msgid "of"
-msgstr "von"
+msgstr ""
 
 #: wppa_functions.php:1206
 msgid "Prev.&nbsp;photo"
-msgstr "Vorheriges&nbsp;Foto"
+msgstr ""
 
 #: wppa_functions.php:1207
 msgid "Next&nbsp;photo"
-msgstr "Nächstes&nbsp;Foto"
+msgstr ""
 
 #: wppa_functions.php:1617
 msgid "Link to"
-msgstr "Verweis zu"
+msgstr ""
 
 #: wppa_functions.php:1621
 msgid "Page is not available."
-msgstr "Diese Seite ist nicht abrufbar."
+msgstr ""
 
 #: wppa_functions.php:1627
 #: wppa_functions.php:1700
 msgid "View the album"
-msgstr "Das Album ansehen"
+msgstr ""
 
 #: wppa_functions.php:1632
 msgid "View the cover photo"
-msgstr "Titelfoto ansehen"
+msgstr ""
 
 #: wppa_functions.php:1633
 msgid "View the cover photos"
-msgstr "Titelfotos ansehen"
+msgstr ""
 
 #: wppa_functions.php:1692
 msgid "Browse photos"
-msgstr "Durchsuche Fotos"
+msgstr ""
 
 #: wppa_functions.php:1701
 msgid "View"
-msgstr "Ansehen"
+msgstr ""
 
 #: wppa_functions.php:1704
 msgid "album"
-msgstr "Album"
+msgstr ""
 
 #: wppa_functions.php:1707
 msgid "albums"
-msgstr "Alben"
+msgstr ""
 
 #: wppa_functions.php:1711
 msgid "and"
-msgstr "und"
+msgstr ""
 
 #: wppa_functions.php:1715
 msgid "photo"
-msgstr "Foto"
+msgstr ""
 
 #: wppa_functions.php:1718
 msgid "photos"
-msgstr "Fotos"
+msgstr ""
 
 #: wppa_functions.php:1884
 msgid "Slower"
-msgstr "Langsamer"
+msgstr ""
 
 #: wppa_functions.php:1886
 msgid "Faster"
-msgstr "Schneller"
+msgstr ""
 
 #: wppa_functions.php:2102
 msgid "Double click to start/stop slideshow running"
@@ -164,59 +163,59 @@ msgstr ""
 
 #: wppa_functions.php:2259
 msgid "- - - Rating enabled - - -"
-msgstr "- - - Bewertung möglich - - -"
+msgstr ""
 
 #: wppa_functions.php:2268
 msgid "very low"
-msgstr "sehr niedrig"
+msgstr ""
 
 #: wppa_functions.php:2269
 msgid "low"
-msgstr "niedrig"
+msgstr ""
 
 #: wppa_functions.php:2270
 msgid "average"
-msgstr "durchschnittlich"
+msgstr ""
 
 #: wppa_functions.php:2271
 msgid "high"
-msgstr "hoch"
+msgstr ""
 
 #: wppa_functions.php:2272
 msgid "very high"
-msgstr "sehr hoch"
+msgstr ""
 
 #: wppa_functions.php:2277
 #: wppa_functions.php:2282
 msgid "Average&nbsp;rating"
-msgstr "Durchschnittliche Bewertung"
+msgstr ""
 
 #: wppa_functions.php:2291
 #: wppa_functions.php:2294
 msgid "My&nbsp;rating"
-msgstr "Meine&nbsp;Bewertung"
+msgstr ""
 
 #: wppa_functions.php:2297
 msgid "You must login to vote"
-msgstr "Zum Bewerten bitte anmelden."
+msgstr ""
 
 #: wppa_slideshow_widget.php:30
 msgid "Sidebar Slideshow"
-msgstr "Seitenleiste Diaschau"
+msgstr ""
 
 #: wppa_slideshow_widget.php:76
 msgid "No album defined yet."
-msgstr "Noch kein Album ausgewählt."
+msgstr ""
 
 #: wppa_toptenwidget.php:53
 msgid "Photo not found."
-msgstr "Foto wurde nicht gefunden."
+msgstr ""
 
 #: wppa_widget.php:26
 msgid "Photo Of The Day"
-msgstr "Foto des Tages"
+msgstr ""
 
 #: theme/wppa_theme.php:80
 msgid "No albums or photos found matching your search criteria."
-msgstr "Es wurde kein Album oder Foto mit Deinen Suchangaben gefunden."
+msgstr ""
 

@@ -4,7 +4,8 @@
 * Functions used in admin and in themes
 * version 3.0.1
 */
-
+global $wppa_api_version;
+$wppa_api_version = '3-0-2-000';
 // Initialize globals and option settings
 function wppa_initialize_runtime() {
 global $wppa;
@@ -98,17 +99,23 @@ global $wppa_locale;
 			'wppa_bradius' => '',
 			'wppa_fontfamily_thumb' => '',
 			'wppa_fontsize_thumb' => '',
+			'wppa_fontcolor_thumb' => '',
 			'wppa_fontfamily_box' => '',
 			'wppa_fontsize_box' => '',
+			'wppa_fontcolor_box' => '',
 			'wppa_fontfamily_nav' => '',
 			'wppa_fontsize_nav' => '',
+			'wppa_fontcolor_nav' => '',
 			'wppa_fontfamily_title' => '',
 			'wppa_fontsize_title' => '',
+			'wppa_fontcolor_title' => '',
 			'wppa_fontfamily_fulldesc' => '',
 			'wppa_fontsize_fulldesc' => '',
+			'wppa_fontcolor_fulldesc' => '',
 			'wppa_fontfamily_fulltitle' => '',
 			'wppa_fontsize_fulltitle' => '',
-			'wppa_black' => '',
+			'wppa_fontcolor_fulltitle' => '',
+//			'wppa_black' => '',
 			'wppa_arrow_color' => '',
 			'wppa_widget_padding_top' => '',
 			'wppa_widget_padding_left' => '',
@@ -120,7 +127,8 @@ global $wppa_locale;
 			'wppa_thumb_auto' => '',
 			'wppa_coverphoto_left' => '',
 			'wppa_thumbphoto_left' => '',
-			'wppa_hide_slideshow' => '',
+//			'wppa_hide_slideshow' => '',
+			'wppa_enable_slideshow' => '',
 //			'wppa_no_thumb_links' => '',
 			'wppa_thumb_text_name' => '',
 			'wppa_thumb_text_desc' => '',
@@ -154,7 +162,12 @@ global $wppa_locale;
 			'wppa_fadein_after_fadeout' => '',
 			'wppa_widget_linkpage' => '',
 			'wppa_widget_linktype' => '',
-			
+			'wppa_slideonly_widget_linkpage' => '',
+			'wppa_slideonly_widget_linktype' => '',
+			'wppa_topten_widget_linkpage' => '',
+			'wppa_topten_widget_linktype' => '',
+			'wppa_search_linkpage' => '',
+			'wppa_chmod' => '',
 			'permalink_structure' => ''	// This must be last
 			);
 							
@@ -215,7 +228,7 @@ global $wpdb;
 global $wppa;
     
 	if ($id == 0) $order=0;
-	else $order = $wpdb->get_var("SELECT p_order_by FROM " . ALBUM_TABLE . " WHERE id=$id");
+	else $order = $wpdb->get_var("SELECT p_order_by FROM " . WPPA_ALBUMS . " WHERE id=$id");
     if ($order == '0') $order = get_option('wppa_list_photos_by');
     switch ($order)
     {
@@ -253,7 +266,7 @@ global $wpdb;
 
 	$result = '';
 	if (is_numeric($id)) {
-		$rating = $wpdb->get_var("SELECT mean_rating FROM ".PHOTO_TABLE." WHERE id=$id");
+		$rating = $wpdb->get_var("SELECT mean_rating FROM ".WPPA_PHOTOS." WHERE id=$id");
 		if ($rating) {
 			if ($opt == 'nolabel') $result = round($rating * 1000) / 1000;
 			else $result = sprintf(__a('Rating: %s', 'wppa_theme'), round($rating * 1000) / 1000);
@@ -281,7 +294,7 @@ function wppa_is_ancestor($anc, $xchild) {
 function wppa_get_parentalbumid($alb) {
 global $wpdb;
     
-	$query = $wpdb->prepare('SELECT `a_parent` FROM `' . ALBUM_TABLE . '` WHERE `id` = %d', $alb);
+	$query = $wpdb->prepare('SELECT `a_parent` FROM `' . WPPA_ALBUMS . '` WHERE `id` = %d', $alb);
 	$result = $wpdb->get_var($query);
 	
     if (!is_numeric($result)) {
@@ -314,7 +327,7 @@ global $wpdb;
 
 	if ($name == '') return '';
     $name = $wpdb->escape($name);
-    $id = $wpdb->get_var("SELECT id FROM " . ALBUM_TABLE . " WHERE name='" . $name . "'");
+    $id = $wpdb->get_var("SELECT id FROM " . WPPA_ALBUMS . " WHERE name='" . $name . "'");
     if ($id) {
 		return $id;
 	}
@@ -331,7 +344,7 @@ global $wpdb;
     else {
         if ($id == '') if (isset($_GET['album'])) $id = $_GET['album'];
         $id = $wpdb->escape($id);	
-        if (is_numeric($id)) $name = $wpdb->get_var("SELECT name FROM " . ALBUM_TABLE . " WHERE id=$id");
+        if (is_numeric($id)) $name = $wpdb->get_var("SELECT name FROM " . WPPA_ALBUMS . " WHERE id=$id");
     }
 	if ($name) {
 		if ($raw != 'raw') $name = stripslashes($name);

@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Photo Album Plus 2.4.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-03-26 14:21+0100\n"
-"PO-Revision-Date: 2011-03-26 14:21+0100\n"
+"POT-Creation-Date: 2011-05-10 13:39+0100\n"
+"PO-Revision-Date: 2011-05-10 13:39+0100\n"
 "Last-Translator: J.N. Breetvelt <OpaJaap@OpaJaap.nl>\n"
 "Language-Team: BNG NET <webmaster@bng.net>\n"
 "MIME-Version: 1.0\n"
@@ -23,101 +23,131 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPath-1: theme\n"
 
-#: wppa.php:135
+#: wppa.php:155
+#: wppa_settings.php:1203
 msgid "Photo Albums"
 msgstr "フォトアルバム"
 
-#: wppa.php:137
+#: wppa.php:157
 msgid "Upload Photos"
 msgstr "写真のアップロード"
 
-#: wppa.php:138
+#: wppa.php:158
 msgid "Import Photos"
 msgstr "写真のインポート"
 
-#: wppa.php:139
+#: wppa.php:159
 #: wppa_export.php:40
 msgid "Export Photos"
 msgstr "写真のエクスポート"
 
-#: wppa.php:140
+#: wppa.php:160
 msgid "Settings"
 msgstr "設定"
 
-#: wppa.php:141
-msgid "Sidebar Widget"
-msgstr "サイドバーウィジェット"
+#: wppa.php:161
+#, fuzzy
+msgid "Photo of the day Widget"
+msgstr "本日の写真:"
 
-#: wppa.php:142
+#: wppa.php:161
+msgid "Photo of the day"
+msgstr "本日の写真:"
+
+#: wppa.php:162
 msgid "Help &amp; Info"
 msgstr "ヘルプとインフォ"
 
-#: wppa_adminfunctions.php:163
+#: wppa_adminfunctions.php:184
 msgid "The wppa database tables are not yet at the required revision level."
 msgstr "プラグインのデータベーステーブルが必要なリビジョンレベルにありません。"
 
-#: wppa_adminfunctions.php:163
-#: wppa_adminfunctions.php:167
+#: wppa_adminfunctions.php:184
+#: wppa_adminfunctions.php:188
 msgid "Current="
 msgstr "現行="
 
-#: wppa_adminfunctions.php:163
-#: wppa_adminfunctions.php:167
+#: wppa_adminfunctions.php:184
+#: wppa_adminfunctions.php:188
 msgid "New="
 msgstr "新規="
 
-#: wppa_adminfunctions.php:166
+#: wppa_adminfunctions.php:187
 msgid "PLEASE DE-ACTIVATE the plugin WP-PHOTO-ALBUM-PLUS and ACTIVATE AGAIN before you continue!"
 msgstr "先に進む前に、プラグインを一度<b>停止</b>にしてから<b>再度有効化</b>してください。"
 
-#: wppa_adminfunctions.php:167
+#: wppa_adminfunctions.php:188
 msgid "Failed to fix this."
 msgstr "修正に失敗しました。"
 
-#: wppa_adminfunctions.php:171
+#: wppa_adminfunctions.php:192
 msgid "I fixed this for you......"
 msgstr "あなたに代わって修正を試みます......"
 
-#: wppa_adminfunctions.php:177
+#: wppa_adminfunctions.php:198
 msgid "IMPORTANT UPGRADE NOTICE"
 msgstr "アップグレード時の注意"
 
-#: wppa_adminfunctions.php:178
+#: wppa_adminfunctions.php:199
 msgid "Please CHECK your customized WPPA_STYLE.CSS file against the newly supplied one. You may wish to add or modify some attributes. Be aware of the fact that most settings can now be set in the admin settings page."
 msgstr "自分用にカスタマイズしたWPPA_STYLE.CSSを新しく提供されたものと比べてください。いくつかの属性について、追加または修正したいものがあるかもしれません。現在では、多くの設定が管理者用設定ページで設定可能です。"
 
-#: wppa_adminfunctions.php:179
+#: wppa_adminfunctions.php:200
 msgid "Please REPLACE your customized WPPA_THEME.PHP file by the newly supplied one, or just remove it from your theme directory. You may modify it later if you wish. Your current customized version is NOT compatible with this version of the plugin software."
 msgstr "自分用にカスタマイズしたWPPA_THEME.PHPを新しく提供されたものと交換するか、さもなければ、使用しているテーマディレクトリから削除してください。修正したければ後でできます。自分用にカスタマイズしたバージョンは、現行のプラグインバージョンに適合していません。"
 
-#: wppa_adminfunctions.php:313
+#: wppa_adminfunctions.php:334
+#: wppa_settings.php:886
+#: wppa_settings.php:902
 msgid "Order #"
 msgstr "順番 #"
 
-#: wppa_adminfunctions.php:314
-#: wppa_albumadmin.php:484
+#: wppa_adminfunctions.php:335
+#: wppa_albumadmin.php:483
+#: wppa_settings.php:282
+#: wppa_settings.php:466
+#: wppa_settings.php:482
+#: wppa_settings.php:621
+#: wppa_settings.php:637
+#: wppa_settings.php:687
+#: wppa_settings.php:704
+#: wppa_settings.php:886
+#: wppa_settings.php:902
+#: wppa_settings.php:920
+#: wppa_settings.php:937
+#: wppa_settings.php:1017
+#: wppa_settings.php:1035
+#: wppa_settings.php:1147
+#: wppa_settings.php:1164
+#: wppa_settings.php:1235
+#: wppa_settings.php:1251
+#: wppa_settings.php:1281
+#: wppa_settings.php:1297
+#: wppa_settings.php:1351
 msgid "Name"
 msgstr "名称"
 
-#: wppa_adminfunctions.php:315
+#: wppa_adminfunctions.php:336
+#: wppa_settings.php:886
+#: wppa_settings.php:902
 msgid "Random"
 msgstr "ランダム"
 
-#: wppa_adminfunctions.php:353
-#: wppa_adminfunctions.php:357
+#: wppa_adminfunctions.php:374
+#: wppa_adminfunctions.php:378
 msgid "Please supply a numeric value greater than or equal to"
 msgstr "次の数値以上にしてください:"
 
-#: wppa_adminfunctions.php:353
-#: wppa_adminfunctions.php:357
+#: wppa_adminfunctions.php:374
+#: wppa_adminfunctions.php:378
 msgid "for"
 msgstr "エラー対象:"
 
-#: wppa_adminfunctions.php:357
+#: wppa_adminfunctions.php:378
 msgid "and less than or equal to"
 msgstr "さらに次の数値以下にしてください:"
 
-#: wppa_adminfunctions.php:467
+#: wppa_adminfunctions.php:488
 msgid "Unsupported value in _wppa_chmod_ :"
 msgstr "_wppa_chmod_ にサポート外の値:"
 
@@ -173,12 +203,10 @@ msgstr "アルバム番号:"
 
 #: wppa_albumadmin.php:103
 #: wppa_albumadmin.php:119
-#: wppa_albumadmin.php:359
-#: wppa_albumadmin.php:376
-#: wppa_albumadmin.php:610
-#: wppa_albumadmin.php:626
-#: wppa_settings.php:480
-#: wppa_settings.php:792
+#: wppa_albumadmin.php:358
+#: wppa_albumadmin.php:375
+#: wppa_albumadmin.php:639
+#: wppa_albumadmin.php:655
 msgid "Name:"
 msgstr "名称:"
 
@@ -189,12 +217,10 @@ msgstr "アルバムの名称を入力してください。この項目は空欄
 
 #: wppa_albumadmin.php:136
 #: wppa_albumadmin.php:152
-#: wppa_albumadmin.php:396
-#: wppa_albumadmin.php:413
-#: wppa_albumadmin.php:643
-#: wppa_albumadmin.php:658
-#: wppa_settings.php:481
-#: wppa_settings.php:793
+#: wppa_albumadmin.php:395
+#: wppa_albumadmin.php:412
+#: wppa_albumadmin.php:672
+#: wppa_albumadmin.php:687
 msgid "Description:"
 msgstr "説明:"
 
@@ -224,31 +250,29 @@ msgid "If you want to sort the albums by order #, enter / modify the order numbe
 msgstr "アルバムを番号 #順にソートしたければ、番号をここに入力または変更してください。"
 
 #: wppa_albumadmin.php:197
-#: wppa_albumadmin.php:441
+#: wppa_albumadmin.php:440
 msgid "Parent album:"
 msgstr "親アルバム:"
 
 #: wppa_albumadmin.php:202
-#: wppa_albumadmin.php:445
+#: wppa_albumadmin.php:444
 msgid "If this is a sub album, select the album in which this album will appear."
 msgstr "このアルバムが子の場合、どのアルバムに表示させるかを選択してください。"
 
 #: wppa_albumadmin.php:210
-#: wppa_settings.php:916
 msgid "Photo order:"
 msgstr "写真の順番:"
 
 #: wppa_albumadmin.php:213
-#: wppa_albumadmin.php:453
-#: wppa_settings.php:467
-#: wppa_settings.php:708
-#: wppa_settings.php:759
+#: wppa_albumadmin.php:452
+#: wppa_settings.php:781
+#: wppa_settings.php:802
 msgid "--- default ---"
 msgstr "--- デフォルト ---"
 
 #: wppa_albumadmin.php:213
-#: wppa_albumadmin.php:453
-#: wppa_settings.php:920
+#: wppa_albumadmin.php:452
+#: wppa_settings.php:902
 msgid "Rating"
 msgstr "投票"
 
@@ -269,16 +293,12 @@ msgid "Select the photo you want to appear on the cover of this album."
 msgstr "このアルバムの表紙（カバー）に表示したい写真を選択してください。"
 
 #: wppa_albumadmin.php:233
-#: wppa_settings.php:584
-#: wppa_settings.php:665
-#: wppa_settings.php:826
-#: wppa_slideshow_widget.php:140
+#: wppa_slideshow_widget.php:142
 msgid "Link to:"
 msgstr "リンク先:"
 
 #: wppa_albumadmin.php:239
-#: wppa_settings.php:672
-#: wppa_settings.php:1087
+#: wppa_settings.php:1579
 msgid "There are no pages (yet) to link to."
 msgstr "リンク先のページが（まだ）存在しません。"
 
@@ -304,125 +324,142 @@ msgstr "警告: チェックするとこのアルバムの全ての投票結果�
 
 #: wppa_albumadmin.php:272
 #: wppa_albumadmin.php:276
-#: wppa_albumadmin.php:280
-#: wppa_settings.php:345
-#: wppa_settings.php:1248
-msgid "Save Changes"
+#: wppa_albumadmin.php:706
+#, fuzzy
+msgid "Save All Changes"
 msgstr "変更を保存"
 
 #: wppa_albumadmin.php:274
 msgid "Manage Photos"
 msgstr "写真の管理"
 
-#: wppa_albumadmin.php:294
+#: wppa_albumadmin.php:293
 msgid "Delete Album"
 msgstr "アルバムの削除"
 
-#: wppa_albumadmin.php:296
+#: wppa_albumadmin.php:295
 #: wppa_albumadmin.php:562
-#: wppa_slideshow_widget.php:120
+#: wppa_slideshow_widget.php:122
 msgid "Album:"
 msgstr "アルバム:"
 
-#: wppa_albumadmin.php:297
+#: wppa_albumadmin.php:296
 msgid "Are you sure you want to delete this album?"
 msgstr "本当にこのアルバムを削除しますか？"
 
-#: wppa_albumadmin.php:298
+#: wppa_albumadmin.php:297
 msgid "Press Delete to continue, and Cancel to go back."
 msgstr "実行するなら削除を、取り消すなら戻るを押してください。"
 
-#: wppa_albumadmin.php:303
+#: wppa_albumadmin.php:302
 msgid "What would you like to do with photos currently in the album?"
 msgstr "現在アルバムに存在する写真をどうしますか？"
 
-#: wppa_albumadmin.php:304
-#: wppa_albumadmin.php:311
-#: wppa_albumadmin.php:493
-#: wppa_albumadmin.php:510
+#: wppa_albumadmin.php:303
+#: wppa_albumadmin.php:310
+#: wppa_albumadmin.php:492
+#: wppa_albumadmin.php:509
 msgid "Delete"
 msgstr "削除"
 
-#: wppa_albumadmin.php:305
+#: wppa_albumadmin.php:304
 msgid "Move to:"
 msgstr "移動:"
 
-#: wppa_albumadmin.php:310
+#: wppa_albumadmin.php:309
 msgid "Cancel"
 msgstr "取消"
 
-#: wppa_albumadmin.php:343
+#: wppa_albumadmin.php:342
 msgid "Manage Albums"
 msgstr "アルバムの管理"
 
-#: wppa_albumadmin.php:351
+#: wppa_albumadmin.php:350
 msgid "Create New Album"
 msgstr "新しいアルバムの作成"
 
-#: wppa_albumadmin.php:363
-#: wppa_albumadmin.php:382
+#: wppa_albumadmin.php:362
+#: wppa_albumadmin.php:381
 msgid "Type the name of the new album. Do not leave this empty."
 msgstr "新しいアルバムの名称を入力してください。この項目は空欄にできません。"
 
-#: wppa_albumadmin.php:400
-#: wppa_albumadmin.php:419
+#: wppa_albumadmin.php:399
+#: wppa_albumadmin.php:418
 msgid "Enter the description for this album."
 msgstr "このアルバムの説明を入力してください。"
 
-#: wppa_albumadmin.php:432
+#: wppa_albumadmin.php:431
 msgid "Order #:"
 msgstr "順番 #:"
 
-#: wppa_albumadmin.php:436
+#: wppa_albumadmin.php:435
 msgid "If you want to sort the albums by order #, enter the order number here."
 msgstr "アルバムを番号 #順にソートしたければ、番号をここに入力してください。"
 
-#: wppa_albumadmin.php:450
+#: wppa_albumadmin.php:449
 msgid "Order photos by:"
 msgstr "写真の並べ方:"
 
-#: wppa_albumadmin.php:454
+#: wppa_albumadmin.php:453
 msgid "If you want to sort the photos in this album different from the system setting, select the order method here."
 msgstr "システム全体の設定とは異なる方法でこのアルバムの写真をソートしたければ、ここで並べ方を選択してください。"
 
-#: wppa_albumadmin.php:459
+#: wppa_albumadmin.php:458
 msgid "Create Album!"
 msgstr "アルバム作成！"
 
-#: wppa_albumadmin.php:462
+#: wppa_albumadmin.php:461
 msgid "You can change all these settings later by clicking the \"Edit\" link in the table above."
 msgstr "これらの設定は、上のテーブルに表示される「編集」をクリックすることで変更できます。"
 
-#: wppa_albumadmin.php:485
+#: wppa_albumadmin.php:484
+#: wppa_settings.php:283
+#: wppa_settings.php:467
+#: wppa_settings.php:483
+#: wppa_settings.php:622
+#: wppa_settings.php:638
+#: wppa_settings.php:688
+#: wppa_settings.php:705
+#: wppa_settings.php:921
+#: wppa_settings.php:938
+#: wppa_settings.php:1018
+#: wppa_settings.php:1036
+#: wppa_settings.php:1148
+#: wppa_settings.php:1165
+#: wppa_settings.php:1236
+#: wppa_settings.php:1252
+#: wppa_settings.php:1282
+#: wppa_settings.php:1298
+#: wppa_settings.php:1352
 msgid "Description"
 msgstr "説明"
 
-#: wppa_albumadmin.php:486
+#: wppa_albumadmin.php:485
 msgid "ID"
 msgstr "ID"
 
-#: wppa_albumadmin.php:488
+#: wppa_albumadmin.php:487
 msgid "Owner"
 msgstr "所有者"
 
-#: wppa_albumadmin.php:490
+#: wppa_albumadmin.php:489
 msgid "Order"
 msgstr "順番"
 
-#: wppa_albumadmin.php:491
+#: wppa_albumadmin.php:490
 msgid "Parent"
 msgstr "親"
 
-#: wppa_albumadmin.php:492
-#: wppa_albumadmin.php:509
+#: wppa_albumadmin.php:491
+#: wppa_albumadmin.php:508
 msgid "Edit"
 msgstr "編集"
 
-#: wppa_albumadmin.php:521
+#: wppa_albumadmin.php:520
 msgid "No albums yet."
 msgstr "アルバムがありません。"
 
-#: wppa_albumadmin.php:534
+#: wppa_albumadmin.php:533
 msgid "No photos yet in this album."
 msgstr "このアルバムには写真がありません。"
 
@@ -449,20 +486,9 @@ msgid "If it says 'Photo rotated', the photo is rotated. If you do not see it ha
 msgstr ""
 
 #: wppa_albumadmin.php:571
-msgid "Order:"
-msgstr "順番:"
-
-#: wppa_albumadmin.php:580
-msgid "Rating:"
-msgstr "投票:"
-
-#: wppa_albumadmin.php:583
-msgid "Entries:"
-msgstr "エントリ:"
-
-#: wppa_albumadmin.php:583
-msgid "Mean value:"
-msgstr "平均値:"
+#, fuzzy
+msgid "Photo order #:"
+msgstr "写真の順番:"
 
 #: wppa_albumadmin.php:590
 msgid "Are you sure you want to copy this photo?"
@@ -496,68 +522,96 @@ msgstr ""
 msgid "Insertion Code"
 msgstr "挿入コード"
 
-#: wppa_albumadmin.php:614
-#: wppa_albumadmin.php:632
+#: wppa_albumadmin.php:600
+msgid "Rating:"
+msgstr "投票:"
+
+#: wppa_albumadmin.php:600
+msgid "Entries:"
+msgstr "エントリ:"
+
+#: wppa_albumadmin.php:600
+msgid "Mean value:"
+msgstr "平均値:"
+
+#: wppa_albumadmin.php:607
+#, fuzzy
+msgid "Link url:"
+msgstr "リンク先:"
+
+#: wppa_albumadmin.php:616
+#, fuzzy
+msgid "Link title:"
+msgstr "リンクタイプ:"
+
+#: wppa_albumadmin.php:620
+#: wppa_albumadmin.php:628
+#, fuzzy
+msgid "If you want this link to be used, select 'the photo specific link' in table VI of the Photo Albums -> Settings admin page."
+msgstr "このウィジェットの内容と動作は、<b>フォトアルバム -> 設定</b>の管理ページで設定できます。"
+
+#: wppa_albumadmin.php:643
+#: wppa_albumadmin.php:661
 msgid "Type/alter the name of the photo. It is NOT a filename and needs no file extension like .jpg."
 msgstr "写真の名称を入力／変更してください。ファイル名ではありませんので、.jpgなどの拡張子は不要です。"
 
-#: wppa_albumadmin.php:702
-#: wppa_commonfunctions.php:325
-#: wppa_settings.php:449
-#: wppa_settings.php:677
-#: wppa_settings.php:710
-#: wppa_settings.php:901
-#: wppa_settings.php:920
+#: wppa_albumadmin.php:734
+#: wppa_commonfunctions.php:342
+#: wppa_settings.php:717
+#: wppa_settings.php:729
+#: wppa_settings.php:781
+#: wppa_settings.php:886
+#: wppa_settings.php:902
 msgid "--- none ---"
 msgstr "--- なし ---"
 
-#: wppa_albumadmin.php:718
-#: wppa_commonfunctions.php:326
+#: wppa_albumadmin.php:750
+#: wppa_commonfunctions.php:343
 msgid "--- separate ---"
 msgstr "--- セパレート---"
 
-#: wppa_albumadmin.php:761
+#: wppa_albumadmin.php:793
 msgid "Could not create album."
 msgstr "アルバムが作成できません。"
 
-#: wppa_albumadmin.php:765
+#: wppa_albumadmin.php:797
 msgid "Album #"
 msgstr "アルバム #"
 
-#: wppa_albumadmin.php:765
+#: wppa_albumadmin.php:797
 msgid "Added."
 msgstr "追加しました。"
 
-#: wppa_albumadmin.php:768
-#: wppa_albumadmin.php:875
+#: wppa_albumadmin.php:800
+#: wppa_albumadmin.php:910
 msgid "Album Name cannot be empty."
 msgstr "アルバムの名称は空欄にできません。"
 
-#: wppa_albumadmin.php:854
+#: wppa_albumadmin.php:889
 msgid "Could not update photo."
 msgstr "写真が更新できません。"
 
-#: wppa_albumadmin.php:867
+#: wppa_albumadmin.php:902
 msgid "Album could not be updated."
 msgstr "アルバムが更新できません。"
 
-#: wppa_albumadmin.php:870
+#: wppa_albumadmin.php:905
 msgid "Album information edited."
 msgstr "アルバムの情報を編集しました。"
 
-#: wppa_albumadmin.php:870
+#: wppa_albumadmin.php:905
 msgid "Back to album management."
 msgstr "アルバムの管理に戻る。"
 
-#: wppa_albumadmin.php:914
+#: wppa_albumadmin.php:949
 msgid "Album Deleted."
 msgstr "アルバムを削除しました。"
 
-#: wppa_albumadmin.php:927
+#: wppa_albumadmin.php:962
 msgid "--- random ---"
 msgstr "--- ランダム ---"
 
-#: wppa_albumadmin.php:941
+#: wppa_albumadmin.php:976
 msgid "No photos yet"
 msgstr "写真がありません"
 
@@ -619,7 +673,7 @@ msgid "<br/>Done!"
 msgstr "<br />終了！"
 
 #: wppa_export.php:190
-#: wppa_export.php:240
+#: wppa_export.php:243
 #, php-format
 msgid "Cannot write to file %s."
 msgstr "%s ファイルに書き込めません。"
@@ -632,15 +686,15 @@ msgstr "アルバムの出力ファイルが開けません。"
 msgid "Could not read album data."
 msgstr "アルバムデータが読めません。"
 
-#: wppa_export.php:254
+#: wppa_export.php:257
 msgid "Could not open photo output file."
 msgstr "写真の出力ファイルが開けません。"
 
-#: wppa_export.php:259
+#: wppa_export.php:262
 msgid "Could not read photo data."
 msgstr "写真データが読めません。"
 
-#: wppa_functions.php:1139
+#: wppa_functions.php:1166
 msgid "<b>ERROR: Illegal attempt to enter a rating.</b>"
 msgstr "<b>エラー: 違法な投票の試みです。</b>"
 
@@ -654,8 +708,8 @@ msgstr "WPPA+ テキスト"
 
 #: wppa_gp_widget.php:65
 #: wppa_searchwidget.php:62
-#: wppa_slideshow_widget.php:119
-#: wppa_toptenwidget.php:85
+#: wppa_slideshow_widget.php:121
+#: wppa_toptenwidget.php:78
 msgid "Title:"
 msgstr "タイトル:"
 
@@ -928,7 +982,7 @@ msgid "For more information on creating custom page templates, click"
 msgstr "カスタムページテンプレートの作成についてより詳しい情報を知りたければ、"
 
 #: wppa_help.php:114
-#: wppa_settings.php:61
+#: wppa_settings.php:245
 msgid "here"
 msgstr "ここをクリックしてください"
 
@@ -1069,1091 +1123,1954 @@ msgstr "警告。検索結果用ページが定義されていません！"
 msgid "Search"
 msgstr "検索"
 
-#: wppa_settings.php:28
+#: wppa_settings.php:35
+msgid "Column width."
+msgstr "カラム幅。"
+
+#: wppa_settings.php:37
+msgid "Full size."
+msgstr "フルサイズ。"
+
+#: wppa_settings.php:38
+msgid "Max height."
+msgstr "最大高。"
+
+#: wppa_settings.php:41
 msgid "Thumbnail size."
 msgstr "サムネイルのサイズ。"
 
-#: wppa_settings.php:34
+#: wppa_settings.php:42
 msgid "Thumbnail frame width"
 msgstr "サムネイルのフレーム幅"
 
-#: wppa_settings.php:38
+#: wppa_settings.php:43
 msgid "Thumbnail frame height"
 msgstr "サムネイルのフレーム高"
 
-#: wppa_settings.php:42
+#: wppa_settings.php:44
 msgid "Thumbnail Spacing"
 msgstr "サムネイルのスペーシング"
 
 #: wppa_settings.php:46
-msgid "Cover photo size."
-msgstr "カバーフォトのサイズ。"
-
-#: wppa_settings.php:61
-msgid "Regenerating thumbnail images, starting at id="
-msgstr "サムネイル画像を再生成中。開始 id="
-
-#: wppa_settings.php:61
-msgid "If the line of dots stops growing or you browser reports Ready but you did NOT get a 'READY regenerating thumbnail images' message, your server has given up. In that case: continue this action by clicking"
-msgstr "ドットの動きが止まったり、準備中にもかかわらずブラウザに「サムネイル画像の再生成準備中」という表示が出なかった場合は、サーバがタイムアウトしています。その際の再試行用リンク:"
-
-#: wppa_settings.php:61
-msgid "and click \"Save Changes\" again."
-msgstr "してこの操作を続行し、「変更の保存」をもう一度クリックしてください。"
-
-#: wppa_settings.php:64
-msgid "READY regenerating thumbnail images."
-msgstr "サムネイル画像再生成の準備完了"
-
-#: wppa_settings.php:81
 msgid "Photocount treshold."
 msgstr "フォトカウントのしきい値。"
 
-#: wppa_settings.php:87
-msgid "Full size."
-msgstr "フルサイズ。"
-
-#: wppa_settings.php:93
-msgid "Max height."
-msgstr "最大高。"
-
-#: wppa_settings.php:101
-msgid "Column width."
-msgstr "カラム幅。"
-
-#: wppa_settings.php:132
-msgid "Album page size."
-msgstr "アルバムのページサイズ。"
-
-#: wppa_settings.php:138
+#: wppa_settings.php:47
 msgid "Thumb page size."
 msgstr "サムネイルのページサイズ。"
 
-#: wppa_settings.php:155
-#: wppa_settings.php:176
-msgid "Opacity."
-msgstr "不透明度"
+#: wppa_settings.php:48
+msgid "Cover photo size."
+msgstr "カバーフォトのサイズ。"
 
-#: wppa_settings.php:232
-msgid "Changes in accesslevels will not be made. It is set to be done by an other program."
-msgstr "アクセス権の変更は行いません。アクセス権は別のプログラムで設定します。"
+#: wppa_settings.php:49
+msgid "Album page size."
+msgstr "アルバムのページサイズ。"
 
-#: wppa_settings.php:286
-msgid "Ratings cleared"
-msgstr "投票を削除しました"
-
-#: wppa_settings.php:287
-msgid "Could not clear ratings"
-msgstr "投票をクリアできません"
-
-#: wppa_settings.php:292
+#: wppa_settings.php:50
 msgid "Number of TopTen photos"
 msgstr "トップ10フォトの数"
 
-#: wppa_settings.php:298
+#: wppa_settings.php:51
 msgid "Widget image thumbnail size"
 msgstr "ウィジェットのサムネイルサイズ"
 
-#: wppa_settings.php:314
-msgid "Error converting to UTF-8"
+#: wppa_settings.php:52
+#, fuzzy
+msgid "Two column width treshold"
+msgstr "フォトカウントのしきい値。"
+
+#: wppa_settings.php:53
+#, fuzzy
+msgid "Three column width treshold"
+msgstr "フォトカウントのしきい値。"
+
+#: wppa_settings.php:58
+#, fuzzy
+msgid "Border width"
+msgstr "ボーダーの厚み"
+
+#: wppa_settings.php:63
+#: wppa_settings.php:452
+#, fuzzy
+msgid "Border radius"
+msgstr "ボーダーの半径"
+
+#: wppa_settings.php:110
+#: wppa_settings.php:114
+msgid "Opacity."
+msgstr "不透明度"
+
+#: wppa_settings.php:197
+msgid "Changes in accesslevels will not be made. It is set to be done by an other program."
+msgstr "アクセス権の変更は行いません。アクセス権は別のプログラムで設定します。"
+
+#: wppa_settings.php:206
+msgid "Ratings cleared"
+msgstr "投票を削除しました"
+
+#: wppa_settings.php:207
+msgid "Could not clear ratings"
+msgstr "投票をクリアできません"
+
+#: wppa_settings.php:218
+#, fuzzy
+msgid "Error converting to UTF_8"
 msgstr "UTF-8への変換時にエラー"
 
-#: wppa_settings.php:318
+#: wppa_settings.php:221
+msgid "Converted to utf8"
+msgstr ""
+
+#: wppa_settings.php:234
 msgid "Other changes saved"
 msgstr "その他変更を保存しました"
 
-#: wppa_settings.php:319
+#: wppa_settings.php:235
 msgid "Changes Saved"
 msgstr "変更を保存しました"
 
-#: wppa_settings.php:322
+#: wppa_settings.php:245
+msgid "Regenerating thumbnail images, starting at id="
+msgstr "サムネイル画像を再生成中。開始 id="
+
+#: wppa_settings.php:245
+msgid "If the line of dots stops growing or you browser reports Ready but you did NOT get a 'READY regenerating thumbnail images' message, your server has given up. In that case: continue this action by clicking"
+msgstr "ドットの動きが止まったり、準備中にもかかわらずブラウザに「サムネイル画像の再生成準備中」という表示が出なかった場合は、サーバがタイムアウトしています。その際の再試行用リンク:"
+
+#: wppa_settings.php:245
+msgid "and click \"Save Changes\" again."
+msgstr "してこの操作を続行し、「変更の保存」をもう一度クリックしてください。"
+
+#: wppa_settings.php:248
+msgid "READY regenerating thumbnail images."
+msgstr "サムネイル画像再生成の準備完了"
+
+#: wppa_settings.php:252
 msgid "Regeneration of thumbnail images interrupted. Please press \"Save Changes\""
 msgstr "サムネイル画像の再生成が中断しました。「変更の保存」を押してください"
 
-#: wppa_settings.php:333
+#: wppa_settings.php:261
 msgid "WP Photo Album Plus Settings"
 msgstr "WPフォトアルバムプラスの設定"
 
-#: wppa_settings.php:334
+#: wppa_settings.php:262
 msgid "Database revision:"
 msgstr "データベースのリビジョン:"
 
-#: wppa_settings.php:334
+#: wppa_settings.php:262
 msgid "WP Charset:"
 msgstr "ワードプレスの文字コード:"
 
-#: wppa_settings.php:334
+#: wppa_settings.php:262
 msgid "WPPA Charset:"
 msgstr "このプラグインの文字コード:"
 
-#: wppa_settings.php:334
+#: wppa_settings.php:262
 msgid "default"
 msgstr "デフォルト"
 
-#: wppa_settings.php:352
-msgid "General settings:"
-msgstr "一般設定:"
+#: wppa_settings.php:275
+msgid "Table I:"
+msgstr ""
 
-#: wppa_settings.php:355
-msgid "Column Width:"
+#: wppa_settings.php:275
+#, fuzzy
+msgid "Sizes:"
+msgstr "サイズ:"
+
+#: wppa_settings.php:276
+msgid "This table describes all the sizes and size options (except fontsizes) for the generation and display of the WPPA+ elements."
+msgstr ""
+
+#: wppa_settings.php:281
+#: wppa_settings.php:465
+#: wppa_settings.php:481
+#: wppa_settings.php:620
+#: wppa_settings.php:636
+#: wppa_settings.php:686
+#: wppa_settings.php:703
+#: wppa_settings.php:919
+#: wppa_settings.php:936
+#: wppa_settings.php:1016
+#: wppa_settings.php:1034
+#: wppa_settings.php:1146
+#: wppa_settings.php:1163
+#: wppa_settings.php:1234
+#: wppa_settings.php:1250
+#: wppa_settings.php:1280
+#: wppa_settings.php:1296
+#: wppa_settings.php:1350
+msgid "#"
+msgstr ""
+
+#: wppa_settings.php:284
+#: wppa_settings.php:468
+#: wppa_settings.php:484
+#: wppa_settings.php:623
+#: wppa_settings.php:706
+#: wppa_settings.php:922
+#: wppa_settings.php:1166
+#: wppa_settings.php:1237
+#: wppa_settings.php:1299
+#: wppa_settings.php:1353
+#, fuzzy
+msgid "Setting"
+msgstr "設定"
+
+#: wppa_settings.php:285
+#: wppa_settings.php:469
+#: wppa_settings.php:485
+#: wppa_settings.php:624
+#: wppa_settings.php:641
+#: wppa_settings.php:691
+#: wppa_settings.php:707
+#: wppa_settings.php:923
+#: wppa_settings.php:942
+#: wppa_settings.php:1022
+#: wppa_settings.php:1039
+#: wppa_settings.php:1151
+#: wppa_settings.php:1167
+#: wppa_settings.php:1238
+#: wppa_settings.php:1254
+#: wppa_settings.php:1284
+#: wppa_settings.php:1300
+#: wppa_settings.php:1354
+msgid "Help"
+msgstr ""
+
+#: wppa_settings.php:290
+#, fuzzy
+msgid "Column Width"
 msgstr "カラム幅:"
 
-#: wppa_settings.php:358
-#: wppa_settings.php:658
-#: wppa_settings.php:732
-#: wppa_settings.php:744
-#: wppa_settings.php:887
-#: wppa_settings.php:888
-#: wppa_slideshow_widget.php:121
-msgid "pixels."
-msgstr "ピクセル"
+#: wppa_settings.php:291
+#, fuzzy
+msgid "The width of the main column in your theme's display area."
+msgstr "使用テーマの表示エリアのメインカラムの幅を入力してください。"
 
-#: wppa_settings.php:359
+#: wppa_settings.php:292
 msgid "Enter the width of the main column in your theme's display area."
 msgstr "使用テーマの表示エリアのメインカラムの幅を入力してください。"
 
-#: wppa_settings.php:360
+#: wppa_settings.php:293
 msgid "You should set this value correctly to make sure the fullsize images are properly aligned horizontally."
 msgstr "正確な数値を入力し、フルサイズ画像が水平方向に正しく並ぶようにしてください。"
 
-#: wppa_settings.php:361
-msgid "You may enter <b>auto</b> for use in themes that have a floating content column."
+#: wppa_settings.php:294
+#, fuzzy
+msgid "You may enter auto for use in themes that have a floating content column."
 msgstr "カラムにfloatを指定したテーマの場合は、<b>auto</b>と入力してかまいません。"
 
-#: wppa_settings.php:367
-msgid "Full Size:"
-msgstr "フルサイズ:"
+#: wppa_settings.php:295
+msgid "The use of 'auto' is strongly discouraged. Do not use it unless it is strictly required."
+msgstr ""
 
-#: wppa_settings.php:370
-msgid "pixels wide,"
+#: wppa_settings.php:298
+#: wppa_settings.php:307
+#: wppa_settings.php:349
+#, fuzzy
+msgid "pixels wide"
 msgstr "ピクセルの幅"
 
-#: wppa_settings.php:371
-msgid "pixels high."
-msgstr "ピクセルの高さ"
+#: wppa_settings.php:301
+#, fuzzy
+msgid "Fullsize Width"
+msgstr "フルサイズ。"
 
-#: wppa_settings.php:372
+#: wppa_settings.php:302
+msgid "The maximum width fullsize photos will be displayed."
+msgstr ""
+
+#: wppa_settings.php:303
+#: wppa_settings.php:312
 msgid "Enter the largest size in pixels as how you want your photos to be displayed."
 msgstr "表示する写真の最大サイズをピクセルで入力してください。"
 
-#: wppa_settings.php:373
+#: wppa_settings.php:304
 msgid "This is usually the same as the Column Width, but it may differ."
 msgstr "通常はカラム幅と同じはずですが、別の数値を指定してもかまいません。"
 
-#: wppa_settings.php:379
-msgid "Resize on Upload:"
+#: wppa_settings.php:310
+#, fuzzy
+msgid "Fullsize Height"
+msgstr "フルサイズの画像:"
+
+#: wppa_settings.php:311
+msgid "The maximum height fullsize photos will be displayed."
+msgstr ""
+
+#: wppa_settings.php:313
+msgid "This setting defines the height of the space reserved for full sized photos."
+msgstr ""
+
+#: wppa_settings.php:314
+#, php-format
+msgid "If you change the width of a display by the %%size= command, this value changes proportionally to match the aspect ratio as defined by this and the previous setting."
+msgstr ""
+
+#: wppa_settings.php:316
+#: wppa_settings.php:359
+#, fuzzy
+msgid "pixels high"
+msgstr "ピクセルの高さ"
+
+#: wppa_settings.php:319
+#, fuzzy
+msgid "Resize on Upload"
 msgstr "アップロード時にサイズ調整:"
 
-#: wppa_settings.php:383
+#: wppa_settings.php:320
+#, fuzzy
+msgid "Indicate if the photos should be resized during upload."
+msgstr "このアルバムでの写真の並べ方を指定してください。"
+
+#: wppa_settings.php:321
 msgid "If you check this item, the size of the photos will be reduced to the Full Size during the upload/import process."
 msgstr "ここをチェックすると、アップロード/インポート時に写真のサイズがフルサイズにまで縮小されます。"
 
-#: wppa_settings.php:384
+#: wppa_settings.php:322
 msgid "The photos will never be enlarged if they are smaller than the Full Size."
 msgstr "フルサイズより小さい写真は拡大されません。"
 
-#: wppa_settings.php:390
-msgid "Stretch to fit:"
+#: wppa_settings.php:327
+#, fuzzy
+msgid "Stretch to fit"
 msgstr "フルサイズに拡大:"
 
-#: wppa_settings.php:394
+#: wppa_settings.php:328
+msgid "Stretch photos that are too small."
+msgstr ""
+
+#: wppa_settings.php:329
 msgid "Fullsize images will be stretched to the Full Size at display time if they are smaller. Leaving unchecked is recommended. It is better to upload photos that fit well the sizes you use!"
 msgstr "フルサイズよりも小さい写真を表示時にフルサイズまで拡大します。チェックしないことをお勧めします。最初から使用するサイズに見合った画像をアップロードしましょう！"
 
+#: wppa_settings.php:334
+#, fuzzy
+msgid "Thumbnail Size"
+msgstr "サムネイルのサイズ"
+
+#: wppa_settings.php:335
+#, fuzzy
+msgid "The size of the thumbnail images."
+msgstr "サムネイル画像にポップアップの効果を使う。"
+
+#: wppa_settings.php:336
 #: wppa_settings.php:399
-msgid "Show breadcrumb:"
+#, fuzzy
+msgid "This size applies to the width or height, whichever is the largest."
+msgstr "ピクセル（幅または高さ、いずれか大きい方）"
+
+#: wppa_settings.php:337
+msgid "Changing the thumbnail size may result in all thumbnails being regenerated. this may take a while."
+msgstr "サムネイルサイズを変更すると、全てのサムネイルを再生成することになります。再生成には時間のかかる場合があります。"
+
+#: wppa_settings.php:339
+#: wppa_settings.php:369
+#: wppa_settings.php:402
+#: wppa_settings.php:425
+#: wppa_settings.php:433
+#: wppa_settings.php:441
+#: wppa_settings.php:449
+#: wppa_settings.php:458
+#: wppa_settings.php:954
+#: wppa_settings.php:965
+#: wppa_settings.php:976
+#: wppa_settings.php:987
+#: wppa_settings.php:998
+#: wppa_settings.php:1009
+#, fuzzy
+msgid "pixels"
+msgstr "ピクセル"
+
+#: wppa_settings.php:343
+#, fuzzy
+msgid "Thumbframe width"
+msgstr "サムネイルのフレーム幅"
+
+#: wppa_settings.php:344
+#, fuzzy
+msgid "The width of the thumbnail frame."
+msgstr "サムネイルフレームの幅、高さ、余白を設定してください。"
+
+#: wppa_settings.php:345
+#, fuzzy
+msgid "Set the width of the thumbnail frame."
+msgstr "サムネイルフレームの幅、高さ、余白を設定してください。"
+
+#: wppa_settings.php:346
+#: wppa_settings.php:356
+#: wppa_settings.php:366
+msgid "Set width, height and spacing for the thumbnail frames."
+msgstr "サムネイルフレームの幅、高さ、余白を設定してください。"
+
+#: wppa_settings.php:347
+#: wppa_settings.php:357
+#: wppa_settings.php:367
+msgid "These sizes should be large enough for a thumbnail image and - optionally - the text under it."
+msgstr "これらのサイズはサムネイル画像や場合によってはその下に表示されるテキストにとって充分な大きさにしてください。"
+
+#: wppa_settings.php:353
+#, fuzzy
+msgid "Thumbframe height"
+msgstr "サムネイルのフレーム高"
+
+#: wppa_settings.php:354
+#, fuzzy
+msgid "The height of the thumbnail frame."
+msgstr "サムネイルフレームの幅、高さ、余白を設定してください。"
+
+#: wppa_settings.php:355
+#, fuzzy
+msgid "Set the height of the thumbnail frame."
+msgstr "サムネイルフレームの幅、高さ、余白を設定してください。"
+
+#: wppa_settings.php:363
+#, fuzzy
+msgid "Thumbnail spacing"
+msgstr "サムネイルのスペーシング"
+
+#: wppa_settings.php:364
+#, fuzzy
+msgid "The spacing between adjacent thumbnail frames."
+msgstr "サムネイルフレームの幅、高さ、余白を設定してください。"
+
+#: wppa_settings.php:365
+#, fuzzy
+msgid "Set the minimal spacing between the adjacent thumbnail frames"
+msgstr "サムネイルフレームの幅、高さ、余白を設定してください。"
+
+#: wppa_settings.php:373
+msgid "Auto spacing"
+msgstr ""
+
+#: wppa_settings.php:374
+msgid "Space the thumbnail frames automatic."
+msgstr ""
+
+#: wppa_settings.php:375
+msgid "If you check this box, the thumbnail images will be evenly distributed over the available width."
+msgstr ""
+
+#: wppa_settings.php:376
+msgid "In this case, the thumbnail spacing value (setting I-9) will be regarded as a minimum value."
+msgstr ""
+
+#: wppa_settings.php:382
+#, fuzzy
+msgid "Photocount threshold"
+msgstr "フォトカウントしきい値"
+
+#: wppa_settings.php:383
+msgid "Number of thumbnails in an album must exceed."
+msgstr ""
+
+#: wppa_settings.php:384
+msgid "Photos do not show up in the album unless there are more than this number of photos in the album. This allows you to have cover photos on an album that contains only sub albums without seeing them in the list of sub albums. Usually set to 0 (always show) or 1 (for one cover photo)."
+msgstr "アルバムにここで指定した数値より多くの写真があれば、アルバムに写真が表示されます。これにより、子アルバムしか持たないアルバムがあった時、子アルバムリストにこれらを表示させずに親アルバムにカバーフォトを持たせることができます。通常は 0 (常に表示) か、または、1 (ひとつのカバーフォト) に設定します。"
+
+#: wppa_settings.php:386
+#, fuzzy
+msgid "pieces"
+msgstr "ライセンス"
+
+#: wppa_settings.php:389
+#: wppa_settings.php:405
+#, fuzzy
+msgid "Page size"
+msgstr "ページ:"
+
+#: wppa_settings.php:390
+#, fuzzy
+msgid "Max number of thumbnails per page."
+msgstr "１ページあたり最大サムネイル数:"
+
+#: wppa_settings.php:391
+msgid "Enter the maximum number of thumbnail images per page. A value of 0 indicates no pagination."
+msgstr "１ページあたりのサムネイル最大数を入力してください。0 にするとページ付けを行いません。"
+
+#: wppa_settings.php:393
+#, fuzzy
+msgid "thumbnails"
+msgstr "サムネイル:"
+
+#: wppa_settings.php:397
+#, fuzzy
+msgid "Coverphoto size"
+msgstr "カバーフォトのサイズ。"
+
+#: wppa_settings.php:398
+#, fuzzy
+msgid "The size of the coverphoto."
+msgstr "カバーフォトの閲覧"
+
+#: wppa_settings.php:400
+msgid "Changing the coverphoto size may result in all thumbnails being regenerated. this may take a while."
+msgstr "カバーフォトサイズを変更すると、全てのサムネイルを再生成することになります。再生成には時間のかかる場合があります。"
+
+#: wppa_settings.php:406
+#, fuzzy
+msgid "Max number of covers per page."
+msgstr "１ページあたり最大カバー数:"
+
+#: wppa_settings.php:407
+msgid "Enter the maximum number of album covers per page. A value of 0 indicates no pagination."
+msgstr "１ページあたりのカバー最大数を入力してください。0 にするとページ付けを行いません。"
+
+#: wppa_settings.php:409
+#, fuzzy
+msgid "covers"
+msgstr "「カバー」"
+
+#: wppa_settings.php:412
+#, fuzzy
+msgid "TopTen count"
+msgstr "トップ10フォト"
+
+#: wppa_settings.php:413
+#, fuzzy
+msgid "Number of photos in TopTen widget."
+msgstr "ウィジェットに表示する写真の数:"
+
+#: wppa_settings.php:414
+msgid "Enter the maximum number of rated photos in the TopTen widget."
+msgstr "トップ10ウィジェットに表示する写真の最大数を入力してください。"
+
+#: wppa_settings.php:416
+msgid "photos"
+msgstr "写真"
+
+#: wppa_settings.php:419
+#, fuzzy
+msgid "TopTen size"
+msgstr "トップ10ウィジェット:"
+
+#: wppa_settings.php:420
+#, fuzzy
+msgid "Size of thumbnails in TopTen widget."
+msgstr "トップ10ウィジェットに表示するミニ写真のサイズを入力してください。"
+
+#: wppa_settings.php:421
+msgid "Enter the size for the mini photos in the TopTen widget."
+msgstr "トップ10ウィジェットに表示するミニ写真のサイズを入力してください。"
+
+#: wppa_settings.php:422
+#, fuzzy
+msgid "The size applies to the width or height, whatever is the largest."
+msgstr "ピクセル（幅または高さ、いずれか大きい方）"
+
+#: wppa_settings.php:423
+msgid "Recommended values: 86 for a two column and 56 for a three column display."
+msgstr "推奨値: 2 カラム表示の場合は 86、3 カラムなら 56。"
+
+#: wppa_settings.php:428
+#, fuzzy
+msgid "2 Columns size"
+msgstr "カラム"
+
+#: wppa_settings.php:429
+#, fuzzy
+msgid "Minimum width for 2 columns."
+msgstr "2 カラムの場合の最小幅:"
+
+#: wppa_settings.php:430
+#: wppa_settings.php:438
+msgid "Display covers in 2 or 3 columns if the display area is wider or equal to the number of pixels entered."
+msgstr "表示エリアが入力したピクセル値と同等以上なら 2 または 3 カラムでカバーを表示します。"
+
+#: wppa_settings.php:431
+#: wppa_settings.php:439
+msgid "This also applies for 'thumbnails as covers', and will NOT apply to single items."
+msgstr "これは「カバーのサムネイル」にも適用されますが、単一アイテムには適用しません。"
+
+#: wppa_settings.php:436
+#, fuzzy
+msgid "3 Columns size"
+msgstr "カラム"
+
+#: wppa_settings.php:437
+#, fuzzy
+msgid "Minimum width for 3 columns."
+msgstr "3 カラムの場合の最小幅:"
+
+#: wppa_settings.php:444
+#, fuzzy
+msgid "Border thickness"
+msgstr "ボーダーの厚み"
+
+#: wppa_settings.php:445
+msgid "Thickness of wppa+ box borders."
+msgstr ""
+
+#: wppa_settings.php:446
+#, fuzzy
+msgid "Enter the thickness for the border of the WPPA+ boxes. A number of 0 means: no border."
+msgstr "上記の各背景の厚さとコーナー半径を入力してください。0 にすると無効。"
+
+#: wppa_settings.php:447
+#: wppa_settings.php:455
+msgid "WPPA+ boxes are: the navigation bars and the filmstrip."
+msgstr ""
+
+#: wppa_settings.php:453
+msgid "Radius of wppa+ box borders."
+msgstr ""
+
+#: wppa_settings.php:454
+#, fuzzy
+msgid "Enter the corner radius for the border of the WPPA+ boxes. A number of 0 means: no rounded corners."
+msgstr "上記の各背景の厚さとコーナー半径を入力してください。0 にすると無効。"
+
+#: wppa_settings.php:456
+msgid "Note that rounded corners are only supported by modern browsers."
+msgstr "丸みをもたせたコーナーが表示できるのは、最近のブラウザのみです。"
+
+#: wppa_settings.php:475
+msgid "Table II:"
+msgstr ""
+
+#: wppa_settings.php:475
+msgid "Visibility:"
+msgstr ""
+
+#: wppa_settings.php:476
+msgid "This table describes the visibility of certain wppa+ elements."
+msgstr ""
+
+#: wppa_settings.php:490
+#, fuzzy
+msgid "Breadcrumb"
 msgstr "パンくずの表示:"
 
-#: wppa_settings.php:403
+#: wppa_settings.php:491
+#, fuzzy
+msgid "Show breadcrumb navigation bars."
+msgstr "パンくずの表示:"
+
+#: wppa_settings.php:492
 msgid "Indicate whether a breadcrumb navigation should be displayed"
 msgstr "パンくずの表示の有無を設定します"
 
-#: wppa_settings.php:408
-msgid "Show \"Home\" in breadcrumb:"
+#: wppa_settings.php:498
+msgid "Home"
+msgstr "ホーム"
+
+#: wppa_settings.php:499
+#, fuzzy
+msgid "Show \"Home\" in breadcrumb."
 msgstr "パンくずに「ホーム」の表示:"
 
-#: wppa_settings.php:412
+#: wppa_settings.php:500
 msgid "Indicate whether the breadcrumb navigation should start with a \"Home\"-link"
 msgstr "パンくずに「ホーム」へのリンクをつけるかどうかを指定します"
 
-#: wppa_settings.php:423
-msgid "Separator:"
+#: wppa_settings.php:506
+#, fuzzy
+msgid "Separator"
 msgstr "セパレータ:"
 
-#: wppa_settings.php:430
-msgid "Text (html):"
-msgstr "テキスト(html):"
+#: wppa_settings.php:507
+msgid "Breadcrumb separator symbol."
+msgstr ""
 
-#: wppa_settings.php:432
-msgid "Image (url):"
-msgstr "画像(url):"
-
-#: wppa_settings.php:434
+#: wppa_settings.php:508
 msgid "Select the desired breadcrumb separator element."
 msgstr "パンくずのセパレータにしたいものを選択してください。"
 
-#: wppa_settings.php:435
+#: wppa_settings.php:509
 msgid "A text string may contain valid html."
 msgstr "テキストにはHTMLが使えます。"
 
-#: wppa_settings.php:436
+#: wppa_settings.php:510
 msgid "An image will be scaled automatically if you set the navigation font size."
 msgstr "ナビゲーションのフォントサイズを設定すれば、画像は自動的にサイズ調整されます。"
 
-#: wppa_settings.php:441
-msgid "Full-size & Slideshow:"
-msgstr "フルサイズとスライドショー:"
+#: wppa_settings.php:512
+msgid "Text (html):"
+msgstr "テキスト(html):"
 
-#: wppa_settings.php:444
-#: wppa_settings.php:754
-#: wppa_slideshow_widget.php:131
-msgid "Vertical alignment:"
-msgstr "縦方向の位置:"
+#: wppa_settings.php:512
+msgid "Image (url):"
+msgstr "画像(url):"
 
-#: wppa_settings.php:450
-#: wppa_settings.php:760
-#: wppa_slideshow_widget.php:133
-msgid "top"
-msgstr "トップ"
+#: wppa_settings.php:519
+msgid "Html"
+msgstr ""
 
-#: wppa_settings.php:451
-#: wppa_settings.php:469
-#: wppa_settings.php:761
-#: wppa_slideshow_widget.php:134
-msgid "center"
-msgstr "センター"
+#: wppa_settings.php:520
+#, fuzzy
+msgid "Breadcrumb separator text."
+msgstr "パンくずのセパレータにしたいものを選択してください。"
 
-#: wppa_settings.php:452
-#: wppa_settings.php:762
-#: wppa_slideshow_widget.php:135
-msgid "bottom"
-msgstr "ボトム"
+#: wppa_settings.php:521
+msgid "Enter the HTML code that produces the separator symbol you want."
+msgstr ""
 
-#: wppa_settings.php:453
-#: wppa_slideshow_widget.php:136
-msgid "fit"
-msgstr "フィット"
+#: wppa_settings.php:522
+msgid "It may be as simple as '-' (without the quotes) or as complex as a tag like <div>..</div>."
+msgstr ""
 
-#: wppa_settings.php:455
-msgid "Specify the vertical alignment of fullsize images."
-msgstr "フルサイズ画像の縦方向の位置を指定してください。"
+#: wppa_settings.php:527
+#, fuzzy
+msgid "Image Url"
+msgstr "画像(url):"
 
-#: wppa_settings.php:456
-msgid "If you select --- none ---, the photos will not be centered horizontally either."
-msgstr "--- なし --- を選択すると、画像は横方向に対しても中央揃えにはなりません。"
+#: wppa_settings.php:528
+msgid "Full url to separator image."
+msgstr ""
 
-#: wppa_settings.php:462
-msgid "Horizontal alignment:"
-msgstr "水平方向の位置:"
+#: wppa_settings.php:529
+msgid "Enter the full url to the image you want to use for the separator symbol."
+msgstr ""
 
-#: wppa_settings.php:468
-msgid "left"
-msgstr "左 "
+#: wppa_settings.php:534
+#, fuzzy
+msgid "Start/stop"
+msgstr "開始"
 
-#: wppa_settings.php:470
-msgid "right"
-msgstr "右 "
-
-#: wppa_settings.php:472
-msgid "Specify the horizontal alignment of fullsize images. If you specify --- default --- , no horizontal alignment will take place."
-msgstr "フルサイズ画像の水平方向の位置を指定してください。--- デフォルト --- にすると、水平方向の位置を指定しないことになります。"
-
-#: wppa_settings.php:477
-msgid "Name and description:"
-msgstr "名称と説明:"
-
-#: wppa_settings.php:482
-msgid "If checked: display name and description under the full-size images and slideshow."
-msgstr "チェックすると、名称や説明がフルサイズ画像とスライドショーの下に表示されます。"
-
-#: wppa_settings.php:487
-#: wppa_settings.php:970
-msgid "Navigation bars:"
-msgstr "ナビゲーションバー:"
-
-#: wppa_settings.php:490
-msgid "Start/stop slideshow bar:"
+#: wppa_settings.php:535
+#, fuzzy
+msgid "Show the Start/Stop slideshow bar."
 msgstr "スライドショーの開始／停止バー"
 
-#: wppa_settings.php:491
-msgid "Browse photos bar:"
+#: wppa_settings.php:536
+#, fuzzy
+msgid "If checked: display the start/stop slideshow navigation bar above the full-size images and slideshow"
+msgstr "チェックすると、名称や説明がフルサイズ画像とスライドショーの下に表示されます。"
+
+#: wppa_settings.php:541
+#, fuzzy
+msgid "Browse bar"
 msgstr "写真のブラウズバー"
 
-#: wppa_settings.php:492
-msgid "Filmstrip navigator:"
+#: wppa_settings.php:542
+#, fuzzy
+msgid "Show Browse photos bar."
+msgstr "写真のブラウズバー"
+
+#: wppa_settings.php:543
+#, fuzzy
+msgid "If checked: display the preveous/next navigation bar under the full-size images and slideshow"
+msgstr "チェックすると、名称や説明がフルサイズ画像とスライドショーの下に表示されます。"
+
+#: wppa_settings.php:548
+#, fuzzy
+msgid "Filmstrip"
 msgstr "フィルムストリップナビゲータ:"
 
-#: wppa_settings.php:493
-msgid "Show seam between end and start of film:"
+#: wppa_settings.php:549
+#, fuzzy
+msgid "Show Filmstrip navigation bar."
+msgstr "フィルムストリップナビゲータ:"
+
+#: wppa_settings.php:550
+#, fuzzy
+msgid "If checked: display the filmstrip navigation bar under the full_size images and slideshow"
+msgstr "チェックすると、名称や説明がフルサイズ画像とスライドショーの下に表示されます。"
+
+#: wppa_settings.php:555
+msgid "Film seam"
+msgstr ""
+
+#: wppa_settings.php:556
+#, fuzzy
+msgid "Show seam between end and start of film."
 msgstr "フィルムの最初と最後の間につなぎ目を表示する"
 
-#: wppa_settings.php:494
-msgid "If checked: display navigation bars and/or a filmstrip over and under the full-size images and slideshow."
-msgstr "チェックすると、ナビゲーションバーおよび／またはフィルムストリップがフルサイズ画像上とスライドショー上またはそれらの下に表示されます。"
-
-#: wppa_settings.php:495
-msgid "Additionaly indicate if you want the wrap-around point to be visible in the filmstrip."
+#: wppa_settings.php:557
+#, fuzzy
+msgid "If checked: display the wrap-around point in the filmstrip"
 msgstr "また、フィルムストリップの周りにあるラップアラウンドを表示するかどうかを指定します。"
 
-#: wppa_settings.php:500
-msgid "Enable slideshow:"
+#: wppa_settings.php:562
+#: wppa_settings.php:969
+#, fuzzy
+msgid "Fullsize name"
+msgstr "フルサイズの画像:"
+
+#: wppa_settings.php:563
+msgid "Display Fullsize name."
+msgstr ""
+
+#: wppa_settings.php:564
+#, fuzzy
+msgid "If checked: display the name of the photo under the full-size images and slideshow."
+msgstr "チェックすると、名称や説明がフルサイズ画像とスライドショーの下に表示されます。"
+
+#: wppa_settings.php:569
+#: wppa_settings.php:958
+#, fuzzy
+msgid "Fullsize desc"
+msgstr "フルサイズの画像:"
+
+#: wppa_settings.php:570
+#, fuzzy
+msgid "Display Fullsize description."
+msgstr "フルサイズの写真の説明のフォント:"
+
+#: wppa_settings.php:571
+#, fuzzy
+msgid "If checked: display description under the full-size images and slideshow."
+msgstr "チェックすると、名称や説明がフルサイズ画像とスライドショーの下に表示されます。"
+
+#: wppa_settings.php:576
+msgid "Slideshow"
+msgstr "スライドショー"
+
+#: wppa_settings.php:577
+#, fuzzy
+msgid "Enable the slideshow."
 msgstr "スライドショーの有効化:"
 
-#: wppa_settings.php:504
+#: wppa_settings.php:578
 msgid "If you do not want slideshows: uncheck this box. Browsing full size images will remain possible."
 msgstr "スライドショーが不要な場合: このボックスからチェックを外してください。フルサイズ画像のブラウジングは引き続き可能です。"
 
-#: wppa_settings.php:509
-msgid "Start slideshow running:"
+#: wppa_settings.php:584
+msgid "Rating system"
+msgstr "投票システム"
+
+#: wppa_settings.php:585
+#, fuzzy
+msgid "Enable the rating system."
+msgstr "投票システムの有効化:"
+
+#: wppa_settings.php:586
+msgid "If checked, the photo rating system will be enabled."
+msgstr "チェックすると写真の投票システムが有効になります。"
+
+#: wppa_settings.php:592
+#, fuzzy
+msgid "Thumbnail name"
+msgstr "サムネイルのフレームサイズ:"
+
+#: wppa_settings.php:593
+msgid "Display Thubnail name."
+msgstr ""
+
+#: wppa_settings.php:594
+#, fuzzy
+msgid "Display photo name under thumbnail images."
+msgstr "サムネイルの下に表示する名称と説明。"
+
+#: wppa_settings.php:600
+#, fuzzy
+msgid "Thumbnail desc"
+msgstr "サムネイル:"
+
+#: wppa_settings.php:601
+#, fuzzy
+msgid "Display Thumbnail description."
+msgstr "サムネイルの下に表示する名称と説明。"
+
+#: wppa_settings.php:602
+#, fuzzy
+msgid "Display description of the photo under thumbnail images."
+msgstr "サムネイルの下に名称、説明、評価を表示する"
+
+#: wppa_settings.php:608
+#, fuzzy
+msgid "Thumbnail rating"
+msgstr "サムネイルのスペーシング"
+
+#: wppa_settings.php:609
+#, fuzzy
+msgid "Display Thumbnail Rating."
+msgstr "サムネイルのスペーシング"
+
+#: wppa_settings.php:610
+#, fuzzy
+msgid "Display the rating of the photo under the thumbnail image."
+msgstr "サムネイルの下に表示する名称と説明。"
+
+#: wppa_settings.php:612
+#, fuzzy
+msgid "(This setting requires that the rating system is enabled.)"
+msgstr "チェックすると写真の投票システムが有効になります。"
+
+#: wppa_settings.php:630
+msgid "Table III:"
+msgstr ""
+
+#: wppa_settings.php:630
+#, fuzzy
+msgid "Backgrounds:"
+msgstr "背景色:"
+
+#: wppa_settings.php:631
+msgid "This table describes the backgrounds of wppa+ elements."
+msgstr ""
+
+#: wppa_settings.php:639
+#: wppa_settings.php:689
+#, fuzzy
+msgid "Background color"
+msgstr "背景色:"
+
+#: wppa_settings.php:640
+#: wppa_settings.php:690
+#, fuzzy
+msgid "Border color"
+msgstr "ボーダー色:"
+
+#: wppa_settings.php:646
+msgid "Even"
+msgstr ""
+
+#: wppa_settings.php:647
+#, fuzzy
+msgid "Even background."
+msgstr "偶数番目の背景:"
+
+#: wppa_settings.php:648
+msgid "Enter valid CSS colors for even numbered backgrounds and borders of album covers and thumbnail displays 'As covers'."
+msgstr "'カバー'として表示されるアルバムカバーやサムネイルの偶数番目の背景とボーダーのCSS色を入力してください。"
+
+#: wppa_settings.php:655
+msgid "Odd"
+msgstr ""
+
+#: wppa_settings.php:656
+#, fuzzy
+msgid "Odd background."
+msgstr "奇数番目の背景:"
+
+#: wppa_settings.php:657
+msgid "Enter valid CSS colors for odd numbered backgrounds and borders of album covers and thumbnail displays 'As covers'."
+msgstr "'カバー'として表示されるアルバムカバーやサムネイルの奇数番目の背景とボーダーのCSS色を入力してください。"
+
+#: wppa_settings.php:664
+msgid "Nav"
+msgstr ""
+
+#: wppa_settings.php:665
+#, fuzzy
+msgid "Navigation bars."
+msgstr "ナビゲーションバー:"
+
+#: wppa_settings.php:666
+msgid "Enter valid CSS colors for navigation backgrounds and borders."
+msgstr "ナビゲーションの背景とボーダーのCSS色を入力してください。"
+
+#: wppa_settings.php:673
+msgid "Img"
+msgstr ""
+
+#: wppa_settings.php:674
+#, fuzzy
+msgid "Popup and Cover Photos."
+msgstr "ポップアップとカバーフォト:"
+
+#: wppa_settings.php:675
+msgid "Enter a valid CSS color for image backgrounds."
+msgstr "画像背景のCSS色を入力してください。"
+
+#: wppa_settings.php:697
+msgid "Table IV:"
+msgstr ""
+
+#: wppa_settings.php:697
+msgid "Behaviour:"
+msgstr ""
+
+#: wppa_settings.php:698
+msgid "This table describes the dynamic behaviour of certain wppa+ elements."
+msgstr ""
+
+#: wppa_settings.php:712
+msgid "V align"
+msgstr ""
+
+#: wppa_settings.php:713
+#, fuzzy
+msgid "Vertical alignment of full-size images."
+msgstr "フルサイズ画像の縦方向の位置を指定してください。"
+
+#: wppa_settings.php:714
+msgid "Specify the vertical alignment of fullsize images."
+msgstr "フルサイズ画像の縦方向の位置を指定してください。"
+
+#: wppa_settings.php:715
+msgid "If you select --- none ---, the photos will not be centered horizontally either."
+msgstr "--- なし --- を選択すると、画像は横方向に対しても中央揃えにはなりません。"
+
+#: wppa_settings.php:717
+#: wppa_settings.php:802
+#: wppa_slideshow_widget.php:135
+msgid "top"
+msgstr "トップ"
+
+#: wppa_settings.php:717
+#: wppa_settings.php:729
+#: wppa_settings.php:802
+#: wppa_slideshow_widget.php:136
+msgid "center"
+msgstr "センター"
+
+#: wppa_settings.php:717
+#: wppa_settings.php:802
+#: wppa_slideshow_widget.php:137
+msgid "bottom"
+msgstr "ボトム"
+
+#: wppa_settings.php:717
+#: wppa_slideshow_widget.php:138
+msgid "fit"
+msgstr "フィット"
+
+#: wppa_settings.php:723
+msgid "H align"
+msgstr ""
+
+#: wppa_settings.php:724
+#, fuzzy
+msgid "Horizontal alignment of full-size images."
+msgstr "フルサイズ画像の縦方向の位置を指定してください。"
+
+#: wppa_settings.php:725
+#, fuzzy
+msgid "Specify the horizontal alignment of fullsize images. If you specify --- none --- , no horizontal alignment will take place."
+msgstr "フルサイズ画像の水平方向の位置を指定してください。--- デフォルト --- にすると、水平方向の位置を指定しないことになります。"
+
+#: wppa_settings.php:726
+msgid "This setting is only usefull when the Column Width differs from the Fullsize Width."
+msgstr ""
+
+#: wppa_settings.php:727
+msgid "(Settings I-1 and I-2)"
+msgstr ""
+
+#: wppa_settings.php:729
+msgid "left"
+msgstr "左 "
+
+#: wppa_settings.php:729
+msgid "right"
+msgstr "右 "
+
+#: wppa_settings.php:735
+msgid "Start"
+msgstr "開始"
+
+#: wppa_settings.php:736
+#, fuzzy
+msgid "Start slideshow running."
 msgstr "スライドショーの開始:"
 
-#: wppa_settings.php:513
+#: wppa_settings.php:737
 msgid "If checked, the slideshow will start running immediately, if unchecked the first photo will be displayed in browse mode."
 msgstr "チェックすると、ただちにスライドショーが開始されます。チェックを外した状態では、ブラウズモードで最初の写真が表示されます。"
 
-#: wppa_settings.php:518
-#: wppa_settings.php:521
-#: wppa_settings.php:524
-msgid "Fade-in after fade-out:"
+#: wppa_settings.php:743
+#, fuzzy
+msgid "Fading"
+msgstr "投票"
+
+#: wppa_settings.php:744
+#, fuzzy
+msgid "Fade-in after fade-out."
 msgstr "フェイドアウト後にフェイドインする"
 
-#: wppa_settings.php:522
+#: wppa_settings.php:745
 msgid "If checked: slides are faded out and in after each other. If unchecked: fadin and fadeout overlap."
 msgstr "チェックすると、スライドが1枚ずつ交互にフェイドアウトとフェイドインを繰り返します。チェックを外すと、フェイドインとフェイドアウトオーバーラップになります。"
 
-#: wppa_settings.php:523
+#: wppa_settings.php:746
 msgid "The version of the jQuery library must be 1.4 or greater for this feature!"
 msgstr "この機能を使用するには、jQueryライブラリのばジョンは 1.4 以上が必要です！"
 
-#: wppa_settings.php:530
-#: wppa_slideshow_widget.php:139
-msgid "Slideshow timeout:"
+#: wppa_settings.php:748
+#: wppa_settings.php:753
+msgid "Fade-in after fade-out:"
+msgstr "フェイドアウト後にフェイドインする"
+
+#: wppa_settings.php:756
+msgid "Timeout"
+msgstr ""
+
+#: wppa_settings.php:757
+#, fuzzy
+msgid "Slideshow timeout."
 msgstr "スライドショーのタイムアウト:"
 
-#: wppa_settings.php:535
-msgid "very short (1 s.)"
-msgstr "非常に短い (1秒)"
-
-#: wppa_settings.php:536
-msgid "short (1.5 s.)"
-msgstr "短い(1.5 s.)"
-
-#: wppa_settings.php:537
-msgid "normal (2.5 s.)"
-msgstr "普通(2.5秒)"
-
-#: wppa_settings.php:538
-msgid "long (4 s.)"
-msgstr "長い(4秒)"
-
-#: wppa_settings.php:539
-msgid "very long (6 s.)"
-msgstr "非常に長い(6秒)"
-
-#: wppa_settings.php:541
+#: wppa_settings.php:758
 msgid "Select the time a single slide will be visible when the slideshow is started."
 msgstr "スライドショーを開始した時、各スライドを表示している時間を選択してください。"
 
-#: wppa_settings.php:546
-msgid "Slideshow animation speed:"
+#: wppa_settings.php:760
+msgid "very short (1 s.)"
+msgstr "非常に短い (1秒)"
+
+#: wppa_settings.php:760
+msgid "short (1.5 s.)"
+msgstr "短い(1.5 s.)"
+
+#: wppa_settings.php:760
+msgid "normal (2.5 s.)"
+msgstr "普通(2.5秒)"
+
+#: wppa_settings.php:760
+msgid "long (4 s.)"
+msgstr "長い(4秒)"
+
+#: wppa_settings.php:760
+msgid "very long (6 s.)"
+msgstr "非常に長い(6秒)"
+
+#: wppa_settings.php:766
+msgid "Speed"
+msgstr ""
+
+#: wppa_settings.php:767
+#, fuzzy
+msgid "Slideshow animation speed."
 msgstr "スライドショーのスピード:"
 
-#: wppa_settings.php:551
-msgid "--- off ---"
-msgstr "--- オフ ---"
-
-#: wppa_settings.php:552
-msgid "very fast (200 ms.)"
-msgstr "非常に早い(200ミリ秒)"
-
-#: wppa_settings.php:553
-msgid "fast (400 ms.)"
-msgstr "早い(400ミリ秒)"
-
-#: wppa_settings.php:554
-msgid "normal (800 ms.)"
-msgstr "普通(800ミリ秒)"
-
-#: wppa_settings.php:555
-msgid "slow (1.2 s.)"
-msgstr "遅い(1.2秒)"
-
-#: wppa_settings.php:556
-msgid "very slow (2 s.)"
-msgstr "非常に遅い(2 s.)"
-
-#: wppa_settings.php:557
-msgid "extremely slow (4 s.)"
-msgstr "極めて遅い(4秒)"
-
-#: wppa_settings.php:559
+#: wppa_settings.php:768
 msgid "Specify the animation speed to be used in slideshows."
 msgstr "スライドショーで使用するアニメーション速度を指定してください。"
 
-#: wppa_settings.php:567
-msgid "Media-like photo link:"
-msgstr "メディアライクな写真リンク:"
+#: wppa_settings.php:769
+msgid "This is the time it takes a photo to fade in or out."
+msgstr ""
 
-#: wppa_settings.php:580
-#: wppa_settings.php:822
+#: wppa_settings.php:771
+msgid "--- off ---"
+msgstr "--- オフ ---"
+
+#: wppa_settings.php:771
+msgid "very fast (200 ms.)"
+msgstr "非常に早い(200ミリ秒)"
+
+#: wppa_settings.php:771
+msgid "fast (400 ms.)"
+msgstr "早い(400ミリ秒)"
+
+#: wppa_settings.php:771
+msgid "normal (800 ms.)"
+msgstr "普通(800ミリ秒)"
+
+#: wppa_settings.php:771
+msgid "slow (1.2 s.)"
+msgstr "遅い(1.2秒)"
+
+#: wppa_settings.php:771
+msgid "very slow (2 s.)"
+msgstr "非常に遅い(2 s.)"
+
+#: wppa_settings.php:771
+msgid "extremely slow (4 s.)"
+msgstr "極めて遅い(4秒)"
+
+#: wppa_settings.php:777
+#, fuzzy
+msgid "Thumbnail type"
+msgstr "サムネイルテキスト:"
+
+#: wppa_settings.php:778
+msgid "The way the thumbnail images are displayed."
+msgstr ""
+
+#: wppa_settings.php:779
+msgid "You may select an altenative display method for thumbnails. Note that some of the thumbnail settings do not apply to all available display methods."
+msgstr "サムネイルの表示方法が選択できます。表示方法として適用できないサムネイルの設定もあります。"
+
+#: wppa_settings.php:781
+msgid "like album covers"
+msgstr "アルバムのカバーと同様"
+
+#: wppa_settings.php:787
+#: wppa_settings.php:833
+#, fuzzy
+msgid "Placement"
+msgstr "配置"
+
+#: wppa_settings.php:788
+#, fuzzy
+msgid "Thumbnail image left or right."
+msgstr "サムネイルの画像は存在しません。"
+
+#: wppa_settings.php:789
+msgid "Indicate the placement position of the thumbnailphoto you wish."
+msgstr "サムネイル画像の配置場所を指定してください。"
+
+#: wppa_settings.php:791
+#: wppa_settings.php:837
+msgid "Left"
+msgstr "左"
+
+#: wppa_settings.php:791
+#: wppa_settings.php:837
+msgid "Right"
+msgstr "右"
+
+#: wppa_settings.php:797
+#, fuzzy
+msgid "Vertical alignment"
+msgstr "縦方向の位置:"
+
+#: wppa_settings.php:798
+#, fuzzy
+msgid "Vertical alignment of thumbnails."
+msgstr "縦方向の位置:"
+
+#: wppa_settings.php:799
+#, fuzzy
+msgid "Specify the vertical alignment of thumbnail images. Use this setting when albums contain both portrait and landscape photos."
+msgstr "サムネイル画像の縦方向の位置を指定してください。人物写真と風景写真が混合しているアルバムの場合のみこの設定を使います。"
+
+#: wppa_settings.php:800
+msgid "It is NOT recommended to use the value --- default ---; it will affect the horizontal alignment also and is ment to be used with custom css."
+msgstr ""
+
+#: wppa_settings.php:808
+msgid "Thumb mouseover"
+msgstr ""
+
+#: wppa_settings.php:809
+#, fuzzy
+msgid "Apply thumbnail mouseover effect."
+msgstr "マウスオーバー時の効果の適用:"
+
+#: wppa_settings.php:810
+msgid "Check this box to use mouseover effect on thumbnail images."
+msgstr "ここをチェックすると、サムネイル画像にマウスオーバーした時にエフェクトを実行します。"
+
+#: wppa_settings.php:817
+#, fuzzy
+msgid "Thumb opacity"
+msgstr "サムネイルのスペーシング"
+
+#: wppa_settings.php:818
+#: wppa_settings.php:851
+#, fuzzy
+msgid "Initial opacity value."
+msgstr "不透明度:"
+
+#: wppa_settings.php:819
+#: wppa_settings.php:852
+msgid "Enter percentage of opacity. 100% is opaque, 0% is transparant"
+msgstr "不透明度を入力してください。100%で不透明、0%で透明"
+
+#: wppa_settings.php:821
+#: wppa_settings.php:854
+msgid "%"
+msgstr ""
+
+#: wppa_settings.php:821
+msgid "(This setting requires thumbnail mouseover to be switched on)"
+msgstr ""
+
+#: wppa_settings.php:825
+msgid "Thumb popup"
+msgstr ""
+
+#: wppa_settings.php:826
+msgid "Use popup effect on thumbnail images."
+msgstr "サムネイル画像にポップアップの効果を使う。"
+
+#: wppa_settings.php:827
+msgid "Thumbnails pop-up to a larger image when hovered."
+msgstr ""
+
+#: wppa_settings.php:834
+msgid "Cover image left or right."
+msgstr ""
+
+#: wppa_settings.php:835
+msgid "Indicate the placement position of the coverphoto you wish."
+msgstr "カバーフォトの配置場所を指定してください。"
+
+#: wppa_settings.php:842
+msgid "Cover mouseover"
+msgstr ""
+
+#: wppa_settings.php:843
+#, fuzzy
+msgid "Apply coverphoto mouseover effect."
+msgstr "マウスオーバー時の効果の適用:"
+
+#: wppa_settings.php:844
+msgid "Check this box to use mouseover effect on cover images."
+msgstr "ここをチェックすると、カバー画像にマウスオーバーした時にエフェクトを実行します。"
+
+#: wppa_settings.php:850
+#, fuzzy
+msgid "Cover opacity"
+msgstr "カバーフォト:"
+
+#: wppa_settings.php:854
+msgid "(This setting requires coverphoto mouseover to be switched on)"
+msgstr ""
+
+#: wppa_settings.php:858
+#, fuzzy
+msgid "Rating login"
+msgstr "投票オプション:"
+
+#: wppa_settings.php:859
+msgid "Users must login to rate photos."
+msgstr "写真の投票にはログインが必須。"
+
+#: wppa_settings.php:860
+msgid "If users want to vote for a photo (rating 1..5 stars) the must login first. The avarage rating will always be displayed as long as the rating system is enabled."
+msgstr ""
+
+#: wppa_settings.php:866
+#, fuzzy
+msgid "Rating change"
+msgstr "投票を削除しました"
+
+#: wppa_settings.php:867
+#: wppa_settings.php:868
+msgid "Users may change their ratings."
+msgstr "投票内容はあとから変更できる。"
+
+#: wppa_settings.php:874
+#, fuzzy
+msgid "Rating multi"
+msgstr "投票"
+
+#: wppa_settings.php:875
+#, fuzzy
+msgid "Users may give multiple votes."
+msgstr "投票内容はあとから変更できる。"
+
+#: wppa_settings.php:876
+msgid "Users may give multiple votes. (This has no effect when users may change their votes.)"
+msgstr "複数回投票できる。（あとから変更可能な場合は意味なし）"
+
+#: wppa_settings.php:882
+#, fuzzy
+msgid "Album order"
+msgstr "アルバムの並び方:"
+
+#: wppa_settings.php:883
+msgid "Album ordering sequence method."
+msgstr ""
+
+#: wppa_settings.php:884
+msgid "Specify the way the albums should be ordered."
+msgstr "アルバムの並び方を指定してください。"
+
+#: wppa_settings.php:891
+#: wppa_settings.php:907
+#, fuzzy
+msgid "Descending"
+msgstr "降順:"
+
+#: wppa_settings.php:892
+#: wppa_settings.php:908
+#, fuzzy
+msgid "Descending order."
+msgstr "降順:"
+
+#: wppa_settings.php:893
+#: wppa_settings.php:909
+msgid "If checked: largest first"
+msgstr "チェックすると大きい順になります"
+
+#: wppa_settings.php:898
+#, fuzzy
+msgid "Photo order"
+msgstr "写真の順番:"
+
+#: wppa_settings.php:899
+msgid "Photo ordering sequence method."
+msgstr ""
+
+#: wppa_settings.php:900
+msgid "Specify the way the photos should be ordered. This is the default setting. You can overrule the default sorting order on a per album basis."
+msgstr "写真の並び方を指定してください。これはデフォルト設定です。各アルバム毎に設定は変更できます。"
+
+#: wppa_settings.php:910
+msgid "This is a system wide setting."
+msgstr "これはシステム全体の設定です。"
+
+#: wppa_settings.php:929
+msgid "Table V:"
+msgstr ""
+
+#: wppa_settings.php:929
+msgid "Fonts:"
+msgstr ""
+
+#: wppa_settings.php:930
+msgid "This table describes the Fonts used for the wppa+ elements."
+msgstr ""
+
+#: wppa_settings.php:931
+msgid "If you leave fields empty, your themes defaults will be used."
+msgstr ""
+
+#: wppa_settings.php:939
+#: wppa_settings.php:1019
+#, fuzzy
+msgid "Font family"
+msgstr "フォントファミリー:"
+
+#: wppa_settings.php:940
+#: wppa_settings.php:1020
+#, fuzzy
+msgid "Font size"
+msgstr "フルサイズ。"
+
+#: wppa_settings.php:941
+#: wppa_settings.php:1021
+msgid "Font color"
+msgstr ""
+
+#: wppa_settings.php:947
+#, fuzzy
+msgid "Album titles"
+msgstr "アルバムタイトルのフォント:"
+
+#: wppa_settings.php:948
+#, fuzzy
+msgid "Font used for Album titles."
+msgstr "アルバムタイトルのフォント:"
+
+#: wppa_settings.php:949
+#: wppa_settings.php:971
+#, fuzzy
+msgid "Enter font name, size and color for album cover titles."
+msgstr "アルバムカバータイトルのフォント名とサイズを入力してください。"
+
+#: wppa_settings.php:959
+#, fuzzy
+msgid "Font for fullsize photo descriptions."
+msgstr "フルサイズの写真の説明のフォント:"
+
+#: wppa_settings.php:960
+#, fuzzy
+msgid "Enter font name, size and color for fullsize photo descriptions."
+msgstr "フルサイズの写真の説明のフォント:"
+
+#: wppa_settings.php:970
+#, fuzzy
+msgid "Font for fullsize photo names."
+msgstr "フルサイズの写真の名前のフォント:"
+
+#: wppa_settings.php:980
+#, fuzzy
+msgid "Navigations"
+msgstr "ナビゲーションバー:"
+
+#: wppa_settings.php:981
+#, fuzzy
+msgid "Font for navigations."
+msgstr "ナビゲーションのフォント:"
+
+#: wppa_settings.php:982
+#, fuzzy
+msgid "Enter font name, size and color for navigation items."
+msgstr "ナビゲーション要素のフォント名とサイズを入力してください。"
+
+#: wppa_settings.php:991
+#, fuzzy
+msgid "Thumbnails"
+msgstr "サムネイル:"
+
+#: wppa_settings.php:992
+#, fuzzy
+msgid "Font for text under thumbnails."
+msgstr "サムネイルの下に表示するテキストのフォント"
+
+#: wppa_settings.php:993
+#, fuzzy
+msgid "Enter font name, size and color for text under thumbnail images."
+msgstr "アルバムカバータイトルのフォント名とサイズを入力してください。"
+
+#: wppa_settings.php:1002
+#, fuzzy
+msgid "Other"
+msgstr "ここをクリックしてください"
+
+#: wppa_settings.php:1003
+#, fuzzy
+msgid "General font in wppa boxes."
+msgstr "wppaボックスの一般的なフォント:"
+
+#: wppa_settings.php:1004
+#, fuzzy
+msgid "Enter font name, size and color for all other items."
+msgstr "その他すべての要素に適用するフォント名とサイズを入力してください。"
+
+#: wppa_settings.php:1028
+msgid "Table VI:"
+msgstr ""
+
+#: wppa_settings.php:1028
+#, fuzzy
+msgid "Links:"
+msgstr "リンク先:"
+
+#: wppa_settings.php:1029
+msgid "This table defines the link types and pages."
+msgstr ""
+
+#: wppa_settings.php:1037
+#: wppa_settings.php:1149
+#, fuzzy
+msgid "Link type"
+msgstr "リンクタイプ:"
+
+#: wppa_settings.php:1038
+#: wppa_settings.php:1150
+#, fuzzy
+msgid "Link page"
+msgstr "リンクタイプ:"
+
+#: wppa_settings.php:1045
+#: wppa_settings.php:1047
+#: wppa_settings.php:1049
+#: wppa_settings.php:1051
+#: wppa_settings.php:1609
 msgid "no link at all."
 msgstr "リンクなし。"
 
-#: wppa_settings.php:581
-#: wppa_settings.php:823
+#: wppa_settings.php:1045
+#: wppa_settings.php:1047
+#: wppa_settings.php:1049
+#: wppa_settings.php:1051
+#: wppa_settings.php:1610
+msgid "the plain photo (file)."
+msgstr ""
+
+#: wppa_settings.php:1045
+#: wppa_settings.php:1047
+#: wppa_settings.php:1049
+#: wppa_settings.php:1051
+#: wppa_settings.php:1611
 msgid "the full size photo in a slideshow."
 msgstr "スライドショーのフルサイズフォト"
 
-#: wppa_settings.php:582
-#: wppa_settings.php:824
+#: wppa_settings.php:1045
+#: wppa_settings.php:1047
+#: wppa_settings.php:1049
+#: wppa_settings.php:1051
+#: wppa_settings.php:1612
 msgid "the fullsize photo on its own."
 msgstr "フォト自身のフルサイズ"
 
-#: wppa_settings.php:586
-#: wppa_settings.php:828
+#: wppa_settings.php:1045
+#: wppa_settings.php:1047
+#: wppa_settings.php:1049
+#: wppa_settings.php:1051
+#: wppa_settings.php:1613
+msgid "the photo specific link."
+msgstr ""
+
+#: wppa_settings.php:1047
+#: wppa_settings.php:1049
+#: wppa_settings.php:1051
+#: wppa_settings.php:1614
+#, fuzzy
+msgid "the content of the album."
+msgstr "アルバムの内容をサムネイルで"
+
+#: wppa_settings.php:1049
+#: wppa_settings.php:1615
+msgid "defined at widget activation."
+msgstr ""
+
+#: wppa_settings.php:1051
+#: wppa_settings.php:1616
+msgid "defined on widget admin page."
+msgstr ""
+
+#: wppa_settings.php:1060
 msgid "--- The same post or page ---"
 msgstr "--- 同一記事またはページ ---"
 
-#: wppa_settings.php:591
-#: wppa_settings.php:833
+#: wppa_settings.php:1076
+#, fuzzy
+msgid "--- No page to link to (yet) ---"
+msgstr "--- リンクなし ---"
+
+#: wppa_settings.php:1080
+#, fuzzy
+msgid "Mphoto"
+msgstr "写真"
+
+#: wppa_settings.php:1081
+#, fuzzy
+msgid "Media-like photo link."
+msgstr "メディアライクな写真リンク:"
+
+#: wppa_settings.php:1082
+#: wppa_settings.php:1095
 msgid "Select the type of link you want, or no link at all."
 msgstr "希望するリンクのタイプを選択してください。選択なき場合はリンクなしになります。"
 
-#: wppa_settings.php:592
-#: wppa_settings.php:834
+#: wppa_settings.php:1083
+#: wppa_settings.php:1096
 msgid "If you select the fullsize photo on its own, it will be stretched to fit, regardless of that setting."
 msgstr "フォト自身のフルサイズを選択すると、設定値に関わらずフィットするように調整されます。"
 
-#: wppa_settings.php:594
-#: wppa_settings.php:836
+#: wppa_settings.php:1084
+#: wppa_settings.php:1097
 #, php-format
 msgid "Note that a page must have at least %%wppa%% in its content to show up the photo(s)."
 msgstr "フォトを表示するには、最低でもページに %%wppa%% と書かれていなければなりません。"
 
-#: wppa_settings.php:600
-msgid "Rating system"
-msgstr "投票システム"
-
-#: wppa_settings.php:603
-msgid "Enable rating system:"
-msgstr "投票システムの有効化:"
-
-#: wppa_settings.php:607
-msgid "If checked, the photo rating system will be enabled."
-msgstr "チェックすると写真の投票システムが有効になります。"
-
-#: wppa_settings.php:612
-msgid "Rating options:"
-msgstr "投票オプション:"
-
-#: wppa_settings.php:616
-msgid "Users must login to rate photos."
-msgstr "写真の投票にはログインが必須。"
-
-#: wppa_settings.php:618
-msgid "Users may change their ratings."
-msgstr "投票内容はあとから変更できる。"
-
-#: wppa_settings.php:620
-msgid "Users may give multiple votes. (This has no effect when users may change their votes.)"
-msgstr "複数回投票できる。（あとから変更可能な場合は意味なし）"
-
-#: wppa_settings.php:621
-msgid "Please supply additional settings for the rating system."
-msgstr "投票システムに適用する設定を選んでください。"
-
-#: wppa_settings.php:626
-msgid "Reset all ratings:"
-msgstr "全投票のリセット:"
-
-#: wppa_settings.php:630
-msgid "WARNING: If checked, this will clear all ratings in the system!"
-msgstr "警告: チェックすると全ての投票結果が消去されます！"
-
-#: wppa_settings.php:634
-msgid "Top Ten Widget:"
-msgstr "トップ10ウィジェット:"
-
-#: wppa_settings.php:637
-msgid "Widget title"
-msgstr "ウィジェットのタイトル"
-
-#: wppa_settings.php:640
-msgid "Top Ten Rated Photos"
-msgstr "評価の高い写真トップ10"
-
-#: wppa_settings.php:641
-msgid "Enter/modify the title for the widget. This is a default and can be overriden at widget activation."
-msgstr "ウィジェットのタイトルを入力／変更してください。入力値はデフォルトとしてウィジェット有効時に適用されます。"
-
-#: wppa_settings.php:646
-msgid "Number of photos in widget:"
-msgstr "ウィジェットに表示する写真の数:"
-
-#: wppa_settings.php:650
-msgid "Enter the maximum number of rated photos in the TopTen widget."
-msgstr "トップ10ウィジェットに表示する写真の最大数を入力してください。"
-
-#: wppa_settings.php:655
-msgid "Widget thumbnail size:"
-msgstr "ウィジェットのサムネイルサイズ:"
-
-#: wppa_settings.php:659
-msgid "Enter the size for the mini photos in the TopTen widget."
-msgstr "トップ10ウィジェットに表示するミニ写真のサイズを入力してください。"
-
-#: wppa_settings.php:660
-msgid "Recommended values: 86 for a two column and 56 for a three column display."
-msgstr "推奨値: 2 カラム表示の場合は 86、3 カラムなら 56。"
-
-#: wppa_settings.php:683
-msgid "Select the page the top ten photos links to."
-msgstr "トップ10写真のリンク先ページを選択してください。"
-
-#: wppa_settings.php:691
-msgid "Thumbnails:"
+#: wppa_settings.php:1093
+#, fuzzy
+msgid "Thumbnail"
 msgstr "サムネイル:"
 
-#: wppa_settings.php:694
-msgid "Photocount threshold:"
-msgstr "フォトカウントしきい値"
-
-#: wppa_settings.php:698
-msgid "Photos do not show up in the album unless there are more than this number of photos in the album. This allows you to have cover photos on an album that contains only sub albums without seeing them in the list of sub albums. Usually set to 0 (always show) or 1 (for one cover photo)."
-msgstr "アルバムにここで指定した数値より多くの写真があれば、アルバムに写真が表示されます。これにより、子アルバムしか持たないアルバムがあった時、子アルバムリストにこれらを表示させずに親アルバムにカバーフォトを持たせることができます。通常は 0 (常に表示) か、または、1 (ひとつのカバーフォト) に設定します。"
-
-#: wppa_settings.php:703
-msgid "Display type:"
-msgstr "表示するタイプ:"
-
-#: wppa_settings.php:709
-msgid "like album covers"
-msgstr "アルバムのカバーと同様"
-
-#: wppa_settings.php:712
-msgid "You may select an altenative display method for thumbnails. Note that some of the thumbnail settings do not apply to all available display methods."
-msgstr "サムネイルの表示方法が選択できます。表示方法として適用できないサムネイルの設定もあります。"
-
-#: wppa_settings.php:717
-#: wppa_settings.php:852
-msgid "Placement:"
-msgstr "配置"
-
-#: wppa_settings.php:721
-#: wppa_settings.php:856
-msgid "Left"
-msgstr "左"
-
-#: wppa_settings.php:722
-#: wppa_settings.php:857
-msgid "Right"
-msgstr "右"
-
-#: wppa_settings.php:723
-msgid "Indicate the placement position of the thumbnailphoto you wish."
-msgstr "サムネイル画像の配置場所を指定してください。"
-
-#: wppa_settings.php:728
-msgid "Thumbnail Size:"
-msgstr "サムネイルのサイズ"
-
-#: wppa_settings.php:733
-msgid "Changing the thumbnail size may result in all thumbnails being regenerated. this may take a while."
-msgstr "サムネイルサイズを変更すると、全てのサムネイルを再生成することになります。再生成には時間のかかる場合があります。"
-
-#: wppa_settings.php:738
-msgid "Thumbnail Framesize:"
-msgstr "サムネイルのフレームサイズ:"
-
-#: wppa_settings.php:741
-#: wppa_slideshow_widget.php:121
-msgid "Width:"
-msgstr "幅:"
-
-#: wppa_settings.php:742
-msgid "pixels, Height:"
-msgstr "ピクセル 高さ:"
-
-#: wppa_settings.php:743
-msgid "pixels, Spacing:"
-msgstr "ピクセル 余白:"
-
-#: wppa_settings.php:745
-msgid "this is a minimum. Space them equally."
-msgstr "最小にします。全て同じ間隔にする。"
-
-#: wppa_settings.php:747
-msgid "Set width, height and spacing for the thumbnail frames."
-msgstr "サムネイルフレームの幅、高さ、余白を設定してください。"
-
-#: wppa_settings.php:748
-msgid "These sizes should be large enough for a thumbnail image and - optionally - the text under it."
-msgstr "これらのサイズはサムネイル画像や場合によってはその下に表示されるテキストにとって充分な大きさにしてください。"
-
-#: wppa_settings.php:764
-msgid "Specify the vertical alignment of thumbnail images. Use this setting only when albums contain both portrait and landscape photos."
-msgstr "サムネイル画像の縦方向の位置を指定してください。人物写真と風景写真が混合しているアルバムの場合のみこの設定を使います。"
-
-#: wppa_settings.php:769
-#: wppa_settings.php:863
-msgid "Apply mouseover effect:"
-msgstr "マウスオーバー時の効果の適用:"
-
-#: wppa_settings.php:773
-#: wppa_settings.php:867
-msgid "Opacity value:"
-msgstr "不透明度:"
-
-#: wppa_settings.php:774
-msgid "Check this box to use mouseover effect on thumbnail images."
-msgstr "ここをチェックすると、サムネイル画像にマウスオーバーした時にエフェクトを実行します。"
-
-#: wppa_settings.php:775
-#: wppa_settings.php:870
-msgid "Enter percentage of opacity. 100% is opaque, 0% is transparant"
-msgstr "不透明度を入力してください。100%で不透明、0%で透明"
-
-#: wppa_settings.php:780
-msgid "Apply popup effect:"
-msgstr "ポップアップの効果の適用:"
-
-#: wppa_settings.php:784
-msgid "Use popup effect on thumbnail images."
-msgstr "サムネイル画像にポップアップの効果を使う。"
-
-#: wppa_settings.php:789
-msgid "Thumbnail text:"
-msgstr "サムネイルテキスト:"
-
-#: wppa_settings.php:794
-msgid "Photo rating:"
-msgstr "写真評価:"
-
-#: wppa_settings.php:795
-msgid "Display name, description and rating under thumbnails."
-msgstr "サムネイルの下に名称、説明、評価を表示する"
-
-#: wppa_settings.php:800
-msgid "Max thumbnails per page:"
-msgstr "１ページあたり最大サムネイル数:"
-
-#: wppa_settings.php:804
-msgid "Enter the maximum number of thumbnail images per page. A value of 0 indicates no pagination."
-msgstr "１ページあたりのサムネイル最大数を入力してください。0 にするとページ付けを行いません。"
-
-#: wppa_settings.php:809
-msgid "Link type:"
-msgstr "リンクタイプ:"
-
-#: wppa_settings.php:840
-msgid "Album covers:"
-msgstr "アルバムのカバー:"
-
-#: wppa_settings.php:843
-msgid "Coverphoto Size:"
-msgstr "カバーフォトのサイズ:"
-
-#: wppa_settings.php:847
-msgid "Changing the coverphoto size may result in all thumbnails being regenerated. this may take a while."
-msgstr "カバーフォトサイズを変更すると、全てのサムネイルを再生成することになります。再生成には時間のかかる場合があります。"
-
-#: wppa_settings.php:858
-msgid "Indicate the placement position of the coverphoto you wish."
-msgstr "カバーフォトの配置場所を指定してください。"
-
-#: wppa_settings.php:869
-msgid "Check this box to use mouseover effect on cover images."
-msgstr "ここをチェックすると、カバー画像にマウスオーバーした時にエフェクトを実行します。"
-
-#: wppa_settings.php:875
-msgid "Max covers per page:"
-msgstr "１ページあたり最大カバー数:"
-
-#: wppa_settings.php:879
-msgid "Enter the maximum number of album covers per page. A value of 0 indicates no pagination."
-msgstr "１ページあたりのカバー最大数を入力してください。0 にするとページ付けを行いません。"
-
-#: wppa_settings.php:884
-msgid "Columns:"
-msgstr "カラム"
-
-#: wppa_settings.php:887
-msgid "Minimum width for 2 columns:"
-msgstr "2 カラムの場合の最小幅:"
-
-#: wppa_settings.php:888
-msgid "Minimum width for 3 columns:"
-msgstr "3 カラムの場合の最小幅:"
-
-#: wppa_settings.php:889
-msgid "Display covers in 2 or 3 columns if the display area is wider or equal to the number of pixels entered."
-msgstr "表示エリアが入力したピクセル値と同等以上なら 2 または 3 カラムでカバーを表示します。"
-
-#: wppa_settings.php:890
-msgid "This also applies for 'thumbnails as covers', and will NOT apply to single items."
-msgstr "これは「カバーのサムネイル」にも適用されますが、単一アイテムには適用しません。"
-
-#: wppa_settings.php:894
-msgid "Order settings:"
-msgstr "順番の設定:"
-
-#: wppa_settings.php:897
-msgid "Album order:"
-msgstr "アルバムの並び方:"
-
-#: wppa_settings.php:902
-msgid "Specify the way the albums should be ordered."
-msgstr "アルバムの並び方を指定してください。"
-
-#: wppa_settings.php:907
-#: wppa_settings.php:926
-msgid "Descending:"
-msgstr "降順:"
-
-#: wppa_settings.php:911
-msgid "If checked: largest first"
-msgstr "チェックすると大きい順になります"
-
-#: wppa_settings.php:921
-msgid "Specify the way the photos should be ordered. This is the default setting. You can overrule the default sorting order on a per album basis."
-msgstr "写真の並び方を指定してください。これはデフォルト設定です。各アルバム毎に設定は変更できます。"
-
-#: wppa_settings.php:930
-msgid "This is a system wide setting."
-msgstr "これはシステム全体の設定です。"
-
-#: wppa_settings.php:934
-msgid "Appearance:"
-msgstr "外観:"
-
-#: wppa_settings.php:937
-msgid "Explanation:"
-msgstr "説明:"
-
-#: wppa_settings.php:941
-msgid "The settings in this chapter may be left blank. When blank, the theme's defaults are used or the settings in wppa_style.css."
-msgstr "この章の設定はブランクのままでも構いません。ブランクのままにした場合は、テーマのデフォルトまたはwppa_style.cssの設定が適用されます。"
-
-#: wppa_settings.php:942
-msgid "It is strongly recommended that you try these settings to achieve your desired appearance before editing the css file."
-msgstr "外見を自分の好みにするには、cssファイルを編集する前に、この章の設定を試してみることを強くお勧めします。"
-
-#: wppa_settings.php:943
-msgid "Note: these settings - if not blank - have precednce over css settings or any hard coded attributes."
-msgstr "注意: この章の設定（ブランクにしなかった場合）は、cssの設定やハードコーディングされた属性よりも優先されます。"
-
-#: wppa_settings.php:944
-msgid "The css classes that these settings act upon are indicated in the descriptions as follows (for example 'wppa-class'):"
-msgstr "この章の設定が適用されるcssクラスは以下の説明を参照してください (例：'wppa-class'):"
-
-#: wppa_settings.php:950
-msgid "Even background:"
-msgstr "偶数番目の背景:"
-
-#: wppa_settings.php:953
-#: wppa_settings.php:963
-#: wppa_settings.php:973
-#: wppa_settings.php:994
-msgid "Background Color:"
-msgstr "背景色:"
-
-#: wppa_settings.php:954
-#: wppa_settings.php:964
-#: wppa_settings.php:974
-msgid "Border Color:"
-msgstr "ボーダー色:"
-
-#: wppa_settings.php:955
-msgid "Enter valid CSS colors for even numbered backgrounds and borders of album covers and thumbnail displays 'As covers'."
-msgstr "'カバー'として表示されるアルバムカバーやサムネイルの偶数番目の背景とボーダーのCSS色を入力してください。"
-
-#: wppa_settings.php:960
-msgid "Odd background:"
-msgstr "奇数番目の背景:"
-
-#: wppa_settings.php:965
-msgid "Enter valid CSS colors for odd numbered backgrounds and borders of album covers and thumbnail displays 'As covers'."
-msgstr "'カバー'として表示されるアルバムカバーやサムネイルの奇数番目の背景とボーダーのCSS色を入力してください。"
-
-#: wppa_settings.php:975
-msgid "Enter valid CSS colors for navigation backgrounds and borders."
-msgstr "ナビゲーションの背景とボーダーのCSS色を入力してください。"
-
-#: wppa_settings.php:980
-msgid "Borders:"
-msgstr "ボーダー:"
-
-#: wppa_settings.php:983
-msgid "Border thickness:"
-msgstr "ボーダーの厚み"
-
-#: wppa_settings.php:984
-msgid "Border radius:"
-msgstr "ボーダーの半径"
-
-#: wppa_settings.php:985
-msgid "Enter thicknes and corner radius for the backgrounds above. A number of 0 means: no."
-msgstr "上記の各背景の厚さとコーナー半径を入力してください。0 にすると無効。"
-
-#: wppa_settings.php:986
-msgid "Note that rounded corners are only supported by modern browsers."
-msgstr "丸みをもたせたコーナーが表示できるのは、最近のブラウザのみです。"
-
-#: wppa_settings.php:991
-msgid "Popup and Cover Photos:"
-msgstr "ポップアップとカバーフォト:"
-
-#: wppa_settings.php:995
-msgid "Enter a valid CSS color for image backgrounds."
-msgstr "画像背景のCSS色を入力してください。"
-
-#: wppa_settings.php:1000
-msgid "Font for album titles:"
-msgstr "アルバムタイトルのフォント:"
-
-#: wppa_settings.php:1003
-#: wppa_settings.php:1013
-#: wppa_settings.php:1023
-#: wppa_settings.php:1033
-#: wppa_settings.php:1043
-#: wppa_settings.php:1053
-msgid "Font family:"
-msgstr "フォントファミリー:"
-
-#: wppa_settings.php:1004
-#: wppa_settings.php:1014
-#: wppa_settings.php:1024
-#: wppa_settings.php:1034
-#: wppa_settings.php:1044
-#: wppa_settings.php:1054
-msgid "Size:"
-msgstr "サイズ:"
-
-#: wppa_settings.php:1005
-#: wppa_settings.php:1015
-#: wppa_settings.php:1025
-msgid "Enter font name and size for album cover titles."
-msgstr "アルバムカバータイトルのフォント名とサイズを入力してください。"
-
-#: wppa_settings.php:1010
-msgid "Font for fullsize photo descriptions:"
-msgstr "フルサイズの写真の説明のフォント:"
-
-#: wppa_settings.php:1020
-msgid "Font for fullsize photo names:"
-msgstr "フルサイズの写真の名前のフォント:"
-
-#: wppa_settings.php:1030
-msgid "Font for navigations:"
-msgstr "ナビゲーションのフォント:"
-
-#: wppa_settings.php:1035
-msgid "Enter font name and size for navigation items."
-msgstr "ナビゲーション要素のフォント名とサイズを入力してください。"
-
-#: wppa_settings.php:1040
-msgid "General font in wppa boxes:"
-msgstr "wppaボックスの一般的なフォント:"
-
-#: wppa_settings.php:1045
-#: wppa_settings.php:1055
-msgid "Enter font name and size for all other items."
-msgstr "その他すべての要素に適用するフォント名とサイズを入力してください。"
-
-#: wppa_settings.php:1050
-msgid "Font for text under thumbnails:"
-msgstr "サムネイルの下に表示するテキストのフォント"
-
-#: wppa_settings.php:1060
-msgid "Default text color:"
-msgstr "デフォルトのテキスト色:"
-
-#: wppa_settings.php:1063
-#: wppa_settings.php:1072
-msgid "Color:"
-msgstr "色:"
-
-#: wppa_settings.php:1064
-msgid "Enter your sites default text color."
-msgstr "サイトのデフォルトのテキスト色を入力してください。"
-
-#: wppa_settings.php:1069
-msgid "Left/right arrow color:"
-msgstr "左右の矢印の色:"
-
-#: wppa_settings.php:1073
-msgid "Enter the color of the navigation arrows."
-msgstr "ナビゲーション用矢印の色を入力してください。"
-
-#: wppa_settings.php:1077
-msgid "Miscellaneous:"
-msgstr "その他:"
-
-#: wppa_settings.php:1080
-msgid "Search page:"
-msgstr "検索ページ:"
-
-#: wppa_settings.php:1099
-#, php-format
-msgid "Select the page to be used to display search results. The page MUST contain %%wppa%%."
-msgstr "検索結果の表示に使用するページを選択してください。ページには %%wppa%% と記入されていなければなりません。"
-
-#: wppa_settings.php:1100
-msgid "You may give it the title \"Search results\" or something alike."
-msgstr "ページのタイトルは「検索結果」などわかりやすいものにすることができます。"
-
-#: wppa_settings.php:1101
-msgid "Or you ou may use the standard page on which you display the generic album."
-msgstr "あるいは、アルバムを表示する基本のページをそのまま利用しても構いません。"
+#: wppa_settings.php:1094
+#, fuzzy
+msgid "Thumbnail link."
+msgstr "サムネイルのサイズ。"
+
+#: wppa_settings.php:1107
+#, fuzzy
+msgid "TopTenWidget"
+msgstr "トップ10ウィジェット:"
 
 #: wppa_settings.php:1108
-msgid "Exclude separate:"
-msgstr "セパレートの除外:"
+#, fuzzy
+msgid "TopTen widget photo link."
+msgstr "ウィジェットでの写真のパディング。"
 
-#: wppa_settings.php:1112
-msgid "When checked, albums (and photos in them) that have the parent set to --- separate --- will be excluded from being searched."
-msgstr "チェックすると、「--- セパレート ---」にセットした親を持つアルバム（およびアルバムに含まれている写真）を検索対象から外します。"
-
-#: wppa_settings.php:1117
-msgid "Allow HTML in album and photo descriptions:"
-msgstr "アルバムおよび写真の説明でのHTMLの使用:"
-
+#: wppa_settings.php:1109
 #: wppa_settings.php:1121
-msgid "If checked: html is allowed. WARNING: No checks on syntax, it is your own responsability to close tags properly!"
-msgstr "チェックするとHTMLが使用できます。注意: 構文チェックは行いません。タグの閉じ忘れは自己責任になります！"
+#, fuzzy
+msgid "Select the type of link the top ten photos point to."
+msgstr "トップ10写真のリンク先ページを選択してください。"
 
-#: wppa_settings.php:1128
-msgid "Set Character set to UTF-8:"
-msgstr "キャラクターセットをUTF-8にする:"
+#: wppa_settings.php:1119
+#, fuzzy
+msgid "SlideWidget"
+msgstr "サイドバーウィジェット"
+
+#: wppa_settings.php:1120
+#, fuzzy
+msgid "Slideshow widget photo link."
+msgstr "写真のリンク先ページを選択してください。"
+
+#: wppa_settings.php:1130
+msgid "PotdWidget"
+msgstr ""
+
+#: wppa_settings.php:1131
+#, fuzzy
+msgid "Photo Of The Day widget link."
+msgstr "本日の写真"
 
 #: wppa_settings.php:1132
-msgid "If checked: Converts the wppa database tables to UTF-8 This allows the use of certain characters - like Turkish - in photo and album names and descriptions."
-msgstr "チェックをすると: wppaデータベーステーブルをUTF-8に変換します。こうすることで、特定の文字 - トルコ語など - を写真やアルバムの名前や説明に使うことができるようになります。"
+#, fuzzy
+msgid "Select the type of link the photo of the day points to."
+msgstr "写真のリンク先ページを選択してください。"
 
-#: wppa_settings.php:1139
-#: wppa_settings.php:1182
-msgid "Access settings:"
-msgstr "アクセス権の設定"
+#: wppa_settings.php:1133
+msgid "If you select 'defined on widget admin page' you can manually enter a link and title on the Photo of the day Widget Admin page."
+msgstr ""
 
-#: wppa_settings.php:1142
-msgid "Directory access (CHMOD):"
+#: wppa_settings.php:1157
+msgid "Table VII:"
+msgstr ""
+
+#: wppa_settings.php:1157
+msgid "Access and Security:"
+msgstr ""
+
+#: wppa_settings.php:1158
+msgid "This table describes the access settings for wppa+ elements and pages."
+msgstr ""
+
+#: wppa_settings.php:1173
+#, fuzzy
+msgid "Directory access (CHMOD)."
 msgstr "ディレクトリのアクセス権 (CHMOD):"
 
-#: wppa_settings.php:1145
-msgid "Leave unchanged."
-msgstr "現状のまま変更しない。"
-
-#: wppa_settings.php:1150
+#: wppa_settings.php:1174
 msgid "In rare cases you might need to change this setting. If you do not know what this means, leave it unchanged."
 msgstr "稀にこの設定の変更が必要な場合があります。意味がよくわからなければ「現状のまま変更しない」をチェックしておいてください。"
 
-#: wppa_settings.php:1155
-msgid "Album access:"
+#: wppa_settings.php:1176
+msgid "Leave unchanged."
+msgstr "現状のまま変更しない。"
+
+#: wppa_settings.php:1181
+#, fuzzy
+msgid "Album access"
 msgstr "アルバムアクセス権:"
 
-#: wppa_settings.php:1159
+#: wppa_settings.php:1182
 msgid "Limit album access to album owners only."
 msgstr "アルバムアクセス権をアルバム所有者に限定する。"
 
-#: wppa_settings.php:1160
+#: wppa_settings.php:1183
 msgid "If checked, users who can edit albums and upload/import photos can do that with their own albums only."
 msgstr "チェックすると、アルバムの編集や写真のアップロード／インポートが許可されているユーザに対し、そのような操作を自分の所有するアルバムに限定します。"
 
-#: wppa_settings.php:1161
+#: wppa_settings.php:1184
 msgid "Users can give their albums to another user. Administrators can change ownership and access all albums always."
 msgstr "ユーザは他のユーザにアルバムを渡すことができます。管理者は所有権を変更することができるほか、いつでも全てのアルバムにアクセスできます。"
 
-#: wppa_settings.php:1167
-msgid "Admin pages access:"
+#: wppa_settings.php:1189
+msgid "WPPA Admin"
+msgstr ""
+
+#: wppa_settings.php:1190
+#, fuzzy
+msgid "Admin pages access."
 msgstr "管理ページアクセス権:"
 
-#: wppa_settings.php:1171
-msgid "Here you can set the capabilities that are specific for <strong>WPPA+.</strong>"
-msgstr "ここでは、<strong>WPフォトアルバムプラス</stron>に特化した権限が設定できます。"
-
-#: wppa_settings.php:1172
-msgid "If you set them here, the classical userlevel is imitated, but implemented by the modern Roles and Capabilities system."
-msgstr "ここで設定した権限は、昔のユーザの種類に似ていますが、現在使われているユーザの種類と権限によって実行されます。"
-
-#: wppa_settings.php:1173
-msgid "That means that any higher userlevel (role) will automaticly get the capabilities that you give to a certain (lower) level."
-msgstr "つまり、上位のユーザ(ユーザの種類)には自動的に任意の(下位の)ユーザの権限も付与されます。"
-
-#: wppa_settings.php:1174
-msgid "If you want to give a capability to a specific user or role, you can set it using an other plugin, such as <strong>Capability Manager</strong>."
-msgstr "特定のユーザまたはユーザの種類に任意の権限を与えたい場合は、<strong>権限マネージャ(Capability Manager)</stron>など他のプラグインを使ってください。"
-
-#: wppa_settings.php:1175
-msgid "Possible capabilities are: <strong>wppa_admin</strong> (for the Photo Albums page), <strong>wppa_sidebar_admin</strong> (for the Sidebar Widget page) and <strong>wppa_upload</strong> (for the Upload and Import pages)."
-msgstr "可能な権限: <strong>アルバム管理</strong>(フォトアルバムのページ)、<strong>サイドバー管理</strong>(サイドバーウィジェットのページ)、<strong>アップロード</strong>(アップロードおよびインポートのページ)。"
-
-#: wppa_settings.php:1176
-msgid "The Help page is available to users with the capability <strong>edit_posts</strong>, the <strong>Settings</strong> page (the page you are on right now) is limited to the role of administrator."
-msgstr "<strong>編集</strong>権限のあるユーザにはヘルプのページが使えます。<strong>設定</strong>のページ(このページ)は管理者限定です。"
-
-#: wppa_settings.php:1186
-msgid "Accesslevels are set here."
-msgstr "アクセス権はここで設定する。"
-
-#: wppa_settings.php:1188
-msgid "Accesslevels are set by an other program."
-msgstr "アクセス権は別のプログラムで設定する。"
-
-#: wppa_settings.php:1189
+#: wppa_settings.php:1191
 msgid "Indicate whether the accesslevels must be set by this admin page or by an other program."
 msgstr "アクセス権をこの管理ページで設定するか、別のプログラムで設定するかを選択してください。"
 
+#: wppa_settings.php:1192
+msgid "If you set them here, the classical userlevel is imitated, but implemented by the modern Roles and Capabilities system."
+msgstr "ここで設定した権限は、昔のユーザの種類に似ていますが、現在使われているユーザの種類と権限によって実行されます。"
+
+#: wppa_settings.php:1193
+msgid "That means that any higher userlevel (role) will automaticly get the capabilities that you give to a certain (lower) level."
+msgstr "つまり、上位のユーザ(ユーザの種類)には自動的に任意の(下位の)ユーザの権限も付与されます。"
+
 #: wppa_settings.php:1194
-msgid "Albums Access Level:"
+#, fuzzy
+msgid "If you want to give a capability to a specific user or role, you can set it using an other plugin, such as Capability Manager."
+msgstr "特定のユーザまたはユーザの種類に任意の権限を与えたい場合は、<strong>権限マネージャ(Capability Manager)</stron>など他のプラグインを使ってください。"
+
+#: wppa_settings.php:1195
+#, fuzzy
+msgid "Possible capabilities are: <strong>wppa_admin</strong> (for the Photo Albums page), wppa_sidebar_admin (for the Sidebar Widget page) and wppa_upload (for the Upload and Import pages)."
+msgstr "可能な権限: <strong>アルバム管理</strong>(フォトアルバムのページ)、<strong>サイドバー管理</strong>(サイドバーウィジェットのページ)、<strong>アップロード</strong>(アップロードおよびインポートのページ)。"
+
+#: wppa_settings.php:1196
+#, fuzzy
+msgid "The Help page is available to users with the capability <strong>edit_posts</strong>, the Settings page (the page you are on right now) is limited to the role of administrator."
+msgstr "<strong>編集</strong>権限のあるユーザにはヘルプのページが使えます。<strong>設定</strong>のページ(このページ)は管理者限定です。"
+
+#: wppa_settings.php:1198
+msgid "Accesslevels are set here."
+msgstr "アクセス権はここで設定する。"
+
+#: wppa_settings.php:1198
+msgid "Accesslevels are set by an other program."
+msgstr "アクセス権は別のプログラムで設定する。"
+
+#: wppa_settings.php:1204
+#, fuzzy
+msgid "Albums Access Level."
 msgstr "アルバムアクセス権:"
-
-#: wppa_settings.php:1200
-#: wppa_settings.php:1216
-#: wppa_settings.php:1232
-msgid "Administrator"
-msgstr "管理者"
-
-#: wppa_settings.php:1201
-#: wppa_settings.php:1217
-#: wppa_settings.php:1233
-msgid "Editor"
-msgstr "編集者"
-
-#: wppa_settings.php:1202
-#: wppa_settings.php:1218
-#: wppa_settings.php:1234
-msgid "Author"
-msgstr "作成者"
-
-#: wppa_settings.php:1203
-#: wppa_settings.php:1219
-#: wppa_settings.php:1235
-msgid "Contributor"
-msgstr "寄稿者"
 
 #: wppa_settings.php:1205
 msgid "The minmum user level that can access the photo album admin (i.e. Manage Albums and Upload Photos)."
 msgstr "フォトアルバムの管理（アルバムの管理と写真のアップロード）にアクセスできる最低ユーザレベル。"
 
-#: wppa_settings.php:1210
-msgid "Upload Access Level:"
+#: wppa_settings.php:1207
+#: wppa_settings.php:1216
+#: wppa_settings.php:1225
+msgid "Administrator"
+msgstr "管理者"
+
+#: wppa_settings.php:1207
+#: wppa_settings.php:1216
+#: wppa_settings.php:1225
+msgid "Editor"
+msgstr "編集者"
+
+#: wppa_settings.php:1207
+#: wppa_settings.php:1216
+#: wppa_settings.php:1225
+msgid "Author"
+msgstr "作成者"
+
+#: wppa_settings.php:1207
+#: wppa_settings.php:1216
+#: wppa_settings.php:1225
+msgid "Contributor"
+msgstr "寄稿者"
+
+#: wppa_settings.php:1212
+#, fuzzy
+msgid "Upload"
+msgstr "写真のアップロード"
+
+#: wppa_settings.php:1213
+#, fuzzy
+msgid "Upload/Import Access Level."
 msgstr "アップロードアクセス権:"
 
-#: wppa_settings.php:1221
-msgid "The minmum user level that can upload photos."
+#: wppa_settings.php:1214
+#, fuzzy
+msgid "The minmum user level that can upload or import photos."
 msgstr "写真がアップロードできる最低ユーザレベル。"
 
-#: wppa_settings.php:1226
-msgid "Sidebar Access Level:"
-msgstr "サイドバーアクセス権:"
+#: wppa_settings.php:1221
+#, fuzzy
+msgid "Widget"
+msgstr "ウィジェットのタイトル"
 
-#: wppa_settings.php:1237
-msgid "The minmum user level that can access the photo album sidebar widget admin."
+#: wppa_settings.php:1222
+#, fuzzy
+msgid "Photo of the day widget admin."
+msgstr "本日の写真:"
+
+#: wppa_settings.php:1223
+#, fuzzy
+msgid "The minmum user level that can access the photo of the day sidebar widget admin."
 msgstr "フォトアルバムのサイドバーウィジェット管理にアクセスできる最低ユーザレベル。"
 
-#: wppa_settings.php:1238
-msgid "NOTE: Accessing this page - WP Photo Album Plus Settings - is always priviledged to Administrators."
-msgstr "注意: このページ - WPフォトアルバムプラスの設定 - へのアクセスは、いかなる場合も管理者に限定されます。"
+#: wppa_settings.php:1244
+msgid "Table VIII:"
+msgstr ""
+
+#: wppa_settings.php:1244
+#, fuzzy
+msgid "Actions:"
+msgstr "説明:"
+
+#: wppa_settings.php:1245
+msgid "This table lists all actions that can be taken to the wppa+ system"
+msgstr ""
+
+#: wppa_settings.php:1253
+#: wppa_settings.php:1283
+msgid "Do it!"
+msgstr ""
+
+#: wppa_settings.php:1259
+msgid "Reset"
+msgstr ""
+
+#: wppa_settings.php:1260
+#, fuzzy
+msgid "Reset all ratings."
+msgstr "全投票のリセット:"
+
+#: wppa_settings.php:1261
+msgid "WARNING: If checked, this will clear all ratings in the system!"
+msgstr "警告: チェックすると全ての投票結果が消去されます！"
+
+#: wppa_settings.php:1266
+msgid "Set to utf-8"
+msgstr ""
+
+#: wppa_settings.php:1267
+#, fuzzy
+msgid "Set Character set to UTF_8."
+msgstr "キャラクターセットをUTF-8にする:"
+
+#: wppa_settings.php:1268
+#, fuzzy
+msgid "If checked: Converts the wppa database tables to UTF_8 This allows the use of certain characters - like Turkish - in photo and album names and descriptions."
+msgstr "チェックをすると: wppaデータベーステーブルをUTF-8に変換します。こうすることで、特定の文字 - トルコ語など - を写真やアルバムの名前や説明に使うことができるようになります。"
+
+#: wppa_settings.php:1290
+msgid "Table IX:"
+msgstr ""
+
+#: wppa_settings.php:1290
+msgid "Miscellaneous:"
+msgstr "その他:"
+
+#: wppa_settings.php:1291
+msgid "This table lists all settings that do not fit into an other table"
+msgstr ""
+
+#: wppa_settings.php:1305
+msgid "Arrow color"
+msgstr ""
+
+#: wppa_settings.php:1306
+#, fuzzy
+msgid "Left/right browsing arrow color."
+msgstr "左右の矢印の色:"
+
+#: wppa_settings.php:1307
+msgid "Enter the color of the navigation arrows."
+msgstr "ナビゲーション用矢印の色を入力してください。"
+
+#: wppa_settings.php:1312
+#, fuzzy
+msgid "Search page"
+msgstr "検索ページ:"
+
+#: wppa_settings.php:1313
+msgid "Display the search results on page."
+msgstr ""
+
+#: wppa_settings.php:1314
+#, php-format
+msgid "Select the page to be used to display search results. The page MUST contain %%wppa%%."
+msgstr "検索結果の表示に使用するページを選択してください。ページには %%wppa%% と記入されていなければなりません。"
+
+#: wppa_settings.php:1315
+msgid "You may give it the title \"Search results\" or something alike."
+msgstr "ページのタイトルは「検索結果」などわかりやすいものにすることができます。"
+
+#: wppa_settings.php:1316
+msgid "Or you ou may use the standard page on which you display the generic album."
+msgstr "あるいは、アルバムを表示する基本のページをそのまま利用しても構いません。"
+
+#: wppa_settings.php:1331
+#, fuzzy
+msgid "Exclude separate"
+msgstr "セパレートの除外:"
+
+#: wppa_settings.php:1332
+#, fuzzy
+msgid "Do not search 'separate' albums."
+msgstr "アルバムが作成できません。"
+
+#: wppa_settings.php:1333
+msgid "When checked, albums (and photos in them) that have the parent set to --- separate --- will be excluded from being searched."
+msgstr "チェックすると、「--- セパレート ---」にセットした親を持つアルバム（およびアルバムに含まれている写真）を検索対象から外します。"
+
+#: wppa_settings.php:1338
+msgid "Allow HTML"
+msgstr ""
+
+#: wppa_settings.php:1339
+#, fuzzy
+msgid "Allow HTML in album and photo descriptions."
+msgstr "アルバムおよび写真の説明でのHTMLの使用:"
+
+#: wppa_settings.php:1340
+msgid "If checked: html is allowed. WARNING: No checks on syntax, it is your own responsability to close tags properly!"
+msgstr "チェックするとHTMLが使用できます。注意: 構文チェックは行いません。タグの閉じ忘れは自己責任になります！"
+
+#: wppa_settings.php:1384
+#: wppa_settings.php:1432
+#: wppa_settings.php:1485
+msgid "Click for help"
+msgstr ""
+
+#: wppa_settings.php:1390
+#: wppa_settings.php:1443
+#: wppa_settings.php:1498
+msgid "You just modified this setting"
+msgstr ""
+
+#: wppa_settings.php:1395
+#: wppa_settings.php:1448
+#: wppa_settings.php:1503
+msgid "You just tried to modify this setting into an illegal value"
+msgstr ""
+
+#: wppa_settings.php:1620
+msgid "The default for this setting is:"
+msgstr ""
+
+#: wppa_settings.php:1625
+msgid "Hide"
+msgstr ""
+
+#: wppa_settings.php:1626
+#, fuzzy
+msgid "Show"
+msgstr "スライドショー"
+
+#: wppa_settings.php:1627
+msgid "Save Changes"
+msgstr "変更を保存"
 
 #: wppa_slideshow_widget.php:16
 msgid "WPPA+ Sidebar Slideshow"
@@ -2164,46 +3081,62 @@ msgid "Sidebar Slideshow"
 msgstr "サイドバースライドショー"
 
 #: wppa_slideshow_widget.php:123
+msgid "Width:"
+msgstr "幅:"
+
+#: wppa_slideshow_widget.php:123
+msgid "pixels."
+msgstr "ピクセル"
+
+#: wppa_slideshow_widget.php:125
 msgid "Portrait only:"
 msgstr "ポートレイトのみ:"
 
-#: wppa_slideshow_widget.php:125
+#: wppa_slideshow_widget.php:127
 msgid "no."
 msgstr "いいえ。"
 
-#: wppa_slideshow_widget.php:126
+#: wppa_slideshow_widget.php:128
 msgid "yes."
 msgstr "はい。"
 
-#: wppa_slideshow_widget.php:127
+#: wppa_slideshow_widget.php:129
 msgid "Set to 'yes' if there are only portrait images in the album and you want the photos to fill the full width of the widget.<br/>Set to 'no' otherwise."
 msgstr "アルバムにポートレイト画像しか存在しない場合で、フォトをウィジェットの最大幅にフィットさせたいときは、「はい」に設定します。<br />それ以外の場合は「いいえ」にしてください。"
 
-#: wppa_slideshow_widget.php:128
+#: wppa_slideshow_widget.php:130
 msgid "If set to 'yes', Vertical alignment will be forced to 'fit'."
 msgstr "「はい」にすると、縦方向の位置は強制的に「フィット」になります。"
 
-#: wppa_slideshow_widget.php:137
+#: wppa_slideshow_widget.php:133
+msgid "Vertical alignment:"
+msgstr "縦方向の位置:"
+
+#: wppa_slideshow_widget.php:139
 msgid "Set the desired vertical alignment method."
 msgstr "希望する縦方向の位置方式を設定してください。"
 
-#: wppa_slideshow_widget.php:139
+#: wppa_slideshow_widget.php:141
+msgid "Slideshow timeout:"
+msgstr "スライドショーのタイムアウト:"
+
+#: wppa_slideshow_widget.php:141
 msgid "sec."
 msgstr "秒。"
 
-#: wppa_slideshow_widget.php:141
+#: wppa_slideshow_widget.php:143
 msgid "The following text fields support qTranslate"
 msgstr "以下のテキストフィールドは qTranslate をサポートします"
 
-#: wppa_slideshow_widget.php:142
+#: wppa_slideshow_widget.php:144
 msgid "Tooltip text:"
 msgstr "ツールチップのテキスト:"
 
-#: wppa_slideshow_widget.php:143
+#: wppa_slideshow_widget.php:145
 msgid "Text above photos:"
 msgstr "写真の上のテキスト:"
 
-#: wppa_slideshow_widget.php:144
+#: wppa_slideshow_widget.php:146
 msgid "Text below photos:"
 msgstr "写真の下のテキスト:"
 
@@ -2212,12 +3145,12 @@ msgid "WPPA+ Top Ten Rated Photos"
 msgstr "WPPA+ のトップ10フォト"
 
 #: wppa_toptenwidget.php:13
-#: wppa_toptenwidget.php:23
-#: wppa_toptenwidget.php:82
+#: wppa_toptenwidget.php:25
+#: wppa_toptenwidget.php:75
 msgid "Top Ten Photos"
 msgstr "トップ10フォト"
 
-#: wppa_toptenwidget.php:86
+#: wppa_toptenwidget.php:79
 msgid "You can set the content and the behaviour of this widget in the <b>Photo Albums -> Settings</b> admin page."
 msgstr "このウィジェットの内容と動作は、<b>フォトアルバム -> 設定</b>の管理ページで設定できます。"
 
@@ -2353,7 +3286,7 @@ msgid "There are no albums or photos in directory:"
 msgstr "次のディレクトリにアルバムや写真がありません:"
 
 #: wppa_upload.php:327
-#: wppa_upload.php:525
+#: wppa_upload.php:529
 msgid "Error inserting photo"
 msgstr "写真の挿入中にエラー:"
 
@@ -2362,7 +3295,7 @@ msgid "Photos Uploaded in album nr"
 msgstr "次のアルバム番号の写真を更新しました: "
 
 #: wppa_upload.php:355
-#: wppa_upload.php:985
+#: wppa_upload.php:995
 msgid "Zipfile"
 msgstr "zipファイル"
 
@@ -2399,178 +3332,178 @@ msgstr "ドットの動きが止まったりブラウザに準備中などの表
 msgid "here."
 msgstr "ここ"
 
-#: wppa_upload.php:529
+#: wppa_upload.php:533
 #, php-format
 msgid "Error inserting photo, album %1s does not exist for photo %2s. Either create the album or remove %3s."
 msgstr "写真の挿入中にエラー。写真「%2s」用のアルバム「%1s」が存在しません。アルバムを作成するか、%3sを削除してください。"
 
-#: wppa_upload.php:535
+#: wppa_upload.php:539
 msgid "Done processing files."
 msgstr "ファイルの処理が完了しました。"
 
-#: wppa_upload.php:538
+#: wppa_upload.php:542
 msgid "No files to import."
 msgstr "インポートするファイルがありません。"
 
-#: wppa_upload.php:542
+#: wppa_upload.php:546
 msgid "Zipfiles extracted."
 msgstr "zipファイルを抽出しました。"
 
-#: wppa_upload.php:543
+#: wppa_upload.php:547
 msgid "Albums created."
 msgstr "アルバムを作成しました。"
 
-#: wppa_upload.php:544
+#: wppa_upload.php:548
 msgid "Photos imported."
 msgstr "写真をインポートしました。"
 
-#: wppa_upload.php:561
+#: wppa_upload.php:565
 msgid "Although the photos are resized during the upload/import process, you may encounter 'Out of memory'errors."
 msgstr "アップロード／インポート処理中に写真のサイズ調整が行われますが、それでも「メモリ不足」エラーが発生することはあります。"
 
-#: wppa_upload.php:561
+#: wppa_upload.php:565
 msgid "In that case: make sure you set the memory limit to 64M and make sure your hosting provider allows you the use of 64 Mb."
 msgstr "その場合は、メモリ制限を64Mに設定しているかどうか、また、64Mのメモリ使用があなたに許可されているかどうかを確認してください。"
 
-#: wppa_upload.php:564
+#: wppa_upload.php:568
 msgid "WARNING: You are uploading very large photos, this may result in server problems and excessive download times for your website visitors."
 msgstr "警告: サイズがとても大きい写真をアップロードしようとしています。その結果、サーバトラブルが発生したり、サイト来訪者が写真をダウンロードするのに非常に時間がかかったりすることがあります。"
 
-#: wppa_upload.php:564
+#: wppa_upload.php:568
 msgid "Check the 'Resize on upload' checkbox, and/or resize the photos before uploading. The recommended size is: not larger than 1024 x 768 pixels (up to approx. 250 kB)."
 msgstr "「アップロード時にサイズ調整」のチェックボックスをチェックし、および／または、アップロード前に写真のサイズを調整してください。推奨サイズ: 1024 x 768ピクセル以下(最大約250Kb)。"
 
-#: wppa_upload.php:569
+#: wppa_upload.php:573
 msgid "WARNING: You are uploading photos that are too small. Photos must be larger than the thumbnail size and larger than the coverphotosize."
 msgstr "警告: サイズがとても小さい写真をアップロードしようとしています。写真はサムネイルサイズとカバーフォトサイズよりも大きくなければなりません。"
 
-#: wppa_upload.php:574
+#: wppa_upload.php:578
 msgid "ERROR: Unable to retrieve immage size of"
 msgstr "【エラー】次の画像のサイズが取得できません："
 
-#: wppa_upload.php:574
+#: wppa_upload.php:578
 #, fuzzy
 msgid "Are you sure it is a photo?"
 msgstr "本当にこの写真をコピーしますか？"
 
-#: wppa_upload.php:585
+#: wppa_upload.php:589
 msgid "Unsupported mime type encountered:"
 msgstr "サポート外のmimeタイプです:"
 
-#: wppa_upload.php:591
+#: wppa_upload.php:595
 msgid "Could not insert photo. query="
 msgstr "写真が挿入できません。query="
 
-#: wppa_upload.php:631
+#: wppa_upload.php:635
 msgid "ERROR: Resized or copied image could not be created."
 msgstr "【エラー】サイズを調整したか、または、コピーした画像を作成できませんでした。"
 
-#: wppa_upload.php:638
+#: wppa_upload.php:642
 msgid "ERROR: Unknown file or album."
 msgstr "【エラー】不明なファイルまたはアルバムです。"
 
-#: wppa_upload.php:705
+#: wppa_upload.php:715
 msgid "Error: unexpected fgets() fail in wppa_get_meta_data()."
 msgstr "エラー: wppa_get_meta_data() で fgets() が予期せず失敗しました。"
 
-#: wppa_upload.php:743
+#: wppa_upload.php:753
 msgid "Trying to fix "
 msgstr "ファイル拡張子が消失した"
 
-#: wppa_upload.php:774
+#: wppa_upload.php:784
 msgid "Fixed extension for "
 msgstr "次の拡張子を修復: "
 
-#: wppa_upload.php:777
+#: wppa_upload.php:787
 msgid "Unable to fix extension for "
 msgstr "次の拡張子の修復不可: "
 
-#: wppa_upload.php:781
+#: wppa_upload.php:791
 msgid "Unknown extension for photo "
 msgstr "次の写真の拡張子が不明:"
 
-#: wppa_upload.php:781
+#: wppa_upload.php:791
 msgid "Please change the name to something with the proper extension and try again!"
 msgstr "正しい拡張子を使った名称に変更し、もう一度お試しください。"
 
-#: wppa_upload.php:790
-#: wppa_upload.php:792
 #: wppa_upload.php:800
+#: wppa_upload.php:802
+#: wppa_upload.php:810
 msgid "Orphan Photos"
 msgstr "オーファンフォト"
 
-#: wppa_upload.php:806
+#: wppa_upload.php:816
 msgid "Could not recover orphanized photos."
 msgstr "オーファンフォトは回復できませんでした。"
 
-#: wppa_upload.php:812
-#: wppa_upload.php:815
-#: wppa_upload.php:818
+#: wppa_upload.php:822
+#: wppa_upload.php:825
+#: wppa_upload.php:828
 msgid "Database fixed."
 msgstr "データベースを修復しました。"
 
-#: wppa_upload.php:812
+#: wppa_upload.php:822
 msgid "orphanized photos recovered."
 msgstr "オーファンフォトを回復しました。"
 
-#: wppa_upload.php:815
+#: wppa_upload.php:825
 msgid "invalid entries removed:"
 msgstr "件の不正なエントリを削除しました: "
 
-#: wppa_upload.php:818
+#: wppa_upload.php:828
 msgid "missing file extensions recovered."
 msgstr "件の消失したファイル拡張子を回復しました。"
 
-#: wppa_upload.php:836
+#: wppa_upload.php:846
 msgid "The uploads directory does not exist, please do a regular WP upload first."
 msgstr "「uploads」ディレクトリが存在しません。まず最初に通常のアップロード方法をお試しください。"
 
-#: wppa_upload.php:841
+#: wppa_upload.php:851
 msgid "Successfully created uploads directory."
 msgstr "アップロード用ディレクトリを作成しました。"
 
-#: wppa_upload.php:850
+#: wppa_upload.php:860
 msgid "Could not create the wppa directory."
 msgstr "「wppa」ディレクトリは作成できませんでした。"
 
-#: wppa_upload.php:855
+#: wppa_upload.php:865
 msgid "Successfully created wppa directory."
 msgstr "wppa用ディレクトリを作成しました。"
 
-#: wppa_upload.php:864
+#: wppa_upload.php:874
 msgid "Could not create the wppa thumbs directory."
 msgstr "「wppa/thumbs」ディレクトリは作成できませんでした。"
 
-#: wppa_upload.php:869
+#: wppa_upload.php:879
 msgid "Successfully created wppa thumbs directory."
 msgstr "wppaの「サムネイル」ディレクトリを作成しました。"
 
-#: wppa_upload.php:878
+#: wppa_upload.php:888
 msgid "Unable to create depot directory"
 msgstr "ディレクトリが作成できません"
 
-#: wppa_upload.php:883
+#: wppa_upload.php:893
 msgid "Successfully created wppa master depot directory."
 msgstr "wppaの「マスターデポ」ディレクトリを作成しました。"
 
-#: wppa_upload.php:892
+#: wppa_upload.php:902
 msgid "Unable to create user depot directory"
 msgstr "ユーザ用「デポ」ディレクトリは作成できませんでした。"
 
-#: wppa_upload.php:897
+#: wppa_upload.php:907
 msgid "Successfully created wppa user depot directory."
 msgstr "wppaのユーザ用「デポ」ディレクトリを作成しました。"
 
-#: wppa_upload.php:954
+#: wppa_upload.php:964
 #, php-format
 msgid "File %s is of an unsupported filetype and has been removed."
 msgstr ""
 
-#: wppa_upload.php:985
+#: wppa_upload.php:995
 msgid "extracted."
 msgstr "抽出完了。"
 
-#: wppa_upload.php:988
+#: wppa_upload.php:998
 msgid "Failed to extract"
 msgstr "抽出失敗"
 
@@ -2579,11 +3512,11 @@ msgid "WPPA+ Photo Of The Day"
 msgstr "フォトアルバムの本日の写真"
 
 #: wppa_widget.php:14
-#: wppa_widget.php:165
+#: wppa_widget.php:135
 msgid "Photo Of The Day"
 msgstr "本日の写真"
 
-#: wppa_widget.php:170
+#: wppa_widget.php:139
 msgid "You can set the content and the behaviour of this widget in the <b>Photo Albums -> Sidebar Widget</b> admin page."
 msgstr "このウィジェットの内容と動作は、<b>フォトアルバム -> サイドバーウィジェット</b>管理ページで設定できます。"
 
@@ -2608,9 +3541,9 @@ msgstr "WPフォトアルバムプラスのサイドバーウィジェットの�
 msgid "Widget Title:"
 msgstr "ウィジェットのタイトル:"
 
-#: wppa_widgetadmin.php:74
-msgid "Photo of the day"
-msgstr "本日の写真:"
+#: wppa_widgetadmin.php:75
+msgid "Enter/modify the title for the widget. This is a default and can be overriden at widget activation."
+msgstr "ウィジェットのタイトルを入力／変更してください。入力値はデフォルトとしてウィジェット有効時に適用されます。"
 
 #: wppa_widgetadmin.php:80
 msgid "Widget Photo Width:"
@@ -2686,51 +3619,35 @@ msgstr "週。"
 msgid "Select how the widget should display."
 msgstr "ウィジェットの表示方法を選択してください。"
 
-#: wppa_widgetadmin.php:161
-msgid "--- url ---"
-msgstr "--- url ---"
+#: wppa_widgetadmin.php:148
+msgid "Links are set on the <b>Photo Albums -> Settings</b> screen."
+msgstr ""
 
-#: wppa_widgetadmin.php:165
-msgid "the content of the album as thumnails."
-msgstr "アルバムの内容をサムネイルで"
-
-#: wppa_widgetadmin.php:169
-msgid "Select the page the photo links to."
-msgstr "写真のリンク先ページを選択してください。"
-
-#: wppa_widgetadmin.php:169
-msgid "Select --- url --- to enter a custom link."
-msgstr "カスタムリンク先を指定するには、「--- url ---」を選択してください。"
-
-#: wppa_widgetadmin.php:177
-msgid "Custom link:"
-msgstr "カスタムリンク:"
-
-#: wppa_widgetadmin.php:181
+#: wppa_widgetadmin.php:159
 msgid "Type the title here"
 msgstr "タイトルを入力してください"
 
-#: wppa_widgetadmin.php:182
+#: wppa_widgetadmin.php:160
 msgid "Url:"
 msgstr "URL:"
 
-#: wppa_widgetadmin.php:183
+#: wppa_widgetadmin.php:161
 msgid "Type your custom url here"
 msgstr "カスタムURLを入力してください"
 
-#: wppa_widgetadmin.php:184
+#: wppa_widgetadmin.php:162
 msgid "Enter the title and the url. Do'nt forget the HTTP://"
 msgstr "タイトルとURlを入力してください。HTTP://をお忘れなく"
 
-#: wppa_widgetadmin.php:190
+#: wppa_widgetadmin.php:169
 msgid "Subtitle:"
 msgstr "サブタイトル:"
 
-#: wppa_widgetadmin.php:196
+#: wppa_widgetadmin.php:175
 msgid "Photo Name"
 msgstr "写真の名称"
 
-#: wppa_widgetadmin.php:199
+#: wppa_widgetadmin.php:178
 msgid "Select the content of the subtitle."
 msgstr "サブタイトルの内容を選択してください。"
 
@@ -2753,6 +3670,142 @@ msgstr "- アルバムのうち - セパレート - 以外全て -"
 #: theme/photo-album-page.php:33
 msgid "Pages:"
 msgstr "ページ:"
+
+#~ msgid "Order:"
+#~ msgstr "順番:"
+
+#~ msgid "General settings:"
+#~ msgstr "一般設定:"
+
+#~ msgid "Full Size:"
+#~ msgstr "フルサイズ:"
+
+#~ msgid "Full-size & Slideshow:"
+#~ msgstr "フルサイズとスライドショー:"
+
+#~ msgid "Horizontal alignment:"
+#~ msgstr "水平方向の位置:"
+
+#~ msgid "Name and description:"
+#~ msgstr "名称と説明:"
+
+#~ msgid ""
+#~ "If checked: display navigation bars and/or a filmstrip over and under the "
+#~ "full-size images and slideshow."
+#~ msgstr ""
+#~ "チェックすると、ナビゲーションバーおよび／またはフィルムストリップがフルサ"
+#~ "イズ画像上とスライドショー上またはそれらの下に表示されます。"
+
+#~ msgid "Please supply additional settings for the rating system."
+#~ msgstr "投票システムに適用する設定を選んでください。"
+
+#~ msgid "Top Ten Rated Photos"
+#~ msgstr "評価の高い写真トップ10"
+
+#~ msgid "Widget thumbnail size:"
+#~ msgstr "ウィジェットのサムネイルサイズ:"
+
+#~ msgid "Display type:"
+#~ msgstr "表示するタイプ:"
+
+#~ msgid "pixels, Height:"
+#~ msgstr "ピクセル 高さ:"
+
+#~ msgid "pixels, Spacing:"
+#~ msgstr "ピクセル 余白:"
+
+#~ msgid "this is a minimum. Space them equally."
+#~ msgstr "最小にします。全て同じ間隔にする。"
+
+#~ msgid "Apply popup effect:"
+#~ msgstr "ポップアップの効果の適用:"
+
+#~ msgid "Photo rating:"
+#~ msgstr "写真評価:"
+
+#~ msgid "Album covers:"
+#~ msgstr "アルバムのカバー:"
+
+#~ msgid "Coverphoto Size:"
+#~ msgstr "カバーフォトのサイズ:"
+
+#~ msgid "Order settings:"
+#~ msgstr "順番の設定:"
+
+#~ msgid "Appearance:"
+#~ msgstr "外観:"
+
+#~ msgid "Explanation:"
+#~ msgstr "説明:"
+
+#~ msgid ""
+#~ "The settings in this chapter may be left blank. When blank, the theme's "
+#~ "defaults are used or the settings in wppa_style.css."
+#~ msgstr ""
+#~ "この章の設定はブランクのままでも構いません。ブランクのままにした場合は、"
+#~ "テーマのデフォルトまたはwppa_style.cssの設定が適用されます。"
+
+#~ msgid ""
+#~ "It is strongly recommended that you try these settings to achieve your "
+#~ "desired appearance before editing the css file."
+#~ msgstr ""
+#~ "外見を自分の好みにするには、cssファイルを編集する前に、この章の設定を試し"
+#~ "てみることを強くお勧めします。"
+
+#~ msgid ""
+#~ "Note: these settings - if not blank - have precednce over css settings or "
+#~ "any hard coded attributes."
+#~ msgstr ""
+#~ "注意: この章の設定（ブランクにしなかった場合）は、cssの設定やハードコー"
+#~ "ディングされた属性よりも優先されます。"
+
+#~ msgid ""
+#~ "The css classes that these settings act upon are indicated in the "
+#~ "descriptions as follows (for example 'wppa-class'):"
+#~ msgstr ""
+#~ "この章の設定が適用されるcssクラスは以下の説明を参照してください "
+#~ "(例：'wppa-class'):"
+
+#~ msgid "Borders:"
+#~ msgstr "ボーダー:"
+
+#~ msgid "Default text color:"
+#~ msgstr "デフォルトのテキスト色:"
+
+#~ msgid "Color:"
+#~ msgstr "色:"
+
+#~ msgid "Enter your sites default text color."
+#~ msgstr "サイトのデフォルトのテキスト色を入力してください。"
+
+#~ msgid "Access settings:"
+#~ msgstr "アクセス権の設定"
+
+#~ msgid ""
+#~ "Here you can set the capabilities that are specific for <strong>WPPA+.</"
+#~ "strong>"
+#~ msgstr ""
+#~ "ここでは、<strong>WPフォトアルバムプラス</stron>に特化した権限が設定できま"
+#~ "す。"
+
+#~ msgid "Sidebar Access Level:"
+#~ msgstr "サイドバーアクセス権:"
+
+#~ msgid ""
+#~ "NOTE: Accessing this page - WP Photo Album Plus Settings - is always "
+#~ "priviledged to Administrators."
+#~ msgstr ""
+#~ "注意: このページ - WPフォトアルバムプラスの設定 - へのアクセスは、いかなる"
+#~ "場合も管理者に限定されます。"
+
+#~ msgid "--- url ---"
+#~ msgstr "--- url ---"
+
+#~ msgid "Select --- url --- to enter a custom link."
+#~ msgstr "カスタムリンク先を指定するには、「--- url ---」を選択してください。"
+
+#~ msgid "Custom link:"
+#~ msgstr "カスタムリンク:"
 
 #~ msgid "No album defined yet."
 #~ msgstr "アルバムが定義されていません。"
@@ -2837,17 +3890,11 @@ msgstr "ページ:"
 #~ msgstr ""
 #~ "あるいは、アルバムを表示する基本のページをそのまま利用しても構いません。"
 
-#~ msgid "Display name and description under thumbnails."
-#~ msgstr "サムネイルの下に表示する名称と説明。"
-
 #~ msgid "extremely slow"
 #~ msgstr "非常に遅い"
 
 #~ msgid "This is usually the same as the Full Size, but it may differ."
 #~ msgstr "通常、フルサイズと同じはずですが、たまに異なることがあります。"
-
-#~ msgid "pixels wide or high, whichever is the largest."
-#~ msgstr "ピクセル（幅または高さ、いずれか大きい方）"
 
 #~ msgid "of"
 #~ msgstr "/"
@@ -2924,17 +3971,11 @@ msgstr "ページ:"
 #~ msgid "Page is not available."
 #~ msgstr "ページが利用できません。"
 
-#~ msgid "View the cover photo"
-#~ msgstr "カバーフォトの閲覧"
-
 #~ msgid "s"
 #~ msgstr "s"
 
 #~ msgid "View the album"
 #~ msgstr "アルバムの閲覧"
-
-#~ msgid "Slideshow"
-#~ msgstr "スライドショー"
 
 #~ msgid "View"
 #~ msgstr "閲覧"
@@ -2945,14 +3986,8 @@ msgstr "ページ:"
 #~ msgid "and"
 #~ msgstr "および"
 
-#~ msgid "photos"
-#~ msgstr "写真"
-
 #~ msgid "Slower"
 #~ msgstr "遅く"
-
-#~ msgid "Start"
-#~ msgstr "開始"
 
 #~ msgid "Faster"
 #~ msgstr "速く"
@@ -2972,9 +4007,6 @@ msgstr "ページ:"
 
 #~ msgid "HERE"
 #~ msgstr "ここをクリック"
-
-#~ msgid "Fullsize images:"
-#~ msgstr "フルサイズの画像:"
 
 #~ msgid ""
 #~ "The size of the full images is controled with html, the photo itself will "
@@ -3095,9 +4127,6 @@ msgstr "ページ:"
 #~ msgstr ""
 #~ "たとえば「フォトギャラリー」のページで表示されるアルバムのうちのひとつから"
 
-#~ msgid "\"cover\""
-#~ msgstr "「カバー」"
-
 #~ msgid ""
 #~ "of the album, i.e. like one of the albums in the \"Photo Gallery\" as "
 #~ "used above, add (instead of \"%%album=...\") a second line like this:"
@@ -3189,9 +4218,6 @@ msgstr "ページ:"
 
 #~ msgid "File not found"
 #~ msgstr "ファイルが見当たりません"
-
-#~ msgid "Home"
-#~ msgstr "ホーム"
 
 #~ msgid "Not implemented yet (5)"
 #~ msgstr "まだ実行されていません (5)"

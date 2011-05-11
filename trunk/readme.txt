@@ -2,12 +2,12 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate
-Version: 3.0.1
+Version: 3.0.2
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
-Requires at least: 2.8
-Tested up to: 3.0.5
+Requires at least: 3.0
+Tested up to: 3.1.1
 
 This plugin is designed to easily manage and display your photo albums and slideshows within your WordPress site. 
 Additionally there are four widgets: Photo of the day, a Search Photos widget, a Top Ten Rated photo widget and a Mini slideshow widget.
@@ -48,7 +48,7 @@ You can find the plugin admin section under Menu Photo Albums on the admin scree
 == Installation ==
 
 = Upgrade notice =
-This version is: Major rev# 2, Minor rev# 4, Fix rev# 4.
+This version is: Major rev# 3, Minor rev# 0, Fix rev# 2, Hotfix rev# 000.
 If you are upgrading from a previous Major or Minor version, note that:
 * If you modified wppa_theme.php and/or wppa_style.css, you will have to use the newly supplied versions. The previous versions are NOT compatible.
 * If you set the userlevel to anything else than 'administrator' you may have to set it again. Note that changing the userlevel can be done by the administrator only!
@@ -103,6 +103,24 @@ If you want to translate the frontend only (the theme part, only approx. 50 word
 WordPress developers Codex page and more specifically at the section about themes and plugins.
 
 == Changelog ==
+
+= 3.0.2 =
+
+= New features = 
+
+* The Settings page has been rewritten to make it more user friendly. 
+All settinges are grouped into tables, and are identifiable by its table number and item number.
+* Increased link configurability. You can link mphotos and thumbnails now also to the plain file. 
+You can define photo specific links: All photos can have a unique link url and title. 
+You can choose to use that link in all 5 different places where a photo link can be configured. 
+Please check the link settings in the Settings screen, Table VI. You might want to change something there.
+* Additionally to the family and size you can now also set the colors for the fonts used in wppa+.
+
+= Bug fixes =
+
+* Includes all hot-fixes since 3.0.1.000.
+* The mouseover effect now also works on TopTen thumbnail images.
+* Fix for Column width = auto. This works now the same like %%size=auto%%
 
 = 3.0.1 =
 

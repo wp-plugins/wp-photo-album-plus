@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 * gp admin functions
-* version 3.0.1
+* version 3.0.2
 */
 
 // Set default option values
@@ -47,17 +47,23 @@ global $wppa_defaults;
 						'wppa_bradius' => '6',
 						'wppa_fontfamily_thumb' => '',
 						'wppa_fontsize_thumb' => '',
+						'wppa_fontcolor_thumb' => '',
 						'wppa_fontfamily_box' => '',
 						'wppa_fontsize_box' => '',
+						'wppa_fontcolor_box' => '',
 						'wppa_fontfamily_nav' => '',
 						'wppa_fontsize_nav' => '',
+						'wppa_fontcolor_nav' => '',
 						'wppa_fontfamily_title' => '',
 						'wppa_fontsize_title' => '',
+						'wppa_fontcolor_title' => '',
 						'wppa_fontfamily_fulldesc' => '',
 						'wppa_fontsize_fulldesc' => '',
+						'wppa_fontcolor_fulldesc' => '',
 						'wppa_fontfamily_fulltitle' => '',
 						'wppa_fontsize_fulltitle' => '',
-						'wppa_black' => 'black',
+						'wppa_fontcolor_fulltitle' => '',
+//						'wppa_black' => 'black',
 						'wppa_arrow_color' => 'black',
 						'wppa_widget_padding_top' => '5',
 						'wppa_widget_padding_left' => '5',
@@ -69,7 +75,7 @@ global $wppa_defaults;
 						'wppa_thumb_auto' => 'yes',
 						'wppa_coverphoto_left' => 'no',
 						'wppa_thumbphoto_left' => 'no',
-						'wppa_hide_slideshow' => 'no',
+//						'wppa_hide_slideshow' => 'no',
 						'wppa_enable_slideshow' => 'yes',
 //						'wppa_no_thumb_links' => 'no',
 						'wppa_thumb_text_name' => 'yes',
@@ -103,7 +109,19 @@ global $wppa_defaults;
 						'wppa_fadein_after_fadeout' => 'no',
 						'wppa_widget_linkpage' => '0',
 						'wppa_widget_linktype' => 'album',
-						'wppa_topten_widget_linkpage' => '0'
+						'wppa_topten_widget_linkpage' => '0',
+						'wppa_topten_widget_linktype' => 'photo',
+						'wppa_slideonly_widget_linkpage' => '0',
+						'wppa_slideonly_widget_linktype' => 'widget',
+						'wppa_search_linkpage' => '0',
+						'wppa_rating_clear' => 'no',
+						'wppa_chmod' => '0',
+						'wppa_owner_only' => 'no',
+						'wppa_set_access_by' => 'me',
+						'wppa_accesslevel' => 'administrator',
+						'wppa_accesslevel_upload' => 'administrator',
+						'wppa_accesslevel_sidebar' => 'administrator',
+						'wppa_charset' => ''
 						);
 	
 	array_walk($wppa_defaults, 'wppa_set_default', $force);
@@ -129,7 +147,7 @@ function wppa_regenerate_thumbs() {
 	
     $start = get_option('wppa_lastthumb', '-1');
 
-	$photos = $wpdb->get_results($wpdb->prepare('SELECT * FROM `' . PHOTO_TABLE . '` WHERE `id` > %d ORDER BY `id`', $start), 'ARRAY_A');
+	$photos = $wpdb->get_results($wpdb->prepare('SELECT * FROM `' . WPPA_PHOTOS . '` WHERE `id` > %d ORDER BY `id`', $start), 'ARRAY_A');
 	
 	if (!empty($photos)) {
 		foreach ($photos as $photo) {
@@ -381,14 +399,14 @@ global $current_user;
 	if ($alb == 'any') {
 		// Administrator has always access OR If all albums are public
 		if (current_user_can('administrator') || get_option('wppa_owner_only', 'no') == 'no') {
-			$albs = $wpdb->get_results('SELECT id FROM '.ALBUM_TABLE);
+			$albs = $wpdb->get_results('SELECT id FROM '.WPPA_ALBUMS);
 			if ($albs) return true;
 			else return false;	// No albums in system
 		}
 		else {
 			get_currentuserinfo();
 			$user = $current_user->user_login;
-			$albs = $wpdb->get_results('SELECT id FROM '.ALBUM_TABLE.' WHERE owner = "'.$user.'"');
+			$albs = $wpdb->get_results('SELECT id FROM '.WPPA_ALBUMS.' WHERE owner = "'.$user.'"');
 			if ($albs) return true;
 			else return false;	// No albums for user accessable
 		}
@@ -406,7 +424,7 @@ global $current_user;
 			$owner = $alb['owner'];
 		}
 		elseif (is_numeric($alb)) {
-			$owner = $wpdb->get_var('SELECT owner FROM '.ALBUM_TABLE.' WHERE id = '.$alb);
+			$owner = $wpdb->get_var('SELECT owner FROM '.WPPA_ALBUMS.' WHERE id = '.$alb);
 		}
 		// Find the user
 		get_currentuserinfo();
@@ -480,7 +498,7 @@ global $wpdb;
 	
 	$err = '2';
 	// Find photo details
-	$photo = $wpdb->get_row('SELECT * FROM '.PHOTO_TABLE.' WHERE id = '.$photoid, 'ARRAY_A');
+	$photo = $wpdb->get_row('SELECT * FROM '.WPPA_PHOTOS.' WHERE id = '.$photoid, 'ARRAY_A');
 	if (!$photo) return $err;
 	$id = '0';
 	$album = $albumto;
@@ -493,7 +511,7 @@ global $wpdb;
 	
 	$err = '3';
 	// Make new db table entry
-	$query = $wpdb->prepare('INSERT INTO `' . PHOTO_TABLE . '` (`id`, `album`, `ext`, `name`, `p_order`, `description`, `mean_rating`) VALUES (%d, %d, %s, %s, %d, %s, \'\')', $id, $album, $ext, $name, $porder, $desc);
+	$query = $wpdb->prepare('INSERT INTO `' . WPPA_PHOTOS . '` (`id`, `album`, `ext`, `name`, `p_order`, `description`, `mean_rating`) VALUES (%d, %d, %s, %s, %d, %s, \'\')', $id, $album, $ext, $name, $porder, $desc);
 	if ($wpdb->query($query) === false) return $err;
 
 	$err = '4';
@@ -521,7 +539,7 @@ global $wpdb;
 	
 	// Get the ext
 	$err = '2';
-	$ext = $wpdb->get_var('SELECT ext FROM '.PHOTO_TABLE.' WHERE id = '.$id);
+	$ext = $wpdb->get_var('SELECT ext FROM '.WPPA_PHOTOS.' WHERE id = '.$id);
 	if (!$ext) return $err;
 	
 	// Get the image

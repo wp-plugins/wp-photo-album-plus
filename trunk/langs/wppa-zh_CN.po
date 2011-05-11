@@ -1,9 +1,14 @@
+# Translation of the WordPress plugin   by .
+# Copyright (C) 2010
+# This file is distributed under the same license as the  package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2010.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: wp-photo-album-plus\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-05-10 13:32+0100\n"
-"PO-Revision-Date: 2011-05-10 13:32+0100\n"
+"POT-Creation-Date: 2011-05-10 13:35+0100\n"
+"PO-Revision-Date: 2011-05-11 13:39+0100\n"
 "Last-Translator: J.N. Breetvelt <OpaJaap@OpaJaap.nl>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -11,170 +16,221 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-KeywordsList: __;_e\n"
 "X-Poedit-Basepath: ..\n"
-"X-Poedit-Language: Dutch\n"
-"X-Poedit-Country: NETHERLANDS\n"
-"X-Poedit-SearchPath-0: theme\n"
-"X-Poedit-SearchPath-1: .\n"
-
-#: theme/photo-album-page.php:33
-msgid "Pages:"
-msgstr "Pagina's:"
-
-#: theme/photo-album-page.php:34
-#: wppa_albumadmin.php:491
-#: wppa_albumadmin.php:508
-msgid "Edit"
-msgstr "Bewerk"
+"X-Poedit-Country: CHINA\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPath-1: theme\n"
 
 #: wppa.php:155
+#: wppa_settings.php:1203
+#, fuzzy
 msgid "Photo Albums"
-msgstr "Foto Albums"
+msgstr "相册"
 
 #: wppa.php:157
+#, fuzzy
 msgid "Upload Photos"
-msgstr "Foto's Uploaden"
+msgstr "上传照片"
 
 #: wppa.php:158
+#, fuzzy
 msgid "Import Photos"
-msgstr "Foto's Importeren"
+msgstr "导入照片"
 
 #: wppa.php:159
 #: wppa_export.php:40
+#, fuzzy
 msgid "Export Photos"
-msgstr "Foto's Exporteren"
+msgstr "导出照片"
 
 #: wppa.php:160
+#, fuzzy
 msgid "Settings"
-msgstr "Instellingen"
+msgstr "设置"
 
 #: wppa.php:161
+#, fuzzy
 msgid "Photo of the day Widget"
-msgstr "Foto van de dag Widget"
+msgstr "相册"
 
 #: wppa.php:161
+#, fuzzy
 msgid "Photo of the day"
-msgstr "Foto van de dag"
+msgstr "相册"
 
 #: wppa.php:162
+#, fuzzy
 msgid "Help &amp; Info"
-msgstr "Help en Info"
+msgstr "帮助/信息"
 
 #: wppa_adminfunctions.php:184
+#, fuzzy
 msgid "The wppa database tables are not yet at the required revision level."
-msgstr "De wppa database tabellen zijn nog niet op het benodigde reviesie nummer."
+msgstr "数据库表的wppa还未按规定的修改的水平。"
 
 #: wppa_adminfunctions.php:184
 #: wppa_adminfunctions.php:188
+#, fuzzy
 msgid "Current="
-msgstr "Huidig="
+msgstr "[当前修订版本]"
 
 #: wppa_adminfunctions.php:184
 #: wppa_adminfunctions.php:188
+#, fuzzy
 msgid "New="
-msgstr "Nieuw="
+msgstr "更新"
 
 #: wppa_adminfunctions.php:187
+#, fuzzy
 msgid "PLEASE DE-ACTIVATE the plugin WP-PHOTO-ALBUM-PLUS and ACTIVATE AGAIN before you continue!"
-msgstr "AUB DE-ACTIVEER de plugin WP=PHOTO-ALBUM-PLUS en ACTIVEER OPNIEUW voordat u doorgaat!"
+msgstr "请WP-PHOTO-ALBUM-PLUS不只插件和激活之前再你继续!"
 
 #: wppa_adminfunctions.php:188
+#, fuzzy
 msgid "Failed to fix this."
-msgstr "Kon dit niet herstellen."
+msgstr "回复这条评论"
 
 #: wppa_adminfunctions.php:192
+#, fuzzy
 msgid "I fixed this for you......"
-msgstr "Dat heb ik voor u gerepareerd......"
+msgstr "在这个站点注册"
 
 #: wppa_adminfunctions.php:198
+#, fuzzy
 msgid "IMPORTANT UPGRADE NOTICE"
-msgstr "BELANGRIJKE MEDEDELING INZAKE UPDATE"
+msgstr "重要升级通知"
 
 #: wppa_adminfunctions.php:199
+#, fuzzy
 msgid "Please CHECK your customized WPPA_STYLE.CSS file against the newly supplied one. You may wish to add or modify some attributes. Be aware of the fact that most settings can now be set in the admin settings page."
-msgstr "VERGELIJK a.u.b uw gemodificeerde WPPA_STYLE.CSS met de nieuwe versie. U zou enkele attributen kunnen willen aanvullen en/of wijzigen. De meeste instellingen zijn thans te doen in de Foto Albums Instellingen menu pagina."
+msgstr "请检查您的定制WPPA_STYLE。根据新提供的CSS文件。你可能想要添加或修改某些属性。是意识到一个事实:大多数设定现在可以被设置在管理员设置页。"
 
 #: wppa_adminfunctions.php:200
+#, fuzzy
 msgid "Please REPLACE your customized WPPA_THEME.PHP file by the newly supplied one, or just remove it from your theme directory. You may modify it later if you wish. Your current customized version is NOT compatible with this version of the plugin software."
-msgstr "VERVANG a.u.b. uw gewijzigde WPPA_THEME.PHP door de nieuwe versie, of verwijder deze uit uw thema directory. U kunt later eventueel een gemodificeerde versie herplaatse. Uw huidige aangepaste versie is NIET compatibel met deze versie van de plugin software."
+msgstr "请您定制WPPA_THEME取代。PHP文件新提供的一个,或者只是把它从你的主题目录。如果以后你可以修改它,你的愿望。你目前的定制的版本是不兼容的这个版本插件软件。"
 
 #: wppa_adminfunctions.php:334
+#: wppa_settings.php:886
+#: wppa_settings.php:902
+#, fuzzy
 msgid "Order #"
-msgstr "Volgorde nummer:"
+msgstr "顺序"
 
 #: wppa_adminfunctions.php:335
 #: wppa_albumadmin.php:483
+#: wppa_settings.php:282
+#: wppa_settings.php:466
+#: wppa_settings.php:482
+#: wppa_settings.php:621
+#: wppa_settings.php:637
+#: wppa_settings.php:687
+#: wppa_settings.php:704
+#: wppa_settings.php:886
+#: wppa_settings.php:902
+#: wppa_settings.php:920
+#: wppa_settings.php:937
+#: wppa_settings.php:1017
+#: wppa_settings.php:1035
+#: wppa_settings.php:1147
+#: wppa_settings.php:1164
+#: wppa_settings.php:1235
+#: wppa_settings.php:1251
+#: wppa_settings.php:1281
+#: wppa_settings.php:1297
+#: wppa_settings.php:1351
+#, fuzzy
 msgid "Name"
-msgstr "Naam"
+msgstr "名称"
 
 #: wppa_adminfunctions.php:336
+#: wppa_settings.php:886
+#: wppa_settings.php:902
+#, fuzzy
 msgid "Random"
-msgstr "Willekeurig"
+msgstr "随机"
 
 #: wppa_adminfunctions.php:374
 #: wppa_adminfunctions.php:378
+#, fuzzy
 msgid "Please supply a numeric value greater than or equal to"
-msgstr "Geef a.u.b. een getal op groter of gelijk aan"
+msgstr "Please supply a numeric value greater than or equal to"
 
 #: wppa_adminfunctions.php:374
 #: wppa_adminfunctions.php:378
+#, fuzzy
 msgid "for"
-msgstr "voor"
+msgstr "for"
 
 #: wppa_adminfunctions.php:378
+#, fuzzy
 msgid "and less than or equal to"
-msgstr "en kleiner of gelijk aan"
+msgstr "与小于或等于"
 
 #: wppa_adminfunctions.php:488
+#, fuzzy
 msgid "Unsupported value in _wppa_chmod_ :"
-msgstr "Niet ondersteunde waarde in _wppa_chmod_ :"
+msgstr "在_wppa_chmod_支持的价值:"
 
 #: wppa_albumadmin.php:18
+#, fuzzy
 msgid "Warning:"
-msgstr "Waarschuwing:"
+msgstr "Warning:"
 
 #: wppa_albumadmin.php:18
+#, fuzzy
 msgid "The uploads directory does not exist or is not writable by the server. Please make sure that <tt>wp-content/uploads/</tt> is writeable by the server."
-msgstr "De map waar de foto's in moeten worden ge-upload bestaat niet of kan niet beschreven wordeb door de server. Zorg er voor dat <tt>wp-content/uploads/</tt> beschrijfbaar is door de server."
+msgstr "在上传目录不存在或不是可写的被服务器。请确保<tt> wp-content /上传/ </tt>是重写的服务器。"
 
 #: wppa_albumadmin.php:35
+#, fuzzy
 msgid "Photo Deleted."
-msgstr "Foto Verwijderd."
+msgstr "删除照片。"
 
 #: wppa_albumadmin.php:44
+#, fuzzy
 msgid "Fullsize image did not exist."
-msgstr "Fotobestand met volledige grootte was niet aanwezig."
+msgstr "全尺寸的形象是不存在的。"
 
 #: wppa_albumadmin.php:52
+#, fuzzy
 msgid "Thumbnail image did not exist."
-msgstr "Miniatuur fotobestand was niet aanwezig."
+msgstr "缩略图的形象是不存在的。"
 
 #: wppa_albumadmin.php:65
+#, fuzzy
 msgid "Photo copied"
-msgstr "Foto gecopiëerd"
+msgstr "照片复制"
 
 #: wppa_albumadmin.php:68
+#, fuzzy
 msgid "Unable to copy photo, error:"
-msgstr "Kan de foto niet copiëren, fout:"
+msgstr "无法复制照片、错误:"
 
 #: wppa_albumadmin.php:77
+#, fuzzy
 msgid "Photo rotated"
-msgstr "Foto gedraaid"
+msgstr "照片旋转"
 
 #: wppa_albumadmin.php:81
+#, fuzzy
 msgid "Unable to rotate photo, error:"
-msgstr "Kan de foto niet draaien, fout:"
+msgstr "不能够旋转照片、错误:"
 
 #: wppa_albumadmin.php:85
+#, fuzzy
 msgid "Internal fatal error while getting rotation data"
-msgstr "Interne fatale fout bij het bepalen van de rotatie gegevens"
+msgstr "内部致命错误而得到旋转的数据"
 
 #: wppa_albumadmin.php:93
+#, fuzzy
 msgid "Edit Album Information"
-msgstr "Album informate Bewerken"
+msgstr "编辑专辑信息"
 
 #: wppa_albumadmin.php:94
+#, fuzzy
 msgid "Album number:"
-msgstr "Album nummer:"
+msgstr "专辑号码:"
 
 #: wppa_albumadmin.php:103
 #: wppa_albumadmin.php:119
@@ -182,13 +238,15 @@ msgstr "Album nummer:"
 #: wppa_albumadmin.php:375
 #: wppa_albumadmin.php:639
 #: wppa_albumadmin.php:655
+#, fuzzy
 msgid "Name:"
-msgstr "Naam:"
+msgstr "名称："
 
 #: wppa_albumadmin.php:107
 #: wppa_albumadmin.php:125
+#, fuzzy
 msgid "Type the name of the album. Do not leave this empty."
-msgstr "Typ de naam van het album. Laat dit veld niet leeg."
+msgstr "这张专辑的类型的名字。不要离开这个空。"
 
 #: wppa_albumadmin.php:136
 #: wppa_albumadmin.php:152
@@ -196,1018 +254,1286 @@ msgstr "Typ de naam van het album. Laat dit veld niet leeg."
 #: wppa_albumadmin.php:412
 #: wppa_albumadmin.php:672
 #: wppa_albumadmin.php:687
+#, fuzzy
 msgid "Description:"
-msgstr "Beschrijving:"
+msgstr "描述:"
 
 #: wppa_albumadmin.php:140
 #: wppa_albumadmin.php:158
+#, fuzzy
 msgid "Enter / modify the description for this album."
-msgstr "Voer in of wijzig de beschrijving van dit album."
+msgstr "Enter / modify the description for this album."
 
 #: wppa_albumadmin.php:169
+#, fuzzy
 msgid "Owned by:"
-msgstr "Eigenaar:"
+msgstr "属于:"
 
 #: wppa_albumadmin.php:174
+#, fuzzy
 msgid "WARNING If you change the owner, you will no longer be able to modify this album and upload or import photos to it!"
-msgstr "WAARSCHUWING Als u de eigenaar wijzigt, kunt u dit album niet langer wijzigen of er foto's naar uploaden of importeren!"
+msgstr "如果你改变了业主的警告,你再也不能修改这张专辑并上传照片或进口到你这里来的人。"
 
 #: wppa_albumadmin.php:182
+#, fuzzy
 msgid "Sort order #:"
-msgstr "Volgorde nummer:"
+msgstr "排序:"
 
 #: wppa_albumadmin.php:188
+#, fuzzy
 msgid "Album order # has only effect if you set the album sort order method to <b>Order #</b> in the Photo Albums -> Settings screen."
-msgstr "Album volgorde nummer heeft alleen effect als u de volgorde methode op <b>Volgorde nummer</b> zet in het Foto Albums -> Instelllingen scherm."
+msgstr "专辑订单号只有效应如果您设置的专辑排序<b>方法订单号</b>在相册-设置屏幕。"
 
 #: wppa_albumadmin.php:191
+#, fuzzy
 msgid "If you want to sort the albums by order #, enter / modify the order number here."
-msgstr "Indien u de albums wilt rangschikken op volgorde nummer, voer dan hier het nummer in."
+msgstr "如果你想要解决这张唱片订单号,进入/修改订单号码在这里。"
 
 #: wppa_albumadmin.php:197
 #: wppa_albumadmin.php:440
+#, fuzzy
 msgid "Parent album:"
-msgstr "Moederalbum:"
+msgstr "家长专辑:"
 
 #: wppa_albumadmin.php:202
 #: wppa_albumadmin.php:444
+#, fuzzy
 msgid "If this is a sub album, select the album in which this album will appear."
-msgstr "Als dit een sub-album is, selecteer dan het album waar het in is opgenomen."
+msgstr "如果这是一个子专辑,该专辑在选择这张专辑将会出现。"
 
 #: wppa_albumadmin.php:210
+#, fuzzy
 msgid "Photo order:"
-msgstr "Foto volgorde:"
+msgstr "照片顺序为:"
 
 #: wppa_albumadmin.php:213
 #: wppa_albumadmin.php:452
+#: wppa_settings.php:781
+#: wppa_settings.php:802
+#, fuzzy
 msgid "--- default ---"
-msgstr "--- standaard ---"
+msgstr "--- 默认 ---"
 
 #: wppa_albumadmin.php:213
 #: wppa_albumadmin.php:452
+#: wppa_settings.php:902
+#, fuzzy
 msgid "Rating"
-msgstr "Waardering"
+msgstr "等级"
 
 #: wppa_albumadmin.php:215
+#, fuzzy
 msgid "Specify the way the photos should be ordered in this album."
-msgstr "Geef de foto sorteer methode op voor dit album."
+msgstr "Specify the way the photos should be ordered in this album."
 
 #: wppa_albumadmin.php:216
+#, fuzzy
 msgid "The default setting can be changed in the Options page."
-msgstr "De standaard sorteer methode kan op de Instellingen pagina gewijzigd worden."
+msgstr "The default setting can be changed in the Options page."
 
 #: wppa_albumadmin.php:223
+#, fuzzy
 msgid "Cover Photo:"
-msgstr "Omslag foto:"
+msgstr "封面图片:"
 
 #: wppa_albumadmin.php:227
+#, fuzzy
 msgid "Select the photo you want to appear on the cover of this album."
-msgstr "Selecteer de foto voor de omslag van het album."
+msgstr "选择你想要拍摄的影像出现在封面上的这张专辑。"
 
 #: wppa_albumadmin.php:233
+#: wppa_slideshow_widget.php:142
+#, fuzzy
 msgid "Link to:"
-msgstr "Link naar:"
+msgstr "链接到:"
 
 #: wppa_albumadmin.php:239
+#: wppa_settings.php:1579
+#, fuzzy
 msgid "There are no pages (yet) to link to."
-msgstr "Er zijn (nog) geen pagina's om naar te linken."
+msgstr "没有页面(然而),以连接到。"
 
 #: wppa_albumadmin.php:245
+#, fuzzy
 msgid "--- the album's content ---"
-msgstr "--- de inhoud van het album ---"
+msgstr "该专辑的内容"
 
 #: wppa_albumadmin.php:249
+#, fuzzy
 msgid "--- no link at all ---"
-msgstr "--- geen link ---"
+msgstr "（0 代表不评分。）"
 
 #: wppa_albumadmin.php:252
+#, fuzzy
 msgid "If you want, you can link the title and the coverphoto to a WP page in stead of the album's content. If so, select the page the cover photo links to."
-msgstr "Als u wilt kunt u de titel en de omslagfoto laten verwijzen naar een WP pagina in plaats van naar de inhoud van het album. Selecteer hiertoe desgewenst de pagina."
+msgstr "如果你愿意,你可以把名字和封面图片到页面代替白磷弹了整张专辑的内容。如果是这样的话,选择网页链接的封面图片。"
 
 #: wppa_albumadmin.php:261
+#, fuzzy
 msgid "Reset ratings:"
-msgstr "Verwijder waarderingen:"
+msgstr "重置评级:"
 
 #: wppa_albumadmin.php:265
+#, fuzzy
 msgid "WARNING: If checked, this will clear all ratings in this album!"
-msgstr "WAARSCHUWING: Indien aangevinkt worden alle waarderingen uit dit album gewist!"
+msgstr "警告:如果勾选此项,这将把所有评级在这张专辑中!"
 
 #: wppa_albumadmin.php:272
 #: wppa_albumadmin.php:276
 #: wppa_albumadmin.php:706
+#, fuzzy
 msgid "Save All Changes"
-msgstr "Alle wijzigingen opslaan"
+msgstr "保存更改"
 
 #: wppa_albumadmin.php:274
+#, fuzzy
 msgid "Manage Photos"
-msgstr "Foto's Beheren"
+msgstr "管理照片"
 
 #: wppa_albumadmin.php:293
+#, fuzzy
 msgid "Delete Album"
-msgstr "Album verwijderen"
+msgstr "删除专辑"
 
 #: wppa_albumadmin.php:295
 #: wppa_albumadmin.php:562
+#: wppa_slideshow_widget.php:122
+#, fuzzy
 msgid "Album:"
-msgstr "Album:"
+msgstr "专辑:"
 
 #: wppa_albumadmin.php:296
+#, fuzzy
 msgid "Are you sure you want to delete this album?"
-msgstr "Weet u zeker dat u dit album wilt verwijderen?"
+msgstr "你确定你要删除这张专辑?"
 
 #: wppa_albumadmin.php:297
+#, fuzzy
 msgid "Press Delete to continue, and Cancel to go back."
-msgstr "Klik Verwijder om door te gaan, of Annuleren om terug te gaan."
+msgstr "按下删除继续,并取消回去。"
 
 #: wppa_albumadmin.php:302
+#, fuzzy
 msgid "What would you like to do with photos currently in the album?"
-msgstr "Wat wilt u doen met foto's in dit album?"
+msgstr "你想要做什麽的照片当前在专辑吗?"
 
 #: wppa_albumadmin.php:303
 #: wppa_albumadmin.php:310
 #: wppa_albumadmin.php:492
 #: wppa_albumadmin.php:509
+#, fuzzy
 msgid "Delete"
-msgstr "Verwijder"
+msgstr "删除"
 
 #: wppa_albumadmin.php:304
+#, fuzzy
 msgid "Move to:"
-msgstr "Verplaatsen naar:"
+msgstr "移动到:"
 
 #: wppa_albumadmin.php:309
+#, fuzzy
 msgid "Cancel"
-msgstr "Annuleer"
+msgstr "取消"
 
 #: wppa_albumadmin.php:342
+#, fuzzy
 msgid "Manage Albums"
-msgstr "Albums Beheren"
+msgstr "管理专辑"
 
 #: wppa_albumadmin.php:350
+#, fuzzy
 msgid "Create New Album"
-msgstr "Nieuw Album Aanmaken"
+msgstr "创造新专辑"
 
 #: wppa_albumadmin.php:362
 #: wppa_albumadmin.php:381
+#, fuzzy
 msgid "Type the name of the new album. Do not leave this empty."
-msgstr "Typ de naam van het nieuwe album. Laat dit veld niet leeg."
+msgstr "类型名称的新专辑。不要留空。"
 
 #: wppa_albumadmin.php:399
 #: wppa_albumadmin.php:418
+#, fuzzy
 msgid "Enter the description for this album."
-msgstr "Voer de beschrijving van dit album in."
+msgstr "在这张专辑里进入描述。"
 
 #: wppa_albumadmin.php:431
+#, fuzzy
 msgid "Order #:"
-msgstr "Volgorde nummer:"
+msgstr "编号："
 
 #: wppa_albumadmin.php:435
+#, fuzzy
 msgid "If you want to sort the albums by order #, enter the order number here."
-msgstr "Indien u de albums wilt rangschikken op volgorde nummer, voer dan hier het nummer in."
+msgstr "如果你想要解决这张唱片,进入你们的编号号码在这里。"
 
 #: wppa_albumadmin.php:449
+#, fuzzy
 msgid "Order photos by:"
-msgstr "Volgorde foto's op:"
+msgstr "照片排序："
 
 #: wppa_albumadmin.php:453
+#, fuzzy
 msgid "If you want to sort the photos in this album different from the system setting, select the order method here."
-msgstr "Als u de volgorde van foto's in dit album anders wilt dan de standaard volgorde, kies dan hier de gewenste methode."
+msgstr "如果你想在这张专辑中排序的照片,从不同的系统设置,选择顺序方法在这里。"
 
 #: wppa_albumadmin.php:458
+#, fuzzy
 msgid "Create Album!"
-msgstr "Maak Album!"
+msgstr "创建专辑!"
 
 #: wppa_albumadmin.php:461
+#, fuzzy
 msgid "You can change all these settings later by clicking the \"Edit\" link in the table above."
-msgstr "U kunt al deze instellingen later veranderen door op \"Bewerk\" te klikken in bovenstaande tabel."
+msgstr "你可以改变所有这些背景后来通过点击\"编辑\"链接,在桌子上面。"
 
 #: wppa_albumadmin.php:484
+#: wppa_settings.php:283
+#: wppa_settings.php:467
+#: wppa_settings.php:483
+#: wppa_settings.php:622
+#: wppa_settings.php:638
+#: wppa_settings.php:688
+#: wppa_settings.php:705
+#: wppa_settings.php:921
+#: wppa_settings.php:938
+#: wppa_settings.php:1018
+#: wppa_settings.php:1036
+#: wppa_settings.php:1148
+#: wppa_settings.php:1165
+#: wppa_settings.php:1236
+#: wppa_settings.php:1252
+#: wppa_settings.php:1282
+#: wppa_settings.php:1298
+#: wppa_settings.php:1352
+#, fuzzy
 msgid "Description"
-msgstr "Beschrijving"
+msgstr "描述"
 
 #: wppa_albumadmin.php:485
+#, fuzzy
 msgid "ID"
 msgstr "ID"
 
 #: wppa_albumadmin.php:487
+#, fuzzy
 msgid "Owner"
-msgstr "Eigenaar"
+msgstr "所有者"
 
 #: wppa_albumadmin.php:489
+#, fuzzy
 msgid "Order"
-msgstr "Volgorde"
+msgstr "排列"
 
 #: wppa_albumadmin.php:490
+#, fuzzy
 msgid "Parent"
-msgstr "Moeder"
+msgstr "父级"
+
+#: wppa_albumadmin.php:491
+#: wppa_albumadmin.php:508
+#, fuzzy
+msgid "Edit"
+msgstr "编辑"
 
 #: wppa_albumadmin.php:520
+#, fuzzy
 msgid "No albums yet."
-msgstr "Er zijn nog geen albums."
+msgstr "没有专辑。"
 
 #: wppa_albumadmin.php:533
+#, fuzzy
 msgid "No photos yet in this album."
-msgstr "Nog geen foto's in dit album."
+msgstr "这张专辑中没有任何相片。"
 
 #: wppa_albumadmin.php:546
+#, fuzzy
 msgid "Preview:"
-msgstr "Voorbeeld:"
+msgstr "预览:"
 
 #: wppa_albumadmin.php:548
 #: wppa_albumadmin.php:550
+#, fuzzy
 msgid "Are you sure you want to rotate this photo?"
-msgstr "Weet u zeker dat u deze foto wilt draaien?"
+msgstr "你确定你要旋转这张照片吗?"
 
 #: wppa_albumadmin.php:548
+#, fuzzy
 msgid "Rotate left"
-msgstr "Linksom draaien"
+msgstr "左旋转"
 
 #: wppa_albumadmin.php:550
+#, fuzzy
 msgid "Rotate right"
-msgstr "Rechtsom draaien"
+msgstr "右旋转"
 
 #: wppa_albumadmin.php:551
+#, fuzzy
 msgid "If it says 'Photo rotated', the photo is rotated. If you do not see it happen here, clear your browser cache."
-msgstr "Als er staat 'Foto gedraaid', dan is de foto ook gedraaid. Als u dat hier niet ziet gebeuren, schhon dan de browser cache op."
+msgstr "If it says 'Photo rotated', the photo is rotated. If you do not see it happen here, clear your browser cache."
 
 #: wppa_albumadmin.php:571
+#, fuzzy
 msgid "Photo order #:"
-msgstr "Foto volgorde nr:"
+msgstr "照片顺序为:"
 
 #: wppa_albumadmin.php:590
+#, fuzzy
 msgid "Are you sure you want to copy this photo?"
-msgstr "Weet u zeker dat u deze foto wilt copiëren?"
+msgstr "你确定你想要复制这张照片吗"
 
 #: wppa_albumadmin.php:590
+#, fuzzy
 msgid "Please select an album to copy the photo to first."
-msgstr "Selecteer eerst een album voor de copie."
+msgstr "请选中专辑以复制照片到第一。"
 
 #: wppa_albumadmin.php:590
+#, fuzzy
 msgid "Copy photo to"
-msgstr "Copiëer foto naar"
+msgstr "复制照片到"
 
 #: wppa_albumadmin.php:593
+#, fuzzy
 msgid "Are you sure you want to delete this photo?"
-msgstr "Weet u zeker dat u deze foto wilt verwijderen?"
+msgstr "你确定你要删除这张照片吗"
 
 #: wppa_albumadmin.php:593
+#, fuzzy
 msgid "Delete photo"
-msgstr "Verwijder foto"
+msgstr "照片删除"
 
 #: wppa_albumadmin.php:595
+#, fuzzy
 msgid ""
 "Insert code for single image in Page or Post:\\n"
 "You may change the size if you like."
 msgstr ""
-"Invoeg code voor enkele foto in pagina of bericht:\\n"
-"U kunt de grootte (size=) desgewenst wijzigen."
+"在对单独的图像插入代码页或职位:\n"
+"你可以改变大小,如果你愿意的话。"
 
 #: wppa_albumadmin.php:595
+#, fuzzy
 msgid "Insertion Code"
-msgstr "Invoeg code"
+msgstr "插入代码 "
 
 #: wppa_albumadmin.php:600
+#, fuzzy
 msgid "Rating:"
-msgstr "Waardering:"
+msgstr "等级评定"
 
 #: wppa_albumadmin.php:600
+#, fuzzy
 msgid "Entries:"
-msgstr "Invoeren:"
+msgstr "记录"
 
 #: wppa_albumadmin.php:600
+#, fuzzy
 msgid "Mean value:"
-msgstr "Gemiddelde waarde:"
+msgstr "平均值"
 
 #: wppa_albumadmin.php:607
+#, fuzzy
 msgid "Link url:"
-msgstr "Koppeling url:"
+msgstr "链接到:"
 
 #: wppa_albumadmin.php:616
+#, fuzzy
 msgid "Link title:"
-msgstr "Koppeling titel:"
+msgstr "连接类型"
 
 #: wppa_albumadmin.php:620
 #: wppa_albumadmin.php:628
+#, fuzzy
 msgid "If you want this link to be used, select 'the photo specific link' in table VI of the Photo Albums -> Settings admin page."
-msgstr "Als u deze koppeling wilt toepassen, selecteer dan 'de foto specifieke link' in tabel VI van de Foto Albums -> Instellingen admin pagina."
+msgstr "您可以设置的内容和行为的部件在<b>Photo Albums -> Settings</b>管理页面。"
 
 #: wppa_albumadmin.php:643
 #: wppa_albumadmin.php:661
+#, fuzzy
 msgid "Type/alter the name of the photo. It is NOT a filename and needs no file extension like .jpg."
-msgstr "Geef de naam van de foto op. Het is GEEN bestandsnaam en hoeft niet te eindigen op .jpg."
+msgstr "类型/改变名称的照片。它不是一个文件名,不需要像jpg文件扩展名。"
 
 #: wppa_albumadmin.php:734
 #: wppa_commonfunctions.php:342
+#: wppa_settings.php:717
+#: wppa_settings.php:729
+#: wppa_settings.php:781
+#: wppa_settings.php:886
+#: wppa_settings.php:902
+#, fuzzy
 msgid "--- none ---"
-msgstr "--- geen ---"
+msgstr " --- 没有 ---"
 
 #: wppa_albumadmin.php:750
 #: wppa_commonfunctions.php:343
+#, fuzzy
 msgid "--- separate ---"
-msgstr "--- afzonderlijk ---"
+msgstr " --- 分离 ---"
 
 #: wppa_albumadmin.php:793
+#, fuzzy
 msgid "Could not create album."
-msgstr "Kan het album niet aanmaken."
+msgstr "无法创建专辑。"
 
 #: wppa_albumadmin.php:797
+#, fuzzy
 msgid "Album #"
-msgstr "Album nummer"
+msgstr "专辑"
 
 #: wppa_albumadmin.php:797
+#, fuzzy
 msgid "Added."
-msgstr "Toegevoegd."
+msgstr "补充说明"
 
 #: wppa_albumadmin.php:800
 #: wppa_albumadmin.php:910
+#, fuzzy
 msgid "Album Name cannot be empty."
-msgstr "Album naam mag niet leeg zijn."
+msgstr "专辑名称不能为空。"
 
 #: wppa_albumadmin.php:889
+#, fuzzy
 msgid "Could not update photo."
-msgstr "Kan de foto niet updaten."
+msgstr "无法更新照片。"
 
 #: wppa_albumadmin.php:902
+#, fuzzy
 msgid "Album could not be updated."
-msgstr "Kan het album niet updaten."
+msgstr "专辑不能够被更新。"
 
 #: wppa_albumadmin.php:905
+#, fuzzy
 msgid "Album information edited."
-msgstr "Album informate bewerkt."
+msgstr "专辑信息进行修改。"
 
 #: wppa_albumadmin.php:905
+#, fuzzy
 msgid "Back to album management."
-msgstr "Trug naar Album Beheer."
+msgstr "回到专辑管理。"
 
 #: wppa_albumadmin.php:949
+#, fuzzy
 msgid "Album Deleted."
-msgstr "Album Verwijderd."
+msgstr "专辑删除。"
 
 #: wppa_albumadmin.php:962
+#, fuzzy
 msgid "--- random ---"
-msgstr "--- willekeurig ---"
+msgstr "--- 随机 ---"
 
 #: wppa_albumadmin.php:976
+#, fuzzy
 msgid "No photos yet"
-msgstr "Nog geen foto's."
+msgstr "没有相片"
 
 #: wppa_export.php:44
-#, php-format
+#, fuzzy, php-format
 msgid "Photos will be exported to: <b>%s</b>."
-msgstr "Foto's worden geëxporteerd naar: <b>%s</b>."
+msgstr "照片将出口到: <b>%s</b>."
 
 #: wppa_export.php:45
+#, fuzzy
 msgid "Export photos from album <span style=\"font-size:12px;\">(Including Album information)</span>:"
-msgstr "Foto's exporteren uit album <span style=\"font-size:12px;\">(Inclusief albuminformatie)</span>:"
+msgstr "从专辑导出 <span style=\"font-size:12px;\">(包括专辑信息)</span>:"
 
 #: wppa_export.php:74
+#, fuzzy
 msgid "Export"
-msgstr "Exporteer"
+msgstr "导出"
 
 #: wppa_export.php:89
+#, fuzzy
 msgid "Exporting...<br/>"
-msgstr "Exporteren...<br/>"
+msgstr "导出进行中...<br/>"
 
 #: wppa_export.php:98
+#, fuzzy
 msgid "ok, <br/>Filling"
-msgstr "ok, <br/>Vullen"
+msgstr "完成, <br/>填充"
 
 #: wppa_export.php:100
+#, fuzzy
 msgid "failed<br/>"
-msgstr "mislukt<br/>"
+msgstr "失败<br/>"
 
 #: wppa_export.php:116
+#, fuzzy
 msgid "<br/>Processing album"
-msgstr "<br/>Album verwerken"
+msgstr "<br/>加工专辑"
 
 #: wppa_export.php:136
+#, fuzzy
 msgid "done."
-msgstr "klaar."
+msgstr "已完成"
 
 #: wppa_export.php:136
+#, fuzzy
 msgid "photos processed."
-msgstr "foto's verwerkt."
+msgstr "照片处理。"
 
 #: wppa_export.php:140
+#, fuzzy
 msgid "<br/>Done export albums."
-msgstr "<br/>Klaar met albums exporteren."
+msgstr "<br/>做出口的专辑。"
 
 #: wppa_export.php:143
+#, fuzzy
 msgid "Nothing to export"
-msgstr "Geen bestanden om te exporteren"
+msgstr "没有什么出口"
 
 #: wppa_export.php:147
+#, fuzzy
 msgid "<br/>Closing zip."
-msgstr "<br/>Afsluiten zip."
+msgstr "<br/>关闭拉链。"
 
 #: wppa_export.php:148
+#, fuzzy
 msgid "<br/>Deleting temp files."
-msgstr "<br/>Tijdelijke bestanden verwijderen."
+msgstr "<br/>删除临时文件。"
 
 #: wppa_export.php:157
+#, fuzzy
 msgid "<br/>Done!"
-msgstr "<br/>Klaar!"
+msgstr "<br/>完成!"
 
 #: wppa_export.php:190
 #: wppa_export.php:243
-#, php-format
+#, fuzzy, php-format
 msgid "Cannot write to file %s."
-msgstr "Kan niet naar bestand %s schrijven."
+msgstr "不能够写文件 %s."
 
 #: wppa_export.php:204
+#, fuzzy
 msgid "Could not open album output file."
-msgstr "Kan het album uitvoer bestand niet aanmaken."
+msgstr "没能打开专辑的输出文件。"
 
 #: wppa_export.php:209
+#, fuzzy
 msgid "Could not read album data."
-msgstr "Kan de album gegevens niet lezen."
+msgstr "不能读专辑的数据。"
 
 #: wppa_export.php:257
+#, fuzzy
 msgid "Could not open photo output file."
-msgstr "Kan het foto uitvoer bestand niet aanmaken."
+msgstr "没能打开照片的输出文件。"
 
 #: wppa_export.php:262
+#, fuzzy
 msgid "Could not read photo data."
-msgstr "Kan de foto gegevens niet lezen."
+msgstr "不能读照片数据。"
 
 #: wppa_functions.php:1166
+#, fuzzy
 msgid "<b>ERROR: Illegal attempt to enter a rating.</b>"
-msgstr "<b>FOUT: Verboden poging een waardering in te voeren.</b>"
+msgstr "<b>错误:不合法的尝试进入一个等级。</b>"
 
 #: wppa_gp_widget.php:16
+#, fuzzy
 msgid "WPPA+ General purpose widget"
-msgstr "WPPA+ Widget voor algemene toepassing"
+msgstr "WPPA +widget"
 
 #: wppa_gp_widget.php:18
+#, fuzzy
 msgid "WPPA+ Text"
-msgstr "WPPA+ Tekst"
+msgstr "WPPA +文本"
 
 #: wppa_gp_widget.php:65
 #: wppa_searchwidget.php:62
+#: wppa_slideshow_widget.php:121
+#: wppa_toptenwidget.php:78
+#, fuzzy
 msgid "Title:"
-msgstr "Titel:"
+msgstr "标题："
 
 #: wppa_gp_widget.php:67
-#, php-format
+#, fuzzy, php-format
 msgid "Enter the content just like a normal text widget. This widget will interprete %%wppa%% script commands."
-msgstr "Voer de inhoud in als bij een gwone tekst widget. Deze widget zal %%wppa%% script commando's interpreteren."
+msgstr "输入的内容就像普通的文本的部件。 This widget will interprete %%wppa%% script commands."
 
 #: wppa_gp_widget.php:68
-#, php-format
+#, fuzzy, php-format
 msgid "Don't forget %%size="
-msgstr "Vergeet %%size=... niet"
+msgstr "别忘了%%size="
 
 #: wppa_gp_widget.php:72
+#, fuzzy
 msgid "Automatically add paragraphs"
-msgstr "Voeg automatisch paragrafen toe"
+msgstr "自动分段"
 
 #: wppa_help.php:23
+#, fuzzy
 msgid "Help and Information"
-msgstr "Help en Informatie"
+msgstr "帮助和信息"
 
 #: wppa_help.php:25
+#, fuzzy
 msgid "Plugin Description"
-msgstr "Plugin Beschrijving"
+msgstr "插件的描述"
 
 #: wppa_help.php:26
+#, fuzzy
 msgid "This plugin is designed to easily manage and display your photo albums within your WordPress site."
-msgstr "Deze plugin is ontworpen om op een gemakkelijke wijze foto's te beheren en te tonen in uw WorPress site."
+msgstr "这个插件的设计是为了在你的WordPress站点轻松地管理并显示您的相册。"
 
 #: wppa_help.php:27
+#, fuzzy
 msgid "Features:"
-msgstr "Mogelijkheden:"
+msgstr "功能"
 
 #: wppa_help.php:29
+#, fuzzy
 msgid "You can create various albums that contain photos as well as sub albums at the same time."
-msgstr "U kunt verschillende albums maken die tegelijkertijd zowel foto's als sub-albums kunnen bevatten."
+msgstr "在同一时间内你可以创造各种各样的专辑,包含图片等的次级专辑。"
 
 #: wppa_help.php:30
+#, fuzzy
 msgid "There is no limitation to the number of albums and photos."
-msgstr "Er is geen beperking van het aantal albums en foto's."
+msgstr "没有限制数量的相册和照片。"
 
 #: wppa_help.php:31
+#, fuzzy
 msgid "There is no limitation to the nesting depth of sub-albums."
-msgstr "Er is geen beperking in de nesting diepte van sub-albums."
+msgstr "没有限制的子-嵌套深度的专辑。"
 
 #: wppa_help.php:32
+#, fuzzy
 msgid "You have full control over the display sizes of the photos."
-msgstr "U heeft volledige controle over de afbeeldingsgrootte van de foto's."
+msgstr "你有充分的控制权的显示器尺寸的照片。"
 
 #: wppa_help.php:33
+#, fuzzy
 msgid "You can specify the way the albums are ordered."
-msgstr "U kunt de sorteer methode voor albums bepalen."
+msgstr "你可以指定方式的专辑是排序的。"
 
 #: wppa_help.php:34
+#, fuzzy
 msgid "You can specify the way the photos are ordered within the albums, both on a system-wide as well as an per album basis."
-msgstr "U kunt de methode instellen waarop de volgorde van de foto's moet worden bepaald. Dit kan zowel voor het gehele systeem als op een per album basis."
+msgstr "你可以指定的方式在这些照片是命令唱片,同时在系统级的,也是一个每专辑的基础。"
 
 #: wppa_help.php:35
+#, fuzzy
 msgid "The visitor of your site can run a slideshow from the photos in an album by a single mouseclick."
-msgstr "De bezoeker van uw site kan met een enkele muisklik een diavoorstelling afdraaien van de foto's in een album."
+msgstr "你的站点的访客可以运行一个幻灯片显示在相册里的照片由一个单一的mouseclick。"
 
 #: wppa_help.php:36
+#, fuzzy
 msgid "The visitor can see an overview of thumbnail images of the photos in album."
-msgstr "De bezoeker kan een overzicht van miniatuur afbeeldingen van de foto's in een album bekijken."
+msgstr "游客可以看到的概观缩略图中的照片一张专辑。"
 
 #: wppa_help.php:37
+#, fuzzy
 msgid "The visitor can browse through the photos in each album you decide to publish."
-msgstr "De bezoeker kan door de foto's bladeren van elk album dat u gepubliceerd heeft."
+msgstr "你可以决定游客可在浏览照片在每个专辑。"
 
 #: wppa_help.php:38
+#, fuzzy
 msgid "You can add a Sidebar Widget that displays a photo which can be changed every hour, day or week."
-msgstr "U kunt een zijkolom widget toevoegen die desgewenst elk uur, dag of week een andere foto laat zien."
+msgstr "你能把一个工具条窗口的显示一张照片,可以改变每小时,每天或一周。"
 
 #: wppa_help.php:39
+#, fuzzy
 msgid "You can add a Sidebar Search Widget that enables the visitor to search for albums and photos with certan words in the name or description."
-msgstr "U kunt een zijkolom widget toevoegen die het de bezoeker mogelijk maakt albums en foto's te zoeken waarbij bepaalde woorden in de naam of de beschrijving voorkomen."
+msgstr "你能把一个侧边栏搜索网页聊窗使访问者寻找相册和照片与某些单词的名称或描述。"
 
 #: wppa_help.php:42
+#, fuzzy
 msgid "Plugin Admin Features"
-msgstr "Plugin Administratie Mogelijkheden"
+msgstr "插件管理特点"
 
 #: wppa_help.php:43
+#, fuzzy
 msgid "You can find the plugin admin section under Menu Photo Albums on the admin screen."
-msgstr "U vindt de plugin administratie onder het Menu Foto Albums op het administratie scherm."
+msgstr "你可以在网上找到的插件行政事务在菜单相册在管理员的屏幕。"
 
 #: wppa_help.php:44
+#, fuzzy
 msgid "The following submenus exist."
-msgstr "De volgende submenu's zijn aanwezig."
+msgstr "评论不存在"
 
 #: wppa_help.php:46
+#, fuzzy
 msgid "Photo Albums: Create and manage Albums."
-msgstr "Foto Albums: Maalk en bewerk Albums."
+msgstr "相册:创建并管理的专辑。"
 
 #: wppa_help.php:47
+#, fuzzy
 msgid "Upload photos: To upload photos to an album you created."
-msgstr "Foto's uploaden: Om foto's te uploaden naar de albums die u heeft aangemaakt."
+msgstr "上传照片:上传照片到一张专辑。"
 
 #: wppa_help.php:48
+#, fuzzy
 msgid "Import photos: To bulk import photos that have been uploaded by an ftp program."
-msgstr "Foto's Importeren: Grotere aantallen foto's mporteren die eerder met een ftp programma zijn geupload."
+msgstr "导入照片:散装货导入照片,由一个ftp上传了计划。"
 
 #: wppa_help.php:49
+#, fuzzy
 msgid "Settings: To control the various settings to customize your needs."
-msgstr "Instellingen: De opties af te stemmen op uw behoeften."
+msgstr "设置:为了控制各种设置来定制您的需求。"
 
 #: wppa_help.php:50
+#, fuzzy
 msgid "Sidebar Widget: To specify the behaviour for an optional sidebar widget."
-msgstr "Zijkolom Widget: Om het gedrag van de optionele widget in te stellen."
+msgstr "工具条窗口的行为:对于指定为一个可选的侧边栏的部件。"
 
 #: wppa_help.php:51
+#, fuzzy
 msgid "Help & Info: The screen you are watching now."
-msgstr "Help en Info: Het scherm waar u nu naar kijkt."
+msgstr "帮助和信息:屏幕你正在看了。"
 
 #: wppa_help.php:54
+#, fuzzy
 msgid "Installation"
-msgstr "Installatie"
+msgstr "安装"
 
 #: wppa_help.php:56
+#, fuzzy
 msgid "You can install the plugin via the standard WP plugins admin page."
-msgstr "U kunt de plugin via de standaard WP Plugin admin pagina installeren."
+msgstr "你可以安装插件通过标准的白磷插件管理页面。"
 
 #: wppa_help.php:57
+#, fuzzy
 msgid "If you want to do it manually, follow the next steps:"
-msgstr "Indien u het met de hand wilt doen, volg dan deze stappen:"
+msgstr "如果你想手工定做,遵循下面的步骤:"
 
 #: wppa_help.php:60
+#, fuzzy
 msgid "Unzip and upload the wppa plugin folder to"
-msgstr "Unzip de plugin en upload de map naar"
+msgstr "解压缩和上传wppa插件文件夹"
 
 #: wppa_help.php:61
+#, fuzzy
 msgid "Make sure that the folder"
-msgstr "Zorg ervoor dat de map"
+msgstr "确保该文件夹"
 
 #: wppa_help.php:61
+#, fuzzy
 msgid "exists and is writable by the server (CHMOD 755)"
-msgstr "bestaat en beschrijfbaar is door de server (CHMOD 755)."
+msgstr "存在,而且是可写登陆时被服务器(755)"
 
 #: wppa_help.php:62
+#, fuzzy
 msgid "Activate the plugin in WP Admin -> Plugins."
-msgstr "Activeer de plugin in WP Admin -> Plugins."
+msgstr "在激活插件管理- >插件管理。"
 
 #: wppa_help.php:65
+#, fuzzy
 msgid "Upgrading WP Photo Album Plus"
-msgstr "Upgraden van WP Photo Album Plus"
+msgstr "升级相册优先"
 
 #: wppa_help.php:66
+#, fuzzy
 msgid "When upgrading WP Photo Album Plus be aware of:"
-msgstr "Als u WP Photo Album Plus gaat upgraden, moet u op het volgende letten:"
+msgstr "当升级相册加注意的:"
 
 #: wppa_help.php:68
+#, fuzzy
 msgid "The revision number consists of 3 parts, Major, minor and fix revision. The current version is:"
-msgstr "Het versienummer bestaat uit 3 delen, Major, minor en fix revisie. De huidige versie is:"
+msgstr "修订号码由三个部分,主修、辅修及修修订。目前的版本是:"
 
 #: wppa_help.php:69
+#, fuzzy
 msgid "When an update implies a major or minor version change and you have copied wppa_theme.php or wppa_style.css to your themes directory, you will have to remove them and make new copies and/or alterations if that should still be needed."
-msgstr "Indien een update een verandering van Major of minor revisie inhoudt en u wppa_theme.php of wppa_style.css heeft gekopiëerd naar uw thema directory, zult u die moeten verwijderen en nieuwe kopieën moeten maken en eventueel aanpassen indien dat nog steeds noodzakelijk is."
+msgstr "当一个更新版本意味着一种主要或次要的变化和你已经把wppa_theme.php或wppa_style.css到你的主题目录中,你将不得不取出,使新拷贝和/或改变如果那仍然应该是需要的。"
 
 #: wppa_help.php:70
+#, fuzzy
 msgid "You will get a one-time reminder after upgrading, the first time you open a wppa admin page."
-msgstr "U krijgt - indien van toepassing - éénmalig een herinnering na een upgrade zodra u een wppa admin pagina opent."
+msgstr "你会得到一个一次性提醒升级后,第一次你打开一个wppa管理员页。"
 
 #: wppa_help.php:73
+#, fuzzy
 msgid "How to start"
-msgstr "Hoe te beginnen"
+msgstr "回到"
 
 #: wppa_help.php:75
+#, fuzzy
 msgid "Install WP Photo ALbum Plus as described above under \"Installation\"."
-msgstr "Installeer WP Photo Album Plus zoals hierboven beschreven onder \"Installatie\"."
+msgstr "安装白磷相册加上如上所述下\"Installation\"."
 
 #: wppa_help.php:76
+#, fuzzy
 msgid "Create at least two albums in the \"Photo Albums\" tab. Just enter the name and a brief description and press \"Create Album\". Leave \"Parent\" at \"--- none ---\"."
-msgstr "Maak minstens twee albums aan in het \"Foto Albums\" menu. Geef de naam en een korte beschrijving en druk op \"Maak Album\". Laat \"Moederalbum\" op \"--- geen ---\"."
+msgstr "创造至少两张专辑在 \"Photo Albums\" 页面。 只要输入的名字和简要说明和按 \"Create Album\". Leave \"Parent\" at \"--- none ---\"."
 
 #: wppa_help.php:77
+#, fuzzy
 msgid "In the uploads tab, you can now upload you photots. Upload at least 2 photos to each album. Make sure the photos you are uploading are of reasonable size (say up to 1024x768 pixels). Do not upload the full 7MP images!"
-msgstr "In het \"Foto's Uploaden\" menu kunnen nu foto's worden geupload. Upload minstens 2 foto's in elk album. Zorg er voor dat de foto's van redelijke afmetingen zijn (zeg tot 1024x768 pixels). Upload geen foto's van 7 megapixels!"
+msgstr "在上传选项卡,您现在可以上传你photots。上载至少2张图片每个专辑。确保你上传的照片是适当大小的像素1024x768。充分7MP不上传的图片!"
 
 #: wppa_help.php:78
+#, fuzzy
 msgid "Create a new WP Page, name it something like \"Photo Gallery\" and put in the content:"
-msgstr "Maak een nieuwe WP Pagina, noem het bijvoorbeeld \"Foto Gallerij\" en voer als inhoud in:"
+msgstr "创建一个新的白磷页,名称是有点像 \"Photo Gallery\" ,放在内容:"
 
 #: wppa_help.php:79
+#, fuzzy
 msgid "Publish the page, and view the page from your WP site."
-msgstr "Publiceer de pagina, en bekijk de pagina vanuit de WP site."
+msgstr "发布页面,并且查看页面,在你的站点。"
 
 #: wppa_help.php:80
+#, fuzzy
 msgid "Now, go playing with the settings in the \"Settings\" panel, discover all the configurable options and watch what is happening when you re-open the \"Photo Gallery\" page."
-msgstr "Ga nu spelen met de instelleingen in het \"Instellingen\" scherm, ontdek alle instelmogelijkheden en bekijk wat er gebeurt als u de \"Foto Gallerij\" opnieuw opent."
+msgstr "现在,去玩的设置,在\"Settings\",发现所有的可配置的选项,看发生了什么,当你重新 \"Photo Gallery\"页。"
 
 #: wppa_help.php:81
+#, fuzzy
 msgid "If you want a \"Photo of the week\" sidebar widget you can use an album for that purpose. See all the options in the \"Sidebar Widget\" submenu."
-msgstr "Als u een \"Foto van de week\" zijkolom widget wilt, dan kunt u een album voor dit doel reserveren. Zie alle opties in het \"Zijkolom Widget\" menu."
+msgstr "如果你想要一个 \"Photo of the week\" 你能使用工具条窗口的专辑为达到这一目的。看到所有的选项,在 \"Sidebar Widget\" 子菜单工具条窗口的。"
 
 #: wppa_help.php:84
+#, fuzzy
 msgid "Creating a Photo Album Page or a Post with photos - Advanced"
-msgstr "Een Foto Album Pagina of een Post met foto's maken - Geavanceerd"
+msgstr "创建一个相册页面或一篇文章和图片-先进的"
 
 #: wppa_help.php:86
+#, fuzzy
 msgid "Create a page like you normally would in WordPress, using the \"Default Template\". In my example, give it the page title of \"Photo Gallery\". In the Page Content section add the following code:"
-msgstr "Maak een pagina zoals gebruikelijk in WordPress en gebruik hierbij de \"standaard sjabloon\". In dit voorbeeld geven we het de naam \"Foto Gallerij\". Zet in de pagina inhoud de volgende code:"
+msgstr "像你这样的创建页面通常会在模板,使用 \"Default Template\".。在这个例子中,给它页面标题的 \"Photo Gallery\"。在页面内容部分添加下列代码:"
 
 #: wppa_help.php:88
+#, fuzzy
 msgid "This will result in a gallery of all Albums that have their parent set to \"--- none ---\"."
-msgstr "Dit resulteert in een gallerij van albums die hun \"Moederalbum\" op \"--- geen ---\" hebben staan."
+msgstr "这将会导致一个画廊的专辑,将他们的到\"--- none ---\"."
 
 #: wppa_help.php:89
+#, fuzzy
 msgid "If you want to display a single album - say album number 19 - in a WP page or WP post (they act exactly the same), add a second line like this:"
-msgstr "Als u een enkel album wilt tonen - zeg album nummer 19 - in een pagina of post (die werken precies hetzelfde), voeg dan een tweede regel toe als dit:"
+msgstr "如果你想要显示一个单一的专辑——说专辑19号——在工作岗位页或白磷(他们的行为完全相同的),添加第二个线是这样的:"
 
 #: wppa_help.php:91
+#, fuzzy
 msgid "This will result in the display of the <b>contents</b> of album nr 19."
-msgstr "Dit resulteert in het afbeelden van de <b>inhoud</b> van album nummer 19."
+msgstr "这将会导致展出的<b>contents</b>内容的专辑nr 19。"
 
 #: wppa_help.php:92
-#, php-format
+#, fuzzy, php-format
 msgid "If you want to display the <b>cover</b> of the album, i.e. like one of the albums in the \"Photo Gallery\" as used above, add (instead of \"%%album=...\") a second line like this:"
-msgstr "Wanneer u het omslag wilt tonen van het album, dat is zoals één van de albums in de \"Foto Gallerij\" zoals hierboven gebruikt, voeg dan (in plaats van \"%%album=...\") een tweede regel toe zoals dit:"
+msgstr "如果你想显示<b>cover</b> 盖的专辑,即喜欢其中的专辑 \"Photo Gallery\" 作为上面使用,加上 (instead of \"%%album=...\") 二次线是这样的:"
 
 #: wppa_help.php:94
+#, fuzzy
 msgid "If you want to display the <b>slideshow</b> directly, use:"
-msgstr "Als u meteen de <b>diavoorstelling</b> wilt tonen, gebruik dan:"
+msgstr "果你想显示的幻灯片<b>slideshow</b>,直接使用:"
 
 #: wppa_help.php:96
+#, fuzzy
 msgid "You can add a third line if you want the photos to be displayed at a different size than normal. You can \"overrule\" the \"Full size\" setting by adding the line (for e.g. 300px):"
-msgstr "U kunt nog een derde regel toevoegen als u de foto's met een andere grootte dan normaal wilt weergeven. U kunt de \"Volledige grootte\"overrulen met de volgende regel (voor bijv. 300pixels):"
+msgstr "你能把一个三线如果你想要的照片进行被显示在一个不同规模比正常。你可以 \"overrule\" the \"Full size\" 的场景,通过增加线(为例句(for e.g. 300px):"
 
 #: wppa_help.php:98
-#, php-format
+#, fuzzy, php-format
 msgid "Note: all information between the %% tags including newlines will be lost."
-msgstr "Opmerking: alle informatie tussen de %%labels, inclusief nieuwe regels, gaat verloren."
+msgstr "注意:所有之间信息%% tags包括换行会丢失。"
 
 #: wppa_help.php:99
+#, fuzzy
 msgid "The sequence above may be used more than once in a single page or post."
-msgstr "Bovenstaande reeks kan meerdere keren in een bericht of pagina voorkomen."
+msgstr "该序列以上可能要超过一次使用,在一个单一的网页或职位。"
 
 #: wppa_help.php:100
+#, fuzzy
 msgid "The text before the first sequence, the text between 2 sequences, as well as the text after the last sequence will be preserved."
-msgstr "De tekst vóór de eerste reeks, de tekst tussen twee reeksen, alsook de tekst na de laatste reeks blijft behouden."
+msgstr "之前的文本,文本之间的第一顺序,以及2序列在最后一序列的文本将保留。"
 
 #: wppa_help.php:102
+#, fuzzy
 msgid "You can also create a custom page template by dropping the following code into a page template:"
-msgstr "U kunt ook zelf een speciale pagina sjabloon maken door de volgende code in een pagina sjabloon op te nemen:"
+msgstr "你也可以创建一个自定义页面模板丢掉了下列代码:成一个网页模板"
 
 #: wppa_help.php:104
+#, fuzzy
 msgid "If you want to display the <b>contents</b> of a single album in the template - say album number 19 - the code would be:"
-msgstr "Als u de <b>inhoud</b> van een enkel album in het sjabloon wilt opnemen - zeg album nummer 19 - dan zou de code zijn:"
+msgstr "如果你想显示 <b>contents</b>一个单一的专辑在模板中19号- -说专辑的代码应该是:"
 
 #: wppa_help.php:106
+#, fuzzy
 msgid "If you want the <b>cover</b> to be displayed instead, use the following code:"
-msgstr "Als u daarentegen de <b>omslag</b> wil tonen, gebruik dan de volgende code:"
+msgstr "如果你想要的是<b>cover</b>,以显示相反,使用下面的代码:"
 
 #: wppa_help.php:108
+#, fuzzy
 msgid "And to display the <b>slideshow</b> it would be:"
-msgstr "En om de <b>diavoorstelling</b> te tonen wordt dat:"
+msgstr "并显示的幻灯片<b>slideshow</b>"
 
 #: wppa_help.php:110
+#, fuzzy
 msgid "If you want to specify a size, add another argument:"
-msgstr "Als u de afmeting wilt aangeven, voeg dan nog een argument toe:"
+msgstr "如果你想要指定一个大小,加上另一个争论:"
 
 #: wppa_help.php:112
+#, fuzzy
 msgid "For more information on usable php routines see the <a href=\"http://wppa.opajaap.nl/\">Docs & Demos</a> website."
-msgstr "Voor meer informatie over bruikbare php routines zie de <a href=\"http://wppa.opajaap.nl/\">Docs & Demos</a> website."
+msgstr "更多信息,对可用的php程序看<a href=\"http://wppa.opajaap.nl/\">Docs & Demos</a>网站。"
 
 #: wppa_help.php:113
+#, fuzzy
 msgid "In order to work properly, the wppa_albums() tag needs to be within the <a href=\"http://codex.wordpress.org/The_Loop\" target=\"_blank\">WordPress loop</a>."
-msgstr "Om goed te werken is het nodig dat de wppa_albums() tag zich bevindt binnen de <a href=\"http://codex.wordpress.org/The_Loop\" target=\"_blank\">WordPress loop</a>."
+msgstr "为了很好地工作,这wppa_albums()的标签需要在<a href=\"http://codex.wordpress.org/The_Loop\" target=\"_blank\">WordPress loop</a>"
 
 #: wppa_help.php:114
+#, fuzzy
 msgid "For more information on creating custom page templates, click"
-msgstr "Voor meer informatie over het maken van pagina sjablonen, klik"
+msgstr "更多信息,对建立自定义页面模板,点击"
 
 #: wppa_help.php:114
+#: wppa_settings.php:245
+#, fuzzy
 msgid "here"
-msgstr "hier"
+msgstr "链接到这里"
 
 #: wppa_help.php:117
+#, fuzzy
 msgid "Adjusting CSS and Template Styling"
-msgstr "Aanpassen van CSS en de Template"
+msgstr "调整CSS和模板的风格"
 
 #: wppa_help.php:119
+#, fuzzy
 msgid "WP Photo Album Plus comes with a default layout and theme."
-msgstr "WP Photo Album Plus komt met een standaard layout en thema."
+msgstr "相册加上带有一个默认的布局和主题。"
 
 #: wppa_help.php:120
+#, fuzzy
 msgid "To change the style and layout of the photo album, copy <tt>.../wp-content/plugins/wp-photo-album-plus/theme/wppa_theme.php</tt> and <tt>.../wp-content/plugins/wp-photo-album-plus/theme/wppa_style.css</tt> to your active theme's folder, and edit them."
-msgstr "Om de stijl en de layout van het fotoalbum te wijzigen, copieert u <tt>.../wp-content/plugins/wp-photo-album-plus/theme/wppa_theme.php</tt> and <tt>.../wp-content/plugins/wp-photo-album-plus/theme/wppa_style.css</tt> naar uw actieve thema map, waarna u ze kunt bewerken. "
+msgstr "改变风格和布局的相册,复制<tt>.../wp-content/plugins/wp-photo-album-plus/theme/wppa_theme.php</tt> 和 <tt>.../wp-content/plugins/wp-photo-album-plus/theme/wppa_style.css</tt> 您的积极的主题文件夹,编辑它们。"
 
 #: wppa_help.php:123
+#, fuzzy
 msgid "Facts to remember"
-msgstr "Zaken om te onthouden"
+msgstr " 回到"
 
 #: wppa_help.php:125
+#, fuzzy
 msgid "If the number of photos in an album is less than or equal to the treshold value, they will not display in the album. They will be used for the cover only."
-msgstr "Als het aantal foto's in een album kleiner of gelijk is aan de drempelwaarde, worden ze niet getoond in het album. Ze worden alleen als omslagfoto gebruikt."
+msgstr "果这个数字的照片一张专辑是小于或等于treshold价值,他们就不显示在新专辑里。他们将会用于只覆盖。"
 
 #: wppa_help.php:126
+#, fuzzy
 msgid "An album that has it's parent set to \"--- separate ---\" will not be displayed in the \"generic\" gallery. This enables you to have albums for use solely for single posts or pages."
-msgstr "Een album dat als moeder \"--- afzonderlijk ---\" heeft, komt niet voor in de algemene fotogallerij. Dit maakt het mogelijk om albums te reserveren voor specifieke posts of pagina's."
+msgstr "这是一张专辑的时候,父母将\"--- separate ---\"将不会出现在吗\"generic\"画廊。这将使你有专辑,专为单一使用发文或页面。"
 
 #: wppa_help.php:127
-#, php-format
+#, fuzzy, php-format
 msgid "Specifying <tt>%%album=...</tt> causes the <b>content</b> of the album to be displayed."
-msgstr "Als u <tt>%%album=...</tt> opgeeft, wordt de <b>inhoud</b> van het album getoond."
+msgstr "指定<tt>%%album=...</tt> causes the <b>content</b> 专辑能够显示出来。"
 
 #: wppa_help.php:128
-#, php-format
+#, fuzzy, php-format
 msgid "Specifying <tt>%%cover=...</tt> causes the <b>cover</b> of the album to be displayed."
-msgstr "Als u <tt>%%cover=...</tt> opgeeft, wordt de <b>omslag</b> van het album getoond."
+msgstr "指定 <tt>%%cover=...</tt>使 <b>cover</b>专辑能够显示出来。"
 
 #: wppa_help.php:129
-#, php-format
+#, fuzzy, php-format
 msgid "Specifying <tt>%%slide=...</tt> causes the <b>slideshow</b> of the album to be displayed."
-msgstr "Als u <tt>%%slide=...</tt> opgeeft, wordt de <b>diavoorstelling</b> van het album getoond."
+msgstr "指定<tt>%%slide=...</tt> 使 <b>slideshow</b> 被显示的专辑."
 
 #: wppa_help.php:130
-#, php-format
+#, fuzzy, php-format
 msgid "Keep the sequence intact: 1. <tt>%%wppa%%</tt>, 2. <tt>%%album=</tt> or <tt>%%cover=</tt> or <tt>%%slide=</tt>, 3. <tt>%%size=</tt>. (2. being optional even when using 3.)."
-msgstr "Houd de volgorde intact: 1. <tt>%%wppa%%</tt>, 2. <tt>%%album=</tt> of <tt>%%cover=</tt> of <tt>%%slide=</tt>, 3. <tt>%%size=</tt>. (2. is optioneel, ook als 3. gebruikt wordt.)."
+msgstr "保持完整的序列。1. <tt>%%wppa%%</tt>, 2. <tt>%%album=</tt> or <tt>%%cover=</tt> or <tt>%%slide=</tt>, 3. <tt>%%size=</tt>.(2. 项可使用 3次.)"
 
 #: wppa_help.php:131
+#, fuzzy
 msgid "Use the default page template, or create one yourself."
-msgstr "Gebruik de standaard pagina sjabloon, of maak er zelf een."
+msgstr "使用默认的网页模板,或建立一个你自己。"
 
 #: wppa_help.php:132
+#, fuzzy
 msgid "You can remove the plugin and re-install the latest version always. This will not affect your photos or albums."
-msgstr "U kunt te allen tijde de plugin verwijderen en opnieuw installeren. Dit heeft geen gevolgen voor uw albums en foto's."
+msgstr "你可以移除插件和重新安装最新版本总是。这不会影响到你的相片或专辑。"
 
 #: wppa_help.php:133
-#, php-format
+#, fuzzy, php-format
 msgid "You may combine %% items on one line like: <tt>%%wppa%% %%cover=13%% %%size=250%%</tt>"
-msgstr "U kunt meerdere %% items op één regel zetten, zoals: <tt>%%wppa%% %%cover=13%% %%size=250%%</tt>"
+msgstr "你可以把所学 %%的物品在一行像: <tt>%%wppa%% %%cover=13%% %%size=250%%</tt>"
 
 #: wppa_help.php:136
+#, fuzzy
 msgid "Plugin Support And Feature Request"
-msgstr "Ondersteuning en verzoeken voor verbetering"
+msgstr "插件支持和功能的要求"
 
 #: wppa_help.php:138
+#, fuzzy
 msgid "If you've read over this readme carefully and are still having issues, if you've discovered a bug,"
-msgstr "Als u deze uitleg aandachtig hebt gelezen en u nog vragen heeft of als u een fout heeft ontdekt,"
+msgstr "如果你已经读过这说明仔细地而且仍然有问题,如果你已经发现了一个错误,"
 
 #: wppa_help.php:139
+#, fuzzy
 msgid "or have a feature request, please contact me via my <a href=\"mailto:opajaap@opajaap.nl?subject=WP%20Photo%20Album%20Plus\">E-mail</a>."
-msgstr "of een verzoek tot uitbreiding heeft, kunt u mij bereiken via mijn <a href=\"mailto:opajaap@opajaap.nl?subject=WP%20Photo%20Album%20Plus\">E-mail</a>."
+msgstr "或有一个特征要求,请与我联系,通过我的电子邮件<a href=\"mailto:opajaap@opajaap.nl?subject=WP%20Photo%20Album%20Plus\">E-mail</a>.。"
 
 #: wppa_help.php:141
+#, fuzzy
 msgid "You may also check the <a href=\"http://wordpress.org/tags/wp-photo-album-plus\">forum</a> for this plugin and/or leave a question there."
-msgstr "U kunt ook het <a href=\"http://wordpress.org/tags/wp-photo-album-plus\">forum</a> raadplegen en er een vraag of opmerking achterlaten."
+msgstr "你可能为这个插件检查 <a href=\"http://wordpress.org/tags/wp-photo-album-plus\">论坛</a>或离开一个问题。"
 
 #: wppa_help.php:143
+#, fuzzy
 msgid "For hot fixes check the <a href=\"http://plugins.trac.wordpress.org/log/wp-photo-album-plus/\">development log</a> for this plugin."
-msgstr "Voor 'hot fixes' check het <a href=\"http://plugins.trac.wordpress.org/log/wp-photo-album-plus/\">development log</a> voor deze plugin."
+msgstr "为此插件修复检查新版本<a href=\"http://plugins.trac.wordpress.org/log/wp-photo-album-plus/\">development log</a>"
 
 #: wppa_help.php:145
+#, fuzzy
 msgid "You may also visit the <a href=\"http://wppa.opajaap.nl/\" target=\"_blank\">WPPA+ Docs & Demos site</a> that also contains the <a href=\"http://wppa.opajaap.nl/?page_id=39\" target=\"_blank\">WPPA+ Tutorial</a>."
-msgstr "U kunt ook de <a href=\"http://wppa.opajaap.nl/\" target=\"_blank\">WPPA+ Docs & Demos site</a> bezoeken die ook de <a href=\"http://wppa.opajaap.nl/?page_id=39\" target=\"_blank\">WPPA+ Tutorial</a> bevat."
+msgstr "你也可以访问<a href=\"http://wppa.opajaap.nl/\" target=\"_blank\">WPPA+ Docs & Demos site</a> 包含有 <a href=\"http://wppa.opajaap.nl/?page_id=39\" target=\"_blank\">WPPA+ Tutorial</a>."
 
 #: wppa_help.php:148
+#, fuzzy
 msgid "If you love this plugin, I would appreciate a donation, either in <a href=\"https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US\">USD</a> or in <a href=\"https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=EUR&lc=US\">EURO</a>."
-msgstr "Als u deze plugin waardeert, kunt u dat tot uitdrukking brengen door middel van een donatie, in <a href=\"https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US\">USD</a> of in <a href=\"https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=EUR&lc=US\">EURO</a>."
+msgstr "如果你爱这个插件,我会非常感激捐献,无论是在<a href=\"https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US\">USD</a>或在<a href=\"https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=EUR&lc=US\">EURO</a>."
 
 #: wppa_help.php:151
+#, fuzzy
 msgid "About and credits"
-msgstr "Over en dank aan"
+msgstr "剪裁并发布"
 
 #: wppa_help.php:153
+#, fuzzy
 msgid "WP Photo Album Plus is extended with many new features and is maintained by J.N. Breetvelt, a.k.a. (<a href=\"http://www.opajaap.nl/\">OpaJaap</a>)"
-msgstr "WP Photo Album Plus is met vele nieuwe functies uitgebreid en wordt onderhouden door J.N. Breetvelt, alias (<a href=\"http://www.opajaap.nl/\">OpaJaap</a>)"
+msgstr "WP相册加是有许多新的特点和扩展,是保持J.N.,a.k.a Breetvelt。 (<a href=\"http://www.opajaap.nl/\">OpaJaap</a>)"
 
 #: wppa_help.php:154
+#, fuzzy
 msgid "Thanx to R.J. Kaplan for WP Photo Album 1.5.1."
-msgstr "Dank aan R.J. Kaplan voor WP Photo Album 1.5.1."
+msgstr "谢谢R.J. Kaplan为WP相册1.5.1 。"
 
 #: wppa_help.php:155
+#, fuzzy
 msgid "Thanx to E.S. Rosenberg for programming tips on security issues."
-msgstr "Dank aan E.S. Rosenberg voor programmeer adviezen m.b.t. beveiliging."
+msgstr "感谢E.S. Rosenberg在编程中解决安全问题。"
 
 #: wppa_help.php:156
+#, fuzzy
 msgid "Thanx to the users who reported bugs and asked for enhancements. Without them WPPA should not have been what it is now!"
-msgstr "Dank aan de gebruikers die fouten hebben gerapporteerd en om aanvullingen hebben verzocht. Zonder hen zou WPPA niet geworden zijn wat het nu is!"
+msgstr "报道很谢谢使用者的错误和要求更换。没有他们WPPA不应该被它现在的样子!"
 
 #: wppa_help.php:159
+#, fuzzy
 msgid "Licence"
-msgstr "Licentie"
+msgstr "许可证。"
 
 #: wppa_help.php:161
+#, fuzzy
 msgid "WP Photo Album is released under the"
-msgstr "WP Photo Album Plus wordt beschikbaar gesteld onder de"
+msgstr "WP的相册是下发布"
 
 #: wppa_help.php:161
+#, fuzzy
 msgid "licence."
-msgstr "licentie."
+msgstr "许可证。"
 
 #: wppa_searchwidget.php:13
+#, fuzzy
 msgid "WPPA+ Search Photos"
-msgstr "WPPA+ Foto's zoeken"
+msgstr "WPPA+照片搜索"
 
 #: wppa_searchwidget.php:14
+#, fuzzy
 msgid "Search Photos"
-msgstr "Foto's zoeken"
+msgstr "搜索照片"
 
 #: wppa_searchwidget.php:24
+#, fuzzy
 msgid "Search photos"
-msgstr "Foto's zoeken"
+msgstr "搜索照片"
 
 #: wppa_searchwidget.php:31
+#, fuzzy
 msgid "Warning. No page defined for search results!"
-msgstr "Waarschuwing. Geen pagina aangewezen voor de zoekresultaten!"
+msgstr "警告。没有页面定义为搜索结果!"
 
 #: wppa_searchwidget.php:39
+#, fuzzy
 msgid "Search"
-msgstr "Zoeken"
+msgstr "搜索"
 
 #: wppa_settings.php:35
+#, fuzzy
 msgid "Column width."
-msgstr "Kolom breedte."
+msgstr "固定宽"
 
 #: wppa_settings.php:37
+#, fuzzy
 msgid "Full size."
-msgstr "Volledige grootte."
+msgstr "原尺寸"
 
 #: wppa_settings.php:38
+#, fuzzy
 msgid "Max height."
-msgstr "Maximale hoogte."
+msgstr "最大高"
 
 #: wppa_settings.php:41
+#, fuzzy
 msgid "Thumbnail size."
-msgstr "Miniatuur grootte."
+msgstr "缩略图大小"
 
 #: wppa_settings.php:42
+#, fuzzy
 msgid "Thumbnail frame width"
-msgstr "Miniaturen frame breedte"
+msgstr "缩略图框架宽度"
 
 #: wppa_settings.php:43
+#, fuzzy
 msgid "Thumbnail frame height"
-msgstr "Miniaturen frame hoogte"
+msgstr "缩略图框的高度"
 
 #: wppa_settings.php:44
+#, fuzzy
 msgid "Thumbnail Spacing"
-msgstr "Miniaturen tussenruimte"
+msgstr "缩略图间距"
 
 #: wppa_settings.php:46
+#, fuzzy
 msgid "Photocount treshold."
-msgstr "Drempelwaarde foto aantal."
+msgstr "照片数很举行。"
 
 #: wppa_settings.php:47
+#, fuzzy
 msgid "Thumb page size."
-msgstr "Miniaturen pagina grootte."
+msgstr "最小嵌入对象大小"
 
 #: wppa_settings.php:48
+#, fuzzy
 msgid "Cover photo size."
-msgstr "Omslag foto grootte."
+msgstr "封面图片尺寸。"
 
 #: wppa_settings.php:49
+#, fuzzy
 msgid "Album page size."
-msgstr "Album pagina grootte."
+msgstr "最小嵌入对象大小"
 
 #: wppa_settings.php:50
+#, fuzzy
 msgid "Number of TopTen photos"
-msgstr "Aantal Top Tien foto's"
+msgstr "照片排序："
 
 #: wppa_settings.php:51
+#, fuzzy
 msgid "Widget image thumbnail size"
-msgstr "Widget foto grootte"
+msgstr "大尺寸图像的高度"
 
 #: wppa_settings.php:52
+#, fuzzy
 msgid "Two column width treshold"
-msgstr "Drempelwaarde 2 kolommen"
+msgstr "照片数很举行。"
 
 #: wppa_settings.php:53
+#, fuzzy
 msgid "Three column width treshold"
-msgstr "Drempelwaarde 3 kolommen"
+msgstr "照片数很举行。"
 
 #: wppa_settings.php:58
+#, fuzzy
 msgid "Border width"
-msgstr "Randdikte"
+msgstr "边框厚度"
 
 #: wppa_settings.php:63
 #: wppa_settings.php:452
+#, fuzzy
 msgid "Border radius"
-msgstr "Afrondingsstraal"
+msgstr "边框半径"
 
 #: wppa_settings.php:110
 #: wppa_settings.php:114
+#, fuzzy
 msgid "Opacity."
-msgstr "Ondoorschijnendheid."
+msgstr "不透明度。"
 
 #: wppa_settings.php:197
+#, fuzzy
 msgid "Changes in accesslevels will not be made. It is set to be done by an other program."
-msgstr "Er worden geen wijzigingen in toegangsrechten aangebracht. Er is ingesteld dat dit door aan ander programma wordt gedaan."
+msgstr "在accesslevels变化将不会被做出。这是要做的其他程序。"
 
 #: wppa_settings.php:206
+#, fuzzy
 msgid "Ratings cleared"
-msgstr "Waarderingen leeggemaakt"
+msgstr "重置评级:"
 
 #: wppa_settings.php:207
+#, fuzzy
 msgid "Could not clear ratings"
-msgstr "Kan de waarderingen niet wissen"
+msgstr "无法访问文件系统。"
 
 #: wppa_settings.php:218
+#, fuzzy
 msgid "Error converting to UTF_8"
-msgstr "Fout bij het converteren naar UTF-8"
+msgstr "设置字体设置为UTF-8:"
 
 #: wppa_settings.php:221
 msgid "Converted to utf8"
-msgstr "Geconverteerd naar utf-8"
+msgstr ""
 
 #: wppa_settings.php:234
+#, fuzzy
 msgid "Other changes saved"
-msgstr "Andere wijzigingen opgeslagen"
+msgstr "草稿保存于"
 
 #: wppa_settings.php:235
+#, fuzzy
 msgid "Changes Saved"
-msgstr "Wijzigingen opgeslagen"
+msgstr "更改已保存。"
 
 #: wppa_settings.php:245
+#, fuzzy
 msgid "Regenerating thumbnail images, starting at id="
-msgstr "Miniatuur afbeeldingen opnieuw maken, begonnen bij id="
+msgstr "再生的缩略图,从id ="
 
 #: wppa_settings.php:245
+#, fuzzy
 msgid "If the line of dots stops growing or you browser reports Ready but you did NOT get a 'READY regenerating thumbnail images' message, your server has given up. In that case: continue this action by clicking"
-msgstr "Indien de lijn puntjes niet meer langer wordt of de browser gereed is en u GEEN 'Gereed met het aanmaken van miniaturen' melding ziet dan heeft de server het opgegeven. In dit geval: ga verder met deze bewerking en klik op"
+msgstr "如果线的点停止增长或者你的浏览器的报道已经准备就绪,但是你没有得到一个“准备好了再生的缩略图的信息,你的服务器已经放弃了。在这种情况下,继续通过点击这个行动"
 
 #: wppa_settings.php:245
+#, fuzzy
 msgid "and click \"Save Changes\" again."
-msgstr "te klikken en opnieuw op \"Wijzigingen opslaan\" te klikken."
+msgstr "并且点击\"Save Changes\" 。"
 
 #: wppa_settings.php:248
+#, fuzzy
 msgid "READY regenerating thumbnail images."
-msgstr "GEREED met het opnieuw aanmaken van miniatuur afbeeldingen."
+msgstr "准备好了再生的缩略图。"
 
 #: wppa_settings.php:252
+#, fuzzy
 msgid "Regeneration of thumbnail images interrupted. Please press \"Save Changes\""
-msgstr "Het opnieuw aanmaken van miniatuur afbeeldingen is onderbroken. Klik a.u.b. op \"Wijzigingen opslaan\""
+msgstr "再生的缩略图打断了。请按\"Save Changes\""
 
 #: wppa_settings.php:261
+#, fuzzy
 msgid "WP Photo Album Plus Settings"
-msgstr "WP Photo Album Plus Instellingen"
+msgstr "WP专辑加上设置"
 
 #: wppa_settings.php:262
+#, fuzzy
 msgid "Database revision:"
-msgstr "Database revisie:"
+msgstr "[当前修订版本]"
 
 #: wppa_settings.php:262
+#, fuzzy
 msgid "WP Charset:"
-msgstr "WP Karakterset:"
+msgstr "WP Charset:"
 
 #: wppa_settings.php:262
+#, fuzzy
 msgid "WPPA Charset:"
-msgstr "WPPA Karakterset:"
+msgstr "WPPA Charset:"
 
 #: wppa_settings.php:262
+#, fuzzy
 msgid "default"
-msgstr "standaard"
+msgstr "默认"
 
 #: wppa_settings.php:275
 msgid "Table I:"
-msgstr "Tabel I:"
+msgstr ""
 
 #: wppa_settings.php:275
+#, fuzzy
 msgid "Sizes:"
-msgstr "Groottes:"
+msgstr "大小"
 
 #: wppa_settings.php:276
 msgid "This table describes all the sizes and size options (except fontsizes) for the generation and display of the WPPA+ elements."
-msgstr "Deze tabel beschrijft alle groottes en grootte-opties (behalve lettertype groottes) die nodig zijn bij het maken en afbeelden van WPPA+ onderdelen."
+msgstr ""
 
 #: wppa_settings.php:281
 #: wppa_settings.php:465
@@ -1228,7 +1554,7 @@ msgstr "Deze tabel beschrijft alle groottes en grootte-opties (behalve lettertyp
 #: wppa_settings.php:1296
 #: wppa_settings.php:1350
 msgid "#"
-msgstr "#"
+msgstr ""
 
 #: wppa_settings.php:284
 #: wppa_settings.php:468
@@ -1240,8 +1566,9 @@ msgstr "#"
 #: wppa_settings.php:1237
 #: wppa_settings.php:1299
 #: wppa_settings.php:1353
+#, fuzzy
 msgid "Setting"
-msgstr "Instelling"
+msgstr "设置"
 
 #: wppa_settings.php:285
 #: wppa_settings.php:469
@@ -1262,121 +1589,141 @@ msgstr "Instelling"
 #: wppa_settings.php:1300
 #: wppa_settings.php:1354
 msgid "Help"
-msgstr "Help"
+msgstr ""
 
 #: wppa_settings.php:290
+#, fuzzy
 msgid "Column Width"
-msgstr "Kolom Breedte"
+msgstr "固定宽"
 
 #: wppa_settings.php:291
+#, fuzzy
 msgid "The width of the main column in your theme's display area."
-msgstr "De breedte van de hoofdkolom van uw thema."
+msgstr "进入宽度的主要柱在你的主题的显示区域。"
 
 #: wppa_settings.php:292
+#, fuzzy
 msgid "Enter the width of the main column in your theme's display area."
-msgstr "Voer de breedte in van de hoofdkolom van uw thema."
+msgstr "进入宽度的主要柱在你的主题的显示区域。"
 
 #: wppa_settings.php:293
+#, fuzzy
 msgid "You should set this value correctly to make sure the fullsize images are properly aligned horizontally."
-msgstr "U dient de waarde juist op te geven om er zeker van te zijn dat de foto's correct horizontaal worden uitgelijnd."
+msgstr "你应该将这个值fullsize正确,确保适当的对齐图像可以安装在水平位置。"
 
 #: wppa_settings.php:294
+#, fuzzy
 msgid "You may enter auto for use in themes that have a floating content column."
-msgstr "U kunt auto invullen voor gebruik in thema's die een variabele hoofdkolom hebben."
+msgstr "你可以输入 <b>auto</b>中所使用的主题,具有一个浮动内容栏目。"
 
 #: wppa_settings.php:295
 msgid "The use of 'auto' is strongly discouraged. Do not use it unless it is strictly required."
-msgstr "Het gebruik van 'auto' wordt sterk afgeraden. Gebruik dat niet tenzij het strikt noodzakelijk is."
+msgstr ""
 
 #: wppa_settings.php:298
 #: wppa_settings.php:307
 #: wppa_settings.php:349
+#, fuzzy
 msgid "pixels wide"
-msgstr "pixels breed"
+msgstr "全尺寸大小是宽度（像素）："
 
 #: wppa_settings.php:301
+#, fuzzy
 msgid "Fullsize Width"
-msgstr "Volledige grootte Breedte"
+msgstr "原尺寸"
 
 #: wppa_settings.php:302
 msgid "The maximum width fullsize photos will be displayed."
-msgstr "De maximale breedte waarop foto's van volledige grootte worden afgebeeld."
+msgstr ""
 
 #: wppa_settings.php:303
 #: wppa_settings.php:312
+#, fuzzy
 msgid "Enter the largest size in pixels as how you want your photos to be displayed."
-msgstr "Voer de grootste maat (in pixels) in hoe u de foto's wilt weergeven."
+msgstr "进入最大的像素大小作为你想怎么看你的照片,以显示。"
 
 #: wppa_settings.php:304
+#, fuzzy
 msgid "This is usually the same as the Column Width, but it may differ."
-msgstr "Dit is meestal hetzelfde als de Kolom breedte, maar het kan hiervan verschillen."
+msgstr "这通常是相同的,但它柱宽度可能会有所不同。"
 
 #: wppa_settings.php:310
+#, fuzzy
 msgid "Fullsize Height"
-msgstr "Volledige grootte Hoogte"
+msgstr "原尺寸"
 
 #: wppa_settings.php:311
 msgid "The maximum height fullsize photos will be displayed."
-msgstr "De maximale hoogte waarop foto's van volledige grootte worden afgebeeld."
+msgstr ""
 
 #: wppa_settings.php:313
 msgid "This setting defines the height of the space reserved for full sized photos."
-msgstr "Deze instelling bepaald de hoogte van de ruimte die wordt gereserveerd voor foto's van volledige grootte."
+msgstr ""
 
 #: wppa_settings.php:314
 #, php-format
 msgid "If you change the width of a display by the %%size= command, this value changes proportionally to match the aspect ratio as defined by this and the previous setting."
-msgstr "Als u de breedte van de afbeelding wijzigt met het %%size= commando, wordt deze waarde proportioneel aangepast zodat de breedte/hoogte verhouding tussen deze en de vorige instelling hetzelfde blijft."
+msgstr ""
 
 #: wppa_settings.php:316
 #: wppa_settings.php:359
+#, fuzzy
 msgid "pixels high"
-msgstr "pixels hoog"
+msgstr "全尺寸大小是高度（像素）："
 
 #: wppa_settings.php:319
+#, fuzzy
 msgid "Resize on Upload"
-msgstr "Tijdens upload verkleinen"
+msgstr "图像上传错误"
 
 #: wppa_settings.php:320
+#, fuzzy
 msgid "Indicate if the photos should be resized during upload."
-msgstr "Geef aan of de foto's verkleind moeten worden bij het uploaden."
+msgstr "Specify the way the photos should be ordered in this album."
 
 #: wppa_settings.php:321
+#, fuzzy
 msgid "If you check this item, the size of the photos will be reduced to the Full Size during the upload/import process."
-msgstr "Als u dit aanvinkt, zullen de foto's verkleind worden tot de Volledig Grootte tijdens het upload/import proces."
+msgstr "如果你检查一下这个项目,大小的照片将会减少到全尺寸在上传/进口的过程。"
 
 #: wppa_settings.php:322
+#, fuzzy
 msgid "The photos will never be enlarged if they are smaller than the Full Size."
-msgstr "De foto's zullen nooit vergroot worden als ze kleiner zijn dan de Volledige Grootte."
+msgstr "永远不会被放大的照片,如果他们都小于完整大小的。"
 
 #: wppa_settings.php:327
+#, fuzzy
 msgid "Stretch to fit"
-msgstr "Vergroot als te klein"
+msgstr "拉伸以适合"
 
 #: wppa_settings.php:328
 msgid "Stretch photos that are too small."
-msgstr "Rek te kleine foto's uit."
+msgstr ""
 
 #: wppa_settings.php:329
+#, fuzzy
 msgid "Fullsize images will be stretched to the Full Size at display time if they are smaller. Leaving unchecked is recommended. It is better to upload photos that fit well the sizes you use!"
-msgstr "Foto's worden vergroot tot de opgegeven volledige grootte als se kleiner zijn. Dit wordt afgeraden. Het is beter foto's te uploaden die van zichzelf groot genoeg zijn!"
+msgstr "全尺寸的图片会在伸展到全尺寸在显示时间如果他们是小的。离开未经检查的是被推荐的。最好是上传照片,使用合适的尺寸使用它时,你的!"
 
 #: wppa_settings.php:334
+#, fuzzy
 msgid "Thumbnail Size"
-msgstr "Miniatuur grootte"
+msgstr "缩略图大小"
 
 #: wppa_settings.php:335
+#, fuzzy
 msgid "The size of the thumbnail images."
-msgstr "De grootte van de miniatuur afbeeldingen."
+msgstr "使用弹出效果的缩略图。"
 
 #: wppa_settings.php:336
 #: wppa_settings.php:399
 msgid "This size applies to the width or height, whichever is the largest."
-msgstr "Deze afmeting betreft de grootste van de breedte of de hoogte."
+msgstr ""
 
 #: wppa_settings.php:337
+#, fuzzy
 msgid "Changing the thumbnail size may result in all thumbnails being regenerated. this may take a while."
-msgstr "Het veranderen van de grootte kan er toe leiden dat alle miniaturen opnieuw worden aangemaakt. Dit kan geruime tijd duren."
+msgstr "大小变化缩略图可能会导致所有缩略图被regenerated.这可能需要一段时间。"
 
 #: wppa_settings.php:339
 #: wppa_settings.php:369
@@ -1392,1037 +1739,1223 @@ msgstr "Het veranderen van de grootte kan er toe leiden dat alle miniaturen opni
 #: wppa_settings.php:987
 #: wppa_settings.php:998
 #: wppa_settings.php:1009
+#, fuzzy
 msgid "pixels"
-msgstr "pixels"
+msgstr "像素。"
 
 #: wppa_settings.php:343
+#, fuzzy
 msgid "Thumbframe width"
-msgstr "Miniaturen frame breedte"
+msgstr "缩略图框架宽度"
 
 #: wppa_settings.php:344
+#, fuzzy
 msgid "The width of the thumbnail frame."
-msgstr "De breedte van de frames van de miniaturen."
+msgstr "宽度,高度和间距设置为缩略图的帧。"
 
 #: wppa_settings.php:345
+#, fuzzy
 msgid "Set the width of the thumbnail frame."
-msgstr "Geef de gewenste breedte op voor de frames van de miniaturen."
+msgstr "宽度,高度和间距设置为缩略图的帧。"
 
 #: wppa_settings.php:346
 #: wppa_settings.php:356
 #: wppa_settings.php:366
+#, fuzzy
 msgid "Set width, height and spacing for the thumbnail frames."
-msgstr "Geef gewenste breedte, hoogte en tussenruimte op voor de frames van de miniaturen."
+msgstr "宽度,高度和间距设置为缩略图的帧。"
 
 #: wppa_settings.php:347
 #: wppa_settings.php:357
 #: wppa_settings.php:367
+#, fuzzy
 msgid "These sizes should be large enough for a thumbnail image and - optionally - the text under it."
-msgstr "Deze maten moeten groot genoeg zijn om de miniatuur en - eventueel - de tekst er onder te kunnen omvatten."
+msgstr "这些通径的阀门必须足够大,可以让一个极小的形象和-选择性地——文本在底下。"
 
 #: wppa_settings.php:353
+#, fuzzy
 msgid "Thumbframe height"
-msgstr "Miniaturen frame hoogte"
+msgstr "缩略图框的高度"
 
 #: wppa_settings.php:354
+#, fuzzy
 msgid "The height of the thumbnail frame."
-msgstr "De hoogte van de frames van de miniaturen."
+msgstr "宽度,高度和间距设置为缩略图的帧。"
 
 #: wppa_settings.php:355
+#, fuzzy
 msgid "Set the height of the thumbnail frame."
-msgstr "Geef gewenste hoogte op voor de frames van de miniaturen."
+msgstr "宽度,高度和间距设置为缩略图的帧。"
 
 #: wppa_settings.php:363
+#, fuzzy
 msgid "Thumbnail spacing"
-msgstr "Miniaturen tussenruimte"
+msgstr "缩略图间距"
 
 #: wppa_settings.php:364
+#, fuzzy
 msgid "The spacing between adjacent thumbnail frames."
-msgstr "De tussenruimte van de frames van de miniaturen."
+msgstr "宽度,高度和间距设置为缩略图的帧。"
 
 #: wppa_settings.php:365
+#, fuzzy
 msgid "Set the minimal spacing between the adjacent thumbnail frames"
-msgstr "Geef gewenste minimale tussenruimte op voor de frames van de miniaturen."
+msgstr "宽度,高度和间距设置为缩略图的帧。"
 
 #: wppa_settings.php:373
 msgid "Auto spacing"
-msgstr "Automatische tussenruimtes"
+msgstr ""
 
 #: wppa_settings.php:374
 msgid "Space the thumbnail frames automatic."
-msgstr "Zet de frames van de miniatuurafbeeldingen automatisch op regelmatige afstanden."
+msgstr ""
 
 #: wppa_settings.php:375
 msgid "If you check this box, the thumbnail images will be evenly distributed over the available width."
-msgstr "Als u dit aanvinkt dan worden de miniatuurafbeeldingen gelijkmatig verdeeld over de beschikbare breedte."
+msgstr ""
 
 #: wppa_settings.php:376
 msgid "In this case, the thumbnail spacing value (setting I-9) will be regarded as a minimum value."
-msgstr "In dit geval wordt de instelling voor de tussenruimte (instelling I-9) beschouwd als een minimum waarde."
+msgstr ""
 
 #: wppa_settings.php:382
+#, fuzzy
 msgid "Photocount threshold"
-msgstr "Drempelwaarde foto aantal"
+msgstr "照片数阈值:"
 
 #: wppa_settings.php:383
 msgid "Number of thumbnails in an album must exceed."
-msgstr "Aantal miniaturen in een album moet groter zijn dan."
+msgstr ""
 
 #: wppa_settings.php:384
+#, fuzzy
 msgid "Photos do not show up in the album unless there are more than this number of photos in the album. This allows you to have cover photos on an album that contains only sub albums without seeing them in the list of sub albums. Usually set to 0 (always show) or 1 (for one cover photo)."
-msgstr "U ziet de foto's niet in het album tenzij er meer dan dit aantal in het album zitten. Dit maakt het mogelijk om omslagfoto's te hebben op albums die verder alleen sub-albums bevatten zonder dat men ze in de lijst van sub-albums ziet. Gebruikelijke waarde 0 (laat alles zien) of 1 (voor één omslagfoto)."
+msgstr "照片中不会出现这张专辑,除非有超过这个数字的相册里的照片。这使得你可以拥有一张专辑封面照片只包含子相册没有亲眼看到这些名单的子的专辑。通常被设置为0或1(始终表现出()的封面图片)。"
 
 #: wppa_settings.php:386
+#, fuzzy
 msgid "pieces"
-msgstr "stuks"
+msgstr "许可证。"
 
 #: wppa_settings.php:389
 #: wppa_settings.php:405
+#, fuzzy
 msgid "Page size"
-msgstr "Pagina grootte"
+msgstr "页面："
 
 #: wppa_settings.php:390
+#, fuzzy
 msgid "Max number of thumbnails per page."
-msgstr "Maximum aantal miniatuur afbeeldingen per pagina."
+msgstr "设置缩略图分页:"
 
 #: wppa_settings.php:391
+#, fuzzy
 msgid "Enter the maximum number of thumbnail images per page. A value of 0 indicates no pagination."
-msgstr "Geef het maximum aantal miniaturen per pagina op. De waarde 0 betekent: geen paginering."
+msgstr "入的最大数量的缩略图/页。0的值表示没有分页。"
 
 #: wppa_settings.php:393
+#, fuzzy
 msgid "thumbnails"
-msgstr "miniaturen"
+msgstr "更新缩略图"
 
 #: wppa_settings.php:397
+#, fuzzy
 msgid "Coverphoto size"
-msgstr "Omslag foto grootte"
+msgstr "封面图片尺寸。"
 
 #: wppa_settings.php:398
 msgid "The size of the coverphoto."
-msgstr "De grootte van de omslagfoto."
+msgstr ""
 
 #: wppa_settings.php:400
+#, fuzzy
 msgid "Changing the coverphoto size may result in all thumbnails being regenerated. this may take a while."
-msgstr "Het veranderen van de grootte kan er toe leiden dat alle miniaturen opnieuw worden aangemaakt. Dit kan geruime tijd duren."
+msgstr "封面图片大小改变可能导致所有被regenerated.缩略图,这可能需要一段时间。"
 
 #: wppa_settings.php:406
+#, fuzzy
 msgid "Max number of covers per page."
-msgstr "Maximum aantal album omslagen per pagina."
+msgstr "马克斯涵盖每页:"
 
 #: wppa_settings.php:407
+#, fuzzy
 msgid "Enter the maximum number of album covers per page. A value of 0 indicates no pagination."
-msgstr "Geef het maximum aantal album omslagen per pagina op. De waarde 0 betekent: geen paginering."
+msgstr "进入专辑封面上的最大的数字/页。0的值表示没有分页。"
 
 #: wppa_settings.php:409
+#, fuzzy
 msgid "covers"
-msgstr "omslagen"
+msgstr "专辑封面:"
 
 #: wppa_settings.php:412
+#, fuzzy
 msgid "TopTen count"
-msgstr "Top Tien aantal"
+msgstr "十大照片"
 
 #: wppa_settings.php:413
+#, fuzzy
 msgid "Number of photos in TopTen widget."
-msgstr "Aantal foto's in de TopTien widget."
+msgstr "显示小工具设置页错误。"
 
 #: wppa_settings.php:414
+#, fuzzy
 msgid "Enter the maximum number of rated photos in the TopTen widget."
-msgstr "Geef het maximaal weer te geven aantal gewaardeerde foto's voor de widget op."
+msgstr "输入的最大数量TopTen额定照片的部件。"
 
 #: wppa_settings.php:416
+#, fuzzy
 msgid "photos"
-msgstr "foto's"
+msgstr "上传照片"
 
 #: wppa_settings.php:419
+#, fuzzy
 msgid "TopTen size"
-msgstr "TopTien grootte"
+msgstr "十大照片"
 
 #: wppa_settings.php:420
+#, fuzzy
 msgid "Size of thumbnails in TopTen widget."
-msgstr "De grootte van de miniaturen in de TopTien widget."
+msgstr "进入径TopTen迷你照片的部件。"
 
 #: wppa_settings.php:421
+#, fuzzy
 msgid "Enter the size for the mini photos in the TopTen widget."
-msgstr "Geef de grootte op van de miniatuur foto's in de TopTien widget."
+msgstr "进入径TopTen迷你照片的部件。"
 
 #: wppa_settings.php:422
 msgid "The size applies to the width or height, whatever is the largest."
-msgstr "De grootte betreft de breedte of hoogte, welke de grootste is."
+msgstr ""
 
 #: wppa_settings.php:423
+#, fuzzy
 msgid "Recommended values: 86 for a two column and 56 for a three column display."
-msgstr "Aanbevolen waarden: 86 voor twee en 56 voor drie kolommen weergave."
+msgstr "推荐值:86分两柱和56三个光柱显示。"
 
 #: wppa_settings.php:428
+#, fuzzy
 msgid "2 Columns size"
-msgstr "2 Kolommen bij"
+msgstr "专栏:"
 
 #: wppa_settings.php:429
+#, fuzzy
 msgid "Minimum width for 2 columns."
-msgstr "Minimum breedte voor 2 kolommen."
+msgstr "2列最小宽度:"
 
 #: wppa_settings.php:430
 #: wppa_settings.php:438
+#, fuzzy
 msgid "Display covers in 2 or 3 columns if the display area is wider or equal to the number of pixels entered."
-msgstr "Toon de omslagen in 2 of 3 kolommen indien de afbeeldingsruimte gelijk is aan of breder is dan het opgegeven aantal pixels."
+msgstr "显示在2或3个栏目涵盖如果显示区域范围宽或等于多少像素进入。"
 
 #: wppa_settings.php:431
 #: wppa_settings.php:439
+#, fuzzy
 msgid "This also applies for 'thumbnails as covers', and will NOT apply to single items."
-msgstr "Dit is ook van toepassing op 'miniaturen als omslagen weergeve', maar NIET op enkele items."
+msgstr "这也适用于“缩略图作为封面’,而不适用于单项"
 
 #: wppa_settings.php:436
+#, fuzzy
 msgid "3 Columns size"
-msgstr "3 Kolommen bij"
+msgstr "专栏:"
 
 #: wppa_settings.php:437
+#, fuzzy
 msgid "Minimum width for 3 columns."
-msgstr "Minimum breedte voor 3 kolommen."
+msgstr "最小宽度为3个栏目:"
 
 #: wppa_settings.php:444
+#, fuzzy
 msgid "Border thickness"
-msgstr "Randdikte"
+msgstr "边框厚度"
 
 #: wppa_settings.php:445
 msgid "Thickness of wppa+ box borders."
-msgstr "Randdikte van wppa+ 'boxes'."
+msgstr ""
 
 #: wppa_settings.php:446
+#, fuzzy
 msgid "Enter the thickness for the border of the WPPA+ boxes. A number of 0 means: no border."
-msgstr "Voer de dikte in voor de randen van WPPA+ boxen. Het getal 0 betekent: geen rand."
+msgstr "进入thicknes为背景和角落半径以上。许多0表示:没有。"
 
 #: wppa_settings.php:447
 #: wppa_settings.php:455
 msgid "WPPA+ boxes are: the navigation bars and the filmstrip."
-msgstr "WPPA+ 'boxes' zijn: de navigatie balken en de filmstrip."
+msgstr ""
 
 #: wppa_settings.php:453
 msgid "Radius of wppa+ box borders."
-msgstr "Afrondingsstraal van wppa+ 'box' randen."
+msgstr ""
 
 #: wppa_settings.php:454
+#, fuzzy
 msgid "Enter the corner radius for the border of the WPPA+ boxes. A number of 0 means: no rounded corners."
-msgstr "Voer de afrondingsstraal in voor de randen van WPPA+ boxen. Het getal 0 betekent: geen afgeronde hoeken."
+msgstr "进入thicknes为背景和角落半径以上。许多0表示:没有。"
 
 #: wppa_settings.php:456
+#, fuzzy
 msgid "Note that rounded corners are only supported by modern browsers."
-msgstr "Merk op dat afgeronde randen alleen door moderne browsers wordt ondersteund."
+msgstr "注意,圆角只是现代浏览器所支持。"
 
 #: wppa_settings.php:475
 msgid "Table II:"
-msgstr "Tabel II:"
+msgstr ""
 
 #: wppa_settings.php:475
 msgid "Visibility:"
-msgstr "Zichtbaarheid:"
+msgstr ""
 
 #: wppa_settings.php:476
 msgid "This table describes the visibility of certain wppa+ elements."
-msgstr "Deze tabel beschrijft de zichtbaarheid van verschillende wppa+ onderdelen."
+msgstr ""
 
 #: wppa_settings.php:490
+#, fuzzy
 msgid "Breadcrumb"
-msgstr "Broodkruimelnavigatie"
+msgstr "显示 \"Home\"面包屑导航。"
 
 #: wppa_settings.php:491
+#, fuzzy
 msgid "Show breadcrumb navigation bars."
-msgstr "Toon broodkruimel navigatiebalken."
+msgstr "显示 \"Home\"面包屑导航。"
 
 #: wppa_settings.php:492
+#, fuzzy
 msgid "Indicate whether a breadcrumb navigation should be displayed"
-msgstr "Geef aan of de broodkruimelnavigatie moet worden weergegeven"
+msgstr "标明一个导航应该被显示"
 
 #: wppa_settings.php:498
 msgid "Home"
-msgstr "Beginpagina"
+msgstr ""
 
 #: wppa_settings.php:499
+#, fuzzy
 msgid "Show \"Home\" in breadcrumb."
-msgstr "Toon \"Beginpagina\" in de broodkruimelnavigatie."
+msgstr "显示 \"Home\"面包屑导航。"
 
 #: wppa_settings.php:500
+#, fuzzy
 msgid "Indicate whether the breadcrumb navigation should start with a \"Home\"-link"
-msgstr "Geef aan of de broodkruimelnavigatie met een \"Beginpagina\"-verwijzing moet beginnen"
+msgstr "显示其是否作为导航应该开始以一个链接到\"Home\""
 
 #: wppa_settings.php:506
+#, fuzzy
 msgid "Separator"
-msgstr "Scheidingsteken"
+msgstr "分隔符"
 
 #: wppa_settings.php:507
 msgid "Breadcrumb separator symbol."
-msgstr "Broodkruimelnavigatie scheidingssymbool."
+msgstr ""
 
 #: wppa_settings.php:508
+#, fuzzy
 msgid "Select the desired breadcrumb separator element."
-msgstr "Selecteer het gewenste broodkruimelnavigatiescheidingselement."
+msgstr "选择想要的面包屑分隔符的元素。"
 
 #: wppa_settings.php:509
+#, fuzzy
 msgid "A text string may contain valid html."
-msgstr "Een tekst mag html code bevatten."
+msgstr "文本字符串可以包含有效的html。"
 
 #: wppa_settings.php:510
+#, fuzzy
 msgid "An image will be scaled automatically if you set the navigation font size."
-msgstr "Een afbeelding wordt automatisch geschaald indien de navigatie fontgrootte is ingesteld."
+msgstr "一幅图像将按一定比例自动如果您设置的导航的字体大小。"
 
 #: wppa_settings.php:512
+#, fuzzy
 msgid "Text (html):"
-msgstr "Tekst (html):"
+msgstr "任意文本或 HTML"
 
 #: wppa_settings.php:512
+#, fuzzy
 msgid "Image (url):"
-msgstr "Afbeelding (url):"
+msgstr "图像 URL"
 
 #: wppa_settings.php:519
 msgid "Html"
-msgstr "Html"
+msgstr ""
 
 #: wppa_settings.php:520
+#, fuzzy
 msgid "Breadcrumb separator text."
-msgstr "Broodkruimelnavigatie scheidings tekst."
+msgstr "选择想要的面包屑分隔符的元素。"
 
 #: wppa_settings.php:521
 msgid "Enter the HTML code that produces the separator symbol you want."
-msgstr "Voer de HTML code in die het gewenste scheidingssymbool aanmaakt."
+msgstr ""
 
 #: wppa_settings.php:522
 msgid "It may be as simple as '-' (without the quotes) or as complex as a tag like <div>..</div>."
-msgstr "Het kan zo eenvoudig zijn als '-' (zonder accenten) of zo complex als een tag zoals <div>..</div>."
+msgstr ""
 
 #: wppa_settings.php:527
+#, fuzzy
 msgid "Image Url"
-msgstr "Afbeelding Url"
+msgstr "图像 URL"
 
 #: wppa_settings.php:528
 msgid "Full url to separator image."
-msgstr "Volledige url naar een afbeelding."
+msgstr ""
 
 #: wppa_settings.php:529
 msgid "Enter the full url to the image you want to use for the separator symbol."
-msgstr "Voer de volledige url in naar een afbeelding die u wenst te gebruiken als scheidings symbool."
+msgstr ""
 
 #: wppa_settings.php:534
 msgid "Start/stop"
-msgstr "Start/stop"
+msgstr ""
 
 #: wppa_settings.php:535
+#, fuzzy
 msgid "Show the Start/Stop slideshow bar."
-msgstr "Toon de Start/stop diavoorstelling balk."
+msgstr "启动/停止幻灯片滚动条:"
 
 #: wppa_settings.php:536
+#, fuzzy
 msgid "If checked: display the start/stop slideshow navigation bar above the full-size images and slideshow"
-msgstr "Indien aangevinkt: toon de start/stop diavoorstelling navigatiebalk boven de diavoorstelling."
+msgstr "如果勾选此项:显示名称和描述的全尺寸下的图像和幻灯片。"
 
 #: wppa_settings.php:541
+#, fuzzy
 msgid "Browse bar"
-msgstr "Blader balk"
+msgstr "显示管理工具栏"
 
 #: wppa_settings.php:542
+#, fuzzy
 msgid "Show Browse photos bar."
-msgstr "Toon de door foto's bladeren balk."
+msgstr "显示管理工具栏"
 
 #: wppa_settings.php:543
+#, fuzzy
 msgid "If checked: display the preveous/next navigation bar under the full-size images and slideshow"
-msgstr "Indien aangevinkt: toon de vorige/volgende navigatiebalk onder de volledige grootte foto's en diavoorstelling"
+msgstr "如果勾选此项:显示名称和描述的全尺寸下的图像和幻灯片。"
 
 #: wppa_settings.php:548
+#, fuzzy
 msgid "Filmstrip"
-msgstr "Filmstrip"
+msgstr "Filmstrip navigator:"
 
 #: wppa_settings.php:549
+#, fuzzy
 msgid "Show Filmstrip navigation bar."
-msgstr "Toon de Filmstrip navigatiebalk."
+msgstr "Filmstrip navigator:"
 
 #: wppa_settings.php:550
+#, fuzzy
 msgid "If checked: display the filmstrip navigation bar under the full_size images and slideshow"
-msgstr "Indien aangevinkt: toon de filmstrip navigatiebalk onder de volledige grootte foto's en diavoorstelling"
+msgstr "如果勾选此项:显示名称和描述的全尺寸下的图像和幻灯片。"
 
 #: wppa_settings.php:555
 msgid "Film seam"
-msgstr "Lasnaad"
+msgstr ""
 
 #: wppa_settings.php:556
+#, fuzzy
 msgid "Show seam between end and start of film."
-msgstr "Toon de naad tussen begin en eind van de fil."
+msgstr "节目结束和开始缝间的电影:"
 
 #: wppa_settings.php:557
+#, fuzzy
 msgid "If checked: display the wrap-around point in the filmstrip"
-msgstr "Indien aangevinkt: toon het punt waar het eind en het begin van de filmstrp samenkomen."
+msgstr "大亚湾核电站运行经验证明表明如果你想边点可filmstrip中可以看到。"
 
 #: wppa_settings.php:562
 #: wppa_settings.php:969
+#, fuzzy
 msgid "Fullsize name"
-msgstr "Volledige grootte naam"
+msgstr "原尺寸"
 
 #: wppa_settings.php:563
 msgid "Display Fullsize name."
-msgstr "Toon naam bij volle grootte."
+msgstr ""
 
 #: wppa_settings.php:564
+#, fuzzy
 msgid "If checked: display the name of the photo under the full-size images and slideshow."
-msgstr "Indien aangevinkt: toon de naam van de foto onder de volledige grootte foto's en diavoorstelling."
+msgstr "如果勾选此项:显示名称和描述的全尺寸下的图像和幻灯片。"
 
 #: wppa_settings.php:569
 #: wppa_settings.php:958
+#, fuzzy
 msgid "Fullsize desc"
-msgstr "Volledige grootte beschrijving"
+msgstr "原尺寸"
 
 #: wppa_settings.php:570
+#, fuzzy
 msgid "Display Fullsize description."
-msgstr "Toon de beschrijving."
+msgstr "字体尺寸的照片描述:"
 
 #: wppa_settings.php:571
+#, fuzzy
 msgid "If checked: display description under the full-size images and slideshow."
-msgstr "Indien aangevinkt: toon de beschrijving onder de volledige grootte foto's en diavoorstelling."
+msgstr "如果勾选此项:显示名称和描述的全尺寸下的图像和幻灯片。"
 
 #: wppa_settings.php:576
+#, fuzzy
 msgid "Slideshow"
-msgstr "Diavoorstelling"
+msgstr "WPPA +侧边栏的幻灯片"
 
 #: wppa_settings.php:577
+#, fuzzy
 msgid "Enable the slideshow."
-msgstr "Diavoorstelling aan."
+msgstr "使用幻灯片:"
 
 #: wppa_settings.php:578
+#, fuzzy
 msgid "If you do not want slideshows: uncheck this box. Browsing full size images will remain possible."
-msgstr "Als u geen diavoorstellingen wilt: haal dit vinkje weg. Door foto's bladeren blijft mogelijk."
+msgstr "如果您不希望幻灯片:取消这个盒子。全尺寸图片浏览仍将是可能的。"
 
 #: wppa_settings.php:584
+#, fuzzy
 msgid "Rating system"
-msgstr "Waarderings systeem"
+msgstr "使评分系统:"
 
 #: wppa_settings.php:585
+#, fuzzy
 msgid "Enable the rating system."
-msgstr "Waarderings systeem aan."
+msgstr "使评分系统:"
 
 #: wppa_settings.php:586
+#, fuzzy
 msgid "If checked, the photo rating system will be enabled."
-msgstr "Indien aangevinkt, wordt het foto waarderings systeem aangezet."
+msgstr "如果勾选此项,照片评级系统将被打开。"
 
 #: wppa_settings.php:592
+#, fuzzy
 msgid "Thumbnail name"
-msgstr "Miniatuur naam"
+msgstr "当前缩略图"
 
 #: wppa_settings.php:593
 msgid "Display Thubnail name."
-msgstr "Toon naam bij miniatuur."
+msgstr ""
 
 #: wppa_settings.php:594
+#, fuzzy
 msgid "Display photo name under thumbnail images."
-msgstr "Toon foto naam onder de miniaturen."
+msgstr "显示名称、描述和评级在缩略图。"
 
 #: wppa_settings.php:600
+#, fuzzy
 msgid "Thumbnail desc"
-msgstr "Miniatuur beschrijving"
+msgstr "更新缩略图"
 
 #: wppa_settings.php:601
 msgid "Display Thumbnail description."
-msgstr "Toon beschrijving bij miniatuur."
+msgstr ""
 
 #: wppa_settings.php:602
+#, fuzzy
 msgid "Display description of the photo under thumbnail images."
-msgstr "Toon de beschrijving van de foto onder de miniaturen."
+msgstr "显示名称、描述和评级在缩略图。"
 
 #: wppa_settings.php:608
+#, fuzzy
 msgid "Thumbnail rating"
-msgstr "Miniaturen waarde"
+msgstr "缩略图间距"
 
 #: wppa_settings.php:609
+#, fuzzy
 msgid "Display Thumbnail Rating."
-msgstr "Toon waardering miniaturen."
+msgstr "缩略图间距"
 
 #: wppa_settings.php:610
+#, fuzzy
 msgid "Display the rating of the photo under the thumbnail image."
-msgstr "Toon de waardering van de foto onder de miniaturen."
+msgstr "显示名称、描述和评级在缩略图。"
 
 #: wppa_settings.php:612
+#, fuzzy
 msgid "(This setting requires that the rating system is enabled.)"
-msgstr "(Deze instelling vereist dat het waarderings systeem aan staat.)"
+msgstr "如果勾选此项,照片评级系统将被打开。"
 
 #: wppa_settings.php:630
 msgid "Table III:"
-msgstr "Tabel III:"
+msgstr ""
 
 #: wppa_settings.php:630
+#, fuzzy
 msgid "Backgrounds:"
-msgstr "Achtergronden:"
+msgstr "背景颜色"
 
 #: wppa_settings.php:631
 msgid "This table describes the backgrounds of wppa+ elements."
-msgstr "Deze tabel beschrijft de achtergronden van wppa+ onderdelen."
+msgstr ""
 
 #: wppa_settings.php:639
 #: wppa_settings.php:689
+#, fuzzy
 msgid "Background color"
-msgstr "Achtergrondkleur"
+msgstr "背景颜色"
 
 #: wppa_settings.php:640
 #: wppa_settings.php:690
+#, fuzzy
 msgid "Border color"
-msgstr "Randkleur"
+msgstr "边框颜色"
 
 #: wppa_settings.php:646
 msgid "Even"
-msgstr "Even"
+msgstr ""
 
 #: wppa_settings.php:647
+#, fuzzy
 msgid "Even background."
-msgstr "Even achtergrond."
+msgstr "背景附着 ..."
 
 #: wppa_settings.php:648
+#, fuzzy
 msgid "Enter valid CSS colors for even numbered backgrounds and borders of album covers and thumbnail displays 'As covers'."
-msgstr "Voer geldige CSS kleuren in voor even genummerde achtergronden en randen van album omslagen en miniatuur weergaven 'Als omslagen'."
+msgstr "进入有效CSS的颜色,背景和边界甚至数的专辑封面和缩略图显示 'As covers'."
 
 #: wppa_settings.php:655
 msgid "Odd"
-msgstr "Oneven"
+msgstr ""
 
 #: wppa_settings.php:656
+#, fuzzy
 msgid "Odd background."
-msgstr "Oneven achtergrond."
+msgstr "背景附着 ..."
 
 #: wppa_settings.php:657
+#, fuzzy
 msgid "Enter valid CSS colors for odd numbered backgrounds and borders of album covers and thumbnail displays 'As covers'."
-msgstr "Voer geldige CSS kleuren in voor on-even genummerde achtergronden en randen van album omslagen en miniatuur weergaven 'Als omslagen'."
+msgstr "进入有效CSS的颜色为奇数的背景和边界的专辑封面和缩略图显示''As covers'。"
 
 #: wppa_settings.php:664
 msgid "Nav"
-msgstr "Navigatie"
+msgstr ""
 
 #: wppa_settings.php:665
+#, fuzzy
 msgid "Navigation bars."
-msgstr "Navigatie balken."
+msgstr "导航标签"
 
 #: wppa_settings.php:666
+#, fuzzy
 msgid "Enter valid CSS colors for navigation backgrounds and borders."
-msgstr "Voer geldige CSS kleuren in voor achtergronden en randen van navigatiebalken."
+msgstr "进入有效CSS导航的背景颜色和边境。"
 
 #: wppa_settings.php:673
 msgid "Img"
-msgstr "Afbeelding"
+msgstr ""
 
 #: wppa_settings.php:674
+#, fuzzy
 msgid "Popup and Cover Photos."
-msgstr "Popup en omslagfoto's."
+msgstr "弹出并覆盖的照片:"
 
 #: wppa_settings.php:675
+#, fuzzy
 msgid "Enter a valid CSS color for image backgrounds."
-msgstr "Voer een geldige CSS kleur in voor de achtergrond van afbeeldingen."
+msgstr "请输入一个有效的CSS颜色图像背景。"
 
 #: wppa_settings.php:697
 msgid "Table IV:"
-msgstr "Tabel IV:"
+msgstr ""
 
 #: wppa_settings.php:697
 msgid "Behaviour:"
-msgstr "Gedrag:"
+msgstr ""
 
 #: wppa_settings.php:698
 msgid "This table describes the dynamic behaviour of certain wppa+ elements."
-msgstr "Deze tabel beschrijft het dynamische gedrag van bepaalde wppa+ onderdelen."
+msgstr ""
 
 #: wppa_settings.php:712
 msgid "V align"
-msgstr "V uitlijning"
+msgstr ""
 
 #: wppa_settings.php:713
+#, fuzzy
 msgid "Vertical alignment of full-size images."
-msgstr "Verticale uitlijning van foto's van volledige grootte."
+msgstr "指定的竖直对齐的全尺寸图片。"
 
 #: wppa_settings.php:714
+#, fuzzy
 msgid "Specify the vertical alignment of fullsize images."
-msgstr "Geef de verticale uitlijning voor foto's van volledige grootte op."
+msgstr "指定的竖直对齐的全尺寸图片。"
 
 #: wppa_settings.php:715
+#, fuzzy
 msgid "If you select --- none ---, the photos will not be centered horizontally either."
-msgstr "Als u --- geen --- opgeeft, worden de foto's ook niet horizontaal gecentreerd."
+msgstr "如果你选择 --- none --- 照片都不会将不被集中水平。"
 
 #: wppa_settings.php:717
 #: wppa_settings.php:802
 #: wppa_slideshow_widget.php:135
+#, fuzzy
 msgid "top"
-msgstr "boven"
+msgstr "上"
 
 #: wppa_settings.php:717
 #: wppa_settings.php:729
 #: wppa_settings.php:802
 #: wppa_slideshow_widget.php:136
+#, fuzzy
 msgid "center"
-msgstr "midden"
+msgstr "中"
 
 #: wppa_settings.php:717
 #: wppa_settings.php:802
 #: wppa_slideshow_widget.php:137
+#, fuzzy
 msgid "bottom"
-msgstr "onder"
+msgstr "下"
 
 #: wppa_settings.php:717
 #: wppa_slideshow_widget.php:138
+#, fuzzy
 msgid "fit"
-msgstr "passend"
+msgstr "拉伸以适合"
 
 #: wppa_settings.php:723
 msgid "H align"
-msgstr "H uitlijning"
+msgstr ""
 
 #: wppa_settings.php:724
+#, fuzzy
 msgid "Horizontal alignment of full-size images."
-msgstr "Horizontale uitlijning van foto's van volledige grootte."
+msgstr "指定的竖直对齐的全尺寸图片。"
 
 #: wppa_settings.php:725
+#, fuzzy
 msgid "Specify the horizontal alignment of fullsize images. If you specify --- none --- , no horizontal alignment will take place."
-msgstr "Geef de gewenste horizontale uitlijning op. Indien u --- geen --- kiest, vindt er geen horizontale uitlijning plaats."
+msgstr "指定的横向对齐的全尺寸图片。如果你指定的--- 默认的 ---,没有横向对齐将举行。"
 
 #: wppa_settings.php:726
 msgid "This setting is only usefull when the Column Width differs from the Fullsize Width."
-msgstr "Deze instelling is alleen zinvol als de Kolom breedte afwijkt van de Volledige grootte breedte."
+msgstr ""
 
 #: wppa_settings.php:727
 msgid "(Settings I-1 and I-2)"
-msgstr "(Instellingen I-1 an I-2)"
+msgstr ""
 
 #: wppa_settings.php:729
+#, fuzzy
 msgid "left"
-msgstr "links"
+msgstr "左"
 
 #: wppa_settings.php:729
+#, fuzzy
 msgid "right"
-msgstr "rechts"
+msgstr "右"
 
 #: wppa_settings.php:735
 msgid "Start"
-msgstr "Start"
+msgstr ""
 
 #: wppa_settings.php:736
+#, fuzzy
 msgid "Start slideshow running."
-msgstr "Start diavoorstelling draaiend."
+msgstr "开始的幻灯片滚动;"
 
 #: wppa_settings.php:737
+#, fuzzy
 msgid "If checked, the slideshow will start running immediately, if unchecked the first photo will be displayed in browse mode."
-msgstr "Indien aangevinkt zal de diavoorstelling meteen beginnen te draaien, indien niet aangevinkt verschijnt de eerste foto in de blader modus."
+msgstr "如果勾选此项,幻灯片将开始运行,如果不立即的第一张照片将会显示在浏览模式。"
 
 #: wppa_settings.php:743
+#, fuzzy
 msgid "Fading"
-msgstr "Fading"
+msgstr "等级"
 
 #: wppa_settings.php:744
+#, fuzzy
 msgid "Fade-in after fade-out."
-msgstr "Fade-in na fade-uit."
+msgstr "后褪色-勾勒:"
 
 #: wppa_settings.php:745
+#, fuzzy
 msgid "If checked: slides are faded out and in after each other. If unchecked: fadin and fadeout overlap."
-msgstr "Indien aangevinkt: in- en uit-faden gebeurt na elkaar in plaatst van tegelijkertijd."
+msgstr "如果勾选此项:幻灯片是淡出后,在对方。如果不fadeout:fadin和重叠的。"
 
 #: wppa_settings.php:746
+#, fuzzy
 msgid "The version of the jQuery library must be 1.4 or greater for this feature!"
-msgstr "De versie van de jQuery bibliotheek moet 1.4 of hoger zijn voor dit effect!"
+msgstr "这个版本的jQuery库必须使用该特性1.4或者更大!"
 
 #: wppa_settings.php:748
 #: wppa_settings.php:753
+#, fuzzy
 msgid "Fade-in after fade-out:"
-msgstr "Fade-in na fade-uit:"
+msgstr "后褪色-勾勒:"
 
 #: wppa_settings.php:756
 msgid "Timeout"
-msgstr "Timeout"
+msgstr ""
 
 #: wppa_settings.php:757
+#, fuzzy
 msgid "Slideshow timeout."
-msgstr "Diavoorstelling timeout."
+msgstr "幻灯片超时:"
 
 #: wppa_settings.php:758
+#, fuzzy
 msgid "Select the time a single slide will be visible when the slideshow is started."
-msgstr "Kies de tijd dat een enkele dia zichtbaar is wanneer de diavoorstelling gestart wodt."
+msgstr "选择时间就会看到一个单一的滑动时幻灯片开始。"
 
 #: wppa_settings.php:760
+#, fuzzy
 msgid "very short (1 s.)"
-msgstr "zeer kort (1 s.)"
+msgstr "非常慢 (1 s.)"
 
 #: wppa_settings.php:760
+#, fuzzy
 msgid "short (1.5 s.)"
-msgstr "kort (1.5 s.)"
+msgstr "短时间 (1.5 s.)"
 
 #: wppa_settings.php:760
+#, fuzzy
 msgid "normal (2.5 s.)"
-msgstr "normaal (2.5 s.)"
+msgstr "正常(2.5 s.)"
 
 #: wppa_settings.php:760
+#, fuzzy
 msgid "long (4 s.)"
-msgstr "lang (4 s.)"
+msgstr "长 (4 s.)"
 
 #: wppa_settings.php:760
+#, fuzzy
 msgid "very long (6 s.)"
-msgstr "zeer lang (6 s.)"
+msgstr "非常快 (6 s.)"
 
 #: wppa_settings.php:766
 msgid "Speed"
-msgstr "Snelheid"
+msgstr ""
 
 #: wppa_settings.php:767
+#, fuzzy
 msgid "Slideshow animation speed."
-msgstr "Animatie snelheid diavoorstelling."
+msgstr "全尺寸大小像素"
 
 #: wppa_settings.php:768
+#, fuzzy
 msgid "Specify the animation speed to be used in slideshows."
-msgstr "Geef de overvloeisnelheid op voor de diavoorstellingen."
+msgstr "指定动画的速度被应用在幻灯片。"
 
 #: wppa_settings.php:769
 msgid "This is the time it takes a photo to fade in or out."
-msgstr "Dit is de tijd benodigd om een foto in- of uit te faden."
+msgstr ""
 
 #: wppa_settings.php:771
+#, fuzzy
 msgid "--- off ---"
-msgstr "--- uit ---"
+msgstr "评论关闭"
 
 #: wppa_settings.php:771
+#, fuzzy
 msgid "very fast (200 ms.)"
-msgstr "zeer snel (200 ms.)"
+msgstr "很快(200 ms.)"
 
 #: wppa_settings.php:771
+#, fuzzy
 msgid "fast (400 ms.)"
-msgstr "snel (400 ms.)"
+msgstr "快速 (400 ms.)"
 
 #: wppa_settings.php:771
+#, fuzzy
 msgid "normal (800 ms.)"
-msgstr "normaal (800 ms.)"
+msgstr "正常(800 ms.)"
 
 #: wppa_settings.php:771
+#, fuzzy
 msgid "slow (1.2 s.)"
-msgstr "langzaam (1.2 s.)"
+msgstr " 缓慢(1.2 s.)"
 
 #: wppa_settings.php:771
+#, fuzzy
 msgid "very slow (2 s.)"
-msgstr "zeer langzaam (2 s.)"
+msgstr "非常慢 (2 s.)"
 
 #: wppa_settings.php:771
+#, fuzzy
 msgid "extremely slow (4 s.)"
-msgstr "extreem langzaam (4 s.)"
+msgstr "极慢(4 s.)"
 
 #: wppa_settings.php:777
+#, fuzzy
 msgid "Thumbnail type"
-msgstr "Type miniaturen"
+msgstr "替代文本"
 
 #: wppa_settings.php:778
 msgid "The way the thumbnail images are displayed."
-msgstr "De wijze waarop de miniaturen worden weergegeven."
+msgstr ""
 
 #: wppa_settings.php:779
+#, fuzzy
 msgid "You may select an altenative display method for thumbnails. Note that some of the thumbnail settings do not apply to all available display methods."
-msgstr "U kunt een alternatieve weergavemethode voor miniatuur afbeeldingen kiezen. Merk op dat niet alle instellingen op alle weergave methodes van toepassing zijn."
+msgstr "您可以选择一个灰色的性显示方法,缩略图。注意一些缩略图设置并不适用于所有可用的显示方法。"
 
 #: wppa_settings.php:781
+#, fuzzy
 msgid "like album covers"
-msgstr "als album omslagen"
+msgstr "编辑专辑信息"
 
 #: wppa_settings.php:787
 #: wppa_settings.php:833
+#, fuzzy
 msgid "Placement"
-msgstr "Plaatsing"
+msgstr "位置:"
 
 #: wppa_settings.php:788
+#, fuzzy
 msgid "Thumbnail image left or right."
-msgstr "Miniatuur afbeelding links of rechts."
+msgstr "缩略图的形象是不存在的。"
 
 #: wppa_settings.php:789
+#, fuzzy
 msgid "Indicate the placement position of the thumbnailphoto you wish."
-msgstr "Geef de plaats aan waar u de miniatuur wilt zien."
+msgstr "设置显示的显示缩略图的照片位置。"
 
 #: wppa_settings.php:791
 #: wppa_settings.php:837
+#, fuzzy
 msgid "Left"
-msgstr "Links"
+msgstr "左"
 
 #: wppa_settings.php:791
 #: wppa_settings.php:837
+#, fuzzy
 msgid "Right"
-msgstr "Rechts"
+msgstr "右"
 
 #: wppa_settings.php:797
+#, fuzzy
 msgid "Vertical alignment"
-msgstr "Verticale uitlijning"
+msgstr "垂直空间"
 
 #: wppa_settings.php:798
+#, fuzzy
 msgid "Vertical alignment of thumbnails."
-msgstr "Verticale uitlijning van miniaturen."
+msgstr "垂直空间"
 
 #: wppa_settings.php:799
+#, fuzzy
 msgid "Specify the vertical alignment of thumbnail images. Use this setting when albums contain both portrait and landscape photos."
-msgstr "Geef de verticale uitlijningsmethode van miniaturen aan. Gebruik deze instelling wanneer albums zowel liggende als staande foto's bevatten."
+msgstr "指定的竖直对齐的缩略图。使用这个设置只有当专辑既包含肖像和景观照片。"
 
 #: wppa_settings.php:800
 msgid "It is NOT recommended to use the value --- default ---; it will affect the horizontal alignment also and is ment to be used with custom css."
-msgstr "Het wordt NIET aanbevolen de waarde --- standaard --- te gebruiken; het zal de horizontale uitlijning beïnvloeden en is bedoeld voor gebruik met aangepaste css."
+msgstr ""
 
 #: wppa_settings.php:808
 msgid "Thumb mouseover"
-msgstr "Miniatuur muis-over"
+msgstr ""
 
 #: wppa_settings.php:809
+#, fuzzy
 msgid "Apply thumbnail mouseover effect."
-msgstr "Pas het 'muis over' effect toe op miniaturen."
+msgstr "保存更改："
 
 #: wppa_settings.php:810
+#, fuzzy
 msgid "Check this box to use mouseover effect on thumbnail images."
-msgstr "Pas het 'muis over' effect toe op miniatuur afbeeldingen."
+msgstr "检查这个箱子用问号影响的缩略图。"
 
 #: wppa_settings.php:817
+#, fuzzy
 msgid "Thumb opacity"
-msgstr "Miniaturen ondoorschijnbaarheid"
+msgstr "缩略图间距"
 
 #: wppa_settings.php:818
 #: wppa_settings.php:851
+#, fuzzy
 msgid "Initial opacity value."
-msgstr "Ondoorschijnendheidswaarde."
+msgstr "平均值"
 
 #: wppa_settings.php:819
 #: wppa_settings.php:852
+#, fuzzy
 msgid "Enter percentage of opacity. 100% is opaque, 0% is transparant"
-msgstr "Percentage van ondoorschijnendheid. 100% is geheel ondoorschijnend, 0% is volledig doorschijnend."
+msgstr "输入百分比的不透明度。 100% is opaque, 0% is transparant"
 
 #: wppa_settings.php:821
 #: wppa_settings.php:854
 msgid "%"
-msgstr "%"
+msgstr ""
 
 #: wppa_settings.php:821
 msgid "(This setting requires thumbnail mouseover to be switched on)"
-msgstr "(Deze instelling vereist het aan staan van het miniatuur muis-over effect)"
+msgstr ""
 
 #: wppa_settings.php:825
 msgid "Thumb popup"
-msgstr "Miniatuur pop-up"
+msgstr ""
 
 #: wppa_settings.php:826
+#, fuzzy
 msgid "Use popup effect on thumbnail images."
-msgstr "Pas het 'pop-up' effect toe op miniatuur afbeeldingen."
+msgstr "使用弹出效果的缩略图。"
 
 #: wppa_settings.php:827
 msgid "Thumbnails pop-up to a larger image when hovered."
-msgstr "Miniaturen worden groter afgebeeld wanneer de muis er overheen bewogen wordt."
+msgstr ""
 
 #: wppa_settings.php:834
 msgid "Cover image left or right."
-msgstr "Omslagfoto links of rechts."
+msgstr ""
 
 #: wppa_settings.php:835
+#, fuzzy
 msgid "Indicate the placement position of the coverphoto you wish."
-msgstr "Geef de plaats aan waar u de omslagfoto wilt zien."
+msgstr "设置显示的封面图片位置。"
 
 #: wppa_settings.php:842
 msgid "Cover mouseover"
-msgstr "Omslag muis-over"
+msgstr ""
 
 #: wppa_settings.php:843
+#, fuzzy
 msgid "Apply coverphoto mouseover effect."
-msgstr "Pas het 'muis over' effect toe op omslagfoto's."
+msgstr "保存更改："
 
 #: wppa_settings.php:844
+#, fuzzy
 msgid "Check this box to use mouseover effect on cover images."
-msgstr "Pas het 'muis over' effect toe op omslagfoto's."
+msgstr "检查这个箱子用问号效果盖上的图像。"
 
 #: wppa_settings.php:850
+#, fuzzy
 msgid "Cover opacity"
-msgstr "Omslag foto ondoorschijnbaarheid"
+msgstr "封面图片:"
 
 #: wppa_settings.php:854
 msgid "(This setting requires coverphoto mouseover to be switched on)"
-msgstr "(Deze instelling vereist het aan staan van het omslag muis-over effect)"
+msgstr ""
 
 #: wppa_settings.php:858
+#, fuzzy
 msgid "Rating login"
-msgstr "Waardering login"
+msgstr "显示选项"
 
 #: wppa_settings.php:859
+#, fuzzy
 msgid "Users must login to rate photos."
-msgstr "Bezoekers moeten ingelogd zijn om foto's te kunnen waaderen."
+msgstr "用户必须登录到率的照片。"
 
 #: wppa_settings.php:860
 msgid "If users want to vote for a photo (rating 1..5 stars) the must login first. The avarage rating will always be displayed as long as the rating system is enabled."
-msgstr "Als bezoekers op een foto willen stemmen (van 1 tot 5 sterren) moeten ze zijn ingelogd. De gemiddelde waardering wordt altijd getoond zolang het waarderingssysteem is geactiveerd."
+msgstr ""
 
 #: wppa_settings.php:866
+#, fuzzy
 msgid "Rating change"
-msgstr "Waarderingen wijzigen"
+msgstr "重置评级:"
 
 #: wppa_settings.php:867
 #: wppa_settings.php:868
+#, fuzzy
 msgid "Users may change their ratings."
-msgstr "Bezoekers mogen hun waarderingen wijzigen."
+msgstr "用户可能会改变他们的收视率。"
 
 #: wppa_settings.php:874
+#, fuzzy
 msgid "Rating multi"
-msgstr "Waardering meerdere"
+msgstr "等级"
 
 #: wppa_settings.php:875
+#, fuzzy
 msgid "Users may give multiple votes."
-msgstr "Bezoekers mogen meerdere waarderingen geven."
+msgstr "用户可能会改变他们的收视率。"
 
 #: wppa_settings.php:876
+#, fuzzy
 msgid "Users may give multiple votes. (This has no effect when users may change their votes.)"
-msgstr "Bezoekers mogen meerdere keren stemmen. (Dit heeft geen effect als ze mogen wijzigen.)"
+msgstr "用户可以获得多的选票。(这没有任何效果,当用户可能会改变他们的选票。)"
 
 #: wppa_settings.php:882
+#, fuzzy
 msgid "Album order"
-msgstr "Album volgorde"
+msgstr "专辑顺序为:"
 
 #: wppa_settings.php:883
 msgid "Album ordering sequence method."
-msgstr "Album volgorde methode."
+msgstr ""
 
 #: wppa_settings.php:884
+#, fuzzy
 msgid "Specify the way the albums should be ordered."
-msgstr "Geef de sorteer methode op voor albums."
+msgstr "指定的方式应责令停业。专辑"
 
 #: wppa_settings.php:891
 #: wppa_settings.php:907
+#, fuzzy
 msgid "Descending"
-msgstr "Aflopend"
+msgstr "降序"
 
 #: wppa_settings.php:892
 #: wppa_settings.php:908
+#, fuzzy
 msgid "Descending order."
-msgstr "Aflopende volgorde."
+msgstr "降序"
 
 #: wppa_settings.php:893
 #: wppa_settings.php:909
+#, fuzzy
 msgid "If checked: largest first"
-msgstr "Als aangevinkt: Grootste eerst."
+msgstr "如果勾选此项:最大的第一"
 
 #: wppa_settings.php:898
+#, fuzzy
 msgid "Photo order"
-msgstr "Foto volgorde"
+msgstr "照片顺序为:"
 
 #: wppa_settings.php:899
 msgid "Photo ordering sequence method."
-msgstr "Foto volgorde methode."
+msgstr ""
 
 #: wppa_settings.php:900
+#, fuzzy
 msgid "Specify the way the photos should be ordered. This is the default setting. You can overrule the default sorting order on a per album basis."
-msgstr "Geef de methode op waarop de volgorde van de foto's moet worden bepaald. Dit is de standaard instelling. U kunt per album een andere methode opgeven."
+msgstr "这些照片应该指定的方式、责令停业。这是一个默认的设置。你可以放弃默认分类顺序对每一个专辑的基础。"
 
 #: wppa_settings.php:910
+#, fuzzy
 msgid "This is a system wide setting."
-msgstr "Deze instelling geldt voor het gehele systeem."
+msgstr "这是一个系统范围的设定。"
 
 #: wppa_settings.php:929
 msgid "Table V:"
-msgstr "Tabel V:"
+msgstr ""
 
 #: wppa_settings.php:929
 msgid "Fonts:"
-msgstr "Lettertypen:"
+msgstr ""
 
 #: wppa_settings.php:930
 msgid "This table describes the Fonts used for the wppa+ elements."
-msgstr "Deze tabel beschrijft de lettertypen die gebruikt worden in de wppa+ onderdelen."
+msgstr ""
 
 #: wppa_settings.php:931
 msgid "If you leave fields empty, your themes defaults will be used."
-msgstr "Als u velden leeg laat, worden de waarden gebruikt zoals uw thema dat bepaalt."
+msgstr ""
 
 #: wppa_settings.php:939
 #: wppa_settings.php:1019
+#, fuzzy
 msgid "Font family"
-msgstr "Lettertype"
+msgstr "字体"
 
 #: wppa_settings.php:940
 #: wppa_settings.php:1020
+#, fuzzy
 msgid "Font size"
-msgstr "Font grootte"
+msgstr "原尺寸"
 
 #: wppa_settings.php:941
 #: wppa_settings.php:1021
 msgid "Font color"
-msgstr "Font kleur"
+msgstr ""
 
 #: wppa_settings.php:947
+#, fuzzy
 msgid "Album titles"
-msgstr "Album titels"
+msgstr "在这张专辑里进入描述。"
 
 #: wppa_settings.php:948
+#, fuzzy
 msgid "Font used for Album titles."
-msgstr "Lettertype voor album titels."
+msgstr "在这张专辑里进入描述。"
 
 #: wppa_settings.php:949
 #: wppa_settings.php:971
+#, fuzzy
 msgid "Enter font name, size and color for album cover titles."
-msgstr "Voer de naam van het lettertype, de grootte en de kleur in voor album omslag titels."
+msgstr "进入字体名称和大小为专辑封面标题。"
 
 #: wppa_settings.php:959
+#, fuzzy
 msgid "Font for fullsize photo descriptions."
-msgstr "Lettertype voor de beschrijving van foto's van volledige grootte."
+msgstr "字体尺寸的照片描述:"
 
 #: wppa_settings.php:960
+#, fuzzy
 msgid "Enter font name, size and color for fullsize photo descriptions."
-msgstr "Voer de naam van het lettertype, de grootte en de kelur in voor de beschrijving van foto's van volledige grootte."
+msgstr "字体尺寸的照片描述:"
 
 #: wppa_settings.php:970
+#, fuzzy
 msgid "Font for fullsize photo names."
-msgstr "Lettertype voor de naam van foto's van volledige grootte."
+msgstr "字体尺寸照片的名字:"
 
 #: wppa_settings.php:980
+#, fuzzy
 msgid "Navigations"
-msgstr "Navigaties"
+msgstr "导航标签"
 
 #: wppa_settings.php:981
+#, fuzzy
 msgid "Font for navigations."
-msgstr "Lettertype voor navigaties."
+msgstr "字体尺寸的照片描述:"
 
 #: wppa_settings.php:982
+#, fuzzy
 msgid "Enter font name, size and color for navigation items."
-msgstr "Voer de naam van het lettertype, de grootte en de kleur in voor navigaties."
+msgstr "进入字体名称和大小为导航的项目。"
 
 #: wppa_settings.php:991
+#, fuzzy
 msgid "Thumbnails"
-msgstr "Miniatuur afbeeldingen"
+msgstr "更新缩略图"
 
 #: wppa_settings.php:992
+#, fuzzy
 msgid "Font for text under thumbnails."
-msgstr "Lettertype voor tekst onder miniaturen."
+msgstr "字体的文本在缩略图:"
 
 #: wppa_settings.php:993
+#, fuzzy
 msgid "Enter font name, size and color for text under thumbnail images."
-msgstr "Voer de naam van het lettertype, de grootte en de kleur in voor tekst onder miniaturen."
+msgstr "进入字体名称和大小为专辑封面标题。"
 
 #: wppa_settings.php:1002
+#, fuzzy
 msgid "Other"
-msgstr "Anders"
+msgstr "链接到这里"
 
 #: wppa_settings.php:1003
+#, fuzzy
 msgid "General font in wppa boxes."
-msgstr "Algemeen lettertype in wppa boxen."
+msgstr "一般的字体wppa盒:"
 
 #: wppa_settings.php:1004
+#, fuzzy
 msgid "Enter font name, size and color for all other items."
-msgstr "Voer de naam van het lettertype, de grootte en de kleur in voor alle andere doeleinden."
+msgstr "进入字体名称和大小,为所有其他的项目。"
 
 #: wppa_settings.php:1028
 msgid "Table VI:"
-msgstr "Tabel VI:"
+msgstr ""
 
 #: wppa_settings.php:1028
+#, fuzzy
 msgid "Links:"
-msgstr "Koppelingen:"
+msgstr "链接到:"
 
 #: wppa_settings.php:1029
 msgid "This table defines the link types and pages."
-msgstr "Deze tabel bepaalt de soorten koppelingen en de pagina's."
+msgstr ""
 
 #: wppa_settings.php:1037
 #: wppa_settings.php:1149
+#, fuzzy
 msgid "Link type"
-msgstr "Link type"
+msgstr "连接类型"
 
 #: wppa_settings.php:1038
 #: wppa_settings.php:1150
+#, fuzzy
 msgid "Link page"
-msgstr "Link pagina"
+msgstr "连接类型"
 
 #: wppa_settings.php:1045
 #: wppa_settings.php:1047
 #: wppa_settings.php:1049
 #: wppa_settings.php:1051
 #: wppa_settings.php:1609
+#, fuzzy
 msgid "no link at all."
-msgstr "helemaal geen link."
+msgstr "（0 代表不评分。）"
 
 #: wppa_settings.php:1045
 #: wppa_settings.php:1047
@@ -2430,23 +2963,25 @@ msgstr "helemaal geen link."
 #: wppa_settings.php:1051
 #: wppa_settings.php:1610
 msgid "the plain photo (file)."
-msgstr "de foto alleen (bestand)."
+msgstr ""
 
 #: wppa_settings.php:1045
 #: wppa_settings.php:1047
 #: wppa_settings.php:1049
 #: wppa_settings.php:1051
 #: wppa_settings.php:1611
+#, fuzzy
 msgid "the full size photo in a slideshow."
-msgstr "de grote foto in de bladermodus."
+msgstr "完整大小的图片在一个幻灯片。"
 
 #: wppa_settings.php:1045
 #: wppa_settings.php:1047
 #: wppa_settings.php:1049
 #: wppa_settings.php:1051
 #: wppa_settings.php:1612
+#, fuzzy
 msgid "the fullsize photo on its own."
-msgstr "de grote foto alleen."
+msgstr "完整大小的照片对自己的。"
 
 #: wppa_settings.php:1045
 #: wppa_settings.php:1047
@@ -2454,1590 +2989,1325 @@ msgstr "de grote foto alleen."
 #: wppa_settings.php:1051
 #: wppa_settings.php:1613
 msgid "the photo specific link."
-msgstr "de foto specifieke koppeling."
+msgstr ""
 
 #: wppa_settings.php:1047
 #: wppa_settings.php:1049
 #: wppa_settings.php:1051
 #: wppa_settings.php:1614
+#, fuzzy
 msgid "the content of the album."
-msgstr "de inhoud van het album."
+msgstr "专辑的内容作为thumnails。"
 
 #: wppa_settings.php:1049
 #: wppa_settings.php:1615
 msgid "defined at widget activation."
-msgstr "bepaald bij de widget activering."
+msgstr ""
 
 #: wppa_settings.php:1051
 #: wppa_settings.php:1616
 msgid "defined on widget admin page."
-msgstr "bepaald op de widget admin pagina."
+msgstr ""
 
 #: wppa_settings.php:1060
+#, fuzzy
 msgid "--- The same post or page ---"
-msgstr "--- Dezelfde post of pagina ---"
+msgstr "同一窗口或标签"
 
 #: wppa_settings.php:1076
+#, fuzzy
 msgid "--- No page to link to (yet) ---"
-msgstr "--- (Nog) geen pagina om naar te koppelen ---"
+msgstr "（0 代表不评分。）"
 
 #: wppa_settings.php:1080
 msgid "Mphoto"
-msgstr "Mfoto"
+msgstr ""
 
 #: wppa_settings.php:1081
+#, fuzzy
 msgid "Media-like photo link."
-msgstr "Link voor %%mphoto."
+msgstr "Media-like照片链接:"
 
 #: wppa_settings.php:1082
 #: wppa_settings.php:1095
+#, fuzzy
 msgid "Select the type of link you want, or no link at all."
-msgstr "Selecteer het soort link dat u wenst, of helemaal geen link."
+msgstr "选择你想要的类型,或者链接没有多大的联系。"
 
 #: wppa_settings.php:1083
 #: wppa_settings.php:1096
+#, fuzzy
 msgid "If you select the fullsize photo on its own, it will be stretched to fit, regardless of that setting."
-msgstr "Als u de grote foto alleen kiest wordt deze zonodig uitgerekt om te passen, ongeacht die instelling."
+msgstr "如果你选择的是全尺寸的照片就其本身,它将延伸到合适的地方,不管那设置。"
 
 #: wppa_settings.php:1084
 #: wppa_settings.php:1097
-#, php-format
+#, fuzzy, php-format
 msgid "Note that a page must have at least %%wppa%% in its content to show up the photo(s)."
-msgstr "Merk op dat aan pagina minimaal %%wppa%% als inhoud moet hebben om de foto's te tonen."
+msgstr "注意一个页面必须至少%%wppa%%在内容上出现这张照片(s)。"
 
 #: wppa_settings.php:1093
+#, fuzzy
 msgid "Thumbnail"
-msgstr "Miniatuur afbeelding"
+msgstr "更新缩略图"
 
 #: wppa_settings.php:1094
+#, fuzzy
 msgid "Thumbnail link."
-msgstr "Miniatuur koppeling."
+msgstr "缩略图大小"
 
 #: wppa_settings.php:1107
+#, fuzzy
 msgid "TopTenWidget"
-msgstr "TopTien Widget"
+msgstr "十大照片"
 
 #: wppa_settings.php:1108
+#, fuzzy
 msgid "TopTen widget photo link."
-msgstr "TopTien Widget foto koppeling."
+msgstr "复制照片到"
 
 #: wppa_settings.php:1109
 #: wppa_settings.php:1121
+#, fuzzy
 msgid "Select the type of link the top ten photos point to."
-msgstr "Selecteer het type koppeling voor de top-tien foto's."
+msgstr "选择网页排名前十的照片链接。"
 
 #: wppa_settings.php:1119
+#, fuzzy
 msgid "SlideWidget"
-msgstr "Diashow Widget"
+msgstr "窗口工具条"
 
 #: wppa_settings.php:1120
+#, fuzzy
 msgid "Slideshow widget photo link."
-msgstr "Dia widget koppeling."
+msgstr "选择网页排名前十的照片链接。"
 
 #: wppa_settings.php:1130
 msgid "PotdWidget"
-msgstr "FvddWidget"
+msgstr ""
 
 #: wppa_settings.php:1131
+#, fuzzy
 msgid "Photo Of The Day widget link."
-msgstr "Foto van de dag widget koppeling."
+msgstr "相册"
 
 #: wppa_settings.php:1132
+#, fuzzy
 msgid "Select the type of link the photo of the day points to."
-msgstr "Selecteer het type koppeling voor de foto van de dag."
+msgstr "选择网页排名前十的照片链接。"
 
 #: wppa_settings.php:1133
 msgid "If you select 'defined on widget admin page' you can manually enter a link and title on the Photo of the day Widget Admin page."
-msgstr "Als u 'bepaald op de widget admin pagina' selecteert, kunt u handmatig een koppeling opgeven op de 'Foto van de dag' admin pagina."
+msgstr ""
 
 #: wppa_settings.php:1157
 msgid "Table VII:"
-msgstr "Tabel VII:"
+msgstr ""
 
 #: wppa_settings.php:1157
 msgid "Access and Security:"
-msgstr "Toegang en Beveiliging:"
+msgstr ""
 
 #: wppa_settings.php:1158
 msgid "This table describes the access settings for wppa+ elements and pages."
-msgstr "Deze tabel beschrijft de toegangsrechten voor wppa+ onderdelen en pagina's."
+msgstr ""
 
 #: wppa_settings.php:1173
+#, fuzzy
 msgid "Directory access (CHMOD)."
-msgstr "Mappen toegang (CHMOD)."
+msgstr "目录访问(模式):"
 
 #: wppa_settings.php:1174
+#, fuzzy
 msgid "In rare cases you might need to change this setting. If you do not know what this means, leave it unchanged."
-msgstr "In uitzonderlijke gevallen kan het nodig zijn deze instelling te wijzigen. Als u dit niets zegt, laat het dan onveranderd."
+msgstr "在罕见的情况下,你可能需要去改变这个设置。如果你不知道这是什么意思,让它保持不变。"
 
 #: wppa_settings.php:1176
+#, fuzzy
 msgid "Leave unchanged."
-msgstr "Ongewijzigd laten."
+msgstr "发表评论"
 
 #: wppa_settings.php:1181
+#, fuzzy
 msgid "Album access"
-msgstr "Album toegang"
+msgstr "高级访问设置选项:"
 
 #: wppa_settings.php:1182
+#, fuzzy
 msgid "Limit album access to album owners only."
-msgstr "Beperk de toegang tot albums tot alleen de eigenaars."
+msgstr "限制进入专辑所有者只专辑。"
 
 #: wppa_settings.php:1183
+#, fuzzy
 msgid "If checked, users who can edit albums and upload/import photos can do that with their own albums only."
-msgstr "Indien aangevinkt kunnen gebruikers die albums kunnen aanmaken en foto's kunnen uploaden/importeren dat alleen nog met albums waarvan ze de eigenaar zijn."
+msgstr "如果勾选此项,使用者可以编辑相册和上传/导入照片可以在自己的唱片而已。"
 
 #: wppa_settings.php:1184
+#, fuzzy
 msgid "Users can give their albums to another user. Administrators can change ownership and access all albums always."
-msgstr "Gebruikers kunnen hun albums aan andere gebruikers geven. Administrateurs kunnen ten alle tijde de eigenaar wijzigen."
+msgstr "用户可以给他们的专辑到另一个用户。管理员可以改变所有权和访问所有专辑总是。"
 
 #: wppa_settings.php:1189
 msgid "WPPA Admin"
-msgstr "WPPA Admin"
+msgstr ""
 
 #: wppa_settings.php:1190
+#, fuzzy
 msgid "Admin pages access."
-msgstr "Toegang tot admin pagina's."
+msgstr "目录访问(模式):"
 
 #: wppa_settings.php:1191
+#, fuzzy
 msgid "Indicate whether the accesslevels must be set by this admin page or by an other program."
-msgstr "Geef aan of de toegangsrechten op deze admin pagina moeten worden ingesteld, of dat u dat met een ander programma doet."
+msgstr "显示其是否作为访问级别必须由这些行政管理页面或其他程序。"
 
 #: wppa_settings.php:1192
+#, fuzzy
 msgid "If you set them here, the classical userlevel is imitated, but implemented by the modern Roles and Capabilities system."
-msgstr "Als u ze hier zet, dan worden de klassieke gebruikers niveaus geïmiteerd met behulp van het moderne Roles en Capabilities systeem."
+msgstr "如果你把他们安置在这里,古典用户级是模仿,但实施现代的角色和能力系统。"
 
 #: wppa_settings.php:1193
+#, fuzzy
 msgid "That means that any higher userlevel (role) will automaticly get the capabilities that you give to a certain (lower) level."
-msgstr "Dat betekent dat elk hoger gebruikersniveau (role) automatisch de capabilities krijgt die u aan een zeker (lager) niveau geeft."
+msgstr "这就意味着任何更高的用户级(作用)将自动获得的生产能力,你给予一定的(较低)的水平。"
 
 #: wppa_settings.php:1194
+#, fuzzy
 msgid "If you want to give a capability to a specific user or role, you can set it using an other plugin, such as Capability Manager."
-msgstr "Als u een toegangsrecht (capability) aan een specifieke gebruiker of gebruikerssoort (role) wilt geven, dan kunt u dat doen met een andere plugin zoals Capability Manager."
+msgstr "如果你想给一个能力对一个特定的用户或角色,你可以设置它使用一个其它插件,如<strong>Capability Manager</strong>."
 
 #: wppa_settings.php:1195
+#, fuzzy
 msgid "Possible capabilities are: <strong>wppa_admin</strong> (for the Photo Albums page), wppa_sidebar_admin (for the Sidebar Widget page) and wppa_upload (for the Upload and Import pages)."
-msgstr "Mogelijke capabilities zijn: wppa_admin (voor de Foto Albums pagina), wppa_sidebar_admin (voor de Zijkolom Widget pagina) en wppa_upload (voor de Upload en Import pagina's)."
+msgstr "可能的能力:<strong>wppa_admin</strong>(相册页面),<strong>wppa_sidebar_admin</strong>(工具条窗口的> >和<strong>wppa_upload</strong>(上传和进口页)。"
 
 #: wppa_settings.php:1196
+#, fuzzy
 msgid "The Help page is available to users with the capability <strong>edit_posts</strong>, the Settings page (the page you are on right now) is limited to the role of administrator."
-msgstr "De Help pagina is beschikbaar voor gebruikers met het recht edit_posts, de Instellingen pagina (de pagina waar u nu naar kijkt) is voorbehouden aan de rol van adminstrator."
+msgstr "说明页是可为用户<strong>edit_posts</strong> ,<strong>Settings</strong> (页面你在现在)是有限的角色的管理员。"
 
 #: wppa_settings.php:1198
+#, fuzzy
 msgid "Accesslevels are set here."
-msgstr "Toegangsrechten worden hier gezet."
+msgstr "访问级别设置在这里。"
 
 #: wppa_settings.php:1198
+#, fuzzy
 msgid "Accesslevels are set by an other program."
-msgstr "Toegangsrechten worden door een ander programma gezet."
+msgstr "访问级别是由一个其他程序。"
 
 #: wppa_settings.php:1204
+#, fuzzy
 msgid "Albums Access Level."
-msgstr "Toegangs niveau voor albums."
+msgstr "专辑存取等级:"
 
 #: wppa_settings.php:1205
+#, fuzzy
 msgid "The minmum user level that can access the photo album admin (i.e. Manage Albums and Upload Photos)."
-msgstr "Het minimale gebrukersniveau dat het foto album mag beheren (d.i. Album beheer en Upload foto's)."
+msgstr "用户级的最小能访问的写真辑管理员(如下。管理相册和上传照片)。"
 
 #: wppa_settings.php:1207
 #: wppa_settings.php:1216
 #: wppa_settings.php:1225
+#, fuzzy
 msgid "Administrator"
-msgstr "Administrateur"
+msgstr "管理员"
 
 #: wppa_settings.php:1207
 #: wppa_settings.php:1216
 #: wppa_settings.php:1225
+#, fuzzy
 msgid "Editor"
-msgstr "Bewerker"
+msgstr "编辑"
 
 #: wppa_settings.php:1207
 #: wppa_settings.php:1216
 #: wppa_settings.php:1225
+#, fuzzy
 msgid "Author"
-msgstr "Auteur"
+msgstr "作者"
 
 #: wppa_settings.php:1207
 #: wppa_settings.php:1216
 #: wppa_settings.php:1225
+#, fuzzy
 msgid "Contributor"
-msgstr "Bijdrager"
+msgstr "投稿者"
 
 #: wppa_settings.php:1212
+#, fuzzy
 msgid "Upload"
-msgstr "Uploaden"
+msgstr "上传照片"
 
 #: wppa_settings.php:1213
+#, fuzzy
 msgid "Upload/Import Access Level."
-msgstr "Toegangs niveau voor uploaden en importeren."
+msgstr "专辑存取等级:"
 
 #: wppa_settings.php:1214
+#, fuzzy
 msgid "The minmum user level that can upload or import photos."
-msgstr "Het minimale gebrukersniveau dat foto's kan toevoegen."
+msgstr "用户级的最小,可以上传照片。"
 
 #: wppa_settings.php:1221
+#, fuzzy
 msgid "Widget"
-msgstr "Widget"
+msgstr "Widget 标题"
 
 #: wppa_settings.php:1222
+#, fuzzy
 msgid "Photo of the day widget admin."
-msgstr "Foto van de dag widget admin."
+msgstr "相册"
 
 #: wppa_settings.php:1223
+#, fuzzy
 msgid "The minmum user level that can access the photo of the day sidebar widget admin."
-msgstr "Het minimale gebrukersniveau dat de foto van de dag zijkolom widget mag beheren."
+msgstr "用户级的最小能访问的写真辑侧边栏窗口的管理。"
 
 #: wppa_settings.php:1244
 msgid "Table VIII:"
-msgstr "Tabel VIII:"
+msgstr ""
 
 #: wppa_settings.php:1244
+#, fuzzy
 msgid "Actions:"
-msgstr "Acties:"
+msgstr "描述:"
 
 #: wppa_settings.php:1245
 msgid "This table lists all actions that can be taken to the wppa+ system"
-msgstr "Deze tabel bevat alle acties die kunnen worden ondernomen op het wppa+ systeem."
+msgstr ""
 
 #: wppa_settings.php:1253
 #: wppa_settings.php:1283
 msgid "Do it!"
-msgstr "Doen!"
+msgstr ""
 
 #: wppa_settings.php:1259
 msgid "Reset"
-msgstr "Reset"
+msgstr ""
 
 #: wppa_settings.php:1260
+#, fuzzy
 msgid "Reset all ratings."
-msgstr "Verwijder alle waarderingen."
+msgstr "所有链接分类目录"
 
 #: wppa_settings.php:1261
+#, fuzzy
 msgid "WARNING: If checked, this will clear all ratings in the system!"
-msgstr "WAARSCHUWING: Indien aangevinkt worden alle waarderingen uit het systeem gewist!"
+msgstr "警告:如果勾选此项,这将把所有评级在这张专辑中!"
 
 #: wppa_settings.php:1266
 msgid "Set to utf-8"
-msgstr "Zet op utf-8"
+msgstr ""
 
 #: wppa_settings.php:1267
+#, fuzzy
 msgid "Set Character set to UTF_8."
-msgstr "Zet karakterset op UTF-8."
+msgstr "设置字体设置为UTF-8:"
 
 #: wppa_settings.php:1268
+#, fuzzy
 msgid "If checked: Converts the wppa database tables to UTF_8 This allows the use of certain characters - like Turkish - in photo and album names and descriptions."
-msgstr "Indien aangevinkt: Converteert de wppa database tabellen naar UTF-8. Dit maakt het gebruik van sommige letters - zoals Turkse - in foto en album namen en beschrijvingen mogelijk."
+msgstr "如果勾选此项:把数据表wppa  UTF-8 这允许使用某些人物 - like Turkish -在照片和专辑名称和描述。"
 
 #: wppa_settings.php:1290
 msgid "Table IX:"
-msgstr "Tabel IX:"
+msgstr ""
 
 #: wppa_settings.php:1290
+#, fuzzy
 msgid "Miscellaneous:"
-msgstr "Diversen:"
+msgstr "杂项:"
 
 #: wppa_settings.php:1291
 msgid "This table lists all settings that do not fit into an other table"
-msgstr "Deze tabel bevat alle instellingen die in geen enkele andere tabel passen."
+msgstr ""
 
 #: wppa_settings.php:1305
 msgid "Arrow color"
-msgstr "Pijlkleur"
+msgstr ""
 
 #: wppa_settings.php:1306
+#, fuzzy
 msgid "Left/right browsing arrow color."
-msgstr "Links/rechts pijlen kleur."
+msgstr "左/右箭头颜色:"
 
 #: wppa_settings.php:1307
+#, fuzzy
 msgid "Enter the color of the navigation arrows."
-msgstr "Voer de kleur voor de navigatiepijlen in."
+msgstr "进入这种颜色的导航的箭。"
 
 #: wppa_settings.php:1312
+#, fuzzy
 msgid "Search page"
-msgstr "Zoekpagina"
+msgstr "查询页面模版"
 
 #: wppa_settings.php:1313
 msgid "Display the search results on page."
-msgstr "Toon de zoekresultaten op pagina."
+msgstr ""
 
 #: wppa_settings.php:1314
-#, php-format
+#, fuzzy, php-format
 msgid "Select the page to be used to display search results. The page MUST contain %%wppa%%."
-msgstr "Selecteer de pagina die u wilt gebruiken om de zoekresultaten te tonen. De pagina MOET %%wppa%% bevatten."
+msgstr "选择网页用来显示搜索结果。网页必须包含%%wppa%%."
 
 #: wppa_settings.php:1315
+#, fuzzy
 msgid "You may give it the title \"Search results\" or something alike."
-msgstr "U kunt het de titel \"Zoekresultaten\" of iets dergelijks geven."
+msgstr "您可以将它标题 \"Search results\"或者一些搜索结果相似。"
 
 #: wppa_settings.php:1316
+#, fuzzy
 msgid "Or you ou may use the standard page on which you display the generic album."
-msgstr "U kunt ook bijvoorbeeld de standaard fotoalbum pagina gebruiken."
+msgstr "或者你呕可以使用标准的页上,你显示的最普通的专辑。"
 
 #: wppa_settings.php:1331
+#, fuzzy
 msgid "Exclude separate"
-msgstr "Afzonderlijk uitsluiten"
+msgstr "多个标签请用英文逗号（,）分开 "
 
 #: wppa_settings.php:1332
+#, fuzzy
 msgid "Do not search 'separate' albums."
-msgstr "Doorzoek geen 'afzonderlijke' albums."
+msgstr "无法创建专辑。"
 
 #: wppa_settings.php:1333
+#, fuzzy
 msgid "When checked, albums (and photos in them) that have the parent set to --- separate --- will be excluded from being searched."
-msgstr "Indien aangevinkt, dan worden albums (en de foto's er in) uitgesloten die hun moeder op --- afzonderlijk --- hebeen staan."
+msgstr "当检查,相册(和照片一样),家长的单独设置为--- separate ---将被驱逐出被搜查。"
 
 #: wppa_settings.php:1338
 msgid "Allow HTML"
-msgstr "Sta HTML toe"
+msgstr ""
 
 #: wppa_settings.php:1339
+#, fuzzy
 msgid "Allow HTML in album and photo descriptions."
-msgstr "Sta het gebruik van HTML toe in de beschrijvingen van albums en foto's."
+msgstr "允许HTML在专辑和图片说明:"
 
 #: wppa_settings.php:1340
+#, fuzzy
 msgid "If checked: html is allowed. WARNING: No checks on syntax, it is your own responsability to close tags properly!"
-msgstr "Indien aangevinkt wordt html geïnterpreteerd. Waarschuwing: Er vindt geen syntaxcontrole plaats, het is uw eigen verantwoordelijkheid de juiste tags te gebruiken en af te sluiten!"
+msgstr "如果勾选此项:html是允许的。警告:没有检查,对语法,是你自己的责任感关闭标签妥善!"
 
 #: wppa_settings.php:1384
 #: wppa_settings.php:1432
 #: wppa_settings.php:1485
 msgid "Click for help"
-msgstr "Klik voor help"
+msgstr ""
 
 #: wppa_settings.php:1390
 #: wppa_settings.php:1443
 #: wppa_settings.php:1498
 msgid "You just modified this setting"
-msgstr "U heeft deze instelling zojuist gewijzigd"
+msgstr ""
 
 #: wppa_settings.php:1395
 #: wppa_settings.php:1448
 #: wppa_settings.php:1503
 msgid "You just tried to modify this setting into an illegal value"
-msgstr "U heeft zojuist geprobeerd deze instelling te veranderen in iets dat niet is toegestaan."
+msgstr ""
 
 #: wppa_settings.php:1620
 msgid "The default for this setting is:"
-msgstr "De standaardwaarde voor deze instelling is:"
+msgstr ""
 
 #: wppa_settings.php:1625
 msgid "Hide"
-msgstr "Verberg"
+msgstr ""
 
 #: wppa_settings.php:1626
 msgid "Show"
-msgstr "Toon"
+msgstr ""
 
 #: wppa_settings.php:1627
-#: wppa_widgetadmin.php:184
-#: wppa_widgetadmin.php:219
+#, fuzzy
 msgid "Save Changes"
-msgstr "Wijzigingen opslaan"
+msgstr "保存更改"
 
 #: wppa_slideshow_widget.php:16
+#, fuzzy
 msgid "WPPA+ Sidebar Slideshow"
-msgstr "WPPA+ Zijkolom Diavoorstelling"
+msgstr "WPPA +侧边栏的幻灯片"
 
 #: wppa_slideshow_widget.php:17
+#, fuzzy
 msgid "Sidebar Slideshow"
-msgstr "Zijkolom Diavoorstelling"
+msgstr "WPPA +侧边栏的幻灯片"
 
 #: wppa_slideshow_widget.php:123
+#, fuzzy
 msgid "Width:"
-msgstr "Breedte:"
+msgstr "宽"
 
 #: wppa_slideshow_widget.php:123
-#: wppa_widgetadmin.php:84
-#: wppa_widgetadmin.php:86
-#: wppa_widgetadmin.php:88
+#, fuzzy
 msgid "pixels."
-msgstr "pixels."
+msgstr "像素。"
 
 #: wppa_slideshow_widget.php:125
+#, fuzzy
 msgid "Portrait only:"
-msgstr "Alleen staand:"
+msgstr "画像只有:"
 
 #: wppa_slideshow_widget.php:127
+#, fuzzy
 msgid "no."
-msgstr "nee."
+msgstr "否"
 
 #: wppa_slideshow_widget.php:128
+#, fuzzy
 msgid "yes."
-msgstr "ja."
+msgstr "是"
 
 #: wppa_slideshow_widget.php:129
+#, fuzzy
 msgid "Set to 'yes' if there are only portrait images in the album and you want the photos to fill the full width of the widget.<br/>Set to 'no' otherwise."
-msgstr "Zet op 'ja' als er alleen staande foto's in het album zijn en u de gehele breedte van de widget wilt vullen.<br/>Zet anders op 'nee'."
+msgstr "设置为'是',如果只有肖像图像在这张专辑,你想要的照片进行填满的宽度的部件。.<br/>设置为“否”起来。"
 
 #: wppa_slideshow_widget.php:130
+#, fuzzy
 msgid "If set to 'yes', Vertical alignment will be forced to 'fit'."
-msgstr "Indien op 'ja' gezet, dan wodt de verticale uitlijning automatisch op 'passend' ingesteld."
+msgstr "如果被设置为 'yes',竖直对齐将被迫 'fit'。"
 
 #: wppa_slideshow_widget.php:133
+#, fuzzy
 msgid "Vertical alignment:"
-msgstr "Verticale uitlijning:"
+msgstr "垂直空间"
 
 #: wppa_slideshow_widget.php:139
+#, fuzzy
 msgid "Set the desired vertical alignment method."
-msgstr "Geef de gewenste verticale uitlijning op."
+msgstr "设置你所需要的竖直对齐方法。"
 
 #: wppa_slideshow_widget.php:141
+#, fuzzy
 msgid "Slideshow timeout:"
-msgstr "Diavoorstelling timeout:"
+msgstr "幻灯片超时:"
 
 #: wppa_slideshow_widget.php:141
+#, fuzzy
 msgid "sec."
-msgstr "sec."
+msgstr "秒"
 
 #: wppa_slideshow_widget.php:143
+#, fuzzy
 msgid "The following text fields support qTranslate"
-msgstr "De volgende tekst velden ondersteunen qTranslate"
+msgstr "下面的文本字段支持问翻译"
 
 #: wppa_slideshow_widget.php:144
+#, fuzzy
 msgid "Tooltip text:"
-msgstr "Ballon tekst:"
+msgstr "提示文本:"
 
 #: wppa_slideshow_widget.php:145
+#, fuzzy
 msgid "Text above photos:"
-msgstr "Tekst boven de foto's:"
+msgstr "以上文字照片:"
 
 #: wppa_slideshow_widget.php:146
+#, fuzzy
 msgid "Text below photos:"
-msgstr "Tekst onder de foto's:"
+msgstr "文本下面照片:"
 
 #: wppa_toptenwidget.php:12
+#, fuzzy
 msgid "WPPA+ Top Ten Rated Photos"
-msgstr "WPPA+ Top Tien gewaardeerde foto's"
+msgstr "WPPA+十大额定的照片"
 
 #: wppa_toptenwidget.php:13
 #: wppa_toptenwidget.php:25
 #: wppa_toptenwidget.php:75
+#, fuzzy
 msgid "Top Ten Photos"
-msgstr "Top Tien foto's"
+msgstr "十大照片"
 
 #: wppa_toptenwidget.php:79
+#, fuzzy
 msgid "You can set the content and the behaviour of this widget in the <b>Photo Albums -> Settings</b> admin page."
-msgstr "U kunt de inhoud en het gedrag van deze widget bepalen in de <b>Foto Albums -> Instellingen</b> admin pagina."
+msgstr "您可以设置的内容和行为的部件在<b>Photo Albums -> Settings</b>管理页面。"
 
 #: wppa_upload.php:36
+#, fuzzy
 msgid "Connecting to your depot..."
-msgstr "Naar uw depot gaan..."
+msgstr "无法创建用户车厂目录"
 
 #: wppa_upload.php:66
+#, fuzzy
 msgid "Single Photos"
-msgstr "Losse Foto's"
+msgstr "上传照片"
 
 #: wppa_upload.php:67
+#, fuzzy
 msgid "You can select up to 15 photos one by one and upload them at once."
-msgstr "U kunt maximaal 15 foto's één voor één selecteren en ze dan in één keer uploaden."
+msgstr "你可以选择多达15照片上传一个接一个,他们在一次。"
 
 #: wppa_upload.php:72
+#, fuzzy
 msgid "Selected Files:"
-msgstr "Geselecteerde bestanden:"
+msgstr "插件文件"
 
 #: wppa_upload.php:79
+#, fuzzy
 msgid "Upload Single Photos"
-msgstr "Losse Foto's Uploaden"
+msgstr "照片排序："
 
 #: wppa_upload.php:90
+#, fuzzy
 msgid "Zipped Photos"
-msgstr "Gezipte Foto's"
+msgstr "上传照片"
 
 #: wppa_upload.php:91
+#, fuzzy
 msgid "You can upload one zipfile at once. It will be placed in your personal wppa-depot.<br/>Once uploaded, use <b>Import Photos</b> to unzip the file and place the photos in any album."
-msgstr "U kunt één zip bestand per keer uploaden. Het wordt in uw persoonlijk depot geplaatst.<br/>Als ge-upload, gebruik dan <b>Foto's Importeren</b> om het bestand uit te pakken en de foto's in een album te plaatsen."
+msgstr "您可以上传一个zipfile一次。它将放置在你的个人wppa-depot。<br/>一次上传了,使用<b>Import Photos</b>的文件解压缩的地方拍的照片里,任何一张专辑。"
 
 #: wppa_upload.php:95
+#, fuzzy
 msgid "Upload Zipped Photos"
-msgstr "Gezipte Foto's Uploaden"
+msgstr "照片排序："
 
 #: wppa_upload.php:96
+#, fuzzy
 msgid "After upload: Go to the <b>Import Photos</b> page."
-msgstr "Na de upload: Ga naar de <b>Foto's Importeren</b> pagina."
+msgstr "上传:后去看 <b>Import Photos</b> 页。"
 
 #: wppa_upload.php:102
+#, fuzzy
 msgid "<small>Ask your administrator to upgrade php to version 5.2.7 or later. This will enable you to upload zipped photos.</small>"
-msgstr "<small>Vraag uw administrateur om php te upgraden naar versie 5.2.7 of later. Dit maakt het mogelijk om gecomprimeerde bestanden met foto's te uploaden.</small>"
+msgstr "<small>问问你的管理员升级或迟或5.2.7 php代码来版本。这样会让你的上传压缩的照片。</small>"
 
 #: wppa_upload.php:107
 #: wppa_upload.php:305
+#, fuzzy
 msgid "No albums exist. You must"
-msgstr "Er zijn nog geen albums. U moet"
+msgstr "没有专辑存在。你必须"
 
 #: wppa_upload.php:107
 #: wppa_upload.php:305
+#, fuzzy
 msgid "create one"
-msgstr "er een aanmaken"
+msgstr "一栏"
 
 #: wppa_upload.php:107
 #: wppa_upload.php:305
+#, fuzzy
 msgid "beofre you can upload your photos."
-msgstr "voordat u foto's kunt uploaden."
+msgstr "此你也可以上传你的照片。"
 
 #: wppa_upload.php:126
 #: wppa_upload.php:146
+#, fuzzy
 msgid "illegal files deleted."
-msgstr "niet toegestane bestanden verwijderd."
+msgstr "非法的文件删除。"
 
 #: wppa_upload.php:175
+#, fuzzy
 msgid "Import photos from:"
-msgstr "Importeer foto's van:"
+msgstr "导入照片："
 
 #: wppa_upload.php:177
+#, fuzzy
 msgid "Your depot"
-msgstr "Uw depot"
+msgstr "您的评论"
 
 #: wppa_upload.php:182
+#, fuzzy
 msgid "Set source directory"
-msgstr "Stel de bronmap in"
+msgstr "目录访问(模式):"
 
 #: wppa_upload.php:196
 #: wppa_upload.php:226
 #: wppa_upload.php:255
+#, fuzzy
 msgid "There are"
-msgstr "Er zijn"
+msgstr "不知道自己在哪？"
 
 #: wppa_upload.php:196
+#, fuzzy
 msgid "zipfiles in the depot."
-msgstr "zipfiles in het depot"
+msgstr "zip文件存放在储藏处"
 
 #: wppa_upload.php:197
+#, fuzzy
 msgid "Delete after successful extraction."
-msgstr "Verwijder na succesvol uitpakken."
+msgstr "成功删除后提取。"
 
 #: wppa_upload.php:226
+#, fuzzy
 msgid "albumdefinitions in the depot."
-msgstr "albumdefinities in het depot."
+msgstr "专辑的定义存放"
 
 #: wppa_upload.php:227
+#, fuzzy
 msgid "Delete after successful import, or if the album already exits."
-msgstr "Verwijder na succesvolle import, of indien het album reeds bestaat."
+msgstr "成功删除后进口,或如果专辑已出口。"
 
 #: wppa_upload.php:255
+#, fuzzy
 msgid "photos in the depot."
-msgstr "foto's in het depot"
+msgstr "相册定义存放"
 
 #: wppa_upload.php:255
+#, fuzzy
 msgid "Photos will be downsized during import."
-msgstr "De foto's zullen verkleind worden tijdens het importeren."
+msgstr "照片将缩减在进口。"
 
 #: wppa_upload.php:257
+#, fuzzy
 msgid "Delete after successful import."
-msgstr "Verwijder na succesvolle import."
+msgstr "成功删除后进口。"
 
 #: wppa_upload.php:261
+#, fuzzy
 msgid "Default album for import:"
-msgstr "Standaard album voor importeren:"
+msgstr "在这张专辑里进入描述。"
 
 #: wppa_upload.php:262
+#, fuzzy
 msgid "Photos that have (<em>name</em>)[<em>album</em>] will be imported by that <em>name</em> in that <em>album</em>."
-msgstr "Foto's die (<em>naam</em>)[<em>album</em>] hebben, worden onder <em>naam</em> geplaatst in <em>album</em>."
+msgstr "照片的 (<em>name</em>)[<em>album</em>] 将进口的 <em>name</em> in that <em>album</em>."
 
 #: wppa_upload.php:291
+#, fuzzy
 msgid "Import"
-msgstr "Importeer"
+msgstr "导入"
 
 #: wppa_upload.php:297
+#, fuzzy
 msgid "There are no archives, albums or photos in directory:"
-msgstr "Er zijn geen archieven, albums of foto's in de map:"
+msgstr "没有档案,相册或照片在目录:"
 
 #: wppa_upload.php:300
+#, fuzzy
 msgid "There are no albums or photos in directory:"
-msgstr "Er zijn geen albums of foto's in de map:"
+msgstr "没有专辑或照片在目录:"
 
 #: wppa_upload.php:327
 #: wppa_upload.php:529
+#, fuzzy
 msgid "Error inserting photo"
-msgstr "Fout bij het invoegen van foto"
+msgstr "不能够旋转照片、错误:"
 
 #: wppa_upload.php:334
+#, fuzzy
 msgid "Photos Uploaded in album nr"
-msgstr "Foto's ge-upload naar album nr"
+msgstr "这张专辑中没有任何相片。"
 
 #: wppa_upload.php:355
 #: wppa_upload.php:995
+#, fuzzy
 msgid "Zipfile"
-msgstr "Zip bestand"
+msgstr "Zipfile"
 
 #: wppa_upload.php:355
+#, fuzzy
 msgid "sucessfully uploaded."
-msgstr "succesvol ge-upload."
+msgstr "上传文件的路径。"
 
 #: wppa_upload.php:356
+#, fuzzy
 msgid "Error"
-msgstr "Fout"
+msgstr "错误："
 
 #: wppa_upload.php:356
+#, fuzzy
 msgid "during upload."
-msgstr "tijdens het uploaden."
+msgstr "取消上传"
 
 #: wppa_upload.php:448
+#, fuzzy
 msgid "Unknown parent album:"
-msgstr "Onbekend moederalbum:"
+msgstr "错误:未知的文件或专辑。"
 
 #: wppa_upload.php:448
+#, fuzzy
 msgid "--- none --- used."
-msgstr "--- geen --- gebruikt."
+msgstr "--- 没有使用 --- "
 
 #: wppa_upload.php:492
+#, fuzzy
 msgid "Processing files, please wait..."
-msgstr "Bestanden verwerken, even geduld a.u.b...."
+msgstr "处理文件,请稍候……"
 
 #: wppa_upload.php:492
+#, fuzzy
 msgid "If the line of dots stops growing or you browser reports Ready, your server has given up. In that case: try again"
-msgstr "Wanneer de lijn puntjes niet meer langer wordt of de browser gereed is, dan heeft de server het opgegeven. In dat geval: probeer opnieuw"
+msgstr "如果线的点停止增长或者报告准备好你的浏览器,你的服务器已经放弃了。在这种情况下:再试一次"
 
 #: wppa_upload.php:492
+#, fuzzy
 msgid "here."
-msgstr "hier."
+msgstr "链接到这里"
 
 #: wppa_upload.php:533
-#, php-format
+#, fuzzy, php-format
 msgid "Error inserting photo, album %1s does not exist for photo %2s. Either create the album or remove %3s."
-msgstr "Fout bij het invoegen van foto. album %1s bestaat niet voor foto %2s. Maak het album aan of verwijder %3s."
+msgstr "错误插入的照片,专辑%1s不存在照片%2s。要么创造专辑或删除 %3s"
 
 #: wppa_upload.php:539
+#, fuzzy
 msgid "Done processing files."
-msgstr "Klaar met het verwerken van de bestanden."
+msgstr "处理文件,请稍候……"
 
 #: wppa_upload.php:542
+#, fuzzy
 msgid "No files to import."
-msgstr "Geen bestanden om te importeren."
+msgstr "选择文件上传"
 
 #: wppa_upload.php:546
+#, fuzzy
 msgid "Zipfiles extracted."
-msgstr "Zip bestanden uitgepakt."
+msgstr "Zipfiles提取出来。"
 
 #: wppa_upload.php:547
+#, fuzzy
 msgid "Albums created."
-msgstr "Albums aangemaakt."
+msgstr "创建日期"
 
 #: wppa_upload.php:548
+#, fuzzy
 msgid "Photos imported."
-msgstr "Foto's geïmporteerd."
+msgstr "上传照片"
 
 #: wppa_upload.php:565
+#, fuzzy
 msgid "Although the photos are resized during the upload/import process, you may encounter 'Out of memory'errors."
-msgstr "Aloewel de foto's verkleind worden tijdens het upload proces kunt u 'Out of memory' foutmeldingen krijgen."
+msgstr "虽然这些照片并缩放上传/进口过程期间,你可能会遇到的'errors内存溢出的。"
 
 #: wppa_upload.php:565
+#, fuzzy
 msgid "In that case: make sure you set the memory limit to 64M and make sure your hosting provider allows you the use of 64 Mb."
-msgstr "In dat geval: zet de geheugenlimiet op 64M en zorg ervoor dat uw hosting provider u toestaat om 64 MB te gebruiken."
+msgstr "在这种情况下:确保您设置的内存限制到64M,确保您的托管服务提供商允许你使用64 Mb的容量。"
 
 #: wppa_upload.php:568
+#, fuzzy
 msgid "WARNING: You are uploading very large photos, this may result in server problems and excessive download times for your website visitors."
-msgstr "WAARSCHUWING: U bent zeer grote foto's aan het uploaden, dit kan tot problemen met de server en tot lange downloadtijden voor uw bezoekers leiden!"
+msgstr "警告:你正在上传非常大的照片,这可能导致了服务器的问题和过多的下载时间让你的网站访客。"
 
 #: wppa_upload.php:568
+#, fuzzy
 msgid "Check the 'Resize on upload' checkbox, and/or resize the photos before uploading. The recommended size is: not larger than 1024 x 768 pixels (up to approx. 250 kB)."
-msgstr "Vink de 'Tijdens upload verkleinen' checkbox aan en/of verklein de foto's alvorens ze te uploaden. De aanbevolen grootte is niet meer dan 1024 x 768 pixels (tot ca. 250 kB)."
+msgstr "在上传图片检查' '复选框,和/或瘦身的照片,再上传。推荐的大小是:不大于1024 x 768像素(大约250 kB)。"
 
 #: wppa_upload.php:573
+#, fuzzy
 msgid "WARNING: You are uploading photos that are too small. Photos must be larger than the thumbnail size and larger than the coverphotosize."
-msgstr "WAARSCHUWING: U bent te kleine goto's aan het uploaden. Foto's moeten groter zijn dan de miniatuurgrootte en groter dan de omslagfoto's."
+msgstr "警告:你正在上传照片,太小了。照片必须大于缩略图的大小和大于封面图片尺寸。"
 
 #: wppa_upload.php:578
+#, fuzzy
 msgid "ERROR: Unable to retrieve immage size of"
-msgstr "FOUT: Kan de abeeldingsgrootte niet bepalen van"
+msgstr "错误:无法取回的“大小"
 
 #: wppa_upload.php:578
+#, fuzzy
 msgid "Are you sure it is a photo?"
-msgstr "Weet u zeker dat dit een foto is?"
+msgstr "你确定你要旋转这张照片吗?"
 
 #: wppa_upload.php:589
+#, fuzzy
 msgid "Unsupported mime type encountered:"
-msgstr "Niet ondersteund mime type gevonden:"
+msgstr "遇到不支持的mime类型。"
 
 #: wppa_upload.php:595
+#, fuzzy
 msgid "Could not insert photo. query="
-msgstr "Kan de foto niet invoegen. query="
+msgstr "不能读照片数据。"
 
 #: wppa_upload.php:635
+#, fuzzy
 msgid "ERROR: Resized or copied image could not be created."
-msgstr "FOUT: Kan geschaalde of gekopiëerde afbeelding niet aanmaken."
+msgstr "图像的缩放或复制错误:无法产生。"
 
 #: wppa_upload.php:642
+#, fuzzy
 msgid "ERROR: Unknown file or album."
-msgstr "FOUT: Onbekend bestand of album."
+msgstr "错误:未知的文件或专辑。"
 
 #: wppa_upload.php:715
+#, fuzzy
 msgid "Error: unexpected fgets() fail in wppa_get_meta_data()."
-msgstr "Fout: onverwachte fgets() fout in wppa_get_meta_data()."
+msgstr "错误:意想不到的函数可以在wppa_get_meta_data()."
 
 #: wppa_upload.php:753
+#, fuzzy
 msgid "Trying to fix "
-msgstr "Probeer te repareren"
+msgstr "回到"
 
 #: wppa_upload.php:784
+#, fuzzy
 msgid "Fixed extension for "
-msgstr "Bestandsextensie gerepareerd voor"
+msgstr "相片未知扩展"
 
 #: wppa_upload.php:787
+#, fuzzy
 msgid "Unable to fix extension for "
-msgstr "Kan de bestandsextensie niet repareren voor"
+msgstr "无法修理进行扩建"
 
 #: wppa_upload.php:791
+#, fuzzy
 msgid "Unknown extension for photo "
-msgstr "Onbekende bestandsextensie voor foto"
+msgstr "相片未知扩展"
 
 #: wppa_upload.php:791
+#, fuzzy
 msgid "Please change the name to something with the proper extension and try again!"
-msgstr "Verander a.u.b. de naam naar iets met de juiste bestandsextensie en probeer opnieuw!"
+msgstr "请更改名字的东西以适当的延伸和再试一次!"
 
 #: wppa_upload.php:800
 #: wppa_upload.php:802
 #: wppa_upload.php:810
+#, fuzzy
 msgid "Orphan Photos"
-msgstr "Verweesde Foto's"
+msgstr "上传照片"
 
 #: wppa_upload.php:816
+#, fuzzy
 msgid "Could not recover orphanized photos."
-msgstr "Kan de verweesde foto's niet recupereren."
+msgstr "不能恢复orphanized照片。"
 
 #: wppa_upload.php:822
 #: wppa_upload.php:825
 #: wppa_upload.php:828
+#, fuzzy
 msgid "Database fixed."
-msgstr "Database hersteld."
+msgstr "固定宽"
 
 #: wppa_upload.php:822
+#, fuzzy
 msgid "orphanized photos recovered."
-msgstr "verweesde foto's teruggevonden."
+msgstr "不能恢复orphanized照片。"
 
 #: wppa_upload.php:825
+#, fuzzy
 msgid "invalid entries removed:"
-msgstr "ongeldige items verwijderd:"
+msgstr "无效数据。"
 
 #: wppa_upload.php:828
+#, fuzzy
 msgid "missing file extensions recovered."
-msgstr "ontbrekende bestandsextensies gereconstrueerd."
+msgstr "失踪的文件扩展名痊愈了。"
 
 #: wppa_upload.php:846
+#, fuzzy
 msgid "The uploads directory does not exist, please do a regular WP upload first."
-msgstr "De uploads map bestaat niet, doe eerst een 'gewone' WP upload."
+msgstr "在上传目录不存在,请做一个常规的WP上传第一。"
 
 #: wppa_upload.php:851
+#, fuzzy
 msgid "Successfully created uploads directory."
-msgstr "De uploads map is succesvol aangemaakt."
+msgstr "成功地创造了上传目录。"
 
 #: wppa_upload.php:860
+#, fuzzy
 msgid "Could not create the wppa directory."
-msgstr "Kan de wppa map niet aanmaken."
+msgstr "无法创建wppa文件。"
 
 #: wppa_upload.php:865
+#, fuzzy
 msgid "Successfully created wppa directory."
-msgstr "De wppa map is succesvol aangemaakt."
+msgstr " 菜单建立成功。"
 
 #: wppa_upload.php:874
+#, fuzzy
 msgid "Could not create the wppa thumbs directory."
-msgstr "Kan de wppa thumbs map niet aanmaken."
+msgstr "无法创建的wppa笨手笨脚的目录。"
 
 #: wppa_upload.php:879
+#, fuzzy
 msgid "Successfully created wppa thumbs directory."
-msgstr "De wppa thumbs map is succesvol aangemaakt."
+msgstr "成功地创造了wppa笨手笨脚的目录。"
 
 #: wppa_upload.php:888
+#, fuzzy
 msgid "Unable to create depot directory"
-msgstr "Kan de depot map niet aanmaken"
+msgstr "无法创建用户车厂目录"
 
 #: wppa_upload.php:893
+#, fuzzy
 msgid "Successfully created wppa master depot directory."
-msgstr "De wppa hoofd depot map is succesvol aangemaakt."
+msgstr "大师成功地创造了wppa油库的目录。"
 
 #: wppa_upload.php:902
+#, fuzzy
 msgid "Unable to create user depot directory"
-msgstr "Kan de gebruikers depot map niet aanmaken"
+msgstr "无法创建用户车厂目录"
 
 #: wppa_upload.php:907
+#, fuzzy
 msgid "Successfully created wppa user depot directory."
-msgstr "De wppa gebruikers depot map is succesvol aangemaakt."
+msgstr "用户成功地创造了wppa的目录。"
 
 #: wppa_upload.php:964
-#, php-format
+#, fuzzy, php-format
 msgid "File %s is of an unsupported filetype and has been removed."
-msgstr "Bestand %s is van een niet ondersteund bestandstype en is verwijderd."
+msgstr "文件“%s”的提示信息,即是被移除。"
 
 #: wppa_upload.php:995
+#, fuzzy
 msgid "extracted."
-msgstr "uitgepakt."
+msgstr "提取出来。"
 
 #: wppa_upload.php:998
+#, fuzzy
 msgid "Failed to extract"
-msgstr "Uitpakken mislukt van"
+msgstr "删除页面失败。"
 
 #: wppa_widget.php:13
+#, fuzzy
 msgid "WPPA+ Photo Of The Day"
-msgstr "WPPA+ Foto van de dag"
+msgstr "日期和文章名"
 
 #: wppa_widget.php:14
 #: wppa_widget.php:135
+#, fuzzy
 msgid "Photo Of The Day"
-msgstr "Foto van de dag"
+msgstr "相册"
 
 #: wppa_widget.php:139
+#, fuzzy
 msgid "You can set the content and the behaviour of this widget in the <b>Photo Albums -> Sidebar Widget</b> admin page."
-msgstr "U kunt de inhoud en het gedrag van deze widget bepalen in de <b>Foto Albums -> Zijkolom Widget</b> admin pagina."
+msgstr "您可以设置的内容和行为的部件在<b>Photo Albums -> Sidebar Widget</b> 的管理页面。"
 
 #: wppa_widgetadmin.php:24
+#, fuzzy
 msgid "Widget Photo Width."
-msgstr "Widget foto breedte."
+msgstr "缩略图框架宽度"
 
 #: wppa_widgetadmin.php:30
 #: wppa_widgetadmin.php:36
+#, fuzzy
 msgid "Widget Photo Padding."
-msgstr "Widget foto padding."
+msgstr "复制照片到"
 
 #: wppa_widgetadmin.php:53
+#, fuzzy
 msgid "Changes Saved. Don't forget to activate the widget!"
-msgstr "Wijzigingen opgeslagen. Vergeet niet de widget te activeren!"
+msgstr "保存更改。别忘了要激活聊窗!"
 
 #: wppa_widgetadmin.php:62
+#, fuzzy
 msgid "WP Photo Album Plus Sidebar Widget Settings"
-msgstr "WP Photo Album Plus Zijkolom Widget Instellingen"
+msgstr "再加上工具条窗口的WP Photo设置"
 
 #: wppa_widgetadmin.php:71
+#, fuzzy
 msgid "Widget Title:"
-msgstr "Wiget Titel:"
+msgstr "Widget 标题"
 
 #: wppa_widgetadmin.php:75
+#, fuzzy
 msgid "Enter/modify the title for the widget. This is a default and can be overriden at widget activation."
-msgstr "Geef de titel van de widget op. Dit is een standaard koptekst en kan overschreven worden bij het activeren van de widget."
+msgstr "进入/修改标题的部件。这是一个默认的并且可以重载在窗口的激活。"
 
 #: wppa_widgetadmin.php:80
+#, fuzzy
 msgid "Widget Photo Width:"
-msgstr "Widget foto breedte:"
+msgstr "缩略图框架宽度"
 
 #: wppa_widgetadmin.php:84
+#, fuzzy
 msgid "Padding top:"
-msgstr "Padding boven:"
+msgstr "文字顶部"
 
 #: wppa_widgetadmin.php:86
+#, fuzzy
 msgid "Padding left:"
-msgstr "Padding links:"
+msgstr "左对齐"
 
 #: wppa_widgetadmin.php:89
+#, fuzzy
 msgid "Enter the desired display width of the photo in the sidebar."
-msgstr "Voer de gewenste afbeeldingsbreedte van de foto in de zijkolom in."
+msgstr "输入你想要的照片显示宽度的工具条里。"
 
 #: wppa_widgetadmin.php:94
+#, fuzzy
 msgid "Use album(s):"
-msgstr "Gebruik album(s):"
+msgstr "专辑号码:"
 
 #: wppa_widgetadmin.php:110
+#, fuzzy
 msgid "Select:"
-msgstr "Geselecteer:"
+msgstr "选择"
 
 #: wppa_widgetadmin.php:112
+#, fuzzy
 msgid "Or Edit:"
-msgstr "Of Bewerk:"
+msgstr "批量编辑"
 
 #: wppa_widgetadmin.php:113
+#, fuzzy
 msgid "Update thumbnails"
-msgstr "Werk miniaturen bij"
+msgstr "更新缩略图"
 
 #: wppa_widgetadmin.php:114
+#, fuzzy
 msgid "Select or edit the album(s) you want to use the photos of for the widget."
-msgstr "Selecteer of bewerk de albumlijst die u wilt gebruiken voor de widget."
+msgstr "选择或编辑该专辑(s)你想要使用的照片的部件。"
 
 #: wppa_widgetadmin.php:119
+#, fuzzy
 msgid "Display method:"
-msgstr "Afbeeldings methode:"
+msgstr "头像显示"
 
 #: wppa_widgetadmin.php:125
+#, fuzzy
 msgid "Fixed photo"
-msgstr "Vaste foto"
+msgstr "相册"
 
 #: wppa_widgetadmin.php:127
+#, fuzzy
 msgid "Last upload"
-msgstr "Laatste geupload"
+msgstr "取消上传"
 
 #: wppa_widgetadmin.php:128
+#, fuzzy
 msgid "Change every"
-msgstr "Verander ieder(e)"
+msgstr "改变固定链接"
 
 #: wppa_widgetadmin.php:132
+#, fuzzy
 msgid "pageview."
-msgstr "pagina."
+msgstr "页面视图。"
 
 #: wppa_widgetadmin.php:133
+#, fuzzy
 msgid "hour."
-msgstr "uur."
+msgstr "小时"
 
 #: wppa_widgetadmin.php:134
+#, fuzzy
 msgid "day."
-msgstr "dag."
+msgstr "天"
 
 #: wppa_widgetadmin.php:135
+#, fuzzy
 msgid "week."
-msgstr "week."
+msgstr "一星期开始于"
 
 #: wppa_widgetadmin.php:137
+#, fuzzy
 msgid "Select how the widget should display."
-msgstr "Selecteer de gewenste afbeeldings methode."
+msgstr "选择如何应该显示该页面。"
 
 #: wppa_widgetadmin.php:148
 msgid "Links are set on the <b>Photo Albums -> Settings</b> screen."
-msgstr "Koppelingen worden ingesteld op het <b>Foto Albums -> Instellingen</b> scherm."
+msgstr ""
 
 #: wppa_widgetadmin.php:159
+#, fuzzy
 msgid "Type the title here"
-msgstr "Typ hier de titel"
+msgstr "在此键入标题"
 
 #: wppa_widgetadmin.php:160
+#, fuzzy
 msgid "Url:"
-msgstr "Url:"
+msgstr "URL"
 
 #: wppa_widgetadmin.php:161
+#, fuzzy
 msgid "Type your custom url here"
-msgstr "Typ hier de eigen url"
+msgstr "在这里输入您的定制的url地址"
 
 #: wppa_widgetadmin.php:162
+#, fuzzy
 msgid "Enter the title and the url. Do'nt forget the HTTP://"
-msgstr "Voer de titel en de url in. Vergeet de HTTP:// niet."
+msgstr "键入标题和url地址。别忘记加 HTTP://"
 
 #: wppa_widgetadmin.php:169
+#, fuzzy
 msgid "Subtitle:"
-msgstr "Ondertitel:"
+msgstr "副标题:"
 
 #: wppa_widgetadmin.php:175
+#, fuzzy
 msgid "Photo Name"
-msgstr "Foto Naam"
+msgstr "照片的名称"
 
 #: wppa_widgetadmin.php:178
+#, fuzzy
 msgid "Select the content of the subtitle."
-msgstr "Selecteer de inhoud van de ondertitel."
+msgstr "显示条目内容？"
 
 #: wppa_widgetfunctions.php:90
+#, fuzzy
 msgid "- select album(s) -"
-msgstr "- selecteer album(s) -"
+msgstr "- 选择专辑-"
 
 #: wppa_widgetfunctions.php:120
+#, fuzzy
 msgid "- all albums -"
-msgstr "- alle albums -"
+msgstr "-所有的专辑-"
 
 #: wppa_widgetfunctions.php:121
+#, fuzzy
 msgid "- all -separate- albums -"
-msgstr "- alle -afzonderlijke- albums -"
+msgstr "所有专辑。"
 
 #: wppa_widgetfunctions.php:122
+#, fuzzy
 msgid "- all albums except -separate-"
-msgstr "- alle albums behalve -afzonderlijk-"
+msgstr "除了缩略图的全部尺寸"
 
+#: theme/photo-album-page.php:33
+#, fuzzy
+msgid "Pages:"
+msgstr "页面："
+
+#, fuzzy
 #~ msgid "Order:"
-#~ msgstr "Volgorde nummer:"
+#~ msgstr "排序："
 
+#, fuzzy
 #~ msgid "General settings:"
-#~ msgstr "Algemene instellingen:"
+#~ msgstr "常规选项"
 
+#, fuzzy
 #~ msgid "Full Size:"
-#~ msgstr "Volledige grootte:"
+#~ msgstr "原尺寸"
 
+#, fuzzy
 #~ msgid "Full-size & Slideshow:"
-#~ msgstr "Volle grootte foto's en Diavoorstellingen:"
+#~ msgstr "全尺寸大小像素"
 
+#, fuzzy
 #~ msgid "Horizontal alignment:"
-#~ msgstr "Horizontale uitlijning:"
+#~ msgstr "水平空间"
 
+#, fuzzy
 #~ msgid "Name and description:"
-#~ msgstr "Naam en Beschrijving:"
+#~ msgstr "日期和文章名"
 
+#, fuzzy
 #~ msgid ""
 #~ "If checked: display navigation bars and/or a filmstrip over and under the "
 #~ "full-size images and slideshow."
-#~ msgstr ""
-#~ "Indien aangevinkt: toon navigatiebalken en/of filmstrip boven en onder de "
-#~ "volledige grootte foto's en diavoorstelling."
+#~ msgstr "如果勾选此项:显示导航条和/或filmstrip结束了,在全尺寸图片和幻灯片。"
 
+#, fuzzy
 #~ msgid "Please supply additional settings for the rating system."
-#~ msgstr "Geef a.u.b. verdere instellingen voor het waarderingssysteem op."
+#~ msgstr "请提供额外的设置评级系统。"
 
-#~ msgid "Top Ten Widget:"
-#~ msgstr "Top Tien Widget:"
-
+#, fuzzy
 #~ msgid "Top Ten Rated Photos"
-#~ msgstr "Top Tien gewaardeerde foto's"
+#~ msgstr "十大额定照片"
 
+#, fuzzy
 #~ msgid "Widget thumbnail size:"
-#~ msgstr "Widget miniatuur grootte:"
+#~ msgstr "最大嵌入对象大小"
 
+#, fuzzy
 #~ msgid "Display type:"
-#~ msgstr "Afbeeldings methode:"
+#~ msgstr "连接类型"
 
+#, fuzzy
 #~ msgid "pixels, Height:"
-#~ msgstr "pixels, Hoogte:"
+#~ msgstr "最大高"
 
+#, fuzzy
 #~ msgid "pixels, Spacing:"
-#~ msgstr "pixels, Tussenruimte:"
+#~ msgstr "像素、间距:"
 
+#, fuzzy
 #~ msgid "this is a minimum. Space them equally."
-#~ msgstr ""
-#~ "dit is een minimum. Verdeel ze regelmatig over de beschikbare breedte."
+#~ msgstr "这是一个最低限度。空间他们一视同仁。"
 
+#, fuzzy
 #~ msgid "Apply popup effect:"
-#~ msgstr "Pas het 'pop-up' effect toe:"
+#~ msgstr "弹出式评论模版"
 
+#, fuzzy
 #~ msgid "Photo rating:"
-#~ msgstr "Foto waardering:"
+#~ msgstr "综合评级"
 
-#~ msgid "Album covers:"
-#~ msgstr "Album omslagen:"
-
+#, fuzzy
 #~ msgid "Coverphoto Size:"
-#~ msgstr "Omslag foto grootte:"
+#~ msgstr "封面图片大小:"
 
+#, fuzzy
 #~ msgid "Order settings:"
-#~ msgstr "Volgorde instellingen:"
+#~ msgstr "顺序设置:"
 
+#, fuzzy
 #~ msgid "Appearance:"
-#~ msgstr "Opmaak:"
+#~ msgstr "外观"
 
+#, fuzzy
 #~ msgid "Explanation:"
-#~ msgstr "Toelichting:"
+#~ msgstr "解释:"
 
+#, fuzzy
 #~ msgid ""
 #~ "The settings in this chapter may be left blank. When blank, the theme's "
 #~ "defaults are used or the settings in wppa_style.css."
 #~ msgstr ""
-#~ "De instellingen in deze sectie mogen leeg gelaten worden. In dat geval "
-#~ "worden de standaardwaarden van het thema of - indien aanwezig - de "
-#~ "instellingen in wppa_style.css gebruikt."
+#~ "在本章的设置可以留出空白。当空白,这个主题的预设值是在wppa_style.css使用或"
+#~ "设定。"
 
+#, fuzzy
 #~ msgid ""
 #~ "It is strongly recommended that you try these settings to achieve your "
 #~ "desired appearance before editing the css file."
-#~ msgstr ""
-#~ "Het wordt sterk aanbevolen om te proberen met deze instellingen het "
-#~ "gewenste resultaat te bereiken alvorens het css bestand te bewerken."
+#~ msgstr "它是被强烈建议您试试这些设置,以达到你想要的前,外观编辑css文件。"
 
+#, fuzzy
 #~ msgid ""
 #~ "Note: these settings - if not blank - have precednce over css settings or "
 #~ "any hard coded attributes."
 #~ msgstr ""
-#~ "Opmerking: deze instellingen - indien ingevuld - hebben prioriteit boven "
-#~ "de css of geprogrammeerde attribuu waarden."
+#~ "注:这些设置-如果不是空白— 有precednce在css设置或者任何硬编码的属性。"
 
+#, fuzzy
 #~ msgid ""
 #~ "The css classes that these settings act upon are indicated in the "
 #~ "descriptions as follows (for example 'wppa-class'):"
-#~ msgstr ""
-#~ "De stijlklassen waar deze instellingen betrekking op hebben zijn als "
-#~ "volgt aangegeven (bijvoorbeeld 'wppa-class'):"
+#~ msgstr "这些设置的css类别,作用于纯生啤酒的描述如下(例如 'wppa-class'):"
 
+#, fuzzy
 #~ msgid "Borders:"
-#~ msgstr "Randen:"
+#~ msgstr "边框"
 
+#, fuzzy
 #~ msgid "Default text color:"
-#~ msgstr "Standaard tekstkleur:"
+#~ msgstr "重设文字颜色"
 
+#, fuzzy
 #~ msgid "Color:"
-#~ msgstr "Kleur:"
+#~ msgstr "颜色："
 
+#, fuzzy
 #~ msgid "Enter your sites default text color."
-#~ msgstr "Voer de standaard tekstkleur van uw website in."
+#~ msgstr "输入您的站点默认字体的颜色。"
 
+#, fuzzy
 #~ msgid "Access settings:"
-#~ msgstr "Toegangsrechten:"
+#~ msgstr "高级访问设置选项:"
 
+#, fuzzy
 #~ msgid ""
 #~ "Here you can set the capabilities that are specific for <strong>WPPA+.</"
 #~ "strong>"
-#~ msgstr ""
-#~ "Hier kunt u de toegangsrechten opgeven die specifiek zijn voor "
-#~ "<strong>WPPA+.</strong>"
+#~ msgstr "在这里你可以设置你的能力,这是特殊的对于<strong>WPPA+.</strong>"
 
+#, fuzzy
 #~ msgid "Sidebar Access Level:"
-#~ msgstr "Zijkolom widget toegangs niveau:"
+#~ msgstr "专辑存取等级:"
 
+#, fuzzy
 #~ msgid ""
 #~ "NOTE: Accessing this page - WP Photo Album Plus Settings - is always "
 #~ "priviledged to Administrators."
-#~ msgstr ""
-#~ "OPMERKING: Deze pagina - Instellingen - is altijd voorbehouden aan "
-#~ "uitsluitend Adminstrateurs."
+#~ msgstr "注:访问这个页面——WP Photo Album Plus设置-总是priviledged到管理员。"
 
+#, fuzzy
 #~ msgid "--- url ---"
-#~ msgstr "--- url ---"
+#~ msgstr "URL"
 
+#, fuzzy
 #~ msgid "Select --- url --- to enter a custom link."
-#~ msgstr "Selecteer --- url --- om een eigen koppeling op te geven."
+#~ msgstr "选择--- url --- 进入一个定制的链接。"
 
+#, fuzzy
 #~ msgid "Custom link:"
-#~ msgstr "Eigen koppeling:"
-
-#~ msgid ""
-#~ "Type/alter the name of the photo. It is NOT a filename and does not need "
-#~ "a file extension like .jpg."
-#~ msgstr ""
-#~ "Geef de naam van de foto op. Het is GEEN bestandsnaam en hoeft niet geen "
-#~ "extensie zoals .jpg."
-
-#~ msgid "No album defined yet."
-#~ msgstr "Er is nog geen album ingesteld."
-
-#~ msgid "Link to"
-#~ msgstr "Link naar"
-
-#~ msgid "Photo not found."
-#~ msgstr "Foto niet gevonden."
-
-#~ msgid "No links:"
-#~ msgstr "Geen koppelingen:"
-
-#~ msgid ""
-#~ "Check this if you do NOT want to link the thumbnails to fullsize images."
-#~ msgstr ""
-#~ "Vink dit aan indien u NIET wilt dat de miniaturen naar grote foto's "
-#~ "linken."
-
-#~ msgid "No albums or photos found matching your search criteria."
-#~ msgstr ""
-#~ "Er zijn geen albums of foto's gevonden die voldoen aan uw zoekopdracht."
-
-#~ msgid "photo albums. The last album added is"
-#~ msgstr "foto albums. Het laatst toegevoegde album is"
-
-#~ msgid ", a subalbum of"
-#~ msgstr ", een sub-album van"
-
-#~ msgid "Searchstring:"
-#~ msgstr "Zoeken naar:"
-
-#~ msgid "Top rated photos"
-#~ msgstr "Top waarderingen"
-
-#~ msgid "<b>ERROR: Attempt to enter an invalid rating.</b>"
-#~ msgstr "<b>FOUT: Poging een ongeldige waardering in te voeren.</b>"
-
-#~ msgid "Prev.&nbsp;page"
-#~ msgstr "Vorige&nbsp;pagina"
-
-#~ msgid "Next&nbsp;page"
-#~ msgstr "Volgende&nbsp;pagina"
-
-#~ msgid "Stop"
-#~ msgstr "Stop"
-
-#~ msgid "Photo"
-#~ msgstr "Foto"
-
-#~ msgid "of"
-#~ msgstr "van"
-
-#~ msgid "Prev.&nbsp;photo"
-#~ msgstr "Vorige&nbsp;foto"
-
-#~ msgid "Next&nbsp;photo"
-#~ msgstr "Volgende&nbsp;foto"
-
-#~ msgid "Page is not available."
-#~ msgstr "Pagina is niet beschikbaar."
-
-#~ msgid "s"
-#~ msgstr "'s"
-
-#~ msgid "View the album"
-#~ msgstr "Bekijk het album"
-
-#~ msgid "View"
-#~ msgstr "Bekijk"
-
-#~ msgid "album"
-#~ msgstr "album"
-
-#~ msgid "albums"
-#~ msgstr "albums"
-
-#~ msgid "and"
-#~ msgstr "en"
-
-#~ msgid "Slower"
-#~ msgstr "Trager"
-
-#~ msgid "Faster"
-#~ msgstr "Sneller"
-
-#~ msgid "- - - Rating enabled - - -"
-#~ msgstr "- - - Waarderingssysteem geactiveerd - - -"
-
-#~ msgid "very low"
-#~ msgstr "zeer laag"
-
-#~ msgid "low"
-#~ msgstr "laag"
-
-#~ msgid "average"
-#~ msgstr "gemiddeld"
-
-#~ msgid "high"
-#~ msgstr "hoog"
-
-#~ msgid "very high"
-#~ msgstr "zeer hoog"
-
-#~ msgid "Average&nbsp;rating"
-#~ msgstr "Gem.&nbsp;waardering"
-
-#~ msgid "Avarage&nbsp;rating:"
-#~ msgstr "Gem.&nbsp;waardering"
-
-#~ msgid "My&nbsp;rating:"
-#~ msgstr "Mijn&nbsp;waardering:"
-
-#~ msgid "My&nbsp;rating"
-#~ msgstr "Mijn&nbsp;waardering"
-
-#~ msgid "You must login to vote"
-#~ msgstr "U moet ingelogd zijn om te stemmen"
-
-#~ msgid "Rating: %s"
-#~ msgstr "%s punten"
-
-#~ msgid "Sub title:"
-#~ msgstr "Onder titel:"
-
-#~ msgid "Search Photos widget"
-#~ msgstr "Foto's zoeken"
-
-#~ msgid "TopTen Rated Photos"
-#~ msgstr "TopTien gewaardeerde foto's"
-
-#~ msgid "No known valid album id to import photos to."
-#~ msgstr "Geen geldige album id om foto's in te importeren."
-
-#~ msgid "Create"
-#~ msgstr "Maak"
-
-#~ msgid "with an ftp program and try again."
-#~ msgstr "met een FTP programma en probeer het opnieuw."
-
-#~ msgid "with an ftp program and place the photos there."
-#~ msgstr "met een ftp programma en plaats de foto's er in."
-
-#~ msgid "Place your photos to be imported in:"
-#~ msgstr "Zet uw foto's die geïmporteerd moeten worden in:"
-
-#~ msgid "using an FTP program and try again."
-#~ msgstr "met een FTP programma en probeer het opnieuw."
-
-#~ msgid "files imported to album number"
-#~ msgstr "bestanden geïmporteerd naar album nummer"
-
-#~ msgid "Checking database, please wait..."
-#~ msgstr "Database kontroleren, even geduld a.u.b...."
-
-#~ msgid "Done. No errors found. Have a nice upload!"
-#~ msgstr "Klaar. Geen fouten gevonden. Veel plezier met uploaden!"
-
-#~ msgid "Avarage rating:"
-#~ msgstr "Gemiddelde waardering:"
-
-#~ msgid "My rating"
-#~ msgstr "Mijn waardering"
-
-#~ msgid ""
-#~ "If you want to enter a custom link, first select --- url --- above and "
-#~ "save changes."
-#~ msgstr ""
-#~ "Indien u een eigen koppeling wilt invoeren, selecteer dan eerst --- url "
-#~ "--- hierboven en sla de wijzighingen op."
-
-#~ msgid "Not implemented yet (5)"
-#~ msgstr "Nog niet geïmplementeerd (5)"
-
-#~ msgid "Not implemented yet (6)"
-#~ msgstr "Nog neit geïmplementeerd (6)"
-
-#, fuzzy
-#~ msgid "Search Photos Description"
-#~ msgstr "Foto's zoeken"
-
-#~ msgid "Photo Search"
-#~ msgstr "Foto's zoeken"
-
-#~ msgid "Enter the caption to be displayed for the widget."
-#~ msgstr "Voer de kopregel van de widget in."
-
-#~ msgid "- - - Single photo - - -"
-#~ msgstr "- - - Enkele foto - - -"
-
-#~ msgid "- - - Slideshow - - -"
-#~ msgstr "- - - Diavoorstelling - - -"
-
-#~ msgid "- - - Start/stop slideshow navigation bar - - -"
-#~ msgstr "- - - Start/stop diavoorstelling balk - - -"
-
-#~ msgid "- - - Browse navigation bar - - -"
-#~ msgstr "- - - Bladeren navigatiebalk - - -"
-
-#~ msgid "- - - Filmstrip - - -"
-#~ msgstr "- - - Filmstrip - - -"
-
-#~ msgid "<span class=\"meta-nav\">&larr;</span> Older posts"
-#~ msgstr "<span class=\"meta-nav\">&larr;</span> Older posts"
-
-#~ msgid "Newer posts <span class=\"meta-nav\">&rarr;</span>"
-#~ msgstr "Newer posts <span class=\"meta-nav\">&rarr;</span>"
-
-#~ msgid "Not Found"
-#~ msgstr "Bestand niet gevonden"
-
-#~ msgid ""
-#~ "Apologies, but no results were found for the requested archive. Perhaps "
-#~ "searching will help find a related post."
-#~ msgstr ""
-#~ "Apologies, but no results were found for the requested archive. Perhaps "
-#~ "searching will help find a related post."
-
-#~ msgid "This gallery contains <a %1$s>%2$s photos</a>."
-#~ msgstr "This gallery contains <a %1$s>%2$s photos</a>."
-
-#~ msgid "More Galleries"
-#~ msgstr "More Galleries"
-
-#~ msgid "Leave a comment"
-#~ msgstr "Leave a comment"
-
-#~ msgid "1 Comment"
-#~ msgstr "1 Comment"
-
-#~ msgid "% Comments"
-#~ msgstr "% Comments"
-
-#~ msgid "Continue reading <span class=\"meta-nav\">&rarr;</span>"
-#~ msgstr "Continue reading <span class=\"meta-nav\">&rarr;</span>"
-
-#~ msgid "<span class=\"%1$s\">Posted in</span> %2$s"
-#~ msgstr "<span class=\"%1$s\">Posted in</span> %2$s"
-
-#~ msgid "<span class=\"%1$s\">Tagged</span> %2$s"
-#~ msgstr "<span class=\"%1$s\">Tagged</span> %2$s"
-
-#~ msgid "Select the album that contains the widget photos."
-#~ msgstr "Selecteer het album waar de widget foto's in staan."
-
-#~ msgid "or have a feature request, please contact me via my"
-#~ msgstr ""
-#~ "of als u een verzoek voor nieuwe functionaliteit heeft, neem dan svp "
-#~ "contact met mij op via mijn"
-
-#~ msgid "You may also check the"
-#~ msgstr "U kunt ook het"
-
-#~ msgid "for this plugin and/or leave a question there."
-#~ msgstr "voor deze plugin bekijken en/of er een vraag achter laten."
-
-#~ msgid "For hot fixes check the"
-#~ msgstr "Voor de laatste wijzigingen zie de"
-
-#~ msgid "for this plugin."
-#~ msgstr "voor deze plugin."
-
-#~ msgid "You may also visit the"
-#~ msgstr "U kunt ook bezoeken:"
-
-#~ msgid "that also contains the"
-#~ msgstr ". Tevens vindt u hier de"
-
-#~ msgid "If you love this plugin, I would appreciate a donation, either in"
-#~ msgstr "Als u deze plugin waardeert, dan ontvang ik gaarne een donatie in"
-
-#~ msgid "or in"
-#~ msgstr "of in"
-
-#~ msgid ""
-#~ "Specify the vertical alignment of fullsize images. Use this setting only "
-#~ "when albums contain both portrait and landscape photos."
-#~ msgstr ""
-#~ "Geef de verticale uitlijningsmethode aan. Gebruik deze instelling alleen "
-#~ "wanneer albums zowel liggende als staande foto's bevatten."
-
-#~ msgid "Slideshow:"
-#~ msgstr "Diavoorstelling:"
-
-#~ msgid "The Fullsize images settings above also apply to this section."
-#~ msgstr ""
-#~ "De instellingen hierboven voor volledige grootte foto's zijn ook hier van "
-#~ "toepassing."
-
-#~ msgid ""
-#~ "First de-activate WP Photo Album before activating WP Photo Album Plus!!"
-#~ msgstr ""
-#~ "De-activeer WP Photo Album eerst voordat u WP Photo Album Plus activeert!!"
-
-#~ msgid "YOU CAN NOT RUN BOTH VERSIONS AT THE SAME TIME!!"
-#~ msgstr "U KUNT NIET BEIDE VERSIES TEGELIJK DRAAIEN!!"
-
-#~ msgid "The existing database and albums and photos will be preserved."
-#~ msgstr "De bestaande database en albums en foto's blijven bewaard."
-
-#~ msgid "YOU DO NOT NEED TO RE-UPLOAD YOUR PHOTOS"
-#~ msgstr "U HOEFT UW FOTO'S NIET OPNIEUW TE UPLOADEN"
-
-#~ msgid ""
-#~ "You will need to use (and probably modify) the newly supplied default "
-#~ "theme file \"wppa_theme.php\"."
-#~ msgstr ""
-#~ "U zult het nieuwe standaard thema bestand \"wppa_theme.php\" moeten "
-#~ "gebruiken en eventueel aanpassen."
-
-#~ msgid ""
-#~ "You can use existing albums to make sub-albums, simply by specifying in "
-#~ "which album they belong."
-#~ msgstr ""
-#~ "U kunt bestaande albums gebruiken om sub-albums te maken, eenvoudig door "
-#~ "aan te geven in welk album ze thuishoren."
-
-#~ msgid "contents"
-#~ msgstr "inhoud"
-
-#~ msgid "of album nr 19."
-#~ msgstr "van album nr. 19."
-
-#~ msgid ""
-#~ "Alternatively, you can create an extra album (say it has number 22) and "
-#~ "set the \"parent\" property of album 19 to this new album. Then your "
-#~ "second line should read:"
-#~ msgstr ""
-#~ "Een andere methode is om een extra album aan te maken (zeg nummer 22) en "
-#~ "dan het \"Moederalbum\" van album 19 op dit nieuwe album te zetten. In "
-#~ "dat geval wordt de tweede regel:"
-
-#~ msgid ""
-#~ "This method enables you to add more than one album to a specific page or "
-#~ "post as long as they have the same parent."
-#~ msgstr ""
-#~ "Deze methode maakt het mogelijk meer dan één album in een bepaalde pagina "
-#~ "of post op te nemen, als ze maar dezelfe \"Moeder\" hebben."
-
-#~ msgid ""
-#~ "Additionally, if you set the parent of this album (nr 22 in this example) "
-#~ "to \"--- separate ---\", it will not be listed in the \"generic\" photo "
-#~ "gallery and the breadcrumb will display the best."
-#~ msgstr ""
-#~ "Bovendien, als u de \"Moeder\" van dit album (nr 22 in dit voorbeeld) op "
-#~ "\"--- afzonderlijk ---\" zet, wordt het album niet getoond in de \"gewone"
-#~ "\" foto gallerij, en wordt de \"breadcrumb\" het best weergegeven."
-
-#~ msgid "You can combine the above as follows: (example)"
-#~ msgstr "U kunt het bovenstaande als volgt combineren: (voorbeeld)"
-
-#~ msgid "or as:"
-#~ msgstr "of als:"
-
-#~ msgid "An album can have only <b>ONE</b> parent."
-#~ msgstr "Een album kan maar <b>EEN</b> moeder album hebben."
-
-#~ msgid ""
-#~ "Use the default page template, or create one yourself. In this case, "
-#~ "study the example (actually the version i use myself): <tt>...wp-content/"
-#~ "plugins/wp-photo-album-plus/examples/page-photo-album.php</tt>"
-#~ msgstr ""
-#~ "Gebruik de standaard pagina sjabloon, of maak er zelf een. Bestudeer (en/"
-#~ "of wijzig) in dat geval mijn versie: <tt>...wp-content/plugins/wp-photo-"
-#~ "album-plus/examples/page-photo-album.php</tt>"
-
-#~ msgid ""
-#~ "WPPA uses a system of tags similar to the WordPress theme system. To view "
-#~ "a list of available tags, please read tags.txt"
-#~ msgstr ""
-#~ "WPPA gebruikt een systeem van 'tags' vergelijkbaar met het WordPress "
-#~ "thema systeem. De beschikbare tags worden gedokumenteerd in tags.txt"
-
-#~ msgid "fast"
-#~ msgstr "snel"
-
-#~ msgid "normal"
-#~ msgstr "normaal"
-
-#~ msgid ""
-#~ "The size of the full images is controled with html, the photo itself will "
-#~ "not be resized unless you check the 'Resize on Upload' box."
-#~ msgstr ""
-#~ "De afmeting van de Volledige grootte wordt bepaald door html. De foto "
-#~ "zelf wordt niet gewijzigd tenzij u de 'Tijdens upload aanpassen' box "
-#~ "aanvinkt."
-
-#, fuzzy
-#~ msgid "Import Photot"
-#~ msgstr "Omslag foto:"
-
-#~ msgid "please wait."
-#~ msgstr "even geduld a.u.b."
-
-#~ msgid "HERE"
-#~ msgstr "HIER"
-
-#~ msgid "Filetype not supported. Thumbnail not created."
-#~ msgstr ""
-#~ "Bestandstype wordt niet indersteund. Miniatuur afbeelding niet aangemaakt"
-
-#~ msgid "Thumbnail path invalid"
-#~ msgstr "Het pad naar de miniatuurafbeelding is ongeldig"
-
-#~ msgid "Homepage"
-#~ msgstr "Beginpagina"
-
-#~ msgid ""
-#~ "You can not change the parent of an album that contains sub albums.&nbsp;"
-#~ msgstr ""
-#~ "U kunt de moeder niet wijzigen van een album dat sub-albums bevat.&nbsp;"
-
-#~ msgid ""
-#~ "This is to prevent circular references. Change the sub albums parent id "
-#~ "first."
-#~ msgstr ""
-#~ "Dat is om te voorkomen dat er cyclische verwijzingen ontstaan. Verander "
-#~ "eerst de moeder van de sub-albums."
-
-#~ msgid ""
-#~ "To avoid excessive newlines in your page or post you may combine the "
-#~ "above to something like:"
-#~ msgstr ""
-#~ "Om overbodige lege regels te voorkomen kan het bovenstaande worden "
-#~ "gecombineerd tot bijvoorbeeld:"
-
-#~ msgid ""
-#~ "There can be only <b>ONE</b> occurence of <tt>%%wppa%%</tt> in a page or "
-#~ "post. If you want more than one, make them siblings and refer to the "
-#~ "parent album. This is a permanent restriction."
-#~ msgstr ""
-#~ "Er kan maar <b>EEN</b> keer <tt>%%wppa%%</tt> in een post of pagina "
-#~ "voorkomen. Als u er meer wilt, geef ze dan hetzelfde moederalbum en "
-#~ "gebruik dat album. Dit is een permanente beperking."
-
-#~ msgid "Please supply a numeric value for Thumbnail size."
-#~ msgstr "Geef a.u.b. een getal op voor de Miniatuurgrootte."
-
-#~ msgid "Please supply a numeric value for Photocount treshold."
-#~ msgstr "Geef a.u.b. een getal op voor de Drempelwaarde."
-
-#~ msgid "Please supply a numeric value for Widget Photo Width."
-#~ msgstr "Geef a.u.b. een getal op voor de Widget Foto breedte."
-
-#~ msgid "Photo not found (2)"
-#~ msgstr "Foto niet gevonden (2)"
-
-#~ msgid "Unknown album (2)"
-#~ msgstr "Onbekend album (2)"
-
-#~ msgid "Photo not found (3)"
-#~ msgstr "Foto niet gevonden (3)"
-
-#~ msgid "Unknown album (3)"
-#~ msgstr "Onbekend album (3)"
-
-#~ msgid "Photo not found (4)"
-#~ msgstr "Foto niet gevonden (4)"
-
-#~ msgid "Unknown album (4)"
-#~ msgstr "Onbekend album (4)"
-
-#~ msgid "Scrollable"
-#~ msgstr "Verschuifbaaar"
-
-#~ msgid ""
-#~ "Update this page after changing \"Use album\" or \"Display method\" above!"
-#~ msgstr ""
-#~ "Werk deze pagina bij nadat \"Gebruik album\" of \"Afbeeldings methode\" "
-#~ "hierboven is gewijzigd!"
-
-#~ msgid "Minimal photocount:"
-#~ msgstr "Minimaal aantal foto's:"
+#~ msgstr "定制的链接:"
