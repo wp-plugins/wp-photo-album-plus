@@ -2,13 +2,13 @@
 /*
 Plugin Name: WP Photo Album Plus
 Description: Easily manage and display your photo albums and slideshows within your WordPress site.
-Version: 3.0.1
+Version: 3.0.2
 Author: J.N. Breetvelt a.k.a OpaJaap
 Author URI: http://www.opajaap.nl/
 Plugin URI: http://wordpress.org/extend/plugins/wp-photo-album-plus/
 */
 
-global $wppa_revno; $wppa_revno = '301';
+global $wppa_revno; $wppa_revno = '303';
 global $wpdb;
 
 /* DEFINES 
@@ -22,8 +22,8 @@ if (!defined('PHP_VERSION_ID')) {
 
 	define('PHP_VERSION_ID', ($version[0] * 10000 + $version[1] * 100 + $version[2]));
 }
-define('ALBUM_TABLE', $wpdb->prefix . 'wppa_albums');
-define('PHOTO_TABLE', $wpdb->prefix . 'wppa_photos');
+define('WPPA_ALBUMS', $wpdb->prefix . 'wppa_albums');
+define('WPPA_PHOTOS', $wpdb->prefix . 'wppa_photos');
 define('WPPA_RATING', $wpdb->prefix . 'wppa_rating');
 define('WPPA_PLUGIN_PATH', 'wp-photo-album-plus');
 define('WPPA_NONCE' , 'wppa-update-check');
@@ -48,7 +48,7 @@ function wppa_setup() {
 	$old_rev = get_option('wppa_revision', '100');
 	if ($old_rev <= $wppa_revno) {
 		
-	$create_albums = "CREATE TABLE " . ALBUM_TABLE . " (
+	$create_albums = "CREATE TABLE " . WPPA_ALBUMS . " (
                     id bigint(20) NOT NULL auto_increment, 
                     name text NOT NULL, 
                     description text NOT NULL, 
@@ -61,7 +61,7 @@ function wppa_setup() {
                     PRIMARY KEY  (id) 
                     );";
                     
-	$create_photos = "CREATE TABLE " . PHOTO_TABLE . " (
+	$create_photos = "CREATE TABLE " . WPPA_PHOTOS . " (
                     id bigint(20) NOT NULL auto_increment, 
                     album bigint(20) NOT NULL, 
                     ext tinytext NOT NULL, 
@@ -69,6 +69,8 @@ function wppa_setup() {
                     description longtext NOT NULL, 
                     p_order smallint(5) unsigned NOT NULL,
 					mean_rating tinytext NOT NULL,
+					linkurl text NOT NULL,
+					linktitle text NOT NULL,
                     PRIMARY KEY  (id) 
                     );";
 
@@ -90,6 +92,24 @@ function wppa_setup() {
 
 	$iret = true;
 	
+	if ($old_rev < '302') {		// hide is obsolete, we use eneble now
+		$opt = get_option('wppa_hide_slideshow', 'nil');
+		if ($opt != 'nil') {
+			if ($opt == 'yes') update_option('wppa_enable_slideshow', 'no');
+			else update_option('wppa_enable_slideshow', 'yes');
+			delete_option('wppa_hide_slideshow');
+		}
+		$opt = get_option('wppa_toptenwidgettitle', 'nil');	// obsolete
+		if ($opt != 'nil') {
+			delete_option('wppa_toptenwidgettitle');
+		}
+		$opt = get_option('wppa_black', 'nil'); // obsolete
+		if ($opt != 'nil') {
+			update_option('wppa_fontcolor_box', $opt);
+			delete_option('wppa_black');
+		}
+	}
+	
 	if ($old_rev < '300') {		// theme and/or css changed since...
 		$key = '0';
 		$userstyle = ABSPATH . 'wp-content/themes/' . get_option('template') . '/wppa_style.css';
@@ -103,7 +123,7 @@ function wppa_setup() {
 		global $current_user;
 		get_currentuserinfo();
 		$user = $current_user->user_login;
-		$query = $wpdb->prepare('UPDATE `' . ALBUM_TABLE . '` SET `owner` = %s WHERE `owner` = %s', $user, '');
+		$query = $wpdb->prepare('UPDATE `' . WPPA_ALBUMS . '` SET `owner` = %s WHERE `owner` = %s', $user, '');
 		$iret = $wpdb->query($query);
 		}
 		
@@ -138,7 +158,7 @@ function wppa_add_admin() {
 	add_submenu_page(__FILE__, __('Import Photos', 'wppa'), __('Import Photos', 'wppa'), 'wppa_upload', 'import_photos', 'wppa_page_import');
 	add_submenu_page(__FILE__, __('Export Photos', 'wppa'), __('Export Photos', 'wppa'), 'administrator', 'export_photos', 'wppa_page_export');
     add_submenu_page(__FILE__, __('Settings', 'wppa'), __('Settings', 'wppa'), 'administrator', 'options', 'wppa_page_options');
-	add_submenu_page(__FILE__, __('Sidebar Widget', 'wppa'), __('Sidebar Widget', 'wppa'), 'wppa_sidebar_admin', 'wppa_sidebar_options', 'wppa_sidebar_page_options');
+	add_submenu_page(__FILE__, __('Photo of the day Widget', 'wppa'), __('Photo of the day', 'wppa'), 'wppa_sidebar_admin', 'wppa_sidebar_options', 'wppa_sidebar_page_options');
     add_submenu_page(__FILE__, __('Help &amp; Info', 'wppa'), __('Help &amp; Info', 'wppa'), 'edit_posts', 'wppa_help', 'wppa_page_help');
 }
 

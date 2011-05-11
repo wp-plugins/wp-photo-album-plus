@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the export functions
-* Version 3.0.1
+* Version 3.0.2
 */
 
 function wppa_page_export() {
@@ -43,7 +43,7 @@ global $wpdb;
 			<?php wppa_nonce_field('$wppa_nonce', WPPA_NONCE); ?>
 			<?php echo(sprintf(__('Photos will be exported to: <b>%s</b>.', 'wppa'), 'wp-content/wppa-depot/'.wppa_get_user())) ?>
 			<h2><?php _e('Export photos from album <span style="font-size:12px;">(Including Album information)</span>:', 'wppa'); ?></h2>
-			<?php $albums = $wpdb->get_results('SELECT * FROM ' . ALBUM_TABLE . ' ' . wppa_get_album_order(), 'ARRAY_A');
+			<?php $albums = $wpdb->get_results('SELECT * FROM ' . WPPA_ALBUMS . ' ' . wppa_get_album_order(), 'ARRAY_A');
 			$high = '0'; ?>
 			
 			<table class="form-table albumtable">
@@ -115,7 +115,7 @@ global $wppa_temp_idx;
 			if (isset($_POST['album-'.$id])) {
 				_e('<br/>Processing album', 'wppa'); echo(' '.$id.'....');
 				wppa_write_album_file_by_id($id);
-				$photos = $wpdb->get_results('SELECT * FROM ' . PHOTO_TABLE . ' WHERE album = ' . $id, 'ARRAY_A');
+				$photos = $wpdb->get_results('SELECT * FROM ' . WPPA_PHOTOS . ' WHERE album = ' . $id, 'ARRAY_A');
 				$cnt = 0;
 				foreach($photos as $photo) {
 					// Copy the photo
@@ -162,7 +162,7 @@ global $wpdb;
 global $wppa_zip;
 global $wppa_temp;
 global $wppa_temp_idx;
-	$album = $wpdb->get_row('SELECT * FROM '.ALBUM_TABLE.' WHERE id = '.$id.' LIMIT 0,1', 'ARRAY_A');
+	$album = $wpdb->get_row('SELECT * FROM '.WPPA_ALBUMS.' WHERE id = '.$id.' LIMIT 0,1', 'ARRAY_A');
 	if ($album) {
 		$fname = ABSPATH.'wp-content/wppa-depot/'.wppa_get_user().'/'.$id.'.amf';
 		$file = fopen($fname, 'wb');
@@ -224,10 +224,13 @@ global $wppa_temp_idx;
 			if (fwrite($file, "name=".$photo['name']."\n") !== FALSE) {
 				if (fwrite($file, "desc=".$photo['description']."\n") !== FALSE) {
 					if (fwrite($file, "pord=".$photo['p_order']."\n") !== FALSE) {
-						if (fwrite($file, "albm=".wppa_get_album_name($photo['album'], 'raw')."\n") !== FALSE) {
-//							if (fwrite($file, ".ext=".$photo['ext']."\n") !== FALSE) {
-//							}
-//							else $err = true;
+						if (fwrite($file, "albm=".wppa_get_album_name($photo['album'], 'raw')."\n") !== FALSE) {	
+							if (fwrite($file, "lnku=".$photo['linkurl']."\n") !== FALSE) {
+								if (fwrite($file, "lnkt=".$photo['linktitle']."\n") !== FALSE) {
+								}
+								else $err = true;
+							}
+							else $err = true;
 						}
 						else $err = true;
 					} 

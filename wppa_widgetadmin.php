@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 * admin sidebar widget
-* version 3.0.0
+* version 3.0.2
 */
 
 function wppa_sidebar_page_options() {
@@ -137,54 +137,33 @@ function wppa_sidebar_page_options() {
 							<span class="description"><br/><?php _e('Select how the widget should display.', 'wppa'); ?></span>								
 						</td>
 					</tr>
-					<tr>
-						<th scope="row">
-							<label ><?php _e('Link to:', 'wppa'); ?></label>
-						</th>
-						<td>
 <?php
-							$query = "SELECT ID, post_title FROM " . $wpdb->posts . " WHERE post_type = 'page' AND post_status = 'publish' ORDER BY post_title ASC";
-							$pages = $wpdb->get_results ($query, 'ARRAY_A');
-							if (empty($pages)) {
-								_e('There are no pages (yet) to link to.', 'wppa');
-							} else {
-								$linkpage = get_option('wppa_widget_linkpage', '0');
-								$linktype = get_option('wppa_widget_linktype', 'album');
-?>
-
-								<select name="wppa-widget-linkpage" id="wppa-wlp" onchange="wppaCheckWidgetLink()" >
-									<option value="0" <?php if ($linkpage == '0') echo($sel); ?>><?php _e('--- none ---', 'wppa'); ?></option>
-<?php
-									foreach ($pages as $page) { ?>
-										<option value="<?php echo($page['ID']); ?>" <?php if ($linkpage == $page['ID']) echo($sel); ?>><?php echo($page['post_title']); ?></option>
-									<?php } ?>
-									<option value="-1" <?php if ($linkpage == '-1') echo($sel); ?>><?php _e('--- url ---', 'wppa'); ?></option>
-								</select>
-								<span class="wppa-wlt"><?php _e('Link type:', 'wppa'); ?></span>
-								<select name="wppa-widget-linktype" id="wppa-wlt" class="wppa-wlt">
-									<option value="album" <?php if ($linktype == 'album') echo($sel) ?>><?php _e('the content of the album as thumnails.', 'wppa') ?></option>
-									<option value="photo" <?php if ($linktype == 'photo') echo($sel) ?>><?php _e('the full size photo in a slideshow.', 'wppa') ?></option>
-									<option value="single" <?php if ($linktype == 'single') echo($sel) ?>><?php _e('the fullsize photo on its own.', 'wppa') ?></option>
-								</select>
-								<span class="description"><br/><?php _e('Select the page the photo links to.', 'wppa'); echo(' '); _e('Select --- url --- to enter a custom link.', 'wppa'); ?></span>
-<?php
-							}							
-?>
-						</td>
-					</tr>
-					<tr class="wppa-wlu" >
-						<th scope="row">
-							<label ><?php _e('Custom link:', 'wppa'); ?></label>
-						</th>
-						<td>
-							<?php _e('Title:', 'wppa') ?>
-							<input type="text" name="wppa-widget-linktitle" id="wppa-widget-linktitle" value="<?php echo(get_option('wppa_widget_linktitle', __('Type the title here', 'wppa'))) ?>"style="width:20%" />
-							<?php _e('Url:', 'wppa') ?>
-							<input type="text"  name="wppa-widget-linkurl" id="wppa-widget-linkurl" value="<?php echo(get_option('wppa_widget_linkurl', __('Type your custom url here', 'wppa'))) ?>" style="width:50%" />
-							<span class="description"><br/><?php _e('Enter the title and the url. Do\'nt forget the HTTP://', 'wppa') ?></span>
-						</td>
-					</tr>
-					<script type="text/javascript">wppaCheckWidgetLink()</script>
+					$linktype = get_option('wppa_widget_linktype', 'album');
+					if ($linktype != 'custom') { ?>
+						<tr>
+							<th scope="row">
+								<label ><?php _e('Link to:', 'wppa'); ?></label>
+							</th>
+							<td>
+								<?php _e('Links are set on the <b>Photo Albums -> Settings</b> screen.', 'wppa'); ?>
+							</td>
+						</tr>
+<?php				} 
+					else { ?>
+						<tr class="wppa-wlu" >
+							<th scope="row">
+								<label ><?php _e('Link to:', 'wppa'); ?></label>
+							</th>
+							<td>
+								<?php _e('Title:', 'wppa') ?>
+								<input type="text" name="wppa-widget-linktitle" id="wppa-widget-linktitle" value="<?php echo(get_option('wppa_widget_linktitle', __('Type the title here', 'wppa'))) ?>"style="width:20%" />
+								<?php _e('Url:', 'wppa') ?>
+								<input type="text"  name="wppa-widget-linkurl" id="wppa-widget-linkurl" value="<?php echo(get_option('wppa_widget_linkurl', __('Type your custom url here', 'wppa'))) ?>" style="width:50%" />
+								<span class="description"><br/><?php _e('Enter the title and the url. Do\'nt forget the HTTP://', 'wppa') ?></span>
+							</td>
+						</tr>
+<?php 				} ?>
+					<!--<script type="text/javascript">wppaCheckWidgetLink()</script>-->
 					<tr>
 						<th scope="row">
 							<label ><?php _e('Subtitle:', 'wppa'); ?></label>
@@ -216,15 +195,15 @@ function wppa_sidebar_page_options() {
 				$id = get_option('wppa_widget_photo', '');
 //				$wi = get_option('wppa_thumbsize', '130') + 24;
 				$wi = wppa_get_minisize() + 24;
-				$hi = $wi + 24;
+				$hi = $wi + 48;
 				foreach ($photos as $photo) {
 ?>
-					<div class="photoselect" style="width: <?php echo(get_option('wppa_widget_width', '150')); ?>px; height: <?php echo($hi); ?>px;" >
+					<div class="photoselect" style="width: <?php echo(get_option('wppa_widget_width', '150')); ?>px; height: <?php echo($hi); ?>px; overflow:hidden; " >
 						<img src="<?php echo(get_bloginfo('wpurl') . '/wp-content/uploads/wppa/thumbs/' . $photo['id'] . '.' . $photo['ext']); ?>" alt="<?php echo($photo['name']); ?>"></img>
 						<input type="radio" name="wppa-widget-photo" id="wppa-widget-photo<?php echo($photo['id']); ?>" value="<?php echo($photo['id']) ?>" <?php if ($photo['id'] == $id) echo('checked="checked"'); ?>/>
 						<div class="clear"></div>
-						<h4 style="position: absolute; top:<?php echo( $wi - 12 ); ?>px;"><?php echo(stripslashes($photo['name'])) ?></h4>
-						<h6 style="position: absolute; top:<?php echo( $wi - 12 ); ?>px; font-size:9px; line-height:10px;"><?php echo(stripslashes($photo['description'])); ?></h6>
+						<h4 style="position: absolute; top:<?php echo( $wi - 12 ); ?>px; font-size:11px; overflow:hidden;"><?php echo(stripslashes($photo['name'])) ?></h4>
+						<h6 style="position: absolute; top:<?php echo( $wi + 6); ?>px; font-size:9px; line-height:10px;"><?php echo(stripslashes($photo['description'])); ?></h6>
 					</div>
 <?php		
 				}

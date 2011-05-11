@@ -27,7 +27,7 @@ class TopTenWidget extends WP_Widget {
 		$page = get_option('wppa_topten_widget_linkpage', '0');
 		$max = get_option('wppa_topten_count', '10');
 		
-		$thumbs = $wpdb->get_results('SELECT * FROM '.PHOTO_TABLE.' WHERE mean_rating > 0 ORDER BY mean_rating DESC LIMIT '.$max, 'ARRAY_A');
+		$thumbs = $wpdb->get_results('SELECT * FROM '.WPPA_PHOTOS.' WHERE mean_rating > 0 ORDER BY mean_rating DESC LIMIT '.$max, 'ARRAY_A');
 		$widget_content = '';
 		$maxw = get_option('wppa_topten_size', '86');
 		$maxh = $maxw + 18;
@@ -36,28 +36,19 @@ class TopTenWidget extends WP_Widget {
 			// Make the HTML for current picture
 			$widget_content .= '<div class="wppa-widget" style="width:'.$maxw.'px; height:'.$maxh.'px; margin:4px; display:inline; text-align:center; float:left;">'; 
 			if ($image) {
-				// make image url
 				$imgurl = get_bloginfo('wpurl') . '/wp-content/uploads/wppa/' . $image['id'] . '.' . $image['ext'];
-				
-				// Find link page if any, if we find a title, there is a valid page to link to
-				$pid = get_option('wppa_topten_widget_linkpage', '0');
-				$page_title = $wpdb->get_var("SELECT post_title FROM " . $wpdb->posts . " WHERE post_type = 'page' AND post_status = 'publish' AND ID=" . $pid);
-				if ($page_title) { 			// Yep, Linkpage found
-					$title = __a('Link to', 'wppa_theme') . ' ' . wppa_qtrans($page_title);
-					$widget_content .= '<a href="'.wppa_get_permalink($pid).'topten=10&amp;slide=true&amp;photo='.$image['id'].'&amp;cover=0&amp;occur=1">';
-				} 
-				else {
-					$title = $widget_title;
-					$widget_content .= '<a href = "'.$imgurl.'" target="_blank">';
+				$link = wppa_get_imglnk_a('topten', $image['id']);
+				if ($link) {
+					$widget_content .= '<a href="'.$link['url'].'" title="'.$link['title'].'">';
 				}
-
 				$file = wppa_get_thumb_path_by_id($image['id']);
 				$imgstyle = wppa_get_imgstyle($file, $maxw, 'center', 'thumb');
-								// 'max-width: ' . $maxw . 'px; max-height: ' . $maxw . 'px;
-				$widget_content .= '<img src="' . $imgurl . '" style="'.$imgstyle.'" title="' . $title . '" alt="' . $title . '">';
-
-				$widget_content .= '</a>';
-			} 
+				$imgevents = wppa_get_imgevents('thumb', $image['id'], true);
+				$widget_content .= '<img src="'.$imgurl.'" style="'.$imgstyle.'" '.$imgevents.' alt="'.esc_attr(wppa_qtrans($image['name'])).'">';
+				if ($link) {
+					$widget_content .= '</a>';
+				}
+			}
 			else {	// No image
 				$widget_content .= __a('Photo not found.', 'wppa_theme');
 			}

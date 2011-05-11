@@ -467,7 +467,7 @@ global $warning_given;
 						$id = basename($album);
 						$id = substr($id, 0, strpos($id, '.'));
 						if (!wppa_is_id_free('album', $id)) $id = 0;
-						$query = $wpdb->prepare('INSERT INTO `' . ALBUM_TABLE . '` (`id`, `name`, `description`, `a_order`, `a_parent`, `p_order_by`, `main_photo`, `cover_linkpage`, `owner`) VALUES (%d, %s, %s, %d, %d, %d, %d, %d, %s)', $id, stripslashes($name), stripslashes($desc), $aord, $parent, $porder, 0, 0, $owner);
+						$query = $wpdb->prepare('INSERT INTO `' . WPPA_ALBUMS . '` (`id`, `name`, `description`, `a_order`, `a_parent`, `p_order_by`, `main_photo`, `cover_linkpage`, `owner`) VALUES (%d, %s, %s, %d, %d, %d, %d, %d, %s)', $id, stripslashes($name), stripslashes($desc), $aord, $parent, $porder, 0, 0, $owner);
 						$iret = $wpdb->query($query);
 
 						if ($iret === FALSE) wppa_error_message(__('Could not create album.', 'wppa'));
@@ -502,19 +502,23 @@ global $warning_given;
 					$name = wppa_get_meta_name($meta);
 					$desc = wppa_get_meta_desc($meta);
 					$porder = wppa_get_meta_porder($meta);
+					$linkurl = wppa_get_meta_linkurl($meta);
+					$linktitle = wppa_get_meta_linktitle($meta);
 				}
 				else {
 					$alb = $album;	// default album
 					$name = '';		// default name
 					$desc = '';		// default description
 					$porder = '0';	// default p_order
+					$linkurl = '';
+					$linktitle = '';
 				}
 				// Insert the photo
 				if (is_numeric($alb) && $alb != '0') {
 					$id = basename($file);
 					$id = substr($id, 0, strpos($id, '.'));
 					if (!is_numeric($id) || !wppa_is_id_free('photo', $id)) $id = 0;
-					if (wppa_insert_photo($file, $alb, stripslashes($name), stripslashes($desc), $porder, $id)) {
+					if (wppa_insert_photo($file, $alb, stripslashes($name), stripslashes($desc), $porder, $id, stripslashes($linkurl), stripslashes($linktitle))) {
 						$pcount++;
 						if ($delp) {
 							unlink($file);
@@ -547,7 +551,7 @@ global $warning_given;
 	}
 }
 
-function wppa_insert_photo ($file = '', $album = '', $name = '', $desc = '', $porder = '0', $id = '0') {
+function wppa_insert_photo ($file = '', $album = '', $name = '', $desc = '', $porder = '0', $id = '0', $linkurl = '', $linktitle = '') {
 	global $wpdb;
 	global $warning_given_small;
 	global $warning_given_big;
@@ -586,7 +590,7 @@ function wppa_insert_photo ($file = '', $album = '', $name = '', $desc = '', $po
 				return false;
 		}
 			
-		$query = $wpdb->prepare('INSERT INTO `' . PHOTO_TABLE . '` (`id`, `album`, `ext`, `name`, `p_order`, `description`, `mean_rating`) VALUES (%d, %d, %s, %s, %d, %s, \'\')', $id, $album, $ext, $name, $porder, $desc);
+		$query = $wpdb->prepare('INSERT INTO `' . WPPA_PHOTOS . '` (`id`, `album`, `ext`, `name`, `p_order`, `description`, `mean_rating`, `linkurl`, `linktitle`) VALUES (%d, %d, %s, %s, %d, %s, \'\', %s, %s)', $id, $album, $ext, $name, $porder, $desc, $linkurl, $linktitle);
 		if ($wpdb->query($query) === false) {
 			wppa_error_message(__('Could not insert photo. query=', 'wppa').$query);
 		}
@@ -685,6 +689,12 @@ function wppa_get_meta_desc($file, $opt = '') {
 function wppa_get_meta_porder($file, $opt = '') {
 	return wppa_get_meta_data($file, 'pord', $opt);
 }
+function wppa_get_meta_linkurl($file, $opt = '') {
+	return wppa_get_meta_data($file, 'lnku', $opt);
+}
+function wppa_get_meta_linktitle($file, $opt = '') {
+	return wppa_get_meta_data($file, 'lnkt', $opt);
+}
 
 function wppa_get_meta_data($file, $item, $opt) {
 	$result = '';
@@ -719,8 +729,8 @@ function wppa_cleanup_photos($alb = '') {
 	$no_photos = '';
 //	if ($alb == '0') wppa_ok_message(__('Checking database, please wait...', 'wppa'));
 	$delcount = 0;
-	if ($alb == '0') $entries = $wpdb->get_results('SELECT id, ext, name FROM '.PHOTO_TABLE, ARRAY_A);
-	else $entries = $wpdb->get_results('SELECT id, ext, name FROM '.PHOTO_TABLE.' WHERE album = '.$alb, ARRAY_A);
+	if ($alb == '0') $entries = $wpdb->get_results('SELECT id, ext, name FROM '.WPPA_PHOTOS, ARRAY_A);
+	else $entries = $wpdb->get_results('SELECT id, ext, name FROM '.WPPA_PHOTOS.' WHERE album = '.$alb, ARRAY_A);
 	if ($entries) {
 		foreach ($entries as $entry) {
 			$thumbpath = ABSPATH.'wp-content/uploads/wppa/thumbs/'.$entry['id'].'.'.$entry['ext'];
@@ -730,7 +740,7 @@ function wppa_cleanup_photos($alb = '') {
 				$no_photos .= ' '.$entry['name'];
 			}
 			if (!is_file($imagepath)) { // No fullimage: delete db entry
-				if ($wpdb->query($wpdb->prepare('DELETE FROM `'.PHOTO_TABLE.'` WHERE `id` = %d LIMIT 1', $entry['id']))) {
+				if ($wpdb->query($wpdb->prepare('DELETE FROM `'.WPPA_PHOTOS.'` WHERE `id` = %d LIMIT 1', $entry['id']))) {
 					$delcount++;
 				}
 			}
@@ -738,7 +748,7 @@ function wppa_cleanup_photos($alb = '') {
 	}
 	// Now fix missing exts for upload bug in 2.3.0
 	$fixcount = 0;
-	$entries = $wpdb->get_results('SELECT id, ext, name FROM '.PHOTO_TABLE.' WHERE ext = ""', ARRAY_A);
+	$entries = $wpdb->get_results('SELECT id, ext, name FROM '.WPPA_PHOTOS.' WHERE ext = ""', ARRAY_A);
 	if ($entries) {
 		wppa_ok_message(__('Trying to fix '.count($entries).' entries with missing file extension, Please wait.', 'wppa'));
 		foreach ($entries as $entry) {
@@ -757,7 +767,7 @@ function wppa_cleanup_photos($alb = '') {
 			}
 			if ($ext == 'jpg' || $ext == 'JPG' || $ext == 'png' || $ext == 'PNG' || $ext == 'gif' || $ext == 'GIF') {
 				
-				if ($wpdb->query('UPDATE '.PHOTO_TABLE.' SET ext = "'.$ext.'" WHERE id = '.$entry['id'])) {
+				if ($wpdb->query('UPDATE '.WPPA_PHOTOS.' SET ext = "'.$ext.'" WHERE id = '.$entry['id'])) {
 					$oldimg = ABSPATH.'wp-content/uploads/wppa/'.$entry['id'].'.';
 					$newimg = ABSPATH.'wp-content/uploads/wppa/'.$entry['id'].'.'.$ext;
 					if (is_file($oldimg)) {
@@ -785,11 +795,11 @@ function wppa_cleanup_photos($alb = '') {
 	
 	// Now fix orphan photos
 	$orphcount = 0;
-	$entries = $wpdb->get_results('SELECT id FROM '.PHOTO_TABLE.' WHERE album = 0', ARRAY_A);
+	$entries = $wpdb->get_results('SELECT id FROM '.WPPA_PHOTOS.' WHERE album = 0', ARRAY_A);
 	if ($entries) {
 		$album = wppa_get_album_id(__('Orphan Photos', 'wppa'));
 		if ($album == '') {
-			$query = $wpdb->prepare('INSERT INTO `' . ALBUM_TABLE . '` (`id`, `name`, `description`, `a_order`, `a_parent`, `p_order_by`, `main_photo`, `cover_linkpage`, `owner`) VALUES (0, %s, %s, %d, %d, %d, %d, %d, %s)', __('Orphan Photos', 'wppa'), $desc, 0, 0, 0, 0, 0, 'admin');
+			$query = $wpdb->prepare('INSERT INTO `' . WPPA_ALBUMS . '` (`id`, `name`, `description`, `a_order`, `a_parent`, `p_order_by`, `main_photo`, `cover_linkpage`, `owner`) VALUES (0, %s, %s, %d, %d, %d, %d, %d, %s)', __('Orphan Photos', 'wppa'), $desc, 0, 0, 0, 0, 0, 'admin');
 			$iret = $wpdb->query($query);
 			if ($iret === false) {
 				wppa_error_message('Could not create album: Orphan Photos', 'wppa');
@@ -800,7 +810,7 @@ function wppa_cleanup_photos($alb = '') {
 			$album = wppa_get_album_id(__('Orphan Photos', 'wppa')); // retry
 		}
 		if ($album) {
-			$orphcount = $wpdb->query('UPDATE '.PHOTO_TABLE.' SET album = '.$album.' WHERE album < 1');
+			$orphcount = $wpdb->query('UPDATE '.WPPA_PHOTOS.' SET album = '.$album.' WHERE album < 1');
 		}
 		else {
 			wppa_error_message(__('Could not recover orphanized photos.', 'wppa'));
@@ -925,8 +935,8 @@ global $wpdb;
 	if ($id == '0') return false;
 	
 	$table = '';
-	if ($type == 'album') $table = ALBUM_TABLE;
-	if ($type == 'photo') $table = PHOTO_TABLE;
+	if ($type == 'album') $table = WPPA_ALBUMS;
+	if ($type == 'photo') $table = WPPA_PHOTOS;
 	if ($table == '') {
 		echo('Unexpected error in wppa_is_id_free()');
 		return false;

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display a slideshow in the sidebar
-* Version 3.0.1
+* Version 3.0.2
 */
 
 /**
@@ -24,6 +24,8 @@ class SlideshowWidget extends WP_Widget {
 		global $wppa; 
 
         extract( $args );
+
+		wppa_initialize_runtime();	// Just in case we are the first
         
  		$title = apply_filters('widget_title', empty( $instance['title'] ) ? __a( 'Sidebar Slideshow', 'wppa_theme' ) : $instance['title']);
 
@@ -41,7 +43,7 @@ class SlideshowWidget extends WP_Widget {
 		
 		if (is_numeric($album)) {
 			echo $before_widget . $before_title . $title . $after_title;
-				if ($linkurl != '') {
+				if ($linkurl != '' && get_option('wppa_slideonly_widget_linktype') == 'widget') {
 					$wppa['in_widget_linkurl'] = $linkurl;
 					$wppa['in_widget_linktitle'] = wppa_qtrans($linktitle);
 				}
@@ -49,7 +51,7 @@ class SlideshowWidget extends WP_Widget {
 					echo '<div style="padding-top:2px; padding-bottom:4px; text-align:center">'.$supertext.'</div>';
 				}
 				echo '<div style="padding-top:2px; padding-bottom:4px;" >';
-					$wppa['in_widget'] = true;
+					$wppa['in_widget'] = 'ss';
 						$wppa['in_widget_timeout'] = $timeout;
 						$wppa['portrait_only'] = ($ponly == 'yes');
 							$wppa['ss_widget_valign'] = $valign;
