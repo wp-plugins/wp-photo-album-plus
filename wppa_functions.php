@@ -5,7 +5,7 @@
 * Various funcions and API modules
 * Version 3.0.2
 *
-*
+* 001: Made noncefield conditional to rating system enabled
 */
 /* Moved to wppa_commonfunctions.php:
 global $wppa_api_version;
@@ -1158,14 +1158,16 @@ function wppa_set_runtimestyle() {
 global $wppa;
 global $wppa_opt;
 
-	/* Nonce field for rating security */
-	if (isset($_GET['rating'])) {
-		if (isset($_GET['wppa_nonce'])) $nonce = $_GET['wppa_nonce']; else $nonce = '';
-		$ok = wp_verify_nonce($nonce, 'wppa-check');
-		if ($ok) sleep(2);
-		else die(__('<b>ERROR: Illegal attempt to enter a rating.</b>', 'wppa_theme'));
+	if ($wppa_opt['wppa_rating_on']) {
+		/* Nonce field for rating security */
+		if (isset($_GET['rating'])) {
+			if (isset($_GET['wppa_nonce'])) $nonce = $_GET['wppa_nonce']; else $nonce = '';
+			$ok = wp_verify_nonce($nonce, 'wppa-check');
+			if ($ok) sleep(2);
+			else die(__('<b>ERROR: Illegal attempt to enter a rating.</b>', 'wppa_theme'));
+		}
+		$wppa['out'] .= wp_nonce_field('wppa-check' , 'wppa_nonce', false, false);
 	}
-	$wppa['out'] .= wp_nonce_field('wppa-check' , 'wppa_nonce', false, false);
 	/* If you simplify this by making a cdata block, you will break rss feeds */
 	/* rss attempts to create a nested cdata block that causes the loss of the script tag */
 	/* The errormessage will say that the /script tag is not matched while it is. */
