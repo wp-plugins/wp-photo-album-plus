@@ -122,6 +122,11 @@ Please check the link settings in the Settings screen, Table VI. You might want 
 * The mouseover effect now also works on TopTen thumbnail images.
 * Fix for Column width = auto. This works now the same like %%size=auto%%
 
+= Hot fixes after initial release =
+
+* 001: Made noncefield conditional to rating system enabled
+
+
 = 3.0.1 =
 
 = New features =

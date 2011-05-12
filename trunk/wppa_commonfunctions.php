@@ -5,7 +5,7 @@
 * version 3.0.1
 */
 global $wppa_api_version;
-$wppa_api_version = '3-0-2-000';
+$wppa_api_version = '3-0-2-001';
 // Initialize globals and option settings
 function wppa_initialize_runtime() {
 global $wppa;
