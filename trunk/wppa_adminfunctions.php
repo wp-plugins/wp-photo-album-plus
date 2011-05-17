@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 * gp admin functions
-* version 3.0.2
+* version 3.0.3
 */
 
 // Set default option values
@@ -113,6 +113,8 @@ global $wppa_defaults;
 						'wppa_topten_widget_linktype' => 'photo',
 						'wppa_slideonly_widget_linkpage' => '0',
 						'wppa_slideonly_widget_linktype' => 'widget',
+						'wppa_coverimg_linkpage' => '0',
+						'wppa_coverimg_linktype' => 'same',
 						'wppa_search_linkpage' => '0',
 						'wppa_rating_clear' => 'no',
 						'wppa_chmod' => '0',
@@ -121,7 +123,8 @@ global $wppa_defaults;
 						'wppa_accesslevel' => 'administrator',
 						'wppa_accesslevel_upload' => 'administrator',
 						'wppa_accesslevel_sidebar' => 'administrator',
-						'wppa_charset' => ''
+						'wppa_charset' => '',
+						'wppa_setup' => ''
 						);
 	
 	array_walk($wppa_defaults, 'wppa_set_default', $force);

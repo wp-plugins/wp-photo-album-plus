@@ -35,7 +35,7 @@ global $target;
 		if (isset($_POST['wppa-go-import']) && $err == '0') { 
 			wppa_ok_message(__('Connecting to your depot...', 'wppa'));
 			update_option('wppa_import_source_'.$user, 'wp-content/wppa-depot/'.$user); ?>
-			<script type="text/javascript">document.location = '<?php echo get_option('siteurl') ?>/wp-admin/admin.php?page=import_photos&zip=<?php echo $target ?>';</script>
+			<script type="text/javascript">document.location = '<?php echo get_admin_url() ?>/admin.php?page=import_photos&zip=<?php echo $target ?>';</script>
 		<?php }
 	} 
 	
@@ -65,7 +65,7 @@ global $target;
 			<div style="border:1px solid #ccc; padding:10px; margin-bottom:10px; width: 600px;">
 				<h3 style="margin-top:0px;"><?php _e('Single Photos', 'wppa'); ?></h3><br />
 				<?php _e('You can select up to 15 photos one by one and upload them at once.', 'wppa'); ?>
-				<form enctype="multipart/form-data" action="<?php echo(get_option('siteurl')) ?>/wp-admin/admin.php?page=upload_photos" method="post">
+				<form enctype="multipart/form-data" action="<?php echo(get_admin_url()) ?>/admin.php?page=upload_photos" method="post">
 				<?php wppa_nonce_field('$wppa_nonce', WPPA_NONCE); ?>
 					<input id="my_file_element" type="file" name="file_1" />
 					<div id="files_list">
@@ -89,7 +89,7 @@ global $target;
 				<div style="border:1px solid #ccc; padding:10px; width: 600px;">
 					<h3 style="margin-top:0px;"><?php _e('Zipped Photos', 'wppa'); ?></h3><br />
 					<?php _e('You can upload one zipfile at once. It will be placed in your personal wppa-depot.<br/>Once uploaded, use <b>Import Photos</b> to unzip the file and place the photos in any album.', 'wppa') ?>
-					<form enctype="multipart/form-data" action="<?php echo(get_option('siteurl')) ?>/wp-admin/admin.php?page=upload_photos" method="post">
+					<form enctype="multipart/form-data" action="<?php echo(get_admin_url()) ?>/admin.php?page=upload_photos" method="post">
 					<?php wppa_nonce_field('$wppa_nonce', WPPA_NONCE); ?>
 						<input id="my_zipfile_element" type="file" name="file_zip" /><br/><br/>
 						<input type="submit" class="button-primary" name="wppa-upload-zip" value="<?php _e('Upload Zipped Photos', 'wppa') ?>" />
@@ -170,7 +170,7 @@ function wppa_page_import() {
 		$photocount = wppa_get_photocount($files);
 		$is_depot = ($source == 'wp-content/wppa-depot/'.$user); ?>
 		
-		<form action="<?php echo(get_option('siteurl')) ?>/wp-admin/admin.php?page=import_photos" method="post">
+		<form action="<?php echo(get_admin_url()) ?>/admin.php?page=import_photos" method="post">
 		<?php wppa_nonce_field('$wppa_nonce', WPPA_NONCE); ?>
 		<?php _e('Import photos from:', 'wppa'); ?>
 			<select name="wppa-source">
@@ -188,7 +188,7 @@ function wppa_page_import() {
 	
 		if ($photocount > '0' || $albumcount > '0' || $zipcount >'0') { ?>
 		
-			<form action="<?php echo(get_option('siteurl')) ?>/wp-admin/admin.php?page=import_photos" method="post">
+			<form action="<?php echo(get_admin_url()) ?>/admin.php?page=import_photos" method="post">
 			<?php wppa_nonce_field('$wppa_nonce', WPPA_NONCE); 
 			
 			if (PHP_VERSION_ID >= 50207 && $zipcount > '0') { ?>		
@@ -489,7 +489,7 @@ global $warning_given;
 	$idx='0';
 	$pcount = '0';
 	if (isset($_POST['wppa-album'])) $album = $_POST['wppa-album']; else $album = '0';
-	wppa_ok_message(__('Processing files, please wait...', 'wppa').' '.__('If the line of dots stops growing or you browser reports Ready, your server has given up. In that case: try again', 'wppa').' <a href="'.get_option('siteurl').'/wp-admin/admin.php?page=import_photos">'.__('here.', 'wppa').'</a>');
+	wppa_ok_message(__('Processing files, please wait...', 'wppa').' '.__('If the line of dots stops growing or you browser reports Ready, your server has given up. In that case: try again', 'wppa').' <a href="'.get_admin_url().'/admin.php?page=import_photos">'.__('here.', 'wppa').'</a>');
 	foreach ($files as $file) {
 		if (isset($_POST['file-'.$idx])) {
 			$ext = strtolower(substr(strrchr($file, "."), 1));

@@ -42,7 +42,7 @@ class TopTenWidget extends WP_Widget {
 					$widget_content .= '<a href="'.$link['url'].'" title="'.$link['title'].'">';
 				}
 				$file = wppa_get_thumb_path_by_id($image['id']);
-				$imgstyle = wppa_get_imgstyle($file, $maxw, 'center', 'thumb');
+				$imgstyle = wppa_get_imgstyle($file, $maxw, 'center', 'ttthumb');
 				$imgevents = wppa_get_imgevents('thumb', $image['id'], true);
 				$widget_content .= '<img src="'.$imgurl.'" style="'.$imgstyle.'" '.$imgevents.' alt="'.esc_attr(wppa_qtrans($image['name'])).'">';
 				if ($link) {

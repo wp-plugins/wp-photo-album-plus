@@ -39,7 +39,7 @@ global $wpdb;
 
 		<h2><?php _e('Export Photos', 'wppa'); ?></h2><br />
 
-		<form action="<?php echo(get_option('siteurl')) ?>/wp-admin/admin.php?page=export_photos" method="post">
+		<form action="<?php echo(get_admin_url()) ?>/admin.php?page=export_photos" method="post">
 			<?php wppa_nonce_field('$wppa_nonce', WPPA_NONCE); ?>
 			<?php echo(sprintf(__('Photos will be exported to: <b>%s</b>.', 'wppa'), 'wp-content/wppa-depot/'.wppa_get_user())) ?>
 			<h2><?php _e('Export photos from album <span style="font-size:12px;">(Including Album information)</span>:', 'wppa'); ?></h2>

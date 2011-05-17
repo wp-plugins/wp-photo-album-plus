@@ -253,7 +253,7 @@ class wppa_ImageResize {
    */ 
 
    function destroyImage($resImage){
-      imagedestroy($resImage);
+      @imagedestroy($resImage);
    }
   
    /*  
