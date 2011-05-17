@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 3.0.2
+* Version 3.0.3
 */
 
 function wppa_page_options() {
@@ -25,232 +25,246 @@ global $options_error;
 	if (isset($_POST['wppa_set_submit'])) {
 		wppa_check_admin_referer( '$wppa_nonce', WPPA_NONCE );
 
-		// Remember the existing physical thumbnail image size
-		$old_minisize = wppa_get_minisize();
-		
-		// Table 1: Sizes
-		$slug = 'wppa_colwidth';
-		$value = $_POST[$slug];
-		if ($value == 'auto') wppa_update_value($slug);
-		else wppa_update_numeric($slug, '100', __('Column width.', 'wppa'));
-
-		wppa_update_numeric('wppa_fullsize', '100', __('Full size.', 'wppa'));
-		wppa_update_numeric('wppa_maxheight', '100', __('Max height.', 'wppa'));
-		wppa_update_check('wppa_resize_on_upload');
-		wppa_update_check('wppa_enlarge');
-		wppa_update_numeric('wppa_thumbsize', '50', __('Thumbnail size.', 'wppa'));
-		wppa_update_numeric('wppa_tf_width', '50', __('Thumbnail frame width', 'wppa'));
-		wppa_update_numeric('wppa_tf_height', '50', __('Thumbnail frame height', 'wppa'));
-		wppa_update_numeric('wppa_tn_margin', '0', __('Thumbnail Spacing', 'wppa'));
-		wppa_update_check('wppa_thumb_auto');
-		wppa_update_numeric('wppa_min_thumbs', '0', __('Photocount treshold.', 'wppa'));
-		wppa_update_numeric('wppa_thumb_page_size', '0', __('Thumb page size.', 'wppa'));
-		wppa_update_numeric('wppa_smallsize', '50', __('Cover photo size.', 'wppa'));
-		wppa_update_numeric('wppa_album_page_size', '0', __('Album page size.', 'wppa'));
-		wppa_update_numeric('wppa_topten_count', '2', __('Number of TopTen photos', 'wppa'), '40');
-		wppa_update_numeric('wppa_topten_size', '32', __('Widget image thumbnail size', 'wppa'), wppa_get_minisize());
-		wppa_update_numeric('wppa_2col_treshold', '300', __('Two column width treshold', 'wppa'));
-		wppa_update_numeric('wppa_3col_treshold', '500', __('Three column width treshold', 'wppa'));
-		
-		$slug = 'wppa_bwidth';
-		$value = $_POST[$slug];
-		if ($value == '') wppa_update_value($slug);
-		else wppa_update_numeric($slug, '0', __('Border width', 'wppa'));
-
-		$slug = 'wppa_bradius';
-		$value = $_POST[$slug];
-		if ($value == '') wppa_update_value($slug);
-		else wppa_update_numeric($slug, '0', __('Border radius', 'wppa'));
-
-		
-		// Table 2: Visibility
-		wppa_update_check('wppa_show_bread');
-		wppa_update_check('wppa_show_home');
-		wppa_update_value('wppa_bc_separator');
-		
-		$slug = 'wppa_bc_txt';
-		wppa_update($slug, htmlspecialchars(stripslashes($_POST['wppa_bc_txt']), ENT_QUOTES));
-		
-		$slug = 'wppa_bc_url';
-		wppa_update($slug, $_POST[$slug]);
-		
-		wppa_update_check('wppa_show_startstop_navigation');
-		wppa_update_check('wppa_show_browse_navigation');
-		wppa_update_check('wppa_filmstrip');
-		wppa_update_check('wppa_film_show_glue');
-		wppa_update_check('wppa_show_full_name');
-		wppa_update_check('wppa_show_full_desc');
-		wppa_update_check('wppa_enable_slideshow');
-		wppa_update_check('wppa_rating_on');
-		wppa_update_check('wppa_thumb_text_name');
-		wppa_update_check('wppa_thumb_text_desc');
-		wppa_update_check('wppa_thumb_text_rating');
-		
-		
-		// Table 3: Backgrounds
-		wppa_update_value('wppa_bgcolor_even');
-		wppa_update_value('wppa_bcolor_even');
-		wppa_update_value('wppa_bgcolor_alt');
-		wppa_update_value('wppa_bcolor_alt');
-		wppa_update_value('wppa_bgcolor_nav');
-		wppa_update_value('wppa_bcolor_nav');
-		wppa_update_value('wppa_bgcolor_img');
-				
-		// Table 4: Behaviour
-		wppa_update_value('wppa_fullvalign');
-		wppa_update_value('wppa_fullhalign');
-		wppa_update_check('wppa_start_slide');
-		wppa_update_check('wppa_fadein_after_fadeout');
-		wppa_update_value('wppa_slideshow_timeout');
-		wppa_update_value('wppa_animation_speed');
-		wppa_update_value('wppa_thumbtype');
-		wppa_update_value('wppa_thumbphoto_left');
-		wppa_update_value('wppa_valign');
-		wppa_update_check('wppa_use_thumb_opacity');
-		wppa_update_numeric('wppa_thumb_opacity', '0', __('Opacity.', 'wppa'), '100');
-		wppa_update_check('wppa_use_thumb_popup');
-		wppa_update_value('wppa_coverphoto_left');
-		wppa_update_check('wppa_use_cover_opacity');
-		wppa_update_numeric('wppa_cover_opacity', '0', __('Opacity.', 'wppa'), '100');
-		wppa_update_check('wppa_rating_login');
-		wppa_update_check('wppa_rating_change');
-		wppa_update_check('wppa_rating_multi');
-		wppa_update_value('wppa_list_albums_by');
-		wppa_update_check('wppa_list_albums_desc');
-		wppa_update_value('wppa_list_photos_by');
-		wppa_update_check('wppa_list_photos_desc');
-		
-		// Table 5: Fonts
-		wppa_update_value('wppa_fontfamily_title');
-		wppa_update_value('wppa_fontsize_title');
-		wppa_update_value('wppa_fontcolor_title');
-
-		wppa_update_value('wppa_fontfamily_fulldesc');
-		wppa_update_value('wppa_fontsize_fulldesc');
-		wppa_update_value('wppa_fontcolor_fulldesc');
-		
-		wppa_update_value('wppa_fontfamily_fulltitle');
-		wppa_update_value('wppa_fontsize_fulltitle');
-		wppa_update_value('wppa_fontcolor_fulltitle');
-
-		wppa_update_value('wppa_fontfamily_nav');
-		wppa_update_value('wppa_fontsize_nav');
-		wppa_update_value('wppa_fontcolor_nav');
-		
-		wppa_update_value('wppa_fontfamily_thumb');
-		wppa_update_value('wppa_fontsize_thumb');
-		wppa_update_value('wppa_fontcolor_thumb');
-		
-		wppa_update_value('wppa_fontfamily_box');
-		wppa_update_value('wppa_fontsize_box');
-		wppa_update_value('wppa_fontcolor_box');
-		
-		// Table 6: Links
-		wppa_update_value('wppa_mphoto_linktype');
-		wppa_update_value('wppa_mphoto_linkpage');
-		
-		wppa_update_value('wppa_thumb_linktype');
-		wppa_update_value('wppa_thumb_linkpage');
-		
-		wppa_update_value('wppa_topten_widget_linktype');
-		wppa_update_value('wppa_topten_widget_linkpage');
-		
-		wppa_update_value('wppa_slideonly_widget_linktype');
-		wppa_update_value('wppa_slideonly_widget_linkpage');
-		
-		wppa_update_value('wppa_widget_linktype');
-		wppa_update_value('wppa_widget_linkpage');
-
-		// Table 7: Security
-		if (isset($_POST['wppa_chmod'])) {
-			$chmod = $_POST['wppa_chmod'];
-			wppa_chmod($chmod);
-		}
-	
-		wppa_update_check('wppa_owner_only');
-		wppa_update_value('wppa_set_access_by');
-
-		$need_update = false;
-		if (isset($_POST['wppa_accesslevel'])) {
-			if (get_option('wppa_accesslevel', '') != $_POST['wppa_accesslevel']) {
-				if (get_option('wppa_set_access_by', 'me') == 'me') update_option('wppa_accesslevel', $_POST['wppa_accesslevel']);
-				$need_update = true;
+		// See if an action is requested, if so, do it and skip the setting changes if any
+		// Table 8: Actions	
+		if (isset($_POST['wppa_action'])) { // Action to be done
+			$slug = $_POST['wppa_action'];
+			switch ($slug) {
+				case 'wppa_rating_clear':		
+					$iret1 = $wpdb->query('DELETE FROM '.WPPA_RATING.' WHERE id > -1');
+					$iret2 = $wpdb->query('UPDATE '.WPPA_PHOTOS.' SET mean_rating="0" WHERE id > -1');
+					if ($iret1 && $iret2) wppa_update_message(__('Ratings cleared', 'wppa'));
+					else {
+						wppa_error_message(__('Could not clear ratings', 'wppa'));
+						$options_error = true;
+					}
+					break;
+				case 'wppa_charset':
+					global $wpdb;
+					if ($wpdb->query("ALTER TABLE " . WPPA_ALBUMS . " MODIFY name text CHARACTER SET utf8") === false) $options_error = true;
+					if ($wpdb->query("ALTER TABLE " . WPPA_PHOTOS . " MODIFY name text CHARACTER SET utf8") === false) $options_error = true;
+					if ($wpdb->query("ALTER TABLE " . WPPA_ALBUMS . " MODIFY description text CHARACTER SET utf8") === false) $options_error = true;
+					if ($wpdb->query("ALTER TABLE " . WPPA_PHOTOS . " MODIFY description longtext CHARACTER SET utf8") === false) $options_error = true;
+					if ($wpdb->query("ALTER TABLE " . WPPA_PHOTOS . " MODIFY linktitle text CHARACTER SET utf8") === false) $options_error = true;
+					if ($options_error) wppa_error_message(__('Error converting to UTF_8', 'wppa'));
+					else {
+						update_option('wppa_charset', 'UTF_8');
+						wppa_update_message(__('Converted to utf8', 'wppa'));
+					}
+					break;
+				case 'wppa_setup':
+					wppa_setup();
+					break;
 			}
-		}
-		if (isset($_POST['wppa_accesslevel_upload'])) {
-			if (get_option('wppa_accesslevel_upload', '') != $_POST['wppa_accesslevel_upload']) {
-				if (get_option('wppa_set_access_by', 'me') == 'me') update_option('wppa_accesslevel_upload', $_POST['wppa_accesslevel_upload']);
-				$need_update = true;
-			}
-		}
-		if (isset($_POST['wppa_accesslevel_sidebar'])) {
-			if (get_option('wppa_accesslevel_sidebar', '') != $_POST['wppa_accesslevel_sidebar']) {
-				if (get_option('wppa_set_access_by', 'me') == 'me') update_option('wppa_accesslevel_sidebar', $_POST['wppa_accesslevel_sidebar']);
-				$need_update = true;
-			}
-		}
-		if ($need_update) {
-			if (get_option('wppa_set_access_by', 'me') == 'me') {
-				wppa_set_caps();
+			if ($options_error) {
+				wppa_error_message(__('Requested action failed, possible setting updates ignored', 'wppa'));
 			}
 			else {
-				wppa_error_message(__('Changes in accesslevels will not be made. It is set to be done by an other program.', 'wppa'));
+				wppa_ok_message(__('Requested action performed, possible setting updates ignored', 'wppa'));
 			}
 		}
 		
-		// Table 8: Actions
+		else { // Update setting(s)
+
+			// Remember the existing physical thumbnail image size
+			$old_minisize = wppa_get_minisize();
 		
-		if (isset($_POST['wppa_rating_clear'])) {
-			$iret1 = $wpdb->query('DELETE FROM '.WPPA_RATING.' WHERE id > -1');
-			$iret2 = $wpdb->query('UPDATE '.WPPA_PHOTOS.' SET mean_rating="0" WHERE id > -1');
-			if ($iret1 && $iret2) wppa_update_message(__('Ratings cleared', 'wppa'));
-			else wppa_update_message(__('Could not clear ratings', 'wppa'));
-		}
+			// Table 1: Sizes
+			$slug = 'wppa_colwidth';
+			$value = $_POST[$slug];
+			if ($value == 'auto') wppa_update_value($slug);
+			else wppa_update_numeric($slug, '100', __('Column width.', 'wppa'));
+
+			wppa_update_numeric('wppa_fullsize', '100', __('Full size.', 'wppa'));
+			wppa_update_numeric('wppa_maxheight', '100', __('Max height.', 'wppa'));
+			wppa_update_check('wppa_resize_on_upload');
+			wppa_update_check('wppa_enlarge');
+			wppa_update_numeric('wppa_thumbsize', '50', __('Thumbnail size.', 'wppa'));
+			wppa_update_numeric('wppa_tf_width', '50', __('Thumbnail frame width', 'wppa'));
+			wppa_update_numeric('wppa_tf_height', '50', __('Thumbnail frame height', 'wppa'));
+			wppa_update_numeric('wppa_tn_margin', '0', __('Thumbnail Spacing', 'wppa'));
+			wppa_update_check('wppa_thumb_auto');
+			wppa_update_numeric('wppa_min_thumbs', '0', __('Photocount treshold.', 'wppa'));
+			wppa_update_numeric('wppa_thumb_page_size', '0', __('Thumb page size.', 'wppa'));
+			wppa_update_numeric('wppa_smallsize', '50', __('Cover photo size.', 'wppa'));
+			wppa_update_numeric('wppa_album_page_size', '0', __('Album page size.', 'wppa'));
+			wppa_update_numeric('wppa_topten_count', '2', __('Number of TopTen photos', 'wppa'), '40');
+			wppa_update_numeric('wppa_topten_size', '32', __('Widget image thumbnail size', 'wppa'), wppa_get_minisize());
+			wppa_update_numeric('wppa_2col_treshold', '300', __('Two column width treshold', 'wppa'));
+			wppa_update_numeric('wppa_3col_treshold', '500', __('Three column width treshold', 'wppa'));
+			
+			$slug = 'wppa_bwidth';
+			$value = $_POST[$slug];
+			if ($value == '') wppa_update_value($slug);
+			else wppa_update_numeric($slug, '0', __('Border width', 'wppa'));
+
+			$slug = 'wppa_bradius';
+			$value = $_POST[$slug];
+			if ($value == '') wppa_update_value($slug);
+			else wppa_update_numeric($slug, '0', __('Border radius', 'wppa'));
 		
-		if (isset($_POST['wppa_charset'])) { // && get_option('wppa_charset', '') != 'UTF_8') {
-			if (!$options_error) {
-				global $wpdb;
-				if ($wpdb->query("ALTER TABLE " . WPPA_ALBUMS . " MODIFY name text CHARACTER SET utf8") === false) $options_error = true;
-				if ($wpdb->query("ALTER TABLE " . WPPA_PHOTOS . " MODIFY name text CHARACTER SET utf8") === false) $options_error = true;
-				if ($wpdb->query("ALTER TABLE " . WPPA_ALBUMS . " MODIFY description text CHARACTER SET utf8") === false) $options_error = true;
-				if ($wpdb->query("ALTER TABLE " . WPPA_PHOTOS . " MODIFY description longtext CHARACTER SET utf8") === false) $options_error = true;
-				if ($wpdb->query("ALTER TABLE " . WPPA_PHOTOS . " MODIFY linktitle text CHARACTER SET utf8") === false) $options_error = true;
-				if ($options_error) wppa_error_message(__('Error converting to UTF_8', 'wppa'));
-				else {
-					update_option('wppa_charset', 'UTF_8');
-					wppa_update_message(__('Converted to utf8', 'wppa'));
+			// Table 2: Visibility
+			wppa_update_check('wppa_show_bread');
+			wppa_update_check('wppa_show_home');
+			wppa_update_value('wppa_bc_separator');
+			wppa_update('wppa_bc_txt', htmlspecialchars(stripslashes($_POST['wppa_bc_txt']), ENT_QUOTES));
+			wppa_update('wppa_bc_url', $_POST['wppa_bc_url']);
+			wppa_update_check('wppa_show_startstop_navigation');
+			wppa_update_check('wppa_show_browse_navigation');
+			wppa_update_check('wppa_filmstrip');
+			wppa_update_check('wppa_film_show_glue');
+			wppa_update_check('wppa_show_full_name');
+			wppa_update_check('wppa_show_full_desc');
+			wppa_update_check('wppa_enable_slideshow');
+			wppa_update_check('wppa_rating_on');
+			wppa_update_check('wppa_thumb_text_name');
+			wppa_update_check('wppa_thumb_text_desc');
+			wppa_update_check('wppa_thumb_text_rating');	
+		
+			// Table 3: Backgrounds
+			wppa_update_value('wppa_bgcolor_even');
+			wppa_update_value('wppa_bcolor_even');
+			wppa_update_value('wppa_bgcolor_alt');
+			wppa_update_value('wppa_bcolor_alt');
+			wppa_update_value('wppa_bgcolor_nav');
+			wppa_update_value('wppa_bcolor_nav');
+			wppa_update_value('wppa_bgcolor_img');
+				
+			// Table 4: Behaviour
+			wppa_update_value('wppa_fullvalign');
+			wppa_update_value('wppa_fullhalign');
+			wppa_update_check('wppa_start_slide');
+			wppa_update_check('wppa_fadein_after_fadeout');
+			wppa_update_value('wppa_slideshow_timeout');
+			wppa_update_value('wppa_animation_speed');
+			wppa_update_value('wppa_thumbtype');
+			wppa_update_value('wppa_thumbphoto_left');
+			wppa_update_value('wppa_valign');
+			wppa_update_check('wppa_use_thumb_opacity');
+			wppa_update_numeric('wppa_thumb_opacity', '0', __('Opacity.', 'wppa'), '100');
+			wppa_update_check('wppa_use_thumb_popup');
+			wppa_update_value('wppa_coverphoto_left');
+			wppa_update_check('wppa_use_cover_opacity');
+			wppa_update_numeric('wppa_cover_opacity', '0', __('Opacity.', 'wppa'), '100');
+			wppa_update_check('wppa_rating_login');
+			wppa_update_check('wppa_rating_change');
+			wppa_update_check('wppa_rating_multi');
+			wppa_update_value('wppa_list_albums_by');
+			wppa_update_check('wppa_list_albums_desc');
+			wppa_update_value('wppa_list_photos_by');
+			wppa_update_check('wppa_list_photos_desc');
+		
+			// Table 5: Fonts
+			wppa_update_value('wppa_fontfamily_title');
+			wppa_update_value('wppa_fontsize_title');
+			wppa_update_value('wppa_fontcolor_title');
+
+			wppa_update_value('wppa_fontfamily_fulldesc');
+			wppa_update_value('wppa_fontsize_fulldesc');
+			wppa_update_value('wppa_fontcolor_fulldesc');
+			
+			wppa_update_value('wppa_fontfamily_fulltitle');
+			wppa_update_value('wppa_fontsize_fulltitle');
+			wppa_update_value('wppa_fontcolor_fulltitle');
+
+			wppa_update_value('wppa_fontfamily_nav');
+			wppa_update_value('wppa_fontsize_nav');
+			wppa_update_value('wppa_fontcolor_nav');
+			
+			wppa_update_value('wppa_fontfamily_thumb');
+			wppa_update_value('wppa_fontsize_thumb');
+			wppa_update_value('wppa_fontcolor_thumb');
+			
+			wppa_update_value('wppa_fontfamily_box');
+			wppa_update_value('wppa_fontsize_box');
+			wppa_update_value('wppa_fontcolor_box');
+		
+			// Table 6: Links
+			wppa_update_value('wppa_mphoto_linktype');
+			wppa_update_value('wppa_mphoto_linkpage');
+			
+			wppa_update_value('wppa_thumb_linktype');
+			wppa_update_value('wppa_thumb_linkpage');
+			
+			wppa_update_value('wppa_topten_widget_linktype');
+			wppa_update_value('wppa_topten_widget_linkpage');
+			
+			wppa_update_value('wppa_slideonly_widget_linktype');
+			wppa_update_value('wppa_slideonly_widget_linkpage');
+			
+			wppa_update_value('wppa_widget_linktype');
+			wppa_update_value('wppa_widget_linkpage');
+			
+			wppa_update_value('wppa_coverimg_linktype');
+//			wppa_update_value('wppa_coverimg_linkpage');
+
+
+			// Table 7: Security
+			if (isset($_POST['wppa_chmod'])) {
+				$chmod = $_POST['wppa_chmod'];
+				wppa_chmod($chmod);
+			}
+		
+			wppa_update_check('wppa_owner_only');
+			wppa_update_value('wppa_set_access_by');
+
+			$need_update = false;
+			if (isset($_POST['wppa_accesslevel'])) {
+				if (get_option('wppa_accesslevel', '') != $_POST['wppa_accesslevel']) {
+					if (get_option('wppa_set_access_by', 'me') == 'me') update_option('wppa_accesslevel', $_POST['wppa_accesslevel']);
+					$need_update = true;
 				}
 			}
-		}
-		
-		// Table 9: Micellaneous
-		wppa_update_value('wppa_arrow_color');
-		wppa_update_value('wppa_search_linkpage');
-		wppa_update_check('wppa_excl_sep');
-		wppa_update_check('wppa_html');
+			if (isset($_POST['wppa_accesslevel_upload'])) {
+				if (get_option('wppa_accesslevel_upload', '') != $_POST['wppa_accesslevel_upload']) {
+					if (get_option('wppa_set_access_by', 'me') == 'me') update_option('wppa_accesslevel_upload', $_POST['wppa_accesslevel_upload']);
+					$need_update = true;
+				}
+			}
+			if (isset($_POST['wppa_accesslevel_sidebar'])) {
+				if (get_option('wppa_accesslevel_sidebar', '') != $_POST['wppa_accesslevel_sidebar']) {
+					if (get_option('wppa_set_access_by', 'me') == 'me') update_option('wppa_accesslevel_sidebar', $_POST['wppa_accesslevel_sidebar']);
+					$need_update = true;
+				}
+			}
+			if ($need_update) {
+				if (get_option('wppa_set_access_by', 'me') == 'me') {
+					wppa_set_caps();
+				}
+				else {
+					wppa_error_message(__('Changes in accesslevels will not be made. It is set to be done by an other program.', 'wppa'));
+				}
+			}
 	
+			// Table 9: Micellaneous
+			wppa_update_value('wppa_arrow_color');
+			wppa_update_value('wppa_search_linkpage');
+			wppa_update_check('wppa_excl_sep');
+			wppa_update_check('wppa_html');
 		
-		// Done update options!
-		if ($options_error) wppa_update_message(__('Other changes saved', 'wppa'));
-		else wppa_update_message(__('Changes Saved', 'wppa'));
+			// Done update options!
+			if ($options_error) wppa_update_message(__('Other changes saved', 'wppa'));
+			else wppa_update_message(__('Changes Saved', 'wppa'));
 
-		// Compute the new physical thumbnail image size
-		$new_minisize = wppa_get_minisize();
-		// Conditionally trigger restart making thumbnails
-		if ($old_minisize != $new_minisize) update_option('wppa_lastthumb', '-1');	
-		// See if a regeneration of thumbs is pending
-		$start = get_option('wppa_lastthumb', '-2');
-		if ($start != '-2') {
-			$start++; 
-			wppa_ok_message(__('Regenerating thumbnail images, starting at id=', 'wppa').$start.'. Please wait... '.__('If the line of dots stops growing or you browser reports Ready but you did NOT get a \'READY regenerating thumbnail images\' message, your server has given up. In that case: continue this action by clicking', 'wppa').' <a href="'.get_option('siteurl').'/wp-admin/admin.php?page=options">'.__('here', 'wppa').'</a>'.' '.__('and click "Save Changes" again.', 'wppa'));
-		
-			wppa_regenerate_thumbs(); 
-			wppa_update_message(__('READY regenerating thumbnail images.', 'wppa')); 				
-			update_option('wppa_lastthumb', '-2');
+			// Compute the new physical thumbnail image size
+			$new_minisize = wppa_get_minisize();
+			// Conditionally trigger restart making thumbnails
+			if ($old_minisize != $new_minisize) update_option('wppa_lastthumb', '-1');	
+			// See if a regeneration of thumbs is pending
+			$start = get_option('wppa_lastthumb', '-2');
+			if ($start != '-2') {
+				$start++; 
+				wppa_ok_message(__('Regenerating thumbnail images, starting at id=', 'wppa').$start.'. Please wait... '.__('If the line of dots stops growing or you browser reports Ready but you did NOT get a \'READY regenerating thumbnail images\' message, your server has given up. In that case: continue this action by clicking', 'wppa').' <a href="'.get_admin_url().'/admin.php?page=options">'.__('here', 'wppa').'</a>'.' '.__('and click "Save Changes" again.', 'wppa'));
+			
+				wppa_regenerate_thumbs(); 
+				wppa_update_message(__('READY regenerating thumbnail images.', 'wppa')); 				
+				update_option('wppa_lastthumb', '-2');
+			}
 		}
-	}
-    elseif (get_option('wppa_lastthumb', '-2') != '-2') wppa_error_message(__('Regeneration of thumbnail images interrupted. Please press "Save Changes"', 'wppa')); 
-
+	} // if wppa_set_submit
+	elseif (get_option('wppa_lastthumb', '-2') != '-2') wppa_error_message(__('Regeneration of thumbnail images interrupted. Please press "Save Changes"', 'wppa')); 
+	
+	
 global $wppa_api_version;
 ?>		
 	<div class="wrap">
@@ -267,7 +281,7 @@ global $wppa_api_version;
 		}
 ?>
 		<!--<br/><a href="javascript:window.print();"><?php //_e('Print settings', 'wppa') ?></a><br/>-->
-		<form action="<?php echo(get_option('siteurl')) ?>/wp-admin/admin.php?page=options" method="post">
+		<form action="<?php echo(get_admin_url()) ?>/admin.php?page=options" method="post">
 	
 			<?php wppa_nonce_field('$wppa_nonce', WPPA_NONCE); ?>
 			
@@ -1050,6 +1064,8 @@ global $wppa_api_version;
 					$values_linktype_ss_widget = array('none', 'file', 'widget', 'album', 'photo', 'single', 'indiv');
 					$options_linktype_potd_widget = array(__('no link at all.', 'wppa'), __('the plain photo (file).', 'wppa'), __('defined on widget admin page.', 'wppa'), __('the content of the album.', 'wppa'), __('the full size photo in a slideshow.', 'wppa'), __('the fullsize photo on its own.', 'wppa'), __('the photo specific link.', 'wppa'));
 					$values_linktype_potd_widget = array('none', 'file', 'custom', 'album', 'photo', 'single', 'indiv');
+					$options_linktype_cover_image = array(__('no link at all.', 'wppa'), __('the plain photo (file).', 'wppa'), __('same as title.', 'wppa'));
+					$values_linktype_cover_image = array('none', 'file', 'same');
 
 					// Linkpages
 					$options_page = false;
@@ -1138,6 +1154,20 @@ global $wppa_api_version;
 					$class = 'wppa_potdlp';
 					$html2 = wppa_select($slug2, $options_page, $values_page, '', $class);
 					wppa_setting_2($slug1, $slug2, '9,10', $name, $desc, $html1, $html2, $help);
+					
+					$name = __('Cover Image', 'wppa');
+					$desc = __('The link from the cover image of an album.', 'wppa');
+					$help = esc_js(__('Select the type of link the coverphoto points to.', 'wppa'));
+					$help .= '\n\n'.esc_js(__('The link from the album title can be configured on the Edit Album page.', 'wppa'));
+					$help .= '\n'.esc_js(__('This link will be used for the photo also if you select: same as title.', 'wppa'));
+					$slug1 = 'wppa_coverimg_linktype';
+					$slug2 = 'wppa_coverimg_linkpage';
+					$onchange = '';
+					$html1 = wppa_select($slug1, $options_linktype_cover_image, $values_linktype_cover_image, $onchange);
+					$class = '';
+					$html2 = '';
+					wppa_setting_2($slug1, $slug2, '11,12', $name, $desc, $html1, $html2, $help);
+					
 					?>
 					
 				</tbody>
@@ -1260,19 +1290,27 @@ global $wppa_api_version;
 					$desc = __('Reset all ratings.', 'wppa');
 					$help = esc_js(__('WARNING: If checked, this will clear all ratings in the system!', 'wppa'));
 					$slug = 'wppa_rating_clear';
-					$html = wppa_checkbox($slug);
-					wppa_setting($slug, '1', $name, $desc, $html, $help, 'wppa_rating');
+					$html = wppa_radio('wppa_action', $slug);
+					wppa_setting($slug, '1', $name, $desc, $html, $help); //, 'wppa_rating');
 					
 					$name = __('Set to utf-8', 'wppa');
 					$desc = __('Set Character set to UTF_8.', 'wppa');
 					$help = esc_js(__('If checked: Converts the wppa database tables to UTF_8 This allows the use of certain characters - like Turkish - in photo and album names and descriptions.', 'wppa'));
 					$slug = 'wppa_charset';
-					$html = wppa_checkbox($slug);
+					$html = wppa_radio('wppa_action', $slug);
 					wppa_setting($slug, '2', $name, $desc, $html, $help, 'wppa_utf8');
-					if (get_option('wppa_charset') == 'UTF_8') { ?>
-						<script type="text/javascript">jQuery('.wppa_utf8').css('color', '#999');jQuery('.wppa_utf8_html').css('visibility', 'hidden');</script>
-					<?php }
+//					if (get_option('wppa_charset') == 'UTF_8') { ?>
+<!--						<script type="text/javascript">jQuery('.wppa_utf8').css('color', '#999');jQuery('.wppa_utf8_html').css('visibility', 'hidden');</script>	-->
+					<?php // }
 
+					$name = __('Setup', 'wppa');
+					$desc = __('Re-initialize plugin.', 'wppa');
+					$help = esc_js(__('Re-initilizes the plugin, (re)creates database tables and sets up default settings and directories if required.', 'wppa'));
+					$help .= '\n\n'.esc_js(__('This action may be required to setup blogs in a multiblog (network) site as well as in rare cases to correct initilization errors.', 'wppa'));
+					$slug = 'wppa_setup';
+					$html = wppa_radio('wppa_action', $slug);
+					wppa_setting($slug, '3', $name, $desc, $html, $help);
+					
 					?>
 				</tbody>
 				<tfoot style="font-weight: bold" class="wppa_table_8">
@@ -1576,6 +1614,16 @@ function wppa_checkbox($slug, $onchange = '') {
 	return $html;
 }
 
+function wppa_radio($slug, $value, $onchange = '') {
+
+	$html = '<input style="height: 15px; margin: 0px; padding: 0px;" type="radio" name="'.$slug.'" id="'.$slug.'" value="'.$value.'"'; 
+//	if (get_option($slug) == 'yes') $html .= ' checked="checked"';
+	if ($onchange != '') $html .= ' onchange="'.$onchange.'"';
+	$html .= ' />';
+	
+	return $html;
+}
+
 function wppa_select($slug, $options, $values, $onchange = '', $class = '') {
 
 	if (!is_array($options)) {
@@ -1617,6 +1665,7 @@ global $wppa_defaults;
 		case 'album': $dft = __('the content of the album.', 'wppa'); break;
 		case 'widget': $dft = __('defined at widget activation.', 'wppa'); break;
 		case 'custom': $dft = __('defined on widget admin page.', 'wppa'); break;
+		case 'same': $dft = __('same as title.', 'wppa'); break;
 		default: $dft = $dflt;
 	}
 

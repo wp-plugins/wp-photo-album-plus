@@ -3,13 +3,13 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions and API modules
-* Version 3.0.2
+* Version 3.0.3
 *
-* 001: Made noncefield conditional to rating system enabled
+
 */
 /* Moved to wppa_commonfunctions.php:
 global $wppa_api_version;
-$wppa_api_version = '3-0-2-000';
+$wppa_api_version = '3-0-3-000';
 */
 /* show system statistics */
 function wppa_statistics() {
@@ -935,7 +935,9 @@ global $wppa_opt;
 				$result .= ' opacity:' . $opac/100 . '; filter:alpha(opacity=' . $opac . ');';
 			}
 			break;
-		case 'thumb':
+		case 'thumb':	// Normal
+		case 'ttthumb':	// Topten
+		case 'fthumb':	// Filmthumb
 			$result .= ' border-width: 0px;';
 			$result .= ' width:' . $width . 'px; height:' . $height . 'px;';
 			if ($xvalign == 'optional') $valign = $wppa_opt['wppa_valign'];
@@ -970,6 +972,9 @@ global $wppa_opt;
 				$opac = $wppa_opt['wppa_thumb_opacity'];
 				$result .= ' opacity:' . $opac/100 . '; filter:alpha(opacity=' . $opac . ');';
 			}
+if ($type == 'thumb' && $wppa_opt['wppa_thumb_linktype'] != 'none') $result .= ' cursor:pointer;';
+if ($type == 'ttthumb' && $wppa_opt['wppa_topten_widget_linktype'] != 'none') $result .= ' cursor:pointer;';
+if ($type == 'fthumb') $result .= ' cursor:pointer;';
 			break;
 		case 'fullsize':
 			$result .= ' width:' . $width . 'px;';
@@ -1640,6 +1645,8 @@ global $cover_count;
 			}
 		}
 	}
+	// Find the coverphoto link
+	$photolink = wppa_get_imglnk_a('coverimg', $coverphoto, $href, $title);
 	// Find the coverphoto details
 	$src = wppa_get_thumb_url_by_id($coverphoto);	
 	$path = wppa_get_thumb_path_by_id($coverphoto);
@@ -1660,6 +1667,7 @@ global $cover_count;
 //	if ($cover_count != '0') $style .= 'margin-left: 8px;';
 	if ($cover_count == '0') {
 		$style .= 'clear:both;';
+//$wppa['out'] .= '<hr style="height:0;" />';
 	}
 	else {
 		$style .= 'margin-left: 8px;';
@@ -1670,8 +1678,8 @@ global $cover_count;
 		if ($src != '') { 
 			$photoframestyle = $photo_left ? 'style="float:left; margin-right:5px;"' : 'style="float:right; margin-left:5px;"';
 			$wppa['out'] .= '<div id="coverphoto_frame_'.$album['id'].'_'.$wppa['master_occur'].'" class="coverphoto-frame" '.$photoframestyle.'>';
-			if ($href != '') {
-				$wppa['out'] .= '<a href="'.$href.'" title="'.$title.'">';
+			if ($photolink) {
+				$wppa['out'] .= '<a href="'.$photolink['url'].'" title="'.$photolink['title'].'">';
 					$wppa['out'] .= '<img src="'.$src.'" alt="'.$title.'" class="image wppa-img" style="'.__wcs('wppa-img').$imgattr.'" '.$events.'/>';
 				$wppa['out'] .= '</a>'; 
 			} else { 
@@ -1725,7 +1733,8 @@ global $cover_count;
 				} 
 			$wppa['out'] .= '</div>';
 		$wppa['out'] .= '</div>';
-		$wppa['out'] .= '<div style="clear:both;"></div>';		
+		$wppa['out'] .= '<div style="clear:both;"></div>';	
+//$wppa['out'] .= '<hr/>';	
 	$wppa['out'] .= '</div><!-- #album-'.$album['id'].'-'.$wppa['master_occur'].' -->';
 	if ($wppa_alt == 'even') $wppa_alt = 'alt'; else $wppa_alt = 'even';
 }
@@ -2093,7 +2102,7 @@ global $wppa_opt;
 global $thumb;
 
 	$src = wppa_get_thumb_path(); 
-	$imgattr = wppa_get_imgstyle($src, $wppa_opt['wppa_thumbsize'], 'optional', 'thumb'); 
+	$imgattr = wppa_get_imgstyle($src, $wppa_opt['wppa_thumbsize'], 'optional', 'fthumb'); 
 	$url = wppa_get_thumb_url(); 
 	$events = wppa_get_imgevents('thumb', $thumb['id'], 'nopopup'); 
 	$events .= ' onclick="wppa_goto('.$wppa['master_occur'].', '.$idx.')"';
@@ -2523,7 +2532,7 @@ function wppa_get_searchstring() {
 	return $src;
 }
 
-function wppa_get_imglnk_a($wich, $photo) {
+function wppa_get_imglnk_a($wich, $photo, $lnk = '', $tit = '') {
 global $wppa;
 global $wppa_opt;
 global $thumb;
@@ -2552,6 +2561,11 @@ global $wpdb;
 		case 'potdwidget':
 			$type = $wppa_opt['wppa_widget_linktype'];
 			$page = $wppa_opt['wppa_widget_linkpage'];
+			if ($page == '0') $page = '-1';
+			break;
+		case 'coverimg':
+			$type = $wppa_opt['wppa_coverimg_linktype'];
+			$page = $wppa_opt['wppa_coverimg_linkpage'];
 			if ($page == '0') $page = '-1';
 			break;
 		default:
@@ -2639,6 +2653,12 @@ global $wpdb;
 			}
 			else $result = false;
 			return $result;
+			break;
+		case 'same':
+			$result['url'] = $lnk;
+			$result['title'] = $tit;
+			return $result;
+			break;
 		default:
 			return false;
 			break;

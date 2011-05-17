@@ -104,6 +104,26 @@ WordPress developers Codex page and more specifically at the section about theme
 
 == Changelog ==
 
+= 3.0.3 =
+
+= New features = 
+
+* Increase configurability of links from album cover photo.
+* A re-initializing action (Table VIII, item 3) has been added. This will be helpfull in multiblog (network) sites.
+
+= Bug fixes =
+
+* Includes all hot-fixes since 3.0.2.000.
+* Minor cosmetic changes in the new settings page.
+
+= Hot fixes after initial release =
+
+= Known problems =
+
+* The Thesis theme has a problem with the <input > field that is required for the rating system. (nonce field).
+The rating system should be disabled in that case (using Thesis).
+
+
 = 3.0.2 =
 
 = New features = 
@@ -125,6 +145,8 @@ Please check the link settings in the Settings screen, Table VI. You might want 
 = Hot fixes after initial release =
 
 * 001: Made noncefield conditional to rating system enabled
+* 002: Admin functions now also work in SSL admin
+* 003: If an image has a link configured, the cursor will be a pointer (hand).
 
 
 = 3.0.1 =

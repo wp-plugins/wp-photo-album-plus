@@ -61,7 +61,7 @@ function wppa_sidebar_page_options() {
 		</div>
 		<h2><?php _e('WP Photo Album Plus Sidebar Widget Settings', 'wppa'); ?></h2>
 		
-		<form action="<?php echo(get_option('siteurl')) ?>/wp-admin/admin.php?page=wppa_sidebar_options" method="post">
+		<form action="<?php echo(get_admin_url()) ?>/admin.php?page=wppa_sidebar_options" method="post">
 			<?php wppa_nonce_field('$wppa_nonce', WPPA_NONCE); ?>
 
 			<table class="form-table albumtable">
@@ -102,7 +102,7 @@ function wppa_sidebar_page_options() {
 								var album = document.getElementById('wppa-wa').value;
 								if (album != 'all' && album != 'sep' && album != 'all-sep')
 									album = document.getElementById('wppa-was').value + ',' + album;
-								var url = "<?php echo(get_option('siteurl')) ?>/wp-admin/admin.php?page=wppa_sidebar_options&walbum=" + album;
+								var url = "<?php echo(get_admin_url()) ?>/admin.php?page=wppa_sidebar_options&walbum=" + album;
 								document.location.href = url;
 							}
 							/* ]]> */

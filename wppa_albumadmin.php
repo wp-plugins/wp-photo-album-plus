@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 * create, edit and delete albums
-* version 3.0.2
+* version 3.0.3
 */
 
 function wppa_admin() {
@@ -92,7 +92,7 @@ function wppa_admin() {
 			<div class="wrap">
 				<h2><?php _e('Edit Album Information', 'wppa'); ?></h2>
 				<p><?php _e('Album number:', 'wppa'); echo(' ' . $_GET['edit_id'] . '.'); ?></p>
-				<form action="<?php echo(get_option('siteurl')) ?>/wp-admin/admin.php?page=<?php echo(WPPA_PLUGIN_PATH) ?>/wppa.php&amp;tab=edit&amp;edit_id=<?php echo($_GET['edit_id']) ?>" method="post">
+				<form action="<?php echo(get_admin_url()) ?>/admin.php?page=<?php echo(WPPA_PLUGIN_PATH) ?>/wppa.php&amp;tab=edit&amp;edit_id=<?php echo($_GET['edit_id']) ?>" method="post">
 				<?php wppa_nonce_field('$wppa_nonce', WPPA_NONCE); ?>
 
 					<table class="form-table albumtable">
@@ -249,7 +249,7 @@ function wppa_admin() {
 											<option value="-1" <?php if ($linkpage == '-1') echo($sel); ?>><?php _e('--- no link at all ---', 'wppa'); ?></option>
 										</select>
 										<span class="description">
-											<br/><?php _e('If you want, you can link the title and the coverphoto to a WP page in stead of the album\'s content. If so, select the page the cover photo links to.', 'wppa'); ?>
+											<br/><?php _e('If you want, you can link the title to a WP page in stead of the album\'s content. If so, select the page the title links to.', 'wppa'); ?>
 										</span>
 									<?php }	?>
 								</td>
@@ -296,7 +296,7 @@ function wppa_admin() {
 				<p><?php _e('Are you sure you want to delete this album?', 'wppa'); ?><br />
 					<?php _e('Press Delete to continue, and Cancel to go back.', 'wppa'); ?>
 				</p>
-				<form name="wppa-del-form" action="<?php echo(get_option('siteurl')) ?>/wp-admin/admin.php?page=<?php echo(WPPA_PLUGIN_PATH) ?>/wppa.php" method="post">
+				<form name="wppa-del-form" action="<?php echo(get_admin_url()) ?>/admin.php?page=<?php echo(WPPA_PLUGIN_PATH) ?>/wppa.php" method="post">
 					<?php wppa_nonce_field('$wppa_nonce', WPPA_NONCE) ?>
 					<p>
 						<?php _e('What would you like to do with photos currently in the album?', 'wppa'); ?><br />
@@ -348,7 +348,7 @@ function wppa_admin() {
 			</div>
 
 			<h2><?php _e('Create New Album', 'wppa'); ?></h2>
-			<form action="<?php echo(get_option('siteurl')) ?>/wp-admin/admin.php?page=<?php echo(WPPA_PLUGIN_PATH) ?>/wppa.php" method="post">
+			<form action="<?php echo(get_admin_url()) ?>/admin.php?page=<?php echo(WPPA_PLUGIN_PATH) ?>/wppa.php" method="post">
 			<?php wppa_nonce_field('$wppa_nonce', WPPA_NONCE) ?>
 				<table class="form-table albumtable">
 					<tbody>
@@ -589,13 +589,13 @@ function wppa_album_photos($id) {
 								<a href="#" id="copy-photo-<?php echo($photo['id']) ?>"></a>
 								<input type="button" class="button-secondary" style="font-weight:bold; color:blue; width:90%" onclick="if (document.getElementById('albsel-<?php echo($photo['id']) ?>').value != 0) { if (confirm('<?php _e('Are you sure you want to copy this photo?', 'wppa') ?>')) document.location = document.getElementById('copy-photo-<?php echo($photo['id']) ?>').href; } else { alert('<?php _e('Please select an album to copy the photo to first.', 'wppa') ?>'); return false;}" value="<?php _e('Copy photo to', 'wppa') ?>" />
 								
-								<br/><a href="<?php echo(get_option('siteurl')) ?>/wp-admin/admin.php?page=<?php echo(WPPA_PLUGIN_PATH) ?>/wppa.php&amp;tab=edit&amp;edit_id=<?php echo($_GET['edit_id']) ?>&amp;photo_del=<?php echo($photo['id']) ?>" id="del-photo-<?php echo($photo['id']) ?>"></a>
+								<br/><a href="<?php echo(get_admin_url()) ?>/admin.php?page=<?php echo(WPPA_PLUGIN_PATH) ?>/wppa.php&amp;tab=edit&amp;edit_id=<?php echo($_GET['edit_id']) ?>&amp;photo_del=<?php echo($photo['id']) ?>" id="del-photo-<?php echo($photo['id']) ?>"></a>
 								<input type="button" class="button-secondary" style="font-weight:bold; color:red; width:90%" onclick="if (confirm('<?php _e('Are you sure you want to delete this photo?', 'wppa') ?>')) document.location = document.getElementById('del-photo-<?php echo($photo['id']) ?>').href;" value="<?php _e('Delete photo', 'wppa'); ?>" />
 								
 								<br/><input type="button" class="button-secondary" style="font-weight:bold; width:90%" onclick="prompt('<?php _e('Insert code for single image in Page or Post:\nYou may change the size if you like.', 'wppa') ?>', '%%wppa%% %%photo=<?php echo($photo['id']); ?>%% %%size=<?php echo(get_option('wppa_fullsize')); ?>%%')" value="<?php _e('Insertion Code', 'wppa'); ?>" />
 							</th>
 							<td>
-								<select id="albsel-<?php echo($photo['id']) ?>" style="width:100%;" name="copy-photo" onchange="document.getElementById('copy-photo-<?php echo($photo['id']) ?>').href='<?php echo(get_option('siteurl')) ?>/wp-admin/admin.php?page=<?php echo(WPPA_PLUGIN_PATH) ?>/wppa.php&amp;tab=edit&amp;edit_id=<?php echo($_GET['edit_id']) ?>&amp;photo_copy=<?php echo($photo['id']) ?>&amp;album_to='+this.value; "><?php echo(wppa_album_select($id, '0', true)) ?></select>
+								<select id="albsel-<?php echo($photo['id']) ?>" style="width:100%;" name="copy-photo" onchange="document.getElementById('copy-photo-<?php echo($photo['id']) ?>').href='<?php echo(get_admin_url()) ?>/admin.php?page=<?php echo(WPPA_PLUGIN_PATH) ?>/wppa.php&amp;tab=edit&amp;edit_id=<?php echo($_GET['edit_id']) ?>&amp;photo_copy=<?php echo($photo['id']) ?>&amp;album_to='+this.value; "><?php echo(wppa_album_select($id, '0', true)) ?></select>
 
 								<br/><br/><?php _e('Rating:', 'wppa') ?><?php _e('Entries:', 'wppa'); echo(' '); echo wppa_get_rating_count_by_id($photo['id']); echo('. '); _e('Mean value:', 'wppa'); echo(' '.wppa_get_rating_by_id($photo['id'], 'nolabel').'.'); ?>
 							

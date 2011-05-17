@@ -2,10 +2,10 @@
 /* wppa_commonfinctions.php
 *
 * Functions used in admin and in themes
-* version 3.0.1
+* version 3.0.3
 */
 global $wppa_api_version;
-$wppa_api_version = '3-0-2-001';
+$wppa_api_version = '3-0-3-000';
 // Initialize globals and option settings
 function wppa_initialize_runtime() {
 global $wppa;
@@ -166,8 +166,11 @@ global $wppa_locale;
 			'wppa_slideonly_widget_linktype' => '',
 			'wppa_topten_widget_linkpage' => '',
 			'wppa_topten_widget_linktype' => '',
+			'wppa_coverimg_linktype' => '',
+			'wppa_coverimg_linkpage' => '',
 			'wppa_search_linkpage' => '',
 			'wppa_chmod' => '',
+			'wppa_setup' => '',
 			'permalink_structure' => ''	// This must be last
 			);
 							
