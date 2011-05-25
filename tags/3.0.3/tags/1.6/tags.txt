@@ -1,0 +1,165 @@
+=============================================================
+=							    =
+=                  WPPA TEMPLATE TAGS		   	    =
+=							    =
+=============================================================
+
+This document lists the functions you can use when creating templates for WPPA
+
+=== wppa_breadcrumb('separator') ===
+
+Works on: Albums page, Thumbs page, Single photo page
+
+Description: Displays the breadcrums style links.
+
+Parameters: 1. the seperator between the links, defaults to &raquo;
+
+
+=== wppa_album_name(id, return) ===
+
+Works on: All pages (on albums page id parameter is required)
+
+Description: Prints (or returns) the name of an album, based on id, or if no id is set, the name of the current album.
+
+Parameters: 1. the id, on thumbs and single photo page defaults tothe current album
+			2. return. if is TRUE, the result will be returned insted of printed
+	
+	
+=== wppa_sep() ===
+
+Works on: All pages
+
+Description: Returns the seperator (? or &) to be applied to the begining of the url, based on the permaling structre
+
+Paramerers: None
+
+
+=== wppa_page('page_name') ===
+
+Works on: Main theme page
+
+Description: checks current page displaying and returns TRUE or FALSE. used for creating a conditional for setting the theme for the different pages
+
+Parameters 1. the page name. can be 'albums', 'thumbs' or 'single'
+
+
+=== wppa_image_url(return) ===
+
+Works on: Albums page in the loop
+
+Description: Prints (or returns) the url to 1 image to represent the album in the album list
+
+Parameters: 1. return. if is TRUE, the result will be returned insted of printed
+
+
+=== wppa_get_albums() ===
+
+Works on: Albums page
+
+Description: loops through the albums. to be used with foreach()
+
+Parameters: None
+
+
+=== wppa_album_url(return) ===
+
+Works on: Albums page within loop
+
+Description: get the url for current album
+
+Parameters: 1. return. if is TRUE, the result will be returned insted of printed
+
+
+=== wppa_the_album_name(return) ===
+
+Works on: Albums page within loop
+
+Description: get the name of the current album
+
+Parameters: 1. return. if is TRUE, the result will be returned insted of printed
+
+
+=== wppa_the_album_desc(return) ===
+
+Works on: Albums page within loop
+
+Description: get the description of the current album
+
+Parameters: 1. return. if is TRUE, the result will be returned insted of printed
+
+
+=== wppa_get_thumbs() ===
+
+Works on: Thumbs page
+
+Description: loops through the thumbs. to be used with foreach()
+
+Parameters: None
+
+
+=== wppa_photo_page_url(return) ===
+
+Works on: Thumbs page in loop
+
+Description: Get link to single photo page
+
+Parameters: 1. return. if is TRUE, the result will be returned insted of printed
+
+
+=== wppa_photo_page_url(return) ===
+
+Works on: Thumbs page in loop
+
+Description: Get url of thumb.
+
+Parameters: 1. return. if is TRUE, the result will be returned insted of printed
+
+
+===  wppa_photo_url(return) ===
+
+Works on: Single photo page
+
+Description: get url of single photo
+
+Parameters: 1. return. if is TRUE, the result will be returned insted of printed
+
+
+=== wppa_photo_name(id, return) ===
+
+Works on: Single photo page. Works on all pages with the ID parameter
+
+Description: Prints (or returns) the name (title) of the photo
+
+Parameters: 1. the id, on single photo page defaults to the current photo
+			2. return. if is TRUE, the result will be returned insted of printed
+
+
+=== wppa_photo_desc(id, return) ===
+
+Works on: Single photo page. Works on all pages with the ID parameter
+
+Description: Prints (or returns) the description of the photo
+
+Parameters: 1. the id, on single photo page defaults to the current photo
+			2. return. if is TRUE, the result will be returned insted of printed
+
+
+=== wppa_prev_next('prev', 'next', id, return) ===
+
+Works on: Single photo page
+
+Description: Prints (or returns) links to the previous and next photo in the album
+
+Parameters: 1. the markup to return with the 'previous' link. %%link%% will be replaced with the url itself. defaults to '&laquo;<a href="%link%">Previous Photo</a> '
+			2. the markup to return with the 'next' link. %%link%% will be replaced with the url itself. defaults to '<a href="%link%">Next Photo</a>&raquo;'
+			3. the id, on single photo page defaults to the current photo
+			4. return. if is TRUE, the result will be returned insted of printed
+
+
+=== wppa_get_fullsize(id) ===
+
+Works on: Single photo page
+
+Description: will return either height="x" or width="x" depending on the photo's layout. x is the set size for full size photos, which can be set in the admin.
+
+Parameters: 1. the id, on single photo page defaults to the current photo

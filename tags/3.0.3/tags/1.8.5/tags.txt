@@ -1,0 +1,313 @@
+=============================================================
+=							                                =
+=                  WPPA TEMPLATE TAGS		   	            =
+=							                                =
+=============================================================
+
+This document lists the functions you can use when creating templates for WPPA-plus
+
+Revision: 1.6.1
+
+Part I, PHP functions
+
+
+=== wppa_breadcrumb('separator') ===
+
+Works on: Albums page, Single photo page, Slide show page
+
+Description: Displays the breadcrums style links.
+
+Parameters: 1. the seperator between the links, defaults to &raquo;
+
+Remarks: extended in version 1.6 to implement subalbums
+
+
+=== wppa_get_parentalbumid(id) ===
+
+Works on: All pages
+
+Description: Returns the id of the albums parent album
+
+Parameters: 1. the id of the child album
+
+Remarks: new in version 1.6
+
+
+=== wppa_album_name(id, return) ===
+
+Works on: All pages (on albums page id parameter is required)
+
+Description: Prints (or returns) the name of an album, based on id, or if no id is set, the name of the current album.
+
+Parameters: 1. the id, on album and single photo page defaults to the current album
+			2. return. if is TRUE, the result will be returned insted of printed
+	
+	
+=== wppa_album_id(name, return) ===
+
+Works on: All pages
+
+Description: Prints (or returns) the id of an album, based on name, if no name is set, returns or prints ''.
+
+Parameters: 1. the name
+			2. return. if is TRUE, the result will be returned insted of printed
+ 
+Remarks: new in version 1.6
+
+=== wppa_sep() ===
+
+Works on: All pages
+
+Description: Returns the seperator (? or &) to be applied to the begining of the url, based on the permalink structre
+
+Paramerers: None
+
+
+=== wppa_page('page_name') ===
+
+Works on: Main theme page
+
+Description: checks current page displaying and returns TRUE or FALSE. used for creating a conditional for setting the theme for the different pages
+
+Parameters 1. the page name. can be 'albums', 'single' or 'slide'
+
+Remarks: changed in version 1.6 to implement slideshow, removed thumbs as it is now identical to album
+
+
+=== wppa_image_url(return) ===
+
+Works on: Albums page in the loop
+
+Description: Prints (or returns) the url to 1 image to represent the album in the album list
+
+Parameters: 1. return. if is TRUE, the result will be returned insted of printed
+
+
+=== wppa_get_albums('album', 'type') ===
+
+Works on: Albums page
+
+Description: loops through the albums in ythe current album. to be used with foreach()
+
+Parameters: 1. album. The requested album. 
+2. type, can be 'album' to find the child albums of the given album, or 'cover' to get the albumdata itsself. Defaults to: unchanged.
+Corresponds to %%album=..%% and %%cover=..%%
+
+Remarks: see on-screen help for more info
+
+
+=== wppa_get_album_url(id) ===
+
+Works on: All pages
+
+Description: returns album url based on album id
+
+Parameters: Album id (required)
+
+Remarks: new in version 1.6
+
+
+=== wppa_album_url(return) ===
+
+Works on: Albums page within loop
+
+Description: get the url for current album
+
+Parameters: 1. return. if is TRUE, the result will be returned insted of printed
+
+
+=== wppa_get_photo_count(id) ===
+
+Works on: All pages.
+
+Description: get the number of photos in a given album (id). Defaults to the current album within loop
+
+Parameters: 1. Album id (optional)
+
+Remarks: new in version 1.6
+
+
+=== wppa_get_album_count(id) ===
+
+Works on: All pages.
+
+Description: get the number of (sub)albums in a given album (id). Defaults to the current album within loop
+
+Parameters: 1. Album id (optional)
+
+Remarks: new in version 1.6
+
+
+=== wppa_the_album_name(return) ===
+
+Works on: Albums page within loop
+
+Description: get the name of the current album
+
+Parameters: 1. return. if is TRUE, the result will be returned insted of printed
+
+
+=== wppa_the_album_desc(return) ===
+
+Works on: Albums page within loop
+
+Description: get the description of the current album
+
+Parameters: 1. return. if is TRUE, the result will be returned insted of printed
+
+
+=== wppa_slideshow_url(return) ===
+
+Works on: Albums page within loop
+
+Description: get the url for slideshow of photos in current album
+
+Parameters: 1. return. if is TRUE, the result will be returned insted of printed
+
+Remarks: new in version 1.6
+
+
+=== wppa_get_thumbs() ===
+
+Works on: Thumbs page
+
+Description: loops through the thumbs. to be used with foreach()
+
+Parameters: None
+
+
+=== wppa_get_photo_page_url() ===
+
+Works on: Thumbs page in loop
+
+Description: Returns url of single photo.
+
+Parameters: None
+
+Remarks: New in version 1.6, Replaces wppa_photo_page_url
+
+
+=== wppa_get_thumb_url() ====
+
+Works on: Thumbs page in loop
+
+Description: Returns url of thumb.
+
+Parameters: None
+
+Remarks: New in version 1.6, Replaces wppa_photo_page_url
+
+
+=== wppa_photo_url(id, return) ===
+
+Works on: Single photo page. Works on all pages with the ID parameter
+
+Description: prints or returns url of single photo
+
+Parameters: 1. return. if is TRUE, the result will be returned insted of printed
+
+
+=== wppa_photo_name(id, return) ===
+
+Works on: Single photo page. Works on all pages with the ID parameter
+
+Description: Prints (or returns) the name (title) of the photo
+
+Parameters: 1. the id, on single photo page defaults to the current photo
+			2. return. if is TRUE, the result will be returned insted of printed
+
+
+=== wppa_photo_desc(id, return) ===
+
+Works on: Single photo page. Works on all pages with the ID parameter
+
+Description: Prints (or returns) the description of the photo
+
+Parameters: 1. the id, on single photo page defaults to the current photo
+			2. return. if is TRUE, the result will be returned insted of printed
+
+
+=== wppa_prev_next('prev', 'next', id, return) ===
+
+Works on: Single photo page
+
+Description: Prints (or returns) links to the previous and next photo in the album
+
+Parameters: 1. the markup to return with the 'previous' link. %%link%% will be replaced with the url itself. defaults to '&laquo;<a href="%link%">Previous Photo</a> '
+			2. the markup to return with the 'next' link. %%link%% will be replaced with the url itself. defaults to '<a href="%link%">Next Photo</a>&raquo;'
+			3. the id, on single photo page defaults to the current photo
+			4. return. if is TRUE, the result will be returned insted of printed
+
+
+=== wppa_get_fullsize(id) ===
+
+Works on: Single photo page
+
+Description: will return either height="x" or width="x" depending on the photo's layout. x is the set size for full size photos, which can be set in the admin.
+
+Parameters: 1. the id, on single photo page defaults to the current photo
+
+
+=== wppa_get_slide_info($index, $id) ===
+
+Works on: Slideshow page
+
+Description: prints the argument list for javascript function wppa_store_slideinfo(...)
+
+Parameters: 1. Index for javasript slide arrays
+            2. Id of photo
+            
+Remarks: New in version 1.6.
+
+           
+           
+Part II: javascript functions
+
+
+=== wppa_store_slideinfo(id, url, size, name, desc) ===
+
+Works on: Slideshow page
+
+Description: stores photo info in javascript arrays required for slideshow
+
+Parameters: 1. Index in arrays
+            2. Url of photo
+            3. size info (height="x" or width="x" depending on the photo's layout)
+            4. name of photo
+            5. description of photo
+            
+Remarks: New in version 1.6
+
+
+=== wppa_nextslide(first) ===
+
+Works on: Internal
+
+Description: shows next slide (or wraps around to first). Automatic called during slideshow
+
+Parameters: 1. first. Must be true if show (re)starts, false otherwise. Important to avoid timer mixup
+
+Remarks: New in version 1.6
+
+
+=== wppa_startstop() ===
+
+Works on: Slideshow page
+
+Description: Toggles running slideshow on/off
+
+Parameters: None
+
+Remarks: New in version 1.6
+
+
+=== wppa_speed(faster) ===
+
+Works on: Slideshow page
+
+Description: Increases or decreases slideshow speed by a factor of 1.5. (Default = 5 sec)
+
+Parameters: faster. If true: interval will be decreased but will remain >= 0.5 sec
+                    If false: interval will be increased but will remain <= 60 sec
+                    
+Remarks: New in version 1.6
