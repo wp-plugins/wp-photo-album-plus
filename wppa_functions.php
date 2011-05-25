@@ -3,13 +3,13 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions and API modules
-* Version 3.0.3
+* Version 3.0.4
 *
 
 */
 /* Moved to wppa_commonfunctions.php:
 global $wppa_api_version;
-$wppa_api_version = '3-0-3-000';
+$wppa_api_version = '3-0-4-000';
 */
 /* show system statistics */
 function wppa_statistics() {
@@ -1492,9 +1492,10 @@ global $wppa_microtime_cum;
 	elseif ($action == 'close')	{
 		if (wppa_page('oneofone')) $wppa['portrait_only'] = false;
 		if (!$wppa['in_widget']) $wppa['out'] .= ('<div style="clear:both;"></div>');
-		$wppa['out'] .= ('</div><!-- wppa-container-'.$wppa['master_occur'].' -->');
-		if (!$wppa['in_widget']) 
-						$wppa['out'] .= ('<p>');					// Re-open paragraph
+		$wppa['out'] .= '</div>';
+//		$wppa['out'] .= ('</div><!-- wppa-container-'.$wppa['master_occur'].' -->');
+//		if (!$wppa['in_widget']) 
+//						$wppa['out'] .= ('<p>');					// Re-open paragraph
 						
 		if ($wppa_debug) {
 			$laptim = microtime(true) - $wppa_microtime;
@@ -2451,17 +2452,18 @@ global $wppa;
 }
 
 function wppa_force_balance_pee($xtext) {
-// we can only correct one missing <p> or </p> because they are not nestable
-// this should be enough, it's only to correct an page/post that is interrupted by a %%wppa%% script
+
 	$text = $xtext;	// Make a local copy
 	$done = false;
 	$temp = strtolower($text);
 	$opens = substr_count($temp, '<p');
 	$close = substr_count($temp, '</p');
-	if ($opens > $close) {	// append a close
+	// append a close
+	if ($opens > $close) {	
 		$text .= '</p>';	
 	}
-	if ($close > $opens) {	// prepend an open
+	// prepend an open
+	if ($close > $opens) {	
 		$text = '<p>'.$text;
 	}
 	return $text;

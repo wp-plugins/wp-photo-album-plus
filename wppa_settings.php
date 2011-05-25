@@ -13,18 +13,19 @@ global $blog_id;
 global $wppa_status;
 global $options_error;
 
-//	wppa_setup();	// Test activation hook	
-
 	// Check if a message is required
 	wppa_check_update();
-
+	// Initialize
 	wppa_initialize_runtime();
 	wppa_set_defaults();
 	$options_error = false;
 
 	if (isset($_POST['wppa_set_submit'])) {
 		wppa_check_admin_referer( '$wppa_nonce', WPPA_NONCE );
-
+		
+		// Remember the existing physical thumbnail image size
+		$old_minisize = wppa_get_minisize();
+		
 		// See if an action is requested, if so, do it and skip the setting changes if any
 		// Table 8: Actions	
 		if (isset($_POST['wppa_action'])) { // Action to be done
@@ -55,6 +56,21 @@ global $options_error;
 				case 'wppa_setup':
 					wppa_setup();
 					break;
+				case 'wppa_backup':
+					if (!wppa_backup_settings()) $options_error = true;
+					break;
+				case 'wppa_restore':
+					if (!wppa_restore_settings()) $options_error = true;
+					wppa_initialize_runtime(true);
+					break;
+				case 'wppa_defaults':
+					wppa_set_defaults(true);
+					wppa_initialize_runtime(true);
+					break;
+				case 'wppa_regen':
+					$old_minisize--; // fake thumbnail size change
+					break;
+					
 			}
 			if ($options_error) {
 				wppa_error_message(__('Requested action failed, possible setting updates ignored', 'wppa'));
@@ -66,9 +82,6 @@ global $options_error;
 		
 		else { // Update setting(s)
 
-			// Remember the existing physical thumbnail image size
-			$old_minisize = wppa_get_minisize();
-		
 			// Table 1: Sizes
 			$slug = 'wppa_colwidth';
 			$value = $_POST[$slug];
@@ -246,20 +259,21 @@ global $options_error;
 			if ($options_error) wppa_update_message(__('Other changes saved', 'wppa'));
 			else wppa_update_message(__('Changes Saved', 'wppa'));
 
-			// Compute the new physical thumbnail image size
-			$new_minisize = wppa_get_minisize();
-			// Conditionally trigger restart making thumbnails
-			if ($old_minisize != $new_minisize) update_option('wppa_lastthumb', '-1');	
-			// See if a regeneration of thumbs is pending
-			$start = get_option('wppa_lastthumb', '-2');
-			if ($start != '-2') {
-				$start++; 
-				wppa_ok_message(__('Regenerating thumbnail images, starting at id=', 'wppa').$start.'. Please wait... '.__('If the line of dots stops growing or you browser reports Ready but you did NOT get a \'READY regenerating thumbnail images\' message, your server has given up. In that case: continue this action by clicking', 'wppa').' <a href="'.get_admin_url().'/admin.php?page=options">'.__('here', 'wppa').'</a>'.' '.__('and click "Save Changes" again.', 'wppa'));
-			
-				wppa_regenerate_thumbs(); 
-				wppa_update_message(__('READY regenerating thumbnail images.', 'wppa')); 				
-				update_option('wppa_lastthumb', '-2');
-			}
+		}
+		
+		// Compute the new physical thumbnail image size
+		$new_minisize = wppa_get_minisize();
+		// Conditionally trigger restart making thumbnails
+		if ($old_minisize != $new_minisize) update_option('wppa_lastthumb', '-1');	
+		// See if a regeneration of thumbs is pending
+		$start = get_option('wppa_lastthumb', '-2');
+		if ($start != '-2') {
+			$start++; 
+			wppa_ok_message(__('Regenerating thumbnail images, starting at id=', 'wppa').$start.'. Please wait... '.__('If the line of dots stops growing or you browser reports Ready but you did NOT get a \'READY regenerating thumbnail images\' message, your server has given up. In that case: continue this action by clicking', 'wppa').' <a href="'.get_admin_url().'/admin.php?page=options">'.__('here', 'wppa').'</a>'.' '.__('and click "Save Changes" again.', 'wppa'));
+		
+			wppa_regenerate_thumbs(); 
+			wppa_update_message(__('READY regenerating thumbnail images.', 'wppa')); 				
+			update_option('wppa_lastthumb', '-2');
 		}
 	} // if wppa_set_submit
 	elseif (get_option('wppa_lastthumb', '-2') != '-2') wppa_error_message(__('Regeneration of thumbnail images interrupted. Please press "Save Changes"', 'wppa')); 
@@ -1311,6 +1325,36 @@ global $wppa_api_version;
 					$html = wppa_radio('wppa_action', $slug);
 					wppa_setting($slug, '3', $name, $desc, $html, $help);
 					
+					$name = __('Backup settings', 'wppa');
+					$desc = __('Save all settings into a backup file.', 'wppa');
+					$help = esc_js(__('Saves all the settings into a backup file', 'wppa'));
+					$slug = 'wppa_backup';
+					$html = wppa_radio('wppa_action', $slug);
+					wppa_setting($slug, '4', $name, $desc, $html, $help);
+					
+					$name = __('Restore settings', 'wppa');
+					$desc = __('Restore all settings from a backup file.', 'wppa');
+					$help = esc_js(__('Restores all the settings from a backup file', 'wppa'));
+					$slug = 'wppa_restore';
+					$file = ABSPATH.'wp-content/wppa-depot/'.wppa_get_user().'/settings.bak';
+					if (is_file($file)) $html = wppa_radio('wppa_action', $slug);
+					else $html = __('No backup file available', 'wppa');
+					wppa_setting($slug, '5', $name, $desc, $html, $help);
+
+					$name = __('Set all defaults', 'wppa');
+					$desc = __('Resets all settings to default values.', 'wppa');
+					$help = esc_js(__('Resets all settings to default values.', 'wppa'));
+					$slug = 'wppa_defaults';
+					$html = wppa_radio('wppa_action', $slug);
+					wppa_setting($slug, '6', $name, $desc, $html, $help);
+					
+					$name = __('Regenerate', 'wppa');
+					$desc = __('Regenerate all thumbnails.', 'wppa');
+					$help = esc_js(__('Regenerate all thumbnails.', 'wppa'));
+					$slug = 'wppa_regen';
+					$html = wppa_radio('wppa_action', $slug);
+					wppa_setting($slug, '7', $name, $desc, $html, $help);
+					
 					?>
 				</tbody>
 				<tfoot style="font-weight: bold" class="wppa_table_8">
@@ -1393,10 +1437,19 @@ global $wppa_api_version;
 					</tr>
 				</tfoot>
 			</table>
+			
+			<?php // Table 10: Miscellaneous ?>
+			<h3><?php _e('Table X:', 'wppa'); echo(' '); _e('PHP Configuration:', 'wppa'); ?><?php wppa_toggle_table(10) ?></h3>
+			<?php _e('This table lists all PHP server configuration parameters and is read only', 'wppa'); ?>
+
+			<div class="wppa_table_10" style="margin-top:20px; text-align:left;">
+				<?php phpinfo(5) ?>
+			</div>
 		</form>
 		<script type="text/javascript">wppaInitSettings();</script>
 	</div>
-<?php 
+	
+<?php
 }
 
 function wppa_setting($slug, $num, $name, $desc, $html, $help, $cls = '') {

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the upload/import pages and functions
-* Version 3.0.2
+* Version 3.0.3
 */
 
 function wppa_page_upload() {
@@ -59,12 +59,26 @@ global $target;
 		</div>
 		<h2><?php _e('Upload Photos', 'wppa'); ?></h2><br />
 
-		<?php		
+		<?php	
+		$max_files = ini_get('max_file_uploads');
+		$max_files_txt = $max_files;
+		if ($max_files < '1') {
+			$max_files_txt = __('unknown', 'wppa');
+			$max_files = '15';
+		}
+		$max_size = ini_get('upload_max_filesize');
+		$max_time = ini_get('max_input_time');	
+		if ($max_time < '1') $max_time = __('unknown', 'wppa');
 		// chek if albums exist before allowing upload
 		if(wppa_has_albums()) { ?>
+			<div style="border:1px solid #ccc; padding:10px; margin-bottom:10px; width: 600px; background-color:#fffbcc; border-color:#e6db55;">
+			<?php echo(sprintf(__('<b>Notice:</b> your server allows you to upload <b>%s</b> files of maximum total <b>%s</b> bytes and allows <b>%s</b> seconds to complete.', 'wppa'), $max_files_txt, $max_size, $max_time)) ?>
+			<?php _e('If your request exceeds these limitations, it will fail, probably without an errormessage.', 'wppa') ?>
+			<?php _e('Additionally your hosting provider may have set other limitations on uploading files.', 'wppa') ?>
+			</div>
 			<div style="border:1px solid #ccc; padding:10px; margin-bottom:10px; width: 600px;">
 				<h3 style="margin-top:0px;"><?php _e('Single Photos', 'wppa'); ?></h3><br />
-				<?php _e('You can select up to 15 photos one by one and upload them at once.', 'wppa'); ?>
+				<?php //_e('You can select up to 15 photos one by one and upload them at once.', 'wppa'); ?>
 				<form enctype="multipart/form-data" action="<?php echo(get_admin_url()) ?>/admin.php?page=upload_photos" method="post">
 				<?php wppa_nonce_field('$wppa_nonce', WPPA_NONCE); ?>
 					<input id="my_file_element" type="file" name="file_1" />
@@ -80,7 +94,7 @@ global $target;
 				</form>
 				<script type="text/javascript">
 				<!-- Create an instance of the multiSelector class, pass it the output target and the max number of files -->
-					var multi_selector = new MultiSelector( document.getElementById( 'files_list' ), 15 );
+					var multi_selector = new MultiSelector( document.getElementById( 'files_list' ), <?php echo($max_files) ?> );
 				<!-- Pass in the file element -->
 					multi_selector.addElement( document.getElementById( 'my_file_element' ) );
 				</script>
@@ -841,7 +855,7 @@ function wppa_check_dirs() {
 	// check if uploads dir exists
 	$dir = ABSPATH . 'wp-content/uploads';
 	if (!is_dir($dir)) {
-		mkdir($dir);
+		@mkdir($dir);
 		if (!is_dir($dir)) {
 			wppa_error_message(__('The uploads directory does not exist, please do a regular WP upload first.', 'wppa'));
 			return false;
@@ -855,9 +869,9 @@ function wppa_check_dirs() {
 	// check if wppa dir exists
 	$dir = ABSPATH . 'wp-content/uploads/wppa';
 	if (!is_dir($dir)) {
-		mkdir($dir);
+		@mkdir($dir);
 		if (!is_dir($dir)) {
-			wppa_error_message(__('Could not create the wppa directory.', 'wppa'));
+			wppa_error_message(__('Could not create the wppa directory.', 'wppa').wppa_credirmsg($dir));
 			return false;
 		}
 		else {
@@ -869,9 +883,9 @@ function wppa_check_dirs() {
 	// check if thumbs dir exists 
 	$dir = ABSPATH . 'wp-content/uploads/wppa/thumbs';
 	if (!is_dir($dir)) {
-		mkdir($dir);
+		@mkdir($dir);
 		if (!is_dir($dir)) {
-			wppa_error_message(__('Could not create the wppa thumbs directory.', 'wppa'));
+			wppa_error_message(__('Could not create the wppa thumbs directory.', 'wppa').wppa_credirmsg($dir));
 			return false;
 		}
 		else {
@@ -883,9 +897,9 @@ function wppa_check_dirs() {
 	// check if depot dir exists
 	$dir = ABSPATH . 'wp-content/wppa-depot';
 	if (!is_dir($dir)) {
-		mkdir($dir);
+		@mkdir($dir);
 		if (!is_dir($dir)) {
-			wppa_error_message(__('Unable to create depot directory', 'wppa'));
+			wppa_error_message(__('Unable to create depot directory', 'wppa').wppa_credirmsg($dir));
 			return false;
 		}
 		else {
@@ -897,9 +911,9 @@ function wppa_check_dirs() {
 	// check if users depot dir exists
 	$dir = ABSPATH . 'wp-content/wppa-depot/'.wppa_get_user();
 	if (!is_dir($dir)) {
-		mkdir($dir);
+		@mkdir($dir);
 		if (!is_dir($dir)) {
-			wppa_error_message(__('Unable to create user depot directory', 'wppa'));
+			wppa_error_message(__('Unable to create user depot directory.', 'wppa').wppa_credirmsg($dir));
 			return false;
 		}
 		else {
@@ -909,6 +923,10 @@ function wppa_check_dirs() {
 	}
 	
 	return true;
+}
+function wppa_credirmsg($dir) {
+	$msg = ' '.sprintf(__('Ask your administrator to give you more rights, try CHMOD from table VII item 1 of the Photo Albums -> Settings admin page or create <b>%s</b> manually using an FTP program.', 'wppa'), $dir);
+	return $msg;
 }
 
 function wppa_walktree($relroot, $source) {
@@ -953,7 +971,7 @@ function wppa_sanitize_files($user) {
 	// See what's in there
 	$paths = $depot.'/*.*';
 	$files = glob($paths);
-	$allowed_types = array('zip', 'jpg', 'png', 'gif', 'amf', 'pmf');
+	$allowed_types = array('zip', 'jpg', 'png', 'gif', 'amf', 'pmf', 'bak');
 
 	$count = '0';
 	if ($files) foreach ($files as $file) {

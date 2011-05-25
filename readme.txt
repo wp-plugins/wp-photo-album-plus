@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate
-Version: 3.0.2
+Version: 3.0.4
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -66,6 +66,22 @@ to your theme directory, you must remove them or replace them with the newly sup
 
 == Frequently Asked Questions ==
 
+= How does the search widget work? =
+
+* A space between words means AND, a comma between words means OR.
+Example: search for 'one two, three four, five' gives a result when either 'one' AND 'two' appears in the same (combination of) name and description. 
+If it matches the name and description of an album, you get the album, and photo vice versa.
+OR this might apply for ('three' AND 'four') OR 'five'. Albums and photos are returned on one page, regardless of pagination settings, if any. 
+That's the way it is designed.
+
+= How can i translate the plugin into my language? =
+
+* See the documentation on the WPPA+ Docs & Demos site: http://wppa.opajaap.nl/?page_id=1349
+
+= How do i install a hotfix? =
+
+* See the documentation on the WPPA+ Docs & Demos site: http://wppa.opajaap.nl/?page_id=823
+
 = What to do if i get errors during upload or import photos? =
 
 * It is always the best to downsize your photos to the Full Size before uploading. It is the fastest and safest way to add photos tou your photo albums.
@@ -83,26 +99,29 @@ but, as explained earlier, this does not help when your hosting provider does no
 If you have control over the server yourself: configure it to allow the use of enough memory.
 Oh, just Google on 'picture resizer' and you will find a bunch of free programs that will easily perform the resizing task for you.
 
-= How does the search widget work? =
-
-* A space between words means AND, a comma between words means OR.
-Example: search for 'one two, three four, five' gives a result when either 'one' AND 'two' appears in the same (combination of) name and description. 
-If it matches the name and description of an album, you get the album, and photo vice versa.
-OR this might apply for ('three' AND 'four') OR 'five'. Albums and photos are returned on one page, regardless of pagination settings, if any. 
-That's the way it is designed.
-
-= How can i translate the plugin into my language? =
-
-* Find on internet the free program POEDIT, and learn how it works.
-* Use the file wppa_theme.pot and wppa.pot that is located in wp-photo-album-plus/langs to create or update
-wppa-[your languagecode].po, wppa-[your languagecode].mo, wppa_theme-[your languagecode].po and wppa_theme-[your languagecode].mo.
-If you want to translate the frontend only (the theme part, only approx. 50 words) you only need to make the wppa_theme-[your languagecode] - files.
-* Place these files in the langs subdir.
-* If everything is ok, mail me the files and i will distribute them so other users can use your translation too.
-* For more information on POT files, domains, gettext and i18n have a look at the I18n for 
-WordPress developers Codex page and more specifically at the section about themes and plugins.
 
 == Changelog ==
+
+= 3.0.4 =
+
+= New features = 
+
+* You can back-up and restore the settings and reset them to default values.
+* Added table X in the settings panel, being a read only table displaying the php configuration.
+
+= Enhancements =
+
+* Improved error reporting and documentation of limitations in admin pages.
+
+= Bug fixes =
+
+* Fixed an no harmfull warning in photo of the day widget admin page.
+* Removed a superfluous p-opening tag.
+
+= Known problems =
+
+* The Thesis theme has a problem with the <input > field that is required for the rating system. (nonce field).
+The rating system should be disabled in that case (using Thesis).
 
 = 3.0.3 =
 

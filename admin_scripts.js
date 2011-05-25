@@ -37,7 +37,7 @@ function wppaInitSettings() {
 	wppaCheckPotdLink();
 	wppaCheckRating();
 	
-	for (i=1; i<10; i++) {
+	for (i=1; i<11; i++) {
 		var cookie = wppa_getCookie('table_'+i);
 		if (cookie == 'off' || cookie == '') {
 			jQuery('.wppa_table_'+i).css('visibility', 'collapse'); 
