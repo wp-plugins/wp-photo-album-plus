@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 * gp admin functions
-* version 3.0.3
+* version 3.0.4
 */
 
 // Set default option values
@@ -124,7 +124,11 @@ global $wppa_defaults;
 						'wppa_accesslevel_upload' => 'administrator',
 						'wppa_accesslevel_sidebar' => 'administrator',
 						'wppa_charset' => '',
-						'wppa_setup' => ''
+						'wppa_setup' => '',
+						'wppa_backup' => '',
+						'wppa_restore' => '',
+						'wppa_defaults' => '',
+						'wppa_regen' => ''
 						);
 	
 	array_walk($wppa_defaults, 'wppa_set_default', $force);
@@ -136,6 +140,65 @@ function wppa_set_default($value, $key, $force) {
 	else {
 //echo "Checking ".$key." to be ".$value."<br/>";
 		if (get_option($key, 'nil') == 'nil') update_option($key, $value);
+	}
+}
+
+function wppa_backup_settings() {
+global $wppa_opt;
+global $wppa_bu_err;
+	// Load options
+	wppa_initialize_runtime();
+	// Open file
+	$fname = ABSPATH.'wp-content/wppa-depot/'.wppa_get_user().'/settings.bak';
+	$file = fopen($fname, 'wb');
+	// Backup
+	if ($file) {
+		array_walk($wppa_opt, 'wppa_save_an_option', $file);
+		// Close file
+		fclose($file);
+		if (!$wppa_bu_err) {
+			wppa_ok_message(__('Settings successfully backed up', 'wppa'));
+			return true;
+		}
+	}
+	wppa_error_message(__('Unable to backup settings', 'wppa'));
+	return false;
+}
+function wppa_save_an_option($value, $key, $file) {
+global $wppa_bu_err;
+	if (fwrite($file, $key.":".$value."\n") === false) {
+		if ($wppa_bu_err !== true) {
+			wppa_error_message(__('Error writing to settings backup file', 'wppa'));
+			$wppa_bu_err = true;
+		}	
+	}
+}
+
+function wppa_restore_settings() {
+	// Open file
+	$fname = ABSPATH.'wp-content/wppa-depot/'.wppa_get_user().'/settings.bak';
+	$file = fopen($fname, 'r');
+	if ($file) {
+		$buffer = fgets($file, 4096);
+		while (!feof($file)) {
+			$buflen = strlen($buffer);
+			$cpos = strpos($buffer, ':');
+			$delta_l = $buflen - $cpos - 2;
+			if ($cpos && $delta_l >= 0) {
+				$slug = substr($buffer, 0, $cpos);
+				$value = stripslashes(substr($buffer, $cpos+1, $delta_l));
+				// echo('Doing|'.$slug.'|'.$value.'|<br/>');
+				update_option($slug, $value);
+			}
+			$buffer = fgets($file, 4096);
+		}
+		fclose($file);
+		wppa_initialize_runtime(true);
+		return true;
+	}
+	else {
+		wppa_error_message(__('Settings backup file not found', 'wppa'));
+		return false;
 	}
 }
 
@@ -153,6 +216,7 @@ function wppa_regenerate_thumbs() {
 	$photos = $wpdb->get_results($wpdb->prepare('SELECT * FROM `' . WPPA_PHOTOS . '` WHERE `id` > %d ORDER BY `id`', $start), 'ARRAY_A');
 	
 	if (!empty($photos)) {
+		$count = count($photos);
 		foreach ($photos as $photo) {
 			$newimage = $wppa_dir . $photo['id'] . '.' . $photo['ext'];
 			wppa_create_thumbnail($newimage, $thumbsize, '' );

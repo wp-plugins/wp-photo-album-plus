@@ -2,17 +2,22 @@
 /* wppa_commonfinctions.php
 *
 * Functions used in admin and in themes
-* version 3.0.3
+* version 3.0.4
 */
 global $wppa_api_version;
-$wppa_api_version = '3-0-3-000';
+$wppa_api_version = '3-0-4-000';
 // Initialize globals and option settings
-function wppa_initialize_runtime() {
+function wppa_initialize_runtime($force = false) {
 global $wppa;
 global $wppa_opt;
 global $wppa_revno;
 global $wppa_api_version;
 global $wppa_locale;
+
+	if ($force) {
+		$wppa = false; // destroy existing arrays
+		$wppa_opt = false;
+	}
 
 	if (!is_array($wppa)) {
 	
@@ -181,18 +186,23 @@ global $wppa_locale;
 }
 function wppa_set_options($value, $key) {
 global $wppa_opt;
-	
-	$temp = get_option($key);
-	switch ($temp) {
-		case 'no':
-			$wppa_opt[$key] = false;
-			break;
-		case 'yes':
-			$wppa_opt[$key] = true;
-			break;
-		default:
-			$wppa_opt[$key] = $temp;
-		}	
+
+	if (is_admin()) {	// admin needs the raw data
+		$wppa_opt[$key] = get_option($key);
+	}
+	else {
+		$temp = get_option($key);
+		switch ($temp) {
+			case 'no':
+				$wppa_opt[$key] = false;
+				break;
+			case 'yes':
+				$wppa_opt[$key] = true;
+				break;
+			default:
+				$wppa_opt[$key] = $temp;
+			}	
+	}
 }
 
 // get the url to the plugins image directory
@@ -379,3 +389,4 @@ function wppa_qtrans($output, $lang = '') {
 	}
 	return $output;
 }
+
