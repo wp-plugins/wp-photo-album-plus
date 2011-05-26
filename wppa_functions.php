@@ -5,11 +5,12 @@
 * Various funcions and API modules
 * Version 3.0.4
 *
+* 001: Added class wppa-slideshow-browse-link to enable hiding it with display: none. This was a special cutomer request and not an error.
 
 */
 /* Moved to wppa_commonfunctions.php:
 global $wppa_api_version;
-$wppa_api_version = '3-0-4-000';
+$wppa_api_version = '3-0-4-001';
 */
 /* show system statistics */
 function wppa_statistics() {
@@ -1698,7 +1699,7 @@ global $cover_count;
 				} 
 			$wppa['out'] .= '</h2>';
 			$wppa['out'] .= '<p class="wppa-box-text wppa-black" style="'.__wcs('wppa-box-text').__wcs('wppa-black').'">'.wppa_html(wppa_get_the_album_desc()).'</p>';
-			$wppa['out'] .= '<div class="wppa-box-text wppa-black wppa-info">';
+			$wppa['out'] .= '<div class="wppa-box-text wppa-black wppa-info wppa-slideshow-browse-link">';
 				if ($photocount > $mincount) { 
 					$label = $wppa_opt['wppa_enable_slideshow'] ?  __a('Slideshow', 'wppa_theme') : __a('Browse photos', 'wppa_theme');
 					$wppa['out'] .= '<a href="'.wppa_get_slideshow_url($linkpage).'" title="'.$label.'" style="'.__wcs('wppa-box-text', 'nocolor').'" >'.$label.'</a>';
