@@ -123,6 +123,11 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 * The Thesis theme has a problem with the <input > field that is required for the rating system. (nonce field).
 The rating system should be disabled in that case (using Thesis).
 
+= Hotfixes after initial release =
+
+* 001: Added class wppa-slideshow-browse-link to enable hiding it with display: none. This was a special cutomer request and not an error.
+
+
 = 3.0.3 =
 
 = New features = 
