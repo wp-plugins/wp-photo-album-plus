@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 * gp admin functions
-* version 3.0.4
+* version 3.0.4.002
 */
 
 // Set default option values
@@ -573,12 +573,14 @@ global $wpdb;
 	$name = $photo['name'];
 	$porder = '0';
 	$desc = $photo['description'];
+	$linkurl = $photo['linkurl'];
+	$linktitle = $photo['linktitle'];
 	$oldimage = ABSPATH.'wp-content/uploads/wppa/'.$photo['id'].'.'.$ext;
 	$oldthumb = ABSPATH.'wp-content/uploads/wppa/thumbs/'.$photo['id'].'.'.$ext;
 	
 	$err = '3';
 	// Make new db table entry
-	$query = $wpdb->prepare('INSERT INTO `' . WPPA_PHOTOS . '` (`id`, `album`, `ext`, `name`, `p_order`, `description`, `mean_rating`) VALUES (%d, %d, %s, %s, %d, %s, \'\')', $id, $album, $ext, $name, $porder, $desc);
+	$query = $wpdb->prepare('INSERT INTO `' . WPPA_PHOTOS . '` (`id`, `album`, `ext`, `name`, `p_order`, `description`, `mean_rating`, `linkurl`, `linktitle`) VALUES (%d, %d, %s, %s, %d, %s, \'\', %s, %s)', $id, $album, $ext, $name, $porder, $desc, $linkurl, $linktitle);
 	if ($wpdb->query($query) === false) return $err;
 
 	$err = '4';
