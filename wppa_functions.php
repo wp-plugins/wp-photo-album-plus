@@ -6,11 +6,11 @@
 * Version 3.0.4
 *
 * 001: Added class wppa-slideshow-browse-link to enable hiding it with display: none. This was a special cutomer request and not an error.
-
+* 002: Photo specific link will now also be copied during a copy photo action.
 */
 /* Moved to wppa_commonfunctions.php:
 global $wppa_api_version;
-$wppa_api_version = '3-0-4-001';
+$wppa_api_version = '3-0-4-002';
 */
 /* show system statistics */
 function wppa_statistics() {
