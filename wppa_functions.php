@@ -7,10 +7,12 @@
 *
 * 001: Added class wppa-slideshow-browse-link to enable hiding it with display: none. This was a special cutomer request and not an error.
 * 002: Photo specific link will now also be copied during a copy photo action.
+* 003: Removed an empty <p></p> right before a wppa invocation. 
+
 */
 /* Moved to wppa_commonfunctions.php:
 global $wppa_api_version;
-$wppa_api_version = '3-0-4-002';
+$wppa_api_version = '3-0-4-003';
 */
 /* show system statistics */
 function wppa_statistics() {
@@ -2457,6 +2459,16 @@ function wppa_force_balance_pee($xtext) {
 	$text = $xtext;	// Make a local copy
 	$done = false;
 	$temp = strtolower($text);
+	
+	// see if this chunk ends in <p> in which case we remove that in stead of appending a </p>
+	$len = strlen($temp);
+	if ($len > 3) {
+		if (substr($temp, $len - 3) == '<p>') {
+			$text = substr($text, 0, $len - 3);
+			$temp = strtolower($text);
+		}
+	}
+	
 	$opens = substr_count($temp, '<p');
 	$close = substr_count($temp, '</p');
 	// append a close

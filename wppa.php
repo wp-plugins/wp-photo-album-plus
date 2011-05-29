@@ -153,7 +153,7 @@ function wppa_add_admin() {
 	}
 
 	$iconurl = get_bloginfo('wpurl') . '/wp-content/plugins/' . WPPA_PLUGIN_PATH . '/images/camera16.png';
-	add_menu_page('WP Photo Album', __('Photo Albums', 'wppa'), 'wppa_admin', __FILE__, 'wppa_admin', $iconurl);
+	add_menu_page('WP Photo Album', __('Photo&thinsp;Albums', 'wppa'), 'wppa_admin', __FILE__, 'wppa_admin', $iconurl);
 	
     add_submenu_page(__FILE__, __('Upload Photos', 'wppa'), __('Upload Photos', 'wppa'), 'wppa_upload', 'upload_photos', 'wppa_page_upload');
 	add_submenu_page(__FILE__, __('Import Photos', 'wppa'), __('Import Photos', 'wppa'), 'wppa_upload', 'import_photos', 'wppa_page_import');
