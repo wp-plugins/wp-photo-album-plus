@@ -7,7 +7,7 @@ Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
 Requires at least: 3.0
-Tested up to: 3.1.2
+Tested up to: 3.2
 
 This plugin is designed to easily manage and display your photo albums and slideshows within your WordPress site. 
 Additionally there are four widgets: Photo of the day, a Search Photos widget, a Top Ten Rated photo widget and a Mini slideshow widget.
@@ -127,6 +127,7 @@ The rating system should be disabled in that case (using Thesis).
 
 * 001: Added class wppa-slideshow-browse-link to enable hiding it with display: none. This was a special cutomer request and not an error.
 * 002: Photo specific link will now also be copied during a copy photo action.
+* 003: Removed an empty <p></p> right before a wppa invocation. 
 
 = 3.0.3 =
 
