@@ -128,6 +128,7 @@ The rating system should be disabled in that case (using Thesis).
 * 001: Added class wppa-slideshow-browse-link to enable hiding it with display: none. This was a special cutomer request and not an error.
 * 002: Photo specific link will now also be copied during a copy photo action.
 * 003: Removed an empty <p></p> right before a wppa invocation. 
+* 004: Fix for facebook plugin (?)
 
 = 3.0.3 =
 

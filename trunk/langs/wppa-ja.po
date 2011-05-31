@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Photo Album Plus 2.4.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-05-25 15:13+0100\n"
-"PO-Revision-Date: 2011-05-25 15:13+0100\n"
+"POT-Creation-Date: 2011-05-31 16:45+0100\n"
+"PO-Revision-Date: 2011-05-31 16:46+0100\n"
 "Last-Translator: J.N. Breetvelt <OpaJaap@OpaJaap.nl>\n"
 "Language-Team: BNG NET <webmaster@bng.net>\n"
 "MIME-Version: 1.0\n"
@@ -24,8 +24,7 @@ msgstr ""
 "X-Poedit-SearchPath-1: theme\n"
 
 #: wppa.php:156
-#: wppa_settings.php:1247
-msgid "Photo Albums"
+msgid "Photo&thinsp;Albums"
 msgstr "フォトアルバム"
 
 #: wppa.php:158
@@ -573,7 +572,7 @@ msgid "Type/alter the name of the photo. It is NOT a filename and needs no file 
 msgstr "写真の名称を入力／変更してください。ファイル名ではありませんので、.jpgなどの拡張子は不要です。"
 
 #: wppa_albumadmin.php:734
-#: wppa_commonfunctions.php:355
+#: wppa_commonfunctions.php:378
 #: wppa_settings.php:745
 #: wppa_settings.php:757
 #: wppa_settings.php:809
@@ -583,7 +582,7 @@ msgid "--- none ---"
 msgstr "--- なし ---"
 
 #: wppa_albumadmin.php:750
-#: wppa_commonfunctions.php:356
+#: wppa_commonfunctions.php:379
 msgid "--- separate ---"
 msgstr "--- セパレート---"
 
@@ -711,7 +710,7 @@ msgstr "写真の出力ファイルが開けません。"
 msgid "Could not read photo data."
 msgstr "写真データが読めません。"
 
-#: wppa_functions.php:1172
+#: wppa_functions.php:1176
 msgid "<b>ERROR: Illegal attempt to enter a rating.</b>"
 msgstr "<b>エラー: 違法な投票の試みです。</b>"
 
@@ -2907,6 +2906,10 @@ msgstr "アクセス権はここで設定する。"
 #: wppa_settings.php:1242
 msgid "Accesslevels are set by an other program."
 msgstr "アクセス権は別のプログラムで設定する。"
+
+#: wppa_settings.php:1247
+msgid "Photo Albums"
+msgstr "フォトアルバム"
 
 #: wppa_settings.php:1248
 #, fuzzy

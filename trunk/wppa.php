@@ -212,4 +212,8 @@ function wppa_load_theme() {
 	}
 }
 
-if (is_admin()) add_action('init', 'wppa_initialize_runtime');
+/* Set up $wppa[], $wppa_opt[] and loads wppa language file, hopefully after q_translate is set up */
+add_action('init', 'wppa_initialize_runtime', '100');
+
+/* Enable rendering wppa after possible metatags with post content is done */
+add_action('wp_head', 'wppa_enable_rendering', '100');

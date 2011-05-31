@@ -5,7 +5,7 @@
 * version 3.0.4
 */
 global $wppa_api_version;
-$wppa_api_version = '3-0-4-003';
+$wppa_api_version = '3-0-4-004';
 // Initialize globals and option settings
 function wppa_initialize_runtime($force = false) {
 global $wppa;
@@ -13,6 +13,7 @@ global $wppa_opt;
 global $wppa_revno;
 global $wppa_api_version;
 global $wppa_locale;
+global $q_config;
 
 	if ($force) {
 		$wppa = false; // destroy existing arrays
@@ -22,11 +23,26 @@ global $wppa_locale;
 	if (!is_array($wppa)) {
 	
 		if ($wppa_locale != 'loaded') {
-			$domain = is_admin() ? 'wppa' : 'wppa_theme';
-			$mofile = ABSPATH.'wp-content/plugins/'.dirname( plugin_basename( __FILE__ ) ) . '/langs/'.$domain.'-'.get_locale().'.mo';
-			$bret = load_plugin_textdomain($domain, false, dirname( plugin_basename( __FILE__ ) ) . '/langs/');
-			$wppa_locale = 'loaded';
-//if ($bret) echo('<span style="color:blue"><small>'.get_locale().'</small></span><br/>');	// Diagnostic
+			$locale = get_locale();
+			// q_translate no longer sets locale, so we do it
+			if ($locale == '') {
+				if (is_array($q_config)) {
+					$lang = $q_config['language'];
+					$locale = $q_config['locale'][$lang];
+					setlocale(LC_COLLATE, $locale);
+				}
+			}
+			if ($locale != '') {
+				$domain = is_admin() ? 'wppa' : 'wppa_theme';
+				$mofile = ABSPATH.'wp-content/plugins/'.dirname( plugin_basename( __FILE__ ) ) . '/langs/'.$domain.'-'.$locale.'.mo';
+				$bret = load_textdomain($domain, $mofile);
+//				$bret = load_plugin_textdomain($domain, false, dirname( plugin_basename( __FILE__ ) ) . '/langs/');
+				$wppa_locale = 'loaded';
+			}
+//if ($bret) 
+//echo('<span style="color:blue"><small>Lang='.$lang.', Locale='.$locale.', Mofile='.$mofile);
+//if (is_file($mofile)) echo(' exists.'); else echo(' does not exist');
+//echo(', bret='.$bret.'</small></span><br/>');	// Diagnostic
 		}
 		
 		$wppa = array (
@@ -57,7 +73,8 @@ global $wppa_locale;
 			'out' => '',
 			'auto_colwidth' => false,
 			'permalink' => '',
-			'randseed' => time() % '4711'
+			'randseed' => time() % '4711',
+			'rendering_enabled' => false
 		);
 
 		if (isset($_POST['wppa-searchstring'])) $wppa['src'] = true;
@@ -181,7 +198,7 @@ global $wppa_locale;
 							
 		array_walk($wppa_opt, 'wppa_set_options');
 	
-		if (!is_admin()) wppa_set_runtimestyle();
+//		if (!is_admin()) wppa_set_runtimestyle();
 	}
 }
 function wppa_set_options($value, $key) {
@@ -203,6 +220,12 @@ global $wppa_opt;
 				$wppa_opt[$key] = $temp;
 			}	
 	}
+}
+
+function wppa_enable_rendering() {
+global $wppa;
+	$wppa['rendering_enabled'] = true;
+	echo('<!-- WPPA+ Rendering enabled -->');
 }
 
 // get the url to the plugins image directory

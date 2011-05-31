@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wppa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-05-25 15:13+0100\n"
-"PO-Revision-Date: 2011-05-25 15:13+0100\n"
+"POT-Creation-Date: 2011-05-31 16:46+0100\n"
+"PO-Revision-Date: 2011-05-31 16:46+0100\n"
 "Last-Translator: J.N. Breetvelt <OpaJaap@OpaJaap.nl>\n"
 "Language-Team: OpaJaap <OpaJaap@OpaJaap.nl>\n"
 "MIME-Version: 1.0\n"
@@ -21,8 +21,7 @@ msgstr ""
 "X-Poedit-SearchPath-1: theme\n"
 
 #: wppa.php:156
-#: wppa_settings.php:1247
-msgid "Photo Albums"
+msgid "Photo&thinsp;Albums"
 msgstr ""
 
 #: wppa.php:158
@@ -558,7 +557,7 @@ msgid "Type/alter the name of the photo. It is NOT a filename and needs no file 
 msgstr ""
 
 #: wppa_albumadmin.php:734
-#: wppa_commonfunctions.php:355
+#: wppa_commonfunctions.php:378
 #: wppa_settings.php:745
 #: wppa_settings.php:757
 #: wppa_settings.php:809
@@ -568,7 +567,7 @@ msgid "--- none ---"
 msgstr ""
 
 #: wppa_albumadmin.php:750
-#: wppa_commonfunctions.php:356
+#: wppa_commonfunctions.php:379
 msgid "--- separate ---"
 msgstr ""
 
@@ -696,7 +695,7 @@ msgstr ""
 msgid "Could not read photo data."
 msgstr ""
 
-#: wppa_functions.php:1172
+#: wppa_functions.php:1176
 msgid "<b>ERROR: Illegal attempt to enter a rating.</b>"
 msgstr ""
 
@@ -2733,6 +2732,10 @@ msgstr ""
 
 #: wppa_settings.php:1242
 msgid "Accesslevels are set by an other program."
+msgstr ""
+
+#: wppa_settings.php:1247
+msgid "Photo Albums"
 msgstr ""
 
 #: wppa_settings.php:1248

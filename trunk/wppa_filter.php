@@ -16,7 +16,7 @@ function wppa_do_filter() {
 function wppa_albums_filter($post) {
 global $wppa;
 
-	wppa_initialize_runtime();
+//	wppa_initialize_runtime();
 
 	$post_old = $post;
 	$post_new = '';
@@ -144,7 +144,12 @@ global $wppa;
 				$wppa['align'] = $align;
 			}
 			
-			$post_new .= wppa_albums();										// Insert the html
+			if ($wppa['rendering_enabled'] || is_feed()) {	// Insert the html
+				$post_new .= wppa_albums();		
+			}
+			else {											// Or an indicator
+				$post_new .= '<span style="color:blue; font-weight:bold; ">[WPPA+ Photo display]</span>';	
+			}
 			
 			$wppa_pos = strpos($post_old, '%%wppa%%');						// Refresh the next invocation position, if any
 		}
