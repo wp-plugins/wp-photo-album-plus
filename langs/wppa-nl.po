@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wp-photo-album-plus\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-05-25 15:13+0100\n"
-"PO-Revision-Date: 2011-05-25 15:26+0100\n"
+"POT-Creation-Date: 2011-05-31 16:46+0100\n"
+"PO-Revision-Date: 2011-05-31 16:46+0100\n"
 "Last-Translator: J.N. Breetvelt <OpaJaap@OpaJaap.nl>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -27,7 +27,7 @@ msgid "Edit"
 msgstr "Bewerk"
 
 #: wppa.php:156
-msgid "Photo Albums"
+msgid "Photo&thinsp;Albums"
 msgstr "Foto Albums"
 
 #: wppa.php:158
@@ -512,12 +512,12 @@ msgid "Type/alter the name of the photo. It is NOT a filename and needs no file 
 msgstr "Geef de naam van de foto op. Het is GEEN bestandsnaam en hoeft niet te eindigen op .jpg."
 
 #: wppa_albumadmin.php:734
-#: wppa_commonfunctions.php:355
+#: wppa_commonfunctions.php:378
 msgid "--- none ---"
 msgstr "--- geen ---"
 
 #: wppa_albumadmin.php:750
-#: wppa_commonfunctions.php:356
+#: wppa_commonfunctions.php:379
 msgid "--- separate ---"
 msgstr "--- afzonderlijk ---"
 
@@ -645,7 +645,7 @@ msgstr "Kan het foto uitvoer bestand niet aanmaken."
 msgid "Could not read photo data."
 msgstr "Kan de foto gegevens niet lezen."
 
-#: wppa_functions.php:1172
+#: wppa_functions.php:1176
 msgid "<b>ERROR: Illegal attempt to enter a rating.</b>"
 msgstr "<b>FOUT: Verboden poging een waardering in te voeren.</b>"
 
@@ -2680,6 +2680,10 @@ msgstr "Toegangsrechten worden hier gezet."
 #: wppa_settings.php:1242
 msgid "Accesslevels are set by an other program."
 msgstr "Toegangsrechten worden door een ander programma gezet."
+
+#: wppa_settings.php:1247
+msgid "Photo Albums"
+msgstr "Foto Albums"
 
 #: wppa_settings.php:1248
 msgid "Albums Access Level."

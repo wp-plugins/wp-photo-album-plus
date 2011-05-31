@@ -8,11 +8,12 @@
 * 001: Added class wppa-slideshow-browse-link to enable hiding it with display: none. This was a special cutomer request and not an error.
 * 002: Photo specific link will now also be copied during a copy photo action.
 * 003: Removed an empty <p></p> right before a wppa invocation. 
+* 004: Fix for facebook plugin (?)
 
 */
 /* Moved to wppa_commonfunctions.php:
 global $wppa_api_version;
-$wppa_api_version = '3-0-4-003';
+$wppa_api_version = '3-0-4-004';
 */
 /* show system statistics */
 function wppa_statistics() {
@@ -47,7 +48,7 @@ function wppa_breadcrumb($opt = '') {
 global $wppa;
 global $wppa_opt;
 
-	wppa_initialize_runtime();
+//	wppa_initialize_runtime();
 
 	/* See if they need us */
 	if ($opt == 'optional' && !$wppa_opt['wppa_show_bread']) return;	/* Nothing to do here */
@@ -182,7 +183,7 @@ global $wppa;
 function wppa_albums($xid = '', $typ='', $siz = '', $ali = '') {
 global $wppa;
 
-	wppa_initialize_runtime();	// Don't be afraid, init will take place only once, nobody can expect from where, maybe here
+//	wppa_initialize_runtime();	// Don't be afraid, init will take place only once, nobody can expect from where, maybe here
     
 //	$wppa['out'] = '';
 	
@@ -1466,6 +1467,8 @@ global $wppa_microtime_cum;
 		if (wppa_page('oneofone')) $wppa['portrait_only'] = true;
 		$wppa_alt = 'alt';
 
+		if ($wppa['master_occur'] == '1') wppa_set_runtimestyle();
+		
 		// last minute change: script %%size=auto%% or reset
 		// $wppa['auto_colwidth'] is set by the filter or by wppa_albums in case called directly
 		// $wppa_opt['wppa_colwidth'] is the option setting
