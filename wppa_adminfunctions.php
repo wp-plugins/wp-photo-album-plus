@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 * gp admin functions
-* version 3.0.4.002
+* version 3.0.5
 */
 
 // Set default option values
@@ -63,7 +63,6 @@ global $wppa_defaults;
 						'wppa_fontfamily_fulltitle' => '',
 						'wppa_fontsize_fulltitle' => '',
 						'wppa_fontcolor_fulltitle' => '',
-//						'wppa_black' => 'black',
 						'wppa_arrow_color' => 'black',
 						'wppa_widget_padding_top' => '5',
 						'wppa_widget_padding_left' => '5',
@@ -75,9 +74,7 @@ global $wppa_defaults;
 						'wppa_thumb_auto' => 'yes',
 						'wppa_coverphoto_left' => 'no',
 						'wppa_thumbphoto_left' => 'no',
-//						'wppa_hide_slideshow' => 'no',
 						'wppa_enable_slideshow' => 'yes',
-//						'wppa_no_thumb_links' => 'no',
 						'wppa_thumb_text_name' => 'yes',
 						'wppa_thumb_text_desc' => 'yes',
 						'wppa_thumb_text_rating' => 'yes',
@@ -138,7 +135,6 @@ function wppa_set_default($value, $key, $force) {
 		update_option($key, $value);
 	}
 	else {
-//echo "Checking ".$key." to be ".$value."<br/>";
 		if (get_option($key, 'nil') == 'nil') update_option($key, $value);
 	}
 }
@@ -146,8 +142,6 @@ function wppa_set_default($value, $key, $force) {
 function wppa_backup_settings() {
 global $wppa_opt;
 global $wppa_bu_err;
-	// Load options
-	wppa_initialize_runtime();
 	// Open file
 	$fname = ABSPATH.'wp-content/wppa-depot/'.wppa_get_user().'/settings.bak';
 	$file = fopen($fname, 'wb');

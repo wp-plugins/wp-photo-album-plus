@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display a slideshow in the sidebar
-* Version 3.0.2
+* Version 3.0.5
 */
 
 /**
@@ -25,8 +25,6 @@ class SlideshowWidget extends WP_Widget {
 
         extract( $args );
 
-		wppa_initialize_runtime();	// Just in case we are the first
-        
  		$title = apply_filters('widget_title', empty( $instance['title'] ) ? __a( 'Sidebar Slideshow', 'wppa_theme' ) : $instance['title']);
 
 		$instance = wp_parse_args( (array) $instance, array( 'title' => '', 'album' => '', 'width' => get_option('wppa_widget_width', '190'), 'ponly' => 'no', 'linkurl' => '', 'linktitle' => '', 'subtext' => '', 'supertext' => '', 'valign' => 'fit', 'timeout' => '4' ) );

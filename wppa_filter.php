@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * get the albums via filter
-* version 3.0.1
+* version 3.0.5
 *
 */
 
@@ -15,8 +15,6 @@ function wppa_do_filter() {
 
 function wppa_albums_filter($post) {
 global $wppa;
-
-//	wppa_initialize_runtime();
 
 	$post_old = $post;
 	$post_new = '';

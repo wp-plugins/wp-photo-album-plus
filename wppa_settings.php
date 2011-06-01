@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 3.0.3
+* Version 3.0.5
 */
 
 function wppa_page_options() {
@@ -16,7 +16,6 @@ global $options_error;
 	// Check if a message is required
 	wppa_check_update();
 	// Initialize
-	wppa_initialize_runtime();
 	wppa_set_defaults();
 	$options_error = false;
 
@@ -287,7 +286,7 @@ global $wppa_api_version;
 			<br />
 		</div>
 		<h2><?php _e('WP Photo Album Plus Settings', 'wppa'); ?></h2>
-		<?php _e('Database revision:', 'wppa'); ?> <?php echo(get_option('wppa_revision', '100')) ?>. <?php _e('WP Charset:', 'wppa'); ?> <?php echo(get_bloginfo('charset')); ?>. <?php _e('WPPA Charset:', 'wppa'); ?> <?php echo(get_option('wppa_charset', __('default', 'wppa'))); ?>. <?php echo 'Current PHP version: ' . phpversion() ?>. <?php echo 'WPPA+ API Version: '.$wppa_api_version ?>.
+		<?php _e('Database revision:', 'wppa'); ?> <?php echo(get_option('wppa_revision', '100')) ?>. <?php _e('WP Charset:', 'wppa'); ?> <?php echo(get_bloginfo('charset')); ?>. <?php echo 'Current PHP version: ' . phpversion() ?>. <?php echo 'WPPA+ API Version: '.$wppa_api_version ?>.
 		<br/><?php if (is_multisite()) { 
 			echo('Multisite enabled. '); 
 			echo('Blogid = '.$blog_id);
@@ -1624,8 +1623,10 @@ global $wppa_status;
 }
 
 function wppa_update_value($slug) {
-	$value = $_POST[$slug];
-	wppa_update($slug, $value);
+	if (isset($_POST[$slug])) {
+		$value = $_POST[$slug];
+		wppa_update($slug, $value);
+	}
 }
 
 function wppa_update_check($slug) {
