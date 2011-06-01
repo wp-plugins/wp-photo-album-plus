@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the widget
-* Version 3.0.2
+* Version 3.0.5
 */
 
 class PhotoOfTheDay extends WP_Widget {
@@ -21,9 +21,7 @@ class PhotoOfTheDay extends WP_Widget {
 
         extract( $args );
 
-		wppa_initialize_runtime();	// Just in case we are the first
-		
- 		$widget_title = apply_filters('widget_title', empty( $instance['title'] ) ? get_option('wppa_widgettitle', __a( 'Photo Of The Day', 'wppa_theme' )) : $instance['title']);
+		$widget_title = apply_filters('widget_title', empty( $instance['title'] ) ? get_option('wppa_widgettitle', __a( 'Photo Of The Day', 'wppa_theme' )) : $instance['title']);
 
 		// get the photo  ($image)
 		switch (get_option('wppa_widget_method', '1')) {

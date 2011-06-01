@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate
-Version: 3.0.4
+Version: 3.0.5
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -101,6 +101,16 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 
 
 == Changelog ==
+
+= 3.0.5 =
+
+= Bug fixes =
+
+* IMPORTANT Fix: All problems that are related to pre-rendering are fixed. 
+The problems with themes like Thesis and plugins like the face-book-meta-tags-plugin that 
+perform a pre-rendering of a post or excerpt are solved now. 
+The restrictions on using the rating system (that did not work anyway) are no longer applicable.
+* Under some circumstances when using qTranslate, the proper language file was not loaded. Fixed.
 
 = 3.0.4 =
 

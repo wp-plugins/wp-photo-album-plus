@@ -3,17 +3,13 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions and API modules
-* Version 3.0.4
+* Version 3.0.5
 *
-* 001: Added class wppa-slideshow-browse-link to enable hiding it with display: none. This was a special cutomer request and not an error.
-* 002: Photo specific link will now also be copied during a copy photo action.
-* 003: Removed an empty <p></p> right before a wppa invocation. 
-* 004: Fix for facebook plugin (?)
 
 */
 /* Moved to wppa_commonfunctions.php:
 global $wppa_api_version;
-$wppa_api_version = '3-0-4-004';
+$wppa_api_version = '3-0-5-000';
 */
 /* show system statistics */
 function wppa_statistics() {
@@ -47,8 +43,6 @@ function wppa_get_statistics() {
 function wppa_breadcrumb($opt = '') {
 global $wppa;
 global $wppa_opt;
-
-//	wppa_initialize_runtime();
 
 	/* See if they need us */
 	if ($opt == 'optional' && !$wppa_opt['wppa_show_bread']) return;	/* Nothing to do here */
@@ -183,10 +177,6 @@ global $wppa;
 function wppa_albums($xid = '', $typ='', $siz = '', $ali = '') {
 global $wppa;
 
-//	wppa_initialize_runtime();	// Don't be afraid, init will take place only once, nobody can expect from where, maybe here
-    
-//	$wppa['out'] = '';
-	
 	$wppa['occur']++;
 	$wppa['master_occur']++;
 	if ($wppa['in_widget']) $wppa['widget_occur']++;
@@ -2290,14 +2280,14 @@ global $wppa_opt;
 	$r['5'] = __a('very high', 'wppa_theme');
 
 	if ($fs != '') $fs += 3; else $fs = '15';	// iconsize = fontsize+3, Default to 15
-	$size = 'style="height:'.$fs.'px; margin-bottom:-3px;"';
+	$style = 'style="height:'.$fs.'px; margin:0 0 -3px 0; padding:0;"';
 
 	$wppa['out'] .= __a('Average&nbsp;rating', 'wppa_theme').'&nbsp;';
 	
 	$icon = 'star.png';
 	$i = '1';
 	while ($i < '6') {
-		$wppa['out'] .= '<img id="wppa-avg-'.$wppa['master_occur'].'-'.$i.'" class="wppa-avg-'.$wppa['master_occur'].' no-shadow" '.$size.' src="'.wppa_get_imgdir().$icon.'" alt="'.$i.'" title="'.__a('Average&nbsp;rating', 'wppa_theme').': '.$r[$i].'" />';
+		$wppa['out'] .= '<img id="wppa-avg-'.$wppa['master_occur'].'-'.$i.'" class="wppa-avg-'.$wppa['master_occur'].' no-shadow" '.$style.' src="'.wppa_get_imgdir().$icon.'" alt="'.$i.'" title="'.__a('Average&nbsp;rating', 'wppa_theme').': '.$r[$i].'" />';
 		$i++;
 	}
 	
@@ -2306,7 +2296,7 @@ global $wppa_opt;
 	if (!$wppa_opt['wppa_rating_login'] || is_user_logged_in()) {
 		$i = '1';
 		while ($i < '6') {
-			$wppa['out'] .= '<img id="wppa-rate-'.$wppa['master_occur'].'-'.$i.'" class="wppa-rate-'.$wppa['master_occur'].' no-shadow" '.$size.' src="'.wppa_get_imgdir().$icon.'" alt="'.$i.'" title="'.__a('My&nbsp;rating', 'wppa_theme').': '.$r[$i].'" onmouseover="wppa_follow_me('.$wppa['master_occur'].', '.$i.')" onmouseout="wppa_leave_me('.$wppa['master_occur'].', '.$i.')" onclick="wppa_rate_it('.$wppa['master_occur'].', '.$i.')" />';
+			$wppa['out'] .= '<img id="wppa-rate-'.$wppa['master_occur'].'-'.$i.'" class="wppa-rate-'.$wppa['master_occur'].' no-shadow" '.$style.' src="'.wppa_get_imgdir().$icon.'" alt="'.$i.'" title="'.__a('My&nbsp;rating', 'wppa_theme').': '.$r[$i].'" onmouseover="wppa_follow_me('.$wppa['master_occur'].', '.$i.')" onmouseout="wppa_leave_me('.$wppa['master_occur'].', '.$i.')" onclick="wppa_rate_it('.$wppa['master_occur'].', '.$i.')" />';
 			$i++;
 		}
 		$wppa['out'] .= '&nbsp;'.__a('My&nbsp;rating', 'wppa_theme');
