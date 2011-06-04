@@ -112,6 +112,10 @@ perform a pre-rendering of a post or excerpt are solved now.
 The restrictions on using the rating system (that did not work anyway) are no longer applicable.
 * Under some circumstances when using qTranslate, the proper language file was not loaded. Fixed.
 
+= Hot fixes after initial release =
+
+* 001: Fixed erroneous link in albumcover
+
 = 3.0.4 =
 
 = New features = 
