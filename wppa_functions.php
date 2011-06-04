@@ -2429,9 +2429,9 @@ global $wppa;
 				else $pl .= '?';
 //				$wppa['permalink'] = $pl;	// cache it
 //			}
-			else {
-				$pl = $wppa['permalink'];
-			}
+//			else {
+//				$pl = $wppa['permalink'];
+//			}
 			break;
 		case 'js':	// normal permalink for js use
 			$pl = get_permalink();
