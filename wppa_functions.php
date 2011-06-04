@@ -5,11 +5,11 @@
 * Various funcions and API modules
 * Version 3.0.5
 *
-
+* 001: Fixed erroneous link in albumcover
 */
 /* Moved to wppa_commonfunctions.php:
 global $wppa_api_version;
-$wppa_api_version = '3-0-5-000';
+$wppa_api_version = '3-0-5-001';
 */
 /* show system statistics */
 function wppa_statistics() {
@@ -2423,12 +2423,12 @@ global $wppa;
 	switch ($key) {
 		case '0':
 		case '':	// normal permalink
-			if ($wppa['permalink'] == '') {	// not in cache
+//			if ($wppa['permalink'] == '') {	// not in cache
 				$pl = get_permalink();
 				if (strpos($pl, '?')) $pl .= '&amp;';
 				else $pl .= '?';
-				$wppa['permalink'] = $pl;	// cache it
-			}
+//				$wppa['permalink'] = $pl;	// cache it
+//			}
 			else {
 				$pl = $wppa['permalink'];
 			}
