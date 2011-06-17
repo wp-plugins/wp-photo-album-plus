@@ -3,13 +3,14 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the export functions
-* Version 3.0.2
+* Version 3.0.6
+*
 */
 
 function wppa_page_export() {
 global $wpdb;
 
-	// export images admin page
+	// Export Photos admin page
 
 	// Check the existence of required directories
 	if (!wppa_check_dirs()) return;
@@ -26,20 +27,20 @@ global $wpdb;
 		wppa_export_photos();
 	} ?>
 	<div class="wrap">
-		<?php $iconurl = get_bloginfo('wpurl') . '/wp-content/plugins/' . WPPA_PLUGIN_PATH . '/images/album32.png'; ?>
+		<?php $iconurl = WPPA_URL.'/images/album32.png'; ?>
 		<div id="icon-camera" class="icon32" style="background: transparent url(<?php echo($iconurl); ?>) no-repeat">		
 		</div>
-		<?php $iconurl = get_bloginfo('wpurl') . '/wp-content/plugins/' . WPPA_PLUGIN_PATH . '/images/arrow32.png'; ?>
+		<?php $iconurl = WPPA_URL.'/images/arrow32.png'; ?>
 		<div id="icon-arrow" class="icon32" style="background: transparent url(<?php echo($iconurl); ?>) no-repeat">
 		</div>
-		<?php $iconurl = get_bloginfo('wpurl') . '/wp-content/plugins/' . WPPA_PLUGIN_PATH . '/images/disk32.png'; ?>
+		<?php $iconurl = WPPA_URL.'/images/disk32.png'; ?>
 		<div id="icon-disk" class="icon32" style="background: transparent url(<?php echo($iconurl); ?>) no-repeat">
 			<br />
 		</div>
 
 		<h2><?php _e('Export Photos', 'wppa'); ?></h2><br />
 
-		<form action="<?php echo(get_admin_url()) ?>/admin.php?page=export_photos" method="post">
+		<form action="<?php echo(wppa_dbg_url(get_admin_url().'/admin.php?page=export_photos')) ?>" method="post">
 			<?php wppa_nonce_field('$wppa_nonce', WPPA_NONCE); ?>
 			<?php echo(sprintf(__('Photos will be exported to: <b>%s</b>.', 'wppa'), 'wp-content/wppa-depot/'.wppa_get_user())) ?>
 			<h2><?php _e('Export photos from album <span style="font-size:12px;">(Including Album information)</span>:', 'wppa'); ?></h2>

@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wppa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-05-10 13:36+0100\n"
-"PO-Revision-Date: 2011-05-10 13:36+0100\n"
+"POT-Creation-Date: 2011-06-17 15:52+0100\n"
+"PO-Revision-Date: 2011-06-17 15:52+0100\n"
 "Last-Translator: J.N. Breetvelt <OpaJaap@OpaJaap.nl>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -20,28 +20,28 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPath-1: theme\n"
 
-#: wppa_commonfunctions.php:272
+#: wppa_commonfunctions.php:320
 #, php-format
 msgid "Rating: %s"
 msgstr ""
 
-#: wppa_commonfunctions.php:342
+#: wppa_commonfunctions.php:390
 msgid "--- none ---"
 msgstr "--- ninguno ---"
 
-#: wppa_commonfunctions.php:343
+#: wppa_commonfunctions.php:391
 msgid "--- separate ---"
 msgstr "--- separar ---"
 
-#: wppa_functions.php:29
+#: wppa_functions.php:31
 msgid "There are"
 msgstr "Existen"
 
-#: wppa_functions.php:29
+#: wppa_functions.php:31
 msgid "photo albums. The last album added is"
 msgstr "álbumes. El último álbum añadido es"
 
-#: wppa_functions.php:33
+#: wppa_functions.php:35
 msgid ", a subalbum of"
 msgstr ", un sub álbum de"
 
@@ -50,8 +50,8 @@ msgid "Home"
 msgstr "Inicio"
 
 #: wppa_functions.php:124
-#: wppa_functions.php:1201
-#: wppa_functions.php:1692
+#: wppa_functions.php:1669
+#: wppa_non_admin.php:90
 msgid "Slideshow"
 msgstr "Presentación"
 
@@ -64,170 +64,189 @@ msgstr "Cadena de Búsqueda:"
 msgid "Top rated photos"
 msgstr "Subir fotos"
 
-#: wppa_functions.php:765
+#: wppa_functions.php:784
 msgid "<b>ERROR: Attempt to enter an invalid rating.</b>"
 msgstr ""
 
-#: wppa_functions.php:1128
+#: wppa_functions.php:1141
 #, fuzzy
 msgid "Prev.&nbsp;page"
 msgstr "Anterior"
 
-#: wppa_functions.php:1132
+#: wppa_functions.php:1145
 #, fuzzy
 msgid "Next&nbsp;page"
 msgstr "Siguiente"
 
-#: wppa_functions.php:1202
-#: wppa_functions.php:1885
-msgid "Start"
-msgstr "Comenzar"
-
-#: wppa_functions.php:1203
-#, fuzzy
-msgid "Stop"
-msgstr "arriba"
-
-#: wppa_functions.php:1204
-msgid "Photo"
-msgstr "Foto"
-
-#: wppa_functions.php:1205
-msgid "of"
-msgstr "de"
-
-#: wppa_functions.php:1206
-#, fuzzy
-msgid "Prev.&nbsp;photo"
-msgstr "Anterior"
-
-#: wppa_functions.php:1207
-#, fuzzy
-msgid "Next&nbsp;photo"
-msgstr "Siguiente"
-
-#: wppa_functions.php:1617
+#: wppa_functions.php:1594
 msgid "Link to"
 msgstr "Enlace a"
 
-#: wppa_functions.php:1621
+#: wppa_functions.php:1598
 msgid "Page is not available."
 msgstr "La página no está disponible."
 
-#: wppa_functions.php:1627
-#: wppa_functions.php:1700
+#: wppa_functions.php:1604
+#: wppa_functions.php:1678
 msgid "View the album"
 msgstr "Ver el álbum"
 
-#: wppa_functions.php:1632
+#: wppa_functions.php:1609
 msgid "View the cover photo"
 msgstr "Ver la foto de portada"
 
-#: wppa_functions.php:1633
+#: wppa_functions.php:1610
 #, fuzzy
 msgid "View the cover photos"
 msgstr "Ver la foto de portada"
 
-#: wppa_functions.php:1692
+#: wppa_functions.php:1669
 #, fuzzy
 msgid "Browse photos"
 msgstr "Barra de Navegación de fotos:"
 
-#: wppa_functions.php:1701
+#: wppa_functions.php:1679
 msgid "View"
 msgstr "Ver"
 
-#: wppa_functions.php:1704
+#: wppa_functions.php:1682
 msgid "album"
 msgstr "el álbum"
 
-#: wppa_functions.php:1707
+#: wppa_functions.php:1685
 msgid "albums"
 msgstr "los álbumes"
 
-#: wppa_functions.php:1711
+#: wppa_functions.php:1689
 msgid "and"
 msgstr "y"
 
-#: wppa_functions.php:1715
+#: wppa_functions.php:1693
 msgid "photo"
 msgstr "la foto"
 
-#: wppa_functions.php:1718
+#: wppa_functions.php:1696
 msgid "photos"
 msgstr "las fotos"
 
-#: wppa_functions.php:1884
+#: wppa_functions.php:1905
 msgid "Slower"
 msgstr "Más lento"
 
-#: wppa_functions.php:1886
+#: wppa_functions.php:1906
+#: wppa_non_admin.php:91
+msgid "Start"
+msgstr "Comenzar"
+
+#: wppa_functions.php:1907
 msgid "Faster"
 msgstr "Más rápido"
 
-#: wppa_functions.php:2102
+#: wppa_functions.php:1930
+msgid "Click to start/stop"
+msgstr ""
+
+#: wppa_functions.php:2136
 #, fuzzy
 msgid "Double click to start/stop slideshow running"
 msgstr "Comenzar Presentación Auto:"
 
-#: wppa_functions.php:2259
+#: wppa_functions.php:2297
 #, fuzzy
 msgid "- - - Rating enabled - - -"
 msgstr "- - - Enlaces de páginas - - -"
 
-#: wppa_functions.php:2268
+#: wppa_functions.php:2306
 #, fuzzy
 msgid "very low"
 msgstr "muy lento (2 s.)"
 
-#: wppa_functions.php:2269
+#: wppa_functions.php:2307
 #, fuzzy
 msgid "low"
 msgstr "Más lento"
 
-#: wppa_functions.php:2270
+#: wppa_functions.php:2308
 #, fuzzy
 msgid "average"
 msgstr "Guardar Cambios"
 
-#: wppa_functions.php:2271
+#: wppa_functions.php:2309
 #, fuzzy
 msgid "high"
 msgstr "derecha"
 
-#: wppa_functions.php:2272
+#: wppa_functions.php:2310
 msgid "very high"
 msgstr ""
 
-#: wppa_functions.php:2277
-#: wppa_functions.php:2282
+#: wppa_functions.php:2315
+#: wppa_functions.php:2320
 msgid "Average&nbsp;rating"
 msgstr ""
 
-#: wppa_functions.php:2291
-#: wppa_functions.php:2294
+#: wppa_functions.php:2329
+#: wppa_functions.php:2332
 msgid "My&nbsp;rating"
 msgstr ""
 
-#: wppa_functions.php:2297
+#: wppa_functions.php:2335
 msgid "You must login to vote"
 msgstr ""
 
-#: wppa_slideshow_widget.php:30
+#: wppa_non_admin.php:92
+#, fuzzy
+msgid "Stop"
+msgstr "arriba"
+
+#: wppa_non_admin.php:93
+msgid "Photo"
+msgstr "Foto"
+
+#: wppa_non_admin.php:94
+msgid "of"
+msgstr "de"
+
+#: wppa_non_admin.php:95
+#, fuzzy
+msgid "Prev.&nbsp;photo"
+msgstr "Anterior"
+
+#: wppa_non_admin.php:96
+#, fuzzy
+msgid "Next&nbsp;photo"
+msgstr "Siguiente"
+
+#: wppa_non_admin.php:97
+#, fuzzy
+msgid "Prev."
+msgstr "aquí."
+
+#: wppa_non_admin.php:98
+msgid "Next"
+msgstr ""
+
+#: wppa_slideshow_widget.php:28
 #, fuzzy
 msgid "Sidebar Slideshow"
 msgstr "Sidebar Widget"
 
-#: wppa_slideshow_widget.php:76
+#: wppa_slideshow_widget.php:80
 #, fuzzy
 msgid "No album defined yet."
 msgstr "No hay álbumes."
 
-#: wppa_toptenwidget.php:53
+#: wppa_toptenwidget.php:48
+#, fuzzy
+msgid "View the top rated photos"
+msgstr "Ver la foto de portada"
+
+#: wppa_toptenwidget.php:62
+#: wppa_widget.php:49
 msgid "Photo not found."
 msgstr "Foto no encontrada."
 
-#: wppa_widget.php:26
+#: wppa_widget.php:24
 #, fuzzy
 msgid "Photo Of The Day"
 msgstr "Foto del día"
@@ -1994,9 +2013,6 @@ msgstr "No se encontraron álbumes o fotos con su búsqueda."
 #~ msgstr ""
 #~ "Si la línea de puntos deja de cargar o su navegador anuncia que ha "
 #~ "terminado, su servidor ha fallado. En ese caso: intente de nuevo"
-
-#~ msgid "here."
-#~ msgstr "aquí."
 
 #~ msgid "No files to import."
 #~ msgstr "No hay archivos para importar."

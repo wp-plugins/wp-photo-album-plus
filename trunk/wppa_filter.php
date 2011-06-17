@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * get the albums via filter
-* version 3.0.5
+* version 3.0.6
 *
 */
 
@@ -158,12 +158,20 @@ global $wppa;
 
 function wppa_atoi($var) {
 	$result = '0';
-	$len = 0;
-	$t = $result;
-	while (is_numeric($t)) {
-		$result = $t;
-		$len++;
-		$t = substr($var, 0, $len);		
+	if (substr($var, 0, 1) == '#') {	// a keyword found
+		$to = strpos($var, '%%');
+		if ($to) {
+			$result = substr($var, 0, $to);
+		}
+	}
+	else {
+		$len = 0;
+		$t = $result;
+		while (is_numeric($t)) {
+			$result = $t;
+			$len++;
+			$t = substr($var, 0, $len);		
+		}
 	}
 	return $result;
 }

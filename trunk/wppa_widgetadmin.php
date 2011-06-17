@@ -3,7 +3,8 @@
 * Pachkage: wp-photo-album-plus
 *
 * admin sidebar widget
-* version 3.0.4
+* version 3.0.6
+*
 */
 
 function wppa_sidebar_page_options() {
@@ -26,7 +27,7 @@ function wppa_sidebar_page_options() {
 		} else {
 			$options_error = true;
 		}
-
+/*
 		if (wppa_check_numeric($_POST['wppa-widget-padding-top'], '0', __('Widget Photo Padding.'))) {
 			update_option('wppa_widget_padding_top', $_POST['wppa-widget-padding-top']);
 		} else {
@@ -38,7 +39,7 @@ function wppa_sidebar_page_options() {
 		} else {
 			$options_error = true;
 		}
-
+*/
 		if (isset($_POST['wppa-widget-albums'])) update_option('wppa_widget_album', wppa_walbum_sanitize($_POST['wppa-widget-albums']));
 		if (isset($_POST['wppa-widget-photo'])) update_option('wppa_widget_photo', $_POST['wppa-widget-photo']);
 		if (isset($_POST['wppa-widget-method'])) update_option('wppa_widget_method', $_POST['wppa-widget-method']);
@@ -57,13 +58,13 @@ function wppa_sidebar_page_options() {
 
 ?>
 	<div class="wrap">
-		<?php $iconurl = get_bloginfo('wpurl') . '/wp-content/plugins/' . WPPA_PLUGIN_PATH . '/images/settings32.png'; ?>
+		<?php $iconurl = WPPA_URL.'/images/settings32.png'; ?>
 		<div id="icon-album" class="icon32" style="background: transparent url(<?php echo($iconurl); ?>) no-repeat">
 			<br />
 		</div>
 		<h2><?php _e('WP Photo Album Plus Sidebar Widget Settings', 'wppa'); ?></h2>
 		
-		<form action="<?php echo(get_admin_url()) ?>/admin.php?page=wppa_sidebar_options" method="post">
+		<form action="<?php echo(wppa_dbg_url(get_admin_url().'/admin.php?page=wppa_sidebar_options')) ?>" method="post">
 			<?php wppa_nonce_field('$wppa_nonce', WPPA_NONCE); ?>
 
 			<table class="form-table albumtable">
@@ -83,11 +84,11 @@ function wppa_sidebar_page_options() {
 						</th>
 						<td>
 							<input type="text" name="wppa-widget-width" id="wppa-widget-width" value="<?php echo(get_option('wppa_widget_width', '150')); ?>" style="width: 50px;" />
-							<?php _e('pixels.', 'wppa'); echo(' '); _e('Padding top:', 'wppa'); ?>
+<!--							<?php _e('pixels.', 'wppa'); echo(' '); _e('Padding top:', 'wppa'); ?>
 							<input type="text" name="wppa-widget-padding-top" id="wppa-widget-padding-top" value="<?php echo(get_option('wppa_widget_padding_top', '5')); ?>" style="width: 50px;" />
 							<?php _e('pixels.', 'wppa'); echo(' '); _e('Padding left:', 'wppa'); ?>
 							<input type="text" name="wppa-widget-padding-left" id="wppa-widget-padding-left" value="<?php echo(get_option('wppa_widget_padding_left', '5')); ?>" style="width: 50px;" />
-							<?php _e('pixels.', 'wppa'); ?>
+-->							<?php _e('pixels.', 'wppa'); ?>
 							<span class="description"><br/><?php _e('Enter the desired display width of the photo in the sidebar.', 'wppa'); ?></span>
 						</td>
 					</tr>
@@ -104,7 +105,7 @@ function wppa_sidebar_page_options() {
 								var album = document.getElementById('wppa-wa').value;
 								if (album != 'all' && album != 'sep' && album != 'all-sep')
 									album = document.getElementById('wppa-was').value + ',' + album;
-								var url = "<?php echo(get_admin_url()) ?>/admin.php?page=wppa_sidebar_options&walbum=" + album;
+								var url = "<?php echo(wppa_dbg_url(get_admin_url().'/admin.php?page=wppa_sidebar_options')) ?>&walbum=" + album;
 								document.location.href = url;
 							}
 							/* ]]> */

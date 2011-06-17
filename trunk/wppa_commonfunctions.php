@@ -2,10 +2,12 @@
 /* wppa_commonfinctions.php
 *
 * Functions used in admin and in themes
-* version 3.0.5
+* version 3.0.6
+*
+* dbg
 */
 global $wppa_api_version;
-$wppa_api_version = '3-0-5-001';
+$wppa_api_version = '3-0-6-000';
 // Initialize globals and option settings
 function wppa_initialize_runtime($force = false) {
 global $wppa;
@@ -33,6 +35,7 @@ global $wppa_api_version;
 			'is_slide' => '0',
 			'is_slideonly' => '0',
 			'film_on' => '0',
+			'browse_on' => '0',
 			'single_photo' => '',
 			'is_mphoto' => '0',
 			'start_album' => '',
@@ -111,8 +114,8 @@ global $wppa_api_version;
 			'wppa_fontsize_fulltitle' => '',
 			'wppa_fontcolor_fulltitle' => '',
 			'wppa_arrow_color' => '',
-			'wppa_widget_padding_top' => '',
-			'wppa_widget_padding_left' => '',
+//			'wppa_widget_padding_top' => '',
+//			'wppa_widget_padding_left' => '',
 			'wppa_2col_treshold' => '',
 			'wppa_3col_treshold' => '',
 			'wppa_film_show_glue' => '',
@@ -129,6 +132,7 @@ global $wppa_api_version;
 			'wppa_show_browse_navigation' => '',
 			'wppa_show_full_desc' => '',
 			'wppa_show_full_name' => '',
+			'wppa_show_cover_text' => '',
 			'wppa_start_slide' => '',
 			'wppa_hide_slideshow' => '',
 			'wppa_filmstrip' => '',
@@ -162,12 +166,19 @@ global $wppa_api_version;
 			'wppa_search_linkpage' => '',
 			'wppa_chmod' => '',
 			'wppa_setup' => '',
+			'wppa_allow_debug' => '',
 			'permalink_structure' => ''			// This must be last
 		);
 		array_walk($wppa_opt, 'wppa_set_options');
 	}
 	wppa_load_language();
+	
+	if (isset($_GET['debug']) && $wppa_opt['wppa_allow_debug']) {
+		$key = $_GET['debug'] ? $_GET['debug'] : E_ALL;
+		$wppa['debug'] = $key;
+	}
 }
+
 function wppa_set_options($value, $key) {
 global $wppa_opt;
 
@@ -210,24 +221,28 @@ global $wppa;
 		$bret = load_textdomain($domain, $mofile);
 	}
 	
-	if ($wppa['debug']) {
-		echo('<span style="color:blue"><small>Lang='.$lang.', Locale='.$locale.', Mofile='.$mofile);
-		if (is_file($mofile)) echo(' exists.'); else echo(' does not exist.');
+	if ($wppa['debug']) {	// Diagnostic
+		$wppa['out'] .= '<span style="color:blue"><small>Lang='.$lang.', Locale='.$wppa_locale.', Mofile='.$mofile;
+		if (is_file($mofile)) $wppa['out'] .= ' exists.'; else $wppa['out'] .= ' does not exist.';
 		if (!$bret) $bret = '0';
-		echo(', loaded='.$bret.'.</small></span><br/>');	// Diagnostic
+		$wppa['out'] .= ', loaded='.$bret.'.</small></span><br/>';	
 	}
 }
 
-// After this appears in the header, rendering will be to full html
-function wppa_enable_rendering() {
-global $wppa;
-	$wppa['rendering_enabled'] = true;
-	echo("\n<!-- WPPA+ Rendering enabled -->\n");
+function wppa_phpinfo($key = -1) {
+	if (is_int($key)) $k = $key; else $k = intval($key);
+	if (!$k) $k = -1;
+	echo("\n".'<div style="width:600px; margin: 24px auto;">'."\n");
+	phpinfo($k);
+	echo("\n".'</div>'."\n");
+	echo("\n".'<style type="text/css">');
+	echo("\n\ta:link {color: #990000; text-decoration: none; background-color: transparent;}");
+	echo("\n</style>");
 }
 
 // get the url to the plugins image directory
 function wppa_get_imgdir() {
-	$result = get_bloginfo('wpurl').'/wp-content/plugins/'.WPPA_PLUGIN_PATH.'/images/';
+	$result = WPPA_URL.'/images/';
 	return $result;
 }
 
@@ -410,3 +425,20 @@ function wppa_qtrans($output, $lang = '') {
 	return $output;
 }
 
+function wppa_dbg_msg($txt='') {
+	echo('<span style="color:blue;"><small>'.$txt.'</small></span><br/>');
+}
+
+function wppa_dbg_url($link, $js = '') {
+global $wppa;
+	$result = $link;
+	if ($wppa['debug']) {
+		if (strpos($result, '?')) {
+			if ($js == 'js') $result .= '&';
+			else $result .= '&amp;';
+		}
+		else $result .= '?';
+		$result .= 'debug='.$wppa['debug'];
+	}
+	return $result;
+}

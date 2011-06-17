@@ -6,7 +6,7 @@
 *
 * A text widget that hooks the wppa+ filter
 *
-* Version 3.0.5
+* Version 3.0.6
 */
 
 class WppaGpWidget extends WP_Widget {
@@ -63,7 +63,7 @@ class WppaGpWidget extends WP_Widget {
 		<p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:'); ?></label>
 		<input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo esc_attr($title); ?>" /></p>
 		<p><?php _e('Enter the content just like a normal text widget. This widget will interprete %%wppa%% script commands.', 'wppa'); ?></p>
-		<p><?php _e('Don\'t forget %%size=', 'wppa'); echo get_option('wppa_widget_width', '190'); ?>&#37;&#37;</p>
+		<p><?php echo (sprintf(__('Don\'t forget %%%%size=%s%%%%', 'wppa'), get_option('wppa_widget_width', '190'))) ?></p>
 
 		<textarea class="widefat" rows="16" cols="20" id="<?php echo $this->get_field_id('text'); ?>" name="<?php echo $this->get_field_name('text'); ?>"><?php echo $text; ?></textarea>
 

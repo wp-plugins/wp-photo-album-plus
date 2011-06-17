@@ -102,6 +102,31 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 
 == Changelog ==
 
+= 3.0.6 =
+
+= New features =
+
+* You can now easily disable the display of all text except the album title from the albumcover. Table II item 17.
+* You can append &debug (?debug if it is the first argument) in the adress bar of the browser to switch debug mode on.
+An optional integer can be set to set the php error reporting switches. Default =  (E_ALL). Example: &debug=-1 (switches everything on: wppa debug, php's E_ALL and E_STRICT).
+This feature can be anabled/disabled by the setting in Table IX item 5.
+If switched on, the WPPA+ system will produce diagnostic messages, together with the normal php errors and warnings.
+It works for both admin as well as site views. Links within the WPPA+ system include the debug switch (and optional value).
+The main wp admin menu items are beyond the scope of this feature. Press the menuitem, append &debug to the adressbar here.
+* You can optionally switch the filmstrip and/or the browsebar on in the slideshow widget.
+* Clicking the counter (Photo xx of yy, or xx / yy in the mini version) will start/stop the slideshow.
+* You can specify an album for the topten widget. Now it is usefull to have more than one topten widget by using different albums.
+* A start has been made with 'keywords' in places of numbers. You can issue the script command: %%photo=#potd%% to use the photo of the day in a page or post.
+
+= Enhancements =
+
+* In a widget, the album cover text will appear above or below the cover photo. This can be set by the coverphoto left/right switch. Table IV item 13.
+This works also for "thumbnail as covers".
+* The Photo of the day widget photo will be centered horizontally, no padding setting is required anymore.
+* The filmstrip will be half the normal size in widgets.
+
+= Bug fixes =
+
 = 3.0.5 =
 
 = Bug fixes =

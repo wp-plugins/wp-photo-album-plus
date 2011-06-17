@@ -3,7 +3,8 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the upload/import pages and functions
-* Version 3.0.3
+* Version 3.0.6
+*
 */
 
 function wppa_page_upload() {
@@ -22,8 +23,6 @@ global $target;
 	wppa_cleanup_photos();
 	wppa_sanitize_files($user);
 
-	@set_time_limit(300); 
-
 	// Do the upload if requested
 	if (isset($_POST['wppa-upload'])) {
 		wppa_check_admin_referer( '$wppa_nonce', WPPA_NONCE );
@@ -35,7 +34,7 @@ global $target;
 		if (isset($_POST['wppa-go-import']) && $err == '0') { 
 			wppa_ok_message(__('Connecting to your depot...', 'wppa'));
 			update_option('wppa_import_source_'.$user, 'wp-content/wppa-depot/'.$user); ?>
-			<script type="text/javascript">document.location = '<?php echo get_admin_url() ?>/admin.php?page=import_photos&zip=<?php echo $target ?>';</script>
+			<script type="text/javascript">document.location = '<?php echo(wppa_dbg_url(get_admin_url().'/admin.php?page=import_photos&zip='.$target, 'js')) ?>';</script>
 		<?php }
 	} 
 	
@@ -46,14 +45,14 @@ global $target;
 	?>
 	
 	<div class="wrap">
-		<?php $iconurl = get_bloginfo('wpurl') . '/wp-content/plugins/' . WPPA_PLUGIN_PATH . '/images/camera32.png'; ?>
+		<?php $iconurl = WPPA_URL.'/images/camera32.png'; ?>
 		<div id="icon-camera" class="icon32" style="background: transparent url(<?php echo($iconurl); ?>) no-repeat">
 			
 		</div>
-		<?php $iconurl = get_bloginfo('wpurl') . '/wp-content/plugins/' . WPPA_PLUGIN_PATH . '/images/arrow32.png'; ?>
+		<?php $iconurl = WPPA_URL.'/images/arrow32.png'; ?>
 		<div id="icon-arrow" class="icon32" style="background: transparent url(<?php echo($iconurl); ?>) no-repeat">
 		</div>
-		<?php $iconurl = get_bloginfo('wpurl') . '/wp-content/plugins/' . WPPA_PLUGIN_PATH . '/images/album32.png'; ?>
+		<?php $iconurl = WPPA_URL.'/images/album32.png'; ?>
 		<div id="icon-album" class="icon32" style="background: transparent url(<?php echo($iconurl); ?>) no-repeat">
 			<br />
 		</div>
@@ -79,7 +78,7 @@ global $target;
 			<div style="border:1px solid #ccc; padding:10px; margin-bottom:10px; width: 600px;">
 				<h3 style="margin-top:0px;"><?php _e('Single Photos', 'wppa'); ?></h3><br />
 				<?php //_e('You can select up to 15 photos one by one and upload them at once.', 'wppa'); ?>
-				<form enctype="multipart/form-data" action="<?php echo(get_admin_url()) ?>/admin.php?page=upload_photos" method="post">
+				<form enctype="multipart/form-data" action="<?php echo(wppa_dbg_url(get_admin_url().'/admin.php?page=upload_photos')) ?>" method="post">
 				<?php wppa_nonce_field('$wppa_nonce', WPPA_NONCE); ?>
 					<input id="my_file_element" type="file" name="file_1" />
 					<div id="files_list">
@@ -103,7 +102,7 @@ global $target;
 				<div style="border:1px solid #ccc; padding:10px; width: 600px;">
 					<h3 style="margin-top:0px;"><?php _e('Zipped Photos', 'wppa'); ?></h3><br />
 					<?php _e('You can upload one zipfile at once. It will be placed in your personal wppa-depot.<br/>Once uploaded, use <b>Import Photos</b> to unzip the file and place the photos in any album.', 'wppa') ?>
-					<form enctype="multipart/form-data" action="<?php echo(get_admin_url()) ?>/admin.php?page=upload_photos" method="post">
+					<form enctype="multipart/form-data" action="<?php echo(wppa_dbg_url(get_admin_url().'/admin.php?page=upload_photos')) ?>" method="post">
 					<?php wppa_nonce_field('$wppa_nonce', WPPA_NONCE); ?>
 						<input id="my_zipfile_element" type="file" name="file_zip" /><br/><br/>
 						<input type="submit" class="button-primary" name="wppa-upload-zip" value="<?php _e('Upload Zipped Photos', 'wppa') ?>" />
@@ -118,7 +117,8 @@ global $target;
 			<?php }
 		}
 	else { ?>
-			<p><?php _e('No albums exist. You must', 'wppa'); ?> <a href="admin.php?page=<?php echo(WPPA_PLUGIN_PATH) ?>/wppa.php"><?php _e('create one', 'wppa'); ?></a> <?php _e('beofre you can upload your photos.', 'wppa'); ?></p>
+			<?php $url = wppa_dbg_url(get_admin_url().'admin.php?page='.WPPA_FILE); ?>
+			<p><?php _e('No albums exist. You must', 'wppa'); ?> <a href="<?php echo($url) ?>"><?php _e('create one', 'wppa'); ?></a> <?php _e('beofre you can upload your photos.', 'wppa'); ?></p>
 <?php } ?>
 	</div>
 <?php
@@ -161,11 +161,11 @@ function wppa_page_import() {
 ?>
 	
 	<div class="wrap">
-		<?php $iconurl = get_bloginfo('wpurl') . '/wp-content/plugins/' . WPPA_PLUGIN_PATH . '/images/camera32.png'; ?>
+		<?php $iconurl = WPPA_URL.'/images/camera32.png'; ?>
 		<div id="icon-camera" class="icon32" style="background: transparent url(<?php echo($iconurl); ?>) no-repeat"></div>
-		<?php $iconurl = get_bloginfo('wpurl') . '/wp-content/plugins/' . WPPA_PLUGIN_PATH . '/images/arrow32.png'; ?>
+		<?php $iconurl = WPPA_URL.'/images/arrow32.png'; ?>
 		<div id="icon-arrow" class="icon32" style="background: transparent url(<?php echo($iconurl); ?>) no-repeat"></div>
-		<?php $iconurl = get_bloginfo('wpurl') . '/wp-content/plugins/' . WPPA_PLUGIN_PATH . '/images/album32.png'; ?>
+		<?php $iconurl = WPPA_URL.'/images/album32.png'; ?>
 		<div id="icon-album" class="icon32" style="background: transparent url(<?php echo($iconurl); ?>) no-repeat"><br /></div>
 		
 		<h2><?php _e('Import Photos', 'wppa'); ?></h2><br />
@@ -184,7 +184,7 @@ function wppa_page_import() {
 		$photocount = wppa_get_photocount($files);
 		$is_depot = ($source == 'wp-content/wppa-depot/'.$user); ?>
 		
-		<form action="<?php echo(get_admin_url()) ?>/admin.php?page=import_photos" method="post">
+		<form action="<?php echo(wppa_dbg_url(get_admin_url().'/admin.php?page=import_photos')) ?>" method="post">
 		<?php wppa_nonce_field('$wppa_nonce', WPPA_NONCE); ?>
 		<?php _e('Import photos from:', 'wppa'); ?>
 			<select name="wppa-source">
@@ -202,7 +202,7 @@ function wppa_page_import() {
 	
 		if ($photocount > '0' || $albumcount > '0' || $zipcount >'0') { ?>
 		
-			<form action="<?php echo(get_admin_url()) ?>/admin.php?page=import_photos" method="post">
+			<form action="<?php echo(wppa_dbg_url(get_admin_url().'/admin.php?page=import_photos')) ?>" method="post">
 			<?php wppa_nonce_field('$wppa_nonce', WPPA_NONCE); 
 			
 			if (PHP_VERSION_ID >= 50207 && $zipcount > '0') { ?>		
@@ -316,7 +316,8 @@ function wppa_page_import() {
 		}
 	}
 	else { ?>
-		<p><?php _e('No albums exist. You must', 'wppa'); ?> <a href="admin.php?page=<?php echo(WPPA_PLUGIN_PATH) ?>/wppa.php"><?php _e('create one', 'wppa'); ?></a> <?php _e('beofre you can upload your photos.', 'wppa'); ?></p>
+		<?php $url = wppa_dbg_url(get_admin_url().'admin.php?page='.WPPA_FILE); ?>
+		<p><?php _e('No albums exist. You must', 'wppa'); ?> <a href="<?php echo($url) ?>"><?php _e('create one', 'wppa'); ?></a> <?php _e('beofre you can upload your photos.', 'wppa'); ?></p>
 <?php } ?>
 	</div>
 <?php
@@ -432,7 +433,7 @@ global $warning_given;
 				$parent = '0';
 				$porder = '0';
 				$owner = '';
-				$handle = @fopen($album, "r");
+				$handle = fopen($album, "r");
 				if ($handle) {
 					$buffer = fgets($handle, 4096);
 					while (!feof($handle)) {
@@ -503,7 +504,7 @@ global $warning_given;
 	$idx='0';
 	$pcount = '0';
 	if (isset($_POST['wppa-album'])) $album = $_POST['wppa-album']; else $album = '0';
-	wppa_ok_message(__('Processing files, please wait...', 'wppa').' '.__('If the line of dots stops growing or you browser reports Ready, your server has given up. In that case: try again', 'wppa').' <a href="'.get_admin_url().'/admin.php?page=import_photos">'.__('here.', 'wppa').'</a>');
+	wppa_ok_message(__('Processing files, please wait...', 'wppa').' '.__('If the line of dots stops growing or your browser reports Ready, your server has given up. In that case: try again', 'wppa').' <a href="'.wppa_dbg_url(get_admin_url().'admin.php?page=import_photos').'">'.__('here.', 'wppa').'</a>');
 	foreach ($files as $file) {
 		if (isset($_POST['file-'.$idx])) {
 			$ext = strtolower(substr(strrchr($file, "."), 1));
@@ -717,7 +718,7 @@ function wppa_get_meta_data($file, $item, $opt) {
 	if ($opt == '{') $opt2 = '}';
 	if ($opt == '[') $opt2 = ']';
 	if (is_file($file)) {
-		$handle = @fopen($file, "r");
+		$handle = fopen($file, "r");
 		if ($handle) {
 			while (($buffer = fgets($handle, 4096)) !== false) {
 				if (substr($buffer, 0, 5) == $item.'=') {
@@ -850,18 +851,15 @@ function wppa_cleanup_photos($alb = '') {
 // Check if the required directories exist, if not, try to create them and report it
 function wppa_check_dirs() {
 
-	@define('WP_DEBUG', true);	
-
 	// check if uploads dir exists
 	$dir = ABSPATH . 'wp-content/uploads';
 	if (!is_dir($dir)) {
-		@mkdir($dir);
+		mkdir($dir);
 		if (!is_dir($dir)) {
 			wppa_error_message(__('The uploads directory does not exist, please do a regular WP upload first.', 'wppa'));
 			return false;
 		}
 		else {
-//			@chmod($dir, 0755);
 			wppa_ok_message(__('Successfully created uploads directory.', 'wppa'));
 		}
 	}	
@@ -869,13 +867,12 @@ function wppa_check_dirs() {
 	// check if wppa dir exists
 	$dir = ABSPATH . 'wp-content/uploads/wppa';
 	if (!is_dir($dir)) {
-		@mkdir($dir);
+		mkdir($dir);
 		if (!is_dir($dir)) {
 			wppa_error_message(__('Could not create the wppa directory.', 'wppa').wppa_credirmsg($dir));
 			return false;
 		}
 		else {
-//			@chmod($dir, 0755);
 			wppa_ok_message(__('Successfully created wppa directory.', 'wppa'));
 		}
 	}
@@ -883,13 +880,12 @@ function wppa_check_dirs() {
 	// check if thumbs dir exists 
 	$dir = ABSPATH . 'wp-content/uploads/wppa/thumbs';
 	if (!is_dir($dir)) {
-		@mkdir($dir);
+		mkdir($dir);
 		if (!is_dir($dir)) {
 			wppa_error_message(__('Could not create the wppa thumbs directory.', 'wppa').wppa_credirmsg($dir));
 			return false;
 		}
 		else {
-//			@chmod($dir, 0755);
 			wppa_ok_message(__('Successfully created wppa thumbs directory.', 'wppa'));
 		}
 	}
@@ -897,13 +893,12 @@ function wppa_check_dirs() {
 	// check if depot dir exists
 	$dir = ABSPATH . 'wp-content/wppa-depot';
 	if (!is_dir($dir)) {
-		@mkdir($dir);
+		mkdir($dir);
 		if (!is_dir($dir)) {
 			wppa_error_message(__('Unable to create depot directory', 'wppa').wppa_credirmsg($dir));
 			return false;
 		}
 		else {
-//			@chmod($dir, 0755);
 			wppa_ok_message(__('Successfully created wppa master depot directory.', 'wppa'));
 		}
 	}
@@ -911,13 +906,12 @@ function wppa_check_dirs() {
 	// check if users depot dir exists
 	$dir = ABSPATH . 'wp-content/wppa-depot/'.wppa_get_user();
 	if (!is_dir($dir)) {
-		@mkdir($dir);
+		mkdir($dir);
 		if (!is_dir($dir)) {
 			wppa_error_message(__('Unable to create user depot directory.', 'wppa').wppa_credirmsg($dir));
 			return false;
 		}
 		else {
-//			@chmod($depot, 0755);
 			wppa_ok_message(__('Successfully created wppa user depot directory.', 'wppa'));
 		}
 	}
@@ -998,26 +992,32 @@ function wppa_extract($path, $delz) {
 // dus...
 
 	$err = '0';
-	$ext = strtolower(substr(strrchr($path, "."), 1));
-	if ($ext == 'zip') {
-		$zip = new ZipArchive;
-		if ($zip->open($path) === true) {
-// 			this for-loop replaces the $zip->extractTo() line
-		    for($i = 0; $i < $zip->numFiles; $i++) {
-				$filename = $zip->getNameIndex($i);
-				$fileinfo = pathinfo($filename);
-				copy("zip://".$path."#".$filename, ABSPATH."wp-content/wppa-depot/".wppa_get_user()."/".$fileinfo['basename']);
-			}                  
-//			$zip->extractTo(ABSPATH . 'wp-content/wppa-depot/'.wppa_get_user().'/');
-			$zip->close();
-			wppa_ok_message(__('Zipfile', 'wppa').' '.basename($path).' '.__('extracted.', 'wppa'));
-			if ($delz) unlink($path);
-		} else {
-			wppa_error_message(__('Failed to extract', 'wppa').' '.$path);
-			$err = '1';
-		}
+	if (!class_exists('ZipArchive')) {
+		$err = '3';
+		wppa_error_message(__('Class ZipArchive does not exist! Check your php configuration', 'wppa'));
 	}
-	else $err = '2';
+	else {
+		$ext = strtolower(substr(strrchr($path, "."), 1));
+		if ($ext == 'zip') {
+			$zip = new ZipArchive;
+			if ($zip->open($path) === true) {
+	// 			this for-loop replaces the $zip->extractTo() line
+				for($i = 0; $i < $zip->numFiles; $i++) {
+					$filename = $zip->getNameIndex($i);
+					$fileinfo = pathinfo($filename);
+					copy("zip://".$path."#".$filename, ABSPATH."wp-content/wppa-depot/".wppa_get_user()."/".$fileinfo['basename']);
+				}                  
+	//			$zip->extractTo(ABSPATH . 'wp-content/wppa-depot/'.wppa_get_user().'/');
+				$zip->close();
+				wppa_ok_message(__('Zipfile', 'wppa').' '.basename($path).' '.__('extracted.', 'wppa'));
+				if ($delz) unlink($path);
+			} else {
+				wppa_error_message(__('Failed to extract', 'wppa').' '.$path);
+				$err = '1';
+			}
+		}
+		else $err = '2';
+	}
 	
 	return $err;
 }

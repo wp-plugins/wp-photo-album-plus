@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Photo Album Plus 2.4.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-05-10 13:37+0100\n"
-"PO-Revision-Date: 2011-05-10 13:37+0100\n"
+"POT-Creation-Date: 2011-06-17 15:53+0100\n"
+"PO-Revision-Date: 2011-06-17 15:53+0100\n"
 "Last-Translator: J.N. Breetvelt <OpaJaap@OpaJaap.nl>\n"
 "Language-Team: BNG NET <webmaster@bng.net>\n"
 "MIME-Version: 1.0\n"
@@ -23,28 +23,28 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPath-1: theme\n"
 
-#: wppa_commonfunctions.php:272
+#: wppa_commonfunctions.php:320
 #, php-format
 msgid "Rating: %s"
 msgstr "投票: %s"
 
-#: wppa_commonfunctions.php:342
+#: wppa_commonfunctions.php:390
 msgid "--- none ---"
 msgstr "--- なし ---"
 
-#: wppa_commonfunctions.php:343
+#: wppa_commonfunctions.php:391
 msgid "--- separate ---"
 msgstr "--- セパレート---"
 
-#: wppa_functions.php:29
+#: wppa_functions.php:31
 msgid "There are"
 msgstr " "
 
-#: wppa_functions.php:29
+#: wppa_functions.php:31
 msgid "photo albums. The last album added is"
 msgstr "件のフォトアルバムがあります。最新のアルバムは"
 
-#: wppa_functions.php:33
+#: wppa_functions.php:35
 msgid ", a subalbum of"
 msgstr "、次のアルバムのサブアルバム: "
 
@@ -53,8 +53,8 @@ msgid "Home"
 msgstr "ホーム"
 
 #: wppa_functions.php:124
-#: wppa_functions.php:1201
-#: wppa_functions.php:1692
+#: wppa_functions.php:1669
+#: wppa_non_admin.php:90
 msgid "Slideshow"
 msgstr "スライドショー"
 
@@ -66,156 +66,175 @@ msgstr "検索文字:"
 msgid "Top rated photos"
 msgstr "評価の高い写真"
 
-#: wppa_functions.php:765
+#: wppa_functions.php:784
 msgid "<b>ERROR: Attempt to enter an invalid rating.</b>"
 msgstr "<b>エラー: 不当な評価の入力が試みられました。</b>"
 
-#: wppa_functions.php:1128
+#: wppa_functions.php:1141
 msgid "Prev.&nbsp;page"
 msgstr "前の&nbsp;ページ"
 
-#: wppa_functions.php:1132
+#: wppa_functions.php:1145
 msgid "Next&nbsp;page"
 msgstr "次の&nbsp;ページ"
 
-#: wppa_functions.php:1202
-#: wppa_functions.php:1885
-msgid "Start"
-msgstr "開始"
-
-#: wppa_functions.php:1203
-msgid "Stop"
-msgstr "停止"
-
-#: wppa_functions.php:1204
-msgid "Photo"
-msgstr "写真"
-
-#: wppa_functions.php:1205
-msgid "of"
-msgstr "/"
-
-#: wppa_functions.php:1206
-msgid "Prev.&nbsp;photo"
-msgstr "前の&nbsp;写真"
-
-#: wppa_functions.php:1207
-msgid "Next&nbsp;photo"
-msgstr "次の&nbsp;写真"
-
-#: wppa_functions.php:1617
+#: wppa_functions.php:1594
 msgid "Link to"
 msgstr "リンク先:"
 
-#: wppa_functions.php:1621
+#: wppa_functions.php:1598
 msgid "Page is not available."
 msgstr "ページが利用できません。"
 
-#: wppa_functions.php:1627
-#: wppa_functions.php:1700
+#: wppa_functions.php:1604
+#: wppa_functions.php:1678
 msgid "View the album"
 msgstr "アルバムの閲覧"
 
-#: wppa_functions.php:1632
+#: wppa_functions.php:1609
 msgid "View the cover photo"
 msgstr "カバーフォトの閲覧"
 
-#: wppa_functions.php:1633
+#: wppa_functions.php:1610
 msgid "View the cover photos"
 msgstr "カバーフォトの閲覧 "
 
-#: wppa_functions.php:1692
+#: wppa_functions.php:1669
 msgid "Browse photos"
 msgstr "写真をブラウズ"
 
-#: wppa_functions.php:1701
+#: wppa_functions.php:1679
 msgid "View"
 msgstr "閲覧"
 
-#: wppa_functions.php:1704
+#: wppa_functions.php:1682
 msgid "album"
 msgstr "アルバム "
 
-#: wppa_functions.php:1707
+#: wppa_functions.php:1685
 msgid "albums"
 msgstr "アルバム"
 
-#: wppa_functions.php:1711
+#: wppa_functions.php:1689
 msgid "and"
 msgstr "および"
 
-#: wppa_functions.php:1715
+#: wppa_functions.php:1693
 msgid "photo"
 msgstr "写真 "
 
-#: wppa_functions.php:1718
+#: wppa_functions.php:1696
 msgid "photos"
 msgstr "写真"
 
-#: wppa_functions.php:1884
+#: wppa_functions.php:1905
 msgid "Slower"
 msgstr "遅く"
 
-#: wppa_functions.php:1886
+#: wppa_functions.php:1906
+#: wppa_non_admin.php:91
+msgid "Start"
+msgstr "開始"
+
+#: wppa_functions.php:1907
 msgid "Faster"
 msgstr "速く"
 
-#: wppa_functions.php:2102
+#: wppa_functions.php:1930
+msgid "Click to start/stop"
+msgstr ""
+
+#: wppa_functions.php:2136
 #, fuzzy
 msgid "Double click to start/stop slideshow running"
 msgstr "スライドショーの開始:"
 
-#: wppa_functions.php:2259
+#: wppa_functions.php:2297
 msgid "- - - Rating enabled - - -"
 msgstr "- - - 評価有効 - - -"
 
-#: wppa_functions.php:2268
+#: wppa_functions.php:2306
 msgid "very low"
 msgstr "非常に低い"
 
-#: wppa_functions.php:2269
+#: wppa_functions.php:2307
 msgid "low"
 msgstr "低い"
 
-#: wppa_functions.php:2270
+#: wppa_functions.php:2308
 msgid "average"
 msgstr "平均"
 
-#: wppa_functions.php:2271
+#: wppa_functions.php:2309
 msgid "high"
 msgstr "高い"
 
-#: wppa_functions.php:2272
+#: wppa_functions.php:2310
 msgid "very high"
 msgstr "非常に高い"
 
-#: wppa_functions.php:2277
-#: wppa_functions.php:2282
+#: wppa_functions.php:2315
+#: wppa_functions.php:2320
 msgid "Average&nbsp;rating"
 msgstr "平均&nbsp;評価"
 
-#: wppa_functions.php:2291
-#: wppa_functions.php:2294
+#: wppa_functions.php:2329
+#: wppa_functions.php:2332
 msgid "My&nbsp;rating"
 msgstr "わたしの&nbsp;評価"
 
-#: wppa_functions.php:2297
+#: wppa_functions.php:2335
 msgid "You must login to vote"
 msgstr "投票にはログインが必須"
 
-#: wppa_slideshow_widget.php:30
+#: wppa_non_admin.php:92
+msgid "Stop"
+msgstr "停止"
+
+#: wppa_non_admin.php:93
+msgid "Photo"
+msgstr "写真"
+
+#: wppa_non_admin.php:94
+msgid "of"
+msgstr "/"
+
+#: wppa_non_admin.php:95
+msgid "Prev.&nbsp;photo"
+msgstr "前の&nbsp;写真"
+
+#: wppa_non_admin.php:96
+msgid "Next&nbsp;photo"
+msgstr "次の&nbsp;写真"
+
+#: wppa_non_admin.php:97
+#, fuzzy
+msgid "Prev."
+msgstr "ここ"
+
+#: wppa_non_admin.php:98
+msgid "Next"
+msgstr ""
+
+#: wppa_slideshow_widget.php:28
 msgid "Sidebar Slideshow"
 msgstr "サイドバースライドショー"
 
-#: wppa_slideshow_widget.php:76
+#: wppa_slideshow_widget.php:80
 msgid "No album defined yet."
 msgstr "アルバムが定義されていません。"
 
-#: wppa_toptenwidget.php:53
+#: wppa_toptenwidget.php:48
+#, fuzzy
+msgid "View the top rated photos"
+msgstr "カバーフォトの閲覧 "
+
+#: wppa_toptenwidget.php:62
+#: wppa_widget.php:49
 msgid "Photo not found."
 msgstr "写真が見当たりません。"
 
-#: wppa_widget.php:26
+#: wppa_widget.php:24
 msgid "Photo Of The Day"
 msgstr "本日の写真"
 
@@ -634,9 +653,6 @@ msgstr "検索条件に見合ったアルバムや写真は見あたりません
 
 #~ msgid "No files to import."
 #~ msgstr "インポートするファイルがありません。"
-
-#~ msgid "here."
-#~ msgstr "ここ"
 
 #~ msgid ""
 #~ "If the line of dots stops growing or you browser reports Ready, your "

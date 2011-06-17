@@ -1,7 +1,7 @@
 /* admin_scripts.js */
 /* Package: wp-photo-album-plus
 /*
-/* Version 3.0.2
+/* Version 3.0.6
 /* Various js routines used in admin pages		
 */
 

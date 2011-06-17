@@ -4,7 +4,7 @@
 *
 * admin help page
 * version 2.5.0
-*/
+*/ 
 
 function wppa_page_help() {
 global $wppa_revno;
