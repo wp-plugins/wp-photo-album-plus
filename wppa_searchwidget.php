@@ -3,7 +3,9 @@
 * Package: wp-photo-album-plus
 *
 * display the search widget
-* Version 3.0.0
+* Version 3.0.6
+*
+* dbg
 */
 
 class SearchPhotos extends WP_Widget {
@@ -31,7 +33,7 @@ class SearchPhotos extends WP_Widget {
 			_e('Warning. No page defined for search results!', 'wppa');
 		}
 		else {
-			$pagelink = get_page_link($page);
+			$pagelink = wppa_dbg_url(get_page_link($page));
 ?>
 			<form id="wppa_searchform" action="<?php echo($pagelink) ?>" method="post" class="widget_search">
 				<div>

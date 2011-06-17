@@ -3,7 +3,9 @@
 * Pachkage: wp-photo-album-plus
 *
 * gp admin functions
-* version 3.0.5
+* version 3.0.6
+*
+* dbg_url checked
 */
 
 // Set default option values
@@ -64,8 +66,8 @@ global $wppa_defaults;
 						'wppa_fontsize_fulltitle' => '',
 						'wppa_fontcolor_fulltitle' => '',
 						'wppa_arrow_color' => 'black',
-						'wppa_widget_padding_top' => '5',
-						'wppa_widget_padding_left' => '5',
+//						'wppa_widget_padding_top' => '5',
+//						'wppa_widget_padding_left' => '5',
 						'wppa_2col_treshold' => '1024',
 						'wppa_3col_treshold' => '1024',
 						'wppa_film_show_glue' => 'yes',
@@ -82,6 +84,7 @@ global $wppa_defaults;
 						'wppa_show_browse_navigation' => 'yes',
 						'wppa_show_full_desc' => 'yes',
 						'wppa_show_full_name' => 'yes',
+						'wppa_show_cover_text' => 'yes',
 						'wppa_start_slide' => 'yes',
 						'wppa_hide_slideshow' => 'no',
 						'wppa_filmstrip' => 'yes',
@@ -125,7 +128,8 @@ global $wppa_defaults;
 						'wppa_backup' => '',
 						'wppa_restore' => '',
 						'wppa_defaults' => '',
-						'wppa_regen' => ''
+						'wppa_regen' => '',
+						'wppa_allow_debug' => 'no'
 						);
 	
 	array_walk($wppa_defaults, 'wppa_set_default', $force);
@@ -203,8 +207,6 @@ function wppa_regenerate_thumbs() {
 	$thumbsize = wppa_get_minisize();
 	$wppa_dir = ABSPATH . 'wp-content/uploads/wppa/';
 
-	@define('WP_DEBUG', true);	
-	
     $start = get_option('wppa_lastthumb', '-1');
 
 	$photos = $wpdb->get_results($wpdb->prepare('SELECT * FROM `' . WPPA_PHOTOS . '` WHERE `id` > %d ORDER BY `id`', $start), 'ARRAY_A');
@@ -242,7 +244,10 @@ function wppa_create_thumbnail( $file, $max_side, $effect = '') {
 function wppa_check_update() {
 global $wppa_revno;
 	if (get_option('wppa_revision', '100') < $wppa_revno) {
-		wppa_error_message(__('The wppa database tables are not yet at the required revision level.', 'wppa').' '.__('Current=', 'wppa').get_option('wppa_revision', '100').' '.__('New=', 'wppa').$wppa_revno);
+		$msg = '';
+		$msg .= __('You probably performed an automatic update. Due to a WP bug not all actions that are required for an update have been executed yet.<br/><br/>', 'wppa');
+		$msg .= __('The wppa database tables are not yet at the required revision level.', 'wppa').' '.__('Current=', 'wppa').get_option('wppa_revision', '100').' '.__('New=', 'wppa').$wppa_revno;
+		wppa_error_message($msg);
 		wppa_setup();
 		if (get_option('wppa_revision', '100') < $wppa_revno) {
 			wppa_error_message(__('PLEASE DE-ACTIVATE the plugin WP-PHOTO-ALBUM-PLUS and ACTIVATE AGAIN before you continue!', 'wppa'));
@@ -498,9 +503,6 @@ global $current_user;
 function wppa_get_users() {
 global $wpdb;
 	$users = $wpdb->get_results('SELECT * FROM '.$wpdb->users, 'ARRAY_A');
-//	foreach ($users as $usr) {
-//		echo($usr['user_login'].'='.$usr['display_name'].'<br/>');
-//	}
 	return $users;
 }
 

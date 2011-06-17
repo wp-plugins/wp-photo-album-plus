@@ -2,7 +2,7 @@
 /* wppa_widgetfunctions.php
 /* Package: wp-photo-album-plus
 /*
-/* Version 3.0.0
+/* Version 3.0.6
 /*
 */
 
@@ -141,4 +141,64 @@ function wppa_walbum_sanitize($walbum) {
 	}
 //echo('In:'.$walbum.'Out:'.$result);	
 	return $result;
+}
+
+// get the photo of the day
+function wppa_get_potd() {
+global $wpdb;
+		switch (get_option('wppa_widget_method', '1')) {
+			case '1':	// Fixed photo
+				$id = get_option('wppa_widget_photo', '');
+				if ($id != '') {
+					$image = $wpdb->get_row($wpdb->prepare('SELECT * FROM `' . WPPA_PHOTOS . '` WHERE `id` = %d LIMIT 0,1', $id), 'ARRAY_A');
+				}
+				break;
+			case '2':	// Random
+				$album = get_option('wppa_widget_album', '');
+				if ($album != '') {
+					$images = wppa_get_widgetphotos($album, 'ORDER BY RAND() LIMIT 0,1');
+					$image = $images[0];
+				}
+				break;
+			case '3':	// Last upload
+				$album = get_option('wppa_widget_album', '');
+				if ($album != '') {
+					$images = wppa_get_widgetphotos($album, 'ORDER BY id DESC LIMIT 0,1');
+					$image = $images[0];
+				}
+				break;
+			case '4':	// Change every
+				$album = get_option('wppa_widget_album', '');
+				if ($album != '') {
+					$per = get_option('wppa_widget_period', '168');
+					$photos = wppa_get_widgetphotos($album);
+					if ($per == '0') {
+						if ($photos) {
+							$image = $photos[rand(0, count($photos)-1)];
+						}
+						else $image = '';
+					}
+					else {
+						$u = date("U"); // Seconds since 1-1-1970
+						$u /= 3600;		//  hours since
+						$u = floor($u);
+						$u /= $per;
+						$u = floor($u);
+						if ($photos) {
+							$p = count($photos); 
+							$idn = fmod($u, $p);
+							$image = $photos[$idn];
+						}
+						else {
+							$image = '';
+						}
+					}
+				} else {
+					$image = '';
+				}
+				break;
+			default:
+				$image = '';
+		}
+	return $image;
 }

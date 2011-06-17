@@ -3,7 +3,8 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 3.0.5
+* Version 3.0.6
+*
 */
 
 function wppa_page_options() {
@@ -75,7 +76,7 @@ global $options_error;
 				wppa_error_message(__('Requested action failed, possible setting updates ignored', 'wppa'));
 			}
 			else {
-				wppa_ok_message(__('Requested action performed, possible setting updates ignored', 'wppa'));
+				if ($slug != 'wppa_regen') wppa_ok_message(__('Requested action performed, possible setting updates ignored', 'wppa'));
 			}
 		}
 		
@@ -131,7 +132,8 @@ global $options_error;
 			wppa_update_check('wppa_rating_on');
 			wppa_update_check('wppa_thumb_text_name');
 			wppa_update_check('wppa_thumb_text_desc');
-			wppa_update_check('wppa_thumb_text_rating');	
+			wppa_update_check('wppa_thumb_text_rating');
+			wppa_update_check('wppa_show_cover_text');
 		
 			// Table 3: Backgrounds
 			wppa_update_value('wppa_bgcolor_even');
@@ -253,6 +255,7 @@ global $options_error;
 			wppa_update_value('wppa_search_linkpage');
 			wppa_update_check('wppa_excl_sep');
 			wppa_update_check('wppa_html');
+			wppa_update_check('wppa_allow_debug');
 		
 			// Done update options!
 			if ($options_error) wppa_update_message(__('Other changes saved', 'wppa'));
@@ -268,10 +271,21 @@ global $options_error;
 		$start = get_option('wppa_lastthumb', '-2');
 		if ($start != '-2') {
 			$start++; 
-			wppa_ok_message(__('Regenerating thumbnail images, starting at id=', 'wppa').$start.'. Please wait... '.__('If the line of dots stops growing or you browser reports Ready but you did NOT get a \'READY regenerating thumbnail images\' message, your server has given up. In that case: continue this action by clicking', 'wppa').' <a href="'.get_admin_url().'/admin.php?page=options">'.__('here', 'wppa').'</a>'.' '.__('and click "Save Changes" again.', 'wppa'));
+			
+			$msg = sprintf(__('Regenerating thumbnail images, starting at id=%s. Please wait...<br/>', 'wppa'), $start);
+			$msg .= __('If the line of dots stops growing or your browser reports Ready but you did NOT get a \'READY regenerating thumbnail images\' message, your server has given up. In that case: continue this action by clicking', 'wppa');
+			$msg .= ' <a href="'.wppa_dbg_url(get_admin_url().'/admin.php?page=options').'">'.__('here', 'wppa').'</a>';
+			$msg .= ' '.__('and click "Save Changes" again.', 'wppa');
+			$max_time = ini_get('max_input_time');	
+			if ($max_time > '0') {
+				$msg .= sprintf(__('<br/><br/>Your server reports that the elapsed time for this operation is limited to %s seconds.', 'wppa'), $max_time);
+				$msg .= __('<br/>There may also be other restrictions set by the server, like cpu time limit.', 'wppa');
+			}
+			
+			wppa_ok_message($msg);
 		
 			wppa_regenerate_thumbs(); 
-			wppa_update_message(__('READY regenerating thumbnail images.', 'wppa')); 				
+			wppa_ok_message(__('READY regenerating thumbnail images.', 'wppa')); 				
 			update_option('wppa_lastthumb', '-2');
 		}
 	} // if wppa_set_submit
@@ -281,7 +295,7 @@ global $options_error;
 global $wppa_api_version;
 ?>		
 	<div class="wrap">
-		<?php $iconurl = get_bloginfo('wpurl') . '/wp-content/plugins/' . WPPA_PLUGIN_PATH . '/images/settings32.png'; ?>
+		<?php $iconurl = WPPA_URL.'/images/settings32.png'; ?>
 		<div id="icon-album" class="icon32" style="background: transparent url(<?php echo($iconurl); ?>) no-repeat">
 			<br />
 		</div>
@@ -292,9 +306,10 @@ global $wppa_api_version;
 			echo('Blogid = '.$blog_id);
 			echo('<br/>');
 		}
+		
 ?>
 		<!--<br/><a href="javascript:window.print();"><?php //_e('Print settings', 'wppa') ?></a><br/>-->
-		<form action="<?php echo(get_admin_url()) ?>/admin.php?page=options" method="post">
+		<form action="<?php echo(wppa_dbg_url(get_admin_url().'/admin.php?page=options')) ?>" method="post">
 	
 			<?php wppa_nonce_field('$wppa_nonce', WPPA_NONCE); ?>
 			
@@ -639,6 +654,15 @@ global $wppa_api_version;
 					$html = '<span class="wppa_rating">'.wppa_checkbox($slug).'</span>&nbsp;&nbsp;<small>'.__('(This setting requires that the rating system is enabled.)', 'wppa').'</small>';
 					$class = 'tt_normal';
 					wppa_setting($slug, '16', $name, $desc, $html, $help, $class);
+					
+					$name = __('Covertext', 'wppa');
+					$desc = __('Show the text on the album cover.', 'wppa');
+					$help = esc_js(__('Display the album decription and the links to the album content', 'wppa'));
+					$help .= '\n'.esc_js(__('If switched off, you can only link to the album using the covertitle or the coverphoto.', 'wppa'));
+					$help .= '\n'.esc_js(__('Make sure you configure the coverphoto link as desired.', 'wppa'));
+					$slug = 'wppa_show_cover_text';
+					$html = wppa_checkbox($slug);
+					wppa_setting($slug, '17', $name, $desc, $html, $help);
 					
 					?>
 				</tbody>
@@ -1423,6 +1447,13 @@ global $wppa_api_version;
 					$html = wppa_checkbox($slug);
 					wppa_setting($slug, '4', $name, $desc, $html, $help);
 					
+					$name = __('Allow WPPA+ Debugging', 'wppa');
+					$desc = __('Allow the use of &debug=.. in urls to this site.', 'wppa');
+					$help = esc_js(__('If checked: appending (?)(&)debug or (?)(&)debug=<int> to an url to this site will generate the display of special WPPA+ diagnostics, as well as php warnings', 'wppa'));
+					$slug = 'wppa_allow_debug';
+					$html = wppa_checkbox($slug);
+					wppa_setting($slug, '5', $name, $desc, $html, $help);
+					
 					?>					
 					
 				</tbody>
@@ -1437,12 +1468,12 @@ global $wppa_api_version;
 				</tfoot>
 			</table>
 			
-			<?php // Table 10: Miscellaneous ?>
+			<?php // Table 10: Php configuration ?>
 			<h3><?php _e('Table X:', 'wppa'); echo(' '); _e('PHP Configuration:', 'wppa'); ?><?php wppa_toggle_table(10) ?></h3>
 			<?php _e('This table lists all PHP server configuration parameters and is read only', 'wppa'); ?>
 
 			<div class="wppa_table_10" style="margin-top:20px; text-align:left;">
-				<?php phpinfo(5) ?>
+				<?php wppa_phpinfo() ?>
 			</div>
 		</form>
 		<script type="text/javascript">wppaInitSettings();</script>

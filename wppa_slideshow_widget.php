@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display a slideshow in the sidebar
-* Version 3.0.5
+* Version 3.0.6
 */
 
 /**
@@ -27,7 +27,7 @@ class SlideshowWidget extends WP_Widget {
 
  		$title = apply_filters('widget_title', empty( $instance['title'] ) ? __a( 'Sidebar Slideshow', 'wppa_theme' ) : $instance['title']);
 
-		$instance = wp_parse_args( (array) $instance, array( 'title' => '', 'album' => '', 'width' => get_option('wppa_widget_width', '190'), 'ponly' => 'no', 'linkurl' => '', 'linktitle' => '', 'subtext' => '', 'supertext' => '', 'valign' => 'fit', 'timeout' => '4' ) );
+		$instance = wp_parse_args( (array) $instance, array( 'title' => '', 'album' => '', 'width' => get_option('wppa_widget_width', '190'), 'ponly' => 'no', 'linkurl' => '', 'linktitle' => '', 'subtext' => '', 'supertext' => '', 'valign' => 'fit', 'timeout' => '4', 'film' => 'no', 'browse' => 'no' ) );
 
 		$album = $instance['album'];
 		$width = $instance['width'];
@@ -38,6 +38,8 @@ class SlideshowWidget extends WP_Widget {
 		$subtext = wppa_qtrans($instance['subtext']);
 		$valign = $instance['valign'];
 		$timeout = $instance['timeout'] * 1000;
+		$film = $instance['film'];
+		$browse = $instance['browse'];
 		
 		if (is_numeric($album)) {
 			echo $before_widget . $before_title . $title . $after_title;
@@ -51,11 +53,15 @@ class SlideshowWidget extends WP_Widget {
 				echo '<div style="padding-top:2px; padding-bottom:4px;" >';
 					$wppa['in_widget'] = 'ss';
 						$wppa['in_widget_timeout'] = $timeout;
-						$wppa['portrait_only'] = ($ponly == 'yes');
-							$wppa['ss_widget_valign'] = $valign;
-								echo wppa_albums($album, 'slideonly', $width, 'center');
-							$wppa['ss_widget_valign'] = '';
-						$wppa['portrait_only'] = false;
+							$wppa['portrait_only'] = ($ponly == 'yes');
+								$wppa['ss_widget_valign'] = $valign;
+									$wppa['film_on'] = ($film == 'yes');
+										$wppa['browse_on'] = ($browse == 'yes');
+											echo wppa_albums($album, 'slideonly', $width, 'center');
+										$wppa['browse_on'] = false;
+									$wppa['film_on'] = false;
+								$wppa['ss_widget_valign'] = '';
+							$wppa['portrait_only'] = false;
 						$wppa['in_widget_timeout'] = '0';
 					$wppa['in_widget'] = false;
 					$wppa['fullsize'] = '';	// Reset to prevent inheritage of wrong size in case widget is rendered before main column
@@ -96,6 +102,8 @@ class SlideshowWidget extends WP_Widget {
 			$instance['valign'] = $new_instance['valign'];
 		}
 		$instance['timeout'] = $new_instance['timeout'];
+		$instance['film'] = $new_instance['film'];
+		$instance['browse'] = $new_instance['browse'];
 		
         return $instance;
     }
@@ -103,7 +111,7 @@ class SlideshowWidget extends WP_Widget {
     /** @see WP_Widget::form */
     function form($instance) {				
 		//Defaults
-		$instance = wp_parse_args( (array) $instance, array( 'title' => '', 'album' => '', 'width' => get_option('wppa_widget_width', '190'), 'ponly' => 'no', 'linkurl' => '', 'linktitle' => '', 'subtext' => '', 'supertext' => '', 'valign' => 'center', 'timeout' => '4' ) );
+		$instance = wp_parse_args( (array) $instance, array( 'title' => '', 'album' => '', 'width' => get_option('wppa_widget_width', '190'), 'ponly' => 'no', 'linkurl' => '', 'linktitle' => '', 'subtext' => '', 'supertext' => '', 'valign' => 'center', 'timeout' => '4', 'film' => 'no', 'browse' => 'no' ) );
 		$title = esc_attr( $instance['title'] );
 		$album = $instance['album'];
 		$width = $instance['width'];
@@ -114,6 +122,8 @@ class SlideshowWidget extends WP_Widget {
 		$subtext = $instance['subtext'];
 		$valign = $instance['valign'];
 		$timeout = $instance['timeout'];
+		$film = $instance['film'];
+		$browse = $instance['browse'];
 		
 	?>
 		<p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:', 'wppa'); ?></label> <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $title; ?>" /></p>
@@ -138,10 +148,27 @@ class SlideshowWidget extends WP_Widget {
 		</p>
 		<p><label for="<?php echo $this->get_field_id('timeout'); ?>"><?php _e('Slideshow timeout:', 'wppa'); ?></label> <input class="widefat" style="width:15%;" id="<?php echo $this->get_field_id('timeout'); ?>" name="<?php echo $this->get_field_name('timeout'); ?>" type="text" value="<?php echo $timeout; ?>" />&nbsp;<?php _e('sec.', 'wppa'); ?></p>
 		<p><label for="<?php echo $this->get_field_id('linkurl'); ?>"><?php _e('Link to:', 'wppa'); ?></label> <input class="widefat" id="<?php echo $this->get_field_id('linkurl'); ?>" name="<?php echo $this->get_field_name('linkurl'); ?>" type="text" value="<?php echo $linkurl; ?>" /></p>
+
+		<p>
+			<?php _e('Show filmstrip:', 'wppa'); ?>
+			<select id="<?php echo $this->get_field_id('film'); ?>" name="<?php echo $this->get_field_name('film'); ?>">
+				<option value="no" <?php if ($film == 'no') echo 'selected="selected"' ?>><?php _e('no.', 'wppa'); ?></option>
+				<option value="yes" <?php if ($film == 'yes') echo 'selected="selected"' ?>><?php _e('yes.', 'wppa'); ?></option>
+			</select>
+		</p>
+		<p>
+			<?php _e('Show browsebar:', 'wppa'); ?>
+			<select id="<?php echo $this->get_field_id('browse'); ?>" name="<?php echo $this->get_field_name('browse'); ?>">
+				<option value="no" <?php if ($browse == 'no') echo 'selected="selected"' ?>><?php _e('no.', 'wppa'); ?></option>
+				<option value="yes" <?php if ($browse == 'yes') echo 'selected="selected"' ?>><?php _e('yes.', 'wppa'); ?></option>
+			</select>
+		</p>
+
 		<p><span style="color:blue"><small><?php _e('The following text fields support qTranslate', 'wppa') ?></small></span></p>
 		<p><label for="<?php echo $this->get_field_id('linktitle'); ?>"><?php _e('Tooltip text:', 'wppa'); ?></label> <input class="widefat" id="<?php echo $this->get_field_id('linktitle'); ?>" name="<?php echo $this->get_field_name('linktitle'); ?>" type="text" value="<?php echo $linktitle; ?>" /></p>
 		<p><label for="<?php echo $this->get_field_id('supertext'); ?>"><?php _e('Text above photos:', 'wppa'); ?></label> <input class="widefat" id="<?php echo $this->get_field_id('supertext'); ?>" name="<?php echo $this->get_field_name('supertext'); ?>" type="text" value="<?php echo $supertext; ?>" /></p>
 		<p><label for="<?php echo $this->get_field_id('subtext'); ?>"><?php _e('Text below photos:', 'wppa'); ?></label> <input class="widefat" id="<?php echo $this->get_field_id('subtext'); ?>" name="<?php echo $this->get_field_name('subtext'); ?>" type="text" value="<?php echo $subtext; ?>" /></p>
+		
 <?php
     }
 

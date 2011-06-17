@@ -3,7 +3,8 @@
 * Pachkage: wp-photo-album-plus
 *
 * create, edit and delete albums
-* version 3.0.3
+* version 3.0.6
+*
 */
 
 function wppa_admin() {
@@ -14,7 +15,7 @@ function wppa_admin() {
 	wppa_check_update();
 	
 	// warn if the uploads directory is no writable
-	if (!is_writable(ABSPATH . 'wp-content/uploads')) { 
+	if (!is_writable(ABSPATH.'wp-content/uploads')) { 
 		wppa_error_message(__('Warning:', 'wppa') . __('The uploads directory does not exist or is not writable by the server. Please make sure that <tt>wp-content/uploads/</tt> is writeable by the server.', 'wppa'));
 	}
 
@@ -34,26 +35,26 @@ function wppa_admin() {
 			if (isset($_GET['photo_del'])) {
 				$message = __('Photo Deleted.', 'wppa');
 				
-				$ext = $wpdb->get_var($wpdb->prepare('SELECT `ext` FROM `' . WPPA_PHOTOS . '` WHERE `id` = %d', $_GET['photo_del'])); 
+				$ext = $wpdb->get_var($wpdb->prepare('SELECT `ext` FROM `'.WPPA_PHOTOS.'` WHERE `id` = %d', $_GET['photo_del'])); 
 				
-				$file = ABSPATH . 'wp-content/uploads/wppa/' . $_GET['photo_del'] . '.' . $ext;
+				$file = ABSPATH.'wp-content/uploads/wppa/'.$_GET['photo_del'].'.'.$ext;
 				if (file_exists($file)) {
 					unlink($file);
 				}
 				else {
-					$message .= ' ' . __('Fullsize image did not exist.', 'wppa');
+					$message .= ' '.__('Fullsize image did not exist.', 'wppa');
 				}
 				
-				$file = ABSPATH . 'wp-content/uploads/wppa/thumbs/' . $_GET['photo_del'] . '.' . $ext;
+				$file = ABSPATH.'wp-content/uploads/wppa/thumbs/'.$_GET['photo_del'].'.'.$ext;
 				if (file_exists($file)) {
 					unlink($file);
 				}
 				else {
-					$message .= ' ' . __('Thumbnail image did not exist.', 'wppa');
+					$message .= ' '.__('Thumbnail image did not exist.', 'wppa');
 				}
 				
-				$wpdb->query($wpdb->prepare('DELETE FROM `' . WPPA_PHOTOS . '` WHERE `id` = %d LIMIT 1', $_GET['photo_del']));
-				$wpdb->query($wpdb->prepare('DELETE FROM `' . WPPA_RATING . '` WHERE `photo` = %d', $_GET['photo_del']));
+				$wpdb->query($wpdb->prepare('DELETE FROM `'.WPPA_PHOTOS.'` WHERE `id` = %d LIMIT 1', $_GET['photo_del']));
+				$wpdb->query($wpdb->prepare('DELETE FROM `'.WPPA_RATING.'` WHERE `photo` = %d', $_GET['photo_del']));
 
 				wppa_update_message($message);
 			}
@@ -87,12 +88,13 @@ function wppa_admin() {
 			}
 			
 			// Get the album information
-			$albuminfo = $wpdb->get_row($wpdb->prepare('SELECT * FROM `' . WPPA_ALBUMS . '` WHERE `id` = %d', $_GET['edit_id']), 'ARRAY_A'); ?>	
+			$albuminfo = $wpdb->get_row($wpdb->prepare('SELECT * FROM `'.WPPA_ALBUMS.'` WHERE `id` = %d', $_GET['edit_id']), 'ARRAY_A'); ?>	
 			
 			<div class="wrap">
 				<h2><?php _e('Edit Album Information', 'wppa'); ?></h2>
 				<p><?php _e('Album number:', 'wppa'); echo(' ' . $_GET['edit_id'] . '.'); ?></p>
-				<form action="<?php echo(get_admin_url()) ?>/admin.php?page=<?php echo(WPPA_PLUGIN_PATH) ?>/wppa.php&amp;tab=edit&amp;edit_id=<?php echo($_GET['edit_id']) ?>" method="post">
+				<?php $url = wppa_dbg_url(get_admin_url().'admin.php?page='.WPPA_FILE.'&amp;tab=edit&amp;edit_id='.$_GET['edit_id']); ?>
+				<form action="<?php echo($url) ?>" method="post">
 				<?php wppa_nonce_field('$wppa_nonce', WPPA_NONCE); ?>
 
 					<table class="form-table albumtable">
@@ -233,8 +235,8 @@ function wppa_admin() {
 									<label ><?php _e('Link to:', 'wppa'); ?></label>
 								</th>
 								<td>
-									<?php $query = 'SELECT `ID`, `post_title` FROM `' . $wpdb->posts . '` WHERE `post_type` = \'page\' AND `post_status` = \'publish\' ORDER BY `post_title` ASC';
-									$pages = $wpdb->get_results ($query, 'ARRAY_A');
+									<?php $query = 'SELECT `ID`, `post_title` FROM `'.$wpdb->posts.'` WHERE `post_type` = \'page\' AND `post_status` = \'publish\' ORDER BY `post_title` ASC';
+									$pages = $wpdb->get_results($query, 'ARRAY_A');
 									if (empty($pages)) {
 										_e('There are no pages (yet) to link to.', 'wppa');
 									} else {
@@ -285,7 +287,7 @@ function wppa_admin() {
 		else if ($_GET['tab'] == 'del'){ ?>
 			
 			<div class="wrap">
-				<?php $iconurl = get_bloginfo('wpurl') . '/wp-content/plugins/' . WPPA_PLUGIN_PATH . '/images/albumdel32.png'; ?>
+				<?php $iconurl = WPPA_URL.'/images/albumdel32.png'; ?>
 				<div id="icon-albumdel" class="icon32" style="background: transparent url(<?php echo($iconurl); ?>) no-repeat">
 					<br />
 				</div>
@@ -296,7 +298,7 @@ function wppa_admin() {
 				<p><?php _e('Are you sure you want to delete this album?', 'wppa'); ?><br />
 					<?php _e('Press Delete to continue, and Cancel to go back.', 'wppa'); ?>
 				</p>
-				<form name="wppa-del-form" action="<?php echo(get_admin_url()) ?>/admin.php?page=<?php echo(WPPA_PLUGIN_PATH) ?>/wppa.php" method="post">
+				<form name="wppa-del-form" action="<?php echo(wppa_dbg_url(get_admin_url().'/admin.php?page='.WPPA_FILE)) ?>" method="post">
 					<?php wppa_nonce_field('$wppa_nonce', WPPA_NONCE) ?>
 					<p>
 						<?php _e('What would you like to do with photos currently in the album?', 'wppa'); ?><br />
@@ -334,7 +336,7 @@ function wppa_admin() {
 		}
 ?>		
 		<div class="wrap">
-			<?php $iconurl = get_bloginfo('wpurl') . '/wp-content/plugins/' . WPPA_PLUGIN_PATH . '/images/album32.png'; ?>
+			<?php $iconurl = WPPA_URL.'/images/album16.png'; ?>
 			<div id="icon-album" class="icon32" style="background: transparent url(<?php echo($iconurl); ?>) no-repeat">
 				<br />
 			</div>
@@ -342,17 +344,17 @@ function wppa_admin() {
 			<h2><?php _e('Manage Albums', 'wppa'); ?></h2>
 			<?php wppa_admin_albums() ?>
 			
-			<?php $iconurl = get_bloginfo('wpurl') . '/wp-content/plugins/' . WPPA_PLUGIN_PATH . '/images/albumnew32.png'; ?>
+			<?php $iconurl = WPPA_URL.'/images/albumnew32.png'; ?>
 			<div id="icon-albumnew" class="icon32" style="background: transparent url(<?php echo($iconurl); ?>) no-repeat">
 				<br />
 			</div>
 
 			<h2><?php _e('Create New Album', 'wppa'); ?></h2>
-			<form action="<?php echo(get_admin_url()) ?>/admin.php?page=<?php echo(WPPA_PLUGIN_PATH) ?>/wppa.php" method="post">
+			<form action="<?php echo(wppa_dbg_url(get_admin_url().'/admin.php?page='.WPPA_FILE)) ?>" method="post">
 			<?php wppa_nonce_field('$wppa_nonce', WPPA_NONCE) ?>
 				<table class="form-table albumtable">
 					<tbody>
-<?php if (!is_array($q_config)) { ?>
+					<?php if (!is_array($q_config)) { ?>
 						<tr valign="top">
 							<th scope="row">
 								<label ><?php _e('Name:', 'wppa'); ?></label>
@@ -362,34 +364,33 @@ function wppa_admin() {
 								<span class="description"><br/><?php _e('Type the name of the new album. Do not leave this empty.', 'wppa'); ?></span>
 							</td>
 						</tr>
-<?php }
-else {
-	$first = true;
-	$last = count($q_config['enabled_languages']) - 1;
-	$idx = 0;
-	foreach ($q_config['enabled_languages'] as $lcode) {
-		$lname = $q_config['language_name'][$lcode];
+						<?php }
+					else {
+						$first = true;
+						$last = count($q_config['enabled_languages']) - 1;
+						$idx = 0;
+						foreach ($q_config['enabled_languages'] as $lcode) {
+							$lname = $q_config['language_name'][$lcode];
 ?>		
-						<tr valign="top">
-							<th scope="row">
-								<label ><?php if ($first) _e('Name:', 'wppa'); $first = false; ?></label>
-							</th>
-							<td>
-								<b><?php echo($lname) ?></b><br/>
-								<input type="text" name="wppa-name-<?php echo($lcode) ?>" id="wppa-name-<?php echo($lcode) ?>" style="width: 50%;" />
-<?php if ($idx == $last) { ?>
-								<span class="description"><br/><?php _e('Type the name of the new album. Do not leave this empty.', 'wppa'); ?></span>
-<?php } ?>
-							</td>
-						</tr>
-	
+							<tr valign="top">
+								<th scope="row">
+									<label ><?php if ($first) _e('Name:', 'wppa'); $first = false; ?></label>
+								</th>
+								<td>
+									<b><?php echo($lname) ?></b><br/>
+									<input type="text" name="wppa-name-<?php echo($lcode) ?>" id="wppa-name-<?php echo($lcode) ?>" style="width: 50%;" />
+									<?php if ($idx == $last) { ?>
+										<span class="description"><br/><?php _e('Type the name of the new album. Do not leave this empty.', 'wppa'); ?></span>
+									<?php } ?>
+								</td>
+							</tr>	
 <?php		
-		$idx++;
-	} ?>
-	<?php
-} ?>
+							$idx++;
+						} ?>
+<?php
+					} ?>
 
-<?php if (!is_array($q_config)) { ?>
+					<?php if (!is_array($q_config)) { ?>
 						<tr valign="top">
 							<th scope="row">
 								<label ><?php _e('Description:', 'wppa'); ?></label>
@@ -399,33 +400,32 @@ else {
 								<span class="description"><br/><?php _e('Enter the description for this album.', 'wppa'); ?></span>
 							</td>
 						</tr>
-<?php }
-else {
-	$first = true;
-	$last = count($q_config['enabled_languages']) - 1;
-	$idx = 0;
-	foreach ($q_config['enabled_languages'] as $lcode) {
-		$lname = $q_config['language_name'][$lcode];
+<?php 				}
+					else {
+						$first = true;
+						$last = count($q_config['enabled_languages']) - 1;
+						$idx = 0;
+						foreach ($q_config['enabled_languages'] as $lcode) {
+							$lname = $q_config['language_name'][$lcode];
 ?>		
-						<tr valign="top">
-							<th scope="row">
-								<label ><?php if ($first) _e('Description:', 'wppa'); $first = false; ?></label>
-							</th>
-							<td>
-								<b><?php echo($lname) ?></b><br/>
-								<textarea style="width: 80%; height: 80px;" name="wppa-desc-<?php echo($lcode) ?>" id="wppa-desc-<?php echo($lcode) ?>"></textarea>
-<?php if ($idx == $last) { ?>
-								<span class="description"><br/><?php _e('Enter the description for this album.', 'wppa'); ?></span>
-<?php
-}
-?>
-							</td>
-						</tr>
+							<tr valign="top">
+								<th scope="row">
+									<label ><?php if ($first) _e('Description:', 'wppa'); $first = false; ?></label>
+								</th>
+								<td>
+									<b><?php echo($lname) ?></b><br/>
+									<textarea style="width: 80%; height: 80px;" name="wppa-desc-<?php echo($lcode) ?>" id="wppa-desc-<?php echo($lcode) ?>"></textarea>
+									<?php if ($idx == $last) { ?>
+										<span class="description"><br/><?php _e('Enter the description for this album.', 'wppa'); ?></span>
+									<?php } ?>
+								</td>
+							</tr>
 <?php		
-		$idx++;
-	} ?>
+							$idx++;
+						} ?>
 <?php
-} ?>	
+					} ?>	
+					
 						<tr valign="top">
 							<th scope="row">
 								<label ><?php _e('Order #:', 'wppa'); ?></label>
@@ -483,9 +483,9 @@ function wppa_admin_albums() {
 				<th scope="col"><?php _e('Name', 'wppa'); ?></th>
 				<th scope="col"><?php _e('Description', 'wppa'); ?></th>
 				<th scope="col"><?php _e('ID', 'wppa'); ?></th>
-<?php if (current_user_can('administrator')) { ?>
-				<th scope="col"><?php _e('Owner', 'wppa'); ?></th>
-<?php } ?>
+				<?php if (current_user_can('administrator')) { ?>
+					<th scope="col"><?php _e('Owner', 'wppa'); ?></th>
+				<?php } ?>
                 <th scope="col"><?php _e('Order', 'wppa'); ?></th>
                 <th scope="col" style="width: 120px;"><?php _e('Parent', 'wppa'); ?></th>
 				<th scope="col"><?php _e('Edit', 'wppa'); ?></th>
@@ -500,17 +500,18 @@ function wppa_admin_albums() {
 					<td><?php echo(wppa_qtrans(stripslashes($album['name']))) ?></td>
 					<td><small><?php echo(wppa_qtrans(stripslashes($album['description']))) ?></small></td>
 					<td><?php echo($album['id']) ?></td>
-<?php if (current_user_can('administrator')) { ?>
-					<td><?php echo($album['owner']); ?></td>
-<?php } ?>
+					<?php if (current_user_can('administrator')) { ?>
+						<td><?php echo($album['owner']); ?></td>
+					<?php } ?>
 					<td><?php echo($album['a_order']) ?></td>
 					<td><?php echo(wppa_qtrans(wppa_get_album_name($album['a_parent']))) ?></td>
-					<td><a href="admin.php?page=<?php echo(WPPA_PLUGIN_PATH) ?>/wppa.php&amp;tab=edit&amp;edit_id=<?php echo($album['id']) ?>" class="wppaedit"><?php _e('Edit', 'wppa'); ?></a></td>
-					<td><a href="admin.php?page=<?php echo(WPPA_PLUGIN_PATH) ?>/wppa.php&amp;tab=del&amp;id=<?php echo($album['id']) ?>" class="wppadelete"><?php _e('Delete', 'wppa'); ?></a></td>
+					<?php $url = wppa_dbg_url(get_admin_url().'admin.php?page='.WPPA_FILE.'&amp;tab=edit&amp;edit_id='.$album['id']); ?>
+					<td><a href="<?php echo($url) ?>" class="wppaedit"><?php _e('Edit', 'wppa'); ?></a></td>
+					<?php $url = wppa_dbg_url(get_admin_url().'admin.php?page='.WPPA_FILE.'&amp;tab=del&amp;id='.$album['id']); ?>
+					<td><a href="<?php echo($url) ?>" class="wppadelete"><?php _e('Delete', 'wppa'); ?></a></td>
 				</tr>		
-<?php			if ($alt == '') { $alt = ' class="alternate" '; } else { $alt = '';}
+				<?php if ($alt == '') { $alt = ' class="alternate" '; } else { $alt = '';}
 			}
-
 ?>			
 		</table>
 	</div>
@@ -527,7 +528,7 @@ function wppa_album_photos($id) {
 	global $wpdb;
 	global $q_config;
 	
-	$photos = $wpdb->get_results($wpdb->prepare('SELECT * FROM `' . WPPA_PHOTOS . '` WHERE `album` = %d ' . wppa_get_photo_order($id), $id), 'ARRAY_A');
+	$photos = $wpdb->get_results($wpdb->prepare('SELECT * FROM `'.WPPA_PHOTOS.'` WHERE `album` = %d '.wppa_get_photo_order($id), $id), 'ARRAY_A');
 
 	if (empty($photos)) { ?>
 		<p><?php _e('No photos yet in this album.', 'wppa'); ?></p>
@@ -574,28 +575,19 @@ function wppa_album_photos($id) {
 								<input type="text" name="<?php echo('photos[' . $photo['id'] . '][p_order]') ?>" value="<?php echo($photo['p_order']) ?>" style="width: 50px"/>
 							</td>
 						</tr>
-<!--							
-						<tr valign="top">
-							<th scope="row">
-								<label ><?php //_e('Rating:', 'wppa') ?></label>
-							</th>
-							<td>
-								<?php //_e('Entries:', 'wppa'); echo(' '); echo wppa_get_rating_count_by_id($photo['id']); echo('. '); _e('Mean value:', 'wppa'); echo(' '.wppa_get_rating_by_id($photo['id'], 'nolabel').'.'); ?>
-							</td>
-						</tr>
--->							
+						
 						<tr valign="top">
 							<th scope="row">
 								<a href="#" id="copy-photo-<?php echo($photo['id']) ?>"></a>
 								<input type="button" class="button-secondary" style="font-weight:bold; color:blue; width:90%" onclick="if (document.getElementById('albsel-<?php echo($photo['id']) ?>').value != 0) { if (confirm('<?php _e('Are you sure you want to copy this photo?', 'wppa') ?>')) document.location = document.getElementById('copy-photo-<?php echo($photo['id']) ?>').href; } else { alert('<?php _e('Please select an album to copy the photo to first.', 'wppa') ?>'); return false;}" value="<?php _e('Copy photo to', 'wppa') ?>" />
-								
-								<br/><a href="<?php echo(get_admin_url()) ?>/admin.php?page=<?php echo(WPPA_PLUGIN_PATH) ?>/wppa.php&amp;tab=edit&amp;edit_id=<?php echo($_GET['edit_id']) ?>&amp;photo_del=<?php echo($photo['id']) ?>" id="del-photo-<?php echo($photo['id']) ?>"></a>
+								<?php $url = wppa_dbg_url(get_admin_url().'admin.php?page='.WPPA_FILE.'&amp;tab=edit&amp;edit_id='.$_GET['edit_id'].'&amp;photo_del='.$photo['id']); ?>
+								<br/><a href="<?php echo($url) ?>" id="del-photo-<?php echo($photo['id']) ?>"></a>
 								<input type="button" class="button-secondary" style="font-weight:bold; color:red; width:90%" onclick="if (confirm('<?php _e('Are you sure you want to delete this photo?', 'wppa') ?>')) document.location = document.getElementById('del-photo-<?php echo($photo['id']) ?>').href;" value="<?php _e('Delete photo', 'wppa'); ?>" />
 								
 								<br/><input type="button" class="button-secondary" style="font-weight:bold; width:90%" onclick="prompt('<?php _e('Insert code for single image in Page or Post:\nYou may change the size if you like.', 'wppa') ?>', '%%wppa%% %%photo=<?php echo($photo['id']); ?>%% %%size=<?php echo(get_option('wppa_fullsize')); ?>%%')" value="<?php _e('Insertion Code', 'wppa'); ?>" />
 							</th>
 							<td>
-								<select id="albsel-<?php echo($photo['id']) ?>" style="width:100%;" name="copy-photo" onchange="document.getElementById('copy-photo-<?php echo($photo['id']) ?>').href='<?php echo(get_admin_url()) ?>/admin.php?page=<?php echo(WPPA_PLUGIN_PATH) ?>/wppa.php&amp;tab=edit&amp;edit_id=<?php echo($_GET['edit_id']) ?>&amp;photo_copy=<?php echo($photo['id']) ?>&amp;album_to='+this.value; "><?php echo(wppa_album_select($id, '0', true)) ?></select>
+								<select id="albsel-<?php echo($photo['id']) ?>" style="width:100%;" name="copy-photo" onchange="document.getElementById('copy-photo-<?php echo($photo['id']) ?>').href='<?php echo(wppa_dbg_url(get_admin_url().'admin.php?page='.WPPA_FILE.'&amp;tab=edit&amp;edit_id='.$_GET['edit_id'].'&amp;photo_copy='.$photo['id'])) ?>&amp;album_to='+this.value; "><?php echo(wppa_album_select($id, '0', true)) ?></select>
 
 								<br/><br/><?php _e('Rating:', 'wppa') ?><?php _e('Entries:', 'wppa'); echo(' '); echo wppa_get_rating_count_by_id($photo['id']); echo('. '); _e('Mean value:', 'wppa'); echo(' '.wppa_get_rating_by_id($photo['id'], 'nolabel').'.'); ?>
 							
@@ -617,7 +609,6 @@ function wppa_album_photos($id) {
 							</th>
 							<td style="padding-top:0; padding-bottom:0;">
 								<input type="text" name="<?php echo('photos[' . $photo['id'] . '][linktitle]') ?>" style="width:100%;" value="<?php echo(stripslashes($photo['linktitle'])) ?>" style="width: 100%"/>
-				<!--				<span class="description"><small><?php _e('If you want this link to be used, select \'the photo specific link\' in table VI of the Photo Albums -> Settings admin page.', 'wppa') ?></small></span>-->
 							</td>
 						</tr>
 
@@ -631,7 +622,7 @@ function wppa_album_photos($id) {
 			</div>
 			<div style="width:50%; float:left; border-left:1px solid #ccc; margin-left:-1px;">
 				
-				<table class="form-table phototable" ><!--425-->
+				<table class="form-table phototable" >
 					<tbody>
 						<?php if (!is_array($q_config)) { ?>					
 							<tr valign="top">
@@ -708,22 +699,15 @@ function wppa_album_photos($id) {
 	} /* photos not empty */
 } /* function */
 
-// check if albums exist
+// check if albums 'exists'
 function wppa_has_albums() {
 	return wppa_have_access('any');
-//	global $wpdb;	
-//	$albums = $wpdb->get_results("SELECT * FROM " . WPPA_ALBUMS, 'ARRAY_A');
-//	if (empty($albums)) {
-//		return FALSE;
-//	} else {
-//		return TRUE;
-//	}
 }
 
 // get select form element listing albums 
-function wppa_album_select($exc = '', $sel = '', $addnone = FALSE, $addseparate = FALSE, $checkancestors = FALSE) {
+function wppa_album_select($exc = '', $sel = '', $addnone = FALSE, $addseparate = FALSE, $checkancestors = FALSE, $none_is_all = false) {
 	global $wpdb;
-	$albums = $wpdb->get_results("SELECT * FROM " . WPPA_ALBUMS . " ORDER BY name", 'ARRAY_A');
+	$albums = $wpdb->get_results("SELECT * FROM ".WPPA_ALBUMS." ORDER BY name", 'ARRAY_A');
 	
     if ($sel == '') {
         $s = wppa_get_last_album();
@@ -731,7 +715,10 @@ function wppa_album_select($exc = '', $sel = '', $addnone = FALSE, $addseparate 
     }
     
     $result = '';
-    if ($addnone) $result .= '<option value="0">' . __('--- none ---', 'wppa') . '</option>';
+    if ($addnone) {
+		if ($none_is_all) $result .= '<option value="0">' . __('--- all ---', 'wppa') . '</option>';
+		else $result .= '<option value="0">' . __('--- none ---', 'wppa') . '</option>';
+	}
     
 	foreach ($albums as $album) if (wppa_have_access($album)) {
 		if ($sel == $album['id']) { 
@@ -773,13 +760,6 @@ function wppa_add_album() {
 	$name = esc_attr($name);
 	$desc = esc_attr($desc);
 
-/*	
-	$name = $_POST['wppa-name']; 
-	$name = esc_attr($name);
-	
-	$desc = $_POST['wppa-desc']; 
-	$desc = esc_attr($desc);
-*/	
 	$order = (is_numeric($_POST['wppa-order']) ? $_POST['wppa-order'] : 0);
 	$parent = (is_numeric($_POST['wppa-parent']) ? $_POST['wppa-parent'] : 0);
 	$porder = (is_numeric($_POST['wppa-photo-order-by']) ? $_POST['wppa-photo-order-by'] : 0);
@@ -787,7 +767,6 @@ function wppa_add_album() {
 	$owner = wppa_get_user();
 
 	if (!empty($name)) {
-		@define('WP_DEBUG', true);
 		$query = $wpdb->prepare('INSERT INTO `' . WPPA_ALBUMS . '` (`id`, `name`, `description`, `a_order`, `a_parent`, `p_order_by`, `main_photo`, `cover_linkpage`, `owner`) VALUES (0, %s, %s, %d, %d, %d, %d, %d, %s)', $name, $desc, $order, $parent, $porder, 0, 0, $owner);
 		$iret = $wpdb->query($query);
         if ($iret === FALSE) wppa_error_message(__('Could not create album.', 'wppa'));
@@ -804,8 +783,6 @@ function wppa_add_album() {
 function wppa_edit_album() {
 	global $wpdb;
 	global $q_config;
-	
-	@define('WP_DEBUG', true);
 	
     $first = TRUE;
 	
@@ -850,32 +827,24 @@ function wppa_edit_album() {
 			$wpdb->query($wpdb->prepare('DELETE FROM `'.WPPA_RATING.'` WHERE `photo` = %d', $photo['id']));
 			$mean_rating = '0';
 		}
-
-/* */
 		
-	if (!is_array($q_config)) {
-		$photo_name = $photo['name'];
-		$photo_desc = $photo['description'];
-	}
-	else {
-		$photo_name = '';
-		$photo_desc = '';
-		foreach ($q_config['enabled_languages'] as $lcode) {
-			$n = $photo['name'][$lcode];
-			$d = $photo['description'][$lcode];
-			if ($n != '') $photo_name .= '[:'.$lcode.']'.$n;
-			if ($d != '') $photo_desc .= '[:'.$lcode.']'.$d;
+		if (!is_array($q_config)) {
+			$photo_name = $photo['name'];
+			$photo_desc = $photo['description'];
 		}
-	}
-	$photo_name = esc_attr($photo_name);
-	$photo_desc = esc_attr($photo_desc);
+		else {
+			$photo_name = '';
+			$photo_desc = '';
+			foreach ($q_config['enabled_languages'] as $lcode) {
+				$n = $photo['name'][$lcode];
+				$d = $photo['description'][$lcode];
+				if ($n != '') $photo_name .= '[:'.$lcode.']'.$n;
+				if ($d != '') $photo_desc .= '[:'.$lcode.']'.$d;
+			}
+		}
+		$photo_name = esc_attr($photo_name);
+		$photo_desc = esc_attr($photo_desc);
 	
-		
-/* 	
-        $photo_name = esc_attr($photo['name']);
-		$photo_desc = $photo['description'];
-*/
-
         if (!is_numeric($photo['p_order'])) $photo['p_order'] = 0;
 		
 		$linkurl = $photo['linkurl'];
@@ -902,7 +871,7 @@ function wppa_edit_album() {
 			wppa_error_message(__('Album could not be updated.', 'wppa'));
 		}
 		else {
-			wppa_update_message(__('Album information edited.', 'wppa') . ' ' . '<a href="admin.php?page=' . WPPA_PLUGIN_PATH . '/wppa.php">' . __('Back to album management.', 'wppa') . '</a>');
+			wppa_update_message(__('Album information edited.', 'wppa') . ' ' . '<a href="'.wppa_dbg_url(get_admin_url().'admin.php?page='.WPPA_FILE).'">' . __('Back to album management.', 'wppa') . '</a>');
 		}
 				
 		wppa_set_last_album($_GET['edit_id']);
@@ -915,8 +884,6 @@ function wppa_edit_album() {
 function wppa_del_album($id, $move = '') {
 	global $wpdb;
 
-//	$wpdb->query("DELETE FROM " . WPPA_ALBUMS . " WHERE id=$id LIMIT 1");
-	
 	$wpdb->query($wpdb->prepare('DELETE FROM `' . WPPA_ALBUMS . '` WHERE `id` = %d LIMIT 1', $id));
 
 	if (empty($move)) { // will delete all the album's photos

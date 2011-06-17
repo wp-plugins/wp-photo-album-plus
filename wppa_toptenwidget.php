@@ -22,46 +22,60 @@ class TopTenWidget extends WP_Widget {
 		
  		$widget_title = apply_filters('widget_title', empty( $instance['title'] ) ? __('Top Ten Photos', 'wppa') : $instance['title']);
 
+	$instance = wp_parse_args( (array) $instance, array( 'title' => '', 'album' => '' ) );
+
 		$page = get_option('wppa_topten_widget_linkpage', '0');
 		$max = get_option('wppa_topten_count', '10');
 		
-		$thumbs = $wpdb->get_results('SELECT * FROM '.WPPA_PHOTOS.' WHERE mean_rating > 0 ORDER BY mean_rating DESC LIMIT '.$max, 'ARRAY_A');
-		$widget_content = '';
+		$album = $instance['album'];
+		
+		if ($album) {
+			$thumbs = $wpdb->get_results('SELECT * FROM '.WPPA_PHOTOS.' WHERE mean_rating > 0 AND album = '.$album.' ORDER BY mean_rating DESC LIMIT '.$max, 'ARRAY_A');
+		}
+		else {
+			$thumbs = $wpdb->get_results('SELECT * FROM '.WPPA_PHOTOS.' WHERE mean_rating > 0 ORDER BY mean_rating DESC LIMIT '.$max, 'ARRAY_A');
+		}
+		$widget_content = "\n".'<!-- WPPA+ TopTen Widget start -->';
 		$maxw = get_option('wppa_topten_size', '86');
 		$maxh = $maxw + 18;
 		if ($thumbs) foreach ($thumbs as $image) {
 			
 			// Make the HTML for current picture
-			$widget_content .= '<div class="wppa-widget" style="width:'.$maxw.'px; height:'.$maxh.'px; margin:4px; display:inline; text-align:center; float:left;">'; 
+			$widget_content .= "\n".'<div class="wppa-widget" style="width:'.$maxw.'px; height:'.$maxh.'px; margin:4px; display:inline; text-align:center; float:left;">'; 
 			if ($image) {
 				$imgurl = get_bloginfo('wpurl') . '/wp-content/uploads/wppa/' . $image['id'] . '.' . $image['ext'];
-				$link = wppa_get_imglnk_a('topten', $image['id']);
+				$no_album = !$album;
+				if ($no_album) $tit = __a('View the top rated photos', 'wppa'); else $tit = '';
+				$link = wppa_get_imglnk_a('topten', $image['id'], '', $tit, $no_album);
 				if ($link) {
-					$widget_content .= '<a href="'.$link['url'].'" title="'.$link['title'].'">';
+					$widget_content .= "\n\t".'<a href="'.$link['url'].'" title="'.$link['title'].'">';
 				}
 				$file = wppa_get_thumb_path_by_id($image['id']);
 				$imgstyle = wppa_get_imgstyle($file, $maxw, 'center', 'ttthumb');
 				$imgevents = wppa_get_imgevents('thumb', $image['id'], true);
-				$widget_content .= '<img src="'.$imgurl.'" style="'.$imgstyle.'" '.$imgevents.' alt="'.esc_attr(wppa_qtrans($image['name'])).'">';
+				$widget_content .= "\n\t\t".'<img src="'.$imgurl.'" style="'.$imgstyle.'" '.$imgevents.' alt="'.esc_attr(wppa_qtrans($image['name'])).'">';
 				if ($link) {
-					$widget_content .= '</a>';
+					$widget_content .= "\n\t".'</a>';
 				}
 			}
 			else {	// No image
 				$widget_content .= __a('Photo not found.', 'wppa_theme');
 			}
-			$widget_content .= '<span style="font-size:9px;">'.wppa_get_rating_by_id($image['id']).'</span>';
-			$widget_content .= '</div>';
+			$widget_content .= "\n\t".'<span style="font-size:9px;">'.wppa_get_rating_by_id($image['id']).'</span>';
+			$widget_content .= "\n".'</div>';
 		}	
 		else $widget_content .= 'There are no rated photos (yet).';
+		
+		$widget_content .= "\n".'<!-- WPPA+ TopTen Widget end -->';
 
-		echo $before_widget . $before_title . $widget_title . $after_title . $widget_content . $after_widget;
+		echo "\n".$before_widget.$before_title.$widget_title.$after_title.$widget_content.$after_widget;
     }
 	
     /** @see WP_Widget::update */
     function update($new_instance, $old_instance) {				
 		$instance = $old_instance;
 		$instance['title'] = strip_tags($new_instance['title']);
+		$instance['album'] = $new_instance['album'];
 		
         return $instance;
     }
@@ -69,12 +83,23 @@ class TopTenWidget extends WP_Widget {
     /** @see WP_Widget::form */
     function form($instance) {				
 		//Defaults
-		$instance = wp_parse_args( (array) $instance, array( 'sortby' => 'post_title', 'title' => '') );
+		$instance = wp_parse_args( (array) $instance, array( 'sortby' => 'post_title', 'title' => '', 'album' => '0') );
  		$widget_title = apply_filters('widget_title', empty( $instance['title'] ) ? get_option('wppa_toptenwidgettitle', __('Top Ten Photos', 'wppa')) : $instance['title']);
+//		$album = empty($instance['album']) ? '--all--' : $instance['album'];
 //		$title = esc_attr( $instance['title'] );
+
+		$album = $instance['album'];
 ?>
 		<p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:', 'wppa'); ?></label> <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $widget_title; ?>" /></p>
-		<p><?php _e('You can set the content and the behaviour of this widget in the <b>Photo Albums -> Settings</b> admin page.', 'wppa'); ?></p>
+		<p><label for="<?php echo $this->get_field_id('album'); ?>"><?php _e('Album:', 'wppa'); ?></label> 
+			<select class="widefat" id="<?php echo $this->get_field_id('album'); ?>" name="<?php echo $this->get_field_name('album'); ?>" >
+
+				<?php echo wppa_album_select('', $album, true, '', '', true); ?>
+
+			</select>
+		</p>
+
+		<p><?php _e('You can set the behaviour of this widget in the <b>Photo Albums -> Settings</b> admin page.', 'wppa'); ?></p>
 <?php
     }
 

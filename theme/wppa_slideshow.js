@@ -1,5 +1,5 @@
 ﻿// Slide show variables and functions
-// This is wppa_slideshow.js version 3.0.2
+// This is wppa_slideshow.js version 3.0.6
 //
 
 var wppa_slides = new Array();
@@ -30,17 +30,21 @@ var wppa_textframe_delta = 0;
 var wppa_box_delta = 0;
 
 var wppa_preambule;
-var wppa_thumbnail_pitch;
+var wppa_thumbnail_pitch = new Array();
 var wppa_filmstrip_length = new Array();
-var wppa_filmstrip_margin = 0;
-var wppa_filmstrip_area_delta;
+var wppa_filmstrip_margin = new Array();
+var wppa_filmstrip_area_delta = new Array();
 var wppa_film_show_glue;
+
+var wppa_is_mini = new Array();
 
 var wppa_slideshow;			// = 'Slideshow' or its translation
 var wppa_photo;				// = 'Photo' or its translation
 var wppa_of;				// = 'of' or its translation
 var wppa_nextphoto;			// = 'Next photo' or its translation
 var wppa_prevphoto;			// = 'Previous photo' or its translation
+var wppa_nextp;
+var wppa_prevp;
 var wppa_start = 'Start';	// defaults
 var wppa_stop = 'Stop';		//
 
@@ -214,9 +218,16 @@ function wppa_after_fade(mocc) {
 
 	// Display counter and arrow texts
 	if (document.getElementById('counter-'+mocc)) {
-		document.getElementById('counter-'+mocc).innerHTML = wppa_photo+' '+(wppa_id[mocc]+1)+' '+wppa_of+' '+wppa_slides[mocc].length;
-		document.getElementById('prev-arrow-'+mocc).innerHTML = wppa_prevphoto;
-		document.getElementById('next-arrow-'+mocc).innerHTML = wppa_nextphoto;
+		if (wppa_is_mini[mocc]) {
+			document.getElementById('counter-'+mocc).innerHTML = (wppa_id[mocc]+1)+' / '+wppa_slides[mocc].length;
+			document.getElementById('prev-arrow-'+mocc).innerHTML = wppa_prevp;
+			document.getElementById('next-arrow-'+mocc).innerHTML = wppa_nextp;
+		}
+		else {
+			document.getElementById('counter-'+mocc).innerHTML = wppa_photo+' '+(wppa_id[mocc]+1)+' '+wppa_of+' '+wppa_slides[mocc].length;
+			document.getElementById('prev-arrow-'+mocc).innerHTML = wppa_prevphoto;
+			document.getElementById('next-arrow-'+mocc).innerHTML = wppa_nextphoto;
+		}
 	}
 	
 	// Restore subtitles
@@ -230,8 +241,8 @@ function wppa_after_fade(mocc) {
 	var xoffset;
 //if (!once) alert(wppa_filmstrip_length[mocc]+","+wppa_id[mocc]+","+wppa_preambule+","+wppa_thumbnail_pitch+","+wppa_filmstrip_margin);
 //once=1;
-	xoffset = wppa_filmstrip_length[mocc] / 2 - (wppa_id[mocc] + 0.5 + wppa_preambule) * wppa_thumbnail_pitch - wppa_filmstrip_margin;
-	if (wppa_film_show_glue) xoffset -= (wppa_filmstrip_margin * 2 + 2);	// Glue
+	xoffset = wppa_filmstrip_length[mocc] / 2 - (wppa_id[mocc] + 0.5 + wppa_preambule) * wppa_thumbnail_pitch[mocc] - wppa_filmstrip_margin[mocc];
+	if (wppa_film_show_glue) xoffset -= (wppa_filmstrip_margin[mocc] * 2 + 2);	// Glue
 	jQuery('#wppa-filmstrip-'+mocc).animate({marginLeft: xoffset+'px'});
 	
 	// Set rating mechanism
@@ -379,7 +390,7 @@ function wppa_do_autocol(mocc) {
 	jQuery(".wppa-container").css('width',w);
 	jQuery(".theimg").css('width',w);
 	jQuery(".thumbnail-area").css('width',w - wppa_thumbnail_area_delta);
-	wppa_filmstrip_length[mocc] = w - wppa_filmstrip_area_delta;
+	wppa_filmstrip_length[mocc] = w - wppa_filmstrip_area_delta[mocc];
 	jQuery(".filmwindow").css('width',wppa_filmstrip_length[mocc]);
 
 	jQuery(".wppa-text-frame").css('width',w - wppa_textframe_delta);
@@ -417,11 +428,11 @@ function wppa_check_rewind(mocc) {
 	n_diff = Math.abs(wppa_id[mocc] - wppa_next_id[mocc]);
 	if (n_diff < 2) return;
 	
-	var n_images = wppa_filmstrip_length[mocc] / wppa_thumbnail_pitch;
+	var n_images = wppa_filmstrip_length[mocc] / wppa_thumbnail_pitch[mocc];
 	
 	if (n_diff >= ((n_images + 1) / 2)) {
-		l_substrate = wppa_thumbnail_pitch * wppa_slides[mocc].length;
-		if (wppa_film_show_glue) l_substrate += (2 + 2 * wppa_filmstrip_margin);
+		l_substrate = wppa_thumbnail_pitch[mocc] * wppa_slides[mocc].length;
+		if (wppa_film_show_glue) l_substrate += (2 + 2 * wppa_filmstrip_margin[mocc]);
 		
 		x_marg = parseInt(jQuery('#wppa-filmstrip-'+mocc).css('margin-left'));
 
