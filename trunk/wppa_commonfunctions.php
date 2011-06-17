@@ -52,7 +52,8 @@ global $wppa_api_version;
 			'auto_colwidth' => false,
 			'permalink' => '',
 			'randseed' => time() % '4711',
-			'rendering_enabled' => false
+			'rendering_enabled' => false,
+			'tabcount' => '0'
 		);
 		if (isset($_POST['wppa-searchstring'])) $wppa['src'] = true;
 		if (isset($_GET['wppa_src'])) $wppa['src'] = true;
