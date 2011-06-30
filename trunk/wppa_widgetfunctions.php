@@ -2,7 +2,7 @@
 /* wppa_widgetfunctions.php
 /* Package: wp-photo-album-plus
 /*
-/* Version 3.0.6
+/* Version 3.0.7
 /*
 */
 
@@ -115,7 +115,7 @@ function wppa_walbum_select($sel = '') {
 			if ($album['id'] < '1000') $result .= '&nbsp;';
 			if ($album['id'] < '100') $result .= '&nbsp;';
 			if ($album['id'] < '10') $result .= '&nbsp;';
-			$result .= stripslashes($album['name']) . '</option>';
+			$result .= wppa_qtrans(stripslashes($album['name'])) . '</option>';
 	}
     $result .= '<option value="all" >'.__('- all albums -', 'wppa').'</option>';
 	$result .= '<option value="sep" >'.__('- all -separate- albums -', 'wppa').'</option>';

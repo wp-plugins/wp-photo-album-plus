@@ -54,7 +54,7 @@ global $options_error;
 					}
 					break;
 				case 'wppa_setup':
-					wppa_setup();
+					wppa_setup(true);
 					break;
 				case 'wppa_backup':
 					if (!wppa_backup_settings()) $options_error = true;

@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate
-Version: 3.0.5
+Version: 3.0.7
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -102,13 +102,29 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 
 == Changelog ==
 
+= 3.0.7 =
+
+= Enhancements =
+
+* The way the plugin is re-activated after an update has been changed due to the fact that wp does no longer run the activation hook after update.
+You should no longer get the messages that the 'database rev is not yet updated' and 'i fixed that for you'. 
+Manual re-initialization still remains possible with the settings page table VIII item 3.
+* The horizontal alignment of the photo of the day widget content can be set to none, left, center or right on the photo of the day admin page.
+The text goes along; if you want the photo and the text align differently, set alignment to --- none --- and use css (classes wppa-widget-photo and wppa-widget-text).
+* Added script keyword: #last. %%photo=#last%% or %%mphoto=#last%% gives the last added photo. %%album, %%cover, %%slide=#last%% etc gives the last added album.
+* Better qTranslate support for the photo of the day admin page.
+
+= Bug fixes =
+
+* In an archive, you will get a marker at the place of an wppa+ invocation rather than the display of javascript.
+
 = 3.0.6 =
 
 = New features =
 
 * You can now easily disable the display of all text except the album title from the albumcover. Table II item 17.
 * You can append &debug (?debug if it is the first argument) in the adress bar of the browser to switch debug mode on.
-An optional integer can be set to set the php error reporting switches. Default =  (E_ALL). Example: &debug=-1 (switches everything on: wppa debug, php's E_ALL and E_STRICT).
+An optional integer can be set to set the php error reporting switches. Default = 6143 (E_ALL). Example: &debug=-1 (switches everything on: wppa debug, php's E_ALL and E_STRICT).
 This feature can be anabled/disabled by the setting in Table IX item 5.
 If switched on, the WPPA+ system will produce diagnostic messages, together with the normal php errors and warnings.
 It works for both admin as well as site views. Links within the WPPA+ system include the debug switch (and optional value).
@@ -126,6 +142,8 @@ This works also for "thumbnail as covers".
 * The filmstrip will be half the normal size in widgets.
 
 = Bug fixes =
+
+* None
 
 = 3.0.5 =
 

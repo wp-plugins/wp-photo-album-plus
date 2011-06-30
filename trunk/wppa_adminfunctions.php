@@ -129,7 +129,8 @@ global $wppa_defaults;
 						'wppa_restore' => '',
 						'wppa_defaults' => '',
 						'wppa_regen' => '',
-						'wppa_allow_debug' => 'no'
+						'wppa_allow_debug' => 'no',
+						'wppa_potd_align' => 'center'
 						);
 	
 	array_walk($wppa_defaults, 'wppa_set_default', $force);

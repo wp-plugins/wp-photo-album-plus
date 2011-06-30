@@ -3,13 +3,13 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions and API modules
-* Version 3.0.6
+* Version 3.0.7
 *
 * dbg
 */
 /* Moved to wppa_commonfunctions.php:
 global $wppa_api_version;
-$wppa_api_version = '3-0-6-000';
+$wppa_api_version = '3-0-7-000';
 */
 
 
@@ -210,12 +210,27 @@ global $wppa;
 		$wppa['is_cover'] = '0';
 		$wppa['is_slide'] = '0';
 		$wppa['is_slideonly'] = '0';
-		if (($id)) {
+		if ($id) {
 			$wppa['single_photo'] = $id;
 		}
 	}
 	else {	// not single photo
-		if (is_numeric($id)) {
+		if ($id) {
+			$wppa['start_album'] = $id;
+		}
+	}
+
+	// See if the album id is a keyword and convert it if possible
+	if ($wppa['start_album'] && !is_numeric($wppa['start_album'])) {
+		if (substr($wppa['start_album'], 0, 1) == '#') {		// Keyword
+			switch ($wppa['start_album']) {
+				case '#last':				// Last upload
+					$id = wppa_get_youngest_album_id();
+					break;
+				default:
+					if ($wppa['debug']) wppa_dbg_msg('Unrecognized album keyword found: '.$id);
+					$id = '0';
+			}
 			$wppa['start_album'] = $id;
 		}
 	}
@@ -226,10 +241,14 @@ global $wppa;
 			switch ($wppa['single_photo']) {
 				case '#potd':				// Photo of the day
 					$t = wppa_get_potd();
-					$id = $t['id'];
+					if (is_array($t)) $id = $t['id'];
+					else $id = '0';
+					break;
+				case '#last':				// Last upload
+					$id = wppa_get_youngest_photo_id();
 					break;
 				default:
-					if ($wppa['debug']) wppa_dbg_msg('Unrecognized keyword found: '.$id);
+					if ($wppa['debug']) wppa_dbg_msg('Unrecognized photo keyword found: '.$id);
 					$id = '0';
 			}
 			$wppa['single_photo'] = $id;
@@ -518,6 +537,14 @@ global $wpdb;
 	
 	$count = $wpdb->query("SELECT * FROM " . WPPA_ALBUMS);
 	return $count;
+}
+
+// get youngest photo id
+function wppa_get_youngest_photo_id() {
+global $wpdb;
+
+	$result = $wpdb->get_var("SELECT id FROM " . WPPA_PHOTOS . " ORDER BY id DESC LIMIT 1");
+	return $result;
 }
 
 // get youngest album id

@@ -17,7 +17,8 @@ class PhotoOfTheDay extends WP_Widget {
 	/** @see WP_Widget::widget */
     function widget($args, $instance) {		
 		global $wpdb;
-		global $widget_content;
+		global $wppa_opt;
+//		global $widget_content;
 
         extract( $args );
 
@@ -30,8 +31,13 @@ class PhotoOfTheDay extends WP_Widget {
 		
 		// Make the HTML for current picture
 		$widget_content = "\n".'<!-- WPPA+ Photo of the day Widget start -->';
-//		$widget_content .= "\n".'<div class="wppa-widget" style="'.__wcs('wppa-widget').'">';
-		$widget_content .= "\n".'<div class="wppa-widget" style="text-align:center; padding-top:2px; ">';
+
+		$ali = $wppa_opt['wppa_potd_align'];
+		if ($ali != 'none') {
+			$align = 'text-align:'.$ali.';';
+		}
+		else $align = '';
+		$widget_content .= "\n".'<div class="wppa-widget-photo" style="'.$align.' padding-top:2px; ">';
 		if ($image) {
 			// make image url
 			$imgurl = get_bloginfo('wpurl') . '/wp-content/uploads/wppa/' . $image['id'] . '.' . $image['ext'];
@@ -56,12 +62,12 @@ class PhotoOfTheDay extends WP_Widget {
 				break;
 			case 'name': 
 				if ($image && $image['name'] != '') {
-					$widget_content .= "\n".'<div class="wppa-widget-text">' . wppa_qtrans(wppa_html(stripslashes($image['name']))) . '</div>';
+					$widget_content .= "\n".'<div class="wppa-widget-text" style="'.$align.'">' . wppa_qtrans(wppa_html(stripslashes($image['name']))) . '</div>';
 				}
 				break;
 			case 'desc': 
 				if ($image && $image['description'] != '') {
-					$widget_content .= "\n".'<div class="wppa-widget-text">' . wppa_qtrans(wppa_html(stripslashes($image['description']))) . '</div>'; 
+					$widget_content .= "\n".'<div class="wppa-widget-text" style="'.$align.'">' . wppa_qtrans(wppa_html(stripslashes($image['description']))) . '</div>'; 
 				}
 				break;
 		}
