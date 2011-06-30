@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the top rated photos
-* Version 3.0.5
+* Version 3.0.6
 */
 class TopTenWidget extends WP_Widget {
     /** constructor */
@@ -85,8 +85,6 @@ class TopTenWidget extends WP_Widget {
 		//Defaults
 		$instance = wp_parse_args( (array) $instance, array( 'sortby' => 'post_title', 'title' => '', 'album' => '0') );
  		$widget_title = apply_filters('widget_title', empty( $instance['title'] ) ? get_option('wppa_toptenwidgettitle', __('Top Ten Photos', 'wppa')) : $instance['title']);
-//		$album = empty($instance['album']) ? '--all--' : $instance['album'];
-//		$title = esc_attr( $instance['title'] );
 
 		$album = $instance['album'];
 ?>

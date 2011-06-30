@@ -2,12 +2,12 @@
 /* wppa_commonfinctions.php
 *
 * Functions used in admin and in themes
-* version 3.0.6
+* version 3.0.7
 *
 * dbg
 */
 global $wppa_api_version;
-$wppa_api_version = '3-0-6-000';
+$wppa_api_version = '3-0-7-000';
 // Initialize globals and option settings
 function wppa_initialize_runtime($force = false) {
 global $wppa;
@@ -115,8 +115,7 @@ global $wppa_api_version;
 			'wppa_fontsize_fulltitle' => '',
 			'wppa_fontcolor_fulltitle' => '',
 			'wppa_arrow_color' => '',
-//			'wppa_widget_padding_top' => '',
-//			'wppa_widget_padding_left' => '',
+			'wppa_widget_width' => '',
 			'wppa_2col_treshold' => '',
 			'wppa_3col_treshold' => '',
 			'wppa_film_show_glue' => '',
@@ -168,6 +167,7 @@ global $wppa_api_version;
 			'wppa_chmod' => '',
 			'wppa_setup' => '',
 			'wppa_allow_debug' => '',
+			'wppa_potd_align' => '',
 			'permalink_structure' => ''			// This must be last
 		);
 		array_walk($wppa_opt, 'wppa_set_options');

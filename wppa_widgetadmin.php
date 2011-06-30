@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 * admin sidebar widget
-* version 3.0.6
+* version 3.0.7
 *
 */
 
@@ -27,19 +27,8 @@ function wppa_sidebar_page_options() {
 		} else {
 			$options_error = true;
 		}
-/*
-		if (wppa_check_numeric($_POST['wppa-widget-padding-top'], '0', __('Widget Photo Padding.'))) {
-			update_option('wppa_widget_padding_top', $_POST['wppa-widget-padding-top']);
-		} else {
-			$options_error = true;
-		}
-
-		if (wppa_check_numeric($_POST['wppa-widget-padding-left'], '0', __('Widget Photo Padding.'))) {
-			update_option('wppa_widget_padding_left', $_POST['wppa-widget-padding-left']);
-		} else {
-			$options_error = true;
-		}
-*/
+		
+		if (isset($_POST['wppa-potd-align'])) update_option('wppa_potd_align', $_POST['wppa-potd-align']);
 		if (isset($_POST['wppa-widget-albums'])) update_option('wppa_widget_album', wppa_walbum_sanitize($_POST['wppa-widget-albums']));
 		if (isset($_POST['wppa-widget-photo'])) update_option('wppa_widget_photo', $_POST['wppa-widget-photo']);
 		if (isset($_POST['wppa-widget-method'])) update_option('wppa_widget_method', $_POST['wppa-widget-method']);
@@ -54,9 +43,8 @@ function wppa_sidebar_page_options() {
 		}
 		if (isset($_POST['wppa-widget-linktype'])) update_option('wppa_widget_linktype', $_POST['wppa-widget-linktype']);
 		if (!$options_error) wppa_update_message(__('Changes Saved. Don\'t forget to activate the widget!', 'wppa')); 
-	}
-
-?>
+	} ?>
+	
 	<div class="wrap">
 		<?php $iconurl = WPPA_URL.'/images/settings32.png'; ?>
 		<div id="icon-album" class="icon32" style="background: transparent url(<?php echo($iconurl); ?>) no-repeat">
@@ -84,12 +72,16 @@ function wppa_sidebar_page_options() {
 						</th>
 						<td>
 							<input type="text" name="wppa-widget-width" id="wppa-widget-width" value="<?php echo(get_option('wppa_widget_width', '150')); ?>" style="width: 50px;" />
-<!--							<?php _e('pixels.', 'wppa'); echo(' '); _e('Padding top:', 'wppa'); ?>
-							<input type="text" name="wppa-widget-padding-top" id="wppa-widget-padding-top" value="<?php echo(get_option('wppa_widget_padding_top', '5')); ?>" style="width: 50px;" />
-							<?php _e('pixels.', 'wppa'); echo(' '); _e('Padding left:', 'wppa'); ?>
-							<input type="text" name="wppa-widget-padding-left" id="wppa-widget-padding-left" value="<?php echo(get_option('wppa_widget_padding_left', '5')); ?>" style="width: 50px;" />
--->							<?php _e('pixels.', 'wppa'); ?>
-							<span class="description"><br/><?php _e('Enter the desired display width of the photo in the sidebar.', 'wppa'); ?></span>
+							<?php _e('pixels.', 'wppa'); echo(' '); _e('Horizontal alignment:', 'wppa'); ?>
+							<select name="wppa-potd-align" id="wppa-potd-align">
+								<?php $ali = get_option('wppa_potd_align') ?>
+								<?php $sel = 'selected="selected"'; ?>
+								<option value="none" <?php if ($ali == 'none') echo($sel) ?>><?php _e('--- none ---', 'wppa') ?></option>
+								<option value="left" <?php if ($ali == 'left') echo($sel) ?>><?php _e('left', 'wppa') ?></option>
+								<option value="center" <?php if ($ali == 'center') echo($sel) ?>><?php _e('center', 'wppa') ?></option>
+								<option value="right" <?php if ($ali == 'right') echo($sel) ?>><?php _e('right', 'wppa') ?></option>
+							</select>
+							<span class="description"><br/><?php _e('Enter the desired display width and alignment of the photo in the sidebar.', 'wppa'); ?></span>
 						</td>
 					</tr>
 					<tr valign="top">
@@ -186,35 +178,26 @@ function wppa_sidebar_page_options() {
 			<p>
 				<input type="submit" class="button-primary" name="wppa-set-submit" value="<?php _e('Save Changes', 'wppa'); ?>" />
 			</p>
-<?php
-			$alb = get_option('wppa_widget_album', '0');
-			
+			<?php $alb = get_option('wppa_widget_album', '0');
 			$photos = wppa_get_widgetphotos($alb);
-			if (empty($photos)) {
-?>
-			<p><?php _e('No photos yet in this album.', 'wppa'); ?></p>
-<?php
-			} else {
+			if (empty($photos)) { ?>
+				<p><?php _e('No photos yet in this album.', 'wppa'); ?></p>
+			<?php } 
+			else {
 				$id = get_option('wppa_widget_photo', '');
-//				$wi = get_option('wppa_thumbsize', '130') + 24;
 				$wi = wppa_get_minisize() + 24;
 				$hi = $wi + 48;
-				foreach ($photos as $photo) {
-?>
+				foreach ($photos as $photo) { ?>
 					<div class="photoselect" style="width: <?php echo(get_option('wppa_widget_width', '150')); ?>px; height: <?php echo($hi); ?>px; overflow:hidden; " >
 						<img src="<?php echo(get_bloginfo('wpurl') . '/wp-content/uploads/wppa/thumbs/' . $photo['id'] . '.' . $photo['ext']); ?>" alt="<?php echo($photo['name']); ?>"></img>
 						<input type="radio" name="wppa-widget-photo" id="wppa-widget-photo<?php echo($photo['id']); ?>" value="<?php echo($photo['id']) ?>" <?php if ($photo['id'] == $id) echo('checked="checked"'); ?>/>
 						<div class="clear"></div>
-						<h4 style="position: absolute; top:<?php echo( $wi - 12 ); ?>px; font-size:11px; overflow:hidden;"><?php echo(stripslashes($photo['name'])) ?></h4>
-						<h6 style="position: absolute; top:<?php echo( $wi + 6); ?>px; font-size:9px; line-height:10px;"><?php echo(stripslashes($photo['description'])); ?></h6>
+						<h4 style="position: absolute; top:<?php echo( $wi - 12 ); ?>px; font-size:11px; overflow:hidden;"><?php echo(wppa_qtrans(stripslashes($photo['name']))) ?></h4>
+						<h6 style="position: absolute; top:<?php echo( $wi + 6); ?>px; font-size:9px; line-height:10px;"><?php echo(wppa_qtrans(stripslashes($photo['description']))); ?></h6>
 					</div>
-<?php		
-				}
-?>
-					<div class="clear"></div>
-<?php
-			}
-?>
+				<?php } ?>
+				<div class="clear"></div>
+			<?php } ?>
 			<script type="text/javascript">wppaCheckWidgetMethod();</script>
 			<script type="text/javascript">wppaCheckWidgetSubtitle();</script>
 			<br />

@@ -142,7 +142,7 @@ global $wppa;
 				$wppa['align'] = $align;
 			}
 			
-			if ($wppa['rendering_enabled'] || is_feed()) {	// Insert the html
+			if (($wppa['rendering_enabled'] || is_feed()) && !is_archive() &&!is_search()) {	// Insert the html
 				$post_new .= wppa_albums();		
 			}
 			else {											// Or an indicator

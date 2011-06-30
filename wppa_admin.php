@@ -3,20 +3,24 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the admin pages
-* Version 3.0.6
+* Version 3.0.7
 *
 * dbg
 */
 
 /* SETUP */
-register_activation_hook(WPPA_FILE, 'wppa_setup');
+//register_activation_hook(WPPA_FILE, 'wppa_setup');
+//act hook is useless since wp does no longer call this hook after upgrade of the plugin
+//this routine is now called at action admin_init, so also after initial install
 
-function wppa_setup() {
+//Set force to true to re-run it even when on rev (happens in wppa_settings.php)
+
+function wppa_setup($force = false) {
 	global $wpdb;
 	global $wppa_revno;
 	
 	$old_rev = get_option('wppa_revision', '100');
-	if ($old_rev <= $wppa_revno) {
+	if ($old_rev < $wppa_revno || $force) {
 		
 	$create_albums = "CREATE TABLE " . WPPA_ALBUMS . " (
                     id bigint(20) NOT NULL auto_increment, 
@@ -63,24 +67,6 @@ function wppa_setup() {
 	
 	$iret = true;
 	
-	if ($old_rev < '302') {		// hide is obsolete, we use eneble now
-		$opt = get_option('wppa_hide_slideshow', 'nil');
-		if ($opt != 'nil') {
-			if ($opt == 'yes') update_option('wppa_enable_slideshow', 'no');
-			else update_option('wppa_enable_slideshow', 'yes');
-			delete_option('wppa_hide_slideshow');
-		}
-		$opt = get_option('wppa_toptenwidgettitle', 'nil');	// obsolete
-		if ($opt != 'nil') {
-			delete_option('wppa_toptenwidgettitle');
-		}
-		$opt = get_option('wppa_black', 'nil'); // obsolete
-		if ($opt != 'nil') {
-			update_option('wppa_fontcolor_box', $opt);
-			delete_option('wppa_black');
-		}
-	}
-	
 	if ($old_rev < '300') {		// theme and/or css changed since...
 		$key = '0';
 		$userstyle = ABSPATH.'wp-content/themes/'.get_option('template').'/wppa_style.css';
@@ -99,6 +85,7 @@ function wppa_setup() {
 		}
 		
 	if ($iret !== false) update_option('wppa_revision', $wppa_revno);
+//	echo('WPPA+ initialized');
 	}
 }
 
@@ -160,3 +147,6 @@ require_once('wppa_widgetadmin.php');
 require_once('wppa_help.php');
 require_once('wppa_adminfunctions.php');
 require_once('wppa_export.php');
+
+// WP no longer runs the activation hook at update so we do it here
+add_action('admin_init', 'wppa_setup');

@@ -3,9 +3,8 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the non admin stuff
-* Version 3.0.6
+* Version 3.0.7
 *
-* dbg
 */
 
 /* API FILTER and FUNCTIONS */
@@ -77,14 +76,6 @@ global $wppa_opt;
 		echo("\t".'wppa_box_delta = '.wppa_get_box_delta().';'."\n");
 		echo("\t".'wppa_ss_timeout = '.$wppa_opt['wppa_slideshow_timeout'].';'."\n");		
 		echo("\t".'wppa_preambule = '.wppa_get_preambule().';'."\n");
-/*
-		$temp = $wppa_opt['wppa_tf_width'] + $wppa_opt['wppa_tn_margin'];
-		echo("\t".'wppa_thumbnail_pitch = '.$temp.';'."\n");
-		$temp = $wppa_opt['wppa_tn_margin'] / 2;
-		echo("\t".'wppa_filmstrip_margin = '.$temp.';'."\n");
-		$temp = 2*6 + 2*23 + 2*$wppa_opt['wppa_bwidth'];
-		echo("\t".'wppa_filmstrip_area_delta = '.$temp.';'."\n");
-*/	
 		if ($wppa_opt['wppa_film_show_glue'] == 'yes') echo("\t".'wppa_film_show_glue = true;'."\n");
 		else echo("\t".'wppa_film_show_glue = false;'."\n");
 		echo("\t".'wppa_slideshow = "'.__a('Slideshow', 'wppa_theme').'";'."\n");
