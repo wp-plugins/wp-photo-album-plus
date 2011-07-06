@@ -142,7 +142,20 @@ global $wppa;
 				$wppa['align'] = $align;
 			}
 			
-			if (($wppa['rendering_enabled'] || is_feed()) && !is_archive() &&!is_search()) {	// Insert the html
+			$do_it = false;
+			if ($wppa['rendering_enabled']) {
+				if ($wppa['in_widget']) $do_it = true;
+				else {
+					$do_it = true;
+					if (is_archive()) $do_it = false;	// Unfortunalely there is not such a simple thing as in_excerpt()
+					if (is_search()) $do_it = false;	// so we estimate that this is an excerpt (where my tags are stripped)
+				}
+			}
+			elseif (is_feed()) {
+				$do_it = true;
+			}
+			
+			if ($do_it) { // ($wppa['rendering_enabled'] || is_feed()) && !is_archive() &&!is_search()) {	// Insert the html
 				$post_new .= wppa_albums();		
 			}
 			else {											// Or an indicator

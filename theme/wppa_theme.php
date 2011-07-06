@@ -3,11 +3,11 @@
 * Package: wp-photo-album-plus
 *
 * display the albums/photos/slideshow in a page or post
-* Version 3.0.1
+* Version 3.1.0
 */
 function wppa_theme() {
 
-global $wppa_version; $wppa_version = '3-0-1';		// The version number of this file, please change if you modify this file
+global $wppa_version; $wppa_version = '3-1-0';		// The version number of this file, please change if you modify this file
 global $wppa;
 global $wppa_opt;
 global $wppa_show_statistics;						// Can be set to true by a custom page template
@@ -87,19 +87,26 @@ wppa_container('open');																// Open container
 	} // wppa_page('oneofone')
 	
 	elseif (wppa_page('slide') || wppa_page('single')) {							// Page 'Slideshow' or 'Single' in browsemode requested
-		// The next 7 lines define the display of the fullsize images and slideshows.
+		// The next 8 lines define the display of the fullsize images and slideshows.
 		// You may change the order of them. Do not leave one out, if you do not want a particular box,
 		// you can switch it off in the Photo Albums -> Settings admin panel.
+		//
+		// In previous versions the name and desc were separate, but not within a box. 
+		// For compatibility the code is given here in case you want it the old way.
+		// Place these lines at the desired place and enable them (remove //) and disable the wppa_slide_name_desc() line hereafter by preceding the code by //
+//		wppa_slide_description('optional');		// The description of the photo	(old method)
+//		wppa_slide_name('optional');			// The name of the photo		(old method)
+
 		wppa_startstop('optional');				// The 'Slower | start/stop | Faster' bar
 		wppa_slide_frame();						// The photo / slide
-		wppa_slide_custom('optional');			// Custom box			// Reserved for future use
+		wppa_slide_name_desc('optional');		// Show name and description in a box. This replaces the old separate ones
+		wppa_slide_custom('optional');			// Custom box			// Reserved for future use, does nothing as per version 3.1.0
 		wppa_slide_rating('optional');			// Rating box
 		wppa_slide_filmstrip('optional');		// Show Filmstrip
-		wppa_slide_description('optional');		// The description of the photo
-		wppa_slide_name('optional');			// The name of the photo
 		wppa_browsebar('optional');				// The 'Previous photo | Photo n of m | Next photo' bar
+		wppa_comments('optional');				// The Comments box
 		//
-		wppa_run_slidecontainer('slideshow');	// Fill in the photo array and display it
+		wppa_run_slidecontainer('slideshow');	// Fill in the photo array and display it. Do not (re)move this line, its vital for the slideshow to work
 	} // wppa_page('slide')
 wppa_container('close');
 }

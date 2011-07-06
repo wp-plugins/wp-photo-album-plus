@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the admin pages
-* Version 3.0.7
+* Version 3.1.0
 *
 * dbg
 */
@@ -20,6 +20,7 @@ function wppa_setup($force = false) {
 	global $wppa_revno;
 	
 	$old_rev = get_option('wppa_revision', '100');
+//echo('oldrev='.$old_rev.' new rev='.$wppa_revno);
 	if ($old_rev < $wppa_revno || $force) {
 		
 	$create_albums = "CREATE TABLE " . WPPA_ALBUMS . " (
@@ -56,18 +57,30 @@ function wppa_setup($force = false) {
 					PRIMARY KEY  (id)
 					);";
 					
+	$create_comments = "CREATE TABLE " . WPPA_COMMENTS . " (
+					id bigint(20) NOT NULL auto_increment,
+					timestamp tinytext NOT NULL,
+					photo bigint(20) NOT NULL,
+					user text NOT NULL,
+					email text NOT NULL,
+					comment text NOT NULL,
+					status tinytext NOT NULL,
+					PRIMARY KEY  (id)	
+					);";
+					
 	require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
 
     dbDelta($create_albums);
     dbDelta($create_photos);
 	dbDelta($create_rating);
+	dbDelta($create_comments);
 	
 	wppa_set_defaults();
 	wppa_check_dirs();
 	
 	$iret = true;
 	
-	if ($old_rev < '300') {		// theme and/or css changed since...
+	if ($old_rev < '310') {		// theme and/or css changed since...
 		$key = '0';
 		$userstyle = ABSPATH.'wp-content/themes/'.get_option('template').'/wppa_style.css';
 		$usertheme = ABSPATH.'wp-content/themes/'.get_option('template').'/wppa_theme.php';
@@ -102,13 +115,20 @@ add_action('admin_menu', 'wppa_add_admin');
 
 function wppa_add_admin() {
 	global $wp_roles;
+	global $wpdb;
 
 	if (current_user_can('administrator')) {	// Make sure admin has access rights
 		$wp_roles->add_cap('administrator', 'wppa_admin');
 		$wp_roles->add_cap('administrator', 'wppa_upload');
 		$wp_roles->add_cap('administrator', 'wppa_sidebar_admin');
 	}
-
+	
+	if (get_option('wppa_show_comments') == 'yes') {
+		$pending = count($wpdb->get_results("SELECT id FROM ".WPPA_COMMENTS." WHERE status='pending'", "ARRAY_A"));
+		$cnt = $pending ? '<span class="update-plugins"><span class="plugin-count">'.$pending.'</span></span>' : '';
+	}
+	else $cnt = '';
+	
 	$iconurl = WPPA_URL.'/images/camera16.png';
 	add_menu_page('WP Photo Album', __('Photo&thinsp;Albums', 'wppa'), 'wppa_admin', WPPA_FILE, 'wppa_admin', $iconurl);
 	
@@ -117,6 +137,7 @@ function wppa_add_admin() {
 	add_submenu_page(WPPA_FILE, __('Export Photos', 'wppa'), __('Export Photos', 'wppa'), 'administrator', 'export_photos', 'wppa_page_export');
     add_submenu_page(WPPA_FILE, __('Settings', 'wppa'), __('Settings', 'wppa'), 'administrator', 'options', 'wppa_page_options');
 	add_submenu_page(WPPA_FILE, __('Photo of the day Widget', 'wppa'), __('Photo of the day', 'wppa'), 'wppa_sidebar_admin', 'wppa_sidebar_options', 'wppa_sidebar_page_options');
+	add_submenu_page(WPPA_FILE, __('Manage comments', 'wppa'), __('Comments', 'wppa').$cnt, 'administrator', 'manage_comments', 'wppa_comments');
     add_submenu_page(WPPA_FILE, __('Help &amp; Info', 'wppa'), __('Help &amp; Info', 'wppa'), 'edit_posts', 'wppa_help', 'wppa_page_help');
 }
 
@@ -140,13 +161,41 @@ function wppa_admin_scripts() {
 }
 
 /* ADMIN PHP's */
-require_once('wppa_albumadmin.php');
-require_once('wppa_upload.php');
-require_once('wppa_settings.php');
-require_once('wppa_widgetadmin.php');
-require_once('wppa_help.php');
+// to save server memory and speed up: only load when needed
+function wppa_admin() {
+	require_once('wppa_albumadmin.php');
+	_wppa_admin();
+}
+function wppa_page_upload() {
+	require_once('wppa_upload.php');
+	_wppa_page_upload();
+}
+function wppa_page_import() {
+	require_once('wppa_upload.php');
+	_wppa_page_import();
+}
+function wppa_page_export() {
+	require_once('wppa_export.php');
+	_wppa_page_export();
+}
+function wppa_page_options() {	
+	require_once('wppa_settings.php');
+	_wppa_page_options();
+}
+function wppa_sidebar_page_options() {
+	require_once('wppa_widgetadmin.php');
+	_wppa_sidebar_page_options();
+}
+function wppa_page_help() {	
+	require_once('wppa_help.php');
+	_wppa_page_help();
+}
+function wppa_comments() { 
+	require_once('wppa_commentadmin.php');
+	_wppa_comments();
+}
+// General purpose admin functions
 require_once('wppa_adminfunctions.php');
-require_once('wppa_export.php');
 
 // WP no longer runs the activation hook at update so we do it here
 add_action('admin_init', 'wppa_setup');

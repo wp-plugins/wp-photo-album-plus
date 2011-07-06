@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wp-photo-album-plus\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-06-17 15:54+0100\n"
-"PO-Revision-Date: 2011-06-17 15:54+0100\n"
+"POT-Creation-Date: 2011-07-06 15:42+0100\n"
+"PO-Revision-Date: 2011-07-06 15:44+0100\n"
 "Last-Translator: J.N. Breetvelt <OpaJaap@OpaJaap.nl>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -20,18 +20,74 @@ msgstr ""
 msgid "No albums or photos found matching your search criteria."
 msgstr "Er zijn geen albums of foto's gevonden die voldoen aan uw zoekopdracht."
 
-#: wppa_commonfunctions.php:320
+#: wppa_commonfunctions.php:335
 #, php-format
 msgid "Rating: %s"
 msgstr "%s punten"
 
-#: wppa_commonfunctions.php:390
+#: wppa_commonfunctions.php:405
 msgid "--- none ---"
 msgstr "--- geen ---"
 
-#: wppa_commonfunctions.php:391
+#: wppa_commonfunctions.php:406
 msgid "--- separate ---"
 msgstr "--- afzonderlijk ---"
+
+#: wppa_commonfunctions.php:503
+msgid "1 second"
+msgstr "1 seconde"
+
+#: wppa_commonfunctions.php:504
+msgid "seconds"
+msgstr "seconden"
+
+#: wppa_commonfunctions.php:508
+msgid "1 minute"
+msgstr "1 minuut"
+
+#: wppa_commonfunctions.php:509
+msgid "minutes"
+msgstr "minuten"
+
+#: wppa_commonfunctions.php:513
+msgid "1 hour"
+msgstr "1 uur"
+
+#: wppa_commonfunctions.php:514
+msgid "hours"
+msgstr "uren"
+
+#: wppa_commonfunctions.php:518
+msgid "1 day"
+msgstr "1 dag"
+
+#: wppa_commonfunctions.php:519
+msgid "days"
+msgstr "dagen"
+
+#: wppa_commonfunctions.php:523
+msgid "1 week"
+msgstr "1 week"
+
+#: wppa_commonfunctions.php:524
+msgid "weeks"
+msgstr "weken"
+
+#: wppa_commonfunctions.php:528
+msgid "1 month"
+msgstr "1 maand"
+
+#: wppa_commonfunctions.php:529
+msgid "months"
+msgstr "maanden"
+
+#: wppa_commonfunctions.php:532
+msgid "1 year"
+msgstr "1 jaar"
+
+#: wppa_commonfunctions.php:533
+msgid "years"
+msgstr "jaren"
 
 #: wppa_functions.php:31
 msgid "There are"
@@ -50,8 +106,7 @@ msgid "Home"
 msgstr "Beginpagina"
 
 #: wppa_functions.php:124
-#: wppa_functions.php:1669
-#: wppa_non_admin.php:90
+#: wppa_functions.php:1911
 msgid "Slideshow"
 msgstr "Diavoorstelling"
 
@@ -63,151 +118,167 @@ msgstr "Zoeken naar:"
 msgid "Top rated photos"
 msgstr "Top waarderingen"
 
-#: wppa_functions.php:784
+#: wppa_functions.php:826
+msgid "You must login to enter a comment"
+msgstr "U moet ingelogd zijn om een reactie te geven"
+
+#: wppa_functions.php:882
 msgid "<b>ERROR: Attempt to enter an invalid rating.</b>"
 msgstr "<b>FOUT: Poging een ongeldige waardering in te voeren.</b>"
 
-#: wppa_functions.php:1141
+#: wppa_functions.php:1112
+#, php-format
+msgid "%d  comments"
+msgstr "%d reacties"
+
+#: wppa_functions.php:1113
+msgid "Leave a comment"
+msgstr "Leave a comment"
+
+#: wppa_functions.php:1368
 msgid "Prev.&nbsp;page"
 msgstr "Vorige&nbsp;pagina"
 
-#: wppa_functions.php:1145
+#: wppa_functions.php:1372
 msgid "Next&nbsp;page"
 msgstr "Volgende&nbsp;pagina"
 
-#: wppa_functions.php:1594
+#: wppa_functions.php:1836
 msgid "Link to"
 msgstr "Link naar"
 
-#: wppa_functions.php:1598
+#: wppa_functions.php:1840
 msgid "Page is not available."
 msgstr "Pagina is niet beschikbaar."
 
-#: wppa_functions.php:1604
-#: wppa_functions.php:1678
+#: wppa_functions.php:1846
+#: wppa_functions.php:1920
 msgid "View the album"
 msgstr "Bekijk het album"
 
-#: wppa_functions.php:1609
+#: wppa_functions.php:1851
 msgid "View the cover photo"
 msgstr "Bekijk de omslagfoto"
 
-#: wppa_functions.php:1610
+#: wppa_functions.php:1852
 msgid "View the cover photos"
 msgstr "Bekijk de omslagfoto's"
 
-#: wppa_functions.php:1669
+#: wppa_functions.php:1911
 msgid "Browse photos"
 msgstr "Foto's bladeren"
 
-#: wppa_functions.php:1679
+#: wppa_functions.php:1921
 msgid "View"
 msgstr "Bekijk"
 
-#: wppa_functions.php:1682
+#: wppa_functions.php:1924
 msgid "album"
 msgstr "album"
 
-#: wppa_functions.php:1685
+#: wppa_functions.php:1927
 msgid "albums"
 msgstr "albums"
 
-#: wppa_functions.php:1689
+#: wppa_functions.php:1931
 msgid "and"
 msgstr "en"
 
-#: wppa_functions.php:1693
+#: wppa_functions.php:1935
 msgid "photo"
 msgstr "foto"
 
-#: wppa_functions.php:1696
+#: wppa_functions.php:1938
 msgid "photos"
 msgstr "foto's"
 
-#: wppa_functions.php:1905
+#: wppa_functions.php:2122
+msgid "To see the full size images, you need to enable javascript in your browser."
+msgstr "Om foto's op volledige grootte te zien, dient u javascript te activeren in uw browser."
+
+#: wppa_functions.php:2155
 msgid "Slower"
 msgstr "Trager"
 
-#: wppa_functions.php:1906
-#: wppa_non_admin.php:91
+#: wppa_functions.php:2156
 msgid "Start"
 msgstr "Start"
 
-#: wppa_functions.php:1907
+#: wppa_functions.php:2157
 msgid "Faster"
 msgstr "Sneller"
 
-#: wppa_functions.php:1930
+#: wppa_functions.php:2180
 msgid "Click to start/stop"
 msgstr "Klik om te starten/stoppen"
 
-#: wppa_functions.php:2136
+#: wppa_functions.php:2425
 msgid "Double click to start/stop slideshow running"
-msgstr "Dubbel klik voor start/stopt diavoorstelling"
+msgstr "Dubbel klik voor start/stop diavoorstelling"
 
-#: wppa_functions.php:2297
+#: wppa_functions.php:2601
 msgid "- - - Rating enabled - - -"
 msgstr "- - - Waarderingssysteem geactiveerd - - -"
 
-#: wppa_functions.php:2306
+#: wppa_functions.php:2610
 msgid "very low"
 msgstr "zeer laag"
 
-#: wppa_functions.php:2307
+#: wppa_functions.php:2611
 msgid "low"
 msgstr "laag"
 
-#: wppa_functions.php:2308
+#: wppa_functions.php:2612
 msgid "average"
 msgstr "gemiddeld"
 
-#: wppa_functions.php:2309
+#: wppa_functions.php:2613
 msgid "high"
 msgstr "hoog"
 
-#: wppa_functions.php:2310
+#: wppa_functions.php:2614
 msgid "very high"
 msgstr "zeer hoog"
 
-#: wppa_functions.php:2315
-#: wppa_functions.php:2320
+#: wppa_functions.php:2619
+#: wppa_functions.php:2624
 msgid "Average&nbsp;rating"
 msgstr "Gem.&nbsp;waardering"
 
-#: wppa_functions.php:2329
-#: wppa_functions.php:2332
+#: wppa_functions.php:2633
+#: wppa_functions.php:2636
 msgid "My&nbsp;rating"
 msgstr "Mijn&nbsp;waardering"
 
-#: wppa_functions.php:2335
+#: wppa_functions.php:2639
 msgid "You must login to vote"
 msgstr "U moet ingelogd zijn om te stemmen"
 
-#: wppa_non_admin.php:92
+#: wppa_non_admin.php:83
 msgid "Stop"
 msgstr "Stop"
 
-#: wppa_non_admin.php:93
+#: wppa_non_admin.php:84
 msgid "Photo"
 msgstr "Foto"
 
-#: wppa_non_admin.php:94
+#: wppa_non_admin.php:85
 msgid "of"
 msgstr "van"
 
-#: wppa_non_admin.php:95
+#: wppa_non_admin.php:86
 msgid "Prev.&nbsp;photo"
 msgstr "Vorige&nbsp;foto"
 
-#: wppa_non_admin.php:96
+#: wppa_non_admin.php:87
 msgid "Next&nbsp;photo"
 msgstr "Volgende&nbsp;foto"
 
-#: wppa_non_admin.php:97
+#: wppa_non_admin.php:88
 msgid "Prev."
 msgstr "Vorige"
 
-#: wppa_non_admin.php:98
+#: wppa_non_admin.php:89
 msgid "Next"
 msgstr "Volgende"
 
@@ -221,16 +292,25 @@ msgstr "Er is nog geen album ingesteld."
 
 #: wppa_toptenwidget.php:48
 msgid "View the top rated photos"
-msgstr "Bekijk de topscore foto's"
+msgstr "Bekijk de top score foto's"
 
 #: wppa_toptenwidget.php:62
-#: wppa_widget.php:49
+#: wppa_widget.php:55
 msgid "Photo not found."
 msgstr "Foto niet gevonden."
 
-#: wppa_widget.php:24
+#: wppa_widget.php:25
 msgid "Photo Of The Day"
 msgstr "Foto van de dag"
+
+#~ msgid "hours ago"
+#~ msgstr "uur geleden"
+
+#~ msgid "days ago"
+#~ msgstr "dagen geleden"
+
+#~ msgid "weeks ago"
+#~ msgstr "weken geleden"
 
 #, fuzzy
 #~ msgid "View the cover phots"
@@ -2249,9 +2329,6 @@ msgstr "Foto van de dag"
 #~ msgid "no."
 #~ msgstr "nee."
 
-#~ msgid "yes."
-#~ msgstr "ja."
-
 #~ msgid ""
 #~ "Set to 'yes' if there are only portrait images in the album and you want "
 #~ "the photos to fill the full width of the widget.<br/>Set to 'no' "
@@ -2600,15 +2677,6 @@ msgstr "Foto van de dag"
 #~ msgid "Change every"
 #~ msgstr "Verander ieder(e)"
 
-#~ msgid "hour."
-#~ msgstr "uur."
-
-#~ msgid "day."
-#~ msgstr "dag."
-
-#~ msgid "week."
-#~ msgstr "week."
-
 #~ msgid "Select how the widget should display."
 #~ msgstr "Selecteer de gewenste afbeeldings methode."
 
@@ -2771,14 +2839,8 @@ msgstr "Foto van de dag"
 #~ msgid "More Galleries"
 #~ msgstr "More Galleries"
 
-#~ msgid "Leave a comment"
-#~ msgstr "Leave a comment"
-
 #~ msgid "1 Comment"
 #~ msgstr "1 Comment"
-
-#~ msgid "% Comments"
-#~ msgstr "% Comments"
 
 #~ msgid "Continue reading <span class=\"meta-nav\">&rarr;</span>"
 #~ msgstr "Continue reading <span class=\"meta-nav\">&rarr;</span>"

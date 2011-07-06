@@ -6,7 +6,7 @@
 * version 2.5.0
 */ 
 
-function wppa_page_help() {
+function _wppa_page_help() {
 global $wppa_revno;
 
 	// Check if a message is required

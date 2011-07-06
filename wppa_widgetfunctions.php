@@ -2,7 +2,7 @@
 /* wppa_widgetfunctions.php
 /* Package: wp-photo-album-plus
 /*
-/* Version 3.0.7
+/* Version 3.1.0
 /*
 */
 
@@ -150,7 +150,7 @@ global $wpdb;
 			case '1':	// Fixed photo
 				$id = get_option('wppa_widget_photo', '');
 				if ($id != '') {
-					$image = $wpdb->get_row($wpdb->prepare('SELECT * FROM `' . WPPA_PHOTOS . '` WHERE `id` = %d LIMIT 0,1', $id), 'ARRAY_A');
+					$image = $wpdb->get_row($wpdb->prepare('SELECT * FROM `' . WPPA_PHOTOS . '` WHERE `id` = %s LIMIT 0,1', $id), 'ARRAY_A');
 				}
 				break;
 			case '2':	// Random
