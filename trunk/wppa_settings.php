@@ -3,11 +3,11 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 3.0.6
+* Version 3.1.0
 *
 */
 
-function wppa_page_options() {
+function _wppa_page_options() {
 global $wpdb;
 global $wppa;
 global $blog_id; 
@@ -47,6 +47,7 @@ global $options_error;
 					if ($wpdb->query("ALTER TABLE " . WPPA_ALBUMS . " MODIFY description text CHARACTER SET utf8") === false) $options_error = true;
 					if ($wpdb->query("ALTER TABLE " . WPPA_PHOTOS . " MODIFY description longtext CHARACTER SET utf8") === false) $options_error = true;
 					if ($wpdb->query("ALTER TABLE " . WPPA_PHOTOS . " MODIFY linktitle text CHARACTER SET utf8") === false) $options_error = true;
+					if ($wpdb->query("ALTER TABLE " . WPPA_COMMENTS . " MODIFY comment text CHARACTER SET utf8") === false) $options_error = true;
 					if ($options_error) wppa_error_message(__('Error converting to UTF_8', 'wppa'));
 					else {
 						update_option('wppa_charset', 'UTF_8');
@@ -134,6 +135,7 @@ global $options_error;
 			wppa_update_check('wppa_thumb_text_desc');
 			wppa_update_check('wppa_thumb_text_rating');
 			wppa_update_check('wppa_show_cover_text');
+			wppa_update_check('wppa_show_comments');
 		
 			// Table 3: Backgrounds
 			wppa_update_value('wppa_bgcolor_even');
@@ -141,8 +143,14 @@ global $options_error;
 			wppa_update_value('wppa_bgcolor_alt');
 			wppa_update_value('wppa_bcolor_alt');
 			wppa_update_value('wppa_bgcolor_nav');
-			wppa_update_value('wppa_bcolor_nav');
+			wppa_update_value('wppa_bcolor_nav');		
+			wppa_update_value('wppa_bgcolor_namedesc');
+			wppa_update_value('wppa_bcolor_namedesc');
+			wppa_update_value('wppa_bgcolor_com');
+			wppa_update_value('wppa_bcolor_com');
+
 			wppa_update_value('wppa_bgcolor_img');
+
 				
 			// Table 4: Behaviour
 			wppa_update_value('wppa_fullvalign');
@@ -167,6 +175,7 @@ global $options_error;
 			wppa_update_check('wppa_list_albums_desc');
 			wppa_update_value('wppa_list_photos_by');
 			wppa_update_check('wppa_list_photos_desc');
+			wppa_update_check('wppa_comment_login');
 		
 			// Table 5: Fonts
 			wppa_update_value('wppa_fontfamily_title');
@@ -664,6 +673,13 @@ global $wppa_api_version;
 					$html = wppa_checkbox($slug);
 					wppa_setting($slug, '17', $name, $desc, $html, $help);
 					
+					$name = __('Comments system', 'wppa');
+					$desc = __('Enable the comments system.', 'wppa');
+					$help = esc_js(__('Display the comments box under the fullsize images and let users enter their comments on individual photos.', 'wppa'));
+					$slug = 'wppa_show_comments';
+					$html = wppa_checkbox($slug);
+					wppa_setting($slug, '18', $name, $desc, $html, $help);
+					
 					?>
 				</tbody>
 				<tfoot style="font-weight: bold" class="wppa_table_2">
@@ -721,6 +737,24 @@ global $wppa_api_version;
 					$html2 = wppa_input($slug2, '100px', '');
 					wppa_setting_2($slug1, $slug2, '3', $name, $desc, $html1, $html2, $help);
 
+					$name = __('Name/desc', 'wppa');
+					$desc = __('Name and Description bars.', 'wppa');
+					$help = esc_js(__('Enter valid CSS colors for name and description box backgrounds and borders.', 'wppa'));
+					$slug1 = 'wppa_bgcolor_namedesc';
+					$slug2 = 'wppa_bcolor_namedesc';
+					$html1 = wppa_input($slug1, '100px', '');
+					$html2 = wppa_input($slug2, '100px', '');
+					wppa_setting_2($slug1, $slug2, '4', $name, $desc, $html1, $html2, $help);
+					
+					$name = __('Comments', 'wppa');
+					$desc = __('Comment input and display areas.', 'wppa');
+					$help = esc_js(__('Enter valid CSS colors for comment box backgrounds and borders.', 'wppa'));
+					$slug1 = 'wppa_bgcolor_com';
+					$slug2 = 'wppa_bcolor_com';
+					$html1 = wppa_input($slug1, '100px', '');
+					$html2 = wppa_input($slug2, '100px', '');
+					wppa_setting_2($slug1, $slug2, '5', $name, $desc, $html1, $html2, $help);
+
 					$name = __('Img', 'wppa');
 					$desc = __('Popup and Cover Photos.', 'wppa');
 					$help = esc_js(__('Enter a valid CSS color for image backgrounds.', 'wppa'));
@@ -728,7 +762,7 @@ global $wppa_api_version;
 					$slug2 = $slug1;
 					$html1 = wppa_input($slug1, '100px', '');
 					$html2 = '';
-					wppa_setting_2($slug1, $slug2, '4', $name, $desc, $html1, $html2, $help);
+					wppa_setting_2($slug1, $slug2, '6', $name, $desc, $html1, $html2, $help);
 					
 					?>
 				</tbody>
@@ -962,6 +996,13 @@ global $wppa_api_version;
 					$slug = 'wppa_list_photos_desc';
 					$html = wppa_checkbox($slug);
 					wppa_setting($slug, '22', $name, $desc, $html, $help);
+					
+					$name = __('Commenting login', 'wppa');
+					$desc = __('Users must be logged in to comment on photos.', 'wppa');
+					$help = esc_js(__('Check this box if you want users to be logged in to be able to enter comments on individual photos.', 'wppa'));
+					$slug = 'wppa_comment_login';
+					$html = wppa_checkbox($slug);
+					wppa_setting($slug, '23', $name, $desc, $html, $help);
 					
 					?>
 				</tbody>

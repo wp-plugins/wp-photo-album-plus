@@ -3,11 +3,11 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the upload/import pages and functions
-* Version 3.0.6
+* Version 3.1.0
 *
 */
 
-function wppa_page_upload() {
+function _wppa_page_upload() {
 global $target;
 
 	// upload images admin page
@@ -125,7 +125,7 @@ global $target;
 }
 
 // import images admin page
-function wppa_page_import() {
+function _wppa_page_import() {
 
 	// Check if a message is required
 	wppa_check_update();
@@ -482,7 +482,7 @@ global $warning_given;
 						$id = basename($album);
 						$id = substr($id, 0, strpos($id, '.'));
 						if (!wppa_is_id_free('album', $id)) $id = 0;
-						$query = $wpdb->prepare('INSERT INTO `' . WPPA_ALBUMS . '` (`id`, `name`, `description`, `a_order`, `a_parent`, `p_order_by`, `main_photo`, `cover_linkpage`, `owner`) VALUES (%d, %s, %s, %d, %d, %d, %d, %d, %s)', $id, stripslashes($name), stripslashes($desc), $aord, $parent, $porder, 0, 0, $owner);
+						$query = $wpdb->prepare('INSERT INTO `' . WPPA_ALBUMS . '` (`id`, `name`, `description`, `a_order`, `a_parent`, `p_order_by`, `main_photo`, `cover_linkpage`, `owner`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)', $id, stripslashes($name), stripslashes($desc), $aord, $parent, $porder, '0', '0', $owner);
 						$iret = $wpdb->query($query);
 
 						if ($iret === FALSE) wppa_error_message(__('Could not create album.', 'wppa'));
@@ -605,7 +605,7 @@ function wppa_insert_photo ($file = '', $album = '', $name = '', $desc = '', $po
 				return false;
 		}
 			
-		$query = $wpdb->prepare('INSERT INTO `' . WPPA_PHOTOS . '` (`id`, `album`, `ext`, `name`, `p_order`, `description`, `mean_rating`, `linkurl`, `linktitle`) VALUES (%d, %d, %s, %s, %d, %s, \'\', %s, %s)', $id, $album, $ext, $name, $porder, $desc, $linkurl, $linktitle);
+		$query = $wpdb->prepare('INSERT INTO `' . WPPA_PHOTOS . '` (`id`, `album`, `ext`, `name`, `p_order`, `description`, `mean_rating`, `linkurl`, `linktitle`) VALUES (%s, %s, %s, %s, %s, %s, \'\', %s, %s)', $id, $album, $ext, $name, $porder, $desc, $linkurl, $linktitle);
 		if ($wpdb->query($query) === false) {
 			wppa_error_message(__('Could not insert photo. query=', 'wppa').$query);
 		}
@@ -735,252 +735,6 @@ function wppa_get_meta_data($file, $item, $opt) {
 	return $result;
 }
 
-// Remove photo entries that have no fullsize image or thumbnail
-function wppa_cleanup_photos($alb = '') {
-	global $wpdb;
-	if ($alb == '') $alb = wppa_get_last_album();
-	if (!is_numeric($alb)) return;
-
-	$no_photos = '';
-//	if ($alb == '0') wppa_ok_message(__('Checking database, please wait...', 'wppa'));
-	$delcount = 0;
-	if ($alb == '0') $entries = $wpdb->get_results('SELECT id, ext, name FROM '.WPPA_PHOTOS, ARRAY_A);
-	else $entries = $wpdb->get_results('SELECT id, ext, name FROM '.WPPA_PHOTOS.' WHERE album = '.$alb, ARRAY_A);
-	if ($entries) {
-		foreach ($entries as $entry) {
-			$thumbpath = ABSPATH.'wp-content/uploads/wppa/thumbs/'.$entry['id'].'.'.$entry['ext'];
-			$imagepath = ABSPATH.'wp-content/uploads/wppa/'.$entry['id'].'.'.$entry['ext'];
-			if (!is_file($thumbpath)) {	// No thumb: delete fullimage
-				if (is_file($imagepath)) unlink($imagepath);
-				$no_photos .= ' '.$entry['name'];
-			}
-			if (!is_file($imagepath)) { // No fullimage: delete db entry
-				if ($wpdb->query($wpdb->prepare('DELETE FROM `'.WPPA_PHOTOS.'` WHERE `id` = %d LIMIT 1', $entry['id']))) {
-					$delcount++;
-				}
-			}
-		}
-	}
-	// Now fix missing exts for upload bug in 2.3.0
-	$fixcount = 0;
-	$entries = $wpdb->get_results('SELECT id, ext, name FROM '.WPPA_PHOTOS.' WHERE ext = ""', ARRAY_A);
-	if ($entries) {
-		wppa_ok_message(__('Trying to fix '.count($entries).' entries with missing file extension, Please wait.', 'wppa'));
-		foreach ($entries as $entry) {
-			$tp = ABSPATH.'wp-content/uploads/wppa/'.$entry['id'].'.';
-			// Try the name
-			$ext = substr(strrchr($entry['name'], "."), 1);
-			if (!($ext == 'jpg' || $ext == 'JPG' || $ext == 'png' || $ext == 'PNG' || $ext == 'gif' || $ext == 'GIF')) {
-				$ext = '';
-			}
-			if ($ext == '' && is_file($tp)) {
-			// Try the type from the file
-				$img = getimagesize($tp);
-				if ($img[2] == 1) $ext = 'gif';
-				if ($img[2] == 2) $ext = 'jpg';
-				if ($img[2] == 3) $ext = 'png';
-			}
-			if ($ext == 'jpg' || $ext == 'JPG' || $ext == 'png' || $ext == 'PNG' || $ext == 'gif' || $ext == 'GIF') {
-				
-				if ($wpdb->query('UPDATE '.WPPA_PHOTOS.' SET ext = "'.$ext.'" WHERE id = '.$entry['id'])) {
-					$oldimg = ABSPATH.'wp-content/uploads/wppa/'.$entry['id'].'.';
-					$newimg = ABSPATH.'wp-content/uploads/wppa/'.$entry['id'].'.'.$ext;
-					if (is_file($oldimg)) {
-						copy($oldimg, $newimg);
-						unlink($oldimg);
-					}
-					$oldimg = ABSPATH.'wp-content/uploads/wppa/thumbs/'.$entry['id'].'.';
-					$newimg = ABSPATH.'wp-content/uploads/wppa/thumbs/'.$entry['id'].'.'.$ext;
-					if (is_file($oldimg)) {
-						copy($oldimg, $newimg);
-						unlink($oldimg);
-					}
-					$fixcount++;
-					wppa_ok_message(__('Fixed extension for ', 'wppa').$entry['name']);
-				}
-				else {
-					wppa_error_message(__('Unable to fix extension for ', 'wppa').$entry['name']);
-				}
-			}
-			else {
-				wppa_error_message(__('Unknown extension for photo ', 'wppa').$entry['name'].'. '.__('Please change the name to something with the proper extension and try again!', 'wppa'));
-			}
-		}	
-	}
-	
-	// Now fix orphan photos
-	$orphcount = 0;
-	$entries = $wpdb->get_results('SELECT id FROM '.WPPA_PHOTOS.' WHERE album = 0', ARRAY_A);
-	if ($entries) {
-		$album = wppa_get_album_id(__('Orphan Photos', 'wppa'));
-		if ($album == '') {
-			$query = $wpdb->prepare('INSERT INTO `' . WPPA_ALBUMS . '` (`id`, `name`, `description`, `a_order`, `a_parent`, `p_order_by`, `main_photo`, `cover_linkpage`, `owner`) VALUES (0, %s, %s, %d, %d, %d, %d, %d, %s)', __('Orphan Photos', 'wppa'), $desc, 0, 0, 0, 0, 0, 'admin');
-			$iret = $wpdb->query($query);
-			if ($iret === false) {
-				wppa_error_message('Could not create album: Orphan Photos', 'wppa');
-			}
-			else {
-				wppa_ok_message('Album: Orphan Photos created.', 'wppa');
-			}
-			$album = wppa_get_album_id(__('Orphan Photos', 'wppa')); // retry
-		}
-		if ($album) {
-			$orphcount = $wpdb->query('UPDATE '.WPPA_PHOTOS.' SET album = '.$album.' WHERE album < 1');
-		}
-		else {
-			wppa_error_message(__('Could not recover orphanized photos.', 'wppa'));
-		}
-	}
-
-	// End fix
-	if ($orphcount > 0){
-		wppa_ok_message(__('Database fixed.', 'wppa').' '.$orphcount.' '.__('orphanized photos recovered.', 'wppa'));
-	}
-	if ($delcount > 0){
-		wppa_ok_message(__('Database fixed.', 'wppa').' '.$delcount.' '.__('invalid entries removed:', 'wppa').$no_photos);
-	}
-	if ($fixcount > 0) {
-		wppa_ok_message(__('Database fixed.', 'wppa').' '.$fixcount.' '.__('missing file extensions recovered.', 'wppa'));
-	}
-		if ($alb == '0' && $delcount == 0 && $fixcount == 0) {
-//		wppa_ok_message(__('Done. No errors found. Have a nice upload!', 'wppa'));
-	}
-}
-
-
-// Check if the required directories exist, if not, try to create them and report it
-function wppa_check_dirs() {
-
-	// check if uploads dir exists
-	$dir = ABSPATH . 'wp-content/uploads';
-	if (!is_dir($dir)) {
-		mkdir($dir);
-		if (!is_dir($dir)) {
-			wppa_error_message(__('The uploads directory does not exist, please do a regular WP upload first.', 'wppa'));
-			return false;
-		}
-		else {
-			wppa_ok_message(__('Successfully created uploads directory.', 'wppa'));
-		}
-	}	
-
-	// check if wppa dir exists
-	$dir = ABSPATH . 'wp-content/uploads/wppa';
-	if (!is_dir($dir)) {
-		mkdir($dir);
-		if (!is_dir($dir)) {
-			wppa_error_message(__('Could not create the wppa directory.', 'wppa').wppa_credirmsg($dir));
-			return false;
-		}
-		else {
-			wppa_ok_message(__('Successfully created wppa directory.', 'wppa'));
-		}
-	}
-	
-	// check if thumbs dir exists 
-	$dir = ABSPATH . 'wp-content/uploads/wppa/thumbs';
-	if (!is_dir($dir)) {
-		mkdir($dir);
-		if (!is_dir($dir)) {
-			wppa_error_message(__('Could not create the wppa thumbs directory.', 'wppa').wppa_credirmsg($dir));
-			return false;
-		}
-		else {
-			wppa_ok_message(__('Successfully created wppa thumbs directory.', 'wppa'));
-		}
-	}
-	
-	// check if depot dir exists
-	$dir = ABSPATH . 'wp-content/wppa-depot';
-	if (!is_dir($dir)) {
-		mkdir($dir);
-		if (!is_dir($dir)) {
-			wppa_error_message(__('Unable to create depot directory', 'wppa').wppa_credirmsg($dir));
-			return false;
-		}
-		else {
-			wppa_ok_message(__('Successfully created wppa master depot directory.', 'wppa'));
-		}
-	}
-	
-	// check if users depot dir exists
-	$dir = ABSPATH . 'wp-content/wppa-depot/'.wppa_get_user();
-	if (!is_dir($dir)) {
-		mkdir($dir);
-		if (!is_dir($dir)) {
-			wppa_error_message(__('Unable to create user depot directory.', 'wppa').wppa_credirmsg($dir));
-			return false;
-		}
-		else {
-			wppa_ok_message(__('Successfully created wppa user depot directory.', 'wppa'));
-		}
-	}
-	
-	return true;
-}
-function wppa_credirmsg($dir) {
-	$msg = ' '.sprintf(__('Ask your administrator to give you more rights, try CHMOD from table VII item 1 of the Photo Albums -> Settings admin page or create <b>%s</b> manually using an FTP program.', 'wppa'), $dir);
-	return $msg;
-}
-
-function wppa_walktree($relroot, $source) {
-
-	if ($relroot == $source) $sel=' selected="selected"'; else $sel = ' ';
-	echo('<option value="'.$relroot.'"'.$sel.'>'.$relroot.'</option>');
-	
-	if ($handle = opendir(ABSPATH.$relroot)) {
-		while (false !== ($file = readdir($handle))) {
-			if (($file) != "." && ($file) != ".." && ($file) != "wppa") {
-				$newroot = $relroot.'/'.$file;
-				if (is_dir(ABSPATH.$newroot)) {	
-					wppa_walktree($newroot, $source);
-				}
-			}
-		}
-		closedir($handle);
-	}
-}
-
-function wppa_is_id_free($type, $id) {
-global $wpdb;
-	if (!is_numeric($id)) return false;
-	if ($id == '0') return false;
-	
-	$table = '';
-	if ($type == 'album') $table = WPPA_ALBUMS;
-	if ($type == 'photo') $table = WPPA_PHOTOS;
-	if ($table == '') {
-		echo('Unexpected error in wppa_is_id_free()');
-		return false;
-	}
-	$res = $wpdb->get_row('SELECT * FROM '.$table.' WHERE id = '.$id, 'ARRAY_A');
-	if ($res) return false;
-	return true;
-}
-
-function wppa_sanitize_files($user) {
-
-	// Get this users depot directory
-	$depot = ABSPATH.'wp-content/wppa-depot/'.$user;
-	// See what's in there
-	$paths = $depot.'/*.*';
-	$files = glob($paths);
-	$allowed_types = array('zip', 'jpg', 'png', 'gif', 'amf', 'pmf', 'bak');
-
-	$count = '0';
-	if ($files) foreach ($files as $file) {
-		if (is_file($file)) {
-			$ext = strtolower(substr(strrchr($file, "."), 1));
-			if (!in_array($ext, $allowed_types)) {
-				unlink($file);
-				wppa_error_message(sprintf(__('File %s is of an unsupported filetype and has been removed.', 'wppa'), basename($file)));
-//echo($file); echo('<br>');
-				$count++;
-			}
-		}
-	}
-	return $count;
-}
 
 function wppa_extract($path, $delz) {
 // There are two reasons that we do not allow the directory structure from the zipfile to be restored.

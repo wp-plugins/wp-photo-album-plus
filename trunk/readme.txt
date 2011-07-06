@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate
-Version: 3.0.7
+Version: 3.1.0
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -11,6 +11,7 @@ Tested up to: 3.2
 
 This plugin is designed to easily manage and display your photo albums and slideshows within your WordPress site. 
 Additionally there are four widgets: Photo of the day, a Search Photos widget, a Top Ten Rated photo widget and a Mini slideshow widget.
+Visitors can leave comments on individual photos.
 
 == Description ==
 
@@ -28,6 +29,7 @@ This plugin is designed to easily manage and display your photo albums and slide
 * You can add a Photo of the day Sidebar Widget that displays a photo which can be changed every hour, day or week.
 * You can add a Search Sidebar Widget which enables the visitors to search albums and photos for certain words in names and descriptions.
 * You can enable a rating system and a supporting Top Ten Photos Sidebar Widget that can hold a configurable number of high rated photos.
+* You can enable a comment system that allows visitors to enter comments on individual photos.
 * Apart from the full-size slideshows you can add a Sidebar Widget that displays a mini slideshow.
 * There is a General Purpose widget that is a text widget wherein you can use wppa+ script commands.
 * Almost all appearance settings can be done in the settings admin page. No php, html or css knowledge is required to customize the appearence of the photo display.
@@ -102,6 +104,23 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 
 == Changelog ==
 
+= 3.1.0 =
+
+= New Features =
+
+* A per photo based comment system has been added.
+* Big Browsing Buttons. When hovering near the left and right edges of the fullsize image when the slideshow is stopped, big left (previous) and right (next) browse buttons appear.
+
+= Enhancements =
+
+* Admin pages load only when used, this results in less server memory usage and speed-up of all admin pages.
+* The name and description under the fullsize images is now combined in a wppa+ box. You can still set fonts individually, you can also switch them on/of individually.
+If you like the 'old' display method, this is still possible; see the explanation in /theme/wppa_theme.php.
+
+= Bug Fixes =
+
+* You can manipulate and delete Albums and Photos now even when their id is greater then 2147483647.
+
 = 3.0.7 =
 
 = Enhancements =
@@ -140,10 +159,6 @@ The main wp admin menu items are beyond the scope of this feature. Press the men
 This works also for "thumbnail as covers".
 * The Photo of the day widget photo will be centered horizontally, no padding setting is required anymore.
 * The filmstrip will be half the normal size in widgets.
-
-= Bug fixes =
-
-* None
 
 = 3.0.5 =
 

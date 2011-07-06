@@ -2,12 +2,12 @@
 /* wppa_commonfinctions.php
 *
 * Functions used in admin and in themes
-* version 3.0.7
+* version 3.1.0
 *
 * dbg
 */
 global $wppa_api_version;
-$wppa_api_version = '3-0-7-000';
+$wppa_api_version = '3-1-0-000';
 // Initialize globals and option settings
 function wppa_initialize_runtime($force = false) {
 global $wppa;
@@ -53,7 +53,12 @@ global $wppa_api_version;
 			'permalink' => '',
 			'randseed' => time() % '4711',
 			'rendering_enabled' => false,
-			'tabcount' => '0'
+			'tabcount' => '0',
+			'comment_id' => '',
+			'comment_photo' => '0',
+			'comment_user' => '',
+			'comment_email' => '',
+			'comment_text' => ''
 		);
 		if (isset($_POST['wppa-searchstring'])) $wppa['src'] = true;
 		if (isset($_GET['wppa_src'])) $wppa['src'] = true;
@@ -91,9 +96,13 @@ global $wppa_api_version;
 			'wppa_bgcolor_alt' => '',
 			'wppa_bgcolor_nav' => '',
 			'wppa_bgcolor_img' => '',
+			'wppa_bgcolor_namedesc' => '',
+			'wppa_bgcolor_com' => '',
 			'wppa_bcolor_even' => '',
 			'wppa_bcolor_alt' => '',
 			'wppa_bcolor_nav' => '',
+			'wppa_bcolor_namedesc' => '',
+			'wppa_bcolor_com' => '',
 			'wppa_bwidth' => '',
 			'wppa_bradius' => '',
 			'wppa_fontfamily_thumb' => '',
@@ -132,6 +141,7 @@ global $wppa_api_version;
 			'wppa_show_browse_navigation' => '',
 			'wppa_show_full_desc' => '',
 			'wppa_show_full_name' => '',
+			'wppa_show_comments' => '',
 			'wppa_show_cover_text' => '',
 			'wppa_start_slide' => '',
 			'wppa_hide_slideshow' => '',
@@ -145,6 +155,8 @@ global $wppa_api_version;
 			'wppa_rating_login' => '',
 			'wppa_rating_change' => '',
 			'wppa_rating_multi' => '',
+			'wppa_comment_login' => '',
+			'wppa_comment_on' => '',
 			'wppa_list_albums_by' => '',
 			'wppa_list_albums_desc' => '',
 			'wppa_list_photos_by' => '',
@@ -168,6 +180,8 @@ global $wppa_api_version;
 			'wppa_setup' => '',
 			'wppa_allow_debug' => '',
 			'wppa_potd_align' => '',
+			'wppa_comadmin_show' => '',
+			'wppa_comadmin_order' => '',
 			'permalink_structure' => ''			// This must be last
 		);
 		array_walk($wppa_opt, 'wppa_set_options');
@@ -343,7 +357,7 @@ function wppa_is_ancestor($anc, $xchild) {
 function wppa_get_parentalbumid($alb) {
 global $wpdb;
     
-	$query = $wpdb->prepare('SELECT `a_parent` FROM `' . WPPA_ALBUMS . '` WHERE `id` = %d', $alb);
+	$query = $wpdb->prepare('SELECT `a_parent` FROM `' . WPPA_ALBUMS . '` WHERE `id` = %s', $alb);
 	$result = $wpdb->get_var($query);
 	
     if (!is_numeric($result)) {
@@ -442,4 +456,80 @@ global $wppa;
 		$result .= 'debug='.$wppa['debug'];
 	}
 	return $result;
+}
+
+function wppa_get_time_since($oldtime) {
+
+	if (is_admin()) {	// admin version
+		$newtime = time();
+		$diff = $newtime - $oldtime;
+		if ($diff < 60) {
+			if ($diff == 1) return __('1 second', 'wppa');
+			else return $diff.' '.__('seconds', 'wppa');
+		}
+		$diff = floor($diff / 60);
+		if ($diff < 60) {
+			if ($diff == 1) return __('1 minute', 'wppa');
+			else return $diff.' '.__('minutes', 'wppa');
+		}
+		$diff = floor($diff / 60);
+		if ($diff < 24) {
+			if ($diff == 1) return __('1 hour', 'wppa');
+			else return $diff.' '.__('hours', 'wppa');
+		}
+		$diff = floor($diff / 24);
+		if ($diff < 7) {
+			if ($diff == 1) return __('1 day', 'wppa');
+			else return $diff.' '.__('days', 'wppa');
+		}
+		elseif ($diff < 31) {
+			$t = floor($diff / 7);
+			if ($t == 1) return __('1 week', 'wppa');
+			else return $t.' '.__('weeks', 'wppa');
+		}
+		$diff = floor($diff / 30.4375);
+		if ($diff < 12) {
+			if ($diff == 1) return __('1 month', 'wppa');
+			else return $diff.' '.__('months', 'wppa');
+		}
+		$diff = floor($diff / 12);
+		if ($diff == 1) return __('1 year', 'wppa');
+		else return $diff.' '.__('years', 'wppa');
+	}
+	else {	// theme version
+		$newtime = time();
+		$diff = $newtime - $oldtime;
+		if ($diff < 60) {
+			if ($diff == 1) return __a('1 second', 'wppa_theme');
+			else return $diff.' '.__a('seconds', 'wppa_theme');
+		}
+		$diff = floor($diff / 60);
+		if ($diff < 60) {
+			if ($diff == 1) return __a('1 minute', 'wppa_theme');
+			else return $diff.' '.__a('minutes', 'wppa_theme');
+		}
+		$diff = floor($diff / 60);
+		if ($diff < 24) {
+			if ($diff == 1) return __a('1 hour', 'wppa_theme');
+			else return $diff.' '.__a('hours', 'wppa_theme');
+		}
+		$diff = floor($diff / 24);
+		if ($diff < 7) {
+			if ($diff == 1) return __a('1 day', 'wppa_theme');
+			else return $diff.' '.__a('days', 'wppa_theme');
+		}
+		elseif ($diff < 31) {
+			$t = floor($diff / 7);
+			if ($t == 1) return __a('1 week', 'wppa_theme');
+			else return $t.' '.__a('weeks', 'wppa_theme');
+		}
+		$diff = floor($diff / 30.4375);
+		if ($diff < 12) {
+			if ($diff == 1) return __a('1 month', 'wppa_theme');
+			else return $diff.' '.__a('months', 'wppa_theme');
+		}
+		$diff = floor($diff / 12);
+		if ($diff == 1) return __a('1 year', 'wppa_theme');
+		else return $diff.' '.__a('years', 'wppa_theme');
+	}
 }

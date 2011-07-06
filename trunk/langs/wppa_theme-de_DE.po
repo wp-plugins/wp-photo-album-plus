@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wppa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-06-17 15:52+0100\n"
-"PO-Revision-Date: 2011-06-17 15:52+0100\n"
+"POT-Creation-Date: 2011-07-06 15:41+0100\n"
+"PO-Revision-Date: 2011-07-06 15:41+0100\n"
 "Last-Translator: J.N. Breetvelt <OpaJaap@OpaJaap.nl>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -21,18 +21,74 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPath-1: theme\n"
 
-#: wppa_commonfunctions.php:320
+#: wppa_commonfunctions.php:335
 #, php-format
 msgid "Rating: %s"
 msgstr "Bewertung: %s"
 
-#: wppa_commonfunctions.php:390
+#: wppa_commonfunctions.php:405
 msgid "--- none ---"
 msgstr "--- keine ---"
 
-#: wppa_commonfunctions.php:391
+#: wppa_commonfunctions.php:406
 msgid "--- separate ---"
 msgstr "--- separat ---"
+
+#: wppa_commonfunctions.php:503
+msgid "1 second"
+msgstr ""
+
+#: wppa_commonfunctions.php:504
+msgid "seconds"
+msgstr ""
+
+#: wppa_commonfunctions.php:508
+msgid "1 minute"
+msgstr ""
+
+#: wppa_commonfunctions.php:509
+msgid "minutes"
+msgstr ""
+
+#: wppa_commonfunctions.php:513
+msgid "1 hour"
+msgstr ""
+
+#: wppa_commonfunctions.php:514
+msgid "hours"
+msgstr ""
+
+#: wppa_commonfunctions.php:518
+msgid "1 day"
+msgstr ""
+
+#: wppa_commonfunctions.php:519
+msgid "days"
+msgstr ""
+
+#: wppa_commonfunctions.php:523
+msgid "1 week"
+msgstr ""
+
+#: wppa_commonfunctions.php:524
+msgid "weeks"
+msgstr ""
+
+#: wppa_commonfunctions.php:528
+msgid "1 month"
+msgstr ""
+
+#: wppa_commonfunctions.php:529
+msgid "months"
+msgstr ""
+
+#: wppa_commonfunctions.php:532
+msgid "1 year"
+msgstr ""
+
+#: wppa_commonfunctions.php:533
+msgid "years"
+msgstr ""
 
 #: wppa_functions.php:31
 msgid "There are"
@@ -51,8 +107,8 @@ msgid "Home"
 msgstr "Startseite"
 
 #: wppa_functions.php:124
-#: wppa_functions.php:1669
-#: wppa_non_admin.php:90
+#: wppa_functions.php:1911
+#: wppa_non_admin.php:81
 msgid "Slideshow"
 msgstr "Diaschau"
 
@@ -64,151 +120,169 @@ msgstr "Suchtext:"
 msgid "Top rated photos"
 msgstr "Hoch bewertete Fotos"
 
-#: wppa_functions.php:784
+#: wppa_functions.php:826
+#, fuzzy
+msgid "You must login to enter a comment"
+msgstr "Zum Bewerten bitte anmelden."
+
+#: wppa_functions.php:882
 msgid "<b>ERROR: Attempt to enter an invalid rating.</b>"
 msgstr "<b>FEHLER: Sie haben versucht eine ungültige Bewertung einzutragen</b>"
 
-#: wppa_functions.php:1141
+#: wppa_functions.php:1112
+#, php-format
+msgid "%d  comments"
+msgstr ""
+
+#: wppa_functions.php:1113
+msgid "Leave a comment"
+msgstr ""
+
+#: wppa_functions.php:1368
 msgid "Prev.&nbsp;page"
 msgstr "Vorherige&nbsp;Seite"
 
-#: wppa_functions.php:1145
+#: wppa_functions.php:1372
 msgid "Next&nbsp;page"
 msgstr "Nächste&nbsp;Seite"
 
-#: wppa_functions.php:1594
+#: wppa_functions.php:1836
 msgid "Link to"
 msgstr "Verweis zu"
 
-#: wppa_functions.php:1598
+#: wppa_functions.php:1840
 msgid "Page is not available."
 msgstr "Diese Seite ist nicht abrufbar."
 
-#: wppa_functions.php:1604
-#: wppa_functions.php:1678
+#: wppa_functions.php:1846
+#: wppa_functions.php:1920
 msgid "View the album"
 msgstr "Das Album ansehen"
 
-#: wppa_functions.php:1609
+#: wppa_functions.php:1851
 msgid "View the cover photo"
 msgstr "Titelfoto ansehen"
 
-#: wppa_functions.php:1610
+#: wppa_functions.php:1852
 msgid "View the cover photos"
 msgstr "Titelfotos ansehen"
 
-#: wppa_functions.php:1669
+#: wppa_functions.php:1911
 msgid "Browse photos"
 msgstr "Durchsuche Fotos"
 
-#: wppa_functions.php:1679
+#: wppa_functions.php:1921
 msgid "View"
 msgstr "Ansehen"
 
-#: wppa_functions.php:1682
+#: wppa_functions.php:1924
 msgid "album"
 msgstr "Album"
 
-#: wppa_functions.php:1685
+#: wppa_functions.php:1927
 msgid "albums"
 msgstr "Alben"
 
-#: wppa_functions.php:1689
+#: wppa_functions.php:1931
 msgid "and"
 msgstr "und"
 
-#: wppa_functions.php:1693
+#: wppa_functions.php:1935
 msgid "photo"
 msgstr "Foto"
 
-#: wppa_functions.php:1696
+#: wppa_functions.php:1938
 msgid "photos"
 msgstr "Fotos"
 
-#: wppa_functions.php:1905
+#: wppa_functions.php:2122
+msgid "To see the full size images, you need to enable javascript in your browser."
+msgstr ""
+
+#: wppa_functions.php:2155
 msgid "Slower"
 msgstr "Langsamer"
 
-#: wppa_functions.php:1906
-#: wppa_non_admin.php:91
+#: wppa_functions.php:2156
+#: wppa_non_admin.php:82
 msgid "Start"
 msgstr "Starte"
 
-#: wppa_functions.php:1907
+#: wppa_functions.php:2157
 msgid "Faster"
 msgstr "Schneller"
 
-#: wppa_functions.php:1930
+#: wppa_functions.php:2180
 msgid "Click to start/stop"
 msgstr ""
 
-#: wppa_functions.php:2136
+#: wppa_functions.php:2425
 msgid "Double click to start/stop slideshow running"
 msgstr ""
 
-#: wppa_functions.php:2297
+#: wppa_functions.php:2601
 msgid "- - - Rating enabled - - -"
 msgstr "- - - Bewertung möglich - - -"
 
-#: wppa_functions.php:2306
+#: wppa_functions.php:2610
 msgid "very low"
 msgstr "sehr niedrig"
 
-#: wppa_functions.php:2307
+#: wppa_functions.php:2611
 msgid "low"
 msgstr "niedrig"
 
-#: wppa_functions.php:2308
+#: wppa_functions.php:2612
 msgid "average"
 msgstr "durchschnittlich"
 
-#: wppa_functions.php:2309
+#: wppa_functions.php:2613
 msgid "high"
 msgstr "hoch"
 
-#: wppa_functions.php:2310
+#: wppa_functions.php:2614
 msgid "very high"
 msgstr "sehr hoch"
 
-#: wppa_functions.php:2315
-#: wppa_functions.php:2320
+#: wppa_functions.php:2619
+#: wppa_functions.php:2624
 msgid "Average&nbsp;rating"
 msgstr "Durchschnittliche Bewertung"
 
-#: wppa_functions.php:2329
-#: wppa_functions.php:2332
+#: wppa_functions.php:2633
+#: wppa_functions.php:2636
 msgid "My&nbsp;rating"
 msgstr "Meine&nbsp;Bewertung"
 
-#: wppa_functions.php:2335
+#: wppa_functions.php:2639
 msgid "You must login to vote"
 msgstr "Zum Bewerten bitte anmelden."
 
-#: wppa_non_admin.php:92
+#: wppa_non_admin.php:83
 msgid "Stop"
 msgstr "Beenden"
 
-#: wppa_non_admin.php:93
+#: wppa_non_admin.php:84
 msgid "Photo"
 msgstr "Foto"
 
-#: wppa_non_admin.php:94
+#: wppa_non_admin.php:85
 msgid "of"
 msgstr "von"
 
-#: wppa_non_admin.php:95
+#: wppa_non_admin.php:86
 msgid "Prev.&nbsp;photo"
 msgstr "Vorheriges&nbsp;Foto"
 
-#: wppa_non_admin.php:96
+#: wppa_non_admin.php:87
 msgid "Next&nbsp;photo"
 msgstr "Nächstes&nbsp;Foto"
 
-#: wppa_non_admin.php:97
+#: wppa_non_admin.php:88
 msgid "Prev."
 msgstr ""
 
-#: wppa_non_admin.php:98
+#: wppa_non_admin.php:89
 msgid "Next"
 msgstr ""
 
@@ -226,11 +300,11 @@ msgid "View the top rated photos"
 msgstr "Titelfotos ansehen"
 
 #: wppa_toptenwidget.php:62
-#: wppa_widget.php:49
+#: wppa_widget.php:55
 msgid "Photo not found."
 msgstr "Foto wurde nicht gefunden."
 
-#: wppa_widget.php:24
+#: wppa_widget.php:25
 msgid "Photo Of The Day"
 msgstr "Foto des Tages"
 

@@ -3,11 +3,11 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the export functions
-* Version 3.0.6
+* Version 3.1.0
 *
 */
 
-function wppa_page_export() {
+function _wppa_page_export() {
 global $wpdb;
 
 	// Export Photos admin page

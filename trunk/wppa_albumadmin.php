@@ -3,11 +3,11 @@
 * Pachkage: wp-photo-album-plus
 *
 * create, edit and delete albums
-* version 3.0.6
+* version 3.1.0
 *
 */
 
-function wppa_admin() {
+function _wppa_admin() {
 	global $wpdb;
 	global $q_config;
 
@@ -35,7 +35,7 @@ function wppa_admin() {
 			if (isset($_GET['photo_del'])) {
 				$message = __('Photo Deleted.', 'wppa');
 				
-				$ext = $wpdb->get_var($wpdb->prepare('SELECT `ext` FROM `'.WPPA_PHOTOS.'` WHERE `id` = %d', $_GET['photo_del'])); 
+				$ext = $wpdb->get_var($wpdb->prepare('SELECT `ext` FROM `'.WPPA_PHOTOS.'` WHERE `id` = %s', $_GET['photo_del'])); 
 				
 				$file = ABSPATH.'wp-content/uploads/wppa/'.$_GET['photo_del'].'.'.$ext;
 				if (file_exists($file)) {
@@ -53,8 +53,8 @@ function wppa_admin() {
 					$message .= ' '.__('Thumbnail image did not exist.', 'wppa');
 				}
 				
-				$wpdb->query($wpdb->prepare('DELETE FROM `'.WPPA_PHOTOS.'` WHERE `id` = %d LIMIT 1', $_GET['photo_del']));
-				$wpdb->query($wpdb->prepare('DELETE FROM `'.WPPA_RATING.'` WHERE `photo` = %d', $_GET['photo_del']));
+				$wpdb->query($wpdb->prepare('DELETE FROM `'.WPPA_PHOTOS.'` WHERE `id` = %s LIMIT 1', $_GET['photo_del']));
+				$wpdb->query($wpdb->prepare('DELETE FROM `'.WPPA_RATING.'` WHERE `photo` = %s', $_GET['photo_del']));
 
 				wppa_update_message($message);
 			}
@@ -88,7 +88,7 @@ function wppa_admin() {
 			}
 			
 			// Get the album information
-			$albuminfo = $wpdb->get_row($wpdb->prepare('SELECT * FROM `'.WPPA_ALBUMS.'` WHERE `id` = %d', $_GET['edit_id']), 'ARRAY_A'); ?>	
+			$albuminfo = $wpdb->get_row($wpdb->prepare('SELECT * FROM `'.WPPA_ALBUMS.'` WHERE `id` = %s', $_GET['edit_id']), 'ARRAY_A'); ?>	
 			
 			<div class="wrap">
 				<h2><?php _e('Edit Album Information', 'wppa'); ?></h2>
@@ -528,7 +528,7 @@ function wppa_album_photos($id) {
 	global $wpdb;
 	global $q_config;
 	
-	$photos = $wpdb->get_results($wpdb->prepare('SELECT * FROM `'.WPPA_PHOTOS.'` WHERE `album` = %d '.wppa_get_photo_order($id), $id), 'ARRAY_A');
+	$photos = $wpdb->get_results($wpdb->prepare('SELECT * FROM `'.WPPA_PHOTOS.'` WHERE `album` = %s '.wppa_get_photo_order($id), $id), 'ARRAY_A');
 
 	if (empty($photos)) { ?>
 		<p><?php _e('No photos yet in this album.', 'wppa'); ?></p>
@@ -699,44 +699,6 @@ function wppa_album_photos($id) {
 	} /* photos not empty */
 } /* function */
 
-// check if albums 'exists'
-function wppa_has_albums() {
-	return wppa_have_access('any');
-}
-
-// get select form element listing albums 
-function wppa_album_select($exc = '', $sel = '', $addnone = FALSE, $addseparate = FALSE, $checkancestors = FALSE, $none_is_all = false) {
-	global $wpdb;
-	$albums = $wpdb->get_results("SELECT * FROM ".WPPA_ALBUMS." ORDER BY name", 'ARRAY_A');
-	
-    if ($sel == '') {
-        $s = wppa_get_last_album();
-        if ($s != $exc) $sel = $s;
-    }
-    
-    $result = '';
-    if ($addnone) {
-		if ($none_is_all) $result .= '<option value="0">' . __('--- all ---', 'wppa') . '</option>';
-		else $result .= '<option value="0">' . __('--- none ---', 'wppa') . '</option>';
-	}
-    
-	foreach ($albums as $album) if (wppa_have_access($album)) {
-		if ($sel == $album['id']) { 
-            $selected = ' selected="selected" '; 
-        } 
-        else { $selected = ''; }
-		if ($album['id'] != $exc && (!$checkancestors || !wppa_is_ancestor($exc, $album['id']))) {
-			$result .= '<option value="' . $album['id'] . '"' . $selected . '>'.wppa_qtrans(stripslashes($album['name'])).'</option>';
-		}
-		else {
-			$result .= '<option disabled="disabled" value="-3">'.wppa_qtrans(stripslashes($album['name'])).'</option>';
-		}
-	}
-    
-    if ($sel == -1) $selected = ' selected="selected" '; else $selected = '';
-    if ($addseparate) $result .= '<option value="-1"' . $selected . '>' . __('--- separate ---', 'wppa') . '</option>';
-	return $result;
-}
 
 // add an album 
 function wppa_add_album() {
@@ -767,7 +729,7 @@ function wppa_add_album() {
 	$owner = wppa_get_user();
 
 	if (!empty($name)) {
-		$query = $wpdb->prepare('INSERT INTO `' . WPPA_ALBUMS . '` (`id`, `name`, `description`, `a_order`, `a_parent`, `p_order_by`, `main_photo`, `cover_linkpage`, `owner`) VALUES (0, %s, %s, %d, %d, %d, %d, %d, %s)', $name, $desc, $order, $parent, $porder, 0, 0, $owner);
+		$query = $wpdb->prepare('INSERT INTO `' . WPPA_ALBUMS . '` (`id`, `name`, `description`, `a_order`, `a_parent`, `p_order_by`, `main_photo`, `cover_linkpage`, `owner`) VALUES (0, %s, %s, %s, %s, %s, %s, %s, %s)', $name, $desc, $order, $parent, $porder, 0, 0, $owner);
 		$iret = $wpdb->query($query);
         if ($iret === FALSE) wppa_error_message(__('Could not create album.', 'wppa'));
 		else {
@@ -824,7 +786,7 @@ function wppa_edit_album() {
 		$mean_rating = $photo['mean_rating'];
 		
 		if (isset($_POST['clear-rating'])) {
-			$wpdb->query($wpdb->prepare('DELETE FROM `'.WPPA_RATING.'` WHERE `photo` = %d', $photo['id']));
+			$wpdb->query($wpdb->prepare('DELETE FROM `'.WPPA_RATING.'` WHERE `photo` = %s', $photo['id']));
 			$mean_rating = '0';
 		}
 		
@@ -850,7 +812,7 @@ function wppa_edit_album() {
 		$linkurl = $photo['linkurl'];
 		$linktitle = $photo['linktitle'];
 		
-		$query = $wpdb->prepare('UPDATE `' . WPPA_PHOTOS . '` SET `name` = %s, `album` = %s, `description` = %s, `p_order` = %d, `mean_rating` = %s, `linkurl` = %s, `linktitle` = %s WHERE `id` = %d LIMIT 1', $photo_name, $photo['album'], $photo_desc, $photo['p_order'], $mean_rating, $linkurl, $linktitle, $photo['id']);
+		$query = $wpdb->prepare('UPDATE `' . WPPA_PHOTOS . '` SET `name` = %s, `album` = %s, `description` = %s, `p_order` = %s, `mean_rating` = %s, `linkurl` = %s, `linktitle` = %s WHERE `id` = %s LIMIT 1', $photo_name, $photo['album'], $photo_desc, $photo['p_order'], $mean_rating, $linkurl, $linktitle, $photo['id']);
 		$iret = $wpdb->query($query);
 
         if ($iret === FALSE) {
@@ -863,8 +825,8 @@ function wppa_edit_album() {
 	
 	// update the album information
 	if (!empty($name)) {
-		if ($owner == '') $query = $wpdb->prepare('UPDATE `' . WPPA_ALBUMS . '` SET `name` = %s, `description` = %s, `main_photo` = %s, `a_order` = %d, `a_parent` = %d, `p_order_by` = %s, `cover_linkpage` = %s WHERE `id` = %d', $name, $desc, $main, $order, $parent, $orderphotos, $link, $_GET['edit_id']);
-		else $query = $wpdb->prepare('UPDATE `' . WPPA_ALBUMS . '` SET `name` = %s, `description` = %s, `main_photo` = %s, `a_order` = %d, `a_parent` = %d, `p_order_by` = %s, `cover_linkpage` = %s, `owner` = %s WHERE `id` = %d', $name, $desc, $main, $order, $parent, $orderphotos, $link, $owner, $_GET['edit_id']);
+		if ($owner == '') $query = $wpdb->prepare('UPDATE `' . WPPA_ALBUMS . '` SET `name` = %s, `description` = %s, `main_photo` = %s, `a_order` = %s, `a_parent` = %s, `p_order_by` = %s, `cover_linkpage` = %s WHERE `id` = %s', $name, $desc, $main, $order, $parent, $orderphotos, $link, $_GET['edit_id']);
+		else $query = $wpdb->prepare('UPDATE `' . WPPA_ALBUMS . '` SET `name` = %s, `description` = %s, `main_photo` = %s, `a_order` = %s, `a_parent` = %s, `p_order_by` = %s, `cover_linkpage` = %s, `owner` = %s WHERE `id` = %s', $name, $desc, $main, $order, $parent, $orderphotos, $link, $owner, $_GET['edit_id']);
 		$iret = $wpdb->query($query);
 		
         if ($iret === FALSE) {
@@ -884,10 +846,10 @@ function wppa_edit_album() {
 function wppa_del_album($id, $move = '') {
 	global $wpdb;
 
-	$wpdb->query($wpdb->prepare('DELETE FROM `' . WPPA_ALBUMS . '` WHERE `id` = %d LIMIT 1', $id));
+	$wpdb->query($wpdb->prepare('DELETE FROM `' . WPPA_ALBUMS . '` WHERE `id` = %s LIMIT 1', $id));
 
 	if (empty($move)) { // will delete all the album's photos
-		$photos = $wpdb->get_results($wpdb->prepare('SELECT * FROM `' . WPPA_PHOTOS . '` WHERE `album` = %d', $id), 'ARRAY_A');
+		$photos = $wpdb->get_results($wpdb->prepare('SELECT * FROM `' . WPPA_PHOTOS . '` WHERE `album` = %s', $id), 'ARRAY_A');
 
 		if (is_array($photos)) {
 			foreach ($photos as $photo) {
@@ -903,14 +865,14 @@ function wppa_del_album($id, $move = '') {
 				}
 				/* else: silence */
 				// remove the photo's ratings
-				$wpdb->query($wpdb->prepare('DELETE FROM `' . WPPA_RATING . '` WHERE `photo` = %d', $photo['id']));
+				$wpdb->query($wpdb->prepare('DELETE FROM `' . WPPA_RATING . '` WHERE `photo` = %s', $photo['id']));
 			} 
 		}
 		
 		// remove the database entries
-		$wpdb->query($wpdb->prepare('DELETE FROM `'.WPPA_PHOTOS.'` WHERE `album` = %d', $id));
+		$wpdb->query($wpdb->prepare('DELETE FROM `'.WPPA_PHOTOS.'` WHERE `album` = %s', $id));
 	} else {
-		$wpdb->query($wpdb->prepare('UPDATE `'.WPPA_PHOTOS.'` SET `album` = %d WHERE `album` = %d', $move, $id));
+		$wpdb->query($wpdb->prepare('UPDATE `'.WPPA_PHOTOS.'` SET `album` = %s WHERE `album` = %s', $move, $id));
 	}
 	
 	wppa_update_message(__('Album Deleted.', 'wppa'));
@@ -921,7 +883,7 @@ function wppa_main_photo($cur = '') {
 	global $wpdb;
 	
     $a_id = $_GET['edit_id'];
-	$photos = $wpdb->get_results($wpdb->prepare('SELECT * FROM `'.WPPA_PHOTOS.'` WHERE `album` = %d '.wppa_get_photo_order($a_id), $a_id), 'ARRAY_A');
+	$photos = $wpdb->get_results($wpdb->prepare('SELECT * FROM `'.WPPA_PHOTOS.'` WHERE `album` = %s '.wppa_get_photo_order($a_id), $a_id), 'ARRAY_A');
 	
 	$output = '';
 	if (!empty($photos)) {

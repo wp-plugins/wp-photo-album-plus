@@ -3,11 +3,11 @@
 * Pachkage: wp-photo-album-plus
 *
 * admin sidebar widget
-* version 3.0.7
+* version 3.1.0
 *
 */
 
-function wppa_sidebar_page_options() {
+function _wppa_sidebar_page_options() {
 	global $wpdb;
 	
 	// Check if a message is required
