@@ -113,6 +113,7 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 = Other changes =
 
 * Removed changelog prior to version 3.0.0
+* Minor cosmetic changes
 
 = 3.1.0 =
 
