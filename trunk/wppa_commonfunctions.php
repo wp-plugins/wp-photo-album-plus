@@ -2,12 +2,11 @@
 /* wppa_commonfinctions.php
 *
 * Functions used in admin and in themes
-* version 3.1.0
+* version 3.1.1
 *
-* dbg
 */
 global $wppa_api_version;
-$wppa_api_version = '3-1-0-000';
+$wppa_api_version = '3-1-1-000';
 // Initialize globals and option settings
 function wppa_initialize_runtime($force = false) {
 global $wppa;
@@ -156,7 +155,6 @@ global $wppa_api_version;
 			'wppa_rating_change' => '',
 			'wppa_rating_multi' => '',
 			'wppa_comment_login' => '',
-			'wppa_comment_on' => '',
 			'wppa_list_albums_by' => '',
 			'wppa_list_albums_desc' => '',
 			'wppa_list_photos_by' => '',

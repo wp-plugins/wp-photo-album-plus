@@ -3,13 +3,14 @@
 * Package: wp-photo-album-plus
 *
 * manage all comments
-* Version 3.1.0
+* Version 3.1.1
 *
 */
 
 function _wppa_comments() {
 global $wpdb;
 global $wppa;
+global $wppa_opt;
 
 	$continue = true;
 	
@@ -25,7 +26,7 @@ global $wppa;
 					<br />
 				</div>
 				<h2><?php _e('WP Photo Album Plus Edit Comment', 'wppa'); ?></h2>
-				
+								
 				<form action="<?php echo(wppa_dbg_url(get_admin_url().'/admin.php?page=manage_comments')); if (isset($_GET['compage'])) echo('&compage='.$_GET['compage']) ?>" method="post">
 		
 					<?php wppa_nonce_field('$wppa_nonce', WPPA_NONCE); ?>
@@ -105,6 +106,8 @@ global $wppa;
 				<br />
 			</div>
 			<h2><?php _e('WP Photo Album Plus Comment admin', 'wppa'); ?></h2>
+			
+			<?php if ($wppa_opt['wppa_show_comments'] == 'no') _e('<h3>The Comment system is not activated</h3><p>To activate: check Table II item 18 on the <b>Photo Albums -> Settings</b> screen and press <b>Save Changes</b>', 'wppa'); ?>
 		
 			<table>
 				<tbody>

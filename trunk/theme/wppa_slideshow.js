@@ -1,5 +1,5 @@
 ﻿// Slide show variables and functions
-// This is wppa_slideshow.js version 3.1.0
+// This is wppa_slideshow.js version 3.1.1
 //
 
 var wppa_slides = new Array();
@@ -8,16 +8,13 @@ var wppa_descs = new Array();
 var wppa_id = new Array();
 var wppa_next_id = new Array();
 var wppa_timeout = new Array();
-//var wppa_timer = new Array();
 var wppa_ss_running = new Array();
 var wppa_foreground = new Array();
 var wppa_toggle_pending = new Array();
 var wppa_busy = new Array();
 var wppa_first = new Array();
 var wppa_saved_id = new Array();
-
 var wppa_fullvalign_fit = new Array();
-
 var wppa_animation_speed;
 var wppa_imgdir;
 var wppa_auto_colwidth = false;
@@ -25,21 +22,16 @@ var wppa_oldcolw = 0;
 var wppa_thumbnail_area_delta;
 var wppa_ss_timeout = 2500;
 var wppa_fadein_after_fadeout = false;
-
 var wppa_text_delay;
-
 var wppa_textframe_delta = 0;
 var wppa_box_delta = 0;
-
 var wppa_preambule;
 var wppa_thumbnail_pitch = new Array();
 var wppa_filmstrip_length = new Array();
 var wppa_filmstrip_margin = new Array();
 var wppa_filmstrip_area_delta = new Array();
 var wppa_film_show_glue;
-
 var wppa_is_mini = new Array();
-
 var wppa_slideshow;			// = 'Slideshow' or its translation
 var wppa_photo;				// = 'Photo' or its translation
 var wppa_of;				// = 'of' or its translation
@@ -49,22 +41,16 @@ var wppa_nextp;
 var wppa_prevp;
 var wppa_start = 'Start';	// defaults
 var wppa_stop = 'Stop';		//
-
 var wppa_photo_ids = new Array();
 var wppa_photo_avg = new Array();
 var wppa_photo_myr = new Array();
 var wppa_photo_rur = new Array();
-
 var wppa_rating_once = true;
-
 var wppa_username;
-
 var wppa_portrait_only = new Array();
 var wppa_in_widget_linkurl = new Array();
 var wppa_in_widget_linktitle = new Array();
-
 var wppa_comment_html = new Array();
-
 var wppa_to_the_same = false;
 
 jQuery(document).ready(function(){
@@ -261,27 +247,17 @@ function wppa_after_fade(mocc) {
 		setTimeout('wppa_almost_next_slide('+mocc+')', wppa_text_delay); // wppa_timeout[mocc]); // wppa_text_delay);
 	}
 	else {
-	
-	
 		// If we are going to the same slide, there is no need to hide and restore the subtitles and commentframe
-	if (!wppa_to_the_same) {	
-		// Restore subtitles
-		jQuery('#imagedesc-'+mocc).html('&nbsp;' + wppa_descs[mocc][wppa_id[mocc]] + '&nbsp;');
-		jQuery('#imagetitle-'+mocc).html('&nbsp;' + wppa_names[mocc][wppa_id[mocc]] + '&nbsp;');
-		// Restore comments html
-		jQuery("#comments-"+mocc).html(wppa_comment_html[mocc][wppa_id[mocc]]);
-	}
-	wppa_to_the_same = false;	// This has now been worked out
+		if (!wppa_to_the_same) {	
+			// Restore subtitles
+			jQuery('#imagedesc-'+mocc).html('&nbsp;' + wppa_descs[mocc][wppa_id[mocc]] + '&nbsp;');
+			jQuery('#imagetitle-'+mocc).html('&nbsp;' + wppa_names[mocc][wppa_id[mocc]] + '&nbsp;');
+			// Restore comments html
+			jQuery("#comments-"+mocc).html(wppa_comment_html[mocc][wppa_id[mocc]]);
+		}
+		wppa_to_the_same = false;	// This has now been worked out
 
-	// Adjust comment frame parts accordingas required for running (here it differs from the html given, so no need to change when running)
-	if (wppa_ss_running[mocc] == 0) {	// Not running
-		jQuery('#wppacommenttable-'+mocc).css('visibility', 'visible');
-		jQuery('#wppacommentstable-'+mocc).css('visibility', 'visible');
-		jQuery('#wppacommentfooter-'+mocc).css('visibility', 'collapse');
-	}
-
-
-	
+		wppa_show_metadata(mocc, 'show');
 	
 		jQuery(".arrow-"+mocc).stop().fadeTo(400,1);
 		wppa_busy[mocc] = false;
@@ -304,12 +280,7 @@ function wppa_almost_next_slide(mocc) {
 	}
 	wppa_to_the_same = false;	// This has now been worked out
 
-	// Adjust comment frame parts according as required for running (here it differs from the html given, so no need to change when running)
-	if (wppa_ss_running[mocc] == 0) {	// Not running
-		jQuery('#wppacommenttable-'+mocc).css('visibility', 'visible');
-		jQuery('#wppacommentstable-'+mocc).css('visibility', 'visible');
-		jQuery('#wppacommentfooter-'+mocc).css('visibility', 'collapse');
-	}
+	wppa_show_metadata(mocc, 'show'); 
 
 	setTimeout('wppa_next_slide('+mocc+')', wppa_timeout[mocc]); 
 }
@@ -334,30 +305,26 @@ function wppa_prev(mocc) {
 
 
 function wppa_goto(mocc, idx) {
-	if (wppa_ss_running[mocc] != 0) {
-//		if (wppa_ss_running[mocc] == 1) wppa_startstop(mocc, idx);	// If you click on a filmthumb the show stops
-		return;
-	}
+	// goto only works when not running and not busy
+	if (wppa_ss_running[mocc] != 0) return;	
 	if (wppa_busy[mocc]) return;
+	
 	wppa_busy[mocc] = true;
-wppa_to_the_same = (wppa_next_id[mocc] == idx);
+	wppa_to_the_same = (wppa_next_id[mocc] == idx);
 	wppa_next_id[mocc] = idx;
 	jQuery(".arrow-"+mocc).stop().fadeTo(400,0.2);
 	wppa_next_slide(mocc);
 }
 
 function wppa_startstop(mocc, idx) {
-	if (idx != -1) {	// Init still
-//		jQuery('#startstop-'+mocc).html('Start'+' '+wppa_slideshow);
+	if (idx != -1) {	// Init still at index idx
 		if (document.getElementById('startstop-'+mocc)) document.getElementById('startstop-'+mocc).innerHTML=wppa_start+' '+wppa_slideshow; 
 		if (document.getElementById('speed0-'+mocc)) document.getElementById('speed0-'+mocc).style.visibility="hidden";
 		if (document.getElementById('speed1-'+mocc)) document.getElementById('speed1-'+mocc).style.visibility="hidden";
 		wppa_next_id[mocc] = idx;
 		wppa_id[mocc] = idx;
 		wppa_next_slide(mocc);
-jQuery('#wppacommenttable-'+mocc).css('visibility', 'visible');
-jQuery('#wppacommentstable-'+mocc).css('visibility', 'visible');
-jQuery('#wppacommentfooter-'+mocc).css('visibility', 'collapse');
+		wppa_show_metadata(mocc, 'show');
 	}
     if (wppa_ss_running[mocc] == 1) { // stop it
 		wppa_ss_running[mocc] = -1;	// stop in progress
@@ -370,38 +337,30 @@ jQuery('#wppacommentfooter-'+mocc).css('visibility', 'collapse');
 		jQuery('#n-a-'+mocc).css('visibility', 'visible');
 		jQuery('#speed0-'+mocc).css('visibility', 'hidden');
 		jQuery('#speed1-'+mocc).css('visibility', 'hidden');
-		
-jQuery('#wppacommenttable-'+mocc).css('visibility', 'visible');
-jQuery('#wppacommentstable-'+mocc).css('visibility', 'visible');
-jQuery('#wppacommentfooter-'+mocc).css('visibility', 'collapse');
-		
+		wppa_show_metadata(mocc, 'show');
+	
 		jQuery('#bc-pname-'+mocc).html(wppa_names[mocc][wppa_id[mocc]]);
     }
     else if (idx == -1) {
-if (wppa_ss_running[mocc]) return; 	// already running or stop in progresss
-if (wppa_busy[mocc]) {				// Currently performing a goto
-	wppa_toggle_pending[mocc] = true;
-	return;		// one thing at a time
-}
+		if (wppa_ss_running[mocc]) return; 	// already running or stop in progresss
+		if (wppa_busy[mocc]) {				// Currently performing a goto
+			wppa_toggle_pending[mocc] = true;
+			return;		// one thing at a time
+		}
         wppa_ss_running[mocc] = 1;
         wppa_next_slide(mocc);
 		if (document.getElementById('startstop-'+mocc)) {
 			document.getElementById('startstop-'+mocc).innerHTML=wppa_stop;
-}
-			jQuery('#prev-arrow-'+mocc).css('visibility', 'hidden');
-			jQuery('#next-arrow-'+mocc).css('visibility', 'hidden');
-			jQuery('#prev-film-arrow-'+mocc).css('visibility', 'hidden');
-			jQuery('#next-film-arrow-'+mocc).css('visibility', 'hidden');
-			jQuery('#p-a-'+mocc).css('visibility', 'hidden');
-			jQuery('#n-a-'+mocc).css('visibility', 'hidden');
-			jQuery('#speed0-'+mocc).css('visibility', 'visible');
-			jQuery('#speed1-'+mocc).css('visibility', 'visible');
-			
-jQuery('#wppacommenttable-'+mocc).css('visibility', 'collapse');
-jQuery('#wppacommentstable-'+mocc).css('visibility', 'collapse');
-jQuery('#wppacommentfooter-'+mocc).css('visibility', 'visible');
-			
-//		}
+		}
+		jQuery('#prev-arrow-'+mocc).css('visibility', 'hidden');
+		jQuery('#next-arrow-'+mocc).css('visibility', 'hidden');
+		jQuery('#prev-film-arrow-'+mocc).css('visibility', 'hidden');
+		jQuery('#next-film-arrow-'+mocc).css('visibility', 'hidden');
+		jQuery('#p-a-'+mocc).css('visibility', 'hidden');
+		jQuery('#n-a-'+mocc).css('visibility', 'hidden');
+		jQuery('#speed0-'+mocc).css('visibility', 'visible');
+		jQuery('#speed1-'+mocc).css('visibility', 'visible');
+		wppa_show_metadata(mocc, 'hide');	
 		jQuery('#bc-pname-'+mocc).html(wppa_slideshow);
     }
 	wppa_set_rating_display(mocc);
@@ -453,7 +412,7 @@ function wppa_do_autocol(mocc) {
 	if (!wppa_auto_colwidth) return;
 	
 	w = document.getElementById('wppa-container-1').parentNode.clientWidth;
-//alert('w='+w);	
+	
 	jQuery(".wppa-container").css('width',w);
 	jQuery(".theimg").css('width',w);
 	jQuery(".thumbnail-area").css('width',w - wppa_thumbnail_area_delta);
@@ -575,8 +534,6 @@ function wppa_rate_it(mocc, value) {
 	if (document.getElementById('wppa_nonce')) url += '&wppa_nonce='+document.getElementById('wppa_nonce').value;
 
 	if (oldval != 0 && wppa_rating_once) return;							// Already rated, and once allowed only
-//	if (wppa_ss_running[mocc] == 1) wppa_startstop(mocc, -1);				// Stop the show, this is NOT a showstopper, however....
-																			// this only works in Firefox, so we disable voting while show is running:
 	if (wppa_ss_running[mocc] == 1) return;										
 																			
 	wppa_vote_in_progress = true;											// Keeps opacity as it is now
@@ -637,5 +594,20 @@ function wppa_bbb(mocc,where,act) {
 			break;
 		default:
 			alert('Unimplemented instruction: '+act+' on: '+elm);
+	}
+}
+
+function wppa_show_metadata(mocc, key) {
+	if (wppa_ss_running[mocc] != 1) {	// Maybe stopped (0) or stop in progress (-1)
+		if (key == 'show') {
+			jQuery('#wppacommenttable-'+mocc).css('visibility', 'visible');
+			jQuery('#wppacommentstable-'+mocc).css('visibility', 'visible');
+			jQuery('#wppacommentfooter-'+mocc).css('visibility', 'collapse');
+		}
+		else {
+			jQuery('#wppacommenttable-'+mocc).css('visibility', 'collapse');
+			jQuery('#wppacommentstable-'+mocc).css('visibility', 'collapse');
+			jQuery('#wppacommentfooter-'+mocc).css('visibility', 'visible');
+		}
 	}
 }
