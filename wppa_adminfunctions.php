@@ -3,9 +3,8 @@
 * Pachkage: wp-photo-album-plus
 *
 * gp admin functions
-* version 3.1.0
+* version 3.1.1
 *
-* dbg_url checked
 */
 
 // Set default option values
@@ -103,7 +102,6 @@ global $wppa_defaults;
 						'wppa_rating_change' => 'yes',
 						'wppa_rating_multi' => 'no',
 						'wppa_comment_login' => 'no',
-						'wppa_comment_on' => 'yes',
 						'wppa_list_albums_by' => '0',
 						'wppa_list_albums_desc' => 'no',
 						'wppa_list_photos_by' => '0',

@@ -3,13 +3,13 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions and API modules
-* Version 3.1.0
+* Version 3.1.1
 *
 * dbg
 */
 /* Moved to wppa_commonfunctions.php:
 global $wppa_api_version;
-$wppa_api_version = '3-1-0-000';
+$wppa_api_version = '3-1-1-000';
 */
 
 
@@ -804,7 +804,7 @@ global $wppa_opt;
 	
 	$comment_request = (isset($_GET['wppacommentbtn']) && ($id == $photo));
 	$comment_allowed = (!$wppa_opt['wppa_comment_login'] || is_user_logged_in());
-	if ($wppa_opt['wppa_comment_on'] && $comment_request && $comment_allowed) {
+	if ($wppa_opt['wppa_show_comments'] && $comment_request && $comment_allowed) {
 		wppa_do_comment($id);
 	}
 
@@ -1046,7 +1046,7 @@ global $wppa_first_comment_html;
 						$result .= $comment['user'].' wrote:';
 						$result .= '<br/><span style="font-size:9px; color:blue;">'.wppa_get_time_since($comment['timestamp']).'</span>';
 					$result .= '</td>';
-					$result .= '<td class="wppa-box-text wppa-td" style="border-width: 0 0 0 0;'.__wcs('wppa-box-text').__wcs('wppa-td').'" >'.$comment['comment'];
+					$result .= '<td class="wppa-box-text wppa-td" style="border-width: 0 0 0 0;'.__wcs('wppa-box-text').__wcs('wppa-td').'" >'.esc_js(stripslashes($comment['comment']));
 					if ($comment['status'] == 'pending' && $comment['user'] == $wppa['comment_user']) {
 						$result .= '<br/><span style="color:red; font-size:9px;" >Awaiting moderation</span>';
 					}

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 3.1.0
+* Version 3.1.1
 *
 */
 
@@ -677,7 +677,8 @@ global $wppa_api_version;
 					$desc = __('Enable the comments system.', 'wppa');
 					$help = esc_js(__('Display the comments box under the fullsize images and let users enter their comments on individual photos.', 'wppa'));
 					$slug = 'wppa_show_comments';
-					$html = wppa_checkbox($slug);
+					$onchange = 'wppaCheckComments()';
+					$html = wppa_checkbox($slug, $onchange);
 					wppa_setting($slug, '18', $name, $desc, $html, $help);
 					
 					?>
@@ -1002,7 +1003,8 @@ global $wppa_api_version;
 					$help = esc_js(__('Check this box if you want users to be logged in to be able to enter comments on individual photos.', 'wppa'));
 					$slug = 'wppa_comment_login';
 					$html = wppa_checkbox($slug);
-					wppa_setting($slug, '23', $name, $desc, $html, $help);
+					$class = 'wppa_comment';
+					wppa_setting($slug, '23', $name, $desc, $html, $help, $class);
 					
 					?>
 				</tbody>
