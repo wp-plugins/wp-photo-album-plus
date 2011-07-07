@@ -104,6 +104,7 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 
 == Changelog ==
 
+
 = 3.1.1 =
 
 = Bug Fixes =
