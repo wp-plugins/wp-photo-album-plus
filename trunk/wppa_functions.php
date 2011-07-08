@@ -3,13 +3,13 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions and API modules
-* Version 3.1.1
+* Version 3.1.2
 *
 * dbg
 */
 /* Moved to wppa_commonfunctions.php:
 global $wppa_api_version;
-$wppa_api_version = '3-1-1-000';
+$wppa_api_version = '3-1-2-000';
 */
 
 
@@ -1100,7 +1100,7 @@ global $wppa_first_comment_html;
 				$result .= '</tr>';
 				$result .= '<tr valign="top" style="vertical-align:top;">';	
 					$result .= '<td valign="top" class="wppa-box-text wppa-td" style="vertical-align:top; width:30%; '.__wcs('wppa-box-text').__wcs('wppa-td').'" >Your comment: <br/>'.$wppa['comment_user'].'<br/><input type="submit" name="wppacommentbtn" value="'.$btn.'" /></td>';
-					$result .= '<td valign="top" class="wppa-box-text wppa-td" style="vertical-align:top; width:70%; '.__wcs('wppa-box-text').__wcs('wppa-td').'" ><textarea name="wppacomment" id="wppacomment-'.$wppa['master_occur'].'" style="height:60px; width:100%; ">'.$txt.'</textarea></td>';
+					$result .= '<td valign="top" class="wppa-box-text wppa-td" style="vertical-align:top; width:70%; '.__wcs('wppa-box-text').__wcs('wppa-td').'" ><textarea name="wppacomment" id="wppacomment-'.$wppa['master_occur'].'" style="height:60px; width:100%; ">'.esc_js(stripslashes($txt)).'</textarea></td>';
 				$result .= '</tr>';
 			$result .= '</tbody>';
 		$result .= '</table>';	
