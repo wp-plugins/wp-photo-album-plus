@@ -1024,7 +1024,7 @@ global $wppa_first_comment_html;
 		if (isset($_GET['wppacomemail'])) $wppa['comment_email'] = $_GET['wppacomemail'];
 		elseif (is_user_logged_in()) {
 			get_currentuserinfo();
-			$wppa['comment_user'] = $current_user->user_login;
+			$wppa['comment_user'] = $current_user->display_name; //user_login;
 			$wppa['comment_email'] = $current_user->user_email;
 		}
 	}

@@ -111,6 +111,7 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 
 * The algoritm to decide if the indicator [WPPA+ Photo display] must be printed has been improved. 
 Only the first in a list of excerpts (archive or search results when the_excerpt() is used as opposed to the_content()) may be wrong.
+* Uses display name rather than login name in comments on photos.
 
 = 3.1.2 =
 
