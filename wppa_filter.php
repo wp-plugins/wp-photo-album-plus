@@ -3,14 +3,21 @@
 * Package: wp-photo-album-plus
 *
 * get the albums via filter
-* version 3.0.6
+* version 3.1.3
 *
 */
 
 add_action('init', 'wppa_do_filter');
 
 function wppa_do_filter() {
+	add_filter('the_excerpt', 'wppa_flag_excerpt', 1);
 	add_filter('the_content', 'wppa_albums_filter', 10);
+}
+
+function wppa_flag_excerpt($post) {
+global $wppa;
+	$wppa['is_excerpt'] = true;
+	return $post;
 }
 
 function wppa_albums_filter($post) {
@@ -25,7 +32,7 @@ global $wppa;
 		while ($wppa_pos !== false) {
 		
 			$text_chunk = substr($post_old, 0, $wppa_pos);
-			$post_new .= wppa_force_balance_pee($text_chunk);				// Copy BEFORE part to new post
+			$post_new .= wppa_force_balance_pee($text_chunk);			// Copy BEFORE part to new post
 			
 			$post_old = substr($post_old, $wppa_pos);					// Shift BEFORE part out of old post
 			$post_old = substr($post_old, 8);							// Shift %%wppa%% out of old post
@@ -143,29 +150,38 @@ global $wppa;
 			}
 			
 			$do_it = false;
-			if ($wppa['rendering_enabled']) {
-				if ($wppa['in_widget']) $do_it = true;
+			if ($wppa['rendering_enabled']) {			// NOT in a head section (in a meta tag or so)
+				if ($wppa['in_widget']) $do_it = true;	// A widget always works
 				else {
 					$do_it = true;
-					if (is_archive()) $do_it = false;	// Unfortunalely there is not such a simple thing as in_excerpt()
-					if (is_search()) $do_it = false;	// so we estimate that this is an excerpt (where my tags are stripped)
+					if ($wppa['is_excerpt']) $do_it = false;	// NOT in an excerpt, this works as long as my excerpt filter (has priority 1 = high)
+																// is run before this filter (has priority 10 = normal)
+																// THIS APPEARS NOT TO BE TRUE, so the first excerpt of a list may be in error
+//					if (is_archive()) $do_it = false;	// Unfortunalely there is not such a simple thing as in_excerpt()
+//					if (is_search()) $do_it = false;	// so we estimate that this is an excerpt (where my tags are stripped)
 				}
 			}
-			elseif (is_feed()) {
+			elseif (is_feed()) {						// A feed has no head section
 				$do_it = true;
+			}
+			
+			if ($wppa['debug']) {
+				if ($wppa['is_excerpt']) wppa_dbg_msg('Excerpt switch on');
+				else wppa_dbg_msg('Excerpt switch off');
 			}
 			
 			if ($do_it) { // ($wppa['rendering_enabled'] || is_feed()) && !is_archive() &&!is_search()) {	// Insert the html
 				$post_new .= wppa_albums();		
 			}
 			else {											// Or an indicator
-				$post_new .= '<span style="color:blue; font-weight:bold; ">[WPPA+ Photo display]</span>';	
+				if ($wppa['is_excerpt']) $post_new .= '[WPPA+ Photo display]';	// Tags will be stripped
+				else $post_new .= '<span style="color:blue; font-weight:bold; ">[WPPA+ Photo display]</span>';	
 			}
-			
 			$wppa_pos = strpos($post_old, '%%wppa%%');						// Refresh the next invocation position, if any
 		}
 	}
 	$post_new .= wppa_force_balance_pee($post_old);							// Copy the rest of the post/page
+	$wppa['is_excerpt'] = false;											// Reset for the next occurrance			
 	return $post_new;
 }
 
