@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate
-Version: 3.1.3
+Version: 3.1.4
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -105,12 +105,26 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 
+= 3.1.4 =
+
+= Bug Fixes =
+
+* The static text in the photo comment form and alert boxes is now properly translatable.
+* The behaviour after input of incomplete comment has been corrected.
+
+= Other changes =
+
+* Cosmetic and reliability enhancements in slideshow.
+* Update text 3.1.3 Other changes to fix the first item issue.
+
+
 = 3.1.3 =
 
 = Other changes =
 
 * The algoritm to decide if the indicator [WPPA+ Photo display] must be printed has been improved. 
 Only the first in a list of excerpts (archive or search results when the_excerpt() is used as opposed to the_content()) may be wrong.
+You can correct this by adding the following line of code just prior to *the_excerpt();* in the template files involved: *global $wppa; $wppa['is_excerpt'] = true;*
 * Uses display name rather than login name in comments on photos.
 
 = 3.1.2 =

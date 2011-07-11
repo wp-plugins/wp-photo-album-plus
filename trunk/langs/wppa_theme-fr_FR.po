@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wppa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-07-06 15:42+0100\n"
-"PO-Revision-Date: 2011-07-06 15:42+0100\n"
+"POT-Creation-Date: 2011-07-11 11:51+0100\n"
+"PO-Revision-Date: 2011-07-11 11:51+0100\n"
 "Last-Translator: J.N. Breetvelt <OpaJaap@OpaJaap.nl>\n"
 "Language-Team: oVa <ova13lastar@gmail.com>\n"
 "MIME-Version: 1.0\n"
@@ -22,78 +22,78 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPath-1: theme\n"
 
-#: wppa_commonfunctions.php:335
+#: wppa_commonfunctions.php:334
 #, php-format
 msgid "Rating: %s"
 msgstr ""
 
-#: wppa_commonfunctions.php:405
+#: wppa_commonfunctions.php:404
 msgid "--- none ---"
 msgstr "--- aucun ---"
 
-#: wppa_commonfunctions.php:406
+#: wppa_commonfunctions.php:405
 msgid "--- separate ---"
 msgstr "--- separateur ---"
 
-#: wppa_commonfunctions.php:503
+#: wppa_commonfunctions.php:502
 msgid "1 second"
 msgstr ""
 
-#: wppa_commonfunctions.php:504
+#: wppa_commonfunctions.php:503
 msgid "seconds"
 msgstr ""
 
-#: wppa_commonfunctions.php:508
+#: wppa_commonfunctions.php:507
 msgid "1 minute"
 msgstr ""
 
-#: wppa_commonfunctions.php:509
+#: wppa_commonfunctions.php:508
 msgid "minutes"
 msgstr ""
 
-#: wppa_commonfunctions.php:513
+#: wppa_commonfunctions.php:512
 #, fuzzy
 msgid "1 hour"
 msgstr "heure."
 
-#: wppa_commonfunctions.php:514
+#: wppa_commonfunctions.php:513
 #, fuzzy
 msgid "hours"
 msgstr "heure."
 
-#: wppa_commonfunctions.php:518
+#: wppa_commonfunctions.php:517
 #, fuzzy
 msgid "1 day"
 msgstr "jour."
 
-#: wppa_commonfunctions.php:519
+#: wppa_commonfunctions.php:518
 #, fuzzy
 msgid "days"
 msgstr "jour."
 
-#: wppa_commonfunctions.php:523
+#: wppa_commonfunctions.php:522
 #, fuzzy
 msgid "1 week"
 msgstr "semaine."
 
-#: wppa_commonfunctions.php:524
+#: wppa_commonfunctions.php:523
 #, fuzzy
 msgid "weeks"
 msgstr "semaine."
 
-#: wppa_commonfunctions.php:528
+#: wppa_commonfunctions.php:527
 msgid "1 month"
 msgstr ""
 
-#: wppa_commonfunctions.php:529
+#: wppa_commonfunctions.php:528
 msgid "months"
 msgstr ""
 
-#: wppa_commonfunctions.php:532
+#: wppa_commonfunctions.php:531
 msgid "1 year"
 msgstr ""
 
-#: wppa_commonfunctions.php:533
+#: wppa_commonfunctions.php:532
 msgid "years"
 msgstr ""
 
@@ -114,7 +114,7 @@ msgid "Home"
 msgstr "Accueil"
 
 #: wppa_functions.php:124
-#: wppa_functions.php:1911
+#: wppa_functions.php:1912
 #: wppa_non_admin.php:81
 msgid "Slideshow"
 msgstr "Diaporama"
@@ -136,6 +136,29 @@ msgstr ""
 msgid "<b>ERROR: Attempt to enter an invalid rating.</b>"
 msgstr ""
 
+#: wppa_functions.php:1065
+#, fuzzy
+msgid "Edit!"
+msgstr "Modifier"
+
+#: wppa_functions.php:1069
+msgid "Send!"
+msgstr ""
+
+#: wppa_functions.php:1094
+#, fuzzy
+msgid "Your name:"
+msgstr "ou comme ceci:"
+
+#: wppa_functions.php:1098
+msgid "Your email:"
+msgstr ""
+
+#: wppa_functions.php:1102
+#, fuzzy
+msgid "Your comment:"
+msgstr "contenu"
+
 #: wppa_functions.php:1112
 #, fuzzy, php-format
 msgid "%d  comments"
@@ -153,118 +176,118 @@ msgstr ""
 msgid "Next&nbsp;page"
 msgstr ""
 
-#: wppa_functions.php:1836
+#: wppa_functions.php:1837
 msgid "Link to"
 msgstr "Lien vers"
 
-#: wppa_functions.php:1840
+#: wppa_functions.php:1841
 msgid "Page is not available."
 msgstr "Page non accessible."
 
-#: wppa_functions.php:1846
-#: wppa_functions.php:1920
+#: wppa_functions.php:1847
+#: wppa_functions.php:1921
 msgid "View the album"
 msgstr "Voir l'album"
 
-#: wppa_functions.php:1851
+#: wppa_functions.php:1852
 msgid "View the cover photo"
 msgstr "Voir la photo de couverture"
 
-#: wppa_functions.php:1852
+#: wppa_functions.php:1853
 msgid "View the cover photos"
 msgstr "Voir les photos de couverture"
 
-#: wppa_functions.php:1911
+#: wppa_functions.php:1912
 #, fuzzy
 msgid "Browse photos"
 msgstr "photos"
 
-#: wppa_functions.php:1921
+#: wppa_functions.php:1922
 msgid "View"
 msgstr "Voir"
 
-#: wppa_functions.php:1924
+#: wppa_functions.php:1925
 msgid "album"
 msgstr "album"
 
-#: wppa_functions.php:1927
+#: wppa_functions.php:1928
 msgid "albums"
 msgstr "albums"
 
-#: wppa_functions.php:1931
+#: wppa_functions.php:1932
 msgid "and"
 msgstr "et"
 
-#: wppa_functions.php:1935
+#: wppa_functions.php:1936
 msgid "photo"
 msgstr "photo"
 
-#: wppa_functions.php:1938
+#: wppa_functions.php:1939
 msgid "photos"
 msgstr "photos"
 
-#: wppa_functions.php:2122
+#: wppa_functions.php:2123
 msgid "To see the full size images, you need to enable javascript in your browser."
 msgstr ""
 
-#: wppa_functions.php:2155
+#: wppa_functions.php:2156
 msgid "Slower"
 msgstr "Ralentir"
 
-#: wppa_functions.php:2156
+#: wppa_functions.php:2157
 #: wppa_non_admin.php:82
 msgid "Start"
 msgstr "Démarrer"
 
-#: wppa_functions.php:2157
+#: wppa_functions.php:2158
 msgid "Faster"
 msgstr "Accélérer"
 
-#: wppa_functions.php:2180
+#: wppa_functions.php:2181
 msgid "Click to start/stop"
 msgstr ""
 
-#: wppa_functions.php:2425
+#: wppa_functions.php:2426
 msgid "Double click to start/stop slideshow running"
 msgstr ""
 
-#: wppa_functions.php:2601
+#: wppa_functions.php:2602
 msgid "- - - Rating enabled - - -"
 msgstr ""
 
-#: wppa_functions.php:2610
+#: wppa_functions.php:2611
 msgid "very low"
 msgstr ""
 
-#: wppa_functions.php:2611
+#: wppa_functions.php:2612
 #, fuzzy
 msgid "low"
 msgstr "Ralentir"
 
-#: wppa_functions.php:2612
+#: wppa_functions.php:2613
 #, fuzzy
 msgid "average"
 msgstr "Enregistrer les modifications"
 
-#: wppa_functions.php:2613
+#: wppa_functions.php:2614
 msgid "high"
 msgstr ""
 
-#: wppa_functions.php:2614
+#: wppa_functions.php:2615
 msgid "very high"
 msgstr ""
 
-#: wppa_functions.php:2619
-#: wppa_functions.php:2624
+#: wppa_functions.php:2620
+#: wppa_functions.php:2625
 msgid "Average&nbsp;rating"
 msgstr ""
 
-#: wppa_functions.php:2633
-#: wppa_functions.php:2636
+#: wppa_functions.php:2634
+#: wppa_functions.php:2637
 msgid "My&nbsp;rating"
 msgstr ""
 
-#: wppa_functions.php:2639
+#: wppa_functions.php:2640
 msgid "You must login to vote"
 msgstr ""
 
@@ -296,6 +319,18 @@ msgstr ""
 
 #: wppa_non_admin.php:89
 msgid "Next"
+msgstr ""
+
+#: wppa_non_admin.php:93
+msgid "Please enter your name"
+msgstr ""
+
+#: wppa_non_admin.php:94
+msgid "Please enter a valid email address"
+msgstr ""
+
+#: wppa_non_admin.php:95
+msgid "Please enter a comment"
 msgstr ""
 
 #: wppa_slideshow_widget.php:28
@@ -1106,9 +1141,6 @@ msgstr ""
 #~ msgid "You can combine the above as follows: (example)"
 #~ msgstr "Vous pouvez combiner ce qui précède comme suit: (exemple)"
 
-#~ msgid "or as:"
-#~ msgstr "ou comme ceci:"
-
 #~ msgid ""
 #~ "In order to work properly, the wppa_albums() tag needs to be within the"
 #~ msgstr ""
@@ -1256,9 +1288,6 @@ msgstr ""
 
 #~ msgid "Parent"
 #~ msgstr "Parent"
-
-#~ msgid "Edit"
-#~ msgstr "Modifier"
 
 #~ msgid "Order:"
 #~ msgstr "Ordre:"
