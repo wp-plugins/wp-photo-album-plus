@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the non admin stuff
-* Version 3.0.7
+* Version 3.1.4
 *
 */
 
@@ -58,7 +58,7 @@ global $wppa_opt;
 	echo("\n<!-- WPPA+ Runtime parameters -->\n");
 	
 	/* This goes into wppa_theme.js */ 
-	echo('<script type="text/javascript">'."\n");
+	echo('<script type="text/javascript"><!--//--><![CDATA[//><!--'."\n");
 	
 		echo("\t".'wppa_bgcolor_img = "'.$wppa_opt['wppa_bgcolor_img'].'";'."\n");
 		if ($wppa_opt['wppa_thumb_linktype'] == 'none') echo("\twppa_popup_nolink = true;\n"); 
@@ -90,8 +90,11 @@ global $wppa_opt;
 		echo("\t".'wppa_username = "'.wppa_get_user().'";'."\n");
 		if ($wppa_opt['wppa_rating_change'] || $wppa_opt['wppa_rating_multi']) echo("\t".'wppa_rating_once = false;'."\n");
 		else echo("\t".'wppa_rating_once = true;'."\n");
+		echo("\t".'wppa_please_name = "'.__a('Please enter your name', 'wppa_theme').'";'."\n");
+		echo("\t".'wppa_please_email = "'.__a('Please enter a valid email address', 'wppa_theme').'";'."\n");
+		echo("\t".'wppa_please_comment = "'.__a('Please enter a comment', 'wppa_theme').'";'."\n");
 
-	echo("</script>\n");
+	echo("//--><!]]></script>\n");
 	
 	$wppa['rendering_enabled'] = true;
 	echo("\n<!-- WPPA+ Rendering enabled -->\n");

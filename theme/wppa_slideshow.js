@@ -1,5 +1,5 @@
 ﻿// Slide show variables and functions
-// This is wppa_slideshow.js version 3.1.1
+// This is wppa_slideshow.js version 3.1.4
 //
 
 var wppa_slides = new Array();
@@ -52,6 +52,9 @@ var wppa_in_widget_linkurl = new Array();
 var wppa_in_widget_linktitle = new Array();
 var wppa_comment_html = new Array();
 var wppa_to_the_same = false;
+var wppa_please_name;
+var wppa_please_email;
+var wppa_please_comment;
 
 jQuery(document).ready(function(){
 	if (wppa_auto_colwidth) wppa_do_autocol(0);
@@ -132,6 +135,21 @@ function wppa_next_slide(mocc) {
 		jQuery("#imagedesc-"+mocc).html('&nbsp;'+wppa_descs[mocc][wppa_id[mocc]]+'&nbsp;');
 		jQuery("#imagetitle-"+mocc).html('&nbsp;'+wppa_names[mocc][wppa_id[mocc]]+'&nbsp;');
 		jQuery("#comments-"+mocc).html(wppa_comment_html[mocc][wppa_id[mocc]]);
+		
+	// Display counter and arrow texts
+	if (document.getElementById('counter-'+mocc)) {
+		if (wppa_is_mini[mocc]) {
+//			document.getElementById('counter-'+mocc).innerHTML = (wppa_id[mocc]+1)+' / '+wppa_slides[mocc].length;
+			document.getElementById('prev-arrow-'+mocc).innerHTML = wppa_prevp;
+			document.getElementById('next-arrow-'+mocc).innerHTML = wppa_nextp;
+		}
+		else {
+//			document.getElementById('counter-'+mocc).innerHTML = wppa_photo+' '+(wppa_id[mocc]+1)+' '+wppa_of+' '+wppa_slides[mocc].length;
+			document.getElementById('prev-arrow-'+mocc).innerHTML = wppa_prevphoto;
+			document.getElementById('next-arrow-'+mocc).innerHTML = wppa_nextphoto;
+		}
+	}
+//		
     }
     // end first
     else {
@@ -171,9 +189,7 @@ function wppa_fade(mocc) {
 	// Hide subtitles
 	if (wppa_ss_running[mocc] != -1) {	// not stop in progress
 		if (!wppa_to_the_same) {
-			jQuery("#imagedesc-"+mocc).html('&nbsp;&nbsp;');
-			jQuery("#imagetitle-"+mocc).html('&nbsp;&nbsp;');
-			jQuery("#comments-"+mocc).html('&nbsp;&nbsp;');	
+			wppa_show_metadata(mocc, 'hide');
 		}
 	}
 	// change foreground
@@ -215,21 +231,21 @@ function wppa_after_fade(mocc) {
 		}
 		jQuery('#slide_frame-'+mocc).css('minHeight', '0px');
 	}
-
+/**/
 	// Display counter and arrow texts
 	if (document.getElementById('counter-'+mocc)) {
 		if (wppa_is_mini[mocc]) {
 			document.getElementById('counter-'+mocc).innerHTML = (wppa_id[mocc]+1)+' / '+wppa_slides[mocc].length;
-			document.getElementById('prev-arrow-'+mocc).innerHTML = wppa_prevp;
-			document.getElementById('next-arrow-'+mocc).innerHTML = wppa_nextp;
+//			document.getElementById('prev-arrow-'+mocc).innerHTML = wppa_prevp;
+//			document.getElementById('next-arrow-'+mocc).innerHTML = wppa_nextp;
 		}
 		else {
 			document.getElementById('counter-'+mocc).innerHTML = wppa_photo+' '+(wppa_id[mocc]+1)+' '+wppa_of+' '+wppa_slides[mocc].length;
-			document.getElementById('prev-arrow-'+mocc).innerHTML = wppa_prevphoto;
-			document.getElementById('next-arrow-'+mocc).innerHTML = wppa_nextphoto;
+//			document.getElementById('prev-arrow-'+mocc).innerHTML = wppa_prevphoto;
+//			document.getElementById('next-arrow-'+mocc).innerHTML = wppa_nextphoto;
 		}
 	}
-
+/**/
 	// Update breadcrumb
 	if (document.getElementById('bc-pname-'+mocc)) document.getElementById('bc-pname-'+mocc).innerHTML = wppa_names[mocc][wppa_id[mocc]];
 
@@ -243,29 +259,10 @@ function wppa_after_fade(mocc) {
 	wppa_set_rating_display(mocc);
 	
 	// Wait for next slide
-	if (wppa_ss_running[mocc] == 1) {
+//	if (wppa_ss_running[mocc] == 1) {
 		setTimeout('wppa_almost_next_slide('+mocc+')', wppa_text_delay); // wppa_timeout[mocc]); // wppa_text_delay);
-	}
-	else {
-		// If we are going to the same slide, there is no need to hide and restore the subtitles and commentframe
-		if (!wppa_to_the_same) {	
-			// Restore subtitles
-			jQuery('#imagedesc-'+mocc).html('&nbsp;' + wppa_descs[mocc][wppa_id[mocc]] + '&nbsp;');
-			jQuery('#imagetitle-'+mocc).html('&nbsp;' + wppa_names[mocc][wppa_id[mocc]] + '&nbsp;');
-			// Restore comments html
-			jQuery("#comments-"+mocc).html(wppa_comment_html[mocc][wppa_id[mocc]]);
-		}
-		wppa_to_the_same = false;	// This has now been worked out
+//	}
 
-		wppa_show_metadata(mocc, 'show');
-	
-		jQuery(".arrow-"+mocc).stop().fadeTo(400,1);
-		wppa_busy[mocc] = false;
-		if (wppa_toggle_pending[mocc]) {
-			wppa_toggle_pending[mocc] = false;
-			wppa_startstop(mocc, -1);
-		}
-	}
 }
 
 function wppa_almost_next_slide(mocc) {
@@ -282,7 +279,18 @@ function wppa_almost_next_slide(mocc) {
 
 	wppa_show_metadata(mocc, 'show'); 
 
-	setTimeout('wppa_next_slide('+mocc+')', wppa_timeout[mocc]); 
+	if (wppa_ss_running[mocc] == 1) {
+		setTimeout('wppa_next_slide('+mocc+')', wppa_timeout[mocc]); 
+		return;
+	}	
+	else {
+		jQuery(".arrow-"+mocc).stop().fadeTo(400,1);
+		wppa_busy[mocc] = false;
+		if (wppa_toggle_pending[mocc]) {
+			wppa_toggle_pending[mocc] = false;
+			wppa_startstop(mocc, -1);
+		}
+	}
 }
  
 function wppa_next(mocc) {
@@ -550,7 +558,7 @@ function wppa_validate_comment(mocc) {
 	// Process name
 	var name = document.getElementById('wppacomname-'+mocc).value;
 	if (name.length<1) {
-		alert("Please enter a valid name");
+		alert(wppa_please_name);
 		return false;
 	}
 	
@@ -559,14 +567,14 @@ function wppa_validate_comment(mocc) {
 	var atpos=email.indexOf("@");
 	var dotpos=email.lastIndexOf(".");
 	if (atpos<1 || dotpos<atpos+2 || dotpos+2>=email.length) {
-		alert("Please enter a valid e-mail address");
+		alert(wppa_please_email);
 		return false;
 	}
 	
 	// Process comment
 	var text = document.getElementById('wppacomment-'+mocc).value;
 	if (text.length<1) {
-		alert("Please enter a comment");
+		alert(wppa_please_comment);
 		return false;
 	}
 	
@@ -586,7 +594,7 @@ function wppa_bbb(mocc,where,act) {
 			jQuery(elm).stop().fadeTo(100, 0.6);
 			break;
 		case 'hide':
-			jQuery(elm).stop().fadeTo(200, 0);
+			jQuery(elm).stop().fadeTo(400, 0);
 			break;
 		case 'click':
 			if (where == 'l') wppa_prev(mocc);
@@ -598,16 +606,52 @@ function wppa_bbb(mocc,where,act) {
 }
 
 function wppa_show_metadata(mocc, key) {
+	// What to do when the slideshow is NOT running
 	if (wppa_ss_running[mocc] != 1) {	// Maybe stopped (0) or stop in progress (-1)
 		if (key == 'show') {
-			jQuery('#wppacommenttable-'+mocc).css('visibility', 'visible');
+			// Show existing comments
 			jQuery('#wppacommentstable-'+mocc).css('visibility', 'visible');
+			// Show the input form table
+			jQuery('#wppacommenttable-'+mocc).css('visibility', 'visible');
+			// Show the comment footer
 			jQuery('#wppacommentfooter-'+mocc).css('visibility', 'collapse');
+			// Fade the browse arrows in
+			jQuery('#prev-film-arrow-'+mocc).fadeIn(100);
+			jQuery('#next-film-arrow-'+mocc).fadeIn(100);
 		}
 		else {
-			jQuery('#wppacommenttable-'+mocc).css('visibility', 'collapse');
+			// Hide existing comments
 			jQuery('#wppacommentstable-'+mocc).css('visibility', 'collapse');
+			// Hide the input form table
+			jQuery('#wppacommenttable-'+mocc).css('visibility', 'collapse');
+			// Hide the comment footer
 			jQuery('#wppacommentfooter-'+mocc).css('visibility', 'visible');
+			// Fade the browse arrows out
+			jQuery('#prev-film-arrow-'+mocc).fadeOut(400);
+			jQuery('#next-film-arrow-'+mocc).fadeOut(400);
 		}
+	}
+	// What to do when the slideshow is running
+	else {	// Slideshow is running
+	}
+	
+	// What to do always, independant of slideshow is running
+	if (key == 'show') {
+		// Show title and description
+		jQuery("#imagedesc-"+mocc).css('visibility', 'visible');
+		jQuery("#imagetitle-"+mocc).css('visibility', 'visible');
+		// Show comments section
+		jQuery("#comments-"+mocc).css('visibility', 'visible');
+		// Display counter
+		jQuery("#counter-"+mocc).css('visibility', 'visible');
+	}
+	else {
+		// Hide title and description
+		jQuery("#imagedesc-"+mocc).css('visibility', 'hidden'); 
+		jQuery("#imagetitle-"+mocc).css('visibility', 'hidden');
+		// Hide comments section
+		jQuery("#comments-"+mocc).html('&nbsp;&nbsp;');	
+		// Hide counter	
+		jQuery("#counter-"+mocc).css('visibility', 'hidden');
 	}
 }

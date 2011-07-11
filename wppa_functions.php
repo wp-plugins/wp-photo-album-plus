@@ -3,13 +3,13 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions and API modules
-* Version 3.1.3
+* Version 3.1.4
 *
 * dbg
 */
 /* Moved to wppa_commonfunctions.php:
 global $wppa_api_version;
-$wppa_api_version = '3-1-3-000';
+$wppa_api_version = '3-1-4-000';
 */
 
 
@@ -1062,11 +1062,11 @@ global $wppa_first_comment_html;
 	$is_current = ($id == $wppa['comment_photo'] && $wppa['comment_id']);
 	if ($is_current) {
 		$txt = $wppa['comment_text'];
-		$btn = __('Edit!', 'wppa');
+		$btn = __a('Edit!', 'wppa_theme');
 	}
 	else {
 		$txt = '';
-		$btn = __('Send!', 'wppa');
+		$btn = __a('Send!', 'wppa_theme');
 	}
 	
 	// Prepare the required extra url args
@@ -1077,7 +1077,7 @@ global $wppa_first_comment_html;
 	if (isset($_GET['slide'])) $slide = $_GET['slide']; else $slide = '';
 
 	// The comment form
-	$result .= '<form id="wppacommentform-'.$wppa['master_occur'].'" class="wppacommentform" action="'.wppa_get_permalink().'" method="get" style="" onsubmit="wppa_validate_comment('.$wppa['master_occur'].')">';
+	$result .= '<form id="wppacommentform-'.$wppa['master_occur'].'" class="wppacommentform" action="'.wppa_get_permalink().'" method="get" style="" onsubmit="return wppa_validate_comment('.$wppa['master_occur'].')">';
 		if ($page_id) $result .= '<input type="hidden" name="page_id" value="'.$page_id.'" />';
 		if ($p) $result .= '<input type="hidden" name="p" value="'.$p.'" />';
 		$result .= wp_nonce_field('wppa-check' , 'wppa_nonce', false, false);
@@ -1091,15 +1091,15 @@ global $wppa_first_comment_html;
 		$result .= '<table id="wppacommenttable-'.$wppa['master_occur'].'" style="visibility:collapse; margin:0;">';
 			$result .= '<tbody>';
 				$result .= '<tr valign="top" style="'.$vis.'">';
-					$result .= '<td class="wppa-box-text wppa-td" style="width:30%; '.__wcs('wppa-box-text').__wcs('wppa-td').'" >Your name: </td>';
+					$result .= '<td class="wppa-box-text wppa-td" style="width:30%; '.__wcs('wppa-box-text').__wcs('wppa-td').'" >'.__a('Your name:', 'wppa_theme').'</td>';
 					$result .= '<td class="wppa-box-text wppa-td" style="width:70%; '.__wcs('wppa-box-text').__wcs('wppa-td').'" ><input type="text" name="wppacomname" id="wppacomname-'.$wppa['master_occur'].'" style="width:100%; " value="'.$wppa['comment_user'].'" /></td>';
 				$result .= '</tr>';
 				$result .= '<tr valign="top" style="'.$vis.'">';
-					$result .= '<td class="wppa-box-text wppa-td" style="width:30%; '.__wcs('wppa-box-text').__wcs('wppa-td').'" >Your email: </td>';
+					$result .= '<td class="wppa-box-text wppa-td" style="width:30%; '.__wcs('wppa-box-text').__wcs('wppa-td').'" >'.__a('Your email:', 'wppa_theme').'</td>';
 					$result .= '<td class="wppa-box-text wppa-td" style="width:70%; '.__wcs('wppa-box-text').__wcs('wppa-td').'" ><input type="text" name="wppacomemail" id="wppacomemail-'.$wppa['master_occur'].'" style="width:100%; " value="'.$wppa['comment_email'].'" /></td>';
 				$result .= '</tr>';
 				$result .= '<tr valign="top" style="vertical-align:top;">';	
-					$result .= '<td valign="top" class="wppa-box-text wppa-td" style="vertical-align:top; width:30%; '.__wcs('wppa-box-text').__wcs('wppa-td').'" >Your comment: <br/>'.$wppa['comment_user'].'<br/><input type="submit" name="wppacommentbtn" value="'.$btn.'" /></td>';
+					$result .= '<td valign="top" class="wppa-box-text wppa-td" style="vertical-align:top; width:30%; '.__wcs('wppa-box-text').__wcs('wppa-td').'" >'.__a('Your comment:', 'wppa_theme').'<br/>'.$wppa['comment_user'].'<br/><input type="submit" name="wppacommentbtn" value="'.$btn.'" /></td>';
 					$result .= '<td valign="top" class="wppa-box-text wppa-td" style="vertical-align:top; width:70%; '.__wcs('wppa-box-text').__wcs('wppa-td').'" ><textarea name="wppacomment" id="wppacomment-'.$wppa['master_occur'].'" style="height:60px; width:100%; ">'.esc_js(stripslashes($txt)).'</textarea></td>';
 				$result .= '</tr>';
 			$result .= '</tbody>';
@@ -1110,7 +1110,7 @@ global $wppa_first_comment_html;
 	$result .= '<table id="wppacommentfooter-'.$wppa['master_occur'].'" class="wppacommentform" style="margin:0;">';
 		$result .= '<tbody><tr style= "text-align:center; "><td style="cursor:pointer;" ><a onclick="wppa_startstop('.$wppa['master_occur'].', -1)">';
 		if ($n_comments) $result .= sprintf(__a('%d  comments', 'wppa_theme'), $n_comments);
-		else $result .= __a('Leave a comment', 'wppa');
+		else $result .= __a('Leave a comment', 'wppa_theme');
 	$result .= '</a></td></tr></tbody></table>';
 
 	return $result;
@@ -1672,22 +1672,23 @@ global $wppa_microtime_cum;
 		if (wppa_page('oneofone')) $wppa['portrait_only'] = true;
 		$wppa_alt = 'alt';
 
-		// $wppa['auto_colwidth'] is set by the filter or by wppa_albums in case called directly
-		// $wppa_opt['wppa_colwidth'] is the option setting
-		// script or call has precedence over option setting
-		// so: if set by script or call: auto, else if set by option: auto
-		$auto = false;
-		if ($wppa['auto_colwidth']) $auto = true;
-		elseif ($wppa_opt['wppa_colwidth'] == 'auto') $auto = true;
-		if ($auto) $wppa['out'] .= wppa_nltab().'<script type="text/javascript">wppa_auto_colwidth = true;</script>';
+		// Javascript occurrence dependant stuff
+		$wppa['out'] .= wppa_nltab('+').'<script type="text/javascript"><!--//--><![CDATA[//><!--';
+			// $wppa['auto_colwidth'] is set by the filter or by wppa_albums in case called directly
+			// $wppa_opt['wppa_colwidth'] is the option setting
+			// script or call has precedence over option setting
+			// so: if set by script or call: auto, else if set by option: auto
+			$auto = false;
+			if ($wppa['auto_colwidth']) $auto = true;
+			elseif ($wppa_opt['wppa_colwidth'] == 'auto') $auto = true;
+			if ($auto) $wppa['out'] .= wppa_nltab().'wppa_auto_colwidth = true;';
 
-		// last minute change: script %%size != default colwidth
-		$temp = wppa_get_container_width() - ( 2*6 + 2*23 + 2*$wppa_opt['wppa_bwidth']);
-		if ($wppa['in_widget']) $temp = wppa_get_container_width() - ( 2*6 + 2*11 + 2*$wppa_opt['wppa_bwidth']);
-		$wppa['out'] .= wppa_nltab().'<script type="text/javascript">wppa_filmstrip_length['.$wppa['master_occur'].'] = '.$temp.';</script>'; // array van maken per mocc!!!!
+			// last minute change: script %%size != default colwidth
+			$temp = wppa_get_container_width() - ( 2*6 + 2*23 + 2*$wppa_opt['wppa_bwidth']);
+			if ($wppa['in_widget']) $temp = wppa_get_container_width() - ( 2*6 + 2*11 + 2*$wppa_opt['wppa_bwidth']);
+			$wppa['out'] .= wppa_nltab().'wppa_filmstrip_length['.$wppa['master_occur'].'] = '.$temp.';';
 
-		// last minute change: filmstrip sizes and related stuff. In widget: half size.
-		$wppa['out'] .= wppa_nltab('+').'<script type="text/javascript">';
+			// last minute change: filmstrip sizes and related stuff. In widget: half size.		
 			$temp = $wppa_opt['wppa_tf_width'] + $wppa_opt['wppa_tn_margin'];
 			if ($wppa['in_widget']) $temp /= 2;
 			$wppa['out'] .= wppa_nltab().'wppa_thumbnail_pitch['.$wppa['master_occur'].'] = '.$temp.';';
@@ -1699,7 +1700,7 @@ global $wppa_microtime_cum;
 			$wppa['out'] .= wppa_nltab().'wppa_filmstrip_area_delta['.$wppa['master_occur'].'] = '.$temp.';';
 			if ($wppa['in_widget']) $wppa['out'] .= wppa_nltab().'wppa_is_mini['.$wppa['master_occur'].'] = true;';
 			else $wppa['out'] .= wppa_nltab().'wppa_is_mini['.$wppa['master_occur'].'] = false;';
-		$wppa['out'] .= wppa_nltab('-').'</script>';
+		$wppa['out'] .= wppa_nltab('-').'//--><!]]></script>';
 		
 	}
 	elseif ($action == 'close')	{

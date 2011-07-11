@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wppa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-07-06 16:51+0100\n"
-"PO-Revision-Date: 2011-07-06 16:51+0100\n"
+"POT-Creation-Date: 2011-07-11 11:52+0100\n"
+"PO-Revision-Date: 2011-07-11 11:52+0100\n"
 "Last-Translator: J.N. Breetvelt <OpaJaap@OpaJaap.nl>\n"
 "Language-Team: oVa <ova13lastar@gmail.com>\n"
 "MIME-Version: 1.0\n"
@@ -60,7 +60,7 @@ msgid "Manage comments"
 msgstr "Gérer les photos"
 
 #: wppa_admin.php:140
-#: wppa_settings.php:749
+#: wppa_settings.php:750
 #, fuzzy
 msgid "Comments"
 msgstr "contenu"
@@ -69,240 +69,240 @@ msgstr "contenu"
 msgid "Help &amp; Info"
 msgstr "Aide &amp; Info"
 
-#: wppa_adminfunctions.php:169
+#: wppa_adminfunctions.php:167
 msgid "Settings successfully backed up"
 msgstr ""
 
-#: wppa_adminfunctions.php:173
+#: wppa_adminfunctions.php:171
 msgid "Unable to backup settings"
 msgstr ""
 
-#: wppa_adminfunctions.php:180
+#: wppa_adminfunctions.php:178
 msgid "Error writing to settings backup file"
 msgstr ""
 
-#: wppa_adminfunctions.php:209
+#: wppa_adminfunctions.php:207
 msgid "Settings backup file not found"
 msgstr ""
 
-#: wppa_adminfunctions.php:259
+#: wppa_adminfunctions.php:257
 msgid "You probably performed an automatic update. Due to a WP bug not all actions that are required for an update have been executed yet.<br/><br/>"
 msgstr ""
 
-#: wppa_adminfunctions.php:260
+#: wppa_adminfunctions.php:258
 msgid "The wppa database tables are not yet at the required revision level."
 msgstr ""
 
-#: wppa_adminfunctions.php:260
-#: wppa_adminfunctions.php:265
+#: wppa_adminfunctions.php:258
+#: wppa_adminfunctions.php:263
 msgid "Current="
 msgstr ""
 
-#: wppa_adminfunctions.php:260
-#: wppa_adminfunctions.php:265
+#: wppa_adminfunctions.php:258
+#: wppa_adminfunctions.php:263
 msgid "New="
 msgstr ""
 
-#: wppa_adminfunctions.php:264
+#: wppa_adminfunctions.php:262
 msgid "PLEASE DE-ACTIVATE the plugin WP-PHOTO-ALBUM-PLUS and ACTIVATE AGAIN before you continue!"
 msgstr ""
 
-#: wppa_adminfunctions.php:265
+#: wppa_adminfunctions.php:263
 msgid "Failed to fix this."
 msgstr ""
 
-#: wppa_adminfunctions.php:269
+#: wppa_adminfunctions.php:267
 msgid "I fixed this for you......"
 msgstr ""
 
-#: wppa_adminfunctions.php:275
+#: wppa_adminfunctions.php:273
 msgid "IMPORTANT UPGRADE NOTICE"
 msgstr ""
 
-#: wppa_adminfunctions.php:276
+#: wppa_adminfunctions.php:274
 msgid "Please CHECK your customized WPPA_STYLE.CSS file against the newly supplied one. You may wish to add or modify some attributes. Be aware of the fact that most settings can now be set in the admin settings page."
 msgstr ""
 
-#: wppa_adminfunctions.php:277
+#: wppa_adminfunctions.php:275
 msgid "Please REPLACE your customized WPPA_THEME.PHP file by the newly supplied one, or just remove it from your theme directory. You may modify it later if you wish. Your current customized version is NOT compatible with this version of the plugin software."
 msgstr ""
 
-#: wppa_adminfunctions.php:411
-#: wppa_settings.php:971
-#: wppa_settings.php:987
+#: wppa_adminfunctions.php:409
+#: wppa_settings.php:972
+#: wppa_settings.php:988
 msgid "Order #"
 msgstr "Ordre #"
 
-#: wppa_adminfunctions.php:412
+#: wppa_adminfunctions.php:410
 #: wppa_albumadmin.php:483
 #: wppa_settings.php:333
 #: wppa_settings.php:517
 #: wppa_settings.php:533
-#: wppa_settings.php:688
-#: wppa_settings.php:704
-#: wppa_settings.php:772
-#: wppa_settings.php:789
-#: wppa_settings.php:971
-#: wppa_settings.php:987
-#: wppa_settings.php:1012
-#: wppa_settings.php:1029
-#: wppa_settings.php:1109
-#: wppa_settings.php:1127
-#: wppa_settings.php:1255
-#: wppa_settings.php:1272
-#: wppa_settings.php:1343
-#: wppa_settings.php:1359
-#: wppa_settings.php:1427
-#: wppa_settings.php:1443
-#: wppa_settings.php:1504
+#: wppa_settings.php:689
+#: wppa_settings.php:705
+#: wppa_settings.php:773
+#: wppa_settings.php:790
+#: wppa_settings.php:972
+#: wppa_settings.php:988
+#: wppa_settings.php:1014
+#: wppa_settings.php:1031
+#: wppa_settings.php:1111
+#: wppa_settings.php:1129
+#: wppa_settings.php:1257
+#: wppa_settings.php:1274
+#: wppa_settings.php:1345
+#: wppa_settings.php:1361
+#: wppa_settings.php:1429
+#: wppa_settings.php:1445
+#: wppa_settings.php:1506
 msgid "Name"
 msgstr "Nom"
 
-#: wppa_adminfunctions.php:413
-#: wppa_settings.php:971
-#: wppa_settings.php:987
+#: wppa_adminfunctions.php:411
+#: wppa_settings.php:972
+#: wppa_settings.php:988
 msgid "Random"
 msgstr "Aléatoire"
 
-#: wppa_adminfunctions.php:451
-#: wppa_adminfunctions.php:455
+#: wppa_adminfunctions.php:449
+#: wppa_adminfunctions.php:453
 msgid "Please supply a numeric value greater than or equal to"
 msgstr "Veuillez fournir une valeur numérique supérieure ou égale à"
 
-#: wppa_adminfunctions.php:451
-#: wppa_adminfunctions.php:455
+#: wppa_adminfunctions.php:449
+#: wppa_adminfunctions.php:453
 msgid "for"
 msgstr "pour"
 
-#: wppa_adminfunctions.php:455
+#: wppa_adminfunctions.php:453
 msgid "and less than or equal to"
 msgstr ""
 
-#: wppa_adminfunctions.php:566
+#: wppa_adminfunctions.php:564
 msgid "Unsupported value in _wppa_chmod_ :"
 msgstr ""
 
-#: wppa_adminfunctions.php:704
+#: wppa_adminfunctions.php:702
 msgid "The uploads directory does not exist, please do a regular WP upload first."
 msgstr ""
 
-#: wppa_adminfunctions.php:708
+#: wppa_adminfunctions.php:706
 msgid "Successfully created uploads directory."
 msgstr ""
 
-#: wppa_adminfunctions.php:717
+#: wppa_adminfunctions.php:715
 #, fuzzy
 msgid "Could not create the wppa directory."
 msgstr "Impossible de créer l'album."
 
-#: wppa_adminfunctions.php:721
+#: wppa_adminfunctions.php:719
 msgid "Successfully created wppa directory."
 msgstr ""
 
-#: wppa_adminfunctions.php:730
+#: wppa_adminfunctions.php:728
 #, fuzzy
 msgid "Could not create the wppa thumbs directory."
 msgstr "Impossible de créer l'album."
 
-#: wppa_adminfunctions.php:734
+#: wppa_adminfunctions.php:732
 msgid "Successfully created wppa thumbs directory."
 msgstr ""
 
-#: wppa_adminfunctions.php:743
+#: wppa_adminfunctions.php:741
 msgid "Unable to create depot directory"
 msgstr ""
 
-#: wppa_adminfunctions.php:747
+#: wppa_adminfunctions.php:745
 msgid "Successfully created wppa master depot directory."
 msgstr ""
 
-#: wppa_adminfunctions.php:756
+#: wppa_adminfunctions.php:754
 #, fuzzy
 msgid "Unable to create user depot directory."
 msgstr "Impossible de créer l'album."
 
-#: wppa_adminfunctions.php:760
+#: wppa_adminfunctions.php:758
 msgid "Successfully created wppa user depot directory."
 msgstr ""
 
-#: wppa_adminfunctions.php:767
+#: wppa_adminfunctions.php:765
 #, php-format
 msgid "Ask your administrator to give you more rights, try CHMOD from table VII item 1 of the Photo Albums -> Settings admin page or create <b>%s</b> manually using an FTP program."
 msgstr ""
 
-#: wppa_adminfunctions.php:801
+#: wppa_adminfunctions.php:799
 msgid "Trying to fix "
 msgstr ""
 
-#: wppa_adminfunctions.php:832
+#: wppa_adminfunctions.php:830
 msgid "Fixed extension for "
 msgstr ""
 
-#: wppa_adminfunctions.php:835
+#: wppa_adminfunctions.php:833
 msgid "Unable to fix extension for "
 msgstr ""
 
-#: wppa_adminfunctions.php:839
+#: wppa_adminfunctions.php:837
 msgid "Unknown extension for photo "
 msgstr ""
 
-#: wppa_adminfunctions.php:839
+#: wppa_adminfunctions.php:837
 msgid "Please change the name to something with the proper extension and try again!"
 msgstr ""
 
+#: wppa_adminfunctions.php:846
 #: wppa_adminfunctions.php:848
-#: wppa_adminfunctions.php:850
-#: wppa_adminfunctions.php:858
+#: wppa_adminfunctions.php:856
 #, fuzzy
 msgid "Orphan Photos"
 msgstr "Upload Photos"
 
-#: wppa_adminfunctions.php:864
+#: wppa_adminfunctions.php:862
 #, fuzzy
 msgid "Could not recover orphanized photos."
 msgstr "Impossible d'uploader la photo."
 
-#: wppa_adminfunctions.php:870
-#: wppa_adminfunctions.php:873
-#: wppa_adminfunctions.php:876
+#: wppa_adminfunctions.php:868
+#: wppa_adminfunctions.php:871
+#: wppa_adminfunctions.php:874
 #, fuzzy
 msgid "Database fixed."
 msgstr "Révision de la base de données:"
 
-#: wppa_adminfunctions.php:870
+#: wppa_adminfunctions.php:868
 msgid "orphanized photos recovered."
 msgstr ""
 
-#: wppa_adminfunctions.php:873
+#: wppa_adminfunctions.php:871
 msgid "invalid entries removed:"
 msgstr ""
 
-#: wppa_adminfunctions.php:876
+#: wppa_adminfunctions.php:874
 msgid "missing file extensions recovered."
 msgstr ""
 
-#: wppa_adminfunctions.php:934
+#: wppa_adminfunctions.php:932
 #, php-format
 msgid "File %s is of an unsupported filetype and has been removed."
 msgstr ""
 
-#: wppa_adminfunctions.php:955
+#: wppa_adminfunctions.php:953
 #, fuzzy
 msgid "--- all ---"
 msgstr "--- default ---"
 
-#: wppa_adminfunctions.php:956
-#: wppa_commonfunctions.php:405
-#: wppa_settings.php:802
-#: wppa_settings.php:814
-#: wppa_settings.php:866
-#: wppa_settings.php:971
-#: wppa_settings.php:987
+#: wppa_adminfunctions.php:954
+#: wppa_commonfunctions.php:404
+#: wppa_settings.php:803
+#: wppa_settings.php:815
+#: wppa_settings.php:867
+#: wppa_settings.php:972
+#: wppa_settings.php:988
 msgid "--- none ---"
 msgstr "--- aucun ---"
 
-#: wppa_adminfunctions.php:973
-#: wppa_commonfunctions.php:406
+#: wppa_adminfunctions.php:971
+#: wppa_commonfunctions.php:405
 msgid "--- separate ---"
 msgstr "--- separateur ---"
 
@@ -421,14 +421,14 @@ msgstr "Ordre des photos:"
 
 #: wppa_albumadmin.php:215
 #: wppa_albumadmin.php:452
-#: wppa_settings.php:866
-#: wppa_settings.php:887
+#: wppa_settings.php:867
+#: wppa_settings.php:888
 msgid "--- default ---"
 msgstr "--- default ---"
 
 #: wppa_albumadmin.php:215
 #: wppa_albumadmin.php:452
-#: wppa_settings.php:987
+#: wppa_settings.php:988
 msgid "Rating"
 msgstr ""
 
@@ -453,7 +453,7 @@ msgid "Link to:"
 msgstr "Lien vers:"
 
 #: wppa_albumadmin.php:241
-#: wppa_settings.php:1756
+#: wppa_settings.php:1758
 msgid "There are no pages (yet) to link to."
 msgstr "Il n'y a pas (encore) de page vers lesquelles pointer."
 
@@ -516,9 +516,9 @@ msgstr "Que voulez-vous faire avec les photos actuellement dans l'album?"
 #: wppa_albumadmin.php:312
 #: wppa_albumadmin.php:492
 #: wppa_albumadmin.php:511
-#: wppa_commentadmin.php:181
-#: wppa_commentadmin.php:208
-#: wppa_commentadmin.php:224
+#: wppa_commentadmin.php:184
+#: wppa_commentadmin.php:211
+#: wppa_commentadmin.php:227
 msgid "Delete"
 msgstr "Supprimer"
 
@@ -577,21 +577,21 @@ msgstr "Vous pourrez changer tous ces paramètres plus tard en cliquant sur le l
 #: wppa_settings.php:334
 #: wppa_settings.php:518
 #: wppa_settings.php:534
-#: wppa_settings.php:689
-#: wppa_settings.php:705
-#: wppa_settings.php:773
-#: wppa_settings.php:790
-#: wppa_settings.php:1013
-#: wppa_settings.php:1030
-#: wppa_settings.php:1110
-#: wppa_settings.php:1128
-#: wppa_settings.php:1256
-#: wppa_settings.php:1273
-#: wppa_settings.php:1344
-#: wppa_settings.php:1360
-#: wppa_settings.php:1428
-#: wppa_settings.php:1444
-#: wppa_settings.php:1505
+#: wppa_settings.php:690
+#: wppa_settings.php:706
+#: wppa_settings.php:774
+#: wppa_settings.php:791
+#: wppa_settings.php:1015
+#: wppa_settings.php:1032
+#: wppa_settings.php:1112
+#: wppa_settings.php:1130
+#: wppa_settings.php:1258
+#: wppa_settings.php:1275
+#: wppa_settings.php:1346
+#: wppa_settings.php:1362
+#: wppa_settings.php:1430
+#: wppa_settings.php:1446
+#: wppa_settings.php:1507
 msgid "Description"
 msgstr "Description"
 
@@ -614,9 +614,9 @@ msgstr "Parent"
 
 #: wppa_albumadmin.php:491
 #: wppa_albumadmin.php:509
-#: wppa_commentadmin.php:180
-#: wppa_commentadmin.php:207
-#: wppa_commentadmin.php:223
+#: wppa_commentadmin.php:183
+#: wppa_commentadmin.php:210
+#: wppa_commentadmin.php:226
 msgid "Edit"
 msgstr "Modifier"
 
@@ -766,247 +766,251 @@ msgstr "--- aléatoire ---"
 msgid "No photos yet"
 msgstr "Pas encore de photo."
 
-#: wppa_commentadmin.php:27
+#: wppa_commentadmin.php:28
 #, fuzzy
 msgid "WP Photo Album Plus Edit Comment"
 msgstr "Options de WP Photo Album Plus"
 
-#: wppa_commentadmin.php:46
+#: wppa_commentadmin.php:47
 #, fuzzy
 msgid "Photo:"
 msgstr "Ordre des photos:"
 
-#: wppa_commentadmin.php:50
+#: wppa_commentadmin.php:51
 msgid "User:"
 msgstr ""
 
-#: wppa_commentadmin.php:54
+#: wppa_commentadmin.php:55
 msgid "Email:"
 msgstr ""
 
-#: wppa_commentadmin.php:58
+#: wppa_commentadmin.php:59
 msgid "Comment:"
 msgstr ""
 
-#: wppa_commentadmin.php:64
-#: wppa_commentadmin.php:273
-#: wppa_settings.php:1805
+#: wppa_commentadmin.php:65
+#: wppa_commentadmin.php:276
+#: wppa_settings.php:1807
 msgid "Save Changes"
 msgstr "Enregistrer les modifications"
 
-#: wppa_commentadmin.php:99
+#: wppa_commentadmin.php:100
 #: wppa_settings.php:271
 msgid "Changes Saved"
 msgstr "Modifications enregistrées."
 
-#: wppa_commentadmin.php:107
+#: wppa_commentadmin.php:108
 #, fuzzy
 msgid "WP Photo Album Plus Comment admin"
 msgstr "Options de WP Photo Album Plus"
 
-#: wppa_commentadmin.php:112
+#: wppa_commentadmin.php:110
+msgid "<h3>The Comment system is not activated</h3><p>To activate: check Table II item 18 on the <b>Photo Albums -> Settings</b> screen and press <b>Save Changes</b>"
+msgstr ""
+
+#: wppa_commentadmin.php:115
 #, fuzzy
 msgid "Total:"
 msgstr "Sous-titre:"
 
-#: wppa_commentadmin.php:116
+#: wppa_commentadmin.php:119
 msgid "Approved:"
 msgstr ""
 
-#: wppa_commentadmin.php:120
+#: wppa_commentadmin.php:123
 #, fuzzy
 msgid "Pending:"
 msgstr "Descendant:"
 
-#: wppa_commentadmin.php:124
+#: wppa_commentadmin.php:127
 #, fuzzy
 msgid "Spam:"
 msgstr "Nom:"
 
-#: wppa_commentadmin.php:135
+#: wppa_commentadmin.php:138
 #, fuzzy
 msgid "Display status:"
 msgstr "Méthode d'affichage:"
 
-#: wppa_commentadmin.php:137
+#: wppa_commentadmin.php:140
 msgid "all"
 msgstr ""
 
-#: wppa_commentadmin.php:138
+#: wppa_commentadmin.php:141
 #, fuzzy
 msgid "pending"
 msgstr "Descendant:"
 
-#: wppa_commentadmin.php:139
+#: wppa_commentadmin.php:142
 msgid "approved"
 msgstr ""
 
-#: wppa_commentadmin.php:140
-msgid "spam"
-msgstr ""
-
 #: wppa_commentadmin.php:143
-#, fuzzy
-msgid "Display order:"
-msgstr "Méthode d'affichage:"
-
-#: wppa_commentadmin.php:145
-msgid "timestamp"
+msgid "spam"
 msgstr ""
 
 #: wppa_commentadmin.php:146
 #, fuzzy
+msgid "Display order:"
+msgstr "Méthode d'affichage:"
+
+#: wppa_commentadmin.php:148
+msgid "timestamp"
+msgstr ""
+
+#: wppa_commentadmin.php:149
+#, fuzzy
 msgid "photo"
 msgstr "Upload Photos"
 
-#: wppa_commentadmin.php:173
-#: wppa_commentadmin.php:216
+#: wppa_commentadmin.php:176
+#: wppa_commentadmin.php:219
 #, fuzzy
 msgid "Photo"
 msgstr "Upload Photos"
 
-#: wppa_commentadmin.php:174
-#: wppa_commentadmin.php:217
+#: wppa_commentadmin.php:177
+#: wppa_commentadmin.php:220
 #: wppa_settings.php:332
 #: wppa_settings.php:516
 #: wppa_settings.php:532
-#: wppa_settings.php:687
-#: wppa_settings.php:703
-#: wppa_settings.php:771
-#: wppa_settings.php:788
-#: wppa_settings.php:1011
-#: wppa_settings.php:1028
-#: wppa_settings.php:1108
-#: wppa_settings.php:1126
-#: wppa_settings.php:1254
-#: wppa_settings.php:1271
-#: wppa_settings.php:1342
-#: wppa_settings.php:1358
-#: wppa_settings.php:1426
-#: wppa_settings.php:1442
-#: wppa_settings.php:1503
+#: wppa_settings.php:688
+#: wppa_settings.php:704
+#: wppa_settings.php:772
+#: wppa_settings.php:789
+#: wppa_settings.php:1013
+#: wppa_settings.php:1030
+#: wppa_settings.php:1110
+#: wppa_settings.php:1128
+#: wppa_settings.php:1256
+#: wppa_settings.php:1273
+#: wppa_settings.php:1344
+#: wppa_settings.php:1360
+#: wppa_settings.php:1428
+#: wppa_settings.php:1444
+#: wppa_settings.php:1505
 msgid "#"
-msgstr ""
-
-#: wppa_commentadmin.php:175
-#: wppa_commentadmin.php:218
-#, fuzzy
-msgid "User"
-msgstr "Accélérer"
-
-#: wppa_commentadmin.php:176
-#: wppa_commentadmin.php:219
-msgid "Email"
-msgstr ""
-
-#: wppa_commentadmin.php:177
-#: wppa_commentadmin.php:220
-msgid "Time since"
 msgstr ""
 
 #: wppa_commentadmin.php:178
 #: wppa_commentadmin.php:221
-msgid "Comment"
-msgstr ""
+#, fuzzy
+msgid "User"
+msgstr "Accélérer"
 
 #: wppa_commentadmin.php:179
 #: wppa_commentadmin.php:222
+msgid "Email"
+msgstr ""
+
+#: wppa_commentadmin.php:180
+#: wppa_commentadmin.php:223
+msgid "Time since"
+msgstr ""
+
+#: wppa_commentadmin.php:181
+#: wppa_commentadmin.php:224
+msgid "Comment"
+msgstr ""
+
+#: wppa_commentadmin.php:182
+#: wppa_commentadmin.php:225
 #, fuzzy
 msgid "Status"
 msgstr "Démarrer"
 
-#: wppa_commentadmin.php:199
+#: wppa_commentadmin.php:202
 #, fuzzy
 msgid "Pending"
 msgstr "Descendant:"
 
-#: wppa_commentadmin.php:200
+#: wppa_commentadmin.php:203
 msgid "Approved"
 msgstr ""
 
-#: wppa_commentadmin.php:201
+#: wppa_commentadmin.php:204
 msgid "Spam"
 msgstr ""
 
-#: wppa_commentadmin.php:208
+#: wppa_commentadmin.php:211
 #, fuzzy
 msgid "Are you sure you want to delete this comment?"
 msgstr "Etes-vous sûr de vouloir supprimer cet album?"
 
-#: wppa_commentadmin.php:259
-#: wppa_commentadmin.php:265
+#: wppa_commentadmin.php:262
+#: wppa_commentadmin.php:268
 msgid "Unable to update comment. Err ="
 msgstr ""
 
-#: wppa_commentadmin.php:284
+#: wppa_commentadmin.php:287
 #, fuzzy
 msgid "Prev page"
 msgstr "photos"
 
-#: wppa_commentadmin.php:297
+#: wppa_commentadmin.php:300
 #, fuzzy
 msgid "Next page"
 msgstr "photos"
 
-#: wppa_commonfunctions.php:467
+#: wppa_commonfunctions.php:466
 msgid "1 second"
 msgstr ""
 
-#: wppa_commonfunctions.php:468
+#: wppa_commonfunctions.php:467
 msgid "seconds"
 msgstr ""
 
-#: wppa_commonfunctions.php:472
+#: wppa_commonfunctions.php:471
 msgid "1 minute"
 msgstr ""
 
-#: wppa_commonfunctions.php:473
+#: wppa_commonfunctions.php:472
 msgid "minutes"
 msgstr ""
 
-#: wppa_commonfunctions.php:477
+#: wppa_commonfunctions.php:476
 #, fuzzy
 msgid "1 hour"
 msgstr "heure."
 
-#: wppa_commonfunctions.php:478
+#: wppa_commonfunctions.php:477
 #, fuzzy
 msgid "hours"
 msgstr "heure."
 
-#: wppa_commonfunctions.php:482
+#: wppa_commonfunctions.php:481
 #, fuzzy
 msgid "1 day"
 msgstr "jour."
 
-#: wppa_commonfunctions.php:483
+#: wppa_commonfunctions.php:482
 #, fuzzy
 msgid "days"
 msgstr "jour."
 
-#: wppa_commonfunctions.php:487
+#: wppa_commonfunctions.php:486
 #, fuzzy
 msgid "1 week"
 msgstr "semaine."
 
-#: wppa_commonfunctions.php:488
+#: wppa_commonfunctions.php:487
 #, fuzzy
 msgid "weeks"
 msgstr "semaine."
 
-#: wppa_commonfunctions.php:492
+#: wppa_commonfunctions.php:491
 msgid "1 month"
 msgstr ""
 
-#: wppa_commonfunctions.php:493
+#: wppa_commonfunctions.php:492
 msgid "months"
 msgstr ""
 
-#: wppa_commonfunctions.php:496
+#: wppa_commonfunctions.php:495
 msgid "1 year"
 msgstr ""
 
-#: wppa_commonfunctions.php:497
+#: wppa_commonfunctions.php:496
 msgid "years"
 msgstr ""
 
@@ -1105,15 +1109,6 @@ msgstr ""
 #, fuzzy
 msgid "Could not process comment"
 msgstr "Impossible d'uploader la photo."
-
-#: wppa_functions.php:1065
-#, fuzzy
-msgid "Edit!"
-msgstr "Modifier"
-
-#: wppa_functions.php:1069
-msgid "Send!"
-msgstr ""
 
 #: wppa_functions.php:1656
 msgid "<b>ERROR: Illegal attempt to enter a rating.</b>"
@@ -1733,13 +1728,13 @@ msgstr ""
 #: wppa_settings.php:335
 #: wppa_settings.php:519
 #: wppa_settings.php:535
-#: wppa_settings.php:690
-#: wppa_settings.php:791
-#: wppa_settings.php:1014
-#: wppa_settings.php:1274
-#: wppa_settings.php:1345
-#: wppa_settings.php:1445
-#: wppa_settings.php:1506
+#: wppa_settings.php:691
+#: wppa_settings.php:792
+#: wppa_settings.php:1016
+#: wppa_settings.php:1276
+#: wppa_settings.php:1347
+#: wppa_settings.php:1447
+#: wppa_settings.php:1508
 #, fuzzy
 msgid "Setting"
 msgstr "Options"
@@ -1747,21 +1742,21 @@ msgstr "Options"
 #: wppa_settings.php:336
 #: wppa_settings.php:520
 #: wppa_settings.php:536
-#: wppa_settings.php:691
-#: wppa_settings.php:708
-#: wppa_settings.php:776
-#: wppa_settings.php:792
-#: wppa_settings.php:1015
-#: wppa_settings.php:1034
-#: wppa_settings.php:1114
-#: wppa_settings.php:1131
-#: wppa_settings.php:1259
-#: wppa_settings.php:1275
-#: wppa_settings.php:1346
-#: wppa_settings.php:1362
-#: wppa_settings.php:1430
-#: wppa_settings.php:1446
-#: wppa_settings.php:1507
+#: wppa_settings.php:692
+#: wppa_settings.php:709
+#: wppa_settings.php:777
+#: wppa_settings.php:793
+#: wppa_settings.php:1017
+#: wppa_settings.php:1036
+#: wppa_settings.php:1116
+#: wppa_settings.php:1133
+#: wppa_settings.php:1261
+#: wppa_settings.php:1277
+#: wppa_settings.php:1348
+#: wppa_settings.php:1364
+#: wppa_settings.php:1432
+#: wppa_settings.php:1448
+#: wppa_settings.php:1509
 msgid "Help"
 msgstr ""
 
@@ -1893,12 +1888,12 @@ msgstr "Changer la taille des vignettes peut entraîner que toutes les vignettes
 #: wppa_settings.php:492
 #: wppa_settings.php:500
 #: wppa_settings.php:509
-#: wppa_settings.php:1046
-#: wppa_settings.php:1057
-#: wppa_settings.php:1068
-#: wppa_settings.php:1079
-#: wppa_settings.php:1090
-#: wppa_settings.php:1101
+#: wppa_settings.php:1048
+#: wppa_settings.php:1059
+#: wppa_settings.php:1070
+#: wppa_settings.php:1081
+#: wppa_settings.php:1092
+#: wppa_settings.php:1103
 msgid "pixels"
 msgstr ""
 
@@ -2280,7 +2275,7 @@ msgid "If checked: display the wrap-around point in the filmstrip"
 msgstr ""
 
 #: wppa_settings.php:613
-#: wppa_settings.php:1061
+#: wppa_settings.php:1063
 #, fuzzy
 msgid "Fullsize name"
 msgstr "Taille réelle."
@@ -2294,7 +2289,7 @@ msgid "If checked: display the name of the photo under the full-size images and 
 msgstr ""
 
 #: wppa_settings.php:620
-#: wppa_settings.php:1050
+#: wppa_settings.php:1052
 #, fuzzy
 msgid "Fullsize desc"
 msgstr "Taille réelle."
@@ -2412,1203 +2407,1203 @@ msgstr ""
 msgid "Display the comments box under the fullsize images and let users enter their comments on individual photos."
 msgstr ""
 
-#: wppa_settings.php:697
+#: wppa_settings.php:698
 msgid "Table III:"
 msgstr ""
 
-#: wppa_settings.php:697
+#: wppa_settings.php:698
 msgid "Backgrounds:"
 msgstr ""
 
-#: wppa_settings.php:698
+#: wppa_settings.php:699
 msgid "This table describes the backgrounds of wppa+ elements."
-msgstr ""
-
-#: wppa_settings.php:706
-#: wppa_settings.php:774
-msgid "Background color"
 msgstr ""
 
 #: wppa_settings.php:707
 #: wppa_settings.php:775
+msgid "Background color"
+msgstr ""
+
+#: wppa_settings.php:708
+#: wppa_settings.php:776
 #, fuzzy
 msgid "Border color"
 msgstr "ou comme ceci:"
 
-#: wppa_settings.php:713
+#: wppa_settings.php:714
 msgid "Even"
 msgstr ""
 
-#: wppa_settings.php:714
+#: wppa_settings.php:715
 msgid "Even background."
 msgstr ""
 
-#: wppa_settings.php:715
+#: wppa_settings.php:716
 msgid "Enter valid CSS colors for even numbered backgrounds and borders of album covers and thumbnail displays 'As covers'."
 msgstr ""
 
-#: wppa_settings.php:722
+#: wppa_settings.php:723
 msgid "Odd"
 msgstr ""
 
-#: wppa_settings.php:723
+#: wppa_settings.php:724
 msgid "Odd background."
 msgstr ""
 
-#: wppa_settings.php:724
+#: wppa_settings.php:725
 msgid "Enter valid CSS colors for odd numbered backgrounds and borders of album covers and thumbnail displays 'As covers'."
 msgstr ""
 
-#: wppa_settings.php:731
+#: wppa_settings.php:732
 msgid "Nav"
 msgstr ""
 
-#: wppa_settings.php:732
+#: wppa_settings.php:733
 msgid "Navigation bars."
 msgstr ""
 
-#: wppa_settings.php:733
+#: wppa_settings.php:734
 msgid "Enter valid CSS colors for navigation backgrounds and borders."
 msgstr ""
 
-#: wppa_settings.php:740
+#: wppa_settings.php:741
 #, fuzzy
 msgid "Name/desc"
 msgstr "Nom"
 
-#: wppa_settings.php:741
+#: wppa_settings.php:742
 #, fuzzy
 msgid "Name and Description bars."
 msgstr "Description:"
 
-#: wppa_settings.php:742
+#: wppa_settings.php:743
 msgid "Enter valid CSS colors for name and description box backgrounds and borders."
 msgstr ""
 
-#: wppa_settings.php:750
+#: wppa_settings.php:751
 msgid "Comment input and display areas."
 msgstr ""
 
-#: wppa_settings.php:751
+#: wppa_settings.php:752
 msgid "Enter valid CSS colors for comment box backgrounds and borders."
 msgstr ""
 
-#: wppa_settings.php:758
+#: wppa_settings.php:759
 msgid "Img"
 msgstr ""
 
-#: wppa_settings.php:759
+#: wppa_settings.php:760
 #, fuzzy
 msgid "Popup and Cover Photos."
 msgstr "Photo de couverture:"
 
-#: wppa_settings.php:760
+#: wppa_settings.php:761
 msgid "Enter a valid CSS color for image backgrounds."
 msgstr ""
 
-#: wppa_settings.php:782
+#: wppa_settings.php:783
 msgid "Table IV:"
 msgstr ""
 
-#: wppa_settings.php:782
+#: wppa_settings.php:783
 msgid "Behaviour:"
 msgstr ""
 
-#: wppa_settings.php:783
+#: wppa_settings.php:784
 msgid "This table describes the dynamic behaviour of certain wppa+ elements."
 msgstr ""
 
-#: wppa_settings.php:797
+#: wppa_settings.php:798
 msgid "V align"
 msgstr ""
 
-#: wppa_settings.php:798
+#: wppa_settings.php:799
 #, fuzzy
 msgid "Vertical alignment of full-size images."
 msgstr "Alignement vertical:"
 
-#: wppa_settings.php:799
+#: wppa_settings.php:800
 msgid "Specify the vertical alignment of fullsize images."
 msgstr ""
 
-#: wppa_settings.php:800
+#: wppa_settings.php:801
 msgid "If you select --- none ---, the photos will not be centered horizontally either."
 msgstr ""
 
-#: wppa_settings.php:802
-#: wppa_settings.php:887
+#: wppa_settings.php:803
+#: wppa_settings.php:888
 msgid "top"
 msgstr "haut"
 
-#: wppa_settings.php:802
-#: wppa_settings.php:814
-#: wppa_settings.php:887
+#: wppa_settings.php:803
+#: wppa_settings.php:815
+#: wppa_settings.php:888
 msgid "center"
 msgstr "milieu"
 
-#: wppa_settings.php:802
-#: wppa_settings.php:887
+#: wppa_settings.php:803
+#: wppa_settings.php:888
 msgid "bottom"
 msgstr "bas"
 
-#: wppa_settings.php:802
+#: wppa_settings.php:803
 msgid "fit"
 msgstr ""
 
-#: wppa_settings.php:808
+#: wppa_settings.php:809
 msgid "H align"
 msgstr ""
 
-#: wppa_settings.php:809
+#: wppa_settings.php:810
 #, fuzzy
 msgid "Horizontal alignment of full-size images."
 msgstr "Alignement vertical:"
 
-#: wppa_settings.php:810
+#: wppa_settings.php:811
 msgid "Specify the horizontal alignment of fullsize images. If you specify --- none --- , no horizontal alignment will take place."
 msgstr ""
 
-#: wppa_settings.php:811
+#: wppa_settings.php:812
 msgid "This setting is only usefull when the Column Width differs from the Fullsize Width."
 msgstr ""
 
-#: wppa_settings.php:812
+#: wppa_settings.php:813
 msgid "(Settings I-1 and I-2)"
 msgstr ""
 
-#: wppa_settings.php:814
+#: wppa_settings.php:815
 #, fuzzy
 msgid "left"
 msgstr "Supprimer"
 
-#: wppa_settings.php:814
+#: wppa_settings.php:815
 msgid "right"
 msgstr ""
 
-#: wppa_settings.php:820
+#: wppa_settings.php:821
 msgid "Start"
 msgstr "Démarrer"
 
-#: wppa_settings.php:821
+#: wppa_settings.php:822
 msgid "Start slideshow running."
 msgstr ""
 
-#: wppa_settings.php:822
+#: wppa_settings.php:823
 msgid "If checked, the slideshow will start running immediately, if unchecked the first photo will be displayed in browse mode."
 msgstr ""
 
-#: wppa_settings.php:828
+#: wppa_settings.php:829
 #, fuzzy
 msgid "Fading"
 msgstr "Attention:"
 
-#: wppa_settings.php:829
+#: wppa_settings.php:830
 msgid "Fade-in after fade-out."
 msgstr ""
 
-#: wppa_settings.php:830
+#: wppa_settings.php:831
 msgid "If checked: slides are faded out and in after each other. If unchecked: fadin and fadeout overlap."
 msgstr ""
 
-#: wppa_settings.php:831
+#: wppa_settings.php:832
 msgid "The version of the jQuery library must be 1.4 or greater for this feature!"
 msgstr ""
 
-#: wppa_settings.php:833
-#: wppa_settings.php:838
+#: wppa_settings.php:834
+#: wppa_settings.php:839
 msgid "Fade-in after fade-out:"
 msgstr ""
 
-#: wppa_settings.php:841
+#: wppa_settings.php:842
 msgid "Timeout"
 msgstr ""
 
-#: wppa_settings.php:842
+#: wppa_settings.php:843
 #, fuzzy
 msgid "Slideshow timeout."
 msgstr "Diaporama"
 
-#: wppa_settings.php:843
+#: wppa_settings.php:844
 msgid "Select the time a single slide will be visible when the slideshow is started."
 msgstr ""
 
-#: wppa_settings.php:845
+#: wppa_settings.php:846
 msgid "very short (1 s.)"
 msgstr ""
 
-#: wppa_settings.php:845
+#: wppa_settings.php:846
 msgid "short (1.5 s.)"
 msgstr ""
 
-#: wppa_settings.php:845
+#: wppa_settings.php:846
 msgid "normal (2.5 s.)"
 msgstr ""
 
-#: wppa_settings.php:845
+#: wppa_settings.php:846
 msgid "long (4 s.)"
 msgstr ""
 
-#: wppa_settings.php:845
+#: wppa_settings.php:846
 msgid "very long (6 s.)"
 msgstr ""
 
-#: wppa_settings.php:851
+#: wppa_settings.php:852
 msgid "Speed"
 msgstr ""
 
-#: wppa_settings.php:852
+#: wppa_settings.php:853
 msgid "Slideshow animation speed."
 msgstr ""
 
-#: wppa_settings.php:853
+#: wppa_settings.php:854
 msgid "Specify the animation speed to be used in slideshows."
 msgstr ""
 
-#: wppa_settings.php:854
+#: wppa_settings.php:855
 msgid "This is the time it takes a photo to fade in or out."
 msgstr ""
 
-#: wppa_settings.php:856
+#: wppa_settings.php:857
 #, fuzzy
 msgid "--- off ---"
 msgstr "--- aucun ---"
 
-#: wppa_settings.php:856
+#: wppa_settings.php:857
 msgid "very fast (200 ms.)"
 msgstr ""
 
-#: wppa_settings.php:856
+#: wppa_settings.php:857
 msgid "fast (400 ms.)"
 msgstr ""
 
-#: wppa_settings.php:856
+#: wppa_settings.php:857
 msgid "normal (800 ms.)"
 msgstr ""
 
-#: wppa_settings.php:856
+#: wppa_settings.php:857
 msgid "slow (1.2 s.)"
 msgstr ""
 
-#: wppa_settings.php:856
+#: wppa_settings.php:857
 msgid "very slow (2 s.)"
 msgstr ""
 
-#: wppa_settings.php:856
+#: wppa_settings.php:857
 msgid "extremely slow (4 s.)"
 msgstr ""
 
-#: wppa_settings.php:862
+#: wppa_settings.php:863
 #, fuzzy
 msgid "Thumbnail type"
 msgstr "Taille vignette:"
 
-#: wppa_settings.php:863
+#: wppa_settings.php:864
 msgid "The way the thumbnail images are displayed."
 msgstr ""
 
-#: wppa_settings.php:864
+#: wppa_settings.php:865
 msgid "You may select an altenative display method for thumbnails. Note that some of the thumbnail settings do not apply to all available display methods."
 msgstr ""
 
-#: wppa_settings.php:866
+#: wppa_settings.php:867
 msgid "like album covers"
 msgstr ""
 
-#: wppa_settings.php:872
-#: wppa_settings.php:918
+#: wppa_settings.php:873
+#: wppa_settings.php:919
 #, fuzzy
 msgid "Placement"
 msgstr "Parent"
 
-#: wppa_settings.php:873
+#: wppa_settings.php:874
 msgid "Thumbnail image left or right."
 msgstr ""
 
-#: wppa_settings.php:874
+#: wppa_settings.php:875
 msgid "Indicate the placement position of the thumbnailphoto you wish."
 msgstr ""
 
-#: wppa_settings.php:876
-#: wppa_settings.php:922
+#: wppa_settings.php:877
+#: wppa_settings.php:923
 msgid "Left"
 msgstr ""
 
-#: wppa_settings.php:876
-#: wppa_settings.php:922
+#: wppa_settings.php:877
+#: wppa_settings.php:923
 msgid "Right"
 msgstr ""
 
-#: wppa_settings.php:882
+#: wppa_settings.php:883
 #, fuzzy
 msgid "Vertical alignment"
 msgstr "Alignement vertical:"
 
-#: wppa_settings.php:883
+#: wppa_settings.php:884
 #, fuzzy
 msgid "Vertical alignment of thumbnails."
 msgstr "Alignement vertical:"
 
-#: wppa_settings.php:884
+#: wppa_settings.php:885
 #, fuzzy
 msgid "Specify the vertical alignment of thumbnail images. Use this setting when albums contain both portrait and landscape photos."
 msgstr "Spécifier l'alignement vertical des vignettes. Utilisez ce paramètre uniquement lorsque des albums contiennent à la fois des portraits et des photos en mode paysage."
 
-#: wppa_settings.php:885
+#: wppa_settings.php:886
 msgid "It is NOT recommended to use the value --- default ---; it will affect the horizontal alignment also and is ment to be used with custom css."
 msgstr ""
 
-#: wppa_settings.php:893
+#: wppa_settings.php:894
 msgid "Thumb mouseover"
 msgstr ""
 
-#: wppa_settings.php:894
+#: wppa_settings.php:895
 msgid "Apply thumbnail mouseover effect."
 msgstr ""
 
-#: wppa_settings.php:895
+#: wppa_settings.php:896
 msgid "Check this box to use mouseover effect on thumbnail images."
 msgstr ""
 
-#: wppa_settings.php:902
+#: wppa_settings.php:903
 #, fuzzy
 msgid "Thumb opacity"
 msgstr "Taille vignette:"
 
-#: wppa_settings.php:903
-#: wppa_settings.php:936
+#: wppa_settings.php:904
+#: wppa_settings.php:937
 msgid "Initial opacity value."
 msgstr ""
 
-#: wppa_settings.php:904
-#: wppa_settings.php:937
+#: wppa_settings.php:905
+#: wppa_settings.php:938
 msgid "Enter percentage of opacity. 100% is opaque, 0% is transparant"
 msgstr ""
 
-#: wppa_settings.php:906
-#: wppa_settings.php:939
+#: wppa_settings.php:907
+#: wppa_settings.php:940
 msgid "%"
 msgstr ""
 
-#: wppa_settings.php:906
+#: wppa_settings.php:907
 msgid "(This setting requires thumbnail mouseover to be switched on)"
 msgstr ""
 
-#: wppa_settings.php:910
+#: wppa_settings.php:911
 msgid "Thumb popup"
 msgstr ""
 
-#: wppa_settings.php:911
+#: wppa_settings.php:912
 #, fuzzy
 msgid "Use popup effect on thumbnail images."
 msgstr "PRET à regénérer les vignettes."
 
-#: wppa_settings.php:912
+#: wppa_settings.php:913
 msgid "Thumbnails pop-up to a larger image when hovered."
 msgstr ""
 
-#: wppa_settings.php:919
+#: wppa_settings.php:920
 msgid "Cover image left or right."
 msgstr ""
 
-#: wppa_settings.php:920
+#: wppa_settings.php:921
 msgid "Indicate the placement position of the coverphoto you wish."
 msgstr ""
 
-#: wppa_settings.php:927
+#: wppa_settings.php:928
 msgid "Cover mouseover"
 msgstr ""
 
-#: wppa_settings.php:928
+#: wppa_settings.php:929
 msgid "Apply coverphoto mouseover effect."
 msgstr ""
 
-#: wppa_settings.php:929
+#: wppa_settings.php:930
 msgid "Check this box to use mouseover effect on cover images."
 msgstr ""
 
-#: wppa_settings.php:935
+#: wppa_settings.php:936
 #, fuzzy
 msgid "Cover opacity"
 msgstr "Photo de couverture:"
 
-#: wppa_settings.php:939
+#: wppa_settings.php:940
 msgid "(This setting requires coverphoto mouseover to be switched on)"
 msgstr ""
 
-#: wppa_settings.php:943
+#: wppa_settings.php:944
 #, fuzzy
 msgid "Rating login"
 msgstr "Attention:"
 
-#: wppa_settings.php:944
+#: wppa_settings.php:945
 msgid "Users must login to rate photos."
 msgstr ""
 
-#: wppa_settings.php:945
+#: wppa_settings.php:946
 msgid "If users want to vote for a photo (rating 1..5 stars) the must login first. The avarage rating will always be displayed as long as the rating system is enabled."
 msgstr ""
 
-#: wppa_settings.php:951
+#: wppa_settings.php:952
 #, fuzzy
 msgid "Rating change"
 msgstr "Attention:"
 
-#: wppa_settings.php:952
 #: wppa_settings.php:953
+#: wppa_settings.php:954
 msgid "Users may change their ratings."
 msgstr ""
 
-#: wppa_settings.php:959
+#: wppa_settings.php:960
 #, fuzzy
 msgid "Rating multi"
 msgstr "Attention:"
 
-#: wppa_settings.php:960
+#: wppa_settings.php:961
 msgid "Users may give multiple votes."
 msgstr ""
 
-#: wppa_settings.php:961
+#: wppa_settings.php:962
 msgid "Users may give multiple votes. (This has no effect when users may change their votes.)"
 msgstr ""
 
-#: wppa_settings.php:967
+#: wppa_settings.php:968
 #, fuzzy
 msgid "Album order"
 msgstr "Ordre Album:"
 
-#: wppa_settings.php:968
+#: wppa_settings.php:969
 msgid "Album ordering sequence method."
 msgstr ""
 
-#: wppa_settings.php:969
+#: wppa_settings.php:970
 msgid "Specify the way the albums should be ordered."
 msgstr "Spécifiez la manière dont les albums doivent être ordonnés."
-
-#: wppa_settings.php:976
-#: wppa_settings.php:992
-#, fuzzy
-msgid "Descending"
-msgstr "Descendant:"
 
 #: wppa_settings.php:977
 #: wppa_settings.php:993
 #, fuzzy
-msgid "Descending order."
+msgid "Descending"
 msgstr "Descendant:"
 
 #: wppa_settings.php:978
 #: wppa_settings.php:994
+#, fuzzy
+msgid "Descending order."
+msgstr "Descendant:"
+
+#: wppa_settings.php:979
+#: wppa_settings.php:995
 msgid "If checked: largest first"
 msgstr "Si coché: la plus grande en premier"
 
-#: wppa_settings.php:983
+#: wppa_settings.php:984
 #, fuzzy
 msgid "Photo order"
 msgstr "Ordre des photos:"
 
-#: wppa_settings.php:984
+#: wppa_settings.php:985
 msgid "Photo ordering sequence method."
 msgstr ""
 
-#: wppa_settings.php:985
+#: wppa_settings.php:986
 msgid "Specify the way the photos should be ordered. This is the default setting. You can overrule the default sorting order on a per album basis."
 msgstr "Spécifiez la manière dont les photos doivent être ordonnées. C'est le réglage par défaut. Vous pouvez annuler l'ordre de tri par défaut sur une base par album."
 
-#: wppa_settings.php:995
+#: wppa_settings.php:996
 msgid "This is a system wide setting."
 msgstr "Il s'agit d'un système de réglage de largeur."
 
-#: wppa_settings.php:1000
+#: wppa_settings.php:1001
 #, fuzzy
 msgid "Commenting login"
 msgstr "Attention:"
 
-#: wppa_settings.php:1001
+#: wppa_settings.php:1002
 msgid "Users must be logged in to comment on photos."
 msgstr ""
 
-#: wppa_settings.php:1002
+#: wppa_settings.php:1003
 msgid "Check this box if you want users to be logged in to be able to enter comments on individual photos."
 msgstr ""
 
-#: wppa_settings.php:1021
+#: wppa_settings.php:1023
 msgid "Table V:"
 msgstr ""
 
-#: wppa_settings.php:1021
+#: wppa_settings.php:1023
 msgid "Fonts:"
 msgstr ""
 
-#: wppa_settings.php:1022
+#: wppa_settings.php:1024
 msgid "This table describes the Fonts used for the wppa+ elements."
 msgstr ""
 
-#: wppa_settings.php:1023
+#: wppa_settings.php:1025
 msgid "If you leave fields empty, your themes defaults will be used."
 msgstr ""
 
-#: wppa_settings.php:1031
-#: wppa_settings.php:1111
+#: wppa_settings.php:1033
+#: wppa_settings.php:1113
 msgid "Font family"
 msgstr ""
 
-#: wppa_settings.php:1032
-#: wppa_settings.php:1112
+#: wppa_settings.php:1034
+#: wppa_settings.php:1114
 #, fuzzy
 msgid "Font size"
 msgstr "Taille réelle."
 
-#: wppa_settings.php:1033
-#: wppa_settings.php:1113
+#: wppa_settings.php:1035
+#: wppa_settings.php:1115
 msgid "Font color"
 msgstr ""
 
-#: wppa_settings.php:1039
+#: wppa_settings.php:1041
 #, fuzzy
 msgid "Album titles"
 msgstr "Ordre Album:"
 
-#: wppa_settings.php:1040
+#: wppa_settings.php:1042
 msgid "Font used for Album titles."
 msgstr ""
 
-#: wppa_settings.php:1041
-#: wppa_settings.php:1063
+#: wppa_settings.php:1043
+#: wppa_settings.php:1065
 msgid "Enter font name, size and color for album cover titles."
 msgstr ""
 
-#: wppa_settings.php:1051
+#: wppa_settings.php:1053
 msgid "Font for fullsize photo descriptions."
 msgstr ""
 
-#: wppa_settings.php:1052
+#: wppa_settings.php:1054
 msgid "Enter font name, size and color for fullsize photo descriptions."
 msgstr ""
 
-#: wppa_settings.php:1062
+#: wppa_settings.php:1064
 msgid "Font for fullsize photo names."
 msgstr ""
 
-#: wppa_settings.php:1072
+#: wppa_settings.php:1074
 msgid "Navigations"
 msgstr ""
 
-#: wppa_settings.php:1073
+#: wppa_settings.php:1075
 msgid "Font for navigations."
 msgstr ""
 
-#: wppa_settings.php:1074
+#: wppa_settings.php:1076
 msgid "Enter font name, size and color for navigation items."
 msgstr ""
 
-#: wppa_settings.php:1083
+#: wppa_settings.php:1085
 #, fuzzy
 msgid "Thumbnails"
 msgstr "Taille de la vignette."
 
-#: wppa_settings.php:1084
+#: wppa_settings.php:1086
 #, fuzzy
 msgid "Font for text under thumbnails."
 msgstr "Sélectionnez le contenu des sous-titres."
 
-#: wppa_settings.php:1085
+#: wppa_settings.php:1087
 msgid "Enter font name, size and color for text under thumbnail images."
 msgstr ""
 
-#: wppa_settings.php:1094
+#: wppa_settings.php:1096
 #, fuzzy
 msgid "Other"
 msgstr "ici"
 
-#: wppa_settings.php:1095
+#: wppa_settings.php:1097
 msgid "General font in wppa boxes."
 msgstr ""
 
-#: wppa_settings.php:1096
+#: wppa_settings.php:1098
 msgid "Enter font name, size and color for all other items."
 msgstr ""
 
-#: wppa_settings.php:1120
+#: wppa_settings.php:1122
 msgid "Table VI:"
 msgstr ""
 
-#: wppa_settings.php:1120
+#: wppa_settings.php:1122
 #, fuzzy
 msgid "Links:"
 msgstr "Lien vers:"
 
-#: wppa_settings.php:1121
+#: wppa_settings.php:1123
 msgid "This table defines the link types and pages."
 msgstr ""
 
-#: wppa_settings.php:1129
-#: wppa_settings.php:1257
+#: wppa_settings.php:1131
+#: wppa_settings.php:1259
 #, fuzzy
 msgid "Link type"
 msgstr "Lien vers:"
 
-#: wppa_settings.php:1130
-#: wppa_settings.php:1258
+#: wppa_settings.php:1132
+#: wppa_settings.php:1260
 #, fuzzy
 msgid "Link page"
 msgstr "Lien vers:"
 
-#: wppa_settings.php:1137
 #: wppa_settings.php:1139
 #: wppa_settings.php:1141
 #: wppa_settings.php:1143
 #: wppa_settings.php:1145
-#: wppa_settings.php:1786
+#: wppa_settings.php:1147
+#: wppa_settings.php:1788
 #, fuzzy
 msgid "no link at all."
 msgstr "--- aucun ---"
 
-#: wppa_settings.php:1137
 #: wppa_settings.php:1139
 #: wppa_settings.php:1141
 #: wppa_settings.php:1143
 #: wppa_settings.php:1145
-#: wppa_settings.php:1787
+#: wppa_settings.php:1147
+#: wppa_settings.php:1789
 msgid "the plain photo (file)."
 msgstr ""
 
-#: wppa_settings.php:1137
 #: wppa_settings.php:1139
 #: wppa_settings.php:1141
 #: wppa_settings.php:1143
-#: wppa_settings.php:1788
+#: wppa_settings.php:1145
+#: wppa_settings.php:1790
 msgid "the full size photo in a slideshow."
 msgstr ""
 
-#: wppa_settings.php:1137
 #: wppa_settings.php:1139
 #: wppa_settings.php:1141
 #: wppa_settings.php:1143
-#: wppa_settings.php:1789
+#: wppa_settings.php:1145
+#: wppa_settings.php:1791
 msgid "the fullsize photo on its own."
 msgstr ""
 
-#: wppa_settings.php:1137
 #: wppa_settings.php:1139
 #: wppa_settings.php:1141
 #: wppa_settings.php:1143
-#: wppa_settings.php:1790
+#: wppa_settings.php:1145
+#: wppa_settings.php:1792
 msgid "the photo specific link."
 msgstr ""
 
-#: wppa_settings.php:1139
 #: wppa_settings.php:1141
 #: wppa_settings.php:1143
-#: wppa_settings.php:1791
+#: wppa_settings.php:1145
+#: wppa_settings.php:1793
 #, fuzzy
 msgid "the content of the album."
 msgstr "Sélectionnez le contenu des sous-titres."
 
-#: wppa_settings.php:1141
-#: wppa_settings.php:1792
+#: wppa_settings.php:1143
+#: wppa_settings.php:1794
 msgid "defined at widget activation."
 msgstr ""
 
-#: wppa_settings.php:1143
-#: wppa_settings.php:1793
+#: wppa_settings.php:1145
+#: wppa_settings.php:1795
 msgid "defined on widget admin page."
 msgstr ""
 
-#: wppa_settings.php:1145
-#: wppa_settings.php:1794
+#: wppa_settings.php:1147
+#: wppa_settings.php:1796
 msgid "same as title."
 msgstr ""
 
-#: wppa_settings.php:1154
+#: wppa_settings.php:1156
 #, fuzzy
 msgid "--- The same post or page ---"
 msgstr "--- separateur ---"
 
-#: wppa_settings.php:1170
+#: wppa_settings.php:1172
 #, fuzzy
 msgid "--- No page to link to (yet) ---"
 msgstr "--- aucun ---"
 
-#: wppa_settings.php:1174
+#: wppa_settings.php:1176
 msgid "Mphoto"
 msgstr ""
 
-#: wppa_settings.php:1175
-msgid "Media-like photo link."
-msgstr ""
-
-#: wppa_settings.php:1176
-#: wppa_settings.php:1189
-#, fuzzy
-msgid "Select the type of link you want, or no link at all."
-msgstr "Sélectionnez la photo que vous souhaitez voir apparaître sur la couverture de cet album."
-
 #: wppa_settings.php:1177
-#: wppa_settings.php:1190
-msgid "If you select the fullsize photo on its own, it will be stretched to fit, regardless of that setting."
+msgid "Media-like photo link."
 msgstr ""
 
 #: wppa_settings.php:1178
 #: wppa_settings.php:1191
+#, fuzzy
+msgid "Select the type of link you want, or no link at all."
+msgstr "Sélectionnez la photo que vous souhaitez voir apparaître sur la couverture de cet album."
+
+#: wppa_settings.php:1179
+#: wppa_settings.php:1192
+msgid "If you select the fullsize photo on its own, it will be stretched to fit, regardless of that setting."
+msgstr ""
+
+#: wppa_settings.php:1180
+#: wppa_settings.php:1193
 #, php-format
 msgid "Note that a page must have at least %%wppa%% in its content to show up the photo(s)."
 msgstr ""
 
-#: wppa_settings.php:1187
+#: wppa_settings.php:1189
 #, fuzzy
 msgid "Thumbnail"
 msgstr "Taille de la vignette."
 
-#: wppa_settings.php:1188
+#: wppa_settings.php:1190
 #, fuzzy
 msgid "Thumbnail link."
 msgstr "Taille de la vignette."
 
-#: wppa_settings.php:1201
+#: wppa_settings.php:1203
 msgid "TopTenWidget"
 msgstr ""
 
-#: wppa_settings.php:1202
+#: wppa_settings.php:1204
 #, fuzzy
 msgid "TopTen widget photo link."
 msgstr "Largeur Photo Widget."
 
-#: wppa_settings.php:1203
-#: wppa_settings.php:1215
+#: wppa_settings.php:1205
+#: wppa_settings.php:1217
 #, fuzzy
 msgid "Select the type of link the top ten photos point to."
 msgstr "Sélectionnez la page vers laquelle la photo pointe."
 
-#: wppa_settings.php:1213
+#: wppa_settings.php:1215
 #, fuzzy
 msgid "SlideWidget"
 msgstr "Widget"
 
-#: wppa_settings.php:1214
+#: wppa_settings.php:1216
 #, fuzzy
 msgid "Slideshow widget photo link."
 msgstr "Sélectionnez la page vers laquelle la photo pointe."
 
-#: wppa_settings.php:1224
+#: wppa_settings.php:1226
 msgid "PotdWidget"
 msgstr ""
 
-#: wppa_settings.php:1225
+#: wppa_settings.php:1227
 #, fuzzy
 msgid "Photo Of The Day widget link."
 msgstr "Photo du jour"
 
-#: wppa_settings.php:1226
+#: wppa_settings.php:1228
 #, fuzzy
 msgid "Select the type of link the photo of the day points to."
 msgstr "Sélectionnez la page vers laquelle la photo pointe."
 
-#: wppa_settings.php:1227
+#: wppa_settings.php:1229
 msgid "If you select 'defined on widget admin page' you can manually enter a link and title on the Photo of the day Widget Admin page."
 msgstr ""
 
-#: wppa_settings.php:1236
+#: wppa_settings.php:1238
 msgid "Cover Image"
 msgstr ""
 
-#: wppa_settings.php:1237
+#: wppa_settings.php:1239
 msgid "The link from the cover image of an album."
 msgstr ""
 
-#: wppa_settings.php:1238
+#: wppa_settings.php:1240
 #, fuzzy
 msgid "Select the type of link the coverphoto points to."
 msgstr "Sélectionnez la page vers laquelle la photo pointe."
 
-#: wppa_settings.php:1239
+#: wppa_settings.php:1241
 msgid "The link from the album title can be configured on the Edit Album page."
 msgstr ""
 
-#: wppa_settings.php:1240
+#: wppa_settings.php:1242
 msgid "This link will be used for the photo also if you select: same as title."
 msgstr ""
 
-#: wppa_settings.php:1265
+#: wppa_settings.php:1267
 msgid "Table VII:"
 msgstr ""
 
-#: wppa_settings.php:1265
+#: wppa_settings.php:1267
 msgid "Access and Security:"
 msgstr ""
 
-#: wppa_settings.php:1266
+#: wppa_settings.php:1268
 msgid "This table describes the access settings for wppa+ elements and pages."
 msgstr ""
 
-#: wppa_settings.php:1281
+#: wppa_settings.php:1283
 msgid "Directory access (CHMOD)."
 msgstr ""
 
-#: wppa_settings.php:1282
+#: wppa_settings.php:1284
 msgid "In rare cases you might need to change this setting. If you do not know what this means, leave it unchanged."
 msgstr ""
 
-#: wppa_settings.php:1284
+#: wppa_settings.php:1286
 #, fuzzy
 msgid "Leave unchanged."
 msgstr "Enregistrer les modifications"
 
-#: wppa_settings.php:1289
+#: wppa_settings.php:1291
 #, fuzzy
 msgid "Album access"
 msgstr "Ordre Album:"
 
-#: wppa_settings.php:1290
+#: wppa_settings.php:1292
 msgid "Limit album access to album owners only."
 msgstr ""
 
-#: wppa_settings.php:1291
+#: wppa_settings.php:1293
 msgid "If checked, users who can edit albums and upload/import photos can do that with their own albums only."
 msgstr ""
 
-#: wppa_settings.php:1292
+#: wppa_settings.php:1294
 msgid "Users can give their albums to another user. Administrators can change ownership and access all albums always."
 msgstr ""
 
-#: wppa_settings.php:1297
+#: wppa_settings.php:1299
 msgid "WPPA Admin"
 msgstr ""
 
-#: wppa_settings.php:1298
+#: wppa_settings.php:1300
 msgid "Admin pages access."
 msgstr ""
 
-#: wppa_settings.php:1299
+#: wppa_settings.php:1301
 msgid "Indicate whether the accesslevels must be set by this admin page or by an other program."
 msgstr ""
 
-#: wppa_settings.php:1300
+#: wppa_settings.php:1302
 msgid "If you set them here, the classical userlevel is imitated, but implemented by the modern Roles and Capabilities system."
 msgstr ""
 
-#: wppa_settings.php:1301
+#: wppa_settings.php:1303
 msgid "That means that any higher userlevel (role) will automaticly get the capabilities that you give to a certain (lower) level."
 msgstr ""
 
-#: wppa_settings.php:1302
+#: wppa_settings.php:1304
 msgid "If you want to give a capability to a specific user or role, you can set it using an other plugin, such as Capability Manager."
 msgstr ""
 
-#: wppa_settings.php:1303
+#: wppa_settings.php:1305
 msgid "Possible capabilities are: <strong>wppa_admin</strong> (for the Photo Albums page), wppa_sidebar_admin (for the Sidebar Widget page) and wppa_upload (for the Upload and Import pages)."
 msgstr ""
 
-#: wppa_settings.php:1304
+#: wppa_settings.php:1306
 msgid "The Help page is available to users with the capability <strong>edit_posts</strong>, the Settings page (the page you are on right now) is limited to the role of administrator."
 msgstr ""
 
-#: wppa_settings.php:1306
+#: wppa_settings.php:1308
 msgid "Accesslevels are set here."
 msgstr ""
 
-#: wppa_settings.php:1306
+#: wppa_settings.php:1308
 msgid "Accesslevels are set by an other program."
 msgstr ""
 
-#: wppa_settings.php:1311
+#: wppa_settings.php:1313
 msgid "Photo Albums"
 msgstr "Albums Photo"
 
-#: wppa_settings.php:1312
+#: wppa_settings.php:1314
 #, fuzzy
 msgid "Albums Access Level."
 msgstr "Niveau d'accès:"
 
-#: wppa_settings.php:1313
+#: wppa_settings.php:1315
 #, fuzzy
 msgid "The minmum user level that can access the photo album admin (i.e. Manage Albums and Upload Photos)."
 msgstr "Le niveau d'accès minimum qui peut accéder à l'administration de WP Photo Album"
 
-#: wppa_settings.php:1315
-#: wppa_settings.php:1324
-#: wppa_settings.php:1333
+#: wppa_settings.php:1317
+#: wppa_settings.php:1326
+#: wppa_settings.php:1335
 msgid "Administrator"
 msgstr "Administrateur"
 
-#: wppa_settings.php:1315
-#: wppa_settings.php:1324
-#: wppa_settings.php:1333
+#: wppa_settings.php:1317
+#: wppa_settings.php:1326
+#: wppa_settings.php:1335
 msgid "Editor"
 msgstr "Editeur"
 
-#: wppa_settings.php:1315
-#: wppa_settings.php:1324
-#: wppa_settings.php:1333
+#: wppa_settings.php:1317
+#: wppa_settings.php:1326
+#: wppa_settings.php:1335
 msgid "Author"
 msgstr "Auteur"
 
-#: wppa_settings.php:1315
-#: wppa_settings.php:1324
-#: wppa_settings.php:1333
+#: wppa_settings.php:1317
+#: wppa_settings.php:1326
+#: wppa_settings.php:1335
 msgid "Contributor"
 msgstr "Contributeur"
 
-#: wppa_settings.php:1320
+#: wppa_settings.php:1322
 #, fuzzy
 msgid "Upload"
 msgstr "Upload Photos"
 
-#: wppa_settings.php:1321
+#: wppa_settings.php:1323
 #, fuzzy
 msgid "Upload/Import Access Level."
 msgstr "Niveau d'accès:"
 
-#: wppa_settings.php:1322
+#: wppa_settings.php:1324
 #, fuzzy
 msgid "The minmum user level that can upload or import photos."
 msgstr "Le niveau d'accès minimum qui peut accéder à l'administration de WP Photo Album"
 
-#: wppa_settings.php:1329
+#: wppa_settings.php:1331
 #, fuzzy
 msgid "Widget"
 msgstr "Titre Widget:"
 
-#: wppa_settings.php:1330
+#: wppa_settings.php:1332
 #, fuzzy
 msgid "Photo of the day widget admin."
 msgstr "Photo du jour"
 
-#: wppa_settings.php:1331
+#: wppa_settings.php:1333
 #, fuzzy
 msgid "The minmum user level that can access the photo of the day sidebar widget admin."
 msgstr "Le niveau d'accès minimum qui peut accéder à l'administration de WP Photo Album"
 
-#: wppa_settings.php:1352
+#: wppa_settings.php:1354
 msgid "Table VIII:"
 msgstr ""
 
-#: wppa_settings.php:1352
+#: wppa_settings.php:1354
 #, fuzzy
 msgid "Actions:"
 msgstr "Description:"
 
-#: wppa_settings.php:1353
+#: wppa_settings.php:1355
 msgid "This table lists all actions that can be taken to the wppa+ system"
 msgstr ""
 
-#: wppa_settings.php:1361
-#: wppa_settings.php:1429
+#: wppa_settings.php:1363
+#: wppa_settings.php:1431
 msgid "Do it!"
 msgstr ""
 
-#: wppa_settings.php:1367
+#: wppa_settings.php:1369
 msgid "Reset"
 msgstr ""
 
-#: wppa_settings.php:1368
+#: wppa_settings.php:1370
 #, fuzzy
 msgid "Reset all ratings."
 msgstr "Installation"
 
-#: wppa_settings.php:1369
+#: wppa_settings.php:1371
 msgid "WARNING: If checked, this will clear all ratings in the system!"
 msgstr ""
 
-#: wppa_settings.php:1374
+#: wppa_settings.php:1376
 msgid "Set to utf-8"
 msgstr ""
 
-#: wppa_settings.php:1375
+#: wppa_settings.php:1377
 msgid "Set Character set to UTF_8."
 msgstr ""
 
-#: wppa_settings.php:1376
+#: wppa_settings.php:1378
 msgid "If checked: Converts the wppa database tables to UTF_8 This allows the use of certain characters - like Turkish - in photo and album names and descriptions."
 msgstr ""
 
-#: wppa_settings.php:1384
+#: wppa_settings.php:1386
 msgid "Setup"
 msgstr ""
 
-#: wppa_settings.php:1385
+#: wppa_settings.php:1387
 msgid "Re-initialize plugin."
 msgstr ""
 
-#: wppa_settings.php:1386
+#: wppa_settings.php:1388
 msgid "Re-initilizes the plugin, (re)creates database tables and sets up default settings and directories if required."
 msgstr ""
 
-#: wppa_settings.php:1387
+#: wppa_settings.php:1389
 msgid "This action may be required to setup blogs in a multiblog (network) site as well as in rare cases to correct initilization errors."
 msgstr ""
 
-#: wppa_settings.php:1392
+#: wppa_settings.php:1394
 #, fuzzy
 msgid "Backup settings"
 msgstr "Niveau d'accès:"
 
-#: wppa_settings.php:1393
+#: wppa_settings.php:1395
 msgid "Save all settings into a backup file."
 msgstr ""
 
-#: wppa_settings.php:1394
+#: wppa_settings.php:1396
 msgid "Saves all the settings into a backup file"
 msgstr ""
 
-#: wppa_settings.php:1399
+#: wppa_settings.php:1401
 #, fuzzy
 msgid "Restore settings"
 msgstr "Options"
 
-#: wppa_settings.php:1400
+#: wppa_settings.php:1402
 msgid "Restore all settings from a backup file."
 msgstr ""
 
-#: wppa_settings.php:1401
+#: wppa_settings.php:1403
 msgid "Restores all the settings from a backup file"
 msgstr ""
 
-#: wppa_settings.php:1405
+#: wppa_settings.php:1407
 msgid "No backup file available"
 msgstr ""
 
-#: wppa_settings.php:1408
+#: wppa_settings.php:1410
 #, fuzzy
 msgid "Set all defaults"
 msgstr "--- default ---"
 
-#: wppa_settings.php:1409
-#: wppa_settings.php:1410
+#: wppa_settings.php:1411
+#: wppa_settings.php:1412
 msgid "Resets all settings to default values."
 msgstr ""
 
-#: wppa_settings.php:1415
+#: wppa_settings.php:1417
 msgid "Regenerate"
 msgstr ""
 
-#: wppa_settings.php:1416
-#: wppa_settings.php:1417
+#: wppa_settings.php:1418
+#: wppa_settings.php:1419
 #, fuzzy
 msgid "Regenerate all thumbnails."
 msgstr "PRET à regénérer les vignettes."
 
-#: wppa_settings.php:1436
+#: wppa_settings.php:1438
 msgid "Table IX:"
 msgstr ""
 
-#: wppa_settings.php:1436
+#: wppa_settings.php:1438
 msgid "Miscellaneous:"
 msgstr ""
 
-#: wppa_settings.php:1437
+#: wppa_settings.php:1439
 msgid "This table lists all settings that do not fit into an other table"
 msgstr ""
 
-#: wppa_settings.php:1451
+#: wppa_settings.php:1453
 msgid "Arrow color"
 msgstr ""
 
-#: wppa_settings.php:1452
+#: wppa_settings.php:1454
 msgid "Left/right browsing arrow color."
 msgstr ""
 
-#: wppa_settings.php:1453
+#: wppa_settings.php:1455
 msgid "Enter the color of the navigation arrows."
 msgstr ""
 
-#: wppa_settings.php:1458
+#: wppa_settings.php:1460
 #, fuzzy
 msgid "Search page"
 msgstr "photos"
 
-#: wppa_settings.php:1459
+#: wppa_settings.php:1461
 msgid "Display the search results on page."
 msgstr ""
 
-#: wppa_settings.php:1460
+#: wppa_settings.php:1462
 #, php-format
 msgid "Select the page to be used to display search results. The page MUST contain %%wppa%%."
 msgstr ""
 
-#: wppa_settings.php:1461
+#: wppa_settings.php:1463
 msgid "You may give it the title \"Search results\" or something alike."
 msgstr ""
 
-#: wppa_settings.php:1462
+#: wppa_settings.php:1464
 msgid "Or you ou may use the standard page on which you display the generic album."
 msgstr ""
 
-#: wppa_settings.php:1477
+#: wppa_settings.php:1479
 msgid "Exclude separate"
 msgstr ""
 
-#: wppa_settings.php:1478
+#: wppa_settings.php:1480
 #, fuzzy
 msgid "Do not search 'separate' albums."
 msgstr "Impossible de créer l'album."
 
-#: wppa_settings.php:1479
+#: wppa_settings.php:1481
 msgid "When checked, albums (and photos in them) that have the parent set to --- separate --- will be excluded from being searched."
 msgstr ""
 
-#: wppa_settings.php:1484
+#: wppa_settings.php:1486
 msgid "Allow HTML"
 msgstr ""
 
-#: wppa_settings.php:1485
+#: wppa_settings.php:1487
 msgid "Allow HTML in album and photo descriptions."
 msgstr ""
 
-#: wppa_settings.php:1486
+#: wppa_settings.php:1488
 msgid "If checked: html is allowed. WARNING: No checks on syntax, it is your own responsability to close tags properly!"
 msgstr ""
 
-#: wppa_settings.php:1491
+#: wppa_settings.php:1493
 msgid "Allow WPPA+ Debugging"
 msgstr ""
 
-#: wppa_settings.php:1492
+#: wppa_settings.php:1494
 msgid "Allow the use of &debug=.. in urls to this site."
 msgstr ""
 
-#: wppa_settings.php:1493
+#: wppa_settings.php:1495
 msgid "If checked: appending (?)(&)debug or (?)(&)debug=<int> to an url to this site will generate the display of special WPPA+ diagnostics, as well as php warnings"
 msgstr ""
 
-#: wppa_settings.php:1513
+#: wppa_settings.php:1515
 msgid "Table X:"
 msgstr ""
 
-#: wppa_settings.php:1513
+#: wppa_settings.php:1515
 msgid "PHP Configuration:"
 msgstr ""
 
-#: wppa_settings.php:1514
+#: wppa_settings.php:1516
 msgid "This table lists all PHP server configuration parameters and is read only"
 msgstr ""
 
-#: wppa_settings.php:1546
-#: wppa_settings.php:1595
-#: wppa_settings.php:1649
+#: wppa_settings.php:1548
+#: wppa_settings.php:1597
+#: wppa_settings.php:1651
 msgid "Click for help"
 msgstr ""
 
-#: wppa_settings.php:1552
-#: wppa_settings.php:1606
-#: wppa_settings.php:1662
+#: wppa_settings.php:1554
+#: wppa_settings.php:1608
+#: wppa_settings.php:1664
 msgid "You just modified this setting"
 msgstr ""
 
-#: wppa_settings.php:1557
-#: wppa_settings.php:1611
-#: wppa_settings.php:1667
+#: wppa_settings.php:1559
+#: wppa_settings.php:1613
+#: wppa_settings.php:1669
 msgid "You just tried to modify this setting into an illegal value"
 msgstr ""
 
-#: wppa_settings.php:1798
+#: wppa_settings.php:1800
 msgid "The default for this setting is:"
 msgstr ""
 
-#: wppa_settings.php:1803
+#: wppa_settings.php:1805
 msgid "Hide"
 msgstr ""
 
-#: wppa_settings.php:1804
+#: wppa_settings.php:1806
 #, fuzzy
 msgid "Show"
 msgstr "Ralentir"
@@ -4159,6 +4154,10 @@ msgstr ""
 #: theme/photo-album-page.php:33
 msgid "Pages:"
 msgstr ""
+
+#, fuzzy
+#~ msgid "Edit!"
+#~ msgstr "Modifier"
 
 #, fuzzy
 #~ msgid "Padding top:"
