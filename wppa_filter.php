@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * get the albums via filter
-* version 3.1.4
+* version 3.1.5
 *
 */
 
@@ -152,24 +152,25 @@ global $wppa;
 			}
 			
 			$do_it = false;
-			if ($wppa['rendering_enabled']) {			// NOT in a head section (in a meta tag or so)
-				if ($wppa['in_widget']) $do_it = true;	// A widget always works
-				else {
-					$do_it = true;
-					if ($wppa['is_excerpt']) $do_it = false;	// NOT in an excerpt, this works as long as my excerpt filter (has priority 1 = high)
-																// is run before this filter (has priority 10 = normal)
-																// THIS APPEARS NOT TO BE TRUE, so the first excerpt of a list may be in error
-//					if (is_archive()) $do_it = false;	// Unfortunalely there is not such a simple thing as in_excerpt()
-//					if (is_search()) $do_it = false;	// so we estimate that this is an excerpt (where my tags are stripped)
-				}
+			
+			if ($wppa['rendering_enabled']) {		// NOT in a head section (in a meta tag or so)
+				$do_it = true;
 			}
-			elseif (is_feed()) {						// A feed has no head section
+			if ($wppa['in_widget']) {				// A widget always works
+				$do_it = true;						
+			}
+			if (is_feed()) {						// A feed has no head section
 				$do_it = true;
 			}
 			
 			if ($wppa['debug']) {
-				if ($wppa['is_excerpt']) wppa_dbg_msg('Excerpt switch on');
-				else wppa_dbg_msg('Excerpt switch off');
+				if ($wppa['is_excerpt']) $msg = 'Excerpt switch on';
+				else $msg = 'Excerpt switch off';
+				
+				if ($do_it) $msg .= ', doit on';
+				else $msg .= ', doit off';
+				
+				wppa_dbg_msg($msg);
 			}
 			
 			if ($do_it) { // ($wppa['rendering_enabled'] || is_feed()) && !is_archive() &&!is_search()) {	// Insert the html
