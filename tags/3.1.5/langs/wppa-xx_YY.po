@@ -1,0 +1,3935 @@
+# Translation of the WordPress plugin   by .
+# Copyright (C) 2010
+# This file is distributed under the same license as the  package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2010.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: wppa\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-07-11 11:58+0100\n"
+"PO-Revision-Date: 2011-07-11 11:58+0100\n"
+"Last-Translator: J.N. Breetvelt <OpaJaap@OpaJaap.nl>\n"
+"Language-Team: OpaJaap <OpaJaap@OpaJaap.nl>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-KeywordsList: __;_e\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPath-1: theme\n"
+
+#: wppa_admin.php:133
+msgid "Photo&thinsp;Albums"
+msgstr ""
+
+#: wppa_admin.php:135
+msgid "Upload Photos"
+msgstr ""
+
+#: wppa_admin.php:136
+msgid "Import Photos"
+msgstr ""
+
+#: wppa_admin.php:137
+#: wppa_export.php:41
+msgid "Export Photos"
+msgstr ""
+
+#: wppa_admin.php:138
+msgid "Settings"
+msgstr ""
+
+#: wppa_admin.php:139
+msgid "Photo of the day Widget"
+msgstr ""
+
+#: wppa_admin.php:139
+msgid "Photo of the day"
+msgstr ""
+
+#: wppa_admin.php:140
+msgid "Manage comments"
+msgstr ""
+
+#: wppa_admin.php:140
+#: wppa_settings.php:750
+msgid "Comments"
+msgstr ""
+
+#: wppa_admin.php:141
+msgid "Help &amp; Info"
+msgstr ""
+
+#: wppa_adminfunctions.php:167
+msgid "Settings successfully backed up"
+msgstr ""
+
+#: wppa_adminfunctions.php:171
+msgid "Unable to backup settings"
+msgstr ""
+
+#: wppa_adminfunctions.php:178
+msgid "Error writing to settings backup file"
+msgstr ""
+
+#: wppa_adminfunctions.php:207
+msgid "Settings backup file not found"
+msgstr ""
+
+#: wppa_adminfunctions.php:257
+msgid "You probably performed an automatic update. Due to a WP bug not all actions that are required for an update have been executed yet.<br/><br/>"
+msgstr ""
+
+#: wppa_adminfunctions.php:258
+msgid "The wppa database tables are not yet at the required revision level."
+msgstr ""
+
+#: wppa_adminfunctions.php:258
+#: wppa_adminfunctions.php:263
+msgid "Current="
+msgstr ""
+
+#: wppa_adminfunctions.php:258
+#: wppa_adminfunctions.php:263
+msgid "New="
+msgstr ""
+
+#: wppa_adminfunctions.php:262
+msgid "PLEASE DE-ACTIVATE the plugin WP-PHOTO-ALBUM-PLUS and ACTIVATE AGAIN before you continue!"
+msgstr ""
+
+#: wppa_adminfunctions.php:263
+msgid "Failed to fix this."
+msgstr ""
+
+#: wppa_adminfunctions.php:267
+msgid "I fixed this for you......"
+msgstr ""
+
+#: wppa_adminfunctions.php:273
+msgid "IMPORTANT UPGRADE NOTICE"
+msgstr ""
+
+#: wppa_adminfunctions.php:274
+msgid "Please CHECK your customized WPPA_STYLE.CSS file against the newly supplied one. You may wish to add or modify some attributes. Be aware of the fact that most settings can now be set in the admin settings page."
+msgstr ""
+
+#: wppa_adminfunctions.php:275
+msgid "Please REPLACE your customized WPPA_THEME.PHP file by the newly supplied one, or just remove it from your theme directory. You may modify it later if you wish. Your current customized version is NOT compatible with this version of the plugin software."
+msgstr ""
+
+#: wppa_adminfunctions.php:409
+#: wppa_settings.php:972
+#: wppa_settings.php:988
+msgid "Order #"
+msgstr ""
+
+#: wppa_adminfunctions.php:410
+#: wppa_albumadmin.php:483
+#: wppa_settings.php:333
+#: wppa_settings.php:517
+#: wppa_settings.php:533
+#: wppa_settings.php:689
+#: wppa_settings.php:705
+#: wppa_settings.php:773
+#: wppa_settings.php:790
+#: wppa_settings.php:972
+#: wppa_settings.php:988
+#: wppa_settings.php:1014
+#: wppa_settings.php:1031
+#: wppa_settings.php:1111
+#: wppa_settings.php:1129
+#: wppa_settings.php:1257
+#: wppa_settings.php:1274
+#: wppa_settings.php:1345
+#: wppa_settings.php:1361
+#: wppa_settings.php:1429
+#: wppa_settings.php:1445
+#: wppa_settings.php:1506
+msgid "Name"
+msgstr ""
+
+#: wppa_adminfunctions.php:411
+#: wppa_settings.php:972
+#: wppa_settings.php:988
+msgid "Random"
+msgstr ""
+
+#: wppa_adminfunctions.php:449
+#: wppa_adminfunctions.php:453
+msgid "Please supply a numeric value greater than or equal to"
+msgstr ""
+
+#: wppa_adminfunctions.php:449
+#: wppa_adminfunctions.php:453
+msgid "for"
+msgstr ""
+
+#: wppa_adminfunctions.php:453
+msgid "and less than or equal to"
+msgstr ""
+
+#: wppa_adminfunctions.php:564
+msgid "Unsupported value in _wppa_chmod_ :"
+msgstr ""
+
+#: wppa_adminfunctions.php:702
+msgid "The uploads directory does not exist, please do a regular WP upload first."
+msgstr ""
+
+#: wppa_adminfunctions.php:706
+msgid "Successfully created uploads directory."
+msgstr ""
+
+#: wppa_adminfunctions.php:715
+msgid "Could not create the wppa directory."
+msgstr ""
+
+#: wppa_adminfunctions.php:719
+msgid "Successfully created wppa directory."
+msgstr ""
+
+#: wppa_adminfunctions.php:728
+msgid "Could not create the wppa thumbs directory."
+msgstr ""
+
+#: wppa_adminfunctions.php:732
+msgid "Successfully created wppa thumbs directory."
+msgstr ""
+
+#: wppa_adminfunctions.php:741
+msgid "Unable to create depot directory"
+msgstr ""
+
+#: wppa_adminfunctions.php:745
+msgid "Successfully created wppa master depot directory."
+msgstr ""
+
+#: wppa_adminfunctions.php:754
+msgid "Unable to create user depot directory."
+msgstr ""
+
+#: wppa_adminfunctions.php:758
+msgid "Successfully created wppa user depot directory."
+msgstr ""
+
+#: wppa_adminfunctions.php:765
+#, php-format
+msgid "Ask your administrator to give you more rights, try CHMOD from table VII item 1 of the Photo Albums -> Settings admin page or create <b>%s</b> manually using an FTP program."
+msgstr ""
+
+#: wppa_adminfunctions.php:799
+msgid "Trying to fix "
+msgstr ""
+
+#: wppa_adminfunctions.php:830
+msgid "Fixed extension for "
+msgstr ""
+
+#: wppa_adminfunctions.php:833
+msgid "Unable to fix extension for "
+msgstr ""
+
+#: wppa_adminfunctions.php:837
+msgid "Unknown extension for photo "
+msgstr ""
+
+#: wppa_adminfunctions.php:837
+msgid "Please change the name to something with the proper extension and try again!"
+msgstr ""
+
+#: wppa_adminfunctions.php:846
+#: wppa_adminfunctions.php:848
+#: wppa_adminfunctions.php:856
+msgid "Orphan Photos"
+msgstr ""
+
+#: wppa_adminfunctions.php:862
+msgid "Could not recover orphanized photos."
+msgstr ""
+
+#: wppa_adminfunctions.php:868
+#: wppa_adminfunctions.php:871
+#: wppa_adminfunctions.php:874
+msgid "Database fixed."
+msgstr ""
+
+#: wppa_adminfunctions.php:868
+msgid "orphanized photos recovered."
+msgstr ""
+
+#: wppa_adminfunctions.php:871
+msgid "invalid entries removed:"
+msgstr ""
+
+#: wppa_adminfunctions.php:874
+msgid "missing file extensions recovered."
+msgstr ""
+
+#: wppa_adminfunctions.php:932
+#, php-format
+msgid "File %s is of an unsupported filetype and has been removed."
+msgstr ""
+
+#: wppa_adminfunctions.php:953
+msgid "--- all ---"
+msgstr ""
+
+#: wppa_adminfunctions.php:954
+#: wppa_commonfunctions.php:404
+#: wppa_settings.php:803
+#: wppa_settings.php:815
+#: wppa_settings.php:867
+#: wppa_settings.php:972
+#: wppa_settings.php:988
+msgid "--- none ---"
+msgstr ""
+
+#: wppa_adminfunctions.php:971
+#: wppa_commonfunctions.php:405
+msgid "--- separate ---"
+msgstr ""
+
+#: wppa_albumadmin.php:19
+msgid "Warning:"
+msgstr ""
+
+#: wppa_albumadmin.php:19
+msgid "The uploads directory does not exist or is not writable by the server. Please make sure that <tt>wp-content/uploads/</tt> is writeable by the server."
+msgstr ""
+
+#: wppa_albumadmin.php:36
+msgid "Photo Deleted."
+msgstr ""
+
+#: wppa_albumadmin.php:45
+msgid "Fullsize image did not exist."
+msgstr ""
+
+#: wppa_albumadmin.php:53
+msgid "Thumbnail image did not exist."
+msgstr ""
+
+#: wppa_albumadmin.php:66
+msgid "Photo copied"
+msgstr ""
+
+#: wppa_albumadmin.php:69
+msgid "Unable to copy photo, error:"
+msgstr ""
+
+#: wppa_albumadmin.php:78
+msgid "Photo rotated"
+msgstr ""
+
+#: wppa_albumadmin.php:82
+msgid "Unable to rotate photo, error:"
+msgstr ""
+
+#: wppa_albumadmin.php:86
+msgid "Internal fatal error while getting rotation data"
+msgstr ""
+
+#: wppa_albumadmin.php:94
+msgid "Edit Album Information"
+msgstr ""
+
+#: wppa_albumadmin.php:95
+msgid "Album number:"
+msgstr ""
+
+#: wppa_albumadmin.php:105
+#: wppa_albumadmin.php:121
+#: wppa_albumadmin.php:360
+#: wppa_albumadmin.php:377
+#: wppa_albumadmin.php:630
+#: wppa_albumadmin.php:646
+msgid "Name:"
+msgstr ""
+
+#: wppa_albumadmin.php:109
+#: wppa_albumadmin.php:127
+msgid "Type the name of the album. Do not leave this empty."
+msgstr ""
+
+#: wppa_albumadmin.php:138
+#: wppa_albumadmin.php:154
+#: wppa_albumadmin.php:396
+#: wppa_albumadmin.php:413
+#: wppa_albumadmin.php:663
+#: wppa_albumadmin.php:678
+msgid "Description:"
+msgstr ""
+
+#: wppa_albumadmin.php:142
+#: wppa_albumadmin.php:160
+msgid "Enter / modify the description for this album."
+msgstr ""
+
+#: wppa_albumadmin.php:171
+msgid "Owned by:"
+msgstr ""
+
+#: wppa_albumadmin.php:176
+msgid "WARNING If you change the owner, you will no longer be able to modify this album and upload or import photos to it!"
+msgstr ""
+
+#: wppa_albumadmin.php:184
+msgid "Sort order #:"
+msgstr ""
+
+#: wppa_albumadmin.php:190
+msgid "Album order # has only effect if you set the album sort order method to <b>Order #</b> in the Photo Albums -> Settings screen."
+msgstr ""
+
+#: wppa_albumadmin.php:193
+msgid "If you want to sort the albums by order #, enter / modify the order number here."
+msgstr ""
+
+#: wppa_albumadmin.php:199
+#: wppa_albumadmin.php:440
+msgid "Parent album:"
+msgstr ""
+
+#: wppa_albumadmin.php:204
+#: wppa_albumadmin.php:444
+msgid "If this is a sub album, select the album in which this album will appear."
+msgstr ""
+
+#: wppa_albumadmin.php:212
+msgid "Photo order:"
+msgstr ""
+
+#: wppa_albumadmin.php:215
+#: wppa_albumadmin.php:452
+#: wppa_settings.php:867
+#: wppa_settings.php:888
+msgid "--- default ---"
+msgstr ""
+
+#: wppa_albumadmin.php:215
+#: wppa_albumadmin.php:452
+#: wppa_settings.php:988
+msgid "Rating"
+msgstr ""
+
+#: wppa_albumadmin.php:217
+msgid "Specify the way the photos should be ordered in this album."
+msgstr ""
+
+#: wppa_albumadmin.php:218
+msgid "The default setting can be changed in the Options page."
+msgstr ""
+
+#: wppa_albumadmin.php:225
+msgid "Cover Photo:"
+msgstr ""
+
+#: wppa_albumadmin.php:229
+msgid "Select the photo you want to appear on the cover of this album."
+msgstr ""
+
+#: wppa_albumadmin.php:235
+msgid "Link to:"
+msgstr ""
+
+#: wppa_albumadmin.php:241
+#: wppa_settings.php:1758
+msgid "There are no pages (yet) to link to."
+msgstr ""
+
+#: wppa_albumadmin.php:247
+msgid "--- the album's content ---"
+msgstr ""
+
+#: wppa_albumadmin.php:251
+msgid "--- no link at all ---"
+msgstr ""
+
+#: wppa_albumadmin.php:254
+msgid "If you want, you can link the title to a WP page in stead of the album's content. If so, select the page the title links to."
+msgstr ""
+
+#: wppa_albumadmin.php:263
+msgid "Reset ratings:"
+msgstr ""
+
+#: wppa_albumadmin.php:267
+msgid "WARNING: If checked, this will clear all ratings in this album!"
+msgstr ""
+
+#: wppa_albumadmin.php:274
+#: wppa_albumadmin.php:278
+#: wppa_albumadmin.php:697
+msgid "Save All Changes"
+msgstr ""
+
+#: wppa_albumadmin.php:276
+msgid "Manage Photos"
+msgstr ""
+
+#: wppa_albumadmin.php:295
+msgid "Delete Album"
+msgstr ""
+
+#: wppa_albumadmin.php:297
+#: wppa_albumadmin.php:563
+msgid "Album:"
+msgstr ""
+
+#: wppa_albumadmin.php:298
+msgid "Are you sure you want to delete this album?"
+msgstr ""
+
+#: wppa_albumadmin.php:299
+msgid "Press Delete to continue, and Cancel to go back."
+msgstr ""
+
+#: wppa_albumadmin.php:304
+msgid "What would you like to do with photos currently in the album?"
+msgstr ""
+
+#: wppa_albumadmin.php:305
+#: wppa_albumadmin.php:312
+#: wppa_albumadmin.php:492
+#: wppa_albumadmin.php:511
+#: wppa_commentadmin.php:184
+#: wppa_commentadmin.php:211
+#: wppa_commentadmin.php:227
+msgid "Delete"
+msgstr ""
+
+#: wppa_albumadmin.php:306
+msgid "Move to:"
+msgstr ""
+
+#: wppa_albumadmin.php:311
+msgid "Cancel"
+msgstr ""
+
+#: wppa_albumadmin.php:344
+msgid "Manage Albums"
+msgstr ""
+
+#: wppa_albumadmin.php:352
+msgid "Create New Album"
+msgstr ""
+
+#: wppa_albumadmin.php:364
+#: wppa_albumadmin.php:383
+msgid "Type the name of the new album. Do not leave this empty."
+msgstr ""
+
+#: wppa_albumadmin.php:400
+#: wppa_albumadmin.php:419
+msgid "Enter the description for this album."
+msgstr ""
+
+#: wppa_albumadmin.php:431
+msgid "Order #:"
+msgstr ""
+
+#: wppa_albumadmin.php:435
+msgid "If you want to sort the albums by order #, enter the order number here."
+msgstr ""
+
+#: wppa_albumadmin.php:449
+msgid "Order photos by:"
+msgstr ""
+
+#: wppa_albumadmin.php:453
+msgid "If you want to sort the photos in this album different from the system setting, select the order method here."
+msgstr ""
+
+#: wppa_albumadmin.php:458
+msgid "Create Album!"
+msgstr ""
+
+#: wppa_albumadmin.php:461
+msgid "You can change all these settings later by clicking the \"Edit\" link in the table above."
+msgstr ""
+
+#: wppa_albumadmin.php:484
+#: wppa_settings.php:334
+#: wppa_settings.php:518
+#: wppa_settings.php:534
+#: wppa_settings.php:690
+#: wppa_settings.php:706
+#: wppa_settings.php:774
+#: wppa_settings.php:791
+#: wppa_settings.php:1015
+#: wppa_settings.php:1032
+#: wppa_settings.php:1112
+#: wppa_settings.php:1130
+#: wppa_settings.php:1258
+#: wppa_settings.php:1275
+#: wppa_settings.php:1346
+#: wppa_settings.php:1362
+#: wppa_settings.php:1430
+#: wppa_settings.php:1446
+#: wppa_settings.php:1507
+msgid "Description"
+msgstr ""
+
+#: wppa_albumadmin.php:485
+msgid "ID"
+msgstr ""
+
+#: wppa_albumadmin.php:487
+msgid "Owner"
+msgstr ""
+
+#: wppa_albumadmin.php:489
+msgid "Order"
+msgstr ""
+
+#: wppa_albumadmin.php:490
+msgid "Parent"
+msgstr ""
+
+#: wppa_albumadmin.php:491
+#: wppa_albumadmin.php:509
+#: wppa_commentadmin.php:183
+#: wppa_commentadmin.php:210
+#: wppa_commentadmin.php:226
+msgid "Edit"
+msgstr ""
+
+#: wppa_albumadmin.php:521
+msgid "No albums yet."
+msgstr ""
+
+#: wppa_albumadmin.php:534
+msgid "No photos yet in this album."
+msgstr ""
+
+#: wppa_albumadmin.php:547
+msgid "Preview:"
+msgstr ""
+
+#: wppa_albumadmin.php:549
+#: wppa_albumadmin.php:551
+msgid "Are you sure you want to rotate this photo?"
+msgstr ""
+
+#: wppa_albumadmin.php:549
+msgid "Rotate left"
+msgstr ""
+
+#: wppa_albumadmin.php:551
+msgid "Rotate right"
+msgstr ""
+
+#: wppa_albumadmin.php:552
+msgid "If it says 'Photo rotated', the photo is rotated. If you do not see it happen here, clear your browser cache."
+msgstr ""
+
+#: wppa_albumadmin.php:572
+msgid "Photo order #:"
+msgstr ""
+
+#: wppa_albumadmin.php:582
+msgid "Are you sure you want to copy this photo?"
+msgstr ""
+
+#: wppa_albumadmin.php:582
+msgid "Please select an album to copy the photo to first."
+msgstr ""
+
+#: wppa_albumadmin.php:582
+msgid "Copy photo to"
+msgstr ""
+
+#: wppa_albumadmin.php:585
+msgid "Are you sure you want to delete this photo?"
+msgstr ""
+
+#: wppa_albumadmin.php:585
+msgid "Delete photo"
+msgstr ""
+
+#: wppa_albumadmin.php:587
+msgid ""
+"Insert code for single image in Page or Post:\\n"
+"You may change the size if you like."
+msgstr ""
+
+#: wppa_albumadmin.php:587
+msgid "Insertion Code"
+msgstr ""
+
+#: wppa_albumadmin.php:592
+msgid "Rating:"
+msgstr ""
+
+#: wppa_albumadmin.php:592
+msgid "Entries:"
+msgstr ""
+
+#: wppa_albumadmin.php:592
+msgid "Mean value:"
+msgstr ""
+
+#: wppa_albumadmin.php:599
+msgid "Link url:"
+msgstr ""
+
+#: wppa_albumadmin.php:608
+msgid "Link title:"
+msgstr ""
+
+#: wppa_albumadmin.php:619
+msgid "If you want this link to be used, select 'the photo specific link' in table VI of the Photo Albums -> Settings admin page."
+msgstr ""
+
+#: wppa_albumadmin.php:634
+#: wppa_albumadmin.php:652
+msgid "Type/alter the name of the photo. It is NOT a filename and needs no file extension like .jpg."
+msgstr ""
+
+#: wppa_albumadmin.php:734
+msgid "Could not create album."
+msgstr ""
+
+#: wppa_albumadmin.php:738
+msgid "Album #"
+msgstr ""
+
+#: wppa_albumadmin.php:738
+msgid "Added."
+msgstr ""
+
+#: wppa_albumadmin.php:741
+#: wppa_albumadmin.php:841
+msgid "Album Name cannot be empty."
+msgstr ""
+
+#: wppa_albumadmin.php:820
+msgid "Could not update photo."
+msgstr ""
+
+#: wppa_albumadmin.php:833
+msgid "Album could not be updated."
+msgstr ""
+
+#: wppa_albumadmin.php:836
+msgid "Album information edited."
+msgstr ""
+
+#: wppa_albumadmin.php:836
+msgid "Back to album management."
+msgstr ""
+
+#: wppa_albumadmin.php:878
+msgid "Album Deleted."
+msgstr ""
+
+#: wppa_albumadmin.php:891
+msgid "--- random ---"
+msgstr ""
+
+#: wppa_albumadmin.php:905
+msgid "No photos yet"
+msgstr ""
+
+#: wppa_commentadmin.php:28
+msgid "WP Photo Album Plus Edit Comment"
+msgstr ""
+
+#: wppa_commentadmin.php:47
+msgid "Photo:"
+msgstr ""
+
+#: wppa_commentadmin.php:51
+msgid "User:"
+msgstr ""
+
+#: wppa_commentadmin.php:55
+msgid "Email:"
+msgstr ""
+
+#: wppa_commentadmin.php:59
+msgid "Comment:"
+msgstr ""
+
+#: wppa_commentadmin.php:65
+#: wppa_commentadmin.php:276
+#: wppa_settings.php:1807
+msgid "Save Changes"
+msgstr ""
+
+#: wppa_commentadmin.php:100
+#: wppa_settings.php:271
+msgid "Changes Saved"
+msgstr ""
+
+#: wppa_commentadmin.php:108
+msgid "WP Photo Album Plus Comment admin"
+msgstr ""
+
+#: wppa_commentadmin.php:110
+msgid "<h3>The Comment system is not activated</h3><p>To activate: check Table II item 18 on the <b>Photo Albums -> Settings</b> screen and press <b>Save Changes</b>"
+msgstr ""
+
+#: wppa_commentadmin.php:115
+msgid "Total:"
+msgstr ""
+
+#: wppa_commentadmin.php:119
+msgid "Approved:"
+msgstr ""
+
+#: wppa_commentadmin.php:123
+msgid "Pending:"
+msgstr ""
+
+#: wppa_commentadmin.php:127
+msgid "Spam:"
+msgstr ""
+
+#: wppa_commentadmin.php:138
+msgid "Display status:"
+msgstr ""
+
+#: wppa_commentadmin.php:140
+msgid "all"
+msgstr ""
+
+#: wppa_commentadmin.php:141
+msgid "pending"
+msgstr ""
+
+#: wppa_commentadmin.php:142
+msgid "approved"
+msgstr ""
+
+#: wppa_commentadmin.php:143
+msgid "spam"
+msgstr ""
+
+#: wppa_commentadmin.php:146
+msgid "Display order:"
+msgstr ""
+
+#: wppa_commentadmin.php:148
+msgid "timestamp"
+msgstr ""
+
+#: wppa_commentadmin.php:149
+msgid "photo"
+msgstr ""
+
+#: wppa_commentadmin.php:176
+#: wppa_commentadmin.php:219
+msgid "Photo"
+msgstr ""
+
+#: wppa_commentadmin.php:177
+#: wppa_commentadmin.php:220
+#: wppa_settings.php:332
+#: wppa_settings.php:516
+#: wppa_settings.php:532
+#: wppa_settings.php:688
+#: wppa_settings.php:704
+#: wppa_settings.php:772
+#: wppa_settings.php:789
+#: wppa_settings.php:1013
+#: wppa_settings.php:1030
+#: wppa_settings.php:1110
+#: wppa_settings.php:1128
+#: wppa_settings.php:1256
+#: wppa_settings.php:1273
+#: wppa_settings.php:1344
+#: wppa_settings.php:1360
+#: wppa_settings.php:1428
+#: wppa_settings.php:1444
+#: wppa_settings.php:1505
+msgid "#"
+msgstr ""
+
+#: wppa_commentadmin.php:178
+#: wppa_commentadmin.php:221
+msgid "User"
+msgstr ""
+
+#: wppa_commentadmin.php:179
+#: wppa_commentadmin.php:222
+msgid "Email"
+msgstr ""
+
+#: wppa_commentadmin.php:180
+#: wppa_commentadmin.php:223
+msgid "Time since"
+msgstr ""
+
+#: wppa_commentadmin.php:181
+#: wppa_commentadmin.php:224
+msgid "Comment"
+msgstr ""
+
+#: wppa_commentadmin.php:182
+#: wppa_commentadmin.php:225
+msgid "Status"
+msgstr ""
+
+#: wppa_commentadmin.php:202
+msgid "Pending"
+msgstr ""
+
+#: wppa_commentadmin.php:203
+msgid "Approved"
+msgstr ""
+
+#: wppa_commentadmin.php:204
+msgid "Spam"
+msgstr ""
+
+#: wppa_commentadmin.php:211
+msgid "Are you sure you want to delete this comment?"
+msgstr ""
+
+#: wppa_commentadmin.php:262
+#: wppa_commentadmin.php:268
+msgid "Unable to update comment. Err ="
+msgstr ""
+
+#: wppa_commentadmin.php:287
+msgid "Prev page"
+msgstr ""
+
+#: wppa_commentadmin.php:300
+msgid "Next page"
+msgstr ""
+
+#: wppa_commonfunctions.php:466
+msgid "1 second"
+msgstr ""
+
+#: wppa_commonfunctions.php:467
+msgid "seconds"
+msgstr ""
+
+#: wppa_commonfunctions.php:471
+msgid "1 minute"
+msgstr ""
+
+#: wppa_commonfunctions.php:472
+msgid "minutes"
+msgstr ""
+
+#: wppa_commonfunctions.php:476
+msgid "1 hour"
+msgstr ""
+
+#: wppa_commonfunctions.php:477
+msgid "hours"
+msgstr ""
+
+#: wppa_commonfunctions.php:481
+msgid "1 day"
+msgstr ""
+
+#: wppa_commonfunctions.php:482
+msgid "days"
+msgstr ""
+
+#: wppa_commonfunctions.php:486
+msgid "1 week"
+msgstr ""
+
+#: wppa_commonfunctions.php:487
+msgid "weeks"
+msgstr ""
+
+#: wppa_commonfunctions.php:491
+msgid "1 month"
+msgstr ""
+
+#: wppa_commonfunctions.php:492
+msgid "months"
+msgstr ""
+
+#: wppa_commonfunctions.php:495
+msgid "1 year"
+msgstr ""
+
+#: wppa_commonfunctions.php:496
+msgid "years"
+msgstr ""
+
+#: wppa_export.php:45
+#, php-format
+msgid "Photos will be exported to: <b>%s</b>."
+msgstr ""
+
+#: wppa_export.php:46
+msgid "Export photos from album <span style=\"font-size:12px;\">(Including Album information)</span>:"
+msgstr ""
+
+#: wppa_export.php:75
+msgid "Export"
+msgstr ""
+
+#: wppa_export.php:90
+msgid "Exporting...<br/>"
+msgstr ""
+
+#: wppa_export.php:99
+msgid "ok, <br/>Filling"
+msgstr ""
+
+#: wppa_export.php:101
+msgid "failed<br/>"
+msgstr ""
+
+#: wppa_export.php:117
+msgid "<br/>Processing album"
+msgstr ""
+
+#: wppa_export.php:137
+msgid "done."
+msgstr ""
+
+#: wppa_export.php:137
+msgid "photos processed."
+msgstr ""
+
+#: wppa_export.php:141
+msgid "<br/>Done export albums."
+msgstr ""
+
+#: wppa_export.php:144
+msgid "Nothing to export"
+msgstr ""
+
+#: wppa_export.php:148
+msgid "<br/>Closing zip."
+msgstr ""
+
+#: wppa_export.php:149
+msgid "<br/>Deleting temp files."
+msgstr ""
+
+#: wppa_export.php:158
+msgid "<br/>Done!"
+msgstr ""
+
+#: wppa_export.php:191
+#: wppa_export.php:244
+#, php-format
+msgid "Cannot write to file %s."
+msgstr ""
+
+#: wppa_export.php:205
+msgid "Could not open album output file."
+msgstr ""
+
+#: wppa_export.php:210
+msgid "Could not read album data."
+msgstr ""
+
+#: wppa_export.php:258
+msgid "Could not open photo output file."
+msgstr ""
+
+#: wppa_export.php:263
+msgid "Could not read photo data."
+msgstr ""
+
+#: wppa_functions.php:991
+msgid "Comment edited"
+msgstr ""
+
+#: wppa_functions.php:994
+msgid "Comment added"
+msgstr ""
+
+#: wppa_functions.php:1000
+msgid "Could not process comment"
+msgstr ""
+
+#: wppa_functions.php:1656
+msgid "<b>ERROR: Illegal attempt to enter a rating.</b>"
+msgstr ""
+
+#: wppa_functions.php:1666
+msgid "<b>ERROR: Illegal attempt to enter a comment.</b>"
+msgstr ""
+
+#: wppa_gp_widget.php:16
+msgid "WPPA+ General purpose widget"
+msgstr ""
+
+#: wppa_gp_widget.php:18
+msgid "WPPA+ Text"
+msgstr ""
+
+#: wppa_gp_widget.php:63
+#: wppa_searchwidget.php:64
+msgid "Title:"
+msgstr ""
+
+#: wppa_gp_widget.php:65
+#, php-format
+msgid "Enter the content just like a normal text widget. This widget will interprete %%wppa%% script commands."
+msgstr ""
+
+#: wppa_gp_widget.php:66
+#, php-format
+msgid "Don't forget %%%%size=%s%%%%"
+msgstr ""
+
+#: wppa_gp_widget.php:70
+msgid "Automatically add paragraphs"
+msgstr ""
+
+#: wppa_help.php:23
+msgid "Help and Information"
+msgstr ""
+
+#: wppa_help.php:25
+msgid "Plugin Description"
+msgstr ""
+
+#: wppa_help.php:26
+msgid "This plugin is designed to easily manage and display your photo albums within your WordPress site."
+msgstr ""
+
+#: wppa_help.php:27
+msgid "Features:"
+msgstr ""
+
+#: wppa_help.php:29
+msgid "You can create various albums that contain photos as well as sub albums at the same time."
+msgstr ""
+
+#: wppa_help.php:30
+msgid "There is no limitation to the number of albums and photos."
+msgstr ""
+
+#: wppa_help.php:31
+msgid "There is no limitation to the nesting depth of sub-albums."
+msgstr ""
+
+#: wppa_help.php:32
+msgid "You have full control over the display sizes of the photos."
+msgstr ""
+
+#: wppa_help.php:33
+msgid "You can specify the way the albums are ordered."
+msgstr ""
+
+#: wppa_help.php:34
+msgid "You can specify the way the photos are ordered within the albums, both on a system-wide as well as an per album basis."
+msgstr ""
+
+#: wppa_help.php:35
+msgid "The visitor of your site can run a slideshow from the photos in an album by a single mouseclick."
+msgstr ""
+
+#: wppa_help.php:36
+msgid "The visitor can see an overview of thumbnail images of the photos in album."
+msgstr ""
+
+#: wppa_help.php:37
+msgid "The visitor can browse through the photos in each album you decide to publish."
+msgstr ""
+
+#: wppa_help.php:38
+msgid "You can add a Sidebar Widget that displays a photo which can be changed every hour, day or week."
+msgstr ""
+
+#: wppa_help.php:39
+msgid "You can add a Sidebar Search Widget that enables the visitor to search for albums and photos with certan words in the name or description."
+msgstr ""
+
+#: wppa_help.php:42
+msgid "Plugin Admin Features"
+msgstr ""
+
+#: wppa_help.php:43
+msgid "You can find the plugin admin section under Menu Photo Albums on the admin screen."
+msgstr ""
+
+#: wppa_help.php:44
+msgid "The following submenus exist."
+msgstr ""
+
+#: wppa_help.php:46
+msgid "Photo Albums: Create and manage Albums."
+msgstr ""
+
+#: wppa_help.php:47
+msgid "Upload photos: To upload photos to an album you created."
+msgstr ""
+
+#: wppa_help.php:48
+msgid "Import photos: To bulk import photos that have been uploaded by an ftp program."
+msgstr ""
+
+#: wppa_help.php:49
+msgid "Settings: To control the various settings to customize your needs."
+msgstr ""
+
+#: wppa_help.php:50
+msgid "Sidebar Widget: To specify the behaviour for an optional sidebar widget."
+msgstr ""
+
+#: wppa_help.php:51
+msgid "Help & Info: The screen you are watching now."
+msgstr ""
+
+#: wppa_help.php:54
+msgid "Installation"
+msgstr ""
+
+#: wppa_help.php:56
+msgid "You can install the plugin via the standard WP plugins admin page."
+msgstr ""
+
+#: wppa_help.php:57
+msgid "If you want to do it manually, follow the next steps:"
+msgstr ""
+
+#: wppa_help.php:60
+msgid "Unzip and upload the wppa plugin folder to"
+msgstr ""
+
+#: wppa_help.php:61
+msgid "Make sure that the folder"
+msgstr ""
+
+#: wppa_help.php:61
+msgid "exists and is writable by the server (CHMOD 755)"
+msgstr ""
+
+#: wppa_help.php:62
+msgid "Activate the plugin in WP Admin -> Plugins."
+msgstr ""
+
+#: wppa_help.php:65
+msgid "Upgrading WP Photo Album Plus"
+msgstr ""
+
+#: wppa_help.php:66
+msgid "When upgrading WP Photo Album Plus be aware of:"
+msgstr ""
+
+#: wppa_help.php:68
+msgid "The revision number consists of 3 parts, Major, minor and fix revision. The current version is:"
+msgstr ""
+
+#: wppa_help.php:69
+msgid "When an update implies a major or minor version change and you have copied wppa_theme.php or wppa_style.css to your themes directory, you will have to remove them and make new copies and/or alterations if that should still be needed."
+msgstr ""
+
+#: wppa_help.php:70
+msgid "You will get a one-time reminder after upgrading, the first time you open a wppa admin page."
+msgstr ""
+
+#: wppa_help.php:73
+msgid "How to start"
+msgstr ""
+
+#: wppa_help.php:75
+msgid "Install WP Photo ALbum Plus as described above under \"Installation\"."
+msgstr ""
+
+#: wppa_help.php:76
+msgid "Create at least two albums in the \"Photo Albums\" tab. Just enter the name and a brief description and press \"Create Album\". Leave \"Parent\" at \"--- none ---\"."
+msgstr ""
+
+#: wppa_help.php:77
+msgid "In the uploads tab, you can now upload you photots. Upload at least 2 photos to each album. Make sure the photos you are uploading are of reasonable size (say up to 1024x768 pixels). Do not upload the full 7MP images!"
+msgstr ""
+
+#: wppa_help.php:78
+msgid "Create a new WP Page, name it something like \"Photo Gallery\" and put in the content:"
+msgstr ""
+
+#: wppa_help.php:79
+msgid "Publish the page, and view the page from your WP site."
+msgstr ""
+
+#: wppa_help.php:80
+msgid "Now, go playing with the settings in the \"Settings\" panel, discover all the configurable options and watch what is happening when you re-open the \"Photo Gallery\" page."
+msgstr ""
+
+#: wppa_help.php:81
+msgid "If you want a \"Photo of the week\" sidebar widget you can use an album for that purpose. See all the options in the \"Sidebar Widget\" submenu."
+msgstr ""
+
+#: wppa_help.php:84
+msgid "Creating a Photo Album Page or a Post with photos - Advanced"
+msgstr ""
+
+#: wppa_help.php:86
+msgid "Create a page like you normally would in WordPress, using the \"Default Template\". In my example, give it the page title of \"Photo Gallery\". In the Page Content section add the following code:"
+msgstr ""
+
+#: wppa_help.php:88
+msgid "This will result in a gallery of all Albums that have their parent set to \"--- none ---\"."
+msgstr ""
+
+#: wppa_help.php:89
+msgid "If you want to display a single album - say album number 19 - in a WP page or WP post (they act exactly the same), add a second line like this:"
+msgstr ""
+
+#: wppa_help.php:91
+msgid "This will result in the display of the <b>contents</b> of album nr 19."
+msgstr ""
+
+#: wppa_help.php:92
+#, php-format
+msgid "If you want to display the <b>cover</b> of the album, i.e. like one of the albums in the \"Photo Gallery\" as used above, add (instead of \"%%album=...\") a second line like this:"
+msgstr ""
+
+#: wppa_help.php:94
+msgid "If you want to display the <b>slideshow</b> directly, use:"
+msgstr ""
+
+#: wppa_help.php:96
+msgid "You can add a third line if you want the photos to be displayed at a different size than normal. You can \"overrule\" the \"Full size\" setting by adding the line (for e.g. 300px):"
+msgstr ""
+
+#: wppa_help.php:98
+#, php-format
+msgid "Note: all information between the %% tags including newlines will be lost."
+msgstr ""
+
+#: wppa_help.php:99
+msgid "The sequence above may be used more than once in a single page or post."
+msgstr ""
+
+#: wppa_help.php:100
+msgid "The text before the first sequence, the text between 2 sequences, as well as the text after the last sequence will be preserved."
+msgstr ""
+
+#: wppa_help.php:102
+msgid "You can also create a custom page template by dropping the following code into a page template:"
+msgstr ""
+
+#: wppa_help.php:104
+msgid "If you want to display the <b>contents</b> of a single album in the template - say album number 19 - the code would be:"
+msgstr ""
+
+#: wppa_help.php:106
+msgid "If you want the <b>cover</b> to be displayed instead, use the following code:"
+msgstr ""
+
+#: wppa_help.php:108
+msgid "And to display the <b>slideshow</b> it would be:"
+msgstr ""
+
+#: wppa_help.php:110
+msgid "If you want to specify a size, add another argument:"
+msgstr ""
+
+#: wppa_help.php:112
+msgid "For more information on usable php routines see the <a href=\"http://wppa.opajaap.nl/\">Docs & Demos</a> website."
+msgstr ""
+
+#: wppa_help.php:113
+msgid "In order to work properly, the wppa_albums() tag needs to be within the <a href=\"http://codex.wordpress.org/The_Loop\" target=\"_blank\">WordPress loop</a>."
+msgstr ""
+
+#: wppa_help.php:114
+msgid "For more information on creating custom page templates, click"
+msgstr ""
+
+#: wppa_help.php:114
+#: wppa_settings.php:286
+msgid "here"
+msgstr ""
+
+#: wppa_help.php:117
+msgid "Adjusting CSS and Template Styling"
+msgstr ""
+
+#: wppa_help.php:119
+msgid "WP Photo Album Plus comes with a default layout and theme."
+msgstr ""
+
+#: wppa_help.php:120
+msgid "To change the style and layout of the photo album, copy <tt>.../wp-content/plugins/wp-photo-album-plus/theme/wppa_theme.php</tt> and <tt>.../wp-content/plugins/wp-photo-album-plus/theme/wppa_style.css</tt> to your active theme's folder, and edit them."
+msgstr ""
+
+#: wppa_help.php:123
+msgid "Facts to remember"
+msgstr ""
+
+#: wppa_help.php:125
+msgid "If the number of photos in an album is less than or equal to the treshold value, they will not display in the album. They will be used for the cover only."
+msgstr ""
+
+#: wppa_help.php:126
+msgid "An album that has it's parent set to \"--- separate ---\" will not be displayed in the \"generic\" gallery. This enables you to have albums for use solely for single posts or pages."
+msgstr ""
+
+#: wppa_help.php:127
+#, php-format
+msgid "Specifying <tt>%%album=...</tt> causes the <b>content</b> of the album to be displayed."
+msgstr ""
+
+#: wppa_help.php:128
+#, php-format
+msgid "Specifying <tt>%%cover=...</tt> causes the <b>cover</b> of the album to be displayed."
+msgstr ""
+
+#: wppa_help.php:129
+#, php-format
+msgid "Specifying <tt>%%slide=...</tt> causes the <b>slideshow</b> of the album to be displayed."
+msgstr ""
+
+#: wppa_help.php:130
+#, php-format
+msgid "Keep the sequence intact: 1. <tt>%%wppa%%</tt>, 2. <tt>%%album=</tt> or <tt>%%cover=</tt> or <tt>%%slide=</tt>, 3. <tt>%%size=</tt>. (2. being optional even when using 3.)."
+msgstr ""
+
+#: wppa_help.php:131
+msgid "Use the default page template, or create one yourself."
+msgstr ""
+
+#: wppa_help.php:132
+msgid "You can remove the plugin and re-install the latest version always. This will not affect your photos or albums."
+msgstr ""
+
+#: wppa_help.php:133
+#, php-format
+msgid "You may combine %% items on one line like: <tt>%%wppa%% %%cover=13%% %%size=250%%</tt>"
+msgstr ""
+
+#: wppa_help.php:136
+msgid "Plugin Support And Feature Request"
+msgstr ""
+
+#: wppa_help.php:138
+msgid "If you've read over this readme carefully and are still having issues, if you've discovered a bug,"
+msgstr ""
+
+#: wppa_help.php:139
+msgid "or have a feature request, please contact me via my <a href=\"mailto:opajaap@opajaap.nl?subject=WP%20Photo%20Album%20Plus\">E-mail</a>."
+msgstr ""
+
+#: wppa_help.php:141
+msgid "You may also check the <a href=\"http://wordpress.org/tags/wp-photo-album-plus\">forum</a> for this plugin and/or leave a question there."
+msgstr ""
+
+#: wppa_help.php:143
+msgid "For hot fixes check the <a href=\"http://plugins.trac.wordpress.org/log/wp-photo-album-plus/\">development log</a> for this plugin."
+msgstr ""
+
+#: wppa_help.php:145
+msgid "You may also visit the <a href=\"http://wppa.opajaap.nl/\" target=\"_blank\">WPPA+ Docs & Demos site</a> that also contains the <a href=\"http://wppa.opajaap.nl/?page_id=39\" target=\"_blank\">WPPA+ Tutorial</a>."
+msgstr ""
+
+#: wppa_help.php:148
+msgid "If you love this plugin, I would appreciate a donation, either in <a href=\"https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US\">USD</a> or in <a href=\"https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=EUR&lc=US\">EURO</a>."
+msgstr ""
+
+#: wppa_help.php:151
+msgid "About and credits"
+msgstr ""
+
+#: wppa_help.php:153
+msgid "WP Photo Album Plus is extended with many new features and is maintained by J.N. Breetvelt, a.k.a. (<a href=\"http://www.opajaap.nl/\">OpaJaap</a>)"
+msgstr ""
+
+#: wppa_help.php:154
+msgid "Thanx to R.J. Kaplan for WP Photo Album 1.5.1."
+msgstr ""
+
+#: wppa_help.php:155
+msgid "Thanx to E.S. Rosenberg for programming tips on security issues."
+msgstr ""
+
+#: wppa_help.php:156
+msgid "Thanx to the users who reported bugs and asked for enhancements. Without them WPPA should not have been what it is now!"
+msgstr ""
+
+#: wppa_help.php:159
+msgid "Licence"
+msgstr ""
+
+#: wppa_help.php:161
+msgid "WP Photo Album is released under the"
+msgstr ""
+
+#: wppa_help.php:161
+msgid "licence."
+msgstr ""
+
+#: wppa_searchwidget.php:15
+msgid "WPPA+ Search Photos"
+msgstr ""
+
+#: wppa_searchwidget.php:16
+msgid "Search Photos"
+msgstr ""
+
+#: wppa_searchwidget.php:26
+msgid "Search photos"
+msgstr ""
+
+#: wppa_searchwidget.php:33
+msgid "Warning. No page defined for search results!"
+msgstr ""
+
+#: wppa_searchwidget.php:41
+msgid "Search"
+msgstr ""
+
+#: wppa_settings.php:37
+msgid "Ratings cleared"
+msgstr ""
+
+#: wppa_settings.php:39
+msgid "Could not clear ratings"
+msgstr ""
+
+#: wppa_settings.php:51
+msgid "Error converting to UTF_8"
+msgstr ""
+
+#: wppa_settings.php:54
+msgid "Converted to utf8"
+msgstr ""
+
+#: wppa_settings.php:77
+msgid "Requested action failed, possible setting updates ignored"
+msgstr ""
+
+#: wppa_settings.php:80
+msgid "Requested action performed, possible setting updates ignored"
+msgstr ""
+
+#: wppa_settings.php:90
+msgid "Column width."
+msgstr ""
+
+#: wppa_settings.php:92
+msgid "Full size."
+msgstr ""
+
+#: wppa_settings.php:93
+msgid "Max height."
+msgstr ""
+
+#: wppa_settings.php:96
+msgid "Thumbnail size."
+msgstr ""
+
+#: wppa_settings.php:97
+msgid "Thumbnail frame width"
+msgstr ""
+
+#: wppa_settings.php:98
+msgid "Thumbnail frame height"
+msgstr ""
+
+#: wppa_settings.php:99
+msgid "Thumbnail Spacing"
+msgstr ""
+
+#: wppa_settings.php:101
+msgid "Photocount treshold."
+msgstr ""
+
+#: wppa_settings.php:102
+msgid "Thumb page size."
+msgstr ""
+
+#: wppa_settings.php:103
+msgid "Cover photo size."
+msgstr ""
+
+#: wppa_settings.php:104
+msgid "Album page size."
+msgstr ""
+
+#: wppa_settings.php:105
+msgid "Number of TopTen photos"
+msgstr ""
+
+#: wppa_settings.php:106
+msgid "Widget image thumbnail size"
+msgstr ""
+
+#: wppa_settings.php:107
+msgid "Two column width treshold"
+msgstr ""
+
+#: wppa_settings.php:108
+msgid "Three column width treshold"
+msgstr ""
+
+#: wppa_settings.php:113
+msgid "Border width"
+msgstr ""
+
+#: wppa_settings.php:118
+#: wppa_settings.php:503
+msgid "Border radius"
+msgstr ""
+
+#: wppa_settings.php:166
+#: wppa_settings.php:170
+msgid "Opacity."
+msgstr ""
+
+#: wppa_settings.php:258
+msgid "Changes in accesslevels will not be made. It is set to be done by an other program."
+msgstr ""
+
+#: wppa_settings.php:270
+msgid "Other changes saved"
+msgstr ""
+
+#: wppa_settings.php:284
+#, php-format
+msgid "Regenerating thumbnail images, starting at id=%s. Please wait...<br/>"
+msgstr ""
+
+#: wppa_settings.php:285
+msgid "If the line of dots stops growing or your browser reports Ready but you did NOT get a 'READY regenerating thumbnail images' message, your server has given up. In that case: continue this action by clicking"
+msgstr ""
+
+#: wppa_settings.php:287
+msgid "and click \"Save Changes\" again."
+msgstr ""
+
+#: wppa_settings.php:290
+#, php-format
+msgid "<br/><br/>Your server reports that the elapsed time for this operation is limited to %s seconds."
+msgstr ""
+
+#: wppa_settings.php:291
+msgid "<br/>There may also be other restrictions set by the server, like cpu time limit."
+msgstr ""
+
+#: wppa_settings.php:297
+msgid "READY regenerating thumbnail images."
+msgstr ""
+
+#: wppa_settings.php:301
+msgid "Regeneration of thumbnail images interrupted. Please press \"Save Changes\""
+msgstr ""
+
+#: wppa_settings.php:311
+msgid "WP Photo Album Plus Settings"
+msgstr ""
+
+#: wppa_settings.php:312
+msgid "Database revision:"
+msgstr ""
+
+#: wppa_settings.php:312
+msgid "WP Charset:"
+msgstr ""
+
+#: wppa_settings.php:326
+msgid "Table I:"
+msgstr ""
+
+#: wppa_settings.php:326
+msgid "Sizes:"
+msgstr ""
+
+#: wppa_settings.php:327
+msgid "This table describes all the sizes and size options (except fontsizes) for the generation and display of the WPPA+ elements."
+msgstr ""
+
+#: wppa_settings.php:335
+#: wppa_settings.php:519
+#: wppa_settings.php:535
+#: wppa_settings.php:691
+#: wppa_settings.php:792
+#: wppa_settings.php:1016
+#: wppa_settings.php:1276
+#: wppa_settings.php:1347
+#: wppa_settings.php:1447
+#: wppa_settings.php:1508
+msgid "Setting"
+msgstr ""
+
+#: wppa_settings.php:336
+#: wppa_settings.php:520
+#: wppa_settings.php:536
+#: wppa_settings.php:692
+#: wppa_settings.php:709
+#: wppa_settings.php:777
+#: wppa_settings.php:793
+#: wppa_settings.php:1017
+#: wppa_settings.php:1036
+#: wppa_settings.php:1116
+#: wppa_settings.php:1133
+#: wppa_settings.php:1261
+#: wppa_settings.php:1277
+#: wppa_settings.php:1348
+#: wppa_settings.php:1364
+#: wppa_settings.php:1432
+#: wppa_settings.php:1448
+#: wppa_settings.php:1509
+msgid "Help"
+msgstr ""
+
+#: wppa_settings.php:341
+msgid "Column Width"
+msgstr ""
+
+#: wppa_settings.php:342
+msgid "The width of the main column in your theme's display area."
+msgstr ""
+
+#: wppa_settings.php:343
+msgid "Enter the width of the main column in your theme's display area."
+msgstr ""
+
+#: wppa_settings.php:344
+msgid "You should set this value correctly to make sure the fullsize images are properly aligned horizontally."
+msgstr ""
+
+#: wppa_settings.php:345
+msgid "You may enter auto for use in themes that have a floating content column."
+msgstr ""
+
+#: wppa_settings.php:346
+msgid "The use of 'auto' is strongly discouraged. Do not use it unless it is strictly required."
+msgstr ""
+
+#: wppa_settings.php:349
+#: wppa_settings.php:358
+#: wppa_settings.php:400
+msgid "pixels wide"
+msgstr ""
+
+#: wppa_settings.php:352
+msgid "Fullsize Width"
+msgstr ""
+
+#: wppa_settings.php:353
+msgid "The maximum width fullsize photos will be displayed."
+msgstr ""
+
+#: wppa_settings.php:354
+#: wppa_settings.php:363
+msgid "Enter the largest size in pixels as how you want your photos to be displayed."
+msgstr ""
+
+#: wppa_settings.php:355
+msgid "This is usually the same as the Column Width, but it may differ."
+msgstr ""
+
+#: wppa_settings.php:361
+msgid "Fullsize Height"
+msgstr ""
+
+#: wppa_settings.php:362
+msgid "The maximum height fullsize photos will be displayed."
+msgstr ""
+
+#: wppa_settings.php:364
+msgid "This setting defines the height of the space reserved for full sized photos."
+msgstr ""
+
+#: wppa_settings.php:365
+#, php-format
+msgid "If you change the width of a display by the %%size= command, this value changes proportionally to match the aspect ratio as defined by this and the previous setting."
+msgstr ""
+
+#: wppa_settings.php:367
+#: wppa_settings.php:410
+msgid "pixels high"
+msgstr ""
+
+#: wppa_settings.php:370
+msgid "Resize on Upload"
+msgstr ""
+
+#: wppa_settings.php:371
+msgid "Indicate if the photos should be resized during upload."
+msgstr ""
+
+#: wppa_settings.php:372
+msgid "If you check this item, the size of the photos will be reduced to the Full Size during the upload/import process."
+msgstr ""
+
+#: wppa_settings.php:373
+msgid "The photos will never be enlarged if they are smaller than the Full Size."
+msgstr ""
+
+#: wppa_settings.php:378
+msgid "Stretch to fit"
+msgstr ""
+
+#: wppa_settings.php:379
+msgid "Stretch photos that are too small."
+msgstr ""
+
+#: wppa_settings.php:380
+msgid "Fullsize images will be stretched to the Full Size at display time if they are smaller. Leaving unchecked is recommended. It is better to upload photos that fit well the sizes you use!"
+msgstr ""
+
+#: wppa_settings.php:385
+msgid "Thumbnail Size"
+msgstr ""
+
+#: wppa_settings.php:386
+msgid "The size of the thumbnail images."
+msgstr ""
+
+#: wppa_settings.php:387
+#: wppa_settings.php:450
+msgid "This size applies to the width or height, whichever is the largest."
+msgstr ""
+
+#: wppa_settings.php:388
+msgid "Changing the thumbnail size may result in all thumbnails being regenerated. this may take a while."
+msgstr ""
+
+#: wppa_settings.php:390
+#: wppa_settings.php:420
+#: wppa_settings.php:453
+#: wppa_settings.php:476
+#: wppa_settings.php:484
+#: wppa_settings.php:492
+#: wppa_settings.php:500
+#: wppa_settings.php:509
+#: wppa_settings.php:1048
+#: wppa_settings.php:1059
+#: wppa_settings.php:1070
+#: wppa_settings.php:1081
+#: wppa_settings.php:1092
+#: wppa_settings.php:1103
+msgid "pixels"
+msgstr ""
+
+#: wppa_settings.php:394
+msgid "Thumbframe width"
+msgstr ""
+
+#: wppa_settings.php:395
+msgid "The width of the thumbnail frame."
+msgstr ""
+
+#: wppa_settings.php:396
+msgid "Set the width of the thumbnail frame."
+msgstr ""
+
+#: wppa_settings.php:397
+#: wppa_settings.php:407
+#: wppa_settings.php:417
+msgid "Set width, height and spacing for the thumbnail frames."
+msgstr ""
+
+#: wppa_settings.php:398
+#: wppa_settings.php:408
+#: wppa_settings.php:418
+msgid "These sizes should be large enough for a thumbnail image and - optionally - the text under it."
+msgstr ""
+
+#: wppa_settings.php:404
+msgid "Thumbframe height"
+msgstr ""
+
+#: wppa_settings.php:405
+msgid "The height of the thumbnail frame."
+msgstr ""
+
+#: wppa_settings.php:406
+msgid "Set the height of the thumbnail frame."
+msgstr ""
+
+#: wppa_settings.php:414
+msgid "Thumbnail spacing"
+msgstr ""
+
+#: wppa_settings.php:415
+msgid "The spacing between adjacent thumbnail frames."
+msgstr ""
+
+#: wppa_settings.php:416
+msgid "Set the minimal spacing between the adjacent thumbnail frames"
+msgstr ""
+
+#: wppa_settings.php:424
+msgid "Auto spacing"
+msgstr ""
+
+#: wppa_settings.php:425
+msgid "Space the thumbnail frames automatic."
+msgstr ""
+
+#: wppa_settings.php:426
+msgid "If you check this box, the thumbnail images will be evenly distributed over the available width."
+msgstr ""
+
+#: wppa_settings.php:427
+msgid "In this case, the thumbnail spacing value (setting I-9) will be regarded as a minimum value."
+msgstr ""
+
+#: wppa_settings.php:433
+msgid "Photocount threshold"
+msgstr ""
+
+#: wppa_settings.php:434
+msgid "Number of thumbnails in an album must exceed."
+msgstr ""
+
+#: wppa_settings.php:435
+msgid "Photos do not show up in the album unless there are more than this number of photos in the album. This allows you to have cover photos on an album that contains only sub albums without seeing them in the list of sub albums. Usually set to 0 (always show) or 1 (for one cover photo)."
+msgstr ""
+
+#: wppa_settings.php:437
+msgid "pieces"
+msgstr ""
+
+#: wppa_settings.php:440
+#: wppa_settings.php:456
+msgid "Page size"
+msgstr ""
+
+#: wppa_settings.php:441
+msgid "Max number of thumbnails per page."
+msgstr ""
+
+#: wppa_settings.php:442
+msgid "Enter the maximum number of thumbnail images per page. A value of 0 indicates no pagination."
+msgstr ""
+
+#: wppa_settings.php:444
+msgid "thumbnails"
+msgstr ""
+
+#: wppa_settings.php:448
+msgid "Coverphoto size"
+msgstr ""
+
+#: wppa_settings.php:449
+msgid "The size of the coverphoto."
+msgstr ""
+
+#: wppa_settings.php:451
+msgid "Changing the coverphoto size may result in all thumbnails being regenerated. this may take a while."
+msgstr ""
+
+#: wppa_settings.php:457
+msgid "Max number of covers per page."
+msgstr ""
+
+#: wppa_settings.php:458
+msgid "Enter the maximum number of album covers per page. A value of 0 indicates no pagination."
+msgstr ""
+
+#: wppa_settings.php:460
+msgid "covers"
+msgstr ""
+
+#: wppa_settings.php:463
+msgid "TopTen count"
+msgstr ""
+
+#: wppa_settings.php:464
+msgid "Number of photos in TopTen widget."
+msgstr ""
+
+#: wppa_settings.php:465
+msgid "Enter the maximum number of rated photos in the TopTen widget."
+msgstr ""
+
+#: wppa_settings.php:467
+msgid "photos"
+msgstr ""
+
+#: wppa_settings.php:470
+msgid "TopTen size"
+msgstr ""
+
+#: wppa_settings.php:471
+msgid "Size of thumbnails in TopTen widget."
+msgstr ""
+
+#: wppa_settings.php:472
+msgid "Enter the size for the mini photos in the TopTen widget."
+msgstr ""
+
+#: wppa_settings.php:473
+msgid "The size applies to the width or height, whatever is the largest."
+msgstr ""
+
+#: wppa_settings.php:474
+msgid "Recommended values: 86 for a two column and 56 for a three column display."
+msgstr ""
+
+#: wppa_settings.php:479
+msgid "2 Columns size"
+msgstr ""
+
+#: wppa_settings.php:480
+msgid "Minimum width for 2 columns."
+msgstr ""
+
+#: wppa_settings.php:481
+#: wppa_settings.php:489
+msgid "Display covers in 2 or 3 columns if the display area is wider or equal to the number of pixels entered."
+msgstr ""
+
+#: wppa_settings.php:482
+#: wppa_settings.php:490
+msgid "This also applies for 'thumbnails as covers', and will NOT apply to single items."
+msgstr ""
+
+#: wppa_settings.php:487
+msgid "3 Columns size"
+msgstr ""
+
+#: wppa_settings.php:488
+msgid "Minimum width for 3 columns."
+msgstr ""
+
+#: wppa_settings.php:495
+msgid "Border thickness"
+msgstr ""
+
+#: wppa_settings.php:496
+msgid "Thickness of wppa+ box borders."
+msgstr ""
+
+#: wppa_settings.php:497
+msgid "Enter the thickness for the border of the WPPA+ boxes. A number of 0 means: no border."
+msgstr ""
+
+#: wppa_settings.php:498
+#: wppa_settings.php:506
+msgid "WPPA+ boxes are: the navigation bars and the filmstrip."
+msgstr ""
+
+#: wppa_settings.php:504
+msgid "Radius of wppa+ box borders."
+msgstr ""
+
+#: wppa_settings.php:505
+msgid "Enter the corner radius for the border of the WPPA+ boxes. A number of 0 means: no rounded corners."
+msgstr ""
+
+#: wppa_settings.php:507
+msgid "Note that rounded corners are only supported by modern browsers."
+msgstr ""
+
+#: wppa_settings.php:526
+msgid "Table II:"
+msgstr ""
+
+#: wppa_settings.php:526
+msgid "Visibility:"
+msgstr ""
+
+#: wppa_settings.php:527
+msgid "This table describes the visibility of certain wppa+ elements."
+msgstr ""
+
+#: wppa_settings.php:541
+msgid "Breadcrumb"
+msgstr ""
+
+#: wppa_settings.php:542
+msgid "Show breadcrumb navigation bars."
+msgstr ""
+
+#: wppa_settings.php:543
+msgid "Indicate whether a breadcrumb navigation should be displayed"
+msgstr ""
+
+#: wppa_settings.php:549
+msgid "Home"
+msgstr ""
+
+#: wppa_settings.php:550
+msgid "Show \"Home\" in breadcrumb."
+msgstr ""
+
+#: wppa_settings.php:551
+msgid "Indicate whether the breadcrumb navigation should start with a \"Home\"-link"
+msgstr ""
+
+#: wppa_settings.php:557
+msgid "Separator"
+msgstr ""
+
+#: wppa_settings.php:558
+msgid "Breadcrumb separator symbol."
+msgstr ""
+
+#: wppa_settings.php:559
+msgid "Select the desired breadcrumb separator element."
+msgstr ""
+
+#: wppa_settings.php:560
+msgid "A text string may contain valid html."
+msgstr ""
+
+#: wppa_settings.php:561
+msgid "An image will be scaled automatically if you set the navigation font size."
+msgstr ""
+
+#: wppa_settings.php:563
+msgid "Text (html):"
+msgstr ""
+
+#: wppa_settings.php:563
+msgid "Image (url):"
+msgstr ""
+
+#: wppa_settings.php:570
+msgid "Html"
+msgstr ""
+
+#: wppa_settings.php:571
+msgid "Breadcrumb separator text."
+msgstr ""
+
+#: wppa_settings.php:572
+msgid "Enter the HTML code that produces the separator symbol you want."
+msgstr ""
+
+#: wppa_settings.php:573
+msgid "It may be as simple as '-' (without the quotes) or as complex as a tag like <div>..</div>."
+msgstr ""
+
+#: wppa_settings.php:578
+msgid "Image Url"
+msgstr ""
+
+#: wppa_settings.php:579
+msgid "Full url to separator image."
+msgstr ""
+
+#: wppa_settings.php:580
+msgid "Enter the full url to the image you want to use for the separator symbol."
+msgstr ""
+
+#: wppa_settings.php:585
+msgid "Start/stop"
+msgstr ""
+
+#: wppa_settings.php:586
+msgid "Show the Start/Stop slideshow bar."
+msgstr ""
+
+#: wppa_settings.php:587
+msgid "If checked: display the start/stop slideshow navigation bar above the full-size images and slideshow"
+msgstr ""
+
+#: wppa_settings.php:592
+msgid "Browse bar"
+msgstr ""
+
+#: wppa_settings.php:593
+msgid "Show Browse photos bar."
+msgstr ""
+
+#: wppa_settings.php:594
+msgid "If checked: display the preveous/next navigation bar under the full-size images and slideshow"
+msgstr ""
+
+#: wppa_settings.php:599
+msgid "Filmstrip"
+msgstr ""
+
+#: wppa_settings.php:600
+msgid "Show Filmstrip navigation bar."
+msgstr ""
+
+#: wppa_settings.php:601
+msgid "If checked: display the filmstrip navigation bar under the full_size images and slideshow"
+msgstr ""
+
+#: wppa_settings.php:606
+msgid "Film seam"
+msgstr ""
+
+#: wppa_settings.php:607
+msgid "Show seam between end and start of film."
+msgstr ""
+
+#: wppa_settings.php:608
+msgid "If checked: display the wrap-around point in the filmstrip"
+msgstr ""
+
+#: wppa_settings.php:613
+#: wppa_settings.php:1063
+msgid "Fullsize name"
+msgstr ""
+
+#: wppa_settings.php:614
+msgid "Display Fullsize name."
+msgstr ""
+
+#: wppa_settings.php:615
+msgid "If checked: display the name of the photo under the full-size images and slideshow."
+msgstr ""
+
+#: wppa_settings.php:620
+#: wppa_settings.php:1052
+msgid "Fullsize desc"
+msgstr ""
+
+#: wppa_settings.php:621
+msgid "Display Fullsize description."
+msgstr ""
+
+#: wppa_settings.php:622
+msgid "If checked: display description under the full-size images and slideshow."
+msgstr ""
+
+#: wppa_settings.php:627
+msgid "Slideshow"
+msgstr ""
+
+#: wppa_settings.php:628
+msgid "Enable the slideshow."
+msgstr ""
+
+#: wppa_settings.php:629
+msgid "If you do not want slideshows: uncheck this box. Browsing full size images will remain possible."
+msgstr ""
+
+#: wppa_settings.php:635
+msgid "Rating system"
+msgstr ""
+
+#: wppa_settings.php:636
+msgid "Enable the rating system."
+msgstr ""
+
+#: wppa_settings.php:637
+msgid "If checked, the photo rating system will be enabled."
+msgstr ""
+
+#: wppa_settings.php:643
+msgid "Thumbnail name"
+msgstr ""
+
+#: wppa_settings.php:644
+msgid "Display Thubnail name."
+msgstr ""
+
+#: wppa_settings.php:645
+msgid "Display photo name under thumbnail images."
+msgstr ""
+
+#: wppa_settings.php:651
+msgid "Thumbnail desc"
+msgstr ""
+
+#: wppa_settings.php:652
+msgid "Display Thumbnail description."
+msgstr ""
+
+#: wppa_settings.php:653
+msgid "Display description of the photo under thumbnail images."
+msgstr ""
+
+#: wppa_settings.php:659
+msgid "Thumbnail rating"
+msgstr ""
+
+#: wppa_settings.php:660
+msgid "Display Thumbnail Rating."
+msgstr ""
+
+#: wppa_settings.php:661
+msgid "Display the rating of the photo under the thumbnail image."
+msgstr ""
+
+#: wppa_settings.php:663
+msgid "(This setting requires that the rating system is enabled.)"
+msgstr ""
+
+#: wppa_settings.php:667
+msgid "Covertext"
+msgstr ""
+
+#: wppa_settings.php:668
+msgid "Show the text on the album cover."
+msgstr ""
+
+#: wppa_settings.php:669
+msgid "Display the album decription and the links to the album content"
+msgstr ""
+
+#: wppa_settings.php:670
+msgid "If switched off, you can only link to the album using the covertitle or the coverphoto."
+msgstr ""
+
+#: wppa_settings.php:671
+msgid "Make sure you configure the coverphoto link as desired."
+msgstr ""
+
+#: wppa_settings.php:676
+msgid "Comments system"
+msgstr ""
+
+#: wppa_settings.php:677
+msgid "Enable the comments system."
+msgstr ""
+
+#: wppa_settings.php:678
+msgid "Display the comments box under the fullsize images and let users enter their comments on individual photos."
+msgstr ""
+
+#: wppa_settings.php:698
+msgid "Table III:"
+msgstr ""
+
+#: wppa_settings.php:698
+msgid "Backgrounds:"
+msgstr ""
+
+#: wppa_settings.php:699
+msgid "This table describes the backgrounds of wppa+ elements."
+msgstr ""
+
+#: wppa_settings.php:707
+#: wppa_settings.php:775
+msgid "Background color"
+msgstr ""
+
+#: wppa_settings.php:708
+#: wppa_settings.php:776
+msgid "Border color"
+msgstr ""
+
+#: wppa_settings.php:714
+msgid "Even"
+msgstr ""
+
+#: wppa_settings.php:715
+msgid "Even background."
+msgstr ""
+
+#: wppa_settings.php:716
+msgid "Enter valid CSS colors for even numbered backgrounds and borders of album covers and thumbnail displays 'As covers'."
+msgstr ""
+
+#: wppa_settings.php:723
+msgid "Odd"
+msgstr ""
+
+#: wppa_settings.php:724
+msgid "Odd background."
+msgstr ""
+
+#: wppa_settings.php:725
+msgid "Enter valid CSS colors for odd numbered backgrounds and borders of album covers and thumbnail displays 'As covers'."
+msgstr ""
+
+#: wppa_settings.php:732
+msgid "Nav"
+msgstr ""
+
+#: wppa_settings.php:733
+msgid "Navigation bars."
+msgstr ""
+
+#: wppa_settings.php:734
+msgid "Enter valid CSS colors for navigation backgrounds and borders."
+msgstr ""
+
+#: wppa_settings.php:741
+msgid "Name/desc"
+msgstr ""
+
+#: wppa_settings.php:742
+msgid "Name and Description bars."
+msgstr ""
+
+#: wppa_settings.php:743
+msgid "Enter valid CSS colors for name and description box backgrounds and borders."
+msgstr ""
+
+#: wppa_settings.php:751
+msgid "Comment input and display areas."
+msgstr ""
+
+#: wppa_settings.php:752
+msgid "Enter valid CSS colors for comment box backgrounds and borders."
+msgstr ""
+
+#: wppa_settings.php:759
+msgid "Img"
+msgstr ""
+
+#: wppa_settings.php:760
+msgid "Popup and Cover Photos."
+msgstr ""
+
+#: wppa_settings.php:761
+msgid "Enter a valid CSS color for image backgrounds."
+msgstr ""
+
+#: wppa_settings.php:783
+msgid "Table IV:"
+msgstr ""
+
+#: wppa_settings.php:783
+msgid "Behaviour:"
+msgstr ""
+
+#: wppa_settings.php:784
+msgid "This table describes the dynamic behaviour of certain wppa+ elements."
+msgstr ""
+
+#: wppa_settings.php:798
+msgid "V align"
+msgstr ""
+
+#: wppa_settings.php:799
+msgid "Vertical alignment of full-size images."
+msgstr ""
+
+#: wppa_settings.php:800
+msgid "Specify the vertical alignment of fullsize images."
+msgstr ""
+
+#: wppa_settings.php:801
+msgid "If you select --- none ---, the photos will not be centered horizontally either."
+msgstr ""
+
+#: wppa_settings.php:803
+#: wppa_settings.php:888
+msgid "top"
+msgstr ""
+
+#: wppa_settings.php:803
+#: wppa_settings.php:815
+#: wppa_settings.php:888
+msgid "center"
+msgstr ""
+
+#: wppa_settings.php:803
+#: wppa_settings.php:888
+msgid "bottom"
+msgstr ""
+
+#: wppa_settings.php:803
+msgid "fit"
+msgstr ""
+
+#: wppa_settings.php:809
+msgid "H align"
+msgstr ""
+
+#: wppa_settings.php:810
+msgid "Horizontal alignment of full-size images."
+msgstr ""
+
+#: wppa_settings.php:811
+msgid "Specify the horizontal alignment of fullsize images. If you specify --- none --- , no horizontal alignment will take place."
+msgstr ""
+
+#: wppa_settings.php:812
+msgid "This setting is only usefull when the Column Width differs from the Fullsize Width."
+msgstr ""
+
+#: wppa_settings.php:813
+msgid "(Settings I-1 and I-2)"
+msgstr ""
+
+#: wppa_settings.php:815
+msgid "left"
+msgstr ""
+
+#: wppa_settings.php:815
+msgid "right"
+msgstr ""
+
+#: wppa_settings.php:821
+msgid "Start"
+msgstr ""
+
+#: wppa_settings.php:822
+msgid "Start slideshow running."
+msgstr ""
+
+#: wppa_settings.php:823
+msgid "If checked, the slideshow will start running immediately, if unchecked the first photo will be displayed in browse mode."
+msgstr ""
+
+#: wppa_settings.php:829
+msgid "Fading"
+msgstr ""
+
+#: wppa_settings.php:830
+msgid "Fade-in after fade-out."
+msgstr ""
+
+#: wppa_settings.php:831
+msgid "If checked: slides are faded out and in after each other. If unchecked: fadin and fadeout overlap."
+msgstr ""
+
+#: wppa_settings.php:832
+msgid "The version of the jQuery library must be 1.4 or greater for this feature!"
+msgstr ""
+
+#: wppa_settings.php:834
+#: wppa_settings.php:839
+msgid "Fade-in after fade-out:"
+msgstr ""
+
+#: wppa_settings.php:842
+msgid "Timeout"
+msgstr ""
+
+#: wppa_settings.php:843
+msgid "Slideshow timeout."
+msgstr ""
+
+#: wppa_settings.php:844
+msgid "Select the time a single slide will be visible when the slideshow is started."
+msgstr ""
+
+#: wppa_settings.php:846
+msgid "very short (1 s.)"
+msgstr ""
+
+#: wppa_settings.php:846
+msgid "short (1.5 s.)"
+msgstr ""
+
+#: wppa_settings.php:846
+msgid "normal (2.5 s.)"
+msgstr ""
+
+#: wppa_settings.php:846
+msgid "long (4 s.)"
+msgstr ""
+
+#: wppa_settings.php:846
+msgid "very long (6 s.)"
+msgstr ""
+
+#: wppa_settings.php:852
+msgid "Speed"
+msgstr ""
+
+#: wppa_settings.php:853
+msgid "Slideshow animation speed."
+msgstr ""
+
+#: wppa_settings.php:854
+msgid "Specify the animation speed to be used in slideshows."
+msgstr ""
+
+#: wppa_settings.php:855
+msgid "This is the time it takes a photo to fade in or out."
+msgstr ""
+
+#: wppa_settings.php:857
+msgid "--- off ---"
+msgstr ""
+
+#: wppa_settings.php:857
+msgid "very fast (200 ms.)"
+msgstr ""
+
+#: wppa_settings.php:857
+msgid "fast (400 ms.)"
+msgstr ""
+
+#: wppa_settings.php:857
+msgid "normal (800 ms.)"
+msgstr ""
+
+#: wppa_settings.php:857
+msgid "slow (1.2 s.)"
+msgstr ""
+
+#: wppa_settings.php:857
+msgid "very slow (2 s.)"
+msgstr ""
+
+#: wppa_settings.php:857
+msgid "extremely slow (4 s.)"
+msgstr ""
+
+#: wppa_settings.php:863
+msgid "Thumbnail type"
+msgstr ""
+
+#: wppa_settings.php:864
+msgid "The way the thumbnail images are displayed."
+msgstr ""
+
+#: wppa_settings.php:865
+msgid "You may select an altenative display method for thumbnails. Note that some of the thumbnail settings do not apply to all available display methods."
+msgstr ""
+
+#: wppa_settings.php:867
+msgid "like album covers"
+msgstr ""
+
+#: wppa_settings.php:873
+#: wppa_settings.php:919
+msgid "Placement"
+msgstr ""
+
+#: wppa_settings.php:874
+msgid "Thumbnail image left or right."
+msgstr ""
+
+#: wppa_settings.php:875
+msgid "Indicate the placement position of the thumbnailphoto you wish."
+msgstr ""
+
+#: wppa_settings.php:877
+#: wppa_settings.php:923
+msgid "Left"
+msgstr ""
+
+#: wppa_settings.php:877
+#: wppa_settings.php:923
+msgid "Right"
+msgstr ""
+
+#: wppa_settings.php:883
+msgid "Vertical alignment"
+msgstr ""
+
+#: wppa_settings.php:884
+msgid "Vertical alignment of thumbnails."
+msgstr ""
+
+#: wppa_settings.php:885
+msgid "Specify the vertical alignment of thumbnail images. Use this setting when albums contain both portrait and landscape photos."
+msgstr ""
+
+#: wppa_settings.php:886
+msgid "It is NOT recommended to use the value --- default ---; it will affect the horizontal alignment also and is ment to be used with custom css."
+msgstr ""
+
+#: wppa_settings.php:894
+msgid "Thumb mouseover"
+msgstr ""
+
+#: wppa_settings.php:895
+msgid "Apply thumbnail mouseover effect."
+msgstr ""
+
+#: wppa_settings.php:896
+msgid "Check this box to use mouseover effect on thumbnail images."
+msgstr ""
+
+#: wppa_settings.php:903
+msgid "Thumb opacity"
+msgstr ""
+
+#: wppa_settings.php:904
+#: wppa_settings.php:937
+msgid "Initial opacity value."
+msgstr ""
+
+#: wppa_settings.php:905
+#: wppa_settings.php:938
+msgid "Enter percentage of opacity. 100% is opaque, 0% is transparant"
+msgstr ""
+
+#: wppa_settings.php:907
+#: wppa_settings.php:940
+msgid "%"
+msgstr ""
+
+#: wppa_settings.php:907
+msgid "(This setting requires thumbnail mouseover to be switched on)"
+msgstr ""
+
+#: wppa_settings.php:911
+msgid "Thumb popup"
+msgstr ""
+
+#: wppa_settings.php:912
+msgid "Use popup effect on thumbnail images."
+msgstr ""
+
+#: wppa_settings.php:913
+msgid "Thumbnails pop-up to a larger image when hovered."
+msgstr ""
+
+#: wppa_settings.php:920
+msgid "Cover image left or right."
+msgstr ""
+
+#: wppa_settings.php:921
+msgid "Indicate the placement position of the coverphoto you wish."
+msgstr ""
+
+#: wppa_settings.php:928
+msgid "Cover mouseover"
+msgstr ""
+
+#: wppa_settings.php:929
+msgid "Apply coverphoto mouseover effect."
+msgstr ""
+
+#: wppa_settings.php:930
+msgid "Check this box to use mouseover effect on cover images."
+msgstr ""
+
+#: wppa_settings.php:936
+msgid "Cover opacity"
+msgstr ""
+
+#: wppa_settings.php:940
+msgid "(This setting requires coverphoto mouseover to be switched on)"
+msgstr ""
+
+#: wppa_settings.php:944
+msgid "Rating login"
+msgstr ""
+
+#: wppa_settings.php:945
+msgid "Users must login to rate photos."
+msgstr ""
+
+#: wppa_settings.php:946
+msgid "If users want to vote for a photo (rating 1..5 stars) the must login first. The avarage rating will always be displayed as long as the rating system is enabled."
+msgstr ""
+
+#: wppa_settings.php:952
+msgid "Rating change"
+msgstr ""
+
+#: wppa_settings.php:953
+#: wppa_settings.php:954
+msgid "Users may change their ratings."
+msgstr ""
+
+#: wppa_settings.php:960
+msgid "Rating multi"
+msgstr ""
+
+#: wppa_settings.php:961
+msgid "Users may give multiple votes."
+msgstr ""
+
+#: wppa_settings.php:962
+msgid "Users may give multiple votes. (This has no effect when users may change their votes.)"
+msgstr ""
+
+#: wppa_settings.php:968
+msgid "Album order"
+msgstr ""
+
+#: wppa_settings.php:969
+msgid "Album ordering sequence method."
+msgstr ""
+
+#: wppa_settings.php:970
+msgid "Specify the way the albums should be ordered."
+msgstr ""
+
+#: wppa_settings.php:977
+#: wppa_settings.php:993
+msgid "Descending"
+msgstr ""
+
+#: wppa_settings.php:978
+#: wppa_settings.php:994
+msgid "Descending order."
+msgstr ""
+
+#: wppa_settings.php:979
+#: wppa_settings.php:995
+msgid "If checked: largest first"
+msgstr ""
+
+#: wppa_settings.php:984
+msgid "Photo order"
+msgstr ""
+
+#: wppa_settings.php:985
+msgid "Photo ordering sequence method."
+msgstr ""
+
+#: wppa_settings.php:986
+msgid "Specify the way the photos should be ordered. This is the default setting. You can overrule the default sorting order on a per album basis."
+msgstr ""
+
+#: wppa_settings.php:996
+msgid "This is a system wide setting."
+msgstr ""
+
+#: wppa_settings.php:1001
+msgid "Commenting login"
+msgstr ""
+
+#: wppa_settings.php:1002
+msgid "Users must be logged in to comment on photos."
+msgstr ""
+
+#: wppa_settings.php:1003
+msgid "Check this box if you want users to be logged in to be able to enter comments on individual photos."
+msgstr ""
+
+#: wppa_settings.php:1023
+msgid "Table V:"
+msgstr ""
+
+#: wppa_settings.php:1023
+msgid "Fonts:"
+msgstr ""
+
+#: wppa_settings.php:1024
+msgid "This table describes the Fonts used for the wppa+ elements."
+msgstr ""
+
+#: wppa_settings.php:1025
+msgid "If you leave fields empty, your themes defaults will be used."
+msgstr ""
+
+#: wppa_settings.php:1033
+#: wppa_settings.php:1113
+msgid "Font family"
+msgstr ""
+
+#: wppa_settings.php:1034
+#: wppa_settings.php:1114
+msgid "Font size"
+msgstr ""
+
+#: wppa_settings.php:1035
+#: wppa_settings.php:1115
+msgid "Font color"
+msgstr ""
+
+#: wppa_settings.php:1041
+msgid "Album titles"
+msgstr ""
+
+#: wppa_settings.php:1042
+msgid "Font used for Album titles."
+msgstr ""
+
+#: wppa_settings.php:1043
+#: wppa_settings.php:1065
+msgid "Enter font name, size and color for album cover titles."
+msgstr ""
+
+#: wppa_settings.php:1053
+msgid "Font for fullsize photo descriptions."
+msgstr ""
+
+#: wppa_settings.php:1054
+msgid "Enter font name, size and color for fullsize photo descriptions."
+msgstr ""
+
+#: wppa_settings.php:1064
+msgid "Font for fullsize photo names."
+msgstr ""
+
+#: wppa_settings.php:1074
+msgid "Navigations"
+msgstr ""
+
+#: wppa_settings.php:1075
+msgid "Font for navigations."
+msgstr ""
+
+#: wppa_settings.php:1076
+msgid "Enter font name, size and color for navigation items."
+msgstr ""
+
+#: wppa_settings.php:1085
+msgid "Thumbnails"
+msgstr ""
+
+#: wppa_settings.php:1086
+msgid "Font for text under thumbnails."
+msgstr ""
+
+#: wppa_settings.php:1087
+msgid "Enter font name, size and color for text under thumbnail images."
+msgstr ""
+
+#: wppa_settings.php:1096
+msgid "Other"
+msgstr ""
+
+#: wppa_settings.php:1097
+msgid "General font in wppa boxes."
+msgstr ""
+
+#: wppa_settings.php:1098
+msgid "Enter font name, size and color for all other items."
+msgstr ""
+
+#: wppa_settings.php:1122
+msgid "Table VI:"
+msgstr ""
+
+#: wppa_settings.php:1122
+msgid "Links:"
+msgstr ""
+
+#: wppa_settings.php:1123
+msgid "This table defines the link types and pages."
+msgstr ""
+
+#: wppa_settings.php:1131
+#: wppa_settings.php:1259
+msgid "Link type"
+msgstr ""
+
+#: wppa_settings.php:1132
+#: wppa_settings.php:1260
+msgid "Link page"
+msgstr ""
+
+#: wppa_settings.php:1139
+#: wppa_settings.php:1141
+#: wppa_settings.php:1143
+#: wppa_settings.php:1145
+#: wppa_settings.php:1147
+#: wppa_settings.php:1788
+msgid "no link at all."
+msgstr ""
+
+#: wppa_settings.php:1139
+#: wppa_settings.php:1141
+#: wppa_settings.php:1143
+#: wppa_settings.php:1145
+#: wppa_settings.php:1147
+#: wppa_settings.php:1789
+msgid "the plain photo (file)."
+msgstr ""
+
+#: wppa_settings.php:1139
+#: wppa_settings.php:1141
+#: wppa_settings.php:1143
+#: wppa_settings.php:1145
+#: wppa_settings.php:1790
+msgid "the full size photo in a slideshow."
+msgstr ""
+
+#: wppa_settings.php:1139
+#: wppa_settings.php:1141
+#: wppa_settings.php:1143
+#: wppa_settings.php:1145
+#: wppa_settings.php:1791
+msgid "the fullsize photo on its own."
+msgstr ""
+
+#: wppa_settings.php:1139
+#: wppa_settings.php:1141
+#: wppa_settings.php:1143
+#: wppa_settings.php:1145
+#: wppa_settings.php:1792
+msgid "the photo specific link."
+msgstr ""
+
+#: wppa_settings.php:1141
+#: wppa_settings.php:1143
+#: wppa_settings.php:1145
+#: wppa_settings.php:1793
+msgid "the content of the album."
+msgstr ""
+
+#: wppa_settings.php:1143
+#: wppa_settings.php:1794
+msgid "defined at widget activation."
+msgstr ""
+
+#: wppa_settings.php:1145
+#: wppa_settings.php:1795
+msgid "defined on widget admin page."
+msgstr ""
+
+#: wppa_settings.php:1147
+#: wppa_settings.php:1796
+msgid "same as title."
+msgstr ""
+
+#: wppa_settings.php:1156
+msgid "--- The same post or page ---"
+msgstr ""
+
+#: wppa_settings.php:1172
+msgid "--- No page to link to (yet) ---"
+msgstr ""
+
+#: wppa_settings.php:1176
+msgid "Mphoto"
+msgstr ""
+
+#: wppa_settings.php:1177
+msgid "Media-like photo link."
+msgstr ""
+
+#: wppa_settings.php:1178
+#: wppa_settings.php:1191
+msgid "Select the type of link you want, or no link at all."
+msgstr ""
+
+#: wppa_settings.php:1179
+#: wppa_settings.php:1192
+msgid "If you select the fullsize photo on its own, it will be stretched to fit, regardless of that setting."
+msgstr ""
+
+#: wppa_settings.php:1180
+#: wppa_settings.php:1193
+#, php-format
+msgid "Note that a page must have at least %%wppa%% in its content to show up the photo(s)."
+msgstr ""
+
+#: wppa_settings.php:1189
+msgid "Thumbnail"
+msgstr ""
+
+#: wppa_settings.php:1190
+msgid "Thumbnail link."
+msgstr ""
+
+#: wppa_settings.php:1203
+msgid "TopTenWidget"
+msgstr ""
+
+#: wppa_settings.php:1204
+msgid "TopTen widget photo link."
+msgstr ""
+
+#: wppa_settings.php:1205
+#: wppa_settings.php:1217
+msgid "Select the type of link the top ten photos point to."
+msgstr ""
+
+#: wppa_settings.php:1215
+msgid "SlideWidget"
+msgstr ""
+
+#: wppa_settings.php:1216
+msgid "Slideshow widget photo link."
+msgstr ""
+
+#: wppa_settings.php:1226
+msgid "PotdWidget"
+msgstr ""
+
+#: wppa_settings.php:1227
+msgid "Photo Of The Day widget link."
+msgstr ""
+
+#: wppa_settings.php:1228
+msgid "Select the type of link the photo of the day points to."
+msgstr ""
+
+#: wppa_settings.php:1229
+msgid "If you select 'defined on widget admin page' you can manually enter a link and title on the Photo of the day Widget Admin page."
+msgstr ""
+
+#: wppa_settings.php:1238
+msgid "Cover Image"
+msgstr ""
+
+#: wppa_settings.php:1239
+msgid "The link from the cover image of an album."
+msgstr ""
+
+#: wppa_settings.php:1240
+msgid "Select the type of link the coverphoto points to."
+msgstr ""
+
+#: wppa_settings.php:1241
+msgid "The link from the album title can be configured on the Edit Album page."
+msgstr ""
+
+#: wppa_settings.php:1242
+msgid "This link will be used for the photo also if you select: same as title."
+msgstr ""
+
+#: wppa_settings.php:1267
+msgid "Table VII:"
+msgstr ""
+
+#: wppa_settings.php:1267
+msgid "Access and Security:"
+msgstr ""
+
+#: wppa_settings.php:1268
+msgid "This table describes the access settings for wppa+ elements and pages."
+msgstr ""
+
+#: wppa_settings.php:1283
+msgid "Directory access (CHMOD)."
+msgstr ""
+
+#: wppa_settings.php:1284
+msgid "In rare cases you might need to change this setting. If you do not know what this means, leave it unchanged."
+msgstr ""
+
+#: wppa_settings.php:1286
+msgid "Leave unchanged."
+msgstr ""
+
+#: wppa_settings.php:1291
+msgid "Album access"
+msgstr ""
+
+#: wppa_settings.php:1292
+msgid "Limit album access to album owners only."
+msgstr ""
+
+#: wppa_settings.php:1293
+msgid "If checked, users who can edit albums and upload/import photos can do that with their own albums only."
+msgstr ""
+
+#: wppa_settings.php:1294
+msgid "Users can give their albums to another user. Administrators can change ownership and access all albums always."
+msgstr ""
+
+#: wppa_settings.php:1299
+msgid "WPPA Admin"
+msgstr ""
+
+#: wppa_settings.php:1300
+msgid "Admin pages access."
+msgstr ""
+
+#: wppa_settings.php:1301
+msgid "Indicate whether the accesslevels must be set by this admin page or by an other program."
+msgstr ""
+
+#: wppa_settings.php:1302
+msgid "If you set them here, the classical userlevel is imitated, but implemented by the modern Roles and Capabilities system."
+msgstr ""
+
+#: wppa_settings.php:1303
+msgid "That means that any higher userlevel (role) will automaticly get the capabilities that you give to a certain (lower) level."
+msgstr ""
+
+#: wppa_settings.php:1304
+msgid "If you want to give a capability to a specific user or role, you can set it using an other plugin, such as Capability Manager."
+msgstr ""
+
+#: wppa_settings.php:1305
+msgid "Possible capabilities are: <strong>wppa_admin</strong> (for the Photo Albums page), wppa_sidebar_admin (for the Sidebar Widget page) and wppa_upload (for the Upload and Import pages)."
+msgstr ""
+
+#: wppa_settings.php:1306
+msgid "The Help page is available to users with the capability <strong>edit_posts</strong>, the Settings page (the page you are on right now) is limited to the role of administrator."
+msgstr ""
+
+#: wppa_settings.php:1308
+msgid "Accesslevels are set here."
+msgstr ""
+
+#: wppa_settings.php:1308
+msgid "Accesslevels are set by an other program."
+msgstr ""
+
+#: wppa_settings.php:1313
+msgid "Photo Albums"
+msgstr ""
+
+#: wppa_settings.php:1314
+msgid "Albums Access Level."
+msgstr ""
+
+#: wppa_settings.php:1315
+msgid "The minmum user level that can access the photo album admin (i.e. Manage Albums and Upload Photos)."
+msgstr ""
+
+#: wppa_settings.php:1317
+#: wppa_settings.php:1326
+#: wppa_settings.php:1335
+msgid "Administrator"
+msgstr ""
+
+#: wppa_settings.php:1317
+#: wppa_settings.php:1326
+#: wppa_settings.php:1335
+msgid "Editor"
+msgstr ""
+
+#: wppa_settings.php:1317
+#: wppa_settings.php:1326
+#: wppa_settings.php:1335
+msgid "Author"
+msgstr ""
+
+#: wppa_settings.php:1317
+#: wppa_settings.php:1326
+#: wppa_settings.php:1335
+msgid "Contributor"
+msgstr ""
+
+#: wppa_settings.php:1322
+msgid "Upload"
+msgstr ""
+
+#: wppa_settings.php:1323
+msgid "Upload/Import Access Level."
+msgstr ""
+
+#: wppa_settings.php:1324
+msgid "The minmum user level that can upload or import photos."
+msgstr ""
+
+#: wppa_settings.php:1331
+msgid "Widget"
+msgstr ""
+
+#: wppa_settings.php:1332
+msgid "Photo of the day widget admin."
+msgstr ""
+
+#: wppa_settings.php:1333
+msgid "The minmum user level that can access the photo of the day sidebar widget admin."
+msgstr ""
+
+#: wppa_settings.php:1354
+msgid "Table VIII:"
+msgstr ""
+
+#: wppa_settings.php:1354
+msgid "Actions:"
+msgstr ""
+
+#: wppa_settings.php:1355
+msgid "This table lists all actions that can be taken to the wppa+ system"
+msgstr ""
+
+#: wppa_settings.php:1363
+#: wppa_settings.php:1431
+msgid "Do it!"
+msgstr ""
+
+#: wppa_settings.php:1369
+msgid "Reset"
+msgstr ""
+
+#: wppa_settings.php:1370
+msgid "Reset all ratings."
+msgstr ""
+
+#: wppa_settings.php:1371
+msgid "WARNING: If checked, this will clear all ratings in the system!"
+msgstr ""
+
+#: wppa_settings.php:1376
+msgid "Set to utf-8"
+msgstr ""
+
+#: wppa_settings.php:1377
+msgid "Set Character set to UTF_8."
+msgstr ""
+
+#: wppa_settings.php:1378
+msgid "If checked: Converts the wppa database tables to UTF_8 This allows the use of certain characters - like Turkish - in photo and album names and descriptions."
+msgstr ""
+
+#: wppa_settings.php:1386
+msgid "Setup"
+msgstr ""
+
+#: wppa_settings.php:1387
+msgid "Re-initialize plugin."
+msgstr ""
+
+#: wppa_settings.php:1388
+msgid "Re-initilizes the plugin, (re)creates database tables and sets up default settings and directories if required."
+msgstr ""
+
+#: wppa_settings.php:1389
+msgid "This action may be required to setup blogs in a multiblog (network) site as well as in rare cases to correct initilization errors."
+msgstr ""
+
+#: wppa_settings.php:1394
+msgid "Backup settings"
+msgstr ""
+
+#: wppa_settings.php:1395
+msgid "Save all settings into a backup file."
+msgstr ""
+
+#: wppa_settings.php:1396
+msgid "Saves all the settings into a backup file"
+msgstr ""
+
+#: wppa_settings.php:1401
+msgid "Restore settings"
+msgstr ""
+
+#: wppa_settings.php:1402
+msgid "Restore all settings from a backup file."
+msgstr ""
+
+#: wppa_settings.php:1403
+msgid "Restores all the settings from a backup file"
+msgstr ""
+
+#: wppa_settings.php:1407
+msgid "No backup file available"
+msgstr ""
+
+#: wppa_settings.php:1410
+msgid "Set all defaults"
+msgstr ""
+
+#: wppa_settings.php:1411
+#: wppa_settings.php:1412
+msgid "Resets all settings to default values."
+msgstr ""
+
+#: wppa_settings.php:1417
+msgid "Regenerate"
+msgstr ""
+
+#: wppa_settings.php:1418
+#: wppa_settings.php:1419
+msgid "Regenerate all thumbnails."
+msgstr ""
+
+#: wppa_settings.php:1438
+msgid "Table IX:"
+msgstr ""
+
+#: wppa_settings.php:1438
+msgid "Miscellaneous:"
+msgstr ""
+
+#: wppa_settings.php:1439
+msgid "This table lists all settings that do not fit into an other table"
+msgstr ""
+
+#: wppa_settings.php:1453
+msgid "Arrow color"
+msgstr ""
+
+#: wppa_settings.php:1454
+msgid "Left/right browsing arrow color."
+msgstr ""
+
+#: wppa_settings.php:1455
+msgid "Enter the color of the navigation arrows."
+msgstr ""
+
+#: wppa_settings.php:1460
+msgid "Search page"
+msgstr ""
+
+#: wppa_settings.php:1461
+msgid "Display the search results on page."
+msgstr ""
+
+#: wppa_settings.php:1462
+#, php-format
+msgid "Select the page to be used to display search results. The page MUST contain %%wppa%%."
+msgstr ""
+
+#: wppa_settings.php:1463
+msgid "You may give it the title \"Search results\" or something alike."
+msgstr ""
+
+#: wppa_settings.php:1464
+msgid "Or you ou may use the standard page on which you display the generic album."
+msgstr ""
+
+#: wppa_settings.php:1479
+msgid "Exclude separate"
+msgstr ""
+
+#: wppa_settings.php:1480
+msgid "Do not search 'separate' albums."
+msgstr ""
+
+#: wppa_settings.php:1481
+msgid "When checked, albums (and photos in them) that have the parent set to --- separate --- will be excluded from being searched."
+msgstr ""
+
+#: wppa_settings.php:1486
+msgid "Allow HTML"
+msgstr ""
+
+#: wppa_settings.php:1487
+msgid "Allow HTML in album and photo descriptions."
+msgstr ""
+
+#: wppa_settings.php:1488
+msgid "If checked: html is allowed. WARNING: No checks on syntax, it is your own responsability to close tags properly!"
+msgstr ""
+
+#: wppa_settings.php:1493
+msgid "Allow WPPA+ Debugging"
+msgstr ""
+
+#: wppa_settings.php:1494
+msgid "Allow the use of &debug=.. in urls to this site."
+msgstr ""
+
+#: wppa_settings.php:1495
+msgid "If checked: appending (?)(&)debug or (?)(&)debug=<int> to an url to this site will generate the display of special WPPA+ diagnostics, as well as php warnings"
+msgstr ""
+
+#: wppa_settings.php:1515
+msgid "Table X:"
+msgstr ""
+
+#: wppa_settings.php:1515
+msgid "PHP Configuration:"
+msgstr ""
+
+#: wppa_settings.php:1516
+msgid "This table lists all PHP server configuration parameters and is read only"
+msgstr ""
+
+#: wppa_settings.php:1548
+#: wppa_settings.php:1597
+#: wppa_settings.php:1651
+msgid "Click for help"
+msgstr ""
+
+#: wppa_settings.php:1554
+#: wppa_settings.php:1608
+#: wppa_settings.php:1664
+msgid "You just modified this setting"
+msgstr ""
+
+#: wppa_settings.php:1559
+#: wppa_settings.php:1613
+#: wppa_settings.php:1669
+msgid "You just tried to modify this setting into an illegal value"
+msgstr ""
+
+#: wppa_settings.php:1800
+msgid "The default for this setting is:"
+msgstr ""
+
+#: wppa_settings.php:1805
+msgid "Hide"
+msgstr ""
+
+#: wppa_settings.php:1806
+msgid "Show"
+msgstr ""
+
+#: wppa_slideshow_widget.php:16
+msgid "WPPA+ Sidebar Slideshow"
+msgstr ""
+
+#: wppa_slideshow_widget.php:17
+msgid "Sidebar Slideshow"
+msgstr ""
+
+#: wppa_slideshow_widget.php:131
+msgid "Width:"
+msgstr ""
+
+#: wppa_slideshow_widget.php:131
+#: wppa_widgetadmin.php:75
+msgid "pixels."
+msgstr ""
+
+#: wppa_slideshow_widget.php:133
+msgid "Portrait only:"
+msgstr ""
+
+#: wppa_slideshow_widget.php:135
+#: wppa_slideshow_widget.php:155
+#: wppa_slideshow_widget.php:162
+msgid "no."
+msgstr ""
+
+#: wppa_slideshow_widget.php:136
+#: wppa_slideshow_widget.php:156
+#: wppa_slideshow_widget.php:163
+msgid "yes."
+msgstr ""
+
+#: wppa_slideshow_widget.php:137
+msgid "Set to 'yes' if there are only portrait images in the album and you want the photos to fill the full width of the widget.<br/>Set to 'no' otherwise."
+msgstr ""
+
+#: wppa_slideshow_widget.php:138
+msgid "If set to 'yes', Vertical alignment will be forced to 'fit'."
+msgstr ""
+
+#: wppa_slideshow_widget.php:141
+msgid "Vertical alignment:"
+msgstr ""
+
+#: wppa_slideshow_widget.php:147
+msgid "Set the desired vertical alignment method."
+msgstr ""
+
+#: wppa_slideshow_widget.php:149
+msgid "Slideshow timeout:"
+msgstr ""
+
+#: wppa_slideshow_widget.php:149
+msgid "sec."
+msgstr ""
+
+#: wppa_slideshow_widget.php:153
+msgid "Show filmstrip:"
+msgstr ""
+
+#: wppa_slideshow_widget.php:160
+msgid "Show browsebar:"
+msgstr ""
+
+#: wppa_slideshow_widget.php:167
+msgid "The following text fields support qTranslate"
+msgstr ""
+
+#: wppa_slideshow_widget.php:168
+msgid "Tooltip text:"
+msgstr ""
+
+#: wppa_slideshow_widget.php:169
+msgid "Text above photos:"
+msgstr ""
+
+#: wppa_slideshow_widget.php:170
+msgid "Text below photos:"
+msgstr ""
+
+#: wppa_toptenwidget.php:12
+msgid "WPPA+ Top Ten Rated Photos"
+msgstr ""
+
+#: wppa_toptenwidget.php:13
+#: wppa_toptenwidget.php:23
+#: wppa_toptenwidget.php:87
+msgid "Top Ten Photos"
+msgstr ""
+
+#: wppa_toptenwidget.php:100
+msgid "You can set the behaviour of this widget in the <b>Photo Albums -> Settings</b> admin page."
+msgstr ""
+
+#: wppa_upload.php:35
+msgid "Connecting to your depot..."
+msgstr ""
+
+#: wppa_upload.php:65
+#: wppa_upload.php:70
+msgid "unknown"
+msgstr ""
+
+#: wppa_upload.php:74
+#, php-format
+msgid "<b>Notice:</b> your server allows you to upload <b>%s</b> files of maximum total <b>%s</b> bytes and allows <b>%s</b> seconds to complete."
+msgstr ""
+
+#: wppa_upload.php:75
+msgid "If your request exceeds these limitations, it will fail, probably without an errormessage."
+msgstr ""
+
+#: wppa_upload.php:76
+msgid "Additionally your hosting provider may have set other limitations on uploading files."
+msgstr ""
+
+#: wppa_upload.php:79
+msgid "Single Photos"
+msgstr ""
+
+#: wppa_upload.php:85
+msgid "Selected Files:"
+msgstr ""
+
+#: wppa_upload.php:92
+msgid "Upload Single Photos"
+msgstr ""
+
+#: wppa_upload.php:103
+msgid "Zipped Photos"
+msgstr ""
+
+#: wppa_upload.php:104
+msgid "You can upload one zipfile at once. It will be placed in your personal wppa-depot.<br/>Once uploaded, use <b>Import Photos</b> to unzip the file and place the photos in any album."
+msgstr ""
+
+#: wppa_upload.php:108
+msgid "Upload Zipped Photos"
+msgstr ""
+
+#: wppa_upload.php:109
+msgid "After upload: Go to the <b>Import Photos</b> page."
+msgstr ""
+
+#: wppa_upload.php:115
+msgid "<small>Ask your administrator to upgrade php to version 5.2.7 or later. This will enable you to upload zipped photos.</small>"
+msgstr ""
+
+#: wppa_upload.php:121
+#: wppa_upload.php:320
+msgid "No albums exist. You must"
+msgstr ""
+
+#: wppa_upload.php:121
+#: wppa_upload.php:320
+msgid "create one"
+msgstr ""
+
+#: wppa_upload.php:121
+#: wppa_upload.php:320
+msgid "beofre you can upload your photos."
+msgstr ""
+
+#: wppa_upload.php:140
+#: wppa_upload.php:160
+msgid "illegal files deleted."
+msgstr ""
+
+#: wppa_upload.php:189
+msgid "Import photos from:"
+msgstr ""
+
+#: wppa_upload.php:191
+msgid "Your depot"
+msgstr ""
+
+#: wppa_upload.php:196
+msgid "Set source directory"
+msgstr ""
+
+#: wppa_upload.php:210
+#: wppa_upload.php:240
+#: wppa_upload.php:269
+msgid "There are"
+msgstr ""
+
+#: wppa_upload.php:210
+msgid "zipfiles in the depot."
+msgstr ""
+
+#: wppa_upload.php:211
+msgid "Delete after successful extraction."
+msgstr ""
+
+#: wppa_upload.php:240
+msgid "albumdefinitions in the depot."
+msgstr ""
+
+#: wppa_upload.php:241
+msgid "Delete after successful import, or if the album already exits."
+msgstr ""
+
+#: wppa_upload.php:269
+msgid "photos in the depot."
+msgstr ""
+
+#: wppa_upload.php:269
+msgid "Photos will be downsized during import."
+msgstr ""
+
+#: wppa_upload.php:271
+msgid "Delete after successful import."
+msgstr ""
+
+#: wppa_upload.php:275
+msgid "Default album for import:"
+msgstr ""
+
+#: wppa_upload.php:276
+msgid "Photos that have (<em>name</em>)[<em>album</em>] will be imported by that <em>name</em> in that <em>album</em>."
+msgstr ""
+
+#: wppa_upload.php:305
+msgid "Import"
+msgstr ""
+
+#: wppa_upload.php:311
+msgid "There are no archives, albums or photos in directory:"
+msgstr ""
+
+#: wppa_upload.php:314
+msgid "There are no albums or photos in directory:"
+msgstr ""
+
+#: wppa_upload.php:342
+#: wppa_upload.php:544
+msgid "Error inserting photo"
+msgstr ""
+
+#: wppa_upload.php:349
+msgid "Photos Uploaded in album nr"
+msgstr ""
+
+#: wppa_upload.php:370
+#: wppa_upload.php:766
+msgid "Zipfile"
+msgstr ""
+
+#: wppa_upload.php:370
+msgid "sucessfully uploaded."
+msgstr ""
+
+#: wppa_upload.php:371
+msgid "Error"
+msgstr ""
+
+#: wppa_upload.php:371
+msgid "during upload."
+msgstr ""
+
+#: wppa_upload.php:463
+msgid "Unknown parent album:"
+msgstr ""
+
+#: wppa_upload.php:463
+msgid "--- none --- used."
+msgstr ""
+
+#: wppa_upload.php:507
+msgid "Processing files, please wait..."
+msgstr ""
+
+#: wppa_upload.php:507
+msgid "If the line of dots stops growing or your browser reports Ready, your server has given up. In that case: try again"
+msgstr ""
+
+#: wppa_upload.php:507
+msgid "here."
+msgstr ""
+
+#: wppa_upload.php:548
+#, php-format
+msgid "Error inserting photo, album %1s does not exist for photo %2s. Either create the album or remove %3s."
+msgstr ""
+
+#: wppa_upload.php:554
+msgid "Done processing files."
+msgstr ""
+
+#: wppa_upload.php:557
+msgid "No files to import."
+msgstr ""
+
+#: wppa_upload.php:561
+msgid "Zipfiles extracted."
+msgstr ""
+
+#: wppa_upload.php:562
+msgid "Albums created."
+msgstr ""
+
+#: wppa_upload.php:563
+msgid "Photos imported."
+msgstr ""
+
+#: wppa_upload.php:580
+msgid "Although the photos are resized during the upload/import process, you may encounter 'Out of memory'errors."
+msgstr ""
+
+#: wppa_upload.php:580
+msgid "In that case: make sure you set the memory limit to 64M and make sure your hosting provider allows you the use of 64 Mb."
+msgstr ""
+
+#: wppa_upload.php:583
+msgid "WARNING: You are uploading very large photos, this may result in server problems and excessive download times for your website visitors."
+msgstr ""
+
+#: wppa_upload.php:583
+msgid "Check the 'Resize on upload' checkbox, and/or resize the photos before uploading. The recommended size is: not larger than 1024 x 768 pixels (up to approx. 250 kB)."
+msgstr ""
+
+#: wppa_upload.php:588
+msgid "WARNING: You are uploading photos that are too small. Photos must be larger than the thumbnail size and larger than the coverphotosize."
+msgstr ""
+
+#: wppa_upload.php:593
+msgid "ERROR: Unable to retrieve immage size of"
+msgstr ""
+
+#: wppa_upload.php:593
+msgid "Are you sure it is a photo?"
+msgstr ""
+
+#: wppa_upload.php:604
+msgid "Unsupported mime type encountered:"
+msgstr ""
+
+#: wppa_upload.php:610
+msgid "Could not insert photo. query="
+msgstr ""
+
+#: wppa_upload.php:650
+msgid "ERROR: Resized or copied image could not be created."
+msgstr ""
+
+#: wppa_upload.php:657
+msgid "ERROR: Unknown file or album."
+msgstr ""
+
+#: wppa_upload.php:730
+msgid "Error: unexpected fgets() fail in wppa_get_meta_data()."
+msgstr ""
+
+#: wppa_upload.php:751
+msgid "Class ZipArchive does not exist! Check your php configuration"
+msgstr ""
+
+#: wppa_upload.php:766
+msgid "extracted."
+msgstr ""
+
+#: wppa_upload.php:769
+msgid "Failed to extract"
+msgstr ""
+
+#: wppa_widget.php:13
+msgid "WPPA+ Photo Of The Day"
+msgstr ""
+
+#: wppa_widget.php:14
+#: wppa_widget.php:92
+msgid "Photo Of The Day"
+msgstr ""
+
+#: wppa_widget.php:96
+msgid "You can set the content and the behaviour of this widget in the <b>Photo Albums -> Sidebar Widget</b> admin page."
+msgstr ""
+
+#: wppa_widgetadmin.php:25
+msgid "Widget Photo Width."
+msgstr ""
+
+#: wppa_widgetadmin.php:45
+msgid "Changes Saved. Don't forget to activate the widget!"
+msgstr ""
+
+#: wppa_widgetadmin.php:53
+msgid "WP Photo Album Plus Sidebar Widget Settings"
+msgstr ""
+
+#: wppa_widgetadmin.php:62
+msgid "Widget Title:"
+msgstr ""
+
+#: wppa_widgetadmin.php:66
+msgid "Enter/modify the title for the widget. This is a default and can be overriden at widget activation."
+msgstr ""
+
+#: wppa_widgetadmin.php:71
+msgid "Widget Photo Width:"
+msgstr ""
+
+#: wppa_widgetadmin.php:75
+msgid "Horizontal alignment:"
+msgstr ""
+
+#: wppa_widgetadmin.php:84
+msgid "Enter the desired display width and alignment of the photo in the sidebar."
+msgstr ""
+
+#: wppa_widgetadmin.php:89
+msgid "Use album(s):"
+msgstr ""
+
+#: wppa_widgetadmin.php:105
+msgid "Select:"
+msgstr ""
+
+#: wppa_widgetadmin.php:107
+msgid "Or Edit:"
+msgstr ""
+
+#: wppa_widgetadmin.php:108
+msgid "Update thumbnails"
+msgstr ""
+
+#: wppa_widgetadmin.php:109
+msgid "Select or edit the album(s) you want to use the photos of for the widget."
+msgstr ""
+
+#: wppa_widgetadmin.php:114
+msgid "Display method:"
+msgstr ""
+
+#: wppa_widgetadmin.php:120
+msgid "Fixed photo"
+msgstr ""
+
+#: wppa_widgetadmin.php:122
+msgid "Last upload"
+msgstr ""
+
+#: wppa_widgetadmin.php:123
+msgid "Change every"
+msgstr ""
+
+#: wppa_widgetadmin.php:127
+msgid "pageview."
+msgstr ""
+
+#: wppa_widgetadmin.php:128
+msgid "hour."
+msgstr ""
+
+#: wppa_widgetadmin.php:129
+msgid "day."
+msgstr ""
+
+#: wppa_widgetadmin.php:130
+msgid "week."
+msgstr ""
+
+#: wppa_widgetadmin.php:132
+msgid "Select how the widget should display."
+msgstr ""
+
+#: wppa_widgetadmin.php:143
+msgid "Links are set on the <b>Photo Albums -> Settings</b> screen."
+msgstr ""
+
+#: wppa_widgetadmin.php:154
+msgid "Type the title here"
+msgstr ""
+
+#: wppa_widgetadmin.php:155
+msgid "Url:"
+msgstr ""
+
+#: wppa_widgetadmin.php:156
+msgid "Type your custom url here"
+msgstr ""
+
+#: wppa_widgetadmin.php:157
+msgid "Enter the title and the url. Do'nt forget the HTTP://"
+msgstr ""
+
+#: wppa_widgetadmin.php:164
+msgid "Subtitle:"
+msgstr ""
+
+#: wppa_widgetadmin.php:170
+msgid "Photo Name"
+msgstr ""
+
+#: wppa_widgetadmin.php:173
+msgid "Select the content of the subtitle."
+msgstr ""
+
+#: wppa_widgetfunctions.php:90
+msgid "- select album(s) -"
+msgstr ""
+
+#: wppa_widgetfunctions.php:120
+msgid "- all albums -"
+msgstr ""
+
+#: wppa_widgetfunctions.php:121
+msgid "- all -separate- albums -"
+msgstr ""
+
+#: wppa_widgetfunctions.php:122
+msgid "- all albums except -separate-"
+msgstr ""
+
+#: theme/photo-album-page.php:33
+msgid "Pages:"
+msgstr ""
+

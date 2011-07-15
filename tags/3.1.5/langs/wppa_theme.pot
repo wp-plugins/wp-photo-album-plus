@@ -1,0 +1,343 @@
+# Translation of the WordPress plugin   by .
+# Copyright (C) 2010
+# This file is distributed under the same license as the  package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2010.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: wppa\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-07-11 11:59+0100\n"
+"PO-Revision-Date: 2011-07-11 11:59+0100\n"
+"Last-Translator: J.N. Breetvelt <OpaJaap@OpaJaap.nl>\n"
+"Language-Team: OpaJaap <OpaJaap@OpaJaap.nl>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-KeywordsList: __a\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPath-1: theme\n"
+
+#: wppa_commonfunctions.php:334
+#, php-format
+msgid "Rating: %s"
+msgstr ""
+
+#: wppa_commonfunctions.php:404
+msgid "--- none ---"
+msgstr ""
+
+#: wppa_commonfunctions.php:405
+msgid "--- separate ---"
+msgstr ""
+
+#: wppa_commonfunctions.php:502
+msgid "1 second"
+msgstr ""
+
+#: wppa_commonfunctions.php:503
+msgid "seconds"
+msgstr ""
+
+#: wppa_commonfunctions.php:507
+msgid "1 minute"
+msgstr ""
+
+#: wppa_commonfunctions.php:508
+msgid "minutes"
+msgstr ""
+
+#: wppa_commonfunctions.php:512
+msgid "1 hour"
+msgstr ""
+
+#: wppa_commonfunctions.php:513
+msgid "hours"
+msgstr ""
+
+#: wppa_commonfunctions.php:517
+msgid "1 day"
+msgstr ""
+
+#: wppa_commonfunctions.php:518
+msgid "days"
+msgstr ""
+
+#: wppa_commonfunctions.php:522
+msgid "1 week"
+msgstr ""
+
+#: wppa_commonfunctions.php:523
+msgid "weeks"
+msgstr ""
+
+#: wppa_commonfunctions.php:527
+msgid "1 month"
+msgstr ""
+
+#: wppa_commonfunctions.php:528
+msgid "months"
+msgstr ""
+
+#: wppa_commonfunctions.php:531
+msgid "1 year"
+msgstr ""
+
+#: wppa_commonfunctions.php:532
+msgid "years"
+msgstr ""
+
+#: wppa_functions.php:31
+msgid "There are"
+msgstr ""
+
+#: wppa_functions.php:31
+msgid "photo albums. The last album added is"
+msgstr ""
+
+#: wppa_functions.php:35
+msgid ", a subalbum of"
+msgstr ""
+
+#: wppa_functions.php:86
+msgid "Home"
+msgstr ""
+
+#: wppa_functions.php:124
+#: wppa_functions.php:1912
+#: wppa_non_admin.php:81
+msgid "Slideshow"
+msgstr ""
+
+#: wppa_functions.php:130
+msgid "Searchstring:"
+msgstr ""
+
+#: wppa_functions.php:133
+msgid "Top rated photos"
+msgstr ""
+
+#: wppa_functions.php:826
+msgid "You must login to enter a comment"
+msgstr ""
+
+#: wppa_functions.php:882
+msgid "<b>ERROR: Attempt to enter an invalid rating.</b>"
+msgstr ""
+
+#: wppa_functions.php:1065
+msgid "Edit!"
+msgstr ""
+
+#: wppa_functions.php:1069
+msgid "Send!"
+msgstr ""
+
+#: wppa_functions.php:1094
+msgid "Your name:"
+msgstr ""
+
+#: wppa_functions.php:1098
+msgid "Your email:"
+msgstr ""
+
+#: wppa_functions.php:1102
+msgid "Your comment:"
+msgstr ""
+
+#: wppa_functions.php:1112
+#, php-format
+msgid "%d  comments"
+msgstr ""
+
+#: wppa_functions.php:1113
+msgid "Leave a comment"
+msgstr ""
+
+#: wppa_functions.php:1368
+msgid "Prev.&nbsp;page"
+msgstr ""
+
+#: wppa_functions.php:1372
+msgid "Next&nbsp;page"
+msgstr ""
+
+#: wppa_functions.php:1837
+msgid "Link to"
+msgstr ""
+
+#: wppa_functions.php:1841
+msgid "Page is not available."
+msgstr ""
+
+#: wppa_functions.php:1847
+#: wppa_functions.php:1921
+msgid "View the album"
+msgstr ""
+
+#: wppa_functions.php:1852
+msgid "View the cover photo"
+msgstr ""
+
+#: wppa_functions.php:1853
+msgid "View the cover photos"
+msgstr ""
+
+#: wppa_functions.php:1912
+msgid "Browse photos"
+msgstr ""
+
+#: wppa_functions.php:1922
+msgid "View"
+msgstr ""
+
+#: wppa_functions.php:1925
+msgid "album"
+msgstr ""
+
+#: wppa_functions.php:1928
+msgid "albums"
+msgstr ""
+
+#: wppa_functions.php:1932
+msgid "and"
+msgstr ""
+
+#: wppa_functions.php:1936
+msgid "photo"
+msgstr ""
+
+#: wppa_functions.php:1939
+msgid "photos"
+msgstr ""
+
+#: wppa_functions.php:2123
+msgid "To see the full size images, you need to enable javascript in your browser."
+msgstr ""
+
+#: wppa_functions.php:2156
+msgid "Slower"
+msgstr ""
+
+#: wppa_functions.php:2157
+#: wppa_non_admin.php:82
+msgid "Start"
+msgstr ""
+
+#: wppa_functions.php:2158
+msgid "Faster"
+msgstr ""
+
+#: wppa_functions.php:2181
+msgid "Click to start/stop"
+msgstr ""
+
+#: wppa_functions.php:2426
+msgid "Double click to start/stop slideshow running"
+msgstr ""
+
+#: wppa_functions.php:2602
+msgid "- - - Rating enabled - - -"
+msgstr ""
+
+#: wppa_functions.php:2611
+msgid "very low"
+msgstr ""
+
+#: wppa_functions.php:2612
+msgid "low"
+msgstr ""
+
+#: wppa_functions.php:2613
+msgid "average"
+msgstr ""
+
+#: wppa_functions.php:2614
+msgid "high"
+msgstr ""
+
+#: wppa_functions.php:2615
+msgid "very high"
+msgstr ""
+
+#: wppa_functions.php:2620
+#: wppa_functions.php:2625
+msgid "Average&nbsp;rating"
+msgstr ""
+
+#: wppa_functions.php:2634
+#: wppa_functions.php:2637
+msgid "My&nbsp;rating"
+msgstr ""
+
+#: wppa_functions.php:2640
+msgid "You must login to vote"
+msgstr ""
+
+#: wppa_non_admin.php:83
+msgid "Stop"
+msgstr ""
+
+#: wppa_non_admin.php:84
+msgid "Photo"
+msgstr ""
+
+#: wppa_non_admin.php:85
+msgid "of"
+msgstr ""
+
+#: wppa_non_admin.php:86
+msgid "Prev.&nbsp;photo"
+msgstr ""
+
+#: wppa_non_admin.php:87
+msgid "Next&nbsp;photo"
+msgstr ""
+
+#: wppa_non_admin.php:88
+msgid "Prev."
+msgstr ""
+
+#: wppa_non_admin.php:89
+msgid "Next"
+msgstr ""
+
+#: wppa_non_admin.php:93
+msgid "Please enter your name"
+msgstr ""
+
+#: wppa_non_admin.php:94
+msgid "Please enter a valid email address"
+msgstr ""
+
+#: wppa_non_admin.php:95
+msgid "Please enter a comment"
+msgstr ""
+
+#: wppa_slideshow_widget.php:28
+msgid "Sidebar Slideshow"
+msgstr ""
+
+#: wppa_slideshow_widget.php:80
+msgid "No album defined yet."
+msgstr ""
+
+#: wppa_toptenwidget.php:48
+msgid "View the top rated photos"
+msgstr ""
+
+#: wppa_toptenwidget.php:62
+#: wppa_widget.php:55
+msgid "Photo not found."
+msgstr ""
+
+#: wppa_widget.php:25
+msgid "Photo Of The Day"
+msgstr ""
+
+#: theme/wppa_theme.php:80
+msgid "No albums or photos found matching your search criteria."
+msgstr ""
+
