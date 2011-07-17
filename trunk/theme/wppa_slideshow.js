@@ -1,5 +1,5 @@
 ﻿// Slide show variables and functions
-// This is wppa_slideshow.js version 3.1.4
+// This is wppa_slideshow.js version 3.1.6
 //
 
 var wppa_slides = new Array();

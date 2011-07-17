@@ -3,26 +3,28 @@
 * Package: wp-photo-album-plus
 *
 * display the top rated photos
-* Version 3.0.6
+* Version 3.1.6
 */
 class TopTenWidget extends WP_Widget {
     /** constructor */
     function TopTenWidget() {
         parent::WP_Widget(false, $name = 'Top Ten Photos');	
-		$widget_ops = array('classname' => 'wppa_topten_widget', 'description' => __( 'WPPA+ Top Ten Rated Photos', 'wppa') );	//
-		$this->WP_Widget('wppa_topten_widget', __('Top Ten Photos', 'wppa'), $widget_ops);															//
+		$widget_ops = array('classname' => 'wppa_topten_widget', 'description' => __( 'WPPA+ Top Ten Rated Photos', 'wppa') );
+		$this->WP_Widget('wppa_topten_widget', __('Top Ten Photos', 'wppa'), $widget_ops);
     }
 
 	/** @see WP_Widget::widget */
     function widget($args, $instance) {		
-		global $widget_content;
+	//	global $widget_content;
 		global $wpdb;
+		global $wppa_opt;
+		global $wppa;
 
         extract( $args );
 		
  		$widget_title = apply_filters('widget_title', empty( $instance['title'] ) ? __('Top Ten Photos', 'wppa') : $instance['title']);
 
-	$instance = wp_parse_args( (array) $instance, array( 'title' => '', 'album' => '' ) );
+		$instance = wp_parse_args( (array) $instance, array( 'title' => '', 'album' => '' ) );
 
 		$page = get_option('wppa_topten_widget_linkpage', '0');
 		$max = get_option('wppa_topten_count', '10');
@@ -47,15 +49,23 @@ class TopTenWidget extends WP_Widget {
 				$no_album = !$album;
 				if ($no_album) $tit = __a('View the top rated photos', 'wppa'); else $tit = '';
 				$link = wppa_get_imglnk_a('topten', $image['id'], '', $tit, $no_album);
-				if ($link) {
-					$widget_content .= "\n\t".'<a href="'.$link['url'].'" title="'.$link['title'].'">';
-				}
 				$file = wppa_get_thumb_path_by_id($image['id']);
 				$imgstyle = wppa_get_imgstyle($file, $maxw, 'center', 'ttthumb');
 				$imgevents = wppa_get_imgevents('thumb', $image['id'], true);
-				$widget_content .= "\n\t\t".'<img src="'.$imgurl.'" style="'.$imgstyle.'" '.$imgevents.' alt="'.esc_attr(wppa_qtrans($image['name'])).'">';
+				$title = esc_attr(wppa_qtrans(stripslashes($image['description'])));
+				
 				if ($link) {
-					$widget_content .= "\n\t".'</a>';
+					if ($wppa_opt['wppa_topten_widget_linktype'] == 'fullpopup') {
+						$widget_content .= "\n\t".'<img id="i-'.$image['id'].'-'.$wppa['master_occur'].'" title="'.$title.'" src="'.$imgurl.'" style="'.$imgstyle.'" '.$imgevents.' onclick="'.$link['url'].'" alt="'.esc_attr(wppa_qtrans($image['name'])).'">';					
+					}
+					else {
+						$widget_content .= "\n\t".'<a href="'.$link['url'].'" title="'.$link['title'].'">';
+							$widget_content .= "\n\t\t".'<img id="i-'.$image['id'].'-'.$wppa['master_occur'].'" title="'.$title.'" src="'.$imgurl.'" style="'.$imgstyle.'" '.$imgevents.' alt="'.esc_attr(wppa_qtrans($image['name'])).'">';
+						$widget_content .= "\n\t".'</a>';
+					}
+				}
+				else {
+					$widget_content .= "\n\t".'<img id="i-'.$image['id'].'-'.$wppa['master_occur'].'" title="'.$title.'" src="'.$imgurl.'" style="'.$imgstyle.'" '.$imgevents.' alt="'.esc_attr(wppa_qtrans($image['name'])).'">';
 				}
 			}
 			else {	// No image

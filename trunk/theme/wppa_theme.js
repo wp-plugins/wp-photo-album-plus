@@ -1,11 +1,12 @@
 // Theme variables and functions
-// This is wppa_theme.js version 3.0.1
+// This is wppa_theme.js version 3.1.6
 //
 
 var wppa_bgcolor_img = '';
 var wppa_timer = new Array();
 var wppa_saved_id = new Array();
-var wppa_popup_nolink = false;
+var wppa_popup_linktype = '';
+var wppa_popup_onclick = new Array();
 
 // Popup of thumbnail images 
 function wppa_popup(mocc, elm, id, rating) {
@@ -23,11 +24,16 @@ function wppa_popup(mocc, elm, id, rating) {
 	
 	// Give this' occurrances popup its content
 	if (document.getElementById('x-'+id+'-'+mocc)) {
-		if (wppa_popup_nolink) {
-			jQuery('#wppa-popup-'+mocc).html('<div class="wppa-popup" style="background-color:'+wppa_bgcolor_img+'; text-align:center;"><img id="wppa-img-'+mocc+'" src="'+elm.src+'" title="" style="border-width: 0px;" /><div id="wppa-name-'+mocc+'" style="display:none; padding:2px;" class="wppa_pu_info">'+elm.alt+'</div><div id="wppa-desc-'+mocc+'" style="clear:both; display:none;" class="wppa_pu_info">'+elm.title+'</div><div id="wppa-rat-'+mocc+'" style="clear:both; display:none;" class="wppa_pu_info">'+rating+'</div></div>');
-		}
-		else {
-			jQuery('#wppa-popup-'+mocc).html('<div class="wppa-popup" style="background-color:'+wppa_bgcolor_img+'; text-align:center;"><a id="wppa-a" href="'+document.getElementById('x-'+id+'-'+mocc).href+'"><img id="wppa-img-'+mocc+'" src="'+elm.src+'" title="" style="border-width: 0px;" /></a><div id="wppa-name-'+mocc+'" style="display:none; padding:2px;" class="wppa_pu_info">'+elm.alt+'</div><div id="wppa-desc-'+mocc+'" style="clear:both; display:none;" class="wppa_pu_info">'+elm.title+'</div><div id="wppa-rat-'+mocc+'" style="clear:both; display:none;" class="wppa_pu_info">'+rating+'</div></div>');
+
+		switch (wppa_popup_linktype) {
+			case 'none':
+				jQuery('#wppa-popup-'+mocc).html('<div class="wppa-popup" style="background-color:'+wppa_bgcolor_img+'; text-align:center;"><img id="wppa-img-'+mocc+'" src="'+elm.src+'" title="" style="border-width: 0px;" /><div id="wppa-name-'+mocc+'" style="display:none; padding:2px;" class="wppa_pu_info">'+elm.alt+'</div><div id="wppa-desc-'+mocc+'" style="clear:both; display:none;" class="wppa_pu_info">'+elm.title+'</div><div id="wppa-rat-'+mocc+'" style="clear:both; display:none;" class="wppa_pu_info">'+rating+'</div></div>');
+				break;
+			case 'fullpopup':
+				jQuery('#wppa-popup-'+mocc).html('<div class="wppa-popup" style="background-color:'+wppa_bgcolor_img+'; text-align:center;"><img id="wppa-img-'+mocc+'" src="'+elm.src+'" title="" style="border-width: 0px;" onclick="'+wppa_popup_onclick[id]+'" /><div id="wppa-name-'+mocc+'" style="display:none; padding:2px;" class="wppa_pu_info">'+elm.alt+'</div><div id="wppa-desc-'+mocc+'" style="clear:both; display:none;" class="wppa_pu_info">'+elm.title+'</div><div id="wppa-rat-'+mocc+'" style="clear:both; display:none;" class="wppa_pu_info">'+rating+'</div></div>');
+				break;
+			default:
+				jQuery('#wppa-popup-'+mocc).html('<div class="wppa-popup" style="background-color:'+wppa_bgcolor_img+'; text-align:center;"><a id="wppa-a" href="'+document.getElementById('x-'+id+'-'+mocc).href+'"><img id="wppa-img-'+mocc+'" src="'+elm.src+'" title="" style="border-width: 0px;" /></a><div id="wppa-name-'+mocc+'" style="display:none; padding:2px;" class="wppa_pu_info">'+elm.alt+'</div><div id="wppa-desc-'+mocc+'" style="clear:both; display:none;" class="wppa_pu_info">'+elm.title+'</div><div id="wppa-rat-'+mocc+'" style="clear:both; display:none;" class="wppa_pu_info">'+rating+'</div></div>');
 		}
 	}
 	
@@ -69,3 +75,35 @@ function wppa_popready(mocc) {
 function wppa_popdown(mocc) {	//	return; //debug
 	jQuery('#wppa-popup-'+mocc).html("");
 }
+
+// Popup of fullsize image
+function wppa_full_popup(mocc, id, url, xwidth, xheight) {
+	var height = xheight+50;
+	var width  = xwidth+14;
+	var name = '';
+	var desc = '';
+	
+	var elm = document.getElementById('i-'+id+'-'+mocc);
+	if (elm) {
+		name = elm.alt;
+		desc = elm.title;
+	}	
+	
+	var wnd = window.open('', '', 'width='+width+', height='+height+', location=no, resizable=no');
+	wnd.document.write('<html>');
+		wnd.document.write('<head>');	
+			wnd.document.write('<style type="text/css">body{margin:0; padding:6px; background-color:'+wppa_bgcolor_img+'; text-align:center;}</style>');
+			wnd.document.write('<title>'+name+'</title>');
+			wnd.document.write('<script type="text/javascript">function wppa_print(){document.getElementById("wppa_printer").style.visibility="hidden";window.print();document.getElementById("wppa_printer").style.visibility="visible";}</script>');
+		wnd.document.write('</head>');
+		wnd.document.write('<body>');
+			wnd.document.write('<div style="width:'+xwidth+'px;">');
+				wnd.document.write('<img src="'+url+'" style="padding-bottom:6px;" /><br/>');
+				wnd.document.write('<div style="text-align:center">'+desc+'</div>');
+				var left = xwidth-30;
+				wnd.document.write('<img src="'+wppa_imgdir+'printer.png" id="wppa_printer" title="Print" style="position:absolute; top:6px; left:'+left+'px; background-color:'+wppa_bgcolor_img+'; padding: 2px; cursor:pointer;" onclick="wppa_print();" />');
+			wnd.document.write('</div>');
+		wnd.document.write('</body>');
+	wnd.document.write('</html>');
+}
+

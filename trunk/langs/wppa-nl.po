@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wp-photo-album-plus\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-07-11 11:52+0100\n"
-"PO-Revision-Date: 2011-07-11 11:56+0100\n"
+"POT-Creation-Date: 2011-07-15 14:21+0100\n"
+"PO-Revision-Date: 2011-07-15 14:21+0100\n"
 "Last-Translator: J.N. Breetvelt <OpaJaap@OpaJaap.nl>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -262,12 +262,12 @@ msgid "--- all ---"
 msgstr "--- alle ---"
 
 #: wppa_adminfunctions.php:954
-#: wppa_commonfunctions.php:404
+#: wppa_commonfunctions.php:403
 msgid "--- none ---"
 msgstr "--- geen ---"
 
 #: wppa_adminfunctions.php:971
-#: wppa_commonfunctions.php:405
+#: wppa_commonfunctions.php:404
 msgid "--- separate ---"
 msgstr "--- afzonderlijk ---"
 
@@ -834,59 +834,59 @@ msgstr "Vorige&nbsp;pagina"
 msgid "Next page"
 msgstr "Volgende&nbsp;pagina"
 
-#: wppa_commonfunctions.php:466
+#: wppa_commonfunctions.php:465
 msgid "1 second"
 msgstr "1 seconde"
 
-#: wppa_commonfunctions.php:467
+#: wppa_commonfunctions.php:466
 msgid "seconds"
 msgstr "seconden"
 
-#: wppa_commonfunctions.php:471
+#: wppa_commonfunctions.php:470
 msgid "1 minute"
 msgstr "1 minuut"
 
-#: wppa_commonfunctions.php:472
+#: wppa_commonfunctions.php:471
 msgid "minutes"
 msgstr "minuten"
 
-#: wppa_commonfunctions.php:476
+#: wppa_commonfunctions.php:475
 msgid "1 hour"
 msgstr "1 uur"
 
-#: wppa_commonfunctions.php:477
+#: wppa_commonfunctions.php:476
 msgid "hours"
 msgstr "uur"
 
-#: wppa_commonfunctions.php:481
+#: wppa_commonfunctions.php:480
 msgid "1 day"
 msgstr "1 dag"
 
-#: wppa_commonfunctions.php:482
+#: wppa_commonfunctions.php:481
 msgid "days"
 msgstr "dagen"
 
-#: wppa_commonfunctions.php:486
+#: wppa_commonfunctions.php:485
 msgid "1 week"
 msgstr "1 week"
 
-#: wppa_commonfunctions.php:487
+#: wppa_commonfunctions.php:486
 msgid "weeks"
 msgstr "weken"
 
-#: wppa_commonfunctions.php:491
+#: wppa_commonfunctions.php:490
 msgid "1 month"
 msgstr "1 maand"
 
-#: wppa_commonfunctions.php:492
+#: wppa_commonfunctions.php:491
 msgid "months"
 msgstr "maanden"
 
-#: wppa_commonfunctions.php:495
+#: wppa_commonfunctions.php:494
 msgid "1 year"
 msgstr "1 jaar"
 
-#: wppa_commonfunctions.php:496
+#: wppa_commonfunctions.php:495
 msgid "years"
 msgstr "jaren"
 
@@ -969,23 +969,23 @@ msgstr "Kan het foto uitvoer bestand niet aanmaken."
 msgid "Could not read photo data."
 msgstr "Kan de foto gegevens niet lezen."
 
-#: wppa_functions.php:991
+#: wppa_functions.php:1004
 msgid "Comment edited"
 msgstr "Reactie bewerkt"
 
-#: wppa_functions.php:994
+#: wppa_functions.php:1007
 msgid "Comment added"
 msgstr "Reactie toegevoegd"
 
-#: wppa_functions.php:1000
+#: wppa_functions.php:1013
 msgid "Could not process comment"
 msgstr "Kan de reactie niet verwerken"
 
-#: wppa_functions.php:1656
+#: wppa_functions.php:1669
 msgid "<b>ERROR: Illegal attempt to enter a rating.</b>"
 msgstr "<b>FOUT: Verboden poging een waardering in te voeren.</b>"
 
-#: wppa_functions.php:1666
+#: wppa_functions.php:1679
 msgid "<b>ERROR: Illegal attempt to enter a comment.</b>"
 msgstr "<b>FOUT: Verboden poging een reactie in te voeren.</b>"
 
@@ -2858,6 +2858,10 @@ msgid "the fullsize photo on its own."
 msgstr "de grote foto alleen."
 
 #: wppa_settings.php:1139
+msgid "the fullsize photo with a print button."
+msgstr "de grote foto met een afdruk knop."
+
+#: wppa_settings.php:1139
 #: wppa_settings.php:1141
 #: wppa_settings.php:1143
 #: wppa_settings.php:1145
@@ -3436,12 +3440,12 @@ msgid "WPPA+ Top Ten Rated Photos"
 msgstr "WPPA+ Top Tien gewaardeerde foto's"
 
 #: wppa_toptenwidget.php:13
-#: wppa_toptenwidget.php:23
-#: wppa_toptenwidget.php:87
+#: wppa_toptenwidget.php:24
+#: wppa_toptenwidget.php:95
 msgid "Top Ten Photos"
 msgstr "Top Tien foto's"
 
-#: wppa_toptenwidget.php:100
+#: wppa_toptenwidget.php:108
 msgid "You can set the behaviour of this widget in the <b>Photo Albums -> Settings</b> admin page."
 msgstr "U kunt het gedrag van deze widget bepalen in de <b>Foto Albums -> Instellingen</b> admin pagina."
 

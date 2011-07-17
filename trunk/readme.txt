@@ -2,12 +2,12 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate
-Version: 3.1.5
+Version: 3.1.6
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
 Requires at least: 3.0
-Tested up to: 3.2
+Tested up to: 3.2.1
 
 This plugin is designed to easily manage and display your photo albums and slideshows within your WordPress site. 
 Additionally there are four widgets: Photo of the day, a Search Photos widget, a Top Ten Rated photo widget and a Mini slideshow widget.
@@ -103,6 +103,22 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 
 
 == Changelog ==
+
+= 3.1.6 =
+
+= New features =
+
+* New link type added for thumbnails and topten thumbnails: the fullsize photo with a print button. 
+This will open the fullsize photo in a new browser window and enables you to print the photo with the description below it.
+
+= Bug Fixes =
+
+* Fixed an RSS bug in displaying thumbnails.
+
+= Other changes =
+
+* Reverted the change made in version 3.1.3 for the algorithm to decide if the indicator must be printed. 
+It turned out to create a bigger problem than it solved. (This change was made in 3.1.5 but not yet documented as such.
 
 
 = 3.1.4 =

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 3.1.1
+* Version 3.1.6
 *
 */
 
@@ -1136,8 +1136,8 @@ global $wppa_api_version;
 				<tbody class="wppa_table_6">
 					<?php 
 					// Linktypes
-					$options_linktype = array(__('no link at all.', 'wppa'), __('the plain photo (file).', 'wppa'), __('the full size photo in a slideshow.', 'wppa'), __('the fullsize photo on its own.', 'wppa'), __('the photo specific link.', 'wppa'));
-					$values_linktype = array('none', 'file', 'photo', 'single', 'indiv');
+					$options_linktype = array(__('no link at all.', 'wppa'), __('the plain photo (file).', 'wppa'), __('the full size photo in a slideshow.', 'wppa'), __('the fullsize photo on its own.', 'wppa'), __('the fullsize photo with a print button.', 'wppa'), __('the photo specific link.', 'wppa'));
+					$values_linktype = array('none', 'file', 'photo', 'single', 'fullpopup', 'indiv');
 					$options_linktype_album = array(__('no link at all.', 'wppa'), __('the plain photo (file).', 'wppa'), __('the content of the album.', 'wppa'), __('the full size photo in a slideshow.', 'wppa'), __('the fullsize photo on its own.', 'wppa'), __('the photo specific link.', 'wppa'));
 					$values_linktype_album = array('none', 'file', 'album', 'photo', 'single', 'indiv');
 					$options_linktype_ss_widget = array(__('no link at all.', 'wppa'), __('the plain photo (file).', 'wppa'), __('defined at widget activation.', 'wppa'), __('the content of the album.', 'wppa'), __('the full size photo in a slideshow.', 'wppa'), __('the fullsize photo on its own.', 'wppa'), __('the photo specific link.', 'wppa'));

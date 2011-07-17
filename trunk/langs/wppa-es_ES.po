@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wppa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-07-11 11:52+0100\n"
-"PO-Revision-Date: 2011-07-11 11:52+0100\n"
+"POT-Creation-Date: 2011-07-15 14:20+0100\n"
+"PO-Revision-Date: 2011-07-15 14:20+0100\n"
 "Last-Translator: J.N. Breetvelt <OpaJaap@OpaJaap.nl>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -289,7 +289,7 @@ msgid "--- all ---"
 msgstr "--- predeterminado ---"
 
 #: wppa_adminfunctions.php:954
-#: wppa_commonfunctions.php:404
+#: wppa_commonfunctions.php:403
 #: wppa_settings.php:803
 #: wppa_settings.php:815
 #: wppa_settings.php:867
@@ -299,7 +299,7 @@ msgid "--- none ---"
 msgstr "--- ninguno ---"
 
 #: wppa_adminfunctions.php:971
-#: wppa_commonfunctions.php:405
+#: wppa_commonfunctions.php:404
 msgid "--- separate ---"
 msgstr "--- separar ---"
 
@@ -954,66 +954,66 @@ msgstr "Anterior"
 msgid "Next page"
 msgstr "Siguiente"
 
-#: wppa_commonfunctions.php:466
+#: wppa_commonfunctions.php:465
 msgid "1 second"
 msgstr ""
 
-#: wppa_commonfunctions.php:467
+#: wppa_commonfunctions.php:466
 msgid "seconds"
 msgstr ""
 
-#: wppa_commonfunctions.php:471
+#: wppa_commonfunctions.php:470
 msgid "1 minute"
 msgstr ""
 
-#: wppa_commonfunctions.php:472
+#: wppa_commonfunctions.php:471
 msgid "minutes"
 msgstr ""
 
-#: wppa_commonfunctions.php:476
+#: wppa_commonfunctions.php:475
 #, fuzzy
 msgid "1 hour"
 msgstr "hora."
 
-#: wppa_commonfunctions.php:477
+#: wppa_commonfunctions.php:476
 #, fuzzy
 msgid "hours"
 msgstr "hora."
 
-#: wppa_commonfunctions.php:481
+#: wppa_commonfunctions.php:480
 #, fuzzy
 msgid "1 day"
 msgstr "día."
 
-#: wppa_commonfunctions.php:482
+#: wppa_commonfunctions.php:481
 #, fuzzy
 msgid "days"
 msgstr "día."
 
-#: wppa_commonfunctions.php:486
+#: wppa_commonfunctions.php:485
 #, fuzzy
 msgid "1 week"
 msgstr "semana."
 
-#: wppa_commonfunctions.php:487
+#: wppa_commonfunctions.php:486
 #, fuzzy
 msgid "weeks"
 msgstr "semana."
 
-#: wppa_commonfunctions.php:491
+#: wppa_commonfunctions.php:490
 #, fuzzy
 msgid "1 month"
 msgstr "1 Comentario"
 
-#: wppa_commonfunctions.php:492
+#: wppa_commonfunctions.php:491
 msgid "months"
 msgstr ""
 
-#: wppa_commonfunctions.php:495
+#: wppa_commonfunctions.php:494
 msgid "1 year"
 msgstr ""
 
-#: wppa_commonfunctions.php:496
+#: wppa_commonfunctions.php:495
 msgid "years"
 msgstr ""
 
@@ -1102,26 +1102,26 @@ msgstr "No se pudo actualizar la foto."
 msgid "Could not read photo data."
 msgstr "No se pudo actualizar la foto."
 
-#: wppa_functions.php:991
+#: wppa_functions.php:1004
 #, fuzzy
 msgid "Comment edited"
 msgstr "1 Comentario"
 
-#: wppa_functions.php:994
+#: wppa_functions.php:1007
 #, fuzzy
 msgid "Comment added"
 msgstr "1 Comentario"
 
-#: wppa_functions.php:1000
+#: wppa_functions.php:1013
 #, fuzzy
 msgid "Could not process comment"
 msgstr "No se pudo actualizar la foto."
 
-#: wppa_functions.php:1656
+#: wppa_functions.php:1669
 msgid "<b>ERROR: Illegal attempt to enter a rating.</b>"
 msgstr ""
 
-#: wppa_functions.php:1666
+#: wppa_functions.php:1679
 msgid "<b>ERROR: Illegal attempt to enter a comment.</b>"
 msgstr ""
 
@@ -3135,6 +3135,11 @@ msgid "the fullsize photo on its own."
 msgstr "Tipo de letra para el nombre de las fotos en tamaño completo.:"
 
 #: wppa_settings.php:1139
+#, fuzzy
+msgid "the fullsize photo with a print button."
+msgstr "Tipo de letra para el nombre de las fotos en tamaño completo.:"
+
+#: wppa_settings.php:1139
 #: wppa_settings.php:1141
 #: wppa_settings.php:1143
 #: wppa_settings.php:1145
@@ -3761,13 +3766,13 @@ msgid "WPPA+ Top Ten Rated Photos"
 msgstr ""
 
 #: wppa_toptenwidget.php:13
-#: wppa_toptenwidget.php:23
-#: wppa_toptenwidget.php:87
+#: wppa_toptenwidget.php:24
+#: wppa_toptenwidget.php:95
 #, fuzzy
 msgid "Top Ten Photos"
 msgstr "Foto de Portada:"
 
-#: wppa_toptenwidget.php:100
+#: wppa_toptenwidget.php:108
 msgid "You can set the behaviour of this widget in the <b>Photo Albums -> Settings</b> admin page."
 msgstr ""
 
