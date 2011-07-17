@@ -3,21 +3,14 @@
 * Package: wp-photo-album-plus
 *
 * get the albums via filter
-* version 3.1.5
+* version 3.1.6
 *
 */
 
 add_action('init', 'wppa_do_filter');
 
 function wppa_do_filter() {
-	add_filter('the_excerpt', 'wppa_flag_excerpt', 1);
 	add_filter('the_content', 'wppa_albums_filter', 10);
-}
-
-function wppa_flag_excerpt($post) {
-global $wppa;
-	$wppa['is_excerpt'] = true;
-	return $post;
 }
 
 function wppa_albums_filter($post) {
@@ -164,27 +157,25 @@ global $wppa;
 			}
 			
 			if ($wppa['debug']) {
-				if ($wppa['is_excerpt']) $msg = 'Excerpt switch on';
-				else $msg = 'Excerpt switch off';
 				
-				if ($do_it) $msg .= ', doit on';
-				else $msg .= ', doit off';
+				if ($do_it) $msg .= 'Doit is on';
+				else $msg .= 'Doit is off';
 				
 				wppa_dbg_msg($msg);
 			}
 			
-			if ($do_it) { // ($wppa['rendering_enabled'] || is_feed()) && !is_archive() &&!is_search()) {	// Insert the html
-				$post_new .= wppa_albums();		
+			if ($do_it) { 
+				$post_new .= wppa_albums();			// Insert the HTML
 			}
-			else {											// Or an indicator
-				if ($wppa['is_excerpt']) $post_new .= '[WPPA+ Photo display]';	// Tags will be stripped
-				else $post_new .= '<span style="color:blue; font-weight:bold; ">[WPPA+ Photo display]</span>';	
+			else {									// Or an indicator
+				$post_new .= '<span style="color:blue; font-weight:bold; ">[WPPA+ Photo display]</span>';	
 			}
+			
 			$wppa_pos = strpos($post_old, '%%wppa%%');						// Refresh the next invocation position, if any
 		}
 	}
 	$post_new .= wppa_force_balance_pee($post_old);							// Copy the rest of the post/page
-	$wppa['is_excerpt'] = false;											// Reset for the next occurrance			
+		
 	return $post_new;
 }
 

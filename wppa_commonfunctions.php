@@ -2,11 +2,11 @@
 /* wppa_commonfinctions.php
 *
 * Functions used in admin and in themes
-* version 3.1.4
+* version 3.1.6
 *
 */
 global $wppa_api_version;
-$wppa_api_version = '3-1-4-000';
+$wppa_api_version = '3-1-6-000';
 // Initialize globals and option settings
 function wppa_initialize_runtime($force = false) {
 global $wppa;
@@ -57,8 +57,7 @@ global $wppa_api_version;
 			'comment_photo' => '0',
 			'comment_user' => '',
 			'comment_email' => '',
-			'comment_text' => '',
-			'is_excerpt' => false
+			'comment_text' => ''
 		);
 		if (isset($_POST['wppa-searchstring'])) $wppa['src'] = true;
 		if (isset($_GET['wppa_src'])) $wppa['src'] = true;

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the non admin stuff
-* Version 3.1.4
+* Version 3.1.6
 *
 */
 
@@ -57,12 +57,11 @@ global $wppa_opt;
 
 	echo("\n<!-- WPPA+ Runtime parameters -->\n");
 	
-	/* This goes into wppa_theme.js */ 
 	echo('<script type="text/javascript"><!--//--><![CDATA[//><!--'."\n");
 	
+		/* This goes into wppa_theme.js */ 
 		echo("\t".'wppa_bgcolor_img = "'.$wppa_opt['wppa_bgcolor_img'].'";'."\n");
-		if ($wppa_opt['wppa_thumb_linktype'] == 'none') echo("\twppa_popup_nolink = true;\n"); 
-		else echo("\twppa_popup_nolink = false;\n");
+		echo("\twppa_popup_linktype = '".$wppa_opt['wppa_thumb_linktype']."';\n"); 
 
 		/* This goes into wppa_slideshow.js */
 		if ($wppa_opt['wppa_fadein_after_fadeout']) echo("\t".'wppa_fadein_after_fadeout = true;'."\n");

@@ -3,13 +3,13 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions and API modules
-* Version 3.1.4
+* Version 3.1.6
 *
 * dbg
 */
 /* Moved to wppa_commonfunctions.php:
 global $wppa_api_version;
-$wppa_api_version = '3-1-4-000';
+$wppa_api_version = '3-1-6-000';
 */
 
 
@@ -584,7 +584,7 @@ global $wppa;
 	
 	$occur = $wppa['in_widget'] ? $wppa['widget_occur'] : $wppa['occur'];
 	$w = $wppa['in_widget'] ? 'w' : '';
-	$link = wppa_get_permalink($page).'album='.$album['id'].'&amp;slide=true'.'&amp;'.$w.'occur='.$occur;
+	$link = wppa_get_permalink($page).'album='.$album['id'].'&amp;slide'.'&amp;'.$w.'occur='.$occur;	// slide=true changed in slide
 	
 	return $link;	
 }
@@ -739,6 +739,19 @@ global $wpdb;
 	$url = get_bloginfo('wpurl').'/wp-content/uploads/wppa/'.$id.'.'.$ext;
 	
 	return $url;
+}
+
+// get path of a full sized image
+function wppa_get_photo_path($id = '') {
+global $wpdb;
+
+    if ($id == '') $id = $_GET['photo'];    
+    $id = $wpdb->escape($id);
+    
+	if (is_numeric($id)) $ext = $wpdb->get_var("SELECT ext FROM ".WPPA_PHOTOS." WHERE id=$id");
+	$path = ABSPATH.'wp-content/uploads/wppa/'.$id.'.'.$ext;
+	
+	return $path;
 }
 
 // get the name of a full sized image
@@ -2062,16 +2075,19 @@ global $wppa_opt;
 	else $title = esc_js(wppa_get_photo_name($thumb['id']));
 	
 	if (is_feed()) {
-		$wppa['out'] .= wppa_nltab().'<a href="'.get_permalink().'><img src="'.$url.'" alt="'.$thumbname.'" title="'.$thumbname.'" style="'.wppa_get_imgstyle($src, '100', '4', 'thumb').'" /></a>';
+		$wppa['out'] .= wppa_nltab().'<a href="'.get_permalink().'"><img src="'.$url.'" alt="'.$thumbname.'" title="'.$thumbname.'" style="'.wppa_get_imgstyle($src, '100', '4', 'thumb').'" /></a>';
 		return;
 	}
 	$wppa['out'] .= wppa_nltab('+').'<div id="thumbnail_frame_'.$thumb['id'].'_'.$wppa['master_occur'].'" class="thumbnail-frame" style="'.wppa_get_thumb_frame_style().'" >';
 
 		$link = wppa_get_imglnk_a('thumb', $thumb['id']);
 		if ($link) {
-			$wppa['out'] .= wppa_nltab('+').'<a href="'.$link['url'].'" class="thumb-img" id="x-'.$thumb['id'].'-'.$wppa['master_occur'].'">';
-				$wppa['out'] .= wppa_nltab().'<img src="'.$url.'" alt="'.$thumbname.'" title="'.esc_attr($title).'" style="'.$imgattr.'" '.$events.' />';
-			$wppa['out'] .= wppa_nltab('-').'</a>';
+			$wppa['out'] .= wppa_nltab('+').'<div onclick="'.$link['url'].'" class="thumb-img" id="x-'.$thumb['id'].'-'.$wppa['master_occur'].'">';
+				$wppa['out'] .= wppa_nltab().'<img id="i-'.$thumb['id'].'-'.$wppa['master_occur'].'" src="'.$url.'" alt="'.$thumbname.'" title="'.esc_attr($title).'" style="'.$imgattr.'" '.$events.' />';
+			$wppa['out'] .= wppa_nltab('-').'</div>';
+			if ($wppa_opt['wppa_thumb_linktype'] == 'fullpopup') {
+				$wppa['out'] .= '<script type="text/javascript">wppa_popup_onclick['.$thumb['id'].'] = "'.$link['url'].'";</script>'; /***/
+			}
 		}
 		else {
 			if ($wppa_opt['wppa_use_thumb_popup']) {
@@ -2926,6 +2942,7 @@ global $wpdb;
 		}
 	}
 	if (!$photo_name) $photo_name = wppa_get_photo_name($photo);
+	$photo_name_js = esc_js($photo_name);
 	$photo_name = esc_attr($photo_name);
 	
 	switch ($type) {
@@ -3026,6 +3043,24 @@ global $wpdb;
 		case 'same':
 			$result['url'] = $lnk;
 			$result['title'] = $tit;
+			return $result;
+			break;
+		case 'fullpopup':
+			$url = wppa_get_photo_url($photo);
+			$imgsize = getimagesize(wppa_get_photo_path($photo));
+			if ($imgsize) {
+				$wid = $imgsize['0'];
+				$hig = $imgsize['1'];
+			}
+			else {
+				$wid = '0';
+				$hig = '0';
+			}
+			$photo_desc = esc_js(wppa_html(stripslashes(wppa_get_photo_desc($photo))));
+
+			$result['url'] = "wppa_full_popup(".$wppa['master_occur'].", ".$photo.", '".$url."', ".$wid.", ".$hig.")";
+
+			$result['title'] = __a('Photo', 'wppa_theme').': '.$photo_name;
 			return $result;
 			break;
 		default:
