@@ -22,7 +22,7 @@ class TopTenWidget extends WP_Widget {
 
         extract( $args );
 		
- 		$widget_title = apply_filters('widget_title', empty( $instance['title'] ) ? __('Top Ten Photos', 'wppa') : $instance['title']);
+ 		$widget_title = apply_filters('widget_title', empty( $instance['title'] ) ? __a('Top Ten Photos', 'wppa_theme') : $instance['title']);
 
 		$instance = wp_parse_args( (array) $instance, array( 'title' => '', 'album' => '' ) );
 
@@ -47,7 +47,7 @@ class TopTenWidget extends WP_Widget {
 			if ($image) {
 				$imgurl = get_bloginfo('wpurl') . '/wp-content/uploads/wppa/' . $image['id'] . '.' . $image['ext'];
 				$no_album = !$album;
-				if ($no_album) $tit = __a('View the top rated photos', 'wppa'); else $tit = '';
+				if ($no_album) $tit = __a('View the top rated photos', 'wppa_theme'); else $tit = '';
 				$link = wppa_get_imglnk_a('topten', $image['id'], '', $tit, $no_album);
 				$file = wppa_get_thumb_path_by_id($image['id']);
 				$imgstyle = wppa_get_imgstyle($file, $maxw, 'center', 'ttthumb');

@@ -3,13 +3,13 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions and API modules
-* Version 3.1.6
+* Version 3.1.7
 *
 * dbg
 */
 /* Moved to wppa_commonfunctions.php:
 global $wppa_api_version;
-$wppa_api_version = '3-1-6-000';
+$wppa_api_version = '3-1-7-000';
 */
 
 
@@ -2082,14 +2082,20 @@ global $wppa_opt;
 
 		$link = wppa_get_imglnk_a('thumb', $thumb['id']);
 		if ($link) {
-			$wppa['out'] .= wppa_nltab('+').'<div onclick="'.$link['url'].'" class="thumb-img" id="x-'.$thumb['id'].'-'.$wppa['master_occur'].'">';
-				$wppa['out'] .= wppa_nltab().'<img id="i-'.$thumb['id'].'-'.$wppa['master_occur'].'" src="'.$url.'" alt="'.$thumbname.'" title="'.esc_attr($title).'" style="'.$imgattr.'" '.$events.' />';
-			$wppa['out'] .= wppa_nltab('-').'</div>';
-			if ($wppa_opt['wppa_thumb_linktype'] == 'fullpopup') {
-				$wppa['out'] .= '<script type="text/javascript">wppa_popup_onclick['.$thumb['id'].'] = "'.$link['url'].'";</script>'; /***/
+			switch($wppa_opt['wppa_thumb_linktype']) {
+				case 'fullpopup':
+					$wppa['out'] .= wppa_nltab('+').'<div onclick="'.$link['url'].'" class="thumb-img" id="x-'.$thumb['id'].'-'.$wppa['master_occur'].'">';
+						$wppa['out'] .= wppa_nltab().'<img id="i-'.$thumb['id'].'-'.$wppa['master_occur'].'" src="'.$url.'" alt="'.$thumbname.'" title="'.esc_attr($title).'" style="'.$imgattr.'" '.$events.' />';
+					$wppa['out'] .= wppa_nltab('-').'</div>';
+					$wppa['out'] .= '<script type="text/javascript">wppa_popup_onclick['.$thumb['id'].'] = "'.$link['url'].'";</script>'; /***/
+					break;
+				default:
+					$wppa['out'] .= wppa_nltab('+').'<a href="'.$link['url'].'" class="thumb-img" id="x-'.$thumb['id'].'-'.$wppa['master_occur'].'">';
+						$wppa['out'] .= wppa_nltab().'<img id="i-'.$thumb['id'].'-'.$wppa['master_occur'].'" src="'.$url.'" alt="'.$thumbname.'" title="'.esc_attr($title).'" style="'.$imgattr.'" '.$events.' />';
+					$wppa['out'] .= wppa_nltab('-').'</a>';
 			}
 		}
-		else {
+		else {	// no link
 			if ($wppa_opt['wppa_use_thumb_popup']) {
 				$wppa['out'] .= wppa_nltab('+').'<div id="x-'.$thumb['id'].'-'.$wppa['master_occur'].'">';
 					$wppa['out'] .= wppa_nltab().'<img src="'.$url.'" alt="'.$thumbname.'" title="'.esc_attr($title).'" style="'.$imgattr.'" '.$events.' />';
