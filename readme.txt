@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate
-Version: 3.1.7
+Version: 3.1.8
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -103,6 +103,16 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 
 
 == Changelog ==
+
+= 3.1.8 =
+
+= Bug fixes = 
+
+* fixed an errormessage in debug mode
+
+= New features = 
+
+* You can set the thumbnail popup image size now explicitly. (Before it was the unscaled thumbnail image)
 
 = 3.1.7 =
 
