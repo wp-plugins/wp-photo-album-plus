@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 3.1.6
+* Version 3.1.8
 *
 */
 
@@ -117,6 +117,11 @@ global $options_error;
 			if ($value == '') wppa_update_value($slug);
 			else wppa_update_numeric($slug, '0', __('Border radius', 'wppa'));
 		
+			$floor = get_option('wppa_thumbsize');
+			$temp = get_option('wppa_smallsize');
+			if ($temp > $floor) $floor = $temp;
+			wppa_update_numeric('wppa_popupsize', $floor, __('Popup size', 'wppa'), get_option('wppa_fullsize'));
+
 			// Table 2: Visibility
 			wppa_update_check('wppa_show_bread');
 			wppa_update_check('wppa_show_home');
@@ -508,6 +513,17 @@ global $wppa_api_version;
 					$slug = 'wppa_bradius';
 					$html = wppa_input($slug, '40px', '', __('pixels', 'wppa'));
 					wppa_setting($slug, '20', $name, $desc, $html, $help);
+					
+					$name = __('Popup size', 'wppa');
+					$desc = __('The size of the thumbnail popup images.', 'wppa');
+					$help = esc_js(__('Enter the size of the popup images. This size should be larger than the thumbnail size.', 'wppa'));
+					$help .= '\n'.esc_js(__('This size should also be at least the cover image size.', 'wppa'));
+					$help .= '\n'.esc_js(__('Changing the popup size may result in all thumbnails being regenerated. this may take a while.', 'wppa'));
+					$help .= '\n\n'.esc_js(__('This setting has only effect if "Thumb popup" (Table IV item 12) is checked.', 'wppa'));
+					$slug = 'wppa_popupsize';
+					$class = 'tt_normal';
+					$html = wppa_input($slug, '40px', '', __('pixels', 'wppa'));
+					wppa_setting($slug, '21', $name, $desc, $html, $help, $class);
 					
 					?>
 				</tbody>

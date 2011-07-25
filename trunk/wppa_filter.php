@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * get the albums via filter
-* version 3.1.6
+* version 3.1.8
 *
 */
 
@@ -158,8 +158,8 @@ global $wppa;
 			
 			if ($wppa['debug']) {
 				
-				if ($do_it) $msg .= 'Doit is on';
-				else $msg .= 'Doit is off';
+				if ($do_it) $msg = 'Doit is on';
+				else $msg = 'Doit is off';
 				
 				wppa_dbg_msg($msg);
 			}

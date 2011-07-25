@@ -2,11 +2,11 @@
 /* wppa_commonfinctions.php
 *
 * Functions used in admin and in themes
-* version 3.1.7
+* version 3.1.8
 *
 */
 global $wppa_api_version;
-$wppa_api_version = '3-1-7-000';
+$wppa_api_version = '3-1-8-000';
 // Initialize globals and option settings
 function wppa_initialize_runtime($force = false) {
 global $wppa;
@@ -180,6 +180,7 @@ global $wppa_api_version;
 			'wppa_potd_align' => '',
 			'wppa_comadmin_show' => '',
 			'wppa_comadmin_order' => '',
+			'wppa_popupsize' => '',
 			'permalink_structure' => ''			// This must be last
 		);
 		array_walk($wppa_opt, 'wppa_set_options');
