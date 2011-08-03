@@ -11,8 +11,6 @@ function _wppa_admin() {
 	global $wpdb;
 	global $q_config;
 
-	// Check if a message is required
-	wppa_check_update();
 	
 	// warn if the uploads directory is no writable
 	if (!is_writable(ABSPATH.'wp-content/uploads')) { 
@@ -616,7 +614,7 @@ function wppa_album_photos($id) {
 				</table>
 				
 				<p style="padding-left:7px; font-size:9px; line-height:10px; color:#666;" >
-					<?php _e('If you want this link to be used, select \'the photo specific link\' in table VI of the Photo Albums -> Settings admin page.', 'wppa') ?>
+					<?php _e('If you want this link to be used, check \'PS Overrule\' checkbox in table VI of the Photo Albums -> Settings admin page.', 'wppa') ?>
 				</p>
 
 			</div>

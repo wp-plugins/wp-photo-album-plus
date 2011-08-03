@@ -1,161 +1,22 @@
 <?php
-/* wppa_adminfunctions.php
+/* wppa-adminfunctions.php
 * Pachkage: wp-photo-album-plus
 *
 * gp admin functions
-* version 3.1.8
+* version 4.0.0
 *
+* 
 */
 
-// Set default option values
-function wppa_set_defaults($force = false) {
-global $wppa_defaults;
-
-	$wppa_defaults = array ( 'wppa_revision' 		=> '100',
-						'wppa_fullsize' 			=> '640',
-						'wppa_colwidth' 			=> '640',
-						'wppa_maxheight' 			=> '640',
-						'wppa_enlarge' 				=> 'no',
-						'wppa_resize_on_upload' 	=> 'no',
-						'wppa_fullvalign' 			=> 'fit',
-						'wppa_fullhalign' 			=> 'center',
-						'wppa_min_thumbs' 			=> '1',
-						'wppa_thumbtype' 			=> 'default',
-						'wppa_valign' 				=> 'center',
-						'wppa_thumbsize' 			=> '100',
-						'wppa_tf_width' 			=> '100',
-						'wppa_tf_height' 			=> '110',
-						'wppa_tn_margin' 			=> '4',
-						'wppa_smallsize' 			=> '150',
-						'wppa_show_bread' 			=> 'yes',
-						'wppa_show_home' 			=> 'yes',
-						'wppa_bc_separator' 		=> 'raquo',
-						'wppa_use_thumb_opacity' 	=> 'yes',
-						'wppa_thumb_opacity' 		=> '85',
-						'wppa_use_thumb_popup' 		=> 'yes',
-						'wppa_use_cover_opacity' 	=> 'yes',
-						'wppa_cover_opacity' 		=> '85',
-						'wppa_animation_speed' 		=> '600',
-						'wppa_slideshow_timeout'	=> '2500',
-						'wppa_bgcolor_even' 		=> '#eeeeee',
-						'wppa_bgcolor_alt' 			=> '#dddddd',
-						'wppa_bgcolor_nav' 			=> '#dddddd',
-						'wppa_bgcolor_img'			=> '#eeeeee',
-						'wppa_bgcolor_namedesc' 	=> '#dddddd',
-						'wppa_bgcolor_com' 			=> '#dddddd',
-						'wppa_bcolor_even' 			=> '#cccccc',
-						'wppa_bcolor_alt' 			=> '#bbbbbb',
-						'wppa_bcolor_nav' 			=> '#bbbbbb',
-						'wppa_bcolor_namedesc' 		=> '#bbbbbb',
-						'wppa_bcolor_com' 			=> '#bbbbbb',
-						'wppa_bwidth' 				=> '1',
-						'wppa_bradius' 				=> '6',
-						'wppa_fontfamily_thumb' 	=> '',
-						'wppa_fontsize_thumb' 		=> '',
-						'wppa_fontcolor_thumb' 		=> '',
-						'wppa_fontfamily_box' 		=> '',
-						'wppa_fontsize_box' 		=> '',
-						'wppa_fontcolor_box' 		=> '',
-						'wppa_fontfamily_nav' 		=> '',
-						'wppa_fontsize_nav' 		=> '',
-						'wppa_fontcolor_nav' 		=> '',
-						'wppa_fontfamily_title' 	=> '',
-						'wppa_fontsize_title' 		=> '',
-						'wppa_fontcolor_title' 		=> '',
-						'wppa_fontfamily_fulldesc' 	=> '',
-						'wppa_fontsize_fulldesc' 	=> '',
-						'wppa_fontcolor_fulldesc' 	=> '',
-						'wppa_fontfamily_fulltitle' => '',
-						'wppa_fontsize_fulltitle' 	=> '',
-						'wppa_fontcolor_fulltitle' 	=> '',
-						'wppa_arrow_color' 			=> 'black',
-						'wppa_2col_treshold' 		=> '1024',
-						'wppa_3col_treshold' 		=> '1024',
-						'wppa_film_show_glue' 		=> 'yes',
-						'wppa_album_page_size' 		=> '0',
-						'wppa_thumb_page_size' 		=> '0',
-						'wppa_thumb_auto' 			=> 'yes',
-						'wppa_coverphoto_left' 		=> 'no',
-						'wppa_thumbphoto_left' 		=> 'no',
-						'wppa_enable_slideshow' 	=> 'yes',
-						'wppa_thumb_text_name' 		=> 'yes',
-						'wppa_thumb_text_desc' 		=> 'yes',
-						'wppa_thumb_text_rating' 			=> 'yes',
-						'wppa_show_startstop_navigation' 	=> 'yes',
-						'wppa_show_browse_navigation' 		=> 'yes',
-						'wppa_show_full_desc' 				=> 'yes',
-						'wppa_show_full_name' 				=> 'yes',
-						'wppa_show_comments' 				=> 'no',
-						'wppa_show_cover_text' 				=> 'yes',
-						'wppa_start_slide' 					=> 'yes',
-						'wppa_hide_slideshow' 				=> 'no',
-						'wppa_filmstrip' 					=> 'yes',
-						'wppa_bc_url' 						=> wppa_get_imgdir().'arrow.gif',
-						'wppa_bc_txt' 						=> htmlspecialchars('<span style="color:red; font_size:24px;">&bull;</span>'),
-						'wppa_topten_count' 				=> '10',
-						'wppa_topten_size' => '86',
-						'wppa_excl_sep' => 'no',
-						'wppa_rating_on' => 'yes',
-						'wppa_rating_login' => 'yes',
-						'wppa_rating_change' => 'yes',
-						'wppa_rating_multi' => 'no',
-						'wppa_comment_login' => 'no',
-						'wppa_list_albums_by' => '0',
-						'wppa_list_albums_desc' => 'no',
-						'wppa_list_photos_by' => '0',
-						'wppa_list_photos_desc' => 'no',
-						'wppa_html' => 'no',
-						'wppa_thumb_linkpage' => '0',
-						'wppa_thumb_linktype' => 'photo',
-						'wppa_mphoto_linkpage' => '0',
-						'wppa_mphoto_linktype' => 'photo',
-						'wppa_fadein_after_fadeout' => 'no',
-						'wppa_widget_linkpage' => '0',
-						'wppa_widget_linktype' => 'album',
-						'wppa_topten_widget_linkpage' => '0',
-						'wppa_topten_widget_linktype' => 'photo',
-						'wppa_slideonly_widget_linkpage' => '0',
-						'wppa_slideonly_widget_linktype' => 'widget',
-						'wppa_coverimg_linkpage' => '0',
-						'wppa_coverimg_linktype' => 'same',
-						'wppa_search_linkpage' => '0',
-						'wppa_rating_clear' => 'no',
-						'wppa_chmod' => '0',
-						'wppa_owner_only' => 'no',
-						'wppa_set_access_by' => 'me',
-						'wppa_accesslevel' => 'administrator',
-						'wppa_accesslevel_upload' => 'administrator',
-						'wppa_accesslevel_sidebar' => 'administrator',
-						'wppa_charset' => '',
-						'wppa_setup' => '',
-						'wppa_backup' => '',
-						'wppa_restore' => '',
-						'wppa_defaults' => '',
-						'wppa_regen' => '',
-						'wppa_allow_debug' => 'no',
-						'wppa_potd_align' => 'center',
-						'wppa_comadmin_show' => 'all',
-						'wppa_popupsize' => get_option('wppa_smallsize', '150'),
-						'wppa_comadmin_order' => 'timestamp'
-
-						);
-	
-	array_walk($wppa_defaults, 'wppa_set_default', $force);
-}
-function wppa_set_default($value, $key, $force) {
-	if ($force) {
-		update_option($key, $value);
-	}
-	else {
-		if (get_option($key, 'nil') == 'nil') update_option($key, $value);
-	}
-}
 
 function wppa_backup_settings() {
 global $wppa_opt;
 global $wppa_bu_err;
+global $wppa;
 	// Open file
-	$fname = ABSPATH.'wp-content/wppa-depot/'.wppa_get_user().'/settings.bak';
+	$fname = WPPA_DEPOT_PATH.'/settings.bak';
+	if ($wppa['debug']) wppa_dbg_msg('Backing up to: '.$fname);
+	
 	$file = fopen($fname, 'wb');
 	// Backup
 	if ($file) {
@@ -182,8 +43,11 @@ global $wppa_bu_err;
 
 function wppa_restore_settings() {
 	// Open file
-	$fname = ABSPATH.'wp-content/wppa-depot/'.wppa_get_user().'/settings.bak';
+	$fname = WPPA_DEPOT_PATH.'/settings.bak';
+	if ($wppa['debug']) wppa_dbg_msg('Restoring from: '.$fname);
+	
 	$file = fopen($fname, 'r');
+	// Restore
 	if ($file) {
 		$buffer = fgets($file, 4096);
 		while (!feof($file)) {
@@ -213,7 +77,6 @@ function wppa_regenerate_thumbs() {
 	global $wpdb;
 	
 	$thumbsize = wppa_get_minisize();
-	$wppa_dir = ABSPATH . 'wp-content/uploads/wppa/';
 
     $start = get_option('wppa_lastthumb', '-1');
 
@@ -222,7 +85,7 @@ function wppa_regenerate_thumbs() {
 	if (!empty($photos)) {
 		$count = count($photos);
 		foreach ($photos as $photo) {
-			$newimage = $wppa_dir . $photo['id'] . '.' . $photo['ext'];
+			$newimage = WPPA_UPLOAD_PATH.'/'.$photo['id'].'.'.$photo['ext'];
 			wppa_create_thumbnail($newimage, $thumbsize, '' );
             update_option('wppa_lastthumb', $photo['id']);
             echo '.';
@@ -238,7 +101,7 @@ function wppa_create_thumbnail( $file, $max_side, $effect = '') {
 		$thumb = 'thumbs/' . basename( $file );
 		$thumbpath = str_replace( basename( $file ), $thumb, $file );
 
-		require_once('wppa_class_resize.php');		
+		require_once('wppa-class-resize.php');		
 		$objResize = new wppa_ImageResize($file, $thumbpath, $dir, $max_side);
 		$objResize->destroyImage($objResize->resOriginalImage);
 		$objResize->destroyImage($objResize->resResizedImage);
@@ -247,35 +110,6 @@ function wppa_create_thumbnail( $file, $max_side, $effect = '') {
 		return false;
 	}
 	return true;
-}
-
-function wppa_check_update() {
-global $wppa_revno;
-	if (get_option('wppa_revision', '100') < $wppa_revno) {
-		$msg = '';
-		$msg .= __('You probably performed an automatic update. Due to a WP bug not all actions that are required for an update have been executed yet.<br/><br/>', 'wppa');
-		$msg .= __('The wppa database tables are not yet at the required revision level.', 'wppa').' '.__('Current=', 'wppa').get_option('wppa_revision', '100').' '.__('New=', 'wppa').$wppa_revno;
-		wppa_error_message($msg);
-		wppa_setup();
-		if (get_option('wppa_revision', '100') < $wppa_revno) {
-			wppa_error_message(__('PLEASE DE-ACTIVATE the plugin WP-PHOTO-ALBUM-PLUS and ACTIVATE AGAIN before you continue!', 'wppa'));
-			wp_die(__('Failed to fix this.', 'wppa').' '.__('Current=', 'wppa').get_option('wppa_revision', '100').' '.__('New=', 'wppa').$wppa_revno);
-			return;
-		}
-		else {
-			wppa_ok_message(__('I fixed this for you......', 'wppa'));
-		}
-	}
-	$key = get_option('wppa_update_key', '0');
-	if ($key == '0') return;
-	
-	$msg = '<center>' . __('IMPORTANT UPGRADE NOTICE', 'wppa') . '</center><br/>';
-	if ($key == '1' || $key == '3') $msg .= '<br/>' . __('Please CHECK your customized WPPA_STYLE.CSS file against the newly supplied one. You may wish to add or modify some attributes. Be aware of the fact that most settings can now be set in the admin settings page.', 'wppa');
-	if ($key == '2' || $key == '3') $msg .= '<br/>' . __('Please REPLACE your customized WPPA_THEME.PHP file by the newly supplied one, or just remove it from your theme directory. You may modify it later if you wish. Your current customized version is NOT compatible with this version of the plugin software.', 'wppa');
-?>
-	<div id="message" class="updatedok"><p><strong><?php echo($msg);?></strong></p></div>
-<?php
-	update_option('wppa_update_key', '0');
 }
 
 
@@ -534,12 +368,16 @@ function wppa_user_select($select = '') {
 }
 
 function wppa_chmod($chmod) {
-	_wppa_chmod_(ABSPATH.'wp-content/uploads/wppa', $chmod);
-	_wppa_chmod_(ABSPATH.'wp-content/uploads/wppa/thumbs', $chmod);
-	_wppa_chmod_(ABSPATH.'wp-content/wppa-depot', $chmod);
-	$users = wppa_get_users();
-	if ($users) foreach($users as $user) {
-		_wppa_chmod_(ABSPATH.'wp-content/wppa-depot/'.$user['display_name'], $chmod);
+	_wppa_chmod_(WPPA_UPLOAD_PATH, $chmod);
+	_wppa_chmod_(WPPA_UPLOAD_PATH.'/thumbs', $chmod);
+	if ( is_multisite() ) {
+		_wppa_chmod_(WPPA_DEPOT_PATH, $chmod);	// Myself only
+	}
+	else {
+		$users = wppa_get_users();
+		if ($users) foreach($users as $user) {
+			_wppa_chmod_(ABSPATH.'wp-content/wppa-depot/'.$user['user_login'], $chmod);
+		}
 	}
 }
 
@@ -547,23 +385,31 @@ function _wppa_chmod_($file, $chmod) {
 	if ($chmod == '0') return;	// Unchange
 	switch ($chmod) {
 		case '750':
-			if (is_dir($file)) chmod($file, 0750);
-			if (is_file($file)) chmod($file, 0640);
+			if (is_dir($file)) _chmod_($file, 0750);
+			if (is_file($file)) _chmod_($file, 0640);
 			break;
 		case '755':
-			if (is_dir($file)) chmod($file, 0755);
-			if (is_file($file)) chmod($file, 0644);
+			if (is_dir($file)) _chmod_($file, 0755);
+			if (is_file($file)) _chmod_($file, 0644);
 			break;
 		case '775':
-			if (is_dir($file)) chmod($file, 0775);
-			if (is_file($file)) chmod($file, 0664);
+			if (is_dir($file)) _chmod_($file, 0775);
+			if (is_file($file)) _chmod_($file, 0664);
 			break;
 		case '777':
-			if (is_dir($file)) chmod($file, 0777);
-			if (is_file($file)) chmod($file, 0666);
+			if (is_dir($file)) _chmod_($file, 0777);
+			if (is_file($file)) _chmod_($file, 0666);
 			break;
 		default:
 		wppa_error_message(__('Unsupported value in _wppa_chmod_ :', 'wppa').' '.$chmod);
+	}
+}
+function _chmod_($file, $rights) {
+	if ( ! chmod($file, $rights) ) {
+		wppa_error_message(sprintf(__('Unable to set the rights on %s to %o', 'wppa'), $file, $rights));
+	}
+	else {
+		wppa_ok_message(sprintf(__('Rights %o set on %s', 'wppa'), $rights, $file ));
 	}
 }
 
@@ -586,8 +432,8 @@ global $wpdb;
 	$desc = $photo['description'];
 	$linkurl = $photo['linkurl'];
 	$linktitle = $photo['linktitle'];
-	$oldimage = ABSPATH.'wp-content/uploads/wppa/'.$photo['id'].'.'.$ext;
-	$oldthumb = ABSPATH.'wp-content/uploads/wppa/thumbs/'.$photo['id'].'.'.$ext;
+	$oldimage = WPPA_UPLOAD_PATH.'/'.$photo['id'].'.'.$ext;
+	$oldthumb = WPPA_UPLOAD_PATH.'/thumbs/'.$photo['id'].'.'.$ext;
 	
 	$err = '3';
 	// Make new db table entry
@@ -597,8 +443,8 @@ global $wpdb;
 	$err = '4';
 	// Find copied photo details
 	$image_id = $wpdb->get_var("SELECT LAST_INSERT_ID()");					
-	$newimage = ABSPATH.'wp-content/uploads/wppa/'.$image_id.'.'.$ext;
-	$newthumb = ABSPATH.'wp-content/uploads/wppa/thumbs/'.$image_id.'.'.$ext;
+	$newimage = WPPA_UPLOAD_PATH.'/'.$image_id.'.'.$ext;
+	$newthumb = WPPA_UPLOAD_PATH.'/thumbs/'.$image_id.'.'.$ext;
 	if (!$image_id) return $err;
 	
 	$err = '5';
@@ -624,7 +470,7 @@ global $wpdb;
 	
 	// Get the image
 	$err = '3';
-	$file = ABSPATH.'wp-content/uploads/wppa/'.$id.'.'.$ext;
+	$file = WPPA_UPLOAD_PATH.'/'.$id.'.'.$ext;
 	if (!is_file($file)) return $err;
 	
 	// Get the imgdetails
@@ -693,84 +539,20 @@ global $wpdb;
 }
 
 
-// Check if the required directories exist, if not, try to create them and report it
-function wppa_check_dirs() {
-
-	// check if uploads dir exists
-	$dir = ABSPATH . 'wp-content/uploads';
-	if (!is_dir($dir)) {
-		mkdir($dir);
-		if (!is_dir($dir)) {
-			wppa_error_message(__('The uploads directory does not exist, please do a regular WP upload first.', 'wppa'));
-			return false;
-		}
-		else {
-			wppa_ok_message(__('Successfully created uploads directory.', 'wppa'));
-		}
-	}	
-
-	// check if wppa dir exists
-	$dir = ABSPATH . 'wp-content/uploads/wppa';
-	if (!is_dir($dir)) {
-		mkdir($dir);
-		if (!is_dir($dir)) {
-			wppa_error_message(__('Could not create the wppa directory.', 'wppa').wppa_credirmsg($dir));
-			return false;
-		}
-		else {
-			wppa_ok_message(__('Successfully created wppa directory.', 'wppa'));
-		}
-	}
-	
-	// check if thumbs dir exists 
-	$dir = ABSPATH . 'wp-content/uploads/wppa/thumbs';
-	if (!is_dir($dir)) {
-		mkdir($dir);
-		if (!is_dir($dir)) {
-			wppa_error_message(__('Could not create the wppa thumbs directory.', 'wppa').wppa_credirmsg($dir));
-			return false;
-		}
-		else {
-			wppa_ok_message(__('Successfully created wppa thumbs directory.', 'wppa'));
-		}
-	}
-	
-	// check if depot dir exists
-	$dir = ABSPATH . 'wp-content/wppa-depot';
-	if (!is_dir($dir)) {
-		mkdir($dir);
-		if (!is_dir($dir)) {
-			wppa_error_message(__('Unable to create depot directory', 'wppa').wppa_credirmsg($dir));
-			return false;
-		}
-		else {
-			wppa_ok_message(__('Successfully created wppa master depot directory.', 'wppa'));
-		}
-	}
-	
-	// check if users depot dir exists
-	$dir = ABSPATH . 'wp-content/wppa-depot/'.wppa_get_user();
-	if (!is_dir($dir)) {
-		mkdir($dir);
-		if (!is_dir($dir)) {
-			wppa_error_message(__('Unable to create user depot directory.', 'wppa').wppa_credirmsg($dir));
-			return false;
-		}
-		else {
-			wppa_ok_message(__('Successfully created wppa user depot directory.', 'wppa'));
-		}
-	}
-	
-	return true;
-}
-function wppa_credirmsg($dir) {
-	$msg = ' '.sprintf(__('Ask your administrator to give you more rights, try CHMOD from table VII item 1 of the Photo Albums -> Settings admin page or create <b>%s</b> manually using an FTP program.', 'wppa'), $dir);
-	return $msg;
-}
-
 // Remove photo entries that have no fullsize image or thumbnail
+// Additionally check the php config
 function wppa_cleanup_photos($alb = '') {
 	global $wpdb;
+	global $wppa_error_displayed;
+
+	// Check the users php config. sometimes a user 'reconfigures' his server to not having GD support...
+	if ( ! function_exists('getimagesize') || ! function_exists('imagecreatefromjpeg') ) {
+		if ( ! $wppa_error_displayed ) {
+			wppa_error_message('Please check your php configuration. Currently it does not support the required functionality to manipulate photos', 'wppa');
+			$wppa_error_displayed = true;
+		}
+	}
+
 	if ($alb == '') $alb = wppa_get_last_album();
 	if (!is_numeric($alb)) return;
 
@@ -781,8 +563,8 @@ function wppa_cleanup_photos($alb = '') {
 	else $entries = $wpdb->get_results('SELECT id, ext, name FROM '.WPPA_PHOTOS.' WHERE album = '.$alb, ARRAY_A);
 	if ($entries) {
 		foreach ($entries as $entry) {
-			$thumbpath = ABSPATH.'wp-content/uploads/wppa/thumbs/'.$entry['id'].'.'.$entry['ext'];
-			$imagepath = ABSPATH.'wp-content/uploads/wppa/'.$entry['id'].'.'.$entry['ext'];
+			$thumbpath = WPPA_UPLOAD_PATH.'/thumbs/'.$entry['id'].'.'.$entry['ext'];
+			$imagepath = WPPA_UPLOAD_PATH.'/'.$entry['id'].'.'.$entry['ext'];
 			if (!is_file($thumbpath)) {	// No thumb: delete fullimage
 				if (is_file($imagepath)) unlink($imagepath);
 				$no_photos .= ' '.$entry['name'];
@@ -800,7 +582,7 @@ function wppa_cleanup_photos($alb = '') {
 	if ($entries) {
 		wppa_ok_message(__('Trying to fix '.count($entries).' entries with missing file extension, Please wait.', 'wppa'));
 		foreach ($entries as $entry) {
-			$tp = ABSPATH.'wp-content/uploads/wppa/'.$entry['id'].'.';
+			$tp = WPPA_UPLOAD_PATH.'/'.$entry['id'].'.';
 			// Try the name
 			$ext = substr(strrchr($entry['name'], "."), 1);
 			if (!($ext == 'jpg' || $ext == 'JPG' || $ext == 'png' || $ext == 'PNG' || $ext == 'gif' || $ext == 'GIF')) {
@@ -816,14 +598,14 @@ function wppa_cleanup_photos($alb = '') {
 			if ($ext == 'jpg' || $ext == 'JPG' || $ext == 'png' || $ext == 'PNG' || $ext == 'gif' || $ext == 'GIF') {
 				
 				if ($wpdb->query('UPDATE '.WPPA_PHOTOS.' SET ext = "'.$ext.'" WHERE id = '.$entry['id'])) {
-					$oldimg = ABSPATH.'wp-content/uploads/wppa/'.$entry['id'].'.';
-					$newimg = ABSPATH.'wp-content/uploads/wppa/'.$entry['id'].'.'.$ext;
+					$oldimg = WPPA_UPLOAD_PATH.'/'.$entry['id'].'.';
+					$newimg = WPPA_UPLOAD_PATH.'/'.$entry['id'].'.'.$ext;
 					if (is_file($oldimg)) {
 						copy($oldimg, $newimg);
 						unlink($oldimg);
 					}
-					$oldimg = ABSPATH.'wp-content/uploads/wppa/thumbs/'.$entry['id'].'.';
-					$newimg = ABSPATH.'wp-content/uploads/wppa/thumbs/'.$entry['id'].'.'.$ext;
+					$oldimg = WPPA_UPLOAD_PATH.'/thumbs/'.$entry['id'].'.';
+					$newimg = WPPA_UPLOAD_PATH.'/thumbs/'.$entry['id'].'.'.$ext;
 					if (is_file($oldimg)) {
 						copy($oldimg, $newimg);
 						unlink($oldimg);
@@ -916,10 +698,10 @@ global $wpdb;
 	return true;
 }
 
-function wppa_sanitize_files($user) {
+function wppa_sanitize_files() {
 
 	// Get this users depot directory
-	$depot = ABSPATH.'wp-content/wppa-depot/'.$user;
+	$depot = WPPA_DEPOT_PATH;
 	// See what's in there
 	$paths = $depot.'/*.*';
 	$files = glob($paths);
@@ -932,7 +714,6 @@ function wppa_sanitize_files($user) {
 			if (!in_array($ext, $allowed_types)) {
 				unlink($file);
 				wppa_error_message(sprintf(__('File %s is of an unsupported filetype and has been removed.', 'wppa'), basename($file)));
-//echo($file); echo('<br>');
 				$count++;
 			}
 		}
@@ -974,3 +755,13 @@ function wppa_album_select($exc = '', $sel = '', $addnone = FALSE, $addseparate 
 	return $result;
 }
 
+
+
+
+/* FORM SECURITY */
+function wppa_nonce_field( $action = -1, $name = 'wppa-update-check' ) { 
+	return wp_nonce_field( $action, $name ); 
+}
+function wppa_check_admin_referer( $arg1, $arg2 ) {
+	check_admin_referer( $arg1, $arg2 );
+}

@@ -1,9 +1,9 @@
 <?php
-/* wppa_filter.php
+/* wppa-filter.php
 * Package: wp-photo-album-plus
 *
 * get the albums via filter
-* version 3.1.8
+* version 4.0.0
 *
 */
 

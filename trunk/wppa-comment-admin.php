@@ -1,9 +1,9 @@
 <?php
-/* wppa_commentadmin.php
+/* wppa-commentadmin.php
 * Package: wp-photo-album-plus
 *
 * manage all comments
-* Version 3.1.1
+* Version 4.0.0
 *
 */
 
@@ -36,7 +36,7 @@ global $wppa_opt;
 							<tr style="vertical-align:top" >
 								<th>
 									<?php $photo = $wpdb->get_row("SELECT * FROM ".WPPA_PHOTOS." WHERE id=".$comment['photo'], "ARRAY_A") ?>
-									<?php $url = get_bloginfo('wpurl').'/wp-content/uploads/wppa/thumbs/'.$comment['photo'].'.'.$photo['ext'] ?>
+									<?php $url = WPPA_UPLOAD_URL.'/thumbs/'.$comment['photo'].'.'.$photo['ext'] ?>
 									<img src="<?php echo($url) ?>" />
 								</th>
 								<td>
@@ -191,7 +191,7 @@ global $wppa_opt;
 						if ($comments) {
 							foreach ($comments as $com) { ?>
 								<tr>
-									<td style="text-align:center"><img src="<?php echo(get_bloginfo('wpurl').'/wp-content/uploads/wppa/thumbs/'.$com['photo'].'.'.$wpdb->get_var("SELECT ext FROM ".WPPA_PHOTOS." WHERE id = ".$com['photo'])) ?>" style="max-height:64px;max-width:64px;" ></td>							
+									<td style="text-align:center"><img src="<?php echo(WPPA_UPLOAD_URL.'/thumbs/'.$com['photo'].'.'.$wpdb->get_var("SELECT ext FROM ".WPPA_PHOTOS." WHERE id = ".$com['photo'])) ?>" style="max-height:64px;max-width:64px;" ></td>							
 									<td><?php echo $com['photo'] ?></td>
 									<td><?php echo $com['user'] ?></td>
 									<td><?php echo $com['email'] ?></td>

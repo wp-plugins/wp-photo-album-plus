@@ -1,9 +1,9 @@
 <?php 
-/* wppa_export.php
+/* wppa-export.php
 * Package: wp-photo-album-plus
 *
 * Contains all the export functions
-* Version 3.1.0
+* Version 4.0.0
 *
 */
 
@@ -12,14 +12,9 @@ global $wpdb;
 
 	// Export Photos admin page
 
-	// Check the existence of required directories
-	if (!wppa_check_dirs()) return;
-
     // sanitize system
 	wppa_cleanup_photos();
 	
-	// Check if an update message is required
-	wppa_check_update();
 
 	// Do the export if requested
 	if (isset($_POST['wppa-export-submit'])) {
@@ -42,7 +37,7 @@ global $wpdb;
 
 		<form action="<?php echo(wppa_dbg_url(get_admin_url().'/admin.php?page=export_photos')) ?>" method="post">
 			<?php wppa_nonce_field('$wppa_nonce', WPPA_NONCE); ?>
-			<?php echo(sprintf(__('Photos will be exported to: <b>%s</b>.', 'wppa'), 'wp-content/wppa-depot/'.wppa_get_user())) ?>
+			<?php echo(sprintf(__('Photos will be exported to: <b>%s</b>.', 'wppa'), WPPA_DEPOT)) ?>
 			<h2><?php _e('Export photos from album <span style="font-size:12px;">(Including Album information)</span>:', 'wppa'); ?></h2>
 			<?php $albums = $wpdb->get_results('SELECT * FROM ' . WPPA_ALBUMS . ' ' . wppa_get_album_order(), 'ARRAY_A');
 			$high = '0'; ?>
@@ -94,13 +89,12 @@ global $wppa_temp_idx;
 		$zipid = get_option('wppa_last_zip', '0');
 		$zipid++;
 		update_option('wppa_last_zip', $zipid);
-		$zipfile = ABSPATH.'wp-content/wppa-depot/'.wppa_get_user().'/wppa-'.$zipid.'.zip';
-		if ($wppa_zip->open($zipfile, 1) === TRUE) { //ZipArchive::CREATE) === TRUE) {
+		$zipfile = WPPA_DEPOT_PATH.'/wppa-'.$zipid.'.zip';
+		if ($wppa_zip->open($zipfile, 1) === TRUE) {
 			_e('ok, <br/>Filling', 'wppa'); echo(' '.basename($zipfile));
 		} else {
 			_e('failed<br/>', 'wppa');
 			$wppa_zip = false;
-//			return false;
 		}
 	}
 	else {
@@ -120,8 +114,8 @@ global $wppa_temp_idx;
 				$cnt = 0;
 				foreach($photos as $photo) {
 					// Copy the photo
-					$from = ABSPATH.'wp-content/uploads/wppa/'.$photo['id'].'.'.$photo['ext'];
-					$to = ABSPATH.'wp-content/wppa-depot/'.wppa_get_user().'/'.$photo['id'].'.'.$photo['ext'];
+					$from = WPPA_UPLOAD_PATH.'/'.$photo['id'].'.'.$photo['ext'];
+					$to = WPPA_DEPOT_PATH.'/'.$photo['id'].'.'.$photo['ext'];
 						
 					if ($wppa_zip) {
 						$wppa_zip->addFile($from, basename($from));
@@ -165,7 +159,7 @@ global $wppa_temp;
 global $wppa_temp_idx;
 	$album = $wpdb->get_row('SELECT * FROM '.WPPA_ALBUMS.' WHERE id = '.$id.' LIMIT 0,1', 'ARRAY_A');
 	if ($album) {
-		$fname = ABSPATH.'wp-content/wppa-depot/'.wppa_get_user().'/'.$id.'.amf';
+		$fname = WPPA_DEPOT_PATH.'/'.$id.'.amf';
 		$file = fopen($fname, 'wb');
 		$err = false;
 		if ($file) {
@@ -218,7 +212,7 @@ global $wppa_zip;
 global $wppa_temp;
 global $wppa_temp_idx;
 	if ($photo) {
-		$fname = ABSPATH.'wp-content/wppa-depot/'.wppa_get_user().'/'.$photo['id'].'.pmf';
+		$fname = WPPA_DEPOT_PATH.'/'.$photo['id'].'.pmf';
 		$file = fopen($fname, 'wb');
 		$err = false;
 		if ($file) {
