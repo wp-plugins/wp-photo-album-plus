@@ -10,9 +10,6 @@
 function _wppa_sidebar_page_options() {
 	global $wpdb;
 	
-	// Check if a message is required
-	wppa_check_update();
-
 	$options_error = false;
 	
 	if (isset($_GET['walbum'])) update_option('wppa_widget_album', wppa_walbum_sanitize($_GET['walbum']));

@@ -1,12 +1,12 @@
 <?php
-/* wppa_gp_widget.php
+/* wppa-gp-widget.php
 * Package: wp-photo-album-plus
 *
 * gp wppa+ widget
 *
 * A text widget that hooks the wppa+ filter
 *
-* Version 3.0.7
+* Version 4.0.0
 */
 
 class WppaGpWidget extends WP_Widget {

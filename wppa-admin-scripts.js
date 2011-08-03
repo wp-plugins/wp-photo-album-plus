@@ -1,9 +1,11 @@
-/* admin_scripts.js */
+/* admin-scripts.js */
 /* Package: wp-photo-album-plus
 /*
-/* Version 3.1.1
+/* Version 4.0.0
 /* Various js routines used in admin pages		
 */
+
+var wppa_moveup_url = '#';
 
 jQuery(document).ready(function() {
 /* alert( 'You are running jQuery version: ' + jQuery.fn.jquery ); */
@@ -337,4 +339,8 @@ for (i=0;i<ARRcookies.length;i++)
     }
   }
   return "";
+}
+
+function wppa_move_up(who) {
+	document.location = wppa_moveup_url+who+"&wppa-update-check="+document.getElementById('wppa-update-check').value;
 }

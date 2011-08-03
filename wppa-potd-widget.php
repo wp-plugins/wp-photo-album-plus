@@ -1,9 +1,9 @@
 <?php
-/* wppa_widget.php
+/* wppa-potd-widget.php
 * Package: wp-photo-album-plus
 *
 * display the widget
-* Version 3.0.5
+* Version 4.0.0
 */
 
 class PhotoOfTheDay extends WP_Widget {
@@ -40,7 +40,7 @@ class PhotoOfTheDay extends WP_Widget {
 		$widget_content .= "\n".'<div class="wppa-widget-photo" style="'.$align.' padding-top:2px; ">';
 		if ($image) {
 			// make image url
-			$imgurl = get_bloginfo('wpurl') . '/wp-content/uploads/wppa/' . $image['id'] . '.' . $image['ext'];
+			$imgurl = WPPA_UPLOAD_URL . '/' . $image['id'] . '.' . $image['ext'];
 		
 			$name = wppa_qtrans($image['name']);
 			$link = wppa_get_imglnk_a('potdwidget', $image['id']);
@@ -99,7 +99,7 @@ class PhotoOfTheDay extends WP_Widget {
 
 } // class PhotoOfTheDay
 
-require_once ('wppa_widgetfunctions.php');
+require_once ('wppa-widget-functions.php');
 
 // register PhotoOfTheDay widget
 add_action('widgets_init', create_function('', 'return register_widget("PhotoOfTheDay");'));

@@ -1,16 +1,14 @@
 <?php
-/* wppa_help.php
+/* wppa-help.php
 * Pachkage: wp-photo-album-plus
 *
 * admin help page
-* version 2.5.0
+* version 4.0.0
 */ 
 
 function _wppa_page_help() {
 global $wppa_revno;
 
-	// Check if a message is required
-	wppa_check_update();
 
 ?>
 	<div class="wrap">

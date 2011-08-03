@@ -1,15 +1,15 @@
 === WP Photo Album Plus ===
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
-Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate
-Version: 3.1.8
+Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, multisite, network
+Version: 4.0.0
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
 Requires at least: 3.0
 Tested up to: 3.2.1
 
-This plugin is designed to easily manage and display your photo albums and slideshows within your WordPress site. 
+This plugin is designed to easily manage and display your photo albums and slideshows in a single as well as in a network WordPress site. 
 Additionally there are four widgets: Photo of the day, a Search Photos widget, a Top Ten Rated photo widget and a Mini slideshow widget.
 Visitors can leave comments on individual photos.
 
@@ -104,6 +104,34 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 
 == Changelog ==
 
+= 4.0.0 =
+
+= New features =
+
+* WPPA+ Now supports multisite installations.
+
+= Bug fixes =
+
+* A clicking monkey will no longer be able to get the slideshow into a hangup state.
+
+= Other changes =
+
+* The sequence order of the slideshow parts (bars and photoframe) is now settable in the Settings screen (Table IX item 6.x). 
+There is no longer a known reason as of to modify wppa-theme.php.
+* The Big Browse Buttons are now invisible, but have a title and a cursor and have the size of half the slideframe each.
+* The Filenames now comply with the wp coding standards.
+* The Photo Links can be set to overrule with the photo specific link - if any. 
+This behaviour can be set for all photo link types independantly. 
+The 'Use photo specific link' linktype is hereby obsolete and has been removed as a selection option.
+* Table X has been extended with WPPA+ constants and all other PHP settings.
+* Border radius in css3 format added (IE9)
+
+= Wish List =
+
+* Cover photo above or below the text (Vertical shape of cover).
+* Indication of NEW for photos and albums with configurable NEW period.
+
+
 = 3.1.8 =
 
 = Bug fixes = 
@@ -113,6 +141,7 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 = New features = 
 
 * You can set the thumbnail popup image size now explicitly. (Before it was the unscaled thumbnail image)
+
 
 = 3.1.7 =
 

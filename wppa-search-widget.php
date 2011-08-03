@@ -1,11 +1,10 @@
 <?php
-/* wppa_searchwidget.php
+/* wppa-searchwidget.php
 * Package: wp-photo-album-plus
 *
 * display the search widget
-* Version 3.0.6
+* Version 4.0.0
 *
-* dbg
 */
 
 class SearchPhotos extends WP_Widget {

@@ -1,18 +1,19 @@
 <?php
-/* wppa_commonfinctions.php
+/* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 3.1.8
+* version 4.0.0
 *
 */
 global $wppa_api_version;
-$wppa_api_version = '3-1-8-000';
+$wppa_api_version = '4-0-0-000';
 // Initialize globals and option settings
 function wppa_initialize_runtime($force = false) {
 global $wppa;
 global $wppa_opt;
 global $wppa_revno;
 global $wppa_api_version;
+global $blog_id;
 
 	if ($force) {
 		$wppa = false; // destroy existing arrays
@@ -65,6 +66,7 @@ global $wppa_api_version;
 	
 	if (!is_array($wppa_opt)) {
 		$wppa_opt = array ( 
+			'wppa_multisite' => '',
 			'wppa_revision' => '',
 			'wppa_fullsize' => '',
 			'wppa_colwidth' => '',
@@ -173,6 +175,12 @@ global $wppa_api_version;
 			'wppa_topten_widget_linktype' => '',
 			'wppa_coverimg_linktype' => '',
 			'wppa_coverimg_linkpage' => '',
+			'wppa_mphoto_overrule'		=> '',
+			'wppa_thumb_overrule'		=> '',
+			'wppa_topten_overrule'		=> '',
+			'wppa_sswidget_overrule'	=> '',
+			'wppa_potdwidget_overrule'	=> '',
+			'wppa_coverimg_overrule'	=> '',
 			'wppa_search_linkpage' => '',
 			'wppa_chmod' => '',
 			'wppa_setup' => '',
@@ -181,6 +189,7 @@ global $wppa_api_version;
 			'wppa_comadmin_show' => '',
 			'wppa_comadmin_order' => '',
 			'wppa_popupsize' => '',
+			'wppa_slide_order' => '',
 			'permalink_structure' => ''			// This must be last
 		);
 		array_walk($wppa_opt, 'wppa_set_options');
@@ -190,6 +199,32 @@ global $wppa_api_version;
 	if (isset($_GET['debug']) && $wppa_opt['wppa_allow_debug']) {
 		$key = $_GET['debug'] ? $_GET['debug'] : E_ALL;
 		$wppa['debug'] = $key;
+	}
+	
+	
+/*
+/wp-content/blogs.dir/1/wppa-depot (For backups, etc)
+/wp-content/blogs.dir/2/wppa (For photo uploads, thumbnails...) 
+
+*/
+	if ( ! defined( 'WPPA_UPLOAD') ) {
+		if ( get_option('wppa_multisite', 'no') == 'yes' ) {	// DO NOT change this in $wppa_opt['wppa_multisite'] as it will not work
+			define( 'WPPA_UPLOAD', 'wp-content/blogs.dir/'.$blog_id);
+			define( 'WPPA_UPLOAD_PATH', ABSPATH.WPPA_UPLOAD.'/wppa');
+			define( 'WPPA_UPLOAD_URL', get_bloginfo('url').'/'.WPPA_UPLOAD.'/wppa');
+			define( 'WPPA_DEPOT', 'wp-content/blogs.dir/'.$blog_id.'/wppa-depot' );			
+			define( 'WPPA_DEPOT_PATH', ABSPATH.WPPA_DEPOT );					
+			define( 'WPPA_DEPOT_URL', get_bloginfo('url').'/'.WPPA_DEPOT );	
+		}
+		else {
+			define( 'WPPA_UPLOAD', 'wp-content/uploads');
+			define( 'WPPA_UPLOAD_PATH', ABSPATH.WPPA_UPLOAD.'/wppa' );
+			define( 'WPPA_UPLOAD_URL', get_bloginfo('url').'/'.WPPA_UPLOAD.'/wppa' );
+			$user = is_user_logged_in() ? '/'.wppa_get_user() : '';
+			define( 'WPPA_DEPOT', 'wp-content/wppa-depot'.$user );
+			define( 'WPPA_DEPOT_PATH', ABSPATH.WPPA_DEPOT );
+			define( 'WPPA_DEPOT_URL', get_bloginfo('url').'/'.WPPA_DEPOT );
+		}
 	}
 }
 
@@ -231,7 +266,7 @@ global $wppa;
 	}
 	if ($wppa_locale) {
 		$domain = is_admin() ? 'wppa' : 'wppa_theme';
-		$mofile = ABSPATH.'wp-content/plugins/'.dirname( plugin_basename( __FILE__ ) ) . '/langs/'.$domain.'-'.$wppa_locale.'.mo';
+		$mofile = WPPA_PATH.'/langs/'.$domain.'-'.$wppa_locale.'.mo';
 		$bret = load_textdomain($domain, $mofile);
 	}
 	
@@ -439,8 +474,9 @@ function wppa_qtrans($output, $lang = '') {
 	return $output;
 }
 
-function wppa_dbg_msg($txt='') {
-	echo('<span style="color:blue;"><small>'.$txt.'</small></span><br/>');
+function wppa_dbg_msg($txt='', $color = 'blue') {
+global $wppa;
+	if ( $wppa['debug'] ) echo('<span style="color:'.$color.';"><small>[WPPA+ dbg msg: '.$txt.']<br /></small></span>');
 }
 
 function wppa_dbg_url($link, $js = '') {

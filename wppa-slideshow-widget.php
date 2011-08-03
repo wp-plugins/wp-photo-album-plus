@@ -1,9 +1,9 @@
 <?php
-/* wppa_slideshow_widget.php
+/* wppa-slideshow-widget.php
 * Package: wp-photo-album-plus
 *
 * display a slideshow in the sidebar
-* Version 3.0.6
+* Version 4.0.0
 */
 
 /**

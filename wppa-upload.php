@@ -1,9 +1,9 @@
 <?php 
-/* wppa_upload.php
+/* wppa-upload.php
 * Package: wp-photo-album-plus
 *
 * Contains all the upload/import pages and functions
-* Version 3.1.0
+* Version 4.0.0
 *
 */
 
@@ -12,35 +12,29 @@ global $target;
 
 	// upload images admin page
 
-	// Check the existence of required directories
-	if (!wppa_check_dirs()) return;
-
-	// Check if an update message is required
-	wppa_check_update();
-
     // sanitize system
 	$user = wppa_get_user();
 	wppa_cleanup_photos();
-	wppa_sanitize_files($user);
+	wppa_sanitize_files();
 
 	// Do the upload if requested
-	if (isset($_POST['wppa-upload'])) {
+	if ( isset( $_POST['wppa-upload'] ) ) {
 		wppa_check_admin_referer( '$wppa_nonce', WPPA_NONCE );
 		wppa_upload_photos();
 	} 
-	if (isset($_POST['wppa-upload-zip'])) {
+	if ( isset( $_POST['wppa-upload-zip'] ) ) {
 		wppa_check_admin_referer( '$wppa_nonce', WPPA_NONCE );
 		$err = wppa_upload_zip();
-		if (isset($_POST['wppa-go-import']) && $err == '0') { 
+		if ( isset( $_POST['wppa-go-import'] ) && $err == '0' ) { 
 			wppa_ok_message(__('Connecting to your depot...', 'wppa'));
-			update_option('wppa_import_source_'.$user, 'wp-content/wppa-depot/'.$user); ?>
+			update_option('wppa_import_source_'.$user, WPPA_DEPOT); ?>
 			<script type="text/javascript">document.location = '<?php echo(wppa_dbg_url(get_admin_url().'/admin.php?page=import_photos&zip='.$target, 'js')) ?>';</script>
 		<?php }
 	} 
 	
 	// sanitize system again
 	wppa_cleanup_photos();
-	wppa_sanitize_files($user);
+	wppa_sanitize_files();
 
 	?>
 	
@@ -127,16 +121,12 @@ global $target;
 // import images admin page
 function _wppa_page_import() {
 
-	// Check if a message is required
-	wppa_check_update();
 
-	// Check the existence of required directories
-	if (!wppa_check_dirs()) return;
 	
 	// Sanitize system
     wppa_cleanup_photos('0');
 	$user = wppa_get_user();
-	$count = wppa_sanitize_files($user);
+	$count = wppa_sanitize_files();
 	if ($count) wppa_error_message($count.' '.__('illegal files deleted.', 'wppa'));
 	
 	// Do the dirty work
@@ -156,7 +146,7 @@ function _wppa_page_import() {
 		wppa_import_photos($delp, $dela, $delz);
 	} 
 	// Sanitize again
-	$count = wppa_sanitize_files($user);
+	$count = wppa_sanitize_files();
 	if ($count) wppa_error_message($count.' '.__('illegal files deleted.', 'wppa'));
 ?>
 	
@@ -171,33 +161,38 @@ function _wppa_page_import() {
 		<h2><?php _e('Import Photos', 'wppa'); ?></h2><br />
 <?php		
 		// Get this users current source directory setting
-		$source = get_option('wppa_import_source_'.$user, 'wp-content/wppa-depot/'.$user);
+		$source      = get_option( 'wppa_import_source_'.$user, WPPA_DEPOT );
+		$source_path = ABSPATH . $source;
+		$source_url  = get_bloginfo('url') . '/' . $source;
 
-		$depot = ABSPATH . $source;	// Filesystem
-		$depoturl = get_bloginfo('url').'/'.$source;	// url
+		// See if the current source is the 'home' directory
+		$is_depot 	= ( $source == WPPA_DEPOT );
 
 		// See what's in there
-		$paths = $depot.'/*.*';
-		$files = glob($paths);
-		$zipcount = wppa_get_zipcount($files);
+		$paths 		= $source_path . '/*.*';
+		$files 		= glob($paths);
+		$zipcount 	= wppa_get_zipcount($files);
 		$albumcount = wppa_get_albumcount($files);
 		$photocount = wppa_get_photocount($files);
-		$is_depot = ($source == 'wp-content/wppa-depot/'.$user); ?>
 		
+?>		
 		<form action="<?php echo(wppa_dbg_url(get_admin_url().'/admin.php?page=import_photos')) ?>" method="post">
 		<?php wppa_nonce_field('$wppa_nonce', WPPA_NONCE); ?>
 		<?php _e('Import photos from:', 'wppa'); ?>
 			<select name="wppa-source">
-				<option value="wp-content/wppa-depot/<?php echo($user) ?>" <?php if ($is_depot) echo('selected="selected"') ?>><?php _e('Your depot', 'wppa') ?></option>
-				<?php $uplpat = get_option('upload_path', 'wp-content/uploads');
-						if ($uplpat == '') $uplpat = 'wp-content/uploads'; ?>
-				<?php wppa_walktree($uplpat, $source) ?>	
+				<?php /* The source is eitrher the users depot: */ ?>
+				<option value="<?php echo(WPPA_DEPOT) ?>" <?php if ($is_depot) echo('selected="selected"') ?>><?php _e('Your depot', 'wppa') ?></option>
+				<?php /* Or anything in or in a subdirectory of WPPA_UPLOAD, except the wppa dir which contains all the wppa photos */ ?>
+				<?php /* of which wppa_walktree() takes care of (it skips any (sub)dir named wppa) */ ?>
+				<?php /* This is true for both singlesite as multisite installations. */ ?>
+				<?php /* See wppa-common-functions.php for the definitions of WPPA_DEPOT and WPPA_UPLOAD */ ?>
+				<?php wppa_walktree(WPPA_UPLOAD, $source) ?>	
 			</select>
 			<input type="submit" class="button-secundary" name="wppa-import-set-source" value="<?php _e('Set source directory', 'wppa'); ?>" />
 		</form>
 <?php
 		
-		// chek if albums exist or will be made before allowing upload
+		// check if albums exist or will be made before allowing upload
 		if(wppa_has_albums() || $albumcount > '0' || $zipcount >'0') { 
 	
 		if ($photocount > '0' || $albumcount > '0' || $zipcount >'0') { ?>
@@ -308,10 +303,10 @@ function _wppa_page_import() {
 		<?php }
 		else {
 			if (PHP_VERSION_ID >= 50207) {
-				wppa_ok_message(__('There are no archives, albums or photos in directory:', 'wppa').' '.$depoturl);
+				wppa_ok_message(__('There are no archives, albums or photos in directory:', 'wppa').' '.$source_url);
 			}
 			else {
-				wppa_ok_message(__('There are no albums or photos in directory:', 'wppa').' '.$depoturl);
+				wppa_ok_message(__('There are no albums or photos in directory:', 'wppa').' '.$source_url);
 			}
 		}
 	}
@@ -361,9 +356,9 @@ global $target;
 	$size = $file['size'];
 	$temp = $file['tmp_name'];
 	
-	$user = wppa_get_user();
+//	$user = wppa_get_user();
 	
-	$target = ABSPATH . 'wp-content/wppa-depot/'.wppa_get_user().'/'.$name;
+	$target = WPPA_DEPOT_PATH.'/'.$name;
 	
 	copy($temp, $target);
 	
@@ -381,7 +376,7 @@ global $warning_given;
 	
 	// Get this users current source directory setting
 	$user = wppa_get_user();
-	$source = get_option('wppa_import_source_'.$user, 'wp-content/wppa-depot/'.$user);
+	$source = get_option('wppa_import_source_'.$user, WPPA_DEPOT); // removed /$user
 
 	$depot = ABSPATH . $source;	// Filesystem
 	$depoturl = get_bloginfo('url').'/'.$source;	// url
@@ -401,20 +396,7 @@ global $warning_given;
 				if ($ext == 'zip') {
 					$err = wppa_extract($zipfile, $delz);
 					if ($err == '0') $zcount++;
-				
-/*					$zip = new ZipArchive;
-					if ($zip->open($zipfile) === TRUE) {
-						$zip->extractTo(ABSPATH . 'wp-content/wppa-depot/'.wppa_get_user().'/');
-						$zip->close();
-						wppa_ok_message(__('Zipfile', 'wppa').' '.$zipfile.' '.__('extracted.', 'wppa'));
-						$zcount++;
-						if ($delz) unlink($zipfile);
-					} else {
-						wppa_error_message(__('Failed to extract', 'wppa').' '.$zipfile);
-					}
-*/
-				} // if zip
-				
+				} // if ext = zip			
 			} // if isset
 			$idx++;
 		} // foreach
@@ -613,10 +595,10 @@ function wppa_insert_photo ($file = '', $album = '', $name = '', $desc = '', $po
 		if ($id == '0') $image_id = $wpdb->get_var("SELECT LAST_INSERT_ID()");
 		else $image_id = $id;
 				
-		$newimage = ABSPATH . 'wp-content/uploads/wppa/' . $image_id . '.' . $ext;
+		$newimage = WPPA_UPLOAD_PATH . '/' . $image_id . '.' . $ext;
 			
 		if (get_option('wppa_resize_on_upload', 'no') == 'yes') {
-			require_once('wppa_class_resize.php');
+			require_once('wppa-class-resize.php');
 			
 			if (wppa_is_wider($img_size[0], $img_size[1])) {
 				$dir = 'W';
@@ -755,13 +737,11 @@ function wppa_extract($path, $delz) {
 		if ($ext == 'zip') {
 			$zip = new ZipArchive;
 			if ($zip->open($path) === true) {
-	// 			this for-loop replaces the $zip->extractTo() line
 				for($i = 0; $i < $zip->numFiles; $i++) {
 					$filename = $zip->getNameIndex($i);
 					$fileinfo = pathinfo($filename);
-					copy("zip://".$path."#".$filename, ABSPATH."wp-content/wppa-depot/".wppa_get_user()."/".$fileinfo['basename']);
+					copy("zip://".$path."#".$filename, WPPA_DEPOT_PATH."/".$fileinfo['basename']);
 				}                  
-	//			$zip->extractTo(ABSPATH . 'wp-content/wppa-depot/'.wppa_get_user().'/');
 				$zip->close();
 				wppa_ok_message(__('Zipfile', 'wppa').' '.basename($path).' '.__('extracted.', 'wppa'));
 				if ($delz) unlink($path);
@@ -772,20 +752,6 @@ function wppa_extract($path, $delz) {
 		}
 		else $err = '2';
 	}
-	
 	return $err;
 }
 
-/*
-$path = 'zipfile.zip'
-
-$zip = new ZipArchive;
-if ($zip->open($path) === true) {
-    for($i = 0; $i < $zip->numFiles; $i++) {
-        $filename = $zip->getNameIndex($i);
-        $fileinfo = pathinfo($filename);
-        copy("zip://".$path."#".$filename, "/your/new/destination/".$fileinfo['basename']);
-    }                  
-    $zip->close();                  
-}
-*/

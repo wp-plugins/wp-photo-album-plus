@@ -1,12 +1,12 @@
 // Theme variables and functions
-// This is wppa_theme.js version 3.1.6
+// This is wppa-theme.js version 4.0.0
 //
 
-var wppa_bgcolor_img = '';
-var wppa_timer = new Array();
+var wppaBackgroundColorImage = '';
+var _wppaTimer = new Array();
 var wppa_saved_id = new Array();
-var wppa_popup_linktype = '';
-var wppa_popup_onclick = new Array();
+var wppaPopupLinkType = '';
+var wppaPopupOnclick = new Array();
 
 // Popup of thumbnail images 
 function wppa_popup(mocc, elm, id, rating) {
@@ -20,20 +20,20 @@ function wppa_popup(mocc, elm, id, rating) {
 	
 	// due to callback bug, see below, we need an extra timer 
 	// stop if running 
-	clearTimeout(wppa_timer[mocc]);
+	clearTimeout(_wppaTimer[mocc]);
 	
 	// Give this' occurrances popup its content
 	if (document.getElementById('x-'+id+'-'+mocc)) {
 
-		switch (wppa_popup_linktype) {
+		switch (wppaPopupLinkType) {
 			case 'none':
-				jQuery('#wppa-popup-'+mocc).html('<div class="wppa-popup" style="background-color:'+wppa_bgcolor_img+'; text-align:center;"><img id="wppa-img-'+mocc+'" src="'+elm.src+'" title="" style="border-width: 0px;" /><div id="wppa-name-'+mocc+'" style="display:none; padding:2px;" class="wppa_pu_info">'+elm.alt+'</div><div id="wppa-desc-'+mocc+'" style="clear:both; display:none;" class="wppa_pu_info">'+elm.title+'</div><div id="wppa-rat-'+mocc+'" style="clear:both; display:none;" class="wppa_pu_info">'+rating+'</div></div>');
+				jQuery('#wppa-popup-'+mocc).html('<div class="wppa-popup" style="background-color:'+wppaBackgroundColorImage+'; text-align:center;"><img id="wppa-img-'+mocc+'" src="'+elm.src+'" title="" style="border-width: 0px;" /><div id="wppa-name-'+mocc+'" style="display:none; padding:2px;" class="wppa_pu_info">'+elm.alt+'</div><div id="wppa-desc-'+mocc+'" style="clear:both; display:none;" class="wppa_pu_info">'+elm.title+'</div><div id="wppa-rat-'+mocc+'" style="clear:both; display:none;" class="wppa_pu_info">'+rating+'</div></div>');
 				break;
 			case 'fullpopup':
-				jQuery('#wppa-popup-'+mocc).html('<div class="wppa-popup" style="background-color:'+wppa_bgcolor_img+'; text-align:center;"><img id="wppa-img-'+mocc+'" src="'+elm.src+'" title="" style="border-width: 0px;" onclick="'+wppa_popup_onclick[id]+'" /><div id="wppa-name-'+mocc+'" style="display:none; padding:2px;" class="wppa_pu_info">'+elm.alt+'</div><div id="wppa-desc-'+mocc+'" style="clear:both; display:none;" class="wppa_pu_info">'+elm.title+'</div><div id="wppa-rat-'+mocc+'" style="clear:both; display:none;" class="wppa_pu_info">'+rating+'</div></div>');
+				jQuery('#wppa-popup-'+mocc).html('<div class="wppa-popup" style="background-color:'+wppaBackgroundColorImage+'; text-align:center;"><img id="wppa-img-'+mocc+'" src="'+elm.src+'" title="" style="border-width: 0px;" onclick="'+wppaPopupOnclick[id]+'" /><div id="wppa-name-'+mocc+'" style="display:none; padding:2px;" class="wppa_pu_info">'+elm.alt+'</div><div id="wppa-desc-'+mocc+'" style="clear:both; display:none;" class="wppa_pu_info">'+elm.title+'</div><div id="wppa-rat-'+mocc+'" style="clear:both; display:none;" class="wppa_pu_info">'+rating+'</div></div>');
 				break;
 			default:
-				jQuery('#wppa-popup-'+mocc).html('<div class="wppa-popup" style="background-color:'+wppa_bgcolor_img+'; text-align:center;"><a id="wppa-a" href="'+document.getElementById('x-'+id+'-'+mocc).href+'"><img id="wppa-img-'+mocc+'" src="'+elm.src+'" title="" style="border-width: 0px;" /></a><div id="wppa-name-'+mocc+'" style="display:none; padding:2px;" class="wppa_pu_info">'+elm.alt+'</div><div id="wppa-desc-'+mocc+'" style="clear:both; display:none;" class="wppa_pu_info">'+elm.title+'</div><div id="wppa-rat-'+mocc+'" style="clear:both; display:none;" class="wppa_pu_info">'+rating+'</div></div>');
+				jQuery('#wppa-popup-'+mocc).html('<div class="wppa-popup" style="background-color:'+wppaBackgroundColorImage+'; text-align:center;"><a id="wppa-a" href="'+document.getElementById('x-'+id+'-'+mocc).href+'"><img id="wppa-img-'+mocc+'" src="'+elm.src+'" title="" style="border-width: 0px;" /></a><div id="wppa-name-'+mocc+'" style="display:none; padding:2px;" class="wppa_pu_info">'+elm.alt+'</div><div id="wppa-desc-'+mocc+'" style="clear:both; display:none;" class="wppa_pu_info">'+elm.title+'</div><div id="wppa-rat-'+mocc+'" style="clear:both; display:none;" class="wppa_pu_info">'+rating+'</div></div>');
 		}
 	}
 	
@@ -65,7 +65,7 @@ function wppa_popup(mocc, elm, id, rating) {
 	jQuery('#wppa-popup-'+mocc).stop().animate({"marginLeft":leftDivBig+"px","marginTop":topDivBig+"px"}, 400);
 	jQuery('#wppa-img-'+mocc).stop().animate({"width":widthImgBig+"px","height":heightImgBig+"px"}, 400);
 	// adding ", 'linear', wppa_popready(occ) " fails, therefor our own timer to the "show info" module
-	wppa_timer[mocc] = setTimeout('wppa_popready('+mocc+')', 400);
+	_wppaTimer[mocc] = setTimeout('wppa_popready('+mocc+')', 400);
 }
 function wppa_popready(mocc) {
 	jQuery("#wppa-name-"+mocc).show();
@@ -92,7 +92,7 @@ function wppa_full_popup(mocc, id, url, xwidth, xheight) {
 	var wnd = window.open('', '', 'width='+width+', height='+height+', location=no, resizable=no');
 	wnd.document.write('<html>');
 		wnd.document.write('<head>');	
-			wnd.document.write('<style type="text/css">body{margin:0; padding:6px; background-color:'+wppa_bgcolor_img+'; text-align:center;}</style>');
+			wnd.document.write('<style type="text/css">body{margin:0; padding:6px; background-color:'+wppaBackgroundColorImage+'; text-align:center;}</style>');
 			wnd.document.write('<title>'+name+'</title>');
 			wnd.document.write('<script type="text/javascript">function wppa_print(){document.getElementById("wppa_printer").style.visibility="hidden";window.print();document.getElementById("wppa_printer").style.visibility="visible";}</script>');
 		wnd.document.write('</head>');
@@ -101,7 +101,7 @@ function wppa_full_popup(mocc, id, url, xwidth, xheight) {
 				wnd.document.write('<img src="'+url+'" style="padding-bottom:6px;" /><br/>');
 				wnd.document.write('<div style="text-align:center">'+desc+'</div>');
 				var left = xwidth-30;
-				wnd.document.write('<img src="'+wppa_imgdir+'printer.png" id="wppa_printer" title="Print" style="position:absolute; top:6px; left:'+left+'px; background-color:'+wppa_bgcolor_img+'; padding: 2px; cursor:pointer;" onclick="wppa_print();" />');
+				wnd.document.write('<img src="'+wppa_imgdir+'printer.png" id="wppa_printer" title="Print" style="position:absolute; top:6px; left:'+left+'px; background-color:'+wppaBackgroundColorImage+'; padding: 2px; cursor:pointer;" onclick="wppa_print();" />');
 			wnd.document.write('</div>');
 		wnd.document.write('</body>');
 	wnd.document.write('</html>');
