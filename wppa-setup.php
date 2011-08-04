@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 4.0.0
+* Version 4.0.1
 *
 */
 
@@ -261,7 +261,8 @@ global $wppa_defaults;
 						'wppa_comadmin_show' 		=> 'all',
 						'wppa_popupsize' 			=> get_option('wppa_smallsize', '150'),
 						'wppa_comadmin_order' 		=> 'timestamp',
-						'wppa_slide_order'			=> '0,1,2,3,4,5,6,7,8,9'
+						'wppa_slide_order'			=> '0,1,2,3,4,5,6,7,8,9',
+						'wppa_show_bbb'				=> 'no'
 
 						);
 	
