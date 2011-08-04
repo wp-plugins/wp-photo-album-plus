@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 * admin sidebar widget
-* version 3.1.0
+* version 4.0.2
 *
 */
 
@@ -206,4 +206,4 @@ function _wppa_sidebar_page_options() {
 <?php
 }
 
-require_once ('wppa_widgetfunctions.php');
+require_once ('wppa-widget-functions.php');

@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, multisite, network
-Version: 4.0.1
+Version: 4.0.2
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -103,6 +103,23 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 
 
 == Changelog ==
+
+= 4.0.2 =
+
+= Bug Fixes =
+
+* Photo of the day admin caused a fatal error, fixed
+
+= New Features =
+
+* You can select *Top* and *Bottom* additionally to Right and Left for coverphoto display position (Table IV item 13). 
+A spinoff of this enhancement are the folowing:
+* The 2 and 3 column treshold values (Table I items 17 and 18) have been replaced by Maximum cover width (item 17).
+This basically does the same as the 2 column treshod value, but is more user understandable and makes the 3col treshold superfluous.
+Note: If you had set the 2 column treshold exactly to the column width before, 
+you may need to change this setting as the old value (that will be used) will result in one column instead of two.
+* There is a new item 18: Minimal cover text frame height, that makes it easier to get the covers equal in height. 
+Additionally will you need to keep the coverphotos all landscape (with the same aspect ratio) or portrait to keep the covers equal in height.
 
 = 4.0.1 =
 
