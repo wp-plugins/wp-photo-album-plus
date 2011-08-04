@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 4.0.0
+* Version 4.0.1
 *
 */
 
@@ -150,6 +150,7 @@ global $options_error;
 			wppa_update_check('wppa_thumb_text_rating');
 			wppa_update_check('wppa_show_cover_text');
 			wppa_update_check('wppa_show_comments');
+			wppa_update_check('wppa_show_bbb');
 		
 			// Table 3: Backgrounds
 			wppa_update_value('wppa_bgcolor_even');
@@ -727,6 +728,15 @@ global $wppa_api_version;
 					$onchange = 'wppaCheckComments()';
 					$html = wppa_checkbox($slug, $onchange);
 					wppa_setting($slug, '18', $name, $desc, $html, $help);
+					
+					$name = __('Big Browse Buttons', 'wppa');
+					$desc = __('Enable invisible browsing buttons.', 'wppa');
+					$help = esc_js(__('If checked, the fullsize image is covered by two invisible areas that act as browse buttons.', 'wppa'));
+					$help .= '\n\n'.esc_js(__('Make sure the Full height (Table I item 3) is properly configured to prevent these areas to overlap unwanted space.', 'wppa'));
+					$help .= '\n\n'.esc_js(__('A side effect of this setting is that right clicking the image no longer enables the visitor to download the image.', 'wppa'));
+					$slug = 'wppa_show_bbb';
+					$html = wppa_checkbox($slug);
+					wppa_setting($slug, '19', $name, $desc, $html, $help);
 					
 					?>
 				</tbody>
