@@ -2,7 +2,7 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 4.0.1
+* version 4.0.2
 *
 */
 global $wppa_api_version;
@@ -126,13 +126,15 @@ global $blog_id;
 			'wppa_fontcolor_fulltitle' => '',
 			'wppa_arrow_color' => '',
 			'wppa_widget_width' => '',
-			'wppa_2col_treshold' => '',
-			'wppa_3col_treshold' => '',
+//			'wppa_2col_treshold' => '',
+//			'wppa_3col_treshold' => '',
+			'wppa_max_cover_width' => '',
+			'wppa_text_frame_height' => '',
 			'wppa_film_show_glue' => '',
 			'wppa_album_page_size' => '',
 			'wppa_thumb_page_size' => '',
 			'wppa_thumb_auto' => '',
-			'wppa_coverphoto_left' => '',
+			'wppa_coverphoto_pos' => '',
 			'wppa_thumbphoto_left' => '',
 			'wppa_enable_slideshow' => '',
 			'wppa_thumb_text_name' => '',

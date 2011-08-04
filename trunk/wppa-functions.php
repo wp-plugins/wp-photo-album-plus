@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions and API modules
-* Version 4.0.0
+* Version 4.0.2
 *
 * dbg
 */
@@ -1893,7 +1893,7 @@ global $cover_count;
 	else {
 		$events = wppa_get_imgevents('cover');
 	}
-	$photo_left = $wppa_opt['wppa_coverphoto_left'];
+	$photo_pos = $wppa_opt['wppa_coverphoto_pos'];
 	
 	$style =  __wcs('wppa-box').__wcs('wppa-'.$wppa_alt);
 	if (is_feed()) $style .= ' padding:7px;';
@@ -1910,13 +1910,13 @@ global $cover_count;
 	
 	$wppa['out'] .= wppa_nltab('+').'<div id="album-'.$album['id'].'-'.$wppa['master_occur'].'" class="album wppa-box wppa-cover-box wppa-'.$wppa_alt.'" style="'.$style.'" >';
 
-		if ($photo_left) {
-			// The Cover photo
-			wppa_the_coverphoto($src, $photo_left, $photolink, $title, $imgattr, $events);
+		if ( $photo_pos == 'left' || $photo_pos == 'top') {
+			// First The Cover photo
+			wppa_the_coverphoto($src, $photo_pos, $photolink, $title, $imgattr, $events);
 		}
 		
 		// The Cover text
-		$textframestyle = wppa_get_text_frame_style($photo_left, 'cover');
+		$textframestyle = wppa_get_text_frame_style($photo_pos, 'cover');
 		$wppa['out'] .= wppa_nltab('+').'<div id="covertext_frame_'.$album['id'].'_'.$wppa['master_occur'].'" class="wppa-text-frame covertext-frame" '.$textframestyle.'>';
 			// The Album title
 			$wppa['out'] .= wppa_nltab('+').'<h2 class="wppa-title" style="clear:none; '.__wcs('wppa-title').'">';
@@ -1928,7 +1928,8 @@ global $cover_count;
 			$wppa['out'] .= wppa_nltab('-').'</h2>';
 			if ($wppa_opt['wppa_show_cover_text']) {
 			// The Album description
-			$wppa['out'] .= wppa_nltab().'<p class="wppa-box-text wppa-black" style="'.__wcs('wppa-box-text').__wcs('wppa-black').'">'.wppa_html(wppa_get_the_album_desc()).'</p>';
+			$textheight = $wppa_opt['wppa_text_frame_height'] > '0' ? 'min-height:'.$wppa_opt['wppa_text_frame_height'].'px; ' : '';
+			$wppa['out'] .= wppa_nltab().'<p class="wppa-box-text wppa-black" style="'.$textheight.__wcs('wppa-box-text').__wcs('wppa-black').'">'.wppa_html(wppa_get_the_album_desc()).'</p>';
 			// The 'Slideshow'/'Browse' link
 			$wppa['out'] .= wppa_nltab('+').'<div class="wppa-box-text wppa-black wppa-info wppa-slideshow-browse-link">';
 				if ($photocount > $mincount) { 
@@ -1969,9 +1970,9 @@ global $cover_count;
 			}
 		$wppa['out'] .= wppa_nltab('-').'</div>';
 		
-		if (!$photo_left) {
-			// The Cover photo
-			wppa_the_coverphoto($src, $photo_left, $photolink, $title, $imgattr, $events);
+		if ( $photo_pos == 'right' || $photo_pos == 'bottom' ) {
+			// The Cover photo last
+			wppa_the_coverphoto($src, $photo_pos, $photolink, $title, $imgattr, $events);
 		}
 		
 		$wppa['out'] .= wppa_nltab().'<div style="clear:both;"></div>';		
@@ -1979,12 +1980,29 @@ global $cover_count;
 	if ($wppa_alt == 'even') $wppa_alt = 'alt'; else $wppa_alt = 'even';
 }
 
-function wppa_the_coverphoto($src, $photo_left, $photolink, $title, $imgattr, $events) {
+function wppa_the_coverphoto($src, $photo_pos, $photolink, $title, $imgattr, $events) {
 global $wppa;
 global $album;
 	if ($src != '') { 
 		if ($wppa['in_widget']) $photoframestyle = 'style="text-align:center; "';
-		else $photoframestyle = $photo_left ? 'style="float:left; margin-right:5px;"' : 'style="float:right; margin-left:5px;"';
+		else {
+			switch ( $photo_pos ) {
+				case 'left':
+					$photoframestyle = 'style="float:left; margin-right:5px;"';
+					break;
+				case 'right':
+					$photoframestyle = 'style="float:right; margin-left:5px;"';
+					break;
+				case 'top':
+					$photoframestyle = 'style="text-align:center;"';
+					break;
+				case 'bottom':
+					$photoframestyle = 'style="text-align:center;"';
+					break;
+				default :
+					wppa_dbg_msg('Illegal $photo_pos in wppa_the_coverphoto');
+			}
+		}
 		$wppa['out'] .= wppa_nltab('+').'<div id="coverphoto_frame_'.$album['id'].'_'.$wppa['master_occur'].'" class="coverphoto-frame" '.$photoframestyle.'>';
 		if ($photolink) {
 			$wppa['out'] .= wppa_nltab('+').'<a href="'.$photolink['url'].'" title="'.$photolink['title'].'">';
@@ -2433,7 +2451,8 @@ global $wppa_opt;
 	$conwidth = wppa_get_container_width();
 	$cols = wppa_get_cover_cols($type);
 	
-	switch ($cols) {
+	$result = floor(($conwidth - (8 * ($cols - 1))) / $cols);
+/*	switch ($cols) {
 		case '1':
 			$result = $conwidth;
 			break;
@@ -2445,6 +2464,7 @@ global $wppa_opt;
 			break;
 		
 	}
+*/
 	$result -= (2 * (7 + $wppa_opt['wppa_bwidth']));	// 2 * (padding + border)
 	return $result;
 }
@@ -2457,15 +2477,45 @@ global $wppa;
 		$result = '';
 	}
 	else {
-		$width = wppa_get_cover_width($type);
-		$width -= 13;	// margin
-		$width -= $wppa_opt['wppa_smallsize'];
-		if ($photo_left) {
-			$result = 'style="width:'.$width.'px; float:right;"';
+		if ( $type == 'thumb' ) {
+			$width = wppa_get_cover_width($type);
+			$width -= 13;	// margin
+			$width -= $wppa_opt['wppa_smallsize'];
+			
+			if ($photo_left) {
+				$result = 'style="width:'.$width.'px; float:right;"';
+			}
+			else {
+				$result = 'style="width:'.$width.'px; float:left;"';
+			}
 		}
-		else {
-			$result = 'style="width:'.$width.'px; float:left;"';
+		elseif ( $type == 'cover' ) {
+			$width = wppa_get_cover_width($type);
+			$photo_pos = $photo_left;
+			switch ( $photo_pos ) {
+				case 'left':
+					$width -= 13;	// margin
+					$width -= $wppa_opt['wppa_smallsize'];
+					$result = 'style="width:'.$width.'px; float:right;"';
+					break;
+				case 'right':
+					$width -= 13;	// margin
+					$width -= $wppa_opt['wppa_smallsize'];
+					$result = 'style="width:'.$width.'px; float:left;"';
+					break;
+				case 'top':
+//					$width -= 13;
+					$result = 'style="width:'.$width.'px;"';
+					break;
+				case 'bottom':
+//					$width -= 13;
+					$result = 'style="width:'.$width.'px;"';
+					break;
+				default:
+					wppa_dbg_msg('Illegal $photo_pos in wppa_get_text_frame_style');
+			}
 		}
+		else wppa_dbg_msg('Illegal $type in wppa_get_text_frame_style');
 	}
 	return $result;
 }
@@ -2501,10 +2551,14 @@ global $wppa;
 global $wppa_opt;
 
 	$conwidth = wppa_get_container_width();
-	$cols = '1';
+	
+	$cols = ceil( $conwidth / $wppa_opt['wppa_max_cover_width'] );
+	
+/*	$cols = '1';
 	if ($conwidth >= $wppa_opt['wppa_2col_treshold']) $cols = '2';
 	if ($conwidth >= $wppa_opt['wppa_3col_treshold']) $cols = '3';
-	
+*/
+	// Exceptions
 	if ($wppa['auto_colwidth']) $cols = '1';
 	if (($type == 'cover') && ($wppa['album_count'] < '2')) $cols = '1';
 	if (($type == 'thumb') && ($wppa['thumb_count'] < '2')) $cols = '1';

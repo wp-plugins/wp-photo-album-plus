@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 4.0.1
+* Version 4.0.2
 *
 */
 
@@ -76,6 +76,18 @@ function wppa_setup($force = false) {
 	dbDelta( $create_rating );
 	dbDelta( $create_comments );
 		
+	// Coverphoto_left is obsolete per version 4.0.2 and changed to coverphoto_pos
+	if (get_option('wppa_coverphoto_left', 'nil') == 'no') update_option('wppa_coverphoto_pos', 'right');
+	if (get_option('wppa_coverphoto_left', 'nil') == 'yes') update_option('wppa_coverphoto_pos', 'left');
+	if (get_option('wppa_coverphoto_left', 'nil') != 'nil') delete_option('wppa_coverphoto_left');
+	// 2col and 3col tresholds are obsolete per version 4.0.2 and replaced by max_cover_width
+	if (get_option('wppa_2col_treshold', 'nil') != 'nil') {
+		update_option('wppa_max_cover_width', get_option('wppa_2col_treshold', '1024'));
+		delete_option('wppa_2col_treshold');
+		delete_option('wppa_3col_treshold');
+	}
+	
+	
 	wppa_set_defaults();
 	wppa_check_dirs();
 	wppa_check_multisite();
@@ -187,13 +199,16 @@ global $wppa_defaults;
 						'wppa_fontsize_fulltitle' 	=> '',
 						'wppa_fontcolor_fulltitle' 	=> '',
 						'wppa_arrow_color' 			=> 'black',
-						'wppa_2col_treshold' 		=> '1024',
-						'wppa_3col_treshold' 		=> '1024',
+//						'wppa_2col_treshold' 		=> '1024',
+//						'wppa_3col_treshold' 		=> '1024',
+						'wppa_max_cover_width'		=> '1024',
+						'wppa_text_frame_height'	=> '54',
 						'wppa_film_show_glue' 		=> 'yes',
 						'wppa_album_page_size' 		=> '0',
 						'wppa_thumb_page_size' 		=> '0',
 						'wppa_thumb_auto' 			=> 'yes',
-						'wppa_coverphoto_left' 		=> 'no',
+//						'wppa_coverphoto_left' 		=> 'no',
+						'wppa_coverphoto_pos'		=> 'right',
 						'wppa_thumbphoto_left' 		=> 'no',
 						'wppa_enable_slideshow' 	=> 'yes',
 						'wppa_thumb_text_name' 		=> 'yes',

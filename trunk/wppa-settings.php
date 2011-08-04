@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 4.0.1
+* Version 4.0.2
 *
 */
 
@@ -113,8 +113,10 @@ global $options_error;
 			wppa_update_numeric('wppa_album_page_size', '0', __('Album page size.', 'wppa'));
 			wppa_update_numeric('wppa_topten_count', '2', __('Number of TopTen photos', 'wppa'), '40');
 			wppa_update_numeric('wppa_topten_size', '32', __('Widget image thumbnail size', 'wppa'), wppa_get_minisize());
-			wppa_update_numeric('wppa_2col_treshold', '300', __('Two column width treshold', 'wppa'));
-			wppa_update_numeric('wppa_3col_treshold', '500', __('Three column width treshold', 'wppa'));
+//			wppa_update_numeric('wppa_2col_treshold', '300', __('Two column width treshold', 'wppa'));
+//			wppa_update_numeric('wppa_3col_treshold', '500', __('Three column width treshold', 'wppa'));
+			wppa_update_numeric('wppa_max_cover_width', '150', __('Max Cover width', 'wppa'));
+			wppa_update_numeric('wppa_text_frame_height', '0', __('Minimal Cover text frame height', 'wppa'));
 			
 			$slug = 'wppa_bwidth';
 			$value = $_POST[$slug];
@@ -180,7 +182,7 @@ global $options_error;
 			wppa_update_check('wppa_use_thumb_opacity');
 			wppa_update_numeric('wppa_thumb_opacity', '0', __('Opacity.', 'wppa'), '100');
 			wppa_update_check('wppa_use_thumb_popup');
-			wppa_update_value('wppa_coverphoto_left');
+			wppa_update_value('wppa_coverphoto_pos');
 			wppa_update_check('wppa_use_cover_opacity');
 			wppa_update_numeric('wppa_cover_opacity', '0', __('Opacity.', 'wppa'), '100');
 			wppa_update_check('wppa_rating_login');
@@ -511,7 +513,7 @@ global $wppa_api_version;
 					$slug = 'wppa_topten_size';
 					$html = wppa_input($slug, '40px', '', __('pixels', 'wppa'));
 					wppa_setting($slug, '16', $name, $desc, $html, $help, 'wppa_rating');
-
+/*
 					$name = __('2 Columns size', 'wppa');
 					$desc = __('Minimum width for 2 columns.', 'wppa');
 					$help = esc_js(__('Display covers in 2 or 3 columns if the display area is wider or equal to the number of pixels entered.', 'wppa'));
@@ -525,6 +527,22 @@ global $wppa_api_version;
 					$help = esc_js(__('Display covers in 2 or 3 columns if the display area is wider or equal to the number of pixels entered.', 'wppa'));
 					$help .= '\n'.esc_js(__('This also applies for \'thumbnails as covers\', and will NOT apply to single items.', 'wppa'));
 					$slug = 'wppa_3col_treshold';
+					$html = wppa_input($slug, '40px', '', __('pixels', 'wppa'));
+					wppa_setting($slug, '18', $name, $desc, $html, $help);
+*/					
+					$name = __('Max Cover width', 'wppa');
+					$desc = __('Maximum width for a album cover display.', 'wppa');
+					$help = esc_js(__('Display covers in 2 or more columns if the display area is wider than the given width.', 'wppa'));
+					$help .= '\n'.esc_js(__('This also applies for \'thumbnails as covers\', and will NOT apply to single items.', 'wppa'));
+					$slug = 'wppa_max_cover_width';
+					$html = wppa_input($slug, '40px', '', __('pixels', 'wppa'));
+					wppa_setting($slug, '17', $name, $desc, $html, $help);
+
+					$name = __('Min Text frame height', 'wppa');
+					$desc = __('The minimal cover text frame height.', 'wppa');
+					$help = esc_js(__('The minimal height of the description field in an album cover display.', 'wppa'));
+					$help .= '\n\n'.esc_js(__('This setting enables you to give the album covers the same height provided that the cover images are equally sized.', 'wppa'));
+					$slug = 'wppa_text_frame_height';
 					$html = wppa_input($slug, '40px', '', __('pixels', 'wppa'));
 					wppa_setting($slug, '18', $name, $desc, $html, $help);
 					
@@ -976,9 +994,9 @@ global $wppa_api_version;
 					$name = __('Placement', 'wppa');
 					$desc = __('Cover image left or right.', 'wppa');
 					$help = esc_js(__('Indicate the placement position of the coverphoto you wish.', 'wppa'));
-					$slug = 'wppa_coverphoto_left';
-					$options = array(__('Left', 'wppa'), __('Right', 'wppa'));
-					$values = array('yes', 'no');
+					$slug = 'wppa_coverphoto_pos';
+					$options = array(__('Left', 'wppa'), __('Right', 'wppa'), __('Top', 'wppa'), __('Bottom', 'wppa'));
+					$values = array('left', 'right', 'top', 'bottom');
 					$html = wppa_select($slug, $options, $values);
 					wppa_setting($slug, '13', $name, $desc, $html, $help);
 
