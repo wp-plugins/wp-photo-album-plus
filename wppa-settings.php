@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 4.0.2
+* Version 4.0.3
 *
 */
 
@@ -1740,9 +1740,7 @@ global $wppa_api_version;
 											
 					</tbody>
 				</table>
-			</div>
-			<div class="wppa_table_10" style="margin-top:20px; text-align:left;">
-				<?php wppa_phpinfo() ?>
+				<?php if ( $wppa_opt['wppa_allow_debug'] == 'yes' ) phpinfo(-1); else phpinfo(4); ?>
 			</div>
 		</form>
 		<script type="text/javascript">wppaInitSettings();</script>
