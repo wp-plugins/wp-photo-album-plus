@@ -2,11 +2,11 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 4.0.2
+* version 4.0.3
 *
 */
 global $wppa_api_version;
-$wppa_api_version = '4-0-1-000';
+$wppa_api_version = '4-0-3-000';
 // Initialize globals and option settings
 function wppa_initialize_runtime($force = false) {
 global $wppa;
@@ -214,19 +214,19 @@ global $blog_id;
 		if ( get_option('wppa_multisite', 'no') == 'yes' ) {	// DO NOT change this in $wppa_opt['wppa_multisite'] as it will not work
 			define( 'WPPA_UPLOAD', 'wp-content/blogs.dir/'.$blog_id);
 			define( 'WPPA_UPLOAD_PATH', ABSPATH.WPPA_UPLOAD.'/wppa');
-			define( 'WPPA_UPLOAD_URL', get_bloginfo('url').'/'.WPPA_UPLOAD.'/wppa');
+			define( 'WPPA_UPLOAD_URL', get_bloginfo('wpurl').'/'.WPPA_UPLOAD.'/wppa');
 			define( 'WPPA_DEPOT', 'wp-content/blogs.dir/'.$blog_id.'/wppa-depot' );			
 			define( 'WPPA_DEPOT_PATH', ABSPATH.WPPA_DEPOT );					
-			define( 'WPPA_DEPOT_URL', get_bloginfo('url').'/'.WPPA_DEPOT );	
+			define( 'WPPA_DEPOT_URL', get_bloginfo('wpurl').'/'.WPPA_DEPOT );	
 		}
 		else {
 			define( 'WPPA_UPLOAD', 'wp-content/uploads');
 			define( 'WPPA_UPLOAD_PATH', ABSPATH.WPPA_UPLOAD.'/wppa' );
-			define( 'WPPA_UPLOAD_URL', get_bloginfo('url').'/'.WPPA_UPLOAD.'/wppa' );
+			define( 'WPPA_UPLOAD_URL', get_bloginfo('wpurl').'/'.WPPA_UPLOAD.'/wppa' );
 			$user = is_user_logged_in() ? '/'.wppa_get_user() : '';
 			define( 'WPPA_DEPOT', 'wp-content/wppa-depot'.$user );
 			define( 'WPPA_DEPOT_PATH', ABSPATH.WPPA_DEPOT );
-			define( 'WPPA_DEPOT_URL', get_bloginfo('url').'/'.WPPA_DEPOT );
+			define( 'WPPA_DEPOT_URL', get_bloginfo('wpurl').'/'.WPPA_DEPOT );
 		}
 	}
 }
