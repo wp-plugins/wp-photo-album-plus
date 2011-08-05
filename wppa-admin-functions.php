@@ -545,6 +545,8 @@ function wppa_cleanup_photos($alb = '') {
 	global $wpdb;
 	global $wppa_error_displayed;
 
+return; // temp disabled for 4.0 bug
+	
 	// Check the users php config. sometimes a user 'reconfigures' his server to not having GD support...
 	if ( ! function_exists('getimagesize') || ! function_exists('imagecreatefromjpeg') ) {
 		if ( ! $wppa_error_displayed ) {
