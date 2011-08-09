@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the slideshow high level functions
-* Version 4.0.1
+* Version 4.0.4
 *
 */
 
@@ -320,7 +320,7 @@ global $wppa;
 global $wppa_opt;
 
 	if (is_feed()) {
-//		wppa_dummy_bar(__('- - - Comments box - - -', 'wppa_theme'));
+		if ( $wppa_opt['wppa_show_comments'] ) wppa_dummy_bar(__a('- - - Comments box activated - - -', 'wppa_theme'));
 		return;
 	}
 	$do_it = false;

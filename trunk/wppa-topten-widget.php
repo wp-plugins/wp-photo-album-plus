@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the top rated photos
-* Version 4.0.0
+* Version 4.0.4
 */
 
 class TopTenWidget extends WP_Widget {
@@ -49,26 +49,29 @@ class TopTenWidget extends WP_Widget {
 				$imgurl = WPPA_UPLOAD_URL . '/' . $image['id'] . '.' . $image['ext'];
 				$no_album = !$album;
 				if ($no_album) $tit = __a('View the top rated photos', 'wppa_theme'); else $tit = esc_attr(wppa_qtrans(stripslashes($image['description'])));
-				$link = wppa_get_imglnk_a('topten', $image['id'], '', $tit, $no_album);
-				$file = wppa_get_thumb_path_by_id($image['id']);
-				$imgstyle = wppa_get_imgstyle($file, $maxw, 'center', 'ttthumb');
+				$link       = wppa_get_imglnk_a('topten', $image['id'], '', $tit, $no_album);
+				$file       = wppa_get_thumb_path_by_id($image['id']);
+				$imgstyle_a = wppa_get_imgstyle_a($file, $maxw, 'center', 'ttthumb');
+				$imgstyle   = $imgstyle_a['style'];
+				$width      = $imgstyle_a['width'];
+				$height     = $imgstyle_a['height'];
+
 				$imgevents = wppa_get_imgevents('thumb', $image['id'], true);
-		//		$title = esc_attr(wppa_qtrans(stripslashes($image['description'])));
-	if ($link) $title = $link['title'];
+
+				if ($link) $title = $link['title'];
 				
 				if ($link) {
 					if ( ! $link['is_url'] ) { // Is an onclick unit
-			//		if ($wppa_opt['wppa_topten_widget_linktype'] == 'fullpopup') {
-						$widget_content .= "\n\t".'<img id="i-'.$image['id'].'-'.$wppa['master_occur'].'" title="'.$title.'" src="'.$imgurl.'" style="'.$imgstyle.'" '.$imgevents.' onclick="'.$link['url'].'" alt="'.esc_attr(wppa_qtrans($image['name'])).'">';					
+						$widget_content .= "\n\t".'<img id="i-'.$image['id'].'-'.$wppa['master_occur'].'" title="'.$title.'" src="'.$imgurl.'" width="'.$width.'" height="'.$height.'" style="'.$imgstyle.'" '.$imgevents.' onclick="'.$link['url'].'" alt="'.esc_attr(wppa_qtrans($image['name'])).'">';					
 					}
 					else {	// Is a href
 						$widget_content .= "\n\t".'<a href="'.$link['url'].'" title="'.$link['title'].'">';
-							$widget_content .= "\n\t\t".'<img id="i-'.$image['id'].'-'.$wppa['master_occur'].'" title="'.$title.'" src="'.$imgurl.'" style="'.$imgstyle.'" '.$imgevents.' alt="'.esc_attr(wppa_qtrans($image['name'])).'">';
+							$widget_content .= "\n\t\t".'<img id="i-'.$image['id'].'-'.$wppa['master_occur'].'" title="'.$title.'" src="'.$imgurl.'" width="'.$width.'" height="'.$height.'" style="'.$imgstyle.'" '.$imgevents.' alt="'.esc_attr(wppa_qtrans($image['name'])).'">';
 						$widget_content .= "\n\t".'</a>';
 					}
 				}
 				else {
-					$widget_content .= "\n\t".'<img id="i-'.$image['id'].'-'.$wppa['master_occur'].'" title="'.$title.'" src="'.$imgurl.'" style="'.$imgstyle.'" '.$imgevents.' alt="'.esc_attr(wppa_qtrans($image['name'])).'">';
+					$widget_content .= "\n\t".'<img id="i-'.$image['id'].'-'.$wppa['master_occur'].'" title="'.$title.'" src="'.$imgurl.'" width="'.$width.'" height="'.$height.'" style="'.$imgstyle.'" '.$imgevents.' alt="'.esc_attr(wppa_qtrans($image['name'])).'">';
 				}
 			}
 			else {	// No image
