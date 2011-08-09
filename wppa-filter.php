@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * get the albums via filter
-* version 4.0.0
+* version 4.0.4
 *
 */
 
@@ -18,8 +18,8 @@ global $wppa;
 
 	$post_old = $post;
 	$post_new = '';
-	
-	if (substr_count($post_old, '%%wppa%%') > 0) {						// Yes, there is something to do here
+
+	if ( strpos($post_old, '%%wppa%%') !== false ) {					// Yes, there is something to do here
 		if ($wppa['debug']) wppa_dbg_msg('%%wppa%% found');				// Issue diagnostic message
 		$wppa['occur'] = '0';											// Init this occurance
 		$wppa_pos = strpos($post_old, '%%wppa%%');						// Where in the post is the invocation

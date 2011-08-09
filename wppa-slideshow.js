@@ -1,5 +1,5 @@
 ﻿// Slide show variables and functions
-// This is wppa-slideshow.js version 4.0.0
+// This is wppa-slideshow.js version 4.0.4
 //
 // Vars. The vars that have a name that starts with an underscore is an internal var
 // The vars without leading underscore are 'external' and get a value from html
@@ -21,6 +21,7 @@ var wppaFilmStripMargin = new Array();
 var wppaFilmStripAreaDelta = new Array();
 var wppaFilmShowGlue;
 var wppaIsMini = new Array();
+var wppa_portrait_only = new Array();
 var wppaSlideShow;				// = 'Slideshow' or its translation
 var wppaPhoto;					// = 'Photo' or its translation
 var wppaOf;						// = 'of' or its translation
@@ -41,7 +42,6 @@ var _wppaPhotoIds = new Array();
 var _wppaPhotoAverages = new Array();
 var _wppaPhotoMyRating = new Array();
 var _wppaVoteReturnUrl = new Array();
-var wppa_portrait_only = new Array();
 var _wppaInWidgetLinkUrl = new Array();
 var _wppaInWidgetLinkTitle = new Array();
 var _wppaCommentHtml = new Array();
@@ -72,7 +72,7 @@ jQuery(document).ready(function(){
 // These functions check the validity and store the users request to be executed later if busy and if applicable.
 
 // This is an entrypoint to load the slide data
-function wppaStoreSlideInfo(mocc, id, url, size, name, desc, photoid, avgrat, myrat, rateurl, iwlinkurl, iwlinktitle, iwtimeout, commenthtml) {
+function wppaStoreSlideInfo(mocc, id, url, size, width, height, name, desc, photoid, avgrat, myrat, rateurl, iwlinkurl, iwlinktitle, iwtimeout, commenthtml) {
 	if ( ! _wppaSlides[mocc] ) {
 		_wppaSlides[mocc] = new Array();
 		_wppaNames[mocc] = new Array();
@@ -96,7 +96,7 @@ function wppaStoreSlideInfo(mocc, id, url, size, name, desc, photoid, avgrat, my
 		_wppaInWidgetLinkTitle[mocc] = new Array(); // iwlinktitle;
 		_wppaCommentHtml[mocc] = new Array();
 	}
-    _wppaSlides[mocc][id] = ' src="' + url + '" alt="' + name + '" class="theimg big" ' + ' style="' + size + '; display:block;">';
+    _wppaSlides[mocc][id] = ' src="' + url + '" alt="' + name + '" class="theimg big" ' + 'width="' + width + '" height="' + height + '" style="' + size + '; display:block;">';
     _wppaNames[mocc][id] = name;
     _wppaDescriptions[mocc][id] = desc;
 	_wppaPhotoIds[mocc][id] = photoid;		// reqd for rating and comment
