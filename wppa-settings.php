@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 4.0.3
+* Version 4.0.5
 *
 */
 
@@ -113,8 +113,6 @@ global $options_error;
 			wppa_update_numeric('wppa_album_page_size', '0', __('Album page size.', 'wppa'));
 			wppa_update_numeric('wppa_topten_count', '2', __('Number of TopTen photos', 'wppa'), '40');
 			wppa_update_numeric('wppa_topten_size', '32', __('Widget image thumbnail size', 'wppa'), wppa_get_minisize());
-//			wppa_update_numeric('wppa_2col_treshold', '300', __('Two column width treshold', 'wppa'));
-//			wppa_update_numeric('wppa_3col_treshold', '500', __('Three column width treshold', 'wppa'));
 			wppa_update_numeric('wppa_max_cover_width', '150', __('Max Cover width', 'wppa'));
 			wppa_update_numeric('wppa_text_frame_height', '0', __('Minimal Cover text frame height', 'wppa'));
 			
@@ -132,6 +130,12 @@ global $options_error;
 			$temp = get_option('wppa_smallsize');
 			if ($temp > $floor) $floor = $temp;
 			wppa_update_numeric('wppa_popupsize', $floor, __('Popup size', 'wppa'), get_option('wppa_fullsize'));
+			
+			$slug = 'wppa_fullimage_border_width';
+			$value = $_POST[$slug];
+			if ($value == '') wppa_update_value($slug);
+			else wppa_update_numeric($slug, '0', __('Fullsize border width', 'wppa'));
+			
 
 			// Table 2: Visibility
 			wppa_update_check('wppa_show_bread');
@@ -167,7 +171,8 @@ global $options_error;
 			wppa_update_value('wppa_bcolor_com');
 
 			wppa_update_value('wppa_bgcolor_img');
-
+			wppa_update_value('wppa_bgcolor_fullimg');
+			wppa_update_value('wppa_bcolor_fullimg');
 				
 			// Table 4: Behaviour
 			wppa_update_value('wppa_fullvalign');
@@ -513,23 +518,7 @@ global $wppa_api_version;
 					$slug = 'wppa_topten_size';
 					$html = wppa_input($slug, '40px', '', __('pixels', 'wppa'));
 					wppa_setting($slug, '16', $name, $desc, $html, $help, 'wppa_rating');
-/*
-					$name = __('2 Columns size', 'wppa');
-					$desc = __('Minimum width for 2 columns.', 'wppa');
-					$help = esc_js(__('Display covers in 2 or 3 columns if the display area is wider or equal to the number of pixels entered.', 'wppa'));
-					$help .= '\n'.esc_js(__('This also applies for \'thumbnails as covers\', and will NOT apply to single items.', 'wppa'));
-					$slug = 'wppa_2col_treshold';
-					$html = wppa_input($slug, '40px', '', __('pixels', 'wppa'));
-					wppa_setting($slug, '17', $name, $desc, $html, $help);
-					
-					$name = __('3 Columns size', 'wppa');
-					$desc = __('Minimum width for 3 columns.', 'wppa');
-					$help = esc_js(__('Display covers in 2 or 3 columns if the display area is wider or equal to the number of pixels entered.', 'wppa'));
-					$help .= '\n'.esc_js(__('This also applies for \'thumbnails as covers\', and will NOT apply to single items.', 'wppa'));
-					$slug = 'wppa_3col_treshold';
-					$html = wppa_input($slug, '40px', '', __('pixels', 'wppa'));
-					wppa_setting($slug, '18', $name, $desc, $html, $help);
-*/					
+				
 					$name = __('Max Cover width', 'wppa');
 					$desc = __('Maximum width for a album cover display.', 'wppa');
 					$help = esc_js(__('Display covers in 2 or more columns if the display area is wider than the given width.', 'wppa'));
@@ -574,6 +563,16 @@ global $wppa_api_version;
 					$class = 'tt_normal';
 					$html = wppa_input($slug, '40px', '', __('pixels', 'wppa'));
 					wppa_setting($slug, '21', $name, $desc, $html, $help, $class);
+			
+					$name = __('Fullsize borderwidth', 'wppa');
+					$desc = __('The width of the border around fullsize images.', 'wppa');
+					$help = esc_js(__('The border is made by the image background being larger than the image itsself (padding).', 'wppa'));
+					$help .= '\n'.esc_js(__('Additionally there may be a one pixel outline of a different color. See Table III, item 7.', 'wppa'));
+					$help .= '\n\n'.esc_js(__('The number you enter here is exclusive the one pixel outline.', 'wppa'));
+					$help .= '\n\n'.esc_js(__('If you leave this entry empty, there will be no outline either.', 'wppa'));
+					$slug = 'wppa_fullimage_border_width';
+					$html = wppa_input($slug, '40px', '', __('pixels', 'wppa'));
+					wppa_setting($slug, '22', $name, $desc, $html, $help, $class);
 					
 					?>
 				</tbody>
@@ -840,6 +839,17 @@ global $wppa_api_version;
 					$html2 = '';
 					wppa_setting_2($slug1, $slug2, '6', $name, $desc, $html1, $html2, $help);
 					
+					$name = __('FullImg', 'wppa');
+					$desc = __('Full size Photos and slideshows.', 'wppa');
+					$help = esc_js(__('Enter valid CSS colors for fullsize photo backgrounds and borders.', 'wppa'));
+					$help .= '\n'.esc_js(__('The colors may be equal or "transparent"', 'wppa'));
+					$help .= '\n'.esc_js(__('For more information about fullsize image borders see the help on Table I, item 22', 'wppa'));
+					$slug1 = 'wppa_bgcolor_fullimg';
+					$slug2 = 'wppa_bcolor_fullimg';
+					$html1 = wppa_input($slug1, '100px', '');
+					$html2 = wppa_input($slug2, '100px', '');
+					wppa_setting_2($slug1, $slug2, '7', $name, $desc, $html1, $html2, $help);
+
 					?>
 				</tbody>
 				<tfoot style="font-weight: bold" class="wppa_table_3">
