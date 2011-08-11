@@ -1,5 +1,5 @@
 ﻿// Slide show variables and functions
-// This is wppa-slideshow.js version 4.0.4
+// This is wppa-slideshow.js version 4.0.5
 //
 // Vars. The vars that have a name that starts with an underscore is an internal var
 // The vars without leading underscore are 'external' and get a value from html
@@ -670,7 +670,7 @@ function _wppaValidateComment(mocc) {
 }
 
 function _wppaGo(url) {
-	_wppaLog('Go', mocc);
+	_wppaLog('Go', 0);
 	
 	document.location = url;	// Go!
 }

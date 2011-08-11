@@ -107,8 +107,18 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 = Wish List =
 
 * Indication of NEW for photos and albums with configurable NEW period.
-* Borders around fullsize images.
-* Bulk actions on comments.
+
+= 4.0.5 =
+
+= New Features =
+
+* Borders around fullsize images. See Settings page Table I item 22 and Table III item 7.
+* You can now execute bulk actions on comments.
+* Hebrew theme language files added
+
+= Bug Fixes =
+
+* Rating system stopped working at 4.0.4, fixed.
 
 = 4.0.4 =
 
@@ -119,10 +129,6 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 = Other changes = 
 
 * Added height and width attributes to img tags. This may fix some layout problems with old browsers.
-
-= Known issues =
-
-* The Big Browse Buttons are transparent. IE 6 does not know about transparency. Therefor the slidshow will not display properly in IE6 with BBB's enabled.
 
 = 4.0.3 =
 
@@ -483,6 +489,10 @@ For more information on multilanguage sites, see the documentation of the qTrans
 * Due to internal changes, it is most likely that this problem will be fixed: http://wordpress.org/support/topic/plugin-wp-photo-album-plus-page-drops-when-activated-on-page?replies=24#post-1965780
 * If you had set *No Links* for thumbnails, you will have to set it again.
 
+== Known issues ==
+
+* The Big Browse Buttons are transparent. IE 6 does not know about transparency. Therefor the slidshow will not display properly in IE6 with BBB's enabled.
+* The plugin My Live Signature completely destroys the display from wppa+ and alse damages other filters. DO NOT INSTALL My Live Signature!
 
 == About and Credits ==
 

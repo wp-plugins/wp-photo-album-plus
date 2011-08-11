@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions and API modules
-* Version 4.0.4
+* Version 4.0.5
 *
 * dbg
 */
@@ -1142,7 +1142,7 @@ function wppa_get_imgstyle($file, $max_size, $xvalign = '', $type = '') {
 	return $result['style'];
 }
 
-function wppa_get_imgstyle_a($file, $max_size, $xvalign = '', $type = '') {
+function wppa_get_imgstyle_a($file, $xmax_size, $xvalign = '', $type = '') {
 global $wppa;
 global $wppa_opt;
 
@@ -1160,6 +1160,21 @@ global $wppa_opt;
 		wppa_dbg_msg('Please check file '.$file.' it is corrupted. If it is a thumbnail image, regenerate them using Table VIII item 7 of the Photo Albums -> Settings admin page.', 'red');
 		return $result;
 	}
+	
+	// Adjust for 'border' 
+	if ( $type == 'fullsize' && ! $wppa['in_widget'] ) {
+		switch ( $wppa_opt['wppa_fullimage_border_width'] ) {
+			case '':
+				$max_size = $xmax_size;
+				break;
+			case '0':
+				$max_size = $xmax_size - '2';
+				break;
+			default:
+				$max_size = $xmax_size - '2' - 2 * $wppa_opt['wppa_fullimage_border_width'];
+			}
+	}
+	else $max_size = $xmax_size;
 	
 	$ratioref = $wppa_opt['wppa_maxheight'] / $wppa_opt['wppa_fullsize'];
 	$max_height = round($max_size * $ratioref);
@@ -1269,6 +1284,7 @@ global $wppa_opt;
 				// Center horizontally
 				$delta = round(($max_size - $width) / 2);
 				if ($delta < '0') $delta = '0';
+
 				$result['style'] .= ' margin-left:' . $delta . 'px;';
 				// Position vertically
 				$delta = '0';
@@ -1290,6 +1306,19 @@ global $wppa_opt;
 				}
 				$result['style'] .= ' margin-top:' . $delta . 'px;';
 			}
+			
+			if ( ! $wppa['in_widget'] ) switch ( $wppa_opt['wppa_fullimage_border_width'] ) {
+				case '':
+					break;
+				case '0':
+					$result['style'] .= ' border: 1px solid ' . $wppa_opt['wppa_bcolor_fullimg'] . ';';
+					break;
+				default:
+					$result['style'] .= ' border: 1px solid ' . $wppa_opt['wppa_bcolor_fullimg'] . ';';
+					$result['style'] .= ' background-color:' . $wppa_opt['wppa_bgcolor_fullimg'] . ';';
+					$result['style'] .= ' padding:' . $wppa_opt['wppa_fullimage_border_width'] . 'px;';
+			}
+			
 			break;
 		default:
 			$wppa['out'] .=  ('Error wrong "$type" argument: '.$type.' in wppa_get_imgstyle_a');

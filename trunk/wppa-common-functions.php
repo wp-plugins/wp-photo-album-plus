@@ -2,7 +2,7 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 4.0.4
+* version 4.0.5
 *
 */
 global $wppa_api_version;
@@ -193,6 +193,9 @@ global $blog_id;
 			'wppa_popupsize' => '',
 			'wppa_slide_order' => '',
 			'wppa_show_bbb' => '',
+			'wppa_fullimage_border_width' => '',
+			'wppa_bgcolor_fullimg' => '',
+			'wppa_bcolor_fullimg' => '',
 			'permalink_structure' => ''			// This must be last
 		);
 		array_walk($wppa_opt, 'wppa_set_options');

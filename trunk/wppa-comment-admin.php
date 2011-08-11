@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all comments
-* Version 4.0.0
+* Version 4.0.5
 *
 */
 
@@ -97,6 +97,34 @@ global $wppa_opt;
 				$iret = wppa_edit_comment($_POST['edit_comment']);
 			}
 			
+			if (isset($_POST['bulkaction'])) {
+				switch ($_POST['bulkaction']) {
+					case 'approveall':
+						$query = "UPDATE " . WPPA_COMMENTS . " SET status='approved' WHERE status='pending'";
+						if ( $wpdb->query($query) === false ) {
+							wppa_error_message(__('Could not bulk update status', 'wppa'));
+							$iret = false;
+						}
+						else $iret = true;
+						break;
+					case 'spamall':
+						$query = "UPDATE " . WPPA_COMMENTS . " SET status='spam' WHERE status='pending'";
+						if ( $wpdb->query($query) === false ) {
+							wppa_error_message(__('Could not bulk update status', 'wppa'));
+							$iret = false;
+						}
+						else $iret = true;
+						break;
+					case 'delspam':
+						$query = "DELETE FROM " . WPPA_COMMENTS . " WHERE status='spam'";
+						if ( $wpdb->query($query) === false ) {
+							wppa_error_message(__('Could not bulk update status', 'wppa'));
+							$iret = false;
+						}
+						break;
+					}				
+			}
+			
 			if ($iret) wppa_update_message(__('Changes Saved', 'wppa'));
 		}
 ?>
@@ -147,6 +175,13 @@ global $wppa_opt;
 				<select name="wppa_comadmin_order">
 					<option value="timestamp" <?php if ($comment_order == 'timestamp') echo('selected="selected"') ?>><?php _e('timestamp', 'wppa') ?></option>
 					<option value="photo" <?php if ($comment_order == 'photo') echo('selected="selected"') ?>><?php _e('photo', 'wppa') ?></option>
+				</select>
+				<?php _e('Bulk action:', 'wppa') ?>
+				<select name="bulkaction">
+					<option value=""><?php  ?></option>
+					<option value="approveall"><?php _e('Approve all pending', 'wppa') ?></option>
+					<option value="spamall"><?php _e('Move all pending to spam', 'wppa') ?></option>
+					<option value="delspam"><?php _e('Delete all spam', 'wppa') ?></option>
 				</select>
 				</p>
 				<?php 
@@ -200,7 +235,7 @@ global $wppa_opt;
 									<td>
 										<select name="status['<?php echo $com['id'] ?>']"><?php echo $com['status'] ?>
 											<option value="pending" 	<?php if($com['status'] == 'pending') 	echo 'selected="selected"' ?>><?php _e('Pending', 'wppa') ?></option>
-											<option value="approved" 	<?php if($com['status'] == 'approved') 		echo 'selected="selected"' ?>><?php _e('Approved', 'wppa') ?></option>
+											<option value="approved" 	<?php if($com['status'] == 'approved') 	echo 'selected="selected"' ?>><?php _e('Approved', 'wppa') ?></option>
 											<option value="spam" 		<?php if($com['status'] == 'spam') 		echo 'selected="selected"' ?>><?php _e('Spam', 'wppa') ?></option>
 										</select>
 									</td>
@@ -299,7 +334,7 @@ function wppa_comment_submit_pages($nitems, $npages) {
 			if ($curpage != $npages) {
 				?><a href="<?php echo($nexturl) ?>"><?php _e('Next page', 'wppa') ?></a><?php
 			}
-		}?>
+		} ?>
 	</p>
 <?php
 }
