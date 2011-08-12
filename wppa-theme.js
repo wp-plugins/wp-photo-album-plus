@@ -101,7 +101,7 @@ function wppa_full_popup(mocc, id, url, xwidth, xheight) {
 				wnd.document.write('<img src="'+url+'" style="padding-bottom:6px;" /><br/>');
 				wnd.document.write('<div style="text-align:center">'+desc+'</div>');
 				var left = xwidth-30;
-				wnd.document.write('<img src="'+wppa_imgdir+'printer.png" id="wppa_printer" title="Print" style="position:absolute; top:6px; left:'+left+'px; background-color:'+wppaBackgroundColorImage+'; padding: 2px; cursor:pointer;" onclick="wppa_print();" />');
+				wnd.document.write('<img src="'+wppaImageDirectory+'printer.png" id="wppa_printer" title="Print" style="position:absolute; top:6px; left:'+left+'px; background-color:'+wppaBackgroundColorImage+'; padding: 2px; cursor:pointer;" onclick="wppa_print();" />');
 			wnd.document.write('</div>');
 		wnd.document.write('</body>');
 	wnd.document.write('</html>');
