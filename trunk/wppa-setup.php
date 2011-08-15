@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 4.0.5
+* Version 4.0.6
 *
 */
 
@@ -34,6 +34,7 @@ function wppa_setup($force = false) {
 					p_order_by int unsigned NOT NULL,
 					cover_linkpage bigint(20) NOT NULL,
 					owner text NOT NULL,
+					timestamp tinytext NOT NULL,
 					PRIMARY KEY  (id) 
 					);";
 					
@@ -47,6 +48,7 @@ function wppa_setup($force = false) {
 					mean_rating tinytext NOT NULL,
 					linkurl text NOT NULL,
 					linktitle text NOT NULL,
+					timestamp tinytext NOT NULL,
 					PRIMARY KEY  (id) 
 					);";
 
@@ -176,6 +178,7 @@ global $wppa_defaults;
 						'wppa_bcolor_even' 			=> '#cccccc',
 						'wppa_bcolor_alt' 			=> '#bbbbbb',
 						'wppa_bcolor_nav' 			=> '#bbbbbb',
+						'wppa_bcolor_img'			=> '',
 						'wppa_bcolor_namedesc' 		=> '#bbbbbb',
 						'wppa_bcolor_com' 			=> '#bbbbbb',
 						'wppa_bwidth' 				=> '1',
@@ -281,10 +284,15 @@ global $wppa_defaults;
 						'wppa_fullimage_border_width' 	=> '',
 						'wppa_bgcolor_fullimg' 			=> '#ccc',
 						'wppa_bcolor_fullimg' 			=> '#777',
+						'wppa_max_photo_newtime'		=> '0',
+						'wppa_max_album_newtime'		=> '0',
+						'wppa_load_skin' 				=> '',
+						'wppa_skinfile' 				=> ''
 
 						);
 	
 	array_walk($wppa_defaults, 'wppa_set_default', $force);
+	return true;
 }
 function wppa_set_default($value, $key, $force) {
 	if ($force) {

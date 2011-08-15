@@ -1,5 +1,5 @@
 // Theme variables and functions
-// This is wppa-theme.js version 4.0.0
+// This is wppa-theme.js version 4.0.6
 //
 
 var wppaBackgroundColorImage = '';
@@ -89,12 +89,12 @@ function wppa_full_popup(mocc, id, url, xwidth, xheight) {
 		desc = elm.title;
 	}	
 	
-	var wnd = window.open('', '', 'width='+width+', height='+height+', location=no, resizable=no');
+	var wnd = window.open('', 'Print', 'width='+width+', height='+height+', location=no, resizable=no, menubar=yes ');
 	wnd.document.write('<html>');
 		wnd.document.write('<head>');	
 			wnd.document.write('<style type="text/css">body{margin:0; padding:6px; background-color:'+wppaBackgroundColorImage+'; text-align:center;}</style>');
 			wnd.document.write('<title>'+name+'</title>');
-			wnd.document.write('<script type="text/javascript">function wppa_print(){document.getElementById("wppa_printer").style.visibility="hidden";window.print();document.getElementById("wppa_printer").style.visibility="visible";}</script>');
+			wnd.document.write('<script type="text/javascript">function wppa_print(){document.getElementById("wppa_printer").style.visibility="hidden"; window.print(); }</script>');
 		wnd.document.write('</head>');
 		wnd.document.write('<body>');
 			wnd.document.write('<div style="width:'+xwidth+'px;">');

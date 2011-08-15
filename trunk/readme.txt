@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, multisite, network
-Version: 4.0.4
+Version: 4.0.6
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -104,9 +104,20 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 
 == Changelog ==
 
-= Wish List =
+= 4.0.6 =
 
-* Indication of NEW for photos and albums with configurable NEW period.
+= New Features =
+
+* Configurable New indicators on album covers and thumbnail images (See Settings page Table IX item 7 and 8).
+* You can now easily import setting files other than your own backup. See OpaJaap-green.skin in Table VIII item 5. The file is located in wp-photo-album-plus/theme.
+
+= Bug Fixes =
+
+* The wppa+ admin menu structure has been revised to cope with several problems that made it impossible to save changes on wppa+ admin pages on some installations.
+
+= Other Changes =
+
+* Various cosmetiv and functional improvements on the settings screen.
 
 = 4.0.5 =
 

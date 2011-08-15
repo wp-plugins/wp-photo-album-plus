@@ -2,11 +2,11 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 4.0.5
+* version 4.0.6
 *
 */
 global $wppa_api_version;
-$wppa_api_version = '4-0-4-000';
+$wppa_api_version = '4-0-6-000';
 // Initialize globals and option settings
 function wppa_initialize_runtime($force = false) {
 global $wppa;
@@ -58,7 +58,8 @@ global $blog_id;
 			'comment_photo' => '0',
 			'comment_user' => '',
 			'comment_email' => '',
-			'comment_text' => ''
+			'comment_text' => '',
+			'no_default' => false
 		);
 		if (isset($_POST['wppa-searchstring'])) $wppa['src'] = true;
 		if (isset($_GET['wppa_src'])) $wppa['src'] = true;
@@ -102,6 +103,7 @@ global $blog_id;
 			'wppa_bcolor_even' => '',
 			'wppa_bcolor_alt' => '',
 			'wppa_bcolor_nav' => '',
+			'wppa_bcolor_img' => '',
 			'wppa_bcolor_namedesc' => '',
 			'wppa_bcolor_com' => '',
 			'wppa_bwidth' => '',
@@ -126,8 +128,6 @@ global $blog_id;
 			'wppa_fontcolor_fulltitle' => '',
 			'wppa_arrow_color' => '',
 			'wppa_widget_width' => '',
-//			'wppa_2col_treshold' => '',
-//			'wppa_3col_treshold' => '',
 			'wppa_max_cover_width' => '',
 			'wppa_text_frame_height' => '',
 			'wppa_film_show_glue' => '',
@@ -196,7 +196,10 @@ global $blog_id;
 			'wppa_fullimage_border_width' => '',
 			'wppa_bgcolor_fullimg' => '',
 			'wppa_bcolor_fullimg' => '',
-			'permalink_structure' => ''			// This must be last
+			'wppa_max_photo_newtime' => '',
+			'wppa_max_album_newtime' => '',
+			'wppa_load_skin' => '',
+			'wppa_skinfile' => ''
 		);
 		array_walk($wppa_opt, 'wppa_set_options');
 	}
@@ -448,6 +451,7 @@ global $wpdb;
         if ($id == '') if (isset($_GET['album'])) $id = $_GET['album'];
         $id = $wpdb->escape($id);	
         if (is_numeric($id)) $name = $wpdb->get_var("SELECT name FROM " . WPPA_ALBUMS . " WHERE id=$id");
+		else $name = '';
     }
 	if ($name) {
 		if ($raw != 'raw') $name = stripslashes($name);

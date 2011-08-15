@@ -27,7 +27,7 @@ global $wppa_opt;
 				</div>
 				<h2><?php _e('WP Photo Album Plus Edit Comment', 'wppa'); ?></h2>
 								
-				<form action="<?php echo(wppa_dbg_url(get_admin_url().'/admin.php?page=manage_comments')); if (isset($_GET['compage'])) echo('&compage='.$_GET['compage']) ?>" method="post">
+				<form action="<?php echo(wppa_dbg_url(get_admin_url().'admin.php?page=wppa_manage_comments')); if (isset($_GET['compage'])) echo('&compage='.$_GET['compage']) ?>" method="post">
 		
 					<?php wppa_nonce_field('$wppa_nonce', WPPA_NONCE); ?>
 					<input type="hidden" name="edit_comment" value="<?php echo($comment['id']) ?>" />
@@ -157,7 +157,7 @@ global $wppa_opt;
 					</tr>
 				</tbody>
 			</table>
-			<form action="<?php echo(wppa_dbg_url(get_admin_url().'/admin.php?page=manage_comments')) ?>" method="post">
+			<form action="<?php echo(wppa_dbg_url(get_admin_url().'admin.php?page=wppa_manage_comments')) ?>" method="post">
 		
 				<?php wppa_nonce_field('$wppa_nonce', WPPA_NONCE); ?>
 				
@@ -239,9 +239,9 @@ global $wppa_opt;
 											<option value="spam" 		<?php if($com['status'] == 'spam') 		echo 'selected="selected"' ?>><?php _e('Spam', 'wppa') ?></option>
 										</select>
 									</td>
-									<?php $url = wppa_dbg_url(get_admin_url().'/admin.php?page=manage_comments&tab=edit&edit_id='.$com['id']);
+									<?php $url = wppa_dbg_url(get_admin_url().'admin.php?page=wppa_manage_comments&tab=edit&edit_id='.$com['id']);
 										if (isset($_GET['compage'])) $url .= '&compage='.$_GET['compage']; ?>
-									<?php $delurl = wppa_dbg_url(get_admin_url().'/admin.php?page=manage_comments&tab=delete&delete_id='.$com['id']) ?>
+									<?php $delurl = wppa_dbg_url(get_admin_url().'admin.php?page=wppa_manage_comments&tab=delete&delete_id='.$com['id']) ?>
 									<td style="color:green; cursor:pointer;" onclick="document.location='<?php echo($url) ?>'"><b><?php _e('Edit', 'wppa') ?></b></td>
 									<td style="color:red; cursor:pointer;" onclick="if (confirm('<?php _e('Are you sure you want to delete this comment?', 'wppa') ?>')) document.location = '<?php echo($delurl) ?>';"><b><?php _e('Delete', 'wppa') ?></b></td>
 								</tr>						
@@ -314,9 +314,9 @@ function wppa_comment_submit_pages($nitems, $npages) {
 		$curpage = isset($_GET['compage']) ? $_GET['compage'] : '1'; 
 		$prevpage = $curpage - '1';
 		$nextpage = $curpage + '1'; 
-		$prevurl = wppa_dbg_url(get_admin_url().'/admin.php?page=manage_comments&compage='.$nextpage);
-		$pagurl = wppa_dbg_url(get_admin_url().'/admin.php?page=manage_comments').'&compage=';
-		$nexturl = wppa_dbg_url(get_admin_url().'/admin.php?page=manage_comments&compage='.$nextpage);
+		$prevurl = wppa_dbg_url(get_admin_url().'admin.php?page=wppa_manage_comments&compage='.$nextpage);
+		$pagurl = wppa_dbg_url(get_admin_url().'admin.php?page=wppa_manage_comments').'&compage=';
+		$nexturl = wppa_dbg_url(get_admin_url().'admin.php?page=wppa_manage_comments&compage='.$nextpage);
 		if ($npages > '1') {
 			if ($curpage != '1') {
 				?><a href="<?php echo($prevurl) ?>"><?php _e('Prev page', 'wppa') ?></a><?php
