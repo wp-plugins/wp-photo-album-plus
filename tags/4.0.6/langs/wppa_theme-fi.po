@@ -1,0 +1,354 @@
+# Translation of the WordPress plugin   by .
+# Copyright (C) 2010
+# This file is distributed under the same license as the  package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2010.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: wppa\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-08-03 14:37+0100\n"
+"PO-Revision-Date: 2011-08-03 14:37+0100\n"
+"Last-Translator: J.N. Breetvelt <OpaJaap@OpaJaap.nl>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-KeywordsList: __a\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-Language: German\n"
+"X-Poedit-Country: GERMANY\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPath-1: theme\n"
+
+#: wppa-common-functions.php:369
+#, php-format
+msgid "Rating: %s"
+msgstr "Arvosana: %s"
+
+#: wppa-common-functions.php:439
+msgid "--- none ---"
+msgstr "--- tyhjä ---"
+
+#: wppa-common-functions.php:440
+msgid "--- separate ---"
+msgstr "--- erillinen ---"
+
+#: wppa-common-functions.php:538
+msgid "1 second"
+msgstr ""
+
+#: wppa-common-functions.php:539
+msgid "seconds"
+msgstr ""
+
+#: wppa-common-functions.php:543
+msgid "1 minute"
+msgstr ""
+
+#: wppa-common-functions.php:544
+msgid "minutes"
+msgstr ""
+
+#: wppa-common-functions.php:548
+msgid "1 hour"
+msgstr ""
+
+#: wppa-common-functions.php:549
+msgid "hours"
+msgstr ""
+
+#: wppa-common-functions.php:553
+msgid "1 day"
+msgstr ""
+
+#: wppa-common-functions.php:554
+msgid "days"
+msgstr ""
+
+#: wppa-common-functions.php:558
+msgid "1 week"
+msgstr ""
+
+#: wppa-common-functions.php:559
+msgid "weeks"
+msgstr ""
+
+#: wppa-common-functions.php:563
+msgid "1 month"
+msgstr ""
+
+#: wppa-common-functions.php:564
+msgid "months"
+msgstr ""
+
+#: wppa-common-functions.php:567
+msgid "1 year"
+msgstr ""
+
+#: wppa-common-functions.php:568
+msgid "years"
+msgstr ""
+
+#: wppa-functions.php:31
+msgid "There are"
+msgstr "Käytettävissä on"
+
+#: wppa-functions.php:31
+msgid "photo albums. The last album added is"
+msgstr "kuva-albumia. Viimeisin lisätty albumi on"
+
+#: wppa-functions.php:35
+msgid ", a subalbum of"
+msgstr ", jonka yläalbumina on"
+
+#: wppa-functions.php:86
+msgid "Home"
+msgstr "Etusivu"
+
+#: wppa-functions.php:124
+#: wppa-functions.php:1935
+#: wppa-non-admin.php:82
+msgid "Slideshow"
+msgstr "Esitys"
+
+#: wppa-functions.php:130
+msgid "Searchstring:"
+msgstr "Hakulauseke:"
+
+#: wppa-functions.php:133
+msgid "Top rated photos"
+msgstr "Korkeimmat pisteet"
+
+#: wppa-functions.php:839
+#, fuzzy
+msgid "You must login to enter a comment"
+msgstr "Sinun on kirjauduttava äänestääksesi"
+
+#: wppa-functions.php:895
+msgid "<b>ERROR: Attempt to enter an invalid rating.</b>"
+msgstr "<b>Virhe: arvosana ei kelpaa.</b>"
+
+#: wppa-functions.php:1076
+msgid "Edit!"
+msgstr ""
+
+#: wppa-functions.php:1080
+msgid "Send!"
+msgstr ""
+
+#: wppa-functions.php:1105
+msgid "Your name:"
+msgstr ""
+
+#: wppa-functions.php:1109
+msgid "Your email:"
+msgstr ""
+
+#: wppa-functions.php:1113
+msgid "Your comment:"
+msgstr ""
+
+#: wppa-functions.php:1123
+#, php-format
+msgid "%d  comments"
+msgstr ""
+
+#: wppa-functions.php:1124
+msgid "Leave a comment"
+msgstr ""
+
+#: wppa-functions.php:1387
+msgid "Prev.&nbsp;page"
+msgstr "Edel.&nbsp;sivu"
+
+#: wppa-functions.php:1391
+msgid "Next&nbsp;page"
+msgstr "Seuraava&nbsp;sivu"
+
+#: wppa-functions.php:1860
+msgid "Link to"
+msgstr "Linkitä"
+
+#: wppa-functions.php:1864
+msgid "Page is not available."
+msgstr "Sivu ei ole saatavilla."
+
+#: wppa-functions.php:1870
+#: wppa-functions.php:1944
+msgid "View the album"
+msgstr "Avaa albumi"
+
+#: wppa-functions.php:1875
+msgid "View the cover photo"
+msgstr "Avaa kansikuva"
+
+#: wppa-functions.php:1876
+msgid "View the cover photos"
+msgstr "Avaa kansikuvat"
+
+#: wppa-functions.php:1935
+msgid "Browse photos"
+msgstr "Selaa kuvia"
+
+#: wppa-functions.php:1945
+msgid "View"
+msgstr "Katso"
+
+#: wppa-functions.php:1948
+msgid "album"
+msgstr "albumi"
+
+#: wppa-functions.php:1951
+msgid "albums"
+msgstr "albumit"
+
+#: wppa-functions.php:1955
+msgid "and"
+msgstr "ja"
+
+#: wppa-functions.php:1959
+msgid "photo"
+msgstr "kuva"
+
+#: wppa-functions.php:1962
+msgid "photos"
+msgstr "kuvaa"
+
+#: wppa-functions.php:2248
+msgid "Double click to start/stop slideshow running"
+msgstr ""
+
+#: wppa-non-admin.php:83
+msgid "Start"
+msgstr "Aloitus"
+
+#: wppa-non-admin.php:84
+msgid "Stop"
+msgstr "Lopeta"
+
+#: wppa-non-admin.php:85
+msgid "Photo"
+msgstr "Kuva"
+
+#: wppa-non-admin.php:86
+msgid "of"
+msgstr ""
+
+#: wppa-non-admin.php:87
+#, fuzzy
+msgid "Previous photo"
+msgstr "Selaa kuvia"
+
+#: wppa-non-admin.php:88
+#, fuzzy
+msgid "Next photo"
+msgstr "Seuraava&nbsp;kuva"
+
+#: wppa-non-admin.php:89
+msgid "Prev."
+msgstr ""
+
+#: wppa-non-admin.php:90
+msgid "Next"
+msgstr ""
+
+#: wppa-non-admin.php:94
+msgid "Please enter your name"
+msgstr ""
+
+#: wppa-non-admin.php:95
+msgid "Please enter a valid email address"
+msgstr ""
+
+#: wppa-non-admin.php:96
+#, fuzzy
+msgid "Please enter a comment"
+msgstr "Sinun on kirjauduttava äänestääksesi"
+
+#: wppa-potd-widget.php:25
+msgid "Photo Of The Day"
+msgstr "Päivän kuva"
+
+#: wppa-potd-widget.php:55
+msgid "Photo not found."
+msgstr "Kuvaa ei löytynyt"
+
+#: wppa-slideshow-widget.php:28
+msgid "Sidebar Slideshow"
+msgstr "Sivupalkin esitys"
+
+#: wppa-slideshow-widget.php:80
+msgid "No album defined yet."
+msgstr "Albumi määrittelemättä"
+
+#: wppa-slideshow.php:67
+msgid "Slower"
+msgstr "Hitaammin"
+
+#: wppa-slideshow.php:69
+msgid "Faster"
+msgstr "Nopeammin"
+
+#: wppa-slideshow.php:86
+msgid "To see the full size images, you need to enable javascript in your browser."
+msgstr ""
+
+#: wppa-slideshow.php:149
+msgid "- - - Rating enabled - - -"
+msgstr "- - - Arvostelu sallittu - - -"
+
+#: wppa-slideshow.php:158
+msgid "very low"
+msgstr "erittäin huono"
+
+#: wppa-slideshow.php:159
+msgid "low"
+msgstr "huono"
+
+#: wppa-slideshow.php:160
+msgid "average"
+msgstr "keskinkertainen"
+
+#: wppa-slideshow.php:161
+msgid "high"
+msgstr "hyvä"
+
+#: wppa-slideshow.php:162
+msgid "very high"
+msgstr "erittäin hyvä"
+
+#: wppa-slideshow.php:167
+#: wppa-slideshow.php:172
+msgid "Average&nbsp;rating"
+msgstr "Keskiarvo"
+
+#: wppa-slideshow.php:181
+#: wppa-slideshow.php:184
+msgid "My&nbsp;rating"
+msgstr "Oma&nbsp;arvosana"
+
+#: wppa-slideshow.php:187
+msgid "You must login to vote"
+msgstr "Sinun on kirjauduttava äänestääksesi"
+
+#: wppa-slideshow.php:310
+msgid "Click to start/stop"
+msgstr ""
+
+#: wppa-topten-widget.php:26
+#, fuzzy
+msgid "Top Ten Photos"
+msgstr "Korkeimmat pisteet"
+
+#: wppa-topten-widget.php:51
+#, fuzzy
+msgid "View the top rated photos"
+msgstr "Titelfotos ansehen"
+
+#: theme/wppa-theme.php:80
+msgid "No albums or photos found matching your search criteria."
+msgstr "Yksikään albumi tai kuva ei vastaa hakukriteeriä."
+
+#~ msgid "Prev.&nbsp;photo"
+#~ msgstr "Edel.&nbsp;kuva"
