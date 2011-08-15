@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 * gp admin functions
-* version 4.0.4
+* version 4.0.6
 *
 * 
 */
@@ -41,25 +41,31 @@ global $wppa_bu_err;
 	}
 }
 
-function wppa_restore_settings() {
-	// Open file
-	$fname = WPPA_DEPOT_PATH.'/settings.bak';
+function wppa_restore_settings($fname) {
+global $wppa;
+
 	if ($wppa['debug']) wppa_dbg_msg('Restoring from: '.$fname);
-	
+	$void_these = array('wppa_multisite', 'wppa_revision', 'wppa_resize_on_upload', 'wppa_allow_debug', 'permalink_structure');
+	// Open file
 	$file = fopen($fname, 'r');
 	// Restore
 	if ($file) {
 		$buffer = fgets($file, 4096);
 		while (!feof($file)) {
 			$buflen = strlen($buffer);
-			$cpos = strpos($buffer, ':');
-			$delta_l = $buflen - $cpos - 2;
-			if ($cpos && $delta_l >= 0) {
-				$slug = substr($buffer, 0, $cpos);
-				$value = stripslashes(substr($buffer, $cpos+1, $delta_l));
-				// echo('Doing|'.$slug.'|'.$value.'|<br/>');
-				update_option($slug, $value);
+			if ($buflen > '0' && substr($buffer, 0, 1) != '/') {	// lines that start with '/' are comment
+				$cpos = strpos($buffer, ':');
+				$delta_l = $buflen - $cpos - 2;
+				if ($cpos && $delta_l >= 0) {
+					$slug = substr($buffer, 0, $cpos);
+					$value = stripslashes(substr($buffer, $cpos+1, $delta_l));
+					// echo('Doing|'.$slug.'|'.$value.'|<br/>');
+					if ( ! in_array($slug, $void_these)) update_option($slug, $value);
+//					else echo $slug.' doe ik niet';
+				}
 			}
+//else echo 'Comment: '.$buffer.'<br/>';
+			
 			$buffer = fgets($file, 4096);
 		}
 		fclose($file);
@@ -67,7 +73,7 @@ function wppa_restore_settings() {
 		return true;
 	}
 	else {
-		wppa_error_message(__('Settings backup file not found', 'wppa'));
+		wppa_error_message(__('Settings file not found', 'wppa'));
 		return false;
 	}
 }

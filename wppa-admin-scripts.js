@@ -344,3 +344,8 @@ for (i=0;i<ARRcookies.length;i++)
 function wppa_move_up(who) {
 	document.location = wppa_moveup_url+who+"&wppa-update-check="+document.getElementById('wppa-update-check').value;
 }
+
+function checkColor(slug) {
+	var color = document.getElementById(slug).value;
+	jQuery('#colorbox-'+slug).css('background-color', color);
+}

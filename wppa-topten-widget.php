@@ -59,6 +59,7 @@ class TopTenWidget extends WP_Widget {
 				$imgevents = wppa_get_imgevents('thumb', $image['id'], true);
 
 				if ($link) $title = $link['title'];
+				else $title = '';
 				
 				if ($link) {
 					if ( ! $link['is_url'] ) { // Is an onclick unit

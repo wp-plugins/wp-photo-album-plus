@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the upload/import pages and functions
-* Version 4.0.0
+* Version 4.0.6
 *
 */
 
@@ -28,7 +28,7 @@ global $target;
 		if ( isset( $_POST['wppa-go-import'] ) && $err == '0' ) { 
 			wppa_ok_message(__('Connecting to your depot...', 'wppa'));
 			update_option('wppa_import_source_'.$user, WPPA_DEPOT); ?>
-			<script type="text/javascript">document.location = '<?php echo(wppa_dbg_url(get_admin_url().'/admin.php?page=import_photos&zip='.$target, 'js')) ?>';</script>
+			<script type="text/javascript">document.location = '<?php echo(wppa_dbg_url(get_admin_url().'admin.php?page=wppa_import_photos&zip='.$target, 'js')) ?>';</script>
 		<?php }
 	} 
 	
@@ -41,14 +41,13 @@ global $target;
 	<div class="wrap">
 		<?php $iconurl = WPPA_URL.'/images/camera32.png'; ?>
 		<div id="icon-camera" class="icon32" style="background: transparent url(<?php echo($iconurl); ?>) no-repeat">
-			
 		</div>
 		<?php $iconurl = WPPA_URL.'/images/arrow32.png'; ?>
 		<div id="icon-arrow" class="icon32" style="background: transparent url(<?php echo($iconurl); ?>) no-repeat">
 		</div>
 		<?php $iconurl = WPPA_URL.'/images/album32.png'; ?>
 		<div id="icon-album" class="icon32" style="background: transparent url(<?php echo($iconurl); ?>) no-repeat">
-			<br />
+		<br />
 		</div>
 		<h2><?php _e('Upload Photos', 'wppa'); ?></h2><br />
 
@@ -72,7 +71,7 @@ global $target;
 			<div style="border:1px solid #ccc; padding:10px; margin-bottom:10px; width: 600px;">
 				<h3 style="margin-top:0px;"><?php _e('Single Photos', 'wppa'); ?></h3><br />
 				<?php //_e('You can select up to 15 photos one by one and upload them at once.', 'wppa'); ?>
-				<form enctype="multipart/form-data" action="<?php echo(wppa_dbg_url(get_admin_url().'/admin.php?page=upload_photos')) ?>" method="post">
+				<form enctype="multipart/form-data" action="<?php echo(wppa_dbg_url(get_admin_url().'admin.php?page=wppa_upload_photos')) ?>" method="post">
 				<?php wppa_nonce_field('$wppa_nonce', WPPA_NONCE); ?>
 					<input id="my_file_element" type="file" name="file_1" />
 					<div id="files_list">
@@ -96,7 +95,7 @@ global $target;
 				<div style="border:1px solid #ccc; padding:10px; width: 600px;">
 					<h3 style="margin-top:0px;"><?php _e('Zipped Photos', 'wppa'); ?></h3><br />
 					<?php _e('You can upload one zipfile at once. It will be placed in your personal wppa-depot.<br/>Once uploaded, use <b>Import Photos</b> to unzip the file and place the photos in any album.', 'wppa') ?>
-					<form enctype="multipart/form-data" action="<?php echo(wppa_dbg_url(get_admin_url().'/admin.php?page=upload_photos')) ?>" method="post">
+					<form enctype="multipart/form-data" action="<?php echo(wppa_dbg_url(get_admin_url().'admin.php?page=wppa_upload_photos')) ?>" method="post">
 					<?php wppa_nonce_field('$wppa_nonce', WPPA_NONCE); ?>
 						<input id="my_zipfile_element" type="file" name="file_zip" /><br/><br/>
 						<input type="submit" class="button-primary" name="wppa-upload-zip" value="<?php _e('Upload Zipped Photos', 'wppa') ?>" />
@@ -111,7 +110,7 @@ global $target;
 			<?php }
 		}
 	else { ?>
-			<?php $url = wppa_dbg_url(get_admin_url().'admin.php?page='.WPPA_FILE); ?>
+			<?php $url = wppa_dbg_url(get_admin_url().'admin.php?page=wppa_admin_menu'); ?>
 			<p><?php _e('No albums exist. You must', 'wppa'); ?> <a href="<?php echo($url) ?>"><?php _e('create one', 'wppa'); ?></a> <?php _e('beofre you can upload your photos.', 'wppa'); ?></p>
 <?php } ?>
 	</div>
@@ -176,7 +175,7 @@ function _wppa_page_import() {
 		$photocount = wppa_get_photocount($files);
 		
 ?>		
-		<form action="<?php echo(wppa_dbg_url(get_admin_url().'/admin.php?page=import_photos')) ?>" method="post">
+		<form action="<?php echo(wppa_dbg_url(get_admin_url().'admin.php?page=wppa_import_photos')) ?>" method="post">
 		<?php wppa_nonce_field('$wppa_nonce', WPPA_NONCE); ?>
 		<?php _e('Import photos from:', 'wppa'); ?>
 			<select name="wppa-source">
@@ -197,7 +196,7 @@ function _wppa_page_import() {
 	
 		if ($photocount > '0' || $albumcount > '0' || $zipcount >'0') { ?>
 		
-			<form action="<?php echo(wppa_dbg_url(get_admin_url().'/admin.php?page=import_photos')) ?>" method="post">
+			<form action="<?php echo(wppa_dbg_url(get_admin_url().'admin.php?page=wppa_import_photos')) ?>" method="post">
 			<?php wppa_nonce_field('$wppa_nonce', WPPA_NONCE); 
 			
 			if (PHP_VERSION_ID >= 50207 && $zipcount > '0') { ?>		
@@ -311,7 +310,7 @@ function _wppa_page_import() {
 		}
 	}
 	else { ?>
-		<?php $url = wppa_dbg_url(get_admin_url().'admin.php?page='.WPPA_FILE); ?>
+		<?php $url = wppa_dbg_url(get_admin_url().'admin.php?page=wppa_admin_menu'); ?>
 		<p><?php _e('No albums exist. You must', 'wppa'); ?> <a href="<?php echo($url) ?>"><?php _e('create one', 'wppa'); ?></a> <?php _e('beofre you can upload your photos.', 'wppa'); ?></p>
 <?php } ?>
 	</div>
@@ -464,7 +463,7 @@ global $warning_given;
 						$id = basename($album);
 						$id = substr($id, 0, strpos($id, '.'));
 						if (!wppa_is_id_free('album', $id)) $id = 0;
-						$query = $wpdb->prepare('INSERT INTO `' . WPPA_ALBUMS . '` (`id`, `name`, `description`, `a_order`, `a_parent`, `p_order_by`, `main_photo`, `cover_linkpage`, `owner`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)', $id, stripslashes($name), stripslashes($desc), $aord, $parent, $porder, '0', '0', $owner);
+						$query = $wpdb->prepare('INSERT INTO `' . WPPA_ALBUMS . '` (`id`, `name`, `description`, `a_order`, `a_parent`, `p_order_by`, `main_photo`, `cover_linkpage`, `owner`, `timestamp`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)', $id, stripslashes($name), stripslashes($desc), $aord, $parent, $porder, '0', '0', $owner, time());
 						$iret = $wpdb->query($query);
 
 						if ($iret === FALSE) wppa_error_message(__('Could not create album.', 'wppa'));
@@ -486,7 +485,7 @@ global $warning_given;
 	$idx='0';
 	$pcount = '0';
 	if (isset($_POST['wppa-album'])) $album = $_POST['wppa-album']; else $album = '0';
-	wppa_ok_message(__('Processing files, please wait...', 'wppa').' '.__('If the line of dots stops growing or your browser reports Ready, your server has given up. In that case: try again', 'wppa').' <a href="'.wppa_dbg_url(get_admin_url().'admin.php?page=import_photos').'">'.__('here.', 'wppa').'</a>');
+	wppa_ok_message(__('Processing files, please wait...', 'wppa').' '.__('If the line of dots stops growing or your browser reports Ready, your server has given up. In that case: try again', 'wppa').' <a href="'.wppa_dbg_url(get_admin_url().'admin.php?page=wppa_import_photos').'">'.__('here.', 'wppa').'</a>');
 	foreach ($files as $file) {
 		if (isset($_POST['file-'.$idx])) {
 			$ext = strtolower(substr(strrchr($file, "."), 1));
@@ -587,7 +586,7 @@ function wppa_insert_photo ($file = '', $album = '', $name = '', $desc = '', $po
 				return false;
 		}
 			
-		$query = $wpdb->prepare('INSERT INTO `' . WPPA_PHOTOS . '` (`id`, `album`, `ext`, `name`, `p_order`, `description`, `mean_rating`, `linkurl`, `linktitle`) VALUES (%s, %s, %s, %s, %s, %s, \'\', %s, %s)', $id, $album, $ext, $name, $porder, $desc, $linkurl, $linktitle);
+		$query = $wpdb->prepare('INSERT INTO `' . WPPA_PHOTOS . '` (`id`, `album`, `ext`, `name`, `p_order`, `description`, `mean_rating`, `linkurl`, `linktitle`, `timestamp`) VALUES (%s, %s, %s, %s, %s, %s, \'\', %s, %s, %s)', $id, $album, $ext, $name, $porder, $desc, $linkurl, $linktitle, time());
 		if ($wpdb->query($query) === false) {
 			wppa_error_message(__('Could not insert photo. query=', 'wppa').$query);
 		}
