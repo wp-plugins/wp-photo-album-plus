@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 4.0.6
+* Version 4.0.7
 *
 */
 
@@ -202,15 +202,12 @@ global $wppa_defaults;
 						'wppa_fontsize_fulltitle' 	=> '',
 						'wppa_fontcolor_fulltitle' 	=> '',
 						'wppa_arrow_color' 			=> 'black',
-//						'wppa_2col_treshold' 		=> '1024',
-//						'wppa_3col_treshold' 		=> '1024',
 						'wppa_max_cover_width'		=> '1024',
 						'wppa_text_frame_height'	=> '54',
 						'wppa_film_show_glue' 		=> 'yes',
 						'wppa_album_page_size' 		=> '0',
 						'wppa_thumb_page_size' 		=> '0',
 						'wppa_thumb_auto' 			=> 'yes',
-//						'wppa_coverphoto_left' 		=> 'no',
 						'wppa_coverphoto_pos'		=> 'right',
 						'wppa_thumbphoto_left' 		=> 'no',
 						'wppa_enable_slideshow' 	=> 'yes',
@@ -281,13 +278,15 @@ global $wppa_defaults;
 						'wppa_comadmin_order' 		=> 'timestamp',
 						'wppa_slide_order'			=> '0,1,2,3,4,5,6,7,8,9',
 						'wppa_show_bbb'				=> 'no',
+						'wppa_show_slideshowbrowselink' => 'yes',
 						'wppa_fullimage_border_width' 	=> '',
 						'wppa_bgcolor_fullimg' 			=> '#ccc',
 						'wppa_bcolor_fullimg' 			=> '#777',
 						'wppa_max_photo_newtime'		=> '0',
 						'wppa_max_album_newtime'		=> '0',
 						'wppa_load_skin' 				=> '',
-						'wppa_skinfile' 				=> ''
+						'wppa_skinfile' 				=> '',
+						'wppa_use_lightbox'				=> 'yes'
 
 						);
 	

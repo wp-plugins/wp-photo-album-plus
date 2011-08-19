@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the non admin stuff
-* Version 4.0.0
+* Version 4.0.7
 *
 */
 
@@ -35,6 +35,11 @@ function wppa_add_javascripts() {
 	wp_enqueue_script('jquery');
 	wp_enqueue_script('wppa_slideshow');
 	wp_enqueue_script('wppa_theme_js');
+	if ( get_option('wppa_use_lightbox', 'yes') == 'yes' ) {
+		wp_enqueue_script('prototype');
+		wp_enqueue_script('scriptaculous-effects');
+		wp_enqueue_script('scriptaculous-builder');
+	}
 }
 	
 /* LOAD WPPA+ THEME */
@@ -49,6 +54,37 @@ function wppa_load_theme() {
 	}
 }
 	
+/* LOAD LIGHTBOX */
+add_action('wp_head', 'wppa_lightbox', '99');
+
+function wppa_lightbox() {
+	if ( get_option('wppa_use_lightbox', 'yes') == 'yes' ) {
+		echo "\n<!-- Start WPPA+ inserted lightbox -->\n";
+	//	echo "\n".'<script type="text/javascript" src="'.WPPA_URL.'/lightbox/js/prototype.js"></script>';
+	//	echo "\n".'<script type="text/javascript" src="'.WPPA_URL.'/lightbox/js/scriptaculous.js?load=effects,builder"></script>';
+		echo "\n".'<script type="text/javascript"><!--//--><![CDATA[//><!--';
+			echo "\n".'LightboxOptions = Object.extend({';
+			echo "\n"."fileLoadingImage:        'wp-content/plugins/wp-photo-album-plus/lightbox/images/loading.gif',   ";  
+			echo "\n"."fileBottomNavCloseImage: 'wp-content/plugins/wp-photo-album-plus/lightbox/images/closelabel.gif',";
+
+			echo "\n".'overlayOpacity: 0.8,   // controls transparency of shadow overlay';
+
+			echo "\n".'animate: true,         // toggles resizing animations';
+			echo "\n".'resizeSpeed: 7,        // controls the speed of the image resizing animations (1=slowest and 10=fastest)';
+
+			echo "\n".'borderSize: 10,         //if you adjust the padding in the CSS, you will need to update this variable';
+
+			echo "\n".'// When grouping images this is used to write: Image # of #.';
+			echo "\n".'// Change it for non-english localization';
+			echo "\n".'labelImage: "'.__a('Image', 'wppa_theme').'",';
+			echo "\n".'labelOf: "'.__a('of', 'wppa_theme').'"';
+			echo "\n".'}, window.LightboxOptions || {});';
+		echo "\n".'//--><!]]></script>';
+		echo "\n".'<script type="text/javascript" src="'.WPPA_URL.'/lightbox/js/lightbox.js"></script>';
+		echo "\n".'<link rel="stylesheet" href="'.WPPA_URL.'/lightbox/css/lightbox.css" type="text/css" media="screen" />';
+		echo "\n<!-- End WPPA+ inserted lightbox -->\n";		
+	}
+}
 /* LOAD JS VARS AND ENABLE RENDERING */
 add_action('wp_head', 'wppa_kickoff', '100');
 

@@ -1,8 +1,8 @@
 === WP Photo Album Plus ===
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
-Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, multisite, network
-Version: 4.0.6
+Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, multisite, network, lightbox
+Version: 4.0.7
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -35,6 +35,7 @@ This plugin is designed to easily manage and display your photo albums and slide
 * Almost all appearance settings can be done in the settings admin page. No php, html or css knowledge is required to customize the appearence of the photo display.
 * International language support for static text: Currently included foreign languages files: Dutch, Japanese, French(outdated), Spanish, German.
 * Inrernational language support for dynamic text: Album and photo names and descriptions fully support the qTranslate multilanguage rules and have separate edit fields for all qTranslate activated languages.
+* Suports lightbox.
 
 Plugin Admin Features:
 
@@ -96,13 +97,25 @@ even a thumbnail image, the server has to create internally a fullsize fullcolor
 This will require one byte of memory for each color (Red, Green, Blue) and for every pixel. 
 So, apart form the memory required for the server's program and the resized image, you will need 21 MB (or even more) of memory just for the intermediate image.
 As most hosting providers do not allow you more than 32 MB, you will get 'Out of memory' errormessages when you try to upload large pictures.
-You can configure WP to use 64 MB (That would be enough in most cases) by specifying `define(‘WP_MEMORY_LIMIT’, ‘64M’);` in wp-config.php, 
+You can configure WP to use 64 MB (That would be enough in most cases) by specifying *define('WP_MEMORY_LIMIT', '64M');* in wp-config.php, 
 but, as explained earlier, this does not help when your hosting provider does not allows the use of that much memory.
 If you have control over the server yourself: configure it to allow the use of enough memory.
 Oh, just Google on 'picture resizer' and you will find a bunch of free programs that will easily perform the resizing task for you.
 
 
 == Changelog ==
+
+= 4.0.7 =
+
+= New Features =
+
+* lightbox support on thumbnails and topten thumbnails (See Table VI items 2 and 3, Table II item 20)
+
+= Bug Fixes =
+
+* Setting upload rights to contributors failed due to a typo. Fixed.
+* Possible further fix to IE8 narrow images problem.
+* Sites without qTranslate active would sometimes get qTranslate tags in names and descriptions. Fixed.
 
 = 4.0.6 =
 
@@ -117,7 +130,7 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 
 = Other Changes =
 
-* Various cosmetiv and functional improvements on the settings screen.
+* Various cosmetic and functional improvements on the settings screen.
 
 = 4.0.5 =
 
