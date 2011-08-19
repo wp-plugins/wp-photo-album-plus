@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the top rated photos
-* Version 4.0.4
+* Version 4.0.7
 */
 
 class TopTenWidget extends WP_Widget {
@@ -58,17 +58,22 @@ class TopTenWidget extends WP_Widget {
 
 				$imgevents = wppa_get_imgevents('thumb', $image['id'], true);
 
-				if ($link) $title = $link['title'];
+				if ($link) $title = esc_attr(stripslashes($link['title']));
 				else $title = '';
 				
 				if ($link) {
-					if ( ! $link['is_url'] ) { // Is an onclick unit
-						$widget_content .= "\n\t".'<img id="i-'.$image['id'].'-'.$wppa['master_occur'].'" title="'.$title.'" src="'.$imgurl.'" width="'.$width.'" height="'.$height.'" style="'.$imgstyle.'" '.$imgevents.' onclick="'.$link['url'].'" alt="'.esc_attr(wppa_qtrans($image['name'])).'">';					
-					}
-					else {	// Is a href
-						$widget_content .= "\n\t".'<a href="'.$link['url'].'" title="'.$link['title'].'">';
+					if ( $link['is_url'] ) {	// Is a href
+						$widget_content .= "\n\t".'<a href="'.$link['url'].'" title="'.$title.'">';
 							$widget_content .= "\n\t\t".'<img id="i-'.$image['id'].'-'.$wppa['master_occur'].'" title="'.$title.'" src="'.$imgurl.'" width="'.$width.'" height="'.$height.'" style="'.$imgstyle.'" '.$imgevents.' alt="'.esc_attr(wppa_qtrans($image['name'])).'">';
 						$widget_content .= "\n\t".'</a>';
+					}
+					elseif ( $link['is_lightbox'] ) {
+						$widget_content .= "\n\t".'<a href="'.$link['url'].'" rel="lightbox[topten]" title="'.$title.'">';
+							$widget_content .= "\n\t\t".'<img id="i-'.$image['id'].'-'.$wppa['master_occur'].'" title="'.$title.'" src="'.$imgurl.'" width="'.$width.'" height="'.$height.'" style="'.$imgstyle.'" '.$imgevents.' alt="'.esc_attr(wppa_qtrans($image['name'])).'">';
+						$widget_content .= "\n\t".'</a>';
+					}
+					else { // Is an onclick unit
+						$widget_content .= "\n\t".'<img id="i-'.$image['id'].'-'.$wppa['master_occur'].'" title="'.$title.'" src="'.$imgurl.'" width="'.$width.'" height="'.$height.'" style="'.$imgstyle.'" '.$imgevents.' onclick="'.$link['url'].'" alt="'.esc_attr(wppa_qtrans($image['name'])).'">';					
 					}
 				}
 				else {

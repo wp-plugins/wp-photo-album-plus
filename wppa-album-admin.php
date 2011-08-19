@@ -1,9 +1,9 @@
 <?php
 /* wppa_albumadmin.php
-* Pachkage: wp-photo-album-plus
+* Package: wp-photo-album-plus
 *
 * create, edit and delete albums
-* version 3.1.0
+* version 4.0.7
 *
 */
 
@@ -97,7 +97,7 @@ function _wppa_admin() {
 
 					<table class="form-table albumtable">
 						<tbody>
-							<?php if (!is_array($q_config)) { ?>
+							<?php if (!wppa_qtrans_enabled()) { ?>
 							<tr valign="top">
 								<th scope="row">
 									<label ><?php _e('Name:', 'wppa'); ?></label>
@@ -130,7 +130,7 @@ function _wppa_admin() {
 								} 
 							} ?>
 
-							<?php if (!is_array($q_config)) { ?>
+							<?php if (!wppa_qtrans_enabled()) { ?>
 							<tr valign="top">
 								<th>
 									<label ><?php _e('Description:', 'wppa'); ?></label>
@@ -352,7 +352,7 @@ function _wppa_admin() {
 			<?php wppa_nonce_field('$wppa_nonce', WPPA_NONCE) ?>
 				<table class="form-table albumtable">
 					<tbody>
-					<?php if (!is_array($q_config)) { ?>
+					<?php if (!wppa_qtrans_enabled()) { ?>
 						<tr valign="top">
 							<th scope="row">
 								<label ><?php _e('Name:', 'wppa'); ?></label>
@@ -388,7 +388,7 @@ function _wppa_admin() {
 <?php
 					} ?>
 
-					<?php if (!is_array($q_config)) { ?>
+					<?php if (!wppa_qtrans_enabled()) { ?>
 						<tr valign="top">
 							<th scope="row">
 								<label ><?php _e('Description:', 'wppa'); ?></label>
@@ -622,7 +622,7 @@ function wppa_album_photos($id) {
 				
 				<table class="form-table phototable" >
 					<tbody>
-						<?php if (!is_array($q_config)) { ?>					
+						<?php if (!wppa_qtrans_enabled()) { ?>					
 							<tr valign="top">
 								<th scope="row" >
 									<label for="<?php echo('photos[' . $photo['id'] . '][name]') ?>"><?php _e('Name:', 'wppa'); ?></label>
@@ -655,7 +655,7 @@ function wppa_album_photos($id) {
 							}
 						} ?>
 
-						<?php if (!is_array($q_config)) { ?>
+						<?php if (!wppa_qtrans_enabled()) { ?>
 							<tr valign="top">
 								<th scope="row" >
 									<label><?php _e('Description:', 'wppa'); ?></label>
@@ -703,7 +703,7 @@ function wppa_add_album() {
 	global $wpdb;
 	global $q_config;
 	
-	if (!is_array($q_config)) {
+	if (!wppa_qtrans_enabled()) {
 		$name = $_POST['wppa-name'];
 		$desc = $_POST['wppa-desc'];
 	}
@@ -747,7 +747,7 @@ function wppa_edit_album() {
 	
     $first = TRUE;
 	
-	if (!is_array($q_config)) {
+	if (!wppa_qtrans_enabled()) {
 		$name = $_POST['wppa-name'];
 		$desc = $_POST['wppa-desc'];
 	}
@@ -789,7 +789,7 @@ function wppa_edit_album() {
 			$mean_rating = '0';
 		}
 		
-		if (!is_array($q_config)) {
+		if (!wppa_qtrans_enabled()) {
 			$photo_name = $photo['name'];
 			$photo_desc = $photo['description'];
 		}

@@ -2,11 +2,11 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 4.0.6
+* version 4.0.7
 *
 */
 global $wppa_api_version;
-$wppa_api_version = '4-0-6-000';
+$wppa_api_version = '4-0-7-000';
 // Initialize globals and option settings
 function wppa_initialize_runtime($force = false) {
 global $wppa;
@@ -193,13 +193,15 @@ global $blog_id;
 			'wppa_popupsize' => '',
 			'wppa_slide_order' => '',
 			'wppa_show_bbb' => '',
+			'wppa_show_slideshowbrowselink' => '',
 			'wppa_fullimage_border_width' => '',
 			'wppa_bgcolor_fullimg' => '',
 			'wppa_bcolor_fullimg' => '',
 			'wppa_max_photo_newtime' => '',
 			'wppa_max_album_newtime' => '',
 			'wppa_load_skin' => '',
-			'wppa_skinfile' => ''
+			'wppa_skinfile' => '',
+			'wppa_use_lightbox' => ''
 		);
 		array_walk($wppa_opt, 'wppa_set_options');
 	}
@@ -266,7 +268,7 @@ global $wppa;
 	if ($wppa_locale) return; // Done already
 	
 	// See if qTranslate present and actve, if so, get locale there
-	if (is_array($q_config)) {	
+	if (wppa_qtrans_enabled()) {	
 		if (isset($q_config['language'])) $lang = $q_config['language'];
 		if (isset($q_config['locale'][$lang])) $wppa_locale = $q_config['locale'][$lang];
 	}
@@ -468,6 +470,11 @@ function wppa_is_wider($x, $y) {
 	$ratioref = get_option('wppa_fullsize') / get_option('wppa_maxheight');
 	$ratio = $x / $y;
 	return ($ratio > $ratioref);
+}
+
+// qtrans hook to see if qtrans is installed
+function wppa_qtrans_enabled() {
+	return (function_exists('qtrans_useCurrentLanguageIfNotFoundUseDefaultLanguage'));
 }
 
 // qtrans hook for multi language support of content

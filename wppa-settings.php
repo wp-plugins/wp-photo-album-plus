@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 4.0.5
+* Version 4.0.7
 *
 */
 
@@ -77,7 +77,7 @@ global $options_error;
 				case 'wppa_load_skin':
 					$fname = $_POST['wppa_skinfile'];
 					if ($fname == 'restore') {
-						if (wppa_restore_settings(WPPA_DEPOT_PATH.'/settings.bak')) {
+						if (wppa_restore_settings(WPPA_DEPOT_PATH.'/settings.bak', 'backup')) {
 							wppa_ok_message(__('Saved settings restored', 'wppa'));
 						}
 						else {
@@ -94,7 +94,7 @@ global $options_error;
 							$options_error = true;
 						}
 					}
-					elseif (wppa_restore_settings($fname)) {
+					elseif (wppa_restore_settings($fname, 'skin')) {
 						wppa_ok_message(sprintf(__('Skinfile %s loaded', 'wppa'), basename($fname)));
 					}
 					else {
@@ -183,6 +183,7 @@ global $options_error;
 			wppa_update_check('wppa_show_cover_text');
 			wppa_update_check('wppa_show_comments');
 			wppa_update_check('wppa_show_bbb');
+			wppa_update_check('wppa_show_slideshowbrowselink');
 		
 			// Table 3: Backgrounds
 			wppa_update_value('wppa_bgcolor_even');
@@ -315,6 +316,7 @@ global $options_error;
 			wppa_update_check('wppa_allow_debug');
 			wppa_update_value('wppa_max_album_newtime');
 			wppa_update_value('wppa_max_photo_newtime');
+			wppa_update_check('wppa_use_lightbox');
 		
 			// Done update options!
 			if ($options_error) wppa_update_message(__('Other changes saved', 'wppa'));
@@ -772,6 +774,16 @@ global $wppa_api_version;
 					$html = wppa_checkbox($slug);
 					wppa_setting($slug, '19', $name, $desc, $html, $help);
 					
+					$name = __('Slideshow/Browse', 'wppa');
+					$desc = __('Display the Slideshow / Browse photos link on album covers', 'wppa');
+					$help = esc_js(__('This setting causes the Slideshow link to be displayed on the album cover.', 'wppa'));
+					$help .= '\n\n'.esc_js(__('If slideshows are disabled in item 12 in this table, you will see a browse link to fullsize images.', 'wppa'));
+					$help .= '\n\n'.esc_js(__('If you do not want the browse link link either, uncheck this item.', 'wppa'));
+					$help .= '\n\n'.esc_js(__('You might wish to uncheck this item when you have thumbnail links set to lightbox', 'wppa'));
+					$slug = 'wppa_show_slideshowbrowselink';
+					$html = wppa_checkbox($slug);
+					wppa_setting($slug, '20', $name, $desc, $html, $help);
+					
 					?>
 				</tbody>
 				<tfoot style="font-weight: bold" class="wppa_table_2">
@@ -989,7 +1001,7 @@ global $wppa_api_version;
 					$name = __('Vertical alignment', 'wppa');
 					$desc = __('Vertical alignment of thumbnails.', 'wppa');
 					$help = esc_js(__('Specify the vertical alignment of thumbnail images. Use this setting when albums contain both portrait and landscape photos.', 'wppa'));
-					$help .= '\n'.esc_js(__('It is NOT recommended to use the value --- default ---; it will affect the horizontal alignment also and is ment to be used with custom css.', 'wppa'));
+					$help .= '\n'.esc_js(__('It is NOT recommended to use the value --- default ---; it will affect the horizontal alignment also and is meant to be used with custom css.', 'wppa'));
 					$slug = 'wppa_valign';
 					$options = array( __('--- default ---', 'wppa'), __('top', 'wppa'), __('center', 'wppa'), __('bottom', 'wppa'));
 					$values = array('default', 'top', 'center', 'bottom');
@@ -1243,8 +1255,8 @@ global $wppa_api_version;
 				<tbody class="wppa_table_6">
 					<?php 
 					// Linktypes
-					$options_linktype = array(__('no link at all.', 'wppa'), __('the plain photo (file).', 'wppa'), __('the full size photo in a slideshow.', 'wppa'), __('the fullsize photo on its own.', 'wppa'), __('the fullsize photo with a print button.', 'wppa')); //, __('the photo specific link.', 'wppa'));
-					$values_linktype = array('none', 'file', 'photo', 'single', 'fullpopup'); //, 'indiv');
+					$options_linktype = array(__('no link at all.', 'wppa'), __('the plain photo (file).', 'wppa'), __('the full size photo in a slideshow.', 'wppa'), __('the fullsize photo on its own.', 'wppa'), __('the fullsize photo with a print button.', 'wppa'), __('lightbox.', 'wppa'));
+					$values_linktype = array('none', 'file', 'photo', 'single', 'fullpopup', 'lightbox'); //, 'indiv');
 					$options_linktype_album = array(__('no link at all.', 'wppa'), __('the plain photo (file).', 'wppa'), __('the content of the album.', 'wppa'), __('the full size photo in a slideshow.', 'wppa'), __('the fullsize photo on its own.', 'wppa')); //, __('the photo specific link.', 'wppa'));
 					$values_linktype_album = array('none', 'file', 'album', 'photo', 'single'); //, 'indiv');
 					$options_linktype_ss_widget = array(__('no link at all.', 'wppa'), __('the plain photo (file).', 'wppa'), __('defined at widget activation.', 'wppa'), __('the content of the album.', 'wppa'), __('the full size photo in a slideshow.', 'wppa'), __('the fullsize photo on its own.', 'wppa')); //, __('the photo specific link.', 'wppa'));
@@ -1728,6 +1740,15 @@ global $wppa_api_version;
 					$values = array( 0, 60*60, 60*60*24, 60*60*24*7, 60*60*24*30);
 					$html = wppa_select($slug, $options, $values);
 					wppa_setting($slug, '8', $name, $desc, $html, $help);
+					
+					$name = __('WPPA+ Lightbox', 'wppa');
+					$desc = __('Uset wppa+ embedded lightbox.', 'wppa');
+					$help = esc_js(__('WPPA+ comes with embedded lightbox 2. If you want to use a different ligtbox (plugin),', 'wppa'));
+					$help .= ' '.esc_js(__('or you do not use lightbox links, you may uncheck this item.', 'wppa'));
+					// prototype and scriptaculus
+					$slug = 'wppa_use_lightbox';
+					$html = wppa_checkbox($slug);
+					wppa_setting($slug, '9', $name, $desc, $html, $help);
 					
 					?>
 				</tbody>
