@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wppa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-08-03 14:38+0100\n"
-"PO-Revision-Date: 2011-08-10 21:15+0300\n"
-"Last-Translator: Michal <michal@michalpeeri.com>\n"
+"POT-Creation-Date: 2011-08-19 14:50+0100\n"
+"PO-Revision-Date: 2011-08-19 14:50+0100\n"
+"Last-Translator: J.N. Breetvelt <OpaJaap@OpaJaap.nl>\n"
 "Language-Team: OpaJaap <OpaJaap@OpaJaap.nl>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -20,72 +20,72 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPath-1: theme\n"
 
-#: wppa-common-functions.php:369
+#: wppa-common-functions.php:380
 #, php-format
 msgid "Rating: %s"
 msgstr "דירוגים: %s"
 
-#: wppa-common-functions.php:439
+#: wppa-common-functions.php:450
 msgid "--- none ---"
 msgstr "--- ריק ---"
 
-#: wppa-common-functions.php:440
+#: wppa-common-functions.php:451
 msgid "--- separate ---"
 msgstr "--- נפרד ---"
 
-#: wppa-common-functions.php:538
+#: wppa-common-functions.php:555
 msgid "1 second"
 msgstr "שנייה אחת"
 
-#: wppa-common-functions.php:539
+#: wppa-common-functions.php:556
 msgid "seconds"
 msgstr "שניות"
 
-#: wppa-common-functions.php:543
+#: wppa-common-functions.php:560
 msgid "1 minute"
 msgstr "דקה אחת"
 
-#: wppa-common-functions.php:544
+#: wppa-common-functions.php:561
 msgid "minutes"
 msgstr "דקות"
 
-#: wppa-common-functions.php:548
+#: wppa-common-functions.php:565
 msgid "1 hour"
 msgstr "שעה אחת"
 
-#: wppa-common-functions.php:549
+#: wppa-common-functions.php:566
 msgid "hours"
 msgstr "שעות"
 
-#: wppa-common-functions.php:553
+#: wppa-common-functions.php:570
 msgid "1 day"
 msgstr "יום אחד"
 
-#: wppa-common-functions.php:554
+#: wppa-common-functions.php:571
 msgid "days"
 msgstr "ימים"
 
-#: wppa-common-functions.php:558
+#: wppa-common-functions.php:575
 msgid "1 week"
 msgstr "שבוע אחד"
 
-#: wppa-common-functions.php:559
+#: wppa-common-functions.php:576
 msgid "weeks"
 msgstr "שבועות"
 
-#: wppa-common-functions.php:563
+#: wppa-common-functions.php:580
 msgid "1 month"
 msgstr "חודש אחד"
 
-#: wppa-common-functions.php:564
+#: wppa-common-functions.php:581
 msgid "months"
 msgstr "חודשים"
 
-#: wppa-common-functions.php:567
+#: wppa-common-functions.php:584
 msgid "1 year"
 msgstr "שנה אחת"
 
-#: wppa-common-functions.php:568
+#: wppa-common-functions.php:585
 msgid "years"
 msgstr "שנים"
 
@@ -106,8 +106,8 @@ msgid "Home"
 msgstr "בית"
 
 #: wppa-functions.php:124
-#: wppa-functions.php:1935
-#: wppa-non-admin.php:82
+#: wppa-functions.php:2000
+#: wppa-non-admin.php:118
 msgid "Slideshow"
 msgstr "מצגת תמונות"
 
@@ -119,145 +119,172 @@ msgstr "מחרוזת חיפוש:"
 msgid "Top rated photos"
 msgstr "התמונות שמדורגות הכי גבוה"
 
-#: wppa-functions.php:839
+#: wppa-functions.php:846
 msgid "You must login to enter a comment"
 msgstr "חייבים להתחבר על מנת להכניס הערה"
 
-#: wppa-functions.php:895
+#: wppa-functions.php:906
 msgid "<b>ERROR: Attempt to enter an invalid rating.</b>"
 msgstr "<b>שגיאה: ניסיון להכניס דירוג לא תקין.</b>"
 
-#: wppa-functions.php:1076
+#: wppa-functions.php:1013
+msgid "Comment edited"
+msgstr ""
+
+#: wppa-functions.php:1016
+msgid "Comment added"
+msgstr ""
+
+#: wppa-functions.php:1022
+msgid "Could not process comment"
+msgstr ""
+
+#: wppa-functions.php:1087
 msgid "Edit!"
 msgstr "עריכה!"
 
-#: wppa-functions.php:1080
+#: wppa-functions.php:1091
 msgid "Send!"
 msgstr "שליחה!"
 
-#: wppa-functions.php:1105
+#: wppa-functions.php:1116
 msgid "Your name:"
 msgstr "שמך:"
 
-#: wppa-functions.php:1109
+#: wppa-functions.php:1120
 msgid "Your email:"
 msgstr "כתובת הדוא\"ל שלך:"
 
-#: wppa-functions.php:1113
+#: wppa-functions.php:1124
 msgid "Your comment:"
 msgstr "ההערה שלך:"
 
-#: wppa-functions.php:1123
+#: wppa-functions.php:1134
 #, php-format
 msgid "%d  comments"
 msgstr "הערות %d"
 
-#: wppa-functions.php:1124
+#: wppa-functions.php:1135
 msgid "Leave a comment"
 msgstr "השאר הערה"
 
-#: wppa-functions.php:1387
+#: wppa-functions.php:1446
 msgid "Prev.&nbsp;page"
 msgstr "עמוד&nbsp;קודם"
 
-#: wppa-functions.php:1391
+#: wppa-functions.php:1450
 msgid "Next&nbsp;page"
 msgstr "עמוד&nbsp;הבא"
 
-#: wppa-functions.php:1860
+#: wppa-functions.php:1735
+#, fuzzy
+msgid "<b>ERROR: Illegal attempt to enter a rating.</b>"
+msgstr "<b>שגיאה: ניסיון להכניס דירוג לא תקין.</b>"
+
+#: wppa-functions.php:1745
+#, fuzzy
+msgid "<b>ERROR: Illegal attempt to enter a comment.</b>"
+msgstr "<b>שגיאה: ניסיון להכניס דירוג לא תקין.</b>"
+
+#: wppa-functions.php:1920
 msgid "Link to"
 msgstr "קישור ל"
 
-#: wppa-functions.php:1864
+#: wppa-functions.php:1924
 msgid "Page is not available."
 msgstr "עמוד לא זמין"
 
-#: wppa-functions.php:1870
-#: wppa-functions.php:1944
+#: wppa-functions.php:1930
+#: wppa-functions.php:2010
 msgid "View the album"
 msgstr "צפה באלבום"
 
-#: wppa-functions.php:1875
+#: wppa-functions.php:1935
 msgid "View the cover photo"
 msgstr "צפה בתמונת השער"
 
-#: wppa-functions.php:1876
+#: wppa-functions.php:1936
 msgid "View the cover photos"
 msgstr "צפה בתמונות השער"
 
-#: wppa-functions.php:1935
+#: wppa-functions.php:2000
 msgid "Browse photos"
 msgstr "דפדף בתמונות"
 
-#: wppa-functions.php:1945
+#: wppa-functions.php:2011
 msgid "View"
 msgstr "צפייה"
 
-#: wppa-functions.php:1948
+#: wppa-functions.php:2014
 msgid "album"
 msgstr "אלבום"
 
-#: wppa-functions.php:1951
+#: wppa-functions.php:2017
 msgid "albums"
 msgstr "אלבומים"
 
-#: wppa-functions.php:1955
+#: wppa-functions.php:2021
 msgid "and"
 msgstr "ו"
 
-#: wppa-functions.php:1959
+#: wppa-functions.php:2025
 msgid "photo"
 msgstr "תמונה"
 
-#: wppa-functions.php:1962
+#: wppa-functions.php:2028
 msgid "photos"
 msgstr "תמונות"
 
-#: wppa-functions.php:2248
+#: wppa-functions.php:2374
 msgid "Double click to start/stop slideshow running"
 msgstr "הקלק קליק כפול להתחיל/לעצור מצגת תמונות"
 
-#: wppa-non-admin.php:83
-msgid "Start"
-msgstr "התחל"
+#: wppa-non-admin.php:79
+msgid "Image"
+msgstr ""
 
-#: wppa-non-admin.php:84
-msgid "Stop"
-msgstr "הפסק"
-
-#: wppa-non-admin.php:85
-msgid "Photo"
-msgstr "תמונה"
-
-#: wppa-non-admin.php:86
+#: wppa-non-admin.php:80
+#: wppa-non-admin.php:122
 msgid "of"
 msgstr "מ"
 
-#: wppa-non-admin.php:87
+#: wppa-non-admin.php:119
+msgid "Start"
+msgstr "התחל"
+
+#: wppa-non-admin.php:120
+msgid "Stop"
+msgstr "הפסק"
+
+#: wppa-non-admin.php:121
+msgid "Photo"
+msgstr "תמונה"
+
+#: wppa-non-admin.php:123
 msgid "Previous photo"
 msgstr "תמונה קודמת"
 
-#: wppa-non-admin.php:88
+#: wppa-non-admin.php:124
 msgid "Next photo"
 msgstr "התמונה הבאה"
 
-#: wppa-non-admin.php:89
+#: wppa-non-admin.php:125
 msgid "Prev."
 msgstr "אחורה"
 
-#: wppa-non-admin.php:90
+#: wppa-non-admin.php:126
 msgid "Next"
 msgstr "קדימה"
 
-#: wppa-non-admin.php:94
+#: wppa-non-admin.php:130
 msgid "Please enter your name"
 msgstr "אנא הכנס שמך"
 
-#: wppa-non-admin.php:95
+#: wppa-non-admin.php:131
 msgid "Please enter a valid email address"
 msgstr "אנא הכנס כתובת אימייל תקינה"
 
-#: wppa-non-admin.php:96
+#: wppa-non-admin.php:132
 msgid "Please enter a comment"
 msgstr "אנא הזן הערה"
 
@@ -285,51 +312,56 @@ msgstr "לאט יותר"
 msgid "Faster"
 msgstr "מהר יותר"
 
-#: wppa-slideshow.php:86
+#: wppa-slideshow.php:87
 msgid "To see the full size images, you need to enable javascript in your browser."
 msgstr "כדי לראות את התמונות בגודל מלא עליך לאפשר javascript בדפדפן שלה."
 
-#: wppa-slideshow.php:149
+#: wppa-slideshow.php:150
 msgid "- - - Rating enabled - - -"
 msgstr "- - - דירוג מאופשר - - -"
 
-#: wppa-slideshow.php:158
+#: wppa-slideshow.php:159
 msgid "very low"
 msgstr "נמוך מאד"
 
-#: wppa-slideshow.php:159
+#: wppa-slideshow.php:160
 msgid "low"
 msgstr "נמוך"
 
-#: wppa-slideshow.php:160
+#: wppa-slideshow.php:161
 msgid "average"
 msgstr "ממוצע"
 
-#: wppa-slideshow.php:161
+#: wppa-slideshow.php:162
 msgid "high"
 msgstr "גבוה"
 
-#: wppa-slideshow.php:162
+#: wppa-slideshow.php:163
 msgid "very high"
 msgstr "גבוה מאד"
 
-#: wppa-slideshow.php:167
-#: wppa-slideshow.php:172
+#: wppa-slideshow.php:168
+#: wppa-slideshow.php:173
 msgid "Average&nbsp;rating"
 msgstr "דירוג ממוצע"
 
-#: wppa-slideshow.php:181
-#: wppa-slideshow.php:184
+#: wppa-slideshow.php:182
+#: wppa-slideshow.php:185
 msgid "My&nbsp;rating"
 msgstr "הדירוג שלי"
 
-#: wppa-slideshow.php:187
+#: wppa-slideshow.php:188
 msgid "You must login to vote"
 msgstr "חובה להתחבר כדי להצביע"
 
-#: wppa-slideshow.php:310
+#: wppa-slideshow.php:311
 msgid "Click to start/stop"
 msgstr "הקלק כדי להתחיל/לעצור"
+
+#: wppa-slideshow.php:323
+#, fuzzy
+msgid "- - - Comments box activated - - -"
+msgstr "- - - דירוג מאופשר - - -"
 
 #: wppa-topten-widget.php:26
 msgid "Top Ten Photos"
