@@ -1,5 +1,5 @@
 ﻿// Slide show variables and functions
-// This is wppa-slideshow.js version 4.0.5
+// This is wppa-slideshow.js version 4.0.8
 //
 // Vars. The vars that have a name that starts with an underscore is an internal var
 // The vars without leading underscore are 'external' and get a value from html
@@ -193,7 +193,7 @@ function _wppaNextSlide(mocc, mode) {
 			if (_wppaInWidgetLinkUrl[mocc][_wppaCurrentIndex[mocc]] != '') jQuery("#theslide0-"+mocc).html('<a href="'+_wppaInWidgetLinkUrl[mocc][_wppaCurrentIndex[mocc]]+'" title="'+_wppaInWidgetLinkTitle[mocc][_wppaCurrentIndex[mocc]]+'"><img id="theimg0-'+mocc+'" '+_wppaSlides[mocc][_wppaCurrentIndex[mocc]]+'</a>');
 			else jQuery("#theslide0-"+mocc).html('<img id="theimg0-'+mocc+'" '+_wppaSlides[mocc][_wppaCurrentIndex[mocc]]);
 			jQuery("#theimg0-"+mocc).hide();
-			jQuery("#theslide0-"+mocc).css('zIndex','901');
+//			jQuery("#theslide0-"+mocc).css('zIndex','901');
 		}
 		if (_wppaInWidgetLinkUrl[mocc][_wppaNextIndex[mocc]] != '') {
 			jQuery("#theslide1-"+mocc).html('<a href="'+_wppaInWidgetLinkUrl[mocc][_wppaNextIndex[mocc]]+'" title="'+_wppaInWidgetLinkTitle[mocc][_wppaNextIndex[mocc]]+'"><img id="theimg1-'+mocc+'" '+_wppaSlides[mocc][_wppaNextIndex[mocc]]+'</a>');
@@ -202,7 +202,7 @@ function _wppaNextSlide(mocc, mode) {
 			jQuery("#theslide1-"+mocc).html('<img id="theimg1-'+mocc+'" '+_wppaSlides[mocc][_wppaNextIndex[mocc]]);
 		}
 		jQuery("#theimg1-"+mocc).hide();	      
-		jQuery("#theslide1-"+mocc).css('zIndex','900');
+//		jQuery("#theslide1-"+mocc).css('zIndex','900');
 	
 		_wppaLoadSpinner(mocc);
 	    
@@ -227,8 +227,8 @@ function _wppaNextSlide(mocc, mode) {
     	// load next img (backg)
 		if (_wppaInWidgetLinkUrl[mocc][_wppaNextIndex[mocc]] != '') jQuery("#theslide"+bg+"-"+mocc).html('<a href="'+_wppaInWidgetLinkUrl[mocc][_wppaNextIndex[mocc]]+'" title="'+_wppaInWidgetLinkTitle[mocc][_wppaNextIndex[mocc]]+'"><img id="theimg'+bg+'-'+mocc+'" '+_wppaSlides[mocc][_wppaNextIndex[mocc]]+'</a>');
 		else jQuery("#theslide"+bg+"-"+mocc).html('<img id="theimg'+bg+'-'+mocc+'" '+_wppaSlides[mocc][_wppaNextIndex[mocc]]);
-		jQuery("#theslide"+bg+"-"+mocc).css('zIndex', '900');
-		jQuery("#theslide"+fg+"-"+mocc).css('zIndex', '901');
+//		jQuery("#theslide"+bg+"-"+mocc).css('zIndex', '900');
+//		jQuery("#theslide"+fg+"-"+mocc).css('zIndex', '901');
 		jQuery("#theimg"+bg+"-"+mocc).hide();
     }
 	_wppaFirst[mocc] = false;
@@ -269,8 +269,8 @@ function _wppaNextSlide_2(mocc) {
 	_wppaForeground[mocc] = 1 - _wppaForeground[mocc];
 	fg = _wppaForeground[mocc];
 	bg = 1 - fg;
-	jQuery("#theslide"+bg+"-"+mocc).css('zIndex', '900');
-	jQuery("#theslide"+fg+"-"+mocc).css('zIndex', '901');
+//	jQuery("#theslide"+bg+"-"+mocc).css('zIndex', '900');
+//	jQuery("#theslide"+fg+"-"+mocc).css('zIndex', '901');
 	setTimeout('_wppaNextSlide_3('+mocc+')', 10);
 }
 

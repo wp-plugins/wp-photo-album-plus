@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 4.0.7
+* Version 4.0.8
 *
 */
 
@@ -162,6 +162,8 @@ global $options_error;
 			if ($value == '') wppa_update_value($slug);
 			else wppa_update_numeric($slug, '0', __('Fullsize border width', 'wppa'));
 			
+			wppa_update_numeric('wppa_lightbox_bordersize', '0', __('Lightbox Bordersize', 'wppa'));
+			
 
 			// Table 2: Visibility
 			wppa_update_check('wppa_show_bread');
@@ -200,6 +202,10 @@ global $options_error;
 			wppa_update_value('wppa_bcolor_img');
 			wppa_update_value('wppa_bgcolor_fullimg');
 			wppa_update_value('wppa_bcolor_fullimg');
+			wppa_update_value('wppa_lightbox_backgroundcolor');
+			wppa_update_value('wppa_lightbox_bordercolor');
+			wppa_update_value('wppa_lightbox_overlaycolor');
+			wppa_update_numeric('wppa_lightbox_overlayopacity', '0', __('Lightbox opacity.', 'wppa'), '100');
 				
 			// Table 4: Behaviour
 			wppa_update_value('wppa_fullvalign');
@@ -225,6 +231,7 @@ global $options_error;
 			wppa_update_value('wppa_list_photos_by');
 			wppa_update_check('wppa_list_photos_desc');
 			wppa_update_check('wppa_comment_login');
+			wppa_update_value('wppa_lightbox_animationspeed');
 		
 			// Table 5: Fonts
 			wppa_update_value('wppa_fontfamily_title');
@@ -245,7 +252,10 @@ global $options_error;
 			wppa_update_value('wppa_fontfamily_box');
 			wppa_update_value('wppa_fontsize_box');
 			wppa_update_value('wppa_fontcolor_box');
-		
+			wppa_update_value('wppa_fontfamily_lightbox');
+			wppa_update_value('wppa_fontsize_lightbox');
+			wppa_update_value('wppa_fontcolor_lightbox');
+
 			// Table 6: Links
 			wppa_update_value('wppa_mphoto_linktype');
 			wppa_update_value('wppa_mphoto_linkpage');
@@ -314,6 +324,7 @@ global $options_error;
 			wppa_update_check('wppa_excl_sep');
 			wppa_update_check('wppa_html');
 			wppa_update_check('wppa_allow_debug');
+			wppa_update_check('wppa_swap_namedesc');
 			wppa_update_value('wppa_max_album_newtime');
 			wppa_update_value('wppa_max_photo_newtime');
 			wppa_update_check('wppa_use_lightbox');
@@ -324,6 +335,12 @@ global $options_error;
 				wppa_initialize_runtime(true); // force reload of $wppa_opt;
 				wppa_update_message(__('Changes Saved', 'wppa'));
 			}
+			
+			// Check for inconsistencies
+			if (($wppa_opt['wppa_thumb_linktype'] == 'lightbox' || $wppa_opt['wppa_topten_widget_linktype'] == 'lightbox') && $wppa_opt['wppa_use_lightbox'] == 'no')
+				wppa_warning_message(__('You use lightbox, but you disabled the lightbox that comes with WPPA+. Either check Table IX item 9 or make sure you have a lightbox enabled.', 'wppa'));
+			if ($wppa_opt['wppa_use_thumb_popup'] == 'yes' && $wppa_opt['wppa_thumb_linktype'] == 'lightbox')
+				wppa_error_message(__('You can not have popup and lightbox on thumbnails at the same time. Uncheck either Table IV item 12 or choose a different linktype in Table VI item 2.', 'wppa'));
 		}
 		
 		// Compute the new physical thumbnail image size
@@ -389,7 +406,7 @@ global $wppa_api_version;
 			<?php _e('This table describes all the sizes and size options (except fontsizes) for the generation and display of the WPPA+ elements.', 'wppa'); ?>
 
 			<table class="widefat">
-				<thead style="font-weight: bold" class="wppa_table_1">
+				<thead style="font-weight: bold; visibility:collapse;" class="wppa_table_1">
 					<tr>
 						<th scope="col"><?php _e('#', 'wppa') ?></th>
 						<th scope="col"><?php _e('Name', 'wppa') ?></th>
@@ -398,7 +415,7 @@ global $wppa_api_version;
 						<th scope="col"><?php _e('Help', 'wppa') ?></th>
 					</tr>
 				</thead>
-				<tbody class="wppa_table_1">
+				<tbody style="visibility: collapse;" class="wppa_table_1">
 					<?php 
 					$name = __('Column Width', 'wppa');
 					$desc = __('The width of the main column in your theme\'s display area.', 'wppa');
@@ -593,9 +610,17 @@ global $wppa_api_version;
 					$html = wppa_input($slug, '40px', '', __('pixels', 'wppa'));
 					wppa_setting($slug, '22', $name, $desc, $html, $help, $class);
 					
+					$name = __('Lightbox Bordersize', 'wppa');
+					$desc = __('The width of the border in lightbox overlay images.', 'wppa');
+					$help = esc_js(__('The border is made by the image background being larger than the image itsself (padding).', 'wppa'));
+					$slug = 'wppa_lightbox_bordersize';
+					$html = wppa_input($slug, '40px', '', __('pixels', 'wppa'));
+					$class = 'wppa_lightbox';
+					wppa_setting($slug, '23', $name, $desc, $html, $help, $class);
+					
 					?>
 				</tbody>
-				<tfoot style="font-weight: bold" class="wppa_table_1">
+				<tfoot style="font-weight: bold; visibility: collapse;" class="wppa_table_1">
 					<tr>
 						<th scope="col"><?php _e('#', 'wppa') ?></th>
 						<th scope="col"><?php _e('Name', 'wppa') ?></th>
@@ -611,7 +636,7 @@ global $wppa_api_version;
 			<?php _e('This table describes the visibility of certain wppa+ elements.', 'wppa'); ?>
 
 			<table class="widefat">
-				<thead style="font-weight: bold" class="wppa_table_2">
+				<thead style="font-weight: bold; visibility:collapse;" class="wppa_table_2">
 					<tr>
 						<th scope="col"><?php _e('#', 'wppa') ?></th>
 						<th scope="col"><?php _e('Name', 'wppa') ?></th>
@@ -620,7 +645,7 @@ global $wppa_api_version;
 						<th scope="col"><?php _e('Help', 'wppa') ?></th>
 					</tr>
 				</thead>
-				<tbody class="wppa_table_2">
+				<tbody style="visibility: collapse;" class="wppa_table_2">
 					<?php 
 					$name = __('Breadcrumb', 'wppa');
 					$desc = __('Show breadcrumb navigation bars.', 'wppa');
@@ -786,7 +811,7 @@ global $wppa_api_version;
 					
 					?>
 				</tbody>
-				<tfoot style="font-weight: bold" class="wppa_table_2">
+				<tfoot style="font-weight: bold; visibility: collapse;" class="wppa_table_2">
 					<tr>
 						<th scope="col"><?php _e('#', 'wppa') ?></th>
 						<th scope="col"><?php _e('Name', 'wppa') ?></th>
@@ -802,7 +827,7 @@ global $wppa_api_version;
 			<?php _e('This table describes the backgrounds of wppa+ elements.', 'wppa'); ?>
 
 			<table class="widefat">
-				<thead style="font-weight: bold" class="wppa_table_3">
+				<thead style="font-weight: bold; visibility:collapse;" class="wppa_table_3">
 					<tr>
 						<th scope="col"><?php _e('#', 'wppa') ?></th>
 						<th scope="col"><?php _e('Name', 'wppa') ?></th>
@@ -814,7 +839,7 @@ global $wppa_api_version;
 						<th scope="col"><?php _e('Help', 'wppa') ?></th>
 					</tr>
 				</thead>
-				<tbody class="wppa_table_3">
+				<tbody style="visibility: collapse;" class="wppa_table_3">
 					<?php 
 					$name = __('Even', 'wppa');
 					$desc = __('Even background.', 'wppa');
@@ -881,9 +906,32 @@ global $wppa_api_version;
 					$html2 = wppa_input($slug2, '100px', '', '', "checkColor('".$slug2."')") . '</td><td>' . wppa_color_box($slug2);
 					wppa_setting_2($slug1, $slug2, '7', $name, $desc, $html1, $html2, $help);
 
+					$name = __('Lightbox', 'wppa');
+					$desc = __('Lightbox image.', 'wppa');
+					$help = esc_js(__('Enter valid CSS colors for lightbox background and border.', 'wppa'));
+					$help .= '\n'.esc_js(__('The colors may be equal or "transparent"', 'wppa'));
+					$help .= '\n'.esc_js(__('For more information about fullsize image borders see the help on Table I, item 22', 'wppa'));
+					$slug1 = 'wppa_lightbox_backgroundcolor';
+					$slug2 = 'wppa_lightbox_bordercolor';
+					$html1 = wppa_input($slug1, '100px', '', '', "checkColor('".$slug1."')") . '</td><td>' . wppa_color_box($slug1);
+					$html2 = wppa_input($slug2, '100px', '', '', "checkColor('".$slug2."')") . '</td><td>' . wppa_color_box($slug2);
+					$class = 'wppa_lightbox';
+					wppa_setting_2($slug1, $slug2, '8', $name, $desc, $html1, $html2, $help, $class);
+
+					$name = __('Overlay', 'wppa');
+					$desc = __('Lightbox overlay background.', 'wppa');
+					$help = esc_js(__('Enter color and opacity for lightbox overlay background.', 'wppa'));
+					$slug1 = 'wppa_lightbox_overlaycolor';
+					$slug2 = 'wppa_lightbox_overlayopacity';
+					$html1 = wppa_input($slug1, '100px', '', '', "checkColor('".$slug1."')") . '</td><td>' . wppa_color_box($slug1);
+					$html2 = wppa_input($slug2, '100px', '', '% opacity') . '</td><td>';
+					$class = 'wppa_lightbox';
+					wppa_setting_2($slug1, $slug2, '9', $name, $desc, $html1, $html2, $help, $class);
+					
+			
 					?>
 				</tbody>
-				<tfoot style="font-weight: bold" class="wppa_table_3">
+				<tfoot style="font-weight: bold; visibility: collapse;" class="wppa_table_3">
 					<tr>
 						<th scope="col"><?php _e('#', 'wppa') ?></th>
 						<th scope="col"><?php _e('Name', 'wppa') ?></th>
@@ -902,7 +950,7 @@ global $wppa_api_version;
 			<?php _e('This table describes the dynamic behaviour of certain wppa+ elements.', 'wppa'); ?>
 
 			<table class="widefat">
-				<thead style="font-weight: bold" class="wppa_table_4">
+				<thead style="font-weight: bold; visibility:collapse;" class="wppa_table_4">
 					<tr>
 						<th scope="col"><?php _e('#', 'wppa') ?></th>
 						<th scope="col"><?php _e('Name', 'wppa') ?></th>
@@ -911,7 +959,7 @@ global $wppa_api_version;
 						<th scope="col"><?php _e('Help', 'wppa') ?></th>
 					</tr>
 				</thead>
-				<tbody class="wppa_table_4">
+				<tbody style="visibility: collapse;" class="wppa_table_4">
 					<?php 
 					$name = __('V align', 'wppa');
 					$desc = __('Vertical alignment of full-size images.', 'wppa');
@@ -1124,9 +1172,19 @@ global $wppa_api_version;
 					$class = 'wppa_comment';
 					wppa_setting($slug, '23', $name, $desc, $html, $help, $class);
 					
+					$name = __('Lightbox Speed', 'wppa');
+					$desc = __('Lightbox animation speed.', 'wppa');
+					$help = esc_js(__('The higher the number, the faster the animation', 'wppa'));
+					$slug = 'wppa_lightbox_animationspeed';
+					$options = array(__('--- off ---', 'wppa'), '1', '2', '3', '4', '5', '6', '7', '8', '9', '10');
+					$values = array('1000', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10');
+					$html = wppa_select($slug, $options, $values);
+					$class = 'wppa_lightbox';
+					wppa_setting($slug, '24', $name, $desc, $html, $help, $class);
+					
 					?>
 				</tbody>
-				<tfoot style="font-weight: bold" class="wppa_table_4">
+				<tfoot style="font-weight: bold; visibility: collapse;" class="wppa_table_4">
 					<tr>
 						<th scope="col"><?php _e('#', 'wppa') ?></th>
 						<th scope="col"><?php _e('Name', 'wppa') ?></th>
@@ -1143,7 +1201,7 @@ global $wppa_api_version;
 			<?php _e('If you leave fields empty, your themes defaults will be used.', 'wppa'); ?>
 			
 			<table class="widefat">
-				<thead style="font-weight: bold" class="wppa_table_5">
+				<thead style="font-weight: bold; visibility:collapse;" class="wppa_table_5">
 					<tr>
 						<th scope="col"><?php _e('#', 'wppa') ?></th>
 						<th scope="col"><?php _e('Name', 'wppa') ?></th>
@@ -1154,7 +1212,7 @@ global $wppa_api_version;
 						<th scope="col"><?php _e('Help', 'wppa') ?></th>
 					</tr>
 				</thead>
-				<tbody class="wppa_table_5">
+				<tbody style="visibility: collapse;" class="wppa_table_5">
 					<?php 
 					$name = __('Album titles', 'wppa');
 					$desc = __('Font used for Album titles.', 'wppa');
@@ -1220,10 +1278,22 @@ global $wppa_api_version;
 					$html1 = wppa_input($slug1, '100%', '300px', '');
 					$html2 = wppa_input($slug2, '40px', '', __('pixels', 'wppa'));
 					$html3 = wppa_input($slug3, '70px', '', '');
-					wppa_setting_3($slug1, $slug2, $slug3, '16,17,18', $name, $desc, $html1, $html2, $html3, $help);		
+					wppa_setting_3($slug1, $slug2, $slug3, '16,17,18', $name, $desc, $html1, $html2, $html3, $help);	
+
+					$name = __('Lightbox', 'wppa');
+					$desc = __('Font in wppa lightbox boxes.', 'wppa');
+					$help = esc_js(__('Enter font name, size and color for lightbox overlays.', 'wppa')); 
+					$slug1 = 'wppa_fontfamily_lightbox';
+					$slug2 = 'wppa_fontsize_lightbox';
+					$slug3 = 'wppa_fontcolor_lightbox';
+					$html1 = wppa_input($slug1, '100%', '300px', '');
+					$html2 = wppa_input($slug2, '40px', '', __('pixels', 'wppa'));
+					$html3 = wppa_input($slug3, '70px', '', '');
+					wppa_setting_3($slug1, $slug2, $slug3, '19,20,21', $name, $desc, $html1, $html2, $html3, $help);	
+					
 					?>
 				</tbody>
-				<tfoot style="font-weight: bold" class="wppa_table_5">
+				<tfoot style="font-weight: bold; visibility: collapse;" class="wppa_table_5">
 					<tr>
 						<th scope="col"><?php _e('#', 'wppa') ?></th>
 						<th scope="col"><?php _e('Name', 'wppa') ?></th>
@@ -1241,7 +1311,7 @@ global $wppa_api_version;
 			<?php _e('This table defines the link types and pages.', 'wppa'); ?>
 			
 			<table class="widefat">
-				<thead style="font-weight: bold" class="wppa_table_6">
+				<thead style="font-weight: bold; visibility:collapse;" class="wppa_table_6">
 					<tr>
 						<th scope="col"><?php _e('#', 'wppa') ?></th>
 						<th scope="col"><?php _e('Name', 'wppa') ?></th>
@@ -1252,7 +1322,7 @@ global $wppa_api_version;
 						<th scope="col"><?php _e('Help', 'wppa') ?></th>
 					</tr>
 				</thead>
-				<tbody class="wppa_table_6">
+				<tbody style="visibility: collapse;" class="wppa_table_6">
 					<?php 
 					// Linktypes
 					$options_linktype = array(__('no link at all.', 'wppa'), __('the plain photo (file).', 'wppa'), __('the full size photo in a slideshow.', 'wppa'), __('the fullsize photo on its own.', 'wppa'), __('the fullsize photo with a print button.', 'wppa'), __('lightbox.', 'wppa'));
@@ -1382,7 +1452,7 @@ global $wppa_api_version;
 					?>
 					
 				</tbody>
-				<tfoot style="font-weight: bold" class="wppa_table_6">
+				<tfoot style="font-weight: bold; visibility: collapse;" class="wppa_table_6">
 					<tr>
 						<th scope="col"><?php _e('#', 'wppa') ?></th>
 						<th scope="col"><?php _e('Name', 'wppa') ?></th>
@@ -1400,7 +1470,7 @@ global $wppa_api_version;
 			<?php _e('This table describes the access settings for wppa+ elements and pages.', 'wppa'); ?>
 
 			<table class="widefat">
-				<thead style="font-weight: bold" class="wppa_table_7">
+				<thead style="font-weight: bold; visibility:collapse;" class="wppa_table_7">
 					<tr>
 						<th scope="col"><?php _e('#', 'wppa') ?></th>
 						<th scope="col"><?php _e('Name', 'wppa') ?></th>
@@ -1409,7 +1479,7 @@ global $wppa_api_version;
 						<th scope="col"><?php _e('Help', 'wppa') ?></th>
 					</tr>
 				</thead>
-				<tbody class="wppa_table_7">
+				<tbody style="visibility: collapse;" class="wppa_table_7">
 					<?php 
 					$name = 'CHMOD';
 					$desc = __('Directory access (CHMOD).', 'wppa');
@@ -1471,7 +1541,7 @@ global $wppa_api_version;
 					
 					?>
 				</tbody>
-				<tfoot style="font-weight: bold" class="wppa_table_7">
+				<tfoot style="font-weight: bold; visibility: collapse;" class="wppa_table_7">
 					<tr>
 						<th scope="col"><?php _e('#', 'wppa') ?></th>
 						<th scope="col"><?php _e('Name', 'wppa') ?></th>
@@ -1487,7 +1557,7 @@ global $wppa_api_version;
 			<?php _e('This table lists all actions that can be taken to the wppa+ system', 'wppa'); ?>
 			
 			<table class="widefat">
-				<thead style="font-weight: bold" class="wppa_table_8">
+				<thead style="font-weight: bold; visibility:collapse;" class="wppa_table_8">
 					<tr>
 						<th scope="col"><?php _e('#', 'wppa') ?></th>
 						<th scope="col"><?php _e('Name', 'wppa') ?></th>
@@ -1497,7 +1567,7 @@ global $wppa_api_version;
 						<th scope="col"><?php _e('Help', 'wppa') ?></th>
 					</tr>
 				</thead>
-				<tbody class="wppa_table_8">
+				<tbody style="visibility: collapse;" class="wppa_table_8">
 					<?php 
 					$wppa['no_default'] = true;
 					
@@ -1591,7 +1661,7 @@ global $wppa_api_version;
 
 					?>
 				</tbody>
-				<tfoot style="font-weight: bold" class="wppa_table_8">
+				<tfoot style="font-weight: bold; visibility: collapse;" class="wppa_table_8">
 					<tr>
 						<th scope="col"><?php _e('#', 'wppa') ?></th>
 						<th scope="col"><?php _e('Name', 'wppa') ?></th>
@@ -1608,7 +1678,7 @@ global $wppa_api_version;
 			<?php _e('This table lists all settings that do not fit into an other table', 'wppa'); ?>
 			
 			<table class="widefat">
-				<thead style="font-weight: bold" class="wppa_table_9">
+				<thead style="font-weight: bold; visibility:collapse;" class="wppa_table_9">
 					<tr>
 						<th scope="col"><?php _e('#', 'wppa') ?></th>
 						<th scope="col"><?php _e('Name', 'wppa') ?></th>
@@ -1617,7 +1687,7 @@ global $wppa_api_version;
 						<th scope="col"><?php _e('Help', 'wppa') ?></th>
 					</tr>
 				</thead>
-				<tbody class="wppa_table_9">
+				<tbody style="visibility: collapse;" class="wppa_table_9">
 					<?php
 					if ( is_multisite() && get_option('wppa_multisite', 'no') != 'yes' ) {
 						$name = __('Enable WPPA+ multisite', 'wppa');
@@ -1721,8 +1791,15 @@ global $wppa_api_version;
 					?>		
 
 					<script type="text/javascript">wppa_moveup_url = "<?php echo wppa_dbg_url(get_admin_url().'admin.php?page=wppa_options&move_up=') ?>";</script>
-					
+
 					<?php
+					$name = __('Swap Namedesc', 'wppa');
+					$desc = __('Swap the order sequence of name and description', 'wppa');
+					$help = '';
+					$slug = 'wppa_swap_namedesc';
+					$html = wppa_checkbox($slug);
+					wppa_setting($slug, '6.9', $name, $desc, $html, $help);
+					
 					$name = __('New Album', 'wppa');
 					$desc = __('Maximum time an album is indicated as New!', 'wppa');
 					$help = '';
@@ -1743,16 +1820,18 @@ global $wppa_api_version;
 					
 					$name = __('WPPA+ Lightbox', 'wppa');
 					$desc = __('Uset wppa+ embedded lightbox.', 'wppa');
-					$help = esc_js(__('WPPA+ comes with embedded lightbox 2. If you want to use a different ligtbox (plugin),', 'wppa'));
+					$help = esc_js(__('WPPA+ comes with embedded lightbox 2. If you want to use a different ligtbox (plugin)', 'wppa'));
 					$help .= ' '.esc_js(__('or you do not use lightbox links, you may uncheck this item.', 'wppa'));
-					// prototype and scriptaculus
+					$help .= '\n\n'.esc_js(__('If you uncheck this item you can also no longer set lightbox configuration settings.', 'wppa'));
+					$help .= '\n\n'.esc_js(__('If you check this item, the wp supplied scripts prototype and scriptaculous are also being loaded.', 'wppa'));
 					$slug = 'wppa_use_lightbox';
-					$html = wppa_checkbox($slug);
+					$onchange = 'wppaCheckLightbox()';
+					$html = wppa_checkbox($slug, $onchange);
 					wppa_setting($slug, '9', $name, $desc, $html, $help);
 					
 					?>
 				</tbody>
-				<tfoot style="font-weight: bold" class="wppa_table_9">
+				<tfoot style="font-weight: bold; visibility: collapse;" class="wppa_table_9">
 					<tr>
 						<th scope="col"><?php _e('#', 'wppa') ?></th>
 						<th scope="col"><?php _e('Name', 'wppa') ?></th>
@@ -1767,15 +1846,15 @@ global $wppa_api_version;
 			<h3><?php _e('Table X:', 'wppa'); echo(' '); _e('WPPA+ and PHP Configuration:', 'wppa'); ?><?php wppa_toggle_table(10) ?></h3>
 			<?php _e('This table lists all WPPA+ constants and PHP server configuration parameters and is read only', 'wppa'); ?>
 
-			<div class="wppa_table_10" style="margin-top:20px; text-align:left;">
+			<div class="wppa_table_10" style="margin-top:20px; text-align:left; visibility:collapse;">
 				<table class="widefat">
-					<thead style="font-weight: bold" class="wppa_table_9">
+					<thead style="font-weight: bold; visibility:collapse;" class="wppa_table_9">
 						<tr>
 							<th scope="col"><?php _e('Name', 'wppa') ?></th>
 							<th scope="col"><?php _e('Description', 'wppa') ?></th>
 							<th scope="col"><?php _e('Value', 'wppa') ?></th>
 						</tr>
-					<tbody class="wppa_table_10">
+					<tbody style="visibility: collapse;" class="wppa_table_10">
 						<tr style="color:#333;">
 							<td>WPPA_ALBUMS</td>
 							<td><small><?php _e('Albums db table name.', 'wppa') ?></small></td>
@@ -1846,7 +1925,6 @@ global $wppa_api_version;
 							<td><small><?php _e('The depot directory url.', 'wppa') ?></small></td>
 							<td><?php echo(WPPA_DEPOT_URL) ?></td>
 						</tr>
-											
 					</tbody>
 				</table>
 				<?php if ( $wppa_opt['wppa_allow_debug'] == 'yes' ) phpinfo(-1); else phpinfo(4); ?>
@@ -2160,8 +2238,8 @@ global $wppa_opt;
 
 function wppa_toggle_table($i) {
 ?>
-	<input type="button" value="<?php _e('Hide', 'wppa') ?>" onclick="jQuery('.wppa_table_<?php echo($i) ?>').css('visibility', 'collapse'); jQuery('._wppa_table_<?php echo($i) ?>').css('visibility', 'visible'); wppa_tablecookieoff('<?php echo($i) ?>')" class="wppa_table_<?php echo($i) ?>" />
-	<input type="button" value="<?php _e('Show', 'wppa') ?>" onclick="jQuery('.wppa_table_<?php echo($i) ?>').css('visibility', 'visible'); jQuery('._wppa_table_<?php echo($i) ?>').css('visibility', 'collapse'); wppa_tablecookieon('<?php echo($i) ?>')" class="_wppa_table_<?php echo($i) ?>" style="visibility: hidden;" />
+	<input type="button" value="<?php _e('Hide', 'wppa') ?>" onclick="jQuery('.wppa_table_<?php echo($i) ?>').css('visibility', 'collapse'); jQuery('._wppa_table_<?php echo($i) ?>').css('visibility', 'visible'); wppa_tablecookieoff('<?php echo($i) ?>')" class="wppa_table_<?php echo($i) ?>" style="visibility: hidden;" />
+	<input type="button" value="<?php _e('Show', 'wppa') ?>" onclick="jQuery('.wppa_table_<?php echo($i) ?>').css('visibility', 'visible'); jQuery('._wppa_table_<?php echo($i) ?>').css('visibility', 'collapse'); wppa_tablecookieon('<?php echo($i) ?>')" class="_wppa_table_<?php echo($i) ?>" />
 	<input type="submit" class="button-primary" name="wppa_set_submit" value="<?php _e('Save Changes', 'wppa'); ?>" />
 <?php
 }
