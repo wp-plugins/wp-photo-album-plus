@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the non admin stuff
-* Version 4.0.7
+* Version 4.0.8
 *
 */
 
@@ -58,21 +58,34 @@ function wppa_load_theme() {
 add_action('wp_head', 'wppa_lightbox', '99');
 
 function wppa_lightbox() {
+global $wppa_opt;
+
 	if ( get_option('wppa_use_lightbox', 'yes') == 'yes' ) {
+		$bw = $wppa_opt['wppa_lightbox_bordersize'];
+		$bw1 = $bw == '' ? '0' : $bw + '1';
+		if ( $bw == '' ) $bw = '0';
+		$as = $wppa_opt['wppa_lightbox_animationspeed'];
+		$bac = $wppa_opt['wppa_lightbox_backgroundcolor'];
+		$boc = $wppa_opt['wppa_lightbox_bordercolor'];
+		$obac = $wppa_opt['wppa_lightbox_overlaycolor'];
+		$opac = $wppa_opt['wppa_lightbox_overlayopacity'] / '100';
+		$fontfam = $wppa_opt['wppa_fontfamily_lightbox'];
+		$fontsiz = $wppa_opt['wppa_fontsize_lightbox'];
+		$fontcol = $wppa_opt['wppa_fontcolor_lightbox'];
 		echo "\n<!-- Start WPPA+ inserted lightbox -->\n";
 	//	echo "\n".'<script type="text/javascript" src="'.WPPA_URL.'/lightbox/js/prototype.js"></script>';
 	//	echo "\n".'<script type="text/javascript" src="'.WPPA_URL.'/lightbox/js/scriptaculous.js?load=effects,builder"></script>';
 		echo "\n".'<script type="text/javascript"><!--//--><![CDATA[//><!--';
 			echo "\n".'LightboxOptions = Object.extend({';
 			echo "\n"."fileLoadingImage:        'wp-content/plugins/wp-photo-album-plus/lightbox/images/loading.gif',   ";  
-			echo "\n"."fileBottomNavCloseImage: 'wp-content/plugins/wp-photo-album-plus/lightbox/images/closelabel.gif',";
+			echo "\n"."fileBottomNavCloseImage: 'wp-content/plugins/wp-photo-album-plus/lightbox/images/cross.png',"; //closelabel.gif',";
 
-			echo "\n".'overlayOpacity: 0.8,   // controls transparency of shadow overlay';
+			echo "\n".'overlayOpacity: '.$opac.',   // controls transparency of shadow overlay';
 
-			echo "\n".'animate: true,         // toggles resizing animations';
-			echo "\n".'resizeSpeed: 7,        // controls the speed of the image resizing animations (1=slowest and 10=fastest)';
+			echo "\n".'animate: '; if ($as) echo 'true,'; else echo 'false,         // toggles resizing animations';
+			echo "\n".'resizeSpeed: '.$as.',        // controls the speed of the image resizing animations (1=slowest and 10=fastest)';
 
-			echo "\n".'borderSize: 10,         //if you adjust the padding in the CSS, you will need to update this variable';
+			echo "\n".'borderSize: '.$bw1.',         //if you adjust the padding in the CSS, you will need to update this variable';
 
 			echo "\n".'// When grouping images this is used to write: Image # of #.';
 			echo "\n".'// Change it for non-english localization';
@@ -81,7 +94,30 @@ function wppa_lightbox() {
 			echo "\n".'}, window.LightboxOptions || {});';
 		echo "\n".'//--><!]]></script>';
 		echo "\n".'<script type="text/javascript" src="'.WPPA_URL.'/lightbox/js/lightbox.js"></script>';
-		echo "\n".'<link rel="stylesheet" href="'.WPPA_URL.'/lightbox/css/lightbox.css" type="text/css" media="screen" />';
+		echo "\n".'<style type="text/css" media="screen">';
+			echo "\n".'#lightbox{	position: absolute;	left: 0; width: 100%; z-index: 100; text-align: center; line-height: 0;}';
+			echo "\n".'#lightbox img{ width: auto; height: auto;}';
+			echo "\n".'#lightbox a img{ border: none; }';
+			echo "\n".'#outerImageContainer{ position: relative; background-color: '.$bac.'; width: 250px; height: 250px; margin: 0 auto; }';
+			echo "\n".'#imageContainer{ padding: '.$bw.'px; '; if ($bw != '') echo 'border: 1px solid '.$boc.';'; echo ' }';
+			echo "\n".'#loading{ position: absolute; top: 40%; left: 0%; height: 25%; width: 100%; text-align: center; line-height: 0; }';
+			echo "\n".'#hoverNav{ position: absolute; top: 0; left: 0; height: 100%; width: 100%; z-index: 10; }';
+			echo "\n".'#imageContainer>#hoverNav{ left: 0;}';
+			echo "\n".'#hoverNav a{ outline: none;}';
+			echo "\n".'#prevLink, #nextLink{ width: 49%; height: 100%; background-image: url(data:image/gif;base64,AAAA); /* Trick IE into showing hover */ display: block; }';
+			echo "\n".'#prevLink { left: 0; float: left;}';
+			echo "\n".'#nextLink { right: 0; float: right;}';
+			echo "\n".'#prevLink:hover, #prevLink:visited:hover { background: url('.WPPA_URL.'/lightbox/images/prevlabel.gif) left 15% no-repeat; }';
+			echo "\n".'#nextLink:hover, #nextLink:visited:hover { background: url('.WPPA_URL.'/lightbox/images/nextlabel.gif) right 15% no-repeat; }';
+			echo "\n".'#imageDataContainer{ font: '.$fontsiz.'px '.$fontfam.'; background-color: '.$bac.'; margin: 0 auto; line-height: 1.4em; overflow: auto; width: 100%	; }';
+			echo "\n".'#imageData{	padding:0 '.$bw.'px; color: '.$fontcol.'; }';
+			echo "\n".'#imageData #imageDetails{ width: 70%; float: left; text-align: left; }';
+			echo "\n".'#imageData #caption{ font-weight: bold;	}';
+			echo "\n".'#imageData #numberDisplay{ display: block; clear: left; padding-bottom: 1.0em;	}';
+			echo "\n".'#imageData #bottomNavClose{ width: 32px; float: right;  padding-bottom: 0.7em; outline: none;}';
+			echo "\n".'#overlay{ position: absolute; top: 0; left: 0; z-index: 90; width: 100%; height: 500px; background-color: '.$obac.'; }';
+		echo "\n".'</style>';
+	//	echo "\n".'<link rel="stylesheet" href="'.WPPA_URL.'/lightbox/css/lightbox.css" type="text/css" media="screen" />';
 		echo "\n<!-- End WPPA+ inserted lightbox -->\n";		
 	}
 }

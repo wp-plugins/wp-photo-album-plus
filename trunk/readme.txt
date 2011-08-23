@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, multisite, network, lightbox
-Version: 4.0.7
+Version: 4.0.8
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -104,6 +104,28 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 
 
 == Changelog ==
+
+= 4.0.8 =
+
+= New features =
+
+* Lightbox configuration possibilities. See Settings page Table I item 23, III 8 & 9, IV 24, V 19 & 20 & 21.
+* Order sequence settable for fullsize name and description. (See Table IX item 6.9)
+
+= Bug Fixes =
+
+* Popups pop down again at mouse leave.
+* Under some circumstances, possible link page selection box was shown in Table VI items 2 and 3 where not appropriate. Fixed.
+* All script is now embedded in CDATA blocks. This will fix certain causes of slideshow not functioning in certain themes.
+
+= Other changes =
+
+* Got rid of z-indexes, you need no longer change the menu css for overlapping slides.
+* Improved errormessages and messages on inconsistent settings.
+
+= Open Wish List =
+
+* Name and description in the sidebar slideshow.
 
 = 4.0.7 =
 

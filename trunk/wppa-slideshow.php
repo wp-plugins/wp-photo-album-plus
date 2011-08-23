@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the slideshow high level functions
-* Version 4.0.7
+* Version 4.0.8
 *
 */
 
@@ -110,8 +110,14 @@ global $wppa_opt;
 	}
 	if ($do_it) { 
 		$wppa['out'] .= wppa_nltab('+').'<div id="namedesc-'.$wppa['master_occur'].'" class="wppa-box wppa-name-desc" style="'.__wcs('wppa-box').__wcs('wppa-name-desc').'" >';
-			wppa_slide_description($key);		// The description of the photo
-			wppa_slide_name($key);			// The name of the photo
+			if ($wppa_opt['wppa_swap_namedesc']) {
+				wppa_slide_name($key);			// The name of the photo
+				wppa_slide_description($key);		// The description of the photo
+			}
+			else {
+				wppa_slide_description($key);		// The description of the photo
+				wppa_slide_name($key);			// The name of the photo
+			}
 		$wppa['out'] .= wppa_nltab('-').'</div><!-- #namedesc -->';
 	}
 }

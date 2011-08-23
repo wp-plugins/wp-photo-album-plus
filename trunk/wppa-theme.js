@@ -1,5 +1,5 @@
 // Theme variables and functions
-// This is wppa-theme.js version 4.0.6
+// This is wppa-theme.js version 4.0.8
 //
 
 var wppaBackgroundColorImage = '';
@@ -27,13 +27,13 @@ function wppa_popup(mocc, elm, id, rating) {
 
 		switch (wppaPopupLinkType) {
 			case 'none':
-				jQuery('#wppa-popup-'+mocc).html('<div class="wppa-popup" style="background-color:'+wppaBackgroundColorImage+'; text-align:center;"><img id="wppa-img-'+mocc+'" src="'+elm.src+'" title="" style="border-width: 0px;" /><div id="wppa-name-'+mocc+'" style="display:none; padding:2px;" class="wppa_pu_info">'+elm.alt+'</div><div id="wppa-desc-'+mocc+'" style="clear:both; display:none;" class="wppa_pu_info">'+elm.title+'</div><div id="wppa-rat-'+mocc+'" style="clear:both; display:none;" class="wppa_pu_info">'+rating+'</div></div>');
+				jQuery('#wppa-popup-'+mocc).html('<div class="wppa-popup" onmouseout="wppa_popdown('+mocc+')" style="background-color:'+wppaBackgroundColorImage+'; text-align:center;"><img id="wppa-img-'+mocc+'" src="'+elm.src+'" title="" style="border-width: 0px;" /><div id="wppa-name-'+mocc+'" style="display:none; padding:2px;" class="wppa_pu_info">'+elm.alt+'</div><div id="wppa-desc-'+mocc+'" style="clear:both; display:none;" class="wppa_pu_info">'+elm.title+'</div><div id="wppa-rat-'+mocc+'" style="clear:both; display:none;" class="wppa_pu_info">'+rating+'</div></div>');
 				break;
 			case 'fullpopup':
-				jQuery('#wppa-popup-'+mocc).html('<div class="wppa-popup" style="background-color:'+wppaBackgroundColorImage+'; text-align:center;"><img id="wppa-img-'+mocc+'" src="'+elm.src+'" title="" style="border-width: 0px;" onclick="'+wppaPopupOnclick[id]+'" /><div id="wppa-name-'+mocc+'" style="display:none; padding:2px;" class="wppa_pu_info">'+elm.alt+'</div><div id="wppa-desc-'+mocc+'" style="clear:both; display:none;" class="wppa_pu_info">'+elm.title+'</div><div id="wppa-rat-'+mocc+'" style="clear:both; display:none;" class="wppa_pu_info">'+rating+'</div></div>');
+				jQuery('#wppa-popup-'+mocc).html('<div class="wppa-popup" onmouseout="wppa_popdown('+mocc+')" style="background-color:'+wppaBackgroundColorImage+'; text-align:center;"><img id="wppa-img-'+mocc+'" src="'+elm.src+'" title="" style="border-width: 0px;" onclick="'+wppaPopupOnclick[id]+'" /><div id="wppa-name-'+mocc+'" style="display:none; padding:2px;" class="wppa_pu_info">'+elm.alt+'</div><div id="wppa-desc-'+mocc+'" style="clear:both; display:none;" class="wppa_pu_info">'+elm.title+'</div><div id="wppa-rat-'+mocc+'" style="clear:both; display:none;" class="wppa_pu_info">'+rating+'</div></div>');
 				break;
 			default:
-				jQuery('#wppa-popup-'+mocc).html('<div class="wppa-popup" style="background-color:'+wppaBackgroundColorImage+'; text-align:center;"><a id="wppa-a" href="'+document.getElementById('x-'+id+'-'+mocc).href+'"><img id="wppa-img-'+mocc+'" src="'+elm.src+'" title="" style="border-width: 0px;" /></a><div id="wppa-name-'+mocc+'" style="display:none; padding:2px;" class="wppa_pu_info">'+elm.alt+'</div><div id="wppa-desc-'+mocc+'" style="clear:both; display:none;" class="wppa_pu_info">'+elm.title+'</div><div id="wppa-rat-'+mocc+'" style="clear:both; display:none;" class="wppa_pu_info">'+rating+'</div></div>');
+				jQuery('#wppa-popup-'+mocc).html('<div class="wppa-popup" onmouseout="wppa_popdown('+mocc+')" style="background-color:'+wppaBackgroundColorImage+'; text-align:center;"><a id="wppa-a" href="'+document.getElementById('x-'+id+'-'+mocc).href+'"><img id="wppa-img-'+mocc+'" src="'+elm.src+'" title="" style="border-width: 0px;" /></a><div id="wppa-name-'+mocc+'" style="display:none; padding:2px;" class="wppa_pu_info">'+elm.alt+'</div><div id="wppa-desc-'+mocc+'" style="clear:both; display:none;" class="wppa_pu_info">'+elm.title+'</div><div id="wppa-rat-'+mocc+'" style="clear:both; display:none;" class="wppa_pu_info">'+rating+'</div></div>');
 		}
 	}
 	
@@ -74,6 +74,7 @@ function wppa_popready(mocc) {
 }
 function wppa_popdown(mocc) {	//	return; //debug
 	jQuery('#wppa-popup-'+mocc).html("");
+	wppa_saved_id[mocc] = -1;
 }
 
 // Popup of fullsize image

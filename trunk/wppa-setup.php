@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 4.0.7
+* Version 4.0.8
 *
 */
 
@@ -286,7 +286,17 @@ global $wppa_defaults;
 						'wppa_max_album_newtime'		=> '0',
 						'wppa_load_skin' 				=> '',
 						'wppa_skinfile' 				=> '',
-						'wppa_use_lightbox'				=> 'yes'
+						'wppa_use_lightbox'				=> 'yes',
+						'wppa_lightbox_bordersize'		=> '10',
+						'wppa_lightbox_animationspeed'	=> '5',
+						'wppa_lightbox_backgroundcolor' => '#fff',
+						'wppa_lightbox_bordercolor' 	=> '#fff',
+						'wppa_lightbox_overlaycolor' 	=> '#000',
+						'wppa_lightbox_overlayopacity'	=> '80',
+						'wppa_swap_namedesc' 			=> 'no',
+						'wppa_fontfamily_lightbox'		=> 'Verdana, Helvetica, sans-serif',
+						'wppa_fontsize_lightbox'		=> '10',
+						'wppa_fontcolor_lightbox'		=> '#666'
 
 						);
 	

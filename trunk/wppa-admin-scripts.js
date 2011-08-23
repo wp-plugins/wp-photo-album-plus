@@ -1,7 +1,7 @@
 /* admin-scripts.js */
 /* Package: wp-photo-album-plus
 /*
-/* Version 4.0.0
+/* Version 4.0.8
 /* Various js routines used in admin pages		
 */
 
@@ -39,12 +39,13 @@ function wppaInitSettings() {
 	wppaCheckPotdLink();
 	wppaCheckRating();
 	wppaCheckComments();
+	wppaCheckLightbox();
 	
 	for (i=1; i<11; i++) {
 		var cookie = wppa_getCookie('table_'+i);
-		if (cookie == 'off' || cookie == '') {
-			jQuery('.wppa_table_'+i).css('visibility', 'collapse'); 
-			jQuery('._wppa_table_'+i).css('visibility', 'visible');
+		if (cookie == 'on') {
+			jQuery('.wppa_table_'+i).css('visibility', 'visible'); 
+			jQuery('._wppa_table_'+i).css('visibility', 'collapse'); // collapse
 		}
 	}
 }
@@ -261,7 +262,7 @@ function wppaCheckWidgetLink() {
 
 function wppaCheckThumbLink() { 
 	var lvalue = document.getElementById('wppa_thumb_linktype').value;
-	if (lvalue == 'none' || lvalue == 'file') {
+	if (lvalue == 'none' || lvalue == 'file' || lvalue == 'lightbox' || lvalue == 'fullpopup') {
 		jQuery('.wppa_tlp').css('visibility', 'hidden');
 	}
 	else {
@@ -271,7 +272,7 @@ function wppaCheckThumbLink() {
 
 function wppaCheckTopTenLink() { 
 	var lvalue = document.getElementById('wppa_topten_widget_linktype').value;
-	if (lvalue == 'none' || lvalue == 'file') {
+	if (lvalue == 'none' || lvalue == 'file' || lvalue == 'lightbox' || lvalue == 'fullpopup') {
 		jQuery('.wppa_ttlp').css('visibility', 'hidden');
 	}
 	else {
@@ -309,12 +310,22 @@ function wppaCheckMphotoLink() {
 	}
 }
 
+function wppaCheckLightbox() {
+	var Lb = document.getElementById('wppa_use_lightbox').checked;
+	if (Lb) {
+		jQuery('.wppa_lightbox').css('visibility', 'visible');
+	}
+	else {
+		jQuery('.wppa_lightbox').css('visibility', 'collapse');
+	}
+}
+
 function wppa_tablecookieon(i) {
-	wppa_setCookie('table_'+i, 'on', '30');
+	wppa_setCookie('table_'+i, 'on', '365');
 }
 
 function wppa_tablecookieoff(i) {
-	wppa_setCookie('table_'+i, 'off', '30');
+	wppa_setCookie('table_'+i, 'off', '365');
 }
 
 function wppa_setCookie(c_name,value,exdays)
