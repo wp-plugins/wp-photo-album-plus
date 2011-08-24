@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the slideshow high level functions
-* Version 4.0.8
+* Version 4.0.9
 *
 */
 
@@ -104,7 +104,11 @@ global $wppa_opt;
 	
 	$do_it = false;
 	if ($key != 'optional') $do_it = true;
-	if (!$wppa['is_slideonly']) {
+	if ($wppa['is_slideonly']) {
+		if ($wppa['name_on']) $do_it = true;
+		if ($wppa['desc_on']) $do_it = true;
+	}
+	else {
 		if ($wppa_opt['wppa_show_full_desc']) $do_it = true;
 		if ($wppa_opt['wppa_show_full_name']) $do_it = true;
 	}
@@ -128,7 +132,7 @@ global $wppa;
 global $wppa_opt;
 
 	if (($opt == 'optional') && !$wppa_opt['wppa_show_full_name']) return;
-	if ($wppa['is_slideonly'] == '1') return;	/* Not when slideonly */
+	if ($wppa['is_slideonly'] && !$wppa['name_on']) return;	/* Not when slideonly and not explicitly turned on in the widget */
 	$wppa['out'] .= wppa_nltab().'<div id="imagetitle-'.$wppa['master_occur'].'" class="wppa-fulltitle imagetitle" style="'.__wcs('wppa-fulltitle').'padding:3px; width:100%"></div>';
 }	
 
@@ -137,7 +141,7 @@ global $wppa;
 global $wppa_opt;
 
 	if (($opt == 'optional') && !$wppa_opt['wppa_show_full_desc']) return;
-	if ($wppa['is_slideonly'] == '1') return;	/* Not when slideonly */
+	if ($wppa['is_slideonly'] && !$wppa['desc_on']) return;	/* Not when slideonly and not explicitly turned on in the widget */
 	$wppa['out'] .= wppa_nltab().'<div id="imagedesc-'.$wppa['master_occur'].'" class="wppa-fulldesc imagedesc" style="'.__wcs('wppa-fulldesc').'padding:3px; width:100%;"></div>';
 }
 

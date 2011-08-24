@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 4.0.8
+* Version 4.0.9
 *
 */
 
@@ -328,6 +328,7 @@ global $options_error;
 			wppa_update_value('wppa_max_album_newtime');
 			wppa_update_value('wppa_max_photo_newtime');
 			wppa_update_check('wppa_use_lightbox');
+			wppa_update_numeric('wppa_filter_priority', '0', __('Filter priority', 'wppa'));
 		
 			// Done update options!
 			if ($options_error) wppa_update_message(__('Other changes saved', 'wppa'));
@@ -924,7 +925,7 @@ global $wppa_api_version;
 					$slug1 = 'wppa_lightbox_overlaycolor';
 					$slug2 = 'wppa_lightbox_overlayopacity';
 					$html1 = wppa_input($slug1, '100px', '', '', "checkColor('".$slug1."')") . '</td><td>' . wppa_color_box($slug1);
-					$html2 = wppa_input($slug2, '100px', '', '% opacity') . '</td><td>';
+					$html2 = wppa_input($slug2, '100px', '', __('% opacity', 'wppa')) . '</td><td>';
 					$class = 'wppa_lightbox';
 					wppa_setting_2($slug1, $slug2, '9', $name, $desc, $html1, $html2, $help, $class);
 					
@@ -1819,7 +1820,7 @@ global $wppa_api_version;
 					wppa_setting($slug, '8', $name, $desc, $html, $help);
 					
 					$name = __('WPPA+ Lightbox', 'wppa');
-					$desc = __('Uset wppa+ embedded lightbox.', 'wppa');
+					$desc = __('Use wppa+ embedded lightbox.', 'wppa');
 					$help = esc_js(__('WPPA+ comes with embedded lightbox 2. If you want to use a different ligtbox (plugin)', 'wppa'));
 					$help .= ' '.esc_js(__('or you do not use lightbox links, you may uncheck this item.', 'wppa'));
 					$help .= '\n\n'.esc_js(__('If you uncheck this item you can also no longer set lightbox configuration settings.', 'wppa'));
@@ -1828,6 +1829,13 @@ global $wppa_api_version;
 					$onchange = 'wppaCheckLightbox()';
 					$html = wppa_checkbox($slug, $onchange);
 					wppa_setting($slug, '9', $name, $desc, $html, $help);
+					
+					$name = __('WPPA+ Filter priority', 'wppa');
+					$desc = __('Sets the priority of the wppa+ content filter.', 'wppa');
+					$help = esc_js(__('If you encounter conflicts with the theme or other plugins, increasing this value sometimes helps. Use with great care!', 'wppa'));
+					$slug = 'wppa_filter_priority';
+					$html = wppa_input($slug, '50px');
+					wppa_setting($slug, '10', $name, $desc, $html, $help);
 					
 					?>
 				</tbody>

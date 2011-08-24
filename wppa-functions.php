@@ -3,13 +3,13 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions and API modules
-* Version 4.0.8
+* Version 4.0.9
 *
 *
 */
 /* Moved to wppa-commonfunctions.php:
 global $wppa_api_version;
-$wppa_api_version = '4-0-8-000';
+$wppa_api_version = '4-0-9-000';
 */
 
 
@@ -1066,7 +1066,7 @@ global $wppa_first_comment_html;
 				$result .= '<tr valign="top" style="border-bottom:0 none; border-top:0 none; border-left: 0 none; border-right: 0 none; " >';
 					$result .= '<td class="wppa-box-text wppa-td" style="width:30%; border-width: 0 0 0 0; '.__wcs('wppa-box-text').__wcs('wppa-td').'" >';
 						$result .= $comment['user'].' wrote:';
-						$result .= '<br /><span style="font-size:9px; color:blue;">'.wppa_get_time_since($comment['timestamp']).'</span>';
+						$result .= '<br /><span style="font-size:9px; ">'.wppa_get_time_since($comment['timestamp']).'</span>';
 					$result .= '</td>';
 					$result .= '<td class="wppa-box-text wppa-td" style="border-width: 0 0 0 0;'.__wcs('wppa-box-text').__wcs('wppa-td').'" >'.esc_js(stripslashes($comment['comment']));
 					if ($comment['status'] == 'pending' && $comment['user'] == $wppa['comment_user']) {
@@ -1130,7 +1130,7 @@ global $wppa_first_comment_html;
 	$result .= '</form>';
 	
 	$result .= '<table id="wppacommentfooter-'.$wppa['master_occur'].'" class="wppacommentform" style="margin:0;">';
-		$result .= '<tbody><tr style= "text-align:center; "><td style="cursor:pointer;" ><a onclick="wppaStartStop('.$wppa['master_occur'].', -1)">';
+		$result .= '<tbody><tr style= "text-align:center; "><td style="cursor:pointer;'.__wcs('wppa-box-text').'" ><a onclick="wppaStartStop('.$wppa['master_occur'].', -1)">';
 		if ($n_comments) $result .= sprintf(__a('%d  comments', 'wppa_theme'), $n_comments);
 		else $result .= __a('Leave a comment', 'wppa_theme');
 	$result .= '</a></td></tr></tbody></table>';
@@ -2755,8 +2755,33 @@ global $wppa;
 	$wppa['out'] .= $txt;
 	return;
 }
-	
+
 function wppa_mphoto() {
+global $wppa;
+global $wppa_opt;
+
+	$width = wppa_get_container_width();
+	$height = floor($width / wppa_get_ratio($wppa['single_photo']));
+
+	$captwidth = $width + '10';
+	$wppa['out'] .= '<div id="wppa_'.$wppa['single_photo'].'" class="wp-caption';
+		if ($wppa['align'] != '') $wppa['out'] .= ' align'.$wppa['align'];
+	$wppa['out'] .='" style="width: '.$captwidth.'px">';
+
+		$link = wppa_get_imglnk_a('mphoto', $wppa['single_photo']);
+		if ($link) {
+			$wppa['out'] .= wppa_nltab('+').'<a href="'.$link['url'].'" title="'.$link['title'].'" class="thumb-img" id="a-'.$wppa['single_photo'].'-'.$wppa['master_occur'].'">';
+		}
+		$wppa['out'] .= wppa_nltab().'<img src="'.wppa_get_image_url_by_id($wppa['single_photo']).'" alt="" class="size-medium" title="'.esc_attr(stripslashes(wppa_get_photo_name($wppa['single_photo']))).'" width="'.$width.'" height="'.$height.'" />';
+		if ($link) {
+			$wppa['out'] .= wppa_nltab('-').'</a>';
+		}
+
+		$wppa['out'] .= '<p class="wp-caption-text">'.strip_tags(stripslashes(wppa_get_photo_desc($wppa['single_photo']))).'</p>';
+
+	$wppa['out'] .= '</div>';
+}	
+function wppa_mphoto_oldversion() {
 global $wppa;
 global $wppa_opt;
 
@@ -3044,7 +3069,17 @@ global $wpdb;
 			$result['is_lightbox'] = false;
 			return $result;
 			break;
+		case 'custom':
+			if ($wich == 'potdwidget') {
+				$result['url'] = $wppa_opt['wppa_widget_linkurl'];
+				$result['title'] = $wppa_opt['wppa_widget_linktitle'];
+				$result['is_url'] = true;
+				$result['is_lightbox'] = false;
+				return $result;
+			}
+			break;
 		default:
+			wppa_dbg_msg('Error, wrong type: '.$type.' in wppa_get_imglink_a');
 			return false;
 			break;
 	}
