@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display a slideshow in the sidebar
-* Version 4.0.0
+* Version 4.0.9
 */
 
 /**
@@ -27,7 +27,7 @@ class SlideshowWidget extends WP_Widget {
 
  		$title = apply_filters('widget_title', empty( $instance['title'] ) ? __a( 'Sidebar Slideshow', 'wppa_theme' ) : $instance['title']);
 
-		$instance = wp_parse_args( (array) $instance, array( 'title' => '', 'album' => '', 'width' => get_option('wppa_widget_width', '190'), 'ponly' => 'no', 'linkurl' => '', 'linktitle' => '', 'subtext' => '', 'supertext' => '', 'valign' => 'fit', 'timeout' => '4', 'film' => 'no', 'browse' => 'no' ) );
+		$instance = wp_parse_args( (array) $instance, array( 'title' => '', 'album' => '', 'width' => get_option('wppa_widget_width', '190'), 'ponly' => 'no', 'linkurl' => '', 'linktitle' => '', 'subtext' => '', 'supertext' => '', 'valign' => 'fit', 'timeout' => '4', 'film' => 'no', 'browse' => 'no', 'name' => 'no', 'desc' => 'no' ) );
 
 		$album = $instance['album'];
 		$width = $instance['width'];
@@ -40,6 +40,8 @@ class SlideshowWidget extends WP_Widget {
 		$timeout = $instance['timeout'] * 1000;
 		$film = $instance['film'];
 		$browse = $instance['browse'];
+		$name = $instance['name'];
+		$desc = $instance['desc'];
 		
 		if (is_numeric($album)) {
 			echo $before_widget . $before_title . $title . $after_title;
@@ -57,7 +59,11 @@ class SlideshowWidget extends WP_Widget {
 								$wppa['ss_widget_valign'] = $valign;
 									$wppa['film_on'] = ($film == 'yes');
 										$wppa['browse_on'] = ($browse == 'yes');
+											$wppa['name_on'] = ($name == 'yes');
+												$wppa['desc_on'] = ($desc == 'yes');
 											echo wppa_albums($album, 'slideonly', $width, 'center');
+												$wppa['desc_on'] = false;
+											$wppa['name_on'] = false;
 										$wppa['browse_on'] = false;
 									$wppa['film_on'] = false;
 								$wppa['ss_widget_valign'] = '';
@@ -104,6 +110,8 @@ class SlideshowWidget extends WP_Widget {
 		$instance['timeout'] = $new_instance['timeout'];
 		$instance['film'] = $new_instance['film'];
 		$instance['browse'] = $new_instance['browse'];
+		$instance['name'] = $new_instance['name'];
+		$instance['desc'] = $new_instance['desc'];
 		
         return $instance;
     }
@@ -111,7 +119,7 @@ class SlideshowWidget extends WP_Widget {
     /** @see WP_Widget::form */
     function form($instance) {				
 		//Defaults
-		$instance = wp_parse_args( (array) $instance, array( 'title' => '', 'album' => '', 'width' => get_option('wppa_widget_width', '190'), 'ponly' => 'no', 'linkurl' => '', 'linktitle' => '', 'subtext' => '', 'supertext' => '', 'valign' => 'center', 'timeout' => '4', 'film' => 'no', 'browse' => 'no' ) );
+		$instance = wp_parse_args( (array) $instance, array( 'title' => '', 'album' => '', 'width' => get_option('wppa_widget_width', '190'), 'ponly' => 'no', 'linkurl' => '', 'linktitle' => '', 'subtext' => '', 'supertext' => '', 'valign' => 'center', 'timeout' => '4', 'film' => 'no', 'browse' => 'no', 'name' => 'no', 'desc' => 'no' ) );
 		$title = esc_attr( $instance['title'] );
 		$album = $instance['album'];
 		$width = $instance['width'];
@@ -124,6 +132,8 @@ class SlideshowWidget extends WP_Widget {
 		$timeout = $instance['timeout'];
 		$film = $instance['film'];
 		$browse = $instance['browse'];
+		$name = $instance['name'];
+		$desc = $instance['desc'];
 		
 	?>
 		<p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:', 'wppa'); ?></label> <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $title; ?>" /></p>
@@ -149,6 +159,20 @@ class SlideshowWidget extends WP_Widget {
 		<p><label for="<?php echo $this->get_field_id('timeout'); ?>"><?php _e('Slideshow timeout:', 'wppa'); ?></label> <input class="widefat" style="width:15%;" id="<?php echo $this->get_field_id('timeout'); ?>" name="<?php echo $this->get_field_name('timeout'); ?>" type="text" value="<?php echo $timeout; ?>" />&nbsp;<?php _e('sec.', 'wppa'); ?></p>
 		<p><label for="<?php echo $this->get_field_id('linkurl'); ?>"><?php _e('Link to:', 'wppa'); ?></label> <input class="widefat" id="<?php echo $this->get_field_id('linkurl'); ?>" name="<?php echo $this->get_field_name('linkurl'); ?>" type="text" value="<?php echo $linkurl; ?>" /></p>
 
+		<p>
+			<?php _e('Show name:', 'wppa'); ?>
+			<select id="<?php echo $this->get_field_id('name'); ?>" name="<?php echo $this->get_field_name('name'); ?>">
+				<option value="no" <?php if ($name == 'no') echo 'selected="selected"' ?>><?php _e('no.', 'wppa'); ?></option>
+				<option value="yes" <?php if ($name == 'yes') echo 'selected="selected"' ?>><?php _e('yes.', 'wppa'); ?></option>
+			</select>
+		</p>
+		<p>
+			<?php _e('Show description:', 'wppa'); ?>
+			<select id="<?php echo $this->get_field_id('desc'); ?>" name="<?php echo $this->get_field_name('desc'); ?>">
+				<option value="no" <?php if ($desc == 'no') echo 'selected="selected"' ?>><?php _e('no.', 'wppa'); ?></option>
+				<option value="yes" <?php if ($desc == 'yes') echo 'selected="selected"' ?>><?php _e('yes.', 'wppa'); ?></option>
+			</select>
+		</p>
 		<p>
 			<?php _e('Show filmstrip:', 'wppa'); ?>
 			<select id="<?php echo $this->get_field_id('film'); ?>" name="<?php echo $this->get_field_name('film'); ?>">

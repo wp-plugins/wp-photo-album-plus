@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, multisite, network, lightbox
-Version: 4.0.8
+Version: 4.0.9
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -104,6 +104,23 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 
 
 == Changelog ==
+
+= 4.0.9 =
+
+(Language files not updated)
+
+= New Features =
+
+* Name and description in the sidebar slideshow widget.
+
+= Bug Fixes =
+
+* Removed blue color of comment age.
+* Photo of the day widget defined link stopped working. Fixed.
+
+= Other Changes =
+
+* You can set the wppa+ filter priority value. This may be usefull to prevent conflicts with certain themes and/or plugins.
 
 = 4.0.8 =
 

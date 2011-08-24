@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 * admin sidebar widget
-* version 4.0.2
+* version 4.0.9
 *
 */
 
@@ -31,13 +31,13 @@ function _wppa_sidebar_page_options() {
 		if (isset($_POST['wppa-widget-method'])) update_option('wppa_widget_method', $_POST['wppa-widget-method']);
 		if (isset($_POST['wppa-widget-period'])) update_option('wppa_widget_period', $_POST['wppa-widget-period']);
 		if (isset($_POST['wppa-widget-subtitle'])) update_option('wppa_widget_subtitle', $_POST['wppa-widget-subtitle']);
-		if (isset($_POST['wppa-widget-linkpage'])) {
-			update_option('wppa_widget_linkpage', $_POST['wppa-widget-linkpage']);
-			if ($_POST['wppa-widget-linkpage'] == '-1') {
+		if (isset($_POST['wppa-widget-linkpage'])) update_option('wppa_widget_linkpage', $_POST['wppa-widget-linkpage']);
+		
+	//		if ($_POST['wppa-widget-linkpage'] == '-1') {
 				if (isset($_POST['wppa-widget-linkurl'])) update_option('wppa_widget_linkurl', $_POST['wppa-widget-linkurl']);
 				if (isset($_POST['wppa-widget-linktitle'])) update_option('wppa_widget_linktitle', $_POST['wppa-widget-linktitle']);
-			}
-		}
+	//		}
+	//	}
 		if (isset($_POST['wppa-widget-linktype'])) update_option('wppa_widget_linktype', $_POST['wppa-widget-linktype']);
 		if (!$options_error) wppa_update_message(__('Changes Saved. Don\'t forget to activate the widget!', 'wppa')); 
 	} ?>
