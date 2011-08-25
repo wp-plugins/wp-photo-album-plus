@@ -288,7 +288,7 @@ global $wppa_defaults;
 						'wppa_max_album_newtime'		=> '0',
 						'wppa_load_skin' 				=> '',
 						'wppa_skinfile' 				=> '',
-						'wppa_use_lightbox'				=> 'yes',
+						'wppa_use_lightbox'				=> 'no',
 						'wppa_lightbox_bordersize'		=> '10',
 						'wppa_lightbox_animationspeed'	=> '5',
 						'wppa_lightbox_backgroundcolor' => '#fff',

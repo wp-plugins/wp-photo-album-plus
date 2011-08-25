@@ -51,7 +51,7 @@ You can find the plugin admin section under Menu Photo Albums on the admin scree
 == Installation ==
 
 = Upgrade notice =
-This version is: Major rev# 3, Minor rev# 0, Fix rev# 2, Hotfix rev# 000.
+This version is: Major rev# 4, Minor rev# 0, Fix rev# 9, Hotfix rev# 000.
 If you are upgrading from a previous Major or Minor version, note that:
 * If you modified wppa_theme.php and/or wppa_style.css, you will have to use the newly supplied versions. The previous versions are NOT compatible.
 * If you set the userlevel to anything else than 'administrator' you may have to set it again. Note that changing the userlevel can be done by the administrator only!
@@ -106,8 +106,6 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 = 4.0.9 =
-
-(Language files not updated)
 
 = New Features =
 
@@ -556,6 +554,7 @@ For more information on multilanguage sites, see the documentation of the qTrans
 
 * The Big Browse Buttons are transparent. IE 6 does not know about transparency. Therefor the slidshow will not display properly in IE6 with BBB's enabled.
 * The plugin My Live Signature completely destroys the display from wppa+ and alse damages other filters. DO NOT INSTALL My Live Signature!
+* The theme Moses from Churchthemer.com uses jQuery in unsafe mode. This conflicts with prototype. Therefor you can NOT use WPPA+ embedded lightbox.
 
 == About and Credits ==
 
