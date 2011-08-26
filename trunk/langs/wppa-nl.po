@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: wp-photo-album-plus\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-08-26 15:09+0100\n"
-"PO-Revision-Date: 2011-08-26 15:09+0100\n"
+"PO-Revision-Date: 2011-08-26 16:25+0100\n"
 "Last-Translator: J.N. Breetvelt <OpaJaap@OpaJaap.nl>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -154,9 +154,8 @@ msgid "--- separate ---"
 msgstr "--- afzonderlijk ---"
 
 #: wppa-admin-functions.php:796
-#, fuzzy
 msgid "Unable to update mean rating"
-msgstr "Kan de reactien niet wijzigen, foutcode ="
+msgstr "Kan de gemiddelde waardering niet wijzigen"
 
 #: wppa-admin-functions.php:803
 msgid "No photos or error reading"
@@ -208,9 +207,9 @@ msgid "Warning:"
 msgstr "Waarschuwing:"
 
 #: wppa-album-admin.php:17
-#, fuzzy, php-format
+#, php-format
 msgid "The uploads directory does not exist or is not writable by the server. Please make sure that %s is writeable by the server."
-msgstr "De map waar de foto's in moeten worden ge-upload bestaat niet of kan niet beschreven wordeb door de server. Zorg er voor dat <tt>wp-content/uploads/</tt> beschrijfbaar is door de server."
+msgstr "De map waar de foto's in moeten worden ge-upload bestaat niet of kan niet beschreven worden door de server. Zorg er voor dat %s beschrijfbaar is door de server."
 
 #: wppa-album-admin.php:24
 msgid "New Album"
@@ -433,14 +432,12 @@ msgid "Manage Albums"
 msgstr "Albums Beheren"
 
 #: wppa-album-admin.php:363
-#, fuzzy
 msgid "Are you sure you want to create a new album?"
-msgstr "Weet u zeker dat u dit album wilt verwijderen?"
+msgstr "Weet u zeker dat u een nieuw album wilt aanmaken?"
 
 #: wppa-album-admin.php:366
-#, fuzzy
 msgid "Create New Empty Album"
-msgstr "Nieuw Album Aanmaken"
+msgstr "Nieuw Leeg Album Aanmaken"
 
 #: wppa-album-admin.php:384
 msgid "Description"
@@ -750,7 +747,7 @@ msgstr "Weet u zeker dat u deze reactie wilt verwijderen?"
 #: wppa-comment-admin.php:297
 #: wppa-comment-admin.php:303
 msgid "Unable to update comment. Err ="
-msgstr "Kan de reactien niet wijzigen, foutcode ="
+msgstr "Kan de reactie niet wijzigen, foutcode ="
 
 #: wppa-comment-admin.php:322
 msgid "Prev page"
@@ -3426,14 +3423,12 @@ msgid "Regenerate all thumbnails."
 msgstr "Alle miniatuurafbeeldingen opnieuw maken."
 
 #: wppa-settings.php:1665
-#, fuzzy
 msgid "Rerate"
-msgstr "Regenereer"
+msgstr "Herwaardeer"
 
 #: wppa-settings.php:1666
-#, fuzzy
 msgid "Recalculate ratings."
-msgstr "Verwijder alle waarderingen."
+msgstr "Herbereken alle waarderingen."
 
 #: wppa-settings.php:1667
 msgid "This function will recalculate all mean photo ratings from the ratings table."
