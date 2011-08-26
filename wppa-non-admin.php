@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the non admin stuff
-* Version 4.0.9
+* Version 4.0.10
 *
 */
 
@@ -75,7 +75,8 @@ global $wppa_opt;
 		echo "\n<!-- Start WPPA+ inserted lightbox -->\n";
 	//	echo "\n".'<script type="text/javascript" src="'.WPPA_URL.'/lightbox/js/prototype.js"></script>';
 	//	echo "\n".'<script type="text/javascript" src="'.WPPA_URL.'/lightbox/js/scriptaculous.js?load=effects,builder"></script>';
-		echo "\n".'<script type="text/javascript"><!--//--><![CDATA[//><!--';
+		echo "\n".'<script type="text/javascript">';
+		echo "\n".'/* <![CDATA[ */';
 			echo "\n".'LightboxOptions = Object.extend({';
 			echo "\n"."fileLoadingImage:        'wp-content/plugins/wp-photo-album-plus/lightbox/images/loading.gif',   ";  
 			echo "\n"."fileBottomNavCloseImage: 'wp-content/plugins/wp-photo-album-plus/lightbox/images/cross.png',"; //closelabel.gif',";
@@ -92,7 +93,8 @@ global $wppa_opt;
 			echo "\n".'labelImage: "'.__a('Image', 'wppa_theme').'",';
 			echo "\n".'labelOf: "'.__a('of', 'wppa_theme').'"';
 			echo "\n".'}, window.LightboxOptions || {});';
-		echo "\n".'//--><!]]></script>';
+		echo "\n".'/* ]]> */';
+		echo "\n".'</script>';
 		echo "\n".'<script type="text/javascript" src="'.WPPA_URL.'/lightbox/js/lightbox.js"></script>';
 		echo "\n".'<style type="text/css" media="screen">';
 			echo "\n".'#lightbox{	position: absolute;	left: 0; width: 100%; z-index: 100; text-align: center; line-height: 0;}';
@@ -130,7 +132,8 @@ global $wppa_opt;
 
 	echo("\n<!-- WPPA+ Runtime parameters -->\n");
 	
-	echo('<script type="text/javascript"><!--//--><![CDATA[//><!--'."\n");
+	echo('<script type="text/javascript">'."\n");
+	echo('/* <![CDATA[ */'."\n");
 	
 		/* This goes into wppa_theme.js */ 
 		echo("\t".'wppaBackgroundColorImage = "'.$wppa_opt['wppa_bgcolor_img'].'";'."\n");
@@ -167,7 +170,8 @@ global $wppa_opt;
 		echo("\t".'wppaPleaseEmail = "'.__a('Please enter a valid email address', 'wppa_theme').'";'."\n");
 		echo("\t".'wppaPleaseComment = "'.__a('Please enter a comment', 'wppa_theme').'";'."\n");
 
-	echo("//--><!]]></script>\n");
+	echo("/* ]]> */\n");
+	echo("</script>\n");
 	
 	$wppa['rendering_enabled'] = true;
 	echo("\n<!-- WPPA+ Rendering enabled -->\n");

@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 * gp admin functions
-* version 4.0.7
+* version 4.0.10
 *
 * 
 */
@@ -271,9 +271,9 @@ function wppa_order_options($order, $nil, $rat = '') {
 }
 
 // display usefull message
-function wppa_update_message($msg) {
+function wppa_update_message($msg, $fixed = false) {
 ?>
-    <div id="message" class="updated fade"><p><strong><?php echo($msg); ?></strong></p></div>
+    <div id="message" class="updated fade" <?php if ($fixed) echo 'style="position: fixed;"' ?>><p><strong><?php echo($msg); ?></strong></p></div>
 <?php
 }
 
@@ -777,6 +777,33 @@ function wppa_album_select($exc = '', $sel = '', $addnone = FALSE, $addseparate 
 	return $result;
 }
 
+function wppa_recalculate_ratings() {
+global $wpdb;
+
+	$photos = $wpdb->get_results('SELECT id FROM '.WPPA_PHOTOS, 'ARRAY_A');
+	if ($photos) {
+		foreach ($photos as $photo) {
+			$ratings = $wpdb->get_results('SELECT value FROM '.WPPA_RATING.' WHERE photo='.$photo['id'], 'ARRAY_A');
+			$the_value = '0';
+			$the_count = '0';
+			foreach ($ratings as $rating) {
+				$the_value += $rating['value'];
+				$the_count++;
+			}
+			if ($the_count) $the_value /= $the_count;
+			$iret = $wpdb->query('UPDATE '.WPPA_PHOTOS.' SET mean_rating = '.$the_value.' WHERE id = '.$photo['id']);
+			if ($iret === false) {
+				wppa_error_message(__('Unable to update mean rating', 'wppa'));
+				return false;
+			}
+		}
+		return true;
+	}
+	else {
+		wppa_error_message(__('No photos or error reading', 'wppa').WPPA_PHOTOS);
+		return false;
+	}
+}
 
 
 

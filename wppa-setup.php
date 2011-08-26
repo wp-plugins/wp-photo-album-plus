@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 4.0.9
+* Version 4.0.10
 *
 */
 
@@ -73,6 +73,9 @@ function wppa_setup($force = false) {
 					
 	require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 
+//	if ($force) $iret = $wpdb->query("DROP TABLE ".WPPA_PHOTOS);
+//	echo 'iret = '.$iret;
+	
 	dbDelta( $create_albums );
 	dbDelta( $create_photos );
 	dbDelta( $create_rating );
@@ -273,6 +276,7 @@ global $wppa_defaults;
 						'wppa_restore' 				=> '',
 						'wppa_defaults' 			=> '',
 						'wppa_regen' 				=> '',
+						'wppa_rerate'				=> '',
 						'wppa_allow_debug' 			=> 'no',
 						'wppa_potd_align' 			=> 'center',
 						'wppa_comadmin_show' 		=> 'all',

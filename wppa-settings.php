@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 4.0.9
+* Version 4.0.10
 *
 */
 
@@ -105,6 +105,10 @@ global $options_error;
 
 				case 'wppa_regen':
 					$old_minisize--; // fake thumbnail size change
+					break;
+					
+				case 'wppa_rerate':
+					if (!wppa_recalculate_ratings()) $options_error = true;
 					break;
 					
 			}
@@ -1658,6 +1662,14 @@ global $wppa_api_version;
 					$html = wppa_radio('wppa_action', $slug);
 					wppa_setting_2('', $slug, '7', $name, $desc, '', $html, $help);
 
+					$name = __('Rerate', 'wppa');
+					$desc = __('Recalculate ratings.', 'wppa');
+					$help = esc_js(__('This function will recalculate all mean photo ratings from the ratings table.', 'wppa'));
+					$help .= '\n'.esc_js(__('You may need this function after the re-import of previously exported photos', 'wppa'));
+					$slug = 'wppa_rerate';
+					$html = wppa_radio('wppa_action', $slug);
+					wppa_setting_2('', $slug, '8', $name, $desc, '', $html, $help);
+
 					$wppa['no_default'] = false;
 
 					?>
@@ -1784,7 +1796,7 @@ global $wppa_api_version;
 					while ( $i < '8' ) {
 						$name = $names[$indexes[$i]];
 						$desc = $descs[$indexes[$i]];
-						$html = $i == '0' ? '' : wppa_button(__('Move Up'), 'wppa_move_up('.$i.')' );
+						$html = $i == '0' ? '' : wppa_button(__('Move Up', 'wppa'), 'wppa_move_up('.$i.')' );
 						$help = '';
 						wppa_setting($slug, '6.'.$indexes[$i] , $name, $desc, $html, $help);
 						$i++;
