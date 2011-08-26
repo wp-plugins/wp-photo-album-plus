@@ -3,13 +3,13 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions and API modules
-* Version 4.0.9
+* Version 4.0.10
 *
 *
 */
 /* Moved to wppa-commonfunctions.php:
 global $wppa_api_version;
-$wppa_api_version = '4-0-9-000';
+$wppa_api_version = '4-0-10-000';
 */
 
 
@@ -1752,7 +1752,8 @@ global $wppa_microtime_cum;
 		$wppa_alt = 'alt';
 
 		// Javascript occurrence dependant stuff
-		$wppa['out'] .= wppa_nltab('+').'<script type="text/javascript"><!--//--><![CDATA[//><!--';
+		$wppa['out'] .= wppa_nltab().'<script type="text/javascript">';
+			$wppa['out'] .= wppa_nltab('+').'/* <![CDATA[ */';
 			// $wppa['auto_colwidth'] is set by the filter or by wppa_albums in case called directly
 			// $wppa_opt['wppa_colwidth'] is the option setting
 			// script or call has precedence over option setting
@@ -1779,7 +1780,8 @@ global $wppa_microtime_cum;
 			$wppa['out'] .= wppa_nltab().'wppaFilmStripAreaDelta['.$wppa['master_occur'].'] = '.$temp.';';
 			if ($wppa['in_widget']) $wppa['out'] .= wppa_nltab().'wppaIsMini['.$wppa['master_occur'].'] = true;';
 			else $wppa['out'] .= wppa_nltab().'wppaIsMini['.$wppa['master_occur'].'] = false;';
-		$wppa['out'] .= wppa_nltab('-').'//--><!]]></script>';
+		$wppa['out'] .= wppa_nltab('-').'/* ]]> */';
+		$wppa['out'] .= wppa_nltab().'</script>';
 		
 	}
 	elseif ($action == 'close')	{
@@ -2233,9 +2235,11 @@ global $wppa_opt;
 				$wppa['out'] .= wppa_nltab('+').'<div onclick="'.$link['url'].'" class="thumb-img" id="x-'.$thumb['id'].'-'.$wppa['master_occur'].'">';
 					$wppa['out'] .= wppa_nltab().'<img id="i-'.$thumb['id'].'-'.$wppa['master_occur'].'" src="'.$url.'" alt="'.$thumbname.'" title="'.esc_attr($title).'" width="'.$imgwidth.'" height="'.$imgheight.'" style="'.$imgstyle.'" '.$events.' />';
 				$wppa['out'] .= wppa_nltab('-').'</div>';
-				$wppa['out'] .= wppa_nltab('+').'<script type="text/javascript"><!--//--><![CDATA[//><!--';
+				$wppa['out'] .= wppa_nltab('+').'<script type="text/javascript">';
+				$wppa['out'] .= wppa_nltab().'/* <![CDATA[ */';
 				$wppa['out'] .= wppa_nltab().'wppaPopupOnclick['.$thumb['id'].'] = "'.$link['url'].'";';
-				$wppa['out'] .= wppa_nltab('-').'//--><!]]></script>'; /***/
+				$wppa['out'] .= wppa_nltab('-').'/* ]]> */';
+				$wppa['out'] .= wppa_nltab().'</script>';
 			}
 		}
 		else {	// no link
@@ -2301,11 +2305,13 @@ global $wppa_opt;
 			$wppa['out'] .= wppa_nltab().'<a href="'.get_permalink().'"><img src="'.wppa_get_image_url_by_id($wppa['single_photo']).'" style="'.$style.'" width="'.$width.'" height="'.$height.'" /></a>';
 			return;
 		} else {
-			$wppa['out'] .= wppa_nltab().'<script type="text/javascript"><!--//--><![CDATA[//><!--';
+			$wppa['out'] .= wppa_nltab().'<script type="text/javascript">';
+			$wppa['out'] .= wppa_nltab('+').'/* <![CDATA[ */';
 			$wppa['out'] .= wppa_nltab().'wppaStoreSlideInfo('.wppa_get_slide_info(0, $wppa['single_photo']).');';
 			$wppa['out'] .= wppa_nltab().'wppaFullValignFit['.$wppa['master_occur'].'] = true;';
 			$wppa['out'] .= wppa_nltab().'wppaStartStop('.$wppa['master_occur'].', 0);';
-			$wppa['out'] .= wppa_nltab().'//--><!]]></script>';
+			$wppa['out'] .= wppa_nltab('-').'/* ]]> */';
+			$wppa['out'] .= wppa_nltab().'</script>';
 		}
 	}
 	elseif ($type == 'slideshow') {
@@ -2323,15 +2329,18 @@ global $wppa_opt;
 		else $alb = '';	// Album id is in $wppa['start_album']
 		$thumbs = wppa_get_thumbs($alb);
 		foreach ($thumbs as $tt) : $id = $tt['id'];
-			$wppa['out'] .= wppa_nltab('+').'<script type="text/javascript"><!--//--><![CDATA[//><!--';
+			$wppa['out'] .= wppa_nltab('+').'<script type="text/javascript">';
+			$wppa['out'] .= wppa_nltab().'/* <![CDATA[ */';
 			$wppa['out'] .= wppa_nltab().'wppaStoreSlideInfo(' . wppa_get_slide_info($index, $id) . ');';
-			$wppa['out'] .= wppa_nltab('-').'//--><!]]></script>';
+			$wppa['out'] .= wppa_nltab('-').'/* ]]> */';
+			$wppa['out'] .= wppa_nltab().'</script>';
 			if ($startid == -2) $startid = $id;
 			if ($startid == $id) $startindex = $index;
 			$index++;
 		endforeach;
 		
-		$wppa['out'] .= wppa_nltab('+').'<script type="text/javascript"><!--//--><![CDATA[//><!--';
+		$wppa['out'] .= wppa_nltab('+').'<script type="text/javascript">';
+			$wppa['out'] .= '/* <![CDATA[ */';
 		
 			if ($wppa['is_slideonly']) $startindex = -1;	// Start running, overrules everything
 			if ($wppa['ss_widget_valign'] != '' && $wppa['ss_widget_valign'] != 'fit') {
@@ -2345,7 +2354,8 @@ global $wppa_opt;
 			}
 			$wppa['out'] .= wppa_nltab().'wppaStartStop('.$wppa['master_occur'].', '.$startindex.');';
 		
-		$wppa['out'] .= wppa_nltab('-').'//--><!]]></script>';
+		$wppa['out'] .= wppa_nltab('-').'/* ]]> */';
+		$wppa['out'] .= wppa_nltab().'</script>';
 
 	}
 	else {

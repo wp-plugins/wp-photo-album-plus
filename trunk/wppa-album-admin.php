@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * create, edit and delete albums
-* version 4.0.7
+* version 4.0.10
 *
 */
 
@@ -13,15 +13,32 @@ function _wppa_admin() {
 
 	
 	// warn if the uploads directory is no writable
-	if (!is_writable(ABSPATH.'wp-content/uploads')) { 
-		wppa_error_message(__('Warning:', 'wppa') . __('The uploads directory does not exist or is not writable by the server. Please make sure that <tt>wp-content/uploads/</tt> is writeable by the server.', 'wppa'));
+	if (!is_writable(WPPA_UPLOAD_PATH)) { 
+		wppa_error_message(__('Warning:', 'wppa') . sprintf(__('The uploads directory does not exist or is not writable by the server. Please make sure that %s is writeable by the server.', 'wppa'), WPPA_UPLOAD_PATH));
 	}
 
 	if (isset($_GET['tab'])) {		
 		// album edit page
 		if ($_GET['tab'] == 'edit'){
+			if ($_GET['edit_id'] == 'new') {
+				$name = __('New Album', 'wppa');
+				$query = $wpdb->prepare('INSERT INTO `' . WPPA_ALBUMS . '` (`id`, `name`, `description`, `a_order`, `a_parent`, `p_order_by`, `main_photo`, `cover_linkpage`, `owner`, `timestamp`) VALUES (0, %s, %s, %s, %s, %s, %s, %s, %s, %s)', $name, '', '', '0', '', '0', '0', wppa_get_user(), time());
+				$iret = $wpdb->query($query);
+				if ($iret === FALSE) {
+					wppa_error_message(__('Could not create album.', 'wppa').'<br/>Query = '.$query);
+					wp_die('Sorry, cannot continue');
+				}
+				else {
+					$edit_id = $wpdb->get_var("SELECT LAST_INSERT_ID()");
+					wppa_set_last_album($edit_id);
+					wppa_update_message(__('Album #', 'wppa') . ' ' . $edit_id . ' ' . __('Added.', 'wppa'));
+				}
+			}
+			else {
+				$edit_id = $_GET['edit_id'];
+			}
 		
-			if (!wppa_have_access($_GET['edit_id'])) wp_die('You do not have the rights to edit this album.');
+			if (!wppa_have_access($edit_id)) wp_die('You do not have the rights to edit this album.');
 		
 			// updates the details
 			if (isset($_POST['wppa-ea-submit'])) {
@@ -86,12 +103,12 @@ function _wppa_admin() {
 			}
 			
 			// Get the album information
-			$albuminfo = $wpdb->get_row($wpdb->prepare('SELECT * FROM `'.WPPA_ALBUMS.'` WHERE `id` = %s', $_GET['edit_id']), 'ARRAY_A'); ?>	
+			$albuminfo = $wpdb->get_row($wpdb->prepare('SELECT * FROM `'.WPPA_ALBUMS.'` WHERE `id` = %s', $edit_id), 'ARRAY_A'); ?>	
 			
 			<div class="wrap">
 				<h2><?php _e('Edit Album Information', 'wppa'); ?></h2>
-				<p><?php _e('Album number:', 'wppa'); echo(' ' . $_GET['edit_id'] . '.'); ?></p>
-				<?php $url = wppa_dbg_url(get_admin_url().'admin.php?page=wppa_admin_menu&amp;tab=edit&amp;edit_id='.$_GET['edit_id']); ?>
+				<p><?php _e('Album number:', 'wppa'); echo(' ' . $edit_id . '.'); ?></p>
+				<?php $url = wppa_dbg_url(get_admin_url().'admin.php?page=wppa_admin_menu&amp;tab=edit&amp;edit_id='.$edit_id); ?>
 				<form action="<?php echo($url) ?>" method="post">
 				<?php wppa_nonce_field('$wppa_nonce', WPPA_NONCE); ?>
 
@@ -275,7 +292,7 @@ function _wppa_admin() {
 					
 					<p><input type="submit" class="button-primary" name="wppa-ea-submit" value="<?php _e('Save All Changes', 'wppa'); ?>" /></p>
 
-					<?php wppa_album_photos($_GET['edit_id']) ?>
+					<?php wppa_album_photos($edit_id) ?>
 			
 			
 				</form>
@@ -341,127 +358,12 @@ function _wppa_admin() {
 
 			<h2><?php _e('Manage Albums', 'wppa'); ?></h2>
 			<?php wppa_admin_albums() ?>
+
+			<?php $url = wppa_dbg_url(get_admin_url().'admin.php?page=wppa_admin_menu&amp;tab=edit&amp;edit_id=new'); ?>
+			<?php $vfy = __('Are you sure you want to create a new album?', 'wppa') ?>
 			
-			<?php $iconurl = WPPA_URL.'/images/albumnew32.png'; ?>
-			<div id="icon-albumnew" class="icon32" style="background: transparent url(<?php echo($iconurl); ?>) no-repeat">
-				<br />
-			</div>
-
-			<h2><?php _e('Create New Album', 'wppa'); ?></h2>
-			<form action="<?php echo(wppa_dbg_url(get_admin_url().'admin.php?page=wppa_admin_menu')) ?>" method="post">
-			<?php wppa_nonce_field('$wppa_nonce', WPPA_NONCE) ?>
-				<table class="form-table albumtable">
-					<tbody>
-					<?php if (!wppa_qtrans_enabled()) { ?>
-						<tr valign="top">
-							<th scope="row">
-								<label ><?php _e('Name:', 'wppa'); ?></label>
-							</th>
-							<td>
-								<input type="text" name="wppa-name" id="wppa-name" style="width: 50%;" />
-								<span class="description"><br/><?php _e('Type the name of the new album. Do not leave this empty.', 'wppa'); ?></span>
-							</td>
-						</tr>
-						<?php }
-					else {
-						$first = true;
-						$last = count($q_config['enabled_languages']) - 1;
-						$idx = 0;
-						foreach ($q_config['enabled_languages'] as $lcode) {
-							$lname = $q_config['language_name'][$lcode];
-?>		
-							<tr valign="top">
-								<th scope="row">
-									<label ><?php if ($first) _e('Name:', 'wppa'); $first = false; ?></label>
-								</th>
-								<td>
-									<b><?php echo($lname) ?></b><br/>
-									<input type="text" name="wppa-name-<?php echo($lcode) ?>" id="wppa-name-<?php echo($lcode) ?>" style="width: 50%;" />
-									<?php if ($idx == $last) { ?>
-										<span class="description"><br/><?php _e('Type the name of the new album. Do not leave this empty.', 'wppa'); ?></span>
-									<?php } ?>
-								</td>
-							</tr>	
-<?php		
-							$idx++;
-						} ?>
-<?php
-					} ?>
-
-					<?php if (!wppa_qtrans_enabled()) { ?>
-						<tr valign="top">
-							<th scope="row">
-								<label ><?php _e('Description:', 'wppa'); ?></label>
-							</th>
-							<td>
-								<textarea style="width: 80%; height: 80px;" name="wppa-desc" id="wppa-desc"></textarea>
-								<span class="description"><br/><?php _e('Enter the description for this album.', 'wppa'); ?></span>
-							</td>
-						</tr>
-<?php 				}
-					else {
-						$first = true;
-						$last = count($q_config['enabled_languages']) - 1;
-						$idx = 0;
-						foreach ($q_config['enabled_languages'] as $lcode) {
-							$lname = $q_config['language_name'][$lcode];
-?>		
-							<tr valign="top">
-								<th scope="row">
-									<label ><?php if ($first) _e('Description:', 'wppa'); $first = false; ?></label>
-								</th>
-								<td>
-									<b><?php echo($lname) ?></b><br/>
-									<textarea style="width: 80%; height: 80px;" name="wppa-desc-<?php echo($lcode) ?>" id="wppa-desc-<?php echo($lcode) ?>"></textarea>
-									<?php if ($idx == $last) { ?>
-										<span class="description"><br/><?php _e('Enter the description for this album.', 'wppa'); ?></span>
-									<?php } ?>
-								</td>
-							</tr>
-<?php		
-							$idx++;
-						} ?>
-<?php
-					} ?>	
-					
-						<tr valign="top">
-							<th scope="row">
-								<label ><?php _e('Order #:', 'wppa'); ?></label>
-							</th>
-							<td>
-								<input type="text" name="wppa-order" id="wppa-order" style="width: 50px;"/>
-								<span class="description"><br/><?php _e('If you want to sort the albums by order #, enter the order number here.', 'wppa'); ?></span>
-							</td>
-						</tr>
-						<tr valign="top">
-							<th scope="row">
-								<label ><?php _e('Parent album:', 'wppa'); ?></label>
-							</th>
-							<td>
-								<select name="wppa-parent"><?php echo(wppa_album_select('', '', TRUE, TRUE)) ?></select>
-								<span class="description"><br/><?php _e('If this is a sub album, select the album in which this album will appear.', 'wppa'); ?></span>
-							</td>
-						</tr>
-						<tr valign="top">
-							<th scope="row">
-								<label ><?php _e('Order photos by:', 'wppa'); ?></label>
-							</th>
-							<td>
-								<select name="wppa-photo-order-by"><?php wppa_order_options('0', __('--- default ---', 'wppa'), __('Rating', 'wppa')) ?></select>
-								<span class="description"><br/><?php _e('If you want to sort the photos in this album different from the system setting, select the order method here.', 'wppa'); ?></span>
-							</td>
-						</tr>
-						<tr valign="top">
-							<th scope="row">
-								<input type="submit" class="button-primary" name="wppa-na-submit" value="<?php _e('Create Album!', 'wppa'); ?>" />
-							</th>
-							<td>
-								<span class="description"><?php _e('You can change all these settings later by clicking the "Edit" link in the table above.', 'wppa'); ?></span>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-			</form>	
+			<br />
+			<input type="button" class="button-primary" onclick="if (confirm('<?php echo $vfy ?>')) document.location='<?php echo $url ?>';" value="<?php _e('Create New Empty Album', 'wppa') ?>" />
 		</div>
 <?php	
 	}
