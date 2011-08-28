@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: WP Photo Album Plus in italiano\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-08-26 15:07+0100\n"
-"PO-Revision-Date: 2011-08-26 15:07+0100\n"
-"Last-Translator: J.N. Breetvelt <OpaJaap@OpaJaap.nl>\n"
+"PO-Revision-Date: 2011-08-26 23:46+0100\n"
+"Last-Translator: Gianni Diurno (aka gidibao) <gidibao[at]gmail[dot]com>\n"
 "Language-Team: Gianni Diurno | gidibao.net & charmingpress.com\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -176,13 +176,12 @@ msgid "--- separate ---"
 msgstr "--- separato ---"
 
 #: wppa-admin-functions.php:796
-#, fuzzy
 msgid "Unable to update mean rating"
-msgstr "Impossibile aggiornare il commento. Err ="
+msgstr "Impossibile aggiornare il voto medio"
 
 #: wppa-admin-functions.php:803
 msgid "No photos or error reading"
-msgstr ""
+msgstr "Nessuna foto o errore lettura"
 
 #: wppa-admin.php:34
 msgid "Photo&thinsp;Albums"
@@ -232,9 +231,9 @@ msgid "Warning:"
 msgstr "Attenzione"
 
 #: wppa-album-admin.php:17
-#, fuzzy, php-format
+#, php-format
 msgid "The uploads directory does not exist or is not writable by the server. Please make sure that %s is writeable by the server."
-msgstr "La cartella per gli uploads non esiste oppure non è scrivibile. Assicurati che la cartella <tt>wp-content/uploads/</tt> sia scrivibile."
+msgstr "La cartella per gli uploads non esiste oppure non è scrivibile. Assicurati che la cartella %s sia scrivibile."
 
 #: wppa-album-admin.php:24
 #: wppa-settings.php:1816
@@ -463,14 +462,12 @@ msgid "Manage Albums"
 msgstr "Gestione album"
 
 #: wppa-album-admin.php:363
-#, fuzzy
 msgid "Are you sure you want to create a new album?"
-msgstr "Sei certo di volere cancellare questo album?"
+msgstr "Sei certo di volere creare un nuovo album?"
 
 #: wppa-album-admin.php:366
-#, fuzzy
 msgid "Create New Empty Album"
-msgstr "Crea un nuovo album"
+msgstr "Crea un nuovo album vuoto"
 
 #: wppa-album-admin.php:384
 #: wppa-settings.php:418
@@ -3499,22 +3496,20 @@ msgid "Regenerate all thumbnails."
 msgstr "Rigenera tutte le miniature."
 
 #: wppa-settings.php:1665
-#, fuzzy
 msgid "Rerate"
-msgstr "Rigenera"
+msgstr "Rivota"
 
 #: wppa-settings.php:1666
-#, fuzzy
 msgid "Recalculate ratings."
-msgstr "Azzera tutte le valutazioni."
+msgstr "Ricalcola le valutazioni."
 
 #: wppa-settings.php:1667
 msgid "This function will recalculate all mean photo ratings from the ratings table."
-msgstr ""
+msgstr "Questa funzione ricalcolerà dalla tabella delle valutazioni tutti i voti medi per le foto."
 
 #: wppa-settings.php:1668
 msgid "You may need this function after the re-import of previously exported photos"
-msgstr ""
+msgstr "Funzione utile dopo la re-importazione delle foto esportate in precedenza"
 
 #: wppa-settings.php:1690
 msgid "Table IX:"
