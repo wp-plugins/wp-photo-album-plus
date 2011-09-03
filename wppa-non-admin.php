@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the non admin stuff
-* Version 4.0.10
+* Version 4.0.11
 *
 */
 
@@ -78,8 +78,8 @@ global $wppa_opt;
 		echo "\n".'<script type="text/javascript">';
 		echo "\n".'/* <![CDATA[ */';
 			echo "\n".'LightboxOptions = Object.extend({';
-			echo "\n"."fileLoadingImage:        'wp-content/plugins/wp-photo-album-plus/lightbox/images/loading.gif',   ";  
-			echo "\n"."fileBottomNavCloseImage: 'wp-content/plugins/wp-photo-album-plus/lightbox/images/cross.png',"; //closelabel.gif',";
+			echo "\n"."fileLoadingImage:        '".WPPA_URL."/lightbox/images/loading.gif',   ";  
+			echo "\n"."fileBottomNavCloseImage: '".WPPA_URL."/lightbox/images/cross.png',"; //closelabel.gif',";
 
 			echo "\n".'overlayOpacity: '.$opac.',   // controls transparency of shadow overlay';
 

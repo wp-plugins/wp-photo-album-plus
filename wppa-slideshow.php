@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the slideshow high level functions
-* Version 4.0.9
+* Version 4.0.11
 *
 */
 
@@ -147,6 +147,19 @@ global $wppa_opt;
 
 // Custom box			// Reserved for future use
 function wppa_slide_custom($opt = '') {
+global $wppa;
+global $wppa_opt;
+
+	if ($opt == 'optional' && !$wppa_opt['wppa_custom_on']) return;
+	if ($wppa['is_slideonly'] == '1') return;	/* Not when slideonly */
+	if (is_feed()) {
+//		wppa_dummy_bar(_ _a('- - - Custom enabled - - -', 'wppa_theme'));
+		return;
+	}
+	
+	$wppa['out'] .= wppa_nltab('+').'<div id="wppa-custom-'.$wppa['master_occur'].'" class="wppa-box wppa-custom" style="'.__wcs('wppa-box').__wcs('wppa-custom').'">';
+		$wppa['out'] .= wppa_nltab().stripslashes($wppa_opt['wppa_custom_content']);
+	$wppa['out'] .= wppa_nltab('-').'</div>';
 }
 
 

@@ -2,7 +2,7 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 4.0.10
+* version 4.0.11
 *
 */
 global $wppa_api_version;
@@ -61,7 +61,9 @@ global $blog_id;
 			'comment_user' => '',
 			'comment_email' => '',
 			'comment_text' => '',
-			'no_default' => false
+			'no_default' => false,
+			'in_widget_frame_height' 	=> ''
+
 		);
 		if (isset($_POST['wppa-searchstring'])) $wppa['src'] = true;
 		if (isset($_GET['wppa_src'])) $wppa['src'] = true;
@@ -102,12 +104,14 @@ global $blog_id;
 			'wppa_bgcolor_img' => '',
 			'wppa_bgcolor_namedesc' => '',
 			'wppa_bgcolor_com' => '',
+			'wppa_bgcolor_cus' => '',
 			'wppa_bcolor_even' => '',
 			'wppa_bcolor_alt' => '',
 			'wppa_bcolor_nav' => '',
 			'wppa_bcolor_img' => '',
 			'wppa_bcolor_namedesc' => '',
 			'wppa_bcolor_com' => '',
+			'wppa_bcolor_cus' => '',
 			'wppa_bwidth' => '',
 			'wppa_bradius' => '',
 			'wppa_fontfamily_thumb' => '',
@@ -217,7 +221,9 @@ global $blog_id;
 			'wppa_fontfamily_lightbox' => '',
 			'wppa_fontsize_lightbox' => '',
 			'wppa_fontcolor_lightbox' => '',
-			'wppa_filter_priority' => ''
+			'wppa_filter_priority' => '',
+			'wppa_custom_on' => '',
+			'wppa_custom_content' => ''
 
 		);
 		array_walk($wppa_opt, 'wppa_set_options');
@@ -348,7 +354,7 @@ global $wppa;
 }
 
 // get photo order
-function wppa_get_photo_order($id) {
+function wppa_get_photo_order($id, $no_random = false) {
 global $wpdb;
 global $wppa;
     
@@ -364,7 +370,8 @@ global $wppa;
         $result = 'ORDER BY name';
         break;
     case '3':
-        $result = 'ORDER BY RAND('.$wppa['randseed'].')';
+		if ($no_random) $result = 'ORDER BY name';
+        else $result = 'ORDER BY RAND('.$wppa['randseed'].')';
         break;
 	case '4':
 		$result = 'ORDER BY mean_rating';
@@ -601,4 +608,17 @@ function wppa_get_time_since($oldtime) {
 		if ($diff == 1) return __a('1 year', 'wppa_theme');
 		else return $diff.' '.__a('years', 'wppa_theme');
 	}
+}
+
+function wppa_nextkey($table) {
+// Creating a keyvalue of an auto increment primary key incidently returns the value of MAXINT
+// and thereby making it impossible to add a next record.
+// This routine will find a free keyvalue larger than any key used, ignoring the fact that the MAXINT key may be used.
+global $wpdb;
+
+	$result = '1';		// Assume empty table
+	$lastkey = $wpdb->get_var("SELECT id FROM ".$table." WHERE id < '9223372036854775806' ORDER BY id DESC LIMIT 1");
+	wppa_dbg_msg('Laskey in '.$table.' = '.$lastkey);
+	if ($lastkey) $result = $lastkey + '1';
+	return $result;
 }

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 4.0.10
+* Version 4.0.11
 *
 */
 
@@ -178,12 +178,14 @@ global $wppa_defaults;
 						'wppa_bgcolor_img'			=> '#eeeeee',
 						'wppa_bgcolor_namedesc' 	=> '#dddddd',
 						'wppa_bgcolor_com' 			=> '#dddddd',
+						'wppa_bgcolor_cus'			=> '#dddddd',
 						'wppa_bcolor_even' 			=> '#cccccc',
 						'wppa_bcolor_alt' 			=> '#bbbbbb',
 						'wppa_bcolor_nav' 			=> '#bbbbbb',
 						'wppa_bcolor_img'			=> '',
 						'wppa_bcolor_namedesc' 		=> '#bbbbbb',
 						'wppa_bcolor_com' 			=> '#bbbbbb',
+						'wppa_bcolor_cus'			=> '#bbbbbb',
 						'wppa_bwidth' 				=> '1',
 						'wppa_bradius' 				=> '6',
 						'wppa_fontfamily_thumb' 	=> '',
@@ -303,11 +305,16 @@ global $wppa_defaults;
 						'wppa_fontfamily_lightbox'		=> 'Verdana, Helvetica, sans-serif',
 						'wppa_fontsize_lightbox'		=> '10',
 						'wppa_fontcolor_lightbox'		=> '#666',
-						'wppa_filter_priority'			=> '10'
+						'wppa_filter_priority'			=> '10',
+						'wppa_widget_width'				=> '200',
+						'wppa_custom_on' 				=> 'no',
+						'wppa_custom_content' 			=> '<div style="color:red; font-size:24px; font-weight:bold; text-align:center;">Hello world!</div>'
+
 
 						);
 	
 	array_walk($wppa_defaults, 'wppa_set_default', $force);
+
 	return true;
 }
 function wppa_set_default($value, $key, $force) {

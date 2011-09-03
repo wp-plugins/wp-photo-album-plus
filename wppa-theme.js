@@ -1,5 +1,5 @@
 // Theme variables and functions
-// This is wppa-theme.js version 4.0.8
+// This is wppa-theme.js version 4.0.11
 //
 
 var wppaBackgroundColorImage = '';
@@ -72,9 +72,9 @@ function wppa_popready(mocc) {
 	jQuery("#wppa-desc-"+mocc).show();
 	jQuery("#wppa-rat-"+mocc).show();
 }
-function wppa_popdown(mocc) {	//	return; //debug
+function wppa_popdown(mocc) {		return; //debug
 	jQuery('#wppa-popup-'+mocc).html("");
-	wppa_saved_id[mocc] = -1;
+//	wppa_saved_id[mocc] = -1; // IE9 link from popup doesnt work, click to popdown, click on thumbnail to link
 }
 
 // Popup of fullsize image

@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions and API modules
-* Version 4.0.10
+* Version 4.0.11
 *
 *
 */
@@ -920,7 +920,8 @@ global $wppa_done;
 			}
 		}
 		else if ($wppa_opt['wppa_rating_multi']) {	// Add another vote from me
-			$query = $wpdb->prepare('INSERT INTO `'.WPPA_RATING. '` (`id`, `photo`, `value`, `user`) VALUES (0, %s, %s, %s)', $id, $rating, $user);
+			$key = wppa_nextkey(WPPA_RATING);
+			$query = $wpdb->prepare('INSERT INTO `'.WPPA_RATING. '` (`id`, `photo`, `value`, `user`) VALUES (%s, %s, %s, %s)', $key, $id, $rating, $user);
 			$iret = $wpdb->query($query);
 			if (!$iret) {
 				wppa_dbg_msg('Unable to add a rating. Query = '.$query, 'red');
@@ -946,7 +947,8 @@ global $wppa_done;
 		}
 	}
 	else {	// This is the first and only rating for this photo/user combi
-		$iret = $wpdb->query($wpdb->prepare('INSERT INTO `'.WPPA_RATING. '` (`id`, `photo`, `value`, `user`) VALUES (0, %s, %s, %s)', $id, $rating, $user));
+		$key = wppa_nextkey(WPPA_RATING);
+		$iret = $wpdb->query($wpdb->prepare('INSERT INTO `'.WPPA_RATING. '` (`id`, `photo`, `value`, `user`) VALUES (%s, %s, %s, %s)', $key, $id, $rating, $user));
 		if (!$iret) {
 			wppa_dbg_msg('Unable to save rating.', 'red');
 		}
@@ -1004,9 +1006,10 @@ if ($iret) {
 if ($wppa['debug']) echo('<script type="text/javascript">alert("Duplicate comment ignored")</script>');
 return;
 }
-			$query = $wpdb->prepare('INSERT INTO `'.WPPA_COMMENTS.'` (`id`, `timestamp`, `photo`, `user`, `email`, `comment`, `status`) VALUES (0, %s, %s, %s, %s, %s, %s )', $time, $photo, $user, $email, $comment, $status);
+			$key = wppa_nextkey(WPPA_COMMENTS);
+			$query = $wpdb->prepare('INSERT INTO `'.WPPA_COMMENTS.'` (`id`, `timestamp`, `photo`, `user`, `email`, `comment`, `status`) VALUES (%s, %s, %s, %s, %s, %s, %s )', $key, $time, $photo, $user, $email, $comment, $status);
 			$iret = $wpdb->query($query);
-			if ($iret !== false) $wppa['comment_id'] = $wpdb->get_var("SELECT LAST_INSERT_ID()");
+			if ($iret !== false) $wppa['comment_id'] = $key; //$wpdb->get_var("SELECT LAST_INSERT_ID()");
 		}
 		if ($iret !== false) {
 			if ($cedit) {
@@ -1294,6 +1297,7 @@ global $wppa_opt;
 
 				$result['style'] .= ' margin-left:' . $delta . 'px;';
 				// Position vertically
+				if ( $wppa['in_widget'] == 'ss' && $wppa['in_widget_frame_height'] > '0' ) $max_height = $wppa['in_widget_frame_height'];
 				$delta = '0';
 				if (!$wppa['auto_colwidth'] && !wppa_page('oneofone')) {
 					switch ($valign) {
@@ -1539,6 +1543,8 @@ global $wppa_opt;
 	
 	$gfh = floor($gfs * $wppa_opt['wppa_maxheight'] / $wppa_opt['wppa_fullsize']);
 	
+	if ($wppa['in_widget'] == 'ss' && $wppa['in_widget_frame_height'] > '0') $gfh = $wppa['in_widget_frame_height'];
+	
 // for bbb:
 $wppa['slideframewidth'] = $gfs;
 $wppa['slideframeheight'] = $gfh;	
@@ -1762,6 +1768,12 @@ global $wppa_microtime_cum;
 			if ($wppa['auto_colwidth']) $auto = true;
 			elseif ($wppa_opt['wppa_colwidth'] == 'auto') $auto = true;
 			if ($auto) $wppa['out'] .= wppa_nltab().'wppaAutoColumnWidth = true;';
+			
+			// last minute change: fullvalign with border needs a height correction in slideframe
+			if ( $wppa_opt['wppa_fullimage_border_width'] != '' && ! $wppa['in_widget'] ) {
+				$delta = (1 + $wppa_opt['wppa_fullimage_border_width']) * 2;
+			} else $delta = 0;
+			$wppa['out'] .= wppa_nltab().'wppaFullFrameDelta['.$wppa['master_occur'].'] = '.$delta.';';
 
 			// last minute change: script %%size != default colwidth
 			$temp = wppa_get_container_width() - ( 2*6 + 2*23 + 2*$wppa_opt['wppa_bwidth']);
@@ -2531,6 +2543,12 @@ global $wppa;
 			if ($opt != '') $result .= 'font-size:'.$opt.'px; ';
 			$opt = $wppa_opt['wppa_fontcolor_fulltitle'];
 			if ($opt != '') $result .= 'color:'.$opt.'; ';
+			break;
+		case 'wppa-custom':
+			$opt = $wppa_opt['wppa_bgcolor_cus'];
+			if ($opt) $result .= 'background-color:'.$opt.'; ';
+			$opt = $wppa_opt['wppa_bcolor_cus'];
+			if ($opt) $result .= 'border-color:'.$opt.'; ';
 			break;
 		case 'wppa-black':
 //			$opt = $wppa_opt['wppa_black'];

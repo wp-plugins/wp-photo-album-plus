@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display a slideshow in the sidebar
-* Version 4.0.9
+* Version 4.0.11
 */
 
 /**
@@ -22,26 +22,44 @@ class SlideshowWidget extends WP_Widget {
     function widget($args, $instance) {		
 		global $wpdb;
 		global $wppa; 
+		global $wppa_opt;
 
         extract( $args );
 
  		$title = apply_filters('widget_title', empty( $instance['title'] ) ? __a( 'Sidebar Slideshow', 'wppa_theme' ) : $instance['title']);
 
-		$instance = wp_parse_args( (array) $instance, array( 'title' => '', 'album' => '', 'width' => get_option('wppa_widget_width', '190'), 'ponly' => 'no', 'linkurl' => '', 'linktitle' => '', 'subtext' => '', 'supertext' => '', 'valign' => 'fit', 'timeout' => '4', 'film' => 'no', 'browse' => 'no', 'name' => 'no', 'desc' => 'no' ) );
+		$instance = wp_parse_args( (array) $instance, 
+									array( 	'title' 	=> '', 
+											'album' 	=> '', 
+											'width' 	=> $wppa_opt['wppa_widget_width'], 
+											'height' 	=> round( $wppa_opt['wppa_widget_width'] * $wppa_opt['wppa_maxheight'] / $wppa_opt['wppa_fullsize'] ),
+											'ponly' 	=> 'no', 
+											'linkurl' 	=> '', 
+											'linktitle' => '', 
+											'subtext' 	=> '', 
+											'supertext' => '', 
+											'valign' 	=> 'center', 
+											'timeout' 	=> '4', 
+											'film' 		=> 'no', 
+											'browse' 	=> 'no', 
+											'name' 		=> 'no', 
+											'desc' 		=> 'no' 
+											) );
 
-		$album = $instance['album'];
-		$width = $instance['width'];
-		$ponly = $instance['ponly'];
-		$linkurl = $instance['linkurl'];
-		$linktitle = $instance['linktitle'];
-		$supertext = wppa_qtrans($instance['supertext']);
-		$subtext = wppa_qtrans($instance['subtext']);
-		$valign = $instance['valign'];
-		$timeout = $instance['timeout'] * 1000;
-		$film = $instance['film'];
-		$browse = $instance['browse'];
-		$name = $instance['name'];
-		$desc = $instance['desc'];
+		$album 		= $instance['album'];
+		$width 		= $instance['width'];
+		$height		= $instance['height'];
+		$ponly 		= $instance['ponly'];
+		$linkurl 	= $instance['linkurl'];
+		$linktitle 	= $instance['linktitle'];
+		$supertext 	= wppa_qtrans($instance['supertext']);
+		$subtext 	= wppa_qtrans($instance['subtext']);
+		$valign 	= $instance['valign'];
+		$timeout	= $instance['timeout'] * 1000;
+		$film 		= $instance['film'];
+		$browse 	= $instance['browse'];
+		$name 		= $instance['name'];
+		$desc 		= $instance['desc'];
 		
 		if (is_numeric($album)) {
 			echo $before_widget . $before_title . $title . $after_title;
@@ -53,23 +71,26 @@ class SlideshowWidget extends WP_Widget {
 					echo '<div style="padding-top:2px; padding-bottom:4px; text-align:center">'.$supertext.'</div>';
 				}
 				echo '<div style="padding-top:2px; padding-bottom:4px;" >';
-					$wppa['in_widget'] = 'ss';
-						$wppa['in_widget_timeout'] = $timeout;
-							$wppa['portrait_only'] = ($ponly == 'yes');
-								$wppa['ss_widget_valign'] = $valign;
-									$wppa['film_on'] = ($film == 'yes');
-										$wppa['browse_on'] = ($browse == 'yes');
-											$wppa['name_on'] = ($name == 'yes');
-												$wppa['desc_on'] = ($desc == 'yes');
-											echo wppa_albums($album, 'slideonly', $width, 'center');
-												$wppa['desc_on'] = false;
-											$wppa['name_on'] = false;
-										$wppa['browse_on'] = false;
-									$wppa['film_on'] = false;
-								$wppa['ss_widget_valign'] = '';
-							$wppa['portrait_only'] = false;
-						$wppa['in_widget_timeout'] = '0';
+					$wppa['in_widget'] 			= 'ss';
+					$wppa['in_widget_frame_height'] = $height;
+					$wppa['in_widget_timeout'] 	= $timeout;
+					$wppa['portrait_only'] = ($ponly == 'yes');
+					$wppa['ss_widget_valign'] = $valign;
+					$wppa['film_on'] = ($film == 'yes');
+					$wppa['browse_on'] = ($browse == 'yes');
+					$wppa['name_on'] = ($name == 'yes');
+					$wppa['desc_on'] = ($desc == 'yes');
+						echo wppa_albums($album, 'slideonly', $width, 'center');
+					$wppa['desc_on'] = false;
+					$wppa['name_on'] = false;
+					$wppa['browse_on'] = false;
+					$wppa['film_on'] = false;
+					$wppa['ss_widget_valign'] = '';
+					$wppa['portrait_only'] = false;
+					$wppa['in_widget_timeout'] = '0';
+					$wppa['in_widget_frame_height'] = '';
 					$wppa['in_widget'] = false;
+					
 					$wppa['fullsize'] = '';	// Reset to prevent inheritage of wrong size in case widget is rendered before main column
 				echo '</div>';
 				if ($linkurl != '') {
@@ -96,6 +117,7 @@ class SlideshowWidget extends WP_Widget {
 		$instance['title'] = strip_tags($new_instance['title']);
 		$instance['album'] = $new_instance['album'];
 		$instance['width'] = $new_instance['width'];
+		$instance['height'] = $new_instance['height'];
 		$instance['ponly'] = $new_instance['ponly'];
 		$instance['linkurl'] = $new_instance['linkurl'];
 		$instance['linktitle'] = $new_instance['linktitle'];
@@ -117,12 +139,31 @@ class SlideshowWidget extends WP_Widget {
     }
 
     /** @see WP_Widget::form */
-    function form($instance) {				
+    function form($instance) {	
+		global $wppa_opt;
 		//Defaults
-		$instance = wp_parse_args( (array) $instance, array( 'title' => '', 'album' => '', 'width' => get_option('wppa_widget_width', '190'), 'ponly' => 'no', 'linkurl' => '', 'linktitle' => '', 'subtext' => '', 'supertext' => '', 'valign' => 'center', 'timeout' => '4', 'film' => 'no', 'browse' => 'no', 'name' => 'no', 'desc' => 'no' ) );
+		$instance = wp_parse_args( (array) $instance,
+									array( 	'title' 	=> '', 
+											'album' 	=> '', 
+											'width' 	=> $wppa_opt['wppa_widget_width'], 
+											'height' 	=> round( $wppa_opt['wppa_widget_width'] * $wppa_opt['wppa_maxheight'] / $wppa_opt['wppa_fullsize'] ),
+											'ponly' 	=> 'no', 
+											'linkurl' 	=> '', 
+											'linktitle' => '', 
+											'subtext' 	=> '', 
+											'supertext' => '', 
+											'valign' 	=> 'center', 
+											'timeout' 	=> '4', 
+											'film' 		=> 'no', 
+											'browse' 	=> 'no', 
+											'name' 		=> 'no', 
+											'desc' 		=> 'no' 
+											) );
+											
 		$title = esc_attr( $instance['title'] );
 		$album = $instance['album'];
 		$width = $instance['width'];
+		$height = $instance['height'];
 		$ponly = $instance['ponly'];
 		$linkurl = $instance['linkurl'];
 		$linktitle = $instance['linktitle'];
@@ -138,7 +179,9 @@ class SlideshowWidget extends WP_Widget {
 	?>
 		<p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:', 'wppa'); ?></label> <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $title; ?>" /></p>
 		<p><label for="<?php echo $this->get_field_id('album'); ?>"><?php _e('Album:', 'wppa'); ?></label> <select id="<?php echo $this->get_field_id('album'); ?>" name="<?php echo $this->get_field_name('album'); ?>"><?php echo(wppa_album_select('', $album)) ?></select></p>
-		<p><label for="<?php echo $this->get_field_id('width'); ?>"><?php _e('Width:', 'wppa'); ?></label> <input class="widefat" style="width:15%;" id="<?php echo $this->get_field_id('width'); ?>" name="<?php echo $this->get_field_name('width'); ?>" type="text" value="<?php echo $width; ?>" />&nbsp;<?php _e('pixels.', 'wppa') ?></p>
+		<p><?php _e('Enter the width and optionally the height of the area wherein the slides will appear. If you specify a 0 for the height, it will be calculated. The value for the height will be ignored if you set the vertical alignment to \'fit\'.', 'wppa') ?></p>
+		<p><label for="<?php echo $this->get_field_id('width'); ?>"><?php _e('Width:', 'wppa'); ?></label> <input class="widefat" style="width:15%;" id="<?php echo $this->get_field_id('width'); ?>" name="<?php echo $this->get_field_name('width'); ?>" type="text" value="<?php echo $width; ?>" />&nbsp;<?php _e('pixels.', 'wppa') ?>
+		<label for="<?php echo $this->get_field_id('height'); ?>"><?php _e('Height:', 'wppa'); ?></label> <input class="widefat" style="width:15%;" id="<?php echo $this->get_field_id('height'); ?>" name="<?php echo $this->get_field_name('height'); ?>" type="text" value="<?php echo $height; ?>" />&nbsp;<?php _e('pixels.', 'wppa') ?></p>
 		<p>
 			<?php _e('Portrait only:', 'wppa'); ?>
 			<select id="<?php echo $this->get_field_id('ponly'); ?>" name="<?php echo $this->get_field_name('ponly'); ?>">

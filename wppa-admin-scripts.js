@@ -1,16 +1,18 @@
 /* admin-scripts.js */
 /* Package: wp-photo-album-plus
 /*
-/* Version 4.0.8
+/* Version 4.0.11
 /* Various js routines used in admin pages		
 */
 
 var wppa_moveup_url = '#';
+var wppa_import = 'Import';
+var wppa_update = 'Update';
 
 jQuery(document).ready(function() {
 /* alert( 'You are running jQuery version: ' + jQuery.fn.jquery ); */
 
-	jQuery(".fade").fadeTo(10000, 0.1)
+	jQuery(".fade").fadeTo(20000, 0.0)
 	});
 
 /* Check if jQuery library revision is high enough, othewise give a message and uncheck checkbox elm */
@@ -359,4 +361,25 @@ function wppa_move_up(who) {
 function checkColor(slug) {
 	var color = document.getElementById(slug).value;
 	jQuery('#colorbox-'+slug).css('background-color', color);
+}
+
+function checkAll(name, clas) {
+	var elm = document.getElementById(name);
+	if (elm) {
+		if ( elm.checked ) {
+			jQuery(clas).prop('checked', 'checked');
+		}
+		else {
+			jQuery(clas).prop('checked', '');
+		}
+	}
+}
+
+function impUpd(elm, id) {
+	if ( elm.checked ) {
+		jQuery(id).prop('value', wppa_update);
+	}
+	else {
+		jQuery(id).prop('value', wppa_import);
+	}
 }
