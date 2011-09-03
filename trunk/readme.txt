@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, multisite, network, lightbox
-Version: 4.0.10
+Version: 4.0.11
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -105,6 +105,30 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 
 == Changelog ==
 
+= 4.0.11 =
+
+= Bug fixes =
+
+* The slideframe height was 2 times the border width too small when v-align is set to 'fit'. Fixed.
+* The BBB's overlapped downwards when v-align is set to 'fit'. Fixed.
+* In IE9 the thumbnail popup links did not work. Fixed.
+
+= New Features =
+
+* The height of the slidefame in the slideshow widget is now explicitly settable as opposed to the calculated value from Table I item 2 and 3, vertical align 'fit' will still overrule, a value of 0 defaults to the old method.
+* The ability to update existing photos with new versions. You can chek 'Update' in the Import Photos admin screen.
+* There is now a custom box in the slideshow box list that you can fill with any html. See Table II item 21 and 22, Table III item 10.
+
+= Other changes =
+
+* In spurous situations the auto increment generated database key returned MAXINT, preventing us from further adding records.
+The associated error message was: Could not insert photo. query=INSERT INTO wp_wppa_photos (id, ...
+The new incremented key is now calculated outside mysql.
+
+= Wish List =
+
+* The ability to automaticly import photos from a given directory to a given album.
+
 = 4.0.10 =
 
 = New Features =
@@ -118,6 +142,8 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 = Other changes =
 
 * The Create new album mechanism has been simplified.
+* Scrolling back to the (previous) photo position after delete, copy or rotate in the album admin screen.
+* Check/uncheck all in import admin page.
 
 = 4.0.9 =
 

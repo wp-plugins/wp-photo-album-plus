@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 * admin sidebar widget
-* version 4.0.9
+* version 4.0.11
 *
 */
 
@@ -68,7 +68,7 @@ function _wppa_sidebar_page_options() {
 							<label ><?php _e('Widget Photo Width:', 'wppa'); ?></label>
 						</th>
 						<td>
-							<input type="text" name="wppa-widget-width" id="wppa-widget-width" value="<?php echo(get_option('wppa_widget_width', '150')); ?>" style="width: 50px;" />
+							<input type="text" name="wppa-widget-width" id="wppa-widget-width" value="<?php echo(get_option('wppa_widget_width', '200')); ?>" style="width: 50px;" />
 							<?php _e('pixels.', 'wppa'); echo(' '); _e('Horizontal alignment:', 'wppa'); ?>
 							<select name="wppa-potd-align" id="wppa-potd-align">
 								<?php $ali = get_option('wppa_potd_align') ?>
@@ -185,7 +185,7 @@ function _wppa_sidebar_page_options() {
 				$wi = wppa_get_minisize() + 24;
 				$hi = $wi + 48;
 				foreach ($photos as $photo) { ?>
-					<div class="photoselect" style="width: <?php echo(get_option('wppa_widget_width', '150')); ?>px; height: <?php echo($hi); ?>px; overflow:hidden; " >
+					<div class="photoselect" style="width: <?php echo(get_option('wppa_widget_width', '200')); ?>px; height: <?php echo($hi); ?>px; overflow:hidden; " >
 						<img src="<?php echo(get_bloginfo('wpurl') . '/wp-content/uploads/wppa/thumbs/' . $photo['id'] . '.' . $photo['ext']); ?>" alt="<?php echo($photo['name']); ?>"></img>
 						<input type="radio" name="wppa-widget-photo" id="wppa-widget-photo<?php echo($photo['id']); ?>" value="<?php echo($photo['id']) ?>" <?php if ($photo['id'] == $id) echo('checked="checked"'); ?>/>
 						<div class="clear"></div>

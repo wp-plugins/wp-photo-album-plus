@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains the admin menu and startups the admin pages
-* Version 4.0.6
+* Version 4.0.11
 *
 */
 
@@ -77,6 +77,7 @@ function wppa_page_upload() {
 // Import admin page
 function wppa_page_import() {
 	require_once 'wppa-upload.php';
+	echo '<script type="text/javascript">/* <![CDATA[ */wppa_import = "'.__('Import', 'wppa').'"; wppa_update = "'.__('Update', 'wppa').'";/* ]]> */</script>';
 	_wppa_page_import();
 }
 // Export admin page

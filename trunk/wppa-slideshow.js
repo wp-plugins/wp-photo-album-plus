@@ -1,11 +1,12 @@
 ﻿// Slide show variables and functions
-// This is wppa-slideshow.js version 4.0.8
+// This is wppa-slideshow.js version 4.0.11
 //
 // Vars. The vars that have a name that starts with an underscore is an internal var
 // The vars without leading underscore are 'external' and get a value from html
 
 // 'External' variables
 var wppaFullValignFit = new Array();
+var wppaFullFrameDelta = new Array();
 var wppaAnimationSpeed;
 var wppaImageDirectory;
 var wppaAutoColumnWidth = false;
@@ -302,10 +303,11 @@ function _wppaNextSlide_4(mocc) {
 		jQuery('#slide_frame-'+mocc).css('height', parseInt(h)+'px');
 	}
 	else if (wppaFullValignFit[mocc]) {
-		h = jQuery('#theimg'+_wppaForeground[mocc]+'-'+mocc).css('height');
-		if (h != 'auto') {
-			jQuery('#slide_frame-'+mocc).css('height', parseInt(h)+'px');
-		}
+		h = parseInt(jQuery('#theimg'+_wppaForeground[mocc]+'-'+mocc).css('height')) + wppaFullFrameDelta[mocc];
+//		if (h != 'auto') {
+			jQuery('#slide_frame-'+mocc).css('height', h+'px');
+//		}
+jQuery('.bbb-'+mocc).css('height', h+'px');
 		jQuery('#slide_frame-'+mocc).css('minHeight', '0px');
 	}
 

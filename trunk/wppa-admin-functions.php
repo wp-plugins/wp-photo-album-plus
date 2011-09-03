@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 * gp admin functions
-* version 4.0.10
+* version 4.0.11
 *
 * 
 */
@@ -273,26 +273,26 @@ function wppa_order_options($order, $nil, $rat = '') {
 // display usefull message
 function wppa_update_message($msg, $fixed = false) {
 ?>
-    <div id="message" class="updated fade" <?php if ($fixed) echo 'style="position: fixed;"' ?>><p><strong><?php echo($msg); ?></strong></p></div>
+    <div id="message" class="updated fade" <?php if ($fixed) echo 'style="position: fixed; width: 80%; text-align: center; text-weight:bold;"' ?>><p><strong><?php echo($msg); ?></strong></p></div>
 <?php
 }
 
 // display error message
-function wppa_error_message($msg) {
+function wppa_error_message($msg, $fixed = false) {
 ?>
-	<div id="error" class="error"><p><strong><?php echo($msg); ?></strong></p></div>
+	<div id="error" class="error <?php if ($fixed) echo fade ?>" <?php if ($fixed) echo 'style="position: fixed;"' ?>><p><strong><?php echo($msg); ?></strong></p></div>
 <?php
 }
 // display warning message
-function wppa_warning_message($msg) {
+function wppa_warning_message($msg, $fixed = false) {
 ?>
-	<div id="warning" class="updated"><p><strong><?php echo($msg); ?></strong></p></div>
+	<div id="warning" class="updated <?php if ($fixed) echo fade ?>" <?php if ($fixed) echo 'style="position: fixed;"' ?>><p><strong><?php echo($msg); ?></strong></p></div>
 <?php
 }
 // display ok message
-function wppa_ok_message($msg) {
+function wppa_ok_message($msg, $fixed = false) {
 ?>
-	<div id="warning" class="updated" style="background-color: #e0ffe0; border-color: #55ee55;" ><p><strong><?php echo($msg); ?></strong></p></div>
+	<div id="warning" class="updated <?php if ($fixed) echo fade ?>" style="background-color: #e0ffe0; border-color: #55ee55;" ><p><strong><?php echo($msg); ?></strong></p></div>
 <?php
 }
 
@@ -444,7 +444,6 @@ global $wpdb;
 	// Find photo details
 	$photo = $wpdb->get_row('SELECT * FROM '.WPPA_PHOTOS.' WHERE id = '.$photoid, 'ARRAY_A');
 	if (!$photo) return $err;
-	$id = '0';
 	$album = $albumto;
 	$ext = $photo['ext'];
 	$name = $photo['name'];
@@ -457,6 +456,7 @@ global $wpdb;
 	
 	$err = '3';
 	// Make new db table entry
+	$id = wppa_nextkey(WPPA_PHOTOS);
 	$query = $wpdb->prepare('INSERT INTO `' . WPPA_PHOTOS . '` (`id`, `album`, `ext`, `name`, `p_order`, `description`, `mean_rating`, `linkurl`, `linktitle`) VALUES (%s, %s, %s, %s, %s, %s, \'\', %s, %s)', $id, $album, $ext, $name, $porder, $desc, $linkurl, $linktitle);
 	if ($wpdb->query($query) === false) return $err;
 
@@ -651,7 +651,8 @@ if ( is_multisite() ) return; // temp disabled for 4.0 bug
 	if ($entries) {
 		$album = wppa_get_album_id(__('Orphan Photos', 'wppa'));
 		if ($album == '') {
-			$query = $wpdb->prepare('INSERT INTO `' . WPPA_ALBUMS . '` (`id`, `name`, `description`, `a_order`, `a_parent`, `p_order_by`, `main_photo`, `cover_linkpage`, `owner`) VALUES (0, %s, %s, %s, %s, %s, %s, %s, %s)', __('Orphan Photos', 'wppa'), $desc, '0', '0', '0', '0', '0', 'admin');
+			$key = wppa_nextkey(WPPA_ALBUMS);
+			$query = $wpdb->prepare('INSERT INTO `' . WPPA_ALBUMS . '` (`id`, `name`, `description`, `a_order`, `a_parent`, `p_order_by`, `main_photo`, `cover_linkpage`, `owner`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)', $key, __('Orphan Photos', 'wppa'), $desc, '0', '0', '0', '0', '0', 'admin');
 			$iret = $wpdb->query($query);
 			if ($iret === false) {
 				wppa_error_message('Could not create album: Orphan Photos', 'wppa');

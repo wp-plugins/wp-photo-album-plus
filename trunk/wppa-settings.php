@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 4.0.10
+* Version 4.0.11
 *
 */
 
@@ -190,6 +190,8 @@ global $options_error;
 			wppa_update_check('wppa_show_comments');
 			wppa_update_check('wppa_show_bbb');
 			wppa_update_check('wppa_show_slideshowbrowselink');
+			wppa_update_check('wppa_custom_on');
+			wppa_update_textarea('wppa_custom_content');
 		
 			// Table 3: Backgrounds
 			wppa_update_value('wppa_bgcolor_even');
@@ -210,6 +212,8 @@ global $options_error;
 			wppa_update_value('wppa_lightbox_bordercolor');
 			wppa_update_value('wppa_lightbox_overlaycolor');
 			wppa_update_numeric('wppa_lightbox_overlayopacity', '0', __('Lightbox opacity.', 'wppa'), '100');
+			wppa_update_value('wppa_bgcolor_cus');
+			wppa_update_value('wppa_bcolor_cus');
 				
 			// Table 4: Behaviour
 			wppa_update_value('wppa_fullvalign');
@@ -814,6 +818,22 @@ global $wppa_api_version;
 					$html = wppa_checkbox($slug);
 					wppa_setting($slug, '20', $name, $desc, $html, $help);
 					
+					$name = __('Show custom box', 'wppa');
+					$desc = __('Display the custom box in the slideshow', 'wppa');
+					$help = esc_js(__('You can fill the custom box with any html you like. It will not be checked, so it is your own responsability to close tags properly.', 'wppa'));
+					$help .= '\n\n'.esc_js(__('The position of the box can be defined in Table IX item 6.', 'wppa'));
+					$slug = 'wppa_custom_on';
+					$html = wppa_checkbox($slug);
+					wppa_setting($slug, '21', $name, $desc, $html, $help);
+					
+					$name = __('Custom content', 'wppa');
+					$desc = __('The content (html) of the custom box.', 'wppa');
+					$help = esc_js(__('You can fill the custom box with any html you like. It will not be checked, so it is your own responsability to close tags properly.', 'wppa'));
+					$help .= '\n\n'.esc_js(__('The position of the box can be defined in Table IX item 6.', 'wppa'));
+					$slug = 'wppa_custom_content';
+					$html = wppa_textarea($slug);
+					wppa_setting($slug, '22', $name, $desc, $html, $help);
+					
 					?>
 				</tbody>
 				<tfoot style="font-weight: bold; visibility: collapse;" class="wppa_table_2">
@@ -933,6 +953,14 @@ global $wppa_api_version;
 					$class = 'wppa_lightbox';
 					wppa_setting_2($slug1, $slug2, '9', $name, $desc, $html1, $html2, $help, $class);
 					
+					$name = __('Custom', 'wppa');
+					$desc = __('Custom box background.', 'wppa');
+					$help = esc_js(__('Enter valid CSS colors for custom box backgrounds and borders.', 'wppa'));
+					$slug1 = 'wppa_bgcolor_cus';
+					$slug2 = 'wppa_bcolor_cus';
+					$html1 = wppa_input($slug1, '100px', '', '', "checkColor('".$slug1."')") . '</td><td>' . wppa_color_box($slug1);
+					$html2 = wppa_input($slug2, '100px', '', '', "checkColor('".$slug2."')") . '</td><td>' . wppa_color_box($slug2);
+					wppa_setting_2($slug1, $slug2, '10', $name, $desc, $html1, $html2, $help);
 			
 					?>
 				</tbody>
@@ -1786,7 +1814,7 @@ global $wppa_api_version;
 						__('Start/Stop & Slower/Faster navigation bar', 'wppa') . ( $wppa_opt['wppa_show_startstop_navigation'] == 'yes' ? $enabled : $disabled ),
 						__('The Slide Frame', 'wppa') . '<span style="float:right;">'.__('(Always)', 'wppa').'</span>',
 						__('Photo Name & Description Box', 'wppa') . ( ( $wppa_opt['wppa_show_full_name'] == 'yes' || $wppa_opt['wppa_show_full_desc'] == 'yes' ) ? $enabled : $disabled ),
-						__('Custom Box', 'wppa') . '<span style="float:right;">'.__('(Reserved)', 'wppa').'</span>',
+						__('Custom Box', 'wppa') . ( $wppa_opt['wppa_custom_on'] == 'yes' ? $enabled : $disabled ),
 						__('Rating Bar', 'wppa') . ( $wppa_opt['wppa_rating_on'] == 'yes' ? $enabled : $disabled ),
 						__('Film Strip with embedded Start/Stop and Goto functionality', 'wppa') . ( $wppa_opt['wppa_filmstrip'] == 'yes' ? $enabled : $disabled ),
 						__('Browse Bar with Photo X of Y counter', 'wppa') . ( $wppa_opt['wppa_show_browse_navigation'] == 'yes' ? $enabled : $disabled ),
@@ -2138,6 +2166,13 @@ function wppa_update_value($slug) {
 	}
 }
 
+function wppa_update_textarea($slug) {
+	if (isset($_POST[$slug])) {
+		$value = html_entity_decode($_POST[$slug]);
+		wppa_update($slug, $value);
+	}
+}
+
 function wppa_update_check($slug) {
 	if (isset($_POST[$slug])) wppa_update($slug, 'yes');
 	else wppa_update($slug, 'no');
@@ -2163,6 +2198,14 @@ function wppa_input($slug, $width, $minwidth = '', $text = '', $onchange = '') {
 	$html .= ' font_size: 11px; margin: 0px; padding: 0px;" type="text" name="'.$slug.'" id="'.$slug.'"';
 	if ($onchange != '') $html .= ' onchange="'.$onchange.'"';
 	$html .= ' value="'.stripslashes(get_option($slug)).'" />'.$text;
+	
+	return $html;
+}
+
+function wppa_textarea($slug) {
+	$html = '<textarea name="'.$slug.'" id="'.$slug.'" style="width:500px;" >';
+	$html .= htmlspecialchars(stripslashes(get_option($slug)));
+	$html .= '</textarea>';
 	
 	return $html;
 }
