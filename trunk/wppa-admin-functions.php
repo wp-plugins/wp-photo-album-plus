@@ -462,7 +462,7 @@ global $wpdb;
 
 	$err = '4';
 	// Find copied photo details
-	$image_id = $wpdb->get_var("SELECT LAST_INSERT_ID()");					
+	$image_id = $id; //$wpdb->get_var("SELECT LAST_INSERT_ID()");					
 	$newimage = WPPA_UPLOAD_PATH.'/'.$image_id.'.'.$ext;
 	$newthumb = WPPA_UPLOAD_PATH.'/thumbs/'.$image_id.'.'.$ext;
 	if (!$image_id) return $err;
