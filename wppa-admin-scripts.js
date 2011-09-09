@@ -1,7 +1,7 @@
 /* admin-scripts.js */
 /* Package: wp-photo-album-plus
 /*
-/* Version 4.0.11
+/* Version 4.0.12
 /* Various js routines used in admin pages		
 */
 
@@ -43,38 +43,54 @@ function wppaInitSettings() {
 	wppaCheckComments();
 	wppaCheckLightbox();
 	
-	for (i=1; i<11; i++) {
-		var cookie = wppa_getCookie('table_'+i);
+	for (table=1; table<11; table++) {
+		var cookie = wppa_getCookie('table_'+table);
 		if (cookie == 'on') {
-			jQuery('.wppa_table_'+i).css('visibility', 'visible'); 
-			jQuery('._wppa_table_'+i).css('visibility', 'collapse'); // collapse
+			wppaShowTable(table);	// Refreshes cookie, so it 'never' forgets
+		}
+		else {
+			wppaHideTable(table);	// Refreshes cookie, so it 'never' forgets
 		}
 	}
+}
+
+function wppaHideTable(table) {
+	jQuery('#wppa_table_'+table).css('display', 'none'); 
+	jQuery('#wppa_tableHide-'+table).css('display', 'none'); 
+	jQuery('#wppa_tableShow-'+table).css('display', 'inline');
+	wppa_tablecookieoff(table);
+}
+
+function wppaShowTable(table) {
+	jQuery('#wppa_table_'+table).css('display', 'block'); 
+	jQuery('#wppa_tableHide-'+table).css('display', 'inline'); 
+	jQuery('#wppa_tableShow-'+table).css('display', 'none');
+	wppa_tablecookieon(table);
 }
 	
 /* Adjust visibility of selection radiobutton if fixed photo is chosen or not */				
 function wppaCheckWidgetMethod() {
 	var ph;
 	var i;
-	if (document.getElementById("wppa_wm").value=="4") {
-		document.getElementById("wppa_wp").style.visibility="visible";
+	if (document.getElementById('wppa-wm').value=='4') {
+		document.getElementById('wppa-wp').style.visibility='visible';
 	}
 	else {
-		document.getElementById("wppa_wp").style.visibility="hidden";
+		document.getElementById('wppa-wp').style.visibility='hidden';
 	}
-	if (document.getElementById("wppa_wm").value=="1") {
-		ph=document.getElementsByName("wppa_widget_photo");
+	if (document.getElementById('wppa-wm').value=='1') {
+		ph=document.getElementsByName('wppa-widget-photo');
 		i=0;
 		while (i<ph.length) {
-			ph[i].style.visibility="visible";
+			ph[i].style.visibility='visible';
 			i++;	
 		}
 	}
 	else {
-		ph=document.getElementsByName("wppa_widget_photo");
+		ph=document.getElementsByName('wppa-widget-photo');
 		i=0;
 		while (i<ph.length) {
-			ph[i].style.visibility="hidden";
+			ph[i].style.visibility='hidden';
 			i++;
 		}
 	}
@@ -82,7 +98,7 @@ function wppaCheckWidgetMethod() {
 
 /* Displays or hides names and.or description dependant of subtitle chosen */
 function wppaCheckWidgetSubtitle() {
-	var subtitle = document.getElementById('wppa_st').value;
+	var subtitle = document.getElementById('wppa-st').value;
 	var stn, std;
 	var i;
 	stn = document.getElementsByTagName('h4');
@@ -92,22 +108,22 @@ function wppaCheckWidgetSubtitle() {
 	{
 	case 'none':
 		while (i < stn.length) {
-			stn[i].style.visibility = "hidden";
-			std[i].style.visibility = "hidden";
+			stn[i].style.visibility = 'hidden';
+			std[i].style.visibility = 'hidden';
 			i++;
 		}
 		break;
 	case 'name':
 		while (i < stn.length) {
-			stn[i].style.visibility = "visible";
-			std[i].style.visibility = "hidden";
+			stn[i].style.visibility = 'visible';
+			std[i].style.visibility = 'hidden';
 			i++;
 		}
 		break;
 	case 'desc':
 		while (i < stn.length) {
-			stn[i].style.visibility = "hidden";
-			std[i].style.visibility = "visible";
+			stn[i].style.visibility = 'hidden';
+			std[i].style.visibility = 'visible';
 			i++;
 		}
 		break;
@@ -180,8 +196,8 @@ function wppaCheckUseCoverOpacity() {
 /* if the slideshow is disabled its useless to ask if it should initially run */
 function wppaCheckHs() {
 	var Hs = document.getElementById('wppa_enable_slideshow').checked;
-	if (Hs) jQuery(".wppa_ss").css('visibility', 'visible');
-	else jQuery(".wppa_ss").css('visibility', 'collapse');
+	if (Hs) jQuery('.wppa_ss').css('visibility', 'visible');
+	else jQuery('.wppa_ss').css('visibility', 'collapse');
 }
 
 /* Enables or disables secundairy breadcrumb settings */

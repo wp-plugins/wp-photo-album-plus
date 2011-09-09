@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 * admin sidebar widget
-* version 4.0.11
+* version 4.0.12
 *
 */
 
@@ -185,7 +185,7 @@ function _wppa_sidebar_page_options() {
 				$wi = wppa_get_minisize() + 24;
 				$hi = $wi + 48;
 				foreach ($photos as $photo) { ?>
-					<div class="photoselect" style="width: <?php echo(get_option('wppa_widget_width', '200')); ?>px; height: <?php echo($hi); ?>px; overflow:hidden; " >
+					<div class="photoselect" style="width: <?php echo(get_option('wppa_widget_width', '200')+'12'); ?>px; height: <?php echo($hi); ?>px; overflow:hidden; " >
 						<img src="<?php echo(get_bloginfo('wpurl') . '/wp-content/uploads/wppa/thumbs/' . $photo['id'] . '.' . $photo['ext']); ?>" alt="<?php echo($photo['name']); ?>"></img>
 						<input type="radio" name="wppa-widget-photo" id="wppa-widget-photo<?php echo($photo['id']); ?>" value="<?php echo($photo['id']) ?>" <?php if ($photo['id'] == $id) echo('checked="checked"'); ?>/>
 						<div class="clear"></div>

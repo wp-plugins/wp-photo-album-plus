@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, multisite, network, lightbox
-Version: 4.0.11
+Version: 4.0.12
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -51,7 +51,7 @@ You can find the plugin admin section under Menu Photo Albums on the admin scree
 == Installation ==
 
 = Upgrade notice =
-This version is: Major rev# 4, Minor rev# 0, Fix rev# 9, Hotfix rev# 000.
+This version is: Major rev# 4, Minor rev# 0, Fix rev# 12, Hotfix rev# 000.
 If you are upgrading from a previous Major or Minor version, note that:
 * If you modified wppa_theme.php and/or wppa_style.css, you will have to use the newly supplied versions. The previous versions are NOT compatible.
 * If you set the userlevel to anything else than 'administrator' you may have to set it again. Note that changing the userlevel can be done by the administrator only!
@@ -104,6 +104,26 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 
 
 == Changelog ==
+
+See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 4.0.12 =
+
+= Bug fixes =
+
+* Copy photo error 4 fixed.
+* Sql warning in create album fixed.
+* Fixed various layout issues for browsers that do not support style property visibility:collapse on table(elements): in Settings screen and in comments display.
+
+= New features =
+
+* If you enable lightbox and disable big browse buttons, the fullsize images are clickable to a lightbox overlay.
+* You can reverse order the comments on photos now. See Table IV item 25.
+
+= Other changes =
+
+* There are still users that have #content .img { max-width: 640px; } and Table I item 1 larger than 640, so we now increase max-width inline to column_width when it is not auto.
+* You can now enter a photo description template that can be set to apply for new added photos. See Table IX item 11 and 12.
 
 = 4.0.11 =
 

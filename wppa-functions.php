@@ -3,13 +3,13 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions and API modules
-* Version 4.0.11
+* Version 4.0.12
 *
 *
 */
 /* Moved to wppa-commonfunctions.php:
 global $wppa_api_version;
-$wppa_api_version = '4-0-10-000';
+$wppa_api_version = '4-0-12-000';
 */
 
 
@@ -1056,31 +1056,33 @@ global $wppa_first_comment_html;
 
 	// Loop the comments already there
 	$n_comments = 0;
-	$comments = $wpdb->get_results('SELECT * FROM '.WPPA_COMMENTS.' WHERE photo = '.$id.' ORDER BY id', 'ARRAY_A');
+	if ($wppa_opt['wppa_comments_desc']) $ord = 'DESC'; else $ord = '';
+	$comments = $wpdb->get_results('SELECT * FROM '.WPPA_COMMENTS.' WHERE photo = '.$id.' ORDER BY id '.$ord, 'ARRAY_A');
 	$color = 'darkgrey';
 	if ($wppa_opt['wppa_fontcolor_box']) $color = $wppa_opt['wppa_fontcolor_box'];
 	if ($comments) {
-		$result .= '<table id="wppacommentstable-'.$wppa['master_occur'].'" class="wppacommentform" style="margin:0; visibility:collapse;"><tbody>';
-		foreach($comments as $comment) {
-			// Show a comment either when it is approved, or it is pending and mine
-			if ($comment['status'] == 'approved' || ($comment['status'] == 'pending' && $comment['user'] == $wppa['comment_user'])) {
-				$n_comments++;
-//				$result .= '<tr valign="top" style="border-bottom:1px solid '.$color.'; border-top:0 none; border-left: 0 none; border-right: 0 none; " >';
-				$result .= '<tr valign="top" style="border-bottom:0 none; border-top:0 none; border-left: 0 none; border-right: 0 none; " >';
-					$result .= '<td class="wppa-box-text wppa-td" style="width:30%; border-width: 0 0 0 0; '.__wcs('wppa-box-text').__wcs('wppa-td').'" >';
-						$result .= $comment['user'].' wrote:';
-						$result .= '<br /><span style="font-size:9px; ">'.wppa_get_time_since($comment['timestamp']).'</span>';
-					$result .= '</td>';
-					$result .= '<td class="wppa-box-text wppa-td" style="border-width: 0 0 0 0;'.__wcs('wppa-box-text').__wcs('wppa-td').'" >'.esc_js(stripslashes($comment['comment']));
-					if ($comment['status'] == 'pending' && $comment['user'] == $wppa['comment_user']) {
-						$result .= '<br /><span style="color:red; font-size:9px;" >Awaiting moderation</span>';
-					}
-					$result .= '</td>';
-				$result .= '</tr>';
-				$result .= '<tr><td colspan="2" style="padding:0"><hr style="background-color:'.$color.'" /></td></tr>';
+		$result .= '<div id="wppa-comtable-wrap-'.$wppa['master_occur'].'" style="display:none;" >';
+			$result .= '<table id="wppacommentstable-'.$wppa['master_occur'].'" class="wppacommentform" style="margin:0; "><tbody>';
+			foreach($comments as $comment) {
+				// Show a comment either when it is approved, or it is pending and mine
+				if ($comment['status'] == 'approved' || ($comment['status'] == 'pending' && $comment['user'] == $wppa['comment_user'])) {
+					$n_comments++;
+					$result .= '<tr valign="top" style="border-bottom:0 none; border-top:0 none; border-left: 0 none; border-right: 0 none; " >';
+						$result .= '<td class="wppa-box-text wppa-td" style="width:30%; border-width: 0 0 0 0; '.__wcs('wppa-box-text').__wcs('wppa-td').'" >';
+							$result .= $comment['user'].' wrote:';
+							$result .= '<br /><span style="font-size:9px; ">'.wppa_get_time_since($comment['timestamp']).'</span>';
+						$result .= '</td>';
+						$result .= '<td class="wppa-box-text wppa-td" style="border-width: 0 0 0 0;'.__wcs('wppa-box-text').__wcs('wppa-td').'" >'.esc_js(stripslashes($comment['comment']));
+						if ($comment['status'] == 'pending' && $comment['user'] == $wppa['comment_user']) {
+							$result .= '<br /><span style="color:red; font-size:9px;" >Awaiting moderation</span>';
+						}
+						$result .= '</td>';
+					$result .= '</tr>';
+					$result .= '<tr><td colspan="2" style="padding:0"><hr style="background-color:'.$color.'" /></td></tr>';
+				}
 			}
-		}
-		$result .= '</tbody></table>';
+			$result .= '</tbody></table>';
+		$result .= '</div>';
 	}
 	
 	// See if we are currently in the process of adding/editing this comment
@@ -1102,41 +1104,44 @@ global $wppa_first_comment_html;
 	if (isset($_GET['slide'])) $slide = $_GET['slide']; else $slide = '';
 
 	// The comment form
-	$result .= '<form id="wppacommentform-'.$wppa['master_occur'].'" class="wppacommentform" action="'.wppa_get_permalink().'" method="get" style="" onsubmit="return wppa_validate_comment('.$wppa['master_occur'].')">';
-		if ($page_id) $result .= '<input type="hidden" name="page_id" value="'.$page_id.'" />';
-		if ($p) $result .= '<input type="hidden" name="p" value="'.$p.'" />';
-		$result .= wp_nonce_field('wppa-check' , 'wppa_nonce', false, false);
-		$result .= '<input type="hidden" name="photo" value="'.$id.'" />';
-		if ($album) $result .= '<input type="hidden" name="album" value="'.$album.'" />';
-		if ($cover) $result .= '<input type="hidden" name="cover" value="'.$cover.'" />';
-		if ($slide) $result .= '<input type="hidden" name="slide" value="'.$slide.'" />';
-		if ($is_current) $result .= '<input type="hidden" name="comment_edit" value="'.$wppa['comment_id'].'" />';
-		$result .= '<input type="hidden" name="occur" value="'.$wppa['occur'].'" />';
+	$result .= '<div id="wppa-comform-wrap-'.$wppa['master_occur'].'" style="display:none;" >';
+		$result .= '<form id="wppacommentform-'.$wppa['master_occur'].'" class="wppacommentform" action="'.wppa_get_permalink().'" method="get" style="" onsubmit="return wppa_validate_comment('.$wppa['master_occur'].')">';
+			if ($page_id) $result .= '<input type="hidden" name="page_id" value="'.$page_id.'" />';
+			if ($p) $result .= '<input type="hidden" name="p" value="'.$p.'" />';
+			$result .= wp_nonce_field('wppa-check' , 'wppa_nonce', false, false);
+			$result .= '<input type="hidden" name="photo" value="'.$id.'" />';
+			if ($album) $result .= '<input type="hidden" name="album" value="'.$album.'" />';
+			if ($cover) $result .= '<input type="hidden" name="cover" value="'.$cover.'" />';
+			if ($slide) $result .= '<input type="hidden" name="slide" value="'.$slide.'" />';
+			if ($is_current) $result .= '<input type="hidden" name="comment_edit" value="'.$wppa['comment_id'].'" />';
+			$result .= '<input type="hidden" name="occur" value="'.$wppa['occur'].'" />';
 
-		$result .= '<table id="wppacommenttable-'.$wppa['master_occur'].'" style="visibility:collapse; margin:0;">';
-			$result .= '<tbody>';
-				$result .= '<tr valign="top" style="'.$vis.'">';
-					$result .= '<td class="wppa-box-text wppa-td" style="width:30%; '.__wcs('wppa-box-text').__wcs('wppa-td').'" >'.__a('Your name:', 'wppa_theme').'</td>';
-					$result .= '<td class="wppa-box-text wppa-td" style="width:70%; '.__wcs('wppa-box-text').__wcs('wppa-td').'" ><input type="text" name="wppacomname" id="wppacomname-'.$wppa['master_occur'].'" style="width:100%; " value="'.$wppa['comment_user'].'" /></td>';
-				$result .= '</tr>';
-				$result .= '<tr valign="top" style="'.$vis.'">';
-					$result .= '<td class="wppa-box-text wppa-td" style="width:30%; '.__wcs('wppa-box-text').__wcs('wppa-td').'" >'.__a('Your email:', 'wppa_theme').'</td>';
-					$result .= '<td class="wppa-box-text wppa-td" style="width:70%; '.__wcs('wppa-box-text').__wcs('wppa-td').'" ><input type="text" name="wppacomemail" id="wppacomemail-'.$wppa['master_occur'].'" style="width:100%; " value="'.$wppa['comment_email'].'" /></td>';
-				$result .= '</tr>';
-				$result .= '<tr valign="top" style="vertical-align:top;">';	
-					$result .= '<td valign="top" class="wppa-box-text wppa-td" style="vertical-align:top; width:30%; '.__wcs('wppa-box-text').__wcs('wppa-td').'" >'.__a('Your comment:', 'wppa_theme').'<br />'.$wppa['comment_user'].'<br /><input type="submit" name="wppacommentbtn" value="'.$btn.'" /></td>';
-					$result .= '<td valign="top" class="wppa-box-text wppa-td" style="vertical-align:top; width:70%; '.__wcs('wppa-box-text').__wcs('wppa-td').'" ><textarea name="wppacomment" id="wppacomment-'.$wppa['master_occur'].'" style="height:60px; width:100%; ">'.esc_js(stripslashes($txt)).'</textarea></td>';
-				$result .= '</tr>';
-			$result .= '</tbody>';
-		$result .= '</table>';	
+			$result .= '<table id="wppacommenttable-'.$wppa['master_occur'].'" style="margin:0;">';
+				$result .= '<tbody>';
+					$result .= '<tr valign="top" style="'.$vis.'">';
+						$result .= '<td class="wppa-box-text wppa-td" style="width:30%; '.__wcs('wppa-box-text').__wcs('wppa-td').'" >'.__a('Your name:', 'wppa_theme').'</td>';
+						$result .= '<td class="wppa-box-text wppa-td" style="width:70%; '.__wcs('wppa-box-text').__wcs('wppa-td').'" ><input type="text" name="wppacomname" id="wppacomname-'.$wppa['master_occur'].'" style="width:100%; " value="'.$wppa['comment_user'].'" /></td>';
+					$result .= '</tr>';
+					$result .= '<tr valign="top" style="'.$vis.'">';
+						$result .= '<td class="wppa-box-text wppa-td" style="width:30%; '.__wcs('wppa-box-text').__wcs('wppa-td').'" >'.__a('Your email:', 'wppa_theme').'</td>';
+						$result .= '<td class="wppa-box-text wppa-td" style="width:70%; '.__wcs('wppa-box-text').__wcs('wppa-td').'" ><input type="text" name="wppacomemail" id="wppacomemail-'.$wppa['master_occur'].'" style="width:100%; " value="'.$wppa['comment_email'].'" /></td>';
+					$result .= '</tr>';
+					$result .= '<tr valign="top" style="vertical-align:top;">';	
+						$result .= '<td valign="top" class="wppa-box-text wppa-td" style="vertical-align:top; width:30%; '.__wcs('wppa-box-text').__wcs('wppa-td').'" >'.__a('Your comment:', 'wppa_theme').'<br />'.$wppa['comment_user'].'<br /><input type="submit" name="wppacommentbtn" value="'.$btn.'" /></td>';
+						$result .= '<td valign="top" class="wppa-box-text wppa-td" style="vertical-align:top; width:70%; '.__wcs('wppa-box-text').__wcs('wppa-td').'" ><textarea name="wppacomment" id="wppacomment-'.$wppa['master_occur'].'" style="height:60px; width:100%; ">'.esc_js(stripslashes($txt)).'</textarea></td>';
+					$result .= '</tr>';
+				$result .= '</tbody>';
+			$result .= '</table>';	
+		$result .= '</form>';
+	$result .= '</div>';
 	
-	$result .= '</form>';
-	
-	$result .= '<table id="wppacommentfooter-'.$wppa['master_occur'].'" class="wppacommentform" style="margin:0;">';
-		$result .= '<tbody><tr style= "text-align:center; "><td style="cursor:pointer;'.__wcs('wppa-box-text').'" ><a onclick="wppaStartStop('.$wppa['master_occur'].', -1)">';
-		if ($n_comments) $result .= sprintf(__a('%d  comments', 'wppa_theme'), $n_comments);
-		else $result .= __a('Leave a comment', 'wppa_theme');
-	$result .= '</a></td></tr></tbody></table>';
+	$result .= '<div id="wppa-comfooter-wrap-'.$wppa['master_occur'].'" style="display:block;" >';
+		$result .= '<table id="wppacommentfooter-'.$wppa['master_occur'].'" class="wppacommentform" style="margin:0;">';
+			$result .= '<tbody><tr style= "text-align:center; "><td style="cursor:pointer;'.__wcs('wppa-box-text').'" ><a onclick="wppaStartStop('.$wppa['master_occur'].', -1)">';
+			if ($n_comments) $result .= sprintf(__a('%d  comments', 'wppa_theme'), $n_comments);
+			else $result .= __a('Leave a comment', 'wppa_theme');
+		$result .= '</a></td></tr></tbody></table>';
+	$result .= '</div>';
 
 	return $result;
 }
@@ -1276,7 +1281,9 @@ global $wppa_opt;
 			$result['style'] .= ' width:' . $width . 'px;';
 			
 			if (!$wppa['auto_colwidth']) {
-				$result['style'] .= 'height:' . $height . 'px;';
+				$result['style'] .= ' height:' . $height . 'px;';
+				// There are still users that have #content .img {max-width: 640px; } and Table I item 1 larger than 640, so we increase max-width inline.
+	$result['style'] .= ' max-width:' . wppa_get_container_width() . 'px;';
 			}
 			
 			if ($wppa['is_slideonly'] == '1') {
