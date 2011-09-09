@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the upload/import pages and functions
-* Version 4.0.11
+* Version 4.0.12
 *
 */
 
@@ -597,6 +597,7 @@ function wppa_insert_photo ($file = '', $album = '', $name = '', $desc = '', $po
 	global $wpdb;
 	global $warning_given_small;
 	global $warning_given_big;
+	global $wppa_opt;
 	
 	if ($name == '') $name = basename($file);
 	if ($file != '' && $album != '' ) {
@@ -632,60 +633,22 @@ function wppa_insert_photo ($file = '', $album = '', $name = '', $desc = '', $po
 				return false;
 		}
 			
-if ($id == '0') {
-$id = wppa_nextkey(WPPA_PHOTOS);
-			$query = $wpdb->prepare('INSERT INTO `' . WPPA_PHOTOS . '` (`id`, `album`, `ext`, `name`, `p_order`, `description`, `mean_rating`, `linkurl`, `linktitle`, `timestamp`) VALUES (%s, %s, %s, %s, %s, %s, \'\', %s, %s, %s)', $id, $album, $ext, $name, $porder, $desc, $linkurl, $linktitle, time());
+		if ($id == '0') {
+			$id = wppa_nextkey(WPPA_PHOTOS);
+			if ( $desc == '' && $wppa_opt['wppa_apply_newphoto_desc'] == 'yes' ) {
+				$desc = stripslashes($wppa_opt['wppa_newphoto_description']);
+			}
+			$mrat = '0';
+			$query = $wpdb->prepare('INSERT INTO `' . WPPA_PHOTOS . '` (`id`, `album`, `ext`, `name`, `p_order`, `description`, `mean_rating`, `linkurl`, `linktitle`, `timestamp`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)', $id, $album, $ext, $name, $porder, $desc, $mrat, $linkurl, $linktitle, time());
 			if ($wpdb->query($query) === false) {
 				wppa_error_message(__('Could not insert photo. query=', 'wppa').$query);
 			}
-}
+		}
 
 		if ($id == '0') $image_id = $wpdb->get_var("SELECT LAST_INSERT_ID()");
 		else $image_id = $id;
 		
 		if ( wppa_make_the_photo_files($file, $image_id, $ext) ) return true;
-/*				
-		$newimage = WPPA_UPLOAD_PATH . '/' . $image_id . '.' . $ext;
-			
-		if (get_option('wppa_resize_on_upload', 'no') == 'yes') {
-			require_once('wppa-class-resize.php');
-			
-			if (wppa_is_wider($img_size[0], $img_size[1])) {
-				$dir = 'W';
-				$siz = get_option('wppa_fullsize', '640');
-				$s = $img_size[0];
-			}
-			else {
-				$dir = 'H';
-				$siz = get_option('wppa_maxheight', get_option('wppa_fullsize', '640'));
-				$s = $img_size[1];
-			}
-
-			if ($s > $siz) {	
-				$objResize = new wppa_ImageResize($file, $newimage, $dir, $siz);
-		$objResize->destroyImage($objResize->resOriginalImage);
-		$objResize->destroyImage($objResize->resResizedImage);
-			}
-			else {
-				copy($file, $newimage);
-			}
-		}
-		else {
-			copy($file, $newimage);
-		}
-
-		if (is_file ($newimage)) {
-			$thumbsize = wppa_get_minisize();
-			wppa_create_thumbnail($newimage, $thumbsize, '' );
-		} 
-		else {
-			wppa_error_message(__('ERROR: Resized or copied image could not be created.', 'wppa'));
-			return false;
-		}
-		echo('.');
-		return true;
-*/
-		
 	}
 	else {
 		wppa_error_message(__('ERROR: Unknown file or album.', 'wppa'));

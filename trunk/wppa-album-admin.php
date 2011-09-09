@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * create, edit and delete albums
-* version 4.0.11
+* version 4.0.12
 *
 */
 
@@ -22,7 +22,7 @@ function _wppa_admin() {
 			if ($_GET['edit_id'] == 'new') {
 				$name = __('New Album', 'wppa');
 				$id = wppa_nextkey(WPPA_ALBUMS);
-				$query = $wpdb->prepare('INSERT INTO `' . WPPA_ALBUMS . '` (`id`, `name`, `description`, `a_order`, `a_parent`, `p_order_by`, `main_photo`, `cover_linkpage`, `owner`, `timestamp`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)', $id, $name, '', '', '0', '', '0', '0', wppa_get_user(), time());
+				$query = $wpdb->prepare('INSERT INTO `' . WPPA_ALBUMS . '` (`id`, `name`, `description`, `a_order`, `a_parent`, `p_order_by`, `main_photo`, `cover_linkpage`, `owner`, `timestamp`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)', $id, $name, '', '0', '0', '0', '0', '0', wppa_get_user(), time());
 				$iret = $wpdb->query($query);
 				if ($iret === FALSE) {
 					wppa_error_message(__('Could not create album.', 'wppa').'<br/>Query = '.$query);

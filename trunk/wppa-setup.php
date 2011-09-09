@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 4.0.11
+* Version 4.0.12
 *
 */
 
@@ -73,9 +73,6 @@ function wppa_setup($force = false) {
 					
 	require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 
-//	if ($force) $iret = $wpdb->query("DROP TABLE ".WPPA_PHOTOS);
-//	echo 'iret = '.$iret;
-	
 	dbDelta( $create_albums );
 	dbDelta( $create_photos );
 	dbDelta( $create_rating );
@@ -91,7 +88,6 @@ function wppa_setup($force = false) {
 		delete_option('wppa_2col_treshold');
 		delete_option('wppa_3col_treshold');
 	}
-	
 	
 	wppa_set_defaults();
 	wppa_check_dirs();
@@ -145,6 +141,21 @@ function wppa_setup($force = false) {
 function wppa_set_defaults($force = false) {
 global $wppa_defaults;
 
+	$wppa_npd = 'The brief photo description';
+	$wppa_npd .= "\n".'<a href="javascript://" onClick="jQuery(\'.wppa-detail\').css(\'display\', \'block\'); jQuery(\'.wppa-more\').css(\'display\', \'none\');">';
+	$wppa_npd .= "\n".'<div class="wppa-more">'."\n".'More -->'."\n".'</div>';
+	$wppa_npd .= "\n".'</a>';
+	$wppa_npd .= "\n".'<a href="javascript://" onClick="jQuery(\'.wppa-detail\').css(\'display\', \'none\'); jQuery(\'.wppa-more\').css(\'display\', \'block\');">';
+	$wppa_npd .= "\n".'<div class="wppa-detail" style="display:none;" >'."\n".'<-- Less'."\n".'</div>';
+	$wppa_npd .= "\n".'</a>';
+	$wppa_npd .= "\n".'<div class="wppa-detail" style="display:none;">';
+	$wppa_npd .= "\n".'<table style="margin:0;" >';
+	$wppa_npd .= "\n".'<tr><td>Date Shot:</td><td>Feb 30 2011 17:37:39</td></tr>';
+	$wppa_npd .= "\n".'<tr><td>Artist:</td><td>Demos Examplos</td></tr>';
+	$wppa_npd .= "\n".'<tr><td>Copyright:</td><td>Lorem Ipse Inc. Ltd.</td></tr>';
+	$wppa_npd .= "\n".'</table>';
+	$wppa_npd .= "\n".'</div>';
+		
 	$wppa_defaults = array ( 'wppa_revision' 		=> '100',
 						'wppa_multisite'			=> 'no',	
 						'wppa_fullsize' 			=> '640',
@@ -250,8 +261,8 @@ global $wppa_defaults;
 						'wppa_fadein_after_fadeout' => 'no',
 						'wppa_widget_linkpage' 		=> '0',
 						'wppa_widget_linktype' 		=> 'album',
-		'wppa_widget_linkurl' => '',
-		'wppa_widget_linktitle' => '',
+						'wppa_widget_linkurl'		=> '',
+						'wppa_widget_linktitle' 	=> '',
 						'wppa_topten_widget_linkpage' 		=> '0',
 						'wppa_topten_widget_linktype' 		=> 'photo',
 						'wppa_slideonly_widget_linkpage' 	=> '0',
@@ -308,8 +319,10 @@ global $wppa_defaults;
 						'wppa_filter_priority'			=> '10',
 						'wppa_widget_width'				=> '200',
 						'wppa_custom_on' 				=> 'no',
-						'wppa_custom_content' 			=> '<div style="color:red; font-size:24px; font-weight:bold; text-align:center;">Hello world!</div>'
-
+						'wppa_custom_content' 			=> '<div style="color:red; font-size:24px; font-weight:bold; text-align:center;">Hello world!</div>',
+						'wppa_apply_newphoto_desc'		=> 'no',
+						'wppa_newphoto_description'		=> $wppa_npd,
+						'wppa_comments_desc'			=> 'no'
 
 						);
 	
@@ -325,7 +338,6 @@ function wppa_set_default($value, $key, $force) {
 		if (get_option($key, 'nil') == 'nil') update_option($key, $value);
 	}
 }
-
 
 // Check if the required directories exist, if not, try to create them and report it
 function wppa_check_dirs() {

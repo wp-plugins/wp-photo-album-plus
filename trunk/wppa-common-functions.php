@@ -2,11 +2,11 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 4.0.11
+* version 4.0.12
 *
 */
 global $wppa_api_version;
-$wppa_api_version = '4-0-10-000';
+$wppa_api_version = '4-0-12-000';
 // Initialize globals and option settings
 function wppa_initialize_runtime($force = false) {
 global $wppa;
@@ -223,7 +223,10 @@ global $blog_id;
 			'wppa_fontcolor_lightbox' => '',
 			'wppa_filter_priority' => '',
 			'wppa_custom_on' => '',
-			'wppa_custom_content' => ''
+			'wppa_custom_content' => '',
+			'wppa_apply_newphoto_desc' => '',
+			'wppa_newphoto_description' => '',
+			'wppa_comments_desc' => ''
 
 		);
 		array_walk($wppa_opt, 'wppa_set_options');
@@ -235,12 +238,6 @@ global $blog_id;
 		$wppa['debug'] = $key;
 	}
 	
-	
-/*
-/wp-content/blogs.dir/1/wppa-depot (For backups, etc)
-/wp-content/blogs.dir/2/wppa (For photo uploads, thumbnails...) 
-
-*/
 	if ( ! defined( 'WPPA_UPLOAD') ) {
 		if ( get_option('wppa_multisite', 'no') == 'yes' ) {	// DO NOT change this in $wppa_opt['wppa_multisite'] as it will not work
 			define( 'WPPA_UPLOAD', 'wp-content/blogs.dir/'.$blog_id);
@@ -489,8 +486,8 @@ global $wpdb;
 	return $name;
 }
 
+// Check if an image is more landscape that the width/height ratio set in Table I item 2 and 3
 function wppa_is_wider($x, $y) {
-
 	$ratioref = get_option('wppa_fullsize') / get_option('wppa_maxheight');
 	$ratio = $x / $y;
 	return ($ratio > $ratioref);
