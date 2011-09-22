@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wppa-zh_CN\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-09-09 14:56+0100\n"
-"PO-Revision-Date: 2011-09-09 14:56+0100\n"
+"POT-Creation-Date: 2011-09-19 10:33+0100\n"
+"PO-Revision-Date: 2011-09-19 10:33+0100\n"
 "Last-Translator: J.N. Breetvelt <OpaJaap@OpaJaap.nl>\n"
 "Language-Team: delthink <delthink@gmail.com>\n"
 "MIME-Version: 1.0\n"
@@ -39,151 +39,151 @@ msgstr "写设置备份文件时出错"
 msgid "Settings file not found"
 msgstr "文件未找到"
 
-#: wppa-admin-functions.php:262
-#: wppa-settings.php:1185
-#: wppa-settings.php:1201
+#: wppa-admin-functions.php:242
+#: wppa-settings.php:1187
+#: wppa-settings.php:1203
 msgid "Order #"
 msgstr "顺序"
 
-#: wppa-admin-functions.php:263
-#: wppa-album-admin.php:391
-#: wppa-settings.php:426
-#: wppa-settings.php:640
-#: wppa-settings.php:659
-#: wppa-settings.php:850
-#: wppa-settings.php:869
-#: wppa-settings.php:981
-#: wppa-settings.php:1003
-#: wppa-settings.php:1185
-#: wppa-settings.php:1201
-#: wppa-settings.php:1245
-#: wppa-settings.php:1265
-#: wppa-settings.php:1357
-#: wppa-settings.php:1378
-#: wppa-settings.php:1519
-#: wppa-settings.php:1540
-#: wppa-settings.php:1611
-#: wppa-settings.php:1630
-#: wppa-settings.php:1725
-#: wppa-settings.php:1745
-#: wppa-settings.php:1924
-#: wppa-settings.php:1943
+#: wppa-admin-functions.php:243
+#: wppa-album-admin.php:392
+#: wppa-settings.php:428
+#: wppa-settings.php:642
+#: wppa-settings.php:661
+#: wppa-settings.php:852
+#: wppa-settings.php:871
+#: wppa-settings.php:983
+#: wppa-settings.php:1005
+#: wppa-settings.php:1187
+#: wppa-settings.php:1203
+#: wppa-settings.php:1247
+#: wppa-settings.php:1267
+#: wppa-settings.php:1359
+#: wppa-settings.php:1380
+#: wppa-settings.php:1521
+#: wppa-settings.php:1542
+#: wppa-settings.php:1620
+#: wppa-settings.php:1639
+#: wppa-settings.php:1734
+#: wppa-settings.php:1754
+#: wppa-settings.php:1933
+#: wppa-settings.php:1952
 msgid "Name"
 msgstr "名称和描述"
 
-#: wppa-admin-functions.php:264
-#: wppa-settings.php:1185
-#: wppa-settings.php:1201
+#: wppa-admin-functions.php:244
+#: wppa-settings.php:1187
+#: wppa-settings.php:1203
 msgid "Random"
 msgstr "排序"
 
-#: wppa-admin-functions.php:302
-#: wppa-admin-functions.php:306
+#: wppa-admin-functions.php:282
+#: wppa-admin-functions.php:286
 msgid "Please supply a numeric value greater than or equal to"
 msgstr "请提供大于或等于一个更大的数字值"
 
-#: wppa-admin-functions.php:302
-#: wppa-admin-functions.php:306
+#: wppa-admin-functions.php:282
+#: wppa-admin-functions.php:286
 msgid "for"
 msgstr "为"
 
-#: wppa-admin-functions.php:306
+#: wppa-admin-functions.php:286
 msgid "and less than or equal to"
 msgstr "以及 小于或等于"
 
-#: wppa-admin-functions.php:424
+#: wppa-admin-functions.php:348
 msgid "Unsupported value in _wppa_chmod_ :"
 msgstr "不支持的值在_wppa_chmod_"
 
-#: wppa-admin-functions.php:429
+#: wppa-admin-functions.php:353
 #, fuzzy, php-format
 msgid "Unable to set the rights on %s to %o"
 msgstr "不能够旋转照片、错误；"
 
-#: wppa-admin-functions.php:432
+#: wppa-admin-functions.php:356
 #, php-format
 msgid "Rights %o set on %s"
 msgstr "权利 %o 设置 %s"
 
-#: wppa-admin-functions.php:605
+#: wppa-admin-functions.php:530
 msgid "Trying to fix "
 msgstr "尝试修复"
 
-#: wppa-admin-functions.php:636
+#: wppa-admin-functions.php:561
 msgid "Fixed extension for "
 msgstr "固定延长"
 
-#: wppa-admin-functions.php:639
+#: wppa-admin-functions.php:564
 msgid "Unable to fix extension for "
 msgstr "无法修复延长"
 
-#: wppa-admin-functions.php:643
+#: wppa-admin-functions.php:568
 msgid "Unknown extension for photo "
 msgstr "相片未知扩展 "
 
-#: wppa-admin-functions.php:643
+#: wppa-admin-functions.php:568
 msgid "Please change the name to something with the proper extension and try again!"
 msgstr "请更改名称的东西以适当延长，然后再试一次！"
 
-#: wppa-admin-functions.php:652
-#: wppa-admin-functions.php:655
-#: wppa-admin-functions.php:663
+#: wppa-admin-functions.php:577
+#: wppa-admin-functions.php:580
+#: wppa-admin-functions.php:588
 msgid "Orphan Photos"
 msgstr "单独相片"
 
-#: wppa-admin-functions.php:669
+#: wppa-admin-functions.php:594
 msgid "Could not recover orphanized photos."
 msgstr "无法恢复单独风格美化版照片。"
 
-#: wppa-admin-functions.php:675
-#: wppa-admin-functions.php:678
-#: wppa-admin-functions.php:681
+#: wppa-admin-functions.php:600
+#: wppa-admin-functions.php:603
+#: wppa-admin-functions.php:606
 msgid "Database fixed."
 msgstr "数据库修复。"
 
-#: wppa-admin-functions.php:675
+#: wppa-admin-functions.php:600
 msgid "orphanized photos recovered."
 msgstr "单独风格美化版照片恢复。"
 
-#: wppa-admin-functions.php:678
+#: wppa-admin-functions.php:603
 msgid "invalid entries removed:"
 msgstr "无效项删除："
 
-#: wppa-admin-functions.php:681
+#: wppa-admin-functions.php:606
 msgid "missing file extensions recovered."
 msgstr "恢复丢失的文件扩展名。"
 
-#: wppa-admin-functions.php:739
+#: wppa-admin-functions.php:664
 #, php-format
 msgid "File %s is of an unsupported filetype and has been removed."
 msgstr "文件%s是一个不受支持的文件类型，并已被删除。"
 
-#: wppa-admin-functions.php:759
+#: wppa-admin-functions.php:684
 #, fuzzy
 msgid "--- all ---"
 msgstr "--- 默认 ---"
 
-#: wppa-admin-functions.php:760
-#: wppa-common-functions.php:471
-#: wppa-settings.php:1016
-#: wppa-settings.php:1028
-#: wppa-settings.php:1080
-#: wppa-settings.php:1185
-#: wppa-settings.php:1201
+#: wppa-admin-functions.php:685
+#: wppa-common-functions.php:476
+#: wppa-settings.php:1018
+#: wppa-settings.php:1030
+#: wppa-settings.php:1082
+#: wppa-settings.php:1187
+#: wppa-settings.php:1203
 msgid "--- none ---"
 msgstr "---无---"
 
-#: wppa-admin-functions.php:777
-#: wppa-common-functions.php:472
+#: wppa-admin-functions.php:702
+#: wppa-common-functions.php:477
 msgid "--- separate ---"
 msgstr "--- 独立 ---"
 
-#: wppa-admin-functions.php:797
+#: wppa-admin-functions.php:722
 #, fuzzy
 msgid "Unable to update mean rating"
 msgstr "不能够旋转照片、错误；"
 
-#: wppa-admin-functions.php:804
+#: wppa-admin-functions.php:729
 msgid "No photos or error reading"
 msgstr ""
 
@@ -222,8 +222,8 @@ msgid "Manage comments"
 msgstr "管理照片"
 
 #: wppa-admin.php:42
-#: wppa-settings.php:916
-#: wppa-settings.php:1830
+#: wppa-settings.php:918
+#: wppa-settings.php:1839
 msgid "Comments"
 msgstr "评论"
 
@@ -249,23 +249,23 @@ msgid "The uploads directory does not exist or is not writable by the server. Pl
 msgstr "该上传目录不存在或不是由服务器可写。请确保<tt>wp-content/uploads/</tt>是由服务器写入。"
 
 #: wppa-album-admin.php:23
-#: wppa-settings.php:1864
+#: wppa-settings.php:1873
 #, fuzzy
 msgid "New Album"
 msgstr "创建新相册"
 
 #: wppa-album-admin.php:28
-#: wppa-album-admin.php:652
+#: wppa-album-admin.php:663
 msgid "Could not create album."
 msgstr "无法创建相册。"
 
 #: wppa-album-admin.php:35
-#: wppa-album-admin.php:656
+#: wppa-album-admin.php:667
 msgid "Album #"
 msgstr "相册#"
 
 #: wppa-album-admin.php:35
-#: wppa-album-admin.php:656
+#: wppa-album-admin.php:667
 msgid "Added."
 msgstr "新增"
 
@@ -281,311 +281,324 @@ msgstr "原片分辨率大小图片不存在"
 msgid "Thumbnail image did not exist."
 msgstr "缩略图不存在"
 
-#: wppa-album-admin.php:86
+#: wppa-album-admin.php:87
 msgid "Photo copied"
 msgstr "照片复制"
 
-#: wppa-album-admin.php:89
+#: wppa-album-admin.php:90
 msgid "Unable to copy photo, error:"
 msgstr "无法复制照片，错误"
 
-#: wppa-album-admin.php:100
+#: wppa-album-admin.php:101
 msgid "Photo rotated"
 msgstr "图片旋转"
 
-#: wppa-album-admin.php:104
+#: wppa-album-admin.php:105
 msgid "Unable to rotate photo, error:"
 msgstr "不能够旋转照片、错误；"
 
-#: wppa-album-admin.php:108
+#: wppa-album-admin.php:109
 msgid "Internal fatal error while getting rotation data"
 msgstr "内部错误而获得旋转数据"
 
-#: wppa-album-admin.php:116
+#: wppa-album-admin.php:117
 msgid "Edit Album Information"
 msgstr "编辑相册信息"
 
-#: wppa-album-admin.php:117
+#: wppa-album-admin.php:118
 msgid "Album number:"
 msgstr "相册序号"
 
-#: wppa-album-admin.php:125
-#: wppa-album-admin.php:141
-#: wppa-album-admin.php:547
-#: wppa-album-admin.php:563
+#: wppa-album-admin.php:126
+#: wppa-album-admin.php:142
+#: wppa-album-admin.php:558
+#: wppa-album-admin.php:574
 msgid "Name:"
 msgstr "名字:"
 
-#: wppa-album-admin.php:129
-#: wppa-album-admin.php:147
+#: wppa-album-admin.php:130
+#: wppa-album-admin.php:148
 msgid "Type the name of the album. Do not leave this empty."
 msgstr "键入专辑的名称。不留空白。"
 
-#: wppa-album-admin.php:158
-#: wppa-album-admin.php:174
-#: wppa-album-admin.php:580
-#: wppa-album-admin.php:595
+#: wppa-album-admin.php:159
+#: wppa-album-admin.php:175
+#: wppa-album-admin.php:591
+#: wppa-album-admin.php:606
 msgid "Description:"
 msgstr "说明："
 
-#: wppa-album-admin.php:162
-#: wppa-album-admin.php:180
+#: wppa-album-admin.php:163
+#: wppa-album-admin.php:181
 msgid "Enter / modify the description for this album."
 msgstr "进入/修改为这张专辑的描述。"
 
-#: wppa-album-admin.php:191
+#: wppa-album-admin.php:192
 msgid "Owned by:"
 msgstr "递属于："
 
-#: wppa-album-admin.php:196
+#: wppa-album-admin.php:197
 msgid "WARNING If you change the owner, you will no longer be able to modify this album and upload or import photos to it!"
 msgstr "警告：如果您更改所有者，您将不再能够修改这张专辑和上传或导入照片了！"
 
-#: wppa-album-admin.php:204
+#: wppa-album-admin.php:205
 msgid "Sort order #:"
 msgstr "排序顺序#："
 
-#: wppa-album-admin.php:210
+#: wppa-album-admin.php:211
 msgid "Album order # has only effect if you set the album sort order method to <b>Order #</b> in the Photo Albums -> Settings screen."
 msgstr "专辑顺序#具有唯一的作用，如果你设置了相册排序的方法来<b>排序</b> -> 设置。"
 
-#: wppa-album-admin.php:213
+#: wppa-album-admin.php:214
 msgid "If you want to sort the albums by order #, enter / modify the order number here."
 msgstr "如果你想排序订单#的相册，在此输入/修改订单号码。"
 
-#: wppa-album-admin.php:219
+#: wppa-album-admin.php:220
 msgid "Parent album:"
 msgstr "父级专辑"
 
-#: wppa-album-admin.php:224
+#: wppa-album-admin.php:225
 msgid "If this is a sub album, select the album in which this album will appear."
 msgstr "如果这是一个子专辑，这张专辑中选择这张专辑将会出现。"
 
-#: wppa-album-admin.php:232
+#: wppa-album-admin.php:233
 msgid "Photo order:"
 msgstr "照片顺序"
 
-#: wppa-album-admin.php:235
-#: wppa-settings.php:1080
-#: wppa-settings.php:1101
+#: wppa-album-admin.php:236
+#: wppa-settings.php:1082
+#: wppa-settings.php:1103
 msgid "--- default ---"
 msgstr "--- 默认 ---"
 
-#: wppa-album-admin.php:235
-#: wppa-settings.php:1201
-#: wppa-settings.php:1827
+#: wppa-album-admin.php:236
+#: wppa-settings.php:1203
+#: wppa-settings.php:1836
 msgid "Rating"
 msgstr "评分"
 
-#: wppa-album-admin.php:237
+#: wppa-album-admin.php:238
 msgid "Specify the way the photos should be ordered in this album."
 msgstr "指定的方式应该放置照片进这张专辑。"
 
-#: wppa-album-admin.php:238
+#: wppa-album-admin.php:239
 msgid "The default setting can be changed in the Options page."
 msgstr "改变默认设置在选项页面。"
 
-#: wppa-album-admin.php:245
+#: wppa-album-admin.php:246
 msgid "Cover Photo:"
 msgstr "封面照片："
 
-#: wppa-album-admin.php:249
+#: wppa-album-admin.php:250
 msgid "Select the photo you want to appear on the cover of this album."
 msgstr "选择您想要的照片出现在这张专辑的封面。"
 
-#: wppa-album-admin.php:255
+#: wppa-album-admin.php:256
 msgid "Link to:"
 msgstr "链接到："
 
-#: wppa-album-admin.php:261
-#: wppa-settings.php:2279
+#: wppa-album-admin.php:262
+#: wppa-settings.php:2288
 msgid "There are no pages (yet) to link to."
 msgstr "没有页面链接。"
 
-#: wppa-album-admin.php:267
+#: wppa-album-admin.php:268
 msgid "--- the album's content ---"
 msgstr "--- 相册目录（内容） ---"
 
-#: wppa-album-admin.php:271
+#: wppa-album-admin.php:272
 msgid "--- no link at all ---"
 msgstr "--- 没有链接 ---"
 
-#: wppa-album-admin.php:274
+#: wppa-album-admin.php:275
 #, fuzzy
 msgid "If you want, you can link the title to a WP page in stead of the album's content. If so, select the page the title links to."
 msgstr "如果你愿意，你可以把链接的标题和封面照片添加在一个wp专辑的内容页面。如果是这样，选择页面上的封面照片链接。"
 
-#: wppa-album-admin.php:283
+#: wppa-album-admin.php:284
 msgid "Reset ratings:"
 msgstr "重置评级:"
 
-#: wppa-album-admin.php:287
+#: wppa-album-admin.php:288
 msgid "WARNING: If checked, this will clear all ratings in this album!"
 msgstr "警告：如果勾选此项，这将清除在此相册中的所有评级！"
 
-#: wppa-album-admin.php:295
+#: wppa-album-admin.php:296
 msgid "Manage Photos"
 msgstr "管理照片"
 
-#: wppa-album-admin.php:299
-#: wppa-album-admin.php:453
+#: wppa-album-admin.php:300
+#: wppa-album-admin.php:454
 msgid "Save All Changes"
 msgstr "保存所有更改"
 
-#: wppa-album-admin.php:314
+#: wppa-album-admin.php:315
 msgid "Delete Album"
 msgstr "删除相册"
 
-#: wppa-album-admin.php:316
-#: wppa-album-admin.php:480
+#: wppa-album-admin.php:317
+#: wppa-album-admin.php:491
 msgid "Album:"
 msgstr "相册："
 
-#: wppa-album-admin.php:317
+#: wppa-album-admin.php:318
 msgid "Are you sure you want to delete this album?"
 msgstr "你确定要删除此相册？"
 
-#: wppa-album-admin.php:318
+#: wppa-album-admin.php:319
 msgid "Press Delete to continue, and Cancel to go back."
 msgstr "按Delete键继续，并返回。"
 
-#: wppa-album-admin.php:323
+#: wppa-album-admin.php:324
 msgid "What would you like to do with photos currently in the album?"
 msgstr "您想要如何处理目前相册中的照片？"
 
-#: wppa-album-admin.php:324
-#: wppa-album-admin.php:331
-#: wppa-album-admin.php:400
-#: wppa-album-admin.php:423
-#: wppa-comment-admin.php:219
-#: wppa-comment-admin.php:246
-#: wppa-comment-admin.php:262
+#: wppa-album-admin.php:325
+#: wppa-album-admin.php:332
+#: wppa-album-admin.php:401
+#: wppa-album-admin.php:424
+#: wppa-comment-admin.php:220
+#: wppa-comment-admin.php:248
+#: wppa-comment-admin.php:265
 msgid "Delete"
 msgstr "删除"
 
-#: wppa-album-admin.php:325
+#: wppa-album-admin.php:326
 msgid "Move to:"
 msgstr "移动到："
 
-#: wppa-album-admin.php:330
+#: wppa-album-admin.php:331
 msgid "Cancel"
 msgstr "取消"
 
-#: wppa-album-admin.php:367
+#: wppa-album-admin.php:368
 msgid "Manage Albums"
 msgstr "管理相册"
 
-#: wppa-album-admin.php:371
+#: wppa-album-admin.php:372
 #, fuzzy
 msgid "Are you sure you want to create a new album?"
 msgstr "你确定要删除此相册？"
 
-#: wppa-album-admin.php:374
+#: wppa-album-admin.php:375
 #, fuzzy
 msgid "Create New Empty Album"
 msgstr "创建新相册"
 
-#: wppa-album-admin.php:392
-#: wppa-settings.php:427
-#: wppa-settings.php:641
-#: wppa-settings.php:660
-#: wppa-settings.php:851
-#: wppa-settings.php:870
-#: wppa-settings.php:982
-#: wppa-settings.php:1004
-#: wppa-settings.php:1246
-#: wppa-settings.php:1266
-#: wppa-settings.php:1358
-#: wppa-settings.php:1379
-#: wppa-settings.php:1520
-#: wppa-settings.php:1541
-#: wppa-settings.php:1612
-#: wppa-settings.php:1631
-#: wppa-settings.php:1726
-#: wppa-settings.php:1746
-#: wppa-settings.php:1925
-#: wppa-settings.php:1944
+#: wppa-album-admin.php:393
+#: wppa-settings.php:429
+#: wppa-settings.php:643
+#: wppa-settings.php:662
+#: wppa-settings.php:853
+#: wppa-settings.php:872
+#: wppa-settings.php:984
+#: wppa-settings.php:1006
+#: wppa-settings.php:1248
+#: wppa-settings.php:1268
+#: wppa-settings.php:1360
+#: wppa-settings.php:1381
+#: wppa-settings.php:1522
+#: wppa-settings.php:1543
+#: wppa-settings.php:1621
+#: wppa-settings.php:1640
+#: wppa-settings.php:1735
+#: wppa-settings.php:1755
+#: wppa-settings.php:1934
+#: wppa-settings.php:1953
 msgid "Description"
 msgstr "描述"
 
-#: wppa-album-admin.php:393
+#: wppa-album-admin.php:394
 msgid "ID"
 msgstr "ID"
 
-#: wppa-album-admin.php:395
+#: wppa-album-admin.php:396
 msgid "Owner"
 msgstr "所有者"
 
-#: wppa-album-admin.php:397
+#: wppa-album-admin.php:398
 msgid "Order"
 msgstr "次序"
 
-#: wppa-album-admin.php:398
+#: wppa-album-admin.php:399
 msgid "Parent"
 msgstr "父级"
 
-#: wppa-album-admin.php:399
-#: wppa-album-admin.php:419
-#: wppa-comment-admin.php:218
-#: wppa-comment-admin.php:245
-#: wppa-comment-admin.php:261
+#: wppa-album-admin.php:400
+#: wppa-album-admin.php:420
+#: wppa-comment-admin.php:219
+#: wppa-comment-admin.php:247
+#: wppa-comment-admin.php:264
 msgid "Edit"
 msgstr "编辑"
 
-#: wppa-album-admin.php:433
+#: wppa-album-admin.php:434
 msgid "No albums yet."
 msgstr "没有相册。"
 
-#: wppa-album-admin.php:446
+#: wppa-album-admin.php:447
 msgid "No photos yet in this album."
 msgstr "专辑中没有照片。"
 
-#: wppa-album-admin.php:462
+#: wppa-album-admin.php:463
 msgid "Preview:"
 msgstr "预览："
 
-#: wppa-album-admin.php:465
-#: wppa-album-admin.php:468
+#: wppa-album-admin.php:466
+#: wppa-album-admin.php:469
 msgid "Are you sure you want to rotate this photo?"
 msgstr "您确定要旋转此照片吗？"
 
-#: wppa-album-admin.php:465
+#: wppa-album-admin.php:466
 msgid "Rotate left"
 msgstr "向左旋转"
 
-#: wppa-album-admin.php:468
+#: wppa-album-admin.php:469
 msgid "Rotate right"
 msgstr "向右旋转"
 
-#: wppa-album-admin.php:469
+#: wppa-album-admin.php:470
 msgid "If it says 'Photo rotated', the photo is rotated. If you do not see it happen here, clear your browser cache."
 msgstr "如果它提示”相片旋转”，相片将旋转。如果你没看到它旋转，清空你的浏览器缓存"
 
-#: wppa-album-admin.php:489
+#: wppa-album-admin.php:481
+#, fuzzy
+msgid "Upload:"
+msgstr "上传 "
+
+#: wppa-album-admin.php:485
+msgid "On:"
+msgstr ""
+
+#: wppa-album-admin.php:485
+msgid "By:"
+msgstr ""
+
+#: wppa-album-admin.php:500
 msgid "Photo order #:"
 msgstr "照片顺序#："
 
-#: wppa-album-admin.php:499
+#: wppa-album-admin.php:510
 msgid "Are you sure you want to copy this photo?"
 msgstr "您确定要复制此照片吗？"
 
-#: wppa-album-admin.php:499
+#: wppa-album-admin.php:510
 msgid "Please select an album to copy the photo to first."
 msgstr "请选择一个相册的照片复制到第一。"
 
-#: wppa-album-admin.php:499
+#: wppa-album-admin.php:510
 msgid "Copy photo to"
 msgstr "复制照片到"
 
-#: wppa-album-admin.php:502
+#: wppa-album-admin.php:513
 msgid "Are you sure you want to delete this photo?"
 msgstr "你确定要删除此照片吗？"
 
-#: wppa-album-admin.php:502
+#: wppa-album-admin.php:513
 msgid "Delete photo"
 msgstr "删除照片"
 
-#: wppa-album-admin.php:504
+#: wppa-album-admin.php:515
 msgid ""
 "Insert code for single image in Page or Post:\\n"
 "You may change the size if you like."
@@ -593,70 +606,70 @@ msgstr ""
 "在页面中插入代码或单幅图像:\\n"
 "你可以改变它的大小。"
 
-#: wppa-album-admin.php:504
+#: wppa-album-admin.php:515
 msgid "Insertion Code"
 msgstr "插入代码"
 
-#: wppa-album-admin.php:509
+#: wppa-album-admin.php:520
 msgid "Rating:"
 msgstr "评分："
 
-#: wppa-album-admin.php:509
+#: wppa-album-admin.php:520
 msgid "Entries:"
 msgstr "条目"
 
-#: wppa-album-admin.php:509
+#: wppa-album-admin.php:520
 msgid "Mean value:"
 msgstr "平均值："
 
-#: wppa-album-admin.php:516
+#: wppa-album-admin.php:527
 msgid "Link url:"
 msgstr "链接地址："
 
-#: wppa-album-admin.php:525
+#: wppa-album-admin.php:536
 msgid "Link title:"
 msgstr "链接标题："
 
-#: wppa-album-admin.php:536
+#: wppa-album-admin.php:547
 #, fuzzy
 msgid "If you want this link to be used, check 'PS Overrule' checkbox in table VI of the Photo Albums -> Settings admin page."
 msgstr "如果您想使用此链接，选择”该照片链接”在表六的相册 ->设置管理页面。"
 
-#: wppa-album-admin.php:551
-#: wppa-album-admin.php:569
+#: wppa-album-admin.php:562
+#: wppa-album-admin.php:580
 msgid "Type/alter the name of the photo. It is NOT a filename and needs no file extension like .jpg."
 msgstr "类型/修改照片的名称。它不是一个文件名和文件扩展名，不需要像jpg文件扩展名。"
 
-#: wppa-album-admin.php:659
-#: wppa-album-admin.php:759
+#: wppa-album-admin.php:670
+#: wppa-album-admin.php:770
 msgid "Album Name cannot be empty."
 msgstr "相册名称不能为空。"
 
-#: wppa-album-admin.php:738
+#: wppa-album-admin.php:749
 msgid "Could not update photo."
 msgstr "无法更新照片。"
 
-#: wppa-album-admin.php:751
+#: wppa-album-admin.php:762
 msgid "Album could not be updated."
 msgstr "相册无法更新。"
 
-#: wppa-album-admin.php:754
+#: wppa-album-admin.php:765
 msgid "Album information edited."
 msgstr "相册信息编辑。"
 
-#: wppa-album-admin.php:754
+#: wppa-album-admin.php:765
 msgid "Back to album management."
 msgstr "返回相册管理。"
 
-#: wppa-album-admin.php:796
+#: wppa-album-admin.php:809
 msgid "Album Deleted."
 msgstr "相册删除。"
 
-#: wppa-album-admin.php:809
+#: wppa-album-admin.php:822
 msgid "--- random ---"
 msgstr "--- 随机 ---"
 
-#: wppa-album-admin.php:823
+#: wppa-album-admin.php:836
 msgid "No photos yet"
 msgstr "没有照片"
 
@@ -684,8 +697,8 @@ msgid "Comment:"
 msgstr "评论:"
 
 #: wppa-comment-admin.php:65
-#: wppa-comment-admin.php:311
-#: wppa-settings.php:2349
+#: wppa-comment-admin.php:314
+#: wppa-settings.php:2358
 msgid "Save Changes"
 msgstr "保存更改 "
 
@@ -697,7 +710,7 @@ msgid "Could not bulk update status"
 msgstr "无法更新照片。"
 
 #: wppa-comment-admin.php:128
-#: wppa-settings.php:348
+#: wppa-settings.php:350
 msgid "Changes Saved"
 msgstr "保存更改"
 
@@ -784,157 +797,173 @@ msgid "Delete all spam"
 msgstr "删除相册"
 
 #: wppa-comment-admin.php:211
-#: wppa-comment-admin.php:254
+#: wppa-comment-admin.php:256
 #, fuzzy
 msgid "Photo"
 msgstr "照片"
 
 #: wppa-comment-admin.php:212
-#: wppa-comment-admin.php:255
-#: wppa-settings.php:425
-#: wppa-settings.php:639
-#: wppa-settings.php:658
-#: wppa-settings.php:849
-#: wppa-settings.php:868
-#: wppa-settings.php:980
-#: wppa-settings.php:1002
-#: wppa-settings.php:1244
-#: wppa-settings.php:1264
-#: wppa-settings.php:1356
-#: wppa-settings.php:1377
-#: wppa-settings.php:1518
-#: wppa-settings.php:1539
-#: wppa-settings.php:1610
-#: wppa-settings.php:1629
-#: wppa-settings.php:1724
-#: wppa-settings.php:1744
-#: wppa-settings.php:1923
+#: wppa-comment-admin.php:257
+#: wppa-settings.php:427
+#: wppa-settings.php:641
+#: wppa-settings.php:660
+#: wppa-settings.php:851
+#: wppa-settings.php:870
+#: wppa-settings.php:982
+#: wppa-settings.php:1004
+#: wppa-settings.php:1246
+#: wppa-settings.php:1266
+#: wppa-settings.php:1358
+#: wppa-settings.php:1379
+#: wppa-settings.php:1520
+#: wppa-settings.php:1541
+#: wppa-settings.php:1619
+#: wppa-settings.php:1638
+#: wppa-settings.php:1733
+#: wppa-settings.php:1753
+#: wppa-settings.php:1932
 msgid "#"
 msgstr "#"
 
 #: wppa-comment-admin.php:213
-#: wppa-comment-admin.php:256
+#: wppa-comment-admin.php:258
+msgid "IP"
+msgstr ""
+
+#: wppa-comment-admin.php:214
+#: wppa-comment-admin.php:259
 msgid "User"
 msgstr "用户名"
 
-#: wppa-comment-admin.php:214
-#: wppa-comment-admin.php:257
+#: wppa-comment-admin.php:215
+#: wppa-comment-admin.php:260
 msgid "Email"
 msgstr "邮件"
 
-#: wppa-comment-admin.php:215
-#: wppa-comment-admin.php:258
+#: wppa-comment-admin.php:216
+#: wppa-comment-admin.php:261
 msgid "Time since"
 msgstr "时间来自于"
 
-#: wppa-comment-admin.php:216
-#: wppa-comment-admin.php:259
+#: wppa-comment-admin.php:217
+#: wppa-comment-admin.php:262
 msgid "Comment"
 msgstr "评论"
 
-#: wppa-comment-admin.php:217
-#: wppa-comment-admin.php:260
+#: wppa-comment-admin.php:218
+#: wppa-comment-admin.php:263
 #, fuzzy
 msgid "Status"
 msgstr "开始"
 
-#: wppa-comment-admin.php:237
+#: wppa-comment-admin.php:239
 #, fuzzy
 msgid "Pending"
 msgstr "降序 "
 
-#: wppa-comment-admin.php:238
+#: wppa-comment-admin.php:240
 msgid "Approved"
 msgstr "批准"
 
-#: wppa-comment-admin.php:239
+#: wppa-comment-admin.php:241
 msgid "Spam"
 msgstr "垃圾"
 
-#: wppa-comment-admin.php:246
+#: wppa-comment-admin.php:248
 #, fuzzy
 msgid "Are you sure you want to delete this comment?"
 msgstr "你确定要删除此照片吗？"
 
-#: wppa-comment-admin.php:297
-#: wppa-comment-admin.php:303
+#: wppa-comment-admin.php:300
+#: wppa-comment-admin.php:306
 #, fuzzy
 msgid "Unable to update comment. Err ="
 msgstr "不能够旋转照片、错误；"
 
-#: wppa-comment-admin.php:322
+#: wppa-comment-admin.php:325
 #, fuzzy
 msgid "Prev page"
 msgstr "搜索页面"
 
-#: wppa-comment-admin.php:335
+#: wppa-comment-admin.php:338
 #, fuzzy
 msgid "Next page"
 msgstr "搜索页面"
 
-#: wppa-common-functions.php:540
+#: wppa-common-functions.php:545
 msgid "1 second"
 msgstr "1秒"
 
-#: wppa-common-functions.php:541
+#: wppa-common-functions.php:546
 msgid "seconds"
 msgstr "秒"
 
-#: wppa-common-functions.php:545
+#: wppa-common-functions.php:550
 msgid "1 minute"
 msgstr "1分钟"
 
-#: wppa-common-functions.php:546
+#: wppa-common-functions.php:551
 msgid "minutes"
 msgstr "分钟"
 
-#: wppa-common-functions.php:550
+#: wppa-common-functions.php:555
 #, fuzzy
 msgid "1 hour"
 msgstr "小时"
 
-#: wppa-common-functions.php:551
+#: wppa-common-functions.php:556
 #, fuzzy
 msgid "hours"
 msgstr "小时"
 
-#: wppa-common-functions.php:555
+#: wppa-common-functions.php:560
 #, fuzzy
 msgid "1 day"
 msgstr "天"
 
-#: wppa-common-functions.php:556
+#: wppa-common-functions.php:561
 #, fuzzy
 msgid "days"
 msgstr "天"
 
-#: wppa-common-functions.php:560
+#: wppa-common-functions.php:565
 #, fuzzy
 msgid "1 week"
 msgstr "星期"
 
-#: wppa-common-functions.php:561
+#: wppa-common-functions.php:566
 #, fuzzy
 msgid "weeks"
 msgstr "星期"
 
-#: wppa-common-functions.php:565
+#: wppa-common-functions.php:570
 msgid "1 month"
 msgstr "1个月"
 
-#: wppa-common-functions.php:566
+#: wppa-common-functions.php:571
 #, fuzzy
 msgid "months"
 msgstr "字体："
 
-#: wppa-common-functions.php:569
+#: wppa-common-functions.php:574
 msgid "1 year"
 msgstr "1年"
 
-#: wppa-common-functions.php:570
+#: wppa-common-functions.php:575
 #, fuzzy
 msgid "years"
 msgstr "yes."
+
+#: wppa-common-functions.php:709
+#: wppa-common-functions.php:710
+msgid "ERROR: Resized or copied image could not be created."
+msgstr "错误：无法调整大小或复制的图像"
+
+#: wppa-common-functions.php:717
+#: wppa-common-functions.php:718
+#, php-format
+msgid "ERROR: File %s is not a valid picture file."
+msgstr ""
 
 #: wppa-export.php:40
 #, php-format
@@ -1014,6 +1043,21 @@ msgstr "无法打开照片并导出文件。"
 #: wppa-export.php:257
 msgid "Could not read photo data."
 msgstr "无法读取照片数据。"
+
+#: wppa-functions.php:3221
+#, fuzzy
+msgid "Could not insert photo into db."
+msgstr "无法插入照片。查询="
+
+#: wppa-functions.php:3225
+#, fuzzy
+msgid "Photo successfully uploaded."
+msgstr "成功上传。"
+
+#: wppa-functions.php:3228
+#, fuzzy
+msgid "Upload failed"
+msgstr "上传 "
 
 #: wppa-gp-widget.php:16
 msgid "WPPA+ General purpose widget"
@@ -1298,7 +1342,7 @@ msgid "For more information on creating custom page templates, click"
 msgstr "点击创建有关自定义页面模板的信息，"
 
 #: wppa-help.php:112
-#: wppa-settings.php:369
+#: wppa-settings.php:371
 msgid "here"
 msgstr "这里"
 
@@ -1553,7 +1597,7 @@ msgid "Widget image thumbnail size"
 msgstr "Widget图像的缩略图大小"
 
 #: wppa-settings.php:146
-#: wppa-settings.php:572
+#: wppa-settings.php:574
 #, fuzzy
 msgid "Max Cover width"
 msgstr "边框宽度"
@@ -1568,12 +1612,12 @@ msgid "Border width"
 msgstr "边框宽度"
 
 #: wppa-settings.php:157
-#: wppa-settings.php:596
+#: wppa-settings.php:598
 msgid "Border radius"
 msgstr "边框半径"
 
 #: wppa-settings.php:162
-#: wppa-settings.php:605
+#: wppa-settings.php:607
 #, fuzzy
 msgid "Popup size"
 msgstr "TopTen大小"
@@ -1584,7 +1628,7 @@ msgid "Fullsize border width"
 msgstr "原片分辨率大小宽度"
 
 #: wppa-settings.php:169
-#: wppa-settings.php:627
+#: wppa-settings.php:629
 #, fuzzy
 msgid "Lightbox Bordersize"
 msgstr "照片顺序"
@@ -1603,2573 +1647,2587 @@ msgstr "不透明度。"
 msgid "Changes in accesslevels will not be made. It is set to be done by an other program."
 msgstr "访问级别更改不成功，该级别已被另一程序设置。"
 
-#: wppa-settings.php:340
+#: wppa-settings.php:342
 msgid "Filter priority"
 msgstr ""
 
-#: wppa-settings.php:345
+#: wppa-settings.php:347
 msgid "Other changes saved"
 msgstr "另存为"
 
-#: wppa-settings.php:353
+#: wppa-settings.php:355
 msgid "You use lightbox, but you disabled the lightbox that comes with WPPA+. Either check Table IX item 9 or make sure you have a lightbox enabled."
 msgstr "您使用lightbox，但你禁用的lightbox与WPPA+。无论是检查表IX第9项，或确保您已经启用了lightbox 。"
 
-#: wppa-settings.php:355
+#: wppa-settings.php:357
 msgid "You can not have popup and lightbox on thumbnails at the same time. Uncheck either Table IV item 12 or choose a different linktype in Table VI item 2."
 msgstr "您不能在同一时间上弹出缩略图和lightbox。取消选中任一表四项目12或表VI项目2中选择一个不同的链接类型。"
 
-#: wppa-settings.php:367
+#: wppa-settings.php:369
 #, fuzzy, php-format
 msgid "Regenerating thumbnail images, starting at id=%s. Please wait...<br />"
 msgstr "再生缩略图，开始ID="
 
-#: wppa-settings.php:368
+#: wppa-settings.php:370
 #, fuzzy
 msgid "If the line of dots stops growing or your browser reports Ready but you did NOT get a 'READY regenerating thumbnail images' message, your server has given up. In that case: continue this action by clicking"
 msgstr "如果点线停止增长或您的浏览器报告准备好，但你没有得到一个'做好准备再生缩略图'消息，您的服务器已经放弃了。在这种情况下：继续通过点击这个动作"
 
-#: wppa-settings.php:370
+#: wppa-settings.php:372
 msgid "and click \"Save Changes\" again."
 msgstr "然后点击 \"存修改\"。"
 
-#: wppa-settings.php:373
+#: wppa-settings.php:375
 #, php-format
 msgid "<br /><br />Your server reports that the elapsed time for this operation is limited to %s seconds."
 msgstr "<br /><br />您的服务器的报告经过此操作的时间是有限的%s秒，。"
 
-#: wppa-settings.php:374
+#: wppa-settings.php:376
 msgid "<br />There may also be other restrictions set by the server, like cpu time limit."
 msgstr "<br />也可能像CPU时间限制，由服务器设置的其他限制。"
 
-#: wppa-settings.php:380
+#: wppa-settings.php:382
 msgid "READY regenerating thumbnail images."
 msgstr "准备生成缩略图。"
 
-#: wppa-settings.php:384
+#: wppa-settings.php:386
 msgid "Regeneration of thumbnail images interrupted. Please press \"Save Changes\""
 msgstr "生成缩略图图像中断。请按\"保存更改\""
 
-#: wppa-settings.php:394
+#: wppa-settings.php:396
 msgid "WP Photo Album Plus Settings"
 msgstr "WP Photo Album Plus 设置"
 
-#: wppa-settings.php:395
+#: wppa-settings.php:397
 msgid "Database revision:"
 msgstr "数据库修改："
 
-#: wppa-settings.php:395
+#: wppa-settings.php:397
 msgid "WP Charset:"
 msgstr "WP 编码："
 
-#: wppa-settings.php:397
+#: wppa-settings.php:399
 msgid "Multisite enabled. "
 msgstr "多站点启用。"
 
-#: wppa-settings.php:398
+#: wppa-settings.php:400
 msgid "Blogid = "
 msgstr "Blogid = "
 
-#: wppa-settings.php:401
+#: wppa-settings.php:403
 msgid "WPPA+ multisite is NOT enabled"
 msgstr "WPPA+多点是不启用"
 
-#: wppa-settings.php:403
+#: wppa-settings.php:405
 msgid "This site is a part of a multisite WP installation. It may still contain photos in single site mode.<br /><br />"
 msgstr "这个网站是一个多点WP安装的一部分。它可能仍然包含在单一网站模式下的照片。<br /><br />"
 
-#: wppa-settings.php:404
+#: wppa-settings.php:406
 msgid "If you want to keep those photos, use Photo Albums -> Export to save them.<br /><br />"
 msgstr "如果您想保留这些照片，使用相册 - >“导出”来拯救他们。<br /><br />"
 
-#: wppa-settings.php:405
+#: wppa-settings.php:407
 msgid "If you saved them already, or if they may be lost, check the <b>Enable WPPA+ multisite</b> checkbox in <b>Table IX item 0</b> and press Save Changes.<br /><br />"
 msgstr "如果你导出成功，或如果他们可能会丢失，检查<b>表IX</b>项目0，然后按<b>启用WPPA+多点</b>“复选框保存更改。<br/><br/>"
 
-#: wppa-settings.php:406
-#: wppa-settings.php:1760
+#: wppa-settings.php:408
+#: wppa-settings.php:1769
 msgid "This will DISCARD THE EXISTING PHOTOS and enable this site in multisite mode."
 msgstr "这将放弃现有的照片，并在多点模式下启用此网站。"
 
-#: wppa-settings.php:417
+#: wppa-settings.php:419
 msgid "Table I:"
 msgstr "表一："
 
-#: wppa-settings.php:417
+#: wppa-settings.php:419
 msgid "Sizes:"
 msgstr "尺寸："
 
-#: wppa-settings.php:418
+#: wppa-settings.php:420
 msgid "This table describes all the sizes and size options (except fontsizes) for the generation and display of the WPPA+ elements."
 msgstr "此表描述了生成和WPPA+元素显示所有的大小和大小选项（除字体大小）。"
 
-#: wppa-settings.php:428
-#: wppa-settings.php:642
-#: wppa-settings.php:661
-#: wppa-settings.php:852
-#: wppa-settings.php:1005
-#: wppa-settings.php:1247
-#: wppa-settings.php:1542
-#: wppa-settings.php:1613
-#: wppa-settings.php:1747
-#: wppa-settings.php:1926
+#: wppa-settings.php:430
+#: wppa-settings.php:644
+#: wppa-settings.php:663
+#: wppa-settings.php:854
+#: wppa-settings.php:1007
+#: wppa-settings.php:1249
+#: wppa-settings.php:1544
+#: wppa-settings.php:1622
+#: wppa-settings.php:1756
+#: wppa-settings.php:1935
 msgid "Setting"
 msgstr "设置"
 
-#: wppa-settings.php:429
-#: wppa-settings.php:643
-#: wppa-settings.php:662
-#: wppa-settings.php:853
-#: wppa-settings.php:875
-#: wppa-settings.php:987
-#: wppa-settings.php:1006
-#: wppa-settings.php:1248
-#: wppa-settings.php:1270
-#: wppa-settings.php:1362
-#: wppa-settings.php:1383
-#: wppa-settings.php:1524
-#: wppa-settings.php:1543
-#: wppa-settings.php:1614
-#: wppa-settings.php:1634
-#: wppa-settings.php:1729
-#: wppa-settings.php:1748
-#: wppa-settings.php:1927
+#: wppa-settings.php:431
+#: wppa-settings.php:645
+#: wppa-settings.php:664
+#: wppa-settings.php:855
+#: wppa-settings.php:877
+#: wppa-settings.php:989
+#: wppa-settings.php:1008
+#: wppa-settings.php:1250
+#: wppa-settings.php:1272
+#: wppa-settings.php:1364
+#: wppa-settings.php:1385
+#: wppa-settings.php:1526
+#: wppa-settings.php:1545
+#: wppa-settings.php:1623
+#: wppa-settings.php:1643
+#: wppa-settings.php:1738
+#: wppa-settings.php:1757
+#: wppa-settings.php:1936
 msgid "Help"
 msgstr "帮助"
 
-#: wppa-settings.php:434
+#: wppa-settings.php:436
 msgid "Column Width"
 msgstr "列宽"
 
-#: wppa-settings.php:435
+#: wppa-settings.php:437
 msgid "The width of the main column in your theme's display area."
 msgstr "在你的主题的展示区主要列的宽度。"
 
-#: wppa-settings.php:436
+#: wppa-settings.php:438
 msgid "Enter the width of the main column in your theme's display area."
 msgstr "输入您的主题的展示区主要列的宽度。"
 
-#: wppa-settings.php:437
+#: wppa-settings.php:439
 msgid "You should set this value correctly to make sure the fullsize images are properly aligned horizontally."
 msgstr "你应该设定这个值正确，以确保原片分辨率大小的图像正确对齐水平。"
 
-#: wppa-settings.php:438
+#: wppa-settings.php:440
 msgid "You may enter auto for use in themes that have a floating content column."
 msgstr "您可以输入在主题，内容有一列使用自动浮动。"
 
-#: wppa-settings.php:439
+#: wppa-settings.php:441
 msgid "The use of 'auto' is strongly discouraged. Do not use it unless it is strictly required."
 msgstr "不提议使用 'auto'标签，除非它是严格要求。"
 
-#: wppa-settings.php:442
-#: wppa-settings.php:451
-#: wppa-settings.php:493
+#: wppa-settings.php:444
+#: wppa-settings.php:453
+#: wppa-settings.php:495
 msgid "pixels wide"
 msgstr "像素宽"
 
-#: wppa-settings.php:445
+#: wppa-settings.php:447
 msgid "Fullsize Width"
 msgstr "原片分辨率大小宽度"
 
-#: wppa-settings.php:446
+#: wppa-settings.php:448
 msgid "The maximum width fullsize photos will be displayed."
 msgstr "最大宽度原片分辨率大小的照片会被显示。"
 
-#: wppa-settings.php:447
-#: wppa-settings.php:456
+#: wppa-settings.php:449
+#: wppa-settings.php:458
 msgid "Enter the largest size in pixels as how you want your photos to be displayed."
 msgstr "输入您希望您的照片显示在最大像素大小。"
 
-#: wppa-settings.php:448
+#: wppa-settings.php:450
 msgid "This is usually the same as the Column Width, but it may differ."
 msgstr "这通常是相同的,但它柱宽度可能会有所不同。"
 
-#: wppa-settings.php:454
+#: wppa-settings.php:456
 msgid "Fullsize Height"
 msgstr "原片分辨率大小高度"
 
-#: wppa-settings.php:455
+#: wppa-settings.php:457
 msgid "The maximum height fullsize photos will be displayed."
 msgstr "最大高度原片分辨率大小的照片会被显示。"
 
-#: wppa-settings.php:457
+#: wppa-settings.php:459
 msgid "This setting defines the height of the space reserved for full sized photos."
 msgstr "此设置定义为全尺寸的照片保留的空间高度。"
 
-#: wppa-settings.php:458
+#: wppa-settings.php:460
 #, php-format
 msgid "If you change the width of a display by the %%size= command, this value changes proportionally to match the aspect ratio as defined by this and the previous setting."
 msgstr "如果你改变由%%size=命令的显示宽度的此值变动比例，以配合这个纵横比以前的设置和定义。"
 
-#: wppa-settings.php:460
-#: wppa-settings.php:503
+#: wppa-settings.php:462
+#: wppa-settings.php:505
 msgid "pixels high"
 msgstr "全尺寸大小高度（像素）："
 
-#: wppa-settings.php:463
+#: wppa-settings.php:465
 msgid "Resize on Upload"
 msgstr "在上载调整"
 
-#: wppa-settings.php:464
+#: wppa-settings.php:466
 msgid "Indicate if the photos should be resized during upload."
 msgstr "说明是否应调整大小的照片在上传。"
 
-#: wppa-settings.php:465
+#: wppa-settings.php:467
 msgid "If you check this item, the size of the photos will be reduced to the Full Size during the upload/import process."
 msgstr "如果选中此项目时，照片的大小将在上传/导入过程中减少到全尺寸。"
 
-#: wppa-settings.php:466
+#: wppa-settings.php:468
 msgid "The photos will never be enlarged if they are smaller than the Full Size."
 msgstr "这些照片将不会被放大，如果它们比全尺寸较小。"
 
-#: wppa-settings.php:471
+#: wppa-settings.php:473
 msgid "Stretch to fit"
 msgstr "拉伸以适合 "
 
-#: wppa-settings.php:472
+#: wppa-settings.php:474
 msgid "Stretch photos that are too small."
 msgstr "弹出照片太小。"
 
-#: wppa-settings.php:473
+#: wppa-settings.php:475
 msgid "Fullsize images will be stretched to the Full Size at display time if they are smaller. Leaving unchecked is recommended. It is better to upload photos that fit well the sizes you use!"
 msgstr "原片分辨率大小的图像将被拉伸到全尺寸在显示时，如果它们比较小。建议不要勾选。这是更好地上传照片的大小也适合您使用！"
 
-#: wppa-settings.php:478
+#: wppa-settings.php:480
 msgid "Thumbnail Size"
 msgstr "缩略图大小 "
 
-#: wppa-settings.php:479
+#: wppa-settings.php:481
 msgid "The size of the thumbnail images."
 msgstr "缩略图的图像的大小。"
 
-#: wppa-settings.php:480
-#: wppa-settings.php:543
+#: wppa-settings.php:482
+#: wppa-settings.php:545
 msgid "This size applies to the width or height, whichever is the largest."
 msgstr "这个尺寸适用的宽度或高度，两者是最大的。"
 
-#: wppa-settings.php:481
+#: wppa-settings.php:483
 msgid "Changing the thumbnail size may result in all thumbnails being regenerated. this may take a while."
 msgstr "更改缩略图大小可能会导致所有缩略图正在恢复中。这可能需要一段时间。"
 
-#: wppa-settings.php:483
-#: wppa-settings.php:513
-#: wppa-settings.php:546
-#: wppa-settings.php:569
-#: wppa-settings.php:577
-#: wppa-settings.php:585
-#: wppa-settings.php:593
-#: wppa-settings.php:602
-#: wppa-settings.php:614
-#: wppa-settings.php:624
-#: wppa-settings.php:631
-#: wppa-settings.php:1282
-#: wppa-settings.php:1293
-#: wppa-settings.php:1304
-#: wppa-settings.php:1315
-#: wppa-settings.php:1326
-#: wppa-settings.php:1337
-#: wppa-settings.php:1348
+#: wppa-settings.php:485
+#: wppa-settings.php:515
+#: wppa-settings.php:548
+#: wppa-settings.php:571
+#: wppa-settings.php:579
+#: wppa-settings.php:587
+#: wppa-settings.php:595
+#: wppa-settings.php:604
+#: wppa-settings.php:616
+#: wppa-settings.php:626
+#: wppa-settings.php:633
+#: wppa-settings.php:1284
+#: wppa-settings.php:1295
+#: wppa-settings.php:1306
+#: wppa-settings.php:1317
+#: wppa-settings.php:1328
+#: wppa-settings.php:1339
+#: wppa-settings.php:1350
 msgid "pixels"
 msgstr "像素"
 
-#: wppa-settings.php:487
+#: wppa-settings.php:489
 msgid "Thumbframe width"
 msgstr "最大框架宽度"
 
-#: wppa-settings.php:488
+#: wppa-settings.php:490
 msgid "The width of the thumbnail frame."
 msgstr "缩略图框架宽度"
 
-#: wppa-settings.php:489
+#: wppa-settings.php:491
 msgid "Set the width of the thumbnail frame."
 msgstr "设置缩略图的框架宽度。"
 
-#: wppa-settings.php:490
-#: wppa-settings.php:500
-#: wppa-settings.php:510
+#: wppa-settings.php:492
+#: wppa-settings.php:502
+#: wppa-settings.php:512
 msgid "Set width, height and spacing for the thumbnail frames."
 msgstr "设置宽度，高度和缩略图帧间距。"
 
-#: wppa-settings.php:491
-#: wppa-settings.php:501
-#: wppa-settings.php:511
+#: wppa-settings.php:493
+#: wppa-settings.php:503
+#: wppa-settings.php:513
 msgid "These sizes should be large enough for a thumbnail image and - optionally - the text under it."
 msgstr "这些尺寸应足够大的缩略图和-选择-根据文字。"
 
-#: wppa-settings.php:497
+#: wppa-settings.php:499
 msgid "Thumbframe height"
 msgstr "最大框架高度"
 
-#: wppa-settings.php:498
+#: wppa-settings.php:500
 msgid "The height of the thumbnail frame."
 msgstr "缩略图框的高度"
 
-#: wppa-settings.php:499
+#: wppa-settings.php:501
 msgid "Set the height of the thumbnail frame."
 msgstr "设置缩略图的框架高度。"
 
-#: wppa-settings.php:507
+#: wppa-settings.php:509
 msgid "Thumbnail spacing"
 msgstr "缩略图间距"
 
-#: wppa-settings.php:508
+#: wppa-settings.php:510
 msgid "The spacing between adjacent thumbnail frames."
 msgstr "相邻帧之间的间距缩略图。"
 
-#: wppa-settings.php:509
+#: wppa-settings.php:511
 msgid "Set the minimal spacing between the adjacent thumbnail frames"
 msgstr "设置帧之间的最小间距相邻缩图"
 
-#: wppa-settings.php:517
+#: wppa-settings.php:519
 msgid "Auto spacing"
 msgstr "自动间距"
 
-#: wppa-settings.php:518
+#: wppa-settings.php:520
 msgid "Space the thumbnail frames automatic."
 msgstr "框架空间自动缩略图。"
 
-#: wppa-settings.php:519
+#: wppa-settings.php:521
 msgid "If you check this box, the thumbnail images will be evenly distributed over the available width."
 msgstr "如果您选中此框，缩略图图像将被均匀分布在可用宽度。"
 
-#: wppa-settings.php:520
+#: wppa-settings.php:522
 msgid "In this case, the thumbnail spacing value (setting I-9) will be regarded as a minimum value."
 msgstr "在这种情况下，缩略图间距值（设置I- 9）将作为最小值认为。"
 
-#: wppa-settings.php:526
+#: wppa-settings.php:528
 msgid "Photocount threshold"
 msgstr "图片计数阈值"
 
-#: wppa-settings.php:527
+#: wppa-settings.php:529
 msgid "Number of thumbnails in an album must exceed."
 msgstr "在一个相册缩略图的数量必须超过。"
 
-#: wppa-settings.php:528
+#: wppa-settings.php:530
 msgid "Photos do not show up in the album unless there are more than this number of photos in the album. This allows you to have cover photos on an album that contains only sub albums without seeing them in the list of sub albums. Usually set to 0 (always show) or 1 (for one cover photo)."
 msgstr "照片不显示在相册中，除非有比这个相册中的照片数量更多。这使你的专辑，其中包含没有看到在他们的子相册列表相册只子的照片。通常设置为0（始终显示）或1（一个封面照片）。"
 
-#: wppa-settings.php:530
+#: wppa-settings.php:532
 msgid "pieces"
 msgstr "件"
 
-#: wppa-settings.php:533
-#: wppa-settings.php:549
+#: wppa-settings.php:535
+#: wppa-settings.php:551
 msgid "Page size"
 msgstr "页面大小"
 
-#: wppa-settings.php:534
+#: wppa-settings.php:536
 msgid "Max number of thumbnails per page."
 msgstr "最大数量每页缩略图。"
 
-#: wppa-settings.php:535
+#: wppa-settings.php:537
 msgid "Enter the maximum number of thumbnail images per page. A value of 0 indicates no pagination."
 msgstr "输入每页面缩略图的最大数量。值0表示不分页。"
 
-#: wppa-settings.php:537
+#: wppa-settings.php:539
 msgid "thumbnails"
 msgstr "缩略图"
 
-#: wppa-settings.php:541
+#: wppa-settings.php:543
 msgid "Coverphoto size"
 msgstr "封面照片尺寸"
 
-#: wppa-settings.php:542
+#: wppa-settings.php:544
 msgid "The size of the coverphoto."
 msgstr "封面的照片尺寸。"
 
-#: wppa-settings.php:544
+#: wppa-settings.php:546
 msgid "Changing the coverphoto size may result in all thumbnails being regenerated. this may take a while."
 msgstr "更改封面照片的大小可能会导致所有缩略图正在恢复中。这可能需要一段时间。"
 
-#: wppa-settings.php:550
+#: wppa-settings.php:552
 msgid "Max number of covers per page."
 msgstr "每页最大数量的封面。"
 
-#: wppa-settings.php:551
+#: wppa-settings.php:553
 msgid "Enter the maximum number of album covers per page. A value of 0 indicates no pagination."
 msgstr "输入相册的最大数量每页封面。值0表示不分页。"
 
-#: wppa-settings.php:553
+#: wppa-settings.php:555
 msgid "covers"
 msgstr "封面"
 
-#: wppa-settings.php:556
+#: wppa-settings.php:558
 msgid "TopTen count"
 msgstr "TopTen数"
 
-#: wppa-settings.php:557
+#: wppa-settings.php:559
 msgid "Number of photos in TopTen widget."
 msgstr "TopTenwidget照片的数量。"
 
-#: wppa-settings.php:558
+#: wppa-settings.php:560
 msgid "Enter the maximum number of rated photos in the TopTen widget."
 msgstr "输入widget中的TopTen额定照片的最大数量。"
 
-#: wppa-settings.php:560
+#: wppa-settings.php:562
 msgid "photos"
 msgstr "照片"
 
-#: wppa-settings.php:563
+#: wppa-settings.php:565
 msgid "TopTen size"
 msgstr "TopTen大小"
 
-#: wppa-settings.php:564
+#: wppa-settings.php:566
 msgid "Size of thumbnails in TopTen widget."
 msgstr "TopTenwidget的缩略图的尺寸。"
 
-#: wppa-settings.php:565
+#: wppa-settings.php:567
 msgid "Enter the size for the mini photos in the TopTen widget."
 msgstr "输入TopTen widget的迷你照片的大小。"
 
-#: wppa-settings.php:566
+#: wppa-settings.php:568
 msgid "The size applies to the width or height, whatever is the largest."
 msgstr "大小适用的宽度或高度，无论是最大的。"
 
-#: wppa-settings.php:567
+#: wppa-settings.php:569
 msgid "Recommended values: 86 for a two column and 56 for a three column display."
 msgstr "推荐值：86两列和三列的显示56。"
 
-#: wppa-settings.php:573
+#: wppa-settings.php:575
 #, fuzzy
 msgid "Maximum width for a album cover display."
 msgstr "2列最小宽度:"
 
-#: wppa-settings.php:574
+#: wppa-settings.php:576
 #, fuzzy
 msgid "Display covers in 2 or more columns if the display area is wider than the given width."
 msgstr "如果显示展示涵盖面积广泛或等于输入的像素数在2或3栏。"
 
-#: wppa-settings.php:575
+#: wppa-settings.php:577
 msgid "This also applies for 'thumbnails as covers', and will NOT apply to single items."
 msgstr "这也适用于'缩略图作为封面',而不适用于单项"
 
-#: wppa-settings.php:580
+#: wppa-settings.php:582
 #, fuzzy
 msgid "Min Text frame height"
 msgstr "最大框架高度"
 
-#: wppa-settings.php:581
+#: wppa-settings.php:583
 #, fuzzy
 msgid "The minimal cover text frame height."
 msgstr "框架高度"
 
-#: wppa-settings.php:582
+#: wppa-settings.php:584
 msgid "The minimal height of the description field in an album cover display."
 msgstr "描述字段的最小高度，显示唱片封面。"
 
-#: wppa-settings.php:583
+#: wppa-settings.php:585
 msgid "This setting enables you to give the album covers the same height provided that the cover images are equally sized."
 msgstr "此设置，可以给专辑封面的同一高度，封面图片是同样大小的。"
 
-#: wppa-settings.php:588
+#: wppa-settings.php:590
 msgid "Border thickness"
 msgstr "边框厚度 "
 
-#: wppa-settings.php:589
+#: wppa-settings.php:591
 msgid "Thickness of wppa+ box borders."
 msgstr "厚度wppa+框边界。"
 
-#: wppa-settings.php:590
+#: wppa-settings.php:592
 msgid "Enter the thickness for the border of the WPPA+ boxes. A number of 0 means: no border."
 msgstr "输入的WPPA+盒子边框的厚度。0意味无边框着数。"
 
-#: wppa-settings.php:591
-#: wppa-settings.php:599
+#: wppa-settings.php:593
+#: wppa-settings.php:601
 msgid "WPPA+ boxes are: the navigation bars and the filmstrip."
 msgstr "WPPA+ boxes：导航栏和走马灯效果一样。"
 
-#: wppa-settings.php:597
+#: wppa-settings.php:599
 msgid "Radius of wppa+ box borders."
 msgstr "半径wppa+框边界。"
 
-#: wppa-settings.php:598
+#: wppa-settings.php:600
 msgid "Enter the corner radius for the border of the WPPA+ boxes. A number of 0 means: no rounded corners."
 msgstr "输入的WPPA+盒边界圆角半径。0意味着没有圆角数。"
 
-#: wppa-settings.php:600
+#: wppa-settings.php:602
 msgid "Note that rounded corners are only supported by modern browsers."
 msgstr "注意,圆角只是现代浏览器所支持。"
 
-#: wppa-settings.php:606
+#: wppa-settings.php:608
 #, fuzzy
 msgid "The size of the thumbnail popup images."
 msgstr "缩略图的图像的大小。"
 
-#: wppa-settings.php:607
+#: wppa-settings.php:609
 msgid "Enter the size of the popup images. This size should be larger than the thumbnail size."
 msgstr "输入弹出的图像的大小。此大小应大于缩略图大小。"
 
-#: wppa-settings.php:608
+#: wppa-settings.php:610
 msgid "This size should also be at least the cover image size."
 msgstr "这大小也应至少覆盖图像的大小。"
 
-#: wppa-settings.php:609
+#: wppa-settings.php:611
 #, fuzzy
 msgid "Changing the popup size may result in all thumbnails being regenerated. this may take a while."
 msgstr "更改封面照片的大小可能会导致所有缩略图正在恢复中。这可能需要一段时间。"
 
-#: wppa-settings.php:610
+#: wppa-settings.php:612
 msgid "Although this setting has only visual effect if \"Thumb popup\" (Table IV item 12) is checked,"
 msgstr "虽然此设置只有视觉效果，如果 拇指弹出（表四项目12）被选中，"
 
-#: wppa-settings.php:611
+#: wppa-settings.php:613
 msgid "the value must be right as it is the physical size of the thumbnail and coverphoto images."
 msgstr "该值必须是正确的，因为它是缩略图和封面照片图像的物理尺寸。"
 
-#: wppa-settings.php:617
+#: wppa-settings.php:619
 #, fuzzy
 msgid "Fullsize borderwidth"
 msgstr "原片分辨率大小宽度"
 
-#: wppa-settings.php:618
+#: wppa-settings.php:620
 #, fuzzy
 msgid "The width of the border around fullsize images."
 msgstr "指定原片分辨率大小的图像的垂直对齐。"
 
-#: wppa-settings.php:619
-#: wppa-settings.php:629
+#: wppa-settings.php:621
+#: wppa-settings.php:631
 msgid "The border is made by the image background being larger than the image itsself (padding)."
 msgstr "边框是其自我（填充）比图像大图像背景。"
 
-#: wppa-settings.php:620
+#: wppa-settings.php:622
 msgid "Additionally there may be a one pixel outline of a different color. See Table III, item 7."
 msgstr "此外，还有可能是一个不同颜色的一个像素的轮廓。见表三，项目7。"
 
-#: wppa-settings.php:621
+#: wppa-settings.php:623
 msgid "The number you enter here is exclusive the one pixel outline."
 msgstr "您输入的号码是唯一的一个像素大纲。"
 
-#: wppa-settings.php:622
+#: wppa-settings.php:624
 #, fuzzy
 msgid "If you leave this entry empty, there will be no outline either."
 msgstr "如果您选择字段为空，你的主题，则使用默认。"
 
-#: wppa-settings.php:628
+#: wppa-settings.php:630
 #, fuzzy
 msgid "The width of the border in lightbox overlay images."
 msgstr "指定原片分辨率大小的图像的垂直对齐。"
 
-#: wppa-settings.php:650
+#: wppa-settings.php:652
 msgid "Table II:"
 msgstr "表II:"
 
-#: wppa-settings.php:650
+#: wppa-settings.php:652
 msgid "Visibility:"
 msgstr "可见性："
 
-#: wppa-settings.php:651
+#: wppa-settings.php:653
 msgid "This table describes the visibility of certain wppa+ elements."
 msgstr "此表描述了一些wppa+元素的可视性。"
 
-#: wppa-settings.php:667
+#: wppa-settings.php:669
 msgid "Breadcrumb"
 msgstr "面包屑导航"
 
-#: wppa-settings.php:668
+#: wppa-settings.php:670
 msgid "Show breadcrumb navigation bars."
 msgstr "显示面包屑导航栏。"
 
-#: wppa-settings.php:669
+#: wppa-settings.php:671
 msgid "Indicate whether a breadcrumb navigation should be displayed"
 msgstr "面包屑导航指示是否应显示"
 
-#: wppa-settings.php:675
+#: wppa-settings.php:677
 msgid "Home"
 msgstr "首页 "
 
-#: wppa-settings.php:676
+#: wppa-settings.php:678
 msgid "Show \"Home\" in breadcrumb."
 msgstr "显示 \"Home\"面包屑导航。 "
 
-#: wppa-settings.php:677
+#: wppa-settings.php:679
 msgid "Indicate whether the breadcrumb navigation should start with a \"Home\"-link"
 msgstr "显示其是否作为导航应该开始以一个链接到 \"Home\""
 
-#: wppa-settings.php:683
+#: wppa-settings.php:685
 msgid "Separator"
 msgstr "分隔符 "
 
-#: wppa-settings.php:684
+#: wppa-settings.php:686
 msgid "Breadcrumb separator symbol."
 msgstr "面包屑分隔符的元素。"
 
-#: wppa-settings.php:685
+#: wppa-settings.php:687
 msgid "Select the desired breadcrumb separator element."
 msgstr "选择想要的面包屑分隔符的元素。"
 
-#: wppa-settings.php:686
+#: wppa-settings.php:688
 msgid "A text string may contain valid html."
 msgstr "文本字符串可以包含有效的HTML。"
 
-#: wppa-settings.php:687
+#: wppa-settings.php:689
 msgid "An image will be scaled automatically if you set the navigation font size."
 msgstr "如果你设置的导航字体大小，图像将被自动缩放"
 
-#: wppa-settings.php:689
+#: wppa-settings.php:691
 msgid "Text (html):"
 msgstr "文本（HTML）："
 
-#: wppa-settings.php:689
+#: wppa-settings.php:691
 msgid "Image (url):"
 msgstr "图像 (url):"
 
-#: wppa-settings.php:696
+#: wppa-settings.php:698
 msgid "Html"
 msgstr "HTML "
 
-#: wppa-settings.php:697
+#: wppa-settings.php:699
 msgid "Breadcrumb separator text."
 msgstr "选择想要的面包屑分隔符的文本元素。"
 
-#: wppa-settings.php:698
+#: wppa-settings.php:700
 msgid "Enter the HTML code that produces the separator symbol you want."
 msgstr "产生你想要的HTML代码输入分隔符号。"
 
-#: wppa-settings.php:699
+#: wppa-settings.php:701
 msgid "It may be as simple as '-' (without the quotes) or as complex as a tag like <div>..</div>."
 msgstr "它可能是简单的' -'（不含引号）或复杂的标签一样<div>..</div>."
 
-#: wppa-settings.php:704
+#: wppa-settings.php:706
 msgid "Image Url"
 msgstr "图像 URL "
 
-#: wppa-settings.php:705
+#: wppa-settings.php:707
 msgid "Full url to separator image."
 msgstr "链接到全尺寸版本图像 "
 
-#: wppa-settings.php:706
+#: wppa-settings.php:708
 msgid "Enter the full url to the image you want to use for the separator symbol."
 msgstr "您想要将图片用于分隔符号请输入完整的URL。"
 
-#: wppa-settings.php:711
+#: wppa-settings.php:713
 msgid "Start/stop"
 msgstr "启动/停止 灯片滚动条:"
 
-#: wppa-settings.php:712
+#: wppa-settings.php:714
 msgid "Show the Start/Stop slideshow bar."
 msgstr "显示开始/停止幻灯片。"
 
-#: wppa-settings.php:713
+#: wppa-settings.php:715
 msgid "If checked: display the start/stop slideshow navigation bar above the full-size images and slideshow"
 msgstr "如果选中：显示开始/停止上述全尺寸图片和幻灯片幻灯片导航栏"
 
-#: wppa-settings.php:718
+#: wppa-settings.php:720
 msgid "Browse bar"
 msgstr "浏览栏"
 
-#: wppa-settings.php:719
+#: wppa-settings.php:721
 msgid "Show Browse photos bar."
 msgstr "显示浏览照片条"
 
-#: wppa-settings.php:720
+#: wppa-settings.php:722
 msgid "If checked: display the preveous/next navigation bar under the full-size images and slideshow"
 msgstr "如果选中：显示在完整大小的图像和幻灯片的上一个项/下一个导航栏"
 
-#: wppa-settings.php:725
+#: wppa-settings.php:727
 msgid "Filmstrip"
 msgstr "幻灯片"
 
-#: wppa-settings.php:726
+#: wppa-settings.php:728
 msgid "Show Filmstrip navigation bar."
 msgstr "显示幻灯片导航栏。"
 
-#: wppa-settings.php:727
+#: wppa-settings.php:729
 msgid "If checked: display the filmstrip navigation bar under the full_size images and slideshow"
 msgstr "如果勾选此项:显示在完整大小的图像和幻灯片的幻灯片导航栏"
 
-#: wppa-settings.php:732
+#: wppa-settings.php:734
 msgid "Film seam"
 msgstr "类似电影荧幕那样的缝"
 
-#: wppa-settings.php:733
+#: wppa-settings.php:735
 msgid "Show seam between end and start of film."
 msgstr "显示节目结束和开始缝间的电影荧幕:"
 
-#: wppa-settings.php:734
+#: wppa-settings.php:736
 msgid "If checked: display the wrap-around point in the filmstrip"
 msgstr "如果选中：显示缠绕在幻灯片点"
 
-#: wppa-settings.php:739
-#: wppa-settings.php:1297
+#: wppa-settings.php:741
+#: wppa-settings.php:1299
 msgid "Fullsize name"
 msgstr "原片分辨率大小的名称"
 
-#: wppa-settings.php:740
+#: wppa-settings.php:742
 msgid "Display Fullsize name."
 msgstr "显示原片分辨率大小的名称。"
 
-#: wppa-settings.php:741
+#: wppa-settings.php:743
 msgid "If checked: display the name of the photo under the full-size images and slideshow."
 msgstr "如果勾选此项:显示名称和描述的全尺寸下的图像和幻灯片。"
 
-#: wppa-settings.php:746
-#: wppa-settings.php:1286
+#: wppa-settings.php:748
+#: wppa-settings.php:1288
 msgid "Fullsize desc"
 msgstr "原片分辨率大小宽度 "
 
-#: wppa-settings.php:747
+#: wppa-settings.php:749
 msgid "Display Fullsize description."
 msgstr "显示原片分辨率大小的描述。"
 
-#: wppa-settings.php:748
+#: wppa-settings.php:750
 msgid "If checked: display description under the full-size images and slideshow."
 msgstr "如果勾选此项:显示名称和描述的全尺寸下的图像和幻灯片。"
 
-#: wppa-settings.php:753
+#: wppa-settings.php:755
 msgid "Slideshow"
 msgstr "幻灯片: "
 
-#: wppa-settings.php:754
+#: wppa-settings.php:756
 msgid "Enable the slideshow."
 msgstr "启用幻灯片。"
 
-#: wppa-settings.php:755
+#: wppa-settings.php:757
 msgid "If you do not want slideshows: uncheck this box. Browsing full size images will remain possible."
 msgstr "如果你不想幻灯片：取消选中此框。浏览全尺寸图片将继续成为可能。"
 
-#: wppa-settings.php:761
+#: wppa-settings.php:763
 msgid "Rating system"
 msgstr "评级制度"
 
-#: wppa-settings.php:762
+#: wppa-settings.php:764
 msgid "Enable the rating system."
 msgstr "启用评级制度。"
 
-#: wppa-settings.php:763
+#: wppa-settings.php:765
 msgid "If checked, the photo rating system will be enabled."
 msgstr "如果勾选此项,照片评级系统将启用。"
 
-#: wppa-settings.php:769
+#: wppa-settings.php:771
 msgid "Thumbnail name"
 msgstr "缩略图名称"
 
-#: wppa-settings.php:770
+#: wppa-settings.php:772
 msgid "Display Thubnail name."
 msgstr "显示缩略图名称。"
 
-#: wppa-settings.php:771
+#: wppa-settings.php:773
 msgid "Display photo name under thumbnail images."
 msgstr "照片缩略图下显示的名称。"
 
-#: wppa-settings.php:777
+#: wppa-settings.php:779
 msgid "Thumbnail desc"
 msgstr "缩略图描述"
 
-#: wppa-settings.php:778
+#: wppa-settings.php:780
 msgid "Display Thumbnail description."
 msgstr "显示缩略图的描述。"
 
-#: wppa-settings.php:779
+#: wppa-settings.php:781
 msgid "Display description of the photo under thumbnail images."
 msgstr "根据说明显示缩略图的照片。"
 
-#: wppa-settings.php:785
+#: wppa-settings.php:787
 msgid "Thumbnail rating"
 msgstr "综合评级 "
 
-#: wppa-settings.php:786
+#: wppa-settings.php:788
 msgid "Display Thumbnail Rating."
 msgstr "显示缩略图等级。"
 
-#: wppa-settings.php:787
+#: wppa-settings.php:789
 msgid "Display the rating of the photo under the thumbnail image."
 msgstr "显示的照片缩略图下的评级。"
 
-#: wppa-settings.php:789
+#: wppa-settings.php:791
 msgid "(This setting requires that the rating system is enabled.)"
 msgstr "（此设置要求，评分系统启用。）"
 
-#: wppa-settings.php:793
+#: wppa-settings.php:795
 #, fuzzy
 msgid "Covertext"
 msgstr "转换到utf8"
 
-#: wppa-settings.php:794
+#: wppa-settings.php:796
 #, fuzzy
 msgid "Show the text on the album cover."
 msgstr "该相册的内容"
 
-#: wppa-settings.php:795
+#: wppa-settings.php:797
 msgid "Display the album decription and the links to the album content"
 msgstr "专辑内容显示专辑解密档案和链接"
 
-#: wppa-settings.php:796
+#: wppa-settings.php:798
 msgid "If switched off, you can only link to the album using the covertitle or the coverphoto."
 msgstr "如果关闭，你只能链接到专辑的封面标题或封面照片。"
 
-#: wppa-settings.php:797
+#: wppa-settings.php:799
 msgid "Make sure you configure the coverphoto link as desired."
 msgstr "确保您需要配置的封面照片链接。"
 
-#: wppa-settings.php:802
+#: wppa-settings.php:804
 msgid "Comments system"
 msgstr "评论系统"
 
-#: wppa-settings.php:803
+#: wppa-settings.php:805
 #, fuzzy
 msgid "Enable the comments system."
 msgstr "启用评级制度。"
 
-#: wppa-settings.php:804
+#: wppa-settings.php:806
 msgid "Display the comments box under the fullsize images and let users enter their comments on individual photos."
 msgstr "根据全尺寸图像显示的评论框，让用户输入他们的意见对个人照片。"
 
-#: wppa-settings.php:810
+#: wppa-settings.php:812
 msgid "Big Browse Buttons"
 msgstr "大浏览按钮"
 
-#: wppa-settings.php:811
+#: wppa-settings.php:813
 msgid "Enable invisible browsing buttons."
 msgstr "启用无形的浏览按钮。"
 
-#: wppa-settings.php:812
+#: wppa-settings.php:814
 msgid "If checked, the fullsize image is covered by two invisible areas that act as browse buttons."
 msgstr "如果选中，完整大小的图像是由两个浏览按钮无形的领域涵盖。"
 
-#: wppa-settings.php:813
+#: wppa-settings.php:815
 msgid "Make sure the Full height (Table I item 3) is properly configured to prevent these areas to overlap unwanted space."
 msgstr "确保全高（表第3项）已正确配置，以防止这些领域的不必要的空间重叠。"
 
-#: wppa-settings.php:814
+#: wppa-settings.php:816
 msgid "A side effect of this setting is that right clicking the image no longer enables the visitor to download the image."
 msgstr "此设置的一个副作用是，右击图像，不再允许访问者下载图像。"
 
-#: wppa-settings.php:819
+#: wppa-settings.php:821
 #, fuzzy
 msgid "Slideshow/Browse"
 msgstr "幻灯片: "
 
-#: wppa-settings.php:820
+#: wppa-settings.php:822
 msgid "Display the Slideshow / Browse photos link on album covers"
 msgstr "显示专辑幻灯片/浏览照片的链接覆盖"
 
-#: wppa-settings.php:821
+#: wppa-settings.php:823
 msgid "This setting causes the Slideshow link to be displayed on the album cover."
 msgstr "此设置使幻灯片显示专辑封面上的链接。"
 
-#: wppa-settings.php:822
+#: wppa-settings.php:824
 msgid "If slideshows are disabled in item 12 in this table, you will see a browse link to fullsize images."
 msgstr "如果在此表中的第12项禁用幻灯片，你会看到一个浏览链接到全尺寸的图像。"
 
-#: wppa-settings.php:823
+#: wppa-settings.php:825
 msgid "If you do not want the browse link link either, uncheck this item."
 msgstr "如果你不希望浏览的链接的链接，要么取消这个项目。"
 
-#: wppa-settings.php:824
+#: wppa-settings.php:826
 msgid "You might wish to uncheck this item when you have thumbnail links set to lightbox"
 msgstr "您可能希望以取消这个项目，当你有缩略图链接设置到 lightbox"
 
-#: wppa-settings.php:829
+#: wppa-settings.php:831
 #, fuzzy
 msgid "Show custom box"
 msgstr "自定义Box"
 
-#: wppa-settings.php:830
+#: wppa-settings.php:832
 msgid "Display the custom box in the slideshow"
 msgstr ""
 
-#: wppa-settings.php:831
-#: wppa-settings.php:839
+#: wppa-settings.php:833
+#: wppa-settings.php:841
 #, fuzzy
 msgid "You can fill the custom box with any html you like. It will not be checked, so it is your own responsability to close tags properly."
 msgstr "如果勾选此项:HTML是允许的。警告:语法不检查,是你自己的反应作者能够关闭正确标签！"
 
-#: wppa-settings.php:832
-#: wppa-settings.php:840
+#: wppa-settings.php:834
+#: wppa-settings.php:842
 msgid "The position of the box can be defined in Table IX item 6."
 msgstr ""
 
-#: wppa-settings.php:837
+#: wppa-settings.php:839
 #, fuzzy
 msgid "Custom content"
 msgstr "自定义Box"
 
-#: wppa-settings.php:838
+#: wppa-settings.php:840
 #, fuzzy
 msgid "The content (html) of the custom box."
 msgstr "该相册的内容"
 
-#: wppa-settings.php:860
+#: wppa-settings.php:862
 msgid "Table III:"
 msgstr "表三III:"
 
-#: wppa-settings.php:860
+#: wppa-settings.php:862
 msgid "Backgrounds:"
 msgstr "背景"
 
-#: wppa-settings.php:861
+#: wppa-settings.php:863
 msgid "This table describes the backgrounds of wppa+ elements."
 msgstr "此表描述了背景wppa+元素的动态行为。"
 
-#: wppa-settings.php:871
-#: wppa-settings.php:983
+#: wppa-settings.php:873
+#: wppa-settings.php:985
 msgid "Background color"
 msgstr "背景颜色 "
 
-#: wppa-settings.php:872
 #: wppa-settings.php:874
-#: wppa-settings.php:984
+#: wppa-settings.php:876
 #: wppa-settings.php:986
+#: wppa-settings.php:988
 #, fuzzy
 msgid "Sample"
 msgstr "名称和描述"
 
-#: wppa-settings.php:873
-#: wppa-settings.php:985
+#: wppa-settings.php:875
+#: wppa-settings.php:987
 msgid "Border color"
 msgstr "边框颜色"
 
-#: wppa-settings.php:880
+#: wppa-settings.php:882
 msgid "Even"
 msgstr "相等"
 
-#: wppa-settings.php:881
+#: wppa-settings.php:883
 msgid "Even background."
 msgstr "相等背景"
 
-#: wppa-settings.php:882
+#: wppa-settings.php:884
 msgid "Enter valid CSS colors for even numbered backgrounds and borders of album covers and thumbnail displays 'As covers'."
 msgstr "输入偶数背景和有效的CSS边框颜色'作为覆盖'专辑封面和缩略图显示。"
 
-#: wppa-settings.php:889
+#: wppa-settings.php:891
 msgid "Odd"
 msgstr "单"
 
-#: wppa-settings.php:890
+#: wppa-settings.php:892
 msgid "Odd background."
 msgstr "单背景。"
 
-#: wppa-settings.php:891
+#: wppa-settings.php:893
 msgid "Enter valid CSS colors for odd numbered backgrounds and borders of album covers and thumbnail displays 'As covers'."
 msgstr "输入奇数背景和有效的CSS边框颜色'作为覆盖'专辑封面和缩略图显示。"
 
-#: wppa-settings.php:898
+#: wppa-settings.php:900
 msgid "Nav"
 msgstr "导航"
 
-#: wppa-settings.php:899
+#: wppa-settings.php:901
 msgid "Navigation bars."
 msgstr "导航栏。"
 
-#: wppa-settings.php:900
+#: wppa-settings.php:902
 msgid "Enter valid CSS colors for navigation backgrounds and borders."
 msgstr "导航输入有效的CSS背景和边框颜色。"
 
-#: wppa-settings.php:907
+#: wppa-settings.php:909
 #, fuzzy
 msgid "Name/desc"
 msgstr "名称和描述"
 
-#: wppa-settings.php:908
+#: wppa-settings.php:910
 #, fuzzy
 msgid "Name and Description bars."
 msgstr "导航栏。"
 
-#: wppa-settings.php:909
+#: wppa-settings.php:911
 #, fuzzy
 msgid "Enter valid CSS colors for name and description box backgrounds and borders."
 msgstr "导航输入有效的CSS背景和边框颜色。"
 
-#: wppa-settings.php:917
+#: wppa-settings.php:919
 msgid "Comment input and display areas."
 msgstr "注释输入和显示领域。"
 
-#: wppa-settings.php:918
+#: wppa-settings.php:920
 #, fuzzy
 msgid "Enter valid CSS colors for comment box backgrounds and borders."
 msgstr "导航输入有效的CSS背景和边框颜色。"
 
-#: wppa-settings.php:925
+#: wppa-settings.php:927
 msgid "Img"
 msgstr "Img"
 
-#: wppa-settings.php:926
+#: wppa-settings.php:928
 #, fuzzy
 msgid "Cover Photos."
 msgstr "封面照片："
 
-#: wppa-settings.php:927
+#: wppa-settings.php:929
 #, fuzzy
 msgid "Enter valid CSS colors for Cover photo backgrounds and borders."
 msgstr "导航输入有效的CSS背景和边框颜色。"
 
-#: wppa-settings.php:934
+#: wppa-settings.php:936
 #, fuzzy
 msgid "FullImg"
 msgstr "Img"
 
-#: wppa-settings.php:935
+#: wppa-settings.php:937
 #, fuzzy
 msgid "Full size Photos and slideshows."
 msgstr "幻灯片的全尺寸照片。"
 
-#: wppa-settings.php:936
+#: wppa-settings.php:938
 #, fuzzy
 msgid "Enter valid CSS colors for fullsize photo backgrounds and borders."
 msgstr "导航输入有效的CSS背景和边框颜色。"
 
-#: wppa-settings.php:937
-#: wppa-settings.php:948
+#: wppa-settings.php:939
+#: wppa-settings.php:950
 msgid "The colors may be equal or \"transparent\""
 msgstr "颜色可能会等于或“透明的”"
 
-#: wppa-settings.php:938
-#: wppa-settings.php:949
+#: wppa-settings.php:940
+#: wppa-settings.php:951
 msgid "For more information about fullsize image borders see the help on Table I, item 22"
 msgstr "如需有关完整大小的图像边界，看到表格1，第22项"
 
-#: wppa-settings.php:945
-#: wppa-settings.php:1341
+#: wppa-settings.php:947
+#: wppa-settings.php:1343
 #, fuzzy
 msgid "Lightbox"
 msgstr "右"
 
-#: wppa-settings.php:946
+#: wppa-settings.php:948
 msgid "Lightbox image."
 msgstr "Lightbox image."
 
-#: wppa-settings.php:947
+#: wppa-settings.php:949
 #, fuzzy
 msgid "Enter valid CSS colors for lightbox background and border."
 msgstr "导航输入有效的CSS背景和边框颜色。"
 
-#: wppa-settings.php:957
+#: wppa-settings.php:959
 msgid "Overlay"
 msgstr "覆盖"
 
-#: wppa-settings.php:958
+#: wppa-settings.php:960
 #, fuzzy
 msgid "Lightbox overlay background."
 msgstr "相等背景"
 
-#: wppa-settings.php:959
+#: wppa-settings.php:961
 #, fuzzy
 msgid "Enter color and opacity for lightbox overlay background."
 msgstr "输入一个有效的CSS背景图像的颜色。"
 
-#: wppa-settings.php:963
+#: wppa-settings.php:965
 #, fuzzy, php-format
 msgid "% opacity"
 msgstr "不透明度"
 
-#: wppa-settings.php:967
-#: wppa-settings.php:1826
+#: wppa-settings.php:969
+#: wppa-settings.php:1835
 msgid "Custom"
 msgstr "自定义"
 
-#: wppa-settings.php:968
+#: wppa-settings.php:970
 #, fuzzy
 msgid "Custom box background."
 msgstr "单背景。"
 
-#: wppa-settings.php:969
+#: wppa-settings.php:971
 #, fuzzy
 msgid "Enter valid CSS colors for custom box backgrounds and borders."
 msgstr "导航输入有效的CSS背景和边框颜色。"
 
-#: wppa-settings.php:994
+#: wppa-settings.php:996
 msgid "Table IV:"
 msgstr "表IV:"
 
-#: wppa-settings.php:994
+#: wppa-settings.php:996
 msgid "Behaviour:"
 msgstr "行为"
 
-#: wppa-settings.php:995
+#: wppa-settings.php:997
 msgid "This table describes the dynamic behaviour of certain wppa+ elements."
 msgstr "此表描述了一些wppa+元素的动态行为。"
 
-#: wppa-settings.php:1011
+#: wppa-settings.php:1013
 msgid "V align"
 msgstr "V对齐"
 
-#: wppa-settings.php:1012
+#: wppa-settings.php:1014
 msgid "Vertical alignment of full-size images."
 msgstr "垂直对齐全尺寸的图像。"
 
-#: wppa-settings.php:1013
+#: wppa-settings.php:1015
 msgid "Specify the vertical alignment of fullsize images."
 msgstr "指定原片分辨率大小的图像的垂直对齐。"
 
-#: wppa-settings.php:1014
+#: wppa-settings.php:1016
 msgid "If you select --- none ---, the photos will not be centered horizontally either."
 msgstr "如果您选择--- none ---，这些照片将不会被任何水平居中。"
 
-#: wppa-settings.php:1016
-#: wppa-settings.php:1101
+#: wppa-settings.php:1018
+#: wppa-settings.php:1103
 msgid "top"
 msgstr "顶部"
 
-#: wppa-settings.php:1016
-#: wppa-settings.php:1028
-#: wppa-settings.php:1101
+#: wppa-settings.php:1018
+#: wppa-settings.php:1030
+#: wppa-settings.php:1103
 msgid "center"
 msgstr "中间"
 
-#: wppa-settings.php:1016
-#: wppa-settings.php:1101
+#: wppa-settings.php:1018
+#: wppa-settings.php:1103
 msgid "bottom"
 msgstr "底部"
 
-#: wppa-settings.php:1016
+#: wppa-settings.php:1018
 msgid "fit"
 msgstr "适应"
 
-#: wppa-settings.php:1022
+#: wppa-settings.php:1024
 msgid "H align"
 msgstr "H对齐"
 
-#: wppa-settings.php:1023
+#: wppa-settings.php:1025
 msgid "Horizontal alignment of full-size images."
 msgstr "水平排列的全尺寸的图像。"
 
-#: wppa-settings.php:1024
+#: wppa-settings.php:1026
 msgid "Specify the horizontal alignment of fullsize images. If you specify --- none --- , no horizontal alignment will take place."
 msgstr "指定原片分辨率大小的图像的水平对齐方式。如果您指定--- none ---，不会有水平对齐效果。"
 
-#: wppa-settings.php:1025
+#: wppa-settings.php:1027
 msgid "This setting is only usefull when the Column Width differs from the Fullsize Width."
 msgstr "此设置时是非常有用的列宽宽度从原片分辨率大小不同。"
 
-#: wppa-settings.php:1026
+#: wppa-settings.php:1028
 msgid "(Settings I-1 and I-2)"
 msgstr "（设置的I -1和I- 2）"
 
-#: wppa-settings.php:1028
+#: wppa-settings.php:1030
 msgid "left"
 msgstr "左"
 
-#: wppa-settings.php:1028
+#: wppa-settings.php:1030
 msgid "right"
 msgstr "右"
 
-#: wppa-settings.php:1034
+#: wppa-settings.php:1036
 msgid "Start"
 msgstr "开始"
 
-#: wppa-settings.php:1035
+#: wppa-settings.php:1037
 msgid "Start slideshow running."
 msgstr "开始幻灯片播放。"
 
-#: wppa-settings.php:1036
+#: wppa-settings.php:1038
 msgid "If checked, the slideshow will start running immediately, if unchecked the first photo will be displayed in browse mode."
 msgstr "如果勾选此项，将立即开始投放幻灯片，如果不勾选此项第一张照片将在浏览模式显示。"
 
-#: wppa-settings.php:1042
+#: wppa-settings.php:1044
 msgid "Fading"
 msgstr "淡出"
 
-#: wppa-settings.php:1043
+#: wppa-settings.php:1045
 msgid "Fade-in after fade-out."
 msgstr "淡入淡出："
 
-#: wppa-settings.php:1044
+#: wppa-settings.php:1046
 msgid "If checked: slides are faded out and in after each other. If unchecked: fadin and fadeout overlap."
 msgstr "勾选此项:幻灯片是淡出后,如果不勾选此项：淡入和淡出重叠。"
 
-#: wppa-settings.php:1045
+#: wppa-settings.php:1047
 msgid "The version of the jQuery library must be 1.4 or greater for this feature!"
 msgstr "jQuery库的版本必须是1.4或以上！"
 
-#: wppa-settings.php:1047
-#: wppa-settings.php:1052
+#: wppa-settings.php:1049
+#: wppa-settings.php:1054
 msgid "Fade-in after fade-out:"
 msgstr "淡入淡出："
 
-#: wppa-settings.php:1055
+#: wppa-settings.php:1057
 msgid "Timeout"
 msgstr "超时:"
 
-#: wppa-settings.php:1056
+#: wppa-settings.php:1058
 msgid "Slideshow timeout."
 msgstr "幻灯片超时:"
 
-#: wppa-settings.php:1057
+#: wppa-settings.php:1059
 msgid "Select the time a single slide will be visible when the slideshow is started."
 msgstr "选择一张幻灯片的时候，可以看到启动时的幻灯片。"
 
-#: wppa-settings.php:1059
+#: wppa-settings.php:1061
 msgid "very short (1 s.)"
 msgstr "非常慢(1 s.)"
 
-#: wppa-settings.php:1059
+#: wppa-settings.php:1061
 msgid "short (1.5 s.)"
 msgstr "短时间(1.5 s.)"
 
-#: wppa-settings.php:1059
+#: wppa-settings.php:1061
 msgid "normal (2.5 s.)"
 msgstr "正常 (2.5 s.)"
 
-#: wppa-settings.php:1059
+#: wppa-settings.php:1061
 msgid "long (4 s.)"
 msgstr "长 (4 s.) "
 
-#: wppa-settings.php:1059
+#: wppa-settings.php:1061
 msgid "very long (6 s.)"
 msgstr "非常快 (6 s.) "
 
-#: wppa-settings.php:1065
+#: wppa-settings.php:1067
 msgid "Speed"
 msgstr "速度"
 
-#: wppa-settings.php:1066
+#: wppa-settings.php:1068
 msgid "Slideshow animation speed."
 msgstr "幻灯片动画的速度。"
 
-#: wppa-settings.php:1067
+#: wppa-settings.php:1069
 msgid "Specify the animation speed to be used in slideshows."
 msgstr "指定动画的速度将用于幻灯片。"
 
-#: wppa-settings.php:1068
+#: wppa-settings.php:1070
 msgid "This is the time it takes a photo to fade in or out."
 msgstr "这是时间拍了一张照片淡出或缩小。"
 
-#: wppa-settings.php:1070
-#: wppa-settings.php:1226
-#: wppa-settings.php:1868
+#: wppa-settings.php:1072
+#: wppa-settings.php:1228
 #: wppa-settings.php:1877
+#: wppa-settings.php:1886
 msgid "--- off ---"
 msgstr "--- off ---"
 
-#: wppa-settings.php:1070
+#: wppa-settings.php:1072
 msgid "very fast (200 ms.)"
 msgstr "很快(200 ms.)"
 
-#: wppa-settings.php:1070
+#: wppa-settings.php:1072
 msgid "fast (400 ms.)"
 msgstr "快 (400 ms.)"
 
-#: wppa-settings.php:1070
+#: wppa-settings.php:1072
 msgid "normal (800 ms.)"
 msgstr "正常(800 ms.) "
 
-#: wppa-settings.php:1070
+#: wppa-settings.php:1072
 msgid "slow (1.2 s.)"
 msgstr " 缓慢(1.2 s.) "
 
-#: wppa-settings.php:1070
+#: wppa-settings.php:1072
 msgid "very slow (2 s.)"
 msgstr "非常慢 (2 s.) "
 
-#: wppa-settings.php:1070
+#: wppa-settings.php:1072
 msgid "extremely slow (4 s.)"
 msgstr "极慢(4 s.) "
 
-#: wppa-settings.php:1076
+#: wppa-settings.php:1078
 msgid "Thumbnail type"
 msgstr "连接类型 "
 
-#: wppa-settings.php:1077
+#: wppa-settings.php:1079
 msgid "The way the thumbnail images are displayed."
 msgstr "缩略图的显示方式。"
 
-#: wppa-settings.php:1078
+#: wppa-settings.php:1080
 msgid "You may select an altenative display method for thumbnails. Note that some of the thumbnail settings do not apply to all available display methods."
 msgstr "您可以选择一个灰色的性显示方法,缩略图。注意一些缩略图设置并不适用于所有可用的显示方法。"
 
-#: wppa-settings.php:1080
+#: wppa-settings.php:1082
 msgid "like album covers"
 msgstr "如相册封面"
 
-#: wppa-settings.php:1086
-#: wppa-settings.php:1132
+#: wppa-settings.php:1088
+#: wppa-settings.php:1134
 msgid "Placement"
 msgstr "位置: "
 
-#: wppa-settings.php:1087
+#: wppa-settings.php:1089
 msgid "Thumbnail image left or right."
 msgstr "缩略图左边或右边。"
 
-#: wppa-settings.php:1088
+#: wppa-settings.php:1090
 msgid "Indicate the placement position of the thumbnailphoto you wish."
 msgstr "设置显示的显示缩略图的照片位置。"
 
-#: wppa-settings.php:1090
-#: wppa-settings.php:1136
+#: wppa-settings.php:1092
+#: wppa-settings.php:1138
 msgid "Left"
 msgstr "左 "
 
-#: wppa-settings.php:1090
-#: wppa-settings.php:1136
+#: wppa-settings.php:1092
+#: wppa-settings.php:1138
 msgid "Right"
 msgstr "右 "
 
-#: wppa-settings.php:1096
+#: wppa-settings.php:1098
 msgid "Vertical alignment"
 msgstr "垂直对齐"
 
-#: wppa-settings.php:1097
+#: wppa-settings.php:1099
 msgid "Vertical alignment of thumbnails."
 msgstr "垂直排列的缩略图。"
 
-#: wppa-settings.php:1098
+#: wppa-settings.php:1100
 msgid "Specify the vertical alignment of thumbnail images. Use this setting when albums contain both portrait and landscape photos."
 msgstr "指定缩略图垂直对齐方式。使用此设置时，专辑包含纵向和横向的照片。"
 
-#: wppa-settings.php:1099
+#: wppa-settings.php:1101
 #, fuzzy
 msgid "It is NOT recommended to use the value --- default ---; it will affect the horizontal alignment also and is meant to be used with custom css."
 msgstr "不推荐使用 --- 默认 --，它会影响到水平的调整也将是彪自定义的CSS使用。"
 
-#: wppa-settings.php:1107
+#: wppa-settings.php:1109
 msgid "Thumb mouseover"
 msgstr "鼠标滑过悬停"
 
-#: wppa-settings.php:1108
+#: wppa-settings.php:1110
 msgid "Apply thumbnail mouseover effect."
 msgstr "使用鼠标悬停弹出效果缩略图。"
 
-#: wppa-settings.php:1109
+#: wppa-settings.php:1111
 msgid "Check this box to use mouseover effect on thumbnail images."
 msgstr "选中此框上使用鼠标悬停缩略图效果。"
 
-#: wppa-settings.php:1116
+#: wppa-settings.php:1118
 msgid "Thumb opacity"
 msgstr "不透明度"
 
-#: wppa-settings.php:1117
-#: wppa-settings.php:1150
+#: wppa-settings.php:1119
+#: wppa-settings.php:1152
 msgid "Initial opacity value."
 msgstr "初始不透明度值。"
 
-#: wppa-settings.php:1118
-#: wppa-settings.php:1151
+#: wppa-settings.php:1120
+#: wppa-settings.php:1153
 msgid "Enter percentage of opacity. 100% is opaque, 0% is transparant"
 msgstr "输入不透明度百分比。 100％是不透明的，0％是透明"
 
-#: wppa-settings.php:1120
-#: wppa-settings.php:1153
+#: wppa-settings.php:1122
+#: wppa-settings.php:1155
 msgid "%"
 msgstr "%"
 
-#: wppa-settings.php:1120
+#: wppa-settings.php:1122
 msgid "(This setting requires thumbnail mouseover to be switched on)"
 msgstr "（此设置需要将鼠标悬停缩略图打开）"
 
-#: wppa-settings.php:1124
+#: wppa-settings.php:1126
 msgid "Thumb popup"
 msgstr "弹出式"
 
-#: wppa-settings.php:1125
+#: wppa-settings.php:1127
 msgid "Use popup effect on thumbnail images."
 msgstr "使用弹出的缩略图图像效果。"
 
-#: wppa-settings.php:1126
+#: wppa-settings.php:1128
 msgid "Thumbnails pop-up to a larger image when hovered."
 msgstr "鼠标滑过缩略图时弹出来一个较大的图像。"
 
-#: wppa-settings.php:1133
+#: wppa-settings.php:1135
 #, fuzzy
 msgid "Cover image position."
 msgstr "封面图片的左边或右边。"
 
-#: wppa-settings.php:1134
+#: wppa-settings.php:1136
 msgid "Indicate the placement position of the coverphoto you wish."
 msgstr "设置显示的封面图片位置。"
 
-#: wppa-settings.php:1136
+#: wppa-settings.php:1138
 #, fuzzy
 msgid "Top"
 msgstr "顶部"
 
-#: wppa-settings.php:1136
+#: wppa-settings.php:1138
 #, fuzzy
 msgid "Bottom"
 msgstr "底部"
 
-#: wppa-settings.php:1141
+#: wppa-settings.php:1143
 msgid "Cover mouseover"
 msgstr "鼠标悬停封面"
 
-#: wppa-settings.php:1142
+#: wppa-settings.php:1144
 msgid "Apply coverphoto mouseover effect."
 msgstr "套用封面照片鼠标悬停效果。"
 
-#: wppa-settings.php:1143
+#: wppa-settings.php:1145
 msgid "Check this box to use mouseover effect on cover images."
 msgstr "选中此框的封面图片上使用鼠标悬停效果"
 
-#: wppa-settings.php:1149
+#: wppa-settings.php:1151
 msgid "Cover opacity"
 msgstr "封面透明度"
 
-#: wppa-settings.php:1153
+#: wppa-settings.php:1155
 msgid "(This setting requires coverphoto mouseover to be switched on)"
 msgstr "（此设置需要封面照片鼠标指向要打开）"
 
-#: wppa-settings.php:1157
+#: wppa-settings.php:1159
 msgid "Rating login"
 msgstr "评级登录"
 
-#: wppa-settings.php:1158
+#: wppa-settings.php:1160
 msgid "Users must login to rate photos."
 msgstr "用户必须登录才能评级照片。"
 
-#: wppa-settings.php:1159
+#: wppa-settings.php:1161
 msgid "If users want to vote for a photo (rating 1..5 stars) the must login first. The avarage rating will always be displayed as long as the rating system is enabled."
 msgstr "如果用户想投票的照片（等级1 ..5星级）的，必须首先登录。该avarage评级将始终显示只要评级系统启用。"
 
-#: wppa-settings.php:1165
+#: wppa-settings.php:1167
 msgid "Rating change"
 msgstr "评级变化"
 
-#: wppa-settings.php:1166
-#: wppa-settings.php:1167
+#: wppa-settings.php:1168
+#: wppa-settings.php:1169
 msgid "Users may change their ratings."
 msgstr "用户可以改变它们的评级。"
 
-#: wppa-settings.php:1173
+#: wppa-settings.php:1175
 msgid "Rating multi"
 msgstr "综合评级 "
 
-#: wppa-settings.php:1174
+#: wppa-settings.php:1176
 msgid "Users may give multiple votes."
 msgstr "用户可能会多张选票。"
 
-#: wppa-settings.php:1175
+#: wppa-settings.php:1177
 msgid "Users may give multiple votes. (This has no effect when users may change their votes.)"
 msgstr "用户可能会多张选票。(这没有任何效果,用户可能会改变他们的投票。)"
 
-#: wppa-settings.php:1181
+#: wppa-settings.php:1183
 msgid "Album order"
 msgstr "专辑顺序"
 
-#: wppa-settings.php:1182
+#: wppa-settings.php:1184
 msgid "Album ordering sequence method."
 msgstr "专辑排序序列的方法。"
 
-#: wppa-settings.php:1183
+#: wppa-settings.php:1185
 msgid "Specify the way the albums should be ordered."
 msgstr "指定的方式，要责令专辑。"
 
-#: wppa-settings.php:1190
-#: wppa-settings.php:1206
+#: wppa-settings.php:1192
+#: wppa-settings.php:1208
 msgid "Descending"
 msgstr "降序 "
 
-#: wppa-settings.php:1191
-#: wppa-settings.php:1207
+#: wppa-settings.php:1193
+#: wppa-settings.php:1209
 msgid "Descending order."
 msgstr "降序排列。"
 
-#: wppa-settings.php:1192
-#: wppa-settings.php:1208
+#: wppa-settings.php:1194
+#: wppa-settings.php:1210
 msgid "If checked: largest first"
 msgstr "如果勾选此项:最大的第一"
 
-#: wppa-settings.php:1197
+#: wppa-settings.php:1199
 msgid "Photo order"
 msgstr "照片顺序"
 
-#: wppa-settings.php:1198
+#: wppa-settings.php:1200
 msgid "Photo ordering sequence method."
 msgstr "照片排序序列的方法。"
 
-#: wppa-settings.php:1199
+#: wppa-settings.php:1201
 msgid "Specify the way the photos should be ordered. This is the default setting. You can overrule the default sorting order on a per album basis."
 msgstr "这些照片应该指定的方式。这是一个默认的设置。你可以放弃默认分类顺序对每一个专辑的基础。"
 
-#: wppa-settings.php:1209
+#: wppa-settings.php:1211
 msgid "This is a system wide setting."
 msgstr "这是一个系统范围的设定。"
 
-#: wppa-settings.php:1214
+#: wppa-settings.php:1216
 #, fuzzy
 msgid "Commenting login"
 msgstr "评级登录"
 
-#: wppa-settings.php:1215
+#: wppa-settings.php:1217
 #, fuzzy
 msgid "Users must be logged in to comment on photos."
 msgstr "用户必须登录才能评级照片。"
 
-#: wppa-settings.php:1216
+#: wppa-settings.php:1218
 msgid "Check this box if you want users to be logged in to be able to enter comments on individual photos."
 msgstr "检查此框，如果你想先登录的用户能够进入个人照片上的评论"
 
-#: wppa-settings.php:1222
+#: wppa-settings.php:1224
 msgid "Lightbox Speed"
 msgstr "Lightbox 速度"
 
-#: wppa-settings.php:1223
+#: wppa-settings.php:1225
 #, fuzzy
 msgid "Lightbox animation speed."
 msgstr "幻灯片动画的速度。"
 
-#: wppa-settings.php:1224
+#: wppa-settings.php:1226
 msgid "The higher the number, the faster the animation"
 msgstr "数字越高，播放的动画越快"
 
-#: wppa-settings.php:1232
+#: wppa-settings.php:1234
 #, fuzzy
 msgid "Last comment first"
 msgstr "管理照片"
 
-#: wppa-settings.php:1233
+#: wppa-settings.php:1235
 #, fuzzy
 msgid "Display the newest comment on top."
 msgstr "网页上显示搜索结果。"
 
-#: wppa-settings.php:1255
+#: wppa-settings.php:1257
 msgid "Table V:"
 msgstr "表V:"
 
-#: wppa-settings.php:1255
+#: wppa-settings.php:1257
 msgid "Fonts:"
 msgstr "字体："
 
-#: wppa-settings.php:1256
+#: wppa-settings.php:1258
 msgid "This table describes the Fonts used for the wppa+ elements."
 msgstr "此表描述了wppa使用的字体+元素。"
 
-#: wppa-settings.php:1257
+#: wppa-settings.php:1259
 msgid "If you leave fields empty, your themes defaults will be used."
 msgstr "如果您选择字段为空，你的主题，则使用默认。"
 
-#: wppa-settings.php:1267
-#: wppa-settings.php:1359
+#: wppa-settings.php:1269
+#: wppa-settings.php:1361
 msgid "Font family"
 msgstr "字体系列"
 
-#: wppa-settings.php:1268
-#: wppa-settings.php:1360
+#: wppa-settings.php:1270
+#: wppa-settings.php:1362
 msgid "Font size"
 msgstr "字体大小 "
 
-#: wppa-settings.php:1269
-#: wppa-settings.php:1361
+#: wppa-settings.php:1271
+#: wppa-settings.php:1363
 msgid "Font color"
 msgstr "字体颜色 "
 
-#: wppa-settings.php:1275
+#: wppa-settings.php:1277
 msgid "Album titles"
 msgstr "相册标题"
 
-#: wppa-settings.php:1276
+#: wppa-settings.php:1278
 msgid "Font used for Album titles."
 msgstr "相册标题字体使用。"
 
-#: wppa-settings.php:1277
-#: wppa-settings.php:1299
+#: wppa-settings.php:1279
+#: wppa-settings.php:1301
 msgid "Enter font name, size and color for album cover titles."
 msgstr "输入字体名称，大小和颜色相册封面标题。"
 
-#: wppa-settings.php:1287
+#: wppa-settings.php:1289
 msgid "Font for fullsize photo descriptions."
 msgstr "原片分辨率大小的照片字体描述。"
 
-#: wppa-settings.php:1288
+#: wppa-settings.php:1290
 msgid "Enter font name, size and color for fullsize photo descriptions."
 msgstr "输入字体名称，大小为原片分辨率大小的照片说明和颜色。"
 
-#: wppa-settings.php:1298
+#: wppa-settings.php:1300
 msgid "Font for fullsize photo names."
 msgstr "原片分辨率大小的照片字体名称。"
 
-#: wppa-settings.php:1308
+#: wppa-settings.php:1310
 msgid "Navigations"
 msgstr "导航"
 
-#: wppa-settings.php:1309
+#: wppa-settings.php:1311
 msgid "Font for navigations."
 msgstr "导航字体。"
 
-#: wppa-settings.php:1310
+#: wppa-settings.php:1312
 msgid "Enter font name, size and color for navigation items."
 msgstr "输入导航项目的字体名称，大小和颜色。"
 
-#: wppa-settings.php:1319
+#: wppa-settings.php:1321
 msgid "Thumbnails"
 msgstr "缩略图"
 
-#: wppa-settings.php:1320
+#: wppa-settings.php:1322
 msgid "Font for text under thumbnails."
 msgstr "缩略图的文字字体。"
 
-#: wppa-settings.php:1321
+#: wppa-settings.php:1323
 msgid "Enter font name, size and color for text under thumbnail images."
 msgstr "根据缩略图输入文本的字体名称，大小和颜色。"
 
-#: wppa-settings.php:1330
+#: wppa-settings.php:1332
 msgid "Other"
 msgstr "其它 "
 
-#: wppa-settings.php:1331
+#: wppa-settings.php:1333
 msgid "General font in wppa boxes."
 msgstr "一般的字体wppa boxes:"
 
-#: wppa-settings.php:1332
+#: wppa-settings.php:1334
 msgid "Enter font name, size and color for all other items."
 msgstr "输入字体的名字，所有其他项目的大小和颜色。"
 
-#: wppa-settings.php:1342
+#: wppa-settings.php:1344
 #, fuzzy
 msgid "Font in wppa lightbox boxes."
 msgstr "一般的字体wppa boxes:"
 
-#: wppa-settings.php:1343
+#: wppa-settings.php:1345
 #, fuzzy
 msgid "Enter font name, size and color for lightbox overlays."
 msgstr "输入字体名称，大小和颜色相册封面标题。"
 
-#: wppa-settings.php:1369
+#: wppa-settings.php:1371
 msgid "Table VI:"
 msgstr "表格 VI:"
 
-#: wppa-settings.php:1369
+#: wppa-settings.php:1371
 msgid "Links:"
 msgstr "链接："
 
-#: wppa-settings.php:1370
+#: wppa-settings.php:1372
 msgid "This table defines the link types and pages."
 msgstr "该表定义了链接类型和页面。"
 
-#: wppa-settings.php:1380
-#: wppa-settings.php:1521
+#: wppa-settings.php:1382
+#: wppa-settings.php:1523
 msgid "Link type"
 msgstr "链接类型"
 
-#: wppa-settings.php:1381
-#: wppa-settings.php:1522
+#: wppa-settings.php:1383
+#: wppa-settings.php:1524
 msgid "Link page"
 msgstr "链接页面"
 
-#: wppa-settings.php:1382
-#: wppa-settings.php:1523
+#: wppa-settings.php:1384
+#: wppa-settings.php:1525
 msgid "PS Overrule"
 msgstr "PS否决"
 
-#: wppa-settings.php:1389
 #: wppa-settings.php:1391
 #: wppa-settings.php:1393
 #: wppa-settings.php:1395
 #: wppa-settings.php:1397
-#: wppa-settings.php:2323
+#: wppa-settings.php:1399
+#: wppa-settings.php:2332
 msgid "no link at all."
 msgstr "没有链接"
 
-#: wppa-settings.php:1389
 #: wppa-settings.php:1391
 #: wppa-settings.php:1393
 #: wppa-settings.php:1395
 #: wppa-settings.php:1397
-#: wppa-settings.php:2324
+#: wppa-settings.php:1399
+#: wppa-settings.php:2333
 msgid "the plain photo (file)."
 msgstr "简单的照片（文件）。"
 
-#: wppa-settings.php:1389
 #: wppa-settings.php:1391
 #: wppa-settings.php:1393
 #: wppa-settings.php:1395
-#: wppa-settings.php:2325
+#: wppa-settings.php:1397
+#: wppa-settings.php:2334
 msgid "the full size photo in a slideshow."
 msgstr "幻灯片的全尺寸照片。"
 
-#: wppa-settings.php:1389
 #: wppa-settings.php:1391
 #: wppa-settings.php:1393
 #: wppa-settings.php:1395
-#: wppa-settings.php:2326
+#: wppa-settings.php:1397
+#: wppa-settings.php:2335
 msgid "the fullsize photo on its own."
 msgstr "完整分辨率大小的照片。"
 
-#: wppa-settings.php:1389
+#: wppa-settings.php:1391
 #, fuzzy
 msgid "the fullsize photo with a print button."
 msgstr "完整分辨率大小的照片。"
 
-#: wppa-settings.php:1389
+#: wppa-settings.php:1391
 msgid "lightbox."
 msgstr "lightbox."
 
-#: wppa-settings.php:1391
 #: wppa-settings.php:1393
 #: wppa-settings.php:1395
-#: wppa-settings.php:2328
+#: wppa-settings.php:1397
+#: wppa-settings.php:2337
 msgid "the content of the album."
 msgstr "该相册的内容"
 
-#: wppa-settings.php:1393
-#: wppa-settings.php:2329
+#: wppa-settings.php:1395
+#: wppa-settings.php:2338
 msgid "defined at widget activation."
 msgstr "定义在组件激活。"
 
-#: wppa-settings.php:1395
-#: wppa-settings.php:2330
+#: wppa-settings.php:1397
+#: wppa-settings.php:2339
 msgid "defined on widget admin page."
 msgstr "管理页面上定义的部件。"
 
-#: wppa-settings.php:1397
-#: wppa-settings.php:2331
+#: wppa-settings.php:1399
+#: wppa-settings.php:2340
 msgid "same as title."
 msgstr "标题相同。"
 
-#: wppa-settings.php:1406
+#: wppa-settings.php:1408
 msgid "--- The same post or page ---"
 msgstr "--- 同一个帖子或者一个单独的网页 ---"
 
-#: wppa-settings.php:1422
+#: wppa-settings.php:1424
 msgid "--- No page to link to (yet) ---"
 msgstr "---没有页面链接---"
 
-#: wppa-settings.php:1426
+#: wppa-settings.php:1428
 msgid "Mphoto"
 msgstr "Mphoto"
 
-#: wppa-settings.php:1427
+#: wppa-settings.php:1429
 msgid "Media-like photo link."
 msgstr "Media-like照片链接:"
 
-#: wppa-settings.php:1428
-#: wppa-settings.php:1443
+#: wppa-settings.php:1430
+#: wppa-settings.php:1445
 msgid "Select the type of link you want, or no link at all."
 msgstr "选择你想要的链接类型，或者没有在所有的链接。"
 
-#: wppa-settings.php:1429
-#: wppa-settings.php:1444
+#: wppa-settings.php:1431
+#: wppa-settings.php:1446
 msgid "If you select the fullsize photo on its own, it will be stretched to fit, regardless of that setting."
 msgstr "如果您选择在自己的原片分辨率大小的照片，该设置将被拉伸以适应。"
 
-#: wppa-settings.php:1430
-#: wppa-settings.php:1445
+#: wppa-settings.php:1432
+#: wppa-settings.php:1447
 #, php-format
 msgid "Note that a page must have at least %%wppa%% in its content to show up the photo(s)."
 msgstr "请注意，必须在其网页内容显示出来 %%wppa%%的照片（s）"
 
-#: wppa-settings.php:1441
+#: wppa-settings.php:1443
 msgid "Thumbnail"
 msgstr "缩略图 "
 
-#: wppa-settings.php:1442
+#: wppa-settings.php:1444
 msgid "Thumbnail link."
 msgstr "缩略图 链接"
 
-#: wppa-settings.php:1457
+#: wppa-settings.php:1459
 msgid "TopTenWidget"
 msgstr "TopTenWidget"
 
-#: wppa-settings.php:1458
+#: wppa-settings.php:1460
 msgid "TopTen widget photo link."
 msgstr "TopTen widget照片链接:"
 
-#: wppa-settings.php:1459
-#: wppa-settings.php:1473
+#: wppa-settings.php:1461
+#: wppa-settings.php:1475
 msgid "Select the type of link the top ten photos point to."
 msgstr "选择链接类型的十大照片指向。"
 
-#: wppa-settings.php:1471
+#: wppa-settings.php:1473
 msgid "SlideWidget"
 msgstr "滑动Widget"
 
-#: wppa-settings.php:1472
+#: wppa-settings.php:1474
 msgid "Slideshow widget photo link."
 msgstr "幻灯片 widget照片链接:"
 
-#: wppa-settings.php:1484
+#: wppa-settings.php:1486
 msgid "PotdWidget"
 msgstr "PotdWidget"
 
-#: wppa-settings.php:1485
+#: wppa-settings.php:1487
 msgid "Photo Of The Day widget link."
 msgstr "每日图片widget链接:"
 
-#: wppa-settings.php:1486
+#: wppa-settings.php:1488
 msgid "Select the type of link the photo of the day points to."
 msgstr "选择链接类型到当天的照片。"
 
-#: wppa-settings.php:1487
+#: wppa-settings.php:1489
 msgid "If you select 'defined on widget admin page' you can manually enter a link and title on the Photo of the day Widget Admin page."
 msgstr "如果您选择对部件管理页面定义'你可以手动输入一个一天的小工具管理页照片链接和标题。"
 
-#: wppa-settings.php:1498
+#: wppa-settings.php:1500
 #, fuzzy
 msgid "Cover Image"
 msgstr "鼠标悬停封面"
 
-#: wppa-settings.php:1499
+#: wppa-settings.php:1501
 msgid "The link from the cover image of an album."
 msgstr "相册封面图像的链接。"
 
-#: wppa-settings.php:1500
+#: wppa-settings.php:1502
 #, fuzzy
 msgid "Select the type of link the coverphoto points to."
 msgstr "选择链接类型的十大照片指向。"
 
-#: wppa-settings.php:1501
+#: wppa-settings.php:1503
 msgid "The link from the album title can be configured on the Edit Album page."
 msgstr "从专辑标题的链接，可配置“编辑相册”页面。"
 
-#: wppa-settings.php:1502
+#: wppa-settings.php:1504
 msgid "This link will be used for the photo also if you select: same as title."
 msgstr "如果您选择使用此链接的照片也将作为标题相同。"
 
-#: wppa-settings.php:1531
+#: wppa-settings.php:1533
 msgid "Table VII:"
 msgstr "表格VII:"
 
-#: wppa-settings.php:1531
+#: wppa-settings.php:1533
 msgid "Access and Security:"
 msgstr "访问和安全："
 
-#: wppa-settings.php:1532
+#: wppa-settings.php:1534
 msgid "This table describes the access settings for wppa+ elements and pages."
 msgstr "本表说明wppa+元素和页面的访问设置。"
 
-#: wppa-settings.php:1549
+#: wppa-settings.php:1551
 msgid "Directory access (CHMOD)."
 msgstr "目录访问 (CHMOD):"
 
-#: wppa-settings.php:1550
+#: wppa-settings.php:1552
 msgid "In rare cases you might need to change this setting. If you do not know what this means, leave it unchanged."
 msgstr "在极少数情况下，您可能需要更改此设置。如果你不知道这意味着什么，不要改变它。"
 
-#: wppa-settings.php:1552
+#: wppa-settings.php:1554
 msgid "Leave unchanged."
 msgstr "离开不保存"
 
-#: wppa-settings.php:1557
+#: wppa-settings.php:1559
 msgid "Album access"
 msgstr "相册访问权限"
 
-#: wppa-settings.php:1558
+#: wppa-settings.php:1560
 msgid "Limit album access to album owners only."
 msgstr "相册访问权限只限制到相册创建者。"
 
-#: wppa-settings.php:1559
+#: wppa-settings.php:1561
 msgid "If checked, users who can edit albums and upload/import photos can do that with their own albums only."
 msgstr "如果勾选此项,使用者可以编辑相册和上传/导入照片在自己的相册。"
 
-#: wppa-settings.php:1560
+#: wppa-settings.php:1562
 msgid "Users can give their albums to another user. Administrators can change ownership and access all albums always."
 msgstr "用户可以给他们的相册给其他用户。管理员可以改变所有权和使用所有相册。"
 
-#: wppa-settings.php:1565
+#: wppa-settings.php:1567
 msgid "WPPA Admin"
 msgstr "WPPA管理"
 
-#: wppa-settings.php:1566
+#: wppa-settings.php:1568
 msgid "Admin pages access."
 msgstr "管理页面访问。"
 
-#: wppa-settings.php:1567
+#: wppa-settings.php:1569
 msgid "Indicate whether the accesslevels must be set by this admin page or by an other program."
 msgstr "指示是否访问级别必须由这个管理页面或由其他程序。"
 
-#: wppa-settings.php:1568
+#: wppa-settings.php:1570
 msgid "If you set them here, the classical userlevel is imitated, but implemented by the modern Roles and Capabilities system."
 msgstr "如果您设置在这里，经典用户级别模仿，而是由现代角色和能力的系统实施。"
 
-#: wppa-settings.php:1569
+#: wppa-settings.php:1571
 msgid "That means that any higher userlevel (role) will automaticly get the capabilities that you give to a certain (lower) level."
 msgstr "这意味着，任何更高的用户级别（角色）将全自动获取的能力，你给予一定的（低）水平。"
 
-#: wppa-settings.php:1570
+#: wppa-settings.php:1572
 msgid "If you want to give a capability to a specific user or role, you can set it using an other plugin, such as Capability Manager."
 msgstr "如果你想给一个有能力的特定用户或角色，您可以设置它使用其他插件如插件更改。"
 
-#: wppa-settings.php:1571
+#: wppa-settings.php:1573
 msgid "Possible capabilities are: <strong>wppa_admin</strong> (for the Photo Albums page), wppa_sidebar_admin (for the Sidebar Widget page) and wppa_upload (for the Upload and Import pages)."
 msgstr "可能需要的功能：<strong>wppa_admin</strong>（相册页面），wppa_sidebar_admin（用于边栏页），wppa_upload （用于上传和导入页）。"
 
-#: wppa-settings.php:1572
+#: wppa-settings.php:1574
 msgid "The Help page is available to users with the capability <strong>edit_posts</strong>, the Settings page (the page you are on right now) is limited to the role of administrator."
 msgstr "帮助页面提供给有能力<strong>edit_posts</strong>用户，<strong>设置页面</strong>（页面你现在是）是仅限于管理员角色。"
 
-#: wppa-settings.php:1574
+#: wppa-settings.php:1576
 msgid "Accesslevels are set here."
 msgstr "访问级别设置在这里。"
 
-#: wppa-settings.php:1574
+#: wppa-settings.php:1576
 msgid "Accesslevels are set by an other program."
 msgstr "访问级别设置由其他程序。"
 
-#: wppa-settings.php:1579
+#: wppa-settings.php:1581
 msgid "Photo Albums"
 msgstr "相册"
 
-#: wppa-settings.php:1580
+#: wppa-settings.php:1582
 msgid "Albums Access Level."
 msgstr "相册访问级别。"
 
-#: wppa-settings.php:1581
+#: wppa-settings.php:1583
 msgid "The minmum user level that can access the photo album admin (i.e. Manage Albums and Upload Photos)."
 msgstr "最小的用户级别可以访问的相册管理（即管理相册和上传照片）。"
 
-#: wppa-settings.php:1583
-#: wppa-settings.php:1592
-#: wppa-settings.php:1601
+#: wppa-settings.php:1585
+#: wppa-settings.php:1594
+#: wppa-settings.php:1603
 msgid "Administrator"
 msgstr "管理员 "
 
-#: wppa-settings.php:1583
-#: wppa-settings.php:1592
-#: wppa-settings.php:1601
+#: wppa-settings.php:1585
+#: wppa-settings.php:1594
+#: wppa-settings.php:1603
 msgid "Editor"
 msgstr "编辑 "
 
-#: wppa-settings.php:1583
-#: wppa-settings.php:1592
-#: wppa-settings.php:1601
+#: wppa-settings.php:1585
+#: wppa-settings.php:1594
+#: wppa-settings.php:1603
 msgid "Author"
 msgstr "作者 "
 
-#: wppa-settings.php:1583
-#: wppa-settings.php:1592
-#: wppa-settings.php:1601
+#: wppa-settings.php:1585
+#: wppa-settings.php:1594
+#: wppa-settings.php:1603
 msgid "Contributor"
 msgstr "投稿者 "
 
-#: wppa-settings.php:1588
+#: wppa-settings.php:1590
 msgid "Upload"
 msgstr "上传 "
 
-#: wppa-settings.php:1589
+#: wppa-settings.php:1591
 msgid "Upload/Import Access Level."
 msgstr "上传/导入访问级别。"
 
-#: wppa-settings.php:1590
+#: wppa-settings.php:1592
 msgid "The minmum user level that can upload or import photos."
 msgstr "该minmum用户级别，可以上传或导入照片。"
 
-#: wppa-settings.php:1597
+#: wppa-settings.php:1599
 msgid "Widget"
 msgstr "Widget工具 "
 
-#: wppa-settings.php:1598
+#: wppa-settings.php:1600
 msgid "Photo of the day widget admin."
 msgstr "天照片widget管理。"
 
-#: wppa-settings.php:1599
+#: wppa-settings.php:1601
 msgid "The minmum user level that can access the photo of the day sidebar widget admin."
 msgstr "最小用户级别可以访问当天sidebar widget管理照片。"
 
-#: wppa-settings.php:1621
+#: wppa-settings.php:1608
+#, fuzzy
+msgid "User upload"
+msgstr "最后上传"
+
+#: wppa-settings.php:1609
+#, fuzzy
+msgid "Enable visitors to upload photos."
+msgstr "此你也可以上传你的照片。"
+
+#: wppa-settings.php:1610
+msgid "If you check this item, visitors who are logged in and have wppa+ upload rights and have access to the album will see an upload photo link on album covers and thumbnail displays."
+msgstr ""
+
+#: wppa-settings.php:1630
 msgid "Table VIII:"
 msgstr "表格VIII:"
 
-#: wppa-settings.php:1621
+#: wppa-settings.php:1630
 msgid "Actions:"
 msgstr "动作 "
 
-#: wppa-settings.php:1622
+#: wppa-settings.php:1631
 msgid "This table lists all actions that can be taken to the wppa+ system"
 msgstr "此表列出了所有可以采取行动的wppa+系统"
 
-#: wppa-settings.php:1632
-#: wppa-settings.php:1727
+#: wppa-settings.php:1641
+#: wppa-settings.php:1736
 msgid "Specification"
 msgstr "规格"
 
-#: wppa-settings.php:1633
-#: wppa-settings.php:1728
+#: wppa-settings.php:1642
+#: wppa-settings.php:1737
 msgid "Do it!"
 msgstr "这样做!"
 
-#: wppa-settings.php:1641
+#: wppa-settings.php:1650
 msgid "Reset"
 msgstr "重置 "
 
-#: wppa-settings.php:1642
+#: wppa-settings.php:1651
 msgid "Reset all ratings."
 msgstr "重置 所有评级。"
 
-#: wppa-settings.php:1643
+#: wppa-settings.php:1652
 msgid "WARNING: If checked, this will clear all ratings in the system!"
 msgstr "警告：如果选中，这将清除系统中所有的评级！"
 
-#: wppa-settings.php:1648
+#: wppa-settings.php:1657
 msgid "Set to utf-8"
 msgstr "设置为UTF-8:"
 
-#: wppa-settings.php:1649
+#: wppa-settings.php:1658
 msgid "Set Character set to UTF_8."
 msgstr "设置字符集UTF_8。"
 
-#: wppa-settings.php:1650
+#: wppa-settings.php:1659
 msgid "If checked: Converts the wppa database tables to UTF_8 This allows the use of certain characters - like Turkish - in photo and album names and descriptions."
 msgstr "如果选中：转换wppa数据库表UTF_8这使得某些文字的使用-如土耳其-在相片和专辑名称和描述。"
 
-#: wppa-settings.php:1658
+#: wppa-settings.php:1667
 msgid "Setup"
 msgstr "安装"
 
-#: wppa-settings.php:1659
+#: wppa-settings.php:1668
 msgid "Re-initialize plugin."
 msgstr "重新初始化插件。"
 
-#: wppa-settings.php:1660
+#: wppa-settings.php:1669
 msgid "Re-initilizes the plugin, (re)creates database tables and sets up default settings and directories if required."
 msgstr "重新初始化插件，（重新）创建数据库表，并设置了默认的设置和目录，如果需要的话。"
 
-#: wppa-settings.php:1661
+#: wppa-settings.php:1670
 msgid "This action may be required to setup blogs in a multiblog (network) site as well as in rare cases to correct initilization errors."
 msgstr "这个动作可能会被要求安装在一个多博客（网络）网站的博客，以及在极少数情况下，纠正错误itilization。"
 
-#: wppa-settings.php:1666
+#: wppa-settings.php:1675
 #, fuzzy
 msgid "Backup settings"
 msgstr "设置"
 
-#: wppa-settings.php:1667
+#: wppa-settings.php:1676
 msgid "Save all settings into a backup file."
 msgstr "所有设置保存到一个备份文件。"
 
-#: wppa-settings.php:1668
+#: wppa-settings.php:1677
 msgid "Saves all the settings into a backup file"
 msgstr "所有的设置保存到一个备份文件"
 
-#: wppa-settings.php:1673
+#: wppa-settings.php:1682
 #, fuzzy
 msgid "Load settings"
 msgstr "设置"
 
-#: wppa-settings.php:1674
+#: wppa-settings.php:1683
 msgid "Restore all settings from defaults, a backup or skin file."
 msgstr "还原默认设置，备份或皮肤文件的所有设置。"
 
-#: wppa-settings.php:1675
+#: wppa-settings.php:1684
 msgid "Restores all the settings from the factory supplied defaults, the backup you created or from a skin file."
 msgstr "恢复工厂提供的默认设置，您创建的备份或从皮肤文件中的所有设置。"
 
-#: wppa-settings.php:1682
+#: wppa-settings.php:1691
 #, fuzzy
 msgid "--- set to defaults ---"
 msgstr "--- 默认 ---"
 
-#: wppa-settings.php:1685
+#: wppa-settings.php:1694
 msgid "--- restore backup ---"
 msgstr "---恢复备份---"
 
-#: wppa-settings.php:1703
+#: wppa-settings.php:1712
 msgid "Regenerate"
 msgstr "再生"
 
-#: wppa-settings.php:1704
-#: wppa-settings.php:1705
+#: wppa-settings.php:1713
+#: wppa-settings.php:1714
 #, fuzzy
 msgid "Regenerate all thumbnails."
 msgstr "准备生成缩略图。"
 
-#: wppa-settings.php:1710
+#: wppa-settings.php:1719
 #, fuzzy
 msgid "Rerate"
 msgstr "再生"
 
-#: wppa-settings.php:1711
+#: wppa-settings.php:1720
 #, fuzzy
 msgid "Recalculate ratings."
 msgstr "重置 所有评级。"
 
-#: wppa-settings.php:1712
+#: wppa-settings.php:1721
 msgid "This function will recalculate all mean photo ratings from the ratings table."
 msgstr ""
 
-#: wppa-settings.php:1713
+#: wppa-settings.php:1722
 msgid "You may need this function after the re-import of previously exported photos"
 msgstr ""
 
-#: wppa-settings.php:1736
+#: wppa-settings.php:1745
 msgid "Table IX:"
 msgstr "表格IX:"
 
-#: wppa-settings.php:1736
+#: wppa-settings.php:1745
 msgid "Miscellaneous:"
 msgstr "杂项: "
 
-#: wppa-settings.php:1737
+#: wppa-settings.php:1746
 msgid "This table lists all settings that do not fit into an other table"
 msgstr "此表列出了所有的设置不适合到另一个表"
 
-#: wppa-settings.php:1754
+#: wppa-settings.php:1763
 msgid "Enable WPPA+ multisite"
 msgstr "启用WPPA+多点"
 
-#: wppa-settings.php:1755
+#: wppa-settings.php:1764
 msgid "Check this box to setup WPPA+ for a multisite wp installation"
 msgstr "选中此框可设置多点WP安装WPPA+"
 
-#: wppa-settings.php:1757
+#: wppa-settings.php:1766
 #, php-format
 msgid "This site is a part of a multisite WP installation. It still contains %s photos in single site mode."
 msgstr "这个网站是一个多点WP安装的一部分。它仍包含在单一网站模式%s的照片。"
 
-#: wppa-settings.php:1758
+#: wppa-settings.php:1767
 msgid "If you want to keep those photos, use Photo Albums -> Export to save them."
 msgstr "如果您想保留这些照片，使用相册 - >“导出”来拯救他们。"
 
-#: wppa-settings.php:1759
+#: wppa-settings.php:1768
 msgid "If you saved them already, or if they may be lost, check the Enable WPPA+ multisite checkbox in Table IX item 0 and press Save Changes."
 msgstr "如果你救了他们已经，或如果他们可能会丢失，检查表IX项目0，然后按启用WPPA+多点“复选框保存更改。"
 
-#: wppa-settings.php:1766
+#: wppa-settings.php:1775
 msgid "Arrow color"
 msgstr "箭头颜色"
 
-#: wppa-settings.php:1767
+#: wppa-settings.php:1776
 msgid "Left/right browsing arrow color."
 msgstr "左/右浏览箭头的颜色。"
 
-#: wppa-settings.php:1768
+#: wppa-settings.php:1777
 msgid "Enter the color of the navigation arrows."
 msgstr "输入导航箭头的颜色。"
 
-#: wppa-settings.php:1773
+#: wppa-settings.php:1782
 msgid "Search page"
 msgstr "搜索页面"
 
-#: wppa-settings.php:1774
+#: wppa-settings.php:1783
 msgid "Display the search results on page."
 msgstr "网页上显示搜索结果。"
 
-#: wppa-settings.php:1775
+#: wppa-settings.php:1784
 #, php-format
 msgid "Select the page to be used to display search results. The page MUST contain %%wppa%%."
 msgstr "选择网页用来显示搜索结果。网页必须包含%%wppa%%."
 
-#: wppa-settings.php:1776
+#: wppa-settings.php:1785
 msgid "You may give it the title \"Search results\" or something alike."
 msgstr "你可以给它的标题 \"Search results\"或类似的搜索结果。"
 
-#: wppa-settings.php:1777
+#: wppa-settings.php:1786
 msgid "Or you ou may use the standard page on which you display the generic album."
 msgstr "或者你可以使用标准的页面上您显示通用专辑。"
 
-#: wppa-settings.php:1792
+#: wppa-settings.php:1801
 msgid "Exclude separate"
 msgstr "排除单独"
 
-#: wppa-settings.php:1793
+#: wppa-settings.php:1802
 msgid "Do not search 'separate' albums."
 msgstr "不要搜索'独立'的相册。"
 
-#: wppa-settings.php:1794
+#: wppa-settings.php:1803
 msgid "When checked, albums (and photos in them) that have the parent set to --- separate --- will be excluded from being searched."
 msgstr "选中后，相册（并在他们的照片）具有独立的母公司---设置---将被排除在被搜查。"
 
-#: wppa-settings.php:1799
+#: wppa-settings.php:1808
 msgid "Allow HTML"
 msgstr "允许HTML"
 
-#: wppa-settings.php:1800
+#: wppa-settings.php:1809
 msgid "Allow HTML in album and photo descriptions."
 msgstr "允许HTML在专辑和图片说明:"
 
-#: wppa-settings.php:1801
+#: wppa-settings.php:1810
 msgid "If checked: html is allowed. WARNING: No checks on syntax, it is your own responsability to close tags properly!"
 msgstr "如果勾选此项:HTML是允许的。警告:语法不检查,是你自己的反应作者能够关闭正确标签！"
 
-#: wppa-settings.php:1806
+#: wppa-settings.php:1815
 msgid "Allow WPPA+ Debugging"
 msgstr "允许WPPA+调试"
 
-#: wppa-settings.php:1807
+#: wppa-settings.php:1816
 msgid "Allow the use of &debug=.. in urls to this site."
 msgstr "允许使用和调试=..到本网站的URL。"
 
-#: wppa-settings.php:1808
+#: wppa-settings.php:1817
 msgid "If checked: appending (?)(&)debug or (?)(&)debug=<int> to an url to this site will generate the display of special WPPA+ diagnostics, as well as php warnings"
 msgstr "如果选中：追加(?)(&)调试或(?)(&)调试=<int>的到本网站的网址会产生特殊WPPA+诊断的显示，以及PHP警告"
 
-#: wppa-settings.php:1816
+#: wppa-settings.php:1825
 msgid "The following lines represent the sequence order of the slideshow components"
 msgstr "下面的几行代表的幻灯片组件的顺序"
 
-#: wppa-settings.php:1823
+#: wppa-settings.php:1832
 #, fuzzy
 msgid "StartStop"
 msgstr "启动/停止 灯片滚动条:"
 
-#: wppa-settings.php:1824
+#: wppa-settings.php:1833
 msgid "SlideFrame"
 msgstr "滑动帧"
 
-#: wppa-settings.php:1825
+#: wppa-settings.php:1834
 #, fuzzy
 msgid "NameDesc"
 msgstr "名称和描述"
 
-#: wppa-settings.php:1828
+#: wppa-settings.php:1837
 #, fuzzy
 msgid "FilmStrip"
 msgstr "幻灯片"
 
-#: wppa-settings.php:1829
+#: wppa-settings.php:1838
 #, fuzzy
 msgid "Browsebar"
 msgstr "浏览栏"
 
-#: wppa-settings.php:1831
+#: wppa-settings.php:1840
 msgid "(Enabled)"
 msgstr "（启用）"
 
-#: wppa-settings.php:1832
+#: wppa-settings.php:1841
 msgid "(Disabled)"
 msgstr "（禁用）"
 
-#: wppa-settings.php:1834
+#: wppa-settings.php:1843
 #, fuzzy
 msgid "Start/Stop & Slower/Faster navigation bar"
 msgstr "显示幻灯片导航栏。"
 
-#: wppa-settings.php:1835
+#: wppa-settings.php:1844
 msgid "The Slide Frame"
 msgstr "幻灯片帧"
 
-#: wppa-settings.php:1835
+#: wppa-settings.php:1844
 msgid "(Always)"
 msgstr "（总是）"
 
-#: wppa-settings.php:1836
+#: wppa-settings.php:1845
 #, fuzzy
 msgid "Photo Name & Description Box"
 msgstr "导航栏。"
 
-#: wppa-settings.php:1837
+#: wppa-settings.php:1846
 msgid "Custom Box"
 msgstr "自定义Box"
 
-#: wppa-settings.php:1838
+#: wppa-settings.php:1847
 #, fuzzy
 msgid "Rating Bar"
 msgstr "评分"
 
-#: wppa-settings.php:1839
+#: wppa-settings.php:1848
 msgid "Film Strip with embedded Start/Stop and Goto functionality"
 msgstr "电影地带与嵌入式启动/停止和跳转功能"
 
-#: wppa-settings.php:1840
+#: wppa-settings.php:1849
 msgid "Browse Bar with Photo X of Y counter"
 msgstr "浏览照片的Y计数器X条幅"
 
-#: wppa-settings.php:1841
+#: wppa-settings.php:1850
 #, fuzzy
 msgid "Comments Box"
 msgstr "评级登录"
 
-#: wppa-settings.php:1847
+#: wppa-settings.php:1856
 #, fuzzy
 msgid "Move Up"
 msgstr "移动到："
 
-#: wppa-settings.php:1857
+#: wppa-settings.php:1866
 #, fuzzy
 msgid "Swap Namedesc"
 msgstr "名称和描述"
 
-#: wppa-settings.php:1858
+#: wppa-settings.php:1867
 msgid "Swap the order sequence of name and description"
 msgstr "交换序的名称和描述"
 
-#: wppa-settings.php:1865
+#: wppa-settings.php:1874
 msgid "Maximum time an album is indicated as New!"
 msgstr "最大的时间显示为新的专辑！"
 
-#: wppa-settings.php:1868
 #: wppa-settings.php:1877
+#: wppa-settings.php:1886
 #, fuzzy
 msgid "One hour"
 msgstr "小时"
 
-#: wppa-settings.php:1868
 #: wppa-settings.php:1877
+#: wppa-settings.php:1886
 #, fuzzy
 msgid "One day"
 msgstr "天"
 
-#: wppa-settings.php:1868
 #: wppa-settings.php:1877
+#: wppa-settings.php:1886
 #, fuzzy
 msgid "One week"
 msgstr "星期"
 
-#: wppa-settings.php:1868
 #: wppa-settings.php:1877
+#: wppa-settings.php:1886
 #, fuzzy
 msgid "One month"
 msgstr "字体："
 
-#: wppa-settings.php:1873
+#: wppa-settings.php:1882
 #, fuzzy
 msgid "New Photo"
 msgstr "照片"
 
-#: wppa-settings.php:1874
+#: wppa-settings.php:1883
 msgid "Maximum time a photo is indicated as New!"
 msgstr "新的照片显示在最前！"
 
-#: wppa-settings.php:1882
+#: wppa-settings.php:1891
 msgid "WPPA+ Lightbox"
 msgstr "WPPA+ Lightbox"
 
-#: wppa-settings.php:1883
+#: wppa-settings.php:1892
 #, fuzzy
 msgid "Use wppa+ embedded lightbox."
 msgstr "Uset wppa+ 嵌入式 lightbox."
 
-#: wppa-settings.php:1884
+#: wppa-settings.php:1893
 msgid "WPPA+ comes with embedded lightbox 2. If you want to use a different ligtbox (plugin)"
 msgstr "WPPA+带有嵌入式lightbox2。如果你想使用一个不同的ligtbox（插件）"
 
-#: wppa-settings.php:1885
+#: wppa-settings.php:1894
 msgid "or you do not use lightbox links, you may uncheck this item."
 msgstr "或者你不使用 lightbox的链接，您可能会取消这个项目。"
 
-#: wppa-settings.php:1886
+#: wppa-settings.php:1895
 msgid "If you uncheck this item you can also no longer set lightbox configuration settings."
 msgstr "如果你取消这个你也可以不再设置 lightbox配置设置的项目。"
 
-#: wppa-settings.php:1887
+#: wppa-settings.php:1896
 msgid "If you check this item, the wp supplied scripts prototype and scriptaculous are also being loaded."
 msgstr "如果选中此项目，WP提供脚本的原型和脚本aculous也被加载。"
 
-#: wppa-settings.php:1893
+#: wppa-settings.php:1902
 msgid "WPPA+ Filter priority"
 msgstr ""
 
-#: wppa-settings.php:1894
+#: wppa-settings.php:1903
 msgid "Sets the priority of the wppa+ content filter."
 msgstr ""
 
-#: wppa-settings.php:1895
+#: wppa-settings.php:1904
 msgid "If you encounter conflicts with the theme or other plugins, increasing this value sometimes helps. Use with great care!"
 msgstr ""
 
-#: wppa-settings.php:1900
+#: wppa-settings.php:1909
 msgid "Apply Newphoto desc"
 msgstr ""
 
-#: wppa-settings.php:1901
+#: wppa-settings.php:1910
 msgid "Give each new photo a standard description."
 msgstr ""
 
-#: wppa-settings.php:1902
+#: wppa-settings.php:1911
 msgid "If checked, each new photo will get the description (template) as specified in the next item."
 msgstr ""
 
-#: wppa-settings.php:1909
+#: wppa-settings.php:1918
 #, fuzzy
 msgid "New photo desc"
 msgstr "照片"
 
-#: wppa-settings.php:1910
+#: wppa-settings.php:1919
 msgid "The description (template) to add to a new photo."
 msgstr ""
 
-#: wppa-settings.php:1911
+#: wppa-settings.php:1920
 #, fuzzy
 msgid "Enter the default description."
 msgstr "输入专辑描述："
 
-#: wppa-settings.php:1912
+#: wppa-settings.php:1921
 msgid "If yuo use html, please check item 4 of this table."
 msgstr ""
 
-#: wppa-settings.php:1934
+#: wppa-settings.php:1943
 #, fuzzy
 msgid "Table X:"
 msgstr "表格IX:"
 
-#: wppa-settings.php:1934
+#: wppa-settings.php:1943
 msgid "WPPA+ and PHP Configuration:"
 msgstr "WPPA+和PHP配置："
 
-#: wppa-settings.php:1935
+#: wppa-settings.php:1944
 msgid "This table lists all WPPA+ constants and PHP server configuration parameters and is read only"
 msgstr "只读此表列出了所有WPPA+的常量和PHP服务器的配置参数"
 
-#: wppa-settings.php:1945
+#: wppa-settings.php:1954
 msgid "Value"
 msgstr "值"
 
-#: wppa-settings.php:1950
+#: wppa-settings.php:1959
 #, fuzzy
 msgid "Albums db table name."
 msgstr "相册无法更新。"
 
-#: wppa-settings.php:1955
+#: wppa-settings.php:1964
 msgid "Photos db table name."
 msgstr "照片DB表的名称。"
 
-#: wppa-settings.php:1960
+#: wppa-settings.php:1969
 #, fuzzy
 msgid "Rating db table name."
 msgstr "清除评级"
 
-#: wppa-settings.php:1965
+#: wppa-settings.php:1974
 msgid "Comments db table name."
 msgstr "评论DB表的名称。"
 
-#: wppa-settings.php:1970
+#: wppa-settings.php:1979
 #, fuzzy
 msgid "Plugins main file name."
 msgstr "插件管理功能"
 
-#: wppa-settings.php:1975
+#: wppa-settings.php:1984
 #, fuzzy
 msgid "Path to plugins directory."
 msgstr "设置源目录"
 
-#: wppa-settings.php:1980
+#: wppa-settings.php:1989
 msgid "Plugins directory name."
 msgstr "plugins目录的名称。"
 
-#: wppa-settings.php:1985
+#: wppa-settings.php:1994
 #, fuzzy
 msgid "Plugins directory url."
 msgstr "插件管理功能"
 
-#: wppa-settings.php:1990
+#: wppa-settings.php:1999
 #, fuzzy
 msgid "The relative upload directory."
 msgstr "成功创建上传目录。"
 
-#: wppa-settings.php:1995
+#: wppa-settings.php:2004
 msgid "The upload directory path."
 msgstr "上传目录的路径。"
 
-#: wppa-settings.php:2000
+#: wppa-settings.php:2009
 msgid "The upload directory url."
 msgstr "上传目录的URL。"
 
-#: wppa-settings.php:2005
+#: wppa-settings.php:2014
 #, fuzzy
 msgid "The relative depot directory."
 msgstr "无法建立目录库"
 
-#: wppa-settings.php:2010
+#: wppa-settings.php:2019
 msgid "The depot directory path."
 msgstr "车厂目录的路径。"
 
-#: wppa-settings.php:2015
+#: wppa-settings.php:2024
 #, fuzzy
 msgid "The depot directory url."
 msgstr "无法建立目录库"
 
-#: wppa-settings.php:2046
+#: wppa-settings.php:2055
 msgid "No help available"
 msgstr "没有帮助"
 
-#: wppa-settings.php:2051
-#: wppa-settings.php:2103
-#: wppa-settings.php:2157
+#: wppa-settings.php:2060
+#: wppa-settings.php:2112
+#: wppa-settings.php:2166
 msgid "Click for help"
 msgstr "点击帮助"
 
-#: wppa-settings.php:2057
-#: wppa-settings.php:2114
-#: wppa-settings.php:2170
+#: wppa-settings.php:2066
+#: wppa-settings.php:2123
+#: wppa-settings.php:2179
 msgid "You just modified this setting"
 msgstr "你只是修改此设置"
 
-#: wppa-settings.php:2062
-#: wppa-settings.php:2119
-#: wppa-settings.php:2175
+#: wppa-settings.php:2071
+#: wppa-settings.php:2128
+#: wppa-settings.php:2184
 msgid "You just tried to modify this setting into an illegal value"
 msgstr "你只是试图修改成此设置一个非法值"
 
-#: wppa-settings.php:2320
+#: wppa-settings.php:2329
 msgid "This value is set to the default."
 msgstr "此值设置为默认。"
 
-#: wppa-settings.php:2327
+#: wppa-settings.php:2336
 msgid "the photo specific link."
 msgstr "照片中的具体链接。"
 
-#: wppa-settings.php:2335
+#: wppa-settings.php:2344
 msgid "The default for this setting is:"
 msgstr "这是一个系统范围的默认设定。"
 
-#: wppa-settings.php:2347
+#: wppa-settings.php:2356
 msgid "Hide"
 msgstr "隐藏 "
 
-#: wppa-settings.php:2348
+#: wppa-settings.php:2357
 msgid "Show"
 msgstr "显示 "
 
-#: wppa-setup.php:108
+#: wppa-setup.php:112
 msgid "IMPORTANT UPGRADE NOTICE"
 msgstr "重要升级提示"
 
-#: wppa-setup.php:109
+#: wppa-setup.php:113
 #, fuzzy
 msgid "Please CHECK your customized WPPA-STYLE.CSS file against the newly supplied one. You may wish to add or modify some attributes. Be aware of the fact that most settings can now be set in the admin settings page."
 msgstr "请再次检查你最新应用的自定义wppa样式css文件。你或许希望增加或修改一些样式，注意，现在那些大部分设置都能在管理页面生效"
 
-#: wppa-setup.php:110
+#: wppa-setup.php:114
 #, fuzzy
 msgid "Please REPLACE your customized WPPA-THEME.PHP file by the newly supplied one, or just remove it from your theme directory. You may modify it later if you wish. Your current customized version is NOT compatible with this version of the plugin software."
 msgstr "请更新你定制的WPPA_THEME.PHP文件，或者移除你的主题目录。如果你希望以后可以修改它。你目前的定制的版本与这个版本插件软件不兼容。"
 
-#: wppa-setup.php:127
+#: wppa-setup.php:129
 #, php-format
 msgid "WPPA+ successfully updated in multi site mode to db version %s."
 msgstr "WPPA DB版本％的多站点模式+成功更新 %s."
 
-#: wppa-setup.php:130
+#: wppa-setup.php:132
 #, php-format
 msgid "WPPA+ updated in single site mode to db version %s. Please visit <b>Photo Albums -> Settings</b> and follow the instructions."
 msgstr "WPPA+ DB版本%s的单一网站模式更新第请访问</b>相册 - >设置</b>，并按照指示。"
 
-#: wppa-setup.php:134
+#: wppa-setup.php:136
 #, php-format
 msgid "WPPA+ successfully updated in single site mode to db version %s."
 msgstr "WPPA DB版本 %s的单一网站模式+成功更新"
 
-#: wppa-setup.php:351
+#: wppa-setup.php:354
 msgid "The uploads directory does not exist, please do a regular WP upload first."
 msgstr "该上传目录不存在，请确保 upload文件可WP上传。"
 
-#: wppa-setup.php:355
+#: wppa-setup.php:358
 msgid "Successfully created uploads directory."
 msgstr "成功创建上传目录。"
 
-#: wppa-setup.php:365
+#: wppa-setup.php:368
 msgid "Could not create the wppa directory."
 msgstr "无法创建wppa文件。 "
 
-#: wppa-setup.php:369
+#: wppa-setup.php:372
 msgid "Successfully created wppa directory."
 msgstr "成功创建wppa目录。"
 
-#: wppa-setup.php:378
+#: wppa-setup.php:381
 msgid "Could not create the wppa thumbs directory."
 msgstr "无法创建wppa首个目录。"
 
-#: wppa-setup.php:382
+#: wppa-setup.php:385
 msgid "Successfully created wppa thumbs directory."
 msgstr "成功创建wppa首个目录。"
 
-#: wppa-setup.php:393
+#: wppa-setup.php:396
 #, fuzzy
 msgid "Unable to create depot directory."
 msgstr "无法建立目录库"
 
-#: wppa-setup.php:397
+#: wppa-setup.php:400
 #, fuzzy
 msgid "Successfully created wppa depot directory."
 msgstr "成功创建wppa用户库目录。"
 
-#: wppa-setup.php:407
+#: wppa-setup.php:410
 #, fuzzy
 msgid "Unable to create user depot directory"
 msgstr "无法创建用户库目录"
 
-#: wppa-setup.php:411
+#: wppa-setup.php:414
 msgid "Successfully created wppa user depot directory."
 msgstr "成功创建wppa用户库目录。"
 
-#: wppa-setup.php:418
+#: wppa-setup.php:421
 #, php-format
 msgid "Ask your administrator to give you more rights, try CHMOD from table VII item 1 of the Photo Albums -> Settings admin page or create <b>%s</b> manually using an FTP program."
 msgstr "要求您的管理员，给你更多的权利，尝试从表七的相册1项CHMOD - >设置管理页面，或使用一个FTP程序手动创建<b>%s</b>。"
 
-#: wppa-setup.php:432
+#: wppa-setup.php:435
 #, php-format
 msgid "wp-photo-album-plus has been enabled in multiblog mode for blog id %s."
 msgstr "博客ID %s多的博客模式已启用WP -图片专辑加第"
 
-#: wppa-setup.php:435
+#: wppa-setup.php:438
 #, php-format
 msgid "There are photos in single site mode for blog id %s. Go to the Photo Albums -> Settings page and read the instructions."
 msgstr "有博客ID%s的单站点模式中的照片号转到相册 - >设置页，并阅读说明书。"
@@ -4452,7 +4510,7 @@ msgid "Photos Uploaded in album nr"
 msgstr "上传相册中的照片星期"
 
 #: wppa-upload.php:398
-#: wppa-upload.php:761
+#: wppa-upload.php:763
 msgid "Zipfile"
 msgstr "Zip文件"
 
@@ -4551,38 +4609,29 @@ msgstr "你确定这是一个照片？"
 msgid "Unsupported mime type encountered:"
 msgstr "遇到不支持的MIME类型："
 
-#: wppa-upload.php:644
+#: wppa-upload.php:645
 msgid "Could not insert photo. query="
 msgstr "无法插入照片。查询="
 
-#: wppa-upload.php:654
+#: wppa-upload.php:656
 msgid "ERROR: Unknown file or album."
 msgstr "错误:未知的文件或相册。"
 
-#: wppa-upload.php:727
+#: wppa-upload.php:729
 msgid "Error: unexpected fgets() fail in wppa_get_meta_data()."
 msgstr "错误：意外的函数fgets() 失败 wppa_get_meta_data()."
 
-#: wppa-upload.php:748
+#: wppa-upload.php:750
 msgid "Class ZipArchive does not exist! Check your php configuration"
 msgstr "zip存档类不存在！检查你的PHP配置"
 
-#: wppa-upload.php:761
+#: wppa-upload.php:763
 msgid "extracted."
 msgstr "提取。"
 
-#: wppa-upload.php:764
+#: wppa-upload.php:766
 msgid "Failed to extract"
 msgstr "提取失败"
-
-#: wppa-upload.php:864
-msgid "ERROR: Resized or copied image could not be created."
-msgstr "错误：无法调整大小或复制的图像"
-
-#: wppa-upload.php:871
-#, php-format
-msgid "ERROR: File %s is not a valid picture file."
-msgstr ""
 
 #: wppa-widget-admin.php:22
 msgid "Widget Photo Width."
@@ -4722,7 +4771,8 @@ msgstr "--所有独立相册--"
 msgid "- all albums except -separate-"
 msgstr "所有相册（独立相册除外）"
 
-#: theme/photo-album-page.php:33
+#: theme/photo-album-page.php:30
+#: theme/photo-album-search-page.php:50
 msgid "Pages:"
 msgstr "页数："
 

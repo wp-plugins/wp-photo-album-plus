@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wppa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-08-19 14:50+0100\n"
-"PO-Revision-Date: 2011-08-19 14:50+0100\n"
+"POT-Creation-Date: 2011-09-18 17:43+0100\n"
+"PO-Revision-Date: 2011-09-18 17:43+0100\n"
 "Last-Translator: J.N. Breetvelt <OpaJaap@OpaJaap.nl>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -20,79 +20,79 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPath-1: theme\n"
 
-#: wppa-common-functions.php:380
+#: wppa-common-functions.php:406
 #, php-format
 msgid "Rating: %s"
 msgstr ""
 
-#: wppa-common-functions.php:450
+#: wppa-common-functions.php:476
 msgid "--- none ---"
 msgstr "--- ninguno ---"
 
-#: wppa-common-functions.php:451
+#: wppa-common-functions.php:477
 msgid "--- separate ---"
 msgstr "--- separar ---"
 
-#: wppa-common-functions.php:555
+#: wppa-common-functions.php:581
 msgid "1 second"
 msgstr ""
 
-#: wppa-common-functions.php:556
+#: wppa-common-functions.php:582
 msgid "seconds"
 msgstr ""
 
-#: wppa-common-functions.php:560
+#: wppa-common-functions.php:586
 msgid "1 minute"
 msgstr ""
 
-#: wppa-common-functions.php:561
+#: wppa-common-functions.php:587
 msgid "minutes"
 msgstr ""
 
-#: wppa-common-functions.php:565
+#: wppa-common-functions.php:591
 #, fuzzy
 msgid "1 hour"
 msgstr "hora."
 
-#: wppa-common-functions.php:566
+#: wppa-common-functions.php:592
 #, fuzzy
 msgid "hours"
 msgstr "hora."
 
-#: wppa-common-functions.php:570
+#: wppa-common-functions.php:596
 #, fuzzy
 msgid "1 day"
 msgstr "día."
 
-#: wppa-common-functions.php:571
+#: wppa-common-functions.php:597
 #, fuzzy
 msgid "days"
 msgstr "día."
 
-#: wppa-common-functions.php:575
+#: wppa-common-functions.php:601
 #, fuzzy
 msgid "1 week"
 msgstr "semana."
 
-#: wppa-common-functions.php:576
+#: wppa-common-functions.php:602
 #, fuzzy
 msgid "weeks"
 msgstr "semana."
 
-#: wppa-common-functions.php:580
+#: wppa-common-functions.php:606
 #, fuzzy
 msgid "1 month"
 msgstr "1 Comentario"
 
-#: wppa-common-functions.php:581
+#: wppa-common-functions.php:607
 msgid "months"
 msgstr ""
 
-#: wppa-common-functions.php:584
+#: wppa-common-functions.php:610
 msgid "1 year"
 msgstr ""
 
-#: wppa-common-functions.php:585
+#: wppa-common-functions.php:611
 msgid "years"
 msgstr ""
 
@@ -112,197 +112,225 @@ msgstr ", un sub álbum de"
 msgid "Home"
 msgstr "Inicio"
 
-#: wppa-functions.php:124
-#: wppa-functions.php:2000
-#: wppa-non-admin.php:118
+#: wppa-functions.php:119
+#: wppa-functions.php:1972
+#: wppa-non-admin.php:157
 msgid "Slideshow"
 msgstr "Presentación"
 
-#: wppa-functions.php:130
+#: wppa-functions.php:125
 msgid "Searchstring:"
 msgstr "Cadena de Búsqueda:"
 
-#: wppa-functions.php:133
+#: wppa-functions.php:128
 #, fuzzy
 msgid "Top rated photos"
 msgstr "Subir fotos"
 
-#: wppa-functions.php:846
+#: wppa-functions.php:775
 msgid "You must login to enter a comment"
 msgstr ""
 
-#: wppa-functions.php:906
+#: wppa-functions.php:840
 msgid "<b>ERROR: Attempt to enter an invalid rating.</b>"
 msgstr ""
 
-#: wppa-functions.php:1013
+#: wppa-functions.php:953
 msgid "Comment edited"
 msgstr ""
 
-#: wppa-functions.php:1016
+#: wppa-functions.php:956
 msgid "Comment added"
 msgstr ""
 
-#: wppa-functions.php:1022
+#: wppa-functions.php:962
 #, fuzzy
 msgid "Could not process comment"
 msgstr "No se pudo actualizar la foto."
 
-#: wppa-functions.php:1087
+#: wppa-functions.php:1029
 #, fuzzy
 msgid "Edit!"
 msgstr "Editar"
 
-#: wppa-functions.php:1091
+#: wppa-functions.php:1033
 msgid "Send!"
 msgstr ""
 
-#: wppa-functions.php:1116
+#: wppa-functions.php:1061
 msgid "Your name:"
 msgstr ""
 
-#: wppa-functions.php:1120
+#: wppa-functions.php:1065
 msgid "Your email:"
 msgstr ""
 
-#: wppa-functions.php:1124
+#: wppa-functions.php:1069
 #, fuzzy
 msgid "Your comment:"
 msgstr "% Comentarios"
 
-#: wppa-functions.php:1134
+#: wppa-functions.php:1080
 #, fuzzy, php-format
 msgid "%d  comments"
 msgstr "% Comentarios"
 
-#: wppa-functions.php:1135
+#: wppa-functions.php:1081
 msgid "Leave a comment"
 msgstr "Deje su comentario"
 
-#: wppa-functions.php:1446
+#: wppa-functions.php:1397
 #, fuzzy
 msgid "Prev.&nbsp;page"
 msgstr "Anterior"
 
-#: wppa-functions.php:1450
+#: wppa-functions.php:1401
 #, fuzzy
 msgid "Next&nbsp;page"
 msgstr "Siguiente"
 
-#: wppa-functions.php:1735
+#: wppa-functions.php:1692
 msgid "<b>ERROR: Illegal attempt to enter a rating.</b>"
 msgstr ""
 
-#: wppa-functions.php:1745
+#: wppa-functions.php:1705
 msgid "<b>ERROR: Illegal attempt to enter a comment.</b>"
 msgstr ""
 
-#: wppa-functions.php:1920
+#: wppa-functions.php:1892
 msgid "Link to"
 msgstr "Enlace a"
 
-#: wppa-functions.php:1924
+#: wppa-functions.php:1896
 msgid "Page is not available."
 msgstr "La página no está disponible."
 
-#: wppa-functions.php:1930
-#: wppa-functions.php:2010
+#: wppa-functions.php:1902
+#: wppa-functions.php:1982
 msgid "View the album"
 msgstr "Ver el álbum"
 
-#: wppa-functions.php:1935
+#: wppa-functions.php:1907
 msgid "View the cover photo"
 msgstr "Ver la foto de portada"
 
-#: wppa-functions.php:1936
+#: wppa-functions.php:1908
 #, fuzzy
 msgid "View the cover photos"
 msgstr "Ver la foto de portada"
 
-#: wppa-functions.php:2000
+#: wppa-functions.php:1972
 #, fuzzy
 msgid "Browse photos"
 msgstr "Barra de Navegación de fotos:"
 
-#: wppa-functions.php:2011
+#: wppa-functions.php:1983
 msgid "View"
 msgstr "Ver"
 
-#: wppa-functions.php:2014
+#: wppa-functions.php:1986
 msgid "album"
 msgstr "el álbum"
 
-#: wppa-functions.php:2017
+#: wppa-functions.php:1989
 msgid "albums"
 msgstr "los álbumes"
 
-#: wppa-functions.php:2021
+#: wppa-functions.php:1993
 msgid "and"
 msgstr "y"
 
-#: wppa-functions.php:2025
+#: wppa-functions.php:1997
 msgid "photo"
 msgstr "la foto"
 
-#: wppa-functions.php:2028
+#: wppa-functions.php:2000
 msgid "photos"
 msgstr "las fotos"
 
-#: wppa-functions.php:2374
+#: wppa-functions.php:2368
 #, fuzzy
 msgid "Double click to start/stop slideshow running"
 msgstr "Comenzar Presentación Auto:"
 
-#: wppa-non-admin.php:79
+#: wppa-functions.php:3155
+#: wppa-functions.php:3161
+#, fuzzy
+msgid "Upload Photo"
+msgstr "Importar fotos"
+
+#: wppa-functions.php:3162
+#, fuzzy
+msgid "Enter/modify photo description"
+msgstr "Escribir / modificar la descripción de éste álbum."
+
+#: wppa-functions.php:3186
+msgid "<b>ERROR: Illegal attempt to upload a file.</b>"
+msgstr ""
+
+#: wppa-functions.php:3193
+#, fuzzy
+msgid "Error during upload"
+msgstr "Error al insertar la foto"
+
+#: wppa-functions.php:3198
+msgid "Uploaded file is not an image"
+msgstr ""
+
+#: wppa-functions.php:3202
+msgid "Only gif, jpg and png image files are supported"
+msgstr ""
+
+#: wppa-non-admin.php:93
 msgid "Image"
 msgstr ""
 
-#: wppa-non-admin.php:80
-#: wppa-non-admin.php:122
+#: wppa-non-admin.php:94
+#: wppa-non-admin.php:161
 msgid "of"
 msgstr "de"
 
-#: wppa-non-admin.php:119
+#: wppa-non-admin.php:158
 msgid "Start"
 msgstr "Comenzar"
 
-#: wppa-non-admin.php:120
+#: wppa-non-admin.php:159
 #, fuzzy
 msgid "Stop"
 msgstr "arriba"
 
-#: wppa-non-admin.php:121
+#: wppa-non-admin.php:160
 msgid "Photo"
 msgstr "Foto"
 
-#: wppa-non-admin.php:123
+#: wppa-non-admin.php:162
 #, fuzzy
 msgid "Previous photo"
 msgstr "Barra de Navegación de fotos:"
 
-#: wppa-non-admin.php:124
+#: wppa-non-admin.php:163
 #, fuzzy
 msgid "Next photo"
 msgstr "Siguiente"
 
-#: wppa-non-admin.php:125
+#: wppa-non-admin.php:164
 #, fuzzy
 msgid "Prev."
 msgstr "aquí."
 
-#: wppa-non-admin.php:126
+#: wppa-non-admin.php:165
 msgid "Next"
 msgstr ""
 
-#: wppa-non-admin.php:130
+#: wppa-non-admin.php:169
 msgid "Please enter your name"
 msgstr ""
 
-#: wppa-non-admin.php:131
+#: wppa-non-admin.php:170
 msgid "Please enter a valid email address"
 msgstr ""
 
-#: wppa-non-admin.php:132
+#: wppa-non-admin.php:171
 #, fuzzy
 msgid "Please enter a comment"
 msgstr "Deje su comentario"
@@ -316,12 +344,12 @@ msgstr "Foto del día"
 msgid "Photo not found."
 msgstr "Foto no encontrada."
 
-#: wppa-slideshow-widget.php:28
+#: wppa-slideshow-widget.php:29
 #, fuzzy
 msgid "Sidebar Slideshow"
 msgstr "Sidebar Widget"
 
-#: wppa-slideshow-widget.php:80
+#: wppa-slideshow-widget.php:107
 #, fuzzy
 msgid "No album defined yet."
 msgstr "No hay álbumes."
@@ -338,54 +366,54 @@ msgstr "Más rápido"
 msgid "To see the full size images, you need to enable javascript in your browser."
 msgstr ""
 
-#: wppa-slideshow.php:150
+#: wppa-slideshow.php:173
 #, fuzzy
 msgid "- - - Rating enabled - - -"
 msgstr "- - - Enlaces de páginas - - -"
 
-#: wppa-slideshow.php:159
+#: wppa-slideshow.php:182
 #, fuzzy
 msgid "very low"
 msgstr "muy lento (2 s.)"
 
-#: wppa-slideshow.php:160
+#: wppa-slideshow.php:183
 #, fuzzy
 msgid "low"
 msgstr "Más lento"
 
-#: wppa-slideshow.php:161
+#: wppa-slideshow.php:184
 #, fuzzy
 msgid "average"
 msgstr "Guardar Cambios"
 
-#: wppa-slideshow.php:162
+#: wppa-slideshow.php:185
 #, fuzzy
 msgid "high"
 msgstr "derecha"
 
-#: wppa-slideshow.php:163
+#: wppa-slideshow.php:186
 msgid "very high"
 msgstr ""
 
-#: wppa-slideshow.php:168
-#: wppa-slideshow.php:173
+#: wppa-slideshow.php:191
+#: wppa-slideshow.php:196
 msgid "Average&nbsp;rating"
 msgstr ""
 
-#: wppa-slideshow.php:182
-#: wppa-slideshow.php:185
+#: wppa-slideshow.php:205
+#: wppa-slideshow.php:208
 msgid "My&nbsp;rating"
 msgstr ""
 
-#: wppa-slideshow.php:188
+#: wppa-slideshow.php:211
 msgid "You must login to vote"
 msgstr ""
 
-#: wppa-slideshow.php:311
+#: wppa-slideshow.php:336
 msgid "Click to start/stop"
 msgstr ""
 
-#: wppa-slideshow.php:323
+#: wppa-slideshow.php:348
 #, fuzzy
 msgid "- - - Comments box activated - - -"
 msgstr "- - - Enlaces de páginas - - -"
@@ -417,9 +445,6 @@ msgstr "No se encontraron álbumes o fotos con su búsqueda."
 
 #~ msgid "Photo Albums"
 #~ msgstr "Álbumes de fotos"
-
-#~ msgid "Import Photos"
-#~ msgstr "Importar fotos"
 
 #~ msgid "Settings"
 #~ msgstr "Configuración"
@@ -513,9 +538,6 @@ msgstr "No se encontraron álbumes o fotos con su búsqueda."
 
 #~ msgid "Description:"
 #~ msgstr "Descripción:"
-
-#~ msgid "Enter / modify the description for this album."
-#~ msgstr "Escribir / modificar la descripción de éste álbum."
 
 #~ msgid "Sort order #:"
 #~ msgstr "Orden #:"
@@ -2144,9 +2166,6 @@ msgstr "No se encontraron álbumes o fotos con su búsqueda."
 
 #~ msgid "There are no photos in depot:"
 #~ msgstr "No hay fotos en el depósito:"
-
-#~ msgid "Error inserting photo"
-#~ msgstr "Error al insertar la foto"
 
 #~ msgid "Photos Uploaded in album nr"
 #~ msgstr "Las fotos subidas en el álbum No."
