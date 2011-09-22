@@ -8,7 +8,7 @@
 /*
 /* You may always look into a newer version of this file to see what new classes and id's come with an upgrade
 /*
-/* This is version 4.0.12
+/* This is version 4.1.0
 */
 
 /* Navigation */
@@ -212,22 +212,22 @@ margin: 0 auto;
 }
 
 /* Comment system */
-#content .wppacommentform, .wppacommentform  {
+#content .wppa-comment-form, .wppa-comment-form  {
 	text-align:left; 
 	padding:0px;	
 	border: 0px none; 
 }
-#content .wppacommentform input, #content .wppacommentform textarea, .wppacommentform input, .wppacommentform textarea  {
+#content .wppa-comment-form input, #content .wppa-comment-form textarea, .wppa-comment-form input, .wppa-comment-form textarea  {
 	padding:0; 
 	margin:0; 
 	font-size:12px; 
 	line-height:18px; /**/
 }
-#content .wppacommentform tr td, .wppacommentform tr td, #content .wppa-detail tr td, .wppa-detail tr td  {
+#content .wppa-comment-form tr td, .wppa-comment-form tr td, #content .wppa-detail tr td, .wppa-detail tr td  {
 	padding: 0px 12px;	/* 3 12 */
 	border: 0px none; /**/
 }
-#content .wppacommentform table, .wppacommentform table, #content .wppa-detail table, .wppa-detail table {
+#content .wppa-comment-form table, .wppa-comment-form table, #content .wppa-detail table, .wppa-detail table {
 	border: 0px none;
 	text-align: left;
 	width: 100%; 
@@ -236,6 +236,18 @@ margin: 0 auto;
 
 /* The custom box, background color and border is set in Table III, item 10 */
 .wppa-custom {
+}
+
+/* User upload photos */
+.wppa-user-file {
+float:left;
+}
+.wppa-user-textarea {
+}
+.wppa-user-submit {
+padding: 0;
+height: 23px;
+float:right;
 }
 
 /* Special requests */

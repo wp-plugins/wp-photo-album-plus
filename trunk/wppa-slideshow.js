@@ -1,5 +1,5 @@
 ﻿// Slide show variables and functions
-// This is wppa-slideshow.js version 4.0.12
+// This is wppa-slideshow.js version 4.1.0
 //
 // Vars. The vars that have a name that starts with an underscore is an internal var
 // The vars without leading underscore are 'external' and get a value from html
@@ -173,6 +173,10 @@ function wppaGoto(mocc, idx) {
 	if ( ! _wppaSlideShowRuns[mocc] ) {
 		_wppaGoto(mocc, idx);
 	}
+}
+
+function wppaValidateComment(mocc) {
+	return _wppaValidateComment(mocc);
 }
 
 function _wppaNextSlide(mocc, mode) {
@@ -629,9 +633,9 @@ function _wppaRateIt(mocc, value) {
 
 	var photoid = _wppaPhotoIds[mocc][_wppaCurrentIndex[mocc]];
 	var oldval = _wppaPhotoMyRating[mocc][_wppaCurrentIndex[mocc]];
-	var url = _wppaVoteReturnUrl[mocc][_wppaCurrentIndex[mocc]]+'&wpparating='+value;
+	var url = _wppaVoteReturnUrl[mocc][_wppaCurrentIndex[mocc]]+'&wppa-rating='+value;
 	
-	if (document.getElementById('wppa_nonce')) url += '&wppa_nonce='+document.getElementById('wppa_nonce').value;
+	if (document.getElementById('wppa-nonce')) url += '&wppa-nonce='+document.getElementById('wppa-nonce').value;
 
 	if (oldval != 0 && wppaRatingOnce) return;							// Already rated, and once allowed only
 	if (_wppaSlideShowRuns[mocc]) return;										
@@ -650,14 +654,14 @@ function _wppaValidateComment(mocc) {
 	var photoid = _wppaPhotoIds[mocc][_wppaCurrentIndex[mocc]];
 	
 	// Process name
-	var name = document.getElementById('wppacomname-'+mocc).value;
+	var name = document.getElementById('wppa-comname-'+mocc).value;
 	if (name.length<1) {
 		alert(wppaPleaseName);
 		return false;
 	}
 	
 	// Process email address
-	var email = document.getElementById('wppacomemail-'+mocc).value;
+	var email = document.getElementById('wppa-comemail-'+mocc).value;
 	var atpos=email.indexOf("@");
 	var dotpos=email.lastIndexOf(".");
 	if (atpos<1 || dotpos<atpos+2 || dotpos+2>=email.length) {
@@ -666,7 +670,7 @@ function _wppaValidateComment(mocc) {
 	}
 	
 	// Process comment
-	var text = document.getElementById('wppacomment-'+mocc).value;
+	var text = document.getElementById('wppa-comment-'+mocc).value;
 	if (text.length<1) {
 		alert(wppaPleaseComment);
 		return false;

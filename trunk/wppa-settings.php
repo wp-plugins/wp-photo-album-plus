@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 4.0.12
+* Version 4.1.0
 *
 */
 
@@ -321,6 +321,8 @@ global $options_error;
 					wppa_error_message(__('Changes in accesslevels will not be made. It is set to be done by an other program.', 'wppa'));
 				}
 			}
+			
+			wppa_update_check('wppa_user_upload_on');
 	
 			// Table 9: Micellaneous
 			if ( is_multisite() && get_option('wppa_multisite', 'no') != 'yes' ) {
@@ -1602,6 +1604,13 @@ global $wppa_api_version;
 						$values = array('administrator', 'editor', 'author', 'contributor');
 						$html = wppa_select($slug, $options, $values);
 						wppa_setting($slug, '6', $name, $desc, $html, $help);
+						
+						$name = __('User upload', 'wppa');
+						$desc = __('Enable visitors to upload photos.', 'wppa');
+						$help = esc_js(__('If you check this item, visitors who are logged in and have wppa+ upload rights and have access to the album will see an upload photo link on album covers and thumbnail displays.', 'wppa'));
+						$slug = 'wppa_user_upload_on';
+						$html = wppa_checkbox($slug);
+						wppa_setting($slug, '7', $name, $desc, $html, $help);
 						
 						?>
 					</tbody>

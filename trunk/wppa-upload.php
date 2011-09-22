@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the upload/import pages and functions
-* Version 4.0.12
+* Version 4.1.0
 *
 */
 
@@ -639,14 +639,16 @@ function wppa_insert_photo ($file = '', $album = '', $name = '', $desc = '', $po
 				$desc = stripslashes($wppa_opt['wppa_newphoto_description']);
 			}
 			$mrat = '0';
-			$query = $wpdb->prepare('INSERT INTO `' . WPPA_PHOTOS . '` (`id`, `album`, `ext`, `name`, `p_order`, `description`, `mean_rating`, `linkurl`, `linktitle`, `timestamp`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)', $id, $album, $ext, $name, $porder, $desc, $mrat, $linkurl, $linktitle, time());
+			$owner = wppa_get_user();
+			$query = $wpdb->prepare('INSERT INTO `' . WPPA_PHOTOS . '` (`id`, `album`, `ext`, `name`, `p_order`, `description`, `mean_rating`, `linkurl`, `linktitle`, `timestamp`, `owner`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)', $id, $album, $ext, $name, $porder, $desc, $mrat, $linkurl, $linktitle, time(), $owner);
 			if ($wpdb->query($query) === false) {
 				wppa_error_message(__('Could not insert photo. query=', 'wppa').$query);
 			}
 		}
 
-		if ($id == '0') $image_id = $wpdb->get_var("SELECT LAST_INSERT_ID()");
-		else $image_id = $id;
+//		if ($id == '0') $image_id = $wpdb->get_var("SELECT LAST_INSERT_ID()");
+//		else 
+		$image_id = $id;
 		
 		if ( wppa_make_the_photo_files($file, $image_id, $ext) ) return true;
 	}
@@ -822,7 +824,7 @@ global $allphotos;
 	}
 	return true;
 }
-
+/*
 function wppa_make_the_photo_files($file, $image_id, $ext) {
 				
 	$img_size = getimagesize($file);
@@ -872,3 +874,4 @@ function wppa_make_the_photo_files($file, $image_id, $ext) {
 		return false;
 	}
 }
+*/

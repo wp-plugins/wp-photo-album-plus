@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 * gp admin functions
-* version 4.0.12
+* version 4.1.0
 *
 * 
 */
@@ -112,26 +112,6 @@ function wppa_regenerate_thumbs() {
 		}
 	}		
 }
-
-// Create thumbnail
-function wppa_create_thumbnail( $file, $max_side, $effect = '') {
-	if (file_exists($file)) {
-		$img_size = getimagesize( $file );
-		$dir = $img_size[0] > $img_size[1] ? 'W' : 'H';
-		$thumb = 'thumbs/' . basename( $file );
-		$thumbpath = str_replace( basename( $file ), $thumb, $file );
-
-		require_once('wppa-class-resize.php');		
-		$objResize = new wppa_ImageResize($file, $thumbpath, $dir, $max_side);
-		$objResize->destroyImage($objResize->resOriginalImage);
-		$objResize->destroyImage($objResize->resResizedImage);
-	}
-	else {
-		return false;
-	}
-	return true;
-}
-
 
 function wppa_set_caps() {
 	global $wp_roles;
@@ -308,65 +288,9 @@ function wppa_check_numeric($value, $minval, $target, $maxval = '') {
 	return false;
 }
 
-function wppa_get_minisize() {
-	$result = '100';
-	
-	$tmp = get_option('wppa_thumbsize', 'nil');
-	if (is_numeric($tmp) && $tmp > $result) $result = $tmp;
-	$tmp = get_option('wppa_smallsize', 'nil');
-	if (is_numeric($tmp) && $tmp > $result) $result = $tmp;
-	$tmp = get_option('wppa_popupsize', 'nil');
-	if (is_numeric($tmp) && $tmp > $result) $result = $tmp;
-	
-	$result = ceil($result / 25) * 25;
-	return $result;
-}
-
 // check if albums 'exists'
 function wppa_has_albums() {
 	return wppa_have_access('any');
-}
-// See if an album or any album is accessable for the current user
-function wppa_have_access($alb) {
-global $wpdb;
-global $current_user;
-	// See if there is any album accessable
-	if ($alb == 'any') {
-		// Administrator has always access OR If all albums are public
-		if (current_user_can('administrator') || get_option('wppa_owner_only', 'no') == 'no') {
-			$albs = $wpdb->get_results('SELECT id FROM '.WPPA_ALBUMS);
-			if ($albs) return true;
-			else return false;	// No albums in system
-		}
-		else {
-			get_currentuserinfo();
-			$user = $current_user->user_login;
-			$albs = $wpdb->get_results('SELECT id FROM '.WPPA_ALBUMS.' WHERE owner = "'.$user.'"');
-			if ($albs) return true;
-			else return false;	// No albums for user accessable
-		}
-	}
-	
-	// See for given album data array or album number
-	else {
-		// Administrator has always access
-		if (current_user_can('administrator')) return true;
-		// If all albums are public
-		if (get_option('wppa_owner_only', 'no') == 'no') return true;
-		// Find the owner
-		$owner = '';
-		if (is_array($alb)) {
-			$owner = $alb['owner'];
-		}
-		elseif (is_numeric($alb)) {
-			$owner = $wpdb->get_var('SELECT owner FROM '.WPPA_ALBUMS.' WHERE id = '.$alb);
-		}
-		// Find the user
-		get_currentuserinfo();
-		
-		if ($current_user->user_login == $owner) return true;
-		else return false;
-	}
 }
 
 function wppa_get_users() {
@@ -457,7 +381,8 @@ global $wpdb;
 	$err = '3';
 	// Make new db table entry
 	$id = wppa_nextkey(WPPA_PHOTOS);
-	$query = $wpdb->prepare('INSERT INTO `' . WPPA_PHOTOS . '` (`id`, `album`, `ext`, `name`, `p_order`, `description`, `mean_rating`, `linkurl`, `linktitle`) VALUES (%s, %s, %s, %s, %s, %s, \'\', %s, %s)', $id, $album, $ext, $name, $porder, $desc, $linkurl, $linktitle);
+	$owner = wppa_get_user();
+	$query = $wpdb->prepare('INSERT INTO `' . WPPA_PHOTOS . '` (`id`, `album`, `ext`, `name`, `p_order`, `description`, `mean_rating`, `linkurl`, `linktitle`, `timestamp`, `owner`) VALUES (%s, %s, %s, %s, %s, %s, \'\', %s, %s, %s, %s)', $id, $album, $ext, $name, $porder, $desc, $linkurl, $linktitle, time(), $owner);
 	if ($wpdb->query($query) === false) return $err;
 
 	$err = '4';

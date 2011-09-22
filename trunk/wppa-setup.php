@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 4.0.12
+* Version 4.1.0
 *
 */
 
@@ -48,6 +48,7 @@ function wppa_setup($force = false) {
 					mean_rating tinytext NOT NULL,
 					linkurl text NOT NULL,
 					linktitle text NOT NULL,
+					owner text NOT NULL,
 					timestamp tinytext NOT NULL,
 					PRIMARY KEY  (id) 
 					);";
@@ -65,6 +66,7 @@ function wppa_setup($force = false) {
 					timestamp tinytext NOT NULL,
 					photo bigint(20) NOT NULL,
 					user text NOT NULL,
+					ip tinytext NOT NULL,
 					email text NOT NULL,
 					comment text NOT NULL,
 					status tinytext NOT NULL,
@@ -95,22 +97,22 @@ function wppa_setup($force = false) {
 	
 	$iret = true;
 
-	if ( $old_rev < '400' ) {		// theme and/or css changed since...
-		$key = '0';
-		$userstyle_old 	= ABSPATH.'wp-content/themes/'.get_option('template').'/wppa_style.css';
-		$userstyle 		= ABSPATH.'wp-content/themes/'.get_option('template').'/wppa-style.css';
+	$key = '0';
+	if ( $old_rev < '400' ) {		// theme changed since...
 		$usertheme_old 	= ABSPATH.'wp-content/themes/'.get_option('template').'/wppa_theme.php';
 		$usertheme 		= ABSPATH.'wp-content/themes/'.get_option('template').'/wppa-theme.php';
-		if ( is_file( $userstyle ) || is_file( $userstyle_old ) ) $key += '1';
 		if ( is_file( $usertheme ) || is_file( $usertheme_old ) ) $key += '2';
-		
-		if ( $key ) {
-			$msg = '<center>' . __('IMPORTANT UPGRADE NOTICE', 'wppa') . '</center><br/>';
-			if ($key == '1' || $key == '3') $msg .= '<br/>' . __('Please CHECK your customized WPPA-STYLE.CSS file against the newly supplied one. You may wish to add or modify some attributes. Be aware of the fact that most settings can now be set in the admin settings page.', 'wppa');
-			if ($key == '2' || $key == '3') $msg .= '<br/>' . __('Please REPLACE your customized WPPA-THEME.PHP file by the newly supplied one, or just remove it from your theme directory. You may modify it later if you wish. Your current customized version is NOT compatible with this version of the plugin software.', 'wppa');
-
-			wppa_ok_message($msg);
-		}		
+	}
+	if ( $old_rev < '410' ) {		// css changed since...
+		$userstyle_old 	= ABSPATH.'wp-content/themes/'.get_option('template').'/wppa_style.css';
+		$userstyle 		= ABSPATH.'wp-content/themes/'.get_option('template').'/wppa-style.css';
+		if ( is_file( $userstyle ) || is_file( $userstyle_old ) ) $key += '1';
+	}
+	if ( $key ) {
+		$msg = '<center>' . __('IMPORTANT UPGRADE NOTICE', 'wppa') . '</center><br/>';
+		if ($key == '1' || $key == '3') $msg .= '<br/>' . __('Please CHECK your customized WPPA-STYLE.CSS file against the newly supplied one. You may wish to add or modify some attributes. Be aware of the fact that most settings can now be set in the admin settings page.', 'wppa');
+		if ($key == '2' || $key == '3') $msg .= '<br/>' . __('Please REPLACE your customized WPPA-THEME.PHP file by the newly supplied one, or just remove it from your theme directory. You may modify it later if you wish. Your current customized version is NOT compatible with this version of the plugin software.', 'wppa');
+		wppa_ok_message($msg);
 	}
 		
 	if ( $old_rev < '243' ) {		// ownerfield added in...
@@ -322,7 +324,8 @@ global $wppa_defaults;
 						'wppa_custom_content' 			=> '<div style="color:red; font-size:24px; font-weight:bold; text-align:center;">Hello world!</div>',
 						'wppa_apply_newphoto_desc'		=> 'no',
 						'wppa_newphoto_description'		=> $wppa_npd,
-						'wppa_comments_desc'			=> 'no'
+						'wppa_comments_desc'			=> 'no',
+						'wppa_user_upload_on'			=> 'no'
 
 						);
 	

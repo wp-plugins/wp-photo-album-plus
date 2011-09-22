@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * get the albums via filter
-* version 4.0.9
+* version 4.1.0
 *
 */
 
@@ -70,49 +70,49 @@ global $wppa;
 			// examine album number
 			if (is_numeric($album_pos)) {				
 				$post_old = substr($post_old, $album_pos + 8);				// shift up to and including %%album= out
-				$wppa['start_album'] = wppa_atoi($post_old);				// get album #
+				$wppa['start_album'] = wppa_atoid($post_old);				// get album #
 				$post_old = substr($post_old, strpos($post_old, '%%') + 2);	// shift album # and trailing %% out
 			}
 			elseif (is_numeric($cover_pos)) {
 				$post_old = substr($post_old, $cover_pos + 8);				// shift up to and including %%cover= out
-				$wppa['start_album'] = wppa_atoi($post_old);				// get album #
+				$wppa['start_album'] = wppa_atoid($post_old);				// get album #
 				$wppa['is_cover'] = '1';
 				$post_old = substr($post_old, strpos($post_old, '%%') + 2);	// shift album # and trailing %% out
 			}
 			elseif (is_numeric($slide_pos)) {
 				$post_old = substr($post_old, $slide_pos + 8);				// shift up to and including %%slide= out
-				$wppa['start_album'] = wppa_atoi($post_old);				// get album #
+				$wppa['start_album'] = wppa_atoid($post_old);				// get album #
 				$wppa['is_slide'] = '1';
 				$post_old = substr($post_old, strpos($post_old, '%%') + 2);	// shift album # and trailing %% out
 			}
 			elseif (is_numeric($slidef_pos)) {
 				$post_old = substr($post_old, $slidef_pos + 9);				// shift up to and including %%slidef= out
-				$wppa['start_album'] = wppa_atoi($post_old);				// get album #
+				$wppa['start_album'] = wppa_atoid($post_old);				// get album #
 				$wppa['is_slide'] = '1';
 				$wppa['film_on'] = '1';
 				$post_old = substr($post_old, strpos($post_old, '%%') + 2);	// shift album # and trailing %% out
 			}
 			elseif (is_numeric($slideonly_pos)) {
 				$post_old = substr($post_old, $slideonly_pos + 12);			// shift up to and including %%slideonly= out
-				$wppa['start_album'] = wppa_atoi($post_old);				// get album #
+				$wppa['start_album'] = wppa_atoid($post_old);				// get album #
 				$wppa['is_slideonly'] = '1';
 				$post_old = substr($post_old, strpos($post_old, '%%') + 2);	// shift album # and trailing %% out
 			}
 			elseif (is_numeric($slideonlyf_pos)) {
 				$post_old = substr($post_old, $slideonlyf_pos + 13);		// shift up to and including %%slideonlyf= out
-				$wppa['start_album'] = wppa_atoi($post_old);				// get album #
+				$wppa['start_album'] = wppa_atoid($post_old);				// get album #
 				$wppa['is_slideonly'] = '1';
 				$wppa['film_on'] = '1';
 				$post_old = substr($post_old, strpos($post_old, '%%') + 2);	// shift album # and trailing %% out
 			}
 			elseif (is_numeric($photo_pos)) {
 				$post_old = substr($post_old, $photo_pos + 8);				// shift up to and including %%photo= out
-				$wppa['single_photo'] = wppa_atoi($post_old);				// get photo #
+				$wppa['single_photo'] = wppa_atoid($post_old);				// get photo #
 				$post_old = substr($post_old, strpos($post_old, '%%') + 2);	// shift photo # and trailing %% out
 			}
 			elseif (is_numeric($mphoto_pos)) {
 				$post_old = substr($post_old, $mphoto_pos + 9);				// shift up to and including %%mphoto= out
-				$wppa['single_photo'] = wppa_atoi($post_old);				// get photo #
+				$wppa['single_photo'] = wppa_atoid($post_old);				// get photo #
 				$wppa['is_mphoto'] = '1';
 				$post_old = substr($post_old, strpos($post_old, '%%') + 2);	// shift photo # and trailing %% out
 			}
@@ -120,7 +120,7 @@ global $wppa;
 			if (is_numeric($size_pos)) {
 				$size_pos = strpos($post_old, '%%size=');					// refresh position due to out-shifting above
 				$post_old = substr($post_old, $size_pos + 7);				// shift up to and including %%size= out
-				$size = wppa_atoi($post_old);								// get size #
+				$size = wppa_atoid($post_old);								// get size #
 				if (substr_compare($post_old, 'auto', 0, 4) == 0) $size = 'auto';
 
 				$post_old = substr($post_old, strpos($post_old, '%%') + 2); // shift size # and trailing %% out
@@ -179,9 +179,15 @@ global $wppa;
 	return $post_new;
 }
 
-function wppa_atoi($var) {
+function wppa_atoid($var) {
 	$result = '0';
 	if (substr($var, 0, 1) == '#') {	// a keyword found
+		$to = strpos($var, '%%');
+		if ($to) {
+			$result = substr($var, 0, $to);
+		}
+	}
+	elseif (substr($var, 0, 1) == '$') {	// a name found
 		$to = strpos($var, '%%');
 		if ($to) {
 			$result = substr($var, 0, $to);
@@ -195,6 +201,7 @@ function wppa_atoi($var) {
 			$len++;
 			$t = substr($var, 0, $len);		
 		}
+		if ( $result == '0' ) $result = substr($var, 0, strpos($var, '%%'));	// Expected a number
 	}
 	return $result;
 }
