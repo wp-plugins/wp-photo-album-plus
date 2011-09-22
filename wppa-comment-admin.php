@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all comments
-* Version 4.0.5
+* Version 4.1.0
 *
 */
 
@@ -210,6 +210,7 @@ global $wppa_opt;
 						<tr>
 							<th scope="col"><?php _e('Photo', 'wppa') ?></th>
 							<th scope="col"><?php _e('#', 'wppa') ?></th>
+							<th scope="col"><?php _e('IP', 'wppa') ?></th>
 							<th scope="col"><?php _e('User', 'wppa') ?></th>
 							<th scope="col"><?php _e('Email', 'wppa') ?></th>
 							<th scope="col"><?php _e('Time since', 'wppa') ?></th>
@@ -228,6 +229,7 @@ global $wppa_opt;
 								<tr>
 									<td style="text-align:center"><img src="<?php echo(WPPA_UPLOAD_URL.'/thumbs/'.$com['photo'].'.'.$wpdb->get_var("SELECT ext FROM ".WPPA_PHOTOS." WHERE id = ".$com['photo'])) ?>" style="max-height:64px;max-width:64px;" ></td>							
 									<td><?php echo $com['photo'] ?></td>
+									<td><?php echo $com['ip'] ?></td>
 									<td><?php echo $com['user'] ?></td>
 									<td><?php echo $com['email'] ?></td>
 									<td><?php echo wppa_get_time_since($com['timestamp']) ?></td>
@@ -253,6 +255,7 @@ global $wppa_opt;
 						<tr>
 							<th scope="col"><?php _e('Photo', 'wppa') ?></th>
 							<th scope="col"><?php _e('#', 'wppa') ?></th>
+							<th scope="col"><?php _e('IP', 'wppa') ?></th>
 							<th scope="col"><?php _e('User', 'wppa') ?></th>
 							<th scope="col"><?php _e('Email', 'wppa') ?></th>
 							<th scope="col"><?php _e('Time since', 'wppa') ?></th>
@@ -314,7 +317,7 @@ function wppa_comment_submit_pages($nitems, $npages) {
 		$curpage = isset($_GET['compage']) ? $_GET['compage'] : '1'; 
 		$prevpage = $curpage - '1';
 		$nextpage = $curpage + '1'; 
-		$prevurl = wppa_dbg_url(get_admin_url().'admin.php?page=wppa_manage_comments&compage='.$nextpage);
+		$prevurl = wppa_dbg_url(get_admin_url().'admin.php?page=wppa_manage_comments&compage='.$prevpage);
 		$pagurl = wppa_dbg_url(get_admin_url().'admin.php?page=wppa_manage_comments').'&compage=';
 		$nexturl = wppa_dbg_url(get_admin_url().'admin.php?page=wppa_manage_comments&compage='.$nextpage);
 		if ($npages > '1') {

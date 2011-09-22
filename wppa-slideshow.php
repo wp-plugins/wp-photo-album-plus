@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the slideshow high level functions
-* Version 4.0.11
+* Version 4.1.0
 *
 */
 
@@ -233,8 +233,10 @@ global $thumb;
 	}
 	if (!$do_it) return;										// Don't do it
 	
-	if (isset($_GET['album'])) $alb = $_GET['album'];
-	else $alb = '';	// Album id is in $wppa['start_album']
+//	if (isset($_GET['album'])) $alb = $_GET['album'];
+//	else $alb = '';	// Album id is in $wppa['start_album']
+	$alb = wppa_get_get('album', '');
+	
 	$thumbs = wppa_get_thumbs($alb);
 	if (!$thumbs || count($thumbs) < 1) return;
 	

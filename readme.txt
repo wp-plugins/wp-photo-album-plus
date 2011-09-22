@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, multisite, network, lightbox
-Version: 4.0.12
+Version: 4.1.0
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -106,6 +106,28 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 4.1.0 =
+
+= Bug fixes =
+
+* Previous page link acts as next pagelink in comment admin page. Fixed.
+* Repaired form validation in submit comment.
+
+= New features =
+
+* You can upload photos from the album cover and/or the thumbnail area display if this feature is enabled, you are logged in and have access to the album.
+* Smilies will be displayed in the comments on photos if this feature is enabled in wp core.
+* You can use names in album script shortcode tags like %%album=$My Album%% %%slide=, %%cover= and %%slideonly=. Note that the name is preceeded by a dollar sign.
+
+= Other changes =
+
+* All get-variables have a wppa- prefix. This increases the immunity to conflicts with certain themes and other plugins.
+The old syntax is maintained to render properly for backward compatibility, i.e. saved urls with &album= etc. as opposed to the new &wppa-album= will still give the right results.
+* Small changes and some additions to wp-photo-album-plus/theme/theme.css
+* Fixed additional small collapse issues (see 4.0.12).
+* Added IP field in comment admin to ease the finding of spam sources.
+* Changed submit method for comments from 'get' to 'post'.
 
 = 4.0.12 =
 

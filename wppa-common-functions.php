@@ -2,11 +2,11 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 4.0.12
+* version 4.1.0
 *
 */
 global $wppa_api_version;
-$wppa_api_version = '4-0-12-000';
+$wppa_api_version = '4-1-0-000';
 // Initialize globals and option settings
 function wppa_initialize_runtime($force = false) {
 global $wppa;
@@ -62,11 +62,15 @@ global $blog_id;
 			'comment_email' => '',
 			'comment_text' => '',
 			'no_default' => false,
-			'in_widget_frame_height' 	=> ''
+			'in_widget_frame_height' 	=> '',
+			'user_uploaded'				=> false,
+			'current_album'				=> '0',
+			'searchstring'				=> wppa_get_searchstring()
 
 		);
+
 		if (isset($_POST['wppa-searchstring'])) $wppa['src'] = true;
-		if (isset($_GET['wppa_src'])) $wppa['src'] = true;
+
 	}
 	
 	if (!is_array($wppa_opt)) {
@@ -226,7 +230,8 @@ global $blog_id;
 			'wppa_custom_content' => '',
 			'wppa_apply_newphoto_desc' => '',
 			'wppa_newphoto_description' => '',
-			'wppa_comments_desc' => ''
+			'wppa_comments_desc' => '',
+			'wppa_user_upload_on' => ''
 
 		);
 		array_walk($wppa_opt, 'wppa_set_options');
@@ -512,9 +517,9 @@ function wppa_qtrans($output, $lang = '') {
 	return $output;
 }
 
-function wppa_dbg_msg($txt='', $color = 'blue') {
+function wppa_dbg_msg($txt='', $color = 'blue', $force = false) {
 global $wppa;
-	if ( $wppa['debug'] ) echo('<span style="color:'.$color.';"><small>[WPPA+ dbg msg: '.$txt.']<br /></small></span>');
+	if ( $wppa['debug'] || $force ) echo('<span style="color:'.$color.';"><small>[WPPA+ dbg msg: '.$txt.']<br /></small></span>');
 }
 
 function wppa_dbg_url($link, $js = '') {
@@ -615,7 +620,149 @@ global $wpdb;
 
 	$result = '1';		// Assume empty table
 	$lastkey = $wpdb->get_var("SELECT id FROM ".$table." WHERE id < '9223372036854775806' ORDER BY id DESC LIMIT 1");
-	wppa_dbg_msg('Laskey in '.$table.' = '.$lastkey);
+	wppa_dbg_msg('Lastkey in '.$table.' = '.$lastkey);
 	if ($lastkey) $result = $lastkey + '1';
 	return $result;
+}
+
+// See if an album or any album is accessable for the current user
+function wppa_have_access($alb) {
+global $wpdb;
+global $current_user;
+	// See if there is any album accessable
+	if ($alb == 'any') {
+		// Administrator has always access OR If all albums are public
+		if (current_user_can('administrator') || get_option('wppa_owner_only', 'no') == 'no') {
+			$albs = $wpdb->get_results('SELECT id FROM '.WPPA_ALBUMS);
+			if ($albs) return true;
+			else return false;	// No albums in system
+		}
+		else {
+			get_currentuserinfo();
+			$user = $current_user->user_login;
+			$albs = $wpdb->get_results('SELECT id FROM '.WPPA_ALBUMS.' WHERE owner = "'.$user.'"');
+			if ($albs) return true;
+			else return false;	// No albums for user accessable
+		}
+	}
+	
+	// See for given album data array or album number
+	else {
+		// Administrator has always access
+		if (current_user_can('administrator')) return true;
+		// If all albums are public
+		if (get_option('wppa_owner_only', 'no') == 'no') return true;
+		// Find the owner
+		$owner = '';
+		if (is_array($alb)) {
+			$owner = $alb['owner'];
+		}
+		elseif (is_numeric($alb)) {
+			$owner = $wpdb->get_var('SELECT owner FROM '.WPPA_ALBUMS.' WHERE id = '.$alb);
+		}
+		// Find the user
+		get_currentuserinfo();
+		
+		if ($current_user->user_login == $owner) return true;
+		else return false;
+	}
+}
+
+function wppa_make_the_photo_files($file, $image_id, $ext) {
+				
+	$img_size = getimagesize($file);
+	if ($img_size) {
+		$newimage = WPPA_UPLOAD_PATH . '/' . $image_id . '.' . $ext;
+			
+		if (get_option('wppa_resize_on_upload', 'no') == 'yes') {
+			require_once('wppa-class-resize.php');
+			
+			if (wppa_is_wider($img_size[0], $img_size[1])) {
+				$dir = 'W';
+				$siz = get_option('wppa_fullsize', '640');
+				$s = $img_size[0];
+			}
+			else {
+				$dir = 'H';
+				$siz = get_option('wppa_maxheight', get_option('wppa_fullsize', '640'));
+				$s = $img_size[1];
+			}
+
+			if ($s > $siz) {	
+				$objResize = new wppa_ImageResize($file, $newimage, $dir, $siz);
+		$objResize->destroyImage($objResize->resOriginalImage);
+		$objResize->destroyImage($objResize->resResizedImage);
+			}
+			else {
+				copy($file, $newimage);
+			}
+		}
+		else {
+			copy($file, $newimage);
+		}
+
+		if (is_file ($newimage)) {
+			$thumbsize = wppa_get_minisize();
+			wppa_create_thumbnail($newimage, $thumbsize, '' );
+		} 
+		else {
+			if (is_admin()) wppa_error_message(__('ERROR: Resized or copied image could not be created.', 'wppa'));
+			else wppa_err_alert(__('ERROR: Resized or copied image could not be created.', 'wppa_theme'));
+			return false;
+		}
+		if (is_admin()) echo('.');
+		return true;
+	}
+	else {
+		if (is_admin()) wppa_error_message(sprintf(__('ERROR: File %s is not a valid picture file.', 'wppa'), $file));
+		else wppa_err_alert(sprintf(__('ERROR: File %s is not a valid picture file.', 'wppa_theme'), $file));
+		return false;
+	}
+}
+
+function wppa_get_minisize() {
+	$result = '100';
+	
+	$tmp = get_option('wppa_thumbsize', 'nil');
+	if (is_numeric($tmp) && $tmp > $result) $result = $tmp;
+	$tmp = get_option('wppa_smallsize', 'nil');
+	if (is_numeric($tmp) && $tmp > $result) $result = $tmp;
+	$tmp = get_option('wppa_popupsize', 'nil');
+	if (is_numeric($tmp) && $tmp > $result) $result = $tmp;
+	
+	$result = ceil($result / 25) * 25;
+	return $result;
+}
+
+function wppa_create_thumbnail( $file, $max_side, $effect = '') {
+	if (file_exists($file)) {
+		$img_size = getimagesize( $file );
+		$dir = $img_size[0] > $img_size[1] ? 'W' : 'H';
+		$thumb = 'thumbs/' . basename( $file );
+		$thumbpath = str_replace( basename( $file ), $thumb, $file );
+
+		require_once('wppa-class-resize.php');		
+		$objResize = new wppa_ImageResize($file, $thumbpath, $dir, $max_side);
+		$objResize->destroyImage($objResize->resOriginalImage);
+		$objResize->destroyImage($objResize->resResizedImage);
+	}
+	else {
+		return false;
+	}
+	return true;
+}
+
+function wppa_get_searchstring() {
+global $wppa;
+
+	$src = '';
+	if (isset($_POST['wppa-searchstring'])) {
+		$src = $_POST['wppa-searchstring'];
+	}
+//	elseif (isset($_GET['wppa_src'])) {
+//		$src = $_GET['wppa_src'];
+//	elseif (wppa_get_get('src')) {
+//		$src = wppa_get_get('src');
+//	}
+	return $src;
 }

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * create, edit and delete albums
-* version 4.0.12
+* version 4.1.0
 *
 */
 
@@ -73,6 +73,7 @@ function _wppa_admin() {
 				
 				$wpdb->query($wpdb->prepare('DELETE FROM `'.WPPA_PHOTOS.'` WHERE `id` = %s LIMIT 1', $_GET['photo_del']));
 				$wpdb->query($wpdb->prepare('DELETE FROM `'.WPPA_RATING.'` WHERE `photo` = %s', $_GET['photo_del']));
+				$wpdb->query($wpdb->prepare('DELETE FROM `'.WPPA_COMMENTS.'` WHERE `photo` = %s', $_GET['photo_del']));
 
 				wppa_update_message($message, 'fixed');
 			}
@@ -477,6 +478,16 @@ function wppa_album_photos($id) {
 						
 						<tr valign="top">
 							<th scope="row">
+								<label ><?php _e('Upload:', 'wppa'); ?></label>
+							</th>
+							<td>
+								<?php $timestamp = $photo['timestamp'] ? $photo['timestamp'] : '0'; ?>
+								<?php if ($timestamp) echo( __('On:', 'wppa').' '.date("F j, Y, g:i a", $timestamp).' '); if ($photo['owner']) echo( __('By:', 'wppa').$photo['owner']) ?>
+							</td>
+						</tr>
+						
+						<tr valign="top">
+							<th scope="row">
 								<label for="<?php echo('photos[' . $photo['id'] . '][album]') ?>"><?php _e('Album:', 'wppa'); ?></label>
 							</th>
 							<td>							
@@ -784,6 +795,8 @@ function wppa_del_album($id, $move = '') {
 				/* else: silence */
 				// remove the photo's ratings
 				$wpdb->query($wpdb->prepare('DELETE FROM `' . WPPA_RATING . '` WHERE `photo` = %s', $photo['id']));
+				// remove the photo's comments
+				$wpdb->query($wpdb->prepare('DELETE FROM `' . WPPA_COMMENTS . '` WHERE `photo` = %s', $photo['id']));
 			} 
 		}
 		
