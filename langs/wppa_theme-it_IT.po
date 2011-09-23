@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: WP Photo Album Plus in italiano\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-09-18 17:44+0100\n"
-"PO-Revision-Date: 2011-09-18 17:44+0100\n"
-"Last-Translator: J.N. Breetvelt <OpaJaap@OpaJaap.nl>\n"
+"PO-Revision-Date: 2011-09-22 19:17+0100\n"
+"Last-Translator: Gianni Diurno (aka gidibao) <gidibao[at]gmail[dot]com>\n"
 "Language-Team: Gianni Diurno | gidibao.net & charmingpress.com\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -242,28 +242,27 @@ msgstr "Doppio click per avvio/stop riproduzione slideshow"
 #: wppa-functions.php:3155
 #: wppa-functions.php:3161
 msgid "Upload Photo"
-msgstr ""
+msgstr "Carica foto"
 
 #: wppa-functions.php:3162
 msgid "Enter/modify photo description"
-msgstr ""
+msgstr "Inserisci/modifica descrizione foto"
 
 #: wppa-functions.php:3186
-#, fuzzy
 msgid "<b>ERROR: Illegal attempt to upload a file.</b>"
-msgstr "<b>ERRORE: Tentativo non valido inserimento voto.</b>"
+msgstr "<b>ERRORE: Tentativo non valido caricamento file.</b>"
 
 #: wppa-functions.php:3193
 msgid "Error during upload"
-msgstr ""
+msgstr "Si è verificato un errore durante il caricamento"
 
 #: wppa-functions.php:3198
 msgid "Uploaded file is not an image"
-msgstr ""
+msgstr "Il file caricato non è una immagine"
 
 #: wppa-functions.php:3202
 msgid "Only gif, jpg and png image files are supported"
-msgstr ""
+msgstr "Sono supportati i soli formati immagine gi, jpg e png"
 
 #: wppa-non-admin.php:93
 msgid "Image"
