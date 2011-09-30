@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: wppa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-09-18 17:43+0100\n"
-"PO-Revision-Date: 2011-09-18 17:43+0100\n"
-"Last-Translator: J.N. Breetvelt <OpaJaap@OpaJaap.nl>\n"
+"PO-Revision-Date: 2011-09-26 10:06+0100\n"
+"Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -36,59 +36,59 @@ msgstr "--- separat ---"
 
 #: wppa-common-functions.php:581
 msgid "1 second"
-msgstr ""
+msgstr "1 Sekunde"
 
 #: wppa-common-functions.php:582
 msgid "seconds"
-msgstr ""
+msgstr "Sekunden"
 
 #: wppa-common-functions.php:586
 msgid "1 minute"
-msgstr ""
+msgstr "1 Minute"
 
 #: wppa-common-functions.php:587
 msgid "minutes"
-msgstr ""
+msgstr "Minuten"
 
 #: wppa-common-functions.php:591
 msgid "1 hour"
-msgstr ""
+msgstr "1 Stunde"
 
 #: wppa-common-functions.php:592
 msgid "hours"
-msgstr ""
+msgstr "Stunden"
 
 #: wppa-common-functions.php:596
 msgid "1 day"
-msgstr ""
+msgstr "1 Tag"
 
 #: wppa-common-functions.php:597
 msgid "days"
-msgstr ""
+msgstr "Tage"
 
 #: wppa-common-functions.php:601
 msgid "1 week"
-msgstr ""
+msgstr "1 Woche"
 
 #: wppa-common-functions.php:602
 msgid "weeks"
-msgstr ""
+msgstr "Wochen"
 
 #: wppa-common-functions.php:606
 msgid "1 month"
-msgstr ""
+msgstr "1 Monat"
 
 #: wppa-common-functions.php:607
 msgid "months"
-msgstr ""
+msgstr "Monate"
 
 #: wppa-common-functions.php:610
 msgid "1 year"
-msgstr ""
+msgstr "1 Jahr"
 
 #: wppa-common-functions.php:611
 msgid "years"
-msgstr ""
+msgstr "Jahre"
 
 #: wppa-functions.php:31
 msgid "There are"
@@ -121,9 +121,8 @@ msgid "Top rated photos"
 msgstr "Hoch bewertete Fotos"
 
 #: wppa-functions.php:775
-#, fuzzy
 msgid "You must login to enter a comment"
-msgstr "Zum Bewerten bitte anmelden."
+msgstr "Zum Kommentieren bitte anmelden"
 
 #: wppa-functions.php:840
 msgid "<b>ERROR: Attempt to enter an invalid rating.</b>"
@@ -131,44 +130,44 @@ msgstr "<b>FEHLER: Sie haben versucht eine ungültige Bewertung einzutragen</b>"
 
 #: wppa-functions.php:953
 msgid "Comment edited"
-msgstr ""
+msgstr "Kommentar bearbeitet"
 
 #: wppa-functions.php:956
 msgid "Comment added"
-msgstr ""
+msgstr "Kommentar hinzugefügt"
 
 #: wppa-functions.php:962
 msgid "Could not process comment"
-msgstr ""
+msgstr " Konnte Kommentar nicht verarbeiten"
 
 #: wppa-functions.php:1029
 msgid "Edit!"
-msgstr ""
+msgstr "Bearbeiten!"
 
 #: wppa-functions.php:1033
 msgid "Send!"
-msgstr ""
+msgstr "Absende!"
 
 #: wppa-functions.php:1061
 msgid "Your name:"
-msgstr ""
+msgstr "Dein Name:"
 
 #: wppa-functions.php:1065
 msgid "Your email:"
-msgstr ""
+msgstr "Deine E-mail:"
 
 #: wppa-functions.php:1069
 msgid "Your comment:"
-msgstr ""
+msgstr "Dein Kommentar:"
 
 #: wppa-functions.php:1080
 #, php-format
 msgid "%d  comments"
-msgstr ""
+msgstr "%d Kommentare"
 
 #: wppa-functions.php:1081
 msgid "Leave a comment"
-msgstr ""
+msgstr "Hinterlasse ein Kommentar"
 
 #: wppa-functions.php:1397
 msgid "Prev.&nbsp;page"
@@ -179,14 +178,12 @@ msgid "Next&nbsp;page"
 msgstr "Nächste&nbsp;Seite"
 
 #: wppa-functions.php:1692
-#, fuzzy
 msgid "<b>ERROR: Illegal attempt to enter a rating.</b>"
-msgstr "<b>FEHLER: Sie haben versucht eine ungültige Bewertung einzutragen</b>"
+msgstr "<b>FEHLER: Ungültiger Versuch zu bewerten</b>"
 
 #: wppa-functions.php:1705
-#, fuzzy
 msgid "<b>ERROR: Illegal attempt to enter a comment.</b>"
-msgstr "<b>FEHLER: Sie haben versucht eine ungültige Bewertung einzutragen</b>"
+msgstr "<b>FEHLER: Ungültiger Versuch zu kommentieren</b>"
 
 #: wppa-functions.php:1892
 msgid "Link to"
@@ -239,37 +236,36 @@ msgstr "Fotos"
 
 #: wppa-functions.php:2368
 msgid "Double click to start/stop slideshow running"
-msgstr ""
+msgstr "Doppelklick zum Starten/Stoppen der Slideshow"
 
 #: wppa-functions.php:3155
 #: wppa-functions.php:3161
 msgid "Upload Photo"
-msgstr ""
+msgstr "Upload Foto"
 
 #: wppa-functions.php:3162
 msgid "Enter/modify photo description"
-msgstr ""
+msgstr "Hinzufügen/Bearbeiten der Foto Beschreibeung"
 
 #: wppa-functions.php:3186
-#, fuzzy
 msgid "<b>ERROR: Illegal attempt to upload a file.</b>"
-msgstr "<b>FEHLER: Sie haben versucht eine ungültige Bewertung einzutragen</b>"
+msgstr "<b>FEHLER: Ungültiger Versuch eine Datei hochzuladen</b>"
 
 #: wppa-functions.php:3193
 msgid "Error during upload"
-msgstr ""
+msgstr "Fehler beim Hochladen"
 
 #: wppa-functions.php:3198
 msgid "Uploaded file is not an image"
-msgstr ""
+msgstr "Hochgeladenen datei ist kein Bild"
 
 #: wppa-functions.php:3202
 msgid "Only gif, jpg and png image files are supported"
-msgstr ""
+msgstr "Nur gif, jpg und png Bilddateien werden unterstützt"
 
 #: wppa-non-admin.php:93
 msgid "Image"
-msgstr ""
+msgstr "Bild"
 
 #: wppa-non-admin.php:94
 #: wppa-non-admin.php:161
@@ -289,35 +285,32 @@ msgid "Photo"
 msgstr "Foto"
 
 #: wppa-non-admin.php:162
-#, fuzzy
 msgid "Previous photo"
-msgstr "Durchsuche Fotos"
+msgstr "Vorheriges Foto"
 
 #: wppa-non-admin.php:163
-#, fuzzy
 msgid "Next photo"
-msgstr "Nächstes&nbsp;Foto"
+msgstr "Nächstes Foto"
 
 #: wppa-non-admin.php:164
 msgid "Prev."
-msgstr ""
+msgstr "Vorheriges"
 
 #: wppa-non-admin.php:165
 msgid "Next"
-msgstr ""
+msgstr "Nächstes"
 
 #: wppa-non-admin.php:169
 msgid "Please enter your name"
-msgstr ""
+msgstr "Bitte gibt deinen Namen an"
 
 #: wppa-non-admin.php:170
 msgid "Please enter a valid email address"
-msgstr ""
+msgstr "Bitte gib eine gültige E-Mail Adress an"
 
 #: wppa-non-admin.php:171
-#, fuzzy
 msgid "Please enter a comment"
-msgstr "Zum Bewerten bitte anmelden."
+msgstr "Bitte hinterlasse ein Kommentar"
 
 #: wppa-potd-widget.php:25
 msgid "Photo Of The Day"
@@ -345,7 +338,7 @@ msgstr "Schneller"
 
 #: wppa-slideshow.php:87
 msgid "To see the full size images, you need to enable javascript in your browser."
-msgstr ""
+msgstr "Um das Komplette Bild zu sehen musst du Javaskript in deinem Browser aktivieren."
 
 #: wppa-slideshow.php:173
 msgid "- - - Rating enabled - - -"
@@ -387,22 +380,19 @@ msgstr "Zum Bewerten bitte anmelden."
 
 #: wppa-slideshow.php:336
 msgid "Click to start/stop"
-msgstr ""
+msgstr "Klicke zum Starten/Stoppen"
 
 #: wppa-slideshow.php:348
-#, fuzzy
 msgid "- - - Comments box activated - - -"
-msgstr "- - - Bewertung möglich - - -"
+msgstr "- - - Kommentar Box aktiviert- - -"
 
 #: wppa-topten-widget.php:26
-#, fuzzy
 msgid "Top Ten Photos"
-msgstr "Hoch bewertete Fotos"
+msgstr "Besten 10 Fotos"
 
 #: wppa-topten-widget.php:51
-#, fuzzy
 msgid "View the top rated photos"
-msgstr "Titelfotos ansehen"
+msgstr "Betrachte die best bewertesten Fotos"
 
 #: theme/wppa-theme.php:80
 msgid "No albums or photos found matching your search criteria."
