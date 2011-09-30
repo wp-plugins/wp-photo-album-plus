@@ -1,7 +1,7 @@
 /* admin-scripts.js */
 /* Package: wp-photo-album-plus
 /*
-/* Version 4.1.0
+/* Version 4.1.1
 /* Various js routines used in admin pages		
 */
 
@@ -42,6 +42,7 @@ function wppaInitSettings() {
 	wppaCheckRating();
 	wppaCheckComments();
 	wppaCheckLightbox();
+	wppaCheckResize();
 	
 	for (table=1; table<11; table++) {
 		var cookie = wppa_getCookie('table_'+table);
@@ -150,15 +151,15 @@ function wppaCheckFullHalign() {
 function wppaCheckThumbType() {
 	var ttype = document.getElementById('wppa_thumbtype').value;
 	if (ttype == 'default') {
-		jQuery('.tt_normal').css('diaplay', 'inline');
+		jQuery('.tt_normal').css('display', '');
 		jQuery('.tt_ascovers').css('display', 'none');
-		jQuery('.tt_always').css('diaplay', 'inline');
+		jQuery('.tt_always').css('display', '');
 		wppaCheckUseThumbOpacity();
 	}
 	if (ttype == 'ascovers') {
 		jQuery('.tt_normal').css('display', 'none');
-		jQuery('.tt_ascovers').css('diaplay', 'inline');
-		jQuery('.tt_always').css('diaplay', 'inline');
+		jQuery('.tt_ascovers').css('display', '');
+		jQuery('.tt_always').css('display', '');
 	}
 	if (ttype == 'none') {
 		jQuery('.tt_normal').css('display', 'none');
@@ -196,7 +197,7 @@ function wppaCheckUseCoverOpacity() {
 /* if the slideshow is disabled its useless to ask if it should initially run */
 function wppaCheckHs() {
 	var Hs = document.getElementById('wppa_enable_slideshow').checked;
-	if (Hs) jQuery('.wppa_ss').css('diaplay', 'inline');
+	if (Hs) jQuery('.wppa_ss').css('display', '');
 	else jQuery('.wppa_ss').css('display', 'none');
 }
 
@@ -269,7 +270,7 @@ function wppaCheckComments() {
 
 function wppaCheckWidgetLink() { 
 	if (document.getElementById('wppa_wlp').value == '-1') {
-		jQuery('.wppa_wlu').css('diaplay', 'inline'); 
+		jQuery('.wppa_wlu').css('display', ''); 
 		jQuery('.wppa_wlt').css('visibility', 'hidden');
 	}
 	else {
@@ -331,10 +332,20 @@ function wppaCheckMphotoLink() {
 function wppaCheckLightbox() {
 	var Lb = document.getElementById('wppa_use_lightbox').checked;
 	if (Lb) {
-		jQuery('.wppa_lightbox').css('diaplay', 'inline');
+		jQuery('.wppa_lightbox').css('display', '');
 	}
 	else {
 		jQuery('.wppa_lightbox').css('display', 'none');
+	}
+}
+
+function wppaCheckResize() {
+	var Rs = document.getElementById('wppa_resize_on_upload').checked;
+	if (Rs) {
+		jQuery('.re_up').css('display', '');
+	}
+	else {
+		jQuery('.re_up').css('display', 'none');
 	}
 }
 

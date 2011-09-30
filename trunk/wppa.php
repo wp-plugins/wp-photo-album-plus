@@ -2,14 +2,14 @@
 /*
 Plugin Name: WP Photo Album Plus
 Description: Easily manage and display your photo albums and slideshows within your WordPress site.
-Version: 4.1.0
+Version: 4.1.1
 Author: J.N. Breetvelt a.k.a OpaJaap
 Author URI: http://www.opajaap.nl/
 Plugin URI: http://wordpress.org/extend/plugins/wp-photo-album-plus/
 */
 
 /* GLOBALS */
-global $wppa_revno; $wppa_revno = '410';	/* This is the database revision number */
+global $wppa_revno; $wppa_revno = '411';	/* This is the database revision number */
 global $wpdb;
 
 /* CONSTANTS

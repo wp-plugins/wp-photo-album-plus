@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, multisite, network, lightbox
-Version: 4.1.0
+Version: 4.1.1
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -106,6 +106,23 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 4.1.1 =
+
+= Bug fixes =
+
+* When using album names in script shortcodes, quotes and html special characters are handled correctly now.
+* Minor fixes and enhancements in the display of the Settings page.
+
+= New features =
+
+* You can specify a screensize different from the Full Size width and height when resize on upload is checked. Nice when you use lightbox!
+* Photo Albums menu added to the admin bar, including a pending comments indicator.
+* You can now select a linktype for an album cover (on a per album basis on the edit album admin page). 
+
+= Other changes =
+
+* The auto_increment clause has been removed from the id field of all 4 wppa db tables. 
 
 = 4.1.0 =
 

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the non admin stuff
-* Version 4.0.11
+* Version 4.1.1
 *
 */
 
@@ -182,3 +182,5 @@ global $wppa_opt;
 		//	global $wp_filter; if (is_array($wp_filter)) print_r($wp_filter);
 	}
 }
+
+require_once 'wppa-adminbar.php';

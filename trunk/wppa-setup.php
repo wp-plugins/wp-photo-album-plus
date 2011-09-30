@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 4.1.0
+* Version 4.1.1
 *
 */
 
@@ -25,13 +25,14 @@ function wppa_setup($force = false) {
 	if ( $old_rev >= $wppa_revno && ! $force ) return; // Nothing to do here
 		
 	$create_albums = "CREATE TABLE " . WPPA_ALBUMS . " (
-					id bigint(20) NOT NULL auto_increment, 
+					id bigint(20) NOT NULL, 
 					name text NOT NULL, 
 					description text NOT NULL, 
 					a_order smallint(5) unsigned NOT NULL, 
 					main_photo bigint(20) NOT NULL, 
 					a_parent bigint(20) NOT NULL,
 					p_order_by int unsigned NOT NULL,
+					cover_linktype tinytext NOT NULL,
 					cover_linkpage bigint(20) NOT NULL,
 					owner text NOT NULL,
 					timestamp tinytext NOT NULL,
@@ -39,7 +40,7 @@ function wppa_setup($force = false) {
 					);";
 					
 	$create_photos = "CREATE TABLE " . WPPA_PHOTOS . " (
-					id bigint(20) NOT NULL auto_increment, 
+					id bigint(20) NOT NULL, 
 					album bigint(20) NOT NULL, 
 					ext tinytext NOT NULL, 
 					name text NOT NULL, 
@@ -54,7 +55,7 @@ function wppa_setup($force = false) {
 					);";
 
 	$create_rating = "CREATE TABLE " . WPPA_RATING . " (
-					id bigint(20) NOT NULL auto_increment,
+					id bigint(20) NOT NULL,
 					photo bigint(20) NOT NULL,
 					value smallint(5) NOT NULL,
 					user text NOT NULL,
@@ -62,7 +63,7 @@ function wppa_setup($force = false) {
 					);";
 					
 	$create_comments = "CREATE TABLE " . WPPA_COMMENTS . " (
-					id bigint(20) NOT NULL auto_increment,
+					id bigint(20) NOT NULL,
 					timestamp tinytext NOT NULL,
 					photo bigint(20) NOT NULL,
 					user text NOT NULL,
@@ -115,13 +116,21 @@ function wppa_setup($force = false) {
 		wppa_ok_message($msg);
 	}
 		
-	if ( $old_rev < '243' ) {		// ownerfield added in...
+	if ( $old_rev < '243' || $force ) {		// owner added in...
 		get_currentuserinfo();
 		$user = $current_user->user_login;
 		$query = $wpdb->prepare( 'UPDATE `'.WPPA_ALBUMS.'` SET `owner` = %s WHERE `owner` = %s', $user, '' );
 		$iret = $wpdb->query( $query );
 	}
+	
+	if ( $iret !== false && ( $old_rev < '411' || $force ) ) {		// cover_linktype added in...
+		$query = $wpdb->prepare( 'UPDATE `'.WPPA_ALBUMS.'`  SET `cover_linktype` = %s WHERE `cover_linktype` = %s', 'content', '' );
+		$iret = $wpdb->query( $query );
 
+		$query = $wpdb->prepare( 'UPDATE `'.WPPA_ALBUMS.'`  SET `cover_linktype` = %s WHERE `cover_linkpage` = %s', 'none', '-1' );
+		$iret = $wpdb->query( $query );
+	}
+	
 	if ($iret !== false) {
 		update_option('wppa_revision', $wppa_revno);
 		if ( is_multisite() ) {
@@ -165,6 +174,7 @@ global $wppa_defaults;
 						'wppa_maxheight' 			=> '640',
 						'wppa_enlarge' 				=> 'no',
 						'wppa_resize_on_upload' 	=> 'no',
+						'wppa_resize_to'			=> '0',
 						'wppa_fullvalign' 			=> 'fit',
 						'wppa_fullhalign' 			=> 'center',
 						'wppa_min_thumbs' 			=> '1',

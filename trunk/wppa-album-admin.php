@@ -1,15 +1,17 @@
 <?php
-/* wppa_albumadmin.php
+/* wppa-albumadmin.php
 * Package: wp-photo-album-plus
 *
 * create, edit and delete albums
-* version 4.1.0
+* version 4.1.1
 *
 */
 
 function _wppa_admin() {
 	global $wpdb;
 	global $q_config;
+	
+	$sel = 'selected="selected"';
 
 	// warn if the uploads directory is no writable
 	if (!is_writable(WPPA_UPLOAD_PATH)) { 
@@ -22,14 +24,13 @@ function _wppa_admin() {
 			if ($_GET['edit_id'] == 'new') {
 				$name = __('New Album', 'wppa');
 				$id = wppa_nextkey(WPPA_ALBUMS);
-				$query = $wpdb->prepare('INSERT INTO `' . WPPA_ALBUMS . '` (`id`, `name`, `description`, `a_order`, `a_parent`, `p_order_by`, `main_photo`, `cover_linkpage`, `owner`, `timestamp`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)', $id, $name, '', '0', '0', '0', '0', '0', wppa_get_user(), time());
+				$query = $wpdb->prepare('INSERT INTO `' . WPPA_ALBUMS . '` (`id`, `name`, `description`, `a_order`, `a_parent`, `p_order_by`, `main_photo`, `cover_linktype`, `cover_linkpage`, `owner`, `timestamp`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)', $id, $name, '', '0', '0', '0', '0', 'content', '0', wppa_get_user(), time());
 				$iret = $wpdb->query($query);
 				if ($iret === FALSE) {
 					wppa_error_message(__('Could not create album.', 'wppa').'<br/>Query = '.$query);
 					wp_die('Sorry, cannot continue');
 				}
 				else {
-					//$edit_id = $wpdb->get_var("SELECT LAST_INSERT_ID()");
 					$edit_id = $id;
 					wppa_set_last_album($edit_id);
 					wppa_update_message(__('Album #', 'wppa') . ' ' . $edit_id . ' ' . __('Added.', 'wppa'));
@@ -253,6 +254,21 @@ function _wppa_admin() {
 							
 							<tr valign="top">
 								<th scope="row">
+									<label ><?php _e('Link type:', 'wppa') ?></label>
+								</th>
+								<td>
+									<?php $linktype = $albuminfo['cover_linktype']; ?>
+									<?php /* if ( !$linktype ) $linktype = 'content'; /* Default */ ?>	
+									<?php /* if ( $albuminfo['cover_linkpage'] == '-1' ) $linktype = 'none'; /* for backward compatibility */ ?>
+									<select name="cover-linktype" id="cover-linktype" >
+										<option value="content" <?php if ( $linktype == 'content' ) echo ($sel) ?>><?php _e('the sub-albums and thumbnails', 'wppa') ?></option>
+										<option value="slide" <?php if ( $linktype == 'slide' ) echo ($sel) ?>><?php _e('the album photos as slideshow', 'wppa') ?></option>
+										<option value="none" <?php if ( $linktype == 'none' ) echo($sel) ?>><?php _e('no link at all', 'wppa') ?></option>
+									</select
+								</td>
+							</tr>
+							<tr valign="top">
+								<th scope="row">
 									<label ><?php _e('Link to:', 'wppa'); ?></label>
 								</th>
 								<td>
@@ -262,14 +278,12 @@ function _wppa_admin() {
 										_e('There are no pages (yet) to link to.', 'wppa');
 									} else {
 										$linkpage = $albuminfo['cover_linkpage'];
-										if (!is_numeric($linkpage)) $linkpage = '0';
-										$sel = 'selected="selected"'; ?>
+										if (!is_numeric($linkpage)) $linkpage = '0'; ?>
 										<select name="cover-linkpage" id="cover-linkpage" >
-											<option value="0" <?php if ($linkpage == '0') echo($sel); ?>><?php _e('--- the album\'s content ---', 'wppa'); ?></option>
+											<option value="0" <?php if ($linkpage == '0') echo($sel); ?>><?php _e('--- the same page or post ---', 'wppa'); ?></option>
 											<?php foreach ($pages as $page) { ?>
 												<option value="<?php echo($page['ID']); ?>" <?php if ($linkpage == $page['ID']) echo($sel); ?>><?php echo($page['post_title']); ?></option>
 											<?php } ?>
-											<option value="-1" <?php if ($linkpage == '-1') echo($sel); ?>><?php _e('--- no link at all ---', 'wppa'); ?></option>
 										</select>
 										<span class="description">
 											<br/><?php _e('If you want, you can link the title to a WP page in stead of the album\'s content. If so, select the page the title links to.', 'wppa'); ?>
@@ -658,7 +672,7 @@ function wppa_add_album() {
 
 	if (!empty($name)) {
 		error_reporting(E_ALL);
-		$query = $wpdb->prepare('INSERT INTO `' . WPPA_ALBUMS . '` (`id`, `name`, `description`, `a_order`, `a_parent`, `p_order_by`, `main_photo`, `cover_linkpage`, `owner`, `timestamp`) VALUES (0, %s, %s, %s, %s, %s, %s, %s, %s, %s)', $name, $desc, $order, $parent, $porder, 0, 0, $owner, time());
+		$query = $wpdb->prepare('INSERT INTO `' . WPPA_ALBUMS . '` (`id`, `name`, `description`, `a_order`, `a_parent`, `p_order_by`, `main_photo`, `cover_linktype`, `cover_linkpage`, `owner`, `timestamp`) VALUES (0, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)', $name, $desc, $order, $parent, $porder, '0', 'content', '0', $owner, time());
 		$iret = $wpdb->query($query);
         if ($iret === FALSE) wppa_error_message(__('Could not create album.', 'wppa').'<br/>Query = '.$query);
 		else {
@@ -704,6 +718,7 @@ function wppa_edit_album() {
 	
     $orderphotos = (is_numeric($_POST['wppa-list-photos-by']) ? $_POST['wppa-list-photos-by'] : 0);
 	
+	$linktype = $_POST['cover-linktype'];
 	$link = $_POST['cover-linkpage'];
 	
 	$owner = (isset($_POST['wppa-owner']) ? $_POST['wppa-owner'] : '');
@@ -754,8 +769,8 @@ function wppa_edit_album() {
 	
 	// update the album information
 	if (!empty($name)) {
-		if ($owner == '') $query = $wpdb->prepare('UPDATE `' . WPPA_ALBUMS . '` SET `name` = %s, `description` = %s, `main_photo` = %s, `a_order` = %s, `a_parent` = %s, `p_order_by` = %s, `cover_linkpage` = %s WHERE `id` = %s', $name, $desc, $main, $order, $parent, $orderphotos, $link, $_GET['edit_id']);
-		else $query = $wpdb->prepare('UPDATE `' . WPPA_ALBUMS . '` SET `name` = %s, `description` = %s, `main_photo` = %s, `a_order` = %s, `a_parent` = %s, `p_order_by` = %s, `cover_linkpage` = %s, `owner` = %s WHERE `id` = %s', $name, $desc, $main, $order, $parent, $orderphotos, $link, $owner, $_GET['edit_id']);
+		if ($owner == '') $query = $wpdb->prepare('UPDATE `' . WPPA_ALBUMS . '` SET `name` = %s, `description` = %s, `main_photo` = %s, `a_order` = %s, `a_parent` = %s, `p_order_by` = %s, `cover_linktype` = %s, `cover_linkpage` = %s WHERE `id` = %s', $name, $desc, $main, $order, $parent, $orderphotos, $linktype, $link, $_GET['edit_id']);
+		else $query = $wpdb->prepare('UPDATE `' . WPPA_ALBUMS . '` SET `name` = %s, `description` = %s, `main_photo` = %s, `a_order` = %s, `a_parent` = %s, `p_order_by` = %s, `cover_linktype` = %s, `cover_linkpage` = %s, `owner` = %s WHERE `id` = %s', $name, $desc, $main, $order, $parent, $orderphotos, $linktype, $link, $owner, $_GET['edit_id']);
 		$iret = $wpdb->query($query);
 		
         if ($iret === FALSE) {

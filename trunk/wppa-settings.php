@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 4.1.0
+* Version 4.1.1
 *
 */
 
@@ -131,6 +131,7 @@ global $options_error;
 			wppa_update_numeric('wppa_fullsize', '100', __('Full size.', 'wppa'));
 			wppa_update_numeric('wppa_maxheight', '100', __('Max height.', 'wppa'));
 			wppa_update_check('wppa_resize_on_upload');
+			wppa_update_value('wppa_resize_to');
 			wppa_update_check('wppa_enlarge');
 			wppa_update_numeric('wppa_thumbsize', '50', __('Thumbnail size.', 'wppa'));
 			wppa_update_numeric('wppa_tf_width', '50', __('Thumbnail frame width', 'wppa'));
@@ -420,7 +421,7 @@ global $wppa_api_version;
 				<span style="font-weight:normal; font-size:12px;"><?php _e('This table describes all the sizes and size options (except fontsizes) for the generation and display of the WPPA+ elements.', 'wppa'); ?></span>
 			</h3>
 
-			<div id="wppa_table_1" >
+			<div id="wppa_table_1" style="display:none" >
 				<table class="widefat">
 					<thead style="font-weight: bold; " class="wppa_table_1">
 						<tr>
@@ -464,11 +465,26 @@ global $wppa_api_version;
 
 						$name = __('Resize on Upload', 'wppa');
 						$desc = __('Indicate if the photos should be resized during upload.', 'wppa');
-						$help = esc_js(__('If you check this item, the size of the photos will be reduced to the Full Size during the upload/import process.', 'wppa'));
-						$help .= '\n'.esc_js(__('The photos will never be enlarged if they are smaller than the Full Size.', 'wppa')); 
+						$help = esc_js(__('If you check this item, the size of the photos will be reduced to the dimension specified in the next item during the upload/import process.', 'wppa'));
+						$help .= '\n'.esc_js(__('The photos will never be stretched during upload if they are smaller.', 'wppa')); 
 						$slug = 'wppa_resize_on_upload';
-						$html = wppa_checkbox($slug);
+						$onchange = 'wppaCheckResize()';
+						$html = wppa_checkbox($slug, $onchange);
 						wppa_setting($slug, '4', $name, $desc, $html, $help);
+						
+						$name = __('Resize to', 'wppa');
+						$desc = __('Resize photos to fit within a given area.', 'wppa');
+						$help = esc_js(__('Specify the screensize for the unscaled photos.', 'wppa'));
+						$help .= '\n'.esc_js(__('The use of a non-default value is particularly usefull when you make use of the embedded lightbox functionality.', 'wppa'));
+						$slug = 'wppa_resize_to';
+						$px = __('pixels', 'wppa');
+						$options = array(__('Fullsize as specified above', 'wppa'), '640 x 480 '.$px, '800 x 600 '.$px, '1024 x 768 '.$px, '1200 x 900 '.$px, '1280 x 960 '.$px, '1366 x 768 '.$px, '1920 x 1080 '.$px);
+						$values = array( '0', '640x480', '800x600', '1024x768', '1200x900', '1280x960', '1366x768', '1920x1080');
+						$class = 're_up';
+						$html = wppa_select($slug, $options, $values);
+						$wppa['no_default'] = true;
+						wppa_setting($slug, '4a', $name, $desc, $html, $help, $class);
+						$wppa['no_default'] = false;
 						
 						$name = __('Stretch to fit', 'wppa');
 						$desc = __('Stretch photos that are too small.', 'wppa');
@@ -653,7 +669,7 @@ global $wppa_api_version;
 				<span style="font-weight:normal; font-size:12px;"><?php _e('This table describes the visibility of certain wppa+ elements.', 'wppa'); ?></span>
 			</h3>
 			
-			<div id="wppa_table_2" >
+			<div id="wppa_table_2" style="display:none" >
 				<table class="widefat">
 					<thead style="font-weight: bold; " class="wppa_table_2">
 						<tr>
@@ -863,7 +879,7 @@ global $wppa_api_version;
 				<span style="font-weight:normal; font-size:12px;"><?php _e('This table describes the backgrounds of wppa+ elements.', 'wppa'); ?></span>
 			</h3>
 
-			<div id="wppa_table_3" >
+			<div id="wppa_table_3" style="display:none" >
 				<table class="widefat">
 					<thead style="font-weight: bold; " class="wppa_table_3">
 						<tr>
@@ -997,7 +1013,7 @@ global $wppa_api_version;
 				<span style="font-weight:normal; font-size:12px;"><?php _e('This table describes the dynamic behaviour of certain wppa+ elements.', 'wppa'); ?></span>
 			</h3>
 
-			<div id="wppa_table_4" >
+			<div id="wppa_table_4" style="display:none" >
 				<table class="widefat">
 					<thead style="font-weight: bold; " class="wppa_table_4">
 						<tr>
@@ -1259,7 +1275,7 @@ global $wppa_api_version;
 						<?php _e('If you leave fields empty, your themes defaults will be used.', 'wppa'); ?></span>
 			</h3>
 			
-			<div id="wppa_table_5" >
+			<div id="wppa_table_5" style="display:none" >
 				<table class="widefat">
 					<thead style="font-weight: bold; " class="wppa_table_5">
 						<tr>
@@ -1372,7 +1388,7 @@ global $wppa_api_version;
 				<span style="font-weight:normal; font-size:12px;"><?php _e('This table defines the link types and pages.', 'wppa'); ?></span>
 			</h3>
 			
-			<div id="wppa_table_6" >
+			<div id="wppa_table_6" style="display:none" >
 				<table class="widefat">
 					<thead style="font-weight: bold; " class="wppa_table_6">
 						<tr>
@@ -1534,7 +1550,7 @@ global $wppa_api_version;
 				<span style="font-weight:normal; font-size:12px;"><?php _e('This table describes the access settings for wppa+ elements and pages.', 'wppa'); ?></span>
 			</h3>
 
-			<div id="wppa_table_7" >
+			<div id="wppa_table_7" style="display:none" >
 				<table class="widefat">
 					<thead style="font-weight: bold; " class="wppa_table_7">
 						<tr>
@@ -1631,7 +1647,7 @@ global $wppa_api_version;
 				<span style="font-weight:normal; font-size:12px;"><?php _e('This table lists all actions that can be taken to the wppa+ system', 'wppa'); ?></span>
 			</h3>
 			
-			<div id="wppa_table_8" >
+			<div id="wppa_table_8" style="display:none" >
 				<table class="widefat">
 					<thead style="font-weight: bold; " class="wppa_table_8">
 						<tr>
@@ -1746,7 +1762,7 @@ global $wppa_api_version;
 				<span style="font-weight:normal; font-size:12px;"><?php _e('This table lists all settings that do not fit into an other table', 'wppa'); ?></span>
 			</h3>
 			
-			<div id="wppa_table_9" >
+			<div id="wppa_table_9" style="display:none" >
 				<table class="widefat">
 					<thead style="font-weight: bold; " class="wppa_table_9">
 						<tr>
@@ -1837,17 +1853,17 @@ global $wppa_api_version;
 							__('FilmStrip', 'wppa'), 
 							__('Browsebar', 'wppa'), 
 							__('Comments', 'wppa'));
-						$enabled  = '<span style="color:green; float:right;">'.__('(Enabled)', 'wppa').'</span>';
-						$disabled = '<span style="color:orange; float:right;">'.__('(Disabled)', 'wppa').'</span>';
+						$enabled  = '<span style="color:green; float:right;">( '.__('Enabled', 'wppa');
+						$disabled = '<span style="color:orange; float:right;">( '.__('Disabled', 'wppa');
 						$descs = array(
-							__('Start/Stop & Slower/Faster navigation bar', 'wppa') . ( $wppa_opt['wppa_show_startstop_navigation'] == 'yes' ? $enabled : $disabled ),
-							__('The Slide Frame', 'wppa') . '<span style="float:right;">'.__('(Always)', 'wppa').'</span>',
-							__('Photo Name & Description Box', 'wppa') . ( ( $wppa_opt['wppa_show_full_name'] == 'yes' || $wppa_opt['wppa_show_full_desc'] == 'yes' ) ? $enabled : $disabled ),
-							__('Custom Box', 'wppa') . ( $wppa_opt['wppa_custom_on'] == 'yes' ? $enabled : $disabled ),
-							__('Rating Bar', 'wppa') . ( $wppa_opt['wppa_rating_on'] == 'yes' ? $enabled : $disabled ),
-							__('Film Strip with embedded Start/Stop and Goto functionality', 'wppa') . ( $wppa_opt['wppa_filmstrip'] == 'yes' ? $enabled : $disabled ),
-							__('Browse Bar with Photo X of Y counter', 'wppa') . ( $wppa_opt['wppa_show_browse_navigation'] == 'yes' ? $enabled : $disabled ),
-							__('Comments Box', 'wppa') . ( $wppa_opt['wppa_show_comments'] == 'yes' ? $enabled : $disabled )
+							__('Start/Stop & Slower/Faster navigation bar', 'wppa') . ( $wppa_opt['wppa_show_startstop_navigation'] == 'yes' ? $enabled : $disabled ) . ' II - 6 )</span>',
+							__('The Slide Frame', 'wppa') . '<span style="float:right;">'.__('( Always )', 'wppa').'</span>',
+							__('Photo Name & Description Box', 'wppa') . ( ( $wppa_opt['wppa_show_full_name'] == 'yes' || $wppa_opt['wppa_show_full_desc'] == 'yes' ) ? $enabled : $disabled ) .' II - 11 )</span>',
+							__('Custom Box', 'wppa') . ( $wppa_opt['wppa_custom_on'] == 'yes' ? $enabled : $disabled ).' II - 21 )</span>',
+							__('Rating Bar', 'wppa') . ( $wppa_opt['wppa_rating_on'] == 'yes' ? $enabled : $disabled ).' II - 13 )</span>',
+							__('Film Strip with embedded Start/Stop and Goto functionality', 'wppa') . ( $wppa_opt['wppa_filmstrip'] == 'yes' ? $enabled : $disabled ).' II - 8 )</span>',
+							__('Browse Bar with Photo X of Y counter', 'wppa') . ( $wppa_opt['wppa_show_browse_navigation'] == 'yes' ? $enabled : $disabled ).' II - 7 )</span>',
+							__('Comments Box', 'wppa') . ( $wppa_opt['wppa_show_comments'] == 'yes' ? $enabled : $disabled ).' II - 18 )</span>'
 							);
 						$i = '0';
 						while ( $i < '8' ) {
@@ -1944,7 +1960,7 @@ global $wppa_api_version;
 				<span style="font-weight:normal; font-size:12px;"><?php _e('This table lists all WPPA+ constants and PHP server configuration parameters and is read only', 'wppa'); ?></span>
 			</h3>
 
-			<div id="wppa_table_10" >
+			<div id="wppa_table_10" style="display:none" >
 				<div class="wppa_table_10" style="margin-top:20px; text-align:left; ">
 					<table class="widefat">
 						<thead style="font-weight: bold; " class="wppa_table_9">
