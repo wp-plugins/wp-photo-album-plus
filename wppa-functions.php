@@ -3,13 +3,13 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions and API modules
-* Version 4.1.0
+* Version 4.1.1
 *
 *
 */
 /* Moved to wppa-commonfunctions.php:
 global $wppa_api_version;
-$wppa_api_version = '4-1-0-000';
+$wppa_api_version = '4-1-1-000';
 */
 
 
@@ -77,6 +77,8 @@ global $wppa_opt;
 	if ( ! $alb && is_numeric($wppa['start_album']) ) $alb = $wppa['start_album'];
 
 	$separate = wppa_is_separate($alb);
+	
+$slide = ( wppa_get_album_title_linktype($alb) == 'slide' ) ? '&amp;wppa-slide' : '';
 
 	// See if we link to covers or to contents
 	$to_cover = $wppa_opt['wppa_thumbtype'] == 'none' ? '1' : '0';
@@ -111,11 +113,11 @@ global $wppa_opt;
 			}
 		
 			if (is_numeric($photo) && $this_occur) {
-				$wppa['out'] .= wppa_nltab().'<a href="'.wppa_get_permalink().'wppa-album='.$alb.'&amp;wppa-cover='.$to_cover.'&amp;wppa-occur='.$wppa['occur'].'" class="wppa-nav-text b4" style="'.__wcs('wppa-nav-text').'" >'.wppa_get_album_name($alb).'</a>';
+				$wppa['out'] .= wppa_nltab().'<a href="'.wppa_get_permalink().'wppa-album='.$alb.'&amp;wppa-cover='.$to_cover.$slide.'&amp;wppa-occur='.$wppa['occur'].'" class="wppa-nav-text b4" style="'.__wcs('wppa-nav-text').'" >'.wppa_get_album_name($alb).'</a>';
 				$wppa['out'] .= wppa_nltab().'<span class="b5" >'.$sep.'</span>';
 				$wppa['out'] .= wppa_nltab().'<span id="bc-pname-'.$wppa['occur'].'" class="wppa-nav-text wppa-black b8" style="'.__wcs('wppa-nav-text').__wcs('wppa-black').'" >'.wppa_get_photo_name($photo).'</span>';
 			} elseif ($this_occur && !wppa_page('albums')) {
-				$wppa['out'] .= wppa_nltab().'<a href="'.wppa_get_permalink().'wppa-album='.$alb.'&amp;wppa-cover='.$to_cover.'&amp;wppa-occur='.$wppa['occur'].'" class="wppa-nav-text b6" style="'.__wcs('wppa-nav-text').'" >'.wppa_get_album_name($alb).'</a>';
+				$wppa['out'] .= wppa_nltab().'<a href="'.wppa_get_permalink().'wppa-album='.$alb.'&amp;wppa-cover='.$to_cover.$slide.'&amp;wppa-occur='.$wppa['occur'].'" class="wppa-nav-text b6" style="'.__wcs('wppa-nav-text').'" >'.wppa_get_album_name($alb).'</a>';
 				$wppa['out'] .= wppa_nltab().'<span class="b7" >'.$sep.'</span>';
 				$wppa['out'] .= wppa_nltab().'<span id="bc-pname-'.$wppa['occur'].'" class="wppa-nav-text wppa-black b9" style="'.__wcs('wppa-nav-text').__wcs('wppa-black').'" >'.__a('Slideshow', 'wppa_theme').'</span>';
 			} else {	// NOT This occurance OR album
@@ -137,7 +139,9 @@ global $wppa;
     if ($parent < 1) return;
     
     wppa_crumb_ancestors($sep, $parent, $wppa['occur'], $to_cover);
-    $wppa['out'] .= wppa_nltab().'<a href="'.wppa_get_permalink().'wppa-album='.$parent.'&amp;wppa-cover='.$to_cover.'&amp;wppa-occur='.$occur.'" class="wppa-nav-text b20" style="'.__wcs('wppa-nav-text').'" >'.wppa_get_album_name($parent).'</a>';
+$slide = ( wppa_get_album_title_linktype($parent) == 'slide' ) ? '&amp;wppa-slide' : '';
+
+    $wppa['out'] .= wppa_nltab().'<a href="'.wppa_get_permalink().'wppa-album='.$parent.'&amp;wppa-cover='.$to_cover.$slide.'&amp;wppa-occur='.$occur.'" class="wppa-nav-text b20" style="'.__wcs('wppa-nav-text').'" >'.wppa_get_album_name($parent).'</a>';
 	$wppa['out'] .= wppa_nltab().'<span class="wppa-nav-text" style="'.__wcs('wppa-nav-text').'">'.$sep.'</span>';
     return;
 }
@@ -968,7 +972,7 @@ global $wppa_done;
 			$key = wppa_nextkey(WPPA_COMMENTS);
 			$query = $wpdb->prepare('INSERT INTO `'.WPPA_COMMENTS.'` (`id`, `timestamp`, `photo`, `user`, `email`, `comment`, `status`, `ip`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s )', $key, $time, $photo, $user, $email, $comment, $status, $_SERVER['REMOTE_ADDR']);
 			$iret = $wpdb->query($query);
-			if ($iret !== false) $wppa['comment_id'] = $key; //$wpdb->get_var("SELECT LAST_INSERT_ID()");
+			if ($iret !== false) $wppa['comment_id'] = $key;
 		}
 		if ($iret !== false) {
 			if ($cedit) {
@@ -1896,42 +1900,62 @@ global $cover_count;
 	$mincount = wppa_get_mincount();
 	$href = '';
 	$title = '';
+		$linkpage = '';
 	// See if there is substantial content to the album
 	$has_content = ($albumcount > '0') || ($photocount > $mincount);
-	// Is there a page the album should point to?
-	$linkpage = '';
-	if ($album['cover_linkpage'] > 0) {	// a page is given
-		$page_data = get_page($album['cover_linkpage']);
-		if (!empty($page_data) && $page_data->post_status == 'publish') {
-			// Yes a page is asked for and it exists
-			if ($has_content) {	// make url with querystring for content
-				$linkpage = $album['cover_linkpage'];
-				$href = wppa_get_album_url($album['id'], $linkpage);
+	// What is the albums title linktype
+	$linktype = $album['cover_linktype'];
+	if ( !$linktype ) $linktype = 'content'; // Default 
+	if ( $album['cover_linkpage'] == '-1' ) $linktype = 'none'; // for backward compatibility
+	// Make the link if any
+//echo('LT='.$linktype.',alb='.$album['name'].'<br/>');
+	if ( $linktype != 'none') {
+		// Is there a page the album should point to?
+//		$linkpage = '';
+		if ($album['cover_linkpage'] > 0) {	// a page is given
+			$page_data = get_page($album['cover_linkpage']);
+			if (!empty($page_data) && $page_data->post_status == 'publish') {
+				// Yes a page is asked for and it exists
+				if ($has_content) {	// make url with querystring for content
+					$linkpage = $album['cover_linkpage'];
+					if ( $linktype == 'content' ) {
+						$href = wppa_get_album_url($album['id'], $linkpage);
+					}
+					elseif ( $linktype == 'slide' ) {
+						$href = wppa_get_slideshow_url($linkpage);
+					}
+				}
+				else {				// make plain link url
+					$href = get_page_link($album['cover_linkpage']);
+				}
+				$title = __a('Link to', 'wppa_theme');
+				$title .= ' ' . $page_data->post_title;
+			} else {
+				$href = '#';
+				$title = __a('Page is not available.', 'wppa_theme');
 			}
-			else {				// make plain link url
-				$href = get_page_link($album['cover_linkpage']);
+		} else {						// link to the same page/post
+			if ($has_content) {				// The very most normal situation
+				if ( $linktype == 'content' ) {
+					$href = wppa_get_album_url($album['id'], $linkpage);
+				}
+				elseif ( $linktype == 'slide' ) {
+					$href = wppa_get_slideshow_url($linkpage);
+				}
+
+//				$href = wppa_get_album_url($album['id'], $linkpage); 
+				$title = __a('View the album', 'wppa_theme').' '.wppa_qtrans(stripslashes($album['name']));
 			}
-			$title = __a('Link to', 'wppa_theme');
-			$title .= ' ' . $page_data->post_title;
-		} else {
-			$href = '#';
-			$title = __a('Page is not available.', 'wppa_theme');
-		}
-	} elseif ($album['cover_linkpage'] == -1) {	// no link at all
-	} else {						// link to the same page/post
-		if ($has_content) {				// The very most normal situation
-			$href = wppa_get_album_url($album['id'], $linkpage); 
-			$title = __a('View the album', 'wppa_theme').' '.wppa_qtrans(stripslashes($album['name']));
-		}
-		else {
-			if ($photocount > '0') {	// coverphotos only
-				$href = wppa_get_image_page_url_by_id($coverphoto); 
-				if ($photocount == '1') $title = __a('View the cover photo', 'wppa_theme'); 
-				else $title = __a('View the cover photos', 'wppa_theme');
-			}
-			else {						// nothing at all
-				$href = '';
-				$title = '';
+			else {
+				if ($photocount > '0') {	// coverphotos only
+					$href = wppa_get_image_page_url_by_id($coverphoto); 
+					if ($photocount == '1') $title = __a('View the cover photo', 'wppa_theme'); 
+					else $title = __a('View the cover photos', 'wppa_theme');
+				}
+				else {						// nothing at all
+					$href = '';
+					$title = '';
+				}
 			}
 		}
 	}
@@ -1996,7 +2020,7 @@ global $cover_count;
 					} else $wppa['out'] .= '&nbsp;'; 
 				$wppa['out'] .= wppa_nltab('-').'</div>';
 			}
-			// The 'Vieuw' link
+			// The 'View' link
 			$wppa['out'] .= wppa_nltab('+').'<div class="wppa-box-text wppa-black wppa-info">';
 				if ($has_content) {
 					if ($wppa_opt['wppa_thumbtype'] == 'none') $photocount = '0'; 	// Fake photocount to prevent link to empty page
@@ -3260,24 +3284,18 @@ global $wppa;
 	$wppa['out'] .= '<script type="text/javascript" >alert(\''.$msg.'\')</script>';
 }
 
-function wppa_get_album_id_by_name($name) {
+function wppa_get_album_id_by_name($xname) {
 global $wpdb;
 
 	$result = '';
 	$count = '0';
-	if (wppa_qtrans_enabled()) {
-		$albums = $wpdb->get_results("SELECT id, name FROM ".WPPA_ALBUMS, "ARRAY_A");
-		foreach($albums as $album) {
-			$album['name'] = wppa_qtrans($album['name']);
-			if ($album['name'] == $name) {
-				$result = $album['id'];
-				$count++;
-			}
-		}
-	}
-	else {
-		$albums = $wpdb->get_results("SELECT id FROM ".WPPA_ALBUMS." WHERE name='".$name."'", "ARRAY_A");
-		foreach($albums as $album) {
+	$name = wppa_normalize_quotes(stripslashes($xname));
+//echo 'search:'.$name.'<br/>';
+	$albums = $wpdb->get_results("SELECT id, name FROM ".WPPA_ALBUMS, "ARRAY_A");
+	foreach($albums as $album) {
+		$albumname = wppa_normalize_quotes(stripslashes(wppa_qtrans($album['name'])));
+//echo 'found:'.$albumname.'<br/>';
+		if ($albumname == $name) {
 			$result = $album['id'];
 			$count++;
 		}
@@ -3289,5 +3307,55 @@ global $wpdb;
 	if ( $count > '1' ) {
 		return '-1';		// duplicates
 	}
+	return $result;
+}
+function wppa_normalize_quotes($xtext) {
+
+	$text = html_entity_decode($xtext);
+	$result = '';
+	while ( $text ) {
+		$char = substr($text, 0, 1);
+		$text = substr($text, 1);
+		switch ($char) {
+			case '`':	// grave
+			case '’':	// acute
+				$result .= "'";
+				break;
+			case '“':	// double grave
+			case '”':	// double acute
+				$result .= '"';
+				break;
+			case '&':
+				if (substr($text, 0, 5) == '#039;') {	// quote
+					$result .= "'";
+					$text = substr($text, 5);
+				}
+				elseif (substr($text, 0, 5) == '#034;') {	// double quote
+					$result .= "'";
+					$text = substr($text, 5);
+				}
+				elseif ( substr($text, 0, 6) == '#8216;' || substr($text, 0, 6) == '#8217;' ) {	// grave || acute
+					$result .= "'";
+					$text = substr($text, 6);
+				}
+				elseif ( substr($text, 0, 6) == '#8220;' || substr($text, 0, 6) == '#8221;' ) {	// double grave || double acute
+					$result .= '"';
+					$text = substr($text, 6);
+				}
+				break;
+			default:
+				$result .= $char;
+				break;
+		}
+	}
+	return $result;
+}
+
+function wppa_get_album_title_linktype($alb) {
+global $wpdb;
+
+	if ( $alb ) $result = $wpdb->get_var("SELECT cover_linktype FROM ".WPPA_ALBUMS." WHERE id = ".$alb." LIMIT 1");
+	else $result = '';
+//echo $result;
 	return $result;
 }

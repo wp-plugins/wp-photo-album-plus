@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 * gp admin functions
-* version 4.1.0
+* version 4.1.1
 *
 * 
 */
@@ -577,7 +577,7 @@ if ( is_multisite() ) return; // temp disabled for 4.0 bug
 		$album = wppa_get_album_id(__('Orphan Photos', 'wppa'));
 		if ($album == '') {
 			$key = wppa_nextkey(WPPA_ALBUMS);
-			$query = $wpdb->prepare('INSERT INTO `' . WPPA_ALBUMS . '` (`id`, `name`, `description`, `a_order`, `a_parent`, `p_order_by`, `main_photo`, `cover_linkpage`, `owner`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)', $key, __('Orphan Photos', 'wppa'), $desc, '0', '0', '0', '0', '0', 'admin');
+			$query = $wpdb->prepare('INSERT INTO `' . WPPA_ALBUMS . '` (`id`, `name`, `description`, `a_order`, `a_parent`, `p_order_by`, `main_photo`, `cover_linktype`, `cover_linkpage`, `owner`, `timestamp`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)', $key, __('Orphan Photos', 'wppa'), $desc, '0', '0', '0', '0', 'content', '0', 'admin', time());
 			$iret = $wpdb->query($query);
 			if ($iret === false) {
 				wppa_error_message('Could not create album: Orphan Photos', 'wppa');

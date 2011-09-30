@@ -2,11 +2,11 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 4.1.0
+* version 4.1.1
 *
 */
 global $wppa_api_version;
-$wppa_api_version = '4-1-0-000';
+$wppa_api_version = '4-1-1-000';
 // Initialize globals and option settings
 function wppa_initialize_runtime($force = false) {
 global $wppa;
@@ -82,6 +82,7 @@ global $blog_id;
 			'wppa_maxheight' => '',
 			'wppa_enlarge' => '',
 			'wppa_resize_on_upload' => '',
+			'wppa_resize_to' => '',
 			'wppa_fullvalign' => '',
 			'wppa_fullhalign' => '',
 			'wppa_min_thumbs' => '',
@@ -492,8 +493,13 @@ global $wpdb;
 }
 
 // Check if an image is more landscape that the width/height ratio set in Table I item 2 and 3
-function wppa_is_wider($x, $y) {
-	$ratioref = get_option('wppa_fullsize') / get_option('wppa_maxheight');
+function wppa_is_wider($x, $y, $refx = '', $refy = '') {
+	if ( $refx == '' ) {
+		$ratioref = get_option('wppa_fullsize') / get_option('wppa_maxheight');
+	}
+	else {
+		$ratioref = $refx/$refy;
+	}
 	$ratio = $x / $y;
 	return ($ratio > $ratioref);
 }
@@ -669,6 +675,7 @@ global $current_user;
 }
 
 function wppa_make_the_photo_files($file, $image_id, $ext) {
+global $wppa_opt;
 				
 	$img_size = getimagesize($file);
 	if ($img_size) {
@@ -676,22 +683,36 @@ function wppa_make_the_photo_files($file, $image_id, $ext) {
 			
 		if (get_option('wppa_resize_on_upload', 'no') == 'yes') {
 			require_once('wppa-class-resize.php');
-			
-			if (wppa_is_wider($img_size[0], $img_size[1])) {
+			// Picture sizes
+			$picx = $img_size[0];
+			$picy = $img_size[1];
+			// Reference suzes
+			if ( $wppa_opt['wppa_resize_to'] == '0') {	// from fullsize
+				$refx = $wppa_opt['wppa_fullsize'];
+				$refy = $wppa_opt['wppa_maxheight'];
+			}
+			else {										// from selection
+				$screen = explode('x', $wppa_opt['wppa_resize_to']);
+				$refx = $screen[0];
+				$refy = $screen[1];
+			}
+			// Too landscape?
+			if ( $picx/$picy > $refx/$refy ) {					// focus on width
+//			if (wppa_is_wider($picx, $picy, $refx, $refy)) {	// focus on width
 				$dir = 'W';
-				$siz = get_option('wppa_fullsize', '640');
+				$siz = $refx; //get_option('wppa_fullsize', '640');
 				$s = $img_size[0];
 			}
-			else {
+			else {												// focus on height
 				$dir = 'H';
-				$siz = get_option('wppa_maxheight', get_option('wppa_fullsize', '640'));
+				$siz = $refy; //get_option('wppa_maxheight', get_option('wppa_fullsize', '640'));
 				$s = $img_size[1];
 			}
 
 			if ($s > $siz) {	
 				$objResize = new wppa_ImageResize($file, $newimage, $dir, $siz);
-		$objResize->destroyImage($objResize->resOriginalImage);
-		$objResize->destroyImage($objResize->resResizedImage);
+				$objResize->destroyImage($objResize->resOriginalImage);
+				$objResize->destroyImage($objResize->resResizedImage);
 			}
 			else {
 				copy($file, $newimage);
