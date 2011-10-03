@@ -9,7 +9,7 @@
 */
 /* Moved to wppa-commonfunctions.php:
 global $wppa_api_version;
-$wppa_api_version = '4-1-1-000';
+$wppa_api_version = '4-1-1-001';
 */
 
 
@@ -124,8 +124,9 @@ $slide = ( wppa_get_album_title_linktype($alb) == 'slide' ) ? '&amp;wppa-slide' 
 				$wppa['out'] .= wppa_nltab().'<span class="wppa-nav-text wppa-black b10" style="'.__wcs('wppa-nav-text').__wcs('wppa-black').'" >'.wppa_get_album_name($alb).'</span>';
 			} 
 		}
-		if (isset($_POST['wppa-searchstring'])) {
-			$wppa['out'] .= wppa_nltab().'<span class="wppa-nav-text b11" style="'.__wcs('wppa-nav-text').__wcs('wppa-black').'" ><b>&nbsp;'.__a('Searchstring:', 'wppa_theme').'&nbsp;'.$_POST['wppa-searchstring'].'</b></span>';
+//		if (isset($_POST['wppa-searchstring'])) {
+		if ($wppa['src'] && $wppa['master_occur'] == '1') {
+			$wppa['out'] .= wppa_nltab().'<span class="wppa-nav-text b11" style="'.__wcs('wppa-nav-text').__wcs('wppa-black').'" ><b>&nbsp;'.__a('Searchstring:', 'wppa_theme').'&nbsp;'.$wppa['searchstring'].'</b></span>'; // $_POST['wppa-searchstring'].'</b></span>';
 		}
 		elseif (wppa_get_get('topten')) {
 			$wppa['out'] .= wppa_nltab().'<span class="wppa-nav-text b11" style="'.__wcs('wppa-nav-text').__wcs('wppa-black').'" ><b>&nbsp;'.__a('Top rated photos', 'wppa_theme').'</b></span>';
@@ -458,9 +459,10 @@ global $wpdb;
 global $wppa;
 global $wppa_opt;
 
-	$src = wppa_get_searchstring();
+	if ( $wppa['master_occur'] == '1' ) $src = wppa_get_searchstring();
+	else $src = '';
 	
-	if (strlen($src)) {
+	if (strlen($src) && $wppa['master_occur'] == '1' ) {	// Search is in occur 1 only
 		$albs = $wpdb->get_results('SELECT * FROM ' . WPPA_ALBUMS . ' ' . wppa_get_album_order(), 'ARRAY_A');
 		$albums = '';
 		$idx = '0';
@@ -470,9 +472,10 @@ global $wppa_opt;
 				$idx++;
 			}
 		}
+		if (is_array($albums)) $wppa['any'] = true;
 	}
 	else {
-		if ($wppa['src']) return false;	// empty search string
+		if ( $wppa['src'] && $wppa['master_occur'] == '1' ) return false;	// empty search string
 
 		if ($wppa['in_widget']) {
 			$occur = wppa_get_get('woccur', '0');
@@ -619,7 +622,8 @@ global $wpdb;
 global $wppa;
 global $wppa_opt;
 
-	$src = wppa_get_searchstring();
+	if ( $wppa['master_occur'] == '1' ) $src = wppa_get_searchstring();
+	else $src = '';
 		
 	if (wppa_get_get('topten')) {
 		$max = $wppa_opt['wppa_topten_count'];
@@ -627,7 +631,7 @@ global $wppa_opt;
 		if ($alb) $thumbs = $wpdb->get_results('SELECT * FROM '.WPPA_PHOTOS.' WHERE mean_rating > 0 AND album = '.$alb.' ORDER BY mean_rating DESC LIMIT '.$max, 'ARRAY_A');
 		else $thumbs = $wpdb->get_results('SELECT * FROM '.WPPA_PHOTOS.' WHERE mean_rating > 0 ORDER BY mean_rating DESC LIMIT '.$max, 'ARRAY_A');
 	}
-	elseif (strlen($src)) {
+	elseif ( strlen($src) && $wppa['master_occur'] == '1' ) {	// Search is in occur 1 only
 		$tmbs = $wpdb->get_results('SELECT * FROM '.WPPA_PHOTOS.' '.wppa_get_photo_order('0'), 'ARRAY_A');
 		$thumbs = '';
 		$idx = '0';
@@ -639,9 +643,10 @@ global $wppa_opt;
 				}
 			}
 		}
+		if (is_array($thumbs)) $wppa['any'] = true;
 	}
 	else {
-		if ($wppa['src']) return false; 	// empty search string
+		if ( $wppa['src'] && $wppa['master_occur'] == '1' ) return false; 	// empty search string
 		
 		if ($wppa['in_widget']) {
 			$occur = wppa_get_get('woccur', '0');
@@ -1874,7 +1879,7 @@ global $wppa_opt;
 		if ($wppa['is_cover'] == '1') {		// Cover has no thumbs: 0 pages
 			$result = '0';
 		} 
-		elseif ((count($array) <= $wppa_opt['wppa_min_thumbs']) && (!$wppa['src'])) {	// Less than treshold and not searching: 0
+		elseif ((count($array) <= $wppa_opt['wppa_min_thumbs']) && ( !$wppa['src'] )) {	// Less than treshold and not searching: 0
 			$result = '0';
 		}
 		elseif ($tps != '0') {
@@ -2347,7 +2352,7 @@ global $wppa_opt;
 		if (wppa_get_get('album')) $alb = wppa_get_get('album');
 		else $alb = '';	// Album id is in $wppa['start_album']
 		$thumbs = wppa_get_thumbs($alb);
-		foreach ($thumbs as $tt) : $id = $tt['id'];
+		if ( $thumbs ) foreach ($thumbs as $tt) : $id = $tt['id'];
 			$wppa['out'] .= wppa_nltab('+').'<script type="text/javascript">';
 			$wppa['out'] .= wppa_nltab().'/* <![CDATA[ */';
 			$wppa['out'] .= wppa_nltab().'wppaStoreSlideInfo(' . wppa_get_slide_info($index, $id) . ');';
@@ -2712,6 +2717,9 @@ function __a($txt, $dom = 'wppa_theme') {
 // get permalink plus ? or & and possible debug switch
 function wppa_get_permalink($key = '') {
 global $wppa;
+global $wppa_opt;
+	
+	if ( !$key && is_search() ) $key = $wppa_opt['wppa_search_linkpage'];
 	
 	switch ($key) {
 		case '0':
@@ -3358,4 +3366,22 @@ global $wpdb;
 	else $result = '';
 //echo $result;
 	return $result;
+}
+
+// Find the search results
+function wppa_have_photos($xwidth = '0') {
+global $wppa;
+
+	if ( !is_search() ) return false;
+	$width = $xwidth ? $xwidth : wppa_get_container_width();
+	
+	$wppa['searchresults'] = wppa_albums('', '', $width);
+
+	return $wppa['any'];
+}
+// Display the searchresults
+function wppa_the_photos() {
+global $wppa;
+
+	if ( $wppa['any'] ) echo $wppa['searchresults'];
 }
