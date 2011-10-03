@@ -6,7 +6,7 @@
 *
 */
 global $wppa_api_version;
-$wppa_api_version = '4-1-1-000';
+$wppa_api_version = '4-1-1-001';
 // Initialize globals and option settings
 function wppa_initialize_runtime($force = false) {
 global $wppa;
@@ -65,11 +65,14 @@ global $blog_id;
 			'in_widget_frame_height' 	=> '',
 			'user_uploaded'				=> false,
 			'current_album'				=> '0',
-			'searchstring'				=> wppa_get_searchstring()
+			'searchstring'				=> wppa_get_searchstring(),
+			'searchresults'				=> '',
+			'any'						=> false
 
 		);
 
 		if (isset($_POST['wppa-searchstring'])) $wppa['src'] = true;
+		if (isset($_GET['s'])) $wppa['src'] = true;
 
 	}
 	
@@ -779,6 +782,9 @@ global $wppa;
 	$src = '';
 	if (isset($_POST['wppa-searchstring'])) {
 		$src = $_POST['wppa-searchstring'];
+	}
+	elseif (isset($_GET['s'])) {	// wp search
+		$src = $_GET['s'];
 	}
 //	elseif (isset($_GET['wppa_src'])) {
 //		$src = $_GET['wppa_src'];
