@@ -3362,7 +3362,7 @@ function wppa_normalize_quotes($xtext) {
 function wppa_get_album_title_linktype($alb) {
 global $wpdb;
 
-	if ( $alb ) $result = $wpdb->get_var( $wpdb->prepare( "SELECT cover_linktype FROM ".WPPA_ALBUMS." WHERE id = %s LIMIT 1", $alb ) );
+	if ( is_numeric($alb) ) $result = $wpdb->get_var( $wpdb->prepare( "SELECT cover_linktype FROM ".WPPA_ALBUMS." WHERE id = %s LIMIT 1", $alb ) );
 	else $result = '';
 //echo $result;
 	return $result;
