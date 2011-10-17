@@ -1,5 +1,5 @@
 ﻿// Slide show variables and functions
-// This is wppa-slideshow.js version 4.1.0
+// This is wppa-slideshow.js version 4.2.0
 //
 // Vars. The vars that have a name that starts with an underscore is an internal var
 // The vars without leading underscore are 'external' and get a value from html
@@ -37,6 +37,11 @@ var wppaPleaseEmail;
 var wppaPleaseComment;
 var wppaRatingOnce = true;
 var wppaUserName;
+var wppaBGcolorNumbar = 'transparent';
+var wppaBcolorNumbar = 'transparent';
+var wppaBGcolorNumbarActive = 'transparent';
+var wppaBcolorNumbarActive = 'transparent';
+var wppaNumbarMax = '10';
 
 // 'Internal' variables
 var _wppaPhotoIds = new Array();
@@ -170,9 +175,25 @@ function wppaLeaveMe(mocc, idx) {
 }
 
 function wppaGoto(mocc, idx) {
+	// Goto the requested slide if the slideshow stopped
 	if ( ! _wppaSlideShowRuns[mocc] ) {
 		_wppaGoto(mocc, idx);
 	}
+}
+
+function wppaGotoKeepState(mocc, idx) {
+	// Goto the requested slide and preserve running state
+	if ( _wppaSlideShowRuns[mocc] ) {
+		_wppaGotoRunning(mocc,idx);
+	}
+	else {
+		_wppaGoto(mocc,idx);
+	}
+}
+
+function wppaGotoRunning(mocc, idx) {
+	// Goto the requested slide and start running
+	_wppaGotoRunning(mocc, idx);
 }
 
 function wppaValidateComment(mocc) {
@@ -183,6 +204,8 @@ function _wppaNextSlide(mocc, mode) {
 	_wppaLog('NextSlide', mocc);
 
 	if ( ! _wppaSlideShowRuns[mocc] && mode == 'auto' ) return; // Kill an old timed request, while stopped
+	if ( _wppaSlides[mocc].length < 2 && !_wppaFirst[mocc] ) return; //Do not animate single image
+	if ( ! _wppaSlideShowRuns[mocc] && mode == 'reset' ) _wppaSlideShowRuns[mocc] = true;
 	// Set the busy flag
 	_wppaIsBusy[mocc] = true;
 
@@ -194,6 +217,20 @@ function _wppaNextSlide(mocc, mode) {
 		_wppaNextIndex[mocc] = _wppaCurrentIndex[mocc] + 1;
 		if (_wppaNextIndex[mocc] == _wppaSlides[mocc].length) _wppaNextIndex[mocc] = 0;
 	}
+//	jQuery('[id^=wppa-numbar-' + mocc + '-]').removeClass("wppa-numbar-current");
+//	jQuery("#wppa-numbar-" + mocc + "-" + _wppaNextIndex[mocc]).addClass("wppa-numbar-current");
+
+	jQuery('[id^=wppa-numbar-' + mocc + '-]').css('background-color', wppaBGcolorNumbar);	//removeClass("wppa-numbar-current");
+	jQuery('[id^=wppa-numbar-' + mocc + '-]').css('border-color', wppaBcolorNumbar);	//removeClass("wppa-numbar-current");
+	jQuery("#wppa-numbar-" + mocc + "-" + _wppaNextIndex[mocc]).css('background-color', wppaBGcolorNumbarActive);	//addClass("wppa-numbar-current");
+	jQuery("#wppa-numbar-" + mocc + "-" + _wppaNextIndex[mocc]).css('border-color', wppaBcolorNumbarActive);	//addClass("wppa-numbar-current");
+	
+	// too many? all dots except current
+	if (_wppaSlides[mocc].length > wppaNumbarMax) {
+		jQuery('[id^=wppa-numbar-' + mocc + '-]').html(' . ');
+		jQuery("#wppa-numbar-" + mocc + "-" + _wppaNextIndex[mocc]).html(' ' + (_wppaNextIndex[mocc]+1) + ' ');
+	}
+	
     // first:
     if (_wppaFirst[mocc]) {
 	    if (_wppaCurrentIndex[mocc] != -1) {
@@ -404,6 +441,32 @@ function _wppaGoto(mocc, idx) {
 	_wppaNextSlide(mocc, 0);
 }
 
+function _wppaGotoRunning(mocc, idx) {
+	//wait until not bussy
+	if (_wppaIsBusy[mocc]) { 
+		setTimeout('_wppaGotoRunning('+mocc+',' + idx + ')', 10);	// Try again after 10 ms
+		return;
+	}
+    
+	_wppaLog('GotoRunning', mocc);
+
+	_wppaSlideShowRuns[mocc] = false; // we don't want timed loop to occur during our work
+    
+	_wppaToTheSame = (_wppaNextIndex[mocc] == idx);
+	_wppaNextIndex[mocc] = idx;
+	_wppaNextSlide(mocc, "manual"); // enqueue new transition
+    
+	_wppaGotoContinue(mocc);
+}
+
+function _wppaGotoContinue(mocc){
+	if (_wppaIsBusy[mocc]) {
+		setTimeout('_wppaGotoContinue('+mocc+')', 10);	// Try again after 10 ms
+	return;
+	}
+	setTimeout('_wppaNextSlide('+mocc+', "reset")', _wppaTimeOut[mocc] + 10); //restart slideshow after new timeout
+}
+
 function _wppaStart(mocc, idx) {
 	_wppaLog('Start', mocc);
 	
@@ -511,7 +574,8 @@ function _wppaDoAutocol(mocc) {
 	jQuery(".theimg").css('width',w);
 	jQuery(".thumbnail-area").css('width',w - wppaThumbnailAreaDelta);
 	wppaFilmStripLength[mocc] = w - wppaFilmStripAreaDelta[mocc];
-	jQuery(".filmwindow").css('width',wppaFilmStripLength[mocc]);
+
+	jQuery("#filmwindow"+mocc).css('width',wppaFilmStripLength[mocc]);
 
 	jQuery(".wppa-text-frame").css('width',w - wppaTextFrameDelta);
 	jQuery(".wppa-cover-box").css('width',w - wppaBoxDelta);

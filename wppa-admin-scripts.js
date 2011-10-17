@@ -43,6 +43,7 @@ function wppaInitSettings() {
 	wppaCheckComments();
 	wppaCheckLightbox();
 	wppaCheckResize();
+	wppaCheckNumbar();
 	
 	for (table=1; table<11; table++) {
 		var cookie = wppa_getCookie('table_'+table);
@@ -346,6 +347,16 @@ function wppaCheckResize() {
 	}
 	else {
 		jQuery('.re_up').css('display', 'none');
+	}
+}
+
+function wppaCheckNumbar() {
+	var Nb = document.getElementById('wppa_show_slideshownumbar').checked;
+	if (Nb) {
+		jQuery('.wppa_numbar').css('display', '');
+	}
+	else {
+		jQuery('.wppa_numbar').css('display', 'none');
 	}
 }
 

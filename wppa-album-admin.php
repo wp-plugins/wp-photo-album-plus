@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * create, edit and delete albums
-* version 4.1.1
+* version 4.2.0
 *
 */
 
@@ -234,7 +234,7 @@ function _wppa_admin() {
 									<label ><?php _e('Photo order:', 'wppa'); ?></label>
 								</th>
 								<td>
-									<select name="wppa-list-photos-by"><?php wppa_order_options($order, __('--- default ---', 'wppa'), __('Rating', 'wppa')) ?></select>
+									<select name="wppa-list-photos-by"><?php wppa_order_options($order, __('--- default ---', 'wppa'), __('Rating', 'wppa'), __('Timestamp', 'wppa')) ?></select>
 									<span class="description">
 										<br/><?php _e('Specify the way the photos should be ordered in this album.', 'wppa'); ?>
 										<br/><?php _e('The default setting can be changed in the Options page.', 'wppa'); ?>
@@ -272,7 +272,7 @@ function _wppa_admin() {
 									<label ><?php _e('Link to:', 'wppa'); ?></label>
 								</th>
 								<td>
-									<?php $query = 'SELECT `ID`, `post_title` FROM `'.$wpdb->posts.'` WHERE `post_type` = \'page\' AND `post_status` = \'publish\' ORDER BY `post_title` ASC';
+									<?php $query = $wpdb->prepare( 'SELECT `ID`, `post_title` FROM `'.$wpdb->posts.'` WHERE `post_type` = \'page\' AND `post_status` = \'publish\' ORDER BY `post_title` ASC');
 									$pages = $wpdb->get_results($query, 'ARRAY_A');
 									if (empty($pages)) {
 										_e('There are no pages (yet) to link to.', 'wppa');
@@ -395,7 +395,7 @@ function _wppa_admin() {
 /* get the albums */
 function wppa_admin_albums() {
 	global $wpdb;
-	$albums = $wpdb->get_results("SELECT * FROM " . WPPA_ALBUMS . " " . wppa_get_album_order(), 'ARRAY_A');
+	$albums = $wpdb->get_results($wpdb->prepare( "SELECT * FROM " . WPPA_ALBUMS . " " . wppa_get_album_order() ), 'ARRAY_A');
 	
 	if (!empty($albums)) {
 ?>	
@@ -474,7 +474,7 @@ function wppa_album_photos($id) {
 					
 						<tr valign="top">
 							<th scope="row">
-								<label ><?php _e('Preview:', 'wppa'); ?></label>
+								<label ><?php echo 'ID = '.$photo['id'].' '.__('Preview:', 'wppa'); ?></label>
 								<br/>
 								<?php $href = wppa_ea_url($id).'&amp;rotate&amp;photo_rotate='.$photo['id'].'&amp;photo_angle=90#p_'.$photo['id']; ?>
 								<input type="button" name="rotate" class="button-secondary" style="font-weight:bold; width:90%" onclick="if (confirm('<?php _e('Are you sure you want to rotate this photo?', 'wppa') ?>')) document.location='<?php echo $href ?>'; else return false;" value="<?php _e('Rotate left', 'wppa'); ?>" />

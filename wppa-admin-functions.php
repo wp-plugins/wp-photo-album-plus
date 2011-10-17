@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 * gp admin functions
-* version 4.1.1
+* version 4.2.0
 *
 * 
 */
@@ -232,7 +232,7 @@ function wppa_get_last_album() {
 }
 
 // display order options
-function wppa_order_options($order, $nil, $rat = '') {
+function wppa_order_options($order, $nil, $rat = '', $timestamp = '') {
     if ($nil != '') { 
 ?>
     <option value="0"<?php if ($order == "" || $order == "0") echo (' selected="selected"'); ?>><?php echo($nil); ?></option>
@@ -246,6 +246,11 @@ function wppa_order_options($order, $nil, $rat = '') {
 	if ($rat != '') {
 ?>
 	<option value="4"<?php if ($order == "4") echo(' selected="selected"'); if (get_option('wppa_rating_on', 'yes') == 'no') echo ('disabled="disabled"') ?>><?php echo($rat); ?></option>
+<?php
+	}
+	if ($timestamp != '') {
+?>
+	<option value="5"<?php if ($order == "5") echo(' selected="selected"') ?>><?php echo ($timestamp) ?></option>
 <?php
 	}
 }
@@ -295,7 +300,7 @@ function wppa_has_albums() {
 
 function wppa_get_users() {
 global $wpdb;
-	$users = $wpdb->get_results('SELECT * FROM '.$wpdb->users, 'ARRAY_A');
+	$users = $wpdb->get_results($wpdb->prepare( 'SELECT * FROM '.$wpdb->users ), 'ARRAY_A');
 	return $users;
 }
 
@@ -366,7 +371,7 @@ global $wpdb;
 	
 	$err = '2';
 	// Find photo details
-	$photo = $wpdb->get_row('SELECT * FROM '.WPPA_PHOTOS.' WHERE id = '.$photoid, 'ARRAY_A');
+	$photo = $wpdb->get_row($wpdb->prepare( 'SELECT * FROM '.WPPA_PHOTOS.' WHERE id = %s', $photoid ), 'ARRAY_A');
 	if (!$photo) return $err;
 	$album = $albumto;
 	$ext = $photo['ext'];
@@ -410,7 +415,7 @@ global $wpdb;
 	
 	// Get the ext
 	$err = '2';
-	$ext = $wpdb->get_var('SELECT ext FROM '.WPPA_PHOTOS.' WHERE id = '.$id);
+	$ext = $wpdb->get_var($wpdb->prepare( 'SELECT ext FROM '.WPPA_PHOTOS.' WHERE id = %s', $id ) );
 	if (!$ext) return $err;
 	
 	// Get the image
@@ -488,6 +493,7 @@ global $wpdb;
 // Additionally check the php config
 function wppa_cleanup_photos($alb = '') {
 	global $wpdb;
+	global $wppa_opt;
 	global $wppa_error_displayed;
 //echo('WPPADBG'.$alb);
 if ( is_multisite() ) return; // temp disabled for 4.0 bug
@@ -495,7 +501,7 @@ if ( is_multisite() ) return; // temp disabled for 4.0 bug
 	// Check the users php config. sometimes a user 'reconfigures' his server to not having GD support...
 	if ( ! function_exists('getimagesize') || ! function_exists('imagecreatefromjpeg') ) {
 		if ( ! $wppa_error_displayed ) {
-			wppa_error_message('Please check your php configuration. Currently it does not support the required functionality to manipulate photos', 'wppa');
+			wppa_error_message(__('Please check your php configuration. Currently it does not support the required functionality to manipulate photos', 'wppa'));
 			$wppa_error_displayed = true;
 		}
 	}
@@ -506,26 +512,37 @@ if ( is_multisite() ) return; // temp disabled for 4.0 bug
 	$no_photos = '';
 //	if ($alb == '0') wppa_ok_message(__('Checking database, please wait...', 'wppa'));
 	$delcount = 0;
-	if ($alb == '0') $entries = $wpdb->get_results('SELECT id, ext, name FROM '.WPPA_PHOTOS, ARRAY_A);
-	else $entries = $wpdb->get_results('SELECT id, ext, name FROM '.WPPA_PHOTOS.' WHERE album = '.$alb, ARRAY_A);
+	if ($alb == '0') $entries = $wpdb->get_results($wpdb->prepare( 'SELECT id, ext, name FROM '.WPPA_PHOTOS ), ARRAY_A);
+	else $entries = $wpdb->get_results($wpdb->prepare( 'SELECT id, ext, name FROM '.WPPA_PHOTOS.' WHERE album = %s', $alb ), ARRAY_A);
 	if ($entries) {
-		foreach ($entries as $entry) {
+		foreach ( $entries as $entry ) {
 			$thumbpath = WPPA_UPLOAD_PATH.'/thumbs/'.$entry['id'].'.'.$entry['ext'];
 			$imagepath = WPPA_UPLOAD_PATH.'/'.$entry['id'].'.'.$entry['ext'];
-			if (!is_file($thumbpath)) {	// No thumb: delete fullimage
-				if (is_file($imagepath)) unlink($imagepath);
-				$no_photos .= ' '.$entry['name'];
+			if ( !is_file($thumbpath) ) {	// No thumb: delete fullimage conditionally 
+				if ( $wppa_opt['wppa_autoclean'] == 'yes' ) {
+					if (is_file($imagepath)) unlink($imagepath);
+				}
+				else {
+					wppa_dbg_msg('Error: expected thumbnail image file does not exist: '.$thumbpath, 'red', true);
+				}
 			}
-			if (!is_file($imagepath)) { // No fullimage: delete db entry
-				if ($wpdb->query($wpdb->prepare('DELETE FROM `'.WPPA_PHOTOS.'` WHERE `id` = %s LIMIT 1', $entry['id']))) {
-					$delcount++;
+			if ( !is_file($imagepath) ) { // No fullimage: delete db entry
+				if ( $wppa_opt['wppa_autoclean'] == 'yes' ) {
+					if ($wpdb->query($wpdb->prepare('DELETE FROM `'.WPPA_PHOTOS.'` WHERE `id` = %s LIMIT 1', $entry['id']))) {
+						$no_photos .= ' '.$entry['name'];
+						$delcount++;
+					}
+				}
+				else {
+					wppa_dbg_msg('Error: expected fullsize image file does not exist: '.$thumbpath, 'red', true);
+					wppa_dbg_msg('Please delete photo '.$entry['name'].' with id='.$entry['id'], 'red', true);
 				}
 			}
 		}
 	}
 	// Now fix missing exts for upload bug in 2.3.0
 	$fixcount = 0;
-	$entries = $wpdb->get_results('SELECT id, ext, name FROM '.WPPA_PHOTOS.' WHERE ext = ""', ARRAY_A);
+	$entries = $wpdb->get_results($wpdb->prepare( 'SELECT id, ext, name FROM '.WPPA_PHOTOS.' WHERE ext = ""' ), 'ARRAY_A' );
 	if ($entries) {
 		wppa_ok_message(__('Trying to fix '.count($entries).' entries with missing file extension, Please wait.', 'wppa'));
 		foreach ($entries as $entry) {
@@ -544,7 +561,7 @@ if ( is_multisite() ) return; // temp disabled for 4.0 bug
 			}
 			if ($ext == 'jpg' || $ext == 'JPG' || $ext == 'png' || $ext == 'PNG' || $ext == 'gif' || $ext == 'GIF') {
 				
-				if ($wpdb->query('UPDATE '.WPPA_PHOTOS.' SET ext = "'.$ext.'" WHERE id = '.$entry['id'])) {
+				if ($wpdb->query($wpdb->prepare( 'UPDATE '.WPPA_PHOTOS.' SET ext = "%s" WHERE id = %s', $ext, $entry['id'] ) ) ) {
 					$oldimg = WPPA_UPLOAD_PATH.'/'.$entry['id'].'.';
 					$newimg = WPPA_UPLOAD_PATH.'/'.$entry['id'].'.'.$ext;
 					if (is_file($oldimg)) {
@@ -572,7 +589,7 @@ if ( is_multisite() ) return; // temp disabled for 4.0 bug
 	
 	// Now fix orphan photos
 	$orphcount = 0;
-	$entries = $wpdb->get_results('SELECT id FROM '.WPPA_PHOTOS.' WHERE album = 0', ARRAY_A);
+	$entries = $wpdb->get_results($wpdb->prepare( 'SELECT id FROM '.WPPA_PHOTOS.' WHERE album = 0' ), ARRAY_A);
 	if ($entries) {
 		$album = wppa_get_album_id(__('Orphan Photos', 'wppa'));
 		if ($album == '') {
@@ -588,7 +605,7 @@ if ( is_multisite() ) return; // temp disabled for 4.0 bug
 			$album = wppa_get_album_id(__('Orphan Photos', 'wppa')); // retry
 		}
 		if ($album) {
-			$orphcount = $wpdb->query('UPDATE '.WPPA_PHOTOS.' SET album = '.$album.' WHERE album < 1');
+			$orphcount = $wpdb->query($wpdb->prepare( 'UPDATE '.WPPA_PHOTOS.' SET album = %s WHERE album < 1', $album ) );
 		}
 		else {
 			wppa_error_message(__('Could not recover orphanized photos.', 'wppa'));
@@ -641,7 +658,7 @@ global $wpdb;
 		echo('Unexpected error in wppa_is_id_free()');
 		return false;
 	}
-	$res = $wpdb->get_row('SELECT * FROM '.$table.' WHERE id = '.$id, 'ARRAY_A');
+	$res = $wpdb->get_row($wpdb->prepare( 'SELECT * FROM '.$table.' WHERE id = %s', $id ), 'ARRAY_A');
 	if ($res) return false;
 	return true;
 }
@@ -672,7 +689,7 @@ function wppa_sanitize_files() {
 // get select form element listing albums 
 function wppa_album_select($exc = '', $sel = '', $addnone = FALSE, $addseparate = FALSE, $checkancestors = FALSE, $none_is_all = false) {
 	global $wpdb;
-	$albums = $wpdb->get_results("SELECT * FROM ".WPPA_ALBUMS." ORDER BY name", 'ARRAY_A');
+	$albums = $wpdb->get_results($wpdb->prepare( "SELECT * FROM ".WPPA_ALBUMS." ORDER BY name" ), 'ARRAY_A');
 	
     if ($sel == '') {
         $s = wppa_get_last_album();
@@ -706,10 +723,10 @@ function wppa_album_select($exc = '', $sel = '', $addnone = FALSE, $addseparate 
 function wppa_recalculate_ratings() {
 global $wpdb;
 
-	$photos = $wpdb->get_results('SELECT id FROM '.WPPA_PHOTOS, 'ARRAY_A');
+	$photos = $wpdb->get_results($wpdb->prepare( 'SELECT id FROM '.WPPA_PHOTOS ), 'ARRAY_A');
 	if ($photos) {
 		foreach ($photos as $photo) {
-			$ratings = $wpdb->get_results('SELECT value FROM '.WPPA_RATING.' WHERE photo='.$photo['id'], 'ARRAY_A');
+			$ratings = $wpdb->get_results($wpdb->prepare( 'SELECT value FROM '.WPPA_RATING.' WHERE photo = %s', $photo['id']), 'ARRAY_A');
 			$the_value = '0';
 			$the_count = '0';
 			foreach ($ratings as $rating) {
@@ -717,7 +734,7 @@ global $wpdb;
 				$the_count++;
 			}
 			if ($the_count) $the_value /= $the_count;
-			$iret = $wpdb->query('UPDATE '.WPPA_PHOTOS.' SET mean_rating = '.$the_value.' WHERE id = '.$photo['id']);
+			$iret = $wpdb->query($wpdb->prepare( 'UPDATE '.WPPA_PHOTOS.' SET mean_rating = %s WHERE id = %s', $the_value, $photo['id'] ) );
 			if ($iret === false) {
 				wppa_error_message(__('Unable to update mean rating', 'wppa'));
 				return false;

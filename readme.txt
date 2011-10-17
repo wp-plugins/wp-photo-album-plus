@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, multisite, network, lightbox
-Version: 4.1.1
+Version: 4.2.0
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -106,6 +106,22 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 4.2.0 =
+
+= Bug fixes =
+
+* A security issue has been fixed
+* Minor fix in filmstrip when size=auto.
+
+= New features =
+
+* There is an additional navigation tool: Number bar. See Table I-24, III-11&12, V-22&23&24. This requires the newly supplied wppa-style.css
+
+= Other changes =
+
+* Auto fix db can now be switched on or off
+* More diagnostics in upload
 
 = 4.1.1 =
 

@@ -99,6 +99,7 @@ class wppa_ImageResize {
    */
   
    function wppa_ImageResize($strPath, $strSavePath, $strType = "W", $value = "150", $boolProtect = true){
+	wppa_dbg_msg('ImageResize called with Path='.$strPath.' SavePath='.$strSavePath.' Type='.$strType.' value='.$value);
       //save the image/path details
       $this->strOriginalImagePath = $strPath;
       $this->strResizedImagePath = $strSavePath; 
@@ -203,14 +204,14 @@ class wppa_ImageResize {
    function saveImage($numQuality = 95){
       switch($this->arrResizedDetails['mime']){
          case "image/jpeg":
-            imagejpeg($this->resResizedImage, $this->strResizedImagePath, $numQuality);
+            if ( !imagejpeg($this->resResizedImage, $this->strResizedImagePath, $numQuality) ) wppa_dbg_msg('Error: imagejpeg failed in class-resize', 'red', true);
             break;
          case "image/png":
             // imagepng = [0-9] (not [0-100])           
-            imagepng($this->resResizedImage, $this->strResizedImagePath, 7);
+            if ( !imagepng($this->resResizedImage, $this->strResizedImagePath, 7) ) wppa_dbg_msg('Error: imagepng failed in class-resize', 'red', true);
             break;
          case "image/gif":
-            imagegif($this->resResizedImage, $this->strResizedImagePath, $numQuality); 
+            if ( !imagegif($this->resResizedImage, $this->strResizedImagePath, $numQuality) ) wppa_dbg_msg('Error: imagegif failed in class-resize', 'red', true); 
             break;
       }
    }
@@ -286,10 +287,13 @@ class wppa_ImageResize {
          $this->updateNewDetails();  
          //do the actual image resize  
          if (function_exists('imagecopyresampled')) {
-           imagecopyresampled($this->resResizedImage, $this->resOriginalImage, 0, 0, 0, 0, $numWidth, $numHeight, $this->arrOriginalDetails[0], $this->arrOriginalDetails[1]); 
+           $bret = imagecopyresampled($this->resResizedImage, $this->resOriginalImage, 0, 0, 0, 0, $numWidth, $numHeight, $this->arrOriginalDetails[0], $this->arrOriginalDetails[1]); 
          } else {
-           imagecopyresized($this->resResizedImage, $this->resOriginalImage, 0, 0, 0, 0, $numWidth, $numHeight, $this->arrOriginalDetails[0], $this->arrOriginalDetails[1]); 
+           $bret = imagecopyresized($this->resResizedImage, $this->resOriginalImage, 0, 0, 0, 0, $numWidth, $numHeight, $this->arrOriginalDetails[0], $this->arrOriginalDetails[1]); 
          }
+		 if ( !$bret ) {
+			wppa_dbg_msg('Error imagecopyresampled/sized failed in wppa-class-resize', 'red', true);
+		 }
          //saves the image  
          $this->saveImage();  
       }  

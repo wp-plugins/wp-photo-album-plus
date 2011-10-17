@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all comments
-* Version 4.1.0
+* Version 4.2.0
 *
 */
 
@@ -17,7 +17,7 @@ global $wppa_opt;
 	if (isset($_GET['tab'])) {
 		if ($_GET['tab'] == 'edit') {
 			$id = $_GET['edit_id'];
-			$comment = $wpdb->get_row("SELECT * FROM ".WPPA_COMMENTS." WHERE id=".$id." LIMIT 1", "ARRAY_A");
+			$comment = $wpdb->get_row($wpdb->prepare( "SELECT * FROM ".WPPA_COMMENTS." WHERE id = %s LIMIT 1", $id ), "ARRAY_A");
 			if ($comment) {
 			?>
 			<div class="wrap">
@@ -35,7 +35,7 @@ global $wppa_opt;
 						<tbody>
 							<tr style="vertical-align:top" >
 								<th>
-									<?php $photo = $wpdb->get_row("SELECT * FROM ".WPPA_PHOTOS." WHERE id=".$comment['photo'], "ARRAY_A") ?>
+									<?php $photo = $wpdb->get_row($wpdb->prepare( "SELECT * FROM ".WPPA_PHOTOS." WHERE id =  %s", $comment['photo']), "ARRAY_A" ) ?>
 									<?php $url = WPPA_UPLOAD_URL.'/thumbs/'.$comment['photo'].'.'.$photo['ext'] ?>
 									<img src="<?php echo($url) ?>" />
 								</th>
@@ -71,7 +71,7 @@ global $wppa_opt;
 		}
 		if ($_GET['tab'] == 'delete') {
 			$id = $_GET['delete_id'];
-			$iret = $wpdb->query("DELETE FROM ".WPPA_COMMENTS." WHERE id=".$id." LIMIT 1");
+			$iret = $wpdb->query($wpdb->prepare( "DELETE FROM ".WPPA_COMMENTS." WHERE id = %s LIMIT 1", $id ) );
 			if ($iret !== false) wppa_update_message('Comment deleted', 'wppa');
 			else wppa_error_message('Error deleting comment', 'wppa');
 			$continue = true;
@@ -101,7 +101,7 @@ global $wppa_opt;
 				switch ($_POST['bulkaction']) {
 					case 'approveall':
 						$query = "UPDATE " . WPPA_COMMENTS . " SET status='approved' WHERE status='pending'";
-						if ( $wpdb->query($query) === false ) {
+						if ( $wpdb->query($wpdb->prepare($query)) === false ) {
 							wppa_error_message(__('Could not bulk update status', 'wppa'));
 							$iret = false;
 						}
@@ -109,7 +109,7 @@ global $wppa_opt;
 						break;
 					case 'spamall':
 						$query = "UPDATE " . WPPA_COMMENTS . " SET status='spam' WHERE status='pending'";
-						if ( $wpdb->query($query) === false ) {
+						if ( $wpdb->query($wpdb->prepare($query)) === false ) {
 							wppa_error_message(__('Could not bulk update status', 'wppa'));
 							$iret = false;
 						}
@@ -117,7 +117,7 @@ global $wppa_opt;
 						break;
 					case 'delspam':
 						$query = "DELETE FROM " . WPPA_COMMENTS . " WHERE status='spam'";
-						if ( $wpdb->query($query) === false ) {
+						if ( $wpdb->query($wpdb->prepare($query)) === false ) {
 							wppa_error_message(__('Could not bulk update status', 'wppa'));
 							$iret = false;
 						}
@@ -141,19 +141,19 @@ global $wppa_opt;
 				<tbody>
 					<tr>
 						<td><h3 style="margin:0; color:#777777;"><?php _e('Total:', 'wppa') ?></h3></td>
-						<td><h3 style="margin:0;"><?php $comments = $wpdb->get_results("SELECT id FROM ".WPPA_COMMENTS." ", "ARRAY_A"); echo(count($comments)) ?></h3></td>
+						<td><h3 style="margin:0;"><?php $comments = $wpdb->get_results($wpdb->prepare( "SELECT id FROM ".WPPA_COMMENTS." "), "ARRAY_A"); echo(count($comments)) ?></h3></td>
 					</tr>
 					<tr>
 						<td><h3 style="margin:0; color:green;"><?php _e('Approved:', 'wppa') ?></h3></td>
-						<td><h3 style="margin:0;"><?php $comments = $wpdb->get_results("SELECT id FROM ".WPPA_COMMENTS." WHERE status='approved'", "ARRAY_A"); echo(count($comments)) ?></h3></td>
+						<td><h3 style="margin:0;"><?php $comments = $wpdb->get_results($wpdb->prepare( "SELECT id FROM ".WPPA_COMMENTS." WHERE status='approved'"), "ARRAY_A"); echo(count($comments)) ?></h3></td>
 					</tr>
 					<tr>
 						<td><h3 style="margin:0; color:#e66f00;"><?php _e('Pending:', 'wppa') ?></h3></td>
-						<td><h3 style="margin:0;"><?php $comments = $wpdb->get_results("SELECT id FROM ".WPPA_COMMENTS." WHERE status='pending'", "ARRAY_A"); echo(count($comments)) ?></h3></td>
+						<td><h3 style="margin:0;"><?php $comments = $wpdb->get_results($wpdb->prepare( "SELECT id FROM ".WPPA_COMMENTS." WHERE status='pending'"), "ARRAY_A"); echo(count($comments)) ?></h3></td>
 					</tr>
 					<tr>
 						<td><h3 style="margin:0; color:red;"><?php _e('Spam:', 'wppa') ?></h3></td>
-						<td><h3 style="margin:0;"><?php $comments = $wpdb->get_results("SELECT id FROM ".WPPA_COMMENTS." WHERE status='spam'", "ARRAY_A"); echo(count($comments)) ?></h3></td>
+						<td><h3 style="margin:0;"><?php $comments = $wpdb->get_results($wpdb->prepare( "SELECT id FROM ".WPPA_COMMENTS." WHERE status='spam'"), "ARRAY_A"); echo(count($comments)) ?></h3></td>
 					</tr>
 				</tbody>
 			</table>
@@ -200,7 +200,7 @@ global $wppa_opt;
 				}
 				else $limit = ' LIMIT 0,'.$pagsize;
 
-				$c = $wpdb->get_results("SELECT id FROM ".WPPA_COMMENTS.$where, "ARRAY_A");
+				$c = $wpdb->get_results($wpdb->prepare( "SELECT id FROM ".WPPA_COMMENTS.$where), "ARRAY_A" );
 				$nitems = count($c);
 				$npages = $nitems ? floor(($nitems - '1') / $pagsize) + '1' : '1';
 				wppa_comment_submit_pages($nitems, $npages);
@@ -223,11 +223,11 @@ global $wppa_opt;
 					<tbody class="wppa_table_1">
 						<?php 
 						
-						$comments = $wpdb->get_results('SELECT * FROM '.WPPA_COMMENTS.$where.$order.$limit, 'ARRAY_A');
+						$comments = $wpdb->get_results($wpdb->prepare( 'SELECT * FROM '.WPPA_COMMENTS.$where.$order.$limit ), 'ARRAY_A');
 						if ($comments) {
 							foreach ($comments as $com) { ?>
 								<tr>
-									<td style="text-align:center"><img src="<?php echo(WPPA_UPLOAD_URL.'/thumbs/'.$com['photo'].'.'.$wpdb->get_var("SELECT ext FROM ".WPPA_PHOTOS." WHERE id = ".$com['photo'])) ?>" style="max-height:64px;max-width:64px;" ></td>							
+									<td style="text-align:center"><img src="<?php echo(WPPA_UPLOAD_URL.'/thumbs/'.$com['photo'].'.'.$wpdb->get_var($wpdb->prepare( "SELECT ext FROM ".WPPA_PHOTOS." WHERE id = %s", $com['photo']))) ?>" style="max-height:64px;max-width:64px;" ></td>							
 									<td><?php echo $com['photo'] ?></td>
 									<td><?php echo $com['ip'] ?></td>
 									<td><?php echo $com['user'] ?></td>
@@ -278,10 +278,12 @@ global $wpdb;
 
 	switch ($value) {
 		case 'delete':
-//			$wpdb->query("DELETE FROM ".WPPA_COMMENTS." WHERE id=".$index." LIMIT 1");
+//			$wpdb->query($wpdb->prepare("DELETE FROM ".WPPA_COMMENTS." WHERE id = %s LIMIT 1", $index ) );
 			break;
 		default:
-			$wpdb->query("UPDATE ".WPPA_COMMENTS." SET status='".$value."' WHERE id=".$index." LIMIT 1");
+			$id = trim( $index, "\'");
+			$query = $wpdb->prepare( "UPDATE ".WPPA_COMMENTS." SET status = '%s' WHERE id = %s LIMIT 1", $value, $id );
+			$wpdb->query($query);
 			break;
 	}
 }
@@ -289,13 +291,13 @@ global $wpdb;
 function wppa_edit_comment($id) {
 global $wpdb;
 
-	$record = $wpdb->get_row("SELECT * FROM ".WPPA_COMMENTS." WHERE id=".$id." LIMIT 0,1", "ARRAY_A");
+	$record = $wpdb->get_row($wpdb->prepare( "SELECT * FROM ".WPPA_COMMENTS." WHERE id = %s LIMIT 0,1", $id ), "ARRAY_A");
 	if ($record) {
 		if (isset($_POST['comment'])) $record['comment'] = $_POST['comment'];
 		if (isset($_POST['email'])) $record['email'] = $_POST['email'];
 		if (isset($_POST['user'])) $record['user'] = $_POST['user'];
 		
-		$iret = $wpdb->query("UPDATE ".WPPA_COMMENTS." SET comment='".$record['comment']."', email='".$record['email']."', user='".$record['user']."' WHERE id=".$id." LIMIT 1");
+		$iret = $wpdb->query($wpdb->prepare( "UPDATE ".WPPA_COMMENTS." SET comment = '%s', email = '%s', user = '%s' WHERE id = %s LIMIT 1", $record['comment'], $record['email'], $record['user'], $id ) );
 		if ($iret === false) {
 			wppa_error_message(__('Unable to update comment. Err =', 'wppa').' 2.');
 			return false;
