@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 4.1.1
+* Version 4.2.0
 *
 */
 
@@ -104,7 +104,7 @@ function wppa_setup($force = false) {
 		$usertheme 		= ABSPATH.'wp-content/themes/'.get_option('template').'/wppa-theme.php';
 		if ( is_file( $usertheme ) || is_file( $usertheme_old ) ) $key += '2';
 	}
-	if ( $old_rev < '410' ) {		// css changed since...
+	if ( $old_rev < '420' ) {		// css changed since...
 		$userstyle_old 	= ABSPATH.'wp-content/themes/'.get_option('template').'/wppa_style.css';
 		$userstyle 		= ABSPATH.'wp-content/themes/'.get_option('template').'/wppa-style.css';
 		if ( is_file( $userstyle ) || is_file( $userstyle_old ) ) $key += '1';
@@ -202,6 +202,8 @@ global $wppa_defaults;
 						'wppa_bgcolor_namedesc' 	=> '#dddddd',
 						'wppa_bgcolor_com' 			=> '#dddddd',
 						'wppa_bgcolor_cus'			=> '#dddddd',
+						'wppa_bgcolor_numbar'		=> '#cccccc',
+						'wppa_bgcolor_numbar_active'=> '#333333',
 						'wppa_bcolor_even' 			=> '#cccccc',
 						'wppa_bcolor_alt' 			=> '#bbbbbb',
 						'wppa_bcolor_nav' 			=> '#bbbbbb',
@@ -209,6 +211,8 @@ global $wppa_defaults;
 						'wppa_bcolor_namedesc' 		=> '#bbbbbb',
 						'wppa_bcolor_com' 			=> '#bbbbbb',
 						'wppa_bcolor_cus'			=> '#bbbbbb',
+						'wppa_bcolor_numbar'		=> '#cccccc',
+						'wppa_bcolor_numbar_active' => '#333333',
 						'wppa_bwidth' 				=> '1',
 						'wppa_bradius' 				=> '6',
 						'wppa_fontfamily_thumb' 	=> '',
@@ -229,6 +233,9 @@ global $wppa_defaults;
 						'wppa_fontfamily_fulltitle' => '',
 						'wppa_fontsize_fulltitle' 	=> '',
 						'wppa_fontcolor_fulltitle' 	=> '',
+						'wppa_fontfamily_numbar' 	=> '',
+						'wppa_fontsize_numbar' 		=> '',
+						'wppa_fontcolor_numbar' 	=> '#777777',
 						'wppa_arrow_color' 			=> 'black',
 						'wppa_max_cover_width'		=> '1024',
 						'wppa_text_frame_height'	=> '54',
@@ -335,7 +342,10 @@ global $wppa_defaults;
 						'wppa_apply_newphoto_desc'		=> 'no',
 						'wppa_newphoto_description'		=> $wppa_npd,
 						'wppa_comments_desc'			=> 'no',
-						'wppa_user_upload_on'			=> 'no'
+						'wppa_user_upload_on'			=> 'no',
+						'wppa_show_slideshownumbar'  	=> 'no',
+						'wppa_autoclean'				=> 'yes',
+						'wppa_numbar_max'				=> '10'
 
 						);
 	
@@ -439,7 +449,7 @@ global $wpdb;
 
 	if ( is_multisite() ) {
 		if ( get_option('wppa_multisite', 'no') != 'yes' ) {
-			$photos = $wpdb->get_var('SELECT COUNT(*) FROM '.WPPA_PHOTOS);
+			$photos = $wpdb->get_var($wpdb->prepare( 'SELECT COUNT(*) FROM '.WPPA_PHOTOS ) );
 			if ( ! $photos ) {
 				update_option('wppa_multisite', 'yes');
 				wppa_ok_message(sprintf(__('wp-photo-album-plus has been enabled in multiblog mode for blog id %s.', 'wppa'), $blog_id));

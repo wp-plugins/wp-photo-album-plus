@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the upload/import pages and functions
-* Version 4.1.1
+* Version 4.2.0
 *
 */
 
@@ -497,7 +497,7 @@ global $warning_given;
 						$id = basename($album);
 						$id = substr($id, 0, strpos($id, '.'));
 						if (!wppa_is_id_free('album', $id)) $id = wppa_nextkey(WPPA_ALBUMS);
-						$query = $wpdb->prepare('INSERT INTO `' . WPPA_ALBUMS . '` (`id`, `name`, `description`, `a_order`, `a_parent`, `p_order_by`, `main_photo`, `cover_linktype`, `cover_linkpage`, `owner`, `timestamp`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)', $id, stripslashes($name), stripslashes($desc), $aord, $parent, $porder, '0', 'content', '0', $owner, time());
+						$query = $wpdb->prepare( 'INSERT INTO `' . WPPA_ALBUMS . '` (`id`, `name`, `description`, `a_order`, `a_parent`, `p_order_by`, `main_photo`, `cover_linktype`, `cover_linkpage`, `owner`, `timestamp`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)', $id, stripslashes($name), stripslashes($desc), $aord, $parent, $porder, '0', 'content', '0', $owner, time());
 						$iret = $wpdb->query($query);
 
 						if ($iret === FALSE) wppa_error_message(__('Could not create album.', 'wppa'));
@@ -781,7 +781,7 @@ global $allphotos;
 	// Fill the names array
 	if ( ! $allphotos ) {
 	wppa_dbg_msg('Filling <br />');
-		$allphotos = $wpdb->get_results("SELECT id, name, ext FROM ".WPPA_PHOTOS, "ARRAY_A");
+		$allphotos = $wpdb->get_results($wpdb->prepare( "SELECT id, name, ext FROM ".WPPA_PHOTOS, "ARRAY_A" ) );
 		if ( is_array($allphotos) ) {
 			$index = '0';
 			$count = count($allphotos);

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 4.1.1
+* Version 4.2.0
 *
 */
 
@@ -41,8 +41,8 @@ global $options_error;
 			$slug = $_POST['wppa_action'];
 			switch ($slug) {
 				case 'wppa_rating_clear':		
-					$iret1 = $wpdb->query('DELETE FROM '.WPPA_RATING.' WHERE id > -1');
-					$iret2 = $wpdb->query('UPDATE '.WPPA_PHOTOS.' SET mean_rating="0" WHERE id > -1');
+					$iret1 = $wpdb->query($wpdb->prepare( 'DELETE FROM '.WPPA_RATING.' WHERE id > -1' ) );
+					$iret2 = $wpdb->query($wpdb->prepare( 'UPDATE '.WPPA_PHOTOS.' SET mean_rating="0" WHERE id > -1' ) );
 					if ($iret1 && $iret2) wppa_update_message(__('Ratings cleared', 'wppa'));
 					else {
 						wppa_error_message(__('Could not clear ratings', 'wppa'));
@@ -52,12 +52,12 @@ global $options_error;
 					
 				case 'wppa_charset':
 					global $wpdb;
-					if ($wpdb->query("ALTER TABLE " . WPPA_ALBUMS . " MODIFY name text CHARACTER SET utf8") === false) $options_error = true;
-					if ($wpdb->query("ALTER TABLE " . WPPA_PHOTOS . " MODIFY name text CHARACTER SET utf8") === false) $options_error = true;
-					if ($wpdb->query("ALTER TABLE " . WPPA_ALBUMS . " MODIFY description text CHARACTER SET utf8") === false) $options_error = true;
-					if ($wpdb->query("ALTER TABLE " . WPPA_PHOTOS . " MODIFY description longtext CHARACTER SET utf8") === false) $options_error = true;
-					if ($wpdb->query("ALTER TABLE " . WPPA_PHOTOS . " MODIFY linktitle text CHARACTER SET utf8") === false) $options_error = true;
-					if ($wpdb->query("ALTER TABLE " . WPPA_COMMENTS . " MODIFY comment text CHARACTER SET utf8") === false) $options_error = true;
+					if ($wpdb->query($wpdb->prepare( "ALTER TABLE " . WPPA_ALBUMS . " MODIFY name text CHARACTER SET utf8")) === false) $options_error = true;
+					if ($wpdb->query($wpdb->prepare( "ALTER TABLE " . WPPA_PHOTOS . " MODIFY name text CHARACTER SET utf8")) === false) $options_error = true;
+					if ($wpdb->query($wpdb->prepare( "ALTER TABLE " . WPPA_ALBUMS . " MODIFY description text CHARACTER SET utf8")) === false) $options_error = true;
+					if ($wpdb->query($wpdb->prepare( "ALTER TABLE " . WPPA_PHOTOS . " MODIFY description longtext CHARACTER SET utf8")) === false) $options_error = true;
+					if ($wpdb->query($wpdb->prepare( "ALTER TABLE " . WPPA_PHOTOS . " MODIFY linktitle text CHARACTER SET utf8")) === false) $options_error = true;
+					if ($wpdb->query($wpdb->prepare( "ALTER TABLE " . WPPA_COMMENTS . " MODIFY comment text CHARACTER SET utf8")) === false) $options_error = true;
 					if ($options_error) wppa_error_message(__('Error converting to UTF_8', 'wppa'));
 					else {
 						update_option('wppa_charset', 'UTF_8');
@@ -193,6 +193,7 @@ global $options_error;
 			wppa_update_check('wppa_show_slideshowbrowselink');
 			wppa_update_check('wppa_custom_on');
 			wppa_update_textarea('wppa_custom_content');
+			wppa_update_check('wppa_show_slideshownumbar');
 		
 			// Table 3: Backgrounds
 			wppa_update_value('wppa_bgcolor_even');
@@ -215,6 +216,10 @@ global $options_error;
 			wppa_update_numeric('wppa_lightbox_overlayopacity', '0', __('Lightbox opacity.', 'wppa'), '100');
 			wppa_update_value('wppa_bgcolor_cus');
 			wppa_update_value('wppa_bcolor_cus');
+			wppa_update_value('wppa_bgcolor_numbar');
+			wppa_update_value('wppa_bcolor_numbar');
+			wppa_update_value('wppa_bgcolor_numbar_active');
+			wppa_update_value('wppa_bcolor_numbar_active');
 				
 			// Table 4: Behaviour
 			wppa_update_value('wppa_fullvalign');
@@ -265,6 +270,9 @@ global $options_error;
 			wppa_update_value('wppa_fontfamily_lightbox');
 			wppa_update_value('wppa_fontsize_lightbox');
 			wppa_update_value('wppa_fontcolor_lightbox');
+			wppa_update_value('wppa_fontfamily_numbar');
+			wppa_update_value('wppa_fontsize_numbar');
+			wppa_update_value('wppa_fontcolor_numbar');
 
 			// Table 6: Links
 			wppa_update_value('wppa_mphoto_linktype');
@@ -343,6 +351,7 @@ global $options_error;
 			wppa_update_numeric('wppa_filter_priority', '0', __('Filter priority', 'wppa'));
 			wppa_update_check('wppa_apply_newphoto_desc');
 			wppa_update_textarea('wppa_newphoto_description');
+			wppa_update_check('wppa_autoclean');
 		
 			// Done update options!
 			if ($options_error) wppa_update_message(__('Other changes saved', 'wppa'));
@@ -650,6 +659,14 @@ global $wppa_api_version;
 						$class = 'wppa_lightbox';
 						wppa_setting($slug, '23', $name, $desc, $html, $help, $class);
 						
+						$name = __('Numbar Max', 'wppa');
+						$desc = __('Maximum nubers to display.', 'wppa');
+						$help = esc_js(__('In order to attemt to fit on one line, the numbers will be replaced by dots - except the current - when there are more than this number of photos in a slideshow.', 'wppa'));
+						$slug = 'wppa_numbar_max';
+						$html = wppa_input($slug, '40px', '', __('numbers', 'wppa'));
+						$class = 'wppa_numbar';
+						wppa_setting($slug, '24', $name, $desc, $html, $help, $class);
+						
 						?>
 					</tbody>
 					<tfoot style="font-weight: bold;" class="wppa_table_1">
@@ -859,7 +876,15 @@ global $wppa_api_version;
 						$slug = 'wppa_custom_content';
 						$html = wppa_textarea($slug);
 						wppa_setting($slug, '22', $name, $desc, $html, $help);
-						
+
+						$name = __('Slideshow/Number bar', 'wppa');
+						$desc = __('Display the Slideshow / Number bar.', 'wppa');
+						$help = esc_js(__('If checked: display the number boxes on slideshow', 'wppa'));
+						$slug = 'wppa_show_slideshownumbar';
+						$onchange = 'wppaCheckNumbar()';
+						$html = wppa_checkbox($slug, $onchange);
+						wppa_setting($slug, '23', $name, $desc, $html, $help);
+ 						
 						?>
 					</tbody>
 					<tfoot style="font-weight: bold;" class="wppa_table_2">
@@ -990,7 +1015,27 @@ global $wppa_api_version;
 						$html1 = wppa_input($slug1, '100px', '', '', "checkColor('".$slug1."')") . '</td><td>' . wppa_color_box($slug1);
 						$html2 = wppa_input($slug2, '100px', '', '', "checkColor('".$slug2."')") . '</td><td>' . wppa_color_box($slug2);
 						wppa_setting_2($slug1, $slug2, '10', $name, $desc, $html1, $html2, $help);
-				
+
+						$name = __('Numbar', 'wppa');
+						$desc = __('Number bar box background.', 'wppa');
+						$help = esc_js(__('Enter valid CSS colors for numbar box backgrounds and borders.', 'wppa'));
+						$slug1 = 'wppa_bgcolor_numbar';
+						$slug2 = 'wppa_bcolor_numbar';
+						$html1 = wppa_input($slug1, '100px', '', '', "checkColor('".$slug1."')") . '</td><td>' . wppa_color_box($slug1);
+						$html2 = wppa_input($slug2, '100px', '', '', "checkColor('".$slug2."')") . '</td><td>' . wppa_color_box($slug2);
+						$class = 'wppa_numbar';
+						wppa_setting_2($slug1, $slug2, '11', $name, $desc, $html1, $html2, $help, $class);
+
+						$name = __('Numbar active', 'wppa');
+						$desc = __('Number bar active box background.', 'wppa');
+						$help = esc_js(__('Enter valid CSS colors for numbar active box backgrounds and borders.', 'wppa'));
+						$slug1 = 'wppa_bgcolor_numbar_active';
+						$slug2 = 'wppa_bcolor_numbar_active';
+						$html1 = wppa_input($slug1, '100px', '', '', "checkColor('".$slug1."')") . '</td><td>' . wppa_color_box($slug1);
+						$html2 = wppa_input($slug2, '100px', '', '', "checkColor('".$slug2."')") . '</td><td>' . wppa_color_box($slug2);
+						$class = 'wppa_numbar';
+						wppa_setting_2($slug1, $slug2, '12', $name, $desc, $html1, $html2, $help, $class);
+						
 						?>
 					</tbody>
 					<tfoot style="font-weight: bold;" class="wppa_table_3">
@@ -1366,6 +1411,17 @@ global $wppa_api_version;
 						$html2 = wppa_input($slug2, '40px', '', __('pixels', 'wppa'));
 						$html3 = wppa_input($slug3, '70px', '', '');
 						wppa_setting_3($slug1, $slug2, $slug3, '19,20,21', $name, $desc, $html1, $html2, $html3, $help);	
+
+						$name = __('Numbar', 'wppa');
+						$desc = __('Font in wppa number bars.', 'wppa');
+						$help = esc_js(__('Enter font name, size and color for numberbar navigation.', 'wppa')); 
+						$slug1 = 'wppa_fontfamily_numbar';
+						$slug2 = 'wppa_fontsize_numbar';
+						$slug3 = 'wppa_fontcolor_numbar';
+						$html1 = wppa_input($slug1, '100%', '300px', '');
+						$html2 = wppa_input($slug2, '40px', '', __('pixels', 'wppa'));
+						$html3 = wppa_input($slug3, '70px', '', '');
+						wppa_setting_3($slug1, $slug2, $slug3, '22,23,24', $name, $desc, $html1, $html2, $html3, $help);	
 						
 						?>
 					</tbody>
@@ -1424,7 +1480,7 @@ global $wppa_api_version;
 						$options_page_post[] = __('--- The same post or page ---', 'wppa');
 						$values_page_post[] = '0';
 						// Pages if any
-						$query = "SELECT ID, post_title, post_content FROM " . $wpdb->posts . " WHERE post_type = 'page' AND post_status = 'publish' ORDER BY post_title ASC";
+						$query = $wpdb->prepare( "SELECT ID, post_title, post_content FROM " . $wpdb->posts . " WHERE post_type = 'page' AND post_status = 'publish' ORDER BY post_title ASC" );
 						$pages = $wpdb->get_results ($query, 'ARRAY_A');
 						if ($pages) {
 							foreach ($pages as $page) {
@@ -1778,7 +1834,7 @@ global $wppa_api_version;
 						if ( is_multisite() && get_option('wppa_multisite', 'no') != 'yes' ) {
 							$name = __('Enable WPPA+ multisite', 'wppa');
 							$desc = __('Check this box to setup WPPA+ for a multisite wp installation', 'wppa');
-							$n_photos = $wpdb->get_var('SELECT COUNT(*) FROM '.WPPA_PHOTOS);
+							$n_photos = $wpdb->get_var($wpdb->prepare('SELECT COUNT(*) FROM '.WPPA_PHOTOS));
 							$help = esc_js(sprintf(__('This site is a part of a multisite WP installation. It still contains %s photos in single site mode.', 'wppa'), $n_photos));
 							$help .= '\n\n'.esc_js(__('If you want to keep those photos, use Photo Albums -> Export to save them.', 'wppa'));
 							$help .= '\n\n'.esc_js(__('If you saved them already, or if they may be lost, check the Enable WPPA+ multisite checkbox in Table IX item 0 and press Save Changes.', 'wppa'));
@@ -1801,7 +1857,7 @@ global $wppa_api_version;
 						$help .= '\n'.esc_js(__('You may give it the title "Search results" or something alike.', 'wppa'));
 						$help .= '\n'.esc_js(__('Or you ou may use the standard page on which you display the generic album.', 'wppa'));
 						$slug = 'wppa_search_linkpage';
-						$query = "SELECT ID, post_title FROM " . $wpdb->posts . " WHERE post_type = 'page' AND post_status = 'publish' ORDER BY post_title ASC";
+						$query = $wpdb->prepare("SELECT ID, post_title FROM " . $wpdb->posts . " WHERE post_type = 'page' AND post_status = 'publish' ORDER BY post_title ASC");
 						$pages = $wpdb->get_results ($query, 'ARRAY_A');
 						$options = false;
 						$values = false;
@@ -1940,6 +1996,13 @@ global $wppa_api_version;
 						wppa_setting($slug, '12', $name, $desc, $html, $help);
 
 						$wppa['no_default'] = false;
+						
+						$name = __('Autoclean', 'wppa');
+						$desc = __('Auto cleanup invalid database entries.', 'wppa');
+						$help = esc_js(__('If checked, the database consistency will be automaticly secured after an interrupted upload or import procedure.', 'wppa'));
+						$slug = 'wppa_autoclean';
+						$html = wppa_checkbox($slug);
+						wppa_setting($slug, '13', $name, $desc, $html, $help);
 						
 						?>
 					</tbody>

@@ -3,13 +3,13 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions and API modules
-* Version 4.1.1
+* Version 4.2.0
 *
 *
 */
 /* Moved to wppa-commonfunctions.php:
 global $wppa_api_version;
-$wppa_api_version = '4-1-1-001';
+$wppa_api_version = '4-2-0-000';
 */
 
 
@@ -158,12 +158,12 @@ function wppa_crumb_page_ancestors($sep, $page = '0') {
 global $wpdb;
 global $wppa;
 	
-	$query = "SELECT post_parent FROM " . $wpdb->posts . " WHERE post_type = 'page' AND post_status = 'publish' AND id = " . $page . " LIMIT 0,1";
-	$parent = $wpdb->get_var($query);
+	$query = "SELECT post_parent FROM " . $wpdb->posts . " WHERE post_type = 'page' AND post_status = 'publish' AND id = %s LIMIT 0,1";
+	$parent = $wpdb->get_var( $wpdb->prepare( $query, $page ) );
 	if (!is_numeric($parent) || $parent == '0') return;
 	wppa_crumb_page_ancestors($sep, $parent);
-	$query = "SELECT post_title FROM " . $wpdb->posts . " WHERE post_type = 'page' AND post_status = 'publish' AND id = " . $parent . " LIMIT 0,1";
-	$title = $wpdb->get_var($query);
+	$query = "SELECT post_title FROM " . $wpdb->posts . " WHERE post_type = 'page' AND post_status = 'publish' AND id = %s LIMIT 0,1";
+	$title = $wpdb->get_var( $wpdb->prepare( $query, $parent ) );
 	if (!$title) {
 		$title = '****';		// Page exists but is not publish
 		$wppa['out'] .= wppa_nltab().'<a href="#" class="wppa-nav-text b30" style="'.__wcs('wppa-nav-text').'" ></a>';
@@ -364,17 +364,17 @@ global $album;
 		$alb = $xalb;
 	}
 	if (is_numeric($alb)) {					// find main id
-		$id = $wpdb->get_var("SELECT main_photo FROM " . WPPA_ALBUMS . " WHERE id = " . $alb);
+		$id = $wpdb->get_var( $wpdb->prepare( "SELECT main_photo FROM " . WPPA_ALBUMS . " WHERE id = %s", $alb ) );
 	}
 	else return false;						// no album, no coverphoto
 	if (is_numeric($id) && $id > '0') {		// check if id belongs to album
-		$ph_alb = $wpdb->get_var("SELECT album FROM " . WPPA_PHOTOS . " WHERE id = " . $id);
+		$ph_alb = $wpdb->get_var( $wpdb->prepare( "SELECT album FROM " . WPPA_PHOTOS . " WHERE id = %s", $id ) );
 		if ($ph_alb != $alb) {				// main photo does no longer belong to album. Treat as random
 			$id = '0';
 		}
 	}
 	if (!is_numeric($id) || $id == '0') {	// random
-		$id = $wpdb->get_var("SELECT id FROM " . WPPA_PHOTOS . " WHERE album = " . $alb . " ORDER BY RAND() LIMIT 1");
+		$id = $wpdb->get_var( $wpdb->prepare( "SELECT id FROM " . WPPA_PHOTOS . " WHERE album = %s ORDER BY RAND() LIMIT 1", $alb ) );
 	}
 	return $id;	
 }
@@ -384,7 +384,7 @@ function wppa_get_thumb_url_by_id($id = false) {
 global $wpdb;
 
 	if ($id == false) return '';	// no id: no url
-	$ext = $wpdb->get_var("SELECT ext FROM " . WPPA_PHOTOS . " WHERE id = " . $id);
+	$ext = $wpdb->get_var( $wpdb->prepare( "SELECT ext FROM " . WPPA_PHOTOS . " WHERE id = %s", $id ) );
 	if ($ext) {
 		$url = WPPA_UPLOAD_URL . '/thumbs/' . $id . '.' . $ext;
 	}
@@ -399,7 +399,7 @@ function wppa_get_thumb_path_by_id($id = false) {
 global $wpdb;
 
 	if ($id == false) return '';	// no id: no path
-	$ext = $wpdb->get_var("SELECT ext FROM " . WPPA_PHOTOS . " WHERE id = " . $id);
+	$ext = $wpdb->get_var( $wpdb->prepare( "SELECT ext FROM " . WPPA_PHOTOS . " WHERE id = %s", $id ) );
 	if ($ext) {
 		$path =  WPPA_UPLOAD_PATH . '/thumbs/' . $id . '.' . $ext;
 	}
@@ -414,7 +414,7 @@ function wppa_get_image_url_by_id($id = false) {
 global $wpdb;
 
 	if ($id == false) return '';	// no id: no url
-	$ext = $wpdb->get_var("SELECT ext FROM " . WPPA_PHOTOS . " WHERE id = " . $id);
+	$ext = $wpdb->get_var( $wpdb->prepare( "SELECT ext FROM " . WPPA_PHOTOS . " WHERE id = %s", $id ) );
 	if ($ext) {
 		$url = WPPA_UPLOAD_URL . '/' . $id . '.' . $ext;
 	}
@@ -429,7 +429,7 @@ function wppa_get_image_path_by_id($id = false) {
 global $wpdb;
 
 	if ($id == false) return '';	// no id: no path
-	$ext = $wpdb->get_var("SELECT ext FROM " . WPPA_PHOTOS . " WHERE id = " . $id);
+	$ext = $wpdb->get_var( $wpdb->prepare( "SELECT ext FROM " . WPPA_PHOTOS . " WHERE id = %s", $id ) );
 	if ($ext) {
 		$path =  WPPA_UPLOAD_PATH . '/' . $id . '.' . $ext;
 	}
@@ -447,7 +447,7 @@ global $wppa;
 	if ($id == false) return '';
 	$occur = $wppa['in_widget'] ? $wppa['widget_occur'] : $wppa['occur'];
 	$w = $wppa['in_widget'] ? 'w' : '';
-	$image = $wpdb->get_row("SELECT * FROM " . WPPA_PHOTOS . " WHERE id={$id} LIMIT 1", 'ARRAY_A');
+	$image = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM " . WPPA_PHOTOS . " WHERE id=%s LIMIT 1", $id ), 'ARRAY_A');
 	if ($image) $imgurl = wppa_get_permalink().'wppa-album='.$image['album'].'&amp;wppa-photo='.$image['id'].'&amp;wppa-cover=0&amp;wppa-'.$w.'occur='.$occur;	
 	else $imgurl = '';
 	return $imgurl;
@@ -463,7 +463,7 @@ global $wppa_opt;
 	else $src = '';
 	
 	if (strlen($src) && $wppa['master_occur'] == '1' ) {	// Search is in occur 1 only
-		$albs = $wpdb->get_results('SELECT * FROM ' . WPPA_ALBUMS . ' ' . wppa_get_album_order(), 'ARRAY_A');
+		$albs = $wpdb->get_results($wpdb->prepare( 'SELECT * FROM ' . WPPA_ALBUMS . ' ' . wppa_get_album_order() ), 'ARRAY_A');
 		$albums = '';
 		$idx = '0';
 		foreach ($albs as $album) if (!$wppa_opt['wppa_excl_sep'] || $album['a_parent'] != '-1') {
@@ -544,7 +544,7 @@ global $wpdb;
 global $album;
     
     if (is_numeric($xid)) $id = $xid; else $id = $album['id'];
-    $count = $wpdb->query("SELECT * FROM " . WPPA_PHOTOS . " WHERE album=".$id);
+    $count = $wpdb->query($wpdb->prepare( "SELECT * FROM " . WPPA_PHOTOS . " WHERE album=%s", $id ) );
 	return $count;
 }
 
@@ -554,7 +554,7 @@ global $wpdb;
 global $album;
     
     if (is_numeric($xid)) $id = $xid; else $id = $album['id'];
-    $count = $wpdb->query("SELECT * FROM " . WPPA_ALBUMS . " WHERE a_parent=".$id);
+    $count = $wpdb->query($wpdb->prepare( "SELECT * FROM " . WPPA_ALBUMS . " WHERE a_parent=%s", $id ) );
     return $count;
 }
 
@@ -562,7 +562,7 @@ global $album;
 function wppa_get_total_album_count() {
 global $wpdb;
 	
-	$count = $wpdb->query("SELECT * FROM " . WPPA_ALBUMS);
+	$count = $wpdb->query( $wpdb->prepare( "SELECT * FROM " . WPPA_ALBUMS ) );
 	return $count;
 }
 
@@ -570,7 +570,7 @@ global $wpdb;
 function wppa_get_youngest_photo_id() {
 global $wpdb;
 
-	$result = $wpdb->get_var("SELECT id FROM " . WPPA_PHOTOS . " ORDER BY id DESC LIMIT 1");
+	$result = $wpdb->get_var( $wpdb->prepare( "SELECT id FROM " . WPPA_PHOTOS . " ORDER BY id DESC LIMIT 1" ) );
 	return $result;
 }
 
@@ -578,7 +578,7 @@ global $wpdb;
 function wppa_get_youngest_album_id() {
 global $wpdb;
 	
-	$result = $wpdb->get_var("SELECT id FROM " . WPPA_ALBUMS . " ORDER BY id DESC LIMIT 1");
+	$result = $wpdb->get_var( $wpdb->prepare( "SELECT id FROM " . WPPA_ALBUMS . " ORDER BY id DESC LIMIT 1" ) );
 	return $result;
 }
 
@@ -586,7 +586,7 @@ global $wpdb;
 function wppa_get_youngest_album_name() {
 global $wpdb;
 	
-	$result = $wpdb->get_var("SELECT name FROM " . WPPA_ALBUMS . " ORDER BY id DESC LIMIT 1");
+	$result = $wpdb->get_var( $wpdb->prepare( "SELECT name FROM " . WPPA_ALBUMS . " ORDER BY id DESC LIMIT 1" ) );
 	return stripslashes($result);
 }
 
@@ -628,11 +628,11 @@ global $wppa_opt;
 	if (wppa_get_get('topten')) {
 		$max = $wppa_opt['wppa_topten_count'];
 		$alb = wppa_get_get('album', '0');
-		if ($alb) $thumbs = $wpdb->get_results('SELECT * FROM '.WPPA_PHOTOS.' WHERE mean_rating > 0 AND album = '.$alb.' ORDER BY mean_rating DESC LIMIT '.$max, 'ARRAY_A');
-		else $thumbs = $wpdb->get_results('SELECT * FROM '.WPPA_PHOTOS.' WHERE mean_rating > 0 ORDER BY mean_rating DESC LIMIT '.$max, 'ARRAY_A');
+		if ($alb) $thumbs = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM '.WPPA_PHOTOS.' WHERE mean_rating > 0 AND album = %s ORDER BY mean_rating DESC LIMIT %s', $alb, $max ) , 'ARRAY_A' );
+		else $thumbs = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM '.WPPA_PHOTOS.' WHERE mean_rating > 0 ORDER BY mean_rating DESC LIMIT %s', $max ) , 'ARRAY_A');
 	}
 	elseif ( strlen($src) && $wppa['master_occur'] == '1' ) {	// Search is in occur 1 only
-		$tmbs = $wpdb->get_results('SELECT * FROM '.WPPA_PHOTOS.' '.wppa_get_photo_order('0'), 'ARRAY_A');
+		$tmbs = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM '.WPPA_PHOTOS.' '.wppa_get_photo_order('0') ), 'ARRAY_A');
 		$thumbs = '';
 		$idx = '0';
 		foreach ($tmbs as $thumb) {
@@ -665,7 +665,7 @@ global $wppa_opt;
 		else $id = 0;
 		if (is_numeric($id)) {
 			$wppa['current_album'] = $id;
-			$thumbs = $wpdb->get_results("SELECT * FROM ".WPPA_PHOTOS." WHERE album=$id ".wppa_get_photo_order($id), 'ARRAY_A'); 
+			$thumbs = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM ".WPPA_PHOTOS." WHERE album=%s ".wppa_get_photo_order($id), $id ), 'ARRAY_A'); 
 		}
 		else {
 			$thumbs = false;
@@ -698,7 +698,7 @@ global $wpdb;
 	if ($id == '') $id = wppa_get_get('photo');
     
 	if (is_numeric($id)) {
-		$ext = $wpdb->get_var("SELECT ext FROM ".WPPA_PHOTOS." WHERE id=$id");
+		$ext = $wpdb->get_var( $wpdb->prepare( "SELECT ext FROM ".WPPA_PHOTOS." WHERE id=%s", $id ) );
 		$url = WPPA_UPLOAD_URL.'/'.$id.'.'.$ext;
 	}
 	else $url = '';
@@ -713,7 +713,7 @@ global $wpdb;
 	if ($id == '') $id = wppa_get_get('photo');
     
 	if (is_numeric($id)) {
-		$ext = $wpdb->get_var("SELECT ext FROM ".WPPA_PHOTOS." WHERE id=$id");
+		$ext = $wpdb->get_var( $wpdb->prepare( "SELECT ext FROM ".WPPA_PHOTOS." WHERE id=%s", $id ) );
 		$path = WPPA_UPLOAD_PATH.'/'.$id.'.'.$ext;
 	}
 	else $path = '';
@@ -727,7 +727,7 @@ global $wpdb;
 
 	if ($id == '') $id = wppa_get_get('photo');
 		
-	if (is_numeric($id)) $name = $wpdb->get_var("SELECT name FROM ".WPPA_PHOTOS." WHERE id=$id");
+	if (is_numeric($id)) $name = $wpdb->get_var( $wpdb->prepare( "SELECT name FROM ".WPPA_PHOTOS." WHERE id=%s", $id ) );
 	else $name = '';
 	
 	return wppa_qtrans($name);
@@ -739,7 +739,7 @@ global $wpdb;
 
 	if ($id == '') $id = wppa_get_get('photo');
 	
-	if (is_numeric($id)) $desc = $wpdb->get_var("SELECT description FROM ".WPPA_PHOTOS." WHERE id=$id");
+	if (is_numeric($id)) $desc = $wpdb->get_var( $wpdb->prepare( "SELECT description FROM ".WPPA_PHOTOS." WHERE id=%s", $id ) );
 	else $desc = '';
 	
 	return wppa_qtrans($desc);
@@ -764,7 +764,7 @@ global $wppa_opt;
 	if ($id == '') $id = wppa_get_get('photo');
 
 	if (is_numeric($id)) {
-		$ext = $wpdb->get_var("SELECT ext FROM ".WPPA_PHOTOS." WHERE id=$id");
+		$ext = $wpdb->get_var( $wpdb->prepare( "SELECT ext FROM ".WPPA_PHOTOS." WHERE id=%s", $id ) );
 	}
 	else $ext = '';
 	$img_path = WPPA_UPLOAD_PATH.'/'.$id.'.'.$ext;
@@ -796,11 +796,11 @@ global $wppa_opt;
 	}
 	
 	// Find my rating
-	$myrat = $wpdb->get_var($wpdb->prepare('SELECT `value` FROM `'.WPPA_RATING.'` WHERE `photo` = %s AND `user` = %s LIMIT 1', $id, $user)); 
+	$myrat = $wpdb->get_var( $wpdb->prepare( 'SELECT `value` FROM `'.WPPA_RATING.'` WHERE `photo` = %s AND `user` = %s LIMIT 1', $id, $user ) ); 
 	if (!$myrat) $myrat = '0';
 
 	// Find the avg rating
-	$avgrat = $wpdb->get_var('SELECT mean_rating FROM '.WPPA_PHOTOS.' WHERE id = '.$id.' LIMIT 1'); 
+	$avgrat = $wpdb->get_var( $wpdb->prepare( 'SELECT mean_rating FROM '.WPPA_PHOTOS.' WHERE id = %s LIMIT 1', $id ) ); 
 	if (!$avgrat) $avgrat = '0';
 	
 	$comment = $comment_allowed ? wppa_comment_html($id) : __a('You must login to enter a comment', 'wppa_theme');
@@ -871,11 +871,11 @@ global $wppa_done;
 		die(__a('<b>ERROR: Attempt to enter an invalid rating.</b>', 'wppa_theme'));
 	}
 
-	$my_oldrat = $wpdb->get_var($wpdb->prepare('SELECT * FROM `'.WPPA_RATING.'` WHERE `photo` = %s AND `user` = %s LIMIT 1', $id, $user)); 
+	$my_oldrat = $wpdb->get_var($wpdb->prepare( 'SELECT * FROM `'.WPPA_RATING.'` WHERE `photo` = %s AND `user` = %s LIMIT 1', $id, $user ) ); 
 
 	if ($my_oldrat) {
 		if ($wppa_opt['wppa_rating_change']) {	// Modify my vote
-			$query = $wpdb->prepare('UPDATE `'.WPPA_RATING.'` SET `value` = %s WHERE `photo` = %s AND `user` = %s LIMIT 1', $rating, $id, $user);
+			$query = $wpdb->prepare( 'UPDATE `'.WPPA_RATING.'` SET `value` = %s WHERE `photo` = %s AND `user` = %s LIMIT 1', $rating, $id, $user );
 			$iret = $wpdb->query($query);
 			if (!$iret) {
 				wppa_dbg_msg('Unable to update rating. Query = '.$query, 'red');
@@ -887,14 +887,14 @@ global $wppa_done;
 		}
 		else if ($wppa_opt['wppa_rating_multi']) {	// Add another vote from me
 			$key = wppa_nextkey(WPPA_RATING);
-			$query = $wpdb->prepare('INSERT INTO `'.WPPA_RATING. '` (`id`, `photo`, `value`, `user`) VALUES (%s, %s, %s, %s)', $key, $id, $rating, $user);
+			$query = $wpdb->prepare( 'INSERT INTO `'.WPPA_RATING. '` (`id`, `photo`, `value`, `user`) VALUES (%s, %s, %s, %s)', $key, $id, $rating, $user );
 			$iret = $wpdb->query($query);
 			if (!$iret) {
 				wppa_dbg_msg('Unable to add a rating. Query = '.$query, 'red');
 				$myrat = $my_oldrat['value'];
 			}
 			else {
-				$query = $wpdb->prepare('SELECT * FROM `'.WPPA_RATING.'`  WHERE `photo` = %s AND `user` = %s', $id, $user);
+				$query = $wpdb->prepare( 'SELECT * FROM `'.WPPA_RATING.'`  WHERE `photo` = %s AND `user` = %s', $id, $user );
 				$myrats = $wpdb->get_results($query, 'ARRAY_A');
 				if (!$myrats) {
 					wppa_dbg_msg('Unable to retrieve ratings. Query = '.$query, 'red');
@@ -922,7 +922,7 @@ global $wppa_done;
 	}
 
 	// Compute new avgrat
-	$ratings = $wpdb->get_results('SELECT * FROM '.WPPA_RATING.' WHERE photo = '.$id, 'ARRAY_A');
+	$ratings = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM '.WPPA_RATING.' WHERE photo = %s', $id), 'ARRAY_A');
 	if ($ratings) {
 		$sum = 0;
 		$cnt = 0;
@@ -1025,7 +1025,7 @@ global $wppa_first_comment_html;
 	// Loop the comments already there
 	$n_comments = 0;
 	if ($wppa_opt['wppa_comments_desc']) $ord = 'DESC'; else $ord = '';
-	$comments = $wpdb->get_results('SELECT * FROM '.WPPA_COMMENTS.' WHERE photo = '.$id.' ORDER BY id '.$ord, 'ARRAY_A');
+	$comments = $wpdb->get_results($wpdb->prepare( 'SELECT * FROM '.WPPA_COMMENTS.' WHERE photo = %s ORDER BY id '.$ord, $id ), 'ARRAY_A' );
 	$color = 'darkgrey';
 	if ($wppa_opt['wppa_fontcolor_box']) $color = $wppa_opt['wppa_fontcolor_box'];
 	if ($comments) {
@@ -2837,7 +2837,7 @@ global $wpdb;
 
 	if (!is_numeric($id)) return '1';	// Not 0 to prevent divide by zero
 	
-	$photo = $wpdb->get_row("SELECT * FROM " . WPPA_PHOTOS . " WHERE id={$id} LIMIT 1", 'ARRAY_A');
+	$photo = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM " . WPPA_PHOTOS . " WHERE id=%s LIMIT 1", $id ), 'ARRAY_A');
 	if (!$photo) return '1';
 	
 	$file = WPPA_UPLOAD_PATH.'/'.$id.'.'.$photo['ext'];
@@ -2851,7 +2851,7 @@ global $wpdb;
 function wppa_get_album_id_by_photo_id($photo) {
 global $wpdb;
 
-	if (is_numeric($photo)) $album = $wpdb->get_var("SELECT album FROM ".WPPA_PHOTOS." WHERE id={$photo} LIMIT 1");
+	if (is_numeric($photo)) $album = $wpdb->get_var( $wpdb->prepare( "SELECT album FROM ".WPPA_PHOTOS." WHERE id=%s LIMIT 1", $photo ) );
 	else $album = '';
 	return $album;
 }
@@ -2870,7 +2870,7 @@ global $wpdb;
 		 ( $wich == 'potdwidget' && $wppa_opt['wppa_potdwidget_overrule'] ) ||
 		 ( $wich == 'coverimg'   && $wppa_opt['wppa_coverimg_overrule'] ) ) {
 		// Look for a photo specific link
-		$data = $wpdb->get_row('SELECT * FROM '.WPPA_PHOTOS.' WHERE id='.$photo.' LIMIT 1', 'ARRAY_A');
+		$data = $wpdb->get_row( $wpdb->prepare( 'SELECT * FROM '.WPPA_PHOTOS.' WHERE id=%s LIMIT 1', $photo ) , 'ARRAY_A' );
 			if ($data) {
 			// If it is there...
 			if ($data['linkurl'] != '') {
@@ -3047,7 +3047,7 @@ global $wpdb;
 			break;
 /*
 		case 'indiv':
-			$data = $wpdb->get_row('SELECT * FROM '.WPPA_PHOTOS.' WHERE id='.$photo.' LIMIT 1', 'ARRAY_A');
+			$data = $wpdb->get_row( $wpdb->prepare( 'SELECT * FROM '.WPPA_PHOTOS.' WHERE id=%s LIMIT 1', $photo ), 'ARRAY_A');
 			if ($data) {
 				if ($data['linkurl'] != '') {
 					$result['url'] = esc_attr($data['linkurl']);
@@ -3149,7 +3149,7 @@ global $wppa_opt;
 		$birthtime = $thumb['timestamp'];
 	}
 	else {
-		$birthtime = $wpdb->get_var("SELECT timestamp FROM " . WPPA_PHOTOS . " WHERE id='" . $id . "' LIMIT 1");
+		$birthtime = $wpdb->get_var( $wpdb->prepare( "SELECT timestamp FROM " . WPPA_PHOTOS . " WHERE id = %s LIMIT 1", $id ) );
 	}
 	$timnow = time();
 	
@@ -3161,7 +3161,7 @@ function wppa_is_album_new($id) {
 global $wpdb;
 global $wppa_opt;
 
-	$birthtime = $wpdb->get_var("SELECT timestamp FROM " . WPPA_ALBUMS . " WHERE id='" . $id . "' LIMIT 1");
+	$birthtime = $wpdb->get_var( $wpdb->prepare( "SELECT timestamp FROM " . WPPA_ALBUMS . " WHERE id = %s LIMIT 1", $id ) );
 	$timnow = time();
 	$isnew = (( $timnow - $birthtime ) < $wppa_opt['wppa_max_album_newtime'] );
 	return $isnew;
@@ -3299,7 +3299,7 @@ global $wpdb;
 	$count = '0';
 	$name = wppa_normalize_quotes(stripslashes($xname));
 //echo 'search:'.$name.'<br/>';
-	$albums = $wpdb->get_results("SELECT id, name FROM ".WPPA_ALBUMS, "ARRAY_A");
+	$albums = $wpdb->get_results( $wpdb->prepare( "SELECT id, name FROM ".WPPA_ALBUMS), "ARRAY_A" );
 	foreach($albums as $album) {
 		$albumname = wppa_normalize_quotes(stripslashes(wppa_qtrans($album['name'])));
 //echo 'found:'.$albumname.'<br/>';
@@ -3362,7 +3362,7 @@ function wppa_normalize_quotes($xtext) {
 function wppa_get_album_title_linktype($alb) {
 global $wpdb;
 
-	if ( $alb ) $result = $wpdb->get_var("SELECT cover_linktype FROM ".WPPA_ALBUMS." WHERE id = ".$alb." LIMIT 1");
+	if ( $alb ) $result = $wpdb->get_var( $wpdb->prepare( "SELECT cover_linktype FROM ".WPPA_ALBUMS." WHERE id = %s LIMIT 1", $alb ) );
 	else $result = '';
 //echo $result;
 	return $result;

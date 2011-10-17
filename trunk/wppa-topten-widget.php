@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the top rated photos
-* Version 4.0.7
+* Version 4.2.0
 */
 
 class TopTenWidget extends WP_Widget {
@@ -33,10 +33,10 @@ class TopTenWidget extends WP_Widget {
 		$album = $instance['album'];
 		
 		if ($album) {
-			$thumbs = $wpdb->get_results('SELECT * FROM '.WPPA_PHOTOS.' WHERE mean_rating > 0 AND album = '.$album.' ORDER BY mean_rating DESC LIMIT '.$max, 'ARRAY_A');
+			$thumbs = $wpdb->get_results($wpdb->prepare( 'SELECT * FROM '.WPPA_PHOTOS.' WHERE mean_rating > 0 AND album = %s ORDER BY mean_rating DESC LIMIT '.$max, $album ), 'ARRAY_A' );
 		}
 		else {
-			$thumbs = $wpdb->get_results('SELECT * FROM '.WPPA_PHOTOS.' WHERE mean_rating > 0 ORDER BY mean_rating DESC LIMIT '.$max, 'ARRAY_A');
+			$thumbs = $wpdb->get_results($wpdb->prepare( 'SELECT * FROM '.WPPA_PHOTOS.' WHERE mean_rating > 0 ORDER BY mean_rating DESC LIMIT '.$max ), 'ARRAY_A' );
 		}
 		$widget_content = "\n".'<!-- WPPA+ TopTen Widget start -->';
 		$maxw = get_option('wppa_topten_size', '86');

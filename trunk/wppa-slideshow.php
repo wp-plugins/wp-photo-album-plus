@@ -94,6 +94,7 @@ if ( $wppa_opt['wppa_show_bbb'] && ! wppa_page('oneofone') ) {	// big browsing b
 		$wppa['out'] .= wppa_nltab().'<img id="bbb-'.$wppa['master_occur'].'-l" class="bbb-'.$wppa['master_occur'].'" src="'.wppa_get_imgdir().'bbbl.png" style=" opacity:0; filter:alpha(opacity=0); border:none; z-index:903; position: absolute; left:0px; top: 0px; width: '.($wppa['slideframewidth']*0.5).'px; height: '.$wppa['slideframeheight'].'px; box-shadow: none; cursor:default;" onmouseover="wppaBbb('.$wppa['master_occur'].',\'l\',\'show\')" onmouseout="wppaBbb('.$wppa['master_occur'].',\'l\',\'hide\')" onclick="wppaBbb('.$wppa['master_occur'].',\'l\',\'click\')" />';
 		$wppa['out'] .= wppa_nltab().'<img id="bbb-'.$wppa['master_occur'].'-r" class="bbb-'.$wppa['master_occur'].'" src="'.wppa_get_imgdir().'bbbr.png" style=" opacity:0; filter:alpha(opacity=0); border:none; z-index:903; position: absolute; left:'.($wppa['slideframewidth']*0.5).'px;top: 0px; width: '.($wppa['slideframewidth']*0.5).'px; height: '.$wppa['slideframeheight'].'px; box-shadow: none; cursor:default;" onmouseover="wppaBbb('.$wppa['master_occur'].',\'r\',\'show\')" onmouseout="wppaBbb('.$wppa['master_occur'].',\'r\',\'hide\')" onclick="wppaBbb('.$wppa['master_occur'].',\'r\',\'click\')" />';
 } /***/
+		wppa_numberbar();
 		
 	$wppa['out'] .= wppa_nltab('-').'</div>';
 }
@@ -126,7 +127,6 @@ global $wppa_opt;
 	}
 }
 
-
 function wppa_slide_name($opt = '') {
 global $wppa;
 global $wppa_opt;
@@ -145,7 +145,6 @@ global $wppa_opt;
 	$wppa['out'] .= wppa_nltab().'<div id="imagedesc-'.$wppa['master_occur'].'" class="wppa-fulldesc imagedesc" style="'.__wcs('wppa-fulldesc').'padding:3px; width:100%;"></div>';
 }
 
-// Custom box			// Reserved for future use
 function wppa_slide_custom($opt = '') {
 global $wppa;
 global $wppa_opt;
@@ -161,7 +160,6 @@ global $wppa_opt;
 		$wppa['out'] .= wppa_nltab().stripslashes($wppa_opt['wppa_custom_content']);
 	$wppa['out'] .= wppa_nltab('-').'</div>';
 }
-
 
 function wppa_slide_rating($opt = '') {
 global $wppa;
@@ -213,8 +211,6 @@ global $wppa_opt;
 	$wppa['out'] .= wppa_nltab('-').'</div><!-- wppa-rating-'.$wppa['master_occur'].' -->';
 }
 
-
-// Show Filmstrip	
 function wppa_slide_filmstrip($opt = '') {
 global $wppa;
 global $wppa_opt;
@@ -270,7 +266,7 @@ global $thumb;
 	$wppa['out'] .= wppa_nltab('+').'<div class="wppa-box wppa-nav" style="'.__wcs('wppa-box').__wcs('wppa-nav').'height:'.$height.'px;">';
 		$wppa['out'] .= wppa_nltab().'<div style="float:left; text-align:left; cursor:pointer; margin-top:'.$topmarg.'px; width: '.($fs-'1').'px; font-size: '.$fs.'px;"><a class="wppa-arrow" style="'.__wcs('wppa-arrow').'" id="prev-film-arrow-'.$wppa['master_occur'].'" onclick="wppaPrev('.$wppa['master_occur'].');" >&laquo;</a></div>';
 		$wppa['out'] .= wppa_nltab().'<div style="float:right; text-align:right; cursor:pointer; margin-top:'.$topmarg.'px; width: '.($fs-'1').'px; font-size: '.$fs.'px;"><a class="wppa-arrow" style="'.__wcs('wppa-arrow').'" id="next-film-arrow-'.$wppa['master_occur'].'" onclick="wppaNext('.$wppa['master_occur'].');">&raquo;</a></div>';
-		$wppa['out'] .= wppa_nltab().'<div class="filmwindow" style="'.$IE6.' display: block; height:'.$height.'px; margin: 0 '.$marg.'px 0 '.$marg.'px; overflow:hidden;">';
+		$wppa['out'] .= wppa_nltab().'<div id="filmwindow-'.$wppa['master_occur'].'" class="filmwindow" style="'.$IE6.' display: block; height:'.$height.'px; margin: 0 '.$marg.'px 0 '.$marg.'px; overflow:hidden;">';
 			$wppa['out'] .= wppa_nltab('+').'<div id="wppa-filmstrip-'.$wppa['master_occur'].'" style="height:'.$height1.'px; width:'.$width.'px; margin-left: -100px;">';
 	}
 	
@@ -313,6 +309,72 @@ global $thumb;
 	}
 }
 
+function wppa_numberbar($opt = '') {
+global $wppa;
+global $wppa_opt;
+
+	if (is_feed()) { 		//don't know if it works with feeds, so switch off
+		return;
+	}
+	
+    $do_it = false;
+    if($wppa_opt['wppa_show_slideshownumbar'] && !$wppa['is_slideonly']) $do_it = true;
+	if ($wppa['numbar_on']) $do_it = true;   
+	if(!$do_it){
+		return;
+	}
+	
+	// get the data
+	$thumbs = wppa_get_thumbs();
+	if (!$thumbs || count($thumbs) < 1) return;
+	
+	// get the sizes
+	$size_given = is_numeric($wppa_opt['wppa_fontsize_numbar']);
+	if ($size_given) {
+		$size = $wppa_opt['wppa_fontsize_numbar'];
+		if ($wppa['in_widget']) $size /= 2;
+	}
+	else {
+		$size = $wppa['in_widget'] ? '9' : '12';
+	}
+	if ($size < '9') $size = '9';
+	$size_2 = floor($size / 2);
+	$size_4 = floor($size_2 / 2);
+	$size_32 = floor($size * 3 / 2);
+	
+	// make the numbar style
+	$style = 'position:absolute; bottom:'.$size.'px; right:0; margin-right:'.$size_2.'px; ';
+	
+	// start the numbar
+	$wppa['out'] .= wppa_nltab('+') . '<div class="wppa-numberbar" style="'.$style.'">';
+		$numid = 0;
+		
+		// make the elementstyles
+		$style = 'display:block; float:left; padding:0 '.$size_4.'px; margin-right:'.$size_2.'px; font-weight:bold; ';
+		if ($wppa_opt['wppa_fontfamily_numbar']) $style .= ' font-family:'.$wppa_opt['wppa_fontfamily_numbar'].';';
+		if ($wppa_opt['wppa_fontcolor_numbar']) $style .= ' color:'.$wppa_opt['wppa_fontcolor_numbar'].';';
+		if ($size_given) $style .= ' font-size:'.$size.'px; line-height:'.$size_32.'px;';
+		
+		$style_active = $style;
+		if ($wppa_opt['wppa_bgcolor_numbar']) $style .= ' background-color:'.$wppa_opt['wppa_bgcolor_numbar'].';';
+		if ($wppa_opt['wppa_bgcolor_numbar_active']) $style_active .= ' background-color:'.$wppa_opt['wppa_bgcolor_numbar_active'].';';
+		if ($wppa_opt['wppa_bcolor_numbar']) $style .= ' border:1px solid '.$wppa_opt['wppa_bcolor_numbar'].';';
+		if ($wppa_opt['wppa_bcolor_numbar_active']) $style_active .= 'border:1px solid '.$wppa_opt['wppa_bcolor_numbar_active'].';';
+
+		// if the number of photos is larger than a certain number, only the active ph displays a number, other are dots
+		$count = count($thumbs);
+		$high = $wppa_opt['wppa_numbar_max'];
+		
+		// do the numbers
+		foreach ($thumbs as $tt) :
+			$title = sprintf(__a('Photo %s of %s', 'wppa_theme'), $numid + '1', $count);
+			$wppa['out'] .= wppa_nltab('+') . '<a href="javascript://" id="wppa-numbar-'.$wppa['master_occur'].'-'.$numid.'" title="'.$title.'" ' . ($numid == 0 ? ' class="wppa-numbar-current" ' : '') . ' style="' . ($numid == 0 ? $style_active : $style) . '" onclick="wppaGotoKeepState('.$wppa['master_occur'].',' . $numid . ');return false;">';
+			$wppa['out'] .= $count > $high ? wppa_nltab() . '.' : wppa_nltab() . $numid + 1;
+			$wppa['out'] .= wppa_nltab('-') . '</a>';
+			$numid++;
+		endforeach;
+	$wppa['out'] .= wppa_nltab('-') . '</div>';                        
+}
 
 function wppa_browsebar($opt = '') {
 global $wppa;

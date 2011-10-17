@@ -43,6 +43,7 @@ class SlideshowWidget extends WP_Widget {
 											'film' 		=> 'no', 
 											'browse' 	=> 'no', 
 											'name' 		=> 'no', 
+											'numbar'	=> 'no',
 											'desc' 		=> 'no' 
 											) );
 
@@ -59,6 +60,7 @@ class SlideshowWidget extends WP_Widget {
 		$film 		= $instance['film'];
 		$browse 	= $instance['browse'];
 		$name 		= $instance['name'];
+		$numbar		= $instance['numbar'];		
 		$desc 		= $instance['desc'];
 		
 		if (is_numeric($album)) {
@@ -79,9 +81,11 @@ class SlideshowWidget extends WP_Widget {
 					$wppa['film_on'] = ($film == 'yes');
 					$wppa['browse_on'] = ($browse == 'yes');
 					$wppa['name_on'] = ($name == 'yes');
+					$wppa['numbar_on'] = ($numbar == 'yes');
 					$wppa['desc_on'] = ($desc == 'yes');
 						echo wppa_albums($album, 'slideonly', $width, 'center');
 					$wppa['desc_on'] = false;
+					$wppa['numbar_on'] = false;
 					$wppa['name_on'] = false;
 					$wppa['browse_on'] = false;
 					$wppa['film_on'] = false;
@@ -133,6 +137,7 @@ class SlideshowWidget extends WP_Widget {
 		$instance['film'] = $new_instance['film'];
 		$instance['browse'] = $new_instance['browse'];
 		$instance['name'] = $new_instance['name'];
+		$instance['numbar'] = $new_instance['numbar'];
 		$instance['desc'] = $new_instance['desc'];
 		
         return $instance;
@@ -157,6 +162,7 @@ class SlideshowWidget extends WP_Widget {
 											'film' 		=> 'no', 
 											'browse' 	=> 'no', 
 											'name' 		=> 'no', 
+											'numbar'	=> 'no',
 											'desc' 		=> 'no' 
 											) );
 											
@@ -174,6 +180,7 @@ class SlideshowWidget extends WP_Widget {
 		$film = $instance['film'];
 		$browse = $instance['browse'];
 		$name = $instance['name'];
+		$numbar = $instance['numbar'];
 		$desc = $instance['desc'];
 		
 	?>
@@ -228,6 +235,13 @@ class SlideshowWidget extends WP_Widget {
 			<select id="<?php echo $this->get_field_id('browse'); ?>" name="<?php echo $this->get_field_name('browse'); ?>">
 				<option value="no" <?php if ($browse == 'no') echo 'selected="selected"' ?>><?php _e('no.', 'wppa'); ?></option>
 				<option value="yes" <?php if ($browse == 'yes') echo 'selected="selected"' ?>><?php _e('yes.', 'wppa'); ?></option>
+			</select>
+		</p>
+		<p>
+			<?php _e('Show numbar:', 'wppa'); ?>
+			<select id="<?php echo $this->get_field_id('numbar'); ?>" name="<?php echo $this->get_field_name('numbar'); ?>">
+				<option value="no" <?php if ($numbar == 'no') echo 'selected="selected"' ?>><?php _e('no.', 'wppa'); ?></option>
+				<option value="yes" <?php if ($numbar == 'yes') echo 'selected="selected"' ?>><?php _e('yes.', 'wppa'); ?></option>
 			</select>
 		</p>
 

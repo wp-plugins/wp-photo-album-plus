@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains the admin menu and startups the admin pages
-* Version 4.0.12
+* Version 4.2.0
 *
 */
 
@@ -25,7 +25,7 @@ function wppa_add_admin() {
 	// See if there are comments pending moderation
 	$pending_html = '';
 	if ( get_option( 'wppa_show_comments' ) == 'yes' ) {
-		$pending_count = $wpdb->get_var( "SELECT COUNT(*) FROM ".WPPA_COMMENTS." WHERE status='pending'" );
+		$pending_count = $wpdb->get_var($wpdb->prepare( "SELECT COUNT(*) FROM ".WPPA_COMMENTS." WHERE status='pending'" ) );
 		if ( $pending_count ) $pending_html = '<span class="update-plugins"><span class="plugin-count">'.$pending_count.'</span></span>';
 	}
 	

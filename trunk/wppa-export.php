@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the export functions
-* Version 4.0.6
+* Version 4.2.0
 *
 */
 
@@ -39,7 +39,7 @@ global $wpdb;
 			<?php wppa_nonce_field('$wppa_nonce', WPPA_NONCE); ?>
 			<?php echo(sprintf(__('Photos will be exported to: <b>%s</b>.', 'wppa'), WPPA_DEPOT)) ?>
 			<h2><?php _e('Export photos from album <span style="font-size:12px;">(Including Album information)</span>:', 'wppa'); ?></h2>
-			<?php $albums = $wpdb->get_results('SELECT * FROM ' . WPPA_ALBUMS . ' ' . wppa_get_album_order(), 'ARRAY_A');
+			<?php $albums = $wpdb->get_results($wpdb->prepare( 'SELECT * FROM ' . WPPA_ALBUMS . ' ' . wppa_get_album_order() ), 'ARRAY_A');
 			$high = '0'; ?>
 			
 			<table class="form-table albumtable">
@@ -110,7 +110,7 @@ global $wppa_temp_idx;
 			if (isset($_POST['album-'.$id])) {
 				_e('<br/>Processing album', 'wppa'); echo(' '.$id.'....');
 				wppa_write_album_file_by_id($id);
-				$photos = $wpdb->get_results('SELECT * FROM ' . WPPA_PHOTOS . ' WHERE album = ' . $id, 'ARRAY_A');
+				$photos = $wpdb->get_results($wpdb->prepare( 'SELECT * FROM ' . WPPA_PHOTOS . ' WHERE album = %s', $id), 'ARRAY_A' );
 				$cnt = 0;
 				foreach($photos as $photo) {
 					// Copy the photo
@@ -157,7 +157,7 @@ global $wpdb;
 global $wppa_zip;
 global $wppa_temp;
 global $wppa_temp_idx;
-	$album = $wpdb->get_row('SELECT * FROM '.WPPA_ALBUMS.' WHERE id = '.$id.' LIMIT 0,1', 'ARRAY_A');
+	$album = $wpdb->get_row($wpdb->prepare( 'SELECT * FROM '.WPPA_ALBUMS.' WHERE id = %s LIMIT 0,1', $id ), 'ARRAY_A');
 	if ($album) {
 		$fname = WPPA_DEPOT_PATH.'/'.$id.'.amf';
 		$file = fopen($fname, 'wb');

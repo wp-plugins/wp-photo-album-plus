@@ -8,7 +8,7 @@
 /*
 /* You may always look into a newer version of this file to see what new classes and id's come with an upgrade
 /*
-/* This is version 4.1.0
+/* This is version 4.2.0
 */
 
 /* Navigation */
@@ -197,8 +197,8 @@
 }
 
 .wppa-widget-text {
-margin: 5px;
-text-align: center;
+	margin: 5px;
+	text-align: center;
 }
 
 /* General purpose classes */
@@ -240,14 +240,14 @@ margin: 0 auto;
 
 /* User upload photos */
 .wppa-user-file {
-float:left;
+	float:left;
 }
 .wppa-user-textarea {
 }
 .wppa-user-submit {
-padding: 0;
-height: 23px;
-float:right;
+	padding: 0;
+	height: 23px;
+	float:right;
 }
 
 /* Special requests */
@@ -255,3 +255,15 @@ float:right;
 /* display: none; */ /* to remove the slideshow / browse photos link frm the album covers */
 }
 
+.wppa-numberbar {
+    z-index: 85;
+}
+
+.wppa-numberbar a {
+	text-decoration:none;
+	cursor:pointer;
+}
+
+.wppa-numberbar a.wppa-numbar-current{
+ /*   background-color: #000; */
+}
