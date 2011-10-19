@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the upload/import pages and functions
-* Version 4.2.0
+* Version 4.2.1
 *
 */
 
@@ -80,7 +80,10 @@ global $target;
 					</div>
 					<p>
 						<label for="wppa-album"><?php _e('Album:', 'wppa'); ?> </label>
-						<select name="wppa-album" id="wppa-album"><?php echo(wppa_album_select()); ?></select>
+						<select name="wppa-album" id="wppa-album">
+							<option value=""><?php _e('- select an album -', 'wppa') ?></option>
+							<?php echo(wppa_album_select()); ?>
+						</select>
 					</p>
 					<input type="submit" class="button-primary" name="wppa-upload" value="<?php _e('Upload Single Photos', 'wppa') ?>" />					
 				</form>
@@ -285,7 +288,7 @@ function _wppa_page_import() {
 				<?php _e('There are', 'wppa'); echo(' '.$photocount.' '); _e('photos in the depot.', 'wppa'); if (get_option('wppa_resize_on_upload', 'no') == 'yes') { echo(' '); _e('Photos will be downsized during import.', 'wppa'); } ?><br/>
 			</p>
 			<p>
-				<?php _e('Default album for import:', 'wppa'); ?><select name="wppa-album" id="wppa-album"><?php echo(wppa_album_select()); ?></select>
+				<?php _e('Default album for import:', 'wppa'); ?><select name="wppa-album" id="wppa-album"><option value=""><?php _e('- select an album -', 'wppa') ?></option><?php echo(wppa_album_select()); ?></select>
 				<?php _e('Photos that have (<em>name</em>)[<em>album</em>] will be imported by that <em>name</em> in that <em>album</em>.', 'wppa') ?>
 				</br>
 			</p>
@@ -502,7 +505,7 @@ global $warning_given;
 
 						if ($iret === FALSE) wppa_error_message(__('Could not create album.', 'wppa'));
 						else {
-							$id = wppa_get_album_id($name);
+							//$id = wppa_get_album_id($name);
 							wppa_set_last_album($id);
 							wppa_ok_message(__('Album #', 'wppa') . ' ' . $id . ': '.stripslashes($name).' ' . __('Added.', 'wppa'));
 							if ($dela) unlink($album);
@@ -519,8 +522,10 @@ global $warning_given;
 	$idx='0';
 	$pcount = '0';
 	if (isset($_POST['wppa-album'])) $album = $_POST['wppa-album']; else $album = '0';
+
 	wppa_ok_message(__('Processing files, please wait...', 'wppa').' '.__('If the line of dots stops growing or your browser reports Ready, your server has given up. In that case: try again', 'wppa').' <a href="'.wppa_dbg_url(get_admin_url().'admin.php?page=wppa_import_photos').'">'.__('here.', 'wppa').'</a>');
 	foreach ($files as $file) {
+
 		if (isset($_POST['file-'.$idx])) {
 			$ext = strtolower(substr(strrchr($file, "."), 1));
 			if ($ext == 'jpg' || $ext == 'png' || $ext == 'gif') {
@@ -565,10 +570,12 @@ global $warning_given;
 						}
 						else {
 							wppa_error_message(__('Error inserting photo', 'wppa') . ' ' . basename($file) . '.');
+							return false;
 						}
 					}
 					else {
-						wppa_error_message(sprintf(__('Error inserting photo, album %1s does not exist for photo %2s. Either create the album or remove %3s.', 'wppa'), stripslashes(wppa_get_meta_album($meta)), basename($file), basename($meta)));
+						wppa_error_message(sprintf(__('Error inserting photo %s, unknown or non existent album.', 'wppa'), basename($file)));
+						return false;
 					} 
 				} // Insert
 			}
@@ -599,8 +606,10 @@ function wppa_insert_photo ($file = '', $album = '', $name = '', $desc = '', $po
 	global $warning_given_big;
 	global $wppa_opt;
 	
-	if ($name == '') $name = basename($file);
 	if ($file != '' && $album != '' ) {
+		// Get the name if not given
+		if ($name == '') $name = basename($file);
+		// Get and verify the size
 		$img_size = getimagesize($file);
 		if ($img_size) { 
 			if (!$warning_given_big && ($img_size['0'] > 1280 || $img_size['1'] > 1280)) {
@@ -621,9 +630,7 @@ function wppa_insert_photo ($file = '', $album = '', $name = '', $desc = '', $po
 			wppa_error_message(__('ERROR: Unable to retrieve immage size of', 'wppa').' '.$name.' '.__('Are you sure it is a photo?', 'wppa'));
 			return false;
 		}
-		
-//		$ext = substr(strrchr($name, "."), 1);
-		// We now use mimetype, regardless of ext
+		// Get ext based on mimetype, regardless of ext
 		switch($img_size[2]) { 	// mime type
 			case 1: $ext = 'gif'; break;
 			case 2: $ext = 'jpg'; break;
@@ -632,23 +639,34 @@ function wppa_insert_photo ($file = '', $album = '', $name = '', $desc = '', $po
 				wppa_error_message(__('Unsupported mime type encountered:', 'wppa').' '.$img_size[2].'.');
 				return false;
 		}
-			
+		// Get an id if not yet there
 		if ($id == '0') {
 			$id = wppa_nextkey(WPPA_PHOTOS);
-			if ( $desc == '' && $wppa_opt['wppa_apply_newphoto_desc'] == 'yes' ) {
-				$desc = stripslashes($wppa_opt['wppa_newphoto_description']);
-			}
-			$mrat = '0';
-			$owner = wppa_get_user();
-			$query = $wpdb->prepare('INSERT INTO `' . WPPA_PHOTOS . '` (`id`, `album`, `ext`, `name`, `p_order`, `description`, `mean_rating`, `linkurl`, `linktitle`, `timestamp`, `owner`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)', $id, $album, $ext, $name, $porder, $desc, $mrat, $linkurl, $linktitle, time(), $owner);
-			if ($wpdb->query($query) === false) {
-				wppa_error_message(__('Could not insert photo. query=', 'wppa').$query);
-			}
 		}
-
-		$image_id = $id;
-		
-		if ( wppa_make_the_photo_files($file, $image_id, $ext) ) return true;
+		// Get opt deflt desc if empty
+		if ( $desc == '' && $wppa_opt['wppa_apply_newphoto_desc'] == 'yes' ) {
+			$desc = stripslashes($wppa_opt['wppa_newphoto_description']);
+		}
+		// Reset rating
+		$mrat = '0';
+		// Find (new) owner
+		$owner = wppa_get_user();
+		// Validate album
+		if ( !is_numeric($album) || $album < '1' ) {
+			wppa_error_message(__('Album not known while trying to add a photo', 'wppa'));
+			return false;
+		}
+		if ( !wppa_have_access($album) ) {
+			wppa_error_message(sprintf(__('Album %s does not exist or is not accessable while trying to add a photo', 'wppa'), $album));
+			return false;
+		}
+		// Add photo to db
+		$query = $wpdb->prepare('INSERT INTO `' . WPPA_PHOTOS . '` (`id`, `album`, `ext`, `name`, `p_order`, `description`, `mean_rating`, `linkurl`, `linktitle`, `timestamp`, `owner`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)', $id, $album, $ext, $name, $porder, $desc, $mrat, $linkurl, $linktitle, time(), $owner);
+		if ($wpdb->query($query) === false) {
+			wppa_error_message(__('Could not insert photo. query=', 'wppa').$query);
+		}
+		// Make the photo files		
+		if ( wppa_make_the_photo_files($file, $id, $ext) ) return true;
 	}
 	else {
 		wppa_error_message(__('ERROR: Unknown file or album.', 'wppa'));
@@ -781,7 +799,7 @@ global $allphotos;
 	// Fill the names array
 	if ( ! $allphotos ) {
 	wppa_dbg_msg('Filling <br />');
-		$allphotos = $wpdb->get_results($wpdb->prepare( "SELECT id, name, ext FROM ".WPPA_PHOTOS, "ARRAY_A" ) );
+		$allphotos = $wpdb->get_results($wpdb->prepare( "SELECT id, name, ext FROM ".WPPA_PHOTOS) , "ARRAY_A" );
 		if ( is_array($allphotos) ) {
 			$index = '0';
 			$count = count($allphotos);
@@ -822,54 +840,4 @@ global $allphotos;
 	}
 	return true;
 }
-/*
-function wppa_make_the_photo_files($file, $image_id, $ext) {
-				
-	$img_size = getimagesize($file);
-	if ($img_size) {
-		$newimage = WPPA_UPLOAD_PATH . '/' . $image_id . '.' . $ext;
-			
-		if (get_option('wppa_resize_on_upload', 'no') == 'yes') {
-			require_once('wppa-class-resize.php');
-			
-			if (wppa_is_wider($img_size[0], $img_size[1])) {
-				$dir = 'W';
-				$siz = get_option('wppa_fullsize', '640');
-				$s = $img_size[0];
-			}
-			else {
-				$dir = 'H';
-				$siz = get_option('wppa_maxheight', get_option('wppa_fullsize', '640'));
-				$s = $img_size[1];
-			}
 
-			if ($s > $siz) {	
-				$objResize = new wppa_ImageResize($file, $newimage, $dir, $siz);
-		$objResize->destroyImage($objResize->resOriginalImage);
-		$objResize->destroyImage($objResize->resResizedImage);
-			}
-			else {
-				copy($file, $newimage);
-			}
-		}
-		else {
-			copy($file, $newimage);
-		}
-
-		if (is_file ($newimage)) {
-			$thumbsize = wppa_get_minisize();
-			wppa_create_thumbnail($newimage, $thumbsize, '' );
-		} 
-		else {
-			wppa_error_message(__('ERROR: Resized or copied image could not be created.', 'wppa'));
-			return false;
-		}
-		echo('.');
-		return true;
-	}
-	else {
-		wppa_error_message(sprintf(__('ERROR: File %s is not a valid picture file.', 'wppa'), $file));
-		return false;
-	}
-}
-*/

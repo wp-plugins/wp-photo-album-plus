@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, multisite, network, lightbox
-Version: 4.2.0
+Version: 4.2.1
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -106,6 +106,18 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 4.2.1 =
+
+= Bug fixes =
+
+* Fatal error on upload with update switch. Fixed.
+* Under some circumstances it looked like photos were imported, but they were lost. Fixed.
+* Delete album with move photos now works as designed.
+
+= Other changes =
+
+* Improved error handling and reporting during import / upload.
 
 = 4.2.0 =
 

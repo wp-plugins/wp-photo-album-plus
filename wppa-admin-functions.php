@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 * gp admin functions
-* version 4.2.0
+* version 4.2.1
 *
 * 
 */
@@ -208,7 +208,7 @@ function wppa_set_last_album($id = '') {
 	
 	get_currentuserinfo();
 
-    if (is_numeric($id)) $albumid = $id; else $albumid = '';
+    if ( is_numeric($id) && wppa_have_access($id) ) $albumid = $id; else $albumid = '';
 	$opt = 'wppa_last_album_used-'.$current_user->user_login;
     update_option($opt, $albumid);
 }

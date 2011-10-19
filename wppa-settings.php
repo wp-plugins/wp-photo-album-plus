@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 4.2.0
+* Version 4.2.1
 *
 */
 
@@ -109,6 +109,10 @@ global $options_error;
 					
 				case 'wppa_rerate':
 					if (!wppa_recalculate_ratings()) $options_error = true;
+					break;
+					
+				case 'wppa_cleanup':
+					wppa_cleanup_photos('0');
 					break;
 					
 			}
@@ -1796,6 +1800,13 @@ global $wppa_api_version;
 						$html = wppa_radio('wppa_action', $slug);
 						wppa_setting_2('', $slug, '8', $name, $desc, '', $html, $help);
 
+						$name = __('Cleanup', 'wppa');
+						$desc = __('Fix and secure WPPA+ system consistency', 'wppa');
+						$help = esc_js(__('This function will cleanup incomplete db entries and recover lost photos.', 'wppa'));
+						$slug = 'wppa_cleanup';
+						$html = wppa_radio('wppa_action', $slug);
+						wppa_setting_2('', $slug, '9', $name, $desc, '', $html, $help);
+						
 						$wppa['no_default'] = false;
 
 						?>
