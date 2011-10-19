@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * create, edit and delete albums
-* version 4.2.0
+* version 4.2.1
 *
 */
 
@@ -338,7 +338,10 @@ function _wppa_admin() {
 						<?php _e('What would you like to do with photos currently in the album?', 'wppa'); ?><br />
 						<input type="radio" name="wppa-del-photos" value="delete" checked="checked" /> <?php _e('Delete', 'wppa'); ?><br />
 						<input type="radio" name="wppa-del-photos" value="move" /> <?php _e('Move to:', 'wppa'); ?> 
-						<select name="wppa-move-album"><?php echo(wppa_album_select($_GET['edit_id'])) ?></select>
+						<select name="wppa-move-album">
+							<option value=""><?php _e('- select an album -', 'wppa') ?></option>
+							<?php echo(wppa_album_select($_GET['edit_id'])) ?>
+						</select>
 					</p>
 				
 					<input type="hidden" name="wppa-del-id" value="<?php echo($_GET['edit_id']) ?>" />
@@ -355,7 +358,6 @@ function _wppa_admin() {
 		if (isset($_POST['wppa-na-submit'])) {
 			wppa_check_admin_referer( '$wppa_nonce', WPPA_NONCE );
 
-			
 			wppa_add_album();
 		}
 		
@@ -363,14 +365,17 @@ function _wppa_admin() {
 		if (isset($_POST['wppa-del-confirm'])) {
 			wppa_check_admin_referer( '$wppa_nonce', WPPA_NONCE );
 
-			
-
 			if ($_POST['wppa-del-photos'] == 'move') {
 				$move = $_POST['wppa-move-album'];
+				if ( wppa_have_access($move) ) {
+					wppa_del_album($_POST['wppa-del-id'], $move);
+				}
+				else {
+					wppa_error_message(__('Unable to move photos. Album not deleted.', 'wppa'));
+				}
 			} else {
-				$move = '';
+				wppa_del_album($_POST['wppa-del-id'], '');
 			}
-			wppa_del_album($_POST['wppa-del-id'], $move);
 		}
 ?>		
 		<div class="wrap">
@@ -790,6 +795,11 @@ function wppa_edit_album() {
 function wppa_del_album($id, $move = '') {
 	global $wpdb;
 
+	if ( $move && !wppa_have_access($move) ) {
+		wppa_error_message(__('Unable to move photos to album %s. Album not deleted.', 'wppa'));
+		return false;
+	}
+	
 	$wpdb->query($wpdb->prepare('DELETE FROM `' . WPPA_ALBUMS . '` WHERE `id` = %s LIMIT 1', $id));
 
 	if (empty($move)) { // will delete all the album's photos
@@ -854,8 +864,6 @@ function wppa_main_photo($cur = '') {
 }
 
 function wppa_ea_url($edit_id, $tab = 'edit') {
-
-
 
 	$nonce = wp_create_nonce('wppa_nonce');
 //	$referrer = $_SERVER["REQUEST_URI"];
