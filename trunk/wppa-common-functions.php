@@ -2,11 +2,11 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 4.2.1
+* version 4.2.2
 *
 */
 global $wppa_api_version;
-$wppa_api_version = '4-2-1-000';
+$wppa_api_version = '4-2-2-000';
 // Initialize globals and option settings
 function wppa_initialize_runtime($force = false) {
 global $wppa;
@@ -246,7 +246,13 @@ global $blog_id;
 			'wppa_user_upload_on' => '',
 			'wppa_show_slideshownumbar'  => '',
 			'wppa_autoclean' => '',
-			'wppa_numbar_max' => ''
+			'wppa_numbar_max' => '',
+			'wppa_watermark_on'				=> '',
+			'wppa_watermark_user'			=> '',
+			'wppa_watermark_file'			=> '',
+			'wppa_watermark_pos'			=> '',
+			'wppa_watermark_upload'			=> ''
+
 
 		);
 		array_walk($wppa_opt, 'wppa_set_options');
@@ -651,6 +657,23 @@ global $wpdb;
 	return $result;
 }
 
+function wppa_is_id_free($type, $id) {
+global $wpdb;
+	if (!is_numeric($id)) return false;
+	if ($id == '0') return false;
+	
+	$table = '';
+	if ($type == 'album') $table = WPPA_ALBUMS;
+	if ($type == 'photo') $table = WPPA_PHOTOS;
+	if ($table == '') {
+		echo('Unexpected error in wppa_is_id_free()');
+		return false;
+	}
+	$res = $wpdb->get_row($wpdb->prepare( 'SELECT * FROM '.$table.' WHERE id = %s', $id ), 'ARRAY_A');
+	if ($res) return false;
+	return true;
+}
+
 // See if an album or any album is accessable for the current user
 function wppa_have_access($alb) {
 global $wpdb;
@@ -660,27 +683,36 @@ global $current_user;
 	
 	// See if there is any album accessable
 	if ($alb == 'any') {
+	
 		// Administrator has always access OR If all albums are public
 		if (current_user_can('administrator') || get_option('wppa_owner_only', 'no') == 'no') {
 			$albs = $wpdb->get_results($wpdb->prepare( 'SELECT id FROM '.WPPA_ALBUMS ) );
 			if ($albs) return true;
 			else return false;	// No albums in system
 		}
-		else {
-			get_currentuserinfo();
-			$user = $current_user->user_login;
-			$albs = $wpdb->get_results($wpdb->prepare( 'SELECT id FROM '.WPPA_ALBUMS.' WHERE owner = "%s"', $user) );
-			if ($albs) return true;
-			else return false;	// No albums for user accessable
-		}
+		
+		// Any --- public --- albums?
+		$albs = $wpdb->get_results($wpdb->prepare( 'SELECT id FROM '.WPPA_ALBUMS.' WHERE owner = "--- public ---"' ) );
+		if ($albs) return true;
+		
+		// Any albums owned by this user?
+		get_currentuserinfo();
+		$user = $current_user->user_login;
+		$albs = $wpdb->get_results($wpdb->prepare( 'SELECT id FROM '.WPPA_ALBUMS.' WHERE owner = "%s"', $user) );
+		if ($albs) return true;
+		else return false;	// No albums for user accessable
+		
 	}
 	
 	// See for given album data array or album number
 	else {
+	
 		// Administrator has always access
 		if (current_user_can('administrator')) return true;
+		
 		// If all albums are public
 		if (get_option('wppa_owner_only', 'no') == 'no') return true;
+		
 		// Find the owner
 		$owner = '';
 		if (is_array($alb)) {
@@ -689,12 +721,16 @@ global $current_user;
 		elseif (is_numeric($alb)) {
 			$owner = $wpdb->get_var($wpdb->prepare( 'SELECT owner FROM '.WPPA_ALBUMS.' WHERE id = %s', $alb ) );
 		}
+		
+		// -- public --- ?
+		if ( $owner == '--- public ---' ) return true;
+		
 		// Find the user
 		get_currentuserinfo();
 		
-		if ($current_user->user_login == $owner) return true;
-		else return false;
+		if ( $current_user->user_login == $owner ) return true;
 	}
+	return false;
 }
 
 function wppa_make_the_photo_files($file, $image_id, $ext) {
@@ -747,21 +783,20 @@ global $wppa_opt;
 			copy($file, $newimage);
 		}
 		
-		if (is_file($newimage)) {
-			if (true) { 					// If watermark on
-				wppa_add_watermark($newimage);
-			}
-		}
-
-		if (is_file ($newimage)) {
+		// File successfully created ?
+		if ( is_file ($newimage) ) {	
+			// Create thumbnail...
 			$thumbsize = wppa_get_minisize();
 			wppa_create_thumbnail($newimage, $thumbsize, '' );
+			// and add watermark (optionally) to fullsize image only
+			wppa_add_watermark($newimage);
 		} 
 		else {
 			if (is_admin()) wppa_error_message(__('ERROR: Resized or copied image could not be created.', 'wppa'));
 			else wppa_err_alert(__('ERROR: Resized or copied image could not be created.', 'wppa_theme'));
 			return false;
 		}
+		// Show progression
 		if (is_admin()) echo('.');
 		return true;
 	}
@@ -794,7 +829,7 @@ function wppa_create_thumbnail( $file, $max_side, $effect = '') {
 		$thumbpath = str_replace( basename( $file ), $thumb, $file );
 
 		require_once('wppa-class-resize.php');		
-		$objResize = new wppa_ImageResize($file, $thumbpath, $dir, $max_side);
+		$objResize = new wppa_ImageResize($file, $thumbpath, $dir, $max_side, false);
 		$objResize->destroyImage($objResize->resOriginalImage);
 		$objResize->destroyImage($objResize->resResizedImage);
 	}
@@ -808,25 +843,63 @@ function wppa_get_searchstring() {
 global $wppa;
 
 	$src = '';
+	
 	if (isset($_POST['wppa-searchstring'])) {
 		$src = $_POST['wppa-searchstring'];
 	}
 	elseif (isset($_GET['s'])) {	// wp search
 		$src = $_GET['s'];
 	}
-//	elseif (isset($_GET['wppa_src'])) {
-//		$src = $_GET['wppa_src'];
-//	elseif (wppa_get_get('src')) {
-//		$src = wppa_get_get('src');
-//	}
+
 	return $src;
 }
 
 function wppa_add_watermark($file) {
-return;	// this is under development
+global $wppa_opt;
+
+	// Init
+	if ( get_option('wppa_watermark_on') != 'yes' ) return;	// Watermarks off
+	$user = wppa_get_user();
+	
+	// Find the watermark file and location
+	$waterfile = WPPA_UPLOAD_PATH . '/watermarks/' . $wppa_opt['wppa_watermark_file'];	// default
+	$waterpos = $wppa_opt['wppa_watermark_pos'];										// default
+
+	if ( get_option('wppa_watermark_user') == 'yes' ) {									// user overrule?
+		if ( isset($_POST['wppa-watermark-file'] ) ) {
+			$waterfile = WPPA_UPLOAD_PATH . '/watermarks/' . $_POST['wppa-watermark-file'];
+			update_option('wppa_watermark_file_' . $user, $_POST['wppa-watermark-file']);
+		}
+		elseif ( get_option('wppa_watermark_file_' . $user, 'nil') != 'nil' ) {
+			$waterfile = WPPA_UPLOAD_PATH . '/watermarks/' . get_option('wppa_watermark_file_' . $user);
+		}
+		if ( isset($_POST['wppa-watermark-pos'] ) ) {
+			$waterpos = $_POST['wppa-watermark-pos'];
+			update_option('wppa_watermark_pos_' . $user, $_POST['wppa-watermark-pos']);
+		}
+		elseif ( get_option('wppa_watermark_pos_' . $user, 'nil') != 'nil' ) {
+			$waterpos = get_option('wppa_watermark_pos_' . $user);
+		}
+	}
+
+	if ( basename($waterfile) == '--- none ---' ) return;	// No watermark this time
+	// Open the watermark file
+	$watersize = @getimagesize($waterfile);
+	if ( !is_array($watersize) ) return;	// Not a valid picture file
+	$waterimage = imagecreatefrompng($waterfile);
+	if ( empty( $waterimage ) or ( !$waterimage ) ) {
+		wppa_dbg_msg('Watermark file '.$waterfile.' not found or corrupt');
+		return;			// No image
+	}
+	imagealphablending($waterimage, false);
+	imagesavealpha($waterimage, true);
+
+		
 	// Open the photo file
 	$photosize = getimagesize($file);
-	if ( !is_array($photosize) ) return;	// Not a valid photo
+	if ( !is_array($photosize) ) {
+		return;	// Not a valid photo
+	}
 	switch ($photosize[2]) {
 		case 1: $tempimage = imagecreatefromgif($file);
 			$photoimage = imagecreatetruecolor($photosize[0], $photosize[1]);
@@ -838,21 +911,37 @@ return;	// this is under development
 			break;
 	}
 	if ( empty( $photoimage ) or ( !$photoimage ) ) return; 			// No image
+
+	$ps_x = $photosize[0];
+	$ps_y = $photosize[1];
+	$ws_x = $watersize[0];
+	if ( $ws_x > $ps_x ) $ws_x = $ps_x;
+	$ws_y = $watersize[1];
+	if ( $ws_y > $ps_y ) $ws_y = $ps_y;
 	
-	// Open the watermark file
-	$waterfile = WPPA_UPLOAD_PATH . '/watermark.png';
-	$watersize = getimagesize($waterfile);
-	if ( !is_array($watersize) ) return;	// Not a valid watermark
-	$waterimage = imagecreatefrompng($waterfile);
-	if ( empty( $waterimage ) or ( !$waterimage ) ) return;			// No image
-	
-//	imagealphablending($waterimage, false);
-	imagesavealpha($waterimage, true);
-	
-	$dest_x = 0;
-	$dest_y = 0;
-	
-	imagecopy( $photoimage , $waterimage , $dest_x, $dest_y, 0, 0, $watersize[0], $watersize[1]); // , 20 );
+	$loy = substr( $waterpos, 0, 3);
+	switch($loy) {
+		case 'top': $dest_y = 0;
+			break;
+		case 'cen': $dest_y = ( $ps_y - $ws_y ) / 2;
+			break;
+		case 'bot': $dest_y = $ps_y - $ws_y;
+			break;
+		default: $dest_y = 0; 	// should never get here
+	}
+	$lox = substr( $waterpos, 3);
+	switch($lox) {
+		case 'lft': $dest_x = 0;
+			break;
+		case 'cen': $dest_x = ( $ps_x - $ws_x ) / 2;
+			break;
+		case 'rht': $dest_x = $ps_x - $ws_x;
+			break;
+		default: $dest_x = 0; 	// should never get here
+	}
+
+	wppa_imagecopymerge_alpha( $photoimage , $waterimage , $dest_x, $dest_y, 0, 0, $ws_x, $ws_y, 20 );
+
 	// Save the result
 	switch ($photosize[2]) {
 		case 1: imagegif($photoimage, $file);
@@ -862,14 +951,10 @@ return;	// this is under development
 		case 3: imagepng($photoimage, $file, 0);
 			break;
 	}
-	
+
 	// Cleanup
 	imagedestroy($photoimage);
 	imagedestroy($waterimage);
-
-//imagecopy($this->newImage, $watermark, $dest_x, $dest_y, 0, 0,$watermarkfile_width, $watermarkfile_height);
-	
-
 
 }
 
@@ -925,3 +1010,59 @@ function wppa_imagecopymerge_alpha($dst_im, $src_im, $dst_x, $dst_y, $src_x, $sr
     imagecopy($dst_im, $src_im, $dst_x, $dst_y, $src_x, $src_y, $src_w, $src_h);
 }
 
+function wppa_watermark_file_select($default = false) {
+global $wppa_opt;
+
+	// Init
+	$result = '';
+	$user = wppa_get_user();
+	
+	// See what's in there
+	$paths = WPPA_UPLOAD_PATH . '/watermarks/*.png';
+	$files = glob($paths);
+	
+	// Find current selection
+	$select = $wppa_opt['wppa_watermark_file'];	// default
+	if ( !$default && get_option('wppa_watermark_user') == 'yes' && get_option('wppa_watermark_file_' . $user, 'nil') !== 'nil' ) {
+		$select = get_option('wppa_watermark_file_' . $user);
+	}
+	
+	// Produce the html
+	$result .= '<option value="--- none ---">'.__('--- none ---', 'wppa').'</option>';
+	if ( $files ) foreach ( $files as $file ) {
+		$sel = $select == basename($file) ? 'selected="selected"' : '';
+		$result .= '<option value="'.basename($file).'" '.$sel.'>'.basename($file).'</option>';
+	}
+	
+	return $result;
+}
+
+function wppa_watermark_pos_select($default = false) {
+global $wppa_opt;
+
+	// Init
+	$user = wppa_get_user();
+	$result = '';
+	$opt = array(	__('top - left', 'wppa'), __('top - center', 'wppa'), __('top - right', 'wppa'), 
+					__('center - left', 'wppa'), __('center - center', 'wppa'), __('center - right', 'wppa'), 
+					__('bottom - left', 'wppa'), __('bottom - center', 'wppa'), __('bottom - right', 'wppa'), );
+	$val = array(	'toplft', 'topcen', 'toprht',
+					'cenlft', 'cencen', 'cenrht',
+					'botlft', 'botcen', 'botrht', );
+	$idx = 0;
+
+	// Find current selection
+	$select = $wppa_opt['wppa_watermark_pos'];	// default
+	if ( !$default && get_option('wppa_watermark_user') == 'yes' && get_option('wppa_watermark_pos_' . $user, 'nil') !== 'nil' ) {
+		$select = get_option('wppa_watermark_pos_' . $user);
+	}
+	
+	// Produce the html
+	while ($idx < 9) {
+		$sel = $select == $val[$idx] ? 'selected="selected"' : '';
+		$result .= '<option value="'.$val[$idx].'" '.$sel.'>'.$opt[$idx].'</option>';
+		$idx++;
+	}
+	
+	return $result;
+}

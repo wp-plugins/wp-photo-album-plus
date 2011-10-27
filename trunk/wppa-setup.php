@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 4.2.0
+* Version 4.2.2
 *
 */
 
@@ -95,6 +95,16 @@ function wppa_setup($force = false) {
 	wppa_set_defaults();
 	wppa_check_dirs();
 	wppa_check_multisite();
+	
+	// Copy factory supplied watermarks
+	$frompath = WPPA_PATH . '/watermarks';
+	$watermarks = glob($frompath . '/*.png');
+	if ( is_array($watermarks) ) {
+		foreach ($watermarks as $fromfile) {
+			$tofile = WPPA_UPLOAD_PATH . '/watermarks/' . basename($fromfile);
+			copy($fromfile, $tofile);
+		}
+	}
 	
 	$iret = true;
 
@@ -345,10 +355,15 @@ global $wppa_defaults;
 						'wppa_user_upload_on'			=> 'no',
 						'wppa_show_slideshownumbar'  	=> 'no',
 						'wppa_autoclean'				=> 'yes',
-						'wppa_numbar_max'				=> '10'
+						'wppa_numbar_max'				=> '10',
+						'wppa_watermark_on'				=> 'no',
+						'wppa_watermark_user'			=> 'no',
+						'wppa_watermark_file'			=> __('specimen.png', 'wppa'),
+						'wppa_watermark_pos'			=> 'cencen',
+						'wppa_watermark_upload'			=> ''
 
 						);
-	
+
 	array_walk($wppa_defaults, 'wppa_set_default', $force);
 
 	return true;
@@ -403,6 +418,19 @@ function wppa_check_dirs() {
 		}
 		else {
 			wppa_ok_message(__('Successfully created wppa thumbs directory.', 'wppa').'<br/>'.$dir);
+		}
+	}
+
+	// check if watermarks dir exists 
+	$dir = WPPA_UPLOAD_PATH.'/watermarks';
+	if (!is_dir($dir)) {
+		mkdir($dir);
+		if (!is_dir($dir)) {
+			wppa_error_message(__('Could not create the wppa watermarks directory.', 'wppa').wppa_credirmsg($dir));
+			return false;
+		}
+		else {
+			wppa_ok_message(__('Successfully created wppa watermarks directory.', 'wppa').'<br/>'.$dir);
 		}
 	}
 	

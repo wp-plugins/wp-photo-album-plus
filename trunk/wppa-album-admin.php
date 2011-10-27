@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * create, edit and delete albums
-* version 4.2.1
+* version 4.2.2
 *
 */
 
@@ -192,12 +192,18 @@ function _wppa_admin() {
 									<th scope="row">
 										<label ><?php _e('Owned by:', 'wppa'); ?></label>
 									</th>
-									<td>
-										<select name="wppa-owner"><?php wppa_user_select($albuminfo['owner']); ?></select>
-										<?php if (!current_user_can('administrator')) { ?>
-											<span class="description" style="color:orange;" ><br/><?php _e('WARNING If you change the owner, you will no longer be able to modify this album and upload or import photos to it!', 'wppa'); ?></span>
-										<?php } ?>
-									</td>
+									<?php if ( $albuminfo['owner'] == '--- public ---' && !current_user_can('administrator') ) { ?>
+										<td>
+											<?php _e('--- public ---', 'wppa') ?>
+										</td>
+									<?php } else { ?>
+										<td>
+											<select name="wppa-owner"><?php wppa_user_select($albuminfo['owner']); ?></select>
+											<?php if (!current_user_can('administrator')) { ?>
+												<span class="description" style="color:orange;" ><br/><?php _e('WARNING If you change the owner, you will no longer be able to modify this album and upload or import photos to it!', 'wppa'); ?></span>
+											<?php } ?>
+										</td>
+									<?php } ?>
 								</tr>
 							<?php } ?>
 

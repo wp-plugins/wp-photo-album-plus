@@ -3,12 +3,13 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the upload/import pages and functions
-* Version 4.2.1
+* Version 4.2.2
 *
 */
 
 function _wppa_page_upload() {
 global $target;
+global $wppa_opt;
 
 	// upload images admin page
 
@@ -17,6 +18,11 @@ global $target;
 	wppa_cleanup_photos();
 	wppa_sanitize_files();
 
+	if ( $wppa_opt['wppa_watermark_on'] == 'yes' && $wppa_opt['wppa_watermark_user'] == 'yes') {
+		if ( isset( $_POST['wppa-watermark-file'] ) ) update_option('wppa_watermark_file_'.$user, $_POST['wppa-watermark-file']);
+		if ( isset( $_POST['wppa-watermark-pos'] ) ) update_option('wppa_watermark_pos_'.$user, $_POST['wppa-watermark-pos']);
+	}
+	
 	// Do the upload if requested
 	if ( isset( $_POST['wppa-upload'] ) ) {
 		wppa_check_admin_referer( '$wppa_nonce', WPPA_NONCE );
@@ -84,6 +90,20 @@ global $target;
 							<option value=""><?php _e('- select an album -', 'wppa') ?></option>
 							<?php echo(wppa_album_select()); ?>
 						</select>
+		<?php if ( $wppa_opt['wppa_watermark_on'] == 'yes' && $wppa_opt['wppa_watermark_user'] == 'yes' ) { ?>		
+</p>
+<p>		
+				<?php _e('Apply watermark file:', 'wppa') ?>
+				<select name="wppa-watermark-file" id="wppa-watermark-file">
+					<?php echo(wppa_watermark_file_select()) ?>
+				</select>
+
+				<?php _e('Position:', 'wppa') ?>
+				<select name="wppa-watermark-pos" id="wppa-watermark-pos">
+					<?php echo(wppa_watermark_pos_select()) ?>
+				</select>
+		<?php } ?>
+						
 					</p>
 					<input type="submit" class="button-primary" name="wppa-upload" value="<?php _e('Upload Single Photos', 'wppa') ?>" />					
 				</form>
@@ -122,12 +142,18 @@ global $target;
 
 // import images admin page
 function _wppa_page_import() {
+global $wppa_opt;
 
 	// Sanitize system
     wppa_cleanup_photos('0');
 	$user = wppa_get_user();
 	$count = wppa_sanitize_files();
 	if ($count) wppa_error_message($count.' '.__('illegal files deleted.', 'wppa'));
+
+	if ( $wppa_opt['wppa_watermark_on'] == 'yes' && $wppa_opt['wppa_watermark_user'] == 'yes' ) {
+		if ( isset( $_POST['wppa-watermark-file'] ) ) update_option('wppa_watermark_file_'.$user, $_POST['wppa-watermark-file']);
+		if ( isset( $_POST['wppa-watermark-pos'] ) ) update_option('wppa_watermark_pos_'.$user, $_POST['wppa-watermark-pos']);
+	}
 	
 	// Do the dirty work
 	if (isset($_GET['zip'])) {
@@ -288,10 +314,25 @@ function _wppa_page_import() {
 				<?php _e('There are', 'wppa'); echo(' '.$photocount.' '); _e('photos in the depot.', 'wppa'); if (get_option('wppa_resize_on_upload', 'no') == 'yes') { echo(' '); _e('Photos will be downsized during import.', 'wppa'); } ?><br/>
 			</p>
 			<p>
-				<?php _e('Default album for import:', 'wppa'); ?><select name="wppa-album" id="wppa-album"><option value=""><?php _e('- select an album -', 'wppa') ?></option><?php echo(wppa_album_select()); ?></select>
+				<?php _e('Default album for import:', 'wppa') ?>
+				<select name="wppa-album" id="wppa-album">
+					<option value=""><?php _e('- select an album -', 'wppa') ?></option>
+					<?php echo(wppa_album_select()) ?>
+				</select>
 				<?php _e('Photos that have (<em>name</em>)[<em>album</em>] will be imported by that <em>name</em> in that <em>album</em>.', 'wppa') ?>
-				</br>
 			</p>
+	<?php if ( $wppa_opt['wppa_watermark_on'] == 'yes' && $wppa_opt['wppa_watermark_user'] == 'yes' ) { ?>
+			<p>
+				<?php _e('Apply watermark file:', 'wppa') ?>
+				<select name="wppa-watermark-file" id="wppa-watermark-file">
+					<?php echo(wppa_watermark_file_select()) ?>
+				</select>
+				<?php _e('Position:', 'wppa') ?>
+				<select name="wppa-watermark-pos" id="wppa-watermark-pos">
+					<?php echo(wppa_watermark_pos_select()) ?>
+				</select>
+			</p>
+	<?php } ?>
 			<table class="form-table albumtable" style="margin-bottom:0;" >
 				<tr>
 					<td>
@@ -562,6 +603,7 @@ global $warning_given;
 						$id = substr($id, 0, strpos($id, '.'));
 						if (!is_numeric($id) || !wppa_is_id_free('photo', $id)) $id = 0;
 						if (wppa_insert_photo($file, $alb, stripslashes($name), stripslashes($desc), $porder, $id, stripslashes($linkurl), stripslashes($linktitle))) {
+
 							$pcount++;
 							if ($delp) {
 								unlink($file);

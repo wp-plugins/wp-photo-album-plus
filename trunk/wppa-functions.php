@@ -3,13 +3,13 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions and API modules
-* Version 4.2.0
+* Version 4.2.2
 *
 *
 */
 /* Moved to wppa-commonfunctions.php:
 global $wppa_api_version;
-$wppa_api_version = '4-2-0-000';
+$wppa_api_version = '4-2-2-000';
 */
 
 
@@ -337,7 +337,7 @@ global $wppa;
 			$cur_page = 'slide';
 		}
 		elseif (wppa_get_get('photo')) {
-			if (wppa_get_get('album')) {
+			if (wppa_get_get('album') !== false ) {
 				$cur_page = 'single';
 			}
 			else {
@@ -628,8 +628,8 @@ global $wppa_opt;
 	if (wppa_get_get('topten')) {
 		$max = $wppa_opt['wppa_topten_count'];
 		$alb = wppa_get_get('album', '0');
-		if ($alb) $thumbs = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM '.WPPA_PHOTOS.' WHERE mean_rating > 0 AND album = %s ORDER BY mean_rating DESC LIMIT %s', $alb, $max ) , 'ARRAY_A' );
-		else $thumbs = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM '.WPPA_PHOTOS.' WHERE mean_rating > 0 ORDER BY mean_rating DESC LIMIT %s', $max ) , 'ARRAY_A');
+		if ($alb) $thumbs = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM `'.WPPA_PHOTOS.'` WHERE `mean_rating` > 0 AND `album` = %s ORDER BY `mean_rating` DESC LIMIT %d', $alb, $max ) , 'ARRAY_A' );
+		else $thumbs = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM `'.WPPA_PHOTOS.'` WHERE `mean_rating` > 0 ORDER BY `mean_rating` DESC LIMIT %d', $max ) , 'ARRAY_A');
 	}
 	elseif ( strlen($src) && $wppa['master_occur'] == '1' ) {	// Search is in occur 1 only
 		$tmbs = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM '.WPPA_PHOTOS.' '.wppa_get_photo_order('0') ), 'ARRAY_A');
@@ -800,7 +800,7 @@ global $wppa_opt;
 	if (!$myrat) $myrat = '0';
 
 	// Find the avg rating
-	$avgrat = $wpdb->get_var( $wpdb->prepare( 'SELECT mean_rating FROM '.WPPA_PHOTOS.' WHERE id = %s LIMIT 1', $id ) ); 
+	$avgrat = $wpdb->get_var( $wpdb->prepare( 'SELECT `mean_rating` FROM `'.WPPA_PHOTOS.'` WHERE `id` = %s LIMIT 1', $id ) ); 
 	if (!$avgrat) $avgrat = '0';
 	
 	$comment = $comment_allowed ? wppa_comment_html($id) : __a('You must login to enter a comment', 'wppa_theme');
@@ -3213,7 +3213,29 @@ global $wppa_opt;
 			$wppa['out'] .= wppa_nltab().'<input type="hidden" name="wppa-upload-album" value="'.$alb.'" />';			
 			$wppa['out'] .= wppa_nltab().'<input class="wppa-user-file" style="margin: 6px 0; float:left; '.__wcs('wppa-box-text').'" id="wppa-user-upload-'.$alb.'-'.$wppa['master_occur'].'" type="file" name="wppa-user-upload-'.$alb.'-'.$wppa['master_occur'].'" onchange="jQuery(\'#wppa-user-submit-'.$alb.'-'.$wppa['master_occur'].'\').css(\'display\', \'block\')" />';
 			$wppa['out'] .= wppa_nltab().'<input type="submit" id="wppa-user-submit-'.$alb.'-'.$wppa['master_occur'].'" style="display:none; margin: 6px 0; float:right; '.__wcs('wppa-box-text').'" class="wppa-user-submit" name="wppa-user-submit-'.$alb.'-'.$wppa['master_occur'].'" value="'.__a('Upload Photo', 'wppa').'" /><br />';
-			$wppa['out'] .= wppa_nltab().'<div style="clear:both; float:left;" >'.__a('Enter/modify photo description', 'wppa_theme').'</div>';
+			// Watermark
+			if ( $wppa_opt['wppa_watermark_on'] == 'yes' && $wppa_opt['wppa_watermark_user'] == 'yes' ) { 
+				$wppa['out'] .= wppa_nltab('+').'<table class="wppa-watermark wppa-box-text" style="margin:0; '.__wcs('wppa-box-text').'" ><tbody>';
+					$wppa['out'] .= wppa_nltab('+').'<tr valign="top" style="border: 0 none; " >';
+						$wppa['out'] .= wppa_nltab('+').'<td class="wppa-box-text wppa-td" style="'.__wcs('wppa-box-text').__wcs('wppa-td').'" >';
+							$wppa['out'] .= wppa_nltab('+').__a('Apply watermark file:', 'wppa_theme');
+						$wppa['out'] .= wppa_nltab('-').'</td>';
+						$wppa['out'] .= wppa_nltab(   ).'<td class="wppa-box-text wppa-td" style="'.__wcs('wppa-box-text').__wcs('wppa-td').'" >';
+							$wppa['out'] .= wppa_nltab('+').'<select style="margin:0; padding:0; " name="wppa-watermark-file" id="wppa-watermark-file">'.wppa_watermark_file_select().'</select>';
+						$wppa['out'] .= wppa_nltab('-').'</td>';
+					$wppa['out'] .= wppa_nltab('-').'</tr>';
+					$wppa['out'] .= wppa_nltab(   ).'<tr valign="top" style="border: 0 none; " >';
+						$wppa['out'] .= wppa_nltab('+').'<td class="wppa-box-text wppa-td" style="'.__wcs('wppa-box-text').__wcs('wppa-td').'" >';
+							$wppa['out'] .= wppa_nltab('+').__a('Position:', 'wppa_theme');
+						$wppa['out'] .= wppa_nltab('-').'</td>';
+						$wppa['out'] .= wppa_nltab(   ).'<td class="wppa-box-text wppa-td" style="'.__wcs('wppa-box-text').__wcs('wppa-td').'" >';
+							$wppa['out'] .= wppa_nltab('+').'<select style="margin:0; padding:0; " name="wppa-watermark-pos" id="wppa-watermark-pos">'.wppa_watermark_pos_select().'</select>';
+						$wppa['out'] .= wppa_nltab('-').'</td>';
+					$wppa['out'] .= wppa_nltab('-').'</tr>';
+				$wppa['out'] .= wppa_nltab('-').'</table>';
+			}		
+
+			$wppa['out'] .= wppa_nltab().'<div class="wppa-box-text wppa-td" style="clear:both; float:left; '.__wcs('wppa-box-text').__wcs('wppa-td').'" >'.__a('Enter/modify photo description', 'wppa_theme').'</div>';
 			$desc = $wppa_opt['wppa_apply_newphoto_desc'] ? stripslashes($wppa_opt['wppa_newphoto_description']) : '';
 			$wppa['out'] .= wppa_nltab().'<textarea class="wppa-user-textarea wppa-box-text" style="height:120px; width:'.($width-6).'px; '.__wcs('wppa-box-text').'" name="wppa-user-desc" >'.$desc.'</textarea>';
 

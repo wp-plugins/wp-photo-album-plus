@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 * admin help page
-* version 4.0.0
+* version 4.2.2
 */ 
 
 function _wppa_page_help() {
@@ -63,8 +63,8 @@ global $wppa_revno;
         <h3><?php _e('Upgrading WP Photo Album Plus', 'wppa'); ?></h3>
         <p><?php _e('When upgrading WP Photo Album Plus be aware of:', 'wppa'); ?></p>
         <ul class="wppa-help-ul">
-			<li><?php _e('The revision number consists of 3 parts, Major, minor and fix revision. The current version is:', 'wppa'); echo(' '.$wppa_revno); ?><br/></li>
-			<li><?php _e('When an update implies a major or minor version change and you have copied wppa_theme.php or wppa_style.css to your themes directory, you will have to remove them and make new copies and/or alterations if that should still be needed.', 'wppa'); ?><br/>
+			<li><?php _e('The revision number consists of 3 parts, Major, minor and fix revision. The current version is:', 'wppa'); echo(' '.$wppa_revno); ?><br /></li>
+			<li><?php _e('When an update implies a major or minor version change and you have copied wppa_theme.php or wppa_style.css to your themes directory, you will have to remove them and make new copies and/or alterations if that should still be needed.', 'wppa'); ?><br />
 				<?php _e('You will get a one-time reminder after upgrading, the first time you open a wppa admin page.', 'wppa'); ?></li>
 		</ul>
             
@@ -89,7 +89,7 @@ global $wppa_revno;
 			<?php _e('This will result in the display of the <b>contents</b> of album nr 19.', 'wppa'); ?><br /><br />
 			<?php _e('If you want to display the <b>cover</b> of the album, i.e. like one of the albums in the "Photo Gallery" as used above, add (instead of "%%album=...") a second line like this:', 'wppa'); ?><br />
 			<tt>%%cover=19%%</tt><br /><br />
-			<?php _e('If you want to display the <b>slideshow</b> directly, use:', 'wppa'); ?><br/>
+			<?php _e('If you want to display the <b>slideshow</b> directly, use:', 'wppa'); ?><br />
 			<tt>%%slide=19%%</tt><br /><br />
 			<?php _e('You can add a third line if you want the photos to be displayed at a different size than normal. You can "overrule" the "Full size" setting by adding the line (for e.g. 300px):', 'wppa'); ?><br />
 			<tt>%%size=300%%</tt><br /><br />
@@ -107,9 +107,9 @@ global $wppa_revno;
 			<tt>&lt;?php wppa_albums(19, 'slide'); ?&gt;</tt><br /><br />
 			<?php _e('If you want to specify a size, add another argument:', 'wppa'); ?><br />
 			<tt>&lt;?php wppa_albums(19, 'album', 300); ?&gt;</tt><br /><br />
-			<?php _e('For more information on usable php routines see the <a href="http://wppa.opajaap.nl/">Docs & Demos</a> website.', 'wppa'); ?><br/>
-			<?php _e('In order to work properly, the wppa_albums() tag needs to be within the <a href="http://codex.wordpress.org/The_Loop" target="_blank">WordPress loop</a>.', 'wppa'); ?><br/>
-			<?php _e('For more information on creating custom page templates, click', 'wppa'); ?> <a href="http://codex.wordpress.org/Pages#Creating_your_own_Page_Templates"><?php _e('here', 'wppa'); ?></a>.<br/>
+			<?php _e('For more information on usable php routines see the <a href="http://wppa.opajaap.nl/">Docs & Demos</a> website.', 'wppa'); ?><br />
+			<?php _e('In order to work properly, the wppa_albums() tag needs to be within the <a href="http://codex.wordpress.org/The_Loop" target="_blank">WordPress loop</a>.', 'wppa'); ?><br />
+			<?php _e('For more information on creating custom page templates, click', 'wppa'); ?> <a href="http://codex.wordpress.org/Pages#Creating_your_own_Page_Templates"><?php _e('here', 'wppa'); ?></a>.<br />
 		</p>
 		
 		<h3><?php _e('Adjusting CSS and Template Styling', 'wppa'); ?></h3>
@@ -134,12 +134,10 @@ global $wppa_revno;
 		<h3><?php _e('Plugin Support And Feature Request', 'wppa'); ?></h3>
 		<p>
 			<?php _e('If you\'ve read over this readme carefully and are still having issues, if you\'ve discovered a bug,', 'wppa'); ?>
-			<?php _e('or have a feature request, please contact me via my <a href="mailto:opajaap@opajaap.nl?subject=WP%20Photo%20Album%20Plus">E-mail</a>.', 'wppa'); ?>
-			<br/>
-			<?php _e('You may also check the <a href="http://wordpress.org/tags/wp-photo-album-plus">forum</a> for this plugin and/or leave a question there.', 'wppa'); ?>
-			<br/>
+			<?php _e('or have a feature request, please check the <a href="http://wordpress.org/tags/wp-photo-album-plus">forum</a> for this plugin and/or leave a question there.', 'wppa'); ?>
+			<br />
 			<?php _e('For hot fixes check the <a href="http://plugins.trac.wordpress.org/log/wp-photo-album-plus/">development log</a> for this plugin.', 'wppa'); ?>
-			<br/>
+			<br />
 			<?php _e('You may also visit the <a href="http://wppa.opajaap.nl/" target="_blank">WPPA+ Docs & Demos site</a> that also contains the <a href="http://wppa.opajaap.nl/?page_id=39" target="_blank">WPPA+ Tutorial</a>.', 'wppa'); ?>
 		</p>
         <p>
@@ -149,8 +147,9 @@ global $wppa_revno;
 		<h3><?php _e('About and credits', 'wppa'); ?></h3>
 		<p>
 			<?php _e('WP Photo Album Plus is extended with many new features and is maintained by J.N. Breetvelt, a.k.a. (<a href="http://www.opajaap.nl/">OpaJaap</a>)', 'wppa'); ?><br />
-			<?php _e('Thanx to R.J. Kaplan for WP Photo Album 1.5.1.', 'wppa'); ?><br/>
-			<?php _e('Thanx to E.S. Rosenberg for programming tips on security issues.', 'wppa'); ?><br/>
+			<?php _e('Thanx to R.J. Kaplan for WP Photo Album 1.5.1.', 'wppa'); ?><br />
+			<?php _e('Thanx to E.S. Rosenberg for programming tips on security issues.', 'wppa'); ?><br />
+			<?php _e('Thanx to Pavel &#352;orejs for the Numbar code.', 'wppa'); ?><br />
 			<?php _e('Thanx to the users who reported bugs and asked for enhancements. Without them WPPA should not have been what it is now!', 'wppa'); ?>
 		</p>
 		

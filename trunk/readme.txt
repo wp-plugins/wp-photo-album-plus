@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, multisite, network, lightbox
-Version: 4.2.1
+Version: 4.2.2
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -106,6 +106,26 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 4.2.2 =
+
+= Bug fixes =
+
+* Link to slideshow from topten widget linked to only one fullsize photo when topten was systemwide. Fixed.
+
+= New features =
+
+* You can apply a watermark to the fullsize image during upload/import. See Table IX item 14 .. 17.
+* You can give album admin rights and upload rights to subscribers. See Table VII item 4 and 5.
+If you use this feature, it is strongly recommended to set the album access to 'owners only' (Table VII item 2).
+* The owner of an album can be set to --- public ---. When album access is set to 'Owners only' (Table VII item 2),
+and upload rights are granted to certain roles, the corresponding users can upload to all their 'own' albums as well as
+to --- public --- albums.
+
+= Other changes =
+
+* You will still get a warning message if you are uploading/importing images that are smaller than the thumbnail size, but they will be there. 
+The thumbnails will be stretched to their minimum required size.
 
 = 4.2.1 =
 
