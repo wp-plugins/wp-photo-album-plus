@@ -1,5 +1,8 @@
 <?php
 /*
+*
+* WPPA+ version 4.2.2
+*
 * PHP Image Resize Class
 *
 * Class to deal with resizing images using PHP.
@@ -82,7 +85,7 @@ class wppa_ImageResize {
    */
   
    function __constructor($strPath, $strSavePath, $strType = "W", $value = "150", $boolProtect = true){
-      $this->wppa_ImageResize($strPath, $strSavePath, $strType, $value); 
+      $this->wppa_ImageResize($strPath, $strSavePath, $strType, $value, $boolProtect); 
    }
   
    /*  

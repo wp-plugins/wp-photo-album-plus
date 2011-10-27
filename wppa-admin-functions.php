@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 * gp admin functions
-* version 4.2.1
+* version 4.2.2
 *
 * 
 */
@@ -120,8 +120,14 @@ function wppa_set_caps() {
 		$wp_roles->add_cap('administrator', 'wppa_admin');
 		$wp_roles->add_cap('administrator', 'wppa_sidebar_admin');
 		$wp_roles->add_cap('administrator', 'wppa_upload');
-		/* album admin and upload */
+		/* album admin */
 		$level = get_option('wppa_accesslevel', 'administrator');
+		if ($level == 'subscriber') {
+			$wp_roles->add_cap('subscriber', 'wppa_admin');		
+			$wp_roles->add_cap('contributor', 'wppa_admin');
+			$wp_roles->add_cap('author', 'wppa_admin');
+			$wp_roles->add_cap('editor', 'wppa_admin');	
+		}
 		if ($level == 'contributor') {
 			$wp_roles->remove_cap('subscriber', 'wppa_admin');		
 			$wp_roles->add_cap('contributor', 'wppa_admin');
@@ -148,6 +154,12 @@ function wppa_set_caps() {
 		}
 		/* upload photos */
 		$level = get_option('wppa_accesslevel_upload', 'administrator');
+		if ($level == 'subscriber') {
+			$wp_roles->add_cap('subscriber', 'wppa_upload');		
+			$wp_roles->add_cap('contributor', 'wppa_upload');
+			$wp_roles->add_cap('author', 'wppa_upload');
+			$wp_roles->add_cap('editor', 'wppa_upload');	
+		}
 		if ($level == 'contributor') {
 			$wp_roles->remove_cap('subscriber', 'wppa_upload');		
 			$wp_roles->add_cap('contributor', 'wppa_upload');
@@ -308,6 +320,8 @@ function wppa_user_select($select = '') {
 	$result = '';
 	$iam = $select == '' ? wppa_get_user() : $select;
 	$users = wppa_get_users();
+	$sel = $select == '--- public ---' ? 'selected="selected"' : '';
+	$result .= '<option value="--- public ---" '.$sel.'>'.__('--- public ---', 'wppa').'</option>';
 	foreach ($users as $usr) {
 		if ($usr['user_login'] == $iam) $sel = 'selected="selected"';
 		else $sel = '';
@@ -319,6 +333,7 @@ function wppa_user_select($select = '') {
 function wppa_chmod($chmod) {
 	_wppa_chmod_(WPPA_UPLOAD_PATH, $chmod);
 	_wppa_chmod_(WPPA_UPLOAD_PATH.'/thumbs', $chmod);
+	_wppa_chmod_(WPPA_UPLOAD_PATH.'/watermarks', $chmod);
 	if ( is_multisite() ) {
 		_wppa_chmod_(WPPA_DEPOT_PATH, $chmod);	// Myself only
 	}
@@ -644,23 +659,6 @@ function wppa_walktree($relroot, $source) {
 		}
 		closedir($handle);
 	}
-}
-
-function wppa_is_id_free($type, $id) {
-global $wpdb;
-	if (!is_numeric($id)) return false;
-	if ($id == '0') return false;
-	
-	$table = '';
-	if ($type == 'album') $table = WPPA_ALBUMS;
-	if ($type == 'photo') $table = WPPA_PHOTOS;
-	if ($table == '') {
-		echo('Unexpected error in wppa_is_id_free()');
-		return false;
-	}
-	$res = $wpdb->get_row($wpdb->prepare( 'SELECT * FROM '.$table.' WHERE id = %s', $id ), 'ARRAY_A');
-	if ($res) return false;
-	return true;
 }
 
 function wppa_sanitize_files() {

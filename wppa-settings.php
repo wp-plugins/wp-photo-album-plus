@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 4.2.1
+* Version 4.2.2
 *
 */
 
@@ -356,7 +356,25 @@ global $options_error;
 			wppa_update_check('wppa_apply_newphoto_desc');
 			wppa_update_textarea('wppa_newphoto_description');
 			wppa_update_check('wppa_autoclean');
-		
+			wppa_update_check('wppa_watermark_on');
+			wppa_update_check('wppa_watermark_user');
+			wppa_update_value('wppa_watermark_file');
+			wppa_update_value('wppa_watermark_pos');
+			
+			if ( isset($_FILES['file_1']) && $_FILES['file_1']['error'] != 4 ) { // Expected a fileupload for a watermark
+				$file = $_FILES['file_1'];
+				if ( $file['error'] ) {
+					wppa_error_message(sprintf(__('Upload error %s', 'wppa'), $file['error']));
+				} 
+				elseif ( $file['type'] != 'image/png' ) {
+					wppa_error_message(sprintf(__('Uploaded file %s is not a .png file', 'wppa'), $file['name']));
+				}
+				else {
+					copy($file['tmp_name'], WPPA_UPLOAD_PATH . '/watermarks/' . basename($file['name']) );
+					wppa_update_message('Upload done');
+				}
+			}
+			
 			// Done update options!
 			if ($options_error) wppa_update_message(__('Other changes saved', 'wppa'));
 			else {
@@ -425,7 +443,7 @@ global $wppa_api_version;
 		}
 ?>
 		<!--<br /><a href="javascript:window.print();"><?php //_e('Print settings', 'wppa') ?></a><br />-->
-		<form action="<?php echo(wppa_dbg_url(get_admin_url().'admin.php?page=wppa_options')) ?>" method="post">
+		<form enctype="multipart/form-data" action="<?php echo(wppa_dbg_url(get_admin_url().'admin.php?page=wppa_options')) ?>" method="post">
 	
 			<?php wppa_nonce_field('$wppa_nonce', WPPA_NONCE); ?>
 			
@@ -1632,9 +1650,9 @@ global $wppa_api_version;
 						$html = wppa_select($slug, $options, $values);
 						wppa_setting($slug, '1', $name, $desc, $html, $help);
 
-						$name = __('Album access', 'wppa');
-						$desc = __('Limit album access to album owners only.', 'wppa');
-						$help = esc_js(__('If checked, users who can edit albums and upload/import photos can do that with their own albums only.', 'wppa')); 
+						$name = __('Owners only', 'wppa');
+						$desc = __('Limit album access to the album owners only.', 'wppa');
+						$help = esc_js(__('If checked, users who can edit albums and/or upload/import photos can do that with their own albums and --- public --- albums only.', 'wppa')); 
 						$help .= '\n'.esc_js(__('Users can give their albums to another user. Administrators can change ownership and access all albums always.', 'wppa'));
 						$slug = 'wppa_owner_only';
 						$html = wppa_checkbox($slug);
@@ -1654,27 +1672,32 @@ global $wppa_api_version;
 						$html = wppa_select($slug, $options, $values);
 						wppa_setting($slug, '3', $name, $desc, $html, $help);
 						
+						$help_extra = '\n\n'.esc_js(__('If you enable any access to users who are not adminstrators, it is strongly recommended to set the album access to \'Owners only\' (item 2).', 'wppa'));
+						
 						$name = __('Photo Albums', 'wppa');
 						$desc = __('Albums Access Level.', 'wppa');
-						$help = esc_js(__('The minmum user level that can access the photo album admin (i.e. Manage Albums and Upload Photos).', 'wppa'));
+						$help = esc_js(__('The minmum user level that can access the photo album admin (i.e. Create and Manage Albums).', 'wppa'));
+						$help .= $help_extra;
 						$slug = 'wppa_accesslevel';
-						$options = array(__('Administrator', 'wppa'), __('Editor', 'wppa'), __('Author', 'wppa'), __('Contributor', 'wppa'));
-						$values = array('administrator', 'editor', 'author', 'contributor');
+						$options = array(__('Administrator', 'wppa'), __('Editor', 'wppa'), __('Author', 'wppa'), __('Contributor', 'wppa'), __('Subscriber', 'wppa'));
+						$values = array('administrator', 'editor', 'author', 'contributor', 'subscriber');
 						$html = wppa_select($slug, $options, $values);
 						wppa_setting($slug, '4', $name, $desc, $html, $help);
 						
 						$name = __('Upload', 'wppa');
 						$desc = __('Upload/Import Access Level.', 'wppa');
 						$help = esc_js(__('The minmum user level that can upload or import photos.', 'wppa')); 
+						$help .= $help_extra;
 						$slug = 'wppa_accesslevel_upload';
-						$options = array(__('Administrator', 'wppa'), __('Editor', 'wppa'), __('Author', 'wppa'), __('Contributor', 'wppa'));
-						$values = array('administrator', 'editor', 'author', 'contributor');
+						$options = array(__('Administrator', 'wppa'), __('Editor', 'wppa'), __('Author', 'wppa'), __('Contributor', 'wppa'), __('Subscriber', 'wppa'));
+						$values = array('administrator', 'editor', 'author', 'contributor', 'subscriber');
 						$html = wppa_select($slug, $options, $values);
 						wppa_setting($slug, '5', $name, $desc, $html, $help);
 						
 						$name = __('Widget', 'wppa');
 						$desc = __('Photo of the day widget admin.', 'wppa');
 						$help = esc_js(__('The minmum user level that can access the photo of the day sidebar widget admin.', 'wppa'));
+						$help .= $help_extra;
 						$slug = 'wppa_accesslevel_sidebar';
 						$options = array(__('Administrator', 'wppa'), __('Editor', 'wppa'), __('Author', 'wppa'), __('Contributor', 'wppa'));
 						$values = array('administrator', 'editor', 'author', 'contributor');
@@ -2014,7 +2037,46 @@ global $wppa_api_version;
 						$slug = 'wppa_autoclean';
 						$html = wppa_checkbox($slug);
 						wppa_setting($slug, '13', $name, $desc, $html, $help);
+
+						$name = __('Watermark', 'wppa');
+						$desc = __('Enable the application of watermarks.', 'wppa');
+						$help = esc_js(__('If checked, photos can be watermarked during upload / import.', 'wppa'));
+						$slug = 'wppa_watermark_on';
+						$onchange = 'wppaCheckWatermark()';
+						$html = wppa_checkbox($slug, $onchange);
+						wppa_setting($slug, '14', $name, $desc, $html, $help);
 						
+						$name = __('User Watermark', 'wppa');
+						$desc = __('Uploading users may select watermark settings', 'wppa');
+						$help = esc_js(__('If checked, anyone who can upload and/or import photos can overrule the default watermark settings.', 'wppa'));
+						$slug = 'wppa_watermark_user';
+						$class = 'wppa_watermark';
+						$html = wppa_checkbox($slug);
+						wppa_setting($slug, '15', $name, $desc, $html, $help, $class);
+						
+						$wppa['no_default'] = true;
+						
+						$name = __('Watermark file', 'wppa');
+						$desc = __('The default watermarkfile to be used.', 'wppa');
+						$help = esc_js(__('Watermark files are of type png and reside in', 'wppa') . ' ' . WPPA_UPLOAD_URL . '/watermarks/');
+						$help .= "\n\n".esc_js(__('A suitable watermarkfile typically consists of a transparent background and a black text or drawing.', 'wppa'));
+						$help .= "\n".esc_js(__('The watermark image will be overlaying the photo with 80% transparency.', 'wppa'));
+						$slug = 'wppa_watermark_file';
+						$class = 'wppa_watermark';
+						$html = '<select style="font-size:11px; height:20px; margin:0 20px 0 0; padding:0; " name="wppa_watermark_file" id="wppa_watermark_file">' . wppa_watermark_file_select('default') . '</select>';
+						$html .= __('position:', 'wppa').'<select style="font-size:11px; height:20px; margin:0 0 0 20px; padding:0; "name="wppa_watermark_pos" id="wppa_watermark_pos">' . wppa_watermark_pos_select('default') . '</select>';
+						wppa_setting($slug, '16', $name, $desc, $html, $help, $class);
+	
+						$name = __('Upload watermark', 'wppa');
+						$desc = __('Upload a new watermark file', 'wppa');
+						// $help = ''; SAME AS PREVIOUS
+						$slug = 'wppa_watermark_upload';
+						$html = '<input id="my_file_element" type="file" name="file_1" style="height:18px; font-size: 11px;" />';
+						wppa_setting($slug, '17', $name, $desc, $html, $help, $class);
+						
+						
+						$wppa['no_default'] = false;
+					
 						?>
 					</tbody>
 					<tfoot style="font-weight: bold;" class="wppa_table_9">
@@ -2168,7 +2230,7 @@ global $wppa_defaults;
 	}
 	
 //	$result .= '<td><a style="color: '.$color.';text-decoration: none; font-weight: '.$fw.'; cursor: pointer;" title="'.$title.'" onclick="alert('."'".$hlp."'".')">'.$char.'</a></td>';
-	$result .= '<td><input type="button" style="font_size: 11px; margin: 0px; padding: 0px; color: '.$color.';text-decoration: none; font-weight: '.$fw.'; cursor: pointer;" title="'.$title.'" onclick="alert('."'".$hlp."'".')" value="'.$char.'"></td>';
+	$result .= '<td><input type="button" style="font-size: 11px; margin: 0px; padding: 0px; color: '.$color.';text-decoration: none; font-weight: '.$fw.'; cursor: pointer;" title="'.$title.'" onclick="alert('."'".$hlp."'".')" value="'.$char.'"></td>';
 	
 	$result .= '</tr>';
 	
@@ -2224,7 +2286,7 @@ global $wppa_defaults;
 	}
 	
 //	$result .= '<td><a style="color: '.$color.';text-decoration: none; font-weight: '.$fw.'; cursor: pointer;" title="'.$title.'" onclick="alert('."'".$hlp."'".')">'.$char.'</a></td>';
-	$result .= '<td><input type="button" style="font_size: 11px; margin: 0px; padding: 0px; color: '.$color.';text-decoration: none; font-weight: '.$fw.'; cursor: pointer;" title="'.$title.'" onclick="alert('."'".$hlp."'".')" value="'.$char.'"></td>';
+	$result .= '<td><input type="button" style="font-size: 11px; margin: 0px; padding: 0px; color: '.$color.';text-decoration: none; font-weight: '.$fw.'; cursor: pointer;" title="'.$title.'" onclick="alert('."'".$hlp."'".')" value="'.$char.'"></td>';
 	
 	$result .= '</tr>';
 	
@@ -2280,7 +2342,7 @@ global $wppa_defaults;
 	}
 	
 //	$result .= '<td><a style="color: '.$color.';text-decoration: none; font-weight: '.$fw.'; cursor: pointer;" title="'.$title.'" onclick="alert('."'".$hlp."'".')">'.$char.'</a></td>';
-	$result .= '<td><input type="button" style="font_size: 11px; margin: 0px; padding: 0px; color: '.$color.';text-decoration: none; font-weight: '.$fw.'; cursor: pointer;" title="'.$title.'" onclick="alert('."'".$hlp."'".')" value="'.$char.'"></td>';
+	$result .= '<td><input type="button" style="font-size: 11px; margin: 0px; padding: 0px; color: '.$color.';text-decoration: none; font-weight: '.$fw.'; cursor: pointer;" title="'.$title.'" onclick="alert('."'".$hlp."'".')" value="'.$char.'"></td>';
 	
 	$result .= '</tr>';
 	
@@ -2337,7 +2399,7 @@ function wppa_input($slug, $width, $minwidth = '', $text = '', $onchange = '') {
 
 	$html = '<input style="width: '.$width.';';
 	if ($minwidth != '') $html .= ' min-width:'.$minwidth.';';
-	$html .= ' font_size: 11px; margin: 0px; padding: 0px;" type="text" name="'.$slug.'" id="'.$slug.'"';
+	$html .= ' font-size: 11px; margin: 0px; padding: 0px;" type="text" name="'.$slug.'" id="'.$slug.'"';
 	if ($onchange != '') $html .= ' onchange="'.$onchange.'"';
 	$html .= ' value="'.stripslashes(get_option($slug)).'" />'.$text;
 	
@@ -2379,7 +2441,7 @@ function wppa_select($slug, $options, $values, $onchange = '', $class = '') {
 		return $html;
 	}
 	
-	$html = '<select style="font_size: 11px; height: 20px; margin: 0px; padding: 0px;" name="'.$slug.'" id="'.$slug.'"';
+	$html = '<select style="font-size: 11px; height: 20px; margin: 0px; padding: 0px;" name="'.$slug.'" id="'.$slug.'"';
 	if ($onchange != '') $html .= ' onchange="'.$onchange.'"';
 	if ($class != '') $html .= ' class="'.$class.'"';
 	$html .= '>';
@@ -2401,7 +2463,7 @@ function wppa_select($slug, $options, $values, $onchange = '', $class = '') {
 
 function wppa_button($text, $onclick) {
 
-	$html = '<input style="font_size: 11px; height: 20px; margin: 0px; padding: 0px;" type="button" value="'.$text.'"'; 
+	$html = '<input style="font-size: 11px; height: 20px; margin: 0px; padding: 0px;" type="button" value="'.$text.'"'; 
 	if ($onclick != '') $html .= ' onclick="'.$onclick.'"';
 	$html .= ' />';
 
