@@ -8,7 +8,7 @@
 /*
 /* You may always look into a newer version of this file to see what new classes and id's come with an upgrade
 /*
-/* This is version 4.2.0
+/* This is version 4.2.3
 */
 
 /* Navigation */
@@ -266,4 +266,10 @@ margin: 0 auto;
 
 .wppa-numberbar a.wppa-numbar-current{
  /*   background-color: #000; */
+}
+
+/* The NEW indicator images */
+.wppa-thumbnew {
+}
+.wppa-albumnew {
 }

@@ -3,13 +3,13 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions and API modules
-* Version 4.2.2
+* Version 4.2.3
 *
 *
 */
 /* Moved to wppa-commonfunctions.php:
 global $wppa_api_version;
-$wppa_api_version = '4-2-2-000';
+$wppa_api_version = '4-2-3-000';
 */
 
 
@@ -78,7 +78,7 @@ global $wppa_opt;
 
 	$separate = wppa_is_separate($alb);
 	
-$slide = ( wppa_get_album_title_linktype($alb) == 'slide' ) ? '&amp;wppa-slide' : '';
+	$slide = ( wppa_get_album_title_linktype($alb) == 'slide' ) ? '&amp;wppa-slide' : '';
 
 	// See if we link to covers or to contents
 	$to_cover = $wppa_opt['wppa_thumbtype'] == 'none' ? '1' : '0';
@@ -130,6 +130,9 @@ $slide = ( wppa_get_album_title_linktype($alb) == 'slide' ) ? '&amp;wppa-slide' 
 		}
 		elseif (wppa_get_get('topten')) {
 			$wppa['out'] .= wppa_nltab().'<span class="wppa-nav-text b11" style="'.__wcs('wppa-nav-text').__wcs('wppa-black').'" ><b>&nbsp;'.__a('Top rated photos', 'wppa_theme').'</b></span>';
+		}
+		elseif (wppa_get_get('comwidget')) {
+			$wppa['out'] .= wppa_nltab().'<span class="wppa-nav-text b11" style="'.__wcs('wppa-nav-text').__wcs('wppa-black').'" ><b>&nbsp;'.__a('Recently commented photos', 'wppa_theme').'</b></span>';
 		}
 	$wppa['out'] .= wppa_nltab('-').'</div>';
 }
@@ -631,6 +634,20 @@ global $wppa_opt;
 		if ($alb) $thumbs = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM `'.WPPA_PHOTOS.'` WHERE `mean_rating` > 0 AND `album` = %s ORDER BY `mean_rating` DESC LIMIT %d', $alb, $max ) , 'ARRAY_A' );
 		else $thumbs = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM `'.WPPA_PHOTOS.'` WHERE `mean_rating` > 0 ORDER BY `mean_rating` DESC LIMIT %d', $max ) , 'ARRAY_A');
 	}
+	elseif (wppa_get_get('comwidget')) {
+		$max = $wppa_opt['wppa_comment_count'];
+		$comments = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM `".WPPA_COMMENTS."` WHERE `status` = 'approved' ORDER BY `timestamp` DESC LIMIT %d", $max ), 'ARRAY_A' );
+		$thumbs = false;
+		$indexes = false;
+		$indexes[] = '-1';
+		if ($comments) foreach ($comments as $comment) {
+			if ( ! in_array($comment['photo'], $indexes ) ) { 	// Not a duplicate
+				$thumb = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM `".WPPA_PHOTOS."` WHERE `id` = %s", $comment['photo'] ), 'ARRAY_A' );
+				$thumbs[] = $thumb;
+				$indexes[] = $comment['photo'];	// remember for check on duplicate
+			}
+		}
+	}
 	elseif ( strlen($src) && $wppa['master_occur'] == '1' ) {	// Search is in occur 1 only
 		$tmbs = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM '.WPPA_PHOTOS.' '.wppa_get_photo_order('0') ), 'ARRAY_A');
 		$thumbs = '';
@@ -803,7 +820,7 @@ global $wppa_opt;
 	$avgrat = $wpdb->get_var( $wpdb->prepare( 'SELECT `mean_rating` FROM `'.WPPA_PHOTOS.'` WHERE `id` = %s LIMIT 1', $id ) ); 
 	if (!$avgrat) $avgrat = '0';
 	
-	$comment = $comment_allowed ? wppa_comment_html($id) : __a('You must login to enter a comment', 'wppa_theme');
+	$comment = wppa_comment_html($id, $comment_allowed);
 	
 	// Compose the rating request callback url. Also usefull as comment request url (?)
 	$url = wppa_get_permalink('js');
@@ -998,7 +1015,7 @@ global $wppa_done;
 }
 
 // Build the html for the comment box
-function wppa_comment_html($id) {
+function wppa_comment_html($id, $comment_allowed) {
 global $wpdb;
 global $wppa;
 global $wppa_opt;
@@ -1026,6 +1043,7 @@ global $wppa_first_comment_html;
 	$n_comments = 0;
 	if ($wppa_opt['wppa_comments_desc']) $ord = 'DESC'; else $ord = '';
 	$comments = $wpdb->get_results($wpdb->prepare( 'SELECT * FROM '.WPPA_COMMENTS.' WHERE photo = %s ORDER BY id '.$ord, $id ), 'ARRAY_A' );
+	$com_count = count($comments);
 	$color = 'darkgrey';
 	if ($wppa_opt['wppa_fontcolor_box']) $color = $wppa_opt['wppa_fontcolor_box'];
 	if ($comments) {
@@ -1077,39 +1095,50 @@ global $wppa_first_comment_html;
 	$returnurl .= 'wppa-photo='.$id;
 
 	// The comment form
-	$result .= '<div id="wppa-comform-wrap-'.$wppa['master_occur'].'" style="display:none;" >';
-		$result .= '<form id="wppa-commentform-'.$wppa['master_occur'].'" class="wppa-comment-form" action="'.$returnurl.'" method="post" style="" onsubmit="return wppaValidateComment('.$wppa['master_occur'].')">';
-			$result .= wp_nonce_field('wppa-check' , 'wppa-nonce', false, false);
-			if ($album) $result .= '<input type="hidden" name="wppa-album" value="'.$album.'" />';
-			if ($cover) $result .= '<input type="hidden" name="wppa-cover" value="'.$cover.'" />';
-			if ($slide) $result .= '<input type="hidden" name="wppa-slide" value="'.$slide.'" />';
-			if ($is_current) $result .= '<input type="hidden" name="wppa-comment-edit" value="'.$wppa['comment_id'].'" />';
-			$result .= '<input type="hidden" name="wppa-occur" value="'.$wppa['occur'].'" />';
+	if ( $comment_allowed ) {
+		$result .= '<div id="wppa-comform-wrap-'.$wppa['master_occur'].'" style="display:none;" >';
+			$result .= '<form id="wppa-commentform-'.$wppa['master_occur'].'" class="wppa-comment-form" action="'.$returnurl.'" method="post" style="" onsubmit="return wppaValidateComment('.$wppa['master_occur'].')">';
+				$result .= wp_nonce_field('wppa-check' , 'wppa-nonce', false, false);
+				if ($album) $result .= '<input type="hidden" name="wppa-album" value="'.$album.'" />';
+				if ($cover) $result .= '<input type="hidden" name="wppa-cover" value="'.$cover.'" />';
+				if ($slide) $result .= '<input type="hidden" name="wppa-slide" value="'.$slide.'" />';
+				if ($is_current) $result .= '<input type="hidden" name="wppa-comment-edit" value="'.$wppa['comment_id'].'" />';
+				$result .= '<input type="hidden" name="wppa-occur" value="'.$wppa['occur'].'" />';
 
-			$result .= '<table id="wppacommenttable-'.$wppa['master_occur'].'" style="margin:0;">';
-				$result .= '<tbody>';
-					$result .= '<tr valign="top" style="'.$vis.'">';
-						$result .= '<td class="wppa-box-text wppa-td" style="width:30%; '.__wcs('wppa-box-text').__wcs('wppa-td').'" >'.__a('Your name:', 'wppa_theme').'</td>';
-						$result .= '<td class="wppa-box-text wppa-td" style="width:70%; '.__wcs('wppa-box-text').__wcs('wppa-td').'" ><input type="text" name="wppa-comname" id="wppa-comname-'.$wppa['master_occur'].'" style="width:100%; " value="'.$wppa['comment_user'].'" /></td>';
-					$result .= '</tr>';
-					$result .= '<tr valign="top" style="'.$vis.'">';
-						$result .= '<td class="wppa-box-text wppa-td" style="width:30%; '.__wcs('wppa-box-text').__wcs('wppa-td').'" >'.__a('Your email:', 'wppa_theme').'</td>';
-						$result .= '<td class="wppa-box-text wppa-td" style="width:70%; '.__wcs('wppa-box-text').__wcs('wppa-td').'" ><input type="text" name="wppa-comemail" id="wppa-comemail-'.$wppa['master_occur'].'" style="width:100%; " value="'.$wppa['comment_email'].'" /></td>';
-					$result .= '</tr>';
-					$result .= '<tr valign="top" style="vertical-align:top;">';	
-						$result .= '<td valign="top" class="wppa-box-text wppa-td" style="vertical-align:top; width:30%; '.__wcs('wppa-box-text').__wcs('wppa-td').'" >'.__a('Your comment:', 'wppa_theme').'<br />'.$wppa['comment_user'].'<br /><input type="submit" name="commentbtn" value="'.$btn.'" style="margin:0;" /></td>';
-						$result .= '<td valign="top" class="wppa-box-text wppa-td" style="vertical-align:top; width:70%; '.__wcs('wppa-box-text').__wcs('wppa-td').'" ><textarea name="wppa-comment" id="wppa-comment-'.$wppa['master_occur'].'" style="height:60px; width:100%; ">'.esc_js(stripslashes($txt)).'</textarea></td>';
-					$result .= '</tr>';
-				$result .= '</tbody>';
-			$result .= '</table>';	
-		$result .= '</form>';
-	$result .= '</div>';
+				$result .= '<table id="wppacommenttable-'.$wppa['master_occur'].'" style="margin:0;">';
+					$result .= '<tbody>';
+						$result .= '<tr valign="top" style="'.$vis.'">';
+							$result .= '<td class="wppa-box-text wppa-td" style="width:30%; '.__wcs('wppa-box-text').__wcs('wppa-td').'" >'.__a('Your name:', 'wppa_theme').'</td>';
+							$result .= '<td class="wppa-box-text wppa-td" style="width:70%; '.__wcs('wppa-box-text').__wcs('wppa-td').'" ><input type="text" name="wppa-comname" id="wppa-comname-'.$wppa['master_occur'].'" style="width:100%; " value="'.$wppa['comment_user'].'" /></td>';
+						$result .= '</tr>';
+						$result .= '<tr valign="top" style="'.$vis.'">';
+							$result .= '<td class="wppa-box-text wppa-td" style="width:30%; '.__wcs('wppa-box-text').__wcs('wppa-td').'" >'.__a('Your email:', 'wppa_theme').'</td>';
+							$result .= '<td class="wppa-box-text wppa-td" style="width:70%; '.__wcs('wppa-box-text').__wcs('wppa-td').'" ><input type="text" name="wppa-comemail" id="wppa-comemail-'.$wppa['master_occur'].'" style="width:100%; " value="'.$wppa['comment_email'].'" /></td>';
+						$result .= '</tr>';
+						$result .= '<tr valign="top" style="vertical-align:top;">';	
+							$result .= '<td valign="top" class="wppa-box-text wppa-td" style="vertical-align:top; width:30%; '.__wcs('wppa-box-text').__wcs('wppa-td').'" >'.__a('Your comment:', 'wppa_theme').'<br />'.$wppa['comment_user'].'<br /><input type="submit" name="commentbtn" value="'.$btn.'" style="margin:0;" /></td>';
+							$result .= '<td valign="top" class="wppa-box-text wppa-td" style="vertical-align:top; width:70%; '.__wcs('wppa-box-text').__wcs('wppa-td').'" ><textarea name="wppa-comment" id="wppa-comment-'.$wppa['master_occur'].'" style="height:60px; width:100%; ">'.esc_js(stripslashes($txt)).'</textarea></td>';
+						$result .= '</tr>';
+					$result .= '</tbody>';
+				$result .= '</table>';	
+			$result .= '</form>';
+		$result .= '</div>';
+	}
+	else {
+		$result .= __a('You must login to enter a comment', 'wppa_theme');
+	}
 	
 	$result .= '<div id="wppa-comfooter-wrap-'.$wppa['master_occur'].'" style="display:block;" >';
 		$result .= '<table id="wppacommentfooter-'.$wppa['master_occur'].'" class="wppa-comment-form" style="margin:0;">';
 			$result .= '<tbody><tr style= "text-align:center; "><td style="cursor:pointer;'.__wcs('wppa-box-text').'" ><a onclick="wppaStartStop('.$wppa['master_occur'].', -1)">';
-			if ($n_comments) $result .= sprintf(__a('%d  comments', 'wppa_theme'), $n_comments);
-			else $result .= __a('Leave a comment', 'wppa_theme');
+			if ( $n_comments ) {
+				$result .= sprintf(__a('%d  comments', 'wppa_theme'), $n_comments);
+			}
+			else {
+				if ( $comment_allowed ) {
+					$result .= __a('Leave a comment', 'wppa_theme');
+				}
+			}
 		$result .= '</a></td></tr></tbody></table>';
 	$result .= '</div>';
 
@@ -1207,6 +1236,7 @@ global $wppa_opt;
 			break;
 		case 'thumb':	// Normal
 		case 'ttthumb':	// Topten
+		case 'comthumb':	// Comment widget
 		case 'fthumb':	// Filmthumb
 			$result['style'] .= ' border-width: 0px;';
 			$result['style'] .= ' width:' . $width . 'px; height:' . $height . 'px;';
@@ -2009,7 +2039,7 @@ global $cover_count;
 					$wppa['out'] .= wppa_qtrans(stripslashes($album['name'])); 
 				} 
 				if ( wppa_is_album_new($album['id']) ) {
-					$wppa['out'] .= wppa_nltab().'<img src="'.WPPA_URL.'/images/star.png" title="New!" style=" width:16px; height:16px; box-shadow:none; " />';
+					$wppa['out'] .= wppa_nltab().'<img src="'.WPPA_URL.'/images/new.png" title="New!" class="wppa-albumnew" style="border:none; margin:0; padding:0; box-shadow:none; " />';
 				}
 			$wppa['out'] .= wppa_nltab('-').'</h2>';
 			if ($wppa_opt['wppa_show_cover_text']) {
@@ -2285,7 +2315,7 @@ global $wppa_opt;
 		if ($wppa_opt['wppa_thumb_text_name'] || $new) {
 			$wppa['out'] .= wppa_nltab().'<div class="wppa-thumb-text" style="'.__wcs('wppa-thumb-text').'" >';
 				if ($wppa_opt['wppa_thumb_text_name']) $wppa['out'] .= wppa_qtrans(stripslashes($thumb['name']));
-				if ($new) $wppa['out'] .= '&nbsp;<img src="'.WPPA_URL.'/images/star.png" title="New!" style=" width:12px; height:12px; box-shadow:none; " />';
+				if ($new) $wppa['out'] .= '&nbsp;<img src="'.WPPA_URL.'/images/new.png" title="New!" class="wppa-thumbnew" style="border:none; margin:0; padding:0; box-shadow:none; " />';
 			$wppa['out'] .= '</div>';
 		}
 		
@@ -2868,7 +2898,8 @@ global $wpdb;
 		 ( $wich == 'topten'     && $wppa_opt['wppa_topten_overrule'] ) ||
 		 ( $wich == 'sswidget'   && $wppa_opt['wppa_sswidget_overrule'] ) ||
 		 ( $wich == 'potdwidget' && $wppa_opt['wppa_potdwidget_overrule'] ) ||
-		 ( $wich == 'coverimg'   && $wppa_opt['wppa_coverimg_overrule'] ) ) {
+		 ( $wich == 'coverimg'   && $wppa_opt['wppa_coverimg_overrule'] ) ||
+		 ( $wich == 'comwidget'	 && $wppa_opt['wppa_comment_overrule'] ) ) {
 		// Look for a photo specific link
 		$data = $wpdb->get_row( $wpdb->prepare( 'SELECT * FROM '.WPPA_PHOTOS.' WHERE id=%s LIMIT 1', $photo ) , 'ARRAY_A' );
 			if ($data) {
@@ -2897,6 +2928,11 @@ global $wpdb;
 		case 'topten':
 			$type = $wppa_opt['wppa_topten_widget_linktype'];
 			$page = $wppa_opt['wppa_topten_widget_linkpage'];
+			if ($page == '0') $page = '-1';
+			break;
+		case 'comwidget':
+			$type = $wppa_opt['wppa_comment_widget_linktype'];
+			$page = $wppa_opt['wppa_comment_widget_linkpage'];
 			if ($page == '0') $page = '-1';
 			break;
 		case 'sswidget':
@@ -3106,6 +3142,9 @@ global $wpdb;
 	}
 	if ($wich == 'topten') {
 		$result['url'] .= '&amp;wppa-topten='.$wppa_opt['wppa_topten_count'];
+	}
+	if ($wich == 'comwidget') {
+		$result['url'] .= '&amp;wppa-comwidget='.$wppa_opt['wppa_comment_count'];
 	}
 	if ($page != '0') {	// on a different page
 		$occur = '1';

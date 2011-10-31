@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 4.2.2
+* Version 4.2.3
 *
 */
 
@@ -173,6 +173,9 @@ global $options_error;
 			
 			wppa_update_numeric('wppa_lightbox_bordersize', '0', __('Lightbox Bordersize', 'wppa'));
 			
+			wppa_update_numeric('wppa_comment_count', '2', __('Number of Comment widget entries', 'wppa'), '40');
+			wppa_update_numeric('wppa_comment_size', '32', __('Comment Widget image thumbnail size', 'wppa'), wppa_get_minisize());
+			
 
 			// Table 2: Visibility
 			wppa_update_check('wppa_show_bread');
@@ -296,7 +299,11 @@ global $options_error;
 			wppa_update_check('wppa_potdwidget_overrule');
 			wppa_update_value('wppa_coverimg_linktype');
 //			wppa_update_value('wppa_coverimg_linkpage');
-			wppa_update_check('wppa_coverimg_overrule');			
+			wppa_update_check('wppa_coverimg_overrule');	
+			wppa_update_value('wppa_comment_widget_linktype');
+			wppa_update_value('wppa_comment_widget_linkpage');
+			wppa_update_check('wppa_comment_overrule');
+			
 
 			// Table 7: Security
 			if (isset($_POST['wppa_chmod'])) {
@@ -688,6 +695,22 @@ global $wppa_api_version;
 						$html = wppa_input($slug, '40px', '', __('numbers', 'wppa'));
 						$class = 'wppa_numbar';
 						wppa_setting($slug, '24', $name, $desc, $html, $help, $class);
+						
+						$name = __('Comment count', 'wppa');
+						$desc = __('Number of entries in Comment widget.', 'wppa');
+						$help = esc_js(__('Enter the maximum number of entries in the Comment widget.', 'wppa'));
+						$slug = 'wppa_comment_count';
+						$html = wppa_input($slug, '40px', '', __('entries', 'wppa'));
+						wppa_setting($slug, '25', $name, $desc, $html, $help);
+						
+						$name = __('Comment size', 'wppa');
+						$desc = __('Size of thumbnails in Comment widget.', 'wppa');
+						$help = esc_js(__('Enter the size for the mini photos in the Comment widget.', 'wppa'));
+						$help .= '\n'.esc_js(__('The size applies to the width or height, whatever is the largest.', 'wppa'));
+						$help .= '\n'.esc_js(__('Recommended values: 86 for a two column and 56 for a three column display.', 'wppa'));
+						$slug = 'wppa_comment_size';
+						$html = wppa_input($slug, '40px', '', __('pixels', 'wppa'));
+						wppa_setting($slug, '26', $name, $desc, $html, $help);
 						
 						?>
 					</tbody>
@@ -1501,6 +1524,8 @@ global $wppa_api_version;
 						// First
 						$options_page_post[] = __('--- The same post or page ---', 'wppa');
 						$values_page_post[] = '0';
+						$options_page[] = __('--- Please select a page ---', 'wppa');
+						$values_page[] = '0';
 						// Pages if any
 						$query = $wpdb->prepare( "SELECT ID, post_title, post_content FROM " . $wpdb->posts . " WHERE post_type = 'page' AND post_status = 'publish' ORDER BY post_title ASC" );
 						$pages = $wpdb->get_results ($query, 'ARRAY_A');
@@ -1606,6 +1631,18 @@ global $wppa_api_version;
 						$html3 = wppa_checkbox($slug3);
 						wppa_setting_3($slug1, $slug2, $slug3, '6a,b,c', $name, $desc, $html1, $html2, $html3, $help);
 						
+						$name = __('CommentWidget', 'wppa');
+						$desc = __('Comment widget photo link.', 'wppa');
+						$help = esc_js(__('Select the type of link the comment widget photos point to.', 'wppa')); 
+						$slug1 = 'wppa_comment_widget_linktype'; 
+						$slug2 = 'wppa_comment_widget_linkpage';
+						$slug3 = 'wppa_comment_overrule';
+						$onchange = 'wppaCheckCommentLink()';
+						$html1 = wppa_select($slug1, $options_linktype, $values_linktype, $onchange);
+						$class = 'wppa_cmlp';
+						$html2 = wppa_select($slug2, $options_page, $values_page, '', $class);
+						$html3 = wppa_checkbox($slug3);
+						wppa_setting_3($slug1, $slug2, $slug3, '3a,b,c', $name, $desc, $html1, $html2, $html3, $help);
 						?>
 						
 					</tbody>

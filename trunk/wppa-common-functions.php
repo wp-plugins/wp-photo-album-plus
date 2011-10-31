@@ -2,11 +2,11 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 4.2.2
+* version 4.2.3
 *
 */
 global $wppa_api_version;
-$wppa_api_version = '4-2-2-000';
+$wppa_api_version = '4-2-3-000';
 // Initialize globals and option settings
 function wppa_initialize_runtime($force = false) {
 global $wppa;
@@ -145,9 +145,9 @@ global $blog_id;
 			'wppa_fontfamily_fulltitle' => '',
 			'wppa_fontsize_fulltitle' => '',
 			'wppa_fontcolor_fulltitle' => '',
-						'wppa_fontfamily_numbar' 	=> '',
-						'wppa_fontsize_numbar' 		=> '',
-						'wppa_fontcolor_numbar' 	=> '',
+			'wppa_fontfamily_numbar' 	=> '',
+			'wppa_fontsize_numbar' 		=> '',
+			'wppa_fontcolor_numbar' 	=> '',
 			'wppa_arrow_color' => '',
 			'wppa_widget_width' => '',
 			'wppa_max_cover_width' => '',
@@ -251,7 +251,13 @@ global $blog_id;
 			'wppa_watermark_user'			=> '',
 			'wppa_watermark_file'			=> '',
 			'wppa_watermark_pos'			=> '',
-			'wppa_watermark_upload'			=> ''
+			'wppa_watermark_upload'			=> '',
+			'wppa_comment_widget_linkpage'	=> '',
+			'wppa_comment_widget_linktype'	=> '',
+			'wppa_comment_count'			=> '',
+			'wppa_comment_size'				=> '',
+			'wppa_comment_overrule'			=> ''
+
 
 
 		);
@@ -915,9 +921,17 @@ global $wppa_opt;
 	$ps_x = $photosize[0];
 	$ps_y = $photosize[1];
 	$ws_x = $watersize[0];
-	if ( $ws_x > $ps_x ) $ws_x = $ps_x;
 	$ws_y = $watersize[1];
-	if ( $ws_y > $ps_y ) $ws_y = $ps_y;
+	$src_x = 0;
+	$src_y = 0;
+	if ( $ws_x > $ps_x ) {
+		$src_x = ($ws_x - $ps_x) / 2;
+		$ws_x = $ps_x;
+	}		
+	if ( $ws_y > $ps_y ) {
+		$src_y = ($ws_y - $ps_y) / 2;
+		$ws_y = $ps_y;
+	}
 	
 	$loy = substr( $waterpos, 0, 3);
 	switch($loy) {
@@ -940,7 +954,7 @@ global $wppa_opt;
 		default: $dest_x = 0; 	// should never get here
 	}
 
-	wppa_imagecopymerge_alpha( $photoimage , $waterimage , $dest_x, $dest_y, 0, 0, $ws_x, $ws_y, 20 );
+	wppa_imagecopymerge_alpha( $photoimage , $waterimage , $dest_x, $dest_y, $src_x, $src_y, $ws_x, $ws_y, 20 );
 
 	// Save the result
 	switch ($photosize[2]) {

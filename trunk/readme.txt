@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, multisite, network, lightbox
-Version: 4.2.2
+Version: 4.2.3
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -30,6 +30,7 @@ This plugin is designed to easily manage and display your photo albums and slide
 * You can add a Search Sidebar Widget which enables the visitors to search albums and photos for certain words in names and descriptions.
 * You can enable a rating system and a supporting Top Ten Photos Sidebar Widget that can hold a configurable number of high rated photos.
 * You can enable a comment system that allows visitors to enter comments on individual photos.
+* You can add a recent comments on photos Widget.
 * Apart from the full-size slideshows you can add a Sidebar Widget that displays a mini slideshow.
 * There is a General Purpose widget that is a text widget wherein you can use wppa+ script commands.
 * Almost all appearance settings can be done in the settings admin page. No php, html or css knowledge is required to customize the appearence of the photo display.
@@ -51,7 +52,7 @@ You can find the plugin admin section under Menu Photo Albums on the admin scree
 == Installation ==
 
 = Upgrade notice =
-This version is: Major rev# 4, Minor rev# 0, Fix rev# 12, Hotfix rev# 000.
+This version is: Major rev# 4, Minor rev# 2, Fix rev# 3, Hotfix rev# 000.
 If you are upgrading from a previous Major or Minor version, note that:
 * If you modified wppa_theme.php and/or wppa_style.css, you will have to use the newly supplied versions. The previous versions are NOT compatible.
 * If you set the userlevel to anything else than 'administrator' you may have to set it again. Note that changing the userlevel can be done by the administrator only!
@@ -106,6 +107,19 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 4.2.3 =
+
+= New features =
+
+* There is a new widget: Recent comments on photos.
+* The Yellow stars ar split into two different items: star.png for the rating system, new.png for the new indicator.
+A new.png is supplied. These images will have no border, padding, margin or box-shadow.
+
+= Other changes =
+
+* You will now see the existing comments even if entering comments are allowed when logged in only.
+* A popuped thumbnail will now pop down by a rightclick.
 
 = 4.2.2 =
 
