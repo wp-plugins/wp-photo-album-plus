@@ -1,5 +1,5 @@
 // Theme variables and functions
-// This is wppa-theme.js version 4.0.11
+// This is wppa-theme.js version 4.2.3
 //
 
 var wppaBackgroundColorImage = '';
@@ -17,7 +17,7 @@ function wppa_popup(mocc, elm, id, rating) {
 	// Ignore Duplicate call
 	if (id == wppa_saved_id[mocc]) return; 
 	wppa_saved_id[mocc] = id;
-	
+
 	// due to callback bug, see below, we need an extra timer 
 	// stop if running 
 	clearTimeout(_wppaTimer[mocc]);
@@ -27,13 +27,13 @@ function wppa_popup(mocc, elm, id, rating) {
 
 		switch (wppaPopupLinkType) {
 			case 'none':
-				jQuery('#wppa-popup-'+mocc).html('<div class="wppa-popup" onmouseout="wppa_popdown('+mocc+')" style="background-color:'+wppaBackgroundColorImage+'; text-align:center;"><img id="wppa-img-'+mocc+'" src="'+elm.src+'" title="" style="border-width: 0px;" /><div id="wppa-name-'+mocc+'" style="display:none; padding:2px;" class="wppa_pu_info">'+elm.alt+'</div><div id="wppa-desc-'+mocc+'" style="clear:both; display:none;" class="wppa_pu_info">'+elm.title+'</div><div id="wppa-rat-'+mocc+'" style="clear:both; display:none;" class="wppa_pu_info">'+rating+'</div></div>');
+				jQuery('#wppa-popup-'+mocc).html('<div class="wppa-popup" onmousedown="wppa_popdown(event,'+mocc+')" style="background-color:'+wppaBackgroundColorImage+'; text-align:center;"><img id="wppa-img-'+mocc+'" src="'+elm.src+'" title="" style="border-width: 0px;" /><div id="wppa-name-'+mocc+'" style="display:none; padding:2px;" class="wppa_pu_info">'+elm.alt+'</div><div id="wppa-desc-'+mocc+'" style="clear:both; display:none;" class="wppa_pu_info">'+elm.title+'</div><div id="wppa-rat-'+mocc+'" style="clear:both; display:none;" class="wppa_pu_info">'+rating+'</div></div>');
 				break;
 			case 'fullpopup':
-				jQuery('#wppa-popup-'+mocc).html('<div class="wppa-popup" onmouseout="wppa_popdown('+mocc+')" style="background-color:'+wppaBackgroundColorImage+'; text-align:center;"><img id="wppa-img-'+mocc+'" src="'+elm.src+'" title="" style="border-width: 0px;" onclick="'+wppaPopupOnclick[id]+'" /><div id="wppa-name-'+mocc+'" style="display:none; padding:2px;" class="wppa_pu_info">'+elm.alt+'</div><div id="wppa-desc-'+mocc+'" style="clear:both; display:none;" class="wppa_pu_info">'+elm.title+'</div><div id="wppa-rat-'+mocc+'" style="clear:both; display:none;" class="wppa_pu_info">'+rating+'</div></div>');
+				jQuery('#wppa-popup-'+mocc).html('<div class="wppa-popup" onmousedown="wppa_popdown(event,'+mocc+')" style="background-color:'+wppaBackgroundColorImage+'; text-align:center;"><img id="wppa-img-'+mocc+'" src="'+elm.src+'" title="" style="border-width: 0px;" onclick="'+wppaPopupOnclick[id]+'" /><div id="wppa-name-'+mocc+'" style="display:none; padding:2px;" class="wppa_pu_info">'+elm.alt+'</div><div id="wppa-desc-'+mocc+'" style="clear:both; display:none;" class="wppa_pu_info">'+elm.title+'</div><div id="wppa-rat-'+mocc+'" style="clear:both; display:none;" class="wppa_pu_info">'+rating+'</div></div>');
 				break;
 			default:
-				jQuery('#wppa-popup-'+mocc).html('<div class="wppa-popup" onmouseout="wppa_popdown('+mocc+')" style="background-color:'+wppaBackgroundColorImage+'; text-align:center;"><a id="wppa-a" href="'+document.getElementById('x-'+id+'-'+mocc).href+'"><img id="wppa-img-'+mocc+'" src="'+elm.src+'" title="" style="border-width: 0px;" /></a><div id="wppa-name-'+mocc+'" style="display:none; padding:2px;" class="wppa_pu_info">'+elm.alt+'</div><div id="wppa-desc-'+mocc+'" style="clear:both; display:none;" class="wppa_pu_info">'+elm.title+'</div><div id="wppa-rat-'+mocc+'" style="clear:both; display:none;" class="wppa_pu_info">'+rating+'</div></div>');
+				jQuery('#wppa-popup-'+mocc).html('<div class="wppa-popup" onmousedown="wppa_popdown(event,'+mocc+')" style="background-color:'+wppaBackgroundColorImage+'; text-align:center;"><a id="wppa-a" href="'+document.getElementById('x-'+id+'-'+mocc).href+'"><img id="wppa-img-'+mocc+'" src="'+elm.src+'" title="" style="border-width: 0px;" /></a><div id="wppa-name-'+mocc+'" style="display:none; padding:2px;" class="wppa_pu_info">'+elm.alt+'</div><div id="wppa-desc-'+mocc+'" style="clear:both; display:none;" class="wppa_pu_info">'+elm.title+'</div><div id="wppa-rat-'+mocc+'" style="clear:both; display:none;" class="wppa_pu_info">'+rating+'</div></div>');
 		}
 	}
 	
@@ -72,8 +72,18 @@ function wppa_popready(mocc) {
 	jQuery("#wppa-desc-"+mocc).show();
 	jQuery("#wppa-rat-"+mocc).show();
 }
-function wppa_popdown(mocc) {		return; //debug
-	jQuery('#wppa-popup-'+mocc).html("");
+function wppa_popdown(e, mocc) {		//return; //debug
+
+	var rightclick;
+	if (!e) var e = window.event;
+	if (e.which) rightclick = (e.which == 3);
+	else if (e.button) rightclick = (e.button == 2);
+//	alert('Rightclick: ' + rightclick); // true or false
+
+	if (rightclick) {
+		jQuery('#wppa-popup-'+mocc).html("");
+		return false;	// do not follow href
+	}
 //	wppa_saved_id[mocc] = -1; // IE9 link from popup doesnt work, click to popdown, click on thumbnail to link
 }
 
