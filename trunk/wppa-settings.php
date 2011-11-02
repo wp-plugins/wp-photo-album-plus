@@ -1642,7 +1642,7 @@ global $wppa_api_version;
 						$class = 'wppa_cmlp';
 						$html2 = wppa_select($slug2, $options_page, $values_page, '', $class);
 						$html3 = wppa_checkbox($slug3);
-						wppa_setting_3($slug1, $slug2, $slug3, '3a,b,c', $name, $desc, $html1, $html2, $html3, $help);
+						wppa_setting_3($slug1, $slug2, $slug3, '7a,b,c', $name, $desc, $html1, $html2, $html3, $help);
 						?>
 						
 					</tbody>
