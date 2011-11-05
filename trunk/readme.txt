@@ -714,8 +714,10 @@ For more information on multilanguage sites, see the documentation of the qTrans
 == Known issues ==
 
 * The Big Browse Buttons are transparent. IE 6 does not know about transparency. Therefor the slidshow will not display properly in IE6 with BBB's enabled.
-* The plugin My Live Signature completely destroys the display from wppa+ and alse damages other filters. DO NOT INSTALL My Live Signature!
+* The plugin My Live Signature completely destroys the display from wppa+ and also damages other filters. DO NOT INSTALL My Live Signature!
 * The theme Moses from Churchthemer.com uses jQuery in unsafe mode. This conflicts with prototype. Therefor you can NOT use WPPA+ embedded lightbox.
+* The plugin Shortcodes Ultimate formats the content and thereby damages the wppa+ generated code by a filter at priority 99. 
+Set the wppa+ filter priority to at least 100 to deal with this conflicting situation. (Table IX item 10)
 
 == About and Credits ==
 
