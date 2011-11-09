@@ -2,11 +2,11 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 4.2.3
+* version 4.2.4
 *
 */
 global $wppa_api_version;
-$wppa_api_version = '4-2-3-000';
+$wppa_api_version = '4-2-4-000';
 // Initialize globals and option settings
 function wppa_initialize_runtime($force = false) {
 global $wppa;
@@ -16,53 +16,53 @@ global $wppa_api_version;
 global $blog_id;
 
 	if ($force) {
-		$wppa = false; // destroy existing arrays
+		$wppa = false; 					// destroy existing arrays
 		$wppa_opt = false;
 	}
 
 	if (!is_array($wppa)) {
 		$wppa = array (
-			'debug' => false,
-			'revno' => $wppa_revno,				// set in wppa.php
-			'api_version' => $wppa_api_version,	// set in wppa_functions.php
-			'fullsize' => '',
-			'enlarge' => false,
-			'occur' => '0',
-			'master_occur' => '0',
-			'widget_occur' => '0',
-			'in_widget' => false,
-			'is_cover' => '0',
-			'is_slide' => '0',
-			'is_slideonly' => '0',
-			'film_on' => '0',
-			'browse_on' => '0',
-			'name_on' => '0',
-			'desc_on' => '0',
-			'numbar_on' => '0',
-			'single_photo' => '',
-			'is_mphoto' => '0',
-			'start_album' => '',
-			'align' => '',
-			'src' => false,
-			'portrait_only' => false,
-			'in_widget_linkurl' => '',
-			'in_widget_linktitle' => '',
-			'in_widget_timeout' => '0',
-			'ss_widget_valign' => '',
-			'album_count' => '0',
-			'thumb_count' => '0',
-			'out' => '',
-			'auto_colwidth' => false,
-			'permalink' => '',
-			'randseed' => time() % '4711',
-			'rendering_enabled' => false,
-			'tabcount' => '0',
-			'comment_id' => '',
-			'comment_photo' => '0',
-			'comment_user' => '',
-			'comment_email' => '',
-			'comment_text' => '',
-			'no_default' => false,
+			'debug' 					=> false,
+			'revno' 					=> $wppa_revno,				// set in wppa.php
+			'api_version' 				=> $wppa_api_version,		// set in wppa_functions.php
+			'fullsize' 					=> '',
+			'enlarge' 					=> false,
+			'occur' 					=> '0',
+			'master_occur' 				=> '0',
+			'widget_occur' 				=> '0',
+			'in_widget' 				=> false,
+			'is_cover' 					=> '0',
+			'is_slide' 					=> '0',
+			'is_slideonly' 				=> '0',
+			'film_on' 					=> '0',
+			'browse_on' 				=> '0',
+			'name_on' 					=> '0',
+			'desc_on' 					=> '0',
+			'numbar_on' 				=> '0',
+			'single_photo' 				=> '',
+			'is_mphoto' 				=> '0',
+			'start_album' 				=> '',
+			'align' 					=> '',
+			'src' 						=> false,
+			'portrait_only' 			=> false,
+			'in_widget_linkurl' 		=> '',
+			'in_widget_linktitle' 		=> '',
+			'in_widget_timeout' 		=> '0',
+			'ss_widget_valign' 			=> '',
+			'album_count' 				=> '0',
+			'thumb_count' 				=> '0',
+			'out' 						=> '',
+			'auto_colwidth' 			=> false,
+			'permalink' 				=> '',
+			'randseed' 					=> time() % '4711',
+			'rendering_enabled' 		=> false,
+			'tabcount' 					=> '0',
+			'comment_id' 				=> '',
+			'comment_photo' 			=> '0',
+			'comment_user' 				=> '',
+			'comment_email' 			=> '',
+			'comment_text' 				=> '',
+			'no_default' 				=> false,
 			'in_widget_frame_height' 	=> '',
 			'user_uploaded'				=> false,
 			'current_album'				=> '0',
@@ -79,7 +79,6 @@ global $blog_id;
 	
 	if (!is_array($wppa_opt)) {
 		$wppa_opt = array ( 
-			'wppa_multisite' => '',
 			'wppa_revision' => '',
 			'wppa_fullsize' => '',
 			'wppa_colwidth' => '',
@@ -207,6 +206,7 @@ global $blog_id;
 			'wppa_sswidget_overrule'	=> '',
 			'wppa_potdwidget_overrule'	=> '',
 			'wppa_coverimg_overrule'	=> '',
+			'wppa_slideshow_overrule'	=> '',
 			'wppa_search_linkpage' => '',
 			'wppa_chmod' => '',
 			'wppa_setup' => '',
@@ -271,7 +271,7 @@ global $blog_id;
 	}
 	
 	if ( ! defined( 'WPPA_UPLOAD') ) {
-		if ( get_option('wppa_multisite', 'no') == 'yes' ) {	// DO NOT change this in $wppa_opt['wppa_multisite'] as it will not work
+		if ( is_multisite() ) {
 			define( 'WPPA_UPLOAD', 'wp-content/blogs.dir/'.$blog_id);
 			define( 'WPPA_UPLOAD_PATH', ABSPATH.WPPA_UPLOAD.'/wppa');
 			define( 'WPPA_UPLOAD_URL', get_bloginfo('wpurl').'/'.WPPA_UPLOAD.'/wppa');
@@ -656,10 +656,21 @@ function wppa_nextkey($table) {
 // This routine will find a free keyvalue larger than any key used, ignoring the fact that the MAXINT key may be used.
 global $wpdb;
 
-	$result = '1';		// Assume empty table
-	$lastkey = $wpdb->get_var( $wpdb->prepare( "SELECT id FROM ".$table." WHERE id < '9223372036854775806' ORDER BY id DESC LIMIT 1" ) );
+	$name = 'wppa_'.$table.'_lastkey';
+	$lastkey = get_option($name, 'nil');
+	
+	if ( $lastkey == 'nil' ) {	// Init option
+		$lastkey = $wpdb->get_var( $wpdb->prepare( "SELECT id FROM ".$table." WHERE id < '9223372036854775806' ORDER BY id DESC LIMIT 1" ) );
+		if ( ! is_numeric($lastkey) ) $lastkey = '0';
+		add_option( $name, $lastkey, '', 'no');
+	}
 	wppa_dbg_msg('Lastkey in '.$table.' = '.$lastkey);
-	if ($lastkey) $result = $lastkey + '1';
+	
+	$result = $lastkey + '1';
+	while ( ! wppa_is_id_free($table, $result) ) {
+		$result++;
+	}
+	update_option($name, $result);
 	return $result;
 }
 
@@ -670,13 +681,16 @@ global $wpdb;
 	
 	$table = '';
 	if ($type == 'album') $table = WPPA_ALBUMS;
-	if ($type == 'photo') $table = WPPA_PHOTOS;
+	elseif ($type == 'photo') $table = WPPA_PHOTOS;
+	else $table = $type;	// $type may be the tablename itsself
+	
 	if ($table == '') {
 		echo('Unexpected error in wppa_is_id_free()');
 		return false;
 	}
-	$res = $wpdb->get_row($wpdb->prepare( 'SELECT * FROM '.$table.' WHERE id = %s', $id ), 'ARRAY_A');
-	if ($res) return false;
+	
+	$exists = $wpdb->get_row($wpdb->prepare( 'SELECT * FROM '.$table.' WHERE id = %s', $id ), 'ARRAY_A');
+	if ($exists) return false;
 	return true;
 }
 
@@ -1079,4 +1093,16 @@ global $wppa_opt;
 	}
 	
 	return $result;
+}
+
+function wppa_table_exists($xtable) {
+global $wpdb;
+
+	$tables = $wpdb->get_results($wpdb->prepare("SHOW TABLES FROM ".DB_NAME), 'ARRAY_A');
+	foreach ($tables as $table) {
+		foreach ( $table as $item ) {
+			if ($item == $xtable) return true;
+		}
+	}
+	return false;
 }

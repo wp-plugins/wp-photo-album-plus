@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wppa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-10-26 16:02+0100\n"
-"PO-Revision-Date: 2011-10-26 16:02+0100\n"
+"POT-Creation-Date: 2011-11-08 16:27+0100\n"
+"PO-Revision-Date: 2011-11-08 16:27+0100\n"
 "Last-Translator: J.N. Breetvelt <OpaJaap@OpaJaap.nl>\n"
 "Language-Team: oVa <ova13lastar@gmail.com>\n"
 "MIME-Version: 1.0\n"
@@ -22,78 +22,88 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPath-1: theme\n"
 
-#: wppa-common-functions.php:433
+#: wppa-comment-widget.php:25
+#, fuzzy
+msgid "Comments on Photos"
+msgstr "Upload Photos"
+
+#: wppa-comment-widget.php:78
+#: wppa-potd-widget.php:55
+msgid "Photo not found."
+msgstr "Photo non trouvée."
+
+#: wppa-common-functions.php:438
 #, php-format
 msgid "Rating: %s"
 msgstr ""
 
-#: wppa-common-functions.php:503
+#: wppa-common-functions.php:508
 msgid "--- none ---"
 msgstr "--- aucun ---"
 
-#: wppa-common-functions.php:504
+#: wppa-common-functions.php:509
 msgid "--- separate ---"
 msgstr "--- separateur ---"
 
-#: wppa-common-functions.php:613
+#: wppa-common-functions.php:618
 msgid "1 second"
 msgstr ""
 
-#: wppa-common-functions.php:614
+#: wppa-common-functions.php:619
 msgid "seconds"
 msgstr ""
 
-#: wppa-common-functions.php:618
+#: wppa-common-functions.php:623
 msgid "1 minute"
 msgstr ""
 
-#: wppa-common-functions.php:619
+#: wppa-common-functions.php:624
 msgid "minutes"
 msgstr ""
 
-#: wppa-common-functions.php:623
+#: wppa-common-functions.php:628
 #, fuzzy
 msgid "1 hour"
 msgstr "heure."
 
-#: wppa-common-functions.php:624
+#: wppa-common-functions.php:629
 #, fuzzy
 msgid "hours"
 msgstr "heure."
 
-#: wppa-common-functions.php:628
+#: wppa-common-functions.php:633
 #, fuzzy
 msgid "1 day"
 msgstr "jour."
 
-#: wppa-common-functions.php:629
+#: wppa-common-functions.php:634
 #, fuzzy
 msgid "days"
 msgstr "jour."
 
-#: wppa-common-functions.php:633
+#: wppa-common-functions.php:638
 #, fuzzy
 msgid "1 week"
 msgstr "semaine."
 
-#: wppa-common-functions.php:634
+#: wppa-common-functions.php:639
 #, fuzzy
 msgid "weeks"
 msgstr "semaine."
 
-#: wppa-common-functions.php:638
+#: wppa-common-functions.php:643
 msgid "1 month"
 msgstr ""
 
-#: wppa-common-functions.php:639
+#: wppa-common-functions.php:644
 msgid "months"
 msgstr ""
 
-#: wppa-common-functions.php:642
+#: wppa-common-functions.php:647
 msgid "1 year"
 msgstr ""
 
-#: wppa-common-functions.php:643
+#: wppa-common-functions.php:648
 msgid "years"
 msgstr ""
 
@@ -114,7 +124,7 @@ msgid "Home"
 msgstr "Accueil"
 
 #: wppa-functions.php:122
-#: wppa-functions.php:2023
+#: wppa-functions.php:2053
 #: wppa-non-admin.php:157
 msgid "Slideshow"
 msgstr "Diaporama"
@@ -128,161 +138,165 @@ msgstr ""
 msgid "Top rated photos"
 msgstr "Upload Photos"
 
-#: wppa-functions.php:806
-msgid "You must login to enter a comment"
+#: wppa-functions.php:135
+msgid "Recently commented photos"
 msgstr ""
 
-#: wppa-functions.php:871
+#: wppa-functions.php:888
 msgid "<b>ERROR: Attempt to enter an invalid rating.</b>"
 msgstr ""
 
-#: wppa-functions.php:984
+#: wppa-functions.php:1001
 msgid "Comment edited"
 msgstr ""
 
-#: wppa-functions.php:987
+#: wppa-functions.php:1004
 msgid "Comment added"
 msgstr ""
 
-#: wppa-functions.php:993
+#: wppa-functions.php:1010
 #, fuzzy
 msgid "Could not process comment"
 msgstr "Impossible d'uploader la photo."
 
-#: wppa-functions.php:1060
+#: wppa-functions.php:1078
 #, fuzzy
 msgid "Edit!"
 msgstr "Modifier"
 
-#: wppa-functions.php:1064
+#: wppa-functions.php:1082
 msgid "Send!"
 msgstr ""
 
-#: wppa-functions.php:1092
+#: wppa-functions.php:1111
 #, fuzzy
 msgid "Your name:"
 msgstr "ou comme ceci:"
 
-#: wppa-functions.php:1096
+#: wppa-functions.php:1115
 msgid "Your email:"
 msgstr ""
 
-#: wppa-functions.php:1100
+#: wppa-functions.php:1119
 #, fuzzy
 msgid "Your comment:"
 msgstr "contenu"
 
-#: wppa-functions.php:1111
+#: wppa-functions.php:1128
+msgid "You must login to enter a comment"
+msgstr ""
+
+#: wppa-functions.php:1135
 #, fuzzy, php-format
 msgid "%d  comments"
 msgstr "contenu"
 
-#: wppa-functions.php:1112
+#: wppa-functions.php:1139
 msgid "Leave a comment"
 msgstr ""
 
-#: wppa-functions.php:1428
+#: wppa-functions.php:1458
 msgid "Prev.&nbsp;page"
 msgstr ""
 
-#: wppa-functions.php:1432
+#: wppa-functions.php:1462
 msgid "Next&nbsp;page"
 msgstr ""
 
-#: wppa-functions.php:1723
+#: wppa-functions.php:1753
 msgid "<b>ERROR: Illegal attempt to enter a rating.</b>"
 msgstr ""
 
-#: wppa-functions.php:1736
+#: wppa-functions.php:1766
 msgid "<b>ERROR: Illegal attempt to enter a comment.</b>"
 msgstr ""
 
-#: wppa-functions.php:1936
+#: wppa-functions.php:1966
 msgid "Link to"
 msgstr "Lien vers"
 
-#: wppa-functions.php:1940
+#: wppa-functions.php:1970
 msgid "Page is not available."
 msgstr "Page non accessible."
 
-#: wppa-functions.php:1952
-#: wppa-functions.php:2033
+#: wppa-functions.php:1982
+#: wppa-functions.php:2063
 msgid "View the album"
 msgstr "Voir l'album"
 
-#: wppa-functions.php:1957
+#: wppa-functions.php:1987
 msgid "View the cover photo"
 msgstr "Voir la photo de couverture"
 
-#: wppa-functions.php:1958
+#: wppa-functions.php:1988
 msgid "View the cover photos"
 msgstr "Voir les photos de couverture"
 
-#: wppa-functions.php:2023
+#: wppa-functions.php:2053
 #, fuzzy
 msgid "Browse photos"
 msgstr "photos"
 
-#: wppa-functions.php:2034
+#: wppa-functions.php:2064
 msgid "View"
 msgstr "Voir"
 
-#: wppa-functions.php:2037
+#: wppa-functions.php:2067
 msgid "album"
 msgstr "album"
 
-#: wppa-functions.php:2040
+#: wppa-functions.php:2070
 msgid "albums"
 msgstr "albums"
 
-#: wppa-functions.php:2044
+#: wppa-functions.php:2074
 msgid "and"
 msgstr "et"
 
-#: wppa-functions.php:2048
+#: wppa-functions.php:2078
 msgid "photo"
 msgstr "photo"
 
-#: wppa-functions.php:2051
+#: wppa-functions.php:2081
 msgid "photos"
 msgstr "photos"
 
-#: wppa-functions.php:2419
+#: wppa-functions.php:2449
 msgid "Double click to start/stop slideshow running"
 msgstr ""
 
-#: wppa-functions.php:3209
-#: wppa-functions.php:3215
+#: wppa-functions.php:3248
+#: wppa-functions.php:3254
 msgid "Upload Photo"
 msgstr ""
 
-#: wppa-functions.php:3221
+#: wppa-functions.php:3260
 msgid "Apply watermark file:"
 msgstr ""
 
-#: wppa-functions.php:3229
+#: wppa-functions.php:3268
 #, fuzzy
 msgid "Position:"
 msgstr "Description:"
 
-#: wppa-functions.php:3238
+#: wppa-functions.php:3277
 #, fuzzy
 msgid "Enter/modify photo description"
 msgstr "Entrez / modifiez la description de cet album."
 
-#: wppa-functions.php:3262
+#: wppa-functions.php:3301
 msgid "<b>ERROR: Illegal attempt to upload a file.</b>"
 msgstr ""
 
-#: wppa-functions.php:3269
+#: wppa-functions.php:3308
 msgid "Error during upload"
 msgstr ""
 
-#: wppa-functions.php:3274
+#: wppa-functions.php:3313
 msgid "Uploaded file is not an image"
 msgstr ""
 
-#: wppa-functions.php:3278
+#: wppa-functions.php:3317
 msgid "Only gif, jpg and png image files are supported"
 msgstr ""
 
@@ -343,10 +357,6 @@ msgstr ""
 #, fuzzy
 msgid "Photo Of The Day"
 msgstr "Photo du jour"
-
-#: wppa-potd-widget.php:55
-msgid "Photo not found."
-msgstr "Photo non trouvée."
 
 #: wppa-slideshow-widget.php:29
 #, fuzzy

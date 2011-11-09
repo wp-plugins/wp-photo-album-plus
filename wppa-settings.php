@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 4.2.3
+* Version 4.2.4
 *
 */
 
@@ -303,6 +303,7 @@ global $options_error;
 			wppa_update_value('wppa_comment_widget_linktype');
 			wppa_update_value('wppa_comment_widget_linkpage');
 			wppa_update_check('wppa_comment_overrule');
+			wppa_update_check('wppa_slideshow_overrule');
 			
 
 			// Table 7: Security
@@ -437,17 +438,41 @@ global $wppa_api_version;
 		<br /><?php if (is_multisite()) { 
 			_e('Multisite enabled. '); 
 			_e('Blogid = '.$blog_id);			
-			if (get_option('wppa_multisite', 'no') == 'no') {
-				echo(' ');
-				_e('WPPA+ multisite is NOT enabled', 'wppa');
-				echo('<br />');
-				$msg  = __('This site is a part of a multisite WP installation. It may still contain photos in single site mode.<br /><br />', 'wppa');
-				$msg .= __('If you want to keep those photos, use Photo Albums -> Export to save them.<br /><br />', 'wppa');
-				$msg .= __('If you saved them already, or if they may be lost, check the <b>Enable WPPA+ multisite</b> checkbox in <b>Table IX item 0</b> and press Save Changes.<br /><br />', 'wppa');
-				$msg .= __('This will DISCARD THE EXISTING PHOTOS and enable this site in multisite mode.', 'wppa');
-				wppa_error_message($msg);
-			}
 		}
+		$any_error = false;
+		// Check db tables
+		$tn = array( WPPA_ALBUMS, WPPA_PHOTOS, WPPA_RATING, WPPA_COMMENTS );
+		$idx = 0;
+		while ($idx < 4) {
+			$ext = wppa_table_exists($tn[$idx]);
+			if ( ! $ext ) {
+				wppa_dbg_msg(__('Unexpected error:', 'wppa').' '.__('Missing database table:', 'wppa').' '.$tn[$idx], 'red', 'force');
+				$any_error = true;
+			}
+			$idx++;
+		}
+		// Check directories
+		$dn = array( ABSPATH.WPPA_UPLOAD, WPPA_UPLOAD_PATH, WPPA_UPLOAD_PATH.'/thumbs', WPPA_DEPOT_PATH);
+		$idx = 0;
+		while ($idx < 4) {
+			if ( ! file_exists($dn[$idx]) ) {
+				wppa_dbg_msg(__('Unexpected error:', 'wppa').' '.__('Missing directory:', 'wppa').' '.$dn[$idx], 'red', 'force');
+				$any_error = true;
+			}
+			elseif ( ! is_writable($dn[$idx]) ) {
+				wppa_dbg_msg(__('Unexpected error:', 'wppa').' '.__('Directory is not writable:', 'wppa').' '.$dn[$idx], 'red', 'force');
+				$any_error = true;
+			}
+			elseif ( ! is_readable($dn[$idx]) ) {
+				wppa_dbg_msg(__('Unexpected error:', 'wppa').' '.__('Directory is not readable:', 'wppa').' '.$dn[$idx], 'red', 'force');
+				$any_error = true;
+			}
+			$idx++;
+		}
+		if ( $any_error ) {
+			echo '<p style="color:red; text-weight:bold;">'.__('Please de-activate and re-activate the plugin. If this problem persists, ask your administrator.', 'wppa').'</p>';
+		}
+
 ?>
 		<!--<br /><a href="javascript:window.print();"><?php //_e('Print settings', 'wppa') ?></a><br />-->
 		<form enctype="multipart/form-data" action="<?php echo(wppa_dbg_url(get_admin_url().'admin.php?page=wppa_options')) ?>" method="post">
@@ -1176,7 +1201,7 @@ global $wppa_api_version;
 						$help .= '\n'.esc_js(__('This is the time it takes a photo to fade in or out.', 'wppa'));
 						$slug = 'wppa_animation_speed';
 						$options = array(__('--- off ---', 'wppa'), __('very fast (200 ms.)', 'wppa'), __('fast (400 ms.)', 'wppa'), __('normal (800 ms.)', 'wppa'),  __('slow (1.2 s.)', 'wppa'), __('very slow (2 s.)', 'wppa'), __('extremely slow (4 s.)', 'wppa'));
-						$values = array('0', '200', '400', '800', '1200', '2000', '4000');
+						$values = array('10', '200', '400', '800', '1200', '2000', '4000');
 						$html = wppa_select($slug, $options, $values);
 						$class = 'wppa_ss';
 						wppa_setting($slug, '6', $name, $desc, $html, $help, $class);
@@ -1643,8 +1668,21 @@ global $wppa_api_version;
 						$html2 = wppa_select($slug2, $options_page, $values_page, '', $class);
 						$html3 = wppa_checkbox($slug3);
 						wppa_setting_3($slug1, $slug2, $slug3, '7a,b,c', $name, $desc, $html1, $html2, $html3, $help);
-						?>
 						
+						$wppa['no_default'] = true;
+						
+						$name = __('Slideshow', 'wppa');
+						$desc = __('Slideshow fullsize link', 'wppa');
+						$help = esc_js(__('You can overrule lightbox but not big browse buttons with the photo specifc link.', 'wppa'));
+						$slug1 = 'dummy';
+						$slug2 = 'dummy';
+						$slug3 = 'wppa_slideshow_overrule';
+						$html1 = wppa_select('', array(__('the plain photo (file).', 'wppa').' '.__('or', 'wppa').' '.__('lightbox').' '.__('if enabled.', 'wppa') ) , array( 'none' ) );
+						$html3 = wppa_checkbox($slug3);
+						wppa_setting_3($slug1, $slug2, $slug3, '8', $name, $desc, $html1, '', $html3, $help);
+						
+						$wppa['no_default'] = false;
+						?>
 					</tbody>
 					<tfoot style="font-weight: bold;" class="wppa_table_6">
 						<tr>
@@ -2333,6 +2371,7 @@ global $wppa_defaults;
 function wppa_setting_3($slug1, $slug2, $slug3, $num, $name, $desc, $html1, $html2, $html3, $help, $cls = '') {
 global $wppa_status;
 global $wppa_defaults;
+global $wppa;
 
 	$result = "\n";
 	$result .= '<tr';
@@ -2351,7 +2390,12 @@ global $wppa_defaults;
 
 	$color = 'black';
 	$char = '?';
-	$fw = ($wppa_defaults[$slug1] == get_option($slug1)) && ($wppa_defaults[$slug2] == get_option($slug2)) && ($wppa_defaults[$slug3] == get_option($slug3)) ? 'normal' : 'bold';
+	if ( ! $wppa['no_default'] ) {
+		$fw = ($wppa_defaults[$slug1] == get_option($slug1)) && ($wppa_defaults[$slug2] == get_option($slug2)) && ($wppa_defaults[$slug3] == get_option($slug3)) ? 'normal' : 'bold';
+	}
+	else {
+		$fw = 'normal';
+	}
 	$title = __('Click for help', 'wppa');
 	$status = '0'; $stat1 = '0'; $stat2 = '0'; $stat3 = '0';
 	if (isset($wppa_status[$slug1])) $stat1 = $wppa_status[$slug1];

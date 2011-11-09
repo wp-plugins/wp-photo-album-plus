@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions and API modules
-* Version 4.2.3
+* Version 4.2.4
 *
 *
 */
@@ -845,9 +845,14 @@ global $wppa_opt;
 		$linktitle = $link['title'];
 	}
 	else {
-		$linkurl = '';
-		$linktitle = '';
+		$link = wppa_get_imglnk_a('slideshow', $id);
+		$linkurl = $link['url'];
+		$linktitle = $link['title'];
 	}
+//	else {
+//		$linkurl = '';
+//		$linktitle = '';
+//	}
 
 	// Find full image style and size
 	$style_a = wppa_get_fullimgstyle_a($id);
@@ -1064,7 +1069,7 @@ global $wppa_first_comment_html;
 						}
 						$result .= '</td>';
 					$result .= '</tr>';
-					$result .= '<tr><td colspan="2" style="padding:0"><hr style="background-color:'.$color.'" /></td></tr>';
+					$result .= '<tr><td colspan="2" style="padding:0"><hr style="background-color:'.$color.'; margin:0;" /></td></tr>';
 				}
 			}
 			$result .= '</tbody></table>';
@@ -1130,7 +1135,7 @@ global $wppa_first_comment_html;
 	
 	$result .= '<div id="wppa-comfooter-wrap-'.$wppa['master_occur'].'" style="display:block;" >';
 		$result .= '<table id="wppacommentfooter-'.$wppa['master_occur'].'" class="wppa-comment-form" style="margin:0;">';
-			$result .= '<tbody><tr style= "text-align:center; "><td style="cursor:pointer;'.__wcs('wppa-box-text').'" ><a onclick="wppaStartStop('.$wppa['master_occur'].', -1)">';
+			$result .= '<tbody><tr style="text-align:center; "><td style="text-align:center; cursor:pointer;'.__wcs('wppa-box-text').'" ><a onclick="wppaStartStop('.$wppa['master_occur'].', -1)">';
 			if ( $n_comments ) {
 				$result .= sprintf(__a('%d  comments', 'wppa_theme'), $n_comments);
 			}
@@ -2899,7 +2904,8 @@ global $wpdb;
 		 ( $wich == 'sswidget'   && $wppa_opt['wppa_sswidget_overrule'] ) ||
 		 ( $wich == 'potdwidget' && $wppa_opt['wppa_potdwidget_overrule'] ) ||
 		 ( $wich == 'coverimg'   && $wppa_opt['wppa_coverimg_overrule'] ) ||
-		 ( $wich == 'comwidget'	 && $wppa_opt['wppa_comment_overrule'] ) ) {
+		 ( $wich == 'comwidget'	 && $wppa_opt['wppa_comment_overrule'] ) ||
+		 ( $wich == 'slideshow'  && $wppa_opt['wppa_slideshow_overrule'] ) ) {
 		// Look for a photo specific link
 		$data = $wpdb->get_row( $wpdb->prepare( 'SELECT * FROM '.WPPA_PHOTOS.' WHERE id=%s LIMIT 1', $photo ) , 'ARRAY_A' );
 			if ($data) {
@@ -2949,6 +2955,11 @@ global $wpdb;
 			$type = $wppa_opt['wppa_coverimg_linktype'];
 			$page = $wppa_opt['wppa_coverimg_linkpage'];
 			if ($page == '0') $page = '-1';
+			break;
+		case 'slideshow':
+			$type = '';
+			$page = '';
+			return;
 			break;
 		default:
 			return false;
