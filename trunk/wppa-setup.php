@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 4.2.3
+* Version 4.2.4
 *
 */
 
@@ -12,13 +12,23 @@
 // The activation hook is useless since wp does no longer call this hook after upgrade of the plugin
 // this routine is now called at action admin_init, so also after initial install
 // Additionally it can now output messages about success or failure
-
+// Just for people that rely on the healing effect of de-activating and re-activating a plugin
+// we still do a setup on activation by faking that we are not up yo rev, and so invoking
+// the setup on the first admin_init event. This has the advantage that we can display messages
+// instead of characters of unexpected output.
+// register_activation_hook(WPPA_FILE, 'wppa_activate'); is in wppa.php
+function wppa_activate() {
+	$old_rev = get_option('wppa_revision', '100');
+	$new_rev = $old_rev = '0.01';
+	update_option('wppa_revision', $new_rev);
+}
 // Set force to true to re-run it even when on rev (happens in wppa-settings.php)
 // Force will NOT redefine constants
 function wppa_setup($force = false) {
 	global $wpdb;
 	global $wppa_revno;
 	global $current_user;
+	global $wppa;
 	
 	$old_rev = get_option('wppa_revision', '100');
 
@@ -75,11 +85,21 @@ function wppa_setup($force = false) {
 					);";
 					
 	require_once ABSPATH . 'wp-admin/includes/upgrade.php';
-
-	dbDelta( $create_albums );
-	dbDelta( $create_photos );
-	dbDelta( $create_rating );
-	dbDelta( $create_comments );
+	
+	$tn = array( WPPA_ALBUMS, WPPA_PHOTOS, WPPA_RATING, WPPA_COMMENTS );
+	$tc = array( $create_albums, $create_photos, $create_rating, $create_comments );
+	$idx = 0;
+	while ($idx < 4) {
+		$a0 = wppa_table_exists($tn[$idx]);
+		dbDelta($tc[$idx]);
+		$a1 = wppa_table_exists($tn[$idx]);
+		if ( ! $a0 ) {
+			if ( $a1 ) wppa_ok_message('Database table '.$tn[$idx].' created.');
+			else wppa_error_message('Could not create database table '.$tn[$idx]);
+		}
+		else if ( isset($wppa['debug']) && $wppa['debug'] ) wppa_ok_message('Database table '.$tn[$idx].' updated.');
+		$idx++;
+	}
 		
 	// Coverphoto_left is obsolete per version 4.0.2 and changed to coverphoto_pos
 	if (get_option('wppa_coverphoto_left', 'nil') == 'no') update_option('wppa_coverphoto_pos', 'right');
@@ -91,11 +111,10 @@ function wppa_setup($force = false) {
 		delete_option('wppa_2col_treshold');
 		delete_option('wppa_3col_treshold');
 	}
-	
-	wppa_set_defaults();
-	wppa_check_dirs();
-	wppa_check_multisite();
-	
+
+	wppa_set_defaults();					// Will always work
+	if ( ! wppa_check_dirs() ) return;		// Quit on error, messages are given in check_dirs
+
 	// Copy factory supplied watermarks
 	$frompath = WPPA_PATH . '/watermarks';
 	$watermarks = glob($frompath . '/*.png');
@@ -142,7 +161,7 @@ function wppa_setup($force = false) {
 	}
 	
 	if ($iret !== false) {
-		update_option('wppa_revision', $wppa_revno);
+		update_option('wppa_revision', $wppa_revno);	// NOT on activation
 		if ( is_multisite() ) {
 			if ( get_option('wppa_multisite', 'no') == 'yes' ) {
 				wppa_ok_message(sprintf(__('WPPA+ successfully updated in multi site mode to db version %s.', 'wppa'), $wppa_revno));
@@ -178,7 +197,6 @@ global $wppa_defaults;
 	$wppa_npd .= "\n".'</div>';
 		
 	$wppa_defaults = array ( 'wppa_revision' 		=> '100',
-						'wppa_multisite'			=> 'no',	
 						'wppa_fullsize' 			=> '640',
 						'wppa_colwidth' 			=> '640',
 						'wppa_maxheight' 			=> '640',
@@ -192,7 +210,7 @@ global $wppa_defaults;
 						'wppa_valign' 				=> 'center',
 						'wppa_thumbsize' 			=> '100',
 						'wppa_tf_width' 			=> '100',
-						'wppa_tf_height' 			=> '110',
+						'wppa_tf_height' 			=> '130',
 						'wppa_tn_margin' 			=> '4',
 						'wppa_smallsize' 			=> '150',
 						'wppa_show_bread' 			=> 'yes',
@@ -203,7 +221,7 @@ global $wppa_defaults;
 						'wppa_use_thumb_popup' 		=> 'yes',
 						'wppa_use_cover_opacity' 	=> 'yes',
 						'wppa_cover_opacity' 		=> '85',
-						'wppa_animation_speed' 		=> '600',
+						'wppa_animation_speed' 		=> '800',
 						'wppa_slideshow_timeout'	=> '2500',
 						'wppa_bgcolor_even' 		=> '#eeeeee',
 						'wppa_bgcolor_alt' 			=> '#dddddd',
@@ -304,6 +322,7 @@ global $wppa_defaults;
 						'wppa_sswidget_overrule'	=> 'no',
 						'wppa_potdwidget_overrule'	=> 'no',
 						'wppa_coverimg_overrule'	=> 'no',
+						'wppa_slideshow_overrule'	=> 'no',
 						'wppa_search_linkpage' 		=> '0',
 						'wppa_rating_clear' 		=> 'no',
 						'wppa_chmod' 				=> '0',
@@ -345,7 +364,7 @@ global $wppa_defaults;
 						'wppa_fontfamily_lightbox'		=> 'Verdana, Helvetica, sans-serif',
 						'wppa_fontsize_lightbox'		=> '10',
 						'wppa_fontcolor_lightbox'		=> '#666',
-						'wppa_filter_priority'			=> '10',
+						'wppa_filter_priority'			=> '1001',
 						'wppa_widget_width'				=> '200',
 						'wppa_custom_on' 				=> 'no',
 						'wppa_custom_content' 			=> '<div style="color:red; font-size:24px; font-weight:bold; text-align:center;">Hello world!</div>',
@@ -476,21 +495,3 @@ function wppa_credirmsg($dir) {
 	return $msg;
 }
 
-// Check if this is a multisite installation, if so, enable WPPA+ in multisite if there are no photos in single site mode
-function wppa_check_multisite() {
-global $blog_id;
-global $wpdb;
-
-	if ( is_multisite() ) {
-		if ( get_option('wppa_multisite', 'no') != 'yes' ) {
-			$photos = $wpdb->get_var($wpdb->prepare( 'SELECT COUNT(*) FROM '.WPPA_PHOTOS ) );
-			if ( ! $photos ) {
-				update_option('wppa_multisite', 'yes');
-				wppa_ok_message(sprintf(__('wp-photo-album-plus has been enabled in multiblog mode for blog id %s.', 'wppa'), $blog_id));
-			}
-			else {
-				wppa_error_message(sprintf(__('There are photos in single site mode for blog id %s. Go to the Photo Albums -> Settings page and read the instructions.', 'wppa'), $blog_id));
-			}
-		}
-	}
-}

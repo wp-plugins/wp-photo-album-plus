@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, multisite, network, lightbox
-Version: 4.2.3
+Version: 4.2.4
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -10,8 +10,9 @@ Requires at least: 3.0
 Tested up to: 3.2.1
 
 This plugin is designed to easily manage and display your photo albums and slideshows in a single as well as in a network WordPress site. 
-Additionally there are four widgets: Photo of the day, a Search Photos widget, a Top Ten Rated photo widget and a Mini slideshow widget.
+Additionally there are five widgets: Photo of the day, a Search Photos widget, a Top Ten Rated photo widget, a Recent comments widget and a Mini slideshow widget.
 Visitors can leave comments on individual photos.
+Uploads can be provided with a watermark.
 
 == Description ==
 
@@ -37,6 +38,7 @@ This plugin is designed to easily manage and display your photo albums and slide
 * International language support for static text: Currently included foreign languages files: Dutch, Japanese, French(outdated), Spanish, German.
 * Inrernational language support for dynamic text: Album and photo names and descriptions fully support the qTranslate multilanguage rules and have separate edit fields for all qTranslate activated languages.
 * Suports lightbox.
+* You can add watermarks to the photos.
 
 Plugin Admin Features:
 
@@ -52,7 +54,7 @@ You can find the plugin admin section under Menu Photo Albums on the admin scree
 == Installation ==
 
 = Upgrade notice =
-This version is: Major rev# 4, Minor rev# 2, Fix rev# 3, Hotfix rev# 000.
+This version is: Major rev# 4, Minor rev# 2, Fix rev# 4, Hotfix rev# 000.
 If you are upgrading from a previous Major or Minor version, note that:
 * If you modified wppa_theme.php and/or wppa_style.css, you will have to use the newly supplied versions. The previous versions are NOT compatible.
 * If you set the userlevel to anything else than 'administrator' you may have to set it again. Note that changing the userlevel can be done by the administrator only!
@@ -107,6 +109,21 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 4.2.4 =
+
+= New Features =
+
+* You can PS Overrule the fullsize images in the slideshow.
+
+= Other Changes =
+
+* An activation hook is supplied for those who trust on the healing effects of de- and re-activation of the plugin.
+It acts the same as Table VIII item 3.
+* Database table entry ids will not be re-used after deletion. Except of the import of previously exported photos and albums, their original ids will still be used if they are available.
+* The existance of the required database tables and directories as well as the writability of those direcories is checked on entering the Settings admin page.
+If anything misses or is not useable an errormessage will be displayed.
+* The default value of the filter priority (Table IX item 10) has been changed from 10 (WP default) to 1001.
 
 = 4.2.3 =
 

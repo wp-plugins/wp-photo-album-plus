@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 * gp admin functions
-* version 4.2.2
+* version 4.2.4
 *
 * 
 */
@@ -511,7 +511,7 @@ function wppa_cleanup_photos($alb = '') {
 	global $wppa_opt;
 	global $wppa_error_displayed;
 //echo('WPPADBG'.$alb);
-if ( is_multisite() ) return; // temp disabled for 4.0 bug
+if ( is_multisite() ) return; // temp disabled for 4.0 bug, must be tested in a real multisite first before enabling
 	
 	// Check the users php config. sometimes a user 'reconfigures' his server to not having GD support...
 	if ( ! function_exists('getimagesize') || ! function_exists('imagecreatefromjpeg') ) {
