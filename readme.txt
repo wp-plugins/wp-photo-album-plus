@@ -112,6 +112,10 @@ See for additional information: http://wppa.opajaap.nl/?page_id=1459
 
 = 4.2.4 =
 
+= Hotfix =
+
+* 001: Pagetitles in breadcrumb will be processed by qTranslate.
+
 = New Features =
 
 * You can PS Overrule the fullsize images in the slideshow.
