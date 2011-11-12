@@ -1,7 +1,7 @@
 /* admin-scripts.js */
 /* Package: wp-photo-album-plus
 /*
-/* Version 4.2.3
+/* Version 4.2.5
 /* Various js routines used in admin pages		
 */
 
@@ -251,10 +251,12 @@ function wppaCheckRating() {
 	if (Rt) {
 		jQuery('.wppa_rating').css('color', '#333');
 		jQuery('.wppa_rating_html').css('visibility', 'visible');
+		jQuery('.wppa_rating_').css('display', '');
 	}
 	else {
 		jQuery('.wppa_rating').css('color', '#999');
 		jQuery('.wppa_rating_html').css('visibility', 'hidden');
+		jQuery('.wppa_rating_').css('display', 'none');
 	}
 }
 

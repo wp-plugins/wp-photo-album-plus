@@ -1,5 +1,5 @@
 ﻿// Slide show variables and functions
-// This is wppa-slideshow.js version 4.2.0
+// This is wppa-slideshow.js version 4.2.5
 //
 // Vars. The vars that have a name that starts with an underscore is an internal var
 // The vars without leading underscore are 'external' and get a value from html
@@ -697,9 +697,11 @@ function _wppaRateIt(mocc, value) {
 
 	var photoid = _wppaPhotoIds[mocc][_wppaCurrentIndex[mocc]];
 	var oldval = _wppaPhotoMyRating[mocc][_wppaCurrentIndex[mocc]];
-	var url = _wppaVoteReturnUrl[mocc][_wppaCurrentIndex[mocc]]+'&wppa-rating='+value;
+	var url = _wppaVoteReturnUrl[mocc][_wppaCurrentIndex[mocc]]+'&wppa-rating='+value+'&wppa-rating-id='+photoid;
 	
 	if (document.getElementById('wppa-nonce')) url += '&wppa-nonce='+document.getElementById('wppa-nonce').value;
+	
+	url += '#wppa-loc-'+mocc;
 
 	if (oldval != 0 && wppaRatingOnce) return;							// Already rated, and once allowed only
 	if (_wppaSlideShowRuns[mocc]) return;										

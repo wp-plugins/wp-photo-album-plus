@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 4.2.4
+* Version 4.2.5
 *
 */
 
@@ -201,6 +201,7 @@ global $options_error;
 			wppa_update_check('wppa_custom_on');
 			wppa_update_textarea('wppa_custom_content');
 			wppa_update_check('wppa_show_slideshownumbar');
+			wppa_update_check('wppa_show_avg_rating');
 		
 			// Table 3: Backgrounds
 			wppa_update_value('wppa_bgcolor_even');
@@ -254,6 +255,7 @@ global $options_error;
 			wppa_update_check('wppa_comment_login');
 			wppa_update_value('wppa_lightbox_animationspeed');
 			wppa_update_check('wppa_comments_desc');
+			wppa_update_check('wppa_next_on_callback');
 		
 			// Table 5: Fonts
 			wppa_update_value('wppa_fontfamily_title');
@@ -954,6 +956,16 @@ global $wppa_api_version;
 						$onchange = 'wppaCheckNumbar()';
 						$html = wppa_checkbox($slug, $onchange);
 						wppa_setting($slug, '23', $name, $desc, $html, $help);
+						
+						$name = __('Show average rating', 'wppa');
+						$desc = __('Display the avarage rating on the rating bar', 'wppa');
+						$help = esc_js(__('If checked, the average rating as well as the current users rating is displayed in max 5 stars.', 'wppa'));
+						$help .= '\n\n'.esc_js(__('If unchecked, only the current users rating is displayed (if any).', 'wppa'));
+						$slug = 'wppa_show_avg_rating';
+						$html = wppa_checkbox($slug);
+						$class = 'wppa_rating_';
+						wppa_setting($slug, '24', $name, $desc, $html, $help, $class);
+
  						
 						?>
 					</tbody>
@@ -1364,11 +1376,20 @@ global $wppa_api_version;
 						
 						$name = __('Last comment first', 'wppa');
 						$desc = __('Display the newest comment on top.', 'wppa');
-						$help = '';
+						$help = esc_js(__('If checked: Display the newest comment on top.', 'wppa'));
+						$help .= '\n\n'.esc_js(__('If unchecked, the comments are listed in the ordere they were entered.', 'wppa'));
 						$slug = 'wppa_comments_desc';
 						$html = wppa_checkbox($slug);
 						$class = 'wppa_comment';
 						wppa_setting($slug, '25', $name, $desc, $html, $help, $class);
+						
+						$name = __('Next after vote', 'wppa');
+						$desc = __('Goto next slide after voting', 'wppa');
+						$help = esc_js(__('If checked, the visitor goes straight to the slide following the slide he voted. This will speed up mass voting.', 'wppa'));
+						$slug = 'wppa_next_on_callback';
+						$html = wppa_checkbox($slug);
+						$class = 'wppa_rating_';
+						wppa_setting($slug, '26', $name, $desc, $html, $help, $class);
 						
 						?>
 					</tbody>
@@ -2562,6 +2583,8 @@ global $wppa;
 	if ($dflt == get_option($slug)) return '\n\n'.$n.' '.esc_js(__('This value is set to the default.', 'wppa'));
 
 	switch ($dflt) {
+		case 'yes': $dft = __('Checked', 'wppa'); break;
+		case 'no': $dft = __('Unchecked', 'wppa'); break;
 		case 'none': $dft = __('no link at all.', 'wppa'); break;
 		case 'file': $dft = __('the plain photo (file).', 'wppa'); break;
 		case 'photo': $dft = __('the full size photo in a slideshow.', 'wppa'); break;

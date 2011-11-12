@@ -3,13 +3,13 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions and API modules
-* Version 4.2.4
+* Version 4.2.5
 *
-* 001: Pagetitles in breadcrumb will be processed by qTranslate.
+*
 */
 /* Moved to wppa-commonfunctions.php:
 global $wppa_api_version;
-$wppa_api_version = '4-2-3-001';
+$wppa_api_version = '4-2-5-000';
 */
 
 
@@ -790,13 +790,14 @@ global $wppa_opt;
 }
 
 // get slide info
-function wppa_get_slide_info($index, $id) {
+function wppa_get_slide_info($index, $id, $callbackid = '') {
 global $wpdb;
 global $wppa;
 global $wppa_opt;
 
 	$user = wppa_get_user();
 	$photo = wppa_get_get('photo', '0');
+	$ratingphoto = wppa_get_get('rating-id', '0');
 	
 	// Process a comment if given for this photo
 	$comment_request = (wppa_get_post('commentbtn') && ($id == $photo));
@@ -806,15 +807,24 @@ global $wppa_opt;
 	}
 
 	// Process a rating if given for this photo
-	$rating_request = (wppa_get_get('rating') && ($id == $photo));
+	$rating_request = (wppa_get_get('rating') && ($id == $ratingphoto));
 	$rating_allowed = (!$wppa_opt['wppa_rating_login'] || is_user_logged_in());
 	if ($wppa_opt['wppa_rating_on'] && $rating_request && $rating_allowed) {
 		wppa_do_rating($id, $user);
 	}
 	
-	// Find my rating
-	$myrat = $wpdb->get_var( $wpdb->prepare( 'SELECT `value` FROM `'.WPPA_RATING.'` WHERE `photo` = %s AND `user` = %s LIMIT 1', $id, $user ) ); 
-	if (!$myrat) $myrat = '0';
+	// Find my (avg) rating
+	$rats = $wpdb->get_results( $wpdb->prepare( 'SELECT `value` FROM `'.WPPA_RATING.'` WHERE `photo` = %s AND `user` = %s', $id, $user ), 'ARRAY_A' ); 
+	if ( !$rats ) $myrat = '0';
+	else {
+		$n = 0;
+		$accu = 0;
+		foreach ( $rats as $rat ) {
+			$accu += $rat['value'];
+			$n++;
+		}
+		$myrat = $accu / $n;
+	}
 
 	// Find the avg rating
 	$avgrat = $wpdb->get_var( $wpdb->prepare( 'SELECT `mean_rating` FROM `'.WPPA_PHOTOS.'` WHERE `id` = %s LIMIT 1', $id ) ); 
@@ -822,7 +832,7 @@ global $wppa_opt;
 	
 	$comment = wppa_comment_html($id, $comment_allowed);
 	
-	// Compose the rating request callback url. Also usefull as comment request url (?)
+	// Compose the rating request callback url.
 	$url = wppa_get_permalink('js');
 	if (wppa_get_get('album')) $url .= 'wppa-album='.wppa_get_get('album').'&';
 	if (wppa_get_get('cover')) $url .= 'wppa-cover='.wppa_get_get('cover').'&';
@@ -836,7 +846,8 @@ global $wppa_opt;
 	if (wppa_get_get('topten')) {
 		$url .= 'wppa-topten='.wppa_get_get('topten').'&';
 	}
-	$url .= 'wppa-photo=' . $id;
+	if ( $callbackid ) $url .= 'wppa-photo=' . $callbackid;
+	else $url .= 'wppa-photo=' . $id;
 	
 	// Find link url and link title
 	if ($wppa['in_widget'] == 'ss') {
@@ -1742,7 +1753,8 @@ global $wppa_microtime_cum;
 		// Open the container
 		$wppa['out'] .= wppa_nltab('init').'<!-- Start WPPA+ generated code -->';
 		$wppa['out'] .= wppa_nltab('+').'<div id="wppa-container-'.$wppa['master_occur'].'" style="'.wppa_get_container_style().'" class="wppa-container wppa-rev-'.$wppa['revno'].' wppa-theme-'.$wppa_version.' wppa-api-'.$wppa['api_version'].'" >';
-
+		$wppa['out'] .= wppa_nltab().'<a name="wppa-loc-'.$wppa['master_occur'].'"></a>';
+		
 		// Start timer if in debug mode
 		if ($wppa['debug']) $wppa_microtime = microtime(true);
 		
@@ -2387,10 +2399,22 @@ global $wppa_opt;
 		if (wppa_get_get('album')) $alb = wppa_get_get('album');
 		else $alb = '';	// Album id is in $wppa['start_album']
 		$thumbs = wppa_get_thumbs($alb);
+		$ix = 0;
+		if ( $thumbs ) while ( $ix < count($thumbs) ) {
+			if ( $ix == (count($thumbs)-1) ) $thumbs[$ix]['next_id'] = $thumbs[0]['id'];
+			else $thumbs[$ix]['next_id'] = $thumbs[$ix + 1]['id'];
+			$ix ++;
+		}
+		
 		if ( $thumbs ) foreach ($thumbs as $tt) : $id = $tt['id'];
 			$wppa['out'] .= wppa_nltab('+').'<script type="text/javascript">';
 			$wppa['out'] .= wppa_nltab().'/* <![CDATA[ */';
-			$wppa['out'] .= wppa_nltab().'wppaStoreSlideInfo(' . wppa_get_slide_info($index, $id) . ');';
+			if ( $wppa_opt['wppa_next_on_callback'] ) {
+				$wppa['out'] .= wppa_nltab().'wppaStoreSlideInfo(' . wppa_get_slide_info($index, $id, $tt['next_id']) . ');';
+			}
+			else {
+				$wppa['out'] .= wppa_nltab().'wppaStoreSlideInfo(' . wppa_get_slide_info($index, $id) . ');';
+			}
 			$wppa['out'] .= wppa_nltab('-').'/* ]]> */';
 			$wppa['out'] .= wppa_nltab().'</script>';
 			if ($startid == -2) $startid = $id;
