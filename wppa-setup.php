@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 4.2.4
+* Version 4.2.5
 *
 */
 
@@ -377,14 +377,16 @@ global $wppa_defaults;
 						'wppa_numbar_max'				=> '10',
 						'wppa_watermark_on'				=> 'no',
 						'wppa_watermark_user'			=> 'no',
-						'wppa_watermark_file'			=> __('specimen.png', 'wppa'),
+						'wppa_watermark_file'			=> 'specimen.png',
 						'wppa_watermark_pos'			=> 'cencen',
 						'wppa_watermark_upload'			=> '',
 						'wppa_comment_widget_linkpage'	=> '0',
 						'wppa_comment_widget_linktype'	=> 'photo',
 						'wppa_comment_count'			=> '10',
 						'wppa_comment_size'				=> '86',
-						'wppa_comment_overrule'			=> 'no'
+						'wppa_comment_overrule'			=> 'no',
+						'wppa_next_on_callback'			=> 'no',
+						'wppa_show_avg_rating'			=> 'yes'
 
 
 						);

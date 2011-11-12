@@ -2,11 +2,11 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 4.2.4
+* version 4.2.5
 *
 */
 global $wppa_api_version;
-$wppa_api_version = '4-2-4-001';
+$wppa_api_version = '4-2-5-000';
 // Initialize globals and option settings
 function wppa_initialize_runtime($force = false) {
 global $wppa;
@@ -256,7 +256,9 @@ global $blog_id;
 			'wppa_comment_widget_linktype'	=> '',
 			'wppa_comment_count'			=> '',
 			'wppa_comment_size'				=> '',
-			'wppa_comment_overrule'			=> ''
+			'wppa_comment_overrule'			=> '',
+			'wppa_next_on_callback'			=> '',
+			'wppa_show_avg_rating'			=> ''
 
 
 
@@ -1099,9 +1101,13 @@ function wppa_table_exists($xtable) {
 global $wpdb;
 
 	$tables = $wpdb->get_results($wpdb->prepare("SHOW TABLES FROM ".DB_NAME), 'ARRAY_A');
+	
 	foreach ($tables as $table) {
-		foreach ( $table as $item ) {
+		if ( is_array($table) )	foreach ( $table as $item ) {
 			if ($item == $xtable) return true;
+		}
+		else {
+			if ($table == $xtable) return true;
 		}
 	}
 	return false;

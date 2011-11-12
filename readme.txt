@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, multisite, network, lightbox
-Version: 4.2.4
+Version: 4.2.5
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -109,6 +109,17 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 4.2.5 =
+
+= Bug Fixes =
+
+* If rating multi is enabled (Table IV item 18), My Rating is now correctly displayed as my avarage rating for this photo.
+
+= New Features =
+
+* You can set 'Next after vote' to jump directly to the next image of a slideshow after voting. See Table IV item 26.
+* You can switch off the display of the avarage rating. See Table II item 24.
 
 = 4.2.4 =
 
