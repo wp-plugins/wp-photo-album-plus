@@ -701,7 +701,7 @@ function _wppaRateIt(mocc, value) {
 	
 	if (document.getElementById('wppa-nonce')) url += '&wppa-nonce='+document.getElementById('wppa-nonce').value;
 	
-	url += '#wppa-loc-'+mocc;
+//	url += '#wppa-loc-'+mocc;
 
 	if (oldval != 0 && wppaRatingOnce) return;							// Already rated, and once allowed only
 	if (_wppaSlideShowRuns[mocc]) return;										
