@@ -5,11 +5,11 @@
 * Various funcions and API modules
 * Version 4.2.5
 *
-*
+* 001 removed autoscroll
 */
 /* Moved to wppa-commonfunctions.php:
 global $wppa_api_version;
-$wppa_api_version = '4-2-5-000';
+$wppa_api_version = '4-2-5-001';
 */
 
 
