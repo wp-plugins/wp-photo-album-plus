@@ -6,10 +6,11 @@
 * Version 4.2.5
 *
 * 001 removed autoscroll
+* 002 sleep after rating and comment only when not logged in
 */
 /* Moved to wppa-commonfunctions.php:
 global $wppa_api_version;
-$wppa_api_version = '4-2-5-001';
+$wppa_api_version = '4-2-5-002';
 */
 
 
@@ -1765,7 +1766,7 @@ global $wppa_microtime_cum;
 				$ok = wp_verify_nonce($nonce, 'wppa-check');
 				if ($ok) {
 					wppa_dbg_msg('Rating nonce ok');
-					sleep(2);
+					if ( ! is_user_logged_in() ) sleep(2);
 				}
 				else die(__a('<b>ERROR: Illegal attempt to enter a rating.</b>', 'wppa_theme'));
 			}
@@ -1778,7 +1779,7 @@ global $wppa_microtime_cum;
 				$ok = wp_verify_nonce($nonce, 'wppa-check');
 				if ($ok) {
 					wppa_dbg_msg('Comment nonce ok');
-					sleep(2);
+					if ( ! is_user_logged_in() ) sleep(2);
 				}
 				else die(__a('<b>ERROR: Illegal attempt to enter a comment.</b>', 'wppa_theme'));
 			}		
