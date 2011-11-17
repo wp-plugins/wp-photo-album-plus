@@ -45,6 +45,7 @@ var wppaNumbarMax = '10';
 var wppaAjaxUrl = '';
 var wppaNextOnCallback = false;
 var wppaRatingUseAjax = false;
+var wppaStarOpacity = 0.2;
 
 // 'Internal' variables
 var _wppaPhotoIds = new Array();
@@ -658,7 +659,7 @@ function _wppaSetRd(mocc, avg, where) {
 	var idx1 = parseInt(avg);
 	var idx2 = idx1 + 1;
 	var frac = avg - idx1;
-	var opac = 0.2 + frac * 0.8;
+	var opac = wppaStarOpacity + frac * (1.0 - wppaStarOpacity);
 	var ilow = 1;
 	var ihigh = 5;
 	
@@ -670,7 +671,7 @@ function _wppaSetRd(mocc, avg, where) {
 			jQuery(where+mocc+'-'+idx).stop().fadeTo(100, opac); 
 		}
 		else {
-			jQuery(where+mocc+'-'+idx).stop().fadeTo(100, 0.2);
+			jQuery(where+mocc+'-'+idx).stop().fadeTo(100, wppaStarOpacity);
 		}
 	}
 }
@@ -716,6 +717,7 @@ function _wppaRateIt(mocc, value) {
 	
 	
 	if (wppaRatingUseAjax) {								// USE AJAX
+		// Create the http request object
 		var xmlhttp;
 		if (window.XMLHttpRequest) {		// code for IE7+, Firefox, Chrome, Opera, Safari
 			xmlhttp=new XMLHttpRequest();
@@ -723,35 +725,49 @@ function _wppaRateIt(mocc, value) {
 		else {								// code for IE6, IE5
 			xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
 		}
-		xmlhttp.onreadystatechange=function() {
-			if (xmlhttp.readyState==4 && xmlhttp.status==200) {
-				var ArrValues = xmlhttp.responseText.split(";");
-				
-				// Store new values
-				_wppaPhotoMyRating[ArrValues[0]][ArrValues[2]] = ArrValues[3];
-				_wppaPhotoAverages[ArrValues[0]][ArrValues[2]] = ArrValues[4];
-				// Update display
-				_wppaSetRd(mocc, ArrValues[3], '#wppa-rate-');
-				_wppaSetRd(mocc, ArrValues[4], '#wppa-avg-');
-
-				if (wppaNextOnCallback) _wppaNext(mocc);
-				// Diagnostics
-//				alert('occur='+ArrValues[0]+'\n'+'photo='+ArrValues[1]+'\n'+'index='+ArrValues[2]+'\n'+'myavgrat='+ArrValues[3]+'\n'+'allavgrat='+ArrValues[4]);
-//				alert(xmlhttp.responseText);
-			}
-		}
 		
 		// Make the Ajax url
 		url = wppaAjaxUrl+'?action=wppa&wppa-action=rate&wppa-rating='+value+'&wppa-rating-id='+photoid;
 		url += '&wppa-occur='+mocc+'&wppa-index='+_wppaCurrentIndex[mocc];
 		if (document.getElementById('wppa-nonce')) url += '&wppa-nonce='+document.getElementById('wppa-nonce').value;
+		
 		// Do the Ajax action
 		xmlhttp.open('GET',url,false);
 		xmlhttp.send();
 
+		// Process the result
+		
+//		xmlhttp.onreadystatechange=function() 
+		{
+			if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+				var ArrValues = xmlhttp.responseText.split(";");
+				
+				if (ArrValues[0] == '0') {	// Error
+					alert('Error during rating.\nCode='+ArrValues[1]+'\nDescription: '+ArrValues[2]);
+				}
+				else {
+					// Store new values
+					_wppaPhotoMyRating[ArrValues[0]][ArrValues[2]] = ArrValues[3];
+					_wppaPhotoAverages[ArrValues[0]][ArrValues[2]] = ArrValues[4];
+					// Update display
+					_wppaSetRd(mocc, ArrValues[3], '#wppa-rate-');
+					_wppaSetRd(mocc, ArrValues[4], '#wppa-avg-');
+
+					if (wppaNextOnCallback) _wppaNext(mocc);
+					// Diagnostics
+//					alert('occur='+ArrValues[0]+'\n'+'photo='+ArrValues[1]+'\n'+'index='+ArrValues[2]+'\n'+'myavgrat='+ArrValues[3]+'\n'+'allavgrat='+ArrValues[4]);
+//					alert(xmlhttp.responseText);
+				}
+			}
+			else alert('Unexpected error. readyState = '+xmlhttp.readyState+' status = '+xmlhttp.status);
+		}
+		
+
+		
+		
 		document.getElementById('wppa-rate-'+mocc+'-'+value).src = wppaImageDirectory+'star.png';				// Reset icon
 		
-		_wppaVoteInProgress = false;											// Opacity may change again 
+		_wppaVoteInProgress = false;											// No longer busy
 
 		
 	}

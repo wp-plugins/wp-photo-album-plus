@@ -259,7 +259,8 @@ global $blog_id;
 			'wppa_comment_overrule'			=> '',
 			'wppa_next_on_callback'			=> '',
 			'wppa_show_avg_rating'			=> '',
-			'wppa_rating_use_ajax'			=> ''
+			'wppa_rating_use_ajax'			=> '',
+			'wppa_star_opacity'				=> ''
 
 
 
@@ -1102,13 +1103,13 @@ function wppa_table_exists($xtable) {
 global $wpdb;
 
 	$tables = $wpdb->get_results($wpdb->prepare("SHOW TABLES FROM ".DB_NAME), 'ARRAY_A');
+	// Some sqls do not show tables, benefit of the doubt: assume table exists
+	if ( empty($tables) ) return true;
 	
+	// Normal check
 	foreach ($tables as $table) {
 		if ( is_array($table) )	foreach ( $table as $item ) {
-			if ($item == $xtable) return true;
-		}
-		else {
-			if ($table == $xtable) return true;
+			if ( strcasecmp($item, $xtable) == 0 ) return true;
 		}
 	}
 	return false;

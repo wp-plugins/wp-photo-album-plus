@@ -257,6 +257,7 @@ global $options_error;
 			wppa_update_check('wppa_comments_desc');
 			wppa_update_check('wppa_next_on_callback');
 			wppa_update_check('wppa_rating_use_ajax');
+			wppa_update_numeric('wppa_star_opacity', '0', __('Opacity.', 'wppa'), '50');
 		
 			// Table 5: Fonts
 			wppa_update_value('wppa_fontfamily_title');
@@ -1400,6 +1401,15 @@ global $wppa_api_version;
 						$html = wppa_checkbox($slug);
 						$class = 'wppa_rating_';
 						wppa_setting($slug, '27', $name, $desc, $html, $help, $class);
+						
+						$name = __('Star off opacity', 'wppa');
+						$desc = __('Rating star off state opacity value.', 'wppa');
+						$help = esc_js(__('Enter percentage of opacity. 100% is opaque, 0% is transparant', 'wppa'));
+						$slug = 'wppa_star_opacity';
+						$html = wppa_input($slug, '50px', '', __('%', 'wppa'));
+						$class = 'wppa_rating_';
+						wppa_setting($slug, '28', $name, $desc, $html, $help, $class);
+						
 						
 						?>
 					</tbody>

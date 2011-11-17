@@ -27,8 +27,14 @@ global $wppa_opt;
 			$nonce  = $_REQUEST['wppa-nonce'];
 			
 			// Check on validity
-			if ( ! wp_verify_nonce($nonce, 'wppa-check') ) exit;					// Nonce check failed
-			if ( ! in_array($rating, array('1', '2', '3', '4', '5')) ) exit;		// Value out of range
+			if ( ! wp_verify_nonce($nonce, 'wppa-check') ) {
+				echo '0;100;Security failure';
+				exit;																// Nonce check failed
+			}
+			if ( ! in_array($rating, array('1', '2', '3', '4', '5')) ) {
+				echo '0;101;Invalid input';
+				exit;																// Value out of range
+			}
 			
 			// Get other data
 			$user     = wppa_get_user();
@@ -39,26 +45,38 @@ global $wppa_opt;
 			if ( ! $mylast ) {
 				$key = wppa_nextkey(WPPA_RATING);
 				$iret = $wpdb->query($wpdb->prepare('INSERT INTO `'.WPPA_RATING. '` (`id`, `photo`, `value`, `user`) VALUES (%s, %s, %s, %s)', $key, $photo, $rating, $user));
-				if (!$iret) exit;													// Fail on storing vote
+				if (!$iret) {
+					echo '0;102;Can not insert rating';
+					exit;															// Fail on storing vote
+				}
 				$myavgrat = $rating;
 			}
 			// Case 2: I will change my previously given vote
 			elseif ( $wppa_opt['wppa_rating_change'] == 'yes' ) {					// Votechanging is allowed
 				$query = $wpdb->prepare( 'UPDATE `'.WPPA_RATING.'` SET `value` = %s WHERE `photo` = %s AND `user` = %s LIMIT 1', $rating, $photo, $user );
 				$iret = $wpdb->query($query);
-				if (!$iret) exit;													// Fail on update
+				if (!$iret) {
+					echo '0;103;Can not update rating';
+					exit;															// Fail on update
+				}
 				$myavgrat = $rating;
 			}
 			// Case 3: Add another vote from me
-			elseif ( $wppa_opt['wppa_rating_multi'] == 'yes' ) {								// Rating multi is allowed
+			elseif ( $wppa_opt['wppa_rating_multi'] == 'yes' ) {					// Rating multi is allowed
 				$key = wppa_nextkey(WPPA_RATING);
 				$query = $wpdb->prepare( 'INSERT INTO `'.WPPA_RATING. '` (`id`, `photo`, `value`, `user`) VALUES (%s, %s, %s, %s)', $key, $photo, $rating, $user );
 				$iret = $wpdb->query($query);
-				if (!$iret) exit;													// Fail on storing vote
+				if (!$iret) {
+					echo '0;104;Can not add rating';
+					exit;															// Fail on storing vote
+				}
 				// Compute my avg rating
 				$query = $wpdb->prepare( 'SELECT * FROM `'.WPPA_RATING.'`  WHERE `photo` = %s AND `user` = %s', $photo, $user );
 				$myrats = $wpdb->get_results($query, 'ARRAY_A');
-				if ( ! $myrats) exit;												// Fail on retrieve
+				if ( ! $myrats) {
+					echo '0;105;Can not read ratings';
+					exit;															// Fail on retrieve
+				}
 				$sum = 0;
 				$cnt = 0;
 				foreach ($myrats as $rt) {
@@ -84,12 +102,15 @@ global $wppa_opt;
 			// Store it in the photo info
 			$query = $wpdb->prepare('UPDATE `'.WPPA_PHOTOS. '` SET `mean_rating` = %s WHERE `id` = %s LIMIT 1', $allavgrat, $photo);
 			$iret = $wpdb->query($query);
-			if (!$iret) exit;														// Fail on save
+			if (!$iret) {
+				echo '0;106;Can not save mean rating';
+				exit;																// Fail on save
+			}
 
 			echo $occur.';'.$photo.';'.$index.';'.$myavgrat.';'.$allavgrat;
 			break;
 		default:
-		die(-1);
+		die('-1');
 	}
 	exit;
 }

@@ -387,7 +387,8 @@ global $wppa_defaults;
 						'wppa_comment_overrule'			=> 'no',
 						'wppa_next_on_callback'			=> 'no',
 						'wppa_show_avg_rating'			=> 'yes',
-						'wppa_rating_use_ajax'			=> 'no'
+						'wppa_rating_use_ajax'			=> 'no',
+						'wppa_star_opacity'				=> '20'
 
 
 						);
