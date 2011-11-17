@@ -180,6 +180,7 @@ global $wppa_opt;
 		else echo("\t".'wppaNextOnCallback = false;'."\n");
 		if ($wppa_opt['wppa_rating_use_ajax']) echo("\t".'wppaRatingUseAjax = true;'."\n");
 		else if ($wppa_opt['wppa_rating_use_ajax']) echo("\t".'wppaRatingUseAjax = false;'."\n");
+		echo("\t".'wppaStarOpacity = "'.($wppa_opt['wppa_star_opacity']/'100').'";'."\n");
 
 	echo("/* ]]> */\n");
 	echo("</script>\n");
