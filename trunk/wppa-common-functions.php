@@ -2,11 +2,11 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 4.2.5
+* version 4.2.6
 *
 */
 global $wppa_api_version;
-$wppa_api_version = '4-2-5-002';
+$wppa_api_version = '4-2-6-000';
 // Initialize globals and option settings
 function wppa_initialize_runtime($force = false) {
 global $wppa;
@@ -258,7 +258,9 @@ global $blog_id;
 			'wppa_comment_size'				=> '',
 			'wppa_comment_overrule'			=> '',
 			'wppa_next_on_callback'			=> '',
-			'wppa_show_avg_rating'			=> ''
+			'wppa_show_avg_rating'			=> '',
+			'wppa_rating_use_ajax'			=> '',
+			'wppa_star_opacity'				=> ''
 
 
 
@@ -482,12 +484,12 @@ global $current_user;
 		return $user;
 	}
 	else {
-		if (is_admin()) {
-			wpa_die('It is not allowed to run admin pages while you are not logged in.');
-		}
-		else {
+//		if (is_admin()) {
+//			die('It is not allowed to run admin pages while you are not logged in.'); // except for ajax
+//		}
+//		else {
 			return $_SERVER['REMOTE_ADDR'];
-		}
+//		}
 	}
 }
 
@@ -1101,13 +1103,13 @@ function wppa_table_exists($xtable) {
 global $wpdb;
 
 	$tables = $wpdb->get_results($wpdb->prepare("SHOW TABLES FROM ".DB_NAME), 'ARRAY_A');
+	// Some sqls do not show tables, benefit of the doubt: assume table exists
+	if ( empty($tables) ) return true;
 	
+	// Normal check
 	foreach ($tables as $table) {
 		if ( is_array($table) )	foreach ( $table as $item ) {
-			if ($item == $xtable) return true;
-		}
-		else {
-			if ($table == $xtable) return true;
+			if ( strcasecmp($item, $xtable) == 0 ) return true;
 		}
 	}
 	return false;

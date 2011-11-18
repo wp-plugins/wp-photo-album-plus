@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the non admin stuff
-* Version 4.1.1
+* Version 4.2.6
 *
 */
 
@@ -175,6 +175,14 @@ global $wppa_opt;
 		echo("\t".'wppaBGcolorNumbarActive = "'.$wppa_opt['wppa_bgcolor_numbar_active'].'";'."\n");
 		echo("\t".'wppaBcolorNumbarActive = "'.$wppa_opt['wppa_bcolor_numbar_active'].'";'."\n");
 		echo("\t".'wppaNumbarMax = "'.$wppa_opt['wppa_numbar_max'].'";'."\n");
+		echo("\t".'wppaAjaxUrl = "'.admin_url('admin-ajax.php').'";'."\n");
+		if ($wppa_opt['wppa_next_on_callback']) echo("\t".'wppaNextOnCallback = true;'."\n");
+		else echo("\t".'wppaNextOnCallback = false;'."\n");
+		if ($wppa_opt['wppa_rating_use_ajax']) echo("\t".'wppaRatingUseAjax = true;'."\n");
+		else if ($wppa_opt['wppa_rating_use_ajax']) echo("\t".'wppaRatingUseAjax = false;'."\n");
+		echo("\t".'wppaStarOpacity = '.($wppa_opt['wppa_star_opacity']/'100').';'."\n");
+		// Preload checkmark image
+		echo("\t".'wppaTickImg.src = "'.wppa_get_imgdir().'tick.png";'."\n");
 
 	echo("/* ]]> */\n");
 	echo("</script>\n");
@@ -189,4 +197,5 @@ global $wppa_opt;
 	}
 }
 
+/* ADD ADMIN BAR */
 require_once 'wppa-adminbar.php';

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 4.2.5
+* Version 4.2.6
 *
 */
 
@@ -256,6 +256,8 @@ global $options_error;
 			wppa_update_value('wppa_lightbox_animationspeed');
 			wppa_update_check('wppa_comments_desc');
 			wppa_update_check('wppa_next_on_callback');
+			wppa_update_check('wppa_rating_use_ajax');
+			wppa_update_numeric('wppa_star_opacity', '0', __('Opacity.', 'wppa'), '50');
 		
 			// Table 5: Fonts
 			wppa_update_value('wppa_fontfamily_title');
@@ -1390,6 +1392,24 @@ global $wppa_api_version;
 						$html = wppa_checkbox($slug);
 						$class = 'wppa_rating_';
 						wppa_setting($slug, '26', $name, $desc, $html, $help, $class);
+						
+						$name = __('Rating use Ajax', 'wppa');
+						$desc = __('Use Ajax technology in rating (voting)', 'wppa');
+						$help = esc_js(__('If checked, the page is updated rather than reloaded after clicking a rating star.', 'wppa'));
+						$help .= '\n\n'.esc_js(__('Enabling this feature ensures the fastest rating mechanism possible.', 'wppa'));
+						$slug = 'wppa_rating_use_ajax';
+						$html = wppa_checkbox($slug);
+						$class = 'wppa_rating_';
+						wppa_setting($slug, '27', $name, $desc, $html, $help, $class);
+						
+						$name = __('Star off opacity', 'wppa');
+						$desc = __('Rating star off state opacity value.', 'wppa');
+						$help = esc_js(__('Enter percentage of opacity. 100% is opaque, 0% is transparant', 'wppa'));
+						$slug = 'wppa_star_opacity';
+						$html = wppa_input($slug, '50px', '', __('%', 'wppa'));
+						$class = 'wppa_rating_';
+						wppa_setting($slug, '28', $name, $desc, $html, $help, $class);
+						
 						
 						?>
 					</tbody>
