@@ -3,14 +3,12 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions and API modules
-* Version 4.2.5
+* Version 4.2.6
 *
-* 001 removed autoscroll
-* 002 sleep after rating and comment only when not logged in
 */
 /* Moved to wppa-commonfunctions.php:
 global $wppa_api_version;
-$wppa_api_version = '4-2-5-002';
+$wppa_api_version = '4-2-6-000';
 */
 
 
