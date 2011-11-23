@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 4.2.6
+* Version 4.2.7
 *
 */
 
@@ -372,6 +372,7 @@ global $options_error;
 			wppa_update_check('wppa_watermark_user');
 			wppa_update_value('wppa_watermark_file');
 			wppa_update_value('wppa_watermark_pos');
+			wppa_update_check('wppa_album_admin_autosave');
 			
 			if ( isset($_FILES['file_1']) && $_FILES['file_1']['error'] != 4 ) { // Expected a fileupload for a watermark
 				$file = $_FILES['file_1'];
@@ -2175,8 +2176,8 @@ global $wppa_api_version;
 						$name = __('Watermark file', 'wppa');
 						$desc = __('The default watermarkfile to be used.', 'wppa');
 						$help = esc_js(__('Watermark files are of type png and reside in', 'wppa') . ' ' . WPPA_UPLOAD_URL . '/watermarks/');
-						$help .= "\n\n".esc_js(__('A suitable watermarkfile typically consists of a transparent background and a black text or drawing.', 'wppa'));
-						$help .= "\n".esc_js(__('The watermark image will be overlaying the photo with 80% transparency.', 'wppa'));
+						$help .= '\n\n'.esc_js(__('A suitable watermarkfile typically consists of a transparent background and a black text or drawing.', 'wppa'));
+						$help .= '\n'.esc_js(__('The watermark image will be overlaying the photo with 80% transparency.', 'wppa'));
 						$slug = 'wppa_watermark_file';
 						$class = 'wppa_watermark';
 						$html = '<select style="font-size:11px; height:20px; margin:0 20px 0 0; padding:0; " name="wppa_watermark_file" id="wppa_watermark_file">' . wppa_watermark_file_select('default') . '</select>';
@@ -2190,8 +2191,18 @@ global $wppa_api_version;
 						$html = '<input id="my_file_element" type="file" name="file_1" style="height:18px; font-size: 11px;" />';
 						wppa_setting($slug, '17', $name, $desc, $html, $help, $class);
 						
-						
 						$wppa['no_default'] = false;
+						
+						$name = __('Album admin autosave', 'wppa');
+						$desc = __('Use the Autosave version of the album admin page', 'wppa');
+						$help = esc_js(__('In this version of the album admin page, all modifications are instantly updated on the server.', 'wppa'));
+						$help .= '\n'.esc_js(__('Edit fields are updated the moment you click anywhere outside the edit box.', 'wppa'));
+						$help .= '\n'.esc_js(__('Selections are updated instantly, except for those that require a button push.', 'wppa'));
+						$help .= '\n\n'.esc_js(__('The status fields keep you informed on the actions taken at the background.', 'wppa'));
+						$slug = 'wppa_album_admin_autosave';
+						$html = wppa_checkbox($slug);
+						wppa_setting($slug, '18', $name, $desc, $html, $help);
+						
 					
 						?>
 					</tbody>

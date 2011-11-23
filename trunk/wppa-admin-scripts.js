@@ -1,7 +1,7 @@
 /* admin-scripts.js */
 /* Package: wp-photo-album-plus
 /*
-/* Version 4.2.5
+/* Version 4.2.7
 /* Various js routines used in admin pages		
 */
 
@@ -445,3 +445,149 @@ function impUpd(elm, id) {
 		jQuery(id).prop('value', wppa_import);
 	}
 }
+
+function wppaAjaxDeletePhoto(photo) {
+
+	var xmlhttp;
+	if (window.XMLHttpRequest) {		// code for IE7+, Firefox, Chrome, Opera, Safari
+		xmlhttp=new XMLHttpRequest();
+	}
+	else {								// code for IE6, IE5
+		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	}
+		
+	// Make the Ajax url
+	var url = wppaAjaxUrl+'?action=wppa&wppa-action=delete-photo&photo-id='+photo;
+	if (document.getElementById('photo-nonce-'+photo)) url += '&wppa-nonce='+document.getElementById('photo-nonce-'+photo).value;
+
+	// Do the Ajax action
+	xmlhttp.open('GET',url,true);
+	xmlhttp.send();
+
+	// Process the result
+	xmlhttp.onreadystatechange=function() {
+		switch (xmlhttp.readyState) {
+		case 1:
+			document.getElementById('photostatus-'+photo).innerHTML = 'server connection established';
+			break;
+		case 2:
+			document.getElementById('photostatus-'+photo).innerHTML = 'request received';
+			break;
+		case 3:
+			document.getElementById('photostatus-'+photo).innerHTML = 'processing request';
+			break;
+		case 4:
+			if (xmlhttp.status==200) {
+				var ArrValues = xmlhttp.responseText.split(";");
+				
+				if ( ArrValues[0] == 0 ) document.getElementById('photostatus-'+photo).innerHTML = ArrValues[1];	// Error
+				else document.getElementById('photoitem-'+photo).innerHTML = ArrValues[1];	// OK
+			}
+			
+		}
+	}
+}
+
+function wppaAjaxUpdatePhoto(photo, actionslug, elem) {
+
+	var xmlhttp;
+	if (window.XMLHttpRequest) {		// code for IE7+, Firefox, Chrome, Opera, Safari
+		xmlhttp=new XMLHttpRequest();
+	}
+	else {								// code for IE6, IE5
+		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	}
+		
+	// Make the Ajax url
+	var url = wppaAjaxUrl+'?action=wppa&wppa-action=update-photo&photo-id='+photo+'&item='+actionslug;
+	if (elem != 0) url += '&value='+elem.value;
+	else url += '&value=0';
+	if (document.getElementById('photo-nonce-'+photo)) url += '&wppa-nonce='+document.getElementById('photo-nonce-'+photo).value;
+//alert(url);
+	// Do the Ajax action
+	xmlhttp.open('GET',url,true);
+	xmlhttp.send();
+
+	// Process the result
+	xmlhttp.onreadystatechange=function() {
+		switch (xmlhttp.readyState) {
+		case 1:
+			document.getElementById('photostatus-'+photo).innerHTML = 'server connection established';
+			break;
+		case 2:
+			document.getElementById('photostatus-'+photo).innerHTML = 'request received';
+			break;
+		case 3:
+			document.getElementById('photostatus-'+photo).innerHTML = 'processing request';
+			break;
+		case 4:
+			if (xmlhttp.status==200) {
+				var ArrValues = xmlhttp.responseText.split(";");
+				switch (ArrValues[0]) {
+					case '0':		// No error
+						document.getElementById('photostatus-'+photo).innerHTML = ArrValues[1];
+						break;
+					case '99':	// Photo is gone
+						document.getElementById('photoitem-'+photo).innerHTML = '<span style="color:red">'+ArrValues[1]+'</span>';
+						break;
+					default:	// Any error
+						document.getElementById('photostatus-'+photo).innerHTML = '<span style="color:red">'+ArrValues[1]+' ('+ArrValues[0]+')</span>';
+						break;
+				}
+			}
+		}
+	}
+}
+
+function wppaAjaxUpdateAlbum(album, actionslug, elem) {
+
+	var xmlhttp;
+	if (window.XMLHttpRequest) {		// code for IE7+, Firefox, Chrome, Opera, Safari
+		xmlhttp=new XMLHttpRequest();
+	}
+	else {								// code for IE6, IE5
+		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	}
+		
+	// Make the Ajax url
+	var url = wppaAjaxUrl+'?action=wppa&wppa-action=update-album&album-id='+album+'&item='+actionslug;
+	if (elem != 0) url += '&value='+elem.value;
+	else url += '&value=0';
+	if (document.getElementById('album-nonce-'+album)) url += '&wppa-nonce='+document.getElementById('album-nonce-'+album).value;
+//alert(url);
+	// Do the Ajax action
+	xmlhttp.open('GET',url,true);
+	xmlhttp.send();
+
+	// Process the result
+	xmlhttp.onreadystatechange=function() {
+		switch (xmlhttp.readyState) {
+		case 1:
+			document.getElementById('albumstatus-'+album).innerHTML = 'server connection established';
+			break;
+		case 2:
+			document.getElementById('albumstatus-'+album).innerHTML = 'request received';
+			break;
+		case 3:
+			document.getElementById('albumstatus-'+album).innerHTML = 'processing request';
+			break;
+		case 4:
+			if (xmlhttp.status==200) {
+				var ArrValues = xmlhttp.responseText.split(";");
+				switch (ArrValues[0]) {
+					case '0':		// No error
+						document.getElementById('albumstatus-'+album).innerHTML = ArrValues[1];
+						break;
+					case '97':		// Ratings cleared
+						document.getElementById('albumstatus-'+album).innerHTML = ArrValues[1];
+						jQuery('.wppa-rating').html(ArrValues[2]);
+						break;
+					default:		// Any error
+						document.getElementById('albumstatus-'+album).innerHTML = '<span style="color:red">'+ArrValues[1]+' ('+ArrValues[0]+')</span>';
+						break;
+				}
+			}
+		}
+	}
+}
+				
