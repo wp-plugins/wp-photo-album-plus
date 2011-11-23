@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, multisite, network, lightbox, comment, watermark
-Version: 4.2.6
+Version: 4.2.7
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -54,7 +54,7 @@ You can find the plugin admin section under Menu Photo Albums on the admin scree
 == Installation ==
 
 = Upgrade notice =
-This version is: Major rev# 4, Minor rev# 2, Fix rev# 4, Hotfix rev# 000.
+This version is: Major rev# 4, Minor rev# 2, Fix rev# 7, Hotfix rev# 000.
 If you are upgrading from a previous Major or Minor version, note that:
 * If you modified wppa_theme.php and/or wppa_style.css, you will have to use the newly supplied versions. The previous versions are NOT compatible.
 * If you set the userlevel to anything else than 'administrator' you may have to set it again. Note that changing the userlevel can be done by the administrator only!
@@ -109,6 +109,19 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 4.2.7 =
+
+= Bug Fixes =
+
+* The helptext of Table IX item 16 and 17 did not show up. Fixed.
+* Fixed spurious error 106 in rating with ajax enabled while WP Supercache is activated.
+* The green checkmark will now always show up when a vote is issued.
+
+= Other changes =
+
+* There is an alternate Album Admin page that updates album info and photo details immediately without the need to press a Save Changes button.
+Enable this by checking Table IX item 18: Album Admin Autosave. This option is especially usefull in editing albums with very many photos.
 
 = 4.2.6 =
 

@@ -2,7 +2,7 @@
 /* wppa-ajax.php
 *
 * Functions used in ajax requests
-* version 4.2.6
+* version 4.2.7
 *
 */
 add_action('wp_ajax_wppa', 'wppa_ajax_callback');
@@ -101,8 +101,14 @@ global $wppa_opt;
 				exit;
 			}
 
+			// Find Olld avgrat
+			$oldavgrat = $wpdb->get_var($wpdb->prepare('SELECT `mean_rating` FROM '.WPPA_PHOTOS.' WHERE `id` = %s', $photo));
+			if ($oldavgrat === false) {
+				echo '0;108;'.$wartxt;
+				exit;																// Fail on read old avgrat
+			}
 			// Compute new allavgrat
-			$ratings = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM '.WPPA_RATING.' WHERE photo = %s', $photo), 'ARRAY_A');
+			$ratings = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM '.WPPA_RATING.' WHERE `photo` = %s', $photo), 'ARRAY_A');
 			if ($ratings) {
 				$sum = 0;
 				$cnt = 0;
@@ -113,16 +119,207 @@ global $wppa_opt;
 				if ($cnt > 0) $allavgrat = $sum/$cnt; else $allavgrat = '0';
 			}
 			else $allavgrat = '0';
-			
-			// Store it in the photo info
-			$query = $wpdb->prepare('UPDATE `'.WPPA_PHOTOS. '` SET `mean_rating` = %s WHERE `id` = %s LIMIT 1', $allavgrat, $photo);
-			$iret = $wpdb->query($query);
-			if ( $iret === false ) {
-				echo '0;106;'.$wartxt;
-				exit;																// Fail on save
+
+			// Store it in the photo info if it has been changed
+			if ( $oldavgrat != $allavgrat ) {
+				$query = $wpdb->prepare('UPDATE `'.WPPA_PHOTOS. '` SET `mean_rating` = %s WHERE `id` = %s', $allavgrat, $photo);
+				$iret = $wpdb->query($query);
+				if ( $iret === false ) {
+					echo '0;106;'.$wartxt;
+					exit;																// Fail on save
+				}
 			}
 
 			echo $occur.';'.$photo.';'.$index.';'.$myavgrat.';'.$allavgrat;
+			break;
+			
+		case 'delete-photo':
+			$photo = $_REQUEST['photo-id'];
+			$nonce = $_REQUEST['wppa-nonce'];
+			
+			// Check validity
+			if ( ! wp_verify_nonce($nonce, 'wppa_nonce_'.$photo) ) {
+				echo '0;'.__('You do not have the rights to delete a photo', 'wppa').$nonce;
+				exit;																// Nonce check failed
+			}
+			// Get file extension
+			$ext = $wpdb->get_var($wpdb->prepare('SELECT `ext` FROM `'.WPPA_PHOTOS.'` WHERE `id` = %s', $photo)); 
+			// Delete fullsize image
+			$file = ABSPATH.'wp-content/uploads/wppa/'.$photo.'.'.$ext;
+			if (file_exists($file)) unlink($file);
+			// Delete thumbnail image
+			$file = ABSPATH.'wp-content/uploads/wppa/thumbs/'.$photo.'.'.$ext;
+			if (file_exists($file)) unlink($file);
+			// Delete db entries
+			$wpdb->query($wpdb->prepare('DELETE FROM `'.WPPA_PHOTOS.'` WHERE `id` = %s LIMIT 1', $photo));
+			$wpdb->query($wpdb->prepare('DELETE FROM `'.WPPA_RATING.'` WHERE `photo` = %s', $photo));
+			$wpdb->query($wpdb->prepare('DELETE FROM `'.WPPA_COMMENTS.'` WHERE `photo` = %s', $photo));
+			echo '1;<span style="color:red" >'.sprintf(__('Photo %s has been deleted', 'wppa'), $photo).'</span>';
+			break;
+
+		case 'update-album':
+			$album = $_REQUEST['album-id'];
+			$nonce = $_REQUEST['wppa-nonce'];
+			$item  = $_REQUEST['item'];
+			$value = $_REQUEST['value'];
+			
+			// Check validity
+			if ( ! wp_verify_nonce($nonce, 'wppa_nonce_'.$album) ) {
+				echo '0;'.__('You do not have the rights to update album information', 'wppa').$nonce;
+				exit;																// Nonce check failed
+			}
+
+			switch ($item) {
+				case 'clear_ratings':
+					$photos = $wpdb->get_results($wpdb->prepare('SELECT * FROM `'.WPPA_PHOTOS.'` WHERE `album` = %s', $album), 'ARRAY_A');
+					if ($photos) foreach ($photos as $photo) {
+						$iret1 = $wpdb->query($wpdb->prepare('DELETE FROM `'.WPPA_RATING.'` WHERE `photo` = %s', $photo['id']));
+						$iret2 = $wpdb->query($wpdb->prepare('UPDATE `'.WPPA_PHOTOS.'` SET `mean_rating` = %s WHERE `id` = %s', '', $photo['id']));
+					}
+					if ($photos !== false && $iret1 !== false && $iret2 !== false) {
+						echo '97;'.__('<b>Ratings cleared</b>', 'wppa').';'.__('No ratings for this photo.', 'wppa');
+					}
+					else {
+						echo '1;'.__('An error occurred while clearing ratings', 'wppa');
+					}
+					exit;
+					break;
+				case 'name':
+					$itemname = __('Name', 'wppa');
+					break;
+				case 'description':
+					$itemname = __('Description', 'wppa');
+					break;
+				case 'a_order':
+					$itemname = __('Album order #', 'wppa');
+					break;
+				case 'main_photo':
+					$itemname = __('Cover photo', 'wppa');
+					break;
+				case 'a_parent':
+					$itemname = __('Parent album', 'wppa');
+					break;
+				case 'p_order_by':
+					$itemname = __('Photo order', 'wppa');
+					break;
+				case 'cover_linktype':
+					$itemname = __('Link type', 'wppa');
+					break;
+				case 'cover_linkpage':
+					$itemname = __('Link to', 'wppa');
+					break;
+				case 'owner':
+					$itemname = __('Owner', 'wppa');
+					break;
+				default:
+					$itemname = $item;
+			}
+			
+			$iret = $wpdb->query($wpdb->prepare('UPDATE '.WPPA_ALBUMS.' SET `'.$item.'` = %s WHERE `id` = %s', $value, $album));
+			if ($iret !== false ) {
+				echo '0;'.sprintf(__('<b>%s</b> of album %s updated', 'wppa'), $itemname, $album);
+			}
+			else {
+				echo '2;'.sprintf(__('An error occurred while trying to update <b>%s</b> of album %s', 'wppa'), $itemname, $album);
+				echo '<br>'.__('Press CTRL+F5 and try again.', 'wppa');
+			}
+			exit;
+			break;
+			
+		case 'update-photo':
+			$photo = $_REQUEST['photo-id'];
+			$nonce = $_REQUEST['wppa-nonce'];
+			$item  = $_REQUEST['item'];
+			$value = $_REQUEST['value'];
+			
+			// Check validity
+			if ( ! wp_verify_nonce($nonce, 'wppa_nonce_'.$photo) ) {
+				echo '0;'.__('You do not have the rights to update photo information', 'wppa').$nonce;
+				exit;																// Nonce check failed
+			}
+			
+			switch ($item) {
+				case 'rotright':
+				case 'rotleft':
+					$angle = $item == 'rotleft' ? '90' : '270';
+					$error = wppa_rotate($photo, $angle);
+					$leftorright = $item == 'rotleft' ? __('left', 'wppa') : __('right', 'wppa');
+					if ( ! $error ) {
+						echo '0;'.sprintf(__('Photo %s rotated %s', 'wppa'), $photo, $leftorright);
+					}
+					else {
+						echo $error.';'.sprintf(__('An error occurred while trying to rotate photo %s', 'wppa'), $photo);
+					}
+					exit;
+					break;
+					
+				case 'moveto':
+					$iret = $wpdb->query($wpdb->prepare('UPDATE '.WPPA_PHOTOS.' SET `album` = %s WHERE `id` = %s', $value, $photo));
+					if ($iret !== false ) {
+						echo '99;'.sprintf(__('Photo %s has been moved to album %s (%s)', 'wppa'), $photo, wppa_qtrans(wppa_get_album_name($value)), $value);
+					}
+					else {
+						echo '3;'.sprintf(__('An error occurred while trying to move photo %s', 'wppa'), $photo);
+					}
+					exit;
+					break;
+					
+				case 'copyto':
+					$error = wppa_copy_photo($photo, $value);
+					if ( ! $error ) {
+						echo '0;'.sprintf(__('Photo %s copied to album %s (%s)', 'wppa'), $photo, wppa_qtrans(wppa_get_album_name($value)), $value);
+					}
+					else {
+						echo '4;'.sprintf(__('An error occurred while trying to copy photo %s', 'wppa'), $photo);
+						echo '<br>'.__('Press CTRL+F5 and try again.', 'wppa');
+					}
+					break;
+					
+				case 'name':
+				case 'description':
+				case 'p_order':
+				case 'owner':
+				case 'linkurl':
+				case 'linktitle':
+					switch ($item) {
+						case 'name':
+							$itemname = __('Name', 'wppa');
+							break;
+						case 'description':
+							$itemname = __('Description', 'wppa');
+							break;
+						case 'p_order':
+							$itemname = __('Photo order #', 'wppa');
+							break;
+						case 'owner':
+							$itemname = __('Owner', 'wppa');
+							break;
+						case 'linkurl':
+							$itemname = __('Link url', 'wppa');
+							break;
+						case 'linktitle':
+							$itemname = __('Link title', 'wppa');
+							break;
+						default:
+							$itemname = $item;
+					}
+					$iret = $wpdb->query($wpdb->prepare('UPDATE '.WPPA_PHOTOS.' SET `'.$item.'` = %s WHERE `id` = %s', $value, $photo));
+					if ($iret !== false ) {
+						echo '0;'.sprintf(__('<b>%s</b> of photo %s updated', 'wppa'), $itemname, $photo);
+					}
+					else {
+						echo '2;'.sprintf(__('An error occurred while trying to update <b>%s</b> of photo %s', 'wppa'), $itemname, $photo);
+						echo '<br>'.__('Press CTRL+F5 and try again.', 'wppa');
+					}
+					exit;
+					break;
+
+					
+				default:
+					echo '98;This update action is not implemented yet('.$item.')';
+					exit;
+			}
+		
 			break;
 		default:
 		die('-1');

@@ -1,5 +1,5 @@
 ﻿// Slide show variables and functions
-// This is wppa-slideshow.js version 4.2.6
+// This is wppa-slideshow.js version 4.2.7
 //
 // Vars. The vars that have a name that starts with an underscore is an internal var
 // The vars without leading underscore are 'external' and get a value from html
@@ -71,6 +71,7 @@ var _wppaFirst = new Array();
 var _wppaVoteInProgress = false;
 var _wppaTextDelay;
 var _wppaUrl = new Array();
+var _wppaLastVote = 0;
 
 jQuery(document).ready(function(){
 	_wppaLog('ready', 0);
@@ -211,6 +212,10 @@ function _wppaNextSlide(mocc, mode) {
 	if ( ! _wppaSlideShowRuns[mocc] && mode == 'auto' ) return; // Kill an old timed request, while stopped
 	if ( _wppaSlides[mocc].length < 2 && !_wppaFirst[mocc] ) return; //Do not animate single image
 	if ( ! _wppaSlideShowRuns[mocc] && mode == 'reset' ) _wppaSlideShowRuns[mocc] = true;
+	
+	// No longer busy voting
+	_wppaVoteInProgress = false;
+	
 	// Set the busy flag
 	_wppaIsBusy[mocc] = true;
 
@@ -663,6 +668,11 @@ function _wppaSetRd(mocc, avg, where) {
 	var opac = wppaStarOpacity + frac * (1.0 - wppaStarOpacity);
 	var ilow = 1;
 	var ihigh = 5;
+
+	if (where == '#wppa-rate-') if (_wppaLastVote > 0) {
+		document.getElementById('wppa-rate-'+mocc+'-'+_wppaLastVote).src = wppaImageDirectory+'star.png';				// Reset icon
+		_wppaLastVote = 0;
+	}
 	
 	for (idx=ilow;idx<=ihigh;idx++) {
 		if (idx <= idx1) {
@@ -712,6 +722,7 @@ function _wppaRateIt(mocc, value) {
 	if (_wppaSlideShowRuns[mocc]) return;										
 																			
 	_wppaVoteInProgress = true;											// Keeps opacity as it is now
+	_wppaLastVote = value;
 	
 	document.getElementById('wppa-rate-'+mocc+'-'+value).src = wppaTickImg.src;//wppaImageDirectory+'tick.png';				// Set icon
 	jQuery('#wppa-rate-'+mocc+'-'+value).stop().fadeTo(100, 1.0);
@@ -733,12 +744,11 @@ function _wppaRateIt(mocc, value) {
 		if (document.getElementById('wppa-nonce')) url += '&wppa-nonce='+document.getElementById('wppa-nonce').value;
 		
 		// Do the Ajax action
-		xmlhttp.open('GET',url,false);
+		xmlhttp.open('GET',url,true);
 		xmlhttp.send();
 
 		// Process the result
-		
-//		xmlhttp.onreadystatechange=function() 
+		xmlhttp.onreadystatechange=function() 
 		{
 			if (xmlhttp.readyState==4 && xmlhttp.status==200) {
 				var ArrValues = xmlhttp.responseText.split(";");
@@ -752,21 +762,15 @@ function _wppaRateIt(mocc, value) {
 					_wppaPhotoAverages[ArrValues[0]][ArrValues[2]] = ArrValues[4];
 					// Update display
 					_wppaSetRatingDisplay(mocc);
-				//	_wppaSetRd(mocc, ArrValues[3], '#wppa-rate-');
-				//	_wppaSetRd(mocc, ArrValues[4], '#wppa-avg-');
 
 					if (wppaNextOnCallback) _wppaNext(mocc);
-					// Diagnostics
-//					alert('occur='+ArrValues[0]+'\n'+'photo='+ArrValues[1]+'\n'+'index='+ArrValues[2]+'\n'+'myavgrat='+ArrValues[3]+'\n'+'allavgrat='+ArrValues[4]);
-//					alert(xmlhttp.responseText);
 				}
 			}
-			else alert('Unexpected error. readyState = '+xmlhttp.readyState+' status = '+xmlhttp.status);
 		}
 		
-		document.getElementById('wppa-rate-'+mocc+'-'+value).src = wppaImageDirectory+'star.png';				// Reset icon
+//		document.getElementById('wppa-rate-'+mocc+'-'+value).src = wppaImageDirectory+'star.png';				// Reset icon
 		
-		_wppaVoteInProgress = false;											// No longer busy
+//		_wppaVoteInProgress = false;											// No longer busy
 
 		
 	}

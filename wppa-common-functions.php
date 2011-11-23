@@ -2,11 +2,11 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 4.2.6
+* version 4.2.7
 *
 */
 global $wppa_api_version;
-$wppa_api_version = '4-2-6-000';
+$wppa_api_version = '4-2-7-000';
 // Initialize globals and option settings
 function wppa_initialize_runtime($force = false) {
 global $wppa;
@@ -260,7 +260,8 @@ global $blog_id;
 			'wppa_next_on_callback'			=> '',
 			'wppa_show_avg_rating'			=> '',
 			'wppa_rating_use_ajax'			=> '',
-			'wppa_star_opacity'				=> ''
+			'wppa_star_opacity'				=> '',
+			'wppa_album_admin_autosave'		=> ''
 
 
 
