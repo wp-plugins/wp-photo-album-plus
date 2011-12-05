@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the slideshow high level functions
-* Version 4.2.5
+* Version 4.2.8
 *
 */
 
@@ -268,8 +268,8 @@ global $thumb;
 	else {
 
 	$wppa['out'] .= wppa_nltab('+').'<div class="wppa-box wppa-nav" style="'.__wcs('wppa-box').__wcs('wppa-nav').'height:'.$height.'px;">';
-		$wppa['out'] .= wppa_nltab().'<div style="float:left; text-align:left; cursor:pointer; margin-top:'.$topmarg.'px; width: '.($fs-'1').'px; font-size: '.$fs.'px;"><a class="wppa-arrow" style="'.__wcs('wppa-arrow').'" id="prev-film-arrow-'.$wppa['master_occur'].'" onclick="wppaPrev('.$wppa['master_occur'].');" >&laquo;</a></div>';
-		$wppa['out'] .= wppa_nltab().'<div style="float:right; text-align:right; cursor:pointer; margin-top:'.$topmarg.'px; width: '.($fs-'1').'px; font-size: '.$fs.'px;"><a class="wppa-arrow" style="'.__wcs('wppa-arrow').'" id="next-film-arrow-'.$wppa['master_occur'].'" onclick="wppaNext('.$wppa['master_occur'].');">&raquo;</a></div>';
+		$wppa['out'] .= wppa_nltab().'<div style="float:left; text-align:left; cursor:pointer; margin-top:'.$topmarg.'px; width: '.($fs-'1').'px; font-size: '.$fs.'px;"><a class="wppa-prev-'.$wppa['master_occur'].' wppa-arrow" style="'.__wcs('wppa-arrow').'" id="prev-film-arrow-'.$wppa['master_occur'].'" onclick="wppaPrev('.$wppa['master_occur'].');" >&laquo;</a></div>';
+		$wppa['out'] .= wppa_nltab().'<div style="float:right; text-align:right; cursor:pointer; margin-top:'.$topmarg.'px; width: '.($fs-'1').'px; font-size: '.$fs.'px;"><a class="wppa-next-'.$wppa['master_occur'].' wppa-arrow" style="'.__wcs('wppa-arrow').'" id="next-film-arrow-'.$wppa['master_occur'].'" onclick="wppaNext('.$wppa['master_occur'].');">&raquo;</a></div>';
 		$wppa['out'] .= wppa_nltab().'<div id="filmwindow-'.$wppa['master_occur'].'" class="filmwindow" style="'.$IE6.' display: block; height:'.$height.'px; margin: 0 '.$marg.'px 0 '.$marg.'px; overflow:hidden;">';
 			$wppa['out'] .= wppa_nltab('+').'<div id="wppa-filmstrip-'.$wppa['master_occur'].'" style="height:'.$height1.'px; width:'.$width.'px; margin-left: -100px;">';
 	}
@@ -395,10 +395,10 @@ global $wppa_opt;
 
 	if ($do_it) {
 		$wppa['out'] .= wppa_nltab('+').'<div id="prevnext2-'.$wppa['master_occur'].'" class="wppa-box wppa-nav wppa-nav-text" style="text-align: center; '.__wcs('wppa-box').__wcs('wppa-nav').__wcs('wppa-nav-text').'">';
-			$wppa['out'] .= wppa_nltab().'<span id="p-a-'.$wppa['master_occur'].'" class="wppa-nav-text wppa-arrow" style="float:left; text-align:left; '.__wcs('wppa-nav-text').__wcs('wppa-arrow').'">&laquo;&nbsp;</span>';
-			$wppa['out'] .= wppa_nltab().'<a id="prev-arrow-'.$wppa['master_occur'].'" class="wppa-nav-text arrow-'.$wppa['master_occur'].'" style="float:left; text-align:left; cursor:pointer; '.__wcs('wppa-nav-text').'" onclick="wppaPrev('.$wppa['master_occur'].')" ></a>';
-			$wppa['out'] .= wppa_nltab().'<span id="n-a-'.$wppa['master_occur'].'" class="wppa-nav-text wppa-arrow" style="float:right; text-align:right; '.__wcs('wppa-nav-text').__wcs('wppa-arrow').'">&nbsp;&raquo;</span>';
-			$wppa['out'] .= wppa_nltab().'<a id="next-arrow-'.$wppa['master_occur'].'" class="wppa-nav-text arrow-'.$wppa['master_occur'].'" style="float:right; text-align:right; cursor:pointer; '.__wcs('wppa-nav-text').'" onclick="wppaNext('.$wppa['master_occur'].')"></a>';
+			$wppa['out'] .= wppa_nltab().'<span id="p-a-'.$wppa['master_occur'].'" class="wppa-prev-'.$wppa['master_occur'].' wppa-nav-text wppa-arrow" style="float:left; text-align:left; '.__wcs('wppa-nav-text').__wcs('wppa-arrow').'">&laquo;&nbsp;</span>';
+			$wppa['out'] .= wppa_nltab().'<a id="prev-arrow-'.$wppa['master_occur'].'" class="wppa-prev-'.$wppa['master_occur'].' wppa-nav-text arrow-'.$wppa['master_occur'].'" style="float:left; text-align:left; cursor:pointer; '.__wcs('wppa-nav-text').'" onclick="wppaPrev('.$wppa['master_occur'].')" ></a>';
+			$wppa['out'] .= wppa_nltab().'<span id="n-a-'.$wppa['master_occur'].'" class="wppa-next-'.$wppa['master_occur'].' wppa-nav-text wppa-arrow" style="float:right; text-align:right; '.__wcs('wppa-nav-text').__wcs('wppa-arrow').'">&nbsp;&raquo;</span>';
+			$wppa['out'] .= wppa_nltab().'<a id="next-arrow-'.$wppa['master_occur'].'" class="wppa-next-'.$wppa['master_occur'].' wppa-nav-text arrow-'.$wppa['master_occur'].'" style="float:right; text-align:right; cursor:pointer; '.__wcs('wppa-nav-text').'" onclick="wppaNext('.$wppa['master_occur'].')"></a>';
 			$wppa['out'] .= wppa_nltab().'<span id="counter-'.$wppa['master_occur'].'" class="wppa-nav-text wppa-black" style="text-align:center; '.__wcs('wppa-nav-text').'; cursor:pointer;" onclick="wppaStartStop('.$wppa['master_occur'].', -1);" title="'.__a('Click to start/stop', 'wppa').'"></span>';
 		$wppa['out'] .= wppa_nltab('-').'</div><!-- #prevnext2 -->';
 	}

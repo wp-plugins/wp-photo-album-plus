@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Photo Album Plus in italiano\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-11-08 16:27+0100\n"
-"PO-Revision-Date: 2011-11-08 16:27+0100\n"
-"Last-Translator: J.N. Breetvelt <OpaJaap@OpaJaap.nl>\n"
+"POT-Creation-Date: 2011-11-08 16:32+0100\n"
+"PO-Revision-Date: 2011-11-25 19:21+0100\n"
+"Last-Translator: Gianni Diurno (aka gidibao) <gidibao[at]gmail[dot]com>\n"
 "Language-Team: Gianni Diurno | gidibao.net & charmingpress.com\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -23,9 +23,8 @@ msgstr ""
 "X-Poedit-SearchPath-1: theme\n"
 
 #: wppa-comment-widget.php:25
-#, fuzzy
 msgid "Comments on Photos"
-msgstr "Foto Top Ten"
+msgstr "Commenti alle foto"
 
 #: wppa-comment-widget.php:78
 #: wppa-potd-widget.php:55
@@ -133,7 +132,7 @@ msgstr "Le foto più votate"
 
 #: wppa-functions.php:135
 msgid "Recently commented photos"
-msgstr ""
+msgstr "Foto commentate di recente"
 
 #: wppa-functions.php:888
 msgid "<b>ERROR: Attempt to enter an invalid rating.</b>"
@@ -260,11 +259,11 @@ msgstr "Carica foto"
 
 #: wppa-functions.php:3260
 msgid "Apply watermark file:"
-msgstr ""
+msgstr "Applica file filigrana:"
 
 #: wppa-functions.php:3268
 msgid "Position:"
-msgstr ""
+msgstr "Posizione:"
 
 #: wppa-functions.php:3277
 msgid "Enter/modify photo description"
@@ -400,7 +399,7 @@ msgstr "Necessario login per votare"
 #: wppa-slideshow.php:370
 #, php-format
 msgid "Photo %s of %s"
-msgstr ""
+msgstr "Foto %s di %s"
 
 #: wppa-slideshow.php:398
 msgid "Click to start/stop"

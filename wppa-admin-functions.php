@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 * gp admin functions
-* version 4.2.7
+* version 4.2.8
 *
 * 
 */
@@ -57,9 +57,14 @@ global $wppa;
 							'wppa_topten_widget_linkpage',
 							'wppa_coverimg_linkpage',
 							'wppa_search_linkpage',
-							'permalink_structure');
+							'permalink_structure',
+							'wppa_album_admin_autosave',
+							'wppa_settings_autosave'
+							);
 	}
-	else $void_these = array();
+	else $void_these = array('wppa_album_admin_autosave',
+							'wppa_settings_autosave'
+							);
 	// Open file
 	$file = fopen($fname, 'r');
 	// Restore
@@ -114,7 +119,8 @@ function wppa_regenerate_thumbs() {
 }
 
 function wppa_set_caps() {
-	global $wp_roles;
+global $wppa;
+global $wp_roles;
 
 	if (current_user_can('administrator')) {
 		$wp_roles->add_cap('administrator', 'wppa_admin');
@@ -211,6 +217,7 @@ function wppa_set_caps() {
 			$wp_roles->remove_cap('editor', 'wppa_sidebar_admin');		
 		}
 	}
+	else $wppa['error'] = true;
 }
 
 // set last album 
@@ -289,7 +296,7 @@ function wppa_warning_message($msg, $fixed = false) {
 // display ok message
 function wppa_ok_message($msg, $fixed = false) {
 ?>
-	<div id="warning" class="updated <?php if ($fixed) echo fade ?>" style="background-color: #e0ffe0; border-color: #55ee55;" ><p><strong><?php echo($msg); ?></strong></p></div>
+	<div id="wppa-ok" class="updated <?php if ($fixed) echo fade ?>" style="background-color: #e0ffe0; border-color: #55ee55;" ><p id="wppa-ok-p" ><strong><?php echo($msg); ?></strong></p></div>
 <?php
 }
 
@@ -346,6 +353,8 @@ function wppa_chmod($chmod) {
 }
 
 function _wppa_chmod_($file, $chmod) {
+global $wppa;
+
 	if ($chmod == '0') return;	// Unchange
 	switch ($chmod) {
 		case '750':
@@ -365,15 +374,26 @@ function _wppa_chmod_($file, $chmod) {
 			if (is_file($file)) _chmod_($file, 0666);
 			break;
 		default:
-		wppa_error_message(__('Unsupported value in _wppa_chmod_ :', 'wppa').' '.$chmod);
+		if ( $wppa['ajax'] ) {
+			$wppa['out'] .= __('Unsupported value in _wppa_chmod_ :', 'wppa').' '.$chmod;
+			$wppa['error'] = '2';
+		}
+		else  wppa_error_message(__('Unsupported value in _wppa_chmod_ :', 'wppa').' '.$chmod);
 	}
 }
 function _chmod_($file, $rights) {
+global $wppa;
+
 	if ( ! chmod($file, $rights) ) {
-		wppa_error_message(sprintf(__('Unable to set the rights on %s to %o', 'wppa'), $file, $rights));
+		if ( $wppa['ajax'] ) {
+			$wppa['out'] .= sprintf(__('Unable to set the rights on %s to %o', 'wppa'), $file, $rights);
+			$wppa['error'] = '3';
+		}
+		else wppa_error_message(sprintf(__('Unable to set the rights on %s to %o', 'wppa'), $file, $rights));
 	}
 	else {
-		wppa_ok_message(sprintf(__('Rights %o set on %s', 'wppa'), $rights, $file ));
+		if ( $wppa['ajax'] ) $wppa['out'] .= sprintf(__('Rights %o set on %s', 'wppa'), $rights, $file ).'. ';
+		else wppa_ok_message(sprintf(__('Rights %o set on %s', 'wppa'), $rights, $file ));
 	}
 }
 
@@ -735,14 +755,26 @@ global $wpdb;
 			if ($the_count) $the_value /= $the_count;
 			$iret = $wpdb->query($wpdb->prepare( 'UPDATE '.WPPA_PHOTOS.' SET mean_rating = %s WHERE id = %s', $the_value, $photo['id'] ) );
 			if ($iret === false) {
-				wppa_error_message(__('Unable to update mean rating', 'wppa'));
+				if ( $wppa['ajax'] ) {
+					$wppa['error'] = true;
+					$wppa['out'] = __('Unable to update mean rating', 'wppa');
+				}
+				else {
+					wppa_error_message(__('Unable to update mean rating', 'wppa'));
+				}
 				return false;
 			}
 		}
 		return true;
 	}
 	else {
-		wppa_error_message(__('No photos or error reading', 'wppa').WPPA_PHOTOS);
+		if ( $wppa['ajax'] ) {
+			$wppa['error'] = true;
+			$wppa['out'] = __('No photos or error reading', 'wppa').WPPA_PHOTOS;
+		}
+		else {
+			wppa_error_message(__('No photos or error reading', 'wppa').WPPA_PHOTOS);
+		}
 		return false;
 	}
 }

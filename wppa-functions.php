@@ -3,12 +3,12 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions and API modules
-* Version 4.2.6
+* Version 4.2.8
 *
 */
 /* Moved to wppa-commonfunctions.php:
 global $wppa_api_version;
-$wppa_api_version = '4-2-6-000';
+$wppa_api_version = '4-2-8-000';
 */
 
 
@@ -57,8 +57,8 @@ global $wppa_opt;
 	switch ($temp) {
 		case 'url':
 			$size = $wppa_opt['wppa_fontsize_nav'];
-			if ($size != '') $style = 'height:'.$size.'px;';
-			else $style = '';
+			if ( $size == '' ) $size = '12';
+			$style = 'height:'.$size.'px;';
 			$sep = ' <img src="'.$wppa_opt['wppa_bc_url'].'" class="no-shadow" style="'.$style.'" /> ';
 			break;
 		case 'txt':
@@ -988,6 +988,7 @@ global $wppa_done;
 	if ( !$email ) die('Illegal attempt to enter a comment');
 	$comment = htmlspecialchars(stripslashes(trim(wppa_get_post('comment'))));
 	$status = is_user_logged_in() ? 'approved' : 'pending';
+//$status='pending';
 	$cedit = wppa_get_post('comment-edit');
 	
 	if ($comment) {
@@ -1636,7 +1637,7 @@ global $wppa;
 	}
 	if (is_numeric($tfw) && is_numeric($tfh)) {
 		$result = 'width: '.$tfw.'px; height: '.$tfh.'px; margin-left: '.$mgl.'px; margin-top: '.$mgl2.'px; margin-bottom: '.$mgl2.'px;';
-		if ($glue && $wppa_opt['wppa_film_show_glue']) {
+		if ($glue && $wppa_opt['wppa_film_show_glue'] && $wppa_opt['wppa_slide_wrap']) {
 			$result .= 'padding-right:'.$mgl.'px; border-right: 2px dotted gray;';
 		}
 	}
@@ -2385,26 +2386,38 @@ global $wppa_opt;
 		}
 	}
 	elseif ($type == 'slideshow') {
-		$index = 0;
-		$startindex = -1;
-
-		if (wppa_get_get('photo')) $startid = wppa_get_get('photo');	// Still slideshow at photo id $startid
-		else {
-			if ($wppa_opt['wppa_start_slide'] && $wppa_opt['wppa_enable_slideshow']) {
-				$startid = -1;					// Start running
-			}
-			else $startid = -2;					// Start still at first photo
+		// Find slideshow start method
+		switch ($wppa_opt['wppa_start_slide']) {
+			case 'run':
+				$startindex = -1;
+				break;
+			case 'still':
+				$startindex = 0;
+				break;
+			case 'norate':
+				$startindex = -2;
+				break;
+			default:
+				echo 'Unexpected error unknown wppa_start_slide in wppa_run_slidecontainer';
 		}
+		// A requested photo id overrules the method. $startid >0 is requested photo id, -1 means: no id requested
+		if (wppa_get_get('photo')) $startid = wppa_get_get('photo');	// Still slideshow at photo id $startid
+		else $startid = -1;
+		
+		// Find album
 		if (wppa_get_get('album')) $alb = wppa_get_get('album');
 		else $alb = '';	// Album id is in $wppa['start_album']
+		// Find thumbs
 		$thumbs = wppa_get_thumbs($alb);
+		// Create next ids
 		$ix = 0;
 		if ( $thumbs ) while ( $ix < count($thumbs) ) {
 			if ( $ix == (count($thumbs)-1) ) $thumbs[$ix]['next_id'] = $thumbs[0]['id'];
 			else $thumbs[$ix]['next_id'] = $thumbs[$ix + 1]['id'];
 			$ix ++;
 		}
-		
+		// Produce scripts for slides
+		$index = 0;
 		if ( $thumbs ) foreach ($thumbs as $tt) : $id = $tt['id'];
 			$wppa['out'] .= wppa_nltab('+').'<script type="text/javascript">';
 			$wppa['out'] .= wppa_nltab().'/* <![CDATA[ */';
@@ -2416,15 +2429,14 @@ global $wppa_opt;
 			}
 			$wppa['out'] .= wppa_nltab('-').'/* ]]> */';
 			$wppa['out'] .= wppa_nltab().'</script>';
-			if ($startid == -2) $startid = $id;
-			if ($startid == $id) $startindex = $index;
+			if ($startid == $id) $startindex = $index;	// Found the requested id, put the corresponding index in $startindex
 			$index++;
 		endforeach;
 		
 		$wppa['out'] .= wppa_nltab('+').'<script type="text/javascript">';
 			$wppa['out'] .= '/* <![CDATA[ */';
 		
-			if ($wppa['is_slideonly']) $startindex = -1;	// Start running, overrules everything
+			if ($wppa['is_slideonly']) $startindex = -1;	// There are no navigations, so start running, overrule everything
 			if ($wppa['ss_widget_valign'] != '' && $wppa['ss_widget_valign'] != 'fit') {
 			}
 			elseif ($wppa_opt['wppa_fullvalign'] == 'fit' || $wppa['is_slideonly'] == '1' ) { 
@@ -2434,6 +2446,8 @@ global $wppa_opt;
 			if ($wppa['portrait_only']) {
 				$wppa['out'] .= wppa_nltab().'wppa_portrait_only['.$wppa['master_occur'].'] = true;';
 			}
+			
+			// Start command with appropriate $startindex: -2 = at norate, -1 run from firat, >=0 still at index
 			$wppa['out'] .= wppa_nltab().'wppaStartStop('.$wppa['master_occur'].', '.$startindex.');';
 		
 		$wppa['out'] .= wppa_nltab('-').'/* ]]> */';
@@ -2495,6 +2509,8 @@ global $thumb;
 function wppa_get_preambule() {
 global $wppa_opt;
 
+	if ( ! $wppa_opt['wppa_slide_wrap'] ) return '0';
+	
 	$result = is_numeric($wppa_opt['wppa_colwidth']) ? $wppa_opt['wppa_colwidth'] : $wppa_opt['wppa_fullsize'];
 	$result = ceil(ceil($result / $wppa_opt['wppa_thumbsize']) / 2 );
 	return $result;

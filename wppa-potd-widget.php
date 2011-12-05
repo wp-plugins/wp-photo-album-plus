@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the widget
-* Version 4.0.0
+* Version 4.2.8
 */
 
 class PhotoOfTheDay extends WP_Widget {
@@ -47,7 +47,7 @@ class PhotoOfTheDay extends WP_Widget {
 			
 			if ($link) $widget_content .= "\n\t".'<a href = "'.$link['url'].'" title="'.$link['title'].'">';
 			
-				$widget_content .= "\n\t\t".'<img src="'.$imgurl.'" style="width: '.get_option('wppa_widget_width', '190').'px;" alt="'.$name.'">';
+				$widget_content .= "\n\t\t".'<img src="'.$imgurl.'" style="width: '.get_option('wppa_widget_width', '190').'px;" alt="'.$name.'" />';
 
 			if ($link) $widget_content .= "\n\t".'</a>';
 		} 

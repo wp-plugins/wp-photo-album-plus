@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 4.2.7
+* Version 4.2.8
 *
 */
 
@@ -144,6 +144,12 @@ function wppa_setup($force = false) {
 		if ($key == '2' || $key == '3') $msg .= '<br/>' . __('Please REPLACE your customized WPPA-THEME.PHP file by the newly supplied one, or just remove it from your theme directory. You may modify it later if you wish. Your current customized version is NOT compatible with this version of the plugin software.', 'wppa');
 		wppa_ok_message($msg);
 	}
+	
+	if ( $old_rev <= '428' ) {
+		$wppa_start_slide = get_option('wppa_start_slide');
+		if ( $wppa_start_slide == 'yes' ) update_option('wppa_start_slide', 'run');
+		if ( $wppa_start_slide == 'no' ) update_option('wppa_start_slide', 'still');
+	}
 		
 	if ( $old_rev < '243' || $force ) {		// owner added in...
 		get_currentuserinfo();
@@ -283,7 +289,7 @@ global $wppa_defaults;
 						'wppa_show_full_name' 		=> 'yes',
 						'wppa_show_comments' 		=> 'no',
 						'wppa_show_cover_text' 		=> 'yes',
-						'wppa_start_slide' 			=> 'yes',
+						'wppa_start_slide' 			=> 'run',
 						'wppa_hide_slideshow' 		=> 'no',
 						'wppa_filmstrip' 			=> 'yes',
 						'wppa_bc_url' 				=> wppa_get_imgdir().'arrow.gif',
@@ -352,7 +358,7 @@ global $wppa_defaults;
 						'wppa_max_photo_newtime'		=> '0',
 						'wppa_max_album_newtime'		=> '0',
 						'wppa_load_skin' 				=> '',
-						'wppa_skinfile' 				=> '',
+						'wppa_skinfile' 				=> 'default',
 						'wppa_use_lightbox'				=> 'no',
 						'wppa_lightbox_bordersize'		=> '10',
 						'wppa_lightbox_animationspeed'	=> '5',
@@ -389,7 +395,9 @@ global $wppa_defaults;
 						'wppa_show_avg_rating'			=> 'yes',
 						'wppa_rating_use_ajax'			=> 'no',
 						'wppa_star_opacity'				=> '20',
-						'wppa_album_admin_autosave'		=> 'no'
+						'wppa_album_admin_autosave'		=> 'yes',
+						'wppa_settings_autosave'		=> 'yes',
+						'wppa_slide_wrap'				=> 'yes'
 
 
 						);
@@ -400,7 +408,10 @@ global $wppa_defaults;
 }
 function wppa_set_default($value, $key, $force) {
 	if ($force) {
-		update_option($key, $value);
+		// Skip the autosave version settings when force, so this is set only once at upgrade or new instal and not when restoring to defaults
+		if ( $key != 'wppa_album_admin_autosave' && $key != 'wppa_settings_autosave' ) {
+			update_option($key, $value);
+		}
 	}
 	else {
 		if (get_option($key, 'nil') == 'nil') update_option($key, $value);
