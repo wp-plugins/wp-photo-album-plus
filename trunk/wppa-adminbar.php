@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * enhances the admin bar with wppa+ menu
-* version 4.2.0
+* version 4.2.8
 *
 */
 
@@ -94,7 +94,7 @@ function wppa_admin_bar_menu() {
 	) );
 
 	// Loop through menu items
-	foreach ( $menu_items as $id => $menu_item ) {
+	if ( $menu_items ) foreach ( $menu_items as $id => $menu_item ) {
 		
 		// Add in item ID
 		$menu_item['id'] = 'wppa-' . $id;

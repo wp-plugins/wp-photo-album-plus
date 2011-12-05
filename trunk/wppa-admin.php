@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains the admin menu and startups the admin pages
-* Version 4.2.7
+* Version 4.2.8
 *
 */
 
@@ -66,9 +66,7 @@ function wppa_admin_scripts() {
 
 // Album admin page
 function wppa_admin() {
-	//if ( get_option('wppa_album_admin_autosave', 'yes') == 'yes' ) 
-	$usr = wppa_get_user();
-	if ( get_option('wppa_album_admin_autosave') == 'yes' ) require_once 'wppa-album-admin-autosave.php';
+	if ( get_option('wppa_album_admin_autosave', 'yes') == 'yes' ) require_once 'wppa-album-admin-autosave.php';
 	else require_once 'wppa-album-admin.php';
 	_wppa_admin();
 }
@@ -90,7 +88,9 @@ function wppa_page_export() {
 }
 // Settings admin page
 function wppa_page_options() {	
-	require_once 'wppa-settings.php';
+	if ( get_option('wppa_settings_autosave', 'yes') == 'yes' ) require_once 'wppa-settings-autosave.php';
+	else require_once 'wppa-settings.php';
+//	require_once 'wppa-settings.php';
 	_wppa_page_options();
 }
 // Photo of the day admin page

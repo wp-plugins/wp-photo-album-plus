@@ -1,5 +1,5 @@
 ﻿// Slide show variables and functions
-// This is wppa-slideshow.js version 4.2.7
+// This is wppa-slideshow.js version 4.2.8
 //
 // Vars. The vars that have a name that starts with an underscore is an internal var
 // The vars without leading underscore are 'external' and get a value from html
@@ -47,6 +47,8 @@ var wppaNextOnCallback = false;
 var wppaRatingUseAjax = false;
 var wppaStarOpacity = 0.2;
 var wppaTickImg = new Image(); 
+var wppaClockImg = new Image();
+var wppaSlideWrap = true;
 
 // 'Internal' variables
 var _wppaPhotoIds = new Array();
@@ -219,6 +221,8 @@ function _wppaNextSlide(mocc, mode) {
 	// Set the busy flag
 	_wppaIsBusy[mocc] = true;
 
+if ( _wppaSlideShowRuns[mocc] ) _wppaShowMetaData(mocc, 'hide');
+	
 	var fg = _wppaForeground[mocc];
 	var bg = 1 - fg;
 
@@ -227,8 +231,6 @@ function _wppaNextSlide(mocc, mode) {
 		_wppaNextIndex[mocc] = _wppaCurrentIndex[mocc] + 1;
 		if (_wppaNextIndex[mocc] == _wppaSlides[mocc].length) _wppaNextIndex[mocc] = 0;
 	}
-//	jQuery('[id^=wppa-numbar-' + mocc + '-]').removeClass("wppa-numbar-current");
-//	jQuery("#wppa-numbar-" + mocc + "-" + _wppaNextIndex[mocc]).addClass("wppa-numbar-current");
 
 	jQuery('[id^=wppa-numbar-' + mocc + '-]').css('background-color', wppaBGcolorNumbar);	//removeClass("wppa-numbar-current");
 	jQuery('[id^=wppa-numbar-' + mocc + '-]').css('border-color', wppaBcolorNumbar);	//removeClass("wppa-numbar-current");
@@ -405,8 +407,15 @@ function _wppaNextSlide_5(mocc) {
 	}
 	_wppaToTheSame = false;					// This has now been worked out
 
-	_wppaShowMetaData(mocc, 'show'); 
+	// End of non wrapped show?
+	if ( _wppaSlideShowRuns[mocc] && ! wppaSlideWrap && ( ( _wppaCurrentIndex[mocc] + 1 ) == _wppaSlides[mocc].length ) ) {  
+		_wppaIsBusy[mocc] = false;
+		_wppaStop(mocc);	// stop
+		return;
+	}
 
+	_wppaShowMetaData(mocc, 'show'); 
+	
 	if ( _wppaTogglePending[mocc] != -2 ) {			// A Toggle pending?
 		var index = _wppaTogglePending[mocc];		// Remember the pending startstop request argument
 		_wppaTogglePending[mocc] = -2;				// Reset the pending toggle
@@ -417,7 +426,6 @@ function _wppaNextSlide_5(mocc) {
 			setTimeout('_wppaNextSlide('+mocc+', "auto")', _wppaTimeOut[mocc]); 
 		}	
 		else {									// Done!
-//			jQuery(".arrow-"+mocc).stop().fadeTo(400,1);
 		}
 	}
 
@@ -427,18 +435,20 @@ function _wppaNextSlide_5(mocc) {
 function _wppaNext(mocc) {
 	_wppaLog('Next', mocc);
 
+if ( ! wppaSlideWrap && _wppaCurrentIndex[mocc] == (_wppaSlides[mocc].length -1) ) return;
+
 	_wppaNextIndex[mocc] = _wppaCurrentIndex[mocc] + 1;
 	if (_wppaNextIndex[mocc] == _wppaSlides[mocc].length) _wppaNextIndex[mocc] = 0;
-	jQuery(".arrow-"+mocc).stop().fadeTo(400,0.2);
 	_wppaNextSlide(mocc, 0);
 }
 
 function _wppaPrev(mocc) {
 	_wppaLog('Prev', mocc);
 	
+if ( ! wppaSlideWrap && _wppaCurrentIndex[mocc] == 0 ) return;
+
 	_wppaNextIndex[mocc] = _wppaCurrentIndex[mocc] - 1;
 	if (_wppaNextIndex[mocc] < 0) _wppaNextIndex[mocc] = _wppaSlides[mocc].length - 1;
-	jQuery(".arrow-"+mocc).stop().fadeTo(400,0.2);
 	_wppaNextSlide(mocc, 0);
 }
 
@@ -447,7 +457,6 @@ function _wppaGoto(mocc, idx) {
 	
 	_wppaToTheSame = (_wppaNextIndex[mocc] == idx);
 	_wppaNextIndex[mocc] = idx;
-	jQuery(".arrow-"+mocc).stop().fadeTo(400,0.2);
 	_wppaNextSlide(mocc, 0);
 }
 
@@ -480,7 +489,16 @@ function _wppaGotoContinue(mocc){
 function _wppaStart(mocc, idx) {
 	_wppaLog('Start', mocc);
 	
-	if ( idx != -1 ) {	// Init still at index idx
+	if ( idx == -2 ) {	// Init at first without my rating
+		var i = 0;
+		idx = 0;
+		while (i < _wppaSlides[mocc].length) {
+			if ( idx == 0 && _wppaPhotoMyRating[mocc][i] == 0 ) idx = i;
+			i++;
+		}
+	}
+
+	if ( idx > -1 ) {	// Init still at index idx
 		if (document.getElementById('startstop-'+mocc)) document.getElementById('startstop-'+mocc).innerHTML=wppaStart+' '+wppaSlideShow; 
 		if (document.getElementById('speed0-'+mocc)) document.getElementById('speed0-'+mocc).style.visibility="hidden";
 		if (document.getElementById('speed1-'+mocc)) document.getElementById('speed1-'+mocc).style.visibility="hidden";
@@ -489,21 +507,15 @@ function _wppaStart(mocc, idx) {
 		_wppaNextSlide(mocc, 0);
 		_wppaShowMetaData(mocc, 'show');
 	}
-	else {				// Init running
-       _wppaSlideShowRuns[mocc] = true;
-        _wppaNextSlide(mocc, 0);
+	else {
+		_wppaSlideShowRuns[mocc] = true;
+		_wppaNextSlide(mocc, 0);
 		if (document.getElementById('startstop-'+mocc)) document.getElementById('startstop-'+mocc).innerHTML=wppaStop;
-		jQuery('#prev-arrow-'+mocc).css('visibility', 'hidden');
-		jQuery('#next-arrow-'+mocc).css('visibility', 'hidden');
-		jQuery('#prev-film-arrow-'+mocc).css('visibility', 'hidden');
-		jQuery('#next-film-arrow-'+mocc).css('visibility', 'hidden');
-		jQuery('#p-a-'+mocc).css('visibility', 'hidden');
-		jQuery('#n-a-'+mocc).css('visibility', 'hidden');
 		jQuery('#speed0-'+mocc).css('visibility', 'visible');
 		jQuery('#speed1-'+mocc).css('visibility', 'visible');
 		_wppaShowMetaData(mocc, 'hide');	
 		jQuery('#bc-pname-'+mocc).html(wppaSlideShow);
-    }
+	}
 	
 	// Both cases:
 	_wppaSetRatingDisplay(mocc);
@@ -514,12 +526,6 @@ function _wppaStop(mocc) {
 	
     _wppaSlideShowRuns[mocc] = false;
     document.getElementById('startstop-'+mocc).innerHTML=wppaStart+' '+wppaSlideShow;  
-	jQuery('#prev-arrow-'+mocc).css('visibility', 'visible');
-	jQuery('#next-arrow-'+mocc).css('visibility', 'visible');
-	jQuery('#prev-film-arrow-'+mocc).css('visibility', 'visible');
-	jQuery('#next-film-arrow-'+mocc).css('visibility', 'visible');
-	jQuery('#p-a-'+mocc).css('visibility', 'visible');
-	jQuery('#n-a-'+mocc).css('visibility', 'visible');
 	jQuery('#speed0-'+mocc).css('visibility', 'hidden');
 	jQuery('#speed1-'+mocc).css('visibility', 'hidden');
 	_wppaShowMetaData(mocc, 'show');
@@ -669,12 +675,8 @@ function _wppaSetRd(mocc, avg, where) {
 	var ilow = 1;
 	var ihigh = 5;
 
-	if (where == '#wppa-rate-') if (_wppaLastVote > 0) {
-		document.getElementById('wppa-rate-'+mocc+'-'+_wppaLastVote).src = wppaImageDirectory+'star.png';				// Reset icon
-		_wppaLastVote = 0;
-	}
-	
 	for (idx=ilow;idx<=ihigh;idx++) {
+		if (where == '#wppa-rate-') document.getElementById('wppa-rate-'+mocc+'-'+idx).src = wppaImageDirectory+'star.png';				// Reset icon
 		if (idx <= idx1) {
 			jQuery(where+mocc+'-'+idx).stop().fadeTo(100, 1.0);
 		}
@@ -716,8 +718,6 @@ function _wppaRateIt(mocc, value) {
 	
 	if (document.getElementById('wppa-nonce')) url += '&wppa-nonce='+document.getElementById('wppa-nonce').value;
 	
-//	url += '#wppa-loc-'+mocc;			// Scroll to top of wppa container
-
 	if (oldval != 0 && wppaRatingOnce) return;							// Already rated, and once allowed only
 	if (_wppaSlideShowRuns[mocc]) return;										
 																			
@@ -743,15 +743,11 @@ function _wppaRateIt(mocc, value) {
 		url += '&wppa-occur='+mocc+'&wppa-index='+_wppaCurrentIndex[mocc];
 		if (document.getElementById('wppa-nonce')) url += '&wppa-nonce='+document.getElementById('wppa-nonce').value;
 		
-		// Do the Ajax action
-		xmlhttp.open('GET',url,true);
-		xmlhttp.send();
-
 		// Process the result
 		xmlhttp.onreadystatechange=function() 
 		{
 			if (xmlhttp.readyState==4 && xmlhttp.status==200) {
-				var ArrValues = xmlhttp.responseText.split(";");
+				var ArrValues = xmlhttp.responseText.split("||");
 				
 				if (ArrValues[0] == '0') {	// Error
 					alert('Error Code='+ArrValues[1]+'\n\n'+ArrValues[2]);
@@ -762,17 +758,17 @@ function _wppaRateIt(mocc, value) {
 					_wppaPhotoAverages[ArrValues[0]][ArrValues[2]] = ArrValues[4];
 					// Update display
 					_wppaSetRatingDisplay(mocc);
+					document.getElementById('wppa-rate-'+mocc+'-'+value).src = wppaTickImg.src;			// Set icon
 
 					if (wppaNextOnCallback) _wppaNext(mocc);
 				}
 			}
+//			else 	document.getElementById('wppa-rate-'+mocc+'-'+value).src = wppaClockImg.src;		// Set icon
 		}
-		
-//		document.getElementById('wppa-rate-'+mocc+'-'+value).src = wppaImageDirectory+'star.png';				// Reset icon
-		
-//		_wppaVoteInProgress = false;											// No longer busy
 
-		
+		// Do the Ajax action
+		xmlhttp.open('GET',url,true);
+		xmlhttp.send();	
 	}
 	else {						// NON-ajax method
 		setTimeout('_wppaGo("'+url+'")', 200);	// 200 ms to display tick
@@ -856,10 +852,10 @@ function _wppaShowMetaData(mocc, key) {
 			// Hide the comment footer
 			jQuery('#wppa-comfooter-wrap-'+mocc).css('display', 'none');
 			// Fade the browse arrows in
-			jQuery('#prev-film-arrow-'+mocc).fadeIn(100);
-			jQuery('#next-film-arrow-'+mocc).fadeIn(100);
-
-			jQuery(".arrow-"+mocc).stop().fadeTo(400,1);
+			if ( wppaSlideWrap || ( _wppaCurrentIndex[mocc] != 0 ) )
+				jQuery('.wppa-prev-'+mocc).fadeIn(300);
+			if ( wppaSlideWrap || ( _wppaCurrentIndex[mocc] != (_wppaSlides[mocc].length - 1) ) )
+				jQuery('.wppa-next-'+mocc).fadeIn(300);
 		}
 		else {							// Hide
 			// Hide existing comments
@@ -869,8 +865,8 @@ function _wppaShowMetaData(mocc, key) {
 			// Hide the comment footer
 			jQuery('#wppa-comfooter-wrap-'+mocc).css('display', 'block');
 			// Fade the browse arrows out
-			jQuery('#prev-film-arrow-'+mocc).fadeOut(400);
-			jQuery('#next-film-arrow-'+mocc).fadeOut(400);
+//			jQuery('.wppa-prev-'+mocc).fadeOut(300);	
+//			jQuery('.wppa-next-'+mocc).fadeOut(300);
 		}
 	}
 	// What to do when the slideshow is running
@@ -882,8 +878,6 @@ function _wppaShowMetaData(mocc, key) {
 		// Show title and description
 		jQuery("#imagedesc-"+mocc).css('visibility', 'visible');
 		jQuery("#imagetitle-"+mocc).css('visibility', 'visible');
-		// Show comments section
-//		jQuery("#comments-"+mocc).css('visibility', 'visible');
 		// Display counter
 		jQuery("#counter-"+mocc).css('visibility', 'visible');
 	}
@@ -891,10 +885,11 @@ function _wppaShowMetaData(mocc, key) {
 		// Hide title and description
 		jQuery("#imagedesc-"+mocc).css('visibility', 'hidden'); 
 		jQuery("#imagetitle-"+mocc).css('visibility', 'hidden');
-		// Hide comments section
-//		jQuery("#comments-"+mocc).html('&nbsp;&nbsp;');	
 		// Hide counter	
 		jQuery("#counter-"+mocc).css('visibility', 'hidden');
+		// Fade the browse arrows out
+		jQuery('.wppa-prev-'+mocc).fadeOut(300);	
+		jQuery('.wppa-next-'+mocc).fadeOut(300);
 	}
 }
 

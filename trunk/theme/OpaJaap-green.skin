@@ -131,6 +131,4 @@ wppa_bgcolor_fullimg:#cce6b3
 wppa_bcolor_fullimg:#77ae40
 wppa_max_photo_newtime:86400
 wppa_max_album_newtime:604800
-wppa_load_skin:
-wppa_skinfile:
 //Done!
