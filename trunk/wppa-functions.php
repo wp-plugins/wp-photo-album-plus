@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions and API modules
-* Version 4.2.8
+* Version 4.2.9
 *
 */
 /* Moved to wppa-commonfunctions.php:
@@ -975,6 +975,7 @@ global $wppa_done;
 function wppa_do_comment($id) {
 global $wpdb;
 global $wppa;
+global $wppa_opt;
 global $wppa_done;
 
 	if ($wppa_done) return; // Prevent multiple
@@ -987,8 +988,8 @@ global $wppa_done;
 	$email = wppa_get_post('comemail');
 	if ( !$email ) die('Illegal attempt to enter a comment');
 	$comment = htmlspecialchars(stripslashes(trim(wppa_get_post('comment'))));
-	$status = is_user_logged_in() ? 'approved' : 'pending';
-//$status='pending';
+	$status = ( is_user_logged_in() && $wppa_opt['wppa_comment_login_approved'] ) ? 'approved' : 'pending';
+
 	$cedit = wppa_get_post('comment-edit');
 	
 	if ($comment) {

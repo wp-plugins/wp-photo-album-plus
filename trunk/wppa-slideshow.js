@@ -1,5 +1,5 @@
 ﻿// Slide show variables and functions
-// This is wppa-slideshow.js version 4.2.8
+// This is wppa-slideshow.js version 4.2.9
 //
 // Vars. The vars that have a name that starts with an underscore is an internal var
 // The vars without leading underscore are 'external' and get a value from html
@@ -74,6 +74,7 @@ var _wppaVoteInProgress = false;
 var _wppaTextDelay;
 var _wppaUrl = new Array();
 var _wppaLastVote = 0;
+var _wppaSkipRated = new Array();
 
 jQuery(document).ready(function(){
 	_wppaLog('ready', 0);
@@ -110,6 +111,7 @@ function wppaStoreSlideInfo(mocc, id, url, size, width, height, name, desc, phot
 		_wppaInWidgetLinkTitle[mocc] = new Array(); // iwlinktitle;
 		_wppaCommentHtml[mocc] = new Array();
 		_wppaUrl[mocc] = new Array();
+		_wppaSkipRated[mocc] = false;
 	}
     _wppaSlides[mocc][id] = ' src="' + url + '" alt="' + name + '" class="theimg big" ' + 'width="' + width + '" height="' + height + '" style="' + size + '; display:block;">';
     _wppaNames[mocc][id] = name;
@@ -442,6 +444,31 @@ if ( ! wppaSlideWrap && _wppaCurrentIndex[mocc] == (_wppaSlides[mocc].length -1)
 	_wppaNextSlide(mocc, 0);
 }
 
+function _wppaNextOnCallback(mocc) {
+	_wppaLog('NextOnCallback', mocc);
+
+if ( ! wppaSlideWrap && _wppaCurrentIndex[mocc] == (_wppaSlides[mocc].length -1) ) return;
+
+	if ( _wppaSkipRated[mocc] ) {
+		var now = _wppaCurrentIndex[mocc];
+		var idx = now + 1;
+		var first = true;
+		if ( _wppaPhotoMyRating[mocc][idx] != 0 ) {
+			while ((idx != (now + 1) && _wppaPhotoMyRating[mocc][idx] != 0) || first) {
+				idx ++;
+				first = false;
+				if (idx == _wppaSlides[mocc].length) idx = 0;
+			}
+		}
+		_wppaNextIndex[mocc] = idx;
+	}
+	else {
+		_wppaNextIndex[mocc] = _wppaCurrentIndex[mocc] + 1;
+		if (_wppaNextIndex[mocc] == _wppaSlides[mocc].length) _wppaNextIndex[mocc] = 0;
+	}
+	_wppaNextSlide(mocc, 0);
+}
+
 function _wppaPrev(mocc) {
 	_wppaLog('Prev', mocc);
 	
@@ -492,9 +519,12 @@ function _wppaStart(mocc, idx) {
 	if ( idx == -2 ) {	// Init at first without my rating
 		var i = 0;
 		idx = 0;
-		while (i < _wppaSlides[mocc].length) {
-			if ( idx == 0 && _wppaPhotoMyRating[mocc][i] == 0 ) idx = i;
-			i++;
+		_wppaSkipRated[mocc] = true;
+		if ( _wppaPhotoMyRating[mocc][i] != 0 ) {
+			while (i < _wppaSlides[mocc].length) {
+				if ( idx == 0 && _wppaPhotoMyRating[mocc][i] == 0 ) idx = i;
+				i++;
+			}
 		}
 	}
 
@@ -760,7 +790,7 @@ function _wppaRateIt(mocc, value) {
 					_wppaSetRatingDisplay(mocc);
 					document.getElementById('wppa-rate-'+mocc+'-'+value).src = wppaTickImg.src;			// Set icon
 
-					if (wppaNextOnCallback) _wppaNext(mocc);
+					if (wppaNextOnCallback) _wppaNextOnCallback(mocc);
 				}
 			}
 //			else 	document.getElementById('wppa-rate-'+mocc+'-'+value).src = wppaClockImg.src;		// Set icon
