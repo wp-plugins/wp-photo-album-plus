@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 4.2.8
+* Version 4.2.9
 *
 */
 
@@ -204,7 +204,7 @@ global $wppa_api_version;
 			<div style="float:left"><?php _e('Legenda:', 'wppa') ?></div><br />			
 			<?php echo wppa_doit_button(__('Button', 'wppa')) ?><div style="float:left">&nbsp;:&nbsp;<?php _e('action that causes page reload.', 'wppa') ?></div>
 			<br />
-			<input type="button" class="button-secundary" style="float:left; font-size: 11px; height: 18px; margin: 0 4px; padding: 0px;" value="<?php _e('Button', 'wppa') ?>" />
+			<input type="button" onclick="if ( confirm('<?php _e('Are you sure?', 'wppa') ?>') ) return true; else return false;" class="button-secundary" style="float:left; border-radius:8px; font-size: 12px; height: 18px; margin: 0 4px; padding: 0px;" value="<?php _e('Button', 'wppa') ?>" />
 			<div style="float:left">&nbsp;:&nbsp;<?php _e('action that does not cause page reload.', 'wppa') ?></div>
 			<br />			
 			<img src="<?php echo wppa_get_imgdir() ?>star.png" title="<?php _e('Setting unmodified', 'wppa') ?>" style="padding-left:4px; float:left; height:16px; width:16px;" /><div style="float:left">&nbsp;:&nbsp;<?php _e('Setting unmodified', 'wppa') ?></div>
@@ -1165,6 +1165,13 @@ global $wppa_api_version;
 						$slug = 'wppa_slide_wrap';
 						$html = wppa_checkbox($slug);
 						wppa_setting($slug, '29', $name, $desc, $html, $help);
+						
+						$name = __('Comment login approved', 'wppa');
+						$desc = __('Comments from logged in users are approved', 'wppa');
+						$help = esc_js(__('If checked, comments entered by logged in users are immediately approved, if unchecked they are pending like comments entered by logged out users', 'wppa'));
+						$slug = 'wppa_comment_login_approved';
+						$html = wppa_checkbox($slug);
+						wppa_setting($slug, '30', $name, $desc, $html, $help);
 						
 						?>
 					</tbody>
@@ -2436,8 +2443,8 @@ global $wppa_opt;
 
 function wppa_toggle_table($i) {
 ?>
-	<input type="button" value="<?php _e('Hide', 'wppa') ?>" onclick="wppaHideTable('<?php echo($i) ?>');" id="wppa_tableHide-<?php echo($i) ?>" />
-	<input type="button" value="<?php _e('Show', 'wppa') ?>" onclick="wppaShowTable('<?php echo($i) ?>');" id="wppa_tableShow-<?php echo($i) ?>" />
+	<input type="button" style="border-radius:10px; " value="<?php _e('Hide', 'wppa') ?>" onclick="wppaHideTable('<?php echo($i) ?>');" id="wppa_tableHide-<?php echo($i) ?>" />
+	<input type="button" style="border-radius:10px; " value="<?php _e('Show', 'wppa') ?>" onclick="wppaShowTable('<?php echo($i) ?>');" id="wppa_tableShow-<?php echo($i) ?>" />
 <!--	<input type="submit" class="button-primary" name="wppa_set_submit" value="<?php _e('Save Changes', 'wppa'); ?>" /> -->
 <?php
 }
@@ -2450,7 +2457,7 @@ function wppa_doit_button( $label = '', $key = '', $sub = '' ) {
 	$result .= ' onclick="';
 	if ( $key ) $result .= 'document.getElementById(\'wppa-key\').value=\''.$key.'\';';
 	if ( $sub ) $result .= 'document.getElementById(\'wppa-sub\').value=\''.$sub.'\';';
-	$result .= 'return true;" />';
+	$result .= 'if ( confirm(\''.__('Are you sure?', 'wppa').'\')) return true; else return false;" />';
 	
 	return $result;
 }
@@ -2458,9 +2465,9 @@ function wppa_doit_button( $label = '', $key = '', $sub = '' ) {
 function wppa_ajax_button( $label = '', $slug ) {
 	if ( $label == '' ) $label = __('Do it!', 'wppa');
 
-	$result = '<input type="button" class="button-secundary" style="float:left; font-size: 11px; height: 16px; margin: 0 4px; padding: 0px;" value="'.$label.'"';
+	$result = '<input type="button" class="button-secundary" style="float:left; border-radius:8px; font-size: 12px; height: 16px; margin: 0 4px; padding: 0px;" value="'.$label.'"';
 	
-	$result .= ' onclick="wppaAjaxUpdateOptionValue(\''.$slug.'\', 0)" />';
+	$result .= ' onclick="if (confirm(\''.__('Are you sure?', 'wppa').'\')) wppaAjaxUpdateOptionValue(\''.$slug.'\', 0)" />';
 	$result .= '<img id="img_'.$slug.'" src="'.wppa_get_imgdir().'star.png" title="'.__('Not done yet', 'wppa').'" style="padding:0 4px; float:left; height:16px; width:16px;" />';
 	
 	return $result;

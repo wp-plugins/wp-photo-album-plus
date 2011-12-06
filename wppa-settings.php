@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 4.2.8
+* Version 4.2.9
 *
 */
 
@@ -263,6 +263,7 @@ wp_verify_nonce($_GET['wppa-nonce'], 'wppa-nonce');
 			wppa_update_check('wppa_rating_use_ajax');
 			wppa_update_numeric('wppa_star_opacity', '0', __('Opacity.', 'wppa'), '50');
 			wppa_update_check('wppa_slide_wrap');
+			wppa_update_check('wppa_comment_login_approved');
 		
 			// Table 5: Fonts
 			wppa_update_value('wppa_fontfamily_title');
@@ -1439,6 +1440,13 @@ global $wppa_api_version;
 						$html = wppa_checkbox($slug);
 						wppa_setting($slug, '29', $name, $desc, $html, $help);
 						
+						$name = __('Comment login approved', 'wppa');
+						$desc = __('Comments from logged in users are approved', 'wppa');
+						$help = esc_js(__('If checked, comments entered by logged in users are immediately approved, if unchecked they are pending like comments entered by logged out users', 'wppa'));
+						$slug = 'wppa_comment_login_approved';
+						$html = wppa_checkbox($slug);
+						wppa_setting($slug, '30', $name, $desc, $html, $help);
+
 						?>
 					</tbody>
 					<tfoot style="font-weight: bold;" class="wppa_table_4">
