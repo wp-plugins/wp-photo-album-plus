@@ -124,6 +124,10 @@ the show will indeed start at the first unrated slide as well as the already vot
 be skipped as long as there are unrated photos. This works only with ajax voting on (Table IV - 27).
 * You will get a confirmation box on actions in the auto-save settings screen.
 
+= Hot Fixes =
+
+001: Fixed a slideshow problem when My Rating was not shown.
+
 = 4.2.8 =
 
 = Bug Fixes =
