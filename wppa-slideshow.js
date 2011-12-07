@@ -1,5 +1,5 @@
 ﻿// Slide show variables and functions
-// This is wppa-slideshow.js version 4.2.9
+// This is wppa-slideshow.js version 4.2.9 Fix 001
 //
 // Vars. The vars that have a name that starts with an underscore is an internal var
 // The vars without leading underscore are 'external' and get a value from html
@@ -706,7 +706,11 @@ function _wppaSetRd(mocc, avg, where) {
 	var ihigh = 5;
 
 	for (idx=ilow;idx<=ihigh;idx++) {
-		if (where == '#wppa-rate-') document.getElementById('wppa-rate-'+mocc+'-'+idx).src = wppaImageDirectory+'star.png';				// Reset icon
+		if (where == '#wppa-rate-') {
+			if (document.getElementById('wppa-rate-'+mocc+'-'+idx)) {
+				document.getElementById('wppa-rate-'+mocc+'-'+idx).src = wppaImageDirectory+'star.png';				// Reset icon
+			}
+		}
 		if (idx <= idx1) {
 			jQuery(where+mocc+'-'+idx).stop().fadeTo(100, 1.0);
 		}
