@@ -2,11 +2,11 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 4.2.9
+* version 4.2.10
 *
 */
 global $wppa_api_version;
-$wppa_api_version = '4-2-9-001';
+$wppa_api_version = '4-2-10-000';
 // Initialize globals and option settings
 function wppa_initialize_runtime($force = false) {
 global $wppa;
@@ -74,7 +74,7 @@ global $blog_id;
 
 		);
 
-		if (isset($_POST['wppa-searchstring'])) $wppa['src'] = true;
+		if (isset($_REQUEST['wppa-searchstring'])) $wppa['src'] = true;
 		if (isset($_GET['s'])) $wppa['src'] = true;
 
 	}
@@ -874,8 +874,8 @@ global $wppa;
 
 	$src = '';
 	
-	if (isset($_POST['wppa-searchstring'])) {
-		$src = $_POST['wppa-searchstring'];
+	if (isset($_REQUEST['wppa-searchstring'])) {
+		$src = $_REQUEST['wppa-searchstring'];
 	}
 	elseif (isset($_GET['s'])) {	// wp search
 		$src = $_GET['s'];
