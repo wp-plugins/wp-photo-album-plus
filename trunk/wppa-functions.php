@@ -3,12 +3,12 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions and API modules
-* Version 4.2.9
+* Version 4.2.10
 *
 */
 /* Moved to wppa-commonfunctions.php:
 global $wppa_api_version;
-$wppa_api_version = '4-2-8-000';
+$wppa_api_version = '4-2-10-000';
 */
 
 
@@ -1504,7 +1504,7 @@ global $wppa;
 function wppa_get_pagesize($type = '') {
 global $wppa_opt;
 
-	if (isset($_POST['wppa-searchstring'])) return '0';
+	if (isset($_REQUEST['wppa-searchstring'])) return '0';
 	if ($type == 'albums') return $wppa_opt['wppa_album_page_size'];
 	if ($type == 'thumbs') return $wppa_opt['wppa_thumb_page_size'];
 	return '0';
@@ -3188,8 +3188,8 @@ global $wpdb;
 			break;
 	}
 	
-	if (isset($_POST['wppa-searchstring'])) {
-		$result['url'] .= '&amp;wppa-src='.$_POST['wppa-searchstring'];
+	if (isset($_REQUEST['wppa-searchstring'])) {
+		$result['url'] .= '&amp;wppa-searchstring='.$_REQUEST['wppa-searchstring'];
 	}
 	if ($wich == 'topten') {
 		$result['url'] .= '&amp;wppa-topten='.$wppa_opt['wppa_topten_count'];

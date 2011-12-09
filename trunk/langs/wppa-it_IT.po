@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: WP Photo Album Plus in italiano\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-12-06 16:03+0100\n"
-"PO-Revision-Date: 2011-12-06 16:03+0100\n"
-"Last-Translator: J.N. Breetvelt <OpaJaap@OpaJaap.nl>\n"
+"PO-Revision-Date: 2011-12-08 09:50+0100\n"
+"Last-Translator: Gianni Diurno (aka gidibao) <gidibao[at]gmail[dot]com>\n"
 "Language-Team: Gianni Diurno | gidibao.net & charmingpress.com\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -270,33 +270,30 @@ msgid "Unexpected error"
 msgstr "Errore inatteso"
 
 #: wppa-ajax.php:147
-#, fuzzy
 msgid "You do not have the rights to delete a photo"
-msgstr "Album sconosciuto durante il tentativo di caricamento foto"
+msgstr "Non hai i permessi per cancellare una foto"
 
 #: wppa-ajax.php:162
-#, fuzzy, php-format
+#, php-format
 msgid "Photo %s has been deleted"
-msgstr "La foto è stata cancellata."
+msgstr "La foto %s è stata cancellata"
 
 #: wppa-ajax.php:174
 msgid "You do not have the rights to update album information"
-msgstr ""
+msgstr "Non hai i permessi per potere aggiornare le informazioni di questo album"
 
 #: wppa-ajax.php:186
-#, fuzzy
 msgid "<b>Ratings cleared</b>"
-msgstr "Le valutazioni sono state svuotate"
+msgstr "<b>Le valutazioni sono state svuotate</b>"
 
 #: wppa-ajax.php:186
 #: wppa-album-admin-autosave.php:453
 msgid "No ratings for this photo."
-msgstr ""
+msgstr "Nessuna valutazione per questa foto."
 
 #: wppa-ajax.php:189
-#, fuzzy
 msgid "An error occurred while clearing ratings"
-msgstr "Si è verificato un errore durante la tua procedura di votazione."
+msgstr "Si è verificato un errore durante la tua procedura di svuotamento valutazioni"
 
 #: wppa-ajax.php:197
 #: wppa-ajax.php:296
@@ -306,19 +303,16 @@ msgid "Description"
 msgstr "Descrizione"
 
 #: wppa-ajax.php:200
-#, fuzzy
 msgid "Album order #"
-msgstr "Disposizione album"
+msgstr "Disposizione num. album"
 
 #: wppa-ajax.php:203
-#, fuzzy
 msgid "Cover photo"
-msgstr "Foto copertina:"
+msgstr "Foto copertina"
 
 #: wppa-ajax.php:206
-#, fuzzy
 msgid "Parent album"
-msgstr "Album genitore:"
+msgstr "Album genitore"
 
 #: wppa-ajax.php:209
 msgid "Photo order"
@@ -329,9 +323,8 @@ msgid "Link type"
 msgstr "Tipo di link"
 
 #: wppa-ajax.php:215
-#, fuzzy
 msgid "Link to"
-msgstr "Link a:"
+msgstr "Link a"
 
 #: wppa-ajax.php:218
 #: wppa-ajax.php:302
@@ -343,22 +336,22 @@ msgstr "Proprietario"
 #: wppa-ajax.php:226
 #, php-format
 msgid "<b>%s</b> of album %s updated"
-msgstr ""
+msgstr "<b>%s</b> di album %s aggiornato"
 
 #: wppa-ajax.php:229
-#, fuzzy, php-format
+#, php-format
 msgid "An error occurred while trying to update <b>%s</b> of album %s"
-msgstr "Si è verificato un errore durante la tua procedura di votazione."
+msgstr "Si è verificato un errore aggiornando <b>%s</b> di album %s"
 
 #: wppa-ajax.php:230
 #: wppa-ajax.php:281
 #: wppa-ajax.php:319
 msgid "Press CTRL+F5 and try again."
-msgstr ""
+msgstr "Premi CTRL+F5 e riprova."
 
 #: wppa-ajax.php:244
 msgid "You do not have the rights to update photo information"
-msgstr ""
+msgstr "Non hai i permessi per potere aggiornare le informazioni di questa foto"
 
 #: wppa-ajax.php:253
 msgid "left"
@@ -369,63 +362,60 @@ msgid "right"
 msgstr "destra"
 
 #: wppa-ajax.php:255
-#, fuzzy, php-format
+#, php-format
 msgid "Photo %s rotated %s"
-msgstr "La foto è stata ruotata"
+msgstr "La foto %s è stata ruotata %s"
 
 #: wppa-ajax.php:258
-#, fuzzy, php-format
+#, php-format
 msgid "An error occurred while trying to rotate photo %s"
-msgstr "Si è verificato un errore durante la tua procedura di votazione."
+msgstr "Si è verificato un errore ruotando la foto %s"
 
 #: wppa-ajax.php:266
 #, php-format
 msgid "Photo %s has been moved to album %s (%s)"
-msgstr ""
+msgstr "La foto %s è stata spostata sotto album %s (%s)"
 
 #: wppa-ajax.php:269
-#, fuzzy, php-format
+#, php-format
 msgid "An error occurred while trying to move photo %s"
-msgstr "Si è verificato un errore durante la tua procedura di votazione."
+msgstr "Si è verificato un errore spostando la foto %s"
 
 #: wppa-ajax.php:277
-#, fuzzy, php-format
+#, php-format
 msgid "Photo %s copied to album %s (%s)"
-msgstr "Foto caricate nell'album numero"
+msgstr "La foto %s è stata copiata sotto album %s (%s)"
 
 #: wppa-ajax.php:280
-#, fuzzy, php-format
+#, php-format
 msgid "An error occurred while trying to copy photo %s"
-msgstr "Si è verificato un errore durante la tua procedura di votazione."
+msgstr "Si è verificato un errore copiando la foto %s"
 
 #: wppa-ajax.php:299
-#, fuzzy
 msgid "Photo order #"
-msgstr "Disposizione num. foto:"
+msgstr "Disposizione num. foto"
 
 #: wppa-ajax.php:305
-#, fuzzy
 msgid "Link url"
-msgstr "URL del link:"
+msgstr "URL del link"
 
 #: wppa-ajax.php:308
-#, fuzzy
 msgid "Link title"
-msgstr "Titolo URL:"
+msgstr "Titolo link"
 
 #: wppa-ajax.php:315
 #, php-format
 msgid "<b>%s</b> of photo %s updated"
-msgstr ""
+msgstr "<b>%s</b> di photo %s aggiornata"
 
 #: wppa-ajax.php:318
-#, fuzzy, php-format
+#, php-format
 msgid "An error occurred while trying to update <b>%s</b> of photo %s"
-msgstr "Si è verificato un errore durante la tua procedura di votazione."
+msgstr "Si è verificato un errore aggiornando <b>%s</b> di foto %s"
 
 #: wppa-ajax.php:336
 msgid "You do not have the rights to update settings"
-msgstr ""
+msgstr "Non hai i permessi per potere aggiornare le impostazioni"
 
 #: wppa-ajax.php:353
 msgid "Column width."
@@ -516,9 +506,8 @@ msgid "Comment Widget image thumbnail size"
 msgstr "Dimensione immagine miniatura nel widget commenti"
 
 #: wppa-ajax.php:422
-#, fuzzy
 msgid "Ratings recalculated"
-msgstr "Le valutazioni sono state svuotate"
+msgstr "Le valutazioni sono state ricalcolate"
 
 #: wppa-ajax.php:425
 msgid "Lightbox opacity."
@@ -536,12 +525,11 @@ msgstr "Filtro priorità"
 
 #: wppa-ajax.php:447
 msgid "CHMOD failed"
-msgstr ""
+msgstr "CHMOD fallito"
 
 #: wppa-ajax.php:453
-#, fuzzy
 msgid "CHMOD unchanged"
-msgstr "Lascia immutato."
+msgstr "CHMOD immutato"
 
 #: wppa-ajax.php:465
 msgid "Error converting to UTF_8"
@@ -549,12 +537,11 @@ msgstr "Errore durante conversione a UTF_8"
 
 #: wppa-ajax.php:468
 msgid "Conversion to UTF_8 completed"
-msgstr ""
+msgstr "Conversione a UTF_8 completata"
 
 #: wppa-ajax.php:479
-#, fuzzy
 msgid "Rights set"
-msgstr "Diritti %o impostati su %s"
+msgstr "Impostazione permessi"
 
 #: wppa-ajax.php:482
 msgid "Changes in accesslevels will not be made. It is set to be done by an other program."
@@ -569,32 +556,32 @@ msgid "Could not clear ratings"
 msgstr "Impossibile svuotare le valutazioni"
 
 #: wppa-ajax.php:517
-#, fuzzy, php-format
+#, php-format
 msgid "Failed to set %s to %s"
-msgstr "Estrazione non riuscita"
+msgstr "Impossibile impostare %s a %s"
 
 #: wppa-ajax.php:522
 #, php-format
 msgid "Setting %s updated to %s"
-msgstr ""
+msgstr "Impostazioni %s aggiornate a %s"
 
 #: wppa-ajax.php:529
 msgid "You just changed a setting that requires the regeneration of thumbnails."
-msgstr ""
+msgstr "Hai appena modificato una impostazione che richiede la rigenerazione delle miniature."
 
 #: wppa-ajax.php:530
 msgid "This process will start as soon as you refresh or re-enter the settings page."
-msgstr ""
+msgstr "Questo processo avrà inizio una volta ricaricata o re-inviata la pagina delle impostazioni."
 
 #: wppa-ajax.php:564
 #: wppa-ajax.php:572
 msgid "You may also enter:"
-msgstr ""
+msgstr "Puoi anche inserire:"
 
 #: wppa-ajax.php:565
 #: wppa-ajax.php:573
 msgid "You may also leave/set this blank"
-msgstr ""
+msgstr "Puoi anche lasciare/impostare a blank"
 
 #: wppa-album-admin-autosave.php:25
 #: wppa-album-admin.php:18
@@ -640,23 +627,23 @@ msgstr "Modifica informazioni album"
 
 #: wppa-album-admin-autosave.php:57
 msgid "Auto Save"
-msgstr ""
+msgstr "Salvataggio automatico"
 
 #: wppa-album-admin-autosave.php:59
 msgid "In this version of the album admin page, all modifications are instantly updated on the server."
-msgstr ""
+msgstr "In questa versione della pagina di amministrazione album tutte le modifiche saranno aggiornate sul server immediatamente."
 
 #: wppa-album-admin-autosave.php:60
 msgid "Edit fields are updated the moment you click anywhere outside the edit box."
-msgstr ""
+msgstr "I campi per le modifiche saranno aggiornati nel momento in cui effettuerai un click al di fuori della casella di modifica."
 
 #: wppa-album-admin-autosave.php:61
 msgid "Selections are updated instantly, except for those that require a button push."
-msgstr ""
+msgstr "Le selezioni saranno approvate immediatamente ad eccezione di quelle che richiedono il premere un pulsante."
 
 #: wppa-album-admin-autosave.php:62
 msgid "The status fields keep you informed on the actions taken at the background."
-msgstr ""
+msgstr "I campi di status ti manterranno informato circa le azioni intraprese in background."
 
 #: wppa-album-admin-autosave.php:65
 #: wppa-album-admin.php:119
@@ -754,9 +741,8 @@ msgid "Specify the way the photos should be ordered in this album."
 msgstr "Specifica come devono essere ordinate le foto per questo album."
 
 #: wppa-album-admin-autosave.php:158
-#, fuzzy
 msgid "The default setting can be changed in the Photo Albums -> Settings page."
-msgstr "L'impostazione predefinita può essere cambiata nella pagina delle Opzioni."
+msgstr "La impostazione predefinita può essere cambiata sotto Photo Albums -> pagina impostazioni."
 
 #: wppa-album-admin-autosave.php:165
 #: wppa-album-admin.php:253
@@ -809,14 +795,12 @@ msgid "If you want, you can link the title to a WP page in stead of the album's 
 msgstr "Qualora lo volessi, puoi collegare il titolo ad una pagina WP invece di un link al contenuto dell'album. Se così fosse, seleziona la pagina alla quale collegare il titolo."
 
 #: wppa-album-admin-autosave.php:221
-#, fuzzy
 msgid "Are you sure you want to clear the ratings in this album?"
-msgstr "Sei certo di volere cancellare questo album?"
+msgstr "Sei certo di volere svuotare le valutazioni per questo album?"
 
 #: wppa-album-admin-autosave.php:221
-#, fuzzy
 msgid "Reset ratings"
-msgstr "Ripristino valutazioni:"
+msgstr "Ripristino valutazioni"
 
 #: wppa-album-admin-autosave.php:229
 #: wppa-album-admin-autosave.php:550
@@ -828,7 +812,7 @@ msgstr "Stato"
 #: wppa-album-admin-autosave.php:232
 #, php-format
 msgid "Album %s is not modified yet"
-msgstr ""
+msgstr "Album %s non ancora modificato"
 
 #: wppa-album-admin-autosave.php:238
 #: wppa-album-admin.php:316
@@ -1008,19 +992,16 @@ msgid "Photo order #:"
 msgstr "Disposizione num. foto:"
 
 #: wppa-album-admin-autosave.php:470
-#, fuzzy
 msgid "Are you sure you want to move this photo?"
-msgstr "Sei certo di volere ruotare questa foto?"
+msgstr "Sei certo di volere spostare questa foto?"
 
 #: wppa-album-admin-autosave.php:470
-#, fuzzy
 msgid "Please select an album to move the photo to first."
-msgstr "Come prima cosa, seleziona un album nel quale importare la foto."
+msgstr "Come prima cosa, seleziona un album nel qualespostare la foto."
 
 #: wppa-album-admin-autosave.php:470
-#, fuzzy
 msgid "Move photo to"
-msgstr "Copia foto a"
+msgstr "Sposta foto in"
 
 #: wppa-album-admin-autosave.php:479
 #: wppa-album-admin.php:535
@@ -1085,7 +1066,7 @@ msgstr "Scrivi/altera il nome della foto. Questo NON è il nome di un file e non
 #: wppa-album-admin-autosave.php:553
 #, php-format
 msgid "Photo %s is not modified yet"
-msgstr ""
+msgstr "Foto %s non ancora modificata"
 
 #: wppa-album-admin-autosave.php:609
 #: wppa-album-admin-autosave.php:706
@@ -2037,7 +2018,7 @@ msgstr "Il file %s che hai caricato non è un file .png"
 
 #: wppa-settings-autosave.php:111
 msgid "No file selected or error on upload"
-msgstr ""
+msgstr "Nessun file selezionato o errore caricamento"
 
 #: wppa-settings-autosave.php:129
 #: wppa-settings.php:421
@@ -2139,28 +2120,26 @@ msgstr "Disattiva e quindi riattiva il plugin. Qualora il problema continuasse a
 
 #: wppa-settings-autosave.php:204
 msgid "Legenda:"
-msgstr ""
+msgstr "Legenda:"
 
 #: wppa-settings-autosave.php:205
 #: wppa-settings-autosave.php:207
-#, fuzzy
 msgid "Button"
-msgstr "Basso"
+msgstr "Pulsante"
 
 #: wppa-settings-autosave.php:205
 msgid "action that causes page reload."
-msgstr ""
+msgstr "azione che genera il caricamento della pagina."
 
 #: wppa-settings-autosave.php:207
 #: wppa-settings-autosave.php:2460
 #: wppa-settings-autosave.php:2470
-#, fuzzy
 msgid "Are you sure?"
-msgstr "Sei certo che sia una foto?"
+msgstr "Ne sei sicuro?"
 
 #: wppa-settings-autosave.php:208
 msgid "action that does not cause page reload."
-msgstr ""
+msgstr "azione che non genera il caricamento della pagina."
 
 #: wppa-settings-autosave.php:210
 #: wppa-settings-autosave.php:1932
@@ -2170,25 +2149,21 @@ msgstr ""
 #: wppa-settings-autosave.php:2333
 #: wppa-settings-autosave.php:2393
 msgid "Setting unmodified"
-msgstr ""
+msgstr "Impostazioni non modificate"
 
 #: wppa-settings-autosave.php:212
-#, fuzzy
 msgid "Update in progress"
-msgstr "Aggiorna le foto già presenti"
+msgstr "Aggiornamento in corso"
 
 #: wppa-settings-autosave.php:214
-#, fuzzy
 msgid "Setting updated"
-msgstr "Impostazioni"
+msgstr "Le impostazioni sono state aggiornate"
 
 #: wppa-settings-autosave.php:216
-#, fuzzy
 msgid "Update failed"
 msgstr "Upload fallito"
 
 #: wppa-settings-autosave.php:218
-#, fuzzy
 msgid "Hide this"
 msgstr "Nascondi"
 
@@ -3684,14 +3659,13 @@ msgstr "Avvio riproduzione slideshow."
 
 #: wppa-settings-autosave.php:927
 #: wppa-settings.php:1193
-#, fuzzy
 msgid "If you select \"running\", the slideshow will start running immediately, if you select \"still at first photo\", the first photo will be displayed in browse mode."
-msgstr "Se attivo, lo slideshow verrà riprodotto immediatamente in automatico diversamente, la prima foto verrà mostrata in modalità navigazione."
+msgstr "Se impostato a \"running\", lo slideshow verrà avviato immediatamente, se impostato a \"still at first photo\", verrà mostrata la prima foto (modalità browse)."
 
 #: wppa-settings-autosave.php:928
 #: wppa-settings.php:1194
 msgid "If you select \"still at first norated\", the first photo that the visitor did not gave a rating will be displayed in browse mode."
-msgstr ""
+msgstr "Se impostato a \"still at first norated\", sarà mostrata la prima foto (modalità browse) non votata dal visitatore."
 
 #: wppa-settings-autosave.php:938
 #: wppa-settings.php:1212
@@ -4192,30 +4166,28 @@ msgstr "Valore opacità stato star off valutazione."
 
 #: wppa-settings-autosave.php:1162
 #: wppa-settings.php:1436
-#, fuzzy
 msgid "Slideshow wrap around"
-msgstr "Velocità animazione slideshow."
+msgstr "Wrap intorno slideshow"
 
 #: wppa-settings-autosave.php:1163
 #: wppa-settings.php:1437
 msgid "The slideshow wraps around the start and end"
-msgstr ""
+msgstr "I wrap dello slideshow intorno start ed end"
 
 #: wppa-settings-autosave.php:1169
 #: wppa-settings.php:1443
-#, fuzzy
 msgid "Comment login approved"
-msgstr "Login commenti"
+msgstr "Login commenti approvato"
 
 #: wppa-settings-autosave.php:1170
 #: wppa-settings.php:1444
 msgid "Comments from logged in users are approved"
-msgstr ""
+msgstr "I commenti degli utenti collegati sono sempre approvati"
 
 #: wppa-settings-autosave.php:1171
 #: wppa-settings.php:1445
 msgid "If checked, comments entered by logged in users are immediately approved, if unchecked they are pending like comments entered by logged out users"
-msgstr ""
+msgstr "Se attivo, i commenti inseriti dagli utenti collegati saranno approvati immediatamente diversamente, saranno messi in coda di moderazione come per gli utenti scollegati"
 
 #: wppa-settings-autosave.php:1191
 #: wppa-settings.php:1465
@@ -5434,35 +5406,33 @@ msgid "Upload a new watermark file"
 msgstr "Carica un nuovo file filigrana"
 
 #: wppa-settings-autosave.php:1942
-#, fuzzy
 msgid "Upload it!"
-msgstr "Upload"
+msgstr "Upload!"
 
 #: wppa-settings-autosave.php:1947
 #: wppa-settings.php:2231
 msgid "Album admin autosave"
-msgstr ""
+msgstr "Salvataggio automatico admin album"
 
 #: wppa-settings-autosave.php:1948
 #: wppa-settings.php:2232
 msgid "Use the Autosave version of the album admin page"
-msgstr ""
+msgstr "Usa la versione salvataggio automatico per la pagina di amministrazione album"
 
 #: wppa-settings-autosave.php:1957
 #: wppa-settings.php:2241
-#, fuzzy
 msgid "Settings autosave"
-msgstr "Impostazioni"
+msgstr "Salvataggio automatico impostazioni"
 
 #: wppa-settings-autosave.php:1958
 #: wppa-settings.php:2242
 msgid "Use the Autosave version of the settings page"
-msgstr ""
+msgstr "Usa la versione salvataggio automatico della pagina impostazioni"
 
 #: wppa-settings-autosave.php:1959
 #: wppa-settings.php:2243
 msgid "In this version of the settings page, all modifications are instantly updated on the server."
-msgstr ""
+msgstr "In questa versione della pagina impostazioni tutte le modifiche saranno aggiornate immediatamente sul server."
 
 #: wppa-settings-autosave.php:1982
 #: wppa-settings.php:2267
@@ -5599,9 +5569,8 @@ msgid "Show"
 msgstr "Mostra"
 
 #: wppa-settings-autosave.php:2471
-#, fuzzy
 msgid "Not done yet"
-msgstr "Nessuna foto ancora"
+msgstr "Non ancora fatto"
 
 #: wppa-settings.php:68
 msgid "Converted to utf8"
