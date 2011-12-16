@@ -2,7 +2,7 @@
 /* wppa_widgetfunctions.php
 /* Package: wp-photo-album-plus
 /*
-/* Version 4.2
+/* Version 4.2.11
 /*
 */
 
@@ -146,6 +146,7 @@ function wppa_walbum_sanitize($walbum) {
 // get the photo of the day
 function wppa_get_potd() {
 global $wpdb;
+	$image = '';
 		switch (get_option('wppa_widget_method', '1')) {
 			case '1':	// Fixed photo
 				$id = get_option('wppa_widget_photo', '');

@@ -3,12 +3,12 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions and API modules
-* Version 4.2.10
+* Version 4.2.11
 *
 */
 /* Moved to wppa-commonfunctions.php:
 global $wppa_api_version;
-$wppa_api_version = '4-2-10-000';
+$wppa_api_version = '4-2-11-000';
 */
 
 
@@ -1388,7 +1388,7 @@ global $wppa_opt;
 			}
 			if (!$no_popup && $wppa_opt['wppa_use_thumb_popup']) {
 				$rating = wppa_get_rating_by_id($id);
-				$result .= 'wppa_popup(' . $wppa['master_occur'] . ', this, ' . $id . ', \''.$rating.'\');';
+				$result .= 'wppaPopUp(' . $wppa['master_occur'] . ', this, ' . $id . ', \''.$rating.'\');';
 			}
 			$result .= '" ';
 		}
@@ -2299,7 +2299,7 @@ global $wppa_opt;
 			elseif ( $link['is_lightbox'] ) {
 				if ( $thumb['description'] ) $title = esc_attr(stripslashes(wppa_qtrans($thumb['description'])));
 				else $title = esc_attr(stripslashes(wppa_qtrans($thumb['name'])));
-				$wppa['out'] .= wppa_nltab('+').'<a href="'.$link['url'].'" rel="lightbox[occ'.$wppa['master_occur'].']" title="'.esc_attr($title).'" class="thumb-img" id="x-'.$thumb['id'].'-'.$wppa['master_occur'].'">';
+				$wppa['out'] .= wppa_nltab('+').'<a href="'.$link['url'].'" rel="'.$wppa_opt['wppa_lightbox_name'].'[occ'.$wppa['master_occur'].']" title="'.esc_attr($title).'" class="thumb-img" id="x-'.$thumb['id'].'-'.$wppa['master_occur'].'">';
 					$wppa['out'] .= wppa_nltab().'<img id="i-'.$thumb['id'].'-'.$wppa['master_occur'].'" src="'.$url.'" alt="'.$thumbname.'" title="'.$thumbname.'" width="'.$imgwidth.'" height="'.$imgheight.'" style="'.$imgstyle.'" '.$events.' />';
 				$wppa['out'] .= wppa_nltab('-').'</a>';
 			}
@@ -2360,7 +2360,7 @@ global $wppa_opt;
 function wppa_popup() {
 global $wppa;
 
-	$wppa['out'] .= wppa_nltab().'<div id="wppa-popup-'.$wppa['master_occur'].'" class="wppa-popup-frame wppa-thumb-text" style="'.__wcs('wppa-thumb-text').'" ></div>';
+	$wppa['out'] .= wppa_nltab().'<div id="wppa-popup-'.$wppa['master_occur'].'" class="wppa-popup-frame wppa-thumb-text" style="'.__wcs('wppa-thumb-text').'" onmouseout="wppaPopDown('.$wppa['master_occur'].');" ></div>';
 	$wppa['out'] .= wppa_nltab().'<div style="clear:both;"></div>';
 }
 
@@ -3166,7 +3166,7 @@ global $wpdb;
 			}
 		//	$photo_desc = esc_js(wppa_html(stripslashes(wppa_get_photo_desc($photo))));
 
-			$result['url'] = "wppa_full_popup(".$wppa['master_occur'].", ".$photo.", '".$url."', ".$wid.", ".$hig.")";
+			$result['url'] = "wppaFullPopUp(".$wppa['master_occur'].", ".$photo.", '".$url."', ".$wid.", ".$hig.")";
 
 			$result['title'] = $title; //$photo_name;
 			$result['is_url'] = false;

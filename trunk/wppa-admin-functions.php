@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 * gp admin functions
-* version 4.2.8
+* version 4.2.11
 *
 * 
 */
@@ -275,28 +275,28 @@ function wppa_order_options($order, $nil, $rat = '', $timestamp = '') {
 }
 
 // display usefull message
-function wppa_update_message($msg, $fixed = false) {
+function wppa_update_message($msg, $fixed = false, $id = '') {
 ?>
-    <div id="message" class="updated fade" <?php if ($fixed) echo 'style="position: fixed; width: 80%; text-align: center; text-weight:bold;"' ?>><p><strong><?php echo($msg); ?></strong></p></div>
+    <div id="wppa-ms-<?php echo $id ?>" class="updated fade" <?php if ($fixed) echo 'style="position: fixed; width: 80%; text-align: center; text-weight:bold;"' ?>><p><strong><?php echo($msg); ?></strong></p></div>
 <?php
 }
 
 // display error message
-function wppa_error_message($msg, $fixed = false) {
+function wppa_error_message($msg, $fixed = false, $id = '') {
 ?>
-	<div id="error" class="error <?php if ($fixed) echo fade ?>" <?php if ($fixed) echo 'style="position: fixed;"' ?>><p><strong><?php echo($msg); ?></strong></p></div>
+	<div id="wppa-er-<?php echo $id ?>" class="error <?php if ($fixed == 'fixed') echo fade ?>" <?php if ($fixed == 'hidden') echo 'style="display:none;"'; if ($fixed == 'fixed') echo 'style="position: fixed;"' ?>><p><strong><?php echo($msg); ?></strong></p></div>
 <?php
 }
 // display warning message
-function wppa_warning_message($msg, $fixed = false) {
+function wppa_warning_message($msg, $fixed = false, $id = '') {
 ?>
-	<div id="warning" class="updated <?php if ($fixed) echo fade ?>" <?php if ($fixed) echo 'style="position: fixed;"' ?>><p><strong><?php echo($msg); ?></strong></p></div>
+	<div id="wppa-wr-<?php echo $id ?>" class="updated <?php if ($fixed == 'fixed') echo fade ?>" <?php if ($fixed == 'hidden') echo 'style="display:none;"'; if ($fixed == 'fixed') echo 'style="position: fixed;"' ?>><p><strong><?php echo($msg); ?></strong></p></div>
 <?php
 }
 // display ok message
-function wppa_ok_message($msg, $fixed = false) {
+function wppa_ok_message($msg, $fixed = false, $id = '') {
 ?>
-	<div id="wppa-ok" class="updated <?php if ($fixed) echo fade ?>" style="background-color: #e0ffe0; border-color: #55ee55;" ><p id="wppa-ok-p" ><strong><?php echo($msg); ?></strong></p></div>
+	<div id="wppa-ok-<?php echo $id ?>" class="updated <?php if ($fixed == 'fixed') echo fade ?>" style="background-color: #e0ffe0; border-color: #55ee55;" ><p id="wppa-ok-p" ><strong><?php echo($msg); ?></strong></p></div>
 <?php
 }
 

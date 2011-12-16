@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 4.2.9
+* Version 4.2.11
 *
 */
 
@@ -313,6 +313,7 @@ wp_verify_nonce($_GET['wppa-nonce'], 'wppa-nonce');
 			wppa_update_value('wppa_comment_widget_linktype');
 			wppa_update_value('wppa_comment_widget_linkpage');
 			wppa_update_check('wppa_comment_overrule');
+			wppa_update_value('wppa_slideshow_linktype');
 			wppa_update_check('wppa_slideshow_overrule');
 			
 
@@ -370,6 +371,7 @@ wp_verify_nonce($_GET['wppa-nonce'], 'wppa-nonce');
 			wppa_update_value('wppa_max_album_newtime');
 			wppa_update_value('wppa_max_photo_newtime');
 			wppa_update_check('wppa_use_lightbox');
+			wppa_update_value('wppa_lightbox_name');
 			wppa_update_numeric('wppa_filter_priority', '0', __('Filter priority', 'wppa'));
 			wppa_update_check('wppa_apply_newphoto_desc');
 			wppa_update_textarea('wppa_newphoto_description');
@@ -1745,20 +1747,20 @@ global $wppa_api_version;
 						$html2 = wppa_select($slug2, $options_page, $values_page, '', $class);
 						$html3 = wppa_checkbox($slug3);
 						wppa_setting_3($slug1, $slug2, $slug3, '7a,b,c', $name, $desc, $html1, $html2, $html3, $help);
-						
-						$wppa['no_default'] = true;
-						
+							
+$wppa['no_default'] = true;							
 						$name = __('Slideshow', 'wppa');
 						$desc = __('Slideshow fullsize link', 'wppa');
 						$help = esc_js(__('You can overrule lightbox but not big browse buttons with the photo specifc link.', 'wppa'));
-						$slug1 = 'dummy';
-						$slug2 = 'dummy';
+						$slug1 = 'wppa_slideshow_linktype';
+						$slug2 = '';
 						$slug3 = 'wppa_slideshow_overrule';
-						$html1 = wppa_select('', array(__('the plain photo (file).', 'wppa').' '.__('or', 'wppa').' '.__('lightbox').' '.__('if enabled.', 'wppa') ) , array( 'none' ) );
+						$opts = array(__('no link at all.', 'wppa'), __('the plain photo (file).', 'wppa'), __('lightbox.', 'wppa'));
+						$vals = array('none', 'file', 'lightbox'); 
+						$html1 = wppa_select($slug1, $opts, $vals);
 						$html3 = wppa_checkbox($slug3);
 						wppa_setting_3($slug1, $slug2, $slug3, '8', $name, $desc, $html1, '', $html3, $help);
-						
-						$wppa['no_default'] = false;
+$wppa['no_default'] = false;
 						?>
 					</tbody>
 					<tfoot style="font-weight: bold;" class="wppa_table_6">
@@ -2157,6 +2159,14 @@ global $wppa_api_version;
 						$html = wppa_checkbox($slug, $onchange);
 						wppa_setting($slug, '9', $name, $desc, $html, $help);
 						
+						$name = __('Alt Lightbox', 'wppa');
+						$desc = __('The identifier of an alternate lightbox.', 'wppa');
+						$help = esc_js(__('If you use a different lightbox plugin that uses rel="lbox-id" you can enter the lbox-id here.', 'wppa'));
+						$slug = 'wppa_lightbox_name';
+						$class = 'wppa_alt_lightbox';
+						$html = wppa_input($slug, '100px');
+						wppa_setting($slug, '9a', $name, $desc, $html, $help, $class);
+
 						$name = __('WPPA+ Filter priority', 'wppa');
 						$desc = __('Sets the priority of the wppa+ content filter.', 'wppa');
 						$help = esc_js(__('If you encounter conflicts with the theme or other plugins, increasing this value sometimes helps. Use with great care!', 'wppa'));
