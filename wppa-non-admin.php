@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the non admin stuff
-* Version 4.2.8
+* Version 4.2.11
 *
 */
 
@@ -181,11 +181,22 @@ global $wppa_opt;
 		if ($wppa_opt['wppa_rating_use_ajax']) echo("\t".'wppaRatingUseAjax = true;'."\n");
 		else if ($wppa_opt['wppa_rating_use_ajax']) echo("\t".'wppaRatingUseAjax = false;'."\n");
 		echo("\t".'wppaStarOpacity = '.($wppa_opt['wppa_star_opacity']/'100').';'."\n");
-		// Preload checkmark image
+		// Preload checkmark and clock images
 		echo("\t".'wppaTickImg.src = "'.wppa_get_imgdir().'tick.png";'."\n");
 		echo("\t".'wppaClockImg.src = "'.wppa_get_imgdir().'clock.png";'."\n");
 		if ($wppa_opt['wppa_slide_wrap'] == 'yes') echo("\t".'wppaSlideWrap = true;'."\n");
 		else echo("\t".'wppaSlideWrap = false;'."\n");
+		switch ($wppa_opt['wppa_slideshow_linktype']) {
+			case 'none':
+				echo("\t".'wppaLightBox = "";'."\n");		// results in omitting the anchor tag
+				break;
+			case 'file':
+				echo("\t".'wppaLightBox = "file";'."\n");	// gives anchor tag with rel="file"
+				break;
+			case 'lightbox':
+				echo("\t".'wppaLightBox = "'.$wppa_opt['wppa_lightbox_name'].'";'."\n");	// gives anchor tag with rel="lightbox" or the like
+				break;
+		}
 
 	echo("/* ]]> */\n");
 	echo("</script>\n");

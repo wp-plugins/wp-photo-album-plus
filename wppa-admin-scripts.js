@@ -1,13 +1,15 @@
 /* admin-scripts.js */
 /* Package: wp-photo-album-plus
 /*
-/* Version 4.2.8
+/* Version 4.2.11
 /* Various js routines used in admin pages		
 */
 
 var wppa_moveup_url = '#';
 var wppa_import = 'Import';
 var wppa_update = 'Update';
+var wppaImageDirectory = '';
+var wppaAjaxUrl = '';
 
 jQuery(document).ready(function() {
 /* alert( 'You are running jQuery version: ' + jQuery.fn.jquery ); */
@@ -348,9 +350,11 @@ function wppaCheckLightbox() {
 	var Lb = document.getElementById('wppa_use_lightbox').checked;
 	if (Lb) {
 		jQuery('.wppa_lightbox').css('display', '');
+		jQuery('.wppa_alt_lightbox').css('display', 'none');
 	}
 	else {
 		jQuery('.wppa_lightbox').css('display', 'none');
+		jQuery('.wppa_alt_lightbox').css('display', '');
 	}
 }
 
@@ -503,7 +507,7 @@ function wppaAjaxUpdatePhoto(photo, actionslug, elem) {
 	url += '&wppa-nonce='+document.getElementById('photo-nonce-'+photo).value;
 	if (elem != 0) url += '&value='+wppaEncode(elem.value);
 	else url += '&value=0';
-//alert(url);
+
 	// Do the Ajax action
 	xmlhttp.open('GET',url,true);
 	xmlhttp.send();
@@ -616,7 +620,6 @@ function wppaAjaxUpdateOptionCheckBox(slug, elem) {
 			document.getElementById('img_'+slug).src = wppaImageDirectory+'clock.png';
 			break;
 		case 4:
-//		alert(xmlhttp.responseText);
 			var ArrValues = xmlhttp.responseText.split("||");
 			if (xmlhttp.status==200) {
 				switch (ArrValues[0]) {
@@ -632,6 +635,7 @@ function wppaAjaxUpdateOptionCheckBox(slug, elem) {
 				document.getElementById('img_'+slug).src = wppaImageDirectory+'cross.png';
 				document.getElementById('img_'+slug).title = 'Communication error';
 			}
+			wppaCheckInconsistencies();
 		}
 	}
 	
@@ -657,7 +661,6 @@ function wppaAjaxUpdateOptionValue(slug, elem) {
 			document.getElementById('img_'+slug).src = wppaImageDirectory+'clock.png';
 		}
 		else {	// Ready
-//alert('Responetext='+xmlhttp.responseText);
 			var ArrValues = xmlhttp.responseText.split("||");
 			
 			if (xmlhttp.status==200) {	// No Error
@@ -675,6 +678,7 @@ function wppaAjaxUpdateOptionValue(slug, elem) {
 				document.getElementById('img_'+slug).src = wppaImageDirectory+'cross.png';
 				document.getElementById('img_'+slug).title = 'Communication error';
 			}
+			wppaCheckInconsistencies();
 		}
 	}
 
@@ -682,7 +686,7 @@ function wppaAjaxUpdateOptionValue(slug, elem) {
 	var url = wppaAjaxUrl+'?action=wppa&wppa-action=update-option&wppa-option='+slug;
 	url += '&wppa-nonce='+document.getElementById('wppa-nonce').value;
 	if ( elem != 0 ) url += '&value='+wppaEncode(elem.value);
-//alert ('Url='+url);	
+
 	// Do the Ajax action
 	xmlhttp.open('GET',url,true);
 	xmlhttp.send();
@@ -708,4 +712,32 @@ function wppaEncode(xtext) {
 
 //	alert('encoded result='+result);
 	return result;
+}
+
+// Check conflicting settings, Autosave version only
+function wppaCheckInconsistencies() {
+	// Uses lightbox but not enabled?
+	if ( ( document.getElementById('wppa_thumb_linktype').value == 'lightbox' ||
+		   document.getElementById('wppa_slideshow_linktype').value == 'lightbox' ||
+		   document.getElementById('wppa_topten_widget_linktype').value == 'lightbox' ) &&
+		   document.getElementById('wppa_use_lightbox').checked == false ) jQuery('#wppa-wr-1').css('display', '');
+	else jQuery('#wppa-wr-1').css('display', 'none');
+	// Uses no lightbox but enabled?
+	if ( ( document.getElementById('wppa_thumb_linktype').value != 'lightbox' &&
+		   document.getElementById('wppa_slideshow_linktype').value != 'lightbox' &&
+		   document.getElementById('wppa_topten_widget_linktype').value != 'lightbox' &&
+		   document.getElementById('wppa_comment_widget_linktype').value != 'lightbox' ) &&
+		   document.getElementById('wppa_use_lightbox').checked == true ) jQuery('#wppa-wr-2').css('display', '');
+	else jQuery('#wppa-wr-2').css('display', 'none');
+	// Uses BBB but also lightbox or file or overrule
+	if ( ( document.getElementById('wppa_slideshow_linktype').value == 'lightbox' ||
+		   document.getElementById('wppa_slideshow_linktype').value == 'file' ||
+		   document.getElementById('wppa_slideshow_overrule').checked == true ) &&
+		   document.getElementById('wppa_show_bbb').checked == true ) jQuery('#wppa-wr-3').css('display', '');
+	else jQuery('#wppa-wr-3').css('display', 'none');
+	// Uses thumb popup and thumb lightbox?
+	if ( document.getElementById('wppa_use_thumb_popup').checked == true && 
+		 document.getElementById('wppa_thumb_linktype').value == 'lightbox' ) jQuery('#wppa-er-1').css('display', '');
+	else jQuery('#wppa-er-1').css('display', 'none');
+
 }

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 4.2.9
+* Version 4.2.11
 *
 */
 
@@ -23,7 +23,7 @@ global $wppa_api_version;
 	// Things that wppa-admin-scripts.js needs to know
 	echo('<script type="text/javascript">'."\n");
 	echo('/* <![CDATA[ */'."\n");
-		echo("\t".'var wppaImageDirectory = "'.wppa_get_imgdir().'";'."\n");
+		echo("\t".'wppaImageDirectory = "'.wppa_get_imgdir().'";'."\n");
 		echo("\t".'wppaAjaxUrl = "'.admin_url('admin-ajax.php').'";'."\n");
 	echo("/* ]]> */\n");
 	echo("</script>\n");
@@ -144,12 +144,6 @@ global $wppa_api_version;
 		update_option('wppa_lastthumb', '-2');
 	}
 	
-	// Check for inconsistencies
-	if (($wppa_opt['wppa_thumb_linktype'] == 'lightbox' || $wppa_opt['wppa_topten_widget_linktype'] == 'lightbox') && $wppa_opt['wppa_use_lightbox'] == 'no')
-		wppa_warning_message(__('You use lightbox, but you disabled the lightbox that comes with WPPA+. Either check Table IX item 9 or make sure you have a lightbox enabled.', 'wppa'));
-	if ($wppa_opt['wppa_use_thumb_popup'] == 'yes' && $wppa_opt['wppa_thumb_linktype'] == 'lightbox')
-		wppa_error_message(__('You can not have popup and lightbox on thumbnails at the same time. Uncheck either Table IV item 12 or choose a different linktype in Table VI item 2.', 'wppa'));
-
 ?>		
 	<div class="wrap">
 		<?php $iconurl = WPPA_URL.'/images/settings32.png'; ?>
@@ -195,8 +189,6 @@ global $wppa_api_version;
 		if ( $any_error ) {
 			echo '<p style="color:red; text-weight:bold;">'.__('Please de-activate and re-activate the plugin. If this problem persists, ask your administrator.', 'wppa').'</p>';
 		}
-
-//	print_r($_POST);
 ?>
 		<!--<br /><a href="javascript:window.print();"><?php //_e('Print settings', 'wppa') ?></a><br />-->
 
@@ -217,7 +209,13 @@ global $wppa_api_version;
 			<br />
 			&nbsp;<a href="javascript://" onclick="jQuery('#wppa-legenda').css('display', 'none')" ><?php _e('Hide this', 'wppa') ?></a> 
 		</div>
-		
+<?php
+		// Check for inconsistencies. The potential messages are printed (display:none) and switched on/off by wppa-admin-scripts.js
+		wppa_warning_message(__('You use lightbox, but you disabled the lightbox that comes with WPPA+. Either check Table IX-9 or make sure you have a lightbox enabled.', 'wppa'), 'hidden', '1');
+		wppa_warning_message(__('You do not use lightbox in Table VI, so you may uncheck Table IX-9.', 'wppa'), 'hidden', '2');
+		wppa_warning_message(__('You use Big Browse Buttons on slide images. Any configured links on slides like PS overrule or lightbox will not work! Check Table VI-8 and/or II-19', 'wppa'), 'hidden', '3');
+		wppa_error_message(__('You can not have popup and lightbox on thumbnails at the same time. Uncheck either Table IV-12 or choose a different linktype in Table VI-2.', 'wppa'), 'hidden', '1');
+?>		
 		<form enctype="multipart/form-data" action="<?php echo(wppa_dbg_url(get_admin_url().'admin.php?page=wppa_options')) ?>" method="post">
 
 			<?php wppa_nonce_field('wppa-nonce', 'wppa-nonce'); ?>
@@ -1472,19 +1470,18 @@ global $wppa_api_version;
 						$html3 = wppa_checkbox($slug3);
 						wppa_setting_3($slug1, $slug2, $slug3, '7a,b,c', $name, $desc, $html1, $html2, $html3, $help);
 						
-						$wppa['no_default'] = true;
-						
 						$name = __('Slideshow', 'wppa');
 						$desc = __('Slideshow fullsize link', 'wppa');
 						$help = esc_js(__('You can overrule lightbox but not big browse buttons with the photo specifc link.', 'wppa'));
-						$slug1 = 'dummy';
-						$slug2 = 'dummy';
+						$slug1 = 'wppa_slideshow_linktype';
+						$slug2 = '';
 						$slug3 = 'wppa_slideshow_overrule';
-						$html1 = wppa_select('', array(__('the plain photo (file).', 'wppa').' '.__('or', 'wppa').' '.__('lightbox').' '.__('if enabled.', 'wppa') ) , array( 'none' ) );
+						$opts = array(__('no link at all.', 'wppa'), __('the plain photo (file).', 'wppa'), __('lightbox.', 'wppa'));
+						$vals = array('none', 'file', 'lightbox'); 
+						$html1 = wppa_select($slug1, $opts, $vals);
 						$html3 = wppa_checkbox($slug3);
 						wppa_setting_3($slug1, $slug2, $slug3, '8', $name, $desc, $html1, '', $html3, $help);
 						
-						$wppa['no_default'] = false;
 						?>
 					</tbody>
 					<tfoot style="font-weight: bold;" class="wppa_table_6">
@@ -1628,14 +1625,14 @@ global $wppa_api_version;
 						$desc = __('Reset all ratings.', 'wppa');
 						$help = esc_js(__('WARNING: If checked, this will clear all ratings in the system!', 'wppa'));
 						$slug = 'wppa_rating_clear';
-						$html = wppa_ajax_button('', $slug); //wppa_doit_button('', $slug); //wppa_radio('wppa_action', $slug);
-						wppa_setting_2('', $slug, '1', $name, $desc, '', $html, $help); //, 'wppa_rating');
+						$html = wppa_ajax_button('', $slug);
+						wppa_setting_2('', $slug, '1', $name, $desc, '', $html, $help);
 						
 						$name = __('Set to utf-8', 'wppa');
 						$desc = __('Set Character set to UTF_8.', 'wppa');
 						$help = esc_js(__('If checked: Converts the wppa database tables to UTF_8 This allows the use of certain characters - like Turkish - in photo and album names and descriptions.', 'wppa'));
 						$slug = 'wppa_charset';
-						$html = wppa_ajax_button('', $slug); //wppa_radio('wppa_action', $slug);
+						$html = wppa_ajax_button('', $slug);
 						wppa_setting_2('', $slug, '2', $name, $desc, '', $html, $help, 'wppa_utf8');
 
 						$name = __('Setup', 'wppa');
@@ -1643,14 +1640,14 @@ global $wppa_api_version;
 						$help = esc_js(__('Re-initilizes the plugin, (re)creates database tables and sets up default settings and directories if required.', 'wppa'));
 						$help .= '\n\n'.esc_js(__('This action may be required to setup blogs in a multiblog (network) site as well as in rare cases to correct initilization errors.', 'wppa'));
 						$slug = 'wppa_setup';
-						$html = wppa_doit_button('', $slug); //wppa_radio('wppa_action', $slug);
+						$html = wppa_doit_button('', $slug);
 						wppa_setting_2('', $slug, '3', $name, $desc, '', $html, $help);
 						
 						$name = __('Backup settings', 'wppa');
 						$desc = __('Save all settings into a backup file.', 'wppa');
 						$help = esc_js(__('Saves all the settings into a backup file', 'wppa'));
 						$slug = 'wppa_backup';
-						$html = wppa_doit_button('', $slug); //wppa_radio('wppa_action', $slug);
+						$html = wppa_doit_button('', $slug);
 						wppa_setting_2('', $slug, '4', $name, $desc, '', $html, $help);
 						
 						$name = __('Load settings', 'wppa');
@@ -1680,14 +1677,14 @@ global $wppa_api_version;
 						}
 						
 						$html1 = wppa_select($slug1, $options, $values);
-						$html2 = wppa_doit_button('', $slug2); //wppa_radio('wppa_action', $slug2);
+						$html2 = wppa_doit_button('', $slug2);
 						wppa_setting_2($slug1, $slug2, '5', $name, $desc, $html1, $html2, $help);
 
 						$name = __('Regenerate', 'wppa');
 						$desc = __('Regenerate all thumbnails.', 'wppa');
 						$help = esc_js(__('Regenerate all thumbnails.', 'wppa'));
 						$slug = 'wppa_regen';
-						$html = wppa_ajax_button('', $slug); //wppa_radio('wppa_action', $slug);
+						$html = wppa_ajax_button('', $slug);
 						wppa_setting_2('', $slug, '7', $name, $desc, '', $html, $help);
 
 						$name = __('Rerate', 'wppa');
@@ -1695,14 +1692,14 @@ global $wppa_api_version;
 						$help = esc_js(__('This function will recalculate all mean photo ratings from the ratings table.', 'wppa'));
 						$help .= '\n'.esc_js(__('You may need this function after the re-import of previously exported photos', 'wppa'));
 						$slug = 'wppa_rerate';
-						$html = wppa_ajax_button('', $slug); //wppa_radio('wppa_action', $slug);
+						$html = wppa_ajax_button('', $slug);
 						wppa_setting_2('', $slug, '8', $name, $desc, '', $html, $help);
 
 						$name = __('Cleanup', 'wppa');
 						$desc = __('Fix and secure WPPA+ system consistency', 'wppa');
 						$help = esc_js(__('This function will cleanup incomplete db entries and recover lost photos.', 'wppa'));
 						$slug = 'wppa_cleanup';
-						$html = wppa_doit_button('', $slug); //wppa_radio('wppa_action', $slug);
+						$html = wppa_doit_button('', $slug);
 						wppa_setting_2('', $slug, '9', $name, $desc, '', $html, $help);
 						
 						$wppa['no_default'] = false;
@@ -1869,6 +1866,14 @@ global $wppa_api_version;
 						$onchange = 'wppaCheckLightbox()';
 						$html = wppa_checkbox($slug, $onchange);
 						wppa_setting($slug, '9', $name, $desc, $html, $help);
+						
+						$name = __('Alt Lightbox', 'wppa');
+						$desc = __('The identifier of an alternate lightbox.', 'wppa');
+						$help = esc_js(__('If you use a different lightbox plugin that uses rel="lbox-id" you can enter the lbox-id here.', 'wppa'));
+						$slug = 'wppa_lightbox_name';
+						$class = 'wppa_alt_lightbox';
+						$html = wppa_input($slug, '100px');
+						wppa_setting($slug, '9a', $name, $desc, $html, $help, $class);
 						
 						$name = __('WPPA+ Filter priority', 'wppa');
 						$desc = __('Sets the priority of the wppa+ content filter.', 'wppa');
@@ -2069,7 +2074,7 @@ global $wppa_api_version;
 				</div>
 			</div>
 		</form>
-		<script type="text/javascript">wppaInitSettings();</script>
+		<script type="text/javascript">wppaInitSettings();wppaCheckInconsistencies();</script>
 	</div>
 	
 <?php
@@ -2095,30 +2100,9 @@ global $wppa_defaults;
 
 	$color = 'black';
 	$char = '?';
-	$fw = 'bold'; //$wppa_defaults[$slug] == get_option($slug) ? 'normal' : 'bold';
+	$fw = 'bold'; 
 	$title = __('Click for help', 'wppa');
-	/*
-	if (isset($wppa_status[$slug])) { 
-		switch ($wppa_status[$slug]) {
-			case '1':				// modified
-				$color = 'green';
-				$char = '!';
-				$title = __('You just modified this setting', 'wppa');
-				break;
-			case '2':				// error
-				$color = 'red';
-				$char = '!';
-				$title = __('You just tried to modify this setting into an illegal value', 'wppa');
-				break;
-			default:
-				$color = 'black';
-				$char = '?';
-				break;
-		}
-	}
-	*/
 	
-//	$result .= '<td><a style="color: '.$color.';text-decoration: none; font-weight: '.$fw.'; cursor: pointer;" title="'.$title.'" onclick="alert('."'".$hlp."'".')">'.$char.'</a></td>';
 	$result .= '<td><input type="button" style="font-size: 11px; margin: 0px; padding: 0px; color: '.$color.';text-decoration: none; font-weight: '.$fw.'; cursor: pointer;" title="'.$title.'" onclick="alert('."'".$hlp."'".')" value="'.$char.'"></td>';
 	
 	$result .= '</tr>';
@@ -2146,35 +2130,9 @@ global $wppa_defaults;
 
 	$color = 'black';
 	$char = '?';
-	
-//	if ($slug1 != '') $fw = ($wppa_defaults[$slug1] == get_option($slug1)) /* && ($wppa_defaults[$slug2] == get_option($slug2)) */ ? 'normal' : 'bold';
-//	else $fw = 'normal';
-$fw = 'bold';
+	$fw = 'bold';
 	$title = __('Click for help', 'wppa');
-/*	$status = '0'; $stat1 = '0'; $stat2 = '0';
-	if (isset($wppa_status[$slug1])) $stat1 = $wppa_status[$slug1];
-	if (isset($wppa_status[$slug2])) $stat2 = $wppa_status[$slug2];
-	if ($stat1 > $status) $status = $stat1;
-	if ($stat2 > $status) $status = $stat2;
-		
-	switch ($status) {
-		case '1':				// modified
-			$color = 'green';
-			$char = '!';
-			$title = __('You just modified this setting', 'wppa');
-			break;
-		case '2':				// error
-			$color = 'red';
-			$char = '!';
-			$title = __('You just tried to modify this setting into an illegal value', 'wppa');
-			break;
-		default:
-			$color = 'black';
-			$char = '?';
-			break;
-	}
-*/	
-//	$result .= '<td><a style="color: '.$color.';text-decoration: none; font-weight: '.$fw.'; cursor: pointer;" title="'.$title.'" onclick="alert('."'".$hlp."'".')">'.$char.'</a></td>';
+
 	$result .= '<td><input type="button" style="font-size: 11px; margin: 0px; padding: 0px; color: '.$color.';text-decoration: none; font-weight: '.$fw.'; cursor: pointer;" title="'.$title.'" onclick="alert('."'".$hlp."'".')" value="'.$char.'"></td>';
 	
 	$result .= '</tr>';
@@ -2204,95 +2162,16 @@ global $wppa;
 
 	$color = 'black';
 	$char = '?';
-	/*
-	if ( ! $wppa['no_default'] ) {
-		$fw = ($wppa_defaults[$slug1] == get_option($slug1)) && ($wppa_defaults[$slug2] == get_option($slug2)) && ($wppa_defaults[$slug3] == get_option($slug3)) ? 'normal' : 'bold';
-	}
-	else {
-		$fw = 'normal';
-	}
-	*/ $fw = 'bold';
-	
+	$fw = 'bold';
 	$title = __('Click for help', 'wppa');
-/*	$status = '0'; $stat1 = '0'; $stat2 = '0'; $stat3 = '0';
-	if (isset($wppa_status[$slug1])) $stat1 = $wppa_status[$slug1];
-	if (isset($wppa_status[$slug2])) $stat2 = $wppa_status[$slug2];
-	if (isset($wppa_status[$slug3])) $stat3 = $wppa_status[$slug3];
-	if ($stat1 > $status) $status = $stat1;
-	if ($stat2 > $status) $status = $stat2;
-	if ($stat3 > $status) $status = $stat3;
-		
-	switch ($status) {
-		case '1':				// modified
-			$color = 'green';
-			$char = '!';
-			$title = __('You just modified this setting', 'wppa');
-			break;
-		case '2':				// error
-			$color = 'red';
-			$char = '!';
-			$title = __('You just tried to modify this setting into an illegal value', 'wppa');
-			break;
-		default:
-			$color = 'black';
-			$char = '?';
-			break;
-	}
-*/	
-//	$result .= '<td><a style="color: '.$color.';text-decoration: none; font-weight: '.$fw.'; cursor: pointer;" title="'.$title.'" onclick="alert('."'".$hlp."'".')">'.$char.'</a></td>';
+	
 	$result .= '<td><input type="button" style="font-size: 11px; margin: 0px; padding: 0px; color: '.$color.';text-decoration: none; font-weight: '.$fw.'; cursor: pointer;" title="'.$title.'" onclick="alert('."'".$hlp."'".')" value="'.$char.'"></td>';
 	
 	$result .= '</tr>';
 	
 	echo $result;
 }
-/*
-function wppa_update_numeric($slug, $minval, $target, $maxval = '') {
-global $options_error;
-global $wppa_status;
 
-	$value = $_POST[$slug];
-	if (wppa_check_numeric($value, $minval, $target, $maxval)) {
-		wppa_update($slug, $value);
-	}
-	else {
-		$wppa_status[$slug] = '2';
-		$options_error = true;
-	}
-}
-
-function wppa_update_value($slug) {
-	if (isset($_POST[$slug])) {
-		$value = $_POST[$slug];
-		wppa_update($slug, $value);
-	}
-}
-
-function wppa_update_textarea($slug) {
-	if (isset($_POST[$slug])) {
-		$value = html_entity_decode($_POST[$slug]);
-		wppa_update($slug, $value);
-	}
-}
-
-function wppa_update_check($slug) {
-	if (isset($_POST[$slug])) wppa_update($slug, 'yes');
-	else wppa_update($slug, 'no');
-}
-
-function wppa_update($slug, $value) {
-global $wppa_status;
-
-	$oldval = get_option($slug, 'nil');
-	if ($oldval == $value) { 		// Not modified
-		$wppa_status[$slug] = '0';
-	}
-	else {							// Modified
-		update_option($slug, trim($value));
-		$wppa_status[$slug] = '1';
-	}
-}
-*/
 function wppa_input($slug, $width, $minwidth = '', $text = '', $onchange = '') {
 
 	$html = '<input style="float:left; width: '.$width.';';
@@ -2306,15 +2185,7 @@ function wppa_input($slug, $width, $minwidth = '', $text = '', $onchange = '') {
 	
 	return $html;
 }
-/*
-function wppa_textarea($slug) {
-	$html = '<textarea name="'.$slug.'" id="'.$slug.'" style="float:left; width:500px;" >';
-	$html .= htmlspecialchars(stripslashes(get_option($slug)));
-	$html .= '</textarea>'.wppa_doit_button(__('Send', 'wppa'));
-	
-	return $html;
-}
-/* */
+
 function wppa_textarea($slug) {
 	$html = '<textarea id="'.$slug.'" style="float:left; width:500px;" onchange="wppaAjaxUpdateOptionValue(\''.$slug.'\', this)" >';
 	$html .= htmlspecialchars(stripslashes(get_option($slug)));
@@ -2323,7 +2194,7 @@ function wppa_textarea($slug) {
 	
 	return $html;
 }
-/* */
+
 function wppa_checkbox($slug, $onchange = '') {
 
 	$html = '<input style="float:left; height: 15px; margin: 0px; padding: 0px;" type="checkbox" id="'.$slug.'"'; 
@@ -2335,25 +2206,7 @@ function wppa_checkbox($slug, $onchange = '') {
 	return $html;
 }
 
-function wppa_radio($slug, $value, $onchange = '') {
-
-	$html = '<input style="height: 15px; margin: 0px; padding: 0px;" type="radio" name="'.$slug.'" id="'.$slug.'" value="'.$value.'"'; 
-//	if (get_option($slug) == 'yes') $html .= ' checked="checked"';
-	if ($onchange != '') $html .= ' onchange="'.$onchange.'"';
-	$html .= ' />';
-	
-	return $html;
-}
-
-function wppa_select_post($slug, $options, $values, $onchange = '', $class = '') {
-global $wppa_add_name;
-	$wppa_add_name = true;
-	$result = wppa_select($slug, $options, $values, $onchange, $class);
-	$wppa_add_name = false;
-	return $result;
-}
 function wppa_select($slug, $options, $values, $onchange = '', $class = '') {
-global $wppa_add_name;
 
 	if (!is_array($options)) {
 		$html = __('There are no pages (yet) to link to.', 'wppa');
@@ -2361,17 +2214,8 @@ global $wppa_add_name;
 	}
 	
 	$html = '<select style="float:left; font-size: 11px; height: 20px; margin: 0px; padding: 0px;" id="'.$slug.'"';
-	if ($wppa_add_name) {	// Old style POST
-		$html .= ' name="'.$slug.'"';
-		$html .= ' onchange="';
-		if ($onchange != '') $html .= $onchange.'; ';
-		$html .= 'document.getElementById(\'wppa-sub\').value=this.value"';
-	}
-	else {					// New style GET Ajax
-		if ($onchange != '') $html .= ' onchange="'.$onchange.';wppaAjaxUpdateOptionValue(\''.$slug.'\', this)"';
-		else $html .= ' onchange="wppaAjaxUpdateOptionValue(\''.$slug.'\', this)"';
-
-	}
+	if ($onchange != '') $html .= ' onchange="'.$onchange.';wppaAjaxUpdateOptionValue(\''.$slug.'\', this)"';
+	else $html .= ' onchange="wppaAjaxUpdateOptionValue(\''.$slug.'\', this)"';
 
 	if ($class != '') $html .= ' class="'.$class.'"';
 	$html .= '>';
@@ -2382,22 +2226,18 @@ global $wppa_add_name;
 	while ($idx < $cnt) {
 		$html .= "\n";
 		$html .= '<option value="'.$values[$idx].'" '; 
-//echo $val.':'.$values[$idx].'<br/>';
 		if ($val == $values[$idx]) $html .= ' selected="selected"'; 
 		$html .= '>'.$options[$idx].'</option>';
 		$idx++;
 	}
 	$html .= '</select>';
-	if ( $wppa_add_name ) $html .= ' '.wppa_doit_button('', $slug);
-	else 
-	$html .= '<img id="img_'.$slug.'" src="'.wppa_get_imgdir().'star.png" title="'.__('Setting unmodified', 'wppa').'" style="padding-left:4px; float:left; height:16px; width:16px;" />';
+	$html .= '<img id="img_'.$slug.'" class="'.$class.'" src="'.wppa_get_imgdir().'star.png" title="'.__('Setting unmodified', 'wppa').'" style="padding-left:4px; float:left; height:16px; width:16px;" />';
 
 	return $html;
 }
 
 function wppa_button($text, $onclick) {
 
-//	$html = '<input style="font-size: 11px; height: 20px; margin: 0px; padding: 0px;" type="button" value="'.$text.'"'; 
 	$html = '<input class="button-primary" style="font-size: 11px; height: 16px; margin: 0px; padding: 0px;" type="button" value="'.$text.'"'; 
 	if ($onclick != '') $html .= ' onclick="'.$onclick.'"';
 	$html .= ' />';
@@ -2413,7 +2253,6 @@ global $wppa;
 	if ($wppa['no_default']) return '';
 	
 	$dflt = $wppa_defaults[$slug];
-//	if ($dflt == get_option($slug)) return '\n\n'.$n.' '.esc_js(__('This value is set to the default.', 'wppa'));
 
 	$dft = $dflt;
 	switch ($dflt) {
@@ -2445,7 +2284,6 @@ function wppa_toggle_table($i) {
 ?>
 	<input type="button" style="border-radius:10px; " value="<?php _e('Hide', 'wppa') ?>" onclick="wppaHideTable('<?php echo($i) ?>');" id="wppa_tableHide-<?php echo($i) ?>" />
 	<input type="button" style="border-radius:10px; " value="<?php _e('Show', 'wppa') ?>" onclick="wppaShowTable('<?php echo($i) ?>');" id="wppa_tableShow-<?php echo($i) ?>" />
-<!--	<input type="submit" class="button-primary" name="wppa_set_submit" value="<?php _e('Save Changes', 'wppa'); ?>" /> -->
 <?php
 }
 

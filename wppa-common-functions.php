@@ -2,11 +2,11 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 4.2.10
+* version 4.2.11
 *
 */
 global $wppa_api_version;
-$wppa_api_version = '4-2-10-000';
+$wppa_api_version = '4-2-11-000';
 // Initialize globals and option settings
 function wppa_initialize_runtime($force = false) {
 global $wppa;
@@ -266,12 +266,16 @@ global $blog_id;
 			'wppa_album_admin_autosave'		=> '',
 			'wppa_settings_autosave'		=> '',
 			'wppa_slide_wrap'				=> '',
-			'wppa_comment_login_approved'	=> ''
+			'wppa_comment_login_approved'	=> '',
+			'wppa_lightbox_name'			=> '',
+			'wppa_slideshow_linktype'		=> ''
 
 
 
 		);
 		array_walk($wppa_opt, 'wppa_set_options');
+		// If wppa+ supplied lightbox is enabled, overrule the lightbox keyword
+		if ( !is_admin() && $wppa_opt['wppa_use_lightbox'] ) $wppa_opt['wppa_lightbox_name'] = 'lightbox';
 	}
 	wppa_load_language();
 	
@@ -490,12 +494,7 @@ global $current_user;
 		return $user;
 	}
 	else {
-//		if (is_admin()) {
-//			die('It is not allowed to run admin pages while you are not logged in.'); // except for ajax
-//		}
-//		else {
-			return $_SERVER['REMOTE_ADDR'];
-//		}
+		return $_SERVER['REMOTE_ADDR'];
 	}
 }
 
@@ -1108,7 +1107,7 @@ global $wppa_opt;
 function wppa_table_exists($xtable) {
 global $wpdb;
 
-	$tables = $wpdb->get_results($wpdb->prepare("SHOW TABLES FROM ".DB_NAME), 'ARRAY_A');
+	$tables = $wpdb->get_results($wpdb->prepare("SHOW TABLES FROM `".DB_NAME."`"), 'ARRAY_A');
 	// Some sqls do not show tables, benefit of the doubt: assume table exists
 	if ( empty($tables) ) return true;
 	

@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, multisite, network, lightbox, comment, watermark
-Version: 4.2.10
+Version: 4.2.11
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -109,6 +109,23 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 4.2.11 =
+
+= Bug Fixes =
+
+* Clear ratings on the edit album page now reports correct.
+* Fixed a possible hangup during ajax rating auto next at end of slide cycle.
+
+= New Features =
+
+* If you do not use the wppa+ embedded lightbox but want to use a different lightbox(plugin) the required keyword used in 'rel="lightbox"' can now be set when it differs from 'lightbox'. (Table IX-9a).
+
+= Other changes =
+
+* The thumbnail popups will now popdown at mouseout.
+* The inconsistency checks in the Settings Autosave are now dynamic and will change the moment you change the settings involved.
+* You can select the link from fullsize to be one of: no link, plain file and lightbox. If yoy used lightbox on fullsize images, you will have to reset the setting in Table VI-8. 
 
 = 4.2.10 =
 

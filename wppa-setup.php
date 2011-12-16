@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 4.2.9
+* Version 4.2.11
 *
 */
 
@@ -398,7 +398,9 @@ global $wppa_defaults;
 						'wppa_album_admin_autosave'		=> 'yes',
 						'wppa_settings_autosave'		=> 'yes',
 						'wppa_slide_wrap'				=> 'yes',
-						'wppa_comment_login_approved'	=> 'yes'
+						'wppa_comment_login_approved'	=> 'yes',
+						'wppa_lightbox_name'			=> 'lightbox',
+						'wppa_slideshow_linktype'		=> 'none'
 
 
 						);

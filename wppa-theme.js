@@ -1,5 +1,5 @@
 // Theme variables and functions
-// This is wppa-theme.js version 4.2.3
+// This is wppa-theme.js version 4.2.11
 //
 
 var wppaBackgroundColorImage = '';
@@ -9,16 +9,11 @@ var wppaPopupLinkType = '';
 var wppaPopupOnclick = new Array();
 
 // Popup of thumbnail images 
-function wppa_popup(mocc, elm, id, rating) {
+function wppaPopUp(mocc, elm, id, rating) {
 	var topDivBig, topDivSmall, leftDivBig, leftDivSmall;
 	var heightImgBig, heightImgSmall, widthImgBig, widthImgSmall, widthImgBigSpace;
 	var puImg;
 	
-	// Ignore Duplicate call
-	if (id == wppa_saved_id[mocc]) return; 
-	wppa_saved_id[mocc] = id;
-
-	// due to callback bug, see below, we need an extra timer 
 	// stop if running 
 	clearTimeout(_wppaTimer[mocc]);
 	
@@ -27,13 +22,13 @@ function wppa_popup(mocc, elm, id, rating) {
 
 		switch (wppaPopupLinkType) {
 			case 'none':
-				jQuery('#wppa-popup-'+mocc).html('<div class="wppa-popup" onmousedown="wppa_popdown(event,'+mocc+')" style="background-color:'+wppaBackgroundColorImage+'; text-align:center;"><img id="wppa-img-'+mocc+'" src="'+elm.src+'" title="" style="border-width: 0px;" /><div id="wppa-name-'+mocc+'" style="display:none; padding:2px;" class="wppa_pu_info">'+elm.alt+'</div><div id="wppa-desc-'+mocc+'" style="clear:both; display:none;" class="wppa_pu_info">'+elm.title+'</div><div id="wppa-rat-'+mocc+'" style="clear:both; display:none;" class="wppa_pu_info">'+rating+'</div></div>');
+				jQuery('#wppa-popup-'+mocc).html('<div class="wppa-popup" style="background-color:'+wppaBackgroundColorImage+'; text-align:center;"><img id="wppa-img-'+mocc+'" src="'+elm.src+'" title="" style="border-width: 0px;" /><div id="wppa-name-'+mocc+'" style="display:none; padding:2px;" class="wppa_pu_info">'+elm.alt+'</div><div id="wppa-desc-'+mocc+'" style="clear:both; display:none;" class="wppa_pu_info">'+elm.title+'</div><div id="wppa-rat-'+mocc+'" style="clear:both; display:none;" class="wppa_pu_info">'+rating+'</div></div>');
 				break;
 			case 'fullpopup':
-				jQuery('#wppa-popup-'+mocc).html('<div class="wppa-popup" onmousedown="wppa_popdown(event,'+mocc+')" style="background-color:'+wppaBackgroundColorImage+'; text-align:center;"><img id="wppa-img-'+mocc+'" src="'+elm.src+'" title="" style="border-width: 0px;" onclick="'+wppaPopupOnclick[id]+'" /><div id="wppa-name-'+mocc+'" style="display:none; padding:2px;" class="wppa_pu_info">'+elm.alt+'</div><div id="wppa-desc-'+mocc+'" style="clear:both; display:none;" class="wppa_pu_info">'+elm.title+'</div><div id="wppa-rat-'+mocc+'" style="clear:both; display:none;" class="wppa_pu_info">'+rating+'</div></div>');
+				jQuery('#wppa-popup-'+mocc).html('<div class="wppa-popup" style="background-color:'+wppaBackgroundColorImage+'; text-align:center;"><img id="wppa-img-'+mocc+'" src="'+elm.src+'" title="" style="border-width: 0px;" onclick="'+wppaPopupOnclick[id]+'" /><div id="wppa-name-'+mocc+'" style="display:none; padding:2px;" class="wppa_pu_info">'+elm.alt+'</div><div id="wppa-desc-'+mocc+'" style="clear:both; display:none;" class="wppa_pu_info">'+elm.title+'</div><div id="wppa-rat-'+mocc+'" style="clear:both; display:none;" class="wppa_pu_info">'+rating+'</div></div>');
 				break;
 			default:
-				jQuery('#wppa-popup-'+mocc).html('<div class="wppa-popup" onmousedown="wppa_popdown(event,'+mocc+')" style="background-color:'+wppaBackgroundColorImage+'; text-align:center;"><a id="wppa-a" href="'+document.getElementById('x-'+id+'-'+mocc).href+'"><img id="wppa-img-'+mocc+'" src="'+elm.src+'" title="" style="border-width: 0px;" /></a><div id="wppa-name-'+mocc+'" style="display:none; padding:2px;" class="wppa_pu_info">'+elm.alt+'</div><div id="wppa-desc-'+mocc+'" style="clear:both; display:none;" class="wppa_pu_info">'+elm.title+'</div><div id="wppa-rat-'+mocc+'" style="clear:both; display:none;" class="wppa_pu_info">'+rating+'</div></div>');
+				jQuery('#wppa-popup-'+mocc).html('<div class="wppa-popup" style="background-color:'+wppaBackgroundColorImage+'; text-align:center;"><a id="wppa-a" href="'+document.getElementById('x-'+id+'-'+mocc).href+'"><img id="wppa-img-'+mocc+'" src="'+elm.src+'" title="" style="border-width: 0px;" /></a><div id="wppa-name-'+mocc+'" style="display:none; padding:2px;" class="wppa_pu_info">'+elm.alt+'</div><div id="wppa-desc-'+mocc+'" style="clear:both; display:none;" class="wppa_pu_info">'+elm.title+'</div><div id="wppa-rat-'+mocc+'" style="clear:both; display:none;" class="wppa_pu_info">'+rating+'</div></div>');
 		}
 	}
 	
@@ -43,7 +38,7 @@ function wppa_popup(mocc, elm, id, rating) {
 	// Set width of text fields to width of a landscape image	
 	if (puImg)
 		jQuery(".wppa_pu_info").css('width', ((puImg.clientWidth > puImg.clientHeight ? puImg.clientWidth : puImg.clientHeight) - 8)+'px');
-	
+//else alert('Error');	
 	// Compute starting coords
 	leftDivSmall = parseInt(elm.offsetLeft) - 7 - 5 - 1; // thumbnail_area:padding, wppa-img:padding, wppa-border; jQuery().css("padding") does not work for padding in css file, only when litaral in the tag
 	topDivSmall = parseInt(elm.offsetTop) - 7 - 5 - 1;		
@@ -64,31 +59,23 @@ function wppa_popup(mocc, elm, id, rating) {
 	// Do the animation
 	jQuery('#wppa-popup-'+mocc).stop().animate({"marginLeft":leftDivBig+"px","marginTop":topDivBig+"px"}, 400);
 	jQuery('#wppa-img-'+mocc).stop().animate({"width":widthImgBig+"px","height":heightImgBig+"px"}, 400);
-	// adding ", 'linear', wppa_popready(occ) " fails, therefor our own timer to the "show info" module
-	_wppaTimer[mocc] = setTimeout('wppa_popready('+mocc+')', 400);
+	// adding ", 'linear', wppaPopReady(occ) " fails, therefor our own timer to the "show info" module
+	_wppaTimer[mocc] = setTimeout('wppaPopReady('+mocc+')', 400);
 }
-function wppa_popready(mocc) {
+function wppaPopReady(mocc) {
 	jQuery("#wppa-name-"+mocc).show();
 	jQuery("#wppa-desc-"+mocc).show();
 	jQuery("#wppa-rat-"+mocc).show();
 }
-function wppa_popdown(e, mocc) {		//return; //debug
 
-	var rightclick;
-	if (!e) var e = window.event;
-	if (e.which) rightclick = (e.which == 3);
-	else if (e.button) rightclick = (e.button == 2);
-//	alert('Rightclick: ' + rightclick); // true or false
-
-	if (rightclick) {
-		jQuery('#wppa-popup-'+mocc).html("");
-		return false;	// do not follow href
-	}
-//	wppa_saved_id[mocc] = -1; // IE9 link from popup doesnt work, click to popdown, click on thumbnail to link
+// Dismiss popup
+function wppaPopDown(mocc) {		//return; //debug
+	jQuery('#wppa-popup-'+mocc).html("");
+	return;
 }
 
 // Popup of fullsize image
-function wppa_full_popup(mocc, id, url, xwidth, xheight) {
+function wppaFullPopUp(mocc, id, url, xwidth, xheight) {
 	var height = xheight+50;
 	var width  = xwidth+14;
 	var name = '';

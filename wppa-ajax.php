@@ -2,7 +2,7 @@
 /* wppa-ajax.php
 *
 * Functions used in ajax requests
-* version 4.2.8
+* version 4.2.11
 *
 */
 add_action('wp_ajax_wppa', 'wppa_ajax_callback');
@@ -183,7 +183,7 @@ global $wppa;
 						$iret2 = $wpdb->query($wpdb->prepare('UPDATE `'.WPPA_PHOTOS.'` SET `mean_rating` = %s WHERE `id` = %s', '', $photo['id']));
 					}
 					if ($photos !== false && $iret1 !== false && $iret2 !== false) {
-						echo '97||'.__('<b>Ratings cleared</b>', 'wppa').';'.__('No ratings for this photo.', 'wppa');
+						echo '97||'.__('<b>Ratings cleared</b>', 'wppa').'||'.__('No ratings for this photo.', 'wppa');
 					}
 					else {
 						echo '1||'.__('An error occurred while clearing ratings', 'wppa');
