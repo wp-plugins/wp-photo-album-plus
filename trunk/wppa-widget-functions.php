@@ -53,7 +53,7 @@ function wppa_get_widgetphotos($alb, $option = '') {
 	}	
 	// Is it ALL-SEP?
 	elseif ($alb == 'all-sep') {
-		$albs = $wpdb->get_results($wpdb->prepare( 'SELECT id, a_parent FROM ' . WPPA_ALBUMS, 'ARRAY_A' ) );
+		$albs = $wpdb->get_results($wpdb->prepare( 'SELECT id, a_parent FROM ' . WPPA_ALBUMS) , 'ARRAY_A' );
 		$query = 'SELECT * FROM ' . WPPA_PHOTOS;
 		$first = true;
 		foreach ($albs as $a) {
