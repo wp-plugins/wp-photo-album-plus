@@ -2,11 +2,11 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 4.2.11
+* version 4.3.1
 *
 */
 global $wppa_api_version;
-$wppa_api_version = '4-2-11-000';
+$wppa_api_version = '4-3-1-000';
 // Initialize globals and option settings
 function wppa_initialize_runtime($force = false) {
 global $wppa;
@@ -70,7 +70,9 @@ global $blog_id;
 			'searchresults'				=> '',
 			'any'						=> false,
 			'ajax'						=> false,
-			'error'						=> false
+			'error'						=> false,
+			'iptc'						=> false,
+			'exif'						=> false
 
 		);
 
@@ -114,6 +116,8 @@ global $blog_id;
 			'wppa_bgcolor_img' => '',
 			'wppa_bgcolor_namedesc' => '',
 			'wppa_bgcolor_com' => '',
+			'wppa_bgcolor_iptc' => '',
+			'wppa_bgcolor_exif' => '',
 			'wppa_bgcolor_cus' => '',
 			'wppa_bgcolor_numbar' => '',
 			'wppa_bgcolor_numbar_active' => '',
@@ -123,6 +127,8 @@ global $blog_id;
 			'wppa_bcolor_img' => '',
 			'wppa_bcolor_namedesc' => '',
 			'wppa_bcolor_com' => '',
+			'wppa_bcolor_iptc' => '',
+			'wppa_bcolor_exif' => '',
 			'wppa_bcolor_cus' => '',
 			'wppa_bcolor_numbar' => '',
 			'wppa_bcolor_numbar_active' => '',
@@ -131,24 +137,31 @@ global $blog_id;
 			'wppa_fontfamily_thumb' => '',
 			'wppa_fontsize_thumb' => '',
 			'wppa_fontcolor_thumb' => '',
+			'wppa_fontweight_thumb' => '',
 			'wppa_fontfamily_box' => '',
 			'wppa_fontsize_box' => '',
 			'wppa_fontcolor_box' => '',
+			'wppa_fontweight_box' => '',
 			'wppa_fontfamily_nav' => '',
 			'wppa_fontsize_nav' => '',
 			'wppa_fontcolor_nav' => '',
+			'wppa_fontweight_nav' => '',
 			'wppa_fontfamily_title' => '',
 			'wppa_fontsize_title' => '',
 			'wppa_fontcolor_title' => '',
+			'wppa_fontweight_title' => '',
 			'wppa_fontfamily_fulldesc' => '',
 			'wppa_fontsize_fulldesc' => '',
 			'wppa_fontcolor_fulldesc' => '',
+			'wppa_fontweight_fulldesc' => '',
 			'wppa_fontfamily_fulltitle' => '',
 			'wppa_fontsize_fulltitle' => '',
 			'wppa_fontcolor_fulltitle' => '',
+			'wppa_fontweight_fulltitle' => '',
 			'wppa_fontfamily_numbar' 	=> '',
 			'wppa_fontsize_numbar' 		=> '',
 			'wppa_fontcolor_numbar' 	=> '',
+			'wppa_fontweight_numbar' => '',
 			'wppa_arrow_color' => '',
 			'wppa_widget_width' => '',
 			'wppa_max_cover_width' => '',
@@ -191,64 +204,65 @@ global $blog_id;
 			'wppa_thumb_linktype' => '',
 			'wppa_mphoto_linkpage' => '',
 			'wppa_mphoto_linktype' => '',
-			'wppa_fadein_after_fadeout' => '',
-			'wppa_widget_linkpage' => '',
-			'wppa_widget_linktype' => '',
-			'wppa_widget_linkurl' => '',
-			'wppa_widget_linktitle' => '',
+			'wppa_fadein_after_fadeout' 	=> '',
+			'wppa_widget_linkpage' 			=> '',
+			'wppa_widget_linktype' 			=> '',
+			'wppa_widget_linkurl' 			=> '',
+			'wppa_widget_linktitle' 		=> '',
 			'wppa_slideonly_widget_linkpage' => '',
 			'wppa_slideonly_widget_linktype' => '',
-			'wppa_topten_widget_linkpage' => '',
-			'wppa_topten_widget_linktype' => '',
-			'wppa_coverimg_linktype' => '',
-			'wppa_coverimg_linkpage' => '',
-			'wppa_mphoto_overrule'		=> '',
-			'wppa_thumb_overrule'		=> '',
-			'wppa_topten_overrule'		=> '',
-			'wppa_sswidget_overrule'	=> '',
-			'wppa_potdwidget_overrule'	=> '',
-			'wppa_coverimg_overrule'	=> '',
-			'wppa_slideshow_overrule'	=> '',
-			'wppa_search_linkpage' => '',
-			'wppa_chmod' => '',
-			'wppa_setup' => '',
-			'wppa_rerate' => '',
-			'wppa_allow_debug' => '',
-			'wppa_potd_align' => '',
-			'wppa_comadmin_show' => '',
-			'wppa_comadmin_order' => '',
-			'wppa_popupsize' => '',
-			'wppa_slide_order' => '',
-			'wppa_show_bbb' => '',
+			'wppa_topten_widget_linkpage' 	=> '',
+			'wppa_topten_widget_linktype' 	=> '',
+			'wppa_coverimg_linktype' 		=> '',
+			'wppa_coverimg_linkpage' 		=> '',
+			'wppa_mphoto_overrule'			=> '',
+			'wppa_thumb_overrule'			=> '',
+			'wppa_topten_overrule'			=> '',
+			'wppa_sswidget_overrule'		=> '',
+			'wppa_potdwidget_overrule'		=> '',
+			'wppa_coverimg_overrule'		=> '',
+			'wppa_slideshow_overrule'		=> '',
+			'wppa_search_linkpage' 			=> '',
+			'wppa_chmod' 					=> '',
+			'wppa_setup' 					=> '',
+			'wppa_rerate' 					=> '',
+			'wppa_allow_debug' 				=> '',
+			'wppa_potd_align' 				=> '',
+			'wppa_comadmin_show' 			=> '',
+			'wppa_comadmin_order' 			=> '',
+			'wppa_popupsize' 				=> '',
+			'wppa_slide_order' 				=> '',
+			'wppa_show_bbb' 				=> '',
 			'wppa_show_slideshowbrowselink' => '',
-			'wppa_fullimage_border_width' => '',
-			'wppa_bgcolor_fullimg' => '',
-			'wppa_bcolor_fullimg' => '',
-			'wppa_max_photo_newtime' => '',
-			'wppa_max_album_newtime' => '',
-			'wppa_load_skin' => '',
-			'wppa_skinfile' => '',
-			'wppa_use_lightbox' => '',
-			'wppa_lightbox_bordersize' => '',
-			'wppa_lightbox_animationspeed' => '',
+			'wppa_fullimage_border_width' 	=> '',
+			'wppa_bgcolor_fullimg' 			=> '',
+			'wppa_bcolor_fullimg' 			=> '',
+			'wppa_max_photo_newtime' 		=> '',
+			'wppa_max_album_newtime' 		=> '',
+			'wppa_load_skin' 				=> '',
+			'wppa_skinfile' 				=> '',
+			'wppa_use_lightbox' 			=> '',
+			'wppa_lightbox_bordersize' 		=> '',
+			'wppa_lightbox_animationspeed' 	=> '',
 			'wppa_lightbox_backgroundcolor' => '',
-			'wppa_lightbox_bordercolor' => '',
-			'wppa_lightbox_overlaycolor' => '',
-			'wppa_lightbox_overlayopacity' => '',
-			'wppa_swap_namedesc' => '',
-			'wppa_fontfamily_lightbox' => '',
-			'wppa_fontsize_lightbox' => '',
-			'wppa_fontcolor_lightbox' => '',
-			'wppa_filter_priority' => '',
-			'wppa_custom_on' => '',
-			'wppa_custom_content' => '',
-			'wppa_apply_newphoto_desc' => '',
-			'wppa_newphoto_description' => '',
-			'wppa_comments_desc' => '',
-			'wppa_user_upload_on' => '',
-			'wppa_show_slideshownumbar'  => '',
-			'wppa_autoclean' => '',
-			'wppa_numbar_max' => '',
+			'wppa_lightbox_bordercolor' 	=> '',
+			'wppa_lightbox_overlaycolor' 	=> '',
+			'wppa_lightbox_overlayopacity' 	=> '',
+			'wppa_swap_namedesc' 			=> '',
+			'wppa_fontfamily_lightbox' 		=> '',
+			'wppa_fontsize_lightbox' 		=> '',
+			'wppa_fontcolor_lightbox' 		=> '',
+			'wppa_fontweight_lightbox' 		=> '',
+			'wppa_filter_priority' 			=> '',
+			'wppa_custom_on' 				=> '',
+			'wppa_custom_content' 			=> '',
+			'wppa_apply_newphoto_desc' 		=> '',
+			'wppa_newphoto_description' 	=> '',
+			'wppa_comments_desc' 			=> '',
+			'wppa_user_upload_on' 			=> '',
+			'wppa_show_slideshownumbar'  	=> '',
+			'wppa_autoclean' 				=> '',
+			'wppa_numbar_max' 				=> '',
 			'wppa_watermark_on'				=> '',
 			'wppa_watermark_user'			=> '',
 			'wppa_watermark_file'			=> '',
@@ -268,7 +282,15 @@ global $blog_id;
 			'wppa_slide_wrap'				=> '',
 			'wppa_comment_login_approved'	=> '',
 			'wppa_lightbox_name'			=> '',
-			'wppa_slideshow_linktype'		=> ''
+			'wppa_slideshow_linktype'		=> '',
+			'wppa_popup_text_name' 			=> '',
+			'wppa_popup_text_desc' 			=> '',
+			'wppa_popup_text_rating' 		=> '',
+			'wppa_thumb_aspect'				=> '',
+			'wppa_show_iptc'				=> '',
+			'wppa_show_exif'				=> '',
+			'wppa_comment_use_gravatar'		=> ''
+
 
 
 
@@ -766,7 +788,7 @@ function wppa_make_the_photo_files($file, $image_id, $ext) {
 global $wppa_opt;
 				
 	wppa_dbg_msg('make_the_photo_files called with file='.$file.' image_id='.$image_id.' ext='.$ext);
-	$img_size = getimagesize($file);
+	$img_size = getimagesize($file, $info);
 	if ($img_size) {
 		$newimage = WPPA_UPLOAD_PATH . '/' . $image_id . '.' . $ext;
 		wppa_dbg_msg('newimage='.$newimage);
@@ -825,6 +847,13 @@ global $wppa_opt;
 			else wppa_err_alert(__('ERROR: Resized or copied image could not be created.', 'wppa_theme'));
 			return false;
 		}
+		
+		// Process the iptc data
+		wppa_import_iptc($image_id, $info);
+		
+		// Process the exif data
+		wppa_import_exif($image_id, $file);
+
 		// Show progression
 		if (is_admin()) echo('.');
 		return true;
@@ -850,21 +879,146 @@ function wppa_get_minisize() {
 	return $result;
 }
 
+// Create thubnail from a given fullsize image path and max size
 function wppa_create_thumbnail( $file, $max_side, $effect = '') {
-	if (file_exists($file)) {
-		$img_size = getimagesize( $file );
-		$dir = $img_size[0] > $img_size[1] ? 'W' : 'H';
-		$thumb = 'thumbs/' . basename( $file );
-		$thumbpath = str_replace( basename( $file ), $thumb, $file );
-
-		require_once('wppa-class-resize.php');		
-		$objResize = new wppa_ImageResize($file, $thumbpath, $dir, $max_side, false);
-		$objResize->destroyImage($objResize->resOriginalImage);
-		$objResize->destroyImage($objResize->resResizedImage);
+global $wppa_opt;
+	
+	// See if we are called with the right args
+	if ( ! file_exists($file) ) return false;		// No file, fail
+	$img_attr = getimagesize( $file );
+	if ( ! $img_attr ) return false;				// Not an image, fail
+	
+	// Retrieve additional required info
+	$asp_attr = explode(':', $wppa_opt['wppa_thumb_aspect']);
+	$thumbpath = str_replace( basename( $file ), 'thumbs/' . basename( $file ), $file );
+	// Source size
+	$src_size_w = $img_attr[0];
+	$src_size_h = $img_attr[1];
+	// Mime type and thumb type
+	$mime = $img_attr[2]; 
+	$type = $asp_attr[2];
+	// Source native aspect
+	$src_asp = $src_size_h / $src_size_w;
+	// Required aspect
+	if ($type == 'none') {
+		$dst_asp = $src_asp;
 	}
 	else {
-		return false;
+		$dst_asp = $asp_attr[0] / $asp_attr[1];
 	}
+	
+	// Create the source image
+	switch ($mime) {	// mime type
+		case 1: // gif
+			$temp = imagecreatefromgif($file);
+			$src = imagecreatetruecolor($src_size_w, $src_size_h);
+			imagecopy($src, $temp, 0, 0, 0, 0, $src_size_w, $src_size_h);
+			imagedestroy($temp);
+			break;
+		case 2:	// jpeg
+			$src = imagecreatefromjpeg($file);
+			break;
+		case 3:	// png
+			$src = imagecreatefrompng($file);
+			break;
+	}
+	
+	// Compute the destination image size
+	if ( $dst_asp < 1.0 ) {	// Landscape
+		$dst_size_w = $max_side;
+		$dst_size_h = round($max_side * $dst_asp);
+	}
+	else {					// Portrait
+		$dst_size_w = round($max_side / $dst_asp);
+		$dst_size_h = $max_side;
+	}
+	
+	// Create the (empty) destination image
+	//echo 'dst_asp='.$dst_asp.' src_asp='.$src_asp;
+	//echo ' size_w='.$dst_size_w.' size_h='.$dst_size_h;
+	$dst = imagecreatetruecolor($dst_size_w, $dst_size_h);
+
+
+	// Switch on what we have to do
+	switch ($type) {
+		case 'none':	// Use aspect from fullsize image
+			$src_x = 0;
+			$src_y = 0;
+			$src_w = $src_size_w;
+			$src_h = $src_size_h;
+			$dst_x = 0;
+			$dst_y = 0;
+			$dst_w = $dst_size_w;
+			$dst_h = $dst_size_h;
+			break;
+		case 'clip':	// Clip image to given aspect ratio
+			if ( $src_asp < $dst_asp ) {	// Source image more landscape than destination
+				$dst_x = 0;
+				$dst_y = 0;
+				$dst_w = $dst_size_w;
+				$dst_h = $dst_size_h;
+				$src_x = round(($src_size_w - $src_size_h / $dst_asp) / 2);
+				$src_y = 0;
+				$src_w = round($src_size_h / $dst_asp);
+				$src_h = $src_size_h;
+			}
+			else {
+				$dst_x = 0;
+				$dst_y = 0;
+				$dst_w = $dst_size_w;
+				$dst_h = $dst_size_h;
+				$src_x = 0;
+				$src_y = round(($src_size_h - $src_size_w * $dst_asp) / 2);
+				$src_w = $src_size_w;
+				$src_h = round($src_size_w * $dst_asp);
+			}
+			break;
+		case 'padd':	// Padd image to given aspect ratio
+			if ( $src_asp < $dst_asp ) {	// Source image more landscape than destination
+				$dst_x = 0;
+				$dst_y = round(($dst_size_h - $dst_size_w * $src_asp) / 2);
+				$dst_w = $dst_size_w;
+				$dst_h = round($dst_size_w * $src_asp);
+				$src_x = 0;
+				$src_y = 0;
+				$src_w = $src_size_w;
+				$src_h = $src_size_h;
+			}
+			else {
+				$dst_x = round(($dst_size_w - $dst_size_h / $src_asp) / 2);
+				$dst_y = 0;
+				$dst_w = round($dst_size_h / $src_asp);
+				$dst_h = $dst_size_h;
+				$src_x = 0;
+				$src_y = 0;
+				$src_w = $src_size_w;
+				$src_h = $src_size_h;
+			}
+			break;
+		default:		// Not implemented
+			return false;
+	}
+	
+	// Do the copy
+	//echo ' dst_x='.$dst_x.' dst_y='.$dst_y.' src_x='.$src_x.' src_y='.$src_y.' dst_w='.$dst_w.' dst_h='.$dst_h.' src_w='.$src_w.' src_h='.$src_h.'<br />';
+	imagecopyresampled($dst, $src, $dst_x, $dst_y, $src_x, $src_y, $dst_w, $dst_h, $src_w, $src_h);
+	
+	// Save the thumb
+	switch ($mime) {	// mime type
+		case 1:
+			imagegif($dst, $thumbpath);
+			break;
+		case 2:
+			imagejpeg($dst, $thumbpath, 100);
+			break;
+		case 3:
+			imagepng($dst, $thumbpath, 6);
+			break;
+	}
+	
+	// Cleanup
+	imagedestroy($src);
+	imagedestroy($dst);
 	return true;
 }
 
@@ -1118,4 +1272,161 @@ global $wpdb;
 		}
 	}
 	return false;
+}
+
+// Process the iptc data
+function wppa_import_iptc($id, $info) {
+global $wpdb;
+
+	wppa_dbg_msg('wppa_import_iptc called for id='.$id);
+	wppa_dbg_msg('array is'.( is_array($info) ? ' ' : ' NOT ' ).'available');
+	wppa_dbg_msg('APP13 is '.( isset($info['APP13']) ? 'set' : 'NOT set'));
+	
+	// Is iptc data present?
+	if ( !isset($info['APP13']) ) return false;	// No iptc data avail
+
+	// Parse
+	$iptc = iptcparse($info['APP13']);
+	if ( ! is_array($iptc) ) return false;		// No data avail 
+	
+	// There is iptc data for this image.
+	// First delete any existing ipts data for this image
+	$wpdb->query($wpdb->prepare("DELETE FROM `".WPPA_IPTC."` WHERE `photo` = %s", $id));
+	// Find defined labels
+	$result = $wpdb->get_results($wpdb->prepare("SELECT `tag` FROM `".WPPA_IPTC."` WHERE `photo`='0' ORDER BY `tag`"), 'ARRAY_N');
+	if ( ! is_array($result) ) $result = array();
+	$labels = array();
+	foreach ($result as $res) {
+		$labels[] = $res['0'];
+	}
+	foreach (array_keys($iptc) as $s) {
+		if ( is_array($iptc[$s]) ) {
+			$c = count ($iptc[$s]);
+			for ($i=0; $i <$c; $i++) {
+				// Process item
+				wppa_dbg_msg('IPTC '.$s.' = '.$iptc[$s][$i]);
+				// Check labels first
+				if ( ! in_array( $s, $labels ) ) {
+					$labels[] = $s;	// Add to labels
+					// Add to db
+					$key 	= wppa_nextkey(WPPA_IPTC);
+					$photo 	= '0';
+					$tag 	= $s;
+					$desc 	= $s.':';
+						if ( $s == '2#005' ) $desc = 'Graphic name:';
+						if ( $s == '2#010' ) $desc = 'Urgency:';
+						if ( $s == '2#015' ) $desc = 'Category:'; 
+						if ( $s == '2#020' ) $desc = 'Supp categories:';
+						if ( $s == '2#040' ) $desc = 'Spec instr:'; 
+						if ( $s == '2#055' ) $desc = 'Creation date:';
+						if ( $s == '2#080' ) $desc = 'Photographer:';
+						if ( $s == '2#085' ) $desc = 'Credit byline title:';
+						if ( $s == '2#090' ) $desc = 'City:';
+						if ( $s == '2#095' ) $desc = 'State:';	
+						if ( $s == '2#101' ) $desc = 'Country:';
+						if ( $s == '2#103' ) $desc = 'Otr:';
+						if ( $s == '2#105' ) $desc = 'Headline:';
+						if ( $s == '2#110' ) $desc = 'Source:';
+						if ( $s == '2#115' ) $desc = 'Photo source:'; 	
+						if ( $s == '2#120' ) $desc = 'Caption:';
+					$status = 'display';
+						if ( $s == '1#090' ) $status = 'hide';
+						if ( $s == '2#000' ) $status = 'hide';
+					$query 	= $wpdb->prepare("INSERT INTO `".WPPA_IPTC."` (`id`, `photo`, `tag`, `description`, `status`) VALUES (%s, %s, %s, %s, %s)", $key, $photo, $tag, $desc, $status); 
+					$iret 	= $wpdb->query($query);
+					if ( ! $iret ) wppa_dbg_msg('Error: '.$query, 'red', 'force');
+				}
+				// Now add poto specific data item
+				$key 	= wppa_nextkey(WPPA_IPTC);
+				$photo 	= $id;
+				$tag 	= $s;
+				$desc 	= $iptc[$s][$i];
+				$status = 'default';
+				$query  = $wpdb->prepare("INSERT INTO `".WPPA_IPTC."` (`id`, `photo`, `tag`, `description`, `status`) VALUES (%s, %s, %s, %s, %s)", $key, $photo, $tag, $desc, $status); 
+				$iret 	= $wpdb->query($query);
+				if ( ! $iret ) wppa_dbg_msg('Error: '.$query, 'red', 'force');
+			}
+		}
+	}
+}
+
+function wppa_import_exif($id, $file) {
+global $wpdb;
+
+	// Check filetype
+	$image_type = exif_imagetype($file);
+	if ( $image_type != IMAGETYPE_JPEG ) return false;	// Not supported image type
+
+	// Get exif data
+	if ( ! function_exists('exif_read_data') ) return false;	// Not supported by the server
+	$exif = exif_read_data($file, 'EXIF');
+	if ( ! is_array($exif) ) return false;			// No data present
+
+	// There is exif data for this image.
+	// First delete any existing exif data for this image
+	$wpdb->query($wpdb->prepare("DELETE FROM `".WPPA_EXIF."` WHERE `photo` = %s", $id));
+	// Find defined labels
+	$result = $wpdb->get_results($wpdb->prepare("SELECT * FROM `".WPPA_EXIF."` WHERE `photo`='0' ORDER BY `tag`"), 'ARRAY_A');
+	if ( ! is_array($result) ) $result = array();
+	$labels = array();
+	$names  = array();
+	foreach ($result as $res) {
+		$labels[] = $res['tag'];
+		$names[]  = $res['description'];
+	}
+	
+	foreach (array_keys($exif) as $s) {
+		// Process item
+		wppa_dbg_msg('EXIF '.$s.' = '.$exif[$s]);
+		if ( is_array($exif[$s]) ) continue;
+		// Check labels first
+		$tag = '';
+		if ( in_array( $s, $names ) ) {
+			$i = 0;
+			while ( $i < count($labels) ) {
+				if ( $names[$i] == $s ) $tag = $labels[$i];
+			}
+		}
+		if ( $tag == '' ) $tag = wppa_exif_tag($s);
+		if ( $tag == '' ) continue;
+		if ( ! in_array( $tag, $labels ) ) {
+			$labels[] = $tag;	// Add to labels
+			// Add to db
+			$key 	= wppa_nextkey(WPPA_EXIF);
+			$photo 	= '0';
+			$desc 	= $s.':';
+			$status = 'display';
+			$query 	= $wpdb->prepare("INSERT INTO `".WPPA_EXIF."` (`id`, `photo`, `tag`, `description`, `status`) VALUES (%s, %s, %s, %s, %s)", $key, $photo, $tag, $desc, $status); 
+			$iret 	= $wpdb->query($query);
+			if ( ! $iret ) wppa_dbg_msg('Error: '.$query, 'red', 'force');
+		}
+		// Now add poto specific data item
+		$key 	= wppa_nextkey(WPPA_EXIF);
+		$photo 	= $id;
+		$desc 	= $exif[$s];
+		$status = 'default';
+		$query  = $wpdb->prepare("INSERT INTO `".WPPA_EXIF."` (`id`, `photo`, `tag`, `description`, `status`) VALUES (%s, %s, %s, %s, %s)", $key, $photo, $tag, $desc, $status); 
+		$iret 	= $wpdb->query($query);
+		if ( ! $iret ) wppa_dbg_msg('Error: '.$query, 'red', 'force');
+	}
+}
+
+// Inverse of exif_tagname();
+function wppa_exif_tag($tagname) {
+global $wppa_inv_exiftags;
+
+	// Setup inverted matrix
+	if ( ! is_array($wppa_inv_exiftags) ) {
+		$key = 0;
+		while ( $key < 65536 ) {
+			$tag = exif_tagname($key);
+			if ( $tag != '' ) {
+				$wppa_inv_exiftags[$tag] = $key;
+			}
+			$key++;
+		}
+	}
+	// Search
+	if ( isset($wppa_inv_exiftags[$tagname]) ) return sprintf('E#%04X',$wppa_inv_exiftags[$tagname]);
+	else return '';
 }

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the slideshow high level functions
-* Version 4.2.8
+* Version 4.3.1
 *
 */
 
@@ -12,7 +12,7 @@ global $wppa_opt;
 
 	$indexes = explode(',', $wppa_opt['wppa_slide_order']);
 	$i = '0';
-	while ( $i < '8' ) {
+	while ( $i < '10' ) {
 		switch ( $indexes[$i] ) {
 			case '0':
 				wppaStartStop('optional');				// The 'Slower | start/stop | Faster' bar
@@ -37,6 +37,12 @@ global $wppa_opt;
 				break;
 			case '7':
 				wppa_comments('optional');				// The Comments box
+				break;
+			case '8':
+				wppa_iptc('optional');					// The IPTC box
+				break;
+			case '9':
+				wppa_exif('optional');					// The EXIF box
 				break;
 			default:
 				break;
@@ -354,7 +360,7 @@ global $wppa_opt;
 		$numid = 0;
 		
 		// make the elementstyles
-		$style = 'display:block; float:left; padding:0 '.$size_4.'px; margin-right:'.$size_2.'px; font-weight:bold; ';
+		$style = 'display:block; float:left; padding:0 '.$size_4.'px; margin-right:'.$size_2.'px; font-weight:'.$wppa_opt['wppa_fontweight_numbar'].'; ';
 		if ($wppa_opt['wppa_fontfamily_numbar']) $style .= ' font-family:'.$wppa_opt['wppa_fontfamily_numbar'].';';
 		if ($wppa_opt['wppa_fontcolor_numbar']) $style .= ' color:'.$wppa_opt['wppa_fontcolor_numbar'].';';
 		if ($size_given) $style .= ' font-size:'.$size.'px; line-height:'.$size_32.'px;';
@@ -417,11 +423,53 @@ global $wppa_opt;
 	$do_it = false;
 	if ($opt != 'optional') $do_it = true;
 	if (!$wppa['is_slideonly'] && $wppa_opt['wppa_show_comments']) $do_it = true;
-//if ($do_it) echo('Yes'); else echo('No');
+
 	if ($do_it) {
 		$wppa['out'] .= wppa_nltab('+').'<div id="comments-'.$wppa['master_occur'].'" class="wppa-box wppa-comments " style="text-align: center; '.__wcs('wppa-box').__wcs('wppa-comments').'">';
 
 		$wppa['out'] .= wppa_nltab('-').'</div><!-- #comments -->';
+	}
+
+}
+
+// The IPTC box
+function wppa_iptc($opt = '') {
+global $wppa;
+global $wppa_opt;
+
+	if (is_feed()) {
+		if ( $wppa_opt['wppa_show_iptc'] ) wppa_dummy_bar(__a('- - - IPTC box activated - - -', 'wppa_theme'));
+		return;
+	}
+	$do_it = false;
+	if ($opt != 'optional') $do_it = true;
+	if (!$wppa['is_slideonly'] && $wppa_opt['wppa_show_iptc']) $do_it = true;
+
+	if ($do_it) {
+		$wppa['out'] .= wppa_nltab('+').'<div id="iptc-'.$wppa['master_occur'].'" class="wppa-box wppa-iptc " style="text-align: center; '.__wcs('wppa-box').__wcs('wppa-iptc').'">';
+
+		$wppa['out'] .= wppa_nltab('-').'</div><!-- #iptc -->';
+	}
+
+}
+
+// The EXIF box
+function wppa_exif($opt = '') {
+global $wppa;
+global $wppa_opt;
+
+	if (is_feed()) {
+		if ( $wppa_opt['wppa_show_exif'] ) wppa_dummy_bar(__a('- - - EXIF box activated - - -', 'wppa_theme'));
+		return;
+	}
+	$do_it = false;
+	if ($opt != 'optional') $do_it = true;
+	if (!$wppa['is_slideonly'] && $wppa_opt['wppa_show_exif']) $do_it = true;
+
+	if ($do_it) {
+		$wppa['out'] .= wppa_nltab('+').'<div id="exif-'.$wppa['master_occur'].'" class="wppa-box wppa-exif " style="text-align: center; '.__wcs('wppa-box').__wcs('wppa-exif').'">';
+
+		$wppa['out'] .= wppa_nltab('-').'</div><!-- #exif -->';
 	}
 
 }

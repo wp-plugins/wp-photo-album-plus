@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the upload/import pages and functions
-* Version 4.2.2
+* Version 4.3.1
 *
 */
 
@@ -653,6 +653,7 @@ function wppa_insert_photo ($file = '', $album = '', $name = '', $desc = '', $po
 		if ($name == '') $name = basename($file);
 		// Get and verify the size
 		$img_size = getimagesize($file);
+		
 		if ($img_size) { 
 			if (!$warning_given_big && ($img_size['0'] > 1280 || $img_size['1'] > 1280)) {
 				if (get_option('wppa_resize_on_upload', 'no') == 'yes') {
