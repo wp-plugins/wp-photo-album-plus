@@ -2,7 +2,7 @@
 /* wppa-ajax.php
 *
 * Functions used in ajax requests
-* version 4.2.11
+* version 4.3.1
 *
 */
 add_action('wp_ajax_wppa', 'wppa_ajax_callback');
@@ -159,6 +159,8 @@ global $wppa;
 			$wpdb->query($wpdb->prepare('DELETE FROM `'.WPPA_PHOTOS.'` WHERE `id` = %s LIMIT 1', $photo));
 			$wpdb->query($wpdb->prepare('DELETE FROM `'.WPPA_RATING.'` WHERE `photo` = %s', $photo));
 			$wpdb->query($wpdb->prepare('DELETE FROM `'.WPPA_COMMENTS.'` WHERE `photo` = %s', $photo));
+			$wpdb->query($wpdb->prepare('DELETE FROM `'.WPPA_IPTC.'` WHERE `photo` = %s', $photo));
+			$wpdb->query($wpdb->prepare('DELETE FROM `'.WPPA_EXIF.'` WHERE `photo` = %s', $photo));
 			echo '1||<span style="color:red" >'.sprintf(__('Photo %s has been deleted', 'wppa'), $photo).'</span>';
 			break;
 
@@ -346,8 +348,65 @@ global $wppa;
 			$wppa['error']  = '0';	//
 			$title  = '';			//
 			
+			$option = wppa_decode($option);
 			// Dispatch on option
-			switch ($option) {
+			if ( substr($option, 0, 16) == 'wppa_iptc_label_' ) {
+				$tag = substr($option, 16);
+				$q = $wpdb->prepare("UPDATE `".WPPA_IPTC."` SET `description`=%s WHERE `tag`=%s AND `photo`='0'", $value, $tag);
+				$bret = $wpdb->query($q);
+				// Produce the response text
+				if ($bret) {
+					$output = '0||'.$tag.' updated to '.$value.'||';
+				}
+				else {
+					$output = '1||Failed to update '.$tag.'||';
+				}
+				echo $output;
+				exit;
+			}
+			elseif ( substr($option, 0, 17) == 'wppa_iptc_status_' ) {
+				$tag = substr($option, 17);
+				$q = $wpdb->prepare("UPDATE `".WPPA_IPTC."` SET `status`=%s WHERE `tag`=%s AND `photo`='0'", $value, $tag);
+				$bret = $wpdb->query($q);
+				// Produce the response text
+				if ($bret) {
+					$output = '0||'.$tag.' updated to '.$value.'||';
+				}
+				else {
+					$output = '1||Failed to update '.$tag.'||';
+				}
+				echo $output;			
+				exit;
+			}
+			elseif ( substr($option, 0, 16) == 'wppa_exif_label_' ) {
+				$tag = substr($option, 16);
+				$q = $wpdb->prepare("UPDATE `".WPPA_EXIF."` SET `description`=%s WHERE `tag`=%s AND `photo`='0'", $value, $tag);
+				$bret = $wpdb->query($q);
+				// Produce the response text
+				if ($bret) {
+					$output = '0||'.$tag.' updated to '.$value.'||';
+				}
+				else {
+					$output = '1||Failed to update '.$tag.'||';
+				}
+				echo $output;
+				exit;
+			}
+			elseif ( substr($option, 0, 17) == 'wppa_exif_status_' ) {
+				$tag = substr($option, 17);
+				$q = $wpdb->prepare("UPDATE `".WPPA_EXIF."` SET `status`=%s WHERE `tag`=%s AND `photo`='0'", $value, $tag);
+				$bret = $wpdb->query($q);
+				// Produce the response text
+				if ($bret) {
+					$output = '0||'.$tag.' updated to '.$value.'||';
+				}
+				else {
+					$output = '1||Failed to update '.$tag.'||';
+				}
+				echo $output;			
+				exit;
+			}
+			else switch ($option) {
 					
 				case 'wppa_colwidth': //	 ??	  fixed   low	high	title
 					wppa_ajax_check_range($value, 'auto', '100', false, __('Column width.', 'wppa'));
@@ -461,6 +520,8 @@ global $wppa;
 					if ($wpdb->query($wpdb->prepare( "ALTER TABLE " . WPPA_PHOTOS . " MODIFY description longtext CHARACTER SET utf8")) === false) $wppa['error'] = true;
 					if ($wpdb->query($wpdb->prepare( "ALTER TABLE " . WPPA_PHOTOS . " MODIFY linktitle text CHARACTER SET utf8")) === false) $wppa['error'] = true;
 					if ($wpdb->query($wpdb->prepare( "ALTER TABLE " . WPPA_COMMENTS . " MODIFY comment text CHARACTER SET utf8")) === false) $wppa['error'] = true;
+					if ($wpdb->query($wpdb->prepare( "ALTER TABLE " . WPPA_IPTC . " MODIFY description text CHARACTER SET utf8")) === false) $wppa['error'] = true;
+					if ($wpdb->query($wpdb->prepare( "ALTER TABLE " . WPPA_EXIF . " MODIFY description text CHARACTER SET utf8")) === false) $wppa['error'] = true;
 					if ($wppa['error']) {
 						$alert = __('Error converting to UTF_8', 'wppa');
 					}
@@ -488,8 +549,8 @@ global $wppa;
 					$iret1 = $wpdb->query($wpdb->prepare( 'DELETE FROM '.WPPA_RATING.' WHERE id > -1' ) );
 					$iret2 = $wpdb->query($wpdb->prepare( 'UPDATE '.WPPA_PHOTOS.' SET mean_rating="0" WHERE id > -1' ) );
 					if ($iret1 !== false && $iret2 !== false) {
+						delete_option('wppa_'.WPPA_RATING.'_lastkey');
 						$title = __('Ratings cleared', 'wppa');
-					//	$alert = $title;
 					}
 					else {
 						$title = __('Could not clear ratings', 'wppa');
@@ -498,7 +559,36 @@ global $wppa;
 					}
 					break;
 
+				case 'wppa_iptc_clear':
+					$iret = $wpdb->query($wpdb->prepare( 'TRUNCATE TABLE '.WPPA_IPTC ) );
+					if ($iret !== false) {
+						delete_option('wppa_'.WPPA_IPTC.'_lastkey');
+						$title = __('IPTC data cleared', 'wppa');
+						$alert = __('Refresh this page to clear table X', 'wppa');
+					}
+					else {
+						$title = __('Could not clear IPTC data', 'wppa');
+						$alert = $title;
+						$wppa['error'] = '1';
+					}
+					break;
+
+				case 'wppa_exif_clear':
+					$iret = $wpdb->query($wpdb->prepare( 'TRUNCATE TABLE '.WPPA_EXIF ) );
+					if ($iret !== false) {
+						delete_option('wppa_'.WPPA_EXIF.'_lastkey');
+						$title = __('EXIF data cleared', 'wppa');
+						$alert = __('Refresh this page to clear table XI', 'wppa');
+					}
+					else {
+						$title = __('Could not clear EXIF data', 'wppa');
+						$alert = $title;
+						$wppa['error'] = '1';
+					}
+					break;
+
 				case 'wppa_regen':
+				case 'wppa_thumb_aspect':
 					if ( get_option('wppa_lastthumb', '-2') == '-2' ) {
 						update_option('wppa_lastthumb', '-1');	// Trigger regen if not doing already
 						$old_minisize--;

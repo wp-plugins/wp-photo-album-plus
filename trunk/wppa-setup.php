@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 4.2.11
+* Version 4.3.1
 *
 */
 
@@ -19,7 +19,7 @@
 // register_activation_hook(WPPA_FILE, 'wppa_activate'); is in wppa.php
 function wppa_activate() {
 	$old_rev = get_option('wppa_revision', '100');
-	$new_rev = $old_rev = '0.01';
+	$new_rev = $old_rev - '0.01';
 	update_option('wppa_revision', $new_rev);
 }
 // Set force to true to re-run it even when on rev (happens in wppa-settings.php)
@@ -84,12 +84,30 @@ function wppa_setup($force = false) {
 					PRIMARY KEY  (id)	
 					);";
 					
+	$create_iptc = "CREATE TABLE " . WPPA_IPTC . " (
+					id bigint(20) NOT NULL,
+					photo bigint(20) NOT NULL,
+					tag tinytext NOT NULL,
+					description text NOT NULL,
+					status tinytext NOT NULL,
+					PRIMARY KEY  (id)					
+					);";
+
+	$create_exif = "CREATE TABLE " . WPPA_EXIF . " (
+					id bigint(20) NOT NULL,
+					photo bigint(20) NOT NULL,
+					tag tinytext NOT NULL,
+					description text NOT NULL,
+					status tinytext NOT NULL,
+					PRIMARY KEY  (id)					
+					);";
+					
 	require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 	
-	$tn = array( WPPA_ALBUMS, WPPA_PHOTOS, WPPA_RATING, WPPA_COMMENTS );
-	$tc = array( $create_albums, $create_photos, $create_rating, $create_comments );
+	$tn = array( WPPA_ALBUMS, WPPA_PHOTOS, WPPA_RATING, WPPA_COMMENTS, WPPA_IPTC, WPPA_EXIF );
+	$tc = array( $create_albums, $create_photos, $create_rating, $create_comments, $create_iptc, $create_exif );
 	$idx = 0;
-	while ($idx < 4) {
+	while ($idx < 6) {
 		$a0 = wppa_table_exists($tn[$idx]);
 		dbDelta($tc[$idx]);
 		$a1 = wppa_table_exists($tn[$idx]);
@@ -112,6 +130,8 @@ function wppa_setup($force = false) {
 		delete_option('wppa_3col_treshold');
 	}
 
+	if ( get_option('wppa_use_lightbox', 'no') == 'yes' && get_option('wppa_slideshow_linktype', 'nil') == 'nil' ) update_option('wppa_slideshow_linktype', 'lightbox');
+	
 	wppa_set_defaults();					// Will always work
 	if ( ! wppa_check_dirs() ) return;		// Quit on error, messages are given in check_dirs
 
@@ -235,6 +255,8 @@ global $wppa_defaults;
 						'wppa_bgcolor_img'			=> '#eeeeee',
 						'wppa_bgcolor_namedesc' 	=> '#dddddd',
 						'wppa_bgcolor_com' 			=> '#dddddd',
+						'wppa_bgcolor_iptc'			=> '#dddddd',
+						'wppa_bgcolor_exif'			=> '#dddddd',
 						'wppa_bgcolor_cus'			=> '#dddddd',
 						'wppa_bgcolor_numbar'		=> '#cccccc',
 						'wppa_bgcolor_numbar_active'=> '#333333',
@@ -244,6 +266,8 @@ global $wppa_defaults;
 						'wppa_bcolor_img'			=> '',
 						'wppa_bcolor_namedesc' 		=> '#bbbbbb',
 						'wppa_bcolor_com' 			=> '#bbbbbb',
+						'wppa_bcolor_iptc' 			=> '#bbbbbb',
+						'wppa_bcolor_exif' 			=> '#bbbbbb',
 						'wppa_bcolor_cus'			=> '#bbbbbb',
 						'wppa_bcolor_numbar'		=> '#cccccc',
 						'wppa_bcolor_numbar_active' => '#333333',
@@ -252,24 +276,31 @@ global $wppa_defaults;
 						'wppa_fontfamily_thumb' 	=> '',
 						'wppa_fontsize_thumb' 		=> '',
 						'wppa_fontcolor_thumb' 		=> '',
+						'wppa_fontweight_thumb'		=> 'normal',
 						'wppa_fontfamily_box' 		=> '',
 						'wppa_fontsize_box' 		=> '',
 						'wppa_fontcolor_box' 		=> '',
+						'wppa_fontweight_box'		=> 'normal',
 						'wppa_fontfamily_nav' 		=> '',
 						'wppa_fontsize_nav' 		=> '',
 						'wppa_fontcolor_nav' 		=> '',
+						'wppa_fontweight_nav'		=> 'normal',
 						'wppa_fontfamily_title' 	=> '',
 						'wppa_fontsize_title' 		=> '',
 						'wppa_fontcolor_title' 		=> '',
+						'wppa_fontweight_title'		=> 'bold',
 						'wppa_fontfamily_fulldesc' 	=> '',
 						'wppa_fontsize_fulldesc' 	=> '',
 						'wppa_fontcolor_fulldesc' 	=> '',
+						'wppa_fontweight_fulldesc'	=> 'normal',
 						'wppa_fontfamily_fulltitle' => '',
 						'wppa_fontsize_fulltitle' 	=> '',
 						'wppa_fontcolor_fulltitle' 	=> '',
+						'wppa_fontweight_fulltitle'	=> 'normal',
 						'wppa_fontfamily_numbar' 	=> '',
 						'wppa_fontsize_numbar' 		=> '',
 						'wppa_fontcolor_numbar' 	=> '#777777',
+						'wppa_fontweight_numbar'	=> 'bold',
 						'wppa_arrow_color' 			=> 'black',
 						'wppa_max_cover_width'		=> '1024',
 						'wppa_text_frame_height'	=> '54',
@@ -370,6 +401,7 @@ global $wppa_defaults;
 						'wppa_fontfamily_lightbox'		=> 'Verdana, Helvetica, sans-serif',
 						'wppa_fontsize_lightbox'		=> '10',
 						'wppa_fontcolor_lightbox'		=> '#666',
+						'wppa_fontweight_lightbox'		=> 'normal',
 						'wppa_filter_priority'			=> '1001',
 						'wppa_widget_width'				=> '200',
 						'wppa_custom_on' 				=> 'no',
@@ -400,8 +432,14 @@ global $wppa_defaults;
 						'wppa_slide_wrap'				=> 'yes',
 						'wppa_comment_login_approved'	=> 'yes',
 						'wppa_lightbox_name'			=> 'lightbox',
-						'wppa_slideshow_linktype'		=> 'none'
-
+						'wppa_slideshow_linktype'		=> 'none',
+						'wppa_popup_text_name' 			=> 'yes',
+						'wppa_popup_text_desc' 			=> 'yes',
+						'wppa_popup_text_rating' 		=> 'yes',
+						'wppa_thumb_aspect'				=> '0:0:none',
+						'wppa_show_iptc'				=> 'no',
+						'wppa_show_exif'				=> 'no',
+						'wppa_comment_use_gravatar'		=> 'no'
 
 						);
 

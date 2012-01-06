@@ -1,18 +1,17 @@
 === WP Photo Album Plus ===
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
-Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, multisite, network, lightbox, comment, watermark
-Version: 4.2.11
+Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, multisite, network, lightbox, comment, watermark, iptc, exif
+Version: 4.3.1
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
 Requires at least: 3.0
-Tested up to: 3.3
+Tested up to: 3.3.1
 
 This plugin is designed to easily manage and display your photo albums and slideshows in a single as well as in a network WordPress site. 
 Additionally there are five widgets: Photo of the day, a Search Photos widget, a Top Ten Rated photo widget, a Recent comments widget and a Mini slideshow widget.
-Visitors can leave comments on individual photos.
-Uploads can be provided with a watermark.
+Visitors can leave comments on individual photos. Uploads can be provided with a watermark. IPTC and EXIF data can be displayed and used in descriptions.
 
 == Description ==
 
@@ -39,6 +38,7 @@ This plugin is designed to easily manage and display your photo albums and slide
 * Inrernational language support for dynamic text: Album and photo names and descriptions fully support the qTranslate multilanguage rules and have separate edit fields for all qTranslate activated languages.
 * Suports lightbox.
 * You can add watermarks to the photos.
+* The plugin supports IPTC and EXIF data.
 
 Plugin Admin Features:
 
@@ -48,13 +48,13 @@ You can find the plugin admin section under Menu Photo Albums on the admin scree
 * Upload photos: To upload photos to an album you created.
 * Import photos: To bulk import photos to an album that are previously been ftp'd.
 * Settings: To control the various settings to customize your needs.
-* Sidebar Widget: To specify the behaviour for an optional sidebar widget.
+* Sidebar Widget: To specify the behaviour for an optional sidebar photo of the day widget.
 * Help & Info: Much information about how to...
 
 == Installation ==
 
 = Upgrade notice =
-This version is: Major rev# 4, Minor rev# 2, Fix rev# 9, Hotfix rev# 000.
+This version is: Major rev# 4, Minor rev# 3, Fix rev# 1, Hotfix rev# 000.
 If you are upgrading from a previous Major or Minor version, note that:
 * If you modified wppa_theme.php and/or wppa_style.css, you will have to use the newly supplied versions. The previous versions are NOT compatible.
 * If you set the userlevel to anything else than 'administrator' you may have to set it again. Note that changing the userlevel can be done by the administrator only!
@@ -109,6 +109,24 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 4.3.1 =
+
+= New features =
+
+* IPTC and EXIF support has been added. This is configurable in Table II-28..29 and Table X and Table XI of the Settings page Auto save version only.
+* You can set the display of avatars at the comments in Table II-30 on the Autosave settings page.
+* The display of name, desc, rating in the thumbnail popup are now switcheable (Table II-25..27).
+* Font weights are now settable in Table V.
+* You can now optionally force the aspect ratio of thumbnails to a fixed value. either by clipping or by padding.
+
+= Other changes =
+
+* If you upgrade from a version prior to 4.2.11 and you used the wppa+ supplied lightbox, the configurable fullsize linktype (Table VI-8) will now be initialized to lightbox.
+
+= Bug fixes =
+
+* Fixed a fatal error in the potd widget when album selection was all-sep.
 
 = 4.2.11 =
 

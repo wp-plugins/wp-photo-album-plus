@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the non admin stuff
-* Version 4.2.11
+* Version 4.3.1
 *
 */
 
@@ -114,7 +114,7 @@ global $wppa_opt;
 			echo "\n".'#imageDataContainer{ font: '.$fontsiz.'px '.$fontfam.'; background-color: '.$bac.'; margin: 0 auto; line-height: 1.4em; overflow: auto; width: 100%	; }';
 			echo "\n".'#imageData{	padding:0 '.$bw.'px; color: '.$fontcol.'; }';
 			echo "\n".'#imageData #imageDetails{ width: 70%; float: left; text-align: left; }';
-			echo "\n".'#imageData #caption{ font-weight: bold;	}';
+			echo "\n".'#imageData #caption{ font-weight: '.$wppa_opt['wppa_fontweight_lightbox'].';	}';
 			echo "\n".'#imageData #numberDisplay{ display: block; clear: left; padding-bottom: 1.0em;	}';
 			echo "\n".'#imageData #bottomNavClose{ width: 32px; float: right;  padding-bottom: 0.7em; outline: none;}';
 			echo "\n".'#overlay{ position: absolute; top: 0; left: 0; z-index: 90; width: 100%; height: 500px; background-color: '.$obac.'; }';

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 4.2.11
+* Version 4.3.1
 *
 */
 
@@ -206,6 +206,10 @@ wp_verify_nonce($_GET['wppa-nonce'], 'wppa-nonce');
 			wppa_update_textarea('wppa_custom_content');
 			wppa_update_check('wppa_show_slideshownumbar');
 			wppa_update_check('wppa_show_avg_rating');
+			wppa_update_check('wppa_popup_text_name');
+			wppa_update_check('wppa_popup_text_desc');
+			wppa_update_check('wppa_popup_text_rating');
+
 		
 			// Table 3: Backgrounds
 			wppa_update_value('wppa_bgcolor_even');
@@ -269,27 +273,35 @@ wp_verify_nonce($_GET['wppa-nonce'], 'wppa-nonce');
 			wppa_update_value('wppa_fontfamily_title');
 			wppa_update_value('wppa_fontsize_title');
 			wppa_update_value('wppa_fontcolor_title');
+			wppa_update_value('wppa_fontweight_title');
 			wppa_update_value('wppa_fontfamily_fulldesc');
 			wppa_update_value('wppa_fontsize_fulldesc');
 			wppa_update_value('wppa_fontcolor_fulldesc');
+			wppa_update_value('wppa_fontweight_fulldesc');
 			wppa_update_value('wppa_fontfamily_fulltitle');
 			wppa_update_value('wppa_fontsize_fulltitle');
 			wppa_update_value('wppa_fontcolor_fulltitle');
+			wppa_update_value('wppa_fontweight_fulltitle');
 			wppa_update_value('wppa_fontfamily_nav');
 			wppa_update_value('wppa_fontsize_nav');
 			wppa_update_value('wppa_fontcolor_nav');
+			wppa_update_value('wppa_fontweight_nav');
 			wppa_update_value('wppa_fontfamily_thumb');
 			wppa_update_value('wppa_fontsize_thumb');
 			wppa_update_value('wppa_fontcolor_thumb');
+			wppa_update_value('wppa_fontweight_thumb');
 			wppa_update_value('wppa_fontfamily_box');
 			wppa_update_value('wppa_fontsize_box');
 			wppa_update_value('wppa_fontcolor_box');
+			wppa_update_value('wppa_fontweight_box');
 			wppa_update_value('wppa_fontfamily_lightbox');
 			wppa_update_value('wppa_fontsize_lightbox');
 			wppa_update_value('wppa_fontcolor_lightbox');
+			wppa_update_value('wppa_fontweight_lightbox');
 			wppa_update_value('wppa_fontfamily_numbar');
 			wppa_update_value('wppa_fontsize_numbar');
 			wppa_update_value('wppa_fontcolor_numbar');
+			wppa_update_value('wppa_fontweight_numbar');
 
 			// Table 6: Links
 			wppa_update_value('wppa_mphoto_linktype');
@@ -455,9 +467,9 @@ global $wppa_api_version;
 		}
 		$any_error = false;
 		// Check db tables
-		$tn = array( WPPA_ALBUMS, WPPA_PHOTOS, WPPA_RATING, WPPA_COMMENTS );
+		$tn = array( WPPA_ALBUMS, WPPA_PHOTOS, WPPA_RATING, WPPA_COMMENTS, WPPA_IPTC );
 		$idx = 0;
-		while ($idx < 4) {
+		while ($idx < 5) {
 			$ext = wppa_table_exists($tn[$idx]);
 			if ( ! $ext ) {
 				wppa_dbg_msg(__('Unexpected error:', 'wppa').' '.__('Missing database table:', 'wppa').' '.$tn[$idx], 'red', 'force');
@@ -978,7 +990,30 @@ global $wppa_api_version;
 						$class = 'wppa_rating_';
 						wppa_setting($slug, '24', $name, $desc, $html, $help, $class);
 
- 						
+ 						$name = __('Popup name', 'wppa');
+						$desc = __('Display Thubnail name on popup.', 'wppa');
+						$help = esc_js(__('Display photo name under thumbnail images on the popup.', 'wppa'));
+						$slug = 'wppa_popup_text_name';
+						$html = wppa_checkbox($slug);
+						$class = 'tt_normal wppa_popup';
+						wppa_setting($slug, '25', $name, $desc, $html, $help, $class);
+						
+						$name = __('Popup desc', 'wppa');
+						$desc = __('Display Thumbnail description on popup.', 'wppa');
+						$help = esc_js(__('Display description of the photo under thumbnail images on the popup.', 'wppa'));
+						$slug = 'wppa_popup_text_desc';
+						$html = wppa_checkbox($slug);
+						$class = 'tt_normal wppa_popup';
+						wppa_setting($slug, '26', $name, $desc, $html, $help, $class);
+						
+						$name = __('Popup rating', 'wppa');
+						$desc = __('Display Thumbnail Rating on popup.', 'wppa');
+						$help = esc_js(__('Display the rating of the photo under the thumbnail image on the popup.', 'wppa'));
+						$slug = 'wppa_popup_text_rating';
+						$html = '<span class="wppa_rating">'.wppa_checkbox($slug).'</span>&nbsp;&nbsp;<small>'.__('(This setting requires that the rating system is enabled.)', 'wppa').'</small>';
+						$class = 'tt_normal wppa_popup';
+						wppa_setting($slug, '27', $name, $desc, $html, $help, $class);
+						
 						?>
 					</tbody>
 					<tfoot style="font-weight: bold;" class="wppa_table_2">
@@ -1297,7 +1332,8 @@ global $wppa_api_version;
 						$desc = __('Use popup effect on thumbnail images.', 'wppa');
 						$help = esc_js(__('Thumbnails pop-up to a larger image when hovered.', 'wppa'));
 						$slug = 'wppa_use_thumb_popup';
-						$html = wppa_checkbox($slug);
+						$onchange = 'wppaCheckPopup()';
+						$html = wppa_checkbox($slug, $onchange);
 						$class = 'tt_normal';
 						wppa_setting($slug, '12', $name, $desc, $html, $help, $class);
 						
@@ -1479,6 +1515,152 @@ global $wppa_api_version;
 							<th scope="col"><?php _e('Font family', 'wppa') ?></th>
 							<th scope="col"><?php _e('Font size', 'wppa') ?></th>
 							<th scope="col"><?php _e('Font color', 'wppa') ?></th>
+							<th scope="col"><?php _e('Font weight', 'wppa') ?></th>
+							<th scope="col"><?php _e('Help', 'wppa') ?></th>
+						</tr>
+					</thead>
+					<tbody class="wppa_table_5">
+						<?php 
+						$options = array(__('normal', 'wppa'), __('bold', 'wppa'), __('bolder', 'wppa'), __('lighter', 'wppa'), '100', '200', '300', '400', '500', '600', '700', '800', '900');
+						$values = array('normal', 'bold', 'bolder', 'lighter', '100', '200', '300', '400', '500', '600', '700', '800', '900');
+						
+						$name = __('Album titles', 'wppa');
+						$desc = __('Font used for Album titles.', 'wppa');
+						$help = esc_js(__('Enter font name, size, color and weight for album cover titles.', 'wppa'));
+						$slug1 = 'wppa_fontfamily_title';
+						$slug2 = 'wppa_fontsize_title';
+						$slug3 = 'wppa_fontcolor_title';
+						$slug4 = 'wppa_fontweight_title';
+						$html1 = wppa_input($slug1, '90%', '300px', '');
+						$html2 = wppa_input($slug2, '40px', '', __('pixels', 'wppa'));
+						$html3 = wppa_input($slug3, '70px', '', '');
+						$html4 = wppa_select($slug4, $options, $values);
+						wppa_setting_4($slug1, $slug2, $slug3, $slug4, '1abcd', $name, $desc, $html1, $html2, $html3, $html4, $help);
+
+						$name = __('Fullsize desc', 'wppa');
+						$desc = __('Font for fullsize photo descriptions.', 'wppa');
+						$help = esc_js(__('Enter font name, size, color and weight for fullsize photo descriptions.', 'wppa'));
+						$slug1 = 'wppa_fontfamily_fulldesc';
+						$slug2 = 'wppa_fontsize_fulldesc';
+						$slug3 = 'wppa_fontcolor_fulldesc';
+						$slug4 = 'wppa_fontweight_fulldesc';
+						$html1 = wppa_input($slug1, '90%', '300px', '');
+						$html2 = wppa_input($slug2, '40px', '', __('pixels', 'wppa'));
+						$html3 = wppa_input($slug3, '70px', '', '');
+						$html4 = wppa_select($slug4, $options, $values);
+						wppa_setting_4($slug1, $slug2, $slug3, $slug4, '2abcd', $name, $desc, $html1, $html2, $html3, $html4, $help);
+						
+						$name = __('Fullsize name', 'wppa');
+						$desc = __('Font for fullsize photo names.', 'wppa');
+						$help = esc_js(__('Enter font name, size, color and weight for fullsize photo names.', 'wppa'));
+						$slug1 = 'wppa_fontfamily_fulltitle';
+						$slug2 = 'wppa_fontsize_fulltitle';
+						$slug3 = 'wppa_fontcolor_fulltitle';
+						$slug4 = 'wppa_fontweight_fulltitle';
+						$html1 = wppa_input($slug1, '90%', '300px', '');
+						$html2 = wppa_input($slug2, '40px', '', __('pixels', 'wppa'));
+						$html3 = wppa_input($slug3, '70px', '', '');
+						$html4 = wppa_select($slug4, $options, $values);
+						wppa_setting_4($slug1, $slug2, $slug3, $slug4, '3abcd', $name, $desc, $html1, $html2, $html3, $html4, $help);
+						
+						$name = __('Navigations', 'wppa');
+						$desc = __('Font for navigations.', 'wppa');
+						$help = esc_js(__('Enter font name, size, color and weight for navigation items.', 'wppa'));
+						$slug1 = 'wppa_fontfamily_nav';
+						$slug2 = 'wppa_fontsize_nav';
+						$slug3 = 'wppa_fontcolor_nav';
+						$slug4 = 'wppa_fontweight_nav';
+						$html1 = wppa_input($slug1, '90%', '300px', '');
+						$html2 = wppa_input($slug2, '40px', '', __('pixels', 'wppa'));
+						$html3 = wppa_input($slug3, '70px', '', '');
+						$html4 = wppa_select($slug4, $options, $values);
+						wppa_setting_4($slug1, $slug2, $slug3, $slug4, '4abcd', $name, $desc, $html1, $html2, $html3, $html4, $help);
+						
+						$name = __('Thumbnails', 'wppa');
+						$desc = __('Font for text under thumbnails.', 'wppa');
+						$help = esc_js(__('Enter font name, size, color and weight for text under thumbnail images.', 'wppa'));
+						$slug1 = 'wppa_fontfamily_thumb';
+						$slug2 = 'wppa_fontsize_thumb';
+						$slug3 = 'wppa_fontcolor_thumb';
+						$slug4 = 'wppa_fontweight_thumb';
+						$html1 = wppa_input($slug1, '90%', '300px', '');
+						$html2 = wppa_input($slug2, '40px', '', __('pixels', 'wppa'));
+						$html3 = wppa_input($slug3, '70px', '', '');
+						$html4 = wppa_select($slug4, $options, $values);
+						wppa_setting_4($slug1, $slug2, $slug3, $slug4, '5abcd', $name, $desc, $html1, $html2, $html3, $html4, $help);
+						
+						$name = __('Other', 'wppa');
+						$desc = __('General font in wppa boxes.', 'wppa');
+						$help = esc_js(__('Enter font name, size, color and weight for all other items.', 'wppa')); 
+						$slug1 = 'wppa_fontfamily_box';
+						$slug2 = 'wppa_fontsize_box';
+						$slug3 = 'wppa_fontcolor_box';
+						$slug4 = 'wppa_fontweight_box';
+						$html1 = wppa_input($slug1, '90%', '300px', '');
+						$html2 = wppa_input($slug2, '40px', '', __('pixels', 'wppa'));
+						$html3 = wppa_input($slug3, '70px', '', '');
+						$html4 = wppa_select($slug4, $options, $values);
+						wppa_setting_4($slug1, $slug2, $slug3, $slug4, '6abcd', $name, $desc, $html1, $html2, $html3, $html4, $help);
+
+						$name = __('Lightbox', 'wppa');
+						$desc = __('Font in wppa lightbox boxes.', 'wppa');
+						$help = esc_js(__('Enter font name, size, color and weight for lightbox overlays.', 'wppa')); 
+						$slug1 = 'wppa_fontfamily_lightbox';
+						$slug2 = 'wppa_fontsize_lightbox';
+						$slug3 = 'wppa_fontcolor_lightbox';
+						$slug4 = 'wppa_fontweight_lightbox';
+						$html1 = wppa_input($slug1, '90%', '300px', '');
+						$html2 = wppa_input($slug2, '40px', '', __('pixels', 'wppa'));
+						$html3 = wppa_input($slug3, '70px', '', '');
+						$html4 = wppa_select($slug4, $options, $values);
+						wppa_setting_4($slug1, $slug2, $slug3, $slug4, '7abcd', $name, $desc, $html1, $html2, $html3, $html4, $help);
+
+						$name = __('Numbar', 'wppa');
+						$desc = __('Font in wppa number bars.', 'wppa');
+						$help = esc_js(__('Enter font name, size, color and weight for numberbar navigation.', 'wppa')); 
+						$slug1 = 'wppa_fontfamily_numbar';
+						$slug2 = 'wppa_fontsize_numbar';
+						$slug3 = 'wppa_fontcolor_numbar';
+						$slug4 = 'wppa_fontweight_numbar';
+						$html1 = wppa_input($slug1, '90%', '300px', '');
+						$html2 = wppa_input($slug2, '40px', '', __('pixels', 'wppa'));
+						$html3 = wppa_input($slug3, '70px', '', '');
+						$html4 = wppa_select($slug4, $options, $values);
+						wppa_setting_4($slug1, $slug2, $slug3, $slug4, '6abcd', $name, $desc, $html1, $html2, $html3, $html4, $help);
+						
+						?>
+					</tbody>
+					<tfoot style="font-weight: bold;" class="wppa_table_5">
+						<tr>
+							<th scope="col"><?php _e('#', 'wppa') ?></th>
+							<th scope="col"><?php _e('Name', 'wppa') ?></th>
+							<th scope="col"><?php _e('Description', 'wppa') ?></th>
+							<th scope="col"><?php _e('Font family', 'wppa') ?></th>
+							<th scope="col"><?php _e('Font size', 'wppa') ?></th>
+							<th scope="col"><?php _e('Font color', 'wppa') ?></th>
+							<th scope="col"><?php _e('Font weight', 'wppa') ?></th>
+							<th scope="col"><?php _e('Help', 'wppa') ?></th>
+						</tr>
+					</tfoot>
+				</table>
+			</div>
+
+<?php /* ?>			<?php // Table 5: Fonts ?>
+			<h3><?php _e('Table V:', 'wppa'); echo(' '); _e('Fonts:', 'wppa'); ?><?php wppa_toggle_table(5) ?>
+				<span style="font-weight:normal; font-size:12px;"><?php _e('This table describes the Fonts used for the wppa+ elements.', 'wppa'); ?>
+						<?php _e('If you leave fields empty, your themes defaults will be used.', 'wppa'); ?></span>
+			</h3>
+			
+			<div id="wppa_table_5" style="display:none" >
+				<table class="widefat">
+					<thead style="font-weight: bold; " class="wppa_table_5">
+						<tr>
+							<th scope="col"><?php _e('#', 'wppa') ?></th>
+							<th scope="col"><?php _e('Name', 'wppa') ?></th>
+							<th scope="col"><?php _e('Description', 'wppa') ?></th>
+							<th scope="col"><?php _e('Font family', 'wppa') ?></th>
+							<th scope="col"><?php _e('Font size', 'wppa') ?></th>
+							<th scope="col"><?php _e('Font color', 'wppa') ?></th>
 							<th scope="col"><?php _e('Help', 'wppa') ?></th>
 						</tr>
 					</thead>
@@ -1587,7 +1769,7 @@ global $wppa_api_version;
 					</tfoot>
 				</table>
 			</div>
-
+<?php */ ?>
 			<?php // Table 6: Links ?>
 			<h3><?php _e('Table VI:', 'wppa'); echo(' '); _e('Links:', 'wppa'); ?><?php wppa_toggle_table(6) ?>
 				<span style="font-weight:normal; font-size:12px;"><?php _e('This table defines the link types and pages.', 'wppa'); ?></span>
@@ -2511,6 +2693,71 @@ global $wppa;
 	if ($stat1 > $status) $status = $stat1;
 	if ($stat2 > $status) $status = $stat2;
 	if ($stat3 > $status) $status = $stat3;
+		
+	switch ($status) {
+		case '1':				// modified
+			$color = 'green';
+			$char = '!';
+			$title = __('You just modified this setting', 'wppa');
+			break;
+		case '2':				// error
+			$color = 'red';
+			$char = '!';
+			$title = __('You just tried to modify this setting into an illegal value', 'wppa');
+			break;
+		default:
+			$color = 'black';
+			$char = '?';
+			break;
+	}
+	
+//	$result .= '<td><a style="color: '.$color.';text-decoration: none; font-weight: '.$fw.'; cursor: pointer;" title="'.$title.'" onclick="alert('."'".$hlp."'".')">'.$char.'</a></td>';
+	$result .= '<td><input type="button" style="font-size: 11px; margin: 0px; padding: 0px; color: '.$color.';text-decoration: none; font-weight: '.$fw.'; cursor: pointer;" title="'.$title.'" onclick="alert('."'".$hlp."'".')" value="'.$char.'"></td>';
+	
+	$result .= '</tr>';
+	
+	echo $result;
+}
+
+function wppa_setting_4($slug1, $slug2, $slug3, $slug4, $num, $name, $desc, $html1, $html2, $html3, $html4, $help, $cls = '') {
+global $wppa_status;
+global $wppa_defaults;
+global $wppa;
+
+	$result = "\n";
+	$result .= '<tr';
+	if ($cls != '') $result .= ' class="'.$cls.'"';
+	$result .= ' style="color:#333;"';
+	$result .= '>';
+	
+	$result .= '<td>'.$num.'</td>';
+	$result .= '<td>'.$name.'</td>';
+	$result .= '<td><small>'.$desc.'</small></td>';
+	$result .= '<td><span class="'.$cls.'_html">'.$html1.'</span></td>';
+	$result .= '<td><span class="'.$cls.'_html">'.$html2.'</span></td>';
+	$result .= '<td><span class="'.$cls.'_html">'.$html3.'</span></td>';
+	$result .= '<td><span class="'.$cls.'_html">'.$html4.'</span></td>';
+	
+	$hlp = $name.':\n\n'.$help.wppa_dflt('1.', $slug1).wppa_dflt('2.', $slug2).wppa_dflt('3.', $slug3).wppa_dflt('4.', $slug4);
+
+	$color = 'black';
+	$char = '?';
+	if ( ! $wppa['no_default'] ) {
+		$fw = ($wppa_defaults[$slug1] == get_option($slug1)) && ($wppa_defaults[$slug2] == get_option($slug2)) && ($wppa_defaults[$slug3] == get_option($slug3)) && ($wppa_defaults[$slug4] == get_option($slug4)) ? 'normal' : 'bold';
+	}
+	else {
+		$fw = 'normal';
+	}
+	$title = __('Click for help', 'wppa');
+	$status = '0'; $stat1 = '0'; $stat2 = '0'; $stat3 = '0'; $stat4='0';
+	if (isset($wppa_status[$slug1])) $stat1 = $wppa_status[$slug1];
+	if (isset($wppa_status[$slug2])) $stat2 = $wppa_status[$slug2];
+	if (isset($wppa_status[$slug3])) $stat3 = $wppa_status[$slug3];
+	if (isset($wppa_status[$slug4])) $stat4 = $wppa_status[$slug4];
+	if ($stat1 > $status) $status = $stat1;
+	if ($stat2 > $status) $status = $stat2;
+	if ($stat3 > $status) $status = $stat3;
+	if ($stat4 > $status) $status = $stat4;
 		
 	switch ($status) {
 		case '1':				// modified

@@ -1,5 +1,5 @@
 ﻿// Slide show variables and functions
-// This is wppa-slideshow.js version 4.2.11
+// This is wppa-slideshow.js version 4.3.1
 //
 // Vars. The vars that have a name that starts with an underscore is an internal var
 // The vars without leading underscore are 'external' and get a value from html
@@ -59,6 +59,8 @@ var _wppaVoteReturnUrl = new Array();
 var _wppaInWidgetLinkUrl = new Array();
 var _wppaInWidgetLinkTitle = new Array();
 var _wppaCommentHtml = new Array();
+var _wppaIptcHtml = new Array();
+var _wppaExifHtml = new Array();
 var _wppaToTheSame = false;
 var _wppaSlides = new Array();
 var _wppaNames = new Array();
@@ -88,7 +90,7 @@ jQuery(document).ready(function(){
 // These functions check the validity and store the users request to be executed later if busy and if applicable.
 
 // This is an entrypoint to load the slide data
-function wppaStoreSlideInfo(mocc, id, url, size, width, height, name, desc, photoid, avgrat, myrat, rateurl, iwlinkurl, iwlinktitle, iwtimeout, commenthtml) {
+function wppaStoreSlideInfo(mocc, id, url, size, width, height, name, desc, photoid, avgrat, myrat, rateurl, iwlinkurl, iwlinktitle, iwtimeout, commenthtml, iptchtml, exifhtml) {
 	if ( ! _wppaSlides[mocc] ) {
 		_wppaSlides[mocc] = new Array();
 		_wppaNames[mocc] = new Array();
@@ -111,6 +113,8 @@ function wppaStoreSlideInfo(mocc, id, url, size, width, height, name, desc, phot
 		_wppaInWidgetLinkUrl[mocc] = new Array(); // iwlinkurl;
 		_wppaInWidgetLinkTitle[mocc] = new Array(); // iwlinktitle;
 		_wppaCommentHtml[mocc] = new Array();
+		_wppaIptcHtml[mocc] = new Array();
+		_wppaExifHtml[mocc] = new Array();
 		_wppaUrl[mocc] = new Array();
 		_wppaSkipRated[mocc] = false;
 	}
@@ -124,6 +128,8 @@ function wppaStoreSlideInfo(mocc, id, url, size, width, height, name, desc, phot
 	_wppaInWidgetLinkUrl[mocc][id] = iwlinkurl;
 	_wppaInWidgetLinkTitle[mocc][id] = iwlinktitle;
 	_wppaCommentHtml[mocc][id] = commenthtml;
+	_wppaIptcHtml[mocc][id] = iptchtml;
+	_wppaExifHtml[mocc][id] = exifhtml;
 	_wppaUrl[mocc][id] = url;
 }
 
@@ -131,6 +137,12 @@ function wppaSpeed(mocc, faster) {
 	// Can change speed of slideshow only when running
 	if ( _wppaSlideShowRuns[mocc] ) {
 		_wppaSpeed(mocc, faster);
+	}
+}
+
+function wppaStopme(mocc) {
+	if ( _wppaSlideShowRuns[mocc] ) {		// Stop it
+		_wppaStop(mocc);
 	}
 }
 
@@ -283,6 +295,8 @@ function _wppaNextSlide(mocc, mode) {
 		jQuery("#imagedesc-"+mocc).html('&nbsp;'+_wppaDescriptions[mocc][_wppaCurrentIndex[mocc]]+'&nbsp;');
 		jQuery("#imagetitle-"+mocc).html('&nbsp;'+_wppaNames[mocc][_wppaCurrentIndex[mocc]]+'&nbsp;');
 		jQuery("#comments-"+mocc).html(_wppaCommentHtml[mocc][_wppaCurrentIndex[mocc]]);
+		jQuery("#iptc-"+mocc).html(_wppaIptcHtml[mocc][_wppaCurrentIndex[mocc]]);
+		jQuery("#exif-"+mocc).html(_wppaExifHtml[mocc][_wppaCurrentIndex[mocc]]);
 		
 		// Display counter and arrow texts
 		if (document.getElementById('counter-'+mocc)) {
@@ -422,6 +436,10 @@ function _wppaNextSlide_5(mocc) {
 		jQuery('#imagetitle-'+mocc).html('&nbsp;' + _wppaNames[mocc][_wppaCurrentIndex[mocc]] + '&nbsp;');
 		// Restore comments html
 		jQuery("#comments-"+mocc).html(_wppaCommentHtml[mocc][_wppaCurrentIndex[mocc]]);
+		// Restor IPTC
+		jQuery("#iptc-"+mocc).html(_wppaIptcHtml[mocc][_wppaCurrentIndex[mocc]]);
+		jQuery("#exif-"+mocc).html(_wppaExifHtml[mocc][_wppaCurrentIndex[mocc]]);
+
 	}
 	_wppaToTheSame = false;					// This has now been worked out
 
@@ -617,6 +635,9 @@ function _wppaLoadSpinner(mocc) {
 		else top = '150px';
 	}
 	lft = jQuery('#slide_frame-'+mocc).css('width');
+	if (lft > 0) {
+		lft = parseInt(parseInt(lft/2) - 4)+'px';
+	}
 
 	jQuery('#spinner-'+mocc).css('top',top);
 	jQuery('#spinner-'+mocc).css('left',lft);
@@ -920,6 +941,9 @@ function _wppaShowMetaData(mocc, key) {
 		jQuery("#imagetitle-"+mocc).css('visibility', 'visible');
 		// Display counter
 		jQuery("#counter-"+mocc).css('visibility', 'visible');
+		// Display iptc
+		jQuery("#iptccontent-"+mocc).css('visibility', 'visible'); 
+		jQuery("#exifcontent-"+mocc).css('visibility', 'visible'); 
 	}
 	else {
 		// Hide title and description
@@ -930,6 +954,9 @@ function _wppaShowMetaData(mocc, key) {
 		// Fade the browse arrows out
 		jQuery('.wppa-prev-'+mocc).fadeOut(300);	
 		jQuery('.wppa-next-'+mocc).fadeOut(300);
+		// Hide iptc
+		jQuery("#iptccontent-"+mocc).css('visibility', 'hidden'); 
+		jQuery("#exifcontent-"+mocc).css('visibility', 'hidden'); 
 	}
 }
 var first=true;
