@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wppa_theme-zh_CN\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-01-07 09:10+0100\n"
-"PO-Revision-Date: 2012-01-07 09:10+0100\n"
+"POT-Creation-Date: 2012-01-07 09:31+0100\n"
+"PO-Revision-Date: 2012-01-07 09:32+0100\n"
 "Last-Translator: J.N. Breetvelt <OpaJaap@OpaJaap.nl>\n"
 "Language-Team: delthink <delthink@gmail.com>\n"
 "MIME-Version: 1.0\n"
@@ -182,6 +182,14 @@ msgstr "%d的评论"
 #: wppa-functions.php:1180
 msgid "Leave a comment"
 msgstr "发表评论"
+
+#: wppa-functions.php:1245
+msgid "No IPTC data"
+msgstr ""
+
+#: wppa-functions.php:1307
+msgid "No EXIF data"
+msgstr ""
 
 #: wppa-functions.php:1629
 msgid "Prev.&nbsp;page"

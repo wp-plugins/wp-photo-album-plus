@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Photo Album Plus 2.4.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-01-07 09:08+0100\n"
-"PO-Revision-Date: 2012-01-07 09:08+0100\n"
+"POT-Creation-Date: 2012-01-07 09:30+0100\n"
+"PO-Revision-Date: 2012-01-07 09:30+0100\n"
 "Last-Translator: J.N. Breetvelt <OpaJaap@OpaJaap.nl>\n"
 "Language-Team: BNG NET <webmaster@bng.net>\n"
 "MIME-Version: 1.0\n"
@@ -194,6 +194,14 @@ msgstr "%件のコメント"
 #: wppa-functions.php:1180
 msgid "Leave a comment"
 msgstr "コメントを残す"
+
+#: wppa-functions.php:1245
+msgid "No IPTC data"
+msgstr ""
+
+#: wppa-functions.php:1307
+msgid "No EXIF data"
+msgstr ""
 
 #: wppa-functions.php:1629
 msgid "Prev.&nbsp;page"

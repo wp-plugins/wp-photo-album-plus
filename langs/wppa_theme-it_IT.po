@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Photo Album Plus in italiano\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-01-07 09:07+0100\n"
-"PO-Revision-Date: 2012-01-07 09:08+0100\n"
+"POT-Creation-Date: 2012-01-07 09:29+0100\n"
+"PO-Revision-Date: 2012-01-07 09:30+0100\n"
 "Last-Translator: J.N. Breetvelt <OpaJaap@OpaJaap.nl>\n"
 "Language-Team: Gianni Diurno | gidibao.net & charmingpress.com\n"
 "MIME-Version: 1.0\n"
@@ -180,6 +180,14 @@ msgstr "%d  commenti"
 #: wppa-functions.php:1180
 msgid "Leave a comment"
 msgstr "Lascia un commento"
+
+#: wppa-functions.php:1245
+msgid "No IPTC data"
+msgstr ""
+
+#: wppa-functions.php:1307
+msgid "No EXIF data"
+msgstr ""
 
 #: wppa-functions.php:1629
 msgid "Prev.&nbsp;page"

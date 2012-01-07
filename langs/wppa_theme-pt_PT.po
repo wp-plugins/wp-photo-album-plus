@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wppa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-01-07 09:09+0100\n"
-"PO-Revision-Date: 2012-01-07 09:09+0100\n"
+"POT-Creation-Date: 2012-01-07 09:31+0100\n"
+"PO-Revision-Date: 2012-01-07 09:31+0100\n"
 "Last-Translator: J.N. Breetvelt <OpaJaap@OpaJaap.nl>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -189,6 +189,14 @@ msgstr "% Comentarios"
 #: wppa-functions.php:1180
 msgid "Leave a comment"
 msgstr "Deje su comentario"
+
+#: wppa-functions.php:1245
+msgid "No IPTC data"
+msgstr ""
+
+#: wppa-functions.php:1307
+msgid "No EXIF data"
+msgstr ""
 
 #: wppa-functions.php:1629
 #, fuzzy
