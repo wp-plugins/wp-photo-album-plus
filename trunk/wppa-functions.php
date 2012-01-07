@@ -1242,7 +1242,7 @@ global $wppaiptclabels;
 		$result .= '</tbody></table></div>';
 	}
 	if ( ! $count ) {
-		$result = '<div id="iptccontent-'.$wppa['master_occur'].'" >'.__('No IPTC data', 'wppa_theme').'</div>';
+		$result = '<div id="iptccontent-'.$wppa['master_occur'].'" >'.__a('No IPTC data', 'wppa_theme').'</div>';
 	}
 
 	return ($result);
@@ -1304,7 +1304,7 @@ global $wppaexiflabels;
 		$result .= '</tbody></table></div>';
 	}
 	if ( ! $count ) {
-		$result = '<div id="exifcontent-'.$wppa['master_occur'].'" >'.__('No EXIF data', 'wppa_theme').'</div>';
+		$result = '<div id="exifcontent-'.$wppa['master_occur'].'" >'.__a('No EXIF data', 'wppa_theme').'</div>';
 	}
 	
 	return ($result);
