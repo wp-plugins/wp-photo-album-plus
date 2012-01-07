@@ -1,0 +1,436 @@
+# Translation of the WordPress plugin   by .
+# Copyright (C) 2010
+# This file is distributed under the same license as the  package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2010.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: wppa_theme-zh_CN\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-11-08 16:29+0100\n"
+"PO-Revision-Date: 2011-11-08 16:29+0100\n"
+"Last-Translator: J.N. Breetvelt <OpaJaap@OpaJaap.nl>\n"
+"Language-Team: delthink <delthink@gmail.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-KeywordsList: __a\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-Language: Chinese\n"
+"X-Poedit-Country: CHINA\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPath-1: theme\n"
+
+#: wppa-comment-widget.php:25
+#, fuzzy
+msgid "Comments on Photos"
+msgstr "评分最高的照片"
+
+#: wppa-comment-widget.php:78
+#: wppa-potd-widget.php:55
+msgid "Photo not found."
+msgstr "照片没有找到。"
+
+#: wppa-common-functions.php:438
+#, php-format
+msgid "Rating: %s"
+msgstr "评分：%s"
+
+#: wppa-common-functions.php:508
+msgid "--- none ---"
+msgstr "---无---"
+
+#: wppa-common-functions.php:509
+msgid "--- separate ---"
+msgstr "---独立---"
+
+#: wppa-common-functions.php:618
+msgid "1 second"
+msgstr "1秒"
+
+#: wppa-common-functions.php:619
+msgid "seconds"
+msgstr "秒"
+
+#: wppa-common-functions.php:623
+msgid "1 minute"
+msgstr "1分钟"
+
+#: wppa-common-functions.php:624
+msgid "minutes"
+msgstr "分钟"
+
+#: wppa-common-functions.php:628
+msgid "1 hour"
+msgstr "1小时"
+
+#: wppa-common-functions.php:629
+msgid "hours"
+msgstr "小时"
+
+#: wppa-common-functions.php:633
+msgid "1 day"
+msgstr "1天"
+
+#: wppa-common-functions.php:634
+msgid "days"
+msgstr "天"
+
+#: wppa-common-functions.php:638
+msgid "1 week"
+msgstr "1星期"
+
+#: wppa-common-functions.php:639
+msgid "weeks"
+msgstr "星期"
+
+#: wppa-common-functions.php:643
+msgid "1 month"
+msgstr "1个月"
+
+#: wppa-common-functions.php:644
+msgid "months"
+msgstr "月"
+
+#: wppa-common-functions.php:647
+msgid "1 year"
+msgstr "一年"
+
+#: wppa-common-functions.php:648
+msgid "years"
+msgstr "年"
+
+#: wppa-functions.php:31
+msgid "There are"
+msgstr "存在"
+
+#: wppa-functions.php:31
+msgid "photo albums. The last album added is"
+msgstr "相册。最后添加的相册"
+
+#: wppa-functions.php:35
+msgid ", a subalbum of"
+msgstr "，子专辑"
+
+#: wppa-functions.php:89
+msgid "Home"
+msgstr "首页"
+
+#: wppa-functions.php:122
+#: wppa-functions.php:2053
+#: wppa-non-admin.php:157
+msgid "Slideshow"
+msgstr "幻灯片"
+
+#: wppa-functions.php:129
+msgid "Searchstring:"
+msgstr "搜寻字串："
+
+#: wppa-functions.php:132
+msgid "Top rated photos"
+msgstr "评分最高的照片"
+
+#: wppa-functions.php:135
+msgid "Recently commented photos"
+msgstr ""
+
+#: wppa-functions.php:888
+msgid "<b>ERROR: Attempt to enter an invalid rating.</b>"
+msgstr "<b>错误：尝试输入一个无效的评级。</b>"
+
+#: wppa-functions.php:1001
+msgid "Comment edited"
+msgstr "编辑评论"
+
+#: wppa-functions.php:1004
+msgid "Comment added"
+msgstr "添加评论"
+
+#: wppa-functions.php:1010
+msgid "Could not process comment"
+msgstr "无法处理评论"
+
+#: wppa-functions.php:1078
+msgid "Edit!"
+msgstr "退出!"
+
+#: wppa-functions.php:1082
+msgid "Send!"
+msgstr "发送！"
+
+#: wppa-functions.php:1111
+msgid "Your name:"
+msgstr "你的名字："
+
+#: wppa-functions.php:1115
+msgid "Your email:"
+msgstr "您的电子邮件："
+
+#: wppa-functions.php:1119
+msgid "Your comment:"
+msgstr "您的评论："
+
+#: wppa-functions.php:1128
+#, fuzzy
+msgid "You must login to enter a comment"
+msgstr "您必须登录投票"
+
+#: wppa-functions.php:1135
+#, php-format
+msgid "%d  comments"
+msgstr "%d的评论"
+
+#: wppa-functions.php:1139
+msgid "Leave a comment"
+msgstr "发表评论"
+
+#: wppa-functions.php:1458
+msgid "Prev.&nbsp;page"
+msgstr "上一页"
+
+#: wppa-functions.php:1462
+msgid "Next&nbsp;page"
+msgstr "下一页"
+
+#: wppa-functions.php:1753
+#, fuzzy
+msgid "<b>ERROR: Illegal attempt to enter a rating.</b>"
+msgstr "<b>错误：尝试输入一个无效的评级。</b>"
+
+#: wppa-functions.php:1766
+#, fuzzy
+msgid "<b>ERROR: Illegal attempt to enter a comment.</b>"
+msgstr "<b>错误：尝试输入一个无效的评级。</b>"
+
+#: wppa-functions.php:1966
+msgid "Link to"
+msgstr "链接到"
+
+#: wppa-functions.php:1970
+msgid "Page is not available."
+msgstr "页面不可用。"
+
+#: wppa-functions.php:1982
+#: wppa-functions.php:2063
+msgid "View the album"
+msgstr "查看相册"
+
+#: wppa-functions.php:1987
+msgid "View the cover photo"
+msgstr "查看封面照片"
+
+#: wppa-functions.php:1988
+msgid "View the cover photos"
+msgstr "查看相册封面"
+
+#: wppa-functions.php:2053
+msgid "Browse photos"
+msgstr "浏览照片"
+
+#: wppa-functions.php:2064
+msgid "View"
+msgstr "查看"
+
+#: wppa-functions.php:2067
+msgid "album"
+msgstr "相册"
+
+#: wppa-functions.php:2070
+msgid "albums"
+msgstr "相簿"
+
+#: wppa-functions.php:2074
+msgid "and"
+msgstr "和"
+
+#: wppa-functions.php:2078
+msgid "photo"
+msgstr "相片"
+
+#: wppa-functions.php:2081
+msgid "photos"
+msgstr "照片"
+
+#: wppa-functions.php:2449
+msgid "Double click to start/stop slideshow running"
+msgstr "双击启动/停止幻灯片运行"
+
+#: wppa-functions.php:3248
+#: wppa-functions.php:3254
+msgid "Upload Photo"
+msgstr ""
+
+#: wppa-functions.php:3260
+msgid "Apply watermark file:"
+msgstr ""
+
+#: wppa-functions.php:3268
+msgid "Position:"
+msgstr ""
+
+#: wppa-functions.php:3277
+msgid "Enter/modify photo description"
+msgstr ""
+
+#: wppa-functions.php:3301
+#, fuzzy
+msgid "<b>ERROR: Illegal attempt to upload a file.</b>"
+msgstr "<b>错误：尝试输入一个无效的评级。</b>"
+
+#: wppa-functions.php:3308
+msgid "Error during upload"
+msgstr ""
+
+#: wppa-functions.php:3313
+msgid "Uploaded file is not an image"
+msgstr ""
+
+#: wppa-functions.php:3317
+msgid "Only gif, jpg and png image files are supported"
+msgstr ""
+
+#: wppa-non-admin.php:93
+msgid "Image"
+msgstr "Image"
+
+#: wppa-non-admin.php:94
+#: wppa-non-admin.php:161
+msgid "of"
+msgstr "于"
+
+#: wppa-non-admin.php:158
+msgid "Start"
+msgstr "开始"
+
+#: wppa-non-admin.php:159
+msgid "Stop"
+msgstr "停止"
+
+#: wppa-non-admin.php:160
+msgid "Photo"
+msgstr "相片"
+
+#: wppa-non-admin.php:162
+#, fuzzy
+msgid "Previous photo"
+msgstr "浏览照片"
+
+#: wppa-non-admin.php:163
+#, fuzzy
+msgid "Next photo"
+msgstr "下一张照片"
+
+#: wppa-non-admin.php:164
+msgid "Prev."
+msgstr "上一页。"
+
+#: wppa-non-admin.php:165
+msgid "Next"
+msgstr "下一页"
+
+#: wppa-non-admin.php:169
+msgid "Please enter your name"
+msgstr "请输入您的姓名"
+
+#: wppa-non-admin.php:170
+msgid "Please enter a valid email address"
+msgstr "请输入一个有效的的电子邮件地址"
+
+#: wppa-non-admin.php:171
+#, fuzzy
+msgid "Please enter a comment"
+msgstr "您必须登录投票"
+
+#: wppa-potd-widget.php:25
+msgid "Photo Of The Day"
+msgstr "每日相册"
+
+#: wppa-slideshow-widget.php:29
+msgid "Sidebar Slideshow"
+msgstr "侧栏幻灯片"
+
+#: wppa-slideshow-widget.php:111
+msgid "No album defined yet."
+msgstr "相册还没有确定。"
+
+#: wppa-slideshow.php:67
+msgid "Slower"
+msgstr "较慢"
+
+#: wppa-slideshow.php:69
+msgid "Faster"
+msgstr "较快"
+
+#: wppa-slideshow.php:87
+msgid "To see the full size images, you need to enable javascript in your browser."
+msgstr "要看到完整大小的图像，您必须启用浏览器的JavaScript。"
+
+#: wppa-slideshow.php:171
+msgid "- - - Rating enabled - - -"
+msgstr "- -- 评分功能 -- -"
+
+#: wppa-slideshow.php:180
+msgid "very low"
+msgstr "极低"
+
+#: wppa-slideshow.php:181
+msgid "low"
+msgstr "低"
+
+#: wppa-slideshow.php:182
+msgid "average"
+msgstr "平均"
+
+#: wppa-slideshow.php:183
+msgid "high"
+msgstr "高"
+
+#: wppa-slideshow.php:184
+msgid "very high"
+msgstr "非常高"
+
+#: wppa-slideshow.php:189
+#: wppa-slideshow.php:194
+msgid "Average&nbsp;rating"
+msgstr "平均评级"
+
+#: wppa-slideshow.php:203
+#: wppa-slideshow.php:206
+msgid "My&nbsp;rating"
+msgstr "我的评分"
+
+#: wppa-slideshow.php:209
+msgid "You must login to vote"
+msgstr "您必须登录投票"
+
+#: wppa-slideshow.php:370
+#, php-format
+msgid "Photo %s of %s"
+msgstr ""
+
+#: wppa-slideshow.php:398
+msgid "Click to start/stop"
+msgstr "单击开始/停止"
+
+#: wppa-slideshow.php:410
+#, fuzzy
+msgid "- - - Comments box activated - - -"
+msgstr "- -- 评分功能 -- -"
+
+#: wppa-topten-widget.php:26
+#, fuzzy
+msgid "Top Ten Photos"
+msgstr "评分最高的照片"
+
+#: wppa-topten-widget.php:51
+#, fuzzy
+msgid "View the top rated photos"
+msgstr "查看相册封面"
+
+#: theme/wppa-theme.php:80
+msgid "No albums or photos found matching your search criteria."
+msgstr "没有找到符合搜索条件的相册或照片。"
+
+#~ msgid "Prev.&nbsp;photo"
+#~ msgstr "上一张照片"
