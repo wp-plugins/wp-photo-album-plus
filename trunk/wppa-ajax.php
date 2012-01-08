@@ -495,6 +495,9 @@ global $wppa;
 				case 'wppa_filter_priority':
 					wppa_ajax_check_range($value, false, '10', false, __('Filter priority', 'wppa'));
 					break;
+				case 'wppa_gravatar_size':
+					wppa_ajax_check_range($value, false, '10', '256', __('Avatar size', 'wppa'));
+					break;
 
 		
 			

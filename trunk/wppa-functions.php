@@ -3,12 +3,12 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions and API modules
-* Version 4.3.1
+* Version 4.3.2
 *
 */
 /* Moved to wppa-commonfunctions.php:
 global $wppa_api_version;
-$wppa_api_version = '4-3-1-000';
+$wppa_api_version = '4-3-2-000';
 */
 
 
@@ -1094,9 +1094,10 @@ global $wppa_first_comment_html;
 						$result .= '<td class="wppa-box-text wppa-td" style="width:30%; border-width: 0 0 0 0; '.__wcs('wppa-box-text').__wcs('wppa-td').'" >';
 							$result .= $comment['user'].' wrote:';
 							$result .= '<br /><span style="font-size:9px; ">'.wppa_get_time_since($comment['timestamp']).'</span>';
-							if ( $wppa_opt['wppa_comment_use_gravatar'] ) {
-								$default = 'mm';
-								$result .= '<div class="com_avatar"><img class="wppa-box-text wppa-td" src="http://www.gravatar.com/avatar/'.md5(strtolower(trim($wppa['comment_email']))).'.jpg?d='.urlencode($default).'&s=40"></div>';
+							if ( $wppa_opt['wppa_comment_gravatar'] != 'none') {
+								if ( $wppa_opt['wppa_comment_gravatar'] != 'url') $default = $wppa_opt['wppa_comment_gravatar'];
+								else $default = $wppa_opt['wppa_comment_gravatar_url'];
+								$result .= '<div class="com_avatar"><img class="wppa-box-text wppa-td" src="http://www.gravatar.com/avatar/'.md5(strtolower(trim($comment['email']))).'.jpg?d='.urlencode($default).'&s='.$wppa_opt['wppa_gravatar_size'].'"></div>';
 							}
 						$result .= '</td>';
 						$result .= '<td class="wppa-box-text wppa-td" style="border-width: 0 0 0 0;'.__wcs('wppa-box-text').__wcs('wppa-td').'" >'.html_entity_decode(esc_js(stripslashes(convert_smilies($comment['comment']))));
