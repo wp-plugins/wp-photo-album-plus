@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 4.3.1
+* Version 4.3.2
 *
 */
 
@@ -519,6 +519,13 @@ global $wppa_api_version;
 						$html = wppa_input($slug, '40px', '', __('pixels', 'wppa'));
 						wppa_setting($slug, '26', $name, $desc, $html, $help);
 						
+						$name = __('Avatar size', 'wppa');
+						$desc = __('Size of Avatar images.', 'wppa');
+						$help = esc_js(__('The size of the square avatar; must be > 0 and < 256', 'wppa'));
+						$slug = 'wppa_gravatar_size';
+						$html = wppa_input($slug, '40px', '', __('pixels', 'wppa'));
+						wppa_setting($slug, '27', $name, $desc, $html, $help);
+						
 						?>
 					</tbody>
 					<tfoot style="font-weight: bold;" class="wppa_table_1">
@@ -789,9 +796,35 @@ global $wppa_api_version;
 						$name = __('Comment Avatar', 'wppa');
 						$desc = __('Show Avatars with the comments', 'wppa');
 						$help = '';
-						$slug = 'wppa_comment_use_gravatar';
-						$html = wppa_checkbox($slug); 
+						$slug = 'wppa_comment_gravatar';
+						$onchange = 'wppaCheckGravatar()';
+						$options = array(	__('--- none ---', 'wppa'), 
+											__('mystery man', 'wppa'), 
+											__('identicon', 'wppa'), 
+											__('monsterid', 'wppa'), 
+											__('wavatar', 'wppa'),
+											__('retro', 'wppa'),
+											__('--- url ---', 'wppa')
+										);
+						$values = array(	'none', 
+											'mm', 
+											'identicon', 
+											'monsterid',
+											'wavatar',
+											'retro',
+											'url'
+										);
+						$html = wppa_select($slug, $options, $values, $onchange);
+						// $html = wppa_checkbox($slug); 
 						wppa_setting($slug, '30', $name, $desc, $html, $help);
+						
+						$name = __('Comment Avatar url', 'wppa');
+						$desc = __('Comment Avatar default url.', 'wppa');
+						$help = '';
+						$slug = 'wppa_comment_gravatar_url';
+						$class = 'wppa_grav';
+						$html = wppa_input($slug, '90%', '300px');
+						wppa_setting($slug, '30a', $name, $desc, $html, $help, $class);
 						
 						?>
 					</tbody>

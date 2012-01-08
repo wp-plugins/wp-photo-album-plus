@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 4.3.1
+* Version 4.3.2
 *
 */
 
@@ -163,6 +163,11 @@ function wppa_setup($force = false) {
 		if ($key == '1' || $key == '3') $msg .= '<br/>' . __('Please CHECK your customized WPPA-STYLE.CSS file against the newly supplied one. You may wish to add or modify some attributes. Be aware of the fact that most settings can now be set in the admin settings page.', 'wppa');
 		if ($key == '2' || $key == '3') $msg .= '<br/>' . __('Please REPLACE your customized WPPA-THEME.PHP file by the newly supplied one, or just remove it from your theme directory. You may modify it later if you wish. Your current customized version is NOT compatible with this version of the plugin software.', 'wppa');
 		wppa_ok_message($msg);
+	}
+	
+	if ( $old_rev <= '432' ) {
+		if ( get_option('wppa_comment_use_gravatar', 'no') == 'yes' ) update_option('wppa_comment_gravatar', 'mm');
+		if ( get_option('wppa_comment_use_gravatar', 'nil') != 'nil' ) delete_option('wppa_comment_use_gravatar');
 	}
 	
 	if ( $old_rev <= '428' ) {
@@ -439,7 +444,9 @@ global $wppa_defaults;
 						'wppa_thumb_aspect'				=> '0:0:none',
 						'wppa_show_iptc'				=> 'no',
 						'wppa_show_exif'				=> 'no',
-						'wppa_comment_use_gravatar'		=> 'no'
+						'wppa_comment_gravatar'			=> 'none',
+						'wppa_comment_gravatar_url'		=> 'http://',
+						'wppa_gravatar_size'			=> '40'
 
 						);
 
