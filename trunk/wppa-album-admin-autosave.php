@@ -331,22 +331,34 @@ function _wppa_admin() {
 // The albums table 
 function wppa_admin_albums() {
 	global $wpdb;
-	$albums = $wpdb->get_results($wpdb->prepare( "SELECT * FROM " . WPPA_ALBUMS . " " . wppa_get_album_order() ), 'ARRAY_A');
 	
-	if (!empty($albums)) {
+	if ( isset($_GET['order_by']) ) $order = $_GET['order_by']; else $order = '';
+	if ( ! $order ) {
+		$query = $wpdb->prepare( "SELECT * FROM `" . WPPA_ALBUMS . "` " . wppa_get_album_order() );
+		$albums = $wpdb->get_results($query, 'ARRAY_A');
+	}
+	else {
+		$query = $wpdb->prepare( "SELECT * FROM `" . WPPA_ALBUMS . "` ORDER BY $order ");
+		$albums = $wpdb->get_results($query, 'ARRAY_A');
+	}
+//echo $query;
+	
+	if ( ! empty($albums) ) {
+		$url = get_admin_url().'admin.php?page=wppa_admin_menu&amp;order_by='; 
+					
 ?>	
 	<div class="table_wrapper">	
 		<table class="widefat">
 			<thead>
 			<tr>
-				<th scope="col"><?php _e('Name', 'wppa'); ?></th>
-				<th scope="col"><?php _e('Description', 'wppa'); ?></th>
-				<th scope="col"><?php _e('ID', 'wppa'); ?></th>
+				<th scope="col" style="width: 120px;">		<a href="<?php echo wppa_dbg_url($url.'name') ?>"><?php _e('Name', 'wppa'); ?>				</a></th>
+				<th scope="col">							<a href="<?php echo wppa_dbg_url($url.'description') ?>"><?php _e('Description', 'wppa'); ?></a></th>
+				<th scope="col">							<a href="<?php echo wppa_dbg_url($url.'id') ?>"><?php _e('ID', 'wppa'); ?>					</a></th>
 				<?php if (current_user_can('administrator')) { ?>
-					<th scope="col"><?php _e('Owner', 'wppa'); ?></th>
+					<th scope="col" style="width: 100px;">	<a href="<?php echo wppa_dbg_url($url.'owner') ?>"><?php _e('Owner', 'wppa'); ?>			</a></th>
 				<?php } ?>
-                <th scope="col"><?php _e('Order', 'wppa'); ?></th>
-                <th scope="col" style="width: 120px;"><?php _e('Parent', 'wppa'); ?></th>
+                <th scope="col">							<a href="<?php echo wppa_dbg_url($url.'a_order') ?>"><?php _e('Order', 'wppa'); ?>			</a></th>
+                <th scope="col" style="width: 120px;">		<a href="<?php echo wppa_dbg_url($url.'a_parent') ?>"><?php _e('Parent', 'wppa'); ?>		</a></th>
 				<th scope="col"><?php _e('Edit', 'wppa'); ?></th>
 				<th scope="col"><?php _e('Delete', 'wppa'); ?></th>	
 			</tr>
