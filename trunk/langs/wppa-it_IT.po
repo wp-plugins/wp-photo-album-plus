@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: WP Photo Album Plus in italiano\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-01-07 09:32+0100\n"
-"PO-Revision-Date: 2012-01-07 09:32+0100\n"
-"Last-Translator: J.N. Breetvelt <OpaJaap@OpaJaap.nl>\n"
+"PO-Revision-Date: 2012-01-11 10:54+0100\n"
+"Last-Translator: Gianni Diurno (aka gidibao) <gidibao[at]gmail[dot]com>\n"
 "Language-Team: Gianni Diurno | gidibao.net & charmingpress.com\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -556,32 +556,28 @@ msgid "Could not clear ratings"
 msgstr "Impossibile svuotare le valutazioni"
 
 #: wppa-ajax.php:566
-#, fuzzy
 msgid "IPTC data cleared"
-msgstr "Le valutazioni sono state svuotate"
+msgstr "I dati IPTC sono stati svuotati"
 
 #: wppa-ajax.php:567
 msgid "Refresh this page to clear table X"
-msgstr ""
+msgstr "Ricarica questa pagina per svuotare la tabella X"
 
 #: wppa-ajax.php:570
-#, fuzzy
 msgid "Could not clear IPTC data"
-msgstr "Impossibile svuotare le valutazioni"
+msgstr "Impossibile svuotare i dati IPTC"
 
 #: wppa-ajax.php:580
-#, fuzzy
 msgid "EXIF data cleared"
-msgstr "Le valutazioni sono state svuotate"
+msgstr "I dati EXIF sono stati svuotati"
 
 #: wppa-ajax.php:581
 msgid "Refresh this page to clear table XI"
-msgstr ""
+msgstr "Ricarica questa pagina per svuotare la tabella XI"
 
 #: wppa-ajax.php:584
-#, fuzzy
 msgid "Could not clear EXIF data"
-msgstr "Impossibile svuotare le valutazioni"
+msgstr "Impossibile svuotare i dati EXIF"
 
 #: wppa-ajax.php:607
 #, php-format
@@ -2501,69 +2497,64 @@ msgid "Changing the thumbnail size may result in all thumbnails being regenerate
 msgstr "Modificando la dimensione della miniatura farà sì che saranno rigenerate tutte le miniature. Potrebbe occorrere un po' di tempo."
 
 #: wppa-settings-autosave.php:312
-#, fuzzy
 msgid "Thumbnail Aspect"
-msgstr "Descrizione miniatura"
+msgstr "Aspetto miniatura"
 
 #: wppa-settings-autosave.php:313
-#, fuzzy
 msgid "Aspect ration of thumbnail image"
-msgstr "Usa effetto popup sulle immagini miniatura."
+msgstr "Aspetto rapporto immagine miniatura"
 
 #: wppa-settings-autosave.php:317
-#, fuzzy
 msgid "--- same as fullsize ---"
-msgstr "--- imposta a predef. ---"
+msgstr "--- a dimensione intera ---"
 
 #: wppa-settings-autosave.php:318
-#, fuzzy
 msgid "--- square clipped ---"
-msgstr "--- ripristino backup ---"
+msgstr "--- ritagio quadrato ---"
 
 #: wppa-settings-autosave.php:319
 msgid "4:5 landscape clipped"
-msgstr ""
+msgstr "4:5 landscape clipped"
 
 #: wppa-settings-autosave.php:320
 msgid "3:4 landscape clipped"
-msgstr ""
+msgstr "3:4 landscape clipped"
 
 #: wppa-settings-autosave.php:321
 msgid "2:3 landscape clipped"
-msgstr ""
+msgstr "2:3 landscape clipped"
 
 #: wppa-settings-autosave.php:322
 msgid "9:16 landscape clipped"
-msgstr ""
+msgstr "9:16 landscape clipped"
 
 #: wppa-settings-autosave.php:323
 msgid "1:2 landscape clipped"
-msgstr ""
+msgstr "1:2 landscape clipped"
 
 #: wppa-settings-autosave.php:324
-#, fuzzy
 msgid "--- square padded ---"
-msgstr "--- separato ---"
+msgstr "--- padded quadrato ---"
 
 #: wppa-settings-autosave.php:325
 msgid "4:5 landscape padded"
-msgstr ""
+msgstr "4:5 landscape padded"
 
 #: wppa-settings-autosave.php:326
 msgid "3:4 landscape padded"
-msgstr ""
+msgstr "3:4 landscape padded"
 
 #: wppa-settings-autosave.php:327
 msgid "2:3 landscape padded"
-msgstr ""
+msgstr "2:3 landscape padded"
 
 #: wppa-settings-autosave.php:328
 msgid "9:16 landscape padded"
-msgstr ""
+msgstr "9:16 landscape padded"
 
 #: wppa-settings-autosave.php:329
 msgid "1:2 landscape padded"
-msgstr ""
+msgstr "1:2 landscape padded"
 
 #: wppa-settings-autosave.php:350
 #: wppa-settings.php:594
@@ -3422,95 +3413,80 @@ msgstr "Se inattivo, verrà mostrata la sola valutazione espressa dal visitatore
 
 #: wppa-settings-autosave.php:749
 #: wppa-settings.php:993
-#, fuzzy
 msgid "Popup name"
-msgstr "Dimensione popup"
+msgstr "Nome popup"
 
 #: wppa-settings-autosave.php:750
 #: wppa-settings.php:994
-#, fuzzy
 msgid "Display Thubnail name on popup."
-msgstr "Mostra nome miniatura."
+msgstr "Mostra nome miniatura nel poppup."
 
 #: wppa-settings-autosave.php:751
 #: wppa-settings.php:995
-#, fuzzy
 msgid "Display photo name under thumbnail images on the popup."
-msgstr "Mostra nome foto sotto immagini miniatura."
+msgstr "Mostra nome foto sotto immagini miniatura nel popup."
 
 #: wppa-settings-autosave.php:757
 #: wppa-settings.php:1001
-#, fuzzy
 msgid "Popup desc"
-msgstr "Dimensione popup"
+msgstr "Descrizione popup"
 
 #: wppa-settings-autosave.php:758
 #: wppa-settings.php:1002
-#, fuzzy
 msgid "Display Thumbnail description on popup."
-msgstr "Mostra descrizione miniatura."
+msgstr "Mostra descrizione miniatura nel popup."
 
 #: wppa-settings-autosave.php:759
 #: wppa-settings.php:1003
-#, fuzzy
 msgid "Display description of the photo under thumbnail images on the popup."
-msgstr "Mostra la descrizione della foto sotto le immagini miniatura."
+msgstr "Mostra la descrizione della foto sotto le immagini miniatura nel popup."
 
 #: wppa-settings-autosave.php:765
 #: wppa-settings.php:1009
-#, fuzzy
 msgid "Popup rating"
-msgstr "Dimensione popup"
+msgstr "Valutazione popup"
 
 #: wppa-settings-autosave.php:766
 #: wppa-settings.php:1010
-#, fuzzy
 msgid "Display Thumbnail Rating on popup."
-msgstr "Mostra valutazione miniatura"
+msgstr "Mostra valutazione miniatura nel popup."
 
 #: wppa-settings-autosave.php:767
 #: wppa-settings.php:1011
-#, fuzzy
 msgid "Display the rating of the photo under the thumbnail image on the popup."
-msgstr "Mostra la valutazione della foto sotto la immagine miniatura."
+msgstr "Mostra la valutazione della foto sotto la immagine miniatura nel popup."
 
 #: wppa-settings-autosave.php:773
-#, fuzzy
 msgid "IPTC system"
-msgstr "Sistema commenti"
+msgstr "Sistema IPTC"
 
 #: wppa-settings-autosave.php:774
-#, fuzzy
 msgid "Enable the iptc system."
-msgstr "Attiva il sistema per le valutazioni."
+msgstr "Attiva il sistema iptc."
 
 #: wppa-settings-autosave.php:775
-#, fuzzy
 msgid "Display the iptc box under the fullsize images."
-msgstr "Mostra la valutazione della foto sotto la immagine miniatura."
+msgstr "Mostra la casella iptc sotto le immagini a dimensione intera."
 
 #: wppa-settings-autosave.php:781
 msgid "EXIF system"
-msgstr ""
+msgstr "Sistema EXIF"
 
 #: wppa-settings-autosave.php:782
-#, fuzzy
 msgid "Enable the exif system."
-msgstr "Attiva il sistema per le valutazioni."
+msgstr "Attiva il sistema exif."
 
 #: wppa-settings-autosave.php:783
-#, fuzzy
 msgid "Display the exif box under the fullsize images."
-msgstr "Mostra la valutazione della foto sotto la immagine miniatura."
+msgstr "Mostra la casella exif sotto le immagini a dimensione intera."
 
 #: wppa-settings-autosave.php:789
-#, fuzzy
 msgid "Comment Avatar"
-msgstr "Commento"
+msgstr "Avatar commento"
 
 #: wppa-settings-autosave.php:790
 msgid "Show Avatars with the comments"
-msgstr ""
+msgstr "Mostra avatar nei commenti"
 
 #: wppa-settings-autosave.php:811
 #: wppa-settings.php:1032
@@ -3754,33 +3730,28 @@ msgid "Enter valid CSS colors for numbar active box backgrounds and borders."
 msgstr "Inserici un colore CSS valido per gli sfondi ed i bordi della casella attiva barra numeri."
 
 #: wppa-settings-autosave.php:947
-#, fuzzy
 msgid "IPTC"
-msgstr "IP"
+msgstr "IPTC"
 
 #: wppa-settings-autosave.php:948
-#, fuzzy
 msgid "IPTC display box background."
-msgstr "Sfondo casella personalizzata."
+msgstr "Sfondo casella IPTC."
 
 #: wppa-settings-autosave.php:949
-#, fuzzy
 msgid "Enter valid CSS colors for iptc box backgrounds and borders."
-msgstr "Inserici un colore CSS valido per gli sfondi ed i bordi della casella personalizzata."
+msgstr "Inserici un colore CSS valido per gli sfondi ed i bordi della casella iptc."
 
 #: wppa-settings-autosave.php:956
 msgid "EXIF"
-msgstr ""
+msgstr "EXIF"
 
 #: wppa-settings-autosave.php:957
-#, fuzzy
 msgid "EXIF display box background."
-msgstr "Sfondo casella personalizzata."
+msgstr "Sfondo casella EXIF."
 
 #: wppa-settings-autosave.php:958
-#, fuzzy
 msgid "Enter valid CSS colors for exif box backgrounds and borders."
-msgstr "Inserici un colore CSS valido per gli sfondi ed i bordi della casella commenti."
+msgstr "Inserici un colore CSS valido per gli sfondi ed i bordi della casella exif."
 
 #: wppa-settings-autosave.php:983
 #: wppa-settings.php:1186
@@ -4462,30 +4433,28 @@ msgstr "Colore font"
 #: wppa-settings-autosave.php:1430
 #: wppa-settings.php:1518
 #: wppa-settings.php:1641
-#, fuzzy
 msgid "Font weight"
-msgstr "Ruota a destra"
+msgstr "Peso font"
 
 #: wppa-settings-autosave.php:1313
 #: wppa-settings.php:1524
 msgid "normal"
-msgstr ""
+msgstr "normal"
 
 #: wppa-settings-autosave.php:1313
 #: wppa-settings.php:1524
 msgid "bold"
-msgstr ""
+msgstr "bold"
 
 #: wppa-settings-autosave.php:1313
 #: wppa-settings.php:1524
 msgid "bolder"
-msgstr ""
+msgstr "bolder"
 
 #: wppa-settings-autosave.php:1313
 #: wppa-settings.php:1524
-#, fuzzy
 msgid "lighter"
-msgstr "destra"
+msgstr "lighter"
 
 #: wppa-settings-autosave.php:1316
 #: wppa-settings.php:1527
@@ -4499,9 +4468,8 @@ msgstr "Il font utilizzato per il titolo degli album."
 
 #: wppa-settings-autosave.php:1318
 #: wppa-settings.php:1529
-#, fuzzy
 msgid "Enter font name, size, color and weight for album cover titles."
-msgstr "Inserisci nome, colore e dimensione per il font che sarà utilizzato per i titoli delle copertine degli album."
+msgstr "Inserisci nome, colore, dimensione e peso per il font che sarà utilizzato per i titoli delle copertine degli album."
 
 #: wppa-settings-autosave.php:1330
 #: wppa-settings.php:1541
@@ -4510,9 +4478,8 @@ msgstr "Font descrizioni foto dimensione intera"
 
 #: wppa-settings-autosave.php:1331
 #: wppa-settings.php:1542
-#, fuzzy
 msgid "Enter font name, size, color and weight for fullsize photo descriptions."
-msgstr "Inserisci nome, colore e dimensione per il font che sarà utilizzato per le descrizioni delle foto a dimensione intera."
+msgstr "Inserisci nome, colore, dimensione e peso per il font che sarà utilizzato per le descrizioni delle foto a dimensione intera."
 
 #: wppa-settings-autosave.php:1343
 #: wppa-settings.php:1554
@@ -4521,9 +4488,8 @@ msgstr "Font nomi foto a dimensione intera."
 
 #: wppa-settings-autosave.php:1344
 #: wppa-settings.php:1555
-#, fuzzy
 msgid "Enter font name, size, color and weight for fullsize photo names."
-msgstr "Inserisci nome, colore e dimensione per il font che sarà utilizzato per le descrizioni delle foto a dimensione intera."
+msgstr "Inserisci nome, colore e dimensione per il font che sarà utilizzato per i nomi delle foto a dimensione intera."
 
 #: wppa-settings-autosave.php:1355
 #: wppa-settings.php:1566
@@ -4537,9 +4503,8 @@ msgstr "Font per le navigazioni"
 
 #: wppa-settings-autosave.php:1357
 #: wppa-settings.php:1568
-#, fuzzy
 msgid "Enter font name, size, color and weight for navigation items."
-msgstr "Inserisci nome, colore e dimensione per il font che sarà utilizzato per gli elementi di navigazione."
+msgstr "Inserisci nome, colore, dimensione e peso per il font che sarà utilizzato per gli elementi di navigazione."
 
 #: wppa-settings-autosave.php:1368
 #: wppa-settings.php:1579
@@ -4553,9 +4518,8 @@ msgstr "Font per il testo sotto le miniature."
 
 #: wppa-settings-autosave.php:1370
 #: wppa-settings.php:1581
-#, fuzzy
 msgid "Enter font name, size, color and weight for text under thumbnail images."
-msgstr "Inserisci nome, colore e dimensione per il font che sarà utilizzato per il testo sotto le immagini miniatura."
+msgstr "Inserisci nome, colore, dimensione e peso per il font che sarà utilizzato per il testo sotto le immagini miniatura."
 
 #: wppa-settings-autosave.php:1381
 #: wppa-settings.php:1592
@@ -4569,9 +4533,8 @@ msgstr "Font generico per caselle wppa."
 
 #: wppa-settings-autosave.php:1383
 #: wppa-settings.php:1594
-#, fuzzy
 msgid "Enter font name, size, color and weight for all other items."
-msgstr "Inserisci nome, colore e dimensione per il font che sarà utilizzato per tutti gli altri elementi."
+msgstr "Inserisci nome, colore, dimensione e peso per il font che sarà utilizzato per tutti gli altri elementi."
 
 #: wppa-settings-autosave.php:1395
 #: wppa-settings.php:1606
@@ -4580,9 +4543,8 @@ msgstr "Font per caselle wppa lightbox."
 
 #: wppa-settings-autosave.php:1396
 #: wppa-settings.php:1607
-#, fuzzy
 msgid "Enter font name, size, color and weight for lightbox overlays."
-msgstr "Inserisci nome, colore e dimensione per il font che sarà utilizzato per overlay lightbox."
+msgstr "Inserisci nome, colore, dimensione e peso per il font che sarà utilizzato per overlay lightbox."
 
 #: wppa-settings-autosave.php:1408
 #: wppa-settings.php:1619
@@ -4591,9 +4553,8 @@ msgstr "Font per barra numerica wppa."
 
 #: wppa-settings-autosave.php:1409
 #: wppa-settings.php:1620
-#, fuzzy
 msgid "Enter font name, size, color and weight for numberbar navigation."
-msgstr "Inserisci nome, colore e dimensione per il font che sarà utilizzato per la barra di navigazione numerica."
+msgstr "Inserisci nome, colore, dimensione e peso per il font che sarà utilizzato per la barra di navigazione numerica."
 
 #: wppa-settings-autosave.php:1438
 #: wppa-settings.php:1774
@@ -5254,33 +5215,28 @@ msgid "This function will cleanup incomplete db entries and recover lost photos.
 msgstr "Questa funzione svuoterà i dati incompleti inseriti nel db e recupererà le foto perse."
 
 #: wppa-settings-autosave.php:1829
-#, fuzzy
 msgid "Reset IPTC"
-msgstr "Azzera"
+msgstr "Azzera IPTC"
 
 #: wppa-settings-autosave.php:1830
 msgid "Clear all IPTC data."
-msgstr ""
+msgstr "Svuota tutti i dati IPTC."
 
 #: wppa-settings-autosave.php:1831
-#, fuzzy
 msgid "WARNING: If checked, this will clear all IPTC data in the system!"
-msgstr "ATTENZIONE: se attivo, saranno cancellate dal sistema tutte le valutazioni!"
+msgstr "ATTENZIONE: se attivo, saranno cancellati dal sistema tutti i dati IPTC!"
 
 #: wppa-settings-autosave.php:1836
-#, fuzzy
 msgid "Reset EXIF"
-msgstr "Azzera"
+msgstr "Azzera EXIF"
 
 #: wppa-settings-autosave.php:1837
-#, fuzzy
 msgid "Reset all EXIF data."
-msgstr "Azzera tutte le valutazioni."
+msgstr "Azzera tutti i dati EXIF."
 
 #: wppa-settings-autosave.php:1838
-#, fuzzy
 msgid "WARNING: If checked, this will clear all EXIF data in the system!"
-msgstr "ATTENZIONE: se attivo, saranno cancellate dal sistema tutte le valutazioni!"
+msgstr "ATTENZIONE: se attivo, saranno cancellati dal sistema tutti i dati EXIF!"
 
 #: wppa-settings-autosave.php:1861
 #: wppa-settings.php:2187
@@ -5415,11 +5371,11 @@ msgstr "Barra navigazione"
 
 #: wppa-settings-autosave.php:1944
 msgid "IPTC data"
-msgstr ""
+msgstr "Dati IPTC"
 
 #: wppa-settings-autosave.php:1945
 msgid "EXIF data"
-msgstr ""
+msgstr "Dati EXIF"
 
 #: wppa-settings-autosave.php:1946
 #: wppa-settings.php:2282
@@ -5478,11 +5434,11 @@ msgstr "Casella commenti"
 
 #: wppa-settings-autosave.php:1957
 msgid "IPTC box"
-msgstr ""
+msgstr "Casella IPTC"
 
 #: wppa-settings-autosave.php:1958
 msgid "EXIF box"
-msgstr ""
+msgstr "Casella EXIF"
 
 #: wppa-settings-autosave.php:1964
 #: wppa-settings.php:2298
@@ -5757,27 +5713,24 @@ msgid "Table X:"
 msgstr "Tabella X:"
 
 #: wppa-settings-autosave.php:2129
-#, fuzzy
 msgid "IPTC Configuration:"
-msgstr "WPPA+ e configurazione PHP:"
+msgstr "Configurazione IPTC:"
 
 #: wppa-settings-autosave.php:2130
-#, fuzzy
 msgid "This table defines the IPTC configuration"
-msgstr "Questa tabella definisce i tipi di link e le pagine."
+msgstr "Questa tabella definisce la configurazione IPTC."
 
 #: wppa-settings-autosave.php:2138
 #: wppa-settings-autosave.php:2174
 #: wppa-settings-autosave.php:2194
 #: wppa-settings-autosave.php:2230
 msgid "Tag"
-msgstr ""
+msgstr "Tag"
 
 #: wppa-settings-autosave.php:2159
 #: wppa-settings-autosave.php:2215
-#, fuzzy
 msgid "Display"
-msgstr "Ordina per:"
+msgstr "Mostra"
 
 #: wppa-settings-autosave.php:2159
 #: wppa-settings-autosave.php:2215
@@ -5787,24 +5740,20 @@ msgid "Hide"
 msgstr "Nascondi"
 
 #: wppa-settings-autosave.php:2185
-#, fuzzy
 msgid "Table XI:"
-msgstr "Tabella I:"
+msgstr "Tabella XI:"
 
 #: wppa-settings-autosave.php:2185
-#, fuzzy
 msgid "EXIF Configuration:"
-msgstr "WPPA+ e configurazione PHP:"
+msgstr "Configurazione EXIF:"
 
 #: wppa-settings-autosave.php:2186
-#, fuzzy
 msgid "This table defines the EXIF configuration"
-msgstr "Questa tabella definisce i tipi di link e le pagine."
+msgstr "Questa tabella definisce la configurazione EXIF."
 
 #: wppa-settings-autosave.php:2241
-#, fuzzy
 msgid "Table XII:"
-msgstr "Tabella II:"
+msgstr "Tabella XII:"
 
 #: wppa-settings-autosave.php:2241
 #: wppa-settings.php:2459
