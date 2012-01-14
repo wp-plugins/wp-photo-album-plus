@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, multisite, network, lightbox, comment, watermark, iptc, exif
-Version: 4.3.2
+Version: 4.3.3
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -109,6 +109,28 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 4.3.3 =
+
+= Bug fixes =
+
+* Fixed a hangup on 16 bit servers when uploading/importing photo.
+* The spinner image is now approx in the center of the fullsize image.
+* A lot of issues when size=auto are fixed. Still no 100% guarantee for all (old) browsers that it works as desired.
+
+= Other changes =
+
+* All new features and improvements will only be implemented in the Auto Save versions of the Settings page and the Edit Album pages.
+The old versions will get phased out. If you can not run the autosave versions please report that on the Forum: http://wordpress.org/extend/plugins/wp-photo-album-plus/
+* Edit Album Autosave: The table is now sortable by clicking on the caption items.
+A subsequent click on the same caption toggles up/down sort.
+It also displays the number of subalbums and photos each album contains.
+* Increased configurability for moderation of comments on photos. Table IV-30.
+* Email address can be set to not required for comments on photos. Table IV-31.
+* Titles in widgets display photo names rather than descriptions for fullsized photos. This is neater while descriptions often contain html code that can not be rendered in a tooltip.
+* Captions of slidewidget and photo of the day widget now behave as expected during widget activation. 
+You do no longer need to enter a html special space to have no title.
+* Lightbox fullsize images (slideshow) will display the photo descriptions as subtitle.
 
 = 4.3.2 =
 

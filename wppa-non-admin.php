@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the non admin stuff
-* Version 4.3.1
+* Version 4.3.3
 *
 */
 
@@ -145,7 +145,7 @@ global $wppa_opt;
 		else echo("\t".'wppaFadeInAfterFadeOut = false;'."\n");
 		echo("\t".'wppaAnimationSpeed = '.$wppa_opt['wppa_animation_speed'].';'."\n");
 		echo("\t".'wppaImageDirectory = "'.wppa_get_imgdir().'";'."\n");
-		if ($wppa['auto_colwidth']) echo("\t".'wppaAutoCoumnWidth = true;'."\n");
+		if ($wppa['auto_colwidth']) echo("\t".'wppaAutoColumnWidth = true;'."\n");
 		else echo("\t".'wppaAutoCoumnWidth = false;'."\n");
 		echo("\t".'wppaThumbnailAreaDelta = '.wppa_get_thumbnail_area_delta().';'."\n");
 		echo("\t".'wppaTextFrameDelta = '.wppa_get_textframe_delta().';'."\n");
@@ -197,6 +197,10 @@ global $wppa_opt;
 				echo("\t".'wppaLightBox = "'.$wppa_opt['wppa_lightbox_name'].'";'."\n");	// gives anchor tag with rel="lightbox" or the like
 				break;
 		}
+		if ( $wppa_opt['wppa_comment_email_required'] ) echo("\t".'wppaEmailRequired = true;'."\n");
+		else echo("\t".'wppaEmailRequired = false;'."\n");
+		if ( is_numeric($wppa_opt['wppa_fullimage_border_width']) ) $temp = $wppa_opt['wppa_fullimage_border_width'] + '1'; else $temp = '0';
+		echo("\t".'wppaSlideBorderWidth = '.$temp.';'."\n");
 
 	echo("/* ]]> */\n");
 	echo("</script>\n");

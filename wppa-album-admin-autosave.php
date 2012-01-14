@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * create, edit and delete albums
-* version 4.2.7
+* version 4.3.3
 *
 */
 
@@ -314,15 +314,15 @@ function _wppa_admin() {
 			</div>
 
 			<h2><?php _e('Manage Albums', 'wppa'); ?></h2>
-			
-			<?php // The table of existing albums ?>
-			<?php wppa_admin_albums() ?>
 			<br />
-			
 			<?php // The Create new album button ?>
 			<?php $url = wppa_dbg_url(get_admin_url().'admin.php?page=wppa_admin_menu&amp;tab=edit&amp;edit_id=new'); ?>
 			<?php $vfy = __('Are you sure you want to create a new album?', 'wppa') ?>
 			<input type="button" class="button-primary" onclick="if (confirm('<?php echo $vfy ?>')) document.location='<?php echo $url ?>';" value="<?php _e('Create New Empty Album', 'wppa') ?>" />
+			<br />
+			<?php // The table of existing albums ?>
+			<?php wppa_admin_albums() ?>
+			<br />
 		</div>
 <?php	
 	}
@@ -332,64 +332,264 @@ function _wppa_admin() {
 function wppa_admin_albums() {
 	global $wpdb;
 	
+	// Read the albums
+	$query = $wpdb->prepare( "SELECT * FROM `" . WPPA_ALBUMS . "` ORDER BY id");
+	$albums = $wpdb->get_results($query, 'ARRAY_A');
+
+	// Find the ordering method
+	$reverse = false;
 	if ( isset($_GET['order_by']) ) $order = $_GET['order_by']; else $order = '';
 	if ( ! $order ) {
-		$query = $wpdb->prepare( "SELECT * FROM `" . WPPA_ALBUMS . "` " . wppa_get_album_order() );
-		$albums = $wpdb->get_results($query, 'ARRAY_A');
+		$order = get_option('wppa_album_order_'.wppa_get_user(), 'id');
+		$reverse = (get_option('wppa_album_order_'.wppa_get_user().'_reverse') == 'yes');
 	}
 	else {
-		$query = $wpdb->prepare( "SELECT * FROM `" . WPPA_ALBUMS . "` ORDER BY $order ");
-		$albums = $wpdb->get_results($query, 'ARRAY_A');
+		$old_order = get_option('wppa_album_order_'.wppa_get_user(), 'id');
+		$reverse = (get_option('wppa_album_order_'.wppa_get_user().'_reverse') == 'yes');
+		if ( $old_order == $order ) {
+			$reverse = ! $reverse;
+		}
+		else $reverse = false;
+		update_option('wppa_album_order_'.wppa_get_user(), $order);
+		if ( $reverse ) update_option('wppa_album_order_'.wppa_get_user().'_reverse', 'yes');
+		else update_option('wppa_album_order_'.wppa_get_user().'_reverse', 'no');
 	}
-//echo $query;
 	
 	if ( ! empty($albums) ) {
-		$url = get_admin_url().'admin.php?page=wppa_admin_menu&amp;order_by='; 
-					
+
+		// Setup the sequence array
+		$seq = false;
+		$num = false;
+		foreach( $albums as $album ) {
+			switch ( $order ) {
+				case 'name':
+					$seq[] = strtolower(wppa_qtrans(stripslashes($album['name'])));
+					break;
+				case 'description':
+					$seq[] = strtolower(wppa_qtrans(stripslashes($album['description'])));
+					break;
+				case 'owner':
+					$seq[] = strtolower($album['owner']);
+					break;
+				case 'a_order':
+					$seq[] = $album['a_order'];
+					$num = true;
+					break;
+				case 'a_parent':
+					$seq[] = strtolower(wppa_qtrans(wppa_get_album_name($album['a_parent'])));
+					break;
+				default:
+					$seq[] = $album['id'];
+					$num = true;
+					break;
+			}
+		}
+		
+		// Sort the seq array
+		if ( $num ) asort($seq, SORT_NUMERIC);
+		else asort($seq, SORT_REGULAR);
+
+		// Reverse ?
+		if ( $reverse ) {
+			$t = $seq;
+			$c = count($t);
+			$tmp = array_keys($t);
+			$seq = false;
+			for ( $i = $c-1; $i >=0; $i-- ) {
+				$seq[$tmp[$i]] = '0';
+			}
+		}
+
+		$downimg = '<img src="'.wppa_get_imgdir().'down.png" style=" height:12px; position:relative; top:2px; " />';
+		$upimg   = '<img src="'.wppa_get_imgdir().'up.png" style=" height:12px; position:relative; top:2px; " />';
 ?>	
-	<div class="table_wrapper">	
-		<table class="widefat">
+<!--	<div class="table_wrapper">	-->
+		<table class="widefat" style="margin-top:12px;" >
 			<thead>
 			<tr>
-				<th scope="col" style="width: 120px;">		<a href="<?php echo wppa_dbg_url($url.'name') ?>"><?php _e('Name', 'wppa'); ?>				</a></th>
-				<th scope="col">							<a href="<?php echo wppa_dbg_url($url.'description') ?>"><?php _e('Description', 'wppa'); ?></a></th>
-				<th scope="col">							<a href="<?php echo wppa_dbg_url($url.'id') ?>"><?php _e('ID', 'wppa'); ?>					</a></th>
+				<?php $url = get_admin_url().'admin.php?page=wppa_admin_menu&amp;order_by='; ?>
+				<th scope="col" style="min-width: 50px;" >
+					<a href="<?php echo wppa_dbg_url($url.'id') ?>">
+						<?php _e('ID', 'wppa');
+							if ($order == 'id') {
+								if ( $reverse ) echo $upimg;
+								else echo $downimg;
+							}
+						?>					
+					</a>
+				</th>
+				<th scope="col" style="min-width: 120px;">
+					<a href="<?php echo wppa_dbg_url($url.'name') ?>">
+						<?php _e('Name', 'wppa'); 
+							if ($order == 'name') {
+								if ( $reverse ) echo $upimg;
+								else echo $downimg;
+							}
+						?>
+					</a>
+				</th>
+				<th scope="col">
+					<a href="<?php echo wppa_dbg_url($url.'description') ?>">
+						<?php _e('Description', 'wppa'); 
+							if ($order == 'description') {
+								if ( $reverse ) echo $upimg;
+								else echo $downimg;
+							}
+						?>
+					</a>
+				</th>
 				<?php if (current_user_can('administrator')) { ?>
-					<th scope="col" style="width: 100px;">	<a href="<?php echo wppa_dbg_url($url.'owner') ?>"><?php _e('Owner', 'wppa'); ?>			</a></th>
+				<th scope="col" style="min-width: 100px;">
+					<a href="<?php echo wppa_dbg_url($url.'owner') ?>">
+						<?php _e('Owner', 'wppa'); 
+							if ($order == 'owner') {
+								if ( $reverse ) echo $upimg;
+								else echo $downimg;
+							}
+						?>
+					</a>
+				</th>
 				<?php } ?>
-                <th scope="col">							<a href="<?php echo wppa_dbg_url($url.'a_order') ?>"><?php _e('Order', 'wppa'); ?>			</a></th>
-                <th scope="col" style="width: 120px;">		<a href="<?php echo wppa_dbg_url($url.'a_parent') ?>"><?php _e('Parent', 'wppa'); ?>		</a></th>
+                <th scope="col" style="min-width: 100px;" >
+					<a href="<?php echo wppa_dbg_url($url.'a_order') ?>">
+						<?php _e('Order', 'wppa'); 
+							if ($order == 'a_order') {
+								if ( $reverse ) echo $upimg;
+								else echo $downimg;
+							}
+						?>
+					</a>
+				</th>
+                <th scope="col" style="width: 120px;">
+					<a href="<?php echo wppa_dbg_url($url.'a_parent') ?>">
+						<?php _e('Parent', 'wppa'); 
+							if ($order == 'a_parent') {
+								if ( $reverse ) echo $upimg;
+								else echo $downimg;
+							}
+						?>
+					</a>
+				</th>
+				<th scope="col">
+					<?php _e('A/P', 'wppa'); ?>
+				</th>
 				<th scope="col"><?php _e('Edit', 'wppa'); ?></th>
 				<th scope="col"><?php _e('Delete', 'wppa'); ?></th>	
 			</tr>
 			</thead>
-			
+			<tbody>
 			<?php $alt = ' class="alternate" '; ?>
 		
-			<?php foreach ($albums as $album) if(wppa_have_access($album)) { ?>
-				<tr <?php echo($alt) ?>>
-					<td><?php echo(wppa_qtrans(stripslashes($album['name']))) ?></td>
-					<td><small><?php echo(wppa_qtrans(stripslashes($album['description']))) ?></small></td>
-					<td><?php echo($album['id']) ?></td>
-					<?php if (current_user_can('administrator')) { ?>
-						<td><?php echo($album['owner']); ?></td>
-					<?php } ?>
-					<td><?php echo($album['a_order']) ?></td>
-					<td><?php echo(wppa_qtrans(wppa_get_album_name($album['a_parent']))) ?></td>
-					<?php $url = wppa_dbg_url(get_admin_url().'admin.php?page=wppa_admin_menu&amp;tab=edit&amp;edit_id='.$album['id']); ?>
-					
-					<?php $url = wppa_ea_url($album['id']) ?>
-					<td><a href="<?php echo($url) ?>" class="wppaedit"><?php _e('Edit', 'wppa'); ?></a></td>
-					<?php $url = wppa_dbg_url(get_admin_url().'admin.php?page=wppa_admin_menu&amp;tab=del&amp;id='.$album['id']); ?>
-					
-					<?php $url = wppa_ea_url($album['id'], 'del') ?>
-					<td><a href="<?php echo($url) ?>" class="wppadelete"><?php _e('Delete', 'wppa'); ?></a></td>
-				</tr>		
-				<?php if ($alt == '') { $alt = ' class="alternate" '; } else { $alt = '';}
-			}
-?>			
+			<?php
+//				foreach ($albums as $album) if(wppa_have_access($album)) { 
+				$idx = '0';
+				foreach (array_keys($seq) as $s) {
+					$album = $albums[$s];
+					if (wppa_have_access($album)) {
+				
+					?>
+						<tr <?php echo($alt) ?>>
+							<td><?php echo($album['id']) ?></td>
+							<td><?php echo(esc_attr(wppa_qtrans(stripslashes($album['name'])))) ?></td>
+							<td><small><?php echo(esc_attr(wppa_qtrans(stripslashes($album['description'])))) ?></small></td>
+							<?php if (current_user_can('administrator')) { ?>
+								<td><?php echo($album['owner']); ?></td>
+							<?php } ?>
+							<td><?php echo($album['a_order']) ?></td>
+							<td><?php echo(wppa_qtrans(wppa_get_album_name($album['a_parent']))) ?></td>
+							<?php $url = wppa_dbg_url(get_admin_url().'admin.php?page=wppa_admin_menu&amp;tab=edit&amp;edit_id='.$album['id']); ?>
+							<?php $na = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `".WPPA_ALBUMS."` WHERE a_parent=%s", $album['id'])); ?>
+							<?php $np = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `".WPPA_PHOTOS."` WHERE album=%s", $album['id'])); ?>
+							<td><?php echo $na.'/'.$np; ?></td>
+							<?php $url = wppa_ea_url($album['id']) ?>
+							<td><a href="<?php echo($url) ?>" class="wppaedit"><?php _e('Edit', 'wppa'); ?></a></td>
+							<?php $url = wppa_dbg_url(get_admin_url().'admin.php?page=wppa_admin_menu&amp;tab=del&amp;id='.$album['id']); ?>
+							
+							<?php $url = wppa_ea_url($album['id'], 'del') ?>
+							<td><a href="<?php echo($url) ?>" class="wppadelete"><?php _e('Delete', 'wppa'); ?></a></td>
+						</tr>		
+						<?php if ($alt == '') { $alt = ' class="alternate" '; } else { $alt = '';}
+					}
+					$idx++;
+				}
+			
+?>	
+			</tbody>
+			<tfoot>
+			<tr>
+				<?php $url = get_admin_url().'admin.php?page=wppa_admin_menu&amp;order_by='; ?>
+				<th scope="col">
+					<a href="<?php echo wppa_dbg_url($url.'id') ?>">
+						<?php _e('ID', 'wppa');
+							if ($order == 'id') {
+								if ( $reverse ) echo $upimg;
+								else echo $downimg;
+							}
+						?>					
+					</a>
+				</th>
+				<th scope="col" style="width: 120px;">
+					<a href="<?php echo wppa_dbg_url($url.'name') ?>">
+						<?php _e('Name', 'wppa'); 
+							if ($order == 'name') {
+								if ( $reverse ) echo $upimg;
+								else echo $downimg;
+							}
+						?>
+					</a>
+				</th>
+				<th scope="col">
+					<a href="<?php echo wppa_dbg_url($url.'description') ?>">
+						<?php _e('Description', 'wppa'); 
+							if ($order == 'description') {
+								if ( $reverse ) echo $upimg;
+								else echo $downimg;
+							}
+						?>
+					</a>
+				</th>
+				<?php if (current_user_can('administrator')) { ?>
+				<th scope="col" style="width: 100px;">
+					<a href="<?php echo wppa_dbg_url($url.'owner') ?>">
+						<?php _e('Owner', 'wppa'); 
+							if ($order == 'owner') {
+								if ( $reverse ) echo $upimg;
+								else echo $downimg;
+							}
+						?>
+					</a>
+				</th>
+				<?php } ?>
+                <th scope="col">
+					<a href="<?php echo wppa_dbg_url($url.'a_order') ?>">
+						<?php _e('Order', 'wppa'); 
+							if ($order == 'a_order') {
+								if ( $reverse ) echo $upimg;
+								else echo $downimg;
+							}
+						?>
+					</a>
+				</th>
+                <th scope="col" style="width: 120px;">
+					<a href="<?php echo wppa_dbg_url($url.'a_parent') ?>">
+						<?php _e('Parent', 'wppa'); 
+							if ($order == 'a_parent') {
+								if ( $reverse ) echo $upimg;
+								else echo $downimg;
+							}
+						?>
+					</a>
+				</th>
+				<th scope="col">
+					<?php _e('#A/#P', 'wppa'); ?>
+				</th>
+				<th scope="col"><?php _e('Edit', 'wppa'); ?></th>
+				<th scope="col"><?php _e('Delete', 'wppa'); ?></th>	
+			</tr>
+			</tfoot>
+		
 		</table>
-	</div>
+<!--	</div> -->
 <?php	
 	} else { 
 ?>

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 4.3.2
+* Version 4.3.3
 *
 */
 
@@ -1300,12 +1300,21 @@ global $wppa_api_version;
 						$html = wppa_checkbox($slug);
 						wppa_setting($slug, '29', $name, $desc, $html, $help);
 						
-						$name = __('Comment login approved', 'wppa');
-						$desc = __('Comments from logged in users are approved', 'wppa');
-						$help = esc_js(__('If checked, comments entered by logged in users are immediately approved, if unchecked they are pending like comments entered by logged out users', 'wppa'));
-						$slug = 'wppa_comment_login_approved';
-						$html = wppa_checkbox($slug);
+						$name = __('Comment moderation', 'wppa');
+						$desc = __('Comments from what users need approval.', 'wppa');
+						$help = esc_js(__('Select the desired users of which the comments need approval.', 'wppa'));
+						$slug = 'wppa_comment_moderation';
+						$options = array(__('All users', 'wppa'), __('Logged out users', 'wppa'), __('No users', 'wppa'));
+						$values = array('all', 'logout', 'none');
+						$html = wppa_select($slug, $options, $values);
 						wppa_setting($slug, '30', $name, $desc, $html, $help);
+						
+						$name = __('Comment email required', 'wppa');
+						$desc = __('Commenting users must enter their email addresses.', 'wppa');
+						$help = '';
+						$slug = 'wppa_comment_email_required';
+						$html = wppa_checkbox($slug);
+						wppa_setting($slug, '31', $name, $desc, $html, $help);
 						
 						?>
 					</tbody>
@@ -1334,7 +1343,7 @@ global $wppa_api_version;
 							<th scope="col"><?php _e('#', 'wppa') ?></th>
 							<th scope="col"><?php _e('Name', 'wppa') ?></th>
 							<th scope="col"><?php _e('Description', 'wppa') ?></th>
-							<th scope="col"><?php _e('Font family', 'wppa') ?></th>
+							<th scope="col" style="min-width:250px;" ><?php _e('Font family', 'wppa') ?></th>
 							<th scope="col"><?php _e('Font size', 'wppa') ?></th>
 							<th scope="col"><?php _e('Font color', 'wppa') ?></th>
 							<th scope="col"><?php _e('Font weight', 'wppa') ?></th>
@@ -1353,7 +1362,7 @@ global $wppa_api_version;
 						$slug2 = 'wppa_fontsize_title';
 						$slug3 = 'wppa_fontcolor_title';
 						$slug4 = 'wppa_fontweight_title';
-						$html1 = wppa_input($slug1, '90%', '300px', '');
+						$html1 = wppa_input($slug1, '90%', '200px', '');
 						$html2 = wppa_input($slug2, '40px', '', __('pixels', 'wppa'));
 						$html3 = wppa_input($slug3, '70px', '', '');
 						$html4 = wppa_select($slug4, $options, $values);
@@ -1366,7 +1375,7 @@ global $wppa_api_version;
 						$slug2 = 'wppa_fontsize_fulldesc';
 						$slug3 = 'wppa_fontcolor_fulldesc';
 						$slug4 = 'wppa_fontweight_fulldesc';
-						$html1 = wppa_input($slug1, '90%', '300px', '');
+						$html1 = wppa_input($slug1, '90%', '200px', '');
 						$html2 = wppa_input($slug2, '40px', '', __('pixels', 'wppa'));
 						$html3 = wppa_input($slug3, '70px', '', '');
 						$html4 = wppa_select($slug4, $options, $values);
@@ -1379,7 +1388,7 @@ global $wppa_api_version;
 						$slug2 = 'wppa_fontsize_fulltitle';
 						$slug3 = 'wppa_fontcolor_fulltitle';
 						$slug4 = 'wppa_fontweight_fulltitle';
-						$html1 = wppa_input($slug1, '90%', '300px', '');
+						$html1 = wppa_input($slug1, '90%', '200px', '');
 						$html2 = wppa_input($slug2, '40px', '', __('pixels', 'wppa'));
 						$html3 = wppa_input($slug3, '70px', '', '');
 						$html4 = wppa_select($slug4, $options, $values);
@@ -1392,7 +1401,7 @@ global $wppa_api_version;
 						$slug2 = 'wppa_fontsize_nav';
 						$slug3 = 'wppa_fontcolor_nav';
 						$slug4 = 'wppa_fontweight_nav';
-						$html1 = wppa_input($slug1, '90%', '300px', '');
+						$html1 = wppa_input($slug1, '90%', '200px', '');
 						$html2 = wppa_input($slug2, '40px', '', __('pixels', 'wppa'));
 						$html3 = wppa_input($slug3, '70px', '', '');
 						$html4 = wppa_select($slug4, $options, $values);
@@ -1405,7 +1414,7 @@ global $wppa_api_version;
 						$slug2 = 'wppa_fontsize_thumb';
 						$slug3 = 'wppa_fontcolor_thumb';
 						$slug4 = 'wppa_fontweight_thumb';
-						$html1 = wppa_input($slug1, '90%', '300px', '');
+						$html1 = wppa_input($slug1, '90%', '200px', '');
 						$html2 = wppa_input($slug2, '40px', '', __('pixels', 'wppa'));
 						$html3 = wppa_input($slug3, '70px', '', '');
 						$html4 = wppa_select($slug4, $options, $values);
@@ -1418,7 +1427,7 @@ global $wppa_api_version;
 						$slug2 = 'wppa_fontsize_box';
 						$slug3 = 'wppa_fontcolor_box';
 						$slug4 = 'wppa_fontweight_box';
-						$html1 = wppa_input($slug1, '90%', '300px', '');
+						$html1 = wppa_input($slug1, '90%', '200px', '');
 						$html2 = wppa_input($slug2, '40px', '', __('pixels', 'wppa'));
 						$html3 = wppa_input($slug3, '70px', '', '');
 						$html4 = wppa_select($slug4, $options, $values);
@@ -1431,7 +1440,7 @@ global $wppa_api_version;
 						$slug2 = 'wppa_fontsize_lightbox';
 						$slug3 = 'wppa_fontcolor_lightbox';
 						$slug4 = 'wppa_fontweight_lightbox';
-						$html1 = wppa_input($slug1, '90%', '300px', '');
+						$html1 = wppa_input($slug1, '90%', '200px', '');
 						$html2 = wppa_input($slug2, '40px', '', __('pixels', 'wppa'));
 						$html3 = wppa_input($slug3, '70px', '', '');
 						$html4 = wppa_select($slug4, $options, $values);
@@ -1444,7 +1453,7 @@ global $wppa_api_version;
 						$slug2 = 'wppa_fontsize_numbar';
 						$slug3 = 'wppa_fontcolor_numbar';
 						$slug4 = 'wppa_fontweight_numbar';
-						$html1 = wppa_input($slug1, '90%', '300px', '');
+						$html1 = wppa_input($slug1, '90%', '200px', '');
 						$html2 = wppa_input($slug2, '40px', '', __('pixels', 'wppa'));
 						$html3 = wppa_input($slug3, '70px', '', '');
 						$html4 = wppa_select($slug4, $options, $values);

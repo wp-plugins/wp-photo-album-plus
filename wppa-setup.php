@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 4.3.2
+* Version 4.3.3
 *
 */
 
@@ -446,7 +446,9 @@ global $wppa_defaults;
 						'wppa_show_exif'				=> 'no',
 						'wppa_comment_gravatar'			=> 'none',
 						'wppa_comment_gravatar_url'		=> 'http://',
-						'wppa_gravatar_size'			=> '40'
+						'wppa_gravatar_size'			=> '40',
+						'wppa_comment_moderation'		=> 'logout',
+						'wppa_comment_email_required'	=> 'yes'
 
 						);
 
