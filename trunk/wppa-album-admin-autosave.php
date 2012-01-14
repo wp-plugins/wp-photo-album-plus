@@ -581,7 +581,7 @@ function wppa_admin_albums() {
 					</a>
 				</th>
 				<th scope="col">
-					<?php _e('#A/#P', 'wppa'); ?>
+					<?php _e('A/P', 'wppa'); ?>
 				</th>
 				<th scope="col"><?php _e('Edit', 'wppa'); ?></th>
 				<th scope="col"><?php _e('Delete', 'wppa'); ?></th>	
