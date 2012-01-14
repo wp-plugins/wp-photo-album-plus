@@ -1,5 +1,5 @@
 ﻿// Slide show variables and functions
-// This is wppa-slideshow.js version 4.3.1
+// This is wppa-slideshow.js version 4.3.3
 //
 // Vars. The vars that have a name that starts with an underscore is an internal var
 // The vars without leading underscore are 'external' and get a value from html
@@ -50,6 +50,8 @@ var wppaTickImg = new Image();
 var wppaClockImg = new Image();
 var wppaSlideWrap = true;
 var wppaLightBox = '';
+var wppaEmailRequired = true;
+var wppaSlideBorderWidth = 0;
 
 // 'Internal' variables
 var _wppaPhotoIds = new Array();
@@ -78,6 +80,7 @@ var _wppaTextDelay;
 var _wppaUrl = new Array();
 var _wppaLastVote = 0;
 var _wppaSkipRated = new Array();
+var _wppaLbTitle = new Array();
 
 jQuery(document).ready(function(){
 	_wppaLog('ready', 0);
@@ -90,7 +93,7 @@ jQuery(document).ready(function(){
 // These functions check the validity and store the users request to be executed later if busy and if applicable.
 
 // This is an entrypoint to load the slide data
-function wppaStoreSlideInfo(mocc, id, url, size, width, height, name, desc, photoid, avgrat, myrat, rateurl, iwlinkurl, iwlinktitle, iwtimeout, commenthtml, iptchtml, exifhtml) {
+function wppaStoreSlideInfo(mocc, id, url, size, width, height, name, desc, photoid, avgrat, myrat, rateurl, iwlinkurl, iwlinktitle, iwtimeout, commenthtml, iptchtml, exifhtml, lbtitle) {
 	if ( ! _wppaSlides[mocc] ) {
 		_wppaSlides[mocc] = new Array();
 		_wppaNames[mocc] = new Array();
@@ -117,8 +120,12 @@ function wppaStoreSlideInfo(mocc, id, url, size, width, height, name, desc, phot
 		_wppaExifHtml[mocc] = new Array();
 		_wppaUrl[mocc] = new Array();
 		_wppaSkipRated[mocc] = false;
+		_wppaLbTitle[mocc] = new Array();
 	}
-    _wppaSlides[mocc][id] = ' src="' + url + '" alt="' + name + '" class="theimg big" ' + 'width="' + width + '" height="' + height + '" style="' + size + '; display:block;">';
+    _wppaSlides[mocc][id] = ' src="' + url + '" alt="' + name + '" class="theimg big" ';
+		// Add 'old' width and height only for non-auto
+		if ( ! wppaAutoColumnWidth ) _wppaSlides[mocc][id] += 'width="' + width + '" height="' + height + '" ';
+	_wppaSlides[mocc][id] += 'style="' + size + '; display:block;">';
     _wppaNames[mocc][id] = name;
     _wppaDescriptions[mocc][id] = desc;
 	_wppaPhotoIds[mocc][id] = photoid;		// reqd for rating and comment
@@ -131,6 +138,7 @@ function wppaStoreSlideInfo(mocc, id, url, size, width, height, name, desc, phot
 	_wppaIptcHtml[mocc][id] = iptchtml;
 	_wppaExifHtml[mocc][id] = exifhtml;
 	_wppaUrl[mocc][id] = url;
+	_wppaLbTitle[mocc][id] = lbtitle;
 }
 
 function wppaSpeed(mocc, faster) {
@@ -140,7 +148,7 @@ function wppaSpeed(mocc, faster) {
 	}
 }
 
-function wppaStopme(mocc) {
+function wppaStopShow(mocc) {
 	if ( _wppaSlideShowRuns[mocc] ) {		// Stop it
 		_wppaStop(mocc);
 	}
@@ -271,7 +279,7 @@ function _wppaNextSlide(mocc, mode) {
 					jQuery("#theslide0-"+mocc).html('<img id="theimg0-'+mocc+'" '+_wppaSlides[mocc][_wppaCurrentIndex[mocc]]);
 				}
 				else {
-					jQuery("#theslide0-"+mocc).html('<a href="'+_wppaUrl[mocc][_wppaCurrentIndex[mocc]]+'" rel="'+wppaLightBox+'"><img id="theimg0-'+mocc+'" '+_wppaSlides[mocc][_wppaCurrentIndex[mocc]]+'</a>');
+					jQuery("#theslide0-"+mocc).html('<a href="'+_wppaUrl[mocc][_wppaCurrentIndex[mocc]]+'" title="'+_wppaLbTitle[mocc][_wppaCurrentIndex[mocc]]+'" rel="'+wppaLightBox+'"><img id="theimg0-'+mocc+'" '+_wppaSlides[mocc][_wppaCurrentIndex[mocc]]+'</a>');
 				}
 			}
 			jQuery("#theimg0-"+mocc).hide();
@@ -284,7 +292,7 @@ function _wppaNextSlide(mocc, mode) {
 				jQuery("#theslide1-"+mocc).html('<img id="theimg1-'+mocc+'" '+_wppaSlides[mocc][_wppaNextIndex[mocc]]);
 			}
 			else {
-				jQuery("#theslide1-"+mocc).html('<a href="'+_wppaUrl[mocc][_wppaNextIndex[mocc]]+'" rel="'+wppaLightBox+'" ><img id="theimg1-'+mocc+'" '+_wppaSlides[mocc][_wppaNextIndex[mocc]]+'</a>');
+				jQuery("#theslide1-"+mocc).html('<a href="'+_wppaUrl[mocc][_wppaNextIndex[mocc]]+'" title="'+_wppaLbTitle[mocc][_wppaNextIndex[mocc]]+'" rel="'+wppaLightBox+'" ><img id="theimg1-'+mocc+'" '+_wppaSlides[mocc][_wppaNextIndex[mocc]]+'</a>');
 			}
 		}
 		jQuery("#theimg1-"+mocc).hide();	      
@@ -321,7 +329,7 @@ function _wppaNextSlide(mocc, mode) {
 				jQuery("#theslide"+bg+"-"+mocc).html('<img id="theimg'+bg+'-'+mocc+'" '+_wppaSlides[mocc][_wppaNextIndex[mocc]]);
 			}
 			else {
-				jQuery("#theslide"+bg+"-"+mocc).html('<a href="'+_wppaUrl[mocc][_wppaNextIndex[mocc]]+'" rel="'+wppaLightBox+'" ><img id="theimg'+bg+'-'+mocc+'" '+_wppaSlides[mocc][_wppaNextIndex[mocc]]+'</a>');
+				jQuery("#theslide"+bg+"-"+mocc).html('<a href="'+_wppaUrl[mocc][_wppaNextIndex[mocc]]+'" title="'+_wppaLbTitle[mocc][_wppaNextIndex[mocc]]+'" rel="'+wppaLightBox+'" ><img id="theimg'+bg+'-'+mocc+'" '+_wppaSlides[mocc][_wppaNextIndex[mocc]]+'</a>');
 			}
 		}
 		jQuery("#theimg"+bg+"-"+mocc).hide();
@@ -635,8 +643,10 @@ function _wppaLoadSpinner(mocc) {
 		else top = '150px';
 	}
 	lft = jQuery('#slide_frame-'+mocc).css('width');
+
+	lft = parseInt(lft);
 	if (lft > 0) {
-		lft = parseInt(parseInt(lft/2) - 4)+'px';
+		lft = parseInt(lft/2 - 4)+'px';
 	}
 
 	jQuery('#spinner-'+mocc).css('top',top);
@@ -646,7 +656,7 @@ function _wppaLoadSpinner(mocc) {
 
 function _wppaUnloadSpinner(mocc) {
 	_wppaLog('UnloadSpinner', mocc);
-
+//return; // debug
 	jQuery('#spinner-'+mocc).html('');
 }
 
@@ -659,11 +669,13 @@ function _wppaDoAutocol(mocc) {
 	w = document.getElementById('wppa-container-1').parentNode.clientWidth;
 	
 	jQuery(".wppa-container").css('width',w);
-	jQuery(".theimg").css('width',w);
+	ws = w - 2 * wppaSlideBorderWidth;
+
+	jQuery(".theimg").css('width',ws);
 	jQuery(".thumbnail-area").css('width',w - wppaThumbnailAreaDelta);
 	wppaFilmStripLength[mocc] = w - wppaFilmStripAreaDelta[mocc];
 
-	jQuery("#filmwindow"+mocc).css('width',wppaFilmStripLength[mocc]);
+	jQuery("#filmwindow-"+mocc).css('width',wppaFilmStripLength[mocc]);
 
 	jQuery(".wppa-text-frame").css('width',w - wppaTextFrameDelta);
 	jQuery(".wppa-cover-box").css('width',w - wppaBoxDelta);
@@ -848,13 +860,15 @@ function _wppaValidateComment(mocc) {
 		return false;
 	}
 	
-	// Process email address
-	var email = jQuery('#wppa-comemail-'+mocc).attr('value');
-	var atpos=email.indexOf("@");
-	var dotpos=email.lastIndexOf(".");
-	if (atpos<1 || dotpos<atpos+2 || dotpos+2>=email.length) {
-		alert(wppaPleaseEmail);
-		return false;
+	if ( wppaEmailRequired ) {
+		// Process email address
+		var email = jQuery('#wppa-comemail-'+mocc).attr('value');
+		var atpos=email.indexOf("@");
+		var dotpos=email.lastIndexOf(".");
+		if (atpos<1 || dotpos<atpos+2 || dotpos+2>=email.length) {
+			alert(wppaPleaseEmail);
+			return false;
+		}
 	}
 	
 	// Process comment

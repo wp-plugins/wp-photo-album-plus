@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the widget
-* Version 4.2.8
+* Version 4.3.3
 */
 
 class PhotoOfTheDay extends WP_Widget {
@@ -18,16 +18,13 @@ class PhotoOfTheDay extends WP_Widget {
     function widget($args, $instance) {		
 		global $wpdb;
 		global $wppa_opt;
-//		global $widget_content;
 
         extract( $args );
 
-		$widget_title = apply_filters('widget_title', empty( $instance['title'] ) ? get_option('wppa_widgettitle', __a( 'Photo Of The Day', 'wppa_theme' )) : $instance['title']);
+		$widget_title = $instance['title'];
 
 		// get the photo  ($image)
-		
 		$image = wppa_get_potd();
-
 		
 		// Make the HTML for current picture
 		$widget_content = "\n".'<!-- WPPA+ Photo of the day Widget start -->';
@@ -88,13 +85,12 @@ class PhotoOfTheDay extends WP_Widget {
     /** @see WP_Widget::form */
     function form($instance) {				
 		//Defaults
-		$instance = wp_parse_args( (array) $instance, array(  'title' => '') );
-		$widget_title = apply_filters('widget_title', empty( $instance['title'] ) ? get_option('wppa_widgettitle', __( 'Photo Of The Day', 'wppa' )) : $instance['title']);
-
-	?>
-		<p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:', 'wppa'); ?></label> <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $widget_title; ?>" /></p>
-		<p><?php _e('You can set the content and the behaviour of this widget in the <b>Photo Albums -> Sidebar Widget</b> admin page.', 'wppa'); ?></p>
-<?php
+		$instance = wp_parse_args( (array) $instance, array(  'title' => get_option('wppa_widgettitle', __( 'Photo Of The Day', 'wppa' ))) );
+		$widget_title = $instance['title']; 
+		?>
+			<p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:', 'wppa'); ?></label> <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $widget_title; ?>" /></p>
+			<p><?php _e('You can set the content and the behaviour of this widget in the <b>Photo Albums -> Sidebar Widget</b> admin page.', 'wppa'); ?></p>
+		<?php
     }
 
 } // class PhotoOfTheDay

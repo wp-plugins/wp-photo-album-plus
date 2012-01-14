@@ -3,12 +3,12 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions and API modules
-* Version 4.3.2
+* Version 4.3.3
 *
 */
 /* Moved to wppa-commonfunctions.php:
 global $wppa_api_version;
-$wppa_api_version = '4-3-2-000';
+$wppa_api_version = '4-3-3-000';
 */
 
 
@@ -885,6 +885,9 @@ global $wppa_opt;
 	// Find EXIF data
 	$exif = wppa_exif_html($id);
 	
+	// Lightbox subtitle
+	$lbtitle = esc_attr(wppa_get_photo_desc($id));
+	
 	// Produce final result
     $result = "'".$wppa['master_occur']."','";
 	$result .= $index."','";
@@ -902,7 +905,9 @@ global $wppa_opt;
 	$result .= $wppa['in_widget_timeout']."','";
 	$result .= $comment."','";
 	$result .= $iptc."','";
-	$result .= $exif."'";
+	$result .= $exif."','";
+	$result .= $lbtitle."'";
+	
     return $result;                                                        
 }
 
@@ -1006,9 +1011,23 @@ global $wppa_done;
 	$user = wppa_get_post('comname');
 	if ( !$user ) die('Illegal attempt to enter a comment');
 	$email = wppa_get_post('comemail');
-	if ( !$email ) die('Illegal attempt to enter a comment');
+	if ( !$email ) {
+		if ( $wppa_opt['wppa_comment_email_required'] ) die('Illegal attempt to enter a comment');
+		else $email = wppa_get_user();	// If email not present and not required, use his IP
+	}
 	$comment = htmlspecialchars(stripslashes(trim(wppa_get_post('comment'))));
-	$status = ( is_user_logged_in() && $wppa_opt['wppa_comment_login_approved'] ) ? 'approved' : 'pending';
+	$policy = $wppa_opt['wppa_comment_moderation'];
+	switch ($policy) {
+		case 'all':
+			$status = 'pending';
+			break;
+		case 'logout':
+			$status = is_user_logged_in() ? 'approved' : 'pending';
+			break;
+		case 'none':
+			$status = 'approved';
+			break;
+	}
 
 	$cedit = wppa_get_post('comment-edit');
 	
@@ -1153,10 +1172,12 @@ global $wppa_first_comment_html;
 							$result .= '<td class="wppa-box-text wppa-td" style="width:30%; '.__wcs('wppa-box-text').__wcs('wppa-td').'" >'.__a('Your name:', 'wppa_theme').'</td>';
 							$result .= '<td class="wppa-box-text wppa-td" style="width:70%; '.__wcs('wppa-box-text').__wcs('wppa-td').'" ><input type="text" name="wppa-comname" id="wppa-comname-'.$wppa['master_occur'].'" style="width:100%; " value="'.$wppa['comment_user'].'" /></td>';
 						$result .= '</tr>';
+if ( $wppa_opt['wppa_comment_email_required'] ) {
 						$result .= '<tr valign="top" style="'.$vis.'">';
 							$result .= '<td class="wppa-box-text wppa-td" style="width:30%; '.__wcs('wppa-box-text').__wcs('wppa-td').'" >'.__a('Your email:', 'wppa_theme').'</td>';
 							$result .= '<td class="wppa-box-text wppa-td" style="width:70%; '.__wcs('wppa-box-text').__wcs('wppa-td').'" ><input type="text" name="wppa-comemail" id="wppa-comemail-'.$wppa['master_occur'].'" style="width:100%; " value="'.$wppa['comment_email'].'" /></td>';
 						$result .= '</tr>';
+}
 						$result .= '<tr valign="top" style="vertical-align:top;">';	
 							$result .= '<td valign="top" class="wppa-box-text wppa-td" style="vertical-align:top; width:30%; '.__wcs('wppa-box-text').__wcs('wppa-td').'" >'.__a('Your comment:', 'wppa_theme').'<br />'.$wppa['comment_user'].'<br /><input type="submit" name="commentbtn" value="'.$btn.'" style="margin:0;" /></td>';
 							$result .= '<td valign="top" class="wppa-box-text wppa-td" style="vertical-align:top; width:70%; '.__wcs('wppa-box-text').__wcs('wppa-td').'" ><textarea name="wppa-comment" id="wppa-comment-'.$wppa['master_occur'].'" style="height:60px; width:100%; ">'.esc_js(stripslashes($txt)).'</textarea></td>';
@@ -1213,7 +1234,7 @@ global $wppaiptclabels;
 		// Open the container content
 		$result = '<div id="iptccontent-'.$wppa['master_occur'].'" >';
 		// Process data
-		$onclick = esc_attr("wppaStopme(".$wppa['master_occur']."); jQuery('.wppa-iptc-table-".$wppa['master_occur']."').css('display', ''); jQuery('.-wppa-iptc-table-".$wppa['master_occur']."').css('display', 'none')");
+		$onclick = esc_attr("wppaStopShow(".$wppa['master_occur']."); jQuery('.wppa-iptc-table-".$wppa['master_occur']."').css('display', ''); jQuery('.-wppa-iptc-table-".$wppa['master_occur']."').css('display', 'none')");
 		$result .= '<a href="javascript://" class="-wppa-iptc-table-'.$wppa['master_occur'].'" onclick="'.$onclick.'" >Show IPTC data</a>';
 
 		$onclick = esc_attr("jQuery('.wppa-iptc-table-".$wppa['master_occur']."').css('display', 'none'); jQuery('.-wppa-iptc-table-".$wppa['master_occur']."').css('display', '')");
@@ -1275,7 +1296,7 @@ global $wppaexiflabels;
 		// Open the container content
 		$result = '<div id="exifcontent-'.$wppa['master_occur'].'" >';
 		// Process data
-		$onclick = esc_attr("wppaStopme(".$wppa['master_occur']."); jQuery('.wppa-exif-table-".$wppa['master_occur']."').css('display', ''); jQuery('.-wppa-exif-table-".$wppa['master_occur']."').css('display', 'none')");
+		$onclick = esc_attr("wppaStopShow(".$wppa['master_occur']."); jQuery('.wppa-exif-table-".$wppa['master_occur']."').css('display', ''); jQuery('.-wppa-exif-table-".$wppa['master_occur']."').css('display', 'none')");
 		$result .= '<a href="javascript://" class="-wppa-exif-table-'.$wppa['master_occur'].'" onclick="'.$onclick.'" >Show EXIF data</a>';
 
 		$onclick = esc_attr("jQuery('.wppa-exif-table-".$wppa['master_occur']."').css('display', 'none'); jQuery('.-wppa-exif-table-".$wppa['master_occur']."').css('display', '')");
@@ -3197,7 +3218,8 @@ global $wpdb;
 	$photo_name_js = esc_js($photo_name);
 	$photo_name = esc_attr($photo_name);
 	$photo_desc = esc_attr(wppa_get_photo_desc($photo));
-	$title = $photo_desc ? $photo_desc : $photo_name;
+//	$title = $photo_desc ? $photo_desc : $photo_name;
+$title = $photo_name;	// Patch 4.3.3
 	
 	switch ($type) {
 		case 'none':		// No link at all
