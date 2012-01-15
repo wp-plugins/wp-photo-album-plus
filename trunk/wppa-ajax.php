@@ -2,7 +2,7 @@
 /* wppa-ajax.php
 *
 * Functions used in ajax requests
-* version 4.3.1
+* version 4.3.4
 *
 */
 add_action('wp_ajax_wppa', 'wppa_ajax_callback');
@@ -588,6 +588,12 @@ global $wppa;
 						$alert = $title;
 						$wppa['error'] = '1';
 					}
+					break;
+					
+				case 'wppa_recup':
+					$result = wppa_recuperate_iptc_exif();
+					echo '0||'.__('Recuperation performed', 'wppa').'||'.$result;
+					exit;
 					break;
 
 				case 'wppa_regen':

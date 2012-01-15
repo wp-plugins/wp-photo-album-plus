@@ -2,11 +2,11 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 4.3.3
+* version 4.3.4
 *
 */
 global $wppa_api_version;
-$wppa_api_version = '4-3-3-000';
+$wppa_api_version = '4-3-4-000';
 // Initialize globals and option settings
 function wppa_initialize_runtime($force = false) {
 global $wppa;
@@ -1434,4 +1434,48 @@ global $wppa_inv_exiftags;
 	// Search
 	if ( isset($wppa_inv_exiftags[$tagname]) ) return sprintf('E#%04X',$wppa_inv_exiftags[$tagname]);
 	else return '';
+}
+
+// This function attemps to recover iptc and exif data from existing files in the wppa dir.
+function wppa_recuperate_iptc_exif() {
+global $wpdb;
+
+	$iptc_count = '0';
+	$exif_count = '0';
+	$out = '';
+	$files = glob( WPPA_UPLOAD_PATH.'/*.*' );
+	if ( $files ) {
+		foreach ( $files as $file ) {
+			if ( is_file ($file) ) {					// Not a dir
+				$attr = getimagesize($file, $info);
+				if ( is_array($attr) ) {				// Is a picturefile
+					if ( $attr[2] == IMAGETYPE_JPEG ) {	// Is a jpg
+						$id = basename($file);
+						$id = substr($id, 0, strpos($id, '.'));
+						// Now we have $id, $file and $info
+						if ( isset($info["APP13"]) ) {	// There is IPTC data
+							$is_iptc = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `".WPPA_IPTC."` WHERE `photo`=%s", $id));
+							if ( ! $is_iptc ) { 	// No IPTC yet and there is: Recuperate
+								wppa_import_iptc($id, $info);
+								$iptc_count++;
+							}						
+						}
+						$image_type = exif_imagetype($file);
+						if ( $image_type == IMAGETYPE_JPEG ) {	// EXIF supported by server
+							$is_exif = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `".WPPA_EXIF."` WHERE `photo`=%s", $id));
+							if ( ! $is_exif ) { 				// No EXIF yet
+								$exif = exif_read_data($file, 'EXIF');
+								if ( is_array($exif) )	{ 		// There is exif data present
+									wppa_import_exif($id, $file);
+									$exif_count++;
+								}
+							}						
+						}						
+					}					
+				}
+			}
+		}
+	}
+	$out .= __(sprintf('%s photos with IPTC data and %s photos with EXIF data processed.', $iptc_count, $exif_count), 'wppa');
+	return $out;
 }
