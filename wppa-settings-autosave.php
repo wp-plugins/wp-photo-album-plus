@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 4.3.3
+* Version 4.3.4
 *
 */
 
@@ -1882,6 +1882,15 @@ global $wppa_api_version;
 						$html = wppa_ajax_button('', $slug);
 						wppa_setting_2('', $slug, '11', $name, $desc, '', $html, $help);
 
+						$name = __('Recuperate', 'wppa');
+						$desc = 'Recuperate IPTC and EXIF data from photos in WPPA+.';
+						$help = esc_js(__('This action will attempt to find and register IPTC and EXIF data from photos in the WPPA+ system.', 'wppa'));
+						$help .= '\n\n'.esc_js(__('WARNING: Photos that have been downzised during upload/import will have NO IPTC and/or EXIF data.', 'wppa'));
+						$help .= '\n'.esc_js(__('If you want that data, you will have to re-import the original files. Use the update switch. You may resize them again.', 'wppa'));
+						$slug = 'wppa_recup';
+						$html = wppa_ajax_button('', $slug);
+						wppa_setting_2('', $slug, '12', $name, $desc, '', $html, $help);
+						
 						$wppa['no_default'] = false;
 
 						?>
