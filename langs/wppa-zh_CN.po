@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wppa-zh_CN\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-01-14 12:28+0100\n"
-"PO-Revision-Date: 2012-01-14 12:28+0100\n"
+"POT-Creation-Date: 2012-01-15 15:02+0100\n"
+"PO-Revision-Date: 2012-01-15 15:02+0100\n"
 "Last-Translator: J.N. Breetvelt <OpaJaap@OpaJaap.nl>\n"
 "Language-Team: delthink <delthink@gmail.com>\n"
 "MIME-Version: 1.0\n"
@@ -58,20 +58,20 @@ msgstr "排序"
 
 #: wppa-admin-functions.php:306
 #: wppa-admin-functions.php:310
-#: wppa-ajax.php:655
-#: wppa-ajax.php:663
+#: wppa-ajax.php:661
+#: wppa-ajax.php:669
 msgid "Please supply a numeric value greater than or equal to"
 msgstr "请提供大于或等于一个更大的数字值"
 
 #: wppa-admin-functions.php:306
 #: wppa-admin-functions.php:310
-#: wppa-ajax.php:655
-#: wppa-ajax.php:663
+#: wppa-ajax.php:661
+#: wppa-ajax.php:669
 msgid "for"
 msgstr "为"
 
 #: wppa-admin-functions.php:310
-#: wppa-ajax.php:663
+#: wppa-ajax.php:669
 msgid "and less than or equal to"
 msgstr "以及 小于或等于"
 
@@ -618,31 +618,35 @@ msgstr ""
 msgid "Could not clear EXIF data"
 msgstr "无法清除评级"
 
-#: wppa-ajax.php:610
+#: wppa-ajax.php:595
+msgid "Recuperation performed"
+msgstr ""
+
+#: wppa-ajax.php:616
 #, fuzzy, php-format
 msgid "Failed to set %s to %s"
 msgstr "提取失败"
 
-#: wppa-ajax.php:615
+#: wppa-ajax.php:621
 #, php-format
 msgid "Setting %s updated to %s"
 msgstr ""
 
-#: wppa-ajax.php:622
+#: wppa-ajax.php:628
 msgid "You just changed a setting that requires the regeneration of thumbnails."
 msgstr ""
 
-#: wppa-ajax.php:623
+#: wppa-ajax.php:629
 msgid "This process will start as soon as you refresh or re-enter the settings page."
 msgstr ""
 
-#: wppa-ajax.php:657
-#: wppa-ajax.php:665
+#: wppa-ajax.php:663
+#: wppa-ajax.php:671
 msgid "You may also enter:"
 msgstr ""
 
-#: wppa-ajax.php:658
-#: wppa-ajax.php:666
+#: wppa-ajax.php:664
+#: wppa-ajax.php:672
 msgid "You may also leave/set this blank"
 msgstr ""
 
@@ -1665,17 +1669,17 @@ msgstr "无法打开照片并导出文件。"
 msgid "Could not read photo data."
 msgstr "无法读取照片数据。"
 
-#: wppa-functions.php:3589
+#: wppa-functions.php:3592
 #, fuzzy
 msgid "Could not insert photo into db."
 msgstr "无法插入照片。查询="
 
-#: wppa-functions.php:3593
+#: wppa-functions.php:3596
 #, fuzzy
 msgid "Photo successfully uploaded."
 msgstr "成功上传。"
 
-#: wppa-functions.php:3596
+#: wppa-functions.php:3599
 #, fuzzy
 msgid "Upload failed"
 msgstr "上传 "
@@ -2261,8 +2265,8 @@ msgid "action that causes page reload."
 msgstr ""
 
 #: wppa-settings-autosave.php:199
-#: wppa-settings-autosave.php:2672
-#: wppa-settings-autosave.php:2682
+#: wppa-settings-autosave.php:2681
+#: wppa-settings-autosave.php:2691
 #, fuzzy
 msgid "Are you sure?"
 msgstr "你确定这是一个照片？"
@@ -2272,14 +2276,14 @@ msgid "action that does not cause page reload."
 msgstr ""
 
 #: wppa-settings-autosave.php:202
-#: wppa-settings-autosave.php:2121
-#: wppa-settings-autosave.php:2123
-#: wppa-settings-autosave.php:2512
-#: wppa-settings-autosave.php:2526
-#: wppa-settings-autosave.php:2537
-#: wppa-settings-autosave.php:2548
-#: wppa-settings-autosave.php:2578
-#: wppa-settings-autosave.php:2608
+#: wppa-settings-autosave.php:2130
+#: wppa-settings-autosave.php:2132
+#: wppa-settings-autosave.php:2521
+#: wppa-settings-autosave.php:2535
+#: wppa-settings-autosave.php:2546
+#: wppa-settings-autosave.php:2557
+#: wppa-settings-autosave.php:2587
+#: wppa-settings-autosave.php:2617
 msgid "Setting unmodified"
 msgstr ""
 
@@ -2345,8 +2349,8 @@ msgstr "此表描述了生成和WPPA+元素显示所有的大小和大小选项�
 #: wppa-settings-autosave.php:1326
 #: wppa-settings-autosave.php:1679
 #: wppa-settings-autosave.php:1762
-#: wppa-settings-autosave.php:1914
-#: wppa-settings-autosave.php:2163
+#: wppa-settings-autosave.php:1923
+#: wppa-settings-autosave.php:2172
 #: wppa-settings.php:520
 #: wppa-settings.php:773
 #: wppa-settings.php:792
@@ -2375,13 +2379,13 @@ msgstr "设置"
 #: wppa-settings-autosave.php:1680
 #: wppa-settings-autosave.php:1763
 #: wppa-settings-autosave.php:1783
-#: wppa-settings-autosave.php:1896
-#: wppa-settings-autosave.php:1915
-#: wppa-settings-autosave.php:2164
-#: wppa-settings-autosave.php:2184
-#: wppa-settings-autosave.php:2220
-#: wppa-settings-autosave.php:2240
-#: wppa-settings-autosave.php:2276
+#: wppa-settings-autosave.php:1905
+#: wppa-settings-autosave.php:1924
+#: wppa-settings-autosave.php:2173
+#: wppa-settings-autosave.php:2193
+#: wppa-settings-autosave.php:2229
+#: wppa-settings-autosave.php:2249
+#: wppa-settings-autosave.php:2285
 #: wppa-settings.php:521
 #: wppa-settings.php:774
 #: wppa-settings.php:793
@@ -3917,7 +3921,7 @@ msgid "% opacity"
 msgstr "不透明度"
 
 #: wppa-settings-autosave.php:951
-#: wppa-settings-autosave.php:1981
+#: wppa-settings-autosave.php:1990
 #: wppa-settings.php:1139
 #: wppa-settings.php:2285
 msgid "Custom"
@@ -4202,8 +4206,8 @@ msgstr "这是时间拍了一张照片淡出或缩小。"
 
 #: wppa-settings-autosave.php:1099
 #: wppa-settings-autosave.php:1256
-#: wppa-settings-autosave.php:2029
 #: wppa-settings-autosave.php:2038
+#: wppa-settings-autosave.php:2047
 #: wppa-settings.php:1277
 #: wppa-settings.php:1434
 #: wppa-settings.php:2327
@@ -4890,7 +4894,7 @@ msgstr "PS否决"
 #: wppa-settings-autosave.php:1506
 #: wppa-settings-autosave.php:1508
 #: wppa-settings-autosave.php:1645
-#: wppa-settings-autosave.php:2635
+#: wppa-settings-autosave.php:2644
 #: wppa-settings.php:1802
 #: wppa-settings.php:1804
 #: wppa-settings.php:1806
@@ -4907,7 +4911,7 @@ msgstr "没有链接"
 #: wppa-settings-autosave.php:1506
 #: wppa-settings-autosave.php:1508
 #: wppa-settings-autosave.php:1645
-#: wppa-settings-autosave.php:2636
+#: wppa-settings-autosave.php:2645
 #: wppa-settings.php:1802
 #: wppa-settings.php:1804
 #: wppa-settings.php:1806
@@ -4922,7 +4926,7 @@ msgstr "简单的照片（文件）。"
 #: wppa-settings-autosave.php:1502
 #: wppa-settings-autosave.php:1504
 #: wppa-settings-autosave.php:1506
-#: wppa-settings-autosave.php:2637
+#: wppa-settings-autosave.php:2646
 #: wppa-settings.php:1802
 #: wppa-settings.php:1804
 #: wppa-settings.php:1806
@@ -4935,7 +4939,7 @@ msgstr "幻灯片的全尺寸照片。"
 #: wppa-settings-autosave.php:1502
 #: wppa-settings-autosave.php:1504
 #: wppa-settings-autosave.php:1506
-#: wppa-settings-autosave.php:2638
+#: wppa-settings-autosave.php:2647
 #: wppa-settings.php:1802
 #: wppa-settings.php:1804
 #: wppa-settings.php:1806
@@ -4960,7 +4964,7 @@ msgstr "lightbox."
 #: wppa-settings-autosave.php:1502
 #: wppa-settings-autosave.php:1504
 #: wppa-settings-autosave.php:1506
-#: wppa-settings-autosave.php:2640
+#: wppa-settings-autosave.php:2649
 #: wppa-settings.php:1804
 #: wppa-settings.php:1806
 #: wppa-settings.php:1808
@@ -4969,21 +4973,21 @@ msgid "the content of the album."
 msgstr "该相册的内容"
 
 #: wppa-settings-autosave.php:1504
-#: wppa-settings-autosave.php:2641
+#: wppa-settings-autosave.php:2650
 #: wppa-settings.php:1806
 #: wppa-settings.php:2935
 msgid "defined at widget activation."
 msgstr "定义在组件激活。"
 
 #: wppa-settings-autosave.php:1506
-#: wppa-settings-autosave.php:2642
+#: wppa-settings-autosave.php:2651
 #: wppa-settings.php:1808
 #: wppa-settings.php:2936
 msgid "defined on widget admin page."
 msgstr "管理页面上定义的部件。"
 
 #: wppa-settings-autosave.php:1508
-#: wppa-settings-autosave.php:2643
+#: wppa-settings-autosave.php:2652
 #: wppa-settings.php:1810
 #: wppa-settings.php:2937
 msgid "same as title."
@@ -5375,16 +5379,16 @@ msgid "This table lists all actions that can be taken to the wppa+ system"
 msgstr "此表列出了所有可以采取行动的wppa+系统"
 
 #: wppa-settings-autosave.php:1781
-#: wppa-settings-autosave.php:1894
+#: wppa-settings-autosave.php:1903
 #: wppa-settings.php:2084
 #: wppa-settings.php:2186
 msgid "Specification"
 msgstr "规格"
 
 #: wppa-settings-autosave.php:1782
-#: wppa-settings-autosave.php:1895
-#: wppa-settings-autosave.php:2665
-#: wppa-settings-autosave.php:2678
+#: wppa-settings-autosave.php:1904
+#: wppa-settings-autosave.php:2674
+#: wppa-settings-autosave.php:2687
 #: wppa-settings.php:2085
 #: wppa-settings.php:2187
 msgid "Do it!"
@@ -5562,662 +5566,679 @@ msgstr "重置 所有评级。"
 msgid "WARNING: If checked, this will clear all EXIF data in the system!"
 msgstr "警告：如果选中，这将清除系统中所有的评级！"
 
-#: wppa-settings-autosave.php:1903
+#: wppa-settings-autosave.php:1885
+#, fuzzy
+msgid "Recuperate"
+msgstr "再生"
+
+#: wppa-settings-autosave.php:1887
+msgid "This action will attempt to find and register IPTC and EXIF data from photos in the WPPA+ system."
+msgstr ""
+
+#: wppa-settings-autosave.php:1888
+msgid "WARNING: Photos that have been downzised during upload/import will have NO IPTC and/or EXIF data."
+msgstr ""
+
+#: wppa-settings-autosave.php:1889
+msgid "If you want that data, you will have to re-import the original files. Use the update switch. You may resize them again."
+msgstr ""
+
+#: wppa-settings-autosave.php:1912
 #: wppa-settings.php:2195
 msgid "Table IX:"
 msgstr "表格IX:"
 
-#: wppa-settings-autosave.php:1903
+#: wppa-settings-autosave.php:1912
 #: wppa-settings.php:2195
 msgid "Miscellaneous:"
 msgstr "杂项: "
 
-#: wppa-settings-autosave.php:1904
+#: wppa-settings-autosave.php:1913
 #: wppa-settings.php:2196
 msgid "This table lists all settings that do not fit into an other table"
 msgstr "此表列出了所有的设置不适合到另一个表"
 
-#: wppa-settings-autosave.php:1921
+#: wppa-settings-autosave.php:1930
 #: wppa-settings.php:2225
 msgid "Arrow color"
 msgstr "箭头颜色"
 
-#: wppa-settings-autosave.php:1922
+#: wppa-settings-autosave.php:1931
 #: wppa-settings.php:2226
 msgid "Left/right browsing arrow color."
 msgstr "左/右浏览箭头的颜色。"
 
-#: wppa-settings-autosave.php:1923
+#: wppa-settings-autosave.php:1932
 #: wppa-settings.php:2227
 msgid "Enter the color of the navigation arrows."
 msgstr "输入导航箭头的颜色。"
 
-#: wppa-settings-autosave.php:1928
+#: wppa-settings-autosave.php:1937
 #: wppa-settings.php:2232
 msgid "Search page"
 msgstr "搜索页面"
 
-#: wppa-settings-autosave.php:1929
+#: wppa-settings-autosave.php:1938
 #: wppa-settings.php:2233
 msgid "Display the search results on page."
 msgstr "网页上显示搜索结果。"
 
-#: wppa-settings-autosave.php:1930
+#: wppa-settings-autosave.php:1939
 #: wppa-settings.php:2234
 #, php-format
 msgid "Select the page to be used to display search results. The page MUST contain %%wppa%%."
 msgstr "选择网页用来显示搜索结果。网页必须包含%%wppa%%."
 
-#: wppa-settings-autosave.php:1931
+#: wppa-settings-autosave.php:1940
 #: wppa-settings.php:2235
 msgid "You may give it the title \"Search results\" or something alike."
 msgstr "你可以给它的标题 \"Search results\"或类似的搜索结果。"
 
-#: wppa-settings-autosave.php:1932
+#: wppa-settings-autosave.php:1941
 #: wppa-settings.php:2236
 msgid "Or you ou may use the standard page on which you display the generic album."
 msgstr "或者你可以使用标准的页面上您显示通用专辑。"
 
-#: wppa-settings-autosave.php:1947
+#: wppa-settings-autosave.php:1956
 #: wppa-settings.php:2251
 msgid "Exclude separate"
 msgstr "排除单独"
 
-#: wppa-settings-autosave.php:1948
+#: wppa-settings-autosave.php:1957
 #: wppa-settings.php:2252
 msgid "Do not search 'separate' albums."
 msgstr "不要搜索'独立'的相册。"
 
-#: wppa-settings-autosave.php:1949
+#: wppa-settings-autosave.php:1958
 #: wppa-settings.php:2253
 msgid "When checked, albums (and photos in them) that have the parent set to --- separate --- will be excluded from being searched."
 msgstr "选中后，相册（并在他们的照片）具有独立的母公司---设置---将被排除在被搜查。"
 
-#: wppa-settings-autosave.php:1954
+#: wppa-settings-autosave.php:1963
 #: wppa-settings.php:2258
 msgid "Allow HTML"
 msgstr "允许HTML"
 
-#: wppa-settings-autosave.php:1955
+#: wppa-settings-autosave.php:1964
 #: wppa-settings.php:2259
 msgid "Allow HTML in album and photo descriptions."
 msgstr "允许HTML在专辑和图片说明:"
 
-#: wppa-settings-autosave.php:1956
+#: wppa-settings-autosave.php:1965
 #: wppa-settings.php:2260
 msgid "If checked: html is allowed. WARNING: No checks on syntax, it is your own responsability to close tags properly!"
 msgstr "如果勾选此项:HTML是允许的。警告:语法不检查,是你自己的反应作者能够关闭正确标签！"
 
-#: wppa-settings-autosave.php:1961
+#: wppa-settings-autosave.php:1970
 #: wppa-settings.php:2265
 msgid "Allow WPPA+ Debugging"
 msgstr "允许WPPA+调试"
 
-#: wppa-settings-autosave.php:1962
+#: wppa-settings-autosave.php:1971
 #: wppa-settings.php:2266
 msgid "Allow the use of &debug=.. in urls to this site."
 msgstr "允许使用和调试=..到本网站的URL。"
 
-#: wppa-settings-autosave.php:1963
+#: wppa-settings-autosave.php:1972
 #: wppa-settings.php:2267
 msgid "If checked: appending (?)(&)debug or (?)(&)debug=<int> to an url to this site will generate the display of special WPPA+ diagnostics, as well as php warnings"
 msgstr "如果选中：追加(?)(&)调试或(?)(&)调试=<int>的到本网站的网址会产生特殊WPPA+诊断的显示，以及PHP警告"
 
-#: wppa-settings-autosave.php:1971
+#: wppa-settings-autosave.php:1980
 #: wppa-settings.php:2275
 msgid "The following lines represent the sequence order of the slideshow components"
 msgstr "下面的几行代表的幻灯片组件的顺序"
 
-#: wppa-settings-autosave.php:1978
+#: wppa-settings-autosave.php:1987
 #: wppa-settings.php:2282
 #, fuzzy
 msgid "StartStop"
 msgstr "启动/停止 灯片滚动条:"
 
-#: wppa-settings-autosave.php:1979
+#: wppa-settings-autosave.php:1988
 #: wppa-settings.php:2283
 msgid "SlideFrame"
 msgstr "滑动帧"
 
-#: wppa-settings-autosave.php:1980
+#: wppa-settings-autosave.php:1989
 #: wppa-settings.php:2284
 #, fuzzy
 msgid "NameDesc"
 msgstr "名称和描述"
 
-#: wppa-settings-autosave.php:1983
+#: wppa-settings-autosave.php:1992
 #: wppa-settings.php:2287
 #, fuzzy
 msgid "FilmStrip"
 msgstr "幻灯片"
 
-#: wppa-settings-autosave.php:1984
+#: wppa-settings-autosave.php:1993
 #: wppa-settings.php:2288
 #, fuzzy
 msgid "Browsebar"
 msgstr "浏览栏"
 
-#: wppa-settings-autosave.php:1986
+#: wppa-settings-autosave.php:1995
 msgid "IPTC data"
 msgstr ""
 
-#: wppa-settings-autosave.php:1987
+#: wppa-settings-autosave.php:1996
 msgid "EXIF data"
 msgstr ""
 
-#: wppa-settings-autosave.php:1988
+#: wppa-settings-autosave.php:1997
 #: wppa-settings.php:2290
 #, fuzzy
 msgid "Enabled"
 msgstr "（启用）"
 
-#: wppa-settings-autosave.php:1989
+#: wppa-settings-autosave.php:1998
 #: wppa-settings.php:2291
 #, fuzzy
 msgid "Disabled"
 msgstr "（禁用）"
 
-#: wppa-settings-autosave.php:1991
+#: wppa-settings-autosave.php:2000
 #: wppa-settings.php:2293
 #, fuzzy
 msgid "Start/Stop & Slower/Faster navigation bar"
 msgstr "显示幻灯片导航栏。"
 
-#: wppa-settings-autosave.php:1992
+#: wppa-settings-autosave.php:2001
 #: wppa-settings.php:2294
 msgid "The Slide Frame"
 msgstr "幻灯片帧"
 
-#: wppa-settings-autosave.php:1992
+#: wppa-settings-autosave.php:2001
 #: wppa-settings.php:2294
 #, fuzzy
 msgid "( Always )"
 msgstr "（总是）"
 
-#: wppa-settings-autosave.php:1993
+#: wppa-settings-autosave.php:2002
 #: wppa-settings.php:2295
 #, fuzzy
 msgid "Photo Name & Description Box"
 msgstr "导航栏。"
 
-#: wppa-settings-autosave.php:1994
+#: wppa-settings-autosave.php:2003
 #: wppa-settings.php:2296
 msgid "Custom Box"
 msgstr "自定义Box"
 
-#: wppa-settings-autosave.php:1995
+#: wppa-settings-autosave.php:2004
 #: wppa-settings.php:2297
 #, fuzzy
 msgid "Rating Bar"
 msgstr "评分"
 
-#: wppa-settings-autosave.php:1996
+#: wppa-settings-autosave.php:2005
 #: wppa-settings.php:2298
 msgid "Film Strip with embedded Start/Stop and Goto functionality"
 msgstr "电影地带与嵌入式启动/停止和跳转功能"
 
-#: wppa-settings-autosave.php:1997
+#: wppa-settings-autosave.php:2006
 #: wppa-settings.php:2299
 msgid "Browse Bar with Photo X of Y counter"
 msgstr "浏览照片的Y计数器X条幅"
 
-#: wppa-settings-autosave.php:1998
+#: wppa-settings-autosave.php:2007
 #: wppa-settings.php:2300
 #, fuzzy
 msgid "Comments Box"
 msgstr "评级登录"
 
-#: wppa-settings-autosave.php:1999
+#: wppa-settings-autosave.php:2008
 msgid "IPTC box"
 msgstr ""
 
-#: wppa-settings-autosave.php:2000
+#: wppa-settings-autosave.php:2009
 msgid "EXIF box"
 msgstr ""
 
-#: wppa-settings-autosave.php:2006
+#: wppa-settings-autosave.php:2015
 #: wppa-settings.php:2306
 #, fuzzy
 msgid "Move Up"
 msgstr "移动到："
 
-#: wppa-settings-autosave.php:2018
+#: wppa-settings-autosave.php:2027
 #: wppa-settings.php:2316
 #, fuzzy
 msgid "Swap Namedesc"
 msgstr "名称和描述"
 
-#: wppa-settings-autosave.php:2019
+#: wppa-settings-autosave.php:2028
 #: wppa-settings.php:2317
 msgid "Swap the order sequence of name and description"
 msgstr "交换序的名称和描述"
 
-#: wppa-settings-autosave.php:2026
+#: wppa-settings-autosave.php:2035
 #: wppa-settings.php:2324
 msgid "Maximum time an album is indicated as New!"
 msgstr "最大的时间显示为新的专辑！"
 
-#: wppa-settings-autosave.php:2029
 #: wppa-settings-autosave.php:2038
+#: wppa-settings-autosave.php:2047
 #: wppa-settings.php:2327
 #: wppa-settings.php:2336
 #, fuzzy
 msgid "One hour"
 msgstr "小时"
 
-#: wppa-settings-autosave.php:2029
 #: wppa-settings-autosave.php:2038
+#: wppa-settings-autosave.php:2047
 #: wppa-settings.php:2327
 #: wppa-settings.php:2336
 #, fuzzy
 msgid "One day"
 msgstr "天"
 
-#: wppa-settings-autosave.php:2029
 #: wppa-settings-autosave.php:2038
+#: wppa-settings-autosave.php:2047
 #: wppa-settings.php:2327
 #: wppa-settings.php:2336
 #, fuzzy
 msgid "One week"
 msgstr "星期"
 
-#: wppa-settings-autosave.php:2029
 #: wppa-settings-autosave.php:2038
+#: wppa-settings-autosave.php:2047
 #: wppa-settings.php:2327
 #: wppa-settings.php:2336
 #, fuzzy
 msgid "One month"
 msgstr "字体："
 
-#: wppa-settings-autosave.php:2034
+#: wppa-settings-autosave.php:2043
 #: wppa-settings.php:2332
 #, fuzzy
 msgid "New Photo"
 msgstr "照片"
 
-#: wppa-settings-autosave.php:2035
+#: wppa-settings-autosave.php:2044
 #: wppa-settings.php:2333
 msgid "Maximum time a photo is indicated as New!"
 msgstr "新的照片显示在最前！"
 
-#: wppa-settings-autosave.php:2043
+#: wppa-settings-autosave.php:2052
 #: wppa-settings.php:2341
 msgid "WPPA+ Lightbox"
 msgstr "WPPA+ Lightbox"
 
-#: wppa-settings-autosave.php:2044
+#: wppa-settings-autosave.php:2053
 #: wppa-settings.php:2342
 #, fuzzy
 msgid "Use wppa+ embedded lightbox."
 msgstr "Uset wppa+ 嵌入式 lightbox."
 
-#: wppa-settings-autosave.php:2045
+#: wppa-settings-autosave.php:2054
 #: wppa-settings.php:2343
 msgid "WPPA+ comes with embedded lightbox 2. If you want to use a different ligtbox (plugin)"
 msgstr "WPPA+带有嵌入式lightbox2。如果你想使用一个不同的ligtbox（插件）"
 
-#: wppa-settings-autosave.php:2046
+#: wppa-settings-autosave.php:2055
 #: wppa-settings.php:2344
 msgid "or you do not use lightbox links, you may uncheck this item."
 msgstr "或者你不使用 lightbox的链接，您可能会取消这个项目。"
 
-#: wppa-settings-autosave.php:2047
+#: wppa-settings-autosave.php:2056
 #: wppa-settings.php:2345
 msgid "If you uncheck this item you can also no longer set lightbox configuration settings."
 msgstr "如果你取消这个你也可以不再设置 lightbox配置设置的项目。"
 
-#: wppa-settings-autosave.php:2048
+#: wppa-settings-autosave.php:2057
 #: wppa-settings.php:2346
 msgid "If you check this item, the wp supplied scripts prototype and scriptaculous are also being loaded."
 msgstr "如果选中此项目，WP提供脚本的原型和脚本aculous也被加载。"
 
-#: wppa-settings-autosave.php:2054
+#: wppa-settings-autosave.php:2063
 #: wppa-settings.php:2352
 #, fuzzy
 msgid "Alt Lightbox"
 msgstr "右"
 
-#: wppa-settings-autosave.php:2055
+#: wppa-settings-autosave.php:2064
 #: wppa-settings.php:2353
 msgid "The identifier of an alternate lightbox."
 msgstr ""
 
-#: wppa-settings-autosave.php:2056
+#: wppa-settings-autosave.php:2065
 #: wppa-settings.php:2354
 msgid "If you use a different lightbox plugin that uses rel=\"lbox-id\" you can enter the lbox-id here."
 msgstr ""
 
-#: wppa-settings-autosave.php:2062
+#: wppa-settings-autosave.php:2071
 #: wppa-settings.php:2360
 msgid "WPPA+ Filter priority"
 msgstr ""
 
-#: wppa-settings-autosave.php:2063
+#: wppa-settings-autosave.php:2072
 #: wppa-settings.php:2361
 msgid "Sets the priority of the wppa+ content filter."
 msgstr ""
 
-#: wppa-settings-autosave.php:2064
+#: wppa-settings-autosave.php:2073
 #: wppa-settings.php:2362
 msgid "If you encounter conflicts with the theme or other plugins, increasing this value sometimes helps. Use with great care!"
 msgstr ""
 
-#: wppa-settings-autosave.php:2069
+#: wppa-settings-autosave.php:2078
 #: wppa-settings.php:2367
 msgid "Apply Newphoto desc"
 msgstr ""
 
-#: wppa-settings-autosave.php:2070
+#: wppa-settings-autosave.php:2079
 #: wppa-settings.php:2368
 msgid "Give each new photo a standard description."
 msgstr ""
 
-#: wppa-settings-autosave.php:2071
+#: wppa-settings-autosave.php:2080
 #: wppa-settings.php:2369
 msgid "If checked, each new photo will get the description (template) as specified in the next item."
 msgstr ""
 
-#: wppa-settings-autosave.php:2078
+#: wppa-settings-autosave.php:2087
 #: wppa-settings.php:2376
 #, fuzzy
 msgid "New photo desc"
 msgstr "照片"
 
-#: wppa-settings-autosave.php:2079
+#: wppa-settings-autosave.php:2088
 #: wppa-settings.php:2377
 msgid "The description (template) to add to a new photo."
 msgstr ""
 
-#: wppa-settings-autosave.php:2080
+#: wppa-settings-autosave.php:2089
 #: wppa-settings.php:2378
 #, fuzzy
 msgid "Enter the default description."
 msgstr "输入专辑描述："
 
-#: wppa-settings-autosave.php:2081
+#: wppa-settings-autosave.php:2090
 #: wppa-settings.php:2379
 msgid "If yuo use html, please check item 4 of this table."
 msgstr ""
 
-#: wppa-settings-autosave.php:2088
+#: wppa-settings-autosave.php:2097
 #: wppa-settings.php:2386
 msgid "Autoclean"
 msgstr ""
 
-#: wppa-settings-autosave.php:2089
+#: wppa-settings-autosave.php:2098
 #: wppa-settings.php:2387
 msgid "Auto cleanup invalid database entries."
 msgstr ""
 
-#: wppa-settings-autosave.php:2090
+#: wppa-settings-autosave.php:2099
 #: wppa-settings.php:2388
 msgid "If checked, the database consistency will be automaticly secured after an interrupted upload or import procedure."
 msgstr ""
 
-#: wppa-settings-autosave.php:2095
+#: wppa-settings-autosave.php:2104
 #: wppa-settings.php:2393
 msgid "Watermark"
 msgstr ""
 
-#: wppa-settings-autosave.php:2096
+#: wppa-settings-autosave.php:2105
 #: wppa-settings.php:2394
 #, fuzzy
 msgid "Enable the application of watermarks."
 msgstr "启用评级制度。"
 
-#: wppa-settings-autosave.php:2097
+#: wppa-settings-autosave.php:2106
 #: wppa-settings.php:2395
 #, fuzzy
 msgid "If checked, photos can be watermarked during upload / import."
 msgstr "说明是否应调整大小的照片在上传。"
 
-#: wppa-settings-autosave.php:2103
+#: wppa-settings-autosave.php:2112
 #: wppa-settings.php:2401
 msgid "User Watermark"
 msgstr ""
 
-#: wppa-settings-autosave.php:2104
+#: wppa-settings-autosave.php:2113
 #: wppa-settings.php:2402
 msgid "Uploading users may select watermark settings"
 msgstr ""
 
-#: wppa-settings-autosave.php:2105
+#: wppa-settings-autosave.php:2114
 #: wppa-settings.php:2403
 #, fuzzy
 msgid "If checked, anyone who can upload and/or import photos can overrule the default watermark settings."
 msgstr "如果勾选此项,使用者可以编辑相册和上传/导入照片在自己的相册。"
 
-#: wppa-settings-autosave.php:2113
+#: wppa-settings-autosave.php:2122
 #: wppa-settings.php:2411
 msgid "Watermark file"
 msgstr ""
 
-#: wppa-settings-autosave.php:2114
+#: wppa-settings-autosave.php:2123
 #: wppa-settings.php:2412
 msgid "The default watermarkfile to be used."
 msgstr ""
 
-#: wppa-settings-autosave.php:2115
+#: wppa-settings-autosave.php:2124
 #: wppa-settings.php:2413
 msgid "Watermark files are of type png and reside in"
 msgstr ""
 
-#: wppa-settings-autosave.php:2116
+#: wppa-settings-autosave.php:2125
 #: wppa-settings.php:2414
 msgid "A suitable watermarkfile typically consists of a transparent background and a black text or drawing."
 msgstr ""
 
-#: wppa-settings-autosave.php:2117
+#: wppa-settings-autosave.php:2126
 #: wppa-settings.php:2415
 msgid "The watermark image will be overlaying the photo with 80% transparency."
 msgstr ""
 
-#: wppa-settings-autosave.php:2122
+#: wppa-settings-autosave.php:2131
 #: wppa-settings.php:2419
 #, fuzzy
 msgid "position:"
 msgstr "说明："
 
-#: wppa-settings-autosave.php:2126
+#: wppa-settings-autosave.php:2135
 #: wppa-settings.php:2422
 #, fuzzy
 msgid "Upload watermark"
 msgstr "上传 "
 
-#: wppa-settings-autosave.php:2127
+#: wppa-settings-autosave.php:2136
 #: wppa-settings.php:2423
 msgid "Upload a new watermark file"
 msgstr ""
 
-#: wppa-settings-autosave.php:2131
+#: wppa-settings-autosave.php:2140
 #, fuzzy
 msgid "Upload it!"
 msgstr "上传 "
 
-#: wppa-settings-autosave.php:2136
+#: wppa-settings-autosave.php:2145
 #: wppa-settings.php:2431
 msgid "Album admin autosave"
 msgstr ""
 
-#: wppa-settings-autosave.php:2137
+#: wppa-settings-autosave.php:2146
 #: wppa-settings.php:2432
 msgid "Use the Autosave version of the album admin page"
 msgstr ""
 
-#: wppa-settings-autosave.php:2146
+#: wppa-settings-autosave.php:2155
 #: wppa-settings.php:2441
 #, fuzzy
 msgid "Settings autosave"
 msgstr "设置"
 
-#: wppa-settings-autosave.php:2147
+#: wppa-settings-autosave.php:2156
 #: wppa-settings.php:2442
 msgid "Use the Autosave version of the settings page"
 msgstr ""
 
-#: wppa-settings-autosave.php:2148
+#: wppa-settings-autosave.php:2157
 #: wppa-settings.php:2443
 msgid "In this version of the settings page, all modifications are instantly updated on the server."
 msgstr ""
 
-#: wppa-settings-autosave.php:2171
+#: wppa-settings-autosave.php:2180
 #: wppa-settings.php:2467
 #, fuzzy
 msgid "Table X:"
 msgstr "表格IX:"
 
-#: wppa-settings-autosave.php:2171
+#: wppa-settings-autosave.php:2180
 #, fuzzy
 msgid "IPTC Configuration:"
 msgstr "WPPA+和PHP配置："
 
-#: wppa-settings-autosave.php:2172
+#: wppa-settings-autosave.php:2181
 #, fuzzy
 msgid "This table defines the IPTC configuration"
 msgstr "该表定义了链接类型和页面。"
 
-#: wppa-settings-autosave.php:2180
-#: wppa-settings-autosave.php:2216
-#: wppa-settings-autosave.php:2236
-#: wppa-settings-autosave.php:2272
+#: wppa-settings-autosave.php:2189
+#: wppa-settings-autosave.php:2225
+#: wppa-settings-autosave.php:2245
+#: wppa-settings-autosave.php:2281
 msgid "Tag"
 msgstr ""
 
-#: wppa-settings-autosave.php:2201
-#: wppa-settings-autosave.php:2257
+#: wppa-settings-autosave.php:2210
+#: wppa-settings-autosave.php:2266
 #, fuzzy
 msgid "Display"
 msgstr "显示方式："
 
-#: wppa-settings-autosave.php:2201
-#: wppa-settings-autosave.php:2257
-#: wppa-settings-autosave.php:2659
+#: wppa-settings-autosave.php:2210
+#: wppa-settings-autosave.php:2266
+#: wppa-settings-autosave.php:2668
 #: wppa-settings.php:2953
 msgid "Hide"
 msgstr "隐藏 "
 
-#: wppa-settings-autosave.php:2227
+#: wppa-settings-autosave.php:2236
 #, fuzzy
 msgid "Table XI:"
 msgstr "表一："
 
-#: wppa-settings-autosave.php:2227
+#: wppa-settings-autosave.php:2236
 #, fuzzy
 msgid "EXIF Configuration:"
 msgstr "WPPA+和PHP配置："
 
-#: wppa-settings-autosave.php:2228
+#: wppa-settings-autosave.php:2237
 #, fuzzy
 msgid "This table defines the EXIF configuration"
 msgstr "该表定义了链接类型和页面。"
 
-#: wppa-settings-autosave.php:2283
+#: wppa-settings-autosave.php:2292
 #, fuzzy
 msgid "Table XII:"
 msgstr "表II:"
 
-#: wppa-settings-autosave.php:2283
+#: wppa-settings-autosave.php:2292
 #: wppa-settings.php:2467
 msgid "WPPA+ and PHP Configuration:"
 msgstr "WPPA+和PHP配置："
 
-#: wppa-settings-autosave.php:2284
+#: wppa-settings-autosave.php:2293
 #: wppa-settings.php:2468
 msgid "This table lists all WPPA+ constants and PHP server configuration parameters and is read only"
 msgstr "只读此表列出了所有WPPA+的常量和PHP服务器的配置参数"
 
-#: wppa-settings-autosave.php:2294
+#: wppa-settings-autosave.php:2303
 #: wppa-settings.php:2478
 msgid "Value"
 msgstr "值"
 
-#: wppa-settings-autosave.php:2299
+#: wppa-settings-autosave.php:2308
 #: wppa-settings.php:2483
 #, fuzzy
 msgid "Albums db table name."
 msgstr "相册无法更新。"
 
-#: wppa-settings-autosave.php:2304
+#: wppa-settings-autosave.php:2313
 #: wppa-settings.php:2488
 msgid "Photos db table name."
 msgstr "照片DB表的名称。"
 
-#: wppa-settings-autosave.php:2309
+#: wppa-settings-autosave.php:2318
 #: wppa-settings.php:2493
 #, fuzzy
 msgid "Rating db table name."
 msgstr "清除评级"
 
-#: wppa-settings-autosave.php:2314
+#: wppa-settings-autosave.php:2323
 #: wppa-settings.php:2498
 msgid "Comments db table name."
 msgstr "评论DB表的名称。"
 
-#: wppa-settings-autosave.php:2319
+#: wppa-settings-autosave.php:2328
 #: wppa-settings.php:2503
 #, fuzzy
 msgid "Plugins main file name."
 msgstr "插件管理功能"
 
-#: wppa-settings-autosave.php:2324
+#: wppa-settings-autosave.php:2333
 #: wppa-settings.php:2508
 #, fuzzy
 msgid "Path to plugins directory."
 msgstr "设置源目录"
 
-#: wppa-settings-autosave.php:2329
+#: wppa-settings-autosave.php:2338
 #: wppa-settings.php:2513
 msgid "Plugins directory name."
 msgstr "plugins目录的名称。"
 
-#: wppa-settings-autosave.php:2334
+#: wppa-settings-autosave.php:2343
 #: wppa-settings.php:2518
 #, fuzzy
 msgid "Plugins directory url."
 msgstr "插件管理功能"
 
-#: wppa-settings-autosave.php:2339
+#: wppa-settings-autosave.php:2348
 #: wppa-settings.php:2523
 #, fuzzy
 msgid "The relative upload directory."
 msgstr "成功创建上传目录。"
 
-#: wppa-settings-autosave.php:2344
+#: wppa-settings-autosave.php:2353
 #: wppa-settings.php:2528
 msgid "The upload directory path."
 msgstr "上传目录的路径。"
 
-#: wppa-settings-autosave.php:2349
+#: wppa-settings-autosave.php:2358
 #: wppa-settings.php:2533
 msgid "The upload directory url."
 msgstr "上传目录的URL。"
 
-#: wppa-settings-autosave.php:2354
+#: wppa-settings-autosave.php:2363
 #: wppa-settings.php:2538
 #, fuzzy
 msgid "The relative depot directory."
 msgstr "无法建立目录库"
 
-#: wppa-settings-autosave.php:2359
+#: wppa-settings-autosave.php:2368
 #: wppa-settings.php:2543
 msgid "The depot directory path."
 msgstr "车厂目录的路径。"
 
-#: wppa-settings-autosave.php:2364
+#: wppa-settings-autosave.php:2373
 #: wppa-settings.php:2548
 #, fuzzy
 msgid "The depot directory url."
 msgstr "无法建立目录库"
 
-#: wppa-settings-autosave.php:2395
+#: wppa-settings-autosave.php:2404
 #: wppa-settings.php:2579
 msgid "No help available"
 msgstr "没有帮助"
 
-#: wppa-settings-autosave.php:2400
-#: wppa-settings-autosave.php:2430
-#: wppa-settings-autosave.php:2462
-#: wppa-settings-autosave.php:2495
+#: wppa-settings-autosave.php:2409
+#: wppa-settings-autosave.php:2439
+#: wppa-settings-autosave.php:2471
+#: wppa-settings-autosave.php:2504
 #: wppa-settings.php:2584
 #: wppa-settings.php:2636
 #: wppa-settings.php:2696
@@ -6225,32 +6246,32 @@ msgstr "没有帮助"
 msgid "Click for help"
 msgstr "点击帮助"
 
-#: wppa-settings-autosave.php:2633
+#: wppa-settings-autosave.php:2642
 #: wppa-settings.php:2927
 msgid "Checked"
 msgstr ""
 
-#: wppa-settings-autosave.php:2634
+#: wppa-settings-autosave.php:2643
 #: wppa-settings.php:2928
 msgid "Unchecked"
 msgstr ""
 
-#: wppa-settings-autosave.php:2639
+#: wppa-settings-autosave.php:2648
 #: wppa-settings.php:2933
 msgid "the photo specific link."
 msgstr "照片中的具体链接。"
 
-#: wppa-settings-autosave.php:2647
+#: wppa-settings-autosave.php:2656
 #: wppa-settings.php:2941
 msgid "The default for this setting is:"
 msgstr "这是一个系统范围的默认设定。"
 
-#: wppa-settings-autosave.php:2660
+#: wppa-settings-autosave.php:2669
 #: wppa-settings.php:2954
 msgid "Show"
 msgstr "显示 "
 
-#: wppa-settings-autosave.php:2683
+#: wppa-settings-autosave.php:2692
 #, fuzzy
 msgid "Not done yet"
 msgstr "没有照片"
