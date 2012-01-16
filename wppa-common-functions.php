@@ -1358,6 +1358,7 @@ function wppa_import_exif($id, $file) {
 global $wpdb;
 
 	// Check filetype
+	if ( ! function_exists('exif_imagetype') ) return false;
 	$image_type = exif_imagetype($file);
 	if ( $image_type != IMAGETYPE_JPEG ) return false;	// Not supported image type
 
