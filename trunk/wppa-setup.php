@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 4.3.3
+* Version 4.3.5
 *
 */
 
@@ -47,7 +47,7 @@ function wppa_setup($force = false) {
 					owner text NOT NULL,
 					timestamp tinytext NOT NULL,
 					PRIMARY KEY  (id) 
-					);";
+					) DEFAULT CHARACTER SET utf8;";
 					
 	$create_photos = "CREATE TABLE " . WPPA_PHOTOS . " (
 					id bigint(20) NOT NULL, 
@@ -62,7 +62,7 @@ function wppa_setup($force = false) {
 					owner text NOT NULL,
 					timestamp tinytext NOT NULL,
 					PRIMARY KEY  (id) 
-					);";
+					) DEFAULT CHARACTER SET utf8;";
 
 	$create_rating = "CREATE TABLE " . WPPA_RATING . " (
 					id bigint(20) NOT NULL,
@@ -70,7 +70,7 @@ function wppa_setup($force = false) {
 					value smallint(5) NOT NULL,
 					user text NOT NULL,
 					PRIMARY KEY  (id)
-					);";
+					) DEFAULT CHARACTER SET utf8;";
 					
 	$create_comments = "CREATE TABLE " . WPPA_COMMENTS . " (
 					id bigint(20) NOT NULL,
@@ -82,7 +82,7 @@ function wppa_setup($force = false) {
 					comment text NOT NULL,
 					status tinytext NOT NULL,
 					PRIMARY KEY  (id)	
-					);";
+					) DEFAULT CHARACTER SET utf8;";
 					
 	$create_iptc = "CREATE TABLE " . WPPA_IPTC . " (
 					id bigint(20) NOT NULL,
@@ -91,7 +91,7 @@ function wppa_setup($force = false) {
 					description text NOT NULL,
 					status tinytext NOT NULL,
 					PRIMARY KEY  (id)					
-					);";
+					) DEFAULT CHARACTER SET utf8;";
 
 	$create_exif = "CREATE TABLE " . WPPA_EXIF . " (
 					id bigint(20) NOT NULL,
@@ -100,7 +100,7 @@ function wppa_setup($force = false) {
 					description text NOT NULL,
 					status tinytext NOT NULL,
 					PRIMARY KEY  (id)					
-					);";
+					) DEFAULT CHARACTER SET utf8;";
 					
 	require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 	
@@ -448,7 +448,10 @@ global $wppa_defaults;
 						'wppa_comment_gravatar_url'		=> 'http://',
 						'wppa_gravatar_size'			=> '40',
 						'wppa_comment_moderation'		=> 'logout',
-						'wppa_comment_email_required'	=> 'yes'
+						'wppa_comment_email_required'	=> 'yes',
+						'wppa_copyright_on'				=> 'no',
+						'wppa_copyright_notice'			=> __('<span style="color:red" >Warning: Do not upload copyrighted material!</span>', 'wppa'),
+						'wppa_fulldesc_align'			=> 'center'
 
 						);
 

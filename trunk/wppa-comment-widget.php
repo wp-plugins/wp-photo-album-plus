@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the recent commets on photos
-* Version 4.2.11
+* Version 4.3.5
 */
 
 class wppaCommentWidget extends WP_Widget {
@@ -77,7 +77,7 @@ class wppaCommentWidget extends WP_Widget {
 			else {
 				$widget_content .= __a('Photo not found.', 'wppa_theme');
 			}
-			$widget_content .= "\n\t".'<span style="font-size:9px; cursor:pointer;" title="'.$comment['comment'].'" >'.$comment['user'].'</span>';
+			$widget_content .= "\n\t".'<span style="font-size:9px; cursor:pointer;" title="'.esc_attr($comment['comment']).'" >'.$comment['user'].'</span>';
 			$widget_content .= "\n".'</div>';
 		}	
 		else $widget_content .= 'There are no commented photos (yet).';

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 4.3.4
+* Version 4.3.5
 *
 */
 
@@ -826,6 +826,24 @@ global $wppa_api_version;
 						$html = wppa_input($slug, '90%', '300px');
 						wppa_setting($slug, '30a', $name, $desc, $html, $help, $class);
 						
+						$name = __('Show Copyright', 'wppa');
+						$desc = __('Show a copyright warning on the user upload screen.', 'wppa');
+						$help = '';
+						$slug = 'wppa_copyright_on';
+						$class = 'wppa_copyr';
+						$html = wppa_checkbox($slug);
+						wppa_setting($slug, '31', $name, $desc, $html, $help, $class);
+						
+						$name = __('Copyright notice', 'wppa');
+						$desc = __('The message to be displayed.', 'wppa');
+						$help = '';
+						$slug = 'wppa_copyright_notice';
+						$class = 'wppa_copyr';
+						$html = wppa_textarea($slug);
+						wppa_setting($slug, '32', $name, $desc, $html, $help, $class);
+
+
+						
 						?>
 					</tbody>
 					<tfoot style="font-weight: bold;" class="wppa_table_2">
@@ -1316,6 +1334,15 @@ global $wppa_api_version;
 						$html = wppa_checkbox($slug);
 						wppa_setting($slug, '31', $name, $desc, $html, $help);
 						
+						$name = __('Full desc align', 'wppa');
+						$desc = __('The alignment of the descriptions under fullsize images and slideshows.', 'wppa');
+						$help = '';
+						$slug = 'wppa_fulldesc_align';
+						$options = array(__('Left', 'wppa'), __('Center', 'wppa'), __('Right', 'wppa'));
+						$values = array('left', 'center', 'right');
+						$html = wppa_select($slug, $options, $values);
+						wppa_setting($slug, '32', $name, $desc, $html, $help);
+						
 						?>
 					</tbody>
 					<tfoot style="font-weight: bold;" class="wppa_table_4">
@@ -1749,7 +1776,8 @@ global $wppa_api_version;
 						$desc = __('Enable visitors to upload photos.', 'wppa');
 						$help = esc_js(__('If you check this item, visitors who are logged in and have wppa+ upload rights and have access to the album will see an upload photo link on album covers and thumbnail displays.', 'wppa'));
 						$slug = 'wppa_user_upload_on';
-						$html = wppa_checkbox($slug);
+						$onchange = 'wppaCheckUserUpload()';
+						$html = wppa_checkbox($slug, $onchange);
 						wppa_setting($slug, '7', $name, $desc, $html, $help);
 						
 						?>

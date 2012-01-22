@@ -1,7 +1,7 @@
 /* admin-scripts.js */
 /* Package: wp-photo-album-plus
 /*
-/* Version 4.3.2
+/* Version 4.3.5
 /* Various js routines used in admin pages		
 */
 
@@ -50,6 +50,7 @@ function wppaInitSettings() {
 	wppaCheckWatermark();
 	wppaCheckPopup();
 	wppaCheckGravatar();
+	wppaCheckUserUpload();
 	
 	for (table=1; table<13; table++) {
 		var cookie = wppa_getCookie('table_'+table);
@@ -400,11 +401,21 @@ function wppaCheckPopup() {
 }
 
 function wppaCheckGravatar() {
+	if ( ! document.getElementById('wppa_comment_gravatar') ) return;
 	if (document.getElementById('wppa_comment_gravatar').value == 'url') {
 		jQuery('.wppa_grav').css('display', '');
 	}
 	else {
 		jQuery('.wppa_grav').css('display', 'none');
+	}
+}
+
+function wppaCheckUserUpload() {
+	if (document.getElementById('wppa_user_upload_on').checked) {
+		jQuery('.wppa_copyr').css('display', '');
+	}
+	else {
+		jQuery('.wppa_copyr').css('display', 'none');
 	}
 }
 

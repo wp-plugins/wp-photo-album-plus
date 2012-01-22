@@ -2,7 +2,7 @@
 /* wppa-ajax.php
 *
 * Functions used in ajax requests
-* version 4.3.4
+* version 4.3.5
 *
 */
 add_action('wp_ajax_wppa', 'wppa_ajax_callback');
@@ -136,6 +136,18 @@ global $wppa;
 			}
 
 			echo $occur.'||'.$photo.'||'.$index.'||'.$myavgrat.'||'.$allavgrat;
+			break;
+		
+		case 'render':	
+			// Correct the fact that this is a non-admin operation
+			require_once 'wppa-non-admin.php';
+			wppa_load_theme();
+			foreach(array_keys($wppa_opt) as $s) {
+				if ( $wppa_opt[$s] == 'no' ) $wppa_opt[$s] = false;
+			}
+			$wppa['ajax'] = true;
+			// Do the dirty stuff
+			echo wppa_albums();
 			break;
 			
 		case 'delete-photo':
