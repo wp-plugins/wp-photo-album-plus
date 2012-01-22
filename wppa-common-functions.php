@@ -2,11 +2,11 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 4.3.4
+* version 4.3.5
 *
 */
 global $wppa_api_version;
-$wppa_api_version = '4-3-4-000';
+$wppa_api_version = '4-3-5-000';
 // Initialize globals and option settings
 function wppa_initialize_runtime($force = false) {
 global $wppa;
@@ -293,7 +293,10 @@ global $blog_id;
 			'wppa_comment_gravatar_url'		=> '',
 			'wppa_gravatar_size'			=> '',
 			'wppa_comment_moderation'		=> '',
-			'wppa_comment_email_required'	=> ''
+			'wppa_comment_email_required'	=> '',
+			'wppa_copyright_on'				=> '',
+			'wppa_copyright_notice'			=> '',
+			'wppa_fulldesc_align'			=> ''
 
 
 

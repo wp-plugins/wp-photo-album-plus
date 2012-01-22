@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the slideshow high level functions
-* Version 4.3.1
+* Version 4.3.5
 *
 */
 
@@ -148,7 +148,7 @@ global $wppa_opt;
 
 	if (($opt == 'optional') && !$wppa_opt['wppa_show_full_desc']) return;
 	if ($wppa['is_slideonly'] && !$wppa['desc_on']) return;	/* Not when slideonly and not explicitly turned on in the widget */
-	$wppa['out'] .= wppa_nltab().'<div id="imagedesc-'.$wppa['master_occur'].'" class="wppa-fulldesc imagedesc" style="'.__wcs('wppa-fulldesc').'padding:3px; width:100%;"></div>';
+	$wppa['out'] .= wppa_nltab().'<div id="imagedesc-'.$wppa['master_occur'].'" class="wppa-fulldesc imagedesc" style="'.__wcs('wppa-fulldesc').'padding:3px; width:100%; text-align:'.$wppa_opt['wppa_fulldesc_align'].'"></div>';
 }
 
 function wppa_slide_custom($opt = '') {

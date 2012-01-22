@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains the admin menu and startups the admin pages
-* Version 4.2.8
+* Version 4.3.5
 *
 */
 
@@ -39,7 +39,7 @@ function wppa_add_admin() {
 	add_submenu_page( 'wppa_admin_menu',  __('Export Photos', 'wppa'),           __('Export Photos', 'wppa'),          'administrator',      'wppa_export_photos',   'wppa_page_export' );
     add_submenu_page( 'wppa_admin_menu',  __('Settings', 'wppa'),                __('Settings', 'wppa'),               'administrator',      'wppa_options',         'wppa_page_options' );
 	add_submenu_page( 'wppa_admin_menu',  __('Photo of the day Widget', 'wppa'), __('Photo of the day', 'wppa'),       'wppa_sidebar_admin', 'wppa_sidebar_options', 'wppa_sidebar_page_options' );
-	add_submenu_page( 'wppa_admin_menu',  __('Manage comments', 'wppa'),         __('Comments', 'wppa').$pending_html, 'administrator',      'wppa_manage_comments', 'wppa_comments' );
+	add_submenu_page( 'wppa_admin_menu',  __('Manage comments', 'wppa'),         __('Comments', 'wppa').$pending_html, 'administrator',      'wppa_manage_comments', 'wppa_comment_admin' );
     add_submenu_page( 'wppa_admin_menu',  __('Help &amp; Info', 'wppa'),         __('Help &amp; Info', 'wppa'),        'edit_posts',         'wppa_help',            'wppa_page_help' );
 }
 
@@ -99,9 +99,9 @@ function wppa_sidebar_page_options() {
 	_wppa_sidebar_page_options();
 }
 // Comments admin page
-function wppa_comments() { 
+function wppa_comment_admin() { 
 	require_once 'wppa-comment-admin.php';
-	_wppa_comments();
+	_wppa_comment_admin();
 }
 // Help admin page
 function wppa_page_help() {	

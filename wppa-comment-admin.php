@@ -3,11 +3,11 @@
 * Package: wp-photo-album-plus
 *
 * manage all comments
-* Version 4.2.0
+* Version 4.3.5
 *
 */
 
-function _wppa_comments() {
+function _wppa_comment_admin() {
 global $wpdb;
 global $wppa;
 global $wppa_opt;

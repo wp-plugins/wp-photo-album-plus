@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, multisite, network, lightbox, comment, watermark, iptc, exif
-Version: 4.3.4
+Version: 4.3.5
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -54,7 +54,7 @@ You can find the plugin admin section under Menu Photo Albums on the admin scree
 == Installation ==
 
 = Upgrade notice =
-This version is: Major rev# 4, Minor rev# 3, Fix rev# 1, Hotfix rev# 000.
+This version is: Major rev# 4, Minor rev# 3, Fix rev# 5, Hotfix rev# 000.
 If you are upgrading from a previous Major or Minor version, note that:
 * If you modified wppa_theme.php and/or wppa_style.css, you will have to use the newly supplied versions. The previous versions are NOT compatible.
 * If you set the userlevel to anything else than 'administrator' you may have to set it again. Note that changing the userlevel can be done by the administrator only!
@@ -109,6 +109,23 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 4.3.5 =
+
+= Bug fixes =
+
+* The name of the commenter will be properly displayed in the comment widget, even when the comment contains html.
+
+= New Features =
+
+* An editable copyright warning message can be added on the user upload section. Table II-31,32.
+* The fullsize photo description can be aligned left, center or right. Table IV-32.
+* New installations will have default chracter set utf8 and do not need to run Table VIII-2.
+
+= Other changes =
+
+* The tooltip on fullsize images now shows the photo name rather than the description.
+* The Avatar can now be local.
 
 = 4.3.4 =
 
