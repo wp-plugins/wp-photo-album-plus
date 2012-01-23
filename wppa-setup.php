@@ -19,7 +19,7 @@
 // register_activation_hook(WPPA_FILE, 'wppa_activate'); is in wppa.php
 function wppa_activate() {
 	$old_rev = get_option('wppa_revision', '100');
-	$new_rev = '99';//$old_rev - '0.01';
+	$new_rev = $old_rev - '0.01';
 	update_option('wppa_revision', $new_rev);
 }
 // Set force to true to re-run it even when on rev (happens in wppa-settings.php)
@@ -194,7 +194,7 @@ global $silent;
 	
 	if ($iret !== false) {
 		update_option('wppa_revision', $wppa_revno);	
-		if ($old_rev != '99') {// NOT on activation
+		if ( ! strstr($old_rev, '.') ) {	// NOT on activation
 			if ( is_multisite() ) {
 				if ( get_option('wppa_multisite', 'no') == 'yes' ) {
 					wppa_ok_message(sprintf(__('WPPA+ successfully updated in multi site mode to db version %s.', 'wppa'), $wppa_revno));
