@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 4.3.5
+* Version 4.3.6
 *
 */
 
@@ -709,6 +709,15 @@ global $wppa_api_version;
 						$slug = 'wppa_show_bbb';
 						$html = wppa_checkbox($slug);
 						wppa_setting($slug, '19', $name, $desc, $html, $help);
+
+						$name = __('Big Browse Buttons in widget', 'wppa');
+						$desc = __('Enable invisible browsing buttons in widget slideshows.', 'wppa');
+						$help = esc_js(__('If checked, the fullsize image is covered by two invisible areas that act as browse buttons.', 'wppa'));
+						$help .= '\n\n'.esc_js(__('Make sure the Full height (Table I item 3) is properly configured to prevent these areas to overlap unwanted space.', 'wppa'));
+						$help .= '\n\n'.esc_js(__('A side effect of this setting is that right clicking the image no longer enables the visitor to download the image.', 'wppa'));
+						$slug = 'wppa_show_bbb_widget';
+						$html = wppa_checkbox($slug);
+						wppa_setting($slug, '19a', $name, $desc, $html, $help);
 						
 						$name = __('Slideshow/Browse', 'wppa');
 						$desc = __('Display the Slideshow / Browse photos link on album covers', 'wppa');
@@ -1342,6 +1351,13 @@ global $wppa_api_version;
 						$values = array('left', 'center', 'right');
 						$html = wppa_select($slug, $options, $values);
 						wppa_setting($slug, '32', $name, $desc, $html, $help);
+						
+						$name = __('Use Ajax', 'wppa');
+						$desc = __('Use Ajax as much as is possible and implemented.', 'wppa');
+						$help = '';
+						$slug = 'wppa_allow_ajax';
+						$html = wppa_checkbox($slug);
+						wppa_setting($slug, '33', $name, $desc, $html, $help);
 						
 						?>
 					</tbody>
@@ -2235,8 +2251,8 @@ global $wppa_api_version;
 								$slug1 = 'wppa_iptc_label_'.$name;
 								$slug2 = 'wppa_iptc_status_'.$name;
 								$html1 = wppa_edit($slug1, $label['description']);
-								$options = array(__('Display', 'wppa'), __('Hide', 'wppa'));
-								$values = array('display', 'hide');
+								$options = array(__('Display', 'wppa'), __('Hide', 'wppa'), __('Optional', 'wppa'));
+								$values = array('display', 'hide', 'option');
 								$html2 = wppa_select_e($slug2, $label['status'], $options, $values);
 								wppa_setting_2($slug1, $slug2, $i, $name, $desc, $html1, $html2, $help);
 								$i++;
@@ -2291,8 +2307,8 @@ global $wppa_api_version;
 								$slug1 = 'wppa_exif_label_'.$name;
 								$slug2 = 'wppa_exif_status_'.$name;
 								$html1 = wppa_edit($slug1, $label['description']);
-								$options = array(__('Display', 'wppa'), __('Hide', 'wppa'));
-								$values = array('display', 'hide');
+								$options = array(__('Display', 'wppa'), __('Hide', 'wppa'), __('Optional', 'wppa'));
+								$values = array('display', 'hide', 'option');
 								$html2 = wppa_select_e($slug2, $label['status'], $options, $values);
 								wppa_setting_2($slug1, $slug2, $i, $name, $desc, $html1, $html2, $help);
 								$i++;

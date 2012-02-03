@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the non admin stuff
-* Version 4.3.3
+* Version 4.3.6
 *
 */
 
@@ -30,11 +30,13 @@ function wppa_add_style() {
 add_action('init', 'wppa_add_javascripts');
 	
 function wppa_add_javascripts() {
-	wp_register_script('wppa_slideshow', WPPA_URL.'/wppa-slideshow.js');
-	wp_register_script('wppa_theme_js', WPPA_URL.'/wppa-theme.js');
+	wp_register_script('wppa-slideshow', WPPA_URL.'/wppa-slideshow.js');
+	wp_register_script('wppa-theme', WPPA_URL.'/wppa-theme.js');
+	wp_register_script('wppa-ajax', WPPA_URL.'/wppa-ajax.js');
 	wp_enqueue_script('jquery');
-	wp_enqueue_script('wppa_slideshow');
-	wp_enqueue_script('wppa_theme_js');
+	wp_enqueue_script('wppa-slideshow');
+	wp_enqueue_script('wppa-theme');
+	wp_enqueue_script('wppa-ajax');
 	if ( get_option('wppa_use_lightbox', 'yes') == 'yes' ) {
 		wp_enqueue_script('prototype');
 		wp_enqueue_script('scriptaculous-effects');
@@ -201,6 +203,8 @@ global $wppa_opt;
 		else echo("\t".'wppaEmailRequired = false;'."\n");
 		if ( is_numeric($wppa_opt['wppa_fullimage_border_width']) ) $temp = $wppa_opt['wppa_fullimage_border_width'] + '1'; else $temp = '0';
 		echo("\t".'wppaSlideBorderWidth = '.$temp.';'."\n");
+		if ( $wppa_opt['wppa_allow_ajax'] ) echo("\t".'wppaAllowAjax = true;'."\n"); 
+		else echo("\t".'wppaAllowAjax = false;'."\n");
 
 	echo("/* ]]> */\n");
 	echo("</script>\n");

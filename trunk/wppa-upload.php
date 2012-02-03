@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the upload/import pages and functions
-* Version 4.3.1
+* Version 4.3.6
 *
 */
 
@@ -612,12 +612,12 @@ global $warning_given;
 						}
 						else {
 							wppa_error_message(__('Error inserting photo', 'wppa') . ' ' . basename($file) . '.');
-							return false;
+//							return false;
 						}
 					}
 					else {
 						wppa_error_message(sprintf(__('Error inserting photo %s, unknown or non existent album.', 'wppa'), basename($file)));
-						return false;
+//						return false;
 					} 
 				} // Insert
 			}
