@@ -1,5 +1,5 @@
 ﻿// Slide show variables and functions
-// This is wppa-slideshow.js version 4.3.5
+// This is wppa-slideshow.js version 4.3.6
 //
 // Vars. The vars that have a name that starts with an underscore is an internal var
 // The vars without leading underscore are 'external' and get a value from html
@@ -52,6 +52,7 @@ var wppaSlideWrap = true;
 var wppaLightBox = '';
 var wppaEmailRequired = true;
 var wppaSlideBorderWidth = 0;
+var wppaSlideInitRunning = new Array();
 
 // 'Internal' variables
 var _wppaPhotoIds = new Array();
@@ -82,6 +83,7 @@ var _wppaLastVote = 0;
 var _wppaSkipRated = new Array();
 var _wppaLbTitle = new Array();
 var _wppaStateCount = 0;
+var _wppaDidGoto = new Array();
 
 jQuery(document).ready(function(){
 	_wppaLog('ready', 0);
@@ -122,6 +124,7 @@ function wppaStoreSlideInfo(mocc, id, url, size, width, height, name, desc, phot
 		_wppaUrl[mocc] = new Array();
 		_wppaSkipRated[mocc] = false;
 		_wppaLbTitle[mocc] = new Array();
+		_wppaDidGoto[mocc] = false;
 	}
     _wppaSlides[mocc][id] = ' src="' + url + '" alt="' + name + '" class="theimg big" ';
 		// Add 'old' width and height only for non-auto
@@ -183,12 +186,14 @@ function wppaRateIt(mocc, value) {
 }
 
 function wppaPrev(mocc) {
+	_wppaDidGoto[mocc] = true;
 	if ( ! _wppaSlideShowRuns[mocc] ) {
 		_wppaPrev(mocc);
 	}
 }
 
 function wppaNext(mocc) {
+	_wppaDidGoto[mocc] = true;
 	if ( ! _wppaSlideShowRuns[mocc] ) {
 		_wppaNext(mocc);
 	}
@@ -208,6 +213,7 @@ function wppaLeaveMe(mocc, idx) {
 
 function wppaGoto(mocc, idx) {
 	// Goto the requested slide if the slideshow stopped
+	_wppaDidGoto[mocc] = true;
 	if ( ! _wppaSlideShowRuns[mocc] ) {
 		_wppaGoto(mocc, idx);
 	}
@@ -215,6 +221,10 @@ function wppaGoto(mocc, idx) {
 
 function wppaGotoKeepState(mocc, idx) {
 	// Goto the requested slide and preserve running state
+	_wppaDidGoto[mocc] = true;
+	_wppaGotoKeepState(mocc, idx);
+}
+function _wppaGotoKeepState(mocc, idx) {	
 	if ( _wppaSlideShowRuns[mocc] ) {
 		_wppaGotoRunning(mocc,idx);
 	}
@@ -223,8 +233,10 @@ function wppaGotoKeepState(mocc, idx) {
 	}
 }
 
+
 function wppaGotoRunning(mocc, idx) {
 	// Goto the requested slide and start running
+	_wppaDidGoto[mocc] = true;
 	_wppaGotoRunning(mocc, idx);
 }
 
@@ -356,9 +368,12 @@ function _wppaNextSlide_2(mocc) {
 	fg = _wppaForeground[mocc];
 	bg = 1 - fg;
 	// Wait for load complete
-	if (!document.getElementById('theimg'+bg+"-"+mocc).complete) {
-		setTimeout('_wppaNextSlide_2('+mocc+')', 100);	// Try again after 100 ms
-		return;
+	// If we are here as a result of an onstatechange event, the background image is no longer available and will not become complete
+	if (document.getElementById('theimg'+bg+"-"+mocc)) { 
+		if (!document.getElementById('theimg'+bg+"-"+mocc).complete) {
+			setTimeout('_wppaNextSlide_2('+mocc+')', 100);	// Try again after 100 ms
+			return;
+		}
 	}
 	// Remove spinner
 	_wppaUnloadSpinner(mocc);
@@ -473,6 +488,10 @@ function _wppaNextSlide_5(mocc) {
 			setTimeout('_wppaNextSlide('+mocc+', "auto")', _wppaTimeOut[mocc]); 
 		}	
 		else {									// Done!
+			if ( _wppaDidGoto[mocc] ) {
+				wppaPushStateSlide(mocc, _wppaCurrentIndex[mocc]);	// Add to history stack
+				_wppaDidGoto[mocc] = false;
+			}
 		}
 	}
 
@@ -590,7 +609,7 @@ function _wppaStart(mocc, idx) {
 		_wppaNextSlide(mocc, 0);
 		_wppaShowMetaData(mocc, 'show');
 	}
-	else {
+	else {	// idx == -1, start from where you are
 		_wppaSlideShowRuns[mocc] = true;
 		_wppaNextSlide(mocc, 0);
 		jQuery('#startstop-'+mocc).html( wppaStop );
@@ -810,10 +829,10 @@ function _wppaRateIt(mocc, value) {
 	jQuery('#wppa-rate-'+mocc+'-'+value).attr('src', wppaTickImg.src);	// Set icon
 	jQuery('#wppa-rate-'+mocc+'-'+value).stop().fadeTo(100, 1.0);		// Fade in fully
 	
-	
-	if (wppaRatingUseAjax) {								// USE AJAX
-		// Create the http request object
-		var xmlhttp = wppaGetXmlHttp();
+	// Try to create the http request object
+	var xmlhttp = wppaGetXmlHttp();	// This function is in wppa-ajax.js
+
+	if ( wppaRatingUseAjax && xmlhttp ) {								// USE AJAX
 		
 		// Make the Ajax url
 		url = wppaAjaxUrl+'?action=wppa&wppa-action=rate&wppa-rating='+value+'&wppa-rating-id='+photoid;
@@ -845,7 +864,7 @@ function _wppaRateIt(mocc, value) {
 		xmlhttp.open('GET',url,true);
 		xmlhttp.send();	
 	}
-	else {						// NON-ajax method
+	else {						// use NON-ajax method, either to setting or browser does not support ajax
 		setTimeout('_wppaGo("'+url+'")', 200);	// 200 ms to display tick
 	}
 }
@@ -994,12 +1013,3 @@ function _wppaLog(text, mocc) {
 	elm.innerHTML = html;	// prepend logmessage
 }
 
-function wppaGetXmlHttp() {
-	if (window.XMLHttpRequest) {		// code for IE7+, Firefox, Chrome, Opera, Safari
-		xmlhttp=new XMLHttpRequest();
-	}
-	else {								// code for IE6, IE5
-		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-	}
-	return xmlhttp;
-}

@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 * admin sidebar widget
-* version 4.0.12
+* version 4.3.6
 *
 */
 
@@ -92,7 +92,7 @@ function _wppa_sidebar_page_options() {
 								document.getElementById('wppa-spin').style.visibility = 'visible';
 								document.getElementById('wppa-upd').style.visibility = 'hidden';
 								var album = document.getElementById('wppa-wa').value;
-								if (album != 'all' && album != 'sep' && album != 'all-sep')
+								if ( album != 'all' && album != 'sep' && album != 'all-sep' && album != 'clr' )
 									album = document.getElementById('wppa-was').value + ',' + album;
 								var url = "<?php echo(wppa_dbg_url(get_admin_url().'admin.php?page=wppa_sidebar_options')) ?>&walbum=" + album;
 								document.location.href = url;
@@ -186,7 +186,7 @@ function _wppa_sidebar_page_options() {
 				$hi = $wi + 48;
 				foreach ($photos as $photo) { ?>
 					<div class="photoselect" style="width: <?php echo(get_option('wppa_widget_width', '200')+'12'); ?>px; height: <?php echo($hi); ?>px; overflow:hidden; " >
-						<img src="<?php echo(get_bloginfo('wpurl') . '/wp-content/uploads/wppa/thumbs/' . $photo['id'] . '.' . $photo['ext']); ?>" alt="<?php echo($photo['name']); ?>"></img>
+						<img src="<?php echo(WPPA_UPLOAD_URL.'/thumbs/' . $photo['id'] . '.' . $photo['ext']); ?>" alt="<?php echo($photo['name']); ?>"></img>
 						<input type="radio" name="wppa-widget-photo" id="wppa-widget-photo<?php echo($photo['id']); ?>" value="<?php echo($photo['id']) ?>" <?php if ($photo['id'] == $id) echo('checked="checked"'); ?>/>
 						<div class="clear"></div>
 						<h4 style="position: absolute; top:<?php echo( $wi - 12 ); ?>px; font-size:11px; overflow:hidden;"><?php echo(wppa_qtrans(stripslashes($photo['name']))) ?></h4>

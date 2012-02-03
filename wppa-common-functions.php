@@ -2,7 +2,7 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 4.3.5
+* version 4.3.6
 *
 */
 global $wppa_api_version;
@@ -233,6 +233,7 @@ global $blog_id;
 			'wppa_popupsize' 				=> '',
 			'wppa_slide_order' 				=> '',
 			'wppa_show_bbb' 				=> '',
+			'wppa_show_bbb_widget'			=> '',
 			'wppa_show_slideshowbrowselink' => '',
 			'wppa_fullimage_border_width' 	=> '',
 			'wppa_bgcolor_fullimg' 			=> '',
@@ -296,9 +297,8 @@ global $blog_id;
 			'wppa_comment_email_required'	=> '',
 			'wppa_copyright_on'				=> '',
 			'wppa_copyright_notice'			=> '',
-			'wppa_fulldesc_align'			=> ''
-
-
+			'wppa_fulldesc_align'			=> '',
+			'wppa_allow_ajax'				=> ''
 
 
 		);
@@ -531,7 +531,7 @@ function wppa_get_album_id($name = '') {
 global $wpdb;
 
 	if ($name == '') return '';
-    $name = $wpdb->escape($name);
+    $name = stripslashes($name);
     $id = $wpdb->get_var( $wpdb->prepare( "SELECT id FROM " . WPPA_ALBUMS . " WHERE name = %s", $name ) );
     if ($id) {
 		return $id;

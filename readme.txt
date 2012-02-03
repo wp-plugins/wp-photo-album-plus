@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, multisite, network, lightbox, comment, watermark, iptc, exif
-Version: 4.3.5
+Version: 4.3.6
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -64,9 +64,10 @@ If you are upgrading from a previous Major or Minor version, note that:
 * Unzip and upload the wppa plugin folder to wp-content/plugins/
 * Make sure that the folder wp-content/uploads/ exists and is writable by the server (CHMOD 755)
 * Activate the plugin in WP Admin -> Plugins.
-* If, after installation, you are unable to upload photos, check the existance and rights (CHMOD 755)
-of the folders wp-content/uploads/wppa/ and wp-content/uploads/wppa/thumbs/. 
-In rare cases you will need to create them manually.
+* If, after installation, you are unable to upload photos, check the existance and rights (CHMOD 755) of: 
+for the single site mode installation: the folders .../wp-content/uploads/wppa/ and .../wp-content/uploads/wppa/thumbs/, 
+and for the multisite mode installation (example for blog id 92): the folders path: .../wp-content/blogs.dir/92/wppa/ and .../wp-content/blogs.dir/92/wppa/thumbs/.
+In rare cases you will need to create them manually. You can see the actual pathnames and urls in the lowest table of the Photo Albums -> Settings page.
 * If you upgraded from WP Photo Album (without plus) and you had copied wppa_theme.php and/or wppa_style.css 
 to your theme directory, you must remove them or replace them with the newly supplied versions.
 
@@ -109,6 +110,27 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 4.3.6 =
+
+= Bug fixes =
+
+* Photo of the day admin and Album admin: display of thumbs: link errors in multisite environment fixed.
+* In a widget there will no longer be an empty box at the location of the comment box.
+
+= New features =
+
+* You can now switch BBB's separately for widgets (Table II-19).
+
+= Other changes =
+
+* Improved userfriendlyness of the selection of albums in the potd widget admin
+* Increased ajaxification. You are strongly recommended to test your site with Table IV-33 checked.
+* IPTC and EXIF tages can now be set to Optional: display when the content is not empty.
+* The photo of the day will link to lightbox if lightbox is activated and if the link is set to: the plain photo(file).
+* Simplified qTranslate interface.
+* Importing photos that were previously exported will now properly import into albums with quotes in the name.
+* Importing photos will no longer stop at an error, but will attempt to continue.
 
 = 4.3.5 =
 

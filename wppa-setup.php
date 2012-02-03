@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 4.3.5
+* Version 4.3.6
 *
 */
 
@@ -166,6 +166,9 @@ global $silent;
 		wppa_ok_message($msg);
 	}
 	
+	if ( $old_rev < '436' ) {
+		update_option('wppa_show_bbb_widget', get_option('wppa_show_bbb', 'no'));
+	}
 	if ( $old_rev <= '432' ) {
 		if ( get_option('wppa_comment_use_gravatar', 'no') == 'yes' ) update_option('wppa_comment_gravatar', 'mm');
 		if ( get_option('wppa_comment_use_gravatar', 'nil') != 'nil' ) delete_option('wppa_comment_use_gravatar');
@@ -390,6 +393,7 @@ global $wppa_defaults;
 						'wppa_comadmin_order' 		=> 'timestamp',
 						'wppa_slide_order'			=> '0,1,2,3,4,5,6,7,8,9',
 						'wppa_show_bbb'				=> 'no',
+						'wppa_show_bbb_widget'		=> 'no',
 						'wppa_show_slideshowbrowselink' => 'yes',
 						'wppa_fullimage_border_width' 	=> '',
 						'wppa_bgcolor_fullimg' 			=> '#ccc',
@@ -454,7 +458,8 @@ global $wppa_defaults;
 						'wppa_comment_email_required'	=> 'yes',
 						'wppa_copyright_on'				=> 'no',
 						'wppa_copyright_notice'			=> __('<span style="color:red" >Warning: Do not upload copyrighted material!</span>', 'wppa'),
-						'wppa_fulldesc_align'			=> 'center'
+						'wppa_fulldesc_align'			=> 'center',
+						'wppa_allow_ajax'				=> 'no'
 
 						);
 

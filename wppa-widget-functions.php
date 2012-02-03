@@ -2,13 +2,13 @@
 /* wppa_widgetfunctions.php
 /* Package: wp-photo-album-plus
 /*
-/* Version 4.3.1
+/* Version 4.3.6
 /*
 */
 
 function wppa_get_widgetphotos($alb, $option = '') {
 	global $wpdb;
-	
+
 	$photos = false;
 	
 	// Is it a single album?
@@ -28,7 +28,7 @@ function wppa_get_widgetphotos($alb, $option = '') {
 			$query .= ' album=' . $a;
 		}
 		$query .= ' ' . $option;
-		$photos = $wpdb->get_results($query, 'ARRAY_A');
+		if ( ! $first ) $photos = $wpdb->get_results($query, 'ARRAY_A');
 	}
 	// Is it ALL?
 	elseif ($alb == 'all') {
@@ -49,7 +49,7 @@ function wppa_get_widgetphotos($alb, $option = '') {
 			}
 		}
 		$query .= ' ' . $option;
-		$photos = $wpdb->get_results($wpdb->prepare( $query ), 'ARRAY_A' );
+		if ( ! $first ) $photos = $wpdb->get_results($wpdb->prepare( $query ), 'ARRAY_A' );
 	}	
 	// Is it ALL-SEP?
 	elseif ($alb == 'all-sep') {
@@ -65,9 +65,9 @@ function wppa_get_widgetphotos($alb, $option = '') {
 			}
 		}
 		$query .= ' ' . $option;
-		$photos = $wpdb->get_results($wpdb->prepare( $query ), 'ARRAY_A');
+		if ( ! $first ) $photos = $wpdb->get_results($wpdb->prepare( $query ), 'ARRAY_A');
 	}
-	
+
 	return $photos;
 }
 
@@ -87,7 +87,7 @@ function wppa_walbum_select($sel = '') {
 	elseif ($sel == 'all-sep') $type = 5;	// All minus separate
 	else $type = 0;							// Nothing yet
     
-    $result = '<option value="" selected="selected">'.__('- select album(s) -', 'wppa').'</option>';
+    $result = '<option value="" >'.__('- select album(s) -', 'wppa').'</option>';
     
 	foreach ($albums as $album) {
 		switch ($type) {
@@ -117,9 +117,13 @@ function wppa_walbum_select($sel = '') {
 			if ($album['id'] < '10') $result .= '&nbsp;';
 			$result .= wppa_qtrans(stripslashes($album['name'])) . '</option>';
 	}
-    $result .= '<option value="all" >'.__('- all albums -', 'wppa').'</option>';
-	$result .= '<option value="sep" >'.__('- all -separate- albums -', 'wppa').'</option>';
-	$result .= '<option value="all-sep" >'.__('- all albums except -separate-', 'wppa').'</option>';
+	if ($type == 3) $sel = 'selected="selected"'; else $sel = '';
+    $result .= '<option value="all" '.$sel.' >'.__('- all albums -', 'wppa').'</option>';
+	if ($type == 4) $sel = 'selected="selected"'; else $sel = '';
+	$result .= '<option value="sep" '.$sel.' >'.__('- all -separate- albums -', 'wppa').'</option>';
+	if ($type == 5) $sel = 'selected="selected"'; else $sel = '';
+	$result .= '<option value="all-sep" '.$sel.' >'.__('- all albums except -separate-', 'wppa').'</option>';
+	$result .= '<option value="clr" >'.__('- start over -', 'wppa').'</option>';
 	return $result;
 }
 
@@ -128,6 +132,7 @@ function wppa_walbum_sanitize($walbum) {
 	if (strstr($result, 'all-sep')) $result = 'all-sep';
 	elseif (strstr($result, 'all')) $result = 'all';
 	elseif (strstr($result, 'sep')) $result = 'sep';
+	elseif (strstr($result, 'clr')) $result = '';
 	else {
 		while (substr_count($result, ',,')) {
 			$pos = strpos($result, ',,');

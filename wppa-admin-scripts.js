@@ -1,7 +1,7 @@
 /* admin-scripts.js */
 /* Package: wp-photo-album-plus
 /*
-/* Version 4.3.5
+/* Version 4.3.6
 /* Various js routines used in admin pages		
 */
 
@@ -765,7 +765,8 @@ function wppaCheckInconsistencies() {
 	if ( ( document.getElementById('wppa_slideshow_linktype').value == 'lightbox' ||
 		   document.getElementById('wppa_slideshow_linktype').value == 'file' ||
 		   document.getElementById('wppa_slideshow_overrule').checked == true ) &&
-		   document.getElementById('wppa_show_bbb').checked == true ) jQuery('#wppa-wr-3').css('display', '');
+		   (document.getElementById('wppa_show_bbb').checked == true ||
+		   document.getElementById('wppa_show_bbb_widget').checked == true)) jQuery('#wppa-wr-3').css('display', '');
 	else jQuery('#wppa-wr-3').css('display', 'none');
 	// Uses thumb popup and thumb lightbox?
 	if ( document.getElementById('wppa_use_thumb_popup').checked == true && 

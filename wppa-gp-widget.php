@@ -6,7 +6,7 @@
 *
 * A text widget that hooks the wppa+ filter
 *
-* Version 4.0.0
+* Version 4.3.6
 */
 
 class WppaGpWidget extends WP_Widget {
@@ -56,6 +56,7 @@ class WppaGpWidget extends WP_Widget {
 	}
 
 	function form( $instance ) {
+		global $wppa_opt;
 		$instance = wp_parse_args( (array) $instance, array( 'title' => '', 'text' => '' ) );
 		$title = strip_tags($instance['title']);
 		$text = format_to_edit($instance['text']);
