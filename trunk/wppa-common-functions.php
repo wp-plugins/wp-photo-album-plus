@@ -6,7 +6,7 @@
 *
 */
 global $wppa_api_version;
-$wppa_api_version = '4-3-5-000';
+$wppa_api_version = '4-3-6-000';
 // Initialize globals and option settings
 function wppa_initialize_runtime($force = false) {
 global $wppa;
@@ -582,8 +582,9 @@ function wppa_qtrans_enabled() {
 // qtrans hook for multi language support of content
 function wppa_qtrans($output, $lang = '') {
 	if ($lang == '') {
-		if (function_exists('qtrans_useCurrentLanguageIfNotFoundUseDefaultLanguage')) {
-			$output = qtrans_useCurrentLanguageIfNotFoundUseDefaultLanguage($output);
+		$output = __($output);
+//		if (function_exists('qtrans_useCurrentLanguageIfNotFoundUseDefaultLanguage')) {
+//			$output = qtrans_useCurrentLanguageIfNotFoundUseDefaultLanguage($output);
 		}
 	} else {
 		if (function_exists('qtrans_use')) {
