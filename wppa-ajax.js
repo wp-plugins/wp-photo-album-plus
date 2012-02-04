@@ -4,7 +4,7 @@
 * Contains the ajax and history code for the frontend
 * except ajax votng what is in the wppa-slideshow.js
 *
-* Version 4.3.6
+* Version 4.3.7
 *
 */
 
@@ -50,9 +50,11 @@ function wppaGetXmlHttp() {
 }
 
 // Setup an event handler for popstate events
-window.onpopstate = function(event) {  
+window.onpopstate = function(event) { 
+	var occ = 0;
 	if ( wppaCanPushState ) {
 		if ( event.state ) {
+			occ = event.state.occur;
 			switch ( event.state.type ) {
 				case 'html':
 					// Restore wppa container content
@@ -65,10 +67,15 @@ window.onpopstate = function(event) {
 			}
 		}
 		else {
+			occ = wppaFirstOccur;
 			// Restore first modified occurrences content
 			jQuery('#wppa-container-'+wppaFirstOccur).html(wppaStartHtml[wppaFirstOccur]);
 			// Now we are back to the initial page
 			wppaFirstOccur = 0;
+		}
+		// If it is a slideshow, stop it
+		if ( document.getElementById('theslide0-'+occ) ) {
+			_wppaStop(occ);
 		}
 	}
 };  

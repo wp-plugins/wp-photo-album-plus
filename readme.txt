@@ -111,6 +111,13 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
 
+= 4.3.7 =
+
+= Bug fixes =
+
+* Fixed error in wppa-common-functions.php causing a fatal error during update.
+* Fixed problem in wppa_get_permalink() causing many links to point to the homepage.
+
 = 4.3.6 =
 
 = Bug fixes =
