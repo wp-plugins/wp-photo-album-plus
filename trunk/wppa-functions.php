@@ -3,12 +3,12 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions and API modules
-* Version 4.3.6
+* Version 4.3.7
 *
 */
 /* Moved to wppa-commonfunctions.php:
 global $wppa_api_version;
-$wppa_api_version = '4-3-6-000';
+$wppa_api_version = '4-3-7-000';
 */
 
 
@@ -3162,6 +3162,60 @@ global $wppa_opt;
 	
 	switch ($key) {
 		case '0':
+		case '':	// normal permalink
+			if ($wppa['in_widget']) $pl = home_url();
+			else {
+				if ( $wppa['ajax'] ) {
+					if ( isset($_GET['page_id']) ) $id = $_GET['page_id'];
+					elseif ( isset($_GET['p']) ) $id = $_GET['p'];
+					else $id = '';
+					$pl = get_permalink(intval($id));
+				}
+				else {
+					$pl = get_permalink();
+				}
+			}
+			if (strpos($pl, '?')) $pl .= '&amp;';
+			else $pl .= '?';
+			break;
+		case 'js':	// normal permalink for js use
+			if ($wppa['in_widget']) $pl = home_url();
+			else {
+				if ( $wppa['ajax'] ) {
+					if ( isset($_GET['page_id']) ) $id = $_GET['page_id'];
+					elseif ( isset($_GET['p']) ) $id = $_GET['p'];
+					else $id = '';
+					$pl = get_permalink(intval($id));
+				}
+				else {
+					$pl = get_permalink();
+				}
+			}
+			if (strpos($pl, '?')) $pl .= '&';
+			else $pl .= '?';
+			break;
+		default:	// pagelink
+			$pl = get_page_link($key);
+			if (strpos($pl, '?')) $pl .= '&amp;';
+			else $pl .= '?';
+			break;
+	}
+	if ($wppa['debug']) {
+		if ( $key == 'js' ) $pl .= 'debug='.$wppa['debug'].'&';
+		else $pl .= 'debug='.$wppa['debug'].'&amp;';
+	}
+	return $pl;
+}
+/*
+// get permalink plus ? or & and possible debug switch
+function wppa_get_permalink($key = '') {
+global $wppa;
+global $wppa_opt;
+	
+	if ( !$key && is_search() ) $key = $wppa_opt['wppa_search_linkpage'];
+	
+	switch ($key) {
+		case '0':
 		case 'js':
 		case '':	// normal permalink
 			$pl = home_url();
@@ -3183,7 +3237,7 @@ global $wppa_opt;
 	if ( $key == 'js' ) $pl = str_replace('&amp;', '&', $pl);
 	return $pl;
 }
-
+*/
 // Like get_permalink but for ajax use
 function wppa_get_ajaxlink($key = '') {
 global $wppa;

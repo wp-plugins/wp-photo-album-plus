@@ -2,11 +2,11 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 4.3.6
+* version 4.3.7
 *
 */
 global $wppa_api_version;
-$wppa_api_version = '4-3-6-000';
+$wppa_api_version = '4-3-7-000';
 // Initialize globals and option settings
 function wppa_initialize_runtime($force = false) {
 global $wppa;
@@ -585,7 +585,7 @@ function wppa_qtrans($output, $lang = '') {
 		$output = __($output);
 //		if (function_exists('qtrans_useCurrentLanguageIfNotFoundUseDefaultLanguage')) {
 //			$output = qtrans_useCurrentLanguageIfNotFoundUseDefaultLanguage($output);
-		}
+//		}
 	} else {
 		if (function_exists('qtrans_use')) {
 			$output = qtrans_use($lang, $output, false);
