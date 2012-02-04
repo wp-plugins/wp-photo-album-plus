@@ -8,7 +8,7 @@
 */
 /* Moved to wppa-commonfunctions.php:
 global $wppa_api_version;
-$wppa_api_version = '4-3-7-000';
+$wppa_api_version = '4-3-7-001';
 */
 
 
@@ -2295,6 +2295,7 @@ global $cover_count;
 					elseif ( $linktype == 'slide' ) {
 						$href = wppa_get_slideshow_url($linkpage);
 					}
+					$hrefsl = $href;
 				}
 				else {				// make plain link url
 					$href = get_page_link($album['cover_linkpage']);
