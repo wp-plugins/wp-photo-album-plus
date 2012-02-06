@@ -4,7 +4,7 @@
 * Contains the ajax and history code for the frontend
 * except ajax votng what is in the wppa-slideshow.js
 *
-* Version 4.3.7
+* Version 4.3.8
 *
 */
 
@@ -58,20 +58,37 @@ window.onpopstate = function(event) {
 			switch ( event.state.type ) {
 				case 'html':
 					// Restore wppa container content
-					jQuery('#wppa-container-'+event.state.occur).html(event.state.html);
+					jQuery('#wppa-container-'+occ).html(event.state.html);
 					break;
 				case 'slide':
-					// Go to specified slide
-					_wppaGoto(event.state.occur, event.state.slide);
+					// Go to specified slide without the didgoto switch to avoid a stackpush here
+					_wppaGoto(occ, event.state.slide);
 					break;				
 			}
 		}
 		else {
 			occ = wppaFirstOccur;
 			// Restore first modified occurrences content
-			jQuery('#wppa-container-'+wppaFirstOccur).html(wppaStartHtml[wppaFirstOccur]);
+			jQuery('#wppa-container-'+occ).html(wppaStartHtml[occ]);
 			// Now we are back to the initial page
 			wppaFirstOccur = 0;
+			// If a photo number given goto that photo
+			if (occ == 0) {	// Find current occur if not yet known
+				var url = document.location.href;
+				var urls = url.split("&wppa-occur=");
+				occ = parseInt(urls[1]);			
+			}
+			var url = document.location.href;
+			var urls = url.split("&wppa-photo=");
+			var photo = parseInt(urls[1]);
+			if (photo > 0) {
+				var idx = 0;
+				while ( idx < _wppaPhotoIds[occ].length ) {
+					if (_wppaPhotoIds[occ][idx] == photo) break;
+					idx++;
+				}
+				if ( idx < _wppaPhotoIds[occ].length ) _wppaGoto(occ, idx);
+			}
 		}
 		// If it is a slideshow, stop it
 		if ( document.getElementById('theslide0-'+occ) ) {
@@ -116,11 +133,32 @@ function wppaPushStateSlide(mocc, slide) {
 
 	if ( wppaCanPushState ) {
 		var url = document.location.href;
-		var urlsplit = url.split("#");
-		if ( parseInt(urlsplit[1]) != slide ) {	// Avoid duplicates
-			wppaHis++;
-			history.pushState({page: wppaHis, occur: mocc, type: 'slide', slide: slide}, "---", '#'+slide+':'+mocc+':'+wppaHis);
+		
+		// Remove &wppa-photo=... if present.
+		var temp1 = url.split("?");
+		var temp2, temp3;
+		var i = 0;
+		var first = true;
+		if (temp1[1]) temp2 = temp1[1].split("&");
+		url = temp1[0];	// everything before '?'
+		if (temp2.length > 0) {
+			while (i<temp2.length) {
+				temp3 = temp2[i].split("=");
+				if (temp3[0] != "wppa-photo") {
+					if (first) url += "?";
+					else url += "&";
+					first = false;
+					url += temp2[i];
+				}
+				i++;
+			}
 		}
+		// Append new &wppa-photo=...
+		if (first) url += "?";
+		else url += "&";
+		url += "wppa-photo="+_wppaPhotoIds[mocc][_wppaCurrentIndex[mocc]];
+		// DoIt
+		history.pushState({page: wppaHis, occur: mocc, type: 'slide', slide: slide}, "---", url);
 	}
 }
 

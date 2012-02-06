@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, multisite, network, lightbox, comment, watermark, iptc, exif
-Version: 4.3.7
+Version: 4.3.8
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -110,6 +110,21 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 4.3.8 =
+
+= Bug fixes =
+
+* Fixed link from covertitle/coverimage to slideshow. (Stopped working as per 4.3.6).
+The computation of all links in the cover have been throughly revised and should function properly now
+in both cases either Table IV-33 is checked or not (Ajax).
+
+= Other changes =
+
+* The use of Big Browse Buttons will now also change the url when ajax is enabled in Table IV-33.
+* The urls created during browsing a slideshow are now equal to the respective single photo urls under the same conditions.
+This means that after browsing a slideshow, the content of the browser addressline can be saved 
+and used later to enter the slideshow at the specified point.
 
 = 4.3.7 =
 
