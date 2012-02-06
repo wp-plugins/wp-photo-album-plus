@@ -1,5 +1,5 @@
 ﻿// Slide show variables and functions
-// This is wppa-slideshow.js version 4.3.7
+// This is wppa-slideshow.js version 4.3.8
 //
 // Vars. The vars that have a name that starts with an underscore is an internal var
 // The vars without leading underscore are 'external' and get a value from html
@@ -927,8 +927,8 @@ function _wppaBbb(mocc,where,act) {
 			jQuery('.bbb-'+mocc).css('cursor', 'default');
 			break;
 		case 'click':
-			if (where == 'l') _wppaPrev(mocc);
-			if (where == 'r') _wppaNext(mocc);
+			if (where == 'l') wppaPrev(mocc);
+			if (where == 'r') wppaNext(mocc);
 			break;
 		default:
 			alert('Unimplemented instruction: '+act+' on: '+elm);
