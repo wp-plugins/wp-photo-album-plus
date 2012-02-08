@@ -2,11 +2,11 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 4.3.9
+* version 4.3.10
 *
 */
 global $wppa_api_version;
-$wppa_api_version = '4-3-9-000';
+$wppa_api_version = '4-3-10-000';
 // Initialize globals and option settings
 function wppa_initialize_runtime($force = false) {
 global $wppa;
@@ -1342,7 +1342,7 @@ global $wpdb;
 						if ( $s == '2#000' ) $status = 'hide';
 					$query 	= $wpdb->prepare("INSERT INTO `".WPPA_IPTC."` (`id`, `photo`, `tag`, `description`, `status`) VALUES (%s, %s, %s, %s, %s)", $key, $photo, $tag, $desc, $status); 
 					$iret 	= $wpdb->query($query);
-					if ( ! $iret ) wppa_dbg_msg('Error: '.$query, 'red', 'force');
+					if ( ! $iret ) wppa_dbg_msg('Error: '.$query);
 				}
 				// Now add poto specific data item
 				$key 	= wppa_nextkey(WPPA_IPTC);
@@ -1352,7 +1352,7 @@ global $wpdb;
 				$status = 'default';
 				$query  = $wpdb->prepare("INSERT INTO `".WPPA_IPTC."` (`id`, `photo`, `tag`, `description`, `status`) VALUES (%s, %s, %s, %s, %s)", $key, $photo, $tag, $desc, $status); 
 				$iret 	= $wpdb->query($query);
-				if ( ! $iret ) wppa_dbg_msg('Error: '.$query, 'red', 'force');
+				if ( ! $iret ) wppa_dbg_msg('Error: '.$query);
 			}
 		}
 	}
@@ -1407,7 +1407,7 @@ global $wpdb;
 			$status = 'display';
 			$query 	= $wpdb->prepare("INSERT INTO `".WPPA_EXIF."` (`id`, `photo`, `tag`, `description`, `status`) VALUES (%s, %s, %s, %s, %s)", $key, $photo, $tag, $desc, $status); 
 			$iret 	= $wpdb->query($query);
-			if ( ! $iret ) wppa_dbg_msg('Error: '.$query, 'red', 'force');
+			if ( ! $iret ) wppa_dbg_msg('Error: '.$query);
 		}
 		// Now add poto specific data item
 		$key 	= wppa_nextkey(WPPA_EXIF);
@@ -1416,7 +1416,7 @@ global $wpdb;
 		$status = 'default';
 		$query  = $wpdb->prepare("INSERT INTO `".WPPA_EXIF."` (`id`, `photo`, `tag`, `description`, `status`) VALUES (%s, %s, %s, %s, %s)", $key, $photo, $tag, $desc, $status); 
 		$iret 	= $wpdb->query($query);
-		if ( ! $iret ) wppa_dbg_msg('Error: '.$query, 'red', 'force');
+		if ( ! $iret ) wppa_dbg_msg('Error: '.$query);
 	}
 }
 
