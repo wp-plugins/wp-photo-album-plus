@@ -3,12 +3,12 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions and API modules
-* Version 4.3.8
+* Version 4.3.9
 *
 */
 /* Moved to wppa-commonfunctions.php:
 global $wppa_api_version;
-$wppa_api_version = '4-3-8-000';
+$wppa_api_version = '4-3-9-000';
 */
 
 
@@ -484,6 +484,19 @@ global $wppa;
 	$w = $wppa['in_widget'] ? 'w' : '';
 	$image = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM " . WPPA_PHOTOS . " WHERE id=%s LIMIT 1", $id ), 'ARRAY_A');
 	if ($image) $imgurl = wppa_get_permalink().'wppa-album='.$image['album'].'&amp;wppa-photo='.$image['id'].'&amp;wppa-cover=0&amp;wppa-'.$w.'occur='.$occur;	
+	else $imgurl = '';
+	return $imgurl;
+}
+
+function wppa_get_image_url_ajax_by_id($id = false) {
+global $wpdb;
+global $wppa;
+	
+	if ($id == false) return '';
+	$occur = $wppa['in_widget'] ? $wppa['widget_occur'] : $wppa['occur'];
+	$w = $wppa['in_widget'] ? 'w' : '';
+	$image = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM " . WPPA_PHOTOS . " WHERE id=%s LIMIT 1", $id ), 'ARRAY_A');
+	if ($image) $imgurl = wppa_get_ajaxlink().'wppa-album='.$image['album'].'&amp;wppa-photo='.$image['id'].'&amp;wppa-cover=0&amp;wppa-'.$w.'occur='.$occur;	
 	else $imgurl = '';
 	return $imgurl;
 }
@@ -1204,7 +1217,7 @@ global $wppa_first_comment_html;
 					$n_comments++;
 					$result .= '<tr valign="top" style="border-bottom:0 none; border-top:0 none; border-left: 0 none; border-right: 0 none; " >';
 						$result .= '<td class="wppa-box-text wppa-td" style="width:30%; border-width: 0 0 0 0; '.__wcs('wppa-box-text').__wcs('wppa-td').'" >';
-							$result .= $comment['user'].' wrote:';
+							$result .= $comment['user'].' '.__a('wrote:', 'wppa_theme');
 							$result .= '<br /><span style="font-size:9px; ">'.wppa_get_time_since($comment['timestamp']).'</span>';
 							if ( $wppa_opt['wppa_comment_gravatar'] != 'none') {
 								// Find the default
@@ -2338,6 +2351,10 @@ global $cover_count;
 	else {	// No content on current page/post
 		if ($photocount > '0') {	// coverphotos only
 			$href_title = wppa_get_image_page_url_by_id($coverphoto); 
+			if ( $wppa_opt['wppa_allow_ajax'] ) {
+				$onclick_title = "wppaDoAjaxRender(".$wppa['master_occur'].", '".wppa_get_image_url_ajax_by_id($coverphoto)."', '".$href_title."')";
+				$href_title = "javascript://";
+			}
 			if ($photocount == '1') $title = __a('View the cover photo', 'wppa_theme'); 
 			else $title = __a('View the cover photos', 'wppa_theme');
 		}
