@@ -2282,7 +2282,8 @@ global $cover_count;
 	$linktype = $album['cover_linktype'];
 	if ( !$linktype ) $linktype = 'content'; // Default 
 	// What is the albums title linkpage
-	if ( $album['cover_linkpage'] == '-1' ) $linktype = 'none'; // for backward compatibility
+	$linkpage = $album['cover_linkpage'];
+	if ( $linkpage == '-1' ) $linktype = 'none'; // for backward compatibility
 	
 	// Find the cover title link and onclick
 	// Dispatch on linktype when page is not current

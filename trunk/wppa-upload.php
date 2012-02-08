@@ -838,10 +838,10 @@ global $allphotos;
 	if ($xname == '') $name = basename($file);
 	else $name = wppa_qtrans($xname);
 	
-	wppa_dbg_msg('Trying to update '.$name.'<br />');
+	wppa_dbg_msg('Trying to update '.$name);
 	// Fill the names array
 	if ( ! $allphotos ) {
-	wppa_dbg_msg('Filling <br />');
+	wppa_dbg_msg('Filling');
 		$allphotos = $wpdb->get_results($wpdb->prepare( "SELECT id, name, ext FROM ".WPPA_PHOTOS) , "ARRAY_A" );
 		if ( is_array($allphotos) ) {
 			$index = '0';
@@ -867,7 +867,7 @@ global $allphotos;
 			}
 			$index++;
 		}
-	wppa_dbg_msg('Found '.$hits.' times photo '.$name.' id='.$lasthit.', ext='.$ext.'<br />');
+	wppa_dbg_msg('Found '.$hits.' times photo '.$name.' id='.$lasthit.', ext='.$ext);
 	}
 	// If one, proceed
 	if ( $hits == '1' ) {
