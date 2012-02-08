@@ -2300,7 +2300,7 @@ global $cover_count;
 	
 	// Find the cover title link and onclick
 	// Dispatch on linktype when page is not current
-	if ( $album['cover_linkpage'] > 0 ) {
+	if ( $linkpage > 0 ) {
 		switch ( $linktype ) {
 			case 'content':
 				if ($has_content) {
@@ -2362,14 +2362,14 @@ global $cover_count;
 	
 	// Find the slideshow link and onclick
 	$href_slideshow = wppa_get_slideshow_url($linkpage);
-	if ( $wppa_opt['wppa_allow_ajax'] ) {
+	if ( $wppa_opt['wppa_allow_ajax'] && ! $linkpage ) {
 		$onclick_slideshow = "wppaDoAjaxRender(".$wppa['master_occur'].", '".wppa_get_slideshow_url_ajax($album['id'], $linkpage)."', '".$href_slideshow."')";
 		$href_slideshow = "javascript://";
 	}
 
 	// Find the content 'View' link 
 	$href_content = wppa_get_album_url($album['id'], $linkpage);
-	if ( $wppa_opt['wppa_allow_ajax'] ) {
+	if ( $wppa_opt['wppa_allow_ajax'] && ! $linkpage ) {
 		$onclick_content = "wppaDoAjaxRender(".$wppa['master_occur'].", '".wppa_get_album_url_ajax($album['id'], $linkpage)."', '".$href_content."')";
 		$href_content = "javascript://";
 	}
