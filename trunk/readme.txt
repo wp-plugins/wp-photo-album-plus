@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, multisite, network, lightbox, comment, watermark, iptc, exif
-Version: 4.3.8
+Version: 4.3.9
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -109,7 +109,18 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 
 == Changelog ==
 
-See for additional information: http://wppa.opajaap.nl/?page_id=1459
+See for additional information: http://wppa.opajaap.nl/?page_id=145
+
+= 4.3.9 =
+
+= Bug fixes =
+
+* Fixed a erroneous link to a different given page.
+
+= Other changes =
+
+* Language files update (French)
+* Various cosmetic fixes
 
 = 4.3.8 =
 
