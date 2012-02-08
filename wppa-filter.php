@@ -22,6 +22,7 @@ global $wppa;
 	if ( strpos($post_old, '%%wppa%%') !== false ) {					// Yes, there is something to do here
 		if ($wppa['debug']) wppa_dbg_msg('%%wppa%% found');				// Issue diagnostic message
 		$wppa['occur'] = '0';											// Init this occurance
+		$wppa['fullsize'] = '';											// Reset at each post
 		$wppa_pos = strpos($post_old, '%%wppa%%');						// Where in the post is the invocation
 		if ($wppa['debug']) wppa_dbg_msg('Text: '.substr($post_old, $wppa_pos, 32));
 		while ($wppa_pos !== false) {
