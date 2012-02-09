@@ -115,7 +115,7 @@ See for additional information: http://wppa.opajaap.nl/?page_id=1459
 
 = Other changes =
 
-* Errors during upload caused by unwilling exif or iptc extraction are now suppressed when they are not fatal in standard mede (non-debug).
+* Errors during upload caused by unwilling exif or iptc extraction are now suppressed when they are not fatal in standard mode (non-debug).
 
 = 4.3.9 =
 
