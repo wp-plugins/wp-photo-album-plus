@@ -109,7 +109,7 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 
 == Changelog ==
 
-See for additional information: http://wppa.opajaap.nl/?page_id=145
+See for additional information: http://wppa.opajaap.nl/?page_id=1459
 
 = 4.3.10 =
 
