@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: WP Photo Album Plus in italiano\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-02-01 14:44+0100\n"
-"PO-Revision-Date: 2012-02-01 14:44+0100\n"
-"Last-Translator: J.N. Breetvelt <OpaJaap@OpaJaap.nl>\n"
+"PO-Revision-Date: 2012-02-16 14:03+0100\n"
+"Last-Translator: Gianni Diurno (aka gidibao) <gidibao[at]gmail[dot]com>\n"
 "Language-Team: Gianni Diurno | gidibao.net & charmingpress.com\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -3346,14 +3346,12 @@ msgid "A side effect of this setting is that right clicking the image no longer 
 msgstr "Questa impostazione farà sì che cliccando sulla immagine con il tasto destro non permetterà all'utente di scaricare l'immagine."
 
 #: wppa-settings-autosave.php:713
-#, fuzzy
 msgid "Big Browse Buttons in widget"
-msgstr "Grandi pulsanti navigazione"
+msgstr "Grandi pulsanti navigazione (widget)"
 
 #: wppa-settings-autosave.php:714
-#, fuzzy
 msgid "Enable invisible browsing buttons in widget slideshows."
-msgstr "Attiva pulsanti navigazione invisibili."
+msgstr "Attiva pulsanti navigazione invisibili nei widget slideshows."
 
 #: wppa-settings-autosave.php:722
 #: wppa-settings.php:950
@@ -3565,20 +3563,19 @@ msgstr "URL predefinito avatar commento"
 
 #: wppa-settings-autosave.php:838
 msgid "Show Copyright"
-msgstr ""
+msgstr "Mostra Copyright"
 
 #: wppa-settings-autosave.php:839
 msgid "Show a copyright warning on the user upload screen."
-msgstr ""
+msgstr "Mostra avvido per il copyright nella schermata di upload."
 
 #: wppa-settings-autosave.php:846
 msgid "Copyright notice"
-msgstr ""
+msgstr "Avviso Copyright"
 
 #: wppa-settings-autosave.php:847
-#, fuzzy
 msgid "The message to be displayed."
-msgstr "La dimensione massima per l'altezza delle immagini a dimensione intera."
+msgstr "Il messaggio da mostrare."
 
 #: wppa-settings-autosave.php:871
 #: wppa-settings.php:1032
@@ -4506,28 +4503,24 @@ msgid "Commenting users must enter their email addresses."
 msgstr "Gli utenti commentatori devono inserire i loro indirizzi email"
 
 #: wppa-settings-autosave.php:1346
-#, fuzzy
 msgid "Full desc align"
-msgstr "Descrizione fullsize"
+msgstr "Allineamento full desc"
 
 #: wppa-settings-autosave.php:1347
-#, fuzzy
 msgid "The alignment of the descriptions under fullsize images and slideshows."
-msgstr "Se attivo: mostra la descrizione sotto lo slideshow e le immagini a dimensione intera"
+msgstr "Allineamento descrizione sotto lo slideshow e le immagini a dimensione intera."
 
 #: wppa-settings-autosave.php:1350
-#, fuzzy
 msgid "Center"
 msgstr "centro"
 
 #: wppa-settings-autosave.php:1355
-#, fuzzy
 msgid "Use Ajax"
-msgstr "Valutazione via Ajax"
+msgstr "Usa Ajax"
 
 #: wppa-settings-autosave.php:1356
 msgid "Use Ajax as much as is possible and implemented."
-msgstr ""
+msgstr "Usa Ajax nei limiti delle possibilità."
 
 #: wppa-settings-autosave.php:1377
 #: wppa-settings.php:1511
@@ -5899,7 +5892,7 @@ msgstr "Nascondi"
 #: wppa-settings-autosave.php:2254
 #: wppa-settings-autosave.php:2310
 msgid "Optional"
-msgstr ""
+msgstr "Facoltativo"
 
 #: wppa-settings-autosave.php:2280
 msgid "Table XI:"
@@ -6151,7 +6144,7 @@ msgstr "WPPA+ è stato aggiornato con successo alla versione db %s in modalità 
 
 #: wppa-setup.php:460
 msgid "<span style=\"color:red\" >Warning: Do not upload copyrighted material!</span>"
-msgstr ""
+msgstr "<span style=\"color:red\" >Attenzione: non caricare materiale protetto da copyright!</span>"
 
 #: wppa-setup.php:491
 msgid "The uploads directory does not exist, please do a regular WP upload first."
@@ -6759,7 +6752,7 @@ msgstr "- tutti album meno -separati-"
 #: wppa-widget-functions.php:126
 #, fuzzy
 msgid "- start over -"
-msgstr "--- separato ---"
+msgstr "- start over -"
 
 #: theme/photo-album-page.php:30
 #: theme/photo-album-search-page.php:52
