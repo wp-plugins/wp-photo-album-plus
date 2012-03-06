@@ -1049,7 +1049,7 @@ global $wppa;
 		$src = $_GET['s'];
 	}
 
-	return $src;
+	return stripslashes($src);
 }
 
 function wppa_add_watermark($file) {

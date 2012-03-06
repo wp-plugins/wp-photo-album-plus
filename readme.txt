@@ -120,6 +120,8 @@ See for additional information: http://wppa.opajaap.nl/?page_id=1459
 * Tapping on a mobile divece on the Big Browse Bars is believed to work now.
 * Cosmetic changes and a few 'forgottn' translations.
 
+* Quotes in searchstrings work properly now
+
 = New features =
 
 * You can select - topten - for the album selection in the photo of the day widget. 
