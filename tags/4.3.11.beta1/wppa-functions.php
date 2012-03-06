@@ -141,7 +141,7 @@ global $wpdb;
 		}
 //		if (isset($_POST['wppa-searchstring'])) {
 		if ($wppa['src'] && $wppa['master_occur'] == '1') {
-			$wppa['out'] .= wppa_nltab().'<span class="wppa-nav-text b11" style="'.__wcs('wppa-nav-text').__wcs('wppa-black').'" ><b>&nbsp;'.__a('Searchstring:', 'wppa_theme').'&nbsp;'.$wppa['searchstring'].'</b></span>'; // $_POST['wppa-searchstring'].'</b></span>';
+			$wppa['out'] .= wppa_nltab().'<span class="wppa-nav-text b11" style="'.__wcs('wppa-nav-text').__wcs('wppa-black').'" ><b>&nbsp;'.__a('Searchstring:', 'wppa_theme').'&nbsp;'.stripslashes($wppa['searchstring']).'</b></span>'; // $_POST['wppa-searchstring'].'</b></span>';
 		}
 		elseif (wppa_get_get('topten') || $wppa['is_topten'] ) {
 			$wppa['out'] .= wppa_nltab().'<span class="wppa-nav-text b11" style="'.__wcs('wppa-nav-text').__wcs('wppa-black').'" ><b>&nbsp;'.__a('Top rated photos', 'wppa_theme').'</b></span>';
@@ -3271,7 +3271,11 @@ global $wppa_opt;
 	switch ($key) {
 		case '0':
 		case '':	// normal permalink
-			if ($wppa['in_widget']) $pl = home_url();
+			if ($wppa['in_widget']) {
+				$pl = home_url();
+				if (strpos($pl, '?')) $pl .= '&amp;';
+				else $pl .= '?';
+				}
 			else {
 				if ( $wppa['ajax'] ) {
 					if ( isset($_GET['page_id']) ) $id = $_GET['page_id'];
@@ -3291,7 +3295,11 @@ global $wppa_opt;
 			}
 			break;
 		case 'js':	// normal permalink for js use
-			if ($wppa['in_widget']) $pl = home_url();
+			if ($wppa['in_widget']) {
+				$pl = home_url();
+				if (strpos($pl, '?')) $pl .= '&';
+				else $pl .= '?';
+			}
 			else {
 				if ( $wppa['ajax'] ) {
 					if ( isset($_GET['page_id']) ) $id = $_GET['page_id'];
@@ -3709,13 +3717,13 @@ $title = $photo_name;	// Patch 4.3.3
 					return false;
 					break;
 				case '0':
-					$result['url'] = wppa_get_permalink().'&amp;wppa-photo='.$photo;
+					$result['url'] = wppa_get_permalink().'wppa-photo='.$photo;
 					$result['title'] = $title; //$photo_name;//'s-0';
 			$result['is_url'] = true;
 			$result['is_lightbox'] = false;
 					break;
 				default:
-					$result['url'] = wppa_get_permalink($page).'&amp;wppa-photo='.$photo;
+					$result['url'] = wppa_get_permalink($page).'wppa-photo='.$photo;
 					$result['title'] = $title; //$photo_name;//'s++';
 			$result['is_url'] = true;
 			$result['is_lightbox'] = false;
