@@ -2,7 +2,7 @@
 /* wppa-ajax.php
 *
 * Functions used in ajax requests
-* version 4.3.5
+* version 4.4.0
 *
 */
 add_action('wp_ajax_wppa', 'wppa_ajax_callback');
@@ -509,6 +509,9 @@ global $wppa;
 					break;
 				case 'wppa_gravatar_size':
 					wppa_ajax_check_range($value, false, '10', '256', __('Avatar size', 'wppa'));
+					break;
+				case 'wppa_watermark_opacity':
+					wppa_ajax_check_range($value, false, '0', '100', __('Watermark opacity', 'wppa'));
 					break;
 
 		

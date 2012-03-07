@@ -4,7 +4,9 @@
 * Contains the ajax and history code for the frontend
 * except ajax votng what is in the wppa-slideshow.js
 *
-* Version 4.3.8
+* Additionally: functions to change the url for addthis during ajax and browse operations
+*
+* Version 4.4.0
 *
 */
 
@@ -18,6 +20,7 @@ var wppaCanPushState = false;
 var wppaAllowAjax = true;		// Assume we are allowed to use ajax
 var wppaMaxOccur = 0;
 var wppaFirstOccur = 0;
+var wppaUsePhotoNamesInUrls = false;
 
 // Initialize
 jQuery(document).ready(function(e) {
@@ -127,39 +130,40 @@ function wppaDoAjaxRender(mocc, ajaxurl, newurl) {
 	else {	// Ajax NOT possible
 		document.location.href = newurl;
 	}
+	/* addthis */
+	wppaUpdateAddThisUrl(newurl, '');
 }
 
 function wppaPushStateSlide(mocc, slide) {
 
 	if ( wppaCanPushState ) {
-		var url = document.location.href;
-		
-		// Remove &wppa-photo=... if present.
-		var temp1 = url.split("?");
-		var temp2, temp3;
-		var i = 0;
-		var first = true;
-		if (temp1[1]) temp2 = temp1[1].split("&");
-		url = temp1[0];	// everything before '?'
-		if (temp2.length > 0) {
-			while (i<temp2.length) {
-				temp3 = temp2[i].split("=");
-				if (temp3[0] != "wppa-photo") {
-					if (first) url += "?";
-					else url += "&";
-					first = false;
-					url += temp2[i];
-				}
-				i++;
-			}
-		}
-		// Append new &wppa-photo=...
-		if (first) url += "?";
-		else url += "&";
-		url += "wppa-photo="+_wppaPhotoIds[mocc][_wppaCurrentIndex[mocc]];
-		// DoIt
+		var url = wppaGetCurrentFullUrl(mocc, _wppaCurrentIndex[mocc]);
 		history.pushState({page: wppaHis, occur: mocc, type: 'slide', slide: slide}, "---", url);
 	}
 }
+
+// WPPA modules for addthis.
+//
+
+var wppaAddThis = false;
+var addthis = null;
+
+jQuery(document).ready(function(){
+	if (addthis) {
+		addthis.init();	// In case loaded asynchronously
+		wppaAddThis = true;
+	}
+});
+
+
+
+function wppaUpdateAddThisUrl(url, title) {
+	if ( ! wppaAddThis ) return;	// No addthis activated
+	addthis.update('share', 'url', url);
+	if (title != '') {
+		addthis.update('share', 'title', title);
+	}
+}
+
 
 

@@ -1,5 +1,5 @@
 ﻿// Slide show variables and functions
-// This is wppa-slideshow.js version 4.3.8
+// This is wppa-slideshow.js version 4.4.0
 //
 // Vars. The vars that have a name that starts with an underscore is an internal var
 // The vars without leading underscore are 'external' and get a value from html
@@ -53,6 +53,7 @@ var wppaLightBox = '';
 var wppaEmailRequired = true;
 var wppaSlideBorderWidth = 0;
 var wppaSlideInitRunning = new Array();
+var wppaAnimationType = 'fadeover';
 
 // 'Internal' variables
 var _wppaPhotoIds = new Array();
@@ -311,11 +312,11 @@ function _wppaNextSlide(mocc, mode) {
 		}
 		jQuery("#theimg1-"+mocc).hide();	      
 	
-		_wppaLoadSpinner(mocc);
+//		_wppaLoadSpinner(mocc);
 	    
 		// Display name, description and comments
-		jQuery("#imagedesc-"+mocc).html('&nbsp;'+_wppaDescriptions[mocc][_wppaCurrentIndex[mocc]]+'&nbsp;');
-		jQuery("#imagetitle-"+mocc).html('&nbsp;'+_wppaNames[mocc][_wppaCurrentIndex[mocc]]+'&nbsp;');
+		jQuery("#imagedesc-"+mocc).html(_wppaDescriptions[mocc][_wppaCurrentIndex[mocc]]);
+		jQuery("#imagetitle-"+mocc).html(_wppaNames[mocc][_wppaCurrentIndex[mocc]]);
 		jQuery("#comments-"+mocc).html(_wppaCommentHtml[mocc][_wppaCurrentIndex[mocc]]);
 		jQuery("#iptc-"+mocc).html(_wppaIptcHtml[mocc][_wppaCurrentIndex[mocc]]);
 		jQuery("#exif-"+mocc).html(_wppaExifHtml[mocc][_wppaCurrentIndex[mocc]]);
@@ -354,7 +355,7 @@ function _wppaNextSlide(mocc, mode) {
 	_wppaCheckRewind(mocc);
 
     // Next is now current
-    _wppaCurrentIndex[mocc] = _wppaNextIndex[mocc];
+//    _wppaCurrentIndex[mocc] = _wppaNextIndex[mocc]; // set lower for swipe
 	if (wppaAutoColumnWidth) _wppaDoAutocol(mocc);
 	// Give free for a while to enable rendering of what we have done so far
 	setTimeout('_wppaNextSlide_2('+mocc+')', 10);	// to be continued
@@ -371,6 +372,8 @@ function _wppaNextSlide_2(mocc) {
 	// If we are here as a result of an onstatechange event, the background image is no longer available and will not become complete
 	if (document.getElementById('theimg'+bg+"-"+mocc)) { 
 		if (!document.getElementById('theimg'+bg+"-"+mocc).complete) {
+_wppaFirst[mocc] = true;
+_wppaLoadSpinner(mocc);
 			setTimeout('_wppaNextSlide_2('+mocc+')', 100);	// Try again after 100 ms
 			return;
 		}
@@ -395,25 +398,161 @@ function _wppaNextSlide_2(mocc) {
 function _wppaNextSlide_3(mocc) {
 	_wppaLog('NextSlide_3', mocc);
 
-	var fg;
-	var bg;
-	fg = _wppaForeground[mocc];
-	bg = 1 - fg;
+	var nw 		= _wppaForeground[mocc];
+	var ol 		= 1 - nw;
+	
+	var olIdx 	= _wppaCurrentIndex[mocc];
+	var nwIdx 	= _wppaNextIndex[mocc];
+	
+	var olSli	= "#theslide"+ol+"-"+mocc;
+	var nwSli 	= "#theslide"+nw+"-"+mocc;
+	
+	var olImg	= "#theimg"+ol+"-"+mocc;
+	var nwImg	= "#theimg"+nw+"-"+mocc;
+	
+	var w 		= parseInt(jQuery(olSli).css('width'));
+	var dir 	= 'nil';
 
-	// Fade old image out
-	jQuery("#theimg"+bg+"-"+mocc).fadeOut(wppaAnimationSpeed); 					// Req'd for change in portrait/landscape vv
-
-	// Fade new image in and continue with step 4
-	if (wppaFadeInAfterFadeOut) {
-		jQuery("#theimg"+fg+"-"+mocc).delay(wppaAnimationSpeed).fadeIn(wppaAnimationSpeed, _wppaNextSlide_4(mocc)); 
+	
+	if (olIdx == nwIdx) dir = 'none';
+	if (olIdx == nwIdx-1) dir = 'left';
+	if (olIdx == nwIdx+1) dir = 'right';
+	if (olIdx == _wppaSlides[mocc].length-1 && nwIdx == 0 && wppaSlideWrap) dir = 'left';
+	if (olIdx == 0 && nwIdx == _wppaSlides[mocc].length-1 && wppaSlideWrap) dir = 'right';
+	// Not known yet?
+	if (dir == 'nil') {
+		if (olIdx < nwIdx) dir = 'left';
+		else dir = 'right';
 	}
-	else {
-		jQuery("#theimg"+fg+"-"+mocc).fadeIn(wppaAnimationSpeed, _wppaNextSlide_4(mocc)); 
+
+	// Repair standard css
+	jQuery(olSli).css({marginLeft:0, width:w});
+	jQuery(nwSli).css({marginLeft:0, width:w});
+	
+	switch (wppaAnimationType) {
+	
+		case 'fadeover': 
+			jQuery(olImg).fadeOut(wppaAnimationSpeed); 
+			jQuery(nwImg).fadeIn(wppaAnimationSpeed, _wppaNextSlide_4(mocc)); 
+			break;
+		
+		case 'fadeafter': 
+			jQuery(olImg).fadeOut(wppaAnimationSpeed); 
+			jQuery(nwImg).delay(wppaAnimationSpeed).fadeIn(wppaAnimationSpeed, _wppaNextSlide_4(mocc)); 
+			break;
+		
+		case 'swipe':
+			switch (dir) {
+				case 'left':
+					jQuery(olSli).animate({marginLeft:-w+"px"}, wppaAnimationSpeed, "swing");
+					jQuery(nwSli).css({marginLeft:w+"px"});
+					jQuery(nwImg).fadeIn(10);
+					jQuery(nwSli).animate({marginLeft:0+"px"}, wppaAnimationSpeed, "swing", _wppaNextSlide_4(mocc));
+					break;
+				case 'right':
+					jQuery(olSli).animate({marginLeft:w+"px"}, wppaAnimationSpeed, "swing");
+					jQuery(nwSli).css({marginLeft:-w+"px"});
+					jQuery(nwImg).fadeIn(10);
+					jQuery(nwSli).animate({marginLeft:0+"px"}, wppaAnimationSpeed, "swing", _wppaNextSlide_4(mocc));
+					break;
+				case 'none':
+					jQuery(nwImg).fadeIn(10);
+					setTimeout('_wppaNextSlide_4('+mocc+')', 10);
+					break;
+			}
+			break;
+		
+		case 'stackon':
+			switch (dir) {
+				case 'left':
+					jQuery(olSli).css({zIndex:80});
+					jQuery(nwSli).css({marginLeft:w+"px", zIndex:81});
+					jQuery(nwImg).fadeIn(10);
+					jQuery(olImg).delay(wppaAnimationSpeed).fadeOut(10);
+					jQuery(nwSli).animate({marginLeft:0+"px"}, wppaAnimationSpeed, "swing", _wppaNextSlide_4(mocc));
+					break;
+				case 'right':
+					jQuery(olSli).css({zIndex:80});
+					jQuery(nwSli).css({marginLeft:-w+"px", zIndex:81});
+					jQuery(nwImg).fadeIn(10);
+					jQuery(olImg).delay(wppaAnimationSpeed).fadeOut(10);
+					jQuery(nwSli).animate({marginLeft:0+"px"}, wppaAnimationSpeed, "swing", _wppaNextSlide_4(mocc));
+					break;
+				case 'none':
+					jQuery(nwImg).fadeIn(10);
+					setTimeout('_wppaNextSlide_4('+mocc+')', 10);
+					break;
+			}
+			break;
+			
+		case 'stackoff':
+			switch (dir) {
+				case 'left':
+					jQuery(olSli).css({marginLeft:0, zIndex:81});
+					jQuery(olSli).animate({marginLeft:-w+"px"}, wppaAnimationSpeed, "swing", _wppaNextSlide_4(mocc));
+					jQuery(nwSli).css({marginLeft:0, zIndex:80});
+					jQuery(nwImg).fadeIn(10);
+					jQuery(olImg).delay(wppaAnimationSpeed).fadeOut(10);
+					break;
+				case 'right':
+					jQuery(olSli).css({marginLeft:0, zIndex:81});
+					jQuery(olSli).animate({marginLeft:w+"px"}, wppaAnimationSpeed, "swing", _wppaNextSlide_4(mocc));
+					jQuery(nwSli).css({marginLeft:0, zIndex:80});
+					jQuery(nwImg).fadeIn(10);
+					jQuery(olImg).delay(wppaAnimationSpeed).fadeOut(10);
+					break;
+				case 'none':
+					jQuery(nwImg).fadeIn(10);
+					setTimeout('_wppaNextSlide_4('+mocc+')', 10);
+					break;
+			}
+			break;
+			
+		case 'turnover':
+			switch (dir) {
+				case 'left':
+					jQuery(olSli).css({zIndex:81});
+					jQuery(olSli).animate({width:0}, wppaAnimationSpeed, "swing");
+					jQuery(olImg).animate({marginLeft:0, width:0, paddingLeft:0, paddingRight:0}, wppaAnimationSpeed, "swing", _wppaNextSlide_4(mocc));
+					jQuery(nwSli).css({width:w, zIndex:80});
+					jQuery(nwImg).fadeIn(10);
+					jQuery(olImg).fadeOut(10);
+					break;
+				case 'right':
+					var nwImgWid = parseInt(jQuery(nwImg).css('width'));
+					var nwMarLft = parseInt(jQuery(nwImg).css('marginLeft'));
+					jQuery(olSli).css({zIndex:80});
+					jQuery(nwSli).css({zIndex:81, width:0});
+					jQuery(nwImg).css({width:0, marginLeft:0});
+					jQuery(nwImg).fadeIn(10);
+					jQuery(nwSli).animate({width:w}, wppaAnimationSpeed, "swing");
+					jQuery(nwImg).animate({width:nwImgWid, marginLeft:nwMarLft}, wppaAnimationSpeed, "swing", _wppaNextSlide_4(mocc));
+					jQuery(olImg).delay(wppaAnimationSpeed).fadeOut(10);
+					break;
+				case 'none':
+					jQuery(nwImg).fadeIn(10);
+					setTimeout('_wppaNextSlide_4('+mocc+')', 10);
+					break;
+				}
+			break;
+			
+		default:
+			alert('Animation type '+wppaAnimationType+' is not supported in this version');	
+			
 	}
 }
 
 function _wppaNextSlide_4(mocc) {
 	_wppaLog('NextSlide_4', mocc);
+
+	// 
+	var nw = _wppaForeground[mocc];
+	var ol = 1-nw;
+//	jQuery("#theslide"+ol+"-"+mocc).css({zIndex: 80});
+//	jQuery("#theslide"+nw+"-"+mocc).css({zIndex: 81});
+	
+	    // Next is now current // put here for swipe
+		_wppaCurrentIndex[mocc] = _wppaNextIndex[mocc];
 
 	// set height to fit if reqd
 	if (wppa_portrait_only[mocc]) {
@@ -457,8 +596,8 @@ function _wppaNextSlide_5(mocc) {
 	// If we are going to the same slide, there is no need to hide and restore the subtitles and commentframe
 	if (!_wppaToTheSame) {	
 		// Restore subtitles
-		jQuery('#imagedesc-'+mocc).html('&nbsp;' + _wppaDescriptions[mocc][_wppaCurrentIndex[mocc]] + '&nbsp;');
-		jQuery('#imagetitle-'+mocc).html('&nbsp;' + _wppaNames[mocc][_wppaCurrentIndex[mocc]] + '&nbsp;');
+		jQuery('#imagedesc-'+mocc).html(_wppaDescriptions[mocc][_wppaCurrentIndex[mocc]]);
+		jQuery('#imagetitle-'+mocc).html(_wppaNames[mocc][_wppaCurrentIndex[mocc]]);
 		// Restore comments html
 		jQuery("#comments-"+mocc).html(_wppaCommentHtml[mocc][_wppaCurrentIndex[mocc]]);
 		// Restor IPTC
@@ -489,12 +628,16 @@ function _wppaNextSlide_5(mocc) {
 		}	
 		else {									// Done!
 			if ( _wppaDidGoto[mocc] ) {
-				wppaPushStateSlide(mocc, _wppaCurrentIndex[mocc]);	// Add to history stack
+				wppaPushStateSlide(mocc, _wppaCurrentIndex[mocc]);					// Add to history stack
 				_wppaDidGoto[mocc] = false;
+				_wppaIsBusy[mocc] = false;					// No longer busy
+				var idx = _wppaCurrentIndex[mocc];
+				var url = wppaGetCurrentFullUrl(mocc, idx);
+				// the next line may stop js execution due to an error in addthis js file (ag.href is undefined ?? ) It works (the url change), however not the title
+				wppaUpdateAddThisUrl(url, _wppaNames[mocc][idx]);	// Update addthis url and title
 			}
 		}
 	}
-
 	_wppaIsBusy[mocc] = false;					// No longer busy
 }
  
@@ -651,15 +794,16 @@ function _wppaLoadSpinner(mocc) {
 	var top;
 	var lft;
 	var elm;
-	
+if (!_wppaFirst[mocc]) return;
+_wppaFirst[mocc] = false;	
 	top = jQuery('#slide_frame-'+mocc).css('height');
 	if (top > 0) {
-		top = parseInt(parseInt(top/2) - 4)+'px';
+		top = parseInt(parseInt(top/2) - 16)+'px';
 	}
 	else {
 		top = jQuery('#slide_frame-'+mocc).css('minHeight');
 		if (top > 0) {
-			top = parseInt(parseInt(top/2) - 4)+'px';
+			top = parseInt(parseInt(top/2) - 16)+'px';
 		}
 		else top = '150px';
 	}
@@ -667,12 +811,12 @@ function _wppaLoadSpinner(mocc) {
 
 	lft = parseInt(lft);
 	if (lft > 0) {
-		lft = parseInt(lft/2 - 4)+'px';
+		lft = parseInt(lft/2 - 16)+'px';
 	}
 
 	jQuery('#spinner-'+mocc).css('top',top);
 	jQuery('#spinner-'+mocc).css('left',lft);
-	jQuery('#spinner-'+mocc).html('<img id="spinnerimg-'+mocc+'" src="'+wppaImageDirectory+'wpspin.gif" />');
+	jQuery('#spinner-'+mocc).html('<img id="spinnerimg-'+mocc+'" src="'+wppaImageDirectory+'loading.gif" />');
 }
 
 function _wppaUnloadSpinner(mocc) {
@@ -916,13 +1060,13 @@ function _wppaBbb(mocc,where,act) {
 	var elm = '#bbb-'+mocc+'-'+where;
 	switch (act) {
 		case 'show':
-			jQuery(elm).stop().fadeTo(100, 0.2);
+//			jQuery(elm).stop().fadeTo(100, 0.2);
 			if (where == 'l') jQuery(elm).attr('title', wppaPreviousPhoto);
 			if (where == 'r') jQuery(elm).attr('title', wppaNextPhoto);
 			jQuery('.bbb-'+mocc).css('cursor', 'pointer');
 			break;
 		case 'hide':
-			jQuery(elm).stop().fadeTo(400, 0);
+//			jQuery(elm).stop().fadeTo(400, 0);
 			jQuery('.bbb-'+mocc).removeAttr('title');
 			jQuery('.bbb-'+mocc).css('cursor', 'default');
 			break;
@@ -934,6 +1078,7 @@ function _wppaBbb(mocc,where,act) {
 			alert('Unimplemented instruction: '+act+' on: '+elm);
 	}
 }
+
 
 function _wppaShowMetaData(mocc, key) {
 	_wppaLog('ShowMetaData', mocc);
@@ -992,9 +1137,11 @@ function _wppaShowMetaData(mocc, key) {
 		// Hide iptc
 		jQuery("#iptccontent-"+mocc).css('visibility', 'hidden'); 
 		jQuery("#exifcontent-"+mocc).css('visibility', 'hidden'); 
+		// Hide addthis
+//		jQuery(".wppa-addthis-"+mocc).css('visibility', 'hidden');
 	}
 }
-var first=true;
+
 function _wppaLog(text, mocc) {
 	
 	if ( ! document.getElementById('wppa-debug-'+mocc) ) return;	// Debugging off
@@ -1011,5 +1158,160 @@ function _wppaLog(text, mocc) {
 	html += old_html;
 	if ( html.length > 1000 ) html = html.substr(0, 1000);
 	elm.innerHTML = html;	// prepend logmessage
+}
+
+
+function wppaGetCurrentFullUrl(mocc, idx) {
+		
+var url = document.location.href;
+	
+	// Remove &wppa-photo=... if present.
+	var temp1 = url.split("?");
+	var temp2 = 'nil';
+	var temp3;
+	var i = 0;
+	var first = true;
+	if (temp1[1]) temp2 = temp1[1].split("&");
+	url = temp1[0];	// everything before '?'
+	if (temp2 != 'nil') {
+		if (temp2.length > 0) {
+			while (i<temp2.length) {
+				temp3 = temp2[i].split("=");
+				if (temp3[0] != "wppa-photo") {
+					if (first) url += "?";
+					else url += "&";
+					first = false;
+					url += temp2[i];
+				}
+				i++;
+			}
+		}
+	}
+	// Append new &wppa-photo=...
+	if (first) url += "?";
+	else url += "&";
+	if ( wppaUsePhotoNamesInUrls ) {
+		url += "wppa-photo="+_wppaNames[mocc][idx];
+	}
+	else {
+		url += "wppa-photo="+_wppaPhotoIds[mocc][idx];
+	}
+	
+	return url;
+}
+
+// Swipe
+
+var triggerElementID = null; 
+var fingerCount = 0;
+var startX = 0;
+var startY = 0;
+var curX = 0;
+var curY = 0;
+var deltaX = 0;
+var deltaY = 0;
+var horzDiff = 0;
+var vertDiff = 0;
+var minLength = 72; 
+var swipeLength = 0;
+var swipeAngle = null;
+var swipeDirection = null;
+var wppaMocc = 0;
+
+function wppaTouchStart(event,passedName,mocc) {
+	wppaMocc = mocc;
+	event.preventDefault();
+	fingerCount = event.touches.length;
+
+	if ( fingerCount == 1 ) {
+		startX = event.touches[0].pageX;
+		startY = event.touches[0].pageY;
+		triggerElementID = passedName;
+	} else {
+		wppaTouchCancel(event);
+	}
+}
+
+function wppaTouchMove(event) {
+	event.preventDefault();
+	if ( event.touches.length == 1 ) {
+		curX = event.touches[0].pageX;
+		curY = event.touches[0].pageY;
+	} else {
+		wppaTouchCancel(event);
+	}
+}
+
+function wppaTouchEnd(event) {
+	event.preventDefault();
+	if ( fingerCount == 1 && curX != 0 ) {
+		swipeLength = Math.round(Math.sqrt(Math.pow(curX - startX,2) + Math.pow(curY - startY,2)));
+		if ( swipeLength >= minLength ) {
+			wppaCalculateAngle();
+			wppaDetermineSwipeDirection();
+			wppaProcessingRoutine();
+			wppaTouchCancel(event); // reset the variables
+		} else {
+			wppaTouchCancel(event);
+		}	
+	} else {
+		wppaTouchCancel(event);
+	}
+}
+
+function wppaTouchCancel(event) {
+	fingerCount = 0;
+	startX = 0;
+	startY = 0;
+	curX = 0;
+	curY = 0;
+	deltaX = 0;
+	deltaY = 0;
+	horzDiff = 0;
+	vertDiff = 0;
+	swipeLength = 0;
+	swipeAngle = null;
+	swipeDirection = null;
+	triggerElementID = null;
+	wppaMocc = 0;
+}
+
+function wppaCalculateAngle() {
+	var X = startX-curX;
+	var Y = curY-startY;
+	var Z = Math.round(Math.sqrt(Math.pow(X,2)+Math.pow(Y,2))); //the distance - rounded - in pixels
+	var r = Math.atan2(Y,X); //angle in radians (Cartesian system)
+	swipeAngle = Math.round(r*180/Math.PI); //angle in degrees
+	if ( swipeAngle < 0 ) { swipeAngle =  360 - Math.abs(swipeAngle); }
+}
+
+function wppaDetermineSwipeDirection() {
+	if ( (swipeAngle <= 45) && (swipeAngle >= 0) ) {
+		swipeDirection = 'left';
+	} else if ( (swipeAngle <= 360) && (swipeAngle >= 315) ) {
+		swipeDirection = 'left';
+	} else if ( (swipeAngle >= 135) && (swipeAngle <= 225) ) {
+		swipeDirection = 'right';
+	} else if ( (swipeAngle > 45) && (swipeAngle < 135) ) {
+		swipeDirection = 'down';
+	} else {
+		swipeDirection = 'up';
+	}
+}
+
+function wppaProcessingRoutine() {
+	var swipedElement = document.getElementById(triggerElementID);
+	if ( swipeDirection == 'left' ) {
+		wppaNext(wppaMocc);
+		wppaMocc = 0;
+	} 
+	else if ( swipeDirection == 'right' ) {
+		wppaPrev(wppaMocc);
+		wppaMocc = 0;
+	} 
+	else if ( swipeDirection == 'up' ) {
+	} 
+	else if ( swipeDirection == 'down' ) {
+	}
 }
 
