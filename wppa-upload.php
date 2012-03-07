@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the upload/import pages and functions
-* Version 4.3.9
+* Version 4.4.0
 *
 */
 
@@ -456,7 +456,7 @@ global $warning_given;
 	$source = get_option('wppa_import_source_'.$user, WPPA_DEPOT); // removed /$user
 
 	$depot = ABSPATH . $source;	// Filesystem
-	$depoturl = get_bloginfo('url').'/'.$source;	// url
+	$depoturl = get_bloginfo('wpurl').'/'.$source;	// url
 
 	// See what's in there
 	$paths = $depot.'/*.*';
@@ -813,11 +813,21 @@ function wppa_extract($path, $delz) {
 		if ($ext == 'zip') {
 			$zip = new ZipArchive;
 			if ($zip->open($path) === true) {
-				for($i = 0; $i < $zip->numFiles; $i++) {
-					$filename = $zip->getNameIndex($i);
-					$fileinfo = pathinfo($filename);
-					copy("zip://".$path."#".$filename, WPPA_DEPOT_PATH."/".$fileinfo['basename']);
-				}                  
+				// Old method: extract only top-level files
+				// If you want new method, change true into false in the next line
+				if ( true ) {
+					for($i = 0; $i < $zip->numFiles; $i++) {
+						$filename = $zip->getNameIndex($i);
+						$fileinfo = pathinfo($filename);
+						wppa_dbg_msg('Trying to copy '."zip://".$path."#".$filename.' to '.WPPA_DEPOT_PATH."/".$fileinfo['basename']);
+						copy("zip://".$path."#".$filename, WPPA_DEPOT_PATH."/".$fileinfo['basename']);
+					}
+				}
+				// New method: extract whole file
+				else {
+					$zip->extractTo(WPPA_DEPOT_PATH);
+				}
+				// End extract code
 				$zip->close();
 				wppa_ok_message(__('Zipfile', 'wppa').' '.basename($path).' '.__('extracted.', 'wppa'));
 				if ($delz) unlink($path);
@@ -842,7 +852,7 @@ global $allphotos;
 	// Fill the names array
 	if ( ! $allphotos ) {
 	wppa_dbg_msg('Filling');
-		$allphotos = $wpdb->get_results($wpdb->prepare( "SELECT id, name, ext FROM ".WPPA_PHOTOS) , "ARRAY_A" );
+		$allphotos = $wpdb->get_results($wpdb->prepare( "SELECT id, name, ext, album FROM ".WPPA_PHOTOS) , "ARRAY_A" );
 		if ( is_array($allphotos) ) {
 			$index = '0';
 			$count = count($allphotos);

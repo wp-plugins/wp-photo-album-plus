@@ -2,12 +2,14 @@
 /* wppa_widgetfunctions.php
 /* Package: wp-photo-album-plus
 /*
-/* Version 4.3.6
+/* Version 4.4.0
 /*
 */
 
+// This function returns an array of photos that meet the current photo of the day selection criteria
 function wppa_get_widgetphotos($alb, $option = '') {
 	global $wpdb;
+	global $wppa_opt;
 
 	$photos = false;
 	
@@ -67,6 +69,11 @@ function wppa_get_widgetphotos($alb, $option = '') {
 		$query .= ' ' . $option;
 		if ( ! $first ) $photos = $wpdb->get_results($wpdb->prepare( $query ), 'ARRAY_A');
 	}
+	// Is it Topten?
+	elseif ($alb == 'topten') {
+		$query = $wpdb->prepare( 'SELECT * FROM ' . WPPA_PHOTOS . ' ORDER BY mean_rating DESC LIMIT ' . $wppa_opt['wppa_topten_count'] );
+		$photos = $wpdb->get_results($wpdb->prepare( $query ), 'ARRAY_A');
+	}
 
 	return $photos;
 }
@@ -85,6 +92,7 @@ function wppa_walbum_select($sel = '') {
 	elseif ($sel == 'all') $type = 3;		// All
 	elseif ($sel == 'sep') $type = 4;		// Separate only
 	elseif ($sel == 'all-sep') $type = 5;	// All minus separate
+	elseif ($sel == 'topten') $type = 6;	// Topten
 	else $type = 0;							// Nothing yet
     
     $result = '<option value="" >'.__('- select album(s) -', 'wppa').'</option>';
@@ -93,19 +101,22 @@ function wppa_walbum_select($sel = '') {
 		switch ($type) {
 			case 1:
 				$dis = ($album['id'] == $sel);
-			break;
+				break;
 			case 2:
 				$dis = in_array($album['id'], $albs);
-			break;
+				break;
 			case 3:
 				$dis = true;
-			break;
+				break;
 			case 4:
 				$dis = ($album['a_parent'] == '-1');
-			break;
+				break;
 			case 5:
 				$dis = ($album['a_parent'] != '-1');
-			break;
+				break;
+			case 6:
+				$dis = false;
+				break;
 			default:
 				$dis = false;
 		}
@@ -123,6 +134,8 @@ function wppa_walbum_select($sel = '') {
 	$result .= '<option value="sep" '.$sel.' >'.__('- all -separate- albums -', 'wppa').'</option>';
 	if ($type == 5) $sel = 'selected="selected"'; else $sel = '';
 	$result .= '<option value="all-sep" '.$sel.' >'.__('- all albums except -separate-', 'wppa').'</option>';
+	if ($type == 6) $sel = 'selected="selected"'; else $sel = '';
+	$result .= '<option value="topten" '.$sel.' >'.__('- top rated photos -', 'wppa').'</option>';
 	$result .= '<option value="clr" >'.__('- start over -', 'wppa').'</option>';
 	return $result;
 }
@@ -161,14 +174,34 @@ global $wpdb;
 				break;
 			case '2':	// Random
 				$album = get_option('wppa_widget_album', '');
-				if ($album != '') {
+				if ($album == 'topten') {
+					$images = wppa_get_widgetphotos($album);
+					if ( count($images) > 1 && $option != '' ) {	// Select a random first from the current selection
+						$idx = rand(0, count($images) - 1);
+						$image = $images[$idx];
+					}
+				}
+				elseif ($album != '') {
 					$images = wppa_get_widgetphotos($album, 'ORDER BY RAND() LIMIT 0,1');
 					$image = $images[0];
 				}
 				break;
 			case '3':	// Last upload
 				$album = get_option('wppa_widget_album', '');
-				if ($album != '') {
+				if ($album == 'topten') {
+					$images = wppa_get_widgetphotos($album);
+					if ($images) {
+						// fid last uploaded image in the $images pool
+						$temp = 0;
+						foreach($images as $img) {
+							if ($img['timestamp'] > $temp) {
+								$temp = $img['timestamp'];
+								$image = $img;
+							}
+						}
+					}
+				}
+				elseif ($album != '') {
 					$images = wppa_get_widgetphotos($album, 'ORDER BY id DESC LIMIT 0,1');
 					$image = $images[0];
 				}

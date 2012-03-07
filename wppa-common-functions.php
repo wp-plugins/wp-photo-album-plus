@@ -2,11 +2,11 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 4.3.10
+* version 4.4.0
 *
 */
 global $wppa_api_version;
-$wppa_api_version = '4-3-10-000';
+$wppa_api_version = '4-4-0-000';
 // Initialize globals and option settings
 function wppa_initialize_runtime($force = false) {
 global $wppa;
@@ -72,7 +72,9 @@ global $blog_id;
 			'ajax'						=> false,
 			'error'						=> false,
 			'iptc'						=> false,
-			'exif'						=> false
+			'exif'						=> false,
+			'is_topten'					=> false,
+			'topten_count'				=> '0'
 
 		);
 
@@ -204,7 +206,6 @@ global $blog_id;
 			'wppa_thumb_linktype' => '',
 			'wppa_mphoto_linkpage' => '',
 			'wppa_mphoto_linktype' => '',
-			'wppa_fadein_after_fadeout' 	=> '',
 			'wppa_widget_linkpage' 			=> '',
 			'wppa_widget_linktype' 			=> '',
 			'wppa_widget_linkurl' 			=> '',
@@ -242,18 +243,7 @@ global $blog_id;
 			'wppa_max_album_newtime' 		=> '',
 			'wppa_load_skin' 				=> '',
 			'wppa_skinfile' 				=> '',
-			'wppa_use_lightbox' 			=> '',
-			'wppa_lightbox_bordersize' 		=> '',
-			'wppa_lightbox_animationspeed' 	=> '',
-			'wppa_lightbox_backgroundcolor' => '',
-			'wppa_lightbox_bordercolor' 	=> '',
-			'wppa_lightbox_overlaycolor' 	=> '',
-			'wppa_lightbox_overlayopacity' 	=> '',
 			'wppa_swap_namedesc' 			=> '',
-			'wppa_fontfamily_lightbox' 		=> '',
-			'wppa_fontsize_lightbox' 		=> '',
-			'wppa_fontcolor_lightbox' 		=> '',
-			'wppa_fontweight_lightbox' 		=> '',
 			'wppa_filter_priority' 			=> '',
 			'wppa_custom_on' 				=> '',
 			'wppa_custom_content' 			=> '',
@@ -298,13 +288,17 @@ global $blog_id;
 			'wppa_copyright_on'				=> '',
 			'wppa_copyright_notice'			=> '',
 			'wppa_fulldesc_align'			=> '',
-			'wppa_allow_ajax'				=> ''
+			'wppa_allow_ajax'				=> '',
+			'wppa_use_photo_names_in_urls' 	=> '',
+			'wppa_allow_foreign_shortcodes' => '',
+			'wppa_watermark_opacity'		=> '',
+			'wppa_bc_on_search'				=> '',
+			'wppa_bc_on_topten'				=> '',
+			'wppa_animation_type'			=> ''
 
 
 		);
 		array_walk($wppa_opt, 'wppa_set_options');
-		// If wppa+ supplied lightbox is enabled, overrule the lightbox keyword
-		if ( !is_admin() && $wppa_opt['wppa_use_lightbox'] ) $wppa_opt['wppa_lightbox_name'] = 'lightbox';
 	}
 	wppa_load_language();
 	
@@ -1042,7 +1036,7 @@ global $wppa;
 		$src = $_GET['s'];
 	}
 
-	return $src;
+	return stripslashes($src);
 }
 
 function wppa_add_watermark($file) {
@@ -1139,7 +1133,7 @@ global $wppa_opt;
 		default: $dest_x = 0; 	// should never get here
 	}
 
-	wppa_imagecopymerge_alpha( $photoimage , $waterimage , $dest_x, $dest_y, $src_x, $src_y, $ws_x, $ws_y, 20 );
+	wppa_imagecopymerge_alpha( $photoimage , $waterimage , $dest_x, $dest_y, $src_x, $src_y, $ws_x, $ws_y, intval($wppa_opt['wppa_watermark_opacity']) );
 
 	// Save the result
 	switch ($photosize[2]) {

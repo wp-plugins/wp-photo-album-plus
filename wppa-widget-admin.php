@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 * admin sidebar widget
-* version 4.3.6
+* version 4.4.0
 *
 */
 
@@ -103,7 +103,11 @@ function _wppa_sidebar_page_options() {
 							<img id="wppa-spin" src="<?php echo(wppa_get_imgdir()); ?>wpspin.gif" style="visibility:hidden;"/>
 							<?php _e('Or Edit:', 'wppa'); ?><input type="text" name="wppa-widget-albums" id="wppa-was" value="<?php echo(get_option('wppa_widget_album', '')); ?>" />
 							<input class="button-primary" name="wppa-upd" id="wppa-upd" value="<?php _e('Update thumbnails', 'wppa'); ?>" onclick="wppaCheckWa()" />
-							<span class="description"><br/><?php _e('Select or edit the album(s) you want to use the photos of for the widget.', 'wppa'); ?></span>
+							<span class="description"><br/>
+								<?php _e('Select or edit the album(s) you want to use the photos of for the widget.', 'wppa'); ?>
+								<br />
+								<?php _e('If you want a <b>- special -</b> selection, you may need to use <b>- start over -</b> first.', 'wppa'); ?>
+							</span>
 						</td>
 					</tr>
 					<tr valign="top">
@@ -185,8 +189,8 @@ function _wppa_sidebar_page_options() {
 				$wi = wppa_get_minisize() + 24;
 				$hi = $wi + 48;
 				foreach ($photos as $photo) { ?>
-					<div class="photoselect" style="width: <?php echo(get_option('wppa_widget_width', '200')+'12'); ?>px; height: <?php echo($hi); ?>px; overflow:hidden; " >
-						<img src="<?php echo(WPPA_UPLOAD_URL.'/thumbs/' . $photo['id'] . '.' . $photo['ext']); ?>" alt="<?php echo($photo['name']); ?>"></img>
+					<div class="photoselect" style="width: <?php echo(get_option('wppa_widget_width', '200')); ?>px; height: <?php echo($hi); ?>px; overflow:hidden; " >
+						<img src="<?php echo(WPPA_UPLOAD_URL.'/thumbs/' . $photo['id'] . '.' . $photo['ext']); ?>" style="width: <?php echo(get_option('wppa_widget_width', '200')) ?>px;" alt="<?php echo($photo['name']); ?>"></img>
 						<input type="radio" name="wppa-widget-photo" id="wppa-widget-photo<?php echo($photo['id']); ?>" value="<?php echo($photo['id']) ?>" <?php if ($photo['id'] == $id) echo('checked="checked"'); ?>/>
 						<div class="clear"></div>
 						<h4 style="position: absolute; top:<?php echo( $wi - 12 ); ?>px; font-size:11px; overflow:hidden;"><?php echo(wppa_qtrans(stripslashes($photo['name']))) ?></h4>

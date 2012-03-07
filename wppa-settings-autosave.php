@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 4.3.6
+* Version 4.4.0
 *
 */
 
@@ -27,11 +27,6 @@ global $wppa_api_version;
 		echo("\t".'wppaAjaxUrl = "'.admin_url('admin-ajax.php').'";'."\n");
 	echo("/* ]]> */\n");
 	echo("</script>\n");
-
-	// Diagnostics
-//	echo '$_POST = '; print_r($_POST);
-//	echo '<br />$_GET = '; print_r($_GET);
-//	echo '<br />$_FILES = '; print_r($_FILES);
 
 	// Someone hit a submit button or the like?
 	if ( isset($_REQUEST['wppa_settings_submit']) ) {	// Yep!
@@ -211,8 +206,8 @@ global $wppa_api_version;
 		</div>
 <?php
 		// Check for inconsistencies. The potential messages are printed (display:none) and switched on/off by wppa-admin-scripts.js
-		wppa_warning_message(__('You use lightbox, but you disabled the lightbox that comes with WPPA+. Either check Table IX-9 or make sure you have a lightbox enabled.', 'wppa'), 'hidden', '1');
-		wppa_warning_message(__('You do not use lightbox in Table VI, so you may uncheck Table IX-9.', 'wppa'), 'hidden', '2');
+//		wppa_warning_message(__('You use lightbox, but you disabled the lightbox that comes with WPPA+. Either check Table IX-9 or make sure you have a lightbox enabled.', 'wppa'), 'hidden', '1');
+//		wppa_warning_message(__('You do not use lightbox in Table VI, so you may uncheck Table IX-9.', 'wppa'), 'hidden', '2');
 		wppa_warning_message(__('You use Big Browse Buttons on slide images. Any configured links on slides like PS overrule or lightbox will not work! Check Table VI-8 and/or II-19', 'wppa'), 'hidden', '3');
 		wppa_error_message(__('You can not have popup and lightbox on thumbnails at the same time. Uncheck either Table IV-12 or choose a different linktype in Table VI-2.', 'wppa'), 'hidden', '1');
 ?>		
@@ -282,7 +277,7 @@ global $wppa_api_version;
 						$name = __('Resize to', 'wppa');
 						$desc = __('Resize photos to fit within a given area.', 'wppa');
 						$help = esc_js(__('Specify the screensize for the unscaled photos.', 'wppa'));
-						$help .= '\n'.esc_js(__('The use of a non-default value is particularly usefull when you make use of the embedded lightbox functionality.', 'wppa'));
+						$help .= '\n'.esc_js(__('The use of a non-default value is particularly usefull when you make use of lightbox functionality.', 'wppa'));
 						$slug = 'wppa_resize_to';
 						$px = __('pixels', 'wppa');
 						$options = array(__('Fullsize as specified above', 'wppa'), '640 x 480 '.$px, '800 x 600 '.$px, '1024 x 768 '.$px, '1200 x 900 '.$px, '1280 x 960 '.$px, '1366 x 768 '.$px, '1920 x 1080 '.$px);
@@ -486,7 +481,7 @@ global $wppa_api_version;
 						$slug = 'wppa_fullimage_border_width';
 						$html = wppa_input($slug, '40px', '', __('pixels', 'wppa'));
 						wppa_setting($slug, '22', $name, $desc, $html, $help, $class);
-						
+/*						
 						$name = __('Lightbox Bordersize', 'wppa');
 						$desc = __('The width of the border in lightbox overlay images.', 'wppa');
 						$help = esc_js(__('The border is made by the image background being larger than the image itsself (padding).', 'wppa'));
@@ -494,7 +489,7 @@ global $wppa_api_version;
 						$html = wppa_input($slug, '40px', '', __('pixels', 'wppa'));
 						$class = 'wppa_lightbox';
 						wppa_setting($slug, '23', $name, $desc, $html, $help, $class);
-						
+*/						
 						$name = __('Numbar Max', 'wppa');
 						$desc = __('Maximum nubers to display.', 'wppa');
 						$help = esc_js(__('In order to attemt to fit on one line, the numbers will be replaced by dots - except the current - when there are more than this number of photos in a slideshow.', 'wppa'));
@@ -566,6 +561,22 @@ global $wppa_api_version;
 						$html = wppa_checkbox($slug, $onchange);
 						wppa_setting($slug, '1', $name, $desc, $html, $help);
 
+						$name = __('Breadcrumb on search results', 'wppa');
+						$desc = __('Show breadcrumb navigation bars on the search results page.', 'wppa');
+						$help = esc_js(__('Indicate whether a breadcrumb navigation should be displayed above the search results.', 'wppa'));
+						$slug = 'wppa_bc_on_search';
+						$html = wppa_checkbox($slug);
+						$class = 'wppa_bc';
+						wppa_setting($slug, '1a', $name, $desc, $html, $help, $class);
+						
+						$name = __('Breadcrumb on topten displays', 'wppa');
+						$desc = __('Show breadcrumb navigation bars on topten displays.', 'wppa');
+						$help = esc_js(__('Indicate whether a breadcrumb navigation should be displayed above the topten displays.', 'wppa'));
+						$slug = 'wppa_bc_on_topten';
+						$html = wppa_checkbox($slug);
+						$class = 'wppa_bc';
+						wppa_setting($slug, '1b', $name, $desc, $html, $help, $class);
+						
 						$name = __('Home', 'wppa');
 						$desc = __('Show "Home" in breadcrumb.', 'wppa');
 						$help = esc_js(__('Indicate whether the breadcrumb navigation should start with a "Home"-link', 'wppa'));
@@ -724,7 +735,7 @@ global $wppa_api_version;
 						$help = esc_js(__('This setting causes the Slideshow link to be displayed on the album cover.', 'wppa'));
 						$help .= '\n\n'.esc_js(__('If slideshows are disabled in item 12 in this table, you will see a browse link to fullsize images.', 'wppa'));
 						$help .= '\n\n'.esc_js(__('If you do not want the browse link link either, uncheck this item.', 'wppa'));
-						$help .= '\n\n'.esc_js(__('You might wish to uncheck this item when you have thumbnail links set to lightbox', 'wppa'));
+//						$help .= '\n\n'.esc_js(__('You might wish to uncheck this item when you have thumbnail links set to lightbox', 'wppa'));
 						$slug = 'wppa_show_slideshowbrowselink';
 						$html = wppa_checkbox($slug);
 						wppa_setting($slug, '20', $name, $desc, $html, $help);
@@ -952,7 +963,7 @@ global $wppa_api_version;
 						$html1 = wppa_input($slug1, '100px', '', '', "checkColor('".$slug1."')") . '</td><td>' . wppa_color_box($slug1);
 						$html2 = wppa_input($slug2, '100px', '', '', "checkColor('".$slug2."')") . '</td><td>' . wppa_color_box($slug2);
 						wppa_setting_2($slug1, $slug2, '7', $name, $desc, $html1, $html2, $help);
-
+/*
 						$name = __('Lightbox', 'wppa');
 						$desc = __('Lightbox image.', 'wppa');
 						$help = esc_js(__('Enter valid CSS colors for lightbox background and border.', 'wppa'));
@@ -974,7 +985,7 @@ global $wppa_api_version;
 						$html2 = wppa_input($slug2, '100px', '', __('% opacity', 'wppa')) . '</td><td>';
 						$class = 'wppa_lightbox';
 						wppa_setting_2($slug1, $slug2, '9', $name, $desc, $html1, $html2, $help, $class);
-						
+*/						
 						$name = __('Custom', 'wppa');
 						$desc = __('Custom box background.', 'wppa');
 						$help = esc_js(__('Enter valid CSS colors for custom box backgrounds and borders.', 'wppa'));
@@ -1095,6 +1106,28 @@ global $wppa_api_version;
 						
 						$wppa['no_default'] = false;
 						
+						$name = __('Animation type', 'wppa');
+						$desc = __('The way successive slides appear.', 'wppa');
+						$help = esc_js(__('Select the way the old slide is to be replaced by the new one in the slideshow/browse fullsize display.', 'wppa'));
+						$slug = 'wppa_animation_type';
+						$options = array(	__('Fade out and in simultaneous', 'wppa'),
+											__('Fade in after fade out', 'wppa'),
+											__('Shift adjacent', 'wppa'),
+											__('Stack on', 'wppa'),
+											__('Stack off', 'wppa'),
+											__('Turn over', 'wppa')
+									);
+						$values = array(	'fadeover',
+											'fadeafter',
+											'swipe',
+											'stackon',
+											'stackoff',
+											'turnover'
+									);
+						$html = wppa_select($slug, $options, $values);
+						wppa_setting($slug, '4', $name, $desc, $html, $help);
+						
+						/*
 						$name = __('Fading', 'wppa');
 						$desc = __('Fade-in after fade-out.', 'wppa');
 						$help = esc_js(__('If checked: slides are faded out and in after each other. If unchecked: fadin and fadeout overlap.', 'wppa'));
@@ -1107,6 +1140,7 @@ global $wppa_api_version;
 						?>
 						<script type="text/javascript">checkjQueryRev('<?php _e('Fade-in after fade-out:', 'wppa') ?>', document.getElementById('wppa_fadein_after_fadeout'), 1.4)</script>
 						<?php
+						*/
 
 						$name = __('Timeout', 'wppa');
 						$desc = __('Slideshow timeout.', 'wppa');
@@ -1275,7 +1309,7 @@ global $wppa_api_version;
 						$html = wppa_checkbox($slug);
 						$class = 'wppa_comment';
 						wppa_setting($slug, '23', $name, $desc, $html, $help, $class);
-						
+/*						
 						$name = __('Lightbox Speed', 'wppa');
 						$desc = __('Lightbox animation speed.', 'wppa');
 						$help = esc_js(__('The higher the number, the faster the animation', 'wppa'));
@@ -1285,7 +1319,7 @@ global $wppa_api_version;
 						$html = wppa_select($slug, $options, $values);
 						$class = 'wppa_lightbox';
 						wppa_setting($slug, '24', $name, $desc, $html, $help, $class);
-						
+*/						
 						$name = __('Last comment first', 'wppa');
 						$desc = __('Display the newest comment on top.', 'wppa');
 						$help = esc_js(__('If checked: Display the newest comment on top.', 'wppa'));
@@ -1358,6 +1392,15 @@ global $wppa_api_version;
 						$slug = 'wppa_allow_ajax';
 						$html = wppa_checkbox($slug);
 						wppa_setting($slug, '33', $name, $desc, $html, $help);
+						
+						$name = __('Photo names in urls', 'wppa');
+						$desc = __('Display photo names in urls, no numbers.', 'wppa');
+						$help = esc_js(__('While browsing through a slideshow and Use Ajax is checked, and the browser supports history.pushState,', 'wppa'));
+						$help .= ' '.esc_js(__('the photo names will be displayed in the generated urls in the browser address line.', 'wppa'));
+						$help .= '\n\n'.esc_js(__('These urls are valid and can be saved for use later.', 'wppa'));
+						$slug = 'wppa_use_photo_names_in_urls';
+						$html = wppa_checkbox($slug);
+						wppa_setting($slug, '34', $name, $desc, $html, $help);
 						
 						?>
 					</tbody>
@@ -1475,7 +1518,7 @@ global $wppa_api_version;
 						$html3 = wppa_input($slug3, '70px', '', '');
 						$html4 = wppa_select($slug4, $options, $values);
 						wppa_setting_4($slug1, $slug2, $slug3, $slug4, '6abcd', $name, $desc, $html1, $html2, $html3, $html4, $help);
-
+/*
 						$name = __('Lightbox', 'wppa');
 						$desc = __('Font in wppa lightbox boxes.', 'wppa');
 						$help = esc_js(__('Enter font name, size, color and weight for lightbox overlays.', 'wppa')); 
@@ -1488,7 +1531,7 @@ global $wppa_api_version;
 						$html3 = wppa_input($slug3, '70px', '', '');
 						$html4 = wppa_select($slug4, $options, $values);
 						wppa_setting_4($slug1, $slug2, $slug3, $slug4, '7abcd', $name, $desc, $html1, $html2, $html3, $html4, $help);
-
+*/
 						$name = __('Numbar', 'wppa');
 						$desc = __('Font in wppa number bars.', 'wppa');
 						$help = esc_js(__('Enter font name, size, color and weight for numberbar navigation.', 'wppa')); 
@@ -1500,7 +1543,7 @@ global $wppa_api_version;
 						$html2 = wppa_input($slug2, '40px', '', __('pixels', 'wppa'));
 						$html3 = wppa_input($slug3, '70px', '', '');
 						$html4 = wppa_select($slug4, $options, $values);
-						wppa_setting_4($slug1, $slug2, $slug3, $slug4, '6abcd', $name, $desc, $html1, $html2, $html3, $html4, $help);
+						wppa_setting_4($slug1, $slug2, $slug3, $slug4, '8abcd', $name, $desc, $html1, $html2, $html3, $html4, $help);
 						
 						?>
 					</tbody>
@@ -1689,7 +1732,7 @@ global $wppa_api_version;
 						$vals = array('none', 'file', 'lightbox'); 
 						$html1 = wppa_select($slug1, $opts, $vals);
 						$html3 = wppa_checkbox($slug3);
-						wppa_setting_3($slug1, $slug2, $slug3, '8', $name, $desc, $html1, '', $html3, $help);
+						wppa_setting_3($slug1, $slug2, $slug3, '8a,c', $name, $desc, $html1, '', $html3, $help);
 						
 						?>
 					</tbody>
@@ -2092,7 +2135,7 @@ global $wppa_api_version;
 						$values = array( 0, 60*60, 60*60*24, 60*60*24*7, 60*60*24*30);
 						$html = wppa_select($slug, $options, $values);
 						wppa_setting($slug, '8', $name, $desc, $html, $help);
-						
+/*						
 						$name = __('WPPA+ Lightbox', 'wppa');
 						$desc = __('Use wppa+ embedded lightbox.', 'wppa');
 						$help = esc_js(__('WPPA+ comes with embedded lightbox 2. If you want to use a different ligtbox (plugin)', 'wppa'));
@@ -2103,10 +2146,10 @@ global $wppa_api_version;
 						$onchange = 'wppaCheckLightbox()';
 						$html = wppa_checkbox($slug, $onchange);
 						wppa_setting($slug, '9', $name, $desc, $html, $help);
-						
-						$name = __('Alt Lightbox', 'wppa');
-						$desc = __('The identifier of an alternate lightbox.', 'wppa');
-						$help = esc_js(__('If you use a different lightbox plugin that uses rel="lbox-id" you can enter the lbox-id here.', 'wppa'));
+*/						
+						$name = __('Lightbox keyname', 'wppa');
+						$desc = __('The identifier of lightbox.', 'wppa');
+						$help = esc_js(__('If you use a lightbox plugin that uses rel="lbox-id" you can enter the lbox-id here.', 'wppa'));
 						$slug = 'wppa_lightbox_name';
 						$class = 'wppa_alt_lightbox';
 						$html = wppa_input($slug, '100px');
@@ -2205,6 +2248,23 @@ global $wppa_api_version;
 						$slug = 'wppa_settings_autosave';
 						$html = wppa_checkbox($slug);
 						wppa_setting($slug, '19', $name, $desc, $html, $help);
+						
+						$name = __('Foreign shortcodes', 'wppa');
+						$desc = __('Enable the use of non-wppa+ shortcodes in fullsize photo descriptions.', 'wppa');
+						$help = esc_js(__('When checked, you can use shortcodes from other plugins in the description of photos.', 'wppa'));
+						$help .= '\n\n'.esc_js(__('The shortcodes will be expanded in the descriptions of fullsize images.', 'wppa'));
+						$help .= '\n'.esc_js(__('You will most likely need also to check Table IX-4 (Allow HTML).', 'wppa'));
+						$slug = 'wppa_allow_foreign_shortcodes';
+						$html = wppa_checkbox($slug);
+						wppa_setting($slug, '20', $name, $desc, $html, $help);
+						
+						$name = __('Watermark opacity', 'wppa');
+						$desc = __('You can set the intensity of watermarks here.', 'wppa');
+						$help = esc_js(__('The higher the number, the intenser the watermark. Value must be > 0 and <= 100.', 'wppa'));
+						$slug = 'wppa_watermark_opacity';
+						$html = wppa_input($slug, '50px', '', '%');
+						wppa_setting($slug, '21', $name, $desc, $html, $help);
+
 					
 						?>
 					</tbody>

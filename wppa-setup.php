@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 4.3.6
+* Version 4.4.0
 *
 */
 
@@ -130,8 +130,11 @@ global $silent;
 		delete_option('wppa_2col_treshold');
 		delete_option('wppa_3col_treshold');
 	}
-
-	if ( get_option('wppa_use_lightbox', 'no') == 'yes' && get_option('wppa_slideshow_linktype', 'nil') == 'nil' ) update_option('wppa_slideshow_linktype', 'lightbox');
+	// now 6 options for anamation 
+	if ($old_rev < '440' && get_option('wppa_fadein_after_fadeout', 'nil') == 'yes') {
+		delete_option('wppa_fadein_after_fadeout');
+		update_option('wppa_animation_type', 'fadeafter');
+	}
 	
 	wppa_set_defaults();					// Will always work
 	if ( ! wppa_check_dirs() ) return;		// Quit on error, messages are given in check_dirs
@@ -353,7 +356,6 @@ global $wppa_defaults;
 						'wppa_thumb_linktype' 		=> 'photo',
 						'wppa_mphoto_linkpage' 		=> '0',
 						'wppa_mphoto_linktype' 		=> 'photo',
-						'wppa_fadein_after_fadeout' => 'no',
 						'wppa_widget_linkpage' 		=> '0',
 						'wppa_widget_linktype' 		=> 'album',
 						'wppa_widget_linkurl'		=> '',
@@ -402,18 +404,7 @@ global $wppa_defaults;
 						'wppa_max_album_newtime'		=> '0',
 						'wppa_load_skin' 				=> '',
 						'wppa_skinfile' 				=> 'default',
-						'wppa_use_lightbox'				=> 'no',
-						'wppa_lightbox_bordersize'		=> '10',
-						'wppa_lightbox_animationspeed'	=> '5',
-						'wppa_lightbox_backgroundcolor' => '#fff',
-						'wppa_lightbox_bordercolor' 	=> '#fff',
-						'wppa_lightbox_overlaycolor' 	=> '#000',
-						'wppa_lightbox_overlayopacity'	=> '80',
 						'wppa_swap_namedesc' 			=> 'no',
-						'wppa_fontfamily_lightbox'		=> 'Verdana, Helvetica, sans-serif',
-						'wppa_fontsize_lightbox'		=> '10',
-						'wppa_fontcolor_lightbox'		=> '#666',
-						'wppa_fontweight_lightbox'		=> 'normal',
 						'wppa_filter_priority'			=> '1001',
 						'wppa_widget_width'				=> '200',
 						'wppa_custom_on' 				=> 'no',
@@ -459,7 +450,14 @@ global $wppa_defaults;
 						'wppa_copyright_on'				=> 'no',
 						'wppa_copyright_notice'			=> __('<span style="color:red" >Warning: Do not upload copyrighted material!</span>', 'wppa'),
 						'wppa_fulldesc_align'			=> 'center',
-						'wppa_allow_ajax'				=> 'no'
+						'wppa_allow_ajax'				=> 'no',
+						'wppa_use_photo_names_in_urls'	=> 'no',
+						'wppa_allow_foreign_shortcodes' => 'no',
+						'wppa_watermark_opacity'		=> '20',
+						'wppa_bc_on_search'				=> 'yes',
+						'wppa_bc_on_topten'				=> 'yes',
+						'wppa_animation_type'			=> 'fadeover'
+
 
 						);
 

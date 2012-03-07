@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, multisite, network, lightbox, comment, watermark, iptc, exif
-Version: 4.3.10
+Version: 4.4.0
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -54,7 +54,7 @@ You can find the plugin admin section under Menu Photo Albums on the admin scree
 == Installation ==
 
 = Upgrade notice =
-This version is: Major rev# 4, Minor rev# 3, Fix rev# 5, Hotfix rev# 000.
+This version is: Major rev# 4, Minor rev# 4, Fix rev# 0, Hotfix rev# 000.
 If you are upgrading from a previous Major or Minor version, note that:
 * If you modified wppa_theme.php and/or wppa_style.css, you will have to use the newly supplied versions. The previous versions are NOT compatible.
 * If you set the userlevel to anything else than 'administrator' you may have to set it again. Note that changing the userlevel can be done by the administrator only!
@@ -72,6 +72,19 @@ In rare cases you will need to create them manually. You can see the actual path
 to your theme directory, you must remove them or replace them with the newly supplied versions.
 
 == Frequently Asked Questions ==
+
+= After update, many things seem to go wrong =
+
+* After an update, always clear your browser cache (CTRL+F5) and clear your temp internetfiles, this will ensure the new versions of js files will be loaded.
+* And - most important - if you use a server side caching program clear its cache.
+
+= What do i have to do when converting to multisite? =
+
+* After the standard WP conversion procedure the photos and thumbnails must be moved to a different location on the server.
+You have to copy all files and subdirectories from .../wp-content/uploads/wppa/ to .../wp-content/blogs.dir/1/wppa/
+This places all existing photos to the 'upload' directory that belongs to blog id 1.
+Make sure the files are accessable by visitors (check CHMOD and .htaccess).
+Further, activate the plugin for all other blogs that require it.
 
 = How does the search widget work? =
 
@@ -110,6 +123,43 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 4.3.11 =
+
+= Bug fixes =
+
+* A missing post/page name in the breadcrumb when using Ajax has been fixed.
+* The photo search will now also work on iptc and exif tags used in descriptions.
+* Tapping on a mobile divece on the Big Browse Bars is believed to work now.
+* Cosmetic changes and a few 'forgottn' translations.
+
+* Quotes in searchstrings work properly now
+
+= New features =
+
+* You can select - topten - for the album selection in the photo of the day widget. 
+The photo selected is chosen from the number of top rated photos as specified in Table I-15, according to the specified Display method.
+* You may use names for albums and photos in urls. 
+Example: http://wppa.opajaap.nl/?page_id=1246&wppa-album=Piet%27s%20child&wppa-slide&wppa-occur=1&wppa-photo=OV-chip_saldo-%27corrector%27
+is now a valid url.
+* You can use photo names in scripting the same way as album names.
+Example: %%wppa%% %%photo=$OV-chip_saldo-'corrector'%% %%size=400%% is a valid script sequence.
+Like for albums: the name must be preceded by a dollar sign ($). 
+If the photo does not exist an errormessage will be displayed.
+However, if the photo with the given name exists more than once, the first found will be used.
+* You can now set photo names in urls rather than photo numbers during browse full size images while Ajax is on. See settings IV-34.
+* The use of shortcodes that refer to other plugins in photo descriptions is now possible. If you want this feature, check Table IX-20.
+* You can set the watermark opacity in Table IX-21.
+* You can switch off the display of the breadcrumb for search results in Table II-1a.
+* You can switch off the display of the breadcrumb for topten displays in posts/pages in Table II-1b.
+* If you have addThis installed, the reference url is now updated during ajax and slide browse operations.
+* You can now select one out of 6 animation types as opposed to 2 types of fading in Table IV-4.
+* Swipe left/right should work now on mobile devices (next/previous photo in slideshow display).
+
+= Other changes =
+
+* The embedded lightbox has been removed due to licencing problems. 
+You can still specify links to lightbox but you will need a separate lightbox plugin to make it work.
 
 = 4.3.10 =
 
