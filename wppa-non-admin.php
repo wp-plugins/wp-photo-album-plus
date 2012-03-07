@@ -70,7 +70,7 @@ global $wppa_opt;
 		//echo("\t".'wppa_popup_size = "'.$wppa_opt['wppa_popupsize'].'";'."\n");
 
 		/* This goes into wppa_slideshow.js */
-		echo("\t".'wppaAnimationType = "'.$wppa_opt['wppa_animation_type'].'";'."\n");
+		if ($wppa_opt['wppa_animation_type']) echo("\t".'wppaAnimationType = "'.$wppa_opt['wppa_animation_type'].'";'."\n");
 //		if ($wppa_opt['wppa_fadein_after_fadeout']) echo("\t".'wppaFadeInAfterFadeOut = true;'."\n");
 //		else echo("\t".'wppaFadeInAfterFadeOut = false;'."\n");
 		echo("\t".'wppaAnimationSpeed = '.$wppa_opt['wppa_animation_speed'].';'."\n");

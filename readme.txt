@@ -77,6 +77,7 @@ to your theme directory, you must remove them or replace them with the newly sup
 
 * After an update, always clear your browser cache (CTRL+F5) and clear your temp internetfiles, this will ensure the new versions of js files will be loaded.
 * And - most important - if you use a server side caching program clear its cache.
+* Visit the Photo Albums -> Settings page, (and do nothing).
 
 = What do i have to do when converting to multisite? =
 
