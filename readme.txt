@@ -160,7 +160,7 @@ However, if the photo with the given name exists more than once, the first found
 = Other changes =
 
 * The embedded lightbox has been removed due to licencing problems. 
-You can still specify links to lightbox but you will need a separate lightbox plugin ( such as http://wordpress.org/extend/plugins/wp-jquery-lightbox/ ) to make it work.
+You can still specify links to lightbox but you will need a separate lightbox plugin ( such as http://wordpress.org/extend/plugins/wp-jquery-lightbox/ or http://wordpress.org/extend/plugins/lightbox-plus/ ) to make it work.
 
 = 4.3.10 =
 
