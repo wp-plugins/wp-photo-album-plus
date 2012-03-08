@@ -125,7 +125,7 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
 
-= 4.3.11 =
+= 4.4.0 =
 
 = Bug fixes =
 
