@@ -1,5 +1,5 @@
 ﻿// Slide show variables and functions
-// This is wppa-slideshow.js version 4.4.0
+// This is wppa-slideshow.js version 4.4.1
 //
 // Vars. The vars that have a name that starts with an underscore is an internal var
 // The vars without leading underscore are 'external' and get a value from html
@@ -85,6 +85,8 @@ var _wppaSkipRated = new Array();
 var _wppaLbTitle = new Array();
 var _wppaStateCount = 0;
 var _wppaDidGoto = new Array();
+// In case we have Lightbox 3 NOT on board
+var myLightbox = null;
 
 jQuery(document).ready(function(){
 	_wppaLog('ready', 0);
@@ -623,6 +625,8 @@ function _wppaNextSlide_5(mocc) {
 		wppaStartStop(mocc, index);					// Do as if the toggle request happens now
 	}
 	else {											// No toggle pending
+		// If lightbox 3 is on board, refresh the imagelist. It has just changed, you know!
+		if (myLightbox) myLightbox.updateImageList();
 		if (_wppaSlideShowRuns[mocc]) {				// Wait for next slide
 			setTimeout('_wppaNextSlide('+mocc+', "auto")', _wppaTimeOut[mocc]); 
 		}	

@@ -1907,6 +1907,8 @@ global $wppa_opt;
 
 function wppa_deep_stristr($string, $tokens) {
 global $wppa_stree;
+	$string = stripslashes($string);
+	$tokens = stripslashes($tokens);
 	// Explode tokens into search tree
 	if (!isset($wppa_stree)) {
 		// sanitize search token string
