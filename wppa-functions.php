@@ -1056,7 +1056,7 @@ global $wppa_opt;
 	} else {
 		$desc = wppa_html(esc_js(stripslashes(wppa_get_photo_desc($id))));	// old version of desc
 	}
-	if ( ! $desc ) $desc = '&nbsp';
+	if ( ! $desc ) $desc = '&nbsp;';
 	
 	// Produce final result
     $result = "'".$wppa['master_occur']."','";
