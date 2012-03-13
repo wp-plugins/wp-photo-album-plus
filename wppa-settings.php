@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 4.3.3
+* Version 4.4.2
 *
 */
 
@@ -498,6 +498,8 @@ global $wppa_api_version;
 		if ( $any_error ) {
 			echo '<p style="color:red; text-weight:bold;">'.__('Please de-activate and re-activate the plugin. If this problem persists, ask your administrator.', 'wppa').'</p>';
 		}
+		
+		wppa_error_message(__('<b>This version of the settings page is obsolete and will be discontinued in the near future. Please check Table IX-19 to use the Auto Save version. If you have any problems usig the autosave version, please reoprt it on the <a href="http://wordpress.org/tags/wp-photo-album-plus">support forum</a>.</b>', 'wppa'));
 
 ?>
 		<!--<br /><a href="javascript:window.print();"><?php //_e('Print settings', 'wppa') ?></a><br />-->

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the slideshow high level functions
-* Version 4.4.0
+* Version 4.4.2
 *
 */
 
@@ -102,8 +102,13 @@ global $wppa_opt;
 		return;
 	}
 	// There are still users who turn off javascript...
+	$ontouch = 'ontouchstart="wppaTouchStart(event,\'slide_frame-'.$wppa['master_occur'].'\', '.$wppa['master_occur'].');"  ontouchend="wppaTouchEnd(event);" ontouchmove="wppaTouchMove(event);" ontouchcancel="wppaTouchCancel(event);"';
+	if ( $wppa_opt['wppa_slide_pause'] ) {
+		$pause = 'onmouseover="wppaSlidePause['.$wppa['master_occur'].'] = \''.__a('Paused', 'wppa_theme').'\'" onmouseout="wppaSlidePause['.$wppa['master_occur'].'] = false"';
+	}
+	else $pause = '';
 	$wppa['out'] .= wppa_nltab().'<noscript style="text-align:center; " ><span style="color:red; ">'.__a('To see the full size images, you need to enable javascript in your browser.', 'wppa').'</span></noscript>';
-	$wppa['out'] .= wppa_nltab('+').'<div id="slide_frame-'.$wppa['master_occur'].'" ontouchstart="wppaTouchStart(event,\'slide_frame-'.$wppa['master_occur'].'\', '.$wppa['master_occur'].');"  ontouchend="wppaTouchEnd(event);" ontouchmove="wppaTouchMove(event);" ontouchcancel="wppaTouchCancel(event);" class="slide-frame" style="overflow:hidden; '.wppa_get_slide_frame_style().'">';
+	$wppa['out'] .= wppa_nltab('+').'<div id="slide_frame-'.$wppa['master_occur'].'" '.$ontouch.' '.$pause.' class="slide-frame" style="overflow:hidden; '.wppa_get_slide_frame_style().'">';
 		$wppa['out'] .= wppa_nltab().'<div id="theslide0-'.$wppa['master_occur'].'" class="theslide" style="width:'.$wppa['slideframewidth'].'px; " ></div>';
 		$wppa['out'] .= wppa_nltab().'<div id="theslide1-'.$wppa['master_occur'].'" class="theslide" style="width:'.$wppa['slideframewidth'].'px; " ></div>';
 		$wppa['out'] .= wppa_nltab().'<div id="spinner-'.$wppa['master_occur'].'" class="spinner"></div>';

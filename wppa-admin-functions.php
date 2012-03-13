@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 * gp admin functions
-* version 4.2.11
+* version 4.4.2
 *
 * 
 */
@@ -113,6 +113,7 @@ function wppa_regenerate_thumbs() {
 			$newimage = WPPA_UPLOAD_PATH.'/'.$photo['id'].'.'.$photo['ext'];
 			wppa_create_thumbnail($newimage, $thumbsize, '' );
             update_option('wppa_lastthumb', $photo['id']);
+			wppa_clear_cache();
             echo '.';
 		}
 	}		

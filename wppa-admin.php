@@ -3,10 +3,12 @@
 * Package: wp-photo-album-plus
 *
 * Contains the admin menu and startups the admin pages
-* Version 4.3.5
+* Version 4.4.2
 *
 */
 
+/* CHECK INSTALLATION */
+add_action ( 'admin_init', 'wppa_setup' );
 
 /* ADMIN MENU */
 add_action( 'admin_menu', 'wppa_add_admin' );

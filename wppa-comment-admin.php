@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all comments
-* Version 4.3.5
+* Version 4.4.2
 *
 */
 
@@ -126,6 +126,9 @@ global $wppa_opt;
 			}
 			
 			if ($iret) wppa_update_message(__('Changes Saved', 'wppa'));
+			
+			// Clear (super)cache
+			wppa_clear_cache();
 		}
 ?>
 		<div class="wrap">
