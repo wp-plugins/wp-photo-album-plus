@@ -8,7 +8,7 @@
 /*
 /* You may always look into a newer version of this file to see what new classes and id's come with an upgrade
 /*
-/* This is version 4.3.1
+/* This is version 4.4.2
 */
 
 /* Navigation */
@@ -270,9 +270,11 @@ margin: 0 auto;
 /* text-align:right; */
 }
 .wppa-iptc-value {
+	padding-left: 12px !important;
 }
 .wppa-exif-label {
 /* text-align:right; */
 }
 .wppa-exif-value {
+	padding-left: 12px !important;
 }

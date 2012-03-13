@@ -2,11 +2,11 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 4.4.1
+* version 4.4.2
 *
 */
 global $wppa_api_version;
-$wppa_api_version = '4-4-1-000';
+$wppa_api_version = '4-4-2-000';
 // Initialize globals and option settings
 function wppa_initialize_runtime($force = false) {
 global $wppa;
@@ -294,7 +294,8 @@ global $blog_id;
 			'wppa_watermark_opacity'		=> '',
 			'wppa_bc_on_search'				=> '',
 			'wppa_bc_on_topten'				=> '',
-			'wppa_animation_type'			=> ''
+			'wppa_animation_type'			=> '',
+			'wppa_slide_pause'				=> ''
 
 
 		);
@@ -858,6 +859,9 @@ global $wppa_opt;
 
 		// Show progression
 		if (is_admin()) echo('.');
+		
+		// Clear (super)cache
+		wppa_clear_cache();
 		return true;
 	}
 	else {
@@ -1477,4 +1481,13 @@ global $wpdb;
 	}
 	$out .= __(sprintf('%s photos with IPTC data and %s photos with EXIF data processed.', $iptc_count, $exif_count), 'wppa');
 	return $out;
+}
+
+function wppa_clear_cache() {
+global $cache_path;
+	// If wp-super-cache is on board, clear cache
+	if ( function_exists('prune_super_cache') ) {
+		prune_super_cache( $cache_path . 'supercache/', true );
+		prune_super_cache( $cache_path, true );
+	}
 }

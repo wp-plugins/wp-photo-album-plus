@@ -1,7 +1,7 @@
 /* admin-scripts.js */
 /* Package: wp-photo-album-plus
 /*
-/* Version 4.4.0
+/* Version 4.4.2
 /* Various js routines used in admin pages		
 */
 
@@ -471,14 +471,15 @@ function impUpd(elm, id) {
 
 function wppaAjaxDeletePhoto(photo) {
 
-	var xmlhttp;
+	var xmlhttp = wppaGetXmlHttp();
+	/*
 	if (window.XMLHttpRequest) {		// code for IE7+, Firefox, Chrome, Opera, Safari
 		xmlhttp=new XMLHttpRequest();
 	}
 	else {								// code for IE6, IE5
 		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
 	}
-		
+	*/
 	// Make the Ajax url
 	var url = wppaAjaxUrl+'?action=wppa&wppa-action=delete-photo&photo-id='+photo;
 	url += '&wppa-nonce='+document.getElementById('photo-nonce-'+photo).value;
@@ -502,9 +503,12 @@ function wppaAjaxDeletePhoto(photo) {
 		case 4:
 			if (xmlhttp.status!=404) {
 				var ArrValues = xmlhttp.responseText.split("||");
+				if (ArrValues[0] != '') {
+					alert('The server returned unexpected output:\n'+ArrValues[0]);
+				}
 				
-				if ( ArrValues[0] == 0 ) document.getElementById('photostatus-'+photo).innerHTML = ArrValues[1];	// Error
-				else document.getElementById('photoitem-'+photo).innerHTML = ArrValues[1];	// OK
+				if ( ArrValues[1] == 0 ) document.getElementById('photostatus-'+photo).innerHTML = ArrValues[2];	// Error
+				else document.getElementById('photoitem-'+photo).innerHTML = ArrValues[2];	// OK
 			}
 			
 		}
@@ -513,14 +517,15 @@ function wppaAjaxDeletePhoto(photo) {
 
 function wppaAjaxUpdatePhoto(photo, actionslug, elem) {
 
-	var xmlhttp;
+	var xmlhttp = wppaGetXmlHttp();
+	/*
 	if (window.XMLHttpRequest) {		// code for IE7+, Firefox, Chrome, Opera, Safari
 		xmlhttp=new XMLHttpRequest();
 	}
 	else {								// code for IE6, IE5
 		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
 	}
-		
+	*/
 	// Make the Ajax url
 	var url = wppaAjaxUrl+'?action=wppa&wppa-action=update-photo&photo-id='+photo+'&item='+actionslug;
 	url += '&wppa-nonce='+document.getElementById('photo-nonce-'+photo).value;
@@ -546,15 +551,18 @@ function wppaAjaxUpdatePhoto(photo, actionslug, elem) {
 		case 4:
 			if (xmlhttp.status!=404) {
 				var ArrValues = xmlhttp.responseText.split("||");
-				switch (ArrValues[0]) {
+				if (ArrValues[0] != '') {
+					alert('The server returned unexpected output:\n'+ArrValues[0]);
+				}
+				switch (ArrValues[1]) {
 					case '0':		// No error
-						document.getElementById('photostatus-'+photo).innerHTML = ArrValues[1];
+						document.getElementById('photostatus-'+photo).innerHTML = ArrValues[2];
 						break;
 					case '99':	// Photo is gone
-						document.getElementById('photoitem-'+photo).innerHTML = '<span style="color:red">'+ArrValues[1]+'</span>';
+						document.getElementById('photoitem-'+photo).innerHTML = '<span style="color:red">'+ArrValues[2]+'</span>';
 						break;
 					default:	// Any error
-						document.getElementById('photostatus-'+photo).innerHTML = '<span style="color:red">'+ArrValues[1]+' ('+ArrValues[0]+')</span>';
+						document.getElementById('photostatus-'+photo).innerHTML = '<span style="color:red">'+ArrValues[2]+' ('+ArrValues[1]+')</span>';
 						break;
 				}
 			}
@@ -564,14 +572,15 @@ function wppaAjaxUpdatePhoto(photo, actionslug, elem) {
 
 function wppaAjaxUpdateAlbum(album, actionslug, elem) {
 
-	var xmlhttp;
+	var xmlhttp = wppaGetXmlHttp();
+	/*
 	if (window.XMLHttpRequest) {		// code for IE7+, Firefox, Chrome, Opera, Safari
 		xmlhttp=new XMLHttpRequest();
 	}
 	else {								// code for IE6, IE5
 		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
 	}
-		
+	*/
 	// Make the Ajax url
 	var url = wppaAjaxUrl+'?action=wppa&wppa-action=update-album&album-id='+album+'&item='+actionslug;
 	url += '&wppa-nonce='+document.getElementById('album-nonce-'+album).value;
@@ -597,16 +606,19 @@ function wppaAjaxUpdateAlbum(album, actionslug, elem) {
 		case 4:
 			if (xmlhttp.status!=404) {
 				var ArrValues = xmlhttp.responseText.split("||");
-				switch (ArrValues[0]) {
+				if (ArrValues[0] != '') {
+					alert('The server returned unexpected output:\n'+ArrValues[0]);
+				}
+				switch (ArrValues[1]) {
 					case '0':		// No error
-						document.getElementById('albumstatus-'+album).innerHTML = ArrValues[1];
+						document.getElementById('albumstatus-'+album).innerHTML = ArrValues[2];
 						break;
 					case '97':		// Ratings cleared
-						document.getElementById('albumstatus-'+album).innerHTML = ArrValues[1];
-						jQuery('.wppa-rating').html(ArrValues[2]);
+						document.getElementById('albumstatus-'+album).innerHTML = ArrValues[2];
+						jQuery('.wppa-rating').html(ArrValues[3]);
 						break;
 					default:		// Any error
-						document.getElementById('albumstatus-'+album).innerHTML = '<span style="color:red">'+ArrValues[1]+' ('+ArrValues[0]+')</span>';
+						document.getElementById('albumstatus-'+album).innerHTML = '<span style="color:red">'+ArrValues[2]+' ('+ArrValues[1]+')</span>';
 						break;
 				}
 			}
@@ -616,14 +628,15 @@ function wppaAjaxUpdateAlbum(album, actionslug, elem) {
 				
 function wppaAjaxUpdateOptionCheckBox(slug, elem) {
 
-	var xmlhttp;
+	var xmlhttp = wppaGetXmlHttp();
+	/*
 	if (window.XMLHttpRequest) {		// code for IE7+, Firefox, Chrome, Opera, Safari
 		xmlhttp=new XMLHttpRequest();
 	}
 	else {								// code for IE6, IE5
 		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
 	}
-		
+	*/	
 	// Make the Ajax url
 	var url = wppaAjaxUrl+'?action=wppa&wppa-action=update-option&wppa-option='+slug;
 	url += '&wppa-nonce='+document.getElementById('wppa-nonce').value;
@@ -640,15 +653,18 @@ function wppaAjaxUpdateOptionCheckBox(slug, elem) {
 			break;
 		case 4:
 			var ArrValues = xmlhttp.responseText.split("||");
+			if (ArrValues[0] != '') {
+				alert('The server returned unexpected output:\n'+ArrValues[0]);
+			}
 			if (xmlhttp.status!=404) {
-				switch (ArrValues[0]) {
+				switch (ArrValues[1]) {
 					case '0':	// No error
 						document.getElementById('img_'+slug).src = wppaImageDirectory+'tick.png';
 						break;
 					default:
 						document.getElementById('img_'+slug).src = wppaImageDirectory+'cross.png';
 					}
-				document.getElementById('img_'+slug).title = ArrValues[1];
+				document.getElementById('img_'+slug).title = ArrValues[2];
 			}
 			else {
 				document.getElementById('img_'+slug).src = wppaImageDirectory+'cross.png';
@@ -665,15 +681,15 @@ function wppaAjaxUpdateOptionCheckBox(slug, elem) {
 
 function wppaAjaxUpdateOptionValue(slug, elem) {
 
-	var xmlhttp;
-	
+	var xmlhttp = wppaGetXmlHttp();
+/*	
 	if (window.XMLHttpRequest) {		// code for IE7+, Firefox, Chrome, Opera, Safari
 		xmlhttp=new XMLHttpRequest();
 	}
 	else {								// code for IE6, IE5
 		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
 	}
-
+*/
 	// on-unit to process the result
 	xmlhttp.onreadystatechange=function() {
 		if (xmlhttp.readyState != 4) {
@@ -681,17 +697,20 @@ function wppaAjaxUpdateOptionValue(slug, elem) {
 		}
 		else {	// Ready
 			var ArrValues = xmlhttp.responseText.split("||");
-//alert(xmlhttp.responseText);			
+//alert(xmlhttp.responseText);	
+			if (ArrValues[0] != '') {
+				alert('The server returned unexpected output:\n'+ArrValues[0]);
+			}
 			if (xmlhttp.status!=404) {	// No Not found
-				switch (ArrValues[0]) {
+				switch (ArrValues[1]) {
 					case '0':	// No error
 						document.getElementById('img_'+slug).src = wppaImageDirectory+'tick.png';
 						break;
 					default:
 						document.getElementById('img_'+slug).src = wppaImageDirectory+'cross.png';
 				}
-				document.getElementById('img_'+slug).title = ArrValues[1];
-				if ( ArrValues[2] != '' ) alert(ArrValues[2]);
+				document.getElementById('img_'+slug).title = ArrValues[2];
+				if ( ArrValues[3] != '' ) alert(ArrValues[3]);
 			}
 			else {						// Not found
 				document.getElementById('img_'+slug).src = wppaImageDirectory+'cross.png';
@@ -737,18 +756,18 @@ function wppaEncode(xtext) {
 // Check conflicting settings, Autosave version only
 function wppaCheckInconsistencies() {
 	// Uses lightbox but not enabled?
-	if ( ( document.getElementById('wppa_thumb_linktype').value == 'lightbox' ||
-		   document.getElementById('wppa_slideshow_linktype').value == 'lightbox' ||
-		   document.getElementById('wppa_topten_widget_linktype').value == 'lightbox' ) &&
-		   document.getElementById('wppa_use_lightbox').checked == false ) jQuery('#wppa-wr-1').css('display', '');
-	else jQuery('#wppa-wr-1').css('display', 'none');
+//	if ( ( document.getElementById('wppa_thumb_linktype').value == 'lightbox' ||
+//		   document.getElementById('wppa_slideshow_linktype').value == 'lightbox' ||
+//		   document.getElementById('wppa_topten_widget_linktype').value == 'lightbox' ) &&
+//		   document.getElementById('wppa_use_lightbox').checked == false ) jQuery('#wppa-wr-1').css('display', '');
+//	else jQuery('#wppa-wr-1').css('display', 'none');
 	// Uses no lightbox but enabled?
-	if ( ( document.getElementById('wppa_thumb_linktype').value != 'lightbox' &&
-		   document.getElementById('wppa_slideshow_linktype').value != 'lightbox' &&
-		   document.getElementById('wppa_topten_widget_linktype').value != 'lightbox' &&
-		   document.getElementById('wppa_comment_widget_linktype').value != 'lightbox' ) &&
-		   document.getElementById('wppa_use_lightbox').checked == true ) jQuery('#wppa-wr-2').css('display', '');
-	else jQuery('#wppa-wr-2').css('display', 'none');
+//	if ( ( document.getElementById('wppa_thumb_linktype').value != 'lightbox' &&
+//		   document.getElementById('wppa_slideshow_linktype').value != 'lightbox' &&
+//		   document.getElementById('wppa_topten_widget_linktype').value != 'lightbox' &&
+//		   document.getElementById('wppa_comment_widget_linktype').value != 'lightbox' ) &&
+//		   document.getElementById('wppa_use_lightbox').checked == true ) jQuery('#wppa-wr-2').css('display', '');
+//	else jQuery('#wppa-wr-2').css('display', 'none');
 	// Uses BBB but also lightbox or file or overrule
 	if ( ( document.getElementById('wppa_slideshow_linktype').value == 'lightbox' ||
 		   document.getElementById('wppa_slideshow_linktype').value == 'file' ||
@@ -761,4 +780,15 @@ function wppaCheckInconsistencies() {
 		 document.getElementById('wppa_thumb_linktype').value == 'lightbox' ) jQuery('#wppa-er-1').css('display', '');
 	else jQuery('#wppa-er-1').css('display', 'none');
 
+}
+
+// Get the http request object
+function wppaGetXmlHttp() {
+	if (window.XMLHttpRequest) {		// code for IE7+, Firefox, Chrome, Opera, Safari
+		xmlhttp=new XMLHttpRequest();
+	}
+	else {								// code for IE6, IE5
+		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	}
+	return xmlhttp;
 }

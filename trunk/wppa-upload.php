@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the upload/import pages and functions
-* Version 4.4.0
+* Version 4.4.2
 *
 */
 
@@ -551,6 +551,7 @@ global $warning_given;
 							wppa_ok_message(__('Album #', 'wppa') . ' ' . $id . ': '.stripslashes($name).' ' . __('Added.', 'wppa'));
 							if ($dela) unlink($album);
 							$acount++;
+							wppa_clear_cache();
 						} // album added
 					} // album did not exist
 				} // if handle (file open)

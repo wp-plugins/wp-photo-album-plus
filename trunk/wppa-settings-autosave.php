@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 4.4.0
+* Version 4.4.2
 *
 */
 
@@ -206,8 +206,6 @@ global $wppa_api_version;
 		</div>
 <?php
 		// Check for inconsistencies. The potential messages are printed (display:none) and switched on/off by wppa-admin-scripts.js
-//		wppa_warning_message(__('You use lightbox, but you disabled the lightbox that comes with WPPA+. Either check Table IX-9 or make sure you have a lightbox enabled.', 'wppa'), 'hidden', '1');
-//		wppa_warning_message(__('You do not use lightbox in Table VI, so you may uncheck Table IX-9.', 'wppa'), 'hidden', '2');
 		wppa_warning_message(__('You use Big Browse Buttons on slide images. Any configured links on slides like PS overrule or lightbox will not work! Check Table VI-8 and/or II-19', 'wppa'), 'hidden', '3');
 		wppa_error_message(__('You can not have popup and lightbox on thumbnails at the same time. Uncheck either Table IV-12 or choose a different linktype in Table VI-2.', 'wppa'), 'hidden', '1');
 ?>		
@@ -481,15 +479,7 @@ global $wppa_api_version;
 						$slug = 'wppa_fullimage_border_width';
 						$html = wppa_input($slug, '40px', '', __('pixels', 'wppa'));
 						wppa_setting($slug, '22', $name, $desc, $html, $help, $class);
-/*						
-						$name = __('Lightbox Bordersize', 'wppa');
-						$desc = __('The width of the border in lightbox overlay images.', 'wppa');
-						$help = esc_js(__('The border is made by the image background being larger than the image itsself (padding).', 'wppa'));
-						$slug = 'wppa_lightbox_bordersize';
-						$html = wppa_input($slug, '40px', '', __('pixels', 'wppa'));
-						$class = 'wppa_lightbox';
-						wppa_setting($slug, '23', $name, $desc, $html, $help, $class);
-*/						
+					
 						$name = __('Numbar Max', 'wppa');
 						$desc = __('Maximum nubers to display.', 'wppa');
 						$help = esc_js(__('In order to attemt to fit on one line, the numbers will be replaced by dots - except the current - when there are more than this number of photos in a slideshow.', 'wppa'));
@@ -963,29 +953,7 @@ global $wppa_api_version;
 						$html1 = wppa_input($slug1, '100px', '', '', "checkColor('".$slug1."')") . '</td><td>' . wppa_color_box($slug1);
 						$html2 = wppa_input($slug2, '100px', '', '', "checkColor('".$slug2."')") . '</td><td>' . wppa_color_box($slug2);
 						wppa_setting_2($slug1, $slug2, '7', $name, $desc, $html1, $html2, $help);
-/*
-						$name = __('Lightbox', 'wppa');
-						$desc = __('Lightbox image.', 'wppa');
-						$help = esc_js(__('Enter valid CSS colors for lightbox background and border.', 'wppa'));
-						$help .= '\n'.esc_js(__('The colors may be equal or "transparent"', 'wppa'));
-						$help .= '\n'.esc_js(__('For more information about fullsize image borders see the help on Table I, item 22', 'wppa'));
-						$slug1 = 'wppa_lightbox_backgroundcolor';
-						$slug2 = 'wppa_lightbox_bordercolor';
-						$html1 = wppa_input($slug1, '100px', '', '', "checkColor('".$slug1."')") . '</td><td>' . wppa_color_box($slug1);
-						$html2 = wppa_input($slug2, '100px', '', '', "checkColor('".$slug2."')") . '</td><td>' . wppa_color_box($slug2);
-						$class = 'wppa_lightbox';
-						wppa_setting_2($slug1, $slug2, '8', $name, $desc, $html1, $html2, $help, $class);
-
-						$name = __('Overlay', 'wppa');
-						$desc = __('Lightbox overlay background.', 'wppa');
-						$help = esc_js(__('Enter color and opacity for lightbox overlay background.', 'wppa'));
-						$slug1 = 'wppa_lightbox_overlaycolor';
-						$slug2 = 'wppa_lightbox_overlayopacity';
-						$html1 = wppa_input($slug1, '100px', '', '', "checkColor('".$slug1."')") . '</td><td>' . wppa_color_box($slug1);
-						$html2 = wppa_input($slug2, '100px', '', __('% opacity', 'wppa')) . '</td><td>';
-						$class = 'wppa_lightbox';
-						wppa_setting_2($slug1, $slug2, '9', $name, $desc, $html1, $html2, $help, $class);
-*/						
+					
 						$name = __('Custom', 'wppa');
 						$desc = __('Custom box background.', 'wppa');
 						$help = esc_js(__('Enter valid CSS colors for custom box backgrounds and borders.', 'wppa'));
@@ -1127,21 +1095,6 @@ global $wppa_api_version;
 						$html = wppa_select($slug, $options, $values);
 						wppa_setting($slug, '4', $name, $desc, $html, $help);
 						
-						/*
-						$name = __('Fading', 'wppa');
-						$desc = __('Fade-in after fade-out.', 'wppa');
-						$help = esc_js(__('If checked: slides are faded out and in after each other. If unchecked: fadin and fadeout overlap.', 'wppa'));
-						$help .= '\n'.esc_js(__('The version of the jQuery library must be 1.4 or greater for this feature!', 'wppa'));
-						$slug = 'wppa_fadein_after_fadeout';
-						$onchange = 'checkjQueryRev('.__('Fade-in after fade-out:', 'wppa').', this, 1.4)';
-						$html = wppa_checkbox($slug, $onchange);
-						$class = 'wppa_ss';
-						wppa_setting($slug, '4', $name, $desc, $html, $help, $class);
-						?>
-						<script type="text/javascript">checkjQueryRev('<?php _e('Fade-in after fade-out:', 'wppa') ?>', document.getElementById('wppa_fadein_after_fadeout'), 1.4)</script>
-						<?php
-						*/
-
 						$name = __('Timeout', 'wppa');
 						$desc = __('Slideshow timeout.', 'wppa');
 						$help = esc_js(__('Select the time a single slide will be visible when the slideshow is started.', 'wppa'));
@@ -1309,17 +1262,7 @@ global $wppa_api_version;
 						$html = wppa_checkbox($slug);
 						$class = 'wppa_comment';
 						wppa_setting($slug, '23', $name, $desc, $html, $help, $class);
-/*						
-						$name = __('Lightbox Speed', 'wppa');
-						$desc = __('Lightbox animation speed.', 'wppa');
-						$help = esc_js(__('The higher the number, the faster the animation', 'wppa'));
-						$slug = 'wppa_lightbox_animationspeed';
-						$options = array(__('--- off ---', 'wppa'), '1', '2', '3', '4', '5', '6', '7', '8', '9', '10');
-						$values = array('1000', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10');
-						$html = wppa_select($slug, $options, $values);
-						$class = 'wppa_lightbox';
-						wppa_setting($slug, '24', $name, $desc, $html, $help, $class);
-*/						
+						
 						$name = __('Last comment first', 'wppa');
 						$desc = __('Display the newest comment on top.', 'wppa');
 						$help = esc_js(__('If checked: Display the newest comment on top.', 'wppa'));
@@ -1401,6 +1344,13 @@ global $wppa_api_version;
 						$slug = 'wppa_use_photo_names_in_urls';
 						$html = wppa_checkbox($slug);
 						wppa_setting($slug, '34', $name, $desc, $html, $help);
+						
+						$name = __('Slide hover pause', 'wppa');
+						$desc = __('Running Slideshow suspends during mouse hover.', 'wppa');
+						$help = '';
+						$slug = 'wppa_slide_pause';
+						$html = wppa_checkbox($slug);
+						wppa_setting($slug, '35', $name, $desc, $html, $help);
 						
 						?>
 					</tbody>
@@ -1518,20 +1468,7 @@ global $wppa_api_version;
 						$html3 = wppa_input($slug3, '70px', '', '');
 						$html4 = wppa_select($slug4, $options, $values);
 						wppa_setting_4($slug1, $slug2, $slug3, $slug4, '6abcd', $name, $desc, $html1, $html2, $html3, $html4, $help);
-/*
-						$name = __('Lightbox', 'wppa');
-						$desc = __('Font in wppa lightbox boxes.', 'wppa');
-						$help = esc_js(__('Enter font name, size, color and weight for lightbox overlays.', 'wppa')); 
-						$slug1 = 'wppa_fontfamily_lightbox';
-						$slug2 = 'wppa_fontsize_lightbox';
-						$slug3 = 'wppa_fontcolor_lightbox';
-						$slug4 = 'wppa_fontweight_lightbox';
-						$html1 = wppa_input($slug1, '90%', '200px', '');
-						$html2 = wppa_input($slug2, '40px', '', __('pixels', 'wppa'));
-						$html3 = wppa_input($slug3, '70px', '', '');
-						$html4 = wppa_select($slug4, $options, $values);
-						wppa_setting_4($slug1, $slug2, $slug3, $slug4, '7abcd', $name, $desc, $html1, $html2, $html3, $html4, $help);
-*/
+
 						$name = __('Numbar', 'wppa');
 						$desc = __('Font in wppa number bars.', 'wppa');
 						$help = esc_js(__('Enter font name, size, color and weight for numberbar navigation.', 'wppa')); 
@@ -2135,18 +2072,7 @@ global $wppa_api_version;
 						$values = array( 0, 60*60, 60*60*24, 60*60*24*7, 60*60*24*30);
 						$html = wppa_select($slug, $options, $values);
 						wppa_setting($slug, '8', $name, $desc, $html, $help);
-/*						
-						$name = __('WPPA+ Lightbox', 'wppa');
-						$desc = __('Use wppa+ embedded lightbox.', 'wppa');
-						$help = esc_js(__('WPPA+ comes with embedded lightbox 2. If you want to use a different ligtbox (plugin)', 'wppa'));
-						$help .= ' '.esc_js(__('or you do not use lightbox links, you may uncheck this item.', 'wppa'));
-						$help .= '\n\n'.esc_js(__('If you uncheck this item you can also no longer set lightbox configuration settings.', 'wppa'));
-						$help .= '\n\n'.esc_js(__('If you check this item, the wp supplied scripts prototype and scriptaculous are also being loaded.', 'wppa'));
-						$slug = 'wppa_use_lightbox';
-						$onchange = 'wppaCheckLightbox()';
-						$html = wppa_checkbox($slug, $onchange);
-						wppa_setting($slug, '9', $name, $desc, $html, $help);
-*/						
+						
 						$name = __('Lightbox keyname', 'wppa');
 						$desc = __('The identifier of lightbox.', 'wppa');
 						$help = esc_js(__('If you use a lightbox plugin that uses rel="lbox-id" you can enter the lbox-id here.', 'wppa'));
@@ -2426,6 +2352,16 @@ global $wppa_api_version;
 								<td>WPPA_COMMENTS</td>
 								<td><small><?php _e('Comments db table name.', 'wppa') ?></small></td>
 								<td><?php echo(WPPA_COMMENTS) ?></td>
+							</tr>
+							<tr style="color:#333;">
+								<td>WPPA_IPTC</td>
+								<td><small><?php _e('IPTC db table name.', 'wppa') ?></small></td>
+								<td><?php echo(WPPA_IPTC) ?></td>
+							</tr>
+							<tr style="color:#333;">
+								<td>WPPA_EXIF</td>
+								<td><small><?php _e('EXIF db table name.', 'wppa') ?></small></td>
+								<td><?php echo(WPPA_EXIF) ?></td>
 							</tr>
 							<tr style="color:#333;">
 								<td>WPPA_FILE</td>

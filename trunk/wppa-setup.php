@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 4.4.0
+* Version 4.4.2
 *
 */
 
@@ -34,6 +34,8 @@ global $silent;
 	$old_rev = get_option('wppa_revision', '100');
 
 	if ( $old_rev >= $wppa_revno && ! $force ) return; // Nothing to do here
+	
+	wppa_clear_cache();
 		
 	$create_albums = "CREATE TABLE " . WPPA_ALBUMS . " (
 					id bigint(20) NOT NULL, 
@@ -456,7 +458,8 @@ global $wppa_defaults;
 						'wppa_watermark_opacity'		=> '20',
 						'wppa_bc_on_search'				=> 'yes',
 						'wppa_bc_on_topten'				=> 'yes',
-						'wppa_animation_type'			=> 'fadeover'
+						'wppa_animation_type'			=> 'fadeover',
+						'wppa_slide_pause'				=> 'no'
 
 
 						);

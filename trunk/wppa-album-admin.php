@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * create, edit and delete albums
-* version 4.3.6
+* version 4.4.2
 *
 */
 
@@ -411,6 +411,9 @@ function wppa_admin_albums() {
 	$albums = $wpdb->get_results($wpdb->prepare( "SELECT * FROM " . WPPA_ALBUMS . " " . wppa_get_album_order() ), 'ARRAY_A');
 	
 	if (!empty($albums)) {
+
+	wppa_error_message(__('<b>This version of the album admin page is obsolete and will be discontinued in the near future. Please check Table IX-18 to use the Auto Save version. If you have any problems usig the autosave version, please reoprt it on the <a href="http://wordpress.org/tags/wp-photo-album-plus">support forum</a>.</b>', 'wppa'));
+
 ?>	
 	<div class="table_wrapper">	
 		<table class="widefat">

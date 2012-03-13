@@ -1,5 +1,5 @@
 ﻿// Slide show variables and functions
-// This is wppa-slideshow.js version 4.4.1
+// This is wppa-slideshow.js version 4.4.2
 //
 // Vars. The vars that have a name that starts with an underscore is an internal var
 // The vars without leading underscore are 'external' and get a value from html
@@ -54,6 +54,7 @@ var wppaEmailRequired = true;
 var wppaSlideBorderWidth = 0;
 var wppaSlideInitRunning = new Array();
 var wppaAnimationType = 'fadeover';
+var wppaSlidePause = new Array();
 
 // 'Internal' variables
 var _wppaPhotoIds = new Array();
@@ -128,6 +129,7 @@ function wppaStoreSlideInfo(mocc, id, url, size, width, height, name, desc, phot
 		_wppaSkipRated[mocc] = false;
 		_wppaLbTitle[mocc] = new Array();
 		_wppaDidGoto[mocc] = false;
+		wppaSlidePause[mocc] = false;
 	}
     _wppaSlides[mocc][id] = ' src="' + url + '" alt="' + name + '" class="theimg big" ';
 		// Add 'old' width and height only for non-auto
@@ -250,9 +252,24 @@ function wppaValidateComment(mocc) {
 function _wppaNextSlide(mocc, mode) {
 	_wppaLog('NextSlide', mocc);
 
-	if ( ! _wppaSlideShowRuns[mocc] && mode == 'auto' ) return; // Kill an old timed request, while stopped
+	var fg = _wppaForeground[mocc];
+	var bg = 1 - fg;
+
+	// Paused??
+	if ( mode == 'auto' ) {
+		if ( wppaSlidePause[mocc] ) {
+			jQuery('#theimg'+fg+'-'+mocc).attr("title", wppaSlidePause[mocc]);
+			setTimeout('_wppaNextSlide('+mocc+', "auto")', 250);	// Retry after 250 ms.
+			return;
+		}
+	}
+	// Kill an old timed request, while stopped
+	if ( ! _wppaSlideShowRuns[mocc] && mode == 'auto' ) return; 
+	// Empty slideshow?
 	if ( ! _wppaSlides[mocc] ) return;
-	if ( _wppaSlides[mocc].length < 2 && !_wppaFirst[mocc] ) return; //Do not animate single image
+	// Do not animate single image
+	if ( _wppaSlides[mocc].length < 2 && !_wppaFirst[mocc] ) return; 
+	// Reset request?
 	if ( ! _wppaSlideShowRuns[mocc] && mode == 'reset' ) _wppaSlideShowRuns[mocc] = true;
 
 	// No longer busy voting
@@ -264,9 +281,6 @@ function _wppaNextSlide(mocc, mode) {
 	// Hide metadata while changing image
 	if ( _wppaSlideShowRuns[mocc] ) _wppaShowMetaData(mocc, 'hide');
 	
-	var fg = _wppaForeground[mocc];
-	var bg = 1 - fg;
-
 	// Find index of next slide if in auto mode and not stop in progress
 	if (_wppaSlideShowRuns[mocc]) {
 		_wppaNextIndex[mocc] = _wppaCurrentIndex[mocc] + 1;

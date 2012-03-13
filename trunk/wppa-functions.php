@@ -1167,6 +1167,9 @@ global $wppa_done;
 	$query = $wpdb->prepare('UPDATE `'.WPPA_PHOTOS. '` SET `mean_rating` = %s WHERE `id` = %s LIMIT 1', $avgrat, $id);
 	$iret = $wpdb->query($query);
 	if (!$iret) wppa_dbg_msg('Error, could not update avg rating for photo '.$id.'. Query = '.$query, 'red');
+	
+	// Clear (super)cache
+	wppa_clear_cache();
 }
 
 // Process a comment request
@@ -1234,6 +1237,9 @@ global $wppa_done;
 			}
 			$wppa['comment_photo'] = $id;
 			$wppa['comment_text'] = $comment;
+			
+			// Clear (super)cache
+			wppa_clear_cache();
 		}
 		else {
 			echo('<script type="text/javascript">alert("'.__a('Could not process comment', 'wppa_theme').'")</script>');
