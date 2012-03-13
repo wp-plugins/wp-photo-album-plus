@@ -1,0 +1,459 @@
+# Translation of the WordPress plugin   by .
+# Copyright (C) 2010
+# This file is distributed under the same license as the  package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2010.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: WP Photo Album Plus in italiano\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-03-12 14:25+0100\n"
+"PO-Revision-Date: 2012-03-12 14:25+0100\n"
+"Last-Translator: J.N. Breetvelt <OpaJaap@OpaJaap.nl>\n"
+"Language-Team: Gianni Diurno | gidibao.net & charmingpress.com\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-KeywordsList: __a\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-Language: Italian\n"
+"X-Poedit-Country: ITALY\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPath-1: theme\n"
+
+#: wppa-comment-widget.php:25
+msgid "Comments on Photos"
+msgstr "Kommentar til billeder"
+
+#: wppa-comment-widget.php:78
+msgid "Photo not found."
+msgstr "Billede ikke fundet"
+
+#: wppa-common-functions.php:477
+#, php-format
+msgid "Rating: %s"
+msgstr "Bedømmelse: %s"
+
+#: wppa-common-functions.php:542
+msgid "--- none ---"
+msgstr "--- ingen ---"
+
+#: wppa-common-functions.php:543
+msgid "--- separate ---"
+msgstr "--- separat ---"
+
+#: wppa-common-functions.php:653
+msgid "1 second"
+msgstr "1 sekund"
+
+#: wppa-common-functions.php:654
+msgid "seconds"
+msgstr "sekunder"
+
+#: wppa-common-functions.php:658
+msgid "1 minute"
+msgstr "1 minut"
+
+#: wppa-common-functions.php:659
+msgid "minutes"
+msgstr "minutter"
+
+#: wppa-common-functions.php:663
+msgid "1 hour"
+msgstr "1 time"
+
+#: wppa-common-functions.php:664
+msgid "hours"
+msgstr "timer"
+
+#: wppa-common-functions.php:668
+msgid "1 day"
+msgstr "1 dag"
+
+#: wppa-common-functions.php:669
+msgid "days"
+msgstr "dage"
+
+#: wppa-common-functions.php:673
+msgid "1 week"
+msgstr "1 uge"
+
+#: wppa-common-functions.php:674
+msgid "weeks"
+msgstr "uger"
+
+#: wppa-common-functions.php:678
+msgid "1 month"
+msgstr "1 måned"
+
+#: wppa-common-functions.php:679
+msgid "months"
+msgstr "måneder"
+
+#: wppa-common-functions.php:682
+msgid "1 year"
+msgstr "1 år"
+
+#: wppa-common-functions.php:683
+msgid "years"
+msgstr "år"
+
+#: wppa-functions.php:30
+msgid "There are"
+msgstr "Der er"
+
+#: wppa-functions.php:30
+msgid "photo albums. The last album added is"
+msgstr "fotoalbum. Det senest tilføjede album er"
+
+#: wppa-functions.php:34
+msgid ", a subalbum of"
+msgstr ", et underalbum til"
+
+#: wppa-functions.php:91
+msgid "Home"
+msgstr "Hjem"
+
+#: wppa-functions.php:137
+#: wppa-functions.php:2512
+msgid "Slideshow"
+msgstr "Slideshow"
+
+#: wppa-functions.php:144
+msgid "Searchstring:"
+msgstr "Søgestreng:"
+
+#: wppa-functions.php:147
+msgid "Top rated photos"
+msgstr "Top fotos"
+
+#: wppa-functions.php:150
+msgid "Recently commented photos"
+msgstr "Nyligt kommenterede fotos"
+
+#: wppa-functions.php:1101
+msgid "<b>ERROR: Attempt to enter an invalid rating.</b>"
+msgstr "<b>FEJL: Forsøg på at skrive en ugyldig bedømmelse.</b>"
+
+#: wppa-functions.php:1230
+msgid "Comment edited"
+msgstr "Kommentarer redigeret"
+
+#: wppa-functions.php:1233
+msgid "Comment added"
+msgstr "Kommentarer tilføjet"
+
+#: wppa-functions.php:1239
+msgid "Could not process comment"
+msgstr "Kommentar kunne ikke bearbejdes"
+
+#: wppa-functions.php:1287
+msgid "wrote:"
+msgstr "skrev:"
+
+#: wppa-functions.php:1325
+msgid "Edit!"
+msgstr "Rediger!"
+
+#: wppa-functions.php:1329
+msgid "Send!"
+msgstr "Send"
+
+#: wppa-functions.php:1358
+msgid "Your name:"
+msgstr "Dit navn"
+
+#: wppa-functions.php:1363
+msgid "Your email:"
+msgstr "Din email"
+
+#: wppa-functions.php:1368
+msgid "Your comment:"
+msgstr "Din kommentar"
+
+#: wppa-functions.php:1377
+msgid "You must login to enter a comment"
+msgstr "Login for at skrive en kommentar"
+
+#: wppa-functions.php:1384
+#, php-format
+msgid "%d  comments"
+msgstr "%d  kommentarer"
+
+#: wppa-functions.php:1388
+msgid "Leave a comment"
+msgstr "Skriv en kommentar"
+
+#: wppa-functions.php:1424
+msgid "Show IPTC data"
+msgstr "Vis IPTC data"
+
+#: wppa-functions.php:1427
+msgid "Hide IPTC data"
+msgstr "Skjul IPTC data"
+
+#: wppa-functions.php:1455
+msgid "No IPTC data"
+msgstr "Ingen IPTC data"
+
+#: wppa-functions.php:1488
+msgid "Show EXIF data"
+msgstr "Vis EXIF data"
+
+#: wppa-functions.php:1491
+msgid "Hide EXIF data"
+msgstr "Skjul EXIF data"
+
+#: wppa-functions.php:1519
+msgid "No EXIF data"
+msgstr "Ingen EXIF data"
+
+#: wppa-functions.php:1867
+#: wppa-functions.php:1868
+msgid "Prev.&nbsp;page"
+msgstr "Forrige&nbsp;side"
+
+#: wppa-functions.php:1872
+#: wppa-functions.php:1873
+msgid "Next&nbsp;page"
+msgstr "Næste&nbsp;side"
+
+#: wppa-functions.php:2171
+msgid "<b>ERROR: Illegal attempt to enter a rating.</b>"
+msgstr "<b>FEJL: Ugyldigt forsøg på at give en bedømmelse.</b>"
+
+#: wppa-functions.php:2184
+msgid "<b>ERROR: Illegal attempt to enter a comment.</b>"
+msgstr "<b>FEJL: Ugyldigt forsøg på at give en kommentar.</b>"
+
+#: wppa-functions.php:2399
+msgid "Link to"
+msgstr "Link til"
+
+#: wppa-functions.php:2423
+#: wppa-functions.php:2523
+msgid "View the album"
+msgstr "Se album"
+
+#: wppa-functions.php:2432
+msgid "View the cover photo"
+msgstr "Se forside foto"
+
+#: wppa-functions.php:2433
+msgid "View the cover photos"
+msgstr "Se forside fotos"
+
+#: wppa-functions.php:2512
+msgid "Browse photos"
+msgstr "Se fotos"
+
+#: wppa-functions.php:2524
+msgid "View"
+msgstr "Se"
+
+#: wppa-functions.php:2527
+msgid "album"
+msgstr "album"
+
+#: wppa-functions.php:2530
+msgid "albums"
+msgstr "album"
+
+#: wppa-functions.php:2534
+msgid "and"
+msgstr "og"
+
+#: wppa-functions.php:2538
+msgid "photo"
+msgstr "foto"
+
+#: wppa-functions.php:2541
+msgid "photos"
+msgstr "fotos"
+
+#: wppa-functions.php:2738
+msgid "View the top rated photos"
+msgstr "Se fotos med højeste bedømmelse"
+
+#: wppa-functions.php:2942
+msgid "Double click to start/stop slideshow running"
+msgstr "Dobbeltklik for at starte/slutte slideshow"
+
+#: wppa-functions.php:3997
+#: wppa-functions.php:4003
+msgid "Upload Photo"
+msgstr "Upload foto"
+
+#: wppa-functions.php:4012
+msgid "Apply watermark file:"
+msgstr "Indsæt vandmærke:"
+
+#: wppa-functions.php:4020
+msgid "Position:"
+msgstr "Position:"
+
+#: wppa-functions.php:4029
+msgid "Enter/modify photo description"
+msgstr "Indsæt/rediger beskrivelse af foto"
+
+#: wppa-functions.php:4053
+msgid "<b>ERROR: Illegal attempt to upload a file.</b>"
+msgstr "<b>FEJL: Ugyldigt forsøg på at uploade en fil.</b>"
+
+#: wppa-functions.php:4060
+msgid "Error during upload"
+msgstr "Fejl under upload"
+
+#: wppa-functions.php:4065
+msgid "Uploaded file is not an image"
+msgstr "Uploaded fil er ikke et billede"
+
+#: wppa-functions.php:4069
+msgid "Only gif, jpg and png image files are supported"
+msgstr "Kun gif, jpg og png filer understøttes"
+
+#: wppa-non-admin.php:88
+#: wppa-slideshow.php:86
+msgid "Start"
+msgstr "Start"
+
+#: wppa-non-admin.php:89
+msgid "Stop"
+msgstr "Stop"
+
+#: wppa-non-admin.php:90
+msgid "Photo"
+msgstr "Foto"
+
+#: wppa-non-admin.php:91
+msgid "of"
+msgstr "af"
+
+#: wppa-non-admin.php:92
+msgid "Previous photo"
+msgstr "Forrige billede"
+
+#: wppa-non-admin.php:93
+msgid "Next photo"
+msgstr "Næste billede"
+
+#: wppa-non-admin.php:94
+msgid "Prev."
+msgstr "Forrige"
+
+#: wppa-non-admin.php:95
+msgid "Next"
+msgstr "Næste"
+
+#: wppa-non-admin.php:99
+msgid "Please enter your name"
+msgstr "Skriv dit navn"
+
+#: wppa-non-admin.php:100
+msgid "Please enter a valid email address"
+msgstr "Skriv en gyldig email adresse"
+
+#: wppa-non-admin.php:101
+msgid "Please enter a comment"
+msgstr "Skriv en kommentar"
+
+#: wppa-slideshow-widget.php:109
+msgid "No album defined yet."
+msgstr "Intet album er defineret."
+
+#: wppa-slideshow.php:85
+msgid "Slower"
+msgstr "Langsommere"
+
+#: wppa-slideshow.php:87
+msgid "Faster"
+msgstr "Hurtigere"
+
+#: wppa-slideshow.php:107
+msgid "Paused"
+msgstr ""
+
+#: wppa-slideshow.php:110
+msgid "To see the full size images, you need to enable javascript in your browser."
+msgstr "For at se billeder i fuld størrelse skal du tillade javascript in din browser."
+
+#: wppa-slideshow.php:195
+msgid "- - - Rating enabled - - -"
+msgstr "- - - Bedømmelse aktiveret - - -"
+
+#: wppa-slideshow.php:204
+msgid "very low"
+msgstr "meget lav"
+
+#: wppa-slideshow.php:205
+msgid "low"
+msgstr "lav"
+
+#: wppa-slideshow.php:206
+msgid "average"
+msgstr "gennemsnitlig"
+
+#: wppa-slideshow.php:207
+msgid "high"
+msgstr "høj"
+
+#: wppa-slideshow.php:208
+msgid "very high"
+msgstr "meget høj"
+
+#: wppa-slideshow.php:215
+#: wppa-slideshow.php:219
+msgid "Average&nbsp;rating"
+msgstr "Bedømmelse&nbsp;gennemsnitlig"
+
+#: wppa-slideshow.php:227
+#: wppa-slideshow.php:231
+#: wppa-slideshow.php:235
+msgid "My&nbsp;rating"
+msgstr "Min&nbsp;bedømmelse"
+
+#: wppa-slideshow.php:238
+msgid "You must login to vote"
+msgstr "Du skal logge ind for at stemme"
+
+#: wppa-slideshow.php:402
+#, php-format
+msgid "Photo %s of %s"
+msgstr "Foto %s af %s"
+
+#: wppa-slideshow.php:430
+msgid "Click to start/stop"
+msgstr "Klik for start/stop"
+
+#: wppa-slideshow.php:442
+msgid "- - - Comments box activated - - -"
+msgstr "- - - Kommentar boks aktiveret - - -"
+
+#: wppa-slideshow.php:463
+msgid "- - - IPTC box activated - - -"
+msgstr "- - - IPTC boks aktiveret - - -"
+
+#: wppa-slideshow.php:484
+msgid "- - - EXIF box activated - - -"
+msgstr "- - - EXIF boks aktiveret - - -"
+
+#: wppa-topten-widget.php:26
+msgid "Top Ten Photos"
+msgstr "Foto Top Ten"
+
+#: theme/wppa-theme.php:80
+msgid "No albums or photos found matching your search criteria."
+msgstr "Ingen album eller fotos fundet der svarer til dine søge kriterier."
+
+#~ msgid "Image"
+#~ msgstr "Billede"
+
+#~ msgid "Page is not available."
+#~ msgstr "Pagina non disponibile."
+
+#~ msgid "Photo Of The Day"
+#~ msgstr "Foto del Giorno"
+
+#~ msgid "Sidebar Slideshow"
+#~ msgstr "Slideshow barra laterale"
