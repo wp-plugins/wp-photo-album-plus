@@ -3,12 +3,12 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions and API modules
-* Version 4.4.0
+* Version 4.4.3
 *
 */
 /* Moved to wppa-common-functions.php:
 global $wppa_api_version;
-$wppa_api_version = '4-4-0-000';
+$wppa_api_version = '4-4-3-000';
 */
 
 
@@ -442,7 +442,7 @@ global $album;
 		}
 	}
 	if (!is_numeric($id) || $id == '0') {	// random
-		$id = $wpdb->get_var( $wpdb->prepare( "SELECT id FROM " . WPPA_PHOTOS . " WHERE album = %s ORDER BY RAND() LIMIT 1", $alb ) );
+		$id = $wpdb->get_var( $wpdb->prepare( "SELECT id FROM " . WPPA_PHOTOS . " WHERE album = %s AND status <> %s ORDER BY RAND() LIMIT 1", $alb, 'pending' ) );
 	}
 	return $id;	
 }
@@ -663,7 +663,8 @@ global $wpdb;
 global $album;
     
     if (is_numeric($xid)) $id = $xid; else $id = $album['id'];
-    $count = $wpdb->query($wpdb->prepare( "SELECT * FROM " . WPPA_PHOTOS . " WHERE album=%s", $id ) );
+//    $count = $wpdb->query($wpdb->prepare( "SELECT * FROM " . WPPA_PHOTOS . " WHERE album=%s", $id ) );
+    $count = $wpdb->query($wpdb->prepare( "SELECT * FROM " . WPPA_PHOTOS . " WHERE album = %s AND ( status <> %s OR owner = %s )", $id, 'pending', wppa_get_user() ) );
 	return $count;
 }
 
@@ -689,7 +690,7 @@ global $wpdb;
 function wppa_get_youngest_photo_id() {
 global $wpdb;
 
-	$result = $wpdb->get_var( $wpdb->prepare( "SELECT id FROM " . WPPA_PHOTOS . " ORDER BY id DESC LIMIT 1" ) );
+	$result = $wpdb->get_var( $wpdb->prepare( "SELECT id FROM " . WPPA_PHOTOS . " WHERE status <> %s ORDER BY id DESC LIMIT 1", 'pending' ) );
 	return $result;
 }
 
@@ -792,7 +793,7 @@ global $wppa_opt;
 		}
 	}
 	elseif ( strlen($src) && $wppa['master_occur'] == '1' ) {	// Search is in occur 1 only
-		$tmbs = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM '.WPPA_PHOTOS.' '.wppa_get_photo_order('0') ), 'ARRAY_A');
+		$tmbs = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM '.WPPA_PHOTOS.' WHERE status <> %s '.wppa_get_photo_order('0'), 'pending' ), 'ARRAY_A');
 		$thumbs = '';
 		$idx = '0';
 		foreach ($tmbs as $thumb) {
@@ -827,7 +828,7 @@ global $wppa_opt;
 		else $id = 0;
 		if (is_numeric($id)) {
 			$wppa['current_album'] = $id;
-			$thumbs = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM ".WPPA_PHOTOS." WHERE album=%s ".wppa_get_photo_order($id), $id ), 'ARRAY_A'); 
+			$thumbs = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM ".WPPA_PHOTOS." WHERE album = %s AND ( status <> %s OR owner = %s) ".wppa_get_photo_order($id), $id, 'pending', wppa_get_user() ), 'ARRAY_A'); 
 		}
 		else {
 			$thumbs = false;
@@ -1057,7 +1058,10 @@ global $wppa_opt;
 		$desc = wppa_html(esc_js(stripslashes(wppa_get_photo_desc($id))));	// old version of desc
 	}
 	if ( ! $desc ) $desc = '&nbsp;';
-	
+	// Check for pending
+	$status = $wpdb->get_var($wpdb->prepare('SELECT status FROM '.WPPA_PHOTOS.' WHERE id = %s', $id));
+	if ( $status == 'pending' ) $desc = wppa_html(esc_js('<span style="color:red">'.__a('Awaiting moderation', 'wppa_theme').'</span>'));
+
 	// Produce final result
     $result = "'".$wppa['master_occur']."','";
 	$result .= $index."','";
@@ -1375,12 +1379,12 @@ if ( $wppa_opt['wppa_comment_email_required'] ) {
 							$result .= '<td valign="top" class="wppa-box-text wppa-td" style="vertical-align:top; width:70%; '.__wcs('wppa-box-text').__wcs('wppa-td').'" ><textarea name="wppa-comment" id="wppa-comment-'.$wppa['master_occur'].'" style="height:60px; width:100%; ">'.esc_js(stripslashes($txt)).'</textarea></td>';
 						$result .= '</tr>';
 					$result .= '</tbody>';
-				$result .= '</table>';	
+				$result .= '</table>';
 			$result .= '</form>';
 		$result .= '</div>';
 	}
 	else {
-		$result .= __a('You must login to enter a comment', 'wppa_theme');
+		$result .= sprintf(__a('You must <a href="%s">login</a> to enter a comment', 'wppa_theme'), site_url('wp-login.php', 'login'));
 	}
 	
 	$result .= '<div id="wppa-comfooter-wrap-'.$wppa['master_occur'].'" style="display:block;" >';
@@ -1502,7 +1506,7 @@ global $wppaexiflabels;
 			if ( $exifline['status'] == 'hide' ) continue;														// Photo status is hide
 			if ( $exifline['status'] == 'default' && $wppaexifdefaults[$exifline['tag']] == 'hide' ) continue;	// P s is default and default is hide
 
-			if ( $exifline['status'] == 'default' && $wppaexifdefaults[$exifline['tag']] == 'option' && trim($exifline['description']) == '' ) continue;	// P s is default and default is optional and field is empty
+			if ( $exifline['status'] == 'default' && $wppaexifdefaults[$exifline['tag']] == 'option' && trim(wppa_format_exif($exifline['tag'], $exifline['description'])) == '' ) continue;	// P s is default and default is optional and field is empty
 
 			$count++;
 			$newtag = $exifline['tag'];
@@ -1515,7 +1519,7 @@ global $wppaexiflabels;
 				$result .= esc_js(wppa_qtrans($wppaexiflabels[$newtag]));
 				$result .= '</td><td class="wppa-exif-value wppa-box-text wppa-td" style="'.__wcs('wppa-box-text').__wcs('wppa-td').'" >';
 			}
-			$result .= esc_js(wppa_qtrans($exifline['description']));
+			$result .= esc_js(wppa_qtrans(wppa_format_exif($exifline['tag'], $exifline['description'])));
 			$oldtag = $newtag;
 		}	
 		if ( $oldtag != '' ) $result .= '</td></tr>';	// Close last line
@@ -2666,9 +2670,10 @@ global $thlinkmsggiven;
 			$wppa['out'] .= wppa_nltab('+').'<h2 class="wppa-title" style="clear:none;">';
 				$wppa['out'] .= wppa_nltab().'<a href="'.$href.'" title="'.$title.'" style="'.__wcs('wppa-title').'" >'.wppa_qtrans(stripslashes($thumb['name'])).'</a>';
 			$wppa['out'] .= wppa_nltab('-').'</h2>';
-			$wppa['out'] .= wppa_nltab().'<p class="wppa-box-text wppa-black" style="'.__wcs('wppa-box-text').__wcs('wppa-black').'" >'.wppa_get_photo_desc($thumb).'</p>';
+			$desc = $thumb['status'] == 'pending' ? '<span style="color:red">'.__a('Awaiting moderation', 'wppa_theme').'</span>' : wppa_get_photo_desc($thumb);
+			$wppa['out'] .= wppa_nltab().'<p class="wppa-box-text wppa-black" style="'.__wcs('wppa-box-text').__wcs('wppa-black').'" >'.$desc.'</p>';
 		$wppa['out'] .= wppa_nltab('-').'</div>';
-		$wppa['out'] .= wppa_nltab().'<div style="clear:both;"></div>';
+//		$wppa['out'] .= wppa_nltab().'<div style="clear:both;"></div>';
 		
 		if (!$photo_left) {
 			wppa_the_thumbascoverphoto($src, $photo_left, $link, $imgattr_a, $events);
@@ -2793,8 +2798,9 @@ else		$link = wppa_get_imglnk_a('thumb', $thumb['id']);
 			$wppa['out'] .= '</div>';
 		}
 		
-		if ($wppa_opt['wppa_thumb_text_desc']) {
-			$wppa['out'] .= wppa_nltab().'<div class="wppa-thumb-text" style="'.__wcs('wppa-thumb-text').'" >'.wppa_get_photo_desc($thumb).'</div>';
+		if ($wppa_opt['wppa_thumb_text_desc'] || $thumb['status'] == 'pending') {
+			$desc = $thumb['status'] == 'pending' ? '<span style="color:red">'.__a('Awaiting moderation', 'wppa_theme').'</span>' : wppa_get_photo_desc($thumb);
+			$wppa['out'] .= wppa_nltab().'<div class="wppa-thumb-text" style="'.__wcs('wppa-thumb-text').'" >'.$desc.'</div>';
 		}
 		
 		if ($wppa_opt['wppa_thumb_text_rating']) {
@@ -4088,7 +4094,8 @@ global $wppa_opt;
 				$linkurl = '';
 				$linktitle = '';
 				$owner = wppa_get_user();
-				$query = $wpdb->prepare('INSERT INTO `' . WPPA_PHOTOS . '` (`id`, `album`, `ext`, `name`, `p_order`, `description`, `mean_rating`, `linkurl`, `linktitle`, `timestamp`, `owner`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)', $id, $alb, $ext, $name, $porder, $desc, $mrat, $linkurl, $linktitle, time(), $owner);
+				$status = ( $wppa_opt['wppa_upload_moderate'] && !current_user_can('wppa_admin') ) ? 'pending' : 'publish';
+				$query = $wpdb->prepare('INSERT INTO `' . WPPA_PHOTOS . '` (`id`, `album`, `ext`, `name`, `p_order`, `description`, `mean_rating`, `linkurl`, `linktitle`, `timestamp`, `owner`, `status`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)', $id, $alb, $ext, $name, $porder, $desc, $mrat, $linkurl, $linktitle, time(), $owner, $status);
 
 				if ($wpdb->query($query) === false) {
 					wppa_err_alert(__('Could not insert photo into db.', 'wppa_theme'));
@@ -4222,10 +4229,19 @@ global $wpdb;
 			$pos = strpos($temp, $tag);
 		}
 	}
+
+	// Remove untranslated
+	$pos = strpos($temp, '2#');
+	while ( $pos !== false ) {
+		$tmp = substr($temp, 0, $pos).substr($temp, $pos+5);
+		$temp = $tmp;
+		$pos = strpos($temp, '2#');
+	}
+
 	return $temp;
 }
 
-// Translate iptc tags into  photo dependant data inside a text
+// Translate exif tags into  photo dependant data inside a text
 function wppa_filter_exif($desc, $photo) {
 global $wpdb;
 
@@ -4237,9 +4253,216 @@ global $wpdb;
 		$tag = $exifline['tag'];
 		$pos = strpos($temp, $tag);
 		while ( $pos !== false ) {
-			$temp = substr_replace($temp, $exifline['description'], $pos, strlen($tag));
+			$temp = substr_replace($temp, wppa_format_exif($tag, $exifline['description']), $pos, strlen($tag));
 			$pos = strpos($temp, $tag);
 		}
 	}
+	
+	// Remove untranslated
+	$pos = strpos($temp, 'E#');
+	while ( $pos !== false ) {
+		$tmp = substr($temp, 0, $pos).substr($temp, $pos+6);
+		$temp = $tmp;
+		$pos = strpos($temp, 'E#');
+	}
+
 	return $temp;
+}
+
+function wppa_format_exif($tag, $data) {
+
+	$result = $data;
+	switch ($tag) {
+/*
+E#0132		Date Time					Already formatted correctly
+E#013B		Photographer				Already formatted correctly
+E#8298		Copyright					Already formatted correctly
+			Location					Formatted into one line according to the 3 tags below:  2#092, 2#090, 2#095, 2#101
+										2#092		Sub location
+										2#090		City
+										2#095		State
+										2#101		Country
+
+E#0110		Camera						Already formatted correctly  Example: Canon EOS 50D
+aux:Lens	Lens						Already formatted correctly - See line 66 in sample photo exifdata.jpg attached  Example aux:Lens="EF300mm f/4L IS USM +1.4x"
+*/
+//	E#920A		Focal length				Must be formatted:  420/1 = 420 mm
+		case 'E#920A':
+			$temp = explode('/', $data);
+			if (isset($temp[1])) {
+				if (is_numeric($temp[1])) {
+					if ($temp[1] != 0) $result = round($temp[0]/$temp[1]).' mm.';
+				}
+			}
+			break;
+
+//	E#9206		Subject distance			Must be formatted:  765/100 = 7,65 m.
+		case 'E#9206':
+			$temp = explode('/', $data);
+			if (isset($temp[1])) {
+				if (is_numeric($temp[1])) {
+					if ($temp[1] != 0) $result = round(100*$temp[0]/$temp[1])/"100".' m.';
+				}
+			}
+			break;
+
+//	E#829A		Shutter Speed				Must be formatted:  1/125 = 1/125 s.
+		case 'E#829A':
+			if ($result) $result .= ' s.';
+			break;
+			
+//	E#829D		F-Stop						Must be formatted:  56/10 = f/5,6
+		case 'E#829D':
+			$temp = explode('/', $data);
+			if (isset($temp[1])) {
+				if (is_numeric($temp[1])) {
+					if ($temp[1] != 0) $result = 'f/'.(round(10*$temp[0]/$temp[1])/10);
+				}
+			}				
+			break;
+/*
+E#8827		ISO	Speed Rating			Already formatted correctly
+E#9204		Exposure bias				Already formatted correctly
+
+E#8822		Exposure program			Must be formatted according to table
+										0 = Not Defined
+										1 = Manual
+										2 = Program AE
+										3 = Aperture-priority AE
+										4 = Shutter speed priority AE
+										5 = Creative (Slow speed)
+										6 = Action (High speed)
+										7 = Portrait
+										8 = Landscape
+										9 = Bulb
+*/
+		case 'E#8822':
+			switch ($data) {
+				case '0': $result = 'Not Defined'; break;
+				case '1': $result = 'Manual'; break;
+				case '2': $result = 'Program AE'; break;
+				case '3': $result = 'Aperture-priority AE'; break;
+				case '4': $result = 'Shutter speed priority AE'; break;
+				case '5': $result = 'Creative (Slow speed)'; break;
+				case '6': $result = 'Action (High speed)'; break;
+				case '7': $result = 'Portrait'; break;
+				case '8': $result = 'Landscape'; break;
+				case '9': $result = 'Bulb'; break;
+			}
+			break;
+/*
+E#9207		Metering mode				Must be formatted according to table
+										1 = Average
+										2 = Center-weighted average
+										3 = Spot
+										4 = Multi-spot
+										5 = Multi-segment
+										6 = Partial
+										255 = Other
+*/
+		case 'E#9207':
+			switch ($data) {
+				case '1': $result = 'Average'; break;
+				case '2': $result = 'Center-weighted average'; break;
+				case '3': $result = 'Spot'; break;
+				case '4': $result = 'Multi-spot'; break;
+				case '5': $result = 'Multi-segment'; break;
+				case '6': $result = 'Partial'; break;
+				case '255': $result = 'Other'; break;
+			}
+			break;
+/*
+E#9209		Flash						Must be formatted according to table
+										0x0	= No Flash
+										0x1	= Fired
+										0x5	= Fired, Return not detected
+										0x7	= Fired, Return detected
+										0x8	= On, Did not fire
+										0x9	= On, Fired
+										0xd	= On, Return not detected
+										0xf	= On, Return detected
+										0x10	= Off, Did not fire
+										0x14	= Off, Did not fire, Return not detected
+										0x18	= Auto, Did not fire
+										0x19	= Auto, Fired
+										0x1d	= Auto, Fired, Return not detected
+										0x1f	= Auto, Fired, Return detected
+										0x20	= No flash function
+										0x30	= Off, No flash function
+										0x41	= Fired, Red-eye reduction
+										0x45	= Fired, Red-eye reduction, Return not detected
+										0x47	= Fired, Red-eye reduction, Return detected
+										0x49	= On, Red-eye reduction
+										0x4d	= On, Red-eye reduction, Return not detected
+										0x4f	= On, Red-eye reduction, Return detected
+										0x50	= Off, Red-eye reduction
+										0x58	= Auto, Did not fire, Red-eye reduction
+										0x59	= Auto, Fired, Red-eye reduction
+										0x5d	= Auto, Fired, Red-eye reduction, Return not detected
+										0x5f	= Auto, Fired, Red-eye reduction, Return detected		
+*/
+		case 'E#9209':
+			switch ($data) {
+				case '0x0':
+				case '0': $result = 'No Flash'; break;
+				case '0x1':
+				case '1': $result = 'Fired'; break;
+				case '0x5':
+				case '5': $result = 'Fired, Return not detected'; break;
+				case '0x7':
+				case '7': $result = 'Fired, Return detected'; break;
+				case '0x8':
+				case '8': $result = 'On, Did not fire'; break;
+				case '0x9':
+				case '9': $result = 'On, Fired'; break;
+				case '0xd':
+				case '13': $result = 'On, Return not detected'; break;
+				case '0xf':
+				case '15': $result = 'On, Return detected'; break;
+				case '0x10':
+				case '16': $result = 'Off, Did not fire'; break;
+				case '0x14':
+				case '20': $result = 'Off, Did not fire, Return not detected'; break;
+				case '0x18':
+				case '24': $result = 'Auto, Did not fire'; break;
+				case '0x19':
+				case '25': $result = 'Auto, Fired'; break;
+				case '0x1d':
+				case '29': $result = 'Auto, Fired, Return not detected'; break;
+				case '0x1f':
+				case '31': $result = 'Auto, Fired, Return detected'; break;
+				case '0x20':
+				case '32': $result = 'No flash function'; break;
+				case '0x30':
+				case '48': $result = 'Off, No flash function'; break;
+				case '0x41':
+				case '65': $result = 'Fired, Red-eye reduction'; break;
+				case '0x45':
+				case '69': $result = 'Fired, Red-eye reduction, Return not detected'; break;
+				case '0x47':
+				case '71': $result = 'Fired, Red-eye reduction, Return detected'; break;
+				case '0x49':
+				case '73': $result = 'On, Red-eye reduction'; break;
+				case '0x4d':
+				case '77': $result = 'Red-eye reduction, Return not detected'; break;
+				case '0x4f':
+				case '79': $result = 'On, Red-eye reduction, Return detected'; break;
+				case '0x50':
+				case '80': $result = 'Off, Red-eye reduction'; break;
+				case '0x58':
+				case '88': $result = 'Auto, Did not fire, Red-eye reduction'; break;
+				case '0x59':
+				case '89': $result = 'Auto, Fired, Red-eye reduction'; break;
+				case '0x5d':
+				case '93': $result = 'Auto, Fired, Red-eye reduction, Return not detected'; break;
+				case '0x5f':
+				case '95': $result = 'Auto, Fired, Red-eye reduction, Return detected'; break;
+			}
+			break;
+			
+		default:
+			$result = $data;
+	}
+	
+	return $result;
 }

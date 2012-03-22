@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the non admin stuff
-* Version 4.4.0
+* Version 4.4.3
 *
 */
 
@@ -23,6 +23,45 @@ function wppa_add_style() {
 	} else {
 		wp_register_style('wppa_style', WPPA_URL.'/theme/wppa-style.css');
 		wp_enqueue_style('wppa_style');
+	}
+}
+
+/* SEO META TAGS */
+add_action('wp_head', 'wppa_add_metatags');
+
+function wppa_add_metatags() {
+global $wpdb;
+
+	// To make sure we are on a page that contains at least %%wppa%% we check for $_GET['wppa-album']. 
+	// This also narrows the selection of featured photos to those that exist in the current album.
+	if ( isset($_GET['wppa-album']) ) {
+		$album = $_GET['wppa-album'];
+		$photos = $wpdb->get_results($wpdb->prepare( "SELECT id, name FROM `".WPPA_PHOTOS."` WHERE `album` = %s AND `status` = %s ", $album, 'featured' ), 'ARRAY_A');
+		if ( $photos ) {
+			echo("\n<!-- WPPA+ BEGIN Featured photos on this page -->");
+			foreach ( $photos as $photo ) {
+				$id = $photo['id'];
+				$name = esc_attr(__($photo['name']));
+				$content = wppa_get_permalink().'wppa-photo='.$photo['id'].'&wppa-occur=1';
+				echo("\n<meta name=\"".$name."\" content=\"".$content."\" >");
+			}
+			echo("\n<!-- WPPA+ END Featured photos on this page -->\n");
+		}
+	}
+	// No album, give the plain photo links of all featured photos
+	else {
+		$photos = $wpdb->get_results($wpdb->prepare( "SELECT id, name, ext FROM `".WPPA_PHOTOS."` WHERE `status` = %s ",'featured' ), 'ARRAY_A');
+		if ( $photos ) {
+			echo("\n<!-- WPPA+ BEGIN Featured photos on this site -->");
+			foreach ( $photos as $photo ) {
+				$id = $photo['id'];
+				$name = esc_attr(__($photo['name']));
+				$ext = $photo['ext'];
+				$content = WPPA_UPLOAD_URL.'/'.$id.'.'.$ext;
+				echo("\n<meta name=\"".$name."\" content=\"".$content."\" >");
+			}
+			echo("\n<!-- WPPA+ END Featured photos on this site -->\n");
+		}
 	}
 }
 

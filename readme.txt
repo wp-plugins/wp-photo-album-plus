@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, multisite, network, lightbox, comment, watermark, iptc, exif
-Version: 4.4.2
+Version: 4.4.3
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -126,6 +126,22 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 4.4.3 =
+
+= Bug Fixes =
+
+* The IPTC and EXIF shortcodes in photo descriptions for items that are not present in the photo info will no longer appear untranslated but will print nothing.
+* The most commonly used EXIF tag values are now properly formatted. e.g. 56/10 for F-stop will print: f/5,6.
+
+= New Features =
+
+* Photos have a new property: status. Status can be one of; pending (awaiting moderation), publish (standard) or featured.
+Featured photos will be easily found by search engines by means of meta tags in the page header.
+Status can be changed on the Photo Albums -> Album Admin -> Edit Album information -> Manage Photos admin screen.
+* Uploads can be set to require moderation (Table IV-36). Users who have Album Admin access rights, can change the status; photos uploaded by them will initially have status publish.
+* In the sentences 'You must login to enter a comment' and 'You must login to vote' the words 'login' are now a link to the wp login screen.
+* You can now select a page in the comment admin page to display the photo with all its comments. Just click the thumbnail image.
 
 = 4.4.2 =
 

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * enhances the admin bar with wppa+ menu
-* version 4.2.8
+* version 4.4.3
 *
 */
 
@@ -17,14 +17,27 @@ function wppa_admin_bar_menu() {
 
 	$menu_items = false;
 	
-	$pend = $wpdb->get_results($wpdb->prepare( "SELECT id FROM ".WPPA_COMMENTS." WHERE status='pending'"), "ARRAY_A" );
-	if ( $pend ) $pending = '&nbsp;<span id="ab-awaiting-mod" class="pending-count">'.count($pend).'</span>';
-	else $pending = '';
+	// Pending comments
+	$com_pend = $wpdb->get_var($wpdb->prepare( "SELECT COUNT(*) FROM ".WPPA_COMMENTS." WHERE status='pending'"));
+	if ( $com_pend ) $com_pending = '&nbsp;<span id="ab-awaiting-mod" class="pending-count">'.$com_pend.'</span>';
+	else $com_pending = '';
+	
+	// Pending uploads
+	$upl_pend = $wpdb->get_var($wpdb->prepare( "SELECT COUNT(*) FROM ".WPPA_PHOTOS." WHERE status='pending'"));
+	if ( $upl_pend ) $upl_pending = '&nbsp;<span id="ab-awaiting-mod" class="pending-count">'.$upl_pend.'</span>';
+	else $upl_pending = '';
+	
+	// Tot
+	$tot_pend = '0';
+	if ( current_user_can('administrator') ) $tot_pend += $com_pend;
+	if ( current_user_can('wppa_admin') ) $tot_pend += $upl_pend;	
+	if ( $tot_pend ) $tot_pending = '&nbsp;<span id="ab-awaiting-mod" class="pending-count">'.$tot_pend.'</span>';
+	else $tot_pending = '';
 	
 	if ( current_user_can( 'wppa_admin' ) ) {
 		$menu_items['admin'] = array(
 			'parent' => $wppaplus,
-			'title'  => __( 'Photo Albums', 'wppa_theme' ),
+			'title'  => __( 'Album Admin', 'wppa_theme' ).$upl_pending,
 			'href'   => admin_url( 'admin.php?page=wppa_admin_menu' )
 		);
 	}
@@ -66,7 +79,7 @@ function wppa_admin_bar_menu() {
 	if ( current_user_can( 'administrator' ) ) {
 		$menu_items['comments'] = array(
 			'parent' => $wppaplus,
-			'title'  => __( 'Comments', 'wppa_theme' ).$pending,
+			'title'  => __( 'Comments', 'wppa_theme' ).$com_pending,
 			'href'   => admin_url( 'admin.php?page=wppa_manage_comments' )
 		);
 	}
@@ -89,7 +102,7 @@ function wppa_admin_bar_menu() {
 	// Add top-level item
 	$wp_admin_bar->add_menu( array(
 		'id'    => $wppaplus,
-		'title' => __( 'Photo Albums', 'wppa_theme' ).$pending,
+		'title' => __( 'Photo Albums', 'wppa_theme' ).$tot_pending,
 		'href'  => ''
 	) );
 

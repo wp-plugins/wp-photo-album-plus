@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains the admin menu and startups the admin pages
-* Version 4.4.2
+* Version 4.4.3
 *
 */
 
@@ -25,23 +25,33 @@ function wppa_add_admin() {
 	}
 	
 	// See if there are comments pending moderation
-	$pending_html = '';
-	if ( get_option( 'wppa_show_comments' ) == 'yes' ) {
-		$pending_count = $wpdb->get_var($wpdb->prepare( "SELECT COUNT(*) FROM ".WPPA_COMMENTS." WHERE status='pending'" ) );
-		if ( $pending_count ) $pending_html = '<span class="update-plugins"><span class="plugin-count">'.$pending_count.'</span></span>';
-	}
-	
+	$com_pending = '';
+	$com_pending_count = $wpdb->get_var($wpdb->prepare( "SELECT COUNT(*) FROM ".WPPA_COMMENTS." WHERE status='pending'" ) );
+	if ( $com_pending_count ) $com_pending = '<span class="update-plugins"><span class="plugin-count">'.$com_pending_count.'</span></span>';
+	// See if there are uploads pending moderation
+	$upl_pending = '';
+	$upl_pending_count = $wpdb->get_var($wpdb->prepare( "SELECT COUNT(*) FROM ".WPPA_PHOTOS." WHERE status='pending'" ) );
+	if ( $upl_pending_count ) $upl_pending = '<span class="update-plugins"><span class="plugin-count">'.$upl_pending_count.'</span></span>';
+	// Compute total pending moderation
+	$tot_pending = '';
+	$tot_pending_count = '0';
+	if ( current_user_can('administrator') ) $tot_pending_count += $com_pending_count;
+	if ( current_user_can('wppa_admin') ) $tot_pending_count+= $upl_pending_count;	
+	if ( $tot_pending_count ) $tot_pending = '<span class="update-plugins"><span class="plugin-count">'.'<b>'.$tot_pending_count.'</b>'.'</span></span>';
+
 	$icon_url = WPPA_URL . '/images/camera16.png';
-	// 				page_title        menu_title                        capability    menu_slug          function      icon_url    position
-	add_menu_page( 'WP Photo Album', __('Photo&thinsp;Albums', 'wppa'), 'wppa_admin', 'wppa_admin_menu', 'wppa_admin', $icon_url ); //,'10' );
+	
+	// 				page_title        menu_title                                      capability    menu_slug          function      icon_url    position
+	add_menu_page( 'WP Photo Album', __('Photo&thinsp;Albums', 'wppa').$tot_pending, 'wppa_admin', 'wppa_admin_menu', 'wppa_admin', $icon_url ); //,'10' );
 	
 	//                 parent_slug        page_title                             menu_title                             capability            menu_slug               function
+	add_submenu_page( 'wppa_admin_menu',  __('Album Admin', 'wppa'),			 __('Album Admin', 'wppa').$upl_pending,'wppa_admin',         'wppa_admin_menu',      'wppa_admin' );
     add_submenu_page( 'wppa_admin_menu',  __('Upload Photos', 'wppa'),           __('Upload Photos', 'wppa'),          'wppa_upload',        'wppa_upload_photos',   'wppa_page_upload' );
 	add_submenu_page( 'wppa_admin_menu',  __('Import Photos', 'wppa'),           __('Import Photos', 'wppa'),          'wppa_upload',        'wppa_import_photos',   'wppa_page_import' );
 	add_submenu_page( 'wppa_admin_menu',  __('Export Photos', 'wppa'),           __('Export Photos', 'wppa'),          'administrator',      'wppa_export_photos',   'wppa_page_export' );
     add_submenu_page( 'wppa_admin_menu',  __('Settings', 'wppa'),                __('Settings', 'wppa'),               'administrator',      'wppa_options',         'wppa_page_options' );
 	add_submenu_page( 'wppa_admin_menu',  __('Photo of the day Widget', 'wppa'), __('Photo of the day', 'wppa'),       'wppa_sidebar_admin', 'wppa_sidebar_options', 'wppa_sidebar_page_options' );
-	add_submenu_page( 'wppa_admin_menu',  __('Manage comments', 'wppa'),         __('Comments', 'wppa').$pending_html, 'administrator',      'wppa_manage_comments', 'wppa_comment_admin' );
+	add_submenu_page( 'wppa_admin_menu',  __('Manage comments', 'wppa'),         __('Comments', 'wppa').$com_pending, 'administrator',      'wppa_manage_comments', 'wppa_comment_admin' );
     add_submenu_page( 'wppa_admin_menu',  __('Help &amp; Info', 'wppa'),         __('Help &amp; Info', 'wppa'),        'edit_posts',         'wppa_help',            'wppa_page_help' );
 }
 
