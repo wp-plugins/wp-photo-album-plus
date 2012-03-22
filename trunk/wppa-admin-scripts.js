@@ -1,7 +1,7 @@
 /* admin-scripts.js */
 /* Package: wp-photo-album-plus
 /*
-/* Version 4.4.2
+/* Version 4.4.3
 /* Various js routines used in admin pages		
 */
 
@@ -791,4 +791,31 @@ function wppaGetXmlHttp() {
 		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
 	}
 	return xmlhttp;
+}
+
+function wppaPhotoStatusChange(id) {
+	// Init
+	jQuery('#psdesc-'+id).css({display: 'none'});
+	elm = document.getElementById('status-'+id);
+	
+	if (elm.value=='pending') {
+		jQuery('#photoitem-'+id).css({backgroundColor: '#ffebe8', borderColor: '#cc0000'});
+	}
+	if (elm.value=='publish') {
+		jQuery('#photoitem-'+id).css({backgroundColor:'#ffffe0', borderColor:'#e6db55'}); 
+	}
+	if (elm.value=='featured') {
+		jQuery('#photoitem-'+id).css({backgroundColor: '#e0ffe0', borderColor: '#55ee55'});
+		var temp = document.getElementById('pname-'+id).value;
+		var name = temp.split('.')
+		if (name.length > 1) {
+			var i = 0;
+			while ( i< name.length ) {
+				if (name[i] == 'jpg' || name[i] == 'JPG' ) {
+					jQuery('#psdesc-'+id).css({display: ''});
+				}
+				i++;
+			}
+		}
+	}
 }

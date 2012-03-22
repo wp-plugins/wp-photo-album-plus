@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 4.4.2
+* Version 4.4.3
 *
 */
 
@@ -64,6 +64,7 @@ global $silent;
 					linktitle text NOT NULL,
 					owner text NOT NULL,
 					timestamp tinytext NOT NULL,
+					status tinytext NOT NULL,
 					PRIMARY KEY  (id) 
 					) DEFAULT CHARACTER SET utf8;";
 
@@ -197,6 +198,11 @@ global $silent;
 		$iret = $wpdb->query( $query );
 
 		$query = $wpdb->prepare( 'UPDATE `'.WPPA_ALBUMS.'`  SET `cover_linktype` = %s WHERE `cover_linkpage` = %s', 'none', '-1' );
+		$iret = $wpdb->query( $query );
+	}
+	
+	if ( $iret !== false && ( $old_rev < '450' || $force ) ) {		// status added in...
+		$query = $wpdb->prepare( 'UPDATE `'.WPPA_PHOTOS.'`  SET `status` = %s WHERE `status` = %s', 'publish', '' );
 		$iret = $wpdb->query( $query );
 	}
 	
@@ -459,7 +465,8 @@ global $wppa_defaults;
 						'wppa_bc_on_search'				=> 'yes',
 						'wppa_bc_on_topten'				=> 'yes',
 						'wppa_animation_type'			=> 'fadeover',
-						'wppa_slide_pause'				=> 'no'
+						'wppa_slide_pause'				=> 'no',
+						'wppa_upload_moderate'			=> 'no'
 
 
 						);

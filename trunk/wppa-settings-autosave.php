@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 4.4.2
+* Version 4.4.3
 *
 */
 
@@ -825,7 +825,6 @@ global $wppa_api_version;
 											'url'
 										);
 						$html = wppa_select($slug, $options, $values, $onchange);
-						// $html = wppa_checkbox($slug); 
 						wppa_setting($slug, '30', $name, $desc, $html, $help);
 						
 						$name = __('Comment Avatar url', 'wppa');
@@ -1351,6 +1350,15 @@ global $wppa_api_version;
 						$slug = 'wppa_slide_pause';
 						$html = wppa_checkbox($slug);
 						wppa_setting($slug, '35', $name, $desc, $html, $help);
+						
+						$name = __('Upload moderation', 'wppa');
+						$desc = __('Uploaded photos need moderation.', 'wppa');
+						$help = esc_js(__('If checked, photos uploaded by users who do not have photo album admin access rights need moderation.', 'wppa'));
+						$help .= esc_js(__('Users who have photo album admin access rights can change the photo status to publish or featured.', 'wppa'));
+						$help .= '\n\n'.esc_js(__('You can set the album admin access rights in Table VII-4.', 'wppa'));
+						$slug = 'wppa_upload_moderate';
+						$html = wppa_checkbox($slug);
+						wppa_setting($slug, '36', $name, $desc, $html, $help);
 						
 						?>
 					</tbody>
@@ -2037,8 +2045,6 @@ global $wppa_api_version;
 							$name = $names[$indexes[$i]];
 							$desc = $descs[$indexes[$i]];
 							$html = $i == '0' ? '' : wppa_doit_button(__('Move Up', 'wppa'), 'wppa_moveup', $i);
-							
-							//	wppa_button(__('Move Up', 'wppa'), 'wppa_move_up('.$i.')' );
 							$help = '';
 							wppa_setting($slug, '6.'.$indexes[$i] , $name, $desc, $html, $help);
 							$i++;
@@ -2170,7 +2176,6 @@ global $wppa_api_version;
 						$help = esc_js(__('In this version of the settings page, all modifications are instantly updated on the server.', 'wppa'));
 						$help .= '\n'.esc_js(__('Edit fields are updated the moment you click anywhere outside the edit box.', 'wppa'));
 						$help .= '\n'.esc_js(__('Selections are updated instantly, except for those that require a button push.', 'wppa'));
-					//	$help .= '\n\n'.esc_js(__('The status fields keep you informed on the actions taken at the background.', 'wppa'));
 						$slug = 'wppa_settings_autosave';
 						$html = wppa_checkbox($slug);
 						wppa_setting($slug, '19', $name, $desc, $html, $help);

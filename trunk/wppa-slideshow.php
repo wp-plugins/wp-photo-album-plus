@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the slideshow high level functions
-* Version 4.4.2
+* Version 4.4.3
 *
 */
 
@@ -235,7 +235,8 @@ global $wppa_opt;
 		if ( $wppa_opt['wppa_show_avg_rating'] ) $wppa['out'] .= '&nbsp;'.__a('My&nbsp;rating', 'wppa_theme');
 	}
 	else {
-		$wppa['out'] .= __a('You must login to vote', 'wppa_theme');
+		$wppa['out'] .= sprintf(__a('You must <a href="%s">login</a> to vote', 'wppa_theme'), site_url('wp-login.php', 'login'));
+
 	}
 	
 	$wppa['out'] .= wppa_nltab('-').'</div><!-- wppa-rating-'.$wppa['master_occur'].' -->';

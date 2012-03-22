@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * create, edit and delete albums
-* version 4.3.6
+* version 4.4.3
 *
 */
 
@@ -470,8 +470,8 @@ function wppa_admin_albums() {
 						?>
 					</a>
 				</th>
-				<th scope="col">
-					<?php _e('A/P', 'wppa'); ?>
+				<th scope="col" title="<?php _e('Albums/Photos/Photos that need Moderation', 'wppa') ?>" >
+					<?php _e('A/P/PM', 'wppa'); ?>
 				</th>
 				<th scope="col"><?php _e('Edit', 'wppa'); ?></th>
 				<th scope="col"><?php _e('Delete', 'wppa'); ?></th>	
@@ -486,9 +486,9 @@ function wppa_admin_albums() {
 				foreach (array_keys($seq) as $s) {
 					$album = $albums[$s];
 					if (wppa_have_access($album)) {
-				
-					?>
-						<tr <?php echo($alt) ?>>
+						$pendcount = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `".WPPA_PHOTOS."` WHERE album=%s AND status=%s", $album['id'], 'pending')); 
+						?>
+						<tr <?php echo($alt); if ($pendcount) echo 'style="background-color:#ffdddd"' ?>>
 							<td><?php echo($album['id']) ?></td>
 							<td><?php echo(esc_attr(wppa_qtrans(stripslashes($album['name'])))) ?></td>
 							<td><small><?php echo(esc_attr(wppa_qtrans(stripslashes($album['description'])))) ?></small></td>
@@ -500,7 +500,8 @@ function wppa_admin_albums() {
 							<?php $url = wppa_dbg_url(get_admin_url().'admin.php?page=wppa_admin_menu&amp;tab=edit&amp;edit_id='.$album['id']); ?>
 							<?php $na = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `".WPPA_ALBUMS."` WHERE a_parent=%s", $album['id'])); ?>
 							<?php $np = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `".WPPA_PHOTOS."` WHERE album=%s", $album['id'])); ?>
-							<td><?php echo $na.'/'.$np; ?></td>
+							<?php $nm = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `".WPPA_PHOTOS."` WHERE album=%s AND status=%s", $album['id'], 'pending')); ?>
+							<td><?php echo $na.'/'.$np; if ($nm) echo '/<span style="font-weight:bold; color:red">'.$nm.'</span>'; ?></td>
 							<?php $url = wppa_ea_url($album['id']) ?>
 							<td><a href="<?php echo($url) ?>" class="wppaedit"><?php _e('Edit', 'wppa'); ?></a></td>
 							<?php $url = wppa_dbg_url(get_admin_url().'admin.php?page=wppa_admin_menu&amp;tab=del&amp;id='.$album['id']); ?>
@@ -580,8 +581,8 @@ function wppa_admin_albums() {
 						?>
 					</a>
 				</th>
-				<th scope="col">
-					<?php _e('A/P', 'wppa'); ?>
+				<th scope="col" title="<?php _e('Albums/Photos/Photos that need Moderation', 'wppa') ?>" >
+					<?php _e('A/P/PM', 'wppa'); ?>
 				</th>
 				<th scope="col"><?php _e('Edit', 'wppa'); ?></th>
 				<th scope="col"><?php _e('Delete', 'wppa'); ?></th>	
@@ -609,9 +610,22 @@ function wppa_album_photos($id) {
 		echo '<p>'.__('No photos yet in this album.', 'wppa').'</p>';
 	} 
 	else { 
-		foreach ($photos as $photo) { ?>
+		foreach ($photos as $photo) {
+/*		
+			switch ( $photo['status'] ) {
+				case 'pending':
+					$bgcol = 'background-color: #ffebe8; border-color: #cc0000;';
+					break;
+				case 'featured':
+					$bgcol = 'background-color: #e0ffe0; border-color: #55ee55;';
+					break;
+				default:
+					$bgcol = 'background-color: #ffffe0; border-color: #e6db55;';
+			}
+*/
+		?>
 
-			<div class="photoitem" id="photoitem-<?php echo $photo['id'] ?>" style="width:100%;" >
+			<div class="photoitem" id="photoitem-<?php echo $photo['id'] ?>" style="width:100%;<?php echo $bgcol ?>" >
 			
 				<!-- Left half starts here -->
 				<div style="width:49.5%; float:left; border-right:1px solid #ccc; margin-right:0;">
@@ -742,7 +756,7 @@ function wppa_album_photos($id) {
 									<label><?php _e('Name:', 'wppa'); ?></label>
 								</th>
 								<td>
-									<input type="text" style="width:100%;" onchange="wppaAjaxUpdatePhoto(<?php echo $photo['id'] ?>, 'name', this)" value="<?php echo(stripslashes($photo['name'])) ?>" />
+									<input type="text" style="width:100%;" id="pname-<?php echo $photo['id'] ?>" onchange="wppaAjaxUpdatePhoto(<?php echo $photo['id'] ?>, 'name', this); wppaPhotoStatusChange(<?php echo $photo['id'] ?>); " value="<?php echo(stripslashes($photo['name'])) ?>" />
 									<span class="description"><br/><?php _e('Type/alter the name of the photo. It is NOT a filename and needs no file extension like .jpg.', 'wppa'); ?></span>
 								</td>
 							</tr>
@@ -758,7 +772,22 @@ function wppa_album_photos($id) {
 							<!-- Status -->
 							<tr valign="bottom">
 								<th scope="row" >
-									<label ><?php _e('Status', 'wppa') ?></label>
+									<label ><?php _e('Status:', 'wppa') ?></label>
+								</th>
+								<td>
+									<select id="status-<?php echo $photo['id'] ?>" onchange="wppaAjaxUpdatePhoto(<?php echo $photo['id'] ?>, 'status', this); wppaPhotoStatusChange(<?php echo $photo['id'] ?>); ">
+										<option value="pending" <?php if ($photo['status']=='pending') echo 'selected="selected"'?> ><?php _e('Pending', 'wppa') ?></option>
+										<option value="publish" <?php if ($photo['status']=='publish') echo 'selected="selected"'?> ><?php _e('Publish', 'wppa') ?></option>
+										<option value="featured" <?php if ($photo['status']=='featured') echo 'selected="selected"'?> ><?php _e('Featured', 'wppa') ?></option>
+									</select>
+									<span id="psdesc-<?php echo $photo['id'] ?>" class="description" style="display:none;" ><?php _e('Note: Featured photos should have a descriptive name; a name a search engine will look for!', 'wppa'); ?></span>
+
+								</td>
+							</tr>
+							<!-- Remark -->
+							<tr valign="bottom">
+								<th scope="row">
+									<label ><?php _e('Remark:', 'wppa') ?></label>
 								</th>
 								<td id="photostatus-<?php echo $photo['id'] ?>" style="width:99%; padding-left:10px;">
 									<?php echo sprintf(__('Photo %s is not modified yet', 'wppa'), $photo['id']) ?>
@@ -767,7 +796,7 @@ function wppa_album_photos($id) {
 
 						</tbody>
 					</table>
-
+					<script type="text/javascript">wppaPhotoStatusChange(<?php echo $photo['id'] ?>)</script>
 				</div>
 			
 				<div class="clear"></div>
