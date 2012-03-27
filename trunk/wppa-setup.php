@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 4.4.3
+* Version 4.4.4
 *
 */
 
@@ -362,18 +362,25 @@ global $wppa_defaults;
 						'wppa_html' 				=> 'no',
 						'wppa_thumb_linkpage' 		=> '0',
 						'wppa_thumb_linktype' 		=> 'photo',
+						'wppa_thumb_blank'			=> 'no',
 						'wppa_mphoto_linkpage' 		=> '0',
 						'wppa_mphoto_linktype' 		=> 'photo',
+						'wppa_mphoto_blank'			=> 'no',
 						'wppa_widget_linkpage' 		=> '0',
 						'wppa_widget_linktype' 		=> 'album',
 						'wppa_widget_linkurl'		=> '',
 						'wppa_widget_linktitle' 	=> '',
+						'wppa_potd_blank'			=> 'no',
 						'wppa_topten_widget_linkpage' 		=> '0',
 						'wppa_topten_widget_linktype' 		=> 'photo',
+						'wppa_topten_blank'					=> 'no',
 						'wppa_slideonly_widget_linkpage' 	=> '0',
 						'wppa_slideonly_widget_linktype' 	=> 'widget',
+						'wppa_sswidget_blank'				=> 'no',
+						'wppa_slideshow_blank'				=> 'no',
 						'wppa_coverimg_linkpage' 	=> '0',
 						'wppa_coverimg_linktype' 	=> 'same',
+						'wppa_coverimg_blank'		=> 'no',
 						'wppa_mphoto_overrule'		=> 'no',
 						'wppa_thumb_overrule'		=> 'no',
 						'wppa_topten_overrule'		=> 'no',
@@ -431,6 +438,7 @@ global $wppa_defaults;
 						'wppa_watermark_upload'			=> '',
 						'wppa_comment_widget_linkpage'	=> '0',
 						'wppa_comment_widget_linktype'	=> 'photo',
+						'wppa_comment_blank'			=> 'no',
 						'wppa_comment_count'			=> '10',
 						'wppa_comment_size'				=> '86',
 						'wppa_comment_overrule'			=> 'no',

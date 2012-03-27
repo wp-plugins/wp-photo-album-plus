@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the non admin stuff
-* Version 4.4.3
+* Version 4.4.4
 *
 */
 
@@ -174,6 +174,8 @@ global $wppa_opt;
 		else echo("\t".'wppaAllowAjax = false;'."\n");
 		if ( $wppa_opt['wppa_use_photo_names_in_urls'] ) echo("\t".'wppaUsePhotoNamesInUrls = true;'."\n"); 
 		else echo("\t".'wppaUsePhotoNamesInUrls = false;'."\n"); 
+		if ( $wppa_opt['wppa_thumb_blank'] ) echo("\t".'wppaThumbTargetBlank = true;'."\n");
+		else echo("\t".'wppaThumbTargetBlank = false;'."\n");
 
 	echo("/* ]]> */\n");
 	echo("</script>\n");

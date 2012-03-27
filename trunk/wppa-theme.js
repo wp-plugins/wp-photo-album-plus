@@ -1,5 +1,5 @@
 // Theme variables and functions
-// This is wppa-theme.js version 4.3.1
+// This is wppa-theme.js version 4.4.4
 //
 
 var wppaBackgroundColorImage = '';
@@ -7,6 +7,7 @@ var _wppaTimer = new Array();
 var wppa_saved_id = new Array();
 var wppaPopupLinkType = '';
 var wppaPopupOnclick = new Array();
+var wppaThumbTargetBlank = false;
 
 // Popup of thumbnail images 
 function wppaPopUp(mocc, elm, id, rating) {
@@ -23,6 +24,8 @@ function wppaPopUp(mocc, elm, id, rating) {
 		var descdiv = elm.title ? '<div id="wppa-desc-'+mocc+'" style="clear:both; display:none; padding:1px;" class="wppa_pu_info">'+elm.title+'</div>' : '';
 		var ratediv = rating ? '<div id="wppa-rat-'+mocc+'" style="clear:both; display:none; padding:1px;" class="wppa_pu_info">'+rating+'</div>' : '';
 		var popuptext = namediv+descdiv+ratediv;
+		var target = '';
+		if (wppaThumbTargetBlank) target = 'target="_blank"';
 		switch (wppaPopupLinkType) {
 			case 'none':
 				jQuery('#wppa-popup-'+mocc).html('<div class="wppa-popup" style="background-color:'+wppaBackgroundColorImage+'; text-align:center;"><img id="wppa-img-'+mocc+'" src="'+elm.src+'" title="" style="border-width: 0px;" />'+popuptext+'</div>');
@@ -31,7 +34,7 @@ function wppaPopUp(mocc, elm, id, rating) {
 				jQuery('#wppa-popup-'+mocc).html('<div class="wppa-popup" style="background-color:'+wppaBackgroundColorImage+'; text-align:center;"><img id="wppa-img-'+mocc+'" src="'+elm.src+'" title="" style="border-width: 0px;" onclick="'+wppaPopupOnclick[id]+'" />'+popuptext+'</div>');
 				break;
 			default:
-				jQuery('#wppa-popup-'+mocc).html('<div class="wppa-popup" style="background-color:'+wppaBackgroundColorImage+'; text-align:center;"><a id="wppa-a" href="'+document.getElementById('x-'+id+'-'+mocc).href+'" style="line-height:1px;" ><img id="wppa-img-'+mocc+'" src="'+elm.src+'" title="" style="border-width: 0px;" /></a>'+popuptext+'</div>');
+				jQuery('#wppa-popup-'+mocc).html('<div class="wppa-popup" style="background-color:'+wppaBackgroundColorImage+'; text-align:center;"><a id="wppa-a" href="'+document.getElementById('x-'+id+'-'+mocc).href+'" '+target+' style="line-height:1px;" ><img id="wppa-img-'+mocc+'" src="'+elm.src+'" title="" style="border-width: 0px;" /></a>'+popuptext+'</div>');
 		}
 	}
 	

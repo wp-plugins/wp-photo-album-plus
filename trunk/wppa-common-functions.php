@@ -2,11 +2,11 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 4.4.3
+* version 4.4.4
 *
 */
 global $wppa_api_version;
-$wppa_api_version = '4-4-3-000';
+$wppa_api_version = '4-4-4-000';
 // Initialize globals and option settings
 function wppa_initialize_runtime($force = false) {
 global $wppa;
@@ -204,18 +204,25 @@ global $blog_id;
 			'wppa_html' => '',
 			'wppa_thumb_linkpage' => '',
 			'wppa_thumb_linktype' => '',
+			'wppa_thumb_blank' => '',
 			'wppa_mphoto_linkpage' => '',
 			'wppa_mphoto_linktype' => '',
+			'wppa_mphoto_blank'				=> '',
 			'wppa_widget_linkpage' 			=> '',
 			'wppa_widget_linktype' 			=> '',
 			'wppa_widget_linkurl' 			=> '',
 			'wppa_widget_linktitle' 		=> '',
+			'wppa_potd_blank'				=> '',
 			'wppa_slideonly_widget_linkpage' => '',
 			'wppa_slideonly_widget_linktype' => '',
+			'wppa_sswidget_blank'			=> '',
+			'wppa_slideshow_blank'			=> '',
 			'wppa_topten_widget_linkpage' 	=> '',
 			'wppa_topten_widget_linktype' 	=> '',
+			'wppa_topten_blank'				=> '',
 			'wppa_coverimg_linktype' 		=> '',
 			'wppa_coverimg_linkpage' 		=> '',
+			'wppa_coverimg_blank'			=> '',
 			'wppa_mphoto_overrule'			=> '',
 			'wppa_thumb_overrule'			=> '',
 			'wppa_topten_overrule'			=> '',
@@ -261,6 +268,7 @@ global $blog_id;
 			'wppa_watermark_upload'			=> '',
 			'wppa_comment_widget_linkpage'	=> '',
 			'wppa_comment_widget_linktype'	=> '',
+			'wppa_comment_blank'			=> '',
 			'wppa_comment_count'			=> '',
 			'wppa_comment_size'				=> '',
 			'wppa_comment_overrule'			=> '',
@@ -1291,7 +1299,7 @@ global $wpdb;
 	
 	// Is iptc data present?
 	if ( !isset($info['APP13']) ) return false;	// No iptc data avail
-
+//var_dump($info);
 	// Parse
 	$iptc = iptcparse($info['APP13']);
 	if ( ! is_array($iptc) ) return false;		// No data avail 
@@ -1369,7 +1377,7 @@ global $wpdb;
 	if ( ! function_exists('exif_read_data') ) return false;	// Not supported by the server
 	$exif = exif_read_data($file, 'EXIF');
 	if ( ! is_array($exif) ) return false;			// No data present
-
+//var_dump($exif);
 	// There is exif data for this image.
 	// First delete any existing exif data for this image
 	$wpdb->query($wpdb->prepare("DELETE FROM `".WPPA_EXIF."` WHERE `photo` = %s", $id));
@@ -1386,7 +1394,7 @@ global $wpdb;
 	foreach (array_keys($exif) as $s) {
 		// Process item
 		wppa_dbg_msg('EXIF '.$s.' = '.$exif[$s]);
-		if ( is_array($exif[$s]) ) continue;
+		
 		// Check labels first
 		$tag = '';
 		if ( in_array( $s, $names ) ) {
@@ -1409,13 +1417,30 @@ global $wpdb;
 			if ( ! $iret ) wppa_dbg_msg('Error: '.$query);
 		}
 		// Now add poto specific data item
-		$key 	= wppa_nextkey(WPPA_EXIF);
-		$photo 	= $id;
-		$desc 	= $exif[$s];
-		$status = 'default';
-		$query  = $wpdb->prepare("INSERT INTO `".WPPA_EXIF."` (`id`, `photo`, `tag`, `description`, `status`) VALUES (%s, %s, %s, %s, %s)", $key, $photo, $tag, $desc, $status); 
-		$iret 	= $wpdb->query($query);
-		if ( ! $iret ) wppa_dbg_msg('Error: '.$query);
+		// If its an array...
+		if ( is_array($exif[$s]) ) { // continue;
+			$c = count ($exif[$s]);
+			for ($i=0; $i <$c; $i++) {
+				$key 	= wppa_nextkey(WPPA_EXIF);
+				$photo 	= $id;
+				$desc 	= $exif[$s][$i];
+				$status = 'default';
+				$query  = $wpdb->prepare("INSERT INTO `".WPPA_EXIF."` (`id`, `photo`, `tag`, `description`, `status`) VALUES (%s, %s, %s, %s, %s)", $key, $photo, $tag, $desc, $status); 
+				$iret 	= $wpdb->query($query);
+				if ( ! $iret ) wppa_dbg_msg('Error: '.$query);
+			
+			}
+		}
+		// Its not an array
+		else {
+			$key 	= wppa_nextkey(WPPA_EXIF);
+			$photo 	= $id;
+			$desc 	= $exif[$s];
+			$status = 'default';
+			$query  = $wpdb->prepare("INSERT INTO `".WPPA_EXIF."` (`id`, `photo`, `tag`, `description`, `status`) VALUES (%s, %s, %s, %s, %s)", $key, $photo, $tag, $desc, $status); 
+			$iret 	= $wpdb->query($query);
+			if ( ! $iret ) wppa_dbg_msg('Error: '.$query);
+		}
 	}
 }
 
@@ -1437,6 +1462,9 @@ global $wppa_inv_exiftags;
 	}
 	// Search
 	if ( isset($wppa_inv_exiftags[$tagname]) ) return sprintf('E#%04X',$wppa_inv_exiftags[$tagname]);
+	elseif ( strlen($tagname) == 19 ) {
+		if ( substr($tagname, 0, 12) == 'UndefinedTag') return 'E#'.substr($tagname, -4);
+	}
 	else return '';
 }
 

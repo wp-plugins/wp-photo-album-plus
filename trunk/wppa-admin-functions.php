@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 * gp admin functions
-* version 4.4.2
+* version 4.4.4
 *
 * 
 */
@@ -664,14 +664,16 @@ if ( is_multisite() ) return; // temp disabled for 4.0 bug, must be tested in a 
 }
 
 
-function wppa_walktree($relroot, $source) {
+function wppa_walktree($relroot, $source, $allowwppa = false, $subdirsonly = false) {
 
-	if ($relroot == $source) $sel=' selected="selected"'; else $sel = ' ';
-	echo('<option value="'.$relroot.'"'.$sel.'>'.$relroot.'</option>');
+	if ( !$subdirsonly ) {
+		if ($relroot == $source) $sel=' selected="selected"'; else $sel = ' ';
+		echo('<option value="'.$relroot.'"'.$sel.'>'.$relroot.'</option>');
+	}
 	
 	if ($handle = opendir(ABSPATH.$relroot)) {
 		while (false !== ($file = readdir($handle))) {
-			if (($file) != "." && ($file) != ".." && ($file) != "wppa") {
+			if ( $file != "." && $file != ".." && ( $file != "wppa" || $allowwppa ) ) {
 				$newroot = $relroot.'/'.$file;
 				if (is_dir(ABSPATH.$newroot)) {	
 					wppa_walktree($newroot, $source);
@@ -686,10 +688,15 @@ function wppa_sanitize_files() {
 
 	// Get this users depot directory
 	$depot = WPPA_DEPOT_PATH;
+	__wppa_sanitize_files($depot);
+}
+
+function __wppa_sanitize_files($root) {
 	// See what's in there
-	$paths = $depot.'/*.*';
-	$files = glob($paths);
 	$allowed_types = array('zip', 'jpg', 'png', 'gif', 'amf', 'pmf', 'bak');
+
+	$paths = $root.'/*';
+	$files = glob($paths);
 
 	$count = '0';
 	if ($files) foreach ($files as $file) {
@@ -699,6 +706,12 @@ function wppa_sanitize_files() {
 				unlink($file);
 				wppa_error_message(sprintf(__('File %s is of an unsupported filetype and has been removed.', 'wppa'), basename($file)));
 				$count++;
+			}
+		}
+		elseif (is_dir($file)) {
+			$entry = basename($file);
+			if ( $entry != '.' && $entry != '..' ) {
+				__wppa_sanitize_files($file);
 			}
 		}
 	}

@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, multisite, network, lightbox, comment, watermark, iptc, exif
-Version: 4.4.3
+Version: 4.4.4
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -75,6 +75,11 @@ to your theme directory, you must remove them or replace them with the newly sup
 
 == Frequently Asked Questions ==
 
+= Which other plugins do you recommand to use with WPPA+, and which not? =
+
+* Recommanded plugins: qTranslate, Lightbox 3, WP Super Cache, AddThis.
+* Plugins that break up WPPA+: My Live Signature.
+
 = After update, many things seem to go wrong =
 
 * After an update, always clear your browser cache (CTRL+F5) and clear your temp internetfiles, this will ensure the new versions of js files will be loaded.
@@ -126,6 +131,24 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 4.4.4 =
+
+= Bug Fixes =
+
+* It is no longer possible to set Tanble I-2 and 3 to 'auto'. Only Item I-1 may be set to 'auto'.
+* The captions of the IPTC and EXIF boxes now obey the settings in Table V-6.
+* The Big Browse Buttons have explicitly background-color: transparent now, to cope with themes that have a white background behind all images.
+
+= New Features =
+
+* You can specify New Tab in Table VI for all links independantly when appropriate. Note: When using Lightbox-3 the plain file will open in a new tab as a lightbox image, 
+a specified lightbox link will open in the same tab (with possible browsing) regardless of the New Tab setting.
+
+= Other Changes =
+
+* Uploaded zip file may now contain sub-directories with photos. They can also be imported. This fixes also a spurious unzip problem.
+* Added support for EXIF UndefinedTags.
 
 = 4.4.3 =
 
