@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 4.4.4
+* Version 4.4.4.001
 *
 */
 
@@ -1535,8 +1535,8 @@ global $wppa_api_version;
 						$values_linktype_album = array('none', 'file', 'album', 'photo', 'single'); //, 'indiv');
 						$options_linktype_ss_widget = array(__('no link at all.', 'wppa'), __('the plain photo (file).', 'wppa'), __('defined at widget activation.', 'wppa'), __('the content of the album.', 'wppa'), __('the full size photo in a slideshow.', 'wppa'), __('the fullsize photo on its own.', 'wppa')); //, __('the photo specific link.', 'wppa'));
 						$values_linktype_ss_widget = array('none', 'file', 'widget', 'album', 'photo', 'single'); //, 'indiv');
-						$options_linktype_potd_widget = array(__('no link at all.', 'wppa'), __('the plain photo (file).', 'wppa'), __('defined on widget admin page.', 'wppa'), __('the content of the album.', 'wppa'), __('the full size photo in a slideshow.', 'wppa'), __('the fullsize photo on its own.', 'wppa')); //, __('the photo specific link.', 'wppa'));
-						$values_linktype_potd_widget = array('none', 'file', 'custom', 'album', 'photo', 'single'); //, 'indiv');
+						$options_linktype_potd_widget = array(__('no link at all.', 'wppa'), __('the plain photo (file).', 'wppa'), __('defined on widget admin page.', 'wppa'), __('the content of the album.', 'wppa'), __('the full size photo in a slideshow.', 'wppa'), __('the fullsize photo on its own.', 'wppa'), __('lightbox.', 'wppa')); //, __('the photo specific link.', 'wppa'));
+						$values_linktype_potd_widget = array('none', 'file', 'custom', 'album', 'photo', 'single', 'lightbox'); //, 'indiv');
 						$options_linktype_cover_image = array(__('no link at all.', 'wppa'), __('the plain photo (file).', 'wppa'), __('same as title.', 'wppa'));
 						$values_linktype_cover_image = array('none', 'file', 'same');
 
