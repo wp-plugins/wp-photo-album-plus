@@ -1,7 +1,7 @@
 /* admin-scripts.js */
 /* Package: wp-photo-album-plus
 /*
-/* Version 4.4.3
+/* Version 4.4.4
 /* Various js routines used in admin pages		
 */
 
@@ -41,6 +41,8 @@ function wppaInitSettings() {
 	wppaCheckCommentLink();
 	wppaCheckMphotoLink();
 	wppaCheckSlideOnlyLink();
+	wppaCheckSlideLink();
+	wppaCheckCoverImg();
 	wppaCheckPotdLink();
 	wppaCheckRating();
 	wppaCheckComments();
@@ -297,6 +299,12 @@ function wppaCheckThumbLink() {
 	else {
 		jQuery('.wppa_tlp').css('visibility', 'visible');
 	}
+	if (lvalue == 'none' || lvalue == 'lightbox' || lvalue == 'fullpopup') {
+		jQuery('.wppa_tlb').css('visibility', 'hidden');
+	}
+	else {
+		jQuery('.wppa_tlb').css('visibility', 'visible');
+	}	
 }
 
 function wppaCheckTopTenLink() { 
@@ -306,6 +314,12 @@ function wppaCheckTopTenLink() {
 	}
 	else {
 		jQuery('.wppa_ttlp').css('visibility', 'visible');
+	}
+	if (lvalue == 'none' || lvalue == 'lightbox' || lvalue == 'fullpopup') {
+		jQuery('.wppa_ttlb').css('visibility', 'hidden');
+	}
+	else {
+		jQuery('.wppa_ttlb').css('visibility', 'visible');
 	}
 }
 
@@ -317,6 +331,12 @@ function wppaCheckCommentLink() {
 	else {
 		jQuery('.wppa_cmlp').css('visibility', 'visible');
 	}
+	if (lvalue == 'none' || lvalue == 'lightbox' || lvalue == 'fullpopup') {
+		jQuery('.wppa_cmlb').css('visibility', 'hidden');
+	}
+	else {
+		jQuery('.wppa_cmlb').css('visibility', 'visible');
+	}
 }
 
 function wppaCheckSlideOnlyLink() {
@@ -326,6 +346,32 @@ function wppaCheckSlideOnlyLink() {
 	}
 	else {
 		jQuery('.wppa_solp').css('visibility', 'visible');
+	}
+	if (lvalue == 'none' || lvalue == 'lightbox' || lvalue == 'fullpopup') {
+		jQuery('.wppa_solb').css('visibility', 'hidden');
+	}
+	else {
+		jQuery('.wppa_solb').css('visibility', 'visible');
+	}
+}
+
+function wppaCheckSlideLink() {
+	var lvalue = document.getElementById('wppa_slideshow_linktype').value;
+		if (lvalue == 'none' || lvalue == 'lightbox' || lvalue == 'fullpopup') {
+		jQuery('.wppa_sslb').css('visibility', 'hidden');
+	}
+	else {
+		jQuery('.wppa_sslb').css('visibility', 'visible');
+	}
+}
+
+function wppaCheckCoverImg() {
+	var lvalue = document.getElementById('wppa_coverimg_linktype').value;
+		if (lvalue == 'none' || lvalue == 'lightbox' || lvalue == 'fullpopup') {
+		jQuery('.wppa_covimgbl').css('visibility', 'hidden');
+	}
+	else {
+		jQuery('.wppa_covimgbl').css('visibility', 'visible');
 	}
 }
 
@@ -337,6 +383,12 @@ function wppaCheckPotdLink() {
 	else {
 		jQuery('.wppa_potdlp').css('visibility', 'visible');
 	}
+	if (lvalue == 'none' || lvalue == 'lightbox' || lvalue == 'fullpopup') {
+		jQuery('.wppa_potdlb').css('visibility', 'hidden');
+	}
+	else {
+		jQuery('.wppa_potdlb').css('visibility', 'visible');
+	}
 }
 
 function wppaCheckMphotoLink() { 
@@ -346,6 +398,12 @@ function wppaCheckMphotoLink() {
 	}
 	else {
 		jQuery('.wppa_mlp').css('visibility', 'visible');
+	}
+	if (lvalue == 'none' || lvalue == 'lightbox' ) {
+		jQuery('.wppa_mlb').css('visibility', 'hidden');
+	}
+	else {
+		jQuery('.wppa_mlb').css('visibility', 'visible');
 	}
 }
 

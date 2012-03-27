@@ -2,7 +2,7 @@
 /* wppa-ajax.php
 *
 * Functions used in ajax requests
-* version 4.4.3
+* version 4.4.4
 *
 */
 add_action('wp_ajax_wppa', 'wppa_ajax_callback');
@@ -680,17 +680,22 @@ function wppa_decode($string) {
 
 function wppa_ajax_check_range($value, $fixed, $low, $high, $title) {
 global $wppa;
-	if ( $fixed !== false && $fixed == $value ) return;	// Ok
-	if ( $low !== false && $value < $low ) {
-		$wppa['error'] = true;
+	if ( $fixed !== false && $fixed == $value ) return;						// User enetred special value correctly
+	if ( !is_numeric($value) ) $wppa['error'] = true;						// Must be numeric if not specaial value
+	if ( $low !== false && $value < $low ) $wppa ['error'] = true;			// Must be >= given min value
+	if ( $high !== false && $value > $high ) $wppa ['error'] = true;		// Must be <= given max value
+	
+	if ( !$wppa ['error'] ) return;		// Still no error, ok
+	
+	// Compose error message
+	if ($low !== false && $hig === false) {	// Only Minimum given
 		$wppa['out'] .= __('Please supply a numeric value greater than or equal to', 'wppa') . ' ' . $low . ' ' . __('for', 'wppa') . ' ' . $title;
 		if ( $fixed !== false ) {
 			if ( $fixed ) $wppa['out'] .= '. ' . __('You may also enter:', 'wppa') . ' ' . $fixed;
 			else $wppa['out'] .= '. ' . __('You may also leave/set this blank', 'wppa');
 		}
 	}
-	if ( $high !== false && $value > $high ) {
-		$wppa['error'] = true;
+	else {	// Also Maximum given
 		$wppa['out'] .= __('Please supply a numeric value greater than or equal to', 'wppa') . ' ' . $low . ' ' . __('and less than or equal to', 'wppa') . ' ' . $high . ' ' . __('for', 'wppa') . ' ' . $title;
 		if ( $fixed !== false ) {
 			if ( $fixed ) $wppa['out'] .= '. ' . __('You may also enter:', 'wppa') . ' ' . $fixed;

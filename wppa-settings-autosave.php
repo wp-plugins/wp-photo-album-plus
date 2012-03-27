@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 4.4.3
+* Version 4.4.4
 *
 */
 
@@ -1521,7 +1521,8 @@ global $wppa_api_version;
 							<th scope="col"><?php _e('Description', 'wppa') ?></th>
 							<th scope="col"><?php _e('Link type', 'wppa') ?></th>
 							<th scope="col"><?php _e('Link page', 'wppa') ?></th>
-							<th scope="col"><?php _e('PS Overrule', 'wppa') ?></th>
+							<th scope="col" title="<?php _e('Photo specific link overrules', 'wppa') ?>" style="cursor: default"><?php _e('PSO', 'wppa') ?></th>
+							<th scope="col"><?php _e('New tab', 'wppa') ?></th>
 							<th scope="col"><?php _e('Help', 'wppa') ?></th>
 						</tr>
 					</thead>
@@ -1555,8 +1556,8 @@ global $wppa_api_version;
 						if ($pages) {
 							foreach ($pages as $page) {
 								if (stripos($page['post_content'], '%%wppa%%') !== false) {
-									$options_page[] = $page['post_title'];
-									$options_page_post[] = $page['post_title'];
+									$options_page[] = __($page['post_title']);
+									$options_page_post[] = __($page['post_title']);
 									$values_page[] = $page['ID'];
 									$values_page_post[] = $page['ID'];
 								}
@@ -1575,12 +1576,15 @@ global $wppa_api_version;
 						$slug1 = 'wppa_mphoto_linktype';
 						$slug2 = 'wppa_mphoto_linkpage';
 						$slug3 = 'wppa_mphoto_overrule';
+						$slug4 = 'wppa_mphoto_blank';
 						$onchange = 'wppaCheckMphotoLink()';
 						$html1 = wppa_select($slug1, $options_linktype_album, $values_linktype_album, $onchange);
 						$class = 'wppa_mlp';
 						$html2 = wppa_select($slug2, $options_page, $values_page, '', $class);
 						$html3 = wppa_checkbox($slug3);
-						wppa_setting_3($slug1, $slug2, $slug3, '1a,b,c', $name, $desc, $html1, $html2, $html3, $help);
+						$class = 'wppa_mlb';
+						$html4 = wppa_checkbox($slug4, '', $class);
+						wppa_setting_4($slug1, $slug2, $slug3, $slug4, '1a,b,c,d', $name, $desc, $html1, $html2, $html3, $html4, $help);
 
 						$name = __('Thumbnail', 'wppa');
 						$desc = __('Thumbnail link.', 'wppa');
@@ -1590,13 +1594,16 @@ global $wppa_api_version;
 						$slug1 = 'wppa_thumb_linktype';
 						$slug2 = 'wppa_thumb_linkpage';
 						$slug3 = 'wppa_thumb_overrule';
+						$slug4 = 'wppa_thumb_blank';
 						$onchange = 'wppaCheckThumbLink()';
 						$html1 = wppa_select($slug1, $options_linktype, $values_linktype, $onchange);
 						$class = 'wppa_tlp';
 						$html2 = wppa_select($slug2, $options_page_post, $values_page_post, '', $class);
 						$html3 = wppa_checkbox($slug3);
+						$class = 'wppa_tlb';
+						$html4 = wppa_checkbox($slug4, '', $class);
 						$class = 'tt_always';
-						wppa_setting_3($slug1, $slug2, $slug3, '2a,b,c', $name, $desc, $html1, $html2, $html3, $help, $class);
+						wppa_setting_4($slug1, $slug2, $slug3, $slug4, '2a,b,c,d', $name, $desc, $html1, $html2, $html3, $html4, $help, $class);
 						
 						$name = __('TopTenWidget', 'wppa');
 						$desc = __('TopTen widget photo link.', 'wppa');
@@ -1604,13 +1611,16 @@ global $wppa_api_version;
 						$slug1 = 'wppa_topten_widget_linktype'; 
 						$slug2 = 'wppa_topten_widget_linkpage';
 						$slug3 = 'wppa_topten_overrule';
+						$slug4 = 'wppa_topten_blank';
 						$onchange = 'wppaCheckTopTenLink()';
 						$html1 = wppa_select($slug1, $options_linktype, $values_linktype, $onchange);
 						$class = 'wppa_ttlp';
 						$html2 = wppa_select($slug2, $options_page, $values_page, '', $class);
 						$html3 = wppa_checkbox($slug3);
+						$class = 'wppa_ttlb';
+						$html4 = wppa_checkbox($slug4, '', $class);
 						$class = 'wppa_rating';
-						wppa_setting_3($slug1, $slug2, $slug3, '3a,b,c', $name, $desc, $html1, $html2, $html3, $help, $class);
+						wppa_setting_4($slug1, $slug2, $slug3, $slug4, '3a,b,c,d', $name, $desc, $html1, $html2, $html3, $html4, $help, $class);
 						
 						$name = __('SlideWidget', 'wppa');
 						$desc = __('Slideshow widget photo link.', 'wppa');
@@ -1618,12 +1628,15 @@ global $wppa_api_version;
 						$slug1 = 'wppa_slideonly_widget_linktype';
 						$slug2 = 'wppa_slideonly_widget_linkpage';
 						$slug3 = 'wppa_sswidget_overrule';
+						$slug4 = 'wppa_sswidget_blank';
 						$onchange = 'wppaCheckSlideOnlyLink()';
 						$html1 = wppa_select($slug1, $options_linktype_ss_widget, $values_linktype_ss_widget, $onchange);
 						$class = 'wppa_solp';
 						$html2 = wppa_select($slug2, $options_page, $values_page, '', $class);
 						$html3 = wppa_checkbox($slug3);
-						wppa_setting_3($slug1, $slug2, $slug3, '4a,b,c', $name, $desc, $html1, $html2, $html3, $help);
+						$class = 'wppa_solb';
+						$html4 = wppa_checkbox($slug4, '', $class);
+						wppa_setting_4($slug1, $slug2, $slug3, $slug4, '4a,b,c,d', $name, $desc, $html1, $html2, $html3, $html4, $help);
 						
 						$name = __('PotdWidget', 'wppa');
 						$desc = __('Photo Of The Day widget link.', 'wppa');
@@ -1632,27 +1645,35 @@ global $wppa_api_version;
 						$slug1 = 'wppa_widget_linktype';
 						$slug2 = 'wppa_widget_linkpage';
 						$slug3 = 'wppa_potdwidget_overrule';
+						$slug4 = 'wppa_potd_blank';
 						$onchange = 'wppaCheckPotdLink()';
 						$html1 = wppa_select($slug1, $options_linktype_potd_widget, $values_linktype_potd_widget, $onchange);
 						$class = 'wppa_potdlp';
 						$html2 = wppa_select($slug2, $options_page, $values_page, '', $class);
 						$html3 = wppa_checkbox($slug3);
-						wppa_setting_3($slug1, $slug2, $slug3, '5a,b,c', $name, $desc, $html1, $html2, $html3, $help);
+						$class = 'wppa_potdlb';
+						$html4 = wppa_checkbox($slug4, '', $class);
+						wppa_setting_4($slug1, $slug2, $slug3, $slug4, '5a,b,c,d', $name, $desc, $html1, $html2, $html3, $html4, $help);
 						
 						$name = __('Cover Image', 'wppa');
 						$desc = __('The link from the cover image of an album.', 'wppa');
 						$help = esc_js(__('Select the type of link the coverphoto points to.', 'wppa'));
 						$help .= '\n\n'.esc_js(__('The link from the album title can be configured on the Edit Album page.', 'wppa'));
 						$help .= '\n'.esc_js(__('This link will be used for the photo also if you select: same as title.', 'wppa'));
+						$help .= '\n\n'.esc_js(__('If you specify New Tab on this line, all links from the cover will open a new tab,', 'wppa'));
+						$help .= '\n'.esc_js(__('except when Ajax is activated on Table IV-33.', 'wppa'));
 						$slug1 = 'wppa_coverimg_linktype';
 						$slug2 = 'wppa_coverimg_linkpage';
 						$slug3 = 'wppa_coverimg_overrule';
-						$onchange = '';
+						$slug4 = 'wppa_coverimg_blank';
+						$onchange = 'wppaCheckCoverImg()';
 						$html1 = wppa_select($slug1, $options_linktype_cover_image, $values_linktype_cover_image, $onchange);
 						$class = '';
 						$html2 = '';
 						$html3 = wppa_checkbox($slug3);
-						wppa_setting_3($slug1, $slug2, $slug3, '6a,b,c', $name, $desc, $html1, $html2, $html3, $help);
+						$class = 'wppa_covimgbl';
+						$html4 = wppa_checkbox($slug4, '', $class);
+						wppa_setting_4($slug1, $slug2, $slug3, $slug4, '6a,b,c,d', $name, $desc, $html1, $html2, $html3, $html4, $help);
 						
 						$name = __('CommentWidget', 'wppa');
 						$desc = __('Comment widget photo link.', 'wppa');
@@ -1660,12 +1681,15 @@ global $wppa_api_version;
 						$slug1 = 'wppa_comment_widget_linktype'; 
 						$slug2 = 'wppa_comment_widget_linkpage';
 						$slug3 = 'wppa_comment_overrule';
+						$slug4 = 'wppa_comment_blank';
 						$onchange = 'wppaCheckCommentLink()';
 						$html1 = wppa_select($slug1, $options_linktype, $values_linktype, $onchange);
 						$class = 'wppa_cmlp';
 						$html2 = wppa_select($slug2, $options_page, $values_page, '', $class);
 						$html3 = wppa_checkbox($slug3);
-						wppa_setting_3($slug1, $slug2, $slug3, '7a,b,c', $name, $desc, $html1, $html2, $html3, $help);
+						$class = 'wppa_cmlb';
+						$html4 = wppa_checkbox($slug4, '', $class);
+						wppa_setting_4($slug1, $slug2, $slug3, $slug4, '7a,b,c,d', $name, $desc, $html1, $html2, $html3, $html4, $help);
 						
 						$name = __('Slideshow', 'wppa');
 						$desc = __('Slideshow fullsize link', 'wppa');
@@ -1673,11 +1697,15 @@ global $wppa_api_version;
 						$slug1 = 'wppa_slideshow_linktype';
 						$slug2 = '';
 						$slug3 = 'wppa_slideshow_overrule';
+						$slug4 = 'wppa_slideshow_blank';
 						$opts = array(__('no link at all.', 'wppa'), __('the plain photo (file).', 'wppa'), __('lightbox.', 'wppa'));
 						$vals = array('none', 'file', 'lightbox'); 
-						$html1 = wppa_select($slug1, $opts, $vals);
+						$onchange = 'wppaCheckSlideLink()';
+						$html1 = wppa_select($slug1, $opts, $vals, $onchange);
 						$html3 = wppa_checkbox($slug3);
-						wppa_setting_3($slug1, $slug2, $slug3, '8a,c', $name, $desc, $html1, '', $html3, $help);
+						$class = 'wppa_sslb';
+						$html4 = wppa_checkbox($slug4, '', $class);
+						wppa_setting_4($slug1, $slug2, $slug3, $slug4, '8a,c,d', $name, $desc, $html1, '', $html3, $html4, $help);
 						
 						?>
 					</tbody>
@@ -1688,7 +1716,8 @@ global $wppa_api_version;
 							<th scope="col"><?php _e('Description', 'wppa') ?></th>
 							<th scope="col"><?php _e('Link type', 'wppa') ?></th>
 							<th scope="col"><?php _e('Link page', 'wppa') ?></th>
-							<th scope="col"><?php _e('PS Overrule', 'wppa') ?></th>
+							<th scope="col" title="<?php _e('Photo specific link overrules', 'wppa') ?>" style="cursor: default"><?php _e('PSO', 'wppa') ?></th>
+							<th scope="col"><?php _e('New tab', 'wppa') ?></th>
 							<th scope="col"><?php _e('Help', 'wppa') ?></th>
 						</tr>
 					</tfoot>
@@ -2593,13 +2622,17 @@ function wppa_textarea($slug) {
 	return $html;
 }
 
-function wppa_checkbox($slug, $onchange = '') {
+function wppa_checkbox($slug, $onchange = '', $class = '') {
 
 	$html = '<input style="float:left; height: 15px; margin: 0px; padding: 0px;" type="checkbox" id="'.$slug.'"'; 
 	if (get_option($slug) == 'yes') $html .= ' checked="checked"';
 	if ($onchange != '') $html .= ' onchange="'.$onchange.';wppaAjaxUpdateOptionCheckBox(\''.$slug.'\', this)"';
 	else $html .= ' onchange="wppaAjaxUpdateOptionCheckBox(\''.$slug.'\', this)"';
-	$html .= ' /><img id="img_'.$slug.'" src="'.wppa_get_imgdir().'star.png" title="'.__('Setting unmodified', 'wppa').'" style="padding-left:4px; float:left; height:16px; width:16px;" />';
+
+	if ($class != '') $html .= ' class="'.$class.'"';
+	$html .= ' /><img id="img_'.$slug.'" src="'.wppa_get_imgdir().'star.png" title="'.__('Setting unmodified', 'wppa').'" style="padding-left:4px; float:left; height:16px; width:16px;"';
+	if ($class != '') $html .= ' class="'.$class.'"';
+	$html .= ' />';
 	
 	return $html;
 }

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the top rated photos
-* Version 4.3.8
+* Version 4.4.4
 */
 
 class TopTenWidget extends WP_Widget {
@@ -63,12 +63,12 @@ class TopTenWidget extends WP_Widget {
 				
 				if ($link) {
 					if ( $link['is_url'] ) {	// Is a href
-						$widget_content .= "\n\t".'<a href="'.$link['url'].'" title="'.$title.'">';
+						$widget_content .= "\n\t".'<a href="'.$link['url'].'" title="'.$title.'" target="'.$link['target'].'" >';
 							$widget_content .= "\n\t\t".'<img id="i-'.$image['id'].'-'.$wppa['master_occur'].'" title="'.$title.'" src="'.$imgurl.'" width="'.$width.'" height="'.$height.'" style="'.$imgstyle.'" '.$imgevents.' alt="'.esc_attr(wppa_qtrans($image['name'])).'">';
 						$widget_content .= "\n\t".'</a>';
 					}
 					elseif ( $link['is_lightbox'] ) {
-						$widget_content .= "\n\t".'<a href="'.$link['url'].'" rel="'.$wppa_opt['wppa_lightbox_name'].'[topten]" title="'.$title.'">';
+						$widget_content .= "\n\t".'<a href="'.$link['url'].'" rel="'.$wppa_opt['wppa_lightbox_name'].'[topten]" title="'.$title.'" target="'.$link['target'].'" >';
 							$widget_content .= "\n\t\t".'<img id="i-'.$image['id'].'-'.$wppa['master_occur'].'" title="'.$title.'" src="'.$imgurl.'" width="'.$width.'" height="'.$height.'" style="'.$imgstyle.'" '.$imgevents.' alt="'.esc_attr(wppa_qtrans($image['name'])).'">';
 						$widget_content .= "\n\t".'</a>';
 					}

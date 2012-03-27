@@ -1,5 +1,5 @@
 ﻿// Slide show variables and functions
-// This is wppa-slideshow.js version 4.4.2
+// This is wppa-slideshow.js version 4.4.4
 //
 // Vars. The vars that have a name that starts with an underscore is an internal var
 // The vars without leading underscore are 'external' and get a value from html
@@ -55,6 +55,7 @@ var wppaSlideBorderWidth = 0;
 var wppaSlideInitRunning = new Array();
 var wppaAnimationType = 'fadeover';
 var wppaSlidePause = new Array();
+var wppaSlideBlank = new Array();
 
 // 'Internal' variables
 var _wppaPhotoIds = new Array();
@@ -299,31 +300,35 @@ function _wppaNextSlide(mocc, mode) {
 		jQuery("#wppa-numbar-" + mocc + "-" + _wppaNextIndex[mocc]).html(' ' + (_wppaNextIndex[mocc]+1) + ' ');
 	}
 	
+	// Target
+	var target = ' target="_self" ';
+	if (wppaSlideBlank[mocc]) target = ' target="_blank" ';
+	
     // first:
     if (_wppaFirst[mocc]) {
 	    if (_wppaCurrentIndex[mocc] != -1) {
 			if (_wppaInWidgetLinkUrl[mocc][_wppaCurrentIndex[mocc]] != '') {
-				jQuery("#theslide0-"+mocc).html('<a href="'+_wppaInWidgetLinkUrl[mocc][_wppaCurrentIndex[mocc]]+'" title="'+_wppaInWidgetLinkTitle[mocc][_wppaCurrentIndex[mocc]]+'"><img title="'+_wppaNames[mocc][_wppaCurrentIndex[mocc]]+'" id="theimg0-'+mocc+'" '+_wppaSlides[mocc][_wppaCurrentIndex[mocc]]+'</a>');
+				jQuery("#theslide0-"+mocc).html('<a '+target+' href="'+_wppaInWidgetLinkUrl[mocc][_wppaCurrentIndex[mocc]]+'" title="'+_wppaInWidgetLinkTitle[mocc][_wppaCurrentIndex[mocc]]+'"><img title="'+_wppaNames[mocc][_wppaCurrentIndex[mocc]]+'" id="theimg0-'+mocc+'" '+_wppaSlides[mocc][_wppaCurrentIndex[mocc]]+'</a>');
 			}
 			else {
 				if (wppaLightBox == '') {
 					jQuery("#theslide0-"+mocc).html('<img title="'+_wppaNames[mocc][_wppaCurrentIndex[mocc]]+'" id="theimg0-'+mocc+'" '+_wppaSlides[mocc][_wppaCurrentIndex[mocc]]);
 				}
 				else {
-					jQuery("#theslide0-"+mocc).html('<a href="'+_wppaUrl[mocc][_wppaCurrentIndex[mocc]]+'" title="'+_wppaLbTitle[mocc][_wppaCurrentIndex[mocc]]+'" rel="'+wppaLightBox+'"><img title="'+_wppaNames[mocc][_wppaCurrentIndex[mocc]]+'" id="theimg0-'+mocc+'" '+_wppaSlides[mocc][_wppaCurrentIndex[mocc]]+'</a>');
+					jQuery("#theslide0-"+mocc).html('<a '+target+' href="'+_wppaUrl[mocc][_wppaCurrentIndex[mocc]]+'" title="'+_wppaLbTitle[mocc][_wppaCurrentIndex[mocc]]+'" rel="'+wppaLightBox+'"><img title="'+_wppaNames[mocc][_wppaCurrentIndex[mocc]]+'" id="theimg0-'+mocc+'" '+_wppaSlides[mocc][_wppaCurrentIndex[mocc]]+'</a>');
 				}
 			}
 			jQuery("#theimg0-"+mocc).hide();
 		}
 		if (_wppaInWidgetLinkUrl[mocc][_wppaNextIndex[mocc]] != '') {
-			jQuery("#theslide1-"+mocc).html('<a href="'+_wppaInWidgetLinkUrl[mocc][_wppaNextIndex[mocc]]+'" title="'+_wppaInWidgetLinkTitle[mocc][_wppaNextIndex[mocc]]+'"><img title="'+_wppaNames[mocc][_wppaNextIndex[mocc]]+'" id="theimg1-'+mocc+'" '+_wppaSlides[mocc][_wppaNextIndex[mocc]]+'</a>');
+			jQuery("#theslide1-"+mocc).html('<a '+target+' href="'+_wppaInWidgetLinkUrl[mocc][_wppaNextIndex[mocc]]+'" title="'+_wppaInWidgetLinkTitle[mocc][_wppaNextIndex[mocc]]+'"><img title="'+_wppaNames[mocc][_wppaNextIndex[mocc]]+'" id="theimg1-'+mocc+'" '+_wppaSlides[mocc][_wppaNextIndex[mocc]]+'</a>');
 		}
 		else {
 			if (wppaLightBox == '') {
 				jQuery("#theslide1-"+mocc).html('<img title="'+_wppaNames[mocc][_wppaNextIndex[mocc]]+'" id="theimg1-'+mocc+'" '+_wppaSlides[mocc][_wppaNextIndex[mocc]]);
 			}
 			else {
-				jQuery("#theslide1-"+mocc).html('<a href="'+_wppaUrl[mocc][_wppaNextIndex[mocc]]+'" title="'+_wppaLbTitle[mocc][_wppaNextIndex[mocc]]+'" rel="'+wppaLightBox+'" ><img title="'+_wppaNames[mocc][_wppaNextIndex[mocc]]+'" id="theimg1-'+mocc+'" '+_wppaSlides[mocc][_wppaNextIndex[mocc]]+'</a>');
+				jQuery("#theslide1-"+mocc).html('<a '+target+' href="'+_wppaUrl[mocc][_wppaNextIndex[mocc]]+'" title="'+_wppaLbTitle[mocc][_wppaNextIndex[mocc]]+'" rel="'+wppaLightBox+'" ><img title="'+_wppaNames[mocc][_wppaNextIndex[mocc]]+'" id="theimg1-'+mocc+'" '+_wppaSlides[mocc][_wppaNextIndex[mocc]]+'</a>');
 			}
 		}
 		jQuery("#theimg1-"+mocc).hide();	      

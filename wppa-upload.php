@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the upload/import pages and functions
-* Version 4.4.3
+* Version 4.4.4
 *
 */
 
@@ -193,6 +193,7 @@ global $wppa_opt;
 
 		// See if the current source is the 'home' directory
 		$is_depot 	= ( $source == WPPA_DEPOT );
+		$is_sub_depot = ( substr($source, 0, strlen(WPPA_DEPOT) ) == WPPA_DEPOT );
 
 		// See what's in there
 		$paths 		= $source_path . '/*.*';
@@ -206,13 +207,9 @@ global $wppa_opt;
 		<?php wppa_nonce_field('$wppa_nonce', WPPA_NONCE); ?>
 		<?php _e('Import photos from:', 'wppa'); ?>
 			<select name="wppa-source">
-				<?php /* The source is eitrher the users depot: */ ?>
 				<option value="<?php echo(WPPA_DEPOT) ?>" <?php if ($is_depot) echo('selected="selected"') ?>><?php _e('Your depot', 'wppa') ?></option>
-				<?php /* Or anything in or in a subdirectory of WPPA_UPLOAD, except the wppa dir which contains all the wppa photos */ ?>
-				<?php /* of which wppa_walktree() takes care of (it skips any (sub)dir named wppa) */ ?>
-				<?php /* This is true for both singlesite as multisite installations. */ ?>
-				<?php /* See wppa-common-functions.php for the definitions of WPPA_DEPOT and WPPA_UPLOAD */ ?>
-				<?php wppa_walktree(WPPA_UPLOAD, $source) ?>	
+				<?php wppa_walktree(WPPA_DEPOT, $source, true, true); /* Allow the name 'wppa', subdirs only */ ?>
+				<?php wppa_walktree(WPPA_UPLOAD, $source, false, false); /* Do NOT allow the name 'wppa', include topdir */ ?>	
 			</select>
 			<input type="submit" class="button-secundary" name="wppa-import-set-source" value="<?php _e('Set source directory', 'wppa'); ?>" />
 		</form>
@@ -236,7 +233,7 @@ global $wppa_opt;
 						<input type="checkbox" id="all-zip" checked="checked" onchange="checkAll('all-zip', '.wppa-zip')" /><b>&nbsp;&nbsp;<?php _e('Check/uncheck all', 'wppa') ?></b>
 					</td>
 					<td>
-					<?php if ($is_depot) { ?>
+					<?php if ($is_sub_depot) { ?>
 						<td>
 							<input type="checkbox" name="del-after-z" checked="checked" /><b>&nbsp;&nbsp;<?php _e('Delete after successful extraction.', 'wppa'); ?></b>
 						</td>
@@ -278,7 +275,7 @@ global $wppa_opt;
 						<input type="checkbox" id="all-amf" checked="checked" onchange="checkAll('all-amf', '.wppa-amf')" /><b>&nbsp;&nbsp;<?php _e('Check/uncheck all', 'wppa') ?></b>
 					</td>
 					<td>
-					<?php if ($is_depot) { ?>
+					<?php if ($is_sub_depot) { ?>
 						<td>
 							<input type="checkbox" name="del-after-a" checked="checked" /><b>&nbsp;&nbsp;<?php _e('Delete after successful import, or if the album already exits.', 'wppa'); ?></b>
 						</td>
@@ -338,7 +335,7 @@ global $wppa_opt;
 					<td>
 						<input type="checkbox" id="all-pho" checked="checked" onchange="checkAll('all-pho', '.wppa-pho')" /><b>&nbsp;&nbsp;<?php _e('Check/uncheck all', 'wppa') ?></b>
 					</td>
-					<?php if ($is_depot) { ?>
+					<?php if ($is_sub_depot) { ?>
 						<td>
 							<input type="checkbox" name="del-after-p" checked="checked" /><b>&nbsp;&nbsp;<?php _e('Delete after successful import.', 'wppa'); ?></b>
 						</td>
@@ -358,7 +355,7 @@ global $wppa_opt;
 						$meta =	substr($file, 0, strlen($file)-3).'pmf';
 						if ($ext == 'jpg' || $ext == 'png' || $ext == 'gif') { ?>
 							<td>
-								<input type="checkbox" name="file-<?php echo($idx) ?>" class= "wppa-pho" <?php if ($is_depot) echo('checked="checked"') ?> />&nbsp;&nbsp;<?php echo(basename($file)); ?>&nbsp;<?php echo(stripslashes(wppa_get_meta_name($meta, '('))) ?><?php echo(stripslashes(wppa_get_meta_album($meta, '['))) ?>
+								<input type="checkbox" name="file-<?php echo($idx) ?>" class= "wppa-pho" <?php if ($is_sub_depot) echo('checked="checked"') ?> />&nbsp;&nbsp;<?php echo(basename($file)); ?>&nbsp;<?php echo(stripslashes(wppa_get_meta_name($meta, '('))) ?><?php echo(stripslashes(wppa_get_meta_album($meta, '['))) ?>
 							</td>
 							<?php if ($ct == 3) {
 								echo('</tr><tr>'); 
@@ -816,21 +813,7 @@ function wppa_extract($path, $delz) {
 		if ($ext == 'zip') {
 			$zip = new ZipArchive;
 			if ($zip->open($path) === true) {
-				// Old method: extract only top-level files
-				// If you want new method, change true into false in the next line
-				if ( true ) {
-					for($i = 0; $i < $zip->numFiles; $i++) {
-						$filename = $zip->getNameIndex($i);
-						$fileinfo = pathinfo($filename);
-						wppa_dbg_msg('Trying to copy '."zip://".$path."#".$filename.' to '.WPPA_DEPOT_PATH."/".$fileinfo['basename']);
-						copy("zip://".$path."#".$filename, WPPA_DEPOT_PATH."/".$fileinfo['basename']);
-					}
-				}
-				// New method: extract whole file
-				else {
-					$zip->extractTo(WPPA_DEPOT_PATH);
-				}
-				// End extract code
+				$zip->extractTo(WPPA_DEPOT_PATH);
 				$zip->close();
 				wppa_ok_message(__('Zipfile', 'wppa').' '.basename($path).' '.__('extracted.', 'wppa'));
 				if ($delz) unlink($path);
