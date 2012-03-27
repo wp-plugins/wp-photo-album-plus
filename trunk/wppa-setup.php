@@ -201,7 +201,7 @@ global $silent;
 		$iret = $wpdb->query( $query );
 	}
 	
-	if ( $iret !== false && ( $old_rev < '450' || $force ) ) {		// status added in...
+	if ( $iret !== false && ( $old_rev < '443' || $force ) ) {		// status added in...
 		$query = $wpdb->prepare( 'UPDATE `'.WPPA_PHOTOS.'`  SET `status` = %s WHERE `status` = %s', 'publish', '' );
 		$iret = $wpdb->query( $query );
 	}
