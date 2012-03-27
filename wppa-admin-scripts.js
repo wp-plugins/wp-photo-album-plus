@@ -1,7 +1,7 @@
 /* admin-scripts.js */
 /* Package: wp-photo-album-plus
 /*
-/* Version 4.4.4
+/* Version 4.4.4.001
 /* Various js routines used in admin pages		
 */
 
@@ -377,7 +377,7 @@ function wppaCheckCoverImg() {
 
 function wppaCheckPotdLink() {
 	var lvalue = document.getElementById('wppa_widget_linktype').value;
-	if (lvalue == 'none' || lvalue == 'file' || lvalue == 'custom') {
+	if (lvalue == 'none' || lvalue == 'lightbox' || lvalue == 'file' || lvalue == 'custom') {
 		jQuery('.wppa_potdlp').css('visibility', 'hidden');
 	}
 	else {
