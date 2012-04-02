@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 4.4.4
+* Version 4.4.5
 *
 */
 
@@ -62,6 +62,7 @@ global $silent;
 					mean_rating tinytext NOT NULL,
 					linkurl text NOT NULL,
 					linktitle text NOT NULL,
+					linktarget tinytext NOT NULL,
 					owner text NOT NULL,
 					timestamp tinytext NOT NULL,
 					status tinytext NOT NULL,
@@ -203,6 +204,10 @@ global $silent;
 	
 	if ( $iret !== false && ( $old_rev < '443' || $force ) ) {		// status added in...
 		$query = $wpdb->prepare( 'UPDATE `'.WPPA_PHOTOS.'`  SET `status` = %s WHERE `status` = %s', 'publish', '' );
+		$iret = $wpdb->query( $query );
+	}
+	if ( $iret !== false && ( $old_rev < '445' || $force ) ) {		// photo specific link target
+		$query = $wpdb->prepare( 'UPDATE `'.WPPA_PHOTOS.'`  SET `linktarget` = %s WHERE `linktarget` = %s', '_self', '' );
 		$iret = $wpdb->query( $query );
 	}
 	
@@ -474,8 +479,9 @@ global $wppa_defaults;
 						'wppa_bc_on_topten'				=> 'yes',
 						'wppa_animation_type'			=> 'fadeover',
 						'wppa_slide_pause'				=> 'no',
-						'wppa_upload_moderate'			=> 'no'
-
+						'wppa_upload_moderate'			=> 'no',
+						'wppa_comment_captcha'			=> 'no',
+						'wppa_spam_maxage'				=> 'none'
 
 						);
 

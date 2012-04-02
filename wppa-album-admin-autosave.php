@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * create, edit and delete albums
-* version 4.4.3
+* version 4.4.5
 *
 */
 
@@ -725,7 +725,11 @@ function wppa_album_photos($id) {
 									<label><?php _e('Link url:', 'wppa') ?></label>
 								</th>
 								<td style="padding-top:0; padding-bottom:0;">
-									<input type="text" style="width:100%;" onchange="wppaAjaxUpdatePhoto(<?php echo $photo['id'] ?>, 'linkurl', this)" value="<?php echo(stripslashes($photo['linkurl'])) ?>" style="width: 100%"/>
+									<input type="text" style="width:70%;" onchange="wppaAjaxUpdatePhoto(<?php echo $photo['id'] ?>, 'linkurl', this)" value="<?php echo(stripslashes($photo['linkurl'])) ?>" style="width: 100%"/>
+									<select style="float:right;"onchange="wppaAjaxUpdatePhoto(<?php echo $photo['id'] ?>, 'linktarget', this)" >
+										<option value="_self" <?php if ( $photo['linktarget'] == '_self' ) echo 'selected="selected"' ?>><?php _e('Same tab', 'wppa') ?></option>
+										<option value="_blank" <?php if ( $photo['linktarget'] == '_blank' ) echo 'selected="selected"' ?>><?php _e('New tab', 'wppa') ?></option>
+									</select>
 								</td>
 							</tr>
 							<!-- Link title -->

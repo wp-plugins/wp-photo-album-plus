@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 * gp admin functions
-* version 4.4.4
+* version 4.4.5
 *
 * 
 */
@@ -416,6 +416,8 @@ global $wpdb;
 	$desc = $photo['description'];
 	$linkurl = $photo['linkurl'];
 	$linktitle = $photo['linktitle'];
+	$linktarget = $photo['linktarget'];
+	$status = $photo['status'];
 	$oldimage = WPPA_UPLOAD_PATH.'/'.$photo['id'].'.'.$ext;
 	$oldthumb = WPPA_UPLOAD_PATH.'/thumbs/'.$photo['id'].'.'.$ext;
 	
@@ -423,7 +425,7 @@ global $wpdb;
 	// Make new db table entry
 	$id = wppa_nextkey(WPPA_PHOTOS);
 	$owner = wppa_get_user();
-	$query = $wpdb->prepare('INSERT INTO `' . WPPA_PHOTOS . '` (`id`, `album`, `ext`, `name`, `p_order`, `description`, `mean_rating`, `linkurl`, `linktitle`, `timestamp`, `owner`) VALUES (%s, %s, %s, %s, %s, %s, \'\', %s, %s, %s, %s)', $id, $album, $ext, $name, $porder, $desc, $linkurl, $linktitle, time(), $owner);
+	$query = $wpdb->prepare('INSERT INTO `' . WPPA_PHOTOS . '` (`id`, `album`, `ext`, `name`, `p_order`, `description`, `mean_rating`, `linkurl`, `linktitle`, `linktarget`, `timestamp`, `owner`, `status`) VALUES (%s, %s, %s, %s, %s, %s, \'\', %s, %s, %s, %s, %s, %s)', $id, $album, $ext, $name, $porder, $desc, $linkurl, $linktitle, $linktarget, time(), $owner, $status);
 	if ($wpdb->query($query) === false) return $err;
 
 	$err = '4';
