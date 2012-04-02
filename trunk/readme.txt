@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, multisite, network, lightbox, comment, watermark, iptc, exif
-Version: 4.4.4
+Version: 4.4.5
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -56,7 +56,7 @@ You can find the plugin admin section under Menu Photo Albums on the admin scree
 == Installation ==
 
 = Upgrade notice =
-This version is: Major rev# 4, Minor rev# 4, Fix rev# 2, Hotfix rev# 000.
+This version is: Major rev# 4, Minor rev# 4, Fix rev# 5, Hotfix rev# 000.
 If you are upgrading from a previous Major or Minor version, note that:
 * If you modified wppa_theme.php and/or wppa_style.css, you will have to use the newly supplied versions. The previous versions are NOT compatible.
 * If you set the userlevel to anything else than 'administrator' you may have to set it again. Note that changing the userlevel can be done by the administrator only!
@@ -131,6 +131,26 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 4.4.5 =
+
+= Bug Fixes =
+
+* The use of IPTC and EXIF tags in photo descriptions now also processes multivalues tags properly.
+* If your php config does not support zipping the export results, you will get a warning message and exporting will continue.
+* On some systems copy photo produced an error. Fixed.
+* Local avatars are finally displayed properly.
+
+= New Features =
+
+* There is a simple calculate captcha for comments on photos. Table VII-8. A wrong answer makes the comment spam. It will be editable to corrrect the captcha.
+It is not a very secure method, but better than nothing.
+* Comments that are marked as spam can now automaticly be deleted after a configurable lifetime. Table VII-9.
+* The photo specific links can now be set - on an individual basis - to be opened in a new tab.
+
+= Other Changes = 
+
+* The support of the non-autosave versions of the settings page and the album admin page has been discontinued.
 
 = 4.4.4 =
 

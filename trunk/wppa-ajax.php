@@ -2,7 +2,7 @@
 /* wppa-ajax.php
 *
 * Functions used in ajax requests
-* version 4.4.4
+* version 4.4.5
 *
 */
 add_action('wp_ajax_wppa', 'wppa_ajax_callback');
@@ -306,6 +306,7 @@ global $wppa;
 				case 'owner':
 				case 'linkurl':
 				case 'linktitle':
+				case 'linktarget':
 				case 'status':
 					switch ($item) {
 						case 'name':
@@ -325,6 +326,9 @@ global $wppa;
 							break;
 						case 'linktitle':
 							$itemname = __('Link title', 'wppa');
+							break;
+						case 'linktarget':
+							$itemname = __('Link target', 'wppa');
 							break;
 						case 'status':
 							$itemname = __('Status', 'wppa');

@@ -2,11 +2,11 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 4.4.4
+* version 4.4.5
 *
 */
 global $wppa_api_version;
-$wppa_api_version = '4-4-4-001';
+$wppa_api_version = '4-4-5-000';
 // Initialize globals and option settings
 function wppa_initialize_runtime($force = false) {
 global $wppa;
@@ -14,6 +14,7 @@ global $wppa_opt;
 global $wppa_revno;
 global $wppa_api_version;
 global $blog_id;
+global $wpdb;
 
 	if ($force) {
 		$wppa = false; 					// destroy existing arrays
@@ -304,7 +305,10 @@ global $blog_id;
 			'wppa_bc_on_topten'				=> '',
 			'wppa_animation_type'			=> '',
 			'wppa_slide_pause'				=> '',
-			'wppa_upload_moderate'			=> ''
+			'wppa_upload_moderate'			=> '',
+			'wppa_comment_captcha'			=> '',
+			'wppa_spam_maxage'				=> ''
+
 
 
 		);
@@ -335,6 +339,15 @@ global $blog_id;
 			define( 'WPPA_DEPOT_PATH', ABSPATH.WPPA_DEPOT );
 			define( 'WPPA_DEPOT_URL', get_bloginfo('wpurl').'/'.WPPA_DEPOT );
 		}
+	}
+	
+	// Delete obsolete spam
+	$spammaxage = $wppa_opt['wppa_spam_maxage'];
+	if ( $spammaxage != 'none' ) {
+		$time = time();
+		$obsolete = $time - $spammaxage;
+		$iret = $wpdb->query($wpdb->prepare('DELETE FROM `'.WPPA_COMMENTS.'` WHERE `status` = %s AND `timestamp` < %s', 'spam', $obsolete));
+		update_option('wppa_spam_auto_delcount', get_option('wppa_spam_auto_delcount', '0') + $iret);
 	}
 }
 

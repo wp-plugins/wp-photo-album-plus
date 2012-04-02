@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all comments
-* Version 4.4.3
+* Version 4.4.5
 *
 */
 
@@ -159,6 +159,12 @@ global $wppa_opt;
 						<td><h3 style="margin:0; color:red;"><?php _e('Spam:', 'wppa') ?></h3></td>
 						<td><h3 style="margin:0;"><?php $comments = $wpdb->get_results($wpdb->prepare( "SELECT id FROM ".WPPA_COMMENTS." WHERE status='spam'"), "ARRAY_A"); echo(count($comments)) ?></h3></td>
 					</tr>
+					<?php if ( $wppa_opt['wppa_spam_maxage'] != 'none' ) { ?>
+					<tr>
+						<td><h3 style="margin:0; color:red;"><?php _e('Auto deleted spam:', 'wppa') ?></h3></td>
+						<td><h3 style="margin:0;"><?php echo get_option('wppa_spam_auto_delcount', '0') ?></h3></td>
+					</tr>
+					<?php } ?>
 				</tbody>
 			</table>
 			<form action="<?php echo(wppa_dbg_url(get_admin_url().'admin.php?page=wppa_manage_comments')) ?>" method="post">

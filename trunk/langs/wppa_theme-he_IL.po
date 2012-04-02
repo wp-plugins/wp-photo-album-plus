@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wppa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-03-20 10:39+0100\n"
-"PO-Revision-Date: 2012-03-20 10:39+0100\n"
+"POT-Creation-Date: 2012-03-29 17:26+0100\n"
+"PO-Revision-Date: 2012-03-29 17:26+0100\n"
 "Last-Translator: J.N. Breetvelt <OpaJaap@OpaJaap.nl>\n"
 "Language-Team: OpaJaap <OpaJaap@OpaJaap.nl>\n"
 "MIME-Version: 1.0\n"
@@ -29,72 +29,72 @@ msgstr "עשר התמונות המובילות"
 msgid "Photo not found."
 msgstr "תמונה לא נמצאה."
 
-#: wppa-common-functions.php:478
+#: wppa-common-functions.php:499
 #, php-format
 msgid "Rating: %s"
 msgstr "דירוגים: %s"
 
-#: wppa-common-functions.php:543
+#: wppa-common-functions.php:564
 msgid "--- none ---"
 msgstr "--- ריק ---"
 
-#: wppa-common-functions.php:544
+#: wppa-common-functions.php:565
 msgid "--- separate ---"
 msgstr "--- נפרד ---"
 
-#: wppa-common-functions.php:654
+#: wppa-common-functions.php:675
 msgid "1 second"
 msgstr "שנייה אחת"
 
-#: wppa-common-functions.php:655
+#: wppa-common-functions.php:676
 msgid "seconds"
 msgstr "שניות"
 
-#: wppa-common-functions.php:659
+#: wppa-common-functions.php:680
 msgid "1 minute"
 msgstr "דקה אחת"
 
-#: wppa-common-functions.php:660
+#: wppa-common-functions.php:681
 msgid "minutes"
 msgstr "דקות"
 
-#: wppa-common-functions.php:664
+#: wppa-common-functions.php:685
 msgid "1 hour"
 msgstr "שעה אחת"
 
-#: wppa-common-functions.php:665
+#: wppa-common-functions.php:686
 msgid "hours"
 msgstr "שעות"
 
-#: wppa-common-functions.php:669
+#: wppa-common-functions.php:690
 msgid "1 day"
 msgstr "יום אחד"
 
-#: wppa-common-functions.php:670
+#: wppa-common-functions.php:691
 msgid "days"
 msgstr "ימים"
 
-#: wppa-common-functions.php:674
+#: wppa-common-functions.php:695
 msgid "1 week"
 msgstr "שבוע אחד"
 
-#: wppa-common-functions.php:675
+#: wppa-common-functions.php:696
 msgid "weeks"
 msgstr "שבועות"
 
-#: wppa-common-functions.php:679
+#: wppa-common-functions.php:700
 msgid "1 month"
 msgstr "חודש אחד"
 
-#: wppa-common-functions.php:680
+#: wppa-common-functions.php:701
 msgid "months"
 msgstr "חודשים"
 
-#: wppa-common-functions.php:683
+#: wppa-common-functions.php:704
 msgid "1 year"
 msgstr "שנה אחת"
 
-#: wppa-common-functions.php:684
+#: wppa-common-functions.php:705
 msgid "years"
 msgstr "שנים"
 
@@ -115,7 +115,7 @@ msgid "Home"
 msgstr "בית"
 
 #: wppa-functions.php:137
-#: wppa-functions.php:2522
+#: wppa-functions.php:2586
 msgid "Slideshow"
 msgstr "מצגת תמונות"
 
@@ -132,8 +132,9 @@ msgid "Recently commented photos"
 msgstr ""
 
 #: wppa-functions.php:1063
-#: wppa-functions.php:2673
-#: wppa-functions.php:2802
+#: wppa-functions.php:1368
+#: wppa-functions.php:2739
+#: wppa-functions.php:2868
 msgid "Awaiting moderation"
 msgstr ""
 
@@ -141,184 +142,197 @@ msgstr ""
 msgid "<b>ERROR: Attempt to enter an invalid rating.</b>"
 msgstr "<b>שגיאה: ניסיון להכניס דירוג לא תקין.</b>"
 
-#: wppa-functions.php:1237
+#: wppa-functions.php:1246
 msgid "Comment edited"
 msgstr ""
 
-#: wppa-functions.php:1240
+#: wppa-functions.php:1249
 msgid "Comment added"
 msgstr ""
 
-#: wppa-functions.php:1249
-msgid "Could not process comment"
+#: wppa-functions.php:1253
+msgid ""
+"Sorry, you gave a wrong answer.\\n"
+"\\n"
+"Please try again to solve the computation."
 msgstr ""
 
-#: wppa-functions.php:1297
+#: wppa-functions.php:1263
+msgid ""
+"Could not process comment.\\n"
+"Probably timed out."
+msgstr ""
+
+#: wppa-functions.php:1344
 msgid "wrote:"
 msgstr ""
 
-#: wppa-functions.php:1335
+#: wppa-functions.php:1371
+msgid "Marked as spam"
+msgstr ""
+
+#: wppa-functions.php:1386
 msgid "Edit!"
 msgstr "עריכה!"
 
-#: wppa-functions.php:1339
+#: wppa-functions.php:1390
 msgid "Send!"
 msgstr "שליחה!"
 
-#: wppa-functions.php:1368
+#: wppa-functions.php:1419
 msgid "Your name:"
 msgstr "שמך:"
 
-#: wppa-functions.php:1373
+#: wppa-functions.php:1424
 msgid "Your email:"
 msgstr "כתובת הדוא\"ל שלך:"
 
-#: wppa-functions.php:1378
+#: wppa-functions.php:1429
 msgid "Your comment:"
 msgstr "ההערה שלך:"
 
-#: wppa-functions.php:1387
+#: wppa-functions.php:1442
 #, fuzzy, php-format
 msgid "You must <a href=\"%s\">login</a> to enter a comment"
 msgstr "חייבים להתחבר על מנת להכניס הערה"
 
-#: wppa-functions.php:1394
+#: wppa-functions.php:1449
 #, php-format
 msgid "%d  comments"
 msgstr "הערות %d"
 
-#: wppa-functions.php:1398
+#: wppa-functions.php:1453
 msgid "Leave a comment"
 msgstr "השאר הערה"
 
-#: wppa-functions.php:1434
+#: wppa-functions.php:1489
 msgid "Show IPTC data"
 msgstr ""
 
-#: wppa-functions.php:1437
+#: wppa-functions.php:1492
 msgid "Hide IPTC data"
 msgstr ""
 
-#: wppa-functions.php:1465
+#: wppa-functions.php:1520
 msgid "No IPTC data"
 msgstr ""
 
-#: wppa-functions.php:1498
+#: wppa-functions.php:1553
 msgid "Show EXIF data"
 msgstr ""
 
-#: wppa-functions.php:1501
+#: wppa-functions.php:1556
 msgid "Hide EXIF data"
 msgstr ""
 
-#: wppa-functions.php:1529
+#: wppa-functions.php:1584
 msgid "No EXIF data"
 msgstr ""
 
-#: wppa-functions.php:1877
-#: wppa-functions.php:1878
+#: wppa-functions.php:1932
+#: wppa-functions.php:1933
 msgid "Prev.&nbsp;page"
 msgstr "עמוד&nbsp;קודם"
 
-#: wppa-functions.php:1882
-#: wppa-functions.php:1883
+#: wppa-functions.php:1937
+#: wppa-functions.php:1938
 msgid "Next&nbsp;page"
 msgstr "עמוד&nbsp;הבא"
 
-#: wppa-functions.php:2181
+#: wppa-functions.php:2236
 #, fuzzy
 msgid "<b>ERROR: Illegal attempt to enter a rating.</b>"
 msgstr "<b>שגיאה: ניסיון להכניס דירוג לא תקין.</b>"
 
-#: wppa-functions.php:2194
+#: wppa-functions.php:2249
 #, fuzzy
 msgid "<b>ERROR: Illegal attempt to enter a comment.</b>"
 msgstr "<b>שגיאה: ניסיון להכניס דירוג לא תקין.</b>"
 
-#: wppa-functions.php:2409
+#: wppa-functions.php:2471
 msgid "Link to"
 msgstr "קישור ל"
 
-#: wppa-functions.php:2433
-#: wppa-functions.php:2533
+#: wppa-functions.php:2495
+#: wppa-functions.php:2597
 msgid "View the album"
 msgstr "צפה באלבום"
 
-#: wppa-functions.php:2442
+#: wppa-functions.php:2504
 msgid "View the cover photo"
 msgstr "צפה בתמונת השער"
 
-#: wppa-functions.php:2443
+#: wppa-functions.php:2505
 msgid "View the cover photos"
 msgstr "צפה בתמונות השער"
 
-#: wppa-functions.php:2522
+#: wppa-functions.php:2586
 msgid "Browse photos"
 msgstr "דפדף בתמונות"
 
-#: wppa-functions.php:2534
+#: wppa-functions.php:2598
 msgid "View"
 msgstr "צפייה"
 
-#: wppa-functions.php:2537
+#: wppa-functions.php:2601
 msgid "album"
 msgstr "אלבום"
 
-#: wppa-functions.php:2540
+#: wppa-functions.php:2604
 msgid "albums"
 msgstr "אלבומים"
 
-#: wppa-functions.php:2544
+#: wppa-functions.php:2608
 msgid "and"
 msgstr "ו"
 
-#: wppa-functions.php:2548
+#: wppa-functions.php:2612
 msgid "photo"
 msgstr "תמונה"
 
-#: wppa-functions.php:2551
+#: wppa-functions.php:2615
 msgid "photos"
 msgstr "תמונות"
 
-#: wppa-functions.php:2749
+#: wppa-functions.php:2815
 msgid "View the top rated photos"
 msgstr "צפה בתמונות שמדורגות הכי גבוה"
 
-#: wppa-functions.php:2954
+#: wppa-functions.php:3020
 msgid "Double click to start/stop slideshow running"
 msgstr "הקלק קליק כפול להתחיל/לעצור מצגת תמונות"
 
-#: wppa-functions.php:4009
-#: wppa-functions.php:4015
+#: wppa-functions.php:4083
+#: wppa-functions.php:4089
 msgid "Upload Photo"
 msgstr ""
 
-#: wppa-functions.php:4024
+#: wppa-functions.php:4098
 msgid "Apply watermark file:"
 msgstr ""
 
-#: wppa-functions.php:4032
+#: wppa-functions.php:4106
 msgid "Position:"
 msgstr ""
 
-#: wppa-functions.php:4041
+#: wppa-functions.php:4115
 msgid "Enter/modify photo description"
 msgstr ""
 
-#: wppa-functions.php:4065
+#: wppa-functions.php:4139
 #, fuzzy
 msgid "<b>ERROR: Illegal attempt to upload a file.</b>"
 msgstr "<b>שגיאה: ניסיון להכניס דירוג לא תקין.</b>"
 
-#: wppa-functions.php:4072
+#: wppa-functions.php:4146
 msgid "Error during upload"
 msgstr ""
 
-#: wppa-functions.php:4077
+#: wppa-functions.php:4151
 msgid "Uploaded file is not an image"
 msgstr ""
 
-#: wppa-functions.php:4081
+#: wppa-functions.php:4155
 msgid "Only gif, jpg and png image files are supported"
 msgstr ""
 

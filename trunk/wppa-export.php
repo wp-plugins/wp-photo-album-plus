@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the export functions
-* Version 4.2.0
+* Version 4.4.5
 *
 */
 
@@ -83,7 +83,7 @@ global $wppa_temp_idx;
 	$wppa_temp_idx = 0;
 
 	_e('Exporting...<br/>', 'wppa');
-	if (PHP_VERSION_ID >= 50207) {
+	if ( PHP_VERSION_ID >= 50207 && class_exists('ZipArchive') ) {
 		echo('Opening zip output file...');
 		$wppa_zip = new ZipArchive;
 		$zipid = get_option('wppa_last_zip', '0');
@@ -99,6 +99,8 @@ global $wppa_temp_idx;
 	}
 	else {
 		$wppa_zip = false;
+		if ( PHP_VERSION_ID < 50207 ) wppa_warning_message(__('Can export albums and photos, but cannot make a zipfile. Your php version is < 5.2.7.', 'wppa'));
+		if ( ! class_exists('ZipArchive') ) wppa_warning_message(__('Can export albums and photos, but cannot make a zipfile. Your php version does not support ZipArchive.', 'wppa'));
 	}
 		
 	if (isset($_POST['high'])) $high = $_POST['high']; else $high = 0;

@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Photo Album Plus in italiano\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-03-20 10:39+0100\n"
-"PO-Revision-Date: 2012-03-20 10:39+0100\n"
+"POT-Creation-Date: 2012-03-29 17:25+0100\n"
+"PO-Revision-Date: 2012-03-29 17:25+0100\n"
 "Last-Translator: J.N. Breetvelt <OpaJaap@OpaJaap.nl>\n"
 "Language-Team: Gianni Diurno | gidibao.net & charmingpress.com\n"
 "MIME-Version: 1.0\n"
@@ -30,72 +30,72 @@ msgstr "Kommentar til billeder"
 msgid "Photo not found."
 msgstr "Billede ikke fundet"
 
-#: wppa-common-functions.php:478
+#: wppa-common-functions.php:499
 #, php-format
 msgid "Rating: %s"
 msgstr "Bedømmelse: %s"
 
-#: wppa-common-functions.php:543
+#: wppa-common-functions.php:564
 msgid "--- none ---"
 msgstr "--- ingen ---"
 
-#: wppa-common-functions.php:544
+#: wppa-common-functions.php:565
 msgid "--- separate ---"
 msgstr "--- separat ---"
 
-#: wppa-common-functions.php:654
+#: wppa-common-functions.php:675
 msgid "1 second"
 msgstr "1 sekund"
 
-#: wppa-common-functions.php:655
+#: wppa-common-functions.php:676
 msgid "seconds"
 msgstr "sekunder"
 
-#: wppa-common-functions.php:659
+#: wppa-common-functions.php:680
 msgid "1 minute"
 msgstr "1 minut"
 
-#: wppa-common-functions.php:660
+#: wppa-common-functions.php:681
 msgid "minutes"
 msgstr "minutter"
 
-#: wppa-common-functions.php:664
+#: wppa-common-functions.php:685
 msgid "1 hour"
 msgstr "1 time"
 
-#: wppa-common-functions.php:665
+#: wppa-common-functions.php:686
 msgid "hours"
 msgstr "timer"
 
-#: wppa-common-functions.php:669
+#: wppa-common-functions.php:690
 msgid "1 day"
 msgstr "1 dag"
 
-#: wppa-common-functions.php:670
+#: wppa-common-functions.php:691
 msgid "days"
 msgstr "dage"
 
-#: wppa-common-functions.php:674
+#: wppa-common-functions.php:695
 msgid "1 week"
 msgstr "1 uge"
 
-#: wppa-common-functions.php:675
+#: wppa-common-functions.php:696
 msgid "weeks"
 msgstr "uger"
 
-#: wppa-common-functions.php:679
+#: wppa-common-functions.php:700
 msgid "1 month"
 msgstr "1 måned"
 
-#: wppa-common-functions.php:680
+#: wppa-common-functions.php:701
 msgid "months"
 msgstr "måneder"
 
-#: wppa-common-functions.php:683
+#: wppa-common-functions.php:704
 msgid "1 year"
 msgstr "1 år"
 
-#: wppa-common-functions.php:684
+#: wppa-common-functions.php:705
 msgid "years"
 msgstr "år"
 
@@ -116,7 +116,7 @@ msgid "Home"
 msgstr "Hjem"
 
 #: wppa-functions.php:137
-#: wppa-functions.php:2522
+#: wppa-functions.php:2586
 msgid "Slideshow"
 msgstr "Slideshow"
 
@@ -133,8 +133,9 @@ msgid "Recently commented photos"
 msgstr "Nyligt kommenterede fotos"
 
 #: wppa-functions.php:1063
-#: wppa-functions.php:2673
-#: wppa-functions.php:2802
+#: wppa-functions.php:1368
+#: wppa-functions.php:2739
+#: wppa-functions.php:2868
 msgid "Awaiting moderation"
 msgstr ""
 
@@ -142,181 +143,195 @@ msgstr ""
 msgid "<b>ERROR: Attempt to enter an invalid rating.</b>"
 msgstr "<b>FEJL: Forsøg på at skrive en ugyldig bedømmelse.</b>"
 
-#: wppa-functions.php:1237
+#: wppa-functions.php:1246
 msgid "Comment edited"
 msgstr "Kommentarer redigeret"
 
-#: wppa-functions.php:1240
+#: wppa-functions.php:1249
 msgid "Comment added"
 msgstr "Kommentarer tilføjet"
 
-#: wppa-functions.php:1249
-msgid "Could not process comment"
+#: wppa-functions.php:1253
+msgid ""
+"Sorry, you gave a wrong answer.\\n"
+"\\n"
+"Please try again to solve the computation."
+msgstr ""
+
+#: wppa-functions.php:1263
+#, fuzzy
+msgid ""
+"Could not process comment.\\n"
+"Probably timed out."
 msgstr "Kommentar kunne ikke bearbejdes"
 
-#: wppa-functions.php:1297
+#: wppa-functions.php:1344
 msgid "wrote:"
 msgstr "skrev:"
 
-#: wppa-functions.php:1335
+#: wppa-functions.php:1371
+msgid "Marked as spam"
+msgstr ""
+
+#: wppa-functions.php:1386
 msgid "Edit!"
 msgstr "Rediger!"
 
-#: wppa-functions.php:1339
+#: wppa-functions.php:1390
 msgid "Send!"
 msgstr "Send"
 
-#: wppa-functions.php:1368
+#: wppa-functions.php:1419
 msgid "Your name:"
 msgstr "Dit navn"
 
-#: wppa-functions.php:1373
+#: wppa-functions.php:1424
 msgid "Your email:"
 msgstr "Din email"
 
-#: wppa-functions.php:1378
+#: wppa-functions.php:1429
 msgid "Your comment:"
 msgstr "Din kommentar"
 
-#: wppa-functions.php:1387
+#: wppa-functions.php:1442
 #, fuzzy, php-format
 msgid "You must <a href=\"%s\">login</a> to enter a comment"
 msgstr "Login for at skrive en kommentar"
 
-#: wppa-functions.php:1394
+#: wppa-functions.php:1449
 #, php-format
 msgid "%d  comments"
 msgstr "%d  kommentarer"
 
-#: wppa-functions.php:1398
+#: wppa-functions.php:1453
 msgid "Leave a comment"
 msgstr "Skriv en kommentar"
 
-#: wppa-functions.php:1434
+#: wppa-functions.php:1489
 msgid "Show IPTC data"
 msgstr "Vis IPTC data"
 
-#: wppa-functions.php:1437
+#: wppa-functions.php:1492
 msgid "Hide IPTC data"
 msgstr "Skjul IPTC data"
 
-#: wppa-functions.php:1465
+#: wppa-functions.php:1520
 msgid "No IPTC data"
 msgstr "Ingen IPTC data"
 
-#: wppa-functions.php:1498
+#: wppa-functions.php:1553
 msgid "Show EXIF data"
 msgstr "Vis EXIF data"
 
-#: wppa-functions.php:1501
+#: wppa-functions.php:1556
 msgid "Hide EXIF data"
 msgstr "Skjul EXIF data"
 
-#: wppa-functions.php:1529
+#: wppa-functions.php:1584
 msgid "No EXIF data"
 msgstr "Ingen EXIF data"
 
-#: wppa-functions.php:1877
-#: wppa-functions.php:1878
+#: wppa-functions.php:1932
+#: wppa-functions.php:1933
 msgid "Prev.&nbsp;page"
 msgstr "Forrige&nbsp;side"
 
-#: wppa-functions.php:1882
-#: wppa-functions.php:1883
+#: wppa-functions.php:1937
+#: wppa-functions.php:1938
 msgid "Next&nbsp;page"
 msgstr "Næste&nbsp;side"
 
-#: wppa-functions.php:2181
+#: wppa-functions.php:2236
 msgid "<b>ERROR: Illegal attempt to enter a rating.</b>"
 msgstr "<b>FEJL: Ugyldigt forsøg på at give en bedømmelse.</b>"
 
-#: wppa-functions.php:2194
+#: wppa-functions.php:2249
 msgid "<b>ERROR: Illegal attempt to enter a comment.</b>"
 msgstr "<b>FEJL: Ugyldigt forsøg på at give en kommentar.</b>"
 
-#: wppa-functions.php:2409
+#: wppa-functions.php:2471
 msgid "Link to"
 msgstr "Link til"
 
-#: wppa-functions.php:2433
-#: wppa-functions.php:2533
+#: wppa-functions.php:2495
+#: wppa-functions.php:2597
 msgid "View the album"
 msgstr "Se album"
 
-#: wppa-functions.php:2442
+#: wppa-functions.php:2504
 msgid "View the cover photo"
 msgstr "Se forside foto"
 
-#: wppa-functions.php:2443
+#: wppa-functions.php:2505
 msgid "View the cover photos"
 msgstr "Se forside fotos"
 
-#: wppa-functions.php:2522
+#: wppa-functions.php:2586
 msgid "Browse photos"
 msgstr "Se fotos"
 
-#: wppa-functions.php:2534
+#: wppa-functions.php:2598
 msgid "View"
 msgstr "Se"
 
-#: wppa-functions.php:2537
+#: wppa-functions.php:2601
 msgid "album"
 msgstr "album"
 
-#: wppa-functions.php:2540
+#: wppa-functions.php:2604
 msgid "albums"
 msgstr "album"
 
-#: wppa-functions.php:2544
+#: wppa-functions.php:2608
 msgid "and"
 msgstr "og"
 
-#: wppa-functions.php:2548
+#: wppa-functions.php:2612
 msgid "photo"
 msgstr "foto"
 
-#: wppa-functions.php:2551
+#: wppa-functions.php:2615
 msgid "photos"
 msgstr "fotos"
 
-#: wppa-functions.php:2749
+#: wppa-functions.php:2815
 msgid "View the top rated photos"
 msgstr "Se fotos med højeste bedømmelse"
 
-#: wppa-functions.php:2954
+#: wppa-functions.php:3020
 msgid "Double click to start/stop slideshow running"
 msgstr "Dobbeltklik for at starte/slutte slideshow"
 
-#: wppa-functions.php:4009
-#: wppa-functions.php:4015
+#: wppa-functions.php:4083
+#: wppa-functions.php:4089
 msgid "Upload Photo"
 msgstr "Upload foto"
 
-#: wppa-functions.php:4024
+#: wppa-functions.php:4098
 msgid "Apply watermark file:"
 msgstr "Indsæt vandmærke:"
 
-#: wppa-functions.php:4032
+#: wppa-functions.php:4106
 msgid "Position:"
 msgstr "Position:"
 
-#: wppa-functions.php:4041
+#: wppa-functions.php:4115
 msgid "Enter/modify photo description"
 msgstr "Indsæt/rediger beskrivelse af foto"
 
-#: wppa-functions.php:4065
+#: wppa-functions.php:4139
 msgid "<b>ERROR: Illegal attempt to upload a file.</b>"
 msgstr "<b>FEJL: Ugyldigt forsøg på at uploade en fil.</b>"
 
-#: wppa-functions.php:4072
+#: wppa-functions.php:4146
 msgid "Error during upload"
 msgstr "Fejl under upload"
 
-#: wppa-functions.php:4077
+#: wppa-functions.php:4151
 msgid "Uploaded file is not an image"
 msgstr "Uploaded fil er ikke et billede"
 
-#: wppa-functions.php:4081
+#: wppa-functions.php:4155
 msgid "Only gif, jpg and png image files are supported"
 msgstr "Kun gif, jpg og png filer understøttes"
 

@@ -3,12 +3,12 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions and API modules
-* Version 4.4.4
+* Version 4.4.5
 *
 */
 /* Moved to wppa-common-functions.php:
 global $wppa_api_version;
-$wppa_api_version = '4-4-4-000';
+$wppa_api_version = '4-4-5-000';
 */
 
 
@@ -1013,21 +1013,17 @@ global $wppa_opt;
 	if ( $callbackid ) $url .= 'wppa-photo=' . $callbackid;
 	else $url .= 'wppa-photo=' . $id;
 	
-	// Find link url and link title
+	// Find link url, link title and link target
 	if ($wppa['in_widget'] == 'ss') {
 		$link = wppa_get_imglnk_a('sswidget', $id);
-		$linkurl = $link['url'];
-		$linktitle = $link['title'];
 	}
 	else {
 		$link = wppa_get_imglnk_a('slideshow', $id);
-		$linkurl = $link['url'];
-		$linktitle = $link['title'];
 	}
-//	else {
-//		$linkurl = '';
-//		$linktitle = '';
-//	}
+	$linkurl = $link['url'];
+	$linktitle = $link['title'];
+	$linktarget = $link['target'];
+
 
 	// Find full image style and size
 	$style_a = wppa_get_fullimgstyle_a($id);
@@ -1075,7 +1071,7 @@ global $wppa_opt;
 	$result .= $avgrat."','";
 	$result .= $myrat."','";
 	$result .= $url."','";
-	$result .= $linkurl."','".$linktitle."','";
+	$result .= $linkurl."','".$linktitle."','".$linktarget."','";
 	$result .= $wppa['in_widget_timeout']."','";
 	$result .= $comment."','";
 	$result .= $iptc."','";
@@ -1209,11 +1205,22 @@ global $wppa_done;
 			break;
 	}
 
+	// Editing a comment?
 	$cedit = wppa_get_post('comment-edit');
 	
+	// Check captcha
+	if ( $wppa_opt['wppa_comment_captcha'] ) {
+		$captkey = $id;
+		if ( $cedit ) $captkey = $wpdb->get_var($wpdb->prepare('SELECT `timestamp` FROM `'.WPPA_COMMENTS.'` WHERE `id` = %s', $cedit)); 
+		if ( ! wppa_check_captcha($captkey) ) {
+				$status = 'spam';
+		}
+	}
+	
+	// Process (edited) comment
 	if ($comment) {
 		if ($cedit) {
-			$query = $wpdb->prepare('UPDATE `'.WPPA_COMMENTS.'` SET `comment` = %s, `user` = %s, `email` = %s WHERE `id` = %s LIMIT 1', $comment, $user, $email, $cedit);
+			$query = $wpdb->prepare('UPDATE `'.WPPA_COMMENTS.'` SET `comment` = %s, `user` = %s, `email` = %s, `status` = %s, `timestamp` = %s WHERE `id` = %s LIMIT 1', $comment, $user, $email, $status, time(), $cedit);
 			$iret = $wpdb->query($query);
 			if ($iret !== false) {
 				$wppa['comment_id'] = $cedit;
@@ -1232,13 +1239,19 @@ global $wppa_done;
 			$iret = $wpdb->query($query);
 			if ($iret !== false) $wppa['comment_id'] = $key;
 		}
-		if ($iret !== false) {
-			if ($cedit) {
-				echo('<script type="text/javascript">alert("'.__a('Comment edited', 'wppa_theme').'")</script>');
+		if ( $iret !== false ) {
+			if ( $status != 'spam' ) {
+				if ($cedit) {
+					echo('<script type="text/javascript">alert("'.__a('Comment edited', 'wppa_theme').'")</script>');
+				}
+				else {
+					echo('<script type="text/javascript">alert("'.__a('Comment added', 'wppa_theme').'")</script>');
+				}
 			}
 			else {
-				echo('<script type="text/javascript">alert("'.__a('Comment added', 'wppa_theme').'")</script>');
+				echo('<script type="text/javascript">alert("'.__a('Sorry, you gave a wrong answer.\n\nPlease try again to solve the computation.', 'wppa_theme').'")</script>');
 			}
+
 			$wppa['comment_photo'] = $id;
 			$wppa['comment_text'] = $comment;
 			
@@ -1246,11 +1259,44 @@ global $wppa_done;
 			wppa_clear_cache();
 		}
 		else {
-			echo('<script type="text/javascript">alert("'.__a('Could not process comment', 'wppa_theme').'")</script>');
+			echo('<script type="text/javascript">alert("'.__a('Could not process comment.\nProbably timed out.', 'wppa_theme').'")</script>');
 		}
 	}
 	else {	// Empty comment
 	}
+}
+
+// Create a captcha
+function wppa_make_captcha($id) {
+	$capt = wppa_ll_captcha($id);
+	return $capt['text'];
+}
+// Check tho comment security answer
+function wppa_check_captcha($id) {
+	$answer = wppa_get_post('wppa-captcha');
+	$capt = wppa_ll_captcha($id);
+	return $capt['ans'] == $answer;
+}
+// Low level captcha routine
+function wppa_ll_captcha($id) {
+	$nonce = wp_create_nonce('wppa_photo_comment_'.$id);
+	$result['val1'] = 1 + intval(substr($nonce, 0, 4), 16) % 12;
+	$result['val2'] = 1 + intval(substr($nonce, -4), 16) % 12;
+	if ( $result['val1'] == $result['val1'] ) $result['val2'] = 1 + intval(substr($nonce, -5, 4), 16) % 12;
+	if ( $result['val1'] != 1 && $result['val2'] != 1 && $result['val1'] * $result['val2'] < 21 ) {
+		$result['oper'] = 'x'; 
+		$result['ans'] = $result['val1'] * $result['val2'];
+	}
+	elseif ( $result['val1'] > ( $result['val2'] + 1 ) ) {
+		$result['oper'] = '-'; 
+		$result['ans'] = $result['val1'] - $result['val2'];
+	}
+	else {
+		$result['oper'] = '+';
+		$result['ans'] = $result['val1'] + $result['val2'];
+	}
+	$result['text'] = sprintf('%d %s %d = ', $result['val1'], $result['oper'], $result['val2']);
+	return $result;
 }
 
 // Build the html for the comment box
@@ -1290,7 +1336,7 @@ global $wppa_first_comment_html;
 			$result .= '<table id="wppacommentstable-'.$wppa['master_occur'].'" class="wppa-comment-form" style="margin:0; "><tbody>';
 			foreach($comments as $comment) {
 				// Show a comment either when it is approved, or it is pending and mine
-				if ($comment['status'] == 'approved' || ($comment['status'] == 'pending' && $comment['user'] == $wppa['comment_user'])) {
+				if ($comment['status'] == 'approved' || (($comment['status'] == 'pending' || $comment['status'] == 'spam') && $comment['user'] == $wppa['comment_user'])) {
 					$n_comments++;
 					$result .= '<tr valign="top" style="border-bottom:0 none; border-top:0 none; border-left: 0 none; border-right: 0 none; " >';
 						$result .= '<td class="wppa-box-text wppa-td" style="width:30%; border-width: 0 0 0 0; '.__wcs('wppa-box-text').__wcs('wppa-td').'" >';
@@ -1305,10 +1351,12 @@ global $wppa_first_comment_html;
 									$default = $wppa_opt['wppa_comment_gravatar_url'];
 								}
 								// Find the avatar
-								if ( function_exists('get_avatar') ) {	// Local Avatar ?
-									$avt = str_replace("'", "\"", get_avatar($comment['email'], $wppa_opt['wppa_gravatar_size'], $default));
+								$avt = '';
+								$usr = get_user_by('login', $comment['user']);
+								if ( $usr ) {	// Local Avatar ?
+									$avt = str_replace("'", "\"", get_avatar($usr->ID, $wppa_opt['wppa_gravatar_size'], $default));
 								}
-								else {
+								if ( $avt == '' ) {	// Global avatars off, try myself
 									$avt = '<img class="wppa-box-text wppa-td" src="http://www.gravatar.com/avatar/'.md5(strtolower(trim($comment['email']))).'.jpg?d='.urlencode($default).'&s='.$wppa_opt['wppa_gravatar_size'].'" />';
 								}
 								// Compose the html
@@ -1317,7 +1365,10 @@ global $wppa_first_comment_html;
 						$result .= '</td>';
 						$result .= '<td class="wppa-box-text wppa-td" style="border-width: 0 0 0 0;'.__wcs('wppa-box-text').__wcs('wppa-td').'" >'.html_entity_decode(esc_js(stripslashes(convert_smilies($comment['comment']))));
 						if ($comment['status'] == 'pending' && $comment['user'] == $wppa['comment_user']) {
-							$result .= '<br /><span style="color:red; font-size:9px;" >Awaiting moderation</span>';
+							$result .= '<br /><span style="color:red; font-size:9px;" >'.__a('Awaiting moderation', 'wppa_theme').'</span>';
+						}
+						if ($comment['status'] == 'spam' && $comment['user'] == $wppa['comment_user']) {
+							$result .= '<br /><span style="color:red; font-size:9px;" >'.__a('Marked as spam', 'wppa_theme').'</span>';
 						}
 						$result .= '</td>';
 					$result .= '</tr>';
@@ -1368,14 +1419,22 @@ global $wppa_first_comment_html;
 							$result .= '<td class="wppa-box-text wppa-td" style="width:30%; '.__wcs('wppa-box-text').__wcs('wppa-td').'" >'.__a('Your name:', 'wppa_theme').'</td>';
 							$result .= '<td class="wppa-box-text wppa-td" style="width:70%; '.__wcs('wppa-box-text').__wcs('wppa-td').'" ><input type="text" name="wppa-comname" id="wppa-comname-'.$wppa['master_occur'].'" style="width:100%; " value="'.$wppa['comment_user'].'" /></td>';
 						$result .= '</tr>';
-if ( $wppa_opt['wppa_comment_email_required'] ) {
-						$result .= '<tr valign="top" style="'.$vis.'">';
-							$result .= '<td class="wppa-box-text wppa-td" style="width:30%; '.__wcs('wppa-box-text').__wcs('wppa-td').'" >'.__a('Your email:', 'wppa_theme').'</td>';
-							$result .= '<td class="wppa-box-text wppa-td" style="width:70%; '.__wcs('wppa-box-text').__wcs('wppa-td').'" ><input type="text" name="wppa-comemail" id="wppa-comemail-'.$wppa['master_occur'].'" style="width:100%; " value="'.$wppa['comment_email'].'" /></td>';
-						$result .= '</tr>';
-}
+						if ( $wppa_opt['wppa_comment_email_required'] ) {
+							$result .= '<tr valign="top" style="'.$vis.'">';
+								$result .= '<td class="wppa-box-text wppa-td" style="width:30%; '.__wcs('wppa-box-text').__wcs('wppa-td').'" >'.__a('Your email:', 'wppa_theme').'</td>';
+								$result .= '<td class="wppa-box-text wppa-td" style="width:70%; '.__wcs('wppa-box-text').__wcs('wppa-td').'" ><input type="text" name="wppa-comemail" id="wppa-comemail-'.$wppa['master_occur'].'" style="width:100%; " value="'.$wppa['comment_email'].'" /></td>';
+							$result .= '</tr>';
+						}
 						$result .= '<tr valign="top" style="vertical-align:top;">';	
-							$result .= '<td valign="top" class="wppa-box-text wppa-td" style="vertical-align:top; width:30%; '.__wcs('wppa-box-text').__wcs('wppa-td').'" >'.__a('Your comment:', 'wppa_theme').'<br />'.$wppa['comment_user'].'<br /><input type="submit" name="commentbtn" value="'.$btn.'" style="margin:0;" /></td>';
+							$result .= '<td valign="top" class="wppa-box-text wppa-td" style="vertical-align:top; width:30%; '.__wcs('wppa-box-text').__wcs('wppa-td').'" >'.__a('Your comment:', 'wppa_theme').'<br />'.$wppa['comment_user'].'<br />';
+							if ( $wppa_opt['wppa_comment_captcha'] ) {
+								$wid = '20%';
+								if ( $wppa_opt['wppa_fontsize_box'] ) $wid = ($wppa_opt['wppa_fontsize_box'] * 1.5 ).'px';
+								$captkey = $id;
+								if ( $is_current ) $captkey = $wpdb->get_var($wpdb->prepare('SELECT `timestamp` FROM `'.WPPA_COMMENTS.'` WHERE `id` = %s', $wppa['comment_id'])); 
+								$result .= wppa_make_captcha($captkey).'<input type="text" name="wppa-captcha" style="width:'.$wid.'; '.__wcs('wppa-box-text').__wcs('wppa-td').'" />&nbsp;';
+							}
+							$result .= '<input type="submit" name="commentbtn" value="'.$btn.'" style="margin:0;" /></td>';
 							$result .= '<td valign="top" class="wppa-box-text wppa-td" style="vertical-align:top; width:70%; '.__wcs('wppa-box-text').__wcs('wppa-td').'" ><textarea name="wppa-comment" id="wppa-comment-'.$wppa['master_occur'].'" style="height:60px; width:100%; ">'.esc_js(stripslashes($txt)).'</textarea></td>';
 						$result .= '</tr>';
 					$result .= '</tbody>';
@@ -2529,7 +2588,7 @@ global $cover_count;
 				$wppa['out'] .= wppa_nltab('+').'<div class="wppa-box-text wppa-black wppa-info wppa-slideshow-browse-link">';
 					if ($photocount > $mincount) { 
 						$label = $wppa_opt['wppa_enable_slideshow'] ?  __a('Slideshow', 'wppa_theme') : __a('Browse photos', 'wppa_theme');
-						$wppa['out'] .= wppa_nltab().'<a href="'.$href_slideshow.'" target="'.$target.'" onclick="'.$onclick_slideshow.'"title="'.$label.'" style="'.__wcs('wppa-box-text', 'nocolor').'" >'.$label.'</a>';
+						$wppa['out'] .= wppa_nltab().'<a href="'.$href_slideshow.'" target="'.$target.'" onclick="'.$onclick_slideshow.'" title="'.$label.'" style="'.__wcs('wppa-box-text', 'nocolor').'" >'.$label.'</a>';
 					} else $wppa['out'] .= '&nbsp;'; 
 				$wppa['out'] .= wppa_nltab('-').'</div>';
 			}
@@ -2765,7 +2824,7 @@ else		$link = wppa_get_imglnk_a('thumb', $thumb['id']);
 		if ($link) {
 			if ( $link['is_url'] ) {	// is url
 				$wppa['out'] .= wppa_nltab('+').'<a href="'.$link['url'].'" target="'.$link['target'].'" class="thumb-img" id="x-'.$thumb['id'].'-'.$wppa['master_occur'].'">';
-					$wppa['out'] .= wppa_nltab().'<img id="i-'.$thumb['id'].'-'.$wppa['master_occur'].'" src="'.$url.'" alt="'.$altforpopup.'" title="'.esc_attr($title).'" width="'.$imgwidth.'" height="'.$imgheight.'" style="'.$imgstyle.'" '.$events.' />';
+					$wppa['out'] .= wppa_nltab().'<img id="i-'.$thumb['id'].'-'.$wppa['master_occur'].'" src="'.$url.'" alt="'.$altforpopup.'" title="'.esc_attr($link['title']).'" width="'.$imgwidth.'" height="'.$imgheight.'" style="'.$imgstyle.'" '.$events.' />';
 				$wppa['out'] .= wppa_nltab('-').'</a>';
 			}
 			elseif ( $link['is_lightbox'] ) {
@@ -3555,7 +3614,7 @@ global $wpdb;
 				$result['is_url'] = true;
 				$result['is_lightbox'] = false;
 				$result['onclick'] = '';
-				$result['target'] = '_blank';
+				$result['target'] = $data['linktarget'];
 				return $result;
 			}
 		}
@@ -4112,9 +4171,10 @@ global $wppa_opt;
 				$mrat = '0';
 				$linkurl = '';
 				$linktitle = '';
+				$linktarget = '_self';
 				$owner = wppa_get_user();
 				$status = ( $wppa_opt['wppa_upload_moderate'] && !current_user_can('wppa_admin') ) ? 'pending' : 'publish';
-				$query = $wpdb->prepare('INSERT INTO `' . WPPA_PHOTOS . '` (`id`, `album`, `ext`, `name`, `p_order`, `description`, `mean_rating`, `linkurl`, `linktitle`, `timestamp`, `owner`, `status`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)', $id, $alb, $ext, $name, $porder, $desc, $mrat, $linkurl, $linktitle, time(), $owner, $status);
+				$query = $wpdb->prepare('INSERT INTO `' . WPPA_PHOTOS . '` (`id`, `album`, `ext`, `name`, `p_order`, `description`, `mean_rating`, `linkurl`, `linktitle`, `linktarget`, `timestamp`, `owner`, `status`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)', $id, $alb, $ext, $name, $porder, $desc, $mrat, $linkurl, $linktitle, $linktarget, time(), $owner, $status);
 
 				if ($wpdb->query($query) === false) {
 					wppa_err_alert(__('Could not insert photo into db.', 'wppa_theme'));
@@ -4236,17 +4296,38 @@ global $wppa;
 function wppa_filter_iptc($desc, $photo) {
 global $wpdb;
 
-	$iptcdata = $wpdb->get_results($wpdb->prepare("SELECT * FROM `".WPPA_IPTC."` WHERE `photo`=%s", $photo), "ARRAY_A");
+	$iptcdata = $wpdb->get_results($wpdb->prepare("SELECT * FROM `".WPPA_IPTC."` WHERE `photo`=%s ORDER BY `id`", $photo), "ARRAY_A");
 	if ( ! $iptcdata ) return $desc;	// Nothing to do
 	
+	// Init
 	$temp = $desc;
+	$prevtag = '';
+	$combined = '';
+	
+	// Process all iptclines of this photo
 	foreach ($iptcdata as $iptcline) {
 		$tag = $iptcline['tag'];
-		$pos = strpos($temp, $tag);
-		while ( $pos !== false ) {
-			$temp = substr_replace($temp, $iptcline['description'], $pos, strlen($tag));
-			$pos = strpos($temp, $tag);
+		if ($prevtag == $tag) {			// add a next item for this tag
+			$combined .= ', '.$iptcline['description'];
 		}
+		else { 							// first item of this tag
+			if ( $combined ) { 			// Process if required
+				$pos = strpos($temp, $prevtag);
+				while ( $pos !== false ) {
+					$temp = substr_replace($temp, $combined, $pos, strlen($tag));
+					$pos = strpos($temp, $prevtag);
+				}
+			}
+			$combined = $iptcline['description'];
+			$prevtag = $tag;
+		}
+	}
+	
+	// Process last
+	$pos = strpos($temp, $prevtag);
+	while ( $pos !== false ) {
+		$temp = substr_replace($temp, $combined, $pos, strlen($tag));
+		$pos = strpos($temp, $prevtag);
 	}
 
 	// Remove untranslated
@@ -4264,19 +4345,40 @@ global $wpdb;
 function wppa_filter_exif($desc, $photo) {
 global $wpdb;
 
-	$exifdata = $wpdb->get_results($wpdb->prepare("SELECT * FROM `".WPPA_EXIF."` WHERE `photo`=%s", $photo), "ARRAY_A");
+	$exifdata = $wpdb->get_results($wpdb->prepare("SELECT * FROM `".WPPA_EXIF."` WHERE `photo`=%s ORDER BY `id`", $photo), "ARRAY_A");
 	if ( ! $exifdata ) return $desc;	// Nothing to do
 	
+	// Init
 	$temp = $desc;
+	$prevtag = '';
+	$combined = '';
+	
+	// Process all exiflines of this photo
 	foreach ($exifdata as $exifline) {
 		$tag = $exifline['tag'];
-		$pos = strpos($temp, $tag);
-		while ( $pos !== false ) {
-			$temp = substr_replace($temp, wppa_format_exif($tag, $exifline['description']), $pos, strlen($tag));
-			$pos = strpos($temp, $tag);
+		if ($prevtag == $tag) {			// add a next item for this tag
+			$combined .= ', '.$exifline['description'];
+		}
+		else { 							// first item of this tag
+			if ( $combined ) { 			// Process if required
+				$pos = strpos($temp, $prevtag);
+				while ( $pos !== false ) {
+					$temp = substr_replace($temp, wppa_format_exif($prevtag, $combined), $pos, strlen($tag));
+					$pos = strpos($temp, $prevtag);
+				}
+			}
+			$combined = $exifline['description'];
+			$prevtag = $tag;
 		}
 	}
 	
+	// Process last
+	$pos = strpos($temp, $prevtag);
+	while ( $pos !== false ) {
+		$temp = substr_replace($temp, wppa_format_exif($prevtag, $combined), $pos, strlen($tag));
+		$pos = strpos($temp, $prevtag);
+	}
+
 	// Remove untranslated
 	$pos = strpos($temp, 'E#');
 	while ( $pos !== false ) {
@@ -4285,6 +4387,7 @@ global $wpdb;
 		$pos = strpos($temp, 'E#');
 	}
 
+	// Return result
 	return $temp;
 }
 
