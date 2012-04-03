@@ -2,7 +2,7 @@
 /* wppa-ajax.php
 *
 * Functions used in ajax requests
-* version 4.4.5
+* version 4.4.6
 *
 */
 add_action('wp_ajax_wppa', 'wppa_ajax_callback');
@@ -42,8 +42,12 @@ global $wppa;
 				echo '0||100||'.$errtxt;
 				exit;																// Nonce check failed
 			}
-			if ( ! in_array($rating, array('1', '2', '3', '4', '5')) ) {
+			if ( $wppa_opt['wppa_rating_max'] == '5' && ! in_array($rating, array('1', '2', '3', '4', '5')) ) {
 				echo '0||101||'.$errtxt;
+				exit;																// Value out of range
+			}
+			elseif ( $wppa_opt['wppa_rating_max'] == '10' && ! in_array($rating, array('1', '2', '3', '4', '5', '6', '7', '8', '9', '10')) ) {
+				echo '0||106||'.$errtxt;
 				exit;																// Value out of range
 			}
 			
@@ -122,6 +126,7 @@ global $wppa;
 					$cnt ++;
 				}
 				if ($cnt > 0) $allavgrat = $sum/$cnt; else $allavgrat = '0';
+				if ($allavgrat == '10') $allavgrat = '9.99999';	// For sort order reasons text field
 			}
 			else $allavgrat = '0';
 
@@ -632,7 +637,28 @@ global $wppa;
 					}				
 					break;
 
-				
+				case 'wppa_rating_max':
+					if ( $value == '5' && $wppa_opt['wppa_rating_max'] == '10' ) {
+						$rats = $wpdb->get_results($wpdb->prepare('SELECT `id`, `value` FROM `'.WPPA_RATING.'`'), 'ARRAY_A');
+						if ( $rats ) {
+							foreach ( $rats as $rat ) {
+								$wpdb->query($wpdb->prepare('UPDATE `'.WPPA_RATING.'` SET `value` = %s WHERE `id` = %s', $rat['value']/2, $rat['id']));
+							}
+						}
+					}
+					if ( $value == '10' && $wppa_opt['wppa_rating_max'] == '5' ) {
+						$rats = $wpdb->get_results($wpdb->prepare('SELECT `id`, `value` FROM `'.WPPA_RATING.'`'), 'ARRAY_A');
+						if ( $rats ) {
+							foreach ( $rats as $rat ) {
+								$wpdb->query($wpdb->prepare('UPDATE `'.WPPA_RATING.'` SET `value` = %s WHERE `id` = %s', $rat['value']*2, $rat['id']));
+							}
+						}
+					}
+					wppa_recalculate_ratings();
+					update_option($option, $value);
+					$wppa['error'] = '0';
+					$alert = '';
+					break;
 				
 				default:
 					// Do the update only

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the slideshow high level functions
-* Version 4.4.4
+* Version 4.4.6
 *
 */
 
@@ -201,11 +201,14 @@ global $wppa_opt;
 	
 	$wppa['out'] .= wppa_nltab('+').'<div id="wppa-rating-'.$wppa['master_occur'].'" class="wppa-box wppa-nav wppa-nav-text" style="'.__wcs('wppa-box').__wcs('wppa-nav').__wcs('wppa-nav-text').$size.' text-align:center;">';
 
-	$r['1'] = __a('very low', 'wppa_theme');
-	$r['2'] = __a('low', 'wppa_theme');
-	$r['3'] = __a('average', 'wppa_theme');
-	$r['4'] = __a('high', 'wppa_theme');
-	$r['5'] = __a('very high', 'wppa_theme');
+	if ( $wppa_opt['wppa_rating_max'] == '5' ) {
+		$r['1'] = __a('very low', 'wppa_theme');
+		$r['2'] = __a('low', 'wppa_theme');
+		$r['3'] = __a('average', 'wppa_theme');
+		$r['4'] = __a('high', 'wppa_theme');
+		$r['5'] = __a('very high', 'wppa_theme');
+	}
+	else for ( $i = '1'; $i <= '10'; $i++ ) $r[$i] = $i;
 
 	if ($fs != '') $fs += 3; else $fs = '15';	// iconsize = fontsize+3, Default to 15
 	$style = 'style="height:'.$fs.'px; margin:0 0 -3px 0; padding:0;"';
@@ -215,7 +218,7 @@ global $wppa_opt;
 		$wppa['out'] .= __a('Average&nbsp;rating', 'wppa_theme').'&nbsp;';
 		
 		$i = '1';
-		while ($i < '6') {
+		while ($i <= $wppa_opt['wppa_rating_max']) {
 			$wppa['out'] .= wppa_nltab().'<img id="wppa-avg-'.$wppa['master_occur'].'-'.$i.'" class="wppa-avg-'.$wppa['master_occur'].' no-shadow" '.$style.' src="'.wppa_get_imgdir().$icon.'" alt="'.$i.'" title="'.__a('Average&nbsp;rating', 'wppa_theme').': '.$r[$i].'" />';
 			$i++;
 		}
@@ -227,7 +230,7 @@ global $wppa_opt;
 		if ( ! $wppa_opt['wppa_show_avg_rating'] ) $wppa['out'] .= __a('My&nbsp;rating', 'wppa_theme').':&nbsp;';
 		
 		$i = '1';
-		while ($i < '6') {
+		while ($i <= $wppa_opt['wppa_rating_max']) {
 			$wppa['out'] .= wppa_nltab().'<img id="wppa-rate-'.$wppa['master_occur'].'-'.$i.'" class="wppa-rate-'.$wppa['master_occur'].' no-shadow" '.$style.' src="'.wppa_get_imgdir().$icon.'" alt="'.$i.'" title="'.__a('My&nbsp;rating', 'wppa_theme').': '.$r[$i].'" onmouseover="wppaFollowMe('.$wppa['master_occur'].', '.$i.')" onmouseout="wppaLeaveMe('.$wppa['master_occur'].', '.$i.')" onclick="wppaRateIt('.$wppa['master_occur'].', '.$i.')" />';
 			$i++;
 		}

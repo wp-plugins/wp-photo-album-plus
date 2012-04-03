@@ -3,12 +3,12 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions and API modules
-* Version 4.4.5
+* Version 4.4.6
 *
 */
 /* Moved to wppa-common-functions.php:
 global $wppa_api_version;
-$wppa_api_version = '4-4-5-000';
+$wppa_api_version = '4-4-6-000';
 */
 
 
@@ -1096,10 +1096,8 @@ global $wppa_done;
 
 	$rating = wppa_get_get('rating');
 	
-//	if ($rating != '1' && $rating != '2' && $rating != '3' && $rating != '4' && $rating != '5') 
-	if ( ! in_array($rating, array('1', '2', '3', '4', '5')) ) {
-		die(__a('<b>ERROR: Attempt to enter an invalid rating.</b>', 'wppa_theme'));
-	}
+	if ( in_array($rating, array('1', '2', '3', '4', '5', '6', '7', '8', '9', '10')) && ( $wppa_opt['wppa_rating_max'] == '10' ) || $rating < '6' ) {}
+	else die(__a('<b>ERROR: Attempt to enter an invalid rating.</b>', 'wppa_theme'));
 
 	$my_oldrat = $wpdb->get_var($wpdb->prepare( 'SELECT * FROM `'.WPPA_RATING.'` WHERE `photo` = %s AND `user` = %s LIMIT 1', $id, $user ) ); 
 
@@ -1161,6 +1159,7 @@ global $wppa_done;
 			$cnt ++;
 		}
 		if ($cnt > 0) $avgrat = $sum/$cnt; else $avgrat = '0';
+		if ( $avgrat == '10' ) $avgrat = '9.99999';	// for sort order reasons text field
 	}
 	else $avgrat = '0';
 	// Store it

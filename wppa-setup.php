@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 4.4.5
+* Version 4.4.6
 *
 */
 
@@ -481,7 +481,9 @@ global $wppa_defaults;
 						'wppa_slide_pause'				=> 'no',
 						'wppa_upload_moderate'			=> 'no',
 						'wppa_comment_captcha'			=> 'no',
-						'wppa_spam_maxage'				=> 'none'
+						'wppa_spam_maxage'				=> 'none',
+						'wppa_rating_max'				=> '10',
+						'wppa_rating_prec'				=> '2'
 
 						);
 

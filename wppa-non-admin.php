@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the non admin stuff
-* Version 4.4.4
+* Version 4.4.6
 *
 */
 
@@ -176,6 +176,7 @@ global $wppa_opt;
 		else echo("\t".'wppaUsePhotoNamesInUrls = false;'."\n"); 
 		if ( $wppa_opt['wppa_thumb_blank'] ) echo("\t".'wppaThumbTargetBlank = true;'."\n");
 		else echo("\t".'wppaThumbTargetBlank = false;'."\n");
+		echo ("\t".'wppaRatingMax = '.$wppa_opt['wppa_rating_max'].';'."\n");
 
 	echo("/* ]]> */\n");
 	echo("</script>\n");

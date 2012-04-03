@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 * gp admin functions
-* version 4.4.5
+* version 4.4.6
 *
 * 
 */
@@ -769,6 +769,7 @@ global $wpdb;
 				$the_count++;
 			}
 			if ($the_count) $the_value /= $the_count;
+			if ($the_value == '10') $the_value = '9.99999';	// mean_rating is a text field. for sort order reasons we make 10 into 9.99999
 			$iret = $wpdb->query($wpdb->prepare( 'UPDATE '.WPPA_PHOTOS.' SET mean_rating = %s WHERE id = %s', $the_value, $photo['id'] ) );
 			if ($iret === false) {
 				if ( $wppa['ajax'] ) {
