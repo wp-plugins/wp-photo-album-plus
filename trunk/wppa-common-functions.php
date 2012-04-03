@@ -2,11 +2,11 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 4.4.5
+* version 4.4.6
 *
 */
 global $wppa_api_version;
-$wppa_api_version = '4-4-5-000';
+$wppa_api_version = '4-4-6-000';
 // Initialize globals and option settings
 function wppa_initialize_runtime($force = false) {
 global $wppa;
@@ -307,7 +307,9 @@ global $wpdb;
 			'wppa_slide_pause'				=> '',
 			'wppa_upload_moderate'			=> '',
 			'wppa_comment_captcha'			=> '',
-			'wppa_spam_maxage'				=> ''
+			'wppa_spam_maxage'				=> '',
+			'wppa_rating_max'				=> '',
+			'wppa_rating_prec'				=> ''
 
 
 
@@ -490,13 +492,17 @@ global $wpdb;
 
 function wppa_get_rating_by_id($id = '', $opt = '') {
 global $wpdb;
+global $wppa_opt;
 
 	$result = '';
 	if (is_numeric($id)) {
 		$rating = $wpdb->get_var( $wpdb->prepare( "SELECT mean_rating FROM ".WPPA_PHOTOS." WHERE id=%s", $id ) );
 		if ($rating) {
-			if ($opt == 'nolabel') $result = round($rating * 1000) / 1000;
-			else $result = sprintf(__a('Rating: %s', 'wppa_theme'), round($rating * 1000) / 1000);
+			$i = $wppa_opt['wppa_rating_prec'];
+			$j = $i + '1';
+			$val = sprintf('%'.$j.'.'.$i.'f', $rating);
+			if ($opt == 'nolabel') $result = $val;
+			else $result = sprintf(__a('Rating: %s', 'wppa_theme'), $val);
 		}
 	}
 	return $result;

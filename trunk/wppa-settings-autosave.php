@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 4.4.5
+* Version 4.4.6
 *
 */
 
@@ -510,6 +510,26 @@ global $wppa_api_version;
 						$slug = 'wppa_gravatar_size';
 						$html = wppa_input($slug, '40px', '', __('pixels', 'wppa'));
 						wppa_setting($slug, '27', $name, $desc, $html, $help);
+						
+						$name = __('Rating size', 'wppa');
+						$desc = __('Select the number of voting stars.', 'wppa');
+						$help = '';
+						$slug = 'wppa_rating_max';
+						$options = array('Standard: 5 stars', 'Extended: 10 stars');
+						$values = array('5', '10');
+						$html = wppa_select($slug, $options, $values);
+						$class = 'wppa_rating_';
+						wppa_setting($slug, '28', $name, $desc, $html, $help, $class);
+						
+						$name = __('Display precision', 'wppa');
+						$desc = __('Select the desired rating display precision.', 'wppa');
+						$help = '';
+						$slug = 'wppa_rating_prec';
+						$options = array('1 '.__('decimal places', 'wppa'), '2 '.__('decimal places', 'wppa'), '3 '.__('decimal places', 'wppa'), '4 '.__('decimal places', 'wppa'));
+						$values = array('1', '2', '3', '4');
+						$html = wppa_select($slug, $options, $values);
+						$class = 'wppa_rating_';
+						wppa_setting($slug, '29', $name, $desc, $html, $help, $class);
 						
 						?>
 					</tbody>
