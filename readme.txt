@@ -136,8 +136,8 @@ See for additional information: http://wppa.opajaap.nl/?page_id=1459
 
 = New Features =
 
-* You can set the rating system to Extended, i.e. 10 stars as opposed to the standard 5.
-* You can specify the display precision for avarage ratings from one up to 4 decimal places.
+* You can set the rating system to Extended, i.e. 10 stars as opposed to the standard 5. Table I-28.
+* You can specify the display precision for avarage ratings from one up to 4 decimal places. Table I-29.
 
 = 4.4.5 =
 
