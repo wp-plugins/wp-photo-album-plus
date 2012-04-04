@@ -2,11 +2,11 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 4.4.6
+* version 4.4.7
 *
 */
 global $wppa_api_version;
-$wppa_api_version = '4-4-6-000';
+$wppa_api_version = '4-4-7-000';
 // Initialize globals and option settings
 function wppa_initialize_runtime($force = false) {
 global $wppa;
@@ -309,7 +309,10 @@ global $wpdb;
 			'wppa_comment_captcha'			=> '',
 			'wppa_spam_maxage'				=> '',
 			'wppa_rating_max'				=> '',
-			'wppa_rating_prec'				=> ''
+			'wppa_rating_prec'				=> '',
+			
+			'wppa_doublethevotes'			=> '',
+			'wppa_halvethevotes'			=> ''
 
 
 

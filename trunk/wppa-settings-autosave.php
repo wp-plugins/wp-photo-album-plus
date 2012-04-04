@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 4.4.6
+* Version 4.4.7
 *
 */
 
@@ -1988,6 +1988,20 @@ global $wppa_api_version;
 						$html = wppa_ajax_button('', $slug);
 						wppa_setting_2('', $slug, '12', $name, $desc, '', $html, $help);
 						
+						$name = __('Double votes', 'wppa');
+						$desc = 'Double existing votes';
+						$help = 'YOU WILL NEED THIS ONLY ONCE TO CORRECT THE EFFECTS OF A BUG IN THE FIRST RELEASE OF VERSION 4.4.6';
+						$slug = 'wppa_doublethevotes';
+						$html = wppa_ajax_button('', $slug);
+						wppa_setting_2('', $slug, '13a', $name, $desc, '', $html, $help);
+
+						$name = __('Halve votes', 'wppa');
+						$desc = 'Halve existing votes';
+						$help = 'YOU WILL NEED THIS ONLY ONCE TO CORRECT THE EFFECTS OF A BUG IN THE FIRST RELEASE OF VERSION 4.4.6';
+						$slug = 'wppa_halvethevotes';
+						$html = wppa_ajax_button('', $slug);
+						wppa_setting_2('', $slug, '13b', $name, $desc, '', $html, $help);
+
 						$wppa['no_default'] = false;
 
 						?>
