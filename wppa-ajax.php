@@ -2,7 +2,7 @@
 /* wppa-ajax.php
 *
 * Functions used in ajax requests
-* version 4.4.6
+* version 4.4.7
 *
 */
 add_action('wp_ajax_wppa', 'wppa_ajax_callback');
@@ -659,7 +659,28 @@ global $wppa;
 					$wppa['error'] = '0';
 					$alert = '';
 					break;
-				
+case 'wppa_halvethevotes':
+						$rats = $wpdb->get_results($wpdb->prepare('SELECT `id`, `value` FROM `'.WPPA_RATING.'`'), 'ARRAY_A');
+						if ( $rats ) {
+							foreach ( $rats as $rat ) {
+								$wpdb->query($wpdb->prepare('UPDATE `'.WPPA_RATING.'` SET `value` = %s WHERE `id` = %s', $rat['value']/2, $rat['id']));
+							}
+						}
+					wppa_recalculate_ratings();
+					$wppa['error'] = '0';
+					$alert = 'Done halving';
+break;					
+case 'wppa_doublethevotes':
+						$rats = $wpdb->get_results($wpdb->prepare('SELECT `id`, `value` FROM `'.WPPA_RATING.'`'), 'ARRAY_A');
+						if ( $rats ) {
+							foreach ( $rats as $rat ) {
+								$wpdb->query($wpdb->prepare('UPDATE `'.WPPA_RATING.'` SET `value` = %s WHERE `id` = %s', $rat['value']*2, $rat['id']));
+							}
+						}
+					wppa_recalculate_ratings();
+					$wppa['error'] = '0';
+					$alert = 'Done doubling';
+break;					
 				default:
 					// Do the update only
 					update_option($option, $value);
