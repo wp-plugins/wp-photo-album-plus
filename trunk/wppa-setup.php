@@ -482,7 +482,7 @@ global $wppa_defaults;
 						'wppa_upload_moderate'			=> 'no',
 						'wppa_comment_captcha'			=> 'no',
 						'wppa_spam_maxage'				=> 'none',
-						'wppa_rating_max'				=> '10',
+						'wppa_rating_max'				=> '5',
 						'wppa_rating_prec'				=> '2'
 
 						);
