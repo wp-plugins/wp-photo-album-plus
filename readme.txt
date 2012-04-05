@@ -136,7 +136,7 @@ See for additional information: http://wppa.opajaap.nl/?page_id=1459
 
 = Bug Fixes =
 
-* Supplied Tools VII-13a and 13b to correct ratings.
+* Supplied Tools VIII-13a and 13b to correct ratings.
 
 = 4.4.6 =
 
