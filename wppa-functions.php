@@ -3,12 +3,12 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions and API modules
-* Version 4.4.6
+* Version 4.4.8
 *
 */
 /* Moved to wppa-common-functions.php:
 global $wppa_api_version;
-$wppa_api_version = '4-4-6-000';
+$wppa_api_version = '4-4-8-000';
 */
 
 
@@ -982,11 +982,18 @@ global $wppa_opt;
 			$n++;
 		}
 		$myrat = $accu / $n;
+//		$myrat = round($myrat);
+		$i = $wppa_opt['wppa_rating_prec'];
+		$j = $i + '1';
+		$myrat = sprintf('%'.$j.'.'.$i.'f', $myrat);
 	}
 
 	// Find the avg rating
-	$avgrat = $wpdb->get_var( $wpdb->prepare( 'SELECT `mean_rating` FROM `'.WPPA_PHOTOS.'` WHERE `id` = %s LIMIT 1', $id ) ); 
-	if (!$avgrat) $avgrat = '0';
+	$avgrat = wppa_get_rating_by_id($id, 'nolabel');
+	
+//	$wpdb->get_var( $wpdb->prepare( 'SELECT `mean_rating` FROM `'.WPPA_PHOTOS.'` WHERE `id` = %s LIMIT 1', $id ) ); 
+//	if (!$avgrat) $avgrat = '0';
+//	else $avgrat = sprintf('', $avgrat);
 	
 	$comment = wppa_comment_html($id, $comment_allowed);
 	
@@ -1679,10 +1686,11 @@ global $wppa_opt;
 				$result['style'] .= ' opacity:' . $opac/100 . '; filter:alpha(opacity=' . $opac . ');';
 			}
 			break;
-		case 'thumb':	// Normal
-		case 'ttthumb':	// Topten
+		case 'thumb':		// Normal
+		case 'ttthumb':		// Topten
 		case 'comthumb':	// Comment widget
-		case 'fthumb':	// Filmthumb
+		case 'fthumb':		// Filmthumb
+		case 'twthumb':		// Thumbnail widget
 			$result['style'] .= ' border-width: 0px;';
 			$result['style'] .= ' width:' . $width . 'px; height:' . $height . 'px;';
 			if ($xvalign == 'optional') $valign = $wppa_opt['wppa_valign'];
@@ -2787,6 +2795,9 @@ global $wppa;
 global $wppa_opt;
 
 	$src       = wppa_get_thumb_path(); 
+	// $maxsize = $wppa['in_widget'] ? $wppa_opt['wppa_comment_size'] : $wppa_opt['wppa_thumbsize'];
+	// there is also:                  $wppa_opt['wppa_topten_size'] 
+	// So, what to do with a WPPA+ Text widget ???
 	$imgattr_a = wppa_get_imgstyle_a($src, $wppa_opt['wppa_thumbsize'], 'optional', 'thumb'); 
 
 	$imgstyle  = $imgattr_a['style'];
@@ -2798,7 +2809,7 @@ global $wppa_opt;
 	$thumbname = esc_attr(wppa_qtrans($thumb['name']));
 	$altforpopup = $wppa_opt['wppa_popup_text_name'] ? esc_attr(stripslashes($thumbname)) : '';	// Added esc_attr(stripslashes()) in 4.3.11
 
-	if ($wppa_opt['wppa_use_thumb_popup'] == 'yes') {
+	if ( $wppa_opt['wppa_use_thumb_popup'] ) {
 		$title = $wppa_opt['wppa_popup_text_desc'] ? esc_attr(wppa_get_photo_desc($thumb)) : '';
 	}
 	else {
@@ -2823,7 +2834,7 @@ else		$link = wppa_get_imglnk_a('thumb', $thumb['id']);
 		if ($link) {
 			if ( $link['is_url'] ) {	// is url
 				$wppa['out'] .= wppa_nltab('+').'<a href="'.$link['url'].'" target="'.$link['target'].'" class="thumb-img" id="x-'.$thumb['id'].'-'.$wppa['master_occur'].'">';
-					$wppa['out'] .= wppa_nltab().'<img id="i-'.$thumb['id'].'-'.$wppa['master_occur'].'" src="'.$url.'" alt="'.$altforpopup.'" title="'.esc_attr($link['title']).'" width="'.$imgwidth.'" height="'.$imgheight.'" style="'.$imgstyle.'" '.$events.' />';
+					$wppa['out'] .= wppa_nltab().'<img id="i-'.$thumb['id'].'-'.$wppa['master_occur'].'" src="'.$url.'" alt="'.$altforpopup.'" title="'.esc_attr($title).'" width="'.$imgwidth.'" height="'.$imgheight.'" style="'.$imgstyle.'" '.$events.' />';
 				$wppa['out'] .= wppa_nltab('-').'</a>';
 			}
 			elseif ( $link['is_lightbox'] ) {
@@ -3601,7 +3612,8 @@ global $wpdb;
 		 ( $wich == 'potdwidget' && $wppa_opt['wppa_potdwidget_overrule'] ) ||
 		 ( $wich == 'coverimg'   && $wppa_opt['wppa_coverimg_overrule'] ) ||
 		 ( $wich == 'comwidget'	 && $wppa_opt['wppa_comment_overrule'] ) ||
-		 ( $wich == 'slideshow'  && $wppa_opt['wppa_slideshow_overrule'] ) ) {
+		 ( $wich == 'slideshow'  && $wppa_opt['wppa_slideshow_overrule'] ) ||
+		 ( $wich == 'tnwidget' 	 && $wppa_opt['wppa_thumbnail_widget_overrule'] )) {
 		// Look for a photo specific link
 		$data = $wpdb->get_row( $wpdb->prepare( 'SELECT * FROM '.WPPA_PHOTOS.' WHERE id=%s LIMIT 1', $photo ) , 'ARRAY_A' );
 			if ($data) {
@@ -3661,6 +3673,12 @@ global $wpdb;
 			$page = $wppa_opt['wppa_coverimg_linkpage'];
 			if ($page == '0') $page = '-1';
 			if ($wppa_opt['wppa_coverimg_blank']) $result['target'] = '_blank';
+			break;
+		case 'tnwidget':
+			$type = $wppa_opt['wppa_thumbnail_widget_linktype'];
+			$page = $wppa_opt['wppa_thumbnail_widget_linkpage'];
+			if ($page == '0') $page = '-1';
+			if ($wppa_opt['wppa_thumbnail_widget_blank']) $result['target'] = '_blank';
 			break;
 		case 'slideshow':
 			$type = '';
@@ -4088,8 +4106,10 @@ global $wppa_opt;
 		$wppa['out'] .= wppa_nltab('+').'<form action="'.$returnurl.'" method="post" enctype="multipart/form-data">';
 			$wppa['out'] .= wppa_nltab().wp_nonce_field('wppa-check' , 'wppa-nonce', false, false);		
 			$wppa['out'] .= wppa_nltab().'<input type="hidden" name="wppa-upload-album" value="'.$alb.'" />';			
-			$wppa['out'] .= wppa_nltab().'<input class="wppa-user-file" style="margin: 6px 0; float:left; '.__wcs('wppa-box-text').'" id="wppa-user-upload-'.$alb.'-'.$wppa['master_occur'].'" type="file" name="wppa-user-upload-'.$alb.'-'.$wppa['master_occur'].'" onchange="jQuery(\'#wppa-user-submit-'.$alb.'-'.$wppa['master_occur'].'\').css(\'display\', \'block\')" />';
-			$wppa['out'] .= wppa_nltab().'<input type="submit" id="wppa-user-submit-'.$alb.'-'.$wppa['master_occur'].'" style="display:none; margin: 6px 0; float:right; '.__wcs('wppa-box-text').'" class="wppa-user-submit" name="wppa-user-submit-'.$alb.'-'.$wppa['master_occur'].'" value="'.__a('Upload Photo', 'wppa_theme').'" /><br />';
+			$wppa['out'] .= wppa_nltab().'<input type="file" multiple="multiple" class="wppa-user-file" style="margin: 6px 0; float:left; '.__wcs('wppa-box-text').'" id="wppa-user-upload-'.$alb.'-'.$wppa['master_occur'].'" name="wppa-user-upload-'.$alb.'-'.$wppa['master_occur'].'[]" onchange="jQuery(\'#wppa-user-submit-'.$alb.'-'.$wppa['master_occur'].'\').css(\'display\', \'block\')" />';
+			$wppa['out'] .= wppa_nltab().'<input type="submit" id="wppa-user-submit-'.$alb.'-'.$wppa['master_occur'].'" style="display:none; margin: 6px 0; float:right; '.__wcs('wppa-box-text').'" class="wppa-user-submit" name="wppa-user-submit-'.$alb.'-'.$wppa['master_occur'].'" value="'.__a('Upload Photo(s)', 'wppa_theme').'" /><br />';
+			$max = ini_get('max_file_uploads');
+			if ( $max ) $wppa['out'] .= wppa_nltab().'<br /><span style="font-size:10px;" >'.sprintf(__a('You may upload up to %s photos at once if your browser supports HTML-5 multiple file upload', 'wppa_theme'), $max).'</span>';
 			if ( $wppa_opt['wppa_copyright_on'] ) {
 				$wppa['out'] .= wppa_nltab().'<div id="wppa-copyright-'.$wppa['master_occur'].'" style="clear:both;" >'.__($wppa_opt['wppa_copyright_notice']).'</div>';
 			}
@@ -4144,50 +4164,81 @@ global $wppa_opt;
 		$alb = wppa_get_post('wppa-upload-album');
 
 		if (is_array($_FILES)) {
+			$bret = true;
+			$filecount = '1';
+//print_r($_FILES);
 			foreach ($_FILES as $file) {
-				if ( $file['error'] != '0' ) {
-					wppa_err_alert(__a('Error during upload', 'wppa_theme'));
-					return;
-				}
-				$imgsize = getimagesize($file['tmp_name']);
-				if ( !is_array($imgsize) ) {
-					wppa_err_alert(__a('Uploaded file is not an image', 'wppa_theme'));
-					return;
-				}
-				if ( $imgsize[2] < 1 || $imgsize[2] > 2 ) {
-					wppa_err_alert(__a('Only gif, jpg and png image files are supported', 'wppa_theme'));
-					return;
-				}
-				switch($imgsize[2]) { 	// mime type
-					case 1: $ext = 'gif'; break;
-					case 2: $ext = 'jpg'; break;
-					case 3: $ext = 'png'; break;
-				}
-				$id = wppa_nextkey(WPPA_PHOTOS);
-				$name = $file['name'];
-				$porder = '0';
-				$desc = wppa_get_post('wppa-user-desc');
-				$mrat = '0';
-				$linkurl = '';
-				$linktitle = '';
-				$linktarget = '_self';
-				$owner = wppa_get_user();
-				$status = ( $wppa_opt['wppa_upload_moderate'] && !current_user_can('wppa_admin') ) ? 'pending' : 'publish';
-				$query = $wpdb->prepare('INSERT INTO `' . WPPA_PHOTOS . '` (`id`, `album`, `ext`, `name`, `p_order`, `description`, `mean_rating`, `linkurl`, `linktitle`, `linktarget`, `timestamp`, `owner`, `status`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)', $id, $alb, $ext, $name, $porder, $desc, $mrat, $linkurl, $linktitle, $linktarget, time(), $owner, $status);
-
-				if ($wpdb->query($query) === false) {
-					wppa_err_alert(__('Could not insert photo into db.', 'wppa_theme'));
-					return;
-				}
-				if ( wppa_make_the_photo_files($file['tmp_name'], $id, $ext) ) {
-					wppa_err_alert(__('Photo successfully uploaded.', 'wppa_theme'));
-				}
+				if ( ! is_array($file['error']) ) $bret = wppa_do_frontend_file_upload($file, $alb);	// this should no longer happen since the name is incl []
 				else {
-					wppa_err_alert(__('Upload failed', 'wppa_theme'));
+					$filecount = count($file['error']);
+					for ($i = '0'; $i < $filecount; $i++) {
+						if ( $bret ) {
+							$f['error'] = $file['error'][$i];
+							$f['tmp_name'] = $file['tmp_name'][$i];
+							$f['name'] = $file['name'][$i];
+							$f['type'] = $file['type'][$i];
+							$f['size'] = $file['size'][$i];
+							$bret = wppa_do_frontend_file_upload($f, $alb);
+						}
+					}
 				}
 			}
+			if ( $bret ) {
+				if ( $filecount == '1' ) wppa_err_alert(__('Photo successfully uploaded.', 'wppa_theme'));
+				else wppa_err_alert(sprintf(__('%s photos successfully uploaded.', 'wppa_theme'), $filecount));
+			}
+			else wppa_err_alert(__('Upload failed', 'wppa_theme'));
 		}		
 	}	
+}
+
+function wppa_do_frontend_file_upload($file, $alb) {
+global $wpdb;
+//global $wppa;
+global $wppa_opt;
+				
+	if ( $file['error'] != '0' ) {
+		wppa_err_alert(__a('Error during upload', 'wppa_theme'));
+		return false;
+	}
+	$imgsize = getimagesize($file['tmp_name']);
+	if ( !is_array($imgsize) ) {
+		wppa_err_alert(__a('Uploaded file is not an image', 'wppa_theme'));
+		return false;
+	}
+	if ( $imgsize[2] < 1 || $imgsize[2] > 2 ) {
+		wppa_err_alert(__a('Only gif, jpg and png image files are supported', 'wppa_theme'));
+		return false;
+	}
+	switch($imgsize[2]) { 	// mime type
+		case 1: $ext = 'gif'; break;
+		case 2: $ext = 'jpg'; break;
+		case 3: $ext = 'png'; break;
+	}
+	$id = wppa_nextkey(WPPA_PHOTOS);
+	$name = $file['name'];
+	$porder = '0';
+	$desc = wppa_get_post('wppa-user-desc');
+	$mrat = '0';
+	$linkurl = '';
+	$linktitle = '';
+	$linktarget = '_self';
+	$owner = wppa_get_user();
+	$status = ( $wppa_opt['wppa_upload_moderate'] && !current_user_can('wppa_admin') ) ? 'pending' : 'publish';
+	$query = $wpdb->prepare('INSERT INTO `' . WPPA_PHOTOS . '` (`id`, `album`, `ext`, `name`, `p_order`, `description`, `mean_rating`, `linkurl`, `linktitle`, `linktarget`, `timestamp`, `owner`, `status`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)', $id, $alb, $ext, $name, $porder, $desc, $mrat, $linkurl, $linktitle, $linktarget, time(), $owner, $status);
+
+	if ($wpdb->query($query) === false) {
+		wppa_err_alert(__('Could not insert photo into db.', 'wppa_theme'));
+		return false;
+	}
+	if ( wppa_make_the_photo_files($file['tmp_name'], $id, $ext) ) {
+		return true;
+//		wppa_err_alert(__('Photo successfully uploaded.', 'wppa_theme'));
+	}
+	else {
+		return false;
+//		wppa_err_alert(__('Upload failed', 'wppa_theme'));
+	}
 }
 
 function wppa_err_alert($msg) {

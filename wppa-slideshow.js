@@ -1,5 +1,5 @@
 ﻿// Slide show variables and functions
-// This is wppa-slideshow.js version 4.4.6
+// This is wppa-slideshow.js version 4.4.8
 //
 // Vars. The vars that have a name that starts with an underscore is an internal var
 // The vars without leading underscore are 'external' and get a value from html
@@ -57,6 +57,8 @@ var wppaAnimationType = 'fadeover';
 var wppaSlidePause = new Array();
 var wppaSlideBlank = new Array();
 var wppaRatingMax = 5;
+var wppaRatingDisplayType = 'graphic';
+var wppaRatingPrec = 2;
 
 // 'Internal' variables
 var _wppaPhotoIds = new Array();
@@ -90,7 +92,7 @@ var _wppaLbTitle = new Array();
 var _wppaStateCount = 0;
 var _wppaDidGoto = new Array();
 // In case we have Lightbox 3 NOT on board
-var myLightbox = null;
+//var myLightbox = null;
 
 jQuery(document).ready(function(){
 	_wppaLog('ready', 0);
@@ -649,7 +651,7 @@ function _wppaNextSlide_5(mocc) {
 	}
 	else {											// No toggle pending
 		// If lightbox 3 is on board, refresh the imagelist. It has just changed, you know!
-		if (myLightbox) myLightbox.updateImageList();
+		if (typeof(myLightbox)!="undefined") myLightbox.updateImageList();
 		if (_wppaSlideShowRuns[mocc]) {				// Wait for next slide
 			setTimeout('_wppaNextSlide('+mocc+', "auto")', _wppaTimeOut[mocc]); 
 		}	
@@ -843,7 +845,7 @@ _wppaFirst[mocc] = false;
 
 	jQuery('#spinner-'+mocc).css('top',top);
 	jQuery('#spinner-'+mocc).css('left',lft);
-	jQuery('#spinner-'+mocc).html('<img id="spinnerimg-'+mocc+'" src="'+wppaImageDirectory+'loading.gif" />');
+	jQuery('#spinner-'+mocc).html('<img id="spinnerimg-'+mocc+'" src="'+wppaImageDirectory+'loading.gif" style="box-shadow: none" />');
 }
 
 function _wppaUnloadSpinner(mocc) {
@@ -929,12 +931,81 @@ function _wppaSetRatingDisplay(mocc) {
 
 	var idx, avg, myr;
 	if (!document.getElementById('wppa-rating-'+mocc)) return; 	// No rating bar
-	// Set Avg rating
+	
 	avg = _wppaPhotoAverages[mocc][_wppaCurrentIndex[mocc]];
-	_wppaSetRd(mocc, avg, '#wppa-avg-');
-	// Set My rating
 	myr = _wppaPhotoMyRating[mocc][_wppaCurrentIndex[mocc]];
-	_wppaSetRd(mocc, myr, '#wppa-rate-');
+	
+	if (wppaRatingDisplayType == 'graphic') {
+		// Set Avg rating
+		_wppaSetRd(mocc, avg, '#wppa-avg-');
+		// Set My rating
+		_wppaSetRd(mocc, myr, '#wppa-rate-');
+	}
+	else { 	// Numeric
+		// Set Avg rating
+		switch (wppaRatingPrec) {
+			case 1:
+				avg = parseInt(avg * 10 + 0.5)/10;
+				break;
+			case 2:
+				avg = parseInt(avg * 100 + 0.5)/100;
+				break;
+			case 3:
+				avg = parseInt(avg * 1000 + 0.5)/1000;
+				break;
+			case 4:
+				avg = parseInt(avg * 10000 + 0.5)/10000;
+				break;
+		}
+		jQuery('#wppa-numrate-avg-'+mocc).html(avg);
+		
+		// Set My rating
+		if (wppaRatingOnce && myr > 0) {
+			jQuery('#wppa-numrate-mine-'+mocc).html(myr);
+		}
+		else {
+			// Format my rating
+			switch (wppaRatingPrec) {
+				case 1:
+					myr = parseInt(myr * 10 + 0.5)/10;
+					break;
+				case 2:
+					myr = parseInt(myr * 100 + 0.5)/100;
+					break;
+				case 3:
+					myr = parseInt(myr * 1000 + 0.5)/1000;
+					break;
+				case 4:
+					myr = parseInt(myr * 10000 + 0.5)/10000;
+					break;
+			}
+
+			/* Selection box
+			var htm = '<select id="wppa-rat-'+mocc+'" onchange="_wppaRateIt('+mocc+', this.value)">';
+				if (myr<1 || parseInt(myr)<myr) htm += '<option value="0">?</option>';
+			var sel = '';
+				for (i=wppaRatingMax; i>0;i--) {
+					if (myr == i) sel = 'selected="selected"'; else sel = '';
+					htm += '<option value="'+i+'" '+sel+' >'+i+'</option>';
+				}
+			htm += '</select>';
+			if (parseInt(myr)<myr) htm += '&nbsp;('+myr+')';
+			/* End selection box */
+			/* Row of numbers */
+			var htm = '';
+			for (i=1;i<=wppaRatingMax;i++) {
+				if (myr == i) {
+					htm += '<span style="cursor:pointer; font-weight:bold;" onclick="_wppaRateIt('+mocc+', '+i+')">&nbsp;'+i+'&nbsp;</span>';
+				}
+				else {
+					if ( myr > (i-1) && myr < i ) htm += '&nbsp;('+myr+')&nbsp;';
+					htm += '<span style="cursor:pointer;" onclick="_wppaRateIt('+mocc+', '+i+')" onmouseover="this.style.fontWeight=\'bold\'" onmouseout="this.style.fontWeight=\'normal\'" >&nbsp;'+i+'&nbsp;</span>';
+				}
+			}
+			/* end row */
+			jQuery('#wppa-numrate-mine-'+mocc).html(htm);
+		}		
+	}
 }
 		
 function _wppaSetRd(mocc, avg, where) {
@@ -985,7 +1056,7 @@ function _wppaLeaveMe(mocc, idx) {
 
 function _wppaRateIt(mocc, value) {
 	_wppaLog('RateIt', mocc);
-
+if (value == 0) return;
 	var photoid = _wppaPhotoIds[mocc][_wppaCurrentIndex[mocc]];
 	var oldval  = _wppaPhotoMyRating[mocc][_wppaCurrentIndex[mocc]];
 	var url 	= _wppaVoteReturnUrl[mocc][_wppaCurrentIndex[mocc]]+'&wppa-rating='+value+'&wppa-rating-id='+photoid;

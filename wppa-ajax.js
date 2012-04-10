@@ -6,7 +6,7 @@
 *
 * Additionally: functions to change the url for addthis during ajax and browse operations
 *
-* Version 4.4.0
+* Version 4.4.8
 *
 */
 
@@ -110,6 +110,7 @@ function wppaDoAjaxRender(mocc, ajaxurl, newurl) {
 		// Setup process the result
 		xmlhttp.onreadystatechange = function() {
 			if ( xmlhttp.readyState == 4 && xmlhttp.status == 200 ) {
+			
 				// Update the wppa container
 				jQuery('#wppa-container-'+mocc).html(xmlhttp.responseText);
 				if ( wppaCanPushState ) {
@@ -119,6 +120,9 @@ function wppaDoAjaxRender(mocc, ajaxurl, newurl) {
 					history.pushState({page: wppaHis, occur: mocc, type: 'html', html: cont}, "---", newurl);
 					if ( wppaFirstOccur == 0 ) wppaFirstOccur = mocc;
 				}
+				
+				// If lightbox 3 is on board, refresh the imagelist. It has just changed, you know!
+				if (typeof(myLightbox)!="undefined") myLightbox.updateImageList();
 			}
 		}
 		// If it is a slideshow: Stop slideshow before pushing it on the stack
@@ -130,6 +134,7 @@ function wppaDoAjaxRender(mocc, ajaxurl, newurl) {
 	else {	// Ajax NOT possible
 		document.location.href = newurl;
 	}
+
 	/* addthis */
 	wppaUpdateAddThisUrl(newurl, '');
 }

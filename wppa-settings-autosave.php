@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 4.4.7
+* Version 4.4.8
 *
 */
 
@@ -531,6 +531,22 @@ global $wppa_api_version;
 						$class = 'wppa_rating_';
 						wppa_setting($slug, '29', $name, $desc, $html, $help, $class);
 						
+						$name = __('Thumbnail count', 'wppa');
+						$desc = __('Number of photos in Thumbnail widget.', 'wppa');
+						$help = esc_js(__('Enter the maximum number of rated photos in the Thumbnail widget.', 'wppa'));
+						$slug = 'wppa_thumbnail_widget_count';
+						$html = wppa_input($slug, '40px', '', __('photos', 'wppa'));
+						wppa_setting($slug, '30', $name, $desc, $html, $help);
+
+						$name = __('Thumbnail widget size', 'wppa');
+						$desc = __('Size of thumbnails in Thumbnail widget.', 'wppa');
+						$help = esc_js(__('Enter the size for the mini photos in the Thumbnail widget.', 'wppa'));
+						$help .= '\n'.esc_js(__('The size applies to the width or height, whatever is the largest.', 'wppa'));
+						$help .= '\n'.esc_js(__('Recommended values: 86 for a two column and 56 for a three column display.', 'wppa'));
+						$slug = 'wppa_thumbnail_widget_size';
+						$html = wppa_input($slug, '40px', '', __('pixels', 'wppa'));
+						wppa_setting($slug, '31', $name, $desc, $html, $help);
+						
 						?>
 					</tbody>
 					<tfoot style="font-weight: bold;" class="wppa_table_1">
@@ -680,6 +696,16 @@ global $wppa_api_version;
 						$onchange = 'wppaCheckRating()';
 						$html = wppa_checkbox($slug, $onchange);
 						wppa_setting($slug, '13', $name, $desc, $html, $help);
+						
+						$name = __('Rating display type', 'wppa');
+						$desc = __('Specify the type of the rating display.', 'wppa');
+						$help = '';
+						$slug = 'wppa_rating_display_type';
+						$options = array(__('Graphic', 'wppa'), __('Numeric', 'wppa'));
+						$values = array('graphic', 'numeric');
+						$html = wppa_select($slug, $options, $values);
+						$class = 'wppa_rating_';
+						wppa_setting($slug, '13a', $name, $desc, $html, $help, $class);
 						
 						$name = __('Thumbnail name', 'wppa');
 						$desc = __('Display Thubnail name.', 'wppa');
@@ -1726,6 +1752,22 @@ global $wppa_api_version;
 						$class = 'wppa_sslb';
 						$html3 = wppa_checkbox($slug3, '', $class);
 						wppa_setting_4($slug1, $slug2, $slug3, $slug4, '8a,c,d', $name, $desc, $html1, '', $html3, $html4, $help);
+						
+						$name = __('ThumbnailWidget', 'wppa');
+						$desc = __('Thumbnail widget photo link.', 'wppa');
+						$help = esc_js(__('Select the type of link the thumbnail photos point to.', 'wppa')); 
+						$slug1 = 'wppa_thumbnail_widget_linktype'; 
+						$slug2 = 'wppa_thumbnail_widget_linkpage';
+						$slug4 = 'wppa_thumbnail_widget_overrule';
+						$slug3 = 'wppa_thumbnail_widget_blank';
+						$onchange = 'wppaCheckThumbnailWLink()';
+						$html1 = wppa_select($slug1, $options_linktype, $values_linktype, $onchange);
+						$class = 'wppa_tnlp';
+						$html2 = wppa_select($slug2, $options_page, $values_page, '', $class);
+						$html4 = wppa_checkbox($slug4);
+						$class = 'wppa_tnlb';
+						$html3 = wppa_checkbox($slug3, '', $class);
+						wppa_setting_4($slug1, $slug2, $slug3, $slug4, '9a,b,c,d', $name, $desc, $html1, $html2, $html3, $html4, $help);
 						
 						?>
 					</tbody>

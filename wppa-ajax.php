@@ -2,7 +2,7 @@
 /* wppa-ajax.php
 *
 * Functions used in ajax requests
-* version 4.4.7
+* version 4.4.8
 *
 */
 add_action('wp_ajax_wppa', 'wppa_ajax_callback');
@@ -43,11 +43,11 @@ global $wppa;
 				exit;																// Nonce check failed
 			}
 			if ( $wppa_opt['wppa_rating_max'] == '5' && ! in_array($rating, array('1', '2', '3', '4', '5')) ) {
-				echo '0||101||'.$errtxt;
+				echo '0||101||'.$errtxt.':'.$rating;
 				exit;																// Value out of range
 			}
 			elseif ( $wppa_opt['wppa_rating_max'] == '10' && ! in_array($rating, array('1', '2', '3', '4', '5', '6', '7', '8', '9', '10')) ) {
-				echo '0||106||'.$errtxt;
+				echo '0||106||'.$errtxt.':'.$rating;
 				exit;																// Value out of range
 			}
 			
