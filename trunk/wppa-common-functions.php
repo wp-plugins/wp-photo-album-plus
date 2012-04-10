@@ -2,11 +2,11 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 4.4.7
+* version 4.4.8
 *
 */
 global $wppa_api_version;
-$wppa_api_version = '4-4-7-000';
+$wppa_api_version = '4-4-8-000';
 // Initialize globals and option settings
 function wppa_initialize_runtime($force = false) {
 global $wppa;
@@ -312,7 +312,15 @@ global $wpdb;
 			'wppa_rating_prec'				=> '',
 			
 			'wppa_doublethevotes'			=> '',
-			'wppa_halvethevotes'			=> ''
+			'wppa_halvethevotes'			=> '',
+			'wppa_rating_display_type'		=> '',
+			'wppa_thumbnail_widget_size'	=> '',
+			'wppa_thumbnail_widget_count'	=> '',
+			'wppa_thumbnail_widget_linkpage'=> '',
+			'wppa_thumbnail_widget_linktype'=> '',
+			'wppa_thumbnail_widget_overrule'		=> '',
+			'wppa_thumbnail_widget_blank'			=> ''
+
 
 
 
@@ -888,6 +896,9 @@ global $wppa_opt;
 		// Process the exif data
 		wppa_import_exif($image_id, $file);
 
+		// Remove tempfile
+		unlink($file);
+
 		// Show progression
 		if (is_admin()) echo('.');
 		
@@ -1397,7 +1408,7 @@ global $wpdb;
 
 	// Get exif data
 	if ( ! function_exists('exif_read_data') ) return false;	// Not supported by the server
-	$exif = exif_read_data($file, 'EXIF');
+	$exif = @ exif_read_data($file, 'EXIF');
 	if ( ! is_array($exif) ) return false;			// No data present
 //var_dump($exif);
 	// There is exif data for this image.

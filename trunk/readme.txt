@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, multisite, network, lightbox, comment, watermark, iptc, exif
-Version: 4.4.7
+Version: 4.4.8
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -131,6 +131,24 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 4.4.8 =
+
+= Bug Fixes =
+
+* The thumbnail popup showed the name twice. Fixed.
+* When using ajax (Table IV-33) and lightbox on thumbnails (Table VI-2a), the thumbnail display required refreshment for lightbox to work properly. Fixed.
+
+= New Features =
+
+* You can now do a multiple selection on photos to upload. Both on the Upload admin screen as on the frontend upload.
+This feature requires a modern browser that supports HTML-5 and will not work on I.E. including I.E.9.
+* You can now set the rating display to Numeric as opposed to Graphic in Table II-13a. Especially usefull when the rating is set to Extended (10) in Table I-28.
+* A new widget has been added: Thumbnail widget. It displays a settable number of thumbnails from one album or from the system. See Table I-30,31; VI-9abcd.
+
+= Other Changes =
+
+* Temp files will be removed after upload.
 
 = 4.4.7 =
 

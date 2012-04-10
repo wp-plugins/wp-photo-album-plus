@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the non admin stuff
-* Version 4.4.6
+* Version 4.4.8
 *
 */
 
@@ -76,7 +76,6 @@ function wppa_add_javascripts() {
 	wp_enqueue_script('wppa-slideshow');
 	wp_enqueue_script('wppa-theme');
 	wp_enqueue_script('wppa-ajax');
-
 }
 	
 /* LOAD WPPA+ THEME */
@@ -110,8 +109,6 @@ global $wppa_opt;
 
 		/* This goes into wppa_slideshow.js */
 		if ($wppa_opt['wppa_animation_type']) echo("\t".'wppaAnimationType = "'.$wppa_opt['wppa_animation_type'].'";'."\n");
-//		if ($wppa_opt['wppa_fadein_after_fadeout']) echo("\t".'wppaFadeInAfterFadeOut = true;'."\n");
-//		else echo("\t".'wppaFadeInAfterFadeOut = false;'."\n");
 		echo("\t".'wppaAnimationSpeed = '.$wppa_opt['wppa_animation_speed'].';'."\n");
 		echo("\t".'wppaImageDirectory = "'.wppa_get_imgdir().'";'."\n");
 		if ($wppa['auto_colwidth']) echo("\t".'wppaAutoColumnWidth = true;'."\n");
@@ -177,6 +174,8 @@ global $wppa_opt;
 		if ( $wppa_opt['wppa_thumb_blank'] ) echo("\t".'wppaThumbTargetBlank = true;'."\n");
 		else echo("\t".'wppaThumbTargetBlank = false;'."\n");
 		echo ("\t".'wppaRatingMax = '.$wppa_opt['wppa_rating_max'].';'."\n");
+		echo ("\t".'wppaRatingDisplayType = "'.$wppa_opt['wppa_rating_display_type'].'";'."\n");
+		echo ("\t".'wppaRatingPrec = '.$wppa_opt['wppa_rating_prec'].';'."\n");
 
 	echo("/* ]]> */\n");
 	echo("</script>\n");
@@ -186,8 +185,6 @@ global $wppa_opt;
 	if ($wppa['debug']) {
 		error_reporting($wppa['debug']);
 		add_action('wp_footer', 'wppa_phpinfo');
-		
-		//	global $wp_filter; if (is_array($wp_filter)) print_r($wp_filter);
 	}
 }
 

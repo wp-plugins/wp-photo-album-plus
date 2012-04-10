@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the slideshow high level functions
-* Version 4.4.6
+* Version 4.4.8
 *
 */
 
@@ -201,46 +201,64 @@ global $wppa_opt;
 	
 	$wppa['out'] .= wppa_nltab('+').'<div id="wppa-rating-'.$wppa['master_occur'].'" class="wppa-box wppa-nav wppa-nav-text" style="'.__wcs('wppa-box').__wcs('wppa-nav').__wcs('wppa-nav-text').$size.' text-align:center;">';
 
-	if ( $wppa_opt['wppa_rating_max'] == '5' ) {
-		$r['1'] = __a('very low', 'wppa_theme');
-		$r['2'] = __a('low', 'wppa_theme');
-		$r['3'] = __a('average', 'wppa_theme');
-		$r['4'] = __a('high', 'wppa_theme');
-		$r['5'] = __a('very high', 'wppa_theme');
-	}
-	else for ( $i = '1'; $i <= '10'; $i++ ) $r[$i] = $i;
+	if ( $wppa_opt['wppa_rating_display_type'] == 'graphic' ) {
+		if ( $wppa_opt['wppa_rating_max'] == '5' ) {
+			$r['1'] = __a('very low', 'wppa_theme');
+			$r['2'] = __a('low', 'wppa_theme');
+			$r['3'] = __a('average', 'wppa_theme');
+			$r['4'] = __a('high', 'wppa_theme');
+			$r['5'] = __a('very high', 'wppa_theme');
+		}
+		else for ( $i = '1'; $i <= '10'; $i++ ) $r[$i] = $i;
 
-	if ($fs != '') $fs += 3; else $fs = '15';	// iconsize = fontsize+3, Default to 15
-	$style = 'style="height:'.$fs.'px; margin:0 0 -3px 0; padding:0;"';
-	$icon = 'star.png';
+		if ($fs != '') $fs += 3; else $fs = '15';	// iconsize = fontsize+3, Default to 15
+		$style = 'style="height:'.$fs.'px; margin:0 0 -3px 0; padding:0; box-shadow:none;"';
+		$icon = 'star.png';
 
-	if ( $wppa_opt['wppa_show_avg_rating'] ) {
-		$wppa['out'] .= __a('Average&nbsp;rating', 'wppa_theme').'&nbsp;';
-		
-		$i = '1';
-		while ($i <= $wppa_opt['wppa_rating_max']) {
-			$wppa['out'] .= wppa_nltab().'<img id="wppa-avg-'.$wppa['master_occur'].'-'.$i.'" class="wppa-avg-'.$wppa['master_occur'].' no-shadow" '.$style.' src="'.wppa_get_imgdir().$icon.'" alt="'.$i.'" title="'.__a('Average&nbsp;rating', 'wppa_theme').': '.$r[$i].'" />';
-			$i++;
+		if ( $wppa_opt['wppa_show_avg_rating'] ) {
+			$wppa['out'] .= __a('Average&nbsp;rating', 'wppa_theme').'&nbsp;';
+			
+			$i = '1';
+			while ($i <= $wppa_opt['wppa_rating_max']) {
+				$wppa['out'] .= wppa_nltab().'<img id="wppa-avg-'.$wppa['master_occur'].'-'.$i.'" class="wppa-avg-'.$wppa['master_occur'].' no-shadow" '.$style.' src="'.wppa_get_imgdir().$icon.'" alt="'.$i.'" title="'.__a('Average&nbsp;rating', 'wppa_theme').': '.$r[$i].'" />';
+				$i++;
+			}
+			
+			$wppa['out'] .= '&nbsp;&nbsp;';
 		}
 		
-		$wppa['out'] .= '&nbsp;&nbsp;';
-	}
-	
-	if (!$wppa_opt['wppa_rating_login'] || is_user_logged_in()) {
-		if ( ! $wppa_opt['wppa_show_avg_rating'] ) $wppa['out'] .= __a('My&nbsp;rating', 'wppa_theme').':&nbsp;';
-		
-		$i = '1';
-		while ($i <= $wppa_opt['wppa_rating_max']) {
-			$wppa['out'] .= wppa_nltab().'<img id="wppa-rate-'.$wppa['master_occur'].'-'.$i.'" class="wppa-rate-'.$wppa['master_occur'].' no-shadow" '.$style.' src="'.wppa_get_imgdir().$icon.'" alt="'.$i.'" title="'.__a('My&nbsp;rating', 'wppa_theme').': '.$r[$i].'" onmouseover="wppaFollowMe('.$wppa['master_occur'].', '.$i.')" onmouseout="wppaLeaveMe('.$wppa['master_occur'].', '.$i.')" onclick="wppaRateIt('.$wppa['master_occur'].', '.$i.')" />';
-			$i++;
+		if (!$wppa_opt['wppa_rating_login'] || is_user_logged_in()) {
+			if ( ! $wppa_opt['wppa_show_avg_rating'] ) $wppa['out'] .= __a('My&nbsp;rating', 'wppa_theme').':&nbsp;';
+			
+			$i = '1';
+			while ($i <= $wppa_opt['wppa_rating_max']) {
+				$wppa['out'] .= wppa_nltab().'<img id="wppa-rate-'.$wppa['master_occur'].'-'.$i.'" class="wppa-rate-'.$wppa['master_occur'].' no-shadow" '.$style.' src="'.wppa_get_imgdir().$icon.'" alt="'.$i.'" title="'.__a('My&nbsp;rating', 'wppa_theme').': '.$r[$i].'" onmouseover="wppaFollowMe('.$wppa['master_occur'].', '.$i.')" onmouseout="wppaLeaveMe('.$wppa['master_occur'].', '.$i.')" onclick="wppaRateIt('.$wppa['master_occur'].', '.$i.')" />';
+				$i++;
+			}
+			
+			if ( $wppa_opt['wppa_show_avg_rating'] ) $wppa['out'] .= '&nbsp;'.__a('My&nbsp;rating', 'wppa_theme');
+		}
+		else {
+			$wppa['out'] .= sprintf(__a('You must <a href="%s">login</a> to vote', 'wppa_theme'), site_url('wp-login.php', 'login'));
+
+		}
+	}	// display_type == graphic
+	elseif ( $wppa_opt['wppa_rating_display_type'] == 'numeric' ) { 	
+		if ( $wppa_opt['wppa_show_avg_rating'] ) {
+			$wppa['out'] .= __a('Average&nbsp;rating', 'wppa_theme').':&nbsp;';
+			$wppa['out'] .= '<span id="wppa-numrate-avg-'.$wppa['master_occur'].'"></span>';
+			$wppa['out'] .= '&nbsp;-&nbsp;';
 		}
 		
-		if ( $wppa_opt['wppa_show_avg_rating'] ) $wppa['out'] .= '&nbsp;'.__a('My&nbsp;rating', 'wppa_theme');
-	}
-	else {
-		$wppa['out'] .= sprintf(__a('You must <a href="%s">login</a> to vote', 'wppa_theme'), site_url('wp-login.php', 'login'));
+		if (!$wppa_opt['wppa_rating_login'] || is_user_logged_in()) {
+			$wppa['out'] .= __a('My&nbsp;rating', 'wppa_theme').':&nbsp;';
+			$wppa['out'] .= '<span id="wppa-numrate-mine-'.$wppa['master_occur'].'"></span>';
+		}
+		else {
+			$wppa['out'] .= sprintf(__a('You must <a href="%s">login</a> to vote', 'wppa_theme'), site_url('wp-login.php', 'login'));
 
-	}
+		}
+	}	// display_type == numeric
 	
 	$wppa['out'] .= wppa_nltab('-').'</div><!-- wppa-rating-'.$wppa['master_occur'].' -->';
 }
