@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, multisite, network, lightbox, comment, watermark, iptc, exif
-Version: 4.4.8
+Version: 4.5.0
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -131,6 +131,31 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 4.5.0 =
+
+= Bug Fixes =
+
+* When the delete checkbox was unchecked for import photos, the files were deleted anyway. 
+This also generated a warning message during import on the attempt to remove a tempfile that was already removed.
+
+= New Features =
+
+* You can link filmstrip images to lightbox containing the full range of photos in the slideshow, as opposed to the standard direct goto feature. Table VI-10.
+* Of all combinations of user roles and wppa+ menuitems the capability can be set to grant or deny. This fully implements the WP role/capability feature. 
+If you changed the standard access configuration it may be required to visit Table VII-A and check/modify the configuration. Administrators will have all accessrights always.
+* There is a switch that enables the check on correctly closing the html tags when entering album and photo descriptions. (Table IX-A2).
+
+= Other Changes =
+
+* Restructured and renumbered Settings tables. Please visit the settings page to get used to the improved lay-out.
+* Removed obsolete settings and actions.
+* Changed the example new photo description.
+* When the requested display size of any photo is not larger than the thumbnail image file, the thumnbnail image file will be used.
+If you have set Table I-C2 to anything different from the default --- same as fullsize --- you may wish to switch this off on Table I-C9.
+This will dramatically improve the page load performance.
+* If the display of comments, iptc and/or exif data is switched off, the code for these boxes is no longer generated.
+This will dramatically improve the server response time in case one or more of these features are switched off.
 
 = 4.4.8 =
 

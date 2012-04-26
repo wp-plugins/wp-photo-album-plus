@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the export functions
-* Version 4.4.5
+* Version 4.5.0
 *
 */
 
@@ -18,7 +18,7 @@ global $wpdb;
 
 	// Do the export if requested
 	if (isset($_POST['wppa-export-submit'])) {
-		wppa_check_admin_referer( '$wppa_nonce', WPPA_NONCE );
+		check_admin_referer( '$wppa_nonce', WPPA_NONCE );
 		wppa_export_photos();
 	} ?>
 	<div class="wrap">
@@ -36,7 +36,7 @@ global $wpdb;
 		<h2><?php _e('Export Photos', 'wppa'); ?></h2><br />
 
 		<form action="<?php echo(wppa_dbg_url(get_admin_url().'admin.php?page=wppa_export_photos')) ?>" method="post">
-			<?php wppa_nonce_field('$wppa_nonce', WPPA_NONCE); ?>
+			<?php wp_nonce_field('$wppa_nonce', WPPA_NONCE); ?>
 			<?php echo(sprintf(__('Photos will be exported to: <b>%s</b>.', 'wppa'), WPPA_DEPOT)) ?>
 			<h2><?php _e('Export photos from album <span style="font-size:12px;">(Including Album information)</span>:', 'wppa'); ?></h2>
 			<?php $albums = $wpdb->get_results($wpdb->prepare( 'SELECT * FROM ' . WPPA_ALBUMS . ' ' . wppa_get_album_order() ), 'ARRAY_A');

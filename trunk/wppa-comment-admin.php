@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all comments
-* Version 4.4.5
+* Version 4.5.0
 *
 */
 
@@ -29,7 +29,7 @@ global $wppa_opt;
 								
 				<form action="<?php echo(wppa_dbg_url(get_admin_url().'admin.php?page=wppa_manage_comments')); if (isset($_GET['compage'])) echo('&compage='.$_GET['compage']) ?>" method="post">
 		
-					<?php wppa_nonce_field('$wppa_nonce', WPPA_NONCE); ?>
+					<?php wp_nonce_field('$wppa_nonce', WPPA_NONCE); ?>
 					<input type="hidden" name="edit_comment" value="<?php echo($comment['id']) ?>" />
 					<table class="form-table albumtable">
 						<tbody>
@@ -82,7 +82,7 @@ global $wppa_opt;
 
 		// Update anything
 		if (isset($_POST['wppa_submit'])) {
-			wppa_check_admin_referer( '$wppa_nonce', WPPA_NONCE );
+			check_admin_referer( '$wppa_nonce', WPPA_NONCE );
 
 			$iret = true;
 			
@@ -169,7 +169,7 @@ global $wppa_opt;
 			</table>
 			<form action="<?php echo(wppa_dbg_url(get_admin_url().'admin.php?page=wppa_manage_comments')) ?>" method="post">
 		
-				<?php wppa_nonce_field('$wppa_nonce', WPPA_NONCE); ?>
+				<?php wp_nonce_field('$wppa_nonce', WPPA_NONCE); ?>
 				<?php $wppa_comadmin_linkpage = get_option('wppa_comadmin_linkpage', '0');
 				_e('Linkpage:', 'wppa'); ?>
 				<select name="wppa_comadmin_linkpage">

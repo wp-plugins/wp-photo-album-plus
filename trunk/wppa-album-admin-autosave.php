@@ -3,13 +3,14 @@
 * Package: wp-photo-album-plus
 *
 * create, edit and delete albums
-* version 4.4.5
+* version 4.5.0
 *
 */
 
 function _wppa_admin() {
 	global $wpdb;
 	global $q_config;
+	global $wppa_opt;
 	
 	echo('<script type="text/javascript">'."\n");
 	echo('/* <![CDATA[ */'."\n");
@@ -91,7 +92,7 @@ function _wppa_admin() {
 								</td>
 							</tr>
 							<!-- Owner -->
-							<?php if (get_option('wppa_owner_only', 'no') == 'yes') { ?>
+							<?php if ( $wppa_opt['wppa_owner_only'] == 'yes' ) { ?>
 								<tr valign="top">
 									<th style="padding-top:0; padding-bottom:0;" scope="row">
 										<label ><?php _e('Owned by:', 'wppa'); ?></label>
@@ -121,7 +122,7 @@ function _wppa_admin() {
 									<input type="text" onchange="wppaAjaxUpdateAlbum(<?php echo $edit_id ?>, 'a_order', this)" value="<?php echo($albuminfo['a_order']) ?>" style="width: 50px;"/>
 								</td>
 								<td style="padding-top:0; padding-bottom:0;">
-									<?php if (get_option('wppa_list_albums_by', '0') != '1' && $albuminfo['a_order'] != '0') { ?>
+									<?php if ( $wppa_opt['wppa_list_albums_by'] != '1' && $albuminfo['a_order'] != '0' ) { ?>
 										<span class="description" style="color:red">
 										<?php _e('Album order # has only effect if you set the album sort order method to <b>Order #</b> in the Photo Albums -> Settings screen.', 'wppa') ?>
 										</span>
@@ -215,7 +216,7 @@ function _wppa_admin() {
 								</td>
 							</tr>
 
-							<?php if (get_option('wppa_rating_on', 'yes') == 'yes') { ?>
+							<?php if ( $wppa_opt['wppa_rating_on'] == 'yes' ) { ?>
 								<tr valign="top">
 									<th style="padding-top:0; padding-bottom:0;" scope="row">
 										<input type="button" class="button-secondary" style="font-weight:bold; color:blue; width:90%" onclick="if (confirm('<?php _e('Are you sure you want to clear the ratings in this album?', 'wppa') ?>')) wppaAjaxUpdateAlbum(<?php echo $edit_id ?>, 'clear_ratings', 0 ) " value="<?php _e('Reset ratings', 'wppa') ?>" /> 
@@ -259,7 +260,7 @@ function _wppa_admin() {
 					<?php _e('Press Delete to continue, and Cancel to go back.', 'wppa'); ?>
 				</p>
 				<form name="wppa-del-form" action="<?php echo(wppa_dbg_url(get_admin_url().'admin.php?page=wppa_admin_menu')) ?>" method="post">
-					<?php wppa_nonce_field('$wppa_nonce', WPPA_NONCE) ?>
+					<?php wp_nonce_field('$wppa_nonce', WPPA_NONCE) ?>
 					<p>
 						<?php _e('What would you like to do with photos currently in the album?', 'wppa'); ?><br />
 						<input type="radio" name="wppa-del-photos" value="delete" checked="checked" /> <?php _e('Delete', 'wppa'); ?><br />
@@ -282,14 +283,14 @@ function _wppa_admin() {
 		
 		// if add form has been submitted
 		if (isset($_POST['wppa-na-submit'])) {
-			wppa_check_admin_referer( '$wppa_nonce', WPPA_NONCE );
+			check_admin_referer( '$wppa_nonce', WPPA_NONCE );
 
 			wppa_add_album();
 		}
 		
 		// if album deleted
 		if (isset($_POST['wppa-del-confirm'])) {
-			wppa_check_admin_referer( '$wppa_nonce', WPPA_NONCE );
+			check_admin_referer( '$wppa_nonce', WPPA_NONCE );
 
 			if ($_POST['wppa-del-photos'] == 'move') {
 				$move = $_POST['wppa-move-album'];
@@ -603,6 +604,7 @@ function wppa_admin_albums() {
 function wppa_album_photos($id) {
 	global $wpdb;
 	global $q_config;
+	global $wppa_opt;
 	
 	$photos = $wpdb->get_results($wpdb->prepare('SELECT * FROM `'.WPPA_PHOTOS.'` WHERE `album` = %s '.wppa_get_photo_order($id, 'norandom'), $id), 'ARRAY_A');
 
@@ -610,20 +612,7 @@ function wppa_album_photos($id) {
 		echo '<p>'.__('No photos yet in this album.', 'wppa').'</p>';
 	} 
 	else { 
-		foreach ($photos as $photo) {
-/*		
-			switch ( $photo['status'] ) {
-				case 'pending':
-					$bgcol = 'background-color: #ffebe8; border-color: #cc0000;';
-					break;
-				case 'featured':
-					$bgcol = 'background-color: #e0ffe0; border-color: #55ee55;';
-					break;
-				default:
-					$bgcol = 'background-color: #ffffe0; border-color: #e6db55;';
-			}
-*/
-		?>
+		foreach ($photos as $photo) { ?>
 
 			<div class="photoitem" id="photoitem-<?php echo $photo['id'] ?>" style="width:100%;<?php echo $bgcol ?>" >
 			
@@ -716,7 +705,7 @@ function wppa_album_photos($id) {
 							<!-- Insert code -->
 							<tr valign="bottom">
 								<th scope="row" style="padding-top:0; padding-bottom:0;">
-									<input type="button" class="button-secondary" style="font-weight:bold; width:90%" onclick="prompt('<?php _e('Insert code for single image in Page or Post:\nYou may change the size if you like.', 'wppa') ?>', '%%wppa%% %%photo=<?php echo($photo['id']); ?>%% %%size=<?php echo(get_option('wppa_fullsize')); ?>%%')" value="<?php _e('Insertion Code', 'wppa'); ?>" />
+									<input type="button" class="button-secondary" style="font-weight:bold; width:90%" onclick="prompt('<?php _e('Insert code for single image in Page or Post:\nYou may change the size if you like.', 'wppa') ?>', '%%wppa%% %%photo=<?php echo($photo['id']); ?>%% %%size=<?php echo $wppa_opt['wppa_fullsize'] ?>%%')" value="<?php _e('Insertion Code', 'wppa'); ?>" />
 								</th>
 							</tr>
 							<!-- Link url -->
@@ -851,104 +840,6 @@ function wppa_add_album() {
         }
 	} 
     else wppa_error_message(__('Album Name cannot be empty.', 'wppa'));
-}
-
-// edit an album 
-function wppa_edit_album() {
-	global $wpdb;
-	global $q_config;
-	
-    $first = TRUE;
-	
-	if (!wppa_qtrans_enabled()) {
-		$name = $_POST['wppa-name'];
-		$desc = $_POST['wppa-desc'];
-	}
-	else {
-		$name = '';
-		$desc = '';
-		foreach ($q_config['enabled_languages'] as $lcode) {
-			$n = $_POST['wppa-name-'.$lcode];
-			$d = $_POST['wppa-desc-'.$lcode];
-			if ($n != '') $name .= '[:'.$lcode.']'.$n;
-			if ($d != '') $desc .= '[:'.$lcode.']'.$d;
-		}
-	}
-	$name = esc_attr($name);
-	$desc = esc_attr($desc);
-
-	if (isset($_POST['wppa-main'])) $main = $_POST['wppa-main'];
-	else $main = '0';
-	
-    $order = (is_numeric($_POST['wppa-order']) ? $_POST['wppa-order'] : 0);
-	
-	$parent = (isset($_POST['wppa-parent']) ? $_POST['wppa-parent'] : 0);
-	if ($parent == -3) $parent = 0;	// selected an unselectable item (IE < 8 ?)
-	
-    $orderphotos = (is_numeric($_POST['wppa-list-photos-by']) ? $_POST['wppa-list-photos-by'] : 0);
-	
-	$linktype = $_POST['cover-linktype'];
-	$link = $_POST['cover-linkpage'];
-	
-	$owner = (isset($_POST['wppa-owner']) ? $_POST['wppa-owner'] : '');
-	
-    // update the photo information
-    if (isset($_POST['photos']))
-	foreach ($_POST['photos'] as $photo) {
-
-		$mean_rating = $photo['mean_rating'];
-		
-
-		if (!wppa_qtrans_enabled()) {
-			$photo_name = $photo['name'];
-			$photo_desc = $photo['description'];
-		}
-		else {
-			$photo_name = '';
-			$photo_desc = '';
-			foreach ($q_config['enabled_languages'] as $lcode) {
-				$n = $photo['name'][$lcode];
-				$d = $photo['description'][$lcode];
-				if ($n != '') $photo_name .= '[:'.$lcode.']'.$n;
-				if ($d != '') $photo_desc .= '[:'.$lcode.']'.$d;
-			}
-		}
-		$photo_name = esc_attr($photo_name);
-		$photo_desc = esc_attr($photo_desc);
-	
-        if (!is_numeric($photo['p_order'])) $photo['p_order'] = 0;
-		
-		$linkurl = $photo['linkurl'];
-		$linktitle = $photo['linktitle'];
-		
-		$query = $wpdb->prepare('UPDATE `' . WPPA_PHOTOS . '` SET `name` = %s, `album` = %s, `description` = %s, `p_order` = %s, `mean_rating` = %s, `linkurl` = %s, `linktitle` = %s WHERE `id` = %s LIMIT 1', $photo_name, $photo['album'], $photo_desc, $photo['p_order'], $mean_rating, $linkurl, $linktitle, $photo['id']);
-		$iret = $wpdb->query($query);
-
-        if ($iret === FALSE) {
-            if ($first) { 
-				wppa_error_message(__('Could not update photo.', 'wppa'));
-				$first = FALSE;
-			}
-        }
-	}
-	
-	// update the album information
-	if (!empty($name)) {
-		if ($owner == '') $query = $wpdb->prepare('UPDATE `' . WPPA_ALBUMS . '` SET `name` = %s, `description` = %s, `main_photo` = %s, `a_order` = %s, `a_parent` = %s, `p_order_by` = %s, `cover_linktype` = %s, `cover_linkpage` = %s WHERE `id` = %s', $name, $desc, $main, $order, $parent, $orderphotos, $linktype, $link, $_GET['edit_id']);
-		else $query = $wpdb->prepare('UPDATE `' . WPPA_ALBUMS . '` SET `name` = %s, `description` = %s, `main_photo` = %s, `a_order` = %s, `a_parent` = %s, `p_order_by` = %s, `cover_linktype` = %s, `cover_linkpage` = %s, `owner` = %s WHERE `id` = %s', $name, $desc, $main, $order, $parent, $orderphotos, $linktype, $link, $owner, $_GET['edit_id']);
-		$iret = $wpdb->query($query);
-		
-        if ($iret === FALSE) {
-			wppa_error_message(__('Album could not be updated.', 'wppa'));
-		}
-		else {
-			wppa_update_message(__('Album information edited.', 'wppa') . ' ' . '<a href="'.wppa_dbg_url(get_admin_url().'admin.php?page=wppa_admin_menu').'">' . __('Back to album management.', 'wppa') . '</a>');
-		}
-				
-		wppa_set_last_album($_GET['edit_id']);
-	} else { 
-		wppa_error_message(__('Album Name cannot be empty.', 'wppa'));
-	}
 }
 
 // delete an album 

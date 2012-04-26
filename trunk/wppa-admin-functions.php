@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 * gp admin functions
-* version 4.4.6
+* version 4.5.0
 *
 * 
 */
@@ -46,7 +46,7 @@ global $wppa;
 
 	if ($wppa['debug']) wppa_dbg_msg('Restoring from: '.$fname);
 	if ( $type == 'skin' ) {
-		$void_these = array('wppa_multisite', 
+		$void_these = array(
 							'wppa_revision', 
 							'wppa_resize_on_upload', 
 							'wppa_allow_debug', 
@@ -58,13 +58,16 @@ global $wppa;
 							'wppa_coverimg_linkpage',
 							'wppa_search_linkpage',
 							'permalink_structure',
-							'wppa_album_admin_autosave',
-							'wppa_settings_autosave'
+							'wppa_rating_max'
 							);
 	}
-	else $void_these = array('wppa_album_admin_autosave',
-							'wppa_settings_autosave'
+	else {
+		$void_these = array(
+							'wppa_revision',
+							'wppa_rating_max'
 							);
+	}
+	
 	// Open file
 	$file = fopen($fname, 'r');
 	// Restore
@@ -119,108 +122,6 @@ function wppa_regenerate_thumbs() {
 	}		
 }
 
-function wppa_set_caps() {
-global $wppa;
-global $wp_roles;
-
-	if (current_user_can('administrator')) {
-		$wp_roles->add_cap('administrator', 'wppa_admin');
-		$wp_roles->add_cap('administrator', 'wppa_sidebar_admin');
-		$wp_roles->add_cap('administrator', 'wppa_upload');
-		/* album admin */
-		$level = get_option('wppa_accesslevel', 'administrator');
-		if ($level == 'subscriber') {
-			$wp_roles->add_cap('subscriber', 'wppa_admin');		
-			$wp_roles->add_cap('contributor', 'wppa_admin');
-			$wp_roles->add_cap('author', 'wppa_admin');
-			$wp_roles->add_cap('editor', 'wppa_admin');	
-		}
-		if ($level == 'contributor') {
-			$wp_roles->remove_cap('subscriber', 'wppa_admin');		
-			$wp_roles->add_cap('contributor', 'wppa_admin');
-			$wp_roles->add_cap('author', 'wppa_admin');
-			$wp_roles->add_cap('editor', 'wppa_admin');	
-		}
-		if ($level == 'author') {
-			$wp_roles->remove_cap('subscriber', 'wppa_admin');		
-			$wp_roles->remove_cap('contributor', 'wppa_admin');
-			$wp_roles->add_cap('author', 'wppa_admin');
-			$wp_roles->add_cap('editor', 'wppa_admin');		
-		}
-		if ($level == 'editor') {
-			$wp_roles->remove_cap('subscriber', 'wppa_admin');		
-			$wp_roles->remove_cap('contributor', 'wppa_admin');
-			$wp_roles->remove_cap('author', 'wppa_admin');
-			$wp_roles->add_cap('editor', 'wppa_admin');		
-		}
-		if ($level == 'administrator') {
-			$wp_roles->remove_cap('subscriber', 'wppa_admin');		
-			$wp_roles->remove_cap('contributor', 'wppa_admin');
-			$wp_roles->remove_cap('author', 'wppa_admin');
-			$wp_roles->remove_cap('editor', 'wppa_admin');		
-		}
-		/* upload photos */
-		$level = get_option('wppa_accesslevel_upload', 'administrator');
-		if ($level == 'subscriber') {
-			$wp_roles->add_cap('subscriber', 'wppa_upload');		
-			$wp_roles->add_cap('contributor', 'wppa_upload');
-			$wp_roles->add_cap('author', 'wppa_upload');
-			$wp_roles->add_cap('editor', 'wppa_upload');	
-		}
-		if ($level == 'contributor') {
-			$wp_roles->remove_cap('subscriber', 'wppa_upload');		
-			$wp_roles->add_cap('contributor', 'wppa_upload');
-			$wp_roles->add_cap('author', 'wppa_upload');
-			$wp_roles->add_cap('editor', 'wppa_upload');	
-		}
-		if ($level == 'author') {
-			$wp_roles->remove_cap('subscriber', 'wppa_upload');		
-			$wp_roles->remove_cap('contributor', 'wppa_upload');
-			$wp_roles->add_cap('author', 'wppa_upload');
-			$wp_roles->add_cap('editor', 'wppa_upload');		
-		}
-		if ($level == 'editor') {
-			$wp_roles->remove_cap('subscriber', 'wppa_upload');		
-			$wp_roles->remove_cap('contributor', 'wppa_upload');
-			$wp_roles->remove_cap('author', 'wppa_upload');
-			$wp_roles->add_cap('editor', 'wppa_upload');		
-		}
-		if ($level == 'administrator') {
-			$wp_roles->remove_cap('subscriber', 'wppa_upload');		
-			$wp_roles->remove_cap('contributor', 'wppa_upload');
-			$wp_roles->remove_cap('author', 'wppa_upload');
-			$wp_roles->remove_cap('editor', 'wppa_upload');		
-		}
-		/* sidebar widget admin */
-		$level = get_option('wppa_accesslevel_sidebar', 'administrator');
-		if ($level == 'contributor') {
-			$wp_roles->remove_cap('subscriber', 'wppa_sidebar_admin');		
-			$wp_roles->add_cap('contributor', 'wppa_sidebar_admin');
-			$wp_roles->add_cap('author', 'wppa_sidebar_admin');
-			$wp_roles->add_cap('editor', 'wppa_sidebar_admin');	
-		}
-		if ($level == 'author') {
-			$wp_roles->remove_cap('subscriber', 'wppa_sidebar_admin');		
-			$wp_roles->remove_cap('contributor', 'wppa_sidebar_admin');
-			$wp_roles->add_cap('author', 'wppa_sidebar_admin');
-			$wp_roles->add_cap('editor', 'wppa_sidebar_admin');		
-		}
-		if ($level == 'editor') {
-			$wp_roles->remove_cap('subscriber', 'wppa_sidebar_admin');		
-			$wp_roles->remove_cap('contributor', 'wppa_sidebar_admin');
-			$wp_roles->remove_cap('author', 'wppa_sidebar_admin');
-			$wp_roles->add_cap('editor', 'wppa_sidebar_admin');		
-		}
-		if ($level == 'administrator') {
-			$wp_roles->remove_cap('subscriber', 'wppa_sidebar_admin');		
-			$wp_roles->remove_cap('contributor', 'wppa_sidebar_admin');
-			$wp_roles->remove_cap('author', 'wppa_sidebar_admin');
-			$wp_roles->remove_cap('editor', 'wppa_sidebar_admin');		
-		}
-	}
-	else $wppa['error'] = true;
-}
-
 // set last album 
 function wppa_set_last_album($id = '') {
     global $albumid;
@@ -253,6 +154,7 @@ function wppa_get_last_album() {
 
 // display order options
 function wppa_order_options($order, $nil, $rat = '', $timestamp = '') {
+global $wppa_opt;
     if ($nil != '') { 
 ?>
     <option value="0"<?php if ($order == "" || $order == "0") echo (' selected="selected"'); ?>><?php echo($nil); ?></option>
@@ -265,7 +167,7 @@ function wppa_order_options($order, $nil, $rat = '', $timestamp = '') {
 <?php
 	if ($rat != '') {
 ?>
-	<option value="4"<?php if ($order == "4") echo(' selected="selected"'); if (get_option('wppa_rating_on', 'yes') == 'no') echo ('disabled="disabled"') ?>><?php echo($rat); ?></option>
+	<option value="4"<?php if ($order == "4") echo(' selected="selected"'); if ( ! $wppa_opt['wppa_rating_on'] ) echo ('disabled="disabled"') ?>><?php echo($rat); ?></option>
 <?php
 	}
 	if ($timestamp != '') {
@@ -336,66 +238,6 @@ function wppa_user_select($select = '') {
 		$result .= '<option value="'.$usr['user_login'].'" '.$sel.'>'.$usr['display_name'].'</option>';
 	}	
 	echo ($result);
-}
-
-function wppa_chmod($chmod) {
-	_wppa_chmod_(WPPA_UPLOAD_PATH, $chmod);
-	_wppa_chmod_(WPPA_UPLOAD_PATH.'/thumbs', $chmod);
-	_wppa_chmod_(WPPA_UPLOAD_PATH.'/watermarks', $chmod);
-	if ( is_multisite() ) {
-		_wppa_chmod_(WPPA_DEPOT_PATH, $chmod);	// Myself only
-	}
-	else {
-		$users = wppa_get_users();
-		if ($users) foreach($users as $user) {
-			_wppa_chmod_(ABSPATH.'wp-content/wppa-depot/'.$user['user_login'], $chmod);
-		}
-	}
-}
-
-function _wppa_chmod_($file, $chmod) {
-global $wppa;
-
-	if ($chmod == '0') return;	// Unchange
-	switch ($chmod) {
-		case '750':
-			if (is_dir($file)) _chmod_($file, 0750);
-			if (is_file($file)) _chmod_($file, 0640);
-			break;
-		case '755':
-			if (is_dir($file)) _chmod_($file, 0755);
-			if (is_file($file)) _chmod_($file, 0644);
-			break;
-		case '775':
-			if (is_dir($file)) _chmod_($file, 0775);
-			if (is_file($file)) _chmod_($file, 0664);
-			break;
-		case '777':
-			if (is_dir($file)) _chmod_($file, 0777);
-			if (is_file($file)) _chmod_($file, 0666);
-			break;
-		default:
-		if ( $wppa['ajax'] ) {
-			$wppa['out'] .= __('Unsupported value in _wppa_chmod_ :', 'wppa').' '.$chmod;
-			$wppa['error'] = '2';
-		}
-		else  wppa_error_message(__('Unsupported value in _wppa_chmod_ :', 'wppa').' '.$chmod);
-	}
-}
-function _chmod_($file, $rights) {
-global $wppa;
-
-	if ( ! chmod($file, $rights) ) {
-		if ( $wppa['ajax'] ) {
-			$wppa['out'] .= sprintf(__('Unable to set the rights on %s to %o', 'wppa'), $file, $rights);
-			$wppa['error'] = '3';
-		}
-		else wppa_error_message(sprintf(__('Unable to set the rights on %s to %o', 'wppa'), $file, $rights));
-	}
-	else {
-		if ( $wppa['ajax'] ) $wppa['out'] .= sprintf(__('Rights %o set on %s', 'wppa'), $rights, $file ).'. ';
-		else wppa_ok_message(sprintf(__('Rights %o set on %s', 'wppa'), $rights, $file ));
-	}
 }
 
 function wppa_copy_photo($photoid, $albumto) {
@@ -794,14 +636,4 @@ global $wpdb;
 		}
 		return false;
 	}
-}
-
-
-
-/* FORM SECURITY */
-function wppa_nonce_field( $action = -1, $name = 'wppa-update-check' ) { 
-	return wp_nonce_field( $action, $name ); 
-}
-function wppa_check_admin_referer( $arg1, $arg2 ) {
-	check_admin_referer( $arg1, $arg2 );
 }

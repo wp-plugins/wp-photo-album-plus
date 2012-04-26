@@ -2,7 +2,7 @@
 /* wppa-ajax.php
 *
 * Functions used in ajax requests
-* version 4.4.8
+* version 4.5.0
 *
 */
 add_action('wp_ajax_wppa', 'wppa_ajax_callback');
@@ -110,7 +110,7 @@ global $wppa;
 				exit;
 			}
 
-			// Find Olld avgrat
+			// Find Old avgrat
 			$oldavgrat = $wpdb->get_var($wpdb->prepare('SELECT `mean_rating` FROM '.WPPA_PHOTOS.' WHERE `id` = %s', $photo));
 			if ($oldavgrat === false) {
 				echo '0||108||'.$wartxt;
@@ -217,6 +217,10 @@ global $wppa;
 					break;
 				case 'description':
 					$itemname = __('Description', 'wppa');
+					if ( $wppa_opt['wppa_check_balance'] == 'yes' && balanceTags( $value, true ) != $value ) {
+						echo '||3||'.__('Unbalanced tags in album description!', 'wppa');
+						exit;
+					}
 					break;
 				case 'a_order':
 					$itemname = __('Album order #', 'wppa');
@@ -319,6 +323,10 @@ global $wppa;
 							break;
 						case 'description':
 							$itemname = __('Description', 'wppa');
+							if ( $wppa_opt['wppa_check_balance'] == 'yes' && balanceTags( $value, true ) != $value ) {
+								echo '||3||'.__('Unbalanced tags in photo description!', 'wppa');
+								exit;
+							}
 							break;
 						case 'p_order':
 							$itemname = __('Photo order #', 'wppa');
@@ -436,6 +444,25 @@ global $wppa;
 				echo $output;			
 				exit;
 			}
+			elseif ( substr($option, 0, 5) == 'caps-' ) {	// Is capability setting
+				global $wp_roles;
+				//$R = new WP_Roles;
+				$setting = explode('-', $option);
+				if ( $value == 'yes' ) {
+					$wp_roles->add_cap($setting[2], $setting[1]);
+					echo '||0||'.__('Capability granted', 'wppa').'||';
+					exit;
+				}
+				elseif ( $value == 'no' ) {
+					$wp_roles->remove_cap($setting[2], $setting[1]);
+					echo '||0||'.__('Capability withdrawn', 'wppa').'||';
+					exit;
+				}
+				else {
+					echo '||1||Invalid value: '.$value.'||';
+					exit;
+				}
+			}
 			else switch ($option) {
 					
 				case 'wppa_colwidth': //	 ??	  fixed   low	high	title
@@ -490,10 +517,10 @@ global $wppa;
 					wppa_ajax_check_range($value, '', '0', false, __('Border radius', 'wppa'));
 					break;
 				case 'wppa_popupsize':				
-					$floor = get_option('wppa_thumbsize');
-					$temp = get_option('wppa_smallsize');
+					$floor = $wppa_opt['wppa_thumbsize'];
+					$temp  = $wppa_opt['wppa_smallsize'];
 					if ($temp > $floor) $floor = $temp;
-					wppa_ajax_check_range($value, false, $floor, get_option('wppa_fullsize'), __('Popup size', 'wppa'));
+					wppa_ajax_check_range($value, false, $floor, $wppa_opt['wppa_fullsize'], __('Popup size', 'wppa'));
 					break;
 				case 'wppa_fullimage_border_width':
 					wppa_ajax_check_range($value, '', '0', false, __('Fullsize border width', 'wppa'));
@@ -509,9 +536,6 @@ global $wppa;
 					break;
 				case 'wppa_rerate':
 					if ( wppa_recalculate_ratings() ) $title = __('Ratings recalculated', 'wppa');
-					break;
-				case 'wppa_lightbox_overlayopacity':
-					wppa_ajax_check_range($value, false, '0', '100', __('Lightbox opacity.', 'wppa'));
 					break;
 				case 'wppa_thumb_opacity':
 					wppa_ajax_check_range($value, false, '0', '100', __('Opacity.', 'wppa'));
@@ -530,55 +554,6 @@ global $wppa;
 					break;
 				case 'wppa_watermark_opacity':
 					wppa_ajax_check_range($value, false, '0', '100', __('Watermark opacity', 'wppa'));
-					break;
-
-		
-			
-				case 'wppa_chmod':
-					if ( $value ) {						// CHMOD value given
-						wppa_chmod($value);
-						$wppa['error'] = $wppa['error'];
-						if ( $wppa['error'] ) {
-							$title = __('CHMOD failed', 'wppa');
-							$alert = $wppa['out'];
-						}
-						else $title = $wppa['out'];
-					}
-					else {								// Zero value
-						$title = __('CHMOD unchanged', 'wppa');
-					}
-					break;
-					
-				case 'wppa_charset':
-					if ($wpdb->query($wpdb->prepare( "ALTER TABLE " . WPPA_ALBUMS . " MODIFY name text CHARACTER SET utf8")) === false) $wppa['error'] = true;
-					if ($wpdb->query($wpdb->prepare( "ALTER TABLE " . WPPA_PHOTOS . " MODIFY name text CHARACTER SET utf8")) === false) $wppa['error'] = true;
-					if ($wpdb->query($wpdb->prepare( "ALTER TABLE " . WPPA_ALBUMS . " MODIFY description text CHARACTER SET utf8")) === false) $wppa['error'] = true;
-					if ($wpdb->query($wpdb->prepare( "ALTER TABLE " . WPPA_PHOTOS . " MODIFY description longtext CHARACTER SET utf8")) === false) $wppa['error'] = true;
-					if ($wpdb->query($wpdb->prepare( "ALTER TABLE " . WPPA_PHOTOS . " MODIFY linktitle text CHARACTER SET utf8")) === false) $wppa['error'] = true;
-					if ($wpdb->query($wpdb->prepare( "ALTER TABLE " . WPPA_COMMENTS . " MODIFY comment text CHARACTER SET utf8")) === false) $wppa['error'] = true;
-					if ($wpdb->query($wpdb->prepare( "ALTER TABLE " . WPPA_IPTC . " MODIFY description text CHARACTER SET utf8")) === false) $wppa['error'] = true;
-					if ($wpdb->query($wpdb->prepare( "ALTER TABLE " . WPPA_EXIF . " MODIFY description text CHARACTER SET utf8")) === false) $wppa['error'] = true;
-					if ($wppa['error']) {
-						$alert = __('Error converting to UTF_8', 'wppa');
-					}
-					else {
-						$title = __('Conversion to UTF_8 completed', 'wppa');
-					}
-					break;
-
-					
-				case 'wppa_accesslevel':
-				case 'wppa_accesslevel_upload':
-				case 'wppa_accesslevel_sidebar':
-					if (get_option('wppa_set_access_by', 'me') == 'me') {
-						update_option($option, $value);	// set_caps needs to know
-						wppa_set_caps();
-						$title = __('Rights set', 'wppa');
-					}
-					else {
-						$alert = __('Changes in accesslevels will not be made. It is set to be done by an other program.', 'wppa');
-						$wppa['error'] = '1';
-					}
 					break;
 					
 				case 'wppa_rating_clear':
@@ -659,28 +634,19 @@ global $wppa;
 					$wppa['error'] = '0';
 					$alert = '';
 					break;
-case 'wppa_halvethevotes':
-						$rats = $wpdb->get_results($wpdb->prepare('SELECT `id`, `value` FROM `'.WPPA_RATING.'`'), 'ARRAY_A');
-						if ( $rats ) {
-							foreach ( $rats as $rat ) {
-								$wpdb->query($wpdb->prepare('UPDATE `'.WPPA_RATING.'` SET `value` = %s WHERE `id` = %s', $rat['value']/2, $rat['id']));
-							}
-						}
-					wppa_recalculate_ratings();
-					$wppa['error'] = '0';
-					$alert = 'Done halving';
-break;					
-case 'wppa_doublethevotes':
-						$rats = $wpdb->get_results($wpdb->prepare('SELECT `id`, `value` FROM `'.WPPA_RATING.'`'), 'ARRAY_A');
-						if ( $rats ) {
-							foreach ( $rats as $rat ) {
-								$wpdb->query($wpdb->prepare('UPDATE `'.WPPA_RATING.'` SET `value` = %s WHERE `id` = %s', $rat['value']*2, $rat['id']));
-							}
-						}
-					wppa_recalculate_ratings();
-					$wppa['error'] = '0';
-					$alert = 'Done doubling';
-break;					
+					
+				case 'wppa_newphoto_description':
+					if ( $wppa_opt['wppa_check_balance'] == 'yes' && balanceTags( $value, true ) != $value ) {
+						$alert = __('Unbalanced tags in photo description!', 'wppa');
+						$wppa['error'] = '1';
+					}
+					else {
+						update_option($option, $value);
+						$wppa['error'] = '0';
+						$alert = '';
+					}
+					break;
+				
 				default:
 					// Do the update only
 					update_option($option, $value);
@@ -739,7 +705,7 @@ global $wppa;
 	if ( !$wppa ['error'] ) return;		// Still no error, ok
 	
 	// Compose error message
-	if ($low !== false && $hig === false) {	// Only Minimum given
+	if ($low !== false && $high === false) {	// Only Minimum given
 		$wppa['out'] .= __('Please supply a numeric value greater than or equal to', 'wppa') . ' ' . $low . ' ' . __('for', 'wppa') . ' ' . $title;
 		if ( $fixed !== false ) {
 			if ( $fixed ) $wppa['out'] .= '. ' . __('You may also enter:', 'wppa') . ' ' . $fixed;

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display a slideshow in the sidebar
-* Version 4.3.3
+* Version 4.5.0
 */
 
 /**
@@ -63,7 +63,7 @@ class SlideshowWidget extends WP_Widget {
 		
 		if (is_numeric($album)) {
 			echo $before_widget . $before_title . $title . $after_title;
-				if ($linkurl != '' && get_option('wppa_slideonly_widget_linktype') == 'widget') {
+				if ( $linkurl != '' && $wppa_opt['wppa_slideonly_widget_linktype'] == 'widget' ) {
 					$wppa['in_widget_linkurl'] = $linkurl;
 					$wppa['in_widget_linktitle'] = wppa_qtrans($linktitle);
 				}

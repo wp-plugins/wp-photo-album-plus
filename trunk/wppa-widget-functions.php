@@ -2,7 +2,7 @@
 /* wppa_widgetfunctions.php
 /* Package: wp-photo-album-plus
 /*
-/* Version 4.4.0
+/* Version 4.5.0
 /*
 */
 
@@ -95,7 +95,7 @@ function wppa_walbum_select($sel = '') {
 	elseif ($sel == 'topten') $type = 6;	// Topten
 	else $type = 0;							// Nothing yet
     
-    $result = '<option value="" >'.__('- select album(s) -', 'wppa').'</option>';
+    $result = '<option value="" >'.__('- select (another) album or a set -', 'wppa').'</option>';
     
 	foreach ($albums as $album) {
 		switch ($type) {
@@ -145,17 +145,13 @@ function wppa_walbum_sanitize($walbum) {
 	if (strstr($result, 'all-sep')) $result = 'all-sep';
 	elseif (strstr($result, 'all')) $result = 'all';
 	elseif (strstr($result, 'sep')) $result = 'sep';
+	elseif (strstr($result, 'topten')) $result = 'topten';
 	elseif (strstr($result, 'clr')) $result = '';
 	else {
-		while (substr_count($result, ',,')) {
-			$pos = strpos($result, ',,');
-			$res = substr_replace($result, ',', $pos, 2);
-			$result = $res;
-		}
-		// remove leading comma
-		if (substr($result, 0, 1) == ',') $result = substr($result, 1);
-		// remove trailing comma
-		if (substr($result, strlen($result) - 1, 1) == ',') $result = substr($result, 0, strlen($result) - 1);
+		// Change multiple commas to one
+		while (substr_count($result, ',,')) $result = str_replace(',,', ',', $result);
+		// remove leading and trailing commas
+		$result = trim($result, ',');
 	}
 //echo('In:'.$walbum.'Out:'.$result);	
 	return $result;
@@ -164,16 +160,18 @@ function wppa_walbum_sanitize($walbum) {
 // get the photo of the day
 function wppa_get_potd() {
 global $wpdb;
+global $wppa_opt;
+
 	$image = '';
-		switch (get_option('wppa_widget_method', '1')) {
+		switch ($wppa_opt['wppa_widget_method']) {
 			case '1':	// Fixed photo
-				$id = get_option('wppa_widget_photo', '');
+				$id = $wppa_opt['wppa_widget_photo'];
 				if ($id != '') {
 					$image = $wpdb->get_row($wpdb->prepare('SELECT * FROM `' . WPPA_PHOTOS . '` WHERE `id` = %s LIMIT 0,1', $id), 'ARRAY_A');
 				}
 				break;
 			case '2':	// Random
-				$album = get_option('wppa_widget_album', '');
+				$album = $wppa_opt['wppa_widget_album'];
 				if ($album == 'topten') {
 					$images = wppa_get_widgetphotos($album);
 					if ( count($images) > 1 && $option != '' ) {	// Select a random first from the current selection
@@ -187,7 +185,7 @@ global $wpdb;
 				}
 				break;
 			case '3':	// Last upload
-				$album = get_option('wppa_widget_album', '');
+				$album = $wppa_opt['wppa_widget_album'];
 				if ($album == 'topten') {
 					$images = wppa_get_widgetphotos($album);
 					if ($images) {
@@ -207,9 +205,9 @@ global $wpdb;
 				}
 				break;
 			case '4':	// Change every
-				$album = get_option('wppa_widget_album', '');
+				$album = $wppa_opt['wppa_widget_album'];
 				if ($album != '') {
-					$per = get_option('wppa_widget_period', '168');
+					$per = $wppa_opt['wppa_widget_period'];
 					$photos = wppa_get_widgetphotos($album);
 					if ($per == '0') {
 						if ($photos) {

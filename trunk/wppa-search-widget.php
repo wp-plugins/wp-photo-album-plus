@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the search widget
-* Version 4.1.0
+* Version 4.5.0
 *
 */
 
@@ -19,15 +19,16 @@ class SearchPhotos extends WP_Widget {
     function widget($args, $instance) {		
 		global $widget_content;
 		global $wppa;
+		global $wppa_opt;
 
         extract( $args );
         
- 		$widget_title = apply_filters('widget_title', empty( $instance['title'] ) ? get_option('wppa_searchwidgettitle', __('Search photos', 'wppa')) : $instance['title']);
+ 		$widget_title = apply_filters('widget_title', empty( $instance['title'] ) ? $wppa_opt['wppa_searchwidgettitle'] : $instance['title']);
 
 		// Display the widget
 		echo $before_widget . $before_title . $widget_title . $after_title;
 		
-		$page = get_option('wppa_search_linkpage', '0');
+		$page = $wppa_opt['wppa_search_linkpage'];
 		if ($page == '0') {
 			_e('Warning. No page defined for search results!', 'wppa');
 		}
