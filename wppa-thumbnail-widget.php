@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display thumbnail photos
-* Version 4.4.8
+* Version 4.5.0
 */
 
 class ThumbnailWidget extends WP_Widget {
@@ -31,8 +31,8 @@ class ThumbnailWidget extends WP_Widget {
 													'name' => 'no'
 													) );
 
-		$page = get_option('wppa_thumbnail_widget_linkpage', '0');
-		$max = get_option('wppa_thumbnail_widget_count', '10');
+		$page = $wppa_opt['wppa_thumbnail_widget_linkpage'];
+		$max  = $wppa_opt['wppa_thumbnail_widget_count'];
 		
 		$album = $instance['album'];
 		$name = $instance['name'];
@@ -44,7 +44,7 @@ class ThumbnailWidget extends WP_Widget {
 			$thumbs = $wpdb->get_results($wpdb->prepare( 'SELECT * FROM '.WPPA_PHOTOS.' WHERE `status` <> %s '.wppa_get_photo_order('0').' LIMIT '.$max, 'pending' ), 'ARRAY_A' );
 		}
 		$widget_content = "\n".'<!-- WPPA+ thumbnail Widget start -->';
-		$maxw = get_option('wppa_thumbnail_widget_size', '86');
+		$maxw = $wppa_opt['wppa_thumbnail_widget_size'];
 		$maxh = $maxw;
 		if ( $name == 'yes' ) $maxh += 18;
 		
@@ -53,13 +53,14 @@ class ThumbnailWidget extends WP_Widget {
 			// Make the HTML for current picture
 			$widget_content .= "\n".'<div class="wppa-widget" style="width:'.$maxw.'px; height:'.$maxh.'px; margin:4px; display:inline; text-align:center; float:left;">'; 
 			if ($image) {
-				$imgurl = WPPA_UPLOAD_URL . '/' . $image['id'] . '.' . $image['ext'];
 				$link       = wppa_get_imglnk_a('tnwidget', $image['id']);
 				$file       = wppa_get_thumb_path_by_id($image['id']);
 				$imgstyle_a = wppa_get_imgstyle_a($file, $maxw, 'center', 'twthumb');
 				$imgstyle   = $imgstyle_a['style'];
 				$width      = $imgstyle_a['width'];
 				$height     = $imgstyle_a['height'];
+				$usethumb	= wppa_use_thumb_file($image['id'], $width, $height) ? '/thumbs' : '';
+				$imgurl 	= WPPA_UPLOAD_URL . $usethumb . '/' . $image['id'] . '.' . $image['ext'];
 
 				$imgevents = wppa_get_imgevents('thumb', $image['id'], true);
 
@@ -110,14 +111,15 @@ class ThumbnailWidget extends WP_Widget {
     }
 
     /** @see WP_Widget::form */
-    function form($instance) {				
+    function form($instance) {	
+		global $wppa_opt;
 		//Defaults
 		$instance = wp_parse_args( (array) $instance, array( 
 															'sortby' => 'post_title', 
 															'title' => '', 
 															'album' => '0',
 															'name' => 'no') );
- 		$widget_title = apply_filters('widget_title', empty( $instance['title'] ) ? get_option('wppa_thumbnailwidgettitle', __('Thumbnail Photos', 'wppa')) : $instance['title']);
+ 		$widget_title = apply_filters('widget_title', empty( $instance['title'] ) ? $wppa_opt['wppa_thumbnailwidgettitle'] : $instance['title']);
 
 		$album = $instance['album'];
 		$name = $instance['name'];

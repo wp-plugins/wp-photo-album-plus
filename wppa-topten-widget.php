@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the top rated photos
-* Version 4.4.4
+* Version 4.5.0
 */
 
 class TopTenWidget extends WP_Widget {
@@ -16,7 +16,6 @@ class TopTenWidget extends WP_Widget {
 
 	/** @see WP_Widget::widget */
     function widget($args, $instance) {		
-	//	global $widget_content;
 		global $wpdb;
 		global $wppa_opt;
 		global $wppa;
@@ -27,8 +26,8 @@ class TopTenWidget extends WP_Widget {
 
 		$instance = wp_parse_args( (array) $instance, array( 'title' => '', 'album' => '' ) );
 
-		$page = get_option('wppa_topten_widget_linkpage', '0');
-		$max = get_option('wppa_topten_count', '10');
+		$page = $wppa_opt['wppa_topten_widget_linkpage'];
+		$max  = $wppa_opt['wppa_topten_count'];
 		
 		$album = $instance['album'];
 		
@@ -39,14 +38,13 @@ class TopTenWidget extends WP_Widget {
 			$thumbs = $wpdb->get_results($wpdb->prepare( 'SELECT * FROM '.WPPA_PHOTOS.' WHERE mean_rating > 0 ORDER BY mean_rating DESC LIMIT '.$max ), 'ARRAY_A' );
 		}
 		$widget_content = "\n".'<!-- WPPA+ TopTen Widget start -->';
-		$maxw = get_option('wppa_topten_size', '86');
+		$maxw = $wppa_opt['wppa_topten_size'];
 		$maxh = $maxw + 18;
 		if ($thumbs) foreach ($thumbs as $image) {
 			
 			// Make the HTML for current picture
 			$widget_content .= "\n".'<div class="wppa-widget" style="width:'.$maxw.'px; height:'.$maxh.'px; margin:4px; display:inline; text-align:center; float:left;">'; 
 			if ($image) {
-				$imgurl = WPPA_UPLOAD_URL . '/' . $image['id'] . '.' . $image['ext'];
 				$no_album = !$album;
 				if ($no_album) $tit = __a('View the top rated photos', 'wppa_theme'); else $tit = esc_attr(wppa_qtrans(stripslashes($image['description'])));
 				$link       = wppa_get_imglnk_a('topten', $image['id'], '', $tit, '', $no_album);
@@ -55,6 +53,8 @@ class TopTenWidget extends WP_Widget {
 				$imgstyle   = $imgstyle_a['style'];
 				$width      = $imgstyle_a['width'];
 				$height     = $imgstyle_a['height'];
+				$usethumb	= wppa_use_thumb_file($image['id'], $width, $height) ? '/thumbs' : '';
+				$imgurl 	= WPPA_UPLOAD_URL . $usethumb . '/' . $image['id'] . '.' . $image['ext'];
 
 				$imgevents = wppa_get_imgevents('thumb', $image['id'], true);
 
@@ -83,8 +83,9 @@ class TopTenWidget extends WP_Widget {
 			else {	// No image
 				$widget_content .= __a('Photo not found.', 'wppa_theme');
 			}
-			$widget_content .= "\n\t".'<span style="font-size:9px;">'.wppa_get_rating_by_id($image['id']).'</span>';
-			$widget_content .= "\n".'</div>';
+			$widget_content .= "\n\t".'<span style="font-size:9px;">'.wppa_get_rating_by_id($image['id']);
+				if ( $wppa_opt['wppa_show_rating_count'] ) $widget_content .= ' ('.wppa_get_rating_count_by_id($image['id']).')';
+			$widget_content .= '</span>'."\n".'</div>';
 		}	
 		else $widget_content .= 'There are no rated photos (yet).';
 		
@@ -103,14 +104,17 @@ class TopTenWidget extends WP_Widget {
     }
 
     /** @see WP_Widget::form */
-    function form($instance) {				
+    function form($instance) {	
+		global $wppa_opt;
 		//Defaults
 		$instance = wp_parse_args( (array) $instance, array( 'sortby' => 'post_title', 'title' => '', 'album' => '0') );
- 		$widget_title = apply_filters('widget_title', empty( $instance['title'] ) ? get_option('wppa_toptenwidgettitle', __('Top Ten Photos', 'wppa')) : $instance['title']);
+ 		$widget_title = apply_filters('widget_title', empty( $instance['title'] ) ? $wppa_opt['wppa_toptenwidgettitle'] : $instance['title']);
 
 		$album = $instance['album'];
 ?>
-		<p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:', 'wppa'); ?></label> <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $widget_title; ?>" /></p>
+		<p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:', 'wppa'); ?></label> 
+			<input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $widget_title; ?>" />
+		</p>
 		<p><label for="<?php echo $this->get_field_id('album'); ?>"><?php _e('Album:', 'wppa'); ?></label> 
 			<select class="widefat" id="<?php echo $this->get_field_id('album'); ?>" name="<?php echo $this->get_field_name('album'); ?>" >
 

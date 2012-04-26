@@ -46,7 +46,7 @@ wppa_container('open');																// Open container
 		
 		if ($thumbs) {
 			$counter_thumbs = '0';
-			if (get_option('wppa_thumbtype', 'default') == 'ascovers') {			// Do the thumbs As covers
+			if ( $wppa_opt['wppa_thumbtype'] == 'ascovers' ) {						// Do the thumbs As covers
 				wppa_thumb_list('open');											// Open Thumblist sub-container
 					foreach ($thumbs as $tt) :  global $thumb; $thumb = $tt; 		// Loop the Thumbs
 						$counter_thumbs++;

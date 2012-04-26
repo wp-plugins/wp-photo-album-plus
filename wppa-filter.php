@@ -3,14 +3,14 @@
 * Package: wp-photo-album-plus
 *
 * get the albums via filter
-* version 4.3.9
+* version 4.5.0
 *
 */
 
 add_action('init', 'wppa_do_filter');
 
 function wppa_do_filter() {
-	add_filter('the_content', 'wppa_albums_filter', get_option('wppa_filter_priority', '10'));
+	add_filter('the_content', 'wppa_albums_filter', get_option('wppa_filter_priority', '1001'));
 }
 
 function wppa_albums_filter($post) {

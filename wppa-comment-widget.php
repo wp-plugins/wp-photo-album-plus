@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the recent commets on photos
-* Version 4.4.4
+* Version 4.5.0
 */
 
 class wppaCommentWidget extends WP_Widget {
@@ -26,13 +26,13 @@ class wppaCommentWidget extends WP_Widget {
 
 		$instance = wp_parse_args( (array) $instance, array( 'title' => '' ) );
 
-		$page = get_option('wppa_comment_widget_linkpage', '0');
-		$max = get_option('wppa_comment_count', '10');
+		$page = $wppa_opt['wppa_comment_widget_linkpage'];
+		$max  = $wppa_opt['wppa_comment_count'];
 		
 		$comments = $wpdb->get_results($wpdb->prepare( "SELECT * FROM ".WPPA_COMMENTS." WHERE status = 'approved' ORDER BY timestamp DESC LIMIT %d", $max ), "ARRAY_A");
 
 		$widget_content = "\n".'<!-- WPPA+ Comment Widget start -->';
-		$maxw = get_option('wppa_comment_size', '86');
+		$maxw = $wppa_opt['wppa_comment_size'];
 		$maxh = $maxw + 18;
 
 		if ($comments) foreach ($comments as $comment) {
@@ -41,16 +41,17 @@ class wppaCommentWidget extends WP_Widget {
 			$widget_content .= "\n".'<div class="wppa-widget" style="width:'.$maxw.'px; height:'.$maxh.'px; margin:4px; display:inline; text-align:center; float:left;">'; 
 			$image = $wpdb->get_row($wpdb->prepare( "SELECT * FROM `".WPPA_PHOTOS."` WHERE `id` = %s", $comment['photo'] ), "ARRAY_A" );
 			if ($image) {
-				$imgurl = WPPA_UPLOAD_URL . '/' . $image['id'] . '.' . $image['ext'];
-				$no_album = true;//!$album;
-				$tit=esc_attr(wppa_qtrans(stripslashes($comment['comment'])));
+				$no_album 	= true;//!$album;
+				$tit		= esc_attr(wppa_qtrans(stripslashes($comment['comment'])));
 				$link       = wppa_get_imglnk_a('comwidget', $image['id'], '', $tit, $no_album);
 				$file       = wppa_get_thumb_path_by_id($image['id']);
 				$imgstyle_a = wppa_get_imgstyle_a($file, $maxw, 'center', 'comthumb');
 				$imgstyle   = $imgstyle_a['style'];
 				$width      = $imgstyle_a['width'];
 				$height     = $imgstyle_a['height'];
-
+				$usethumb	= wppa_use_thumb_file($image['id'], $width, $height) ? '/thumbs' : '';
+				$imgurl 	= WPPA_UPLOAD_URL . $usethumb . '/' . $image['id'] . '.' . $image['ext'];
+				
 				$imgevents = wppa_get_imgevents('thumb', $image['id'], true);	
 
 				if ($link) $title = esc_attr(stripslashes($link['title']));

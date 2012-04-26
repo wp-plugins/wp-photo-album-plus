@@ -2,11 +2,11 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 4.4.8
+* version 4.5.0
 *
 */
 global $wppa_api_version;
-$wppa_api_version = '4-4-8-000';
+$wppa_api_version = '4-5-0-000';
 // Initialize globals and option settings
 function wppa_initialize_runtime($force = false) {
 global $wppa;
@@ -85,242 +85,310 @@ global $wpdb;
 	}
 	
 	if (!is_array($wppa_opt)) {
-		$wppa_opt = array ( 
-			'wppa_revision' => '',
-			'wppa_fullsize' => '',
-			'wppa_colwidth' => '',
-			'wppa_maxheight' => '',
-			'wppa_enlarge' => '',
-			'wppa_resize_on_upload' => '',
-			'wppa_resize_to' => '',
-			'wppa_fullvalign' => '',
-			'wppa_fullhalign' => '',
-			'wppa_min_thumbs' => '',
-			'wppa_thumbtype' => '',
-			'wppa_valign' => '',
-			'wppa_thumbsize' => '',
-			'wppa_tf_width' => '',
-			'wppa_tf_height' => '',
-			'wppa_tn_margin' => '',
-			'wppa_smallsize' => '',
-			'wppa_show_bread' => '',
-			'wppa_show_home' => '',
-			'wppa_bc_separator' => '',
-			'wppa_use_thumb_opacity' => '',
-			'wppa_thumb_opacity' => '',
-			'wppa_use_thumb_popup' => '',
-			'wppa_use_cover_opacity' => '',
-			'wppa_cover_opacity' => '',
-			'wppa_animation_speed' => '',
-			'wppa_slideshow_timeout' => '',
-			'wppa_bgcolor_even' => '',
-			'wppa_bgcolor_alt' => '',
-			'wppa_bgcolor_nav' => '',
-			'wppa_bgcolor_img' => '',
-			'wppa_bgcolor_namedesc' => '',
-			'wppa_bgcolor_com' => '',
-			'wppa_bgcolor_iptc' => '',
-			'wppa_bgcolor_exif' => '',
-			'wppa_bgcolor_cus' => '',
-			'wppa_bgcolor_numbar' => '',
-			'wppa_bgcolor_numbar_active' => '',
-			'wppa_bcolor_even' => '',
-			'wppa_bcolor_alt' => '',
-			'wppa_bcolor_nav' => '',
-			'wppa_bcolor_img' => '',
-			'wppa_bcolor_namedesc' => '',
-			'wppa_bcolor_com' => '',
-			'wppa_bcolor_iptc' => '',
-			'wppa_bcolor_exif' => '',
-			'wppa_bcolor_cus' => '',
-			'wppa_bcolor_numbar' => '',
-			'wppa_bcolor_numbar_active' => '',
-			'wppa_bwidth' => '',
-			'wppa_bradius' => '',
-			'wppa_fontfamily_thumb' => '',
-			'wppa_fontsize_thumb' => '',
-			'wppa_fontcolor_thumb' => '',
-			'wppa_fontweight_thumb' => '',
-			'wppa_fontfamily_box' => '',
-			'wppa_fontsize_box' => '',
-			'wppa_fontcolor_box' => '',
-			'wppa_fontweight_box' => '',
-			'wppa_fontfamily_nav' => '',
-			'wppa_fontsize_nav' => '',
-			'wppa_fontcolor_nav' => '',
-			'wppa_fontweight_nav' => '',
-			'wppa_fontfamily_title' => '',
-			'wppa_fontsize_title' => '',
-			'wppa_fontcolor_title' => '',
-			'wppa_fontweight_title' => '',
-			'wppa_fontfamily_fulldesc' => '',
-			'wppa_fontsize_fulldesc' => '',
-			'wppa_fontcolor_fulldesc' => '',
-			'wppa_fontweight_fulldesc' => '',
-			'wppa_fontfamily_fulltitle' => '',
-			'wppa_fontsize_fulltitle' => '',
-			'wppa_fontcolor_fulltitle' => '',
-			'wppa_fontweight_fulltitle' => '',
-			'wppa_fontfamily_numbar' 	=> '',
-			'wppa_fontsize_numbar' 		=> '',
-			'wppa_fontcolor_numbar' 	=> '',
-			'wppa_fontweight_numbar' => '',
-			'wppa_arrow_color' => '',
-			'wppa_widget_width' => '',
-			'wppa_max_cover_width' => '',
-			'wppa_text_frame_height' => '',
-			'wppa_film_show_glue' => '',
-			'wppa_album_page_size' => '',
-			'wppa_thumb_page_size' => '',
-			'wppa_thumb_auto' => '',
-			'wppa_coverphoto_pos' => '',
-			'wppa_thumbphoto_left' => '',
-			'wppa_enable_slideshow' => '',
-			'wppa_thumb_text_name' => '',
-			'wppa_thumb_text_desc' => '',
-			'wppa_thumb_text_rating' => '',
-			'wppa_show_startstop_navigation' => '',
-			'wppa_show_browse_navigation' => '',
-			'wppa_show_full_desc' => '',
-			'wppa_show_full_name' => '',
-			'wppa_show_comments' => '',
-			'wppa_show_cover_text' => '',
-			'wppa_start_slide' => '',
-			'wppa_hide_slideshow' => '',
-			'wppa_filmstrip' => '',
-			'wppa_bc_url' => '',
-			'wppa_bc_txt' => '',
-			'wppa_topten_count' => '',
-			'wppa_topten_size' => '',
-			'wppa_excl_sep' => '',
-			'wppa_rating_on' => '',
-			'wppa_rating_login' => '',
-			'wppa_rating_change' => '',
-			'wppa_rating_multi' => '',
-			'wppa_comment_login' => '',
-			'wppa_list_albums_by' => '',
-			'wppa_list_albums_desc' => '',
-			'wppa_list_photos_by' => '',
-			'wppa_list_photos_desc' => '',
-			'wppa_html' => '',
-			'wppa_thumb_linkpage' => '',
-			'wppa_thumb_linktype' => '',
-			'wppa_thumb_blank' => '',
-			'wppa_mphoto_linkpage' => '',
-			'wppa_mphoto_linktype' => '',
-			'wppa_mphoto_blank'				=> '',
-			'wppa_widget_linkpage' 			=> '',
-			'wppa_widget_linktype' 			=> '',
-			'wppa_widget_linkurl' 			=> '',
-			'wppa_widget_linktitle' 		=> '',
-			'wppa_potd_blank'				=> '',
-			'wppa_slideonly_widget_linkpage' => '',
-			'wppa_slideonly_widget_linktype' => '',
-			'wppa_sswidget_blank'			=> '',
-			'wppa_slideshow_blank'			=> '',
-			'wppa_topten_widget_linkpage' 	=> '',
-			'wppa_topten_widget_linktype' 	=> '',
-			'wppa_topten_blank'				=> '',
-			'wppa_coverimg_linktype' 		=> '',
-			'wppa_coverimg_linkpage' 		=> '',
-			'wppa_coverimg_blank'			=> '',
-			'wppa_mphoto_overrule'			=> '',
-			'wppa_thumb_overrule'			=> '',
-			'wppa_topten_overrule'			=> '',
-			'wppa_sswidget_overrule'		=> '',
-			'wppa_potdwidget_overrule'		=> '',
-			'wppa_coverimg_overrule'		=> '',
-			'wppa_slideshow_overrule'		=> '',
-			'wppa_search_linkpage' 			=> '',
-			'wppa_chmod' 					=> '',
-			'wppa_setup' 					=> '',
-			'wppa_rerate' 					=> '',
-			'wppa_allow_debug' 				=> '',
-			'wppa_potd_align' 				=> '',
-			'wppa_comadmin_show' 			=> '',
-			'wppa_comadmin_order' 			=> '',
-			'wppa_popupsize' 				=> '',
-			'wppa_slide_order' 				=> '',
-			'wppa_show_bbb' 				=> '',
-			'wppa_show_bbb_widget'			=> '',
-			'wppa_show_slideshowbrowselink' => '',
-			'wppa_fullimage_border_width' 	=> '',
-			'wppa_bgcolor_fullimg' 			=> '',
-			'wppa_bcolor_fullimg' 			=> '',
-			'wppa_max_photo_newtime' 		=> '',
-			'wppa_max_album_newtime' 		=> '',
-			'wppa_load_skin' 				=> '',
-			'wppa_skinfile' 				=> '',
-			'wppa_swap_namedesc' 			=> '',
-			'wppa_filter_priority' 			=> '',
-			'wppa_custom_on' 				=> '',
-			'wppa_custom_content' 			=> '',
-			'wppa_apply_newphoto_desc' 		=> '',
-			'wppa_newphoto_description' 	=> '',
-			'wppa_comments_desc' 			=> '',
-			'wppa_user_upload_on' 			=> '',
-			'wppa_show_slideshownumbar'  	=> '',
-			'wppa_autoclean' 				=> '',
-			'wppa_numbar_max' 				=> '',
-			'wppa_watermark_on'				=> '',
-			'wppa_watermark_user'			=> '',
-			'wppa_watermark_file'			=> '',
-			'wppa_watermark_pos'			=> '',
-			'wppa_watermark_upload'			=> '',
-			'wppa_comment_widget_linkpage'	=> '',
-			'wppa_comment_widget_linktype'	=> '',
-			'wppa_comment_blank'			=> '',
-			'wppa_comment_count'			=> '',
-			'wppa_comment_size'				=> '',
-			'wppa_comment_overrule'			=> '',
-			'wppa_next_on_callback'			=> '',
-			'wppa_show_avg_rating'			=> '',
-			'wppa_rating_use_ajax'			=> '',
-			'wppa_star_opacity'				=> '',
-			'wppa_album_admin_autosave'		=> '',
-			'wppa_settings_autosave'		=> '',
-			'wppa_slide_wrap'				=> '',
-			'wppa_comment_login_approved'	=> '',
-			'wppa_lightbox_name'			=> '',
-			'wppa_slideshow_linktype'		=> '',
-			'wppa_popup_text_name' 			=> '',
-			'wppa_popup_text_desc' 			=> '',
-			'wppa_popup_text_rating' 		=> '',
-			'wppa_thumb_aspect'				=> '',
-			'wppa_show_iptc'				=> '',
-			'wppa_show_exif'				=> '',
-			'wppa_comment_gravatar'			=> '',
-			'wppa_comment_gravatar_url'		=> '',
-			'wppa_gravatar_size'			=> '',
-			'wppa_comment_moderation'		=> '',
-			'wppa_comment_email_required'	=> '',
-			'wppa_copyright_on'				=> '',
-			'wppa_copyright_notice'			=> '',
-			'wppa_fulldesc_align'			=> '',
-			'wppa_allow_ajax'				=> '',
-			'wppa_use_photo_names_in_urls' 	=> '',
-			'wppa_allow_foreign_shortcodes' => '',
-			'wppa_watermark_opacity'		=> '',
-			'wppa_bc_on_search'				=> '',
-			'wppa_bc_on_topten'				=> '',
-			'wppa_animation_type'			=> '',
-			'wppa_slide_pause'				=> '',
-			'wppa_upload_moderate'			=> '',
-			'wppa_comment_captcha'			=> '',
-			'wppa_spam_maxage'				=> '',
-			'wppa_rating_max'				=> '',
-			'wppa_rating_prec'				=> '',
-			
-			'wppa_doublethevotes'			=> '',
-			'wppa_halvethevotes'			=> '',
-			'wppa_rating_display_type'		=> '',
-			'wppa_thumbnail_widget_size'	=> '',
-			'wppa_thumbnail_widget_count'	=> '',
-			'wppa_thumbnail_widget_linkpage'=> '',
-			'wppa_thumbnail_widget_linktype'=> '',
-			'wppa_thumbnail_widget_overrule'		=> '',
-			'wppa_thumbnail_widget_blank'			=> ''
+		$wppa_opt = array ( 'wppa_revision' 			=> '',
+	
+						// Table I: Sizes
+						// A System
+						'wppa_colwidth' 				=> '',	// 1
+						'wppa_resize_on_upload' 		=> '',	// 2
+						'wppa_resize_to'				=> '',	// 3
+						'wppa_min_thumbs' 				=> '',	// 4
+						'wppa_bwidth' 					=> '',	// 5
+						'wppa_bradius' 					=> '',	// 6
+						// B Fullsize
+						'wppa_fullsize' 				=> '',	// 1
+						'wppa_maxheight' 				=> '',	// 2
+						'wppa_enlarge' 					=> '',	// 3
+						'wppa_fullimage_border_width' 	=> '',	// 4
+						'wppa_numbar_max'				=> '',	// 5
+						// C Thumbnails
+						'wppa_thumbsize' 				=> '',	// 1
+						'wppa_thumb_aspect'				=> '',	// 2
+						'wppa_tf_width' 				=> '',	// 3
+						'wppa_tf_height' 				=> '',	// 4
+						'wppa_tn_margin' 				=> '',	// 5
+						'wppa_thumb_auto' 				=> '',	// 6
+						'wppa_thumb_page_size' 			=> '',	// 7
+						'wppa_popupsize' 				=> '',	// 8
+						'wppa_use_thumbs_if_fit'		=> '',	// 9
+						// D Covers
+						'wppa_max_cover_width'			=> '',	// 1
+						'wppa_text_frame_height'		=> '',	// 2
+						'wppa_smallsize' 				=> '',	// 3
+						'wppa_album_page_size' 			=> '',	// 4
+						// E Rating & comments
+						'wppa_rating_max'				=> '',	// 1
+						'wppa_rating_prec'				=> '',	// 2
+						'wppa_gravatar_size'			=> '',	// 3
+						// F Widgets
+						'wppa_topten_count' 			=> '',	// 1
+						'wppa_topten_size' 				=> '',	// 2
+						'wppa_comment_count'			=> '',	// 3
+						'wppa_comment_size'				=> '',	// 4
+						'wppa_thumbnail_widget_count'	=> '',	// 5
+						'wppa_thumbnail_widget_size'	=> '',	// 6
+						
+						// Table II: Visibility
+						// A Breadcrumb
+						'wppa_show_bread' 					=> '',	// 1
+						'wppa_bc_on_search'					=> '',	// 2
+						'wppa_bc_on_topten'					=> '',	// 3
+						'wppa_show_home' 					=> '',	// 4
+						'wppa_bc_separator' 				=> '',	// 5
+						'wppa_bc_txt' 						=> '',	// 6
+						'wppa_bc_url' 						=> '',	// 7
+						// B Slideshow
+						'wppa_show_startstop_navigation' 	=> '',	// 1
+						'wppa_show_browse_navigation' 		=> '',	// 2
+						'wppa_filmstrip' 					=> '',	// 3
+						'wppa_film_show_glue' 				=> '',	// 4
+						'wppa_show_full_name' 				=> '',	// 5
+						'wppa_show_full_desc' 				=> '',	// 6
+						'wppa_rating_on' 					=> '',	// 7
+						'wppa_rating_display_type'			=> '',	// 8
+						'wppa_show_avg_rating'				=> '',	// 9
+						'wppa_show_comments' 				=> '',	// 10
+						'wppa_comment_gravatar'				=> '',	// 11
+						'wppa_comment_gravatar_url'			=> '',	// 12
+						'wppa_show_bbb'						=> '',	// 13
+						'wppa_custom_on' 					=> '',	// 14
+						'wppa_custom_content' 				=> '',	// 15
+						'wppa_show_slideshownumbar'  		=> '',	// 16
+						'wppa_show_iptc'					=> '',	// 17
+						'wppa_show_exif'					=> '',	// 18
+						'wppa_copyright_on'					=> '',	// 19
+						'wppa_copyright_notice'				=> '',	// 20
+						// C Thumbnails
+						'wppa_thumb_text_name' 				=> '',	// 1
+						'wppa_thumb_text_desc' 				=> '',	// 2
+						'wppa_thumb_text_rating' 			=> '',	// 3
+						'wppa_popup_text_name' 				=> '',	// 4
+						'wppa_popup_text_desc' 				=> '',	// 5
+						'wppa_popup_text_rating' 			=> '',	// 6
+						'wppa_show_rating_count'			=> '',	// 7
+						// D Covers
+						'wppa_show_cover_text' 				=> '',	// 1
+						'wppa_enable_slideshow' 			=> '',	// 2
+						'wppa_show_slideshowbrowselink' 	=> '',	// 3
+						// E Widgets
+						'wppa_show_bbb_widget'				=> '',	// 1
 
+						// Table III: Backgrounds
+						'wppa_bgcolor_even' 			=> '',
+						'wppa_bcolor_even' 				=> '',
+						'wppa_bgcolor_alt' 				=> '',
+						'wppa_bcolor_alt' 				=> '',
+						'wppa_bgcolor_nav' 				=> '',
+						'wppa_bcolor_nav' 				=> '',
+						'wppa_bgcolor_namedesc' 		=> '',
+						'wppa_bcolor_namedesc' 			=> '',
+						'wppa_bgcolor_com' 				=> '',
+						'wppa_bcolor_com' 				=> '',
+						'wppa_bgcolor_img'				=> '',
+						'wppa_bcolor_img'				=> '',
+						'wppa_bgcolor_fullimg' 			=> '',
+						'wppa_bcolor_fullimg' 			=> '',
+						'wppa_bgcolor_cus'				=> '',
+						'wppa_bcolor_cus'				=> '',
+						'wppa_bgcolor_numbar'			=> '',
+						'wppa_bcolor_numbar'			=> '',
+						'wppa_bgcolor_numbar_active'	=> '',
+						'wppa_bcolor_numbar_active'	 	=> '',
+						'wppa_bgcolor_iptc'				=> '',
+						'wppa_bcolor_iptc' 				=> '',
+						'wppa_bgcolor_exif'				=> '',
+						'wppa_bcolor_exif' 				=> '',
+
+						// Table IV: Behaviour
+						// A System
+						'wppa_allow_ajax'				=> '',	// 1
+						'wppa_use_photo_names_in_urls'	=> '',	// 2
+						// B Full size and Slideshow
+						'wppa_fullvalign' 				=> '',	// 1
+						'wppa_fullhalign' 				=> '',	// 2
+						'wppa_start_slide' 				=> '',	// 3
+						'wppa_animation_type'			=> '',	// 4
+						'wppa_slideshow_timeout'		=> '',	// 5
+						'wppa_animation_speed' 			=> '',	// 6
+						'wppa_slide_pause'				=> '',	// 7
+						'wppa_slide_wrap'				=> '',	// 8
+						'wppa_fulldesc_align'			=> '',	// 9
+						// C Thumbnail
+						'wppa_list_photos_by' 			=> '',	// 1
+						'wppa_list_photos_desc' 		=> '',	// 2
+						'wppa_thumbtype' 				=> '',	// 3
+						'wppa_thumbphoto_left' 			=> '',	// 4
+						'wppa_valign' 					=> '',	// 5
+						'wppa_use_thumb_opacity' 		=> '',	// 6
+						'wppa_thumb_opacity' 			=> '',	// 7
+						'wppa_use_thumb_popup' 			=> '',	// 8
+						// D Albums and covers
+						'wppa_list_albums_by' 			=> '',	// 1
+						'wppa_list_albums_desc' 		=> '',	// 2
+						'wppa_coverphoto_pos'			=> '',	// 3
+						'wppa_use_cover_opacity' 		=> '',	// 4
+						'wppa_cover_opacity' 			=> '',	// 5
+						// E Rating
+						'wppa_rating_login' 			=> '',	// 1
+						'wppa_rating_change' 			=> '',	// 2
+						'wppa_rating_multi' 			=> '',	// 3
+						'wppa_rating_use_ajax'			=> '',	// 4
+						'wppa_next_on_callback'			=> '',	// 5
+						'wppa_star_opacity'				=> '',	// 6
+						// F Comments
+						'wppa_comment_login' 			=> '',	// 1
+						'wppa_comments_desc'			=> '',	// 2
+						'wppa_comment_moderation'		=> '',	// 3
+						'wppa_comment_email_required'	=> '',	// 4
+
+						// Table V: Fonts
+						'wppa_fontfamily_title' 	=> '',
+						'wppa_fontsize_title' 		=> '',
+						'wppa_fontcolor_title' 		=> '',
+						'wppa_fontweight_title'		=> '',
+						'wppa_fontfamily_fulldesc' 	=> '',
+						'wppa_fontsize_fulldesc' 	=> '',
+						'wppa_fontcolor_fulldesc' 	=> '',
+						'wppa_fontweight_fulldesc'	=> '',
+						'wppa_fontfamily_fulltitle' => '',
+						'wppa_fontsize_fulltitle' 	=> '',
+						'wppa_fontcolor_fulltitle' 	=> '',
+						'wppa_fontweight_fulltitle'	=> '',
+						'wppa_fontfamily_nav' 		=> '',
+						'wppa_fontsize_nav' 		=> '',
+						'wppa_fontcolor_nav' 		=> '',
+						'wppa_fontweight_nav'		=> '',
+						'wppa_fontfamily_thumb' 	=> '',
+						'wppa_fontsize_thumb' 		=> '',
+						'wppa_fontcolor_thumb' 		=> '',
+						'wppa_fontweight_thumb'		=> '',
+						'wppa_fontfamily_box' 		=> '',
+						'wppa_fontsize_box' 		=> '',
+						'wppa_fontcolor_box' 		=> '',
+						'wppa_fontweight_box'		=> '',
+						'wppa_fontfamily_numbar' 	=> '',
+						'wppa_fontsize_numbar' 		=> '',
+						'wppa_fontcolor_numbar' 	=> '',
+						'wppa_fontweight_numbar'	=> '',
+						
+						// Table VI: Links
+						'wppa_mphoto_linktype' 				=> '',
+						'wppa_mphoto_linkpage' 				=> '',
+						'wppa_mphoto_blank'					=> '',
+						'wppa_mphoto_overrule'				=> '',
+						
+						'wppa_thumb_linktype' 				=> '',
+						'wppa_thumb_linkpage' 				=> '',
+						'wppa_thumb_blank'					=> '',
+						'wppa_thumb_overrule'				=> '',
+						
+						'wppa_topten_widget_linktype' 		=> '',
+						'wppa_topten_widget_linkpage' 		=> '',
+						'wppa_topten_blank'					=> '',
+						'wppa_topten_overrule'				=> '',
+						
+						'wppa_slideonly_widget_linktype' 	=> '',
+						'wppa_slideonly_widget_linkpage' 	=> '',
+						'wppa_sswidget_blank'				=> '',
+						'wppa_sswidget_overrule'			=> '',
+
+						'wppa_widget_linktype' 				=> '',
+						'wppa_widget_linkpage' 				=> '',
+						'wppa_potd_blank'					=> '',
+						'wppa_potdwidget_overrule'			=> '',
+
+						'wppa_coverimg_linktype' 			=> '',
+						'wppa_coverimg_linkpage' 			=> '',
+						'wppa_coverimg_blank'				=> '',
+						'wppa_coverimg_overrule'			=> '',
+
+						'wppa_comment_widget_linktype'		=> '',
+						'wppa_comment_widget_linkpage'		=> '',
+						'wppa_comment_blank'				=> '',
+						'wppa_comment_overrule'				=> '',
+
+						'wppa_slideshow_linktype'			=> '',
+						'wppa_slideshow_blank'				=> '',
+						'wppa_slideshow_overrule'			=> '',
+
+						'wppa_thumbnail_widget_linktype'	=> '',
+						'wppa_thumbnail_widget_linkpage'	=> '',
+						'wppa_thumbnail_widget_overrule'	=> '',
+						'wppa_thumbnail_widget_blank'		=> '',
+
+						'wppa_film_linktype'				=> '',
+						
+						// Table VII: Security
+						// B
+						'wppa_owner_only' 			=> '',
+						'wppa_user_upload_on'		=> '',
+						'wppa_upload_moderate'		=> '',
+						'wppa_comment_captcha'		=> '',
+						'wppa_spam_maxage'			=> '',
+						
+						// Table VIII: Actions
+						// A Harmless
+						'wppa_setup' 				=> '',
+						'wppa_backup' 				=> '',
+						'wppa_load_skin' 			=> '',
+						'wppa_skinfile' 			=> '',
+						'wppa_regen' 				=> '',
+						'wppa_rerate'				=> '',
+						'wppa_cleanup'				=> '',
+						'wppa_recup'				=> '',
+						// B Irreversable
+						'wppa_rating_clear' 		=> '',
+						'wppa_iptc_clear'			=> '',
+						'wppa_exif_clear'			=> '',
+
+						// Table IX: Miscellaneous
+						'wppa_check_balance'			=> '',
+						'wppa_arrow_color' 				=> '',
+						'wppa_search_linkpage' 			=> '',
+						'wppa_excl_sep' 				=> '',
+						'wppa_html' 					=> '',
+						'wppa_allow_debug' 				=> '',
+						'wppa_slide_order'				=> '',
+						'wppa_swap_namedesc' 			=> '',
+						'wppa_max_album_newtime'		=> '',
+						'wppa_max_photo_newtime'		=> '',
+						'wppa_lightbox_name'			=> '',
+						'wppa_filter_priority'			=> '',
+						'wppa_apply_newphoto_desc'		=> '',
+						'wppa_newphoto_description'		=> '',
+						'wppa_autoclean'				=> '',
+						'wppa_watermark_on'				=> '',
+						'wppa_watermark_user'			=> '',
+						'wppa_watermark_file'			=> '',
+						'wppa_watermark_pos'			=> '',
+						'wppa_watermark_upload'			=> '',
+						'wppa_watermark_opacity'		=> '',
+						'wppa_allow_foreign_shortcodes' => '',
+
+						// Photo of the day widget admin
+						'wppa_widgettitle'			=> '',
+						'wppa_widget_linkurl'		=> '',
+						'wppa_widget_linktitle' 	=> '',
+						'wppa_widget_subtitle'		=> '',
+						'wppa_widget_album'			=> '',
+						'wppa_widget_photo'			=> '',
+						'wppa_potd_align' 			=> '',
+						'wppa_widget_method'		=> '',
+						'wppa_widget_period'		=> '',
+						'wppa_widget_width'			=> '',
+						
+						// Topten widget
+						'wppa_toptenwidgettitle'	=> '',
+
+						// Thumbnail widget
+						'wppa_thumbnailwidgettitle'	=> '',
+						
+						// Search widget
+						'wppa_searchwidgettitle'	=> '',
+						
+						// Comment admin
+						'wppa_comadmin_show' 		=> '',
+						'wppa_comadmin_order' 		=> ''
 
 
 
@@ -434,9 +502,10 @@ function wppa_get_imgdir() {
 // get album order
 function wppa_get_album_order() {
 global $wppa;
+global $wppa_opt;
 
     $result = '';
-    $order = get_option('wppa_list_albums_by');
+    $order = $wppa_opt['wppa_list_albums_by'];
     switch ($order)
     {
     case '1':
@@ -454,7 +523,7 @@ global $wppa;
     default:
         $result = 'ORDER BY id';
     }
-    if (get_option('wppa_list_albums_desc') == 'yes') $result .= ' DESC';
+    if ( get_option('wppa_list_albums_desc', 'no') == 'yes' ) $result .= ' DESC';
     return $result;
 }
 
@@ -462,10 +531,11 @@ global $wppa;
 function wppa_get_photo_order($id, $no_random = false) {
 global $wpdb;
 global $wppa;
+global $wppa_opt;
     
 	if ($id == 0) $order=0;
 	else $order = $wpdb->get_var( $wpdb->prepare( "SELECT p_order_by FROM " . WPPA_ALBUMS . " WHERE id=%s", $id) );
-    if ($order == '0') $order = get_option('wppa_list_photos_by');
+    if ($order == '0') $order = $wppa_opt['wppa_list_photos_by'];
     switch ($order)
     {
     case '1':
@@ -487,7 +557,7 @@ global $wppa;
     default:
         $result = 'ORDER BY id';
     }
-    if (get_option('wppa_list_photos_desc') == 'yes') $result .= ' DESC';
+    if ( get_option('wppa_list_photos_desc', 'no') == 'yes' ) $result .= ' DESC';
     return $result;
 }
 
@@ -598,8 +668,9 @@ global $wpdb;
 
 // Check if an image is more landscape that the width/height ratio set in Table I item 2 and 3
 function wppa_is_wider($x, $y, $refx = '', $refy = '') {
+global $wppa_opt;
 	if ( $refx == '' ) {
-		$ratioref = get_option('wppa_fullsize') / get_option('wppa_maxheight');
+		$ratioref = $wppa_opt['wppa_fullsize'] / $wppa_opt['wppa_maxheight'];
 	}
 	else {
 		$ratioref = $refx/$refy;
@@ -771,6 +842,7 @@ global $wpdb;
 function wppa_have_access($alb) {
 global $wpdb;
 global $current_user;
+global $wppa_opt;
 
 	if ( !$alb ) return false;
 	
@@ -852,14 +924,13 @@ global $wppa_opt;
 			}
 			// Too landscape?
 			if ( $picx/$picy > $refx/$refy ) {					// focus on width
-//			if (wppa_is_wider($picx, $picy, $refx, $refy)) {	// focus on width
 				$dir = 'W';
-				$siz = $refx; //get_option('wppa_fullsize', '640');
+				$siz = $refx;
 				$s = $img_size[0];
 			}
 			else {												// focus on height
 				$dir = 'H';
-				$siz = $refy; //get_option('wppa_maxheight', get_option('wppa_fullsize', '640'));
+				$siz = $refy;
 				$s = $img_size[1];
 			}
 
@@ -895,9 +966,6 @@ global $wppa_opt;
 		
 		// Process the exif data
 		wppa_import_exif($image_id, $file);
-
-		// Remove tempfile
-		unlink($file);
 
 		// Show progression
 		if (is_admin()) echo('.');

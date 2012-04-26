@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the upload/import pages and functions
-* Version 4.4.8
+* Version 4.5.0
 *
 */
 
@@ -25,15 +25,15 @@ global $wppa_opt;
 	
 	// Do the upload if requested
 	if ( isset( $_POST['wppa-upload-multiple'] ) ) {
-		wppa_check_admin_referer( '$wppa_nonce', WPPA_NONCE );
+		check_admin_referer( '$wppa_nonce', WPPA_NONCE );
 		wppa_upload_multiple();
 	}
 	if ( isset( $_POST['wppa-upload'] ) ) {
-		wppa_check_admin_referer( '$wppa_nonce', WPPA_NONCE );
+		check_admin_referer( '$wppa_nonce', WPPA_NONCE );
 		wppa_upload_photos();
 	} 
 	if ( isset( $_POST['wppa-upload-zip'] ) ) {
-		wppa_check_admin_referer( '$wppa_nonce', WPPA_NONCE );
+		check_admin_referer( '$wppa_nonce', WPPA_NONCE );
 		$err = wppa_upload_zip();
 		if ( isset( $_POST['wppa-go-import'] ) && $err == '0' ) { 
 			wppa_ok_message(__('Connecting to your depot...', 'wppa'));
@@ -84,7 +84,7 @@ global $wppa_opt;
 				<?php echo sprintf(__('You can select up to %s photos in one selection and upload them.', 'wppa'), $max_files_txt); ?>
 				<br /><small style="color:blue" ><?php _e('You need a modern browser that supports HTML-5 to select multiple files', 'wppa') ?></small>
 				<form enctype="multipart/form-data" action="<?php echo(wppa_dbg_url(get_admin_url().'admin.php?page=wppa_upload_photos')) ?>" method="post">
-				<?php wppa_nonce_field('$wppa_nonce', WPPA_NONCE); ?>
+				<?php wp_nonce_field('$wppa_nonce', WPPA_NONCE); ?>
 					<input id="my_files" type="file" multiple="multiple" name="my_files[]" />
 					<p>
 						<label for="wppa-album"><?php _e('Album:', 'wppa'); ?> </label>
@@ -116,7 +116,7 @@ global $wppa_opt;
 				<h3 style="margin-top:0px;"><?php  _e('Box B:', 'wppa'); echo ' ';_e('Single Photos in multiple selections', 'wppa'); ?></h3>
 				<?php echo sprintf(__('You can select up to %s photos one by one and upload them at once.', 'wppa'), $max_files_txt); ?>
 				<form enctype="multipart/form-data" action="<?php echo(wppa_dbg_url(get_admin_url().'admin.php?page=wppa_upload_photos')) ?>" method="post">
-				<?php wppa_nonce_field('$wppa_nonce', WPPA_NONCE); ?>
+				<?php wp_nonce_field('$wppa_nonce', WPPA_NONCE); ?>
 					<input id="my_file_element" type="file" name="file_1" />
 					<div id="files_list">
 						<h3><?php _e('Selected Files:', 'wppa'); ?></h3>
@@ -160,7 +160,7 @@ global $wppa_opt;
 					<h3 style="margin-top:0px;"><?php  _e('Box C:', 'wppa'); echo ' ';_e('Zipped Photos in one selection', 'wppa'); ?></h3>
 					<?php echo sprintf(__('You can upload one zipfile. It will be placed in your personal wppa-depot: <b>.../%s</b><br/>Once uploaded, use <b>Import Photos</b> to unzip the file and place the photos in any album.', 'wppa'), WPPA_DEPOT) ?>
 					<form enctype="multipart/form-data" action="<?php echo(wppa_dbg_url(get_admin_url().'admin.php?page=wppa_upload_photos')) ?>" method="post">
-					<?php wppa_nonce_field('$wppa_nonce', WPPA_NONCE); ?>
+					<?php wp_nonce_field('$wppa_nonce', WPPA_NONCE); ?>
 						<input id="my_zipfile_element" type="file" name="file_zip" /><br/><br/>
 						<input type="submit" class="button-primary" name="wppa-upload-zip" value="<?php _e('Upload Zipped Photos', 'wppa') ?>" />
 						<input type="checkbox" name="wppa-go-import" checked="checked"><?php _e('After upload: Go to the <b>Import Photos</b> page.', 'wppa') ?></input>
@@ -198,15 +198,15 @@ global $wppa_opt;
 	
 	// Do the dirty work
 	if (isset($_GET['zip'])) {
-	//	wppa_check_admin_referer( '$wppa_nonce', WPPA_NONCE );
+	//	check_admin_referer( '$wppa_nonce', WPPA_NONCE );
 		wppa_extract($_GET['zip'], true);
 	}
 	if (isset($_POST['wppa-import-set-source'])) {
-		wppa_check_admin_referer( '$wppa_nonce', WPPA_NONCE );
+		check_admin_referer( '$wppa_nonce', WPPA_NONCE );
 		update_option('wppa_import_source_'.$user, $_POST['wppa-source']);
 	}
 	elseif (isset($_POST['wppa-import-submit'])) {
-		wppa_check_admin_referer( '$wppa_nonce', WPPA_NONCE );
+		check_admin_referer( '$wppa_nonce', WPPA_NONCE );
         if (isset($_POST['del-after-p'])) $delp = true; else $delp = false;
 		if (isset($_POST['del-after-a'])) $dela = true; else $dela = false;	
 		if (isset($_POST['del-after-z'])) $delz = true; else $delz = false;
@@ -245,7 +245,7 @@ global $wppa_opt;
 		
 ?>		
 		<form action="<?php echo(wppa_dbg_url(get_admin_url().'admin.php?page=wppa_import_photos')) ?>" method="post">
-		<?php wppa_nonce_field('$wppa_nonce', WPPA_NONCE); ?>
+		<?php wp_nonce_field('$wppa_nonce', WPPA_NONCE); ?>
 		<?php _e('Import photos from:', 'wppa'); ?>
 			<select name="wppa-source">
 				<option value="<?php echo(WPPA_DEPOT) ?>" <?php if ($is_depot) echo('selected="selected"') ?>><?php _e('Your depot', 'wppa') ?></option>
@@ -262,7 +262,7 @@ global $wppa_opt;
 		if ($photocount > '0' || $albumcount > '0' || $zipcount >'0') { ?>
 		
 			<form action="<?php echo(wppa_dbg_url(get_admin_url().'admin.php?page=wppa_import_photos')) ?>" method="post">
-			<?php wppa_nonce_field('$wppa_nonce', WPPA_NONCE); 
+			<?php wp_nonce_field('$wppa_nonce', WPPA_NONCE); 
 			
 			if (PHP_VERSION_ID >= 50207 && $zipcount > '0') { ?>		
 			<p>
@@ -349,7 +349,7 @@ global $wppa_opt;
 			<?php }
 			if ($photocount > '0') { ?>
 			<p>
-				<?php _e('There are', 'wppa'); echo(' '.$photocount.' '); _e('photos in the depot.', 'wppa'); if (get_option('wppa_resize_on_upload', 'no') == 'yes') { echo(' '); _e('Photos will be downsized during import.', 'wppa'); } ?><br/>
+				<?php _e('There are', 'wppa'); echo(' '.$photocount.' '); _e('photos in the depot.', 'wppa'); if ( $wppa_opt['wppa_resize_on_upload'] == 'yes' ) { echo(' '); _e('Photos will be downsized during import.', 'wppa'); } ?><br/>
 			</p>
 			<p>
 				<?php _e('Default album for import:', 'wppa') ?>
@@ -680,12 +680,10 @@ global $warning_given;
 						}
 						else {
 							wppa_error_message(__('Error inserting photo', 'wppa') . ' ' . basename($file) . '.');
-//							return false;
 						}
 					}
 					else {
 						wppa_error_message(sprintf(__('Error inserting photo %s, unknown or non existent album.', 'wppa'), basename($file)));
-//						return false;
 					} 
 				} // Insert
 			}
@@ -724,7 +722,7 @@ function wppa_insert_photo ($file = '', $album = '', $name = '', $desc = '', $po
 		
 		if ($img_size) { 
 			if (!$warning_given_big && ($img_size['0'] > 1280 || $img_size['1'] > 1280)) {
-				if (get_option('wppa_resize_on_upload', 'no') == 'yes') {
+				if ( $wppa_opt['wppa_resize_on_upload'] == 'yes' ) {
 					wppa_ok_message(__('Although the photos are resized during the upload/import process, you may encounter \'Out of memory\'errors.', 'wppa') . '<br/>' . __('In that case: make sure you set the memory limit to 64M and make sure your hosting provider allows you the use of 64 Mb.', 'wppa'));
 				}
 				else {

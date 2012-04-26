@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains the admin menu and startups the admin pages
-* Version 4.4.5
+* Version 4.5.0
 *
 */
 
@@ -21,7 +21,12 @@ function wppa_add_admin() {
 	if ( current_user_can( 'administrator' ) ) {	
 		$wp_roles->add_cap( 'administrator', 'wppa_admin' );
 		$wp_roles->add_cap( 'administrator', 'wppa_upload' );
-		$wp_roles->add_cap( 'administrator', 'wppa_sidebar_admin' );
+		$wp_roles->add_cap( 'administrator', 'wppa_import' );
+		$wp_roles->add_cap( 'administrator', 'wppa_export' );
+		$wp_roles->add_cap( 'administrator', 'wppa_settings' );
+		$wp_roles->add_cap( 'administrator', 'wppa_potd' );
+		$wp_roles->add_cap( 'administrator', 'wppa_comments' );
+		$wp_roles->add_cap( 'administrator', 'wppa_help' );
 	}
 	
 	// See if there are comments pending moderation
@@ -45,14 +50,14 @@ function wppa_add_admin() {
 	add_menu_page( 'WP Photo Album', __('Photo&thinsp;Albums', 'wppa').$tot_pending, 'wppa_admin', 'wppa_admin_menu', 'wppa_admin', $icon_url ); //,'10' );
 	
 	//                 parent_slug        page_title                             menu_title                             capability            menu_slug               function
-	add_submenu_page( 'wppa_admin_menu',  __('Album Admin', 'wppa'),			 __('Album Admin', 'wppa').$upl_pending,'wppa_admin',         'wppa_admin_menu',      'wppa_admin' );
+	add_submenu_page( 'wppa_admin_menu',  __('Album Admin', 'wppa'),			 __('Album Admin', 'wppa').$upl_pending,'wppa_admin',        'wppa_admin_menu',      'wppa_admin' );
     add_submenu_page( 'wppa_admin_menu',  __('Upload Photos', 'wppa'),           __('Upload Photos', 'wppa'),          'wppa_upload',        'wppa_upload_photos',   'wppa_page_upload' );
-	add_submenu_page( 'wppa_admin_menu',  __('Import Photos', 'wppa'),           __('Import Photos', 'wppa'),          'wppa_upload',        'wppa_import_photos',   'wppa_page_import' );
-	add_submenu_page( 'wppa_admin_menu',  __('Export Photos', 'wppa'),           __('Export Photos', 'wppa'),          'administrator',      'wppa_export_photos',   'wppa_page_export' );
-    add_submenu_page( 'wppa_admin_menu',  __('Settings', 'wppa'),                __('Settings', 'wppa'),               'administrator',      'wppa_options',         'wppa_page_options' );
-	add_submenu_page( 'wppa_admin_menu',  __('Photo of the day Widget', 'wppa'), __('Photo of the day', 'wppa'),       'wppa_sidebar_admin', 'wppa_sidebar_options', 'wppa_sidebar_page_options' );
-	add_submenu_page( 'wppa_admin_menu',  __('Manage comments', 'wppa'),         __('Comments', 'wppa').$com_pending, 'administrator',      'wppa_manage_comments', 'wppa_comment_admin' );
-    add_submenu_page( 'wppa_admin_menu',  __('Help &amp; Info', 'wppa'),         __('Help &amp; Info', 'wppa'),        'edit_posts',         'wppa_help',            'wppa_page_help' );
+	add_submenu_page( 'wppa_admin_menu',  __('Import Photos', 'wppa'),           __('Import Photos', 'wppa'),          'wppa_import',        'wppa_import_photos',   'wppa_page_import' );
+	add_submenu_page( 'wppa_admin_menu',  __('Export Photos', 'wppa'),           __('Export Photos', 'wppa'),          'wppa_export',     	 'wppa_export_photos',   'wppa_page_export' );
+    add_submenu_page( 'wppa_admin_menu',  __('Settings', 'wppa'),                __('Settings', 'wppa'),               'wppa_settings',      'wppa_options',         'wppa_page_options' );
+	add_submenu_page( 'wppa_admin_menu',  __('Photo of the day Widget', 'wppa'), __('Photo of the day', 'wppa'),       'wppa_potd', 		 'wppa_photo_of_the_day', 'wppa_sidebar_page_options' );
+	add_submenu_page( 'wppa_admin_menu',  __('Manage comments', 'wppa'),         __('Comments', 'wppa').$com_pending,  'wppa_comments',      'wppa_manage_comments', 'wppa_comment_admin' );
+    add_submenu_page( 'wppa_admin_menu',  __('Help &amp; Info', 'wppa'),         __('Help &amp; Info', 'wppa'),        'wppa_help',          'wppa_help',            'wppa_page_help' );
 }
 
 /* ADMIN STYLES */
@@ -78,9 +83,7 @@ function wppa_admin_scripts() {
 
 // Album admin page
 function wppa_admin() {
-//	if ( get_option('wppa_album_admin_autosave', 'yes') == 'yes' ) 
-		require_once 'wppa-album-admin-autosave.php';
-//	else require_once 'wppa-album-admin.php';
+	require_once 'wppa-album-admin-autosave.php';
 	_wppa_admin();
 }
 // Upload admin page
@@ -101,9 +104,7 @@ function wppa_page_export() {
 }
 // Settings admin page
 function wppa_page_options() {	
-//	if ( get_option('wppa_settings_autosave', 'yes') == 'yes' ) 
-		require_once 'wppa-settings-autosave.php';
-//	else require_once 'wppa-settings.php';
+	require_once 'wppa-settings-autosave.php';
 	_wppa_page_options();
 }
 // Photo of the day admin page

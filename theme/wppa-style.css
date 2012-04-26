@@ -111,6 +111,7 @@
 	background-color: transparent;
 	display: inline;
 	overflow: hidden;
+	text-align: center;
 }
 
 /* Text under thumbnail images */
@@ -134,6 +135,7 @@
 	background-color: white; 
 	font-size: 10px;
 	line-height: 12px;
+	text-align: center;
 /*	z-index: 1000; */
 }
 
