@@ -1,9 +1,9 @@
 /* admin-styles.css 
 *
 * wp-photo-album-plus
-* version 4.0.0
+* version 4.5.1
 */
-#files_list
+#files_list, #files_list2
 {
 	margin: 10px 0;
 	font-size: 0.8em;
@@ -13,7 +13,12 @@
 	padding: 5px;
 }
 
-#files_list h3
+#files_list2 thead {
+	font-size: 1.25em;
+	font-weight: normal;
+}
+
+#files_list h3, #files_list2 h3
 {
 	margin: 0 0 5px 0;
 	padding: 0 0 2px 0;

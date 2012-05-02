@@ -569,6 +569,7 @@ Hide Camera info
 						// C Search
 						'wppa_search_linkpage' 			=> '0',		// 1
 						'wppa_excl_sep' 				=> 'no',	// 2
+						'wppa_photos_only'				=> 'no',	// 3
 						// D Watermark
 						'wppa_watermark_on'				=> 'no',
 						'wppa_watermark_user'			=> 'no',

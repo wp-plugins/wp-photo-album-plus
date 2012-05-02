@@ -2,11 +2,11 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 4.5.0
+* version 4.5.1
 *
 */
 global $wppa_api_version;
-$wppa_api_version = '4-5-0-000';
+$wppa_api_version = '4-5-1-000';
 // Initialize globals and option settings
 function wppa_initialize_runtime($force = false) {
 global $wppa;
@@ -346,6 +346,8 @@ global $wpdb;
 						'wppa_arrow_color' 				=> '',
 						'wppa_search_linkpage' 			=> '',
 						'wppa_excl_sep' 				=> '',
+						'wppa_photos_only'				=> '',	// 3
+						
 						'wppa_html' 					=> '',
 						'wppa_allow_debug' 				=> '',
 						'wppa_slide_order'				=> '',
@@ -1620,4 +1622,12 @@ global $cache_path;
 		prune_super_cache( $cache_path . 'supercache/', true );
 		prune_super_cache( $cache_path, true );
 	}
+}
+
+function wppa_err_alert($msg) {
+global $wppa;
+
+	$fullmsg = '<script type="text/javascript" >jQuery(document).ready(function(e) { alert(\''.$msg.'\') } )</script>';
+	if ( is_admin() ) echo $fullmsg;
+	else $wppa['out'] .= $fullmsg;	
 }

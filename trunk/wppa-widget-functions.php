@@ -2,7 +2,7 @@
 /* wppa_widgetfunctions.php
 /* Package: wp-photo-album-plus
 /*
-/* Version 4.5.0
+/* Version 4.5.1
 /*
 */
 
@@ -142,11 +142,12 @@ function wppa_walbum_select($sel = '') {
 
 function wppa_walbum_sanitize($walbum) {
 	$result = strtolower($walbum);
-	if (strstr($result, 'all-sep')) $result = 'all-sep';
-	elseif (strstr($result, 'all')) $result = 'all';
-	elseif (strstr($result, 'sep')) $result = 'sep';
-	elseif (strstr($result, 'topten')) $result = 'topten';
-	elseif (strstr($result, 'clr')) $result = '';
+	
+	if ( strstr($result, 'all-sep') ) $result = 'all-sep';
+	elseif ( strstr($result, 'all') ) $result = 'all';
+	elseif ( strstr($result, 'sep') ) $result = 'sep';
+	elseif ( strstr($result, 'topten') ) $result = 'topten';
+	elseif ( strstr($result, 'clr') ) $result = '';
 	else {
 		// Change multiple commas to one
 		while (substr_count($result, ',,')) $result = str_replace(',,', ',', $result);
@@ -174,7 +175,7 @@ global $wppa_opt;
 				$album = $wppa_opt['wppa_widget_album'];
 				if ($album == 'topten') {
 					$images = wppa_get_widgetphotos($album);
-					if ( count($images) > 1 && $option != '' ) {	// Select a random first from the current selection
+					if ( count($images) > 1 ) {	// Select a random first from the current selection
 						$idx = rand(0, count($images) - 1);
 						$image = $images[$idx];
 					}
