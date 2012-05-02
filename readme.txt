@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, multisite, network, lightbox, comment, watermark, iptc, exif
-Version: 4.5.0
+Version: 4.5.1
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -131,6 +131,27 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 4.5.1 =
+
+= Bug Fixes =
+
+* The photo of the day album selection finally works as designed.
+* Random topten photo of the day now works also!
+* The lightbox on a thumbnail widget will show the collection of the photos of the widget involved only, no longer of all the thumbnail widgets together.
+* Same for the topten widget.
+
+= New Features =
+
+* The upload screen Box A now also displays a list of the selected files.
+* You can set the search mechanism to search for photos only (Table IX-C3).
+
+= Other changes =
+
+* The 3 js files for the frontend are now combined into one: wppa.js. This reduces page load file accesses.
+* Improved check on filetype when uploading watermark file.
+* When Ajax is enabled and the browser supports history.pushState the stack is maintained also when the slideshow is the only non-widget running show.
+* Same for update of addthis linkurl and title. (despite bugs in addthis code).
 
 = 4.5.0 =
 

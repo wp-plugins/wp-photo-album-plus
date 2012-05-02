@@ -3,12 +3,12 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions and API modules
-* Version 4.5.0
+* Version 4.5.1
 *
 */
 /* Moved to wppa-common-functions.php:
 global $wppa_api_version;
-$wppa_api_version = '4-5-0-000';
+$wppa_api_version = '4-5-1-000';
 */
 
 
@@ -545,6 +545,8 @@ global $wppa_opt;
 	if ( $wppa['master_occur'] == '1' ) $src = wppa_get_searchstring();
 	else $src = '';
 	
+	if ( $src && $wppa_opt['wppa_photos_only'] ) return false;
+	
 	if (strlen($src) && $wppa['master_occur'] == '1' ) {	// Search is in occur 1 only
 		$albs = $wpdb->get_results($wpdb->prepare( 'SELECT * FROM ' . WPPA_ALBUMS . ' ' . wppa_get_album_order() ), 'ARRAY_A');
 		$albums = '';
@@ -634,24 +636,6 @@ global $wppa;
 	}
 	if ($id != '') {
 		$link = wppa_get_ajaxlink($pag).'wppa-album='.$id.'&amp;wppa-cover=0&amp;wppa-'.$w.'occur='.$occur;
-	
-	/*
-		$link = admin_url('admin-ajax.php');
-		$link .= '?action=wppa&amp;wppa-action=render';
-		$link .= '&amp;wppa-album='.$id.'&amp;wppa-cover=0';
-		$link .= '&amp;wppa-size='.wppa_get_container_width();
-		$link .= '&amp;wppa-moccur='.$wppa['master_occur'].'&amp;wppa-'.$w.'occur='.$occur;
-		*//*
-		if ( $wppa['ajax'] ) {
-			if ( isset($_GET['p']) ) $link .= '&amp;p='.$_GET['p'];
-			elseif ( isset($_GET['page_id']) ) $link .= '&amp;page_id='.$_GET['page_id'];
-			elseif ( isset($_GET['wppa-fromp']) ) $link .= '&amp;wppa-fromp='.$_GET['wppa-fromp'];
-			else echo 'Unexpected error missing p/page in wppa_get_album_url_ajax';
-		}
-		else {
-			$link .= '&amp;wppa-fromp='.get_the_ID();
-		}
-/*	*/
 	}
 	else $link = '';
     return $link;
@@ -663,8 +647,7 @@ global $wpdb;
 global $album;
     
     if (is_numeric($xid)) $id = $xid; else $id = $album['id'];
-//    $count = $wpdb->query($wpdb->prepare( "SELECT * FROM " . WPPA_PHOTOS . " WHERE album=%s", $id ) );
-    $count = $wpdb->query($wpdb->prepare( "SELECT * FROM " . WPPA_PHOTOS . " WHERE album = %s AND ( status <> %s OR owner = %s )", $id, 'pending', wppa_get_user() ) );
+    $count = $wpdb->get_var($wpdb->prepare( "SELECT COUNT(*) FROM " . WPPA_PHOTOS . " WHERE album = %s AND ( status <> %s OR owner = %s )", $id, 'pending', wppa_get_user() ) );
 	return $count;
 }
 
@@ -674,7 +657,7 @@ global $wpdb;
 global $album;
     
     if (is_numeric($xid)) $id = $xid; else $id = $album['id'];
-    $count = $wpdb->query($wpdb->prepare( "SELECT * FROM " . WPPA_ALBUMS . " WHERE a_parent=%s", $id ) );
+    $count = $wpdb->get_var($wpdb->prepare( "SELECT COUNT(*) FROM " . WPPA_ALBUMS . " WHERE a_parent=%s", $id ) );
     return $count;
 }
 
@@ -4196,7 +4179,6 @@ global $wppa_opt;
 		if (is_array($_FILES)) {
 			$bret = true;
 			$filecount = '1';
-//print_r($_FILES);
 			foreach ($_FILES as $file) {
 				if ( ! is_array($file['error']) ) $bret = wppa_do_frontend_file_upload($file, $alb);	// this should no longer happen since the name is incl []
 				else {
@@ -4262,47 +4244,15 @@ global $wppa_opt;
 		return false;
 	}
 	if ( wppa_make_the_photo_files($file['tmp_name'], $id, $ext) ) {
-		return true;
 //		wppa_err_alert(__('Photo successfully uploaded.', 'wppa_theme'));
+		return true;
 	}
 	else {
-		return false;
 //		wppa_err_alert(__('Upload failed', 'wppa_theme'));
+		return false;
 	}
 }
 
-function wppa_err_alert($msg) {
-global $wppa;
-
-	$wppa['out'] .= '<script type="text/javascript" >alert(\''.$msg.'\')</script>';
-}
-/*
-function wppa_get_album_id_by_name($xname) {
-global $wpdb;
-
-	$result = '';
-	$count = '0';
-	$name = wppa_normalize_quotes(stripslashes($xname));
-//echo 'search:'.$name.'<br/>';
-	$albums = $wpdb->get_results( $wpdb->prepare( "SELECT id, name FROM ".WPPA_ALBUMS), "ARRAY_A" );
-	foreach($albums as $album) {
-		$albumname = wppa_normalize_quotes(stripslashes(wppa_qtrans($album['name'])));
-//echo 'found:'.$albumname.'<br/>';
-		if ($albumname == $name) {
-			$result = $album['id'];
-			$count++;
-		}
-	}
-	
-	if ( $count == '0' ) {
-		return false;		// not found
-	}
-	if ( $count > '1' ) {
-		return '-1';		// duplicates
-	}
-	return $result;
-}
-*/
 function wppa_normalize_quotes($xtext) {
 
 	$text = html_entity_decode($xtext);
@@ -4670,17 +4620,18 @@ E#9209		Flash						Must be formatted according to table
 }
 
 
-function wppa_use_thumb_file($id, $width, $height) {
+function wppa_use_thumb_file($id, $width = '0', $height = '0') {
 global $wppa_opt;
 global $wpdb;
 
 	if ( ! $wppa_opt['wppa_use_thumbs_if_fit'] ) return false;
-	if ( ! $width && ! $height ) return false;
+	if ( ! $width && ! $height ) return false;	// should give at least one dimension
 	$ext = $wpdb->get_var($wpdb->prepare('SELECT ext FROM `'.WPPA_PHOTOS.'` WHERE `id` = %s', $id));
 	if ( ! $ext ) return false;
 	$size = getimagesize(WPPA_UPLOAD_PATH.'/thumbs/'.$id.'.'.$ext);
 	if ( ! is_array($size) ) return false;
-	if ( ( $width > 0 && $size[0] >= $width ) || ( $height > 0 && $size[1] >= $height ) ) return true;
-	return false;
+	if ( $width > 0 && $size[0] < $width ) return false;
+	if ( $height > 0 && $size[1] < $height ) return false;
+	return true;
 }
 	

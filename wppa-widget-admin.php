@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 * admin sidebar widget
-* version 4.5.0
+* version 4.5.1
 *
 */
 
@@ -13,7 +13,10 @@ function _wppa_sidebar_page_options() {
 	
 	$options_error = false;
 	
-	if (isset($_GET['walbum'])) update_option('wppa_widget_album', wppa_walbum_sanitize($_GET['walbum']));
+	if (isset($_GET['walbum'])) {
+		$walbum = wppa_walbum_sanitize($_GET['walbum']);
+		update_option('wppa_widget_album', $walbum);
+	}
 	if (isset($_POST['wppa-set-submit'])) {
 		check_admin_referer( '$wppa_nonce', WPPA_NONCE );
 		
@@ -34,7 +37,9 @@ function _wppa_sidebar_page_options() {
 			$options_error = true;
 		}
 		if (!$options_error) wppa_update_message(__('Changes Saved. Don\'t forget to activate the widget!', 'wppa')); 
-	} ?>
+	} 
+	wppa_initialize_runtime('force');
+	?>
 	
 	<div class="wrap">
 		<?php $iconurl = WPPA_URL.'/images/settings32.png'; ?>
@@ -86,7 +91,7 @@ function _wppa_sidebar_page_options() {
 								document.getElementById('wppa-spin').style.visibility = 'visible';
 								document.getElementById('wppa-upd').style.visibility = 'hidden';
 								var album = document.getElementById('wppa-wa').value;
-								if ( album != 'all' && album != 'sep' && album != 'all-sep' && album != 'clr' )
+								if ( album != 'all' && album != 'sep' && album != 'all-sep' && album != 'topten' && album != 'clr' )
 									album = document.getElementById('wppa-was').value + ',' + album;
 								var url = "<?php echo(wppa_dbg_url(get_admin_url().'admin.php?page=wppa_photo_of_the_day')) ?>&walbum=" + album;
 								document.location.href = url;
@@ -95,7 +100,7 @@ function _wppa_sidebar_page_options() {
 							</script>
 							<?php _e('Select:', 'wppa'); ?><select name="wppa-widget-album" id="wppa-wa" onchange="wppaCheckWa()" ><?php echo wppa_walbum_select($wppa_opt['wppa_widget_album']) ?></select>
 							<img id="wppa-spin" src="<?php echo(wppa_get_imgdir()); ?>wpspin.gif" style="visibility:hidden;"/>
-							<?php _e('Or Edit:', 'wppa'); ?><input type="text" name="wppa-widget-albums" id="wppa-was" value="<?php echo get_option('wppa_widget_album') /* Do not change into $wppa_opt, it may just have changed */ ?>" />
+							<?php _e('Or Edit:', 'wppa'); ?><input type="text" name="wppa-widget-albums" id="wppa-was" value="<?php echo $wppa_opt['wppa_widget_album'] ?>" />
 							<input class="button-primary" name="wppa-upd" id="wppa-upd" value="<?php _e('Update thumbnails', 'wppa'); ?>" onclick="wppaCheckWa()" />
 							<span class="description"><br/>
 								<?php _e('Select or edit the album(s) you want to use the photos of for the widget.', 'wppa'); ?>

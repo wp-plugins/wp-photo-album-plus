@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the upload/import pages and functions
-* Version 4.5.0
+* Version 4.5.1
 *
 */
 
@@ -85,7 +85,56 @@ global $wppa_opt;
 				<br /><small style="color:blue" ><?php _e('You need a modern browser that supports HTML-5 to select multiple files', 'wppa') ?></small>
 				<form enctype="multipart/form-data" action="<?php echo(wppa_dbg_url(get_admin_url().'admin.php?page=wppa_upload_photos')) ?>" method="post">
 				<?php wp_nonce_field('$wppa_nonce', WPPA_NONCE); ?>
-					<input id="my_files" type="file" multiple="multiple" name="my_files[]" />
+					<input id="my_files" type="file" multiple="multiple" name="my_files[]" onchange="showit()" />
+					<div id="files_list2">
+						<h3><?php _e('Selected Files:', 'wppa'); ?></h3>
+						
+					</div>
+					<script type="text/javascript">
+						function showit() {
+							var maxsize = parseInt('<?php echo $max_size ?>') * 1024 * 1024;
+							var maxcount = parseInt('<?php echo $max_files_txt ?>');
+							var totsize = 0;
+							var files = document.getElementById('my_files').files;
+							var tekst = '<h3><?php _e('Selected Files:', 'wppa') ?></h3>';
+							tekst += '<table><thead><tr>';
+									tekst += '<td><?php _e('Name', 'wppa') ?></td><td><?php _e('Size', 'wppa') ?></td><td><?php _e('Type', 'wppa') ?></td>';
+								tekst += '</tr></thead>';
+								tekst += '<tbody>';
+									tekst += '<tr><td><hr /></td><td><hr /></td><td><hr /></td></tr>';
+									for (var i=0;i<files.length;i++) {
+										tekst += '<tr>';
+											tekst += '<td>' + files[i].name + '</td>';
+											tekst += '<td>' + files[i].size + '</td>';
+											totsize += files[i].size;
+											tekst += '<td>' + files[i].type + '</td>';
+										tekst += '</tr>';
+									}
+									tekst += '<tr><td><hr /></td><td><hr /></td><td><hr /></td></tr>';
+								var style1 = '';
+								var style2 = '';
+								var style3 = '';
+								var warn1 = '';
+								var warn2 = '';
+								var warn3 = '';
+								if ( maxcount > 0 && files.length > maxcount ) {
+									style1 = 'color:red';
+									warn1 = '<?php _e('Too many!', 'wppa') ?>';
+								}
+								if ( maxsize > 0 && totsize > maxsize ) {
+									style2 = 'color:red';
+									warn2 = '<?php _e('Too big!', 'wppa') ?>';
+								}
+								if ( warn1 || warn2 ) {
+									style3 = 'color:green';
+									warn3 = '<?php _e('Try again!', 'wppa') ?>';
+								}
+								tekst += '<tr><td style="'+style1+'" ><?php _e('Total', 'wppa') ?>: '+files.length+' '+warn1+'</td><td style="'+style2+'" >'+totsize+' '+warn2+'</td><td style="'+style3+'" >'+warn3+'</td></tr>';
+								tekst += '</tbody>';
+							tekst += '</table>';
+							jQuery('#files_list2').html(tekst); 
+						}
+					</script>
 					<p>
 						<label for="wppa-album"><?php _e('Album:', 'wppa'); ?> </label>
 						<select name="wppa-album" id="wppa-album">

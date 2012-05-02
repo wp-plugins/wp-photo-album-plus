@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 4.5.0
+* Version 4.5.1
 *
 */
 
@@ -98,12 +98,15 @@ global $wppa_subtable;
 					if ( $file['error'] ) {
 						wppa_error_message(sprintf(__('Upload error %s', 'wppa'), $file['error']));
 					} 
-					elseif ( $file['type'] != 'image/png' ) {
-						wppa_error_message(sprintf(__('Uploaded file %s is not a .png file', 'wppa'), $file['name']));
-					}
 					else {
-						copy($file['tmp_name'], WPPA_UPLOAD_PATH . '/watermarks/' . basename($file['name']) );
-						wppa_update_message('Upload done');
+						$imgsize = getimagesize($file['tmp_name']);
+						if ( !is_array($imgsize) || !isset($imgsize[2]) || $imgsize[2] != 3 ) {
+							wppa_error_message(sprintf(__('Uploaded file %s is not a .png file', 'wppa'), $file['name']).' (Type='.$file['type'].').');
+						}
+						else {
+							copy($file['tmp_name'], WPPA_UPLOAD_PATH . '/watermarks/' . basename($file['name']));
+							wppa_err_alert(sprintf(__('Upload of %s done', 'wppa'), basename($file['name'])));
+						}
 					}
 				}
 				else {
@@ -461,7 +464,7 @@ global $wppa_subtable;
 						$name = __('Use thumbs if fit', 'wppa');
 						$desc = __('Use the thumbnail image files if they are large enough.', 'wppa');
 						$help = esc_js(__('This setting speeds up page loading for small photos.', 'wppa'));
-						$help .= '\n\n'.esc_js(__('Do NOT use this when your thumbnails have a forced aspect ration (when Table I-C2 is set to anything different from --- same as fullsize ---', 'wppa'));
+						$help .= '\n\n'.esc_js(__('Do NOT use this when your thumbnails have a forced aspect ratio (when Table I-C2 is set to anything different from --- same as fullsize ---)', 'wppa'));
 						$slug = 'wppa_use_thumbs_if_fit';
 						$html = wppa_checkbox($slug); 
 						wppa_setting($slug, '9', $name, $desc, $html, $help);
@@ -1115,8 +1118,8 @@ global $wppa_subtable;
 						wppa_setting($slug, '2', $name, $desc, $html, $help);
 
 						$name = __('Img', 'wppa');
-						$desc = __('Cover Photos.', 'wppa');
-						$help = esc_js(__('Enter valid CSS colors for Cover photo backgrounds and borders.', 'wppa'));
+						$desc = __('Cover Photos and popups.', 'wppa');
+						$help = esc_js(__('Enter valid CSS colors for Cover photo and popup backgrounds and borders.', 'wppa'));
 						$slug1 = 'wppa_bgcolor_img';
 						$slug2 = 'wppa_bcolor_img';
 						$slug = array($slug1, $slug2);
@@ -2303,7 +2306,7 @@ global $wppa_subtable;
 						$name = __('New photo desc', 'wppa');
 						$desc = __('The description (template) to add to a new photo.', 'wppa');
 						$help = esc_js(__('Enter the default description.', 'wppa'));
-						$help .= '\n\n'.esc_js(__('If yuo use html, please check item A-1 of this table.', 'wppa'));
+						$help .= '\n\n'.esc_js(__('If you use html, please check item A-1 of this table.', 'wppa'));
 						$slug = 'wppa_newphoto_description';
 						$html = wppa_textarea($slug);
 						wppa_setting(false, '4', $name, $desc, $html, $help);
@@ -2337,6 +2340,13 @@ global $wppa_subtable;
 						$slug = 'wppa_excl_sep';
 						$html = wppa_checkbox($slug);
 						wppa_setting($slug, '2', $name, $desc, $html, $help);
+						
+						$name = __('Photos only', 'wppa');
+						$desc = __('Search for photos only.', 'wppa');
+						$help = esc_js(__('When checked, only photos will be searched for.', 'wppa'));
+						$slug = 'wppa_photos_only';
+						$html = wppa_checkbox($slug);
+						wppa_setting($slug, '3', $name, $desc, $html, $help);
 						
 						wppa_setting_subheader('D', '1', __('Watermark related settings', 'wppa'));
 						
@@ -2717,7 +2727,10 @@ global $wppa_subtable;
 		$hlp = $name.':\n\n'.$help;
 		if ( $slugs ) {
 			$hlp .= '\n\n'.__('The default for this setting is:', 'wppa');
-			foreach ( array_keys($slugs) as $slugidx ) {
+			if ( count($slugs) == 1) {
+				if ( $slugs[0] != '' ) $hlp .= ' '.wppa_dflt($slugs[0]);
+			}
+			else foreach ( array_keys($slugs) as $slugidx ) {
 				if ( $slugs[$slugidx] != '' && isset($nums[$slugidx]) ) $hlp .= ' '.$nums[$slugidx].'. '.wppa_dflt($slugs[$slugidx]);
 			}
 		}

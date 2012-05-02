@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the non admin stuff
-* Version 4.4.8
+* Version 4.5.1
 *
 */
 
@@ -65,17 +65,13 @@ global $wpdb;
 	}
 }
 
-/* LOAD SLIDESHOW and THEME JS */
+/* LOAD SLIDESHOW, THEME and AJAX JS */
 add_action('init', 'wppa_add_javascripts');
 	
 function wppa_add_javascripts() {
-	wp_register_script('wppa-slideshow', WPPA_URL.'/wppa-slideshow.js');
-	wp_register_script('wppa-theme', WPPA_URL.'/wppa-theme.js');
-	wp_register_script('wppa-ajax', WPPA_URL.'/wppa-ajax.js');
+	wp_register_script('wppa', WPPA_URL.'/wppa.js');
 	wp_enqueue_script('jquery');
-	wp_enqueue_script('wppa-slideshow');
-	wp_enqueue_script('wppa-theme');
-	wp_enqueue_script('wppa-ajax');
+	wp_enqueue_script('wppa');
 }
 	
 /* LOAD WPPA+ THEME */
