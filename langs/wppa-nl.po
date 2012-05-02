@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wp-photo-album-plus\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-04-28 10:15+0100\n"
-"PO-Revision-Date: 2012-04-28 11:54+0100\n"
+"POT-Creation-Date: 2012-05-01 16:34+0100\n"
+"PO-Revision-Date: 2012-05-01 16:35+0100\n"
 "Last-Translator: J.N. Breetvelt <OpaJaap@OpaJaap.nl>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -1455,20 +1455,20 @@ msgstr "Kan het foto uitvoer bestand niet aanmaken."
 msgid "Could not read photo data."
 msgstr "Kan de foto gegevens niet lezen."
 
-#: wppa-functions.php:4217
+#: wppa-functions.php:4197
 msgid "Photo successfully uploaded."
 msgstr "Foto succesvol ge-upload."
 
-#: wppa-functions.php:4218
+#: wppa-functions.php:4198
 #, php-format
 msgid "%s photos successfully uploaded."
 msgstr "%s foto's succesvol ge-upload."
 
-#: wppa-functions.php:4220
+#: wppa-functions.php:4200
 msgid "Upload failed"
 msgstr "Upload mislukt"
 
-#: wppa-functions.php:4261
+#: wppa-functions.php:4241
 msgid "Could not insert photo into db."
 msgstr "Kan de foto niet invoegen in de database."
 
@@ -1749,7 +1749,7 @@ msgid "For more information on creating custom page templates, click"
 msgstr "Voor meer informatie over het maken van pagina sjablonen, klik"
 
 #: wppa-help.php:112
-#: wppa-settings-autosave.php:130
+#: wppa-settings-autosave.php:133
 msgid "here"
 msgstr "hier"
 
@@ -1916,3343 +1916,3348 @@ msgstr "Skin bestand %s geladen"
 msgid "Upload error %s"
 msgstr "Upload fout %s"
 
-#: wppa-settings-autosave.php:102
+#: wppa-settings-autosave.php:104
 #, php-format
 msgid "Uploaded file %s is not a .png file"
 msgstr "Het geüploade bestand %s is niet van het type .png"
 
-#: wppa-settings-autosave.php:110
+#: wppa-settings-autosave.php:108
+#, php-format
+msgid "Upload of %s done"
+msgstr "Upload van %s klaar"
+
+#: wppa-settings-autosave.php:113
 msgid "No file selected or error on upload"
 msgstr "Geen bestand geselecteerd of een fout tijdens uploaden"
 
-#: wppa-settings-autosave.php:128
+#: wppa-settings-autosave.php:131
 #, php-format
 msgid "Regenerating thumbnail images, starting at id=%s. Please wait...<br />"
 msgstr "Miniatuur afbeeldingen opnieuw maken, begonnen bij id=%s. Even geduld a.u.b...<br />"
 
-#: wppa-settings-autosave.php:129
+#: wppa-settings-autosave.php:132
 msgid "If the line of dots stops growing or your browser reports Ready but you did NOT get a 'READY regenerating thumbnail images' message, your server has given up. In that case: continue this action by clicking"
 msgstr "Indien de lijn puntjes niet meer langer wordt of de browser gereed is en u GEEN 'Gereed met het aanmaken van miniaturen' melding ziet dan heeft de server het opgegeven. In dit geval: ga verder met deze bewerking en klik op"
 
-#: wppa-settings-autosave.php:133
+#: wppa-settings-autosave.php:136
 #, php-format
 msgid "<br /><br />Your server reports that the elapsed time for this operation is limited to %s seconds."
 msgstr "<br /><br />Uw server meldt dat de tijd vor deze bewerking beperkt is tot %s seconden."
 
-#: wppa-settings-autosave.php:134
+#: wppa-settings-autosave.php:137
 msgid "<br />There may also be other restrictions set by the server, like cpu time limit."
 msgstr "<br />Er kunnen tevens andere beperkingen van kracht zijn, zoals een cpu tijd begrenzing."
 
-#: wppa-settings-autosave.php:141
+#: wppa-settings-autosave.php:144
 msgid "READY regenerating thumbnail images."
 msgstr "GEREED met het opnieuw aanmaken van miniatuur afbeeldingen."
 
-#: wppa-settings-autosave.php:152
+#: wppa-settings-autosave.php:155
 msgid "WP Photo Album Plus Settings"
 msgstr "WP Photo Album Plus Instellingen"
 
-#: wppa-settings-autosave.php:153
+#: wppa-settings-autosave.php:156
 msgid "Database revision:"
 msgstr "Database revisie:"
 
-#: wppa-settings-autosave.php:153
+#: wppa-settings-autosave.php:156
 msgid "WP Charset:"
 msgstr "WP Karakterset:"
 
-#: wppa-settings-autosave.php:155
+#: wppa-settings-autosave.php:158
 msgid "Multisite enabled. "
 msgstr "Multisite geactiveerd."
 
-#: wppa-settings-autosave.php:156
+#: wppa-settings-autosave.php:159
 msgid "Blogid = "
 msgstr "Blog id ="
 
-#: wppa-settings-autosave.php:165
-#: wppa-settings-autosave.php:183
-#: wppa-settings-autosave.php:187
-#: wppa-settings-autosave.php:191
+#: wppa-settings-autosave.php:168
+#: wppa-settings-autosave.php:186
+#: wppa-settings-autosave.php:190
+#: wppa-settings-autosave.php:194
 msgid "Unexpected error:"
 msgstr "Onverwachte fout:"
 
-#: wppa-settings-autosave.php:165
+#: wppa-settings-autosave.php:168
 msgid "Missing database table:"
 msgstr "Ontbrekende database tabel:"
 
-#: wppa-settings-autosave.php:183
+#: wppa-settings-autosave.php:186
 msgid "Missing directory:"
 msgstr "Ontbrekende map:"
 
-#: wppa-settings-autosave.php:187
+#: wppa-settings-autosave.php:190
 msgid "Directory is not writable:"
 msgstr "Map is niet beschrijfbaar:"
 
-#: wppa-settings-autosave.php:191
+#: wppa-settings-autosave.php:194
 msgid "Directory is not readable:"
 msgstr "Map is niet leesbaar:"
 
-#: wppa-settings-autosave.php:197
+#: wppa-settings-autosave.php:200
 msgid "Please de-activate and re-activate the plugin. If this problem persists, ask your administrator."
 msgstr "AUB de plugin de-activeren en opnieuw activeren. Als dit probleem blijft, vraag uw administrator."
 
-#: wppa-settings-autosave.php:201
+#: wppa-settings-autosave.php:204
 msgid "Show legenda"
 msgstr "Toon legenda"
 
-#: wppa-settings-autosave.php:203
+#: wppa-settings-autosave.php:206
 msgid "Legenda:"
 msgstr "Legenda:"
 
-#: wppa-settings-autosave.php:204
-#: wppa-settings-autosave.php:206
+#: wppa-settings-autosave.php:207
+#: wppa-settings-autosave.php:209
 msgid "Button"
 msgstr "Knop"
 
-#: wppa-settings-autosave.php:204
+#: wppa-settings-autosave.php:207
 msgid "action that causes page reload."
 msgstr "actie die het herladen van de pagina veroorzaakt."
 
-#: wppa-settings-autosave.php:206
-#: wppa-settings-autosave.php:2917
-#: wppa-settings-autosave.php:2927
+#: wppa-settings-autosave.php:209
+#: wppa-settings-autosave.php:2920
+#: wppa-settings-autosave.php:2930
 msgid "Are you sure?"
 msgstr "Weet u het zeker?"
 
-#: wppa-settings-autosave.php:207
+#: wppa-settings-autosave.php:210
 msgid "action that does not cause page reload."
 msgstr "actie die het herladen van de pagina niet veroorzaakt."
 
-#: wppa-settings-autosave.php:209
-#: wppa-settings-autosave.php:2367
-#: wppa-settings-autosave.php:2369
-#: wppa-settings-autosave.php:2746
-#: wppa-settings-autosave.php:2760
-#: wppa-settings-autosave.php:2771
-#: wppa-settings-autosave.php:2784
-#: wppa-settings-autosave.php:2800
-#: wppa-settings-autosave.php:2833
-#: wppa-settings-autosave.php:2863
+#: wppa-settings-autosave.php:212
+#: wppa-settings-autosave.php:2370
+#: wppa-settings-autosave.php:2372
+#: wppa-settings-autosave.php:2749
+#: wppa-settings-autosave.php:2763
+#: wppa-settings-autosave.php:2774
+#: wppa-settings-autosave.php:2787
+#: wppa-settings-autosave.php:2803
+#: wppa-settings-autosave.php:2836
+#: wppa-settings-autosave.php:2866
 msgid "Setting unmodified"
 msgstr "Instelling ongewijzigd"
 
-#: wppa-settings-autosave.php:211
+#: wppa-settings-autosave.php:214
 msgid "Update in progress"
 msgstr "Wijziging wordt uitgevoerd"
 
-#: wppa-settings-autosave.php:213
+#: wppa-settings-autosave.php:216
 msgid "Setting updated"
 msgstr "Instelling gewijzigd"
 
-#: wppa-settings-autosave.php:215
+#: wppa-settings-autosave.php:218
 msgid "Update failed"
 msgstr "Wijziging mislukt"
 
-#: wppa-settings-autosave.php:217
+#: wppa-settings-autosave.php:220
 msgid "Hide this"
 msgstr "Verberg dit"
 
-#: wppa-settings-autosave.php:221
+#: wppa-settings-autosave.php:224
 msgid "You use Big Browse Buttons on slide images. Any configured links on slides like PS overrule or lightbox will not work! Check Table VI-8 and/or II-B13"
 msgstr "U gebruikt Grote bladerknoppen. Elke koppeling vanaf foto's van volledige groote zoals FS gaat voor of lightbox zal niet werken. Kontroleer Tabel VI-8 en/of II-B13"
 
-#: wppa-settings-autosave.php:222
+#: wppa-settings-autosave.php:225
 msgid "You can not have popup and lightbox on thumbnails at the same time. Uncheck either Table IV-C8 or choose a different linktype in Table VI-2."
 msgstr "U kunt niet popup en lightbox tegelijkertijd actief hebben. Haal danwel het vinkje weg bij Table IV-C8, of kies een ander linktype in Tabel VI-2."
 
-#: wppa-settings-autosave.php:232
+#: wppa-settings-autosave.php:235
 msgid "Table I:"
 msgstr "Tabel I:"
 
-#: wppa-settings-autosave.php:232
+#: wppa-settings-autosave.php:235
 msgid "Sizes:"
 msgstr "Groottes:"
 
-#: wppa-settings-autosave.php:233
+#: wppa-settings-autosave.php:236
 msgid "This table describes all the sizes and size options (except fontsizes) for the generation and display of the WPPA+ elements."
 msgstr "Deze tabel beschrijft alle groottes en grootte-opties (behalve lettertype groottes) die nodig zijn bij het maken en afbeelden van WPPA+ onderdelen."
 
-#: wppa-settings-autosave.php:243
-#: wppa-settings-autosave.php:588
-#: wppa-settings-autosave.php:607
-#: wppa-settings-autosave.php:958
-#: wppa-settings-autosave.php:1157
-#: wppa-settings-autosave.php:1506
-#: wppa-settings-autosave.php:2034
-#: wppa-settings-autosave.php:2208
-#: wppa-settings-autosave.php:2447
+#: wppa-settings-autosave.php:246
+#: wppa-settings-autosave.php:591
+#: wppa-settings-autosave.php:610
+#: wppa-settings-autosave.php:961
+#: wppa-settings-autosave.php:1160
+#: wppa-settings-autosave.php:1509
+#: wppa-settings-autosave.php:2037
+#: wppa-settings-autosave.php:2211
+#: wppa-settings-autosave.php:2450
 msgid "Setting"
 msgstr "Instelling"
 
-#: wppa-settings-autosave.php:244
-#: wppa-settings-autosave.php:589
-#: wppa-settings-autosave.php:608
-#: wppa-settings-autosave.php:959
-#: wppa-settings-autosave.php:981
-#: wppa-settings-autosave.php:1139
-#: wppa-settings-autosave.php:1158
-#: wppa-settings-autosave.php:1507
-#: wppa-settings-autosave.php:1530
-#: wppa-settings-autosave.php:1656
-#: wppa-settings-autosave.php:1678
-#: wppa-settings-autosave.php:1918
-#: wppa-settings-autosave.php:2035
-#: wppa-settings-autosave.php:2055
-#: wppa-settings-autosave.php:2190
-#: wppa-settings-autosave.php:2209
-#: wppa-settings-autosave.php:2448
-#: wppa-settings-autosave.php:2468
-#: wppa-settings-autosave.php:2504
-#: wppa-settings-autosave.php:2524
-#: wppa-settings-autosave.php:2560
+#: wppa-settings-autosave.php:247
+#: wppa-settings-autosave.php:592
+#: wppa-settings-autosave.php:611
+#: wppa-settings-autosave.php:962
+#: wppa-settings-autosave.php:984
+#: wppa-settings-autosave.php:1142
+#: wppa-settings-autosave.php:1161
+#: wppa-settings-autosave.php:1510
+#: wppa-settings-autosave.php:1533
+#: wppa-settings-autosave.php:1659
+#: wppa-settings-autosave.php:1681
+#: wppa-settings-autosave.php:1921
+#: wppa-settings-autosave.php:2038
+#: wppa-settings-autosave.php:2058
+#: wppa-settings-autosave.php:2193
+#: wppa-settings-autosave.php:2212
+#: wppa-settings-autosave.php:2451
+#: wppa-settings-autosave.php:2471
+#: wppa-settings-autosave.php:2507
+#: wppa-settings-autosave.php:2527
+#: wppa-settings-autosave.php:2563
 msgid "Help"
 msgstr "Help"
 
-#: wppa-settings-autosave.php:250
+#: wppa-settings-autosave.php:253
 msgid "WPPA+ global system related settings"
 msgstr "Algemene instellingen van het WPPA+ systeem"
 
-#: wppa-settings-autosave.php:252
+#: wppa-settings-autosave.php:255
 msgid "Column Width"
 msgstr "Kolom Breedte"
 
-#: wppa-settings-autosave.php:253
+#: wppa-settings-autosave.php:256
 msgid "The width of the main column in your theme's display area."
 msgstr "De breedte van de hoofdkolom van uw thema."
 
-#: wppa-settings-autosave.php:254
+#: wppa-settings-autosave.php:257
 msgid "Enter the width of the main column in your theme's display area."
 msgstr "Voer de breedte in van de hoofdkolom van uw thema."
 
-#: wppa-settings-autosave.php:255
+#: wppa-settings-autosave.php:258
 msgid "You should set this value correctly to make sure the fullsize images are properly aligned horizontally."
 msgstr "U dient de waarde juist op te geven om er zeker van te zijn dat de foto's correct horizontaal worden uitgelijnd."
 
-#: wppa-settings-autosave.php:256
+#: wppa-settings-autosave.php:259
 msgid "You may enter auto for use in themes that have a floating content column."
 msgstr "U kunt auto invullen voor gebruik in thema's die een variabele hoofdkolom hebben."
 
-#: wppa-settings-autosave.php:257
+#: wppa-settings-autosave.php:260
 msgid "The use of 'auto' is strongly discouraged. Do not use it unless it is strictly required."
 msgstr "Het gebruik van 'auto' wordt sterk afgeraden. Gebruik dat niet tenzij het strikt noodzakelijk is."
 
-#: wppa-settings-autosave.php:260
-#: wppa-settings-autosave.php:316
-#: wppa-settings-autosave.php:408
+#: wppa-settings-autosave.php:263
+#: wppa-settings-autosave.php:319
+#: wppa-settings-autosave.php:411
 msgid "pixels wide"
 msgstr "pixels breed"
 
-#: wppa-settings-autosave.php:263
+#: wppa-settings-autosave.php:266
 msgid "Resize on Upload"
 msgstr "Tijdens upload verkleinen"
 
-#: wppa-settings-autosave.php:264
+#: wppa-settings-autosave.php:267
 msgid "Indicate if the photos should be resized during upload."
 msgstr "Geef aan of de foto's verkleind moeten worden bij het uploaden."
 
-#: wppa-settings-autosave.php:265
+#: wppa-settings-autosave.php:268
 msgid "If you check this item, the size of the photos will be reduced to the dimension specified in the next item during the upload/import process."
 msgstr "Als u dit aanvinkt, zullen de foto's verkleind worden tot de in de het volgende item aangegeven grootte tijdens het upload/import proces."
 
-#: wppa-settings-autosave.php:266
+#: wppa-settings-autosave.php:269
 msgid "The photos will never be stretched during upload if they are smaller."
 msgstr "De foto's zullen nooit vergroot worden als ze kleiner zijn."
 
-#: wppa-settings-autosave.php:272
+#: wppa-settings-autosave.php:275
 msgid "Resize to"
 msgstr "Verkleinen naar"
 
-#: wppa-settings-autosave.php:273
+#: wppa-settings-autosave.php:276
 msgid "Resize photos to fit within a given area."
 msgstr "Foto's verkelinen tot ze in een gegeven rechthoek passen."
 
-#: wppa-settings-autosave.php:274
+#: wppa-settings-autosave.php:277
 msgid "Specify the screensize for the unscaled photos."
 msgstr "Specificeer de schermgrootte voor de ungeschaalde foto's."
 
-#: wppa-settings-autosave.php:275
+#: wppa-settings-autosave.php:278
 msgid "The use of a non-default value is particularly usefull when you make use of lightbox functionality."
 msgstr "Het gebruik van een niet standaard waarde is in het bijzonder handig wanneer u gebruik maakt van lightbox functionaliteit."
 
-#: wppa-settings-autosave.php:277
-#: wppa-settings-autosave.php:296
-#: wppa-settings-autosave.php:305
-#: wppa-settings-autosave.php:342
-#: wppa-settings-autosave.php:360
-#: wppa-settings-autosave.php:428
-#: wppa-settings-autosave.php:458
-#: wppa-settings-autosave.php:476
-#: wppa-settings-autosave.php:484
-#: wppa-settings-autosave.php:492
-#: wppa-settings-autosave.php:528
-#: wppa-settings-autosave.php:546
-#: wppa-settings-autosave.php:562
-#: wppa-settings-autosave.php:578
-#: wppa-settings-autosave.php:1549
-#: wppa-settings-autosave.php:1564
-#: wppa-settings-autosave.php:1579
-#: wppa-settings-autosave.php:1594
-#: wppa-settings-autosave.php:1609
-#: wppa-settings-autosave.php:1624
-#: wppa-settings-autosave.php:1639
+#: wppa-settings-autosave.php:280
+#: wppa-settings-autosave.php:299
+#: wppa-settings-autosave.php:308
+#: wppa-settings-autosave.php:345
+#: wppa-settings-autosave.php:363
+#: wppa-settings-autosave.php:431
+#: wppa-settings-autosave.php:461
+#: wppa-settings-autosave.php:479
+#: wppa-settings-autosave.php:487
+#: wppa-settings-autosave.php:495
+#: wppa-settings-autosave.php:531
+#: wppa-settings-autosave.php:549
+#: wppa-settings-autosave.php:565
+#: wppa-settings-autosave.php:581
+#: wppa-settings-autosave.php:1552
+#: wppa-settings-autosave.php:1567
+#: wppa-settings-autosave.php:1582
+#: wppa-settings-autosave.php:1597
+#: wppa-settings-autosave.php:1612
+#: wppa-settings-autosave.php:1627
+#: wppa-settings-autosave.php:1642
 msgid "pixels"
 msgstr "pixels"
 
-#: wppa-settings-autosave.php:278
+#: wppa-settings-autosave.php:281
 msgid "Fullsize as specified above"
 msgstr "Volledige grootte zoals hierboven is aangegeven"
 
-#: wppa-settings-autosave.php:284
+#: wppa-settings-autosave.php:287
 msgid "Photocount threshold"
 msgstr "Drempelwaarde foto aantal"
 
-#: wppa-settings-autosave.php:285
+#: wppa-settings-autosave.php:288
 msgid "Number of thumbnails in an album must exceed."
 msgstr "Aantal miniaturen in een album moet groter zijn dan."
 
-#: wppa-settings-autosave.php:286
+#: wppa-settings-autosave.php:289
 msgid "Photos do not show up in the album unless there are more than this number of photos in the album. This allows you to have cover photos on an album that contains only sub albums without seeing them in the list of sub albums. Usually set to 0 (always show) or 1 (for one cover photo)."
 msgstr "U ziet de foto's niet in het album tenzij er meer dan dit aantal in het album zitten. Dit maakt het mogelijk om omslagfoto's te hebben op albums die verder alleen sub-albums bevatten zonder dat men ze in de lijst van sub-albums ziet. Gebruikelijke waarde 0 (laat alles zien) of 1 (voor één omslagfoto)."
 
-#: wppa-settings-autosave.php:288
+#: wppa-settings-autosave.php:291
 msgid "pieces"
 msgstr "stuks"
 
-#: wppa-settings-autosave.php:291
+#: wppa-settings-autosave.php:294
 msgid "Border thickness"
 msgstr "Randdikte"
 
-#: wppa-settings-autosave.php:292
+#: wppa-settings-autosave.php:295
 msgid "Thickness of wppa+ box borders."
 msgstr "Randdikte van wppa+ 'boxes'."
 
-#: wppa-settings-autosave.php:293
+#: wppa-settings-autosave.php:296
 msgid "Enter the thickness for the border of the WPPA+ boxes. A number of 0 means: no border."
 msgstr "Voer de dikte in voor de randen van WPPA+ boxen. Het getal 0 betekent: geen rand."
 
-#: wppa-settings-autosave.php:294
-#: wppa-settings-autosave.php:302
+#: wppa-settings-autosave.php:297
+#: wppa-settings-autosave.php:305
 msgid "WPPA+ boxes are: the navigation bars and the filmstrip."
 msgstr "WPPA+ 'boxes' zijn: de navigatie balken en de filmstrip."
 
-#: wppa-settings-autosave.php:300
+#: wppa-settings-autosave.php:303
 msgid "Radius of wppa+ box borders."
 msgstr "Afrondingsstraal van wppa+ 'box' randen."
 
-#: wppa-settings-autosave.php:301
+#: wppa-settings-autosave.php:304
 msgid "Enter the corner radius for the border of the WPPA+ boxes. A number of 0 means: no rounded corners."
 msgstr "Voer de afrondingsstraal in voor de randen van WPPA+ boxen. Het getal 0 betekent: geen afgeronde hoeken."
 
-#: wppa-settings-autosave.php:303
+#: wppa-settings-autosave.php:306
 msgid "Note that rounded corners are only supported by modern browsers."
 msgstr "Merk op dat afgeronde randen alleen door moderne browsers wordt ondersteund."
 
-#: wppa-settings-autosave.php:308
+#: wppa-settings-autosave.php:311
 msgid "Fullsize photos and Slideshow related settings"
 msgstr "Volledige grootte foto's en diavoorstellingen gerelateerde instellingen"
 
-#: wppa-settings-autosave.php:310
+#: wppa-settings-autosave.php:313
 msgid "Fullsize Width"
 msgstr "Volledige grootte Breedte"
 
-#: wppa-settings-autosave.php:311
+#: wppa-settings-autosave.php:314
 msgid "The maximum width fullsize photos will be displayed."
 msgstr "De maximale breedte waarop foto's van volledige grootte worden afgebeeld."
 
-#: wppa-settings-autosave.php:312
-#: wppa-settings-autosave.php:321
+#: wppa-settings-autosave.php:315
+#: wppa-settings-autosave.php:324
 msgid "Enter the largest size in pixels as how you want your photos to be displayed."
 msgstr "Voer de grootste maat (in pixels) in hoe u de foto's wilt weergeven."
 
-#: wppa-settings-autosave.php:313
+#: wppa-settings-autosave.php:316
 msgid "This is usually the same as the Column Width (Table I-A1), but it may differ."
 msgstr "Dit is meestal hetzelfde als de Kolom breedte (Tabel I-A1), maar het kan hiervan verschillen."
 
-#: wppa-settings-autosave.php:319
+#: wppa-settings-autosave.php:322
 msgid "Fullsize Height"
 msgstr "Volledige grootte Hoogte"
 
-#: wppa-settings-autosave.php:320
+#: wppa-settings-autosave.php:323
 msgid "The maximum height fullsize photos will be displayed."
 msgstr "De maximale hoogte waarop foto's van volledige grootte worden afgebeeld."
 
-#: wppa-settings-autosave.php:322
+#: wppa-settings-autosave.php:325
 msgid "This setting defines the height of the space reserved for full sized photos."
 msgstr "Deze instelling bepaald de hoogte van de ruimte die wordt gereserveerd voor foto's van volledige grootte."
 
-#: wppa-settings-autosave.php:323
+#: wppa-settings-autosave.php:326
 #, php-format
 msgid "If you change the width of a display by the %%size= command, this value changes proportionally to match the aspect ratio as defined by this and the previous setting."
 msgstr "Als u de breedte van de afbeelding wijzigt met het %%size= commando, wordt deze waarde proportioneel aangepast zodat de breedte/hoogte verhouding tussen deze en de vorige instelling hetzelfde blijft."
 
-#: wppa-settings-autosave.php:325
-#: wppa-settings-autosave.php:418
+#: wppa-settings-autosave.php:328
+#: wppa-settings-autosave.php:421
 msgid "pixels high"
 msgstr "pixels hoog"
 
-#: wppa-settings-autosave.php:328
+#: wppa-settings-autosave.php:331
 msgid "Stretch to fit"
 msgstr "Vergroot als te klein"
 
-#: wppa-settings-autosave.php:329
+#: wppa-settings-autosave.php:332
 msgid "Stretch photos that are too small."
 msgstr "Rek te kleine foto's uit."
 
-#: wppa-settings-autosave.php:330
+#: wppa-settings-autosave.php:333
 msgid "Fullsize images will be stretched to the Full Size at display time if they are smaller. Leaving unchecked is recommended. It is better to upload photos that fit well the sizes you use!"
 msgstr "Foto's worden vergroot tot de opgegeven volledige grootte als se kleiner zijn. Dit wordt afgeraden. Het is beter foto's te uploaden die van zichzelf groot genoeg zijn!"
 
-#: wppa-settings-autosave.php:335
+#: wppa-settings-autosave.php:338
 msgid "Fullsize borderwidth"
 msgstr "Volledige grootte randbreedte"
 
-#: wppa-settings-autosave.php:336
+#: wppa-settings-autosave.php:339
 msgid "The width of the border around fullsize images."
 msgstr "De breedte van de rand om volledige grootte foto's."
 
-#: wppa-settings-autosave.php:337
+#: wppa-settings-autosave.php:340
 msgid "The border is made by the image background being larger than the image itsself (padding)."
 msgstr "De rand wordt gevormd zodra de achtergrond groter is dan de afbeelding zelf (padding)."
 
-#: wppa-settings-autosave.php:338
+#: wppa-settings-autosave.php:341
 msgid "Additionally there may be a one pixel outline of a different color. See Table III, item 7."
 msgstr "Bovendien kan er een 1 pixel breder omlijning zijn van evt. een andere kleur, Zie Tabel III, item7."
 
-#: wppa-settings-autosave.php:339
+#: wppa-settings-autosave.php:342
 msgid "The number you enter here is exclusive the one pixel outline."
 msgstr "Het getal wat u hier invult is exclusief de 1 pixel omlijning,"
 
-#: wppa-settings-autosave.php:340
+#: wppa-settings-autosave.php:343
 msgid "If you leave this entry empty, there will be no outline either."
 msgstr "Als u dit veld leeg laat, is er ook geen omlijning."
 
-#: wppa-settings-autosave.php:345
+#: wppa-settings-autosave.php:348
 msgid "Numbar Max"
 msgstr "Numbar maximum"
 
-#: wppa-settings-autosave.php:346
+#: wppa-settings-autosave.php:349
 msgid "Maximum nubers to display."
 msgstr "Maximaal aantal nummers."
 
-#: wppa-settings-autosave.php:347
+#: wppa-settings-autosave.php:350
 msgid "In order to attemt to fit on one line, the numbers will be replaced by dots - except the current - when there are more than this number of photos in a slideshow."
 msgstr "Teneinde te proberen om alles op één regel te krijgen, worden de cijfers vervangen door punten - m.u.v. de huidige - wanneer er meer dan dit aantal foto's in een diavoorstelling zijn."
 
-#: wppa-settings-autosave.php:349
+#: wppa-settings-autosave.php:352
 msgid "numbers"
 msgstr "nummers"
 
-#: wppa-settings-autosave.php:353
+#: wppa-settings-autosave.php:356
 msgid "Thumbnail photos related settings"
 msgstr "Miniatuur afbeeldingen gerelateerde instellingen"
 
-#: wppa-settings-autosave.php:355
+#: wppa-settings-autosave.php:358
 msgid "Thumbnail Size"
 msgstr "Miniatuur grootte"
 
-#: wppa-settings-autosave.php:356
+#: wppa-settings-autosave.php:359
 msgid "The size of the thumbnail images."
 msgstr "De grootte van de miniatuur afbeeldingen."
 
-#: wppa-settings-autosave.php:357
-#: wppa-settings-autosave.php:489
+#: wppa-settings-autosave.php:360
+#: wppa-settings-autosave.php:492
 msgid "This size applies to the width or height, whichever is the largest."
 msgstr "Deze afmeting betreft de grootste van de breedte of de hoogte."
 
-#: wppa-settings-autosave.php:358
+#: wppa-settings-autosave.php:361
 msgid "Changing the thumbnail size may result in all thumbnails being regenerated. this may take a while."
 msgstr "Het veranderen van de grootte kan er toe leiden dat alle miniaturen opnieuw worden aangemaakt. Dit kan geruime tijd duren."
 
-#: wppa-settings-autosave.php:364
+#: wppa-settings-autosave.php:367
 msgid "Thumbnail Aspect"
 msgstr "Miniatuur Verhouding"
 
-#: wppa-settings-autosave.php:365
+#: wppa-settings-autosave.php:368
 msgid "Aspect ration of thumbnail image"
 msgstr "Hoogte/breedte verhouding van miniaturen"
 
-#: wppa-settings-autosave.php:369
+#: wppa-settings-autosave.php:372
 msgid "--- same as fullsize ---"
 msgstr "--- zelfde als volledige grootte ---"
 
-#: wppa-settings-autosave.php:370
+#: wppa-settings-autosave.php:373
 msgid "--- square clipped ---"
 msgstr "--- vierkant afgeknipt ---"
 
-#: wppa-settings-autosave.php:371
+#: wppa-settings-autosave.php:374
 msgid "4:5 landscape clipped"
 msgstr "4:5 liggend afgesneden"
 
-#: wppa-settings-autosave.php:372
+#: wppa-settings-autosave.php:375
 msgid "3:4 landscape clipped"
 msgstr "3:4 liggend afgesneden"
 
-#: wppa-settings-autosave.php:373
+#: wppa-settings-autosave.php:376
 msgid "2:3 landscape clipped"
 msgstr "2:3 liggend afgesneden"
 
-#: wppa-settings-autosave.php:374
+#: wppa-settings-autosave.php:377
 msgid "9:16 landscape clipped"
 msgstr "9:16 liggend afgesneden"
 
-#: wppa-settings-autosave.php:375
+#: wppa-settings-autosave.php:378
 msgid "1:2 landscape clipped"
 msgstr "1:2 liggend afgesneden"
 
-#: wppa-settings-autosave.php:376
+#: wppa-settings-autosave.php:379
 msgid "--- square padded ---"
 msgstr "--- vierkant aangevuld ---"
 
-#: wppa-settings-autosave.php:377
+#: wppa-settings-autosave.php:380
 msgid "4:5 landscape padded"
 msgstr "4:5 liggend aangevuld"
 
-#: wppa-settings-autosave.php:378
+#: wppa-settings-autosave.php:381
 msgid "3:4 landscape padded"
 msgstr "3:4 liggend aangevuld"
 
-#: wppa-settings-autosave.php:379
+#: wppa-settings-autosave.php:382
 msgid "2:3 landscape padded"
 msgstr "2:3 liggend aangevuld"
 
-#: wppa-settings-autosave.php:380
+#: wppa-settings-autosave.php:383
 msgid "9:16 landscape padded"
 msgstr "9:16 liggend aangevuld"
 
-#: wppa-settings-autosave.php:381
+#: wppa-settings-autosave.php:384
 msgid "1:2 landscape padded"
 msgstr "1:2 liggend aangevuld"
 
-#: wppa-settings-autosave.php:402
+#: wppa-settings-autosave.php:405
 msgid "Thumbframe width"
 msgstr "Miniaturen frame breedte"
 
-#: wppa-settings-autosave.php:403
+#: wppa-settings-autosave.php:406
 msgid "The width of the thumbnail frame."
 msgstr "De breedte van de frames van de miniaturen."
 
-#: wppa-settings-autosave.php:404
+#: wppa-settings-autosave.php:407
 msgid "Set the width of the thumbnail frame."
 msgstr "Geef de gewenste breedte op voor de frames van de miniaturen."
 
-#: wppa-settings-autosave.php:405
-#: wppa-settings-autosave.php:415
-#: wppa-settings-autosave.php:425
+#: wppa-settings-autosave.php:408
+#: wppa-settings-autosave.php:418
+#: wppa-settings-autosave.php:428
 msgid "Set width, height and spacing for the thumbnail frames."
 msgstr "Geef gewenste breedte, hoogte en tussenruimte op voor de frames van de miniaturen."
 
-#: wppa-settings-autosave.php:406
-#: wppa-settings-autosave.php:416
-#: wppa-settings-autosave.php:426
+#: wppa-settings-autosave.php:409
+#: wppa-settings-autosave.php:419
+#: wppa-settings-autosave.php:429
 msgid "These sizes should be large enough for a thumbnail image and - optionally - the text under it."
 msgstr "Deze maten moeten groot genoeg zijn om de miniatuur en - eventueel - de tekst er onder te kunnen omvatten."
 
-#: wppa-settings-autosave.php:412
+#: wppa-settings-autosave.php:415
 msgid "Thumbframe height"
 msgstr "Miniaturen frame hoogte"
 
-#: wppa-settings-autosave.php:413
+#: wppa-settings-autosave.php:416
 msgid "The height of the thumbnail frame."
 msgstr "De hoogte van de frames van de miniaturen."
 
-#: wppa-settings-autosave.php:414
+#: wppa-settings-autosave.php:417
 msgid "Set the height of the thumbnail frame."
 msgstr "Geef gewenste hoogte op voor de frames van de miniaturen."
 
-#: wppa-settings-autosave.php:422
+#: wppa-settings-autosave.php:425
 msgid "Thumbnail spacing"
 msgstr "Miniaturen tussenruimte"
 
-#: wppa-settings-autosave.php:423
+#: wppa-settings-autosave.php:426
 msgid "The spacing between adjacent thumbnail frames."
 msgstr "De tussenruimte van de frames van de miniaturen."
 
-#: wppa-settings-autosave.php:424
+#: wppa-settings-autosave.php:427
 msgid "Set the minimal spacing between the adjacent thumbnail frames"
 msgstr "Geef gewenste minimale tussenruimte op voor de frames van de miniaturen."
 
-#: wppa-settings-autosave.php:432
+#: wppa-settings-autosave.php:435
 msgid "Auto spacing"
 msgstr "Automatische tussenruimtes"
 
-#: wppa-settings-autosave.php:433
+#: wppa-settings-autosave.php:436
 msgid "Space the thumbnail frames automatic."
 msgstr "Zet de frames van de miniatuurafbeeldingen automatisch op regelmatige afstanden."
 
-#: wppa-settings-autosave.php:434
+#: wppa-settings-autosave.php:437
 msgid "If you check this box, the thumbnail images will be evenly distributed over the available width."
 msgstr "Als u dit aanvinkt dan worden de miniatuurafbeeldingen gelijkmatig verdeeld over de beschikbare breedte."
 
-#: wppa-settings-autosave.php:435
+#: wppa-settings-autosave.php:438
 msgid "In this case, the thumbnail spacing value (setting I-9) will be regarded as a minimum value."
 msgstr "In dit geval wordt de instelling voor de tussenruimte (instelling I-9) beschouwd als een minimum waarde."
 
-#: wppa-settings-autosave.php:441
-#: wppa-settings-autosave.php:495
+#: wppa-settings-autosave.php:444
+#: wppa-settings-autosave.php:498
 msgid "Page size"
 msgstr "Pagina grootte"
 
-#: wppa-settings-autosave.php:442
+#: wppa-settings-autosave.php:445
 msgid "Max number of thumbnails per page."
 msgstr "Maximum aantal miniatuur afbeeldingen per pagina."
 
-#: wppa-settings-autosave.php:443
+#: wppa-settings-autosave.php:446
 msgid "Enter the maximum number of thumbnail images per page. A value of 0 indicates no pagination."
 msgstr "Geef het maximum aantal miniaturen per pagina op. De waarde 0 betekent: geen paginering."
 
-#: wppa-settings-autosave.php:445
+#: wppa-settings-autosave.php:448
 msgid "thumbnails"
 msgstr "miniaturen"
 
-#: wppa-settings-autosave.php:450
+#: wppa-settings-autosave.php:453
 msgid "The size of the thumbnail popup images."
 msgstr "De grootte van de popup afbeeldingen."
 
-#: wppa-settings-autosave.php:451
+#: wppa-settings-autosave.php:454
 msgid "Enter the size of the popup images. This size should be larger than the thumbnail size."
 msgstr "Geef de grootte van de pop-up afbeeldingen op. Deze grootte dient groter te zijn dan de grootte van de miniaturen."
 
-#: wppa-settings-autosave.php:452
+#: wppa-settings-autosave.php:455
 msgid "This size should also be at least the cover image size."
 msgstr "Deze grootte dient ook minsens zo groot te zijn als de omslafoto grootte."
 
-#: wppa-settings-autosave.php:453
+#: wppa-settings-autosave.php:456
 msgid "Changing the popup size may result in all thumbnails being regenerated. this may take a while."
 msgstr "Het veranderen van de grootte kan er toe leiden dat alle miniaturen opnieuw worden aangemaakt. Dit kan geruime tijd duren."
 
-#: wppa-settings-autosave.php:454
+#: wppa-settings-autosave.php:457
 msgid "Although this setting has only visual effect if \"Thumb popup\" (Table IV-C8) is checked,"
 msgstr "Alhoewel deze instelling alleen effect heeft als \"Miniatuur popup\" (Tabel IV-C8) is aangevinkt,"
 
-#: wppa-settings-autosave.php:455
+#: wppa-settings-autosave.php:458
 msgid "the value must be right as it is the physical size of the thumbnail and coverphoto images."
 msgstr "dient de waarde juist te zijn daar het de fysieke grootte van de afbeeldingen voor miniaturen en omslagfoto's is."
 
-#: wppa-settings-autosave.php:461
+#: wppa-settings-autosave.php:464
 msgid "Use thumbs if fit"
 msgstr "Gebruik miniaturen waar mogelijk"
 
-#: wppa-settings-autosave.php:462
+#: wppa-settings-autosave.php:465
 msgid "Use the thumbnail image files if they are large enough."
 msgstr "Gebruik de miniatuur afbeeldingsbestanden indien ze groot genoeg zijn."
 
-#: wppa-settings-autosave.php:463
+#: wppa-settings-autosave.php:466
 msgid "This setting speeds up page loading for small photos."
 msgstr "Deze instelling versnelt de pagina opbouw aanzienlijk voor kleine foto's."
 
-#: wppa-settings-autosave.php:464
+#: wppa-settings-autosave.php:467
 msgid "Do NOT use this when your thumbnails have a forced aspect ratio (when Table I-C2 is set to anything different from --- same as fullsize ---)"
 msgstr "Gebruik deze instelling NIET indien u een andere verhouding dan --- zelfde als volledige grootte --- in tabel I-C2 heeft gekozen"
 
-#: wppa-settings-autosave.php:469
-#: wppa-settings-autosave.php:913
+#: wppa-settings-autosave.php:472
+#: wppa-settings-autosave.php:916
 msgid "Album cover related settings"
 msgstr "Album omslagen gerelateerde instellingen"
 
-#: wppa-settings-autosave.php:472
+#: wppa-settings-autosave.php:475
 msgid "Maximum width for a album cover display."
 msgstr "Maximale breedte van een album omslag."
 
-#: wppa-settings-autosave.php:473
+#: wppa-settings-autosave.php:476
 msgid "Display covers in 2 or more columns if the display area is wider than the given width."
 msgstr "Toon de omslagen in 2 of meer kolommen indien de afbeeldingsruimte gelijk is aan of breder is dan het opgegeven aantal pixels."
 
-#: wppa-settings-autosave.php:474
+#: wppa-settings-autosave.php:477
 msgid "This also applies for 'thumbnails as covers', and will NOT apply to single items."
 msgstr "Dit is ook van toepassing op 'miniaturen als omslagen weergeve', maar NIET op enkele items."
 
-#: wppa-settings-autosave.php:479
+#: wppa-settings-autosave.php:482
 msgid "Min Text frame height"
 msgstr "Minimale hoogte tekst frame"
 
-#: wppa-settings-autosave.php:480
+#: wppa-settings-autosave.php:483
 msgid "The minimal cover text frame height."
 msgstr "De minimale hoogte van een omslag tekst veld."
 
-#: wppa-settings-autosave.php:481
+#: wppa-settings-autosave.php:484
 msgid "The minimal height of the description field in an album cover display."
 msgstr "De minimale hoogte van het beschrijvingsveld in een album omslag."
 
-#: wppa-settings-autosave.php:482
+#: wppa-settings-autosave.php:485
 msgid "This setting enables you to give the album covers the same height provided that the cover images are equally sized."
 msgstr "Deze instelling maakt het mogelijk om album omslagen even hoo te maken indien de omslagfoto's dezelfde grootte hebben."
 
-#: wppa-settings-autosave.php:487
+#: wppa-settings-autosave.php:490
 msgid "Coverphoto size"
 msgstr "Omslag foto grootte"
 
-#: wppa-settings-autosave.php:488
+#: wppa-settings-autosave.php:491
 msgid "The size of the coverphoto."
 msgstr "De grootte van de omslagfoto."
 
-#: wppa-settings-autosave.php:490
+#: wppa-settings-autosave.php:493
 msgid "Changing the coverphoto size may result in all thumbnails being regenerated. this may take a while."
 msgstr "Het veranderen van de grootte kan er toe leiden dat alle miniaturen opnieuw worden aangemaakt. Dit kan geruime tijd duren."
 
-#: wppa-settings-autosave.php:496
+#: wppa-settings-autosave.php:499
 msgid "Max number of covers per page."
 msgstr "Maximum aantal album omslagen per pagina."
 
-#: wppa-settings-autosave.php:497
+#: wppa-settings-autosave.php:500
 msgid "Enter the maximum number of album covers per page. A value of 0 indicates no pagination."
 msgstr "Geef het maximum aantal album omslagen per pagina op. De waarde 0 betekent: geen paginering."
 
-#: wppa-settings-autosave.php:499
+#: wppa-settings-autosave.php:502
 msgid "covers"
 msgstr "omslagen"
 
-#: wppa-settings-autosave.php:502
+#: wppa-settings-autosave.php:505
 msgid "Rating and comment related settings"
 msgstr "Waarderingen en reacties gerelateerde instellingen"
 
-#: wppa-settings-autosave.php:504
+#: wppa-settings-autosave.php:507
 msgid "Rating size"
 msgstr "Grootte waarderingen"
 
-#: wppa-settings-autosave.php:505
+#: wppa-settings-autosave.php:508
 msgid "Select the number of voting stars."
 msgstr "Selecteer het aantal sterren."
 
-#: wppa-settings-autosave.php:514
+#: wppa-settings-autosave.php:517
 msgid "Display precision"
 msgstr "Weergave precisie"
 
-#: wppa-settings-autosave.php:515
+#: wppa-settings-autosave.php:518
 msgid "Select the desired rating display precision."
 msgstr "Selecteer de gewenste waarderings weergave precisie."
 
-#: wppa-settings-autosave.php:518
+#: wppa-settings-autosave.php:521
 msgid "decimal places"
 msgstr "cyfers achter de komma"
 
-#: wppa-settings-autosave.php:525
+#: wppa-settings-autosave.php:528
 msgid "Size of Avatar images."
 msgstr "De grootte van de Avatar afbeeldingen."
 
-#: wppa-settings-autosave.php:526
+#: wppa-settings-autosave.php:529
 msgid "The size of the square avatar; must be > 0 and < 256"
 msgstr "De afmeting van de vierkante avatar; moet zijn > 0 en < 256"
 
-#: wppa-settings-autosave.php:531
-#: wppa-settings-autosave.php:940
+#: wppa-settings-autosave.php:534
+#: wppa-settings-autosave.php:943
 msgid "Widget related settings"
 msgstr "Widget gerelateerde instellingen"
 
-#: wppa-settings-autosave.php:533
+#: wppa-settings-autosave.php:536
 msgid "TopTen count"
 msgstr "Top Tien aantal"
 
-#: wppa-settings-autosave.php:534
+#: wppa-settings-autosave.php:537
 msgid "Number of photos in TopTen widget."
 msgstr "Aantal foto's in de TopTien widget."
 
-#: wppa-settings-autosave.php:535
+#: wppa-settings-autosave.php:538
 msgid "Enter the maximum number of rated photos in the TopTen widget."
 msgstr "Geef het maximaal weer te geven aantal gewaardeerde foto's voor de widget op."
 
-#: wppa-settings-autosave.php:537
-#: wppa-settings-autosave.php:569
+#: wppa-settings-autosave.php:540
+#: wppa-settings-autosave.php:572
 msgid "photos"
 msgstr "foto's"
 
-#: wppa-settings-autosave.php:540
+#: wppa-settings-autosave.php:543
 msgid "TopTen size"
 msgstr "TopTien grootte"
 
-#: wppa-settings-autosave.php:541
+#: wppa-settings-autosave.php:544
 msgid "Size of thumbnails in TopTen widget."
 msgstr "De grootte van de miniaturen in de TopTien widget."
 
-#: wppa-settings-autosave.php:542
+#: wppa-settings-autosave.php:545
 msgid "Enter the size for the mini photos in the TopTen widget."
 msgstr "Geef de grootte op van de miniatuur foto's in de TopTien widget."
 
-#: wppa-settings-autosave.php:543
-#: wppa-settings-autosave.php:559
-#: wppa-settings-autosave.php:575
+#: wppa-settings-autosave.php:546
+#: wppa-settings-autosave.php:562
+#: wppa-settings-autosave.php:578
 msgid "The size applies to the width or height, whatever is the largest."
 msgstr "De grootte betreft de breedte of hoogte, welke de grootste is."
 
-#: wppa-settings-autosave.php:544
-#: wppa-settings-autosave.php:560
-#: wppa-settings-autosave.php:576
+#: wppa-settings-autosave.php:547
+#: wppa-settings-autosave.php:563
+#: wppa-settings-autosave.php:579
 msgid "Recommended values: 86 for a two column and 56 for a three column display."
 msgstr "Aanbevolen waarden: 86 voor twee en 56 voor drie kolommen weergave."
 
-#: wppa-settings-autosave.php:549
+#: wppa-settings-autosave.php:552
 msgid "Comment count"
 msgstr "Reacties aantal"
 
-#: wppa-settings-autosave.php:550
+#: wppa-settings-autosave.php:553
 msgid "Number of entries in Comment widget."
 msgstr "Aantal foto's in de Reacties widget."
 
-#: wppa-settings-autosave.php:551
+#: wppa-settings-autosave.php:554
 msgid "Enter the maximum number of entries in the Comment widget."
 msgstr "Geef het maximaal weer te geven aantal becommentarieerde foto's voor de widget op."
 
-#: wppa-settings-autosave.php:553
+#: wppa-settings-autosave.php:556
 msgid "entries"
 msgstr "stuks"
 
-#: wppa-settings-autosave.php:556
+#: wppa-settings-autosave.php:559
 msgid "Comment size"
 msgstr "Reacties grootte"
 
-#: wppa-settings-autosave.php:557
+#: wppa-settings-autosave.php:560
 msgid "Size of thumbnails in Comment widget."
 msgstr "De grootte van de miniaturen in de Reacties widget."
 
-#: wppa-settings-autosave.php:558
+#: wppa-settings-autosave.php:561
 msgid "Enter the size for the mini photos in the Comment widget."
 msgstr "Geef de grootte op van de miniatuur foto's in de Reacties widget."
 
-#: wppa-settings-autosave.php:565
+#: wppa-settings-autosave.php:568
 msgid "Thumbnail count"
 msgstr "Miniaturen aantal"
 
-#: wppa-settings-autosave.php:566
+#: wppa-settings-autosave.php:569
 msgid "Number of photos in Thumbnail widget."
 msgstr "Aantal foto's in de Miniaturen widget."
 
-#: wppa-settings-autosave.php:567
+#: wppa-settings-autosave.php:570
 msgid "Enter the maximum number of rated photos in the Thumbnail widget."
 msgstr "Geef het maximaal weer te geven aantal foto's voor de miniaturen widget op."
 
-#: wppa-settings-autosave.php:572
+#: wppa-settings-autosave.php:575
 msgid "Thumbnail widget size"
 msgstr "Miniatuur grootte van de miniaturen widget"
 
-#: wppa-settings-autosave.php:573
+#: wppa-settings-autosave.php:576
 msgid "Size of thumbnails in Thumbnail widget."
 msgstr "De grootte van de miniaturen in de Miniaturen widget."
 
-#: wppa-settings-autosave.php:574
+#: wppa-settings-autosave.php:577
 msgid "Enter the size for the mini photos in the Thumbnail widget."
 msgstr "Geef de grootte op van de miniatuur foto's in de miniaturen widget."
 
-#: wppa-settings-autosave.php:596
+#: wppa-settings-autosave.php:599
 msgid "Table II:"
 msgstr "Tabel II:"
 
-#: wppa-settings-autosave.php:596
+#: wppa-settings-autosave.php:599
 msgid "Visibility:"
 msgstr "Zichtbaarheid:"
 
-#: wppa-settings-autosave.php:597
+#: wppa-settings-autosave.php:600
 msgid "This table describes the visibility of certain wppa+ elements."
 msgstr "Deze tabel beschrijft de zichtbaarheid van verschillende wppa+ onderdelen."
 
-#: wppa-settings-autosave.php:614
+#: wppa-settings-autosave.php:617
 msgid "Breadcrumb related settings"
 msgstr "Broodkruimelnavigatie gerelateerde instellingen"
 
-#: wppa-settings-autosave.php:616
+#: wppa-settings-autosave.php:619
 msgid "Breadcrumb"
 msgstr "Broodkruimelnavigatie"
 
-#: wppa-settings-autosave.php:617
+#: wppa-settings-autosave.php:620
 msgid "Show breadcrumb navigation bars."
 msgstr "Toon broodkruimel navigatiebalken."
 
-#: wppa-settings-autosave.php:618
+#: wppa-settings-autosave.php:621
 msgid "Indicate whether a breadcrumb navigation should be displayed"
 msgstr "Geef aan of de broodkruimelnavigatie moet worden weergegeven"
 
-#: wppa-settings-autosave.php:624
+#: wppa-settings-autosave.php:627
 msgid "Breadcrumb on search results"
 msgstr "Broodkruimelnavigatie op zoekresultaten"
 
-#: wppa-settings-autosave.php:625
+#: wppa-settings-autosave.php:628
 msgid "Show breadcrumb navigation bars on the search results page."
 msgstr "Toon broodkruimel navigatiebalken op de zoekresultaten pagina."
 
-#: wppa-settings-autosave.php:626
+#: wppa-settings-autosave.php:629
 msgid "Indicate whether a breadcrumb navigation should be displayed above the search results."
 msgstr "Geef aan of de broodkruimelnavigatie moet worden weergegeven boven de zoekresultaten."
 
-#: wppa-settings-autosave.php:632
+#: wppa-settings-autosave.php:635
 msgid "Breadcrumb on topten displays"
 msgstr "Broodkruimel op toptien weergaven"
 
-#: wppa-settings-autosave.php:633
+#: wppa-settings-autosave.php:636
 msgid "Show breadcrumb navigation bars on topten displays."
 msgstr "Toon broodkruimel navigatiebalken op toptien displays."
 
-#: wppa-settings-autosave.php:634
+#: wppa-settings-autosave.php:637
 msgid "Indicate whether a breadcrumb navigation should be displayed above the topten displays."
 msgstr "Geef aan of de broodkruimelnavigatie moet worden weergegeven boven toptien weergaven."
 
-#: wppa-settings-autosave.php:640
+#: wppa-settings-autosave.php:643
 msgid "Home"
 msgstr "Beginpagina"
 
-#: wppa-settings-autosave.php:641
+#: wppa-settings-autosave.php:644
 msgid "Show \"Home\" in breadcrumb."
 msgstr "Toon \"Beginpagina\" in de broodkruimelnavigatie."
 
-#: wppa-settings-autosave.php:642
+#: wppa-settings-autosave.php:645
 msgid "Indicate whether the breadcrumb navigation should start with a \"Home\"-link"
 msgstr "Geef aan of de broodkruimelnavigatie met een \"Beginpagina\"-verwijzing moet beginnen"
 
-#: wppa-settings-autosave.php:648
+#: wppa-settings-autosave.php:651
 msgid "Separator"
 msgstr "Scheidingsteken"
 
-#: wppa-settings-autosave.php:649
+#: wppa-settings-autosave.php:652
 msgid "Breadcrumb separator symbol."
 msgstr "Broodkruimelnavigatie scheidingssymbool."
 
-#: wppa-settings-autosave.php:650
+#: wppa-settings-autosave.php:653
 msgid "Select the desired breadcrumb separator element."
 msgstr "Selecteer het gewenste broodkruimelnavigatiescheidingselement."
 
-#: wppa-settings-autosave.php:651
+#: wppa-settings-autosave.php:654
 msgid "A text string may contain valid html."
 msgstr "Een tekst mag html code bevatten."
 
-#: wppa-settings-autosave.php:652
+#: wppa-settings-autosave.php:655
 msgid "An image will be scaled automatically if you set the navigation font size."
 msgstr "Een afbeelding wordt automatisch geschaald indien de navigatie fontgrootte is ingesteld."
 
-#: wppa-settings-autosave.php:654
+#: wppa-settings-autosave.php:657
 msgid "Text (html):"
 msgstr "Tekst (html):"
 
-#: wppa-settings-autosave.php:654
+#: wppa-settings-autosave.php:657
 msgid "Image (url):"
 msgstr "Afbeelding (url):"
 
-#: wppa-settings-autosave.php:661
+#: wppa-settings-autosave.php:664
 msgid "Html"
 msgstr "Html"
 
-#: wppa-settings-autosave.php:662
+#: wppa-settings-autosave.php:665
 msgid "Breadcrumb separator text."
 msgstr "Broodkruimelnavigatie scheidings tekst."
 
-#: wppa-settings-autosave.php:663
+#: wppa-settings-autosave.php:666
 msgid "Enter the HTML code that produces the separator symbol you want."
 msgstr "Voer de HTML code in die het gewenste scheidingssymbool aanmaakt."
 
-#: wppa-settings-autosave.php:664
+#: wppa-settings-autosave.php:667
 msgid "It may be as simple as '-' (without the quotes) or as complex as a tag like <div>..</div>."
 msgstr "Het kan zo eenvoudig zijn als '-' (zonder accenten) of zo complex als een tag zoals <div>..</div>."
 
-#: wppa-settings-autosave.php:669
+#: wppa-settings-autosave.php:672
 msgid "Image Url"
 msgstr "Afbeelding Url"
 
-#: wppa-settings-autosave.php:670
+#: wppa-settings-autosave.php:673
 msgid "Full url to separator image."
 msgstr "Volledige url naar een afbeelding."
 
-#: wppa-settings-autosave.php:671
+#: wppa-settings-autosave.php:674
 msgid "Enter the full url to the image you want to use for the separator symbol."
 msgstr "Voer de volledige url in naar een afbeelding die u wenst te gebruiken als scheidings symbool."
 
-#: wppa-settings-autosave.php:676
-#: wppa-settings-autosave.php:1184
+#: wppa-settings-autosave.php:679
+#: wppa-settings-autosave.php:1187
 msgid "Slideshow related settings"
 msgstr "Diavoorstelling gerelateerde instellingen"
 
-#: wppa-settings-autosave.php:678
+#: wppa-settings-autosave.php:681
 msgid "Start/stop"
 msgstr "Start/stop"
 
-#: wppa-settings-autosave.php:679
+#: wppa-settings-autosave.php:682
 msgid "Show the Start/Stop slideshow bar."
 msgstr "Toon de Start/stop diavoorstelling balk."
 
-#: wppa-settings-autosave.php:680
+#: wppa-settings-autosave.php:683
 msgid "If checked: display the start/stop slideshow navigation bar above the full-size images and slideshow"
 msgstr "Indien aangevinkt: toon de start/stop diavoorstelling navigatiebalk boven de diavoorstelling."
 
-#: wppa-settings-autosave.php:685
+#: wppa-settings-autosave.php:688
 msgid "Browse bar"
 msgstr "Blader balk"
 
-#: wppa-settings-autosave.php:686
+#: wppa-settings-autosave.php:689
 msgid "Show Browse photos bar."
 msgstr "Toon de door foto's bladeren balk."
 
-#: wppa-settings-autosave.php:687
+#: wppa-settings-autosave.php:690
 msgid "If checked: display the preveous/next navigation bar under the full-size images and slideshow"
 msgstr "Indien aangevinkt: toon de vorige/volgende navigatiebalk onder de volledige grootte foto's en diavoorstelling"
 
-#: wppa-settings-autosave.php:692
+#: wppa-settings-autosave.php:695
 msgid "Filmstrip"
 msgstr "Filmstrip"
 
-#: wppa-settings-autosave.php:693
+#: wppa-settings-autosave.php:696
 msgid "Show Filmstrip navigation bar."
 msgstr "Toon de Filmstrip navigatiebalk."
 
-#: wppa-settings-autosave.php:694
+#: wppa-settings-autosave.php:697
 msgid "If checked: display the filmstrip navigation bar under the full_size images and slideshow"
 msgstr "Indien aangevinkt: toon de filmstrip navigatiebalk onder de volledige grootte foto's en diavoorstelling"
 
-#: wppa-settings-autosave.php:699
+#: wppa-settings-autosave.php:702
 msgid "Film seam"
 msgstr "Lasnaad"
 
-#: wppa-settings-autosave.php:700
+#: wppa-settings-autosave.php:703
 msgid "Show seam between end and start of film."
 msgstr "Toon de naad tussen begin en eind van de fil."
 
-#: wppa-settings-autosave.php:701
+#: wppa-settings-autosave.php:704
 msgid "If checked: display the wrap-around point in the filmstrip"
 msgstr "Indien aangevinkt: toon het punt waar het eind en het begin van de filmstrp samenkomen."
 
-#: wppa-settings-autosave.php:706
-#: wppa-settings-autosave.php:1570
+#: wppa-settings-autosave.php:709
+#: wppa-settings-autosave.php:1573
 msgid "Fullsize name"
 msgstr "Volledige grootte naam"
 
-#: wppa-settings-autosave.php:707
+#: wppa-settings-autosave.php:710
 msgid "Display Fullsize name."
 msgstr "Toon naam bij volle grootte."
 
-#: wppa-settings-autosave.php:708
+#: wppa-settings-autosave.php:711
 msgid "If checked: display the name of the photo under the full-size images and slideshow."
 msgstr "Indien aangevinkt: toon de naam van de foto onder de volledige grootte foto's en diavoorstelling."
 
-#: wppa-settings-autosave.php:713
-#: wppa-settings-autosave.php:1555
+#: wppa-settings-autosave.php:716
+#: wppa-settings-autosave.php:1558
 msgid "Fullsize desc"
 msgstr "Volledige grootte beschrijving"
 
-#: wppa-settings-autosave.php:714
+#: wppa-settings-autosave.php:717
 msgid "Display Fullsize description."
 msgstr "Toon de beschrijving."
 
-#: wppa-settings-autosave.php:715
+#: wppa-settings-autosave.php:718
 msgid "If checked: display description under the full-size images and slideshow."
 msgstr "Indien aangevinkt: toon de beschrijving onder de volledige grootte foto's en diavoorstelling."
 
-#: wppa-settings-autosave.php:720
+#: wppa-settings-autosave.php:723
 msgid "Rating system"
 msgstr "Waarderings systeem"
 
-#: wppa-settings-autosave.php:721
+#: wppa-settings-autosave.php:724
 msgid "Enable the rating system."
 msgstr "Waarderings systeem aan."
 
-#: wppa-settings-autosave.php:722
+#: wppa-settings-autosave.php:725
 msgid "If checked, the photo rating system will be enabled."
 msgstr "Indien aangevinkt, wordt het foto waarderings systeem aangezet."
 
-#: wppa-settings-autosave.php:728
+#: wppa-settings-autosave.php:731
 msgid "Rating display type"
 msgstr "Waarderings systeem weergave type"
 
-#: wppa-settings-autosave.php:729
+#: wppa-settings-autosave.php:732
 msgid "Specify the type of the rating display."
 msgstr "Geef het type weergave voor het waarderingssysteem op."
 
-#: wppa-settings-autosave.php:732
+#: wppa-settings-autosave.php:735
 msgid "Graphic"
 msgstr "Grafisch"
 
-#: wppa-settings-autosave.php:732
+#: wppa-settings-autosave.php:735
 msgid "Numeric"
 msgstr "Nummeriek"
 
-#: wppa-settings-autosave.php:738
+#: wppa-settings-autosave.php:741
 msgid "Show average rating"
 msgstr "Toon gemiddelde waardering"
 
-#: wppa-settings-autosave.php:739
+#: wppa-settings-autosave.php:742
 msgid "Display the avarage rating on the rating bar"
 msgstr "Toon de gemiddelde waardering op de waarderingsbalk"
 
-#: wppa-settings-autosave.php:740
+#: wppa-settings-autosave.php:743
 msgid "If checked, the average rating as well as the current users rating is displayed in max 5 stars."
 msgstr "Indien aangevinkt wordt zowel de gemiddelde als de waardering van de huidige gebruiker afgebeeld in max 5 sterren."
 
-#: wppa-settings-autosave.php:741
+#: wppa-settings-autosave.php:744
 msgid "If unchecked, only the current users rating is displayed (if any)."
 msgstr "Indien niet aangevinkt wordt alleen de waardering van de huidige bezoeker getoond (indien ingevoerd)."
 
-#: wppa-settings-autosave.php:747
+#: wppa-settings-autosave.php:750
 msgid "Comments system"
 msgstr "Reactie systeem"
 
-#: wppa-settings-autosave.php:748
+#: wppa-settings-autosave.php:751
 msgid "Enable the comments system."
 msgstr "Reacties systeem aan."
 
-#: wppa-settings-autosave.php:749
+#: wppa-settings-autosave.php:752
 msgid "Display the comments box under the fullsize images and let users enter their comments on individual photos."
 msgstr "Toon de Reacties box onder de foto's van volledige grootte en laat bezoekers reageren op individuele foto's."
 
-#: wppa-settings-autosave.php:755
+#: wppa-settings-autosave.php:758
 msgid "Comment Avatar default"
 msgstr "Reactie Avatar standaard"
 
-#: wppa-settings-autosave.php:756
+#: wppa-settings-autosave.php:759
 msgid "Show Avatars with the comments if not --- none ---"
 msgstr "Toon Avatars bij de reacties indien geen --- geen ---"
 
-#: wppa-settings-autosave.php:761
+#: wppa-settings-autosave.php:764
 msgid "mystery man"
 msgstr "mystery man"
 
-#: wppa-settings-autosave.php:762
+#: wppa-settings-autosave.php:765
 msgid "identicon"
 msgstr "identicon"
 
-#: wppa-settings-autosave.php:763
+#: wppa-settings-autosave.php:766
 msgid "monsterid"
 msgstr "monsterid"
 
-#: wppa-settings-autosave.php:764
+#: wppa-settings-autosave.php:767
 msgid "wavatar"
 msgstr "wavatar"
 
-#: wppa-settings-autosave.php:765
+#: wppa-settings-autosave.php:768
 msgid "retro"
 msgstr "retro"
 
-#: wppa-settings-autosave.php:766
+#: wppa-settings-autosave.php:769
 msgid "--- url ---"
 msgstr "--- url ---"
 
-#: wppa-settings-autosave.php:780
+#: wppa-settings-autosave.php:783
 msgid "Comment Avatar url"
 msgstr "Reactie Avatar url"
 
-#: wppa-settings-autosave.php:781
+#: wppa-settings-autosave.php:784
 msgid "Comment Avatar default url."
 msgstr "Reactie Avatar standaard url."
 
-#: wppa-settings-autosave.php:788
+#: wppa-settings-autosave.php:791
 msgid "Big Browse Buttons"
 msgstr "Grote blader knoppen"
 
-#: wppa-settings-autosave.php:789
+#: wppa-settings-autosave.php:792
 msgid "Enable invisible browsing buttons."
 msgstr "Activeer onzichtbare bladerknoppen."
 
-#: wppa-settings-autosave.php:790
-#: wppa-settings-autosave.php:944
+#: wppa-settings-autosave.php:793
+#: wppa-settings-autosave.php:947
 msgid "If checked, the fullsize image is covered by two invisible areas that act as browse buttons."
 msgstr "Indien aangevinkt, wordt de volledige grootte foto bedekt met twee transparante helften die als vorige/volgende knoppen werken."
 
-#: wppa-settings-autosave.php:791
-#: wppa-settings-autosave.php:945
+#: wppa-settings-autosave.php:794
+#: wppa-settings-autosave.php:948
 msgid "Make sure the Full height (Table I-B2) is properly configured to prevent these areas to overlap unwanted space."
 msgstr "Zorg ervoor dat de Volledige hoogte (Tabel I-B2) goed staat ingesteld ter voorkoming dat deze knoppen ongewenste gebieden overlappen."
 
-#: wppa-settings-autosave.php:792
-#: wppa-settings-autosave.php:946
+#: wppa-settings-autosave.php:795
+#: wppa-settings-autosave.php:949
 msgid "A side effect of this setting is that right clicking the image no longer enables the visitor to download the image."
 msgstr "Een neveneffect van deze instelling is dat met rechtsklikken de foto niet meer kan worden opgeslagen."
 
-#: wppa-settings-autosave.php:797
+#: wppa-settings-autosave.php:800
 msgid "Show custom box"
 msgstr "Toon Speciale box"
 
-#: wppa-settings-autosave.php:798
+#: wppa-settings-autosave.php:801
 msgid "Display the custom box in the slideshow"
 msgstr "Toon de speciale box in de diavoorstelling"
 
-#: wppa-settings-autosave.php:799
-#: wppa-settings-autosave.php:808
+#: wppa-settings-autosave.php:802
+#: wppa-settings-autosave.php:811
 msgid "You can fill the custom box with any html you like. It will not be checked, so it is your own responsability to close tags properly."
 msgstr "U kunt de speciale box vullen met elke html die u wenst. Het wordt niet gecontroleerd, dus het is uw eigen verantwoordelijkheid om tags correct te sluiten."
 
-#: wppa-settings-autosave.php:800
-#: wppa-settings-autosave.php:809
+#: wppa-settings-autosave.php:803
+#: wppa-settings-autosave.php:812
 msgid "The position of the box can be defined in Table IX-E."
 msgstr "De plaats van de box kan bepaald worden in Tabel IX-E."
 
-#: wppa-settings-autosave.php:806
+#: wppa-settings-autosave.php:809
 msgid "Custom content"
 msgstr "Inhoud Speciale box"
 
-#: wppa-settings-autosave.php:807
+#: wppa-settings-autosave.php:810
 msgid "The content (html) of the custom box."
 msgstr "De inhoud (html) van de speciale box."
 
-#: wppa-settings-autosave.php:815
+#: wppa-settings-autosave.php:818
 msgid "Slideshow/Number bar"
 msgstr "Diavoorstelling/Nummer reeks"
 
-#: wppa-settings-autosave.php:816
+#: wppa-settings-autosave.php:819
 msgid "Display the Slideshow / Number bar."
 msgstr "Toon de Diavoorstelleng / Nummer reeks."
 
-#: wppa-settings-autosave.php:817
+#: wppa-settings-autosave.php:820
 msgid "If checked: display the number boxes on slideshow"
 msgstr "Indien aangevinkt: toon de nummers op de diavoorstelling"
 
-#: wppa-settings-autosave.php:823
+#: wppa-settings-autosave.php:826
 msgid "IPTC system"
 msgstr "IPTC systeem"
 
-#: wppa-settings-autosave.php:824
+#: wppa-settings-autosave.php:827
 msgid "Enable the iptc system."
 msgstr "IPTC systeem aan."
 
-#: wppa-settings-autosave.php:825
+#: wppa-settings-autosave.php:828
 msgid "Display the iptc box under the fullsize images."
 msgstr "Toon de iptc box onder de foto's van volledige groote."
 
-#: wppa-settings-autosave.php:831
+#: wppa-settings-autosave.php:834
 msgid "EXIF system"
 msgstr "EXIF systeem"
 
-#: wppa-settings-autosave.php:832
+#: wppa-settings-autosave.php:835
 msgid "Enable the exif system."
 msgstr "EXIF systeem aan."
 
-#: wppa-settings-autosave.php:833
+#: wppa-settings-autosave.php:836
 msgid "Display the exif box under the fullsize images."
 msgstr "Toon de exif box onder de foto's van volledige groote."
 
-#: wppa-settings-autosave.php:839
+#: wppa-settings-autosave.php:842
 msgid "Show Copyright"
 msgstr "Toon Auteursrecht"
 
-#: wppa-settings-autosave.php:840
+#: wppa-settings-autosave.php:843
 msgid "Show a copyright warning on the user upload screen."
 msgstr "Toon een autersrecht waarschuwing op het gebruikers upload scherm."
 
-#: wppa-settings-autosave.php:847
+#: wppa-settings-autosave.php:850
 msgid "Copyright notice"
 msgstr "Autersrecht mededeling"
 
-#: wppa-settings-autosave.php:848
+#: wppa-settings-autosave.php:851
 msgid "The message to be displayed."
 msgstr "De mededeling die getoond moet worden."
 
-#: wppa-settings-autosave.php:855
+#: wppa-settings-autosave.php:858
 msgid "Thumbnail display related settings"
 msgstr "Miniatuur afbeeldingen gerelateerde instellingen"
 
-#: wppa-settings-autosave.php:857
+#: wppa-settings-autosave.php:860
 msgid "Thumbnail name"
 msgstr "Miniatuur naam"
 
-#: wppa-settings-autosave.php:858
+#: wppa-settings-autosave.php:861
 msgid "Display Thubnail name."
 msgstr "Toon naam bij miniatuur."
 
-#: wppa-settings-autosave.php:859
+#: wppa-settings-autosave.php:862
 msgid "Display photo name under thumbnail images."
 msgstr "Toon foto naam onder de miniaturen."
 
-#: wppa-settings-autosave.php:865
+#: wppa-settings-autosave.php:868
 msgid "Thumbnail desc"
 msgstr "Miniatuur beschrijving"
 
-#: wppa-settings-autosave.php:866
+#: wppa-settings-autosave.php:869
 msgid "Display Thumbnail description."
 msgstr "Toon beschrijving bij miniatuur."
 
-#: wppa-settings-autosave.php:867
+#: wppa-settings-autosave.php:870
 msgid "Display description of the photo under thumbnail images."
 msgstr "Toon de beschrijving van de foto onder de miniaturen."
 
-#: wppa-settings-autosave.php:873
+#: wppa-settings-autosave.php:876
 msgid "Thumbnail rating"
 msgstr "Miniaturen waarde"
 
-#: wppa-settings-autosave.php:874
+#: wppa-settings-autosave.php:877
 msgid "Display Thumbnail Rating."
 msgstr "Toon waardering miniaturen."
 
-#: wppa-settings-autosave.php:875
+#: wppa-settings-autosave.php:878
 msgid "Display the rating of the photo under the thumbnail image."
 msgstr "Toon de waardering van de foto onder de miniaturen."
 
-#: wppa-settings-autosave.php:881
+#: wppa-settings-autosave.php:884
 msgid "Popup name"
 msgstr "Popup naam"
 
-#: wppa-settings-autosave.php:882
+#: wppa-settings-autosave.php:885
 msgid "Display Thubnail name on popup."
 msgstr "Toon naam bij miniatuur popup."
 
-#: wppa-settings-autosave.php:883
+#: wppa-settings-autosave.php:886
 msgid "Display photo name under thumbnail images on the popup."
 msgstr "Toon foto naam onder de miniatuur popups."
 
-#: wppa-settings-autosave.php:889
+#: wppa-settings-autosave.php:892
 msgid "Popup desc"
 msgstr "Popup beschrijving"
 
-#: wppa-settings-autosave.php:890
+#: wppa-settings-autosave.php:893
 msgid "Display Thumbnail description on popup."
 msgstr "Toon beschrijving bij miniatuur popup."
 
-#: wppa-settings-autosave.php:891
+#: wppa-settings-autosave.php:894
 msgid "Display description of the photo under thumbnail images on the popup."
 msgstr "Toon de beschrijving van de foto onder de miniatuur popups."
 
-#: wppa-settings-autosave.php:897
+#: wppa-settings-autosave.php:900
 msgid "Popup rating"
 msgstr "Popup waardering"
 
-#: wppa-settings-autosave.php:898
+#: wppa-settings-autosave.php:901
 msgid "Display Thumbnail Rating on popup."
 msgstr "Toon waardering miniatuur popup."
 
-#: wppa-settings-autosave.php:899
+#: wppa-settings-autosave.php:902
 msgid "Display the rating of the photo under the thumbnail image on the popup."
 msgstr "Toon de waardering van de foto onder de miniatuur popup."
 
-#: wppa-settings-autosave.php:905
+#: wppa-settings-autosave.php:908
 msgid "Show rating count"
 msgstr "Toon aantal waarderingen"
 
-#: wppa-settings-autosave.php:906
+#: wppa-settings-autosave.php:909
 msgid "Display the number of votes along with average ratings."
 msgstr "Vermeld het aantal waarderingen bij de gemiddelden."
 
-#: wppa-settings-autosave.php:907
+#: wppa-settings-autosave.php:910
 msgid "If checked, the number of votes is displayed along with average rating displays on thumbnail and popup displays."
 msgstr "Indien aangevinkt zullen de aantallen stemmen worden vermeld bij de gemiddelden bij miniaturen en pop-up afbeeldingen."
 
-#: wppa-settings-autosave.php:915
+#: wppa-settings-autosave.php:918
 msgid "Covertext"
 msgstr "Omslagtekst"
 
-#: wppa-settings-autosave.php:916
+#: wppa-settings-autosave.php:919
 msgid "Show the text on the album cover."
 msgstr "Toon de tekst op het album omslag."
 
-#: wppa-settings-autosave.php:917
+#: wppa-settings-autosave.php:920
 msgid "Display the album decription and the links to the album content"
 msgstr "Toon de album beschrijving en de koppelingen naar de album inhoud"
 
-#: wppa-settings-autosave.php:918
+#: wppa-settings-autosave.php:921
 msgid "If switched off, you can only link to the album using the covertitle or the coverphoto."
 msgstr "Indien aangevinkt, kan men alleen naar de albuminhoud via de titel of de omslagfoto."
 
-#: wppa-settings-autosave.php:919
+#: wppa-settings-autosave.php:922
 msgid "Make sure you configure the coverphoto link as desired."
 msgstr "Zorg er voor dat u de koppeling van de omslagfoto juist instelt."
 
-#: wppa-settings-autosave.php:924
-#: wppa-settings-autosave.php:1861
+#: wppa-settings-autosave.php:927
+#: wppa-settings-autosave.php:1864
 msgid "Slideshow"
 msgstr "Diavoorstelling"
 
-#: wppa-settings-autosave.php:925
+#: wppa-settings-autosave.php:928
 msgid "Enable the slideshow."
 msgstr "Diavoorstelling aan."
 
-#: wppa-settings-autosave.php:926
+#: wppa-settings-autosave.php:929
 msgid "If you do not want slideshows: uncheck this box. Browsing full size images will remain possible."
 msgstr "Als u geen diavoorstellingen wilt: haal dit vinkje weg. Door foto's bladeren blijft mogelijk."
 
-#: wppa-settings-autosave.php:931
+#: wppa-settings-autosave.php:934
 msgid "Slideshow/Browse"
 msgstr "Diavoorstelling/Bladeren"
 
-#: wppa-settings-autosave.php:932
+#: wppa-settings-autosave.php:935
 msgid "Display the Slideshow / Browse photos link on album covers"
 msgstr "Toon de Diavoorstelleng / Blader foto's link op album omslagen"
 
-#: wppa-settings-autosave.php:933
+#: wppa-settings-autosave.php:936
 msgid "This setting causes the Slideshow link to be displayed on the album cover."
 msgstr "Deze instelling zorgt ervoor dat de Diavoorstelling koppeling wordt getoond op de album omslag."
 
-#: wppa-settings-autosave.php:934
+#: wppa-settings-autosave.php:937
 msgid "If slideshows are disabled in item 2 in this table, you will see a browse link to fullsize images."
 msgstr "Als de diavoorstelling is uitgeschakeld in item 2 in de deze tabel, zult u een blader grote fotos link zien."
 
-#: wppa-settings-autosave.php:935
+#: wppa-settings-autosave.php:938
 msgid "If you do not want the browse link link either, uncheck this item."
 msgstr "Als u de blader link ook niet wilt, haal dan bij dit item het vinkje weg."
 
-#: wppa-settings-autosave.php:942
+#: wppa-settings-autosave.php:945
 msgid "Big Browse Buttons in widget"
 msgstr "Grote blader knoppen in widget"
 
-#: wppa-settings-autosave.php:943
+#: wppa-settings-autosave.php:946
 msgid "Enable invisible browsing buttons in widget slideshows."
 msgstr "Activeer onzichtbare bladerknoppen in widget diavoorstellingen."
 
-#: wppa-settings-autosave.php:966
+#: wppa-settings-autosave.php:969
 msgid "Table III:"
 msgstr "Tabel III:"
 
-#: wppa-settings-autosave.php:966
+#: wppa-settings-autosave.php:969
 msgid "Backgrounds:"
 msgstr "Achtergronden:"
 
-#: wppa-settings-autosave.php:967
+#: wppa-settings-autosave.php:970
 msgid "This table describes the backgrounds of wppa+ elements."
 msgstr "Deze tabel beschrijft de achtergronden van wppa+ onderdelen."
 
-#: wppa-settings-autosave.php:977
-#: wppa-settings-autosave.php:1135
+#: wppa-settings-autosave.php:980
+#: wppa-settings-autosave.php:1138
 msgid "Background color"
 msgstr "Achtergrondkleur"
 
-#: wppa-settings-autosave.php:978
-#: wppa-settings-autosave.php:980
-#: wppa-settings-autosave.php:1136
-#: wppa-settings-autosave.php:1138
+#: wppa-settings-autosave.php:981
+#: wppa-settings-autosave.php:983
+#: wppa-settings-autosave.php:1139
+#: wppa-settings-autosave.php:1141
 msgid "Sample"
 msgstr "Voorbeeld"
 
-#: wppa-settings-autosave.php:979
-#: wppa-settings-autosave.php:1137
+#: wppa-settings-autosave.php:982
+#: wppa-settings-autosave.php:1140
 msgid "Border color"
 msgstr "Randkleur"
 
-#: wppa-settings-autosave.php:987
+#: wppa-settings-autosave.php:990
 msgid "Slideshow elements backgrounds"
 msgstr "Diavoorstelling elementen achtergronden"
 
-#: wppa-settings-autosave.php:989
+#: wppa-settings-autosave.php:992
 msgid "Nav"
 msgstr "Navigatie"
 
-#: wppa-settings-autosave.php:990
+#: wppa-settings-autosave.php:993
 msgid "Navigation bars."
 msgstr "Navigatie balken."
 
-#: wppa-settings-autosave.php:991
+#: wppa-settings-autosave.php:994
 msgid "Enter valid CSS colors for navigation backgrounds and borders."
 msgstr "Voer geldige CSS kleuren in voor achtergronden en randen van navigatiebalken."
 
-#: wppa-settings-autosave.php:1000
+#: wppa-settings-autosave.php:1003
 msgid "FullImg"
 msgstr "VolleAfb"
 
-#: wppa-settings-autosave.php:1001
+#: wppa-settings-autosave.php:1004
 msgid "Full size Photos and slideshows."
 msgstr "Volledige grootte foto's en diavoorstellingen."
 
-#: wppa-settings-autosave.php:1002
+#: wppa-settings-autosave.php:1005
 msgid "Enter valid CSS colors for fullsize photo backgrounds and borders."
 msgstr "Voer geldige CSS kleuren in voor achtergronden en randen van volledige grootte foto's."
 
-#: wppa-settings-autosave.php:1003
+#: wppa-settings-autosave.php:1006
 msgid "The colors may be equal or \"transparent\""
 msgstr "De kleuren mogen gelijk zijn of \"transparent\""
 
-#: wppa-settings-autosave.php:1004
+#: wppa-settings-autosave.php:1007
 msgid "For more information about fullsize image borders see the help on Table I-B4"
 msgstr "Voor meer informatie over volledige grootte randen zie de help bij Tabel I-B4"
 
-#: wppa-settings-autosave.php:1013
-#: wppa-settings-autosave.php:1630
+#: wppa-settings-autosave.php:1016
+#: wppa-settings-autosave.php:1633
 msgid "Numbar"
 msgstr "Numbar"
 
-#: wppa-settings-autosave.php:1014
+#: wppa-settings-autosave.php:1017
 msgid "Number bar box background."
 msgstr "Nummer box achtergrond."
 
-#: wppa-settings-autosave.php:1015
+#: wppa-settings-autosave.php:1018
 msgid "Enter valid CSS colors for numbar box backgrounds and borders."
 msgstr "Voer geldige CSS kleuren in voor achtergronden en randen van nummer boxen."
 
-#: wppa-settings-autosave.php:1025
+#: wppa-settings-autosave.php:1028
 msgid "Numbar active"
 msgstr "Numbar actieve"
 
-#: wppa-settings-autosave.php:1026
+#: wppa-settings-autosave.php:1029
 msgid "Number bar active box background."
 msgstr "Nummer actieve box achtergrond."
 
-#: wppa-settings-autosave.php:1027
+#: wppa-settings-autosave.php:1030
 msgid "Enter valid CSS colors for numbar active box backgrounds and borders."
 msgstr "Voer geldige CSS kleuren in voor achtergronden en randen van actieve nummer boxen."
 
-#: wppa-settings-autosave.php:1037
+#: wppa-settings-autosave.php:1040
 msgid "Name/desc"
 msgstr "Naam/beschrijving"
 
-#: wppa-settings-autosave.php:1038
+#: wppa-settings-autosave.php:1041
 msgid "Name and Description bars."
 msgstr "Naam en Beschrijving box."
 
-#: wppa-settings-autosave.php:1039
+#: wppa-settings-autosave.php:1042
 msgid "Enter valid CSS colors for name and description box backgrounds and borders."
 msgstr "Voer geldige CSS kleuren in voor achtergronden en randen van naam en beschrijving boxen."
 
-#: wppa-settings-autosave.php:1049
+#: wppa-settings-autosave.php:1052
 msgid "Comment input and display areas."
 msgstr "Reacties invoer en afbeeldings gebied."
 
-#: wppa-settings-autosave.php:1050
+#: wppa-settings-autosave.php:1053
 msgid "Enter valid CSS colors for comment box backgrounds and borders."
 msgstr "Voer geldige CSS kleuren in voor achtergronden en randen van reactie boxen."
 
-#: wppa-settings-autosave.php:1060
-#: wppa-settings-autosave.php:2395
+#: wppa-settings-autosave.php:1063
+#: wppa-settings-autosave.php:2398
 msgid "Custom"
 msgstr "Speciaal"
 
-#: wppa-settings-autosave.php:1061
+#: wppa-settings-autosave.php:1064
 msgid "Custom box background."
 msgstr "Speciale box achtergrond."
 
-#: wppa-settings-autosave.php:1062
+#: wppa-settings-autosave.php:1065
 msgid "Enter valid CSS colors for custom box backgrounds and borders."
 msgstr "Voer geldige CSS kleuren in voor achtergronden en randen van speciale boxen."
 
-#: wppa-settings-autosave.php:1071
+#: wppa-settings-autosave.php:1074
 msgid "IPTC"
 msgstr "IPTC"
 
-#: wppa-settings-autosave.php:1072
+#: wppa-settings-autosave.php:1075
 msgid "IPTC display box background."
 msgstr "IPTC box achtergrond."
 
-#: wppa-settings-autosave.php:1073
+#: wppa-settings-autosave.php:1076
 msgid "Enter valid CSS colors for iptc box backgrounds and borders."
 msgstr "Voer geldige CSS kleuren in voor achtergronden en randen van iptc boxen."
 
-#: wppa-settings-autosave.php:1082
+#: wppa-settings-autosave.php:1085
 msgid "EXIF"
 msgstr "EXIF"
 
-#: wppa-settings-autosave.php:1083
+#: wppa-settings-autosave.php:1086
 msgid "EXIF display box background."
 msgstr "EXIF box achtergrond."
 
-#: wppa-settings-autosave.php:1084
+#: wppa-settings-autosave.php:1087
 msgid "Enter valid CSS colors for exif box backgrounds and borders."
 msgstr "Voer geldige CSS kleuren in voor achtergronden en randen van exif boxen."
 
-#: wppa-settings-autosave.php:1093
+#: wppa-settings-autosave.php:1096
 msgid "Other backgrounds"
 msgstr "Andere achtergronden"
 
-#: wppa-settings-autosave.php:1095
+#: wppa-settings-autosave.php:1098
 msgid "Even"
 msgstr "Even"
 
-#: wppa-settings-autosave.php:1096
+#: wppa-settings-autosave.php:1099
 msgid "Even background."
 msgstr "Even achtergrond."
 
-#: wppa-settings-autosave.php:1097
+#: wppa-settings-autosave.php:1100
 msgid "Enter valid CSS colors for even numbered backgrounds and borders of album covers and thumbnail displays 'As covers'."
 msgstr "Voer geldige CSS kleuren in voor even genummerde achtergronden en randen van album omslagen en miniatuur weergaven 'Als omslagen'."
 
-#: wppa-settings-autosave.php:1106
+#: wppa-settings-autosave.php:1109
 msgid "Odd"
 msgstr "Oneven"
 
-#: wppa-settings-autosave.php:1107
+#: wppa-settings-autosave.php:1110
 msgid "Odd background."
 msgstr "Oneven achtergrond."
 
-#: wppa-settings-autosave.php:1108
+#: wppa-settings-autosave.php:1111
 msgid "Enter valid CSS colors for odd numbered backgrounds and borders of album covers and thumbnail displays 'As covers'."
 msgstr "Voer geldige CSS kleuren in voor on-even genummerde achtergronden en randen van album omslagen en miniatuur weergaven 'Als omslagen'."
 
-#: wppa-settings-autosave.php:1117
+#: wppa-settings-autosave.php:1120
 msgid "Img"
 msgstr "Afbeelding"
 
-#: wppa-settings-autosave.php:1118
-msgid "Cover Photos."
-msgstr "Omslag foto's."
+#: wppa-settings-autosave.php:1121
+msgid "Cover Photos and popups."
+msgstr "Omslag foto's en popups."
 
-#: wppa-settings-autosave.php:1119
-msgid "Enter valid CSS colors for Cover photo backgrounds and borders."
-msgstr "Voer geldige CSS kleuren in voor achtergronden en randen van omslagfoto's."
+#: wppa-settings-autosave.php:1122
+msgid "Enter valid CSS colors for Cover photo and popup backgrounds and borders."
+msgstr "Voer geldige CSS kleuren in voor achtergronden en randen van omslagfoto's en popups."
 
-#: wppa-settings-autosave.php:1146
+#: wppa-settings-autosave.php:1149
 msgid "Table IV:"
 msgstr "Tabel IV:"
 
-#: wppa-settings-autosave.php:1146
+#: wppa-settings-autosave.php:1149
 msgid "Behaviour:"
 msgstr "Gedrag:"
 
-#: wppa-settings-autosave.php:1147
+#: wppa-settings-autosave.php:1150
 msgid "This table describes the dynamic behaviour of certain wppa+ elements."
 msgstr "Deze tabel beschrijft het dynamische gedrag van bepaalde wppa+ onderdelen."
 
-#: wppa-settings-autosave.php:1164
+#: wppa-settings-autosave.php:1167
 msgid "System related settings"
 msgstr "Systeem gerelateerde instellingen"
 
-#: wppa-settings-autosave.php:1166
+#: wppa-settings-autosave.php:1169
 msgid "Use Ajax"
 msgstr "Gebruik Ajax"
 
-#: wppa-settings-autosave.php:1167
+#: wppa-settings-autosave.php:1170
 msgid "Use Ajax as much as is possible and implemented."
 msgstr "Gebruik Ajax waar mogelijk en geïmplementeerd."
 
-#: wppa-settings-autosave.php:1174
+#: wppa-settings-autosave.php:1177
 msgid "Photo names in urls"
 msgstr "Foto namen in urls"
 
-#: wppa-settings-autosave.php:1175
+#: wppa-settings-autosave.php:1178
 msgid "Display photo names in urls, no numbers."
 msgstr "Toon foto namen in urls i.pv. nummers."
 
-#: wppa-settings-autosave.php:1176
+#: wppa-settings-autosave.php:1179
 msgid "While browsing through a slideshow and Use Ajax is checked, and the browser supports history.pushState,"
 msgstr "Terwijl men bladert door een diavoorstelling en Gebruik Ajax is aangevinkt, en de browser history.pushState ondersteund,"
 
-#: wppa-settings-autosave.php:1177
+#: wppa-settings-autosave.php:1180
 msgid "the photo names will be displayed in the generated urls in the browser address line."
 msgstr "worden de fotonamen gebruikt in de gegenereerde urls in de adresregel van de browser."
 
-#: wppa-settings-autosave.php:1178
+#: wppa-settings-autosave.php:1181
 msgid "These urls are valid and can be saved for use later."
 msgstr "De urls zijn geldig en kunnen bewaard worden om later te gebruiken."
 
-#: wppa-settings-autosave.php:1186
+#: wppa-settings-autosave.php:1189
 msgid "V align"
 msgstr "V uitlijning"
 
-#: wppa-settings-autosave.php:1187
+#: wppa-settings-autosave.php:1190
 msgid "Vertical alignment of full-size images."
 msgstr "Verticale uitlijning van foto's van volledige grootte."
 
-#: wppa-settings-autosave.php:1188
+#: wppa-settings-autosave.php:1191
 msgid "Specify the vertical alignment of fullsize images."
 msgstr "Geef de verticale uitlijning voor foto's van volledige grootte op."
 
-#: wppa-settings-autosave.php:1189
+#: wppa-settings-autosave.php:1192
 msgid "If you select --- none ---, the photos will not be centered horizontally either."
 msgstr "Als u --- geen --- opgeeft, worden de foto's ook niet horizontaal gecentreerd."
 
-#: wppa-settings-autosave.php:1191
-#: wppa-settings-autosave.php:1335
+#: wppa-settings-autosave.php:1194
+#: wppa-settings-autosave.php:1338
 #: wppa-slideshow-widget.php:201
 msgid "top"
 msgstr "boven"
 
-#: wppa-settings-autosave.php:1191
-#: wppa-settings-autosave.php:1203
-#: wppa-settings-autosave.php:1335
+#: wppa-settings-autosave.php:1194
+#: wppa-settings-autosave.php:1206
+#: wppa-settings-autosave.php:1338
 #: wppa-slideshow-widget.php:202
 #: wppa-widget-admin.php:77
 msgid "center"
 msgstr "midden"
 
-#: wppa-settings-autosave.php:1191
-#: wppa-settings-autosave.php:1335
+#: wppa-settings-autosave.php:1194
+#: wppa-settings-autosave.php:1338
 #: wppa-slideshow-widget.php:203
 msgid "bottom"
 msgstr "onder"
 
-#: wppa-settings-autosave.php:1191
+#: wppa-settings-autosave.php:1194
 #: wppa-slideshow-widget.php:204
 msgid "fit"
 msgstr "passend"
 
-#: wppa-settings-autosave.php:1197
+#: wppa-settings-autosave.php:1200
 msgid "H align"
 msgstr "H uitlijning"
 
-#: wppa-settings-autosave.php:1198
+#: wppa-settings-autosave.php:1201
 msgid "Horizontal alignment of full-size images."
 msgstr "Horizontale uitlijning van foto's van volledige grootte."
 
-#: wppa-settings-autosave.php:1199
+#: wppa-settings-autosave.php:1202
 msgid "Specify the horizontal alignment of fullsize images. If you specify --- none --- , no horizontal alignment will take place."
 msgstr "Geef de gewenste horizontale uitlijning op. Indien u --- geen --- kiest, vindt er geen horizontale uitlijning plaats."
 
-#: wppa-settings-autosave.php:1200
+#: wppa-settings-autosave.php:1203
 msgid "This setting is only usefull when the Column Width differs from the Fullsize Width."
 msgstr "Deze instelling is alleen zinvol als de Kolom breedte afwijkt van de Volledige grootte breedte."
 
-#: wppa-settings-autosave.php:1201
+#: wppa-settings-autosave.php:1204
 msgid "(Settings I-1 and I-2)"
 msgstr "(Instellingen I-1 an I-2)"
 
-#: wppa-settings-autosave.php:1209
+#: wppa-settings-autosave.php:1212
 msgid "Start"
 msgstr "Start"
 
-#: wppa-settings-autosave.php:1210
+#: wppa-settings-autosave.php:1213
 msgid "Start slideshow running."
 msgstr "Start diavoorstelling draaiend."
 
-#: wppa-settings-autosave.php:1211
+#: wppa-settings-autosave.php:1214
 msgid "If you select \"running\", the slideshow will start running immediately, if you select \"still at first photo\", the first photo will be displayed in browse mode."
 msgstr "Indien u \"draaiend\" kiest, zal de diavoorstelling meteen beginnen te draaien, indien u \"stil bij eerste foto\" kiest, verschijnt de eerste foto in de blader modus."
 
-#: wppa-settings-autosave.php:1212
+#: wppa-settings-autosave.php:1215
 msgid "If you select \"still at first norated\", the first photo that the visitor did not gave a rating will be displayed in browse mode."
 msgstr "Als u \"stil bij eerste zonder waardering\" selecteert, wordt de eerste foto die geen waardering van de bezoeker heeft gekregen als eerste getoond."
 
-#: wppa-settings-autosave.php:1214
+#: wppa-settings-autosave.php:1217
 msgid "running"
 msgstr "draaiend"
 
-#: wppa-settings-autosave.php:1215
+#: wppa-settings-autosave.php:1218
 msgid "still at first photo"
 msgstr "stil bij de eerste foto"
 
-#: wppa-settings-autosave.php:1216
+#: wppa-settings-autosave.php:1219
 msgid "still at first norated"
 msgstr "stil bij de eerste zonder waardering"
 
-#: wppa-settings-autosave.php:1226
+#: wppa-settings-autosave.php:1229
 msgid "Animation type"
 msgstr "Animatie type"
 
-#: wppa-settings-autosave.php:1227
+#: wppa-settings-autosave.php:1230
 msgid "The way successive slides appear."
 msgstr "De wijze waarop opvolgende dias verschijnen."
 
-#: wppa-settings-autosave.php:1228
+#: wppa-settings-autosave.php:1231
 msgid "Select the way the old slide is to be replaced by the new one in the slideshow/browse fullsize display."
 msgstr "Selecteer de wijze waarop de oude foto wordt vervangen door de nieuwe in de diavoorstelling en de bladermodus."
 
-#: wppa-settings-autosave.php:1230
+#: wppa-settings-autosave.php:1233
 msgid "Fade out and in simultaneous"
 msgstr "Fade uit en in tegelijkertijd"
 
-#: wppa-settings-autosave.php:1231
+#: wppa-settings-autosave.php:1234
 msgid "Fade in after fade out"
 msgstr "Fade-in na fade-uit"
 
-#: wppa-settings-autosave.php:1232
+#: wppa-settings-autosave.php:1235
 msgid "Shift adjacent"
 msgstr "Schuif naast elkaar"
 
-#: wppa-settings-autosave.php:1233
+#: wppa-settings-autosave.php:1236
 msgid "Stack on"
 msgstr "Opstapelen"
 
-#: wppa-settings-autosave.php:1234
+#: wppa-settings-autosave.php:1237
 msgid "Stack off"
 msgstr "Afstapelen"
 
-#: wppa-settings-autosave.php:1235
+#: wppa-settings-autosave.php:1238
 msgid "Turn over"
 msgstr "Omdraaien"
 
-#: wppa-settings-autosave.php:1247
+#: wppa-settings-autosave.php:1250
 msgid "Timeout"
 msgstr "Timeout"
 
-#: wppa-settings-autosave.php:1248
+#: wppa-settings-autosave.php:1251
 msgid "Slideshow timeout."
 msgstr "Diavoorstelling timeout."
 
-#: wppa-settings-autosave.php:1249
+#: wppa-settings-autosave.php:1252
 msgid "Select the time a single slide will be visible when the slideshow is started."
 msgstr "Kies de tijd dat een enkele dia zichtbaar is wanneer de diavoorstelling gestart wodt."
 
-#: wppa-settings-autosave.php:1251
+#: wppa-settings-autosave.php:1254
 msgid "very short (1 s.)"
 msgstr "zeer kort (1 s.)"
 
-#: wppa-settings-autosave.php:1251
+#: wppa-settings-autosave.php:1254
 msgid "short (1.5 s.)"
 msgstr "kort (1.5 s.)"
 
-#: wppa-settings-autosave.php:1251
+#: wppa-settings-autosave.php:1254
 msgid "normal (2.5 s.)"
 msgstr "normaal (2.5 s.)"
 
-#: wppa-settings-autosave.php:1251
+#: wppa-settings-autosave.php:1254
 msgid "long (4 s.)"
 msgstr "lang (4 s.)"
 
-#: wppa-settings-autosave.php:1251
+#: wppa-settings-autosave.php:1254
 msgid "very long (6 s.)"
 msgstr "zeer lang (6 s.)"
 
-#: wppa-settings-autosave.php:1257
+#: wppa-settings-autosave.php:1260
 msgid "Speed"
 msgstr "Snelheid"
 
-#: wppa-settings-autosave.php:1258
+#: wppa-settings-autosave.php:1261
 msgid "Slideshow animation speed."
 msgstr "Animatie snelheid diavoorstelling."
 
-#: wppa-settings-autosave.php:1259
+#: wppa-settings-autosave.php:1262
 msgid "Specify the animation speed to be used in slideshows."
 msgstr "Geef de overvloeisnelheid op voor de diavoorstellingen."
 
-#: wppa-settings-autosave.php:1260
+#: wppa-settings-autosave.php:1263
 msgid "This is the time it takes a photo to fade in or out."
 msgstr "Dit is de tijd benodigd om een foto in- of uit te faden."
 
-#: wppa-settings-autosave.php:1262
-#: wppa-settings-autosave.php:2021
-#: wppa-settings-autosave.php:2282
-#: wppa-settings-autosave.php:2291
+#: wppa-settings-autosave.php:1265
+#: wppa-settings-autosave.php:2024
+#: wppa-settings-autosave.php:2285
+#: wppa-settings-autosave.php:2294
 msgid "--- off ---"
 msgstr "--- uit ---"
 
-#: wppa-settings-autosave.php:1262
+#: wppa-settings-autosave.php:1265
 msgid "very fast (200 ms.)"
 msgstr "zeer snel (200 ms.)"
 
-#: wppa-settings-autosave.php:1262
+#: wppa-settings-autosave.php:1265
 msgid "fast (400 ms.)"
 msgstr "snel (400 ms.)"
 
-#: wppa-settings-autosave.php:1262
+#: wppa-settings-autosave.php:1265
 msgid "normal (800 ms.)"
 msgstr "normaal (800 ms.)"
 
-#: wppa-settings-autosave.php:1262
+#: wppa-settings-autosave.php:1265
 msgid "slow (1.2 s.)"
 msgstr "langzaam (1.2 s.)"
 
-#: wppa-settings-autosave.php:1262
+#: wppa-settings-autosave.php:1265
 msgid "very slow (2 s.)"
 msgstr "zeer langzaam (2 s.)"
 
-#: wppa-settings-autosave.php:1262
+#: wppa-settings-autosave.php:1265
 msgid "extremely slow (4 s.)"
 msgstr "extreem langzaam (4 s.)"
 
-#: wppa-settings-autosave.php:1268
+#: wppa-settings-autosave.php:1271
 msgid "Slide hover pause"
 msgstr "Diavoorstelling muis-over pause"
 
-#: wppa-settings-autosave.php:1269
+#: wppa-settings-autosave.php:1272
 msgid "Running Slideshow suspends during mouse hover."
 msgstr "De draaiende diavoorstelling wordt gepauzeerd zolang de muiswijzer op de afbeelding staat."
 
-#: wppa-settings-autosave.php:1275
+#: wppa-settings-autosave.php:1278
 msgid "Slideshow wrap around"
 msgstr "Diavoorstelling loopt rond"
 
-#: wppa-settings-autosave.php:1276
+#: wppa-settings-autosave.php:1279
 msgid "The slideshow wraps around the start and end"
 msgstr "De diavoorstelling loopt rond over begin en einde"
 
-#: wppa-settings-autosave.php:1282
+#: wppa-settings-autosave.php:1285
 msgid "Full desc align"
 msgstr "Volledige grootte uitlijning"
 
-#: wppa-settings-autosave.php:1283
+#: wppa-settings-autosave.php:1286
 msgid "The alignment of the descriptions under fullsize images and slideshows."
 msgstr "De uitlijning van beschrijvingen onder volledige grootte foto's en diavoorstellingen."
 
-#: wppa-settings-autosave.php:1286
-#: wppa-settings-autosave.php:1324
-#: wppa-settings-autosave.php:1389
+#: wppa-settings-autosave.php:1289
+#: wppa-settings-autosave.php:1327
+#: wppa-settings-autosave.php:1392
 msgid "Left"
 msgstr "Links"
 
-#: wppa-settings-autosave.php:1286
+#: wppa-settings-autosave.php:1289
 msgid "Center"
 msgstr "Midden"
 
-#: wppa-settings-autosave.php:1286
-#: wppa-settings-autosave.php:1324
-#: wppa-settings-autosave.php:1389
+#: wppa-settings-autosave.php:1289
+#: wppa-settings-autosave.php:1327
+#: wppa-settings-autosave.php:1392
 msgid "Right"
 msgstr "Rechts"
 
-#: wppa-settings-autosave.php:1291
+#: wppa-settings-autosave.php:1294
 msgid "Thumbnail related settings"
 msgstr "Miniatuur gerelateerde instellingen"
 
-#: wppa-settings-autosave.php:1294
+#: wppa-settings-autosave.php:1297
 msgid "Photo ordering sequence method."
 msgstr "Foto volgorde methode."
 
-#: wppa-settings-autosave.php:1295
+#: wppa-settings-autosave.php:1298
 msgid "Specify the way the photos should be ordered. This is the default setting. You can overrule the default sorting order on a per album basis."
 msgstr "Geef de methode op waarop de volgorde van de foto's moet worden bepaald. Dit is de standaard instelling. U kunt per album een andere methode opgeven."
 
-#: wppa-settings-autosave.php:1302
-#: wppa-settings-autosave.php:1378
+#: wppa-settings-autosave.php:1305
+#: wppa-settings-autosave.php:1381
 msgid "Descending"
 msgstr "Aflopend"
 
-#: wppa-settings-autosave.php:1303
-#: wppa-settings-autosave.php:1379
+#: wppa-settings-autosave.php:1306
+#: wppa-settings-autosave.php:1382
 msgid "Descending order."
 msgstr "Aflopende volgorde."
 
-#: wppa-settings-autosave.php:1304
-#: wppa-settings-autosave.php:1380
+#: wppa-settings-autosave.php:1307
+#: wppa-settings-autosave.php:1383
 msgid "If checked: largest first"
 msgstr "Als aangevinkt: Grootste eerst."
 
-#: wppa-settings-autosave.php:1305
+#: wppa-settings-autosave.php:1308
 msgid "This is a system wide setting."
 msgstr "Deze instelling geldt voor het gehele systeem."
 
-#: wppa-settings-autosave.php:1310
+#: wppa-settings-autosave.php:1313
 msgid "Thumbnail type"
 msgstr "Type miniaturen"
 
-#: wppa-settings-autosave.php:1311
+#: wppa-settings-autosave.php:1314
 msgid "The way the thumbnail images are displayed."
 msgstr "De wijze waarop de miniaturen worden weergegeven."
 
-#: wppa-settings-autosave.php:1312
+#: wppa-settings-autosave.php:1315
 msgid "You may select an altenative display method for thumbnails. Note that some of the thumbnail settings do not apply to all available display methods."
 msgstr "U kunt een alternatieve weergavemethode voor miniatuur afbeeldingen kiezen. Merk op dat niet alle instellingen op alle weergave methodes van toepassing zijn."
 
-#: wppa-settings-autosave.php:1314
+#: wppa-settings-autosave.php:1317
 msgid "like album covers"
 msgstr "als album omslagen"
 
-#: wppa-settings-autosave.php:1320
-#: wppa-settings-autosave.php:1385
+#: wppa-settings-autosave.php:1323
+#: wppa-settings-autosave.php:1388
 msgid "Placement"
 msgstr "Plaatsing"
 
-#: wppa-settings-autosave.php:1321
+#: wppa-settings-autosave.php:1324
 msgid "Thumbnail image left or right."
 msgstr "Miniatuur afbeelding links of rechts."
 
-#: wppa-settings-autosave.php:1322
+#: wppa-settings-autosave.php:1325
 msgid "Indicate the placement position of the thumbnailphoto you wish."
 msgstr "Geef de plaats aan waar u de miniatuur wilt zien."
 
-#: wppa-settings-autosave.php:1330
+#: wppa-settings-autosave.php:1333
 msgid "Vertical alignment"
 msgstr "Verticale uitlijning"
 
-#: wppa-settings-autosave.php:1331
+#: wppa-settings-autosave.php:1334
 msgid "Vertical alignment of thumbnails."
 msgstr "Verticale uitlijning van miniaturen."
 
-#: wppa-settings-autosave.php:1332
+#: wppa-settings-autosave.php:1335
 msgid "Specify the vertical alignment of thumbnail images. Use this setting when albums contain both portrait and landscape photos."
 msgstr "Geef de verticale uitlijningsmethode van miniaturen aan. Gebruik deze instelling wanneer albums zowel liggende als staande foto's bevatten."
 
-#: wppa-settings-autosave.php:1333
+#: wppa-settings-autosave.php:1336
 msgid "It is NOT recommended to use the value --- default ---; it will affect the horizontal alignment also and is meant to be used with custom css."
 msgstr "Het wordt NIET aanbevolen de waarde --- standaard --- te gebruiken; het zal de horizontale uitlijning beïnvloeden en is bedoeld voor gebruik met aangepaste css."
 
-#: wppa-settings-autosave.php:1341
+#: wppa-settings-autosave.php:1344
 msgid "Thumb mouseover"
 msgstr "Miniatuur muis-over"
 
-#: wppa-settings-autosave.php:1342
+#: wppa-settings-autosave.php:1345
 msgid "Apply thumbnail mouseover effect."
 msgstr "Pas het 'muis over' effect toe op miniaturen."
 
-#: wppa-settings-autosave.php:1343
+#: wppa-settings-autosave.php:1346
 msgid "Check this box to use mouseover effect on thumbnail images."
 msgstr "Pas het 'muis over' effect toe op miniatuur afbeeldingen."
 
-#: wppa-settings-autosave.php:1350
+#: wppa-settings-autosave.php:1353
 msgid "Thumb opacity"
 msgstr "Miniaturen ondoorschijnbaarheid"
 
-#: wppa-settings-autosave.php:1351
-#: wppa-settings-autosave.php:1403
+#: wppa-settings-autosave.php:1354
+#: wppa-settings-autosave.php:1406
 msgid "Initial opacity value."
 msgstr "Ondoorschijnendheidswaarde."
 
-#: wppa-settings-autosave.php:1352
-#: wppa-settings-autosave.php:1404
-#: wppa-settings-autosave.php:1455
+#: wppa-settings-autosave.php:1355
+#: wppa-settings-autosave.php:1407
+#: wppa-settings-autosave.php:1458
 msgid "Enter percentage of opacity. 100% is opaque, 0% is transparant"
 msgstr "Percentage van ondoorschijnendheid. 100% is geheel ondoorschijnend, 0% is volledig doorschijnend."
 
-#: wppa-settings-autosave.php:1354
-#: wppa-settings-autosave.php:1406
-#: wppa-settings-autosave.php:1457
+#: wppa-settings-autosave.php:1357
+#: wppa-settings-autosave.php:1409
+#: wppa-settings-autosave.php:1460
 msgid "%"
 msgstr "%"
 
-#: wppa-settings-autosave.php:1358
+#: wppa-settings-autosave.php:1361
 msgid "Thumb popup"
 msgstr "Miniatuur pop-up"
 
-#: wppa-settings-autosave.php:1359
+#: wppa-settings-autosave.php:1362
 msgid "Use popup effect on thumbnail images."
 msgstr "Pas het 'pop-up' effect toe op miniatuur afbeeldingen."
 
-#: wppa-settings-autosave.php:1360
+#: wppa-settings-autosave.php:1363
 msgid "Thumbnails pop-up to a larger image when hovered."
 msgstr "Miniaturen worden groter afgebeeld wanneer de muis er overheen bewogen wordt."
 
-#: wppa-settings-autosave.php:1367
+#: wppa-settings-autosave.php:1370
 msgid "Album and covers related settings"
 msgstr "Albums en omslagen gerelateerde instellingen"
 
-#: wppa-settings-autosave.php:1369
+#: wppa-settings-autosave.php:1372
 msgid "Album order"
 msgstr "Album volgorde"
 
-#: wppa-settings-autosave.php:1370
+#: wppa-settings-autosave.php:1373
 msgid "Album ordering sequence method."
 msgstr "Album volgorde methode."
 
-#: wppa-settings-autosave.php:1371
+#: wppa-settings-autosave.php:1374
 msgid "Specify the way the albums should be ordered."
 msgstr "Geef de sorteer methode op voor albums."
 
-#: wppa-settings-autosave.php:1386
+#: wppa-settings-autosave.php:1389
 msgid "Cover image position."
 msgstr "Omslagfoto plaatsing."
 
-#: wppa-settings-autosave.php:1387
+#: wppa-settings-autosave.php:1390
 msgid "Indicate the placement position of the coverphoto you wish."
 msgstr "Geef de plaats aan waar u de omslagfoto wilt zien."
 
-#: wppa-settings-autosave.php:1389
+#: wppa-settings-autosave.php:1392
 msgid "Top"
 msgstr "Boven"
 
-#: wppa-settings-autosave.php:1389
+#: wppa-settings-autosave.php:1392
 msgid "Bottom"
 msgstr "Onder"
 
-#: wppa-settings-autosave.php:1394
+#: wppa-settings-autosave.php:1397
 msgid "Cover mouseover"
 msgstr "Omslag muis-over"
 
-#: wppa-settings-autosave.php:1395
+#: wppa-settings-autosave.php:1398
 msgid "Apply coverphoto mouseover effect."
 msgstr "Pas het 'muis over' effect toe op omslagfoto's."
 
-#: wppa-settings-autosave.php:1396
+#: wppa-settings-autosave.php:1399
 msgid "Check this box to use mouseover effect on cover images."
 msgstr "Pas het 'muis over' effect toe op omslagfoto's."
 
-#: wppa-settings-autosave.php:1402
+#: wppa-settings-autosave.php:1405
 msgid "Cover opacity"
 msgstr "Omslag foto ondoorschijnbaarheid"
 
-#: wppa-settings-autosave.php:1410
+#: wppa-settings-autosave.php:1413
 msgid "Rating related settings"
 msgstr "Waarderingen gerelateerde instellingen"
 
-#: wppa-settings-autosave.php:1412
+#: wppa-settings-autosave.php:1415
 msgid "Rating login"
 msgstr "Waardering login"
 
-#: wppa-settings-autosave.php:1413
+#: wppa-settings-autosave.php:1416
 msgid "Users must login to rate photos."
 msgstr "Bezoekers moeten ingelogd zijn om foto's te kunnen waaderen."
 
-#: wppa-settings-autosave.php:1414
+#: wppa-settings-autosave.php:1417
 msgid "If users want to vote for a photo (rating 1..5 stars) the must login first. The avarage rating will always be displayed as long as the rating system is enabled."
 msgstr "Als bezoekers op een foto willen stemmen (van 1 tot 5 sterren) moeten ze zijn ingelogd. De gemiddelde waardering wordt altijd getoond zolang het waarderingssysteem is geactiveerd."
 
-#: wppa-settings-autosave.php:1420
+#: wppa-settings-autosave.php:1423
 msgid "Rating change"
 msgstr "Waarderingen wijzigen"
 
-#: wppa-settings-autosave.php:1421
-#: wppa-settings-autosave.php:1422
+#: wppa-settings-autosave.php:1424
+#: wppa-settings-autosave.php:1425
 msgid "Users may change their ratings."
 msgstr "Bezoekers mogen hun waarderingen wijzigen."
 
-#: wppa-settings-autosave.php:1428
+#: wppa-settings-autosave.php:1431
 msgid "Rating multi"
 msgstr "Waardering meerdere"
 
-#: wppa-settings-autosave.php:1429
+#: wppa-settings-autosave.php:1432
 msgid "Users may give multiple votes."
 msgstr "Bezoekers mogen meerdere waarderingen geven."
 
-#: wppa-settings-autosave.php:1430
+#: wppa-settings-autosave.php:1433
 msgid "Users may give multiple votes. (This has no effect when users may change their votes.)"
 msgstr "Bezoekers mogen meerdere keren stemmen. (Dit heeft geen effect als ze mogen wijzigen.)"
 
-#: wppa-settings-autosave.php:1436
+#: wppa-settings-autosave.php:1439
 msgid "Rating use Ajax"
 msgstr "Waarderen gebruik Ajax"
 
-#: wppa-settings-autosave.php:1437
+#: wppa-settings-autosave.php:1440
 msgid "Use Ajax technology in rating (voting)"
 msgstr "Gebruik Ajax technologie voor het stemmen"
 
-#: wppa-settings-autosave.php:1438
+#: wppa-settings-autosave.php:1441
 msgid "If checked, the page is updated rather than reloaded after clicking a rating star."
 msgstr "Indien aangevinkt, wordt de pagina ge-update i.p.v. herladen na het klikken op een waarderings ster."
 
-#: wppa-settings-autosave.php:1439
+#: wppa-settings-autosave.php:1442
 msgid "Enabling this feature ensures the fastest rating mechanism possible."
 msgstr "Het aanzetten van dit mechanisme levert het snelst mogelijke stemsysteem op."
 
-#: wppa-settings-autosave.php:1445
+#: wppa-settings-autosave.php:1448
 msgid "Next after vote"
 msgstr "Volgende na stemmen"
 
-#: wppa-settings-autosave.php:1446
+#: wppa-settings-autosave.php:1449
 msgid "Goto next slide after voting"
 msgstr "Ga naar de volgende dia na het stemmen"
 
-#: wppa-settings-autosave.php:1447
+#: wppa-settings-autosave.php:1450
 msgid "If checked, the visitor goes straight to the slide following the slide he voted. This will speed up mass voting."
 msgstr "Indien aangevinkt gaat de bezoeker na het stemmen meteen naar de volgende dia. Dit versnelt het stemproces aanzienlijk."
 
-#: wppa-settings-autosave.php:1453
+#: wppa-settings-autosave.php:1456
 msgid "Star off opacity"
 msgstr "Ster 'uit' ondoorschijnbaarheid"
 
-#: wppa-settings-autosave.php:1454
+#: wppa-settings-autosave.php:1457
 msgid "Rating star off state opacity value."
 msgstr "Ondoorschijnendheidswaarde voor een waarderingsster in de 'uit' stand."
 
-#: wppa-settings-autosave.php:1461
+#: wppa-settings-autosave.php:1464
 msgid "Comments related settings"
 msgstr "Reacties gerelateerde instellingen"
 
-#: wppa-settings-autosave.php:1463
+#: wppa-settings-autosave.php:1466
 msgid "Commenting login"
 msgstr "Reacties login"
 
-#: wppa-settings-autosave.php:1464
+#: wppa-settings-autosave.php:1467
 msgid "Users must be logged in to comment on photos."
 msgstr "Bezoekers moeten ingelogd zijn om te reageren op foto's."
 
-#: wppa-settings-autosave.php:1465
+#: wppa-settings-autosave.php:1468
 msgid "Check this box if you want users to be logged in to be able to enter comments on individual photos."
 msgstr "Vink dit aan als u wilt dat bezoekers moeten zijn ingelogd om reacties op foto's te kunnen invoeren."
 
-#: wppa-settings-autosave.php:1471
+#: wppa-settings-autosave.php:1474
 msgid "Last comment first"
 msgstr "Laatste reactie eerst"
 
-#: wppa-settings-autosave.php:1472
+#: wppa-settings-autosave.php:1475
 msgid "Display the newest comment on top."
 msgstr "Toon de nieuwste reactie aan de bovenkant."
 
-#: wppa-settings-autosave.php:1473
+#: wppa-settings-autosave.php:1476
 msgid "If checked: Display the newest comment on top."
 msgstr "Indien aangevinkt: toon de nieuwste reactie aan de bovenkant."
 
-#: wppa-settings-autosave.php:1474
+#: wppa-settings-autosave.php:1477
 msgid "If unchecked, the comments are listed in the ordere they were entered."
 msgstr "Indien niet aangevinkt worden de reacties getoond in de volgorde waarin ze werden ingevoerd."
 
-#: wppa-settings-autosave.php:1480
+#: wppa-settings-autosave.php:1483
 msgid "Comment moderation"
 msgstr "Reactie moderatie"
 
-#: wppa-settings-autosave.php:1481
+#: wppa-settings-autosave.php:1484
 msgid "Comments from what users need approval."
 msgstr "Reacties van welke gebruikers goedkeuring behoeven."
 
-#: wppa-settings-autosave.php:1482
+#: wppa-settings-autosave.php:1485
 msgid "Select the desired users of which the comments need approval."
 msgstr "Selecteer de gewenste gebruikers waarvoor de reacties op foto's goedkeuring behoeven."
 
-#: wppa-settings-autosave.php:1484
+#: wppa-settings-autosave.php:1487
 msgid "All users"
 msgstr "Alle gebruikers"
 
-#: wppa-settings-autosave.php:1484
+#: wppa-settings-autosave.php:1487
 msgid "Logged out users"
 msgstr "Uitgelogde gebruikers"
 
-#: wppa-settings-autosave.php:1484
+#: wppa-settings-autosave.php:1487
 msgid "No users"
 msgstr "Geen"
 
-#: wppa-settings-autosave.php:1490
+#: wppa-settings-autosave.php:1493
 msgid "Comment email required"
 msgstr "Reactie email noodzakelijk"
 
-#: wppa-settings-autosave.php:1491
+#: wppa-settings-autosave.php:1494
 msgid "Commenting users must enter their email addresses."
 msgstr "Reagerende gebruikers moet hun e-mail adres opgeven."
 
-#: wppa-settings-autosave.php:1514
+#: wppa-settings-autosave.php:1517
 msgid "Table V:"
 msgstr "Tabel V:"
 
-#: wppa-settings-autosave.php:1514
+#: wppa-settings-autosave.php:1517
 msgid "Fonts:"
 msgstr "Lettertypen:"
 
-#: wppa-settings-autosave.php:1515
+#: wppa-settings-autosave.php:1518
 msgid "This table describes the Fonts used for the wppa+ elements."
 msgstr "Deze tabel beschrijft de lettertypen die gebruikt worden in de wppa+ onderdelen."
 
-#: wppa-settings-autosave.php:1516
+#: wppa-settings-autosave.php:1519
 msgid "If you leave fields empty, your themes defaults will be used."
 msgstr "Als u velden leeg laat, worden de waarden gebruikt zoals uw thema dat bepaalt."
 
-#: wppa-settings-autosave.php:1526
-#: wppa-settings-autosave.php:1652
+#: wppa-settings-autosave.php:1529
+#: wppa-settings-autosave.php:1655
 msgid "Font family"
 msgstr "Lettertype"
 
-#: wppa-settings-autosave.php:1527
-#: wppa-settings-autosave.php:1653
+#: wppa-settings-autosave.php:1530
+#: wppa-settings-autosave.php:1656
 msgid "Font size"
 msgstr "Font grootte"
 
-#: wppa-settings-autosave.php:1528
-#: wppa-settings-autosave.php:1654
+#: wppa-settings-autosave.php:1531
+#: wppa-settings-autosave.php:1657
 msgid "Font color"
 msgstr "Font kleur"
 
-#: wppa-settings-autosave.php:1529
-#: wppa-settings-autosave.php:1655
+#: wppa-settings-autosave.php:1532
+#: wppa-settings-autosave.php:1658
 msgid "Font weight"
 msgstr "Vetheid"
 
-#: wppa-settings-autosave.php:1537
+#: wppa-settings-autosave.php:1540
 msgid "normal"
 msgstr "normaal"
 
-#: wppa-settings-autosave.php:1537
+#: wppa-settings-autosave.php:1540
 msgid "bold"
 msgstr "vet"
 
-#: wppa-settings-autosave.php:1537
+#: wppa-settings-autosave.php:1540
 msgid "bolder"
 msgstr "vetter"
 
-#: wppa-settings-autosave.php:1537
+#: wppa-settings-autosave.php:1540
 msgid "lighter"
 msgstr "lichter"
 
-#: wppa-settings-autosave.php:1540
+#: wppa-settings-autosave.php:1543
 msgid "Album titles"
 msgstr "Album titels"
 
-#: wppa-settings-autosave.php:1541
+#: wppa-settings-autosave.php:1544
 msgid "Font used for Album titles."
 msgstr "Lettertype voor album titels."
 
-#: wppa-settings-autosave.php:1542
+#: wppa-settings-autosave.php:1545
 msgid "Enter font name, size, color and weight for album cover titles."
 msgstr "Voer de naam van het lettertype, de grootte, de kleur en vetheid in voor album omslag titels."
 
-#: wppa-settings-autosave.php:1556
+#: wppa-settings-autosave.php:1559
 msgid "Font for fullsize photo descriptions."
 msgstr "Lettertype voor de beschrijving van foto's van volledige grootte."
 
-#: wppa-settings-autosave.php:1557
+#: wppa-settings-autosave.php:1560
 msgid "Enter font name, size, color and weight for fullsize photo descriptions."
 msgstr "Voer de naam van het lettertype, de grootte, de kelur en vetheid in voor de beschrijving van foto's van volledige grootte."
 
-#: wppa-settings-autosave.php:1571
+#: wppa-settings-autosave.php:1574
 msgid "Font for fullsize photo names."
 msgstr "Lettertype voor de naam van foto's van volledige grootte."
 
-#: wppa-settings-autosave.php:1572
+#: wppa-settings-autosave.php:1575
 msgid "Enter font name, size, color and weight for fullsize photo names."
 msgstr "Voer de naam van het lettertype, de grootte, de kelur en vetheid in voor de beschrijving van foto's van volledige grootte."
 
-#: wppa-settings-autosave.php:1585
+#: wppa-settings-autosave.php:1588
 msgid "Navigations"
 msgstr "Navigaties"
 
-#: wppa-settings-autosave.php:1586
+#: wppa-settings-autosave.php:1589
 msgid "Font for navigations."
 msgstr "Lettertype voor navigaties."
 
-#: wppa-settings-autosave.php:1587
+#: wppa-settings-autosave.php:1590
 msgid "Enter font name, size, color and weight for navigation items."
 msgstr "Voer de naam van het lettertype, de grootte, de kleur en vetheid in voor navigaties."
 
-#: wppa-settings-autosave.php:1600
+#: wppa-settings-autosave.php:1603
 msgid "Thumbnails"
 msgstr "Miniatuur afbeeldingen"
 
-#: wppa-settings-autosave.php:1601
+#: wppa-settings-autosave.php:1604
 msgid "Font for text under thumbnails."
 msgstr "Lettertype voor tekst onder miniaturen."
 
-#: wppa-settings-autosave.php:1602
+#: wppa-settings-autosave.php:1605
 msgid "Enter font name, size, color and weight for text under thumbnail images."
 msgstr "Voer de naam van het lettertype, de grootte, de kleur en vetheid in voor tekst onder miniaturen."
 
-#: wppa-settings-autosave.php:1615
+#: wppa-settings-autosave.php:1618
 msgid "Other"
 msgstr "Anders"
 
-#: wppa-settings-autosave.php:1616
+#: wppa-settings-autosave.php:1619
 msgid "General font in wppa boxes."
 msgstr "Algemeen lettertype in wppa boxen."
 
-#: wppa-settings-autosave.php:1617
+#: wppa-settings-autosave.php:1620
 msgid "Enter font name, size, color and weight for all other items."
 msgstr "Voer de naam van het lettertype, de grootte, de kleur en vetheid in voor alle andere doeleinden."
 
-#: wppa-settings-autosave.php:1631
+#: wppa-settings-autosave.php:1634
 msgid "Font in wppa number bars."
 msgstr "Lettertype in nummer reeks."
 
-#: wppa-settings-autosave.php:1632
+#: wppa-settings-autosave.php:1635
 msgid "Enter font name, size, color and weight for numberbar navigation."
 msgstr "Voer de naam van het lettertype, de grootte, de kleur en vetheid in voor nummer reeks navigatie."
 
-#: wppa-settings-autosave.php:1663
+#: wppa-settings-autosave.php:1666
 msgid "Table VI:"
 msgstr "Tabel VI:"
 
-#: wppa-settings-autosave.php:1663
+#: wppa-settings-autosave.php:1666
 msgid "Links:"
 msgstr "Koppelingen:"
 
-#: wppa-settings-autosave.php:1664
+#: wppa-settings-autosave.php:1667
 msgid "This table defines the link types and pages."
 msgstr "Deze tabel bepaalt de soorten koppelingen en de pagina's."
 
-#: wppa-settings-autosave.php:1675
-#: wppa-settings-autosave.php:1915
+#: wppa-settings-autosave.php:1678
+#: wppa-settings-autosave.php:1918
 msgid "Link page"
 msgstr "Link pagina"
 
-#: wppa-settings-autosave.php:1677
-#: wppa-settings-autosave.php:1917
+#: wppa-settings-autosave.php:1680
+#: wppa-settings-autosave.php:1920
 msgid "Photo specific link overrules"
 msgstr "Foto specifieke koppeling gaat voor"
 
-#: wppa-settings-autosave.php:1677
-#: wppa-settings-autosave.php:1917
+#: wppa-settings-autosave.php:1680
+#: wppa-settings-autosave.php:1920
 msgid "PSO"
 msgstr "FSO"
 
-#: wppa-settings-autosave.php:1685
-#: wppa-settings-autosave.php:1687
-#: wppa-settings-autosave.php:1689
-#: wppa-settings-autosave.php:1691
-#: wppa-settings-autosave.php:1693
-#: wppa-settings-autosave.php:1869
-#: wppa-settings-autosave.php:2880
+#: wppa-settings-autosave.php:1688
+#: wppa-settings-autosave.php:1690
+#: wppa-settings-autosave.php:1692
+#: wppa-settings-autosave.php:1694
+#: wppa-settings-autosave.php:1696
+#: wppa-settings-autosave.php:1872
+#: wppa-settings-autosave.php:2883
 msgid "no link at all."
 msgstr "helemaal geen link."
 
-#: wppa-settings-autosave.php:1685
-#: wppa-settings-autosave.php:1687
-#: wppa-settings-autosave.php:1689
-#: wppa-settings-autosave.php:1691
-#: wppa-settings-autosave.php:1693
-#: wppa-settings-autosave.php:1869
-#: wppa-settings-autosave.php:2881
+#: wppa-settings-autosave.php:1688
+#: wppa-settings-autosave.php:1690
+#: wppa-settings-autosave.php:1692
+#: wppa-settings-autosave.php:1694
+#: wppa-settings-autosave.php:1696
+#: wppa-settings-autosave.php:1872
+#: wppa-settings-autosave.php:2884
 msgid "the plain photo (file)."
 msgstr "de foto alleen (bestand)."
 
-#: wppa-settings-autosave.php:1685
-#: wppa-settings-autosave.php:1687
-#: wppa-settings-autosave.php:1689
-#: wppa-settings-autosave.php:1691
-#: wppa-settings-autosave.php:2882
+#: wppa-settings-autosave.php:1688
+#: wppa-settings-autosave.php:1690
+#: wppa-settings-autosave.php:1692
+#: wppa-settings-autosave.php:1694
+#: wppa-settings-autosave.php:2885
 msgid "the full size photo in a slideshow."
 msgstr "de grote foto in de bladermodus."
 
-#: wppa-settings-autosave.php:1685
-#: wppa-settings-autosave.php:1687
-#: wppa-settings-autosave.php:1689
-#: wppa-settings-autosave.php:1691
-#: wppa-settings-autosave.php:2883
+#: wppa-settings-autosave.php:1688
+#: wppa-settings-autosave.php:1690
+#: wppa-settings-autosave.php:1692
+#: wppa-settings-autosave.php:1694
+#: wppa-settings-autosave.php:2886
 msgid "the fullsize photo on its own."
 msgstr "de grote foto alleen."
 
-#: wppa-settings-autosave.php:1685
+#: wppa-settings-autosave.php:1688
 msgid "the fullsize photo with a print button."
 msgstr "de grote foto met een afdruk knop."
 
-#: wppa-settings-autosave.php:1685
-#: wppa-settings-autosave.php:1691
-#: wppa-settings-autosave.php:1869
+#: wppa-settings-autosave.php:1688
+#: wppa-settings-autosave.php:1694
+#: wppa-settings-autosave.php:1872
 msgid "lightbox."
 msgstr "lightbox."
 
-#: wppa-settings-autosave.php:1687
-#: wppa-settings-autosave.php:1689
-#: wppa-settings-autosave.php:1691
-#: wppa-settings-autosave.php:2885
+#: wppa-settings-autosave.php:1690
+#: wppa-settings-autosave.php:1692
+#: wppa-settings-autosave.php:1694
+#: wppa-settings-autosave.php:2888
 msgid "the content of the album."
 msgstr "de inhoud van het album."
 
-#: wppa-settings-autosave.php:1689
-#: wppa-settings-autosave.php:2886
+#: wppa-settings-autosave.php:1692
+#: wppa-settings-autosave.php:2889
 msgid "defined at widget activation."
 msgstr "bepaald bij de widget activering."
 
-#: wppa-settings-autosave.php:1691
-#: wppa-settings-autosave.php:2887
+#: wppa-settings-autosave.php:1694
+#: wppa-settings-autosave.php:2890
 msgid "defined on widget admin page."
 msgstr "bepaald op de widget admin pagina."
 
-#: wppa-settings-autosave.php:1693
-#: wppa-settings-autosave.php:2888
+#: wppa-settings-autosave.php:1696
+#: wppa-settings-autosave.php:2891
 msgid "same as title."
 msgstr "gelijk aan titel."
 
-#: wppa-settings-autosave.php:1702
+#: wppa-settings-autosave.php:1705
 msgid "--- The same post or page ---"
 msgstr "--- Dezelfde post of pagina ---"
 
-#: wppa-settings-autosave.php:1720
+#: wppa-settings-autosave.php:1723
 msgid "--- No page to link to (yet) ---"
 msgstr "--- (Nog) geen pagina om naar te koppelen ---"
 
-#: wppa-settings-autosave.php:1724
+#: wppa-settings-autosave.php:1727
 msgid "Mphoto"
 msgstr "Mfoto"
 
-#: wppa-settings-autosave.php:1725
+#: wppa-settings-autosave.php:1728
 msgid "Media-like photo link."
 msgstr "Link voor %%mphoto."
 
-#: wppa-settings-autosave.php:1726
-#: wppa-settings-autosave.php:1746
+#: wppa-settings-autosave.php:1729
+#: wppa-settings-autosave.php:1749
 msgid "Select the type of link you want, or no link at all."
 msgstr "Selecteer het soort link dat u wenst, of helemaal geen link."
 
-#: wppa-settings-autosave.php:1727
-#: wppa-settings-autosave.php:1747
+#: wppa-settings-autosave.php:1730
+#: wppa-settings-autosave.php:1750
 msgid "If you select the fullsize photo on its own, it will be stretched to fit, regardless of that setting."
 msgstr "Als u de grote foto alleen kiest wordt deze zonodig uitgerekt om te passen, ongeacht die instelling."
 
-#: wppa-settings-autosave.php:1728
-#: wppa-settings-autosave.php:1748
+#: wppa-settings-autosave.php:1731
+#: wppa-settings-autosave.php:1751
 #, php-format
 msgid "Note that a page must have at least %%wppa%% in its content to show up the photo(s)."
 msgstr "Merk op dat aan pagina minimaal %%wppa%% als inhoud moet hebben om de foto's te tonen."
 
-#: wppa-settings-autosave.php:1744
+#: wppa-settings-autosave.php:1747
 msgid "Thumbnail"
 msgstr "Miniatuur afbeelding"
 
-#: wppa-settings-autosave.php:1745
+#: wppa-settings-autosave.php:1748
 msgid "Thumbnail link."
 msgstr "Miniatuur koppeling."
 
-#: wppa-settings-autosave.php:1765
+#: wppa-settings-autosave.php:1768
 msgid "TopTenWidget"
 msgstr "TopTien Widget"
 
-#: wppa-settings-autosave.php:1766
+#: wppa-settings-autosave.php:1769
 msgid "TopTen widget photo link."
 msgstr "TopTien Widget foto koppeling."
 
-#: wppa-settings-autosave.php:1767
-#: wppa-settings-autosave.php:1786
+#: wppa-settings-autosave.php:1770
+#: wppa-settings-autosave.php:1789
 msgid "Select the type of link the top ten photos point to."
 msgstr "Selecteer het type koppeling voor de top-tien foto's."
 
-#: wppa-settings-autosave.php:1784
+#: wppa-settings-autosave.php:1787
 msgid "SlideWidget"
 msgstr "Diashow Widget"
 
-#: wppa-settings-autosave.php:1785
+#: wppa-settings-autosave.php:1788
 msgid "Slideshow widget photo link."
 msgstr "Dia widget koppeling."
 
-#: wppa-settings-autosave.php:1802
+#: wppa-settings-autosave.php:1805
 msgid "PotdWidget"
 msgstr "FvddWidget"
 
-#: wppa-settings-autosave.php:1803
+#: wppa-settings-autosave.php:1806
 msgid "Photo Of The Day widget link."
 msgstr "Foto van de dag widget koppeling."
 
-#: wppa-settings-autosave.php:1804
+#: wppa-settings-autosave.php:1807
 msgid "Select the type of link the photo of the day points to."
 msgstr "Selecteer het type koppeling voor de foto van de dag."
 
-#: wppa-settings-autosave.php:1805
+#: wppa-settings-autosave.php:1808
 msgid "If you select 'defined on widget admin page' you can manually enter a link and title on the Photo of the day Widget Admin page."
 msgstr "Als u 'bepaald op de widget admin pagina' selecteert, kunt u handmatig een koppeling opgeven op de 'Foto van de dag' admin pagina."
 
-#: wppa-settings-autosave.php:1821
+#: wppa-settings-autosave.php:1824
 msgid "Cover Image"
 msgstr "Omslag Foto"
 
-#: wppa-settings-autosave.php:1822
+#: wppa-settings-autosave.php:1825
 msgid "The link from the cover image of an album."
 msgstr "De koppeling van de album omslagfoto."
 
-#: wppa-settings-autosave.php:1823
+#: wppa-settings-autosave.php:1826
 msgid "Select the type of link the coverphoto points to."
 msgstr "Selecteer het type koppeling voor de omslagfoto."
 
-#: wppa-settings-autosave.php:1824
+#: wppa-settings-autosave.php:1827
 msgid "The link from the album title can be configured on the Edit Album page."
 msgstr "De koppeling van de album titel kan geconfigureerd worden op de pagina Album informatie bewerken."
 
-#: wppa-settings-autosave.php:1825
+#: wppa-settings-autosave.php:1828
 msgid "This link will be used for the photo also if you select: same as title."
 msgstr "Deze link wordt ook voor de foto gebruikt als u kiest voor: gelijk aan titel."
 
-#: wppa-settings-autosave.php:1826
+#: wppa-settings-autosave.php:1829
 msgid "If you specify New Tab on this line, all links from the cover will open a new tab,"
 msgstr "Als u Niewe Tab op deze regel aanvinkt, worden alle koppelingen vanuit de omslag in een nieuwe tab geopend,"
 
-#: wppa-settings-autosave.php:1827
+#: wppa-settings-autosave.php:1830
 msgid "except when Ajax is activated on Table IV-A1."
 msgstr "behalve wanneer Ajax is geactiveerd in Table IV-A1."
 
-#: wppa-settings-autosave.php:1843
+#: wppa-settings-autosave.php:1846
 msgid "CommentWidget"
 msgstr "Reacties Widget"
 
-#: wppa-settings-autosave.php:1844
+#: wppa-settings-autosave.php:1847
 msgid "Comment widget photo link."
 msgstr "Reacties Widget foto koppeling."
 
-#: wppa-settings-autosave.php:1845
+#: wppa-settings-autosave.php:1848
 msgid "Select the type of link the comment widget photos point to."
 msgstr "Selecteer het type koppeling voor de becommentariëerde foto's."
 
-#: wppa-settings-autosave.php:1862
+#: wppa-settings-autosave.php:1865
 msgid "Slideshow fullsize link"
 msgstr "Diavoorstelling koppeling."
 
-#: wppa-settings-autosave.php:1863
+#: wppa-settings-autosave.php:1866
 msgid "You can overrule lightbox but not big browse buttons with the photo specifc link."
 msgstr "U kunt lightbox overrulen maar niet de Big Browse Buttons men een foto specifieke koppeling."
 
-#: wppa-settings-autosave.php:1880
+#: wppa-settings-autosave.php:1883
 msgid "ThumbnailWidget"
 msgstr "Miniaturen widget"
 
-#: wppa-settings-autosave.php:1881
+#: wppa-settings-autosave.php:1884
 msgid "Thumbnail widget photo link."
 msgstr "Miniaturen Widget foto koppeling."
 
-#: wppa-settings-autosave.php:1882
+#: wppa-settings-autosave.php:1885
 msgid "Select the type of link the thumbnail photos point to."
 msgstr "Selecteer het type koppeling voor de miniaturen."
 
-#: wppa-settings-autosave.php:1898
+#: wppa-settings-autosave.php:1901
 msgid "Film linktype"
 msgstr "Film link type"
 
-#: wppa-settings-autosave.php:1899
+#: wppa-settings-autosave.php:1902
 msgid "Direct access goto image in:"
 msgstr "Ga direct naar foto in:"
 
-#: wppa-settings-autosave.php:1900
+#: wppa-settings-autosave.php:1903
 msgid "Select the action to be taken when the user clicks on a filmstrip image."
 msgstr "Selecteer de actie die moet worden ondernomen wanneer de bezoeker op een filmstrip afbeelding klikt."
 
-#: wppa-settings-autosave.php:1902
+#: wppa-settings-autosave.php:1905
 msgid "slideshow window"
 msgstr "diavoorstelling venster"
 
-#: wppa-settings-autosave.php:1902
+#: wppa-settings-autosave.php:1905
 msgid "lightbox overlay"
 msgstr "lightbox overlay"
 
-#: wppa-settings-autosave.php:1925
+#: wppa-settings-autosave.php:1928
 msgid "Table VII:"
 msgstr "Tabel VII:"
 
-#: wppa-settings-autosave.php:1925
+#: wppa-settings-autosave.php:1928
 msgid "Access and Security:"
 msgstr "Toegang en Beveiliging:"
 
-#: wppa-settings-autosave.php:1926
+#: wppa-settings-autosave.php:1929
 msgid "This table describes the access settings for wppa+ elements and pages."
 msgstr "Deze tabel beschrijft de toegangsrechten voor wppa+ onderdelen en pagina's."
 
-#: wppa-settings-autosave.php:1952
+#: wppa-settings-autosave.php:1955
 msgid "Role"
 msgstr "Role"
 
-#: wppa-settings-autosave.php:1960
+#: wppa-settings-autosave.php:1963
 msgid "Roles and Capability settings"
 msgstr "Roles and Capability instellingen"
 
-#: wppa-settings-autosave.php:1982
+#: wppa-settings-autosave.php:1985
 msgid "Miscellaneous scurity settings"
 msgstr "Overige beveiligings instellingen"
 
-#: wppa-settings-autosave.php:1984
+#: wppa-settings-autosave.php:1987
 msgid "Owners only"
 msgstr "Alleen eigenaars"
 
-#: wppa-settings-autosave.php:1985
+#: wppa-settings-autosave.php:1988
 msgid "Limit album access to the album owners only."
 msgstr "Beperk de toegang tot albums tot alleen de eigenaars."
 
-#: wppa-settings-autosave.php:1986
+#: wppa-settings-autosave.php:1989
 msgid "If checked, users who can edit albums and/or upload/import photos can do that with their own albums and --- public --- albums only."
 msgstr "Indien aangevinkt kunnen gebruikers die albums kunnen aanmaken en/of foto's kunnen uploaden/importeren dat alleen met albums waarvan ze de eigenaar zijn of die --- openbaar --- zijn."
 
-#: wppa-settings-autosave.php:1987
+#: wppa-settings-autosave.php:1990
 msgid "Users can give their albums to another user. Administrators can change ownership and access all albums always."
 msgstr "Gebruikers kunnen hun albums aan andere gebruikers geven. Administrateurs kunnen ten alle tijde de eigenaar wijzigen."
 
-#: wppa-settings-autosave.php:1992
+#: wppa-settings-autosave.php:1995
 msgid "User upload"
 msgstr "Bezoeker upload"
 
-#: wppa-settings-autosave.php:1993
+#: wppa-settings-autosave.php:1996
 msgid "Enable visitors to upload photos."
 msgstr "Bezoekers kunnen foto's uploaden."
 
-#: wppa-settings-autosave.php:1994
+#: wppa-settings-autosave.php:1997
 msgid "If you check this item, visitors who are logged in and have wppa+ upload rights and have access to the album will see an upload photo link on album covers and thumbnail displays."
 msgstr "Als u dit item aanvinkt zullen bezoekers die ingelogd zijn en wppa+ upload rechten hebben en toegang tot het album hebben een upload link zien op albumomslagen en miniatuur oversichten."
 
-#: wppa-settings-autosave.php:2000
+#: wppa-settings-autosave.php:2003
 msgid "Upload moderation"
 msgstr "Upload moderatie"
 
-#: wppa-settings-autosave.php:2001
+#: wppa-settings-autosave.php:2004
 msgid "Uploaded photos need moderation."
 msgstr "Ge-uploade fotos behoeven goedkeuring."
 
-#: wppa-settings-autosave.php:2002
+#: wppa-settings-autosave.php:2005
 msgid "If checked, photos uploaded by users who do not have photo album admin access rights need moderation."
 msgstr "Indien aangevinkt, behoeven foto's die ge-upload zijn door gebruikers die geen album admin rechten hebben goedkeuring."
 
-#: wppa-settings-autosave.php:2003
+#: wppa-settings-autosave.php:2006
 msgid "Users who have photo album admin access rights can change the photo status to publish or featured."
 msgstr "Gebruikers die album admin rechten hebben kunnen de foto status wijzigen in gepubliceerd of aanbevolen."
 
-#: wppa-settings-autosave.php:2004
+#: wppa-settings-autosave.php:2007
 msgid "You can set the album admin access rights in Table VII-A."
 msgstr "U kunt de album admin rechten instellen in Tabel VII-A."
 
-#: wppa-settings-autosave.php:2009
+#: wppa-settings-autosave.php:2012
 msgid "Comment captcha"
 msgstr "Reactie captcha"
 
-#: wppa-settings-autosave.php:2010
+#: wppa-settings-autosave.php:2013
 msgid "Use a simple calculate captcha on comments form."
 msgstr "Gebruik een eenvoudige reken captche op het foto reactie formulier."
 
-#: wppa-settings-autosave.php:2017
+#: wppa-settings-autosave.php:2020
 msgid "Spam lifetime"
 msgstr "Spam levensduur"
 
-#: wppa-settings-autosave.php:2018
+#: wppa-settings-autosave.php:2021
 msgid "Delete spam comments when older than."
 msgstr "Verwijder spam reacties als ze ouder zijn dan."
 
-#: wppa-settings-autosave.php:2021
+#: wppa-settings-autosave.php:2024
 msgid "10 minutes"
 msgstr "10 minuten"
 
-#: wppa-settings-autosave.php:2021
+#: wppa-settings-autosave.php:2024
 msgid "half an hour"
 msgstr "een half uur"
 
-#: wppa-settings-autosave.php:2021
+#: wppa-settings-autosave.php:2024
 msgid "one hour"
 msgstr "een uur"
 
-#: wppa-settings-autosave.php:2021
+#: wppa-settings-autosave.php:2024
 msgid "one day"
 msgstr "een dag"
 
-#: wppa-settings-autosave.php:2021
+#: wppa-settings-autosave.php:2024
 msgid "one week"
 msgstr "een week"
 
-#: wppa-settings-autosave.php:2042
+#: wppa-settings-autosave.php:2045
 msgid "Table VIII:"
 msgstr "Tabel VIII:"
 
-#: wppa-settings-autosave.php:2042
+#: wppa-settings-autosave.php:2045
 msgid "Actions:"
 msgstr "Acties:"
 
-#: wppa-settings-autosave.php:2043
+#: wppa-settings-autosave.php:2046
 msgid "This table lists all actions that can be taken to the wppa+ system"
 msgstr "Deze tabel bevat alle acties die kunnen worden ondernomen op het wppa+ systeem."
 
-#: wppa-settings-autosave.php:2053
-#: wppa-settings-autosave.php:2188
+#: wppa-settings-autosave.php:2056
+#: wppa-settings-autosave.php:2191
 msgid "Specification"
 msgstr "Specificatie"
 
-#: wppa-settings-autosave.php:2054
-#: wppa-settings-autosave.php:2189
-#: wppa-settings-autosave.php:2910
-#: wppa-settings-autosave.php:2923
+#: wppa-settings-autosave.php:2057
+#: wppa-settings-autosave.php:2192
+#: wppa-settings-autosave.php:2913
+#: wppa-settings-autosave.php:2926
 msgid "Do it!"
 msgstr "Doen!"
 
-#: wppa-settings-autosave.php:2062
+#: wppa-settings-autosave.php:2065
 msgid "Harmless and reverseable actions"
 msgstr "Onschadelijke en helstelbare acties"
 
-#: wppa-settings-autosave.php:2064
+#: wppa-settings-autosave.php:2067
 msgid "Setup"
 msgstr "Setup"
 
-#: wppa-settings-autosave.php:2065
+#: wppa-settings-autosave.php:2068
 msgid "Re-initialize plugin."
 msgstr "Her-initialiseer plugin."
 
-#: wppa-settings-autosave.php:2066
+#: wppa-settings-autosave.php:2069
 msgid "Re-initilizes the plugin, (re)creates database tables and sets up default settings and directories if required."
 msgstr "Her-initialiseert de plugin, (re)construeert database tabellen en installeert standaardwaarden en mappen indien dat nodig is."
 
-#: wppa-settings-autosave.php:2067
+#: wppa-settings-autosave.php:2070
 msgid "This action may be required to setup blogs in a multiblog (network) site as well as in rare cases to correct initilization errors."
 msgstr "Deze actie kan nodig zijn om multiblog (netwerk) sites op te zetten en in zeldzame gevallen om initialisatie fouten te corrigeren."
 
-#: wppa-settings-autosave.php:2074
+#: wppa-settings-autosave.php:2077
 msgid "Backup settings"
 msgstr "Backup instellingen"
 
-#: wppa-settings-autosave.php:2075
+#: wppa-settings-autosave.php:2078
 msgid "Save all settings into a backup file."
 msgstr "Sla alle instellingen op in een backup bestand."
 
-#: wppa-settings-autosave.php:2076
+#: wppa-settings-autosave.php:2079
 msgid "Saves all the settings into a backup file"
 msgstr "Sla alle instellingen op in een backup bestand"
 
-#: wppa-settings-autosave.php:2083
+#: wppa-settings-autosave.php:2086
 msgid "Load settings"
 msgstr "Instellingen laden"
 
-#: wppa-settings-autosave.php:2084
+#: wppa-settings-autosave.php:2087
 msgid "Restore all settings from defaults, a backup or skin file."
 msgstr "Zet alle instellingen terug naar standaardwaarden, uit een backup of skin bestand."
 
-#: wppa-settings-autosave.php:2085
+#: wppa-settings-autosave.php:2088
 msgid "Restores all the settings from the factory supplied defaults, the backup you created or from a skin file."
 msgstr "Zet alle instellingen terug naar fabrieksinstellingen, van uw backup bestand of van een skin bestand."
 
-#: wppa-settings-autosave.php:2092
+#: wppa-settings-autosave.php:2095
 msgid "--- set to defaults ---"
 msgstr "--- zet op standaard waarden ---"
 
-#: wppa-settings-autosave.php:2095
+#: wppa-settings-autosave.php:2098
 msgid "--- restore backup ---"
 msgstr "--- backup terugzetten ---"
 
-#: wppa-settings-autosave.php:2113
+#: wppa-settings-autosave.php:2116
 msgid "Regenerate"
 msgstr "Regenereer"
 
-#: wppa-settings-autosave.php:2114
-#: wppa-settings-autosave.php:2115
+#: wppa-settings-autosave.php:2117
+#: wppa-settings-autosave.php:2118
 msgid "Regenerate all thumbnails."
 msgstr "Alle miniatuurafbeeldingen opnieuw maken."
 
-#: wppa-settings-autosave.php:2122
+#: wppa-settings-autosave.php:2125
 msgid "Rerate"
 msgstr "Herwaardeer"
 
-#: wppa-settings-autosave.php:2123
+#: wppa-settings-autosave.php:2126
 msgid "Recalculate ratings."
 msgstr "Herbereken alle waarderingen."
 
-#: wppa-settings-autosave.php:2124
+#: wppa-settings-autosave.php:2127
 msgid "This function will recalculate all mean photo ratings from the ratings table."
 msgstr "Deze functie zal alle gemiddelde waarderingen herberekenen."
 
-#: wppa-settings-autosave.php:2125
+#: wppa-settings-autosave.php:2128
 msgid "You may need this function after the re-import of previously exported photos"
 msgstr "U kunt dit nodig hebben bij het her-importeren van eerder geëxporteerde foto's"
 
-#: wppa-settings-autosave.php:2132
+#: wppa-settings-autosave.php:2135
 msgid "Cleanup"
 msgstr "Opschonen"
 
-#: wppa-settings-autosave.php:2133
+#: wppa-settings-autosave.php:2136
 msgid "Fix and secure WPPA+ system consistency"
 msgstr "Schoon het WPPA+ system op en waarborg de consistentie"
 
-#: wppa-settings-autosave.php:2134
+#: wppa-settings-autosave.php:2137
 msgid "This function will cleanup incomplete db entries and recover lost photos."
 msgstr "Deze functie zal onvolledige database ingangen opschonen en evt. verloren foto's terugvinden. "
 
-#: wppa-settings-autosave.php:2141
+#: wppa-settings-autosave.php:2144
 msgid "Recuperate"
 msgstr "Recuperatie"
 
-#: wppa-settings-autosave.php:2143
+#: wppa-settings-autosave.php:2146
 msgid "This action will attempt to find and register IPTC and EXIF data from photos in the WPPA+ system."
 msgstr "Deze actie doet een poging om de IPTC en EXIF gegevens op te sporen en te registreren van de foto's in het WPPA+ systeem."
 
-#: wppa-settings-autosave.php:2144
+#: wppa-settings-autosave.php:2147
 msgid "WARNING: Photos that have been downzised during upload/import will have NO IPTC and/or EXIF data."
 msgstr "WAARSCHUWING: Foto's die zijn verkleind bij de oorspronkelijke upload/import hebben GEEN IPTC en/of EXIF gegevens."
 
-#: wppa-settings-autosave.php:2145
+#: wppa-settings-autosave.php:2148
 msgid "If you want that data, you will have to re-import the original files. Use the update switch. You may resize them again."
 msgstr "Als u die informatie wilt, dient u de oorspronkelijke bestanden te her-importeren. Gebruik de update checkbox. U mag ze dan wéér verkelinen."
 
-#: wppa-settings-autosave.php:2152
+#: wppa-settings-autosave.php:2155
 msgid "Clearing and other irreverseable actions"
 msgstr "Leegmaak- en onomkeerbare acties"
 
-#: wppa-settings-autosave.php:2154
+#: wppa-settings-autosave.php:2157
 msgid "Clear ratings"
 msgstr "Wis alle waarderingen"
 
-#: wppa-settings-autosave.php:2155
+#: wppa-settings-autosave.php:2158
 msgid "Reset all ratings."
 msgstr "Verwijder alle waarderingen."
 
-#: wppa-settings-autosave.php:2156
+#: wppa-settings-autosave.php:2159
 msgid "WARNING: If checked, this will clear all ratings in the system!"
 msgstr "WAARSCHUWING: Indien aangevinkt worden alle waarderingen uit het systeem gewist!"
 
-#: wppa-settings-autosave.php:2163
+#: wppa-settings-autosave.php:2166
 msgid "Reset IPTC"
 msgstr "Reset IPTC"
 
-#: wppa-settings-autosave.php:2164
+#: wppa-settings-autosave.php:2167
 msgid "Clear all IPTC data."
 msgstr "Verwijder alle IPTC gegevens."
 
-#: wppa-settings-autosave.php:2165
+#: wppa-settings-autosave.php:2168
 msgid "WARNING: If checked, this will clear all IPTC data in the system!"
 msgstr "WAARSCHUWING: Indien aangevinkt worden alle IPTC gegevens uit het systeem gewist!"
 
-#: wppa-settings-autosave.php:2172
+#: wppa-settings-autosave.php:2175
 msgid "Reset EXIF"
 msgstr "Reset EXIF"
 
-#: wppa-settings-autosave.php:2173
+#: wppa-settings-autosave.php:2176
 msgid "Clear all EXIF data."
 msgstr "Verwijder alle EXIF gegevens."
 
-#: wppa-settings-autosave.php:2174
+#: wppa-settings-autosave.php:2177
 msgid "WARNING: If checked, this will clear all EXIF data in the system!"
 msgstr "WAARSCHUWING: Indien aangevinkt worden alle EXIF gegevens uit het systeem gewist!"
 
-#: wppa-settings-autosave.php:2197
+#: wppa-settings-autosave.php:2200
 msgid "Table IX:"
 msgstr "Tabel IX:"
 
-#: wppa-settings-autosave.php:2197
+#: wppa-settings-autosave.php:2200
 msgid "Miscellaneous:"
 msgstr "Diversen:"
 
-#: wppa-settings-autosave.php:2198
+#: wppa-settings-autosave.php:2201
 msgid "This table lists all settings that do not fit into an other table"
 msgstr "Deze tabel bevat alle instellingen die in geen enkele andere tabel passen."
 
-#: wppa-settings-autosave.php:2215
+#: wppa-settings-autosave.php:2218
 msgid "WPPA+ System related miscellaneous settings"
 msgstr "WPPA+ Systeem gerelateerde overige instellingen"
 
-#: wppa-settings-autosave.php:2217
+#: wppa-settings-autosave.php:2220
 msgid "Allow HTML"
 msgstr "Sta HTML toe"
 
-#: wppa-settings-autosave.php:2218
+#: wppa-settings-autosave.php:2221
 msgid "Allow HTML in album and photo descriptions."
 msgstr "Sta het gebruik van HTML toe in de beschrijvingen van albums en foto's."
 
-#: wppa-settings-autosave.php:2219
+#: wppa-settings-autosave.php:2222
 msgid "If checked: html is allowed. WARNING: No checks on syntax, it is your own responsability to close tags properly!"
 msgstr "Indien aangevinkt wordt html geïnterpreteerd. Waarschuwing: Er vindt geen syntaxcontrole plaats, het is uw eigen verantwoordelijkheid de juiste tags te gebruiken en af te sluiten!"
 
-#: wppa-settings-autosave.php:2224
+#: wppa-settings-autosave.php:2227
 msgid "Check tag balance"
 msgstr "Kontroleer tag balans"
 
-#: wppa-settings-autosave.php:2225
+#: wppa-settings-autosave.php:2228
 msgid "Check if the HTML tags are properly closed: \"balanced\"."
 msgstr "Kontroleer of de HTML tags netjes zij gesloten: \"in balans\" zijn."
 
-#: wppa-settings-autosave.php:2226
+#: wppa-settings-autosave.php:2229
 msgid "If the HTML tags in an album or a photo description are not in balance, the description is not updated, an errormessage is displayed"
 msgstr "Indien de HTML tags in album of foto beschrijvingen niet in balans zijn, wordt de beschrijving niet ge-ipdate maar verschijnt er een foutmelding"
 
-#: wppa-settings-autosave.php:2231
+#: wppa-settings-autosave.php:2234
 msgid "Allow WPPA+ Debugging"
 msgstr "Sta WPPA+ Debugging toe"
 
-#: wppa-settings-autosave.php:2232
+#: wppa-settings-autosave.php:2235
 msgid "Allow the use of &debug=.. in urls to this site."
 msgstr "Sta het gebruik van &debug=.. in urls naar deze site toe."
 
-#: wppa-settings-autosave.php:2233
+#: wppa-settings-autosave.php:2236
 msgid "If checked: appending (?)(&)debug or (?)(&)debug=<int> to an url to this site will generate the display of special WPPA+ diagnostics, as well as php warnings"
 msgstr "Indien aangevinkt: het toevoegen van (?)(&)debug of (?)(&)debug=<int> bij een url naar deze site zal het afdrukken van speciale WPPA+ diagnostische tekst toto gevolg hebben en tevens php waarschuwingen tonen."
 
-#: wppa-settings-autosave.php:2238
+#: wppa-settings-autosave.php:2241
 msgid "Autoclean"
 msgstr "Auto schonen"
 
-#: wppa-settings-autosave.php:2239
+#: wppa-settings-autosave.php:2242
 msgid "Auto cleanup invalid database entries."
 msgstr "Schoon ongeldige daabase ingangen automatisch op."
 
-#: wppa-settings-autosave.php:2240
+#: wppa-settings-autosave.php:2243
 msgid "If checked, the database consistency will be automaticly secured after an interrupted upload or import procedure."
 msgstr "Indien aangevinkt zal de inegriteit van het WPPA+ systeem automatisch worden hersteld na een onderbroken upload of import procedure."
 
-#: wppa-settings-autosave.php:2245
+#: wppa-settings-autosave.php:2248
 msgid "WPPA+ Filter priority"
 msgstr "WPPA+ Filter prioriteit"
 
-#: wppa-settings-autosave.php:2246
+#: wppa-settings-autosave.php:2249
 msgid "Sets the priority of the wppa+ content filter."
 msgstr "Zet de prioriteit van de wppa+ content filter."
 
-#: wppa-settings-autosave.php:2247
+#: wppa-settings-autosave.php:2250
 msgid "If you encounter conflicts with the theme or other plugins, increasing this value sometimes helps. Use with great care!"
 msgstr "Als u conflicten met het thema of andere plugins heeft, wil het verhogen van dit getal wel eens helpen. Wees erg voorzichtig!"
 
-#: wppa-settings-autosave.php:2252
+#: wppa-settings-autosave.php:2255
 msgid "Lightbox keyname"
 msgstr "Lightbox sleutelwoord"
 
-#: wppa-settings-autosave.php:2253
+#: wppa-settings-autosave.php:2256
 msgid "The identifier of lightbox."
 msgstr "De identificatie van lightbox."
 
-#: wppa-settings-autosave.php:2254
+#: wppa-settings-autosave.php:2257
 msgid "If you use a lightbox plugin that uses rel=\"lbox-id\" you can enter the lbox-id here."
 msgstr "Als u een lightbox plugin gebruikt die rel=\"lbox-id\" gebruikt, kunt u hier de lbox-id opgeven."
 
-#: wppa-settings-autosave.php:2260
+#: wppa-settings-autosave.php:2263
 msgid "Foreign shortcodes"
 msgstr "Vreemde shortcodes"
 
-#: wppa-settings-autosave.php:2261
+#: wppa-settings-autosave.php:2264
 msgid "Enable the use of non-wppa+ shortcodes in fullsize photo descriptions."
 msgstr "Maak het gebruik van non-wppa+ shortcodes mogelijk in foto beschrijvingen."
 
-#: wppa-settings-autosave.php:2262
+#: wppa-settings-autosave.php:2265
 msgid "When checked, you can use shortcodes from other plugins in the description of photos."
 msgstr "Indien aangevinkt: u kunt shortcodes van andere plugins gebruiken in de foto beschrijvingen."
 
-#: wppa-settings-autosave.php:2263
+#: wppa-settings-autosave.php:2266
 msgid "The shortcodes will be expanded in the descriptions of fullsize images."
 msgstr "De shortcodes in fotobeschrijvingen zullen worden geïnterpreteerd bij volledige grootte afbeeldingen."
 
-#: wppa-settings-autosave.php:2264
+#: wppa-settings-autosave.php:2267
 msgid "You will most likely need also to check Table IX-A1 (Allow HTML)."
 msgstr "U zult hoogstwaarschijnlijk ook Tabel IX-A1 (Sta HTML toe) moeten aanvinken."
 
-#: wppa-settings-autosave.php:2269
+#: wppa-settings-autosave.php:2272
 msgid "Arrow color"
 msgstr "Pijlkleur"
 
-#: wppa-settings-autosave.php:2270
+#: wppa-settings-autosave.php:2273
 msgid "Left/right browsing arrow color."
 msgstr "Links/rechts pijlen kleur."
 
-#: wppa-settings-autosave.php:2271
+#: wppa-settings-autosave.php:2274
 msgid "Enter the color of the navigation arrows."
 msgstr "Voer de kleur voor de navigatiepijlen in."
 
-#: wppa-settings-autosave.php:2276
+#: wppa-settings-autosave.php:2279
 msgid "New Album and New Photo related miscellaneous settings"
 msgstr "Nieuwe Album en Nieuwe Foto gerelateerde overige instellingen"
 
-#: wppa-settings-autosave.php:2279
+#: wppa-settings-autosave.php:2282
 msgid "Maximum time an album is indicated as New!"
 msgstr "De minimale tijd dat een album aangemerkt wordt als Niew!"
 
-#: wppa-settings-autosave.php:2282
-#: wppa-settings-autosave.php:2291
+#: wppa-settings-autosave.php:2285
+#: wppa-settings-autosave.php:2294
 msgid "One hour"
 msgstr "Een uur"
 
-#: wppa-settings-autosave.php:2282
-#: wppa-settings-autosave.php:2291
+#: wppa-settings-autosave.php:2285
+#: wppa-settings-autosave.php:2294
 msgid "One day"
 msgstr "Een dag"
 
-#: wppa-settings-autosave.php:2282
-#: wppa-settings-autosave.php:2291
+#: wppa-settings-autosave.php:2285
+#: wppa-settings-autosave.php:2294
 msgid "One week"
 msgstr "Een week"
 
-#: wppa-settings-autosave.php:2282
-#: wppa-settings-autosave.php:2291
+#: wppa-settings-autosave.php:2285
+#: wppa-settings-autosave.php:2294
 msgid "One month"
 msgstr "Een maand"
 
-#: wppa-settings-autosave.php:2287
+#: wppa-settings-autosave.php:2290
 msgid "New Photo"
 msgstr "Nieuwe Foto"
 
-#: wppa-settings-autosave.php:2288
+#: wppa-settings-autosave.php:2291
 msgid "Maximum time a photo is indicated as New!"
 msgstr "De minimale tijd dat een foto aangemerkt wordt als Niew!"
 
-#: wppa-settings-autosave.php:2296
+#: wppa-settings-autosave.php:2299
 msgid "Apply Newphoto desc"
 msgstr "Gebruik Nieuwe Foto beschrijving"
 
-#: wppa-settings-autosave.php:2297
+#: wppa-settings-autosave.php:2300
 msgid "Give each new photo a standard description."
 msgstr "Geef iedere nieuwe foto een standaard beschrijving."
 
-#: wppa-settings-autosave.php:2298
+#: wppa-settings-autosave.php:2301
 msgid "If checked, each new photo will get the description (template) as specified in the next item."
 msgstr "Indien aangevinkt, zal elke nieuwe foto de standaard beschrijving krijgen die in het volgende item is opgenomen."
 
-#: wppa-settings-autosave.php:2303
+#: wppa-settings-autosave.php:2306
 msgid "New photo desc"
 msgstr "Nieuwe Foto beschr"
 
-#: wppa-settings-autosave.php:2304
+#: wppa-settings-autosave.php:2307
 msgid "The description (template) to add to a new photo."
 msgstr "De standaard beschrijving voor nieuwe fotos."
 
-#: wppa-settings-autosave.php:2305
+#: wppa-settings-autosave.php:2308
 msgid "Enter the default description."
 msgstr "Voer de standaard beschrijving in."
 
-#: wppa-settings-autosave.php:2306
+#: wppa-settings-autosave.php:2309
 msgid "If you use html, please check item A-1 of this table."
 msgstr "Als u html gebruikt, vink dan item A1 van deze tabel aan."
 
-#: wppa-settings-autosave.php:2311
+#: wppa-settings-autosave.php:2314
 msgid "Search Albums and Photos related settings"
 msgstr "Zoek Albums en Foto's gerelateerde instellingen"
 
-#: wppa-settings-autosave.php:2313
+#: wppa-settings-autosave.php:2316
 msgid "Search page"
 msgstr "Zoekpagina"
 
-#: wppa-settings-autosave.php:2314
+#: wppa-settings-autosave.php:2317
 msgid "Display the search results on page."
 msgstr "Toon de zoekresultaten op pagina."
 
-#: wppa-settings-autosave.php:2315
+#: wppa-settings-autosave.php:2318
 #, php-format
 msgid "Select the page to be used to display search results. The page MUST contain %%wppa%%."
 msgstr "Selecteer de pagina die u wilt gebruiken om de zoekresultaten te tonen. De pagina MOET %%wppa%% bevatten."
 
-#: wppa-settings-autosave.php:2316
+#: wppa-settings-autosave.php:2319
 msgid "You may give it the title \"Search results\" or something alike."
 msgstr "U kunt het de titel \"Zoekresultaten\" of iets dergelijks geven."
 
-#: wppa-settings-autosave.php:2317
+#: wppa-settings-autosave.php:2320
 msgid "Or you ou may use the standard page on which you display the generic album."
 msgstr "U kunt ook bijvoorbeeld de standaard fotoalbum pagina gebruiken."
 
-#: wppa-settings-autosave.php:2334
+#: wppa-settings-autosave.php:2337
 msgid "Exclude separate"
 msgstr "Afzonderlijk uitsluiten"
 
-#: wppa-settings-autosave.php:2335
+#: wppa-settings-autosave.php:2338
 msgid "Do not search 'separate' albums."
 msgstr "Doorzoek geen 'afzonderlijke' albums."
 
-#: wppa-settings-autosave.php:2336
+#: wppa-settings-autosave.php:2339
 msgid "When checked, albums (and photos in them) that have the parent set to --- separate --- will be excluded from being searched."
 msgstr "Indien aangevinkt, dan worden albums (en de foto's er in) uitgesloten die hun moeder op --- afzonderlijk --- hebeen staan."
 
-#: wppa-settings-autosave.php:2341
+#: wppa-settings-autosave.php:2344
 msgid "Watermark related settings"
 msgstr "Watermerk gerelateerde instellingen"
 
-#: wppa-settings-autosave.php:2343
+#: wppa-settings-autosave.php:2346
 msgid "Watermark"
 msgstr "Watermerk"
 
-#: wppa-settings-autosave.php:2344
+#: wppa-settings-autosave.php:2347
 msgid "Enable the application of watermarks."
 msgstr "Maak het gebruik van watermerken mogelijk."
 
-#: wppa-settings-autosave.php:2345
+#: wppa-settings-autosave.php:2348
 msgid "If checked, photos can be watermarked during upload / import."
 msgstr "Geef aan of de foto's moeten worden voorzien van een watermerk bij het uploaden en importeren."
 
-#: wppa-settings-autosave.php:2351
+#: wppa-settings-autosave.php:2354
 msgid "User Watermark"
 msgstr "Gebruikers watermerk"
 
-#: wppa-settings-autosave.php:2352
+#: wppa-settings-autosave.php:2355
 msgid "Uploading users may select watermark settings"
 msgstr "Gebruikers die kunnen uploaden kunnen een watermerk kiezen"
 
-#: wppa-settings-autosave.php:2353
+#: wppa-settings-autosave.php:2356
 msgid "If checked, anyone who can upload and/or import photos can overrule the default watermark settings."
 msgstr "Indien aangevinkt kunnen gebruikers die albums kunnen aanmaken en foto's kunnen uploaden/importeren afwijken van de satandaardinstellingen voor watermerken."
 
-#: wppa-settings-autosave.php:2359
+#: wppa-settings-autosave.php:2362
 msgid "Watermark file"
 msgstr "Watermerk bestand"
 
-#: wppa-settings-autosave.php:2360
+#: wppa-settings-autosave.php:2363
 msgid "The default watermarkfile to be used."
 msgstr "Het standaard watermerk bestand dat zal worden gebruikt."
 
-#: wppa-settings-autosave.php:2361
+#: wppa-settings-autosave.php:2364
 msgid "Watermark files are of type png and reside in"
 msgstr "Watermerk bestanden zijn van het type png en bevinden zich in"
 
-#: wppa-settings-autosave.php:2362
+#: wppa-settings-autosave.php:2365
 msgid "A suitable watermarkfile typically consists of a transparent background and a black text or drawing."
 msgstr "Een geschikt watermerkbestand bestaat typisch uit een transparante achtergrond en een zwarte text of tekening."
 
-#: wppa-settings-autosave.php:2363
+#: wppa-settings-autosave.php:2366
 msgid "The watermark image will be overlaying the photo with 80% transparency."
 msgstr "Het watermerk beeld zal met 80% transparantie over de foto heen gelegd worden."
 
-#: wppa-settings-autosave.php:2368
+#: wppa-settings-autosave.php:2371
 msgid "position:"
 msgstr "positie:"
 
-#: wppa-settings-autosave.php:2372
+#: wppa-settings-autosave.php:2375
 msgid "Upload watermark"
 msgstr "Upload watermerk"
 
-#: wppa-settings-autosave.php:2373
+#: wppa-settings-autosave.php:2376
 msgid "Upload a new watermark file"
 msgstr "Upload een nieuw watermerk bestand"
 
-#: wppa-settings-autosave.php:2377
+#: wppa-settings-autosave.php:2380
 msgid "Upload it!"
 msgstr "Uploaden!"
 
-#: wppa-settings-autosave.php:2381
+#: wppa-settings-autosave.php:2384
 msgid "You can set the intensity of watermarks here."
 msgstr "U kunt hier de intensiteit van de watermerken instellen."
 
-#: wppa-settings-autosave.php:2382
+#: wppa-settings-autosave.php:2385
 msgid "The higher the number, the intenser the watermark. Value must be > 0 and <= 100."
 msgstr "Hoe hoger het getal, hoe intenser het watermerk. Waarde moet > 0 en <=100 zijn."
 
-#: wppa-settings-autosave.php:2387
+#: wppa-settings-autosave.php:2390
 msgid "Slideshow elements sequence order settings"
 msgstr "Diavoorstelling elementen volgorde instellingen"
 
-#: wppa-settings-autosave.php:2392
+#: wppa-settings-autosave.php:2395
 msgid "StartStop"
 msgstr "StartStop"
 
-#: wppa-settings-autosave.php:2393
+#: wppa-settings-autosave.php:2396
 msgid "SlideFrame"
 msgstr "De foto"
 
-#: wppa-settings-autosave.php:2394
+#: wppa-settings-autosave.php:2397
 msgid "NameDesc"
 msgstr "NaamBeschrijving"
 
-#: wppa-settings-autosave.php:2397
+#: wppa-settings-autosave.php:2400
 msgid "FilmStrip"
 msgstr "Filmstrip"
 
-#: wppa-settings-autosave.php:2398
+#: wppa-settings-autosave.php:2401
 msgid "Browsebar"
 msgstr "Bladerbalk"
 
-#: wppa-settings-autosave.php:2400
+#: wppa-settings-autosave.php:2403
 msgid "IPTC data"
 msgstr "IPTC gegevens"
 
-#: wppa-settings-autosave.php:2401
+#: wppa-settings-autosave.php:2404
 msgid "EXIF data"
 msgstr "EXIF gegevens"
 
-#: wppa-settings-autosave.php:2402
+#: wppa-settings-autosave.php:2405
 msgid "Enabled"
 msgstr "Ingeschakeld"
 
-#: wppa-settings-autosave.php:2403
+#: wppa-settings-autosave.php:2406
 msgid "Disabled"
 msgstr "Uitgeschakeld"
 
-#: wppa-settings-autosave.php:2405
+#: wppa-settings-autosave.php:2408
 msgid "Start/Stop & Slower/Faster navigation bar"
 msgstr "Start/stop & Sneller/Langzamer balk"
 
-#: wppa-settings-autosave.php:2406
+#: wppa-settings-autosave.php:2409
 msgid "The Slide Frame"
 msgstr "De Foto frame"
 
-#: wppa-settings-autosave.php:2406
+#: wppa-settings-autosave.php:2409
 msgid "( Always )"
 msgstr "( Altijd )"
 
-#: wppa-settings-autosave.php:2407
+#: wppa-settings-autosave.php:2410
 msgid "Photo Name & Description Box"
 msgstr "Foto Naam en Beschrijving box"
 
-#: wppa-settings-autosave.php:2408
+#: wppa-settings-autosave.php:2411
 msgid "Custom Box"
 msgstr "Speciale box"
 
-#: wppa-settings-autosave.php:2409
+#: wppa-settings-autosave.php:2412
 msgid "Rating Bar"
 msgstr "Waarderingsbalk"
 
-#: wppa-settings-autosave.php:2410
+#: wppa-settings-autosave.php:2413
 msgid "Film Strip with embedded Start/Stop and Goto functionality"
 msgstr "Filmstrip met ingebouwde Start/Stop en Ga Naar functionaliteit"
 
-#: wppa-settings-autosave.php:2411
+#: wppa-settings-autosave.php:2414
 msgid "Browse Bar with Photo X of Y counter"
 msgstr "Blader balk met Foto X van Y teller"
 
-#: wppa-settings-autosave.php:2412
+#: wppa-settings-autosave.php:2415
 msgid "Comments Box"
 msgstr "Reacties Box"
 
-#: wppa-settings-autosave.php:2413
+#: wppa-settings-autosave.php:2416
 msgid "IPTC box"
 msgstr "IPTC box"
 
-#: wppa-settings-autosave.php:2414
+#: wppa-settings-autosave.php:2417
 msgid "EXIF box"
 msgstr "EXIF box"
 
-#: wppa-settings-autosave.php:2420
+#: wppa-settings-autosave.php:2423
 msgid "Move Up"
 msgstr "Omhoog"
 
-#: wppa-settings-autosave.php:2427
+#: wppa-settings-autosave.php:2430
 msgid "Swap Namedesc"
 msgstr "Verwissel Naam en beschrijving"
 
-#: wppa-settings-autosave.php:2428
+#: wppa-settings-autosave.php:2431
 msgid "Swap the order sequence of name and description"
 msgstr "Verwissel de volgorde van naam en beschrijving"
 
-#: wppa-settings-autosave.php:2455
+#: wppa-settings-autosave.php:2458
 msgid "Table X:"
 msgstr "Tabel X:"
 
-#: wppa-settings-autosave.php:2455
+#: wppa-settings-autosave.php:2458
 msgid "IPTC Configuration:"
 msgstr "IPTC Configuratie:"
 
-#: wppa-settings-autosave.php:2456
+#: wppa-settings-autosave.php:2459
 msgid "This table defines the IPTC configuration"
 msgstr "Deze tabel bepaalt de IPTC configuratie."
 
-#: wppa-settings-autosave.php:2464
-#: wppa-settings-autosave.php:2500
-#: wppa-settings-autosave.php:2520
-#: wppa-settings-autosave.php:2556
+#: wppa-settings-autosave.php:2467
+#: wppa-settings-autosave.php:2503
+#: wppa-settings-autosave.php:2523
+#: wppa-settings-autosave.php:2559
 msgid "Tag"
 msgstr "Tag"
 
-#: wppa-settings-autosave.php:2485
-#: wppa-settings-autosave.php:2541
+#: wppa-settings-autosave.php:2488
+#: wppa-settings-autosave.php:2544
 msgid "Display"
 msgstr "Toon"
 
-#: wppa-settings-autosave.php:2485
-#: wppa-settings-autosave.php:2541
-#: wppa-settings-autosave.php:2904
+#: wppa-settings-autosave.php:2488
+#: wppa-settings-autosave.php:2544
+#: wppa-settings-autosave.php:2907
 msgid "Hide"
 msgstr "Verberg"
 
-#: wppa-settings-autosave.php:2485
-#: wppa-settings-autosave.php:2541
+#: wppa-settings-autosave.php:2488
+#: wppa-settings-autosave.php:2544
 msgid "Optional"
 msgstr "Optioneel"
 
-#: wppa-settings-autosave.php:2511
+#: wppa-settings-autosave.php:2514
 msgid "Table XI:"
 msgstr "Tabel XI:"
 
-#: wppa-settings-autosave.php:2511
+#: wppa-settings-autosave.php:2514
 msgid "EXIF Configuration:"
 msgstr "EXIF Configuratie:"
 
-#: wppa-settings-autosave.php:2512
+#: wppa-settings-autosave.php:2515
 msgid "This table defines the EXIF configuration"
 msgstr "Deze tabel bepaalt de EXIF configuratie."
 
-#: wppa-settings-autosave.php:2567
+#: wppa-settings-autosave.php:2570
 msgid "Table XII:"
 msgstr "Tabel XII:"
 
-#: wppa-settings-autosave.php:2567
+#: wppa-settings-autosave.php:2570
 msgid "WPPA+ and PHP Configuration:"
 msgstr "WPPA+ en PHP Configuratie:"
 
-#: wppa-settings-autosave.php:2568
+#: wppa-settings-autosave.php:2571
 msgid "This table lists all WPPA+ constants and PHP server configuration parameters and is read only"
 msgstr "Deze tabel beschrijft alle WPPA+ konstanten en de PHP server instellingen en is alleen lezen"
 
-#: wppa-settings-autosave.php:2578
+#: wppa-settings-autosave.php:2581
 msgid "Value"
 msgstr "Waarde"
 
-#: wppa-settings-autosave.php:2583
+#: wppa-settings-autosave.php:2586
 msgid "Albums db table name."
 msgstr "Albums db tabel naam."
 
-#: wppa-settings-autosave.php:2588
+#: wppa-settings-autosave.php:2591
 msgid "Photos db table name."
 msgstr "Foto's db tabel naam."
 
-#: wppa-settings-autosave.php:2593
+#: wppa-settings-autosave.php:2596
 msgid "Rating db table name."
 msgstr "Waarderingen db tabel naam."
 
-#: wppa-settings-autosave.php:2598
+#: wppa-settings-autosave.php:2601
 msgid "Comments db table name."
 msgstr "Reacties db tabel naam."
 
-#: wppa-settings-autosave.php:2603
+#: wppa-settings-autosave.php:2606
 msgid "IPTC db table name."
 msgstr "IPTC db tabel naam."
 
-#: wppa-settings-autosave.php:2608
+#: wppa-settings-autosave.php:2611
 msgid "EXIF db table name."
 msgstr "EXIF db tabel naam."
 
-#: wppa-settings-autosave.php:2613
+#: wppa-settings-autosave.php:2616
 msgid "Plugins main file name."
 msgstr "Hoofdbestandsnaam van de plugin."
 
-#: wppa-settings-autosave.php:2618
+#: wppa-settings-autosave.php:2621
 msgid "Path to plugins directory."
 msgstr "Pad naar de plugin map."
 
-#: wppa-settings-autosave.php:2623
+#: wppa-settings-autosave.php:2626
 msgid "Plugins directory name."
 msgstr "Directory naam van de plugin."
 
-#: wppa-settings-autosave.php:2628
+#: wppa-settings-autosave.php:2631
 msgid "Plugins directory url."
 msgstr "Url naar de plugin map."
 
-#: wppa-settings-autosave.php:2633
+#: wppa-settings-autosave.php:2636
 msgid "The relative upload directory."
 msgstr "De relatieve upload map."
 
-#: wppa-settings-autosave.php:2638
+#: wppa-settings-autosave.php:2641
 msgid "The upload directory path."
 msgstr "Het upload directory pad."
 
-#: wppa-settings-autosave.php:2643
+#: wppa-settings-autosave.php:2646
 msgid "The upload directory url."
 msgstr "De upload directory url."
 
-#: wppa-settings-autosave.php:2648
+#: wppa-settings-autosave.php:2651
 msgid "The relative depot directory."
 msgstr "De relatieve depot map."
 
-#: wppa-settings-autosave.php:2653
+#: wppa-settings-autosave.php:2656
 msgid "The depot directory path."
 msgstr "Het depot directory pad."
 
-#: wppa-settings-autosave.php:2658
+#: wppa-settings-autosave.php:2661
 msgid "The depot directory url."
 msgstr "De depot map url."
 
-#: wppa-settings-autosave.php:2719
+#: wppa-settings-autosave.php:2722
 msgid "The default for this setting is:"
 msgstr "De standaardwaarde voor deze instelling is:"
 
-#: wppa-settings-autosave.php:2725
+#: wppa-settings-autosave.php:2728
 msgid "No help available"
 msgstr "Geen help beschikbaar"
 
-#: wppa-settings-autosave.php:2730
+#: wppa-settings-autosave.php:2733
 msgid "Click for help"
 msgstr "Klik voor help"
 
-#: wppa-settings-autosave.php:2878
+#: wppa-settings-autosave.php:2881
 msgid "Checked"
 msgstr "Aangevinkt"
 
-#: wppa-settings-autosave.php:2879
+#: wppa-settings-autosave.php:2882
 msgid "Unchecked"
 msgstr "Niet aangevinkt"
 
-#: wppa-settings-autosave.php:2884
+#: wppa-settings-autosave.php:2887
 msgid "the photo specific link."
 msgstr "de foto specifieke koppeling."
 
-#: wppa-settings-autosave.php:2905
+#: wppa-settings-autosave.php:2908
 msgid "Show"
 msgstr "Toon"
 
-#: wppa-settings-autosave.php:2928
+#: wppa-settings-autosave.php:2931
 msgid "Not done yet"
 msgstr "Nog niet gedaan"
 
@@ -5525,319 +5530,323 @@ msgstr "U heeft een moderne browser nodig die HTML-5 multi-file upload understeu
 
 #: wppa-upload.php:90
 #: wppa-upload.php:99
-#: wppa-upload.php:161
+#: wppa-upload.php:171
 msgid "Selected Files:"
 msgstr "Geselecteerde bestanden:"
 
-#: wppa-upload.php:100
+#: wppa-upload.php:101
 msgid "Size"
 msgstr "Grootte"
 
-#: wppa-upload.php:100
+#: wppa-upload.php:101
 msgid "Type"
 msgstr "Type"
 
-#: wppa-upload.php:116
+#: wppa-upload.php:122
 msgid "Too many!"
 msgstr "Te veel!"
 
-#: wppa-upload.php:120
+#: wppa-upload.php:126
 msgid "Too big!"
 msgstr "Te groot!"
 
-#: wppa-upload.php:122
+#: wppa-upload.php:130
+msgid "Try again!"
+msgstr "Probeer opnieuw!"
+
+#: wppa-upload.php:132
 msgid "Total"
 msgstr "Totaal"
 
-#: wppa-upload.php:137
-#: wppa-upload.php:173
-#: wppa-upload.php:403
+#: wppa-upload.php:147
+#: wppa-upload.php:183
+#: wppa-upload.php:413
 msgid "Apply watermark file:"
 msgstr "Gebruik watermerk:"
 
-#: wppa-upload.php:142
-#: wppa-upload.php:178
-#: wppa-upload.php:407
+#: wppa-upload.php:152
+#: wppa-upload.php:188
+#: wppa-upload.php:417
 msgid "Position:"
 msgstr "Positie:"
 
-#: wppa-upload.php:148
+#: wppa-upload.php:158
 msgid "Upload Multiple Photos"
 msgstr "Meerdere Foto's Uploaden"
 
-#: wppa-upload.php:155
+#: wppa-upload.php:165
 msgid "Box B:"
 msgstr "Box B:"
 
-#: wppa-upload.php:155
+#: wppa-upload.php:165
 msgid "Single Photos in multiple selections"
 msgstr "Enkele foto's in meerdere selecties"
 
-#: wppa-upload.php:156
+#: wppa-upload.php:166
 #, php-format
 msgid "You can select up to %s photos one by one and upload them at once."
 msgstr "U kunt maximaal %s foto's één voor één selecteren en ze dan in één keer uploaden."
 
-#: wppa-upload.php:184
+#: wppa-upload.php:194
 msgid "Upload Single Photos"
 msgstr "Losse Foto's Uploaden"
 
-#: wppa-upload.php:199
+#: wppa-upload.php:209
 msgid "Box C:"
 msgstr "Box C:"
 
-#: wppa-upload.php:199
+#: wppa-upload.php:209
 msgid "Zipped Photos in one selection"
 msgstr "Gezipte Foto's in één selectie"
 
-#: wppa-upload.php:200
+#: wppa-upload.php:210
 #, php-format
 msgid "You can upload one zipfile. It will be placed in your personal wppa-depot: <b>.../%s</b><br/>Once uploaded, use <b>Import Photos</b> to unzip the file and place the photos in any album."
 msgstr "U kunt één zip bestand per keer uploaden. Het wordt in uw persoonlijk depot: <b>.../%s</b> geplaatst.<br/>Als ze ge-upload zijn, gebruik dan <b>Foto's Importeren</b> om het bestand uit te pakken en de foto's in een album te plaatsen."
 
-#: wppa-upload.php:204
+#: wppa-upload.php:214
 msgid "Upload Zipped Photos"
 msgstr "Gezipte Foto's Uploaden"
 
-#: wppa-upload.php:205
+#: wppa-upload.php:215
 msgid "After upload: Go to the <b>Import Photos</b> page."
 msgstr "Na de upload: Ga naar de <b>Foto's Importeren</b> pagina."
 
-#: wppa-upload.php:211
+#: wppa-upload.php:221
 msgid "<small>Ask your administrator to upgrade php to version 5.2.7 or later. This will enable you to upload zipped photos.</small>"
 msgstr "<small>Vraag uw administrateur om php te upgraden naar versie 5.2.7 of later. Dit maakt het mogelijk om gecomprimeerde bestanden met foto's te uploaden.</small>"
 
-#: wppa-upload.php:217
-#: wppa-upload.php:469
+#: wppa-upload.php:227
+#: wppa-upload.php:479
 msgid "No albums exist. You must"
 msgstr "Er zijn nog geen albums. U moet"
 
-#: wppa-upload.php:217
-#: wppa-upload.php:469
+#: wppa-upload.php:227
+#: wppa-upload.php:479
 msgid "create one"
 msgstr "er een aanmaken"
 
-#: wppa-upload.php:217
-#: wppa-upload.php:469
+#: wppa-upload.php:227
+#: wppa-upload.php:479
 msgid "beofre you can upload your photos."
 msgstr "voordat u foto's kunt uploaden."
 
-#: wppa-upload.php:231
-#: wppa-upload.php:256
+#: wppa-upload.php:241
+#: wppa-upload.php:266
 msgid "illegal files deleted."
 msgstr "niet toegestane bestanden verwijderd."
 
-#: wppa-upload.php:288
+#: wppa-upload.php:298
 msgid "Import photos from:"
 msgstr "Importeer foto's van:"
 
-#: wppa-upload.php:290
+#: wppa-upload.php:300
 msgid "Your depot"
 msgstr "Uw depot"
 
-#: wppa-upload.php:294
+#: wppa-upload.php:304
 msgid "Set source directory"
 msgstr "Stel de bronmap in"
 
-#: wppa-upload.php:308
-#: wppa-upload.php:350
-#: wppa-upload.php:391
+#: wppa-upload.php:318
+#: wppa-upload.php:360
+#: wppa-upload.php:401
 msgid "There are"
 msgstr "Er zijn"
 
-#: wppa-upload.php:308
+#: wppa-upload.php:318
 msgid "zipfiles in the depot."
 msgstr "zipfiles in het depot"
 
-#: wppa-upload.php:313
-#: wppa-upload.php:355
-#: wppa-upload.php:416
+#: wppa-upload.php:323
+#: wppa-upload.php:365
+#: wppa-upload.php:426
 msgid "Check/uncheck all"
 msgstr "Alles aan/uit vinken"
 
-#: wppa-upload.php:318
+#: wppa-upload.php:328
 msgid "Delete after successful extraction."
 msgstr "Verwijder na succesvol uitpakken."
 
-#: wppa-upload.php:350
+#: wppa-upload.php:360
 msgid "albumdefinitions in the depot."
 msgstr "albumdefinities in het depot."
 
-#: wppa-upload.php:360
+#: wppa-upload.php:370
 msgid "Delete after successful import, or if the album already exits."
 msgstr "Verwijder na succesvolle import, of indien het album reeds bestaat."
 
-#: wppa-upload.php:391
+#: wppa-upload.php:401
 msgid "photos in the depot."
 msgstr "foto's in het depot"
 
-#: wppa-upload.php:391
+#: wppa-upload.php:401
 msgid "Photos will be downsized during import."
 msgstr "De foto's zullen verkleind worden tijdens het importeren."
 
-#: wppa-upload.php:394
+#: wppa-upload.php:404
 msgid "Default album for import:"
 msgstr "Standaard album voor importeren:"
 
-#: wppa-upload.php:399
+#: wppa-upload.php:409
 msgid "Photos that have (<em>name</em>)[<em>album</em>] will be imported by that <em>name</em> in that <em>album</em>."
 msgstr "Foto's die (<em>naam</em>)[<em>album</em>] hebben, worden onder <em>naam</em> geplaatst in <em>album</em>."
 
-#: wppa-upload.php:420
+#: wppa-upload.php:430
 msgid "Delete after successful import."
 msgstr "Verwijder na succesvolle import."
 
-#: wppa-upload.php:424
+#: wppa-upload.php:434
 msgid "Update existing photos"
 msgstr "Bestaande foto's bijwerken"
 
-#: wppa-upload.php:460
+#: wppa-upload.php:470
 msgid "There are no archives, albums or photos in directory:"
 msgstr "Er zijn geen archieven, albums of foto's in de map:"
 
-#: wppa-upload.php:463
+#: wppa-upload.php:473
 msgid "There are no albums or photos in directory:"
 msgstr "Er zijn geen albums of foto's in de map:"
 
-#: wppa-upload.php:493
-#: wppa-upload.php:523
-#: wppa-upload.php:721
+#: wppa-upload.php:503
+#: wppa-upload.php:533
+#: wppa-upload.php:731
 msgid "Error inserting photo"
 msgstr "Fout bij het invoegen van foto"
 
-#: wppa-upload.php:502
-#: wppa-upload.php:530
+#: wppa-upload.php:512
+#: wppa-upload.php:540
 msgid "Photos Uploaded in album nr"
 msgstr "Foto's ge-upload naar album nr"
 
-#: wppa-upload.php:548
-#: wppa-upload.php:925
+#: wppa-upload.php:558
+#: wppa-upload.php:935
 msgid "Zipfile"
 msgstr "Zip bestand"
 
-#: wppa-upload.php:548
+#: wppa-upload.php:558
 msgid "sucessfully uploaded."
 msgstr "succesvol ge-upload."
 
-#: wppa-upload.php:549
+#: wppa-upload.php:559
 msgid "Error"
 msgstr "Fout"
 
-#: wppa-upload.php:549
+#: wppa-upload.php:559
 msgid "during upload."
 msgstr "tijdens het uploaden."
 
-#: wppa-upload.php:628
+#: wppa-upload.php:638
 msgid "Unknown parent album:"
 msgstr "Onbekend moederalbum:"
 
-#: wppa-upload.php:628
+#: wppa-upload.php:638
 msgid "--- none --- used."
 msgstr "--- geen --- gebruikt."
 
-#: wppa-upload.php:674
+#: wppa-upload.php:684
 msgid "Processing files, please wait..."
 msgstr "Bestanden verwerken, even geduld a.u.b...."
 
-#: wppa-upload.php:674
+#: wppa-upload.php:684
 msgid "If the line of dots stops growing or your browser reports Ready, your server has given up. In that case: try again"
 msgstr "Wanneer de lijn puntjes niet meer langer wordt of de browser gereed is, dan heeft de server het opgegeven. In dat geval: probeer opnieuw"
 
-#: wppa-upload.php:674
+#: wppa-upload.php:684
 msgid "here."
 msgstr "hier."
 
-#: wppa-upload.php:725
+#: wppa-upload.php:735
 #, php-format
 msgid "Error inserting photo %s, unknown or non existent album."
 msgstr "Fout bij het opnemen van foto %s, onbeked of niet bestaand album."
 
-#: wppa-upload.php:732
+#: wppa-upload.php:742
 msgid "Done processing files."
 msgstr "Klaar met het verwerken van de bestanden."
 
-#: wppa-upload.php:735
+#: wppa-upload.php:745
 msgid "No files to import."
 msgstr "Geen bestanden om te importeren."
 
-#: wppa-upload.php:739
+#: wppa-upload.php:749
 msgid "Zipfiles extracted."
 msgstr "Zip bestanden uitgepakt."
 
-#: wppa-upload.php:740
+#: wppa-upload.php:750
 msgid "Albums created."
 msgstr "Albums aangemaakt."
 
-#: wppa-upload.php:742
+#: wppa-upload.php:752
 msgid "Photos updated."
 msgstr "Foto's bijgewerkt."
 
-#: wppa-upload.php:743
+#: wppa-upload.php:753
 msgid "Photos imported."
 msgstr "Foto's geïmporteerd."
 
-#: wppa-upload.php:765
+#: wppa-upload.php:775
 msgid "Although the photos are resized during the upload/import process, you may encounter 'Out of memory'errors."
 msgstr "Aloewel de foto's verkleind worden tijdens het upload proces kunt u 'Out of memory' foutmeldingen krijgen."
 
-#: wppa-upload.php:765
+#: wppa-upload.php:775
 msgid "In that case: make sure you set the memory limit to 64M and make sure your hosting provider allows you the use of 64 Mb."
 msgstr "In dat geval: zet de geheugenlimiet op 64M en zorg ervoor dat uw hosting provider u toestaat om 64 MB te gebruiken."
 
-#: wppa-upload.php:768
+#: wppa-upload.php:778
 msgid "WARNING: You are uploading very large photos, this may result in server problems and excessive download times for your website visitors."
 msgstr "WAARSCHUWING: U bent zeer grote foto's aan het uploaden, dit kan tot problemen met de server en tot lange downloadtijden voor uw bezoekers leiden!"
 
-#: wppa-upload.php:768
+#: wppa-upload.php:778
 msgid "Check the 'Resize on upload' checkbox, and/or resize the photos before uploading. The recommended size is: not larger than 1024 x 768 pixels (up to approx. 250 kB)."
 msgstr "Vink de 'Tijdens upload verkleinen' checkbox aan en/of verklein de foto's alvorens ze te uploaden. De aanbevolen grootte is niet meer dan 1024 x 768 pixels (tot ca. 250 kB)."
 
-#: wppa-upload.php:773
+#: wppa-upload.php:783
 msgid "WARNING: You are uploading photos that are too small. Photos must be larger than the thumbnail size and larger than the coverphotosize."
 msgstr "WAARSCHUWING: U bent te kleine goto's aan het uploaden. Foto's moeten groter zijn dan de miniatuurgrootte en groter dan de omslagfoto's."
 
-#: wppa-upload.php:778
+#: wppa-upload.php:788
 msgid "ERROR: Unable to retrieve immage size of"
 msgstr "FOUT: Kan de abeeldingsgrootte niet bepalen van"
 
-#: wppa-upload.php:778
+#: wppa-upload.php:788
 msgid "Are you sure it is a photo?"
 msgstr "Weet u zeker dat dit een foto is?"
 
-#: wppa-upload.php:787
+#: wppa-upload.php:797
 msgid "Unsupported mime type encountered:"
 msgstr "Niet ondersteund mime type gevonden:"
 
-#: wppa-upload.php:804
+#: wppa-upload.php:814
 msgid "Album not known while trying to add a photo"
 msgstr "Album onbekend bij het toevoegen van een foto"
 
-#: wppa-upload.php:808
+#: wppa-upload.php:818
 #, php-format
 msgid "Album %s does not exist or is not accessable while trying to add a photo"
 msgstr "Album %s bestaat niet of is niet toegankelijk voor het toevoegen van een foto"
 
-#: wppa-upload.php:816
+#: wppa-upload.php:826
 msgid "Could not insert photo. query="
 msgstr "Kan de foto niet invoegen. query="
 
-#: wppa-upload.php:822
+#: wppa-upload.php:832
 msgid "ERROR: Unknown file or album."
 msgstr "FOUT: Onbekend bestand of album."
 
-#: wppa-upload.php:895
+#: wppa-upload.php:905
 msgid "Error: unexpected fgets() fail in wppa_get_meta_data()."
 msgstr "Fout: onverwachte fgets() fout in wppa_get_meta_data()."
 
-#: wppa-upload.php:916
+#: wppa-upload.php:926
 msgid "Class ZipArchive does not exist! Check your php configuration"
 msgstr "De klasse ZipArchive bestaat niet! Kontroleer a.u.b. uw php configuratie"
 
-#: wppa-upload.php:925
+#: wppa-upload.php:935
 msgid "extracted."
 msgstr "uitgepakt."
 
-#: wppa-upload.php:928
+#: wppa-upload.php:938
 msgid "Failed to extract"
 msgstr "Uitpakken mislukt van"
 
