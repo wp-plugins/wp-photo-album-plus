@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 4.5.1
+* Version 4.5.2
 *
 */
 
@@ -1644,6 +1644,21 @@ global $wppa_subtable;
 						$html4 = wppa_select($slug4, $options, $values);
 						$html = array($html1, $html2, $html3, $html4);
 						wppa_setting($slug, '7a,b,c,d', $name, $desc, $html, $help);
+
+						$name = __('Numbar Active', 'wppa');
+						$desc = __('Font in wppa number bars, active item.', 'wppa');
+						$help = esc_js(__('Enter font name, size, color and weight for numberbar navigation.', 'wppa')); 
+						$slug1 = 'wppa_fontfamily_numbar_active';
+						$slug2 = 'wppa_fontsize_numbar_active';
+						$slug3 = 'wppa_fontcolor_numbar_active';
+						$slug4 = 'wppa_fontweight_numbar_active';
+						$slug = array($slug1, $slug2, $slug3, $slug4);
+						$html1 = wppa_input($slug1, '90%', '200px', '');
+						$html2 = wppa_input($slug2, '40px', '', __('pixels', 'wppa'));
+						$html3 = wppa_input($slug3, '70px', '', '');
+						$html4 = wppa_select($slug4, $options, $values);
+						$html = array($html1, $html2, $html3, $html4);
+						wppa_setting($slug, '8a,b,c,d', $name, $desc, $html, $help);
 						
 						?>
 					</tbody>

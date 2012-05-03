@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 4.5.0
+* Version 4.5.2
 *
 */
 
@@ -181,6 +181,12 @@ global $silent;
 			wppa_remove_setting('wppa_accesslevel_admin');
 			wppa_remove_setting('wppa_accesslevel_upload');
 			wppa_remove_setting('wppa_accesslevel_sidebar');
+		}
+		if ( $old_rev <= '452') {
+			wppa_copy_setting('wppa_fontfamily_numbar', 'wppa_fontfamily_numbar_active');
+			wppa_copy_setting('wppa_fontsize_numbar', 'wppa_fontsize_numbar_active');
+			wppa_copy_setting('wppa_fontcolor_numbar', 'wppa_fontcolor_numbar_active');
+			wppa_copy_setting('wppa_fontweight_numbar', 'wppa_fontweight_numbar_active');
 		}
 	}
 	
@@ -479,7 +485,12 @@ Hide Camera info
 						'wppa_fontfamily_numbar' 	=> '',
 						'wppa_fontsize_numbar' 		=> '',
 						'wppa_fontcolor_numbar' 	=> '#777777',
-						'wppa_fontweight_numbar'	=> 'bold',
+						'wppa_fontweight_numbar'	=> 'normal',
+						'wppa_fontfamily_numbar_active' 	=> '',
+						'wppa_fontsize_numbar_active' 		=> '',
+						'wppa_fontcolor_numbar_active' 	=> '#777777',
+						'wppa_fontweight_numbar_active'	=> 'bold',
+
 						
 						// Table VI: Links
 						'wppa_mphoto_linktype' 				=> 'photo',

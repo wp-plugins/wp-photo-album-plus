@@ -2,7 +2,7 @@
 //
 // conatins slideshow, theme and ajax code
 //
-// Version 4.5.1
+// Version 4.5.2
 
 // Part 1: Slideshow
 //
@@ -47,6 +47,17 @@ var wppaBGcolorNumbar = 'transparent';
 var wppaBcolorNumbar = 'transparent';
 var wppaBGcolorNumbarActive = 'transparent';
 var wppaBcolorNumbarActive = 'transparent';
+
+var wppaFontFamilyNumbar = '';
+var wppaFontSizeNumbar = '';
+var wppaFontColorNumbar = '';
+var wppaFontWeightNumbar = '';
+var wppaFontFamilyNumbarActive = '';
+var wppaFontSizeNumbarActive = '';
+var wppaFontColorNumbarActive = '';
+var wppaFontWeightNumbarActive = '';
+
+
 var wppaNumbarMax = '10';
 var wppaAjaxUrl = '';
 var wppaNextOnCallback = false;
@@ -304,12 +315,23 @@ function _wppaNextSlide(mocc, mode) {
 		if (_wppaNxtIdx[mocc] == _wppaSlides[mocc].length) _wppaNxtIdx[mocc] = 0;
 	}
 
-	// Set numbar backgrounds
-	jQuery('[id^=wppa-numbar-' + mocc + '-]').css('background-color', wppaBGcolorNumbar);
-	jQuery('[id^=wppa-numbar-' + mocc + '-]').css('border-color', wppaBcolorNumbar);
-	jQuery("#wppa-numbar-" + mocc + "-" + _wppaNxtIdx[mocc]).css('background-color', wppaBGcolorNumbarActive);
-	jQuery("#wppa-numbar-" + mocc + "-" + _wppaNxtIdx[mocc]).css('border-color', wppaBcolorNumbarActive);
-	
+	// Set numbar backgrounds and fonts
+	jQuery('[id^=wppa-numbar-' + mocc + '-]').css({	backgroundColor: wppaBGcolorNumbar, 
+													borderColor: wppaBcolorNumbar,
+													fontFamily: wppaFontFamilyNumbar,
+													fontSize: wppaFontSizeNumbar,
+													color: wppaFontColorNumbar,
+													fontWeight: wppaFontWeightNumbar
+													});
+
+	jQuery("#wppa-numbar-" + mocc + "-" + _wppaNxtIdx[mocc]).css({	backgroundColor: wppaBGcolorNumbarActive, 
+																	borderColor: wppaBcolorNumbarActive,
+																	fontFamily: wppaFontFamilyNumbarActive,
+																	fontSize: wppaFontSizeNumbarActive,
+																	color: wppaFontColorNumbarActive,
+																	fontWeight: wppaFontWeightNumbarActive
+																	});
+
 	// too many? all dots except current
 	if (_wppaSlides[mocc].length > wppaNumbarMax) {
 		jQuery('[id^=wppa-numbar-' + mocc + '-]').html(' . ');
