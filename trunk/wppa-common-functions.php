@@ -2,11 +2,11 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 4.5.1
+* version 4.5.2
 *
 */
 global $wppa_api_version;
-$wppa_api_version = '4-5-1-000';
+$wppa_api_version = '4-5-2-000';
 // Initialize globals and option settings
 function wppa_initialize_runtime($force = false) {
 global $wppa;
@@ -270,6 +270,10 @@ global $wpdb;
 						'wppa_fontsize_numbar' 		=> '',
 						'wppa_fontcolor_numbar' 	=> '',
 						'wppa_fontweight_numbar'	=> '',
+						'wppa_fontfamily_numbar_active' 	=> '',
+						'wppa_fontsize_numbar_active' 		=> '',
+						'wppa_fontcolor_numbar_active' 	=> '',
+						'wppa_fontweight_numbar_active'	=> '',
 						
 						// Table VI: Links
 						'wppa_mphoto_linktype' 				=> '',
