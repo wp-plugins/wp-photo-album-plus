@@ -2,12 +2,12 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, multisite, network, lightbox, comment, watermark, iptc, exif
-Version: 4.5.3
+Version: 4.5.4
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
 Requires at least: 3.0
-Tested up to: 3.3.1
+Tested up to: 3.3.2
 
 This plugin is designed to easily manage and display your photo albums and slideshows in a single as well as in a network WordPress site. 
 Additionally there are five widgets: Photo of the day, a Search Photos widget, a Top Ten Rated photo widget, a Recent comments widget and a Mini slideshow widget.
@@ -56,7 +56,7 @@ You can find the plugin admin section under Menu Photo Albums on the admin scree
 == Installation ==
 
 = Upgrade notice =
-This version is: Major rev# 4, Minor rev# 5, Fix rev# 3, Hotfix rev# 000.
+This version is: Major rev# 4, Minor rev# 5, Fix rev# 4, Hotfix rev# 000.
 If you are upgrading from a previous Major or Minor version, note that:
 * If you modified wppa_theme.php and/or wppa_style.css, you will have to use the newly supplied versions. The previous versions are NOT compatible.
 * If you set the userlevel to anything else than 'administrator' you may have to set it again. Note that changing the userlevel can be done by the administrator only!
@@ -131,6 +131,23 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 4.5.4 =
+
+= Bug Fixes =
+
+* Frontend upload should support .png files but returned an error. Fixed.
+* Fixed a pagelink album number where the script indicated an album number and we are looking to paginated thumbnails of a (grand)child album.
+
+= New Features =
+
+* A new lightbox module has been implememted. Just set Table IX-A6 to *wppa* to enable it. No other plugin or library required.
+When applied to the full-size slide image (Table VI-8a set to *lightbox*) the entire slideshow will be browseable.
+* You can uncheck the *User upload login* switch (Table VII-B0) to enable anonymus uploads. Be carefull, read the Help (?) first!
+
+= Other Changes =
+
+* Changed the default lightbox keyword to *wppa*
 
 = 4.5.3 =
 

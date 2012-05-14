@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the non admin stuff
-* Version 4.5.3
+* Version 4.5.4
 *
 */
 
@@ -86,6 +86,23 @@ function wppa_load_theme() {
 	}
 }
 	
+/* LOAD FOOTER REQD DATA */
+add_action('wp_footer', 'wppa_load_footer');
+
+function wppa_load_footer() {
+global $wppa_opt;
+	if ($wppa_opt['wppa_lightbox_name'] == 'wppa') {
+		echo("\n<!-- start WPPA+ Footer data -->\n");
+		echo('
+			<div id="wppa-overlay-bg" style="text-align:center; display:none; position:fixed; top:0; left:0; z-index:100090; width:100%; height:500px; background-color: #000;"></div>
+			<div id="wppa-overlay-ic" style="position:fixed; top:0; padding-top:10px; z-index:100095; opacity:1; box-shadow:none;" ></div>
+			<img id="wppa-overlay-sp" style="position:fixed; top:200px; left:200px; z-index:100100; opacity:1; visibility:hidden; box-shadow:none;" src="'.wppa_get_imgdir().'loading.gif" />
+			');
+		echo("\n".'<script type="text/javascript">jQuery("#wppa-overlay-bg").css({height:screen.height+"px"})</script>');
+		echo("\n<!-- end WPPA+ Footer data -->\n");
+	}
+}
+
 /* LOAD JS VARS AND ENABLE RENDERING */
 add_action('wp_head', 'wppa_kickoff', '100');
 

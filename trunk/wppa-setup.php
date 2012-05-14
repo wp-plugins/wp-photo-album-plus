@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 4.5.2
+* Version 4.5.4
 *
 */
 
@@ -541,6 +541,7 @@ Hide Camera info
 						
 						// Table VII: Security
 						// B
+						'wppa_user_upload_login'	=> 'yes',
 						'wppa_owner_only' 			=> 'no',
 						'wppa_user_upload_on'		=> 'no',
 						'wppa_upload_moderate'		=> 'no',
@@ -569,7 +570,7 @@ Hide Camera info
 						'wppa_allow_debug' 				=> 'no',		// 3
 						'wppa_autoclean'				=> 'yes',		// 4
 						'wppa_filter_priority'			=> '1001',		// 5
-						'wppa_lightbox_name'			=> 'lightbox',	// 6
+						'wppa_lightbox_name'			=> 'wppa',		// 6
 						'wppa_allow_foreign_shortcodes' => 'no',		// 7
 						'wppa_arrow_color' 				=> 'black',
 						// B New
