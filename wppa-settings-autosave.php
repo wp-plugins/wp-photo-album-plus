@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 4.5.2
+* Version 4.5.4
 *
 */
 
@@ -1999,6 +1999,14 @@ global $wppa_subtable;
 						<?php
 						wppa_setting_subheader('B', '5', __('Miscellaneous scurity settings', 'wppa'));
 					
+						$name = __('User upload login', 'wppa');
+						$desc = __('Users must be logged in to be able to upload.', 'wppa');
+						$help = esc_js(__('If you uncheck this box, make sure you check the next 3 items.', 'wppa'));
+						$help .= '\n'.esc_js(__('Set the owner to ---public--- of the albums that are allowed to be uploaded to.', 'wppa'));
+						$slug = 'wppa_user_upload_login';
+						$html = wppa_checkbox($slug);
+						wppa_setting($slug, '0', $name, $desc, $html, $help);
+						
 						$name = __('Owners only', 'wppa');
 						$desc = __('Limit album access to the album owners only.', 'wppa');
 						$help = esc_js(__('If checked, users who can edit albums and/or upload/import photos can do that with their own albums and --- public --- albums only.', 'wppa')); 

@@ -3,12 +3,12 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions and API modules
-* Version 4.5.1
+* Version 4.5.4
 *
 */
 /* Moved to wppa-common-functions.php:
 global $wppa_api_version;
-$wppa_api_version = '4-5-1-000';
+$wppa_api_version = '4-5-4-000';
 */
 
 
@@ -1890,8 +1890,10 @@ global $wppa_opt;
 	}
 	$extra_url = 'wppa-cover='.$ic;
 	// album
-	if ( $wppa['start_album'] ) $alb = $wppa['start_album'];
-	elseif (wppa_get_get('album')) $alb = wppa_get_get('album');
+//	if ( $wppa['start_album'] ) $alb = $wppa['start_album'];
+//	elseif (wppa_get_get('album')) $alb = wppa_get_get('album');
+	if (wppa_get_get('album')) $alb = wppa_get_get('album');
+	elseif ( $wppa['start_album'] ) $alb = $wppa['start_album'];
 	else $alb = '0';
 	if ( $alb ) $extra_url .= '&amp;wppa-album='.$alb;
 	
@@ -4100,9 +4102,11 @@ global $wppa;
 global $wppa_opt;
 
 	if ( !$wppa_opt['wppa_user_upload_on'] ) return;	// Feature not enabled
-	if ( !is_user_logged_in() ) return;					// Must login
 	if ( $wppa['in_widget'] ) return;					// Not in a widget
-	if ( !current_user_can('wppa_upload') ) return;		// No upload rights
+	if ( $wppa_opt['wppa_user_upload_login'] ) {
+		if ( !is_user_logged_in() ) return;					// Must login
+		if ( !current_user_can('wppa_upload') ) return;		// No upload rights
+	}
 	if ( !wppa_have_access($alb) ) return;				// No album access
 	
 	// Prepare the required extra url args
@@ -4165,9 +4169,12 @@ global $wppa_opt;
 	$wppa['user_uploaded'] = true;
 
 	if ( !$wppa_opt['wppa_user_upload_on'] ) return;	// Feature not enabled
-	if ( !is_user_logged_in() ) return;					// Must login
-	if ( !current_user_can('wppa_upload') ) return;		// No upload rights
-
+	
+	if ( $wppa_opt['wppa_user_upload_login'] ) {
+		if ( !is_user_logged_in() ) return;					// Must login
+		if ( !current_user_can('wppa_upload') ) return;		// No upload rights
+	}
+	
 	if (wppa_get_post('wppa-upload-album')) {
 
 		$nonce = wppa_get_post('nonce');
@@ -4218,8 +4225,8 @@ global $wppa_opt;
 		wppa_err_alert(__a('Uploaded file is not an image', 'wppa_theme'));
 		return false;
 	}
-	if ( $imgsize[2] < 1 || $imgsize[2] > 2 ) {
-		wppa_err_alert(__a('Only gif, jpg and png image files are supported', 'wppa_theme'));
+	if ( $imgsize[2] < 1 || $imgsize[2] > 3 ) {
+		wppa_err_alert(__a(sprintf('Only gif, jpg and png image files are supported. Returned filetype = %d.', $imagesize[2]), 'wppa_theme'));
 		return false;
 	}
 	switch($imgsize[2]) { 	// mime type
