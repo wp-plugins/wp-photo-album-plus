@@ -1897,13 +1897,17 @@ function wppaOvlSize(speed) {
 	var nh = img.naturalHeight;
 	var mh = window.innerHeight - 100;
 	var mw = parseInt(mh * nw / nh);
-
-	
 	var pt = 10;
-	if (nh < mh) pt = 10 + (mh - nh)/2;
+	var lft = parseInt((iw-mw)/2);
+	
+	// Image too small?
+	if (nh < mh) {
+		pt = 10 + (mh - nh)/2;
+		lft = parseInt((iw-nw)/2);
+	}
 
 	jQuery('#wppa-overlay-img').animate({maxWidth: mw+'px'}, speed);
-	jQuery('#wppa-overlay-ic').animate({left: (iw-mw)/2+'px', paddingTop: pt+'px'}, speed);
+	jQuery('#wppa-overlay-ic').animate({left: lft+'px', paddingTop: pt+'px'}, speed);
 	
 	// If resizing, also resize txt elements when sizing is complete
 	if ( document.getElementById('wppa-overlay-txt') ) {
