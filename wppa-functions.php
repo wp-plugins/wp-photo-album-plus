@@ -1892,7 +1892,11 @@ global $wppa_opt;
 	// album
 //	if ( $wppa['start_album'] ) $alb = $wppa['start_album'];
 //	elseif (wppa_get_get('album')) $alb = wppa_get_get('album');
-	if (wppa_get_get('album')) $alb = wppa_get_get('album');
+	$occur = $wppa['in_widget'] ? wppa_get_get('woccur', '0') : wppa_get_get('occur', '0');
+	$ref_occur = $wppa['in_widget'] ? $wppa['widget_occur'] : $wppa['occur'];
+	if (($occur == $ref_occur || $wppa['ajax'] ) && wppa_get_get('album')) {
+			$alb = wppa_get_get('album');
+	}
 	elseif ( $wppa['start_album'] ) $alb = $wppa['start_album'];
 	else $alb = '0';
 	if ( $alb ) $extra_url .= '&amp;wppa-album='.$alb;
