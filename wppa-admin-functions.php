@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 * gp admin functions
-* version 4.5.0
+* version 4.5.5
 *
 * 
 */
@@ -606,7 +606,7 @@ global $wpdb;
 			$ratings = $wpdb->get_results($wpdb->prepare( 'SELECT value FROM '.WPPA_RATING.' WHERE photo = %s', $photo['id']), 'ARRAY_A');
 			$the_value = '0';
 			$the_count = '0';
-			foreach ($ratings as $rating) {
+			if ( $ratings ) foreach ($ratings as $rating) {
 				$the_value += $rating['value'];
 				$the_count++;
 			}
@@ -623,6 +623,8 @@ global $wpdb;
 				}
 				return false;
 			}
+			$ratcount = count($ratings);
+			$iret = $wpdb->query($wpdb->prepare( 'UPDATE '.WPPA_PHOTOS.' SET rating_count = %s WHERE id = %s', $ratcount, $photo['id'] ) );
 		}
 		return true;
 	}
@@ -636,4 +638,134 @@ global $wpdb;
 		}
 		return false;
 	}
+}
+
+function wppa_check_database($verbose = false) {
+global $wpdb;
+
+	$any_error = false;
+	// Check db tables
+	// This is to test if dbdelta did his job in adding tables and columns
+	$tn = array( WPPA_ALBUMS, WPPA_PHOTOS, WPPA_RATING, WPPA_COMMENTS, WPPA_IPTC, WPPA_EXIF );
+	$flds = array( 	WPPA_ALBUMS => array(	'id' => 'bigint(20) NOT NULL', 
+											'name' => 'text NOT NULL', 
+											'description' => 'text NOT NULL', 
+											'a_order' => 'smallint(5) unsigned NOT NULL', 
+											'main_photo' => 'bigint(20) NOT NULL', 
+											'a_parent' => 'bigint(20) NOT NULL',
+											'p_order_by' => 'int unsigned NOT NULL',
+											'cover_linktype' => 'tinytext NOT NULL',
+											'cover_linkpage' => 'bigint(20) NOT NULL',
+											'owner' => 'text NOT NULL',
+											'timestamp' => 'tinytext NOT NULL'											
+										), 
+					WPPA_PHOTOS => array(	'id' => 'bigint(20) NOT NULL', 
+											'album' => 'bigint(20) NOT NULL', 
+											'ext' => 'tinytext NOT NULL', 
+											'name' => 'text NOT NULL', 
+											'description' => 'longtext NOT NULL', 
+											'p_order' => 'smallint(5) unsigned NOT NULL',
+											'mean_rating' => 'tinytext NOT NULL',
+											'linkurl' => 'text NOT NULL',
+											'linktitle' => 'text NOT NULL',
+											'linktarget' => 'tinytext NOT NULL',
+											'owner' => 'text NOT NULL',
+											'timestamp' => 'tinytext NOT NULL',
+											'status' => 'tinytext NOT NULL',
+											'rating_count' => "bigint(20) default '0'"
+										), 
+					WPPA_RATING => array(	'id' => 'bigint(20) NOT NULL',
+											'photo' => 'bigint(20) NOT NULL',
+											'value' => 'smallint(5) NOT NULL',
+											'user' => 'text NOT NULL'
+										), 
+					WPPA_COMMENTS => array(
+											'id' => 'bigint(20) NOT NULL',
+											'timestamp' => 'tinytext NOT NULL',
+											'photo' => 'bigint(20) NOT NULL',
+											'user' => 'text NOT NULL',
+											'ip' => 'tinytext NOT NULL',
+											'email' => 'text NOT NULL',
+											'comment' => 'text NOT NULL',
+											'status' => 'tinytext NOT NULL'
+										), 
+					WPPA_IPTC => array(
+											'id' => 'bigint(20) NOT NULL',
+											'photo' => 'bigint(20) NOT NULL',
+											'tag' => 'tinytext NOT NULL',
+											'description' => 'text NOT NULL',
+											'status' => 'tinytext NOT NULL'
+										), 
+					WPPA_EXIF => array(
+											'id' => 'bigint(20) NOT NULL',
+											'photo' => 'bigint(20) NOT NULL',
+											'tag' => 'tinytext NOT NULL',
+											'description' => 'text NOT NULL',
+											'status' => 'tinytext NOT NULL'
+										) 
+				);
+	$errtxt = '';
+	$idx = 0;
+	while ($idx < 6) {
+		// Test existence of table
+		$ext = wppa_table_exists($tn[$idx]);
+		if ( ! $ext ) {
+			if ($verbose) wppa_error_message(__('Unexpected error:', 'wppa').' '.__('Missing database table:', 'wppa').' '.$tn[$idx], 'red', 'force');
+			$any_error = true;
+		}
+		// Test columns
+		else {
+			$tablefields = $wpdb->get_results("DESCRIBE {$tn[$idx]};", "ARRAY_A");
+			// unset flags for found fields
+			foreach ( $tablefields as $field ) {					
+				if ( isset( $flds[$tn[$idx]][$field['Field']] )) unset( $flds[$tn[$idx]][$field['Field']] );
+			}
+			// Fields left?
+			if ( is_array($flds[$tn[$idx]]) ) foreach ( array_keys($flds[$tn[$idx]]) as $field ) {
+				$errtxt .= '<tr><td>'.$tn[$idx].'</td><td>'.$field.'</td><td>'.$flds[$tn[$idx]][$field].'</td></tr>';
+			}
+		}
+		$idx++;
+	}
+	if ( $errtxt ) {
+		$fulltxt = 'The latest update failed to update the database tables required for wppa+ to function properly<br /><br />';
+		$fulltxt .= 'Make sure you have the rights to issue SQL commands like <i>"ALTER TABLE tablename ADD COLUMN columname datatype"</i> and run the action on <i>Table VII-A1</i> on the Photo Albums -> Settings admin page.<br /><br />';
+		$fulltxt .= 'The following table lists the missing columns:';
+		$fulltxt .= '<br /><table id="wppa-err-table"><thead style="font-weight:bold;"><tr><td>Table name</td><td>Column name</td><td>Data type</td></thead>';
+		$fulltxt .= $errtxt;
+		$fulltxt .= '</table><b>';
+		if ($verbose) wppa_error_message( $fulltxt, 'red', 'force' );
+		$any_error = true;
+	}
+	// Check directories
+	$dn = array( ABSPATH.WPPA_UPLOAD, WPPA_UPLOAD_PATH, WPPA_UPLOAD_PATH.'/thumbs', WPPA_DEPOT_PATH);
+	$idx = 0;
+	while ($idx < 4) {
+		if ( ! file_exists($dn[$idx]) ) {	// First try to repair
+			@ mkdir($dn[$idx]);
+			@ chmod($dn[$idx], 0755);
+		}
+		else {
+			@ chmod($dn[$idx], 0755);		// there are always people who destruct things
+		}
+		
+		if ( ! file_exists($dn[$idx]) ) {	// Test again
+			if ($verbose) wppa_error_message(__('Unexpected error:', 'wppa').' '.__('Missing directory:', 'wppa').' '.$dn[$idx], 'red', 'force');
+			$any_error = true;
+		}
+		elseif ( ! is_writable($dn[$idx]) ) {
+			if ($verbose) wppa_error_message(__('Unexpected error:', 'wppa').' '.__('Directory is not writable:', 'wppa').' '.$dn[$idx], 'red', 'force');
+			$any_error = true;
+		}
+		elseif ( ! is_readable($dn[$idx]) ) {
+			if ($verbose) wppa_error_message(__('Unexpected error:', 'wppa').' '.__('Directory is not readable:', 'wppa').' '.$dn[$idx], 'red', 'force');
+			$any_error = true;
+		}
+		$idx++;
+	}
+	if ( $any_error ) {
+		if ($verbose) wppa_error_message(__('Please de-activate and re-activate the plugin. If this problem persists, ask your administrator.', 'wppa'), 'red', 'force');
+	}
+	
+	return ! $any_error;	// True = no error
 }

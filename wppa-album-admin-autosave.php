@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * create, edit and delete albums
-* version 4.5.1
+* version 4.5.5
 *
 */
 
@@ -11,6 +11,9 @@ function _wppa_admin() {
 	global $wpdb;
 	global $q_config;
 	global $wppa_opt;
+	global $wppa_revno;
+	
+	if ( get_option('wppa_revision') != $wppa_revno ) wppa_check_database(true);
 	
 	echo('<script type="text/javascript">'."\n");
 	echo('/* <![CDATA[ */'."\n");

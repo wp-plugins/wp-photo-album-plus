@@ -1,7 +1,7 @@
 /* admin-styles.css 
 *
 * wp-photo-album-plus
-* version 4.5.1
+* version 4.5.5
 */
 #files_list, #files_list2
 {
@@ -198,4 +198,16 @@ hr {
 
 .wp-menu-image a:link {
 background-color:transparent;
+}
+#wppa-err-table {
+border:1px solid black;
+	border-collapse:collapse;
+}
+#wppa-err-table td {
+	font-size:16px;
+	border:1px solid black;
+	padding:1px 6px;
+}
+#wppa-err-table tbody td {
+	font-weight:normal;
 }

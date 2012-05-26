@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, multisite, network, lightbox, comment, watermark, iptc, exif
-Version: 4.5.4
+Version: 4.5.5
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -56,7 +56,7 @@ You can find the plugin admin section under Menu Photo Albums on the admin scree
 == Installation ==
 
 = Upgrade notice =
-This version is: Major rev# 4, Minor rev# 5, Fix rev# 4, Hotfix rev# 000.
+This version is: Major rev# 4, Minor rev# 5, Fix rev# 5, Hotfix rev# 000.
 If you are upgrading from a previous Major or Minor version, note that:
 * If you modified wppa_theme.php and/or wppa_style.css, you will have to use the newly supplied versions. The previous versions are NOT compatible.
 * If you set the userlevel to anything else than 'administrator' you may have to set it again. Note that changing the userlevel can be done by the administrator only!
@@ -85,6 +85,9 @@ to your theme directory, you must remove them or replace them with the newly sup
 * After an update, always clear your browser cache (CTRL+F5) and clear your temp internetfiles, this will ensure the new versions of js files will be loaded.
 * And - most important - if you use a server side caching program clear its cache. (No longer needed as of version 4.4.2)
 * Visit the Photo Albums -> Settings page -> Table VII-A1 and press Do it!
+* When upload fails after an upgrade, one or more columns may be added to one of the db tables. In rare cases this may have been failed. 
+Unfortunately this is hard to determine. 
+If this happens, make sure (ask your hosting provider) that you have all the rights to modify db tables and run action Table VII-A1 again.
 
 = What do i have to do when converting to multisite? =
 
@@ -131,6 +134,27 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 4.5.5 =
+
+= Bug Fixes =
+
+* The spinner image is now displayed only when there is no image visible in the slide frame.
+
+= New Features =
+
+* Scrolling by 'page' in filmstrip added (double angle brackets, the single angle brackets act as next and previous now).
+* Added configuration settings to the new wppa-embedded lightbox functionality: 1: number of lines in description (Table I-G1),
+2: Label text to the Close cross (Table II-F1), 3: Background opacity (Table IV-G1), 4: Action on click on background (Table IV-G2).
+* You can select ---all--- albums in the slideshow widget.
+* Added album id keyword #all. You can use %%album=#all%% and %%slide=#all%% etc. %%cover=#all%% is meaningless and will return nothing.
+* In the topten widget you can select order method either 'By mean value' (as before) or 'By number of votes' (new). 
+To the options in Table IV-C1 order by number of votes has been added.
+
+= Other Changes =
+
+* Global photo order select can now also be by Timestamp in Table IV-C1.
+* Improved and detailed error reporting in case of wppa database problems after a (partially) failed plugin update.
 
 = 4.5.4 =
 

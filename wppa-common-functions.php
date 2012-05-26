@@ -2,11 +2,11 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 4.5.4
+* version 4.5.5
 *
 */
 global $wppa_api_version;
-$wppa_api_version = '4-5-4-000';
+$wppa_api_version = '4-5-5-000';
 // Initialize globals and option settings
 function wppa_initialize_runtime($force = false) {
 global $wppa;
@@ -127,6 +127,8 @@ global $wpdb;
 						'wppa_comment_size'				=> '',	// 4
 						'wppa_thumbnail_widget_count'	=> '',	// 5
 						'wppa_thumbnail_widget_size'	=> '',	// 6
+						// G Overlay
+						'wppa_ovl_txt_lines'			=> '',	// 
 						
 						// Table II: Visibility
 						// A Breadcrumb
@@ -172,6 +174,9 @@ global $wpdb;
 						'wppa_show_slideshowbrowselink' 	=> '',	// 3
 						// E Widgets
 						'wppa_show_bbb_widget'				=> '',	// 1
+						// F Overlay
+						'wppa_ovl_close_txt'				=> '',
+						'wppa_ovl_theme'					=> '',
 
 						// Table III: Backgrounds
 						'wppa_bgcolor_even' 			=> '',
@@ -240,6 +245,10 @@ global $wpdb;
 						'wppa_comments_desc'			=> '',	// 2
 						'wppa_comment_moderation'		=> '',	// 3
 						'wppa_comment_email_required'	=> '',	// 4
+						// G Overlay
+						'wppa_ovl_opacity'				=> '',
+						'wppa_ovl_onclick'				=> '',
+
 
 						// Table V: Fonts
 						'wppa_fontfamily_title' 	=> '',
@@ -402,12 +411,13 @@ global $wpdb;
 		);
 		array_walk($wppa_opt, 'wppa_set_options');
 	}
-	wppa_load_language();
 	
 	if (isset($_GET['debug']) && $wppa_opt['wppa_allow_debug']) {
 		$key = $_GET['debug'] ? $_GET['debug'] : E_ALL;
 		$wppa['debug'] = $key;
 	}
+	
+	wppa_load_language();
 	
 	if ( ! defined( 'WPPA_UPLOAD') ) {
 		if ( is_multisite() ) {
@@ -561,6 +571,9 @@ global $wppa_opt;
 	case '5':
 		$result = 'ORDER BY timestamp';
 		break;
+	case '6':
+		$result = 'ORDER BY rating_count';
+		break;
     default:
         $result = 'ORDER BY id';
     }
@@ -570,12 +583,16 @@ global $wppa_opt;
 
 function wppa_get_rating_count_by_id($id = '') {
 global $wpdb;
+global $thumb;
 
 	if (!is_numeric($id)) return '';
-	$query = $wpdb->prepare( 'SELECT * FROM '.WPPA_RATING.' WHERE photo = %s', $id);
-	$ratings = $wpdb->get_results($query, 'ARRAY_A');
-	if ($ratings) return count($ratings);
-	else return '0';
+
+	if ( isset($thumb['id']) ) {
+		if ( $thumb['id'] == $id ) return $thumb['rating_count'];	// Fopund in temp global photo
+	}
+
+	$query = $wpdb->prepare( 'SELECT `rating_count` FROM `'.WPPA_PHOTOS.'` WHERE `id` = %s', $id);
+	return $wpdb->get_var($query);
 }
 
 function wppa_get_rating_by_id($id = '', $opt = '') {

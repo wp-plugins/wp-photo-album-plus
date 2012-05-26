@@ -3,12 +3,12 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions and API modules
-* Version 4.5.4
+* Version 4.5.5
 *
 */
 /* Moved to wppa-common-functions.php:
 global $wppa_api_version;
-$wppa_api_version = '4-5-4-000';
+$wppa_api_version = '4-5-5-000';
 */
 
 
@@ -136,7 +136,8 @@ global $wpdb;
 				$wppa['out'] .= wppa_nltab().'<span class="b7" >'.$sep.'</span>';
 				$wppa['out'] .= wppa_nltab().'<span id="bc-pname-'.$wppa['occur'].'" class="wppa-nav-text wppa-black b9" style="'.__wcs('wppa-nav-text').__wcs('wppa-black').'" >'.__a('Slideshow', 'wppa_theme').'</span>';
 			} else {	// NOT This occurance OR album
-				$wppa['out'] .= wppa_nltab().'<span class="wppa-nav-text wppa-black b10" style="'.__wcs('wppa-nav-text').__wcs('wppa-black').'" >'.__(wppa_get_album_name($alb)).'</span>';
+				$albnam = $alb == '-2' ? __('All albums', 'wppa_theme') : __(wppa_get_album_name($alb));
+				$wppa['out'] .= wppa_nltab().'<span class="wppa-nav-text wppa-black b10" style="'.__wcs('wppa-nav-text').__wcs('wppa-black').'" >'.$albnam.'</span>';
 			} 
 		}
 //		if (isset($_POST['wppa-searchstring'])) {
@@ -285,6 +286,9 @@ global $wppa_opt;
 						wppa_dbg_msg('A topten album has no cover. '.$wppa['start_album'], 'red', 'force');
 						return;	// Give up this occurence
 					}
+					break;
+				case '#all':
+					$id = '-2';
 					break;
 				default:
 					wppa_dbg_msg('Unrecognized album keyword found: '.$wppa['start_album'], 'red', 'force');
@@ -811,7 +815,12 @@ global $wppa_opt;
 		else $id = 0;
 		if (is_numeric($id)) {
 			$wppa['current_album'] = $id;
-			$thumbs = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM ".WPPA_PHOTOS." WHERE album = %s AND ( status <> %s OR owner = %s) ".wppa_get_photo_order($id), $id, 'pending', wppa_get_user() ), 'ARRAY_A'); 
+			if ( $id == -2 ) {	// album == -2 is now: all albums
+				$thumbs = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM ".WPPA_PHOTOS." WHERE ( status <> %s OR owner = %s) ".wppa_get_photo_order('0'), 'pending', wppa_get_user() ), 'ARRAY_A'); 
+			}
+			else {
+				$thumbs = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM ".WPPA_PHOTOS." WHERE album = %s AND ( status <> %s OR owner = %s) ".wppa_get_photo_order($id), $id, 'pending', wppa_get_user() ), 'ARRAY_A'); 
+			}
 		}
 		else {
 			$thumbs = false;
@@ -1170,6 +1179,12 @@ global $wppa_done;
 	$query = $wpdb->prepare('UPDATE `'.WPPA_PHOTOS. '` SET `mean_rating` = %s WHERE `id` = %s LIMIT 1', $avgrat, $id);
 	$iret = $wpdb->query($query);
 	if (!$iret) wppa_dbg_msg('Error, could not update avg rating for photo '.$id.'. Query = '.$query, 'red');
+	
+	// Compute rating count
+	$ratcount = count($ratings);
+	$query = $wpdb->prepare('UPDATE `'.WPPA_PHOTOS. '` SET `rating_count` = %s WHERE `id` = %s LIMIT 1', $ratcount, $id);
+	$iret = $wpdb->query($query);
+	if (!$iret) wppa_dbg_msg('Error, could not update rating count for photo '.$id.'. Query = '.$query, 'red');
 	
 	// Clear (super)cache
 	wppa_clear_cache();
@@ -2289,8 +2304,8 @@ global $wppa_microtime_cum;
 			$wppa['out'] .= wppa_nltab().'wppaFullFrameDelta['.$wppa['master_occur'].'] = '.$delta.';';
 
 			// last minute change: script %%size != default colwidth
-			$temp = wppa_get_container_width() - ( 2*6 + 2*23 + 2*$wppa_opt['wppa_bwidth']);
-			if ($wppa['in_widget']) $temp = wppa_get_container_width() - ( 2*6 + 2*11 + 2*$wppa_opt['wppa_bwidth']);
+			$temp = wppa_get_container_width() - ( 2*6 + 2*36 + 2*$wppa_opt['wppa_bwidth']);
+			if ($wppa['in_widget']) $temp = wppa_get_container_width() - ( 2*6 + 2*18 + 2*$wppa_opt['wppa_bwidth']);
 			$wppa['out'] .= wppa_nltab().'wppaFilmStripLength['.$wppa['master_occur'].'] = '.$temp.';';
 
 			// last minute change: filmstrip sizes and related stuff. In widget: half size.		
@@ -2300,8 +2315,8 @@ global $wppa_microtime_cum;
 			$temp = $wppa_opt['wppa_tn_margin'] / 2;
 			if ($wppa['in_widget']) $temp /= 2;
 			$wppa['out'] .= wppa_nltab().'wppaFilmStripMargin['.$wppa['master_occur'].'] = '.$temp.';';
-			$temp = 2*6 + 2*23 + 2*$wppa_opt['wppa_bwidth'];
-			if ($wppa['in_widget']) $temp = 2*6 + 2*11 + 2*$wppa_opt['wppa_bwidth'];
+			$temp = 2*6 + 2*36 + 2*$wppa_opt['wppa_bwidth'];
+			if ($wppa['in_widget']) $temp = 2*6 + 2*18 + 2*$wppa_opt['wppa_bwidth'];
 			$wppa['out'] .= wppa_nltab().'wppaFilmStripAreaDelta['.$wppa['master_occur'].'] = '.$temp.';';
 			if ($wppa['in_widget']) $wppa['out'] .= wppa_nltab().'wppaIsMini['.$wppa['master_occur'].'] = true;';
 			else $wppa['out'] .= wppa_nltab().'wppaIsMini['.$wppa['master_occur'].'] = false;';
@@ -2454,6 +2469,7 @@ global $cover_count;
 	$has_content = ($albumcount > '0') || ($photocount > $mincount);
 	// What is the albums title linktype
 	$linktype = $album['cover_linktype'];
+//echo 'linktype='.$linktype;
 	if ( !$linktype ) $linktype = 'content'; // Default 
 	// What is the albums title linkpage
 	$linkpage = $album['cover_linkpage'];
@@ -2466,6 +2482,7 @@ global $cover_count;
 			case 'content':
 				if ($has_content) {
 					$href_title = wppa_get_album_url($album['id'], $linkpage);
+//echo 'href_title1='.$href_title;
 				}
 				else {
 					$href_title = get_page_link($album['cover_linkpage']);
@@ -2474,6 +2491,7 @@ global $cover_count;
 			case 'slide':
 				if ($has_content) {
 					$href_title = wppa_get_slideshow_url($linkpage);
+//echo 'href_title2='.$href_title;
 				}
 				else {
 					$href_title = get_page_link($album['cover_linkpage']);
@@ -2491,6 +2509,7 @@ global $cover_count;
 		switch ( $linktype ) {
 			case 'content':
 				$href_title = wppa_get_album_url($album['id'], $linkpage);
+//echo 'album_url1='.$href_title.' ajax_url='.wppa_get_album_url_ajax($album['id'], $linkpage);
 				if ( $wppa_opt['wppa_allow_ajax'] ) {
 					$onclick_title = "wppaDoAjaxRender(".$wppa['master_occur'].", '".wppa_get_album_url_ajax($album['id'], $linkpage)."', '".$href_title."')";
 					$href_title = "javascript://";
@@ -2498,6 +2517,7 @@ global $cover_count;
 				break;
 			case 'slide':
 				$href_title = wppa_get_slideshow_url($linkpage);
+//echo 'album_url2='.$href_title.' ajax_url='.wppa_get_album_url_ajax($album['id'], $linkpage);
 				if ( $wppa_opt['wppa_allow_ajax'] ) {
 					$onclick_title = "wppaDoAjaxRender(".$wppa['master_occur'].", '".wppa_get_slideshow_url_ajax($album['id'], $linkpage)."', '".$href_title."')";
 					$href_title = "javascript://";
@@ -3069,7 +3089,6 @@ function wppa_get_preambule() {
 global $wppa_opt;
 
 	if ( ! $wppa_opt['wppa_slide_wrap'] ) return '0';
-	
 	$result = is_numeric($wppa_opt['wppa_colwidth']) ? $wppa_opt['wppa_colwidth'] : $wppa_opt['wppa_fullsize'];
 	$result = ceil(ceil($result / $wppa_opt['wppa_thumbsize']) / 2 );
 	return $result;

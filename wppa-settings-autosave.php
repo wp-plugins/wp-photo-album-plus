@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 4.5.4
+* Version 4.5.5
 *
 */
 
@@ -18,6 +18,7 @@ global $wppa_api_version;
 global $wp_roles;
 global $wppa_table;
 global $wppa_subtable;
+global $wppa_revno;
 			
 
 	// Initialize
@@ -145,6 +146,9 @@ global $wppa_subtable;
 		<?php				
 		update_option('wppa_lastthumb', '-2');
 	}
+	// Check database
+//	if ( get_option('wppa_revision') != $wppa_revno ) 
+		wppa_check_database(true);
 	
 ?>		
 	<div class="wrap">
@@ -157,47 +161,6 @@ global $wppa_subtable;
 		<br /><?php if (is_multisite()) { 
 			_e('Multisite enabled. '); 
 			_e('Blogid = '.$blog_id);			
-		}
-		$any_error = false;
-		// Check db tables
-		$tn = array( WPPA_ALBUMS, WPPA_PHOTOS, WPPA_RATING, WPPA_COMMENTS, WPPA_IPTC, WPPA_EXIF );
-		$idx = 0;
-		while ($idx < 6) {
-			$ext = wppa_table_exists($tn[$idx]);
-			if ( ! $ext ) {
-				wppa_dbg_msg(__('Unexpected error:', 'wppa').' '.__('Missing database table:', 'wppa').' '.$tn[$idx], 'red', 'force');
-				$any_error = true;
-			}
-			$idx++;
-		}
-		// Check directories
-		$dn = array( ABSPATH.WPPA_UPLOAD, WPPA_UPLOAD_PATH, WPPA_UPLOAD_PATH.'/thumbs', WPPA_DEPOT_PATH);
-		$idx = 0;
-		while ($idx < 4) {
-			if ( ! file_exists($dn[$idx]) ) {	// First try to repair
-				@ mkdir($dn[$idx]);
-				@ chmod($dn[$idx], 0755);
-			}
-			else {
-				@ chmod($dn[$idx], 0755);		// there are always people who destruct things
-			}
-			
-			if ( ! file_exists($dn[$idx]) ) {	// Test again
-				wppa_dbg_msg(__('Unexpected error:', 'wppa').' '.__('Missing directory:', 'wppa').' '.$dn[$idx], 'red', 'force');
-				$any_error = true;
-			}
-			elseif ( ! is_writable($dn[$idx]) ) {
-				wppa_dbg_msg(__('Unexpected error:', 'wppa').' '.__('Directory is not writable:', 'wppa').' '.$dn[$idx], 'red', 'force');
-				$any_error = true;
-			}
-			elseif ( ! is_readable($dn[$idx]) ) {
-				wppa_dbg_msg(__('Unexpected error:', 'wppa').' '.__('Directory is not readable:', 'wppa').' '.$dn[$idx], 'red', 'force');
-				$any_error = true;
-			}
-			$idx++;
-		}
-		if ( $any_error ) {
-			echo '<p style="color:red; text-weight:bold;">'.__('Please de-activate and re-activate the plugin. If this problem persists, ask your administrator.', 'wppa').'</p>';
 		}
 ?>
 		<!--<br /><a href="javascript:window.print();"><?php //_e('Print settings', 'wppa') ?></a><br />-->
@@ -288,7 +251,7 @@ global $wppa_subtable;
 						$desc = __('Number of thumbnails in an album must exceed.', 'wppa');
 						$help = esc_js(__('Photos do not show up in the album unless there are more than this number of photos in the album. This allows you to have cover photos on an album that contains only sub albums without seeing them in the list of sub albums. Usually set to 0 (always show) or 1 (for one cover photo).', 'wppa'));
 						$slug = 'wppa_min_thumbs';
-						$html = wppa_input($slug, '50px', '', __('pieces', 'wppa'));
+						$html = wppa_input($slug, '40px', '', __('pieces', 'wppa'));
 						wppa_setting($slug, '4', $name, $desc, $html, $help);
 						
 						$name = __('Border thickness', 'wppa');
@@ -580,6 +543,15 @@ global $wppa_subtable;
 						$slug = 'wppa_thumbnail_widget_size';
 						$html = wppa_input($slug, '40px', '', __('pixels', 'wppa'));
 						wppa_setting($slug, '6', $name, $desc, $html, $help);
+						
+						wppa_setting_subheader('G', '1', __('Lightbox related settings. These settings have effect only when Table IX-A6 is set to wppa', 'wppa'));
+						
+						$name = __('Number of text lines', 'wppa');
+						$desc = __('Number of lines on the lightbox description area, exclusive the n/m line.', 'wppa');
+						$help = esc_js(__('Enter a number in the range from 0 to 24 or auto', 'wppa'));
+						$slug = 'wppa_ovl_txt_lines';
+						$html = wppa_input($slug, '40px', '', __('lines', 'wppa'));
+						wppa_setting($slug, '1', $name, $desc, $html, $help);
 						
 						?>
 					</tbody>
@@ -951,6 +923,25 @@ global $wppa_subtable;
 						$html = wppa_checkbox($slug);
 						wppa_setting($slug, '1', $name, $desc, $html, $help);
 
+						wppa_setting_subheader('F', '1', __('Lightbox related settings. These settings have effect only when Table IX-A6 is set to wppa', 'wppa'));
+
+						$name = __('Overlay Close label text', 'wppa');
+						$desc = __('The text label for the cross exit symbol.', 'wppa');
+						$help = __('This text may be multilingual according to the qTranslate short tags specs.', 'wppa');
+						$slug = 'wppa_ovl_close_txt';
+						$html = wppa_input($slug, '200px');
+						wppa_setting($slug, '1', $name, $desc, $html, $help);
+						
+						$name = __('Overlay theme color', 'wppa');
+						$desc = __('The color of the image border and text background.', 'wppa');
+						$help = '';
+						$slug = 'wppa_ovl_theme';
+						$options = array(__('Black', 'wppa'), __('White', 'wppa'));
+						$values = array('black', 'white');
+						$html = wppa_select($slug, $options, $values);
+						wppa_setting($slug, '2', $name, $desc, $html, $help);
+						
+						
 						?>
 					</tbody>
 					<tfoot style="font-weight: bold;" class="wppa_table_2">
@@ -1297,8 +1288,8 @@ global $wppa_subtable;
 						$desc = __('Photo ordering sequence method.', 'wppa');
 						$help = esc_js(__('Specify the way the photos should be ordered. This is the default setting. You can overrule the default sorting order on a per album basis.', 'wppa'));
 						$slug = 'wppa_list_photos_by';
-						$options = array(__('--- none ---', 'wppa'), __('Order #', 'wppa'), __('Name', 'wppa'), __('Random', 'wppa'), __('Rating', 'wppa'));
-						$values = array('0', '1', '2', '3', '4');
+						$options = array(__('--- none ---', 'wppa'), __('Order #', 'wppa'), __('Name', 'wppa'), __('Random', 'wppa'), __('Rating mean value', 'wppa'), __('Number of votes', 'wppa'), __('Timestamp', 'wppa'));
+						$values = array('0', '1', '2', '3', '4', '6', '5');
 						$html = wppa_select($slug, $options, $values);
 						wppa_setting($slug, '1', $name, $desc, $html, $help);
 						
@@ -1498,6 +1489,23 @@ global $wppa_subtable;
 						$class = 'wppa_comment_';
 						wppa_setting($slug, '4', $name, $desc, $html, $help, $class);
 						
+						wppa_setting_subheader('G', '1', __('Lightbox related settings. These settings have effect only when Table IX-A6 is set to wppa', 'wppa'));
+						
+						$name = __('Overlay opacity', 'wppa');
+						$desc = __('The opacity of the lightbox overlay background.', 'wppa');
+						$help = '';
+						$slug = 'wppa_ovl_opacity';
+						$html = wppa_input($slug, '50px', '', __('%', 'wppa'));
+						wppa_setting($slug, '1', $name, $desc, $html, $help);
+						
+						$name = __('Click on background', 'wppa');
+						$desc = __('Select the action to be taken on click on background.', 'wppa');
+						$help = '';
+						$slug = 'wppa_ovl_onclick';
+						$options = array(__('Nothing', 'wppa'), __('Exit (close)', 'wppa'), __('Browse (left/right)', 'wppa'));
+						$values = array('none', 'close', 'browse');
+						$html = wppa_select($slug, $options, $values);
+						wppa_setting($slug, '2', $name, $desc, $html, $help);
 						
 						?>
 					</tbody>
@@ -2332,7 +2340,7 @@ global $wppa_subtable;
 						$help .= '\n\n'.esc_js(__('If you use html, please check item A-1 of this table.', 'wppa'));
 						$slug = 'wppa_newphoto_description';
 						$html = wppa_textarea($slug);
-						wppa_setting(false, '4', $name, $desc, $html, $help);
+						wppa_setting($slug, '4', $name, $desc, $html, $help);
 						
 						wppa_setting_subheader('C', '1', __('Search Albums and Photos related settings', 'wppa'));
 						
@@ -2751,10 +2759,10 @@ global $wppa_subtable;
 		if ( $slugs ) {
 			$hlp .= '\n\n'.__('The default for this setting is:', 'wppa');
 			if ( count($slugs) == 1) {
-				if ( $slugs[0] != '' ) $hlp .= ' '.wppa_dflt($slugs[0]);
+				if ( $slugs[0] != '' ) $hlp .= ' '.esc_js(wppa_dflt($slugs[0]));
 			}
 			else foreach ( array_keys($slugs) as $slugidx ) {
-				if ( $slugs[$slugidx] != '' && isset($nums[$slugidx]) ) $hlp .= ' '.$nums[$slugidx].'. '.wppa_dflt($slugs[$slugidx]);
+				if ( $slugs[$slugidx] != '' && isset($nums[$slugidx]) ) $hlp .= ' '.$nums[$slugidx].'. '.esc_js(wppa_dflt($slugs[$slugidx]));
 			}
 		}
 	}
@@ -2780,7 +2788,7 @@ function wppa_input($slug, $width, $minwidth = '', $text = '', $onchange = '') {
 	else $html .= ' onchange="wppaAjaxUpdateOptionValue(\''.$slug.'\', this)"';
 	$html .= ' value="'.esc_attr(get_option($slug)).'" />';	// changed stripslashes into esc_attr
 	$html .= '<img id="img_'.$slug.'" src="'.wppa_get_imgdir().'star.png" title="'.__('Setting unmodified', 'wppa').'" style="padding:0 4px; float:left; height:16px; width:16px;" />';
-	$html .= $text;
+	$html .= '<span style="float:left">'.$text.'</span>';
 	
 	return $html;
 }
