@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 4.5.4
+* Version 4.5.5
 *
 */
 
@@ -68,6 +68,7 @@ global $silent;
 					owner text NOT NULL,
 					timestamp tinytext NOT NULL,
 					status tinytext NOT NULL,
+					rating_count bigint(20) NOT NULL default '0',
 					PRIMARY KEY  (id) 
 					) DEFAULT CHARACTER SET utf8;";
 
@@ -188,6 +189,13 @@ global $silent;
 			wppa_copy_setting('wppa_fontcolor_numbar', 'wppa_fontcolor_numbar_active');
 			wppa_copy_setting('wppa_fontweight_numbar', 'wppa_fontweight_numbar_active');
 		}
+		if ( $old_rev <= '455') {	// rating_count added to WPPA_PHOTOS
+			$phs = $wpdb->get_results($wpdb->prepare('SELECT `id` FROM `'.WPPA_PHOTOS), 'ARRAY_A');
+			if ($phs) foreach ($phs as $ph) {
+				$cnt = $wpdb->get_var($wpdb->prepare('SELECT COUNT(*) FROM `'.WPPA_RATING.'` WHERE `photo` = %s', $ph['id']));
+				$wpdb->query($wpdb->prepare('UPDATE `'.WPPA_PHOTOS.'` SET `rating_count` = %s WHERE `id` = %s', $cnt, $ph['id']));
+			}
+		}
 	}
 	
 	// Set default values for new options
@@ -225,6 +233,9 @@ global $silent;
 		if ($key == '2' || $key == '3') $msg .= '<br/>' . __('Please REPLACE your customized WPPA-THEME.PHP file by the newly supplied one, or just remove it from your theme directory. You may modify it later if you wish. Your current customized version is NOT compatible with this version of the plugin software.', 'wppa');
 		wppa_ok_message($msg);
 	}
+	
+	// Check if db is ok
+	if ( ! wppa_check_database() ) $wppa['error'] = true;
 	
 	// Done!
 	if ( ! $wppa['error'] ) {
@@ -273,12 +284,12 @@ function wppa_set_defaults($force = false) {
 global $wppa_defaults;
 
 	$npd = '
-<a href="javascript://" onClick="jQuery(\'.wppa-dtl\').css(\'display\', \'block\'); jQuery(\'.wppa-more\').css(\'display\', \'none\');">
+<a href="javascript://" onClick="jQuery(\'.wppa-dtl\').css(\'display\', \'block\'); jQuery(\'.wppa-more\').css(\'display\', \'none\'); wppaOvlResize();">
 <div class="wppa-more">
 Camara info
 </div>
 </a>
-<a href="javascript://" onClick="jQuery(\'.wppa-dtl\').css(\'display\', \'none\'); jQuery(\'.wppa-more\').css(\'display\', \'block\');">
+<a href="javascript://" onClick="jQuery(\'.wppa-dtl\').css(\'display\', \'none\'); jQuery(\'.wppa-more\').css(\'display\', \'block\'); wppaOvlResize();">
 <div class="wppa-dtl" style="display:none;" >
 Hide Camera info
 </div>
@@ -343,6 +354,8 @@ Hide Camera info
 						'wppa_comment_size'				=> '86',	// 4
 						'wppa_thumbnail_widget_count'	=> '10',	// 5
 						'wppa_thumbnail_widget_size'	=> '86',	// 6
+						// G Overlay
+						'wppa_ovl_txt_lines'			=> '4',		// 
 
 						// Table II: Visibility
 						// A Breadcrumb
@@ -388,6 +401,9 @@ Hide Camera info
 						'wppa_show_slideshowbrowselink' 	=> 'yes',	// 3
 						// E Widgets
 						'wppa_show_bbb_widget'				=> 'no',	// 1
+						// F Overlay
+						'wppa_ovl_close_txt'				=> 'CLOSE',
+						'wppa_ovl_theme'					=> 'black',
 
 						// Table III: Backgrounds
 						'wppa_bgcolor_even' 			=> '#eeeeee',
@@ -456,6 +472,9 @@ Hide Camera info
 						'wppa_comments_desc'			=> 'no',
 						'wppa_comment_moderation'		=> 'logout',
 						'wppa_comment_email_required'	=> 'yes',
+						// G Overlay
+						'wppa_ovl_opacity'				=> '80',
+						'wppa_ovl_onclick'				=> 'none',
 						
 						// Table V: Fonts
 						'wppa_fontfamily_title' 	=> '',

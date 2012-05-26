@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * get the albums via filter
-* version 4.5.0
+* version 4.5.5
 *
 */
 
@@ -203,6 +203,7 @@ function wppa_atoid($var) {
 			$t = substr($var, 0, $len);		
 		}
 		if ( $result == '0' ) $result = substr($var, 0, strpos($var, '%%'));	// Expected a number
+		if ( $result < '0' ) $result = '0';	// Neg values not allwed, they are codes now
 	}
 	return $result;
 }

@@ -3,13 +3,14 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the upload/import pages and functions
-* Version 4.5.1
+* Version 4.5.5
 *
 */
 
 function _wppa_page_upload() {
 global $target;
 global $wppa_opt;
+global $wppa_revno;
 
 	// upload images admin page
 
@@ -45,6 +46,9 @@ global $wppa_opt;
 	// sanitize system again
 	wppa_cleanup_photos();
 	wppa_sanitize_files();
+	
+	// Check database
+	if ( get_option('wppa_revision') != $wppa_revno ) wppa_check_database(true);
 
 	?>
 	
@@ -233,6 +237,10 @@ global $wppa_opt;
 // import images admin page
 function _wppa_page_import() {
 global $wppa_opt;
+global $wppa_revno;
+
+	// Check database
+	if ( get_option('wppa_revision') != $wppa_revno ) wppa_check_database(true);
 
 	// Sanitize system
     wppa_cleanup_photos('0');

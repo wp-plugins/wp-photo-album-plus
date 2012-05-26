@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the slideshow high level functions
-* Version 4.4.8
+* Version 4.5.5
 *
 */
 
@@ -111,7 +111,7 @@ global $wppa_opt;
 	$wppa['out'] .= wppa_nltab('+').'<div id="slide_frame-'.$wppa['master_occur'].'" '.$ontouch.' '.$pause.' class="slide-frame" style="overflow:hidden; '.wppa_get_slide_frame_style().'">';
 		$wppa['out'] .= wppa_nltab().'<div id="theslide0-'.$wppa['master_occur'].'" class="theslide" style="width:'.$wppa['slideframewidth'].'px; " ></div>';
 		$wppa['out'] .= wppa_nltab().'<div id="theslide1-'.$wppa['master_occur'].'" class="theslide" style="width:'.$wppa['slideframewidth'].'px; " ></div>';
-		$wppa['out'] .= wppa_nltab().'<div id="spinner-'.$wppa['master_occur'].'" class="spinner"></div>';
+		$wppa['out'] .= wppa_nltab().'<div id="spinner-'.$wppa['master_occur'].'" class="spinner" ></div>';
 		if ( ! wppa_page('oneofone') ) {	
 			if (( $wppa_opt['wppa_show_bbb'] && ! $wppa['in_widget'] ) || ( $wppa_opt['wppa_show_bbb_widget'] && $wppa['in_widget'] )){	// big browsing buttons enabled
 				$wppa['out'] .= wppa_nltab().'<img id="bbb-'.$wppa['master_occur'].'-l" class="bbb-'.$wppa['master_occur'].'" src="'.wppa_get_imgdir().'bbbl.png" style="background-color: transparent; border:none; z-index:83; position: absolute; left:0px; top: 0px; width: '.($wppa['slideframewidth']*0.5).'px; height: '.$wppa['slideframeheight'].'px; box-shadow: none; cursor:default;" onmouseover="wppaBbb('.$wppa['master_occur'].',\'l\',\'show\')" onmouseout="wppaBbb('.$wppa['master_occur'].',\'l\',\'hide\')" onclick="wppaBbb('.$wppa['master_occur'].',\'l\',\'click\')" />';
@@ -295,22 +295,30 @@ global $thumb;
 	$topmarg = $wppa_opt['wppa_thumbsize'] / 2 - 12 + 7;
 	$height = $wppa_opt['wppa_thumbsize']+$wppa_opt['wppa_tn_margin'];
 	$height1 = $wppa_opt['wppa_thumbsize'];
-	$marg = '22';
+	$marg = '32';
 	$fs = '24';
-	$fw = '20';
+	$fw = '36';
 	if ($wppa['in_widget']) {
 		$width /= 2;
 		$topmarg /= 2;
 		$height /= 2;
 		$height1 /= 2;
-		$marg = '11';
+		$marg = '16';
 		$fs = '12';
-		$fw = '10';
+		$fw = '18';
 	}
 
-	$w = wppa_get_container_width() - ( 2*6 + 2*23 + 2*$wppa_opt['wppa_bwidth']); /* 2*padding + 2*arrow + 2*border */
-	if ($wppa['in_widget']) $w = wppa_get_container_width() - ( 2*6 + 2*11 + 2*$wppa_opt['wppa_bwidth']); /* 2*padding + 2*arrow + 2*border */
+	$w = wppa_get_container_width() - ( 2*6 + 2*36 + 2*$wppa_opt['wppa_bwidth']); /* 2*padding + 2*arrows + 2*border */
+	if ($wppa['in_widget']) $w = wppa_get_container_width() - ( 2*6 + 2*18 + 2*$wppa_opt['wppa_bwidth']); /* 2*padding + 2*arrow + 2*border */
 	$IE6 = 'width: '.$w.'px;';
+	$pagsiz = round($w / ($wppa_opt['wppa_thumbsize'] + $wppa_opt['wppa_tn_margin']));
+	if ($wppa['in_widget']) $pagsiz = round($w / ($wppa_opt['wppa_thumbsize']/2 + $wppa_opt['wppa_tn_margin']/2));
+	
+	$wppa['out'] .= wppa_nltab().'<script type="text/javascript">';
+		$wppa['out'] .= wppa_nltab('+').'/* <![CDATA[ */';
+			$wppa['out'] .= wppa_nltab().'wppaFilmPageSize['.$wppa['master_occur'].'] = '.$pagsiz.';';
+		$wppa['out'] .= wppa_nltab('-').'/* ]]> */';
+	$wppa['out'] .= wppa_nltab().'</script>';
 	
 	if (is_feed()) {
 		$wppa['out'] .= wppa_nltab().'<div style="'.__wcs('wppa-box').__wcs('wppa-nav').'">';
@@ -318,8 +326,14 @@ global $thumb;
 	else {
 
 	$wppa['out'] .= wppa_nltab('+').'<div class="wppa-box wppa-nav" style="text-align:center; '.__wcs('wppa-box').__wcs('wppa-nav').'height:'.$height.'px;">';
-		$wppa['out'] .= wppa_nltab().'<div style="float:left; text-align:left; cursor:pointer; margin-top:'.$topmarg.'px; width: '.$fw.'px; font-size: '.$fs.'px;"><a class="wppa-prev-'.$wppa['master_occur'].' wppa-arrow" style="'.__wcs('wppa-arrow').'" id="prev-film-arrow-'.$wppa['master_occur'].'" onclick="wppaPrev('.$wppa['master_occur'].');" >&laquo;</a></div>';
-		$wppa['out'] .= wppa_nltab().'<div style="float:right; text-align:right; cursor:pointer; margin-top:'.$topmarg.'px; width: '.$fw.'px; font-size: '.$fs.'px;"><a class="wppa-next-'.$wppa['master_occur'].' wppa-arrow" style="'.__wcs('wppa-arrow').'" id="next-film-arrow-'.$wppa['master_occur'].'" onclick="wppaNext('.$wppa['master_occur'].');">&raquo;</a></div>';
+		$wppa['out'] .= wppa_nltab().'<div style="float:left; text-align:left; cursor:pointer; margin-top:'.$topmarg.'px; width: '.$fw.'px; font-size: '.$fs.'px;">';
+			$wppa['out'] .= wppa_nltab().'<a class="wppa-prev-'.$wppa['master_occur'].' wppa-arrow" style="'.__wcs('wppa-arrow').'" id="prev-film-arrow-'.$wppa['master_occur'].'" onclick="wppaPrevN('.$wppa['master_occur'].','.$pagsiz.');" title="'.sprintf(__a('%s back', 'wppa_theme'), $pagsiz).'" >&laquo;</a>';
+			$wppa['out'] .= wppa_nltab().'<a class="wppa-prev-'.$wppa['master_occur'].' wppa-arrow" style="'.__wcs('wppa-arrow').'" id="prev-film-arrow-1-'.$wppa['master_occur'].'" onclick="wppaPrev('.$wppa['master_occur'].');" title="'.__a('Previous', 'wppa_theme').'" >&lsaquo;</a>';
+		$wppa['out'] .= wppa_nltab().'</div>';
+		$wppa['out'] .= wppa_nltab().'<div style="float:right; text-align:right; cursor:pointer; margin-top:'.$topmarg.'px; width: '.$fw.'px; font-size: '.$fs.'px;">';
+			$wppa['out'] .= wppa_nltab().'<a class="wppa-next-'.$wppa['master_occur'].' wppa-arrow" style="'.__wcs('wppa-arrow').'" id="next-film-arrow-1-'.$wppa['master_occur'].'" onclick="wppaNext('.$wppa['master_occur'].');" title="'.__a('Next', 'wppa_theme').'" >&rsaquo;</a>';
+			$wppa['out'] .= wppa_nltab().'<a class="wppa-next-'.$wppa['master_occur'].' wppa-arrow" style="'.__wcs('wppa-arrow').'" id="next-film-arrow-'.$wppa['master_occur'].'" onclick="wppaNextN('.$wppa['master_occur'].','.$pagsiz.');" title="'.sprintf(__a('%s forward', 'wppa_theme'), $pagsiz).'" >&raquo;</a>';
+		$wppa['out'] .= wppa_nltab().'</div>';
 		$wppa['out'] .= wppa_nltab().'<div id="filmwindow-'.$wppa['master_occur'].'" class="filmwindow" style="'.$IE6.' display: block; height:'.$height.'px; margin: 0 0 0 '.$marg.'px; overflow:hidden;">';
 			$wppa['out'] .= wppa_nltab('+').'<div id="wppa-filmstrip-'.$wppa['master_occur'].'" style="height:'.$height1.'px; width:'.$width.'px; margin-left: -100px;">';
 	}

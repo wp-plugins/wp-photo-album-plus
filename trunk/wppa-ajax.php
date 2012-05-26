@@ -2,7 +2,7 @@
 /* wppa-ajax.php
 *
 * Functions used in ajax requests
-* version 4.5.0
+* version 4.5.5
 *
 */
 add_action('wp_ajax_wppa', 'wppa_ajax_callback');
@@ -136,6 +136,17 @@ global $wppa;
 				$iret = $wpdb->query($query);
 				if ( $iret === false ) {
 					echo '0||106||'.$wartxt;
+					exit;																// Fail on save
+				}
+			}
+			
+			// Compute rating_count
+			$ratcount = $wpdb->get_var( $wpdb->prepare( 'SELECT COUNT(*) FROM `'.WPPA_RATING.'`  WHERE `photo` = %s', $photo));
+			if ( $ratcount !== false ) {
+				$query = $wpdb->prepare('UPDATE `'.WPPA_PHOTOS. '` SET `rating_count` = %s WHERE `id` = %s', $ratcount, $photo);
+				$iret = $wpdb->query($query);
+				if ( $iret === false ) {
+					echo '0||107||'.$wartxt;
 					exit;																// Fail on save
 				}
 			}
@@ -555,10 +566,16 @@ global $wppa;
 				case 'wppa_watermark_opacity':
 					wppa_ajax_check_range($value, false, '0', '100', __('Watermark opacity', 'wppa'));
 					break;
+				case 'wppa_ovl_txt_lines':
+					wppa_ajax_check_range($value, 'auto', '0', '24', __('Number of text lines', 'wppa'));
+					break;
+				case 'wppa_ovl_opacity':
+					wppa_ajax_check_range($value, false, '0', '100', __('Overlay opacity', 'wppa'));
+					break;
 					
 				case 'wppa_rating_clear':
-					$iret1 = $wpdb->query($wpdb->prepare( 'DELETE FROM '.WPPA_RATING.' WHERE id > -1' ) );
-					$iret2 = $wpdb->query($wpdb->prepare( 'UPDATE '.WPPA_PHOTOS.' SET mean_rating="0" WHERE id > -1' ) );
+					$iret1 = $wpdb->query($wpdb->prepare( 'TRUNCATE TABLE '.WPPA_RATING ) );
+					$iret2 = $wpdb->query($wpdb->prepare( 'UPDATE '.WPPA_PHOTOS.' SET mean_rating="0", rating_count="0" WHERE id > -1' ) );
 					if ($iret1 !== false && $iret2 !== false) {
 						delete_option('wppa_'.WPPA_RATING.'_lastkey');
 						$title = __('Ratings cleared', 'wppa');
