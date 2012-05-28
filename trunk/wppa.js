@@ -2,7 +2,7 @@
 //
 // conatins slideshow, theme and ajax code
 //
-// Version 4.5.5
+// Version 4.5.6
 
 // Part 1: Slideshow
 //
@@ -1861,7 +1861,7 @@ function wppaOvlShow(arg) {
 	jQuery('#wppa-overlay-ic').css({left: lft, paddingTop: ptp});
 	var txtcol = wppaOvlTheme == 'black' ? '#a7a7a7' : '#272727';	// Normal font
 	var qtxtcol = wppaOvlTheme == 'black' ? '#a7a7a7' : '#575757';	// Bold font
-	var html = 	'<div id="wppa-overlay-qt-txt"  style="position:absolute; right:16px; top:'+(wppaOvlPadTop-3)+'px; visibility:hidden; box-shadow:none; font-family:helvetica; font-weight:bold; font-size:14px; color:'+qtxtcol+'; cursor:pointer; " onclick="wppaOvlHide()" >'+wppaOvlCloseTxt+'&nbsp;&nbsp;</div>'+
+	var html = 	'<div id="wppa-overlay-qt-txt"  style="position:absolute; right:16px; top:'+(wppaOvlPadTop-1)+'px; visibility:hidden; box-shadow:none; font-family:helvetica; font-weight:bold; font-size:14px; color:'+qtxtcol+'; cursor:pointer; " onclick="wppaOvlHide()" >'+wppaOvlCloseTxt+'&nbsp;&nbsp;</div>'+
 				'<img id="wppa-overlay-qt-img"  src="'+wppaImageDirectory+'smallcross-'+wppaOvlTheme+'.gif'+'" style="position:absolute; right:0; top:'+wppaOvlPadTop+'px; visibility:hidden; box-shadow:none; cursor:pointer" onclick="wppaOvlHide()" >'+
 				'<img id="wppa-overlay-img" src="'+wppaOvlUrl+'" style="border-width:16px; border-style:solid; border-color:'+wppaOvlTheme+'; margin-bottom:-15px; max-width:'+mw+'px; visibility:hidden; box-shadow:none;" />'+
 				'<div id="wppa-overlay-txt-container" style="padding:10px; background-color:'+wppaOvlTheme+'; color:'+txtcol+'; text-align:center; font-size: 10px; font-weight:bold; line-height:12px; visibility:hidden; box-shadow:none;" ></div>';
@@ -1887,6 +1887,7 @@ function wppaOvlShow3() {
 	// Remove spinner
 	jQuery('#wppa-overlay-sp').css({visibility: 'hidden'});
 	// Size to final dimensions
+	jQuery('#wppa-overlay-txt-container').html('<div id="wppa-overlay-txt"></div>');	// reqd for sizeing
 	var speed = 300;
 	wppaOvlSize(speed);
 	// Go on
@@ -1929,11 +1930,11 @@ function wppaOvlShow4() {
 		if ( window.onresize ) {
 			wppaOvlSizeHandler = window.onresize;
 		}
-		window.onresize = function () {return wppaOvlSize(10);}
+		window.onresize = function () {return wppaOvlResize(10);}
 		
 		wppaOvlFirst = false;
 	}
-	if (wppaOvlTxtHeight == 'auto') wppaOvlSize(10);	// Resize to accomodate for var text height
+	if (wppaOvlTxtHeight == 'auto') wppaOvlResize(10);	// Resize to accomodate for var text height
 	return false;
 }
 
@@ -1956,14 +1957,23 @@ function wppaOvlShowNext() {
 
 function wppaOvlSize(speed) {	
 
+	// Wait for text complete
+	if (! document.getElementById('wppa-overlay-txt')) { setTimeout('wppaOvlSize('+speed+')', 10); return;}
+
 	var iw = window.innerWidth;
 	var img = document.getElementById('wppa-overlay-img');
 	var cw = img.clientWidth;
 	var nw = img.naturalWidth;
 	var nh = img.naturalHeight;
 	var mh;
-	mh = wppaOvlTxtHeight == 'auto' ? window.innerHeight - 52 : window.innerHeight - wppaOvlTxtHeight - 52;
-	if (document.getElementById('wppa-overlay-txt')) mh = window.innerHeight - document.getElementById('wppa-overlay-txt').clientHeight - 52;
+	if (wppaOvlTxtHeight == 'auto') {
+		var tch = document.getElementById('wppa-overlay-txt').clientHeight;
+		if (tch == 0) tch = 36;
+		mh = window.innerHeight - tch - 52;
+	}
+	else {
+		mh = window.innerHeight - wppaOvlTxtHeight - 52;
+	}
 	var mw = parseInt(mh * nw / nh);
 	var pt = wppaOvlPadTop;
 	var lft = parseInt((iw-mw)/2);
@@ -1976,7 +1986,7 @@ function wppaOvlSize(speed) {
 
 	jQuery('#wppa-overlay-img').stop().animate({maxWidth: mw+'px'}, speed);
 	jQuery('#wppa-overlay-ic').stop().animate({left: lft+'px', paddingTop: pt+'px'}, speed);
-	jQuery('#wppa-overlay-qt-txt').stop().animate({top: (pt-3)+'px'}, speed);
+	jQuery('#wppa-overlay-qt-txt').stop().animate({top: (pt-1)+'px'}, speed);
 	jQuery('#wppa-overlay-qt-img').stop().animate({top: pt+'px'}, speed);
 	
 	// If resizing, also resize txt elements when sizing is complete
@@ -2079,7 +2089,7 @@ function wppaOvlResize() {
 	// See if generic lightbox is on
 	if ( wppaLightBox != 'wppa' ) return;	// No, not this time.
 	// Wait for completeion of text and do a size operation
-	var speed=300;
-	setTimeout('wppaOvlSize(10)', speed+20);
-	setTimeout('wppaOvlSize(10)', speed+150);
+	setTimeout('wppaOvlSize(10)', 50);		// After resizing, the number of lines may have changed
+	setTimeout('wppaOvlSize(10)', 200);
+	setTimeout('wppaOvlSize(10)', 500);
 }
