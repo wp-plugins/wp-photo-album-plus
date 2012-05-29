@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wppa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-05-26 14:37+0100\n"
-"PO-Revision-Date: 2012-05-26 14:37+0100\n"
+"POT-Creation-Date: 2012-05-26 14:54+0100\n"
+"PO-Revision-Date: 2012-05-29 13:52+0100\n"
 "Last-Translator: J.N. Breetvelt <OpaJaap@OpaJaap.nl>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -196,9 +196,8 @@ msgid "Photo&thinsp;Albums"
 msgstr "Álbumes de fotos"
 
 #: wppa-admin.php:55
-#, fuzzy
 msgid "Album Admin"
-msgstr "Álbum #"
+msgstr "Administrar Albums"
 
 #: wppa-admin.php:56
 msgid "Upload Photos"
@@ -210,16 +209,14 @@ msgstr "Importar fotos"
 
 #: wppa-admin.php:58
 #: wppa-export.php:36
-#, fuzzy
 msgid "Export Photos"
-msgstr "Importar fotos"
+msgstr "Exportar fotos"
 
 #: wppa-admin.php:59
 msgid "Settings"
 msgstr "Configuración"
 
 #: wppa-admin.php:60
-#, fuzzy
 msgid "Photo of the day Widget"
 msgstr "Foto del día"
 
@@ -228,14 +225,12 @@ msgid "Photo of the day"
 msgstr "Foto del día"
 
 #: wppa-admin.php:61
-#, fuzzy
 msgid "Manage comments"
-msgstr "Administrar Fotos"
+msgstr "Administrar comentarios"
 
 #: wppa-admin.php:61
-#, fuzzy
 msgid "Comments"
-msgstr "% Comentarios"
+msgstr "Comentarios"
 
 #: wppa-admin.php:62
 msgid "Help &amp; Info"
@@ -254,9 +249,8 @@ msgid "An error occurred while processing you rating request."
 msgstr ""
 
 #: wppa-ajax.php:36
-#, fuzzy
 msgid "You may refresh the page and try again."
-msgstr "con un programa FTP e intentar de nuevo"
+msgstr "Debes recargar la pagina y volverlo a intentar"
 
 #: wppa-ajax.php:37
 msgid "Althoug an error occurred while processing your rating, your vote has been registered."
@@ -279,9 +273,9 @@ msgid "You do not have the rights to delete a photo"
 msgstr ""
 
 #: wppa-ajax.php:194
-#, fuzzy, php-format
+#, php-format
 msgid "Photo %s has been deleted"
-msgstr "Foto eliminada."
+msgstr "Foto %s eliminada."
 
 #: wppa-ajax.php:207
 msgid "You do not have the rights to update album information"
@@ -312,29 +306,24 @@ msgid "Unbalanced tags in album description!"
 msgstr ""
 
 #: wppa-ajax.php:237
-#, fuzzy
 msgid "Album order #"
-msgstr "Orden del álbum:"
+msgstr "Orden del álbum"
 
 #: wppa-ajax.php:240
-#, fuzzy
 msgid "Cover photo"
-msgstr "Foto de Portada:"
+msgstr "Foto de Portada"
 
 #: wppa-ajax.php:243
-#, fuzzy
 msgid "Parent album"
-msgstr "Álbum superior:"
+msgstr "Álbum superior"
 
 #: wppa-ajax.php:246
-#, fuzzy
 msgid "Photo order"
-msgstr "Orden de fotos:"
+msgstr "Orden de fotos"
 
 #: wppa-ajax.php:249
-#, fuzzy
 msgid "Link type"
-msgstr "Enlace a:"
+msgstr "Enlace a"
 
 #: wppa-ajax.php:252
 msgid "Link to"
@@ -350,7 +339,7 @@ msgstr "Administrador"
 #: wppa-ajax.php:263
 #, php-format
 msgid "<b>%s</b> of album %s updated"
-msgstr ""
+msgstr "<b>%s</b>del album %s actualizado"
 
 #: wppa-ajax.php:266
 #, php-format
@@ -396,9 +385,9 @@ msgid "An error occurred while trying to move photo %s"
 msgstr ""
 
 #: wppa-ajax.php:315
-#, fuzzy, php-format
+#, php-format
 msgid "Photo %s copied to album %s (%s)"
-msgstr "Las fotos subidas en el álbum No."
+msgstr "%s fotos copiadas al album %s (%s)"
 
 #: wppa-ajax.php:318
 #, php-format
@@ -435,9 +424,8 @@ msgstr "Enlace a:"
 #: wppa-album-admin-autosave.php:233
 #: wppa-comment-admin.php:245
 #: wppa-comment-admin.php:301
-#, fuzzy
 msgid "Status"
-msgstr "Comenzar"
+msgstr "Estado"
 
 #: wppa-ajax.php:365
 #, php-format
@@ -671,9 +659,8 @@ msgid "The uploads directory does not exist or is not writable by the server. Pl
 msgstr "El directorio de subidas no existe o no es escribible por el servidor. Por favor asegúrese que <tt>wp-content/uploads/</tt> sea escribible."
 
 #: wppa-album-admin-autosave.php:36
-#, fuzzy
 msgid "New Album"
-msgstr "Crear Nuevo Álbum"
+msgstr "Nuevo Álbum"
 
 #: wppa-album-admin-autosave.php:41
 #: wppa-album-admin-autosave.php:838
@@ -696,23 +683,23 @@ msgstr "Editar información del álbum"
 
 #: wppa-album-admin-autosave.php:61
 msgid "Auto Save"
-msgstr ""
+msgstr "(Auto guardado activado)"
 
 #: wppa-album-admin-autosave.php:63
 msgid "In this version of the album admin page, all modifications are instantly updated on the server."
-msgstr ""
+msgstr "La modificaciones que realices se guardan automaticamente"
 
 #: wppa-album-admin-autosave.php:64
 msgid "Edit fields are updated the moment you click anywhere outside the edit box."
-msgstr ""
+msgstr "Despues de editar una opcion, haz click fuera de esa opcion para que se guarde automaticamente"
 
 #: wppa-album-admin-autosave.php:65
 msgid "Selections are updated instantly, except for those that require a button push."
-msgstr ""
+msgstr "Todo se guarda automaticamente excepto las opciones que requieran pulsar un boton"
 
 #: wppa-album-admin-autosave.php:66
 msgid "The status fields keep you informed on the actions taken at the background."
-msgstr ""
+msgstr "El cuadro \"Estado\" te mantendra informado de lo que sucede en segundo plano"
 
 #: wppa-album-admin-autosave.php:69
 msgid "Album number:"
@@ -847,7 +834,7 @@ msgstr "Configuración del orden:"
 #: wppa-album-admin-autosave.php:236
 #, php-format
 msgid "Album %s is not modified yet"
-msgstr ""
+msgstr "El Album %s no ha sido modificado"
 
 #: wppa-album-admin-autosave.php:242
 msgid "Manage Photos"
@@ -863,15 +850,15 @@ msgstr "Álbum:"
 
 #: wppa-album-admin-autosave.php:262
 msgid "Are you sure you want to delete this album?"
-msgstr "Está seguro que quiere eliminar este álbum?"
+msgstr "¿Está seguro de que quiere eliminar este álbum?"
 
 #: wppa-album-admin-autosave.php:263
 msgid "Press Delete to continue, and Cancel to go back."
-msgstr "Seleccione Eliminar para continuar, o Cancelar para regresar."
+msgstr "Seleccione \"eliminar\" para borrarlo, o \"cancelar\" para regresar."
 
 #: wppa-album-admin-autosave.php:268
 msgid "What would you like to do with photos currently in the album?"
-msgstr "Qué quiere hacer con las fotos del álbum?"
+msgstr "¿Qué quiere hacer con las fotos del álbum?"
 
 #: wppa-album-admin-autosave.php:269
 #: wppa-album-admin-autosave.php:279
@@ -889,9 +876,8 @@ msgid "Move to:"
 msgstr "Mover a:"
 
 #: wppa-album-admin-autosave.php:272
-#, fuzzy
 msgid "- select an album -"
-msgstr "- seleccionar álbum(es) -"
+msgstr "- seleccione un album -"
 
 #: wppa-album-admin-autosave.php:278
 msgid "Cancel"
@@ -906,14 +892,12 @@ msgid "Manage Albums"
 msgstr "Administrar Álbumes"
 
 #: wppa-album-admin-autosave.php:324
-#, fuzzy
 msgid "Are you sure you want to create a new album?"
-msgstr "Está seguro que quiere eliminar este álbum?"
+msgstr "¿Quieres crear un nuevo album?"
 
 #: wppa-album-admin-autosave.php:325
-#, fuzzy
 msgid "Create New Empty Album"
-msgstr "Crear Nuevo Álbum"
+msgstr "Crear un nuevo Álbum"
 
 #: wppa-album-admin-autosave.php:417
 #: wppa-album-admin-autosave.php:528
@@ -963,9 +947,8 @@ msgstr ""
 
 #: wppa-album-admin-autosave.php:633
 #: wppa-album-admin-autosave.php:636
-#, fuzzy
 msgid "Are you sure you want to rotate this photo?"
-msgstr "Está seguro que quiere eliminar este álbum?"
+msgstr "¿Estás seguro que quieres eliminar este álbum?"
 
 #: wppa-album-admin-autosave.php:633
 msgid "Rotate left"
@@ -980,9 +963,8 @@ msgid "If it says 'Photo rotated', the photo is rotated. If you do not see it ha
 msgstr ""
 
 #: wppa-album-admin-autosave.php:651
-#, fuzzy
 msgid "Upload:"
-msgstr "Subir fotos"
+msgstr "Subir:"
 
 #: wppa-album-admin-autosave.php:655
 msgid "On:"
@@ -1353,7 +1335,7 @@ msgstr "Anterior"
 
 #: wppa-comment-admin.php:378
 msgid "Next page"
-msgstr "Siguiente"
+msgstr "Siguiente pagina"
 
 #: wppa-comment-widget.php:13
 #, fuzzy
@@ -1566,58 +1548,49 @@ msgid "Cannot write to file %s."
 msgstr ""
 
 #: wppa-export.php:201
-#, fuzzy
 msgid "Could not open album output file."
-msgstr "No se pudo crear el álbum."
+msgstr "Could not open album output file."
 
 #: wppa-export.php:206
-#, fuzzy
 msgid "Could not read album data."
-msgstr "No se pudo crear el álbum."
+msgstr "Could not read album data."
 
 #: wppa-export.php:254
-#, fuzzy
 msgid "Could not open photo output file."
-msgstr "No se pudo actualizar la foto."
+msgstr "Could not open photo output file."
 
 #: wppa-export.php:259
-#, fuzzy
 msgid "Could not read photo data."
-msgstr "No se pudo actualizar la foto."
+msgstr "Could not read photo data."
 
 #: wppa-functions.php:139
-#, fuzzy
 msgid "All albums"
-msgstr "- todos los álbumes-"
+msgstr "All albums"
 
 #: wppa-functions.php:4229
-#, fuzzy
 msgid "Photo successfully uploaded."
-msgstr "Foto eliminada."
+msgstr "Photo successfully uploaded."
 
 #: wppa-functions.php:4230
-#, fuzzy, php-format
+#, php-format
 msgid "%s photos successfully uploaded."
-msgstr "Foto eliminada."
+msgstr "%s photos successfully uploaded."
 
 #: wppa-functions.php:4232
-#, fuzzy
 msgid "Upload failed"
-msgstr "Subir fotos"
+msgstr ""
 
 #: wppa-functions.php:4273
-#, fuzzy
 msgid "Could not insert photo into db."
-msgstr "No se pudo actualizar la foto."
+msgstr "Could not insert photo into db."
 
 #: wppa-gp-widget.php:16
 msgid "WPPA+ General purpose widget"
 msgstr ""
 
 #: wppa-gp-widget.php:18
-#, fuzzy
 msgid "WPPA+ Text"
-msgstr "WPPA Charset:"
+msgstr "WPPA+ Text"
 
 #: wppa-gp-widget.php:66
 #, php-format
@@ -1707,7 +1680,7 @@ msgstr "Estos son los submenús del Administrador de Fotos."
 
 #: wppa-help.php:44
 msgid "Photo Albums: Create and manage Albums."
-msgstr "Foto Álbumes: Cree y adminsitre álbumes."
+msgstr "Álbumes de fotos: Cree y administre álbumes."
 
 #: wppa-help.php:45
 msgid "Upload photos: To upload photos to an album you created."
@@ -1957,9 +1930,8 @@ msgid "If you've read over this readme carefully and are still having issues, if
 msgstr "Si has leido todo éste 'readme' cuidadosamente y ves todavía errores, has descubrido un bug,"
 
 #: wppa-help.php:137
-#, fuzzy
 msgid "or have a feature request, please check the <a href=\"http://wordpress.org/tags/wp-photo-album-plus\">forum</a> for this plugin and/or leave a question there."
-msgstr "Puede que también quiera ver el <a href=\"http://wordpress.org/tags/wp-photo-album-plus\">foro</a> para comentar este plugin y/o dejar una pregunta."
+msgstr "or have a feature request, please check the <a href=\"http://wordpress.org/tags/wp-photo-album-plus\">forum</a> for this plugin and/or leave a question there."
 
 #: wppa-help.php:139
 msgid "For hot fixes check the <a href=\"http://plugins.trac.wordpress.org/log/wp-photo-album-plus/\">development log</a> for this plugin."
@@ -2010,28 +1982,24 @@ msgid "licence."
 msgstr "licencia."
 
 #: wppa-potd-widget.php:13
-#, fuzzy
 msgid "WPPA+ Photo Of The Day"
-msgstr "Foto del día"
+msgstr "WPPA+ Photo Of The Day"
 
 #: wppa-potd-widget.php:14
-#, fuzzy
 msgid "Photo Of The Day"
-msgstr "Foto del día"
+msgstr "Photo Of The Day"
 
 #: wppa-potd-widget.php:95
 msgid "You can set the content and the behaviour of this widget in the <b>Photo Albums -> Sidebar Widget</b> admin page."
 msgstr ""
 
 #: wppa-search-widget.php:14
-#, fuzzy
 msgid "WPPA+ Search Photos"
-msgstr "Buscar fotos"
+msgstr "WPPA+ Search Photos"
 
 #: wppa-search-widget.php:15
-#, fuzzy
 msgid "Search Photos"
-msgstr "Buscar fotos"
+msgstr "Search Photos"
 
 #: wppa-search-widget.php:33
 msgid "Warning. No page defined for search results!"
@@ -2046,9 +2014,8 @@ msgid "Saved settings restored"
 msgstr ""
 
 #: wppa-settings-autosave.php:71
-#, fuzzy
 msgid "Unable to restore saved settings"
-msgstr "Configuración del orden:"
+msgstr "Unable to restore saved settings"
 
 #: wppa-settings-autosave.php:77
 #, fuzzy
@@ -2090,9 +2057,8 @@ msgid "Regenerating thumbnail images, starting at id=%s. Please wait...<br />"
 msgstr "Regenerar las miniaturas, empezando con id="
 
 #: wppa-settings-autosave.php:133
-#, fuzzy
 msgid "If the line of dots stops growing or your browser reports Ready but you did NOT get a 'READY regenerating thumbnail images' message, your server has given up. In that case: continue this action by clicking"
-msgstr "Si la línea de puntos deja de avanzar o tu navegador dice 'Listo' pero aún NO ha aparecido un mensaje de 'regeneración de miniatura satisfactoria', tu servidor ha fallado. En ese caso: continúe la acción clickeando"
+msgstr "Si la línea de puntos deja de avanzar o tu navegador dice indica que ha terminado, tu servidor ha fallado. En ese caso:vuelve a intentarlo"
 
 #: wppa-settings-autosave.php:137
 #, php-format
@@ -2128,13 +2094,12 @@ msgid "Blogid = "
 msgstr ""
 
 #: wppa-settings-autosave.php:167
-#, fuzzy
 msgid "Show legenda"
-msgstr "Nombre de la foto"
+msgstr "Mostrar la leyenda"
 
 #: wppa-settings-autosave.php:169
 msgid "Legenda:"
-msgstr ""
+msgstr "Leyenda:"
 
 #: wppa-settings-autosave.php:170
 #: wppa-settings-autosave.php:172
@@ -2144,7 +2109,7 @@ msgstr "abajo"
 
 #: wppa-settings-autosave.php:170
 msgid "action that causes page reload."
-msgstr ""
+msgstr "al pulsar recargara la pagina."
 
 #: wppa-settings-autosave.php:172
 #: wppa-settings-autosave.php:2961
@@ -2155,7 +2120,7 @@ msgstr "Está seguro que quiere eliminar este álbum?"
 
 #: wppa-settings-autosave.php:173
 msgid "action that does not cause page reload."
-msgstr ""
+msgstr "al pulsar NO recargara la pagina."
 
 #: wppa-settings-autosave.php:175
 #: wppa-settings-autosave.php:2408
@@ -2168,26 +2133,23 @@ msgstr ""
 #: wppa-settings-autosave.php:2877
 #: wppa-settings-autosave.php:2907
 msgid "Setting unmodified"
-msgstr ""
+msgstr "Configuracion original"
 
 #: wppa-settings-autosave.php:177
-#, fuzzy
 msgid "Update in progress"
-msgstr "Subir fotos"
+msgstr "Actualizacion en proceso"
 
 #: wppa-settings-autosave.php:179
-#, fuzzy
 msgid "Setting updated"
-msgstr "Configuración"
+msgstr "Configuración actualizada"
 
 #: wppa-settings-autosave.php:181
-#, fuzzy
 msgid "Update failed"
-msgstr "Subir fotos"
+msgstr "Error al actualizar"
 
 #: wppa-settings-autosave.php:183
 msgid "Hide this"
-msgstr ""
+msgstr "Ocultar esto"
 
 #: wppa-settings-autosave.php:187
 msgid "You use Big Browse Buttons on slide images. Any configured links on slides like PS overrule or lightbox will not work! Check Table VI-8 and/or II-B13"
@@ -2202,13 +2164,12 @@ msgid "Table I:"
 msgstr ""
 
 #: wppa-settings-autosave.php:198
-#, fuzzy
 msgid "Sizes:"
 msgstr "Tamaño:"
 
 #: wppa-settings-autosave.php:199
 msgid "This table describes all the sizes and size options (except fontsizes) for the generation and display of the WPPA+ elements."
-msgstr ""
+msgstr "Esta tabla describe todas las opciones relacionadas con el tamaño de los elementos WPPA+ (excepto tamaño de las letras)"
 
 #: wppa-settings-autosave.php:209
 #: wppa-settings-autosave.php:563
@@ -2219,7 +2180,6 @@ msgstr ""
 #: wppa-settings-autosave.php:2068
 #: wppa-settings-autosave.php:2242
 #: wppa-settings-autosave.php:2488
-#, fuzzy
 msgid "Setting"
 msgstr "Configuración"
 
@@ -2249,15 +2209,13 @@ msgstr ""
 
 #: wppa-settings-autosave.php:216
 msgid "WPPA+ global system related settings"
-msgstr ""
+msgstr "Todo lo relacionado con el sistema WPPA+"
 
 #: wppa-settings-autosave.php:218
-#, fuzzy
 msgid "Column Width"
-msgstr "Ancho de Columna:"
+msgstr "Ancho de Columna"
 
 #: wppa-settings-autosave.php:219
-#, fuzzy
 msgid "The width of the main column in your theme's display area."
 msgstr "Escribe el tamaño de la columna principal en el área de display de tu tema."
 
@@ -2270,7 +2228,6 @@ msgid "You should set this value correctly to make sure the fullsize images are 
 msgstr "Debe elegir un valor correcto para asegurar que el tamaño completo de la imagen está alineado horizontalmente (y correctamente)."
 
 #: wppa-settings-autosave.php:222
-#, fuzzy
 msgid "You may enter auto for use in themes that have a floating content column."
 msgstr "Debe escribir <b>auto</b> para usar en los temas que tienen una columna flotante."
 
@@ -2281,19 +2238,16 @@ msgstr ""
 #: wppa-settings-autosave.php:226
 #: wppa-settings-autosave.php:282
 #: wppa-settings-autosave.php:374
-#, fuzzy
 msgid "pixels wide"
-msgstr "pixeles de ancho,"
+msgstr "pixeles de ancho"
 
 #: wppa-settings-autosave.php:229
-#, fuzzy
 msgid "Resize on Upload"
-msgstr "Redimensionar al Subir:"
+msgstr "Redimensionar al Subir"
 
 #: wppa-settings-autosave.php:230
-#, fuzzy
 msgid "Indicate if the photos should be resized during upload."
-msgstr "Especifique la forma en la cual la fotos deben ser ordenadas en éste álbum."
+msgstr "Indica si la foto debe ser redimensionada durante la subida"
 
 #: wppa-settings-autosave.php:231
 #, fuzzy
@@ -2507,9 +2461,8 @@ msgid "numbers"
 msgstr "Álbum número:"
 
 #: wppa-settings-autosave.php:319
-#, fuzzy
 msgid "Thumbnail photos related settings"
-msgstr "Espacio entre las miniaturas"
+msgstr "Thumbnail photos related settings"
 
 #: wppa-settings-autosave.php:321
 #, fuzzy
@@ -5498,7 +5451,7 @@ msgstr "Cuando está seleccionado, los álbumes (y las fotos en ellos) que tiene
 #: wppa-settings-autosave.php:2375
 #, fuzzy
 msgid "Photos only"
-msgstr "Orden de fotos:"
+msgstr "Orden de fotos"
 
 #: wppa-settings-autosave.php:2376
 #, fuzzy
@@ -5723,16 +5676,16 @@ msgstr "Método de visualización:"
 #: wppa-settings-autosave.php:2582
 #: wppa-settings-autosave.php:2948
 msgid "Hide"
-msgstr ""
+msgstr "Ocultar"
 
 #: wppa-settings-autosave.php:2526
 #: wppa-settings-autosave.php:2582
 msgid "Optional"
-msgstr ""
+msgstr "Opcional"
 
 #: wppa-settings-autosave.php:2552
 msgid "Table XI:"
-msgstr ""
+msgstr "Tabla XI:"
 
 #: wppa-settings-autosave.php:2552
 msgid "EXIF Configuration:"
@@ -5744,7 +5697,7 @@ msgstr ""
 
 #: wppa-settings-autosave.php:2608
 msgid "Table XII:"
-msgstr ""
+msgstr "Tabla XII:"
 
 #: wppa-settings-autosave.php:2608
 msgid "WPPA+ and PHP Configuration:"
@@ -5846,11 +5799,11 @@ msgstr ""
 
 #: wppa-settings-autosave.php:2922
 msgid "Checked"
-msgstr ""
+msgstr "Marcado"
 
 #: wppa-settings-autosave.php:2923
 msgid "Unchecked"
-msgstr ""
+msgstr "Desmarcado"
 
 #: wppa-settings-autosave.php:2928
 msgid "the photo specific link."
@@ -6024,7 +5977,7 @@ msgstr ""
 #: wppa-slideshow-widget.php:241
 #: wppa-thumbnail-widget.php:138
 msgid "no."
-msgstr ""
+msgstr "no."
 
 #: wppa-slideshow-widget.php:194
 #: wppa-slideshow-widget.php:214
@@ -6034,7 +5987,7 @@ msgstr ""
 #: wppa-slideshow-widget.php:242
 #: wppa-thumbnail-widget.php:139
 msgid "yes."
-msgstr ""
+msgstr "si."
 
 #: wppa-slideshow-widget.php:195
 msgid "Set to 'yes' if there are only portrait images in the album and you want the photos to fill the full width of the widget.<br/>Set to 'no' otherwise."
@@ -6120,7 +6073,7 @@ msgstr ""
 
 #: wppa-topten-widget.php:126
 msgid "Sort by:"
-msgstr ""
+msgstr "Ordenar por:"
 
 #: wppa-topten-widget.php:128
 #, fuzzy
@@ -6134,37 +6087,37 @@ msgstr ""
 #: wppa-upload.php:72
 #: wppa-upload.php:77
 msgid "unknown"
-msgstr ""
+msgstr "desconocido"
 
 #: wppa-upload.php:81
 #, php-format
 msgid "<b>Notice:</b> your server allows you to upload <b>%s</b> files of maximum total <b>%s</b> bytes and allows <b>%s</b> seconds to complete."
-msgstr ""
+msgstr "<b>Advertencia:</b> Tu servidor permite subir <b>%s</b> fotos a la vez con un tamaño maximo de <b>%s</b> bytes y solo permite <b>%s</b> segundos para que se realize al subida de fotos"
 
 #: wppa-upload.php:82
 msgid "If your request exceeds these limitations, it will fail, probably without an errormessage."
-msgstr ""
+msgstr "Si excedes alguna de esas condiciones probablemente la subida de fotos fallara y no se indicara ningun error."
 
 #: wppa-upload.php:83
 msgid "Additionally your hosting provider may have set other limitations on uploading files."
-msgstr ""
+msgstr "Adicionalmente tu proveedor de hosting puede tener otras limitaciones"
 
 #: wppa-upload.php:87
 msgid "Box A:"
-msgstr ""
+msgstr "Opcion A:"
 
 #: wppa-upload.php:87
 msgid "Multiple Photos in one selection"
-msgstr ""
+msgstr "Varias fotos de una vez"
 
 #: wppa-upload.php:88
-#, fuzzy, php-format
+#, php-format
 msgid "You can select up to %s photos in one selection and upload them."
-msgstr "Puede subir 15 fotos a la vez."
+msgstr "Puedes subir hasta %s fotos de una vez"
 
 #: wppa-upload.php:89
 msgid "You need a modern browser that supports HTML-5 to select multiple files"
-msgstr ""
+msgstr "<b>Necesitas un navegador moderno para que este modo funcione. Internet Explorer 9/Firefox 3 minimo</b>"
 
 #: wppa-upload.php:94
 #: wppa-upload.php:103
@@ -6173,30 +6126,28 @@ msgid "Selected Files:"
 msgstr "Archivos seleccionados:"
 
 #: wppa-upload.php:105
-#, fuzzy
 msgid "Size"
-msgstr "Tamaño:"
+msgstr "Tamaño"
 
 #: wppa-upload.php:105
 msgid "Type"
-msgstr ""
+msgstr "Tipo"
 
 #: wppa-upload.php:126
 msgid "Too many!"
-msgstr ""
+msgstr "Too many!"
 
 #: wppa-upload.php:130
 msgid "Too big!"
-msgstr ""
+msgstr "Too big!"
 
 #: wppa-upload.php:134
 msgid "Try again!"
-msgstr ""
+msgstr "Try again!"
 
 #: wppa-upload.php:136
-#, fuzzy
 msgid "Total"
-msgstr "Subtítulo"
+msgstr "Total"
 
 #: wppa-upload.php:151
 #: wppa-upload.php:187
@@ -6212,17 +6163,16 @@ msgid "Position:"
 msgstr "Descripción:"
 
 #: wppa-upload.php:162
-#, fuzzy
 msgid "Upload Multiple Photos"
-msgstr "Subir fotos"
+msgstr "Subir las fotos"
 
 #: wppa-upload.php:169
 msgid "Box B:"
-msgstr ""
+msgstr "Opcion B:"
 
 #: wppa-upload.php:169
 msgid "Single Photos in multiple selections"
-msgstr ""
+msgstr "Varias fotos una a una"
 
 #: wppa-upload.php:170
 #, fuzzy, php-format
@@ -6230,32 +6180,29 @@ msgid "You can select up to %s photos one by one and upload them at once."
 msgstr "Puede subir 15 fotos a la vez."
 
 #: wppa-upload.php:198
-#, fuzzy
 msgid "Upload Single Photos"
 msgstr "Subir fotos"
 
 #: wppa-upload.php:213
 msgid "Box C:"
-msgstr ""
+msgstr "Opcion C:"
 
 #: wppa-upload.php:213
-#, fuzzy
 msgid "Zipped Photos in one selection"
-msgstr "Subir fotos"
+msgstr "Fotos en un archivo comprimido"
 
 #: wppa-upload.php:214
 #, php-format
 msgid "You can upload one zipfile. It will be placed in your personal wppa-depot: <b>.../%s</b><br/>Once uploaded, use <b>Import Photos</b> to unzip the file and place the photos in any album."
-msgstr ""
+msgstr "Puedes subir un archivo .zip con fotos. Este fichero se guardara en la carpeta wppa-depot <b>.../%s</b><br/>Una vez subido, usa <b>Importar fotos</b> para descomprimir las fotos y meterlas en un album"
 
 #: wppa-upload.php:218
-#, fuzzy
 msgid "Upload Zipped Photos"
-msgstr "Subir fotos"
+msgstr "Subir fotos comprimidas"
 
 #: wppa-upload.php:219
 msgid "After upload: Go to the <b>Import Photos</b> page."
-msgstr ""
+msgstr "Despues de subir ve a la pagina de \"Imporar fotos\""
 
 #: wppa-upload.php:225
 msgid "<small>Ask your administrator to upgrade php to version 5.2.7 or later. This will enable you to upload zipped photos.</small>"
@@ -6282,9 +6229,8 @@ msgid "illegal files deleted."
 msgstr ""
 
 #: wppa-upload.php:306
-#, fuzzy
 msgid "Import photos from:"
-msgstr "Importar fotos a álbum:"
+msgstr "Importar fotos desde:"
 
 #: wppa-upload.php:308
 msgid "Your depot"
@@ -6292,7 +6238,7 @@ msgstr ""
 
 #: wppa-upload.php:312
 msgid "Set source directory"
-msgstr ""
+msgstr "Seleccionar como origen"
 
 #: wppa-upload.php:326
 #: wppa-upload.php:368
@@ -6309,7 +6255,7 @@ msgstr "fotos en el depósito de subida."
 #: wppa-upload.php:373
 #: wppa-upload.php:434
 msgid "Check/uncheck all"
-msgstr ""
+msgstr "Marcar/Desmarcar todo"
 
 #: wppa-upload.php:336
 #, fuzzy
@@ -6336,31 +6282,27 @@ msgstr "Las fotos serán reducidas (peso) durante el importado."
 
 #: wppa-upload.php:412
 msgid "Default album for import:"
-msgstr ""
+msgstr "Album donde se guardaran las fotos: "
 
 #: wppa-upload.php:417
 msgid "Photos that have (<em>name</em>)[<em>album</em>] will be imported by that <em>name</em> in that <em>album</em>."
-msgstr ""
+msgstr "Fotos que contengan el nombre de un album se guardaran en dicho album."
 
 #: wppa-upload.php:438
-#, fuzzy
 msgid "Delete after successful import."
-msgstr "Eliminar la importación satisfactoria:"
+msgstr "Eliminar si la importación es satisfactoria."
 
 #: wppa-upload.php:442
-#, fuzzy
 msgid "Update existing photos"
-msgstr "Subir fotos"
+msgstr "Actualizar fotos existentes"
 
 #: wppa-upload.php:478
-#, fuzzy
 msgid "There are no archives, albums or photos in directory:"
-msgstr "No hay fotos en el depósito:"
+msgstr "No hay fotos ni albums ni .zips en el depósito:"
 
 #: wppa-upload.php:481
-#, fuzzy
 msgid "There are no albums or photos in directory:"
-msgstr "No hay fotos en el depósito:"
+msgstr "No hay fotos ni albums en el depósito:"
 
 #: wppa-upload.php:511
 #: wppa-upload.php:541
@@ -6371,12 +6313,12 @@ msgstr "Error al insertar la foto"
 #: wppa-upload.php:520
 #: wppa-upload.php:548
 msgid "Photos Uploaded in album nr"
-msgstr "Las fotos subidas en el álbum No."
+msgstr "fotos subidas al album No."
 
 #: wppa-upload.php:566
 #: wppa-upload.php:943
 msgid "Zipfile"
-msgstr ""
+msgstr "archifo zip"
 
 #: wppa-upload.php:566
 msgid "sucessfully uploaded."
@@ -6384,11 +6326,11 @@ msgstr ""
 
 #: wppa-upload.php:567
 msgid "Error"
-msgstr ""
+msgstr "Error"
 
 #: wppa-upload.php:567
 msgid "during upload."
-msgstr ""
+msgstr "durante la subida."
 
 #: wppa-upload.php:646
 #, fuzzy
@@ -6396,9 +6338,8 @@ msgid "Unknown parent album:"
 msgstr "Álbum superior:"
 
 #: wppa-upload.php:646
-#, fuzzy
 msgid "--- none --- used."
-msgstr "--- ninguno ---"
+msgstr "--- ninguno --- usado."
 
 #: wppa-upload.php:692
 msgid "Processing files, please wait..."
@@ -6420,7 +6361,7 @@ msgstr ""
 
 #: wppa-upload.php:750
 msgid "Done processing files."
-msgstr ""
+msgstr "Finalizado el procesamiento de los ficheros."
 
 #: wppa-upload.php:753
 msgid "No files to import."
@@ -6428,7 +6369,7 @@ msgstr "No hay archivos para importar."
 
 #: wppa-upload.php:757
 msgid "Zipfiles extracted."
-msgstr ""
+msgstr "Archivo zip extraido."
 
 #: wppa-upload.php:758
 #, fuzzy
@@ -6436,14 +6377,12 @@ msgid "Albums created."
 msgstr "Álbum eliminado."
 
 #: wppa-upload.php:760
-#, fuzzy
 msgid "Photos updated."
-msgstr "Foto eliminada."
+msgstr "Fotos actualizadas."
 
 #: wppa-upload.php:761
-#, fuzzy
 msgid "Photos imported."
-msgstr "Foto eliminada."
+msgstr "Fotos importadas."
 
 #: wppa-upload.php:783
 msgid "Although the photos are resized during the upload/import process, you may encounter 'Out of memory'errors."
@@ -6476,7 +6415,7 @@ msgstr "Está seguro que quiere eliminar este álbum?"
 
 #: wppa-upload.php:805
 msgid "Unsupported mime type encountered:"
-msgstr ""
+msgstr "Tipo de imagen no soportado:"
 
 #: wppa-upload.php:822
 msgid "Album not known while trying to add a photo"
@@ -6506,7 +6445,7 @@ msgstr ""
 
 #: wppa-upload.php:943
 msgid "extracted."
-msgstr ""
+msgstr "extraido."
 
 #: wppa-upload.php:946
 msgid "Failed to extract"
