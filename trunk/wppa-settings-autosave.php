@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 4.5.5
+* Version 4.5.7
 *
 */
 
@@ -1281,6 +1281,13 @@ global $wppa_revno;
 						$values = array('left', 'center', 'right');
 						$html = wppa_select($slug, $options, $values);
 						wppa_setting($slug, '9', $name, $desc, $html, $help);
+						
+						$name = __('Remove redundant space', 'wppa');
+						$desc = __('Removes unwanted &lt;p> and &lt;br> tags in fullsize descriptions.', 'wppa');
+						$help = __('This setting has only effect when Table IX-A7 (foreign shortcodes) is checked.', 'wppa');
+						$slug = 'wppa_clean_pbr';
+						$html = wppa_checkbox($slug);
+						wppa_setting($slug, '10', $name, $desc, $html, $help);
 						
 						wppa_setting_subheader('C', '1', __('Thumbnail related settings', 'wppa'));
 

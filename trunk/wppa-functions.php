@@ -3,12 +3,12 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions and API modules
-* Version 4.5.5
+* Version 4.5.7
 *
 */
 /* Moved to wppa-common-functions.php:
 global $wppa_api_version;
-$wppa_api_version = '4-5-5-000';
+$wppa_api_version = '4-5-7-000';
 */
 
 
@@ -1042,31 +1042,46 @@ global $wppa_opt;
 //	echo $photourl.'<br/>';
 	
 	// Find iptc data
-	$iptc = $wppa_opt['wppa_show_iptc'] ? wppa_iptc_html($id) : '';
+	$iptc = ( $wppa_opt['wppa_show_iptc'] && !$wppa['is_slideonly'] ) ? wppa_iptc_html($id) : '';
 	
 	// Find EXIF data
-	$exif = $wppa_opt['wppa_show_exif'] ? wppa_exif_html($id) : '';
+	$exif = ( $wppa_opt['wppa_show_exif'] && !$wppa['is_slideonly'] ) ? wppa_exif_html($id) : '';
 	
 	// Lightbox subtitle
-	$lbtitle = esc_attr(wppa_get_photo_desc($id));
+	$doit = false;
+	if ( $wppa_opt['wppa_slideshow_linktype'] == 'lightbox' ) $doit = true;					// For fullsize
+	if ( $wppa_opt['wppa_filmstrip'] && $wppa_opt['wppa_film_linktype'] == 'lightbox') {	// For filmstrip?
+		if ( ! $wppa['is_slideonly'] ) $doit = true;		// Film below fullsize
+		if ( $wppa['film_on'] ) $doit = true;				// Film explicitly on (slideonlyf)		
+	}
+	if ( $doit ) {
+		$lbtitle = esc_attr(wppa_get_photo_desc($id));
+	}
+	else $lbtitle = '';
 	
 	// Name
 	$name = esc_js(wppa_get_photo_name($id));
 	if ( ! $name ) $name = '&nbsp;';
 	
 	// Make photo desc, filtered
-	if ( $wppa_opt['wppa_allow_foreign_shortcodes'] ) {
-		// Recursion at this point (when users put %%wppa%% in a photo description) will lead to system hang and stack overflow
-		// Therefor we tempoary disable the rendering of wppa
-		$wppa['rendering_enabled'] = false;			
-		$desc = wppa_html(esc_js(stripslashes(apply_filters('the_content', wppa_get_photo_desc($id)))));
-		$wppa['rendering_enabled'] = true;
-		// Remove extra space created by other filters like wpautop
-		$desc = str_replace(array("<p>", "</p>", "<br>"), " ", $desc);
-	} else {
-		$desc = wppa_html(esc_js(stripslashes(wppa_get_photo_desc($id))));	// old version of desc
+	if ( !$wppa['is_slideonly'] ) {
+		if ( $wppa_opt['wppa_allow_foreign_shortcodes'] ) {
+			// Recursion at this point (when users put %%wppa%% in a photo description) will lead to system hang and stack overflow
+			// Therefor we tempoary disable the rendering of wppa
+			$wppa['rendering_enabled'] = false;			
+			$desc = wppa_html(esc_js(stripslashes(apply_filters('the_content', wppa_get_photo_desc($id)))));
+			$wppa['rendering_enabled'] = true;
+			// Remove extra space created by other filters like wpautop
+			if ($wppa_opt['wppa_clean_pbr']) {
+				$desc = str_replace(array("<p>", "</p>", "<br>", "<br/>", "<br />"), " ", $desc);
+			}
+		} else {
+			$desc = wppa_html(esc_js(stripslashes(wppa_get_photo_desc($id))));	// old version of desc
+		}
+		if ( ! $desc ) $desc = '&nbsp;';
 	}
-	if ( ! $desc ) $desc = '&nbsp;';
+	else $desc = '';
+	
 	// Check for pending
 	$status = $wpdb->get_var($wpdb->prepare('SELECT status FROM '.WPPA_PHOTOS.' WHERE id = %s', $id));
 	if ( $status == 'pending' ) $desc = wppa_html(esc_js('<span style="color:red">'.__a('Awaiting moderation', 'wppa_theme').'</span>'));
@@ -4531,6 +4546,13 @@ E#8822		Exposure program			Must be formatted according to table
 				case '8': $result = 'Landscape'; break;
 				case '9': $result = 'Bulb'; break;
 			}
+			break;
+/* 
+E#9204 		Exposure bias value 
+*/
+		case 'E#9204':
+			if ( $data) $result = $data.' EV';
+			else $result = '';
 			break;
 /*
 E#9207		Metering mode				Must be formatted according to table
