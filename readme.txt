@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, multisite, network, lightbox, comment, watermark, iptc, exif
-Version: 4.5.6
+Version: 4.5.7
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -134,6 +134,16 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 4.5.7 =
+
+= Other Changes =
+
+* The removal of normally unwanted spaces caused by p and br tags when Table IX-A7 is checked (foreign shortcodes) 
+is now optional and can be set on Table IV-B10.
+* Importand server side and page load performance improvement. The IPTC data, EXIF data and photo description for fullsize photos and 
+slideshows is now only generated and loaded when it is actually needed. I.e not in cases of slideonly(f).
+* Exif tag E#9204 is now formatted (if not empty) by appending ' EV'.
 
 = 4.5.6 =
 
