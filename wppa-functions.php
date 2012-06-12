@@ -3,12 +3,12 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions and API modules
-* Version 4.5.7
+* Version 4.6.0
 *
 */
 /* Moved to wppa-common-functions.php:
 global $wppa_api_version;
-$wppa_api_version = '4-5-7-000';
+$wppa_api_version = '4-6-0-000';
 */
 
 
@@ -2121,6 +2121,10 @@ $wppa['slideframeheight'] = $gfh;
 			}
 		}
 	}
+	// Margin bottom
+	if ( $wppa_opt['wppa_box_spacing'] ) {
+		$result .= 'margin-bottom: ' . $wppa_opt['wppa_box_spacing'] . 'px;';
+	}
 
 	return $result;
 }
@@ -2268,6 +2272,20 @@ global $wppa_microtime_cum;
 		
 		// Start timer if in debug mode
 		if ($wppa['debug']) $wppa_microtime = microtime(true);
+		
+		/* Check if wppa.js and jQuery are present */
+		if ( WPPA_DEBUG || isset($_GET['wppa-debug']) || WP_DEBUG ) {
+			$wppa['out'] .= '<script type="text/javascript">/* <![CDATA[ */';
+				$wppa['out'] .= "if (typeof(_wppaSlides) == 'undefined') alert('There is a problem with your theme. The file wppa.js is not loaded when it is expected (Errloc = wppa_container).');";
+				$wppa['out'] .= "if (typeof(jQuery) == 'undefined') alert('There is a problem with your theme. The jQuery library is not loaded when it is expected (Errloc = wppa_container).');";
+			$wppa['out'] .= "/* ]]> */</script>";
+		} 
+		/* Check if init is properly done */
+		if ( ! $wppa_opt['wppa_fullsize'] ) {
+			$wppa['out'] .= '<script type="text/javascript">/* <![CDATA[ */';
+				$wppa['out'] .= "alert('The initialisation of wppa+ is not complete yet. You will probably see division by zero errors. Please run Photo Albums -> Settings admin page Table VIII-A1. (Errloc = wppa_container).');";
+			$wppa['out'] .= "/* ]]> */</script>";
+		}
 		
 		// Nonce field check for rating security 
 		if ($wppa['master_occur'] == '1') { 				
@@ -2439,7 +2457,8 @@ global $wppa_opt;
 			$result = ceil(count($array) / $aps); 
 		} 
 		elseif ($tps != '0') {
-			$result = '1'; 
+			if ( count($array) ) $result = '1'; 
+			else $result = '0';
 		}
 	}
 	elseif ($type == 'thumbs') {
@@ -2850,6 +2869,9 @@ global $wppa_opt;
 
 	if ( $wppa_opt['wppa_use_thumb_popup'] ) {
 		$title = $wppa_opt['wppa_popup_text_desc'] ? esc_attr(wppa_get_photo_desc($thumb)) : '';
+		if ( $wppa_opt['wppa_popup_text_desc_strip'] ) {
+			$title = wppa_strip_tags($title);
+		}
 	}
 	else {
 		$title = esc_attr(wppa_get_photo_name($thumb));	// esc_attr was esc_js prior to 4.0.7
@@ -2930,6 +2952,17 @@ else		$link = wppa_get_imglnk_a('thumb', $thumb['id']);
 		
 	$wppa['out'] .= wppa_nltab('-').'</div><!-- #thumbnail_frame_'.$thumb['id'].'_'.$wppa['master_occur'].' -->';
 }	
+
+function wppa_strip_tags($text) {
+
+	$text = preg_replace(	array	(	'@<a[^>]*?>.*?</a>@siu',				// unescaped <a> tag
+										'@&lt;a[^>]*?&gt;.*?&lt;/a&gt;@siu'		// escaped <a> tag
+									),
+							array	( ' ', ' '
+									),
+							$text );
+	return $text;
+}
 
 function wppa_get_mincount() {
 global $wppa;
@@ -3123,6 +3156,10 @@ global $wppa;
 			if ($opt > '0') {
 				$result .= 'border-radius:'.$opt.'px; ';
 				$result .= '-moz-border-radius:'.$opt.'px; -khtml-border-radius:'.$opt.'px; -webkit-border-radius:'.$opt.'px; ';
+			}
+			$opt = $wppa_opt['wppa_box_spacing'];
+			if ( $opt != '' ) {
+				$result .= 'margin-bottom:'.$opt.'px; ';
 			}
 			break;
 		case 'wppa-mini-box':

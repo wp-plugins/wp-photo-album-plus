@@ -1,7 +1,7 @@
 /* admin-scripts.js */
 /* Package: wp-photo-album-plus
 /*
-/* Version 4.5.0
+/* Version 4.6.0
 /* Various js routines used in admin pages		
 */
 
@@ -501,16 +501,14 @@ function wppa_tablecookieoff(i) {
 	wppa_setCookie('table_'+i, 'off', '365');
 }
 
-function wppa_setCookie(c_name,value,exdays)
-{
+function wppa_setCookie(c_name,value,exdays) {
 var exdate=new Date();
 exdate.setDate(exdate.getDate() + exdays);
 var c_value=escape(value) + ((exdays==null) ? "" : "; expires="+exdate.toUTCString());
 document.cookie=c_name + "=" + c_value;
 }
 
-function wppa_getCookie(c_name)
-{
+function wppa_getCookie(c_name) {
 var i,x,y,ARRcookies=document.cookie.split(";");
 for (i=0;i<ARRcookies.length;i++)
 {
@@ -605,15 +603,16 @@ function wppaAjaxUpdatePhoto(photo, actionslug, elem) {
 
 	var xmlhttp = wppaGetXmlHttp();
 
-	// Make the Ajax url
-	var url = wppaAjaxUrl+'?action=wppa&wppa-action=update-photo&photo-id='+photo+'&item='+actionslug;
-	url += '&wppa-nonce='+document.getElementById('photo-nonce-'+photo).value;
-	if (elem != 0) url += '&value='+wppaEncode(elem.value);
-	else url += '&value=0';
+	// Make the Ajax send data
+	var data = 'action=wppa&wppa-action=update-photo&photo-id='+photo+'&item='+actionslug;
+	data += '&wppa-nonce='+document.getElementById('photo-nonce-'+photo).value;
+	if (elem != 0) data += '&value='+wppaEncode(elem.value);
+	else data += '&value=0';
 
 	// Do the Ajax action
-	xmlhttp.open('GET',url,true);
-	xmlhttp.send();
+	xmlhttp.open('POST',wppaAjaxUrl,true);
+	xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+	xmlhttp.send(data);
 
 	// Process the result
 	xmlhttp.onreadystatechange=function() {
@@ -653,15 +652,16 @@ function wppaAjaxUpdateAlbum(album, actionslug, elem) {
 
 	var xmlhttp = wppaGetXmlHttp();
 
-	// Make the Ajax url
-	var url = wppaAjaxUrl+'?action=wppa&wppa-action=update-album&album-id='+album+'&item='+actionslug;
-	url += '&wppa-nonce='+document.getElementById('album-nonce-'+album).value;
-	if (elem != 0) url += '&value='+wppaEncode(elem.value);
-	else url += '&value=0';
+	// Make the Ajax send data
+	var data = 'action=wppa&wppa-action=update-album&album-id='+album+'&item='+actionslug;
+	data += '&wppa-nonce='+document.getElementById('album-nonce-'+album).value;
+	if (elem != 0) data += '&value='+wppaEncode(elem.value);
+	else data += '&value=0';
 
 	// Do the Ajax action
-	xmlhttp.open('GET',url,true);
-	xmlhttp.send();
+	xmlhttp.open('POST',wppaAjaxUrl,true);
+	xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+	xmlhttp.send(data);
 
 	// Process the result
 	xmlhttp.onreadystatechange=function() {
@@ -755,7 +755,7 @@ function wppaAjaxUpdateOptionValue(slug, elem) {
 		}
 		else {	// Ready
 			var ArrValues = xmlhttp.responseText.split("||");
-//alert(xmlhttp.responseText);	
+
 			if (ArrValues[0] != '') {
 				alert('The server returned unexpected output:\n'+ArrValues[0]);
 			}
@@ -780,13 +780,14 @@ function wppaAjaxUpdateOptionValue(slug, elem) {
 
 	// Make the Ajax url
 	eslug = wppaEncode(slug);
-	var url = wppaAjaxUrl+'?action=wppa&wppa-action=update-option&wppa-option='+eslug;
-	url += '&wppa-nonce='+document.getElementById('wppa-nonce').value;
-	if ( elem != 0 ) url += '&value='+wppaEncode(elem.value);
-//alert(url);
+	var data = 'action=wppa&wppa-action=update-option&wppa-option='+eslug;
+	data += '&wppa-nonce='+document.getElementById('wppa-nonce').value;
+	if ( elem != 0 ) data += '&value='+wppaEncode(elem.value);
+
 	// Do the Ajax action
-	xmlhttp.open('GET',url,true);
-	xmlhttp.send();
+	xmlhttp.open('POST',wppaAjaxUrl,true);
+	xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+	xmlhttp.send(data);
 }
 	
 function wppaEncode(xtext) {

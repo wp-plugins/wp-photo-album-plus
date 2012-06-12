@@ -2,7 +2,7 @@
 //
 // conatins slideshow, theme and ajax code
 //
-// Version 4.5.6
+// Version 4.6.0
 
 // Part 1: Slideshow
 //
@@ -1861,7 +1861,7 @@ function wppaOvlShow(arg) {
 	jQuery('#wppa-overlay-ic').css({left: lft, paddingTop: ptp});
 	var txtcol = wppaOvlTheme == 'black' ? '#a7a7a7' : '#272727';	// Normal font
 	var qtxtcol = wppaOvlTheme == 'black' ? '#a7a7a7' : '#575757';	// Bold font
-	var html = 	'<div id="wppa-overlay-qt-txt"  style="position:absolute; right:16px; top:'+(wppaOvlPadTop-1)+'px; visibility:hidden; box-shadow:none; font-family:helvetica; font-weight:bold; font-size:14px; color:'+qtxtcol+'; cursor:pointer; " onclick="wppaOvlHide()" >'+wppaOvlCloseTxt+'&nbsp;&nbsp;</div>'+
+	var html = 	'<div id="wppa-overlay-qt-txt"  style="position:absolute; right:16px; top:'+(wppaOvlPadTop-3)+'px; visibility:hidden; box-shadow:none; font-family:helvetica; font-weight:bold; font-size:14px; color:'+qtxtcol+'; cursor:pointer; " onclick="wppaOvlHide()" >'+wppaOvlCloseTxt+'&nbsp;&nbsp;</div>'+
 				'<img id="wppa-overlay-qt-img"  src="'+wppaImageDirectory+'smallcross-'+wppaOvlTheme+'.gif'+'" style="position:absolute; right:0; top:'+wppaOvlPadTop+'px; visibility:hidden; box-shadow:none; cursor:pointer" onclick="wppaOvlHide()" >'+
 				'<img id="wppa-overlay-img" src="'+wppaOvlUrl+'" style="border-width:16px; border-style:solid; border-color:'+wppaOvlTheme+'; margin-bottom:-15px; max-width:'+mw+'px; visibility:hidden; box-shadow:none;" />'+
 				'<div id="wppa-overlay-txt-container" style="padding:10px; background-color:'+wppaOvlTheme+'; color:'+txtcol+'; text-align:center; font-size: 10px; font-weight:bold; line-height:12px; visibility:hidden; box-shadow:none;" ></div>';
@@ -1986,7 +1986,7 @@ function wppaOvlSize(speed) {
 
 	jQuery('#wppa-overlay-img').stop().animate({maxWidth: mw+'px'}, speed);
 	jQuery('#wppa-overlay-ic').stop().animate({left: lft+'px', paddingTop: pt+'px'}, speed);
-	jQuery('#wppa-overlay-qt-txt').stop().animate({top: (pt-1)+'px'}, speed);
+	jQuery('#wppa-overlay-qt-txt').stop().animate({top: (pt-3)+'px'}, speed);
 	jQuery('#wppa-overlay-qt-img').stop().animate({top: pt+'px'}, speed);
 	
 	// If resizing, also resize txt elements when sizing is complete
