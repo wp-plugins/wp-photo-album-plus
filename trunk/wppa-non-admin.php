@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the non admin stuff
-* Version 4.5.6
+* Version 4.6.0
 *
 */
 
@@ -65,13 +65,12 @@ global $wpdb;
 	}
 }
 
-/* LOAD SLIDESHOW, THEME and AJAX JS */
+/* LOAD SLIDESHOW, THEME, AJAX and LIGHTBOX js, all in one file nowadays */
 add_action('init', 'wppa_add_javascripts');
 	
 function wppa_add_javascripts() {
-	wp_register_script('wppa', WPPA_URL.'/wppa.js');
 	wp_enqueue_script('jquery');
-	wp_enqueue_script('wppa');
+	wp_enqueue_script('wppa', WPPA_URL.'/wppa.js', array('jquery'));
 }
 	
 /* LOAD WPPA+ THEME */
@@ -127,6 +126,11 @@ global $wppa_opt;
 	echo('<script type="text/javascript">'."\n");
 	echo('/* <![CDATA[ */'."\n");
 	
+		/* Check if wppa.js and jQuery are present */
+		if ( WPPA_DEBUG || isset($_GET['wppa-debug']) || WP_DEBUG ) {
+			echo("\t"."if (typeof(_wppaSlides) == 'undefined') alert('There is a problem with your theme. The file wppa.js is not loaded when it is expected (Errloc = wppa_kickoff).');");
+			echo("\t"."if (typeof(jQuery) == 'undefined') alert('There is a problem with your theme. The jQuery library is not loaded when it is expected (Errloc = wppa_kickoff).');");
+		}
 		/* This goes into wppa_theme.js */ 
 		echo("\t".'wppaBackgroundColorImage = "'.$wppa_opt['wppa_bgcolor_img'].'";'."\n");
 		echo("\t".'wppaPopupLinkType = "'.$wppa_opt['wppa_thumb_linktype'].'";'."\n"); 

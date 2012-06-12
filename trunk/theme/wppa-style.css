@@ -8,7 +8,7 @@
 /*
 /* You may always look into a newer version of this file to see what new classes and id's come with an upgrade
 /*
-/* This is version 4.5.6
+/* This is version 4.6.0
 */
 
 /* Navigation */
@@ -24,7 +24,6 @@
 }
 /* All boxes. Admin settings page defines border thickness and border radius */
 .wppa-box {
-	margin: 8px 0 8px 0;
 	padding: 2px 6px 2px 6px;
 }
 .wppa-mini-box {
@@ -53,12 +52,6 @@
 	clear: none;
 }
 
-/* Description of album 
-.album .description {
-    min-height: 45px;
-	margin-bottom: 16px;
-}
-*/
 /* fonts used in wppa boxes, all settable in the settings admin screen */
 .wppa-box-text {
 }

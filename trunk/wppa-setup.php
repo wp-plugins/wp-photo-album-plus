@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 4.5.7
+* Version 4.6.0
 *
 */
 
@@ -217,12 +217,12 @@ global $silent;
 	// Check if this update comes with a new wppa-theme.php and/or a new wppa-style.css
 	// If so, produce message
 	$key = '0';
-	if ( $old_rev < '400' ) {		// theme changed since...
+	if ( $old_rev < '460' ) {		// theme changed since...
 		$usertheme_old 	= ABSPATH.'wp-content/themes/'.get_option('template').'/wppa_theme.php';
 		$usertheme 		= ABSPATH.'wp-content/themes/'.get_option('template').'/wppa-theme.php';
 		if ( is_file( $usertheme ) || is_file( $usertheme_old ) ) $key += '2';
 	}
-	if ( $old_rev < '420' ) {		// css changed since...
+	if ( $old_rev < '460' ) {		// css changed since...
 		$userstyle_old 	= ABSPATH.'wp-content/themes/'.get_option('template').'/wppa_style.css';
 		$userstyle 		= ABSPATH.'wp-content/themes/'.get_option('template').'/wppa-style.css';
 		if ( is_file( $userstyle ) || is_file( $userstyle_old ) ) $key += '1';
@@ -286,7 +286,7 @@ global $wppa_defaults;
 	$npd = '
 <a href="javascript://" onClick="jQuery(\'.wppa-dtl\').css(\'display\', \'block\'); jQuery(\'.wppa-more\').css(\'display\', \'none\'); wppaOvlResize();">
 <div class="wppa-more">
-Camara info
+Camera info
 </div>
 </a>
 <a href="javascript://" onClick="jQuery(\'.wppa-dtl\').css(\'display\', \'none\'); jQuery(\'.wppa-more\').css(\'display\', \'block\'); wppaOvlResize();">
@@ -322,6 +322,7 @@ Hide Camera info
 						'wppa_min_thumbs' 				=> '1',		// 4
 						'wppa_bwidth' 					=> '1',		// 5
 						'wppa_bradius' 					=> '6',		// 6
+						'wppa_box_spacing'				=> '8',		// 7
 						// B Fullsize
 						'wppa_fullsize' 				=> '640',	// 1
 						'wppa_maxheight' 				=> '480',	// 2
@@ -366,6 +367,7 @@ Hide Camera info
 						'wppa_bc_separator' 				=> 'raquo',	// 5
 						'wppa_bc_txt' 						=> htmlspecialchars('<span style="color:red; font_size:24px;">&bull;</span>'),	// 6
 						'wppa_bc_url' 						=> wppa_get_imgdir().'arrow.gif',	// 7
+						'wppa_pagelink_pos'					=> 'bottom',	// 8
 						// B Slideshow
 						'wppa_show_startstop_navigation' 	=> 'yes',		// 1
 						'wppa_show_browse_navigation' 		=> 'yes',		// 2
@@ -393,6 +395,7 @@ Hide Camera info
 						'wppa_thumb_text_rating' 			=> 'yes',	// 3
 						'wppa_popup_text_name' 				=> 'yes',	// 4
 						'wppa_popup_text_desc' 				=> 'yes',	// 5
+						'wppa_popup_text_desc_strip'		=> 'no',	// 5.1
 						'wppa_popup_text_rating' 			=> 'yes',	// 6
 						'wppa_show_rating_count'			=> 'no',	// 7
 						// D Covers

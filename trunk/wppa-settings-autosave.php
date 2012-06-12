@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 4.5.7
+* Version 4.6.0
 *
 */
 
@@ -270,6 +270,13 @@ global $wppa_revno;
 						$slug = 'wppa_bradius';
 						$html = wppa_input($slug, '40px', '', __('pixels', 'wppa'));
 						wppa_setting($slug, '6', $name, $desc, $html, $help);
+						
+						$name = __('Box spacing', 'wppa');
+						$desc = __('Distance between wppa+ boxes.', 'wppa');
+						$help = '';
+						$slug = 'wppa_box_spacing';
+						$html = wppa_input($slug, '40px', '', __('pixels', 'wppa'));
+						wppa_setting($slug, '7', $name, $desc, $html, $help);
 
 						wppa_setting_subheader('B', '1', __('Fullsize photos and Slideshow related settings', 'wppa'));
 						
@@ -647,6 +654,15 @@ global $wppa_revno;
 						$slug = 'wppa_bc_url';
 						$html = wppa_input($slug, '90%', '300px');
 						wppa_setting($slug, '7', $name, $desc, $html, $help, $slug);
+						
+						$name = __('Pagelink position', 'wppa');
+						$desc = __('The location for the pagelinks bar.', 'wppa');
+						$help = '';
+						$slug = 'wppa_pagelink_pos';
+						$options = array(__('Top', 'wppa'), __('Bottom', 'wppa'), __('Both', 'wppa'));
+						$values = array('top', 'bottom', 'both');
+						$html = wppa_select($slug, $options, $values);
+						wppa_setting($slug, '8', $name, $desc, $html, $help);
 
 						wppa_setting_subheader('B', '1', __('Slideshow related settings', 'wppa'));
 						
@@ -868,6 +884,14 @@ global $wppa_revno;
 						$html = wppa_checkbox($slug);
 						$class = 'tt_normal wppa_popup';
 						wppa_setting($slug, '5', $name, $desc, $html, $help, $class);
+						
+						$name = __('Popup desc no links', 'wppa');
+						$desc = __('Strip html anchor tags from descriptions on popups', 'wppa');
+						$help = esc_js(__('Use this option to prevent the display of links that cannot be activated.', 'wppa'));
+						$slug = 'wppa_popup_text_desc_strip';
+						$html = wppa_checkbox($slug);
+						$class = 'tt_normal wppa_popup';
+						wppa_setting($slug, '5.1', $name, $desc, $html, $help, $class);
 						
 						$name = __('Popup rating', 'wppa');
 						$desc = __('Display Thumbnail Rating on popup.', 'wppa');

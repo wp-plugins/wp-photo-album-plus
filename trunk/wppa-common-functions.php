@@ -2,11 +2,11 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 4.5.7
+* version 4.6.0
 *
 */
 global $wppa_api_version;
-$wppa_api_version = '4-5-7-000';
+$wppa_api_version = '4-6-0-000';
 // Initialize globals and option settings
 function wppa_initialize_runtime($force = false) {
 global $wppa;
@@ -95,6 +95,7 @@ global $wpdb;
 						'wppa_min_thumbs' 				=> '',	// 4
 						'wppa_bwidth' 					=> '',	// 5
 						'wppa_bradius' 					=> '',	// 6
+						'wppa_box_spacing'				=> '',	// 7
 						// B Fullsize
 						'wppa_fullsize' 				=> '',	// 1
 						'wppa_maxheight' 				=> '',	// 2
@@ -139,6 +140,7 @@ global $wpdb;
 						'wppa_bc_separator' 				=> '',	// 5
 						'wppa_bc_txt' 						=> '',	// 6
 						'wppa_bc_url' 						=> '',	// 7
+						'wppa_pagelink_pos'					=> '', 	// 8
 						// B Slideshow
 						'wppa_show_startstop_navigation' 	=> '',	// 1
 						'wppa_show_browse_navigation' 		=> '',	// 2
@@ -166,6 +168,7 @@ global $wpdb;
 						'wppa_thumb_text_rating' 			=> '',	// 3
 						'wppa_popup_text_name' 				=> '',	// 4
 						'wppa_popup_text_desc' 				=> '',	// 5
+						'wppa_popup_text_desc_strip'		=> '',	// 5.1
 						'wppa_popup_text_rating' 			=> '',	// 6
 						'wppa_show_rating_count'			=> '',	// 7
 						// D Covers

@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, multisite, network, lightbox, comment, watermark, iptc, exif
-Version: 4.5.7
+Version: 4.6.0
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -55,8 +55,17 @@ You can find the plugin admin section under Menu Photo Albums on the admin scree
 
 == Installation ==
 
+= Requirements =
+
+* The plugin requires at least wp version 3.0.
+* The theme should have a call to wp_head() in its header.php file and wp_footer() in its footer.php file. 
+* The theme should load enqueued scripts in the header if the scripts are enqueued without the $in_footer switch (like wppa.js and jQuery). 
+* The theme should not prevent this plugin from loading the jQuery library in its default wp manner, i.e. the library jQuery in safe mode (uses jQuery() and not $()). 
+Most themes comply with these requirements. 
+However, check these requirements in case of problems with new installations with themes you never had used before with wppa+ or when you modifies your theme.
+
 = Upgrade notice =
-This version is: Major rev# 4, Minor rev# 5, Fix rev# 5, Hotfix rev# 000.
+This version is: Major rev# 4, Minor rev# 6, Fix rev# 0, Hotfix rev# 000.
 If you are upgrading from a previous Major or Minor version, note that:
 * If you modified wppa_theme.php and/or wppa_style.css, you will have to use the newly supplied versions. The previous versions are NOT compatible.
 * If you set the userlevel to anything else than 'administrator' you may have to set it again. Note that changing the userlevel can be done by the administrator only!
@@ -134,6 +143,26 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 4.6.0 =
+
+= Bug Fixes =
+
+* Special characters will now be processed as expected when editing album and photo names and descriptions as well as in text on the Settings screen.
+* Fixed a typo (camara) in the default new photo description. This helps only for new installations or when you reset all settings to default values on Table VIII-A3.
+
+= New Features =
+
+* You can now strip html anchor tags in descriptions under thumbnail popups in Table II-C5.1.
+* You can select the location(s) where the pagelink bar will be placed, on top of the album content display, at the bottom(default) or both.
+This feature requires the use of the newly supplied wppa-theme.php. Setting: Table II-A8.
+* You can set the vertical wppa+ box spacing in Table I-A7.
+
+= Other Changes =
+
+* There are built-in checks for a few theme and initialisation requirements. 
+In case of non-compliance an errormessage will be displayed if one of three possible debug switches are in effect: 
+WPPA_DEBUG set true in wppa.php, WP_DEBUG is set true in wp-config.php or (?|&)debug is appended to the url.
 
 = 4.5.7 =
 

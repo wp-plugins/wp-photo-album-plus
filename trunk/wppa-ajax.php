@@ -2,7 +2,7 @@
 /* wppa-ajax.php
 *
 * Functions used in ajax requests
-* version 4.5.5
+* version 4.6.0
 *
 */
 add_action('wp_ajax_wppa', 'wppa_ajax_callback');
@@ -526,6 +526,9 @@ global $wppa;
 					break;
 				case 'wppa_bradius':
 					wppa_ajax_check_range($value, '', '0', false, __('Border radius', 'wppa'));
+					break;
+				case 'wppa_box_spacing':
+					wppa_ajax_check_range($value, '', '-20', '100', __('Box spacing', 'wppa'));
 					break;
 				case 'wppa_popupsize':				
 					$floor = $wppa_opt['wppa_thumbsize'];
