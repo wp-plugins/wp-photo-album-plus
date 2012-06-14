@@ -2,7 +2,7 @@
 //
 // conatins slideshow, theme and ajax code
 //
-// Version 4.6.0
+// Version 4.6.1
 
 // Part 1: Slideshow
 //
@@ -1798,6 +1798,7 @@ var wppaOvlTxtHeight = 36;	// 12 * ( n lines of text including the n/m line )
 var wppaOvlOpacity = 0.8;
 var wppaOvlOnclickType = 'none';
 var wppaOvlTheme = 'black';
+var wppaOvlAnimSpeed = 300;
 
 jQuery(document).ready(function(){
 	wppaInitOverlay();
@@ -1861,7 +1862,7 @@ function wppaOvlShow(arg) {
 	jQuery('#wppa-overlay-ic').css({left: lft, paddingTop: ptp});
 	var txtcol = wppaOvlTheme == 'black' ? '#a7a7a7' : '#272727';	// Normal font
 	var qtxtcol = wppaOvlTheme == 'black' ? '#a7a7a7' : '#575757';	// Bold font
-	var html = 	'<div id="wppa-overlay-qt-txt"  style="position:absolute; right:16px; top:'+(wppaOvlPadTop-3)+'px; visibility:hidden; box-shadow:none; font-family:helvetica; font-weight:bold; font-size:14px; color:'+qtxtcol+'; cursor:pointer; " onclick="wppaOvlHide()" >'+wppaOvlCloseTxt+'&nbsp;&nbsp;</div>'+
+	var html = 	'<div id="wppa-overlay-qt-txt"  style="position:absolute; right:16px; top:'+(wppaOvlPadTop-1)+'px; visibility:hidden; box-shadow:none; font-family:helvetica; font-weight:bold; font-size:14px; color:'+qtxtcol+'; cursor:pointer; " onclick="wppaOvlHide()" >'+wppaOvlCloseTxt+'&nbsp;&nbsp;</div>'+
 				'<img id="wppa-overlay-qt-img"  src="'+wppaImageDirectory+'smallcross-'+wppaOvlTheme+'.gif'+'" style="position:absolute; right:0; top:'+wppaOvlPadTop+'px; visibility:hidden; box-shadow:none; cursor:pointer" onclick="wppaOvlHide()" >'+
 				'<img id="wppa-overlay-img" src="'+wppaOvlUrl+'" style="border-width:16px; border-style:solid; border-color:'+wppaOvlTheme+'; margin-bottom:-15px; max-width:'+mw+'px; visibility:hidden; box-shadow:none;" />'+
 				'<div id="wppa-overlay-txt-container" style="padding:10px; background-color:'+wppaOvlTheme+'; color:'+txtcol+'; text-align:center; font-size: 10px; font-weight:bold; line-height:12px; visibility:hidden; box-shadow:none;" ></div>';
@@ -1877,7 +1878,7 @@ function wppaOvlShow2() {
 		setTimeout('wppaOvlShow2()', 10);	// Wait for load complete
 		return;
 	}
-
+if (wppaOvlAnimSpeed!=0)
 	img.style.visibility = 'visible';		// Display image
 	
 	setTimeout('wppaOvlShow3()', 10);
@@ -1888,7 +1889,7 @@ function wppaOvlShow3() {
 	jQuery('#wppa-overlay-sp').css({visibility: 'hidden'});
 	// Size to final dimensions
 	jQuery('#wppa-overlay-txt-container').html('<div id="wppa-overlay-txt"></div>');	// reqd for sizeing
-	var speed = 300;
+	var speed = wppaOvlAnimSpeed;
 	wppaOvlSize(speed);
 	// Go on
 	setTimeout('wppaOvlShow4()', speed+50);
@@ -1984,17 +1985,26 @@ function wppaOvlSize(speed) {
 		lft = parseInt((iw-nw)/2);
 	}
 
-	jQuery('#wppa-overlay-img').stop().animate({maxWidth: mw+'px'}, speed);
-	jQuery('#wppa-overlay-ic').stop().animate({left: lft+'px', paddingTop: pt+'px'}, speed);
-	jQuery('#wppa-overlay-qt-txt').stop().animate({top: (pt-3)+'px'}, speed);
-	jQuery('#wppa-overlay-qt-img').stop().animate({top: pt+'px'}, speed);
+	if ( speed == 0 ) {
+		jQuery('#wppa-overlay-img').css({maxWidth: mw+'px', visibility: 'visible'});
+		jQuery('#wppa-overlay-ic').css({left: lft+'px', paddingTop: pt+'px'});
+		jQuery('#wppa-overlay-qt-txt').css({top: (pt-3)+'px'});
+		jQuery('#wppa-overlay-qt-img').css({top: pt+'px'});
+	}
+	else {
+		jQuery('#wppa-overlay-img').stop().animate({maxWidth: mw+'px'}, speed);
+		jQuery('#wppa-overlay-ic').stop().animate({left: lft+'px', paddingTop: pt+'px'}, speed);
+		jQuery('#wppa-overlay-qt-txt').stop().animate({top: (pt-1)+'px'}, speed);
+		jQuery('#wppa-overlay-qt-img').stop().animate({top: pt+'px'}, speed);
+	}
 	
 	// If resizing, also resize txt elements when sizing is complete
 	if ( document.getElementById('wppa-overlay-txt') ) {
 		// Hide during resize if sizing takes longer than 10 ms.
-		if (speed > 10) jQuery('#wppa-overlay-txt').css({visibility: 'hidden'});	
+		if (speed > 10) jQuery('#wppa-overlay-txt').css({visibility: 'hidden'});
+}		
 		setTimeout('wppaOvlSize2()', speed+20);
-	}
+//	}
 	return true;
 }
 function wppaOvlSize2() {

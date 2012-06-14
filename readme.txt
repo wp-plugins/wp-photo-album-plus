@@ -2,12 +2,12 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, multisite, network, lightbox, comment, watermark, iptc, exif
-Version: 4.6.0
+Version: 4.6.1
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
 Requires at least: 3.0
-Tested up to: 3.3.2
+Tested up to: 3.4
 
 This plugin is designed to easily manage and display your photo albums and slideshows in a single as well as in a network WordPress site. 
 Additionally there are five widgets: Photo of the day, a Search Photos widget, a Top Ten Rated photo widget, a Recent comments widget and a Mini slideshow widget.
@@ -80,7 +80,8 @@ for the single site mode installation: the folders .../wp-content/uploads/wppa/ 
 and for the multisite mode installation (example for blog id 92): the folders path: .../wp-content/blogs.dir/92/wppa/ and .../wp-content/blogs.dir/92/wppa/thumbs/.
 In rare cases you will need to create them manually. You can see the actual pathnames and urls in the lowest table of the Photo Albums -> Settings page.
 * If you upgraded from WP Photo Album (without plus) and you had copied wppa_theme.php and/or wppa_style.css 
-to your theme directory, you must remove them or replace them with the newly supplied versions.
+to your theme directory, you must remove them or replace them with the newly supplied versions. The fullsize will be reset to 640 px. 
+See Table I-A1 and Table I-B1,2 of the Photo Albums -> Settings admin page.
 
 == Frequently Asked Questions ==
 
@@ -143,6 +144,18 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 4.6.1 =
+
+= New Features =
+
+* The fade-in speed of the lightbox overlay image can now be set in Table IV-G3.
+* Frontend upload now also allows the input of photo name.
+
+= Other Changes =
+
+* Prevented a possible error when converting from old wp photo album (without plus)
+* Made a change that will enable the use of google libraries (in 4.6.0)
 
 = 4.6.0 =
 

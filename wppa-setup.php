@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 4.6.0
+* Version 4.6.1
 *
 */
 
@@ -479,6 +479,7 @@ Hide Camera info
 						// G Overlay
 						'wppa_ovl_opacity'				=> '80',
 						'wppa_ovl_onclick'				=> 'none',
+						'wppa_ovl_anim'					=> '300',
 						
 						// Table V: Fonts
 						'wppa_fontfamily_title' 	=> '',
@@ -644,6 +645,10 @@ Hide Camera info
 						);
 
 	array_walk($wppa_defaults, 'wppa_set_default', $force);
+	
+	// Check for upgrade right after conversion from old wppa
+	if ( ! is_numeric(get_option('wppa_fullsize')) ) update_option('wppa_fullsize', '640');
+	
 	return true;
 }
 function wppa_set_default($value, $key, $force) {

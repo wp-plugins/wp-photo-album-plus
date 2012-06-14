@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 4.6.0
+* Version 4.6.1
 *
 */
 
@@ -1537,6 +1537,15 @@ global $wppa_revno;
 						$values = array('none', 'close', 'browse');
 						$html = wppa_select($slug, $options, $values);
 						wppa_setting($slug, '2', $name, $desc, $html, $help);
+						
+						$name = __('Overlay animation speed', 'wppa');
+						$desc = __('The fade-in time of the lightbox images', 'wppa');
+						$help = '';
+						$slug = 'wppa_ovl_anim';
+						$options = array(__('--- off ---', 'wppa'), __('very fast (100 ms.)', 'wppa'), __('fast (200 ms.)', 'wppa'), __('normal (300 ms.)', 'wppa'),  __('slow (500 ms.)', 'wppa'), __('very slow (1 s.)', 'wppa'), __('extremely slow (2 s.)', 'wppa'));
+						$values = array('0', '100', '200', '300', '500', '1000', '2000');
+						$html = wppa_select($slug, $options, $values);
+						wppa_setting($slug, '3', $name, $desc, $html, $help);
 						
 						?>
 					</tbody>
