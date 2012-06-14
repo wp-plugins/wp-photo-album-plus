@@ -3,12 +3,12 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions and API modules
-* Version 4.6.0
+* Version 4.6.1
 *
 */
 /* Moved to wppa-common-functions.php:
 global $wppa_api_version;
-$wppa_api_version = '4-6-0-000';
+$wppa_api_version = '4-6-1-000';
 */
 
 
@@ -2257,6 +2257,7 @@ global $wppa_version;			// The theme version (wppa_theme.php)
 global $wppa_alt;
 global $wppa_microtime;
 global $wppa_microtime_cum;
+global $wppa_err_displayed;
 
 	if (is_feed()) return;		// Need no container in RSS feeds
 	
@@ -2274,11 +2275,12 @@ global $wppa_microtime_cum;
 		if ($wppa['debug']) $wppa_microtime = microtime(true);
 		
 		/* Check if wppa.js and jQuery are present */
-		if ( WPPA_DEBUG || isset($_GET['wppa-debug']) || WP_DEBUG ) {
+		if ( ! $wppa_err_displayed && ( WPPA_DEBUG || isset($_GET['wppa-debug']) || WP_DEBUG ) ) {
 			$wppa['out'] .= '<script type="text/javascript">/* <![CDATA[ */';
 				$wppa['out'] .= "if (typeof(_wppaSlides) == 'undefined') alert('There is a problem with your theme. The file wppa.js is not loaded when it is expected (Errloc = wppa_container).');";
 				$wppa['out'] .= "if (typeof(jQuery) == 'undefined') alert('There is a problem with your theme. The jQuery library is not loaded when it is expected (Errloc = wppa_container).');";
 			$wppa['out'] .= "/* ]]> */</script>";
+			$wppa_err_displayed = true;
 		} 
 		/* Check if init is properly done */
 		if ( ! $wppa_opt['wppa_fullsize'] ) {
@@ -3300,7 +3302,7 @@ global $wppa;
 			if ($opt != '') $result .= 'color:'.$opt.'; ';
 			break;
 		case 'wppa-td';
-			$result .= 'padding: 3px 2px 3px 0; ';
+			$result .= 'padding: 3px 2px 3px 0; border: 0';
 			break;
 		default:
 			wppa_dbg_msg('Unexpected error in __wcs, unknown class: '.$class, 'red');
@@ -4189,8 +4191,8 @@ global $wppa_opt;
 	$cover = wppa_get_get('cover', '');
 
 	$returnurl = wppa_get_permalink();
-	if ($album) 	$returnurl .= 'wppa-album='.$album.'&';
-	if ($cover) 	$returnurl .= 'wppa-cover='.$cover.'&';
+	if ($album) 	$returnurl .= 'wppa-album='.$album.'&amp;';
+	if ($cover) 	$returnurl .= 'wppa-cover='.$cover.'&amp;';
 					$returnurl .= 'wppa-occur='.$wppa['occur'];
 	
 	$wppa['out'] .= wppa_nltab().'<a href="javascript://" id="wppa-up-'.$alb.'-'.$wppa['master_occur'].'" onclick="jQuery(\'#wppa-up-'.$alb.'-'.$wppa['master_occur'].'\').css(\'display\',\'none\');jQuery(\'#wppa-file-'.$alb.'-'.$wppa['master_occur'].'\').css(\'display\',\'block\')" class="" style="float:left;">'.__a('Upload Photo', 'wppa_theme').'</a>';
@@ -4207,7 +4209,7 @@ global $wppa_opt;
 			}
 			// Watermark
 			if ( $wppa_opt['wppa_watermark_on'] == 'yes' && $wppa_opt['wppa_watermark_user'] == 'yes' ) { 
-				$wppa['out'] .= wppa_nltab('+').'<table class="wppa-watermark wppa-box-text" style="margin:0; '.__wcs('wppa-box-text').'" ><tbody>';
+				$wppa['out'] .= wppa_nltab('+').'<table class="wppa-watermark wppa-box-text" style="margin:0; border:0; '.__wcs('wppa-box-text').'" ><tbody>';
 					$wppa['out'] .= wppa_nltab('+').'<tr valign="top" style="border: 0 none; " >';
 						$wppa['out'] .= wppa_nltab('+').'<td class="wppa-box-text wppa-td" style="'.__wcs('wppa-box-text').__wcs('wppa-td').'" >';
 							$wppa['out'] .= wppa_nltab('+').__a('Apply watermark file:', 'wppa_theme');
@@ -4225,14 +4227,24 @@ global $wppa_opt;
 						$wppa['out'] .= wppa_nltab('-').'</td>';
 					$wppa['out'] .= wppa_nltab('-').'</tr>';
 				$wppa['out'] .= wppa_nltab('-').'</table>';
-			}		
+			}	
+			
+// Name
+$wppa['out'] .= '
+		<div class="wppa-box-text wppa-td" style="clear:both: float:left; text-align:left; '.__wcs('wppa-box-text').__wcs('wppa-td').'" >'.
+			__a('Enter photo name', 'wppa_theme').'&nbsp;<span style="font-size:10px;" >'.__a('If you leave this blank, the original filename(s) will be used as photo name(s).', 'wppa_theme').'</span>'.'
+		</div>
+		<input type="text" class="wppa-box-text" style="width:'.($width-6).'px; '.__wcs('wppa-box-text').'" name="wppa-user-name" />';
 
-			$wppa['out'] .= wppa_nltab().'<div class="wppa-box-text wppa-td" style="clear:both; float:left; '.__wcs('wppa-box-text').__wcs('wppa-td').'" >'.__a('Enter/modify photo description', 'wppa_theme').'</div>';
-			$desc = $wppa_opt['wppa_apply_newphoto_desc'] ? stripslashes($wppa_opt['wppa_newphoto_description']) : '';
-			$wppa['out'] .= wppa_nltab().'<textarea class="wppa-user-textarea wppa-box-text" style="height:120px; width:'.($width-6).'px; '.__wcs('wppa-box-text').'" name="wppa-user-desc" >'.$desc.'</textarea>';
-
-		$wppa['out'] .= wppa_nltab('-').'</form>';
-	$wppa['out'] .= wppa_nltab('-').'</div>';
+		// Description
+		$desc = $wppa_opt['wppa_apply_newphoto_desc'] ? stripslashes($wppa_opt['wppa_newphoto_description']) : '';
+$wppa['out'] .= '
+		<div class="wppa-box-text wppa-td" style="clear:both; float:left; text-align:left; '.__wcs('wppa-box-text').__wcs('wppa-td').'" >'.
+			__a('Enter/modify photo description', 'wppa_theme').'
+		</div>
+		<textarea class="wppa-user-textarea wppa-box-text" style="height:120px; width:'.($width-6).'px; '.__wcs('wppa-box-text').'" name="wppa-user-desc" >'.$desc.'</textarea>
+	</form>
+</div>';
 }
 
 function wppa_user_upload() {
@@ -4310,9 +4322,14 @@ global $wppa_opt;
 		case 3: $ext = 'png'; break;
 	}
 	$id = wppa_nextkey(WPPA_PHOTOS);
-	$name = $file['name'];
+	if ( wppa_get_post('user-name') ) {
+		$name = wppa_get_post('user-name');
+	}
+	else {
+		$name = $file['name'];
+	}
 	$porder = '0';
-	$desc = wppa_get_post('wppa-user-desc');
+	$desc = wppa_get_post('user-desc');
 	$mrat = '0';
 	$linkurl = '';
 	$linktitle = '';
