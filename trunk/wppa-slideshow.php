@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the slideshow high level functions
-* Version 4.5.5
+* Version 4.5.5.001
 *
 */
 
@@ -297,7 +297,7 @@ global $thumb;
 	$height1 = $wppa_opt['wppa_thumbsize'];
 	$marg = '32';
 	$fs = '24';
-	$fw = '36';
+	$fw = '42';
 	if ($wppa['in_widget']) {
 		$width /= 2;
 		$topmarg /= 2;
@@ -305,11 +305,11 @@ global $thumb;
 		$height1 /= 2;
 		$marg = '16';
 		$fs = '12';
-		$fw = '18';
+		$fw = '21';
 	}
 
-	$w = wppa_get_container_width() - ( 2*6 + 2*36 + 2*$wppa_opt['wppa_bwidth']); /* 2*padding + 2*arrows + 2*border */
-	if ($wppa['in_widget']) $w = wppa_get_container_width() - ( 2*6 + 2*18 + 2*$wppa_opt['wppa_bwidth']); /* 2*padding + 2*arrow + 2*border */
+	$w = wppa_get_container_width() - ( 2*6 + 2*42 + 2*$wppa_opt['wppa_bwidth']); /* 2*padding + 2*arrows + 2*border */
+	if ($wppa['in_widget']) $w = wppa_get_container_width() - ( 2*6 + 2*21 + 2*$wppa_opt['wppa_bwidth']); /* 2*padding + 2*arrow + 2*border */
 	$IE6 = 'width: '.$w.'px;';
 	$pagsiz = round($w / ($wppa_opt['wppa_thumbsize'] + $wppa_opt['wppa_tn_margin']));
 	if ($wppa['in_widget']) $pagsiz = round($w / ($wppa_opt['wppa_thumbsize']/2 + $wppa_opt['wppa_tn_margin']/2));
