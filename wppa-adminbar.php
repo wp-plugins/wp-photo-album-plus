@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * enhances the admin bar with wppa+ menu
-* version 4.5.0
+* version 4.6.1.002
 *
 */
 
@@ -48,49 +48,49 @@ function wppa_admin_bar_menu() {
 			'href'   => admin_url( 'admin.php?page=wppa_upload_photos' )
 		);
 	}
-	if ( current_user_can( 'wppa_upload' ) ) {
+	if ( current_user_can( 'wppa_import' ) ) {
 		$menu_items['import'] = array(
 			'parent' => $wppaplus,
 			'title'  => __a( 'Import Photos', 'wppa_theme' ),
 			'href'   => admin_url( 'admin.php?page=wppa_import_photos' )
 		);
 	}
-	if ( current_user_can( 'administrator' ) ) {
+	if ( current_user_can( 'wppa_export' ) ) {
 		$menu_items['export'] = array(
 			'parent' => $wppaplus,
 			'title'  => __a( 'Export Photos', 'wppa_theme' ),
 			'href'   => admin_url( 'admin.php?page=wppa_export_photos' )
 		);
 	}
-	if ( current_user_can( 'administrator' ) ) {
+	if ( current_user_can( 'wppa_settings' ) ) {
 		$menu_items['settings'] = array(
 			'parent' => $wppaplus,
 			'title'  => __a( 'Settings', 'wppa_theme' ),
 			'href'   => admin_url( 'admin.php?page=wppa_options' )
 		);
 	}
-	if ( current_user_can( 'wppa_sidebar_admin' ) ) {
+	if ( current_user_can( 'wppa_potd' ) ) {
 		$menu_items['sidebar'] = array(
 			'parent' => $wppaplus,
 			'title'  => __a( 'Photo of the day', 'wppa_theme' ),
 			'href'   => admin_url( 'admin.php?page=wppa_photo_of_the_day' )
 		);
 	}
-	if ( current_user_can( 'administrator' ) ) {
+	if ( current_user_can( 'wppa_comments' ) ) {
 		$menu_items['comments'] = array(
 			'parent' => $wppaplus,
 			'title'  => __a( 'Comments', 'wppa_theme' ).$com_pending,
 			'href'   => admin_url( 'admin.php?page=wppa_manage_comments' )
 		);
 	}
-	if ( current_user_can( 'edit_posts' ) ) {
+	if ( current_user_can( 'wppa_help' ) ) {
 		$menu_items['help'] = array(
 			'parent' => $wppaplus,
 			'title'  => __a( 'Help & Info', 'wppa_theme' ),
 			'href'   => admin_url( 'admin.php?page=wppa_help' )
 		);
 	}
-	if ( current_user_can( 'edit_posts' ) ) {
+	if ( current_user_can( 'wppa_help' ) ) {
 		$menu_items['opajaap'] = array(
 			'parent' => $wppaplus,
 			'title'  => __a( 'Docs & Demos', 'wppa_theme' ),
