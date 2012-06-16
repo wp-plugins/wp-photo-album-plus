@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * create, edit and delete albums
-* version 4.5.5
+* version 4.6.2
 *
 */
 
@@ -51,9 +51,11 @@ function _wppa_admin() {
 				$edit_id = $_GET['edit_id'];
 			}
 		
-			if (!wppa_have_access($edit_id)) wp_die('You do not have the rights to edit this album.');
-		
-		
+			$album_owner = $wpdb->get_var($wpdb->prepare("SELECT `owner` FROM ".WPPA_ALBUMS." WHERE `id` = %s", $edit_id));
+			if ( ( $album_owner == '--- public ---' && ! current_user_can('administrator') ) || ! wppa_have_access($edit_id) ) {
+				wp_die('You do not have the rights to edit this album');
+			}
+
 			// Get the album information
 			$albuminfo = $wpdb->get_row($wpdb->prepare('SELECT * FROM `'.WPPA_ALBUMS.'` WHERE `id` = %s', $edit_id), 'ARRAY_A'); ?>	
 			
@@ -248,8 +250,13 @@ function _wppa_admin() {
 			</div>
 <?php 	} 
 		// album delete confirm page
-		else if ($_GET['tab'] == 'del') { ?>
-			
+		else if ($_GET['tab'] == 'del') { 
+
+			$album_owner = $wpdb->get_var($wpdb->prepare("SELECT `owner` FROM ".WPPA_ALBUMS." WHERE `id` = %s", $_GET['edit_id']));
+			if ( ( $album_owner == '--- public ---' && ! current_user_can('administrator') ) || ! wppa_have_access($_GET['edit_id']) ) {
+				wp_die('You do not have the rights to delete this album');
+			}
+?>			
 			<div class="wrap">
 				<?php $iconurl = WPPA_URL.'/images/albumdel32.png'; ?>
 				<div id="icon-albumdel" class="icon32" style="background: transparent url(<?php echo($iconurl); ?>) no-repeat">
@@ -294,6 +301,11 @@ function _wppa_admin() {
 		// if album deleted
 		if (isset($_POST['wppa-del-confirm'])) {
 			check_admin_referer( '$wppa_nonce', WPPA_NONCE );
+			
+			$album_owner = $wpdb->get_var($wpdb->prepare("SELECT `owner` FROM ".WPPA_ALBUMS." WHERE `id` = %s", $_POST['wppa-del-id']));
+			if ( ( $album_owner == '--- public ---' && ! current_user_can('administrator') ) || ! wppa_have_access($_POST['wppa-del-id']) ) {
+				wp_die('You do not have the rights to delete this album');
+			}
 
 			if ($_POST['wppa-del-photos'] == 'move') {
 				$move = $_POST['wppa-move-album'];
@@ -506,12 +518,17 @@ function wppa_admin_albums() {
 							<?php $np = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `".WPPA_PHOTOS."` WHERE album=%s", $album['id'])); ?>
 							<?php $nm = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `".WPPA_PHOTOS."` WHERE album=%s AND status=%s", $album['id'], 'pending')); ?>
 							<td><?php echo $na.'/'.$np; if ($nm) echo '/<span style="font-weight:bold; color:red">'.$nm.'</span>'; ?></td>
+							<?php if ( $album['owner'] != '--- public ---' || current_user_can('administrator') ) { ?>
 							<?php $url = wppa_ea_url($album['id']) ?>
 							<td><a href="<?php echo($url) ?>" class="wppaedit"><?php _e('Edit', 'wppa'); ?></a></td>
 							<?php $url = wppa_dbg_url(get_admin_url().'admin.php?page=wppa_admin_menu&amp;tab=del&amp;id='.$album['id']); ?>
 							
 							<?php $url = wppa_ea_url($album['id'], 'del') ?>
 							<td><a href="<?php echo($url) ?>" class="wppadelete"><?php _e('Delete', 'wppa'); ?></a></td>
+							<?php }
+							else { ?>
+							<td></td><td></td>
+							<?php } ?>
 						</tr>		
 						<?php if ($alt == '') { $alt = ' class="alternate" '; } else { $alt = '';}
 					}
