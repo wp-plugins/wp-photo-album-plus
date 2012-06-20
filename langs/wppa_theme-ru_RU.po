@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wppa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-05-29 15:36+0100\n"
-"PO-Revision-Date: 2012-05-29 15:36+0100\n"
+"POT-Creation-Date: 2012-06-20 13:36+0100\n"
+"PO-Revision-Date: 2012-06-20 13:36+0100\n"
 "Last-Translator: J.N. Breetvelt <OpaJaap@OpaJaap.nl>\n"
 "Language-Team: OpaJaap <OpaJaap@OpaJaap.nl>\n"
 "MIME-Version: 1.0\n"
@@ -60,80 +60,81 @@ msgstr "Документация и демо"
 msgid "Photo Albums"
 msgstr "Фотоальбомы"
 
-#: wppa-comment-widget.php:25
-msgid "Comments on Photos"
-msgstr "Комментарии к фото"
-
-#: wppa-comment-widget.php:79
+#: wppa-comment-widget.php:76
 msgid "Photo not found."
 msgstr "Фото не найдено."
 
-#: wppa-common-functions.php:610
+#: wppa-common-functions.php:619
 #, php-format
 msgid "Rating: %s"
 msgstr "Рейтинг: %s"
 
-#: wppa-common-functions.php:675
+#: wppa-common-functions.php:684
 msgid "--- none ---"
 msgstr "--- пусто ---"
 
-#: wppa-common-functions.php:676
+#: wppa-common-functions.php:685
 msgid "--- separate ---"
 msgstr "--- разделитель ---"
 
-#: wppa-common-functions.php:787
+#: wppa-common-functions.php:796
 msgid "1 second"
 msgstr "1 секунда"
 
-#: wppa-common-functions.php:788
+#: wppa-common-functions.php:797
+#: wppa-functions.php:4805
 msgid "seconds"
 msgstr "секунд"
 
-#: wppa-common-functions.php:792
+#: wppa-common-functions.php:801
 msgid "1 minute"
 msgstr "1 минута"
 
-#: wppa-common-functions.php:793
+#: wppa-common-functions.php:802
+#: wppa-functions.php:4804
 msgid "minutes"
 msgstr "минут"
 
-#: wppa-common-functions.php:797
+#: wppa-common-functions.php:806
 msgid "1 hour"
 msgstr "1 час"
 
-#: wppa-common-functions.php:798
+#: wppa-common-functions.php:807
+#: wppa-functions.php:4803
 msgid "hours"
 msgstr "часов"
 
-#: wppa-common-functions.php:802
+#: wppa-common-functions.php:811
 msgid "1 day"
 msgstr "1 день"
 
-#: wppa-common-functions.php:803
+#: wppa-common-functions.php:812
+#: wppa-functions.php:4802
 msgid "days"
 msgstr "дней"
 
-#: wppa-common-functions.php:807
+#: wppa-common-functions.php:816
 msgid "1 week"
 msgstr "1 неделя"
 
-#: wppa-common-functions.php:808
+#: wppa-common-functions.php:817
+#: wppa-functions.php:4801
 msgid "weeks"
 msgstr "недель"
 
-#: wppa-common-functions.php:812
+#: wppa-common-functions.php:821
 msgid "1 month"
 msgstr "1 месяц"
 
-#: wppa-common-functions.php:813
+#: wppa-common-functions.php:822
 msgid "months"
 msgstr "месяцев"
 
-#: wppa-common-functions.php:816
+#: wppa-common-functions.php:825
 msgid "1 year"
 msgstr "1 год"
 
-#: wppa-common-functions.php:817
+#: wppa-common-functions.php:826
 msgid "years"
 msgstr "лет"
 
@@ -154,8 +155,8 @@ msgid "Home"
 msgstr "В начало"
 
 #: wppa-functions.php:137
-#: wppa-functions.php:2621
-#: wppa-non-admin.php:148
+#: wppa-functions.php:2658
+#: wppa-non-admin.php:152
 msgid "Slideshow"
 msgstr "Слайдшоу"
 
@@ -171,26 +172,26 @@ msgstr "Лучшие фото"
 msgid "Recently commented photos"
 msgstr "Недавно комментировали"
 
-#: wppa-functions.php:1072
-#: wppa-functions.php:1386
-#: wppa-functions.php:2774
-#: wppa-functions.php:2906
+#: wppa-functions.php:1087
+#: wppa-functions.php:1401
+#: wppa-functions.php:2811
+#: wppa-functions.php:2946
 msgid "Awaiting moderation"
 msgstr "Ожидает одобрения"
 
-#: wppa-functions.php:1113
+#: wppa-functions.php:1128
 msgid "<b>ERROR: Attempt to enter an invalid rating.</b>"
 msgstr "<b>ОШИБКА: Попытка ввести некорректное значение рейтинга.</b>"
 
-#: wppa-functions.php:1263
+#: wppa-functions.php:1278
 msgid "Comment edited"
 msgstr "Комментарий отредактирован"
 
-#: wppa-functions.php:1266
+#: wppa-functions.php:1281
 msgid "Comment added"
 msgstr "Комментарий добавлен"
 
-#: wppa-functions.php:1270
+#: wppa-functions.php:1285
 msgid ""
 "Sorry, you gave a wrong answer.\\n"
 "\\n"
@@ -200,7 +201,7 @@ msgstr ""
 "\\n"
 "Попробуйте еще раз."
 
-#: wppa-functions.php:1280
+#: wppa-functions.php:1295
 msgid ""
 "Could not process comment.\\n"
 "Probably timed out."
@@ -208,229 +209,247 @@ msgstr ""
 "Невозможно обработать комментарий.\\n"
 "Возможно, время вышло."
 
-#: wppa-functions.php:1361
+#: wppa-functions.php:1376
 msgid "wrote:"
 msgstr "писал:"
 
-#: wppa-functions.php:1389
+#: wppa-functions.php:1404
 msgid "Marked as spam"
 msgstr "Помечено как спам"
 
-#: wppa-functions.php:1404
+#: wppa-functions.php:1419
 msgid "Edit!"
 msgstr "Редактировать"
 
-#: wppa-functions.php:1408
+#: wppa-functions.php:1423
 msgid "Send!"
 msgstr "Отправить!"
 
-#: wppa-functions.php:1437
+#: wppa-functions.php:1452
 msgid "Your name:"
 msgstr "Ваше имя:"
 
-#: wppa-functions.php:1442
+#: wppa-functions.php:1457
 msgid "Your email:"
 msgstr "Ваш email:"
 
-#: wppa-functions.php:1447
+#: wppa-functions.php:1462
 msgid "Your comment:"
 msgstr "Ваш комментарий:"
 
-#: wppa-functions.php:1464
+#: wppa-functions.php:1479
 #, php-format
 msgid "You must <a href=\"%s\">login</a> to enter a comment"
 msgstr "Вы должны <a href=\"%s\">войти</a>, чтобы оставить комментарий"
 
-#: wppa-functions.php:1471
+#: wppa-functions.php:1486
 #, php-format
 msgid "%d  comments"
 msgstr "%d  комментарии"
 
-#: wppa-functions.php:1475
+#: wppa-functions.php:1490
 msgid "Leave a comment"
 msgstr "Оставить комментарий"
 
-#: wppa-functions.php:1511
+#: wppa-functions.php:1526
 msgid "Show IPTC data"
 msgstr "Показать IPTC"
 
-#: wppa-functions.php:1514
+#: wppa-functions.php:1529
 msgid "Hide IPTC data"
 msgstr "Скрыть IPTC"
 
-#: wppa-functions.php:1542
+#: wppa-functions.php:1557
 msgid "No IPTC data"
 msgstr "IPTC отсутствует"
 
-#: wppa-functions.php:1575
+#: wppa-functions.php:1590
 msgid "Show EXIF data"
 msgstr "Показать EXIF"
 
-#: wppa-functions.php:1578
+#: wppa-functions.php:1593
 msgid "Hide EXIF data"
 msgstr "Скрыть EXIF"
 
-#: wppa-functions.php:1606
+#: wppa-functions.php:1621
 msgid "No EXIF data"
 msgstr "EXIF отсутствует"
 
-#: wppa-functions.php:1962
-#: wppa-functions.php:1963
+#: wppa-functions.php:1977
+#: wppa-functions.php:1978
 msgid "Prev.&nbsp;page"
 msgstr "Предыдущая страница"
 
-#: wppa-functions.php:1967
-#: wppa-functions.php:1968
+#: wppa-functions.php:1982
+#: wppa-functions.php:1983
 msgid "Next&nbsp;page"
 msgstr "Следующая страница"
 
-#: wppa-functions.php:2266
+#: wppa-functions.php:2301
 msgid "<b>ERROR: Illegal attempt to enter a rating.</b>"
 msgstr "<b>ОШИБКА: Сбой при вводе оценки.</b>"
 
-#: wppa-functions.php:2279
+#: wppa-functions.php:2314
 msgid "<b>ERROR: Illegal attempt to enter a comment.</b>"
 msgstr "<b>ОШИБКА: Сбой при вводе комментария.</b>"
 
-#: wppa-functions.php:2504
+#: wppa-functions.php:2541
 msgid "Link to"
 msgstr "Ссылка на"
 
-#: wppa-functions.php:2530
-#: wppa-functions.php:2632
+#: wppa-functions.php:2567
+#: wppa-functions.php:2669
 msgid "View the album"
 msgstr "Смотреть альбом"
 
-#: wppa-functions.php:2539
+#: wppa-functions.php:2576
 msgid "View the cover photo"
 msgstr "Смотреть обложку"
 
-#: wppa-functions.php:2540
+#: wppa-functions.php:2577
 msgid "View the cover photos"
 msgstr "Смотреть фотографии обложки"
 
-#: wppa-functions.php:2621
+#: wppa-functions.php:2658
 msgid "Browse photos"
 msgstr "Просмотреть фото"
 
-#: wppa-functions.php:2633
+#: wppa-functions.php:2670
 msgid "View"
 msgstr "Смотреть"
 
-#: wppa-functions.php:2636
+#: wppa-functions.php:2673
 msgid "album"
 msgstr "альбом"
 
-#: wppa-functions.php:2639
+#: wppa-functions.php:2676
 msgid "albums"
 msgstr "альбомов"
 
-#: wppa-functions.php:2643
+#: wppa-functions.php:2680
+#: wppa-functions.php:4804
 msgid "and"
 msgstr "и"
 
-#: wppa-functions.php:2647
+#: wppa-functions.php:2684
 msgid "photo"
 msgstr "фото"
 
-#: wppa-functions.php:2650
+#: wppa-functions.php:2687
 msgid "photos"
 msgstr "фото"
 
-#: wppa-functions.php:2853
+#: wppa-functions.php:2893
 msgid "View the top rated photos"
 msgstr "Смотреть самые лучшие фото"
 
-#: wppa-functions.php:3059
+#: wppa-functions.php:3113
 msgid "Click to browse in fullsize"
 msgstr "Смотреть в полном размере"
 
-#: wppa-functions.php:3064
+#: wppa-functions.php:3118
 msgid "Double click to start/stop slideshow running"
 msgstr "Двойной щелчок запускает или останавливает слайдшоу"
 
-#: wppa-functions.php:4144
+#: wppa-functions.php:4196
+#: wppa-functions.php:4323
+msgid "Max uploads reached"
+msgstr ""
+
+#: wppa-functions.php:4210
 msgid "Upload Photo"
 msgstr "Загрузить фото"
 
-#: wppa-functions.php:4150
+#: wppa-functions.php:4216
 msgid "Upload Photo(s)"
 msgstr "Загрузить фото"
 
-#: wppa-functions.php:4152
+#: wppa-functions.php:4219
 #, php-format
 msgid "You may upload up to %s photos at once if your browser supports HTML-5 multiple file upload"
 msgstr "Вы можете загрузить за один раз до %s фотографий, если Ваш браузер поддерживает множественную загрузку файлов HTML-5"
 
-#: wppa-functions.php:4161
+#: wppa-functions.php:4228
 msgid "Apply watermark file:"
 msgstr "Приложить файл с \"водяным знаком\":"
 
-#: wppa-functions.php:4169
+#: wppa-functions.php:4236
 msgid "Position:"
 msgstr "Положение:"
 
-#: wppa-functions.php:4178
+#: wppa-functions.php:4248
+msgid "Enter photo name"
+msgstr ""
+
+#: wppa-functions.php:4248
+msgid "If you leave this blank, the original filename(s) will be used as photo name(s)."
+msgstr ""
+
+#: wppa-functions.php:4256
 msgid "Enter/modify photo description"
 msgstr "Ввести/изменить описание фото"
 
-#: wppa-functions.php:4205
+#: wppa-functions.php:4282
 msgid "<b>ERROR: Illegal attempt to upload a file.</b>"
 msgstr "<b>ОШИБКА: Сбой при попытке загрузить файл.</b>"
 
-#: wppa-functions.php:4243
+#: wppa-functions.php:4327
 msgid "Error during upload"
 msgstr "Сбой при загрузке"
 
-#: wppa-functions.php:4248
+#: wppa-functions.php:4332
 msgid "Uploaded file is not an image"
 msgstr "Загруженный файл не является изображением"
 
-#: wppa-non-admin.php:149
+#: wppa-functions.php:4799
+msgid "You can upload after"
+msgstr ""
+
+#: wppa-non-admin.php:153
 msgid "Start"
 msgstr "Начать"
 
-#: wppa-non-admin.php:150
+#: wppa-non-admin.php:154
 msgid "Stop"
 msgstr "Остановить"
 
-#: wppa-non-admin.php:151
+#: wppa-non-admin.php:155
 msgid "Photo"
 msgstr "Фото"
 
-#: wppa-non-admin.php:152
+#: wppa-non-admin.php:156
 msgid "of"
 msgstr "из"
 
-#: wppa-non-admin.php:153
+#: wppa-non-admin.php:157
 msgid "Previous photo"
 msgstr "Предыдущее фото"
 
-#: wppa-non-admin.php:154
+#: wppa-non-admin.php:158
 msgid "Next photo"
 msgstr "Следующее фото"
 
-#: wppa-non-admin.php:155
+#: wppa-non-admin.php:159
 msgid "Prev."
 msgstr "Пред."
 
-#: wppa-non-admin.php:156
+#: wppa-non-admin.php:160
 msgid "Next"
 msgstr "След."
 
-#: wppa-non-admin.php:160
+#: wppa-non-admin.php:164
 msgid "Please enter your name"
 msgstr "Введите свое имя"
 
-#: wppa-non-admin.php:161
+#: wppa-non-admin.php:165
 msgid "Please enter a valid email address"
 msgstr "Введите свой email"
 
-#: wppa-non-admin.php:162
+#: wppa-non-admin.php:166
 msgid "Please enter a comment"
 msgstr "Прокомментируйте"
 
-#: wppa-slideshow-widget.php:109
+#: wppa-slideshow-widget.php:111
 msgid "No album defined yet."
 msgstr "Альбом еще не определен."
 
@@ -528,15 +547,15 @@ msgstr "- - - показ IPTC включен - - -"
 msgid "- - - EXIF box activated - - -"
 msgstr "- - - показ EXIF включен - - -"
 
-#: wppa-thumbnail-widget.php:26
-msgid "Thumbnail Photos"
-msgstr "Предпросмотр фото"
-
-#: wppa-topten-widget.php:25
-msgid "Top Ten Photos"
-msgstr "Лучшая десятка фотографий"
-
-#: theme/wppa-theme.php:80
+#: theme/wppa-theme.php:92
 msgid "No albums or photos found matching your search criteria."
 msgstr "Не найдено ни альбомов, ни фотографий по Вашему запросу."
 
+#~ msgid "Comments on Photos"
+#~ msgstr "Комментарии к фото"
+
+#~ msgid "Thumbnail Photos"
+#~ msgstr "Предпросмотр фото"
+
+#~ msgid "Top Ten Photos"
+#~ msgstr "Лучшая десятка фотографий"

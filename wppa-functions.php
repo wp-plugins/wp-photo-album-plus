@@ -3,12 +3,12 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions and API modules
-* Version 4.6.1
+* Version 4.6.3
 *
 */
 /* Moved to wppa-common-functions.php:
 global $wppa_api_version;
-$wppa_api_version = '4-6-1-000';
+$wppa_api_version = '4-6-3-000';
 */
 
 
@@ -2453,13 +2453,14 @@ global $wppa_opt;
 
 	$aps = wppa_get_pagesize('albums');	
 	$tps = wppa_get_pagesize('thumbs'); 
+	$arraycount = is_array($array) ? count($array) : '0';
 	$result = '0';
 	if ($type == 'albums') {
 		if ($aps != '0') {
-			$result = ceil(count($array) / $aps); 
+			$result = ceil($arraycount / $aps); 
 		} 
 		elseif ($tps != '0') {
-			if ( count($array) ) $result = '1'; 
+			if ( $arraycount ) $result = '1'; 
 			else $result = '0';
 		}
 	}
@@ -2467,11 +2468,11 @@ global $wppa_opt;
 		if ($wppa['is_cover'] == '1') {		// Cover has no thumbs: 0 pages
 			$result = '0';
 		} 
-		elseif ((count($array) <= $wppa_opt['wppa_min_thumbs']) && ( !$wppa['src'] )) {	// Less than treshold and not searching: 0
+		elseif (( $arraycount <= $wppa_opt['wppa_min_thumbs']) && ( !$wppa['src'] )) {	// Less than treshold and not searching: 0
 			$result = '0';
 		}
 		elseif ($tps != '0') {
-			$result = ceil(count($array) / $tps);	// Pag on: compute
+			$result = ceil($arraycount / $tps);	// Pag on: compute
 		}
 		else {
 			$result = '1';								// Pag off: all fits on 1
@@ -3055,7 +3056,10 @@ global $wppa_opt;
 		$wppa['out'] .= wppa_nltab('+').'<script type="text/javascript">';
 			$wppa['out'] .= '/* <![CDATA[ */';
 		
-			if ($wppa['is_slideonly']) $startindex = -1;	// There are no navigations, so start running, overrule everything
+			if ($wppa['is_slideonly']) {
+				if ( $wppa_opt['wppa_start_slideonly'] ) $startindex = -1;	// There are no navigations, so start running, overrule everything
+				else $startindex = 0;
+			}
 			if ($wppa['ss_widget_valign'] != '' && $wppa['ss_widget_valign'] != 'fit') {
 			}
 			elseif ($wppa_opt['wppa_fullvalign'] == 'fit' || $wppa['is_slideonly'] == '1' ) { 
@@ -3639,7 +3643,8 @@ global $wppa_opt;
 		if ($link) {
 			$wppa['out'] .= wppa_nltab('-').'</a>';
 		}
-		$wppa['out'] .= '<p class="wp-caption-text">'.strip_tags(stripslashes(wppa_get_photo_desc($wppa['single_photo']))).'</p>';
+//		$wppa['out'] .= '<p class="wp-caption-text">'.strip_tags(stripslashes(wppa_get_photo_desc($wppa['single_photo']))).'</p>';
+		$wppa['out'] .= '<p class="wp-caption-text">'.wppa_get_photo_desc($wppa['single_photo']).'</p>';
 
 	$wppa['out'] .= '</div>';
 }	
@@ -4185,7 +4190,14 @@ global $wppa_opt;
 		if ( !current_user_can('wppa_upload') ) return;		// No upload rights
 	}
 	if ( !wppa_have_access($alb) ) return;				// No album access
-	
+	$allow = wppa_allow_uploads($alb);
+
+	if ( ! $allow ) {
+		$wppa['out'] .= __a('Max uploads reached', 'wppa_theme');
+		$wppa['out'] .= wppa_time_to_wait_html($alb);
+		return;											// Max quota reached
+	}
+
 	// Prepare the required extra url args
 	$album = wppa_get_get('album', '');
 	$cover = wppa_get_get('cover', '');
@@ -4203,6 +4215,7 @@ global $wppa_opt;
 			$wppa['out'] .= wppa_nltab().'<input type="file" multiple="multiple" class="wppa-user-file" style="margin: 6px 0; float:left; '.__wcs('wppa-box-text').'" id="wppa-user-upload-'.$alb.'-'.$wppa['master_occur'].'" name="wppa-user-upload-'.$alb.'-'.$wppa['master_occur'].'[]" onchange="jQuery(\'#wppa-user-submit-'.$alb.'-'.$wppa['master_occur'].'\').css(\'display\', \'block\')" />';
 			$wppa['out'] .= wppa_nltab().'<input type="submit" id="wppa-user-submit-'.$alb.'-'.$wppa['master_occur'].'" style="display:none; margin: 6px 0; float:right; '.__wcs('wppa-box-text').'" class="wppa-user-submit" name="wppa-user-submit-'.$alb.'-'.$wppa['master_occur'].'" value="'.__a('Upload Photo(s)', 'wppa_theme').'" /><br />';
 			$max = ini_get('max_file_uploads');
+			if ( $max && $allow > '0' && $allow < $max ) $max = $allow;
 			if ( $max ) $wppa['out'] .= wppa_nltab().'<br /><span style="font-size:10px;" >'.sprintf(__a('You may upload up to %s photos at once if your browser supports HTML-5 multiple file upload', 'wppa_theme'), $max).'</span>';
 			if ( $wppa_opt['wppa_copyright_on'] ) {
 				$wppa['out'] .= wppa_nltab().'<div id="wppa-copyright-'.$wppa['master_occur'].'" style="clear:both;" >'.__($wppa_opt['wppa_copyright_notice']).'</div>';
@@ -4273,25 +4286,29 @@ global $wppa_opt;
 		if (is_array($_FILES)) {
 			$bret = true;
 			$filecount = '1';
+			$done = '0';
 			foreach ($_FILES as $file) {
-				if ( ! is_array($file['error']) ) $bret = wppa_do_frontend_file_upload($file, $alb);	// this should no longer happen since the name is incl []
-				else {
-					$filecount = count($file['error']);
-					for ($i = '0'; $i < $filecount; $i++) {
-						if ( $bret ) {
-							$f['error'] = $file['error'][$i];
-							$f['tmp_name'] = $file['tmp_name'][$i];
-							$f['name'] = $file['name'][$i];
-							$f['type'] = $file['type'][$i];
-							$f['size'] = $file['size'][$i];
-							$bret = wppa_do_frontend_file_upload($f, $alb);
+				if ( $bret ) {
+					if ( ! is_array($file['error']) ) $bret = wppa_do_frontend_file_upload($file, $alb);	// this should no longer happen since the name is incl []
+					else {
+						$filecount = count($file['error']);
+						for ($i = '0'; $i < $filecount; $i++) {
+							if ( $bret ) {
+								$f['error'] = $file['error'][$i];
+								$f['tmp_name'] = $file['tmp_name'][$i];
+								$f['name'] = $file['name'][$i];
+								$f['type'] = $file['type'][$i];
+								$f['size'] = $file['size'][$i];
+								$bret = wppa_do_frontend_file_upload($f, $alb);
+								if ( $bret ) $done++;
+							}
 						}
 					}
 				}
 			}
-			if ( $bret ) {
-				if ( $filecount == '1' ) wppa_err_alert(__('Photo successfully uploaded.', 'wppa_theme'));
-				else wppa_err_alert(sprintf(__('%s photos successfully uploaded.', 'wppa_theme'), $filecount));
+			if ( $bret || $done ) {
+				if ( $done == '1' ) wppa_err_alert(__('Photo successfully uploaded.', 'wppa_theme'));
+				else wppa_err_alert(sprintf(__('%s photos successfully uploaded.', 'wppa_theme'), $done));
 			}
 			else wppa_err_alert(__('Upload failed', 'wppa_theme'));
 		}		
@@ -4300,9 +4317,12 @@ global $wppa_opt;
 
 function wppa_do_frontend_file_upload($file, $alb) {
 global $wpdb;
-//global $wppa;
 global $wppa_opt;
 				
+	if ( ! wppa_allow_uploads($alb) ) {
+		wppa_err_alert(__a('Max uploads reached', 'wppa_theme'));
+		return false;
+	}
 	if ( $file['error'] != '0' ) {
 		wppa_err_alert(__a('Error during upload', 'wppa_theme'));
 		return false;
@@ -4741,3 +4761,49 @@ global $wpdb;
 	return true;
 }
 	
+
+function wppa_time_to_wait_html($album) {
+global $wpdb;
+	
+	if ( ! $album ) return '0';
+
+	$limits = $wpdb->get_var($wpdb->prepare("SELECT `upload_limit` FROM `".WPPA_ALBUMS."` WHERE `id` = %s", $album));
+	$temp = explode('/', $limits);
+	$limit_max  = isset($temp[0]) ? $temp[0] : '0';
+	$limit_time = isset($temp[1]) ? $temp[1] : '0';
+
+	$result = '';
+	
+	if ( ! $limit_max || ! $limit_time ) return $result;
+	
+	$last_upload_time = $wpdb->get_var($wpdb->prepare("SELECT `timestamp` FROM `".WPPA_PHOTOS."` WHERE `album` = %s ORDER BY `timestamp` DESC LIMIT 1", $album));
+	$timnow = time();
+	
+	// For simplicity: a year is 364 days = 52 weeks, we skip the months
+	$seconds = array( 'min' => '60', 'hour' => '3600', 'day' => '86400', 'week' => '604800', 'month' => '2592000', 'year' => '31449600' );
+	$deltatim = $last_upload_time + $limit_time - $timnow;
+	
+	$temp    = $deltatim;
+//	$months  = floor($temp / $seconds['month']);
+//	$temp    = $temp % $seconds['month'];
+	$weeks   = floor($temp / $seconds['week']);
+	$temp    = $temp % $seconds['week'];
+	$days    = floor($temp / $seconds['day']);
+	$temp    = $temp % $seconds['day'];
+	$hours   = floor($temp / $seconds['hour']);
+	$temp    = $temp % $seconds['hour'];
+	$mins    = floor($temp / $seconds['min']);
+	$secs    = $temp % $seconds['min'];
+	
+	$switch = false;
+	$string = __a('You can upload after', 'wppa_theme').' ';
+//	if ( $months           ) { $string .= $months.' '.'months'.', '; $switch = true; }
+	if ( $weeks || $switch ) { $string .= $weeks.' '.__a('weeks', 'wppa_theme').', '; $switch = true; }
+	if ( $days  || $switch ) { $string .= $days.' '.__a('days', 'wppa_theme').', '; $switch = true; }
+	if ( $hours || $switch ) { $string .= $hours.' '.__a('hours', 'wppa_theme').', '; $switch = true; }
+	if ( $mins  || $switch ) { $string .= $mins.' '.__a('minutes', 'wppa_theme').' '.__a('and', 'wppa_theme').' '; $switch = true; }
+	if (           $switch ) { $string .= $secs.' '.__a('seconds', 'wppa_theme'); }
+	$string .= '.';
+	$result = '<span style="font-size:9px;"> '.$string.'</span>';
+	return $result;
+}

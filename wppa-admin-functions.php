@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 * gp admin functions
-* version 4.5.5
+* version 4.6.3
 *
 * 
 */
@@ -563,8 +563,18 @@ function __wppa_sanitize_files($root) {
 }
 
 // get select form element listing albums 
-function wppa_album_select($exc = '', $sel = '', $addnone = FALSE, $addseparate = FALSE, $checkancestors = FALSE, $none_is_all = false, $none_is_blank = false ) {
-	global $wpdb;
+function wppa_album_select(	$exc = '', 
+							$sel = '', 
+							$addnone = FALSE, 
+							$addseparate = FALSE, 
+							$checkancestors = FALSE, 
+							$none_is_all = false, 
+							$none_is_blank = false,
+							$check_upload_allowed = false
+							) {
+
+global $wpdb;
+
 	$albums = $wpdb->get_results($wpdb->prepare( "SELECT * FROM ".WPPA_ALBUMS." ORDER BY name" ), 'ARRAY_A');
 	
     if ($sel == '') {
@@ -579,15 +589,24 @@ function wppa_album_select($exc = '', $sel = '', $addnone = FALSE, $addseparate 
 		else $result .= '<option value="0">' . __('--- none ---', 'wppa') . '</option>';
 	}
     
-	foreach ($albums as $album) if (wppa_have_access($album)) {
-		if ($sel == $album['id']) { 
+	foreach ($albums as $album) if (wppa_have_access($album['id'])) {
+		$disabled = '';
+		$selected = '';
+
+		if ( $check_upload_allowed && ! wppa_allow_uploads($album['id']) ) {
+			$disabled = ' disabled="disabled" ';
+		}
+		elseif ($sel == $album['id']) { 
             $selected = ' selected="selected" '; 
         } 
-        else { $selected = ''; }
+		
 		if ($album['id'] != $exc && (!$checkancestors || !wppa_is_ancestor($exc, $album['id']))) {
-			$result .= '<option value="' . $album['id'] . '"' . $selected . '>'.wppa_qtrans(stripslashes($album['name'])).'</option>';
+			$result .= '<option value="' . $album['id'] . '"' . $selected . $disabled . '>';
+			$result .= wppa_qtrans(stripslashes($album['name']));
+			if ( $disabled ) $result .= ' '.__('(full)', 'wppa');
+			$result .= '</option>';
 		}
-		else {
+		else {	// excluded or is ancestor
 			$result .= '<option disabled="disabled" value="-3">'.wppa_qtrans(stripslashes($album['name'])).'</option>';
 		}
 	}
@@ -657,7 +676,8 @@ global $wpdb;
 											'cover_linktype' => 'tinytext NOT NULL',
 											'cover_linkpage' => 'bigint(20) NOT NULL',
 											'owner' => 'text NOT NULL',
-											'timestamp' => 'tinytext NOT NULL'											
+											'timestamp' => 'tinytext NOT NULL',
+											'upload_limit' => 'tinytext NOT NULL',											
 										), 
 					WPPA_PHOTOS => array(	'id' => 'bigint(20) NOT NULL', 
 											'album' => 'bigint(20) NOT NULL', 

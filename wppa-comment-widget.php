@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the recent commets on photos
-* Version 4.5.0
+* Version 4.6.3
 */
 
 class wppaCommentWidget extends WP_Widget {
@@ -22,12 +22,9 @@ class wppaCommentWidget extends WP_Widget {
 
         extract( $args );
 		
- 		$widget_title = apply_filters('widget_title', empty( $instance['title'] ) ? __a('Comments on Photos', 'wppa_theme') : $instance['title']);
-
-		$instance = wp_parse_args( (array) $instance, array( 'title' => '' ) );
-
 		$page = $wppa_opt['wppa_comment_widget_linkpage'];
 		$max  = $wppa_opt['wppa_comment_count'];
+		$widget_title = apply_filters('widget_title', $instance['title']);
 		
 		$comments = $wpdb->get_results($wpdb->prepare( "SELECT * FROM ".WPPA_COMMENTS." WHERE status = 'approved' ORDER BY timestamp DESC LIMIT %d", $max ), "ARRAY_A");
 
@@ -85,7 +82,9 @@ class wppaCommentWidget extends WP_Widget {
 		
 		$widget_content .= "\n".'<!-- WPPA+ comment Widget end -->';
 
-		echo "\n".$before_widget.$before_title.$widget_title.$after_title.$widget_content.$after_widget;
+		echo "\n" . $before_widget;
+		if ( !empty( $widget_title ) ) { echo $before_title . $widget_title . $after_title; }
+		echo $widget_content . $after_widget;
     }
 	
     /** @see WP_Widget::update */
@@ -99,8 +98,8 @@ class wppaCommentWidget extends WP_Widget {
     /** @see WP_Widget::form */
     function form($instance) {				
 		//Defaults
-		$instance = wp_parse_args( (array) $instance, array( 'title' => '' ) );
- 		$widget_title = apply_filters('widget_title', empty( $instance['title'] ) ? get_option('wppa_commentwidgettitle', __('Comments on Photos', 'wppa')) : $instance['title']);
+		$instance = wp_parse_args( (array) $instance, array( 'title' => __('Comments on Photos', 'wppa') ) );
+ 		$widget_title = $instance['title'];
 ?>
 			<p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:', 'wppa'); ?></label> <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $widget_title; ?>" /></p>
 			<p><?php _e('You can set the behaviour of this widget in the <b>Photo Albums -> Settings</b> admin page.', 'wppa'); ?></p>

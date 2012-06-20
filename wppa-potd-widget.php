@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the widget
-* Version 4.5.0
+* Version 4.6.3
 */
 
 class PhotoOfTheDay extends WP_Widget {
@@ -21,7 +21,8 @@ class PhotoOfTheDay extends WP_Widget {
 
         extract( $args );
 
-		$widget_title = $instance['title'];
+//		$widget_title = $instance['title'];
+		$widget_title = apply_filters('widget_title', $instance['title']);
 
 		// get the photo  ($image)
 		$image = wppa_get_potd();
@@ -73,7 +74,9 @@ class PhotoOfTheDay extends WP_Widget {
 
 		$widget_content .= "\n".'<!-- WPPA+ Photo of the day Widget end -->';
 
-		echo "\n" . $before_widget . $before_title . $widget_title . $after_title . $widget_content . $after_widget;
+		echo "\n" . $before_widget;
+		if ( !empty( $widget_title ) ) { echo $before_title . $widget_title . $after_title; }
+		echo $widget_content . $after_widget;
     }
 	
     /** @see WP_Widget::update */

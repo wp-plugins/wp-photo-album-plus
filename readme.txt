@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, multisite, network, lightbox, comment, watermark, iptc, exif
-Version: 4.6.2
+Version: 4.6.3
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -65,7 +65,7 @@ Most themes comply with these requirements.
 However, check these requirements in case of problems with new installations with themes you never had used before with wppa+ or when you modifies your theme.
 
 = Upgrade notice =
-This version is: Major rev# 4, Minor rev# 6, Fix rev# 0, Hotfix rev# 000.
+This version is: Major rev# 4, Minor rev# 6, Fix rev# 3, Hotfix rev# 000.
 If you are upgrading from a previous Major or Minor version, note that:
 * If you modified wppa_theme.php and/or wppa_style.css, you will have to use the newly supplied versions. The previous versions are NOT compatible.
 * If you set the userlevel to anything else than 'administrator' you may have to set it again. Note that changing the userlevel can be done by the administrator only!
@@ -144,6 +144,24 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 4.6.3 =
+
+= Bug Fixes =
+
+* The animation in the embedded lightbox for images that were smaller than the maximum possible ended with a shift to the left. Fixed.
+* Fixed a layout issue for the left/right arrows in the embedded lightbox for some installations.
+* Fixed a pagination problem that caused the first page to be empty and redundant.
+
+= New Features =
+
+* There is a maximum upload system in place. See Table IX-B5 and the Edit Album admin page. 
+Limits can be set on an album basis (with a default on creation time set in Table IX-B5) and are only changeable by administrators.
+* You can set whether slideonly starts running or not in Table IV-B3.1.
+
+= Other Changes =
+
+* All the 7 widgets can now have an empty title and will hide the widget title box when the title is blank.
 
 = 4.6.2 =
 

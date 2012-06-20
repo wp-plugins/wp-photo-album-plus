@@ -2,11 +2,11 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 4.6.2
+* version 4.6.3
 *
 */
 global $wppa_api_version;
-$wppa_api_version = '4-6-2-000';
+$wppa_api_version = '4-6-3-000';
 // Initialize globals and option settings
 function wppa_initialize_runtime($force = false) {
 global $wppa;
@@ -215,6 +215,7 @@ global $wpdb;
 						'wppa_fullvalign' 				=> '',	// 1
 						'wppa_fullhalign' 				=> '',	// 2
 						'wppa_start_slide' 				=> '',	// 3
+						'wppa_start_slideonly'			=> '',	// 3.1
 						'wppa_animation_type'			=> '',	// 4
 						'wppa_slideshow_timeout'		=> '',	// 5
 						'wppa_animation_speed' 			=> '',	// 6
@@ -377,6 +378,9 @@ global $wpdb;
 						'wppa_filter_priority'			=> '',
 						'wppa_apply_newphoto_desc'		=> '',
 						'wppa_newphoto_description'		=> '',
+						'wppa_upload_limit_count'		=> '',		// 5a
+						'wppa_upload_limit_time'		=> '',		// 5b
+
 						'wppa_autoclean'				=> '',
 						'wppa_watermark_on'				=> '',
 						'wppa_watermark_user'			=> '',
@@ -1657,4 +1661,32 @@ global $wppa;
 	$fullmsg = '<script type="text/javascript" >jQuery(document).ready(function(e) { alert(\''.$msg.'\') } )</script>';
 	if ( is_admin() ) echo $fullmsg;
 	else $wppa['out'] .= $fullmsg;	
+}
+
+// Return the allowed number to upload in an album. -1 = unlimited
+function wppa_allow_uploads($album = '0') {
+global $wpdb;
+
+	if ( ! $album ) return '0';
+
+	$limits = $wpdb->get_var($wpdb->prepare("SELECT `upload_limit` FROM `".WPPA_ALBUMS."` WHERE `id` = %s", $album));
+	$temp = explode('/', $limits);
+	$limit_max  = isset($temp[0]) ? $temp[0] : '0';
+	$limit_time = isset($temp[1]) ? $temp[1] : '0';
+
+	if ( ! $limit_max ) return '-1';		// Unlimited max
+	
+	if ( ! $limit_time ) {					// For ever
+		$curcount = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `".WPPA_PHOTOS."` WHERE `album` = %s", $album));
+	}
+	else {									// Time criterium in place
+		$timnow = time();
+		$timthen = $timnow - $limit_time;
+		$curcount = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `".WPPA_PHOTOS."` WHERE `album` = %s AND `timestamp` > %s", $album, $timthen));
+	}
+	
+	if ( $curcount >= $limit_max ) $result = '0';	// No more allowed
+	else $result = $limit_max - $curcount;
+
+	return $result;
 }

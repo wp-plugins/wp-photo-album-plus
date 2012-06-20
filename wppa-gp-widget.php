@@ -6,7 +6,7 @@
 *
 * A text widget that hooks the wppa+ filter
 *
-* Version 4.3.6
+* Version 4.6.3
 */
 
 class WppaGpWidget extends WP_Widget {
@@ -22,7 +22,7 @@ class WppaGpWidget extends WP_Widget {
 		global $wppa; 
 
 		extract($args);
- 		$title = apply_filters('widget_title', empty( $instance['title'] ) ? '' : $instance['title']);
+ 		$title = apply_filters('widget_title', $instance['title']);
 
 		$wppa['in_widget'] = true;
 				
@@ -57,8 +57,8 @@ class WppaGpWidget extends WP_Widget {
 
 	function form( $instance ) {
 		global $wppa_opt;
-		$instance = wp_parse_args( (array) $instance, array( 'title' => '', 'text' => '' ) );
-		$title = strip_tags($instance['title']);
+		$instance = wp_parse_args( (array) $instance, array( 'title' => __('WPPA+ Text', 'wppa'), 'text' => '' ) );
+		$title = $instance['title'];
 		$text = format_to_edit($instance['text']);
 ?>
 		<p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:'); ?></label>
