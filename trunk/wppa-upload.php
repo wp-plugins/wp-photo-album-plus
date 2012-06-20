@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the upload/import pages and functions
-* Version 4.5.5
+* Version 4.6.3
 *
 */
 
@@ -143,7 +143,7 @@ global $wppa_revno;
 						<label for="wppa-album"><?php _e('Album:', 'wppa'); ?> </label>
 						<select name="wppa-album" id="wppa-album">
 							<option value=""><?php _e('- select an album -', 'wppa') ?></option>
-							<?php echo(wppa_album_select()); ?>
+							<?php echo(wppa_album_select('', '', false, false, false, false, false, true)); ?>
 						</select>
 					</p>
 					<?php if ( $wppa_opt['wppa_watermark_on'] == 'yes' && $wppa_opt['wppa_watermark_user'] == 'yes' ) { ?>		
@@ -179,7 +179,7 @@ global $wppa_revno;
 						<label for="wppa-album"><?php _e('Album:', 'wppa'); ?> </label>
 						<select name="wppa-album" id="wppa-album">
 							<option value=""><?php _e('- select an album -', 'wppa') ?></option>
-							<?php echo(wppa_album_select()); ?>
+							<?php echo(wppa_album_select('', '', false, false, false, false, false, true)); ?>
 						</select>
 					</p>
 					<?php if ( $wppa_opt['wppa_watermark_on'] == 'yes' && $wppa_opt['wppa_watermark_user'] == 'yes' ) { ?>		
@@ -412,7 +412,7 @@ global $wppa_revno;
 				<?php _e('Default album for import:', 'wppa') ?>
 				<select name="wppa-album" id="wppa-album">
 					<option value=""><?php _e('- select an album -', 'wppa') ?></option>
-					<?php echo(wppa_album_select()) ?>
+					<?php echo(wppa_album_select('', '', false, false, false, false, false, true)) ?>
 				</select>
 				<?php _e('Photos that have (<em>name</em>)[<em>album</em>] will be imported by that <em>name</em> in that <em>album</em>.', 'wppa') ?>
 			</p>
@@ -508,7 +508,7 @@ function wppa_upload_multiple() {
 						$count++;
 					}
 					else {
-						wppa_error_message(__('Error inserting photo', 'wppa') . ' ' . basename($file['tmp_name']) . '.');
+						wppa_error_message(__('Error inserting photo', 'wppa') . ' ' . basename($file['name'][$i]) . '.');
 						return;
 					}
 				}
@@ -538,7 +538,7 @@ function wppa_upload_photos() {
 				$count++;
 			}
 			else {
-				wppa_error_message(__('Error inserting photo', 'wppa') . ' ' . basename($file['tmp_name']) . '.');
+				wppa_error_message(__('Error inserting photo', 'wppa') . ' ' . basename($file['name']) . '.');
 				return;
 			}
 		}
@@ -771,6 +771,11 @@ function wppa_insert_photo ($file = '', $album = '', $name = '', $desc = '', $po
 	global $warning_given_big;
 	global $wppa_opt;
 	
+	if ( ! wppa_allow_uploads($album) ) {
+			wppa_err_alert(__('Max uploads reached for album', 'wppa').' '.wppa_get_album_name($album));
+			return false;
+	}
+
 	if ($file != '' && $album != '' ) {
 		// Get the name if not given
 		if ($name == '') $name = basename($file);
@@ -793,7 +798,7 @@ function wppa_insert_photo ($file = '', $album = '', $name = '', $desc = '', $po
 			}
 		}
 		else {
-			wppa_error_message(__('ERROR: Unable to retrieve immage size of', 'wppa').' '.$name.' '.__('Are you sure it is a photo?', 'wppa'));
+			wppa_error_message(__('ERROR: Unable to retrieve image size of', 'wppa').' '.$name.' '.__('Are you sure it is a photo?', 'wppa'));
 			return false;
 		}
 		// Get ext based on mimetype, regardless of ext

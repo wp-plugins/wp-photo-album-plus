@@ -2,7 +2,7 @@
 /* wppa-ajax.php
 *
 * Functions used in ajax requests
-* version 4.6.0
+* version 4.6.3
 *
 */
 add_action('wp_ajax_wppa', 'wppa_ajax_callback');
@@ -253,6 +253,22 @@ global $wppa;
 					break;
 				case 'owner':
 					$itemname = __('Owner', 'wppa');
+					break;
+				case 'upload_limit_count':
+					wppa_ajax_check_range($value, false, '0', false, __('Upload limit count', 'wppa'));
+					if ( $wppa['error'] ) exit;
+					$oldval = $wpdb->get_var($wpdb->prepare('SELECT `upload_limit` FROM '.WPPA_ALBUMS.' WHERE `id` = %s', $album));
+					$temp = explode('/', $oldval);
+					$value = $value.'/'.$temp[1];
+					$item = 'upload_limit';
+					$itemname = __('Upload limit count', 'wppa');
+					break;
+				case 'upload_limit_time':
+					$oldval = $wpdb->get_var($wpdb->prepare('SELECT `upload_limit` FROM '.WPPA_ALBUMS.' WHERE `id` = %s', $album));
+					$temp = explode('/', $oldval);
+					$value = $temp[0].'/'.$value;
+					$item = 'upload_limit';
+					$itemname = __('Upload limit time', 'wppa');
 					break;
 				default:
 					$itemname = $item;
@@ -575,7 +591,9 @@ global $wppa;
 				case 'wppa_ovl_opacity':
 					wppa_ajax_check_range($value, false, '0', '100', __('Overlay opacity', 'wppa'));
 					break;
-					
+				case 'wppa_upload_limit_count':
+					wppa_ajax_check_range($value, false, '0', false, __('Upload limit', 'wppa'));
+					break;
 				case 'wppa_rating_clear':
 					$iret1 = $wpdb->query($wpdb->prepare( 'TRUNCATE TABLE '.WPPA_RATING ) );
 					$iret2 = $wpdb->query($wpdb->prepare( 'UPDATE '.WPPA_PHOTOS.' SET mean_rating="0", rating_count="0" WHERE id > -1' ) );

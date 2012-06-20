@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display a slideshow in the sidebar
-* Version 4.5.5
+* Version 4.6.3
 */
 
 /**
@@ -44,7 +44,7 @@ class SlideshowWidget extends WP_Widget {
 											'numbar'	=> 'no',
 											'desc' 		=> 'no' 
 											) );
-		$title 		= $instance['title'];
+		$title 		= apply_filters('widget_title', $instance['title']);
 		$album 		= $instance['album'];
 		$width 		= $instance['width'];
 		$height		= $instance['height'];
@@ -62,7 +62,8 @@ class SlideshowWidget extends WP_Widget {
 		$desc 		= $instance['desc'];
 		
 		if (is_numeric($album)) {
-			echo $before_widget . $before_title . $title . $after_title;
+			echo $before_widget;
+				if ( !empty( $title ) ) { echo $before_title . $title . $after_title; }
 				if ( $linkurl != '' && $wppa_opt['wppa_slideonly_widget_linktype'] == 'widget' ) {
 					$wppa['in_widget_linkurl'] = $linkurl;
 					$wppa['in_widget_linktitle'] = wppa_qtrans($linktitle);
@@ -105,12 +106,11 @@ class SlideshowWidget extends WP_Widget {
 			echo $after_widget;
 		}
 		else {
-			echo $before_widget . $before_title . $title . $after_title;
+			echo "\n" . $before_widget;
+			if ( !empty( $widget_title ) ) { echo $before_title . $widget_title . $after_title; }
 			echo __a('No album defined yet.', 'wppa_theme');
 			echo $after_widget;
 		}
-
-		//echo $before_widget . $before_title . $title . $after_title . $widget_content . $after_widget;
     }
 	
     /** @see WP_Widget::update */
@@ -146,7 +146,7 @@ class SlideshowWidget extends WP_Widget {
 		global $wppa_opt;
 		//Defaults
 		$instance = wp_parse_args( (array) $instance,
-									array( 	'title' 	=> apply_filters('widget_title', __( 'Sidebar Slideshow', 'wppa' )),
+									array( 	'title' 	=> __( 'Sidebar Slideshow', 'wppa' ),
 											'album' 	=> '', 
 											'width' 	=> $wppa_opt['wppa_widget_width'], 
 											'height' 	=> round( $wppa_opt['wppa_widget_width'] * $wppa_opt['wppa_maxheight'] / $wppa_opt['wppa_fullsize'] ),

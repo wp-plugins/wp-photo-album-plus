@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 4.6.1
+* Version 4.6.3
 *
 */
 
@@ -1240,6 +1240,13 @@ global $wppa_revno;
 						$html = wppa_select($slug, $options, $values);
 						$class = 'wppa_ss';
 						wppa_setting($slug, '3', $name, $desc, $html, $help, $class);
+						
+						$name = __('Start slideonly', 'wppa');
+						$desc = __('Start slideonly slideshow running.', 'wppa');
+						$help = '';
+						$slug = 'wppa_start_slideonly';
+						$html = wppa_checkbox($slug);
+						wppa_setting($slug, '3.1', $name, $desc, $html, $help);
 												
 						$name = __('Animation type', 'wppa');
 						$desc = __('The way successive slides appear.', 'wppa');
@@ -2381,6 +2388,23 @@ global $wppa_revno;
 						$slug = 'wppa_newphoto_description';
 						$html = wppa_textarea($slug);
 						wppa_setting($slug, '4', $name, $desc, $html, $help);
+						
+						$name = __('Upload limit', 'wppa');
+						$desc = __('New albums are created with this upload limit.', 'wppa');
+						$help = esc_js(__('Administrators can change the limit settings in the "Edit Album Information" admin page.', 'wppa'));
+						$help .= '\n'.esc_js(__('A value of 0 means: no limit.', 'wppa'));
+						$slug = 'wppa_upload_limit_count';
+						$html = wppa_input($slug, '50px', '', __('photos', 'wppa'));
+						$slug = 'wppa_upload_limit_time';
+						$options = array( 	__('for ever', 'wppa'), 
+											__('per hour', 'wppa'), 
+											__('per day', 'wppa'), 
+											__('per week', 'wppa'), 
+											__('per month', 'wppa'), 	// 30 days
+											__('per year', 'wppa'));	// 364 days
+						$values = array( '0', '3600', '86400', '604800', '2592000', '31449600');
+						$html .= wppa_select($slug, $options, $values);
+						wppa_setting(false, '5', $name, $desc, $html, $help);
 						
 						wppa_setting_subheader('C', '1', __('Search Albums and Photos related settings', 'wppa'));
 						

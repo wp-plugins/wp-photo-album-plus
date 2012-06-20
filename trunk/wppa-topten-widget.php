@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the top rated photos
-* Version 4.5.5
+* Version 4.6.3
 */
 
 class TopTenWidget extends WP_Widget {
@@ -22,10 +22,9 @@ class TopTenWidget extends WP_Widget {
 
         extract( $args );
 		
- 		$widget_title = apply_filters('widget_title', empty( $instance['title'] ) ? __a('Top Ten Photos', 'wppa_theme') : $instance['title']);
-
 		$instance = wp_parse_args( (array) $instance, array( 'sortby' => 'mean_rating', 'title' => '', 'album' => '' ) );
 
+ 		$widget_title = apply_filters('widget_title', $instance['title'] );
 		$page = $wppa_opt['wppa_topten_widget_linkpage'];
 		$max  = $wppa_opt['wppa_topten_count'];
 		
@@ -91,7 +90,9 @@ class TopTenWidget extends WP_Widget {
 		
 		$widget_content .= "\n".'<!-- WPPA+ TopTen Widget end -->';
 
-		echo "\n".$before_widget.$before_title.$widget_title.$after_title.$widget_content.$after_widget;
+		echo "\n" . $before_widget;
+		if ( !empty( $widget_title ) ) { echo $before_title . $widget_title . $after_title; }
+		echo $widget_content . $after_widget;
     }
 	
     /** @see WP_Widget::update */
@@ -108,8 +109,8 @@ class TopTenWidget extends WP_Widget {
     function form($instance) {	
 		global $wppa_opt;
 		//Defaults
-		$instance = wp_parse_args( (array) $instance, array( 'sortby' => 'mean_rating', 'title' => '', 'album' => '0') );
- 		$widget_title = apply_filters('widget_title', empty( $instance['title'] ) ? $wppa_opt['wppa_toptenwidgettitle'] : $instance['title']);
+		$instance = wp_parse_args( (array) $instance, array( 'sortby' => 'mean_rating', 'title' => __('Top Ten Photos', 'wppa'), 'album' => '0') );
+ 		$widget_title = apply_filters('widget_title', $instance['title']);
 
 		$album = $instance['album'];
 ?>

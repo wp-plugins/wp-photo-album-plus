@@ -2,7 +2,7 @@
 //
 // conatins slideshow, theme and ajax code
 //
-// Version 4.6.1
+// Version 4.6.3
 
 // Part 1: Slideshow
 //
@@ -1907,8 +1907,8 @@ function wppaOvlShow4() {
 		if (wppaOvlIdx != (wppaOvlUrls.length-1)) vr = 'visible';
 		if (wppaOvlTxtHeight == 'auto') ht = '';
 		
-		var html = 	'<img src="'+wppaImageDirectory+'prev-'+wppaOvlTheme+'.gif" style="margin-top:-8px; float:left; '+vl+'; box-shadow:none;" onclick="wppaOvlShowPrev()" / >'+
-					'<img src="'+wppaImageDirectory+'next-'+wppaOvlTheme+'.gif" style="margin-top:-8px; float:right;'+vr+'; box-shadow:none;" onclick="wppaOvlShowNext()" / >'+
+		var html = 	'<img src="'+wppaImageDirectory+'prev-'+wppaOvlTheme+'.gif" style="position:relative; top:-8px; float:left; '+vl+'; box-shadow:none;" onclick="wppaOvlShowPrev()" / >'+
+					'<img src="'+wppaImageDirectory+'next-'+wppaOvlTheme+'.gif" style="position:relative; top:-8px; float:right;'+vr+'; box-shadow:none;" onclick="wppaOvlShowNext()" / >'+
 					'<div id="wppa-overlay-txt" style="text-align:center; min-height:36px; '+ht+' overflow:hidden; box-shadow:none; width:'+(cw-80)+'px;" >'+(wppaOvlIdx+1)+'/'+wppaOvlUrls.length+'<br />'+wppaOvlTitle+'</div>';
 		jQuery('#wppa-overlay-txt-container').html(html);
 	}
@@ -1978,33 +1978,36 @@ function wppaOvlSize(speed) {
 	var mw = parseInt(mh * nw / nh);
 	var pt = wppaOvlPadTop;
 	var lft = parseInt((iw-mw)/2);
-	
+	var wid = mw;
+
 	// Image too small?
 	if (nh < mh) {
 		pt = wppaOvlPadTop + (mh - nh)/2;
 		lft = parseInt((iw-nw)/2);
+		wid = nw;
 	}
 
+	// Go to final size
 	if ( speed == 0 ) {
-		jQuery('#wppa-overlay-img').css({maxWidth: mw+'px', visibility: 'visible'});
+		jQuery('#wppa-overlay-img').css({maxWidth: wid+'px', visibility: 'visible'});
 		jQuery('#wppa-overlay-ic').css({left: lft+'px', paddingTop: pt+'px'});
 		jQuery('#wppa-overlay-qt-txt').css({top: (pt-3)+'px'});
 		jQuery('#wppa-overlay-qt-img').css({top: pt+'px'});
 	}
 	else {
-		jQuery('#wppa-overlay-img').stop().animate({maxWidth: mw+'px'}, speed);
-		jQuery('#wppa-overlay-ic').stop().animate({left: lft+'px', paddingTop: pt+'px'}, speed);
-		jQuery('#wppa-overlay-qt-txt').stop().animate({top: (pt-1)+'px'}, speed);
-		jQuery('#wppa-overlay-qt-img').stop().animate({top: pt+'px'}, speed);
+
+		jQuery('#wppa-overlay-img').animate({maxWidth: wid+'px'}, speed);
+		jQuery('#wppa-overlay-ic').animate({left: lft+'px', paddingTop: pt+'px'}, speed);
+		jQuery('#wppa-overlay-qt-txt').animate({top: (pt-1)+'px'}, speed);
+		jQuery('#wppa-overlay-qt-img').animate({top: pt+'px'}, speed);
 	}
 	
 	// If resizing, also resize txt elements when sizing is complete
 	if ( document.getElementById('wppa-overlay-txt') ) {
 		// Hide during resize if sizing takes longer than 10 ms.
 		if (speed > 10) jQuery('#wppa-overlay-txt').css({visibility: 'hidden'});
-}		
-		setTimeout('wppaOvlSize2()', speed+20);
-//	}
+	}		
+	setTimeout('wppaOvlSize2()', speed+20);
 	return true;
 }
 function wppaOvlSize2() {

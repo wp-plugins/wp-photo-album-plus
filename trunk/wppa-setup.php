@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 4.6.1
+* Version 4.6.3
 *
 */
 
@@ -51,6 +51,7 @@ global $silent;
 					cover_linkpage bigint(20) NOT NULL,
 					owner text NOT NULL,
 					timestamp tinytext NOT NULL,
+					upload_limit tinytext NOT NULL,
 					PRIMARY KEY  (id) 
 					) DEFAULT CHARACTER SET utf8;";
 					
@@ -148,6 +149,7 @@ global $silent;
 	wppa_setup_query($wpdb->prepare( 'UPDATE `'.WPPA_ALBUMS.'` SET `cover_linktype` = %s WHERE `cover_linkpage` = %s', 'none', '-1' ));
 	wppa_setup_query($wpdb->prepare( 'UPDATE `'.WPPA_PHOTOS.'` SET `status` = %s WHERE `status` = %s', 'publish', '' ));
 	wppa_setup_query($wpdb->prepare( 'UPDATE `'.WPPA_PHOTOS.'` SET `linktarget` = %s WHERE `linktarget` = %s', '_self', '' ));
+	wppa_setup_query($wpdb->prepare( 'UPDATE `'.WPPA_ALBUMS.'` SET `upload_limit` = %s WHERE `upload_limit` = %s', '0/0', '' ));
 
 	// Convert any changed and remove obsolete setting options
 	if ( $old_rev > '100' ) {	// On update only
@@ -356,7 +358,7 @@ Hide Camera info
 						'wppa_thumbnail_widget_count'	=> '10',	// 5
 						'wppa_thumbnail_widget_size'	=> '86',	// 6
 						// G Overlay
-						'wppa_ovl_txt_lines'			=> '4',		// 
+						'wppa_ovl_txt_lines'			=> 'auto',	// 
 
 						// Table II: Visibility
 						// A Breadcrumb
@@ -442,6 +444,7 @@ Hide Camera info
 						'wppa_fullvalign' 				=> 'fit',
 						'wppa_fullhalign' 				=> 'center',
 						'wppa_start_slide' 				=> 'run',
+						'wppa_start_slideonly'			=> 'yes',
 						'wppa_animation_type'			=> 'fadeover',
 						'wppa_slideshow_timeout'		=> '2500',
 						'wppa_animation_speed' 			=> '800',
@@ -602,6 +605,8 @@ Hide Camera info
 						'wppa_max_photo_newtime'		=> '0',		// 2
 						'wppa_apply_newphoto_desc'		=> 'no',	// 3
 						'wppa_newphoto_description'		=> $npd,	// 4
+						'wppa_upload_limit_count'		=> '0',		// 5a
+						'wppa_upload_limit_time'		=> '0',		// 5b
 						// C Search
 						'wppa_search_linkpage' 			=> '0',		// 1
 						'wppa_excl_sep' 				=> 'no',	// 2
@@ -760,6 +765,6 @@ function wppa_check_dirs() {
 	return true;
 }
 function wppa_credirmsg($dir) {
-	$msg = ' '.sprintf(__('Ask your administrator to give you more rights, try CHMOD from table VII item 1 of the Photo Albums -> Settings admin page or create <b>%s</b> manually using an FTP program.', 'wppa'), $dir);
+	$msg = ' '.sprintf(__('Ask your administrator to give you more rights, or create <b>%s</b> manually using an FTP program.', 'wppa'), $dir);
 	return $msg;
 }

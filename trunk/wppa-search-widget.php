@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the search widget
-* Version 4.5.0
+* Version 4.6.3
 *
 */
 
@@ -23,10 +23,12 @@ class SearchPhotos extends WP_Widget {
 
         extract( $args );
         
- 		$widget_title = apply_filters('widget_title', empty( $instance['title'] ) ? $wppa_opt['wppa_searchwidgettitle'] : $instance['title']);
+ 		$widget_title = apply_filters('widget_title', $instance['title']);
 
 		// Display the widget
-		echo $before_widget . $before_title . $widget_title . $after_title;
+		echo $before_widget;
+			
+		if ( !empty( $widget_title ) ) { echo $before_title . $widget_title . $after_title; }
 		
 		$page = $wppa_opt['wppa_search_linkpage'];
 		if ($page == '0') {
@@ -58,8 +60,8 @@ class SearchPhotos extends WP_Widget {
     /** @see WP_Widget::form */
     function form($instance) {				
 		//Defaults
-		$instance = wp_parse_args( (array) $instance, array( 'title' => '') );
-		$title = esc_attr( $instance['title'] );
+		$instance = wp_parse_args( (array) $instance, array( 'title' => __('Search Photos', 'wppa')) );
+		$title = $instance['title'];
 	?>
 		<p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:', 'wppa'); ?></label> <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $title; ?>" /></p>
 <?php

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * create, edit and delete albums
-* version 4.6.2
+* version 4.6.3
 *
 */
 
@@ -35,7 +35,8 @@ function _wppa_admin() {
 			if ($_GET['edit_id'] == 'new') {
 				$name = __('New Album', 'wppa');
 				$id = wppa_nextkey(WPPA_ALBUMS);
-				$query = $wpdb->prepare('INSERT INTO `' . WPPA_ALBUMS . '` (`id`, `name`, `description`, `a_order`, `a_parent`, `p_order_by`, `main_photo`, `cover_linktype`, `cover_linkpage`, `owner`, `timestamp`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)', $id, $name, '', '0', '0', '0', '0', 'content', '0', wppa_get_user(), time());
+				$uplim = $wppa_opt['wppa_upload_limit_count'].'/'.$wppa_opt['wppa_upload_limit_time'];
+				$query = $wpdb->prepare('INSERT INTO `' . WPPA_ALBUMS . '` (`id`, `name`, `description`, `a_order`, `a_parent`, `p_order_by`, `main_photo`, `cover_linktype`, `cover_linkpage`, `owner`, `timestamp`, `upload_limit`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)', $id, $name, '', '0', '0', '0', '0', 'content', '0', wppa_get_user(), time(), $uplim);
 				$iret = $wpdb->query($query);
 				if ($iret === FALSE) {
 					wppa_error_message(__('Could not create album.', 'wppa').'<br/>Query = '.$query);
@@ -175,6 +176,46 @@ function _wppa_admin() {
 								</td>
 								<td style="padding-top:0; padding-bottom:0;">
 									<span class="description"><?php _e('Select the photo you want to appear on the cover of this album.', 'wppa'); ?></span>
+								</td>
+							</tr>
+							<!-- Upload limit -->
+							<tr valign="top">
+								<th style="padding-top:0; padding-bottom:4px;" scope="row">
+									<label ><?php _e('Upload limit:', 'wppa') ?></label>
+								</th>
+								<td style="padding-top:0; padding-bottom:4px;">
+								<?php
+									$lims = explode('/', $albuminfo['upload_limit']);
+									if ( current_user_can('administrator') ) { ?>
+										<input type="text" id="upload_limit_count" value="<?php echo($lims[0]) ?>" style="width: 50px" onchange="wppaAjaxUpdateAlbum(<?php echo $edit_id ?>, 'upload_limit_count', this)" />
+										<select onchange="wppaAjaxUpdateAlbum(<?php echo $edit_id ?>, 'upload_limit_time', this)" >
+											<option value="0" <?php if ($lims[1] == '0') echo 'selected="selected"' ?>><?php _e('for ever', 'wppa') ?></option>
+											<option value="3600" <?php if ($lims[1] == '3600') echo 'selected="selected"' ?>><?php _e('per hour', 'wppa') ?></option>
+											<option value="86400" <?php if ($lims[1] == '86400') echo 'selected="selected"' ?>><?php _e('per day', 'wppa') ?></option>
+											<option value="604800" <?php if ($lims[1] == '604800') echo 'selected="selected"' ?>><?php _e('per week', 'wppa') ?></option>
+											<option value="2592000" <?php if ($lims[1] == '2592000') echo 'selected="selected"' ?>><?php _e('per month', 'wppa') ?></option>
+											<option value="31536000" <?php if ($lims[1] == '31536000') echo 'selected="selected"' ?>><?php _e('per year', 'wppa') ?></option>
+										</select>
+										</td>
+										<td style="padding-top:0; padding-bottom:4px;">
+										<span class="description"><?php _e('Set the upload limit (0 means unlimited) and the upload limit period.', 'wppa'); ?></span>
+										<?php
+									}
+									else {
+										
+										if ( $lims[0] == '0' ) _e('Unlimited', 'wppa');
+										else {
+											echo $lims[0].' ';
+											switch ($lims[1]) {
+												case '3600': _e('per hour', 'wppa'); break;
+												case '86400': _e('per day', 'wppa'); break;
+												case '604800': _e('per week', 'wppa'); break;
+												case '2592000': _e('per month', 'wppa'); break;
+												case '31536000': _e('per year', 'wppa'); break;
+											}
+										}
+									}
+								?>
 								</td>
 							</tr>
 							<!-- Link type -->

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display thumbnail photos
-* Version 4.5.0
+* Version 4.6.3
 */
 
 class ThumbnailWidget extends WP_Widget {
@@ -23,13 +23,13 @@ class ThumbnailWidget extends WP_Widget {
 
         extract( $args );
 		
- 		$widget_title = apply_filters('widget_title', empty( $instance['title'] ) ? __a('Thumbnail Photos', 'wppa_theme') : $instance['title']);
-
 		$instance = wp_parse_args( (array) $instance, array( 
 													'title' => '',
 													'album' => 'no',
 													'name' => 'no'
 													) );
+ 
+		$widget_title = apply_filters('widget_title', $instance['title']);
 
 		$page = $wppa_opt['wppa_thumbnail_widget_linkpage'];
 		$max  = $wppa_opt['wppa_thumbnail_widget_count'];
@@ -97,7 +97,9 @@ class ThumbnailWidget extends WP_Widget {
 		
 		$widget_content .= "\n".'<!-- WPPA+ thumbnail Widget end -->';
 
-		echo "\n".$before_widget.$before_title.$widget_title.$after_title.$widget_content.$after_widget;
+		echo "\n" . $before_widget;
+		if ( !empty( $widget_title ) ) { echo $before_title . $widget_title . $after_title; }
+		echo $widget_content . $after_widget;
     }
 	
     /** @see WP_Widget::update */
@@ -115,14 +117,12 @@ class ThumbnailWidget extends WP_Widget {
 		global $wppa_opt;
 		//Defaults
 		$instance = wp_parse_args( (array) $instance, array( 
-															'sortby' => 'post_title', 
-															'title' => '', 
+															'title' => __('Thumbnail Photos', 'wppa'),
 															'album' => '0',
 															'name' => 'no') );
- 		$widget_title = apply_filters('widget_title', empty( $instance['title'] ) ? $wppa_opt['wppa_thumbnailwidgettitle'] : $instance['title']);
-
-		$album = $instance['album'];
+ 		$album = $instance['album'];
 		$name = $instance['name'];
+		$widget_title = $instance['title'];
 ?>
 		<p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:', 'wppa'); ?></label> <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $widget_title; ?>" /></p>
 		<p><label for="<?php echo $this->get_field_id('album'); ?>"><?php _e('Album:', 'wppa'); ?></label> 
