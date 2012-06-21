@@ -151,7 +151,8 @@ See for additional information: http://wppa.opajaap.nl/?page_id=1459
 
 * The animation in the embedded lightbox for images that were smaller than the maximum possible ended with a shift to the left. Fixed.
 * Fixed a layout issue for the left/right arrows in the embedded lightbox for some installations.
-* Fixed a pagination problem that caused the first page to be empty and redundant.
+* Fixed a pagination problem that caused the first page to be empty and redundant when %%album=#topten...%% was used.
+* The subtitles in %%mphoto=..%% are displayed properly now even when they contain html and html is allowed.
 
 = New Features =
 
