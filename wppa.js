@@ -2,7 +2,7 @@
 //
 // conatins slideshow, theme and ajax code
 //
-// Version 4.6.3
+// Version 4.6.4
 
 // Part 1: Slideshow
 //
@@ -974,6 +974,10 @@ function _wppaDoAutocol(mocc) {
 			h = document.getElementById('theimg1-'+mocc).clientHeight;
 		}
 	}
+	
+	// Adjust slideframe width
+	jQuery("#slide_frame-"+mocc).css('width',w);
+	
 	// Set slideframe height to the height found (if any)
 	if (h > 0) {
 		jQuery("#slide_frame-"+mocc).css('height',h);
@@ -1751,7 +1755,11 @@ function wppaPushStateSlide(mocc, slide) {
 
 	if ( wppaCanPushState ) {
 		var url = wppaGetCurrentFullUrl(mocc, _wppaCurIdx[mocc]);
-		history.pushState({page: wppaHis, occur: mocc, type: 'slide', slide: slide}, "---", url);
+		try {
+			history.pushState({page: wppaHis, occur: mocc, type: 'slide', slide: slide}, "---", url);
+		}
+		catch(err) {
+		}
 	}
 }
 
