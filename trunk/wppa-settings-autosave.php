@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 4.6.3
+* Version 4.6.4
 *
 */
 
@@ -1781,9 +1781,15 @@ global $wppa_revno;
 						$pages = $wpdb->get_results ($query, 'ARRAY_A');
 						if ($pages) {
 							foreach ($pages as $page) {
-								if (stripos($page['post_content'], '%%wppa%%') !== false) {
+								if (strpos($page['post_content'], '%%wppa%%') !== false) {
 									$options_page[] = __($page['post_title']);
 									$options_page_post[] = __($page['post_title']);
+									$values_page[] = $page['ID'];
+									$values_page_post[] = $page['ID'];
+								}
+								else {
+									$options_page[] = '|'.__($page['post_title']).'|';
+									$options_page_post[] = '|'.__($page['post_title']).'|';
 									$values_page[] = $page['ID'];
 									$values_page_post[] = $page['ID'];
 								}
@@ -2353,6 +2359,21 @@ global $wppa_revno;
 						$slug = 'wppa_arrow_color';
 						$html = wppa_input($slug, '70px', '', '');
 						wppa_setting($slug, '8', $name, $desc, $html, $help);
+						
+						$name = __('Meta on page', 'wppa');
+						$desc = __('Meta tags for photos on the page.', 'wppa');
+						$help = esc_js(__('If checked, the header of the page will contain metatags that refer to featured photos on the page in the page context.', 'wppa'));
+						$slug = 'wppa_meta_page';
+						$html = wppa_checkbox($slug);
+						wppa_setting($slug, '9', $name, $desc, $html, $help);
+						
+						$name = __('Meta all', 'wppa');
+						$desc = __('Meta tags for all featured photos.', 'wppa');
+						$help = esc_js(__('If checked, the header of the page will contain metatags that refer to all featured photo files.', 'wppa'));
+						$help .= '\n'.esc_js(__('If you have many featured photos, you might wish to uncheck this item to reduce the size of the page header.', 'wppa'));
+						$slug = 'wppa_meta_all';
+						$html = wppa_checkbox($slug);
+						wppa_setting($slug, '10', $name, $desc, $html, $help);
 
 						wppa_setting_subheader('B', '1', __('New Album and New Photo related miscellaneous settings', 'wppa'));
 
@@ -2414,7 +2435,7 @@ global $wppa_revno;
 						$help .= '\n'.esc_js(__('You may give it the title "Search results" or something alike.', 'wppa'));
 						$help .= '\n'.esc_js(__('Or you ou may use the standard page on which you display the generic album.', 'wppa'));
 						$slug = 'wppa_search_linkpage';
-						$query = $wpdb->prepare("SELECT ID, post_title FROM " . $wpdb->posts . " WHERE post_type = 'page' AND post_status = 'publish' ORDER BY post_title ASC");
+						$query = $wpdb->prepare("SELECT ID, post_title, post_content FROM " . $wpdb->posts . " WHERE post_type = 'page' AND post_status = 'publish' ORDER BY post_title ASC");
 						$pages = $wpdb->get_results ($query, 'ARRAY_A');
 						$options = false;
 						$values = false;
@@ -2422,8 +2443,14 @@ global $wppa_revno;
 						$values[] = '0';
 						if ($pages) {
 							foreach ($pages as $page) {
-								$options[] = __($page['post_title']);
-								$values[] = $page['ID'];
+								if ( strpos($page['post_content'], '%%wppa%%') !== false ) {
+									$options[] = __($page['post_title']);
+									$values[] = $page['ID'];
+								}
+								else {
+									$options[] = '|'.__($page['post_title']).'|';
+									$values[] = $page['ID'];
+								}
 							}
 						}
 						$html = wppa_select($slug, $options, $values, '', '', true);
@@ -2932,9 +2959,13 @@ function wppa_select($slug, $options, $values, $onchange = '', $class = '', $fir
 	while ($idx < $cnt) {
 		$html .= "\n";
 		$html .= '<option value="'.$values[$idx].'" '; 
+		$dis = false;
+		if ($idx == 0 && $first_disable) $dis = true;
+		$opt = trim($options[$idx], '|');
+		if ($opt != $options[$idx]) $dis = true;
 		if ($val == $values[$idx]) $html .= ' selected="selected"'; 
-		if ($idx == 0 && $first_disable) $html .= ' disabled="disabled"';
-		$html .= '>'.$options[$idx].'</option>';
+		if ($dis) $html .= ' disabled="disabled"';
+		$html .= '>'.$opt.'</option>';
 		$idx++;
 	}
 	$html .= '</select>';

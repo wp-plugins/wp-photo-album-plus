@@ -3,12 +3,12 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions and API modules
-* Version 4.6.3
+* Version 4.6.4
 *
 */
 /* Moved to wppa-common-functions.php:
 global $wppa_api_version;
-$wppa_api_version = '4-6-3-000';
+$wppa_api_version = '4-6-4-000';
 */
 
 
@@ -2350,8 +2350,8 @@ global $wppa_err_displayed;
 			$temp = $wppa_opt['wppa_tn_margin'] / 2;
 			if ($wppa['in_widget']) $temp /= 2;
 			$wppa['out'] .= wppa_nltab().'wppaFilmStripMargin['.$wppa['master_occur'].'] = '.$temp.';';
-			$temp = 2*6 + 2*36 + 2*$wppa_opt['wppa_bwidth'];
-			if ($wppa['in_widget']) $temp = 2*6 + 2*18 + 2*$wppa_opt['wppa_bwidth'];
+			$temp = 2*6 + 2*42 + 2*$wppa_opt['wppa_bwidth'];
+			if ($wppa['in_widget']) $temp = 2*6 + 2*21 + 2*$wppa_opt['wppa_bwidth'];
 			$wppa['out'] .= wppa_nltab().'wppaFilmStripAreaDelta['.$wppa['master_occur'].'] = '.$temp.';';
 			if ($wppa['in_widget']) $wppa['out'] .= wppa_nltab().'wppaIsMini['.$wppa['master_occur'].'] = true;';
 			else $wppa['out'] .= wppa_nltab().'wppaIsMini['.$wppa['master_occur'].'] = false;';
