@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 4.6.4
+* Version 4.6.5
 *
 */
 
@@ -551,6 +551,22 @@ global $wppa_revno;
 						$html = wppa_input($slug, '40px', '', __('pixels', 'wppa'));
 						wppa_setting($slug, '6', $name, $desc, $html, $help);
 						
+						$name = __('LasTen count', 'wppa');
+						$desc = __('Number of photos in Last Ten widget.', 'wppa');
+						$help = esc_js(__('Enter the maximum number of rated photos in the LasTen widget.', 'wppa'));
+						$slug = 'wppa_lasten_count';
+						$html = wppa_input($slug, '40px', '', __('photos', 'wppa'));
+						wppa_setting($slug, '7', $name, $desc, $html, $help);
+						
+						$name = __('LasTen size', 'wppa');
+						$desc = __('Size of thumbnails in Last Ten widget.', 'wppa');
+						$help = esc_js(__('Enter the size for the mini photos in the LasTen widget.', 'wppa'));
+						$help .= '\n'.esc_js(__('The size applies to the width or height, whatever is the largest.', 'wppa'));
+						$help .= '\n'.esc_js(__('Recommended values: 86 for a two column and 56 for a three column display.', 'wppa'));
+						$slug = 'wppa_lasten_size';
+						$html = wppa_input($slug, '40px', '', __('pixels', 'wppa'));
+						wppa_setting($slug, '8', $name, $desc, $html, $help);
+						
 						wppa_setting_subheader('G', '1', __('Lightbox related settings. These settings have effect only when Table IX-A6 is set to wppa', 'wppa'));
 						
 						$name = __('Number of text lines', 'wppa');
@@ -619,6 +635,14 @@ global $wppa_revno;
 						$class = 'wppa_bc';
 						wppa_setting($slug, '3', $name, $desc, $html, $help, $class);
 						
+						$name = __('Breadcrumb on last ten displays', 'wppa');
+						$desc = __('Show breadcrumb navigation bars on last ten displays.', 'wppa');
+						$help = esc_js(__('Indicate whether a breadcrumb navigation should be displayed above the last ten displays.', 'wppa'));
+						$slug = 'wppa_bc_on_lasten';
+						$html = wppa_checkbox($slug);
+						$class = 'wppa_bc';
+						wppa_setting($slug, '3.1', $name, $desc, $html, $help, $class);
+
 						$name = __('Home', 'wppa');
 						$desc = __('Show "Home" in breadcrumb.', 'wppa');
 						$help = esc_js(__('Indicate whether the breadcrumb navigation should start with a "Home"-link', 'wppa'));
@@ -1974,6 +1998,24 @@ global $wppa_revno;
 						$html = array($html1, $html2, $html3, $html4);
 						wppa_setting($slug, '9a,b,c,d', $name, $desc, $html, $help);
 						
+						$name = __('LasTenWidget', 'wppa');
+						$desc = __('Last Ten widget photo link.', 'wppa');
+						$help = esc_js(__('Select the type of link the last ten photos point to.', 'wppa')); 
+						$slug1 = 'wppa_lasten_widget_linktype'; 
+						$slug2 = 'wppa_lasten_widget_linkpage';
+						$slug3 = 'wppa_lasten_blank';
+						$slug4 = 'wppa_lasten_overrule';
+						$slug = array($slug1, $slug2, $slug3, $slug4);
+						$onchange = 'wppaCheckLasTenLink()';
+						$html1 = wppa_select($slug1, $options_linktype, $values_linktype, $onchange);
+						$class = 'wppa_ltlp';
+						$html2 = wppa_select($slug2, $options_page, $values_page, '', $class, true);
+						$class = 'wppa_ltlb';
+						$html3 = wppa_checkbox($slug3, '', $class);
+						$html4 = wppa_checkbox($slug4);
+						$html = array($html1, $html2, $html3, $html4);
+						wppa_setting($slug, '10a,b,c,d', $name, $desc, $html, $help);
+
 						$name = __('Film linktype', 'wppa');
 						$desc = __('Direct access goto image in:', 'wppa');
 						$help = esc_js(__('Select the action to be taken when the user clicks on a filmstrip image.', 'wppa'));
@@ -1981,7 +2023,7 @@ global $wppa_revno;
 						$options = array(__('slideshow window', 'wppa'), __('lightbox overlay', 'wppa'));
 						$values = array('slideshow', 'lightbox');
 						$html = wppa_select($slug, $options, $values);
-						wppa_setting($slug, '10', $name, $desc, $html.'<td></td><td></td><td></td>', $help);
+						wppa_setting($slug, '11', $name, $desc, $html.'<td></td><td></td><td></td>', $help);
 						
 						?>
 					</tbody>

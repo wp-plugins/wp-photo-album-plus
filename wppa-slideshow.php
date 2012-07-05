@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the slideshow high level functions
-* Version 4.5.5.001
+* Version 4.6.5
 *
 */
 
@@ -109,8 +109,17 @@ global $wppa_opt;
 	else $pause = '';
 	$wppa['out'] .= wppa_nltab().'<noscript style="text-align:center; " ><span style="color:red; ">'.__a('To see the full size images, you need to enable javascript in your browser.', 'wppa').'</span></noscript>';
 	$wppa['out'] .= wppa_nltab('+').'<div id="slide_frame-'.$wppa['master_occur'].'" '.$ontouch.' '.$pause.' class="slide-frame" style="overflow:hidden; '.wppa_get_slide_frame_style().'">';
-		$wppa['out'] .= wppa_nltab().'<div id="theslide0-'.$wppa['master_occur'].'" class="theslide" style="width:'.$wppa['slideframewidth'].'px; " ></div>';
-		$wppa['out'] .= wppa_nltab().'<div id="theslide1-'.$wppa['master_occur'].'" class="theslide" style="width:'.$wppa['slideframewidth'].'px; " ></div>';
+		$auto = false;
+		if ($wppa['auto_colwidth']) $auto = true;
+		elseif ($wppa_opt['wppa_colwidth'] == 'auto') $auto = true;
+		if ($auto) {
+			$wppa['out'] .= wppa_nltab().'<div id="theslide0-'.$wppa['master_occur'].'" class="theslide theslide-'.$wppa['master_occur'].'" style="width:100%; margin:auto;" ></div>';
+			$wppa['out'] .= wppa_nltab().'<div id="theslide1-'.$wppa['master_occur'].'" class="theslide theslide-'.$wppa['master_occur'].'" style="width:100%; margin:auto;" ></div>';
+		}
+		else {
+			$wppa['out'] .= wppa_nltab().'<div id="theslide0-'.$wppa['master_occur'].'" class="theslide theslide-'.$wppa['master_occur'].'" style="width:'.$wppa['slideframewidth'].'px; " ></div>';
+			$wppa['out'] .= wppa_nltab().'<div id="theslide1-'.$wppa['master_occur'].'" class="theslide theslide-'.$wppa['master_occur'].'" style="width:'.$wppa['slideframewidth'].'px; " ></div>';
+		}
 		$wppa['out'] .= wppa_nltab().'<div id="spinner-'.$wppa['master_occur'].'" class="spinner" ></div>';
 		if ( ! wppa_page('oneofone') ) {	
 			if (( $wppa_opt['wppa_show_bbb'] && ! $wppa['in_widget'] ) || ( $wppa_opt['wppa_show_bbb_widget'] && $wppa['in_widget'] )){	// big browsing buttons enabled

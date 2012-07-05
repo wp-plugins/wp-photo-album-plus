@@ -2,12 +2,12 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, multisite, network, lightbox, comment, watermark, iptc, exif
-Version: 4.6.4
+Version: 4.6.5
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
 Requires at least: 3.0
-Tested up to: 3.4
+Tested up to: 3.4.1
 
 This plugin is designed to easily manage and display your photo albums and slideshows in a single as well as in a network WordPress site. 
 Additionally there are five widgets: Photo of the day, a Search Photos widget, a Top Ten Rated photo widget, a Recent comments widget and a Mini slideshow widget.
@@ -65,7 +65,7 @@ Most themes comply with these requirements.
 However, check these requirements in case of problems with new installations with themes you never had used before with wppa+ or when you modifies your theme.
 
 = Upgrade notice =
-This version is: Major rev# 4, Minor rev# 6, Fix rev# 3, Hotfix rev# 000.
+This version is: Major rev# 4, Minor rev# 6, Fix rev# 5, Hotfix rev# 000.
 If you are upgrading from a previous Major or Minor version, note that:
 * If you modified wppa_theme.php and/or wppa_style.css, you will have to use the newly supplied versions. The previous versions are NOT compatible.
 * If you set the userlevel to anything else than 'administrator' you may have to set it again. Note that changing the userlevel can be done by the administrator only!
@@ -89,6 +89,14 @@ See Table I-A1 and Table I-B1,2 of the Photo Albums -> Settings admin page.
 
 * Recommanded plugins: qTranslate, Lightbox 3, WP Super Cache, AddThis.
 * Plugins that break up WPPA+: My Live Signature.
+
+= Are there special requirements for responsive (mobile) themes? =
+
+* Yes! Go to the Photo Albums -> Settings admin page. Enter *auto* in Table I-A1. Lowercase letters, no quotes.
+* Do not use %%size=[any number]%%, unless you want a fixed width display. This setting is inherited to the next %%wppa%%, 
+so use %%size=auto%% in the next %%wppa%% occurrence to go back to automatic.
+* If you use the Slideshow widget, set the width also to *auto*, and the vertical alignment to *fit*.
+* You may also need to change the thumbnail sizes for widgets in *Table I-F 2,4,6 and 8*. Set to 75 if you want 3 columns in the theme *Responsive*.
 
 = After update, many things seem to go wrong =
 
@@ -144,6 +152,24 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 4.6.5 =
+
+= Bug Fixes =
+
+* Changed 'javascript://' to 'javascript:void();' for validation reasons.
+
+= New Features =
+
+* There is a new widget: LasTen. It displays the n most recently uploaded photos. Its settings are like those for the topten widget.
+* There is a new script keyword: %%album=#lasten%% optional album id and count like: %%album=#lasten,4,7%%.
+
+= Other Changes =
+
+* WPPA+ is now compatible with responsive themes (mobile themes). Tested with Responsive, Fluid blogging and SimpleX.
+To use wppa+ on a responsive theme: Set Table I-A1 to *auto*, Set the width in the slideshow widget to *auto* and 
+do not use any %%size=...%% script tokens unless you incidently want a fixed width display.
+* You can select *month* as the period in the photo of the day admin.
 
 = 4.6.4 =
 

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 4.6.4
+* Version 4.6.5
 *
 */
 
@@ -286,12 +286,12 @@ function wppa_set_defaults($force = false) {
 global $wppa_defaults;
 
 	$npd = '
-<a href="javascript://" onClick="jQuery(\'.wppa-dtl\').css(\'display\', \'block\'); jQuery(\'.wppa-more\').css(\'display\', \'none\'); wppaOvlResize();">
+<a onClick="jQuery(\'.wppa-dtl\').css(\'display\', \'block\'); jQuery(\'.wppa-more\').css(\'display\', \'none\'); wppaOvlResize();">
 <div class="wppa-more">
 Camera info
 </div>
 </a>
-<a href="javascript://" onClick="jQuery(\'.wppa-dtl\').css(\'display\', \'none\'); jQuery(\'.wppa-more\').css(\'display\', \'block\'); wppaOvlResize();">
+<a onClick="jQuery(\'.wppa-dtl\').css(\'display\', \'none\'); jQuery(\'.wppa-more\').css(\'display\', \'block\'); wppaOvlResize();">
 <div class="wppa-dtl" style="display:none;" >
 Hide Camera info
 </div>
@@ -357,6 +357,8 @@ Hide Camera info
 						'wppa_comment_size'				=> '86',	// 4
 						'wppa_thumbnail_widget_count'	=> '10',	// 5
 						'wppa_thumbnail_widget_size'	=> '86',	// 6
+						'wppa_lasten_count'				=> '10',	// 7
+						'wppa_lasten_size' 				=> '86',	// 2
 						// G Overlay
 						'wppa_ovl_txt_lines'			=> 'auto',	// 
 
@@ -365,6 +367,7 @@ Hide Camera info
 						'wppa_show_bread' 					=> 'yes',	// 1
 						'wppa_bc_on_search'					=> 'yes',	// 2
 						'wppa_bc_on_topten'					=> 'yes',	// 3
+						'wppa_bc_on_lasten'					=> 'yes',	// 3
 						'wppa_show_home' 					=> 'yes',	// 4
 						'wppa_bc_separator' 				=> 'raquo',	// 5
 						'wppa_bc_txt' 						=> htmlspecialchars('<span style="color:red; font_size:24px;">&bull;</span>'),	// 6
@@ -565,6 +568,12 @@ Hide Camera info
 						'wppa_thumbnail_widget_blank'		=> 'no',
 
 						'wppa_film_linktype'				=> 'slideshow',
+						
+						'wppa_lasten_widget_linktype' 		=> 'photo',
+						'wppa_lasten_widget_linkpage' 		=> '0',
+						'wppa_lasten_blank'					=> 'no',
+						'wppa_lasten_overrule'				=> 'no',
+
 						
 						// Table VII: Security
 						// B
