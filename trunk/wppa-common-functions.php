@@ -2,11 +2,11 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 4.6.4
+* version 4.6.5
 *
 */
 global $wppa_api_version;
-$wppa_api_version = '4-6-4-000';
+$wppa_api_version = '4-6-5-000';
 // Initialize globals and option settings
 function wppa_initialize_runtime($force = false) {
 global $wppa;
@@ -65,6 +65,7 @@ global $wpdb;
 			'comment_text' 				=> '',
 			'no_default' 				=> false,
 			'in_widget_frame_height' 	=> '',
+			'in_widget_frame_width'		=> '',
 			'user_uploaded'				=> false,
 			'current_album'				=> '0',
 			'searchstring'				=> wppa_get_searchstring(),
@@ -75,7 +76,9 @@ global $wpdb;
 			'iptc'						=> false,
 			'exif'						=> false,
 			'is_topten'					=> false,
-			'topten_count'				=> '0'
+			'topten_count'				=> '0',
+			'is_lasten'					=> false,
+			'lasten_count'				=> '0'
 
 		);
 
@@ -128,6 +131,8 @@ global $wpdb;
 						'wppa_comment_size'				=> '',	// 4
 						'wppa_thumbnail_widget_count'	=> '',	// 5
 						'wppa_thumbnail_widget_size'	=> '',	// 6
+						'wppa_lasten_count' 			=> '',	// 1
+						'wppa_lasten_size' 				=> '',	// 2
 						// G Overlay
 						'wppa_ovl_txt_lines'			=> '',	// 
 						
@@ -136,6 +141,7 @@ global $wpdb;
 						'wppa_show_bread' 					=> '',	// 1
 						'wppa_bc_on_search'					=> '',	// 2
 						'wppa_bc_on_topten'					=> '',	// 3
+						'wppa_bc_on_lasten'					=> '',	// 3
 						'wppa_show_home' 					=> '',	// 4
 						'wppa_bc_separator' 				=> '',	// 5
 						'wppa_bc_txt' 						=> '',	// 6
@@ -336,6 +342,12 @@ global $wpdb;
 						'wppa_thumbnail_widget_blank'		=> '',
 
 						'wppa_film_linktype'				=> '',
+						
+						'wppa_lasten_widget_linktype' 		=> '',
+						'wppa_lasten_widget_linkpage' 		=> '',
+						'wppa_lasten_blank'					=> '',
+						'wppa_lasten_overrule'				=> '',
+
 						
 						// Table VII: Security
 						// B

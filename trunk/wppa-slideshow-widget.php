@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display a slideshow in the sidebar
-* Version 4.6.3
+* Version 4.6.5
 */
 
 /**
@@ -48,6 +48,7 @@ class SlideshowWidget extends WP_Widget {
 		$album 		= $instance['album'];
 		$width 		= $instance['width'];
 		$height		= $instance['height'];
+		if ( $height == '0' ) $height = round($width * $wppa_opt['wppa_maxheight'] / $wppa_opt['wppa_fullsize']);
 		$ponly 		= $instance['ponly'];
 		$linkurl 	= $instance['linkurl'];
 		$linktitle 	= $instance['linktitle'];
@@ -72,8 +73,10 @@ class SlideshowWidget extends WP_Widget {
 					echo '<div style="padding-top:2px; padding-bottom:4px; text-align:center">'.$supertext.'</div>';
 				}
 				echo '<div style="padding-top:2px; padding-bottom:4px;" >';
+			$wppa['auto_colwidth'] = false;	
 					$wppa['in_widget'] 			= 'ss';
 					$wppa['in_widget_frame_height'] = $height;
+					$wppa['in_widget_frame_width'] = $width;
 					$wppa['in_widget_timeout'] 	= $timeout;
 					$wppa['portrait_only'] = ($ponly == 'yes');
 					$wppa['ss_widget_valign'] = $valign;
@@ -92,9 +95,11 @@ class SlideshowWidget extends WP_Widget {
 					$wppa['portrait_only'] = false;
 					$wppa['in_widget_timeout'] = '0';
 					$wppa['in_widget_frame_height'] = '';
+					$wppa['in_widget_frame_width'] = '';
 					$wppa['in_widget'] = false;
 					
 					$wppa['fullsize'] = '';	// Reset to prevent inheritage of wrong size in case widget is rendered before main column
+					
 				echo '</div>';
 				if ($linkurl != '') {
 					$wppa['in_widget_linkurl'] = '';

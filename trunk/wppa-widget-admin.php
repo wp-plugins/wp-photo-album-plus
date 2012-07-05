@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 * admin sidebar widget
-* version 4.5.1
+* version 4.6.5
 *
 */
 
@@ -128,6 +128,7 @@ function _wppa_sidebar_page_options() {
 								<option value="1" <?php if ($period == '1') echo($sel); ?>><?php _e('hour.', 'wppa'); ?></option>
 								<option value="24" <?php if ($period == '24') echo($sel); ?>><?php _e('day.', 'wppa'); ?></option>
 								<option value="168" <?php if ($period == '168') echo($sel); ?>><?php _e('week.', 'wppa'); ?></option>
+								<option value="736" <?php if ($period == '736') echo($sel); ?>><?php _e('month.', 'wppa'); ?></option>
 							</select>
 							<span class="description"><br/><?php _e('Select how the widget should display.', 'wppa'); ?></span>								
 						</td>
