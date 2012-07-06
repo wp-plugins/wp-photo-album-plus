@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * create, edit and delete albums
-* version 4.6.3
+* version 4.6.6
 *
 */
 
@@ -854,6 +854,38 @@ function wppa_album_photos($id) {
 				</div>
 			
 				<div class="clear"></div>
+				
+				<!-- Comments -->
+				<?php 
+				$comments = $wpdb->get_results($wpdb->prepare("SELECT * FROM `".WPPA_COMMENTS."` WHERE `photo` = %s ORDER BY `timestamp` DESC", $photo['id']), 'ARRAY_A');
+				if ( $comments ) {
+				?>
+				<hr />
+				<div>
+					<table>
+						<thead>
+							<tr style="font-weight:bold;" >
+								<td style="padding:0 4px;" >User</td>
+								<td style="padding:0 4px;" >Time since</td>
+								<td style="padding:0 4px;" >Status</td>
+								<td style="padding:0 4px;" >Comment</td>
+							</tr>
+						</thead>
+						<tbody>
+							<?php foreach ( $comments as $comment ) {
+							echo '
+							<tr>
+								<td style="padding:0 4px;" >'.$comment['user'].'</td>
+								<td style="padding:0 4px;" >'.wppa_get_time_since($comment['timestamp']).'</td>
+								<td style="padding:0 4px;" >'.$comment['status'].'</td>
+								<td style="padding:0 4px;" >'.$comment['comment'].'</td>
+							</tr>
+							';
+							} ?>
+						</tbody>
+					</table>
+				</div>
+			<?php } ?>
 			</div>
 <?php
 		} /* foreach photo */

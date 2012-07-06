@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, multisite, network, lightbox, comment, watermark, iptc, exif
-Version: 4.6.5
+Version: 4.6.6
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -152,6 +152,16 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 4.6.6 =
+
+= Bug Fixes =
+
+* Fixed a slideshow layout issue where column width not auto and fullsize smaller than column width.
+
+= New Features =
+
+* The Edit Album display now shows the comments at each photo.
 
 = 4.6.5 =
 
