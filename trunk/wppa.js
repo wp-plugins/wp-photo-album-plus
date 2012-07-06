@@ -2,7 +2,7 @@
 //
 // conatins slideshow, theme, ajax and lightbox code
 //
-// Version 4.6.5
+// Version 4.6.6
 
 // Part 1: Slideshow
 //
@@ -473,8 +473,8 @@ function _wppaNextSlide_3(mocc) {
 //	jQuery(nwSli).css({width:'100%'});//marginLeft:'auto', marginRight:'auto'});
 //}
 //	else {
-	//	jQuery(olSli).css({marginLeft:0, width:w});
-	//	jQuery(nwSli).css({marginLeft:0, width:w});
+		jQuery(olSli).css({marginLeft:0, width:w});
+		jQuery(nwSli).css({marginLeft:0, width:w});
 //	}
 wppaFormatSlide(mocc);
 	
@@ -729,6 +729,7 @@ function wppaMakeTheSlideHtml(mocc, bgfg, idx) {
 }
 
 function wppaFormatSlide(mocc) {
+if ( ! wppaAutoColumnWidth[mocc] ) return;
 	// vars we have
 	var imgid    = 'theimg'+_wppaFg[mocc]+'-'+mocc;
 	var slideid  = 'theslide'+_wppaFg[mocc]+'-'+mocc;
