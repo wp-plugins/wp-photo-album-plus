@@ -811,7 +811,7 @@ function wppaFormatSlide(mocc) {
 		}
 
 		// Align vertical
-		if (valign != 'none') {
+		if (valign != 'default') {
 			switch (valign) {
 				case 'top':				
 					margt = 0;
