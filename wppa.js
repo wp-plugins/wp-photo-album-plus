@@ -839,7 +839,7 @@ function wppaFormatSlide(mocc) {
 		jQuery('#'+imgid).css({width:imgw, height:imgh});
 
 		// Align horizontal
-		if (valign != 'none' && halign != 'none') {
+		if (valign != 'default' && halign != 'default') {
 			switch (halign) {
 				case 'left':
 					margl = 0;
