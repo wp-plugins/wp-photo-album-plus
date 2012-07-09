@@ -2,7 +2,7 @@
 //
 // conatins slideshow, theme, ajax and lightbox code
 //
-// Version 4.6.6
+// Version 4.6.7
 
 // Part 1: Slideshow
 //
@@ -79,6 +79,7 @@ var wppaRatingDisplayType = 'graphic';
 var wppaRatingPrec = 2;
 var wppaFilmPageSize = new Array();
 var wppaAspectRatio = new Array();
+var wppaFullSize = new Array();
 var wppaStretch = false;
 var wppaThumbSpaceAuto = false;
 var wppaMinThumbSpace = 4;
@@ -468,15 +469,10 @@ function _wppaNextSlide_3(mocc) {
 	}
 
 	// Repair standard css
-//if ( wppaAutoColumnWidth[mocc] ) {
-//	jQuery(olSli).css({width:'100%'});//marginLeft:'auto', marginRight:'auto'});
-//	jQuery(nwSli).css({width:'100%'});//marginLeft:'auto', marginRight:'auto'});
-//}
-//	else {
-		jQuery(olSli).css({marginLeft:0, width:w});
-		jQuery(nwSli).css({marginLeft:0, width:w});
-//	}
-wppaFormatSlide(mocc);
+	jQuery(olSli).css({marginLeft:0, width:w});
+	jQuery(nwSli).css({marginLeft:0, width:w});
+
+	wppaFormatSlide(mocc);
 	
 	switch (wppaAnimationType) {
 	
@@ -603,8 +599,24 @@ function _wppaNextSlide_4(mocc) {
     // Next is now current // put here for swipe
 	_wppaCurIdx[mocc] = _wppaNxtIdx[mocc];
 
-	// Format
-//	wppaFormatSlide(mocc);
+/*	
+	// set height to fit if reqd
+	if (! wppaAutoColumnWidth[mocc] ) {
+		if (wppaPortraitOnly[mocc]) {
+			h = jQuery('#theimg'+_wppaFg[mocc]+'-'+mocc).css('height');
+			jQuery('#slide_frame-'+mocc).css('height', parseInt(h)+'px');
+		}
+		else if (wppaFullValign[mocc] == 'fit') {
+			h = parseInt(jQuery('#theimg'+_wppaFg[mocc]+'-'+mocc).css('height')) + wppaFullFrameDelta[mocc];
+			jQuery('#slide_frame-'+mocc).css('height', h+'px');
+			jQuery('.bbb-'+mocc).css('height', h+'px');
+			jQuery('#slide_frame-'+mocc).css('minHeight', '0px');
+		}
+	}
+	else {
+*/
+		wppaFormatSlide(mocc);
+//	}
 	
 	// Display counter and arrow texts
 	if (wppaIsMini[mocc]) {
@@ -725,11 +737,10 @@ function wppaMakeTheSlideHtml(mocc, bgfg, idx) {
 			jQuery("#theslide"+bgfg+"-"+mocc).html(html);
 		}
 	}
-	// jQuery("#theimg"+bgfg+"-"+mocc).hide();	// == display:none
 }
 
 function wppaFormatSlide(mocc) {
-if ( ! wppaAutoColumnWidth[mocc] ) return;
+
 	// vars we have
 	var imgid    = 'theimg'+_wppaFg[mocc]+'-'+mocc;
 	var slideid  = 'theslide'+_wppaFg[mocc]+'-'+mocc;
@@ -744,12 +755,13 @@ if ( ! wppaAutoColumnWidth[mocc] ) return;
 	var natwidth  = elm.naturalWidth;
 	var natheight = elm.naturalHeight;
 	var aspect    = wppaAspectRatio[mocc];
+	var fullsize  = wppaFullSize[mocc];
 	var delta     = wppaFullFrameDelta[mocc];
 
 	// Switches we have
 	var ponly   = wppaPortraitOnly[mocc];
-	var valign  = wppaFullValign[mocc];
-	var halign  = wppaFullHalign[mocc];
+	var valign  = wppaFullValign[mocc]; if (typeof(valign)=='undefined') valign = 'none';
+	var halign  = wppaFullHalign[mocc]; if (typeof(halign)=='undefined') halign = 'none';
 	var stretch = wppaStretch;
 	
 	// vars to be calculated:
@@ -761,18 +773,26 @@ if ( ! wppaAutoColumnWidth[mocc] ) return;
 	// Calculate
 	if ( ponly ) {
 		imgw = contw - delta;
-		imgh = parseInt(imgw * natwidth / natheight);
+		imgh = parseInt(imgw * natheight / natwidth);
 		margl = 0;
 		margt = 0;
 		slidew = contw;
 		slideh = imgh + delta;
 		framew = contw;
 		frameh = slideh;
+		// Size
+		jQuery('#'+frameid).css({width:framew, height:frameh});
+		jQuery('#'+slideid).css({width:slidew, height:slideh});
+		jQuery('#'+imgid).css({width:imgw, height:imgh});
 	}
 	else {
-		// not 'ponly' so we have a fixed display area
+		// not 'ponly' so we have a fixed display area. First assume the container is the hor limit
 		framew = contw;
-		frameh = parseInt(framew * aspect);
+		// If the fullsize (Table I-B1) is smaller than the container width The frame is scaled down to fit the fullsize
+		if ( fullsize < contw ) {
+			framew = fullsize;				// The fullsize appears to be the hor limit
+		}
+		frameh = parseInt(framew * aspect);	// Always obey the occurences aspect ratio
 		slidew = framew;
 		slideh = frameh;
 		if ( stretch || natwidth >= (framew-delta) || natheight >= (frameh-delta) ) {	// Image big enough
@@ -789,51 +809,60 @@ if ( ! wppaAutoColumnWidth[mocc] ) return;
 			imgw = natwidth;
 			imgh = natheight;
 		}
-		switch (valign) {
-			case 'top':				
-				margt = 0;
-				break;
-			case 'center':
-				margt = parseInt((frameh - (imgh+delta)) / 2);
-				break;
-			case 'bottom':
-				margt = frameh - (imgh+delta);
-				break;
-			case 'fit':
-				margt = 0;
-				frameh = imgh + delta;
-				slideh = imgh + delta;
-				break;
-			default:
-				alert('Unknown v align:'+valign+' occ='+mocc);
+
+		// Align vertical
+		if (valign != 'none') {
+			switch (valign) {
+				case 'top':				
+					margt = 0;
+					break;
+				case 'center':
+					margt = parseInt((frameh - (imgh+delta)) / 2);
+					break;
+				case 'bottom':
+					margt = frameh - (imgh+delta);
+					break;
+				case 'fit':
+					margt = 0;
+					frameh = imgh + delta;
+					slideh = imgh + delta;
+					break;
+				default:
+					alert('Unknown v align:'+valign+' occ='+mocc);
+			}
+			jQuery('#'+imgid).css({marginTop:margt, marginBottom:0});
 		}
-		switch (halign) {
-			case 'left':
-			//	margl =
-			//	break;
-			case 'center':
-			//	margl =
-			//	break;
-			case 'right':
-			//	margl =
-			//	break;
-			default:
-//				alert('Unknown h align:'+halign+' occ='+mocc);
 
-				margl = parseInt((framew - (imgw+delta)) / 2);	// always center for now
+		// Size (after v align because 'fit' changes the frameh and slidh)
+		jQuery('#'+frameid).css({width:framew, height:frameh});
+		jQuery('#'+slideid).css({width:slidew, height:slideh});
+		jQuery('#'+imgid).css({width:imgw, height:imgh});
 
+		// Align horizontal
+		if (valign != 'none' && halign != 'none') {
+			switch (halign) {
+				case 'left':
+					margl = 0;
+					break;
+				case 'center':
+					margl = parseInt((contw - framew) / 2);
+					break;
+				case 'right':
+					margl = contw - framew;
+					break;
+				default:
+					alert('Unknown h align:'+halign+' occ='+mocc);
+			}
+			if (margl < 0) margl = 0;
+			jQuery('#'+imgid).css({marginLeft:'auto', marginRight:'auto'});
+			jQuery('#'+frameid).css({marginLeft:margl});
 		}
 	}
-
-	var bbbwidth = parseInt(framew/2);
 	
-	// Doit
-	jQuery('#'+frameid).css({width:framew, height:frameh});
-	jQuery('#'+slideid).css({width:slidew, height:slideh});
-	jQuery('#'+imgid).css({width:imgw, height:imgh, marginLeft:margl, marginTop:margt, marginRight:0, marginBottom:0});
-//alert('#'+imgid+' '+imgw);
-	jQuery('#bbb-'+mocc+'-l').css({height:frameh, width:bbbwidth});
-	jQuery('#bbb-'+mocc+'-r').css({height:frameh, width:bbbwidth, marginLeft:bbbwidth});
+	// Size Big Browse Buttons
+	var bbbwidth = parseInt(framew/2);
+	jQuery('#bbb-'+mocc+'-l').css({height:frameh, width:bbbwidth, left:0});
+	jQuery('#bbb-'+mocc+'-r').css({height:frameh, width:bbbwidth, left:bbbwidth});
 }
 
 function wppaUpdateLightboxes() {
@@ -1061,6 +1090,9 @@ function _wppaUnloadSpinner(mocc) {
 
 function wppaGetContainerWidth(mocc) {
 	var elm = document.getElementById('wppa-container-'+mocc);
+	
+	if ( !wppaAutoColumnWidth[mocc] ) return elm.clientWidth;
+	
 	while (elm.parentNode.clientWidth == 0) {
 		elm = elm.parentNode;
 	}

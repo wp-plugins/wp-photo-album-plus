@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 4.6.5
+* Version 4.6.7
 *
 */
 
@@ -219,8 +219,8 @@ global $wppa_revno;
 						$desc = __('The width of the main column in your theme\'s display area.', 'wppa');
 						$help = esc_js(__('Enter the width of the main column in your theme\'s display area.', 'wppa'));
 						$help .= '\n'.esc_js(__('You should set this value correctly to make sure the fullsize images are properly aligned horizontally.', 'wppa')); 
-						$help .= '\n'.esc_js(__('You may enter auto for use in themes that have a floating content column.', 'wppa'));
-						$help .= '\n'.esc_js(__('The use of \'auto\' is strongly discouraged. Do not use it unless it is strictly required.', 'wppa'));
+						$help .= '\n\n'.esc_js(__('You may enter \'auto\' for use in themes that have a floating content column.', 'wppa'));
+						$help .= '\n'.esc_js(__('The use of \'auto\' is required for responsive themes.', 'wppa'));
 						$slug = 'wppa_colwidth';
 						$onchange = 'wppaCheckFullHalign()';
 						$html = wppa_input($slug, '40px', '', __('pixels wide', 'wppa'), $onchange);
@@ -1240,7 +1240,7 @@ global $wppa_revno;
 						$desc = __('Horizontal alignment of full-size images.', 'wppa');
 						$help = esc_js(__('Specify the horizontal alignment of fullsize images. If you specify --- none --- , no horizontal alignment will take place.', 'wppa'));
 						$help .= '\n\n'.esc_js(__('This setting is only usefull when the Column Width differs from the Fullsize Width.', 'wppa'));
-						$help .= '\n'.esc_js(__('(Settings I-1 and I-2)', 'wppa'));
+						$help .= '\n'.esc_js(__('(Settings I-A1 and I-B1)', 'wppa'));
 						$slug = 'wppa_fullhalign';
 						$options = array(__('--- none ---', 'wppa'), __('left', 'wppa'), __('center', 'wppa'), __('right', 'wppa'));
 						$values = array('default', 'left', 'center', 'right');

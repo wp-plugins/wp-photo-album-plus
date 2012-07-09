@@ -3,12 +3,12 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions and API modules
-* Version 4.6.5
+* Version 4.6.7
 *
 */
 /* Moved to wppa-common-functions.php:
 global $wppa_api_version;
-$wppa_api_version = '4-6-5-000';
+$wppa_api_version = '4-6-7-000';
 */
 
 
@@ -1798,12 +1798,15 @@ global $wppa_opt;
 			if ($type == 'fthumb') $result['style'] .= ' cursor:pointer;';
 			break;
 		case 'fullsize':
-			$result['style'] .= ' width:' . $width . 'px;';
-			
-			if (!$wppa['auto_colwidth']) {
+			if ( $wppa['auto_colwidth'] ) {
+				$result['style'] .= ' max-width:' . $width . 'px;';		// These sizes fit within the rectangle define by Table I-B1,2
+				$result['style'] .= ' max-height:' . $height . 'px;';
+			}
+			else {
+				$result['style'] .= ' width:' . $width . 'px;';
 				$result['style'] .= ' height:' . $height . 'px;';
 				// There are still users that have #content .img {max-width: 640px; } and Table I item 1 larger than 640, so we increase max-width inline.
-	$result['style'] .= ' max-width:' . wppa_get_container_width() . 'px;';
+				$result['style'] .= ' max-width:' . wppa_get_container_width() . 'px;';
 			}
 			
 			if ($wppa['is_slideonly'] == '1') {
@@ -2383,15 +2386,18 @@ global $wppa_err_displayed;
 			}
 			$wppa['out'] .= wppa_nltab().'wppaTopMoc = '.$wppa['master_occur'].';';
 			
-			// Aspect ratio
+			// Aspect ratio and fullsize
 			if ( $wppa['in_widget'] == 'ss' && is_numeric($wppa['in_widget_frame_width']) && $wppa['in_widget_frame_width'] > '0' ) {
-				$temp = $wppa['in_widget_frame_height'] / $wppa['in_widget_frame_width'];
+				$asp = $wppa['in_widget_frame_height'] / $wppa['in_widget_frame_width'];
+				$fls = $wppa['in_widget_frame_width'];
 			}
 			else {
-				$temp = $wppa_opt['wppa_maxheight'] / $wppa_opt['wppa_fullsize'];
+				$asp = $wppa_opt['wppa_maxheight'] / $wppa_opt['wppa_fullsize'];
+				$fls = $wppa_opt['wppa_fullsize'];
 			}
-			$wppa['out'] .= wppa_nltab().'wppaAspectRatio['.$wppa['master_occur'].'] = '.$temp.';';
-
+			$wppa['out'] .= wppa_nltab().'wppaAspectRatio['.$wppa['master_occur'].'] = '.$asp.';';
+			$wppa['out'] .= wppa_nltab().'wppaFullSize['.$wppa['master_occur'].'] = '.$fls.';';
+//echo 'occ='.$wppa['master_occur'].' asp='.$asp.' fls='.$fls.' clw='.wppa_get_container_width().' auto='.$auto.'<br />';
 			// last minute change: fullvalign with border needs a height correction in slideframe
 			if ( $wppa_opt['wppa_fullimage_border_width'] != '' && ! $wppa['in_widget'] ) {
 				$delta = (1 + $wppa_opt['wppa_fullimage_border_width']) * 2;
@@ -3065,6 +3071,7 @@ global $wppa_opt;
 			$wppa['out'] .= wppa_nltab('+').'/* <![CDATA[ */';
 			$wppa['out'] .= wppa_nltab().'wppaStoreSlideInfo('.wppa_get_slide_info(0, $wppa['single_photo']).');';
 			$wppa['out'] .= wppa_nltab().'wppaFullValign['.$wppa['master_occur'].'] = "fit";';
+			$wppa['out'] .= wppa_nltab().'wppaFullHalign['.$wppa['master_occur'].'] = "none";';
 			$wppa['out'] .= wppa_nltab().'wppaStartStop('.$wppa['master_occur'].', 0);';
 			$wppa['out'] .= wppa_nltab('-').'/* ]]> */';
 			$wppa['out'] .= wppa_nltab().'</script>';
@@ -3129,7 +3136,8 @@ global $wppa_opt;
 			
 			// Vertical align
 			if ( $wppa['is_slideonly'] ) { 
-				$wppa['out'] .= wppa_nltab().'wppaFullValign['.$wppa['master_occur'].'] = "fit";';
+				$ali = $wppa['ss_widget_valign'] ? $wppa['ss_widget_valign'] : $ali = 'fit';
+				$wppa['out'] .= wppa_nltab().'wppaFullValign['.$wppa['master_occur'].'] = "'.$ali.'";';
 			}
 			else {
 				$wppa['out'] .= wppa_nltab().'wppaFullValign['.$wppa['master_occur'].'] = "'.$wppa_opt['wppa_fullvalign'].'";';
