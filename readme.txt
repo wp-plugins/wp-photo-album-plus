@@ -1,16 +1,18 @@
 === WP Photo Album Plus ===
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
-Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, multisite, network, lightbox, comment, watermark, iptc, exif
-Version: 4.6.6
+Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile
+Version: 4.6.7
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
 Requires at least: 3.0
 Tested up to: 3.4.1
 
-This plugin is designed to easily manage and display your photo albums and slideshows in a single as well as in a network WordPress site. 
-Additionally there are five widgets: Photo of the day, a Search Photos widget, a Top Ten Rated photo widget, a Recent comments widget and a Mini slideshow widget.
+This plugin is designed to easily manage and display your photo albums and slideshows in a single as well as in a network WordPress site and 
+is applicable for both static as dynamic (responsive) themes as used for mobile clients. 
+Additionally there are eight widgets: Photo of the day, a Search Photos widget, a Top Ten Rated photo widget, a Recent comments on photoswidget, 
+a Mini slideshow widget, a Latest uploaded widget, a general Thumbnail widget and a general purpose text widget that supports wppa scripts.
 Visitors can leave comments on individual photos. Uploads can be provided with a watermark. IPTC and EXIF data can be displayed and used in descriptions.
 
 == Description ==
@@ -32,10 +34,11 @@ This plugin is designed to easily manage and display your photo albums and slide
 * You can enable a comment system that allows visitors to enter comments on individual photos.
 * You can add a recent comments on photos Widget.
 * Apart from the full-size slideshows you can add a Sidebar Widget that displays a mini slideshow.
+* There is a widget to display a number of most recently uploaded photos. It can be configured systemwide and/or on an album basis.
 * There is a General Purpose widget that is a text widget wherein you can use wppa+ script commands.
 * Almost all appearance settings can be done in the settings admin page. No php, html or css knowledge is required to customize the appearence of the photo display.
 * International language support for static text: Currently included foreign languages files: Dutch, Japanese, French(outdated), Spanish, German.
-* Inrernational language support for dynamic text: Album and photo names and descriptions fully support the qTranslate multilanguage rules.
+* International language support for dynamic text: Album and photo names and descriptions fully support the qTranslate multilanguage rules.
 * Suports lightbox 3.
 * You can add watermarks to the photos.
 * The plugin supports IPTC and EXIF data.
@@ -65,7 +68,7 @@ Most themes comply with these requirements.
 However, check these requirements in case of problems with new installations with themes you never had used before with wppa+ or when you modifies your theme.
 
 = Upgrade notice =
-This version is: Major rev# 4, Minor rev# 6, Fix rev# 5, Hotfix rev# 000.
+This version is: Major rev# 4, Minor rev# 6, Fix rev# 7, Hotfix rev# 000.
 If you are upgrading from a previous Major or Minor version, note that:
 * If you modified wppa_theme.php and/or wppa_style.css, you will have to use the newly supplied versions. The previous versions are NOT compatible.
 * If you set the userlevel to anything else than 'administrator' you may have to set it again. Note that changing the userlevel can be done by the administrator only!
@@ -152,6 +155,13 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 4.6.7 =
+
+= Bug Fixes =
+
+* There were a few slideshow display and alignment problems. Fixed.
+* The settings in Table I-B1 and 2 (Fullsize width and height) now also limit the maximum display size when Table I-A1 is set to 'auto', i.e. in responsive (mobile) themes.
 
 = 4.6.6 =
 
