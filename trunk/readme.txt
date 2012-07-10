@@ -156,6 +156,13 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
 
+= 4.6.8 =
+
+= Bug Fixes =
+
+* Improved lightbox display in IE < 9, its not great yet
+* Fixed unknown v align and h aligh errors
+
 = 4.6.7 =
 
 = Bug Fixes =
