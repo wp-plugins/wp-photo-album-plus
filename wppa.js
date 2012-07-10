@@ -811,7 +811,7 @@ function wppaFormatSlide(mocc) {
 		}
 
 		// Align vertical
-		if (valign != 'default') {
+		if (valign != 'default' && valign != 'none') {
 			switch (valign) {
 				case 'top':				
 					margt = 0;
@@ -839,7 +839,7 @@ function wppaFormatSlide(mocc) {
 		jQuery('#'+imgid).css({width:imgw, height:imgh});
 
 		// Align horizontal
-		if (valign != 'default' && halign != 'default') {
+		if (valign != 'default' && valign != 'none' && halign != 'none' && halign != 'default') {
 			switch (halign) {
 				case 'left':
 					margl = 0;
@@ -2164,19 +2164,33 @@ function wppaOvlSize(speed) {
 		wid = nw;
 	}
 
+	
 	// Go to final size
-	if ( speed == 0 ) {
-		jQuery('#wppa-overlay-img').css({maxWidth: wid+'px', visibility: 'visible'});
-		jQuery('#wppa-overlay-ic').css({left: lft+'px', paddingTop: pt+'px'});
-		jQuery('#wppa-overlay-qt-txt').css({top: (pt-3)+'px'});
-		jQuery('#wppa-overlay-qt-img').css({top: pt+'px'});
-	}
-	else {
+	if ( parseInt(navigator.appVersion) > 4 ) {	// New browser
+		if ( speed == 0 ) {
+			jQuery('#wppa-overlay-img').css({maxWidth: wid, visibility: 'visible'});
+			jQuery('#wppa-overlay-ic').css({left: lft, paddingTop: pt});
+			jQuery('#wppa-overlay-qt-txt').css({top: (pt-1)});
+			jQuery('#wppa-overlay-qt-img').css({top: pt});
+		}
+		else {
 
-		jQuery('#wppa-overlay-img').animate({maxWidth: wid+'px'}, speed);
-		jQuery('#wppa-overlay-ic').animate({left: lft+'px', paddingTop: pt+'px'}, speed);
-		jQuery('#wppa-overlay-qt-txt').animate({top: (pt-1)+'px'}, speed);
-		jQuery('#wppa-overlay-qt-img').animate({top: pt+'px'}, speed);
+			jQuery('#wppa-overlay-img').animate({maxWidth: wid}, speed);
+			jQuery('#wppa-overlay-ic').animate({left: lft, paddingTop: pt}, speed);
+			jQuery('#wppa-overlay-qt-txt').animate({top: (pt-1)}, speed);
+			jQuery('#wppa-overlay-qt-img').animate({top: pt}, speed);
+		}
+	}
+	else {	// IE<9
+
+		jQuery('#wppa-overlay-ic').css('padding-left', lft+'px');
+		jQuery('#wppa-overlay-ic').css('left', '');
+		jQuery('#wppa-overlay-ic').css('padding-top', pt+'px');
+
+		jQuery('#wppa-overlay-ic').css('height', '500px');
+		jQuery('#wppa-overlay-ic').css('overflow', 'auto');
+		jQuery('#wppa-overlay-img').css('max-width', '');
+
 	}
 	
 	// If resizing, also resize txt elements when sizing is complete
