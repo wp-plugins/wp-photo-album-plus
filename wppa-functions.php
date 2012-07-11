@@ -3,12 +3,12 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions and API modules
-* Version 4.6.7
+* Version 4.6.9
 *
 */
 /* Moved to wppa-common-functions.php:
 global $wppa_api_version;
-$wppa_api_version = '4-6-7-000';
+$wppa_api_version = '4-6-9-000';
 */
 
 
@@ -2942,10 +2942,11 @@ global $wppa_opt;
 	$altforpopup = $wppa_opt['wppa_popup_text_name'] ? esc_attr(stripslashes($thumbname)) : '';	// Added esc_attr(stripslashes()) in 4.3.11
 
 	if ( $wppa_opt['wppa_use_thumb_popup'] ) {
-		$title = $wppa_opt['wppa_popup_text_desc'] ? esc_attr(wppa_get_photo_desc($thumb)) : '';
+		$title = $wppa_opt['wppa_popup_text_desc'] ? $thumb['description'] : ''; //wppa_get_photo_desc($thumb) : '';
 		if ( $wppa_opt['wppa_popup_text_desc_strip'] ) {
 			$title = wppa_strip_tags($title);
 		}
+		$title = esc_attr(__($title));
 	}
 	else {
 		$title = esc_attr(wppa_get_photo_name($thumb));	// esc_attr was esc_js prior to 4.0.7
