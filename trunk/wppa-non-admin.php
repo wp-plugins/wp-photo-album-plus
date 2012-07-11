@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the non admin stuff
-* Version 4.6.5
+* Version 4.6.9
 *
 */
 
@@ -112,6 +112,8 @@ global $wppa_opt;
 			wppaOvlOnclickType = "'.$wppa_opt['wppa_ovl_onclick'].'";
 			wppaOvlTheme = "'.$wppa_opt['wppa_ovl_theme'].'";
 			wppaOvlAnimSpeed = '.$wppa_opt['wppa_ovl_anim'].';
+			wppaVer4WindowWidth = 800;
+			wppaVer4WindowHeight = 600;
 			</script>');
 		echo("\n<!-- end WPPA+ Footer data -->\n");
 	}
