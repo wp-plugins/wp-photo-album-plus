@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the last uploaded photos
-* Version 4.6.5
+* Version 4.6.10
 */
 
 class LasTenWidget extends WP_Widget {
@@ -22,16 +22,18 @@ class LasTenWidget extends WP_Widget {
 
         extract( $args );
 		
-		$instance = wp_parse_args( (array) $instance, array( 'title' => '', 'album' => '' ) );
+		$instance = wp_parse_args( (array) $instance, array( 'title' => '', 'album' => '', 'albumenum' => '', 'timesince' => 'yes' ) );
 
  		$widget_title = apply_filters('widget_title', $instance['title'] );
 		$page = $wppa_opt['wppa_lasten_widget_linkpage'];
 		$max  = $wppa_opt['wppa_lasten_count'];
+		$timesince = $instance['timesince'];
 		
 		$album = $instance['album'];
-		
+		$albumenum = $instance['albumenum'];
+		if ($album == '-99') $album = implode(' OR `album` = ', explode(',', $albumenum));
 		if ($album) {
-			$thumbs = $wpdb->get_results($wpdb->prepare( 'SELECT * FROM '.WPPA_PHOTOS.' album = %s ORDER BY timestamp DESC LIMIT '.$max, $album ), 'ARRAY_A' );
+			$thumbs = $wpdb->get_results($wpdb->prepare( 'SELECT * FROM '.WPPA_PHOTOS.' WHERE album = '.$album.' ORDER BY timestamp DESC LIMIT '.$max ), 'ARRAY_A' );
 		}
 		else {
 			$thumbs = $wpdb->get_results($wpdb->prepare( 'SELECT * FROM '.WPPA_PHOTOS.' ORDER BY timestamp DESC LIMIT '.$max ), 'ARRAY_A' );
@@ -46,7 +48,7 @@ class LasTenWidget extends WP_Widget {
 			if ($image) {
 				$no_album = !$album;
 				if ($no_album) $tit = __a('View the most recent uploaded photos', 'wppa_theme'); else $tit = esc_attr(wppa_qtrans(stripslashes($image['description'])));
-				$link       = wppa_get_imglnk_a('lasten', $image['id'], '', $tit, '', $no_album);
+				$link       = wppa_get_imglnk_a('lasten', $image['id'], '', $tit, '', $no_album, $albumenum);
 				$file       = wppa_get_thumb_path_by_id($image['id']);
 				$imgstyle_a = wppa_get_imgstyle_a($file, $maxw, 'center', 'ltthumb');
 				$imgstyle   = $imgstyle_a['style'];
@@ -82,9 +84,11 @@ class LasTenWidget extends WP_Widget {
 			else {	// No image
 				$widget_content .= __a('Photo not found.', 'wppa_theme');
 			}
-			$widget_content .= "\n\t".'<span style="font-size:9px;">'.wppa_get_time_since($image['timestamp']);
-
-			$widget_content .= '</span>'."\n".'</div>';
+			if ($timesince == 'yes') {
+				$widget_content .= "\n\t".'<span style="font-size:9px;">'.wppa_get_time_since($image['timestamp']);
+				$widget_content .= '</span>';
+			}
+			$widget_content .= "\n".'</div>';
 		}	
 		else $widget_content .= 'There are no uploaded photos (yet).';
 		
@@ -100,6 +104,9 @@ class LasTenWidget extends WP_Widget {
 		$instance = $old_instance;
 		$instance['title'] = strip_tags($new_instance['title']);
 		$instance['album'] = $new_instance['album'];
+		$instance['albumenum'] = $new_instance['albumenum'];
+		if ( $instance['album'] != '-99' ) $instance['albumenum'] = '';
+		$instance['timesince'] = $new_instance['timesince'];
 		
         return $instance;
     }
@@ -108,10 +115,11 @@ class LasTenWidget extends WP_Widget {
     function form($instance) {	
 		global $wppa_opt;
 		//Defaults
-		$instance = wp_parse_args( (array) $instance, array( 'title' => __('Last Ten Photos', 'wppa'), 'album' => '0') );
+		$instance = wp_parse_args( (array) $instance, array( 'title' => __('Last Ten Photos', 'wppa'), 'album' => '0', 'albumenum' => '', 'timesince' => 'yes' ) );
  		$widget_title = apply_filters('widget_title', $instance['title']);
 
 		$album = $instance['album'];
+		$timesince = $instance['timesince'];
 ?>
 		<p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:', 'wppa'); ?></label> 
 			<input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $widget_title; ?>" />
@@ -119,10 +127,25 @@ class LasTenWidget extends WP_Widget {
 		<p><label for="<?php echo $this->get_field_id('album'); ?>"><?php _e('Album:', 'wppa'); ?></label> 
 			<select class="widefat" id="<?php echo $this->get_field_id('album'); ?>" name="<?php echo $this->get_field_name('album'); ?>" >
 
-				<?php echo wppa_album_select('', $album, true, '', '', true); ?>
+				<?php echo wppa_album_select('', $album, true, '', '', true, '', '', true, true); ?>
 
 			</select>
 		</p>
+		
+		<?php $album_enum = $instance['albumenum'] ?>
+		<p id="wppa-albums-enum" style="display:block;" ><label for="<?php echo $this->get_field_id('albumenum'); ?>"><?php _e('Albums:', 'wppa'); ?></label>
+		<small style="color:blue;" ><br /><?php _e('Select --- multiple see below --- in the Album selection box. Then enter album numbers seperated by commas', 'wppa') ?></small>
+			<input class="widefat" id="<?php echo $this->get_field_id('albumenum'); ?>" name="<?php echo $this->get_field_name('albumenum'); ?>" type="text" value="<?php echo $album_enum ?>" />
+		</p>
+		
+		<p>
+			<?php _e('Show time since:', 'wppa'); ?>
+			<select id="<?php echo $this->get_field_id('timesince'); ?>" name="<?php echo $this->get_field_name('timesince'); ?>">
+				<option value="no" <?php if ($timesince == 'no') echo 'selected="selected"' ?>><?php _e('no.', 'wppa'); ?></option>
+				<option value="yes" <?php if ($timesince == 'yes') echo 'selected="selected"' ?>><?php _e('yes.', 'wppa'); ?></option>
+			</select>
+		</p>
+
 
 		<p><?php _e('You can set the behaviour of this widget in the <b>Photo Albums -> Settings</b> admin page.', 'wppa'); ?></p>
 <?php

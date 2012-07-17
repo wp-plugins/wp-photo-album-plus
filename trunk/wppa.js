@@ -2,7 +2,7 @@
 //
 // conatins slideshow, theme, ajax and lightbox code
 //
-// Version 4.6.9
+// Version 4.6.10
 
 // Part 1: Slideshow
 //
@@ -736,9 +736,9 @@ function wppaFormatSlide(mocc) {
 		wppaColWidth[mocc] = contw;
 	}
 	var natwidth  = elm.naturalWidth;
-		if (typeof(natwidth)=='undefined') natwidth = parseInt(elm.style.width);
+		if (typeof(natwidth)=='undefined') natwidth = parseInt(elm.style.maxWidth);
 	var natheight = elm.naturalHeight;
-		if (typeof(natheight)=='undefined') natheight = parseInt(elm.style.height);
+		if (typeof(natheight)=='undefined') natheight = parseInt(elm.style.maxHeight);
 	var aspect    = wppaAspectRatio[mocc];
 	var fullsize  = wppaFullSize[mocc];
 	var delta     = wppaFullFrameDelta[mocc];
@@ -841,6 +841,9 @@ function wppaFormatSlide(mocc) {
 			if (margl < 0) margl = 0;
 			jQuery('#'+imgid).css({marginLeft:'auto', marginRight:'auto'});
 			jQuery('#'+frameid).css({marginLeft:margl});
+			// Do not let ver 4 browser shortcomings workarounds spoil the max dimensions
+//			jQuery('#'+imgid).css('max-height', imgh+'px');
+//			jQuery('#'+imgid).css('max-width', imgw+'px');
 		}
 	}
 	
@@ -1974,8 +1977,8 @@ jQuery(document).ready(function(){
 function wppaFindWindowSize() {
 	wppaWindowInnerWidth = window.innerWidth;
 	wppaWindowInnerHeight = window.innerHeight;
-	if (typeof(wppaWindowInnerWidth)=='undefined') wppaWindowInnerWidth = wppaVer4WindowWidth;
-	if (typeof(wppaWindowInnerHeight)=='undefined') wppaWindowInnerHeight = wppaVer4WindowHeight;
+	if (typeof(wppaWindowInnerWidth)=='undefined') wppaWindowInnerWidth = jQuery(window).width(); // wppaVer4WindowWidth;
+	if (typeof(wppaWindowInnerHeight)=='undefined') wppaWindowInnerHeight = jQuery(window).height(); //wppaVer4WindowHeight;
 }
 
 function wppaOvlShow(arg) {
