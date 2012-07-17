@@ -2968,7 +2968,8 @@ global $wppa_opt;
 		if ( $wppa_opt['wppa_popup_text_desc_strip'] ) {
 			$title = wppa_strip_tags($title);
 		}
-		$title = esc_attr(__($title));
+//		$title = esc_attr(__($title));
+		$title = esc_attr(stripslashes(__($title)));
 	}
 	else {
 		$title = esc_attr(wppa_get_photo_name($thumb));	// esc_attr was esc_js prior to 4.0.7
