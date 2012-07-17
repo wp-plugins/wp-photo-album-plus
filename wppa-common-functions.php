@@ -2,11 +2,11 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 4.6.9
+* version 4.6.10
 *
 */
 global $wppa_api_version;
-$wppa_api_version = '4-6-9-000';
+$wppa_api_version = '4-6-10-000';
 // Initialize globals and option settings
 function wppa_initialize_runtime($force = false) {
 global $wppa;
@@ -1704,4 +1704,19 @@ global $wpdb;
 	else $result = $limit_max - $curcount;
 
 	return $result;
+}
+
+// See if a string is a comma seperated list of numbers, a single num returns false
+function wppa_is_enum($str) {
+
+	if ( is_numeric($str) ) return false;
+	if ( strstr( $str, ',' ) === false ) return false;
+	
+	$temp = explode(',', $str);
+	
+	foreach ( $temp as $t ) {
+		if ( ! is_numeric($t) ) return false;
+	}
+	
+	return true;
 }

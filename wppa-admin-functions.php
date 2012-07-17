@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 * gp admin functions
-* version 4.6.3
+* version 4.6.10
 *
 * 
 */
@@ -570,7 +570,9 @@ function wppa_album_select(	$exc = '',
 							$checkancestors = FALSE, 
 							$none_is_all = false, 
 							$none_is_blank = false,
-							$check_upload_allowed = false
+							$check_upload_allowed = false,
+							$add_multiple = false,
+							$add_numbers = false
 							) {
 
 global $wpdb;
@@ -583,6 +585,11 @@ global $wpdb;
     }
     
     $result = '';
+	
+	if ($add_multiple) {
+		$result .= '<option value="-99">' . __('--- multiple see below ---', 'wppa') . '</option>';
+	}
+
     if ($addnone) {
 		if ($none_is_blank) $result .= '<option value="0"></option>';
 		elseif ($none_is_all) $result .= '<option value="0">' . __('--- all ---', 'wppa') . '</option>';
@@ -604,6 +611,7 @@ global $wpdb;
 			$result .= '<option value="' . $album['id'] . '"' . $selected . $disabled . '>';
 			$result .= wppa_qtrans(stripslashes($album['name']));
 			if ( $disabled ) $result .= ' '.__('(full)', 'wppa');
+			if ( $add_numbers ) $result .= ' ('.$album['id'].')';
 			$result .= '</option>';
 		}
 		else {	// excluded or is ancestor

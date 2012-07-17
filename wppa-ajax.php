@@ -2,7 +2,7 @@
 /* wppa-ajax.php
 *
 * Functions used in ajax requests
-* version 4.6.3
+* version 4.6.10
 *
 */
 add_action('wp_ajax_wppa', 'wppa_ajax_callback');
@@ -23,6 +23,12 @@ global $wppa;
 	$wppa_action = $_REQUEST['wppa-action'];
 	
 	switch ($wppa_action) {
+		case 'tinymcedialog':
+			$result = wppa_make_tinymce_dialog();
+			echo $result;
+			exit;
+			break;
+			
 		case 'rate':
 			// Get commandline args
 			$photo  = $_REQUEST['wppa-rating-id'];
