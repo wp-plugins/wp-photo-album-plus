@@ -3,12 +3,12 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions and API modules
-* Version 4.6.10
+* Version 4.6.11
 *
 */
 /* Moved to wppa-common-functions.php:
 global $wppa_api_version;
-$wppa_api_version = '4-6-10-000';
+$wppa_api_version = '4-6-11-000';
 */
 
 
@@ -392,6 +392,9 @@ global $wppa_opt;
 		$wppa['is_mphoto'] = '0';
 		$wppa['single_photo'] = '';
 	}
+//	elseif (wppa_page('oneofone')) {	// New style single photo
+//		wppa_sphoto();
+//	}
 	else {
 		if (function_exists('wppa_theme')) wppa_theme();	// Call the theme module
 		else $wppa['out'] = '<span style="color:red">ERROR: Missing function wppa_theme(), check the installation of WPPA+. Remove customized wppa_theme.php</span>';
@@ -3731,8 +3734,8 @@ global $wppa_opt;
 
 	$width 		= wppa_get_container_width();
 	$height 	= floor($width / wppa_get_ratio($wppa['single_photo']));
-	$usethumb	= wppa_use_thumb_file($wppa['single_photo'], $width, $height) ? '/thumbs' : '';
-	$src 		= str_replace('/wppa', '/wppa'.$usethumb , wppa_get_image_url_by_id($wppa['single_photo']));
+	$usethumb	= wppa_use_thumb_file($wppa['single_photo'], $width, $height) ? 'thumbs/' : '';
+	$src 		= str_replace('/wppa/', '/wppa/'.$usethumb , wppa_get_image_url_by_id($wppa['single_photo']));
 
 	$captwidth = $width + '10';
 	$wppa['out'] .= '<div id="wppa_'.$wppa['single_photo'].'" class="wp-caption';
@@ -3748,11 +3751,38 @@ global $wppa_opt;
 		if ($link) {
 			$wppa['out'] .= wppa_nltab('-').'</a>';
 		}
-//		$wppa['out'] .= '<p class="wp-caption-text">'.strip_tags(stripslashes(wppa_get_photo_desc($wppa['single_photo']))).'</p>';
 		$wppa['out'] .= '<p class="wp-caption-text">'.wppa_get_photo_desc($wppa['single_photo']).'</p>';
 
 	$wppa['out'] .= '</div>';
 }	
+// Like mphoto but without the caption
+function wppa_sphoto() {
+global $wppa;
+global $wppa_opt;
+
+	$width 		= wppa_get_container_width();
+	$height 	= floor($width / wppa_get_ratio($wppa['single_photo']));
+	$usethumb	= wppa_use_thumb_file($wppa['single_photo'], $width, $height) ? 'thumbs/' : '';
+	$src 		= str_replace('/wppa/', '/wppa/'.$usethumb , wppa_get_image_url_by_id($wppa['single_photo']));
+
+	$wppa['out'] .= '<div id="wppa_'.$wppa['single_photo'].'" class="';
+		if ($wppa['align'] != '') $wppa['out'] .= ' align'.$wppa['align'];
+	$wppa['out'] .='" style="width: '.$width.'px">';
+
+		$link = wppa_get_imglnk_a('mphoto', $wppa['single_photo']);
+		if ($link) {
+			$wppa['out'] .= wppa_nltab('+').'<a href="'.$link['url'].'" title="'.$link['title'].'" target="'.$link['target'].'" class="thumb-img" id="a-'.$wppa['single_photo'].'-'.$wppa['master_occur'].'">';
+		}
+		
+		$wppa['out'] .= wppa_nltab().'<img src="'.$src.'" alt="" class="size-medium" title="'.esc_attr(stripslashes(wppa_get_photo_name($wppa['single_photo']))).'" width="'.$width.'" height="'.$height.'" />';
+		if ($link) {
+			$wppa['out'] .= wppa_nltab('-').'</a>';
+		}
+//		$wppa['out'] .= '<p class="wp-caption-text">'.wppa_get_photo_desc($wppa['single_photo']).'</p>';
+
+	$wppa['out'] .= '</div>';
+}	
+/*
 function wppa_mphoto_oldversion() {
 global $wppa;
 global $wppa_opt;
@@ -3774,7 +3804,7 @@ global $wppa_opt;
 	}
 	$wppa['out'] .= '[/caption]';
 }
-
+*/
 // returns aspect ratio (w/h), or 1 on error
 function wppa_get_ratio($id = '') {
 global $wpdb;

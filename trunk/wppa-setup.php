@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 4.6.5
+* Version 4.6.11
 *
 */
 
@@ -358,7 +358,7 @@ Hide Camera info
 						'wppa_thumbnail_widget_count'	=> '10',	// 5
 						'wppa_thumbnail_widget_size'	=> '86',	// 6
 						'wppa_lasten_count'				=> '10',	// 7
-						'wppa_lasten_size' 				=> '86',	// 2
+						'wppa_lasten_size' 				=> '86',	// 8
 						// G Overlay
 						'wppa_ovl_txt_lines'			=> 'auto',	// 
 

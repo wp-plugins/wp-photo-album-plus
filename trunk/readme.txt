@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile
-Version: 4.6.10
+Version: 4.6.11
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -68,7 +68,7 @@ Most themes comply with these requirements.
 However, check these requirements in case of problems with new installations with themes you never had used before with wppa+ or when you modifies your theme.
 
 = Upgrade notice =
-This version is: Major rev# 4, Minor rev# 6, Fix rev# 10, Hotfix rev# 000.
+This version is: Major rev# 4, Minor rev# 6, Fix rev# 11, Hotfix rev# 000.
 If you are upgrading from a previous Major or Minor version, note that:
 * If you modified wppa_theme.php and/or wppa_style.css, you will have to use the newly supplied versions. The previous versions are NOT compatible.
 * If you set the userlevel to anything else than 'administrator' you may have to set it again. Note that changing the userlevel can be done by the administrator only!
@@ -155,6 +155,24 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 4.6.11 =
+
+= Bug Fixes =
+
+* The Tinymce shortcode generator did not show album previews when the photo order was descending. Fixed.
+* Fixed redundant slashes in thumbnail popup description causing html attributes not to act as intented.
+
+= New Features =
+
+* Th E-mail adresses in the comment admin page are now links to the mail program to enable quick replies.
+
+= Other Changes =
+
+* Almost all static texts in the Tinymce shortcode generator are now translatable.
+* The Tinymce shortcode generator now also displays previews of --- special --- albums like #topten etc.
+* Minor cosmetic changes to the shortcode dialog.
+* If the plugin Ultimate TinyMCE is installed (and is up to rev 2.7.1) the WPPA+ Shortcode can be positiond in that plugins Settings Page.
 
 = 4.6.10 =
 
