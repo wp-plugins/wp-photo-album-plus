@@ -172,7 +172,7 @@ See for additional information: http://wppa.opajaap.nl/?page_id=1459
 * Almost all static texts in the Tinymce shortcode generator are now translatable.
 * The Tinymce shortcode generator now also displays previews of --- special --- albums like #topten etc.
 * Minor cosmetic changes to the shortcode dialog.
-* If the plugin Ultimate TinyMCE is installed (and is up to rev 2.7.1) the WPPA+ Shortcode can be positiond in that plugins Settings Page.
+* If the plugin Ultimate TinyMCE is installed (and is up to rev 2.7.1) the WPPA+ Shortcode button can be positiond in that plugins Settings Page.
 
 = 4.6.10 =
 
