@@ -2,7 +2,7 @@
 * Pachkage: wp-photo-album-plus
 *
 *
-* Version 4.6.10
+* Version 4.6.11
 *
 */
 
@@ -77,8 +77,8 @@
 
 					// Check for inconsistencies
 					if ( type == 'cover' ) {
-						if ( album == '#topten' || album == '#lasten' || album == '#all' || album == '#last' ) {
-							alert('Sorry, you made a mistake\n\nA special selection has no album cover\n\nPlease try again');
+						if ( album == '#topten' || album == '#lasten' || album == '#all' ) {
+							alert('Sorry, you made a mistake\n\nA --- special --- selection has no album cover\n\nPlease try again');
 							return;
 						}
 					}
@@ -132,6 +132,9 @@ function wppaTinyMceAlbumPreview(id) {
 	
 	if (count > 0) for (var i = 1; i <= count; i++) {
 		if ( temp[i] != '' ) html += '<img src="'+wppaThumbDirectory+temp[i]+'" style="max-width:75px; max-height:75px; margin:2px;" />';
+	}
+	else {
+		html = '<br /><br /><br />'+wppaNoPreview;
 	}
 	jQuery('#mygallery-album-preview').html(html);
 }

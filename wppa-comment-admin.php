@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all comments
-* Version 4.5.0
+* Version 4.6.11
 *
 */
 
@@ -260,7 +260,15 @@ global $wppa_opt;
 									$url = get_page_link($wppa_comadmin_linkpage);
 									if (strpos($url, '?')) $url .= '&';
 									else $url .= '?';
-									$alb = $wpdb->get_var($wpdb->prepare("SELECT album FROM ".WPPA_PHOTOS." WHERE id = %s", $com['photo']));
+									$photo = $wpdb->get_row($wpdb->prepare("SELECT * FROM ".WPPA_PHOTOS." WHERE id = %s", $com['photo']), 'ARRAY_A');
+									if ($photo) {
+										$alb = $photo['album'];
+										$pname = __($photo['name']);
+									}
+									else {
+										$alb = '';
+										$pname = '';
+									}
 									$url .= 'wppa-album='.$alb.'&wppa-photo='.$com['photo'].'&wppa-occur=1';
 									
 									?>
@@ -269,7 +277,15 @@ global $wppa_opt;
 									<td><?php echo $com['photo'] ?></td>
 									<td><?php echo $com['ip'] ?></td>
 									<td><?php echo $com['user'] ?></td>
-									<td><?php echo $com['email'] ?></td>
+									<td><?php 
+										if ( $com['email'] ) {
+											$subject = str_replace(' ', '%20', sprintf(__('Reply to your comment on photo: %s on %s', 'wppa'), $pname, get_bloginfo('name')));
+											echo '<a href="mailto:'.$com['email'].'?Subject='.$subject.'" title="'.__('Reply', 'wppa').'" >'.$com['email'].'</a>';
+										}
+										else {
+											echo $com['email'];
+										} ?>
+									</td>
 									<td><?php echo wppa_get_time_since($com['timestamp']) ?></td>
 									<td><?php echo $com['comment'] ?></td>
 									<td>

@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 *
-* Version 4.6.10
+* Version 4.6.11
 *
 */
 
@@ -20,7 +20,9 @@ class wppaGallery
 		// only hook up these filters if we're in the admin panel, and the current user has permission
 		// to edit posts and pages
 		if ( current_user_can( 'edit_posts' ) && current_user_can( 'edit_pages' ) ) {
-			add_filter( 'mce_buttons', array( $this, 'filter_mce_button' ) );
+			if (!is_plugin_active('ultimate-tinymce/main.php')) {
+				add_filter( 'mce_buttons', array( $this, 'filter_mce_button' ) );
+			}
 			add_filter( 'mce_external_plugins', array( $this, 'filter_mce_plugin' ) );	
 		}
 	}
@@ -50,18 +52,22 @@ function wppa_inject_js() {
 		echo("\t".'wppaImageDirectory = "'.wppa_get_imgdir().'";'."\n");
 		echo("\t".'wppaAjaxUrl = "'.admin_url('admin-ajax.php').'";'."\n");
 		echo("\t".'wppaThumbDirectory = "'.WPPA_UPLOAD_URL.'/thumbs/";'."\n");
+		echo("\t".'wppaNoPreview = "'.__('No Preview available', 'wppa').'";'."\n");
 	echo("/* ]]> */\n");
 	echo("</script>\n");
 }
 
 function wppa_make_tinymce_dialog() {
 global $wpdb;
+global $wppa_opt;
 
 	$result = 
 	'<div id="mygallery-form">'.
 		'<div style="height:156px; background-color:#eee; overflow:auto; margin-top:10px;" >'.
-			'<div id="mygallery-album-preview" style="text-align:center;font-size:48px; line-height:21px; color:#fff;" class="mygallery-album" ><br /><br /><br />Preview</div>'.
-			'<div id="mygallery-photo-preview" style="text-align:center;font-size:48px; line-height:21px; color:#fff; display:none;" class="mygallery-photo" ><br /><br /><br />Preview</div>'.
+			'<div id="mygallery-album-preview" style="text-align:center;font-size:48px; line-height:21px; color:#fff;" class="mygallery-album" ><br /><br /><br />'.
+			__('Album Preview', 'wppa').'<br /><span style="font-size:12px; color:#777" ><br/>'.__('A maximum of 100 photos can be previewd', 'wppa').'</span></div>'.
+			'<div id="mygallery-photo-preview" style="text-align:center;font-size:48px; line-height:21px; color:#fff; display:none;" class="mygallery-photo" ><br /><br /><br />'.
+			__('Photo Preview', 'wppa').'</div>'.
 		'</div>'.
 		'<table id="mygallery-table" class="form-table">'.
 		
@@ -89,21 +95,53 @@ global $wpdb;
 						$albums = $wpdb->get_results($wpdb->prepare("SELECT `id`, `name` FROM `".WPPA_ALBUMS."` ORDER BY `timestamp` DESC"), 'ARRAY_A');
 						if ($albums) {
 							$result .= 
-							'<option value="0" >'.__('Please select an album', 'wppa').'</option>';
+							// Please select
+							'<option value="0" disabled="disabled" selected="selected" >'.__('Please select an album', 'wppa').'</option>';
+							// All standard albums
 							foreach ( $albums as $album ) {
 								$value = $album['id'];
-								$photos = $wpdb->get_results($wpdb->prepare("SELECT `id`, `name`, `album`, `ext` FROM `".WPPA_PHOTOS."` WHERE `album` = %s ".wppa_get_photo_order($album['id'])." DESC LIMIT 100", $album['id']), 'ARRAY_A');
+								$alb = $album['id'];
+								$photos = $wpdb->get_results($wpdb->prepare("SELECT `id`, `name`, `album`, `ext` FROM `".WPPA_PHOTOS."` WHERE `album` = %s ".wppa_get_photo_order($alb)." LIMIT 100", $alb), 'ARRAY_A');
 								if ( $photos ) foreach ( $photos as $photo ) {
 									$value .= '|'.$photo['id'].'.'.$photo['ext'];
 								}
 								else $value .= '|';
-								$result .= '<option value="'.$value.'" >'.stripslashes(__($album['name'])).'</option>';
+								if ( count($photos) <= $wppa_opt['wppa_min_thumbs'] ) $note = ' (*)'; else $note = '';
+								$result .= '<option value="'.$value.'" >'.stripslashes(__($album['name'])).$note.'</option>';
 							}
-							$result .=
-							'<option value = "#last" >'.__('- The latest created album -', 'wppa').'</option>'.
-							'<option value = "#topten" >'.__('--- The top rated photos ---', 'wppa').'</option>'.
-							'<option value = "#lasten" >'.__('--- The most recently uploaded photos ---', 'wppa').'</option>'.
-							'<option value = "#all" >'.__('--- All photos in the system ---', 'wppa').'</option>';
+							// #last
+								$value = '#last';
+								$alb = $albums[0]['id'];
+								$photos = $wpdb->get_results($wpdb->prepare("SELECT `id`, `name`, `album`, `ext` FROM `".WPPA_PHOTOS."` WHERE `album` = %s ".wppa_get_photo_order($alb)." LIMIT 100", $alb), 'ARRAY_A');
+								if ( $photos ) foreach ( $photos as $photo ) {
+									$value .= '|'.$photo['id'].'.'.$photo['ext'];
+								}
+								else $value .= '|';
+								$result .= '<option value="'.$value.'" >'.__('- The latest created album -', 'wppa').'</option>';
+							// #topten
+								$value = '#topten';
+								$photos = $wpdb->get_results($wpdb->prepare("SELECT `id`, `name`, `album`, `ext` FROM `".WPPA_PHOTOS."` ORDER BY `mean_rating` DESC LIMIT ".$wppa_opt['wppa_topten_count']), 'ARRAY_A');
+								if ( $photos ) foreach ( $photos as $photo ) {
+									$value .= '|'.$photo['id'].'.'.$photo['ext'];
+								}
+								else $value .= '|';
+								$result .= '<option value = "'.$value.'" >'.__('--- The top rated photos ---', 'wppa').'</option>';
+							// #lasten
+								$value = '#lasten';
+								$photos = $wpdb->get_results($wpdb->prepare("SELECT `id`, `name`, `album`, `ext` FROM `".WPPA_PHOTOS."` ORDER BY `timestamp` DESC LIMIT ".$wppa_opt['wppa_lasten_count']), 'ARRAY_A');
+								if ( $photos ) foreach ( $photos as $photo ) {
+									$value .= '|'.$photo['id'].'.'.$photo['ext'];
+								}
+								else $value .= '|';
+								$result .= '<option value = "'.$value.'" >'.__('--- The most recently uploaded photos ---', 'wppa').'</option>';							
+							// #all
+								$value = '#all';
+								$photos = $wpdb->get_results($wpdb->prepare("SELECT `id`, `name`, `album`, `ext` FROM `".WPPA_PHOTOS."` ".wppa_get_photo_order()." LIMIT 100"), 'ARRAY_A');
+								if ( $photos ) foreach ( $photos as $photo ) {
+									$value .= '|'.$photo['id'].'.'.$photo['ext'];
+								}
+								else $value .= '|';
+								$result .= '<option value = "'.$value.'" >'.__('--- All photos in the system ---', 'wppa').'</option>';
 						}
 						else {
 							$result .= '<option value="0" >'.__('There are no albums yet', 'wppa').'</option>';
@@ -112,7 +150,8 @@ global $wpdb;
 					'</select>'.
 					'<br />'.
 					'<small class="mygallery-album" >'.
-						__('Specify the album to be used or --- A special selection of photos ---', 'wppa').'<br />&nbsp;'.
+						__('Specify the album to be used or --- A special selection of photos ---', 'wppa').'<br />'.
+						__('(*) Album contains less than the minimun number of photos', 'wppa').
 					'</small>'.
 				'</td>'.
 			'</tr>'.
@@ -123,7 +162,7 @@ global $wpdb;
 					'<select id="mygallery-photo" name="photo" style="display:none;" class="mygallery-photo" onchange="wppaTinyMcePhotoPreview(this.value)" >';
 						$photos = $wpdb->get_results($wpdb->prepare("SELECT `id`, `name`, `album`, `ext` FROM `".WPPA_PHOTOS."` ORDER BY `timestamp` DESC LIMIT 100"), 'ARRAY_A');
 						if ($photos) {
-							$result .= '<option value="0" >'.__('Please select a photo', 'wppa').'</option>';
+							$result .= '<option value="0" disabled="disabled" selected="selected" >'.__('Please select a photo', 'wppa').'</option>';
 							foreach ( $photos as $photo ) {
 								$result .= '<option value="'.$photo['id'].'.'.$photo['ext'].'" >'.stripslashes(__($photo['name'])).' ('.__(wppa_get_album_name($photo['album'])).')'.'</option>';
 							}
@@ -168,7 +207,7 @@ global $wpdb;
 
 		'</table>'.
 		'<p class="submit">'.
-			'<input type="button" id="mygallery-submit" class="button-primary" value="Insert Gallery" name="submit" />'.
+			'<input type="button" id="mygallery-submit" class="button-primary" value="'.__('Insert Gallery', 'wppa').'" name="submit" />'.
 		'</p>'.
 	'</div>';
 	return $result;
