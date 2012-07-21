@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wp-photo-album-plus\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-07-19 07:11+0100\n"
-"PO-Revision-Date: 2012-07-19 07:11+0100\n"
+"POT-Creation-Date: 2012-07-21 07:13+0100\n"
+"PO-Revision-Date: 2012-07-21 07:13+0100\n"
 "Last-Translator: J.N. Breetvelt <OpaJaap@OpaJaap.nl>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -2045,7 +2045,7 @@ msgid "WPPA+ Search Photos"
 msgstr "WPPA+ Foto's zoeken"
 
 #: wppa-search-widget.php:15
-#: wppa-search-widget.php:63
+#: wppa-search-widget.php:64
 msgid "Search Photos"
 msgstr "Foto's zoeken"
 
@@ -3795,7 +3795,7 @@ msgstr "boven"
 #: wppa-settings-autosave.php:1245
 #: wppa-settings-autosave.php:1391
 #: wppa-slideshow-widget.php:207
-#: wppa-tinymce.php:200
+#: wppa-tinymce.php:212
 msgid "center"
 msgstr "midden"
 
@@ -5941,87 +5941,103 @@ msgstr "Een enkele foto"
 msgid "A single photo with caption"
 msgstr "Een enkele foto met onderschrift"
 
-#: wppa-tinymce.php:87
+#: wppa-tinymce.php:85
+msgid "A generic albums display"
+msgstr "Een generieke albums afbeelding"
+
+#: wppa-tinymce.php:88
 msgid "Specify the type of gallery"
 msgstr "Geef het type weergave op"
 
-#: wppa-tinymce.php:92
+#: wppa-tinymce.php:93
+msgid "Explanation:"
+msgstr "Toelichting:"
+
+#: wppa-tinymce.php:95
+msgid "Use this gallerytype to display all the top-level album covers."
+msgstr "Gebruik dit type om alle top-leven album omslagen te tonen."
+
+#: wppa-tinymce.php:96
+msgid "Also, make a page with this type of gallery display to be used as a target for the Search results and for links set in Table VI."
+msgstr "Maak ook een pagina met dit type om gebruikt te worden als doel van Zoek resultaten en voor koppelingen in Tabel VI."
+
+#: wppa-tinymce.php:101
 msgid "The Album to be used:"
 msgstr "Het te gebruiken album:"
 
-#: wppa-tinymce.php:99
+#: wppa-tinymce.php:108
 msgid "Please select an album"
 msgstr "Selecteer een album"
 
-#: wppa-tinymce.php:120
+#: wppa-tinymce.php:130
 msgid "- The latest created album -"
 msgstr "- Het laatst aangemaakte album -"
 
-#: wppa-tinymce.php:128
+#: wppa-tinymce.php:138
 msgid "--- The top rated photos ---"
 msgstr "--- Top gewaardeerde foto's ---"
 
-#: wppa-tinymce.php:136
+#: wppa-tinymce.php:146
 msgid "--- The most recently uploaded photos ---"
 msgstr "--- De meest recent geuploade foto's ---"
 
-#: wppa-tinymce.php:144
+#: wppa-tinymce.php:154
 msgid "--- All photos in the system ---"
 msgstr "--- Alle foto's in het systeem ---"
 
-#: wppa-tinymce.php:147
+#: wppa-tinymce.php:157
 msgid "There are no albums yet"
 msgstr "Er zijn nog geen albums"
 
-#: wppa-tinymce.php:153
+#: wppa-tinymce.php:165
 msgid "Specify the album to be used or --- A special selection of photos ---"
 msgstr "Selecteer het te gebruiken album of --- Een speciale selectie ---"
 
-#: wppa-tinymce.php:154
-msgid "(*) Album contains less than the minimun number of photos"
-msgstr "(*) Album bevat minder dan het minimum aantal foto's"
+#: wppa-tinymce.php:166
+msgid "* Album contains less than the minimun number of photos"
+msgstr "* Album bevat minder dan het minimum aantal foto's"
 
-#: wppa-tinymce.php:160
+#: wppa-tinymce.php:172
 msgid "The Photo to be used:"
 msgstr "De Foto:"
 
-#: wppa-tinymce.php:165
+#: wppa-tinymce.php:177
 msgid "Please select a photo"
 msgstr "Selecteer een foto"
 
-#: wppa-tinymce.php:171
+#: wppa-tinymce.php:183
 msgid "There are no photos yet"
 msgstr "Er zijn nog geen foto's"
 
-#: wppa-tinymce.php:177
+#: wppa-tinymce.php:189
 msgid "Specify the photo to be used"
 msgstr "Specificeer de te gebruiken foto"
 
-#: wppa-tinymce.php:178
+#: wppa-tinymce.php:190
 msgid "You can select from a maximum of 100 most recently added photos"
 msgstr "U kunt kiezen uit één van de maximaal 100 meest recente foto's"
 
-#: wppa-tinymce.php:184
+#: wppa-tinymce.php:196
 msgid "The size of the display:"
 msgstr "De afbeeldings grootte:"
 
-#: wppa-tinymce.php:189
+#: wppa-tinymce.php:201
 msgid "Specify the horizontal size in pixels or <span style=\"color:blue\" >auto</span>"
 msgstr "Geef de horizontale grootte in pixels op of <span style=\"color:blue\" >auto</span>"
 
-#: wppa-tinymce.php:190
+#: wppa-tinymce.php:202
 msgid "Leave this blank for default size"
 msgstr "Laat dit blank voor de standaard grootte"
 
-#: wppa-tinymce.php:195
+#: wppa-tinymce.php:207
 msgid "Horizontal alignment:"
 msgstr "Horizontale uitlijning:"
 
-#: wppa-tinymce.php:204
+#: wppa-tinymce.php:216
 msgid "Specify the alignment to be used or --- none ---"
 msgstr "Geef de uitlijning op of --- geen ---"
 
-#: wppa-tinymce.php:210
+#: wppa-tinymce.php:222
 msgid "Insert Gallery"
 msgstr "Code Invoegen"
 
@@ -7362,9 +7378,6 @@ msgstr "- begin opnieuw -"
 
 #~ msgid "Coverphoto Size:"
 #~ msgstr "Omslag foto grootte:"
-
-#~ msgid "Explanation:"
-#~ msgstr "Toelichting:"
 
 #~ msgid ""
 #~ "The settings in this chapter may be left blank. When blank, the theme's "

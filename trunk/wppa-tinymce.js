@@ -2,7 +2,7 @@
 * Pachkage: wp-photo-album-plus
 *
 *
-* Version 4.6.11
+* Version 4.6.12
 *
 */
 
@@ -65,6 +65,10 @@
 					var size 	= table.find('#mygallery-size').val();
 					var align	= table.find('#mygallery-align').val();
 					var photo 	= parseInt(table.find('#mygallery-photo').val());
+					var alb 	= table.find('#mygallery-alb').val();
+						if ( alb == '' ) alb = '0'; else alb = parseInt(alb);
+					var cnt		= table.find('#mygallery-cnt').val();
+						if ( cnt == '' ) cnt = '0'; else cnt = parseInt(cnt);
 					
 					// Sinitize input
 					if (size == 0) {}								// Ok, use default
@@ -82,7 +86,7 @@
 							return;
 						}
 					}
-					if ( type != 'photo' && type != 'mphoto' )	{
+					if ( type != 'photo' && type != 'mphoto' && type != 'generic' )	{
 						if ( album == 0 ) {
 							alert('Sorry, you made a mistake\n\nPlease select an album\n\nPlease try again');
 							return;
@@ -97,10 +101,29 @@
 					
 					// Make the shortcode
 					var shortcode = '%%wppa%%';
-					if ( type == 'photo' || type == 'mphoto' )				
+					
+					if ( type == 'generic' ) {
+					}
+					else if ( type == 'photo' || type == 'mphoto' )	{			
 						shortcode += ' %%'+type+'='+photo+'%%';
-					else
-						shortcode += ' %%'+type+'='+album+'%%';
+					}
+					else {
+						var temp = album.split('|');
+						if ( temp[0] == '#topten'|| temp[0] == '#lasten' ) {
+							if ( cnt != '0' ) {
+								shortcode += ' %%'+type+'='+temp[0]+','+alb+','+cnt+'%%';
+							}
+							else if ( alb != '0' ) {
+								shortcode += ' %%'+type+'='+temp[0]+','+alb+'%%';
+							}
+							else {
+								shortcode += ' %%'+type+'='+album+'%%';
+							}
+						}
+						else {
+							shortcode += ' %%'+type+'='+album+'%%';
+						}
+					}
 						
 					if ( size != 0 )
 						shortcode += ' %%size='+size+'%%';
@@ -121,6 +144,25 @@
 	});
 })()
 
+function wppaGalleryTypeChange(value) {
+
+	if (value == 'generic' ) {
+		jQuery('.mygallery-photo').hide();
+		jQuery('.mygallery-album').hide();
+		jQuery('.mygallery-help').show();
+	}
+	else if (value == 'photo' || value == 'mphoto') {
+		jQuery('.mygallery-photo').show();
+		jQuery('.mygallery-album').hide();
+		jQuery('.mygallery-help').hide();
+	}
+	else {
+		jQuery('.mygallery-photo').hide();
+		jQuery('.mygallery-album').show();
+		jQuery('.mygallery-help').hide();
+	}
+}
+
 function wppaTinyMcePhotoPreview(id) {
 	jQuery('#mygallery-photo-preview').html('<img src="'+wppaThumbDirectory+id+'" style="max-width:600px; max-height:150px; margin-top:3px;" />');
 }
@@ -137,4 +179,11 @@ function wppaTinyMceAlbumPreview(id) {
 		html = '<br /><br /><br />'+wppaNoPreview;
 	}
 	jQuery('#mygallery-album-preview').html(html);
+	
+	if ( temp[0] == '#topten' || temp[0] == '#lasten' ) { 
+		jQuery('.mygallery-extra').show();
+	}
+	else {
+		jQuery('.mygallery-extra').hide();
+	}
 }

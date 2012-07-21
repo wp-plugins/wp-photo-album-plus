@@ -39,6 +39,7 @@ class SearchPhotos extends WP_Widget {
 ?>
 			<form id="wppa_searchform" action="<?php echo($pagelink) ?>" method="post" class="widget_search">
 				<div>
+	<!-- Optional text -->
 					<input type="text" name="wppa-searchstring" id="wppa_s" value="<?php echo $wppa['searchstring'] ?>" />
 					<input id = "wppa_searchsubmit" type="submit" value="<?php _e('Search', 'wppa'); ?>" />
 				</div>
