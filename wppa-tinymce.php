@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 *
-* Version 4.6.11
+* Version 4.6.12
 *
 */
 
@@ -74,24 +74,33 @@ global $wppa_opt;
 			'<tr>'.
 				'<th><label for="mygallery-type">'.__('Type of Gallery display:', 'wppa').'</label></th>'.
 				'<td>'.
-					'<select id="mygallery-type" name="type" onchange="if (this.value == \'photo\' || this.value == \'mphoto\') {jQuery(\'.mygallery-photo\').show();jQuery(\'.mygallery-album\').hide();} else {jQuery(\'.mygallery-photo\').hide();jQuery(\'.mygallery-album\').show();}">'.
+					'<select id="mygallery-type" name="type" onchange="wppaGalleryTypeChange(this.value)">'.
 						'<option value="cover">'.__('The cover of an album', 'wppa').'</option>'.
 						'<option value="album">'.__('The sub-albums and/or thumbnails in an album', 'wppa').'</option>'.
-						'<option value="slide">'.__('A slideshow of the photos in an album', 'wppa').'</album>'.
-						'<option value="slideonly">'.__('A slideshow without supporting boxes', 'wppa').'</album>'.
-						'<option value="slideonlyf">'.__('A slideshow with a filmstrip only', 'wppa').'</album>'.
-						'<option value="photo">'.__('A single photo', 'wppa').'</album>'.
-						'<option value="mphoto">'.__('A single photo with caption', 'wppa').'</album>'.
+						'<option value="slide">'.__('A slideshow of the photos in an album', 'wppa').'</option>'.
+						'<option value="slideonly">'.__('A slideshow without supporting boxes', 'wppa').'</option>'.
+						'<option value="slideonlyf">'.__('A slideshow with a filmstrip only', 'wppa').'</option>'.
+						'<option value="photo">'.__('A single photo', 'wppa').'</option>'.
+						'<option value="mphoto">'.__('A single photo with caption', 'wppa').'</option>'.
+						'<option value="generic">'.__('A generic albums display', 'wppa').'</option>'.
 					'</select>'.
 					'<br />'.
 					'<small>'.__('Specify the type of gallery', 'wppa').'</small>'.
 				'</td>'.
 			'</tr>'.
 			
+			'<tr class="mygallery-help" style="display:none;" >'.
+				'<th><label for="mygallery-album" class="mygallery-help" >'.__('Explanation:', 'wppa').'</label></th>'.
+				'<td>'.
+					__('Use this gallerytype to display all the top-level album covers.', 'wppa').'<br/ >'.
+					__('Also, make a page with this type of gallery display to be used as a target for the Search results and for links set in Table VI.', 'wppa').
+				'</td>'.
+			'</tr>'.
+		
 			'<tr class="mygallery-album" >'.
 				'<th><label for="mygallery-album" class="mygallery-album" >'.__('The Album to be used:', 'wppa').'</label></th>'.
 				'<td>'.
-					'<select id="mygallery-album" name="album" class="mygallery-album" onchange="wppaTinyMceAlbumPreview(this.value)">';
+					'<select id="mygallery-album" name="album" style=width:270px;" class="mygallery-album" onchange="wppaTinyMceAlbumPreview(this.value)">';
 						$albums = $wpdb->get_results($wpdb->prepare("SELECT `id`, `name` FROM `".WPPA_ALBUMS."` ORDER BY `timestamp` DESC"), 'ARRAY_A');
 						if ($albums) {
 							$result .= 
@@ -106,7 +115,8 @@ global $wppa_opt;
 									$value .= '|'.$photo['id'].'.'.$photo['ext'];
 								}
 								else $value .= '|';
-								if ( count($photos) <= $wppa_opt['wppa_min_thumbs'] ) $note = ' (*)'; else $note = '';
+								$note = ' ('.$album['id'].')';
+								if ( count($photos) <= $wppa_opt['wppa_min_thumbs'] ) $note .= ' *';
 								$result .= '<option value="'.$value.'" >'.stripslashes(__($album['name'])).$note.'</option>';
 							}
 							// #last
@@ -148,10 +158,12 @@ global $wppa_opt;
 						}
 					$result .=
 					'</select>'.
+					'<input type="text" id="mygallery-alb" name="alb" value="" style="width:50px; display:none; background-color:#ddd;" class="mygallery-extra" title="Enter albumnumber if not systemwide" />'.
+					'<input type="text" id="mygallery-cnt" name="cnt" value="" style="width:50px; display:none; background-color:#ddd;" class="mygallery-extra" title="Enter count if not default" />'.
 					'<br />'.
 					'<small class="mygallery-album" >'.
 						__('Specify the album to be used or --- A special selection of photos ---', 'wppa').'<br />'.
-						__('(*) Album contains less than the minimun number of photos', 'wppa').
+						__('* Album contains less than the minimun number of photos', 'wppa').
 					'</small>'.
 				'</td>'.
 			'</tr>'.

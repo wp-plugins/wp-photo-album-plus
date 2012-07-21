@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wppa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-07-19 07:10+0100\n"
-"PO-Revision-Date: 2012-07-19 07:10+0100\n"
+"POT-Creation-Date: 2012-07-20 16:33+0100\n"
+"PO-Revision-Date: 2012-07-20 16:33+0100\n"
 "Last-Translator: J.N. Breetvelt <OpaJaap@OpaJaap.nl>\n"
 "Language-Team: oVa <ova13lastar@gmail.com>\n"
 "MIME-Version: 1.0\n"
@@ -2149,7 +2149,7 @@ msgid "WPPA+ Search Photos"
 msgstr ""
 
 #: wppa-search-widget.php:15
-#: wppa-search-widget.php:63
+#: wppa-search-widget.php:64
 #, fuzzy
 msgid "Search Photos"
 msgstr "Photo de couverture:"
@@ -2158,7 +2158,7 @@ msgstr "Photo de couverture:"
 msgid "Warning. No page defined for search results!"
 msgstr ""
 
-#: wppa-search-widget.php:43
+#: wppa-search-widget.php:44
 msgid "Search"
 msgstr ""
 
@@ -4049,7 +4049,7 @@ msgstr "haut"
 #: wppa-settings-autosave.php:1245
 #: wppa-settings-autosave.php:1391
 #: wppa-slideshow-widget.php:207
-#: wppa-tinymce.php:200
+#: wppa-tinymce.php:212
 #: wppa-widget-admin.php:77
 msgid "center"
 msgstr "milieu"
@@ -6352,98 +6352,114 @@ msgstr "Gérer les photos"
 msgid "A single photo with caption"
 msgstr ""
 
-#: wppa-tinymce.php:87
+#: wppa-tinymce.php:85
+msgid "A generic albums display"
+msgstr ""
+
+#: wppa-tinymce.php:88
 msgid "Specify the type of gallery"
 msgstr ""
 
-#: wppa-tinymce.php:92
+#: wppa-tinymce.php:93
+msgid "Explanation:"
+msgstr ""
+
+#: wppa-tinymce.php:95
+msgid "Use this gallerytype to display all the top-level album covers."
+msgstr ""
+
+#: wppa-tinymce.php:96
+msgid "Also, make a page with this type of gallery display to be used as a target for the Search results and for links set in Table VI."
+msgstr ""
+
+#: wppa-tinymce.php:101
 msgid "The Album to be used:"
 msgstr ""
 
-#: wppa-tinymce.php:99
+#: wppa-tinymce.php:108
 #, fuzzy
 msgid "Please select an album"
 msgstr "albums"
 
-#: wppa-tinymce.php:120
+#: wppa-tinymce.php:130
 #, fuzzy
 msgid "- The latest created album -"
 msgstr "albums"
 
-#: wppa-tinymce.php:128
+#: wppa-tinymce.php:138
 #, fuzzy
 msgid "--- The top rated photos ---"
 msgstr "Upload Photos"
 
-#: wppa-tinymce.php:136
+#: wppa-tinymce.php:146
 #, fuzzy
 msgid "--- The most recently uploaded photos ---"
 msgstr "--- separateur ---"
 
-#: wppa-tinymce.php:144
+#: wppa-tinymce.php:154
 #, fuzzy
 msgid "--- All photos in the system ---"
 msgstr "--- aucun ---"
 
-#: wppa-tinymce.php:147
+#: wppa-tinymce.php:157
 #, fuzzy
 msgid "There are no albums yet"
 msgstr "Il n'y a pas (encore) de page vers lesquelles pointer."
 
-#: wppa-tinymce.php:153
+#: wppa-tinymce.php:165
 msgid "Specify the album to be used or --- A special selection of photos ---"
 msgstr ""
 
-#: wppa-tinymce.php:154
-msgid "(*) Album contains less than the minimun number of photos"
+#: wppa-tinymce.php:166
+msgid "* Album contains less than the minimun number of photos"
 msgstr ""
 
-#: wppa-tinymce.php:160
+#: wppa-tinymce.php:172
 msgid "The Photo to be used:"
 msgstr ""
 
-#: wppa-tinymce.php:165
+#: wppa-tinymce.php:177
 #, fuzzy
 msgid "Please select a photo"
 msgstr "--- separateur ---"
 
-#: wppa-tinymce.php:171
+#: wppa-tinymce.php:183
 #, fuzzy
 msgid "There are no photos yet"
 msgstr "Pas encore de photo."
 
-#: wppa-tinymce.php:177
+#: wppa-tinymce.php:189
 msgid "Specify the photo to be used"
 msgstr ""
 
-#: wppa-tinymce.php:178
+#: wppa-tinymce.php:190
 msgid "You can select from a maximum of 100 most recently added photos"
 msgstr ""
 
-#: wppa-tinymce.php:184
+#: wppa-tinymce.php:196
 #, fuzzy
 msgid "The size of the display:"
 msgstr "PRET à regénérer les vignettes."
 
-#: wppa-tinymce.php:189
+#: wppa-tinymce.php:201
 msgid "Specify the horizontal size in pixels or <span style=\"color:blue\" >auto</span>"
 msgstr ""
 
-#: wppa-tinymce.php:190
+#: wppa-tinymce.php:202
 msgid "Leave this blank for default size"
 msgstr ""
 
-#: wppa-tinymce.php:195
+#: wppa-tinymce.php:207
 #: wppa-widget-admin.php:71
 #, fuzzy
 msgid "Horizontal alignment:"
 msgstr "Alignement vertical:"
 
-#: wppa-tinymce.php:204
+#: wppa-tinymce.php:216
 msgid "Specify the alignment to be used or --- none ---"
 msgstr ""
 
-#: wppa-tinymce.php:210
+#: wppa-tinymce.php:222
 msgid "Insert Gallery"
 msgstr ""
 
