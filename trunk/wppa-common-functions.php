@@ -6,7 +6,7 @@
 *
 */
 global $wppa_api_version;
-$wppa_api_version = '4-6-12-000';
+$wppa_api_version = '4-6-12-001';
 // Initialize globals and option settings
 function wppa_initialize_runtime($force = false) {
 global $wppa;
@@ -569,12 +569,12 @@ global $wppa_opt;
 }
 
 // get photo order
-function wppa_get_photo_order($id, $no_random = false) {
+function wppa_get_photo_order($id = '0', $no_random = false) {
 global $wpdb;
 global $wppa;
 global $wppa_opt;
     
-	if ($id == 0) $order=0;
+	if ($id == '0') $order = '0';
 	else $order = $wpdb->get_var( $wpdb->prepare( "SELECT p_order_by FROM " . WPPA_ALBUMS . " WHERE id=%s", $id) );
     if ($order == '0') $order = $wppa_opt['wppa_list_photos_by'];
     switch ($order)

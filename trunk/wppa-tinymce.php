@@ -146,7 +146,7 @@ global $wppa_opt;
 								$result .= '<option value = "'.$value.'" >'.__('--- The most recently uploaded photos ---', 'wppa').'</option>';							
 							// #all
 								$value = '#all';
-								$photos = $wpdb->get_results($wpdb->prepare("SELECT `id`, `name`, `album`, `ext` FROM `".WPPA_PHOTOS."` ".wppa_get_photo_order()." LIMIT 100"), 'ARRAY_A');
+								$photos = $wpdb->get_results($wpdb->prepare("SELECT `id`, `name`, `album`, `ext` FROM `".WPPA_PHOTOS."` ".wppa_get_photo_order('0')." LIMIT 100"), 'ARRAY_A');
 								if ( $photos ) foreach ( $photos as $photo ) {
 									$value .= '|'.$photo['id'].'.'.$photo['ext'];
 								}
