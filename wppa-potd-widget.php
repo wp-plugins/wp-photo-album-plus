@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the widget
-* Version 4.6.3
+* Version 4.7.0
 */
 
 class PhotoOfTheDay extends WP_Widget {
@@ -44,10 +44,24 @@ class PhotoOfTheDay extends WP_Widget {
 			$name = wppa_qtrans($image['name']);
 			$link = wppa_get_imglnk_a('potdwidget', $image['id']);
 			$lightbox = $link['is_lightbox'] ? 'rel="'.$wppa_opt['wppa_lightbox_name'].'"' : '';
+			if ( $link ) {
+				if ( $link['is_lightbox'] ) {
+					$cursor = ' cursor:url('.wppa_get_imgdir().'magnifier.png),pointer;';
+					$title = __('Zoom in', 'wppa_theme');
+				}
+				else {
+					$cursor = ' cursor:pointer;';
+					$title = $link['title'];
+				}
+			}
+			else {
+				$cursor = ' cursor:default;';
+				$title = esc_attr(stripslashes(__($image['name'])));
+			}
 			
-			if ($link) $widget_content .= "\n\t".'<a href = "'.$link['url'].'" target="'.$link['target'].'" '.$lightbox.' title="'.$link['title'].'">';
+			if ($link) $widget_content .= "\n\t".'<a href = "'.$link['url'].'" target="'.$link['target'].'" '.$lightbox.' title="'.$title.'">';
 			
-				$widget_content .= "\n\t\t".'<img src="'.$imgurl.'" style="width: '.$wppa_opt['wppa_widget_width'].'px;" alt="'.$name.'" />';
+				$widget_content .= "\n\t\t".'<img src="'.$imgurl.'" style="width: '.$wppa_opt['wppa_widget_width'].'px;'.$cursor.'" alt="'.$name.'" />';
 
 			if ($link) $widget_content .= "\n\t".'</a>';
 		} 

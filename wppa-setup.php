@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 4.6.11
+* Version 4.7.0
 *
 */
 
@@ -197,6 +197,11 @@ global $silent;
 				$cnt = $wpdb->get_var($wpdb->prepare('SELECT COUNT(*) FROM `'.WPPA_RATING.'` WHERE `photo` = %s', $ph['id']));
 				$wpdb->query($wpdb->prepare('UPDATE `'.WPPA_PHOTOS.'` SET `rating_count` = %s WHERE `id` = %s', $cnt, $ph['id']));
 			}
+		}
+		if ( $old_rev < '470' ) {	// single photo re-impl. has its own links, clone from slideshow
+			wppa_copy_setting('wppa_slideshow_linktype', 'wppa_sphoto_linktype');
+			wppa_copy_setting('wppa_slideshow_blank', 'wppa_sphoto_blank');
+			wppa_copy_setting('wppa_slideshow_overrule', 'wppa_sphoto_overrule');
 		}
 	}
 	
@@ -407,6 +412,7 @@ Hide Camera info
 						'wppa_show_cover_text' 				=> 'yes',	// 1
 						'wppa_enable_slideshow' 			=> 'yes',	// 2
 						'wppa_show_slideshowbrowselink' 	=> 'yes',	// 3
+						'wppa_show_viewlink'				=> 'yes',	// 4
 						// E Widgets
 						'wppa_show_bbb_widget'				=> 'no',	// 1
 						// F Overlay
@@ -523,6 +529,11 @@ Hide Camera info
 
 						
 						// Table VI: Links
+						'wppa_sphoto_linktype' 				=> 'photo',
+						'wppa_sphoto_linkpage' 				=> '0',
+						'wppa_sphoto_blank'					=> 'no',
+						'wppa_sphoto_overrule'				=> 'no',
+
 						'wppa_mphoto_linktype' 				=> 'photo',
 						'wppa_mphoto_linkpage' 				=> '0',
 						'wppa_mphoto_blank'					=> 'no',

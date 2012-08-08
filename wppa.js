@@ -2,7 +2,7 @@
 //
 // conatins slideshow, theme, ajax and lightbox code
 //
-// Version 4.6.10
+// Version 4.7.0
 
 // Part 1: Slideshow
 //
@@ -134,6 +134,7 @@ jQuery(document).ready(function(){
 
 // This is an entrypoint to load the slide data
 function wppaStoreSlideInfo(mocc, id, url, size, width, height, name, desc, photoid, avgrat, myrat, rateurl, linkurl, linktitle, linktarget, iwtimeout, commenthtml, iptchtml, exifhtml, lbtitle) {
+var cursor;
 	if ( ! _wppaSlides[mocc] ) {
 		_wppaSlides[mocc] = new Array();
 		_wppaNames[mocc] = new Array();
@@ -163,10 +164,17 @@ function wppaStoreSlideInfo(mocc, id, url, size, width, height, name, desc, phot
 		_wppaDidGoto[mocc] = false;
 		wppaSlidePause[mocc] = false;
 	}
+	
+	// Cursor
+	cursor = 'default';
+	if (linkurl != '') cursor = 'pointer';
+	else if (wppaLightBox=='wppa') cursor =  'url('+wppaImageDirectory+'magnifier.png),pointer';
+
+	
     _wppaSlides[mocc][id] = ' src="' + url + '" alt="' + name + '" class="theimg theimg-'+mocc+' big" ';
 		// Add 'old' width and height only for non-auto
 		if ( ! wppaAutoColumnWidth[mocc] ) _wppaSlides[mocc][id] += 'width="' + width + '" height="' + height + '" ';
-	_wppaSlides[mocc][id] += 'style="' + size + '; display:none;">';	// was block
+	_wppaSlides[mocc][id] += 'style="' + size + '; cursor:'+cursor+'; display:none;">';	// was block
     _wppaNames[mocc][id] = name;
     _wppaDsc[mocc][id] = desc;
 	_wppaId[mocc][id] = photoid;		// reqd for rating and comment
@@ -595,6 +603,13 @@ function _wppaNextSlide_4(mocc) {
 
 	var nw = _wppaFg[mocc];
 	var ol = 1-nw;
+
+	var olSli	= "#theslide"+ol+"-"+mocc;
+	var nwSli 	= "#theslide"+nw+"-"+mocc;
+
+	// Make sure title and onclick of the new image (slide) are in sight
+	jQuery(olSli).css({zIndex:80});
+	jQuery(nwSli).css({zIndex:81});
 	
     // Next is now current // put here for swipe
 	_wppaCurIdx[mocc] = _wppaNxtIdx[mocc];
@@ -692,6 +707,7 @@ function wppaMakeTheSlideHtml(mocc, bgfg, idx) {
 												'</a>');
 	}
 	else {
+//alert('bgfg='+bgfg+', lt='+_wppaLinkTitle[mocc][idx]);
 		if (wppaLightBox == '') {			// No link and no lightbox
 			jQuery("#theslide"+bgfg+"-"+mocc).html('<img title="'+_wppaNames[mocc][idx]+'" id="theimg'+bgfg+'-'+mocc+'" '+_wppaSlides[mocc][idx]);
 		}
@@ -707,7 +723,8 @@ function wppaMakeTheSlideHtml(mocc, bgfg, idx) {
 			}
 			// Current slide
 			html += '<a href="'+_wppaUrl[mocc][idx]+'" title="'+_wppaLbTitle[mocc][idx]+'" rel="'+wppaLightBox+'[slide-'+mocc+'-'+bgfg+']">'+
-					'<img title="'+_wppaNames[mocc][idx]+'" id="theimg'+bgfg+'-'+mocc+'" '+_wppaSlides[mocc][idx]+
+//					'<img title="'+_wppaNames[mocc][idx]+'" id="theimg'+bgfg+'-'+mocc+'" '+_wppaSlides[mocc][idx]+
+					'<img title="'+_wppaLinkTitle[mocc][idx]+'" id="theimg'+bgfg+'-'+mocc+'" '+_wppaSlides[mocc][idx]+
 					'</a>';
 			// After current slide // This does NOT work on lightbox 3 !
 			if (wppaLightBox=='wppa') {
@@ -848,9 +865,13 @@ function wppaFormatSlide(mocc) {
 	}
 	
 	// Size Big Browse Buttons
-	var bbbwidth = parseInt(framew/2);
+	var bbbwidth = parseInt(framew/3);
+	var leftmarg = bbbwidth*2;
+	
 	jQuery('#bbb-'+mocc+'-l').css({height:frameh, width:bbbwidth, left:0});
-	jQuery('#bbb-'+mocc+'-r').css({height:frameh, width:bbbwidth, left:bbbwidth});
+	jQuery('#bbb-'+mocc+'-r').css({height:frameh, width:bbbwidth, left:leftmarg});
+	
+//	jQuery('#'+imgid).css({cursor:url(),pointer});
 }
 
 function wppaUpdateLightboxes() {
@@ -1130,6 +1151,10 @@ function _wppaDoAutocol(mocc) {
 	// Filmstrip
 	wppaFilmStripLength[mocc] = w - wppaFilmStripAreaDelta[mocc];
 	jQuery("#filmwindow-"+mocc).css('width',wppaFilmStripLength[mocc]);
+	
+	// Single photo
+	jQuery(".wppa-sphoto-"+mocc).css('width',w);
+	jQuery(".wppa-simg-"+mocc).css('width',w - 2*wppaSlideBorderWidth );
 
 	// Check again after 50 ms	
 	setTimeout('_wppaDoAutocol('+mocc+')', 50);
@@ -1695,19 +1720,23 @@ function wppaPopUp(mocc, elm, id, rating) {
 	
 	// Find handle to the popup image 
 	puImg = document.getElementById('wppa-img-'+mocc);
+
+	// Compute ending sizes
+	widthImgBig = parseInt(puImg.clientWidth); 
+	if (widthImgBig == 0) widthImgBig = puImg.naturalWidth;	// Chrome?
+	heightImgBig = parseInt(puImg.clientHeight);
+	if (heightImgBig == 0) heightImgBig = puImg.naturalHeight;
 	
 	// Set width of text fields to width of a landscape image	
-	if (puImg) jQuery(".wppa_pu_info").css('width', ((puImg.clientWidth > puImg.clientHeight ? puImg.clientWidth : puImg.clientHeight) - 8)+'px');	
+	if (puImg) jQuery(".wppa_pu_info").css('width', ((widthImgBig > heightImgBig ? widthImgBig : heightImgBig) - 8)+'px');	
 	// Compute starting coords
 	leftDivSmall = parseInt(elm.offsetLeft) - 7 - 5 - 1; // thumbnail_area:padding, wppa-img:padding, wppa-border; jQuery().css("padding") does not work for padding in css file, only when litaral in the tag
 	topDivSmall = parseInt(elm.offsetTop) - 7 - 5 - 1;		
 	// Compute starting sizes
 	widthImgSmall = parseInt(elm.clientWidth);
 	heightImgSmall = parseInt(elm.clientHeight);
-	// Compute ending sizes
-	widthImgBig = puImg.clientWidth; 
-	heightImgBig = parseInt(puImg.clientHeight);
-	widthImgBigSpace = puImg.clientWidth > puImg.clientHeight ? puImg.clientWidth : puImg.clientHeight;
+
+	widthImgBigSpace = widthImgBig > heightImgBig ? widthImgBig : heightImgBig;
 	// Compute ending coords
 	leftDivBig = leftDivSmall - parseInt((widthImgBigSpace - widthImgSmall) / 2);
 	topDivBig = topDivSmall - parseInt((heightImgBig - heightImgSmall) / 2);
@@ -1718,6 +1747,7 @@ function wppaPopUp(mocc, elm, id, rating) {
 	// Do the animation
 	jQuery('#wppa-popup-'+mocc).stop().animate({"marginLeft":leftDivBig+"px","marginTop":topDivBig+"px"}, 400);
 	jQuery('#wppa-img-'+mocc).stop().animate({"width":widthImgBig+"px","height":heightImgBig+"px"}, 400);
+//alert(widthImgBig+', '+heightImgBig);
 	// adding ", 'linear', wppaPopReady(occ) " fails, therefor our own timer to the "show info" module
 	_wppaTimer[mocc] = setTimeout('wppaPopReady('+mocc+')', 400);
 }
@@ -1728,7 +1758,7 @@ function wppaPopReady(mocc) {
 }
 
 // Dismiss popup
-function wppaPopDown(mocc) {		// return; //debug
+function wppaPopDown(mocc) {	//	 return; //debug
 	jQuery('#wppa-popup-'+mocc).html("");
 	return;
 }
@@ -1881,8 +1911,9 @@ function wppaDoAjaxRender(mocc, ajaxurl, newurl) {
 					if ( wppaFirstOccur == 0 ) wppaFirstOccur = mocc;
 				}
 				
-				// If lightbox 3 is on board, refresh the imagelist. It has just changed, you know!
-				if (typeof(myLightbox)!="undefined") myLightbox.updateImageList();
+				// If lightbox is on board, refresh the imagelist. It has just changed, you know!
+//				if (typeof(myLightbox)!="undefined") myLightbox.updateImageList();
+				wppaUpdateLightboxes();
 				
 				/* addthis */
 				wppaUpdateAddThisUrl(newurl, '');
@@ -1970,7 +2001,7 @@ var wppaOvlAnimSpeed = 300;
 var wppaVer4WindowWidth = 800;
 var wppaVer4WindowHeight = 600;
 
-jQuery(document).ready(function(){
+jQuery(document).ready(function(e){
 	wppaInitOverlay();
 });
 
@@ -1984,8 +2015,6 @@ function wppaFindWindowSize() {
 function wppaOvlShow(arg) {
 
 	wppaFindWindowSize();
-	
-	if ( wppaLightBox != 'wppa' ) return;	// No, not this time.
 	
 	// Display spinner
 	jQuery('#wppa-overlay-sp').css({left: (wppaWindowInnerWidth/2)-16, top: (wppaWindowInnerHeight/2)-16, visibility: 'visible'});
@@ -2053,7 +2082,7 @@ function wppaOvlShow2() {
 	
 	var img = document.getElementById('wppa-overlay-img');
 	
-	if (!img.complete) {
+	if (!img || !img.complete) {
 		setTimeout('wppaOvlShow2()', 10);	// Wait for load complete
 		return;
 	}
@@ -2110,8 +2139,7 @@ function wppaOvlShow4() {
 		if ( window.onresize ) {
 			wppaOvlSizeHandler = window.onresize;
 		}
-		window.onresize = function () {return wppaOvlResize(10);}
-		
+		window.onresize = function () {return wppaOvlResize(10);}		
 		wppaOvlFirst = false;
 	}
 	if (wppaOvlTxtHeight == 'auto') wppaOvlResize(10);	// Resize to accomodate for var text height
@@ -2149,18 +2177,35 @@ function wppaOvlSize(speed) {
 	
 	var nw = img.naturalWidth; 
 	var nh = img.naturalHeight; 
-		if ( typeof(nw) == 'undefined' ) {	// ver 4 browser
-			nw = img.clientWidth;
-			nh = img.clientHeight;
-			var fakt1 = 800/nw;
-			var fakt2 = 600/nh;
-			var fakt;
-			if (fakt1<fakt2) fakt = fakt1; // very landscape
-			else fakt = fakt2;
+	
+	var fakt1;
+	var fakt2;
+	var fakt;
+	
+	// If the width is the limiting factor, adjust the height
+	if ( typeof(nw) == 'undefined' ) {	// ver 4 browser
+		nw = img.clientWidth;
+		nh = img.clientHeight;
+		fakt1 = (iw-100)/nw;
+		fakt2 = ih/nh;
+		if (fakt1<fakt2) fakt = fakt1;	// very landscape, width is the limit
+		else fakt = fakt2;				// Height is the limit
+		if ( true ) {					// Up or downsize
 			nw = parseInt(nw * fakt);
 			nh = parseInt(nh * fakt);
 		}
-		
+	}
+	else {
+		fakt1 = (iw-100)/nw;
+		fakt2 = ih/nh;
+		if (fakt1<fakt2) fakt = fakt1;	// very landscape, width is the limit
+		else fakt = fakt2;				// Height is the limit
+		if ( fakt < 1.0 ) {				// Only downsize if needed
+			nw = parseInt(nw * fakt);
+			nh = parseInt(nh * fakt);
+		}
+	}
+
 	var mh;	// max image height
 	var tch = document.getElementById('wppa-overlay-txt').clientHeight;
 
@@ -2252,8 +2297,6 @@ function wppaOvlOnclick(event) {
 
 function wppaInitOverlay() {
 
-	if ( wppaLightBox != 'wppa' ) return;	// No, not this time
-	
 	var anchors=jQuery('a');
 	var anchor;
 	var i;
@@ -2299,7 +2342,7 @@ var wppaKbAction = function(e) {
 // Isn't it simple?
 function wppaOvlResize() {
 	// See if generic lightbox is on
-	if ( wppaLightBox != 'wppa' ) return;	// No, not this time.
+//	if ( wppaLightBox != 'wppa' ) return;	// No, not this time.
 	// Wait for completeion of text and do a size operation
 	setTimeout('wppaOvlSize(10)', 50);		// After resizing, the number of lines may have changed
 	setTimeout('wppaOvlSize(10)', 200);

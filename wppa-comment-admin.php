@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all comments
-* Version 4.6.11
+* Version 4.7.0
 *
 */
 
@@ -46,6 +46,13 @@ global $wppa_opt;
 							<tr>
 								<th scope="row"><label ><?php _e('Photo:', 'wppa'); ?></label></th>
 								<td><?php echo($comment['photo']) ?></td>								
+							</tr>
+							<tr>
+								<th scope="row"><label ><?php _e('Album:', 'wppa'); ?></label></th>
+								<td><?php 
+									echo __(wppa_get_album_name($photo['album']));
+									?>
+								</td>
 							</tr>
 							<tr>
 								<th scope="row"><label ><?php _e('User:', 'wppa') ?></label></th>
@@ -119,7 +126,7 @@ global $wppa_opt;
 					case 'delspam':
 						$query = "DELETE FROM " . WPPA_COMMENTS . " WHERE status='spam'";
 						if ( $wpdb->query($wpdb->prepare($query)) === false ) {
-							wppa_error_message(__('Could not bulk update status', 'wppa'));
+							wppa_error_message(__('Could not bulk delete spam', 'wppa'));
 							$iret = false;
 						}
 						break;
@@ -131,6 +138,10 @@ global $wppa_opt;
 			// Clear (super)cache
 			wppa_clear_cache();
 		}
+		
+		// Delete trash
+		$query = "DELETE FROM " . WPPA_COMMENTS . " WHERE status='trash'";
+		$wpdb->query($wpdb->prepare($query));
 ?>
 		<div class="wrap">
 			<?php $iconurl = WPPA_URL.'/images/comment.png'; ?>
@@ -235,7 +246,8 @@ global $wppa_opt;
 				<table class="widefat">
 					<thead style="font-weight: bold" class="">
 						<tr>
-							<th scope="col"><?php _e('Photo', 'wppa') ?></th>
+							<th scope="col"><?php _e('Photo', 'wppa') ?><br />
+											<?php _e('(Album)', 'wppa') ?></th>
 							<th scope="col"><?php _e('#', 'wppa') ?></th>
 							<th scope="col"><?php _e('IP', 'wppa') ?></th>
 							<th scope="col"><?php _e('User', 'wppa') ?></th>
@@ -264,15 +276,23 @@ global $wppa_opt;
 									if ($photo) {
 										$alb = $photo['album'];
 										$pname = __($photo['name']);
+										$albname = '('.__(wppa_get_album_name($alb)).')';
 									}
 									else {
 										$alb = '';
 										$pname = '';
+										$albname = '';
 									}
 									$url .= 'wppa-album='.$alb.'&wppa-photo='.$com['photo'].'&wppa-occur=1';
 									
 									?>
-									<td style="text-align:center"><a href="<? echo $url ?>" target="_blank"><img title="<?php _e('Click to see the fullsize photo and all comments', 'wppa') ?>" src="<?php echo(WPPA_UPLOAD_URL.'/thumbs/'.$com['photo'].'.'.$wpdb->get_var($wpdb->prepare( "SELECT ext FROM ".WPPA_PHOTOS." WHERE id = %s", $com['photo']))) ?>" style="max-height:64px;max-width:64px;" /></a></td>							
+									<td style="text-align:center">
+										<a href="<? echo $url ?>" target="_blank">
+											<img title="<?php _e('Click to see the fullsize photo and all comments', 'wppa') ?>" src="<?php echo(WPPA_UPLOAD_URL.'/thumbs/'.$com['photo'].'.'.$wpdb->get_var($wpdb->prepare( "SELECT ext FROM ".WPPA_PHOTOS." WHERE id = %s", $com['photo']))) ?>" style="max-height:64px;max-width:64px;" />
+										</a>
+										<br />
+										<?php echo $albname ?>
+									</td>							
 									<? } ?>
 									<td><?php echo $com['photo'] ?></td>
 									<td><?php echo $com['ip'] ?></td>
@@ -307,7 +327,8 @@ global $wppa_opt;
 					</tbody>
 					<tfoot style="font-weight: bold" class="">
 						<tr>
-							<th scope="col"><?php _e('Photo', 'wppa') ?></th>
+							<th scope="col"><?php _e('Photo', 'wppa') ?><br />
+											<?php _e('(Album)', 'wppa') ?></th>
 							<th scope="col"><?php _e('#', 'wppa') ?></th>
 							<th scope="col"><?php _e('IP', 'wppa') ?></th>
 							<th scope="col"><?php _e('User', 'wppa') ?></th>

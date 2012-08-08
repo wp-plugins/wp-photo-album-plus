@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile
-Version: 4.6.12
+Version: 4.7.0
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -28,6 +28,7 @@ This plugin is designed to easily manage and display your photo albums and slide
 * The visitor of your site can run a slideshow from the photos in an album by a single mouseclick.
 * The visitor can see an overview of thumbnail images of the photos in album.
 * The visitor can browse through the photos in each album you decide to publish.
+* Individual thumbnails and slides can be linked to off site urls.
 * You can add a Photo of the day Sidebar Widget that displays a photo which can be changed every hour, day or week.
 * You can add a Search Sidebar Widget which enables the visitors to search albums and photos for certain words in names and descriptions.
 * You can enable a rating system and a supporting Top Ten Photos Sidebar Widget that can hold a configurable number of high rated photos.
@@ -68,7 +69,7 @@ Most themes comply with these requirements.
 However, check these requirements in case of problems with new installations with themes you never had used before with wppa+ or when you modifies your theme.
 
 = Upgrade notice =
-This version is: Major rev# 4, Minor rev# 6, Fix rev# 11, Hotfix rev# 000.
+This version is: Major rev# 4, Minor rev# 7, Fix rev# 0, Hotfix rev# 000.
 If you are upgrading from a previous Major or Minor version, note that:
 * If you modified wppa_theme.php and/or wppa_style.css, you will have to use the newly supplied versions. The previous versions are NOT compatible.
 * If you set the userlevel to anything else than 'administrator' you may have to set it again. Note that changing the userlevel can be done by the administrator only!
@@ -156,6 +157,42 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
 
+= 4.7.0 =
+
+= Bug Fixes =
+
+* The Settings page now passes W3C validation.
+* The embedded lightbox now also initializes when it is active on any linksources but not on slideshows.
+* The thumbnail popups popped down to zero dimensions in Chrome. Fixed.
+* The links to lightbox in the slideshow did not function for even numbered slides when animation type was a fading type. Fixed.
+* In lightbox: If the picture is very landscape, so the width is the limiting factor, it will be properly downsized now.
+* It is no longer required to have Table II-D2 checked in order to make Table VI-11 set to slideshow window to work.
+
+= New Features =
+
+* The search widget has an optional textfield before the edit box at widget activation. It may contain HTML.
+* Single photos and Media type photos can link to lightbox.
+* The photos album name is displayed on the comment admin and the comment edit screens.
+* If the (admin) user has the rights to admin comments, he will be able to change the comment status on the Album Admin-> Manage Photos screen.
+The status 'trash' has the meaning: delete when the screen is refreshed/reopened or when the comment admin page is opened.
+
+= Other Changes = 
+
+* Cosmetic changes to the Settings screen. All tables and subtables can be toggled on/of by clicking the header bar.
+* The concept of single photos has been re-implemented. Links are settable in Table VI-0.
+This implementation skips all superfluous overhead and it is possible now to have multiple photos in a row without vertical alignment problems;
+just use %%align=left%% and put all script tokens together without newlines.
+* The Big Browse Buttons are now each 1/3 of the slideframe wide, allowing the middle part to link to lightbox or a Photo Specific link.
+* Links to lightbox show a magnifier cursor and tooltip: Zoom in. (Only in browsers that support url cursors).
+* Table II-D has been slightly changed. Item 1 (Covertext) applies to the album description only now. 
+Item 4 has been added to switch the View link on/off separately. 
+Please review the settings in Table II-D if the display has changed after the update to this version.
+
+= Known Restrictions =
+
+* Resizing the browser window when lightbox is open does the image resize when it is part of a set, but not when it is a single image.
+If anybody can supply me a fix for this, i would be very glad.
+
 = 4.6.12 =
 
 = Other Changes =
@@ -172,7 +209,7 @@ and the extended features on #topten and #lasten.
 
 = New Features =
 
-* Th E-mail adresses in the comment admin page are now links to the mail program to enable quick replies.
+* The E-mail adresses in the comment admin page are now links to the mail program to enable quick replies.
 
 = Other Changes =
 

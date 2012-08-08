@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the upload/import pages and functions
-* Version 4.6.3
+* Version 4.7.0
 *
 */
 
@@ -216,7 +216,7 @@ global $wppa_revno;
 					<?php wp_nonce_field('$wppa_nonce', WPPA_NONCE); ?>
 						<input id="my_zipfile_element" type="file" name="file_zip" /><br/><br/>
 						<input type="submit" class="button-primary" name="wppa-upload-zip" value="<?php _e('Upload Zipped Photos', 'wppa') ?>" />
-						<input type="checkbox" name="wppa-go-import" checked="checked"><?php _e('After upload: Go to the <b>Import Photos</b> page.', 'wppa') ?></input>
+						<input type="checkbox" name="wppa-go-import" checked="checked" /><?php _e('After upload: Go to the <b>Import Photos</b> page.', 'wppa') ?>
 					</form>
 				</div>
 			<?php }
