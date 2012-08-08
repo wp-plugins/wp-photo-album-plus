@@ -2,11 +2,11 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 4.6.12
+* version 4.7.0
 *
 */
 global $wppa_api_version;
-$wppa_api_version = '4-6-12-001';
+$wppa_api_version = '4-7-0-000';
 // Initialize globals and option settings
 function wppa_initialize_runtime($force = false) {
 global $wppa;
@@ -181,6 +181,7 @@ global $wpdb;
 						'wppa_show_cover_text' 				=> '',	// 1
 						'wppa_enable_slideshow' 			=> '',	// 2
 						'wppa_show_slideshowbrowselink' 	=> '',	// 3
+						'wppa_show_viewlink'				=> '',	// 4
 						// E Widgets
 						'wppa_show_bbb_widget'				=> '',	// 1
 						// F Overlay
@@ -297,6 +298,11 @@ global $wpdb;
 						'wppa_fontweight_numbar_active'	=> '',
 						
 						// Table VI: Links
+						'wppa_sphoto_linktype' 				=> '',
+						'wppa_sphoto_linkpage' 				=> '',
+						'wppa_sphoto_blank'					=> '',
+						'wppa_sphoto_overrule'				=> '',
+
 						'wppa_mphoto_linktype' 				=> '',
 						'wppa_mphoto_linkpage' 				=> '',
 						'wppa_mphoto_blank'					=> '',
@@ -508,6 +514,7 @@ global $wppa;
 	}
 	else {		// Get locale from wp-config
 		$wppa_locale = get_locale();
+		$lang = substr($wppa_locale, 0, 2);
 	}
 	if ($wppa_locale) {
 		$domain = is_admin() ? 'wppa' : 'wppa_theme';
@@ -524,14 +531,34 @@ global $wppa;
 }
 
 function wppa_phpinfo($key = -1) {
-	if (is_int($key)) $k = $key; else $k = intval($key);
-	if (!$k) $k = -1;
-	echo("\n".'<div style="width:600px; margin: 24px auto;">'."\n");
-	phpinfo($k);
-	echo("\n".'</div>'."\n");
-	echo("\n".'<style type="text/css">');
-	echo("\n\ta:link {color: #990000; text-decoration: none; background-color: transparent;}");
-	echo("\n</style>");
+global $wppa_opt;
+
+	echo '<div id="phpinfo" style="width:600px; margin:auto;" >';
+
+		ob_start();
+		if ( $wppa_opt['wppa_allow_debug'] == 'yes' ) phpinfo(-1); else phpinfo(4);
+		$php = ob_get_clean();
+		$php = preg_replace(	array	(	'@<!DOCTYPE.*?>@siu',
+											'@<html.*?>@siu',
+											'@</html.*?>@siu',
+											'@<head[^>]*?>.*?</head>@siu',
+											'@<body.*?>@siu',
+											'@</body.*?>@siu',
+											'@cellpadding=".*?"@siu',
+											'@border=".*?"@siu',
+											'@width=".*?"@siu',
+											'@name=".*?"@siu',
+											'@<font.*?>@siu',
+											'@</font.*?>@siu'
+										),
+										'',
+										$php );
+										
+		$php = str_replace('Features','Features</td><td>', $php);
+
+		echo $php;	
+		
+	echo '</div>';
 }
 
 // get the url to the plugins image directory

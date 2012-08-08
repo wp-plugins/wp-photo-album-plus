@@ -1,7 +1,7 @@
 /* admin-scripts.js */
 /* Package: wp-photo-album-plus
 /*
-/* Version 4.6.5
+/* Version 4.7.0
 /* Various js routines used in admin pages		
 */
 
@@ -41,6 +41,7 @@ function wppaInitSettings() {
 	wppaCheckThumbnailWLink();
 	wppaCheckCommentLink();
 	wppaCheckMphotoLink();
+	wppaCheckSphotoLink();
 	wppaCheckSlideOnlyLink();
 	wppaCheckSlideLink();
 	wppaCheckCoverImg();
@@ -56,6 +57,9 @@ function wppaInitSettings() {
 	wppaCheckUserUpload();
 	wppaCheckAjax();
 	
+	var tab=new Array('I','II','III','IV','V','VI','VII','VIII','IX','X','XI','XII');
+	var sub=new Array('A','B','C','D','E','F','G','H','I','J');
+	
 	for (table=1; table<13; table++) {
 		var cookie = wppa_getCookie('table_'+table);
 		if (cookie == 'on') {
@@ -64,6 +68,40 @@ function wppaInitSettings() {
 		else {
 			wppaHideTable(table);	// Refreshes cookie, so it 'never' forgets
 		}
+		for (subtab=0; subtab<10; subtab++) {
+			cookie = wppa_getCookie('table_'+tab[table-1]+'-'+sub[subtab]);
+			if (cookie == 'on') {
+				wppaToggleSubTable(tab[table-1],sub[subtab]);
+			}
+		}
+		wppaToggleSubTable(tab[table-1],'Z');
+	}
+}
+
+function wppaToggleTable(table) {
+	if (jQuery('#wppa_table_'+table).css('display')=='none') {
+		jQuery('#wppa_table_'+table).css('display', 'inline');
+		wppa_tablecookieon(table);
+	}
+	else {
+		jQuery('#wppa_table_'+table).css('display', 'none');
+		wppa_tablecookieoff(table);
+	}
+	
+}
+
+var wppaSubTabOn = new Array();
+
+function wppaToggleSubTable(table,subtable) {
+	if (wppaSubTabOn[table+'-'+subtable]) {
+		jQuery('.wppa-'+table+'-'+subtable).addClass('wppa-none');
+		wppaSubTabOn[table+'-'+subtable] = false;
+		wppa_tablecookieoff(table+'-'+subtable);
+	}
+	else {
+		jQuery('.wppa-'+table+'-'+subtable).removeClass('wppa-none');
+		wppaSubTabOn[table+'-'+subtable] = true;
+		wppa_tablecookieon(table+'-'+subtable);
 	}
 }
 
@@ -438,7 +476,7 @@ function wppaCheckPotdLink() {
 
 function wppaCheckMphotoLink() { 
 	var lvalue = document.getElementById('wppa_mphoto_linktype').value;
-	if (lvalue == 'none' || lvalue == 'file') {
+	if (lvalue == 'none' || lvalue == 'file' || lvalue == 'lightbox' ) {
 		jQuery('.wppa_mlp').css('visibility', 'hidden');
 	}
 	else {
@@ -449,6 +487,22 @@ function wppaCheckMphotoLink() {
 	}
 	else {
 		jQuery('.wppa_mlb').css('visibility', 'visible');
+	}
+}
+
+function wppaCheckSphotoLink() { 
+	var lvalue = document.getElementById('wppa_sphoto_linktype').value;
+	if (lvalue == 'none' || lvalue == 'file' || lvalue == 'lightbox' ) {
+		jQuery('.wppa_slp').css('visibility', 'hidden');
+	}
+	else {
+		jQuery('.wppa_slp').css('visibility', 'visible');
+	}
+	if (lvalue == 'none' || lvalue == 'lightbox' ) {
+		jQuery('.wppa_slb').css('visibility', 'hidden');
+	}
+	else {
+		jQuery('.wppa_slb').css('visibility', 'visible');
 	}
 }
 
@@ -715,6 +769,39 @@ function wppaAjaxUpdateAlbum(album, actionslug, elem) {
 	}
 }
 				
+function wppaAjaxUpdateCommentStatus(photo, id, value) {
+	
+	var xmlhttp = wppaGetXmlHttp();
+	
+	// Make the Ajax url
+	var url = wppaAjaxUrl+	'?action=wppa&wppa-action=update-comment-status'+
+							'&wppa-photo-id='+photo+
+							'&wppa-comment-id='+id+
+							'&wppa-comment-status='+value+
+							'&wppa-nonce='+document.getElementById('photo-nonce-'+photo).value;
+	
+	xmlhttp.onreadystatechange=function() {
+		if ( xmlhttp.readyState == 4 && xmlhttp.status != 404 ) {
+			var ArrValues = xmlhttp.responseText.split("||");
+			if (ArrValues[0] != '') {
+				alert('The server returned unexpected output:\n'+ArrValues[0]);
+			}
+			switch (ArrValues[1]) {
+				case '0':		// No error
+					document.getElementById('photostatus-'+photo).innerHTML = ArrValues[2];
+					break;
+				default:	// Error
+					document.getElementById('photoitem-'+photo).innerHTML = '<span style="color:red">'+ArrValues[2]+'</span>';
+					break;
+			}
+		}
+	}
+
+	// Do the Ajax action
+	xmlhttp.open('GET',url,true);
+	xmlhttp.send();	
+}
+
 function wppaAjaxUpdateOptionCheckBox(slug, elem) {
 
 	var xmlhttp = wppaGetXmlHttp();
@@ -832,13 +919,6 @@ function wppaEncode(xtext) {
 // Check conflicting settings, Autosave version only
 function wppaCheckInconsistencies() {
 
-	// Uses BBB but also lightbox or file or overrule
-	if ( ( document.getElementById('wppa_slideshow_linktype').value == 'lightbox' ||
-		   document.getElementById('wppa_slideshow_linktype').value == 'file' ||
-		   document.getElementById('wppa_slideshow_overrule').checked == true ) &&
-		   (document.getElementById('wppa_show_bbb').checked == true ||
-		   document.getElementById('wppa_show_bbb_widget').checked == true)) jQuery('#wppa-wr-3').css('display', '');
-	else jQuery('#wppa-wr-3').css('display', 'none');
 	// Uses thumb popup and thumb lightbox?
 	if ( document.getElementById('wppa_use_thumb_popup').checked == true && 
 		 document.getElementById('wppa_thumb_linktype').value == 'lightbox' ) jQuery('#wppa-er-1').css('display', '');

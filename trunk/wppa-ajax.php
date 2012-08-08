@@ -2,7 +2,7 @@
 /* wppa-ajax.php
 *
 * Functions used in ajax requests
-* version 4.6.10
+* version 4.7.0
 *
 */
 add_action('wp_ajax_wppa', 'wppa_ajax_callback');
@@ -289,6 +289,29 @@ global $wppa;
 				echo '<br>'.__('Press CTRL+F5 and try again.', 'wppa');
 			}
 			wppa_clear_cache();
+			exit;
+			break;
+		
+		case 'update-comment-status':
+			$photo = $_REQUEST['wppa-photo-id'];
+			$nonce = $_REQUEST['wppa-nonce'];
+			$comid = $_REQUEST['wppa-comment-id'];
+			$comstat = $_REQUEST['wppa-comment-status'];
+			
+			// Check validity
+			if ( ! wp_verify_nonce($nonce, 'wppa_nonce_'.$photo) ) {
+				echo '||0||'.__('You do not have the rights to update comment status', 'wppa').$nonce;
+				exit;																// Nonce check failed
+			}
+
+			$iret = $wpdb->query($wpdb->prepare('UPDATE `'.WPPA_COMMENTS.'` SET `status` = %s WHERE `id` = %s', $comstat, $comid));
+			
+			if ( $iret !== false ) {
+				echo '||0||'.sprintf(__('Status of comment #%s updated', 'wppa'), $comid);
+			}
+			else {
+				echo '||1||'.sprintf(__('Error updating status comment #%s', 'wppa'), $comid);
+			}
 			exit;
 			break;
 			
