@@ -629,6 +629,10 @@ global $wppa;
 				case 'wppa_upload_limit_count':
 					wppa_ajax_check_range($value, false, '0', false, __('Upload limit', 'wppa'));
 					break;
+				case 'wppa_cp_points_comment':
+				case 'wppa_cp_points_rating':
+					wppa_ajax_check_range($value, false, '0', false, __('Cube Points points', 'wppa'));
+					break;
 				case 'wppa_rating_clear':
 					$iret1 = $wpdb->query($wpdb->prepare( 'TRUNCATE TABLE '.WPPA_RATING ) );
 					$iret2 = $wpdb->query($wpdb->prepare( 'UPDATE '.WPPA_PHOTOS.' SET mean_rating="0", rating_count="0" WHERE id > -1' ) );
