@@ -3,12 +3,12 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions and API modules
-* Version 4.7.0
+* Version 4.7.1
 *
 */
 /* Moved to wppa-common-functions.php:
 global $wppa_api_version;
-$wppa_api_version = '4-7-0-000';
+$wppa_api_version = '4-7-1-000';
 */
 
 
@@ -1234,6 +1234,12 @@ global $wppa_done;
 		if (!$iret) {
 			wppa_dbg_msg('Unable to save rating.', 'red');
 		}
+		else {
+			//SUCCESSFUL RATING, ADD POINTS
+			if( function_exists('cp_alterPoints') && is_user_logged_in() ) {
+				cp_alterPoints(cp_currentUser(), $wppa_opt['wppa_cp_points_rating']);
+			}
+		}
 		$myrat = $rating;
 	}
 
@@ -1338,6 +1344,10 @@ global $wppa_done;
 					echo('<script type="text/javascript">alert("'.__a('Comment edited', 'wppa_theme').'")</script>');
 				}
 				else {
+					//SUCCESSFUL COMMENT, ADD POINTS
+					if( function_exists('cp_alterPoints') && is_user_logged_in() ) {
+						cp_alterPoints(cp_currentUser(), $wppa_opt['wppa_cp_points_comment']);
+					}
 					echo('<script type="text/javascript">alert("'.__a('Comment added', 'wppa_theme').'")</script>');
 				}
 			}

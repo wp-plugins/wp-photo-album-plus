@@ -1,8 +1,8 @@
 === WP Photo Album Plus ===
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
-Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile
-Version: 4.7.0
+Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile
+Version: 4.7.1
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -44,7 +44,8 @@ This plugin is designed to easily manage and display your photo albums and slide
 * You can add watermarks to the photos.
 * The plugin supports IPTC and EXIF data.
 * Supports addThis: while browsing fullsize images the share url will be updated.
-* Supports WP supercache. The cache will be cleared whenever required for wppa+
+* Supports WP supercache. The cache will be cleared whenever required for wppa+.
+* Supports Cube Points. You can assign points to comments and votes.
 
 Plugin Admin Features:
 
@@ -91,7 +92,7 @@ See Table I-A1 and Table I-B1,2 of the Photo Albums -> Settings admin page.
 
 = Which other plugins do you recommand to use with WPPA+, and which not? =
 
-* Recommanded plugins: qTranslate, Lightbox 3, WP Super Cache, AddThis.
+* Recommanded plugins: qTranslate, WP Super Cache, AddThis, Cube Points.
 * Plugins that break up WPPA+: My Live Signature.
 
 = Are there special requirements for responsive (mobile) themes? =
@@ -156,6 +157,12 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 4.7.1 =
+
+= New Features =
+
+* Now supports the plugin Cube Points. You can assign points to Comments and Rating votes in Table IX-F.
 
 = 4.7.0 =
 
