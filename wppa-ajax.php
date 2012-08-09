@@ -2,7 +2,7 @@
 /* wppa-ajax.php
 *
 * Functions used in ajax requests
-* version 4.7.0
+* version 4.7.1
 *
 */
 add_action('wp_ajax_wppa', 'wppa_ajax_callback');
@@ -74,6 +74,12 @@ global $wppa;
 				if ( $iret === false ) {
 					echo '0||102||'.$errtxt;
 					exit;															// Fail on storing vote
+				}
+				else {
+					//SUCCESSFUL RATING, ADD POINTS
+					if( function_exists('cp_alterPoints') && is_user_logged_in() ) {
+						cp_alterPoints(cp_currentUser(), $wppa_opt['wppa_cp_points_rating']);
+					}
 				}
 				$myavgrat = $rating;
 			}

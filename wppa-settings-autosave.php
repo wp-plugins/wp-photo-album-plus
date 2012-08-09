@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 4.7.0
+* Version 4.7.1
 *
 */
 
@@ -2658,6 +2658,23 @@ global $wppa_revno;
 							$slug = 'wppa_swap_namedesc';
 							$html = wppa_checkbox($slug);
 							wppa_setting($slug, '11', $name, $desc, $html, $help);
+							
+							wppa_setting_subheader('F', '1', __('Other plugins settings', 'wppa'));
+							
+							$name = __('Cube Points Comment', 'wppa');
+							$desc = __('Number of points for a comment', 'wppa');
+							$help = esc_js(__('This setting requires the plugin Cube Points', 'wppa'));
+							$slug = 'wppa_cp_points_comment';
+							$html = wppa_input($slug, '50px', '', __('points per comment', 'wppa'));
+							wppa_setting($slug, '1', $name, $desc, $html, $help);
+
+							$name = __('Cube Points Rating', 'wppa');
+							$desc = __('Number of points for a rating vote', 'wppa');
+							$help = esc_js(__('This setting requires the plugin Cube Points', 'wppa'));
+							$slug = 'wppa_cp_points_rating';
+							$html = wppa_input($slug, '50px', '', __('points per vote', 'wppa'));
+							wppa_setting($slug, '2', $name, $desc, $html, $help);
+
 							?>		
 			
 						</tbody>
