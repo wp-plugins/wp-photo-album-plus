@@ -116,6 +116,7 @@
 /* The popup small image, here is still a problem with IE6 */
 .wppa-popup-frame {
 	position: absolute;
+	z-index:1000;
 }
 
 .wppa-popup {
