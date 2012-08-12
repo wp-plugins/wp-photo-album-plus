@@ -2,11 +2,11 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 4.7.1
+* version 4.7.3
 *
 */
 global $wppa_api_version;
-$wppa_api_version = '4-7-2-001';
+$wppa_api_version = '4-7-3-000';
 // Initialize globals and option settings
 function wppa_initialize_runtime($force = false) {
 global $wppa;
@@ -187,6 +187,12 @@ global $wpdb;
 						// F Overlay
 						'wppa_ovl_close_txt'				=> '',
 						'wppa_ovl_theme'					=> '',
+						'wppa_ovl_slide_name'				=> '',
+						'wppa_ovl_slide_desc'				=> '',
+						'wppa_ovl_thumb_name'				=> '',
+						'wppa_ovl_thumb_desc'				=> '',
+						'wppa_ovl_potd_name'				=> '',
+						'wppa_ovl_potd_desc'				=> '',
 
 						// Table III: Backgrounds
 						'wppa_bgcolor_even' 			=> '',

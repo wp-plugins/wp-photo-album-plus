@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 4.7.1
+* Version 4.7.3
 *
 */
 
@@ -1000,7 +1000,52 @@ global $wppa_revno;
 							$html = wppa_select($slug, $options, $values);
 							wppa_setting($slug, '2', $name, $desc, $html, $help);
 							
+							$name = __('Overlay slide name', 'wppa');
+							$desc = __('Show name if from slide.', 'wppa');
+							$help = esc_js(__('Shows the photos name on a lightbox display when initiated from a slide.', 'wppa'));
+							$help .= '\n\n'.esc_js(__('This setting also applies to film thumbnails if Table VI-11 is set to lightbox overlay.', 'wppa'));
+							$slug = 'wppa_ovl_slide_name';
+							$html = wppa_checkbox($slug);
+							wppa_setting($slug, '3', $name, $desc, $html, $help);
 							
+							$name = __('Overlay slide desc', 'wppa');
+							$desc = __('Show description if from slide.', 'wppa');
+							$help = esc_js(__('Shows the photos description on a lightbox display when initiated from a slide.', 'wppa'));
+							$help .= '\n\n'.esc_js(__('This setting also applies to film thumbnails if Table VI-11 is set to lightbox overlay.', 'wppa'));
+							$slug = 'wppa_ovl_slide_desc';
+							$html = wppa_checkbox($slug);
+							wppa_setting($slug, '4', $name, $desc, $html, $help);
+							
+							$name = __('Overlay thumb name', 'wppa');
+							$desc = __('Show the photos name if from thumb.', 'wppa');
+							$help = esc_js(__('Shows the name on a lightbox display when initiated from a standard thumbnail or a widget thumbnail.', 'wppa'));
+							$help .= '\n\n'.esc_js(__('This setting applies to standard thumbnails, thumbnail-, comment-, topten- and lasten-widget.', 'wppa'));
+							$slug = 'wppa_ovl_thumb_name';
+							$html = wppa_checkbox($slug);
+							wppa_setting($slug, '5', $name, $desc, $html, $help);
+							
+							$name = __('Overlay thumb desc', 'wppa');
+							$desc = __('Show description if from slide.', 'wppa');
+							$help = esc_js(__('Shows the photos description on a lightbox display when initiated from a standard thumbnail or a widget thumbnail.', 'wppa'));
+							$help .= '\n\n'.esc_js(__('This setting applies to standard thumbnails, thumbnail-, comment-, topten- and lasten-widget.', 'wppa'));
+							$slug = 'wppa_ovl_thumb_desc';
+							$html = wppa_checkbox($slug);
+							wppa_setting($slug, '6', $name, $desc, $html, $help);
+
+							$name = __('Overlay potd name', 'wppa');
+							$desc = __('Show the photos name if from photo of the day.', 'wppa');
+							$help = esc_js(__('Shows the name on a lightbox display when initiated from the photo of the day.', 'wppa'));
+							$slug = 'wppa_ovl_potd_name';
+							$html = wppa_checkbox($slug);
+							wppa_setting($slug, '7', $name, $desc, $html, $help);
+							
+							$name = __('Overlay potd desc', 'wppa');
+							$desc = __('Show description if from from photo of the day.', 'wppa');
+							$help = esc_js(__('Shows the photos description on a lightbox display when initiated from the photo of the day.', 'wppa'));
+							$slug = 'wppa_ovl_potd_desc';
+							$html = wppa_checkbox($slug);
+							wppa_setting($slug, '8', $name, $desc, $html, $help);
+
 							?>
 						</tbody>
 						<tfoot style="font-weight: bold;" class="wppa_table_2">

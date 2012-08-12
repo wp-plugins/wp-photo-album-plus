@@ -2,7 +2,7 @@
 //
 // conatins slideshow, theme, ajax and lightbox code
 //
-// Version 4.7.0
+// Version 4.7.3
 
 // Part 1: Slideshow
 //
@@ -1990,6 +1990,7 @@ var wppaOvlSizeHandler = '';
 var wppaOvlPadTop = 5;
 var wppaWindowInnerWidth;
 var wppaWindowInnerHeight;
+var wppaOvlIsSingle;
 
 // The next var values become overwritten in wppa-non-admin.php -> wppa_load_footer()
 var wppaOvlCloseTxt = 'CLOSE';
@@ -2119,9 +2120,11 @@ function wppaOvlShow4() {
 					'<img src="'+wppaImageDirectory+'next-'+wppaOvlTheme+'.gif" style="position:relative; top:-8px; float:right;'+vr+'; box-shadow:none;" onclick="wppaOvlShowNext()" / >'+
 					'<div id="wppa-overlay-txt" style="text-align:center; min-height:36px; '+ht+' overflow:hidden; box-shadow:none; width:'+(cw-80)+'px;" >'+(wppaOvlIdx+1)+'/'+wppaOvlUrls.length+'<br />'+wppaOvlTitle+'</div>';
 		jQuery('#wppa-overlay-txt-container').html(html);
+		wppaOvlIsSingle = false;
 	}
 	else {
-		jQuery('#wppa-overlay-txt-container').html('<br />'+wppaOvlTitle);
+		jQuery('#wppa-overlay-txt-container').html('<div id="wppa-overlay-txt" style="text-align:center; margin-left:45px;" >'+wppaOvlTitle+'</div>');
+		wppaOvlIsSingle = true;
 	}
 	jQuery('#wppa-overlay-txt-container').css('visibility', 'visible');
 	jQuery('#wppa-overlay-qt-txt').css({visibility: 'visible'});
@@ -2147,6 +2150,7 @@ function wppaOvlShow4() {
 }
 
 function wppaOvlShowPrev() {
+	if (wppaOvlIsSingle) return false;
 	if (wppaOvlIdx < 1) {
 		wppaOvlHide();	// There is no prev, quit
 		return false;
@@ -2155,6 +2159,7 @@ function wppaOvlShowPrev() {
 	return false;
 }
 function wppaOvlShowNext() {
+	if (wppaOvlIsSingle) return false;
 	if (wppaOvlIdx >= (wppaOvlUrls.length-1)) {
 		wppaOvlHide();	// There is no next, quit
 		return false;
@@ -2238,10 +2243,10 @@ function wppaOvlSize(speed) {
 		jQuery('#wppa-overlay-qt-img').css({top: pt});
 	}
 	else {
-		jQuery('#wppa-overlay-img').animate({width:wid, maxWidth: wid}, speed);
-		jQuery('#wppa-overlay-ic').animate({width: cwid, left: lft, paddingTop: pt}, speed);
-		jQuery('#wppa-overlay-qt-txt').animate({top: (pt-1)}, speed);
-		jQuery('#wppa-overlay-qt-img').animate({top: pt}, speed);
+		jQuery('#wppa-overlay-img').stop().animate({width:wid, maxWidth: wid}, speed);
+		jQuery('#wppa-overlay-ic').stop().animate({width: cwid, left: lft, paddingTop: pt}, speed);
+		jQuery('#wppa-overlay-qt-txt').stop().animate({top: (pt-1)}, speed);
+		jQuery('#wppa-overlay-qt-img').stop().animate({top: pt}, speed);
 	}
 	
 	// If resizing, also resize txt elements when sizing is complete

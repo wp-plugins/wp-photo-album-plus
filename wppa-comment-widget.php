@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the recent commets on photos
-* Version 4.7.0
+* Version 4.7.3
 */
 
 class wppaCommentWidget extends WP_Widget {
@@ -61,6 +61,7 @@ class wppaCommentWidget extends WP_Widget {
 						$widget_content .= "\n\t".'</a>';
 					}
 					elseif ( $link['is_lightbox'] ) {
+						$title = wppa_get_lbtitle('thumb', $image);
 						$widget_content .= "\n\t".'<a href="'.$link['url'].'" rel="'.$wppa_opt['wppa_lightbox_name'].'[comment]" title="'.$title.'">';
 							$widget_content .= "\n\t\t".'<img id="i-'.$image['id'].'-'.$wppa['master_occur'].'" title="'.__('Zoom in', 'wppa_theme').'" src="'.$imgurl.'" width="'.$width.'" height="'.$height.'" style="'.$imgstyle.$cursor.'" '.$imgevents.' alt="'.esc_attr(wppa_qtrans($image['name'])).'">';
 						$widget_content .= "\n\t".'</a>';
