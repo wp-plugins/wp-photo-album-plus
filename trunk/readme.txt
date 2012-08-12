@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile
-Version: 4.7.2
+Version: 4.7.3
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -70,7 +70,7 @@ Most themes comply with these requirements.
 However, check these requirements in case of problems with new installations with themes you never had used before with wppa+ or when you modifies your theme.
 
 = Upgrade notice =
-This version is: Major rev# 4, Minor rev# 7, Fix rev# 0, Hotfix rev# 000.
+This version is: Major rev# 4, Minor rev# 7, Fix rev# 3, Hotfix rev# 000.
 If you are upgrading from a previous Major or Minor version, note that:
 * If you modified wppa_theme.php and/or wppa_style.css, you will have to use the newly supplied versions. The previous versions are NOT compatible.
 * If you set the userlevel to anything else than 'administrator' you may have to set it again. Note that changing the userlevel can be done by the administrator only!
@@ -157,6 +157,16 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 4.7.3 =
+
+= Bug Fixes =
+
+* Resizing the browser window when lightbox is open does the image resize when it is part of a set, but not when it is a single image. Fixed.
+
+= New Features =
+
+* You can now specify what you want in the subtitle of a lightbox display in Table II-F3..8
 
 = 4.7.2 =
 
