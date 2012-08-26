@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 *
-* Version 4.6.12
+* Version 4.7.4
 *
 */
 
@@ -178,6 +178,8 @@ global $wppa_opt;
 							foreach ( $photos as $photo ) {
 								$result .= '<option value="'.$photo['id'].'.'.$photo['ext'].'" >'.stripslashes(__($photo['name'])).' ('.__(wppa_get_album_name($photo['album'])).')'.'</option>';
 							}
+							$result .=  '<option value="#last" >'.__('--- The most recently uploaded photo ---', 'wppa').'</option>'.
+										'<option value="#potd" >'.__('--- The photo of the day ---', 'wppa').'</option>';
 						}
 						else {
 							$result .= '<option value="0" >'.__('There are no photos yet', 'wppa').'</option>';
@@ -198,7 +200,8 @@ global $wppa_opt;
 					'<input type="text" id="mygallery-size" value="" />'.
 					'<br />'.
 					'<small>'.
-						__('Specify the horizontal size in pixels or <span style="color:blue" >auto</span>', 'wppa').'<br />'.
+						__('Specify the horizontal size in pixels or <span style="color:blue" >auto</span>.', 'wppa').' '.
+						__('A value less than <span style="color:blue" >100</span> will automaticly be interpreted as a <span style="color:blue" >percentage</span> of the available space.', 'wppa').'<br />'.
 						__('Leave this blank for default size', 'wppa').'</small>'.
 				'</td>'.
 			'</tr>'.
@@ -219,7 +222,8 @@ global $wppa_opt;
 
 		'</table>'.
 		'<p class="submit">'.
-			'<input type="button" id="mygallery-submit" class="button-primary" value="'.__('Insert Gallery', 'wppa').'" name="submit" />'.
+			'<input type="button" id="mygallery-submit" class="button-primary" value="'.__('Insert Gallery', 'wppa').'" name="submit" />&nbsp;'.
+			'<input type="checkbox" id="mygallery-newstyle" />'.'&nbsp;'.__('Create new style shortcode', 'wppa').
 		'</p>'.
 	'</div>';
 	return $result;

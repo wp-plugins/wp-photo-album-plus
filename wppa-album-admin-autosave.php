@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * create, edit and delete albums
-* version 4.7.0
+* version 4.7.4
 *
 */
 
@@ -93,12 +93,26 @@ function _wppa_admin() {
 								<th style="padding-top:0; padding-bottom:0;">
 									<label ><?php _e('Description:', 'wppa'); ?></label>
 								</th>
-								<td style="padding-top:0; padding-bottom:0;">
-									<textarea style="width: 100%; height: 80px;" onchange="wppaAjaxUpdateAlbum(<?php echo $edit_id ?>, 'description', this)" ><?php echo(stripslashes($albuminfo['description'])) ?></textarea>
-								</td>
-								<td style="padding-top:0; padding-bottom:0;">
-									<span class="description"><?php _e('Enter / modify the description for this album.', 'wppa'); ?></span>
-								</td>
+								<?php if ( get_option('wppa_use_wp_editor') == 'yes' ) { ?>
+									<td style="padding-top:0; padding-bottom:0;" colspan="2" >
+									
+										<?php 
+										$quicktags_settings = array( 'buttons' => 'strong,em,link,block,ins,ul,ol,li,code,close' );
+										wp_editor(stripslashes($albuminfo['description']), 'wppaalbumdesc', array('wpautop' => false, 'media_buttons' => false, 'textarea_rows' => '6', 'tinymce' => false, 'quicktags' => $quicktags_settings ));
+										?>
+									
+										<input type="button" class="button-secundary" style="float:left; border-radius:8px; font-size: 12px; height: 16px; margin: 0 4px; padding: 0px;" value="<?php _e('Update Album description', 'wppa') ?>" onclick="wppaAjaxUpdateAlbum(<?php echo $edit_id ?>, 'description', document.getElementById('wppaalbumdesc') )" />
+										<br />
+									</td>
+								<?php }
+								else { ?>
+									<td style="padding-top:0; padding-bottom:0;">
+										<textarea style="width: 100%; height: 80px;" onchange="wppaAjaxUpdateAlbum(<?php echo $edit_id ?>, 'description', this)" ><?php echo(stripslashes($albuminfo['description'])) ?></textarea>
+									</td>
+									<td style="padding-top:0; padding-bottom:0;">
+										<span class="description"><?php _e('Enter / modify the description for this album.', 'wppa') ?></span>
+									</td>
+								<?php } ?>
 							</tr>
 							<!-- Owner -->
 							<?php if ( $wppa_opt['wppa_owner_only'] == 'yes' ) { ?>
@@ -286,11 +300,7 @@ function _wppa_admin() {
 					</table>
 							
 				<h2><?php _e('Manage Photos', 'wppa'); ?></h2>
-					
-
 				<?php wppa_album_photos($edit_id) ?>
-			
-			
 			</div>
 <?php 	} 
 		// album delete confirm page
@@ -363,7 +373,6 @@ function _wppa_admin() {
 				wppa_del_album($_POST['wppa-del-id'], '');
 			}
 		}
-		
 		
 		// The Manage Album page 
 ?>	
@@ -822,9 +831,23 @@ function wppa_album_photos($id) {
 								<th scope="row" >
 									<label><?php _e('Description:', 'wppa'); ?></label>
 								</th>
+								<?php if ( get_option('wppa_use_wp_editor') == 'yes' ) { ?>
+								<td>
+								
+									<?php 
+									$alfaid = wppa_alfa_id($photo['id']);
+									$quicktags_settings = array( 'buttons' => 'strong,em,link,block,ins,ul,ol,li,code,close' );
+									wp_editor(stripslashes($photo['description']), 'wppaphotodesc'.$alfaid, array('wpautop' => false, 'media_buttons' => false, 'textarea_rows' => '6', 'tinymce' => false, 'quicktags' => $quicktags_settings ));
+									?>
+									
+									<input type="button" class="button-secundary" style="float:left; border-radius:8px; font-size: 12px; height: 16px; margin: 0 4px; padding: 0px;" value="<?php _e('Update Photo description', 'wppa') ?>" onclick="wppaAjaxUpdatePhoto(<?php echo $photo['id'] ?>, 'description', document.getElementById('wppaphotodesc'+'<?php echo $alfaid ?>') )" />
+								</td>
+								<?php }
+								else { ?>
 								<td>
 									<textarea style="width: 100%; height:160px;" onchange="wppaAjaxUpdatePhoto(<?php echo $photo['id'] ?>, 'description', this)" ><?php echo(stripslashes($photo['description'])) ?></textarea>
 								</td>
+								<?php } ?>
 							</tr>
 							<!-- Status -->
 							<tr style="vertical-align:bottom;" >

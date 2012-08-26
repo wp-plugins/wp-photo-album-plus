@@ -1,7 +1,7 @@
 /* admin-scripts.js */
 /* Package: wp-photo-album-plus
 /*
-/* Version 4.7.0
+/* Version 4.7.4
 /* Various js routines used in admin pages		
 */
 
@@ -887,7 +887,7 @@ function wppaAjaxUpdateOptionValue(slug, elem) {
 	var data = 'action=wppa&wppa-action=update-option&wppa-option='+eslug;
 	data += '&wppa-nonce='+document.getElementById('wppa-nonce').value;
 	if ( elem != 0 ) data += '&value='+wppaEncode(elem.value);
-
+//if (!confirm('Do '+wppaAjaxUrl+'\n'+data)) return;	// Diagnostic
 	// Do the Ajax action
 	xmlhttp.open('POST',wppaAjaxUrl,true);
 	xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
@@ -896,6 +896,8 @@ function wppaAjaxUpdateOptionValue(slug, elem) {
 	
 function wppaEncode(xtext) {
 	var text, result;
+	
+	if (typeof(xtext)=='undefined') return;
 	
 	text = xtext;
 	result = text.replace(/#/g, '||HASH||');

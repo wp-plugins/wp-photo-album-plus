@@ -2,7 +2,7 @@
 //
 // conatins slideshow, theme, ajax and lightbox code
 //
-// Version 4.7.3
+// Version 4.7.4
 
 // Part 1: Slideshow
 //
@@ -17,6 +17,7 @@ var wppaFullFrameDelta = new Array();
 var wppaAnimationSpeed;
 var wppaImageDirectory;
 var wppaAutoColumnWidth = new Array();
+var wppaAutoColumnFrac = new Array();
 var wppaThumbnailAreaDelta;
 var wppaSlideShowTimeOut = 2500;
 var wppaFadeInAfterFadeOut = false;
@@ -119,11 +120,14 @@ var wppaTopMoc = 0;
 var wppaColWidth = new Array();
 
 jQuery(document).ready(function(){
-	_wppaLog('ready', 0);
+	_wppaLog('ready', 1);
 	
 	// Autocol?
 	for (mocc = 1; mocc <= wppaTopMoc; mocc++) {
-		if (wppaAutoColumnWidth[mocc]) _wppaDoAutocol(mocc);
+		if (wppaAutoColumnWidth[mocc]) {
+			wppaColWidth[mocc] = 0;
+			_wppaDoAutocol(mocc);
+		}
 	}
 	_wppaTextDelay = wppaAnimationSpeed;
 	if (wppaFadeInAfterFadeOut) _wppaTextDelay *= 2;
@@ -686,8 +690,11 @@ function _wppaNextSlide_5(mocc) {
 				i++;
 			}
 			if ( nRuns == 0 || ( nRuns == 1 && _wppaSSRuns[mocc] ) ) {	// No running OR This is the only running
-				wppaUpdateAddThisUrl(wppaGetCurrentFullUrl(mocc, _wppaCurIdx[mocc]), _wppaNames[mocc][_wppaCurIdx[mocc]]);	
-				wppaPushStateSlide(mocc, _wppaCurIdx[mocc]);					// Add to history stack
+				var url = wppaGetCurrentFullUrl(mocc, _wppaCurIdx[mocc]);
+				if (url != '') {
+					wppaUpdateAddThisUrl(url, _wppaNames[mocc][_wppaCurIdx[mocc]]);	
+					wppaPushStateSlide(mocc, _wppaCurIdx[mocc]);					// Add to history stack
+				}
 			}
 		}
 		// If running: Wait for next slide
@@ -1105,7 +1112,7 @@ function wppaGetContainerWidth(mocc) {
 	while (elm.parentNode.clientWidth == 0) {
 		elm = elm.parentNode;
 	}
-	return elm.parentNode.clientWidth;
+	return elm.parentNode.clientWidth * wppaAutoColumnFrac[mocc];
 }
 
 function _wppaDoAutocol(mocc) {
@@ -1116,10 +1123,11 @@ function _wppaDoAutocol(mocc) {
 	
 	// Container
 	w = wppaGetContainerWidth(mocc);//document.getElementById('wppa-container-'+mocc).parentNode.clientWidth;
-	if (wppaColWidth[mocc] == w) {
+	if (wppaColWidth[mocc] == w && w != 0) {
 		setTimeout('_wppaDoAutocol('+mocc+')', 100);
 		return;
 	}
+
 	wppaColWidth[mocc] = w;
 	jQuery(".wppa-container-"+mocc).css('width',w);
 
@@ -1155,6 +1163,12 @@ function _wppaDoAutocol(mocc) {
 	// Single photo
 	jQuery(".wppa-sphoto-"+mocc).css('width',w);
 	jQuery(".wppa-simg-"+mocc).css('width',w - 2*wppaSlideBorderWidth );
+	jQuery(".wppa-simg-"+mocc).css('height', '');
+	
+	// Mphoto
+	jQuery(".wppa-mphoto-"+mocc).css('width',w + 10);
+	jQuery(".wppa-mimg-"+mocc).css('width',w);
+	jQuery(".wppa-mimg-"+mocc).css('height', '');
 
 	// Check again after 50 ms	
 	setTimeout('_wppaDoAutocol('+mocc+')', 50);
@@ -1527,20 +1541,24 @@ function _wppaLog(text, mocc) {
 
 function wppaGetCurrentFullUrl(mocc, idx) {
 		
-var url = document.location.href;
+var xurl = document.location.href;
+var url;
 	
 	// Remove &wppa-photo=... if present.
-	var temp1 = url.split("?");
+	var temp1 = xurl.split("?");
 	var temp2 = 'nil';
 	var temp3;
 	var i = 0;
 	var first = true;
 	if (temp1[1]) temp2 = temp1[1].split("&");
+
+	var albumSeen = false;
 	url = temp1[0];	// everything before '?'
 	if (temp2 != 'nil') {
 		if (temp2.length > 0) {
 			while (i<temp2.length) {
 				temp3 = temp2[i].split("=");
+				if (temp3[0] == "wppa-album") albumSeen = true;
 				if (temp3[0] != "wppa-photo") {
 					if (first) url += "?";
 					else url += "&";
@@ -1551,6 +1569,8 @@ var url = document.location.href;
 			}
 		}
 	}
+	if ( !albumSeen ) return '';
+	
 	// Append new &wppa-photo=...
 	if (first) url += "?";
 	else url += "&";
@@ -1722,11 +1742,11 @@ function wppaPopUp(mocc, elm, id, rating) {
 	puImg = document.getElementById('wppa-img-'+mocc);
 
 	// Compute ending sizes
-	widthImgBig = parseInt(puImg.clientWidth); 
-	if (widthImgBig == 0) widthImgBig = puImg.naturalWidth;	// Chrome?
-	heightImgBig = parseInt(puImg.clientHeight);
-	if (heightImgBig == 0) heightImgBig = puImg.naturalHeight;
-	
+	if (puImg.naturalWidth) widthImgBig = puImg.naturalWidth;
+	else widthImgBig = parseInt(puImg.clientWidth);
+	if (puImg.naturalHeight) heightImgBig = puImg.naturalHeight;
+	else heightImgBig = parseInt(puImg.clientHeight);
+
 	// Set width of text fields to width of a landscape image	
 	if (puImg) jQuery(".wppa_pu_info").css('width', ((widthImgBig > heightImgBig ? widthImgBig : heightImgBig) - 8)+'px');	
 	// Compute starting coords
@@ -1941,12 +1961,16 @@ function wppaDoAjaxRender(mocc, ajaxurl, newurl) {
 
 function wppaPushStateSlide(mocc, slide) {
 
-	if ( wppaCanPushState ) {
-		var url = wppaGetCurrentFullUrl(mocc, _wppaCurIdx[mocc]);
-		try {
-			history.pushState({page: wppaHis, occur: mocc, type: 'slide', slide: slide}, "---", url);
-		}
-		catch(err) {
+	if ( ! wppaIsMini[mocc] ) {	// Not from a widget
+		if ( wppaCanPushState ) {
+			var url = wppaGetCurrentFullUrl(mocc, _wppaCurIdx[mocc]);
+			if (url != '') {
+				try {
+					history.pushState({page: wppaHis, occur: mocc, type: 'slide', slide: slide}, "---", url);
+				}
+				catch(err) {
+				}
+			}
 		}
 	}
 }
@@ -2007,15 +2031,20 @@ jQuery(document).ready(function(e){
 });
 
 function wppaFindWindowSize() {
+_wppaLog('wppaFindWindowSize', 1);
 	wppaWindowInnerWidth = window.innerWidth;
 	wppaWindowInnerHeight = window.innerHeight;
 	if (typeof(wppaWindowInnerWidth)=='undefined') wppaWindowInnerWidth = jQuery(window).width(); // wppaVer4WindowWidth;
 	if (typeof(wppaWindowInnerHeight)=='undefined') wppaWindowInnerHeight = jQuery(window).height(); //wppaVer4WindowHeight;
+_wppaLog('winw='+wppaWindowInnerWidth+', winh='+wppaWindowInnerHeight, 1);
 }
 
 function wppaOvlShow(arg) {
-
+_wppaLog('wppaOvlShow', 1);
 	wppaFindWindowSize();
+	
+	// Prevent Weaver ii from hiding us
+	jQuery('#weaver-final').removeClass('wvr-hide-bang');
 	
 	// Display spinner
 	jQuery('#wppa-overlay-sp').css({left: (wppaWindowInnerWidth/2)-16, top: (wppaWindowInnerHeight/2)-16, visibility: 'visible'});
@@ -2064,10 +2093,11 @@ function wppaOvlShow(arg) {
 	}
 
 	var mw = 250;
-
+_wppaLog('ovlOpac='+wppaOvlOpacity, 1);
 	jQuery('#wppa-overlay-bg').fadeTo(300, wppaOvlOpacity);
 	var lft = (wppaWindowInnerWidth/2-125)+'px';
 	var ptp = (wppaWindowInnerHeight/2-125)+'px';
+_wppaLog('lft='+lft+', ptp='+ptp, 1);
 	jQuery('#wppa-overlay-ic').css({left: lft, paddingTop: ptp});
 	var txtcol = wppaOvlTheme == 'black' ? '#a7a7a7' : '#272727';	// Normal font
 	var qtxtcol = wppaOvlTheme == 'black' ? '#a7a7a7' : '#575757';	// Bold font
@@ -2080,7 +2110,7 @@ function wppaOvlShow(arg) {
 	return false;
 }
 function wppaOvlShow2() {
-	
+_wppaLog('wppaOvlShow2', 1);	
 	var img = document.getElementById('wppa-overlay-img');
 	
 	if (!img || !img.complete) {
@@ -2094,6 +2124,7 @@ if (wppaOvlAnimSpeed!=0)
 	return false;
 }
 function wppaOvlShow3() {
+_wppaLog('wppaOvlShow3', 1);
 	// Remove spinner
 	jQuery('#wppa-overlay-sp').css({visibility: 'hidden'});
 	// Size to final dimensions
@@ -2105,6 +2136,7 @@ function wppaOvlShow3() {
 	return false;
 }
 function wppaOvlShow4() {
+_wppaLog('wppaOvlShow4', 1);
 
 	var cw = document.getElementById('wppa-overlay-img').clientWidth;
 	if (wppaOvlIdx != -1) {	// One out of a set
@@ -2150,6 +2182,7 @@ function wppaOvlShow4() {
 }
 
 function wppaOvlShowPrev() {
+_wppaLog('wppaOvlShowPrev', 1);
 	if (wppaOvlIsSingle) return false;
 	if (wppaOvlIdx < 1) {
 		wppaOvlHide();	// There is no prev, quit
@@ -2159,6 +2192,7 @@ function wppaOvlShowPrev() {
 	return false;
 }
 function wppaOvlShowNext() {
+_wppaLog('wppaOvlShowNext', 1);
 	if (wppaOvlIsSingle) return false;
 	if (wppaOvlIdx >= (wppaOvlUrls.length-1)) {
 		wppaOvlHide();	// There is no next, quit
@@ -2168,7 +2202,8 @@ function wppaOvlShowNext() {
 	return false;
 }
 
-function wppaOvlSize(speed) {	
+function wppaOvlSize(speed) {
+_wppaLog('wppaOvlSize', 1);
 
 	// Wait for text complete
 	if (! document.getElementById('wppa-overlay-txt')) { setTimeout('wppaOvlSize('+speed+')', 10); return;}
@@ -2235,6 +2270,7 @@ function wppaOvlSize(speed) {
 	}
 
 	var cwid = wid+32;
+
 	// Go to final size
 	if ( speed == 0 ) {
 		jQuery('#wppa-overlay-img').css({width:wid, maxWidth: wid, visibility: 'visible'});
@@ -2258,6 +2294,7 @@ function wppaOvlSize(speed) {
 	return true;
 }
 function wppaOvlSize2() {
+_wppaLog('wppaOvlSize2', 1);
 	
 	var cw = document.getElementById('wppa-overlay-img').clientWidth;
 
@@ -2269,8 +2306,10 @@ function wppaOvlSize2() {
 }
 
 function wppaOvlHide() {
+_wppaLog('wppaOvlHide', 1);
 	// Clear image container
 	jQuery('#wppa-overlay-ic').html('');
+	jQuery('#wppa-overlay-ic').css({paddingTop: 0});
 	// Remove background
 	jQuery('#wppa-overlay-bg').fadeOut(300);
 	// Re-instal posssible original kb handler
@@ -2301,7 +2340,7 @@ function wppaOvlOnclick(event) {
 }
 
 function wppaInitOverlay() {
-
+_wppaLog('wppaInitOverlay', 1);
 	var anchors=jQuery('a');
 	var anchor;
 	var i;
@@ -2346,6 +2385,7 @@ var wppaKbAction = function(e) {
 // Change to: <a href="javascript://" onclick="myproc(); wppaOvlResize()" >Show Details</a>
 // Isn't it simple?
 function wppaOvlResize() {
+_wppaLog('wppaOvlResize', 1);
 	// See if generic lightbox is on
 //	if ( wppaLightBox != 'wppa' ) return;	// No, not this time.
 	// Wait for completeion of text and do a size operation

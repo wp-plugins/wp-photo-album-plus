@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 4.7.3
+* Version 4.7.4
 *
 */
 
@@ -502,6 +502,13 @@ global $wppa_revno;
 							$html = wppa_input($slug, '40px', '', __('pixels', 'wppa'));
 							wppa_setting($slug, '3', $name, $desc, $html, $help);
 							
+							$name = __('Rating space', 'wppa');
+							$desc = __('Space between avg and my rating stars', 'wppa');
+							$help = '';
+							$slug = 'wppa_ratspacing';
+							$html = wppa_input($slug, '40px', '', __('pixels', 'wppa'));
+							wppa_setting($slug, '4', $name, $desc, $html, $help);
+							
 							wppa_setting_subheader('F', '1', __('Widget related settings', 'wppa'));
 							
 							$name = __('TopTen count', 'wppa');
@@ -576,6 +583,16 @@ global $wppa_revno;
 							$slug = 'wppa_ovl_txt_lines';
 							$html = wppa_input($slug, '40px', '', __('lines', 'wppa'));
 							wppa_setting($slug, '1', $name, $desc, $html, $help);
+							
+							$name = __('Magnifier cursor size', 'wppa');
+							$desc = __('Select the size of the magnifier cursor.', 'wppa');
+							$help = '';
+							$slug = 'wppa_magnifier';
+							$options = array(__('small','wppa'), __('medium', 'wppa'), __('large', 'wppa'));
+							$values  = array('magnifier-small.png', 'magnifier-medium.png', 'magnifier-large.png');
+							$onchange = 'document.getElementById(\'wppa-cursor\').src=wppaImageDirectory+document.getElementById(\'wppa_magnifier\').value';
+							$html = wppa_select($slug, $options, $values, $onchange);
+							wppa_setting($slug, '2', $name, $desc, $html.'&nbsp;&nbsp;<img id="wppa-cursor" src="'.wppa_get_imgdir().$wppa_opt[$slug].'" />', $help);
 							
 							?>
 						</tbody>
@@ -827,7 +844,7 @@ global $wppa_revno;
 							$help = esc_js(__('You can fill the custom box with any html you like. It will not be checked, so it is your own responsability to close tags properly.', 'wppa'));
 							$help .= '\n\n'.esc_js(__('The position of the box can be defined in Table IX-E.', 'wppa'));
 							$slug = 'wppa_custom_content';
-							$html = wppa_textarea($slug);
+							$html = wppa_textarea($slug, $name);
 							$class = 'wppa_custom_';
 							wppa_setting(false, '15', $name, $desc, $html, $help, $class);
 
@@ -868,7 +885,7 @@ global $wppa_revno;
 							$help = '';
 							$slug = 'wppa_copyright_notice';
 							$class = 'wppa_copyr';
-							$html = wppa_textarea($slug);
+							$html = wppa_textarea($slug, $name);
 							wppa_setting($slug, '20', $name, $desc, $html, $help, $class);
 
 							wppa_setting_subheader('C', '1', __('Thumbnail display related settings', 'wppa'));
@@ -2515,6 +2532,13 @@ global $wppa_revno;
 							$slug = 'wppa_meta_all';
 							$html = wppa_checkbox($slug);
 							wppa_setting($slug, '10', $name, $desc, $html, $help);
+							
+							$name = __('Use WP editor', 'wppa');
+							$desc = __('Use the wp editor for multiline text fields.', 'wppa');
+							$help = '';
+							$slug = 'wppa_use_wp_editor';
+							$html = wppa_checkbox($slug);
+							wppa_setting($slug, '11', $name, $desc, $html, $help);
 
 							wppa_setting_subheader('B', '1', __('New Album and New Photo related miscellaneous settings', 'wppa'));
 
@@ -2548,7 +2572,7 @@ global $wppa_revno;
 							$help = esc_js(__('Enter the default description.', 'wppa'));
 							$help .= '\n\n'.esc_js(__('If you use html, please check item A-1 of this table.', 'wppa'));
 							$slug = 'wppa_newphoto_description';
-							$html = wppa_textarea($slug);
+							$html = wppa_textarea($slug, $name);
 							wppa_setting($slug, '4', $name, $desc, $html, $help);
 							
 							$name = __('Upload limit', 'wppa');
@@ -3086,12 +3110,26 @@ function wppa_edit($slug, $value, $width = '90%', $minwidth = '', $text = '', $o
 
 }
 
-function wppa_textarea($slug) {
-	$html = '<textarea id="'.$slug.'" style="float:left; width:500px;" onchange="wppaAjaxUpdateOptionValue(\''.$slug.'\', this)" >';
-	$html .= esc_textarea(stripslashes(get_option($slug))); //htmlspecialchars(stripslashes(get_option($slug)));
-	$html .= '</textarea>';
-	$html .= '<img id="img_'.$slug.'" src="'.wppa_get_imgdir().'star.png" title="'.__('Setting unmodified', 'wppa').'" style="padding:0 4px; float:left; height:16px; width:16px;" />';
+function wppa_textarea($slug, $buttonlabel = '') {
+
+	if ( get_option('wppa_use_wp_editor') == 'yes' ) {	// New style textarea, use wp_editor
+		$editor_id = str_replace( '_', '', $slug);
+		ob_start();
+			$quicktags_settings = array( 'buttons' => 'strong,em,link,block,ins,ul,ol,li,code,close' );
+			wp_editor( get_option($slug), $editor_id, $settings = array('wpautop' => false, 'media_buttons' => false, 'textarea_rows' => '6', 'textarea_name' => $slug, 'tinymce' => false, 'quicktags' => $quicktags_settings ) );
+		$html = ob_get_clean();
+		$blbl = __('Update', 'wppa');
+		if ( $buttonlabel ) $blbl .= ' '.$buttonlabel;
+		
+		$html .= wppa_ajax_button($blbl, $slug, $editor_id, 'no_confirm');
+	}
+	else {
+		$html = '<textarea id="'.$slug.'" style="float:left; width:500px;" onchange="wppaAjaxUpdateOptionValue(\''.$slug.'\', this)" >';
+		$html .= esc_textarea(stripslashes(get_option($slug))); //htmlspecialchars(stripslashes(get_option($slug)));
+		$html .= '</textarea>';
 	
+		$html .= '<img id="img_'.$slug.'" src="'.wppa_get_imgdir().'star.png" title="'.__('Setting unmodified', 'wppa').'" style="padding:0 4px; float:left; height:16px; width:16px;" />';
+	}
 	return $html;
 }
 
@@ -3238,12 +3276,19 @@ function wppa_doit_button( $label = '', $key = '', $sub = '' ) {
 	return $result;
 }
 
-function wppa_ajax_button( $label = '', $slug ) {
+function wppa_ajax_button( $label = '', $slug, $elmid = '0', $no_confirm = false ) {
 	if ( $label == '' ) $label = __('Do it!', 'wppa');
 
 	$result = '<input type="button" class="button-secundary" style="float:left; border-radius:8px; font-size: 12px; height: 16px; margin: 0 4px; padding: 0px;" value="'.$label.'"';
+	$result .= ' onclick="';
+	if ( ! $no_confirm ) $result .= 'if (confirm(\''.__('Are you sure?', 'wppa').'\')) ';
+	if ( $elmid ) { 
+		$result .= 'wppaAjaxUpdateOptionValue(\''.$slug.'\', document.getElementById(\''.$elmid.'\'))" />';
+	}
+	else {
+		$result .= 'wppaAjaxUpdateOptionValue(\''.$slug.'\', 0)" />';
+	}
 	
-	$result .= ' onclick="if (confirm(\''.__('Are you sure?', 'wppa').'\')) wppaAjaxUpdateOptionValue(\''.$slug.'\', 0)" />';
 	$result .= '<img id="img_'.$slug.'" src="'.wppa_get_imgdir().'star.png" title="'.__('Not done yet', 'wppa').'" style="padding:0 4px; float:left; height:16px; width:16px;" />';
 	
 	return $result;

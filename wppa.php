@@ -2,7 +2,7 @@
 /*
 Plugin Name: WP Photo Album Plus
 Description: Easily manage and display your photo albums and slideshows within your WordPress site.
-Version: 4.7.3
+Version: 4.7.4
 Author: J.N. Breetvelt a.k.a OpaJaap
 Author URI: http://wppa.opajaap.nl/
 Plugin URI: http://wordpress.org/extend/plugins/wp-photo-album-plus/
@@ -17,7 +17,7 @@ global $wpdb;
 /* when new options are added and when the wppa_setup() routine 
 /* must be called right after update for any other reason.
 */
-global $wppa_revno; $wppa_revno = '473';	
+global $wppa_revno; $wppa_revno = '474';	
 
 /* CONSTANTS
 /*
@@ -25,6 +25,7 @@ global $wppa_revno; $wppa_revno = '473';
 /* PHP_VERSION_ID is available as of PHP 5.2.7, if our 
 /* version is lower than that, then emulate it
 */
+global $wppa_loadtime; $wppa_loadtime = - microtime(true);
 if ( ! defined( 'PHP_VERSION_ID' ) ) {
 	$version = explode( '.', PHP_VERSION );
 	define( 'PHP_VERSION_ID', ( $version[0] * 10000 + $version[1] * 100 + $version[2] ) );
@@ -67,3 +68,5 @@ else require_once 'wppa-non-admin.php';
 
 /* ADD AJAX */
 require_once 'wppa-ajax.php';
+
+$wppa_loadtime += microtime(true);
