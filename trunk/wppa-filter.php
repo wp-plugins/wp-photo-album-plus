@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * get the albums via filter
-* version 4.5.5
+* version 4.7.4
 *
 */
 
@@ -24,7 +24,7 @@ global $wppa;
 		$wppa['occur'] = '0';											// Init this occurance
 		$wppa['fullsize'] = '';											// Reset at each post
 		$wppa_pos = strpos($post_old, '%%wppa%%');						// Where in the post is the invocation
-		if ($wppa['debug']) wppa_dbg_msg('Text: '.substr($post_old, $wppa_pos, 32));
+		if ($wppa['debug']) wppa_dbg_msg('Text: '.htmlspecialchars(substr($post_old, $wppa_pos, 32)));
 		while ($wppa_pos !== false) {
 		
 			$text_chunk = substr($post_old, 0, $wppa_pos);
@@ -207,3 +207,99 @@ function wppa_atoid($var) {
 	}
 	return $result;
 }
+
+// New shortcodes
+function wppa_shortcodes( $atts, $content = null ) {
+global $wppa;
+global $wppa_postid;
+
+	extract( shortcode_atts( array(
+		'type'  => 'generic',
+		'album' => '',
+		'photo' => '',
+		'size'	=> '',
+		'align'	=> ''
+	), $atts ) );
+
+	// Find occur
+	if ( get_the_ID() != $wppa_postid ) {		// New post
+		$wppa['occur'] = '0';					// Init this occurance
+		$wppa['fullsize'] = '';					// Reset at each post
+		$wppa_postid = get_the_ID();			// Remember the post id
+	}
+
+	// Set internal defaults
+	$wppa['start_album'] = '';
+	$wppa['is_cover'] = '0';
+	$wppa['is_slide'] = '0';
+	$wppa['is_slideonly'] = '0';
+	$wppa['single_photo'] = '';
+	$wppa['is_mphoto'] = '0';
+	$wppa['film_on'] = '0';
+//	$size = '';
+//	$align = '';
+
+	// Find type
+	switch ( $type ) {
+		case 'generic':
+			break;
+		case 'cover':
+			$wppa['start_album'] = $album;
+			$wppa['is_cover'] = '1';
+			break;
+		case 'album':
+			$wppa['start_album'] = $album;
+			break;
+		case 'slide':
+			$wppa['start_album'] = $album;
+			$wppa['is_slide'] = '1';
+			break;
+		case 'slideonly':
+			$wppa['start_album'] = $album;
+			$wppa['is_slideonly'] = '1';
+			break;
+		case 'slideonlyf':
+			$wppa['start_album'] = $album;
+			$wppa['is_slideonly'] = '1';
+			$wppa['film_on'] = '1';
+			break;
+		case 'photo':
+			$wppa['single_photo'] = $photo;
+			break;
+		case 'mphoto':
+			$wppa['single_photo'] = $photo;
+			$wppa['is_mphoto'] = '1';
+			break;
+	}
+	
+	// Count
+	
+	// Find size
+	if ($size == 'auto') {
+		$wppa['auto_colwidth'] = true;
+		$wppa['fullsize'] = '';
+	}
+	else {
+		$wppa['auto_colwidth'] = false;
+		$wppa['fullsize'] = $size;
+	}
+	
+	// Find align
+	$wppa['align'] = $align;
+
+	// Ready to render ???
+	$do_it = false;
+	if ($wppa['rendering_enabled']) $do_it = true;	// NOT in a head section (in a meta tag or so)
+	if ($wppa['in_widget']) $do_it = true;			// A widget always works
+	if (is_feed()) $do_it = true;					// A feed has no head section
+	
+	if ($wppa['debug']) {
+		if ($do_it) $msg = 'Doit is on'; else $msg = 'Doit is off';
+		wppa_dbg_msg($msg);
+	}
+			
+	if ($do_it) return wppa_albums();				// Return the HTML
+	else return '<span style="color:blue; font-weight:bold; ">[WPPA+ Photo display]</span>';	// Or an indicator
+}
+
+add_shortcode( 'wppa', 'wppa_shortcodes' );

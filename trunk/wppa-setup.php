@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 4.7.3
+* Version 4.7.4
 *
 */
 
@@ -203,6 +203,31 @@ global $silent;
 			wppa_copy_setting('wppa_slideshow_blank', 'wppa_sphoto_blank');
 			wppa_copy_setting('wppa_slideshow_overrule', 'wppa_sphoto_overrule');
 		}
+		if ( $old_rev <= '474' ) {	// Convert album and photo descriptions to contain html in stead of htmlspecialchars. Allowing html is assumed, if not permitted, wppa_html will convert to specialcars.
+			// html
+			$at = 0; $ah = 0; $pt = 0; $ph = 0;
+			$albs = $wpdb->get_results('SELECT * FROM '.WPPA_ALBUMS, 'ARRAY_A');
+			if ($albs) {
+				foreach($albs as $alb) {
+					$at++;
+					if (html_entity_decode($alb['description']) != $alb['description']) {
+						$wpdb->query($wpdb->prepare('UPDATE `'.WPPA_ALBUMS.'` SET `description` = %s WHERE `id` = %s', html_entity_decode($alb['description']), $alb['id']));
+						$ah++;
+					}
+				}
+			}
+			$phots = $wpdb->get_results('SELECT * FROM '.WPPA_PHOTOS, 'ARRAY_A');
+			if ($phots) {
+				foreach($phots as $phot) {
+					$pt++;
+					if (html_entity_decode($phot['description']) != $phot['description']) {
+						$wpdb->query($wpdb->prepare('UPDATE `'.WPPA_PHOTOS.'` SET `description` = %s WHERE `id` = %s', html_entity_decode($phot['description']), $phot['id']));
+						$ph++;
+					}
+				}
+			}	
+			if ( WPPA_DEBUG ) if ($ah || $ph) wppa_ok_message($ah.' out of '.$at.' albums and '.$ph.' out of '.$pt.' photos html converted');
+		}
 	}
 	
 	// Set default values for new options
@@ -355,6 +380,7 @@ Hide Camera info
 						'wppa_rating_max'				=> '5',		// 1
 						'wppa_rating_prec'				=> '2',		// 2
 						'wppa_gravatar_size'			=> '40',	// 3
+						'wppa_ratspacing'				=> '30',
 						// F Widgets
 						'wppa_topten_count' 			=> '10',	// 1
 						'wppa_topten_size' 				=> '86',	// 2
@@ -365,7 +391,8 @@ Hide Camera info
 						'wppa_lasten_count'				=> '10',	// 7
 						'wppa_lasten_size' 				=> '86',	// 8
 						// G Overlay
-						'wppa_ovl_txt_lines'			=> 'auto',	// 
+						'wppa_ovl_txt_lines'			=> 'auto',	// 1
+						'wppa_magnifier'				=> 'magnifier-small.png',	// 2
 
 						// Table II: Visibility
 						// A Breadcrumb
@@ -628,8 +655,7 @@ Hide Camera info
 						'wppa_arrow_color' 				=> 'black',
 						'wppa_meta_page'				=> 'yes',		// 9
 						'wppa_meta_all'					=> 'yes',		// 10
-						'wppa_cp_points_comment'		=> '0',
-						'wppa_cp_points_rating'			=> '0',
+						'wppa_use_wp_editor'			=> 'no',
 
 						// B New
 						'wppa_max_album_newtime'		=> '0',		// 1
@@ -652,6 +678,10 @@ Hide Camera info
 						
 						'wppa_slide_order'				=> '0,1,2,3,4,5,6,7,8,9',
 						'wppa_swap_namedesc' 			=> 'no',
+
+						// F Other plugins
+						'wppa_cp_points_comment'		=> '0',
+						'wppa_cp_points_rating'			=> '0',
 
 						// Photo of the day widget
 						'wppa_widgettitle'			=> __('Photo of the day', 'wppa'),

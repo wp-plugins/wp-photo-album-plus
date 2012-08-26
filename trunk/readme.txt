@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile
-Version: 4.7.3
+Version: 4.7.4
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -157,6 +157,29 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 4.7.4 =
+
+= Bug Fixes =
+
+* Thumbnail popup failed under some circumstances in chrome and safari. Fixed.
+* Removed erroneous #'s from links when ajax is enabled, causing ajax and some links not to work properly.
+* The update of the url (and hence the history.pusState) no longer happens on a single slidechange when there is no album in the url.
+* Fixed a fimwindow alignment problem that only showed up in sites that could not provide a link to show it.
+* Fixed a problem where links at the top of the page did no longer work after closure of a lightbox display.
+
+= New Features =
+
+* The space between avg and my rating is now settable in Table II-E4
+* The shortcode generator now optionally creates new style shortcodes. 
+The use of new style shortcodes is experimental, it is encouraged to be used by experienced users, but not yet granted to work always.
+* You can now decide to use the wp editor in places of multiline inputs in Table IX-A11.
+* You can select one out of three sizes magnifier cursor for lightbox in Table I-G2.
+* You can specify a fraction for the %%width=..%% script token. It implies auto.
+
+= Other Changes =
+
+* Plugin load time and initialisation time measurements added in diagnostic mode.
 
 = 4.7.3 =
 

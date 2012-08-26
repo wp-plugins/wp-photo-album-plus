@@ -2,11 +2,11 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 4.7.3
+* version 4.7.4
 *
 */
 global $wppa_api_version;
-$wppa_api_version = '4-7-3-000';
+$wppa_api_version = '4-7-4-000';
 // Initialize globals and option settings
 function wppa_initialize_runtime($force = false) {
 global $wppa;
@@ -15,6 +15,9 @@ global $wppa_revno;
 global $wppa_api_version;
 global $blog_id;
 global $wpdb;
+global $wppa_initruntimetime;
+
+	$wppa_initruntimetime = - microtime(true);
 
 	if ($force) {
 		$wppa = false; 					// destroy existing arrays
@@ -124,6 +127,7 @@ global $wpdb;
 						'wppa_rating_max'				=> '',	// 1
 						'wppa_rating_prec'				=> '',	// 2
 						'wppa_gravatar_size'			=> '',	// 3
+						'wppa_ratspacing'				=> '',
 						// F Widgets
 						'wppa_topten_count' 			=> '',	// 1
 						'wppa_topten_size' 				=> '',	// 2
@@ -134,7 +138,8 @@ global $wpdb;
 						'wppa_lasten_count' 			=> '',	// 1
 						'wppa_lasten_size' 				=> '',	// 2
 						// G Overlay
-						'wppa_ovl_txt_lines'			=> '',	// 
+						'wppa_ovl_txt_lines'			=> '',	// 1
+						'wppa_magnifier'				=> '',	// 2
 						
 						// Table II: Visibility
 						// A Breadcrumb
@@ -397,6 +402,8 @@ global $wpdb;
 						'wppa_cp_points_comment'		=> '',
 						'wppa_cp_points_rating'			=> '',
 
+						'wppa_use_wp_editor'			=> '',	//A 11
+						
 						'wppa_html' 					=> '',
 						'wppa_allow_debug' 				=> '',
 						'wppa_slide_order'				=> '',
@@ -485,6 +492,8 @@ global $wpdb;
 		$iret = $wpdb->query($wpdb->prepare('DELETE FROM `'.WPPA_COMMENTS.'` WHERE `status` = %s AND `timestamp` < %s', 'spam', $obsolete));
 		update_option('wppa_spam_auto_delcount', get_option('wppa_spam_auto_delcount', '0') + $iret);
 	}
+	
+	$wppa_initruntimetime += microtime(true);
 }
 
 function wppa_set_options($value, $key) {
@@ -1698,6 +1707,7 @@ global $wpdb;
 
 function wppa_clear_cache() {
 global $cache_path;
+
 	// If wp-super-cache is on board, clear cache
 	if ( function_exists('prune_super_cache') ) {
 		prune_super_cache( $cache_path . 'supercache/', true );
@@ -1754,4 +1764,8 @@ function wppa_is_enum($str) {
 	}
 	
 	return true;
+}
+
+function wppa_alfa_id($id = '0') {
+	return str_replace( array('1', '2', '3', '4', '5', '6', '7', '8', '9', '0'), array('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'), $id );
 }

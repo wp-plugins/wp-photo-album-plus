@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the widget
-* Version 4.7.3
+* Version 4.7.4
 */
 
 class PhotoOfTheDay extends WP_Widget {
@@ -46,7 +46,7 @@ class PhotoOfTheDay extends WP_Widget {
 			$lightbox = $link['is_lightbox'] ? 'rel="'.$wppa_opt['wppa_lightbox_name'].'"' : '';
 			if ( $link ) {
 				if ( $link['is_lightbox'] ) {
-					$cursor = ' cursor:url('.wppa_get_imgdir().'magnifier.png),pointer;';
+					$cursor = ' cursor:url('.wppa_get_imgdir().$wppa_opt['wppa_magnifier'].'),pointer;';
 					$title  = __('Zoom in', 'wppa_theme');
 					$ltitle = wppa_get_lbtitle('potd', $image);
 				}

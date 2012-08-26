@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the slideshow high level functions
-* Version 4.6.5
+* Version 4.7.4
 *
 */
 
@@ -233,7 +233,7 @@ global $wppa_opt;
 				$i++;
 			}
 			
-			$wppa['out'] .= '&nbsp;&nbsp;';
+			$wppa['out'] .= '<img src="'.wppa_get_imgdir().'transp.png" style="width:'.$wppa_opt['wppa_ratspacing'].'px; height:15px; box-shadow:none; padding:0; margin:0; border:none;" />';
 		}
 		
 		if (!$wppa_opt['wppa_rating_login'] || is_user_logged_in()) {
@@ -304,7 +304,7 @@ global $thumb;
 	$topmarg = $wppa_opt['wppa_thumbsize'] / 2 - 12 + 7;
 	$height = $wppa_opt['wppa_thumbsize']+$wppa_opt['wppa_tn_margin'];
 	$height1 = $wppa_opt['wppa_thumbsize'];
-	$marg = '32';
+	$marg = '42';	// 32
 	$fs = '24';
 	$fw = '42';
 	if ($wppa['in_widget']) {
@@ -312,7 +312,7 @@ global $thumb;
 		$topmarg /= 2;
 		$height /= 2;
 		$height1 /= 2;
-		$marg = '16';
+		$marg = '21';
 		$fs = '12';
 		$fw = '21';
 	}
@@ -343,7 +343,7 @@ global $thumb;
 			$wppa['out'] .= wppa_nltab().'<a class="wppa-next-'.$wppa['master_occur'].' wppa-arrow" style="'.__wcs('wppa-arrow').'" id="next-film-arrow-1-'.$wppa['master_occur'].'" onclick="wppaNext('.$wppa['master_occur'].');" title="'.__a('Next', 'wppa_theme').'" >&rsaquo;</a>';
 			$wppa['out'] .= wppa_nltab().'<a class="wppa-next-'.$wppa['master_occur'].' wppa-arrow" style="'.__wcs('wppa-arrow').'" id="next-film-arrow-'.$wppa['master_occur'].'" onclick="wppaNextN('.$wppa['master_occur'].','.$pagsiz.');" title="'.sprintf(__a('%s forward', 'wppa_theme'), $pagsiz).'" >&raquo;</a>';
 		$wppa['out'] .= wppa_nltab().'</div>';
-		$wppa['out'] .= wppa_nltab().'<div id="filmwindow-'.$wppa['master_occur'].'" class="filmwindow" style="'.$IE6.' display: block; height:'.$height.'px; margin: 0 0 0 '.$marg.'px; overflow:hidden;">';
+		$wppa['out'] .= wppa_nltab().'<div id="filmwindow-'.$wppa['master_occur'].'" class="filmwindow" style="'.$IE6.' display: block; height:'.$height.'px; margin: -1px 0 0 '.$marg.'px; overflow:hidden;">';
 			$wppa['out'] .= wppa_nltab('+').'<div id="wppa-filmstrip-'.$wppa['master_occur'].'" style="height:'.$height1.'px; width:'.$width.'px; margin-left: -100px;">';
 	}
 	

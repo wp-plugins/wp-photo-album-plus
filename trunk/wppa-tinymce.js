@@ -2,7 +2,7 @@
 * Pachkage: wp-photo-album-plus
 *
 *
-* Version 4.6.12
+* Version 4.7.4
 *
 */
 
@@ -23,9 +23,10 @@
 						// triggers the thickbox
 						var width = jQuery(window).width(), H = jQuery(window).height(), W = ( 720 < width ) ? 720 : width;
 						W = W - 80;
-						H = H - 84;
-						H = 500;	// does not work, height is changed auto, can't find where
+						H = jQuery(window).height();
+						H = H - 115;
 						tb_show( 'WPPA+ Gallery Shortcode', '#TB_inline?width=' + W + '&height=' + H + '&inlineId=mygallery-form' );
+			//			jQuery('#TB_window').css({overflow: 'auto'});
 					}
 				});
 				return button;
@@ -64,20 +65,23 @@
 					var album 	= temp[0];
 					var size 	= table.find('#mygallery-size').val();
 					var align	= table.find('#mygallery-align').val();
-					var photo 	= parseInt(table.find('#mygallery-photo').val());
+					var temp 	= table.find('#mygallery-photo').val().split('.');
+					var photo	= temp[0];						
 					var alb 	= table.find('#mygallery-alb').val();
 						if ( alb == '' ) alb = '0'; else alb = parseInt(alb);
 					var cnt		= table.find('#mygallery-cnt').val();
 						if ( cnt == '' ) cnt = '0'; else cnt = parseInt(cnt);
+					var newstyle = document.getElementById('mygallery-newstyle').checked;
 					
 					// Sinitize input
 					if (size == 0) {}								// Ok, use default
 					else if (size == parseInt(size) && size > 0) {}	// Ok, positive number
 					else if (size == 'auto') {}						// Ok, auto
 					else {
-						alert('Sorry, you made a mistake\n\nSize must be a positive number or auto\n\nPlease try again');
+						alert('Sorry, you made a mistake\n\nSize must be a positive number or auto\nA number less than 100 will be interpreted as a percentage of the current column width\n\nPlease try again');
 						return;
 					}
+					if (size < 100) size=size/100;
 
 					// Check for inconsistencies
 					if ( type == 'cover' ) {
@@ -131,10 +135,39 @@
 					if ( align != 'none' )
 						shortcode += ' %%align='+align+'%%';			
 					
-					// shortcode += ' ';
+					// Make the new shortcode
+					var newShortcode = '[wppa type="'+type+'"';
+					
+					if ( type == 'generic' ) {
+					}
+					else if ( type == 'photo' || type == 'mphoto' )	{			
+						newShortcode += ' photo="'+photo+'"';
+					}
+					else {
+						var temp = album.split('|');
+						if ( temp[0] == '#topten'|| temp[0] == '#lasten' ) {
+							if ( cnt != '0' ) {
+								newShortcode += ' album="'+temp[0]+','+alb+','+cnt+'"';
+							}
+							else if ( alb != '0' ) {
+								newShortcode += ' album="'+temp[0]+','+alb+'"';
+							}
+							else {
+								newShortcode += ' album="'+temp[0]+'"';
+							}
+						}
+						else {
+							newShortcode += ' album="'+album+'"';
+						}
+					}
+					
+					if ( size != 0 )  newShortcode += ' size="'+size+'"';
+					if ( align != 'none' ) newShortcode += ' align="'+align+'"';
+					newShortcode += '][/wppa]';
 					
 					// inserts the shortcode into the active editor
-					tinyMCE.activeEditor.execCommand('mceInsertContent', 0, shortcode);
+					if (newstyle) tinyMCE.activeEditor.execCommand('mceInsertContent', 0, newShortcode);
+					else tinyMCE.activeEditor.execCommand('mceInsertContent', 0, shortcode);
 					
 					// closes Thickbox
 					tb_remove();
