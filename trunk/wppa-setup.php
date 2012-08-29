@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 4.7.4
+* Version 4.7.5
 *
 */
 
@@ -271,6 +271,10 @@ global $silent;
 	
 	// Done!
 	if ( ! $wppa['error'] ) {
+		$old_rev = round($old_rev); // might be 0.01 off
+		if ( $old_rev < $wppa_revno ) { 	// was a real upgrade,
+			update_option('wppa_prevrev', $old_rev);	// Remember prev rev. For support purposes. They say they stay up to rev, but they come from stoneage...
+		}
 		update_option('wppa_revision', $wppa_revno);	
 		if ( WPPA_DEBUG ) {
 			if ( is_multisite() ) {
@@ -344,7 +348,8 @@ Hide Camera info
 </table>
 </div>';
 
-	$wppa_defaults = array ( 'wppa_revision' 			=> '100',
+	$wppa_defaults = array ( 	'wppa_revision' 		=> '100',
+								'wppa_prevrev'			=> '100',
 	
 						// Table I: Sizes
 						// A System

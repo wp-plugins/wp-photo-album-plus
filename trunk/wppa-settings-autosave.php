@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 4.7.4
+* Version 4.7.5
 *
 */
 
@@ -1505,8 +1505,8 @@ global $wppa_revno;
 							$desc = __('Album ordering sequence method.', 'wppa');
 							$help = esc_js(__('Specify the way the albums should be ordered.', 'wppa'));
 							$slug = 'wppa_list_albums_by';
-							$options = array(__('--- none ---', 'wppa'), __('Order #', 'wppa'), __('Name', 'wppa'), __('Random', 'wppa'));
-							$values = array('0', '1', '2', '3');
+							$options = array(__('--- none ---', 'wppa'), __('Order #', 'wppa'), __('Name', 'wppa'), __('Random', 'wppa'), __('Timestamp', 'wppa'));
+							$values = array('0', '1', '2', '3', '5');
 							$html = wppa_select($slug, $options, $values);
 							wppa_setting($slug, '1', $name, $desc, $html, $help);
 							

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the slideshow high level functions
-* Version 4.7.4
+* Version 4.7.5
 *
 */
 
@@ -164,18 +164,38 @@ function wppa_slide_name($opt = '') {
 global $wppa;
 global $wppa_opt;
 
-	if (($opt == 'optional') && !$wppa_opt['wppa_show_full_name']) return;
-	if ($wppa['is_slideonly'] && !$wppa['name_on']) return;	/* Not when slideonly and not explicitly turned on in the widget */
-	$wppa['out'] .= wppa_nltab().'<div id="imagetitle-'.$wppa['master_occur'].'" class="wppa-fulltitle imagetitle" style="'.__wcs('wppa-fulltitle').'padding:3px; width:100%"></div>';
+	if ( $wppa['is_slideonly'] ) {
+		if ( $wppa['name_on'] ) $doit = true;
+		else $doit = false;
+	}
+	else {
+		if ( $opt == 'optional' ) {
+			if ( $wppa_opt['wppa_show_full_name'] ) $doit = true;
+			else $doit = false;
+		}
+		else $doit = true;
+	}
+	
+	if ( $doit ) $wppa['out'] .= wppa_nltab().'<div id="imagetitle-'.$wppa['master_occur'].'" class="wppa-fulltitle imagetitle" style="'.__wcs('wppa-fulltitle').'padding:3px; width:100%"></div>';
 }	
 
 function wppa_slide_description($opt = '') {
 global $wppa;
 global $wppa_opt;
 
-	if (($opt == 'optional') && !$wppa_opt['wppa_show_full_desc']) return;
-	if ($wppa['is_slideonly'] && !$wppa['desc_on']) return;	/* Not when slideonly and not explicitly turned on in the widget */
-	$wppa['out'] .= wppa_nltab().'<div id="imagedesc-'.$wppa['master_occur'].'" class="wppa-fulldesc imagedesc" style="'.__wcs('wppa-fulldesc').'padding:3px; width:100%; text-align:'.$wppa_opt['wppa_fulldesc_align'].'"></div>';
+	if ( $wppa['is_slideonly'] ) {
+		if ( $wppa['desc_on'] ) $doit = true;
+		else $doit = false;
+	}
+	else {
+		if ( $opt == 'optional' ) {
+			if ( $wppa_opt['wppa_show_full_desc'] ) $doit = true;
+			else $doit = false;
+		}
+		else $doit = true;
+	}
+	
+	if ( $doit ) $wppa['out'] .= wppa_nltab().'<div id="imagedesc-'.$wppa['master_occur'].'" class="wppa-fulldesc imagedesc" style="'.__wcs('wppa-fulldesc').'padding:3px; width:100%; text-align:'.$wppa_opt['wppa_fulldesc_align'].'"></div>';
 }
 
 function wppa_slide_custom($opt = '') {

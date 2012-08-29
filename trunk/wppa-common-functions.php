@@ -2,11 +2,11 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 4.7.4
+* version 4.7.5
 *
 */
 global $wppa_api_version;
-$wppa_api_version = '4-7-4-000';
+$wppa_api_version = '4-7-5-000';
 // Initialize globals and option settings
 function wppa_initialize_runtime($force = false) {
 global $wppa;
@@ -92,6 +92,7 @@ global $wppa_initruntimetime;
 	
 	if (!is_array($wppa_opt)) {
 		$wppa_opt = array ( 'wppa_revision' 			=> '',
+							'wppa_prevrev'				=> '',
 	
 						// Table I: Sizes
 						// A System
