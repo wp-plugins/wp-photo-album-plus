@@ -3,12 +3,12 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions and API modules
-* Version 4.7.4
+* Version 4.7.5
 *
 */
 /* Moved to wppa-common-functions.php:
 global $wppa_api_version;
-$wppa_api_version = '4-7-4-000';
+$wppa_api_version = '4-7-5-000';
 */
 
 if ( ! defined( 'ABSPATH' ) )
@@ -1127,7 +1127,7 @@ global $wppa_opt;
 	if ( ! $name ) $name = '&nbsp;';
 	
 	// Make photo desc, filtered
-	if ( !$wppa['is_slideonly'] ) {
+	if ( !$wppa['is_slideonly'] || $wppa['desc_on'] ) {
 		if ( $wppa_opt['wppa_allow_foreign_shortcodes'] ) {
 			// Recursion at this point (when users put %%wppa%% in a photo description) will lead to system hang and stack overflow
 			// Therefor we tempoary disable the rendering of wppa
@@ -2356,6 +2356,8 @@ global $wppa_opt;
 		if ($marg) $result .= 'margin-left: '.$marg;
 	}
 	
+	$result .= ' padding:0;';	//4.7.5
+	
 	return $result;
 }
 
@@ -2395,7 +2397,7 @@ global $wppa_initruntimetime;
 		$wppa['out'] .= wppa_nltab('init');
 		if ( ! $wppa['ajax'] ) {
 			$wppa['out'] .= '<!-- Start WPPA+ generated code -->';
-			$wppa['out'] .= wppa_nltab('+').'<div id="wppa-container-'.$wppa['master_occur'].'" style="'.wppa_get_container_style().'" class="wppa-container wppa-container-'.$wppa['master_occur'].' wppa-rev-'.$wppa['revno'].' wppa-theme-'.$wppa_version.' wppa-api-'.$wppa['api_version'].'" >';
+			$wppa['out'] .= wppa_nltab('+').'<div id="wppa-container-'.$wppa['master_occur'].'" style="'.wppa_get_container_style().'" class="wppa-container wppa-container-'.$wppa['master_occur'].' wppa-rev-'.$wppa['revno'].' wppa-prevrev-'.$wppa_opt['wppa_prevrev'].' wppa-theme-'.$wppa_version.' wppa-api-'.$wppa['api_version'].'" >';
 		}
 //		$wppa['out'] .= wppa_nltab().'<a name="wppa-loc-'.$wppa['master_occur'].'"></a>';
 		
