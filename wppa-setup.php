@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 4.7.5
+* Version 4.7.6
 *
 */
 
@@ -564,6 +564,11 @@ Hide Camera info
 						'wppa_fontsize_numbar_active' 		=> '',
 						'wppa_fontcolor_numbar_active' 	=> '#777777',
 						'wppa_fontweight_numbar_active'	=> 'bold',
+
+						'wppa_fontfamily_lightbox'	=> '',
+						'wppa_fontsize_lightbox'	=> '10',
+						'wppa_fontcolor_lightbox'	=> '',
+						'wppa_fontweight_lightbox'	=> 'bold',
 
 						
 						// Table VI: Links

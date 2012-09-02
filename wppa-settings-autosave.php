@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 4.7.5
+* Version 4.7.6
 *
 */
 
@@ -1821,6 +1821,21 @@ global $wppa_revno;
 							$html = array($html1, $html2, $html3, $html4);
 							wppa_setting($slug, '8a,b,c,d', $name, $desc, $html, $help);
 							
+							$name = __('Lightbox', 'wppa');
+							$desc = __('Font in wppa lightbox overlays.', 'wppa');
+							$help = esc_js(__('Enter font name, size, color and weight for wppa lightbox overlays.', 'wppa')); 
+							$slug1 = 'wppa_fontfamily_lightbox';
+							$slug2 = 'wppa_fontsize_lightbox';
+							$slug3 = 'wppa_fontcolor_lightbox';
+							$slug4 = 'wppa_fontweight_lightbox';
+							$slug = array($slug1, $slug2, $slug3, $slug4);
+							$html1 = wppa_input($slug1, '90%', '200px', '');
+							$html2 = wppa_input($slug2, '40px', '', __('pixels', 'wppa'));
+							$html3 = wppa_input($slug3, '70px', '', '');
+							$html4 = wppa_select($slug4, $options, $values);
+							$html = array($html1, $html2, $html3, $html4);
+							wppa_setting($slug, '9a,b,c,d', $name, $desc, $html, $help);
+							
 							?>
 						</tbody>
 						<tfoot style="font-weight: bold;" class="wppa_table_5">
@@ -1892,7 +1907,7 @@ global $wppa_revno;
 							$pages = $wpdb->get_results ($query, 'ARRAY_A');
 							if ($pages) {
 								foreach ($pages as $page) {
-									if (strpos($page['post_content'], '%%wppa%%') !== false) {
+									if (strpos($page['post_content'], '%%wppa%%') !== false || strpos($page['post_content'], '[wppa') !== false) {
 										$options_page[] = __($page['post_title']);
 										$options_page_post[] = __($page['post_title']);
 										$values_page[] = $page['ID'];
@@ -1915,7 +1930,7 @@ global $wppa_revno;
 							$desc = __('Single photo link.', 'wppa');
 							$help = esc_js(__('Select the type of link you want, or no link at all.', 'wppa')); 
 							$help .= '\n'.esc_js(__('If you select the fullsize photo on its own, it will be stretched to fit, regardless of that setting.', 'wppa')); /* oneofone is treated as portrait only */
-							$help .= '\n'.esc_js(__('Note that a page must have at least %%wppa%% in its content to show up the photo(s).', 'wppa')); 
+							$help .= '\n'.esc_js(__('Note that a page must have at least %%wppa%% or [wppa][/wppa] in its content to show up the photo(s).', 'wppa')); 
 							$slug1 = 'wppa_sphoto_linktype';
 							$slug2 = 'wppa_sphoto_linkpage';
 							$slug3 = 'wppa_sphoto_blank';
@@ -1935,7 +1950,7 @@ global $wppa_revno;
 							$desc = __('Media-like photo link.', 'wppa');
 							$help = esc_js(__('Select the type of link you want, or no link at all.', 'wppa')); 
 							$help .= '\n'.esc_js(__('If you select the fullsize photo on its own, it will be stretched to fit, regardless of that setting.', 'wppa')); /* oneofone is treated as portrait only */
-							$help .= '\n'.esc_js(__('Note that a page must have at least %%wppa%% in its content to show up the photo(s).', 'wppa')); 
+							$help .= '\n'.esc_js(__('Note that a page must have at least %%wppa%% or [wppa][/wppa] in its content to show up the photo(s).', 'wppa')); 
 							$slug1 = 'wppa_mphoto_linktype';
 							$slug2 = 'wppa_mphoto_linkpage';
 							$slug3 = 'wppa_mphoto_blank';
@@ -1955,7 +1970,7 @@ global $wppa_revno;
 							$desc = __('Thumbnail link.', 'wppa');
 							$help = esc_js(__('Select the type of link you want, or no link at all.', 'wppa'));
 							$help .= '\n'.esc_js(__('If you select the fullsize photo on its own, it will be stretched to fit, regardless of that setting.', 'wppa')); /* oneofone is treated as portrait only */ 
-							$help .= '\n'.esc_js(__('Note that a page must have at least %%wppa%% in its content to show up the photo(s).', 'wppa'));
+							$help .= '\n'.esc_js(__('Note that a page must have at least %%wppa%% or [wppa][/wppa] in its content to show up the photo(s).', 'wppa'));
 							$slug1 = 'wppa_thumb_linktype';
 							$slug2 = 'wppa_thumb_linkpage';
 							$slug3 = 'wppa_thumb_blank';
@@ -2596,7 +2611,7 @@ global $wppa_revno;
 							
 							$name = __('Search page', 'wppa');
 							$desc = __('Display the search results on page.', 'wppa');
-							$help = esc_js(__('Select the page to be used to display search results. The page MUST contain %%wppa%%.', 'wppa'));
+							$help = esc_js(__('Select the page to be used to display search results. The page MUST contain %%wppa%% or [wppa][/wppa].', 'wppa'));
 							$help .= '\n'.esc_js(__('You may give it the title "Search results" or something alike.', 'wppa'));
 							$help .= '\n'.esc_js(__('Or you ou may use the standard page on which you display the generic album.', 'wppa'));
 							$slug = 'wppa_search_linkpage';
@@ -2608,7 +2623,7 @@ global $wppa_revno;
 							$values[] = '0';
 							if ($pages) {
 								foreach ($pages as $page) {
-									if ( strpos($page['post_content'], '%%wppa%%') !== false ) {
+									if ( strpos($page['post_content'], '%%wppa%%') !== false || strpos($page['post_content'], '[wppa') !== false ) {
 										$options[] = __($page['post_title']);
 										$values[] = $page['ID'];
 									}

@@ -3,12 +3,12 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions and API modules
-* Version 4.7.5
+* Version 4.7.6
 *
 */
 /* Moved to wppa-common-functions.php:
 global $wppa_api_version;
-$wppa_api_version = '4-7-5-000';
+$wppa_api_version = '4-7-6-000';
 */
 
 if ( ! defined( 'ABSPATH' ) )
@@ -982,7 +982,11 @@ global $wpdb;
 		else $id = $xid;
 		if (is_numeric($id)) $desc = $wpdb->get_var( $wpdb->prepare( "SELECT description FROM ".WPPA_PHOTOS." WHERE id=%s", $id ) );
 	}
-	return wppa_qtrans(wppa_filter_exif(wppa_filter_iptc(wppa_html(stripslashes($desc)), $id), $id));
+
+	$desc = wppa_qtrans(wppa_filter_exif(wppa_filter_iptc(wppa_html(stripslashes($desc)), $id), $id));
+	$desc = str_replace(array('%%wppa%%', '[wppa', '[/wppa]'), array('%-wppa-%', '{wppa', '{/wppa}'), $desc);
+	
+	return $desc;
 }
 
 // get full img style
@@ -1128,22 +1132,24 @@ global $wppa_opt;
 	
 	// Make photo desc, filtered
 	if ( !$wppa['is_slideonly'] || $wppa['desc_on'] ) {
+		$desc = wppa_get_photo_desc($id);
+
+		// Further filtering required?
 		if ( $wppa_opt['wppa_allow_foreign_shortcodes'] ) {
-			// Recursion at this point (when users put %%wppa%% in a photo description) will lead to system hang and stack overflow
-			// Therefor we tempoary disable the rendering of wppa
-			$wppa['rendering_enabled'] = false;			
-			$desc = wppa_html(esc_js(stripslashes(apply_filters('the_content', wppa_get_photo_desc($id)))));
-			$wppa['rendering_enabled'] = true;
-			// Remove extra space created by other filters like wpautop
-			if ($wppa_opt['wppa_clean_pbr']) {
-				$desc = str_replace(array("<p>", "</p>", "<br>", "<br/>", "<br />"), " ", $desc);
-			}
-		} else {
-			$desc = wppa_html(esc_js(stripslashes(wppa_get_photo_desc($id))));	// old version of desc
+			$desc = do_shortcode($desc); //apply_filters('the_content', $desc);
 		}
+		// And format
+		$desc = wppa_html(esc_js(stripslashes($desc)));
+
+		// Remove extra space created by other filters like wpautop
+		if ($wppa_opt['wppa_clean_pbr']) {
+			$desc = str_replace(array("<p>", "</p>", "<br>", "<br/>", "<br />"), " ", $desc);
+		}
+		
 	//	if ( true ) {	// qr code? for the future...
 	//		$desc = '<img style="float:left;" src="http://api.qrserver.com/v1/create-qr-code/?data='.urlencode(wppa_get_permalink().'wppa-photo='.$photo['id'].'&wppa-occur=1').'&size=64x64&color=223311&bgcolor=E6F2D9" />'.$desc;
 	//	}
+	
 		if ( ! $desc ) $desc = '&nbsp;';
 	}
 	else $desc = '';
@@ -2388,6 +2394,7 @@ global $wppa_microtime_cum;
 global $wppa_err_displayed;
 global $wppa_loadtime;
 global $wppa_initruntimetime;
+global $wppa_numqueries;
 
 	if (is_feed()) return;		// Need no container in RSS feeds
 	
@@ -2402,10 +2409,14 @@ global $wppa_initruntimetime;
 //		$wppa['out'] .= wppa_nltab().'<a name="wppa-loc-'.$wppa['master_occur'].'"></a>';
 		
 		// Start timer if in debug mode
-		if ($wppa['debug']) $wppa_microtime = microtime(true);
+		if ($wppa['debug']) {
+			$wppa_microtime = - microtime(true);
+			$wppa_numqueries = - get_num_queries();
+		}
 		if ( $wppa['master_occur'] == '1' ) {
 			wppa_dbg_msg('Plugin load time :'.substr($wppa_loadtime,0,5).'s.', 'green');
 			wppa_dbg_msg('Init runtime time :'.substr($wppa_initruntimetime,0,5).'s.', 'green');
+			wppa_dbg_msg('Num queries before wppa :'.get_num_queries(), 'green');
 		}
 		
 		/* Check if wppa.js and jQuery are present */
@@ -2540,10 +2551,12 @@ global $wppa_initruntimetime;
 		}
 						
 		if ($wppa['debug']) {
-			$laptim = microtime(true) - $wppa_microtime;
+			$laptim = $wppa_microtime + microtime(true);
+			$wppa_numqueries += get_num_queries();
 			if (!is_numeric($wppa_microtime_cum)) $wppa_mcrotime_cum = '0';
 			$wppa_microtime_cum += $laptim;
 			wppa_dbg_msg('Time elapsed occ '.$wppa['master_occur'].':'.substr($laptim, 0, 5).'s. Tot:'.substr($wppa_microtime_cum, 0, 5).'s.', 'green');
+			wppa_dbg_msg('Nuber of queries occ '.$wppa['master_occur'].':'.$wppa_numqueries, 'green');
 		}
 	}
 	else {
@@ -4016,6 +4029,7 @@ global $wpdb;
 	}
 	
 	$result['target'] = '_self';
+	$result['title'] = '';
 	switch ($wich) {
 		case 'sphoto':
 			$type = $wppa_opt['wppa_sphoto_linktype'];

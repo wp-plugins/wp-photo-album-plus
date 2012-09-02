@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * get the albums via filter
-* version 4.7.4
+* version 4.7.6
 *
 */
 
@@ -248,6 +248,7 @@ global $wppa_postid;
 			$wppa['is_cover'] = '1';
 			break;
 		case 'album':
+		case 'content':
 			$wppa['start_album'] = $album;
 			break;
 		case 'slide':
@@ -297,7 +298,7 @@ global $wppa_postid;
 		if ($do_it) $msg = 'Doit is on'; else $msg = 'Doit is off';
 		wppa_dbg_msg($msg);
 	}
-			
+	
 	if ($do_it) return wppa_albums();				// Return the HTML
 	else return '<span style="color:blue; font-weight:bold; ">[WPPA+ Photo display]</span>';	// Or an indicator
 }
