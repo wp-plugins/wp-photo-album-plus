@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile
-Version: 4.7.5
+Version: 4.7.6
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -157,6 +157,23 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 4.7.6 =
+
+= Bug Fixes =
+
+* New tab on link from slide to plain file now works.
+* Link form slide to lightbox now displays the selected magnifier cursor.
+* New style and old style shortcodes can now also be mixed in a single page/post when they contain slideshows and Table IX-A7 is checked (Allow foreign shortcodes).
+
+= New Features =
+
+* Font characteristics for wppa lightbox overlay text are now settable in Table V-9.
+
+= Other Changes =
+
+* Pages containing the new style shortcode are now also selectable as target page in Table VI
+* The state of the 'Create new style shortcoe' selectionbox is now remembered in a cookie.
 
 = 4.7.5 =
 

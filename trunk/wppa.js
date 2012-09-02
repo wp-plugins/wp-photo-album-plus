@@ -2,7 +2,7 @@
 //
 // conatins slideshow, theme, ajax and lightbox code
 //
-// Version 4.7.4
+// Version 4.7.6
 
 // Part 1: Slideshow
 //
@@ -84,6 +84,7 @@ var wppaFullSize = new Array();
 var wppaStretch = false;
 var wppaThumbSpaceAuto = false;
 var wppaMinThumbSpace = 4;
+var wppaMagnifierCursor = '';
 
 // 'Internal' variables (private)
 var _wppaId = new Array();
@@ -172,7 +173,7 @@ var cursor;
 	// Cursor
 	cursor = 'default';
 	if (linkurl != '') cursor = 'pointer';
-	else if (wppaLightBox=='wppa') cursor =  'url('+wppaImageDirectory+'magnifier.png),pointer';
+	else if (wppaLightBox=='wppa') cursor =  'url('+wppaImageDirectory+wppaMagnifierCursor+'),pointer';
 
 	
     _wppaSlides[mocc][id] = ' src="' + url + '" alt="' + name + '" class="theimg theimg-'+mocc+' big" ';
@@ -729,7 +730,7 @@ function wppaMakeTheSlideHtml(mocc, bgfg, idx) {
 				}
 			}
 			// Current slide
-			html += '<a href="'+_wppaUrl[mocc][idx]+'" title="'+_wppaLbTitle[mocc][idx]+'" rel="'+wppaLightBox+'[slide-'+mocc+'-'+bgfg+']">'+
+			html += '<a href="'+_wppaUrl[mocc][idx]+'" target="'+_wppaLinkTarget[mocc][idx]+'" title="'+_wppaLbTitle[mocc][idx]+'" rel="'+wppaLightBox+'[slide-'+mocc+'-'+bgfg+']">'+
 //					'<img title="'+_wppaNames[mocc][idx]+'" id="theimg'+bgfg+'-'+mocc+'" '+_wppaSlides[mocc][idx]+
 					'<img title="'+_wppaLinkTitle[mocc][idx]+'" id="theimg'+bgfg+'-'+mocc+'" '+_wppaSlides[mocc][idx]+
 					'</a>';
@@ -2025,6 +2026,11 @@ var wppaOvlTheme = 'black';
 var wppaOvlAnimSpeed = 300;
 var wppaVer4WindowWidth = 800;
 var wppaVer4WindowHeight = 600;
+var wppaOvlFontFamily = 'Helvetica';
+var wppaOvlFontSize = '10';
+var wppaOvlFontColor = '';
+var wppaOvlFontWeight = 'bold';
+var wppaOvlLineHeight = '12';
 
 jQuery(document).ready(function(e){
 	wppaInitOverlay();
@@ -2101,10 +2107,11 @@ _wppaLog('lft='+lft+', ptp='+ptp, 1);
 	jQuery('#wppa-overlay-ic').css({left: lft, paddingTop: ptp});
 	var txtcol = wppaOvlTheme == 'black' ? '#a7a7a7' : '#272727';	// Normal font
 	var qtxtcol = wppaOvlTheme == 'black' ? '#a7a7a7' : '#575757';	// Bold font
+	if (wppaOvlFontColor) txtcol = wppaOvlFontColor;
 	var html = 	'<div id="wppa-overlay-qt-txt"  style="position:absolute; right:16px; top:'+(wppaOvlPadTop-1)+'px; visibility:hidden; box-shadow:none; font-family:helvetica; font-weight:bold; font-size:14px; color:'+qtxtcol+'; cursor:pointer; " onclick="wppaOvlHide()" >'+wppaOvlCloseTxt+'&nbsp;&nbsp;</div>'+
 				'<img id="wppa-overlay-qt-img"  src="'+wppaImageDirectory+'smallcross-'+wppaOvlTheme+'.gif'+'" style="position:absolute; right:0; top:'+wppaOvlPadTop+'px; visibility:hidden; box-shadow:none; cursor:pointer" onclick="wppaOvlHide()" >'+
 				'<img id="wppa-overlay-img" src="'+wppaOvlUrl+'" style="border-width:16px; border-style:solid; border-color:'+wppaOvlTheme+'; margin-bottom:-15px; max-width:'+mw+'px; visibility:hidden; box-shadow:none;" />'+
-				'<div id="wppa-overlay-txt-container" style="padding:10px; background-color:'+wppaOvlTheme+'; color:'+txtcol+'; text-align:center; font-size: 10px; font-weight:bold; line-height:12px; visibility:hidden; box-shadow:none;" ></div>';
+				'<div id="wppa-overlay-txt-container" style="padding:10px; background-color:'+wppaOvlTheme+'; color:'+txtcol+'; text-align:center; font-family:'+wppaOvlFontFamily+'; font-size: '+wppaOvlFontSize+'px; font-weight:'+wppaOvlFontWeight+'; line-height:'+wppaOvlLineHeight+'px; visibility:hidden; box-shadow:none;" ></div>';
 	jQuery('#wppa-overlay-ic').html(html);
 	setTimeout('wppaOvlShow2()', 10);
 	return false;

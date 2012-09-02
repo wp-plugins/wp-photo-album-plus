@@ -2,7 +2,7 @@
 * Pachkage: wp-photo-album-plus
 *
 *
-* Version 4.7.4
+* Version 4.7.6
 *
 */
 
@@ -26,7 +26,9 @@
 						H = jQuery(window).height();
 						H = H - 115;
 						tb_show( 'WPPA+ Gallery Shortcode', '#TB_inline?width=' + W + '&height=' + H + '&inlineId=mygallery-form' );
-			//			jQuery('#TB_window').css({overflow: 'auto'});
+
+						var isNew = wppa_getCookie('wppanewstyle') == 'on';
+						if (isNew) document.getElementById('mygallery-newstyle').checked = 'checked';
 					}
 				});
 				return button;
@@ -165,9 +167,15 @@
 					if ( align != 'none' ) newShortcode += ' align="'+align+'"';
 					newShortcode += '][/wppa]';
 					
-					// inserts the shortcode into the active editor
-					if (newstyle) tinyMCE.activeEditor.execCommand('mceInsertContent', 0, newShortcode);
-					else tinyMCE.activeEditor.execCommand('mceInsertContent', 0, shortcode);
+					// inserts the shortcode into the active editor and save the newstyle checkbox
+					if (newstyle) {
+						tinyMCE.activeEditor.execCommand('mceInsertContent', 0, newShortcode);
+						wppa_setCookie('wppanewstyle', 'on', '365');
+					}
+					else {
+						tinyMCE.activeEditor.execCommand('mceInsertContent', 0, shortcode);
+						wppa_setCookie('wppanewstyle', 'off', '365');
+					}
 					
 					// closes Thickbox
 					tb_remove();

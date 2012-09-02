@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the non admin stuff
-* Version 4.6.9
+* Version 4.7.6
 *
 */
 
@@ -104,7 +104,7 @@ global $wppa_opt;
 			echo ("\n\t\t\t".'wppaOvlTxtHeight = "auto";');
 		}
 		else {
-			echo ("\n\t\t\t".'wppaOvlTxtHeight = '.(($wppa_opt['wppa_ovl_txt_lines'] + 1) * 12).';');
+			echo ("\n\t\t\t".'wppaOvlTxtHeight = '.(($wppa_opt['wppa_ovl_txt_lines'] + 1) * ($wppa_opt['wppa_fontsize_lightbox'] + 2)).';');
 		}
 		echo('
 			wppaOvlCloseTxt = "'.__($wppa_opt['wppa_ovl_close_txt']).'";
@@ -113,7 +113,18 @@ global $wppa_opt;
 			wppaOvlTheme = "'.$wppa_opt['wppa_ovl_theme'].'";
 			wppaOvlAnimSpeed = '.$wppa_opt['wppa_ovl_anim'].';
 			wppaVer4WindowWidth = 800;
-			wppaVer4WindowHeight = 600;
+			wppaVer4WindowHeight = 600;');
+			if ( $wppa_opt['wppa_fontfamily_lightbox'] ) echo ('
+			wppaOvlFontFamily = "'.$wppa_opt['wppa_fontfamily_lightbox'].'";');
+			if ( $wppa_opt['wppa_fontsize_lightbox'] ) echo ('
+			wppaOvlFontSize = "'.$wppa_opt['wppa_fontsize_lightbox'].'";');
+			if ( $wppa_opt['wppa_fontcolor_lightbox'] ) echo ('
+			wppaOvlFontColor = "'.$wppa_opt['wppa_fontcolor_lightbox'].'";');
+			if ( $wppa_opt['wppa_fontweight_lightbox'] ) echo ('
+			wppaOvlFontWeight = "'.$wppa_opt['wppa_fontweight_lightbox'].'";');
+			if ( $wppa_opt['wppa_fontsize_lightbox'] ) echo ('
+			wppaOvlLineHeight = "'.($wppa_opt['wppa_fontsize_lightbox'] + '2').'";');
+			echo ('
 			</script>');
 		echo("\n<!-- end WPPA+ Footer data -->\n");
 	}
@@ -224,6 +235,7 @@ global $wppa_opt;
 		echo ("\t".'wppaMinThumbSpace = '.$wppa_opt['wppa_tn_margin'].';'."\n");
 		if ( $wppa_opt['wppa_thumb_auto'] ) echo ("\t".'wppaThumbSpaceAuto = true;'."\n");
 		else ("\t".'wppaThumbSpaceAuto = false;'."\n");
+		echo ("\t".'wppaMagnifierCursor = "'.$wppa_opt['wppa_magnifier'].'";'."\n");
 
 	echo("/* ]]> */\n");
 	echo("</script>\n");
