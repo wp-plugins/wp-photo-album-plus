@@ -6,7 +6,7 @@
 *
 */
 global $wppa_api_version;
-$wppa_api_version = '4-7-6-000';
+$wppa_api_version = '4-7-6-001';
 // Initialize globals and option settings
 function wppa_initialize_runtime($force = false) {
 global $wppa;
