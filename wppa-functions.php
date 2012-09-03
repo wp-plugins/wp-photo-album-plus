@@ -1142,7 +1142,7 @@ global $wppa_opt;
 		$desc = wppa_html(esc_js(stripslashes($desc)));
 
 		// Remove extra space created by other filters like wpautop
-		if ($wppa_opt['wppa_clean_pbr']) {
+		if ( $wppa_opt['wppa_allow_foreign_shortcodes'] && $wppa_opt['wppa_clean_pbr'] ) {
 			$desc = str_replace(array("<p>", "</p>", "<br>", "<br/>", "<br />"), " ", $desc);
 		}
 		
