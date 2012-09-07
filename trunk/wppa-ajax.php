@@ -29,7 +29,7 @@ global $wppa;
 			$data = $wpdb->get_row($wpdb->prepare("SELECT * FROM `".WPPA_PHOTOS."` WHERE `id` = %s", $photo), 'ARRAY_A');
 			if ($data) {	// The photo is supposed to exist
 				// Make the name
-				$name = $data['name'];
+				$name = __($data['name']);
 				$name = sanitize_file_name($name);
 				$dotpos = strrpos($name, '.');
 				if ( $dotpos !== false ) $name = substr($name, '0', $dotpos);
