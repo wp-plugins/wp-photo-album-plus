@@ -2,7 +2,7 @@
 //
 // conatins slideshow, theme, ajax and lightbox code
 //
-// Version 4.7.7
+// Version 4.7.8
 
 // Part 1: Slideshow
 //

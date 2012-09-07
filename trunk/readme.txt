@@ -158,6 +158,12 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
 
+= 4.7.8 =
+
+= Bug Fixes =
+
+* Fixed js error that stopped slideshow under some circumstances
+
 = 4.7.7 =
 
 = Bug Fixes =
