@@ -717,7 +717,7 @@ var result;
 	switch (wppaArtMonkyLink) {
 	case 'file':
 	case 'zip':
-		result = '<a onclick="wppaAjaxMakeOrigName('+mocc+', '+_wppaId[mocc][_wppaCurIdx[mocc]]+');" >'+_wppaNames[mocc][_wppaCurIdx[mocc]]+'</a>';
+		result = '<a title="Download" onclick="wppaAjaxMakeOrigName('+mocc+', '+_wppaId[mocc][_wppaCurIdx[mocc]]+');" >'+_wppaNames[mocc][_wppaCurIdx[mocc]]+'</a>';
 		break;
 	case none:
 		result = _wppaNames[mocc][_wppaCurIdx[mocc]];

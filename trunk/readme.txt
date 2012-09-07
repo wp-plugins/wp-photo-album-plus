@@ -170,8 +170,6 @@ See for additional information: http://wppa.opajaap.nl/?page_id=1459
 * You can now link the fullsize name to an imagefile or a zipfile containing the photo with the name as filename. Table VI-12: Art Monkey Link.
 * Swipe on lightbox (left-right) is supposed to work on all mobile devices now.
 
-= Other Changes =
-
 = 4.7.6 =
 
 = Bug Fixes =
