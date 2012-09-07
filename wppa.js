@@ -719,7 +719,7 @@ var result;
 	case 'zip':
 		result = '<a title="Download" onclick="wppaAjaxMakeOrigName('+mocc+', '+_wppaId[mocc][_wppaCurIdx[mocc]]+');" >'+_wppaNames[mocc][_wppaCurIdx[mocc]]+'</a>';
 		break;
-	case none:
+	case 'none':
 		result = _wppaNames[mocc][_wppaCurIdx[mocc]];
 		break;
 	}
