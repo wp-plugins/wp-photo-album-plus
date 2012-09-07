@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 4.7.6
+* Version 4.7.7
 *
 */
 
@@ -2146,6 +2146,16 @@ global $wppa_revno;
 							$values = array('slideshow', 'lightbox');
 							$html = wppa_select($slug, $options, $values);
 							wppa_setting($slug, '11', $name, $desc, $html.'</td><td></td><td></td><td>', $help);
+							
+							$name = __('Art Monkey Link', 'wppa');
+							$desc = __('Enable the Art Monkey link on fullsize names.', 'wppa');
+							$help = esc_js(__('Link Photo name in slideshow to file or zip with photoname as filename.', 'wppa'));
+							$slug = 'wppa_art_monkey_link';
+							$options = array(__('--- none ---', 'wppa'), __('image file', 'wppa'), __('zipped image', 'wppa'));
+							$values = array('none', 'file', 'zip');
+							$html = wppa_select($slug, $options, $values);
+							wppa_setting($slug, '12', $name, $desc, $html.'</td><td></td><td></td><td>', $help);
+							
 							
 							?>
 						</tbody>

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 4.7.6
+* Version 4.7.7
 *
 */
 
@@ -627,6 +627,8 @@ Hide Camera info
 						'wppa_lasten_widget_linkpage' 		=> '0',
 						'wppa_lasten_blank'					=> 'no',
 						'wppa_lasten_overrule'				=> 'no',
+						
+						'wppa_art_monkey_link'				=> 'none',
 
 						
 						// Table VII: Security
