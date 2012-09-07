@@ -2,7 +2,7 @@
 /* wppa-ajax.php
 *
 * Functions used in ajax requests
-* version 4.7.1
+* version 4.7.7
 *
 */
 add_action('wp_ajax_wppa', 'wppa_ajax_callback');
@@ -17,12 +17,82 @@ global $wppa;
 	$wppa['error'] = '0';
 	$wppa['out']   = '';
 
-	// ALTHOUGH WE ARE HERE AS FRONT END VISITOR, is_admin() is true. 
+	// ALTHOUGH IF WE ARE HERE AS FRONT END VISITOR, is_admin() is true. 
 	// So, $wppa_opt switches are 'yes' or 'no' and not true or false.
 	
 	$wppa_action = $_REQUEST['wppa-action'];
 	
 	switch ($wppa_action) {
+		case 'makeorigname':
+			$photo = $_REQUEST['photo-id'];
+			$type = $wppa_opt['wppa_art_monkey_link'];
+			$data = $wpdb->get_row($wpdb->prepare("SELECT * FROM `".WPPA_PHOTOS."` WHERE `id` = %s", $photo), 'ARRAY_A');
+			if ($data) {	// The photo is supposed to exist
+				// Make the name
+				$name = $data['name'];
+				$name = sanitize_file_name($name);
+				$dotpos = strrpos($name, '.');
+				if ( $dotpos !== false ) $name = substr($name, '0', $dotpos);
+				if ( strlen($name) == '0' ) {
+					echo '||1||'.__('Empty filename', 'wppa');
+					exit;
+				}
+				// Make the filenames
+				$source = WPPA_UPLOAD_PATH.'/'.$photo.'.'.$data['ext'];
+				$dest = WPPA_UPLOAD_PATH.'/temp/'.$name.'.'.$data['ext'];
+				$zipfile = WPPA_UPLOAD_PATH.'/temp/'.$name.'.zip';
+				$tempdir = WPPA_UPLOAD_PATH.'/temp';
+				if ( ! is_dir($tempdir) ) @ mkdir($tempdir);
+				if ( ! is_dir($tempdir) ) {
+					echo '||2||'.__('Unable to create tempdir', 'wppa');
+					exit;
+				}
+				// Remove obsolete files
+				// To prevent filling up diskspace, divide lifetime by 2 and repeat removing obsolete files until count <= 10
+				$filecount = 100;
+				$lifetime = 3600;
+				while ( $filecount > 10 ) {
+					$files = glob(WPPA_UPLOAD_PATH.'/temp/*');
+					$filecount = 0;
+					if ( $files ) {	
+						$timnow = time();
+						$expired = $timnow - $lifetime;
+						foreach ( $files as $file ) {
+							$modified = filemtime($file);
+							if ( $modified < $expired ) unlink($file);
+							else $filecount++;
+						}
+					}
+					$lifetime /= 2;
+				}
+				// Make the files
+				if ( $type == 'file' ) {
+					copy($source, $dest);
+					$ext = $data['ext'];
+				}
+				if ( $type == 'zip' ) {
+					if ( ! class_exists('ZipArchive') ) {
+						echo '||8||'.__('Unable to create zip archive', 'wppa');
+						exit;
+					}
+					$ext = 'zip';
+					$wppa_zip = new ZipArchive;
+					$wppa_zip->open($zipfile, 1);
+					$wppa_zip->addFile($source, basename($dest));
+					$wppa_zip->close();						
+				}
+				
+				$desturl = WPPA_UPLOAD_URL.'/temp/'.$name.'.'.$ext;
+				echo '||0||'.$desturl;	// No error: return url
+				exit;
+			}
+			else {
+				echo '||9||'.__('The photo does no longer exist', 'wppa');
+				exit;
+			}
+			exit;
+			break;
+			
 		case 'tinymcedialog':
 			$result = wppa_make_tinymce_dialog();
 			echo $result;

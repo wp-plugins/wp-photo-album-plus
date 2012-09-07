@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the slideshow high level functions
-* Version 4.7.5
+* Version 4.7.7
 *
 */
 
@@ -101,12 +101,12 @@ global $wppa_opt;
 		}
 		return;
 	}
-	// There are still users who turn off javascript...
 	$ontouch = 'ontouchstart="wppaTouchStart(event,\'slide_frame-'.$wppa['master_occur'].'\', '.$wppa['master_occur'].');"  ontouchend="wppaTouchEnd(event);" ontouchmove="wppaTouchMove(event);" ontouchcancel="wppaTouchCancel(event);"';
 	if ( $wppa_opt['wppa_slide_pause'] ) {
 		$pause = 'onmouseover="wppaSlidePause['.$wppa['master_occur'].'] = \''.__a('Paused', 'wppa_theme').'\'" onmouseout="wppaSlidePause['.$wppa['master_occur'].'] = false"';
 	}
 	else $pause = '';
+	// There are still users who turn off javascript...
 	$wppa['out'] .= wppa_nltab().'<noscript style="text-align:center; " ><span style="color:red; ">'.__a('To see the full size images, you need to enable javascript in your browser.', 'wppa').'</span></noscript>';
 	$wppa['out'] .= wppa_nltab('+').'<div id="slide_frame-'.$wppa['master_occur'].'" '.$ontouch.' '.$pause.' class="slide-frame" style="overflow:hidden; '.wppa_get_slide_frame_style().'">';
 		$auto = false;
@@ -337,8 +337,10 @@ global $thumb;
 		$fw = '21';
 	}
 
-	$w = wppa_get_container_width() - ( 2*6 + 2*42 + 2*$wppa_opt['wppa_bwidth']); /* 2*padding + 2*arrows + 2*border */
-	if ($wppa['in_widget']) $w = wppa_get_container_width() - ( 2*6 + 2*21 + 2*$wppa_opt['wppa_bwidth']); /* 2*padding + 2*arrow + 2*border */
+	$conw = wppa_get_container_width();
+	if ( $conw < 1 ) $conw *= 640;
+	$w = $conw - ( 2*6 + 2*42 + 2*$wppa_opt['wppa_bwidth']); /* 2*padding + 2*arrows + 2*border */
+	if ($wppa['in_widget']) $w = $conw - ( 2*6 + 2*21 + 2*$wppa_opt['wppa_bwidth']); /* 2*padding + 2*arrow + 2*border */
 	$IE6 = 'width: '.$w.'px;';
 	$pagsiz = round($w / ($wppa_opt['wppa_thumbsize'] + $wppa_opt['wppa_tn_margin']));
 	if ($wppa['in_widget']) $pagsiz = round($w / ($wppa_opt['wppa_thumbsize']/2 + $wppa_opt['wppa_tn_margin']/2));

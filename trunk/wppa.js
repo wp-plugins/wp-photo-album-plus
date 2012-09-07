@@ -2,7 +2,7 @@
 //
 // conatins slideshow, theme, ajax and lightbox code
 //
-// Version 4.7.6
+// Version 4.7.7
 
 // Part 1: Slideshow
 //
@@ -85,6 +85,7 @@ var wppaStretch = false;
 var wppaThumbSpaceAuto = false;
 var wppaMinThumbSpace = 4;
 var wppaMagnifierCursor = '';
+var wppaArtMonkyLink = 'none';
 
 // 'Internal' variables (private)
 var _wppaId = new Array();
@@ -177,12 +178,16 @@ var cursor;
 
 	
     _wppaSlides[mocc][id] = ' src="' + url + '" alt="' + name + '" class="theimg theimg-'+mocc+' big" ';
+	
+		// Add swipe
+		_wppaSlides[mocc][id] += 'ontouchstart="wppaTouchStart(event, this.id, '+mocc+');"  ontouchend="wppaTouchEnd(event);" ontouchmove="wppaTouchMove(event);" ontouchcancel="wppaTouchCancel(event);" ';
+
 		// Add 'old' width and height only for non-auto
 		if ( ! wppaAutoColumnWidth[mocc] ) _wppaSlides[mocc][id] += 'width="' + width + '" height="' + height + '" ';
 	_wppaSlides[mocc][id] += 'style="' + size + '; cursor:'+cursor+'; display:none;">';	// was block
     _wppaNames[mocc][id] = name;
     _wppaDsc[mocc][id] = desc;
-	_wppaId[mocc][id] = photoid;		// reqd for rating and comment
+	_wppaId[mocc][id] = photoid;		// reqd for rating and comment and monkey
 	_wppaAvg[mocc][id] = avgrat;		// avg ratig value
 	_wppaMyr[mocc][id] = myrat;		// my rating
 	_wppaVRU[mocc][id] = rateurl;		// url that performs the vote and returns to the page
@@ -383,7 +388,7 @@ function _wppaNextSlide(mocc, mode) {
 	    
 		// Display name, description and comments
 		jQuery("#imagedesc-"+mocc).html(_wppaDsc[mocc][_wppaCurIdx[mocc]]);
-		jQuery("#imagetitle-"+mocc).html(_wppaNames[mocc][_wppaCurIdx[mocc]]);
+		jQuery("#imagetitle-"+mocc).html(wppaMakeNameHtml(mocc));
 		jQuery("#comments-"+mocc).html(_wppaCommentHtml[mocc][_wppaCurIdx[mocc]]);
 		jQuery("#iptc-"+mocc).html(_wppaIptcHtml[mocc][_wppaCurIdx[mocc]]);
 		jQuery("#exif-"+mocc).html(_wppaExifHtml[mocc][_wppaCurIdx[mocc]]);
@@ -652,7 +657,7 @@ function _wppaNextSlide_5(mocc) {
 	if (!_wppaToTheSame) {	
 		// Restore subtitles
 		jQuery('#imagedesc-'+mocc).html(_wppaDsc[mocc][_wppaCurIdx[mocc]]);
-		jQuery('#imagetitle-'+mocc).html(_wppaNames[mocc][_wppaCurIdx[mocc]]);
+		jQuery("#imagetitle-"+mocc).html(wppaMakeNameHtml(mocc));
 		// Restore comments html
 		jQuery("#comments-"+mocc).html(_wppaCommentHtml[mocc][_wppaCurIdx[mocc]]);
 		// Restor IPTC
@@ -707,6 +712,20 @@ function _wppaNextSlide_5(mocc) {
 	_wppaIsBusy[mocc] = false;					// No longer busy
 }
  
+function wppaMakeNameHtml(mocc) {
+var result;
+	switch (wppaArtMonkyLink) {
+	case 'file':
+	case 'zip':
+		result = '<a onclick="wppaAjaxMakeOrigName('+mocc+', '+_wppaId[mocc][_wppaCurIdx[mocc]]+');" >'+_wppaNames[mocc][_wppaCurIdx[mocc]]+'</a>';
+		break;
+	case none:
+		result = _wppaNames[mocc][_wppaCurIdx[mocc]];
+		break;
+	}
+	return result;
+}
+
 function wppaMakeTheSlideHtml(mocc, bgfg, idx) {
  
 	if (_wppaLinkUrl[mocc][idx] != '') {	// Link explicitly given
@@ -1686,17 +1705,29 @@ function wppaDetermineSwipeDirection() {
 
 function wppaProcessingRoutine() {
 	var swipedElement = document.getElementById(triggerElementID);
-	if ( swipeDirection == 'left' ) {
-		wppaNext(wppaMocc);
-		wppaMocc = 0;
-	} 
-	else if ( swipeDirection == 'right' ) {
-		wppaPrev(wppaMocc);
-		wppaMocc = 0;
-	} 
-	else if ( swipeDirection == 'up' ) {
-	} 
-	else if ( swipeDirection == 'down' ) {
+	if ( wppaMocc == -1 ) { // swipe on ligtbox image
+		if ( swipeDirection == 'left' ) {
+			wppaOvlShowNext();
+			wppaMocc = 0;
+		}
+		else if ( swipeDirection == 'right' ) {
+			wppaOvlShowPrev();
+			wppaMocc = 0;
+		}		
+	}
+	else {	// swipe on slideshow
+		if ( swipeDirection == 'left' ) {
+			wppaNext(wppaMocc);
+			wppaMocc = 0;
+		} 
+		else if ( swipeDirection == 'right' ) {
+			wppaPrev(wppaMocc);
+			wppaMocc = 0;
+		} 
+		else if ( swipeDirection == 'up' ) {
+		} 
+		else if ( swipeDirection == 'down' ) {
+		}
 	}
 }
 
@@ -2110,7 +2141,9 @@ _wppaLog('lft='+lft+', ptp='+ptp, 1);
 	if (wppaOvlFontColor) txtcol = wppaOvlFontColor;
 	var html = 	'<div id="wppa-overlay-qt-txt"  style="position:absolute; right:16px; top:'+(wppaOvlPadTop-1)+'px; visibility:hidden; box-shadow:none; font-family:helvetica; font-weight:bold; font-size:14px; color:'+qtxtcol+'; cursor:pointer; " onclick="wppaOvlHide()" >'+wppaOvlCloseTxt+'&nbsp;&nbsp;</div>'+
 				'<img id="wppa-overlay-qt-img"  src="'+wppaImageDirectory+'smallcross-'+wppaOvlTheme+'.gif'+'" style="position:absolute; right:0; top:'+wppaOvlPadTop+'px; visibility:hidden; box-shadow:none; cursor:pointer" onclick="wppaOvlHide()" >'+
-				'<img id="wppa-overlay-img" src="'+wppaOvlUrl+'" style="border-width:16px; border-style:solid; border-color:'+wppaOvlTheme+'; margin-bottom:-15px; max-width:'+mw+'px; visibility:hidden; box-shadow:none;" />'+
+				'<img id="wppa-overlay-img"'+
+				' ontouchstart="wppaTouchStart(event, \'wppa-overlay-img\', -1);"  ontouchend="wppaTouchEnd(event);" ontouchmove="wppaTouchMove(event);" ontouchcancel="wppaTouchCancel(event);" '+
+				' src="'+wppaOvlUrl+'" style="border-width:16px; border-style:solid; border-color:'+wppaOvlTheme+'; margin-bottom:-15px; max-width:'+mw+'px; visibility:hidden; box-shadow:none;" />'+
 				'<div id="wppa-overlay-txt-container" style="padding:10px; background-color:'+wppaOvlTheme+'; color:'+txtcol+'; text-align:center; font-family:'+wppaOvlFontFamily+'; font-size: '+wppaOvlFontSize+'px; font-weight:'+wppaOvlFontWeight+'; line-height:'+wppaOvlLineHeight+'px; visibility:hidden; box-shadow:none;" ></div>';
 	jQuery('#wppa-overlay-ic').html(html);
 	setTimeout('wppaOvlShow2()', 10);
@@ -2399,4 +2432,35 @@ _wppaLog('wppaOvlResize', 1);
 	setTimeout('wppaOvlSize(10)', 50);		// After resizing, the number of lines may have changed
 	setTimeout('wppaOvlSize(10)', 200);
 	setTimeout('wppaOvlSize(10)', 500);
+}
+
+function wppaAjaxMakeOrigName(mocc, id) {
+	
+	// Create the http request object
+	var xmlhttp = wppaGetXmlHttp();
+	var url = wppaAjaxUrl+'?action=wppa&wppa-action=makeorigname&photo-id='+id;
+
+	// Issue request Synchronously!!
+	xmlhttp.open("GET",url,false);
+	xmlhttp.send();
+	
+	if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+		var result = xmlhttp.responseText.split('||');
+		if (result[1] == '0') {	// Ok, no error
+			// Publish result
+			if ( wppaArtMonkyLink == 'file' ) window.open(result[2]);
+			if ( wppaArtMonkyLink == 'zip' ) document.location = result[2];
+			// Go
+			return true;
+		}
+		else {
+			// Show error
+			alert('Error: '+result[1]+'\n\n'+result[2]);
+			return false;
+		}
+	}
+	else {
+		alert('Comm error encountered');
+		return false;
+	}
 }

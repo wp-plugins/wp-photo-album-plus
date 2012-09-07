@@ -2,11 +2,11 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 4.7.6
+* version 4.7.7
 *
 */
 global $wppa_api_version;
-$wppa_api_version = '4-7-6-001';
+$wppa_api_version = '4-7-7-000';
 // Initialize globals and option settings
 function wppa_initialize_runtime($force = false) {
 global $wppa;
@@ -372,6 +372,7 @@ global $wppa_initruntimetime;
 						'wppa_lasten_blank'					=> '',
 						'wppa_lasten_overrule'				=> '',
 
+						'wppa_art_monkey_link'				=> '',
 						
 						// Table VII: Security
 						// B
