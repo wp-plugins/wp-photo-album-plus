@@ -7,7 +7,7 @@ Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
 Requires at least: 3.0
-Tested up to: 3.4.1
+Tested up to: 3.4.2
 
 This plugin is designed to easily manage and display your photo albums and slideshows in a single as well as in a network WordPress site and 
 is applicable for both static as dynamic (responsive) themes as used for mobile clients. 
