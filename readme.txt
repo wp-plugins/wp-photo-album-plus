@@ -106,7 +106,8 @@ so use %%size=auto%% in the next %%wppa%% occurrence to go back to automatic.
 = After update, many things seem to go wrong =
 
 * After an update, always clear your browser cache (CTRL+F5) and clear your temp internetfiles, this will ensure the new versions of js files will be loaded.
-* And - most important - if you use a server side caching program clear its cache. (No longer needed as of version 4.4.2)
+* And - most important - if you use a server side caching program (like WP Total Cavhe) clear its cache. 
+* Make sure any minifying plugin (like W3 Total Cache) is also reset to make sure the new version files are used.
 * Visit the Photo Albums -> Settings page -> Table VII-A1 and press Do it!
 * When upload fails after an upgrade, one or more columns may be added to one of the db tables. In rare cases this may have been failed. 
 Unfortunately this is hard to determine. 
