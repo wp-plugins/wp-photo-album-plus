@@ -2,11 +2,11 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 4.7.8
+* version 4.7.9
 *
 */
 global $wppa_api_version;
-$wppa_api_version = '4-7-8-000';
+$wppa_api_version = '4-7-9-000';
 // Initialize globals and option settings
 function wppa_initialize_runtime($force = false) {
 global $wppa;
@@ -81,7 +81,9 @@ global $wppa_initruntimetime;
 			'is_topten'					=> false,
 			'topten_count'				=> '0',
 			'is_lasten'					=> false,
-			'lasten_count'				=> '0'
+			'lasten_count'				=> '0',
+			'start_photo'				=> '0',
+			'is_single'					=> false
 
 		);
 
@@ -199,6 +201,7 @@ global $wppa_initruntimetime;
 						'wppa_ovl_thumb_desc'				=> '',
 						'wppa_ovl_potd_name'				=> '',
 						'wppa_ovl_potd_desc'				=> '',
+						'wppa_ovl_show_counter'				=> '',
 
 						// Table III: Backgrounds
 						'wppa_bgcolor_even' 			=> '',
@@ -242,6 +245,7 @@ global $wppa_initruntimetime;
 						'wppa_slide_wrap'				=> '',	// 8
 						'wppa_fulldesc_align'			=> '',	// 9
 						'wppa_clean_pbr'				=> '',	// 10
+						'wppa_run_wppautop_on_desc'		=> '',	// 11
 						// C Thumbnail
 						'wppa_list_photos_by' 			=> '',	// 1
 						'wppa_list_photos_desc' 		=> '',	// 2
@@ -373,6 +377,7 @@ global $wppa_initruntimetime;
 						'wppa_lasten_overrule'				=> '',
 
 						'wppa_art_monkey_link'				=> '',
+						'wppa_art_monkey_popup_link'		=> '',
 						
 						// Table VII: Security
 						// B

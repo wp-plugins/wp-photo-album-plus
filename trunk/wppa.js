@@ -2,7 +2,7 @@
 //
 // conatins slideshow, theme, ajax and lightbox code
 //
-// Version 4.7.8
+// Version 4.7.9
 
 // Part 1: Slideshow
 //
@@ -1816,7 +1816,7 @@ function wppaPopDown(mocc) {	//	 return; //debug
 }
 
 // Popup of fullsize image
-function wppaFullPopUp(mocc, id, url, xwidth, xheight) {
+function wppaFullPopUp(mocc, id, url, xwidth, xheight, ajaxurl) {
 	var height = xheight+50;
 	var width  = xwidth+14;
 	var name = '';
@@ -1833,13 +1833,42 @@ function wppaFullPopUp(mocc, id, url, xwidth, xheight) {
 		wnd.document.write('<head>');	
 			wnd.document.write('<style type="text/css">body{margin:0; padding:6px; background-color:'+wppaBackgroundColorImage+'; text-align:center;}</style>');
 			wnd.document.write('<title>'+name+'</title>');
-			wnd.document.write('<script type="text/javascript">function wppa_print(){document.getElementById("wppa_printer").style.visibility="hidden"; window.print(); }</script>');
+			wnd.document.write(
+			'<script type="text/javascript">function wppa_downl(id){'+
+				'var xmlhttp = new XMLHttpRequest();'+
+				'var url = "'+ajaxurl+'?action=wppa&wppa-action=makeorigname&photo-id='+id+'&from=popup";'+
+				'xmlhttp.open("GET",url,false);'+
+				'xmlhttp.send();'+
+				'if (xmlhttp.readyState==4 && xmlhttp.status==200) {'+
+					'var result = xmlhttp.responseText.split("||");'+
+					'if (result[1] == "0") {'+
+						'window.open(result[2]);'+
+						'return true;'+
+					'}'+
+					'else {'+
+						'alert("Error: "+result[1]+" "+result[2]);'+
+						'return false;'+
+					'}'+
+				'}'+
+				'else {'+
+					'alert("Comm error encountered");'+
+					'return false;'+
+				'}'+
+			'}</script>');
+			wnd.document.write(
+			'<script type="text/javascript">function wppa_print(){'+
+				'document.getElementById("wppa_printer").style.visibility="hidden"; '+
+				'document.getElementById("wppa_download").style.visibility="hidden"; '+
+				'window.print();'+
+			'}</script>');
 		wnd.document.write('</head>');
 		wnd.document.write('<body>');
 			wnd.document.write('<div style="width:'+xwidth+'px;">');
 				wnd.document.write('<img src="'+url+'" style="padding-bottom:6px;" /><br/>');
 				wnd.document.write('<div style="text-align:center">'+desc+'</div>');
-				var left = xwidth-30;
+				var left = xwidth-66;
+				wnd.document.write('<img src="'+wppaImageDirectory+'download.png" id="wppa_download" title="Download" style="position:absolute; top:6px; left:'+left+'px; background-color:'+wppaBackgroundColorImage+'; padding: 2px; cursor:pointer;" onclick="wppa_downl();" />');
+				left = xwidth-30;
 				wnd.document.write('<img src="'+wppaImageDirectory+'printer.png" id="wppa_printer" title="Print" style="position:absolute; top:6px; left:'+left+'px; background-color:'+wppaBackgroundColorImage+'; padding: 2px; cursor:pointer;" onclick="wppa_print();" />');
 			wnd.document.write('</div>');
 		wnd.document.write('</body>');
@@ -2062,6 +2091,7 @@ var wppaOvlFontSize = '10';
 var wppaOvlFontColor = '';
 var wppaOvlFontWeight = 'bold';
 var wppaOvlLineHeight = '12';
+var wppaOvlShowCounter = true;
 
 jQuery(document).ready(function(e){
 	wppaInitOverlay();
@@ -2190,7 +2220,9 @@ _wppaLog('wppaOvlShow4', 1);
 		
 		var html = 	'<img src="'+wppaImageDirectory+'prev-'+wppaOvlTheme+'.gif" style="position:relative; top:-8px; float:left; '+vl+'; box-shadow:none;" onclick="wppaOvlShowPrev()" / >'+
 					'<img src="'+wppaImageDirectory+'next-'+wppaOvlTheme+'.gif" style="position:relative; top:-8px; float:right;'+vr+'; box-shadow:none;" onclick="wppaOvlShowNext()" / >'+
-					'<div id="wppa-overlay-txt" style="text-align:center; min-height:36px; '+ht+' overflow:hidden; box-shadow:none; width:'+(cw-80)+'px;" >'+(wppaOvlIdx+1)+'/'+wppaOvlUrls.length+'<br />'+wppaOvlTitle+'</div>';
+					'<div id="wppa-overlay-txt" style="text-align:center; min-height:36px; '+ht+' overflow:hidden; box-shadow:none; width:'+(cw-80)+'px;" >';
+					if ( wppaOvlShowCounter ) html += (wppaOvlIdx+1)+'/'+wppaOvlUrls.length+'<br />';
+					html += wppaOvlTitle+'</div>';
 		jQuery('#wppa-overlay-txt-container').html(html);
 		wppaOvlIsSingle = false;
 	}
@@ -2438,7 +2470,7 @@ function wppaAjaxMakeOrigName(mocc, id) {
 	
 	// Create the http request object
 	var xmlhttp = wppaGetXmlHttp();
-	var url = wppaAjaxUrl+'?action=wppa&wppa-action=makeorigname&photo-id='+id;
+	var url = wppaAjaxUrl+'?action=wppa&wppa-action=makeorigname&photo-id='+id+'&from=fsname';
 
 	// Issue request Synchronously!!
 	xmlhttp.open("GET",url,false);

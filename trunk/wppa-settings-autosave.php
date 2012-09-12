@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 4.7.7
+* Version 4.7.9
 *
 */
 
@@ -1062,6 +1062,14 @@ global $wppa_revno;
 							$slug = 'wppa_ovl_potd_desc';
 							$html = wppa_checkbox($slug);
 							wppa_setting($slug, '8', $name, $desc, $html, $help);
+							
+							$name = __('Overlay show counter', 'wppa');
+							$desc = __('Show the x/y counter below the image.', 'wppa');
+							$help = '';
+							$slug = 'wppa_ovl_show_counter';
+							$html = wppa_checkbox($slug);
+							wppa_setting($slug, '9', $name, $desc, $html, $help);
+							
 
 							?>
 						</tbody>
@@ -1422,6 +1430,13 @@ global $wppa_revno;
 							$slug = 'wppa_clean_pbr';
 							$html = wppa_checkbox($slug);
 							wppa_setting($slug, '10', $name, $desc, $html, $help);
+							
+							$name = __('Run wpautop on description', 'wppa');
+							$desc = __('Adds &lt;p> and &lt;br> tags in fullsize descriptions.', 'wppa');
+							$help = '';
+							$slug = 'wppa_run_wppautop_on_desc';
+							$html = wppa_checkbox($slug);
+							wppa_setting($slug, '11', $name, $desc, $html, $help);
 							
 							wppa_setting_subheader('C', '1', __('Thumbnail related settings', 'wppa'));
 
@@ -1881,7 +1896,7 @@ global $wppa_revno;
 							$wppa_subtable = 'Z';
 							
 							// Linktypes
-							$options_linktype = array(__('no link at all.', 'wppa'), __('the plain photo (file).', 'wppa'), __('the full size photo in a slideshow.', 'wppa'), __('the fullsize photo on its own.', 'wppa'), __('the fullsize photo with a print button.', 'wppa'), __('lightbox.', 'wppa'));
+							$options_linktype = array(__('no link at all.', 'wppa'), __('the plain photo (file).', 'wppa'), __('the full size photo in a slideshow.', 'wppa'), __('the fullsize photo on its own.', 'wppa'), __('the fs photo with download and print buttons.', 'wppa'), __('lightbox.', 'wppa'));
 							$values_linktype = array('none', 'file', 'photo', 'single', 'fullpopup', 'lightbox'); //, 'indiv');
 							$options_linktype_album = array(__('no link at all.', 'wppa'), __('the plain photo (file).', 'wppa'), __('the content of the album.', 'wppa'), __('the full size photo in a slideshow.', 'wppa'), __('the fullsize photo on its own.', 'wppa'), __('lightbox.', 'wppa'));
 							$values_linktype_album = array('none', 'file', 'album', 'photo', 'single', 'lightbox'); //, 'indiv');
@@ -2156,6 +2171,14 @@ global $wppa_revno;
 							$html = wppa_select($slug, $options, $values);
 							wppa_setting($slug, '12', $name, $desc, $html.'</td><td></td><td></td><td>', $help);
 							
+							$name = __('Popup Download Link', 'wppa');
+							$desc = __('Configure the download link on fullsize popups.', 'wppa');
+							$help = esc_js(__('Link fullsize popup download button to either image or zip file.', 'wppa'));
+							$slug = 'wppa_art_monkey_popup_link';
+							$options = array(__('image file', 'wppa'), __('zipped image', 'wppa'));
+							$values = array('file', 'zip');
+							$html = wppa_select($slug, $options, $values);
+							wppa_setting($slug, '12', $name, $desc, $html.'</td><td></td><td></td><td>', $help);
 							
 							?>
 						</tbody>

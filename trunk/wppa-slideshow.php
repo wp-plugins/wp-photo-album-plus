@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the slideshow high level functions
-* Version 4.7.7
+* Version 4.7.9
 *
 */
 
@@ -59,6 +59,9 @@ global $wppa_opt;
 //		wppa_dummy_bar(__('- - - Start/stop slideshow navigation bar - - -', 'wppa_theme'));
 		return;
 	}
+	
+	// A single image slideshow needs no navigation
+	if ( $wppa['is_single'] ) return;
 	
 	// we always need this for the functionality (through filmstrip etc).
 	// so if not wanted: hide it
@@ -297,6 +300,9 @@ global $wppa;
 global $wppa_opt;
 global $thumb;
 
+	// A single image slideshow needs no navigation
+	if ( $wppa['is_single'] ) return;
+
 	$do_it = false;												// Init
 	if (is_feed()) $do_it = true;								// feed -> do it to indicate that there is a slideshow
 	else {														// Not a feed
@@ -412,6 +418,9 @@ function wppa_numberbar($opt = '') {
 global $wppa;
 global $wppa_opt;
 
+	// A single image slideshow needs no navigation
+	if ( $wppa['is_single'] ) return;
+
 	if (is_feed()) { 		//don't know if it works with feeds, so switch off
 		return;
 	}
@@ -478,6 +487,9 @@ global $wppa_opt;
 function wppa_browsebar($opt = '') {
 global $wppa;
 global $wppa_opt;
+
+	// A single image slideshow needs no navigation
+	if ( $wppa['is_single'] ) return;
 
 	if (is_feed()) {
 //		wppa_dummy_bar(__('- - - Browse navigation bar - - -', 'wppa_theme'));
