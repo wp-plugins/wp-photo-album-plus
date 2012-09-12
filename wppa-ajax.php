@@ -2,7 +2,7 @@
 /* wppa-ajax.php
 *
 * Functions used in ajax requests
-* version 4.7.7
+* version 4.7.9
 *
 */
 add_action('wp_ajax_wppa', 'wppa_ajax_callback');
@@ -25,7 +25,17 @@ global $wppa;
 	switch ($wppa_action) {
 		case 'makeorigname':
 			$photo = $_REQUEST['photo-id'];
-			$type = $wppa_opt['wppa_art_monkey_link'];
+			$from = $_REQUEST['from'];
+			if ( $from == 'fsname' ) {
+				$type = $wppa_opt['wppa_art_monkey_link'];
+			}
+			elseif ( $from == 'popup' ) {
+				$type = $wppa_opt['wppa_art_monkey_popup_link'];
+			}
+			else {
+				echo '||7||'.__('Unknown source of request', 'wppa');
+				exit;
+			}
 			$data = $wpdb->get_row($wpdb->prepare("SELECT * FROM `".WPPA_PHOTOS."` WHERE `id` = %s", $photo), 'ARRAY_A');
 			if ($data) {	// The photo is supposed to exist
 				// Make the name
@@ -70,7 +80,7 @@ global $wppa;
 					copy($source, $dest);
 					$ext = $data['ext'];
 				}
-				if ( $type == 'zip' ) {
+				elseif ( $type == 'zip' ) {
 					if ( ! class_exists('ZipArchive') ) {
 						echo '||8||'.__('Unable to create zip archive', 'wppa');
 						exit;
@@ -80,6 +90,10 @@ global $wppa;
 					$wppa_zip->open($zipfile, 1);
 					$wppa_zip->addFile($source, basename($dest));
 					$wppa_zip->close();						
+				}
+				else {
+					echo '||6||'.__('Unknown type', 'wppa');
+					exit;
 				}
 				
 				$desturl = WPPA_UPLOAD_URL.'/temp/'.$name.'.'.$ext;

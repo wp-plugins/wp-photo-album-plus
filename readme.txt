@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile
-Version: 4.7.7
+Version: 4.7.9
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -158,6 +158,18 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 4.7.9 =
+
+= New Features =
+
+* Download button added to the fullsize popup with print button. Save image or zip under its original name (Art Monkey type of link).
+* New wppa display type added: slphoto. Displays a single photo in the style of a slideshow, without navigation boxes, 
+but with rating and comment as configured for slideshows.
+* If you specify both album and photo in a shortcode for a slideshow, the slideshow will start at the specified photo. 
+Works in new shortcode only as scripts do not allow the specification of both album and photo.
+* The display of the x/y counter in lightbox displays is now settable in Table II-F9
+* Added an option to run wpautop on fullsize descriptions Table IV-B11.
 
 = 4.7.8 =
 

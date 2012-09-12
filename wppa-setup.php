@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 4.7.7
+* Version 4.7.9
 *
 */
 
@@ -456,6 +456,7 @@ Hide Camera info
 						'wppa_ovl_thumb_desc'				=> 'no',
 						'wppa_ovl_potd_name'				=> 'yes',
 						'wppa_ovl_potd_desc'				=> 'no',
+						'wppa_ovl_show_counter'				=> 'yes',
 
 						// Table III: Backgrounds
 						'wppa_bgcolor_even' 			=> '#eeeeee',
@@ -499,6 +500,7 @@ Hide Camera info
 						'wppa_slide_wrap'				=> 'yes',
 						'wppa_fulldesc_align'			=> 'center',
 						'wppa_clean_pbr'				=> 'yes',
+						'wppa_run_wppautop_on_desc'		=> 'no',
 						// C Thumbnail
 						'wppa_list_photos_by' 			=> '0',
 						'wppa_list_photos_desc' 		=> 'no',
@@ -629,6 +631,7 @@ Hide Camera info
 						'wppa_lasten_overrule'				=> 'no',
 						
 						'wppa_art_monkey_link'				=> 'none',
+						'wppa_art_monkey_popup_link'		=> 'file',
 
 						
 						// Table VII: Security

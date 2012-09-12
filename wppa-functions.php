@@ -3,12 +3,12 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions and API modules
-* Version 4.7.6
+* Version 4.7.9
 *
 */
 /* Moved to wppa-common-functions.php:
 global $wppa_api_version;
-$wppa_api_version = '4-7-6-000';
+$wppa_api_version = '4-7-9-000';
 */
 
 if ( ! defined( 'ABSPATH' ) )
@@ -49,6 +49,9 @@ global $wppa_opt;
 global $wpdb;
 
 	/* See if they need us */
+		
+	if ( $wppa['is_single'] ) return;	/* A single image slideshow needs no navigation */
+
 	if ($opt == 'optional' && !$wppa_opt['wppa_show_bread']) return;	/* Nothing to do here */
 	if (wppa_page('oneofone')) return; /* Never at a single image */
 	if ($wppa['is_slideonly'] == '1') return;	/* Not when slideony */
@@ -784,8 +787,13 @@ global $wppa_opt;
 	if ( $wppa['master_occur'] == '1' ) $src = wppa_get_searchstring();
 	else $src = '';
 	
+	// Single image slideshow?
+	if ( $wppa['start_photo'] && $wppa['is_single'] ) {
+		$thumbs = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM `'.WPPA_PHOTOS.'` WHERE `id` = %s', $wppa['start_photo'] ) , 'ARRAY_A');
+	}
+	
 	// Topten?	
-	if ( $wppa['is_topten'] ) {
+	elseif ( $wppa['is_topten'] ) {
 		$max = $wppa['topten_count'];
 		$alb = $wppa['start_album'];
 		if ($alb) $thumbs = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM `'.WPPA_PHOTOS.'` WHERE `mean_rating` > 0 AND `album` = %s ORDER BY `mean_rating` DESC LIMIT %d', $alb, $max ) , 'ARRAY_A' );
@@ -1133,6 +1141,11 @@ global $wppa_opt;
 	// Make photo desc, filtered
 	if ( !$wppa['is_slideonly'] || $wppa['desc_on'] ) {
 		$desc = wppa_get_photo_desc($id);
+		
+		// Run wpautop on description?
+		if ( $wppa_opt['wppa_run_wppautop_on_desc'] ) {
+			$desc = wpautop($desc);	
+		}
 
 		// Further filtering required?
 		if ( $wppa_opt['wppa_allow_foreign_shortcodes'] ) {
@@ -1145,7 +1158,7 @@ global $wppa_opt;
 		if ( $wppa_opt['wppa_allow_foreign_shortcodes'] && $wppa_opt['wppa_clean_pbr'] ) {
 			$desc = str_replace(array("<p>", "</p>", "<br>", "<br/>", "<br />"), " ", $desc);
 		}
-		
+
 	//	if ( true ) {	// qr code? for the future...
 	//		$desc = '<img style="float:left;" src="http://api.qrserver.com/v1/create-qr-code/?data='.urlencode(wppa_get_permalink().'wppa-photo='.$photo['id'].'&wppa-occur=1').'&size=64x64&color=223311&bgcolor=E6F2D9" />'.$desc;
 	//	}
@@ -3220,6 +3233,7 @@ global $wppa_opt;
 		}
 		// A requested photo id overrules the method. $startid >0 is requested photo id, -1 means: no id requested
 		if (wppa_get_get('photo')) $startid = wppa_get_get('photo');	// Still slideshow at photo id $startid
+		else if ( $wppa['start_photo'] ) $startid = $wppa['start_photo'];
 		else $startid = -1;
 		
 		// Find album
@@ -3277,7 +3291,7 @@ global $wppa_opt;
 				$wppa['out'] .= wppa_nltab().'wppaPortraitOnly['.$wppa['master_occur'].'] = true;';
 			}
 			
-			// Start command with appropriate $startindex: -2 = at norate, -1 run from firat, >=0 still at index
+			// Start command with appropriate $startindex: -2 = at norate, -1 run from first, >=0 still at index
 			$wppa['out'] .= wppa_nltab().'wppaStartStop('.$wppa['master_occur'].', '.$startindex.');';
 		
 		$wppa['out'] .= wppa_nltab('-').'/* ]]> */';
@@ -4290,7 +4304,7 @@ $title = $photo_name;	// Patch 4.3.3
 			}
 		//	$photo_desc = esc_js(wppa_html(stripslashes(wppa_get_photo_desc($photo))));
 
-			$result['url'] = "wppaFullPopUp(".$wppa['master_occur'].", ".$photo.", '".$url."', ".$wid.", ".$hig.")";
+			$result['url'] = "wppaFullPopUp(".$wppa['master_occur'].", ".$photo.", '".$url."', ".$wid.", ".$hig.", '".admin_url('admin-ajax.php')."')";
 
 			$result['title'] = $title; //$photo_name;
 			$result['is_url'] = false;

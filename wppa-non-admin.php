@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the non admin stuff
-* Version 4.7.7
+* Version 4.7.9
 *
 */
 
@@ -106,7 +106,9 @@ global $wppa_opt;
 			echo ("\n\t\t\t".'wppaOvlTxtHeight = "auto";');
 		}
 		else {
-			echo ("\n\t\t\t".'wppaOvlTxtHeight = '.(($wppa_opt['wppa_ovl_txt_lines'] + 1) * ($wppa_opt['wppa_fontsize_lightbox'] + 2)).';');
+			if ( ! $wppa_opt['wppa_fontsize_lightbox'] ) $wppa_opt['wppa_fontsize_lightbox'] = '10';
+			$d = $wppa_opt['wppa_ovl_show_counter'] ? 1 : 0;
+			echo ("\n\t\t\t".'wppaOvlTxtHeight = '.(($wppa_opt['wppa_ovl_txt_lines'] + $d) * ($wppa_opt['wppa_fontsize_lightbox'] + 2)).';');
 		}
 		echo('
 			wppaOvlCloseTxt = "'.__($wppa_opt['wppa_ovl_close_txt']).'";
@@ -116,6 +118,10 @@ global $wppa_opt;
 			wppaOvlAnimSpeed = '.$wppa_opt['wppa_ovl_anim'].';
 			wppaVer4WindowWidth = 800;
 			wppaVer4WindowHeight = 600;');
+			if ( $wppa_opt['wppa_ovl_show_counter'] ) echo ('
+			wppaOvlShowCounter = true;');
+			else echo ('
+			wppaOvlShowCounter = false;');
 			if ( $wppa_opt['wppa_fontfamily_lightbox'] ) echo ('
 			wppaOvlFontFamily = "'.$wppa_opt['wppa_fontfamily_lightbox'].'";');
 			if ( $wppa_opt['wppa_fontsize_lightbox'] ) echo ('

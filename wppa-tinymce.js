@@ -2,7 +2,7 @@
 * Pachkage: wp-photo-album-plus
 *
 *
-* Version 4.7.6
+* Version 4.7.9
 *
 */
 
@@ -92,13 +92,13 @@
 							return;
 						}
 					}
-					if ( type != 'photo' && type != 'mphoto' && type != 'generic' )	{
+					if ( type != 'photo' && type != 'mphoto' && type != 'slphoto' && type != 'generic' )	{
 						if ( album == 0 ) {
 							alert('Sorry, you made a mistake\n\nPlease select an album\n\nPlease try again');
 							return;
 						}
 					}
-					if ( type == 'photo' || type == 'mphoto' )	{
+					if ( type == 'photo' || type == 'mphoto' || type == 'slphoto' )	{
 						if ( photo == 0 ) {
 							alert('Sorry, you made a mistake\n\nPlease select a photo\n\nPlease try again');
 							return;
@@ -110,7 +110,7 @@
 					
 					if ( type == 'generic' ) {
 					}
-					else if ( type == 'photo' || type == 'mphoto' )	{			
+					else if ( type == 'photo' || type == 'mphoto' || type == 'slphoto' )	{			
 						shortcode += ' %%'+type+'='+photo+'%%';
 					}
 					else {
@@ -142,7 +142,7 @@
 					
 					if ( type == 'generic' ) {
 					}
-					else if ( type == 'photo' || type == 'mphoto' )	{			
+					else if ( type == 'photo' || type == 'mphoto' || type == 'slphoto' )	{			
 						newShortcode += ' photo="'+photo+'"';
 					}
 					else {
@@ -192,7 +192,7 @@ function wppaGalleryTypeChange(value) {
 		jQuery('.mygallery-album').hide();
 		jQuery('.mygallery-help').show();
 	}
-	else if (value == 'photo' || value == 'mphoto') {
+	else if (value == 'photo' || value == 'mphoto' || value == 'slphoto' ) {
 		jQuery('.mygallery-photo').show();
 		jQuery('.mygallery-album').hide();
 		jQuery('.mygallery-help').hide();
@@ -214,7 +214,7 @@ function wppaTinyMceAlbumPreview(id) {
 	var count = temp.length - 1;
 	
 	if (count > 0) for (var i = 1; i <= count; i++) {
-		if ( temp[i] != '' ) html += '<img src="'+wppaThumbDirectory+temp[i]+'" style="max-width:75px; max-height:75px; margin:2px;" />';
+		if ( temp[i] != '' ) html += '<img src="'+wppaThumbDirectory+temp[i]+'" title="'+parseInt(temp[i])+'" style="max-width:75px; max-height:75px; margin:2px;" />';
 	}
 	else {
 		html = '<br /><br /><br />'+wppaNoPreview;
