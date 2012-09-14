@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile
-Version: 4.7.9
+Version: 4.7.10
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -158,6 +158,27 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 4.7.10 =
+
+= Bug Fixes =
+
+* Fixed errors in comment admin when no linkpage was selected.
+* The frontend upload dialog will now have the correct initial width in responsive themes and where size is auto.
+
+= New Features =
+
+* You can apply a watermark to an existing photo on the Album admin -> Manage photos admin screen. 
+To enable the user to select a watermark on the manage photos screen, check Table IX-D1: Watermark 
+AND - if the user has no right to change settings (See Table VII-A) - Table IX-D2: User watermark.
+* You can preview the fullsize image in a new browsertab by clicking the thumbnail on the Album admin -> Manage photos admin screen. 
+After applying a watermark, press CTRL+F5 to see the changes you made.
+
+= Other Changes =
+
+* The rule above that a watermark is selectable not only if Table IX-D2 is checked but also if the user has 
+the right to change settings (e.g. the default watermark) applies to all corresponding locations (front-end and upload/import screen).
+* When using the wp editor (Table IX-A11) the update buttons in the album admin page show a spinner while processing the update request.
 
 = 4.7.9 =
 

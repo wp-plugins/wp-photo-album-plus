@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 4.7.9
+* Version 4.7.10
 *
 */
 
@@ -2727,7 +2727,7 @@ global $wppa_revno;
 							$help = esc_js(__('The higher the number, the intenser the watermark. Value must be > 0 and <= 100.', 'wppa'));
 							$slug = 'wppa_watermark_opacity';
 							$html = wppa_input($slug, '50px', '', '%');
-							wppa_setting($slug, '5', $name, $desc, $html, $help);
+							wppa_setting($slug, '5', $name, $desc, $html, $help, $class);
 
 							wppa_setting_subheader('E', '1', __('Slideshow elements sequence order settings', 'wppa'));
 							

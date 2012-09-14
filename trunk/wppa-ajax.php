@@ -2,7 +2,7 @@
 /* wppa-ajax.php
 *
 * Functions used in ajax requests
-* version 4.7.9
+* version 4.7.10
 *
 */
 add_action('wp_ajax_wppa', 'wppa_ajax_callback');
@@ -405,6 +405,27 @@ global $wppa;
 			exit;
 			break;
 			
+		case 'watermark-photo':
+			$photo = $_REQUEST['photo-id'];
+			$nonce = $_REQUEST['wppa-nonce'];
+		
+			// Check validity
+			if ( ! wp_verify_nonce($nonce, 'wppa_nonce_'.$photo) ) {
+				echo '||1||'.__('You do not have the rights to change photos', 'wppa');
+				exit;																// Nonce check failed
+			}
+			
+			$ext = $wpdb->get_var($wpdb->prepare("SELECT `ext` FROM `".WPPA_PHOTOS."` WHERE `id` = %s", $photo));
+			
+			if ( wppa_add_watermark(WPPA_UPLOAD_PATH.'/'.$photo.'.'.$ext) ) {
+				echo '||0||'.__('Watermark applied', 'wppa');
+				exit;
+			}
+			else {
+				echo '||1||'.__('An error occured while trying to apply a watermark', 'wppa');
+				exit;
+			}
+
 		case 'update-photo':
 			$photo = $_REQUEST['photo-id'];
 			$nonce = $_REQUEST['wppa-nonce'];
@@ -414,7 +435,7 @@ global $wppa;
 			
 			// Check validity
 			if ( ! wp_verify_nonce($nonce, 'wppa_nonce_'.$photo) ) {
-				echo '||0||'.__('You do not have the rights to update photo information', 'wppa').$nonce;
+				echo '||0||'.__('You do not have the rights to update photo information', 'wppa');
 				exit;																// Nonce check failed
 			}
 			

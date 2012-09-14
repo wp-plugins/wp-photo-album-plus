@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all comments
-* Version 4.7.0
+* Version 4.7.10
 *
 */
 
@@ -184,7 +184,7 @@ global $wppa_opt;
 				<?php $wppa_comadmin_linkpage = get_option('wppa_comadmin_linkpage', '0');
 				_e('Linkpage:', 'wppa'); ?>
 				<select name="wppa_comadmin_linkpage">
-					<option value="0" <?php if ($wppa_comadmin_linkpage=='0') echo 'selected="selected"' ?>><?php _e('--- Please select a page ---', 'wppa') ?></option>
+					<option value="0" <?php if ($wppa_comadmin_linkpage=='0') echo 'selected="selected"' ?> disabled="disabled" ><?php _e('--- Please select a page ---', 'wppa') ?></option>
 					<?php
 						$query = $wpdb->prepare( "SELECT ID, post_title, post_content FROM " . $wpdb->posts . " WHERE post_type = 'page' AND post_status = 'publish' ORDER BY post_title ASC" );
 						$pages = $wpdb->get_results ($query, 'ARRAY_A');
@@ -266,12 +266,7 @@ global $wppa_opt;
 						if ($comments) {
 							foreach ($comments as $com) { ?>
 								<tr>
-									<? if ($wppa_comadmin_linkpage == '0') { ?>
-									<td style="text-align:center"><img src="<?php echo(WPPA_UPLOAD_URL.'/thumbs/'.$com['photo'].'.'.$wpdb->get_var($wpdb->prepare( "SELECT ext FROM ".WPPA_PHOTOS." WHERE id = %s", $com['photo']))) ?>" style="max-height:64px;max-width:64px;" /></td>							
-									<? } else { 
-									$url = get_page_link($wppa_comadmin_linkpage);
-									if (strpos($url, '?')) $url .= '&';
-									else $url .= '?';
+									<?php
 									$photo = $wpdb->get_row($wpdb->prepare("SELECT * FROM ".WPPA_PHOTOS." WHERE id = %s", $com['photo']), 'ARRAY_A');
 									if ($photo) {
 										$alb = $photo['album'];
@@ -283,17 +278,27 @@ global $wppa_opt;
 										$pname = '';
 										$albname = '';
 									}
-									$url .= 'wppa-album='.$alb.'&wppa-photo='.$com['photo'].'&wppa-occur=1';
 									
-									?>
-									<td style="text-align:center">
-										<a href="<? echo $url ?>" target="_blank">
-											<img title="<?php _e('Click to see the fullsize photo and all comments', 'wppa') ?>" src="<?php echo(WPPA_UPLOAD_URL.'/thumbs/'.$com['photo'].'.'.$wpdb->get_var($wpdb->prepare( "SELECT ext FROM ".WPPA_PHOTOS." WHERE id = %s", $com['photo']))) ?>" style="max-height:64px;max-width:64px;" />
-										</a>
-										<br />
-										<?php echo $albname ?>
-									</td>							
-									<? } ?>
+									if ($wppa_comadmin_linkpage == '0') { ?>
+										<td style="text-align:center">
+											<img src="<?php echo(WPPA_UPLOAD_URL.'/thumbs/'.$com['photo'].'.'.$wpdb->get_var($wpdb->prepare( "SELECT ext FROM ".WPPA_PHOTOS." WHERE id = %s", $com['photo']))) ?>" style="max-height:64px;max-width:64px;" />
+											<br />
+											<?php echo $albname ?>
+										</td><?php							
+									} 
+									else { 
+										$url = get_page_link($wppa_comadmin_linkpage);
+										if (strpos($url, '?')) $url .= '&';
+										else $url .= '?';
+										$url .= 'wppa-album='.$alb.'&wppa-photo='.$com['photo'].'&wppa-occur=1'; ?>
+										<td style="text-align:center">
+											<a href="<? echo $url ?>" target="_blank">
+												<img title="<?php _e('Click to see the fullsize photo and all comments', 'wppa') ?>" src="<?php echo(WPPA_UPLOAD_URL.'/thumbs/'.$com['photo'].'.'.$wpdb->get_var($wpdb->prepare( "SELECT ext FROM ".WPPA_PHOTOS." WHERE id = %s", $com['photo']))) ?>" style="max-height:64px;max-width:64px;" />
+											</a>
+											<br />
+											<?php echo $albname ?>
+										</td><?php							
+									} ?>
 									<td><?php echo $com['photo'] ?></td>
 									<td><?php echo $com['ip'] ?></td>
 									<td><?php echo $com['user'] ?></td>

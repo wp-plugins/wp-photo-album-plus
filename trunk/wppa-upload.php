@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the upload/import pages and functions
-* Version 4.7.0
+* Version 4.7.10
 *
 */
 
@@ -19,7 +19,7 @@ global $wppa_revno;
 	wppa_cleanup_photos();
 	wppa_sanitize_files();
 
-	if ( $wppa_opt['wppa_watermark_on'] == 'yes' && $wppa_opt['wppa_watermark_user'] == 'yes') {
+	if ( $wppa_opt['wppa_watermark_on'] == 'yes' && ( $wppa_opt['wppa_watermark_user'] == 'yes' || current_user_can('wppa_settings') ) ) {
 		if ( isset( $_POST['wppa-watermark-file'] ) ) update_option('wppa_watermark_file_'.$user, $_POST['wppa-watermark-file']);
 		if ( isset( $_POST['wppa-watermark-pos'] ) ) update_option('wppa_watermark_pos_'.$user, $_POST['wppa-watermark-pos']);
 	}
@@ -146,7 +146,7 @@ global $wppa_revno;
 							<?php echo(wppa_album_select('', '', false, false, false, false, false, true)); ?>
 						</select>
 					</p>
-					<?php if ( $wppa_opt['wppa_watermark_on'] == 'yes' && $wppa_opt['wppa_watermark_user'] == 'yes' ) { ?>		
+					<?php if ( $wppa_opt['wppa_watermark_on'] == 'yes' && ( $wppa_opt['wppa_watermark_user'] == 'yes' || current_user_can('wppa_settings') ) ) { ?>		
 						<p>		
 							<?php _e('Apply watermark file:', 'wppa') ?>
 							<select name="wppa-watermark-file" id="wppa-watermark-file">
@@ -182,7 +182,7 @@ global $wppa_revno;
 							<?php echo(wppa_album_select('', '', false, false, false, false, false, true)); ?>
 						</select>
 					</p>
-					<?php if ( $wppa_opt['wppa_watermark_on'] == 'yes' && $wppa_opt['wppa_watermark_user'] == 'yes' ) { ?>		
+					<?php if ( $wppa_opt['wppa_watermark_on'] == 'yes' && ( $wppa_opt['wppa_watermark_user'] == 'yes' || current_user_can('wppa_settings') ) ) { ?>		
 						<p>		
 							<?php _e('Apply watermark file:', 'wppa') ?>
 							<select name="wppa-watermark-file" id="wppa-watermark-file">
@@ -248,7 +248,7 @@ global $wppa_revno;
 	$count = wppa_sanitize_files();
 	if ($count) wppa_error_message($count.' '.__('illegal files deleted.', 'wppa'));
 
-	if ( $wppa_opt['wppa_watermark_on'] == 'yes' && $wppa_opt['wppa_watermark_user'] == 'yes' ) {
+	if ( $wppa_opt['wppa_watermark_on'] == 'yes' && ( $wppa_opt['wppa_watermark_user'] == 'yes' || current_user_can('wppa_settings') ) ) {
 		if ( isset( $_POST['wppa-watermark-file'] ) ) update_option('wppa_watermark_file_'.$user, $_POST['wppa-watermark-file']);
 		if ( isset( $_POST['wppa-watermark-pos'] ) ) update_option('wppa_watermark_pos_'.$user, $_POST['wppa-watermark-pos']);
 	}
@@ -416,7 +416,7 @@ global $wppa_revno;
 				</select>
 				<?php _e('Photos that have (<em>name</em>)[<em>album</em>] will be imported by that <em>name</em> in that <em>album</em>.', 'wppa') ?>
 			</p>
-	<?php if ( $wppa_opt['wppa_watermark_on'] == 'yes' && $wppa_opt['wppa_watermark_user'] == 'yes' ) { ?>
+	<?php if ( $wppa_opt['wppa_watermark_on'] == 'yes' && ( $wppa_opt['wppa_watermark_user'] == 'yes' || current_user_can('wppa_settings') ) ) { ?>
 			<p>
 				<?php _e('Apply watermark file:', 'wppa') ?>
 				<select name="wppa-watermark-file" id="wppa-watermark-file">
