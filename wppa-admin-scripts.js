@@ -1,7 +1,7 @@
 /* admin-scripts.js */
 /* Package: wp-photo-album-plus
 /*
-/* Version 4.7.4
+/* Version 4.7.10
 /* Various js routines used in admin pages		
 */
 
@@ -670,9 +670,50 @@ function wppaAjaxDeletePhoto(photo) {
 	}
 }
 
+function wppaAjaxApplyWatermark(photo, file, pos) {
+
+	var xmlhttp = wppaGetXmlHttp();
+
+	// Show spinner
+	jQuery('#wppa-water-spin-'+photo).css({visibility:'visible'});
+	
+	// Make the Ajax send data
+	var data = 'action=wppa&wppa-action=watermark-photo&photo-id='+photo;
+	data += '&wppa-nonce='+document.getElementById('photo-nonce-'+photo).value;
+	if (file) data += '&wppa-watermark-file='+file;
+	if (pos) data += '&wppa-watermark-pos='+pos;
+
+	// Do the Ajax action
+	xmlhttp.open('POST',wppaAjaxUrl,true);
+	xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+	xmlhttp.send(data);
+
+	// Process the result
+	xmlhttp.onreadystatechange=function() {
+		if (xmlhttp.readyState == 4 && xmlhttp.status != 404) {
+			var ArrValues = xmlhttp.responseText.split("||");
+			if (ArrValues[0] != '') {
+				alert('The server returned unexpected output:\n'+ArrValues[0]);
+			}
+			switch (ArrValues[1]) {
+				case '0':		// No error
+					document.getElementById('photostatus-'+photo).innerHTML = ArrValues[2];
+					break;
+				default:
+					document.getElementById('photostatus-'+photo).innerHTML = '<span style="color:red">'+ArrValues[2]+'</span>';
+			}
+			// Hide spinner
+			jQuery('#wppa-water-spin-'+photo).css({visibility:'hidden'});
+		}
+	}
+}
+
 function wppaAjaxUpdatePhoto(photo, actionslug, elem) {
 
 	var xmlhttp = wppaGetXmlHttp();
+
+	// Show spinner
+	if ( actionslug == 'description' ) jQuery('#wppa-photo-spin-'+photo).css({visibility:'visible'});
 
 	// Make the Ajax send data
 	var data = 'action=wppa&wppa-action=update-photo&photo-id='+photo+'&item='+actionslug;
@@ -714,6 +755,8 @@ function wppaAjaxUpdatePhoto(photo, actionslug, elem) {
 						document.getElementById('photostatus-'+photo).innerHTML = '<span style="color:red">'+ArrValues[2]+' ('+ArrValues[1]+')</span>';
 						break;
 				}
+				// Hide spinner
+				if ( actionslug == 'description' ) jQuery('#wppa-photo-spin-'+photo).css({visibility:'hidden'});
 			}
 		}
 	}
@@ -723,6 +766,9 @@ function wppaAjaxUpdateAlbum(album, actionslug, elem) {
 
 	var xmlhttp = wppaGetXmlHttp();
 
+	// Show spinner
+	if ( actionslug == 'description' ) jQuery('#wppa-album-spin').css({visibility:'visible'});
+	
 	// Make the Ajax send data
 	var data = 'action=wppa&wppa-action=update-album&album-id='+album+'&item='+actionslug;
 	data += '&wppa-nonce='+document.getElementById('album-nonce-'+album).value;
@@ -764,6 +810,8 @@ function wppaAjaxUpdateAlbum(album, actionslug, elem) {
 						document.getElementById('albumstatus-'+album).innerHTML = '<span style="color:red">'+ArrValues[2]+' ('+ArrValues[1]+')</span>';
 						break;
 				}
+				// Hide spinner
+				if ( actionslug == 'description' ) jQuery('#wppa-album-spin').css({visibility:'hidden'});
 			}
 		}
 	}

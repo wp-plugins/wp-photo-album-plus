@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * create, edit and delete albums
-* version 4.7.4
+* version 4.7.10
 *
 */
 
@@ -102,6 +102,7 @@ function _wppa_admin() {
 										?>
 									
 										<input type="button" class="button-secundary" style="float:left; border-radius:8px; font-size: 12px; height: 16px; margin: 0 4px; padding: 0px;" value="<?php _e('Update Album description', 'wppa') ?>" onclick="wppaAjaxUpdateAlbum(<?php echo $edit_id ?>, 'description', document.getElementById('wppaalbumdesc') )" />
+										<img id="wppa-album-spin" src="<?php echo wppa_get_imgdir().'wpspin.gif' ?>" style="visibility:hidden" />
 										<br />
 									</td>
 								<?php }
@@ -685,6 +686,15 @@ function wppa_album_photos($id) {
 		echo '<p>'.__('No photos yet in this album.', 'wppa').'</p>';
 	} 
 	else { 
+		$wms = array( 'toplft' => __('top - left', 'wppa'), 'topcen' => __('top - center', 'wppa'), 'toprht' => __('top - right', 'wppa'), 
+					  'cenlft' => __('center - left', 'wppa'), 'cencen' => __('center - center', 'wppa'), 'cenrht' => __('center - right', 'wppa'), 
+					  'botlft' => __('bottom - left', 'wppa'), 'botcen' => __('bottom - center', 'wppa'), 'botrht' => __('bottom - right', 'wppa'), );
+		$temp = wppa_get_water_file_and_pos();
+		$wmfile = $temp['file'];
+		$wmpos = $wms[$temp['pos']];
+	echo 'file='.$wmfile;
+	echo 'pos='.$wmpos;
+		
 		foreach ($photos as $photo) { ?>
 
 			<div class="photoitem" id="photoitem-<?php echo $photo['id'] ?>" style="width:100%;<?php echo $bgcol ?>" >
@@ -711,8 +721,11 @@ function wppa_album_photos($id) {
 									</span>
 								</th>
 								<td style="text-align:center;">
-									<?php $src = WPPA_UPLOAD_URL.'/thumbs/' . $photo['id'] . '.' . $photo['ext']; ?> 
-									<img src="<?php echo($src) ?>" alt="<?php echo($photo['name']) ?>" style="max-width: 160px;" />
+									<?php $src = WPPA_UPLOAD_URL.'/thumbs/' . $photo['id'] . '.' . $photo['ext']; ?>
+									<?php $big = WPPA_UPLOAD_URL.'/' . $photo['id'] . '.' . $photo['ext']; ?>
+									<a href="<?php echo $big ?>" target="_blank" title="<?php _e('Preview fullsize photo', 'wppa') ?>" >
+										<img src="<?php echo($src) ?>" alt="<?php echo($photo['name']) ?>" style="max-width: 160px;" />
+									</a>
 								</td>	
 							</tr>
 							<!-- Upload -->
@@ -823,7 +836,7 @@ function wppa_album_photos($id) {
 								</th>
 								<td>
 									<input type="text" style="width:100%;" id="pname-<?php echo $photo['id'] ?>" onchange="wppaAjaxUpdatePhoto(<?php echo $photo['id'] ?>, 'name', this); wppaPhotoStatusChange(<?php echo $photo['id'] ?>); " value="<?php echo(stripslashes($photo['name'])) ?>" />
-									<span class="description"><br/><?php _e('Type/alter the name of the photo. It is NOT a filename and needs no file extension like .jpg.', 'wppa'); ?></span>
+									<span class="description"><br/><?php _e('Type/alter the name of the photo. <small>It is NOT a filename and needs no file extension like .jpg.</small>', 'wppa'); ?></span>
 								</td>
 							</tr>
 
@@ -841,6 +854,7 @@ function wppa_album_photos($id) {
 									?>
 									
 									<input type="button" class="button-secundary" style="float:left; border-radius:8px; font-size: 12px; height: 16px; margin: 0 4px; padding: 0px;" value="<?php _e('Update Photo description', 'wppa') ?>" onclick="wppaAjaxUpdatePhoto(<?php echo $photo['id'] ?>, 'description', document.getElementById('wppaphotodesc'+'<?php echo $alfaid ?>') )" />
+									<img id="wppa-photo-spin-<?php echo $photo['id'] ?>" src="<?php echo wppa_get_imgdir().'wpspin.gif' ?>" style="visibility:hidden" />
 								</td>
 								<?php }
 								else { ?>
@@ -862,6 +876,40 @@ function wppa_album_photos($id) {
 									</select>
 									<span id="psdesc-<?php echo $photo['id'] ?>" class="description" style="display:none;" ><?php _e('Note: Featured photos should have a descriptive name; a name a search engine will look for!', 'wppa'); ?></span>
 
+								</td>
+							</tr>
+							<!-- Watermark -->
+							<tr style="vertical-align:bottom;" >
+								<th scope="row" >
+									<label ><?php _e('Watermark:', 'wppa') ?></label>
+								</th>
+								<td>
+									<?php 
+									if ( get_option('wppa_watermark_on') == 'yes' ) { 
+										if ( get_option('wppa_watermark_user') == 'yes' ) {	
+											echo __('File:','wppa').' ' ?>
+											<select id="wmfsel_<?php echo $photo['id']?>">
+											<?php echo wppa_watermark_file_select() ?>
+											</select>
+											<?php
+											echo __('Pos:', 'wppa').' ' ?>
+											<select id="wmpsel_<?php echo $photo['id']?>">
+											<?php echo wppa_watermark_pos_select() ?>
+											</select> 
+											<input type="button" class="button-secundary" style="border-radius:8px; font-size: 12px; height: 16px; margin: 0 4px; padding: 0px;" value="<?php _e('Apply watermark', 'wppa') ?>" onclick="if (confirm('<?php _e('Are you sure?\n\nOnce applied it can not be removed!\nAnd I do not know if there is already a watermark on this photo', 'wppa') ?>')) wppaAjaxApplyWatermark(<?php echo $photo['id'] ?>, document.getElementById('wmfsel_<?php echo $photo['id']?>').value, document.getElementById('wmpsel_<?php echo $photo['id']?>').value)" />
+											<?php
+										}
+										else {
+											echo __('File:','wppa').' '.$wmfile.' '.__('Pos:', 'wppa').' '.$wmpos; ?>
+											<input type="button" class="button-secundary" style="border-radius:8px; font-size: 12px; height: 16px; margin: 0 4px; padding: 0px;" value="<?php _e('Apply watermark', 'wppa') ?>" onclick="if (confirm('<?php _e('Are you sure?\n\nOnce applied it can not be removed!\nAnd I do not know if there is already a watermark on this photo', 'wppa') ?>')) wppaAjaxApplyWatermark(<?php echo $photo['id'] ?>, '', '')" />
+											<?php
+										} ?>
+										<img id="wppa-water-spin-<?php echo $photo['id'] ?>" src="<?php echo wppa_get_imgdir().'wpspin.gif' ?>" style="visibility:hidden" /><?php
+									}
+									else { 
+										_e('Not configured', 'wppa');
+									} 
+									?>
 								</td>
 							</tr>
 							<!-- Remark -->
