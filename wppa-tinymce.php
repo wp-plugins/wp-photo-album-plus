@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 *
-* Version 4.7.9
+* Version 4.7.11
 *
 */
 
@@ -18,8 +18,8 @@ class wppaGallery
 	 
 	function action_admin_init() {
 		// only hook up these filters if we're in the admin panel, and the current user has permission
-		// to edit posts and pages
-		if ( current_user_can( 'edit_posts' ) && current_user_can( 'edit_pages' ) ) {
+		// to edit posts or pages
+		if ( current_user_can( 'edit_posts' ) || current_user_can( 'edit_pages' ) ) {
 			if (!is_plugin_active('ultimate-tinymce/main.php')) {
 				add_filter( 'mce_buttons', array( $this, 'filter_mce_button' ) );
 			}

@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile
-Version: 4.7.10
+Version: 4.7.11
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -148,8 +148,8 @@ Modern cameras produce photos of 7 megapixels or even more. To downsize the phot
 even a thumbnail image, the server has to create internally a fullsize fullcolor image of the photo you are uploading/importing.
 This will require one byte of memory for each color (Red, Green, Blue) and for every pixel. 
 So, apart form the memory required for the server's program and the resized image, you will need 21 MB (or even more) of memory just for the intermediate image.
-As most hosting providers do not allow you more than 32 MB, you will get 'Out of memory' errormessages when you try to upload large pictures.
-You can configure WP to use 64 MB (That would be enough in most cases) by specifying *define('WP_MEMORY_LIMIT', '64M');* in wp-config.php, 
+As most hosting providers do not allow you more than 64 MB, you will get 'Out of memory' errormessages when you try to upload large pictures.
+You can configure WP to use 128 MB (That would be enough in most cases) by specifying *define('WP_MEMORY_LIMIT', '128M');* in wp-config.php, 
 but, as explained earlier, this does not help when your hosting provider does not allows the use of that much memory.
 If you have control over the server yourself: configure it to allow the use of enough memory.
 Oh, just Google on 'picture resizer' and you will find a bunch of free programs that will easily perform the resizing task for you.
@@ -158,6 +158,21 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 4.7.11 =
+
+= Bug Fixes =
+
+* All users that can edit posts or edit pages will have the wppa+ album shortcode button above the visual editor.
+
+= New Features =
+
+* Network administrators can decide to run wppa+ in single site mode. Add to wp-config.php: define ('WPPA_MULTISITE_GLOBAL', true); Do not apply in existing installations!
+
+= Other Changes =
+
+* Improved check on sufficient memory during upload. Also added messages on what the max uploadeable photo pixelsize is. You should no longer get crashes due to out of memory errors.
+* Added Turkish translation frontend.
 
 = 4.7.10 =
 

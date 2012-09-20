@@ -3,12 +3,12 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions and API modules
-* Version 4.7.10
+* Version 4.7.11
 *
 */
 /* Moved to wppa-common-functions.php:
 global $wppa_api_version;
-$wppa_api_version = '4-7-10-000';
+$wppa_api_version = '4-7-11-000';
 */
 
 if ( ! defined( 'ABSPATH' ) )
@@ -4565,6 +4565,10 @@ global $wppa_opt;
 			$max = ini_get('max_file_uploads');
 			if ( $max && $allow > '0' && $allow < $max ) $max = $allow;
 			if ( $max ) $wppa['out'] .= wppa_nltab().'<br /><span style="font-size:10px;" >'.sprintf(__a('You may upload up to %s photos at once if your browser supports HTML-5 multiple file upload', 'wppa_theme'), $max).'</span>';
+			$maxsize = wppa_check_memory_limit(false);
+			if ( is_array($maxsize) ) {
+				$wppa['out'] .= wppa_nltab().'<br /><span style="font-size:10px;" >'.sprintf(__a('Max photo size: %d x %d (%2.1f MegaPixel)', 'wppa_theme'), $maxsize['maxx'], $maxsize['maxy'], $maxsize['maxp']/(1024*1024) ).'</span>';
+			}
 			if ( $wppa_opt['wppa_copyright_on'] ) {
 				$wppa['out'] .= wppa_nltab().'<div id="wppa-copyright-'.$wppa['master_occur'].'" style="clear:both;" >'.__($wppa_opt['wppa_copyright_notice']).'</div>';
 			}
@@ -4681,8 +4685,16 @@ global $wppa_opt;
 		return false;
 	}
 	if ( $imgsize[2] < 1 || $imgsize[2] > 3 ) {
-		wppa_err_alert(__a(sprintf('Only gif, jpg and png image files are supported. Returned filetype = %d.', $imagesize[2]), 'wppa_theme'));
+		wppa_err_alert(sprintf(__a('Only gif, jpg and png image files are supported. Returned filetype = %d.', 'wppa_theme'), $imagesize[2]));
 		return false;
+	}
+	$mayupload = wppa_check_memory_limit('', $imgsize[0], $imgsize[1]);
+	if ( $mayupload === false ) {
+		$maxsize = wppa_check_memory_limit(false);
+		if ( is_array($maxsize) ) {	
+			wppa_err_alert(sprintf(__a('The image is too big. Max photo size: %d x %d (%2.1f MegaPixel)', 'wppa_theme'), $maxsize['maxx'], $maxsize['maxy'], $maxsize['maxp']/(1024*1024) ));
+			return false;
+		}
 	}
 	switch($imgsize[2]) { 	// mime type
 		case 1: $ext = 'gif'; break;
