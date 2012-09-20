@@ -2,11 +2,11 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 4.7.10
+* version 4.7.11
 *
 */
 global $wppa_api_version;
-$wppa_api_version = '4-7-10-000';
+$wppa_api_version = '4-7-11-000';
 // Initialize globals and option settings
 function wppa_initialize_runtime($force = false) {
 global $wppa;
@@ -478,7 +478,7 @@ global $wppa_initruntimetime;
 	wppa_load_language();
 	
 	if ( ! defined( 'WPPA_UPLOAD') ) {
-		if ( is_multisite() ) {
+		if ( is_multisite() && ! WPPA_MULTISITE_GLOBAL ) {
 			define( 'WPPA_UPLOAD', 'wp-content/blogs.dir/'.$blog_id);
 			define( 'WPPA_UPLOAD_PATH', ABSPATH.WPPA_UPLOAD.'/wppa');
 			define( 'WPPA_UPLOAD_URL', get_bloginfo('wpurl').'/'.WPPA_UPLOAD.'/wppa');
@@ -1793,4 +1793,81 @@ function wppa_is_enum($str) {
 
 function wppa_alfa_id($id = '0') {
 	return str_replace( array('1', '2', '3', '4', '5', '6', '7', '8', '9', '0'), array('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'), $id );
+}
+
+// Thanx to the maker of nextgen, but greatly improved
+// Usage: wppa_check_memory_limit() return string telling the max upload size
+// @1: if false, return array ( 'maxx', 'maxy', 'maxp' )
+// @2: width to test an image,
+// @3: height to test an image.
+// If both present: return true if fit in memory, false if not.
+//
+//
+function wppa_check_memory_limit($verbose = true, $x = '0', $y = '0') {
+
+	if ( (function_exists('memory_get_usage')) && (ini_get('memory_limit')) ) {
+		
+		// get memory limit
+		
+		$memory_limit = 0;
+		$memory_ini = ini_get('memory_limit');
+		if ( strstr($memory_ini, 'M') ) $memory_limit = substr($memory_ini, 0, -1) * 1024 * 1024;
+			
+		$memory_cfg = get_cfg_var('memory_limit');
+		if ( strstr($memory_cfg, 'M') ) {
+			$memory_cfg = substr($memory_cfg, 0, -1) * 1024 * 1024;
+			if ($memory_cfg < $memory_limit) $memory_limit = $memory_cfg;
+		}
+		
+		if ( ! $memory_limit ) return '';
+		
+		// Calculate the free memory 	
+		$free_memory = $memory_limit - memory_get_usage(true);
+		
+		// Ofsset: 4 bytes per pixel resized image 
+		if ( get_option('wppa_resize_on_upload') == 'yes' ) {
+			$t = get_option('wppa_resize_to');
+			if ( $t == '0') {
+				$to['0'] = get_option('wppa_fullsize');
+				$to['1'] = get_option('wppa_maxheight');
+			}
+			else {
+				$to = explode('x', $t);
+			}
+			$offset = 4 * $to['0'] * $to['1'];
+		}
+		else $offset = '0';
+		
+		$offset += 1024 * 512;	// Pragma: + 0.5 Mb
+		
+		// Correction factor
+		$factor = '1.30';	// add 30% margin for overhead and safety
+		
+		// Calculate max size
+		$mbsforimage = $free_memory - $offset * $factor;	// Substract offset
+		
+		$maxpixels = $mbsforimage / 4;
+		$maxpixels = $maxpixels / $factor;
+		
+		if ( $x && $y ) { 	// Request for check an image
+			if ( $x * $y <= $maxpixels ) $result = true;
+			else $result = false;
+		}
+		else {	// Request for tel me what is the limit
+			$maxx = sqrt($maxpixels / 12) * 4;
+			$maxy = sqrt($maxpixels / 12) * 3;
+			if ( $verbose ) {
+				$result = '<br />'.sprintf(  __( 'Based on your server memory limit you should not upload images larger then <strong>%d x %d (%2.1f MP)</strong>', 'wppa' ), $maxx, $maxy, $maxpixels / (1024 * 1024));
+			}
+			else {
+				$result['maxx'] = $maxx;
+				$result['maxy'] = $maxy;
+				$result['maxp'] = $maxpixels;
+			}
+		}
+	}
+	else {
+		$result = '';
+	}
+	return $result;
 }

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the upload/import pages and functions
-* Version 4.7.10
+* Version 4.7.11
 *
 */
 
@@ -81,6 +81,7 @@ global $wppa_revno;
 			<?php echo(sprintf(__('<b>Notice:</b> your server allows you to upload <b>%s</b> files of maximum total <b>%s</b> bytes and allows <b>%s</b> seconds to complete.', 'wppa'), $max_files_txt, $max_size, $max_time)) ?>
 			<?php _e('If your request exceeds these limitations, it will fail, probably without an errormessage.', 'wppa') ?>
 			<?php _e('Additionally your hosting provider may have set other limitations on uploading files.', 'wppa') ?>
+			<?php echo '<br />'.wppa_check_memory_limit() ?>
 			</div>
 			<?php /* Multple photos */ ?>
 			<div style="border:1px solid #ccc; padding:10px; margin-bottom:10px; width: 600px;">
@@ -768,7 +769,6 @@ global $warning_given;
 function wppa_insert_photo ($file = '', $album = '', $name = '', $desc = '', $porder = '0', $id = '0', $linkurl = '', $linktitle = '') {
 	global $wpdb;
 	global $warning_given_small;
-	global $warning_given_big;
 	global $wppa_opt;
 	
 	if ( ! wppa_allow_uploads($album) ) {
@@ -783,14 +783,9 @@ function wppa_insert_photo ($file = '', $album = '', $name = '', $desc = '', $po
 		$img_size = getimagesize($file);
 		
 		if ($img_size) { 
-			if (!$warning_given_big && ($img_size['0'] > 1280 || $img_size['1'] > 1280)) {
-				if ( $wppa_opt['wppa_resize_on_upload'] == 'yes' ) {
-					wppa_ok_message(__('Although the photos are resized during the upload/import process, you may encounter \'Out of memory\'errors.', 'wppa') . '<br/>' . __('In that case: make sure you set the memory limit to 64M and make sure your hosting provider allows you the use of 64 Mb.', 'wppa'));
-				}
-				else {
-					wppa_warning_message(__('WARNING: You are uploading very large photos, this may result in server problems and excessive download times for your website visitors.', 'wppa') . '<br/>' . __('Check the \'Resize on upload\' checkbox, and/or resize the photos before uploading. The recommended size is: not larger than 1024 x 768 pixels (up to approx. 250 kB).', 'wppa'));
-				}
-				$warning_given_big = true;
+			if ( wppa_check_memory_limit('', $img_size['0'], $img_size['1'] ) === false ) { 
+				wppa_error_message(sprintf(__('ERROR: Attempt to upload a photo that is too large to process (%s).', 'wppa'), $name).wppa_check_memory_limit());
+				return false;
 			}
 			if (!$warning_given_small && ($img_size['0'] < wppa_get_minisize() && $img_size['1'] < wppa_get_minisize())) {
 				wppa_warning_message(__('WARNING: You are uploading photos that are too small. Photos must be larger than the thumbnail size and larger than the coverphotosize.', 'wppa'));

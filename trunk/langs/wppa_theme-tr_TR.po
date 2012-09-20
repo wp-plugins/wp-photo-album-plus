@@ -5,357 +5,350 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: WP Photo Album Plus in italiano\n"
+"Project-Id-Version: wppa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-09-17 15:43+0100\n"
-"PO-Revision-Date: 2012-09-17 15:43+0100\n"
+"POT-Creation-Date: 2012-09-20 14:35+0100\n"
+"PO-Revision-Date: 2012-09-20 14:36+0100\n"
 "Last-Translator: J.N. Breetvelt <OpaJaap@OpaJaap.nl>\n"
-"Language-Team: Gianni Diurno | gidibao.net & charmingpress.com\n"
-"Language: it_IT\n"
+"Language-Team: OpaJaap <OpaJaap@OpaJaap.nl>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-KeywordsList: __a\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-SourceCharset: utf-8\n"
+"X-Generator: Poedit 1.5.3\n"
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPath-1: theme\n"
 
 #: wppa-adminbar.php:40
 msgid "Album Admin"
-msgstr ""
+msgstr "Albüm Yöneticisi"
 
 #: wppa-adminbar.php:47
-#, fuzzy
 msgid "Upload Photos"
-msgstr "Upload foto"
+msgstr "Fotoğraf Yükle"
 
 #: wppa-adminbar.php:54
-#, fuzzy
 msgid "Import Photos"
-msgstr "Upload foto"
+msgstr "Fotoğrafları İçe Aktar"
 
 #: wppa-adminbar.php:61
-#, fuzzy
 msgid "Export Photos"
-msgstr "Upload foto"
+msgstr "Fotoğrafları Dışa Aktar"
 
 #: wppa-adminbar.php:68
 msgid "Settings"
-msgstr ""
+msgstr "Ayarlar"
 
 #: wppa-adminbar.php:75
-#, fuzzy
 msgid "Photo of the day"
-msgstr "Foto del Giorno"
+msgstr "Günün Fotoğrafı"
 
 #: wppa-adminbar.php:82
-#, fuzzy
 msgid "Comments"
-msgstr "%d  kommentarer"
+msgstr "Yorumlar"
 
 #: wppa-adminbar.php:89
 msgid "Help & Info"
-msgstr ""
+msgstr "Yardım ve Bilgi"
 
 #: wppa-adminbar.php:96
 msgid "Docs & Demos"
-msgstr ""
+msgstr "Dokümanlar ve Demolar"
 
 #: wppa-adminbar.php:105
 msgid "Photo Albums"
-msgstr ""
+msgstr "Fotoğraf Albümleri"
 
 #: wppa-comment-widget.php:78 wppa-lasten-widget.php:87
 #: wppa-potd-widget.php:71 wppa-thumbnail-widget.php:92
 #: wppa-topten-widget.php:85
 msgid "Photo not found."
-msgstr "Billede ikke fundet"
+msgstr "Fotoğraf bulunamadı."
 
 #: wppa-common-functions.php:691
 #, php-format
 msgid "Rating: %s"
-msgstr "Bedømmelse: %s"
+msgstr "Puan: %s"
 
 #: wppa-common-functions.php:756
 msgid "--- none ---"
-msgstr "--- ingen ---"
+msgstr "--- boş ---"
 
 #: wppa-common-functions.php:757
 msgid "--- separate ---"
-msgstr "--- separat ---"
+msgstr "--- ayrı ---"
 
 #: wppa-common-functions.php:868
 msgid "1 second"
-msgstr "1 sekund"
+msgstr "1 saniye"
 
 #: wppa-common-functions.php:869 wppa-functions.php:5165
 msgid "seconds"
-msgstr "sekunder"
+msgstr "saniye"
 
 #: wppa-common-functions.php:873
 msgid "1 minute"
-msgstr "1 minut"
+msgstr "1 dakika"
 
 #: wppa-common-functions.php:874 wppa-functions.php:5164
 msgid "minutes"
-msgstr "minutter"
+msgstr "dakika"
 
 #: wppa-common-functions.php:878
 msgid "1 hour"
-msgstr "1 time"
+msgstr "1 saat"
 
 #: wppa-common-functions.php:879 wppa-functions.php:5163
 msgid "hours"
-msgstr "timer"
+msgstr "saat"
 
 #: wppa-common-functions.php:883
 msgid "1 day"
-msgstr "1 dag"
+msgstr "1 gün"
 
 #: wppa-common-functions.php:884 wppa-functions.php:5162
 msgid "days"
-msgstr "dage"
+msgstr "gün"
 
 #: wppa-common-functions.php:888
 msgid "1 week"
-msgstr "1 uge"
+msgstr "1 hafta"
 
 #: wppa-common-functions.php:889 wppa-functions.php:5161
 msgid "weeks"
-msgstr "uger"
+msgstr "hafta"
 
 #: wppa-common-functions.php:893
 msgid "1 month"
-msgstr "1 måned"
+msgstr "1 ay"
 
 #: wppa-common-functions.php:894
 msgid "months"
-msgstr "måneder"
+msgstr "ay"
 
 #: wppa-common-functions.php:897
 msgid "1 year"
-msgstr "1 år"
+msgstr "1 yıl"
 
 #: wppa-common-functions.php:898
 msgid "years"
-msgstr "år"
+msgstr "yıl"
 
 #: wppa-functions.php:32
 msgid "There are"
-msgstr "Der er"
+msgstr "Burada"
 
 #: wppa-functions.php:32
 msgid "photo albums. The last album added is"
-msgstr "fotoalbum. Det senest tilføjede album er"
+msgstr "fotoğraf albümü vardır. Son eklenen albüm: "
 
 #: wppa-functions.php:36
 msgid ", a subalbum of"
-msgstr ", et underalbum til"
+msgstr "; ana albümü: "
 
 #: wppa-functions.php:97
 msgid "Home"
-msgstr "Hjem"
+msgstr "Anasayfa"
 
 #: wppa-functions.php:143 wppa-functions.php:2852 wppa-non-admin.php:176
 msgid "Slideshow"
-msgstr "Slideshow"
+msgstr "Slayt Gösterisi"
 
 #: wppa-functions.php:151
 msgid "Searchstring:"
-msgstr "Søgestreng:"
+msgstr "Arama Dizesi:"
 
 #: wppa-functions.php:154
 msgid "Top rated photos"
-msgstr "Top fotos"
+msgstr "En yüksek puan alan fotoğraflar"
 
 #: wppa-functions.php:157
-#, fuzzy
 msgid "Recently uploaded photos"
-msgstr "Nyligt kommenterede fotos"
+msgstr "En son yüklenen fotoğraflar"
 
 #: wppa-functions.php:160
 msgid "Recently commented photos"
-msgstr "Nyligt kommenterede fotos"
+msgstr "En son yorum yapılan fotoğraflar"
 
 #: wppa-functions.php:1172 wppa-functions.php:1496 wppa-functions.php:3016
 #: wppa-functions.php:3156
 msgid "Awaiting moderation"
-msgstr ""
+msgstr "Yönetici onayı bekliyor"
 
 #: wppa-functions.php:1213
 msgid "<b>ERROR: Attempt to enter an invalid rating.</b>"
-msgstr "<b>FEJL: Forsøg på at skrive en ugyldig bedømmelse.</b>"
+msgstr "<b>HATA: Geçersiz puanlama girişimi.</b>"
 
 #: wppa-functions.php:1369
 msgid "Comment edited"
-msgstr "Kommentarer redigeret"
+msgstr "Yorum düzenlendi"
 
 #: wppa-functions.php:1376
 msgid "Comment added"
-msgstr "Kommentarer tilføjet"
+msgstr "Yorum eklendi"
 
 #: wppa-functions.php:1380
 msgid ""
 "Sorry, you gave a wrong answer.\\n\\nPlease try again to solve the "
 "computation."
 msgstr ""
+"Üzgünüz, cevabınız doğru değil.\\n\\nLütfen hesaplamayı tekrar deneyin."
 
 #: wppa-functions.php:1390
-#, fuzzy
 msgid "Could not process comment.\\nProbably timed out."
-msgstr "Kommentar kunne ikke bearbejdes"
+msgstr "Yorum işlenemedi.\\nYüksek olasılıkla zaman aşımına uğradı."
 
 #: wppa-functions.php:1471
 msgid "wrote:"
-msgstr "skrev:"
+msgstr "dedi ki:"
 
 #: wppa-functions.php:1499
 msgid "Marked as spam"
-msgstr ""
+msgstr "Spam olarak işaretlendi"
 
 #: wppa-functions.php:1514
 msgid "Edit!"
-msgstr "Rediger!"
+msgstr "Düzenle!"
 
 #: wppa-functions.php:1518
 msgid "Send!"
-msgstr "Send"
+msgstr "Gönder!"
 
 #: wppa-functions.php:1547
 msgid "Your name:"
-msgstr "Dit navn"
+msgstr "İsminiz:"
 
 #: wppa-functions.php:1552
 msgid "Your email:"
-msgstr "Din email"
+msgstr "E-posta Adresiniz:"
 
 #: wppa-functions.php:1557
 msgid "Your comment:"
-msgstr "Din kommentar"
+msgstr "Yorumunuz:"
 
 #: wppa-functions.php:1587
-#, fuzzy, php-format
+#, php-format
 msgid "You must <a href=\"%s\">login</a> to enter a comment"
-msgstr "Login for at skrive en kommentar"
+msgstr "Yorum yapmak için <a href=\"%s\">giriş</a> yapmanız gerekiyor"
 
 #: wppa-functions.php:1594
 #, php-format
 msgid "%d  comments"
-msgstr "%d  kommentarer"
+msgstr "%d yorum"
 
 #: wppa-functions.php:1598
 msgid "Leave a comment"
-msgstr "Skriv en kommentar"
+msgstr "Yorum yapın"
 
 #: wppa-functions.php:1634
 msgid "Show IPTC data"
-msgstr "Vis IPTC data"
+msgstr "IPTC verilerini göster"
 
 #: wppa-functions.php:1637
 msgid "Hide IPTC data"
-msgstr "Skjul IPTC data"
+msgstr "IPTC verilerini gizle"
 
 #: wppa-functions.php:1665
 msgid "No IPTC data"
-msgstr "Ingen IPTC data"
+msgstr "IPTC verisi yok"
 
 #: wppa-functions.php:1698
 msgid "Show EXIF data"
-msgstr "Vis EXIF data"
+msgstr "EXIF verilerini göster"
 
 #: wppa-functions.php:1701
 msgid "Hide EXIF data"
-msgstr "Skjul EXIF data"
+msgstr "EXIF verilerini gizle"
 
 #: wppa-functions.php:1729
 msgid "No EXIF data"
-msgstr "Ingen EXIF data"
+msgstr "EXIF verisi yok"
 
 #: wppa-functions.php:2122 wppa-functions.php:2123
 msgid "Prev.&nbsp;page"
-msgstr "Forrige&nbsp;side"
+msgstr "Önceki&nbsp;sayfa"
 
 #: wppa-functions.php:2127 wppa-functions.php:2128
 msgid "Next&nbsp;page"
-msgstr "Næste&nbsp;side"
+msgstr "Sonraki&nbsp;sayfa"
 
 #: wppa-functions.php:2459
 msgid "<b>ERROR: Illegal attempt to enter a rating.</b>"
-msgstr "<b>FEJL: Ugyldigt forsøg på at give en bedømmelse.</b>"
+msgstr "<b>HATA: Geçersiz puanlama girişimi.</b>"
 
 #: wppa-functions.php:2472
 msgid "<b>ERROR: Illegal attempt to enter a comment.</b>"
-msgstr "<b>FEJL: Ugyldigt forsøg på at give en kommentar.</b>"
+msgstr "<b>HATA: Geçersiz yorum yapma girişimi.</b>"
 
 #: wppa-functions.php:2728
 msgid "Link to"
-msgstr "Link til"
+msgstr "Bağlantı: "
 
 #: wppa-functions.php:2754 wppa-functions.php:2870 wppa-functions.php:2873
 msgid "View the album"
-msgstr "Se album"
+msgstr "Görüntülenecek albüm:"
 
 #: wppa-functions.php:2763
 msgid "View the cover photo"
-msgstr "Se forside foto"
+msgstr "Kapak fotoğrafını görüntüle"
 
 #: wppa-functions.php:2764
 msgid "View the cover photos"
-msgstr "Se forside fotos"
+msgstr "Kapak fotoğraflarını görüntüle"
 
 #: wppa-functions.php:2852
 msgid "Browse photos"
-msgstr "Se fotos"
+msgstr "Fotoğraflara gözat"
 
 #: wppa-functions.php:2875
 msgid "View"
-msgstr "Se"
+msgstr "Toplam"
 
 #: wppa-functions.php:2878
 msgid "album"
-msgstr "album"
+msgstr "albüm var."
 
 #: wppa-functions.php:2881
 msgid "albums"
-msgstr "album"
+msgstr "albüm var."
 
 #: wppa-functions.php:2885 wppa-functions.php:5164
 msgid "and"
-msgstr "og"
+msgstr "ve"
 
 #: wppa-functions.php:2889
 msgid "photo"
-msgstr "foto"
+msgstr "fotoğraf var."
 
 #: wppa-functions.php:2892
 msgid "photos"
-msgstr "fotos"
+msgstr "fotoğraf var."
 
 #: wppa-functions.php:3102 wppa-topten-widget.php:48
 msgid "View the top rated photos"
-msgstr "Se fotos med højeste bedømmelse"
+msgstr "En yüksek puan alan fotoğrafları görüntüle"
 
 #: wppa-functions.php:3336
 msgid "Zoom in"
-msgstr ""
+msgstr "Yaklaştır"
 
 #: wppa-functions.php:3342
 msgid "Double click to start/stop slideshow running"
-msgstr "Dobbeltklik for at starte/slutte slideshow"
+msgstr "Slayt gösterisini başlatmak/durdurmak için çift tıklayın"
 
 #: wppa-functions.php:4544 wppa-functions.php:4675
 msgid "Max uploads reached"
-msgstr ""
+msgstr "Yükleme sınırına erişildi"
 
 #: wppa-functions.php:4558
 msgid "Upload Photo"
-msgstr "Upload foto"
+msgstr "Fotoğraf Yükle"
 
 #: wppa-functions.php:4564
-#, fuzzy
 msgid "Upload Photo(s)"
-msgstr "Upload foto"
+msgstr "Fotoğraf Yükle"
 
 #: wppa-functions.php:4567
 #, php-format
@@ -363,6 +356,8 @@ msgid ""
 "You may upload up to %s photos at once if your browser supports HTML-5 "
 "multiple file upload"
 msgstr ""
+"Tarayıcınız HTML-5 çoklu dosya yüklemeyi destekliyorsa bir kerede en fazla "
+"%s fotoğraf yükleyebilirsiniz"
 
 #: wppa-functions.php:4570
 #, php-format
@@ -371,43 +366,44 @@ msgstr ""
 
 #: wppa-functions.php:4580
 msgid "Apply watermark file:"
-msgstr "Indsæt vandmærke:"
+msgstr "Filigran dosyası:"
 
 #: wppa-functions.php:4588
 msgid "Position:"
-msgstr "Position:"
+msgstr "Konum:"
 
 #: wppa-functions.php:4600
 msgid "Enter photo name"
-msgstr ""
+msgstr "Fotoğraf başlığı girin"
 
 #: wppa-functions.php:4600
 msgid ""
 "If you leave this blank, the original filename(s) will be used as photo name"
 "(s)."
 msgstr ""
+"Bu alan boş bırakılırsa dosya ismi fotoğraf başlığı olarak kullanılacaktır."
 
 #: wppa-functions.php:4608
 msgid "Enter/modify photo description"
-msgstr "Indsæt/rediger beskrivelse af foto"
+msgstr "Fotoğraf tanımı gir veya düzenle"
 
 #: wppa-functions.php:4634
 msgid "<b>ERROR: Illegal attempt to upload a file.</b>"
-msgstr "<b>FEJL: Ugyldigt forsøg på at uploade en fil.</b>"
+msgstr "<b>HATA: Geçersiz dosya yükleme girişimi.</b>"
 
 #: wppa-functions.php:4679
 msgid "Error during upload"
-msgstr "Fejl under upload"
+msgstr "Yükleme sırasında hata oluştu"
 
 #: wppa-functions.php:4684
 msgid "Uploaded file is not an image"
-msgstr "Uploaded fil er ikke et billede"
+msgstr "Yüklenen dosya bir resim dosyası değil"
 
 #: wppa-functions.php:4688
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "Only gif, jpg and png image files are supported. Returned filetype = %d."
-msgstr "Kun gif, jpg og png filer understøttes"
+msgstr ""
 
 #: wppa-functions.php:4695
 #, php-format
@@ -416,173 +412,152 @@ msgstr ""
 
 #: wppa-functions.php:5159
 msgid "You can upload after"
-msgstr ""
+msgstr "Yüklemenize şu kadar kaldı:"
 
 #: wppa-lasten-widget.php:50
-#, fuzzy
 msgid "View the most recent uploaded photos"
-msgstr "Se fotos med højeste bedømmelse"
+msgstr "En son yüklenen fotoğrafları görüntüle"
 
 #: wppa-non-admin.php:177 wppa-slideshow.php:89
 msgid "Start"
-msgstr "Start"
+msgstr " "
 
 #: wppa-non-admin.php:178
 msgid "Stop"
-msgstr "Stop"
+msgstr "Durdur"
 
 #: wppa-non-admin.php:179
 msgid "Photo"
-msgstr "Foto"
+msgstr " "
 
 #: wppa-non-admin.php:180
 msgid "of"
-msgstr "af"
+msgstr "/"
 
 #: wppa-non-admin.php:181
 msgid "Previous photo"
-msgstr "Forrige billede"
+msgstr "Önceki fotoğraf"
 
 #: wppa-non-admin.php:182
 msgid "Next photo"
-msgstr "Næste billede"
+msgstr "Sonraki fotoğraf"
 
 #: wppa-non-admin.php:183
 msgid "Prev."
-msgstr "Forrige"
+msgstr "Önceki"
 
 #: wppa-non-admin.php:184 wppa-slideshow.php:371
 msgid "Next"
-msgstr "Næste"
+msgstr "Sonraki"
 
 #: wppa-non-admin.php:188
 msgid "Please enter your name"
-msgstr "Skriv dit navn"
+msgstr "Lütfen isminizi girin"
 
 #: wppa-non-admin.php:189
 msgid "Please enter a valid email address"
-msgstr "Skriv en gyldig email adresse"
+msgstr "Lütfen geçerli bir e-posta adresi girin"
 
 #: wppa-non-admin.php:190
 msgid "Please enter a comment"
-msgstr "Skriv en kommentar"
+msgstr "Lütfen bir yorum girin"
 
 #: wppa-slideshow-widget.php:116
 msgid "No album defined yet."
-msgstr "Intet album er defineret."
+msgstr "Henüz bir albüm tanımlanmadı."
 
 #: wppa-slideshow.php:88
 msgid "Slower"
-msgstr "Langsommere"
+msgstr "Daha yavaş"
 
 #: wppa-slideshow.php:90
 msgid "Faster"
-msgstr "Hurtigere"
+msgstr "Daha hızlı"
 
 #: wppa-slideshow.php:109
 msgid "Paused"
-msgstr ""
+msgstr "Durduruldu"
 
 #: wppa-slideshow.php:113
 msgid ""
 "To see the full size images, you need to enable javascript in your browser."
 msgstr ""
-"For at se billeder i fuld størrelse skal du tillade javascript in din "
-"browser."
+"Görsellerin tam boyutlarını görmek için tarayıcınızda javascript'i aktive "
+"etmeniz gerekiyor."
 
 #: wppa-slideshow.php:227
 msgid "- - - Rating enabled - - -"
-msgstr "- - - Bedømmelse aktiveret - - -"
+msgstr "- - - Puanlama aktif - - -"
 
 #: wppa-slideshow.php:238
 msgid "very low"
-msgstr "meget lav"
+msgstr "çok düşük"
 
 #: wppa-slideshow.php:239
 msgid "low"
-msgstr "lav"
+msgstr "düşük"
 
 #: wppa-slideshow.php:240
 msgid "average"
-msgstr "gennemsnitlig"
+msgstr "ortalama"
 
 #: wppa-slideshow.php:241
 msgid "high"
-msgstr "høj"
+msgstr "yüksek"
 
 #: wppa-slideshow.php:242
 msgid "very high"
-msgstr "meget høj"
+msgstr "çok yüksek"
 
 #: wppa-slideshow.php:251 wppa-slideshow.php:255 wppa-slideshow.php:280
 msgid "Average&nbsp;rating"
-msgstr "Bedømmelse&nbsp;gennemsnitlig"
+msgstr "Ortalama&nbsp;puan"
 
 #: wppa-slideshow.php:263 wppa-slideshow.php:267 wppa-slideshow.php:271
 #: wppa-slideshow.php:286
 msgid "My&nbsp;rating"
-msgstr "Min&nbsp;bedømmelse"
+msgstr "Benim&nbsp;puanlamam"
 
 #: wppa-slideshow.php:274 wppa-slideshow.php:290
-#, fuzzy, php-format
+#, php-format
 msgid "You must <a href=\"%s\">login</a> to vote"
-msgstr "Du skal logge ind for at stemme"
+msgstr "Oy vermek için <a href=\"%s\">giriş</a> yapmanız gerekiyor"
 
 #: wppa-slideshow.php:367
 #, php-format
 msgid "%s back"
-msgstr ""
+msgstr "%s geri"
 
 #: wppa-slideshow.php:368
-#, fuzzy
 msgid "Previous"
-msgstr "Forrige billede"
+msgstr "Önceki"
 
 #: wppa-slideshow.php:372
 #, php-format
 msgid "%s forward"
-msgstr ""
+msgstr "%s ileri"
 
 #: wppa-slideshow.php:478
 #, php-format
 msgid "Photo %s of %s"
-msgstr "Foto %s af %s"
+msgstr "%s / %s"
 
 #: wppa-slideshow.php:509
 msgid "Click to start/stop"
-msgstr "Klik for start/stop"
+msgstr "Başlatmak/durdurmak için tıklayın"
 
 #: wppa-slideshow.php:521
 msgid "- - - Comments box activated - - -"
-msgstr "- - - Kommentar boks aktiveret - - -"
+msgstr "- - - Yorum kutusu aktif - - -"
 
 #: wppa-slideshow.php:542
 msgid "- - - IPTC box activated - - -"
-msgstr "- - - IPTC boks aktiveret - - -"
+msgstr "- - - IPTC kutusu aktif - - -"
 
 #: wppa-slideshow.php:563
 msgid "- - - EXIF box activated - - -"
-msgstr "- - - EXIF boks aktiveret - - -"
+msgstr "- - - EXIF kutusu aktif - - -"
 
 #: theme/wppa-theme.php:92
 msgid "No albums or photos found matching your search criteria."
-msgstr "Ingen album eller fotos fundet der svarer til dine søge kriterier."
-
-#~ msgid "Comments on Photos"
-#~ msgstr "Kommentar til billeder"
-
-#, fuzzy
-#~ msgid "Thumbnail Photos"
-#~ msgstr "Foto Top Ten"
-
-#~ msgid "Top Ten Photos"
-#~ msgstr "Foto Top Ten"
-
-#~ msgid "Image"
-#~ msgstr "Billede"
-
-#~ msgid "Page is not available."
-#~ msgstr "Pagina non disponibile."
-
-#~ msgid "Sidebar Slideshow"
-#~ msgstr "Slideshow barra laterale"
+msgstr "Arama kriterlerine uyan albüm veya fotoğraf bulunamadı."

@@ -56,6 +56,14 @@ function wppaInitSettings() {
 	wppaCheckGravatar();
 	wppaCheckUserUpload();
 	wppaCheckAjax();
+	wppaCheckLinkPageErr('sphoto');
+	wppaCheckLinkPageErr('mphoto');
+	wppaCheckLinkPageErr('topten_widget');
+	wppaCheckLinkPageErr('slideonly_widget');
+	wppaCheckLinkPageErr('widget');
+	wppaCheckLinkPageErr('comment_widget');
+	wppaCheckLinkPageErr('thumbnail_widget');
+	wppaCheckLinkPageErr('lasten_widget');
 	
 	var tab=new Array('I','II','III','IV','V','VI','VII','VIII','IX','X','XI','XII');
 	var sub=new Array('A','B','C','D','E','F','G','H','I','J');
@@ -970,10 +978,12 @@ function wppaEncode(xtext) {
 function wppaCheckInconsistencies() {
 
 	// Uses thumb popup and thumb lightbox?
-	if ( document.getElementById('wppa_use_thumb_popup').checked == true && 
-		 document.getElementById('wppa_thumb_linktype').value == 'lightbox' ) jQuery('#wppa-er-1').css('display', '');
-	else jQuery('#wppa-er-1').css('display', 'none');
-
+	if ( document.getElementById('wppa_use_thumb_popup').checked == true && document.getElementById('wppa_thumb_linktype').value == 'lightbox' ) {
+		jQuery('.popup-lightbox-err').css('display', '');
+	}
+	else {
+		jQuery('.popup-lightbox-err').css('display', 'none');
+	}
 }
 
 // Get the http request object
@@ -1011,5 +1021,17 @@ function wppaPhotoStatusChange(id) {
 				i++;
 			}
 		}
+	}
+}
+
+function wppaCheckLinkPageErr(slug) {
+	var type = document.getElementById('wppa_'+slug+'_linktype').value;
+	var page = document.getElementById('wppa_'+slug+'_linkpage').value;
+	
+	if ( page == '0' && ( type == 'photo' || type == 'single' || type == 'album' )) {
+		jQuery('#'+slug+'-err').css({display:''});
+	}
+	else {
+		jQuery('#'+slug+'-err').css({display:'none'});
 	}
 }
