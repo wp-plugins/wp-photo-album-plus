@@ -6,7 +6,7 @@
 *
 */
 global $wppa_api_version;
-$wppa_api_version = '4-7-11-000';
+$wppa_api_version = '4-7-11-001';
 // Initialize globals and option settings
 function wppa_initialize_runtime($force = false) {
 global $wppa;
@@ -1807,22 +1807,26 @@ function wppa_check_memory_limit($verbose = true, $x = '0', $y = '0') {
 
 	if ( (function_exists('memory_get_usage')) && (ini_get('memory_limit')) ) {
 		
+		// Convert to kP, for calculation in MB
+		$x /= 1024;
+		$y /= 1024;
+		
 		// get memory limit
 		
 		$memory_limit = 0;
 		$memory_ini = ini_get('memory_limit');
-		if ( strstr($memory_ini, 'M') ) $memory_limit = substr($memory_ini, 0, -1) * 1024 * 1024;
+		if ( strstr($memory_ini, 'M') ) $memory_limit = substr($memory_ini, 0, -1);// * 1024 * 1024;
 			
 		$memory_cfg = get_cfg_var('memory_limit');
 		if ( strstr($memory_cfg, 'M') ) {
-			$memory_cfg = substr($memory_cfg, 0, -1) * 1024 * 1024;
+			$memory_cfg = substr($memory_cfg, 0, -1);// * 1024 * 1024;
 			if ($memory_cfg < $memory_limit) $memory_limit = $memory_cfg;
 		}
 		
 		if ( ! $memory_limit ) return '';
 		
 		// Calculate the free memory 	
-		$free_memory = $memory_limit - memory_get_usage(true);
+		$free_memory = $memory_limit - ( memory_get_usage(true) / ( 1024 * 1024 ) );
 		
 		// Ofsset: 4 bytes per pixel resized image 
 		if ( get_option('wppa_resize_on_upload') == 'yes' ) {
@@ -1839,6 +1843,8 @@ function wppa_check_memory_limit($verbose = true, $x = '0', $y = '0') {
 		else $offset = '0';
 		
 		$offset += 1024 * 512;	// Pragma: + 0.5 Mb
+		
+		$offset /= ( 1024 * 1024 );
 		
 		// Correction factor
 		$factor = '1.30';	// add 30% margin for overhead and safety
@@ -1857,12 +1863,12 @@ function wppa_check_memory_limit($verbose = true, $x = '0', $y = '0') {
 			$maxx = sqrt($maxpixels / 12) * 4;
 			$maxy = sqrt($maxpixels / 12) * 3;
 			if ( $verbose ) {
-				$result = '<br />'.sprintf(  __( 'Based on your server memory limit you should not upload images larger then <strong>%d x %d (%2.1f MP)</strong>', 'wppa' ), $maxx, $maxy, $maxpixels / (1024 * 1024));
+				$result = '<br />'.sprintf(  __( 'Based on your server memory limit you should not upload images larger then <strong>%d x %d (%2.1f MP)</strong>', 'wppa' ), $maxx*1024, $maxy*1024, $maxpixels);// / (1024 * 1024));
 			}
 			else {
-				$result['maxx'] = $maxx;
-				$result['maxy'] = $maxy;
-				$result['maxp'] = $maxpixels;
+				$result['maxx'] = $maxx*1024;
+				$result['maxy'] = $maxy*1024;
+				$result['maxp'] = $maxpixels*1024*1024;
 			}
 		}
 	}
