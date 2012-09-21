@@ -2945,7 +2945,8 @@ global $wppa_opt;
 		}
 		$wppa['out'] .= wppa_nltab('+').'<div id="coverphoto_frame_'.$album['id'].'_'.$wppa['master_occur'].'" class="coverphoto-frame" '.$photoframestyle.'>';
 		if ($photolink) {
-			$wppa['out'] .= wppa_nltab('+').'<a href="'.$photolink['url'].'" target="'.$photolink['target'].'" title="'.$photolink['title'].'" onclick="'.$photolink['onclick'].'" >';
+			$href = $photolink['url'] == '#' ? '' : 'href="'.$photolink['url'].'" ';
+			$wppa['out'] .= wppa_nltab('+').'<a '.$href.'target="'.$photolink['target'].'" title="'.$photolink['title'].'" onclick="'.$photolink['onclick'].'" >';
 				$wppa['out'] .= wppa_nltab().'<img src="'.$src.'" alt="'.$title.'" class="image wppa-img" width="'.$imgwidth.'" height="'.$imgheight.'" style="'.__wcs('wppa-img').$imgattr.'" '.$events.' />';
 			$wppa['out'] .= wppa_nltab('-').'</a>'; 
 		} else { 
