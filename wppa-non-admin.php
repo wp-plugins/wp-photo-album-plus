@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the non admin stuff
-* Version 4.7.9
+* Version 4.7.12
 *
 */
 
@@ -176,6 +176,8 @@ global $wppa_opt;
 		echo("\t".'wppaSlideShow = "'.__a('Slideshow', 'wppa_theme').'";'."\n");
 		echo("\t".'wppaStart = "'.__a('Start', 'wppa_theme').'";'."\n");
 		echo("\t".'wppaStop = "'.__a('Stop', 'wppa_theme').'";'."\n");
+		echo("\t".'wppaSlower = "'.__a('Slower', 'wppa_theme').'";'."\n");
+		echo("\t".'wppaFaster = "'.__a('Faster', 'wppa_theme').'";'."\n");
 		echo("\t".'wppaPhoto = "'.__a('Photo', 'wppa_theme').'";'."\n");
 		echo("\t".'wppaOf = "'.__a('of', 'wppa_theme').'";'."\n");
 		echo("\t".'wppaPreviousPhoto = "'.__a('Previous photo', 'wppa_theme').'";'."\n");
