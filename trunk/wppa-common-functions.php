@@ -2,11 +2,11 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 4.7.11
+* version 4.7.12
 *
 */
 global $wppa_api_version;
-$wppa_api_version = '4-7-11-002';
+$wppa_api_version = '4-7-12-000';
 // Initialize globals and option settings
 function wppa_initialize_runtime($force = false) {
 global $wppa;
@@ -1805,75 +1805,91 @@ function wppa_alfa_id($id = '0') {
 //
 function wppa_check_memory_limit($verbose = true, $x = '0', $y = '0') {
 
-	if ( (function_exists('memory_get_usage')) && (ini_get('memory_limit')) ) {
+	if ( ! function_exists('memory_get_usage') ) return '';
 		
-		// Convert to kP, for calculation in MB
-		$x /= 1024;
-		$y /= 1024;
-		
-		// get memory limit
-		
-		$memory_limit = 0;
-		$memory_ini = ini_get('memory_limit');
-		if ( strstr($memory_ini, 'M') ) $memory_limit = substr($memory_ini, 0, -1);// * 1024 * 1024;
-			
-		$memory_cfg = get_cfg_var('memory_limit');
-		if ( strstr($memory_cfg, 'M') ) {
-			$memory_cfg = substr($memory_cfg, 0, -1);// * 1024 * 1024;
-			if ($memory_cfg < $memory_limit) $memory_limit = $memory_cfg;
+	// get memory limit
+	$memory_limit = 0;
+	$memory_limini = wppa_convert_bytes(ini_get('memory_limit'));
+	$memory_limcfg = wppa_convert_bytes(get_cfg_var('memory_limit'));
+	
+	// find the smallest not being zero
+	if ( $memory_limini && $memory_limcfg ) $memory_limit = min($memory_limini, $memory_limcfg);
+	elseif ( $memory_limini ) $memory_limit = $memory_limini;
+	else $memory_limit = $memory_limcfg;
+
+	// No data
+	if ( ! $memory_limit ) return '';
+	
+	// Calculate the free memory 	
+	$free_memory = $memory_limit - memory_get_usage(true);
+	
+	// Ofsset: 4 bytes per pixel resized image 
+	if ( get_option('wppa_resize_on_upload') == 'yes' ) {
+		$t = get_option('wppa_resize_to');
+		if ( $t == '0') {
+			$to['0'] = get_option('wppa_fullsize');
+			$to['1'] = get_option('wppa_maxheight');
 		}
-		
-		if ( ! $memory_limit ) return '';
-		
-		// Calculate the free memory 	
-		$free_memory = $memory_limit - ( memory_get_usage(true) / ( 1024 * 1024 ) );
-		
-		// Ofsset: 4 bytes per pixel resized image 
-		if ( get_option('wppa_resize_on_upload') == 'yes' ) {
-			$t = get_option('wppa_resize_to');
-			if ( $t == '0') {
-				$to['0'] = get_option('wppa_fullsize');
-				$to['1'] = get_option('wppa_maxheight');
-			}
-			else {
-				$to = explode('x', $t);
-			}
-			$offset = 4 * $to['0'] * $to['1'];
+		else {
+			$to = explode('x', $t);
 		}
-		else $offset = '0';
-		
-		$offset += 1024 * 512;	// Pragma: + 0.5 Mb
-		
-		$offset /= ( 1024 * 1024 );
-		
-		// Correction factor
-		$factor = '1.30';	// add 30% margin for overhead and safety
-		
-		// Calculate max size
-		$mbsforimage = $free_memory - $offset * $factor;	// Substract offset
-		
-		$maxpixels = $mbsforimage / 4;
-		$maxpixels = $maxpixels / $factor;
-		
-		if ( $x && $y ) { 	// Request for check an image
-			if ( $x * $y <= $maxpixels ) $result = true;
-			else $result = false;
-		}
-		else {	// Request for tel me what is the limit
-			$maxx = sqrt($maxpixels / 12) * 4;
-			$maxy = sqrt($maxpixels / 12) * 3;
-			if ( $verbose ) {
-				$result = '<br />'.sprintf(  __( 'Based on your server memory limit you should not upload images larger then <strong>%d x %d (%2.1f MP)</strong>', 'wppa' ), $maxx*1024, $maxy*1024, $maxpixels);// / (1024 * 1024));
-			}
-			else {
-				$result['maxx'] = $maxx*1024;
-				$result['maxy'] = $maxy*1024;
-				$result['maxp'] = $maxpixels*1024*1024;
-			}
-		}
+		$offset = 4 * $to['0'] * $to['1'];
 	}
-	else {
-		$result = '';
+	else $offset = '0';
+	
+	$offset += 1024 * 512;	// Pragma: + 0.5 Mb
+	
+	// Correction factor (found by trial and error)
+	$factor = '1.30';	// add 30% margin for overhead and safety
+	
+	// Calculate max size
+	$mbsforimage = $free_memory - $offset * $factor;	// Substract offset
+	
+	$maxpixels = $mbsforimage / 4;
+	$maxpixels = $maxpixels / $factor;
+	
+	if ( $x && $y ) { 	// Request for check an image
+		if ( $x * $y <= $maxpixels ) $result = true;
+		else $result = false;
+	}
+	else {	// Request for tel me what is the limit
+		$maxx = sqrt($maxpixels / 12) * 4;
+		$maxy = sqrt($maxpixels / 12) * 3;
+		if ( $verbose ) {
+			$result = '<br />'.sprintf(  __( 'Based on your server memory limit you should not upload images larger then <strong>%d x %d (%2.1f MP)</strong>', 'wppa' ), $maxx, $maxy, $maxpixels / (1024 * 1024) );
+		}
+		else {
+			$result['maxx'] = $maxx;
+			$result['maxy'] = $maxy;
+			$result['maxp'] = $maxpixels;
+		}
 	}
 	return $result;
+}
+
+/**
+ * Convert a shorthand byte value from a PHP configuration directive to an integer value. Negative values return 0.
+ * @param    string   $value
+ * @return   int
+ */
+function wppa_convert_bytes( $value ) {
+    if ( is_numeric( $value ) ) {
+        return max( '0', $value );
+    } else {
+        $value_length = strlen( $value );
+        $qty = substr( $value, 0, $value_length - 1 );
+        $unit = strtolower( substr( $value, $value_length - 1 ) );
+        switch ( $unit ) {
+            case 'k':
+                $qty *= 1024;
+                break;
+            case 'm':
+                $qty *= 1048576;
+                break;
+            case 'g':
+                $qty *= 1073741824;
+                break;
+        }
+        return max( '0', $qty );
+    }
 }

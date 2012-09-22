@@ -2,7 +2,7 @@
 //
 // conatins slideshow, theme, ajax and lightbox code
 //
-// Version 4.7.9
+// Version 4.7.12
 
 // Part 1: Slideshow
 //
@@ -36,6 +36,8 @@ var wppaPhoto;					// = 'Photo' or its translation
 var wppaOf;						// = 'of' or its translation
 var wppaNextPhoto;				// = 'Next photo' or its translation
 var wppaPreviousPhoto;			// = 'Previous photo' or its translation
+var wppaSlower;
+var wppaFaster;
 var wppaNextP;
 var wppaPrevP;
 var wppaStart = 'Start';		// defaults
@@ -2002,10 +2004,17 @@ function wppaDoAjaxRender(mocc, ajaxurl, newurl) {
 				/* Autocol? */
 				wppaColWidth[mocc] = 0;	// clear
 				//_wppaDoAutocol(mocc);
+				
+				// If it is a slideshow: Upate 'Faster' and 'Slower' to the desired language.
+				// The ajax stuff gets the admin language while we need the frontend language
+				jQuery('#speed0-'+mocc).html(wppaSlower);
+				jQuery('#speed1-'+mocc).html(wppaFaster);
+
 			}
 		}
+
 		// If it is a slideshow: Stop slideshow before pushing it on the stack
-		if ( _wppaCurIdx[mocc] ) _wppaStop(mocc);
+		if ( _wppaSSRuns[mocc] ) _wppaStop(mocc);
 		// Do the Ajax action
 		xmlhttp.open('GET',ajaxurl,true);
 		xmlhttp.send();	
