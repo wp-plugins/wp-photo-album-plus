@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display thumbnail photos
-* Version 4.7.3
+* Version 4.7.13
 */
 
 class ThumbnailWidget extends WP_Widget {
@@ -50,6 +50,8 @@ class ThumbnailWidget extends WP_Widget {
 		
 		if ($thumbs) foreach ($thumbs as $image) {
 			
+			global $thumb;
+			$thumb = $image;
 			// Make the HTML for current picture
 			$widget_content .= "\n".'<div class="wppa-widget" style="width:'.$maxw.'px; height:'.$maxh.'px; margin:4px; display:inline; text-align:center; float:left;">'; 
 			if ($image) {

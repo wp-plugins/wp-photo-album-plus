@@ -2,11 +2,11 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 4.7.12
+* version 4.7.13
 *
 */
 global $wppa_api_version;
-$wppa_api_version = '4-7-12-000';
+$wppa_api_version = '4-7-13-000';
 // Initialize globals and option settings
 function wppa_initialize_runtime($force = false) {
 global $wppa;
@@ -385,6 +385,8 @@ global $wppa_initruntimetime;
 						'wppa_owner_only' 			=> '',
 						'wppa_user_upload_on'		=> '',
 						'wppa_upload_moderate'		=> '',
+						'wppa_memcheck_frontend'	=> '',
+						'wppa_memcheck_admin'		=> '',
 						'wppa_comment_captcha'		=> '',
 						'wppa_spam_maxage'			=> '',
 						
@@ -1804,9 +1806,12 @@ function wppa_alfa_id($id = '0') {
 //
 //
 function wppa_check_memory_limit($verbose = true, $x = '0', $y = '0') {
-
+global $wppa_opt;
+// ini_set('memory_limit', '18M');	// testing
 	if ( ! function_exists('memory_get_usage') ) return '';
-		
+	if ( is_admin() && $wppa_opt['wppa_memcheck_admin'] == 'no' ) return '';
+	if ( ! is_admin() && ! $wppa_opt['wppa_memcheck_frontend'] ) return '';
+
 	// get memory limit
 	$memory_limit = 0;
 	$memory_limini = wppa_convert_bytes(ini_get('memory_limit'));
@@ -1822,8 +1827,8 @@ function wppa_check_memory_limit($verbose = true, $x = '0', $y = '0') {
 	
 	// Calculate the free memory 	
 	$free_memory = $memory_limit - memory_get_usage(true);
-	
-	// Ofsset: 4 bytes per pixel resized image 
+
+	// Calculate number of pixels largest target resized image 
 	if ( get_option('wppa_resize_on_upload') == 'yes' ) {
 		$t = get_option('wppa_resize_to');
 		if ( $t == '0') {
@@ -1833,21 +1838,25 @@ function wppa_check_memory_limit($verbose = true, $x = '0', $y = '0') {
 		else {
 			$to = explode('x', $t);
 		}
-		$offset = 4 * $to['0'] * $to['1'];
+		$resizedpixels = $to['0'] * $to['1'];
 	}
-	else $offset = '0';
+	else {
+		$resizedpixels = wppa_get_minisize() * wppa_get_minisize() * 3 / 4;
+	}
 	
-	$offset += 1024 * 512;	// Pragma: + 0.5 Mb
-	
-	// Correction factor (found by trial and error)
-	$factor = '1.30';	// add 30% margin for overhead and safety
-	
+	// Number of bytes per pixel (found by trial and error)
+	//	$factor = '5.60';	//  5.60 for 17M: 386 x 289 (0.1 MP) thumb only
+	//	$factor = '5.10';	//  5.10 for 104M: 4900 x 3675 (17.2 MP) thumb only
+	$memlimmb = $memory_limit / ( 1024 * 1024 );
+	$factor = '5.68' - '0.58' * ( $memlimmb / 104 );
+
 	// Calculate max size
-	$mbsforimage = $free_memory - $offset * $factor;	// Substract offset
+	$maxpixels = ( $free_memory / $factor ) - $resizedpixels;
 	
-	$maxpixels = $mbsforimage / 4;
-	$maxpixels = $maxpixels / $factor;
+	// If obviously faulty: quit silently
+	if ( $maxpixels < 0 ) return '';
 	
+	// What are we asked for?
 	if ( $x && $y ) { 	// Request for check an image
 		if ( $x * $y <= $maxpixels ) $result = true;
 		else $result = false;
@@ -1855,10 +1864,10 @@ function wppa_check_memory_limit($verbose = true, $x = '0', $y = '0') {
 	else {	// Request for tel me what is the limit
 		$maxx = sqrt($maxpixels / 12) * 4;
 		$maxy = sqrt($maxpixels / 12) * 3;
-		if ( $verbose ) {
+		if ( $verbose ) {		// Make it a string
 			$result = '<br />'.sprintf(  __( 'Based on your server memory limit you should not upload images larger then <strong>%d x %d (%2.1f MP)</strong>', 'wppa' ), $maxx, $maxy, $maxpixels / (1024 * 1024) );
 		}
-		else {
+		else {					// Or an array
 			$result['maxx'] = $maxx;
 			$result['maxy'] = $maxy;
 			$result['maxp'] = $maxpixels;

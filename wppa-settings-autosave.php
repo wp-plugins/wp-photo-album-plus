@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 4.7.11
+* Version 4.7.13
 *
 */
 
@@ -2315,7 +2315,21 @@ global $wppa_revno;
 							$slug = 'wppa_upload_moderate';
 							$html = wppa_checkbox($slug);
 							wppa_setting($slug, '3', $name, $desc, $html, $help);
-
+							
+							$name = __('Upload memory check frontend', 'wppa');
+							$desc = __('Disable uploading photos that are too large.', 'wppa');
+							$help = esc_js(__('To prevent out of memory crashes during upload and possible database inconsistencies, uploads can be prevented if the photos are too big.', 'wppa'));
+							$slug = 'wppa_memcheck_frontend';
+							$html = wppa_checkbox($slug);
+							wppa_setting($slug, '3.1', $name, $desc, $html, $help);
+							
+							$name = __('Upload memory check admin', 'wppa');
+							$desc = __('Disable uploading photos that are too large.', 'wppa');
+							$help = esc_js(__('To prevent out of memory crashes during upload and possible database inconsistencies, uploads can be prevented if the photos are too big.', 'wppa'));
+							$slug = 'wppa_memcheck_admin';
+							$html = wppa_checkbox($slug);
+							wppa_setting($slug, '3.2', $name, $desc, $html, $help);
+							
 							$name = __('Comment captcha', 'wppa');
 							$desc = __('Use a simple calculate captcha on comments form.', 'wppa');
 							$help = '';

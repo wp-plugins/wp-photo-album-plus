@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * create, edit and delete albums
-* version 4.7.10
+* version 4.7.13
 *
 */
 
@@ -666,6 +666,19 @@ function wppa_admin_albums() {
 		
 		</table>
 <!--	</div> -->
+<?php
+	$albcount = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `".WPPA_ALBUMS."`"));
+	$photocount = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `".WPPA_PHOTOS."`"));
+	$pendingcount = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `".WPPA_PHOTOS."` WHERE `status` = 'pending'"));
+	
+	echo sprintf(__('There are <strong>%d</strong> albums and <strong>%d</strong> photos in the system.', 'wppa'), $albcount, $photocount);
+	if ( $pendingcount ) echo ' '.sprintf(__('<strong>%d</strong> photos are pending moderation.', 'wppa'), $pendingcount);
+	
+	$lastalbum = $wpdb->get_row($wpdb->prepare("SELECT `id`, `name` FROM `".WPPA_ALBUMS."` ORDER BY `timestamp` DESC LIMIT 1"), 'ARRAY_A');
+	if ( $lastalbum ) echo '<br />'.sprintf(__('The most recently added album is <strong>%s</strong> (%d).', 'wppa'), __($lastalbum['name']), $lastalbum['id']);
+	$lastphoto = $wpdb->get_row($wpdb->prepare("SELECT `id`, `name` FROM `".WPPA_PHOTOS."` ORDER BY `timestamp` DESC LIMIT 1"), 'ARRAY_A');
+	if ( $lastphoto ) echo '<br />'.sprintf(__('The most recently added photo is <strong>%s</strong> (%d).', 'wppa'), __($lastphoto['name']), $lastphoto['id']);
+?>
 <?php	
 	} else { 
 ?>
@@ -692,8 +705,6 @@ function wppa_album_photos($id) {
 		$temp = wppa_get_water_file_and_pos();
 		$wmfile = $temp['file'];
 		$wmpos = $wms[$temp['pos']];
-	echo 'file='.$wmfile;
-	echo 'pos='.$wmpos;
 		
 		foreach ($photos as $photo) { ?>
 
