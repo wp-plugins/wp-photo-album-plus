@@ -552,6 +552,11 @@ global $wppa;
 		$domain = is_admin() ? 'wppa' : 'wppa_theme';
 		$mofile = WPPA_PATH.'/langs/'.$domain.'-'.$wppa_locale.'.mo';
 		$bret = load_textdomain($domain, $mofile);
+		
+		// Load theme language file also
+		$domain2 = 'wppa_theme';
+		$mofile2 = WPPA_PATH.'/langs/'.$domain2.'-'.$wppa_locale.'.mo';
+		$bret2 = load_textdomain($domain2, $mofile2);
 	}
 	
 	if ($wppa['debug']) {	// Diagnostic
