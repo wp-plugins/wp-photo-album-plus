@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the slideshow high level functions
-* Version 4.7.9
+* Version 4.7.13
 *
 */
 
@@ -21,10 +21,10 @@ global $wppa_opt;
 				wppa_slide_frame();						// The photo / slide
 				break;
 			case '2':
-				wppa_slide_name_desc('optional');		// Show name and description in a box. This replaces the old separate ones
+				wppa_slide_name_desc('optional');		// Show name and description in a box. 
 				break;
 			case '3':
-				wppa_slide_custom('optional');			// Custom box			// Reserved for future use, does nothing as per version 3.1.0
+				wppa_slide_custom('optional');			// Custom box
 				break;
 			case '4':
 				wppa_slide_rating('optional');			// Rating box
@@ -178,6 +178,7 @@ global $wppa_opt;
 		}
 		else $doit = true;
 	}
+	if ( $opt == 'description' ) $doit = false;
 	
 	if ( $doit ) $wppa['out'] .= wppa_nltab().'<div id="imagetitle-'.$wppa['master_occur'].'" class="wppa-fulltitle imagetitle" style="'.__wcs('wppa-fulltitle').'padding:3px; width:100%"></div>';
 }	
@@ -197,6 +198,7 @@ global $wppa_opt;
 		}
 		else $doit = true;
 	}
+	if ( $opt == 'name' ) $doit = false;
 	
 	if ( $doit ) $wppa['out'] .= wppa_nltab().'<div id="imagedesc-'.$wppa['master_occur'].'" class="wppa-fulldesc imagedesc" style="'.__wcs('wppa-fulldesc').'padding:3px; width:100%; text-align:'.$wppa_opt['wppa_fulldesc_align'].'"></div>';
 }

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the recent commets on photos
-* Version 4.7.3
+* Version 4.7.13
 */
 
 class wppaCommentWidget extends WP_Widget {
@@ -38,6 +38,10 @@ class wppaCommentWidget extends WP_Widget {
 			$widget_content .= "\n".'<div class="wppa-widget" style="width:'.$maxw.'px; height:'.$maxh.'px; margin:4px; display:inline; text-align:center; float:left;">'; 
 			$image = $wpdb->get_row($wpdb->prepare( "SELECT * FROM `".WPPA_PHOTOS."` WHERE `id` = %s", $comment['photo'] ), "ARRAY_A" );
 			if ($image) {
+			
+				global $thumb;
+				$thumb = $image;
+				
 				$no_album 	= true;//!$album;
 				$tit		= esc_attr(wppa_qtrans(stripslashes($comment['comment'])));
 				$link       = wppa_get_imglnk_a('comwidget', $image['id'], '', $tit, $no_album);

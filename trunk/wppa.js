@@ -2,7 +2,7 @@
 //
 // conatins slideshow, theme, ajax and lightbox code
 //
-// Version 4.7.12
+// Version 4.7.13
 
 // Part 1: Slideshow
 //
@@ -576,7 +576,7 @@ function _wppaNextSlide_3(mocc) {
 		case 'turnover':
 			switch (dir) {
 				case 'left':
-			//	case 'right':
+/*	there is a z-order problem here, if you can fix it, i would be glad
 					jQuery(olSli).css({zIndex:81});
 					jQuery(olSli).animate({width:0}, wppaAnimationSpeed, "swing");
 					jQuery(olImg).animate({marginLeft:0, width:0, paddingLeft:0, paddingRight:0}, wppaAnimationSpeed, "swing", _wppaNextSlide_4(mocc));
@@ -584,6 +584,7 @@ function _wppaNextSlide_3(mocc) {
 					jQuery(nwImg).fadeIn(10);
 					jQuery(olImg).fadeOut(10);
 					break;
+*/
 				case 'right':
 					var nwImgWid = parseInt(jQuery(nwSli).css('width'));
 					var nwMarLft = parseInt(jQuery(nwImg).css('marginLeft'));

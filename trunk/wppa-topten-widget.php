@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the top rated photos
-* Version 4.7.3
+* Version 4.7.13
 */
 
 class TopTenWidget extends WP_Widget {
@@ -41,6 +41,8 @@ class TopTenWidget extends WP_Widget {
 		$maxh = $maxw + 18;
 		if ($thumbs) foreach ($thumbs as $image) {
 			
+			global $thumb;
+			$thumb = $image;
 			// Make the HTML for current picture
 			$widget_content .= "\n".'<div class="wppa-widget" style="width:'.$maxw.'px; height:'.$maxh.'px; margin:4px; display:inline; text-align:center; float:left;">'; 
 			if ($image) {

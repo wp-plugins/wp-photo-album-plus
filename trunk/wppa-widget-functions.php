@@ -2,7 +2,7 @@
 /* wppa_widgetfunctions.php
 /* Package: wp-photo-album-plus
 /*
-/* Version 4.5.1
+/* Version 4.7.13
 /*
 */
 
@@ -238,5 +238,9 @@ global $wppa_opt;
 			default:
 				$image = '';
 		}
+		
+	global $thumb;
+	$thumb = $image;
+	
 	return $image;
 }

@@ -2,18 +2,14 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile
-Version: 4.7.12
+Version: 4.7.13
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
 Requires at least: 3.0
 Tested up to: 3.4.2
 
-This plugin is designed to easily manage and display your photo albums and slideshows in a single as well as in a network WordPress site and 
-is applicable for both static as dynamic (responsive) themes as used for mobile clients. 
-Additionally there are eight widgets: Photo of the day, a Search Photos widget, a Top Ten Rated photo widget, a Recent comments on photoswidget, 
-a Mini slideshow widget, a Latest uploaded widget, a general Thumbnail widget and a general purpose text widget that supports wppa scripts.
-Visitors can leave comments on individual photos. Uploads can be provided with a watermark. IPTC and EXIF data can be displayed and used in descriptions.
+This plugin is designed to easily manage and display your photo albums and slideshows in a single as well as in a network WordPress site.
 
 == Description ==
 
@@ -68,9 +64,10 @@ You can find the plugin admin section under Menu Photo Albums on the admin scree
 * The theme should not prevent this plugin from loading the jQuery library in its default wp manner, i.e. the library jQuery in safe mode (uses jQuery() and not $()). 
 Most themes comply with these requirements. 
 However, check these requirements in case of problems with new installations with themes you never had used before with wppa+ or when you modifies your theme.
+* The server should have at least 32MB of memory, 64MB or more is recommended.
 
 = Upgrade notice =
-This version is: Major rev# 4, Minor rev# 7, Fix rev# 3, Hotfix rev# 000.
+This version is: Major rev# 4, Minor rev# 7, Fix rev# 13, Hotfix rev# 000.
 If you are upgrading from a previous Major or Minor version, note that:
 * If you modified wppa_theme.php and/or wppa_style.css, you will have to use the newly supplied versions. The previous versions are NOT compatible.
 * If you set the userlevel to anything else than 'administrator' you may have to set it again. Note that changing the userlevel can be done by the administrator only!
@@ -78,9 +75,9 @@ If you are upgrading from a previous Major or Minor version, note that:
 
 = Standard installation when not from the wp plugins page =
 * Unzip and upload the wppa plugin folder to wp-content/plugins/
-* Make sure that the folder wp-content/uploads/ exists and is writable by the server (CHMOD 755)
+* Make sure that the folder wp-content/uploads/ exists and is writable by the server (CHMOD 755, some systems need CHMOD 777)
 * Activate the plugin in WP Admin -> Plugins.
-* If, after installation, you are unable to upload photos, check the existance and rights (CHMOD 755) of: 
+* If, after installation, you are unable to upload photos, check the existance and rights (CHMOD 755, some systems need CHMOD 777) of: 
 for the single site mode installation: the folders .../wp-content/uploads/wppa/ and .../wp-content/uploads/wppa/thumbs/, 
 and for the multisite mode installation (example for blog id 92): the folders path: .../wp-content/blogs.dir/92/wppa/ and .../wp-content/blogs.dir/92/wppa/thumbs/.
 In rare cases you will need to create them manually. You can see the actual pathnames and urls in the lowest table of the Photo Albums -> Settings page.
@@ -158,6 +155,18 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 4.7.13 =
+
+= Other changes =
+
+* Check on sufficient memory on upload can be switched off (Table VII-B3.1 -B3.2) for systems where the computation fails and uploads are no longer possible.
+If during the calculation it becomes obvious that the result is unreliable, this check takes no action.
+* Significant performance improvements when there are no exif and iptc tags in photo descriptions.
+* Significant performance improvements due to the reduction of database queries to approx 35% in comparision with the previous version.
+* Exif values like: 'On, Red-eye reduction' are now translatable.
+* Added debug info on queries.
+* Added statistics under the album table in the Photo albums -> Album admin page
 
 = 4.7.12 =
 
