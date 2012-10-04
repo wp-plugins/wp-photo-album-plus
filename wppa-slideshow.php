@@ -3,51 +3,97 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the slideshow high level functions
-* Version 4.7.13
+* Version 4.7.14
 *
 */
 
 function wppa_the_slideshow() {
 global $wppa_opt;
 
-	$indexes = explode(',', $wppa_opt['wppa_slide_order']);
-	$i = '0';
-	while ( $i < '10' ) {
-		switch ( $indexes[$i] ) {
-			case '0':
-				wppaStartStop('optional');				// The 'Slower | start/stop | Faster' bar
-				break;
-			case '1':
-				wppa_slide_frame();						// The photo / slide
-				break;
-			case '2':
-				wppa_slide_name_desc('optional');		// Show name and description in a box. 
-				break;
-			case '3':
-				wppa_slide_custom('optional');			// Custom box
-				break;
-			case '4':
-				wppa_slide_rating('optional');			// Rating box
-				break;
-			case '5':
-				wppa_slide_filmstrip('optional');		// Show Filmstrip
-				break;
-			case '6':
-				wppa_browsebar('optional');				// The 'Previous photo | Photo n of m | Next photo' bar
-				break;
-			case '7':
-				wppa_comments('optional');				// The Comments box
-				break;
-			case '8':
-				wppa_iptc('optional');					// The IPTC box
-				break;
-			case '9':
-				wppa_exif('optional');					// The EXIF box
-				break;
-			default:
-				break;
+	if ( $wppa_opt['wppa_split_namedesc'] ) {
+		$indexes = explode(',', $wppa_opt['wppa_slide_order_split']);
+		$i = '0';
+		while ( $i < '11' ) {
+			switch ( $indexes[$i] ) {
+				case '0':
+					wppaStartStop('optional');				// The 'Slower | start/stop | Faster' bar
+					break;
+				case '1':
+					wppa_slide_frame();						// The photo / slide
+					break;
+				case '2':
+					wppa_slide_name_box('optional');		// Show name in a box. 
+					break;
+				case '3':
+					wppa_slide_desc_box('optional');		// Show description in a box. 
+					break;
+				case '4':
+					wppa_slide_custom('optional');			// Custom box
+					break;
+				case '5':
+					wppa_slide_rating('optional');			// Rating box
+					break;
+				case '6':
+					wppa_slide_filmstrip('optional');		// Show Filmstrip
+					break;
+				case '7':
+					wppa_browsebar('optional');				// The 'Previous photo | Photo n of m | Next photo' bar
+					break;
+				case '8':
+					wppa_comments('optional');				// The Comments box
+					break;
+				case '9':
+					wppa_iptc('optional');					// The IPTC box
+					break;
+				case '10':
+					wppa_exif('optional');					// The EXIF box
+					break;
+				default:
+					break;
+			}
+			$i++;
 		}
-		$i++;
+	}
+	else {
+		$indexes = explode(',', $wppa_opt['wppa_slide_order']);
+		$i = '0';
+		while ( $i < '10' ) {
+			switch ( $indexes[$i] ) {
+				case '0':
+					wppaStartStop('optional');				// The 'Slower | start/stop | Faster' bar
+					break;
+				case '1':
+					wppa_slide_frame();						// The photo / slide
+					break;
+				case '2':
+					wppa_slide_name_desc('optional');		// Show name and description in a box. 
+					break;
+				case '3':
+					wppa_slide_custom('optional');			// Custom box
+					break;
+				case '4':
+					wppa_slide_rating('optional');			// Rating box
+					break;
+				case '5':
+					wppa_slide_filmstrip('optional');		// Show Filmstrip
+					break;
+				case '6':
+					wppa_browsebar('optional');				// The 'Previous photo | Photo n of m | Next photo' bar
+					break;
+				case '7':
+					wppa_comments('optional');				// The Comments box
+					break;
+				case '8':
+					wppa_iptc('optional');					// The IPTC box
+					break;
+				case '9':
+					wppa_exif('optional');					// The EXIF box
+					break;
+				default:
+					break;
+			}
+			$i++;
+		}
 	}
 }
 
@@ -159,6 +205,44 @@ global $wppa_opt;
 				wppa_slide_description($key);		// The description of the photo
 				wppa_slide_name($key);			// The name of the photo
 			}
+		$wppa['out'] .= wppa_nltab('-').'</div><!-- #namedesc -->';
+	}
+}
+
+function wppa_slide_name_box($key = 'optional') {
+global $wppa;
+global $wppa_opt;
+	
+	$do_it = false;
+	if ($key != 'optional') $do_it = true;
+	if ($wppa['is_slideonly']) {
+		if ($wppa['name_on']) $do_it = true;
+	}
+	else {
+		if ($wppa_opt['wppa_show_full_name']) $do_it = true;
+	}
+	if ($do_it) { 
+		$wppa['out'] .= wppa_nltab('+').'<div id="namebox-'.$wppa['master_occur'].'" class="wppa-box wppa-name-desc" style="'.__wcs('wppa-box').__wcs('wppa-name-desc').'" >';
+				wppa_slide_name($key);			// The name of the photo
+		$wppa['out'] .= wppa_nltab('-').'</div><!-- #namedesc -->';
+	}
+}
+
+function wppa_slide_desc_box($key = 'optional') {
+global $wppa;
+global $wppa_opt;
+	
+	$do_it = false;
+	if ($key != 'optional') $do_it = true;
+	if ($wppa['is_slideonly']) {
+		if ($wppa['desc_on']) $do_it = true;
+	}
+	else {
+		if ($wppa_opt['wppa_show_full_desc']) $do_it = true;
+	}
+	if ($do_it) { 
+		$wppa['out'] .= wppa_nltab('+').'<div id="descbox-'.$wppa['master_occur'].'" class="wppa-box wppa-name-desc" style="'.__wcs('wppa-box').__wcs('wppa-name-desc').'" >';
+				wppa_slide_description($key);		// The description of the photo
 		$wppa['out'] .= wppa_nltab('-').'</div><!-- #namedesc -->';
 	}
 }

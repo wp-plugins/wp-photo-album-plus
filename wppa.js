@@ -2,7 +2,7 @@
 //
 // conatins slideshow, theme, ajax and lightbox code
 //
-// Version 4.7.13
+// Version 4.7.14
 
 // Part 1: Slideshow
 //
@@ -24,6 +24,7 @@ var wppaFadeInAfterFadeOut = false;
 var wppaTextFrameDelta = 0;
 var wppaBoxDelta = 0;
 var wppaPreambule;
+var wppaHideWhenEmpty = false;
 var wppaThumbnailPitch = new Array();
 var wppaFilmStripLength = new Array();
 var wppaFilmStripMargin = new Array();
@@ -64,6 +65,7 @@ var wppaFontWeightNumbarActive = '';
 
 var wppaNumbarMax = '10';
 var wppaAjaxUrl = '';
+var wppaLocale = '';
 var wppaNextOnCallback = false;
 var wppaRatingUseAjax = false;
 var wppaStarOpacity = 0.2;
@@ -88,6 +90,7 @@ var wppaThumbSpaceAuto = false;
 var wppaMinThumbSpace = 4;
 var wppaMagnifierCursor = '';
 var wppaArtMonkyLink = 'none';
+var wppaShare = '';
 
 // 'Internal' variables (private)
 var _wppaId = new Array();
@@ -122,6 +125,7 @@ var _wppaStateCount = 0;
 var _wppaDidGoto = new Array();
 var wppaTopMoc = 0;
 var wppaColWidth = new Array();
+var _wppaShareUrl = new Array();
 
 jQuery(document).ready(function(){
 	_wppaLog('ready', 1);
@@ -141,7 +145,7 @@ jQuery(document).ready(function(){
 // These functions check the validity and store the users request to be executed later if busy and if applicable.
 
 // This is an entrypoint to load the slide data
-function wppaStoreSlideInfo(mocc, id, url, size, width, height, name, desc, photoid, avgrat, myrat, rateurl, linkurl, linktitle, linktarget, iwtimeout, commenthtml, iptchtml, exifhtml, lbtitle) {
+function wppaStoreSlideInfo(mocc, id, url, size, width, height, name, desc, photoid, avgrat, myrat, rateurl, linkurl, linktitle, linktarget, iwtimeout, commenthtml, iptchtml, exifhtml, lbtitle, shareurl) {
 var cursor;
 	if ( ! _wppaSlides[mocc] ) {
 		_wppaSlides[mocc] = new Array();
@@ -171,6 +175,7 @@ var cursor;
 		_wppaLbTitle[mocc] = new Array();
 		_wppaDidGoto[mocc] = false;
 		wppaSlidePause[mocc] = false;
+		_wppaShareUrl[mocc] = new Array();
 	}
 	
 	// Cursor
@@ -205,6 +210,7 @@ var cursor;
 	_wppaExifHtml[mocc][id] = exifhtml;
 	_wppaUrl[mocc][id] = url;
 	_wppaLbTitle[mocc][id] = lbtitle;
+	_wppaShareUrl[mocc][id] = shareurl;
 }
 
 function wppaSpeed(mocc, faster) {
@@ -660,6 +666,10 @@ function _wppaNextSlide_5(mocc) {
 	if (!_wppaToTheSame) {	
 		// Restore subtitles
 		jQuery('#imagedesc-'+mocc).html(_wppaDsc[mocc][_wppaCurIdx[mocc]]);
+		if ( wppaHideWhenEmpty ) {
+			if ( _wppaDsc[mocc][_wppaCurIdx[mocc]] == '' || _wppaDsc[mocc][_wppaCurIdx[mocc]] == '&nbsp;' ) jQuery('#descbox-'+mocc).css('display', 'none');
+			else jQuery('#descbox-'+mocc).css('display', '');
+		}
 		jQuery("#imagetitle-"+mocc).html(wppaMakeNameHtml(mocc));
 		// Restore comments html
 		jQuery("#comments-"+mocc).html(_wppaCommentHtml[mocc][_wppaCurIdx[mocc]]);
@@ -689,7 +699,16 @@ function _wppaNextSlide_5(mocc) {
 	else {								// No toggle pending
 		wppaUpdateLightboxes(); 		// Refresh lighytbox
 		// Update addthis url and title if ( ( this is non-mini ) AND ( this is the only running non-mini OR there are no running non-minis ) )
-		if ( ! wppaIsMini[mocc] ) {	// This is a non-mini
+		if ( ! wppaIsMini[mocc] ) {			// This is NOT a widget
+			if ( ! _wppaSSRuns[mocc] ) {	// This is not running
+				// Update addthis share url
+				if ( wppaShare == 'site' ) url = _wppaShareUrl[mocc][_wppaCurIdx[mocc]]; //wppaGetCurrentFullUrl(mocc, _wppaCurIdx[mocc]);
+				if ( wppaShare == 'file' ) url = _wppaUrl[mocc][_wppaCurIdx[mocc]];
+				wppaUpdateAddThisUrl(url, _wppaNames[mocc][_wppaCurIdx[mocc]]);					
+				// Push state
+				wppaPushStateSlide(mocc, _wppaCurIdx[mocc], _wppaShareUrl[mocc][_wppaCurIdx[mocc]]);
+			}
+			/*
 			var nRuns = 0;
 			var i=1;
 			while (i<=wppaTopMoc) {
@@ -699,12 +718,17 @@ function _wppaNextSlide_5(mocc) {
 				i++;
 			}
 			if ( nRuns == 0 || ( nRuns == 1 && _wppaSSRuns[mocc] ) ) {	// No running OR This is the only running
-				var url = wppaGetCurrentFullUrl(mocc, _wppaCurIdx[mocc]);
+				var url = '';
+				if ( wppaShare == 'site' ) url = _wppaShareUrl[mocc][_wppaCurIdx[mocc]]; //wppaGetCurrentFullUrl(mocc, _wppaCurIdx[mocc]);
+				if ( wppaShare == 'file' ) url = _wppaUrl[mocc][_wppaCurIdx[mocc]];
+				console.log('ShareLink='+url);
 				if (url != '') {
+
 					wppaUpdateAddThisUrl(url, _wppaNames[mocc][_wppaCurIdx[mocc]]);	
 					wppaPushStateSlide(mocc, _wppaCurIdx[mocc]);					// Add to history stack
 				}
 			}
+			*/
 		}
 		// If running: Wait for next slide
 		if (_wppaSSRuns[mocc]) {				
@@ -1796,12 +1820,15 @@ function wppaPopUp(mocc, elm, id, rating) {
 	leftDivBig = leftDivSmall - parseInt((widthImgBigSpace - widthImgSmall) / 2);
 	topDivBig = topDivSmall - parseInt((heightImgBig - heightImgSmall) / 2);
 	
+	// Padding for portrait images
+	var lrPad = parseInt((widthImgBigSpace - widthImgBig) / 2);
+	
 	// Setup starting properties
 	jQuery('#wppa-popup-'+mocc).css({"marginLeft":leftDivSmall+"px","marginTop":topDivSmall+"px"});
-	jQuery('#wppa-img-'+mocc).css({"width":widthImgSmall+"px","height":heightImgSmall+"px"});
+	jQuery('#wppa-img-'+mocc).css({"paddingLeft":0,"paddingRight":0,"width":widthImgSmall+"px","height":heightImgSmall+"px"});
 	// Do the animation
 	jQuery('#wppa-popup-'+mocc).stop().animate({"marginLeft":leftDivBig+"px","marginTop":topDivBig+"px"}, 400);
-	jQuery('#wppa-img-'+mocc).stop().animate({"width":widthImgBig+"px","height":heightImgBig+"px"}, 400);
+	jQuery('#wppa-img-'+mocc).stop().animate({"paddingLeft":lrPad+"px","paddingRight":lrPad+"px","width":widthImgBig+"px","height":heightImgBig+"px"}, 400);
 //alert(widthImgBig+', '+heightImgBig);
 	// adding ", 'linear', wppaPopReady(occ) " fails, therefor our own timer to the "show info" module
 	_wppaTimer[mocc] = setTimeout('wppaPopReady('+mocc+')', 400);
@@ -1990,8 +2017,11 @@ function wppaDoAjaxRender(mocc, ajaxurl, newurl) {
 					cont = xmlhttp.responseText;
 					try {
 						history.pushState({page: wppaHis, occur: mocc, type: 'html', html: cont}, "---", newurl);
+						console.log('Ajax rendering: History stack updated');
 					}
-					catch(err) {}
+					catch(err) {
+						console.log('Ajax rendering: Failed to update history stack');
+					}
 					if ( wppaFirstOccur == 0 ) wppaFirstOccur = mocc;
 				}
 				
@@ -2017,6 +2047,7 @@ function wppaDoAjaxRender(mocc, ajaxurl, newurl) {
 		// If it is a slideshow: Stop slideshow before pushing it on the stack
 		if ( _wppaSSRuns[mocc] ) _wppaStop(mocc);
 		// Do the Ajax action
+		ajaxurl += '&locale='+wppaLocale;
 		xmlhttp.open('GET',ajaxurl,true);
 		xmlhttp.send();	
 	}
@@ -2030,16 +2061,18 @@ function wppaDoAjaxRender(mocc, ajaxurl, newurl) {
 	}
 }
 
-function wppaPushStateSlide(mocc, slide) {
+function wppaPushStateSlide(mocc, slide, url) {
 
 	if ( ! wppaIsMini[mocc] ) {	// Not from a widget
 		if ( wppaCanPushState ) {
-			var url = wppaGetCurrentFullUrl(mocc, _wppaCurIdx[mocc]);
+//			var url = wppaGetCurrentFullUrl(mocc, _wppaCurIdx[mocc]);
 			if (url != '') {
 				try {
 					history.pushState({page: wppaHis, occur: mocc, type: 'slide', slide: slide}, "---", url);
+					console.log('Slide history stack updated');
 				}
 				catch(err) {
+					console.log('Slide history stack update failed');
 				}
 			}
 		}
@@ -2060,14 +2093,18 @@ function wppaUpdateAddThisUrl(url, title) {
 	if ( ! wppaAddThis ) return;	// No addthis activated
 	try {
 		addthis.update('share', 'url', url);
+		console.log('AddThis share url update to '+url+' succeeded');
 	}
 	catch(err){
+		console.log('AddThis share url update to '+url+' failed');
 	}
 	if (title != '') {
 		try {
 			addthis.update('share', 'title', title);
+			console.log('AddThis share title update to '+title+' succeeded');
 		}
 		catch(err) {
+			console.log('AddThis share title update to '+title+' failed');
 		}
 	}
 }

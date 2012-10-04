@@ -3,12 +3,12 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions and API modules
-* Version 4.7.13
+* Version 4.7.14
 *
 */
 /* Moved to wppa-common-functions.php:
 global $wppa_api_version;
-$wppa_api_version = '4-7-13-000';
+$wppa_api_version = '4-7-14-000';
 */
 
 if ( ! defined( 'ABSPATH' ) )
@@ -506,10 +506,17 @@ global $wpdb;
 // get thumb path
 function wppa_get_thumb_path_by_id($id = false) {
 global $wpdb;
+global $thumb;
 
 	if ($id == false) return '';	// no id: no path
-	$ext = $wpdb->get_var( $wpdb->prepare( "SELECT ext FROM " . WPPA_PHOTOS . " WHERE id = %s", $id ) );
-	wppa_dbg_q('Q5');
+	if ( isset($thumb['id']) && $thumb['id'] == $id ) {
+		$ext = $thumb['ext'];
+		wppa_dbg_q('G5');
+	}
+	else {
+		$ext = $wpdb->get_var( $wpdb->prepare( "SELECT ext FROM " . WPPA_PHOTOS . " WHERE id = %s", $id ) );
+		wppa_dbg_q('Q5');
+	}
 	if ($ext) {
 		$path =  WPPA_UPLOAD_PATH . '/thumbs/' . $id . '.' . $ext;
 	}
@@ -565,12 +572,19 @@ global $wpdb;
 function wppa_get_image_page_url_by_id($id = false) {
 global $wpdb;
 global $wppa;
+global $thumb;
 	
 	if ($id == false) return '';
 	$occur = $wppa['in_widget'] ? $wppa['widget_occur'] : $wppa['occur'];
 	$w = $wppa['in_widget'] ? 'w' : '';
-	$image = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM " . WPPA_PHOTOS . " WHERE id=%s LIMIT 1", $id ), 'ARRAY_A');
-	wppa_dbg_q('Q8');
+	if ( isset($thumb['id']) && $thumb['id'] == $id ) {
+		$image = $thumb;
+		wppa_dbg_q('G8');
+	}
+	else {
+		$image = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM " . WPPA_PHOTOS . " WHERE id=%s LIMIT 1", $id ), 'ARRAY_A');
+		wppa_dbg_q('Q8');
+	}
 	if ($image) $imgurl = wppa_get_permalink().'wppa-album='.$image['album'].'&amp;wppa-photo='.$image['id'].'&amp;wppa-cover=0&amp;wppa-'.$w.'occur='.$occur;	
 	else $imgurl = '';
 	return $imgurl;
@@ -759,6 +773,7 @@ global $wpdb;
 }
 
 // get album name
+// This function is not used as far as i know
 function wppa_get_the_album_name() {
 global $album;
 	
@@ -766,6 +781,7 @@ global $album;
 }
 
 // get album decription
+// This function is not used as far as i know
 function wppa_get_the_album_desc() {
 global $album;
 	
@@ -956,12 +972,21 @@ global $thumb;
 // get url of a full sized image
 function wppa_get_photo_url($id = '') {
 global $wpdb;
+global $thumb;
+
+global $wppa;
 
 	if ($id == '') $id = wppa_get_get('photo');
     
 	if (is_numeric($id)) {
-		$ext = $wpdb->get_var( $wpdb->prepare( "SELECT ext FROM ".WPPA_PHOTOS." WHERE id=%s", $id ) );
-		wppa_dbg_q('Q28');
+		if ( isset($thumb['id']) && $thumb['id'] == $id ) {
+			$ext = $thumb['ext'];
+			wppa_dbg_q('G28');
+		}
+		else {
+			$ext = $wpdb->get_var( $wpdb->prepare( "SELECT ext FROM ".WPPA_PHOTOS." WHERE id=%s", $id ) );
+			wppa_dbg_q('Q28');
+		}
 		$url = WPPA_UPLOAD_URL.'/'.$id.'.'.$ext;
 	}
 	else $url = '';
@@ -1258,6 +1283,8 @@ global $thumb;
 	}
 	if ( $status == 'pending' ) $desc = wppa_html(esc_js('<span style="color:red">'.__a('Awaiting moderation', 'wppa_theme').'</span>'));
 
+	$shareurl = wppa_get_image_page_url_by_id($id);
+	
 	// Produce final result
     $result = "'".$wppa['master_occur']."','";
 	$result .= $index."','";
@@ -1276,7 +1303,8 @@ global $thumb;
 	$result .= $comment."','";
 	$result .= $iptc."','";
 	$result .= $exif."','";
-	$result .= $lbtitle."'";
+	$result .= $lbtitle."','";
+	$result .= $shareurl."'";		// Used for full link url in addthis and for history.pushstate()
 	
 	// This is an ingenious line of code that is going to prevent us from very much trouble. 
 	// Created by OpaJaap on Jan 15 2012, 14:36 local time. Thanx.
@@ -1471,10 +1499,58 @@ global $wppa_done;
 					echo('<script type="text/javascript">alert("'.__a('Comment edited', 'wppa_theme').'")</script>');
 				}
 				else {
-					//SUCCESSFUL COMMENT, ADD POINTS
+					// SUCCESSFUL COMMENT, ADD POINTS
 					if( function_exists('cp_alterPoints') && is_user_logged_in() ) {
 						cp_alterPoints(cp_currentUser(), $wppa_opt['wppa_cp_points_comment']);
 					}
+					// SEND EMAILS
+					if ( is_numeric($wppa_opt['wppa_comment_notify']) ) {	// single user
+						// Mail specific user
+						$user    = get_userdata($wppa_opt['wppa_comment_notify']);
+						$to      = $user->user_email;
+						$subject = '['.get_bloginfo('name').'] '.__('Comment on photo:', 'wppa_theme').' '.wppa_get_photo_name($id);
+						$message = $comment;
+						$message .= "\n\n".__('You receive this email as you are assigned to moderate', 'wpp_theme');
+						if ( user_can( $user, 'wppa_comments' ) ) {	// user can moderate
+							$message .= "\n\n".'Moderate link: '."\n";
+							$message .= get_admin_url().'admin.php?page=wppa_manage_comments&commentid='.$key;
+						}
+						$from    = "From: ".$email;
+						mail( $to , $subject , $message , $from, '' );
+					}
+					if ( $wppa_opt['wppa_comment_notify'] == 'admin' || $wppa_opt['wppa_comment_notify'] == 'both' ) {
+						// Mail admin
+						$to      = get_bloginfo('admin_email'); //$userdata->user_email;
+						$subject = '['.get_bloginfo('name').'] '.__('Comment on photo:', 'wppa_theme').' '.wppa_get_photo_name($id);
+						$message = $comment;
+						$message .= "\n\n".__('You receive this email as administrator of the site', 'wpp_theme');
+						if ( user_can( $user, 'wppa_comments' ) ) {	// user can moderate, always true for admin
+							$message .= "\n\n".'Moderate link: '."\n";
+							$message .= get_admin_url().'admin.php?page=wppa_manage_comments&commentid='.$key;
+						}
+						$from    = "From: ".$email;
+						mail( $to , $subject , $message , $from, '' );
+					}
+					if ( $wppa_opt['wppa_comment_notify'] == 'owner' || $wppa_opt['wppa_comment_notify'] == 'both' ) {
+						// Mail owner
+						$alb     = $wpdb->get_var($wpdb->prepare("SELECT `album` FROM `".WPPA_PHOTOS."` WHERE `id` = %d", $id));
+						$owner   = $wpdb->get_var($wpdb->prepare("SELECT `owner` FROM `".WPPA_ALBUMS."` WHERE `id` = %d", $alb));
+						if ( $owner == '--- public ---' ) $owner = 'admin';
+						if ( $owner != 'admin' || $wppa_opt['wppa_comment_notify'] != 'both' ) { // Prevent dup to admin
+							$user    = get_user_by('login', $owner);
+							$to      = $user->user_email;
+							$subject = '['.get_bloginfo('name').'] '.__('Comment on photo:', 'wppa_theme').' '.wppa_get_photo_name($id);
+							$message = $comment;
+							$message .= "\n\n".__('You receive this email as owner of the album', 'wpp_theme');
+							if ( user_can( $user, 'wppa_comments' ) ) {	// user can moderate
+								$message .= "\n\n".'Moderate link: '."\n";
+								$message .= get_admin_url().'admin.php?page=wppa_manage_comments&commentid='.$key;
+							}
+							$from    = "From: ".$email;
+							mail( $to , $subject , $message , $from, '' );
+						}
+					}
+					// Notyfy user
 					echo('<script type="text/javascript">alert("'.__a('Comment added', 'wppa_theme').'")</script>');
 				}
 			}
@@ -2536,7 +2612,7 @@ global $wppa_numqueries;
 		if ($wppa['debug']) {
 			$wppa_microtime = - microtime(true);
 			$wppa_numqueries = - get_num_queries();
-			$wppa['queries'] = '';
+			wppa_dbg_q('init');
 		}
 		if ( $wppa['master_occur'] == '1' ) {
 			wppa_dbg_msg('Plugin load time :'.substr($wppa_loadtime,0,5).'s.', 'green');
@@ -2682,9 +2758,7 @@ global $wppa_numqueries;
 			$wppa_microtime_cum += $laptim;
 			wppa_dbg_msg('Time elapsed occ '.$wppa['master_occur'].':'.substr($laptim, 0, 5).'s. Tot:'.substr($wppa_microtime_cum, 0, 5).'s.', 'green');
 			wppa_dbg_msg('Nuber of queries occ '.$wppa['master_occur'].':'.$wppa_numqueries, 'green');
-			ob_start();
-			print_r($wppa['queries']);
-			wppa_dbg_msg(ob_get_clean());
+			wppa_dbg_q('print');
 		}
 	}
 	else {
@@ -3252,7 +3326,7 @@ else		$link = wppa_get_imglnk_a('thumb', $thumb['id']);
 				$wppa['out'] .= wppa_nltab('-').'</div>';
 			}
 			else {
-				$wppa['out'] .= wppa_nltab().'<img src="'.$url.'" alt="'.$thumbname.'" title="'.esc_attr($title).'" width="'.$imgwidth.'" height="'.$imgheight.'" style="'.$imgattr.'" '.$events.' />';
+				$wppa['out'] .= wppa_nltab().'<img src="'.$url.'" alt="'.$thumbname.'" title="'.esc_attr($title).'" width="'.$imgwidth.'" height="'.$imgheight.'" style="'.$imgstyle.'" '.$events.' />';
 			}
 		}
 		
@@ -3793,7 +3867,8 @@ function __a($txt, $dom = 'wppa_theme') {
 function wppa_get_permalink($key = '') {
 global $wppa;
 global $wppa_opt;
-	
+global $wppa_locale;
+//$z=-get_num_queries();	
 	if ( !$key && is_search() ) $key = $wppa_opt['wppa_search_linkpage'];
 	
 	switch ($key) {
@@ -3857,6 +3932,13 @@ global $wppa_opt;
 		if ( $key == 'js' ) $pl .= 'debug='.$wppa['debug'].'&';
 		else $pl .= 'debug='.$wppa['debug'].'&amp;';
 	}
+	
+	if ( $wppa_locale ) {
+		if ( $key == 'js' ) $pl .= 'locale='.$wppa_locale.'&';
+		else $pl .= 'locale='.$wppa_locale.'&amp;';
+	}
+//$z+=get_num_queries();	
+//if ($z) wppa_dbg_q('Q901');
 	return $pl;
 }
 /*
@@ -4155,8 +4237,14 @@ global $wpdb;
 		 ( $wich == 'slideshow'  && $wppa_opt['wppa_slideshow_overrule'] ) ||
 		 ( $wich == 'tnwidget' 	 && $wppa_opt['wppa_thumbnail_widget_overrule'] )) {
 		// Look for a photo specific link
-		$data = $wpdb->get_row( $wpdb->prepare( 'SELECT * FROM '.WPPA_PHOTOS.' WHERE id=%s LIMIT 1', $photo ) , 'ARRAY_A' );
-		wppa_dbg_q('Q53');
+		if ( isset($thumb['id']) && $thumb['id'] == $photo ) {
+			$data = $thumb;
+			wppa_dbg_q('G53');
+		}
+		else {
+			$data = $wpdb->get_row( $wpdb->prepare( 'SELECT * FROM '.WPPA_PHOTOS.' WHERE id=%s LIMIT 1', $photo ) , 'ARRAY_A' );
+			wppa_dbg_q('Q53');
+		}
 			if ($data) {
 			// If it is there...
 			if ($data['linkurl'] != '') {
@@ -5351,9 +5439,4 @@ global $thumb;
 	}
 	$result = esc_attr($result);
 	return $result;
-}
-
-function wppa_dbg_q($id) {
-global $wppa;
-	if ($wppa['debug']) if (!isset($wppa['queries'][$id])) $wppa['queries'][$id]=1;else $wppa['queries'][$id]++;
 }
