@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile
-Version: 4.7.13
+Version: 4.7.14
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -67,7 +67,7 @@ However, check these requirements in case of problems with new installations wit
 * The server should have at least 32MB of memory, 64MB or more is recommended.
 
 = Upgrade notice =
-This version is: Major rev# 4, Minor rev# 7, Fix rev# 13, Hotfix rev# 000.
+This version is: Major rev# 4, Minor rev# 7, Fix rev# 14, Hotfix rev# 000.
 If you are upgrading from a previous Major or Minor version, note that:
 * If you modified wppa_theme.php and/or wppa_style.css, you will have to use the newly supplied versions. The previous versions are NOT compatible.
 * If you set the userlevel to anything else than 'administrator' you may have to set it again. Note that changing the userlevel can be done by the administrator only!
@@ -155,6 +155,26 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 4.7.14 =
+
+= Bug Fixes =
+
+* When using qTranslate and being switched to a non-default language, the content is now always in the right language independant of the ajax switch.
+* Fixed bugs in AddThis interface.
+* The popup of a portrait image is horizontally centered during animation now.
+
+= New Features =
+
+* The name and description can be set to display in two separate boxes in the slideshow. Table IX-E13.
+* If the name and description are displayed in separate boxes, the display of an empty description box can be suppressed in Table II-B6.1.
+* Type of sharelink for AddThis is now configurable in Table IX-F3.
+* You can select which user(s) will receive a notification by email on entring a new comment. Table IV-F5. 
+If the user has the right to admin comments, a moderatelink is included in the mail.
+
+= Other Changes =
+
+* Further reduction on database queries to an average of approx 20% compared with version 4.7.12
 
 = 4.7.13 =
 

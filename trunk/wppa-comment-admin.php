@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all comments
-* Version 4.7.10
+* Version 4.7.14
 *
 */
 
@@ -224,7 +224,10 @@ global $wppa_opt;
 				</p>
 				<?php 
 				$pagsize = '8'; 
-				if ($comment_show != 'all') {
+				if ( isset($_REQUEST['commentid']) ) {	// Moderate link from email
+					$where = " WHERE id=".$_REQUEST['commentid'];
+				}
+				elseif ($comment_show != 'all') {
 					$where = " WHERE status='".$comment_show."'";
 				}
 				else $where = '';

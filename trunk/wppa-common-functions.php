@@ -2,11 +2,11 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 4.7.13
+* version 4.7.14
 *
 */
 global $wppa_api_version;
-$wppa_api_version = '4-7-13-000';
+$wppa_api_version = '4-7-14-000';
 // Initialize globals and option settings
 function wppa_initialize_runtime($force = false) {
 global $wppa;
@@ -162,6 +162,7 @@ global $wppa_initruntimetime;
 						'wppa_film_show_glue' 				=> '',	// 4
 						'wppa_show_full_name' 				=> '',	// 5
 						'wppa_show_full_desc' 				=> '',	// 6
+						'wppa_hide_when_empty'				=> '',	// 6.1
 						'wppa_rating_on' 					=> '',	// 7
 						'wppa_rating_display_type'			=> '',	// 8
 						'wppa_show_avg_rating'				=> '',	// 9
@@ -273,6 +274,7 @@ global $wppa_initruntimetime;
 						'wppa_comments_desc'			=> '',	// 2
 						'wppa_comment_moderation'		=> '',	// 3
 						'wppa_comment_email_required'	=> '',	// 4
+						'wppa_comment_notify'			=> '',
 						// G Overlay
 						'wppa_ovl_opacity'				=> '',
 						'wppa_ovl_onclick'				=> '',
@@ -416,13 +418,16 @@ global $wppa_initruntimetime;
 						'wppa_meta_all'					=> '',	// 10
 						'wppa_cp_points_comment'		=> '',
 						'wppa_cp_points_rating'			=> '',
+						'wppa_sharetype'				=> '',
 
 						'wppa_use_wp_editor'			=> '',	//A 11
 						
 						'wppa_html' 					=> '',
 						'wppa_allow_debug' 				=> '',
 						'wppa_slide_order'				=> '',
+						'wppa_slide_order_split'		=> '',
 						'wppa_swap_namedesc' 			=> '',
+						'wppa_split_namedesc'			=> '',
 						'wppa_max_album_newtime'		=> '',
 						'wppa_max_photo_newtime'		=> '',
 						'wppa_lightbox_name'			=> '',
@@ -538,32 +543,35 @@ global $q_config;
 global $wppa;
 
 	if ($wppa_locale) return; // Done already
-	
+
+	// Locale in arg?
+	if (isset($_REQUEST['locale'])) {
+		$wppa_locale = $_REQUEST['locale'];
+	}
 	// See if qTranslate present and actve, if so, get locale there
-	if (wppa_qtrans_enabled()) {	
+	elseif (wppa_qtrans_enabled()) {	
 		if (isset($q_config['language'])) $lang = $q_config['language'];
 		if (isset($q_config['locale'][$lang])) $wppa_locale = $q_config['locale'][$lang];
 	}
-	else {		// Get locale from wp-config
+	// Get locale from wp-config
+	else {		
 		$wppa_locale = get_locale();
 		$lang = substr($wppa_locale, 0, 2);
 	}
+	
 	if ($wppa_locale) {
 		$domain = is_admin() ? 'wppa' : 'wppa_theme';
 		$mofile = WPPA_PATH.'/langs/'.$domain.'-'.$wppa_locale.'.mo';
 		$bret = load_textdomain($domain, $mofile);
+		wppa_dbg_msg('Domain: '.$domain.', mofile: '.$mofile.', loaded='.$bret);
 		
-		// Load theme language file also
-		$domain2 = 'wppa_theme';
-		$mofile2 = WPPA_PATH.'/langs/'.$domain2.'-'.$wppa_locale.'.mo';
-		$bret2 = load_textdomain($domain2, $mofile2);
-	}
-	
-	if ($wppa['debug']) {	// Diagnostic
-		$wppa['out'] .= '<span style="color:blue"><small>Lang='.$lang.', Locale='.$wppa_locale.', Mofile='.$mofile;
-		if (is_file($mofile)) $wppa['out'] .= ' exists.'; else $wppa['out'] .= ' does not exist.';
-		if (!$bret) $bret = '0';
-		$wppa['out'] .= ', loaded='.$bret.'.</small></span><br/>';	
+		// Load theme language file also, for Ajax
+		if ( is_admin() ) {
+			$domain2 = 'wppa_theme';
+			$mofile2 = WPPA_PATH.'/langs/'.$domain2.'-'.$wppa_locale.'.mo';
+			$bret2 = load_textdomain($domain2, $mofile2);
+			wppa_dbg_msg('Domain: '.$domain2.', mofile: '.$mofile2.', loaded='.$bret2);
+		}
 	}
 }
 
@@ -639,7 +647,10 @@ global $wppa;
 global $wppa_opt;
     
 	if ($id == '0') $order = '0';
-	else $order = $wpdb->get_var( $wpdb->prepare( "SELECT p_order_by FROM " . WPPA_ALBUMS . " WHERE id=%s", $id) );
+	else {
+		$order = $wpdb->get_var( $wpdb->prepare( "SELECT p_order_by FROM " . WPPA_ALBUMS . " WHERE id=%s", $id) );
+		wppa_dbg_q('Q201');
+	}
     if ($order == '0') $order = $wppa_opt['wppa_list_photos_by'];
     switch ($order)
     {
@@ -680,16 +691,25 @@ global $thumb;
 	}
 
 	$query = $wpdb->prepare( 'SELECT `rating_count` FROM `'.WPPA_PHOTOS.'` WHERE `id` = %s', $id);
+	wppa_dbg_q('Q202');
 	return $wpdb->get_var($query);
 }
 
 function wppa_get_rating_by_id($id = '', $opt = '') {
 global $wpdb;
 global $wppa_opt;
+global $thumb;
 
 	$result = '';
 	if (is_numeric($id)) {
-		$rating = $wpdb->get_var( $wpdb->prepare( "SELECT mean_rating FROM ".WPPA_PHOTOS." WHERE id=%s", $id ) );
+		if ( isset($thumb['id']) && $thumb['id'] == $id )  {
+			$rating = $thumb['mean_rating'];
+			wppa_dbg_q('G203');
+		}
+		else {
+			$rating = $wpdb->get_var( $wpdb->prepare( "SELECT mean_rating FROM ".WPPA_PHOTOS." WHERE id=%s", $id ) );
+			wppa_dbg_q('Q203');
+		}
 		if ($rating) {
 			$i = $wppa_opt['wppa_rating_prec'];
 			$j = $i + '1';
@@ -721,6 +741,7 @@ function wppa_get_parentalbumid($alb) {
 global $wpdb;
     
 	$query = $wpdb->prepare('SELECT `a_parent` FROM `' . WPPA_ALBUMS . '` WHERE `id` = %s', $alb);
+	wppa_dbg_q('Q204');
 	$result = $wpdb->get_var($query);
 	
     if (!is_numeric($result)) {
@@ -749,6 +770,7 @@ global $wpdb;
 	if ($name == '') return '';
     $name = stripslashes($name);
     $id = $wpdb->get_var( $wpdb->prepare( "SELECT id FROM " . WPPA_ALBUMS . " WHERE name = %s", $name ) );
+	wppa_dbg_q('Q205');
     if ($id) {
 		return $id;
 	}
@@ -759,13 +781,24 @@ global $wpdb;
 
 function wppa_get_album_name($id = '', $raw = '') {
 global $wpdb;
+global $album;
     
     if ($id == '0') $name = is_admin() ? __('--- none ---', 'wppa') : __a('--- none ---', 'wppa_theme');
     elseif ($id == '-1') $name = is_admin() ? __('--- separate ---', 'wppa') : __a('--- separate ---', 'wppa_theme');
     else {
         if ($id == '') if (isset($_GET['album'])) $id = $_GET['album'];
         $id = $wpdb->escape($id);	
-        if (is_numeric($id)) $name = $wpdb->get_var( $wpdb->prepare( "SELECT name FROM " . WPPA_ALBUMS . " WHERE id=%s", $id ) );
+        if (is_numeric($id)) {
+			if ( isset($album['id']) && $album['id'] == $id ) {	// In cache?
+				$name = $album['name'];
+				wppa_dbg_q('G206');
+			}
+			else {	// Update cache
+				$album = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM " . WPPA_ALBUMS . " WHERE id=%s", $id ), 'ARRAY_A' );
+				$name = $album['name'];
+				wppa_dbg_q('Q206');
+			}
+		}
 		else $name = '';
     }
 	if ($name) {
@@ -917,6 +950,7 @@ global $wpdb;
 	
 	if ( $lastkey == 'nil' ) {	// Init option
 		$lastkey = $wpdb->get_var( $wpdb->prepare( "SELECT id FROM ".$table." WHERE id < '9223372036854775806' ORDER BY id DESC LIMIT 1" ) );
+		wppa_dbg_q('Q207');
 		if ( ! is_numeric($lastkey) ) $lastkey = '0';
 		add_option( $name, $lastkey, '', 'no');
 	}
@@ -946,6 +980,7 @@ global $wpdb;
 	}
 	
 	$exists = $wpdb->get_row($wpdb->prepare( 'SELECT * FROM '.$table.' WHERE id = %s', $id ), 'ARRAY_A');
+	wppa_dbg_q('Q208');
 	if ($exists) return false;
 	return true;
 }
@@ -964,18 +999,21 @@ global $wppa_opt;
 		// Administrator has always access OR If all albums are public
 		if (current_user_can('administrator') || get_option('wppa_owner_only', 'no') == 'no') {
 			$albs = $wpdb->get_results($wpdb->prepare( 'SELECT id FROM '.WPPA_ALBUMS ) );
+			wppa_dbg_q('Q209');
 			if ($albs) return true;
 			else return false;	// No albums in system
 		}
 		
 		// Any --- public --- albums?
 		$albs = $wpdb->get_results($wpdb->prepare( 'SELECT id FROM '.WPPA_ALBUMS.' WHERE owner = "--- public ---"' ) );
+		wppa_dbg_q('Q210');
 		if ($albs) return true;
 		
 		// Any albums owned by this user?
 		get_currentuserinfo();
 		$user = $current_user->user_login;
 		$albs = $wpdb->get_results($wpdb->prepare( 'SELECT id FROM '.WPPA_ALBUMS.' WHERE owner = "%s"', $user) );
+		wppa_dbg_q('Q211');
 		if ($albs) return true;
 		else return false;	// No albums for user accessable
 		
@@ -997,6 +1035,7 @@ global $wppa_opt;
 		}
 		elseif (is_numeric($alb)) {
 			$owner = $wpdb->get_var($wpdb->prepare( 'SELECT owner FROM '.WPPA_ALBUMS.' WHERE id = %s', $alb ) );
+			wppa_dbg_q('Q212');
 		}
 		
 		// -- public --- ?
@@ -1502,6 +1541,7 @@ function wppa_table_exists($xtable) {
 global $wpdb;
 
 	$tables = $wpdb->get_results($wpdb->prepare("SHOW TABLES FROM `".DB_NAME."`"), 'ARRAY_A');
+	wppa_dbg_q('Q213');
 	// Some sqls do not show tables, benefit of the doubt: assume table exists
 	if ( empty($tables) ) return true;
 	
@@ -1532,8 +1572,10 @@ global $wpdb;
 	// There is iptc data for this image.
 	// First delete any existing ipts data for this image
 	$wpdb->query($wpdb->prepare("DELETE FROM `".WPPA_IPTC."` WHERE `photo` = %s", $id));
+	wppa_dbg_q('Q214');
 	// Find defined labels
 	$result = $wpdb->get_results($wpdb->prepare("SELECT `tag` FROM `".WPPA_IPTC."` WHERE `photo`='0' ORDER BY `tag`"), 'ARRAY_N');
+	wppa_dbg_q('Q215');
 	if ( ! is_array($result) ) $result = array();
 	$labels = array();
 	foreach ($result as $res) {
@@ -1573,6 +1615,7 @@ global $wpdb;
 						if ( $s == '1#090' ) $status = 'hide';
 						if ( $s == '2#000' ) $status = 'hide';
 					$query 	= $wpdb->prepare("INSERT INTO `".WPPA_IPTC."` (`id`, `photo`, `tag`, `description`, `status`) VALUES (%s, %s, %s, %s, %s)", $key, $photo, $tag, $desc, $status); 
+					wppa_dbg_q('Q216');
 					$iret 	= $wpdb->query($query);
 					if ( ! $iret ) wppa_dbg_msg('Error: '.$query);
 				}
@@ -1583,6 +1626,7 @@ global $wpdb;
 				$desc 	= $iptc[$s][$i];
 				$status = 'default';
 				$query  = $wpdb->prepare("INSERT INTO `".WPPA_IPTC."` (`id`, `photo`, `tag`, `description`, `status`) VALUES (%s, %s, %s, %s, %s)", $key, $photo, $tag, $desc, $status); 
+				wppa_dbg_q('Q217');
 				$iret 	= $wpdb->query($query);
 				if ( ! $iret ) wppa_dbg_msg('Error: '.$query);
 			}
@@ -1606,8 +1650,10 @@ global $wpdb;
 	// There is exif data for this image.
 	// First delete any existing exif data for this image
 	$wpdb->query($wpdb->prepare("DELETE FROM `".WPPA_EXIF."` WHERE `photo` = %s", $id));
+	wppa_dbg_q('Q218');
 	// Find defined labels
 	$result = $wpdb->get_results($wpdb->prepare("SELECT * FROM `".WPPA_EXIF."` WHERE `photo`='0' ORDER BY `tag`"), 'ARRAY_A');
+	wppa_dbg_q('Q219');
 	if ( ! is_array($result) ) $result = array();
 	$labels = array();
 	$names  = array();
@@ -1638,6 +1684,7 @@ global $wpdb;
 			$desc 	= $s.':';
 			$status = 'display';
 			$query 	= $wpdb->prepare("INSERT INTO `".WPPA_EXIF."` (`id`, `photo`, `tag`, `description`, `status`) VALUES (%s, %s, %s, %s, %s)", $key, $photo, $tag, $desc, $status); 
+			wppa_dbg_q('Q220');
 			$iret 	= $wpdb->query($query);
 			if ( ! $iret ) wppa_dbg_msg('Error: '.$query);
 		}
@@ -1651,6 +1698,7 @@ global $wpdb;
 				$desc 	= $exif[$s][$i];
 				$status = 'default';
 				$query  = $wpdb->prepare("INSERT INTO `".WPPA_EXIF."` (`id`, `photo`, `tag`, `description`, `status`) VALUES (%s, %s, %s, %s, %s)", $key, $photo, $tag, $desc, $status); 
+				wppa_dbg_q('Q221');
 				$iret 	= $wpdb->query($query);
 				if ( ! $iret ) wppa_dbg_msg('Error: '.$query);
 			
@@ -1663,6 +1711,7 @@ global $wpdb;
 			$desc 	= $exif[$s];
 			$status = 'default';
 			$query  = $wpdb->prepare("INSERT INTO `".WPPA_EXIF."` (`id`, `photo`, `tag`, `description`, `status`) VALUES (%s, %s, %s, %s, %s)", $key, $photo, $tag, $desc, $status); 
+			wppa_dbg_q('Q222');
 			$iret 	= $wpdb->query($query);
 			if ( ! $iret ) wppa_dbg_msg('Error: '.$query);
 		}
@@ -1712,6 +1761,7 @@ global $wpdb;
 						// Now we have $id, $file and $info
 						if ( isset($info["APP13"]) ) {	// There is IPTC data
 							$is_iptc = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `".WPPA_IPTC."` WHERE `photo`=%s", $id));
+							wppa_dbg_q('Q223');
 							if ( ! $is_iptc ) { 	// No IPTC yet and there is: Recuperate
 								wppa_import_iptc($id, $info);
 								$iptc_count++;
@@ -1720,6 +1770,7 @@ global $wpdb;
 						$image_type = exif_imagetype($file);
 						if ( $image_type == IMAGETYPE_JPEG ) {	// EXIF supported by server
 							$is_exif = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `".WPPA_EXIF."` WHERE `photo`=%s", $id));
+							wppa_dbg_q('Q224');
 							if ( ! $is_exif ) { 				// No EXIF yet
 								$exif = exif_read_data($file, 'EXIF');
 								if ( is_array($exif) )	{ 		// There is exif data present
@@ -1762,6 +1813,7 @@ global $wpdb;
 	if ( ! $album ) return '0';
 
 	$limits = $wpdb->get_var($wpdb->prepare("SELECT `upload_limit` FROM `".WPPA_ALBUMS."` WHERE `id` = %s", $album));
+	wppa_dbg_q('Q225');
 	$temp = explode('/', $limits);
 	$limit_max  = isset($temp[0]) ? $temp[0] : '0';
 	$limit_time = isset($temp[1]) ? $temp[1] : '0';
@@ -1770,11 +1822,13 @@ global $wpdb;
 	
 	if ( ! $limit_time ) {					// For ever
 		$curcount = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `".WPPA_PHOTOS."` WHERE `album` = %s", $album));
+		wppa_dbg_q('Q226');
 	}
 	else {									// Time criterium in place
 		$timnow = time();
 		$timthen = $timnow - $limit_time;
 		$curcount = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `".WPPA_PHOTOS."` WHERE `album` = %s AND `timestamp` > %s", $album, $timthen));
+		wppa_dbg_q('Q227');
 	}
 	
 	if ( $curcount >= $limit_max ) $result = '0';	// No more allowed
@@ -1906,4 +1960,44 @@ function wppa_convert_bytes( $value ) {
         }
         return max( '0', $qty );
     }
+}
+
+function wppa_dbg_q($id) {
+global $wppa;
+
+	if ( ! $wppa['debug'] ) return;	// Nothing to do here
+	
+	switch ( $id ) {
+		case 'init':
+			break;
+		case 'print':
+			$qtot = 0;
+			$gtot = 0;
+			$keys = array_keys($wppa['queries']);
+			sort($keys);
+			$line = 'Cumulative query statistics: Q=query, G=cache<br />';
+			foreach ($keys as $k) {
+				if ( substr($k,0,1) == 'Q' ) {
+					$line .= $k.'=>'.$wppa['queries'][$k].', ';
+					$qtot += $wppa['queries'][$k];
+				}
+			}
+			$line .= '<br />';
+			foreach ($keys as $k) {
+				if ( substr($k,0,1) == 'G' ) {
+					$line .= $k.'=>'.$wppa['queries'][$k].', ';
+					$gtot += $wppa['queries'][$k];
+				}
+			}
+			$line .= '<br />';
+			$line .= sprintf('Total queries attempted: %d, Cash hits: %d, equals %4.2f', $qtot+$gtot, $gtot, $gtot*100/($qtot+$gtot)).'%';
+			wppa_dbg_msg($line);
+//			ob_start();
+//			print_r($wppa['queries']);
+//			wppa_dbg_msg(ob_get_clean());
+			break;
+		default:
+			if ($wppa['debug']) if (!isset($wppa['queries'][$id])) $wppa['queries'][$id]=1;else $wppa['queries'][$id]++;
+			break;
+	}
 }

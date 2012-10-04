@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the non admin stuff
-* Version 4.7.12
+* Version 4.7.14
 *
 */
 
@@ -135,6 +135,7 @@ global $wppa_opt;
 			echo ('
 			</script>');
 		echo("\n<!-- end WPPA+ Footer data -->\n");
+		wppa_dbg_q('print');
 	}
 }
 
@@ -144,6 +145,7 @@ add_action('wp_head', 'wppa_kickoff', '100');
 function wppa_kickoff() {
 global $wppa;
 global $wppa_opt;
+global $wppa_locale;
 
 	echo("\n<!-- WPPA+ Runtime parameters -->\n");
 	
@@ -190,6 +192,7 @@ global $wppa_opt;
 		echo("\t".'wppaPleaseName = "'.__a('Please enter your name', 'wppa_theme').'";'."\n");
 		echo("\t".'wppaPleaseEmail = "'.__a('Please enter a valid email address', 'wppa_theme').'";'."\n");
 		echo("\t".'wppaPleaseComment = "'.__a('Please enter a comment', 'wppa_theme').'";'."\n");
+		if ( $wppa_opt['wppa_hide_when_empty'] ) echo("\t".'wppaHideWhenEmpty = true;'."\n");
 		
 		echo("\t".'wppaBGcolorNumbar = "'.$wppa_opt['wppa_bgcolor_numbar'].'";'."\n");
 		echo("\t".'wppaBcolorNumbar = "'.$wppa_opt['wppa_bcolor_numbar'].'";'."\n");
@@ -205,6 +208,7 @@ global $wppa_opt;
 		echo("\t".'wppaFontWeightNumbarActive = "'.$wppa_opt['wppa_fontweight_numbar_active'].'";'."\n");
 		
 		echo("\t".'wppaNumbarMax = "'.$wppa_opt['wppa_numbar_max'].'";'."\n");
+		if ($wppa_locale) echo("\t".'wppaLocale = "'.$wppa_locale.'";'."\n");
 		echo("\t".'wppaAjaxUrl = "'.admin_url('admin-ajax.php').'";'."\n");
 		if ($wppa_opt['wppa_next_on_callback']) echo("\t".'wppaNextOnCallback = true;'."\n");
 		else echo("\t".'wppaNextOnCallback = false;'."\n");
@@ -247,6 +251,7 @@ global $wppa_opt;
 		else ("\t".'wppaThumbSpaceAuto = false;'."\n");
 		echo ("\t".'wppaMagnifierCursor = "'.$wppa_opt['wppa_magnifier'].'";'."\n");
 		echo ("\t".'wppaArtMonkyLink = "'.$wppa_opt['wppa_art_monkey_link'].'";'."\n");
+		echo ("\t".'wppaShare = "'.$wppa_opt['wppa_sharetype'].'";'."\n");
 
 	echo("/* ]]> */\n");
 	echo("</script>\n");

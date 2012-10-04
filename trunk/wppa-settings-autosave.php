@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 4.7.13
+* Version 4.7.14
 *
 */
 
@@ -44,12 +44,22 @@ global $wppa_revno;
 							
 			// Must be here
 			case 'wppa_moveup':
-				$sequence = get_option('wppa_slide_order');
-				$indices = explode(',', $sequence);
-				$temp = $indices[$sub];
-				$indices[$sub] = $indices[$sub - '1'];
-				$indices[$sub - '1'] = $temp;
-				update_option('wppa_slide_order', implode(',', $indices));
+				if ( get_option('wppa_split_namedesc') == 'yes' ) {
+					$sequence = get_option('wppa_slide_order_split');
+					$indices = explode(',', $sequence);
+					$temp = $indices[$sub];
+					$indices[$sub] = $indices[$sub - '1'];
+					$indices[$sub - '1'] = $temp;
+					update_option('wppa_slide_order_split', implode(',', $indices));
+				}
+				else {
+					$sequence = get_option('wppa_slide_order');
+					$indices = explode(',', $sequence);
+					$temp = $indices[$sub];
+					$indices[$sub] = $indices[$sub - '1'];
+					$indices[$sub - '1'] = $temp;
+					update_option('wppa_slide_order', implode(',', $indices));
+				}
 				break;
 			// Should better be here
 			case 'wppa_setup':
@@ -756,6 +766,13 @@ global $wppa_revno;
 							$slug = 'wppa_show_full_desc';
 							$html = wppa_checkbox($slug);
 							wppa_setting($slug, '6', $name, $desc, $html, $help);
+							
+							$name = __('Hide when empty', 'wppa');
+							$desc = __('Hide the descriptionbox when empty.', 'wppa');
+							$help = '';
+							$slug = 'wppa_hide_when_empty';
+							$html = wppa_checkbox($slug);
+							wppa_setting($slug, '6.1', $name, $desc, $html, $help, 'hide_empty');
 
 							$name = __('Rating system', 'wppa');
 							$desc = __('Enable the rating system.', 'wppa');
@@ -1649,6 +1666,21 @@ global $wppa_revno;
 							$html = wppa_checkbox($slug);
 							$class = 'wppa_comment_';
 							wppa_setting($slug, '4', $name, $desc, $html, $help, $class);
+							
+							$name = __('Comment notify', 'wppa');
+							$desc = __('Select who must receive an e-mail notification of a new comment.', 'wppa');
+							$help = '';
+							$slug = 'wppa_comment_notify';
+							$options = array(__('--- None ---', 'wppa'), __('--- Admin ---', 'wppa'), __('--- Album owner ---'), __('--- Admin & Owner ---', 'wppa'));
+							$values = array('none', 'admin', 'owner', 'both');
+							$users = wppa_get_users();
+							foreach ($users as $usr) {
+								$options[] = $usr['display_name'];
+								$values[]  = $usr['ID'];
+							}							
+							$html = wppa_select($slug, $options, $values);
+							$class = 'wppa_comment_';
+							wppa_setting($slug, '5', $name, $desc, $html, $help, $class);
 							
 							wppa_setting_subheader('G', '1', __('Lightbox related settings. These settings have effect only when Table IX-A6 is set to wppa', 'wppa'));
 							
@@ -2767,42 +2799,85 @@ global $wppa_revno;
 
 							wppa_setting_subheader('E', '1', __('Slideshow elements sequence order settings', 'wppa'));
 							
-							$indexopt = get_option('wppa_slide_order');
-							$indexes  = explode(',', $indexopt);
-							$names    = array(
-								__('StartStop', 'wppa'), 
-								__('SlideFrame', 'wppa'), 
-								__('NameDesc', 'wppa'), 
-								__('Custom', 'wppa'), 
-								__('Rating', 'wppa'), 
-								__('FilmStrip', 'wppa'), 
-								__('Browsebar', 'wppa'), 
-								__('Comments', 'wppa'),
-								__('IPTC data', 'wppa'),
-								__('EXIF data', 'wppa'));
-							$enabled  = '<span style="color:green; float:right;">( '.__('Enabled', 'wppa');
-							$disabled = '<span style="color:orange; float:right;">( '.__('Disabled', 'wppa');
-							$descs = array(
-								__('Start/Stop & Slower/Faster navigation bar', 'wppa') . ( $wppa_opt['wppa_show_startstop_navigation'] == 'yes' ? $enabled : $disabled ) . ' II-B1 )</span>',
-								__('The Slide Frame', 'wppa') . '<span style="float:right;">'.__('( Always )', 'wppa').'</span>',
-								__('Photo Name & Description Box', 'wppa') . ( ( $wppa_opt['wppa_show_full_name'] == 'yes' || $wppa_opt['wppa_show_full_desc'] == 'yes' ) ? $enabled : $disabled ) .' II-B5,6 )</span>',
-								__('Custom Box', 'wppa') . ( $wppa_opt['wppa_custom_on'] == 'yes' ? $enabled : $disabled ).' II-B14 )</span>',
-								__('Rating Bar', 'wppa') . ( $wppa_opt['wppa_rating_on'] == 'yes' ? $enabled : $disabled ).' II-B7 )</span>',
-								__('Film Strip with embedded Start/Stop and Goto functionality', 'wppa') . ( $wppa_opt['wppa_filmstrip'] == 'yes' ? $enabled : $disabled ).' II-B3 )</span>',
-								__('Browse Bar with Photo X of Y counter', 'wppa') . ( $wppa_opt['wppa_show_browse_navigation'] == 'yes' ? $enabled : $disabled ).' II-B2 )</span>',
-								__('Comments Box', 'wppa') . ( $wppa_opt['wppa_show_comments'] == 'yes' ? $enabled : $disabled ).' II-B10 )</span>',
-								__('IPTC box', 'wppa') . ( $wppa_opt['wppa_show_iptc'] == 'yes' ? $enabled : $disabled ).' II-B17 )</span>',
-								__('EXIF box', 'wppa') . ( $wppa_opt['wppa_show_exif'] == 'yes' ? $enabled : $disabled ).' II-B18 )</span>'
-								);
-							$i = '0';
-							while ( $i < '10' ) {
-								$name = $names[$indexes[$i]];
-								$desc = $descs[$indexes[$i]];
-								$html = $i == '0' ? '&nbsp;' : wppa_doit_button(__('Move Up', 'wppa'), 'wppa_moveup', $i);
-								$help = '';
-								$slug = 'wppa_slide_order';
-								wppa_setting($slug, $indexes[$i]+1 , $name, $desc, $html, $help);
-								$i++;
+							if ( get_option('wppa_split_namedesc') == 'yes' ) {
+								$indexopt = get_option('wppa_slide_order_split');
+								$indexes  = explode(',', $indexopt);
+								$names    = array(
+									__('StartStop', 'wppa'), 
+									__('SlideFrame', 'wppa'), 
+									__('Name', 'wppa'), 
+									__('Desc', 'wppa'),
+									__('Custom', 'wppa'), 
+									__('Rating', 'wppa'), 
+									__('FilmStrip', 'wppa'), 
+									__('Browsebar', 'wppa'), 
+									__('Comments', 'wppa'),
+									__('IPTC data', 'wppa'),
+									__('EXIF data', 'wppa'));
+								$enabled  = '<span style="color:green; float:right;">( '.__('Enabled', 'wppa');
+								$disabled = '<span style="color:orange; float:right;">( '.__('Disabled', 'wppa');
+								$descs = array(
+									__('Start/Stop & Slower/Faster navigation bar', 'wppa') . ( $wppa_opt['wppa_show_startstop_navigation'] == 'yes' ? $enabled : $disabled ) . ' II-B1 )</span>',
+									__('The Slide Frame', 'wppa') . '<span style="float:right;">'.__('( Always )', 'wppa').'</span>',
+									__('Photo Name Box', 'wppa') . ( $wppa_opt['wppa_show_full_name'] == 'yes' ? $enabled : $disabled ) .' II-B5 )</span>',
+									__('Photo Description Box', 'wppa') . ( $wppa_opt['wppa_show_full_desc'] == 'yes' ? $enabled : $disabled ) .' II-B6 )</span>',
+									__('Custom Box', 'wppa') . ( $wppa_opt['wppa_custom_on'] == 'yes' ? $enabled : $disabled ).' II-B14 )</span>',
+									__('Rating Bar', 'wppa') . ( $wppa_opt['wppa_rating_on'] == 'yes' ? $enabled : $disabled ).' II-B7 )</span>',
+									__('Film Strip with embedded Start/Stop and Goto functionality', 'wppa') . ( $wppa_opt['wppa_filmstrip'] == 'yes' ? $enabled : $disabled ).' II-B3 )</span>',
+									__('Browse Bar with Photo X of Y counter', 'wppa') . ( $wppa_opt['wppa_show_browse_navigation'] == 'yes' ? $enabled : $disabled ).' II-B2 )</span>',
+									__('Comments Box', 'wppa') . ( $wppa_opt['wppa_show_comments'] == 'yes' ? $enabled : $disabled ).' II-B10 )</span>',
+									__('IPTC box', 'wppa') . ( $wppa_opt['wppa_show_iptc'] == 'yes' ? $enabled : $disabled ).' II-B17 )</span>',
+									__('EXIF box', 'wppa') . ( $wppa_opt['wppa_show_exif'] == 'yes' ? $enabled : $disabled ).' II-B18 )</span>'
+									);
+								$i = '0';
+								while ( $i < '11' ) {
+									$name = $names[$indexes[$i]];
+									$desc = $descs[$indexes[$i]];
+									$html = $i == '0' ? '&nbsp;' : wppa_doit_button(__('Move Up', 'wppa'), 'wppa_moveup', $i);
+									$help = '';
+									$slug = 'wppa_slide_order';
+									wppa_setting($slug, $indexes[$i]+1 , $name, $desc, $html, $help);
+									$i++;
+								}
+							}
+							else {
+								$indexopt = get_option('wppa_slide_order');
+								$indexes  = explode(',', $indexopt);
+								$names    = array(
+									__('StartStop', 'wppa'), 
+									__('SlideFrame', 'wppa'), 
+									__('NameDesc', 'wppa'), 
+									__('Custom', 'wppa'), 
+									__('Rating', 'wppa'), 
+									__('FilmStrip', 'wppa'), 
+									__('Browsebar', 'wppa'), 
+									__('Comments', 'wppa'),
+									__('IPTC data', 'wppa'),
+									__('EXIF data', 'wppa'));
+								$enabled  = '<span style="color:green; float:right;">( '.__('Enabled', 'wppa');
+								$disabled = '<span style="color:orange; float:right;">( '.__('Disabled', 'wppa');
+								$descs = array(
+									__('Start/Stop & Slower/Faster navigation bar', 'wppa') . ( $wppa_opt['wppa_show_startstop_navigation'] == 'yes' ? $enabled : $disabled ) . ' II-B1 )</span>',
+									__('The Slide Frame', 'wppa') . '<span style="float:right;">'.__('( Always )', 'wppa').'</span>',
+									__('Photo Name & Description Box', 'wppa') . ( ( $wppa_opt['wppa_show_full_name'] == 'yes' || $wppa_opt['wppa_show_full_desc'] == 'yes' ) ? $enabled : $disabled ) .' II-B5,6 )</span>',
+									__('Custom Box', 'wppa') . ( $wppa_opt['wppa_custom_on'] == 'yes' ? $enabled : $disabled ).' II-B14 )</span>',
+									__('Rating Bar', 'wppa') . ( $wppa_opt['wppa_rating_on'] == 'yes' ? $enabled : $disabled ).' II-B7 )</span>',
+									__('Film Strip with embedded Start/Stop and Goto functionality', 'wppa') . ( $wppa_opt['wppa_filmstrip'] == 'yes' ? $enabled : $disabled ).' II-B3 )</span>',
+									__('Browse Bar with Photo X of Y counter', 'wppa') . ( $wppa_opt['wppa_show_browse_navigation'] == 'yes' ? $enabled : $disabled ).' II-B2 )</span>',
+									__('Comments Box', 'wppa') . ( $wppa_opt['wppa_show_comments'] == 'yes' ? $enabled : $disabled ).' II-B10 )</span>',
+									__('IPTC box', 'wppa') . ( $wppa_opt['wppa_show_iptc'] == 'yes' ? $enabled : $disabled ).' II-B17 )</span>',
+									__('EXIF box', 'wppa') . ( $wppa_opt['wppa_show_exif'] == 'yes' ? $enabled : $disabled ).' II-B18 )</span>'
+									);
+								$i = '0';
+								while ( $i < '10' ) {
+									$name = $names[$indexes[$i]];
+									$desc = $descs[$indexes[$i]];
+									$html = $i == '0' ? '&nbsp;' : wppa_doit_button(__('Move Up', 'wppa'), 'wppa_moveup', $i);
+									$help = '';
+									$slug = 'wppa_slide_order';
+									wppa_setting($slug, $indexes[$i]+1 , $name, $desc, $html, $help);
+									$i++;
+								}
 							}
 							
 							$name = __('Swap Namedesc', 'wppa');
@@ -2810,7 +2885,15 @@ global $wppa_revno;
 							$help = '';
 							$slug = 'wppa_swap_namedesc';
 							$html = wppa_checkbox($slug);
-							wppa_setting($slug, '11', $name, $desc, $html, $help);
+							$class = 'swap_namedesc';
+							wppa_setting($slug, '12', $name, $desc, $html, $help, $class);
+							
+							$name = __('Split Name and Desc', 'wppa');
+							$desc = __('Put Name and Description in separate boxes', 'wppa');
+							$help = '';
+							$slug = 'wppa_split_namedesc';
+							$html = wppa_checkbox($slug,'alert(\''.__('Please reload this page after the green checkmark appears!', 'wppa').'\');wppaCheckSplitNamedesc();');
+							wppa_setting($slug, '13', $name, $desc, $html, $help);
 							
 							wppa_setting_subheader('F', '1', __('Other plugins settings', 'wppa'));
 							
@@ -2827,6 +2910,16 @@ global $wppa_revno;
 							$slug = 'wppa_cp_points_rating';
 							$html = wppa_input($slug, '50px', '', __('points per vote', 'wppa'));
 							wppa_setting($slug, '2', $name, $desc, $html, $help);
+							
+							$name = __('Share type', 'wppa');
+							$desc = __('Select type of social media photo share link.', 'wppa');
+							$help = '';
+							$slug = 'wppa_sharetype';
+							$options = array(__('--- none ---', 'wppa'), __('The page with the photo', 'wppa'), __('The plain photofile', 'wppa'));
+							$values = array('none', 'site', 'file');
+							$html = wppa_select($slug, $options, $values);
+							wppa_setting($slug, '3', $name, $desc, $html, $help);
+
 
 							?>		
 			
