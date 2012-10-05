@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all comments
-* Version 4.7.14
+* Version 4.7.15
 *
 */
 
@@ -26,8 +26,11 @@ global $wppa_opt;
 					<br />
 				</div>
 				<h2><?php _e('WP Photo Album Plus Edit Comment', 'wppa'); ?></h2>
-								
-				<form action="<?php echo(wppa_dbg_url(get_admin_url().'admin.php?page=wppa_manage_comments')); if (isset($_GET['compage'])) echo('&compage='.$_GET['compage']) ?>" method="post">
+				<?php $action = wppa_dbg_url(get_admin_url().'admin.php?page=wppa_manage_comments');
+					if ( isset($_GET['compage']) ) $action .= '&compage='.$_GET['compage'];
+					if ( isset($_GET['commentid']) ) $action .= '&commentid='.$_GET['commentid'];
+				?>
+				<form action="<?php echo $action ?>" method="post">
 		
 					<?php wp_nonce_field('$wppa_nonce', WPPA_NONCE); ?>
 					<input type="hidden" name="edit_comment" value="<?php echo($comment['id']) ?>" />
@@ -178,68 +181,77 @@ global $wppa_opt;
 					<?php } ?>
 				</tbody>
 			</table>
-			<form action="<?php echo(wppa_dbg_url(get_admin_url().'admin.php?page=wppa_manage_comments')) ?>" method="post">
+			<?php $action = wppa_dbg_url(get_admin_url().'admin.php?page=wppa_manage_comments');
+					if ( isset($_REQUEST['commentid']) ) $action .= '&commentid='.$_REQUEST['commentid'];
+			?>
+			<form action="<?php echo $action ?>" method="post">
 		
-				<?php wp_nonce_field('$wppa_nonce', WPPA_NONCE); ?>
-				<?php $wppa_comadmin_linkpage = get_option('wppa_comadmin_linkpage', '0');
-				_e('Linkpage:', 'wppa'); ?>
-				<select name="wppa_comadmin_linkpage">
-					<option value="0" <?php if ($wppa_comadmin_linkpage=='0') echo 'selected="selected"' ?> disabled="disabled" ><?php _e('--- Please select a page ---', 'wppa') ?></option>
-					<?php
-						$query = $wpdb->prepare( "SELECT ID, post_title, post_content FROM " . $wpdb->posts . " WHERE post_type = 'page' AND post_status = 'publish' ORDER BY post_title ASC" );
-						$pages = $wpdb->get_results ($query, 'ARRAY_A');
-						if ($pages) {
-							foreach ($pages as $page) {
-								if (stripos($page['post_content'], '%%wppa%%') !== false) {
-									if ($wppa_comadmin_linkpage == $page['ID']) $sel = 'selected="selected"';
-									else $sel = '';
-									echo '<option value="'.$page['ID'].'" '.$sel.'>'.__($page['post_title']).'</option>';
-								}
-							}
-						} ?>
-				</select>
-				<?php _e('You can see the photo and all its comments on the selected page by clicking on the thumbnail image', 'wppa'); ?>
-				<?php $comment_show = get_option('wppa_comadmin_show') ?>
-				<p>
-				<?php _e('Display status:', 'wppa') ?>
-				<select name="wppa_comadmin_show">
-					<option value="all" <?php if ($comment_show == 'all') echo('selected="selected"') ?>><?php _e('all', 'wppa') ?></option>
-					<option value="pending" <?php if ($comment_show == 'pending') echo('selected="selected"') ?>><?php _e('pending', 'wppa') ?></option>
-					<option value="approved" <?php if ($comment_show == 'approved') echo('selected="selected"') ?>><?php _e('approved', 'wppa') ?></option>
-					<option value="spam" <?php if ($comment_show == 'spam') echo('selected="selected"') ?>><?php _e('spam', 'wppa') ?></option>
-				</select>
-				<?php $comment_order = get_option('wppa_comadmin_order', 'wppa') ?>
-				<?php _e('Display order:', 'wppa') ?>
-				<select name="wppa_comadmin_order">
-					<option value="timestamp" <?php if ($comment_order == 'timestamp') echo('selected="selected"') ?>><?php _e('timestamp', 'wppa') ?></option>
-					<option value="photo" <?php if ($comment_order == 'photo') echo('selected="selected"') ?>><?php _e('photo', 'wppa') ?></option>
-				</select>
-				<?php _e('Bulk action:', 'wppa') ?>
-				<select name="bulkaction">
-					<option value=""><?php  ?></option>
-					<option value="approveall"><?php _e('Approve all pending', 'wppa') ?></option>
-					<option value="spamall"><?php _e('Move all pending to spam', 'wppa') ?></option>
-					<option value="delspam"><?php _e('Delete all spam', 'wppa') ?></option>
-				</select>
-				</p>
 				<?php 
+				wp_nonce_field('$wppa_nonce', WPPA_NONCE);
+				$wppa_comadmin_linkpage = get_option('wppa_comadmin_linkpage', '0');
+				if ( ! isset($_REQUEST['commentid']) ) {
+					_e('Linkpage:', 'wppa'); ?>
+					<select name="wppa_comadmin_linkpage">
+						<option value="0" <?php if ($wppa_comadmin_linkpage=='0') echo 'selected="selected"' ?> disabled="disabled" ><?php _e('--- Please select a page ---', 'wppa') ?></option>
+						<?php
+							$query = $wpdb->prepare( "SELECT ID, post_title, post_content FROM " . $wpdb->posts . " WHERE post_type = 'page' AND post_status = 'publish' ORDER BY post_title ASC" );
+							$pages = $wpdb->get_results ($query, 'ARRAY_A');
+							if ($pages) {
+								foreach ($pages as $page) {
+									if (stripos($page['post_content'], '%%wppa%%') !== false) {
+										if ($wppa_comadmin_linkpage == $page['ID']) $sel = 'selected="selected"';
+										else $sel = '';
+										echo '<option value="'.$page['ID'].'" '.$sel.'>'.__($page['post_title']).'</option>';
+									}
+								}
+							} ?>
+					</select>
+					<?php _e('You can see the photo and all its comments on the selected page by clicking on the thumbnail image', 'wppa'); ?>
+					<?php $comment_show = get_option('wppa_comadmin_show') ?>
+					<p>
+					<?php _e('Display status:', 'wppa') ?>
+					<select name="wppa_comadmin_show">
+						<option value="all" <?php if ($comment_show == 'all') echo('selected="selected"') ?>><?php _e('all', 'wppa') ?></option>
+						<option value="pending" <?php if ($comment_show == 'pending') echo('selected="selected"') ?>><?php _e('pending', 'wppa') ?></option>
+						<option value="approved" <?php if ($comment_show == 'approved') echo('selected="selected"') ?>><?php _e('approved', 'wppa') ?></option>
+						<option value="spam" <?php if ($comment_show == 'spam') echo('selected="selected"') ?>><?php _e('spam', 'wppa') ?></option>
+					</select>
+					<?php $comment_order = get_option('wppa_comadmin_order', 'wppa') ?>
+					<?php _e('Display order:', 'wppa') ?>
+					<select name="wppa_comadmin_order">
+						<option value="timestamp" <?php if ($comment_order == 'timestamp') echo('selected="selected"') ?>><?php _e('timestamp', 'wppa') ?></option>
+						<option value="photo" <?php if ($comment_order == 'photo') echo('selected="selected"') ?>><?php _e('photo', 'wppa') ?></option>
+					</select>
+					<?php _e('Bulk action:', 'wppa') ?>
+					<select name="bulkaction">
+						<option value=""><?php  ?></option>
+						<option value="approveall"><?php _e('Approve all pending', 'wppa') ?></option>
+						<option value="spamall"><?php _e('Move all pending to spam', 'wppa') ?></option>
+						<option value="delspam"><?php _e('Delete all spam', 'wppa') ?></option>
+					</select>
+					</p><?php 
+				}
 				$pagsize = '8'; 
 				if ( isset($_REQUEST['commentid']) ) {	// Moderate link from email
 					$where = " WHERE id=".$_REQUEST['commentid'];
+					$order = '';
+					$limit = '';
 				}
-				elseif ($comment_show != 'all') {
-					$where = " WHERE status='".$comment_show."'";
+				else {
+					if ($comment_show != 'all') {
+						$where = " WHERE status='".$comment_show."'";
+					}
+					else $where = '';
+					if ($comment_order == 'timestamp') {
+						$order = " ORDER BY ".$comment_order." DESC";
+					}
+					else $order = " ORDER BY ".$comment_order;
+					if (isset($_GET['compage'])) {
+						$offset = ($_GET['compage'] - 1) * $pagsize;
+						$limit = " LIMIT ".$offset.",".$pagsize;
+					}
+					else $limit = ' LIMIT 0,'.$pagsize;
 				}
-				else $where = '';
-				if ($comment_order == 'timestamp') {
-					$order = " ORDER BY ".$comment_order." DESC";
-				}
-				else $order = " ORDER BY ".$comment_order;
-				if (isset($_GET['compage'])) {
-					$offset = ($_GET['compage'] - 1) * $pagsize;
-					$limit = " LIMIT ".$offset.",".$pagsize;
-				}
-				else $limit = ' LIMIT 0,'.$pagsize;
 
 				$c = $wpdb->get_results($wpdb->prepare( "SELECT id FROM ".WPPA_COMMENTS.$where), "ARRAY_A" );
 				$nitems = count($c);
@@ -324,7 +336,8 @@ global $wppa_opt;
 										</select>
 									</td>
 									<?php $url = wppa_dbg_url(get_admin_url().'admin.php?page=wppa_manage_comments&tab=edit&edit_id='.$com['id']);
-										if (isset($_GET['compage'])) $url .= '&compage='.$_GET['compage']; ?>
+										if ( isset($_GET['compage'])) $url .= '&compage='.$_GET['compage']; 
+										if ( isset($_GET['commentid']) ) $url .= '&commentid='.$_GET['commentid']; ?>
 									<?php $delurl = wppa_dbg_url(get_admin_url().'admin.php?page=wppa_manage_comments&tab=delete&delete_id='.$com['id']) ?>
 									<td style="color:green; cursor:pointer;" onclick="document.location='<?php echo($url) ?>'"><b><?php _e('Edit', 'wppa') ?></b></td>
 									<td style="color:red; cursor:pointer;" onclick="if (confirm('<?php _e('Are you sure you want to delete this comment?', 'wppa') ?>')) document.location = '<?php echo($delurl) ?>';"><b><?php _e('Delete', 'wppa') ?></b></td>

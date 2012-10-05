@@ -2,11 +2,11 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 4.7.14
+* version 4.7.15
 *
 */
 global $wppa_api_version;
-$wppa_api_version = '4-7-14-000';
+$wppa_api_version = '4-7-15-000';
 // Initialize globals and option settings
 function wppa_initialize_runtime($force = false) {
 global $wppa;
@@ -202,6 +202,11 @@ global $wppa_initruntimetime;
 						'wppa_ovl_thumb_desc'				=> '',
 						'wppa_ovl_potd_name'				=> '',
 						'wppa_ovl_potd_desc'				=> '',
+						'wppa_ovl_sphoto_name'				=> '',
+						'wppa_ovl_sphoto_desc'				=> '',
+						'wppa_ovl_mphoto_name'				=> '',
+						'wppa_ovl_mphoto_desc'				=> '',
+
 						'wppa_ovl_show_counter'				=> '',
 
 						// Table III: Backgrounds

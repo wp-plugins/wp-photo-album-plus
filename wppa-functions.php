@@ -3,12 +3,12 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions and API modules
-* Version 4.7.14
+* Version 4.7.15
 *
 */
 /* Moved to wppa-common-functions.php:
 global $wppa_api_version;
-$wppa_api_version = '4-7-14-000';
+$wppa_api_version = '4-7-15-000';
 */
 
 if ( ! defined( 'ABSPATH' ) )
@@ -1504,32 +1504,35 @@ global $wppa_done;
 						cp_alterPoints(cp_currentUser(), $wppa_opt['wppa_cp_points_comment']);
 					}
 					// SEND EMAILS
+					$subj = '['.get_bloginfo('name').'] '.__('Comment on photo:', 'wppa_theme').' '.wppa_get_photo_name($id);
+					$usr  = $user;
+					if ( is_user_logged_in() ) {
+						global $current_user;
+						get_currentuserinfo();
+						$usr = $current_user->display_name;
+					}
+					$mess = $usr.' <'.$email.'> '.__('wrote on photo', 'wppa_theme').' '.wppa_get_photo_name($id).":\n\n".$comment."\n\n";
+					$modl = "\n\n".'Moderate link: '."\n".get_admin_url().'admin.php?page=wppa_manage_comments&commentid='.$key;
+					$from    = "From: ".$email;
+					
 					if ( is_numeric($wppa_opt['wppa_comment_notify']) ) {	// single user
 						// Mail specific user
-						$user    = get_userdata($wppa_opt['wppa_comment_notify']);
-						$to      = $user->user_email;
-						$subject = '['.get_bloginfo('name').'] '.__('Comment on photo:', 'wppa_theme').' '.wppa_get_photo_name($id);
-						$message = $comment;
-						$message .= "\n\n".__('You receive this email as you are assigned to moderate', 'wpp_theme');
-						if ( user_can( $user, 'wppa_comments' ) ) {	// user can moderate
-							$message .= "\n\n".'Moderate link: '."\n";
-							$message .= get_admin_url().'admin.php?page=wppa_manage_comments&commentid='.$key;
-						}
-						$from    = "From: ".$email;
-						mail( $to , $subject , $message , $from, '' );
+						$moduser = get_userdata($wppa_opt['wppa_comment_notify']);
+						$to      = $moduser->user_email;
+						
+						$message = $mess.__('You receive this email as you are assigned to moderate', 'wpp_theme');
+						if ( user_can( $moduser, 'wppa_comments' ) ) $message .= $modl;
+						
+						mail( $to , $subj , $message , $from, '' );
 					}
 					if ( $wppa_opt['wppa_comment_notify'] == 'admin' || $wppa_opt['wppa_comment_notify'] == 'both' ) {
 						// Mail admin
-						$to      = get_bloginfo('admin_email'); //$userdata->user_email;
-						$subject = '['.get_bloginfo('name').'] '.__('Comment on photo:', 'wppa_theme').' '.wppa_get_photo_name($id);
-						$message = $comment;
-						$message .= "\n\n".__('You receive this email as administrator of the site', 'wpp_theme');
-						if ( user_can( $user, 'wppa_comments' ) ) {	// user can moderate, always true for admin
-							$message .= "\n\n".'Moderate link: '."\n";
-							$message .= get_admin_url().'admin.php?page=wppa_manage_comments&commentid='.$key;
-						}
-						$from    = "From: ".$email;
-						mail( $to , $subject , $message , $from, '' );
+						$to      = get_bloginfo('admin_email');
+						
+						$message = $mess.__('You receive this email as administrator of the site', 'wpp_theme');
+						$message .= $modl;
+						
+						mail( $to , $subj , $message , $from, '' );
 					}
 					if ( $wppa_opt['wppa_comment_notify'] == 'owner' || $wppa_opt['wppa_comment_notify'] == 'both' ) {
 						// Mail owner
@@ -1537,17 +1540,13 @@ global $wppa_done;
 						$owner   = $wpdb->get_var($wpdb->prepare("SELECT `owner` FROM `".WPPA_ALBUMS."` WHERE `id` = %d", $alb));
 						if ( $owner == '--- public ---' ) $owner = 'admin';
 						if ( $owner != 'admin' || $wppa_opt['wppa_comment_notify'] != 'both' ) { // Prevent dup to admin
-							$user    = get_user_by('login', $owner);
-							$to      = $user->user_email;
-							$subject = '['.get_bloginfo('name').'] '.__('Comment on photo:', 'wppa_theme').' '.wppa_get_photo_name($id);
-							$message = $comment;
-							$message .= "\n\n".__('You receive this email as owner of the album', 'wpp_theme');
-							if ( user_can( $user, 'wppa_comments' ) ) {	// user can moderate
-								$message .= "\n\n".'Moderate link: '."\n";
-								$message .= get_admin_url().'admin.php?page=wppa_manage_comments&commentid='.$key;
-							}
-							$from    = "From: ".$email;
-							mail( $to , $subject , $message , $from, '' );
+							$moduser = get_user_by('login', $owner);
+							$to      = $moduser->user_email;
+							
+							$message = $mess.__('You receive this email as owner of the album', 'wpp_theme');
+							if ( user_can( $moduser, 'wppa_comments' ) ) $message .= $modl;
+							
+							mail( $to , $subj , $message , $from, '' );
 						}
 					}
 					// Notyfy user
@@ -4074,7 +4073,8 @@ global $wppa_opt;
 		$link = wppa_get_imglnk_a('mphoto', $wppa['single_photo']);
 		if ($link) {
 			if ( $link['is_lightbox'] ) {
-				$wppa['out'] .= wppa_nltab('+').'<a href="'.$link['url'].'" title="'.$link['title'].'" rel="'.$wppa_opt['wppa_lightbox_name'].'" target="'.$link['target'].'" class="thumb-img" id="a-'.$wppa['single_photo'].'-'.$wppa['master_occur'].'">';
+				$lbtitle = wppa_get_lbtitle('mphoto', $wppa['single_photo']);
+				$wppa['out'] .= wppa_nltab('+').'<a href="'.$link['url'].'" title="'.$lbtitle.'" rel="'.$wppa_opt['wppa_lightbox_name'].'" target="'.$link['target'].'" class="thumb-img" id="a-'.$wppa['single_photo'].'-'.$wppa['master_occur'].'">';
 			}
 			else {
 				$wppa['out'] .= wppa_nltab('+').'<a href="'.$link['url'].'" title="'.$link['title'].'" target="'.$link['target'].'" class="thumb-img" id="a-'.$wppa['single_photo'].'-'.$wppa['master_occur'].'">';
@@ -4136,7 +4136,8 @@ global $wppa_opt;
 		$link = wppa_get_imglnk_a('sphoto', $wppa['single_photo']);
 		if ($link) {
 			if ( $link['is_lightbox'] ) {
-				$wppa['out'] .= wppa_nltab('+').'<a href="'.$link['url'].'" title="'.$link['title'].'" rel="'.$wppa_opt['wppa_lightbox_name'].'" target="'.$link['target'].'" class="thumb-img" id="a-'.$wppa['single_photo'].'-'.$wppa['master_occur'].'" >';
+				$lbtitle = wppa_get_lbtitle('sphoto', $wppa['single_photo']);
+				$wppa['out'] .= wppa_nltab('+').'<a href="'.$link['url'].'" title="'.$lbtitle.'" rel="'.$wppa_opt['wppa_lightbox_name'].'" target="'.$link['target'].'" class="thumb-img" id="a-'.$wppa['single_photo'].'-'.$wppa['master_occur'].'" >';
 			}
 			else {
 				$wppa['out'] .= wppa_nltab('+').'<a href="'.$link['url'].'" title="'.$link['title'].'" target="'.$link['target'].'" class="thumb-img" id="a-'.$wppa['single_photo'].'-'.$wppa['master_occur'].'" >';

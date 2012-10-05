@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 4.7.14
+* Version 4.7.15
 *
 */
 
@@ -1083,13 +1083,41 @@ global $wppa_revno;
 							$slug = 'wppa_ovl_potd_desc';
 							$html = wppa_checkbox($slug);
 							wppa_setting($slug, '8', $name, $desc, $html, $help);
+
+							$name = __('Overlay sphoto name', 'wppa');
+							$desc = __('Show the photos name if from a single photo.', 'wppa');
+							$help = esc_js(__('Shows the name on a lightbox display when initiated from a single photo.', 'wppa'));
+							$slug = 'wppa_ovl_sphoto_name';
+							$html = wppa_checkbox($slug);
+							wppa_setting($slug, '9', $name, $desc, $html, $help);
+							
+							$name = __('Overlay sphoto desc', 'wppa');
+							$desc = __('Show description if from from a single photo.', 'wppa');
+							$help = esc_js(__('Shows the photos description on a lightbox display when initiated from a single photo.', 'wppa'));
+							$slug = 'wppa_ovl_sphoto_desc';
+							$html = wppa_checkbox($slug);
+							wppa_setting($slug, '10', $name, $desc, $html, $help);
+
+							$name = __('Overlay mphoto name', 'wppa');
+							$desc = __('Show the photos name if from a single media style photo.', 'wppa');
+							$help = esc_js(__('Shows the name on a lightbox display when initiated from a single media style photo.', 'wppa'));
+							$slug = 'wppa_ovl_mphoto_name';
+							$html = wppa_checkbox($slug);
+							wppa_setting($slug, '11', $name, $desc, $html, $help);
+							
+							$name = __('Overlay mphoto desc', 'wppa');
+							$desc = __('Show description if from from a media style photo.', 'wppa');
+							$help = esc_js(__('Shows the photos description on a lightbox display when initiated from a single media style photo.', 'wppa'));
+							$slug = 'wppa_ovl_mphoto_desc';
+							$html = wppa_checkbox($slug);
+							wppa_setting($slug, '12', $name, $desc, $html, $help);
 							
 							$name = __('Overlay show counter', 'wppa');
 							$desc = __('Show the x/y counter below the image.', 'wppa');
 							$help = '';
 							$slug = 'wppa_ovl_show_counter';
 							$html = wppa_checkbox($slug);
-							wppa_setting($slug, '9', $name, $desc, $html, $help);
+							wppa_setting($slug, '99', $name, $desc, $html, $help);
 							
 
 							?>

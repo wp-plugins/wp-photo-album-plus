@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 4.7.14
+* Version 4.7.15
 *
 */
 
@@ -457,6 +457,10 @@ Hide Camera info
 						'wppa_ovl_thumb_desc'				=> 'no',
 						'wppa_ovl_potd_name'				=> 'yes',
 						'wppa_ovl_potd_desc'				=> 'no',
+						'wppa_ovl_sphoto_name'				=> 'yes',
+						'wppa_ovl_sphoto_desc'				=> 'no',
+						'wppa_ovl_mphoto_name'				=> 'yes',
+						'wppa_ovl_mphoto_desc'				=> 'no',
 						'wppa_ovl_show_counter'				=> 'yes',
 
 						// Table III: Backgrounds

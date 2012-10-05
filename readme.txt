@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile
-Version: 4.7.14
+Version: 4.7.15
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -155,6 +155,18 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 4.7.15 =
+
+= Bug Fixes =
+
+* Admin did not always get a moderate link on a comment notification email. Fixed.
+
+= Other changes =
+
+* Table II-F has been expanded with settings for single and single media type photos.
+* Cosmetic changes to the comment admin page while moderating comment from email notification.
+* cosmetic changes to the comment notification email.
 
 = 4.7.14 =
 
