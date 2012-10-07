@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: wppa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-09-26 14:09+0100\n"
-"PO-Revision-Date: 2012-09-26 14:09+0100\n"
+"PO-Revision-Date: 2012-10-06 16:40+0100\n"
 "Last-Translator: J.N. Breetvelt <OpaJaap@OpaJaap.nl>\n"
 "Language-Team: oVa <ova13lastar@gmail.com>\n"
 "Language: fr_FR\n"
@@ -48,7 +48,7 @@ msgstr "Photo du jour"
 
 #: wppa-adminbar.php:82
 msgid "Comments"
-msgstr "%d commentaires"
+msgstr "Commentaires"
 
 #: wppa-adminbar.php:89
 msgid "Help & Info"

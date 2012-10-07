@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 4.7.15
+* Version 4.7.16
 *
 */
 
@@ -1117,7 +1117,14 @@ global $wppa_revno;
 							$help = '';
 							$slug = 'wppa_ovl_show_counter';
 							$html = wppa_checkbox($slug);
-							wppa_setting($slug, '99', $name, $desc, $html, $help);
+							wppa_setting($slug, '90', $name, $desc, $html, $help);
+							
+							$name = __('Show Zoom in', 'wppa');
+							$desc = __('Display tooltip "Zoom in" along with the magnifier cursor.', 'wppa');
+							$help = '';
+							$slug = 'wppa_show_zoomin';
+							$html = wppa_checkbox($slug);
+							wppa_setting($slug, '91', $name, $desc, $html, $help);
 							
 
 							?>
