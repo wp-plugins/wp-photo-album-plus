@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 4.7.15
+* Version 4.7.16
 *
 */
 
@@ -462,6 +462,7 @@ Hide Camera info
 						'wppa_ovl_mphoto_name'				=> 'yes',
 						'wppa_ovl_mphoto_desc'				=> 'no',
 						'wppa_ovl_show_counter'				=> 'yes',
+						'wppa_show_zoomin'					=> 'yes',
 
 						// Table III: Backgrounds
 						'wppa_bgcolor_even' 			=> '#eeeeee',
