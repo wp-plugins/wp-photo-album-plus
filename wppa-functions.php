@@ -3,12 +3,12 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions and API modules
-* Version 4.7.16
+* Version 4.7.17
 *
 */
 /* Moved to wppa-common-functions.php:
 global $wppa_api_version;
-$wppa_api_version = '4-7-16-000';
+$wppa_api_version = '4-7-17-000';
 */
 
 if ( ! defined( 'ABSPATH' ) )
@@ -1670,7 +1670,11 @@ global $wppa_first_comment_html;
 								$result .= '<div class="com_avatar">'.$avt.'</div>';
 							}
 						$result .= '</td>';
-						$result .= '<td class="wppa-box-text wppa-td" style="width:70%; word-wrap:break-word; border-width: 0 0 0 0;'.__wcs('wppa-box-text').__wcs('wppa-td').'" ><textarea class="wppa-comment-textarea" readonly="readonly" style="background-color:transparent; width:100%; height:90px; overflow:auto; word-wrap:break-word;'.__wcs('wppa-box-text').__wcs('wppa-td').'" >'.html_entity_decode(esc_js(stripslashes(convert_smilies($comment['comment'])))).'</textarea>';
+						$txtwidth = floor( wppa_get_container_width() * 0.7 ).'px';
+						$result .= '<td class="wppa-box-text wppa-td" style="width:70%; word-wrap:break-word; border-width: 0 0 0 0;'.__wcs('wppa-box-text').__wcs('wppa-td').'" >'.
+										'<p class="wppa-comment-textarea-'.$wppa['master_occur'].'" style="margin:0; background-color:transparent; width:'.$txtwidth.'; height:90px; overflow:auto; word-wrap:break-word;'.__wcs('wppa-box-text').__wcs('wppa-td').'" >'.
+											html_entity_decode(esc_js(stripslashes(convert_smilies($comment['comment'])))).
+										'</p>';
 						if ($comment['status'] == 'pending' && $comment['user'] == $wppa['comment_user']) {
 							$result .= '<br /><span style="color:red; font-size:9px;" >'.__a('Awaiting moderation', 'wppa_theme').'</span>';
 						}

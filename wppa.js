@@ -2,7 +2,7 @@
 //
 // conatins slideshow, theme, ajax and lightbox code
 //
-// Version 4.7.14
+// Version 4.7.17
 
 // Part 1: Slideshow
 //
@@ -1202,6 +1202,9 @@ function _wppaDoAutocol(mocc) {
 	
 	// Slide
 	wppaFormatSlide(mocc);
+	
+	// Comments
+	jQuery(".wppa-comment-textarea-"+mocc).css('width',w * 0.7);
 	
 	// Filmstrip
 	wppaFilmStripLength[mocc] = w - wppaFilmStripAreaDelta[mocc];
