@@ -1673,14 +1673,16 @@ global $wppa_first_comment_html;
 						$txtwidth = floor( wppa_get_container_width() * 0.7 ).'px';
 						$result .= '<td class="wppa-box-text wppa-td" style="width:70%; word-wrap:break-word; border-width: 0 0 0 0;'.__wcs('wppa-box-text').__wcs('wppa-td').'" >'.
 										'<p class="wppa-comment-textarea-'.$wppa['master_occur'].'" style="margin:0; background-color:transparent; width:'.$txtwidth.'; height:90px; overflow:auto; word-wrap:break-word;'.__wcs('wppa-box-text').__wcs('wppa-td').'" >'.
-											html_entity_decode(esc_js(stripslashes(convert_smilies($comment['comment'])))).
-										'</p>';
-						if ($comment['status'] == 'pending' && $comment['user'] == $wppa['comment_user']) {
-							$result .= '<br /><span style="color:red; font-size:9px;" >'.__a('Awaiting moderation', 'wppa_theme').'</span>';
-						}
-						if ($comment['status'] == 'spam' && $comment['user'] == $wppa['comment_user']) {
-							$result .= '<br /><span style="color:red; font-size:9px;" >'.__a('Marked as spam', 'wppa_theme').'</span>';
-						}
+											html_entity_decode(esc_js(stripslashes(convert_smilies($comment['comment']))));
+										
+											if ($comment['status'] == 'pending' && $comment['user'] == $wppa['comment_user']) {
+												$result .= '<br /><span style="color:red; font-size:9px;" >'.__a('Awaiting moderation', 'wppa_theme').'</span>';
+											}
+											if ($comment['status'] == 'spam' && $comment['user'] == $wppa['comment_user']) {
+												$result .= '<br /><span style="color:red; font-size:9px;" >'.__a('Marked as spam', 'wppa_theme').'</span>';
+											}
+											
+											$result .= '</p>';
 						$result .= '</td>';
 					$result .= '</tr>';
 					$result .= '<tr><td colspan="2" style="padding:0"><hr style="background-color:'.$color.'; margin:0;" /></td></tr>';
