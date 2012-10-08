@@ -1670,14 +1670,14 @@ global $wppa_first_comment_html;
 								$result .= '<div class="com_avatar">'.$avt.'</div>';
 							}
 						$result .= '</td>';
-						$result .= '<td class="wppa-box-text wppa-td" style="width:70%; word-wrap:break-word; border-width: 0 0 0 0;'.__wcs('wppa-box-text').__wcs('wppa-td').'" ><textarea class="wppa-comment-textarea" readonly="readonly" style="background-color:transparent; width:100%; height:90px; overflow:auto; word-wrap:break-word;'.__wcs('wppa-box-text').__wcs('wppa-td').'" >'.html_entity_decode(esc_js(stripslashes(convert_smilies($comment['comment']))));
+						$result .= '<td class="wppa-box-text wppa-td" style="width:70%; word-wrap:break-word; border-width: 0 0 0 0;'.__wcs('wppa-box-text').__wcs('wppa-td').'" ><textarea class="wppa-comment-textarea" readonly="readonly" style="background-color:transparent; width:100%; height:90px; overflow:auto; word-wrap:break-word;'.__wcs('wppa-box-text').__wcs('wppa-td').'" >'.html_entity_decode(esc_js(stripslashes(convert_smilies($comment['comment'])))).'</textarea>';
 						if ($comment['status'] == 'pending' && $comment['user'] == $wppa['comment_user']) {
 							$result .= '<br /><span style="color:red; font-size:9px;" >'.__a('Awaiting moderation', 'wppa_theme').'</span>';
 						}
 						if ($comment['status'] == 'spam' && $comment['user'] == $wppa['comment_user']) {
 							$result .= '<br /><span style="color:red; font-size:9px;" >'.__a('Marked as spam', 'wppa_theme').'</span>';
 						}
-						$result .= '</textarea></td>';
+						$result .= '</td>';
 					$result .= '</tr>';
 					$result .= '<tr><td colspan="2" style="padding:0"><hr style="background-color:'.$color.'; margin:0;" /></td></tr>';
 				}
@@ -1699,16 +1699,22 @@ global $wppa_first_comment_html;
 	
 	// Prepare the callback url
 	$returnurl = wppa_get_permalink();
+
 	$album = wppa_get_get('album');
-	if ($album) $returnurl .= 'wppa-album='.$album.'&';
+	if ( $album !== false ) $returnurl .= 'wppa-album='.$album.'&';
 	$cover = wppa_get_get('cover');
 	if ($cover) $returnurl .= 'wppa-cover='.$cover.'&';
 	$slide = wppa_get_get('slide');
 	if ($slide !== false) $returnurl .= 'wppa-slide&';
 	$occur = wppa_get_get('occur');
 	if ($occur) $returnurl .= 'wppa-occur='.$occur.'&';
-	$returnurl .= 'wppa-photo='.$id;
+	$lasten = wppa_get_get('lasten');
+	if ( $lasten ) $returnurl .= 'wppa-lasten='.$lasten.'&';
+	$topten = wppa_get_get('topten');
+	if ( $topten ) $returnurl .= 'wppa-topten='.$topten.'&';
 
+	$returnurl .= 'wppa-photo='.$id;
+	
 	// The comment form
 	if ( $comment_allowed ) {
 		$result .= '<div id="wppa-comform-wrap-'.$wppa['master_occur'].'" style="display:none;" >';
