@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * create, edit and delete albums
-* version 4.7.13
+* version 4.7.18
 *
 */
 
@@ -477,8 +477,12 @@ function wppa_admin_albums() {
 		<table class="widefat" style="margin-top:12px;" >
 			<thead>
 			<tr>
+				<th style="min-width:20px;" >
+					<img src="<?php echo wppa_get_imgdir().'backarrow.gif' ?>" style="height:16px;" title="<?php _e('Collapse subalbums', 'wppa') ?>" />
+					<img src="<?php echo wppa_get_imgdir().'arrow.gif' ?>" style="height:16px;" title="<?php _e('Expand subalbums', 'wppa') ?>" />
+				</th>
 				<?php $url = get_admin_url().'admin.php?page=wppa_admin_menu&amp;order_by='; ?>
-				<th scope="col" style="min-width: 50px;" >
+				<th scope="col" colspan="6" style="min-width: 50px;" >
 					<a href="<?php echo wppa_dbg_url($url.'id') ?>">
 						<?php _e('ID', 'wppa');
 							if ($order == 'id') {
@@ -488,6 +492,7 @@ function wppa_admin_albums() {
 						?>					
 					</a>
 				</th>
+				
 				<th scope="col" style="min-width: 120px;">
 					<a href="<?php echo wppa_dbg_url($url.'name') ?>">
 						<?php _e('Name', 'wppa'); 
@@ -548,53 +553,22 @@ function wppa_admin_albums() {
 			</tr>
 			</thead>
 			<tbody>
-			<?php $alt = ' class="alternate" '; ?>
 		
-			<?php
-//				foreach ($albums as $album) if(wppa_have_access($album)) { 
-				$idx = '0';
-				foreach (array_keys($seq) as $s) {
-					$album = $albums[$s];
-					if (wppa_have_access($album)) {
-						$pendcount = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `".WPPA_PHOTOS."` WHERE album=%s AND status=%s", $album['id'], 'pending')); 
-						?>
-						<tr <?php echo($alt); if ($pendcount) echo 'style="background-color:#ffdddd"' ?>>
-							<td><?php echo($album['id']) ?></td>
-							<td><?php echo(esc_attr(wppa_qtrans(stripslashes($album['name'])))) ?></td>
-							<td><small><?php echo(esc_attr(wppa_qtrans(stripslashes($album['description'])))) ?></small></td>
-							<?php if (current_user_can('administrator')) { ?>
-								<td><?php echo($album['owner']); ?></td>
-							<?php } ?>
-							<td><?php echo($album['a_order']) ?></td>
-							<td><?php echo(wppa_qtrans(wppa_get_album_name($album['a_parent']))) ?></td>
-							<?php $url = wppa_dbg_url(get_admin_url().'admin.php?page=wppa_admin_menu&amp;tab=edit&amp;edit_id='.$album['id']); ?>
-							<?php $na = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `".WPPA_ALBUMS."` WHERE a_parent=%s", $album['id'])); ?>
-							<?php $np = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `".WPPA_PHOTOS."` WHERE album=%s", $album['id'])); ?>
-							<?php $nm = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `".WPPA_PHOTOS."` WHERE album=%s AND status=%s", $album['id'], 'pending')); ?>
-							<td><?php echo $na.'/'.$np; if ($nm) echo '/<span style="font-weight:bold; color:red">'.$nm.'</span>'; ?></td>
-							<?php if ( $album['owner'] != '--- public ---' || current_user_can('administrator') ) { ?>
-							<?php $url = wppa_ea_url($album['id']) ?>
-							<td><a href="<?php echo($url) ?>" class="wppaedit"><?php _e('Edit', 'wppa'); ?></a></td>
-							<?php $url = wppa_dbg_url(get_admin_url().'admin.php?page=wppa_admin_menu&amp;tab=del&amp;id='.$album['id']); ?>
-							
-							<?php $url = wppa_ea_url($album['id'], 'del') ?>
-							<td><a href="<?php echo($url) ?>" class="wppadelete"><?php _e('Delete', 'wppa'); ?></a></td>
-							<?php }
-							else { ?>
-							<td></td><td></td>
-							<?php } ?>
-						</tr>		
-						<?php if ($alt == '') { $alt = ' class="alternate" '; } else { $alt = '';}
-					}
-					$idx++;
-				}
-			
-?>	
+			<?php wppa_do_albumlist('0', '0', $albums, $seq); ?>
+			<tr>
+				<td colspan="12" ><em><?php _e('The following albums are ---separate--- and do not show up in the generic album display', 'wppa'); ?></em></td>
+			</tr>
+			<?php wppa_do_albumlist('-1', '0', $albums, $seq); ?>
+				
 			</tbody>
 			<tfoot>
 			<tr>
+				<th>
+					<img src="<?php echo wppa_get_imgdir().'backarrow.gif' ?>" style="height:16px;" />
+					<img src="<?php echo wppa_get_imgdir().'arrow.gif' ?>" style="height:16px;" />
+				</th>
 				<?php $url = get_admin_url().'admin.php?page=wppa_admin_menu&amp;order_by='; ?>
-				<th scope="col">
+				<th scope="col" colspan="6" >
 					<a href="<?php echo wppa_dbg_url($url.'id') ?>">
 						<?php _e('ID', 'wppa');
 							if ($order == 'id') {
@@ -604,6 +578,7 @@ function wppa_admin_albums() {
 						?>					
 					</a>
 				</th>
+				
 				<th scope="col" style="width: 120px;">
 					<a href="<?php echo wppa_dbg_url($url.'name') ?>">
 						<?php _e('Name', 'wppa'); 
@@ -665,12 +640,27 @@ function wppa_admin_albums() {
 			</tfoot>
 		
 		</table>
+		
+		<script type="text/javascript" >
+			function checkArrows() {
+				elms = jQuery('.alb-arrow-off');
+				for(i=0;i<elms.length;i++) {
+					elm = elms[i];
+					if ( elm.parentNode.parentNode.style.display == 'none' ) elm.style.display = 'none';
+				}
+				elms = jQuery('.alb-arrow-on');
+				for(i=0;i<elms.length;i++) {
+					elm = elms[i];
+					if ( elm.parentNode.parentNode.style.display == 'none' ) elm.style.display = '';
+				}
+			}
+		</script>
 <!--	</div> -->
 <?php
 	$albcount = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `".WPPA_ALBUMS."`"));
 	$photocount = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `".WPPA_PHOTOS."`"));
 	$pendingcount = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `".WPPA_PHOTOS."` WHERE `status` = 'pending'"));
-	
+
 	echo sprintf(__('There are <strong>%d</strong> albums and <strong>%d</strong> photos in the system.', 'wppa'), $albcount, $photocount);
 	if ( $pendingcount ) echo ' '.sprintf(__('<strong>%d</strong> photos are pending moderation.', 'wppa'), $pendingcount);
 	
@@ -685,6 +675,103 @@ function wppa_admin_albums() {
 	<p><?php _e('No albums yet.', 'wppa'); ?></p>
 <?php
 	}
+}
+
+function wppa_do_albumlist($parent, $nestinglevel, $albums, $seq) {
+global $wpdb;
+
+	$alt = true;
+
+		foreach (array_keys($seq) as $s) {			// Obey the global sequence
+			$album = $albums[$s];
+			if ( $album['a_parent'] == $parent ) {
+				if (wppa_have_access($album)) {
+					$pendcount = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `".WPPA_PHOTOS."` WHERE album=%s AND status=%s", $album['id'], 'pending')); 
+					$haschildren = wppa_have_accessable_children($album); 
+					{
+						$class = '';
+						if ( $parent != '0' && $parent != '-1' ) {
+							$class .= 'wppa-alb-on-'.$parent.' ';
+							$par = $parent;
+							while ( $par != '0' && $par != '-1' ) {
+								$class .= 'wppa-alb-off-'.$par.' ';
+								$par = wppa_get_parentalbumid($par);
+							}
+						}
+						if ( $alt ) $class .= ' alternate';
+						$style = '';
+						if ( $pendcount ) $style .= 'background-color:#ffdddd; ';
+					//	if ( $haschildren ) $style .= 'font-weight:bold; '; 
+						if ( $parent != '0' && $parent != '-1' ) $style .= 'display:none; ';
+						$onclickon = 'jQuery(\'.wppa-alb-on-'.$album['id'].'\').css(\'display\',\'\'); jQuery(\'#alb-arrow-on-'.$album['id'].'\').css(\'display\',\'none\'); jQuery(\'#alb-arrow-off-'.$album['id'].'\').css(\'display\',\'\');';
+						$onclickoff = 'jQuery(\'.wppa-alb-off-'.$album['id'].'\').css(\'display\',\'none\'); jQuery(\'#alb-arrow-on-'.$album['id'].'\').css(\'display\',\'\'); jQuery(\'#alb-arrow-off-'.$album['id'].'\').css(\'display\',\'none\'); checkArrows();';
+						$indent = $nestinglevel;
+						if ( $indent > '5' ) $indent = 5;
+						?>
+
+						<tr class="<?php echo $class ?>" style="<?php echo $style ?>" >
+							<?php
+							$i = 0;
+							while ( $i < $indent ) {
+								echo '<td style="padding:2px;" ></td>';
+								$i++;
+							}
+							?>
+							<td style="padding:2px; text-align:center;" ><?php if ( $haschildren ) { ?>
+								<img id="alb-arrow-off-<?php echo $album['id'] ?>" class="alb-arrow-off" style="height:16px; display:none;" src="<?php echo wppa_get_imgdir().'backarrow.gif' ?>" onclick="<?php echo $onclickoff ?>" title="<?php _e('Collapse subalbums', 'wppa') ?>" />
+								<img id="alb-arrow-on-<?php echo $album['id'] ?>" class="alb-arrow-on" style="height:16px;" src="<?php echo wppa_get_imgdir().'arrow.gif' ?>" onclick="<?php echo $onclickon ?>" title="<?php _e('Expand subalbums', 'wppa') ?>" />
+							<?php } ?></td>
+							<td style="padding:2px;" ><?php echo($album['id']); ?></td>
+							<?php 
+							$i = $indent;
+							while ( $i < 5 ) {
+								echo '<td style="padding:2px;" ></td>';
+								$i++;
+							}
+							?>
+							<td><?php echo(esc_attr(wppa_qtrans(stripslashes($album['name'])))) ?></td>
+							<td><small><?php echo(esc_attr(wppa_qtrans(stripslashes($album['description'])))) ?></small></td>
+							<?php if (current_user_can('administrator')) { ?>
+								<td><?php echo($album['owner']); ?></td>
+							<?php } ?>
+							<td><?php echo($album['a_order']) ?></td>
+							<td><?php echo(wppa_qtrans(wppa_get_album_name($album['a_parent']))) ?></td>
+							<?php $url = wppa_dbg_url(get_admin_url().'admin.php?page=wppa_admin_menu&amp;tab=edit&amp;edit_id='.$album['id']); ?>
+							<?php $na = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `".WPPA_ALBUMS."` WHERE a_parent=%s", $album['id'])); ?>
+							<?php $np = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `".WPPA_PHOTOS."` WHERE album=%s", $album['id'])); ?>
+							<?php $nm = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `".WPPA_PHOTOS."` WHERE album=%s AND status=%s", $album['id'], 'pending')); ?>
+							<td><?php echo $na.'/'.$np; if ($nm) echo '/<span style="font-weight:bold; color:red">'.$nm.'</span>'; ?></td>
+							<?php if ( $album['owner'] != '--- public ---' || current_user_can('administrator') ) { ?>
+							<?php $url = wppa_ea_url($album['id']) ?>
+							<td><a href="<?php echo($url) ?>" class="wppaedit"><?php _e('Edit', 'wppa'); ?></a></td>
+							<?php $url = wppa_dbg_url(get_admin_url().'admin.php?page=wppa_admin_menu&amp;tab=del&amp;id='.$album['id']); ?>
+							
+							<?php $url = wppa_ea_url($album['id'], 'del') ?>
+							<td><a href="<?php echo($url) ?>" class="wppadelete"><?php _e('Delete', 'wppa'); ?></a></td>
+							<?php }
+							else { ?>
+							<td></td><td></td>
+							<?php } ?>
+						</tr>		
+						<?php if ($alt == '') { $alt = ' class="alternate" '; } else { $alt = '';}
+						if ( $haschildren ) wppa_do_albumlist($album['id'], $nestinglevel+'1', $albums, $seq);
+					}
+				}
+			}
+		}
+	
+}		
+
+function wppa_have_accessable_children($alb) {
+global $wpdb;
+
+	$albums = $wpdb->get_results($wpdb->prepare("SELECT * FROM `".WPPA_ALBUMS."` WHERE `a_parent` = ".$alb['id']), 'ARRAY_A' );
+
+	if ( ! $albums || ! count($albums) ) return false;
+	foreach ( $albums as $album ) {
+		if ( wppa_have_access($album) ) return true;
+	}
+	return false;
 }
 
 // The photo edit list for albums

@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile
-Version: 4.7.17
+Version: 4.7.18
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -155,6 +155,19 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 4.7.18 =
+
+= Bug Fixes =
+
+* Album names containing double quotes caused layout problems in IE8. Fixed.
+* Clearing the ratings of the photos in an empty album no longer causes an error message.
+
+= Other Changes =
+
+* The display of the album list in the main screen of the Album Admin page now shows only top-level albums. 
+Clicking the arrow expands the subalbum tree one level etc.
+* You can now check boxes on the upload screen to go to the album admin after upload directly. The most recent state is remembered.
 
 = 4.7.17 =
 

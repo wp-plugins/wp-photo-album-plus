@@ -3,12 +3,12 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions and API modules
-* Version 4.7.17
+* Version 4.7.18
 *
 */
 /* Moved to wppa-common-functions.php:
 global $wppa_api_version;
-$wppa_api_version = '4-7-17-000';
+$wppa_api_version = '4-7-18-000';
 */
 
 if ( ! defined( 'ABSPATH' ) )
@@ -2952,7 +2952,7 @@ global $cover_count;
 				break;
 			default:
 		}
-		$title = __a('View the album', 'wppa_theme').' '.wppa_qtrans(stripslashes($album['name']));
+		$title = __a('View the album', 'wppa_theme').' '.esc_attr(wppa_qtrans(stripslashes($album['name'])));
 	}
 	else {	// No content on current page/post
 		if ($photocount > '0') {	// coverphotos only
@@ -3068,10 +3068,10 @@ global $cover_count;
 						if ($wppa_opt['wppa_thumbtype'] == 'none') $photocount = '0'; 	// Fake photocount to prevent link to empty page
 						if ($photocount > $mincount || $albumcount) {					// Still has content
 							if ( $href_content == '#' ) {
-								$wppa['out'] .= wppa_nltab('+').'<a onclick="'.$onclick_content.'" title="'.__a('View the album', 'wppa_theme').' '.stripslashes(wppa_qtrans($album['name'])).'" style="'.__wcs('wppa-box-text', 'nocolor').'" >';
+								$wppa['out'] .= wppa_nltab('+').'<a onclick="'.$onclick_content.'" title="'.__a('View the album', 'wppa_theme').' '.esc_attr(stripslashes(wppa_qtrans($album['name']))).'" style="'.__wcs('wppa-box-text', 'nocolor').'" >';
 							}
 							else {
-								$wppa['out'] .= wppa_nltab('+').'<a href="'.$href_content.'" target="'.$target.'" onclick="'.$onclick_content.'" title="'.__a('View the album', 'wppa_theme').' '.stripslashes(wppa_qtrans($album['name'])).'" style="'.__wcs('wppa-box-text', 'nocolor').'" >';
+								$wppa['out'] .= wppa_nltab('+').'<a href="'.$href_content.'" target="'.$target.'" onclick="'.$onclick_content.'" title="'.__a('View the album', 'wppa_theme').' '.esc_attr(stripslashes(wppa_qtrans($album['name']))).'" style="'.__wcs('wppa-box-text', 'nocolor').'" >';
 							}
 							$wppa['out'] .= __a('View', 'wppa_theme');
 							if ($albumcount) { 
