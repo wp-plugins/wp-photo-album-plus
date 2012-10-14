@@ -1,7 +1,7 @@
 /* admin-scripts.js */
 /* Package: wp-photo-album-plus
 /*
-/* Version 4.7.14
+/* Version 4.7.18
 /* Various js routines used in admin pages		
 */
 
@@ -612,6 +612,11 @@ for (i=0;i<ARRcookies.length;i++)
     }
   }
   return "";
+}
+
+function wppaCookieCheckbox(elm, id) {
+	if ( elm.checked ) wppa_setCookie(id, 'on', '365');
+	else wppa_setCookie(id, 'off', '365');
 }
 
 function wppa_move_up(who) {

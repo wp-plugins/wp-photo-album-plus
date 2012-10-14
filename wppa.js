@@ -2,7 +2,7 @@
 //
 // conatins slideshow, theme, ajax and lightbox code
 //
-// Version 4.7.17
+// Version 4.7.18
 
 // Part 1: Slideshow
 //
@@ -2092,8 +2092,11 @@ jQuery(document).ready(function(){
 	}
 });
 
-function wppaUpdateAddThisUrl(url, title) {
+function wppaUpdateAddThisUrl(xurl, title) {
 	if ( ! wppaAddThis ) return;	// No addthis activated
+	
+	var url = encodeURI(xurl);
+	
 	try {
 		addthis.update('share', 'url', url);
 		console.log('AddThis share url update to '+url+' succeeded');
@@ -2110,6 +2113,8 @@ function wppaUpdateAddThisUrl(url, title) {
 			console.log('AddThis share title update to '+title+' failed');
 		}
 	}
+//  Does not exist unfortunately...
+//	addthis.update('share', 'description', 'Geupdate Desc');
 }
 
 // WPPA EMBEDDED NATIVE LIGHTBOX FUNCTIONALITY

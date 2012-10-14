@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the upload/import pages and functions
-* Version 4.7.11
+* Version 4.7.18
 *
 */
 
@@ -28,10 +28,18 @@ global $wppa_revno;
 	if ( isset( $_POST['wppa-upload-multiple'] ) ) {
 		check_admin_referer( '$wppa_nonce', WPPA_NONCE );
 		wppa_upload_multiple();
+		if ( isset( $_POST['wppa-go-edit-multiple'] ) ) {
+			wppa_ok_message(__('Connecting to edit album...', 'wppa')); ?>
+			<script type="text/javascript">document.location = '<?php echo(wppa_dbg_url(get_admin_url().'admin.php?page=wppa_admin_menu&tab=edit&edit_id='.$_POST['wppa-album'], 'js')) ?>';</script>
+		<?php }
 	}
 	if ( isset( $_POST['wppa-upload'] ) ) {
 		check_admin_referer( '$wppa_nonce', WPPA_NONCE );
 		wppa_upload_photos();
+		if ( isset( $_POST['wppa-go-edit-single'] ) ) {
+			wppa_ok_message(__('Connecting to edit album...', 'wppa')); ?>
+			<script type="text/javascript">document.location = '<?php echo(wppa_dbg_url(get_admin_url().'admin.php?page=wppa_admin_menu&tab=edit&edit_id='.$_POST['wppa-album'], 'js')) ?>';</script>
+		<?php }
 	} 
 	if ( isset( $_POST['wppa-upload-zip'] ) ) {
 		check_admin_referer( '$wppa_nonce', WPPA_NONCE );
@@ -160,8 +168,12 @@ global $wppa_revno;
 							</select>
 						</p>
 					<?php } ?>
-					<input type="submit" class="button-primary" name="wppa-upload-multiple" value="<?php _e('Upload Multiple Photos', 'wppa') ?>" />					
-				</form>
+					<input type="submit" class="button-primary" name="wppa-upload-multiple" value="<?php _e('Upload Multiple Photos', 'wppa') ?>" />
+					<input type="checkbox" id="wppa-go-edit-multiple" name="wppa-go-edit-multiple" onchange="wppaCookieCheckbox(this, 'wppa-go-edit-multiple')" />&nbsp;
+					<script type="text/javascript" >
+						if ( wppa_getCookie('wppa-go-edit-multiple') == 'on' ) document.getElementById('wppa-go-edit-multiple').checked = 'checked';
+					</script>
+					<?php _e('After upload: Go to the <b>Edit Album</b> page.', 'wppa') ?>				</form>
 			</div>
 			<?php /* End multiple */ ?>
 
@@ -196,7 +208,13 @@ global $wppa_revno;
 							</select>
 						</p>
 					<?php } ?>
-					<input type="submit" class="button-primary" name="wppa-upload" value="<?php _e('Upload Single Photos', 'wppa') ?>" />					
+					<input type="submit" class="button-primary" name="wppa-upload" value="<?php _e('Upload Single Photos', 'wppa') ?>" />
+<input type="checkbox" id="wppa-go-edit-single" name="wppa-go-edit-single" onchange="wppaCookieCheckbox(this, 'wppa-go-edit-single')" />&nbsp;
+				
+<script type="text/javascript" >
+	if ( wppa_getCookie('wppa-go-edit-single') == 'on' ) document.getElementById('wppa-go-edit-single').checked = 'checked';
+</script>
+<?php _e('After upload: Go to the <b>Edit Album</b> page.', 'wppa') ?>	
 				</form>
 				<script type="text/javascript">
 				<!-- Create an instance of the multiSelector class, pass it the output target and the max number of files -->
@@ -217,7 +235,11 @@ global $wppa_revno;
 					<?php wp_nonce_field('$wppa_nonce', WPPA_NONCE); ?>
 						<input id="my_zipfile_element" type="file" name="file_zip" /><br/><br/>
 						<input type="submit" class="button-primary" name="wppa-upload-zip" value="<?php _e('Upload Zipped Photos', 'wppa') ?>" />
-						<input type="checkbox" name="wppa-go-import" checked="checked" /><?php _e('After upload: Go to the <b>Import Photos</b> page.', 'wppa') ?>
+						<input type="checkbox" id="wppa-go-import" name="wppa-go-import" onchange="wppaCookieCheckbox(this, 'wppa-go-import')" />&nbsp;
+<script type="text/javascript" >
+	if ( wppa_getCookie('wppa-go-import') == 'on' ) document.getElementById('wppa-go-import').checked = 'checked';
+</script>
+						<?php _e('After upload: Go to the <b>Import Photos</b> page.', 'wppa') ?>
 					</form>
 				</div>
 			<?php }
