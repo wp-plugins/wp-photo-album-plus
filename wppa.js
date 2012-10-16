@@ -704,6 +704,7 @@ function _wppaNextSlide_5(mocc) {
 				// Update addthis share url
 				if ( wppaShare == 'site' ) url = _wppaShareUrl[mocc][_wppaCurIdx[mocc]]; //wppaGetCurrentFullUrl(mocc, _wppaCurIdx[mocc]);
 				if ( wppaShare == 'file' ) url = _wppaUrl[mocc][_wppaCurIdx[mocc]];
+				console.log('_wppaNextSlide_5: going for update addthis with url='+url);
 				wppaUpdateAddThisUrl(url, _wppaNames[mocc][_wppaCurIdx[mocc]]);					
 				// Push state
 				wppaPushStateSlide(mocc, _wppaCurIdx[mocc], _wppaShareUrl[mocc][_wppaCurIdx[mocc]]);
@@ -1925,12 +1926,11 @@ var wppaUsePhotoNamesInUrls = false;
 
 // Initialize
 jQuery(document).ready(function(e) {
-	// Are we allowed anyway?
-	if ( ! wppaAllowAjax ) return;	// Not allowed today
-	
-	if ( wppaGetXmlHttp() ) {
+	// Are we allowed and capable to ajax?
+	if ( wppaAllowAjax && wppaGetXmlHttp() ) {
 		wppaCanAjaxRender = true;
 	}
+	// Can we do history.pushState ?
 	if ( typeof(history.pushState) != 'undefined' ) {		
 		// Save entire initial page content ( I do not know which container is going to be modified first )
 		var i=1;
