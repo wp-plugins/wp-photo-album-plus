@@ -3,12 +3,12 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions and API modules
-* Version 4.7.18
+* Version 4.7.19
 *
 */
 /* Moved to wppa-common-functions.php:
 global $wppa_api_version;
-$wppa_api_version = '4-7-18-000';
+$wppa_api_version = '4-7-19-000';
 */
 
 if ( ! defined( 'ABSPATH' ) )
@@ -1513,7 +1513,8 @@ global $wppa_done;
 						$usr = $current_user->display_name;
 					}
 					$mess = $usr.' <'.$email.'> '.__('wrote on photo', 'wppa_theme').' '.wppa_get_photo_name($id).":\n\n".$comment."\n\n";
-					$modl = "\n\n".'Moderate link: '."\n".get_admin_url().'admin.php?page=wppa_manage_comments&commentid='.$key;
+					$modl = "\n\n".'Moderate comment admin: '."\n".get_admin_url().'admin.php?page=wppa_manage_comments&commentid='.$key;
+					$modl .= "\n\n".'Moderate manage photo: '."\n".get_admin_url().'admin.php?page=wppa_admin_menu&tab=cmod&photo='.$id;
 					$from    = "From: ".$email;
 					
 					if ( is_numeric($wppa_opt['wppa_comment_notify']) ) {	// single user

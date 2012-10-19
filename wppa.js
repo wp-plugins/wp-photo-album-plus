@@ -2,7 +2,7 @@
 //
 // conatins slideshow, theme, ajax and lightbox code
 //
-// Version 4.7.18
+// Version 4.7.19
 
 // Part 1: Slideshow
 //
@@ -2093,6 +2093,8 @@ jQuery(document).ready(function(){
 });
 
 function wppaUpdateAddThisUrl(xurl, title) {
+
+console.log('wppaUpdateAddThisUrl called with url = '+xurl);
 	if ( ! wppaAddThis ) return;	// No addthis activated
 	
 	var url = encodeURI(xurl);
