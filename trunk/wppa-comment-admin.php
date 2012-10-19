@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all comments
-* Version 4.7.15
+* Version 4.7.19
 *
 */
 
@@ -198,7 +198,7 @@ global $wppa_opt;
 							$pages = $wpdb->get_results ($query, 'ARRAY_A');
 							if ($pages) {
 								foreach ($pages as $page) {
-									if (stripos($page['post_content'], '%%wppa%%') !== false) {
+									if ( stripos($page['post_content'], '%%wppa%%') !== false || stripos($page['post_content'], '[wppa') !== false ) {
 										if ($wppa_comadmin_linkpage == $page['ID']) $sel = 'selected="selected"';
 										else $sel = '';
 										echo '<option value="'.$page['ID'].'" '.$sel.'>'.__($page['post_title']).'</option>';
