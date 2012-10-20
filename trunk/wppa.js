@@ -772,12 +772,14 @@ function wppaMakeTheSlideHtml(mocc, bgfg, idx) {
 			// Before current slide	// This does NOT work on lightbox 3 !
 			if (wppaLightBox=='wppa') {
 				while (i<idx) {
-					html += '<a href="'+_wppaUrl[mocc][i]+'" title="'+_wppaLbTitle[mocc][i]+'" rel="'+wppaLightBox+'[slide-'+mocc+'-'+bgfg+']"></a>';
+					var url = _wppaUrl[mocc][i].replace('/thumbs/', '/');
+					html += '<a href="'+url+'" title="'+_wppaLbTitle[mocc][i]+'" rel="'+wppaLightBox+'[slide-'+mocc+'-'+bgfg+']"></a>';
 						i++;
 				}
 			}
 			// Current slide
-			html += '<a href="'+_wppaUrl[mocc][idx]+'" target="'+_wppaLinkTarget[mocc][idx]+'" title="'+_wppaLbTitle[mocc][idx]+'" rel="'+wppaLightBox+'[slide-'+mocc+'-'+bgfg+']">'+
+			var url = _wppaUrl[mocc][idx].replace('/thumbs/', '/');
+			html += '<a href="'+url+'" target="'+_wppaLinkTarget[mocc][idx]+'" title="'+_wppaLbTitle[mocc][idx]+'" rel="'+wppaLightBox+'[slide-'+mocc+'-'+bgfg+']">'+
 //					'<img title="'+_wppaNames[mocc][idx]+'" id="theimg'+bgfg+'-'+mocc+'" '+_wppaSlides[mocc][idx]+
 					'<img title="'+_wppaLinkTitle[mocc][idx]+'" id="theimg'+bgfg+'-'+mocc+'" '+_wppaSlides[mocc][idx]+
 					'</a>';
@@ -785,7 +787,8 @@ function wppaMakeTheSlideHtml(mocc, bgfg, idx) {
 			if (wppaLightBox=='wppa') {
 				i = idx + 1;
 				while (i<_wppaUrl[mocc].length) {
-					html += '<a href="'+_wppaUrl[mocc][i]+'" title="'+_wppaLbTitle[mocc][i]+'" rel="'+wppaLightBox+'[slide-'+mocc+'-'+bgfg+']"></a>';
+					var url = _wppaUrl[mocc][i].replace('/thumbs/', '/');
+					html += '<a href="'+url+'" title="'+_wppaLbTitle[mocc][i]+'" rel="'+wppaLightBox+'[slide-'+mocc+'-'+bgfg+']"></a>';
 					i++;
 				}
 			}
