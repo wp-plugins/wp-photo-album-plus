@@ -139,6 +139,9 @@ jQuery(document).ready(function(){
 	}
 	_wppaTextDelay = wppaAnimationSpeed;
 	if (wppaFadeInAfterFadeOut) _wppaTextDelay *= 2;
+	
+	// Init share url to have querystring
+	wppaUpdateAddThisUrl('', '');
 });
 
 // First the external entrypoints that may be called directly from HTML
@@ -704,7 +707,6 @@ function _wppaNextSlide_5(mocc) {
 				// Update addthis share url
 				if ( wppaShare == 'site' ) url = _wppaShareUrl[mocc][_wppaCurIdx[mocc]]; //wppaGetCurrentFullUrl(mocc, _wppaCurIdx[mocc]);
 				if ( wppaShare == 'file' ) url = _wppaUrl[mocc][_wppaCurIdx[mocc]];
-				console.log('_wppaNextSlide_5: going for update addthis with url='+url);
 				wppaUpdateAddThisUrl(url, _wppaNames[mocc][_wppaCurIdx[mocc]]);					
 				// Push state
 				wppaPushStateSlide(mocc, _wppaCurIdx[mocc], _wppaShareUrl[mocc][_wppaCurIdx[mocc]]);
@@ -722,7 +724,7 @@ function _wppaNextSlide_5(mocc) {
 				var url = '';
 				if ( wppaShare == 'site' ) url = _wppaShareUrl[mocc][_wppaCurIdx[mocc]]; //wppaGetCurrentFullUrl(mocc, _wppaCurIdx[mocc]);
 				if ( wppaShare == 'file' ) url = _wppaUrl[mocc][_wppaCurIdx[mocc]];
-				console.log('ShareLink='+url);
+				wppaConsoleLog('ShareLink='+url);
 				if (url != '') {
 
 					wppaUpdateAddThisUrl(url, _wppaNames[mocc][_wppaCurIdx[mocc]]);	
@@ -1535,7 +1537,7 @@ function _wppaShowMetaData(mocc, key) {
 			jQuery('#wppa-comtable-wrap-'+mocc).css('display', 'none');
 			// Hide the input form table
 			jQuery('#wppa-comform-wrap-'+mocc).css('display', 'none');
-			// Hide the comment footer
+			// Show the comment footer
 			jQuery('#wppa-comfooter-wrap-'+mocc).css('display', 'block');
 			// Fade the browse arrows out
 //			jQuery('.wppa-prev-'+mocc).fadeOut(300);	
@@ -2023,10 +2025,10 @@ function wppaDoAjaxRender(mocc, ajaxurl, newurl) {
 					cont = xmlhttp.responseText;
 					try {
 						history.pushState({page: wppaHis, occur: mocc, type: 'html', html: cont}, "---", newurl);
-						console.log('Ajax rendering: History stack updated');
+						wppaConsoleLog('Ajax rendering: History stack updated');
 					}
 					catch(err) {
-						console.log('Ajax rendering: Failed to update history stack');
+						wppaConsoleLog('Ajax rendering: Failed to update history stack');
 					}
 					if ( wppaFirstOccur == 0 ) wppaFirstOccur = mocc;
 				}
@@ -2075,10 +2077,10 @@ function wppaPushStateSlide(mocc, slide, url) {
 			if (url != '') {
 				try {
 					history.pushState({page: wppaHis, occur: mocc, type: 'slide', slide: slide}, "---", url);
-					console.log('Slide history stack updated');
+					wppaConsoleLog('Slide history stack updated');
 				}
 				catch(err) {
-					console.log('Slide history stack update failed');
+					wppaConsoleLog('Slide history stack update failed');
 				}
 			}
 		}
@@ -2086,40 +2088,51 @@ function wppaPushStateSlide(mocc, slide, url) {
 }
 
 // WPPA modules for addthis.
-var wppaAddThis = false;
+var wppaAddThis = -1;
 
 jQuery(document).ready(function(){
 	if (typeof(addthis) != 'undefined') {
 		addthis.init();	// In case loaded asynchronously
 		wppaAddThis = true;
 	}
+	else wppaAddThis = false;
 });
 
 function wppaUpdateAddThisUrl(xurl, title) {
 
-console.log('wppaUpdateAddThisUrl called with url = '+xurl);
-	if ( ! wppaAddThis ) return;	// No addthis activated
+	if ( wppaAddThis == -1 ) {	// Document not ready yet
+		setTimeout('wppaUpdateAddThisUrl("'+xurl+'", "'+title+'")', 1000);	// retry after 1000 ms.
+		wppaConsoleLog('Retrying');
+		return;
+	}
+	if ( wppaAddThis == false ) return;	// No addthis activated
 	
-	var url = encodeURI(xurl);
+	var url = xurl;
+	if ( url == '' ) {
+		url = document.URL;	// document.location.href
+		wppaConsoleLog('Url set to '+url);
+	}
+	url = encodeURI(url);
 	
 	try {
 		addthis.update('share', 'url', url);
-		console.log('AddThis share url update to '+url+' succeeded');
+		wppaConsoleLog('AddThis share url update to '+url+' succeeded');
 	}
 	catch(err){
-		console.log('AddThis share url update to '+url+' failed');
+		wppaConsoleLog('AddThis share url update to '+url+' failed');
 	}
 	if (title != '') {
 		try {
 			addthis.update('share', 'title', title);
-			console.log('AddThis share title update to '+title+' succeeded');
+			wppaConsoleLog('AddThis share title update to '+title+' succeeded');
 		}
 		catch(err) {
-			console.log('AddThis share title update to '+title+' failed');
+			wppaConsoleLog('AddThis share title update to '+title+' failed');
 		}
 	}
 //  Does not exist unfortunately...
 //	addthis.update('share', 'description', 'Geupdate Desc');
+	addthis.ready();
 }
 
 // WPPA EMBEDDED NATIVE LIGHTBOX FUNCTIONALITY
@@ -2554,5 +2567,11 @@ function wppaAjaxMakeOrigName(mocc, id) {
 	else {
 		alert('Comm error encountered');
 		return false;
+	}
+}
+
+function wppaConsoleLog(arg) {
+	if ( typeof(console) != 'undefined' ) {
+		console.log(arg);
 	}
 }
