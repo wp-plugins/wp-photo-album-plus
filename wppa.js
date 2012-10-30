@@ -2,7 +2,7 @@
 //
 // conatins slideshow, theme, ajax and lightbox code
 //
-// Version 4.7.19
+// Version 4.8.0
 
 // Part 1: Slideshow
 //
@@ -91,6 +91,8 @@ var wppaMinThumbSpace = 4;
 var wppaMagnifierCursor = '';
 var wppaArtMonkyLink = 'none';
 var wppaShare = '';
+var wppaAutoOpenComments = false;
+var wppaQRData;
 
 // 'Internal' variables (private)
 var _wppaId = new Array();
@@ -702,36 +704,21 @@ function _wppaNextSlide_5(mocc) {
 	else {								// No toggle pending
 		wppaUpdateLightboxes(); 		// Refresh lighytbox
 		// Update addthis url and title if ( ( this is non-mini ) AND ( this is the only running non-mini OR there are no running non-minis ) )
-		if ( ! wppaIsMini[mocc] ) {			// This is NOT a widget
+		if ( ! wppaIsMini[mocc] ) {		// This is NOT a widget
+		// Prepare visual url (for addressline)
+			var visurl = wppaGetCurrentFullUrl(mocc, _wppaCurIdx[mocc]);
+				if ( visurl == '' ) visurl = _wppaShareUrl[mocc][_wppaCurIdx[mocc]];
+				
+			// Update possible QR Widget
+			wppaQRData = _wppaShareUrl[mocc][_wppaCurIdx[mocc]];
 			if ( ! _wppaSSRuns[mocc] ) {	// This is not running
 				// Update addthis share url
 				if ( wppaShare == 'site' ) url = _wppaShareUrl[mocc][_wppaCurIdx[mocc]]; //wppaGetCurrentFullUrl(mocc, _wppaCurIdx[mocc]);
 				if ( wppaShare == 'file' ) url = _wppaUrl[mocc][_wppaCurIdx[mocc]];
 				wppaUpdateAddThisUrl(url, _wppaNames[mocc][_wppaCurIdx[mocc]]);					
 				// Push state
-				wppaPushStateSlide(mocc, _wppaCurIdx[mocc], _wppaShareUrl[mocc][_wppaCurIdx[mocc]]);
+				wppaPushStateSlide(mocc, _wppaCurIdx[mocc], visurl);
 			}
-			/*
-			var nRuns = 0;
-			var i=1;
-			while (i<=wppaTopMoc) {
-				if ( typeof(_wppaSlides[i]) != 'undefined' && _wppaSSRuns[i] && ! wppaIsMini[i]) {
-					nRuns++;
-				}
-				i++;
-			}
-			if ( nRuns == 0 || ( nRuns == 1 && _wppaSSRuns[mocc] ) ) {	// No running OR This is the only running
-				var url = '';
-				if ( wppaShare == 'site' ) url = _wppaShareUrl[mocc][_wppaCurIdx[mocc]]; //wppaGetCurrentFullUrl(mocc, _wppaCurIdx[mocc]);
-				if ( wppaShare == 'file' ) url = _wppaUrl[mocc][_wppaCurIdx[mocc]];
-				wppaConsoleLog('ShareLink='+url);
-				if (url != '') {
-
-					wppaUpdateAddThisUrl(url, _wppaNames[mocc][_wppaCurIdx[mocc]]);	
-					wppaPushStateSlide(mocc, _wppaCurIdx[mocc]);					// Add to history stack
-				}
-			}
-			*/
 		}
 		// If running: Wait for next slide
 		if (_wppaSSRuns[mocc]) {				
@@ -1513,19 +1500,31 @@ function _wppaBbb(mocc,where,act) {
 	}
 }
 
+function wppaOpenComments(mocc) {
+
+	if ( _wppaSSRuns[mocc] ) _wppaStop(mocc);
+		// Show existing comments
+		jQuery('#wppa-comtable-wrap-'+mocc).css('display', 'block');
+		// Show the input form table
+		jQuery('#wppa-comform-wrap-'+mocc).css('display', 'block');
+		// Hide the comment footer
+		jQuery('#wppa-comfooter-wrap-'+mocc).css('display', 'none');
+}
 
 function _wppaShowMetaData(mocc, key) {
-	_wppaLog('ShowMetaData', mocc);
 	
 	// What to do when the slideshow is NOT running
 	if ( ! _wppaSSRuns[mocc] ) {	
 		if (key == 'show') {			// Show
+		
+		if (wppaAutoOpenComments) {
 			// Show existing comments
 			jQuery('#wppa-comtable-wrap-'+mocc).css('display', 'block');
 			// Show the input form table
 			jQuery('#wppa-comform-wrap-'+mocc).css('display', 'block');
 			// Hide the comment footer
 			jQuery('#wppa-comfooter-wrap-'+mocc).css('display', 'none');
+}
 			// Fade the browse arrows in
 			if ( wppaSlideWrap || ( _wppaCurIdx[mocc] != 0 ) )
 				jQuery('.wppa-prev-'+mocc).fadeIn(300);
@@ -1561,8 +1560,8 @@ function _wppaShowMetaData(mocc, key) {
 	}
 	else {
 		// Hide title and description
-		jQuery("#imagedesc-"+mocc).css('visibility', 'hidden'); 
-		jQuery("#imagetitle-"+mocc).css('visibility', 'hidden');
+//		jQuery("#imagedesc-"+mocc).css('visibility', 'hidden'); 
+//		jQuery("#imagetitle-"+mocc).css('visibility', 'hidden');
 		// Hide counter	
 		jQuery("#counter-"+mocc).css('visibility', 'hidden');
 		// Fade the browse arrows out
@@ -1636,7 +1635,7 @@ var url;
 	else {
 		url += "wppa-photo="+_wppaId[mocc][idx];
 	}
-	
+
 	return url;
 }
 
@@ -2004,6 +2003,7 @@ window.onpopstate = function(event) {
 			_wppaStop(occ);
 		}
 	}
+	wppaQRData = document.location.href; //????
 };  
 
 // The AJAX rendering routine
@@ -2039,6 +2039,9 @@ function wppaDoAjaxRender(mocc, ajaxurl, newurl) {
 				
 				/* addthis */
 				wppaUpdateAddThisUrl(newurl, '');
+				
+				/* qrcode */
+				wppaQRData = newurl;
 
 				/* Autocol? */
 				wppaColWidth[mocc] = 0;	// clear

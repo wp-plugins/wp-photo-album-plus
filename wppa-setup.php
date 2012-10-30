@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 4.7.16
+* Version 4.8.0
 *
 */
 
@@ -249,7 +249,7 @@ global $silent;
 	// Check if this update comes with a new wppa-theme.php and/or a new wppa-style.css
 	// If so, produce message
 	$key = '0';
-	if ( $old_rev < '460' ) {		// theme changed since...
+	if ( $old_rev < '480' ) {		// theme changed since...
 		$usertheme_old 	= ABSPATH.'wp-content/themes/'.get_option('template').'/wppa_theme.php';
 		$usertheme 		= ABSPATH.'wp-content/themes/'.get_option('template').'/wppa-theme.php';
 		if ( is_file( $usertheme ) || is_file( $usertheme_old ) ) $key += '2';
@@ -395,6 +395,8 @@ Hide Camera info
 						'wppa_thumbnail_widget_size'	=> '86',	// 6
 						'wppa_lasten_count'				=> '10',	// 7
 						'wppa_lasten_size' 				=> '86',	// 8
+						'wppa_album_widget_count'		=> '10',
+						'wppa_album_widget_size'		=> '86',
 						// G Overlay
 						'wppa_ovl_txt_lines'			=> 'auto',	// 1
 						'wppa_magnifier'				=> 'magnifier-small.png',	// 2
@@ -441,6 +443,7 @@ Hide Camera info
 						'wppa_popup_text_desc_strip'		=> 'no',	// 5.1
 						'wppa_popup_text_rating' 			=> 'yes',	// 6
 						'wppa_show_rating_count'			=> 'no',	// 7
+						'wppa_albdesc_on_thumbarea'			=> 'none',
 						// D Covers
 						'wppa_show_cover_text' 				=> 'yes',	// 1
 						'wppa_enable_slideshow' 			=> 'yes',	// 2
@@ -507,6 +510,7 @@ Hide Camera info
 						'wppa_fulldesc_align'			=> 'center',
 						'wppa_clean_pbr'				=> 'yes',
 						'wppa_run_wppautop_on_desc'		=> 'no',
+						'wppa_auto_open_comments'		=> 'yes',
 						// C Thumbnail
 						'wppa_list_photos_by' 			=> '0',
 						'wppa_list_photos_desc' 		=> 'no',
@@ -639,7 +643,11 @@ Hide Camera info
 						
 						'wppa_art_monkey_link'				=> 'none',
 						'wppa_art_monkey_popup_link'		=> 'file',
-
+/* Niew */
+						'wppa_album_widget_linktype'		=> 'content',
+						'wppa_album_widget_linkpage'		=> '0',
+						'wppa_album_widget_blank'			=> 'no',
+/* end nieuw */
 						
 						// Table VII: Security
 						// B
@@ -733,8 +741,15 @@ Hide Camera info
 						
 						// Comment admin
 						'wppa_comadmin_show' 		=> 'all',
-						'wppa_comadmin_order' 		=> 'timestamp'
+						'wppa_comadmin_order' 		=> 'timestamp',
 								
+						// QR code settings
+						'wppa_qr_in_desc'			=> 'no',
+						'wppa_qr_size'				=> '200',
+						'wppa_qr_color'				=> '#000000',
+						'wppa_qr_bgcolor'			=> '#FFFFFF'
+						
+						
 						);
 
 	array_walk($wppa_defaults, 'wppa_set_default', $force);

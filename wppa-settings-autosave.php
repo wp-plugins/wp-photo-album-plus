@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 4.7.16
+* Version 4.8.0
 *
 */
 
@@ -323,7 +323,7 @@ global $wppa_revno;
 							$name = __('Slideshow borderwidth', 'wppa');
 							$desc = __('The width of the border around slideshow images.', 'wppa');
 							$help = esc_js(__('The border is made by the image background being larger than the image itsself (padding).', 'wppa'));
-							$help .= '\n'.esc_js(__('Additionally there may be a one pixel outline of a different color. See Table III, item 7.', 'wppa'));
+							$help .= '\n'.esc_js(__('Additionally there may be a one pixel outline of a different color. See Table III-A2.', 'wppa'));
 							$help .= '\n\n'.esc_js(__('The number you enter here is exclusive the one pixel outline.', 'wppa'));
 							$help .= '\n\n'.esc_js(__('If you leave this entry empty, there will be no outline either.', 'wppa'));
 							$slug = 'wppa_fullimage_border_width';
@@ -588,6 +588,22 @@ global $wppa_revno;
 							$slug = 'wppa_lasten_size';
 							$html = wppa_input($slug, '40px', '', __('pixels', 'wppa'));
 							wppa_setting($slug, '8', $name, $desc, $html, $help);
+							
+							$name = __('Album widget count', 'wppa');
+							$desc = __('Number of albums in Album widget.', 'wppa');
+							$help = esc_js(__('Enter the maximum number of thumbnail photos of albums in the Album widget.', 'wppa'));
+							$slug = 'wppa_album_widget_count';
+							$html = wppa_input($slug, '40px', '', __('albums', 'wppa'));
+							wppa_setting($slug, '9', $name, $desc, $html, $help);
+							
+							$name = __('Album widget size', 'wppa');
+							$desc = __('Size of thumbnails in Album widget.', 'wppa');
+							$help = esc_js(__('Enter the size for the mini photos in the Album widget.', 'wppa'));
+							$help .= '\n'.esc_js(__('The size applies to the width or height, whatever is the largest.', 'wppa'));
+							$help .= '\n'.esc_js(__('Recommended values: 86 for a two column and 56 for a three column display.', 'wppa'));
+							$slug = 'wppa_album_widget_size';
+							$html = wppa_input($slug, '40px', '', __('pixels', 'wppa'));
+							wppa_setting($slug, '10', $name, $desc, $html, $help);
 							
 							wppa_setting_subheader('G', '1', __('Lightbox related settings. These settings have effect only when Table IX-A6 is set to wppa', 'wppa'));
 							
@@ -975,6 +991,15 @@ global $wppa_revno;
 							$class = 'wppa_rating_ tt_normal';
 							wppa_setting($slug, '7', $name, $desc, $html, $help, $class);
 
+							$name = __('Show desc on thumb area', 'wppa');
+							$desc = __('Select if and where to display the album description on the thumbnail display.', 'wppa');
+							$help = '';
+							$slug = 'wppa_albdesc_on_thumbarea';
+							$options = array(__('None', 'wppa'), __('At the top', 'wppa'), __('At the bottom', 'wppa'));
+							$values = array('none', 'top', 'bottom');
+							$html = wppa_select($slug, $options, $values);
+							wppa_setting($slug, '8', $name, $desc, $html, $help);
+							
 							wppa_setting_subheader('D', '1', __('Album cover related settings', 'wppa'));
 							
 							$name = __('Covertext', 'wppa');
@@ -1493,6 +1518,15 @@ global $wppa_revno;
 							$slug = 'wppa_run_wppautop_on_desc';
 							$html = wppa_checkbox($slug);
 							wppa_setting($slug, '11', $name, $desc, $html, $help);
+							
+							$name = __('Auto open comments', 'wppa');
+							$desc = __('Automatic opens comments box when slideshow does not run.', 'wppa');
+							$help = '';
+							$slug = 'wppa_auto_open_comments';
+							$html = wppa_checkbox($slug);
+							wppa_setting($slug, '12', $name, $desc, $html, $help);
+							
+
 							
 							wppa_setting_subheader('C', '1', __('Thumbnail related settings', 'wppa'));
 
@@ -2013,48 +2047,174 @@ global $wppa_revno;
 								$values_page[] = '0';
 							}
 
-							$name = __('Sphoto', 'wppa');
-							$desc = __('Single photo link.', 'wppa');
-							$help = esc_js(__('Select the type of link you want, or no link at all.', 'wppa')); 
-							$help .= '\n'.esc_js(__('If you select the fullsize photo on its own, it will be stretched to fit, regardless of that setting.', 'wppa')); /* oneofone is treated as portrait only */
-							$help .= '\n'.esc_js(__('Note that a page must have at least %%wppa%% or [wppa][/wppa] in its content to show up the photo(s).', 'wppa')); 
-							$slug1 = 'wppa_sphoto_linktype';
-							$slug2 = 'wppa_sphoto_linkpage';
-							$slug3 = 'wppa_sphoto_blank';
-							$slug4 = 'wppa_sphoto_overrule';
+							wppa_setting_subheader('A', '4', __('Links from images in WPPA+ Widgets', 'wppa'));
+							
+							$name = __('PotdWidget', 'wppa');
+							$desc = __('Photo Of The Day widget link.', 'wppa');
+							$help = esc_js(__('Select the type of link the photo of the day points to.', 'wppa')); 
+							$help .= '\n\n'.esc_js(__('If you select \'defined on widget admin page\' you can manually enter a link and title on the Photo of the day Widget Admin page.', 'wppa'));
+							$slug1 = 'wppa_widget_linktype';
+							$slug2 = 'wppa_widget_linkpage';
+							$slug3 = 'wppa_potd_blank';
+							$slug4 = 'wppa_potdwidget_overrule';
 							$slug = array($slug1, $slug2, $slug3, $slug4);
-							$onchange = 'wppaCheckSphotoLink(); wppaCheckLinkPageErr(\'sphoto\');';
-							$html1 = wppa_select($slug1, $options_linktype_album, $values_linktype_album, $onchange);
-							$class = 'wppa_slp';
-							$onchange = 'wppaCheckLinkPageErr(\'sphoto\');';
+							$onchange = 'wppaCheckPotdLink(); wppaCheckLinkPageErr(\'widget\');';
+							$html1 = wppa_select($slug1, $options_linktype_potd_widget, $values_linktype_potd_widget, $onchange);
+							$class = 'wppa_potdlp';
+							$onchange = 'wppaCheckLinkPageErr(\'widget\');';
 							$html2 = wppa_select($slug2, $options_page, $values_page, $onchange, $class, true);
-							$class = 'wppa_slb';
+							$class = 'wppa_potdlb';
 							$html3 = wppa_checkbox($slug3, '', $class);
 							$html4 = wppa_checkbox($slug4);
-							$htmlerr = wppa_htmlerr('sphoto');
+							$htmlerr = wppa_htmlerr('widget');
 							$html = array($html1, $htmlerr.$html2, $html3, $html4);
-							wppa_setting($slug, '0a,b,c,d', $name, $desc, $html, $help);
+							wppa_setting($slug, '1a,b,c,d', $name, $desc, $html, $help);
+							
+							$name = __('SlideWidget', 'wppa');
+							$desc = __('Slideshow widget photo link.', 'wppa');
+							$help = esc_js(__('Select the type of link the slideshow photos point to.', 'wppa')); 
+							$slug1 = 'wppa_slideonly_widget_linktype';
+							$slug2 = 'wppa_slideonly_widget_linkpage';
+							$slug3 = 'wppa_sswidget_blank';
+							$slug4 = 'wppa_sswidget_overrule';
+							$slug = array($slug1, $slug2, $slug3, $slug4);
+							$onchange = 'wppaCheckSlideOnlyLink(); wppaCheckLinkPageErr(\'slideonly_widget\');';
+							$html1 = wppa_select($slug1, $options_linktype_ss_widget, $values_linktype_ss_widget, $onchange);
+							$class = 'wppa_solp';
+							$onchange = 'wppaCheckLinkPageErr(\'slideonly_widget\');';
+							$html2 = wppa_select($slug2, $options_page, $values_page, $onchange, $class, true);
+							$class = 'wppa_solb';
+							$html3 = wppa_checkbox($slug3, '', $class);
+							$html4 = wppa_checkbox($slug4);
+							$htmlerr = wppa_htmlerr('slideonly_widget');
+							$html = array($html1, $htmlerr.$html2, $html3, $html4);
+							wppa_setting($slug, '2a,b,c,d', $name, $desc, $html, $help);
+							
+							$name = __('Album widget', 'wppa');
+							$desc = __('Album widget thumbnail link', 'wppa');
+							$help = esc_js(__('Select the type of link the album widget photos point to.', 'wppa'));
+							$slug1 = 'wppa_album_widget_linktype'; 
+							$slug2 = 'wppa_album_widget_linkpage';
+							$slug3 = 'wppa_album_widget_blank';
+						//	$slug4 = 'wppa_album_widget_overrule';	// useless
+							$slug = array($slug1, $slug2, $slug3);
+							$onchange = 'wppaCheckLinkPageErr(\'album_widget\');';
+							$options_linktype = array(__('subalbums and thumbnails', 'wppa'), __('slideshow', 'wppa'));
+							$values_linktype = array('content', 'slide');
+							$html1 = wppa_select($slug1, $options_linktype, $values_linktype, $onchange);
+							$class = 'wppa_awlp';
+							$onchange = 'wppaCheckLinkPageErr(\'album_widget\');';
+							$html2 = wppa_select($slug2, $options_page, $values_page, $onchange, $class, true);
+							$class = 'wppa_awlb';
+							$html3 = wppa_checkbox($slug3, '', $class);
+							$html4 = ''; // wppa_checkbox($slug4);
+							$htmlerr = wppa_htmlerr('album_widget');
+							$html = array($html1, $htmlerr.$html2, $html3, $html4);
+							wppa_setting($slug, '3a,b,c', $name, $desc, $html, $help);
 
-							$name = __('Mphoto', 'wppa');
-							$desc = __('Media-like photo link.', 'wppa');
-							$help = esc_js(__('Select the type of link you want, or no link at all.', 'wppa')); 
-							$help .= '\n'.esc_js(__('If you select the fullsize photo on its own, it will be stretched to fit, regardless of that setting.', 'wppa')); /* oneofone is treated as portrait only */
-							$help .= '\n'.esc_js(__('Note that a page must have at least %%wppa%% or [wppa][/wppa] in its content to show up the photo(s).', 'wppa')); 
-							$slug1 = 'wppa_mphoto_linktype';
-							$slug2 = 'wppa_mphoto_linkpage';
-							$slug3 = 'wppa_mphoto_blank';
-							$slug4 = 'wppa_mphoto_overrule';
+							$name = __('ThumbnailWidget', 'wppa');
+							$desc = __('Thumbnail widget photo link.', 'wppa');
+							$help = esc_js(__('Select the type of link the thumbnail photos point to.', 'wppa')); 
+							$slug1 = 'wppa_thumbnail_widget_linktype'; 
+							$slug2 = 'wppa_thumbnail_widget_linkpage';
+							$slug3 = 'wppa_thumbnail_widget_blank';
+							$slug4 = 'wppa_thumbnail_widget_overrule';
 							$slug = array($slug1, $slug2, $slug3, $slug4);
-							$onchange = 'wppaCheckMphotoLink(); wppaCheckLinkPageErr(\'mphoto\');';
-							$html1 = wppa_select($slug1, $options_linktype_album, $values_linktype_album, $onchange);
-							$class = 'wppa_mlp';
-							$onchange = 'wppaCheckLinkPageErr(\'mphoto\');';
+							$onchange = 'wppaCheckThumbnailWLink(); wppaCheckLinkPageErr(\'thumbnail_widget\');';
+							$html1 = wppa_select($slug1, $options_linktype, $values_linktype, $onchange);
+							$class = 'wppa_tnlp';
+							$onchange = 'wppaCheckLinkPageErr(\'thumbnail_widget\');';
 							$html2 = wppa_select($slug2, $options_page, $values_page, $onchange, $class, true);
-							$class = 'wppa_mlb';
+							$class = 'wppa_tnlb';
 							$html3 = wppa_checkbox($slug3, '', $class);
 							$html4 = wppa_checkbox($slug4);
-							$htmlerr = wppa_htmlerr('mphoto');
+							$htmlerr = wppa_htmlerr('thumbnail_widget');
 							$html = array($html1, $htmlerr.$html2, $html3, $html4);
+							wppa_setting($slug, '4a,b,c,d', $name, $desc, $html, $help);
+
+							$name = __('TopTenWidget', 'wppa');
+							$desc = __('TopTen widget photo link.', 'wppa');
+							$help = esc_js(__('Select the type of link the top ten photos point to.', 'wppa')); 
+							$slug1 = 'wppa_topten_widget_linktype'; 
+							$slug2 = 'wppa_topten_widget_linkpage';
+							$slug3 = 'wppa_topten_blank';
+							$slug4 = 'wppa_topten_overrule';
+							$slug = array($slug1, $slug2, $slug3, $slug4);
+							$onchange = 'wppaCheckTopTenLink(); wppaCheckLinkPageErr(\'topten_widget\');';
+							$html1 = wppa_select($slug1, $options_linktype, $values_linktype, $onchange);
+							$class = 'wppa_ttlp';
+							$onchange = 'wppaCheckLinkPageErr(\'topten_widget\');';
+							$html2 = wppa_select($slug2, $options_page, $values_page, $onchange, $class, true);
+							$class = 'wppa_ttlb';
+							$html3 = wppa_checkbox($slug3, '', $class);
+							$html4 = wppa_checkbox($slug4);
+							$htmlerr = wppa_htmlerr('topten_widget');
+							$html = array($html1, $htmlerr.$html2, $html3, $html4);
+							$class = 'wppa_rating';
+							wppa_setting($slug, '5a,b,c,d', $name, $desc, $html, $help, $class);
+							
+							$name = __('LasTenWidget', 'wppa');
+							$desc = __('Last Ten widget photo link.', 'wppa');
+							$help = esc_js(__('Select the type of link the last ten photos point to.', 'wppa')); 
+							$slug1 = 'wppa_lasten_widget_linktype'; 
+							$slug2 = 'wppa_lasten_widget_linkpage';
+							$slug3 = 'wppa_lasten_blank';
+							$slug4 = 'wppa_lasten_overrule';
+							$slug = array($slug1, $slug2, $slug3, $slug4);
+							$onchange = 'wppaCheckLasTenLink(); wppaCheckLinkPageErr(\'lasten_widget\');';
+							$html1 = wppa_select($slug1, $options_linktype, $values_linktype, $onchange);
+							$class = 'wppa_ltlp';
+							$onchange = 'wppaCheckLinkPageErr(\'lasten_widget\');';
+							$html2 = wppa_select($slug2, $options_page, $values_page, $onchange, $class, true);
+							$class = 'wppa_ltlb';
+							$html3 = wppa_checkbox($slug3, '', $class);
+							$html4 = wppa_checkbox($slug4);
+							$htmlerr = wppa_htmlerr('lasten_widget');
+							$html = array($html1, $htmlerr.$html2, $html3, $html4);
+							wppa_setting($slug, '6a,b,c,d', $name, $desc, $html, $help);
+
+							$name = __('CommentWidget', 'wppa');
+							$desc = __('Comment widget photo link.', 'wppa');
+							$help = esc_js(__('Select the type of link the comment widget photos point to.', 'wppa')); 
+							$slug1 = 'wppa_comment_widget_linktype'; 
+							$slug2 = 'wppa_comment_widget_linkpage';
+							$slug3 = 'wppa_comment_blank';
+							$slug4 = 'wppa_comment_overrule';
+							$slug = array($slug1, $slug2, $slug3, $slug4);
+							$onchange = 'wppaCheckCommentLink(); wppaCheckLinkPageErr(\'comment_widget\');';
+							$html1 = wppa_select($slug1, $options_linktype, $values_linktype, $onchange);
+							$class = 'wppa_cmlp';
+							$onchange = 'wppaCheckLinkPageErr(\'comment_widget\');';
+							$html2 = wppa_select($slug2, $options_page, $values_page, $onchange, $class, true);
+							$class = 'wppa_cmlb';
+							$html3 = wppa_checkbox($slug3, '', $class);
+							$html4 = wppa_checkbox($slug4);
+							$htmlerr = wppa_htmlerr('comment_widget');
+							$html = array($html1, $htmlerr.$html2, $html3, $html4);
+							wppa_setting($slug, '7a,b,c,d', $name, $desc, $html, $help);
+							
+							wppa_setting_subheader('B', '4', __('Links from other WPPA+ images', 'wppa'));
+							
+							$name = __('Cover Image', 'wppa');
+							$desc = __('The link from the cover image of an album.', 'wppa');
+							$help = esc_js(__('Select the type of link the coverphoto points to.', 'wppa'));
+							$help .= '\n\n'.esc_js(__('The link from the album title can be configured on the Edit Album page.', 'wppa'));
+							$help .= '\n'.esc_js(__('This link will be used for the photo also if you select: same as title.', 'wppa'));
+							$help .= '\n\n'.esc_js(__('If you specify New Tab on this line, all links from the cover will open a new tab,', 'wppa'));
+							$help .= '\n'.esc_js(__('except when Ajax is activated on Table IV-A1.', 'wppa'));
+							$slug1 = 'wppa_coverimg_linktype';
+							$slug2 = 'wppa_coverimg_linkpage';
+							$slug3 = 'wppa_coverimg_blank';
+							$slug4 = 'wppa_coverimg_overrule';
+							$slug = array($slug1, $slug2, $slug3, $slug4);
+							$onchange = 'wppaCheckCoverImg()';
+							$html1 = wppa_select($slug1, $options_linktype_cover_image, $values_linktype_cover_image, $onchange);
+							$class = '';
+							$html2 = '';
+							$class = 'wppa_covimgbl';
+							$html3 = wppa_checkbox($slug3, '', $class);
+							$html4 = wppa_checkbox($slug4);
+							$html = array($html1, $html2, $html3, $html4);
 							wppa_setting($slug, '1a,b,c,d', $name, $desc, $html, $help);
 
 							$name = __('Thumbnail', 'wppa');
@@ -2078,110 +2238,50 @@ global $wppa_revno;
 							$html = array($html1, $htmlerr.$html2, $html3, $html4);
 							$class = 'tt_always';
 							wppa_setting($slug, '2a,b,c,d', $name, $desc, $html, $help, $class);
-							
-							$name = __('TopTenWidget', 'wppa');
-							$desc = __('TopTen widget photo link.', 'wppa');
-							$help = esc_js(__('Select the type of link the top ten photos point to.', 'wppa')); 
-							$slug1 = 'wppa_topten_widget_linktype'; 
-							$slug2 = 'wppa_topten_widget_linkpage';
-							$slug3 = 'wppa_topten_blank';
-							$slug4 = 'wppa_topten_overrule';
+
+							$name = __('Sphoto', 'wppa');
+							$desc = __('Single photo link.', 'wppa');
+							$help = esc_js(__('Select the type of link you want, or no link at all.', 'wppa')); 
+							$help .= '\n'.esc_js(__('If you select the fullsize photo on its own, it will be stretched to fit, regardless of that setting.', 'wppa')); /* oneofone is treated as portrait only */
+							$help .= '\n'.esc_js(__('Note that a page must have at least %%wppa%% or [wppa][/wppa] in its content to show up the photo(s).', 'wppa')); 
+							$slug1 = 'wppa_sphoto_linktype';
+							$slug2 = 'wppa_sphoto_linkpage';
+							$slug3 = 'wppa_sphoto_blank';
+							$slug4 = 'wppa_sphoto_overrule';
 							$slug = array($slug1, $slug2, $slug3, $slug4);
-							$onchange = 'wppaCheckTopTenLink(); wppaCheckLinkPageErr(\'topten_widget\');';
-							$html1 = wppa_select($slug1, $options_linktype, $values_linktype, $onchange);
-							$class = 'wppa_ttlp';
-							$onchange = 'wppaCheckLinkPageErr(\'topten_widget\');';
+							$onchange = 'wppaCheckSphotoLink(); wppaCheckLinkPageErr(\'sphoto\');';
+							$html1 = wppa_select($slug1, $options_linktype_album, $values_linktype_album, $onchange);
+							$class = 'wppa_slp';
+							$onchange = 'wppaCheckLinkPageErr(\'sphoto\');';
 							$html2 = wppa_select($slug2, $options_page, $values_page, $onchange, $class, true);
-							$class = 'wppa_ttlb';
+							$class = 'wppa_slb';
 							$html3 = wppa_checkbox($slug3, '', $class);
 							$html4 = wppa_checkbox($slug4);
-							$htmlerr = wppa_htmlerr('topten_widget');
+							$htmlerr = wppa_htmlerr('sphoto');
 							$html = array($html1, $htmlerr.$html2, $html3, $html4);
-							$class = 'wppa_rating';
-							wppa_setting($slug, '3a,b,c,d', $name, $desc, $html, $help, $class);
-							
-							$name = __('SlideWidget', 'wppa');
-							$desc = __('Slideshow widget photo link.', 'wppa');
-							$help = esc_js(__('Select the type of link the top ten photos point to.', 'wppa')); 
-							$slug1 = 'wppa_slideonly_widget_linktype';
-							$slug2 = 'wppa_slideonly_widget_linkpage';
-							$slug3 = 'wppa_sswidget_blank';
-							$slug4 = 'wppa_sswidget_overrule';
+							wppa_setting($slug, '3a,b,c,d', $name, $desc, $html, $help);
+
+							$name = __('Mphoto', 'wppa');
+							$desc = __('Media-like photo link.', 'wppa');
+							$help = esc_js(__('Select the type of link you want, or no link at all.', 'wppa')); 
+							$help .= '\n'.esc_js(__('If you select the fullsize photo on its own, it will be stretched to fit, regardless of that setting.', 'wppa')); /* oneofone is treated as portrait only */
+							$help .= '\n'.esc_js(__('Note that a page must have at least %%wppa%% or [wppa][/wppa] in its content to show up the photo(s).', 'wppa')); 
+							$slug1 = 'wppa_mphoto_linktype';
+							$slug2 = 'wppa_mphoto_linkpage';
+							$slug3 = 'wppa_mphoto_blank';
+							$slug4 = 'wppa_mphoto_overrule';
 							$slug = array($slug1, $slug2, $slug3, $slug4);
-							$onchange = 'wppaCheckSlideOnlyLink(); wppaCheckLinkPageErr(\'slideonly_widget\');';
-							$html1 = wppa_select($slug1, $options_linktype_ss_widget, $values_linktype_ss_widget, $onchange);
-							$class = 'wppa_solp';
-							$onchange = 'wppaCheckLinkPageErr(\'slideonly_widget\');';
+							$onchange = 'wppaCheckMphotoLink(); wppaCheckLinkPageErr(\'mphoto\');';
+							$html1 = wppa_select($slug1, $options_linktype_album, $values_linktype_album, $onchange);
+							$class = 'wppa_mlp';
+							$onchange = 'wppaCheckLinkPageErr(\'mphoto\');';
 							$html2 = wppa_select($slug2, $options_page, $values_page, $onchange, $class, true);
-							$class = 'wppa_solb';
+							$class = 'wppa_mlb';
 							$html3 = wppa_checkbox($slug3, '', $class);
 							$html4 = wppa_checkbox($slug4);
-							$htmlerr = wppa_htmlerr('slideonly_widget');
+							$htmlerr = wppa_htmlerr('mphoto');
 							$html = array($html1, $htmlerr.$html2, $html3, $html4);
 							wppa_setting($slug, '4a,b,c,d', $name, $desc, $html, $help);
-							
-							$name = __('PotdWidget', 'wppa');
-							$desc = __('Photo Of The Day widget link.', 'wppa');
-							$help = esc_js(__('Select the type of link the photo of the day points to.', 'wppa')); 
-							$help .= '\n\n'.esc_js(__('If you select \'defined on widget admin page\' you can manually enter a link and title on the Photo of the day Widget Admin page.', 'wppa'));
-							$slug1 = 'wppa_widget_linktype';
-							$slug2 = 'wppa_widget_linkpage';
-							$slug3 = 'wppa_potd_blank';
-							$slug4 = 'wppa_potdwidget_overrule';
-							$slug = array($slug1, $slug2, $slug3, $slug4);
-							$onchange = 'wppaCheckPotdLink(); wppaCheckLinkPageErr(\'widget\');';
-							$html1 = wppa_select($slug1, $options_linktype_potd_widget, $values_linktype_potd_widget, $onchange);
-							$class = 'wppa_potdlp';
-							$onchange = 'wppaCheckLinkPageErr(\'widget\');';
-							$html2 = wppa_select($slug2, $options_page, $values_page, $onchange, $class, true);
-							$class = 'wppa_potdlb';
-							$html3 = wppa_checkbox($slug3, '', $class);
-							$html4 = wppa_checkbox($slug4);
-							$htmlerr = wppa_htmlerr('widget');
-							$html = array($html1, $htmlerr.$html2, $html3, $html4);
-							wppa_setting($slug, '5a,b,c,d', $name, $desc, $html, $help);
-							
-							$name = __('Cover Image', 'wppa');
-							$desc = __('The link from the cover image of an album.', 'wppa');
-							$help = esc_js(__('Select the type of link the coverphoto points to.', 'wppa'));
-							$help .= '\n\n'.esc_js(__('The link from the album title can be configured on the Edit Album page.', 'wppa'));
-							$help .= '\n'.esc_js(__('This link will be used for the photo also if you select: same as title.', 'wppa'));
-							$help .= '\n\n'.esc_js(__('If you specify New Tab on this line, all links from the cover will open a new tab,', 'wppa'));
-							$help .= '\n'.esc_js(__('except when Ajax is activated on Table IV-A1.', 'wppa'));
-							$slug1 = 'wppa_coverimg_linktype';
-							$slug2 = 'wppa_coverimg_linkpage';
-							$slug3 = 'wppa_coverimg_blank';
-							$slug4 = 'wppa_coverimg_overrule';
-							$slug = array($slug1, $slug2, $slug3, $slug4);
-							$onchange = 'wppaCheckCoverImg()';
-							$html1 = wppa_select($slug1, $options_linktype_cover_image, $values_linktype_cover_image, $onchange);
-							$class = '';
-							$html2 = '';
-							$class = 'wppa_covimgbl';
-							$html3 = wppa_checkbox($slug3, '', $class);
-							$html4 = wppa_checkbox($slug4);
-							$html = array($html1, $html2, $html3, $html4);
-							wppa_setting($slug, '6a,b,c,d', $name, $desc, $html, $help);
-							
-							$name = __('CommentWidget', 'wppa');
-							$desc = __('Comment widget photo link.', 'wppa');
-							$help = esc_js(__('Select the type of link the comment widget photos point to.', 'wppa')); 
-							$slug1 = 'wppa_comment_widget_linktype'; 
-							$slug2 = 'wppa_comment_widget_linkpage';
-							$slug3 = 'wppa_comment_blank';
-							$slug4 = 'wppa_comment_overrule';
-							$slug = array($slug1, $slug2, $slug3, $slug4);
-							$onchange = 'wppaCheckCommentLink(); wppaCheckLinkPageErr(\'comment_widget\');';
-							$html1 = wppa_select($slug1, $options_linktype, $values_linktype, $onchange);
-							$class = 'wppa_cmlp';
-							$onchange = 'wppaCheckLinkPageErr(\'comment_widget\');';
-							$html2 = wppa_select($slug2, $options_page, $values_page, $onchange, $class, true);
-							$class = 'wppa_cmlb';
-							$html3 = wppa_checkbox($slug3, '', $class);
-							$html4 = wppa_checkbox($slug4);
-							$htmlerr = wppa_htmlerr('comment_widget');
-							$html = array($html1, $htmlerr.$html2, $html3, $html4);
-							wppa_setting($slug, '7a,b,c,d', $name, $desc, $html, $help);
 							
 							$name = __('Slideshow', 'wppa');
 							$desc = __('Slideshow fullsize link', 'wppa');
@@ -2200,47 +2300,7 @@ global $wppa_revno;
 							$html3 = wppa_checkbox($slug3, '', $class);
 							$html4 = wppa_checkbox($slug4);
 							$html = array($html1, $html2, $html3, $html4);
-							wppa_setting($slug, '8a,,c,d', $name, $desc, $html, $help);
-							
-							$name = __('ThumbnailWidget', 'wppa');
-							$desc = __('Thumbnail widget photo link.', 'wppa');
-							$help = esc_js(__('Select the type of link the thumbnail photos point to.', 'wppa')); 
-							$slug1 = 'wppa_thumbnail_widget_linktype'; 
-							$slug2 = 'wppa_thumbnail_widget_linkpage';
-							$slug3 = 'wppa_thumbnail_widget_blank';
-							$slug4 = 'wppa_thumbnail_widget_overrule';
-							$slug = array($slug1, $slug2, $slug3, $slug4);
-							$onchange = 'wppaCheckThumbnailWLink(); wppaCheckLinkPageErr(\'thumbnail_widget\');';
-							$html1 = wppa_select($slug1, $options_linktype, $values_linktype, $onchange);
-							$class = 'wppa_tnlp';
-							$onchange = 'wppaCheckLinkPageErr(\'thumbnail_widget\');';
-							$html2 = wppa_select($slug2, $options_page, $values_page, $onchange, $class, true);
-							$class = 'wppa_tnlb';
-							$html3 = wppa_checkbox($slug3, '', $class);
-							$html4 = wppa_checkbox($slug4);
-							$htmlerr = wppa_htmlerr('thumbnail_widget');
-							$html = array($html1, $htmlerr.$html2, $html3, $html4);
-							wppa_setting($slug, '9a,b,c,d', $name, $desc, $html, $help);
-							
-							$name = __('LasTenWidget', 'wppa');
-							$desc = __('Last Ten widget photo link.', 'wppa');
-							$help = esc_js(__('Select the type of link the last ten photos point to.', 'wppa')); 
-							$slug1 = 'wppa_lasten_widget_linktype'; 
-							$slug2 = 'wppa_lasten_widget_linkpage';
-							$slug3 = 'wppa_lasten_blank';
-							$slug4 = 'wppa_lasten_overrule';
-							$slug = array($slug1, $slug2, $slug3, $slug4);
-							$onchange = 'wppaCheckLasTenLink(); wppaCheckLinkPageErr(\'lasten_widget\');';
-							$html1 = wppa_select($slug1, $options_linktype, $values_linktype, $onchange);
-							$class = 'wppa_ltlp';
-							$onchange = 'wppaCheckLinkPageErr(\'lasten_widget\');';
-							$html2 = wppa_select($slug2, $options_page, $values_page, $onchange, $class, true);
-							$class = 'wppa_ltlb';
-							$html3 = wppa_checkbox($slug3, '', $class);
-							$html4 = wppa_checkbox($slug4);
-							$htmlerr = wppa_htmlerr('lasten_widget');
-							$html = array($html1, $htmlerr.$html2, $html3, $html4);
-							wppa_setting($slug, '10a,b,c,d', $name, $desc, $html, $help);
+							wppa_setting($slug, '5a,,c,d', $name, $desc, $html, $help);
 
 							$name = __('Film linktype', 'wppa');
 							$desc = __('Direct access goto image in:', 'wppa');
@@ -2249,8 +2309,10 @@ global $wppa_revno;
 							$options = array(__('slideshow window', 'wppa'), __('lightbox overlay', 'wppa'));
 							$values = array('slideshow', 'lightbox');
 							$html = wppa_select($slug, $options, $values);
-							wppa_setting($slug, '11', $name, $desc, $html.'</td><td></td><td></td><td>', $help);
+							wppa_setting($slug, '6', $name, $desc, $html.'</td><td></td><td></td><td>', $help);
 							
+							wppa_setting_subheader('C', '4', __('Other links', 'wppa'));
+
 							$name = __('Art Monkey Link', 'wppa');
 							$desc = __('Enable the Art Monkey link on fullsize names.', 'wppa');
 							$help = esc_js(__('Link Photo name in slideshow to file or zip with photoname as filename.', 'wppa'));
@@ -2258,7 +2320,7 @@ global $wppa_revno;
 							$options = array(__('--- none ---', 'wppa'), __('image file', 'wppa'), __('zipped image', 'wppa'));
 							$values = array('none', 'file', 'zip');
 							$html = wppa_select($slug, $options, $values);
-							wppa_setting($slug, '12', $name, $desc, $html.'</td><td></td><td></td><td>', $help);
+							wppa_setting($slug, '1', $name, $desc, $html.'</td><td></td><td></td><td>', $help);
 							
 							$name = __('Popup Download Link', 'wppa');
 							$desc = __('Configure the download link on fullsize popups.', 'wppa');
@@ -2267,7 +2329,7 @@ global $wppa_revno;
 							$options = array(__('image file', 'wppa'), __('zipped image', 'wppa'));
 							$values = array('file', 'zip');
 							$html = wppa_select($slug, $options, $values);
-							wppa_setting($slug, '12', $name, $desc, $html.'</td><td></td><td></td><td>', $help);
+							wppa_setting($slug, '2', $name, $desc, $html.'</td><td></td><td></td><td>', $help);
 							
 							?>
 						</tbody>
@@ -2955,6 +3017,35 @@ global $wppa_revno;
 							$html = wppa_select($slug, $options, $values);
 							wppa_setting($slug, '3', $name, $desc, $html, $help);
 
+							wppa_setting_subheader('G', '1', __('QR Code settings. These settings also apply to the WPPA+ QR Widget', 'wppa'));
+							
+							$name = __('QR in desc', 'wppa');
+							$desc = __('Show QR code in fullsize descriptions', 'wppa');
+							$help = '';
+							$slug = 'wppa_qr_in_desc';
+							$html = wppa_checkbox($slug);
+							wppa_setting($slug, '1', $name, $desc, $html, $help);
+							
+							$name = __('QR size', 'wppa');
+							$desc = __('The size of the QR display.', 'wppa');
+							$help = '';
+							$slug = 'wppa_qr_size';
+							$html = wppa_input($slug, '50px', '', __('pixels', 'wppa'));
+							wppa_setting($slug, '2', $name, $desc, $html, $help);
+							
+							$name = __('QR color', 'wppa');
+							$desc = __('The display color of the qr code (dark)', 'wppa');
+							$help = __('This color MUST be given in hexadecimal format!', 'wppa');
+							$slug = 'wppa_qr_color';
+							$html = wppa_input($slug, '100px', '', '', "checkColor('".$slug."')") . wppa_color_box($slug);
+							wppa_setting($slug, '3', $name, $desc, $html, $help);
+							
+							$name = __('QR background color', 'wppa');
+							$desc = __('The background color of the qr code (light)', 'wppa');
+							$help = '';
+							$slug = 'wppa_qr_bgcolor';
+							$html = wppa_input($slug, '100px', '', '', "checkColor('".$slug."')") . wppa_color_box($slug);
+							wppa_setting($slug, '4', $name, $desc, $html, $help);
 
 							?>		
 			
@@ -3471,7 +3562,7 @@ global $wppa;
 function wppa_color_box($slug) {
 global $wppa_opt;
 
-	return '<div id="colorbox-' . $slug . '" style="width:100px; height:16px; background-color:' . $wppa_opt[$slug] . '; border:1px solid #dfdfdf;" ></div>';
+	return '<div id="colorbox-' . $slug . '" style="width:100px; height:16px; float:left; background-color:' . $wppa_opt[$slug] . '; border:1px solid #dfdfdf;" ></div>';
 
 }
 

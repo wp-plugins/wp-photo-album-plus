@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the top rated photos
-* Version 4.7.16
+* Version 4.8.0
 */
 
 class TopTenWidget extends WP_Widget {
@@ -135,7 +135,7 @@ class TopTenWidget extends WP_Widget {
 			</select>
 		</p>
 
-		<p><?php _e('You can set the behaviour of this widget in the <b>Photo Albums -> Settings</b> admin page.', 'wppa'); ?></p>
+		<p><?php _e('You can set the sizes in this widget in the <b>Photo Albums -> Settings</b> admin page.', 'wppa'); ?></p>
 <?php
     }
 

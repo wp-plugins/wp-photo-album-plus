@@ -2,11 +2,11 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 4.7.19
+* version 4.8.0
 *
 */
 global $wppa_api_version;
-$wppa_api_version = '4-7-19-000';
+$wppa_api_version = '4-8-0-000';
 // Initialize globals and option settings
 function wppa_initialize_runtime($force = false) {
 global $wppa;
@@ -83,7 +83,8 @@ global $wppa_initruntimetime;
 			'is_lasten'					=> false,
 			'lasten_count'				=> '0',
 			'start_photo'				=> '0',
-			'is_single'					=> false
+			'is_single'					=> false,
+			'is_landing'				=> '0'
 
 		);
 
@@ -140,6 +141,9 @@ global $wppa_initruntimetime;
 						'wppa_thumbnail_widget_size'	=> '',	// 6
 						'wppa_lasten_count' 			=> '',	// 1
 						'wppa_lasten_size' 				=> '',	// 2
+						'wppa_album_widget_count'		=> '',
+						'wppa_album_widget_size'		=> '',
+
 						// G Overlay
 						'wppa_ovl_txt_lines'			=> '',	// 1
 						'wppa_magnifier'				=> '',	// 2
@@ -186,6 +190,7 @@ global $wppa_initruntimetime;
 						'wppa_popup_text_desc_strip'		=> '',	// 5.1
 						'wppa_popup_text_rating' 			=> '',	// 6
 						'wppa_show_rating_count'			=> '',	// 7
+						'wppa_albdesc_on_thumbarea'			=> '',
 						// D Covers
 						'wppa_show_cover_text' 				=> '',	// 1
 						'wppa_enable_slideshow' 			=> '',	// 2
@@ -253,6 +258,7 @@ global $wppa_initruntimetime;
 						'wppa_fulldesc_align'			=> '',	// 9
 						'wppa_clean_pbr'				=> '',	// 10
 						'wppa_run_wppautop_on_desc'		=> '',	// 11
+						'wppa_auto_open_comments'		=> '',
 						// C Thumbnail
 						'wppa_list_photos_by' 			=> '',	// 1
 						'wppa_list_photos_desc' 		=> '',	// 2
@@ -387,6 +393,12 @@ global $wppa_initruntimetime;
 						'wppa_art_monkey_link'				=> '',
 						'wppa_art_monkey_popup_link'		=> '',
 						
+/* Niew */
+						'wppa_album_widget_linktype'		=> '',
+						'wppa_album_widget_linkpage'		=> '',
+						'wppa_album_widget_blank'					=> '',
+/* end nieuw */
+
 						// Table VII: Security
 						// B
 						'wppa_user_upload_login'	=> '',
@@ -475,8 +487,13 @@ global $wppa_initruntimetime;
 						
 						// Comment admin
 						'wppa_comadmin_show' 		=> '',
-						'wppa_comadmin_order' 		=> ''
+						'wppa_comadmin_order' 		=> '',
 
+						// QR code settings
+						'wppa_qr_in_desc'			=> '',
+						'wppa_qr_size'				=> '',
+						'wppa_qr_color'				=> '',
+						'wppa_qr_bgcolor'			=> ''
 
 
 		);

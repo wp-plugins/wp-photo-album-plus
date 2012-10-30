@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the recent commets on photos
-* Version 4.7.16
+* Version 4.8.0
 */
 
 class wppaCommentWidget extends WP_Widget {
@@ -108,7 +108,7 @@ class wppaCommentWidget extends WP_Widget {
  		$widget_title = $instance['title'];
 ?>
 			<p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:', 'wppa'); ?></label> <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $widget_title; ?>" /></p>
-			<p><?php _e('You can set the behaviour of this widget in the <b>Photo Albums -> Settings</b> admin page.', 'wppa'); ?></p>
+			<p><?php _e('You can set the sizes in this widget in the <b>Photo Albums -> Settings</b> admin page.', 'wppa'); ?></p>
 <?php
     }
 
