@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile
-Version: 4.7.19
+Version: 4.8.0
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -33,6 +33,8 @@ This plugin is designed to easily manage and display your photo albums and slide
 * Apart from the full-size slideshows you can add a Sidebar Widget that displays a mini slideshow.
 * There is a widget to display a number of most recently uploaded photos. It can be configured systemwide and/or on an album basis.
 * There is a General Purpose widget that is a text widget wherein you can use wppa+ script commands.
+* There is an album widget that displays thumbnail images that link to album contents.
+* There is a QR code widget that will be updated when the content of the page changes.
 * Almost all appearance settings can be done in the settings admin page. No php, html or css knowledge is required to customize the appearence of the photo display.
 * International language support for static text: Currently included foreign languages files: Dutch, Japanese, French(outdated), Spanish, German.
 * International language support for dynamic text: Album and photo names and descriptions fully support the qTranslate multilanguage rules.
@@ -67,7 +69,7 @@ However, check these requirements in case of problems with new installations wit
 * The server should have at least 32MB of memory, 64MB or more is recommended.
 
 = Upgrade notice =
-This version is: Major rev# 4, Minor rev# 7, Fix rev# 17, Hotfix rev# 000.
+This version is: Major rev# 4, Minor rev# 8, Fix rev# 0, Hotfix rev# 000.
 If you are upgrading from a previous Major or Minor version, note that:
 * If you modified wppa_theme.php and/or wppa_style.css, you will have to use the newly supplied versions. The previous versions are NOT compatible.
 * If you set the userlevel to anything else than 'administrator' you may have to set it again. Note that changing the userlevel can be done by the administrator only!
@@ -155,6 +157,22 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 4.8.0 =
+
+= New Features =
+
+* There is a new widget: **Thumbnail Albums** widget. It shows album cover image thumbnails that link to 
+either the content of the album (sub-albums and thumbnails) or to a slidshow of the content photos.
+* There is a new widget: **QR Widget**. It shows a qr code that will be updated at wppa+ Ajax operations and slideshow browsing and running.
+* The qrcode can alternatively be displayed in the photo description box in the slideshow. All QR code settings are in Table IX-G.
+* You can now have the album description at the top or at the bottom of the thumnail area display. (Table II-C8).
+* You can switch off the automatic opening of the comment box when the slideshow does not run. (Table IV-B12).
+
+= Other Changes =
+
+* Table VI has been reorganized and sub-devided into separate sections.
+* wppa-theme.php and wppa-style.css have been changed. If you have them, check your optional copies in your theme dir.
 
 = 4.7.19 =
 

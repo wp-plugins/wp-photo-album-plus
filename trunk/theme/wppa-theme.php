@@ -72,6 +72,7 @@ wppa_container('open');																// Open container
 			}	// As covers
 			else {																	// Do the thumbs As default
 				wppa_thumb_area('open');											// Open Thumbarea sub-container
+				wppa_album_desc('top');												// Optionally display album description
 					foreach ($thumbs as $tt) :  global $thumb; $thumb = $tt; 		// Loop the Thumbs
 						$counter_thumbs++;
 						if (wppa_onpage('thumbs', $counter_thumbs, $curpage - $n_album_pages)) {
@@ -80,6 +81,7 @@ wppa_container('open');																// Open container
 						}	// End if on page
 					endforeach; 
 					wppa_popup();													// Prepare Popup box
+				wppa_album_desc('bottom');											// Optionally display album description
 				wppa_thumb_area('close');											// Close Thumbarea sub-container
 			}	// As default
 		}	// If thumbs
@@ -92,11 +94,12 @@ wppa_container('open');																// Open container
 			$wppa['out'] .= '<div class="center">'.__a('No albums or photos found matching your search criteria.', 'wppa_theme').'</div>';
 		}
 	} // wppa_page('albums')
-	
-	elseif (wppa_page('oneofone')) {												// Page 'Single image' requested
-		wppa_slide_frame();															// Setup slideframe
-		wppa_run_slidecontainer('single');											// Fill in the photo and display it
-	} // wppa_page('oneofone')
+
+// Obsolete. Is done in wppa-functions.php -> wppa_sphoto() like wppa_mphoto	
+//	elseif (wppa_page('oneofone')) {												// Page 'Single image' requested
+//		wppa_slide_frame();															// Setup slideframe
+//		wppa_run_slidecontainer('single');											// Fill in the photo and display it
+//	} // wppa_page('oneofone')
 	
 	elseif (wppa_page('slide') || wppa_page('single')) {							// Page 'Slideshow' or 'Single' in browsemode requested
 		wppa_the_slideshow();														// Producs all the html required for the slideshow

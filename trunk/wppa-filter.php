@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * get the albums via filter
-* version 4.7.9
+* version 4.8.0
 *
 */
 
@@ -246,6 +246,7 @@ global $wppa_postid;
 	$wppa['single_photo'] = '';
 	$wppa['is_mphoto'] = '0';
 	$wppa['film_on'] = '0';
+	$wppa['is_landing'] = '0';
 	// Undocumented
 	$wppa['start_photo'] = '0';	// Start a slideshow here
 	$wppa['is_single'] = false;	// Is a one image slideshow
@@ -254,6 +255,8 @@ global $wppa_postid;
 
 	// Find type
 	switch ( $type ) {
+		case 'landing':
+			$wppa['is_landing'] = '0';
 		case 'generic':
 			break;
 		case 'cover':

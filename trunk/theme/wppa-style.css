@@ -82,9 +82,6 @@
 	border: none; 
 	margin: 0;
 	padding: 4px;
-	-moz-border-radius: 3px;
-	-khtml-border-radius: 3px;
-	-webkit-border-radius: 3px;
 	border-radius: 3px;
 }
 
@@ -283,6 +280,10 @@ margin: 0 auto;
 
 #wppa-overlay-txt table {
 text-align:left;
+}
+
+.wppa-label, .wppa-value {
+/* float:left; */
 }
 
 .wppa-mphoto {

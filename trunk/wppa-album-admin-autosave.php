@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * create, edit and delete albums
-* version 4.7.19
+* version 4.8.0
 *
 */
 
@@ -1510,7 +1510,9 @@ function wppa_main_photo($cur = '') {
 			else { 
 				$selected = ''; 
 			}
-			$output .= '<option value="'.$photo['id'].'" '.$selected.'>'.wppa_qtrans($photo['name']).'</option>';
+			$name = wppa_qtrans($photo['name']);
+			if ( strlen($name) > 45 ) $name = substr($name, 0, 45).'...';
+			$output .= '<option value="'.$photo['id'].'" '.$selected.'>'.$name.'</option>';
 		}
 		
 		$output .= '</select>';

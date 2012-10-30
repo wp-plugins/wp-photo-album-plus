@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 * gp admin functions
-* version 4.6.10
+* version 4.8.0
 *
 * 
 */
@@ -796,4 +796,14 @@ global $wpdb;
 	}
 	
 	return ! $any_error;	// True = no error
+}
+
+function wppa_has_children($alb) {
+global $wpdb;
+
+	$albums = $wpdb->get_results($wpdb->prepare("SELECT * FROM `".WPPA_ALBUMS."` WHERE `a_parent` = ".$alb['id']), 'ARRAY_A' );
+
+	if ( ! $albums || ! count($albums) ) return false;
+	
+	return true;
 }

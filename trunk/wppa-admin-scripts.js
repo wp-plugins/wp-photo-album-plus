@@ -1,7 +1,7 @@
 /* admin-scripts.js */
 /* Package: wp-photo-album-plus
 /*
-/* Version 4.7.18
+/* Version 4.8.0
 /* Various js routines used in admin pages		
 */
 
@@ -64,6 +64,7 @@ function wppaInitSettings() {
 	wppaCheckLinkPageErr('comment_widget');
 	wppaCheckLinkPageErr('thumbnail_widget');
 	wppaCheckLinkPageErr('lasten_widget');
+	wppaCheckLinkPageErr('album_widget');
 	wppaCheckSplitNamedesc();
 	
 	var tab=new Array('I','II','III','IV','V','VI','VII','VIII','IX','X','XI','XII');
@@ -1045,7 +1046,7 @@ function wppaCheckLinkPageErr(slug) {
 	var type = document.getElementById('wppa_'+slug+'_linktype').value;
 	var page = document.getElementById('wppa_'+slug+'_linkpage').value;
 	
-	if ( page == '0' && ( type == 'photo' || type == 'single' || type == 'album' )) {
+	if ( page == '0' && ( type == 'photo' || type == 'single' || type == 'album' || type == 'content' || type == 'slide' )) {
 		jQuery('#'+slug+'-err').css({display:''});
 	}
 	else {
