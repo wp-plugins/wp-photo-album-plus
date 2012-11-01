@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 4.8.0
+* Version 4.8.1
 *
 */
 
@@ -2099,9 +2099,9 @@ global $wppa_revno;
 						//	$slug4 = 'wppa_album_widget_overrule';	// useless
 							$slug = array($slug1, $slug2, $slug3);
 							$onchange = 'wppaCheckLinkPageErr(\'album_widget\');';
-							$options_linktype = array(__('subalbums and thumbnails', 'wppa'), __('slideshow', 'wppa'));
-							$values_linktype = array('content', 'slide');
-							$html1 = wppa_select($slug1, $options_linktype, $values_linktype, $onchange);
+							$options_linktype_album_widget = array(__('subalbums and thumbnails', 'wppa'), __('slideshow', 'wppa'));
+							$values_linktype_album_widget = array('content', 'slide');
+							$html1 = wppa_select($slug1, $options_linktype_album_widget, $values_linktype_album_widget, $onchange);
 							$class = 'wppa_awlp';
 							$onchange = 'wppaCheckLinkPageErr(\'album_widget\');';
 							$html2 = wppa_select($slug2, $options_page, $values_page, $onchange, $class, true);
