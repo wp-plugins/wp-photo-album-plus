@@ -2,11 +2,11 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 4.8.0
+* version 4.8.1
 *
 */
 global $wppa_api_version;
-$wppa_api_version = '4-8-0-000';
+$wppa_api_version = '4-8-1-000';
 // Initialize globals and option settings
 function wppa_initialize_runtime($force = false) {
 global $wppa;
@@ -586,14 +586,14 @@ global $wppa;
 		$domain = is_admin() ? 'wppa' : 'wppa_theme';
 		$mofile = WPPA_PATH.'/langs/'.$domain.'-'.$wppa_locale.'.mo';
 		$bret = load_textdomain($domain, $mofile);
-		wppa_dbg_msg('Domain: '.$domain.', mofile: '.$mofile.', loaded='.$bret);
+//		wppa_dbg_msg('Domain: '.$domain.', mofile: '.$mofile.', loaded='.$bret);
 		
 		// Load theme language file also, for Ajax
 		if ( is_admin() ) {
 			$domain2 = 'wppa_theme';
 			$mofile2 = WPPA_PATH.'/langs/'.$domain2.'-'.$wppa_locale.'.mo';
 			$bret2 = load_textdomain($domain2, $mofile2);
-			wppa_dbg_msg('Domain: '.$domain2.', mofile: '.$mofile2.', loaded='.$bret2);
+//			wppa_dbg_msg('Domain: '.$domain2.', mofile: '.$mofile2.', loaded='.$bret2);
 		}
 	}
 }
