@@ -1246,6 +1246,7 @@ global $thumb;
 
 	// Shareurl
 	$shareurl = wppa_get_image_page_url_by_id($id);
+//	$shareurl = wppa_convert_to_pretty($shareurl);
 	$shareurl = str_replace('&amp;', '&', $shareurl);
 	
 	// Make photo desc, filtered
@@ -2485,6 +2486,7 @@ $wppa['slideframeheight'] = $gfh;
 function wppa_get_thumb_frame_style($glue = false, $film = '') {
 global $wppa_opt;
 global $wppa;
+global $wppaerrmsgxxx;
 
 	$tfw = $wppa_opt['wppa_tf_width'];
 	$tfh = $wppa_opt['wppa_tf_height'];
@@ -2498,6 +2500,11 @@ global $wppa;
 	if ($film == '' && $wppa_opt['wppa_thumb_auto']) {
 		$area = wppa_get_box_width() + $tfw;	// Area for n+1 thumbs
 		$n_1 = floor($area / ($tfw + $mgl));
+		if ( $n_1 == '0' ) {
+			if ( ! $wppaerrmsgxxx ) wppa_dbg_msg('Misconfig. thumbnail area too small. Areasize = '.wppa_get_box_width().' tfwidth = '.$tfw.' marg= '.$mgl);
+			$n_1 = '1';
+			$wppaerrmsgxxx = true;	// err msg given
+		}
 		$mgl = floor($area / $n_1) - $tfw;	
 	}
 	if (is_numeric($tfw) && is_numeric($tfh)) {
@@ -5500,4 +5507,96 @@ global $wpdb;
 		}
 	}
 	$wppa['out'] .= $result;
+}
+
+function wppa_convert_from_pretty($uri) {
+
+	// Test if we should be here anyway
+	$wppapos = stripos($uri, '/wppaspec/');
+	if ( ! $wppapos ) wp_die('Unexpected error in wppa_convert_to_pretty()');
+	
+	// copy start up to including slash before wppaspec
+	$newuri = substr($uri, 0, $wppapos+1);				
+	
+	// explode part after wppaspec/
+	$args = explode('/', substr($uri, $wppapos+10));	
+	
+	// process 'arguments'
+	if ( count($args > 0) ) {
+		$first = true;
+		foreach ( $args as $arg ) {
+			if ( $first ) $newuri .= '?'; else $newuri .= '&';
+			$first = false;
+			$code = substr($arg, 0, 1);
+			switch ( $code ) {
+				case 'a':
+					$newuri .= 'wppa-album='.substr($arg, 1);
+					break;
+				case 'p':
+					$newuri .= 'wppa-photo='.substr($arg, 1);
+					break;
+				case 's':
+					$newuri .= 'wppa-slide';
+					break;
+				case 'c':
+					$newuri .= 'wppa-cover='.substr($arg, 1);
+					break;
+				case 'o':
+					$newuri .= 'wppa-occur='.substr($arg, 1);
+					break;
+					
+			}
+		}
+	}
+	
+	return $newuri;
+}
+
+function wppa_convert_to_pretty($xuri) {
+
+	// Do some preprocessing
+	$uri = str_replace('&amp;', '&', $xuri);
+	$uri = str_replace('wppa-', '', $uri);
+	
+	// Test if querystring exists
+	$qpos = stripos($uri, '?');
+	if ( ! $qpos ) return $uri;
+
+	// Make sure we end without '/'
+	$newuri = trim(substr($uri, 0, $qpos), '/');
+	$newuri .= '/wppaspec';
+	
+	// explode querystring
+	$args = explode('&', substr($uri, $qpos+1));
+	$support = array('album', 'photo', 'slide', 'cover', 'occur');
+	if ( count($args) > 0 ) {
+		foreach ( $args as $arg ) {
+			$t = explode('=', $arg);
+			$code = $t['0'];
+			if ( isset($t['1']) ) $val = $t['1']; else $val = false;
+			if ( in_array( $code, $support ) ) {
+				$newuri .= '/';
+				switch ( $code ) {
+					case 'album':
+						$newuri .= 'a';
+						break;
+					case 'photo':
+						$newuri .= 'p';
+						break;
+					case 'slide':
+						$newuri .= 's';
+						break;
+					case 'cover':
+						$newuri .= 'c';
+						break;
+					case 'occur':
+						$newuri .= 'o';
+						break;
+				}
+				if ( $val ) $newuri .= $val;
+			}
+		}
+	}
+	
+	return $newuri;
 }
