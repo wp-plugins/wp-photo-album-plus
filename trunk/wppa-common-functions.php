@@ -2,11 +2,11 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 4.8.1
+* version 4.8.2
 *
 */
 global $wppa_api_version;
-$wppa_api_version = '4-8-1-000';
+$wppa_api_version = '4-8-2-000';
 // Initialize globals and option settings
 function wppa_initialize_runtime($force = false) {
 global $wppa;
@@ -181,6 +181,12 @@ global $wppa_initruntimetime;
 						'wppa_show_exif'					=> '',	// 18
 						'wppa_copyright_on'					=> '',	// 19
 						'wppa_copyright_notice'				=> '',	// 20
+						'wppa_share_on'						=> '',
+						'wppa_share_qr'						=> '',
+						'wppa_share_facebook'				=> '',
+						'wppa_share_twitter'				=> '',
+						'wppa_share_hyves'					=> '',
+
 						// C Thumbnails
 						'wppa_thumb_text_name' 				=> '',	// 1
 						'wppa_thumb_text_desc' 				=> '',	// 2
@@ -240,11 +246,14 @@ global $wppa_initruntimetime;
 						'wppa_bcolor_iptc' 				=> '',
 						'wppa_bgcolor_exif'				=> '',
 						'wppa_bcolor_exif' 				=> '',
+						'wppa_bgcolor_share'			=> '',
+						'wppa_bcolor_share' 			=> '',
 
 						// Table IV: Behaviour
 						// A System
 						'wppa_allow_ajax'				=> '',	// 1
 						'wppa_use_photo_names_in_urls'	=> '',	// 2
+						'wppa_use_pretty_links'			=> '',
 						// B Full size and Slideshow
 						'wppa_fullvalign' 				=> '',	// 1
 						'wppa_fullhalign' 				=> '',	// 2
@@ -436,7 +445,6 @@ global $wppa_initruntimetime;
 						'wppa_meta_all'					=> '',	// 10
 						'wppa_cp_points_comment'		=> '',
 						'wppa_cp_points_rating'			=> '',
-						'wppa_sharetype'				=> '',
 
 						'wppa_use_wp_editor'			=> '',	//A 11
 						
@@ -490,7 +498,6 @@ global $wppa_initruntimetime;
 						'wppa_comadmin_order' 		=> '',
 
 						// QR code settings
-						'wppa_qr_in_desc'			=> '',
 						'wppa_qr_size'				=> '',
 						'wppa_qr_color'				=> '',
 						'wppa_qr_bgcolor'			=> ''

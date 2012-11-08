@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 4.8.1
+* Version 4.8.2
 *
 */
 
@@ -924,6 +924,51 @@ global $wppa_revno;
 							$class = 'wppa_copyr';
 							$html = wppa_textarea($slug, $name);
 							wppa_setting($slug, '20', $name, $desc, $html, $help, $class);
+							
+							$name = __('Show Share Box', 'wppa');
+							$desc = __('Display the share social media buttons box.', 'wppa');
+							$help = '';
+							$slug = 'wppa_share_on';
+							$onchange = 'wppaCheckShares()';
+							$html = wppa_checkbox($slug, $onchange);
+							wppa_setting($slug, '21', $name, $desc, $html, $help);
+							
+							$name = __('Show QR Code', 'wppa');
+							$desc = __('Display the QR code in the share box.', 'wppa');
+							$help = '';
+							$slug = 'wppa_share_qr';
+							$class = 'wppa_share';
+							$html = wppa_checkbox($slug, $onchange);
+							wppa_setting($slug, '21.1', $name, $desc, $html, $help, $class);
+							
+							$name = __('Show Facebook button', 'wppa');
+							$desc = __('Display the Facebook button in the share box.', 'wppa');
+							$help = '';
+							$slug = 'wppa_share_facebook';
+							$class = 'wppa_share';
+							$html = wppa_checkbox($slug, $onchange);
+							wppa_setting($slug, '21.2', $name, $desc, $html, $help, $class);
+
+							$name = __('Show Twitter button', 'wppa');
+							$desc = __('Display the Twitter button in the share box.', 'wppa');
+							$help = '';
+							$slug = 'wppa_share_twitter';
+							$class = 'wppa_share';
+							$html = wppa_checkbox($slug, $onchange);
+							wppa_setting($slug, '21.3', $name, $desc, $html, $help, $class);
+
+							$name = __('Show Hyves button', 'wppa');
+							$desc = __('Display the Hyves button in the share box.', 'wppa');
+							$help = '';
+							$slug = 'wppa_share_hyves';
+							$class = 'wppa_share';
+							$html = wppa_checkbox($slug, $onchange);
+							wppa_setting($slug, '21.4', $name, $desc, $html, $help, $class);
+							
+//							'wppa_share_facebook'
+//							'wppa_share_twitter'
+//							'wppa_share_hyves'
+
 
 							wppa_setting_subheader('C', '1', __('Thumbnail display related settings', 'wppa'));
 							
@@ -1297,6 +1342,17 @@ global $wppa_revno;
 							$html = array($html1, $html2);
 							wppa_setting($slug, '9', $name, $desc, $html, $help);
 				
+							$name = __('Share', 'wppa');
+							$desc = __('Share box display background.', 'wppa');
+							$help = esc_js(__('Enter valid CSS colors for share box backgrounds and borders.', 'wppa'));
+							$slug1 = 'wppa_bgcolor_share';
+							$slug2 = 'wppa_bcolor_share';
+							$slug = array($slug1, $slug2);
+							$html1 = wppa_input($slug1, '100px', '', '', "checkColor('".$slug1."')") . '</td><td>' . wppa_color_box($slug1);
+							$html2 = wppa_input($slug2, '100px', '', '', "checkColor('".$slug2."')") . '</td><td>' . wppa_color_box($slug2);
+							$html = array($html1, $html2);
+							wppa_setting($slug, '10', $name, $desc, $html, $help);
+
 							wppa_setting_subheader('B', '4', __('Other backgrounds', 'wppa'));
 				
 							$name = __('Even', 'wppa');
@@ -1390,6 +1446,17 @@ global $wppa_revno;
 							$html = wppa_checkbox($slug);
 							$class = 'wppa_allow_ajax_';
 							wppa_setting($slug, '2', $name, $desc, $html, $help, $class);
+							
+							$name = __('Enable pretty links', 'wppa');
+							$desc = __('Enable the generation and understanding of pretty links.', 'wppa');
+							$help = esc_js(__('If checked, links to social media and the qr code will have "/token1/token2/" etc in stead of "&arg1=..&arg2=.." etc.', 'wppa'));
+							$help .= '\n'.esc_js(__('These types of links will be interpreted and cause a redirection on entering.', 'wppa'));
+							$help .= '\n'.esc_js(__('It is recommended to check this box. It shortens links dramatically and simplifies qr codes.', 'wppa'));
+							$help .= '\n'.esc_js(__('However, you may encounter conflicts with themes and/or other plugins, so test it troughly!', 'wppa'));
+							$help .= '\n\n'.esc_js(__('Table IV-A2 (Photo names in urls) must be UNchecked for this setting to work!', 'wppa'));
+							$slug = 'wppa_use_pretty_links';
+							$html = wppa_checkbox($slug);
+							wppa_setting($slug, '3', $name, $desc, $html, $help);
 							
 							wppa_setting_subheader('B', '1', __('Slideshow related settings', 'wppa'));
 
@@ -2910,7 +2977,9 @@ global $wppa_revno;
 									__('Browsebar', 'wppa'), 
 									__('Comments', 'wppa'),
 									__('IPTC data', 'wppa'),
-									__('EXIF data', 'wppa'));
+									__('EXIF data', 'wppa'),
+									__('Share box', 'wppa') 
+									);
 								$enabled  = '<span style="color:green; float:right;">( '.__('Enabled', 'wppa');
 								$disabled = '<span style="color:orange; float:right;">( '.__('Disabled', 'wppa');
 								$descs = array(
@@ -2924,10 +2993,11 @@ global $wppa_revno;
 									__('Browse Bar with Photo X of Y counter', 'wppa') . ( $wppa_opt['wppa_show_browse_navigation'] == 'yes' ? $enabled : $disabled ).' II-B2 )</span>',
 									__('Comments Box', 'wppa') . ( $wppa_opt['wppa_show_comments'] == 'yes' ? $enabled : $disabled ).' II-B10 )</span>',
 									__('IPTC box', 'wppa') . ( $wppa_opt['wppa_show_iptc'] == 'yes' ? $enabled : $disabled ).' II-B17 )</span>',
-									__('EXIF box', 'wppa') . ( $wppa_opt['wppa_show_exif'] == 'yes' ? $enabled : $disabled ).' II-B18 )</span>'
+									__('EXIF box', 'wppa') . ( $wppa_opt['wppa_show_exif'] == 'yes' ? $enabled : $disabled ).' II-B18 )</span>',
+									__('Social media share box', 'wppa') . ( $wppa_opt['wppa_share_on'] == 'yes' ? $enabled : $disabled ).' II-B21 )</span>'
 									);
 								$i = '0';
-								while ( $i < '11' ) {
+								while ( $i < '12' ) {
 									$name = $names[$indexes[$i]];
 									$desc = $descs[$indexes[$i]];
 									$html = $i == '0' ? '&nbsp;' : wppa_doit_button(__('Move Up', 'wppa'), 'wppa_moveup', $i);
@@ -2950,7 +3020,9 @@ global $wppa_revno;
 									__('Browsebar', 'wppa'), 
 									__('Comments', 'wppa'),
 									__('IPTC data', 'wppa'),
-									__('EXIF data', 'wppa'));
+									__('EXIF data', 'wppa'),
+									__('Share box', 'wppa')
+									);
 								$enabled  = '<span style="color:green; float:right;">( '.__('Enabled', 'wppa');
 								$disabled = '<span style="color:orange; float:right;">( '.__('Disabled', 'wppa');
 								$descs = array(
@@ -2963,10 +3035,11 @@ global $wppa_revno;
 									__('Browse Bar with Photo X of Y counter', 'wppa') . ( $wppa_opt['wppa_show_browse_navigation'] == 'yes' ? $enabled : $disabled ).' II-B2 )</span>',
 									__('Comments Box', 'wppa') . ( $wppa_opt['wppa_show_comments'] == 'yes' ? $enabled : $disabled ).' II-B10 )</span>',
 									__('IPTC box', 'wppa') . ( $wppa_opt['wppa_show_iptc'] == 'yes' ? $enabled : $disabled ).' II-B17 )</span>',
-									__('EXIF box', 'wppa') . ( $wppa_opt['wppa_show_exif'] == 'yes' ? $enabled : $disabled ).' II-B18 )</span>'
+									__('EXIF box', 'wppa') . ( $wppa_opt['wppa_show_exif'] == 'yes' ? $enabled : $disabled ).' II-B18 )</span>',
+									__('Social media share box', 'wppa') . ( $wppa_opt['wppa_share_on'] == 'yes' ? $enabled : $disabled ).' II-B21 )</span>'
 									);
 								$i = '0';
-								while ( $i < '10' ) {
+								while ( $i < '11' ) {
 									$name = $names[$indexes[$i]];
 									$desc = $descs[$indexes[$i]];
 									$html = $i == '0' ? '&nbsp;' : wppa_doit_button(__('Move Up', 'wppa'), 'wppa_moveup', $i);
@@ -3008,44 +3081,28 @@ global $wppa_revno;
 							$html = wppa_input($slug, '50px', '', __('points per vote', 'wppa'));
 							wppa_setting($slug, '2', $name, $desc, $html, $help);
 							
-							$name = __('Share type', 'wppa');
-							$desc = __('Select type of social media photo share link.', 'wppa');
-							$help = '';
-							$slug = 'wppa_sharetype';
-							$options = array(__('--- none ---', 'wppa'), __('The page with the photo', 'wppa'), __('The plain photofile', 'wppa'));
-							$values = array('none', 'site', 'file');
-							$html = wppa_select($slug, $options, $values);
-							wppa_setting($slug, '3', $name, $desc, $html, $help);
-
-							wppa_setting_subheader('G', '1', __('QR Code settings. These settings also apply to the WPPA+ QR Widget', 'wppa'));
-							
-							$name = __('QR in desc', 'wppa');
-							$desc = __('Show QR code in fullsize descriptions', 'wppa');
-							$help = '';
-							$slug = 'wppa_qr_in_desc';
-							$html = wppa_checkbox($slug);
-							wppa_setting($slug, '1', $name, $desc, $html, $help);
+							wppa_setting_subheader('G', '1', __('QR Code widget settings. The colors also apply to the QR code in the Share box.', 'wppa'));
 							
 							$name = __('QR size', 'wppa');
 							$desc = __('The size of the QR display.', 'wppa');
 							$help = '';
 							$slug = 'wppa_qr_size';
 							$html = wppa_input($slug, '50px', '', __('pixels', 'wppa'));
-							wppa_setting($slug, '2', $name, $desc, $html, $help);
+							wppa_setting($slug, '1', $name, $desc, $html, $help);
 							
 							$name = __('QR color', 'wppa');
 							$desc = __('The display color of the qr code (dark)', 'wppa');
 							$help = __('This color MUST be given in hexadecimal format!', 'wppa');
 							$slug = 'wppa_qr_color';
 							$html = wppa_input($slug, '100px', '', '', "checkColor('".$slug."')") . wppa_color_box($slug);
-							wppa_setting($slug, '3', $name, $desc, $html, $help);
+							wppa_setting($slug, '2', $name, $desc, $html, $help);
 							
 							$name = __('QR background color', 'wppa');
 							$desc = __('The background color of the qr code (light)', 'wppa');
 							$help = '';
 							$slug = 'wppa_qr_bgcolor';
 							$html = wppa_input($slug, '100px', '', '', "checkColor('".$slug."')") . wppa_color_box($slug);
-							wppa_setting($slug, '4', $name, $desc, $html, $help);
+							wppa_setting($slug, '3', $name, $desc, $html, $help);
 
 							?>		
 			

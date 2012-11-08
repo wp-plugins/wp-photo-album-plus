@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 4.8.0
+* Version 4.8.2
 *
 */
 
@@ -228,6 +228,20 @@ global $silent;
 			}	
 			if ( WPPA_DEBUG ) if ($ah || $ph) wppa_ok_message($ah.' out of '.$at.' albums and '.$ph.' out of '.$pt.' photos html converted');
 		}
+		if ( $old_rev <= '482' ) {	// Share box added
+			$so = get_option('wppa_slide_order', '0,1,2,3,4,5,6,7,8,9');
+			if ( strlen($so) == '19' ) {
+				update_option('wppa_slide_order', $so.',10');
+			}
+			$so = get_option('wppa_slide_order_split', '0,1,2,3,4,5,6,7,8,9,10');
+			if ( strlen($so) == '22' ) {
+				update_option('wppa_slide_order_split', $so.',11');
+			}
+			wppa_remove_setting('wppa_sharetype');
+			wppa_copy_setting('wppa_bgcolor_namedesc', 'wppa_bgcolor_share');
+			wppa_copy_setting('wppa_bcolor_namedesc', 'wppa_bcolor_share');
+
+		}
 	}
 	
 	// Set default values for new options
@@ -254,7 +268,7 @@ global $silent;
 		$usertheme 		= ABSPATH.'wp-content/themes/'.get_option('template').'/wppa-theme.php';
 		if ( is_file( $usertheme ) || is_file( $usertheme_old ) ) $key += '2';
 	}
-	if ( $old_rev < '460' ) {		// css changed since...
+	if ( $old_rev < '480' ) {		// css changed since...
 		$userstyle_old 	= ABSPATH.'wp-content/themes/'.get_option('template').'/wppa_style.css';
 		$userstyle 		= ABSPATH.'wp-content/themes/'.get_option('template').'/wppa-style.css';
 		if ( is_file( $userstyle ) || is_file( $userstyle_old ) ) $key += '1';
@@ -434,6 +448,11 @@ Hide Camera info
 						'wppa_show_exif'					=> 'no',		// 18
 						'wppa_copyright_on'					=> 'yes',		// 19
 						'wppa_copyright_notice'				=> __('<span style="color:red" >Warning: Do not upload copyrighted material!</span>', 'wppa'),	// 20
+						'wppa_share_on'						=> 'no',
+						'wppa_share_qr'						=> 'yes',
+						'wppa_share_facebook'				=> 'yes',
+						'wppa_share_twitter'				=> 'yes',
+						'wppa_share_hyves'					=> 'yes',
 						// C Thumbnails
 						'wppa_thumb_text_name' 				=> 'yes',	// 1
 						'wppa_thumb_text_desc' 				=> 'yes',	// 2
@@ -492,11 +511,14 @@ Hide Camera info
 						'wppa_bcolor_iptc' 				=> '#bbbbbb',
 						'wppa_bgcolor_exif'				=> '#dddddd',
 						'wppa_bcolor_exif' 				=> '#bbbbbb',
+						'wppa_bgcolor_share'			=> '#dddddd',
+						'wppa_bcolor_share' 			=> '#bbbbbb',
 
 						// Table IV: Behaviour
 						// A System
 						'wppa_allow_ajax'				=> 'no',
 						'wppa_use_photo_names_in_urls'	=> 'no',
+						'wppa_use_pretty_links'			=> 'no',
 						// B Full size and Slideshow
 						'wppa_fullvalign' 				=> 'fit',
 						'wppa_fullhalign' 				=> 'center',
@@ -708,15 +730,14 @@ Hide Camera info
 						'wppa_watermark_upload'			=> '',
 						'wppa_watermark_opacity'		=> '20',
 						
-						'wppa_slide_order'				=> '0,1,2,3,4,5,6,7,8,9',
-						'wppa_slide_order_split'		=> '0,1,2,3,4,5,6,7,8,9,10',
+						'wppa_slide_order'				=> '0,1,2,3,4,5,6,7,8,9,10',
+						'wppa_slide_order_split'		=> '0,1,2,3,4,5,6,7,8,9,10,11',
 						'wppa_swap_namedesc' 			=> 'no',
 						'wppa_split_namedesc'			=> 'no',
 
 						// F Other plugins
 						'wppa_cp_points_comment'		=> '0',
 						'wppa_cp_points_rating'			=> '0',
-						'wppa_sharetype'				=> 'site',
 
 						// Photo of the day widget
 						'wppa_widgettitle'			=> __('Photo of the day', 'wppa'),
@@ -744,7 +765,6 @@ Hide Camera info
 						'wppa_comadmin_order' 		=> 'timestamp',
 								
 						// QR code settings
-						'wppa_qr_in_desc'			=> 'no',
 						'wppa_qr_size'				=> '200',
 						'wppa_qr_color'				=> '#000000',
 						'wppa_qr_bgcolor'			=> '#FFFFFF'

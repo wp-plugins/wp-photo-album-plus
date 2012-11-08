@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the non admin stuff
-* Version 4.8.0
+* Version 4.8.2
 *
 */
 
@@ -44,7 +44,8 @@ global $wppa_opt;
 				foreach ( $photos as $photo ) {
 					$id = $photo['id'];
 					$name = esc_attr(__($photo['name']));
-					$content = wppa_get_permalink().'wppa-photo='.$photo['id'].'&wppa-occur=1';
+					$content = wppa_get_permalink().'wppa-photo='.$photo['id'].'&amp;wppa-occur=1';
+					$content = wppa_convert_to_pretty($content);
 					echo("\n<meta name=\"".$name."\" content=\"".$content."\" >");
 				}
 				echo("\n<!-- WPPA+ END Featured photos on this page -->\n");
@@ -64,6 +65,21 @@ global $wppa_opt;
 				echo("\n<meta name=\"".$name."\" content=\"".$content."\" >");
 			}
 			echo("\n<!-- WPPA+ END Featured photos on this site -->\n");
+		}
+	}
+	
+	// Share thumbnail, I do not believe in this, but.. you never know, maybe it works somewhere
+	if ( isset($_GET['wppa-photo']) ) {
+		$id = $_GET['wppa-photo'];
+		if ( is_numeric($id) ) {
+			$photo = $wpdb->get_row($wpdb->prepare( "SELECT * FROM `".WPPA_PHOTOS."` WHERE `id` = %s ", $id ), 'ARRAY_A');
+			if ( $photo ) {
+				$imgurl = WPPA_UPLOAD_URL.'/thumbs/'.$id.'.'.$photo['ext'];
+				echo ("\n<!-- WPPA+ Share thumbnail data -->\n");
+				echo ("\n".'<link rel="image_src" href="'.$imgurl.'" />');
+				echo ("\n".'<meta property="og:image" content="'.$imgurl.'" />');
+				echo ("\n<!-- WPPA+ End Share thumbnail data -->\n");
+			}
 		}
 	}
 }
@@ -136,6 +152,21 @@ global $wppa_opt;
 			</script>');
 		echo("\n<!-- end WPPA+ Footer data -->\n");
 		wppa_dbg_q('print');
+	}
+}
+
+
+/* CHECK REDIRECTION */
+add_action('init', 'wppa_redirect');
+
+function wppa_redirect() {
+	$uri = $_ENV["SCRIPT_URI"];
+	$wppapos = stripos($uri, '/wppaspec/');
+	if ( $wppapos && get_option('permalink_structure') && get_option('wppa_use_pretty_links') == 'yes' ) {
+		$newuri = wppa_convert_from_pretty($uri);
+		if ( $newuri == $uri ) return;
+		wp_redirect($newuri);
+		exit;
 	}
 }
 
@@ -244,7 +275,6 @@ global $wppa_locale;
 		else ("\t".'wppaThumbSpaceAuto = false;'."\n");
 		echo ("\t".'wppaMagnifierCursor = "'.$wppa_opt['wppa_magnifier'].'";'."\n");
 		echo ("\t".'wppaArtMonkyLink = "'.$wppa_opt['wppa_art_monkey_link'].'";'."\n");
-		echo ("\t".'wppaShare = "'.$wppa_opt['wppa_sharetype'].'";'."\n");
 		if ( $wppa_opt['wppa_auto_open_comments'] ) echo ("\t".'wppaAutoOpenComments = true;'."\n");
 		else echo ("\t".'wppaAutoOpenComments = false;'."\n");
 		

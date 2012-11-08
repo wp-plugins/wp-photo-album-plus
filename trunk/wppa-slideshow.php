@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the slideshow high level functions
-* Version 4.8.0
+* Version 4.8.2
 *
 */
 
@@ -13,7 +13,7 @@ global $wppa_opt;
 	if ( $wppa_opt['wppa_split_namedesc'] ) {
 		$indexes = explode(',', $wppa_opt['wppa_slide_order_split']);
 		$i = '0';
-		while ( $i < '11' ) {
+		while ( $i < '12' ) {
 			switch ( $indexes[$i] ) {
 				case '0':
 					wppaStartStop('optional');				// The 'Slower | start/stop | Faster' bar
@@ -48,6 +48,9 @@ global $wppa_opt;
 				case '10':
 					wppa_exif('optional');					// The EXIF box
 					break;
+				case '11':
+					wppa_share('optional');					// The Share box
+					break;
 				default:
 					break;
 			}
@@ -57,7 +60,7 @@ global $wppa_opt;
 	else {
 		$indexes = explode(',', $wppa_opt['wppa_slide_order']);
 		$i = '0';
-		while ( $i < '10' ) {
+		while ( $i < '11' ) {
 			switch ( $indexes[$i] ) {
 				case '0':
 					wppaStartStop('optional');				// The 'Slower | start/stop | Faster' bar
@@ -88,6 +91,9 @@ global $wppa_opt;
 					break;
 				case '9':
 					wppa_exif('optional');					// The EXIF box
+					break;
+				case '10':
+					wppa_share('optional');					// The Share box
 					break;
 				default:
 					break;
@@ -637,7 +643,6 @@ global $wppa_opt;
 
 		$wppa['out'] .= wppa_nltab('-').'</div><!-- #iptc -->';
 	}
-
 }
 
 // The EXIF box
@@ -658,5 +663,23 @@ global $wppa_opt;
 
 		$wppa['out'] .= wppa_nltab('-').'</div><!-- #exif -->';
 	}
+}
 
+// The Sharebox
+function wppa_share($opt = '') {
+global $wppa;
+global $wppa_opt;
+
+	if ( is_feed() ) {
+		return;
+	}
+	$do_it = false;
+	if ( $opt != 'optional' ) $do_it = true;
+	if ( ! $wppa['is_slideonly'] && $wppa_opt['wppa_share_on'] && ! $wppa['in_widget'] ) $do_it = true;
+	
+	if ( $do_it ) {
+		$wppa['out'] .= wppa_nltab('+').'<div id="share-'.$wppa['master_occur'].'" class="wppa-box wppa-box-text wppa-share " style="text-align: center; '.__wcs('wppa-box').__wcs('wppa-box-text').__wcs('wppa-share').'">';
+
+		$wppa['out'] .= wppa_nltab('-').'</div><!-- #share -->';
+	}
 }
