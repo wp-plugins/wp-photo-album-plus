@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile
-Version: 4.8.1
+Version: 4.8.2
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -41,7 +41,6 @@ This plugin is designed to easily manage and display your photo albums and slide
 * Suports lightbox 3.
 * You can add watermarks to the photos.
 * The plugin supports IPTC and EXIF data.
-* Supports addThis: while browsing fullsize images the share url will be updated.
 * Supports WP supercache. The cache will be cleared whenever required for wppa+.
 * Supports Cube Points. You can assign points to comments and votes.
 
@@ -69,7 +68,7 @@ However, check these requirements in case of problems with new installations wit
 * The server should have at least 32MB of memory, 64MB or more is recommended.
 
 = Upgrade notice =
-This version is: Major rev# 4, Minor rev# 8, Fix rev# 0, Hotfix rev# 000.
+This version is: Major rev# 4, Minor rev# 8, Fix rev# 2, Hotfix rev# 000.
 If you are upgrading from a previous Major or Minor version, note that:
 * If you modified wppa_theme.php and/or wppa_style.css, you will have to use the newly supplied versions. The previous versions are NOT compatible.
 * If you set the userlevel to anything else than 'administrator' you may have to set it again. Note that changing the userlevel can be done by the administrator only!
@@ -91,7 +90,7 @@ See Table I-A1 and Table I-B1,2 of the Photo Albums -> Settings admin page.
 
 = Which other plugins do you recommand to use with WPPA+, and which not? =
 
-* Recommanded plugins: qTranslate, WP Super Cache, AddThis, Cube Points.
+* Recommanded plugins: qTranslate, WP Super Cache, Cube Points.
 * Plugins that break up WPPA+: My Live Signature.
 
 = Are there special requirements for responsive (mobile) themes? =
@@ -157,6 +156,22 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 4.8.2 =
+
+= New Features =
+
+* New box in the slideshow: Share box. Contains links to social media that work. 
+Shares the url showing the photo, name and description of the photo where the box is displayed under.
+You can configure the box in **Table II-B21**, and move it upwards in Table IX-E.
+* The creation and interpretation of 'Pretty Links' is supported now. Enable in Table IV-A3. **Table IV-A2 must be unchecked for this setting to work properly!**
+
+= Other Changes =
+
+* Discontinued support of AddThis. addthis.update() does not work properly for url and title, and does not exist for image and description. 
+Also the documentation of addthis.update() is no longer findable in the addthis api documentation. The use of addThis is no longer encouraged.
+The dynamic updates from wppa+ have been removed.
+* Removed diagnostics and some code that is no longer required.
 
 = 4.8.1 =
 

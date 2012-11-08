@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display thumbnail photos
-* Version 4.8.0
+* Version 4.8.2
 */
 
 
@@ -39,7 +39,8 @@ class wppaQRWidget extends WP_Widget {
 			
 			wppaConsoleLog("doc.loc.href = "+wppaQRData);
 			
-			function wppaQRUpdate() {
+			function wppaQRUpdate(arg) {
+				if ( arg ) wppaQRData = arg;
 				if ( wppaQRData != wppaQRDataOld ) {
 					wppaQRDataOld = wppaQRData;
 					workData = wppaQRData;
@@ -47,7 +48,6 @@ class wppaQRWidget extends WP_Widget {
 					document.getElementById("wppa-qr-img").src = wppaQRSrc;
 					document.getElementById("wppa-qr-img").title = workData;
 				}
-				setTimeout("wppaQRUpdate()", 250);
 				return;			
 			}
 

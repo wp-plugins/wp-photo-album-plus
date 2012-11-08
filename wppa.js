@@ -2,7 +2,7 @@
 //
 // conatins slideshow, theme, ajax and lightbox code
 //
-// Version 4.8.0
+// Version 4.8.2
 
 // Part 1: Slideshow
 //
@@ -90,9 +90,7 @@ var wppaThumbSpaceAuto = false;
 var wppaMinThumbSpace = 4;
 var wppaMagnifierCursor = '';
 var wppaArtMonkyLink = 'none';
-var wppaShare = '';
 var wppaAutoOpenComments = false;
-var wppaQRData;
 
 // 'Internal' variables (private)
 var _wppaId = new Array();
@@ -128,9 +126,9 @@ var _wppaDidGoto = new Array();
 var wppaTopMoc = 0;
 var wppaColWidth = new Array();
 var _wppaShareUrl = new Array();
+var _wppaShareHtml = new Array();
 
 jQuery(document).ready(function(){
-	_wppaLog('ready', 1);
 	
 	// Autocol?
 	for (mocc = 1; mocc <= wppaTopMoc; mocc++) {
@@ -142,15 +140,13 @@ jQuery(document).ready(function(){
 	_wppaTextDelay = wppaAnimationSpeed;
 	if (wppaFadeInAfterFadeOut) _wppaTextDelay *= 2;
 	
-	// Init share url to have querystring
-	wppaUpdateAddThisUrl('', '');
 });
 
 // First the external entrypoints that may be called directly from HTML
 // These functions check the validity and store the users request to be executed later if busy and if applicable.
 
 // This is an entrypoint to load the slide data
-function wppaStoreSlideInfo(mocc, id, url, size, width, height, name, desc, photoid, avgrat, myrat, rateurl, linkurl, linktitle, linktarget, iwtimeout, commenthtml, iptchtml, exifhtml, lbtitle, shareurl) {
+function wppaStoreSlideInfo(mocc, id, url, size, width, height, name, desc, photoid, avgrat, myrat, rateurl, linkurl, linktitle, linktarget, iwtimeout, commenthtml, iptchtml, exifhtml, lbtitle, shareurl, smhtml) {
 var cursor;
 	if ( ! _wppaSlides[mocc] ) {
 		_wppaSlides[mocc] = new Array();
@@ -181,6 +177,7 @@ var cursor;
 		_wppaDidGoto[mocc] = false;
 		wppaSlidePause[mocc] = false;
 		_wppaShareUrl[mocc] = new Array();
+		_wppaShareHtml[mocc] = new Array();
 	}
 	
 	// Cursor
@@ -216,6 +213,7 @@ var cursor;
 	_wppaUrl[mocc][id] = url;
 	_wppaLbTitle[mocc][id] = lbtitle;
 	_wppaShareUrl[mocc][id] = shareurl;
+	_wppaShareHtml[mocc][id] = smhtml;
 }
 
 function wppaSpeed(mocc, faster) {
@@ -332,7 +330,6 @@ function wppaValidateComment(mocc) {
 }
 
 function _wppaNextSlide(mocc, mode) {
-	_wppaLog('NextSlide', mocc);
 
 	var fg = _wppaFg[mocc];
 	var bg = 1 - fg;
@@ -436,7 +433,6 @@ function _wppaNextSlide(mocc, mode) {
 }
 
 function _wppaNextSlide_2(mocc) {
-	_wppaLog('NextSlide_2', mocc);
 
 	var fg, bg;	
 
@@ -470,7 +466,6 @@ function _wppaNextSlide_2(mocc) {
 }
 
 function _wppaNextSlide_3(mocc) {
-	_wppaLog('NextSlide_3', mocc);
 
 	var nw 		= _wppaFg[mocc];
 	var ol 		= 1 - nw;
@@ -623,7 +618,6 @@ function _wppaNextSlide_3(mocc) {
 }
 
 function _wppaNextSlide_4(mocc) {
-	_wppaLog('NextSlide_4', mocc);
 
 	var nw = _wppaFg[mocc];
 	var ol = 1-nw;
@@ -665,7 +659,6 @@ function _wppaNextSlide_4(mocc) {
 }
 
 function _wppaNextSlide_5(mocc) {
-	_wppaLog('NextSlide_5', mocc);
 
 	// If we are going to the same slide, there is no need to hide and restore the subtitles and commentframe
 	if (!_wppaToTheSame) {	
@@ -681,6 +674,8 @@ function _wppaNextSlide_5(mocc) {
 		// Restor IPTC
 		jQuery("#iptc-"+mocc).html(_wppaIptcHtml[mocc][_wppaCurIdx[mocc]]);
 		jQuery("#exif-"+mocc).html(_wppaExifHtml[mocc][_wppaCurIdx[mocc]]);
+		// Restore share html
+		jQuery("#share-"+mocc).html(_wppaShareHtml[mocc][_wppaCurIdx[mocc]]);
 
 	}
 	_wppaToTheSame = false;					// This has now been worked out
@@ -703,19 +698,15 @@ function _wppaNextSlide_5(mocc) {
 	}
 	else {								// No toggle pending
 		wppaUpdateLightboxes(); 		// Refresh lighytbox
-		// Update addthis url and title if ( ( this is non-mini ) AND ( this is the only running non-mini OR there are no running non-minis ) )
+		// Update url and title if ( ( this is non-mini ) AND ( this is the only running non-mini OR there are no running non-minis ) )
 		if ( ! wppaIsMini[mocc] ) {		// This is NOT a widget
 		// Prepare visual url (for addressline)
 			var visurl = wppaGetCurrentFullUrl(mocc, _wppaCurIdx[mocc]);
 				if ( visurl == '' ) visurl = _wppaShareUrl[mocc][_wppaCurIdx[mocc]];
 				
 			// Update possible QR Widget
-			wppaQRData = _wppaShareUrl[mocc][_wppaCurIdx[mocc]];
+			if ( typeof(wppaQRUpdate) != 'undefined') wppaQRUpdate(_wppaShareUrl[mocc][_wppaCurIdx[mocc]]);
 			if ( ! _wppaSSRuns[mocc] ) {	// This is not running
-				// Update addthis share url
-				if ( wppaShare == 'site' ) url = _wppaShareUrl[mocc][_wppaCurIdx[mocc]]; //wppaGetCurrentFullUrl(mocc, _wppaCurIdx[mocc]);
-				if ( wppaShare == 'file' ) url = _wppaUrl[mocc][_wppaCurIdx[mocc]];
-				wppaUpdateAddThisUrl(url, _wppaNames[mocc][_wppaCurIdx[mocc]]);					
 				// Push state
 				wppaPushStateSlide(mocc, _wppaCurIdx[mocc], visurl);
 			}
@@ -928,7 +919,6 @@ function wppaUpdateLightboxes() {
 }
 
 function _wppaNext(mocc) {
-	_wppaLog('Next', mocc);
 
 	// Check for end of non wrapped show
 	if ( ! wppaSlideWrap && _wppaCurIdx[mocc] == (_wppaSlides[mocc].length -1) ) return;
@@ -940,7 +930,6 @@ function _wppaNext(mocc) {
 }
 
 function _wppaNextN(mocc, n) {
-	_wppaLog('NextN', mocc);
 
 	// Check for end of non wrapped show
 	if ( ! wppaSlideWrap && _wppaCurIdx[mocc] >= (_wppaSlides[mocc].length - n) ) return;
@@ -952,7 +941,6 @@ function _wppaNextN(mocc, n) {
 }
 
 function _wppaNextOnCallback(mocc) {
-	_wppaLog('NextOnCallback', mocc);
 
 	// Check for end of non wrapped show
 	if ( ! wppaSlideWrap && _wppaCurIdx[mocc] == (_wppaSlides[mocc].length -1) ) return;
@@ -981,7 +969,6 @@ function _wppaNextOnCallback(mocc) {
 }
 
 function _wppaPrev(mocc) {
-	_wppaLog('Prev', mocc);
 	
 	// Check for begin of non wrapped show
 	if ( ! wppaSlideWrap && _wppaCurIdx[mocc] == 0 ) return;
@@ -993,7 +980,6 @@ function _wppaPrev(mocc) {
 }
 
 function _wppaPrevN(mocc, n) {
-	_wppaLog('PrevN', mocc);
 	
 	// Check for begin of non wrapped show
 	if ( ! wppaSlideWrap && _wppaCurIdx[mocc] < n ) return;
@@ -1005,7 +991,6 @@ function _wppaPrevN(mocc, n) {
 }
 
 function _wppaGoto(mocc, idx) {
-	_wppaLog('Goto', mocc);
 	
 	_wppaToTheSame = (_wppaNxtIdx[mocc] == idx);
 	_wppaNxtIdx[mocc] = idx;
@@ -1039,7 +1024,6 @@ function _wppaGotoContinue(mocc){
 }
 
 function _wppaStart(mocc, idx) {
-	_wppaLog('Start', mocc);
 	
 	if ( idx == -2 ) {	// Init at first without my rating
 		var i = 0;
@@ -1077,7 +1061,6 @@ function _wppaStart(mocc, idx) {
 }
 
 function _wppaStop(mocc) {
-	_wppaLog('Stop', mocc);
 	
     _wppaSSRuns[mocc] = false;
     jQuery('#startstop-'+mocc).html( wppaStart+' '+wppaSlideShow );  
@@ -1088,7 +1071,6 @@ function _wppaStop(mocc) {
 }
 
 function _wppaSpeed(mocc, faster) {
-	_wppaLog('Speed', 0);
 	
     if (faster) {
         if (_wppaTimeOut[mocc] > 500) _wppaTimeOut[mocc] /= 1.5;
@@ -1099,7 +1081,6 @@ function _wppaSpeed(mocc, faster) {
 }
 
 function _wppaLoadSpinner(mocc) {
-	_wppaLog('LoadSpinner', mocc);
 	
 	var top;
 	var lft;
@@ -1139,8 +1120,7 @@ function _wppaLoadSpinner(mocc) {
 }
 
 function _wppaUnloadSpinner(mocc) {
-	_wppaLog('UnloadSpinner', mocc);
-//return; // debug
+
 	jQuery('#spinner-'+mocc).html('');
 }
 
@@ -1156,7 +1136,7 @@ function wppaGetContainerWidth(mocc) {
 }
 
 function _wppaDoAutocol(mocc) {
-	_wppaLog('DoAutocol', mocc);
+	
 	var w;
 	var h;
 	if (!wppaAutoColumnWidth[mocc]) return;
@@ -1218,7 +1198,6 @@ function _wppaDoAutocol(mocc) {
 }
 
 function _wppaCheckRewind(mocc) {
-	_wppaLog('CheckRewind', mocc);
 
 	var n_images;
 	var n_diff;
@@ -1250,7 +1229,6 @@ function _wppaCheckRewind(mocc) {
 }
 
 function _wppaSetRatingDisplay(mocc) {
-	_wppaLog('setRatingDisplay', mocc);
 
 	var idx, avg, myr;
 	if (!document.getElementById('wppa-rating-'+mocc)) return; 	// No rating bar
@@ -1303,17 +1281,6 @@ function _wppaSetRatingDisplay(mocc) {
 					break;
 			}
 
-			/* Selection box
-			var htm = '<select id="wppa-rat-'+mocc+'" onchange="_wppaRateIt('+mocc+', this.value)">';
-				if (myr<1 || parseInt(myr)<myr) htm += '<option value="0">?</option>';
-			var sel = '';
-				for (i=wppaRatingMax; i>0;i--) {
-					if (myr == i) sel = 'selected="selected"'; else sel = '';
-					htm += '<option value="'+i+'" '+sel+' >'+i+'</option>';
-				}
-			htm += '</select>';
-			if (parseInt(myr)<myr) htm += '&nbsp;('+myr+')';
-			/* End selection box */
 			/* Row of numbers */
 			var htm = '';
 			for (i=1;i<=wppaRatingMax;i++) {
@@ -1332,7 +1299,6 @@ function _wppaSetRatingDisplay(mocc) {
 }
 		
 function _wppaSetRd(mocc, avg, where) {
-	_wppaLog('SetRd', mocc);
 		
 	var idx1 = parseInt(avg);
 	var idx2 = idx1 + 1;
@@ -1358,7 +1324,6 @@ function _wppaSetRd(mocc, avg, where) {
 }
 
 function _wppaFollowMe(mocc, idx) {
-	_wppaLog('FollowMe', mocc);
 
 	if (_wppaSSRuns[mocc]) return;				// Do not rate on a running show, what only works properly in Firefox								
 
@@ -1368,7 +1333,6 @@ function _wppaFollowMe(mocc, idx) {
 }
 
 function _wppaLeaveMe(mocc, idx) {
-	_wppaLog('LeaveMe', mocc);
 
 	if (_wppaSSRuns[mocc]) return;				// Do not rate on a running show, what only works properly in Firefox	
 
@@ -1378,7 +1342,7 @@ function _wppaLeaveMe(mocc, idx) {
 }
 
 function _wppaRateIt(mocc, value) {
-	_wppaLog('RateIt', mocc);
+
 if (value == 0) return;
 	var photoid = _wppaId[mocc][_wppaCurIdx[mocc]];
 	var oldval  = _wppaMyr[mocc][_wppaCurIdx[mocc]];
@@ -1435,7 +1399,6 @@ if (value == 0) return;
 }
 
 function _wppaValidateComment(mocc) {
-	_wppaLog('ValidateComment', mocc);
 
 	var photoid = _wppaId[mocc][_wppaCurIdx[mocc]];
 	
@@ -1468,13 +1431,11 @@ function _wppaValidateComment(mocc) {
 }
 
 function _wppaGo(url) {
-	_wppaLog('Go', 0);
 	
 	document.location = url;	// Go!
 }
 
 function _wppaBbb(mocc,where,act) {
-	_wppaLog('Bbb', mocc);
 	
 	if (_wppaSSRuns[mocc]) return;
 	
@@ -1570,8 +1531,7 @@ function _wppaShowMetaData(mocc, key) {
 		// Hide iptc
 		jQuery("#iptccontent-"+mocc).css('visibility', 'hidden'); 
 		jQuery("#exifcontent-"+mocc).css('visibility', 'hidden'); 
-		// Hide addthis
-//		jQuery(".wppa-addthis-"+mocc).css('visibility', 'hidden');
+
 	}
 }
 
@@ -1914,7 +1874,7 @@ function wppaFullPopUp(mocc, id, url, xwidth, xheight, ajaxurl) {
 }
 
 // Part 3: Ajax
-// Additionally: functions to change the url for addthis during ajax and browse operations
+// Additionally: functions to change the url during ajax and browse operations
 
 // AJAX RENDERING INCLUDING HISTORY MANAGEMENT
 // IF AJAX NOT ALLOWED, ALSO NO HISTORY MENAGEMENT!!
@@ -1975,6 +1935,7 @@ window.onpopstate = function(event) {
 			}
 		}
 		else {
+		/*
 			occ = wppaFirstOccur;
 			// Restore first modified occurrences content
 			jQuery('#wppa-container-'+occ).html(wppaStartHtml[occ]);
@@ -1997,13 +1958,15 @@ window.onpopstate = function(event) {
 				}
 				if ( idx < _wppaId[occ].length ) _wppaGoto(occ, idx);
 			}
+		*/
 		}
 		// If it is a slideshow, stop it
 		if ( document.getElementById('theslide0-'+occ) ) {
 			_wppaStop(occ);
 		}
 	}
-	wppaQRData = document.location.href; //????
+	if ( typeof(wppaQRUpdate) != 'undefined') wppaQRUpdate(document.location.href);
+//	wppaQRData = document.location.href; //????
 };  
 
 // The AJAX rendering routine
@@ -2037,11 +2000,8 @@ function wppaDoAjaxRender(mocc, ajaxurl, newurl) {
 //				if (typeof(myLightbox)!="undefined") myLightbox.updateImageList();
 				wppaUpdateLightboxes();
 				
-				/* addthis */
-				wppaUpdateAddThisUrl(newurl, '');
-				
 				/* qrcode */
-				wppaQRData = newurl;
+				if ( typeof(wppaQRUpdate) != 'undefined') wppaQRUpdate(newurl);
 
 				/* Autocol? */
 				wppaColWidth[mocc] = 0;	// clear
@@ -2065,8 +2025,6 @@ function wppaDoAjaxRender(mocc, ajaxurl, newurl) {
 	else {	// Ajax NOT possible
 		document.location.href = newurl;
 
-		/* addthis */
-		wppaUpdateAddThisUrl(newurl, '');
 		/* Autocol? */
 		wppaColWidth[mocc] = 0;	// clear: forces recalc
 	}
@@ -2088,54 +2046,6 @@ function wppaPushStateSlide(mocc, slide, url) {
 			}
 		}
 	}
-}
-
-// WPPA modules for addthis.
-var wppaAddThis = -1;
-
-jQuery(document).ready(function(){
-	if (typeof(addthis) != 'undefined') {
-		addthis.init();	// In case loaded asynchronously
-		wppaAddThis = true;
-	}
-	else wppaAddThis = false;
-});
-
-function wppaUpdateAddThisUrl(xurl, title) {
-
-	if ( wppaAddThis == -1 ) {	// Document not ready yet
-		setTimeout('wppaUpdateAddThisUrl("'+xurl+'", "'+title+'")', 1000);	// retry after 1000 ms.
-		wppaConsoleLog('Retrying');
-		return;
-	}
-	if ( wppaAddThis == false ) return;	// No addthis activated
-	
-	var url = xurl;
-	if ( url == '' ) {
-		url = document.URL;	// document.location.href
-		wppaConsoleLog('Url set to '+url);
-	}
-	url = encodeURI(url);
-	
-	try {
-		addthis.update('share', 'url', url);
-		wppaConsoleLog('AddThis share url update to '+url+' succeeded');
-	}
-	catch(err){
-		wppaConsoleLog('AddThis share url update to '+url+' failed');
-	}
-	if (title != '') {
-		try {
-			addthis.update('share', 'title', title);
-			wppaConsoleLog('AddThis share title update to '+title+' succeeded');
-		}
-		catch(err) {
-			wppaConsoleLog('AddThis share title update to '+title+' failed');
-		}
-	}
-//  Does not exist unfortunately...
-//	addthis.update('share', 'description', 'Geupdate Desc');
-	addthis.ready();
 }
 
 // WPPA EMBEDDED NATIVE LIGHTBOX FUNCTIONALITY
