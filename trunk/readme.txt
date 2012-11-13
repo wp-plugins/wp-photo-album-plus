@@ -162,6 +162,7 @@ See for additional information: http://wppa.opajaap.nl/?page_id=1459
 = Bug Fixes =
 
 * Removed spurious html tags from the description used for social media sharing.
+* Fix for special chars in album names.
 
 = New Features = 
 
