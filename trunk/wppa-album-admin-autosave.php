@@ -82,7 +82,7 @@ function _wppa_admin() {
 									<label ><?php _e('Name:', 'wppa'); ?></label>
 								</th>
 								<td style="padding-top:4px; padding-bottom:0;">
-									<input type="text" style="width: 100%;" onchange="wppaAjaxUpdateAlbum(<?php echo $edit_id ?>, 'name', this)" value="<?php echo(stripslashes($albuminfo['name'])) ?>" />
+									<input type="text" style="width: 100%;" onchange="wppaAjaxUpdateAlbum(<?php echo $edit_id ?>, 'name', this)" value="<?php echo esc_attr(stripslashes($albuminfo['name'])) ?>" />
 								</td>
 								<td style="padding-top:4px; padding-bottom:0;">
 									<span class="description"><?php _e('Type the name of the album. Do not leave this empty.', 'wppa'); ?></span>
