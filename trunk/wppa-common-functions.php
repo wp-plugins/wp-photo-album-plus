@@ -2,11 +2,11 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 4.8.2
+* version 4.8.3
 *
 */
 global $wppa_api_version;
-$wppa_api_version = '4-8-2-000';
+$wppa_api_version = '4-8-3-000';
 // Initialize globals and option settings
 function wppa_initialize_runtime($force = false) {
 global $wppa;
@@ -112,6 +112,7 @@ global $wppa_initruntimetime;
 						'wppa_enlarge' 					=> '',	// 3
 						'wppa_fullimage_border_width' 	=> '',	// 4
 						'wppa_numbar_max'				=> '',	// 5
+						'wppa_share_size'				=> '',
 						// C Thumbnails
 						'wppa_thumbsize' 				=> '',	// 1
 						'wppa_thumb_aspect'				=> '',	// 2
@@ -182,6 +183,7 @@ global $wppa_initruntimetime;
 						'wppa_copyright_on'					=> '',	// 19
 						'wppa_copyright_notice'				=> '',	// 20
 						'wppa_share_on'						=> '',
+						'wppa_share_on_widget'				=> '',
 						'wppa_share_qr'						=> '',
 						'wppa_share_facebook'				=> '',
 						'wppa_share_twitter'				=> '',
@@ -268,6 +270,7 @@ global $wppa_initruntimetime;
 						'wppa_clean_pbr'				=> '',	// 10
 						'wppa_run_wppautop_on_desc'		=> '',	// 11
 						'wppa_auto_open_comments'		=> '',
+						'wppa_film_hover_goto'			=> '',
 						// C Thumbnail
 						'wppa_list_photos_by' 			=> '',	// 1
 						'wppa_list_photos_desc' 		=> '',	// 2

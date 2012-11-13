@@ -1,7 +1,7 @@
 /* admin-scripts.js */
 /* Package: wp-photo-album-plus
 /*
-/* Version 4.8.2
+/* Version 4.8.3
 /* Various js routines used in admin pages		
 */
 
@@ -329,7 +329,7 @@ function wppaCheckAjax() {
 }
 
 function wppaCheckShares() {
-	var Sh = document.getElementById('wppa_share_on').checked;
+	var Sh = document.getElementById('wppa_share_on').checked || document.getElementById('wppa_share_on_widget').checked;
 	if (Sh) jQuery('.wppa_share').css('display', '');
 	else jQuery('.wppa_share').css('display', 'none');
 }

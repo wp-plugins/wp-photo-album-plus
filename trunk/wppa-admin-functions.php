@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 * gp admin functions
-* version 4.8.0
+* version 4.8.3
 *
 * 
 */
@@ -757,7 +757,7 @@ global $wpdb;
 	}
 	if ( $errtxt ) {
 		$fulltxt = 'The latest update failed to update the database tables required for wppa+ to function properly<br /><br />';
-		$fulltxt .= 'Make sure you have the rights to issue SQL commands like <i>"ALTER TABLE tablename ADD COLUMN columname datatype"</i> and run the action on <i>Table VII-A1</i> on the Photo Albums -> Settings admin page.<br /><br />';
+		$fulltxt .= 'Make sure you have the rights to issue SQL commands like <i>"ALTER TABLE tablename ADD COLUMN columname datatype"</i> and run the action on <i>Table VIII-A1</i> on the Photo Albums -> Settings admin page.<br /><br />';
 		$fulltxt .= 'The following table lists the missing columns:';
 		$fulltxt .= '<br /><table id="wppa-err-table"><thead style="font-weight:bold;"><tr><td>Table name</td><td>Column name</td><td>Data type</td></thead>';
 		$fulltxt .= $errtxt;

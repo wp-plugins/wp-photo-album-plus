@@ -2,7 +2,7 @@
 //
 // conatins slideshow, theme, ajax and lightbox code
 //
-// Version 4.8.2
+// Version 4.8.3
 
 // Part 1: Slideshow
 //
@@ -127,6 +127,7 @@ var wppaTopMoc = 0;
 var wppaColWidth = new Array();
 var _wppaShareUrl = new Array();
 var _wppaShareHtml = new Array();
+var _wppaFilmNoMove = new Array();
 
 jQuery(document).ready(function(){
 	
@@ -178,6 +179,7 @@ var cursor;
 		wppaSlidePause[mocc] = false;
 		_wppaShareUrl[mocc] = new Array();
 		_wppaShareHtml[mocc] = new Array();
+		_wppaFilmNoMove[mocc] = false;
 	}
 	
 	// Cursor
@@ -302,6 +304,14 @@ function wppaGoto(mocc, idx) {
 	if ( ! _wppaSSRuns[mocc] ) {
 		_wppaGoto(mocc, idx);
 	}
+}
+
+function wppaGotoFilmNoMove(mocc, idx) {
+	_wppaDidGoto[mocc] = true;
+	if ( ! _wppaSSRuns[mocc] ) {
+		_wppaFilmNoMove[mocc] = true;
+		_wppaGoto(mocc, idx);
+	}	
 }
 
 function wppaGotoKeepState(mocc, idx) {
@@ -646,10 +656,15 @@ function _wppaNextSlide_4(mocc) {
 	jQuery('#bc-pname-'+mocc).html( _wppaNames[mocc][_wppaCurIdx[mocc]] );
 
 	// Adjust filmstrip
-	var xoffset;
-	xoffset = wppaFilmStripLength[mocc] / 2 - (_wppaCurIdx[mocc] + 0.5 + wppaPreambule) * wppaThumbnailPitch[mocc] - wppaFilmStripMargin[mocc];
-	if (wppaFilmShowGlue) xoffset -= (wppaFilmStripMargin[mocc] * 2 + 2);	// Glue
-	jQuery('#wppa-filmstrip-'+mocc).animate({marginLeft: xoffset+'px'});
+	if ( ! _wppaFilmNoMove[mocc] ) {
+		var xoffset;
+		xoffset = wppaFilmStripLength[mocc] / 2 - (_wppaCurIdx[mocc] + 0.5 + wppaPreambule) * wppaThumbnailPitch[mocc] - wppaFilmStripMargin[mocc];
+		if (wppaFilmShowGlue) xoffset -= (wppaFilmStripMargin[mocc] * 2 + 2);	// Glue
+		jQuery('#wppa-filmstrip-'+mocc).animate({marginLeft: xoffset+'px'});
+	}
+	else {
+		_wppaFilmNoMove[mocc] = false; // reset
+	}
 	
 	// Set rating mechanism
 	_wppaSetRatingDisplay(mocc);
