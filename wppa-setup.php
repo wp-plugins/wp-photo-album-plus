@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 4.8.2
+* Version 4.8.3
 *
 */
 
@@ -380,6 +380,7 @@ Hide Camera info
 						'wppa_enlarge' 					=> 'no',	// 3
 						'wppa_fullimage_border_width' 	=> '',		// 4
 						'wppa_numbar_max'				=> '10',	// 5
+						'wppa_share_size'				=> '32',
 						// C Thumbnails
 						'wppa_thumbsize' 				=> '100',		// 1
 						'wppa_thumb_aspect'				=> '0:0:none',	// 2
@@ -449,6 +450,7 @@ Hide Camera info
 						'wppa_copyright_on'					=> 'yes',		// 19
 						'wppa_copyright_notice'				=> __('<span style="color:red" >Warning: Do not upload copyrighted material!</span>', 'wppa'),	// 20
 						'wppa_share_on'						=> 'no',
+						'wppa_share_on_widget'				=> 'no',
 						'wppa_share_qr'						=> 'yes',
 						'wppa_share_facebook'				=> 'yes',
 						'wppa_share_twitter'				=> 'yes',
@@ -533,6 +535,7 @@ Hide Camera info
 						'wppa_clean_pbr'				=> 'yes',
 						'wppa_run_wppautop_on_desc'		=> 'no',
 						'wppa_auto_open_comments'		=> 'yes',
+						'wppa_film_hover_goto'			=> 'no',
 						// C Thumbnail
 						'wppa_list_photos_by' 			=> '0',
 						'wppa_list_photos_desc' 		=> 'no',

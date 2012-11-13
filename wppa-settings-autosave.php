@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 4.8.2
+* Version 4.8.3
 *
 */
 
@@ -337,6 +337,16 @@ global $wppa_revno;
 							$html = wppa_input($slug, '40px', '', __('numbers', 'wppa'));
 							$class = 'wppa_numbar';
 							wppa_setting($slug, '5', $name, $desc, $html, $help, $class);
+							
+							$name = __('Share button size', 'wppa');
+							$desc = __('The size of the social media icons in the Share box', 'wppa');
+							$help = '';
+							$slug = 'wppa_share_size';
+							$opts = array('16 x 16', '32 x 32');
+							$vals = array('16', '32');
+							$html = wppa_select($slug, $opts, $vals);
+							$class = 'wppa_share';
+							wppa_setting($slug, '6', $name, $desc, $html.__('pixels', 'wppa'), $help, $class);
 
 							wppa_setting_subheader('C', '1', __('Thumbnail photos related settings', 'wppa'));
 							
@@ -933,6 +943,14 @@ global $wppa_revno;
 							$html = wppa_checkbox($slug, $onchange);
 							wppa_setting($slug, '21', $name, $desc, $html, $help);
 							
+							$name = __('Show Share Box Widget', 'wppa');
+							$desc = __('Display the share social media buttons box in widgets.', 'wppa');
+							$help = __('This setting applies to normal slideshows in widgets, not to the slideshowwidget as that is a slideonly display.', 'wppa');
+							$slug = 'wppa_share_on_widget';
+							$onchange = 'wppaCheckShares()';
+							$html = wppa_checkbox($slug, $onchange);
+							wppa_setting($slug, '21.0', $name, $desc, $html, $help);
+
 							$name = __('Show QR Code', 'wppa');
 							$desc = __('Display the QR code in the share box.', 'wppa');
 							$help = '';
@@ -1593,7 +1611,12 @@ global $wppa_revno;
 							$html = wppa_checkbox($slug);
 							wppa_setting($slug, '12', $name, $desc, $html, $help);
 							
-
+							$name = __('Film hover goto', 'wppa');
+							$desc = __('Go to slide when hovering filmstrip thumbnail.', 'wppa');
+							$help = __('Do not use this setting when slides have different aspect ratios!', 'wppa');
+							$slug = 'wppa_film_hover_goto';
+							$html = wppa_checkbox($slug);
+							wppa_setting($slug, '13', $name, $desc, $html, $help);
 							
 							wppa_setting_subheader('C', '1', __('Thumbnail related settings', 'wppa'));
 
@@ -3554,7 +3577,7 @@ function wppa_select($slug, $options, $values, $onchange = '', $class = '', $fir
 		$idx++;
 	}
 	$html .= '</select>';
-	$html .= '<img id="img_'.$slug.'" class="'.$class.'" src="'.wppa_get_imgdir().'star.png" title="'.__('Setting unmodified', 'wppa').'" style="padding-left:4px; float:left; height:16px; width:16px;" />';
+	$html .= '<img id="img_'.$slug.'" class="'.$class.'" src="'.wppa_get_imgdir().'star.png" title="'.__('Setting unmodified', 'wppa').'" style="padding:0 4px; float:left; height:16px; width:16px;" />';
 
 	return $html;
 }

@@ -3,12 +3,12 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions and API modules
-* Version 4.8.2
+* Version 4.8.3
 *
 */
 /* Moved to wppa-common-functions.php:
 global $wppa_api_version;
-$wppa_api_version = '4-8-2-000';
+$wppa_api_version = '4-8-3-000';
 */
 
 if ( ! defined( 'ABSPATH' ) )
@@ -1281,11 +1281,9 @@ global $thumb;
 	else {
 		$desc = '';
 	}
-		
-		
+	
 	// Share HTML 
-	if ( $wppa_opt['wppa_share_on'] ) $sharehtml = wppa_get_share_html();
-	else $sharehtml = '';
+	$sharehtml = wppa_get_share_html();
 	
 	// Check for pending
 	if ( isset($thumb['id']) && $thumb['id'] == $id ) {
@@ -1687,7 +1685,7 @@ global $wppa_first_comment_html;
 						$result .= '</td>';
 						$txtwidth = floor( wppa_get_container_width() * 0.7 ).'px';
 						$result .= '<td class="wppa-box-text wppa-td" style="width:70%; word-wrap:break-word; border-width: 0 0 0 0;'.__wcs('wppa-box-text').__wcs('wppa-td').'" >'.
-										'<p class="wppa-comment-textarea-'.$wppa['master_occur'].'" style="margin:0; background-color:transparent; width:'.$txtwidth.'; height:90px; overflow:auto; word-wrap:break-word;'.__wcs('wppa-box-text').__wcs('wppa-td').'" >'.
+										'<p class="wppa-comment-textarea-'.$wppa['master_occur'].'" style="margin:0; background-color:transparent; width:'.$txtwidth.'; max-height:90px; overflow:auto; word-wrap:break-word;'.__wcs('wppa-box-text').__wcs('wppa-td').'" >'.
 											html_entity_decode(esc_js(stripslashes(convert_smilies($comment['comment']))));
 										
 											if ($comment['status'] == 'pending' && $comment['user'] == $wppa['comment_user']) {
@@ -2196,13 +2194,13 @@ function wppa_is_landscape($img_attr) {
 	return ($img_attr[0] > $img_attr[1]);
 }
 
-function wppa_get_imgevents($type = '', $id = '', $no_popup = false) {
+function wppa_get_imgevents($type = '', $id = '', $no_popup = false, $idx = '' ) {
 global $wppa;
 global $wppa_opt;
 
 	$result = '';
 	$perc = '';
-	if ($type == 'thumb') {
+	if ( $type == 'thumb' || $type=='film' ) {
 		if ($wppa_opt['wppa_use_thumb_opacity'] || $wppa_opt['wppa_use_thumb_popup']) {
 			
 			if ($wppa_opt['wppa_use_thumb_opacity']) {
@@ -2211,6 +2209,11 @@ global $wppa_opt;
 			} else {
 				$result = ' onmouseover="';
 			}
+
+			if ( $type == 'film' && $wppa_opt['wppa_film_hover_goto'] ) {
+				$result .= 'wppaGotoFilmNoMove('.$wppa['master_occur'].', '.$idx.');';
+			}
+
 			if (!$no_popup && $wppa_opt['wppa_use_thumb_popup']) {
 				if ( $wppa_opt['wppa_thumb_linktype'] != 'lightbox' ) {
 					$rating = $wppa_opt['wppa_popup_text_rating'] ? wppa_get_rating_by_id($id) : '';
@@ -3404,6 +3407,8 @@ function wppa_strip_tags($text, $key = '') {
 								array	( ' ', ' ', ' ', ' ', ' '
 										),
 								$text );
+		$text = str_replace(array('<br/>', '<br />'), ' ', $text);
+		$text = strip_tags($text);
 	}
 	else {
 		$text = preg_replace(	array	(	'@<a[^>]*?>.*?</a>@siu',				// unescaped <a> tag
@@ -3568,7 +3573,7 @@ global $thumb;
 		
 	$url = wppa_get_thumb_url(); 
 	$furl = str_replace('/thumbs', '', $url);
-	$events = wppa_get_imgevents('thumb', $thumb['id'], 'nopopup'); 
+	$events = wppa_get_imgevents('film', $thumb['id'], 'nopopup', $idx); 
 	$thumbname = esc_attr(wppa_qtrans($thumb['name']));
 	$title = $thumbname;
 	
@@ -5641,8 +5646,16 @@ global $wppa_opt;
 }
 
 function wppa_get_share_html() {
+global $wppa;
 global $wppa_opt;
 global $thumb;
+
+	$do_it = false;
+	if ( ! $wppa['is_slideonly'] ) {
+		if ( $wppa_opt['wppa_share_on'] && ! $wppa['in_widget'] ) $do_it = true;
+		if ( $wppa_opt['wppa_share_on_widget'] && $wppa['in_widget'] ) $do_it = true;
+	}
+	if ( ! $do_it ) return '';
 
 	// The share url
 	$share = wppa_get_image_page_url_by_id($thumb['id']);
@@ -5661,6 +5674,10 @@ global $thumb;
 	// The share thumbnail
 	$img = WPPA_UPLOAD_URL . '/thumbs/' . $thumb['id'] . '.' . $thumb['ext'];
 
+	// The icon size
+	if ( $wppa['in_widget'] ) $s = '16';
+	else $s = $wppa_opt['wppa_share_size'];
+	
 	// qr code
 	if ( $wppa_opt['wppa_share_qr'] ) {	
 		$src = 'http://api.qrserver.com/v1/create-qr-code/?data='.urlencode($share).'&size=80x80&color='.trim($wppa_opt['wppa_qr_color'], '#').'&bgcolor='.trim($wppa_opt['wppa_qr_bgcolor'], '#');
@@ -5680,7 +5697,7 @@ global $thumb;
 				&p[title]='.urlencode($name).'
 				&p[summary]='.urlencode($desc).'" 
 				target="_blank" >
-					<img src="'.wppa_get_imgdir().'facebook.png" 
+					<img src="'.wppa_get_imgdir().'facebook.png" style="height:'.$s.'px;" 
 						 alt="Share on Facebook" />
 			</a>
 		</div>';
@@ -5691,12 +5708,12 @@ global $thumb;
 	if ( $wppa_opt['wppa_share_twitter'] ) {	
 		$tw = '
 		<div style="float:left; padding:2px;" >
-			<a title="'.sprintf(__a('Share %s on Twitter', 'wppa'), esc_attr($name)).'" 
+			<a title="'.sprintf(__a('Tweet %s on Twitter', 'wppa'), esc_attr($name)).'" 
 				href="https://twitter.com/intent/tweet?
 				url='.urlencode($share).'
 				&text='.urlencode($desc).'" 
 				target="_blank" >
-					<img src="'.wppa_get_imgdir().'twitter.png" 
+					<img src="'.wppa_get_imgdir().'twitter.png" style="height:'.$s.'px;" 
 						alt="Share on Twitter" />
 			</a>
 		</div>';
@@ -5707,14 +5724,14 @@ global $thumb;
 	if ( $wppa_opt['wppa_share_hyves'] ) {
 		$hv = '
 		<div style="float:left; padding:2px;" >
-			<a title="'.sprintf(__a('Share %s on Hyves', 'wppa'), esc_attr($name)).'" 
+			<a title="'.sprintf(__a('Tip %s on Hyves', 'wppa'), esc_attr($name)).'" 
 				href="http://www.hyves-share.nl/button/tip/?
 				tipcategoryid=12
 				&rating=5
 				&title='.urlencode($name).'
 				&body='.urlencode($desc).': '.urlencode($share).'" 
 				target="_blank" >
-					<img src="'.wppa_get_imgdir().'hyves.png" 
+					<img src="'.wppa_get_imgdir().'hyves.png" style="height:'.$s.'px;" 
 						alt="Share on Hyves" />
 			</a>
 		</div>';		

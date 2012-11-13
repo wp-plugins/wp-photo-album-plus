@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile
-Version: 4.8.2
+Version: 4.8.3
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -68,7 +68,7 @@ However, check these requirements in case of problems with new installations wit
 * The server should have at least 32MB of memory, 64MB or more is recommended.
 
 = Upgrade notice =
-This version is: Major rev# 4, Minor rev# 8, Fix rev# 2, Hotfix rev# 000.
+This version is: Major rev# 4, Minor rev# 8, Fix rev# 3, Hotfix rev# 000.
 If you are upgrading from a previous Major or Minor version, note that:
 * If you modified wppa_theme.php and/or wppa_style.css, you will have to use the newly supplied versions. The previous versions are NOT compatible.
 * If you set the userlevel to anything else than 'administrator' you may have to set it again. Note that changing the userlevel can be done by the administrator only!
@@ -156,6 +156,22 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 4.8.3 =
+
+= Bug Fixes =
+
+* Removed spurious html tags from the description used for social media sharing.
+
+= New Features = 
+
+* You can set the behaviour of the filmstrip thumbnails to go to the indicated slide on hovering. Table IV-B13.
+
+= Other Changes =
+
+* If a file wppa.min.js exists, it will be loaded in place of wppa.js. A minified wppa.min.js is supplied and saves approx. 25 kb data load.
+* The Share box can be switched on for slideshows in widgets, not being slideonly slideshows like the slideshow widget.
+* The size of the social media icons in the Share box is selectable: 16 or 32 pixels. In widgets it is 16 px always.
 
 = 4.8.2 =
 
