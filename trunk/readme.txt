@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile
-Version: 4.8.3
+Version: 4.8.4
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -92,6 +92,7 @@ See Table I-A1 and Table I-B1,2 of the Photo Albums -> Settings admin page.
 
 * Recommanded plugins: qTranslate, WP Super Cache, Cube Points.
 * Plugins that break up WPPA+: My Live Signature.
+* Google Analytics for WordPress will break the slideshow in most cases when *Track outbound clicks & downloads:* has been checked in its configuration.
 
 = Are there special requirements for responsive (mobile) themes? =
 
@@ -156,6 +157,20 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 4.8.4 =
+
+= Bug Fixes =
+
+* Fix for special chars in photo names.
+
+= New Features =
+
+* The photo of the day display method selction *Change every* has been expanded with *day of month is order#*
+
+= Other changes =
+
+* Pretty links are automaticly disabled when the permalink structure is default or when the super global $_ENV["SCRIPT_URI"] is not set and will no longer result in not found errors.
 
 = 4.8.3 =
 

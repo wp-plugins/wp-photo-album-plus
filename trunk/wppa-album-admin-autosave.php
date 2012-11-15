@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * create, edit and delete albums
-* version 4.8.0
+* version 4.8.4
 *
 */
 
@@ -1254,7 +1254,7 @@ function wppa_album_photos($id) {
 									<label><?php _e('Name:', 'wppa'); ?></label>
 								</th>
 								<td>
-									<input type="text" style="width:100%;" id="pname-<?php echo $photo['id'] ?>" onchange="wppaAjaxUpdatePhoto(<?php echo $photo['id'] ?>, 'name', this); wppaPhotoStatusChange(<?php echo $photo['id'] ?>); " value="<?php echo(stripslashes($photo['name'])) ?>" />
+									<input type="text" style="width:100%;" id="pname-<?php echo $photo['id'] ?>" onchange="wppaAjaxUpdatePhoto(<?php echo $photo['id'] ?>, 'name', this); wppaPhotoStatusChange(<?php echo $photo['id'] ?>); " value="<?php echo esc_attr(stripslashes($photo['name'])) ?>" />
 									<span class="description"><br/><?php _e('Type/alter the name of the photo. <small>It is NOT a filename and needs no file extension like .jpg.</small>', 'wppa'); ?></span>
 								</td>
 							</tr>

@@ -2,7 +2,7 @@
 /* wppa-ajax.php
 *
 * Functions used in ajax requests
-* version 4.7.18
+* version 4.8.4
 *
 */
 add_action('wp_ajax_wppa', 'wppa_ajax_callback');
@@ -327,9 +327,12 @@ global $wppa;
 					break;
 				case 'description':
 					$itemname = __('Description', 'wppa');
-					if ( $wppa_opt['wppa_check_balance'] == 'yes' && balanceTags( $value, true ) != $value ) {
-						echo '||3||'.__('Unbalanced tags in album description!', 'wppa');
-						exit;
+					if ( $wppa_opt['wppa_check_balance'] == 'yes' ) {
+						$value = str_replace(array('<br/>','<br>'), '<br />', $value);
+						if ( balanceTags( $value, true ) != $value ) {
+							echo '||3||'.__('Unbalanced tags in album description!', 'wppa');
+							exit;
+						}
 					}
 					break;
 				case 'a_order':
@@ -493,9 +496,12 @@ global $wppa;
 							break;
 						case 'description':
 							$itemname = __('Description', 'wppa');
-							if ( $wppa_opt['wppa_check_balance'] == 'yes' && balanceTags( $value, true ) != $value ) {
-								echo '||3||'.__('Unbalanced tags in photo description!', 'wppa');
-								exit;
+							if ( $wppa_opt['wppa_check_balance'] == 'yes' ) {
+								$value = str_replace(array('<br/>','<br>'), '<br />', $value);
+								if ( balanceTags( $value, true ) != $value ) {
+									echo '||3||'.__('Unbalanced tags in photo description!', 'wppa');
+									exit;
+								}
 							}
 							break;
 						case 'p_order':

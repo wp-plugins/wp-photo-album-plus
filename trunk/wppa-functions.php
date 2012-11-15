@@ -3,12 +3,12 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions and API modules
-* Version 4.8.3
+* Version 4.8.4
 *
 */
 /* Moved to wppa-common-functions.php:
 global $wppa_api_version;
-$wppa_api_version = '4-8-3-000';
+$wppa_api_version = '4-8-4-000';
 */
 
 if ( ! defined( 'ABSPATH' ) )
@@ -2355,7 +2355,8 @@ global $wppa_opt;
 		for ($i=$from; $i<=$to; $i++) {
 			if ($curpage == $i) { 
 				$wppa['out'] .= wppa_nltab('+').'<div class="wppa-mini-box wppa-alt wppa-black" style="display:inline; text-align:center; '.__wcs('wppa-mini-box').__wcs('wppa-alt').__wcs('wppa-black').' text-decoration: none; cursor: default; font-weight:normal; " >';
-					$wppa['out'] .= wppa_nltab().'<a style="font-weight:normal; text-decoration: none; cursor: default; '.__wcs('wppa-black').'">&nbsp;'.$i.'&nbsp;</a>';
+//					$wppa['out'] .= wppa_nltab().'<a style="font-weight:normal; text-decoration: none; cursor: default; '.__wcs('wppa-black').'">&nbsp;'.$i.'&nbsp;</a>';
+					$wppa['out'] .= wppa_nltab().'&nbsp;'.$i.'&nbsp;';
 				$wppa['out'] .= wppa_nltab('-').'</div>';
 			}
 			else { 
@@ -5510,8 +5511,10 @@ function wppa_convert_from_pretty($uri) {
 global $wppa_opt;
 
 	// Test if we should be here anyway
+	if ( ! isset($_ENV["SCRIPT_URI"]) ) return $uri;
 	$wppapos = stripos($uri, '/wppaspec/');
 	if ( ! $wppapos ) return $uri;	// Is not a pretty link
+	if ( ! get_option('permalink_structure') ) return $uri;
 	
 	// copy start up to including slash before wppaspec
 	$newuri = substr($uri, 0, $wppapos+1);				
@@ -5576,6 +5579,8 @@ function wppa_convert_to_pretty($xuri) {
 global $wppa_opt;
 
 	if ( ! $wppa_opt['wppa_use_pretty_links'] ) return $xuri;
+	if ( ! get_option('permalink_structure') ) return $xuri;
+	if ( ! isset($_ENV["SCRIPT_URI"]) ) return $xuri;
 	
 	// Do some preprocessing
 	$uri = str_replace('&amp;', '&', $xuri);

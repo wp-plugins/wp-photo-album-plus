@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 * admin sidebar widget
-* version 4.6.5
+* version 4.8.4
 *
 */
 
@@ -129,6 +129,7 @@ function _wppa_sidebar_page_options() {
 								<option value="24" <?php if ($period == '24') echo($sel); ?>><?php _e('day.', 'wppa'); ?></option>
 								<option value="168" <?php if ($period == '168') echo($sel); ?>><?php _e('week.', 'wppa'); ?></option>
 								<option value="736" <?php if ($period == '736') echo($sel); ?>><?php _e('month.', 'wppa'); ?></option>
+								<option value="day-of-month" <?php if ($period == 'day-of-month') echo($sel); ?>><?php _e('day of month is order#', 'wppa'); ?></option>
 							</select>
 							<span class="description"><br/><?php _e('Select how the widget should display.', 'wppa'); ?></span>								
 						</td>
@@ -193,8 +194,9 @@ function _wppa_sidebar_page_options() {
 						<img src="<?php echo(WPPA_UPLOAD_URL.'/thumbs/' . $photo['id'] . '.' . $photo['ext']); ?>" style="width: <?php echo $wppa_opt['wppa_widget_width'] ?>px;" alt="<?php echo($photo['name']); ?>"></img>
 						<input type="radio" name="wppa-widget-photo" id="wppa-widget-photo<?php echo($photo['id']); ?>" value="<?php echo($photo['id']) ?>" <?php if ($photo['id'] == $id) echo('checked="checked"'); ?>/>
 						<div class="clear"></div>
-						<h4 style="position: absolute; top:<?php echo( $wi - 12 ); ?>px; font-size:11px; overflow:hidden;"><?php echo(wppa_qtrans(stripslashes($photo['name']))) ?></h4>
+						<h4 style="position: absolute; top:<?php echo( $wi - 12 ); ?>px; font-size:11px; overflow:hidden;"><?php echo wppa_qtrans(stripslashes($photo['name'])) ?></h4>
 						<h6 style="position: absolute; top:<?php echo( $wi + 6); ?>px; font-size:9px; line-height:10px;"><?php echo(wppa_qtrans(stripslashes($photo['description']))); ?></h6>
+						<h5 style="position: absolute; top:<?php echo( $wi + 24); ?>px; font-size:9px; line-height:10px;"><?php echo '(#'.$photo['p_order'].')' ?></h5>
 					</div>
 				<?php } ?>
 				<div class="clear"></div>
