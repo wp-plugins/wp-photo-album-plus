@@ -165,6 +165,7 @@ global $wppa_opt;
 add_action('init', 'wppa_redirect');
 
 function wppa_redirect() {
+	if ( ! isset($_ENV["SCRIPT_URI"]) ) return;
 	$uri = $_ENV["SCRIPT_URI"];
 	$wppapos = stripos($uri, '/wppaspec/');
 	if ( $wppapos && get_option('permalink_structure') && get_option('wppa_use_pretty_links') == 'yes' ) {

@@ -2,11 +2,11 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 4.8.3
+* version 4.8.4
 *
 */
 global $wppa_api_version;
-$wppa_api_version = '4-8-3-000';
+$wppa_api_version = '4-8-4-000';
 // Initialize globals and option settings
 function wppa_initialize_runtime($force = false) {
 global $wppa;

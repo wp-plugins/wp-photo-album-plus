@@ -2,7 +2,7 @@
 /* wppa_widgetfunctions.php
 /* Package: wp-photo-album-plus
 /*
-/* Version 4.7.13
+/* Version 4.8.4
 /*
 */
 
@@ -201,7 +201,7 @@ global $wppa_opt;
 					}
 				}
 				elseif ($album != '') {
-					$images = wppa_get_widgetphotos($album, 'ORDER BY id DESC LIMIT 0,1');
+					$images = wppa_get_widgetphotos($album, 'ORDER BY timestamp DESC LIMIT 0,1');
 					$image = $images[0];
 				}
 				break;
@@ -213,6 +213,15 @@ global $wppa_opt;
 					if ($per == '0') {
 						if ($photos) {
 							$image = $photos[rand(0, count($photos)-1)];
+						}
+						else $image = '';
+					}
+					elseif ($per == 'day-of-month') {
+						if ($photos) {
+							foreach ($photos as $img) {
+								if ( $img['p_order'] == trim(date('d'), '0') ) break;
+							}
+							$image = $img;
 						}
 						else $image = '';
 					}
