@@ -1,7 +1,7 @@
 /* admin-scripts.js */
 /* Package: wp-photo-album-plus
 /*
-/* Version 4.8.3
+/* Version 4.8.4.001
 /* Various js routines used in admin pages		
 */
 
@@ -910,15 +910,17 @@ function wppaAjaxUpdateOptionCheckBox(slug, elem) {
 				switch (ArrValues[1]) {
 					case '0':	// No error
 						document.getElementById('img_'+slug).src = wppaImageDirectory+'tick.png';
+						document.getElementById('img_'+slug).title = ArrValues[2];
 						break;
 					default:
 						document.getElementById('img_'+slug).src = wppaImageDirectory+'cross.png';
+						document.getElementById('img_'+slug).title = 'Error #'+ArrValues[1]+', message: '+ArrValues[2];
 					}
-				document.getElementById('img_'+slug).title = ArrValues[2];
+				
 			}
 			else {
 				document.getElementById('img_'+slug).src = wppaImageDirectory+'cross.png';
-				document.getElementById('img_'+slug).title = 'Communication error';
+				document.getElementById('img_'+slug).title = 'Communication error, status = '+xmlhttp.status;
 			}
 			wppaCheckInconsistencies();
 		}
