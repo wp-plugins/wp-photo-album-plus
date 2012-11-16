@@ -914,7 +914,7 @@ function wppaAjaxUpdateOptionCheckBox(slug, elem) {
 						break;
 					default:
 						document.getElementById('img_'+slug).src = wppaImageDirectory+'cross.png';
-						document.getElementById('img_'+slug).title = 'Error #'+ArrValues[1]+', message: '+ArrValues[2];
+						document.getElementById('img_'+slug).title = 'Error #'+ArrValues[1]+', message: '+ArrValues[2]+', status: '+xmlhttp.status;
 					}
 				
 			}
