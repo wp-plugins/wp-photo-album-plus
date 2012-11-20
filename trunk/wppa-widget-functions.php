@@ -218,8 +218,10 @@ global $wppa_opt;
 					}
 					elseif ($per == 'day-of-month') {
 						if ($photos) {
+							$d = date('d');
+							if ( substr($d, '0', '1') == '0' ) $d = substr($d,'1');
 							foreach ($photos as $img) {
-								if ( $img['p_order'] == trim(date('d'), '0') ) break;
+								if ( $img['p_order'] == $d ) break;
 							}
 							$image = $img;
 						}
