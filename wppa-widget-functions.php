@@ -2,7 +2,7 @@
 /* wppa_widgetfunctions.php
 /* Package: wp-photo-album-plus
 /*
-/* Version 4.8.4
+/* Version 4.8.5
 /*
 */
 
@@ -217,15 +217,14 @@ global $wppa_opt;
 						else $image = '';
 					}
 					elseif ($per == 'day-of-month') {
+						$image = '';
 						if ($photos) {
-							$d = date('d');
+							$d = wppa_local_date('d');
 							if ( substr($d, '0', '1') == '0' ) $d = substr($d,'1');
 							foreach ($photos as $img) {
-								if ( $img['p_order'] == $d ) break;
+								if ( $img['p_order'] == $d ) $image = $img;
 							}
-							$image = $img;
 						}
-						else $image = '';
 					}
 					else {
 						$u = date("U"); // Seconds since 1-1-1970

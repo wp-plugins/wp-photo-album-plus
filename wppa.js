@@ -2,7 +2,7 @@
 //
 // conatins slideshow, theme, ajax and lightbox code
 //
-// Version 4.8.3
+// Version 4.8.5
 
 // Part 1: Slideshow
 //
@@ -740,7 +740,7 @@ var result;
 	switch (wppaArtMonkyLink) {
 	case 'file':
 	case 'zip':
-		result = '<a title="Download" onclick="wppaAjaxMakeOrigName('+mocc+', '+_wppaId[mocc][_wppaCurIdx[mocc]]+');" >'+_wppaNames[mocc][_wppaCurIdx[mocc]]+'</a>';
+		result = '<a title="Download" style="cursor:pointer;" onclick="wppaAjaxMakeOrigName('+mocc+', '+_wppaId[mocc][_wppaCurIdx[mocc]]+');" >'+_wppaNames[mocc][_wppaCurIdx[mocc]]+'</a>';
 		break;
 	case 'none':
 		result = _wppaNames[mocc][_wppaCurIdx[mocc]];
@@ -1756,9 +1756,13 @@ function wppaPopUp(mocc, elm, id, rating) {
 	var topDivBig, topDivSmall, leftDivBig, leftDivSmall;
 	var heightImgBig, heightImgSmall, widthImgBig, widthImgSmall, widthImgBigSpace;
 	var puImg;
+	var vOffset = 0;
 	
 	// stop if running 
 	clearTimeout(_wppaTimer[mocc]);
+	
+	// Vertical offset?
+	if (document.getElementById('wppa-albdesc-'+mocc)) vOffset = document.getElementById('wppa-albdesc-'+mocc).clientHeight;
 	
 	// Give this' occurrances popup its content
 	if (document.getElementById('x-'+id+'-'+mocc)) {
@@ -1776,7 +1780,13 @@ function wppaPopUp(mocc, elm, id, rating) {
 				jQuery('#wppa-popup-'+mocc).html('<div class="wppa-popup" style="background-color:'+wppaBackgroundColorImage+'; text-align:center;"><img id="wppa-img-'+mocc+'" src="'+elm.src+'" title="" style="border-width: 0px;" onclick="'+wppaPopupOnclick[id]+'" />'+popuptext+'</div>');
 				break;
 			default:
-				jQuery('#wppa-popup-'+mocc).html('<div class="wppa-popup" style="background-color:'+wppaBackgroundColorImage+'; text-align:center;"><a id="wppa-a" href="'+document.getElementById('x-'+id+'-'+mocc).href+'" '+target+' style="line-height:1px;" ><img id="wppa-img-'+mocc+'" src="'+elm.src+'" title="" style="border-width: 0px;" /></a>'+popuptext+'</div>');
+				if (elm.onclick) {
+					jQuery('#wppa-popup-'+mocc).html('<div class="wppa-popup" style="background-color:'+wppaBackgroundColorImage+'; text-align:center;"><img id="wppa-img-'+mocc+'" src="'+elm.src+'" title="" style="border-width: 0px;" />'+popuptext+'</div>');
+					document.getElementById('wppa-img-'+mocc).onclick = elm.onclick;
+				}
+				else {
+					jQuery('#wppa-popup-'+mocc).html('<div class="wppa-popup" style="background-color:'+wppaBackgroundColorImage+'; text-align:center;"><a id="wppa-a" href="'+document.getElementById('x-'+id+'-'+mocc).href+'" '+target+' style="line-height:1px;" ><img id="wppa-img-'+mocc+'" src="'+elm.src+'" title="" style="border-width: 0px;" /></a>'+popuptext+'</div>');
+				}
 		}
 	}
 	
@@ -1794,6 +1804,7 @@ function wppaPopUp(mocc, elm, id, rating) {
 	// Compute starting coords
 	leftDivSmall = parseInt(elm.offsetLeft) - 7 - 5 - 1; // thumbnail_area:padding, wppa-img:padding, wppa-border; jQuery().css("padding") does not work for padding in css file, only when litaral in the tag
 	topDivSmall = parseInt(elm.offsetTop) - 7 - 5 - 1;		
+		topDivSmall -= vOffset;
 	// Compute starting sizes
 	widthImgSmall = parseInt(elm.clientWidth);
 	heightImgSmall = parseInt(elm.clientHeight);

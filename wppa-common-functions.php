@@ -2,11 +2,11 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 4.8.4
+* version 4.8.5
 *
 */
 global $wppa_api_version;
-$wppa_api_version = '4-8-4-000';
+$wppa_api_version = '4-8-5-000';
 // Initialize globals and option settings
 function wppa_initialize_runtime($force = false) {
 global $wppa;
@@ -219,8 +219,11 @@ global $wppa_initruntimetime;
 						'wppa_ovl_sphoto_desc'				=> '',
 						'wppa_ovl_mphoto_name'				=> '',
 						'wppa_ovl_mphoto_desc'				=> '',
+						'wppa_ovl_alw_name'					=> '',
+						'wppa_ovl_alw_desc'					=> '',
+						'wppa_ovl_cover_name'				=> '',
+						'wppa_ovl_cover_desc'				=> '',
 						'wppa_show_zoomin'					=> '',
-
 						'wppa_ovl_show_counter'				=> '',
 
 						// Table III: Backgrounds
@@ -299,6 +302,7 @@ global $wppa_initruntimetime;
 						'wppa_comment_moderation'		=> '',	// 3
 						'wppa_comment_email_required'	=> '',	// 4
 						'wppa_comment_notify'			=> '',
+						'wppa_comment_notify_added'		=> '',
 						// G Overlay
 						'wppa_ovl_opacity'				=> '',
 						'wppa_ovl_onclick'				=> '',
@@ -713,46 +717,6 @@ global $wppa_opt;
     return $result;
 }
 
-function wppa_get_rating_count_by_id($id = '') {
-global $wpdb;
-global $thumb;
-
-	if (!is_numeric($id)) return '';
-
-	if ( isset($thumb['id']) ) {
-		if ( $thumb['id'] == $id ) return $thumb['rating_count'];	// Fopund in temp global photo
-	}
-
-	$query = $wpdb->prepare( 'SELECT `rating_count` FROM `'.WPPA_PHOTOS.'` WHERE `id` = %s', $id);
-	wppa_dbg_q('Q202');
-	return $wpdb->get_var($query);
-}
-
-function wppa_get_rating_by_id($id = '', $opt = '') {
-global $wpdb;
-global $wppa_opt;
-global $thumb;
-
-	$result = '';
-	if (is_numeric($id)) {
-		if ( isset($thumb['id']) && $thumb['id'] == $id )  {
-			$rating = $thumb['mean_rating'];
-			wppa_dbg_q('G203');
-		}
-		else {
-			$rating = $wpdb->get_var( $wpdb->prepare( "SELECT mean_rating FROM ".WPPA_PHOTOS." WHERE id=%s", $id ) );
-			wppa_dbg_q('Q203');
-		}
-		if ($rating) {
-			$i = $wppa_opt['wppa_rating_prec'];
-			$j = $i + '1';
-			$val = sprintf('%'.$j.'.'.$i.'f', $rating);
-			if ($opt == 'nolabel') $result = $val;
-			else $result = sprintf(__a('Rating: %s', 'wppa_theme'), $val);
-		}
-	}
-	return $result;
-}
 
 // See if an album is another albums ancestor
 function wppa_is_ancestor($anc, $xchild) {
@@ -769,19 +733,6 @@ function wppa_is_ancestor($anc, $xchild) {
 	return false;
 }
 
-// Get the albums parent
-function wppa_get_parentalbumid($alb) {
-global $wpdb;
-    
-	$query = $wpdb->prepare('SELECT `a_parent` FROM `' . WPPA_ALBUMS . '` WHERE `id` = %s', $alb);
-	wppa_dbg_q('Q204');
-	$result = $wpdb->get_var($query);
-	
-    if (!is_numeric($result)) {
-		$result = 0;
-	}
-    return $result;
-}
 
 // get user
 function wppa_get_user() {
@@ -810,38 +761,6 @@ global $wpdb;
 	else {
 		return '';
 	}
-}
-
-function wppa_get_album_name($id = '', $raw = '') {
-global $wpdb;
-global $album;
-    
-    if ($id == '0') $name = is_admin() ? __('--- none ---', 'wppa') : __a('--- none ---', 'wppa_theme');
-    elseif ($id == '-1') $name = is_admin() ? __('--- separate ---', 'wppa') : __a('--- separate ---', 'wppa_theme');
-    else {
-        if ($id == '') if (isset($_GET['album'])) $id = $_GET['album'];
-        $id = $wpdb->escape($id);	
-        if (is_numeric($id)) {
-			if ( isset($album['id']) && $album['id'] == $id ) {	// In cache?
-				$name = $album['name'];
-				wppa_dbg_q('G206');
-			}
-			else {	// Update cache
-				$album = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM " . WPPA_ALBUMS . " WHERE id=%s", $id ), 'ARRAY_A' );
-				$name = $album['name'];
-				wppa_dbg_q('Q206');
-			}
-		}
-		else $name = '';
-    }
-	if ($name) {
-		if ($raw != 'raw') $name = stripslashes($name);
-	}
-	else {
-		$name = '';
-	}
-	if (!is_admin()) $name = wppa_qtrans($name);
-	return $name;
 }
 
 // Check if an image is more landscape that the width/height ratio set in Table I item 2 and 3
@@ -2034,3 +1953,30 @@ global $wppa;
 			break;
 	}
 }
+
+// Exactly like php's date(), but corrected for wp's timezone
+function wppa_local_date($format, $timestamp = false) {
+
+	$current_offset = get_option('gmt_offset');
+	$tzstring = get_option('timezone_string');
+
+	// Remove old Etc mappings.  Fallback to gmt_offset.
+	if ( false !== strpos($tzstring,'Etc/GMT') )
+		$tzstring = '';
+
+	if ( empty($tzstring) ) { // Create a UTC+- zone if no timezone string exists
+		$check_zone_info = false;
+		if ( 0 == $current_offset )
+			$tzstring = 'UTC+0';
+		elseif ($current_offset < 0)
+			$tzstring = 'UTC' . $current_offset;
+		else
+			$tzstring = 'UTC+' . $current_offset;
+	}
+
+	date_default_timezone_set($tzstring);
+	$result = date_i18n($format, $timestamp);
+	
+	return $result;
+}
+

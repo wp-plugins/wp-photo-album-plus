@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all comments
-* Version 4.7.19
+* Version 4.8.5
 *
 */
 
@@ -53,7 +53,7 @@ global $wppa_opt;
 							<tr>
 								<th scope="row"><label ><?php _e('Album:', 'wppa'); ?></label></th>
 								<td><?php 
-									echo __(wppa_get_album_name($photo['album']));
+									echo wppa_get_album_name($photo['album']);
 									?>
 								</td>
 							</tr>
@@ -286,7 +286,7 @@ global $wppa_opt;
 									if ($photo) {
 										$alb = $photo['album'];
 										$pname = __($photo['name']);
-										$albname = '('.__(wppa_get_album_name($alb)).')';
+										$albname = '('.wppa_get_album_name($alb).')';
 									}
 									else {
 										$alb = '';

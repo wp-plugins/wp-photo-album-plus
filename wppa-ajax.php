@@ -2,7 +2,7 @@
 /* wppa-ajax.php
 *
 * Functions used in ajax requests
-* version 4.8.4
+* version 4.8.5
 *
 */
 add_action('wp_ajax_wppa', 'wppa_ajax_callback');
@@ -463,7 +463,7 @@ global $wppa;
 				case 'moveto':
 					$iret = $wpdb->query($wpdb->prepare('UPDATE '.WPPA_PHOTOS.' SET `album` = %s WHERE `id` = %s', $value, $photo));
 					if ($iret !== false ) {
-						echo '||99||'.sprintf(__('Photo %s has been moved to album %s (%s)', 'wppa'), $photo, wppa_qtrans(wppa_get_album_name($value)), $value);
+						echo '||99||'.sprintf(__('Photo %s has been moved to album %s (%s)', 'wppa'), $photo, wppa_get_album_name($value), $value);
 					}
 					else {
 						echo '||3||'.sprintf(__('An error occurred while trying to move photo %s', 'wppa'), $photo);
@@ -474,7 +474,7 @@ global $wppa;
 				case 'copyto':
 					$wppa['error'] = wppa_copy_photo($photo, $value);
 					if ( ! $wppa['error'] ) {
-						echo '||0||'.sprintf(__('Photo %s copied to album %s (%s)', 'wppa'), $photo, wppa_qtrans(wppa_get_album_name($value)), $value);
+						echo '||0||'.sprintf(__('Photo %s copied to album %s (%s)', 'wppa'), $photo, wppa_get_album_name($value), $value);
 					}
 					else {
 						echo '||4||'.sprintf(__('An error occurred while trying to copy photo %s', 'wppa'), $photo);

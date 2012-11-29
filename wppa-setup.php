@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 4.8.3
+* Version 4.8.5
 *
 */
 
@@ -242,6 +242,7 @@ global $silent;
 			wppa_copy_setting('wppa_bcolor_namedesc', 'wppa_bcolor_share');
 
 		}
+
 	}
 	
 	// Set default values for new options
@@ -485,6 +486,10 @@ Hide Camera info
 						'wppa_ovl_sphoto_desc'				=> 'no',
 						'wppa_ovl_mphoto_name'				=> 'yes',
 						'wppa_ovl_mphoto_desc'				=> 'no',
+						'wppa_ovl_alw_name'					=> 'yes',
+						'wppa_ovl_alw_desc'					=> 'no',
+						'wppa_ovl_cover_name'				=> 'yes',
+						'wppa_ovl_cover_desc'				=> 'no',
 						'wppa_ovl_show_counter'				=> 'yes',
 						'wppa_show_zoomin'					=> 'yes',
 
@@ -564,6 +569,7 @@ Hide Camera info
 						'wppa_comment_moderation'		=> 'logout',
 						'wppa_comment_email_required'	=> 'yes',
 						'wppa_comment_notify'			=> 'none',
+						'wppa_comment_notify_added'		=> 'yes',
 						// G Overlay
 						'wppa_ovl_opacity'				=> '80',
 						'wppa_ovl_onclick'				=> 'none',

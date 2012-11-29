@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display thumbnail photos
-* Version 4.8.0
+* Version 4.8.5
 */
 
 class AlbumWidget extends WP_Widget {
@@ -20,7 +20,10 @@ class AlbumWidget extends WP_Widget {
 		global $wpdb;
 		global $wppa_opt;
 		global $wppa;
+		global $thumb;
 
+		$wppa['master_occur'] ++;
+		
         extract( $args );
 		
 		$instance = wp_parse_args( (array) $instance, array( 
@@ -75,7 +78,7 @@ class AlbumWidget extends WP_Widget {
 				// Make the HTML for current picture
 				if ( $image && $imgcount > $wppa_opt['wppa_min_thumbs'] ) {
 					$link       = wppa_get_imglnk_a('albwidget', $image['id']);
-					$file       = wppa_get_thumb_path_by_id($image['id']);
+					$file       = wppa_get_thumb_path($image['id']);
 					$imgevents  = wppa_get_imgevents('thumb', $image['id'], true);
 					$imgstyle_a = wppa_get_imgstyle_a($file, $maxw, 'center', 'albthumb');
 					$imgstyle   = $imgstyle_a['style'];
@@ -110,10 +113,16 @@ class AlbumWidget extends WP_Widget {
 							$widget_content .= "\n\t".'</a>';
 						}
 						elseif ( $link['is_lightbox'] ) {
-							$title = wppa_get_lbtitle('thumb', $image);
-							$widget_content .= "\n\t".'<a href="'.$link['url'].'" rel="'.$wppa_opt['wppa_lightbox_name'].'[thumbnail-'.$album.']" title="'.$title.'" target="'.$link['target'].'" >';
-								$widget_content .= "\n\t\t".'<img id="i-'.$image['id'].'-'.$wppa['master_occur'].'" title="'.wppa_zoom_in().'" src="'.$imgurl.'" width="'.$width.'" height="'.$height.'" style="'.$imgstyle.$cursor.'" '.$imgevents.' alt="'.esc_attr(wppa_qtrans($image['name'])).'">';
-							$widget_content .= "\n\t".'</a>';
+							$thumbs = $wpdb->get_results($wpdb->prepare("SELECT * FROM `".WPPA_PHOTOS."` WHERE `album` = %s ".wppa_get_photo_order($album['id']), $album['id']), 'ARRAY_A');
+							if ( $thumbs ) foreach ( $thumbs as $thumb ) {
+								$title = wppa_get_lbtitle('alw', $thumb['id']);
+								$link = wppa_get_photo_url($thumb['id']);
+								$widget_content .= "\n\t".'<a href="'.$link.'" rel="'.$wppa_opt['wppa_lightbox_name'].'[alw-'.$wppa['master_occur'].'-'.$album['id'].']" title="'.$title.'" >';
+								if ( $thumb['id'] == $image['id'] ) {		// the cover image
+									$widget_content .= "\n\t\t".'<img id="i-'.$image['id'].'-'.$wppa['master_occur'].'" title="'.wppa_zoom_in().'" src="'.$imgurl.'" width="'.$width.'" height="'.$height.'" style="'.$imgstyle.$cursor.'" '.$imgevents.' alt="'.esc_attr(wppa_qtrans($image['name'])).'">';
+								}
+								$widget_content .= "\n\t".'</a>';
+							}
 						}
 						else { // Is an onclick unit
 							$widget_content .= "\n\t".'<img id="i-'.$image['id'].'-'.$wppa['master_occur'].'" title="'.$title.'" src="'.$imgurl.'" width="'.$width.'" height="'.$height.'" style="'.$imgstyle.' cursor:pointer;" '.$imgevents.' onclick="'.$link['url'].'" alt="'.esc_attr(wppa_qtrans($image['name'])).'">';					
@@ -123,7 +132,7 @@ class AlbumWidget extends WP_Widget {
 						$widget_content .= "\n\t".'<img id="i-'.$image['id'].'-'.$wppa['master_occur'].'" title="'.$title.'" src="'.$imgurl.'" width="'.$width.'" height="'.$height.'" style="'.$imgstyle.'" '.$imgevents.' alt="'.esc_attr(wppa_qtrans($image['name'])).'">';
 					}
 				
-					if ($name == 'yes') $widget_content .= "\n\t".'<span style="font-size:9px;">'.__(stripslashes($album['name'])).'</span>';
+					if ($name == 'yes') $widget_content .= "\n\t".'<span style="font-size:9px; line-height:12px;">'.__(stripslashes($album['name'])).'</span>';
 
 					$widget_content .= "\n".'</div>';
 					$count++;
