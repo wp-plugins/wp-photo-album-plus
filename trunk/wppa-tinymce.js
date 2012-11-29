@@ -2,7 +2,7 @@
 * Pachkage: wp-photo-album-plus
 *
 *
-* Version 4.7.9
+* Version 4.8.5
 *
 */
 
@@ -63,12 +63,16 @@
 				form.find('#mygallery-submit').click(function(){
 					
 					var type 	= table.find('#mygallery-type').val();
-					var temp	= table.find('#mygallery-album').val().split('|');
-					var album 	= temp[0];
+					var temp1;
+						if (table.find('#mygallery-album').val()) temp1 = table.find('#mygallery-album').val().split('|');
+						else temp1 = [''];
+					var album 	= temp1[0];
 					var size 	= table.find('#mygallery-size').val();
 					var align	= table.find('#mygallery-align').val();
-					var temp 	= table.find('#mygallery-photo').val().split('.');
-					var photo	= temp[0];						
+					var temp2;
+						if (table.find('#mygallery-photo').val()) temp2 = table.find('#mygallery-photo').val().split('.');
+						else temp2 = [''];
+					var photo	= temp2[0];						
 					var alb 	= table.find('#mygallery-alb').val();
 						if ( alb == '' ) alb = '0'; else alb = parseInt(alb);
 					var cnt		= table.find('#mygallery-cnt').val();
