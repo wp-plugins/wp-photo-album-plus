@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 4.8.3
+* Version 4.8.5
 *
 */
 
@@ -1200,6 +1200,34 @@ global $wppa_revno;
 							$html = wppa_checkbox($slug);
 							wppa_setting($slug, '12', $name, $desc, $html, $help);
 							
+							$name = __('Overlay albumwidget name', 'wppa');
+							$desc = __('Show the photos name if from the album widget.', 'wppa');
+							$help = esc_js(__('Shows the name on a lightbox display when initiated from the album widget.', 'wppa'));
+							$slug = 'wppa_ovl_alw_name';
+							$html = wppa_checkbox($slug);
+							wppa_setting($slug, '13', $name, $desc, $html, $help);
+							
+							$name = __('Overlay albumwidget desc', 'wppa');
+							$desc = __('Show description if from from the album widget.', 'wppa');
+							$help = esc_js(__('Shows the photos description on a lightbox display when initiated from the album widget.', 'wppa'));
+							$slug = 'wppa_ovl_alw_desc';
+							$html = wppa_checkbox($slug);
+							wppa_setting($slug, '14', $name, $desc, $html, $help);
+							
+							$name = __('Overlay coverphoto name', 'wppa');
+							$desc = __('Show the photos name if from the album cover.', 'wppa');
+							$help = esc_js(__('Shows the name on a lightbox display when initiated from the album coverphoto.', 'wppa'));
+							$slug = 'wppa_ovl_cover_name';
+							$html = wppa_checkbox($slug);
+							wppa_setting($slug, '15', $name, $desc, $html, $help);
+							
+							$name = __('Overlay coverphoto desc', 'wppa');
+							$desc = __('Show description if from from the album cover.', 'wppa');
+							$help = esc_js(__('Shows the photos description on a lightbox display when initiated from the album coverphoto.', 'wppa'));
+							$slug = 'wppa_ovl_cover_desc';
+							$html = wppa_checkbox($slug);
+							wppa_setting($slug, '16', $name, $desc, $html, $help);
+
 							$name = __('Overlay show counter', 'wppa');
 							$desc = __('Show the x/y counter below the image.', 'wppa');
 							$help = '';
@@ -1841,6 +1869,14 @@ global $wppa_revno;
 							$class = 'wppa_comment_';
 							wppa_setting($slug, '5', $name, $desc, $html, $help, $class);
 							
+							$name = __('Comment ntfy added', 'wppa');
+							$desc = __('Show "Comment added" after successfull adding a comment.', 'wppa');
+							$help = '';
+							$slug = 'wppa_comment_notify_added';
+							$html = wppa_checkbox($slug);
+							$class = 'wppa_comment_';
+							wppa_setting($slug, '6', $name, $desc, $html, $help, $class);
+							
 							wppa_setting_subheader('G', '1', __('Lightbox related settings. These settings have effect only when Table IX-A6 is set to wppa', 'wppa'));
 							
 							$name = __('Overlay opacity', 'wppa');
@@ -2100,8 +2136,8 @@ global $wppa_revno;
 							$values_linktype_ss_widget = array('none', 'file', 'widget', 'album', 'photo', 'single'); //, 'indiv');
 							$options_linktype_potd_widget = array(__('no link at all.', 'wppa'), __('the plain photo (file).', 'wppa'), __('defined on widget admin page.', 'wppa'), __('the content of the album.', 'wppa'), __('the full size photo in a slideshow.', 'wppa'), __('the fullsize photo on its own.', 'wppa'), __('lightbox.', 'wppa')); //, __('the photo specific link.', 'wppa'));
 							$values_linktype_potd_widget = array('none', 'file', 'custom', 'album', 'photo', 'single', 'lightbox'); //, 'indiv');
-							$options_linktype_cover_image = array(__('no link at all.', 'wppa'), __('the plain photo (file).', 'wppa'), __('same as title.', 'wppa'));
-							$values_linktype_cover_image = array('none', 'file', 'same');
+							$options_linktype_cover_image = array(__('no link at all.', 'wppa'), __('the plain photo (file).', 'wppa'), __('same as title.', 'wppa'), __('lightbox.', 'wppa'));
+							$values_linktype_cover_image = array('none', 'file', 'same', 'lightbox');
 
 							// Linkpages
 							$options_page = false;
@@ -2188,9 +2224,9 @@ global $wppa_revno;
 							$slug3 = 'wppa_album_widget_blank';
 						//	$slug4 = 'wppa_album_widget_overrule';	// useless
 							$slug = array($slug1, $slug2, $slug3);
-							$onchange = 'wppaCheckLinkPageErr(\'album_widget\');';
-							$options_linktype_album_widget = array(__('subalbums and thumbnails', 'wppa'), __('slideshow', 'wppa'));
-							$values_linktype_album_widget = array('content', 'slide');
+							$onchange = 'wppaCheckAlbumWidgetLink(); wppaCheckLinkPageErr(\'album_widget\');';
+							$options_linktype_album_widget = array(__('subalbums and thumbnails.', 'wppa'), __('slideshow.', 'wppa'), __('lightbox.', 'wppa'));
+							$values_linktype_album_widget = array('content', 'slide', 'lightbox');
 							$html1 = wppa_select($slug1, $options_linktype_album_widget, $values_linktype_album_widget, $onchange);
 							$class = 'wppa_awlp';
 							$onchange = 'wppaCheckLinkPageErr(\'album_widget\');';

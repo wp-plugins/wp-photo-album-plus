@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * create, edit and delete albums
-* version 4.8.4
+* version 4.8.5
 *
 */
 
@@ -471,7 +471,7 @@ function wppa_admin_albums_flat() {
 					$num = true;
 					break;
 				case 'a_parent':
-					$seq[] = strtolower(wppa_qtrans(wppa_get_album_name($album['a_parent'])));
+					$seq[] = strtolower(wppa_get_album_name($album['a_parent']), 'extended');
 					break;
 				default:
 					$seq[] = $album['id'];
@@ -591,7 +591,7 @@ function wppa_admin_albums_flat() {
 								<td><?php echo($album['owner']); ?></td>
 							<?php } ?>
 							<td><?php echo($album['a_order']) ?></td>
-							<td><?php echo(wppa_qtrans(wppa_get_album_name($album['a_parent']))) ?></td>
+							<td><?php echo wppa_get_album_name($album['a_parent'], 'extended') ?></td>
 							<?php $url = wppa_dbg_url(get_admin_url().'admin.php?page=wppa_admin_menu&amp;tab=edit&amp;edit_id='.$album['id']); ?>
 							<?php $na = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `".WPPA_ALBUMS."` WHERE a_parent=%s", $album['id'])); ?>
 							<?php $np = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `".WPPA_PHOTOS."` WHERE album=%s", $album['id'])); ?>
@@ -760,7 +760,7 @@ function wppa_admin_albums_collapsable() {
 					$num = true;
 					break;
 				case 'a_parent':
-					$seq[] = strtolower(wppa_qtrans(wppa_get_album_name($album['a_parent'])));
+					$seq[] = strtolower(wppa_get_album_name($album['a_parent']), 'extended');
 					break;
 				default:
 					$seq[] = $album['id'];
@@ -1050,7 +1050,7 @@ global $wpdb;
 								<td><?php echo($album['owner']); ?></td>
 							<?php } ?>
 							<td><?php echo($album['a_order']) ?></td>
-							<td><?php echo(wppa_qtrans(wppa_get_album_name($album['a_parent']))) ?></td>
+							<td><?php echo wppa_get_album_name($album['a_parent'], 'extended') ?></td>
 							<?php $url = wppa_dbg_url(get_admin_url().'admin.php?page=wppa_admin_menu&amp;tab=edit&amp;edit_id='.$album['id']); ?>
 							<?php $na = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `".WPPA_ALBUMS."` WHERE a_parent=%s", $album['id'])); ?>
 							<?php $np = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `".WPPA_PHOTOS."` WHERE album=%s", $album['id'])); ?>
@@ -1154,7 +1154,7 @@ function wppa_album_photos($id) {
 								</th>
 								<td style="padding-top:0; padding-bottom:0;">
 									<?php $timestamp = $photo['timestamp'] ? $photo['timestamp'] : '0'; ?>
-									<?php if ($timestamp) echo( __('On:', 'wppa').' '.date("F j, Y, g:i a", $timestamp).' utc '); if ($photo['owner']) echo( __('By:', 'wppa').$photo['owner']) ?>
+									<?php if ($timestamp) echo( __('On:', 'wppa').' '.wppa_local_date(get_option('date_format', "F j, Y,").' '.get_option('time_format', "g:i a"), $timestamp).' local time '); if ($photo['owner']) echo( __('By:', 'wppa').$photo['owner']) ?>
 								</td>
 							</tr>
 							<!-- Rating -->

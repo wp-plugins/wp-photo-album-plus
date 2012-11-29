@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile
-Version: 4.8.4
+Version: 4.8.5
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -94,6 +94,10 @@ See Table I-A1 and Table I-B1,2 of the Photo Albums -> Settings admin page.
 * Plugins that break up WPPA+: My Live Signature.
 * Google Analytics for WordPress will break the slideshow in most cases when *Track outbound clicks & downloads:* has been checked in its configuration.
 
+= Which themes have problems with wppa+ ? =
+
+* Photocrati has a problem with the wppa+ embedded lightbox when using page templates with sidebar.
+
 = Are there special requirements for responsive (mobile) themes? =
 
 * Yes! Go to the Photo Albums -> Settings admin page. Enter *auto* in Table I-A1. Lowercase letters, no quotes.
@@ -157,6 +161,28 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 4.8.5 =
+
+= Bug Fixes =
+
+* Thumbnail popups were vertically misplaced when Table II-C8 (display album description on thumbnail area) was set to *top*. Fixed.
+* The lightbox background was not large enough for an ipad in portrait position. Fixed.
+* The photo of the day, when set to *day of month is order#* will now display the correct image and change on 24.00 based on the blogs timezone set in wp *Settings -> General*.
+
+= New features =
+
+* You can switch off the display of the "Comment Added/Edited" alert box in Table IV-F6.
+* The album cover photo can now link to lightbox, giving sets of the album contents.
+* The Album widget thumbnails can now link to lightbox, giving sets of the respective album contents.
+
+= Other Changes =
+
+* The date/time of upload on the album admin -> edit -> manage photos page is now based on the blogs timezone set in wp *Settings -> General*.
+* The Twitter Intent Tweet now displays the working link to the image you wanted to share.
+* The Hyves Tip now shows spaces where spaces are expected in place of plus signs.
+* The links form standard thumbnails to slideshow are Ajaxified for normal albums 
+(not for special photo selections like topten, lasten or search results) where possible (same page/post, no new tab, no pso).
 
 = 4.8.4 =
 

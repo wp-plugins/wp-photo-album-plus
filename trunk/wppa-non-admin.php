@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the non admin stuff
-* Version 4.8.3
+* Version 4.8.5
 *
 */
 
@@ -116,7 +116,7 @@ global $wppa_opt;
 	if ($wppa_opt['wppa_lightbox_name'] == 'wppa') {
 		echo("\n<!-- start WPPA+ Footer data -->\n");
 		echo('
-			<div id="wppa-overlay-bg" style="text-align:center; display:none; position:fixed; top:0; left:0; z-index:100090; width:100%; height:500px; background-color:black;" onclick="wppaOvlOnclick(event)" ></div>
+			<div id="wppa-overlay-bg" style="text-align:center; display:none; position:fixed; top:0; left:0; z-index:100090; width:100%; height:2048px; background-color:black;" onclick="wppaOvlOnclick(event)" ></div>
 			<div id="wppa-overlay-ic" style="position:fixed; top:0; padding-top:10px; z-index:100095; opacity:1; box-shadow:none;" '.
 			' ontouchstart="wppaTouchStart(event, \'wppa-overlay-ic\', -1);"  ontouchend="wppaTouchEnd(event);" ontouchmove="wppaTouchMove(event);" ontouchcancel="wppaTouchCancel(event);" '.
 			'></div>

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the top rated photos
-* Version 4.8.0
+* Version 4.8.5
 */
 
 class TopTenWidget extends WP_Widget {
@@ -49,7 +49,7 @@ class TopTenWidget extends WP_Widget {
 				$no_album = !$album;
 				if ($no_album) $tit = __a('View the top rated photos', 'wppa_theme'); else $tit = esc_attr(wppa_qtrans(stripslashes($image['description'])));
 				$link       = wppa_get_imglnk_a('topten', $image['id'], '', $tit, '', $no_album);
-				$file       = wppa_get_thumb_path_by_id($image['id']);
+				$file       = wppa_get_thumb_path($image['id']);
 				$imgstyle_a = wppa_get_imgstyle_a($file, $maxw, 'center', 'ttthumb');
 				$imgstyle   = $imgstyle_a['style'];
 				$width      = $imgstyle_a['width'];
@@ -70,7 +70,7 @@ class TopTenWidget extends WP_Widget {
 						$widget_content .= "\n\t".'</a>';
 					}
 					elseif ( $link['is_lightbox'] ) {
-						$title = wppa_get_lbtitle('thumb', $image);
+						$title = wppa_get_lbtitle('thumb', $image['id']);
 						$widget_content .= "\n\t".'<a href="'.$link['url'].'" rel="'.$wppa_opt['wppa_lightbox_name'].'[topten-'.$album.']" title="'.$title.'" target="'.$link['target'].'" >';
 							$widget_content .= "\n\t\t".'<img id="i-'.$image['id'].'-'.$wppa['master_occur'].'" title="'.wppa_zoom_in().'" src="'.$imgurl.'" width="'.$width.'" height="'.$height.'" style="'.$imgstyle.$cursor.'" '.$imgevents.' alt="'.esc_attr(wppa_qtrans($image['name'])).'">';
 						$widget_content .= "\n\t".'</a>';

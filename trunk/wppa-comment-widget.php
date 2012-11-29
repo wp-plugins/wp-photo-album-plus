@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the recent commets on photos
-* Version 4.8.0
+* Version 4.8.5
 */
 
 class wppaCommentWidget extends WP_Widget {
@@ -45,7 +45,7 @@ class wppaCommentWidget extends WP_Widget {
 				$no_album 	= true;//!$album;
 				$tit		= esc_attr(wppa_qtrans(stripslashes($comment['comment'])));
 				$link       = wppa_get_imglnk_a('comwidget', $image['id'], '', $tit, $no_album);
-				$file       = wppa_get_thumb_path_by_id($image['id']);
+				$file       = wppa_get_thumb_path($image['id']);
 				$imgstyle_a = wppa_get_imgstyle_a($file, $maxw, 'center', 'comthumb');
 				$imgstyle   = $imgstyle_a['style'];
 				$width      = $imgstyle_a['width'];
@@ -65,7 +65,7 @@ class wppaCommentWidget extends WP_Widget {
 						$widget_content .= "\n\t".'</a>';
 					}
 					elseif ( $link['is_lightbox'] ) {
-						$title = wppa_get_lbtitle('thumb', $image);
+						$title = wppa_get_lbtitle('thumb', $image['id']);
 						$widget_content .= "\n\t".'<a href="'.$link['url'].'" rel="'.$wppa_opt['wppa_lightbox_name'].'[comment]" title="'.$title.'">';
 							$widget_content .= "\n\t\t".'<img id="i-'.$image['id'].'-'.$wppa['master_occur'].'" title="'.wppa_zoom_in().'" src="'.$imgurl.'" width="'.$width.'" height="'.$height.'" style="'.$imgstyle.$cursor.'" '.$imgevents.' alt="'.esc_attr(wppa_qtrans($image['name'])).'">';
 						$widget_content .= "\n\t".'</a>';

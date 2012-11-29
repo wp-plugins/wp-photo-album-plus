@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 *
-* Version 4.7.11
+* Version 4.8.5
 *
 */
 
@@ -177,7 +177,9 @@ global $wppa_opt;
 						if ($photos) {
 							$result .= '<option value="0" disabled="disabled" selected="selected" >'.__('Please select a photo', 'wppa').'</option>';
 							foreach ( $photos as $photo ) {
-								$result .= '<option value="'.$photo['id'].'.'.$photo['ext'].'" >'.stripslashes(__($photo['name'])).' ('.__(wppa_get_album_name($photo['album'])).')'.'</option>';
+								$name = stripslashes(__($photo['name']));
+								if ( strlen($name) > '50') $name = substr($name, '0', '50').'...';
+								$result .= '<option value="'.$photo['id'].'.'.$photo['ext'].'" >'.$name.' ('.wppa_get_album_name($photo['album']).')'.'</option>';
 							}
 							$result .=  '<option value="#last" >'.__('--- The most recently uploaded photo ---', 'wppa').'</option>'.
 										'<option value="#potd" >'.__('--- The photo of the day ---', 'wppa').'</option>';
