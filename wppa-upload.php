@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the upload/import pages and functions
-* Version 4.7.18
+* Version 4.8.6
 *
 */
 
@@ -985,7 +985,7 @@ global $allphotos;
 	// Fill the names array
 	if ( ! $allphotos ) {
 	wppa_dbg_msg('Filling');
-		$allphotos = $wpdb->get_results($wpdb->prepare( "SELECT id, name, ext, album FROM ".WPPA_PHOTOS) , "ARRAY_A" );
+		$allphotos = $wpdb->get_results( "SELECT `id`, `name`, `ext`, `album` FROM `".WPPA_PHOTOS."`", ARRAY_A );
 		if ( is_array($allphotos) ) {
 			$index = '0';
 			$count = count($allphotos);

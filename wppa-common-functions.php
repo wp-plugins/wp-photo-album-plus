@@ -2,11 +2,11 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 4.8.5
+* version 4.8.6
 *
 */
 global $wppa_api_version;
-$wppa_api_version = '4-8-5-000';
+$wppa_api_version = '4-8-6-000';
 // Initialize globals and option settings
 function wppa_initialize_runtime($force = false) {
 global $wppa;
@@ -127,6 +127,7 @@ global $wppa_initruntimetime;
 						'wppa_max_cover_width'			=> '',	// 1
 						'wppa_text_frame_height'		=> '',	// 2
 						'wppa_smallsize' 				=> '',	// 3
+						'wppa_coversize_is_height'		=> '',	// 3.1
 						'wppa_album_page_size' 			=> '',	// 4
 						// E Rating & comments
 						'wppa_rating_max'				=> '',	// 1
@@ -188,6 +189,8 @@ global $wppa_initruntimetime;
 						'wppa_share_facebook'				=> '',
 						'wppa_share_twitter'				=> '',
 						'wppa_share_hyves'					=> '',
+						
+						'wppa_share_single_image'			=> '',
 
 						// C Thumbnails
 						'wppa_thumb_text_name' 				=> '',	// 1
@@ -469,6 +472,8 @@ global $wppa_initruntimetime;
 						'wppa_newphoto_description'		=> '',
 						'wppa_upload_limit_count'		=> '',		// 5a
 						'wppa_upload_limit_time'		=> '',		// 5b
+						'wppa_grant_an_album'			=> '',
+						'wppa_grant_parent'				=> '',
 
 						'wppa_autoclean'				=> '',
 						'wppa_watermark_on'				=> '',
@@ -546,8 +551,28 @@ global $wppa_initruntimetime;
 	if ( $spammaxage != 'none' ) {
 		$time = time();
 		$obsolete = $time - $spammaxage;
-		$iret = $wpdb->query($wpdb->prepare('DELETE FROM `'.WPPA_COMMENTS.'` WHERE `status` = %s AND `timestamp` < %s', 'spam', $obsolete));
+		$iret = $wpdb->query($wpdb->prepare( "DELETE FROM `".WPPA_COMMENTS."` WHERE `status` = 'spam' AND `timestamp` < %s", $obsolete));
 		update_option('wppa_spam_auto_delcount', get_option('wppa_spam_auto_delcount', '0') + $iret);
+	}
+	
+	// Create an album if required
+	if ( $wppa_opt['wppa_grant_an_album'] 
+		&& $wppa_opt['wppa_owner_only'] 
+		&& is_user_logged_in() 
+		&& current_user_can('wppa_upload') ) {
+			$owner = wppa_get_user('login');
+			$user = wppa_get_user('display');
+			$albs = $wpdb->get_var($wpdb->prepare( "SELECT COUNT(*) FROM `".WPPA_ALBUMS."` WHERE `owner` = %s", $owner ));
+			if ( ! $albs ) {	// make an album for this user
+				$id = wppa_nextkey(WPPA_ALBUMS);
+				$name = $user;
+				$desc = __('Default photo album for', 'wppa').' '.$user;
+				$uplim = $wppa_opt['wppa_upload_limit_count'].'/'.$wppa_opt['wppa_upload_limit_time'];
+				$parent = $wppa_opt['wppa_grant_parent'];
+				$query = $wpdb->prepare('INSERT INTO `' . WPPA_ALBUMS . '` (`id`, `name`, `description`, `a_order`, `a_parent`, `p_order_by`, `main_photo`, `cover_linktype`, `cover_linkpage`, `owner`, `timestamp`, `upload_limit`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)', $id, $name, $desc, '0', $parent, '0', '0', 'content', '0', $owner, time(), $uplim);
+				$iret = $wpdb->query($query);
+
+			}
 	}
 	
 	$wppa_initruntimetime += microtime(true);
@@ -685,7 +710,7 @@ global $wppa_opt;
     
 	if ($id == '0') $order = '0';
 	else {
-		$order = $wpdb->get_var( $wpdb->prepare( "SELECT p_order_by FROM " . WPPA_ALBUMS . " WHERE id=%s", $id) );
+		$order = $wpdb->get_var( $wpdb->prepare( "SELECT `p_order_by` FROM `" . WPPA_ALBUMS . "` WHERE `id` = %s", $id) );
 		wppa_dbg_q('Q201');
 	}
     if ($order == '0') $order = $wppa_opt['wppa_list_photos_by'];
@@ -735,13 +760,20 @@ function wppa_is_ancestor($anc, $xchild) {
 
 
 // get user
-function wppa_get_user() {
+function wppa_get_user($type = 'login') {
 global $current_user;
 
 	if (is_user_logged_in()) {
-		get_currentuserinfo();
-		$user = $current_user->user_login;
-		return $user;
+		if ( $type == 'login' ) {
+			get_currentuserinfo();
+			$user = $current_user->user_login;
+			return $user;
+		}
+		if ( $type == 'display' ) {
+			get_currentuserinfo();
+			$user = $current_user->display_name;
+			return $user;
+		}
 	}
 	else {
 		return $_SERVER['REMOTE_ADDR'];
@@ -753,7 +785,7 @@ global $wpdb;
 
 	if ($name == '') return '';
     $name = stripslashes($name);
-    $id = $wpdb->get_var( $wpdb->prepare( "SELECT id FROM " . WPPA_ALBUMS . " WHERE name = %s", $name ) );
+    $id = $wpdb->get_var( $wpdb->prepare( "SELECT `id` FROM `" . WPPA_ALBUMS . "` WHERE `name` = %s", $name ) );
 	wppa_dbg_q('Q205');
     if ($id) {
 		return $id;
@@ -901,7 +933,7 @@ global $wpdb;
 	$lastkey = get_option($name, 'nil');
 	
 	if ( $lastkey == 'nil' ) {	// Init option
-		$lastkey = $wpdb->get_var( $wpdb->prepare( "SELECT id FROM ".$table." WHERE id < '9223372036854775806' ORDER BY id DESC LIMIT 1" ) );
+		$lastkey = $wpdb->get_var( "SELECT `id` FROM `".$table."` WHERE `id` < '9223372036854775806' ORDER BY `id` DESC LIMIT 1" );
 		wppa_dbg_q('Q207');
 		if ( ! is_numeric($lastkey) ) $lastkey = '0';
 		add_option( $name, $lastkey, '', 'no');
@@ -931,9 +963,9 @@ global $wpdb;
 		return false;
 	}
 	
-	$exists = $wpdb->get_row($wpdb->prepare( 'SELECT * FROM '.$table.' WHERE id = %s', $id ), 'ARRAY_A');
+	$exists = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM `".$table."` WHERE `id` = %s", $id ), ARRAY_A );
 	wppa_dbg_q('Q208');
-	if ($exists) return false;
+	if ( $exists ) return false;
 	return true;
 }
 
@@ -950,21 +982,21 @@ global $wppa_opt;
 	
 		// Administrator has always access OR If all albums are public
 		if (current_user_can('administrator') || get_option('wppa_owner_only', 'no') == 'no') {
-			$albs = $wpdb->get_results($wpdb->prepare( 'SELECT id FROM '.WPPA_ALBUMS ) );
+			$albs = $wpdb->get_results( "SELECT `id` FROM `".WPPA_ALBUMS."`" );
 			wppa_dbg_q('Q209');
 			if ($albs) return true;
 			else return false;	// No albums in system
 		}
 		
 		// Any --- public --- albums?
-		$albs = $wpdb->get_results($wpdb->prepare( 'SELECT id FROM '.WPPA_ALBUMS.' WHERE owner = "--- public ---"' ) );
+		$albs = $wpdb->get_results( "SELECT `id` FROM `".WPPA_ALBUMS."` WHERE `owner` = '--- public ---'" );
 		wppa_dbg_q('Q210');
 		if ($albs) return true;
 		
 		// Any albums owned by this user?
 		get_currentuserinfo();
 		$user = $current_user->user_login;
-		$albs = $wpdb->get_results($wpdb->prepare( 'SELECT id FROM '.WPPA_ALBUMS.' WHERE owner = "%s"', $user) );
+		$albs = $wpdb->get_results($wpdb->prepare( "SELECT `id` FROM `".WPPA_ALBUMS."` WHERE `owner` = %s", $user) );
 		wppa_dbg_q('Q211');
 		if ($albs) return true;
 		else return false;	// No albums for user accessable
@@ -986,7 +1018,7 @@ global $wppa_opt;
 			$owner = $alb['owner'];
 		}
 		elseif (is_numeric($alb)) {
-			$owner = $wpdb->get_var($wpdb->prepare( 'SELECT owner FROM '.WPPA_ALBUMS.' WHERE id = %s', $alb ) );
+			$owner = $wpdb->get_var( $wpdb->prepare( "SELECT `owner` FROM `".WPPA_ALBUMS."` WHERE `id` = %s", $alb ) );
 			wppa_dbg_q('Q212');
 		}
 		
@@ -1085,12 +1117,19 @@ global $wppa_opt;
 }
 
 function wppa_get_minisize() {
+global $wppa_opt;
+
 	$result = '100';
 	
 	$tmp = get_option('wppa_thumbsize', 'nil');
 	if (is_numeric($tmp) && $tmp > $result) $result = $tmp;
+	
 	$tmp = get_option('wppa_smallsize', 'nil');
+	if ( $wppa_opt['wppa_coversize_is_height'] ) {
+		$tmp = round($tmp * 4 / 3);		// assume aspectratio 4:3
+	}
 	if (is_numeric($tmp) && $tmp > $result) $result = $tmp;
+	
 	$tmp = get_option('wppa_popupsize', 'nil');
 	if (is_numeric($tmp) && $tmp > $result) $result = $tmp;
 	
@@ -1492,7 +1531,7 @@ global $wppa_opt;
 function wppa_table_exists($xtable) {
 global $wpdb;
 
-	$tables = $wpdb->get_results($wpdb->prepare("SHOW TABLES FROM `".DB_NAME."`"), 'ARRAY_A');
+	$tables = $wpdb->get_results( "SHOW TABLES FROM `".DB_NAME."`", ARRAY_A);
 	wppa_dbg_q('Q213');
 	// Some sqls do not show tables, benefit of the doubt: assume table exists
 	if ( empty($tables) ) return true;
@@ -1526,7 +1565,7 @@ global $wpdb;
 	$wpdb->query($wpdb->prepare("DELETE FROM `".WPPA_IPTC."` WHERE `photo` = %s", $id));
 	wppa_dbg_q('Q214');
 	// Find defined labels
-	$result = $wpdb->get_results($wpdb->prepare("SELECT `tag` FROM `".WPPA_IPTC."` WHERE `photo`='0' ORDER BY `tag`"), 'ARRAY_N');
+	$result = $wpdb->get_results( "SELECT `tag` FROM `".WPPA_IPTC."` WHERE `photo` = '0' ORDER BY `tag`", ARRAY_N);
 	wppa_dbg_q('Q215');
 	if ( ! is_array($result) ) $result = array();
 	$labels = array();
@@ -1604,7 +1643,7 @@ global $wpdb;
 	$wpdb->query($wpdb->prepare("DELETE FROM `".WPPA_EXIF."` WHERE `photo` = %s", $id));
 	wppa_dbg_q('Q218');
 	// Find defined labels
-	$result = $wpdb->get_results($wpdb->prepare("SELECT * FROM `".WPPA_EXIF."` WHERE `photo`='0' ORDER BY `tag`"), 'ARRAY_A');
+	$result = $wpdb->get_results( "SELECT * FROM `".WPPA_EXIF."` WHERE `photo` = '0' ORDER BY `tag`", ARRAY_A );
 	wppa_dbg_q('Q219');
 	if ( ! is_array($result) ) $result = array();
 	$labels = array();
@@ -1712,7 +1751,7 @@ global $wpdb;
 						$id = substr($id, 0, strpos($id, '.'));
 						// Now we have $id, $file and $info
 						if ( isset($info["APP13"]) ) {	// There is IPTC data
-							$is_iptc = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `".WPPA_IPTC."` WHERE `photo`=%s", $id));
+							$is_iptc = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `".WPPA_IPTC."` WHERE `photo` = %s", $id));
 							wppa_dbg_q('Q223');
 							if ( ! $is_iptc ) { 	// No IPTC yet and there is: Recuperate
 								wppa_import_iptc($id, $info);

@@ -2,7 +2,7 @@
 /* wppa_widgetfunctions.php
 /* Package: wp-photo-album-plus
 /*
-/* Version 4.8.5
+/* Version 4.8.6
 /*
 */
 
@@ -21,7 +21,7 @@ function wppa_get_widgetphotos($alb, $option = '') {
 	// Is it an enumeration of album ids?
 	elseif (strchr($alb, ',')) {
 		$albs = explode(',', $alb);
-		$query = $wpdb->prepare( 'SELECT * FROM ' . WPPA_PHOTOS );
+		$query = 'SELECT * FROM ' . WPPA_PHOTOS;
 		$first = true;
 		foreach ($albs as $a) if (is_numeric($a)) {
 			if ($first) $query .= ' WHERE ';
@@ -30,16 +30,16 @@ function wppa_get_widgetphotos($alb, $option = '') {
 			$query .= ' album=' . $a;
 		}
 		$query .= ' ' . $option;
-		if ( ! $first ) $photos = $wpdb->get_results($query, 'ARRAY_A');
+		if ( ! $first ) $photos = $wpdb->get_results($query, ARRAY_A);
 	}
 	// Is it ALL?
 	elseif ($alb == 'all') {
-		$query = $wpdb->prepare( 'SELECT * FROM ' . WPPA_PHOTOS . ' ' . $option );
-		$photos = $wpdb->get_results($query, 'ARRAY_A');
+		$query = 'SELECT * FROM ' . WPPA_PHOTOS . ' ' . $option;
+		$photos = $wpdb->get_results($query, ARRAY_A);
 	}
 	// Is it SEP?
 	elseif ($alb == 'sep') {
-		$albs = $wpdb->get_results( $wpdb->prepare( 'SELECT id, a_parent FROM ' . WPPA_ALBUMS), 'ARRAY_A' );
+		$albs = $wpdb->get_results( 'SELECT id, a_parent FROM ' . WPPA_ALBUMS, ARRAY_A );
 		$query = 'SELECT * FROM ' . WPPA_PHOTOS;
 		$first = true;
 		foreach ($albs as $a) {
@@ -51,11 +51,11 @@ function wppa_get_widgetphotos($alb, $option = '') {
 			}
 		}
 		$query .= ' ' . $option;
-		if ( ! $first ) $photos = $wpdb->get_results($wpdb->prepare( $query ), 'ARRAY_A' );
+		if ( ! $first ) $photos = $wpdb->get_results( $query, ARRAY_A );
 	}	
 	// Is it ALL-SEP?
 	elseif ($alb == 'all-sep') {
-		$albs = $wpdb->get_results($wpdb->prepare( 'SELECT id, a_parent FROM ' . WPPA_ALBUMS) , 'ARRAY_A' );
+		$albs = $wpdb->get_results( 'SELECT id, a_parent FROM ' . WPPA_ALBUMS, ARRAY_A );
 		$query = 'SELECT * FROM ' . WPPA_PHOTOS;
 		$first = true;
 		foreach ($albs as $a) {
@@ -67,12 +67,12 @@ function wppa_get_widgetphotos($alb, $option = '') {
 			}
 		}
 		$query .= ' ' . $option;
-		if ( ! $first ) $photos = $wpdb->get_results($wpdb->prepare( $query ), 'ARRAY_A');
+		if ( ! $first ) $photos = $wpdb->get_results( $query, ARRAY_A );
 	}
 	// Is it Topten?
 	elseif ($alb == 'topten') {
-		$query = $wpdb->prepare( 'SELECT * FROM ' . WPPA_PHOTOS . ' ORDER BY mean_rating DESC LIMIT ' . $wppa_opt['wppa_topten_count'] );
-		$photos = $wpdb->get_results($wpdb->prepare( $query ), 'ARRAY_A');
+		$query = 'SELECT * FROM ' . WPPA_PHOTOS . ' ORDER BY mean_rating DESC LIMIT ' . $wppa_opt['wppa_topten_count'];
+		$photos = $wpdb->get_results( $query, ARRAY_A );
 	}
 
 	return $photos;
@@ -82,7 +82,7 @@ function wppa_get_widgetphotos($alb, $option = '') {
 // Special version for widget
 function wppa_walbum_select($sel = '') {
 	global $wpdb;
-	$albums = $wpdb->get_results($wpdb->prepare( "SELECT * FROM " . WPPA_ALBUMS . " ORDER BY name" ), 'ARRAY_A' );
+	$albums = $wpdb->get_results( "SELECT * FROM " . WPPA_ALBUMS . " ORDER BY name", ARRAY_A );
 	
 	if (is_numeric($sel)) $type = 1;		// Single number
 	elseif (strchr($sel, ',')) {

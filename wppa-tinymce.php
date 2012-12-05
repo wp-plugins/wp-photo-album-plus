@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 *
-* Version 4.8.5
+* Version 4.8.6
 *
 */
 
@@ -102,7 +102,7 @@ global $wppa_opt;
 				'<th><label for="mygallery-album" class="mygallery-album" >'.__('The Album to be used:', 'wppa').'</label></th>'.
 				'<td>'.
 					'<select id="mygallery-album" name="album" style=width:270px;" class="mygallery-album" onchange="wppaTinyMceAlbumPreview(this.value)">';
-						$albums = $wpdb->get_results($wpdb->prepare("SELECT `id`, `name` FROM `".WPPA_ALBUMS."` ORDER BY `timestamp` DESC"), 'ARRAY_A');
+						$albums = $wpdb->get_results( "SELECT `id`, `name` FROM `".WPPA_ALBUMS."` ORDER BY `timestamp` DESC", ARRAY_A );
 						if ($albums) {
 							$result .= 
 							// Please select
@@ -111,7 +111,7 @@ global $wppa_opt;
 							foreach ( $albums as $album ) {
 								$value = $album['id'];
 								$alb = $album['id'];
-								$photos = $wpdb->get_results($wpdb->prepare("SELECT `id`, `name`, `album`, `ext` FROM `".WPPA_PHOTOS."` WHERE `album` = %s ".wppa_get_photo_order($alb)." LIMIT 100", $alb), 'ARRAY_A');
+								$photos = $wpdb->get_results($wpdb->prepare( "SELECT `id`, `name`, `album`, `ext` FROM `".WPPA_PHOTOS."` WHERE `album` = %s ".wppa_get_photo_order($alb)." LIMIT 100", $alb), ARRAY_A );
 								if ( $photos ) foreach ( $photos as $photo ) {
 									$value .= '|'.$photo['id'].'.'.$photo['ext'];
 								}
@@ -123,7 +123,7 @@ global $wppa_opt;
 							// #last
 								$value = '#last';
 								$alb = $albums[0]['id'];
-								$photos = $wpdb->get_results($wpdb->prepare("SELECT `id`, `name`, `album`, `ext` FROM `".WPPA_PHOTOS."` WHERE `album` = %s ".wppa_get_photo_order($alb)." LIMIT 100", $alb), 'ARRAY_A');
+								$photos = $wpdb->get_results($wpdb->prepare( "SELECT `id`, `name`, `album`, `ext` FROM `".WPPA_PHOTOS."` WHERE `album` = %s ".wppa_get_photo_order($alb)." LIMIT 100", $alb), ARRAY_A );
 								if ( $photos ) foreach ( $photos as $photo ) {
 									$value .= '|'.$photo['id'].'.'.$photo['ext'];
 								}
@@ -131,7 +131,7 @@ global $wppa_opt;
 								$result .= '<option value="'.$value.'" >'.__('- The latest created album -', 'wppa').'</option>';
 							// #topten
 								$value = '#topten';
-								$photos = $wpdb->get_results($wpdb->prepare("SELECT `id`, `name`, `album`, `ext` FROM `".WPPA_PHOTOS."` ORDER BY `mean_rating` DESC LIMIT ".$wppa_opt['wppa_topten_count']), 'ARRAY_A');
+								$photos = $wpdb->get_results( "SELECT `id`, `name`, `album`, `ext` FROM `".WPPA_PHOTOS."` ORDER BY `mean_rating` DESC LIMIT ".$wppa_opt['wppa_topten_count'], ARRAY_A );
 								if ( $photos ) foreach ( $photos as $photo ) {
 									$value .= '|'.$photo['id'].'.'.$photo['ext'];
 								}
@@ -139,7 +139,7 @@ global $wppa_opt;
 								$result .= '<option value = "'.$value.'" >'.__('--- The top rated photos ---', 'wppa').'</option>';
 							// #lasten
 								$value = '#lasten';
-								$photos = $wpdb->get_results($wpdb->prepare("SELECT `id`, `name`, `album`, `ext` FROM `".WPPA_PHOTOS."` ORDER BY `timestamp` DESC LIMIT ".$wppa_opt['wppa_lasten_count']), 'ARRAY_A');
+								$photos = $wpdb->get_results( "SELECT `id`, `name`, `album`, `ext` FROM `".WPPA_PHOTOS."` ORDER BY `timestamp` DESC LIMIT ".$wppa_opt['wppa_lasten_count'], ARRAY_A );
 								if ( $photos ) foreach ( $photos as $photo ) {
 									$value .= '|'.$photo['id'].'.'.$photo['ext'];
 								}
@@ -147,7 +147,7 @@ global $wppa_opt;
 								$result .= '<option value = "'.$value.'" >'.__('--- The most recently uploaded photos ---', 'wppa').'</option>';							
 							// #all
 								$value = '#all';
-								$photos = $wpdb->get_results($wpdb->prepare("SELECT `id`, `name`, `album`, `ext` FROM `".WPPA_PHOTOS."` ".wppa_get_photo_order('0')." LIMIT 100"), 'ARRAY_A');
+								$photos = $wpdb->get_results( "SELECT `id`, `name`, `album`, `ext` FROM `".WPPA_PHOTOS."` ".wppa_get_photo_order('0')." LIMIT 100", ARRAY_A );
 								if ( $photos ) foreach ( $photos as $photo ) {
 									$value .= '|'.$photo['id'].'.'.$photo['ext'];
 								}
@@ -173,7 +173,7 @@ global $wppa_opt;
 				'<th><label for="mygallery-photo" style="display:none;" class="mygallery-photo" >'.__('The Photo to be used:', 'wppa').'</label></th>'.
 				'<td>'.
 					'<select id="mygallery-photo" name="photo" style="display:none;" class="mygallery-photo" onchange="wppaTinyMcePhotoPreview(this.value)" >';
-						$photos = $wpdb->get_results($wpdb->prepare("SELECT `id`, `name`, `album`, `ext` FROM `".WPPA_PHOTOS."` ORDER BY `timestamp` DESC LIMIT 100"), 'ARRAY_A');
+						$photos = $wpdb->get_results( "SELECT `id`, `name`, `album`, `ext` FROM `".WPPA_PHOTOS."` ORDER BY `timestamp` DESC LIMIT 100", ARRAY_A );
 						if ($photos) {
 							$result .= '<option value="0" disabled="disabled" selected="selected" >'.__('Please select a photo', 'wppa').'</option>';
 							foreach ( $photos as $photo ) {

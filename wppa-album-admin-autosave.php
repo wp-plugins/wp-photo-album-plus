@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * create, edit and delete albums
-* version 4.8.5
+* version 4.8.6
 *
 */
 
@@ -23,7 +23,7 @@ function _wppa_admin() {
 
 	// Delete trashed comments
 	$query = "DELETE FROM " . WPPA_COMMENTS . " WHERE status='trash'";
-	$wpdb->query($wpdb->prepare($query));
+	$wpdb->query($query);
 
 	$sel = 'selected="selected"';
 
@@ -61,7 +61,7 @@ function _wppa_admin() {
 			}
 
 			// Get the album information
-			$albuminfo = $wpdb->get_row($wpdb->prepare('SELECT * FROM `'.WPPA_ALBUMS.'` WHERE `id` = %s', $edit_id), 'ARRAY_A'); ?>	
+			$albuminfo = $wpdb->get_row($wpdb->prepare('SELECT * FROM `'.WPPA_ALBUMS.'` WHERE `id` = %s', $edit_id), ARRAY_A); ?>	
 			
 			<div class="wrap">
 				<h2><?php echo __('Edit Album Information', 'wppa').' <span style="color:blue">'.__('Auto Save', 'wppa').'</span>' ?></h2>
@@ -101,7 +101,7 @@ function _wppa_admin() {
 										wp_editor(stripslashes($albuminfo['description']), 'wppaalbumdesc', array('wpautop' => false, 'media_buttons' => false, 'textarea_rows' => '6', 'tinymce' => false, 'quicktags' => $quicktags_settings ));
 										?>
 									
-										<input type="button" class="button-secundary" style="float:left; border-radius:8px; font-size: 12px; height: 16px; margin: 0 4px; padding: 0px;" value="<?php _e('Update Album description', 'wppa') ?>" onclick="wppaAjaxUpdateAlbum(<?php echo $edit_id ?>, 'description', document.getElementById('wppaalbumdesc') )" />
+										<input type="button" class="button-secundary" value="<?php _e('Update Album description', 'wppa') ?>" onclick="wppaAjaxUpdateAlbum(<?php echo $edit_id ?>, 'description', document.getElementById('wppaalbumdesc') )" />
 										<img id="wppa-album-spin" src="<?php echo wppa_get_imgdir().'wpspin.gif' ?>" style="visibility:hidden" />
 										<br />
 									</td>
@@ -258,8 +258,8 @@ function _wppa_admin() {
 									<label ><?php _e('Link to:', 'wppa'); ?></label>
 								</th>
 								<td style="padding-top:0; padding-bottom:0;">
-									<?php $query = $wpdb->prepare( 'SELECT `ID`, `post_title` FROM `'.$wpdb->posts.'` WHERE `post_type` = \'page\' AND `post_status` = \'publish\' ORDER BY `post_title` ASC');
-									$pages = $wpdb->get_results($query, 'ARRAY_A');
+									<?php $query = 'SELECT `ID`, `post_title` FROM `'.$wpdb->posts.'` WHERE `post_type` = \'page\' AND `post_status` = \'publish\' ORDER BY `post_title` ASC';
+									$pages = $wpdb->get_results($query, ARRAY_A);
 									if (empty($pages)) {
 										_e('There are no pages (yet) to link to.', 'wppa');
 									} else {
@@ -283,7 +283,7 @@ function _wppa_admin() {
 							<?php if ( $wppa_opt['wppa_rating_on'] == 'yes' ) { ?>
 								<tr style="vertical-align:top;" >
 									<th style="padding-top:0; padding-bottom:0;" scope="row">
-										<input type="button" class="button-secondary" style="font-weight:bold; color:blue; width:90%" onclick="if (confirm('<?php _e('Are you sure you want to clear the ratings in this album?', 'wppa') ?>')) wppaAjaxUpdateAlbum(<?php echo $edit_id ?>, 'clear_ratings', 0 ) " value="<?php _e('Reset ratings', 'wppa') ?>" /> 
+										<input type="button" class="button-secundary" style="color:blue; width:90%" onclick="if (confirm('<?php _e('Are you sure you want to clear the ratings in this album?', 'wppa') ?>')) wppaAjaxUpdateAlbum(<?php echo $edit_id ?>, 'clear_ratings', 0 ) " value="<?php _e('Reset ratings', 'wppa') ?>" /> 
 									</th>
 								</tr>
 							<?php } ?>
@@ -428,8 +428,7 @@ function wppa_admin_albums_flat() {
 	global $wpdb;
 	
 	// Read the albums
-	$query = $wpdb->prepare( "SELECT * FROM `" . WPPA_ALBUMS . "` ORDER BY id");
-	$albums = $wpdb->get_results($query, 'ARRAY_A');
+	$albums = $wpdb->get_results( "SELECT * FROM `" . WPPA_ALBUMS . "` ORDER BY `id`", ARRAY_A );
 
 	// Find the ordering method
 	$reverse = false;
@@ -692,16 +691,16 @@ function wppa_admin_albums_flat() {
 		</table>
 <!--	</div> -->
 <?php
-	$albcount = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `".WPPA_ALBUMS."`"));
-	$photocount = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `".WPPA_PHOTOS."`"));
-	$pendingcount = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `".WPPA_PHOTOS."` WHERE `status` = 'pending'"));
+	$albcount = $wpdb->get_var( "SELECT COUNT(*) FROM `".WPPA_ALBUMS."`" );
+	$photocount = $wpdb->get_var( "SELECT COUNT(*) FROM `".WPPA_PHOTOS."`" );
+	$pendingcount = $wpdb->get_var( "SELECT COUNT(*) FROM `".WPPA_PHOTOS."` WHERE `status` = 'pending'" );
 	
 	echo sprintf(__('There are <strong>%d</strong> albums and <strong>%d</strong> photos in the system.', 'wppa'), $albcount, $photocount);
 	if ( $pendingcount ) echo ' '.sprintf(__('<strong>%d</strong> photos are pending moderation.', 'wppa'), $pendingcount);
 	
-	$lastalbum = $wpdb->get_row($wpdb->prepare("SELECT `id`, `name` FROM `".WPPA_ALBUMS."` ORDER BY `timestamp` DESC LIMIT 1"), 'ARRAY_A');
+	$lastalbum = $wpdb->get_row( "SELECT `id`, `name` FROM `".WPPA_ALBUMS."` ORDER BY `timestamp` DESC LIMIT 1", ARRAY_A );
 	if ( $lastalbum ) echo '<br />'.sprintf(__('The most recently added album is <strong>%s</strong> (%d).', 'wppa'), __(stripslashes($lastalbum['name'])), $lastalbum['id']);
-	$lastphoto = $wpdb->get_row($wpdb->prepare("SELECT `id`, `name` FROM `".WPPA_PHOTOS."` ORDER BY `timestamp` DESC LIMIT 1"), 'ARRAY_A');
+	$lastphoto = $wpdb->get_row( "SELECT `id`, `name` FROM `".WPPA_PHOTOS."` ORDER BY `timestamp` DESC LIMIT 1", ARRAY_A );
 	if ( $lastphoto ) echo '<br />'.sprintf(__('The most recently added photo is <strong>%s</strong> (%d).', 'wppa'), __(stripslashes($lastphoto['name'])), $lastphoto['id']);
 ?>
 <?php	
@@ -717,8 +716,7 @@ function wppa_admin_albums_collapsable() {
 	global $wpdb;
 	
 	// Read the albums
-	$query = $wpdb->prepare( "SELECT * FROM `" . WPPA_ALBUMS . "` ORDER BY id");
-	$albums = $wpdb->get_results($query, 'ARRAY_A');
+	$albums = $wpdb->get_results( "SELECT * FROM `" . WPPA_ALBUMS . "` ORDER BY `id`", ARRAY_A);
 
 	// Find the ordering method
 	$reverse = false;
@@ -869,7 +867,7 @@ function wppa_admin_albums_collapsable() {
 			<tbody>
 		
 			<?php wppa_do_albumlist('0', '0', $albums, $seq); ?>
-			<?php if ( $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `".WPPA_ALBUMS."` WHERE `a_parent` = '-1'")) > 0 ) { ?>
+			<?php if ( $wpdb->get_var( "SELECT COUNT(*) FROM `".WPPA_ALBUMS."` WHERE `a_parent` = '-1'" ) > 0 ) { ?>
 				<tr>
 					<td colspan="12" ><em><?php _e('The following albums are ---separate--- and do not show up in the generic album display', 'wppa'); ?></em></td>
 				</tr>
@@ -972,16 +970,16 @@ function wppa_admin_albums_collapsable() {
 		</script>
 <!--	</div> -->
 <?php
-	$albcount = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `".WPPA_ALBUMS."`"));
-	$photocount = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `".WPPA_PHOTOS."`"));
-	$pendingcount = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `".WPPA_PHOTOS."` WHERE `status` = 'pending'"));
+	$albcount = $wpdb->get_var( "SELECT COUNT(*) FROM `".WPPA_ALBUMS."`" );
+	$photocount = $wpdb->get_var( "SELECT COUNT(*) FROM `".WPPA_PHOTOS."`" );
+	$pendingcount = $wpdb->get_var( "SELECT COUNT(*) FROM `".WPPA_PHOTOS."` WHERE `status` = 'pending'" );
 
 	echo sprintf(__('There are <strong>%d</strong> albums and <strong>%d</strong> photos in the system.', 'wppa'), $albcount, $photocount);
 	if ( $pendingcount ) echo ' '.sprintf(__('<strong>%d</strong> photos are pending moderation.', 'wppa'), $pendingcount);
 	
-	$lastalbum = $wpdb->get_row($wpdb->prepare("SELECT `id`, `name` FROM `".WPPA_ALBUMS."` ORDER BY `timestamp` DESC LIMIT 1"), 'ARRAY_A');
+	$lastalbum = $wpdb->get_row( "SELECT `id`, `name` FROM `".WPPA_ALBUMS."` ORDER BY `timestamp` DESC LIMIT 1", ARRAY_A );
 	if ( $lastalbum ) echo '<br />'.sprintf(__('The most recently added album is <strong>%s</strong> (%d).', 'wppa'), __(stripslashes($lastalbum['name'])), $lastalbum['id']);
-	$lastphoto = $wpdb->get_row($wpdb->prepare("SELECT `id`, `name` FROM `".WPPA_PHOTOS."` ORDER BY `timestamp` DESC LIMIT 1"), 'ARRAY_A');
+	$lastphoto = $wpdb->get_row( "SELECT `id`, `name` FROM `".WPPA_PHOTOS."` ORDER BY `timestamp` DESC LIMIT 1", ARRAY_A );
 	if ( $lastphoto ) echo '<br />'.sprintf(__('The most recently added photo is <strong>%s</strong> (%d).', 'wppa'), __(stripslashes($lastphoto['name'])), $lastphoto['id']);
 ?>
 <?php	
@@ -1080,7 +1078,7 @@ global $wpdb;
 function wppa_have_accessable_children($alb) {
 global $wpdb;
 
-	$albums = $wpdb->get_results($wpdb->prepare("SELECT * FROM `".WPPA_ALBUMS."` WHERE `a_parent` = ".$alb['id']), 'ARRAY_A' );
+	$albums = $wpdb->get_results( "SELECT * FROM `" . WPPA_ALBUMS . "` WHERE `a_parent` = " . $alb['id'], ARRAY_A );
 
 	if ( ! $albums || ! count($albums) ) return false;
 	foreach ( $albums as $album ) {
@@ -1097,10 +1095,10 @@ function wppa_album_photos($id) {
 	
 	if ( $_GET['tab'] == 'cmod' ) {
 		$pid = $_GET['photo'];
-		$photos = $wpdb->get_results($wpdb->prepare('SELECT * FROM `'.WPPA_PHOTOS.'` WHERE `id` = %s ', $pid), 'ARRAY_A');
+		$photos = $wpdb->get_results($wpdb->prepare('SELECT * FROM `'.WPPA_PHOTOS.'` WHERE `id` = %s ', $pid), ARRAY_A);
 	}
 	else {
-		$photos = $wpdb->get_results($wpdb->prepare('SELECT * FROM `'.WPPA_PHOTOS.'` WHERE `album` = %s '.wppa_get_photo_order($id, 'norandom'), $id), 'ARRAY_A');
+		$photos = $wpdb->get_results($wpdb->prepare('SELECT * FROM `'.WPPA_PHOTOS.'` WHERE `album` = %s '.wppa_get_photo_order($id, 'norandom'), $id), ARRAY_A);
 	}
 	
 	if (empty($photos)) { 
@@ -1129,10 +1127,10 @@ function wppa_album_photos($id) {
 									<label ><?php echo 'ID = '.$photo['id'].' '.__('Preview:', 'wppa'); ?></label>
 									<br/>
 
-									<input type="button" name="rotate" class="button-secondary" style="font-weight:bold; width:90%" onclick="if (confirm('<?php _e('Are you sure you want to rotate this photo?', 'wppa') ?>')) wppaAjaxUpdatePhoto(<?php echo $photo['id'] ?>, 'rotleft', 0); " value="<?php _e('Rotate left', 'wppa'); ?>" />
+									<input type="button" name="rotate" class="button-secundary" style="width:90%" onclick="if (confirm('<?php _e('Are you sure you want to rotate this photo?', 'wppa') ?>')) wppaAjaxUpdatePhoto(<?php echo $photo['id'] ?>, 'rotleft', 0); " value="<?php _e('Rotate left', 'wppa'); ?>" />
 									<br/>
 									
-									<input type="button" name="rotate" class="button-secondary" style="font-weight:bold; width:90%" onclick="if (confirm('<?php _e('Are you sure you want to rotate this photo?', 'wppa') ?>')) wppaAjaxUpdatePhoto(<?php echo $photo['id'] ?>, 'rotright', 0); " value="<?php _e('Rotate right', 'wppa'); ?>" />
+									<input type="button" name="rotate" class="button-secundary" style="width:90%" onclick="if (confirm('<?php _e('Are you sure you want to rotate this photo?', 'wppa') ?>')) wppaAjaxUpdatePhoto(<?php echo $photo['id'] ?>, 'rotright', 0); " value="<?php _e('Rotate right', 'wppa'); ?>" />
 									<br/>
 									
 									<span style="font-size: 9px; line-height: 10px; color:#666;">
@@ -1186,7 +1184,7 @@ function wppa_album_photos($id) {
 							<!-- Move -->
 							<tr style="vertical-align:bottom;" >
 								<th scope="row" style="padding-top:0; padding-bottom:0;">
-									<input type="button" class="button-secondary" style="font-weight:bold; color:blue; width:90%" onclick="if(document.getElementById('moveto-<?php echo($photo['id']) ?>').value != 0) { if (confirm('<?php _e('Are you sure you want to move this photo?', 'wppa') ?>')) wppaAjaxUpdatePhoto(<?php echo $photo['id'] ?>, 'moveto', document.getElementById('moveto-<?php echo($photo['id']) ?>') ) } else { alert('<?php _e('Please select an album to move the photo to first.', 'wppa') ?>'); return false;}" value="<?php _e('Move photo to', 'wppa') ?>" /> 
+									<input type="button" class="button-secundary" style="color:blue; width:90%" onclick="if(document.getElementById('moveto-<?php echo($photo['id']) ?>').value != 0) { if (confirm('<?php _e('Are you sure you want to move this photo?', 'wppa') ?>')) wppaAjaxUpdatePhoto(<?php echo $photo['id'] ?>, 'moveto', document.getElementById('moveto-<?php echo($photo['id']) ?>') ) } else { alert('<?php _e('Please select an album to move the photo to first.', 'wppa') ?>'); return false;}" value="<?php _e('Move photo to', 'wppa') ?>" /> 
 								</th>
 								<td style="padding-top:0; padding-bottom:0;">							
 									<select id="moveto-<?php echo $photo['id'] ?>" style="width:100%;" ><?php echo(wppa_album_select($id, '0', true, false, false, false, true)) ?></select>
@@ -1195,7 +1193,7 @@ function wppa_album_photos($id) {
 							<!-- Copy -->
 							<tr style="vertical-align:bottom;" >
 								<th scope="row" style="padding-top:0; padding-bottom:0;">
-								 	<input type="button" class="button-secondary" style="font-weight:bold; color:blue; width:90%" onclick="if (document.getElementById('copyto-<?php echo($photo['id']) ?>').value != 0) { if (confirm('<?php _e('Are you sure you want to copy this photo?', 'wppa') ?>')) wppaAjaxUpdatePhoto(<?php echo $photo['id'] ?>, 'copyto', document.getElementById('copyto-<?php echo($photo['id']) ?>') ) } else { alert('<?php _e('Please select an album to copy the photo to first.', 'wppa') ?>'); return false;}" value="<?php _e('Copy photo to', 'wppa') ?>" />
+								 	<input type="button" class="button-secundary" style="color:blue; width:90%" onclick="if (document.getElementById('copyto-<?php echo($photo['id']) ?>').value != 0) { if (confirm('<?php _e('Are you sure you want to copy this photo?', 'wppa') ?>')) wppaAjaxUpdatePhoto(<?php echo $photo['id'] ?>, 'copyto', document.getElementById('copyto-<?php echo($photo['id']) ?>') ) } else { alert('<?php _e('Please select an album to copy the photo to first.', 'wppa') ?>'); return false;}" value="<?php _e('Copy photo to', 'wppa') ?>" />
 								</th>
 								<td style="padding-top:0; padding-bottom:0;">
 									<select id="copyto-<?php echo($photo['id']) ?>" style="width:100%;" ><?php echo(wppa_album_select($id, '0', true, false, false, false, true)) ?></select>
@@ -1204,13 +1202,13 @@ function wppa_album_photos($id) {
 							<!-- Delete -->
 							<tr style="vertical-align:bottom;" >
 								<th scope="row" style="padding-top:0; padding-bottom:0;">
-									<input type="button" class="button-secondary" style="font-weight:bold; color:red; width:90%" onclick="if (confirm('<?php _e('Are you sure you want to delete this photo?', 'wppa') ?>')) wppaAjaxDeletePhoto(<?php echo $photo['id'] ?>)" value="<?php _e('Delete photo', 'wppa'); ?>" />
+									<input type="button" class="button-secundary" style="color:red; width:90%" onclick="if (confirm('<?php _e('Are you sure you want to delete this photo?', 'wppa') ?>')) wppaAjaxDeletePhoto(<?php echo $photo['id'] ?>)" value="<?php _e('Delete photo', 'wppa'); ?>" />
 								</th>
 							</tr>
 							<!-- Insert code -->
 							<tr style="vertical-align:bottom;" >
 								<th scope="row" style="padding-top:0; padding-bottom:0;">
-									<input type="button" class="button-secondary" style="font-weight:bold; width:90%" onclick="prompt('<?php _e('Insert code for single image in Page or Post:\nYou may change the size if you like.', 'wppa') ?>', '%%wppa%% %%photo=<?php echo($photo['id']); ?>%% %%size=<?php echo $wppa_opt['wppa_fullsize'] ?>%%')" value="<?php _e('Insertion Code', 'wppa'); ?>" />
+									<input type="button" class="button-secundary" style="width:90%" onclick="prompt('<?php _e('Insert code for single image in Page or Post:\nYou may change the size if you like.', 'wppa') ?>', '%%wppa%% %%photo=<?php echo($photo['id']); ?>%% %%size=<?php echo $wppa_opt['wppa_fullsize'] ?>%%')" value="<?php _e('Insertion Code', 'wppa'); ?>" />
 								</th>
 							</tr>
 							<!-- Link url -->
@@ -1272,7 +1270,7 @@ function wppa_album_photos($id) {
 									wp_editor(stripslashes($photo['description']), 'wppaphotodesc'.$alfaid, array('wpautop' => false, 'media_buttons' => false, 'textarea_rows' => '6', 'tinymce' => false, 'quicktags' => $quicktags_settings ));
 									?>
 									
-									<input type="button" class="button-secundary" style="float:left; border-radius:8px; font-size: 12px; height: 16px; margin: 0 4px; padding: 0px;" value="<?php _e('Update Photo description', 'wppa') ?>" onclick="wppaAjaxUpdatePhoto(<?php echo $photo['id'] ?>, 'description', document.getElementById('wppaphotodesc'+'<?php echo $alfaid ?>') )" />
+									<input type="button" class="button-secundary" value="<?php _e('Update Photo description', 'wppa') ?>" onclick="wppaAjaxUpdatePhoto(<?php echo $photo['id'] ?>, 'description', document.getElementById('wppaphotodesc'+'<?php echo $alfaid ?>') )" />
 									<img id="wppa-photo-spin-<?php echo $photo['id'] ?>" src="<?php echo wppa_get_imgdir().'wpspin.gif' ?>" style="visibility:hidden" />
 								</td>
 								<?php }
@@ -1315,12 +1313,12 @@ function wppa_album_photos($id) {
 											<select id="wmpsel_<?php echo $photo['id']?>">
 											<?php echo wppa_watermark_pos_select() ?>
 											</select> 
-											<input type="button" class="button-secundary" style="border-radius:8px; font-size: 12px; height: 16px; margin: 0 4px; padding: 0px;" value="<?php _e('Apply watermark', 'wppa') ?>" onclick="if (confirm('<?php _e('Are you sure?\n\nOnce applied it can not be removed!\nAnd I do not know if there is already a watermark on this photo', 'wppa') ?>')) wppaAjaxApplyWatermark(<?php echo $photo['id'] ?>, document.getElementById('wmfsel_<?php echo $photo['id']?>').value, document.getElementById('wmpsel_<?php echo $photo['id']?>').value)" />
+											<input type="button" class="button-secundary" value="<?php _e('Apply watermark', 'wppa') ?>" onclick="if (confirm('<?php _e('Are you sure?\n\nOnce applied it can not be removed!\nAnd I do not know if there is already a watermark on this photo', 'wppa') ?>')) wppaAjaxApplyWatermark(<?php echo $photo['id'] ?>, document.getElementById('wmfsel_<?php echo $photo['id']?>').value, document.getElementById('wmpsel_<?php echo $photo['id']?>').value)" />
 											<?php
 										}
 										else {
 											echo __('File:','wppa').' '.$wmfile.' '.__('Pos:', 'wppa').' '.$wmpos; ?>
-											<input type="button" class="button-secundary" style="border-radius:8px; font-size: 12px; height: 16px; margin: 0 4px; padding: 0px;" value="<?php _e('Apply watermark', 'wppa') ?>" onclick="if (confirm('<?php _e('Are you sure?\n\nOnce applied it can not be removed!\nAnd I do not know if there is already a watermark on this photo', 'wppa') ?>')) wppaAjaxApplyWatermark(<?php echo $photo['id'] ?>, '', '')" />
+											<input type="button" class="button-secundary" value="<?php _e('Apply watermark', 'wppa') ?>" onclick="if (confirm('<?php _e('Are you sure?\n\nOnce applied it can not be removed!\nAnd I do not know if there is already a watermark on this photo', 'wppa') ?>')) wppaAjaxApplyWatermark(<?php echo $photo['id'] ?>, '', '')" />
 											<?php
 										} ?>
 										<img id="wppa-water-spin-<?php echo $photo['id'] ?>" src="<?php echo wppa_get_imgdir().'wpspin.gif' ?>" style="visibility:hidden" /><?php
@@ -1350,7 +1348,7 @@ function wppa_album_photos($id) {
 				
 				<!-- Comments -->
 				<?php 
-				$comments = $wpdb->get_results($wpdb->prepare("SELECT * FROM `".WPPA_COMMENTS."` WHERE `photo` = %s ORDER BY `timestamp` DESC", $photo['id']), 'ARRAY_A');
+				$comments = $wpdb->get_results($wpdb->prepare("SELECT * FROM `".WPPA_COMMENTS."` WHERE `photo` = %s ORDER BY `timestamp` DESC", $photo['id']), ARRAY_A);
 				if ( $comments ) {
 				?>
 				<hr />
@@ -1460,7 +1458,7 @@ function wppa_del_album($id, $move = '') {
 	$wpdb->query($wpdb->prepare('DELETE FROM `' . WPPA_ALBUMS . '` WHERE `id` = %s LIMIT 1', $id));
 
 	if (empty($move)) { // will delete all the album's photos
-		$photos = $wpdb->get_results($wpdb->prepare('SELECT * FROM `' . WPPA_PHOTOS . '` WHERE `album` = %s', $id), 'ARRAY_A');
+		$photos = $wpdb->get_results($wpdb->prepare('SELECT * FROM `' . WPPA_PHOTOS . '` WHERE `album` = %s', $id), ARRAY_A);
 
 		if (is_array($photos)) {
 			foreach ($photos as $photo) {
@@ -1496,7 +1494,7 @@ function wppa_main_photo($cur = '') {
 	global $wpdb;
 	
     $a_id = $_GET['edit_id'];
-	$photos = $wpdb->get_results($wpdb->prepare('SELECT * FROM `'.WPPA_PHOTOS.'` WHERE `album` = %s '.wppa_get_photo_order($a_id), $a_id), 'ARRAY_A');
+	$photos = $wpdb->get_results($wpdb->prepare('SELECT * FROM `'.WPPA_PHOTOS.'` WHERE `album` = %s '.wppa_get_photo_order($a_id), $a_id), ARRAY_A);
 	
 	$output = '';
 	if (!empty($photos)) {

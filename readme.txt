@@ -2,12 +2,12 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile
-Version: 4.8.5
+Version: 4.8.6
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
 Requires at least: 3.0
-Tested up to: 3.4.2
+Tested up to: 3.5
 
 This plugin is designed to easily manage and display your photo albums and slideshows in a single as well as in a network WordPress site.
 
@@ -161,6 +161,21 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 4.8.6 =
+
+= New Features = 
+
+* Grant an album (Table IX-B6,7). If checked: for any user who has upload rights a default album will be created 
+if there is not yet an album with him as owner as soon as he logs in. (Requires Table VII-B1: Owners only).
+* Coversize is height (Table I-D3.1) works only when Coverphoto pos is top or bottom (Table IV-D3). 
+This makes it easyer to make the covers equal in height.
+* Share a single image (Table II-B21.99). The sharelink points to a page with a *single image like a slideshow* rather than *the photo in the slideshow*.
+
+= Other Changes =
+
+* Changes made to be compatible with WP 3.5: Fix in TinyMCE shortcode generator and fixes to warning prepare() arg 2.
+* To prevent disappointments, the settings that have no help text do no longer show a questionmark button.
 
 = 4.8.5 =
 

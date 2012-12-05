@@ -2,7 +2,7 @@
 /* wppa-ajax.php
 *
 * Functions used in ajax requests
-* version 4.8.5
+* version 4.8.6
 *
 */
 add_action('wp_ajax_wppa', 'wppa_ajax_callback');
@@ -36,7 +36,7 @@ global $wppa;
 				echo '||7||'.__('Unknown source of request', 'wppa');
 				exit;
 			}
-			$data = $wpdb->get_row($wpdb->prepare("SELECT * FROM `".WPPA_PHOTOS."` WHERE `id` = %s", $photo), 'ARRAY_A');
+			$data = $wpdb->get_row($wpdb->prepare("SELECT * FROM `".WPPA_PHOTOS."` WHERE `id` = %s", $photo), ARRAY_A);
 			if ($data) {	// The photo is supposed to exist
 				// Make the name
 				$name = __($data['name']);
@@ -188,7 +188,7 @@ global $wppa;
 				}
 				// Compute my avg rating
 				$query = $wpdb->prepare( 'SELECT * FROM `'.WPPA_RATING.'`  WHERE `photo` = %s AND `user` = %s', $photo, $user );
-				$myrats = $wpdb->get_results($query, 'ARRAY_A');
+				$myrats = $wpdb->get_results($query, ARRAY_A);
 				if ( ! $myrats) {
 					echo '0||105||'.$wartxt;
 					exit;															// Fail on retrieve
@@ -213,7 +213,7 @@ global $wppa;
 				exit;																// Fail on read old avgrat
 			}
 			// Compute new allavgrat
-			$ratings = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM '.WPPA_RATING.' WHERE `photo` = %s', $photo), 'ARRAY_A');
+			$ratings = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM '.WPPA_RATING.' WHERE `photo` = %s', $photo), ARRAY_A);
 			if ($ratings) {
 				$sum = 0;
 				$cnt = 0;
@@ -306,7 +306,7 @@ global $wppa;
 
 			switch ($item) {
 				case 'clear_ratings':
-					$photos = $wpdb->get_results($wpdb->prepare('SELECT * FROM `'.WPPA_PHOTOS.'` WHERE `album` = %s', $album), 'ARRAY_A');
+					$photos = $wpdb->get_results($wpdb->prepare('SELECT * FROM `'.WPPA_PHOTOS.'` WHERE `album` = %s', $album), ARRAY_A);
 					if ($photos) foreach ($photos as $photo) {
 						$iret1 = $wpdb->query($wpdb->prepare('DELETE FROM `'.WPPA_RATING.'` WHERE `photo` = %s', $photo['id']));
 						$iret2 = $wpdb->query($wpdb->prepare('UPDATE `'.WPPA_PHOTOS.'` SET `mean_rating` = %s WHERE `id` = %s', '', $photo['id']));
@@ -748,8 +748,8 @@ global $wppa;
 					wppa_ajax_check_range($value, false, '0', false, __('Cube Points points', 'wppa'));
 					break;
 				case 'wppa_rating_clear':
-					$iret1 = $wpdb->query($wpdb->prepare( 'TRUNCATE TABLE '.WPPA_RATING ) );
-					$iret2 = $wpdb->query($wpdb->prepare( 'UPDATE '.WPPA_PHOTOS.' SET mean_rating="0", rating_count="0" WHERE id > -1' ) );
+					$iret1 = $wpdb->query( 'TRUNCATE TABLE '.WPPA_RATING );
+					$iret2 = $wpdb->query( 'UPDATE '.WPPA_PHOTOS.' SET mean_rating="0", rating_count="0" WHERE id > -1' );
 					if ($iret1 !== false && $iret2 !== false) {
 						delete_option('wppa_'.WPPA_RATING.'_lastkey');
 						$title = __('Ratings cleared', 'wppa');
@@ -762,7 +762,7 @@ global $wppa;
 					break;
 
 				case 'wppa_iptc_clear':
-					$iret = $wpdb->query($wpdb->prepare( 'TRUNCATE TABLE '.WPPA_IPTC ) );
+					$iret = $wpdb->query( 'TRUNCATE TABLE '.WPPA_IPTC );
 					if ($iret !== false) {
 						delete_option('wppa_'.WPPA_IPTC.'_lastkey');
 						$title = __('IPTC data cleared', 'wppa');
@@ -776,7 +776,7 @@ global $wppa;
 					break;
 
 				case 'wppa_exif_clear':
-					$iret = $wpdb->query($wpdb->prepare( 'TRUNCATE TABLE '.WPPA_EXIF ) );
+					$iret = $wpdb->query( 'TRUNCATE TABLE '.WPPA_EXIF );
 					if ($iret !== false) {
 						delete_option('wppa_'.WPPA_EXIF.'_lastkey');
 						$title = __('EXIF data cleared', 'wppa');
@@ -805,7 +805,7 @@ global $wppa;
 
 				case 'wppa_rating_max':
 					if ( $value == '5' && $wppa_opt['wppa_rating_max'] == '10' ) {
-						$rats = $wpdb->get_results($wpdb->prepare('SELECT `id`, `value` FROM `'.WPPA_RATING.'`'), 'ARRAY_A');
+						$rats = $wpdb->get_results( 'SELECT `id`, `value` FROM `'.WPPA_RATING.'`', ARRAY_A );
 						if ( $rats ) {
 							foreach ( $rats as $rat ) {
 								$wpdb->query($wpdb->prepare('UPDATE `'.WPPA_RATING.'` SET `value` = %s WHERE `id` = %s', $rat['value']/2, $rat['id']));
@@ -813,7 +813,7 @@ global $wppa;
 						}
 					}
 					if ( $value == '10' && $wppa_opt['wppa_rating_max'] == '5' ) {
-						$rats = $wpdb->get_results($wpdb->prepare('SELECT `id`, `value` FROM `'.WPPA_RATING.'`'), 'ARRAY_A');
+						$rats = $wpdb->get_results( 'SELECT `id`, `value` FROM `'.WPPA_RATING.'`', ARRAY_A );
 						if ( $rats ) {
 							foreach ( $rats as $rat ) {
 								$wpdb->query($wpdb->prepare('UPDATE `'.WPPA_RATING.'` SET `value` = %s WHERE `id` = %s', $rat['value']*2, $rat['id']));

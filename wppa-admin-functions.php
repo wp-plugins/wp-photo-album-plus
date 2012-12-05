@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 * gp admin functions
-* version 4.8.3
+* version 4.8.6
 *
 * 
 */
@@ -108,7 +108,7 @@ function wppa_regenerate_thumbs() {
 
     $start = get_option('wppa_lastthumb', '-1');
 
-	$photos = $wpdb->get_results($wpdb->prepare('SELECT * FROM `' . WPPA_PHOTOS . '` WHERE `id` > %s ORDER BY `id`', $start), 'ARRAY_A');
+	$photos = $wpdb->get_results($wpdb->prepare('SELECT * FROM `' . WPPA_PHOTOS . '` WHERE `id` > %s ORDER BY `id`', $start), ARRAY_A);
 	
 	if (!empty($photos)) {
 		$count = count($photos);
@@ -222,7 +222,7 @@ function wppa_has_albums() {
 
 function wppa_get_users() {
 global $wpdb;
-	$users = $wpdb->get_results($wpdb->prepare( 'SELECT * FROM '.$wpdb->users ), 'ARRAY_A');
+	$users = $wpdb->get_results( 'SELECT * FROM '.$wpdb->users, ARRAY_A);
 	return $users;
 }
 
@@ -392,8 +392,8 @@ if ( is_multisite() ) return; // temp disabled for 4.0 bug, must be tested in a 
 	$no_photos = '';
 //	if ($alb == '0') wppa_ok_message(__('Checking database, please wait...', 'wppa'));
 	$delcount = 0;
-	if ($alb == '0') $entries = $wpdb->get_results($wpdb->prepare( 'SELECT id, ext, name FROM '.WPPA_PHOTOS ), ARRAY_A);
-	else $entries = $wpdb->get_results($wpdb->prepare( 'SELECT id, ext, name FROM '.WPPA_PHOTOS.' WHERE album = %s', $alb ), ARRAY_A);
+	if ($alb == '0') $entries = $wpdb->get_results( "SELECT `id`, `ext`, `name` FROM `".WPPA_PHOTOS, ARRAY_A);
+	else $entries = $wpdb->get_results($wpdb->prepare( "SELECT `id`, `ext`, `name` FROM `".WPPA_PHOTOS."` WHERE `album` = %s", $alb ), ARRAY_A);
 	if ($entries) {
 		foreach ( $entries as $entry ) {
 			$thumbpath = WPPA_UPLOAD_PATH.'/thumbs/'.$entry['id'].'.'.$entry['ext'];
@@ -422,7 +422,7 @@ if ( is_multisite() ) return; // temp disabled for 4.0 bug, must be tested in a 
 	}
 	// Now fix missing exts for upload bug in 2.3.0
 	$fixcount = 0;
-	$entries = $wpdb->get_results($wpdb->prepare( 'SELECT id, ext, name FROM '.WPPA_PHOTOS.' WHERE ext = ""' ), 'ARRAY_A' );
+	$entries = $wpdb->get_results( "SELECT `id`, `ext`, `name` FROM `".WPPA_PHOTOS."` WHERE `ext` = ''" , ARRAY_A );
 	if ($entries) {
 		wppa_ok_message(__('Trying to fix '.count($entries).' entries with missing file extension, Please wait.', 'wppa'));
 		foreach ($entries as $entry) {
@@ -441,7 +441,7 @@ if ( is_multisite() ) return; // temp disabled for 4.0 bug, must be tested in a 
 			}
 			if ($ext == 'jpg' || $ext == 'JPG' || $ext == 'png' || $ext == 'PNG' || $ext == 'gif' || $ext == 'GIF') {
 				
-				if ($wpdb->query($wpdb->prepare( 'UPDATE '.WPPA_PHOTOS.' SET ext = "%s" WHERE id = %s', $ext, $entry['id'] ) ) ) {
+				if ($wpdb->query($wpdb->prepare( "UPDATE `".WPPA_PHOTOS."` SET `ext` = %s WHERE `id` = %s", $ext, $entry['id'] ) ) ) {
 					$oldimg = WPPA_UPLOAD_PATH.'/'.$entry['id'].'.';
 					$newimg = WPPA_UPLOAD_PATH.'/'.$entry['id'].'.'.$ext;
 					if (is_file($oldimg)) {
@@ -469,7 +469,7 @@ if ( is_multisite() ) return; // temp disabled for 4.0 bug, must be tested in a 
 	
 	// Now fix orphan photos
 	$orphcount = 0;
-	$entries = $wpdb->get_results($wpdb->prepare( 'SELECT id FROM '.WPPA_PHOTOS.' WHERE album = 0' ), ARRAY_A);
+	$entries = $wpdb->get_results( "SELECT `id` FROM `".WPPA_PHOTOS."` WHERE `album` = '0'", ARRAY_A);
 	if ($entries) {
 		$album = wppa_get_album_id(__('Orphan Photos', 'wppa'));
 		if ($album == '') {
@@ -577,7 +577,7 @@ function wppa_album_select(	$exc = '',
 
 global $wpdb;
 
-	$albums = $wpdb->get_results($wpdb->prepare( "SELECT * FROM ".WPPA_ALBUMS." ORDER BY name" ), 'ARRAY_A');
+	$albums = $wpdb->get_results( "SELECT * FROM `".WPPA_ALBUMS."` ORDER BY `name`", ARRAY_A);
 	
     if ($sel == '') {
         $s = wppa_get_last_album();
@@ -627,7 +627,7 @@ global $wpdb;
 function wppa_recalculate_ratings() {
 global $wpdb;
 
-	$photos = $wpdb->get_results($wpdb->prepare( 'SELECT id FROM '.WPPA_PHOTOS ), 'ARRAY_A');
+	$photos = $wpdb->get_results( "SELECT `id` FROM `" . WPPA_PHOTOS . "`", ARRAY_A);
 	if ($photos) {
 		foreach ($photos as $photo) {
 			$ratings = $wpdb->get_results($wpdb->prepare( 'SELECT value FROM '.WPPA_RATING.' WHERE photo = %s', $photo['id']), 'ARRAY_A');
@@ -801,9 +801,5 @@ global $wpdb;
 function wppa_has_children($alb) {
 global $wpdb;
 
-	$albums = $wpdb->get_results($wpdb->prepare("SELECT * FROM `".WPPA_ALBUMS."` WHERE `a_parent` = ".$alb['id']), 'ARRAY_A' );
-
-	if ( ! $albums || ! count($albums) ) return false;
-	
-	return true;
+	return $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `".WPPA_ALBUMS."` WHERE `a_parent` = %s", $alb['id']) );
 }
