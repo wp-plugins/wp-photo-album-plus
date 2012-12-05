@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 4.8.5
+* Version 4.8.6
 *
 */
 
@@ -186,7 +186,7 @@ global $wppa_revno;
 			<div style="float:left"><?php _e('Legenda:', 'wppa') ?></div><br />			
 			<?php echo wppa_doit_button(__('Button', 'wppa')) ?><div style="float:left">&nbsp;:&nbsp;<?php _e('action that causes page reload.', 'wppa') ?></div>
 			<br />
-			<input type="button" onclick="if ( confirm('<?php _e('Are you sure?', 'wppa') ?>') ) return true; else return false;" class="button-secundary" style="float:left; border-radius:8px; font-size: 12px; height: 18px; margin: 0 4px; padding: 0px;" value="<?php _e('Button', 'wppa') ?>" />
+			<input type="button" onclick="if ( confirm('<?php _e('Are you sure?', 'wppa') ?>') ) return true; else return false;" class="button-secundary" style="float:left; border-radius:3px; font-size: 12px; height: 18px; margin: 0 4px; padding: 0px;" value="<?php _e('Button', 'wppa') ?>" />
 			<div style="float:left">&nbsp;:&nbsp;<?php _e('action that does not cause page reload.', 'wppa') ?></div>
 			<br />			
 			<img src="<?php echo wppa_get_imgdir() ?>star.png" title="<?php _e('Setting unmodified', 'wppa') ?>" style="padding-left:4px; float:left; height:16px; width:16px;" /><div style="float:left">&nbsp;:&nbsp;<?php _e('Setting unmodified', 'wppa') ?></div>
@@ -489,6 +489,15 @@ global $wppa_revno;
 							$slug = 'wppa_smallsize';
 							$html = wppa_input($slug, '40px', '', __('pixels', 'wppa'));
 							wppa_setting($slug, '3', $name, $desc, $html, $help);
+							
+							$name = __('Size is height', 'wppa');
+							$desc = __('The size of the coverphoto is the height of it.', 'wppa');
+							$help = esc_js(__('If set: the previous setting is the height, if unset: the largest of width and height.', 'wppa'));
+							$help .= '\n'.esc_js(__('This setting applies for coverphoto position top or bottom only (Table IV-D3).', 'wppa'));
+							$help .= '\n'.esc_js(__('This makes it easyer to make the covers of equal height.', 'wppa'));
+							$slug = 'wppa_coversize_is_height';
+							$html = wppa_checkbox($slug);
+							wppa_setting($slug, '3.1', $name, $desc, $html, $help);
 							
 							$name = __('Page size', 'wppa');
 							$desc = __('Max number of covers per page.', 'wppa');
@@ -983,10 +992,12 @@ global $wppa_revno;
 							$html = wppa_checkbox($slug, $onchange);
 							wppa_setting($slug, '21.4', $name, $desc, $html, $help, $class);
 							
-//							'wppa_share_facebook'
-//							'wppa_share_twitter'
-//							'wppa_share_hyves'
-
+							$name = __('Share single image', 'wppa');
+							$desc = __('Share a link to a single image, not the slideshow.', 'wppa');
+							$help = esc_js(__('The sharelink points to a page with a single image rather than to the page with the photo in the slideshow.', 'wppa'));
+							$slug = 'wppa_share_single_image';
+							$html = wppa_checkbox($slug, $onchange);
+							wppa_setting($slug, '21.99', $name, $desc, $html, $help, $class);
 
 							wppa_setting_subheader('C', '1', __('Thumbnail display related settings', 'wppa'));
 							
@@ -2150,8 +2161,8 @@ global $wppa_revno;
 							$options_page[] = __('--- Please select a page ---', 'wppa');
 							$values_page[] = '0';
 							// Pages if any
-							$query = $wpdb->prepare( "SELECT ID, post_title, post_content FROM " . $wpdb->posts . " WHERE post_type = 'page' AND post_status = 'publish' ORDER BY post_title ASC" );
-							$pages = $wpdb->get_results ($query, 'ARRAY_A');
+							$query = "SELECT ID, post_title, post_content FROM " . $wpdb->posts . " WHERE post_type = 'page' AND post_status = 'publish' ORDER BY post_title ASC";
+							$pages = $wpdb->get_results ($query, ARRAY_A);
 							if ($pages) {
 								foreach ($pages as $page) {
 									if (strpos($page['post_content'], '%%wppa%%') !== false || strpos($page['post_content'], '[wppa') !== false) {
@@ -2931,6 +2942,29 @@ global $wppa_revno;
 							$html .= wppa_select($slug, $options, $values);
 							wppa_setting(false, '5', $name, $desc, $html, $help);
 							
+							$name = __('Grant an album', 'wppa');
+							$desc = __('Create an album for each user logging in.', 'wppa');
+							$help = '';
+							$slug = 'wppa_grant_an_album';
+							$html = wppa_checkbox($slug);
+							wppa_setting($slug, '6', $name, $desc, $html, $help);
+							
+							$name = __('Grant parent', 'wppa');
+							$desc = __('The parent album of the auto created albums.', 'wppa');
+							$help = '';
+							$slug = 'wppa_grant_parent';
+							$opts = array( __('--- none ---', 'wppa'), __('--- separate ---', 'wppa') );
+							$vals = array( '0', '-1');
+							$albs = $wpdb->get_results( "SELECT `id`, `name` FROM`" . WPPA_ALBUMS . "` ORDER BY `name`", ARRAY_A );
+							if ( $albs ) {
+								foreach ( $albs as $alb ) {
+									$opts[] = __(stripslashes($alb['name']));
+									$vals[] = $alb['id'];
+								}
+							}
+							$html = wppa_select($slug, $opts, $vals);
+							wppa_setting($slug, '7', $name, $desc, $html, $help);
+							
 							wppa_setting_subheader('C', '1', __('Search Albums and Photos related settings', 'wppa'));
 							
 							$name = __('Search page', 'wppa');
@@ -2939,8 +2973,8 @@ global $wppa_revno;
 							$help .= '\n'.esc_js(__('You may give it the title "Search results" or something alike.', 'wppa'));
 							$help .= '\n'.esc_js(__('Or you ou may use the standard page on which you display the generic album.', 'wppa'));
 							$slug = 'wppa_search_linkpage';
-							$query = $wpdb->prepare("SELECT ID, post_title, post_content FROM " . $wpdb->posts . " WHERE post_type = 'page' AND post_status = 'publish' ORDER BY post_title ASC");
-							$pages = $wpdb->get_results ($query, 'ARRAY_A');
+							$query = "SELECT ID, post_title, post_content FROM " . $wpdb->posts . " WHERE post_type = 'page' AND post_status = 'publish' ORDER BY post_title ASC";
+							$pages = $wpdb->get_results($query, ARRAY_A);
 							$options = false;
 							$values = false;
 							$options[] = __('--- Please select a page ---', 'wppa');
@@ -2999,9 +3033,9 @@ global $wppa_revno;
 							$help .= '\n'.esc_js(__('The watermark image will be overlaying the photo with 80% transparency.', 'wppa'));
 							$slug = 'wppa_watermark_file';
 							$class = 'wppa_watermark';
-							$html = '<select style="float:left; font-size:11px; height:20px; margin:0 20px 0 0; padding:0; " id="wppa_watermark_file" onchange="wppaAjaxUpdateOptionValue(\'wppa_watermark_file\', this)" >' . wppa_watermark_file_select('default') . '</select>';
+							$html = '<select style="float:left; font-size:11px; height:20px; margin:0 4px 0 0; padding:0; " id="wppa_watermark_file" onchange="wppaAjaxUpdateOptionValue(\'wppa_watermark_file\', this)" >' . wppa_watermark_file_select('default') . '</select>';
 							$html .= '<img id="img_wppa_watermark_file" src="'.wppa_get_imgdir().'star.png" title="'.__('Setting unmodified', 'wppa').'" style="padding-left:4px; float:left; height:16px; width:16px;" />';
-							$html .= __('position:', 'wppa').'<select style="float:left; font-size:11px; height:20px; margin:0 0 0 20px; padding:0; "  id="wppa_watermark_pos" onchange="wppaAjaxUpdateOptionValue(\'wppa_watermark_pos\', this)" >' . wppa_watermark_pos_select('default') . '</select>';
+							$html .= '<span style="float:left; margin-left:12px;" >'.__('position:', 'wppa').'</span><select style="float:left; font-size:11px; height:20px; margin:0 0 0 20px; padding:0; "  id="wppa_watermark_pos" onchange="wppaAjaxUpdateOptionValue(\'wppa_watermark_pos\', this)" >' . wppa_watermark_pos_select('default') . '</select>';
 							$html .= '<img id="img_wppa_watermark_pos" src="'.wppa_get_imgdir().'star.png" title="'.__('Setting unmodified', 'wppa').'" style="padding-left:4px; float:left; height:16px; width:16px;" />';
 							wppa_setting(false, '3', $name, $desc, $html, $help, $class);
 		
@@ -3203,7 +3237,7 @@ global $wppa_revno;
 							
 							$wppa_subtable = 'Z';
 							
-							$labels = $wpdb->get_results($wpdb->prepare("SELECT * FROM `".WPPA_IPTC."` WHERE `photo`='0' ORDER BY `tag`"), 'ARRAY_A');
+							$labels = $wpdb->get_results( "SELECT * FROM `".WPPA_IPTC."` WHERE `photo` = '0' ORDER BY `tag`", ARRAY_A );
 							if ( is_array( $labels ) ) {
 								$i = '1';
 								foreach ( $labels as $label ) {
@@ -3263,7 +3297,7 @@ global $wppa_revno;
 							
 							$wppa_subtable = 'Z';
 							
-							$labels = $wpdb->get_results($wpdb->prepare("SELECT * FROM `".WPPA_EXIF."` WHERE `photo`='0' ORDER BY `tag`"), 'ARRAY_A');
+							$labels = $wpdb->get_results( "SELECT * FROM `".WPPA_EXIF."` WHERE `photo` = '0' ORDER BY `tag`", ARRAY_A);
 							if ( is_array( $labels ) ) {
 								$i = '1';
 								foreach ( $labels as $label ) {
@@ -3486,14 +3520,12 @@ global $wppa_subtable;
 				if ( $slugs[$slugidx] != '' && isset($nums[$slugidx]) ) $hlp .= ' '.$nums[$slugidx].'. '.esc_js(wppa_dflt($slugs[$slugidx]));
 			}
 		}
+		$result .= '<td><input type="button" style="font-size: 11px; height:20px; padding:0; cursor: pointer;" title="'.__('Click for help', 'wppa').'" onclick="alert('."'".$hlp."'".')" value="&nbsp;?&nbsp;"></td>';
 	}
-	else $hlp = __('No help available', 'wppa');
-
-	$color = 'black';
-	$char = '?';
-	$fw = 'bold'; 
-	$title = __('Click for help', 'wppa');
-	$result .= '<td><input type="button" style="font-size: 11px; margin: 0px; padding: 0px; color: '.$color.';text-decoration: none; font-weight: '.$fw.'; cursor: pointer;" title="'.$title.'" onclick="alert('."'".$hlp."'".')" value="'.$char.'"></td>';
+	else {
+		$result .= '<td></td>';//$hlp = __('No help available', 'wppa');
+	}
+	
 	$result .= '</tr>';
 	
 	echo $result;	
@@ -3502,7 +3534,7 @@ global $wppa_subtable;
 
 function wppa_input($slug, $width, $minwidth = '', $text = '', $onchange = '') {
 
-	$html = '<input style="float:left; width: '.$width.';';
+	$html = '<input style="float:left; width: '.$width.'; height:20px;';
 	if ($minwidth != '') $html .= ' min-width:'.$minwidth.';';
 	$html .= ' font-size: 11px; margin: 0px; padding: 0px;" type="text" id="'.$slug.'"';
 	if ($onchange != '') $html .= ' onchange="'.$onchange.';wppaAjaxUpdateOptionValue(\''.$slug.'\', this)"';
@@ -3516,7 +3548,7 @@ function wppa_input($slug, $width, $minwidth = '', $text = '', $onchange = '') {
 
 function wppa_edit($slug, $value, $width = '90%', $minwidth = '', $text = '', $onchange = '') {
 
-	$html = '<input style="float:left; width: '.$width.';';
+	$html = '<input style="float:left; width: '.$width.'; height:20px;';
 	if ($minwidth != '') $html .= ' min-width:'.$minwidth.';';
 	$html .= ' font-size: 11px; margin: 0px; padding: 0px;" type="text" id="'.$slug.'"';
 	if ($onchange != '') $html .= ' onchange="'.$onchange.';wppaAjaxUpdateOptionValue(\''.$slug.'\', this)"';
@@ -3698,7 +3730,7 @@ function wppa_doit_button( $label = '', $key = '', $sub = '' ) {
 function wppa_ajax_button( $label = '', $slug, $elmid = '0', $no_confirm = false ) {
 	if ( $label == '' ) $label = __('Do it!', 'wppa');
 
-	$result = '<input type="button" class="button-secundary" style="float:left; border-radius:8px; font-size: 12px; height: 16px; margin: 0 4px; padding: 0px;" value="'.$label.'"';
+	$result = '<input type="button" class="button-secundary" style="float:left; border-radius:3px; font-size: 11px; height: 18px; margin: 0 4px; padding: 0px;" value="'.$label.'"';
 	$result .= ' onclick="';
 	if ( ! $no_confirm ) $result .= 'if (confirm(\''.__('Are you sure?', 'wppa').'\')) ';
 	if ( $elmid ) { 

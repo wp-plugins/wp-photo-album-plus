@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display thumbnail photos
-* Version 4.8.5
+* Version 4.8.6
 */
 
 class AlbumWidget extends WP_Widget {
@@ -46,15 +46,15 @@ class AlbumWidget extends WP_Widget {
 		$skip = $instance['skip'];
 		
 		if ( is_numeric($parent) ) {
-			$albums = $wpdb->get_results($wpdb->prepare( 'SELECT * FROM `'.WPPA_ALBUMS.'` WHERE `a_parent` = %s '.wppa_get_album_order(), $parent ), 'ARRAY_A' );
+			$albums = $wpdb->get_results($wpdb->prepare( 'SELECT * FROM `'.WPPA_ALBUMS.'` WHERE `a_parent` = %s '.wppa_get_album_order(), $parent ), ARRAY_A );
 		}
 		else {
 			switch ($parent) {
 				case 'all':
-					$albums = $wpdb->get_results($wpdb->prepare( 'SELECT * FROM `'.WPPA_ALBUMS.'` '.wppa_get_album_order() ), 'ARRAY_A' );
+					$albums = $wpdb->get_results( 'SELECT * FROM `'.WPPA_ALBUMS.'` '.wppa_get_album_order(), ARRAY_A );
 					break;
 				case 'last':
-					$albums = $wpdb->get_results($wpdb->prepare( 'SELECT * FROM `'.WPPA_ALBUMS.'` ORDER BY `timestamp` DESC' ), 'ARRAY_A' );
+					$albums = $wpdb->get_results( 'SELECT * FROM `'.WPPA_ALBUMS.'` ORDER BY `timestamp` DESC', ARRAY_A );
 					break;
 				default:
 					wppa_dbg_msg('Error, unimplemented album selection: '.$parent.' in Album widget.', 'red', true);
@@ -72,7 +72,7 @@ class AlbumWidget extends WP_Widget {
 				global $thumb;
 				
 				$imageid = wppa_get_coverphoto_id($album['id']);
-				$image = $wpdb->get_row($wpdb->prepare('SELECT * FROM `'.WPPA_PHOTOS.'` WHERE `id` = %s', $imageid), 'ARRAY_A');
+				$image = $wpdb->get_row($wpdb->prepare('SELECT * FROM `'.WPPA_PHOTOS.'` WHERE `id` = %s', $imageid), ARRAY_A);
 				$imgcount = $wpdb->get_var($wpdb->prepare('SELECT COUNT(*) FROM '.WPPA_PHOTOS.' WHERE `album` = %s', $album['id']));
 				$thumb = $image;
 				// Make the HTML for current picture
@@ -185,7 +185,7 @@ class AlbumWidget extends WP_Widget {
 				<option value="0"  <?php if ($album == '0')  echo 'selected="selected"' ?>><?php _e('--- all generic albums ---', 'wppa') ?></option>
 				<option value="-1" <?php if ($album == '-1') echo 'selected="selected"' ?>><?php _e('--- all separate albums ---', 'wppa') ?></option>
 				<option value="last" <?php if ($album == 'last') echo 'selected="selected"' ?>><?php _e('--- most recently added albums ---', 'wppa') ?></option>
-				<?php $albs = $wpdb->get_results($wpdb->prepare("SELECT * FROM `".WPPA_ALBUMS."` ORDER BY `name`"), 'ARRAY_A');
+				<?php $albs = $wpdb->get_results( "SELECT * FROM `".WPPA_ALBUMS."` ORDER BY `name`", ARRAY_A);
 				if ( $albs ) foreach( $albs as $alb ) {
 					echo '<option value="'.$alb['id'].'" '; 
 					if ( $album == $alb['id'] ) echo 'selected="selected" '; 

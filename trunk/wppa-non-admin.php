@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the non admin stuff
-* Version 4.8.5
+* Version 4.8.6
 *
 */
 
@@ -38,7 +38,7 @@ global $wppa_opt;
 	if ( isset($_GET['wppa-album']) ) {
 		if ( $wppa_opt['wppa_meta_page'] ) {
 			$album = $_GET['wppa-album'];
-			$photos = $wpdb->get_results($wpdb->prepare( "SELECT id, name FROM `".WPPA_PHOTOS."` WHERE `album` = %s AND `status` = %s ", $album, 'featured' ), 'ARRAY_A');
+			$photos = $wpdb->get_results($wpdb->prepare( "SELECT id, name FROM `".WPPA_PHOTOS."` WHERE `album` = %s AND `status` = 'featured'", $album ), ARRAY_A);
 			if ( $photos ) {
 				echo("\n<!-- WPPA+ BEGIN Featured photos on this page -->");
 				foreach ( $photos as $photo ) {
@@ -54,7 +54,7 @@ global $wppa_opt;
 	}
 	// No album, give the plain photo links of all featured photos
 	elseif ( $wppa_opt['wppa_meta_all'] ) {
-		$photos = $wpdb->get_results($wpdb->prepare( "SELECT id, name, ext FROM `".WPPA_PHOTOS."` WHERE `status` = %s ",'featured' ), 'ARRAY_A');
+		$photos = $wpdb->get_results( "SELECT `id`, `name`, `ext` FROM `".WPPA_PHOTOS."` WHERE `status` = 'featured'", ARRAY_A);
 		if ( $photos ) {
 			echo("\n<!-- WPPA+ BEGIN Featured photos on this site -->");
 			foreach ( $photos as $photo ) {
@@ -72,7 +72,7 @@ global $wppa_opt;
 	if ( isset($_GET['wppa-photo']) ) {
 		$id = $_GET['wppa-photo'];
 		if ( is_numeric($id) ) {
-			$photo = $wpdb->get_row($wpdb->prepare( "SELECT * FROM `".WPPA_PHOTOS."` WHERE `id` = %s ", $id ), 'ARRAY_A');
+			$photo = $wpdb->get_row($wpdb->prepare( "SELECT * FROM `".WPPA_PHOTOS."` WHERE `id` = %s ", $id ), ARRAY_A);
 			if ( $photo ) {
 				$imgurl = WPPA_UPLOAD_URL.'/thumbs/'.$id.'.'.$photo['ext'];
 				echo ("\n<!-- WPPA+ Share thumbnail data -->\n");

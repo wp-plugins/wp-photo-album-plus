@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 4.8.5
+* Version 4.8.6
 *
 */
 
@@ -133,14 +133,14 @@ global $silent;
 	
 	// Do the things dbdelta does not do.
 	// Character set
-	wppa_setup_query($wpdb->prepare( "ALTER TABLE " . WPPA_ALBUMS . " MODIFY name text CHARACTER SET utf8"));
-	wppa_setup_query($wpdb->prepare( "ALTER TABLE " . WPPA_PHOTOS . " MODIFY name text CHARACTER SET utf8"));
-	wppa_setup_query($wpdb->prepare( "ALTER TABLE " . WPPA_ALBUMS . " MODIFY description text CHARACTER SET utf8"));
-	wppa_setup_query($wpdb->prepare( "ALTER TABLE " . WPPA_PHOTOS . " MODIFY description longtext CHARACTER SET utf8"));
-	wppa_setup_query($wpdb->prepare( "ALTER TABLE " . WPPA_PHOTOS . " MODIFY linktitle text CHARACTER SET utf8"));
-	wppa_setup_query($wpdb->prepare( "ALTER TABLE " . WPPA_COMMENTS . " MODIFY comment text CHARACTER SET utf8"));
-	wppa_setup_query($wpdb->prepare( "ALTER TABLE " . WPPA_IPTC . " MODIFY description text CHARACTER SET utf8"));
-	wppa_setup_query($wpdb->prepare( "ALTER TABLE " . WPPA_EXIF . " MODIFY description text CHARACTER SET utf8"));
+	wppa_setup_query( "ALTER TABLE " . WPPA_ALBUMS . " MODIFY name text CHARACTER SET utf8");
+	wppa_setup_query( "ALTER TABLE " . WPPA_PHOTOS . " MODIFY name text CHARACTER SET utf8");
+	wppa_setup_query( "ALTER TABLE " . WPPA_ALBUMS . " MODIFY description text CHARACTER SET utf8");
+	wppa_setup_query( "ALTER TABLE " . WPPA_PHOTOS . " MODIFY description longtext CHARACTER SET utf8");
+	wppa_setup_query( "ALTER TABLE " . WPPA_PHOTOS . " MODIFY linktitle text CHARACTER SET utf8");
+	wppa_setup_query( "ALTER TABLE " . WPPA_COMMENTS . " MODIFY comment text CHARACTER SET utf8");
+	wppa_setup_query( "ALTER TABLE " . WPPA_IPTC . " MODIFY description text CHARACTER SET utf8");
+	wppa_setup_query( "ALTER TABLE " . WPPA_EXIF . " MODIFY description text CHARACTER SET utf8");
 	// Default values
 	get_currentuserinfo();
 	$user = $current_user->user_login;
@@ -192,7 +192,7 @@ global $silent;
 			wppa_copy_setting('wppa_fontweight_numbar', 'wppa_fontweight_numbar_active');
 		}
 		if ( $old_rev <= '455') {	// rating_count added to WPPA_PHOTOS
-			$phs = $wpdb->get_results($wpdb->prepare('SELECT `id` FROM `'.WPPA_PHOTOS), 'ARRAY_A');
+			$phs = $wpdb->get_results( 'SELECT `id` FROM `'.WPPA_PHOTOS.'`', ARRAY_A );
 			if ($phs) foreach ($phs as $ph) {
 				$cnt = $wpdb->get_var($wpdb->prepare('SELECT COUNT(*) FROM `'.WPPA_RATING.'` WHERE `photo` = %s', $ph['id']));
 				$wpdb->query($wpdb->prepare('UPDATE `'.WPPA_PHOTOS.'` SET `rating_count` = %s WHERE `id` = %s', $cnt, $ph['id']));
@@ -396,6 +396,7 @@ Hide Camera info
 						'wppa_max_cover_width'			=> '1024',	// 1
 						'wppa_text_frame_height'		=> '54',	// 2
 						'wppa_smallsize' 				=> '150',	// 3
+						'wppa_coversize_is_height'		=> 'no',	// 3.1
 						'wppa_album_page_size' 			=> '0',		// 4
 						// E Rating & comments
 						'wppa_rating_max'				=> '5',		// 1
@@ -456,6 +457,8 @@ Hide Camera info
 						'wppa_share_facebook'				=> 'yes',
 						'wppa_share_twitter'				=> 'yes',
 						'wppa_share_hyves'					=> 'yes',
+						
+						'wppa_share_single_image'			=> 'no',
 						// C Thumbnails
 						'wppa_thumb_text_name' 				=> 'yes',	// 1
 						'wppa_thumb_text_desc' 				=> 'yes',	// 2
@@ -727,6 +730,8 @@ Hide Camera info
 						'wppa_newphoto_description'		=> $npd,	// 4
 						'wppa_upload_limit_count'		=> '0',		// 5a
 						'wppa_upload_limit_time'		=> '0',		// 5b
+						'wppa_grant_an_album'		=> 'no',
+						'wppa_grant_parent'			=> '0',
 						// C Search
 						'wppa_search_linkpage' 			=> '0',		// 1
 						'wppa_excl_sep' 				=> 'no',	// 2

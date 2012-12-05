@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the recent commets on photos
-* Version 4.8.5
+* Version 4.8.6
 */
 
 class wppaCommentWidget extends WP_Widget {
@@ -26,7 +26,7 @@ class wppaCommentWidget extends WP_Widget {
 		$max  = $wppa_opt['wppa_comment_count'];
 		$widget_title = apply_filters('widget_title', $instance['title']);
 		
-		$comments = $wpdb->get_results($wpdb->prepare( "SELECT * FROM ".WPPA_COMMENTS." WHERE status = 'approved' ORDER BY timestamp DESC LIMIT %d", $max ), "ARRAY_A");
+		$comments = $wpdb->get_results($wpdb->prepare( "SELECT * FROM ".WPPA_COMMENTS." WHERE `status` = 'approved' ORDER BY `timestamp` DESC LIMIT %d", $max ), ARRAY_A );
 
 		$widget_content = "\n".'<!-- WPPA+ Comment Widget start -->';
 		$maxw = $wppa_opt['wppa_comment_size'];
@@ -36,7 +36,7 @@ class wppaCommentWidget extends WP_Widget {
 		
 			// Make the HTML for current comment
 			$widget_content .= "\n".'<div class="wppa-widget" style="width:'.$maxw.'px; height:'.$maxh.'px; margin:4px; display:inline; text-align:center; float:left;">'; 
-			$image = $wpdb->get_row($wpdb->prepare( "SELECT * FROM `".WPPA_PHOTOS."` WHERE `id` = %s", $comment['photo'] ), "ARRAY_A" );
+			$image = $wpdb->get_row($wpdb->prepare( "SELECT * FROM `".WPPA_PHOTOS."` WHERE `id` = %s", $comment['photo'] ), ARRAY_A );
 			if ($image) {
 			
 				global $thumb;
