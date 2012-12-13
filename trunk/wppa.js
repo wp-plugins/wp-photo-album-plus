@@ -2,7 +2,7 @@
 //
 // conatins slideshow, theme, ajax and lightbox code
 //
-// Version 4.8.5
+// Version 4.8.7
 
 // Part 1: Slideshow
 //
@@ -1054,8 +1054,8 @@ function _wppaStart(mocc, idx) {
 
 	if ( idx > -1 ) {	// Init still at index idx
 		jQuery('#startstop-'+mocc).html( wppaStart+' '+wppaSlideShow ); 
-		jQuery('#speed0-'+mocc).css('visibility', 'hidden');
-		jQuery('#speed1-'+mocc).css('visibility', 'hidden');
+		jQuery('#speed0-'+mocc).css('display', 'none');
+		jQuery('#speed1-'+mocc).css('display', 'none');
 		_wppaNxtIdx[mocc] = idx;
 		_wppaCurIdx[mocc] = idx;
 		_wppaNextSlide(mocc, 0);
@@ -1065,8 +1065,8 @@ function _wppaStart(mocc, idx) {
 		_wppaSSRuns[mocc] = true;
 		_wppaNextSlide(mocc, 0);
 		jQuery('#startstop-'+mocc).html( wppaStop );
-		jQuery('#speed0-'+mocc).css('visibility', 'visible');
-		jQuery('#speed1-'+mocc).css('visibility', 'visible');
+		jQuery('#speed0-'+mocc).css('display', 'inline');
+		jQuery('#speed1-'+mocc).css('display', 'inline');
 		_wppaShowMetaData(mocc, 'hide');	
 		jQuery('#bc-pname-'+mocc).html(wppaSlideShow);
 	}
@@ -1079,8 +1079,8 @@ function _wppaStop(mocc) {
 	
     _wppaSSRuns[mocc] = false;
     jQuery('#startstop-'+mocc).html( wppaStart+' '+wppaSlideShow );  
-	jQuery('#speed0-'+mocc).css('visibility', 'hidden');
-	jQuery('#speed1-'+mocc).css('visibility', 'hidden');
+	jQuery('#speed0-'+mocc).css('display', 'none');
+	jQuery('#speed1-'+mocc).css('display', 'none');
 	_wppaShowMetaData(mocc, 'show');
 	jQuery('#bc-pname-'+mocc).html( _wppaNames[mocc][_wppaCurIdx[mocc]] );
 }
@@ -2353,7 +2353,9 @@ _wppaLog('wppaOvlSize', 1);
 		wid = nw;
 	}
 
-	var cwid = wid+32;
+	var cwid = wid+32;	// container width = image width + 2 * border
+	
+		lft -= 16; 		// border width
 
 	// Go to final size
 	if ( speed == 0 ) {

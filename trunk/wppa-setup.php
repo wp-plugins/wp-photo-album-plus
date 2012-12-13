@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 4.8.6
+* Version 4.8.7
 *
 */
 
@@ -457,6 +457,8 @@ Hide Camera info
 						'wppa_share_facebook'				=> 'yes',
 						'wppa_share_twitter'				=> 'yes',
 						'wppa_share_hyves'					=> 'yes',
+						'wppa_share_google'					=> 'yes',
+						'wppa_share_pinterest'				=> 'yes',
 						
 						'wppa_share_single_image'			=> 'no',
 						// C Thumbnails

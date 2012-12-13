@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 4.8.6
+* Version 4.8.7
 *
 */
 
@@ -992,6 +992,22 @@ global $wppa_revno;
 							$html = wppa_checkbox($slug, $onchange);
 							wppa_setting($slug, '21.4', $name, $desc, $html, $help, $class);
 							
+							$name = __('Show Google+ button', 'wppa');
+							$desc = __('Display the Google+ button in the share box.', 'wppa');
+							$help = '';
+							$slug = 'wppa_share_google';
+							$class = 'wppa_share';
+							$html = wppa_checkbox($slug, $onchange);
+							wppa_setting($slug, '21.5', $name, $desc, $html, $help, $class);
+							
+							$name = __('Show Pinterest button', 'wppa');
+							$desc = __('Display the Pintrest button in the share box.', 'wppa');
+							$help = '';
+							$slug = 'wppa_share_pinterest';
+							$class = 'wppa_share';
+							$html = wppa_checkbox($slug, $onchange);
+							wppa_setting($slug, '21.6', $name, $desc, $html, $help, $class);
+						
 							$name = __('Share single image', 'wppa');
 							$desc = __('Share a link to a single image, not the slideshow.', 'wppa');
 							$help = esc_js(__('The sharelink points to a page with a single image rather than to the page with the photo in the slideshow.', 'wppa'));

@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wppa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-12-05 15:18+0100\n"
-"PO-Revision-Date: 2012-12-05 15:18+0100\n"
+"POT-Creation-Date: 2012-12-10 11:48+0100\n"
+"PO-Revision-Date: 2012-12-10 11:48+0100\n"
 "Last-Translator: J.N. Breetvelt <OpaJaap@OpaJaap.nl>\n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -152,7 +152,7 @@ msgstr ""
 msgid "--- all ---"
 msgstr "--- Internetadresse ---"
 
-#: wppa-admin-functions.php:596 wppa-common-functions.php:1492
+#: wppa-admin-functions.php:596 wppa-common-functions.php:1502
 #: wppa-settings-autosave.php:852 wppa-settings-autosave.php:1525
 #: wppa-settings-autosave.php:1537 wppa-settings-autosave.php:1666
 #: wppa-settings-autosave.php:1683 wppa-settings-autosave.php:1743
@@ -1209,44 +1209,44 @@ msgstr ""
 msgid "No photos yet in this album."
 msgstr "Noch keine Fotos in diesem Album."
 
-#: wppa-album-admin-autosave.php:1108 wppa-common-functions.php:1507
+#: wppa-album-admin-autosave.php:1108 wppa-common-functions.php:1517
 msgid "top - left"
 msgstr ""
 
-#: wppa-album-admin-autosave.php:1108 wppa-common-functions.php:1507
+#: wppa-album-admin-autosave.php:1108 wppa-common-functions.php:1517
 #, fuzzy
 msgid "top - center"
 msgstr "mitte"
 
-#: wppa-album-admin-autosave.php:1108 wppa-common-functions.php:1507
+#: wppa-album-admin-autosave.php:1108 wppa-common-functions.php:1517
 #, fuzzy
 msgid "top - right"
 msgstr "rechts"
 
-#: wppa-album-admin-autosave.php:1109 wppa-common-functions.php:1508
+#: wppa-album-admin-autosave.php:1109 wppa-common-functions.php:1518
 #, fuzzy
 msgid "center - left"
 msgstr "mitte"
 
-#: wppa-album-admin-autosave.php:1109 wppa-common-functions.php:1508
+#: wppa-album-admin-autosave.php:1109 wppa-common-functions.php:1518
 msgid "center - center"
 msgstr ""
 
-#: wppa-album-admin-autosave.php:1109 wppa-common-functions.php:1508
+#: wppa-album-admin-autosave.php:1109 wppa-common-functions.php:1518
 #, fuzzy
 msgid "center - right"
 msgstr "mitte"
 
-#: wppa-album-admin-autosave.php:1110 wppa-common-functions.php:1509
+#: wppa-album-admin-autosave.php:1110 wppa-common-functions.php:1519
 #, fuzzy
 msgid "bottom - left"
 msgstr "unten"
 
-#: wppa-album-admin-autosave.php:1110 wppa-common-functions.php:1509
+#: wppa-album-admin-autosave.php:1110 wppa-common-functions.php:1519
 msgid "bottom - center"
 msgstr ""
 
-#: wppa-album-admin-autosave.php:1110 wppa-common-functions.php:1509
+#: wppa-album-admin-autosave.php:1110 wppa-common-functions.php:1519
 #, fuzzy
 msgid "bottom - right"
 msgstr "unten"
@@ -1807,79 +1807,79 @@ msgstr "WPPA+ Die Zehn höchst bewertesten Fotos"
 msgid "Comments on Photos"
 msgstr "Bewertungsoptionen:"
 
-#: wppa-common-functions.php:569
+#: wppa-common-functions.php:570
 #, fuzzy
 msgid "Default photo album for"
 msgstr "Standardzielalbum für den Import:"
 
-#: wppa-common-functions.php:856
+#: wppa-common-functions.php:865
 msgid "1 second"
 msgstr "1 Sekunde"
 
-#: wppa-common-functions.php:857
+#: wppa-common-functions.php:866
 msgid "seconds"
 msgstr "Sekunden"
 
-#: wppa-common-functions.php:861
+#: wppa-common-functions.php:870
 msgid "1 minute"
 msgstr "1 Minute"
 
-#: wppa-common-functions.php:862
+#: wppa-common-functions.php:871
 msgid "minutes"
 msgstr "Minuten"
 
-#: wppa-common-functions.php:866
+#: wppa-common-functions.php:875
 msgid "1 hour"
 msgstr "1 Stunde"
 
-#: wppa-common-functions.php:867
+#: wppa-common-functions.php:876
 msgid "hours"
 msgstr "Stunden"
 
-#: wppa-common-functions.php:871
+#: wppa-common-functions.php:880
 msgid "1 day"
 msgstr "1 Tag"
 
-#: wppa-common-functions.php:872
+#: wppa-common-functions.php:881
 msgid "days"
 msgstr "Tage"
 
-#: wppa-common-functions.php:876
+#: wppa-common-functions.php:885
 msgid "1 week"
 msgstr "1 Woche"
 
-#: wppa-common-functions.php:877
+#: wppa-common-functions.php:886
 msgid "weeks"
 msgstr "Wochen"
 
-#: wppa-common-functions.php:881
+#: wppa-common-functions.php:890
 msgid "1 month"
 msgstr "1 Monat"
 
-#: wppa-common-functions.php:882
+#: wppa-common-functions.php:891
 msgid "months"
 msgstr "Monate"
 
-#: wppa-common-functions.php:885
+#: wppa-common-functions.php:894
 msgid "1 year"
 msgstr "1 Jahr"
 
-#: wppa-common-functions.php:886
+#: wppa-common-functions.php:895
 msgid "years"
 msgstr "Jahr"
 
-#: wppa-common-functions.php:1094 wppa-common-functions.php:1095
+#: wppa-common-functions.php:1103 wppa-common-functions.php:1104
 msgid "ERROR: Resized or copied image could not be created."
 msgstr ""
 "Fehler: An die Größe angepasstes oder kopiertes Bild konnte nicht erstellt "
 "werden."
 
-#: wppa-common-functions.php:1113 wppa-common-functions.php:1114
+#: wppa-common-functions.php:1122 wppa-common-functions.php:1123
 #, php-format
 msgid "ERROR: File %s is not a valid picture file."
 msgstr ""
 
-#: wppa-common-functions.php:1918
+#: wppa-common-functions.php:1928
 #, php-format
 msgid ""
 "Based on your server memory limit you should not upload images larger then "
@@ -1985,57 +1985,47 @@ msgstr "Kann Fotodaten nicht lesen."
 msgid "All albums"
 msgstr "- alle Alben -"
 
-#: wppa-functions.php:1267
+#: wppa-functions.php:1478
 #, fuzzy
 msgid "Comment on photo:"
 msgstr "Bewertungsoptionen:"
 
-#: wppa-functions.php:1274
+#: wppa-functions.php:1485
 #, fuzzy
 msgid "wrote on photo"
 msgstr "Titelfoto"
 
-#: wppa-functions.php:1284
+#: wppa-functions.php:1495
 msgid "You receive this email as you are assigned to moderate"
 msgstr ""
 
-#: wppa-functions.php:1293
+#: wppa-functions.php:1504
 msgid "You receive this email as administrator of the site"
 msgstr ""
 
-#: wppa-functions.php:1307
+#: wppa-functions.php:1518
 msgid "You receive this email as owner of the album"
 msgstr ""
 
-#: wppa-functions.php:4746
+#: wppa-functions.php:4950
 #, fuzzy
 msgid "Photo successfully uploaded."
 msgstr "Hochladeverzeichnis erfolgreich erstellt."
 
-#: wppa-functions.php:4747
+#: wppa-functions.php:4951
 #, fuzzy, php-format
 msgid "%s photos successfully uploaded."
 msgstr "Hochladeverzeichnis erfolgreich erstellt."
 
-#: wppa-functions.php:4749
+#: wppa-functions.php:4953
 #, fuzzy
 msgid "Upload failed"
 msgstr "Fotos hochladen"
 
-#: wppa-functions.php:4807
+#: wppa-functions.php:5011
 #, fuzzy
 msgid "Could not insert photo into db."
 msgstr "Konnte Foto nicht einfügen. query="
-
-#: wppa-functions.php:5493
-#, php-format
-msgid "See this image on %s"
-msgstr ""
-
-#: wppa-functions.php:5493
-#, fuzzy
-msgid "and"
-msgstr "Zufällig"
 
 #: wppa-gp-widget.php:16
 msgid "WPPA+ General purpose widget"
@@ -8953,6 +8943,10 @@ msgid ""
 "Sorry, but nothing matched your search criteria. Please try again with some "
 "different keywords."
 msgstr ""
+
+#, fuzzy
+#~ msgid "and"
+#~ msgstr "Zufällig"
 
 #, fuzzy
 #~ msgid "Select type of social media photo share link."

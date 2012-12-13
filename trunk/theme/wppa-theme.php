@@ -3,11 +3,11 @@
 * Package: wp-photo-album-plus
 *
 * display the albums/photos/slideshow in a page or post
-* Version 4.6.0
+* Version 4.8.7
 */
 function wppa_theme() {
 
-global $wppa_version; $wppa_version = '4-6-0';		// The version number of this file, please change if you modify this file
+global $wppa_version; $wppa_version = '4-8-7';		// The version number of this file, please change if you modify this file
 global $wppa;
 global $wppa_opt;
 global $wppa_show_statistics;						// Can be set to true by a custom page template
@@ -94,12 +94,6 @@ wppa_container('open');																// Open container
 			$wppa['out'] .= '<div class="center">'.__a('No albums or photos found matching your search criteria.', 'wppa_theme').'</div>';
 		}
 	} // wppa_page('albums')
-
-// Obsolete. Is done in wppa-functions.php -> wppa_sphoto() like wppa_mphoto	
-//	elseif (wppa_page('oneofone')) {												// Page 'Single image' requested
-//		wppa_slide_frame();															// Setup slideframe
-//		wppa_run_slidecontainer('single');											// Fill in the photo and display it
-//	} // wppa_page('oneofone')
 	
 	elseif (wppa_page('slide') || wppa_page('single')) {							// Page 'Slideshow' or 'Single' in browsemode requested
 		wppa_the_slideshow();														// Producs all the html required for the slideshow
