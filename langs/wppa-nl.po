@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wp-photo-album-plus\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-12-05 15:19+0100\n"
-"PO-Revision-Date: 2012-12-05 15:28+0100\n"
+"POT-Creation-Date: 2012-12-10 11:52+0100\n"
+"PO-Revision-Date: 2012-12-10 11:52+0100\n"
 "Last-Translator: J.N. Breetvelt <OpaJaap@OpaJaap.nl>\n"
 "Language-Team: \n"
 "Language: nl_NL\n"
@@ -184,7 +184,7 @@ msgstr "--- meerdere zie onder ---"
 msgid "--- all ---"
 msgstr "--- alle ---"
 
-#: wppa-admin-functions.php:596 wppa-common-functions.php:1492
+#: wppa-admin-functions.php:596 wppa-common-functions.php:1502
 #: wppa-settings-autosave.php:852 wppa-settings-autosave.php:1525
 #: wppa-settings-autosave.php:1537 wppa-settings-autosave.php:1666
 #: wppa-settings-autosave.php:1683 wppa-settings-autosave.php:1743
@@ -1179,39 +1179,39 @@ msgstr ""
 msgid "No photos yet in this album."
 msgstr "Nog geen foto's in dit album."
 
-#: wppa-album-admin-autosave.php:1108 wppa-common-functions.php:1507
+#: wppa-album-admin-autosave.php:1108 wppa-common-functions.php:1517
 msgid "top - left"
 msgstr "boven - links"
 
-#: wppa-album-admin-autosave.php:1108 wppa-common-functions.php:1507
+#: wppa-album-admin-autosave.php:1108 wppa-common-functions.php:1517
 msgid "top - center"
 msgstr "boven - midden"
 
-#: wppa-album-admin-autosave.php:1108 wppa-common-functions.php:1507
+#: wppa-album-admin-autosave.php:1108 wppa-common-functions.php:1517
 msgid "top - right"
 msgstr "boven - rechts"
 
-#: wppa-album-admin-autosave.php:1109 wppa-common-functions.php:1508
+#: wppa-album-admin-autosave.php:1109 wppa-common-functions.php:1518
 msgid "center - left"
 msgstr "midden - links"
 
-#: wppa-album-admin-autosave.php:1109 wppa-common-functions.php:1508
+#: wppa-album-admin-autosave.php:1109 wppa-common-functions.php:1518
 msgid "center - center"
 msgstr "midden - midden"
 
-#: wppa-album-admin-autosave.php:1109 wppa-common-functions.php:1508
+#: wppa-album-admin-autosave.php:1109 wppa-common-functions.php:1518
 msgid "center - right"
 msgstr "midden - rechts"
 
-#: wppa-album-admin-autosave.php:1110 wppa-common-functions.php:1509
+#: wppa-album-admin-autosave.php:1110 wppa-common-functions.php:1519
 msgid "bottom - left"
 msgstr "onder - links"
 
-#: wppa-album-admin-autosave.php:1110 wppa-common-functions.php:1509
+#: wppa-album-admin-autosave.php:1110 wppa-common-functions.php:1519
 msgid "bottom - center"
 msgstr "onder - midden"
 
-#: wppa-album-admin-autosave.php:1110 wppa-common-functions.php:1509
+#: wppa-album-admin-autosave.php:1110 wppa-common-functions.php:1519
 msgid "bottom - right"
 msgstr "onder - rechts"
 
@@ -1730,76 +1730,76 @@ msgstr "WPPA+ Reacties op foto's"
 msgid "Comments on Photos"
 msgstr "Reacties op foto's"
 
-#: wppa-common-functions.php:569
+#: wppa-common-functions.php:570
 msgid "Default photo album for"
 msgstr "Standaard album voor"
 
-#: wppa-common-functions.php:856
+#: wppa-common-functions.php:865
 msgid "1 second"
 msgstr "1 seconde"
 
-#: wppa-common-functions.php:857
+#: wppa-common-functions.php:866
 msgid "seconds"
 msgstr "seconden"
 
-#: wppa-common-functions.php:861
+#: wppa-common-functions.php:870
 msgid "1 minute"
 msgstr "1 minuut"
 
-#: wppa-common-functions.php:862
+#: wppa-common-functions.php:871
 msgid "minutes"
 msgstr "minuten"
 
-#: wppa-common-functions.php:866
+#: wppa-common-functions.php:875
 msgid "1 hour"
 msgstr "1 uur"
 
-#: wppa-common-functions.php:867
+#: wppa-common-functions.php:876
 msgid "hours"
 msgstr "uur"
 
-#: wppa-common-functions.php:871
+#: wppa-common-functions.php:880
 msgid "1 day"
 msgstr "1 dag"
 
-#: wppa-common-functions.php:872
+#: wppa-common-functions.php:881
 msgid "days"
 msgstr "dagen"
 
-#: wppa-common-functions.php:876
+#: wppa-common-functions.php:885
 msgid "1 week"
 msgstr "1 week"
 
-#: wppa-common-functions.php:877
+#: wppa-common-functions.php:886
 msgid "weeks"
 msgstr "weken"
 
-#: wppa-common-functions.php:881
+#: wppa-common-functions.php:890
 msgid "1 month"
 msgstr "1 maand"
 
-#: wppa-common-functions.php:882
+#: wppa-common-functions.php:891
 msgid "months"
 msgstr "maanden"
 
-#: wppa-common-functions.php:885
+#: wppa-common-functions.php:894
 msgid "1 year"
 msgstr "1 jaar"
 
-#: wppa-common-functions.php:886
+#: wppa-common-functions.php:895
 msgid "years"
 msgstr "jaren"
 
-#: wppa-common-functions.php:1094 wppa-common-functions.php:1095
+#: wppa-common-functions.php:1103 wppa-common-functions.php:1104
 msgid "ERROR: Resized or copied image could not be created."
 msgstr "FOUT: Kan geschaalde of gekopiëerde afbeelding niet aanmaken."
 
-#: wppa-common-functions.php:1113 wppa-common-functions.php:1114
+#: wppa-common-functions.php:1122 wppa-common-functions.php:1123
 #, php-format
 msgid "ERROR: File %s is not a valid picture file."
 msgstr "FOUT: Bestand %s is geen geldig afbeeldingsbestand."
 
-#: wppa-common-functions.php:1918
+#: wppa-common-functions.php:1928
 #, php-format
 msgid ""
 "Based on your server memory limit you should not upload images larger then "
@@ -1910,51 +1910,42 @@ msgstr "Kan de foto gegevens niet lezen."
 msgid "All albums"
 msgstr "Alle albums"
 
-#: wppa-functions.php:1267
+#: wppa-functions.php:1478
 msgid "Comment on photo:"
 msgstr "Reacties op foto's:"
 
-#: wppa-functions.php:1274
+#: wppa-functions.php:1485
 msgid "wrote on photo"
 msgstr "schreef op foto"
 
-#: wppa-functions.php:1284
+#: wppa-functions.php:1495
 msgid "You receive this email as you are assigned to moderate"
 msgstr "U ontvangt deze email omdat u aangewezen bent om the modereren"
 
-#: wppa-functions.php:1293
+#: wppa-functions.php:1504
 msgid "You receive this email as administrator of the site"
 msgstr "U ontvangt deze email als administrateur van deze site"
 
-#: wppa-functions.php:1307
+#: wppa-functions.php:1518
 msgid "You receive this email as owner of the album"
 msgstr "U intvangt deze email als eigenaar van het album"
 
-#: wppa-functions.php:4746
+#: wppa-functions.php:4950
 msgid "Photo successfully uploaded."
 msgstr "Foto succesvol ge-upload."
 
-#: wppa-functions.php:4747
+#: wppa-functions.php:4951
 #, php-format
 msgid "%s photos successfully uploaded."
 msgstr "%s foto's succesvol ge-upload."
 
-#: wppa-functions.php:4749
+#: wppa-functions.php:4953
 msgid "Upload failed"
 msgstr "Upload mislukt"
 
-#: wppa-functions.php:4807
+#: wppa-functions.php:5011
 msgid "Could not insert photo into db."
 msgstr "Kan de foto niet invoegen in de database."
-
-#: wppa-functions.php:5493
-#, php-format
-msgid "See this image on %s"
-msgstr "Bekijk deze afbeelding op %s"
-
-#: wppa-functions.php:5493
-msgid "and"
-msgstr "en"
 
 #: wppa-gp-widget.php:16
 msgid "WPPA+ General purpose widget"
@@ -8568,6 +8559,12 @@ msgstr "- top gewaardeerde fotos -"
 #: wppa-widget-functions.php:139
 msgid "- start over -"
 msgstr "- begin opnieuw -"
+
+#~ msgid "See this image on %s"
+#~ msgstr "Bekijk deze afbeelding op %s"
+
+#~ msgid "and"
+#~ msgstr "en"
 
 #~ msgid "No help available"
 #~ msgstr "Geen help beschikbaar"

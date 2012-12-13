@@ -2,11 +2,11 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 4.8.6
+* version 4.8.7
 *
 */
 global $wppa_api_version;
-$wppa_api_version = '4-8-6-000';
+$wppa_api_version = '4-8-7-000';
 // Initialize globals and option settings
 function wppa_initialize_runtime($force = false) {
 global $wppa;
@@ -84,7 +84,8 @@ global $wppa_initruntimetime;
 			'lasten_count'				=> '0',
 			'start_photo'				=> '0',
 			'is_single'					=> false,
-			'is_landing'				=> '0'
+			'is_landing'				=> '0',
+			'is_comten'					=> false
 
 		);
 
@@ -189,6 +190,9 @@ global $wppa_initruntimetime;
 						'wppa_share_facebook'				=> '',
 						'wppa_share_twitter'				=> '',
 						'wppa_share_hyves'					=> '',
+						'wppa_share_google'					=> '',
+						'wppa_share_pinterest'				=> '',
+
 						
 						'wppa_share_single_image'			=> '',
 
@@ -412,11 +416,9 @@ global $wppa_initruntimetime;
 						'wppa_art_monkey_link'				=> '',
 						'wppa_art_monkey_popup_link'		=> '',
 						
-/* Niew */
 						'wppa_album_widget_linktype'		=> '',
 						'wppa_album_widget_linkpage'		=> '',
-						'wppa_album_widget_blank'					=> '',
-/* end nieuw */
+						'wppa_album_widget_blank'			=> '',
 
 						// Table VII: Security
 						// B
@@ -795,7 +797,7 @@ global $wpdb;
 	}
 }
 
-// Check if an image is more landscape that the width/height ratio set in Table I item 2 and 3
+// Check if an image is more landscape than the width/height ratio set in Table I item 2 and 3
 function wppa_is_wider($x, $y, $refx = '', $refy = '') {
 global $wppa_opt;
 	if ( $refx == '' ) {
@@ -828,9 +830,17 @@ function wppa_qtrans($output, $lang = '') {
 	return $output;
 }
 
-function wppa_dbg_msg($txt='', $color = 'blue', $force = false) {
+function wppa_dbg_msg($txt='', $color = 'blue', $force = false, $return = false) {
 global $wppa;
-	if ( $wppa['debug'] || $force ) echo('<span style="color:'.$color.';"><small>[WPPA+ dbg msg: '.$txt.']<br /></small></span>');
+	if ( $wppa['debug'] || $force ) {
+		$result = '<span style="color:'.$color.';"><small>[WPPA+ dbg msg: '.$txt.']<br /></small></span>';
+		if ( $return ) {
+			return $result;
+		}
+		else {
+			echo $result;
+		}
+	}
 }
 
 function wppa_dbg_url($link, $js = '') {
@@ -1195,7 +1205,10 @@ global $wppa_opt;
 	//echo 'dst_asp='.$dst_asp.' src_asp='.$src_asp;
 	//echo ' size_w='.$dst_size_w.' size_h='.$dst_size_h;
 	$dst = imagecreatetruecolor($dst_size_w, $dst_size_h);
-
+	if ( $mime == 3 ) {	// Png, save transparancy
+		imagealphablending($dst, false);
+		imagesavealpha($dst, true);
+	}
 
 	// Switch on what we have to do
 	switch ($type) {
@@ -1287,6 +1300,7 @@ global $wppa;
 	
 	if (isset($_REQUEST['wppa-searchstring'])) {
 		$src = $_REQUEST['wppa-searchstring'];
+		$src = str_replace('_', ' ', $src);
 	}
 	elseif (isset($_GET['s'])) {	// wp search
 		$src = $_GET['s'];

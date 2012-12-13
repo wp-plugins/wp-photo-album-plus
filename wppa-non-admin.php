@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the non admin stuff
-* Version 4.8.6
+* Version 4.8.7
 *
 */
 
@@ -26,19 +26,46 @@ function wppa_add_style() {
 	}
 }
 
-/* SEO META TAGS */
+/* SEO META TAGS AND SM SHARE DATA */
 add_action('wp_head', 'wppa_add_metatags');
 
 function wppa_add_metatags() {
 global $wpdb;
 global $wppa_opt;
+global $thumb;
+
+	// If a photo is given in the querystring, it may be a sm examinig the site for a share, do not supply metatags
+	if ( wppa_get_get('photo') ) {
+		// Share info for sm that uses og
+		$id = wppa_get_get('photo');
+		if ( is_numeric($id) ) {
+			wppa_cache_thumb($id);
+			if ( $thumb ) {
+				$title  = __(stripslashes($thumb['name']));
+				$imgurl = WPPA_UPLOAD_URL.'/thumbs/'.$id.'.'.$thumb['ext'];
+				$desc   = sprintf(__a('See this image on %s', 'wppa_theme'), str_replace('&amp;', __a('and', 'wppa_theme'), get_bloginfo('name')));
+				$pdesc  = wppa_strip_tags(wppa_html(__(stripslashes($thumb['description']))), 'all');
+				$url    = wppa_convert_to_pretty(str_replace('&amp;', '&', wppa_get_image_page_url_by_id($thumb['id'], $wppa_opt['wppa_share_single_image'])));
+				$site   = get_bloginfo('name');
+				if ( $pdesc ) $desc .= ': '.$pdesc;
+				echo "\n<!-- WPPA+ Share data -->".'
+	<meta property="og:type" content="article" />
+	<meta property="og:url" content="'.esc_attr($url).'" />
+	<meta property="og:site_name" content="'.esc_attr($site).'" />
+	<meta property="og:title" content="'.esc_attr($title).'" />
+	<meta property="og:image" content="'.esc_attr($imgurl).'" />
+	<meta property="og:description" content="'.esc_attr($desc).'" />';				
+				echo "\n<!-- WPPA+ End Share data -->\n";
+			}
+		}
+	}
 
 	// To make sure we are on a page that contains at least %%wppa%% we check for $_GET['wppa-album']. 
 	// This also narrows the selection of featured photos to those that exist in the current album.
-	if ( isset($_GET['wppa-album']) ) {
+	elseif ( wppa_get_get('album') ) {
 		if ( $wppa_opt['wppa_meta_page'] ) {
-			$album = $_GET['wppa-album'];
-			$photos = $wpdb->get_results($wpdb->prepare( "SELECT id, name FROM `".WPPA_PHOTOS."` WHERE `album` = %s AND `status` = 'featured'", $album ), ARRAY_A);
+			$album = wppa_get_get('album');
+			$photos = $wpdb->get_results($wpdb->prepare( "SELECT `id`, `name` FROM `".WPPA_PHOTOS."` WHERE `album` = %s AND `status` = 'featured'", $album ), ARRAY_A);
 			if ( $photos ) {
 				echo("\n<!-- WPPA+ BEGIN Featured photos on this page -->");
 				foreach ( $photos as $photo ) {
@@ -52,7 +79,8 @@ global $wppa_opt;
 			}
 		}
 	}
-	// No album, give the plain photo links of all featured photos
+	
+	// No photo and no album, give the plain photo links of all featured photos
 	elseif ( $wppa_opt['wppa_meta_all'] ) {
 		$photos = $wpdb->get_results( "SELECT `id`, `name`, `ext` FROM `".WPPA_PHOTOS."` WHERE `status` = 'featured'", ARRAY_A);
 		if ( $photos ) {
@@ -65,21 +93,6 @@ global $wppa_opt;
 				echo("\n<meta name=\"".$name."\" content=\"".$content."\" >");
 			}
 			echo("\n<!-- WPPA+ END Featured photos on this site -->\n");
-		}
-	}
-	
-	// Share thumbnail, I do not believe in this, but.. you never know, maybe it works somewhere
-	if ( isset($_GET['wppa-photo']) ) {
-		$id = $_GET['wppa-photo'];
-		if ( is_numeric($id) ) {
-			$photo = $wpdb->get_row($wpdb->prepare( "SELECT * FROM `".WPPA_PHOTOS."` WHERE `id` = %s ", $id ), ARRAY_A);
-			if ( $photo ) {
-				$imgurl = WPPA_UPLOAD_URL.'/thumbs/'.$id.'.'.$photo['ext'];
-				echo ("\n<!-- WPPA+ Share thumbnail data -->\n");
-				echo ("\n".'<link rel="image_src" href="'.$imgurl.'" />');
-				echo ("\n".'<meta property="og:image" content="'.$imgurl.'" />');
-				echo ("\n<!-- WPPA+ End Share thumbnail data -->\n");
-			}
 		}
 	}
 }
@@ -157,6 +170,12 @@ global $wppa_opt;
 			</script>');
 		echo("\n<!-- end WPPA+ Footer data -->\n");
 		wppa_dbg_q('print');
+	}
+	
+	if ( ( $wppa_opt['wppa_share_on'] || $wppa_opt['wppa_share_on_widget'] ) && $wppa_opt['wppa_share_pinterest'] ) {
+		echo("\n<!-- WPPA+ Pinterest share -->\n");
+		echo('<script type="text/javascript" src="//assets.pinterest.com/js/pinit.js"></script>');
+		echo("\n<!-- end WPPA+ Pinterest share -->\n");
 	}
 }
 

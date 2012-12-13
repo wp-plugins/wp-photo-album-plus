@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile
-Version: 4.8.6
+Version: 4.8.7
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -161,6 +161,21 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 4.8.7 =
+
+= Bug Fixes =
+
+* RSS feeds for Single image slideshows did not show an image. Fixed.
+* The ampersand character is now correctly processed in shares when it appears in the blogtitle.
+* Links now always work when the lading page contains a shortcode/script of other types than generic or landing.
+* When pretty links are enabled, spaces were removed in a searchstring. Fixed by replacing them with underscores.
+* Transparency of png images is now preserved in thumbnails.
+
+= New Features =
+
+* You can have the album description in the custom box. Add **w#albdesc** as a shortcode for the album description.
+* Added Social media share buttons for **Google+** and **Pinterest** (Table II-B21.5,6).
 
 = 4.8.6 =
 
