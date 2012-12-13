@@ -5810,7 +5810,7 @@ global $thumb;
 	}
 	else $pi = '';
 	
-	return $qr.$fb.$tw.$hv.$go.$pi;//.'<small>This box is under construction and may not yet properly work for all icons shown</small>'.
+	return $qr.$fb.$tw.$hv.$go.$pi.//.'<small>This box is under construction and may not yet properly work for all icons shown</small>'.
 	'<div style="clear:both"></div>';
 
 }
