@@ -3,12 +3,12 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions and API modules
-* Version 4.8.7
+* Version 4.8.8
 *
 */
 /* Moved to wppa-common-functions.php:
 global $wppa_api_version;
-$wppa_api_version = '4-8-7-000';
+$wppa_api_version = '4-8-8-000';
 */
 
 if ( ! defined( 'ABSPATH' ) )
@@ -272,20 +272,21 @@ global $wppa_opt;
 		// Interprete function args
 		if ($type == 'album') {
 		}
-		elseif ($type == 'cover') {
+		elseif ( $type == 'cover' ) {
 			$wppa['is_cover'] = '1';
 		}
-		elseif ($type == 'slide') {
+		elseif ( $type == 'slide' ) {
 			$wppa['is_slide'] = '1';
 		}
-		elseif ($type == 'slideonly') {
+		elseif ( $type == 'slideonly' ) {
 			$wppa['is_slideonly'] = '1';
 		}
-		elseif ($type == 'photo') {
-			$wppa['single_photo'] = $id;
+		
+		if ( $type == 'photo' || $type == 'mphoto' || $type == 'slphoto' ) {	// Any type of single photo? id given is photo id
+			if ( $id ) $wppa['single_photo'] = $id;
 		}
-		else {	// not single photo
-			$wppa['start_album'] = $id;
+		else {																	// Not single photo: id given is album id
+			if ( $id ) $wppa['start_album'] = $id;
 		}
 	}
 	// 3. The filter supplied the data
@@ -5796,12 +5797,14 @@ global $thumb;
 	else $go = '';
 	
 	// Pinterest
+	$desc = urlencode($see_on_site).': '.urlencode($photo_desc).'" ';
+	if ( strlen($desc) > 500) $desc = substr($desc, 0, 495).'...';
 	if ( $wppa_opt['wppa_share_pinterest'] ) {
 		$pi = 	'<div style="float:left; padding:2px;" >';
 		$pi .= 		'<a title="'.sprintf(__a('Share %s on Pinterest', 'wppa'), esc_attr($photo_name)).'" ';
 		$pi .= 			'href="http://pinterest.com/pin/create/button/?url='.urlencode($share_url);
 		$pi .=			'&media='.urlencode(str_replace('/thumbs/', '/', $share_img));						// Fullsize image
-		$pi .=			'&description='.urlencode($see_on_site).': '.urlencode($photo_desc).'" ';
+		$pi .=			'&description='.$desc;
 		$pi .=			'target="_blank" >';//'class="pin-it-button" count-layout="horizontal" >';
 		$pi .=			'<img src="'.wppa_get_imgdir().'pinterest.png" style="height:'.$s.'px;" alt="Pin it!" />';	//border="0" src="//assets.pinterest.com/images/PinExt.png" title="Pin It" />';
 		$pi .=		'</a>';
