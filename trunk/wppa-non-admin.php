@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the non admin stuff
-* Version 4.8.7
+* Version 4.8.8
 *
 */
 
@@ -171,14 +171,7 @@ global $wppa_opt;
 		echo("\n<!-- end WPPA+ Footer data -->\n");
 		wppa_dbg_q('print');
 	}
-	
-	if ( ( $wppa_opt['wppa_share_on'] || $wppa_opt['wppa_share_on_widget'] ) && $wppa_opt['wppa_share_pinterest'] ) {
-		echo("\n<!-- WPPA+ Pinterest share -->\n");
-		echo('<script type="text/javascript" src="//assets.pinterest.com/js/pinit.js"></script>');
-		echo("\n<!-- end WPPA+ Pinterest share -->\n");
-	}
 }
-
 
 /* CHECK REDIRECTION */
 add_action('init', 'wppa_redirect');
@@ -306,7 +299,14 @@ global $wppa_locale;
 
 	echo("/* ]]> */\n");
 	echo("</script>\n");
-	
+
+	// Pinterest js
+	if ( ( $wppa_opt['wppa_share_on'] || $wppa_opt['wppa_share_on_widget'] ) && $wppa_opt['wppa_share_pinterest'] ) {
+		echo("\n<!-- WPPA+ Pinterest share -->\n");
+		echo('<script type="text/javascript" src="//assets.pinterest.com/js/pinit.js"></script>');
+		echo("\n<!-- end WPPA+ Pinterest share -->\n");
+	}
+
 	$wppa['rendering_enabled'] = true;
 	echo("\n<!-- WPPA+ Rendering enabled -->\n");
 	if ($wppa['debug']) {
