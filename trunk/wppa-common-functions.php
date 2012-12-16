@@ -2,11 +2,11 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 4.8.7
+* version 4.8.9
 *
 */
 global $wppa_api_version;
-$wppa_api_version = '4-8-7-000';
+$wppa_api_version = '4-8-9-000';
 // Initialize globals and option settings
 function wppa_initialize_runtime($force = false) {
 global $wppa;
@@ -558,8 +558,8 @@ global $wppa_initruntimetime;
 	}
 	
 	// Create an album if required
-	if ( $wppa_opt['wppa_grant_an_album'] 
-		&& $wppa_opt['wppa_owner_only'] 
+	if ( $wppa_opt['wppa_grant_an_album'] == 'yes'
+		&& $wppa_opt['wppa_owner_only'] == 'yes'
 		&& is_user_logged_in() 
 		&& current_user_can('wppa_upload') ) {
 			$owner = wppa_get_user('login');
