@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the top rated photos
-* Version 4.8.6
+* Version 4.8.10
 */
 
 class TopTenWidget extends WP_Widget {
@@ -126,7 +126,7 @@ class TopTenWidget extends WP_Widget {
 		<p><label for="<?php echo $this->get_field_id('album'); ?>"><?php _e('Album:', 'wppa'); ?></label> 
 			<select class="widefat" id="<?php echo $this->get_field_id('album'); ?>" name="<?php echo $this->get_field_name('album'); ?>" >
 
-				<?php echo wppa_album_select('', $album, true, '', '', true); ?>
+				<?php echo wppa_album_select_a(array('selected' => $album, 'addall' => true, 'path' => wppa_switch('wppa_hier_albsel'))) //('', $album, true, '', '', true); ?>
 
 			</select>
 		</p>
