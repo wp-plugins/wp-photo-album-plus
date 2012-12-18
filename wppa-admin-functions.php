@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 * gp admin functions
-* version 4.8.6
+* version 4.8.10
 *
 * 
 */
@@ -621,6 +621,96 @@ global $wpdb;
     
     if ($sel == -1) $selected = ' selected="selected" '; else $selected = '';
     if ($addseparate) $result .= '<option value="-1"' . $selected . '>' . __('--- separate ---', 'wppa') . '</option>';
+	return $result;
+}
+
+function wppa_album_select_a($args) {
+global $wpdb;
+
+	$args = wp_parse_args( $args, array(	'exclude' 			=> '', 
+											'selected' 			=> '', 
+											'disabled' 			=> '',
+											'addpleaseselect' 	=> false,
+											'addnone' 			=> false, 
+											'addall' 			=> false,
+											'addblank' 			=> false,
+											'addseparate' 		=> false, 
+											'disableancestors' 	=> false,
+											'checkaccess' 		=> false,
+											'checkupload' 		=> false,
+											'addmultiple' 		=> false,
+											'addnumbers' 		=> false,
+											'path' 				=> false) );
+	if ( $args['selected'] == '' ) {
+        $s = wppa_get_last_album();
+        if ( $s != $args['exclude'] ) $args['selected'] = $s;
+    }
+												
+												
+	$albums = $wpdb->get_results( "SELECT `id`, `name` FROM `".WPPA_ALBUMS, ARRAY_A);	
+	
+	// Filter
+	
+	// Add paths
+	if ( $args['path'] && $albums ) foreach ( array_keys($albums) as $index ) {
+		$tempid = $albums[$index]['id'];
+		$albums[$index]['name'] = __(stripslashes($albums[$index]['name']));
+		while ( $tempid != '0' && $tempid != '-1' ) {
+			$tempid = wppa_get_parentalbumid($tempid);
+			if ( $tempid != '0' && $tempid != '-1' ) {
+				$albums[$index]['name'] = wppa_get_album_name($tempid).' > '.$albums[$index]['name'];
+			}
+			elseif ( $tempid == '-1' ) $albums[$index]['name'] = '-s- '.$albums[$index]['name'];
+		}
+	}	// Or just translate
+	elseif ( $albums ) foreach ( array_keys($albums) as $index ) {
+		$albums[$index]['name'] = __(stripslashes($albums[$index]['name']));
+	}
+	
+	// Modify
+	$iarr = false;
+	if ( $albums ) foreach ( $albums as $album ) {
+		$iarr[$album['id']] = $album['name'];
+	}
+	$albums = $iarr;
+	
+	// Sort
+	$bret = asort(&$albums);
+	
+	// Output
+	$result = '';
+	
+	$selected = $args['selected'] == '0' ? ' selected="selected"' : '';
+	if ( $args['addpleaseselect'] ) $result .= '<option value="0" disabled="disabled"'.$selected.' >' . __('- select an album -', 'wppa') . '</option>';
+	
+	$selected = $args['selected'] == '0' ? ' selected="selected"' : '';
+	if ( $args['addnone'] ) $result .= '<option value="0"'.$selected.' >' . __('--- none ---', 'wppa') . '</option>';
+	
+	$selected = $args['selected'] == '0' ? ' selected="selected"' : '';
+	if ( $args['addall'] ) $result .= '<option value="0"'.$selected.' >' . __('--- all ---', 'wppa') . '</option>';
+	
+	$selected = $args['selected'] == '0' ? ' selected="selected"' : '';
+	if ( $args['addblank'] ) $result .= '<option value="0"'.$selected.' ></option>';
+	
+	$selected = $args['selected'] == '-99' ? ' selected="selected"' : '';
+	if ( $args['addmultiple'] ) $result .= '<option value="-99"'.$selected.' >' . __('--- multiple see below ---', 'wppa') . '</option>';
+	
+	if ( $albums ) foreach ( array_keys($albums) as $index ) {
+		if ( $args['selected'] == $index ) $selected = ' selected="selected"'; else $selected = '';
+		if ( ( $args['disabled'] == $index ) || 
+			 ( $args['exclude'] == $index ) ||
+			 ( $args['checkupload'] && ! wppa_allow_uploads($index) ) ||
+			 ( $args['disableancestors'] && wppa_is_ancestor($args['exclude'], $index))
+			) $disabled = ' disabled="disabled"'; else $disabled = '';
+		if ( ! $args['checkaccess'] || wppa_have_access($index) ) {
+			if ( $args['addnumbers'] ) $number = ' ('.$index.')'; else $number = '';
+			$result .= '<option value="' . $index . '" ' . $selected . $disabled . '>' . $albums[$index] . $number . '</option>';
+		}
+	}
+	
+	$selected = $args['selected'] == '-1' ? ' selected="selected"' : '';
+	if ( $args['addseparate'] ) $result .= '<option value="-1"' . $selected . '>' . __('--- separate ---', 'wppa') . '</option>';
+	
 	return $result;
 }
 

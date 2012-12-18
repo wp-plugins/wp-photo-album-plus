@@ -3,12 +3,12 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions and API modules
-* Version 4.8.8
+* Version 4.8.10
 *
 */
 /* Moved to wppa-common-functions.php:
 global $wppa_api_version;
-$wppa_api_version = '4-8-8-000';
+$wppa_api_version = '4-8-10-000';
 */
 
 if ( ! defined( 'ABSPATH' ) )
@@ -263,7 +263,8 @@ global $wppa_opt;
 		$wppa['is_topten'] 		= $wppa['topten_count'] != '0';
 		$wppa['lasten_count'] 	= wppa_get_get('lasten', '0');
 		$wppa['is_lasten'] 		= $wppa['lasten_count'] != '0';
-		$wppa['is_comten']		= wppa_get_get('comwidget', '0');
+		$wppa['comten_count'] 	= wppa_get_get('comwidget', '0');
+		$wppa['is_comten']		= $wppa['comten_count'] != '0';
 	}
 	// 2. wppa_albums is called directly. Assune any arg. If not, no worry, system defaults are used == generic
 	elseif ( $id != '' || $type != '' || $size != '' || $align != '' ) {
@@ -1690,7 +1691,9 @@ global $wppa_first_comment_html;
 	if ( $lasten ) $returnurl .= 'wppa-lasten='.$lasten.'&';
 	$topten = wppa_get_get('topten');
 	if ( $topten ) $returnurl .= 'wppa-topten='.$topten.'&';
-
+	$comten = wppa_get_get('comwidget');
+	if ( $comten ) $returnurl .= 'wppa-comwidget='.$comten.'&';
+	
 	$returnurl .= 'wppa-photo='.$id;
 	
 	// The comment form
@@ -4630,6 +4633,10 @@ if ($wich=='comwidget') $album='0';
 	if ($wich == 'comwidget') {
 		$result['url'] .= '&amp;wppa-comwidget='.$wppa_opt['wppa_comment_count'];
 	}
+elseif ($wppa['is_comten']) {
+	$result['url'] .= '&amp;wppa-comwidget='.$wppa['comten_count'];
+}
+	
 	if ($page != '0') {	// on a different page
 		$occur = '1';
 		$w = '';

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the upload/import pages and functions
-* Version 4.8.6
+* Version 4.8.10
 *
 */
 
@@ -151,8 +151,7 @@ global $wppa_revno;
 					<p>
 						<label for="wppa-album"><?php _e('Album:', 'wppa'); ?> </label>
 						<select name="wppa-album" id="wppa-album">
-							<option value=""><?php _e('- select an album -', 'wppa') ?></option>
-							<?php echo(wppa_album_select('', '', false, false, false, false, false, true)); ?>
+							<?php echo wppa_album_select_a(array('path' => wppa_switch('wppa_hier_albsel'),'addpleaseselect' => true, 'checkupload' => true));//echo(wppa_album_select('', '', false, false, false, false, false, true)); ?>
 						</select>
 					</p>
 					<?php if ( $wppa_opt['wppa_watermark_on'] == 'yes' && ( $wppa_opt['wppa_watermark_user'] == 'yes' || current_user_can('wppa_settings') ) ) { ?>		
@@ -191,8 +190,7 @@ global $wppa_revno;
 					<p>
 						<label for="wppa-album"><?php _e('Album:', 'wppa'); ?> </label>
 						<select name="wppa-album" id="wppa-album">
-							<option value=""><?php _e('- select an album -', 'wppa') ?></option>
-							<?php echo(wppa_album_select('', '', false, false, false, false, false, true)); ?>
+							<?php echo wppa_album_select_a(array('path' => wppa_switch('wppa_hier_albsel'), 'addpleaseselect' => true, 'checkaccess' => true, 'checkupload' => true));//('', '', false, false, false, false, false, true)); ?>
 						</select>
 					</p>
 					<?php if ( $wppa_opt['wppa_watermark_on'] == 'yes' && ( $wppa_opt['wppa_watermark_user'] == 'yes' || current_user_can('wppa_settings') ) ) { ?>		

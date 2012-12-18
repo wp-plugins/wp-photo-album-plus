@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * create, edit and delete albums
-* version 4.8.6
+* version 4.8.10
 *
 */
 
@@ -160,7 +160,7 @@ function _wppa_admin() {
 									<label ><?php _e('Parent album:', 'wppa'); ?> </label>
 								</th>
 								<td style="padding-top:0; padding-bottom:0;">
-									<select onchange="wppaAjaxUpdateAlbum(<?php echo $edit_id ?>, 'a_parent', this)" ><?php echo(wppa_album_select($albuminfo['id'], $albuminfo['a_parent'], true, true, true)) /*$albuminfo["id"], $albuminfo["a_parent"], TRUE, TRUE, TRUE)) */?></select>
+									<select id="wppa-parsel" style="max-width:100%;" onchange="wppaAjaxUpdateAlbum(<?php echo $edit_id ?>, 'a_parent', this)" ><?php echo wppa_album_select_a(array('exclude' => $albuminfo['id'], 'selected' => $albuminfo['a_parent'], 'addnone' => true, 'addseparate' => true, 'disableancestors' => true, 'path' => wppa_switch('wppa_hier_albsel'))) /*$albuminfo["id"], $albuminfo["a_parent"], TRUE, TRUE, TRUE)) */?></select>
 								</td>
 								<td style="padding-top:0; padding-bottom:0;">
 									<span class="description">
@@ -345,8 +345,7 @@ function _wppa_admin() {
 						<input type="radio" name="wppa-del-photos" value="delete" checked="checked" /> <?php _e('Delete', 'wppa'); ?><br />
 						<input type="radio" name="wppa-del-photos" value="move" /> <?php _e('Move to:', 'wppa'); ?> 
 						<select name="wppa-move-album">
-							<option value=""><?php _e('- select an album -', 'wppa') ?></option>
-							<?php echo(wppa_album_select($_GET['edit_id'])) ?>
+							<?php echo wppa_album_select_a(array('path' => wppa_switch('wppa_hier_albsel'), 'selected' => '0', 'exclude' => $_GET['edit_id'], 'addpleaseselect' => true)) ?>
 						</select>
 					</p>
 				
@@ -1187,7 +1186,7 @@ function wppa_album_photos($id) {
 									<input type="button" class="button-secundary" style="color:blue; width:90%" onclick="if(document.getElementById('moveto-<?php echo($photo['id']) ?>').value != 0) { if (confirm('<?php _e('Are you sure you want to move this photo?', 'wppa') ?>')) wppaAjaxUpdatePhoto(<?php echo $photo['id'] ?>, 'moveto', document.getElementById('moveto-<?php echo($photo['id']) ?>') ) } else { alert('<?php _e('Please select an album to move the photo to first.', 'wppa') ?>'); return false;}" value="<?php _e('Move photo to', 'wppa') ?>" /> 
 								</th>
 								<td style="padding-top:0; padding-bottom:0;">							
-									<select id="moveto-<?php echo $photo['id'] ?>" style="width:100%;" ><?php echo(wppa_album_select($id, '0', true, false, false, false, true)) ?></select>
+									<select id="moveto-<?php echo $photo['id'] ?>" style="width:100%;" ><?php echo wppa_album_select_a(array('path' => wppa_switch('wppa_hier_albsel'), 'exclude' => $id, 'selected' => '0', 'addblank' => true)) ?></select>
 								</td>
 							</tr>
 							<!-- Copy -->
@@ -1196,7 +1195,7 @@ function wppa_album_photos($id) {
 								 	<input type="button" class="button-secundary" style="color:blue; width:90%" onclick="if (document.getElementById('copyto-<?php echo($photo['id']) ?>').value != 0) { if (confirm('<?php _e('Are you sure you want to copy this photo?', 'wppa') ?>')) wppaAjaxUpdatePhoto(<?php echo $photo['id'] ?>, 'copyto', document.getElementById('copyto-<?php echo($photo['id']) ?>') ) } else { alert('<?php _e('Please select an album to copy the photo to first.', 'wppa') ?>'); return false;}" value="<?php _e('Copy photo to', 'wppa') ?>" />
 								</th>
 								<td style="padding-top:0; padding-bottom:0;">
-									<select id="copyto-<?php echo($photo['id']) ?>" style="width:100%;" ><?php echo(wppa_album_select($id, '0', true, false, false, false, true)) ?></select>
+									<select id="copyto-<?php echo($photo['id']) ?>" style="width:100%;" ><?php echo wppa_album_select_a(array('path' => wppa_switch('wppa_hier_albsel'), 'exclude' => $id, 'selected' => '0', 'addblank' => true)) ?></select>
 								</td>
 							</tr>
 							<!-- Delete -->

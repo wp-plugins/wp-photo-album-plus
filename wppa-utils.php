@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains low-level utility routines
-* Version 4.8.7
+* Version 4.8.10
 *
 */
 
@@ -196,4 +196,9 @@ global $thumb;
 	}
 	else $result = '';
 	return $result;
+}
+
+function wppa_switch($key) {
+global $wppa_opt;
+	return $wppa_opt[$key] === true || $wppa_opt[$key] == 'yes';
 }

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 4.8.7
+* Version 4.8.10
 *
 */
 
@@ -2906,6 +2906,13 @@ global $wppa_revno;
 							$html = wppa_checkbox($slug);
 							wppa_setting($slug, '11', $name, $desc, $html, $help);
 
+							$name = __('Album sel hierarchic', 'wppa');
+							$desc = __('Show albums with (grand)parents in selection lists.', 'wppa');
+							$help = '';
+							$slug = 'wppa_hier_albsel';
+							$html = wppa_checkbox($slug);
+							wppa_setting($slug, '12', $name, $desc, $html, $help);
+							
 							wppa_setting_subheader('B', '1', __('New Album and New Photo related miscellaneous settings', 'wppa'));
 
 							$name = __('New Album', 'wppa');
