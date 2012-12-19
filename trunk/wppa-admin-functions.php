@@ -675,7 +675,7 @@ global $wpdb;
 	$albums = $iarr;
 	
 	// Sort
-	$bret = asort(&$albums);
+	$bret = asort($albums);
 	
 	// Output
 	$result = '';
