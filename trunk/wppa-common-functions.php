@@ -2,11 +2,11 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 4.8.10
+* version 4.8.11
 *
 */
 global $wppa_api_version;
-$wppa_api_version = '4-8-10-000';
+$wppa_api_version = '4-8-11-000';
 // Initialize globals and option settings
 function wppa_initialize_runtime($force = false) {
 global $wppa;
@@ -115,6 +115,7 @@ global $wppa_initruntimetime;
 						'wppa_fullimage_border_width' 	=> '',	// 4
 						'wppa_numbar_max'				=> '',	// 5
 						'wppa_share_size'				=> '',
+						'wppa_mini_treshold'			=> '',
 						// C Thumbnails
 						'wppa_thumbsize' 				=> '',	// 1
 						'wppa_thumb_aspect'				=> '',	// 2
@@ -139,8 +140,8 @@ global $wppa_initruntimetime;
 						// F Widgets
 						'wppa_topten_count' 			=> '',	// 1
 						'wppa_topten_size' 				=> '',	// 2
-						'wppa_comment_count'			=> '',	// 3
-						'wppa_comment_size'				=> '',	// 4
+						'wppa_comten_count'			=> '',	// 3
+						'wppa_comten_size'				=> '',	// 4
 						'wppa_thumbnail_widget_count'	=> '',	// 5
 						'wppa_thumbnail_widget_size'	=> '',	// 6
 						'wppa_lasten_count' 			=> '',	// 1
@@ -158,7 +159,9 @@ global $wppa_initruntimetime;
 						'wppa_bc_on_search'					=> '',	// 2
 						'wppa_bc_on_topten'					=> '',	// 3
 						'wppa_bc_on_lasten'					=> '',	// 3
+						'wppa_bc_on_comten'					=> '',	// 3
 						'wppa_show_home' 					=> '',	// 4
+						'wppa_show_page' 					=> '',	// 4
 						'wppa_bc_separator' 				=> '',	// 5
 						'wppa_bc_txt' 						=> '',	// 6
 						'wppa_bc_url' 						=> '',	// 7

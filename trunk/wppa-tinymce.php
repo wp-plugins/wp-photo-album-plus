@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 *
-* Version 4.8.6
+* Version 4.8.11
 *
 */
 
@@ -63,7 +63,7 @@ global $wppa_opt;
 
 	$result = 
 	'<div id="mygallery-form">'.
-		'<div style="height:156px; background-color:#eee; overflow:auto; margin-top:10px;" >'.
+		'<div style="height:158px; background-color:#eee; overflow:auto; margin-top:10px;" >'.
 			'<div id="mygallery-album-preview" style="text-align:center;font-size:48px; line-height:21px; color:#fff;" class="mygallery-album" ><br /><br /><br />'.
 			__('Album Preview', 'wppa').'<br /><span style="font-size:12px; color:#777" ><br/>'.__('A maximum of 100 photos can be previewd', 'wppa').'</span></div>'.
 			'<div id="mygallery-photo-preview" style="text-align:center;font-size:48px; line-height:21px; color:#fff; display:none;" class="mygallery-photo" ><br /><br /><br />'.
@@ -144,7 +144,23 @@ global $wppa_opt;
 									$value .= '|'.$photo['id'].'.'.$photo['ext'];
 								}
 								else $value .= '|';
-								$result .= '<option value = "'.$value.'" >'.__('--- The most recently uploaded photos ---', 'wppa').'</option>';							
+								$result .= '<option value = "'.$value.'" >'.__('--- The most recently uploaded photos ---', 'wppa').'</option>';	
+							// #comten
+								$value = '#comten';
+								$comments = $wpdb->get_results( "SELECT `id`, `photo` FROM `".WPPA_COMMENTS."` ORDER BY `timestamp` DESC", ARRAY_A );
+								$photos = false;
+								$done = false;
+								if ( $comments ) foreach ( $comments as $comment ) {
+									if ( count($done) < $wppa_opt['wppa_comten_count'] && ! in_array($comment['photo'], $done) ) {
+										$done[] = $comment['photo'];
+										$photos[] = $wpdb->get_row( "SELECT `id`, `name`, `album`, `ext` FROM `".WPPA_PHOTOS."` WHERE `id` = ".$comment['photo'], ARRAY_A );
+									}
+								}
+								if ( $photos ) foreach ( $photos as $photo ) {
+									$value .= '|'.$photo['id'].'.'.$photo['ext'];
+								}
+								else $value .= '|';
+								$result .= '<option value = "'.$value.'" >'.__('--- The most recently commented photos ---', 'wppa').'</option>';									
 							// #all
 								$value = '#all';
 								$photos = $wpdb->get_results( "SELECT `id`, `name`, `album`, `ext` FROM `".WPPA_PHOTOS."` ".wppa_get_photo_order('0')." LIMIT 100", ARRAY_A );

@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile
-Version: 4.8.10
+Version: 4.8.11
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -68,7 +68,7 @@ However, check these requirements in case of problems with new installations wit
 * The server should have at least 32MB of memory, 64MB or more is recommended.
 
 = Upgrade notice =
-This version is: Major rev# 4, Minor rev# 8, Fix rev# 8, Hotfix rev# 000.
+This version is: Major rev# 4, Minor rev# 8, Fix rev# 11, Hotfix rev# 000.
 If you are upgrading from a previous Major or Minor version, note that:
 * If you modified wppa_theme.php and/or wppa_style.css, you will have to use the newly supplied versions. The previous versions are NOT compatible.
 * If you set the userlevel to anything else than 'administrator' you may have to set it again. Note that changing the userlevel can be done by the administrator only!
@@ -161,6 +161,19 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 4.8.11 =
+
+= Bug Fixes =
+
+* Fixed a problem in the pagelinks in the breadcrumb.
+
+= New Features =
+
+* New Album keyword #comten. Represents the last commented photos. Acts similar as #topten and #lasten.
+* Two settings added in Table II-A: show breadcrumb on comten displays: II-A3.2, and show pages in breadcrumb: II-A4.1.
+* You can specify to what width of the slideshow small texts must be used. 
+This is a dynamical setting i.e. the textsize changes on the fly for responsive themes. Table I-B7: Mini treshold.
 
 = 4.8.10 =
 
