@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 4.8.10
+* Version 4.8.11
 *
 */
 
@@ -347,6 +347,14 @@ global $wppa_revno;
 							$html = wppa_select($slug, $opts, $vals);
 							$class = 'wppa_share';
 							wppa_setting($slug, '6', $name, $desc, $html.__('pixels', 'wppa'), $help, $class);
+							
+							$name = __('Mini Treshold', 'wppa');
+							$desc = __('Show mini text at slideshow smaller then.', 'wppa');
+							$help = esc_js(__('Display Next and Prev. as opposed to Next photo and Previous photo when the cotainer is smaller than this size.', 'wppa'));
+							$help .= '\n\n'.esc_js(__('Special use in responsive themes.', 'wppa'));
+							$slug = 'wppa_mini_treshold';
+							$html = wppa_input($slug, '40px', '', __('pixels', 'wppa'));
+							wppa_setting($slug, '7', $name, $desc, $html, $help);
 
 							wppa_setting_subheader('C', '1', __('Thumbnail photos related settings', 'wppa'));
 							
@@ -563,7 +571,7 @@ global $wppa_revno;
 							$name = __('Comment count', 'wppa');
 							$desc = __('Number of entries in Comment widget.', 'wppa');
 							$help = esc_js(__('Enter the maximum number of entries in the Comment widget.', 'wppa'));
-							$slug = 'wppa_comment_count';
+							$slug = 'wppa_comten_count';
 							$html = wppa_input($slug, '40px', '', __('entries', 'wppa'));
 							wppa_setting($slug, '3', $name, $desc, $html, $help);
 							
@@ -572,7 +580,7 @@ global $wppa_revno;
 							$help = esc_js(__('Enter the size for the mini photos in the Comment widget.', 'wppa'));
 							$help .= '\n'.esc_js(__('The size applies to the width or height, whatever is the largest.', 'wppa'));
 							$help .= '\n'.esc_js(__('Recommended values: 86 for a two column and 56 for a three column display.', 'wppa'));
-							$slug = 'wppa_comment_size';
+							$slug = 'wppa_comten_size';
 							$html = wppa_input($slug, '40px', '', __('pixels', 'wppa'));
 							wppa_setting($slug, '4', $name, $desc, $html, $help);
 
@@ -713,6 +721,14 @@ global $wppa_revno;
 							$class = 'wppa_bc';
 							wppa_setting($slug, '3.1', $name, $desc, $html, $help, $class);
 
+							$name = __('Breadcrumb on comment ten displays', 'wppa');
+							$desc = __('Show breadcrumb navigation bars on comment ten displays.', 'wppa');
+							$help = esc_js(__('Indicate whether a breadcrumb navigation should be displayed above the comment ten displays.', 'wppa'));
+							$slug = 'wppa_bc_on_comten';
+							$html = wppa_checkbox($slug);
+							$class = 'wppa_bc';
+							wppa_setting($slug, '3.2', $name, $desc, $html, $help, $class);
+
 							$name = __('Home', 'wppa');
 							$desc = __('Show "Home" in breadcrumb.', 'wppa');
 							$help = esc_js(__('Indicate whether the breadcrumb navigation should start with a "Home"-link', 'wppa'));
@@ -720,6 +736,14 @@ global $wppa_revno;
 							$html = wppa_checkbox($slug);
 							$class = 'wppa_bc';
 							wppa_setting($slug, '4', $name, $desc, $html, $help, $class);
+
+							$name = __('Page', 'wppa');
+							$desc = __('Show the page(s) in breadcrumb.', 'wppa');
+							$help = esc_js(__('Indicate whether the breadcrumb navigation should show the page(hierarchy)', 'wppa'));
+							$slug = 'wppa_show_page';
+							$html = wppa_checkbox($slug);
+							$class = 'wppa_bc';
+							wppa_setting($slug, '4.1', $name, $desc, $html, $help, $class);
 
 							$name = __('Separator', 'wppa');
 							$desc = __('Breadcrumb separator symbol.', 'wppa');

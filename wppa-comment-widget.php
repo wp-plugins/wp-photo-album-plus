@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the recent commets on photos
-* Version 4.8.6
+* Version 4.8.11
 */
 
 class wppaCommentWidget extends WP_Widget {
@@ -23,13 +23,13 @@ class wppaCommentWidget extends WP_Widget {
         extract( $args );
 		
 		$page = $wppa_opt['wppa_comment_widget_linkpage'];
-		$max  = $wppa_opt['wppa_comment_count'];
+		$max  = $wppa_opt['wppa_comten_count'];
 		$widget_title = apply_filters('widget_title', $instance['title']);
 		
 		$comments = $wpdb->get_results($wpdb->prepare( "SELECT * FROM ".WPPA_COMMENTS." WHERE `status` = 'approved' ORDER BY `timestamp` DESC LIMIT %d", $max ), ARRAY_A );
 
 		$widget_content = "\n".'<!-- WPPA+ Comment Widget start -->';
-		$maxw = $wppa_opt['wppa_comment_size'];
+		$maxw = $wppa_opt['wppa_comten_size'];
 		$maxh = $maxw + 18;
 
 		if ($comments) foreach ($comments as $comment) {
@@ -44,7 +44,7 @@ class wppaCommentWidget extends WP_Widget {
 				
 				$no_album 	= true;//!$album;
 				$tit		= esc_attr(wppa_qtrans(stripslashes($comment['comment'])));
-				$link       = wppa_get_imglnk_a('comwidget', $image['id'], '', $tit, $no_album);
+				$link       = wppa_get_imglnk_a('comten', $image['id'], '', $tit, $no_album);
 				$file       = wppa_get_thumb_path($image['id']);
 				$imgstyle_a = wppa_get_imgstyle_a($file, $maxw, 'center', 'comthumb');
 				$imgstyle   = $imgstyle_a['style'];

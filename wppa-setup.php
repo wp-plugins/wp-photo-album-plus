@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 4.8.10
+* Version 4.8.11
 *
 */
 
@@ -242,6 +242,10 @@ global $silent;
 			wppa_copy_setting('wppa_bcolor_namedesc', 'wppa_bcolor_share');
 
 		}
+		if ( $old_rev <= '4811' ) {
+			wppa_rename_setting('wppa_comment_count', 'wppa_comten_count');
+			wppa_rename_setting('wppa_comment_size', 'wppa_comten_size');
+		}
 
 	}
 	
@@ -382,6 +386,7 @@ Hide Camera info
 						'wppa_fullimage_border_width' 	=> '',		// 4
 						'wppa_numbar_max'				=> '10',	// 5
 						'wppa_share_size'				=> '32',
+						'wppa_mini_treshold'			=> '300',
 						// C Thumbnails
 						'wppa_thumbsize' 				=> '100',		// 1
 						'wppa_thumb_aspect'				=> '0:0:none',	// 2
@@ -406,8 +411,8 @@ Hide Camera info
 						// F Widgets
 						'wppa_topten_count' 			=> '10',	// 1
 						'wppa_topten_size' 				=> '86',	// 2
-						'wppa_comment_count'			=> '10',	// 3
-						'wppa_comment_size'				=> '86',	// 4
+						'wppa_comten_count'				=> '10',	// 3
+						'wppa_comten_size'				=> '86',	// 4
 						'wppa_thumbnail_widget_count'	=> '10',	// 5
 						'wppa_thumbnail_widget_size'	=> '86',	// 6
 						'wppa_lasten_count'				=> '10',	// 7
@@ -424,7 +429,9 @@ Hide Camera info
 						'wppa_bc_on_search'					=> 'yes',	// 2
 						'wppa_bc_on_topten'					=> 'yes',	// 3
 						'wppa_bc_on_lasten'					=> 'yes',	// 3
+						'wppa_bc_on_comten'					=> 'yes',	// 3
 						'wppa_show_home' 					=> 'yes',	// 4
+						'wppa_show_page' 					=> 'yes',	// 4
 						'wppa_bc_separator' 				=> 'raquo',	// 5
 						'wppa_bc_txt' 						=> htmlspecialchars('<span style="color:red; font_size:24px;">&bull;</span>'),	// 6
 						'wppa_bc_url' 						=> wppa_get_imgdir().'arrow.gif',	// 7
