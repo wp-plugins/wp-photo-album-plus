@@ -219,7 +219,8 @@ global $wppa_locale;
 	wppaSlideShowTimeOut = '.$wppa_opt['wppa_slideshow_timeout'].';
 	wppaPreambule = '.wppa_get_preambule().';';
 		if ($wppa_opt['wppa_film_show_glue'] == 'yes') echo '
-	wppaFilmShowGlue = true;
+	wppaFilmShowGlue = true;';
+	echo '
 	wppaSlideShow = "'.__a('Slideshow', 'wppa_theme').'";
 	wppaStart = "'.__a('Start', 'wppa_theme').'";
 	wppaStop = "'.__a('Stop', 'wppa_theme').'";
