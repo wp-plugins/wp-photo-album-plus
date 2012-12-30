@@ -3,12 +3,12 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions and API modules
-* Version 4.8.11
+* Version 4.8.12
 *
 */
 /* Moved to wppa-common-functions.php:
 global $wppa_api_version;
-$wppa_api_version = '4-8-11-000';
+$wppa_api_version = '4-8-12-000';
 */
 
 if ( ! defined( 'ABSPATH' ) )
@@ -224,12 +224,15 @@ global $wppa_opt;
 	// First calculate the occurance
 	if ( $wppa['ajax'] ) {
 		$wppa['master_occur'] = $_GET['wppa-moccur'];
+		if ( ! is_numeric($wppa['master_occur']) ) wp_die('Are you cheeting?');
 		$wppa['fullsize'] = $_GET['wppa-size'];
 		if ( isset($_GET['wppa-occur']) ) {
 			$wppa['occur'] = $_GET['wppa-occur'];
+			if ( ! is_numeric($wppa['occur']) ) wp_die('Are you cheeting?');
 		}
 		if ( isset($_GET['wppa-woccur']) ) {
 			$wppa['widget_occur'] = $_GET['wppa-woccur'];
+			if ( ! is_numeric($wppa['widget-occur']) ) wp_die('Are you cheeting?');
 			$wppa['in_widget'] = true;
 		}
 	}
@@ -4990,14 +4993,17 @@ global $wppa_opt;
 			$done = '0';
 			foreach ($_FILES as $file) {
 				if ( $bret ) {
-					if ( ! is_array($file['error']) ) $bret = wppa_do_frontend_file_upload($file, $alb);	// this should no longer happen since the name is incl []
+					if ( ! is_array($file['error']) ) {
+						$file['name'] = strip_tags($file['name']);
+						$bret = wppa_do_frontend_file_upload($file, $alb);	// this should no longer happen since the name is incl []
+					}
 					else {
 						$filecount = count($file['error']);
 						for ($i = '0'; $i < $filecount; $i++) {
 							if ( $bret ) {
 								$f['error'] = $file['error'][$i];
 								$f['tmp_name'] = $file['tmp_name'][$i];
-								$f['name'] = $file['name'][$i];
+								$f['name'] = strip_tags($file['name'][$i]);
 								$f['type'] = $file['type'][$i];
 								$f['size'] = $file['size'][$i];
 								$bret = wppa_do_frontend_file_upload($f, $alb);
@@ -5057,6 +5063,7 @@ global $wppa_opt;
 	else {
 		$name = $file['name'];
 	}
+	$name = htmlspecialchars($name);
 	$porder = '0';
 	$desc = wppa_get_post('user-desc');
 	$mrat = '0';
@@ -5172,7 +5179,7 @@ global $wpdb;
 	foreach ($iptcdata as $iptcline) {
 		$tag = $iptcline['tag'];
 		if ($prevtag == $tag) {			// add a next item for this tag
-			$combined .= ', '.htmlspecialchars($iptcline['description']);
+			$combined .= ', '.htmlspecialchars(strip_tags($iptcline['description']));
 		}
 		else { 							// first item of this tag
 			if ( $combined ) { 			// Process if required
@@ -5182,7 +5189,7 @@ global $wpdb;
 					$pos = strpos($temp, $prevtag);
 				}
 			}
-			$combined = htmlspecialchars($iptcline['description']);
+			$combined = htmlspecialchars(strip_tags($iptcline['description']));
 			$prevtag = $tag;
 		}
 	}
@@ -5232,7 +5239,7 @@ global $exifdata, $exifdataphoto;
 	foreach ($exifdata as $exifline) {
 		$tag = $exifline['tag'];
 		if ($prevtag == $tag) {			// add a next item for this tag
-			$combined .= ', '.htmlspecialchars($exifline['description']);
+			$combined .= ', '.htmlspecialchars(strip_tags($exifline['description']));
 		}
 		else { 							// first item of this tag
 			if ( $combined ) { 			// Process if required
@@ -5242,7 +5249,7 @@ global $exifdata, $exifdataphoto;
 					$pos = strpos($temp, $prevtag);
 				}
 			}
-			$combined = htmlspecialchars($exifline['description']);
+			$combined = htmlspecialchars(strip_tags($exifline['description']));
 			$prevtag = $tag;
 		}
 	}
