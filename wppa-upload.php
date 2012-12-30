@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the upload/import pages and functions
-* Version 4.8.10
+* Version 4.8.12
 *
 */
 
@@ -799,6 +799,8 @@ function wppa_insert_photo ($file = '', $album = '', $name = '', $desc = '', $po
 	if ($file != '' && $album != '' ) {
 		// Get the name if not given
 		if ($name == '') $name = basename($file);
+		// Sanitize name
+		$name = htmlspecialchars(strip_tags($name));
 		// Get and verify the size
 		$img_size = getimagesize($file);
 		
