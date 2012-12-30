@@ -492,6 +492,7 @@ global $wppa;
 				case 'status':
 					switch ($item) {
 						case 'name':
+							$value = strip_tags($value);
 							$itemname = __('Name', 'wppa');
 							break;
 						case 'description':
