@@ -168,6 +168,7 @@ See for additional information: http://wppa.opajaap.nl/?page_id=1459
 = Bug Fixes =
 
 * The filmstrip content is now adjusted when the size of the container changes.
+* Fixed an admin hang when there was a deleted parentalbum and Table IX-A12 was checked.
 
 = New Features =
 
@@ -200,7 +201,6 @@ In the photo description the missing tag values will no longer show the tag but 
 = Bug Fixes =
 
 * Fixed a problem in the pagelinks in the breadcrumb.
-* Fixed an admin hang when there was a deleted parentalbum and Table IX-A12 was checked.
 
 = New Features =
 
