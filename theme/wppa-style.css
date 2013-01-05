@@ -296,6 +296,10 @@ text-align:left;
 }
 .wppa-sphoto {
 }
+
+.wppa-tagcloud {
+	padding-top:6px;
+}
 /* phpinfo */
 #phpinfo {background-color: #ffffff; color: #000000;}
 #phpinfo, #phpinfo td, #phpinfo th, #phpinfo h1, #phpinfo h2 {font-family: sans-serif;}

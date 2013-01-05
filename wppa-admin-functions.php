@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 * gp admin functions
-* version 4.8.10
+* version 4.9.0
 *
 * 
 */
@@ -82,7 +82,7 @@ global $wppa;
 					$slug = substr($buffer, 0, $cpos);
 					$value = stripslashes(substr($buffer, $cpos+1, $delta_l));
 					//wppa_dbg_msg('Doing|'.$slug.'|'.$value);
-					if ( ! in_array($slug, $void_these)) update_option($slug, $value);
+					if ( ! in_array($slug, $void_these)) wppa_wppa_update_option($slug, $value);
 					else wppa_dbg_msg($slug.' skipped');
 				}
 			}
@@ -115,7 +115,7 @@ function wppa_regenerate_thumbs() {
 		foreach ($photos as $photo) {
 			$newimage = WPPA_UPLOAD_PATH.'/'.$photo['id'].'.'.$photo['ext'];
 			wppa_create_thumbnail($newimage, $thumbsize, '' );
-            update_option('wppa_lastthumb', $photo['id']);
+            wppa_update_option('wppa_lastthumb', $photo['id']);
 			wppa_clear_cache();
             echo '.';
 		}
@@ -131,7 +131,7 @@ function wppa_set_last_album($id = '') {
 
     if ( is_numeric($id) && wppa_have_access($id) ) $albumid = $id; else $albumid = '';
 	$opt = 'wppa_last_album_used-'.$current_user->user_login;
-    update_option($opt, $albumid);
+    wppa_update_option($opt, $albumid);
 }
 
 // get last album
@@ -267,7 +267,7 @@ global $wpdb;
 	// Make new db table entry
 	$id = wppa_nextkey(WPPA_PHOTOS);
 	$owner = wppa_get_user();
-	$query = $wpdb->prepare('INSERT INTO `' . WPPA_PHOTOS . '` (`id`, `album`, `ext`, `name`, `p_order`, `description`, `mean_rating`, `linkurl`, `linktitle`, `linktarget`, `timestamp`, `owner`, `status`) VALUES (%s, %s, %s, %s, %s, %s, \'\', %s, %s, %s, %s, %s, %s)', $id, $album, $ext, $name, $porder, $desc, $linkurl, $linktitle, $linktarget, time(), $owner, $status);
+	$query = $wpdb->prepare('INSERT INTO `' . WPPA_PHOTOS . '` (`id`, `album`, `ext`, `name`, `p_order`, `description`, `mean_rating`, `linkurl`, `linktitle`, `linktarget`, `timestamp`, `owner`, `status`, `tags`) VALUES (%s, %s, %s, %s, %s, %s, \'\', %s, %s, %s, %s, %s, %s, %s)', $id, $album, $ext, $name, $porder, $desc, $linkurl, $linktitle, $linktarget, time(), $owner, $status, '');
 	if ($wpdb->query($query) === false) return $err;
 
 	$err = '4';
@@ -641,47 +641,39 @@ global $wpdb;
 											'addmultiple' 		=> false,
 											'addnumbers' 		=> false,
 											'path' 				=> false) );
+											
+	// Provide default selection if no selected given
 	if ( $args['selected'] == '' ) {
-        $s = wppa_get_last_album();
-        if ( $s != $args['exclude'] ) $args['selected'] = $s;
+        $args['selected'] = wppa_get_last_album();
     }
-												
+	// See if selection is valid
+	if ( ( $args['selected'] == $args['exclude'] ) || 
+		 ( $args['checkupload'] && ! wppa_allow_uploads($args['selected']) ) ||
+		 ( $args['disableancestors'] && wppa_is_ancestor($args['exclude'], $args['selected']) )
+	   ) {
+		$args['selected'] = '0';
+	}
 												
 	$albums = $wpdb->get_results( "SELECT `id`, `name` FROM `".WPPA_ALBUMS, ARRAY_A);	
 	
-	// Filter
-	
-	// Add paths
-	if ( $args['path'] && $albums ) foreach ( array_keys($albums) as $index ) {
-		$tempid = $albums[$index]['id'];
-		$albums[$index]['name'] = __(stripslashes($albums[$index]['name']));
-		while ( $tempid != '0' && $tempid != '-1' ) {
-			$tempid = wppa_get_parentalbumid($tempid);
-			if ( $tempid != '0' && $tempid != '-1' ) {
-				$albums[$index]['name'] = wppa_get_album_name($tempid).' > '.$albums[$index]['name'];
-			}
-			elseif ( $tempid == '-1' ) $albums[$index]['name'] = '-s- '.$albums[$index]['name'];
+	if ( $albums ) {
+		// Add paths
+		if ( $args['path'] ) {
+			$albums = wppa_add_paths($albums);
 		}
-	}	// Or just translate
-	elseif ( $albums ) foreach ( array_keys($albums) as $index ) {
-		$albums[$index]['name'] = __(stripslashes($albums[$index]['name']));
+		// Or just translate
+		else foreach ( array_keys($albums) as $index ) {
+			$albums[$index]['name'] = __(stripslashes($albums[$index]['name']));
+		}
+		// Sort
+		$albums = wppa_array_sort($albums, 'name');
 	}
-	
-	// Modify
-	$iarr = false;
-	if ( $albums ) foreach ( $albums as $album ) {
-		$iarr[$album['id']] = $album['name'];
-	}
-	$albums = $iarr;
-	
-	// Sort
-	$bret = asort($albums);
 	
 	// Output
 	$result = '';
 	
 	$selected = $args['selected'] == '0' ? ' selected="selected"' : '';
-	if ( $args['addpleaseselect'] ) $result .= '<option value="0" disabled="disabled"'.$selected.' >' . __('- select an album -', 'wppa') . '</option>';
+	if ( $args['addpleaseselect'] ) $result .= '<option value="0" disabled="disabled" '.$selected.' >' . __('- select an album -', 'wppa') . '</option>';
 	
 	$selected = $args['selected'] == '0' ? ' selected="selected"' : '';
 	if ( $args['addnone'] ) $result .= '<option value="0"'.$selected.' >' . __('--- none ---', 'wppa') . '</option>';
@@ -695,16 +687,16 @@ global $wpdb;
 	$selected = $args['selected'] == '-99' ? ' selected="selected"' : '';
 	if ( $args['addmultiple'] ) $result .= '<option value="-99"'.$selected.' >' . __('--- multiple see below ---', 'wppa') . '</option>';
 	
-	if ( $albums ) foreach ( array_keys($albums) as $index ) {
-		if ( $args['selected'] == $index ) $selected = ' selected="selected"'; else $selected = '';
-		if ( ( $args['disabled'] == $index ) || 
-			 ( $args['exclude'] == $index ) ||
-			 ( $args['checkupload'] && ! wppa_allow_uploads($index) ) ||
-			 ( $args['disableancestors'] && wppa_is_ancestor($args['exclude'], $index))
+	if ( $albums ) foreach ( $albums as $album ) {
+		if ( ( $args['disabled'] == $album['id'] ) || 
+			 ( $args['exclude'] == $album['id'] ) ||
+			 ( $args['checkupload'] && ! wppa_allow_uploads($album['id']) ) ||
+			 ( $args['disableancestors'] && wppa_is_ancestor($args['exclude'], $album['id']) )
 			) $disabled = ' disabled="disabled"'; else $disabled = '';
-		if ( ! $args['checkaccess'] || wppa_have_access($index) ) {
-			if ( $args['addnumbers'] ) $number = ' ('.$index.')'; else $number = '';
-			$result .= '<option value="' . $index . '" ' . $selected . $disabled . '>' . $albums[$index] . $number . '</option>';
+		if ( $args['selected'] == $album['id'] && ! $disabled ) $selected = ' selected="selected"'; else $selected = '';
+		if ( ! $args['checkaccess'] || wppa_have_access($album['id']) ) {
+			if ( $args['addnumbers'] ) $number = ' ('.$album['id'].')'; else $number = '';
+			$result .= '<option value="' . $album['id'] . '" ' . $selected . $disabled . '>' . $album['name'] . $number . '</option>';
 		}
 	}
 	

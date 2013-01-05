@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 *
-* Version 4.8.11
+* Version 4.9.0
 *
 */
 
@@ -104,6 +104,10 @@ global $wppa_opt;
 					'<select id="mygallery-album" name="album" style=width:270px;" class="mygallery-album" onchange="wppaTinyMceAlbumPreview(this.value)">';
 						$albums = $wpdb->get_results( "SELECT `id`, `name` FROM `".WPPA_ALBUMS."` ORDER BY `timestamp` DESC", ARRAY_A );
 						if ($albums) {
+							if ( wppa_switch('wppa_hier_albsel') ) $albums = wppa_add_paths($albums);
+							else foreach ( array_keys($albums) as $index ) $albums[$index]['name'] = __(stripslashes($albums[$index]['name']));
+							// Sort
+							$albums = wppa_array_sort($albums, 'name');
 							$result .= 
 							// Please select
 							'<option value="0" disabled="disabled" selected="selected" >'.__('Please select an album', 'wppa').'</option>';

@@ -2,11 +2,11 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 4.8.12
+* version 4.9.0
 *
 */
 global $wppa_api_version;
-$wppa_api_version = '4-8-12-000';
+$wppa_api_version = '4-9-0-000';
 // Initialize globals and option settings
 function wppa_initialize_runtime($force = false) {
 global $wppa;
@@ -86,7 +86,8 @@ global $wppa_initruntimetime;
 			'is_single'					=> false,
 			'is_landing'				=> '0',
 			'is_comten'					=> false,
-			'comten_count'				=> '0'
+			'comten_count'				=> '0',
+			'is_tag'					=> false
 
 		);
 
@@ -95,7 +96,14 @@ global $wppa_initruntimetime;
 
 	}
 	
-	if (!is_array($wppa_opt)) {
+	if ( is_admin() ) {
+		$wppa_opt = get_option('wppa_cached_options_admin', false);
+	}
+	else {
+		$wppa_opt = get_option('wppa_cached_options', false);
+	}
+				
+	if ( ! is_array($wppa_opt) ) {
 		$wppa_opt = array ( 'wppa_revision' 			=> '',
 							'wppa_prevrev'				=> '',
 	
@@ -118,9 +126,12 @@ global $wppa_initruntimetime;
 						'wppa_mini_treshold'			=> '',
 						// C Thumbnails
 						'wppa_thumbsize' 				=> '',	// 1
+						'wppa_thumbsize_alt' 			=> '',	// 1a
 						'wppa_thumb_aspect'				=> '',	// 2
 						'wppa_tf_width' 				=> '',	// 3
+						'wppa_tf_width_alt' 			=> '',	// 3a
 						'wppa_tf_height' 				=> '',	// 4
+						'wppa_tf_height_alt' 			=> '',	// 4a
 						'wppa_tn_margin' 				=> '',	// 5
 						'wppa_thumb_auto' 				=> '',	// 6
 						'wppa_thumb_page_size' 			=> '',	// 7
@@ -160,6 +171,7 @@ global $wppa_initruntimetime;
 						'wppa_bc_on_topten'					=> '',	// 3
 						'wppa_bc_on_lasten'					=> '',	// 3
 						'wppa_bc_on_comten'					=> '',	// 3
+						'wppa_bc_on_tag'					=> '',	// 3
 						'wppa_show_home' 					=> '',	// 4
 						'wppa_show_page' 					=> '',	// 4
 						'wppa_bc_separator' 				=> '',	// 5
@@ -424,6 +436,10 @@ global $wppa_initruntimetime;
 						'wppa_album_widget_linkpage'		=> '',
 						'wppa_album_widget_blank'			=> '',
 
+						'wppa_tagcloud_linktype'			=> '',
+						'wppa_tagcloud_linkpage'			=> '',
+						'wppa_tagcloud_blank'				=> '',
+
 						// Table VII: Security
 						// B
 						'wppa_user_upload_login'	=> '',
@@ -523,7 +539,15 @@ global $wppa_initruntimetime;
 
 
 		);
+		
 		array_walk($wppa_opt, 'wppa_set_options');
+		
+		if ( is_admin() ) {
+			update_option('wppa_cached_options_admin', $wppa_opt);
+		}
+		else {
+			update_option('wppa_cached_options', $wppa_opt);
+		}
 	}
 	
 	if (isset($_GET['debug']) && $wppa_opt['wppa_allow_debug']) {
@@ -559,7 +583,7 @@ global $wppa_initruntimetime;
 		$time = time();
 		$obsolete = $time - $spammaxage;
 		$iret = $wpdb->query($wpdb->prepare( "DELETE FROM `".WPPA_COMMENTS."` WHERE `status` = 'spam' AND `timestamp` < %s", $obsolete));
-		update_option('wppa_spam_auto_delcount', get_option('wppa_spam_auto_delcount', '0') + $iret);
+		if ( $iret ) wppa_update_option('wppa_spam_auto_delcount', get_option('wppa_spam_auto_delcount', '0') + $iret);
 	}
 	
 	// Create an album if required
@@ -959,7 +983,7 @@ global $wpdb;
 	while ( ! wppa_is_id_free($table, $result) ) {
 		$result++;
 	}
-	update_option($name, $result);
+	wppa_update_option($name, $result);
 	return $result;
 }
 
@@ -1137,6 +1161,9 @@ global $wppa_opt;
 	$result = '100';
 	
 	$tmp = get_option('wppa_thumbsize', 'nil');
+	if (is_numeric($tmp) && $tmp > $result) $result = $tmp;
+
+	$tmp = get_option('wppa_thumbsize_alt', 'nil');
 	if (is_numeric($tmp) && $tmp > $result) $result = $tmp;
 	
 	$tmp = get_option('wppa_smallsize', 'nil');

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 4.8.11
+* Version 4.9.0
 *
 */
 
@@ -50,7 +50,7 @@ global $wppa_revno;
 					$temp = $indices[$sub];
 					$indices[$sub] = $indices[$sub - '1'];
 					$indices[$sub - '1'] = $temp;
-					update_option('wppa_slide_order_split', implode(',', $indices));
+					wppa_update_option('wppa_slide_order_split', implode(',', $indices));
 				}
 				else {
 					$sequence = get_option('wppa_slide_order');
@@ -58,7 +58,7 @@ global $wppa_revno;
 					$temp = $indices[$sub];
 					$indices[$sub] = $indices[$sub - '1'];
 					$indices[$sub - '1'] = $temp;
-					update_option('wppa_slide_order', implode(',', $indices));
+					wppa_update_option('wppa_slide_order', implode(',', $indices));
 				}
 				break;
 			// Should better be here
@@ -154,7 +154,7 @@ global $wppa_revno;
 		?>
 		<script type="text/javascript">document.getElementById("wppa-ok-p").innerHTML="<strong><?php _e('READY regenerating thumbnail images.', 'wppa') ?></strong>"</script>
 		<?php				
-		update_option('wppa_lastthumb', '-2');
+		wppa_update_option('wppa_lastthumb', '-2');
 	}
 	// Check database
 //	if ( get_option('wppa_revision') != $wppa_revno ) 
@@ -367,6 +367,15 @@ global $wppa_revno;
 							$class = 'tt_normal';
 							wppa_setting($slug, '1', $name, $desc, $html, $help, $class);
 
+							$name = __('Thumbnail Size Alt', 'wppa');
+							$desc = __('The alternative size of the thumbnail images.', 'wppa');
+							$help = esc_js(__('This size applies to the width or height, whichever is the largest.', 'wppa'));
+							$help .= '\n'.esc_js(__('Changing the thumbnail size may result in all thumbnails being regenerated. this may take a while.', 'wppa'));
+							$slug = 'wppa_thumbsize_alt';
+							$html = wppa_input($slug, '40px', '', __('pixels', 'wppa'));
+							$class = 'tt_normal';
+							wppa_setting($slug, '1a', $name, $desc, $html, $help, $class);
+
 							$name = __('Thumbnail Aspect', 'wppa');
 							$desc = __('Aspect ration of thumbnail image', 'wppa');
 							$help = '';
@@ -415,6 +424,16 @@ global $wppa_revno;
 							$class = 'tt_normal';
 							wppa_setting($slug, '3', $name, $desc, $html, $help, $class);
 
+							$name = __('Thumbframe width Alt', 'wppa');
+							$desc = __('The width of the alternative thumbnail frame.', 'wppa');
+							$help = esc_js(__('Set the width of the thumbnail frame.', 'wppa'));
+							$help .= '\n\n'.esc_js(__('Set width, height and spacing for the thumbnail frames.', 'wppa'));
+							$help .= '\n'.esc_js(__('These sizes should be large enough for a thumbnail image and - optionally - the text under it.', 'wppa'));
+							$slug = 'wppa_tf_width_alt';
+							$html = wppa_input($slug, '40px', '', __('pixels wide', 'wppa'));
+							$class = 'tt_normal';
+							wppa_setting($slug, '3a', $name, $desc, $html, $help, $class);
+
 							$name = __('Thumbframe height', 'wppa');
 							$desc = __('The height of the thumbnail frame.', 'wppa');
 							$help = esc_js(__('Set the height of the thumbnail frame.', 'wppa'));
@@ -424,6 +443,16 @@ global $wppa_revno;
 							$html = wppa_input($slug, '40px', '', __('pixels high', 'wppa'));
 							$class = 'tt_normal';
 							wppa_setting($slug, '4', $name, $desc, $html, $help, $class);
+
+							$name = __('Thumbframe height Alt', 'wppa');
+							$desc = __('The height of the alternative thumbnail frame.', 'wppa');
+							$help = esc_js(__('Set the height of the thumbnail frame.', 'wppa'));
+							$help .= '\n\n'.esc_js(__('Set width, height and spacing for the thumbnail frames.', 'wppa'));
+							$help .= '\n'.esc_js(__('These sizes should be large enough for a thumbnail image and - optionally - the text under it.', 'wppa'));
+							$slug = 'wppa_tf_height_alt';
+							$html = wppa_input($slug, '40px', '', __('pixels high', 'wppa'));
+							$class = 'tt_normal';
+							wppa_setting($slug, '4a', $name, $desc, $html, $help, $class);
 
 							$name = __('Thumbnail spacing', 'wppa');
 							$desc = __('The spacing between adjacent thumbnail frames.', 'wppa');
@@ -728,6 +757,14 @@ global $wppa_revno;
 							$html = wppa_checkbox($slug);
 							$class = 'wppa_bc';
 							wppa_setting($slug, '3.2', $name, $desc, $html, $help, $class);
+
+							$name = __('Breadcrumb on tag result displays', 'wppa');
+							$desc = __('Show breadcrumb navigation bars on tag result displays.', 'wppa');
+							$help = esc_js(__('Indicate whether a breadcrumb navigation should be displayed above the tag result displays.', 'wppa'));
+							$slug = 'wppa_bc_on_tag';
+							$html = wppa_checkbox($slug);
+							$class = 'wppa_bc';
+							wppa_setting($slug, '3.3', $name, $desc, $html, $help, $class);
 
 							$name = __('Home', 'wppa');
 							$desc = __('Show "Home" in breadcrumb.', 'wppa');
@@ -2507,6 +2544,28 @@ global $wppa_revno;
 							$values = array('file', 'zip');
 							$html = wppa_select($slug, $options, $values);
 							wppa_setting($slug, '2', $name, $desc, $html.'</td><td></td><td></td><td>', $help);
+							
+							$name = __('Tagcloud Link', 'wppa');
+							$desc = __('Configure the link from the tags in the tag cloud.', 'wppa');
+							$help = esc_js(__('Link the tag words to ether the thumbnails or the slideshow.', 'wppa'));
+							$slug1 = 'wppa_tagcloud_linktype';
+							$slug2 = 'wppa_tagcloud_linkpage';
+							$slug3 = 'wppa_tagcloud_blank';
+							$slug4 = '';
+							$slug = array($slug1, $slug2, $slug3, $slug4);
+							$opts = array(__('thumbnails', 'wppa'), __('slideshow', 'wppa'));
+							$vals = array('album', 'slide'); 
+							$onchange = 'wppaCheckTagLink(); wppaCheckLinkPageErr(\'tagcloud\');';
+							$html1 = wppa_select($slug1, $opts, $vals, $onchange);						
+							$class = 'wppa_tglp';
+							$onchange = 'wppaCheckLinkPageErr(\'tagcloud\');';
+							$html2 = wppa_select($slug2, $options_page, $values_page, $onchange, $class, true);
+							$class = 'wppa_tglb';
+							$html3 = wppa_checkbox($slug3, '', $class);
+							$html4 = '';
+							$htmlerr = wppa_htmlerr('tagcloud');
+							$html = array($html1, $htmlerr.$html2, $html3, $html4);
+							wppa_setting($slug, '3a,b,c', $name, $desc, $html, $help);
 							
 							?>
 						</tbody>

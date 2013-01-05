@@ -2,7 +2,7 @@
 /* wppa-ajax.php
 *
 * Functions used in ajax requests
-* version 4.8.6
+* version 4.9.0
 *
 */
 add_action('wp_ajax_wppa', 'wppa_ajax_callback');
@@ -274,7 +274,9 @@ global $wppa;
 				exit;																// Nonce check failed
 			}
 			// Get file extension
-			$ext = $wpdb->get_var($wpdb->prepare('SELECT `ext` FROM `'.WPPA_PHOTOS.'` WHERE `id` = %s', $photo)); 
+			$ext = $wpdb->get_var($wpdb->prepare('SELECT `ext` FROM `'.WPPA_PHOTOS.'` WHERE `id` = %s', $photo));
+			// Get album
+			$album = $wpdb->get_var($wpdb->prepare('SELECT `album` FROM `'.WPPA_PHOTOS.'` WHERE `id` = %s', $photo));
 			// Delete fullsize image
 			$file = ABSPATH.'wp-content/uploads/wppa/'.$photo.'.'.$ext;
 			if (file_exists($file)) unlink($file);
@@ -289,6 +291,10 @@ global $wppa;
 			$wpdb->query($wpdb->prepare('DELETE FROM `'.WPPA_EXIF.'` WHERE `photo` = %s', $photo));
 			echo '||1||<span style="color:red" >'.sprintf(__('Photo %s has been deleted', 'wppa'), $photo).'</span>';
 			wppa_clear_cache();
+			echo '||';
+			$a = wppa_allow_uploads($album);
+			if ( ! $a ) echo 'full';
+			else echo 'notfull||'.$a;
 			break;
 
 		case 'update-album':
@@ -323,6 +329,7 @@ global $wppa;
 					exit;
 					break;
 				case 'name':
+					$value = strip_tags($value);
 					$itemname = __('Name', 'wppa');
 					break;
 				case 'description':
@@ -346,6 +353,9 @@ global $wppa;
 					break;
 				case 'p_order_by':
 					$itemname = __('Photo order', 'wppa');
+					break;
+				case 'alt_thumbsize':
+					$itemname = __('Use Alt thumbsize', 'wppa');
 					break;
 				case 'cover_linktype':
 					$itemname = __('Link type', 'wppa');
@@ -379,6 +389,12 @@ global $wppa;
 			$iret = $wpdb->query($wpdb->prepare('UPDATE '.WPPA_ALBUMS.' SET `'.$item.'` = %s WHERE `id` = %s', $value, $album));
 			if ($iret !== false ) {
 				echo '||0||'.sprintf(__('<b>%s</b> of album %s updated', 'wppa'), $itemname, $album);
+				if ( $item == 'upload_limit' ) {
+					echo '||';
+					$a = wppa_allow_uploads($album);
+					if ( ! $a ) echo 'full';
+					else echo 'notfull||'.$a;
+				}
 			}
 			else {
 				echo '||2||'.sprintf(__('An error occurred while trying to update <b>%s</b> of album %s', 'wppa'), $itemname, $album);
@@ -489,6 +505,7 @@ global $wppa;
 				case 'linkurl':
 				case 'linktitle':
 				case 'linktarget':
+				case 'tags':
 				case 'status':
 					switch ($item) {
 						case 'name':
@@ -519,6 +536,35 @@ global $wppa;
 							break;
 						case 'linktarget':
 							$itemname = __('Link target', 'wppa');
+							break;
+						case 'tags':
+							// Sanitize tags
+							$value = strip_tags($value);
+							$value = str_replace(' ', '', $value);
+							$value = str_replace(';', ',', $value);
+							$temp = explode(',', $value);
+							if ( is_array($temp) ) {
+								asort($temp);
+								$value = '';
+								$first = true;
+								$previdx = '';
+								foreach ( array_keys($temp) as $idx ) {
+									$temp[$idx] = strtoupper(substr($temp[$idx], 0, 1)).strtolower(substr($temp[$idx], 1));
+									if ( $temp[$idx] ) {
+										if ( $first ) {
+											$first = false;
+											$value .= $temp[$idx];
+											$previdx = $idx;
+										}
+										elseif ( $temp[$idx] !=  $temp[$previdx] ) {	// Skip duplicates
+											$value .= ','.$temp[$idx];
+											$previdx = $idx;
+										}
+									}									
+								}
+							}
+							wppa_clear_taglist();
+							$itemname = __('Photo Tags', 'wppa');
 							break;
 						case 'status':
 							$itemname = __('Status', 'wppa');
@@ -799,7 +845,7 @@ global $wppa;
 				case 'wppa_regen':
 				case 'wppa_thumb_aspect':
 					if ( get_option('wppa_lastthumb', '-2') == '-2' ) {
-						update_option('wppa_lastthumb', '-1');	// Trigger regen if not doing already
+						wppa_update_option('wppa_lastthumb', '-1');	// Trigger regen if not doing already
 						$old_minisize--;
 					}				
 					break;
@@ -822,7 +868,7 @@ global $wppa;
 						}
 					}
 					wppa_recalculate_ratings();
-					update_option($option, $value);
+					wppa_update_option($option, $value);
 					$wppa['error'] = '0';
 					$alert = '';
 					break;
@@ -833,7 +879,7 @@ global $wppa;
 						$wppa['error'] = '1';
 					}
 					else {
-						update_option($option, $value);
+						wppa_update_option($option, $value);
 						$wppa['error'] = '0';
 						$alert = '';
 					}
@@ -841,7 +887,7 @@ global $wppa;
 				
 				default:
 					// Do the update only
-					update_option($option, $value);
+					wppa_update_option($option, $value);
 					$wppa['error'] = '0';
 					$alert = '';
 			}
@@ -850,14 +896,14 @@ global $wppa;
 				if ( ! $alert ) $alert .= $wppa['out'];
 			}
 			else {
-				update_option($option, $value);
+				wppa_update_option($option, $value);
 				if ( ! $title ) $title = sprintf(__('Setting %s updated to %s', 'wppa'), $option, $value);
 			}
 			
 			// Did we do something that will require regen?
 			$new_minisize = wppa_get_minisize();
 			if ( $old_minisize != $new_minisize ) {
-				update_option('wppa_lastthumb', '-1');	// Trigger regen
+				wppa_update_option('wppa_lastthumb', '-1');	// Trigger regen
 				$alert .= __('You just changed a setting that requires the regeneration of thumbnails.', 'wppa');
 				$alert .= ' '.__('This process will start as soon as you refresh or re-enter the settings page.', 'wppa');
 			}

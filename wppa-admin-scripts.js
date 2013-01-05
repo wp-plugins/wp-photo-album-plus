@@ -1,7 +1,7 @@
 /* admin-scripts.js */
 /* Package: wp-photo-album-plus
 /*
-/* Version 4.8.5
+/* Version 4.9.0
 /* Various js routines used in admin pages		
 */
 
@@ -10,6 +10,7 @@ var wppa_import = 'Import';
 var wppa_update = 'Update';
 var wppaImageDirectory = '';
 var wppaAjaxUrl = '';
+var wppaUploadToThisAlbum = 'Upload to this album';
 
 jQuery(document).ready(function() {
 /* alert( 'You are running jQuery version: ' + jQuery.fn.jquery ); */
@@ -47,6 +48,7 @@ function wppaInitSettings() {
 	wppaCheckSlideLink();
 	wppaCheckCoverImg();
 	wppaCheckPotdLink();
+	wppaCheckTagLink()
 	wppaCheckRating();
 	wppaCheckComments();
 	wppaCheckCustom();
@@ -66,6 +68,7 @@ function wppaInitSettings() {
 	wppaCheckLinkPageErr('thumbnail_widget');
 	wppaCheckLinkPageErr('lasten_widget');
 	wppaCheckLinkPageErr('album_widget');
+	wppaCheckLinkPageErr('tagcloud');
 	wppaCheckSplitNamedesc();
 	wppaCheckShares();
 	
@@ -508,6 +511,11 @@ function wppaCheckPotdLink() {
 	}
 }
 
+function wppaCheckTagLink() {
+	var lvalue = document.getElementById('wppa_tagcloud_linktype').value;
+	/* */
+}
+
 function wppaCheckMphotoLink() { 
 	var lvalue = document.getElementById('wppa_mphoto_linktype').value;
 	if (lvalue == 'none' || lvalue == 'file' || lvalue == 'lightbox' ) {
@@ -713,7 +721,10 @@ function wppaAjaxDeletePhoto(photo) {
 				}
 				
 				if ( ArrValues[1] == 0 ) document.getElementById('photostatus-'+photo).innerHTML = ArrValues[2];	// Error
-				else document.getElementById('photoitem-'+photo).innerHTML = ArrValues[2];	// OK
+				else {
+					document.getElementById('photoitem-'+photo).innerHTML = ArrValues[2];	// OK
+					wppaProcessFull(ArrValues[3], ArrValues[4]);
+				}
 			}
 			
 		}
@@ -851,6 +862,8 @@ function wppaAjaxUpdateAlbum(album, actionslug, elem) {
 				switch (ArrValues[1]) {
 					case '0':		// No error
 						document.getElementById('albumstatus-'+album).innerHTML = ArrValues[2];
+						// Process full/notfull
+						if ( typeof(ArrValues[3]) != 'undefined' ) wppaProcessFull(ArrValues[3], ArrValues[4]);
 						break;
 					case '97':		// Ratings cleared
 						document.getElementById('albumstatus-'+album).innerHTML = ArrValues[2];
@@ -866,7 +879,21 @@ function wppaAjaxUpdateAlbum(album, actionslug, elem) {
 		}
 	}
 }
-				
+	
+function wppaProcessFull(arg, n) {
+
+	if ( arg == 'full' ) {
+		jQuery('#full').css('display', '');
+		jQuery('#notfull').css('display', 'none');
+	}
+	if ( arg == 'notfull' ) {
+		jQuery('#full').css('display', 'none');
+		if ( n > 0 ) jQuery('#notfull').attr('value', wppaUploadToThisAlbum+' (max '+n+')');
+		else jQuery('#notfull').attr('value', wppaUploadToThisAlbum);
+		jQuery('#notfull').css('display', '');
+	}
+}
+	
 function wppaAjaxUpdateCommentStatus(photo, id, value) {
 	
 	var xmlhttp = wppaGetXmlHttp();
@@ -886,12 +913,15 @@ function wppaAjaxUpdateCommentStatus(photo, id, value) {
 			}
 			switch (ArrValues[1]) {
 				case '0':		// No error
-					document.getElementById('photostatus-'+photo).innerHTML = ArrValues[2];
+					jQuery('#photostatus-'+photo).html(ArrValues[2]);
+//					document.getElementById('photostatus-'+photo).innerHTML = ArrValues[2];
 					break;
 				default:	// Error
-					document.getElementById('photoitem-'+photo).innerHTML = '<span style="color:red">'+ArrValues[2]+'</span>';
+					jQuery('#photoitem-'+photo).html('<span style="color:red">'+ArrValues[2]+'</span>');
+//					document.getElementById('photoitem-'+photo).innerHTML = '<span style="color:red">'+ArrValues[2]+'</span>';
 					break;
 			}
+			jQuery('#wppa-comment-spin-'+id).css('visibility', 'hidden');
 		}
 	}
 
@@ -1077,5 +1107,17 @@ function wppaCheckLinkPageErr(slug) {
 	}
 	else {
 		jQuery('#'+slug+'-err').css({display:'none'});
+	}
+}
+
+function wppaAddTag(val, id) {
+	var elm = document.getElementById(id);
+	if ( val ) {
+		if ( elm.value ) {
+			elm.value += ','+val;
+		}
+		else {
+			elm.value = val;
+		}
 	}
 }

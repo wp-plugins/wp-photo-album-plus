@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all comments
-* Version 4.8.6
+* Version 4.9.0
 *
 */
 
@@ -96,14 +96,16 @@ global $wppa_opt;
 
 			$iret = true;
 			
-			if (isset($_POST['wppa_comadmin_show'])) update_option('wppa_comadmin_show', $_POST['wppa_comadmin_show']);
-			if (isset($_POST['wppa_comadmin_linkpage'])) update_option('wppa_comadmin_linkpage', $_POST['wppa_comadmin_linkpage']);
-			if (isset($_POST['wppa_comadmin_order'])) update_option('wppa_comadmin_order', $_POST['wppa_comadmin_order']);
+			if (isset($_POST['wppa_comadmin_show'])) wppa_update_option('wppa_comadmin_show', $_POST['wppa_comadmin_show']);
+			if (isset($_POST['wppa_comadmin_linkpage'])) wppa_update_option('wppa_comadmin_linkpage', $_POST['wppa_comadmin_linkpage']);
+			if (isset($_POST['wppa_comadmin_order'])) wppa_update_option('wppa_comadmin_order', $_POST['wppa_comadmin_order']);
 			
+			/* Ajaxified
 			if (isset($_POST['status'])) if (is_array($_POST['status'])) {
 				array_walk($_POST['status'], 'wppa_edit_commentstatus');
 			}
-
+			*/
+			
 			if (isset($_POST['edit_comment'])) {
 				$iret = wppa_edit_comment($_POST['edit_comment']);
 			}
@@ -269,7 +271,7 @@ global $wppa_opt;
 							<th scope="col"><?php _e('Email', 'wppa') ?></th>
 							<th scope="col"><?php _e('Time since', 'wppa') ?></th>
 							<th scope="col"><?php _e('Comment', 'wppa') ?></th>
-							<th scope="col"><?php _e('Status', 'wppa') ?></th>
+							<th scope="col" style="width: 130px;" ><?php _e('Status', 'wppa') ?></th>
 							<th scope="col"><?php _e('Edit', 'wppa') ?></th>
 							<th scope="col"><?php _e('Delete', 'wppa') ?></th>
 						</tr>
@@ -329,11 +331,13 @@ global $wppa_opt;
 									<td><?php echo wppa_get_time_since($com['timestamp']) ?></td>
 									<td><?php echo $com['comment'] ?></td>
 									<td>
-										<select name="status['<?php echo $com['id'] ?>']"><?php echo $com['status'] ?>
+										<input type="hidden" id="photo-nonce-<?php echo $com['photo'] ?>" value="<?php echo wp_create_nonce('wppa_nonce_'.$com['photo']);  ?>" />
+										<select name="status['<?php echo $com['id'] ?>']" onchange="jQuery('#wppa-comment-spin-<?php echo $com['id'] ?>').css('visibility', 'visible'); wppaAjaxUpdateCommentStatus(<?php echo $com['photo'] ?>, <?php echo $com['id'] ?>, this.value)">
 											<option value="pending" 	<?php if($com['status'] == 'pending') 	echo 'selected="selected"' ?>><?php _e('Pending', 'wppa') ?></option>
 											<option value="approved" 	<?php if($com['status'] == 'approved') 	echo 'selected="selected"' ?>><?php _e('Approved', 'wppa') ?></option>
 											<option value="spam" 		<?php if($com['status'] == 'spam') 		echo 'selected="selected"' ?>><?php _e('Spam', 'wppa') ?></option>
 										</select>
+										<img id="wppa-comment-spin-<?php echo $com['id'] ?>" src="<?php echo wppa_get_imgdir().'wpspin.gif' ?>" style="visibility:hidden" />
 									</td>
 									<?php $url = wppa_dbg_url(get_admin_url().'admin.php?page=wppa_manage_comments&tab=edit&edit_id='.$com['id']);
 										if ( isset($_GET['compage'])) $url .= '&compage='.$_GET['compage']; 
