@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the non admin stuff
-* Version 4.8.8
+* Version 4.9.0
 *
 */
 
@@ -127,48 +127,35 @@ add_action('wp_footer', 'wppa_load_footer');
 function wppa_load_footer() {
 global $wppa_opt;
 	if ($wppa_opt['wppa_lightbox_name'] == 'wppa') {
-		echo("\n<!-- start WPPA+ Footer data -->\n");
-		echo('
-			<div id="wppa-overlay-bg" style="text-align:center; display:none; position:fixed; top:0; left:0; z-index:100090; width:100%; height:2048px; background-color:black;" onclick="wppaOvlOnclick(event)" ></div>
-			<div id="wppa-overlay-ic" style="position:fixed; top:0; padding-top:10px; z-index:100095; opacity:1; box-shadow:none;" '.
-			' ontouchstart="wppaTouchStart(event, \'wppa-overlay-ic\', -1);"  ontouchend="wppaTouchEnd(event);" ontouchmove="wppaTouchMove(event);" ontouchcancel="wppaTouchCancel(event);" '.
-			'></div>
-			<img id="wppa-overlay-sp" style="position:fixed; top:200px; left:200px; z-index:100100; opacity:1; visibility:hidden; box-shadow:none;" src="'.wppa_get_imgdir().'loading.gif" />
-			');
-		echo("\n".'<script type="text/javascript">jQuery("#wppa-overlay-bg").css({height:screen.height+"px"});');
-		if ( $wppa_opt['wppa_ovl_txt_lines'] == 'auto' ) {
-			echo ("\n\t\t\t".'wppaOvlTxtHeight = "auto";');
-		}
-		else {
-			if ( ! $wppa_opt['wppa_fontsize_lightbox'] ) $wppa_opt['wppa_fontsize_lightbox'] = '10';
-			$d = $wppa_opt['wppa_ovl_show_counter'] ? 1 : 0;
-			echo ("\n\t\t\t".'wppaOvlTxtHeight = '.(($wppa_opt['wppa_ovl_txt_lines'] + $d) * ($wppa_opt['wppa_fontsize_lightbox'] + 2)).';');
-		}
-		echo('
-			wppaOvlCloseTxt = "'.__($wppa_opt['wppa_ovl_close_txt']).'";
-			wppaOvlOpacity = '.($wppa_opt['wppa_ovl_opacity']/100).';
-			wppaOvlOnclickType = "'.$wppa_opt['wppa_ovl_onclick'].'";
-			wppaOvlTheme = "'.$wppa_opt['wppa_ovl_theme'].'";
-			wppaOvlAnimSpeed = '.$wppa_opt['wppa_ovl_anim'].';
-			wppaVer4WindowWidth = 800;
-			wppaVer4WindowHeight = 600;');
-			if ( $wppa_opt['wppa_ovl_show_counter'] ) echo ('
-			wppaOvlShowCounter = true;');
-			else echo ('
-			wppaOvlShowCounter = false;');
-			if ( $wppa_opt['wppa_fontfamily_lightbox'] ) echo ('
-			wppaOvlFontFamily = "'.$wppa_opt['wppa_fontfamily_lightbox'].'";');
-			if ( $wppa_opt['wppa_fontsize_lightbox'] ) echo ('
-			wppaOvlFontSize = "'.$wppa_opt['wppa_fontsize_lightbox'].'";');
-			if ( $wppa_opt['wppa_fontcolor_lightbox'] ) echo ('
-			wppaOvlFontColor = "'.$wppa_opt['wppa_fontcolor_lightbox'].'";');
-			if ( $wppa_opt['wppa_fontweight_lightbox'] ) echo ('
-			wppaOvlFontWeight = "'.$wppa_opt['wppa_fontweight_lightbox'].'";');
-			if ( $wppa_opt['wppa_fontsize_lightbox'] ) echo ('
-			wppaOvlLineHeight = "'.($wppa_opt['wppa_fontsize_lightbox'] + '2').'";');
-			echo ('
-			</script>');
-		echo("\n<!-- end WPPA+ Footer data -->\n");
+		if ( ! $wppa_opt['wppa_fontsize_lightbox'] ) $wppa_opt['wppa_fontsize_lightbox'] = '10';
+		$d = $wppa_opt['wppa_ovl_show_counter'] ? 1 : 0;
+		$ovlh = $wppa_opt['wppa_ovl_txt_lines'] == 'auto' ? 'auto' : (($wppa_opt['wppa_ovl_txt_lines'] + $d) * ($wppa_opt['wppa_fontsize_lightbox'] + 2));
+		echo '
+<!-- start WPPA+ Footer data -->
+	<div id="wppa-overlay-bg" style="text-align:center; display:none; position:fixed; top:0; left:0; z-index:100090; width:100%; height:2048px; background-color:black;" onclick="wppaOvlOnclick(event)" ></div>
+	<div id="wppa-overlay-ic" style="position:fixed; top:0; padding-top:10px; z-index:100095; opacity:1; box-shadow:none;"
+		ontouchstart="wppaTouchStart(event, \'wppa-overlay-ic\', -1);"  ontouchend="wppaTouchEnd(event);" 
+		ontouchmove="wppaTouchMove(event);" ontouchcancel="wppaTouchCancel(event);" >
+	</div>
+	<img id="wppa-overlay-sp" style="position:fixed; top:200px; left:200px; z-index:100100; opacity:1; visibility:hidden; box-shadow:none;" src="'.wppa_get_imgdir().'loading.gif" />
+	<script type="text/javascript">jQuery("#wppa-overlay-bg").css({height:screen.height+"px"});
+		wppaOvlTxtHeight = "'.$ovlh.'";
+		wppaOvlCloseTxt = "'.__($wppa_opt['wppa_ovl_close_txt']).'";
+		wppaOvlOpacity = '.($wppa_opt['wppa_ovl_opacity']/100).';
+		wppaOvlOnclickType = "'.$wppa_opt['wppa_ovl_onclick'].'";
+		wppaOvlTheme = "'.$wppa_opt['wppa_ovl_theme'].'";
+		wppaOvlAnimSpeed = '.$wppa_opt['wppa_ovl_anim'].';
+		wppaVer4WindowWidth = 800;
+		wppaVer4WindowHeight = 600;
+		wppaOvlShowCounter = '.( $wppa_opt['wppa_ovl_show_counter'] ? 'true' : 'false' ).';
+		'.( $wppa_opt['wppa_fontfamily_lightbox'] ? 'wppaOvlFontFamily = "'.$wppa_opt['wppa_fontfamily_lightbox'].'"' : '').'
+		'.( $wppa_opt['wppa_fontsize_lightbox'] ? 'wppaOvlFontSize = "'.$wppa_opt['wppa_fontsize_lightbox'].'"' : '').'
+		'.( $wppa_opt['wppa_fontcolor_lightbox'] ? 'wppaOvlFontColor = "'.$wppa_opt['wppa_fontcolor_lightbox'].'"' : '').'
+		'.( $wppa_opt['wppa_fontweight_lightbox'] ? 'wppaOvlFontWeight = "'.$wppa_opt['wppa_fontweight_lightbox'].'"' : '').'
+		'.( $wppa_opt['wppa_fontsize_lightbox'] ? 'wppaOvlLineHeight = "'.($wppa_opt['wppa_fontsize_lightbox'] + '2').'"' : '').'
+	</script>
+<!-- end WPPA+ Footer data -->';
+
 		wppa_dbg_q('print');
 	}
 }
@@ -196,18 +183,32 @@ global $wppa;
 global $wppa_opt;
 global $wppa_locale;
 
-	echo("\n<!-- WPPA+ Runtime parameters -->\n");
-	
-	echo('<script type="text/javascript">'."\n");
-	echo('/* <![CDATA[ */'."\n");
-	
-		/* Check if wppa.js and jQuery are present */
-		if ( WPPA_DEBUG || isset($_GET['wppa-debug']) || WP_DEBUG ) {
-			echo("\t"."if (typeof(_wppaSlides) == 'undefined') alert('There is a problem with your theme. The file wppa.js is not loaded when it is expected (Errloc = wppa_kickoff).');");
-			echo("\t"."if (typeof(jQuery) == 'undefined') alert('There is a problem with your theme. The jQuery library is not loaded when it is expected (Errloc = wppa_kickoff).');");
-		}
-		/* This goes into wppa.js */ 
-		echo '
+	switch ($wppa_opt['wppa_slideshow_linktype']) {
+		case 'none':
+			$lbkey = ''; //echo("\t".'wppaLightBox = "";'."\n");		// results in omitting the anchor tag
+			break;
+		case 'file':
+			$lbkey = 'file'; //echo("\t".'wppaLightBox = "file";'."\n");	// gives anchor tag with rel="file"
+			break;
+		case 'lightbox':
+			$lbkey = $wppa_opt['wppa_lightbox_name']; //echo("\t".'wppaLightBox = "'.$wppa_opt['wppa_lightbox_name'].'";'."\n");	// gives anchor tag with rel="lightbox" or the like
+			break;
+	}
+	if ( is_numeric($wppa_opt['wppa_fullimage_border_width']) ) $fbw = $wppa_opt['wppa_fullimage_border_width'] + '1'; else $fbw = '0';
+		
+	echo '
+<!-- WPPA+ Runtime parameters -->
+	<script type="text/javascript">
+	/* <![CDATA[ */
+';
+	if ( WPPA_DEBUG || isset($_GET['wppa-debug']) || WP_DEBUG ) {
+	echo '
+	/* Check if wppa.js and jQuery are present */
+	if (typeof(_wppaSlides) == \'undefined\') alert(\'There is a problem with your theme. The file wppa.js is not loaded when it is expected (Errloc = wppa_kickoff).\');
+	if (typeof(jQuery) == \'undefined\') alert(\'There is a problem with your theme. The jQuery library is not loaded when it is expected (Errloc = wppa_kickoff).\');
+';	}
+	/* This goes into wppa.js */ 
+	echo '
 	wppaBackgroundColorImage = "'.$wppa_opt['wppa_bgcolor_img'].'";
 	wppaPopupLinkType = "'.$wppa_opt['wppa_thumb_linktype'].'";
 	wppaAnimationType = "'.$wppa_opt['wppa_animation_type'].'";
@@ -217,10 +218,8 @@ global $wppa_locale;
 	wppaTextFrameDelta = '.wppa_get_textframe_delta().';
 	wppaBoxDelta = '.wppa_get_box_delta().';
 	wppaSlideShowTimeOut = '.$wppa_opt['wppa_slideshow_timeout'].';
-	wppaPreambule = '.wppa_get_preambule().';';
-		if ($wppa_opt['wppa_film_show_glue'] == 'yes') echo '
-	wppaFilmShowGlue = true;';
-	echo '
+	wppaPreambule = '.wppa_get_preambule().';
+	wppaFilmShowGlue = '.( $wppa_opt['wppa_film_show_glue'] == 'yes' ? 'true' : 'false' ).';
 	wppaSlideShow = "'.__a('Slideshow', 'wppa_theme').'";
 	wppaStart = "'.__a('Start', 'wppa_theme').'";
 	wppaStop = "'.__a('Stop', 'wppa_theme').'";
@@ -232,86 +231,66 @@ global $wppa_locale;
 	wppaNextPhoto = "'.__a('Next photo', 'wppa_theme').'";
 	wppaPrevP = "'.__a('Prev.', 'wppa_theme').'";
 	wppaNextP = "'.__a('Next', 'wppa_theme').'";
-	wppaMiniTreshold = '.$wppa_opt['wppa_mini_treshold'].';';
-		echo("\n\t".'wppaUserName = "'.wppa_get_user().'";'."\n");
-		if ($wppa_opt['wppa_rating_change'] || $wppa_opt['wppa_rating_multi']) echo("\t".'wppaRatingOnce = false;'."\n");
-		else echo("\t".'wppaRatingOnce = true;'."\n");
-		echo("\t".'wppaPleaseName = "'.__a('Please enter your name', 'wppa_theme').'";'."\n");
-		echo("\t".'wppaPleaseEmail = "'.__a('Please enter a valid email address', 'wppa_theme').'";'."\n");
-		echo("\t".'wppaPleaseComment = "'.__a('Please enter a comment', 'wppa_theme').'";'."\n");
-		if ( $wppa_opt['wppa_hide_when_empty'] ) echo("\t".'wppaHideWhenEmpty = true;'."\n");
-		echo("\t".'wppaBGcolorNumbar = "'.$wppa_opt['wppa_bgcolor_numbar'].'";'."\n");
-		echo("\t".'wppaBcolorNumbar = "'.$wppa_opt['wppa_bcolor_numbar'].'";'."\n");
-		echo("\t".'wppaBGcolorNumbarActive = "'.$wppa_opt['wppa_bgcolor_numbar_active'].'";'."\n");
-		echo("\t".'wppaBcolorNumbarActive = "'.$wppa_opt['wppa_bcolor_numbar_active'].'";'."\n");
-		echo("\t".'wppaFontFamilyNumbar = "'.$wppa_opt['wppa_fontfamily_numbar'].'";'."\n");
-		echo("\t".'wppaFontSizeNumbar = "'.$wppa_opt['wppa_fontsize_numbar'].'px";'."\n");
-		echo("\t".'wppaFontColorNumbar = "'.$wppa_opt['wppa_fontcolor_numbar'].'";'."\n");
-		echo("\t".'wppaFontWeightNumbar = "'.$wppa_opt['wppa_fontweight_numbar'].'";'."\n");
-		echo("\t".'wppaFontFamilyNumbarActive = "'.$wppa_opt['wppa_fontfamily_numbar_active'].'";'."\n");
-		echo("\t".'wppaFontSizeNumbarActive = "'.$wppa_opt['wppa_fontsize_numbar_active'].'px";'."\n");
-		echo("\t".'wppaFontColorNumbarActive = "'.$wppa_opt['wppa_fontcolor_numbar_active'].'";'."\n");
-		echo("\t".'wppaFontWeightNumbarActive = "'.$wppa_opt['wppa_fontweight_numbar_active'].'";'."\n");
-		echo("\t".'wppaNumbarMax = "'.$wppa_opt['wppa_numbar_max'].'";'."\n");
-		if ($wppa_locale) echo("\t".'wppaLocale = "'.$wppa_locale.'";'."\n");
-		echo("\t".'wppaAjaxUrl = "'.admin_url('admin-ajax.php').'";'."\n");
-		if ($wppa_opt['wppa_next_on_callback']) echo("\t".'wppaNextOnCallback = true;'."\n");
-		else echo("\t".'wppaNextOnCallback = false;'."\n");
-		if ($wppa_opt['wppa_rating_use_ajax']) echo("\t".'wppaRatingUseAjax = true;'."\n");
-		else if ($wppa_opt['wppa_rating_use_ajax']) echo("\t".'wppaRatingUseAjax = false;'."\n");
-		echo("\t".'wppaStarOpacity = '.($wppa_opt['wppa_star_opacity']/'100').';'."\n");
-		// Preload checkmark and clock images
-		echo("\t".'wppaTickImg.src = "'.wppa_get_imgdir().'tick.png";'."\n");
-		echo("\t".'wppaClockImg.src = "'.wppa_get_imgdir().'clock.png";'."\n");
-		if ($wppa_opt['wppa_slide_wrap'] == 'yes') echo("\t".'wppaSlideWrap = true;'."\n");
-		else echo("\t".'wppaSlideWrap = false;'."\n");
-		switch ($wppa_opt['wppa_slideshow_linktype']) {
-			case 'none':
-				echo("\t".'wppaLightBox = "";'."\n");		// results in omitting the anchor tag
-				break;
-			case 'file':
-				echo("\t".'wppaLightBox = "file";'."\n");	// gives anchor tag with rel="file"
-				break;
-			case 'lightbox':
-				echo("\t".'wppaLightBox = "'.$wppa_opt['wppa_lightbox_name'].'";'."\n");	// gives anchor tag with rel="lightbox" or the like
-				break;
-		}
-		if ( $wppa_opt['wppa_comment_email_required'] ) echo("\t".'wppaEmailRequired = true;'."\n");
-		else echo("\t".'wppaEmailRequired = false;'."\n");
-		if ( is_numeric($wppa_opt['wppa_fullimage_border_width']) ) $temp = $wppa_opt['wppa_fullimage_border_width'] + '1'; else $temp = '0';
-		echo("\t".'wppaSlideBorderWidth = '.$temp.';'."\n");
-		if ( $wppa_opt['wppa_allow_ajax'] ) echo("\t".'wppaAllowAjax = true;'."\n"); 
-		else echo("\t".'wppaAllowAjax = false;'."\n");
-		if ( $wppa_opt['wppa_use_photo_names_in_urls'] ) echo("\t".'wppaUsePhotoNamesInUrls = true;'."\n"); 
-		else echo("\t".'wppaUsePhotoNamesInUrls = false;'."\n"); 
-		if ( $wppa_opt['wppa_thumb_blank'] ) echo("\t".'wppaThumbTargetBlank = true;'."\n");
-		else echo("\t".'wppaThumbTargetBlank = false;'."\n");
-		echo ("\t".'wppaRatingMax = '.$wppa_opt['wppa_rating_max'].';'."\n");
-		echo ("\t".'wppaRatingDisplayType = "'.$wppa_opt['wppa_rating_display_type'].'";'."\n");
-		echo ("\t".'wppaRatingPrec = '.$wppa_opt['wppa_rating_prec'].';'."\n");
-		if ( $wppa_opt['wppa_enlarge'] ) echo ("\t".'wppaStretch = true;'."\n");
-		else ("\t".'wppaStretch = false;'."\n");
-		echo ("\t".'wppaMinThumbSpace = '.$wppa_opt['wppa_tn_margin'].';'."\n");
-		if ( $wppa_opt['wppa_thumb_auto'] ) echo ("\t".'wppaThumbSpaceAuto = true;'."\n");
-		else ("\t".'wppaThumbSpaceAuto = false;'."\n");
-		echo ("\t".'wppaMagnifierCursor = "'.$wppa_opt['wppa_magnifier'].'";'."\n");
-		echo ("\t".'wppaArtMonkyLink = "'.$wppa_opt['wppa_art_monkey_link'].'";'."\n");
-		if ( $wppa_opt['wppa_auto_open_comments'] ) echo ("\t".'wppaAutoOpenComments = true;'."\n");
-		else echo ("\t".'wppaAutoOpenComments = false;'."\n");
-		
-
-	echo("/* ]]> */\n");
-	echo("</script>\n");
+	wppaMiniTreshold = '.$wppa_opt['wppa_mini_treshold'].';
+	wppaUserName = "'.wppa_get_user().'";
+	wppaRatingOnce = '.( $wppa_opt['wppa_rating_change'] || $wppa_opt['wppa_rating_multi'] ? 'false' : 'true' ).';
+	wppaPleaseName = "'.__a('Please enter your name', 'wppa_theme').'";
+	wppaPleaseEmail = "'.__a('Please enter a valid email address', 'wppa_theme').'";
+	wppaPleaseComment = "'.__a('Please enter a comment', 'wppa_theme').'";
+	wppaHideWhenEmpty = '.( $wppa_opt['wppa_hide_when_empty'] ? 'true' : 'false' ).';
+	wppaBGcolorNumbar = "'.$wppa_opt['wppa_bgcolor_numbar'].'";
+	wppaBcolorNumbar = "'.$wppa_opt['wppa_bcolor_numbar'].'";
+	wppaBGcolorNumbarActive = "'.$wppa_opt['wppa_bgcolor_numbar_active'].'";
+	wppaBcolorNumbarActive = "'.$wppa_opt['wppa_bcolor_numbar_active'].'";
+	wppaFontFamilyNumbar = "'.$wppa_opt['wppa_fontfamily_numbar'].'";
+	wppaFontSizeNumbar = "'.$wppa_opt['wppa_fontsize_numbar'].'px";
+	wppaFontColorNumbar = "'.$wppa_opt['wppa_fontcolor_numbar'].'";
+	wppaFontWeightNumbar = "'.$wppa_opt['wppa_fontweight_numbar'].'";
+	wppaFontFamilyNumbarActive = "'.$wppa_opt['wppa_fontfamily_numbar_active'].'";
+	wppaFontSizeNumbarActive = "'.$wppa_opt['wppa_fontsize_numbar_active'].'px";
+	wppaFontColorNumbarActive = "'.$wppa_opt['wppa_fontcolor_numbar_active'].'";
+	wppaFontWeightNumbarActive = "'.$wppa_opt['wppa_fontweight_numbar_active'].'";
+	wppaNumbarMax = "'.$wppa_opt['wppa_numbar_max'].'";
+	wppaLocale = "'.$wppa_locale.'";
+	wppaAjaxUrl = "'.admin_url('admin-ajax.php').'";
+	wppaNextOnCallback = '.( $wppa_opt['wppa_next_on_callback'] ? 'true' : 'false' ).';
+	wppaRatingUseAjax = '.( $wppa_opt['wppa_rating_use_ajax'] ? 'true' : 'false' ).';
+	wppaStarOpacity = '.( $wppa_opt['wppa_star_opacity']/'100' ).';
+	wppaTickImg.src = "'.wppa_get_imgdir().'tick.png";
+	wppaClockImg.src = "'.wppa_get_imgdir().'clock.png";
+	wppaSlideWrap = '.( $wppa_opt['wppa_slide_wrap'] ? 'true' : 'false' ).';
+	wppaLightBox = "'.$lbkey.'";
+	wppaEmailRequired = '.( $wppa_opt['wppa_comment_email_required'] ? 'true' : 'false' ).';
+	wppaSlideBorderWidth = '.$fbw.';
+	wppaAllowAjax = '.( $wppa_opt['wppa_allow_ajax'] ? 'true' : 'false' ).';
+	wppaUsePhotoNamesInUrls = '.( $wppa_opt['wppa_use_photo_names_in_urls'] ? 'true' : 'false' ).';
+	wppaThumbTargetBlank = '.( $wppa_opt['wppa_thumb_blank'] ? 'true' : 'false' ).';
+	wppaRatingMax = '.$wppa_opt['wppa_rating_max'].';
+	wppaRatingDisplayType = "'.$wppa_opt['wppa_rating_display_type'].'";
+	wppaRatingPrec = '.$wppa_opt['wppa_rating_prec'].';
+	wppaStretch = '.( $wppa_opt['wppa_enlarge'] ? 'true' : 'false' ).';
+	wppaMinThumbSpace = '.$wppa_opt['wppa_tn_margin'].';
+	wppaThumbSpaceAuto = '.( $wppa_opt['wppa_thumb_auto'] ? 'true' : 'false' ).';
+	wppaMagnifierCursor = "'.$wppa_opt['wppa_magnifier'].'";
+	wppaArtMonkyLink = "'.$wppa_opt['wppa_art_monkey_link'].'";
+	wppaAutoOpenComments = '.( $wppa_opt['wppa_auto_open_comments'] ? 'true' : 'false' ).';
+	/* ]]> */
+</script>
+';
 
 	// Pinterest js
 	if ( ( $wppa_opt['wppa_share_on'] || $wppa_opt['wppa_share_on_widget'] ) && $wppa_opt['wppa_share_pinterest'] ) {
-		echo("\n<!-- WPPA+ Pinterest share -->\n");
-		echo('<script type="text/javascript" src="//assets.pinterest.com/js/pinit.js"></script>');
-		echo("\n<!-- end WPPA+ Pinterest share -->\n");
+		echo '
+<!-- WPPA+ Pinterest share -->
+	<script type="text/javascript" src="//assets.pinterest.com/js/pinit.js"></script>
+<!-- end WPPA+ Pinterest share -->
+';
 	}
 
 	$wppa['rendering_enabled'] = true;
-	echo("\n<!-- WPPA+ Rendering enabled -->\n");
+	echo '
+<!-- WPPA+ Rendering enabled -->
+';
 	if ($wppa['debug']) {
 		error_reporting($wppa['debug']);
 		add_action('wp_footer', 'wppa_phpinfo');

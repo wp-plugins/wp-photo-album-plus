@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 * admin sidebar widget
-* version 4.8.4
+* version 4.9.0
 *
 */
 
@@ -15,24 +15,24 @@ function _wppa_sidebar_page_options() {
 	
 	if (isset($_GET['walbum'])) {
 		$walbum = wppa_walbum_sanitize($_GET['walbum']);
-		update_option('wppa_widget_album', $walbum);
+		wppa_update_option('wppa_widget_album', $walbum);
 	}
 	if (isset($_POST['wppa-set-submit'])) {
 		check_admin_referer( '$wppa_nonce', WPPA_NONCE );
 		
-		if (isset($_POST['wppa-widgettitle'])) update_option('wppa_widgettitle', $_POST['wppa-widgettitle']);
-		if (isset($_POST['wppa-potd-align'])) update_option('wppa_potd_align', $_POST['wppa-potd-align']);
-		if (isset($_POST['wppa-widget-albums'])) update_option('wppa_widget_album', wppa_walbum_sanitize($_POST['wppa-widget-albums']));
-		if (isset($_POST['wppa-widget-photo'])) update_option('wppa_widget_photo', $_POST['wppa-widget-photo']);
-		if (isset($_POST['wppa-widget-method'])) update_option('wppa_widget_method', $_POST['wppa-widget-method']);
-		if (isset($_POST['wppa-widget-period'])) update_option('wppa_widget_period', $_POST['wppa-widget-period']);
-		if (isset($_POST['wppa-widget-subtitle'])) update_option('wppa_widget_subtitle', $_POST['wppa-widget-subtitle']);
-		if (isset($_POST['wppa-widget-linkpage'])) update_option('wppa_widget_linkpage', $_POST['wppa-widget-linkpage']);
-		if (isset($_POST['wppa-widget-linkurl'])) update_option('wppa_widget_linkurl', $_POST['wppa-widget-linkurl']);
-		if (isset($_POST['wppa-widget-linktitle'])) update_option('wppa_widget_linktitle', $_POST['wppa-widget-linktitle']);
-		if (isset($_POST['wppa-widget-linktype'])) update_option('wppa_widget_linktype', $_POST['wppa-widget-linktype']);
+		if (isset($_POST['wppa-widgettitle'])) wppa_update_option('wppa_widgettitle', $_POST['wppa-widgettitle']);
+		if (isset($_POST['wppa-potd-align'])) wppa_update_option('wppa_potd_align', $_POST['wppa-potd-align']);
+		if (isset($_POST['wppa-widget-albums'])) wppa_update_option('wppa_widget_album', wppa_walbum_sanitize($_POST['wppa-widget-albums']));
+		if (isset($_POST['wppa-widget-photo'])) wppa_update_option('wppa_widget_photo', $_POST['wppa-widget-photo']);
+		if (isset($_POST['wppa-widget-method'])) wppa_update_option('wppa_widget_method', $_POST['wppa-widget-method']);
+		if (isset($_POST['wppa-widget-period'])) wppa_update_option('wppa_widget_period', $_POST['wppa-widget-period']);
+		if (isset($_POST['wppa-widget-subtitle'])) wppa_update_option('wppa_widget_subtitle', $_POST['wppa-widget-subtitle']);
+		if (isset($_POST['wppa-widget-linkpage'])) wppa_update_option('wppa_widget_linkpage', $_POST['wppa-widget-linkpage']);
+		if (isset($_POST['wppa-widget-linkurl'])) wppa_update_option('wppa_widget_linkurl', $_POST['wppa-widget-linkurl']);
+		if (isset($_POST['wppa-widget-linktitle'])) wppa_update_option('wppa_widget_linktitle', $_POST['wppa-widget-linktitle']);
+		if (isset($_POST['wppa-widget-linktype'])) wppa_update_option('wppa_widget_linktype', $_POST['wppa-widget-linktype']);
 		if (wppa_check_numeric($_POST['wppa-widget-width'], '100', __('Widget Photo Width.'))) {
-			update_option('wppa_widget_width', $_POST['wppa-widget-width']);
+			wppa_update_option('wppa_widget_width', $_POST['wppa-widget-width']);
 		} else {
 			$options_error = true;
 		}

@@ -2,11 +2,11 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile
-Version: 4.8.12
+Version: 4.9.0
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
-Requires at least: 3.0
+Requires at least: 3.1
 Tested up to: 3.5
 
 This plugin is designed to easily manage and display your photo albums and slideshows in a single as well as in a network WordPress site.
@@ -35,6 +35,7 @@ This plugin is designed to easily manage and display your photo albums and slide
 * There is a General Purpose widget that is a text widget wherein you can use wppa+ script commands.
 * There is an album widget that displays thumbnail images that link to album contents.
 * There is a QR code widget that will be updated when the content of the page changes.
+* There is a tag cloud widget to quickly get a selection of photos with a certain tag.
 * Almost all appearance settings can be done in the settings admin page. No php, html or css knowledge is required to customize the appearence of the photo display.
 * International language support for static text: Currently included foreign languages files: Dutch, Japanese, French(outdated), Spanish, German.
 * International language support for dynamic text: Album and photo names and descriptions fully support the qTranslate multilanguage rules.
@@ -162,9 +163,35 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
 
+= 4.9.0 =
+
+= Bug Fixes =
+
+* The filmstrip content is now adjusted when the size of the container changes.
+
+= New Features =
+
+* Tags on photos. See Album admin -> Manage photos: input field and selection box, <b>Photo Tag Cloud</b> widget and settings: Table II-A3.3, Table VI-C3.
+* There is a button on the album admin -> manage album information screen to go to the upload page directly if the user has the rights to do so.
+* If Table IX-B3 is set: There is a button on the album admin -> manage album information screen to set all photo descriptions 
+to the New photo description as set in Table IX-B4.
+* You can specify an alternative thumbnail size on a per album basis. Size settings are in Table I-C1a,3a,4a.
+* If you are logged in and are the owner of the photo ( or admin ) and have album admin rights, 
+there will be an Edit link in the fullsize photo description that allows you to edit the photo information directly.
+
+= Other Changes =
+
+* The album selection in the shortcode generator now also respects the hiërarchical display setting in Table IX-A12.
+* Changing the status of a comment in the comment admin page is Ajaxified and no longer requires pressing the Save Changes button.
+* Changed treatment of missing IPTC and EXIF data. 
+In the IPTC and EXIF boxes: if the status is set to *optional* in Table X and XI, the itemlines will be omitted.
+In the photo description the missing tag values will no longer show the tag but will be replaced by <b>n.a.</b>.
+* The option settings are 'cached' into a single option to improve initialisation performance.
+* The HTML tags in album and photo desciptions will be balanced prior to displaying, regardless of the setting in <strong>Table IX-A2</strong></li>.
+
 = 4.8.12 =
 
-= Buig Fixes =
+= Bug Fixes =
 
 * Security release
 
@@ -173,6 +200,7 @@ See for additional information: http://wppa.opajaap.nl/?page_id=1459
 = Bug Fixes =
 
 * Fixed a problem in the pagelinks in the breadcrumb.
+* Fixed an admin hang when there was a deleted parentalbum and Table IX-A12 was checked.
 
 = New Features =
 

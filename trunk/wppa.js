@@ -2,7 +2,7 @@
 //
 // conatins slideshow, theme, ajax and lightbox code
 //
-// Version 4.8.11
+// Version 4.9.0
 
 // Part 1: Slideshow
 //
@@ -657,15 +657,7 @@ function _wppaNextSlide_4(mocc) {
 	jQuery('#bc-pname-'+mocc).html( _wppaNames[mocc][_wppaCurIdx[mocc]] );
 
 	// Adjust filmstrip
-	if ( ! _wppaFilmNoMove[mocc] ) {
-		var xoffset;
-		xoffset = wppaFilmStripLength[mocc] / 2 - (_wppaCurIdx[mocc] + 0.5 + wppaPreambule) * wppaThumbnailPitch[mocc] - wppaFilmStripMargin[mocc];
-		if (wppaFilmShowGlue) xoffset -= (wppaFilmStripMargin[mocc] * 2 + 2);	// Glue
-		jQuery('#wppa-filmstrip-'+mocc).animate({marginLeft: xoffset+'px'});
-	}
-	else {
-		_wppaFilmNoMove[mocc] = false; // reset
-	}
+	_wppaAdjustFilmstrip(mocc);
 	
 	// Set rating mechanism
 	_wppaSetRatingDisplay(mocc);
@@ -926,6 +918,21 @@ function wppaFormatSlide(mocc) {
 	jQuery('#bbb-'+mocc+'-r').css({height:frameh, width:bbbwidth, left:leftmarg});
 	
 //	jQuery('#'+imgid).css({cursor:url(),pointer});
+}
+
+function _wppaAdjustFilmstrip(mocc) {
+
+	if ( ! document.getElementById('wppa-filmstrip-'+mocc) ) return;	// No filmstrip this mocc
+	
+	if ( ! _wppaFilmNoMove[mocc] ) {
+		var xoffset;
+		xoffset = wppaFilmStripLength[mocc] / 2 - (_wppaCurIdx[mocc] + 0.5 + wppaPreambule) * wppaThumbnailPitch[mocc] - wppaFilmStripMargin[mocc];
+		if (wppaFilmShowGlue) xoffset -= (wppaFilmStripMargin[mocc] * 2 + 2);	// Glue
+		jQuery('#wppa-filmstrip-'+mocc).animate({marginLeft: xoffset+'px'});
+	}
+	else {
+		_wppaFilmNoMove[mocc] = false; // reset
+	}
 }
 
 function wppaUpdateLightboxes() {
@@ -1198,6 +1205,7 @@ function _wppaDoAutocol(mocc) {
 	// Filmstrip
 	wppaFilmStripLength[mocc] = w - wppaFilmStripAreaDelta[mocc];
 	jQuery("#filmwindow-"+mocc).css('width',wppaFilmStripLength[mocc]);
+	_wppaAdjustFilmstrip(mocc);	// reposition content
 	
 	// Texts in slideshow and browsebar
 	if ( !wppaIsMini[mocc] && typeof(_wppaSlides[mocc]) != 'undefined' ) {	// Mini is properly initialized
@@ -1829,15 +1837,15 @@ function wppaPopUp(mocc, elm, id, rating) {
 	leftDivBig = leftDivSmall - parseInt((widthImgBigSpace - widthImgSmall) / 2);
 	topDivBig = topDivSmall - parseInt((heightImgBig - heightImgSmall) / 2);
 	
-	// Padding for portrait images
-	var lrPad = parseInt((widthImgBigSpace - widthImgBig) / 2);
+	// Margin for portrait images
+	var lrMarg = parseInt((widthImgBigSpace - widthImgBig) / 2);
 	
 	// Setup starting properties
 	jQuery('#wppa-popup-'+mocc).css({"marginLeft":leftDivSmall+"px","marginTop":topDivSmall+"px"});
-	jQuery('#wppa-img-'+mocc).css({"paddingLeft":0,"paddingRight":0,"width":widthImgSmall+"px","height":heightImgSmall+"px"});
+	jQuery('#wppa-img-'+mocc).css({"marginLeft":0,"marginRight":0,"width":widthImgSmall+"px","height":heightImgSmall+"px"});
 	// Do the animation
 	jQuery('#wppa-popup-'+mocc).stop().animate({"marginLeft":leftDivBig+"px","marginTop":topDivBig+"px"}, 400);
-	jQuery('#wppa-img-'+mocc).stop().animate({"paddingLeft":lrPad+"px","paddingRight":lrPad+"px","width":widthImgBig+"px","height":heightImgBig+"px"}, 400);
+	jQuery('#wppa-img-'+mocc).stop().animate({"marginLeft":lrMarg+"px","marginRight":lrMarg+"px","width":widthImgBig+"px","height":heightImgBig+"px"}, 400);
 //alert(widthImgBig+', '+heightImgBig);
 	// adding ", 'linear', wppaPopReady(occ) " fails, therefor our own timer to the "show info" module
 	_wppaTimer[mocc] = setTimeout('wppaPopReady('+mocc+')', 400);

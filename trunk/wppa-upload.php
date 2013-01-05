@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the upload/import pages and functions
-* Version 4.8.12
+* Version 4.9.0
 *
 */
 
@@ -23,6 +23,9 @@ global $wppa_revno;
 		if ( isset( $_POST['wppa-watermark-file'] ) ) update_option('wppa_watermark_file_'.$user, $_POST['wppa-watermark-file']);
 		if ( isset( $_POST['wppa-watermark-pos'] ) ) update_option('wppa_watermark_pos_'.$user, $_POST['wppa-watermark-pos']);
 	}
+	
+	// If from album admin set the last album
+	if ( isset( $_REQUEST['wppa-set-album'] ) ) wppa_set_last_album($_REQUEST['wppa-set-album']);
 	
 	// Do the upload if requested
 	if ( isset( $_POST['wppa-upload-multiple'] ) ) {
@@ -851,7 +854,7 @@ function wppa_insert_photo ($file = '', $album = '', $name = '', $desc = '', $po
 		// Add photo to db
 		$status = ( $wppa_opt['wppa_upload_moderate'] && !current_user_can('wppa_admin') ) ? 'pending' : 'publish';
 		$linktarget = '_self';
-		$query = $wpdb->prepare('INSERT INTO `' . WPPA_PHOTOS . '` (`id`, `album`, `ext`, `name`, `p_order`, `description`, `mean_rating`, `linkurl`, `linktitle`, `linktarget`, `timestamp`, `owner`, `status`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)', $id, $album, $ext, $name, $porder, $desc, $mrat, $linkurl, $linktitle, $linktarget, time(), $owner, $status);
+		$query = $wpdb->prepare('INSERT INTO `' . WPPA_PHOTOS . '` (`id`, `album`, `ext`, `name`, `p_order`, `description`, `mean_rating`, `linkurl`, `linktitle`, `linktarget`, `timestamp`, `owner`, `status`, `tags`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)', $id, $album, $ext, $name, $porder, $desc, $mrat, $linkurl, $linktitle, $linktarget, time(), $owner, $status, '');
 		if ($wpdb->query($query) === false) {
 			wppa_error_message(__('Could not insert photo. query=', 'wppa').$query);
 		}
