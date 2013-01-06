@@ -230,9 +230,9 @@ function wppa_add_paths($albums) {
 	if ( is_array($albums) ) foreach ( array_keys($albums) as $index ) {
 		$tempid = $albums[$index]['id'];
 		$albums[$index]['name'] = __(stripslashes($albums[$index]['name']));	// Translate name
-		while ( $tempid != '0' && $tempid != '-1' && $tempid != '-9' ) {
+		while ( $tempid > '0' ) {
 			$tempid = wppa_get_parentalbumid($tempid);
-			if ( $tempid != '0' && $tempid != '-1' && $tempid != '-9' ) {
+			if ( $tempid > '0' ) {
 				$albums[$index]['name'] = wppa_get_album_name($tempid).' > '.$albums[$index]['name'];
 			}
 			elseif ( $tempid == '-1' ) $albums[$index]['name'] = '-s- '.$albums[$index]['name'];
@@ -326,4 +326,9 @@ function wppa_update_option($option, $value) {
 	update_option($option, $value);
 	delete_option('wppa_cached_options');
 	delete_option('wppa_cached_options_admin');
+}
+
+function wppa_album_exists($id) {
+global $wpdb;
+	return $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `".WPPA_ALBUMS."` WHERE `id` = %s", $id));
 }
