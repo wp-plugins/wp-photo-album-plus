@@ -35,6 +35,16 @@ function _wppa_admin() {
 		wppa_error_message(__('Warning:', 'wppa') . sprintf(__('The uploads directory does not exist or is not writable by the server. Please make sure that %s is writeable by the server.', 'wppa'), WPPA_UPLOAD_PATH));
 	}
 
+	// Fix orphan albums
+	$albs = $wpdb->get_results("SELECT * FROM `".WPPA_ALBUMS, ARRAY_A);
+	if ( $albs ) {
+		foreach ($albs as $alb) {
+			if ( $alb['a_parent'] > '0' && wppa_get_parentalbumid($alb['a_parent']) == '-9' ) {
+				$wpdb->query("UPDATE `".WPPA_ALBUMS."` SET `a_parent` = '-1' WHERE `id` = '".$alb['id']."'");
+			}
+		}
+	}
+	
 	if (isset($_GET['tab'])) {		
 		// album edit page
 		if ($_GET['tab'] == 'edit'){
