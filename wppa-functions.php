@@ -176,8 +176,7 @@ function wppa_crumb_ancestors($sep, $alb, $occur, $to_cover) {
 global $wppa;
 
     $parent = wppa_get_parentalbumid($alb);
-
-	if ($parent < 1) return;
+	if ( $parent < '1' ) return;
     
     wppa_crumb_ancestors($sep, $parent, $wppa['occur'], $to_cover);
 
@@ -389,6 +388,13 @@ global $wppa_opt;
 		wppa_dbg_msg('Unrecognized Album identification found: '.$wppa['start_album'], 'red', 'force');
 		wppa_reset_occurrance();
 		return;	// Forget this occurrance
+	}
+	if ($wppa['start_album']) {
+		if ( ! wppa_album_exists($wppa['start_album']) ) {
+			wppa_dbg_msg('Album does not exist: '.$wppa['start_album'], 'red', 'force');
+			wppa_reset_occurrance();
+			return;	// Forget this occurrance
+		}
 	}
 	
 	// See if the photo id is a keyword and convert it if possible
