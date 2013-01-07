@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 4.9.0
+* Version 4.9.1
 *
 */
 
@@ -3279,6 +3279,13 @@ global $wppa_revno;
 							$slug = 'wppa_cp_points_rating';
 							$html = wppa_input($slug, '50px', '', __('points per vote', 'wppa'));
 							wppa_setting($slug, '2', $name, $desc, $html, $help);
+							
+							$name = __('Cube Points Upload', 'wppa');
+							$desc = __('Number of points for a successfull frontend upload', 'wppa');
+							$help = esc_js(__('This setting requires the plugin Cube Points', 'wppa'));
+							$slug = 'wppa_cp_points_upload';
+							$html = wppa_input($slug, '50px', '', __('points per upload', 'wppa'));
+							wppa_setting($slug, '3', $name, $desc, $html, $help);
 							
 							wppa_setting_subheader('G', '1', __('QR Code widget settings. The colors also apply to the QR code in the Share box.', 'wppa'));
 							

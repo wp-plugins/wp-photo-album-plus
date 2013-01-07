@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains low-level utility routines
-* Version 4.9.0
+* Version 4.9.1
 *
 */
 
@@ -116,7 +116,8 @@ global $thumb;
 function wppa_is_separate($id) {
 
 	if ( ! $id ) return false;
-	if ( ! is_numeric($id) || $id < '1' ) wppa_dbg_msg('Invalid arg wppa_is_separate('.$id.')', 'red');
+	if ( $id < '1' ) return false;
+	if ( ! is_numeric($id) ) wppa_dbg_msg('Invalid arg wppa_is_separate('.$id.')', 'red');
 	$alb = wppa_get_parentalbumid($id);
 	if ($alb == 0) return false;
 	if ($alb == -1) return true;
@@ -331,4 +332,9 @@ function wppa_update_option($option, $value) {
 function wppa_album_exists($id) {
 global $wpdb;
 	return $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `".WPPA_ALBUMS."` WHERE `id` = %s", $id));
+}
+
+function wppa_photo_exists($id) {
+global $wpdb;
+	return $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `".WPPA_PHOTOS."` WHERE `id` = %s", $id));
 }
