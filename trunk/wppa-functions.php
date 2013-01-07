@@ -3,12 +3,12 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions and API modules
-* Version 4.9.0
+* Version 4.9.1
 *
 */
 /* Moved to wppa-common-functions.php:
 global $wppa_api_version;
-$wppa_api_version = '4-9-0-000';
+$wppa_api_version = '4-9-1-000';
 */
 
 if ( ! defined( 'ABSPATH' ) )
@@ -85,9 +85,7 @@ global $wpdb;
 	$alb = '0';
 	if ( $this_occur ) $alb = wppa_get_get('album');
 	if ( ! $alb && is_numeric($wppa['start_album']) ) $alb = $wppa['start_album'];
-
 	$separate = wppa_is_separate($alb);
-	
 	$slide = ( wppa_get_album_title_linktype($alb) == 'slide' ) ? '&amp;wppa-slide' : '';
 
 	// See if we link to covers or to contents
@@ -389,7 +387,7 @@ global $wppa_opt;
 		wppa_reset_occurrance();
 		return;	// Forget this occurrance
 	}
-	if ($wppa['start_album']) {
+	if ( $wppa['start_album'] > '0' ) {	// -2 is #all
 		if ( ! wppa_album_exists($wppa['start_album']) ) {
 			wppa_dbg_msg('Album does not exist: '.$wppa['start_album'], 'red', 'force');
 			wppa_reset_occurrance();
@@ -430,7 +428,32 @@ global $wppa_opt;
 			}
 		}
 	}
-	
+	/*
+	// Check if photo is valid
+	if ( $wppa['single_photo'] ) {
+		if ( $wppa['single_photo'] == '-9' ) {
+			wppa_reset_occurrance();
+			return;	// Forget this occurrance
+		}
+		if ( ! wppa_photo_exists($wppa['single_photo']) ) {
+			wppa_dbg_msg('Photo does not exist: '.$wppa['single_photo'], 'red', 'force');
+			wppa_reset_occurrance();
+			return;	// Forget this occurrance
+		}
+	}
+	if ( $wppa['start_photo'] ) {
+		if ( $wppa['start_photo'] == '-9' ) {
+			wppa_reset_occurrance();
+			return;	// Forget this occurrance
+		}
+		if ( ! wppa_photo_exists($wppa['start_photo']) ) {
+			wppa_dbg_msg('Photo does not exist: '.$wppa['start_photo'], 'red', 'force');
+			wppa_reset_occurrance();
+			return;	// Forget this occurrance
+		}
+	}
+
+*/
 	// Size and align
 	if ( is_numeric($size) ) {
 		$wppa['fullsize'] = $size;
@@ -1334,7 +1357,7 @@ global $thumb;
 	else {
 		$desc = '';
 	}
-	if ( $thumb['owner'] == wppa_get_user() && current_user_can('wppa_admin') && is_user_logged_in() ) {
+	if ( ( $thumb['owner'] == wppa_get_user() || current_user_can('wppa_admin') ) && is_user_logged_in() ) {
 		$desc = '<div style="float:right; margin-right:6px;" ><a href="'.get_admin_url().'admin.php?page=wppa_admin_menu&amp;tab=pmod&amp;photo='.$thumb['id'].'" target="_blank" >'.__('Edit', 'wppa_theme').'</a></div><br />'.$desc;
 	}
 	
@@ -2714,7 +2737,6 @@ global $wppa_numqueries;
 	if (is_feed()) return;		// Need no container in RSS feeds
 	
 	if ($action == 'open') {
-
 		// Open the container
 		$wppa['out'] .= wppa_nltab('init');
 		if ( ! $wppa['ajax'] ) {
@@ -5061,6 +5083,7 @@ global $wppa_opt;
 					if ( ! is_array($file['error']) ) {
 						$file['name'] = strip_tags($file['name']);
 						$bret = wppa_do_frontend_file_upload($file, $alb);	// this should no longer happen since the name is incl []
+						if ( $bret ) $done++;
 					}
 					else {
 						$filecount = count($file['error']);
@@ -5078,9 +5101,16 @@ global $wppa_opt;
 					}
 				}
 			}
-			if ( $bret || $done ) {
-				if ( $done == '1' ) wppa_err_alert(__('Photo successfully uploaded.', 'wppa_theme'));
-				else wppa_err_alert(sprintf(__('%s photos successfully uploaded.', 'wppa_theme'), $done));
+			if ( $done ) {
+				//SUCCESSFUL RATING, ADD POINTS
+				if( function_exists('cp_alterPoints') && is_user_logged_in() ) {
+					$cbpoints = $wppa_opt['wppa_cp_points_upload'] * $done;
+					cp_alterPoints(cp_currentUser(), $wppa_opt['wppa_cp_points_rating']);
+				}
+				else $cbpoints = '0';
+				$alert = $done == '1' ? __('Photo successfully uploaded.', 'wppa_theme') : sprintf(__('%s photos successfully uploaded.', 'wppa_theme'), $done);
+				if ( $cbpoints ) $alert .= '\n'.sprintf(__('%s points added.', 'wppa_theme'), $cbpoints);
+				wppa_err_alert($alert);
 			}
 			else wppa_err_alert(__('Upload failed', 'wppa_theme'));
 		}		

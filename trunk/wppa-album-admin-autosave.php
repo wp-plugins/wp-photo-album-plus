@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * create, edit and delete albums
-* version 4.9.0
+* version 4.9.1
 *
 */
 
@@ -35,12 +35,18 @@ function _wppa_admin() {
 		wppa_error_message(__('Warning:', 'wppa') . sprintf(__('The uploads directory does not exist or is not writable by the server. Please make sure that %s is writeable by the server.', 'wppa'), WPPA_UPLOAD_PATH));
 	}
 
-	// Fix orphan albums
+	// Fix orphan albums and deleted target pages
 	$albs = $wpdb->get_results("SELECT * FROM `".WPPA_ALBUMS, ARRAY_A);
 	if ( $albs ) {
 		foreach ($albs as $alb) {
-			if ( $alb['a_parent'] > '0' && wppa_get_parentalbumid($alb['a_parent']) == '-9' ) {
+			if ( $alb['a_parent'] > '0' && wppa_get_parentalbumid($alb['a_parent']) == '-9' ) {	// Parent died?
 				$wpdb->query("UPDATE `".WPPA_ALBUMS."` SET `a_parent` = '-1' WHERE `id` = '".$alb['id']."'");
+			}
+			if ( $alb['cover_linkpage'] > '0' ) {
+				$iret = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `".$wpdb->posts."` WHERE `ID` = %s AND `post_type` = 'page' AND `post_status` = 'publish'", $alb['cover_linkpage']));
+				if ( ! $iret ) {	// Page gone?
+					$wpdb->query("UPDATE `".WPPA_ALBUMS."` SET `cover_linkpage` = '0' WHERE `id` = '".$alb['id']."'");
+				}
 			}
 		}
 	}

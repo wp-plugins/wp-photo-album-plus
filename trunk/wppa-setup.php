@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 4.9.0
+* Version 4.9.1
 *
 */
 
@@ -16,8 +16,8 @@
 // we still do a setup on activation by faking that we are not up yo rev, and so invoking
 // the setup on the first admin_init event. This has the advantage that we can display messages
 // instead of characters of unexpected output.
-// register_activation_hook(WPPA_FILE, 'wppa_activate'); is in wppa.php
-function wppa_activate() {
+// register_activation_hook(WPPA_FILE, 'wppa_activate_plugin'); is in wppa.php
+function wppa_activate_plugin() {
 	$old_rev = get_option('wppa_revision', '100');
 	$new_rev = $old_rev - '0.01';
 	wppa_update_option('wppa_revision', $new_rev);
@@ -771,6 +771,7 @@ Hide Camera info
 						// F Other plugins
 						'wppa_cp_points_comment'		=> '0',
 						'wppa_cp_points_rating'			=> '0',
+						'wppa_cp_points_upload'			=> '0',
 
 						// Photo of the day widget
 						'wppa_widgettitle'			=> __('Photo of the day', 'wppa'),
