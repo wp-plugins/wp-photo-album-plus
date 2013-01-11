@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains low-level utility routines
-* Version 4.9.1
+* Version 4.9.2
 *
 */
 
@@ -115,13 +115,15 @@ global $thumb;
 // See if an album is in a separate tree
 function wppa_is_separate($id) {
 
-	if ( ! $id ) return false;
+	if ( ! is_numeric($id) ) {
+		wppa_dbg_msg('Invalid arg wppa_is_separate('.$id.')', 'red');
+		return false;
+	}
+	if ( $id == '-1' ) return true;
 	if ( $id < '1' ) return false;
-	if ( ! is_numeric($id) ) wppa_dbg_msg('Invalid arg wppa_is_separate('.$id.')', 'red');
 	$alb = wppa_get_parentalbumid($id);
-	if ($alb == 0) return false;
-	if ($alb == -1) return true;
-	return (wppa_is_separate($alb));
+	
+	return wppa_is_separate($alb);
 }
 
 // Get the albums parent
@@ -152,15 +154,30 @@ global $album;
 			$name = is_admin() ? __('--- separate ---', 'wppa') : __a('--- separate ---', 'wppa_theme');
 			return $name;
 		}
+		if ( $id == '-2' ) {
+			$name = is_admin() ? __('--- all ---', 'wppa') : __a('--- all ---', 'wppa_theme');
+			return $name;
+		}
 		if ( $id == '-9' ) {
 			$name = is_admin() ? __('--- deleted ---', 'wppa') : __a('--- deleted ---', 'wppa_theme');
 			return $name;
 		}
 		if ( $extended == 'raw' ) {
 			$name = stripslashes($wpdb->get_var($wpdb->prepare("SELECT `name` FROM `".WPPA_ALBUMS."` WHERE `id` = %s", $id)));
+			return $name;
 		}
 	}
-	if ( ! is_numeric($id) || $id < '1' ) wppa_dbg_msg('Invalid arg wppa_get_album_name('.$id.', '.$extended.')', 'red');
+	else {
+		if ( $id == '-2' ) {
+			$name = is_admin() ? __('All Albums', 'wppa') : __a('All Albums', 'wppa_theme');
+			return $name;
+		}
+	}
+	
+	if ( ! is_numeric($id) || $id < '1' ) {
+		wppa_dbg_msg('Invalid arg wppa_get_album_name('.$id.', '.$extended.')', 'red');
+		return '';
+	}
     else {
 		if ( ! wppa_cache_album($id) ) $name = is_admin() ? __('--- deleted ---', 'wppa') : __a('--- deleted ---', 'wppa_theme');
 		else $name = __(stripslashes($album['name']));

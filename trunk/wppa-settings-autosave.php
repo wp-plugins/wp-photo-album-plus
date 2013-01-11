@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 4.9.1
+* Version 4.9.2
 *
 */
 
@@ -2216,8 +2216,24 @@ global $wppa_revno;
 							$wppa_subtable = 'Z';
 							
 							// Linktypes
-							$options_linktype = array(__('no link at all.', 'wppa'), __('the plain photo (file).', 'wppa'), __('the full size photo in a slideshow.', 'wppa'), __('the fullsize photo on its own.', 'wppa'), __('the fs photo with download and print buttons.', 'wppa'), __('lightbox.', 'wppa'));
-							$values_linktype = array('none', 'file', 'photo', 'single', 'fullpopup', 'lightbox'); //, 'indiv');
+							$options_linktype = array(
+								__('no link at all.', 'wppa'), 
+								__('the plain photo (file).', 'wppa'), 
+								__('the full size photo in a slideshow.', 'wppa'), 
+								__('the fullsize photo on its own.', 'wppa'), 
+								__('the single photo in the style of a slideshow.', 'wppa'),
+								__('the fs photo with download and print buttons.', 'wppa'), 
+								__('lightbox.', 'wppa')
+							);
+							$values_linktype = array(
+								'none', 
+								'file', 
+								'photo', 
+								'single', 
+								'slphoto', 
+								'fullpopup', 
+								'lightbox'
+							);
 							$options_linktype_album = array(__('no link at all.', 'wppa'), __('the plain photo (file).', 'wppa'), __('the content of the album.', 'wppa'), __('the full size photo in a slideshow.', 'wppa'), __('the fullsize photo on its own.', 'wppa'), __('lightbox.', 'wppa'));
 							$values_linktype_album = array('none', 'file', 'album', 'photo', 'single', 'lightbox'); //, 'indiv');
 							$options_linktype_ss_widget = array(__('no link at all.', 'wppa'), __('the plain photo (file).', 'wppa'), __('defined at widget activation.', 'wppa'), __('the content of the album.', 'wppa'), __('the full size photo in a slideshow.', 'wppa'), __('the fullsize photo on its own.', 'wppa')); //, __('the photo specific link.', 'wppa'));
@@ -2566,6 +2582,28 @@ global $wppa_revno;
 							$htmlerr = wppa_htmlerr('tagcloud');
 							$html = array($html1, $htmlerr.$html2, $html3, $html4);
 							wppa_setting($slug, '3a,b,c', $name, $desc, $html, $help);
+
+							$name = __('Multitag Link', 'wppa');
+							$desc = __('Configure the link from the multitag selection.', 'wppa');
+							$help = esc_js(__('Link to ether the thumbnails or the slideshow.', 'wppa'));
+							$slug1 = 'wppa_multitag_linktype';
+							$slug2 = 'wppa_multitag_linkpage';
+							$slug3 = 'wppa_multitag_blank';
+							$slug4 = '';
+							$slug = array($slug1, $slug2, $slug3, $slug4);
+							$opts = array(__('thumbnails', 'wppa'), __('slideshow', 'wppa'));
+							$vals = array('album', 'slide'); 
+							$onchange = 'wppaCheckMTagLink(); wppaCheckLinkPageErr(\'multitag\');';
+							$html1 = wppa_select($slug1, $opts, $vals, $onchange);						
+							$class = 'wppa_tglp';
+							$onchange = 'wppaCheckLinkPageErr(\'multitag\');';
+							$html2 = wppa_select($slug2, $options_page, $values_page, $onchange, $class, true);
+							$class = 'wppa_tglb';
+							$html3 = wppa_checkbox($slug3, '', $class);
+							$html4 = '';
+							$htmlerr = wppa_htmlerr('multitag');
+							$html = array($html1, $htmlerr.$html2, $html3, $html4);
+							wppa_setting($slug, '4a,b,c', $name, $desc, $html, $help);
 							
 							?>
 						</tbody>
