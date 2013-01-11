@@ -35,7 +35,7 @@ This plugin is designed to easily manage and display your photo albums and slide
 * There is a General Purpose widget that is a text widget wherein you can use wppa+ script commands.
 * There is an album widget that displays thumbnail images that link to album contents.
 * There is a QR code widget that will be updated when the content of the page changes.
-* There is a tag cloud widget to quickly get a selection of photos with a certain tag.
+* There is a tag cloud widget and a multi tag widget to quickly get a selection of photos with (a) certain tag(s).
 * Almost all appearance settings can be done in the settings admin page. No php, html or css knowledge is required to customize the appearence of the photo display.
 * International language support for static text: Currently included foreign languages files: Dutch, Japanese, French(outdated), Spanish, German.
 * International language support for dynamic text: Album and photo names and descriptions fully support the qTranslate multilanguage rules.
@@ -174,6 +174,7 @@ refreshing the page or returning from voting or commenting resulted in a slidesh
 = New Features =
 
 * There is a new linktype from thumbnails ( generic thumbnails, tumbnail-, lasten-, topten- and comten-widget thumbnails ) to <i>the single photo in the style of a slideshow</i>.
+* There is a new widget: <strong>Photo Tags Filter</strong> that allows the visitor to select photos having more than one tags at the same time.
 
 = 4.9.1 =
 
