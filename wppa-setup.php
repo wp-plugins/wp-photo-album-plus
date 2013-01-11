@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 4.9.1
+* Version 4.9.2
 *
 */
 
@@ -270,12 +270,12 @@ global $silent;
 	// Check if this update comes with a new wppa-theme.php and/or a new wppa-style.css
 	// If so, produce message
 	$key = '0';
-	if ( $old_rev < '480' ) {		// theme changed since...
+	if ( $old_rev < '4902' ) {		// theme changed since...
 		$usertheme_old 	= ABSPATH.'wp-content/themes/'.get_option('template').'/wppa_theme.php';
 		$usertheme 		= ABSPATH.'wp-content/themes/'.get_option('template').'/wppa-theme.php';
 		if ( is_file( $usertheme ) || is_file( $usertheme_old ) ) $key += '2';
 	}
-	if ( $old_rev < '4900' ) {		// css changed since...
+	if ( $old_rev < '4902' ) {		// css changed since...
 		$userstyle_old 	= ABSPATH.'wp-content/themes/'.get_option('template').'/wppa_style.css';
 		$userstyle 		= ABSPATH.'wp-content/themes/'.get_option('template').'/wppa-style.css';
 		if ( is_file( $userstyle ) || is_file( $userstyle_old ) ) $key += '1';
@@ -700,6 +700,10 @@ Hide Camera info
 						'wppa_tagcloud_linktype'			=> 'album',
 						'wppa_tagcloud_linkpage'			=> '0',
 						'wppa_tagcloud_blank'				=> 'no',
+
+						'wppa_multitag_linktype'			=> 'album',
+						'wppa_multitag_linkpage'			=> '0',
+						'wppa_multitag_blank'				=> 'no',
 						
 						// Table VII: Security
 						// B

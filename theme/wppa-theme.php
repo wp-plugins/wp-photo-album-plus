@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the albums/photos/slideshow in a page or post
-* Version 4.8.7
+* Version 4.9.2
 */
 function wppa_theme() {
 
@@ -92,6 +92,9 @@ wppa_container('open');																// Open container
 		// Empty search results?
 		if ( ! $didsome && $wppa['src'] ) {
 			$wppa['out'] .= '<div class="center">'.__a('No albums or photos found matching your search criteria.', 'wppa_theme').'</div>';
+		}
+		if ( ! $didsome && $wppa['is_tag'] ) {
+			$wppa['out'] .= '<div class="center">'.__a('No photos found matching your search criteria.', 'wppa_theme').'</div>';
 		}
 	} // wppa_page('albums')
 	
