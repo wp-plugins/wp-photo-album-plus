@@ -23,307 +23,308 @@ msgstr ""
 
 #: wppa-adminbar.php:40
 msgid "Album Admin"
-msgstr "Albumadministration"
+msgstr "Zarządzaj albumami zdjęć"
 
 #: wppa-adminbar.php:47
 msgid "Upload Photos"
-msgstr "Ladda upp foton"
+msgstr "Prześlij nowe zdjęcia"
 
 #: wppa-adminbar.php:54
 msgid "Import Photos"
-msgstr "Importera foton"
+msgstr "Importuj zdjęcia"
 
 #: wppa-adminbar.php:61
 msgid "Export Photos"
-msgstr "Exportera foton"
+msgstr "Eksportuj zdjęcia"
 
 #: wppa-adminbar.php:68
 msgid "Settings"
-msgstr "Inställningar"
+msgstr "Ustawienia"
 
 #: wppa-adminbar.php:75
 msgid "Photo of the day"
-msgstr "Dagens foto"
+msgstr "Zdjęcie dnia"
 
 #: wppa-adminbar.php:82
 msgid "Comments"
-msgstr "Kommentarer"
+msgstr "Komentarze"
 
 #: wppa-adminbar.php:89
 msgid "Help & Info"
-msgstr "Hjälp & info"
+msgstr "Pomoc & Informacje"
 
 #: wppa-adminbar.php:96
 msgid "Docs & Demos"
-msgstr "Dok. & Demos"
+msgstr "Dokumentacja & Demo"
 
 #: wppa-adminbar.php:105
 msgid "Photo Albums"
-msgstr "Fotoalbum"
+msgstr "Albumy zdjęć"
 
 #: wppa-album-widget.php:100
 #, php-format
 msgid "Upload at least %d photos to this album!"
-msgstr ""
+msgstr "Prześlij przynajmniej %d zdjęć do tego albumu!"
 
 #: wppa-comment-widget.php:82 wppa-lasten-widget.php:89
 #: wppa-potd-widget.php:71 wppa-thumbnail-widget.php:94
 #: wppa-topten-widget.php:92
 msgid "Photo not found."
-msgstr "Foto hittades inte"
+msgstr "Nie znaleziono strony."
 
 #: wppa-common-functions.php:936
 msgid "1 second"
-msgstr "1 sekund"
+msgstr "1 sekunda"
 
 #: wppa-common-functions.php:937 wppa-functions.php:5672
 msgid "seconds"
-msgstr "sekunder"
+msgstr "sekund"
 
 #: wppa-common-functions.php:941
 msgid "1 minute"
-msgstr "1 minut"
+msgstr "1 minuta"
 
 #: wppa-common-functions.php:942 wppa-functions.php:5671
 msgid "minutes"
-msgstr "minuter"
+msgstr "minut"
 
 #: wppa-common-functions.php:946
 msgid "1 hour"
-msgstr "1 timme"
+msgstr "1 godzina"
 
 #: wppa-common-functions.php:947 wppa-functions.php:5670
 msgid "hours"
-msgstr "timmar"
+msgstr "godzin"
 
 #: wppa-common-functions.php:951
 msgid "1 day"
-msgstr "1 dag"
+msgstr "1 dzień"
 
 #: wppa-common-functions.php:952 wppa-functions.php:5669
 msgid "days"
-msgstr "dagar"
+msgstr "dni"
 
 #: wppa-common-functions.php:956
 msgid "1 week"
-msgstr "1 vecka"
+msgstr "1 tydzień"
 
 #: wppa-common-functions.php:957 wppa-functions.php:5668
 msgid "weeks"
-msgstr "veckor"
+msgstr "tygodni"
 
 #: wppa-common-functions.php:961
 msgid "1 month"
-msgstr "1 månad"
+msgstr "1 miesiąc"
 
 #: wppa-common-functions.php:962
 msgid "months"
-msgstr "månader"
+msgstr "miesięcy"
 
 #: wppa-common-functions.php:965
 msgid "1 year"
-msgstr "1 år"
+msgstr "1 rok"
 
 #: wppa-common-functions.php:966
 msgid "years"
-msgstr "år"
+msgstr "lat"
 
 #: wppa-functions.php:32
 msgid "There are"
-msgstr "Det finns"
+msgstr "Są"
 
 #: wppa-functions.php:32
 msgid "photo albums. The last album added is"
-msgstr "fotoalbum, det senast tillagda albumet är"
+msgstr "albumy zdjęć. Ostatni dodany album to: "
 
 #: wppa-functions.php:36
 msgid ", a subalbum of"
-msgstr ", ett underalbum till"
+msgstr ", album podrzędny do"
 
 #: wppa-functions.php:97
 msgid "Home"
-msgstr "Hem"
+msgstr "Start"
 
 #: wppa-functions.php:143 wppa-functions.php:3224 wppa-non-admin.php:223
 msgid "Slideshow"
-msgstr "bildspelet"
+msgstr "Pokaz slajdów"
 
 #: wppa-functions.php:152
 msgid "Searchstring:"
-msgstr "Söksträng:"
+msgstr "Szukany ciąg:"
 
 #: wppa-functions.php:156
 msgid "Top rated photos"
-msgstr "Toppnoterade foton"
+msgstr "Najlepiej ocenione zdjęcia"
 
 #: wppa-functions.php:160
-#, fuzzy
 msgid "Recently uploaded photos"
-msgstr "Nyligen kommenterade foton"
+msgstr "Ostatnio przesłane zdjęcia"
 
 #: wppa-functions.php:164
 msgid "Recently commented photos"
-msgstr "Nyligen kommenterade foton"
+msgstr "Ostatnio komentowane zdjęcia"
 
 #: wppa-functions.php:168
-#, fuzzy
 msgid "Tagged photos:"
-msgstr "Toppnoterade foton"
+msgstr "Zdjęcia z tagami:"
 
 #: wppa-functions.php:1397 wppa-functions.php:1793 wppa-functions.php:3405
 #: wppa-functions.php:3576
 msgid "Awaiting moderation"
-msgstr "Avvaktar moderering"
+msgstr "Oczekuje na moderację"
 
 #: wppa-functions.php:1442
 msgid "<b>ERROR: Attempt to enter an invalid rating.</b>"
-msgstr "<b>FEL: Försök att ange ett ogiligt betyg.</b>"
+msgstr "<b>BŁĄD: Próba wprowadzenia nieprawidłowej oceny.</b>"
 
 #: wppa-functions.php:1612
 msgid "Comment edited"
-msgstr "Kommentar ändrad"
+msgstr "Komentarz zmieniony"
 
 #: wppa-functions.php:1620
-#, fuzzy
 msgid "Comment on photo:"
-msgstr "Kommentarer om foton"
+msgstr ""
 
 #: wppa-functions.php:1627
 #, fuzzy
 msgid "wrote on photo"
-msgstr "Scrolla foton"
+msgstr "Przeglądaj zdjęcia"
 
 #: wppa-functions.php:1638
 msgid "You receive this email as you are assigned to moderate"
-msgstr ""
+msgstr "Otrzymujesz tę wiadomość, ponieważ jesteś moderatorem"
 
 #: wppa-functions.php:1647
 msgid "You receive this email as administrator of the site"
-msgstr ""
+msgstr "Otrzymujesz tę wiadomość jako administrator strony"
 
 #: wppa-functions.php:1661
 msgid "You receive this email as owner of the album"
-msgstr ""
+msgstr "Otrzymujesz tę wiadomość, ponieważ jesteś właścicielem albumu zdjęć"
 
 #: wppa-functions.php:1668
 msgid "Comment added"
-msgstr "Kommentar tillagd"
+msgstr "Komentarz dodany"
 
 #: wppa-functions.php:1672
 msgid ""
 "Sorry, you gave a wrong answer.\\n\\nPlease try again to solve the "
 "computation."
-msgstr "Tyvärr, felaktigt svar.\\n\\nFörsök igen att lösa beräkningen."
+msgstr ""
+"Niestety, podałeś błędną odpowiedź.\\n\\nSpróbuj ponownie i podaj "
+"rozwiązanie."
 
 #: wppa-functions.php:1682
 msgid "Could not process comment.\\nProbably timed out."
-msgstr "Det gick inte att behandla kommentaren.\\nFörmodligen tidsöverdrag."
+msgstr ""
+"Nie udało się przetworzyć komentarza.\\nPrawdopodobnie przekroczenie czasu "
+"oczekiwania."
 
 #: wppa-functions.php:1764
 msgid "wrote:"
-msgstr "skrev:"
+msgstr "napisał:"
 
 #: wppa-functions.php:1796
 msgid "Marked as spam"
-msgstr "Markerad som spam"
+msgstr "Oznaczono jako spam"
 
 #: wppa-functions.php:1813
 msgid "Edit!"
-msgstr "Redigera!"
+msgstr "Edytuj!"
 
 #: wppa-functions.php:1817
 msgid "Send!"
-msgstr "Skicka!"
+msgstr " WYŚLIJ "
 
 #: wppa-functions.php:1856
 msgid "Your name:"
-msgstr "Ditt namn:"
+msgstr "Twoje imię i nazwisko:"
 
 #: wppa-functions.php:1861
 msgid "Your email:"
-msgstr "Din epost:"
+msgstr "Twój adres email:"
 
 #: wppa-functions.php:1866
 msgid "Your comment:"
-msgstr "Din kommentar"
+msgstr "Wpisz Twój komentarz:"
 
 #: wppa-functions.php:1896
 #, php-format
 msgid "You must <a href=\"%s\">login</a> to enter a comment"
-msgstr "Du måste <a href=\"%s\">logga in</a> för att skriva en kommentar"
+msgstr "Musisz <a href=\"%s\">zalogować się</a>, aby wprowadzić komentarz"
 
 #: wppa-functions.php:1903
 #, php-format
 msgid "%d  comments"
-msgstr "%d  kommentar"
+msgstr "%d komentarzy"
 
 #: wppa-functions.php:1907
 msgid "Leave a comment"
-msgstr "Skriv en kommentar"
+msgstr "Napisz swój komentarz"
 
 #: wppa-functions.php:1947
 msgid "Show IPTC data"
-msgstr "Visa IPTC data"
+msgstr "Pokaż dane IPTC "
 
 #: wppa-functions.php:1950
 msgid "Hide IPTC data"
-msgstr "Göm IPTC data"
+msgstr "Ukryj dane IPTC"
 
 #: wppa-functions.php:1977
 msgid "No IPTC data"
-msgstr "Ingen ITPC data"
+msgstr "Brak danych IPTC"
 
 #: wppa-functions.php:2014
 msgid "Show EXIF data"
-msgstr "Visa EXIF data"
+msgstr "Pokaż dane EXIF"
 
 #: wppa-functions.php:2017
 msgid "Hide EXIF data"
-msgstr "Göm EXIF data"
+msgstr "Ukryj dane EXIF"
 
 #: wppa-functions.php:2044
 msgid "No EXIF data"
-msgstr "Ingen EXIF data"
+msgstr "Brak danych EXIF"
 
 #: wppa-functions.php:2460 wppa-functions.php:2461
 msgid "Prev.&nbsp;page"
-msgstr "Föreg.&nbsp;sida"
+msgstr "Poprz.&nbsp;strona"
 
 #: wppa-functions.php:2465 wppa-functions.php:2466
 msgid "Next&nbsp;page"
-msgstr "Nästa&nbsp;sida"
+msgstr "Nast.&nbsp;strona"
 
 #: wppa-functions.php:2807
 msgid "<b>ERROR: Illegal attempt to enter a rating.</b>"
-msgstr "<b>FEL: Ogiltigt försök att ange ett betyg.</b>"
+msgstr "<b>BŁĄD: Nielegalna próba wprowadzenia oceny.</b>"
 
 #: wppa-functions.php:2820
 msgid "<b>ERROR: Illegal attempt to enter a comment.</b>"
-msgstr "<b>FEL: Ogiltigt försök att skriva en kommentar.</b>"
+msgstr "<b>BŁĄD: Niedozwolona próba wejścia w komentarz.</b>"
 
 #: wppa-functions.php:3080
 msgid "Link to"
-msgstr "Länk till"
+msgstr "Link do"
 
 #: wppa-functions.php:3106 wppa-functions.php:3242 wppa-functions.php:3245
 msgid "View the album"
-msgstr "Visa albumet"
+msgstr "Pokaż album:"
 
 #: wppa-functions.php:3125
 msgid "View the cover photo"
-msgstr "Visa omslagsbilden"
+msgstr "Pokaż zdjęcie z okładki"
 
 #: wppa-functions.php:3126
 msgid "View the cover photos"
-msgstr "Visa omslagsbilderna"
+msgstr "Pokaż zdjęcia na okładki"
 
 #: wppa-functions.php:3224
 msgid "Browse photos"
-msgstr "Scrolla foton"
+msgstr "Przeglądaj zdjęcia"
 
 #: wppa-functions.php:3247
 msgid "View"
-msgstr "Visa"
+msgstr "Zobacz"
 
 #: wppa-functions.php:3250
 msgid "album"
@@ -331,40 +332,40 @@ msgstr "album"
 
 #: wppa-functions.php:3253
 msgid "albums"
-msgstr "album"
+msgstr "albumy"
 
 #: wppa-functions.php:3257 wppa-functions.php:5671 wppa-functions.php:5904
 #: wppa-non-admin.php:46
 msgid "and"
-msgstr "och"
+msgstr "i"
 
 #: wppa-functions.php:3261
 msgid "photo"
-msgstr "foto"
+msgstr "zdjęcie"
 
 #: wppa-functions.php:3264
 msgid "photos"
-msgstr "foton"
+msgstr "zdjęcia"
 
 #: wppa-functions.php:3496 wppa-topten-widget.php:50
 msgid "View the top rated photos"
-msgstr "Visa toppnoterade foton"
+msgstr "Zobacz najwyżej ocenione zdjęcia"
 
 #: wppa-functions.php:3774
 msgid "Double click to start/stop slideshow running"
-msgstr "Dubbelklick för att starta/avbryta bildspelet"
+msgstr "Kliknij dwukrotnie, aby uruchomić pokaz slajdów"
 
 #: wppa-functions.php:5017 wppa-functions.php:5159
 msgid "Max uploads reached"
-msgstr ""
+msgstr "Limit przesłanych zdjęć osiągnięty"
 
 #: wppa-functions.php:5031
 msgid "Upload Photo"
-msgstr "Ladda upp bild"
+msgstr "Prześlij nowe zdjęcie do tego albumu"
 
 #: wppa-functions.php:5037
 msgid "Upload Photo(s)"
-msgstr "Ladda upp bild(er)"
+msgstr "Wyślij zdjęcia"
 
 #: wppa-functions.php:5040
 #, php-format
@@ -372,70 +373,73 @@ msgid ""
 "You may upload up to %s photos at once if your browser supports HTML-5 "
 "multiple file upload"
 msgstr ""
-"Det är möjligt att ladda upp %s foton i taget om din webläsare stöder HTML-5 "
-"flerfilsuppladdning"
+"Możesz przesłać do %s zdjęć jednocześnie, jeśli twója przeglądarka obsługuje "
+"HTML-5 i tę funkcję."
 
 #: wppa-functions.php:5043
 #, php-format
 msgid "Max photo size: %d x %d (%2.1f MegaPixel)"
-msgstr ""
+msgstr "maks. rozmiar zdjęcia: %d x %d (%2.1f Megapikseli)"
 
 #: wppa-functions.php:5053
 msgid "Apply watermark file:"
-msgstr "Lägg till vattenstämpelfil:"
+msgstr "Zastosuj plik znaku wodnego:"
 
 #: wppa-functions.php:5061
 msgid "Position:"
-msgstr "Position:"
+msgstr "Pozycja:"
 
 #: wppa-functions.php:5073
 msgid "Enter photo name"
 msgstr ""
+"Wprowadź tytuł zdjęcia, kilka słów i [rok wykonania] - jeśli jest znany"
 
 #: wppa-functions.php:5073
 msgid ""
 "If you leave this blank, the original filename(s) will be used as photo name"
 "(s)."
 msgstr ""
+"Jeśli pole zostawisz puste, jako tytuł zdjęcia zostanie użyta oryginalna "
+"nazwa pliku."
 
 #: wppa-functions.php:5081
 msgid "Enter/modify photo description"
-msgstr "Ange/ändra fotots beskrivning"
+msgstr "Wprowadź opis zdjęcia"
 
 #: wppa-functions.php:5107
 msgid "<b>ERROR: Illegal attempt to upload a file.</b>"
-msgstr "<b>FEL: Ogiltigt försök att laada upp en fil.</b>"
+msgstr "<b>BŁĄD: Niedozwolona próba przesłania pliku.</b>"
 
 #: wppa-functions.php:5163
 msgid "Error during upload"
-msgstr "Fel vid uppladdning"
+msgstr "Błąd podczas przesyłania"
 
 #: wppa-functions.php:5168
 msgid "Uploaded file is not an image"
-msgstr "Den uppladdade filen är inte tt foto"
+msgstr "Przesłany plik nie jest zdjęciem"
 
 #: wppa-functions.php:5172
 #, php-format
 msgid ""
 "Only gif, jpg and png image files are supported. Returned filetype = %d."
-msgstr ""
+msgstr "Można przesyłać tylko pliki jpg, gif i png. Typ pliku = %d."
 
 #: wppa-functions.php:5179
 #, php-format
 msgid "The image is too big. Max photo size: %d x %d (%2.1f MegaPixel)"
-msgstr ""
+msgstr "Zdjęcie jest za duże. Maksymalny rozmiar: %d x %d (%2.1f megapikseli)"
 
 #: wppa-functions.php:5336 wppa-functions.php:5396
 msgid "n.a."
-msgstr ""
+msgstr "n.d."
 
 #: wppa-functions.php:5474
 msgid "Not Defined"
-msgstr ""
+msgstr "Nie zdefiniowano"
 
 #: wppa-functions.php:5475
 msgid "Manual"
-msgstr ""
+msgstr "Podręcznik"
 
 #: wppa-functions.php:5476
 msgid "Program AE"
@@ -459,20 +463,19 @@ msgstr ""
 
 #: wppa-functions.php:5481
 msgid "Portrait"
-msgstr ""
+msgstr "Pionowo"
 
 #: wppa-functions.php:5482
 msgid "Landscape"
-msgstr ""
+msgstr "Poziomo"
 
 #: wppa-functions.php:5483
 msgid "Bulb"
 msgstr ""
 
 #: wppa-functions.php:5505
-#, fuzzy
 msgid "Average"
-msgstr "medel"
+msgstr "Średnio"
 
 #: wppa-functions.php:5506
 msgid "Center-weighted average"
@@ -608,11 +611,11 @@ msgstr ""
 
 #: wppa-functions.php:5666
 msgid "You can upload after"
-msgstr ""
+msgstr "Możesz przesłać potem"
 
 #: wppa-functions.php:5700
 msgid "Zoom in"
-msgstr ""
+msgstr "Powiększ"
 
 #: wppa-functions.php:5904 wppa-non-admin.php:46
 #, php-format
@@ -646,11 +649,12 @@ msgstr ""
 
 #: wppa-functions.php:6037
 msgid "Please select a tagcloud landing page"
-msgstr ""
+msgstr "Wybierz stronę docelową dla chmury tagów."
 
 #: wppa-functions.php:6073
+#, fuzzy
 msgid "Please select a multitag landing page"
-msgstr ""
+msgstr "Wybierz stronę docelową dla chmury tagów."
 
 #: wppa-functions.php:6090
 msgid "Please check the tag(s) that the photos must have"
@@ -661,192 +665,182 @@ msgid "Find!"
 msgstr ""
 
 #: wppa-lasten-widget.php:52
-#, fuzzy
 msgid "View the most recent uploaded photos"
-msgstr "Visa toppnoterade foton"
+msgstr "Zobacz ostatnio przesłane zdjęcia"
 
 #: wppa-non-admin.php:224 wppa-slideshow.php:141
 msgid "Start"
-msgstr "Starta"
+msgstr "Start:"
 
 #: wppa-non-admin.php:225
 msgid "Stop"
-msgstr "Avbryt"
+msgstr "Stop"
 
 #: wppa-non-admin.php:226 wppa-slideshow.php:140
 msgid "Slower"
-msgstr "Långsammare"
+msgstr "Wolniej"
 
 #: wppa-non-admin.php:227 wppa-slideshow.php:142
 msgid "Faster"
-msgstr "Snabbare"
+msgstr "Szybciej"
 
 #: wppa-non-admin.php:228
 msgid "Photo"
-msgstr "Foto"
+msgstr "Zdjęcie"
 
 #: wppa-non-admin.php:229
 msgid "of"
-msgstr "av"
+msgstr "z"
 
 #: wppa-non-admin.php:230
 msgid "Previous photo"
-msgstr "Föregående foto"
+msgstr "Poprzednie zdjęcie"
 
 #: wppa-non-admin.php:231
 msgid "Next photo"
-msgstr "Nästa foto"
+msgstr "Następne zdjęcie"
 
 #: wppa-non-admin.php:232
 msgid "Prev."
-msgstr "Föreg."
+msgstr "Poprz."
 
 #: wppa-non-admin.php:233 wppa-slideshow.php:475
 msgid "Next"
-msgstr "Nästa"
+msgstr "Nast."
 
 #: wppa-non-admin.php:237
 msgid "Please enter your name"
-msgstr "Var vänlig skriv ditt namn"
+msgstr "Wprowadź swoje imię i nazwisko"
 
 #: wppa-non-admin.php:238
 msgid "Please enter a valid email address"
-msgstr "Var vänlig ange en aktuell e-postadress"
+msgstr "Wprowadź swój adres email"
 
 #: wppa-non-admin.php:239
 msgid "Please enter a comment"
-msgstr "Var vänlig skriv en kommentar"
+msgstr "Wprowadź komentarz"
 
 #: wppa-slideshow-widget.php:116
 msgid "No album defined yet."
-msgstr "Inget album är definierat."
+msgstr "Nie zdefiniowano jeszcze żadnego albumu."
 
 #: wppa-slideshow.php:161
 msgid "Paused"
-msgstr "Pausad"
+msgstr "Włączona pauza"
 
 #: wppa-slideshow.php:165
 msgid ""
 "To see the full size images, you need to enable javascript in your browser."
 msgstr ""
-"För att se ett foto i full storlek behöver du aktivera Javascript i din "
-"webläsare."
+"Aby obejrzeć zdjęcia w pełnym wymiarze, musisz włączyć javascript w twojej "
+"przeglądarce."
 
 #: wppa-slideshow.php:331
 msgid "- - - Rating enabled - - -"
-msgstr "- - - Betyg tillgängligt - - -"
+msgstr "- - - Oceny włączone - - -"
 
 #: wppa-slideshow.php:342
 msgid "very low"
-msgstr "väldigt lågt"
+msgstr ""
 
 #: wppa-slideshow.php:343
 msgid "low"
-msgstr "lågt"
+msgstr ""
 
 #: wppa-slideshow.php:344
 msgid "average"
-msgstr "medel"
+msgstr ""
 
 #: wppa-slideshow.php:345
 msgid "high"
-msgstr "högt"
+msgstr ""
 
 #: wppa-slideshow.php:346
 msgid "very high"
-msgstr "väldigt högt"
+msgstr ""
 
 #: wppa-slideshow.php:355 wppa-slideshow.php:359 wppa-slideshow.php:384
 msgid "Average&nbsp;rating"
-msgstr "Medel&nbsp;gradering"
+msgstr ""
 
 #: wppa-slideshow.php:367 wppa-slideshow.php:371 wppa-slideshow.php:375
 #: wppa-slideshow.php:390
 msgid "My&nbsp;rating"
-msgstr "Min&nbsp;gradering"
+msgstr ""
 
 #: wppa-slideshow.php:378 wppa-slideshow.php:394
 #, php-format
 msgid "You must <a href=\"%s\">login</a> to vote"
-msgstr "Du måste <a href=\"%s\">logga in</a> för att rösta"
+msgstr ""
 
 #: wppa-slideshow.php:471
 #, php-format
 msgid "%s back"
-msgstr "%s bakåt"
+msgstr "%s do tyłu"
 
 #: wppa-slideshow.php:472
 msgid "Previous"
-msgstr "Föregående"
+msgstr "Poprzednie"
 
 #: wppa-slideshow.php:476
 #, php-format
 msgid "%s forward"
-msgstr "%s framåt"
+msgstr "%s naprzód"
 
 #: wppa-slideshow.php:582
 #, php-format
 msgid "Photo %s of %s"
-msgstr "Foto %s av %s"
+msgstr "Zdjęcie %s z %s"
 
 #: wppa-slideshow.php:613
 msgid "Click to start/stop"
-msgstr "Klicka för att starta/stoppa"
+msgstr "Kliknij: start/stop"
 
 #: wppa-slideshow.php:625
 msgid "- - - Comments box activated - - -"
-msgstr "- - - Kommentarsbox aktiverad - - -"
+msgstr "- - - Ramka komentarzy aktywowana - - -"
 
 #: wppa-slideshow.php:646
 msgid "- - - IPTC box activated - - -"
-msgstr "- - - IPTC box aktiverad - - -"
+msgstr "- - - Ramka IPTC aktywowana - - -"
 
 #: wppa-slideshow.php:666
 msgid "- - - EXIF box activated - - -"
-msgstr "- - - EXIF box aktiverad - - -"
+msgstr "- - - Ramka EXIF aktywowana - - -"
 
 #: wppa-utils.php:150
 msgid "--- none ---"
-msgstr "--- ingen ---"
+msgstr "--- żaden ---"
 
 #: wppa-utils.php:154
 msgid "--- separate ---"
-msgstr "--- separera ---"
+msgstr "--- separator ---"
 
 #: wppa-utils.php:158
 #, fuzzy
 msgid "--- all ---"
-msgstr "--- ingen ---"
+msgstr "--- żaden ---"
 
 #: wppa-utils.php:162 wppa-utils.php:182
 #, fuzzy
 msgid "--- deleted ---"
-msgstr "--- separera ---"
+msgstr "--- separator ---"
 
 #: wppa-utils.php:172
 #, fuzzy
 msgid "All Albums"
-msgstr "Fotoalbum"
+msgstr "Albumy zdjęć"
 
 #: wppa-utils.php:236
 #, php-format
 msgid "Rating: %s"
-msgstr "Betyg: %s"
+msgstr "Ocena: %s"
 
 #: theme/wppa-theme.php:96
 msgid "No albums or photos found matching your search criteria."
-msgstr "Inga album eller foton som matchar sökkriteriet."
+msgstr "Nie znaleziono albumów ani zdjęć spełniających kryteria wyszukiwania."
 
 #: theme/wppa-theme.php:99 theme/wppa-theme.php:110
 #, fuzzy
 msgid "No photos found matching your search criteria."
-msgstr "Inga album eller foton som matchar sökkriteriet."
-
-#~ msgid "Click to browse in fullsize"
-#~ msgstr "Klicka för att vis i full storlek"
-
-#~ msgid "Thumbnail Photos"
-#~ msgstr "Tumnagelfoton"
-
-#~ msgid "Top Ten Photos"
-#~ msgstr "Topp tio foton"
+msgstr "Nie znaleziono albumów ani zdjęć spełniających kryteria wyszukiwania."

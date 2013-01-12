@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the slideshow high level functions
-* Version 4.9.1
+* Version 4.9.3
 *
 */
 
@@ -697,4 +697,13 @@ global $wppa_opt;
 
 		$wppa['out'] .= wppa_nltab('-').'</div><!-- #share -->';
 	}
+}
+
+// Errorbox
+function wppa_errorbox($text) {
+global $wppa;
+
+	$wppa['out'] .= wppa_nltab('+').'<div id="error-'.$wppa['master_occur'].'" class="wppa-box wppa-box-text wppa-nav wppa-errorbox " style="text-align: center; '.__wcs('wppa-box').__wcs('wppa-box-text').__wcs('wppa-nav').'">';
+	$wppa['out'] .= wppa_nltab().$text;
+	$wppa['out'] .= wppa_nltab('-').'</div><!-- #error -->';
 }
