@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions and API modules
-* Version 4.9.2
+* Version 4.9.3
 *
 */
 /* Moved to wppa-common-functions.php:
@@ -165,7 +165,7 @@ global $wpdb;
 		}
 		elseif ( $wppa['is_tag'] ) {
 			$wppa['out'] .= wppa_nltab().'<span class="b12" >'.$sep.'</span>';
-			$wppa['out'] .= wppa_nltab().'<span class="wppa-nav-text b11" style="'.__wcs('wppa-nav-text').__wcs('wppa-black').'" ><b>'.__a('Tagged photos:', 'wppa_theme').'&nbsp;'.trim($wppa['is_tag'], ',').'</b></span>';
+			$wppa['out'] .= wppa_nltab().'<span class="wppa-nav-text b11" style="'.__wcs('wppa-nav-text').__wcs('wppa-black').'" ><b>'.__a('Tagged photos:', 'wppa_theme').'&nbsp;'.$wppa['is_tag'].'</b></span>';
 		}
 
 	$wppa['out'] .= wppa_nltab('-').'</div>';
@@ -274,7 +274,7 @@ global $wppa_opt;
 		$wppa['is_lasten'] 		= $wppa['lasten_count'] != '0';
 		$wppa['comten_count'] 	= wppa_get_get('comten', '0');
 		$wppa['is_comten']		= $wppa['comten_count'] != '0';
-		$wppa['is_tag']			= wppa_get_get('tag', false);
+		$wppa['is_tag']			= trim(strip_tags(wppa_get_get('tag', false)), ',');
 	}
 	// 2. wppa_albums is called directly. Assume any arg. If not, no worry, system defaults are used == generic
 	elseif ( $id != '' || $type != '' || $size != '' || $align != '' ) {
@@ -1110,7 +1110,7 @@ global $wppa_opt;
 			$seltags = explode(',',$wppa['is_tag']);
 			$in = true;
 			if ( $seltags ) foreach ( $seltags as $seltag ) {
-				if ( $seltag && ! in_array($temp[$index]['id'], $tags[$seltag]['ids']) ) {
+				if ( $seltag && ! @in_array($temp[$index]['id'], $tags[$seltag]['ids']) ) {
 					$in = false;
 				}
 			}
@@ -1617,36 +1617,37 @@ global $wppa_done;
 						cp_alterPoints(cp_currentUser(), $wppa_opt['wppa_cp_points_comment']);
 					}
 					// SEND EMAILS
-					$subj = '['.get_bloginfo('name').'] '.__('Comment on photo:', 'wppa_theme').' '.wppa_get_photo_name($id);
+					$subj = '['.get_bloginfo('name').'] '.__a('Comment on photo:', 'wppa_theme').' '.wppa_get_photo_name($id);
 					$usr  = $user;
 					if ( is_user_logged_in() ) {
 						global $current_user;
 						get_currentuserinfo();
 						$usr = $current_user->display_name;
 					}
-					$mess = $usr.' <'.$email.'> '.__('wrote on photo', 'wppa_theme').' '.wppa_get_photo_name($id).":\n\n".$comment."\n\n";
+					$mess = $usr.' <'.$email.'> '.__a('wrote on photo', 'wppa_theme').' '.wppa_get_photo_name($id).":\n\n".$comment."\n\n";
 					$modl = "\n\n".'Moderate comment admin: '."\n".get_admin_url().'admin.php?page=wppa_manage_comments&commentid='.$key;
 					$modl .= "\n\n".'Moderate manage photo: '."\n".get_admin_url().'admin.php?page=wppa_admin_menu&tab=cmod&photo='.$id;
 					$from    = "From: ".$email;
+					$extraheaders = "\r\n" . 'MIME-Version: 1.0' . "\r\n" . 'Content-Transfer-Encoding: 8bit' . "\r\n" . 'Content-Type: text/plain; charset="UTF-8"';
 					
 					if ( is_numeric($wppa_opt['wppa_comment_notify']) ) {	// single user
 						// Mail specific user
 						$moduser = get_userdata($wppa_opt['wppa_comment_notify']);
 						$to      = $moduser->user_email;
 						
-						$message = $mess.__('You receive this email as you are assigned to moderate', 'wpp_theme');
+						$message = $mess.__a('You receive this email as you are assigned to moderate', 'wpp_theme');
 						if ( user_can( $moduser, 'wppa_comments' ) ) $message .= $modl;
 						
-						mail( $to , $subj , $message , $from, '' );
+						mail( $to , $subj , $message , $from . $extraheaders, '' );
 					}
 					if ( $wppa_opt['wppa_comment_notify'] == 'admin' || $wppa_opt['wppa_comment_notify'] == 'both' ) {
 						// Mail admin
 						$to      = get_bloginfo('admin_email');
 						
-						$message = $mess.__('You receive this email as administrator of the site', 'wpp_theme');
+						$message = $mess.__a('You receive this email as administrator of the site', 'wpp_theme');
 						$message .= $modl;
 						
-						mail( $to , $subj , $message , $from, '' );
+						mail( $to , $subj , $message , $from . $extraheaders, '' );
 					}
 					if ( $wppa_opt['wppa_comment_notify'] == 'owner' || $wppa_opt['wppa_comment_notify'] == 'both' ) {
 						// Mail owner
@@ -1657,10 +1658,10 @@ global $wppa_done;
 							$moduser = get_user_by('login', $owner);
 							$to      = $moduser->user_email;
 							
-							$message = $mess.__('You receive this email as owner of the album', 'wpp_theme');
+							$message = $mess.__a('You receive this email as owner of the album', 'wpp_theme');
 							if ( user_can( $moduser, 'wppa_comments' ) ) $message .= $modl;
 							
-							mail( $to , $subj , $message , $from, '' );
+							mail( $to , $subj , $message , $from . $extraheaders, '' );
 						}
 					}
 					// Notyfy user
@@ -2403,7 +2404,8 @@ global $wppa_opt;
 	}
 	elseif ( $wppa['start_album'] ) $alb = $wppa['start_album'];
 	else $alb = '0';
-	if ( $alb ) $extra_url .= '&amp;wppa-album='.$alb;
+//	if ( $alb ) 
+		$extra_url .= '&amp;wppa-album='.$alb;
 	
 	// photo
 	if (wppa_get_get('photo')) {
@@ -3635,6 +3637,8 @@ function wppa_run_slidecontainer($type = '') {
 global $wppa;
 global $wppa_opt;
 
+global $thumbs;
+
 	if ( $wppa['is_single'] && is_feed() ) {	// process feed for single image slideshow here, normal slideshow uses filmthumbs
 		$style_a = wppa_get_fullimgstyle_a($wppa['start_photo']);
 		$style   = $style_a['style'];
@@ -3664,10 +3668,10 @@ global $wppa_opt;
 		else $startid = -1;
 		
 		// Find album
-		if (wppa_get_get('album')) $alb = wppa_get_get('album');
-		else $alb = '';	// Album id is in $wppa['start_album']
+//		if (wppa_get_get('album')) $alb = wppa_get_get('album');
+//		else $alb = '';	// Album id is in $wppa['start_album']
 		// Find thumbs
-		$thumbs = wppa_get_thumbs($alb);
+//		$thumbs = wppa_get_thumbs($alb);
 		// Create next ids
 		$ix = 0;
 		if ( $thumbs ) while ( $ix < count($thumbs) ) {
@@ -6072,13 +6076,18 @@ global $wppa;
 	$result .= '
 	<script type="text/javascript">
 	function wppaProcessMultiTagRequest() {
+	var any = false;
 	var url="'.$hr.'&wppa-tag=";';
 	if ( $tags ) foreach ( $tags as $tag ) {
 		$result .= '
-		if ( document.getElementById("wppa'.$tag['tag'].'").checked ) url+="'.$tag['tag'].',";';
+		if ( document.getElementById("wppa'.$tag['tag'].'").checked ) {
+			url+="'.$tag['tag'].',";
+			any = true;
+		}';
 	}	
 	$result .= '
-	document.location = url;
+	if ( any ) document.location = url;
+	else alert ("'.__a('Please check the tag(s) that the photos must have', 'wppa_theme').'");
 	}</script>
 	';
 	
@@ -6106,7 +6115,6 @@ global $wppa;
 		}
 		if ( $tropen ) $result .= '</tr>';
 		$result .= '</table>';
-//		$result .= '<br />';
 		$result .= '<input type="button" onclick="wppaProcessMultiTagRequest()" value="'.__a('Find!', 'wppa_theme').'" />';
 	}
 	return $result;

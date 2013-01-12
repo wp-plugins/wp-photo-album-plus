@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the albums/photos/slideshow in a page or post
-* Version 4.9.2
+* Version 4.9.3
 */
 function wppa_theme() {
 
@@ -11,6 +11,8 @@ global $wppa_version; $wppa_version = '4-8-7';		// The version number of this fi
 global $wppa;
 global $wppa_opt;
 global $wppa_show_statistics;						// Can be set to true by a custom page template
+
+global $thumbs;
 
 $curpage = wppa_get_curpage();						// Get the page # we are on when pagination is on, or 1
 $didsome = false;									// Required initializations for pagination
@@ -91,16 +93,22 @@ wppa_container('open');																// Open container
 		
 		// Empty search results?
 		if ( ! $didsome && $wppa['src'] ) {
-			$wppa['out'] .= '<div class="center">'.__a('No albums or photos found matching your search criteria.', 'wppa_theme').'</div>';
+			$wppa['out'] .= wppa_errorbox(__a('No albums or photos found matching your search criteria.', 'wppa_theme'));
 		}
 		if ( ! $didsome && $wppa['is_tag'] ) {
-			$wppa['out'] .= '<div class="center">'.__a('No photos found matching your search criteria.', 'wppa_theme').'</div>';
+			$wppa['out'] .= wppa_errorbox(__a('No photos found matching your search criteria.', 'wppa_theme'));
 		}
 	} // wppa_page('albums')
 	
 	elseif (wppa_page('slide') || wppa_page('single')) {							// Page 'Slideshow' or 'Single' in browsemode requested
-		wppa_the_slideshow();														// Producs all the html required for the slideshow
-		wppa_run_slidecontainer('slideshow');										// Fill in the photo array and display it.
+		$thumbs = wppa_get_thumbs();
+		if ( $thumbs ) {
+			wppa_the_slideshow();													// Producs all the html required for the slideshow
+			wppa_run_slidecontainer('slideshow');									// Fill in the photo array and display it.
+		}
+		else {
+			$wppa['out'] .= wppa_errorbox(__a('No photos found matching your search criteria.', 'wppa_theme'));
+		}
 	} // wppa_page('slide')
 wppa_container('close');
 }
