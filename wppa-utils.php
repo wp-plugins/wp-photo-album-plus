@@ -3,9 +3,13 @@
 * Package: wp-photo-album-plus
 *
 * Contains low-level utility routines
-* Version 4.9.2
+* Version 4.9.4
 *
 */
+
+function __a($txt, $dom = 'wppa_theme') {
+	return __($txt, $dom);
+}
 
 // Bring album into cache
 function wppa_cache_album($id) {
@@ -354,4 +358,84 @@ global $wpdb;
 function wppa_photo_exists($id) {
 global $wpdb;
 	return $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `".WPPA_PHOTOS."` WHERE `id` = %s", $id));
+}
+
+function wppa_dislike_add($photo) {
+global $wppa_opt;
+
+	$usr = wppa_get_user();
+	$data = get_option('wppa_dislikes', false);
+	
+	if ( ! is_array($data) ) { 	// Empty
+		$data[$photo][] = $usr;
+		update_option('wppa_dislikes', $data);
+		return;
+	}
+	else {
+		if ( ! isset($data[$photo]) || ! in_array($usr, $data[$photo]) ) {
+			$data[$photo][] = $usr;
+			update_option('wppa_dislikes', $data);
+			$count = count($data[$photo]);
+			
+			if ( $count % $wppa_opt['wppa_dislike_mail_every'] == '0' ) {	// Mail the admin
+				$to        = get_bloginfo('admin_email');
+				$subj 	   = __('Notification of inappropriate image', 'wppa');
+				$cont['0'] = sprintf(__('Photo %s has been marked as inappropriate by %s different visitors.', 'wppa'), $photo, $count);
+				$cont['1'] = '<a href="'.get_admin_url().'admin.php?page=wppa_admin_menu&tab=pmod&photo='.$photo.'" >'.__('Manage photo', 'wppa').'</a>';
+				wppa_send_mail($to, $subj, $cont, $photo);
+			}
+		}
+	}
+}
+
+function wppa_dislike_remove($photo) {
+
+	$data = get_option('wppa_dislikes', false);
+	if ( is_array($data) ) {
+		if ( isset($data[$photo]) ) unset($data[$photo]);
+		update_option('wppa_dislikes', $data);
+	}
+}
+
+function wppa_dislike_get($photo) {
+	
+	$data = get_option('wppa_dislikes', false);
+	if ( is_array($data) ) {
+		if ( isset($data[$photo]) ) {
+			return $data[$photo];
+		}
+	}
+	return false;
+}
+
+function wppa_send_mail($to, $subj, $cont, $photo) {
+
+	$from			= 'From: noreply@'.substr(home_url(), strpos(home_url(), '.') + '1');
+	$extraheaders 	= "\n" . 'MIME-Version: 1.0' . "\n" . 'Content-Transfer-Encoding: 8bit' . "\n" . 'Content-Type: text/html; charset="UTF-8"';
+	$message 		= '
+<html>
+	<head>
+		<title>'.$subj.'</title>
+	</head>
+	<body>
+		<h3>'.$subj.'</h3>
+		<p><img src="'.wppa_get_thumb_url($photo).'" /></p>';
+		if ( is_array($cont) ) {
+			foreach ( $cont as $c ) if ( $c ) {
+				$message .= '
+		<p>'.$c.'</p>';
+			}
+		}
+		else {
+			$message .= '
+		<p>'.$cont.'</p>';
+		}
+		$message .= '
+		<p><small>'.__a('This message is automaticly generated. It is useless to respond to it.', 'wppa_theme').'</small></p>';
+		$message .= '
+	</body>
+</html>';
+				
+	$iret = mail( $to , '['.get_bloginfo('name').'] '.$subj , $message , $from . $extraheaders, '' );
+	if ( ! $iret ) echo 'Mail sending Failed';
 }

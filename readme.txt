@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile
-Version: 4.9.3
+Version: 4.9.4
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -162,6 +162,27 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 4.9.4 =
+
+= Bug Fixes =
+
+* Cube points frontend upload was calculated wrong. Fixed.
+* Fixed (removed) CR for proper utf8 encoding of email notifications.
+* The texts *Average rating* and *My rating* now also have shorthands for small container widths.
+
+= New Features =
+
+* There is a red cross in the rating bar. Clicking will register a 'dislike'. 
+After a certain 'dislikes' by different users, admin will receive a notification email.
+This feature is configurable in Table II-B7.1. Entering 0 will disble this feature. Default is 5.
+* You can display the number of comments on the popup image ( Table II-C6.1 )
+* You can specify that admin receives a notification by email at a frontend photo upload. ( Table VII-B3.0 ).
+
+= Other Changes =
+
+* On entering the Settings page, a check is done if the selected linkpages still exist.
+* Cosmetic changes to email notifications.
 
 = 4.9.3 =
 

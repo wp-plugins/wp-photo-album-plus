@@ -2,11 +2,11 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 4.9.3
+* version 4.9.4
 *
 */
 global $wppa_api_version;
-$wppa_api_version = '4-9-3-000';
+$wppa_api_version = '4-9-4-000';
 // Initialize globals and option settings
 function wppa_initialize_runtime($force = false) {
 global $wppa;
@@ -187,6 +187,7 @@ global $wppa_initruntimetime;
 						'wppa_show_full_desc' 				=> '',	// 6
 						'wppa_hide_when_empty'				=> '',	// 6.1
 						'wppa_rating_on' 					=> '',	// 7
+						'wppa_dislike_mail_every'			=> '',	// 7.1
 						'wppa_rating_display_type'			=> '',	// 8
 						'wppa_show_avg_rating'				=> '',	// 9
 						'wppa_show_comments' 				=> '',	// 10
@@ -220,6 +221,7 @@ global $wppa_initruntimetime;
 						'wppa_popup_text_desc' 				=> '',	// 5
 						'wppa_popup_text_desc_strip'		=> '',	// 5.1
 						'wppa_popup_text_rating' 			=> '',	// 6
+						'wppa_popup_text_ncomments'			=> '',
 						'wppa_show_rating_count'			=> '',	// 7
 						'wppa_albdesc_on_thumbarea'			=> '',
 						// D Covers
@@ -450,6 +452,7 @@ global $wppa_initruntimetime;
 						'wppa_owner_only' 			=> '',
 						'wppa_user_upload_on'		=> '',
 						'wppa_upload_moderate'		=> '',
+						'wppa_upload_notify' 		=> '',
 						'wppa_memcheck_frontend'	=> '',
 						'wppa_memcheck_admin'		=> '',
 						'wppa_comment_captcha'		=> '',

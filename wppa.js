@@ -2,7 +2,7 @@
 //
 // conatins slideshow, theme, ajax and lightbox code
 //
-// Version 4.9.0
+// Version 4.9.4
 
 // Part 1: Slideshow
 //
@@ -41,6 +41,11 @@ var wppaSlower;
 var wppaFaster;
 var wppaNextP;
 var wppaPrevP;
+var wppaAvgRating;
+var wppaMyRating;
+var wppaAvgRat;
+var wppaMyRat;
+var wppaDislikeMsg;
 var wppaMiniTreshold = 300;
 var wppaStart = 'Start';		// defaults
 var wppaStop = 'Stop';			//
@@ -419,10 +424,14 @@ function _wppaNextSlide(mocc, mode) {
 			if ( wppaIsMini[mocc] || wppaGetContainerWidth(mocc) < wppaMiniTreshold ) {
 				jQuery('#prev-arrow-'+mocc).html(wppaPrevP);
 				jQuery('#next-arrow-'+mocc).html(wppaNextP);
+				jQuery('#wppa-avg-rat-'+mocc).html(wppaAvgRat);
+				jQuery('#wppa-my-rat-'+mocc).html(wppaMyRat);
 			}
 			else {
 				jQuery('#prev-arrow-'+mocc).html(wppaPreviousPhoto);
 				jQuery('#next-arrow-'+mocc).html(wppaNextPhoto);
+				jQuery('#wppa-avg-rat-'+mocc).html(wppaAvgRating);
+				jQuery('#wppa-my-rat-'+mocc).html(wppaMyRating);
 			}
 		}
     }
@@ -1212,11 +1221,17 @@ function _wppaDoAutocol(mocc) {
 		if ( wppaColWidth[mocc] < wppaMiniTreshold ) {
 			jQuery('#prev-arrow-'+mocc).html(wppaPrevP);
 			jQuery('#next-arrow-'+mocc).html(wppaNextP);
+			jQuery('#wppa-avg-rat-'+mocc).html(wppaAvgRat);
+			jQuery('#wppa-my-rat-'+mocc).html(wppaMyRat);
+
 			jQuery('#counter-'+mocc).html( (_wppaCurIdx[mocc]+1)+' / '+_wppaSlides[mocc].length );
 		}
 		else {
 			jQuery('#prev-arrow-'+mocc).html(wppaPreviousPhoto);
 			jQuery('#next-arrow-'+mocc).html(wppaNextPhoto);
+			jQuery('#wppa-avg-rat-'+mocc).html(wppaAvgRating);
+			jQuery('#wppa-my-rat-'+mocc).html(wppaMyRating);
+
 			jQuery('#counter-'+mocc).html( wppaPhoto+' '+(_wppaCurIdx[mocc]+1)+' '+wppaOf+' '+_wppaSlides[mocc].length );
 		}
 	}
@@ -1359,6 +1374,7 @@ function _wppaSetRd(mocc, avg, where) {
 			jQuery(where+mocc+'-'+idx).stop().fadeTo(100, wppaStarOpacity);
 		}
 	}
+	jQuery('#wppa-dislike-'+mocc).stop().fadeTo(100, wppaStarOpacity);
 }
 
 function _wppaFollowMe(mocc, idx) {
@@ -1397,14 +1413,15 @@ if (value == 0) return;
 	jQuery('#wppa-rate-'+mocc+'-'+value).stop().fadeTo(100, 1.0);		// Fade in fully
 	
 	// Try to create the http request object
-	var xmlhttp = wppaGetXmlHttp();	// This function is in wppa-ajax.js
+	var xmlhttp = wppaGetXmlHttp();	
 
-	if ( wppaRatingUseAjax && xmlhttp ) {								// USE AJAX
+	if ( ( wppaRatingUseAjax || value == -1 ) && xmlhttp ) {			// USE AJAX Dislike always uses ajax
 		
 		// Make the Ajax url
 		url = wppaAjaxUrl+'?action=wppa&wppa-action=rate&wppa-rating='+value+'&wppa-rating-id='+photoid;
 		url += '&wppa-occur='+mocc+'&wppa-index='+_wppaCurIdx[mocc];
 		url += '&wppa-nonce='+jQuery('#wppa-nonce').attr('value');
+		url += '&locale='+wppaLocale;
 		
 		// Setup process the result
 		xmlhttp.onreadystatechange=function() 
@@ -1414,6 +1431,9 @@ if (value == 0) return;
 				
 				if (ArrValues[0] == '0') {	// Error
 					alert('Error Code='+ArrValues[1]+'\n\n'+ArrValues[2]);
+				}
+				else if ( value == -1 ) {	// -1 is the dislike button
+					alert(wppaDislikeMsg);
 				}
 				else {
 					// Store new values
@@ -1775,7 +1795,7 @@ var wppaPopupOnclick = new Array();
 var wppaThumbTargetBlank = false;
 
 // Popup of thumbnail images 
-function wppaPopUp(mocc, elm, id, rating) {
+function wppaPopUp(mocc, elm, id, rating, ncom) {
 	var topDivBig, topDivSmall, leftDivBig, leftDivSmall;
 	var heightImgBig, heightImgSmall, widthImgBig, widthImgSmall, widthImgBigSpace;
 	var puImg;
@@ -1792,7 +1812,9 @@ function wppaPopUp(mocc, elm, id, rating) {
 		var namediv = elm.alt ? '<div id="wppa-name-'+mocc+'" style="display:none; padding:1px;" class="wppa_pu_info">'+elm.alt+'</div>' : '';
 		var descdiv = elm.title ? '<div id="wppa-desc-'+mocc+'" style="clear:both; display:none; padding:1px;" class="wppa_pu_info">'+elm.title+'</div>' : '';
 		var ratediv = rating ? '<div id="wppa-rat-'+mocc+'" style="clear:both; display:none; padding:1px;" class="wppa_pu_info">'+rating+'</div>' : '';
-		var popuptext = namediv+descdiv+ratediv;
+		var ncomdiv = ncom ? '<div id="wppa-ncom-'+mocc+'" style="clear:both; display:none; padding:1px;" class="wppa_pu_info">'+ncom+'</div>' : '';
+		var popuptext = namediv+descdiv+ratediv+ncomdiv;
+
 		var target = '';
 		if (wppaThumbTargetBlank) target = 'target="_blank"';
 		switch (wppaPopupLinkType) {
@@ -1854,6 +1876,7 @@ function wppaPopReady(mocc) {
 	jQuery("#wppa-name-"+mocc).show();
 	jQuery("#wppa-desc-"+mocc).show();
 	jQuery("#wppa-rat-"+mocc).show();
+	jQuery("#wppa-ncom-"+mocc).show();
 }
 
 // Dismiss popup

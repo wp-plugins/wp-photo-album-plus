@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 4.9.3
+* Version 4.9.4
 *
 */
 
@@ -451,6 +451,7 @@ Hide Camera info
 						'wppa_show_full_desc' 				=> 'yes',		// 6
 						'wppa_hide_when_empty'				=> 'no',		// 6.1
 						'wppa_rating_on' 					=> 'yes',		// 7
+						'wppa_dislike_mail_every'			=> '5', 		// 7.1
 						'wppa_rating_display_type'			=> 'graphic',	// 8
 						'wppa_show_avg_rating'				=> 'yes',		// 9
 						'wppa_show_comments' 				=> 'yes',		// 10
@@ -482,6 +483,7 @@ Hide Camera info
 						'wppa_popup_text_desc' 				=> 'yes',	// 5
 						'wppa_popup_text_desc_strip'		=> 'no',	// 5.1
 						'wppa_popup_text_rating' 			=> 'yes',	// 6
+						'wppa_popup_text_ncomments'			=> 'yes', 	//
 						'wppa_show_rating_count'			=> 'no',	// 7
 						'wppa_albdesc_on_thumbarea'			=> 'none',
 						// D Covers
@@ -711,6 +713,7 @@ Hide Camera info
 						'wppa_owner_only' 			=> 'no',
 						'wppa_user_upload_on'		=> 'no',
 						'wppa_upload_moderate'		=> 'no',
+						'wppa_upload_notify' 		=> 'no',
 						'wppa_memcheck_frontend'	=> 'yes',
 						'wppa_memcheck_admin'		=> 'yes',
 						'wppa_comment_captcha'		=> 'no',
