@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the slideshow high level functions
-* Version 4.9.3
+* Version 4.9.4
 *
 */
 
@@ -352,15 +352,23 @@ global $wppa_opt;
 		$icon = 'star.png';
 
 		if ( $wppa_opt['wppa_show_avg_rating'] ) {
-			$wppa['out'] .= __a('Average&nbsp;rating', 'wppa_theme').'&nbsp;';
+			$wppa['out'] .= '<span id="wppa-avg-rat-'.$wppa['master_occur'].'">'.__a('Average&nbsp;rating', 'wppa_theme').'</span>&nbsp;';
 			
 			$i = '1';
 			while ($i <= $wppa_opt['wppa_rating_max']) {
 				$wppa['out'] .= wppa_nltab().'<img id="wppa-avg-'.$wppa['master_occur'].'-'.$i.'" class="wppa-avg-'.$wppa['master_occur'].' no-shadow" '.$style.' src="'.wppa_get_imgdir().$icon.'" alt="'.$i.'" title="'.__a('Average&nbsp;rating', 'wppa_theme').': '.$r[$i].'" />';
 				$i++;
 			}
-			
-			$wppa['out'] .= '<img src="'.wppa_get_imgdir().'transp.png" style="width:'.$wppa_opt['wppa_ratspacing'].'px; height:15px; box-shadow:none; padding:0; margin:0; border:none;" />';
+			if ( ! $wppa_opt['wppa_dislike_mail_every'] ) {
+				$wppa['out'] .= '<img src="'.wppa_get_imgdir().'transp.png" style="width:'.$wppa_opt['wppa_ratspacing'].'px; height:15px; box-shadow:none; padding:0; margin:0; border:none;" />';
+			}
+		}
+	
+		if ( $wppa_opt['wppa_dislike_mail_every'] ) {
+			$evnts = 'onmouseover="jQuery(this).stop().fadeTo(100, 1.0)" onmouseout="jQuery(this).stop().fadeTo(100, wppaStarOpacity)" onclick="if (confirm(\''.__a('Are you sure you want to mark this image as inappropriate?').'\')) wppaRateIt('.$wppa['master_occur'].', -1)"';
+			$title = 'title="'.__a('Click this cross if you do NOT like this image!', 'wppa_theme').'"';
+			$wppa['out'] .= '&nbsp;<img id="wppa-dislike-'.$wppa['master_occur'].'" '.$title.' src="'.wppa_get_imgdir().'cross.png" '.$style.' class="no-shadow" '.$evnts.' />&nbsp;';
+
 		}
 		
 		if (!$wppa_opt['wppa_rating_login'] || is_user_logged_in()) {
@@ -372,7 +380,7 @@ global $wppa_opt;
 				$i++;
 			}
 			
-			if ( $wppa_opt['wppa_show_avg_rating'] ) $wppa['out'] .= '&nbsp;'.__a('My&nbsp;rating', 'wppa_theme');
+			if ( $wppa_opt['wppa_show_avg_rating'] ) $wppa['out'] .= '&nbsp;'.'<span id="wppa-my-rat-'.$wppa['master_occur'].'">'.__a('My&nbsp;rating', 'wppa_theme').'</span>';
 		}
 		else {
 			$wppa['out'] .= sprintf(__a('You must <a href="%s">login</a> to vote', 'wppa_theme'), site_url('wp-login.php', 'login'));

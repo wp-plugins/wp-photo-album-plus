@@ -3,12 +3,12 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions and API modules
-* Version 4.9.3
+* Version 4.9.4
 *
 */
 /* Moved to wppa-common-functions.php:
 global $wppa_api_version;
-$wppa_api_version = '4-9-2-000';
+$wppa_api_version = '4-9-4-000';
 */
 
 if ( ! defined( 'ABSPATH' ) )
@@ -1617,37 +1617,36 @@ global $wppa_done;
 						cp_alterPoints(cp_currentUser(), $wppa_opt['wppa_cp_points_comment']);
 					}
 					// SEND EMAILS
-					$subj = '['.get_bloginfo('name').'] '.__a('Comment on photo:', 'wppa_theme').' '.wppa_get_photo_name($id);
+					$subj = __a('Comment on photo:', 'wppa_theme').' '.wppa_get_photo_name($id);
 					$usr  = $user;
 					if ( is_user_logged_in() ) {
 						global $current_user;
 						get_currentuserinfo();
 						$usr = $current_user->display_name;
 					}
-					$mess = $usr.' <'.$email.'> '.__a('wrote on photo', 'wppa_theme').' '.wppa_get_photo_name($id).":\n\n".$comment."\n\n";
-					$modl = "\n\n".'Moderate comment admin: '."\n".get_admin_url().'admin.php?page=wppa_manage_comments&commentid='.$key;
-					$modl .= "\n\n".'Moderate manage photo: '."\n".get_admin_url().'admin.php?page=wppa_admin_menu&tab=cmod&photo='.$id;
-					$from    = "From: ".$email;
-					$extraheaders = "\r\n" . 'MIME-Version: 1.0' . "\r\n" . 'Content-Transfer-Encoding: 8bit' . "\r\n" . 'Content-Type: text/plain; charset="UTF-8"';
+					$cont['0'] = $usr.' <'.$email.'> '.__a('wrote on photo', 'wppa_theme').' '.wppa_get_photo_name($id).':';
+					$cont['1'] = $comment;
+					$cont2     = '<a href="'.get_admin_url().'admin.php?page=wppa_manage_comments&commentid='.$key.'" >'.__a('Moderate comment admin', 'wppa_theme').'</a>';
+					$cont3     = '<a href="'.get_admin_url().'admin.php?page=wppa_admin_menu&tab=cmod&photo='.$id.'" >'.__a('Moderate manage photo', 'wppa_theme').'</a>';
 					
 					if ( is_numeric($wppa_opt['wppa_comment_notify']) ) {	// single user
 						// Mail specific user
-						$moduser = get_userdata($wppa_opt['wppa_comment_notify']);
-						$to      = $moduser->user_email;
-						
-						$message = $mess.__a('You receive this email as you are assigned to moderate', 'wpp_theme');
-						if ( user_can( $moduser, 'wppa_comments' ) ) $message .= $modl;
-						
-						mail( $to , $subj , $message , $from . $extraheaders, '' );
+						$moduser 	= get_userdata($wppa_opt['wppa_comment_notify']);
+						$to      	= $moduser->user_email;
+						if ( user_can( $moduser, 'wppa_comments' ) ) $cont['2'] = $cont2; else $cont['2'] = '';
+						if ( user_can( $moduser, 'wppa_admin' ) ) 	 $cont['3'] = $cont3; else $cont['3'] = '';
+						$cont['4'] 	= __a('You receive this email as you are assigned to moderate', 'wpp_theme');
+						// Send!
+						wppa_send_mail($to, $subj, $cont, $photo);
 					}
 					if ( $wppa_opt['wppa_comment_notify'] == 'admin' || $wppa_opt['wppa_comment_notify'] == 'both' ) {
 						// Mail admin
-						$to      = get_bloginfo('admin_email');
-						
-						$message = $mess.__a('You receive this email as administrator of the site', 'wpp_theme');
-						$message .= $modl;
-						
-						mail( $to , $subj , $message , $from . $extraheaders, '' );
+						$to      	= get_bloginfo('admin_email');
+						$cont['2'] = $cont2;
+						$cont['3'] = $cont3;
+						$cont['4'] = __a('You receive this email as administrator of the site', 'wpp_theme');
+						// Send!
+						wppa_send_mail($to, $subj, $cont, $photo);
 					}
 					if ( $wppa_opt['wppa_comment_notify'] == 'owner' || $wppa_opt['wppa_comment_notify'] == 'both' ) {
 						// Mail owner
@@ -1657,11 +1656,11 @@ global $wppa_done;
 						if ( $owner != 'admin' || $wppa_opt['wppa_comment_notify'] != 'both' ) { // Prevent dup to admin
 							$moduser = get_user_by('login', $owner);
 							$to      = $moduser->user_email;
-							
-							$message = $mess.__a('You receive this email as owner of the album', 'wpp_theme');
-							if ( user_can( $moduser, 'wppa_comments' ) ) $message .= $modl;
-							
-							mail( $to , $subj , $message , $from . $extraheaders, '' );
+							if ( user_can( $moduser, 'wppa_comments' ) ) $cont['2'] = $cont2; else $cont['2'] = '';
+							if ( user_can( $moduser, 'wppa_admin' ) ) 	 $cont['3'] = $cont3; else $cont['3'] = '';
+							$cont['4'] = __a('You receive this email as owner of the album', 'wpp_theme');
+							// Send!
+							wppa_send_mail($to, $subj, $cont, $photo);
 						}
 					}
 					// Notyfy user
@@ -2307,6 +2306,7 @@ function wppa_is_landscape($img_attr) {
 function wppa_get_imgevents($type = '', $id = '', $no_popup = false, $idx = '' ) {
 global $wppa;
 global $wppa_opt;
+global $wpdb;
 
 	$result = '';
 	$perc = '';
@@ -2328,7 +2328,14 @@ global $wppa_opt;
 				if ( $wppa_opt['wppa_thumb_linktype'] != 'lightbox' ) {
 					$rating = $wppa_opt['wppa_popup_text_rating'] ? wppa_get_rating_by_id($id) : '';
 					if ( $rating && $wppa_opt['wppa_show_rating_count'] ) $rating .= ' ('.wppa_get_rating_count_by_id($id).')';
-					$result .= 'wppaPopUp(' . $wppa['master_occur'] . ', this, ' . $id . ', \''.$rating.'\');" ';
+					if ( $wppa_opt['wppa_popup_text_ncomments'] ) $ncom = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `".WPPA_COMMENTS."` WHERE `photo` = %s", $id));
+					else $ncom = '0';
+					if ( $ncom ) {
+						if ( $ncom == '1') $ncom = __a('1 Comment', 'wppa_theme'); 
+						else $ncom = sprintf(__a('%s Comments', 'wppa_theme'), $ncom); 
+					}
+					else $ncom = '';
+					$result .= 'wppaPopUp(' . $wppa['master_occur'] . ', this, ' . $id . ', \''.$rating.'\', \'' . $ncom . '\');" ';
 				}
 				else {
 					// Popup and lightbox on thumbs are incompatible. skip popup.
@@ -4106,10 +4113,6 @@ function wppa_get_box_delta() {
 	return wppa_get_container_width() - wppa_get_box_width();
 }
 
-function __a($txt, $dom = 'wppa_theme') {
-	return __($txt, $dom);
-}
-
 // get permalink plus ? or & and possible debug switch
 function wppa_get_permalink($key = '', $plain = false) {
 global $wppa;
@@ -5136,10 +5139,10 @@ global $wppa_opt;
 				}
 			}
 			if ( $done ) {
-				//SUCCESSFUL RATING, ADD POINTS
+				//SUCCESSFUL UPLOAD, ADD POINTS
 				if( function_exists('cp_alterPoints') && is_user_logged_in() ) {
 					$cbpoints = $wppa_opt['wppa_cp_points_upload'] * $done;
-					cp_alterPoints(cp_currentUser(), $wppa_opt['wppa_cp_points_rating']);
+					cp_alterPoints(cp_currentUser(), $cbpoints);
 				}
 				else $cbpoints = '0';
 				$alert = $done == '1' ? __('Photo successfully uploaded.', 'wppa_theme') : sprintf(__('%s photos successfully uploaded.', 'wppa_theme'), $done);
@@ -5210,6 +5213,20 @@ global $wppa_opt;
 	}
 	if ( wppa_make_the_photo_files($file['tmp_name'], $id, $ext) ) {
 //		wppa_err_alert(__('Photo successfully uploaded.', 'wppa_theme'));
+		if ( $wppa_opt['wppa_upload_notify'] ) {
+			$to = get_bloginfo('admin_email');
+			$subj = sprintf(__a('New photo uploaded: %s'), $name);
+			$cont['0'] = sprintf(__a('User %s uploaded photo %s into album %s'), $owner, $id, wppa_get_album_name($alb));
+			if ( $wppa_opt['wppa_upload_moderate'] && !current_user_can('wppa_admin') ) {
+				$cont['1'] = __a('This upload requires moderation');
+				$cont['2'] = '<a href="'.get_admin_url().'admin.php?page=wppa_admin_menu&tab=cmod&photo='.$id.'" >'.__a('Moderate manage photo', 'wppa_theme').'</a>';
+			}
+			else {
+				$cont['1'] = __a('Details:');
+				$cont['1'] .= ' <a href="'.get_admin_url().'admin.php?page=wppa_admin_menu&tab=cmod&photo='.$id.'" >'.__a('Manage photo', 'wppa_theme').'</a>';
+			}
+			wppa_send_mail($to, $subj, $cont, $id);
+		}
 		return true;
 	}
 	else {

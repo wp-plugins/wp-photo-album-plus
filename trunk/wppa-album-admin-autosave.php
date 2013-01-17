@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * create, edit and delete albums
-* version 4.9.1
+* version 4.9.4
 *
 */
 
@@ -396,7 +396,7 @@ function _wppa_admin() {
 			}
 		}
 		
-		// Photo moderate ( not used yet )
+		// Photo moderate
 		else if ($_GET['tab'] == 'pmod') {
 			$photo = $_GET['photo'];
 			$alb = wppa_get_album_id_by_photo_id($photo);
@@ -1262,7 +1262,12 @@ function wppa_album_photos($id) {
 									else {
 										_e('No ratings for this photo.', 'wppa');
 									}
+									$dislikes = wppa_dislike_get($photo['id']);
+									if ( $dislikes ) {
+										echo ' <span style="color:red" >'.sprintf(__('Disliked by %d visitors', 'wppa'), count($dislikes)).'</span>';
+									}
 									?>
+									
 								</td>
 							</tr>
 							<!-- P_order -->

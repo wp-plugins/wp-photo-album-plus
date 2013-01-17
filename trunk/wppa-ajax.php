@@ -2,7 +2,7 @@
 /* wppa-ajax.php
 *
 * Functions used in ajax requests
-* version 4.9.0
+* version 4.9.4
 *
 */
 add_action('wp_ajax_wppa', 'wppa_ajax_callback');
@@ -132,13 +132,20 @@ global $wppa;
 				echo '0||100||'.$errtxt;
 				exit;																// Nonce check failed
 			}
-			if ( $wppa_opt['wppa_rating_max'] == '5' && ! in_array($rating, array('1', '2', '3', '4', '5')) ) {
+			if ( $wppa_opt['wppa_rating_max'] == '5' && ! in_array($rating, array('-1', '1', '2', '3', '4', '5')) ) {
 				echo '0||101||'.$errtxt.':'.$rating;
 				exit;																// Value out of range
 			}
-			elseif ( $wppa_opt['wppa_rating_max'] == '10' && ! in_array($rating, array('1', '2', '3', '4', '5', '6', '7', '8', '9', '10')) ) {
+			elseif ( $wppa_opt['wppa_rating_max'] == '10' && ! in_array($rating, array('-1', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10')) ) {
 				echo '0||106||'.$errtxt.':'.$rating;
 				exit;																// Value out of range
+			}
+			
+			// In case value = -1 this is a dislike vote
+			if ( $rating == '-1' ) {
+				wppa_dislike_add($photo);
+				echo $occur.'||'.$photo;
+				exit;
 			}
 			
 			// Get other data
@@ -289,6 +296,9 @@ global $wppa;
 			$wpdb->query($wpdb->prepare('DELETE FROM `'.WPPA_COMMENTS.'` WHERE `photo` = %s', $photo));
 			$wpdb->query($wpdb->prepare('DELETE FROM `'.WPPA_IPTC.'` WHERE `photo` = %s', $photo));
 			$wpdb->query($wpdb->prepare('DELETE FROM `'.WPPA_EXIF.'` WHERE `photo` = %s', $photo));
+			// Delete dislikes
+			wppa_dislike_remove($photo);
+			
 			echo '||1||<span style="color:red" >'.sprintf(__('Photo %s has been deleted', 'wppa'), $photo).'</span>';
 			wppa_clear_cache();
 			echo '||';
@@ -790,8 +800,12 @@ global $wppa;
 				case 'wppa_upload_limit_count':
 					wppa_ajax_check_range($value, false, '0', false, __('Upload limit', 'wppa'));
 					break;
+				case 'wppa_dislike_mail_every':
+					wppa_ajax_check_range($value, false, '0', false, __('Notify inappropriate', 'wppa'));
+					break;
 				case 'wppa_cp_points_comment':
 				case 'wppa_cp_points_rating':
+				case 'wppa_cp_points_upload':
 					wppa_ajax_check_range($value, false, '0', false, __('Cube Points points', 'wppa'));
 					break;
 				case 'wppa_rating_clear':

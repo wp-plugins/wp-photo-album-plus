@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wp-photo-album-plus\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-01-12 15:47+0100\n"
-"PO-Revision-Date: 2013-01-12 15:51+0100\n"
+"POT-Creation-Date: 2013-01-17 10:08+0100\n"
+"PO-Revision-Date: 2013-01-17 10:14+0100\n"
 "Last-Translator: J.N. Breetvelt <OpaJaap@OpaJaap.nl>\n"
 "Language-Team: \n"
 "Language: nl_NL\n"
@@ -76,59 +76,59 @@ msgstr "Upload minstens %d foto's in dit album!"
 msgid "Photo not found."
 msgstr "Foto niet gevonden."
 
-#: wppa-common-functions.php:936
+#: wppa-common-functions.php:938
 msgid "1 second"
 msgstr "1 seconde"
 
-#: wppa-common-functions.php:937 wppa-functions.php:5672
+#: wppa-common-functions.php:939 wppa-functions.php:5675
 msgid "seconds"
 msgstr "seconden"
 
-#: wppa-common-functions.php:941
+#: wppa-common-functions.php:943
 msgid "1 minute"
 msgstr "1 minuut"
 
-#: wppa-common-functions.php:942 wppa-functions.php:5671
+#: wppa-common-functions.php:944 wppa-functions.php:5674
 msgid "minutes"
 msgstr "minuten"
 
-#: wppa-common-functions.php:946
+#: wppa-common-functions.php:948
 msgid "1 hour"
 msgstr "1 uur"
 
-#: wppa-common-functions.php:947 wppa-functions.php:5670
+#: wppa-common-functions.php:949 wppa-functions.php:5673
 msgid "hours"
 msgstr "uren"
 
-#: wppa-common-functions.php:951
+#: wppa-common-functions.php:953
 msgid "1 day"
 msgstr "1 dag"
 
-#: wppa-common-functions.php:952 wppa-functions.php:5669
+#: wppa-common-functions.php:954 wppa-functions.php:5672
 msgid "days"
 msgstr "dagen"
 
-#: wppa-common-functions.php:956
+#: wppa-common-functions.php:958
 msgid "1 week"
 msgstr "1 week"
 
-#: wppa-common-functions.php:957 wppa-functions.php:5668
+#: wppa-common-functions.php:959 wppa-functions.php:5671
 msgid "weeks"
 msgstr "weken"
 
-#: wppa-common-functions.php:961
+#: wppa-common-functions.php:963
 msgid "1 month"
 msgstr "1 maand"
 
-#: wppa-common-functions.php:962
+#: wppa-common-functions.php:964
 msgid "months"
 msgstr "maanden"
 
-#: wppa-common-functions.php:965
+#: wppa-common-functions.php:967
 msgid "1 year"
 msgstr "1 jaar"
 
-#: wppa-common-functions.php:966
+#: wppa-common-functions.php:968
 msgid "years"
 msgstr "jaren"
 
@@ -148,7 +148,7 @@ msgstr ", een sub-album van"
 msgid "Home"
 msgstr "Home"
 
-#: wppa-functions.php:143 wppa-functions.php:3224 wppa-non-admin.php:223
+#: wppa-functions.php:143 wppa-functions.php:3231 wppa-non-admin.php:223
 msgid "Slideshow"
 msgstr "Diavoorstelling"
 
@@ -172,8 +172,8 @@ msgstr "Recente reacties op foto's"
 msgid "Tagged photos:"
 msgstr "Gelabelde foto's:"
 
-#: wppa-functions.php:1397 wppa-functions.php:1793 wppa-functions.php:3405
-#: wppa-functions.php:3576
+#: wppa-functions.php:1397 wppa-functions.php:1792 wppa-functions.php:3412
+#: wppa-functions.php:3583
 msgid "Awaiting moderation"
 msgstr "Wacht op goedkeuring"
 
@@ -193,6 +193,14 @@ msgstr "Reacties op foto:"
 msgid "wrote on photo"
 msgstr "schreef op foto"
 
+#: wppa-functions.php:1629
+msgid "Moderate comment admin"
+msgstr "Modereer Reactie admin"
+
+#: wppa-functions.php:1630
+msgid "Moderate manage photo"
+msgstr "Modereer Foto beheren"
+
 #: wppa-functions.php:1638
 msgid "You receive this email as you are assigned to moderate"
 msgstr "U ontvangt deze email omdat u aangewezen bent om the modereren"
@@ -205,11 +213,11 @@ msgstr "U ontvangt deze email als administrateur van deze site"
 msgid "You receive this email as owner of the album"
 msgstr "U intvangt deze email als eigenaar van het album"
 
-#: wppa-functions.php:1668
+#: wppa-functions.php:1667
 msgid "Comment added"
 msgstr "Reactie toegevoegd"
 
-#: wppa-functions.php:1672
+#: wppa-functions.php:1671
 msgid ""
 "Sorry, you gave a wrong answer.\\n\\nPlease try again to solve the "
 "computation."
@@ -217,158 +225,167 @@ msgstr ""
 "Sorry, maar u gaf een verkeerd antwoord.\\n\\nProbeer nog eens de "
 "rekenopgave op te lossen."
 
-#: wppa-functions.php:1682
+#: wppa-functions.php:1681
 msgid "Could not process comment.\\nProbably timed out."
 msgstr "Kan de reactie niet verwerken.\\nWaarschijnlijk verlopen."
 
-#: wppa-functions.php:1764
+#: wppa-functions.php:1763
 msgid "wrote:"
 msgstr "schreef:"
 
-#: wppa-functions.php:1796
+#: wppa-functions.php:1795
 msgid "Marked as spam"
 msgstr "Gemarkeerd als spam"
 
-#: wppa-functions.php:1813
+#: wppa-functions.php:1812
 msgid "Edit!"
 msgstr "Bewerk!"
 
-#: wppa-functions.php:1817
+#: wppa-functions.php:1816
 msgid "Send!"
 msgstr "Verstuur!"
 
-#: wppa-functions.php:1856
+#: wppa-functions.php:1855
 msgid "Your name:"
 msgstr "Uw naam:"
 
-#: wppa-functions.php:1861
+#: wppa-functions.php:1860
 msgid "Your email:"
 msgstr "Uw email:"
 
-#: wppa-functions.php:1866
+#: wppa-functions.php:1865
 msgid "Your comment:"
 msgstr "Uw reactie:"
 
-#: wppa-functions.php:1896
+#: wppa-functions.php:1895
 #, php-format
 msgid "You must <a href=\"%s\">login</a> to enter a comment"
 msgstr "U moet <a href=\"%s\">ingelogd</a> zijn om een reactie te geven"
 
-#: wppa-functions.php:1903
+#: wppa-functions.php:1902
 #, php-format
 msgid "%d  comments"
 msgstr "%d reacties"
 
-#: wppa-functions.php:1907
+#: wppa-functions.php:1906
 msgid "Leave a comment"
 msgstr "Geef een reactie"
 
-#: wppa-functions.php:1947
+#: wppa-functions.php:1946
 msgid "Show IPTC data"
 msgstr "Toon IPTC gegevens"
 
-#: wppa-functions.php:1950
+#: wppa-functions.php:1949
 msgid "Hide IPTC data"
 msgstr "Verberg IPTC gegevens"
 
-#: wppa-functions.php:1977
+#: wppa-functions.php:1976
 msgid "No IPTC data"
 msgstr "Geen IPTC gegevens"
 
-#: wppa-functions.php:2014
+#: wppa-functions.php:2013
 msgid "Show EXIF data"
 msgstr "Toon EXIF gegevens"
 
-#: wppa-functions.php:2017
+#: wppa-functions.php:2016
 msgid "Hide EXIF data"
 msgstr "Verberg EXIF gegevens"
 
-#: wppa-functions.php:2044
+#: wppa-functions.php:2043
 msgid "No EXIF data"
 msgstr "Geen EXIF gegevens"
 
-#: wppa-functions.php:2460 wppa-functions.php:2461
+#: wppa-functions.php:2334
+msgid "1 Comment"
+msgstr "1 Reactie"
+
+#: wppa-functions.php:2335
+#, php-format
+msgid "%s Comments"
+msgstr "%s Reacties"
+
+#: wppa-functions.php:2467 wppa-functions.php:2468
 msgid "Prev.&nbsp;page"
 msgstr "Vorige&nbsp;pagina"
 
-#: wppa-functions.php:2465 wppa-functions.php:2466
+#: wppa-functions.php:2472 wppa-functions.php:2473
 msgid "Next&nbsp;page"
 msgstr "Volgende&nbsp;pagina"
 
-#: wppa-functions.php:2807
+#: wppa-functions.php:2814
 msgid "<b>ERROR: Illegal attempt to enter a rating.</b>"
 msgstr "<b>FOUT: Verboden poging een waardering in te voeren.</b>"
 
-#: wppa-functions.php:2820
+#: wppa-functions.php:2827
 msgid "<b>ERROR: Illegal attempt to enter a comment.</b>"
 msgstr "<b>FOUT: Verboden poging een reactie in te voeren.</b>"
 
-#: wppa-functions.php:3080
+#: wppa-functions.php:3087
 msgid "Link to"
 msgstr "Link naar"
 
-#: wppa-functions.php:3106 wppa-functions.php:3242 wppa-functions.php:3245
+#: wppa-functions.php:3113 wppa-functions.php:3249 wppa-functions.php:3252
 msgid "View the album"
 msgstr "Bekijk het album"
 
-#: wppa-functions.php:3125
+#: wppa-functions.php:3132
 msgid "View the cover photo"
 msgstr "Bekijk de omslagfoto"
 
-#: wppa-functions.php:3126
+#: wppa-functions.php:3133
 msgid "View the cover photos"
 msgstr "Bekijk de omslagfoto's"
 
-#: wppa-functions.php:3224
+#: wppa-functions.php:3231
 msgid "Browse photos"
 msgstr "Foto's bladeren"
 
-#: wppa-functions.php:3247
+#: wppa-functions.php:3254
 msgid "View"
 msgstr "Bekijk"
 
-#: wppa-functions.php:3250
+#: wppa-functions.php:3257
 msgid "album"
 msgstr "album"
 
-#: wppa-functions.php:3253
+#: wppa-functions.php:3260
 msgid "albums"
 msgstr "albums"
 
-#: wppa-functions.php:3257 wppa-functions.php:5671 wppa-functions.php:5904
+#: wppa-functions.php:3264 wppa-functions.php:5674 wppa-functions.php:5907
 #: wppa-non-admin.php:46
 msgid "and"
 msgstr "en"
 
-#: wppa-functions.php:3261
+#: wppa-functions.php:3268
 msgid "photo"
 msgstr "foto"
 
-#: wppa-functions.php:3264
+#: wppa-functions.php:3271
 msgid "photos"
 msgstr "foto's"
 
-#: wppa-functions.php:3496 wppa-topten-widget.php:50
+#: wppa-functions.php:3503 wppa-topten-widget.php:50
 msgid "View the top rated photos"
 msgstr "Bekijk de top score foto's"
 
-#: wppa-functions.php:3774
+#: wppa-functions.php:3781
 msgid "Double click to start/stop slideshow running"
 msgstr "Dubbel klik voor start/stop diavoorstelling"
 
-#: wppa-functions.php:5017 wppa-functions.php:5159
+#: wppa-functions.php:5020 wppa-functions.php:5162
 msgid "Max uploads reached"
 msgstr "Maximaal aantal uploads bereikt"
 
-#: wppa-functions.php:5031
+#: wppa-functions.php:5034
 msgid "Upload Photo"
 msgstr "Foto Uploaden"
 
-#: wppa-functions.php:5037
+#: wppa-functions.php:5040
 msgid "Upload Photo(s)"
 msgstr "Foto('s) Uploaden"
 
-#: wppa-functions.php:5040
+#: wppa-functions.php:5043
 #, php-format
 msgid ""
 "You may upload up to %s photos at once if your browser supports HTML-5 "
@@ -377,47 +394,47 @@ msgstr ""
 "U kunt maximaal %s foto's in één keer uploaden indien uw browser HTML-5 "
 "multi-file upload ondersteunt"
 
-#: wppa-functions.php:5043
+#: wppa-functions.php:5046
 #, php-format
 msgid "Max photo size: %d x %d (%2.1f MegaPixel)"
 msgstr "Maximale foto afmetingen: %d x %d (%2.1f MegaPixel)"
 
-#: wppa-functions.php:5053
+#: wppa-functions.php:5056
 msgid "Apply watermark file:"
 msgstr "Gebruik watermerk:"
 
-#: wppa-functions.php:5061
+#: wppa-functions.php:5064
 msgid "Position:"
 msgstr "Positie:"
 
-#: wppa-functions.php:5073
+#: wppa-functions.php:5076
 msgid "Enter photo name"
 msgstr "Voer de foto Naam in"
 
-#: wppa-functions.php:5073
+#: wppa-functions.php:5076
 msgid ""
 "If you leave this blank, the original filename(s) will be used as photo name"
 "(s)."
 msgstr ""
 "Als u dit leeg laat wordt de oorspronkelijke filenaam als fotonaam gebruikt."
 
-#: wppa-functions.php:5081
+#: wppa-functions.php:5084
 msgid "Enter/modify photo description"
 msgstr "Voer in of wijzig de beschrijving van de foto"
 
-#: wppa-functions.php:5107
+#: wppa-functions.php:5110
 msgid "<b>ERROR: Illegal attempt to upload a file.</b>"
 msgstr "<b>FOUT: Verboden poging een bestand te uploaden.</b>"
 
-#: wppa-functions.php:5163
+#: wppa-functions.php:5166
 msgid "Error during upload"
 msgstr "Fout bij het uploaden"
 
-#: wppa-functions.php:5168
+#: wppa-functions.php:5171
 msgid "Uploaded file is not an image"
 msgstr "Ge-upload bestand is geen afbeelding"
 
-#: wppa-functions.php:5172
+#: wppa-functions.php:5175
 #, php-format
 msgid ""
 "Only gif, jpg and png image files are supported. Returned filetype = %d."
@@ -425,244 +442,244 @@ msgstr ""
 "Alleen gif, jpg en png afbeeldingsbestanden worden ondersteund. Bestandstype "
 "= %d."
 
-#: wppa-functions.php:5179
+#: wppa-functions.php:5182
 #, php-format
 msgid "The image is too big. Max photo size: %d x %d (%2.1f MegaPixel)"
 msgstr ""
 "De afbeelding is te groot. Maximale foto afmetingen: %d x %d (%2.1f "
 "MegaPixel)"
 
-#: wppa-functions.php:5336 wppa-functions.php:5396
+#: wppa-functions.php:5339 wppa-functions.php:5399
 msgid "n.a."
 msgstr "n.v.t."
 
-#: wppa-functions.php:5474
+#: wppa-functions.php:5477
 msgid "Not Defined"
 msgstr "Niet bepaald"
 
-#: wppa-functions.php:5475
+#: wppa-functions.php:5478
 msgid "Manual"
 msgstr "Handmatig"
 
-#: wppa-functions.php:5476
+#: wppa-functions.php:5479
 msgid "Program AE"
 msgstr "Automatich"
 
-#: wppa-functions.php:5477
+#: wppa-functions.php:5480
 msgid "Aperture-priority AE"
 msgstr "Automatish diafragma prioriteit"
 
-#: wppa-functions.php:5478
+#: wppa-functions.php:5481
 msgid "Shutter speed priority AE"
 msgstr "Automatish sluiter prioriteit"
 
-#: wppa-functions.php:5479
+#: wppa-functions.php:5482
 msgid "Creative (Slow speed)"
 msgstr "Creatief (Langzaam)"
 
-#: wppa-functions.php:5480
+#: wppa-functions.php:5483
 msgid "Action (High speed)"
 msgstr "Actie (Snel)"
 
-#: wppa-functions.php:5481
+#: wppa-functions.php:5484
 msgid "Portrait"
 msgstr "Portret"
 
-#: wppa-functions.php:5482
+#: wppa-functions.php:5485
 msgid "Landscape"
 msgstr "Landschap"
 
-#: wppa-functions.php:5483
+#: wppa-functions.php:5486
 msgid "Bulb"
 msgstr "Lamp"
 
-#: wppa-functions.php:5505
+#: wppa-functions.php:5508
 msgid "Average"
 msgstr "Gemiddeld"
 
-#: wppa-functions.php:5506
+#: wppa-functions.php:5509
 msgid "Center-weighted average"
 msgstr "Centrum gewogen gemiddelde"
 
-#: wppa-functions.php:5507
+#: wppa-functions.php:5510
 msgid "Spot"
 msgstr "Punt"
 
-#: wppa-functions.php:5508
+#: wppa-functions.php:5511
 msgid "Multi-spot"
 msgstr "Meerdere punten"
 
-#: wppa-functions.php:5509
+#: wppa-functions.php:5512
 msgid "Multi-segment"
 msgstr "Meerdere gebieden"
 
-#: wppa-functions.php:5510
+#: wppa-functions.php:5513
 msgid "Partial"
 msgstr "Gedeeltelijk"
 
-#: wppa-functions.php:5511
+#: wppa-functions.php:5514
 msgid "Other"
 msgstr "Anders"
 
-#: wppa-functions.php:5547
+#: wppa-functions.php:5550
 msgid "No Flash"
 msgstr "Geen flitser"
 
-#: wppa-functions.php:5549
+#: wppa-functions.php:5552
 msgid "Fired"
 msgstr "Ging af"
 
-#: wppa-functions.php:5551
+#: wppa-functions.php:5554
 msgid "Fired, Return not detected"
 msgstr "Ging af, niet gedetecteerd"
 
-#: wppa-functions.php:5553
+#: wppa-functions.php:5556
 msgid "Fired, Return detected"
 msgstr "Ging af, gedetecteerd"
 
-#: wppa-functions.php:5555
+#: wppa-functions.php:5558
 msgid "On, Did not fire"
 msgstr "Aan, ging niet af"
 
-#: wppa-functions.php:5557
+#: wppa-functions.php:5560
 msgid "On, Fired"
 msgstr "Aan, ging af"
 
-#: wppa-functions.php:5559
+#: wppa-functions.php:5562
 msgid "On, Return not detected"
 msgstr "Aan, niet gedetecteerd"
 
-#: wppa-functions.php:5561
+#: wppa-functions.php:5564
 msgid "On, Return detected"
 msgstr "Aan, gedetecteerd"
 
-#: wppa-functions.php:5563
+#: wppa-functions.php:5566
 msgid "Off, Did not fire"
 msgstr "Uit, ging niet af"
 
-#: wppa-functions.php:5565
+#: wppa-functions.php:5568
 msgid "Off, Did not fire, Return not detected"
 msgstr "Uit, ging niet af, niet gedetecteerd"
 
-#: wppa-functions.php:5567
+#: wppa-functions.php:5570
 msgid "Auto, Did not fire"
 msgstr "Auto, ging niet af"
 
-#: wppa-functions.php:5569
+#: wppa-functions.php:5572
 msgid "Auto, Fired"
 msgstr "Auto, ging af"
 
-#: wppa-functions.php:5571
+#: wppa-functions.php:5574
 msgid "Auto, Fired, Return not detected"
 msgstr "Auto, ging af, niet gedetecteerd"
 
-#: wppa-functions.php:5573
+#: wppa-functions.php:5576
 msgid "Auto, Fired, Return detected"
 msgstr "Auto, ging af, gedetecteerd"
 
-#: wppa-functions.php:5575
+#: wppa-functions.php:5578
 msgid "No flash function"
 msgstr "Geen flitsfunctie"
 
-#: wppa-functions.php:5577
+#: wppa-functions.php:5580
 msgid "Off, No flash function"
 msgstr "Uit, geen flitsfunctie"
 
-#: wppa-functions.php:5579
+#: wppa-functions.php:5582
 msgid "Fired, Red-eye reduction"
 msgstr "Ging af, rode ogen reductie"
 
-#: wppa-functions.php:5581
+#: wppa-functions.php:5584
 msgid "Fired, Red-eye reduction, Return not detected"
 msgstr "Ging af, rode ogen reductie, niet gedetecteerd"
 
-#: wppa-functions.php:5583
+#: wppa-functions.php:5586
 msgid "Fired, Red-eye reduction, Return detected"
 msgstr "Ging af, rode ogen reductie, gedetecteerd"
 
-#: wppa-functions.php:5585
+#: wppa-functions.php:5588
 msgid "On, Red-eye reduction"
 msgstr "Aan, rode ogen reductie"
 
-#: wppa-functions.php:5587
+#: wppa-functions.php:5590
 msgid "Red-eye reduction, Return not detected"
 msgstr "Rode ogen reductie, niet gedetecteerd"
 
-#: wppa-functions.php:5589
+#: wppa-functions.php:5592
 msgid "On, Red-eye reduction, Return detected"
 msgstr "Aan, rode ogen reductie, gedetecteerd"
 
-#: wppa-functions.php:5591
+#: wppa-functions.php:5594
 msgid "Off, Red-eye reduction"
 msgstr "Uit, rode ogen reductie"
 
-#: wppa-functions.php:5593
+#: wppa-functions.php:5596
 msgid "Auto, Did not fire, Red-eye reduction"
 msgstr "Auto, ging niet af, rode ogen reductie"
 
-#: wppa-functions.php:5595
+#: wppa-functions.php:5598
 msgid "Auto, Fired, Red-eye reduction"
 msgstr "Auto, ging af, rode ogen reductie"
 
-#: wppa-functions.php:5597
+#: wppa-functions.php:5600
 msgid "Auto, Fired, Red-eye reduction, Return not detected"
 msgstr "Auto, ging af, rode ogen reductie, niet gedetecteerd"
 
-#: wppa-functions.php:5599
+#: wppa-functions.php:5602
 msgid "Auto, Fired, Red-eye reduction, Return detected"
 msgstr "Auto, ging af, rode ogen reductie, gedetecteerd"
 
-#: wppa-functions.php:5666
+#: wppa-functions.php:5669
 msgid "You can upload after"
 msgstr "U kunt uploaden na"
 
-#: wppa-functions.php:5700
+#: wppa-functions.php:5703
 msgid "Zoom in"
 msgstr "Zoom in"
 
-#: wppa-functions.php:5904 wppa-non-admin.php:46
+#: wppa-functions.php:5907 wppa-non-admin.php:46
 #, php-format
 msgid "See this image on %s"
 msgstr "Bekijk deze afbeelding op %s"
 
-#: wppa-functions.php:5923
+#: wppa-functions.php:5926
 #, php-format
 msgid "Share %s on Facebook"
 msgstr "Deel %s op Facebook"
 
-#: wppa-functions.php:5965
+#: wppa-functions.php:5968
 #, php-format
 msgid "Tweet %s on Twitter"
 msgstr "Tweet %s op Twitter"
 
-#: wppa-functions.php:5977
+#: wppa-functions.php:5980
 #, php-format
 msgid "Tip %s on Hyves"
 msgstr "Tip %s op Hyves"
 
-#: wppa-functions.php:5990
+#: wppa-functions.php:5993
 #, php-format
 msgid "Share %s on Google+"
 msgstr "Deel %s op Google+"
 
-#: wppa-functions.php:6005
+#: wppa-functions.php:6008
 #, php-format
 msgid "Share %s on Pinterest"
 msgstr "Deel %s op Pinterest"
 
-#: wppa-functions.php:6037
+#: wppa-functions.php:6040
 msgid "Please select a tagcloud landing page"
 msgstr "Selecteer a.u.b. een tagcloud link pagina"
 
-#: wppa-functions.php:6073
+#: wppa-functions.php:6076
 msgid "Please select a multitag landing page"
 msgstr "Selecteer a.u.b. een multtag link pagina"
 
-#: wppa-functions.php:6090
+#: wppa-functions.php:6093
 msgid "Please check the tag(s) that the photos must have"
 msgstr "Vink de tags aan die de foto's moeten hebben"
 
-#: wppa-functions.php:6118
+#: wppa-functions.php:6121
 msgid "Find!"
 msgstr "Vind!"
 
@@ -706,19 +723,41 @@ msgstr "Volgende foto"
 msgid "Prev."
 msgstr "Vorige"
 
-#: wppa-non-admin.php:233 wppa-slideshow.php:475
+#: wppa-non-admin.php:233 wppa-slideshow.php:483
 msgid "Next"
 msgstr "Volgende"
 
+#: wppa-non-admin.php:234 wppa-slideshow.php:355 wppa-slideshow.php:359
+#: wppa-slideshow.php:392
+msgid "Average&nbsp;rating"
+msgstr "Gem.&nbsp;waardering"
+
+#: wppa-non-admin.php:235 wppa-slideshow.php:375 wppa-slideshow.php:379
+#: wppa-slideshow.php:383 wppa-slideshow.php:398
+msgid "My&nbsp;rating"
+msgstr "Mijn&nbsp;waardering"
+
+#: wppa-non-admin.php:236
+msgid "Avg."
+msgstr "Gem."
+
 #: wppa-non-admin.php:237
+msgid "Mine"
+msgstr "Mijn"
+
+#: wppa-non-admin.php:238
+msgid "You marked this image as inappropriate."
+msgstr "U heeft deze afbeelding als ongepast gemarkeerd."
+
+#: wppa-non-admin.php:242
 msgid "Please enter your name"
 msgstr "Voer a.u.b. uw naam in"
 
-#: wppa-non-admin.php:238
+#: wppa-non-admin.php:243
 msgid "Please enter a valid email address"
 msgstr "Voer a.u.b. een geldig email adres in"
 
-#: wppa-non-admin.php:239
+#: wppa-non-admin.php:244
 msgid "Please enter a comment"
 msgstr "Voer a.u.b een reactie in"
 
@@ -761,79 +800,83 @@ msgstr "hoog"
 msgid "very high"
 msgstr "zeer hoog"
 
-#: wppa-slideshow.php:355 wppa-slideshow.php:359 wppa-slideshow.php:384
-msgid "Average&nbsp;rating"
-msgstr "Gem.&nbsp;waardering"
+#: wppa-slideshow.php:368
+msgid "Are you sure you want to mark this image as inappropriate?"
+msgstr "Weet u zeker dat u deze afbeelding als ongepast wilt aanmerken?"
 
-#: wppa-slideshow.php:367 wppa-slideshow.php:371 wppa-slideshow.php:375
-#: wppa-slideshow.php:390
-msgid "My&nbsp;rating"
-msgstr "Mijn&nbsp;waardering"
+#: wppa-slideshow.php:369
+msgid "Click this cross if you do NOT like this image!"
+msgstr "Vink dit aan indien u deze afbeelding ongepast vindt!"
 
-#: wppa-slideshow.php:378 wppa-slideshow.php:394
+#: wppa-slideshow.php:386 wppa-slideshow.php:402
 #, php-format
 msgid "You must <a href=\"%s\">login</a> to vote"
 msgstr "U moet <a href=\"%s\">ingelogd</a> zijn om te stemmen"
 
-#: wppa-slideshow.php:471
+#: wppa-slideshow.php:479
 #, php-format
 msgid "%s back"
 msgstr "%s twrug"
 
-#: wppa-slideshow.php:472
+#: wppa-slideshow.php:480
 msgid "Previous"
 msgstr "Vorige"
 
-#: wppa-slideshow.php:476
+#: wppa-slideshow.php:484
 #, php-format
 msgid "%s forward"
 msgstr "%s verder"
 
-#: wppa-slideshow.php:582
+#: wppa-slideshow.php:590
 #, php-format
 msgid "Photo %s of %s"
 msgstr "Foto %s van %s"
 
-#: wppa-slideshow.php:613
+#: wppa-slideshow.php:621
 msgid "Click to start/stop"
 msgstr "Klik om te starten/stoppen"
 
-#: wppa-slideshow.php:625
+#: wppa-slideshow.php:633
 msgid "- - - Comments box activated - - -"
 msgstr "- - - Reactiesysteem geactiveerd - - -"
 
-#: wppa-slideshow.php:646
+#: wppa-slideshow.php:654
 msgid "- - - IPTC box activated - - -"
 msgstr "- - - IPTC box geactiveerd - - -"
 
-#: wppa-slideshow.php:666
+#: wppa-slideshow.php:674
 msgid "- - - EXIF box activated - - -"
 msgstr "- - - EXIF box geactiveerd - - -"
 
-#: wppa-utils.php:150
+#: wppa-utils.php:154
 msgid "--- none ---"
 msgstr "--- geen ---"
 
-#: wppa-utils.php:154
+#: wppa-utils.php:158
 msgid "--- separate ---"
 msgstr "--- afzonderlijk ---"
 
-#: wppa-utils.php:158
+#: wppa-utils.php:162
 msgid "--- all ---"
 msgstr "--- alle ---"
 
-#: wppa-utils.php:162 wppa-utils.php:182
+#: wppa-utils.php:166 wppa-utils.php:186
 msgid "--- deleted ---"
 msgstr "--- verwijderd ---"
 
-#: wppa-utils.php:172
+#: wppa-utils.php:176
 msgid "All Albums"
 msgstr "Alle albums"
 
-#: wppa-utils.php:236
+#: wppa-utils.php:240
 #, php-format
 msgid "Rating: %s"
 msgstr "%s punten"
+
+#: wppa-utils.php:434
+msgid "This message is automaticly generated. It is useless to respond to it."
+msgstr ""
+"Dit bericht is automatisch aangemaakt. Het is zinloos om het te beantwoorden."
 
 #~ msgid "Click to browse in fullsize"
 #~ msgstr "Klik om te bladeren"
@@ -1077,17 +1120,11 @@ msgstr "%s punten"
 #~ msgid "Save Changes"
 #~ msgstr "Wijzigingen opslaan"
 
-#~ msgid "Manage Photos"
-#~ msgstr "Foto's Beheren"
-
 #~ msgid "Delete Album"
 #~ msgstr "Album verwijderen"
 
 #~ msgid "Album:"
 #~ msgstr "Album:"
-
-#~ msgid "Are you sure you want to delete this album?"
-#~ msgstr "Weet u zeker dat u dit album wilt verwijderen?"
 
 #~ msgid "Press Delete to continue, and Cancel to go back."
 #~ msgstr "Klik Verwijder om door te gaan, of Annuleren om terug te gaan."
@@ -2404,12 +2441,6 @@ msgstr "%s punten"
 
 #~ msgid "No links:"
 #~ msgstr "Geen koppelingen:"
-
-#~ msgid ""
-#~ "Check this if you do NOT want to link the thumbnails to fullsize images."
-#~ msgstr ""
-#~ "Vink dit aan indien u NIET wilt dat de miniaturen naar grote foto's "
-#~ "linken."
 
 #~ msgid "Album covers:"
 #~ msgstr "Album omslagen:"

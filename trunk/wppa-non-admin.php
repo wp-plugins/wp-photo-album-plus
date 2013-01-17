@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the non admin stuff
-* Version 4.9.0
+* Version 4.9.4
 *
 */
 
@@ -43,7 +43,7 @@ global $thumb;
 			if ( $thumb ) {
 				$title  = __(stripslashes($thumb['name']));
 				$imgurl = WPPA_UPLOAD_URL.'/thumbs/'.$id.'.'.$thumb['ext'];
-				$desc   = sprintf(__a('See this image on %s', 'wppa_theme'), str_replace('&amp;', __a('and', 'wppa_theme'), get_bloginfo('name')));
+				$desc   = sprintf(__a('See this image on %s'), str_replace('&amp;', __a('and'), get_bloginfo('name')));
 				$pdesc  = wppa_strip_tags(wppa_html(__(stripslashes($thumb['description']))), 'all');
 				$url    = wppa_convert_to_pretty(str_replace('&amp;', '&', wppa_get_image_page_url_by_id($thumb['id'], $wppa_opt['wppa_share_single_image'])));
 				$site   = get_bloginfo('name');
@@ -220,23 +220,28 @@ global $wppa_locale;
 	wppaSlideShowTimeOut = '.$wppa_opt['wppa_slideshow_timeout'].';
 	wppaPreambule = '.wppa_get_preambule().';
 	wppaFilmShowGlue = '.( $wppa_opt['wppa_film_show_glue'] == 'yes' ? 'true' : 'false' ).';
-	wppaSlideShow = "'.__a('Slideshow', 'wppa_theme').'";
-	wppaStart = "'.__a('Start', 'wppa_theme').'";
-	wppaStop = "'.__a('Stop', 'wppa_theme').'";
-	wppaSlower = "'.__a('Slower', 'wppa_theme').'";
-	wppaFaster = "'.__a('Faster', 'wppa_theme').'";
-	wppaPhoto = "'.__a('Photo', 'wppa_theme').'";
-	wppaOf = "'.__a('of', 'wppa_theme').'";
-	wppaPreviousPhoto = "'.__a('Previous photo', 'wppa_theme').'";
-	wppaNextPhoto = "'.__a('Next photo', 'wppa_theme').'";
-	wppaPrevP = "'.__a('Prev.', 'wppa_theme').'";
-	wppaNextP = "'.__a('Next', 'wppa_theme').'";
+	wppaSlideShow = "'.__a('Slideshow').'";
+	wppaStart = "'.__a('Start').'";
+	wppaStop = "'.__a('Stop').'";
+	wppaSlower = "'.__a('Slower').'";
+	wppaFaster = "'.__a('Faster').'";
+	wppaPhoto = "'.__a('Photo').'";
+	wppaOf = "'.__a('of').'";
+	wppaPreviousPhoto = "'.__a('Previous photo').'";
+	wppaNextPhoto = "'.__a('Next photo').'";
+	wppaPrevP = "'.__a('Prev.').'";
+	wppaNextP = "'.__a('Next').'";
+	wppaAvgRating = "'.__a('Average&nbsp;rating').'";
+	wppaMyRating = "'.__a('My&nbsp;rating').'";
+	wppaAvgRat = "'.__a('Avg.').'";
+	wppaMyRat = "'.__a('Mine').'";
+	wppaDislikeMsg = "'.__a('You marked this image as inappropriate.').'";
 	wppaMiniTreshold = '.$wppa_opt['wppa_mini_treshold'].';
 	wppaUserName = "'.wppa_get_user().'";
 	wppaRatingOnce = '.( $wppa_opt['wppa_rating_change'] || $wppa_opt['wppa_rating_multi'] ? 'false' : 'true' ).';
-	wppaPleaseName = "'.__a('Please enter your name', 'wppa_theme').'";
-	wppaPleaseEmail = "'.__a('Please enter a valid email address', 'wppa_theme').'";
-	wppaPleaseComment = "'.__a('Please enter a comment', 'wppa_theme').'";
+	wppaPleaseName = "'.__a('Please enter your name').'";
+	wppaPleaseEmail = "'.__a('Please enter a valid email address').'";
+	wppaPleaseComment = "'.__a('Please enter a comment').'";
 	wppaHideWhenEmpty = '.( $wppa_opt['wppa_hide_when_empty'] ? 'true' : 'false' ).';
 	wppaBGcolorNumbar = "'.$wppa_opt['wppa_bgcolor_numbar'].'";
 	wppaBcolorNumbar = "'.$wppa_opt['wppa_bcolor_numbar'].'";
