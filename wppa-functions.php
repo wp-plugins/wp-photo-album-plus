@@ -3,12 +3,12 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions and API modules
-* Version 4.9.4
+* Version 4.9.4.001
 *
 */
 /* Moved to wppa-common-functions.php:
 global $wppa_api_version;
-$wppa_api_version = '4-9-4-000';
+$wppa_api_version = '4-9-4-001';
 */
 
 if ( ! defined( 'ABSPATH' ) )
@@ -1554,7 +1554,14 @@ global $wppa_done;
 		if ( $wppa_opt['wppa_comment_email_required'] ) die('Illegal attempt to enter a comment');
 		else $email = wppa_get_user();	// If email not present and not required, use his IP
 	}
-	$comment = htmlspecialchars(stripslashes(trim(wppa_get_post('comment'))));
+	
+	// Retrieve and filter comment
+	$comment = wppa_get_post('comment');
+	$comment = trim($comment);
+	$comment = stripslashes($comment);
+	$comment = wppa_strip_tags($comment, 'script&style');
+	$comment = htmlspecialchars($comment);
+	
 	$policy = $wppa_opt['wppa_comment_moderation'];
 	switch ($policy) {
 		case 'all':
@@ -3607,6 +3614,14 @@ function wppa_strip_tags($text, $key = '') {
 								$text );
 		$text = str_replace(array('<br/>', '<br />'), ' ', $text);
 		$text = strip_tags($text);
+	}
+	elseif ( $key == 'script&style' ) {
+		$text = preg_replace(	array	(	'@<script[^>]*?>.*?</script>@siu',
+											'@<style[^>]*?>.*?</style>@siu'
+										),
+								array	( ' ', ' '
+										),
+								$text );
 	}
 	else {
 		$text = preg_replace(	array	(	'@<a[^>]*?>.*?</a>@siu',				// unescaped <a> tag
