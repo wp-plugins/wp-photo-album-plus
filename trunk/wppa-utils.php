@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains low-level utility routines
-* Version 4.9.4
+* Version 4.9.5
 *
 */
 
@@ -408,7 +408,7 @@ function wppa_dislike_get($photo) {
 	return false;
 }
 
-function wppa_send_mail($to, $subj, $cont, $photo) {
+function wppa_send_mail($to, $subj, $cont, $photo, $email = '') {
 
 	$from			= 'From: noreply@'.substr(home_url(), strpos(home_url(), '.') + '1');
 	$extraheaders 	= "\n" . 'MIME-Version: 1.0' . "\n" . 'Content-Transfer-Encoding: 8bit' . "\n" . 'Content-Type: text/html; charset="UTF-8"';
@@ -416,6 +416,7 @@ function wppa_send_mail($to, $subj, $cont, $photo) {
 <html>
 	<head>
 		<title>'.$subj.'</title>
+		<style>blockquote { color:#000077; background-color: #dddddd; border:1px solid black; padding: 6px; border-radius 4px;} </style>
 	</head>
 	<body>
 		<h3>'.$subj.'</h3>
@@ -430,12 +431,26 @@ function wppa_send_mail($to, $subj, $cont, $photo) {
 			$message .= '
 		<p>'.$cont.'</p>';
 		}
+		if ( is_user_logged_in() ) {
+			global $current_user;
+			get_currentuserinfo();
+			$e = $current_user->user_email;
+			$eml = sprintf(__a('The visitors email address is: <a href="mailto:%s">%s</a>'), $e, $e);
+			$message .= '
+		<p>'.$eml.'</p>';
+		}
+		elseif ( $email ) {
+			$e = $email;
+			$eml = sprintf(__a('The visitor says his email address is: <a href="mailto:%s">%s</a>'), $e, $e);
+			$message .= '
+		<p>'.$eml.'</p>';
+		}
 		$message .= '
-		<p><small>'.__a('This message is automaticly generated. It is useless to respond to it.', 'wppa_theme').'</small></p>';
+		<p><small>'.sprintf(__a('This message is automaticly generated at %s. It is useless to respond to it.'), '<a href="'.home_url().'" >'.home_url().'</a>').'</small></p>';
 		$message .= '
 	</body>
 </html>';
 				
-	$iret = mail( $to , '['.get_bloginfo('name').'] '.$subj , $message , $from . $extraheaders, '' );
+	$iret = mail( $to , '['.str_replace('&#039;', '', get_bloginfo('name')).'] '.$subj , $message , $from . $extraheaders, '' );
 	if ( ! $iret ) echo 'Mail sending Failed';
 }

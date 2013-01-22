@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * create, edit and delete albums
-* version 4.9.4
+* version 4.9.5
 *
 */
 
@@ -58,7 +58,7 @@ function _wppa_admin() {
 				$name = __('New Album', 'wppa');
 				$id = wppa_nextkey(WPPA_ALBUMS);
 				$uplim = $wppa_opt['wppa_upload_limit_count'].'/'.$wppa_opt['wppa_upload_limit_time'];
-				$query = $wpdb->prepare('INSERT INTO `' . WPPA_ALBUMS . '` (`id`, `name`, `description`, `a_order`, `a_parent`, `p_order_by`, `main_photo`, `cover_linktype`, `cover_linkpage`, `owner`, `timestamp`, `upload_limit`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)', $id, $name, '', '0', '0', '0', '0', 'content', '0', wppa_get_user(), time(), $uplim);
+				$query = $wpdb->prepare('INSERT INTO `' . WPPA_ALBUMS . '` (`id`, `name`, `description`, `a_order`, `a_parent`, `p_order_by`, `main_photo`, `cover_linktype`, `cover_linkpage`, `owner`, `timestamp`, `upload_limit`, `alt_thumbsize`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)', $id, $name, '', '0', '0', '0', '0', 'content', '0', wppa_get_user(), time(), $uplim, '0');
 				$iret = $wpdb->query($query);
 				if ($iret === FALSE) {
 					wppa_error_message(__('Could not create album.', 'wppa').'<br/>Query = '.$query);
