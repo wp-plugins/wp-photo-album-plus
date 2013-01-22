@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile
-Version: 4.9.4
+Version: 4.9.5
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -55,6 +55,13 @@ You can find the plugin admin section under Menu Photo Albums on the admin scree
 * Settings: To control the various settings to customize your needs.
 * Sidebar Widget: To specify the behaviour for an optional sidebar photo of the day widget.
 * Help & Info: Much information about how to...
+
+Translations:
+
+There are translations in many languages. The frontend and admin sides are separately translatable. 
+* Dutch translation by OpaJaap himself (<a href="http://www.opajaap.nl">Opa Jaap's Weblog</a>) (both)
+* Slovak translation by Branco Radenovich (<a href="http://webhostinggeeks.com/user-reviews/">WebHostingGeeks.com</a>) (frontend)
+* Polish translation by Maciej Matysiak (both)
 
 == Installation ==
 
@@ -162,6 +169,17 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 4.9.5 =
+
+= Bug Fixes =
+
+* On some installations it was no longer possible to create new albums. Fixed.
+
+= Other Changes =
+
+* Cosmetic changes to notification emails
+* Language files updates and new languages
 
 = 4.9.4 =
 
