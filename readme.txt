@@ -67,16 +67,17 @@ There are translations in many languages. The frontend and admin sides are separ
 
 = Requirements =
 
-* The plugin requires at least wp version 3.0.
+* The plugin requires at least wp version 3.1.
 * The theme should have a call to wp_head() in its header.php file and wp_footer() in its footer.php file. 
 * The theme should load enqueued scripts in the header if the scripts are enqueued without the $in_footer switch (like wppa.js and jQuery). 
 * The theme should not prevent this plugin from loading the jQuery library in its default wp manner, i.e. the library jQuery in safe mode (uses jQuery() and not $()). 
+* The theme should not use remove_action() or remove_all_actions() when it affects actions added by wppa+.
 Most themes comply with these requirements. 
 However, check these requirements in case of problems with new installations with themes you never had used before with wppa+ or when you modifies your theme.
 * The server should have at least 32MB of memory, 64MB or more is recommended.
 
 = Upgrade notice =
-This version is: Major rev# 4, Minor rev# 9, Fix rev# 3, Hotfix rev# 000.
+This version is: Major rev# 4, Minor rev# 9, Fix rev# 6, Hotfix rev# 000.
 If you are upgrading from a previous Major or Minor version, note that:
 * If you modified wppa_theme.php and/or wppa_style.css, you will have to use the newly supplied versions. The previous versions are NOT compatible.
 * If you set the userlevel to anything else than 'administrator' you may have to set it again. Note that changing the userlevel can be done by the administrator only!
