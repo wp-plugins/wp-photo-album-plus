@@ -3,12 +3,12 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions and API modules
-* Version 4.9.5
+* Version 4.9.6
 *
 */
 /* Moved to wppa-common-functions.php:
 global $wppa_api_version;
-$wppa_api_version = '4-9-5-000';
+$wppa_api_version = '4-9-6-000';
 */
 
 if ( ! defined( 'ABSPATH' ) )
@@ -2942,9 +2942,11 @@ global $wppa_numqueries;
 function wppa_album_list($action) {
 global $wppa;
 global $cover_count;
+global $cover_count_key;
 
 	if ($action == 'open') {
 		$cover_count = '0';
+		$cover_count_key = 'l';
 		$wppa['out'] .= wppa_nltab('+').'<div id="wppa-albumlist-'.$wppa['master_occur'].'" class="albumlist">';
 	}
 	elseif ($action == 'close') {
@@ -2958,9 +2960,11 @@ global $cover_count;
 function wppa_thumb_list($action) {
 global $wppa;
 global $cover_count;
+global $cover_count_key;
 
 	if ($action == 'open') {
 		$cover_count = '0';
+		$cover_count_key = 'l';
 		$wppa['out'] .= wppa_nltab('+').'<div id="wppa-thumblist-'.$wppa['master_occur'].'" class="thumblist">';
 	}
 	elseif ($action == 'close') {
@@ -3035,7 +3039,7 @@ global $album;
 global $wppa;
 global $wppa_opt;
 global $wppa_alt;
-global $cover_count;
+global $cover_count_key;
 global $wpdb;
 
 	$albumid = $album['id'];
@@ -3184,11 +3188,14 @@ global $wpdb;
 	
 	$wid = wppa_get_cover_width('cover');
 	$style .= 'width: '.$wid.'px;';	
-	if ($cover_count == '0') {
-		$style .= 'clear:both;';
+	if ( $cover_count_key == 'm' ) {
+		$style .= 'margin-left: 8px;';
+	}
+	elseif ( $cover_count_key == 'r' ) {
+		$style .= 'float:right;';
 	}
 	else {
-		$style .= 'margin-left: 8px;';
+		$style .= 'clear:both;';
 	}
 	wppa_step_covercount('cover');
 	
@@ -3362,7 +3369,7 @@ global $thumb;
 global $wppa;
 global $wppa_opt;
 global $wppa_alt;
-global $cover_count;
+global $cover_count_key;
 global $thlinkmsggiven;
 
 	$path = wppa_get_thumb_path($thumb['id']); 
@@ -3396,11 +3403,14 @@ global $thlinkmsggiven;
 	
 	$wid = wppa_get_cover_width('thumb');
 	$style .= 'width: '.$wid.'px;';	
-	if ($cover_count == '0') {
-		$style .= 'clear:both;';
+	if ( $cover_count_key == 'm' ) {
+		$style .= 'margin-left: 8px;';
+	}
+	elseif ( $cover_count_key == 'r' ) {
+		$style .= 'float:right;';
 	}
 	else {
-		$style .= 'margin-left: 8px;';
+		$style .= 'clear:both;';
 	}
 	wppa_step_covercount('thumb');
 
@@ -4093,10 +4103,19 @@ global $wppa_opt;
 
 function wppa_step_covercount($type) {
 global $cover_count;
+global $cover_count_key;
 
+	$key = 'm';
 	$cols = wppa_get_cover_cols($type);
 	$cover_count++;
-	if ( $cover_count == $cols ) $cover_count = '0'; // Row is full
+	if ( $cover_count == $cols ) {
+		$cover_count = '0'; // Row is full
+		$key = 'l';
+	}
+	if ( $cover_count + '1' == $cols ) {
+		$key = 'r';
+	}
+	$cover_count_key = $key;
 }
 
 function wppa_get_cover_cols($type) {

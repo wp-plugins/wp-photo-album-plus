@@ -2,11 +2,11 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 4.9.4
+* version 4.9.6
 *
 */
 global $wppa_api_version;
-$wppa_api_version = '4-9-4-001';
+$wppa_api_version = '4-9-6-000';
 // Initialize globals and option settings
 function wppa_initialize_runtime($force = false) {
 global $wppa;
@@ -608,7 +608,7 @@ global $wppa_initruntimetime;
 				$desc = __('Default photo album for', 'wppa').' '.$user;
 				$uplim = $wppa_opt['wppa_upload_limit_count'].'/'.$wppa_opt['wppa_upload_limit_time'];
 				$parent = $wppa_opt['wppa_grant_parent'];
-				$query = $wpdb->prepare('INSERT INTO `' . WPPA_ALBUMS . '` (`id`, `name`, `description`, `a_order`, `a_parent`, `p_order_by`, `main_photo`, `cover_linktype`, `cover_linkpage`, `owner`, `timestamp`, `upload_limit`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)', $id, $name, $desc, '0', $parent, '0', '0', 'content', '0', $owner, time(), $uplim);
+				$query = $wpdb->prepare('INSERT INTO `' . WPPA_ALBUMS . '` (`id`, `name`, `description`, `a_order`, `a_parent`, `p_order_by`, `main_photo`, `cover_linktype`, `cover_linkpage`, `owner`, `timestamp`, `upload_limit`, `alt_thumbsize`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)', $id, $name, $desc, '0', $parent, '0', '0', 'content', '0', $owner, time(), $uplim, '0');
 				$iret = $wpdb->query($query);
 
 			}
