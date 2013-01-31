@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * enhances the admin bar with wppa+ menu
-* version 4.8.6
+* version 4.9.7
 *
 */
 
@@ -47,6 +47,13 @@ function wppa_admin_bar_menu() {
 			'title'  => __a( 'Upload Photos', 'wppa_theme' ),
 			'href'   => admin_url( 'admin.php?page=wppa_upload_photos' )
 		);
+		if ( ! current_user_can( 'wppa_admin' ) ) {
+			$menu_items['edit'] = array(
+				'parent' => $wppaplus,
+				'title'  => __a( 'Edit Photos' ),
+				'href'   => admin_url( 'admin.php?page=wppa_edit_photo' )
+			);
+		}
 	}
 	if ( current_user_can( 'wppa_import' ) ) {
 		$menu_items['import'] = array(

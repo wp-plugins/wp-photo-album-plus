@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile
-Version: 4.9.6
+Version: 4.9.7
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -170,6 +170,24 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 4.9.7 =
+
+= Bug Fixes =
+
+* When the shortcode specifies a slideshow, and rating does not use ajax, the returnurl showed a single image in stead of the slideshow. Fixed.
+* The number of comments shown on the thumbnail popup is now for the approved comments only.
+* The selection list for album in upload box A is now properly filtered on albums that has the user access to.
+
+= New Features =
+
+* If Checked in Table VII-B5, Any logged in user with upload rights can edit the photo information of his own photos, regardless of album admin rights.
+If he has no album admin rights, he will have a menuitem: *Edit Photos* that enables him to edit all his photos.
+
+= Other Changes =
+
+* Table VII-B has been renumbered.
+* Pagination now also works for searchresults and selecting on tags.
 
 = 4.9.6 =
 
