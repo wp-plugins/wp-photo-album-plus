@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 4.9.4
+* Version 4.9.7
 *
 */
 
@@ -1257,7 +1257,7 @@ global $wppa_revno;
 							wppa_setting($slug, '5', $name, $desc, $html, $help);
 							
 							$name = __('Overlay thumb desc', 'wppa');
-							$desc = __('Show description if from slide.', 'wppa');
+							$desc = __('Show description if from thumb.', 'wppa');
 							$help = esc_js(__('Shows the photos description on a lightbox display when initiated from a standard thumbnail or a widget thumbnail.', 'wppa'));
 							$help .= '\n\n'.esc_js(__('This setting applies to standard thumbnails, thumbnail-, comment-, topten- and lasten-widget.', 'wppa'));
 							$slug = 'wppa_ovl_thumb_desc';
@@ -2716,14 +2716,6 @@ global $wppa_revno;
 						<tbody class="wppa_table_7">
 							<?php
 							wppa_setting_subheader('B', '1', __('Miscellaneous scurity settings', 'wppa'));
-						
-							$name = __('User upload login', 'wppa');
-							$desc = __('Users must be logged in to be able to upload.', 'wppa');
-							$help = esc_js(__('If you uncheck this box, make sure you check the next 3 items.', 'wppa'));
-							$help .= '\n'.esc_js(__('Set the owner to ---public--- of the albums that are allowed to be uploaded to.', 'wppa'));
-							$slug = 'wppa_user_upload_login';
-							$html = wppa_checkbox($slug);
-							wppa_setting($slug, '0', $name, $desc, $html, $help);
 							
 							$name = __('Owners only', 'wppa');
 							$desc = __('Limit album access to the album owners only.', 'wppa');
@@ -2741,6 +2733,14 @@ global $wppa_revno;
 							$html = wppa_checkbox($slug, $onchange);
 							wppa_setting($slug, '2', $name, $desc, $html, $help);
 							
+							$name = __('User upload login', 'wppa');
+							$desc = __('Users must be logged in to be able to upload.', 'wppa');
+							$help = esc_js(__('If you uncheck this box, make sure you check the next 3 items.', 'wppa'));
+							$help .= '\n'.esc_js(__('Set the owner to ---public--- of the albums that are allowed to be uploaded to.', 'wppa'));
+							$slug = 'wppa_user_upload_login';
+							$html = wppa_checkbox($slug);
+							wppa_setting($slug, '3', $name, $desc, $html, $help);
+							
 							$name = __('Upload moderation', 'wppa');
 							$desc = __('Uploaded photos need moderation.', 'wppa');
 							$help = esc_js(__('If checked, photos uploaded by users who do not have photo album admin access rights need moderation.', 'wppa'));
@@ -2748,28 +2748,36 @@ global $wppa_revno;
 							$help .= '\n\n'.esc_js(__('You can set the album admin access rights in Table VII-A.', 'wppa'));
 							$slug = 'wppa_upload_moderate';
 							$html = wppa_checkbox($slug);
-							wppa_setting($slug, '3', $name, $desc, $html, $help);
+							wppa_setting($slug, '4', $name, $desc, $html, $help);
 
+							$name = __('Uploader Edit', 'wppa');
+							$desc = __('Allow the uploader to edit the photo info', 'wppa');
+							$help = esc_js(__('If checked, any logged in user that has upload rights and uploads an image has the capability to edit the photo information.', 'wppa'));
+							$help .= '\n\n'.esc_js(__('Note: This may be AFTER moderation!!', 'wppa'));
+							$slug = 'wppa_upload_edit';
+							$html = wppa_checkbox($slug);
+							wppa_setting($slug, '5', $name, $desc, $html, $help);
+							
 							$name = __('Upload notify', 'wppa');
 							$desc = __('Notify admin at frontend upload.', 'wppa');
 							$help = esc_js(__('If checked, admin will receive a notification by email.', 'wppa'));
 							$slug = 'wppa_upload_notify';
 							$html = wppa_checkbox($slug);
-							wppa_setting($slug, '3.0', $name, $desc, $html, $help);
+							wppa_setting($slug, '6', $name, $desc, $html, $help);
 							
 							$name = __('Upload memory check frontend', 'wppa');
 							$desc = __('Disable uploading photos that are too large.', 'wppa');
 							$help = esc_js(__('To prevent out of memory crashes during upload and possible database inconsistencies, uploads can be prevented if the photos are too big.', 'wppa'));
 							$slug = 'wppa_memcheck_frontend';
 							$html = wppa_checkbox($slug);
-							wppa_setting($slug, '3.1', $name, $desc, $html, $help);
+							wppa_setting($slug, '7', $name, $desc, $html, $help);
 							
 							$name = __('Upload memory check admin', 'wppa');
 							$desc = __('Disable uploading photos that are too large.', 'wppa');
 							$help = esc_js(__('To prevent out of memory crashes during upload and possible database inconsistencies, uploads can be prevented if the photos are too big.', 'wppa'));
 							$slug = 'wppa_memcheck_admin';
 							$html = wppa_checkbox($slug);
-							wppa_setting($slug, '3.2', $name, $desc, $html, $help);
+							wppa_setting($slug, '8', $name, $desc, $html, $help);
 							
 							$name = __('Comment captcha', 'wppa');
 							$desc = __('Use a simple calculate captcha on comments form.', 'wppa');
@@ -2777,7 +2785,7 @@ global $wppa_revno;
 							$slug = 'wppa_comment_captcha';
 							$html = wppa_checkbox($slug);
 							$class = 'wppa_comment_';
-							wppa_setting($slug, '4', $name, $desc, $html, $help, $class);
+							wppa_setting($slug, '9', $name, $desc, $html, $help, $class);
 							
 							$name = __('Spam lifetime', 'wppa');
 							$desc = __('Delete spam comments when older than.', 'wppa');
@@ -2787,7 +2795,7 @@ global $wppa_revno;
 							$values = array('none', '600', '1800', '3600', '86400', '604800');
 							$html = wppa_select($slug, $options, $values);
 							$class = 'wppa_comment_';
-							wppa_setting($slug, '5', $name, $desc, $html, $help, $class);
+							wppa_setting($slug, '10', $name, $desc, $html, $help, $class);
 							
 							?>
 						</tbody>

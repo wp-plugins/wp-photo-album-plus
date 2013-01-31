@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Photo Album Plus 2.4.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-01-23 14:45+0100\n"
-"PO-Revision-Date: 2013-01-23 14:45+0100\n"
+"POT-Creation-Date: 2013-01-31 13:45+0100\n"
+"PO-Revision-Date: 2013-01-31 13:45+0100\n"
 "Last-Translator: J.N. Breetvelt <OpaJaap@OpaJaap.nl>\n"
 "Language-Team: BNG NET <webmaster@bng.net>\n"
 "Language: ja_JP\n"
@@ -46,8 +46,8 @@ msgid "Order #"
 msgstr "順番 #"
 
 #: wppa-admin-functions.php:165 wppa-ajax.php:343 wppa-ajax.php:523
-#: wppa-album-admin-autosave.php:610 wppa-album-admin-autosave.php:726
-#: wppa-album-admin-autosave.php:903 wppa-album-admin-autosave.php:990
+#: wppa-album-admin-autosave.php:611 wppa-album-admin-autosave.php:727
+#: wppa-album-admin-autosave.php:904 wppa-album-admin-autosave.php:991
 #: wppa-settings-autosave.php:221 wppa-settings-autosave.php:688
 #: wppa-settings-autosave.php:709 wppa-settings-autosave.php:1357
 #: wppa-settings-autosave.php:1378 wppa-settings-autosave.php:1548
@@ -55,10 +55,10 @@ msgstr "順番 #"
 #: wppa-settings-autosave.php:1838 wppa-settings-autosave.php:2018
 #: wppa-settings-autosave.php:2039 wppa-settings-autosave.php:2197
 #: wppa-settings-autosave.php:2221 wppa-settings-autosave.php:2644
-#: wppa-settings-autosave.php:2797 wppa-settings-autosave.php:2818
-#: wppa-settings-autosave.php:2953 wppa-settings-autosave.php:2975
-#: wppa-settings-autosave.php:3247 wppa-settings-autosave.php:3395
-#: wppa-settings-autosave.php:3541 wppa-upload.php:117
+#: wppa-settings-autosave.php:2805 wppa-settings-autosave.php:2826
+#: wppa-settings-autosave.php:2961 wppa-settings-autosave.php:2983
+#: wppa-settings-autosave.php:3255 wppa-settings-autosave.php:3403
+#: wppa-settings-autosave.php:3549 wppa-upload.php:117
 msgid "Name"
 msgstr "名称"
 
@@ -155,11 +155,11 @@ msgid "--- all ---"
 msgstr "--- url ---"
 
 #: wppa-admin-functions.php:596 wppa-admin-functions.php:679
-#: wppa-common-functions.php:1546 wppa-settings-autosave.php:923
+#: wppa-common-functions.php:1547 wppa-settings-autosave.php:923
 #: wppa-settings-autosave.php:1620 wppa-settings-autosave.php:1632
 #: wppa-settings-autosave.php:1761 wppa-settings-autosave.php:1778
 #: wppa-settings-autosave.php:1838 wppa-settings-autosave.php:2579
-#: wppa-settings-autosave.php:3138 wppa-tinymce.php:236 wppa-upload.php:661
+#: wppa-settings-autosave.php:3146 wppa-tinymce.php:236 wppa-upload.php:661
 #: wppa-utils.php:154 wppa-widget-admin.php:75 wppa-widget-admin.php:171
 msgid "--- none ---"
 msgstr "--- なし ---"
@@ -169,7 +169,7 @@ msgid "(full)"
 msgstr ""
 
 #: wppa-admin-functions.php:623 wppa-admin-functions.php:704
-#: wppa-settings-autosave.php:3138 wppa-upload.php:662 wppa-utils.php:158
+#: wppa-settings-autosave.php:3146 wppa-upload.php:662 wppa-utils.php:158
 msgid "--- separate ---"
 msgstr "--- セパレート---"
 
@@ -228,47 +228,52 @@ msgstr "アルバム #"
 msgid "Upload Photos"
 msgstr "写真のアップロード"
 
-#: wppa-admin.php:57 wppa-upload.php:309
+#: wppa-admin.php:59
+#, fuzzy
+msgid "Edit Photos"
+msgstr "写真のエクスポート"
+
+#: wppa-admin.php:61 wppa-upload.php:309
 msgid "Import Photos"
 msgstr "写真のインポート"
 
-#: wppa-admin.php:58 wppa-export.php:36
+#: wppa-admin.php:62 wppa-export.php:36
 msgid "Export Photos"
 msgstr "写真のエクスポート"
 
-#: wppa-admin.php:59
+#: wppa-admin.php:63
 msgid "Settings"
 msgstr "設定"
 
-#: wppa-admin.php:60
+#: wppa-admin.php:64
 #, fuzzy
 msgid "Photo of the day Widget"
 msgstr "本日の写真:"
 
-#: wppa-admin.php:60 wppa-setup.php:784
+#: wppa-admin.php:64 wppa-setup.php:785
 msgid "Photo of the day"
 msgstr "本日の写真:"
 
-#: wppa-admin.php:61
+#: wppa-admin.php:65
 #, fuzzy
 msgid "Manage comments"
 msgstr "写真の管理"
 
-#: wppa-admin.php:61 wppa-settings-autosave.php:1452
-#: wppa-settings-autosave.php:3253 wppa-settings-autosave.php:3296
+#: wppa-admin.php:65 wppa-settings-autosave.php:1452
+#: wppa-settings-autosave.php:3261 wppa-settings-autosave.php:3304
 #, fuzzy
 msgid "Comments"
 msgstr "%件のコメント"
 
-#: wppa-admin.php:62
+#: wppa-admin.php:66
 msgid "Help &amp; Info"
 msgstr "ヘルプとインフォ"
 
-#: wppa-admin.php:99 wppa-upload.php:496
+#: wppa-admin.php:109 wppa-upload.php:496
 msgid "Import"
 msgstr "インポート"
 
-#: wppa-admin.php:99 wppa-settings-autosave.php:3761
+#: wppa-admin.php:109 wppa-settings-autosave.php:3769
 msgid "Update"
 msgstr ""
 
@@ -344,7 +349,7 @@ msgstr ""
 msgid "<b>Ratings cleared</b>"
 msgstr "投票を削除しました"
 
-#: wppa-ajax.php:331 wppa-ajax.php:337 wppa-album-admin-autosave.php:1263
+#: wppa-ajax.php:331 wppa-ajax.php:337 wppa-photo-admin-autosave.php:121
 msgid "No ratings for this photo."
 msgstr ""
 
@@ -357,20 +362,20 @@ msgstr ""
 msgid "<b>No photos in this album</b>"
 msgstr "このアルバムには写真がありません。"
 
-#: wppa-ajax.php:346 wppa-ajax.php:526 wppa-album-admin-autosave.php:620
-#: wppa-album-admin-autosave.php:736 wppa-album-admin-autosave.php:913
-#: wppa-album-admin-autosave.php:1000 wppa-settings-autosave.php:222
+#: wppa-ajax.php:346 wppa-ajax.php:526 wppa-album-admin-autosave.php:621
+#: wppa-album-admin-autosave.php:737 wppa-album-admin-autosave.php:914
+#: wppa-album-admin-autosave.php:1001 wppa-settings-autosave.php:222
 #: wppa-settings-autosave.php:689 wppa-settings-autosave.php:710
 #: wppa-settings-autosave.php:1358 wppa-settings-autosave.php:1379
 #: wppa-settings-autosave.php:1549 wppa-settings-autosave.php:1573
 #: wppa-settings-autosave.php:2019 wppa-settings-autosave.php:2040
 #: wppa-settings-autosave.php:2198 wppa-settings-autosave.php:2222
-#: wppa-settings-autosave.php:2645 wppa-settings-autosave.php:2798
-#: wppa-settings-autosave.php:2819 wppa-settings-autosave.php:2954
-#: wppa-settings-autosave.php:2976 wppa-settings-autosave.php:3396
-#: wppa-settings-autosave.php:3418 wppa-settings-autosave.php:3456
-#: wppa-settings-autosave.php:3478 wppa-settings-autosave.php:3516
-#: wppa-settings-autosave.php:3542 wppa-widget-admin.php:173
+#: wppa-settings-autosave.php:2645 wppa-settings-autosave.php:2806
+#: wppa-settings-autosave.php:2827 wppa-settings-autosave.php:2962
+#: wppa-settings-autosave.php:2984 wppa-settings-autosave.php:3404
+#: wppa-settings-autosave.php:3426 wppa-settings-autosave.php:3464
+#: wppa-settings-autosave.php:3486 wppa-settings-autosave.php:3524
+#: wppa-settings-autosave.php:3550 wppa-widget-admin.php:173
 msgid "Description"
 msgstr "説明"
 
@@ -412,9 +417,9 @@ msgstr "リンクタイプ:"
 msgid "Link to"
 msgstr "リンク先:"
 
-#: wppa-ajax.php:377 wppa-ajax.php:539 wppa-album-admin-autosave.php:631
-#: wppa-album-admin-autosave.php:747 wppa-album-admin-autosave.php:924
-#: wppa-album-admin-autosave.php:1011
+#: wppa-ajax.php:377 wppa-ajax.php:539 wppa-album-admin-autosave.php:632
+#: wppa-album-admin-autosave.php:748 wppa-album-admin-autosave.php:925
+#: wppa-album-admin-autosave.php:1012
 msgid "Owner"
 msgstr "所有者"
 
@@ -547,8 +552,8 @@ msgstr "写真の名称"
 
 #: wppa-ajax.php:580 wppa-album-admin-autosave.php:369
 #: wppa-comment-admin.php:274 wppa-comment-admin.php:363
-#: wppa-settings-autosave.php:3419 wppa-settings-autosave.php:3457
-#: wppa-settings-autosave.php:3479 wppa-settings-autosave.php:3517
+#: wppa-settings-autosave.php:3427 wppa-settings-autosave.php:3465
+#: wppa-settings-autosave.php:3487 wppa-settings-autosave.php:3525
 #, fuzzy
 msgid "Status"
 msgstr "開始"
@@ -694,7 +699,7 @@ msgstr ""
 msgid "Avatar size"
 msgstr "ページ:"
 
-#: wppa-ajax.php:792 wppa-settings-autosave.php:3232
+#: wppa-ajax.php:792 wppa-settings-autosave.php:3240
 #, fuzzy
 msgid "Watermark opacity"
 msgstr "カバーフォト:"
@@ -709,7 +714,7 @@ msgstr "ウィジェットに表示する写真の数:"
 msgid "Overlay opacity"
 msgstr "カバーフォト:"
 
-#: wppa-ajax.php:801 wppa-settings-autosave.php:3110
+#: wppa-ajax.php:801 wppa-settings-autosave.php:3118
 #, fuzzy
 msgid "Upload limit"
 msgstr "写真のアップロード"
@@ -808,22 +813,22 @@ msgstr ""
 "「uploads」ディレクトリが存在しないか、書込み禁止になっています。<tt>wp-"
 "content/uploads/</tt>のパーミッションを確認してください。"
 
-#: wppa-album-admin-autosave.php:58 wppa-settings-autosave.php:3077
+#: wppa-album-admin-autosave.php:58 wppa-settings-autosave.php:3085
 #, fuzzy
 msgid "New Album"
 msgstr "新しいアルバムの作成"
 
-#: wppa-album-admin-autosave.php:64 wppa-album-admin-autosave.php:1568
+#: wppa-album-admin-autosave.php:64 wppa-album-admin-autosave.php:1216
 #: wppa-upload.php:695
 msgid "Could not create album."
 msgstr "アルバムが作成できません。"
 
-#: wppa-album-admin-autosave.php:70 wppa-album-admin-autosave.php:1572
+#: wppa-album-admin-autosave.php:70 wppa-album-admin-autosave.php:1220
 #: wppa-upload.php:699
 msgid "Album #"
 msgstr "アルバム #"
 
-#: wppa-album-admin-autosave.php:70 wppa-album-admin-autosave.php:1572
+#: wppa-album-admin-autosave.php:70 wppa-album-admin-autosave.php:1220
 #: wppa-upload.php:699
 msgid "Added."
 msgstr "追加しました。"
@@ -862,7 +867,7 @@ msgstr ""
 msgid "Album number:"
 msgstr "アルバム番号:"
 
-#: wppa-album-admin-autosave.php:107 wppa-album-admin-autosave.php:1350
+#: wppa-album-admin-autosave.php:107 wppa-photo-admin-autosave.php:208
 msgid "Name:"
 msgstr "名称:"
 
@@ -870,7 +875,7 @@ msgstr "名称:"
 msgid "Type the name of the album. Do not leave this empty."
 msgstr "アルバムの名称を入力してください。この項目は空欄にできません。"
 
-#: wppa-album-admin-autosave.php:119 wppa-album-admin-autosave.php:1360
+#: wppa-album-admin-autosave.php:119 wppa-photo-admin-autosave.php:218
 msgid "Description:"
 msgstr "説明:"
 
@@ -933,8 +938,8 @@ msgstr "写真の順番:"
 msgid "--- default ---"
 msgstr "--- デフォルト ---"
 
-#: wppa-album-admin-autosave.php:203 wppa-settings-autosave.php:3250
-#: wppa-settings-autosave.php:3293
+#: wppa-album-admin-autosave.php:203 wppa-settings-autosave.php:3258
+#: wppa-settings-autosave.php:3301
 msgid "Rating"
 msgstr "投票"
 
@@ -988,36 +993,36 @@ msgstr "このアルバムの表紙（カバー）に表示したい写真を選
 msgid "Upload limit:"
 msgstr "写真のアップロード"
 
-#: wppa-album-admin-autosave.php:252 wppa-settings-autosave.php:3117
+#: wppa-album-admin-autosave.php:252 wppa-settings-autosave.php:3125
 msgid "for ever"
 msgstr ""
 
 #: wppa-album-admin-autosave.php:253 wppa-album-admin-autosave.php:270
-#: wppa-settings-autosave.php:3118
+#: wppa-settings-autosave.php:3126
 #, fuzzy
 msgid "per hour"
 msgstr "時。"
 
 #: wppa-album-admin-autosave.php:254 wppa-album-admin-autosave.php:271
-#: wppa-settings-autosave.php:3119
+#: wppa-settings-autosave.php:3127
 #, fuzzy
 msgid "per day"
 msgstr "日。"
 
 #: wppa-album-admin-autosave.php:255 wppa-album-admin-autosave.php:272
-#: wppa-settings-autosave.php:3120
+#: wppa-settings-autosave.php:3128
 #, fuzzy
 msgid "per week"
 msgstr "週。"
 
 #: wppa-album-admin-autosave.php:256 wppa-album-admin-autosave.php:273
-#: wppa-settings-autosave.php:3121
+#: wppa-settings-autosave.php:3129
 #, fuzzy
 msgid "per month"
 msgstr "1件のコメント"
 
 #: wppa-album-admin-autosave.php:257 wppa-album-admin-autosave.php:274
-#: wppa-settings-autosave.php:3122
+#: wppa-settings-autosave.php:3130
 #, fuzzy
 msgid "per year"
 msgstr "はい。"
@@ -1054,8 +1059,8 @@ msgstr "リンクなし。"
 msgid "Link to:"
 msgstr "リンク先:"
 
-#: wppa-album-admin-autosave.php:306 wppa-settings-autosave.php:3810
-#: wppa-settings-autosave.php:3845
+#: wppa-album-admin-autosave.php:306 wppa-settings-autosave.php:3818
+#: wppa-settings-autosave.php:3853
 msgid "There are no pages (yet) to link to."
 msgstr "リンク先のページが（まだ）存在しません。"
 
@@ -1122,455 +1127,170 @@ msgstr "写真の管理"
 msgid "Moderate photo"
 msgstr "写真の管理"
 
-#: wppa-album-admin-autosave.php:429
+#: wppa-album-admin-autosave.php:406 wppa-photo-admin-autosave.php:20
+#, fuzzy
+msgid "Edit photo"
+msgstr "写真の管理"
+
+#: wppa-album-admin-autosave.php:430
 msgid "Delete Album"
 msgstr "アルバムの削除"
 
-#: wppa-album-admin-autosave.php:431 wppa-comment-admin.php:54
+#: wppa-album-admin-autosave.php:432 wppa-comment-admin.php:54
 #: wppa-lasten-widget.php:131 wppa-slideshow-widget.php:191
 #: wppa-thumbnail-widget.php:132 wppa-topten-widget.php:126
 #: wppa-upload.php:155 wppa-upload.php:194
 msgid "Album:"
 msgstr "アルバム:"
 
-#: wppa-album-admin-autosave.php:432
+#: wppa-album-admin-autosave.php:433
 msgid "Are you sure you want to delete this album?"
 msgstr "本当にこのアルバムを削除しますか？"
 
-#: wppa-album-admin-autosave.php:433
+#: wppa-album-admin-autosave.php:434
 msgid "Press Delete to continue, and Cancel to go back."
 msgstr "実行するなら削除を、取り消すなら戻るを押してください。"
 
-#: wppa-album-admin-autosave.php:438
+#: wppa-album-admin-autosave.php:439
 msgid "What would you like to do with photos currently in the album?"
 msgstr "現在アルバムに存在する写真をどうしますか？"
 
-#: wppa-album-admin-autosave.php:439 wppa-album-admin-autosave.php:448
-#: wppa-album-admin-autosave.php:664 wppa-album-admin-autosave.php:698
-#: wppa-album-admin-autosave.php:780 wppa-album-admin-autosave.php:957
-#: wppa-album-admin-autosave.php:1044 wppa-album-admin-autosave.php:1156
+#: wppa-album-admin-autosave.php:440 wppa-album-admin-autosave.php:449
+#: wppa-album-admin-autosave.php:665 wppa-album-admin-autosave.php:699
+#: wppa-album-admin-autosave.php:781 wppa-album-admin-autosave.php:958
+#: wppa-album-admin-autosave.php:1045 wppa-album-admin-autosave.php:1157
 #: wppa-comment-admin.php:276 wppa-comment-admin.php:347
 #: wppa-comment-admin.php:365
 msgid "Delete"
 msgstr "削除"
 
-#: wppa-album-admin-autosave.php:440
+#: wppa-album-admin-autosave.php:441
 msgid "Move to:"
 msgstr "移動:"
 
-#: wppa-album-admin-autosave.php:447
+#: wppa-album-admin-autosave.php:448
 msgid "Cancel"
 msgstr "取消"
 
-#: wppa-album-admin-autosave.php:478
+#: wppa-album-admin-autosave.php:479
 msgid "Unable to move photos. Album not deleted."
 msgstr ""
 
-#: wppa-album-admin-autosave.php:496
+#: wppa-album-admin-autosave.php:497
 msgid "Manage Albums"
 msgstr "アルバムの管理"
 
-#: wppa-album-admin-autosave.php:500
+#: wppa-album-admin-autosave.php:501
 #, fuzzy
 msgid "Are you sure you want to create a new album?"
 msgstr "本当にこのアルバムを削除しますか？"
 
-#: wppa-album-admin-autosave.php:501
+#: wppa-album-admin-autosave.php:502
 #, fuzzy
 msgid "Create New Empty Album"
 msgstr "新しいアルバムの作成"
 
-#: wppa-album-admin-autosave.php:503
+#: wppa-album-admin-autosave.php:504
 msgid "Switch to Collapsable table"
 msgstr ""
 
-#: wppa-album-admin-autosave.php:505
+#: wppa-album-admin-autosave.php:506
 msgid "Switch to Flat table"
 msgstr ""
 
-#: wppa-album-admin-autosave.php:600 wppa-album-admin-autosave.php:716
-#: wppa-album-admin-autosave.php:892 wppa-album-admin-autosave.php:979
+#: wppa-album-admin-autosave.php:601 wppa-album-admin-autosave.php:717
+#: wppa-album-admin-autosave.php:893 wppa-album-admin-autosave.php:980
 msgid "ID"
 msgstr "ID"
 
-#: wppa-album-admin-autosave.php:642 wppa-album-admin-autosave.php:758
-#: wppa-album-admin-autosave.php:935 wppa-album-admin-autosave.php:1022
+#: wppa-album-admin-autosave.php:643 wppa-album-admin-autosave.php:759
+#: wppa-album-admin-autosave.php:936 wppa-album-admin-autosave.php:1023
 msgid "Order"
 msgstr "順番"
 
-#: wppa-album-admin-autosave.php:652 wppa-album-admin-autosave.php:768
-#: wppa-album-admin-autosave.php:945 wppa-album-admin-autosave.php:1032
+#: wppa-album-admin-autosave.php:653 wppa-album-admin-autosave.php:769
+#: wppa-album-admin-autosave.php:946 wppa-album-admin-autosave.php:1033
 msgid "Parent"
 msgstr "親"
 
-#: wppa-album-admin-autosave.php:660 wppa-album-admin-autosave.php:776
-#: wppa-album-admin-autosave.php:953 wppa-album-admin-autosave.php:1040
+#: wppa-album-admin-autosave.php:661 wppa-album-admin-autosave.php:777
+#: wppa-album-admin-autosave.php:954 wppa-album-admin-autosave.php:1041
 msgid "Albums/Photos/Photos that need Moderation"
 msgstr ""
 
-#: wppa-album-admin-autosave.php:661 wppa-album-admin-autosave.php:777
-#: wppa-album-admin-autosave.php:954 wppa-album-admin-autosave.php:1041
+#: wppa-album-admin-autosave.php:662 wppa-album-admin-autosave.php:778
+#: wppa-album-admin-autosave.php:955 wppa-album-admin-autosave.php:1042
 msgid "A/P/PM"
 msgstr ""
 
-#: wppa-album-admin-autosave.php:663 wppa-album-admin-autosave.php:694
-#: wppa-album-admin-autosave.php:779 wppa-album-admin-autosave.php:956
-#: wppa-album-admin-autosave.php:1043 wppa-album-admin-autosave.php:1152
+#: wppa-album-admin-autosave.php:664 wppa-album-admin-autosave.php:695
+#: wppa-album-admin-autosave.php:780 wppa-album-admin-autosave.php:957
+#: wppa-album-admin-autosave.php:1044 wppa-album-admin-autosave.php:1153
 #: wppa-comment-admin.php:275 wppa-comment-admin.php:346
 #: wppa-comment-admin.php:364 theme/photo-album-page.php:31
 #: theme/photo-album-search-page.php:53
 msgid "Edit"
 msgstr "編集"
 
-#: wppa-album-admin-autosave.php:791 wppa-album-admin-autosave.php:1070
+#: wppa-album-admin-autosave.php:792 wppa-album-admin-autosave.php:1071
 #, php-format
 msgid ""
 "There are <strong>%d</strong> albums and <strong>%d</strong> photos in the "
 "system."
 msgstr ""
 
-#: wppa-album-admin-autosave.php:792 wppa-album-admin-autosave.php:1071
+#: wppa-album-admin-autosave.php:793 wppa-album-admin-autosave.php:1072
 #, php-format
 msgid "<strong>%d</strong> photos are pending moderation."
 msgstr ""
 
-#: wppa-album-admin-autosave.php:795 wppa-album-admin-autosave.php:1074
+#: wppa-album-admin-autosave.php:796 wppa-album-admin-autosave.php:1075
 #, php-format
 msgid "The most recently added album is <strong>%s</strong> (%d)."
 msgstr ""
 
-#: wppa-album-admin-autosave.php:797 wppa-album-admin-autosave.php:1076
+#: wppa-album-admin-autosave.php:798 wppa-album-admin-autosave.php:1077
 #, fuzzy, php-format
 msgid "The most recently added photo is <strong>%s</strong> (%d)."
 msgstr "--- 同一記事またはページ ---"
 
-#: wppa-album-admin-autosave.php:802 wppa-album-admin-autosave.php:1081
+#: wppa-album-admin-autosave.php:803 wppa-album-admin-autosave.php:1082
 msgid "No albums yet."
 msgstr "アルバムがありません。"
 
-#: wppa-album-admin-autosave.php:886 wppa-album-admin-autosave.php:1127
+#: wppa-album-admin-autosave.php:887 wppa-album-admin-autosave.php:1128
 #, fuzzy
 msgid "Collapse subalbums"
 msgstr "- 全アルバム -"
 
-#: wppa-album-admin-autosave.php:887 wppa-album-admin-autosave.php:1128
+#: wppa-album-admin-autosave.php:888 wppa-album-admin-autosave.php:1129
 msgid "Expand subalbums"
 msgstr ""
 
-#: wppa-album-admin-autosave.php:965
+#: wppa-album-admin-autosave.php:966
 msgid ""
 "The following albums are ---separate--- and do not show up in the generic "
 "album display"
 msgstr ""
 
-#: wppa-album-admin-autosave.php:1198 wppa-widget-admin.php:186
-msgid "No photos yet in this album."
-msgstr "このアルバムには写真がありません。"
-
-#: wppa-album-admin-autosave.php:1201 wppa-common-functions.php:1561
-msgid "top - left"
-msgstr ""
-
-#: wppa-album-admin-autosave.php:1201 wppa-common-functions.php:1561
-#, fuzzy
-msgid "top - center"
-msgstr "センター"
-
-#: wppa-album-admin-autosave.php:1201 wppa-common-functions.php:1561
-#, fuzzy
-msgid "top - right"
-msgstr "右 "
-
-#: wppa-album-admin-autosave.php:1202 wppa-common-functions.php:1562
-#, fuzzy
-msgid "center - left"
-msgstr "センター"
-
-#: wppa-album-admin-autosave.php:1202 wppa-common-functions.php:1562
-msgid "center - center"
-msgstr ""
-
-#: wppa-album-admin-autosave.php:1202 wppa-common-functions.php:1562
-#, fuzzy
-msgid "center - right"
-msgstr "センター"
-
-#: wppa-album-admin-autosave.php:1203 wppa-common-functions.php:1563
-#, fuzzy
-msgid "bottom - left"
-msgstr "ボトム"
-
-#: wppa-album-admin-autosave.php:1203 wppa-common-functions.php:1563
-msgid "bottom - center"
-msgstr ""
-
-#: wppa-album-admin-autosave.php:1203 wppa-common-functions.php:1563
-#, fuzzy
-msgid "bottom - right"
-msgstr "ボトム"
-
-#: wppa-album-admin-autosave.php:1220
-msgid "Preview:"
-msgstr "プレビュー:"
-
-#: wppa-album-admin-autosave.php:1223 wppa-album-admin-autosave.php:1226
-#, fuzzy
-msgid "Are you sure you want to rotate this photo?"
-msgstr "本当にこの写真を削除しますか？"
-
 #: wppa-album-admin-autosave.php:1223
-msgid "Rotate left"
-msgstr ""
-
-#: wppa-album-admin-autosave.php:1226
-msgid "Rotate right"
-msgstr ""
-
-#: wppa-album-admin-autosave.php:1230
-msgid ""
-"If it says 'Photo rotated', the photo is rotated. If you do not see it "
-"happen here, clear your browser cache."
-msgstr ""
-
-#: wppa-album-admin-autosave.php:1236
-#, fuzzy
-msgid "Preview fullsize photo"
-msgstr "前の写真"
-
-#: wppa-album-admin-autosave.php:1244
-#, fuzzy
-msgid "Upload:"
-msgstr "写真のアップロード"
-
-#: wppa-album-admin-autosave.php:1248
-msgid "On:"
-msgstr ""
-
-#: wppa-album-admin-autosave.php:1248
-msgid "By:"
-msgstr ""
-
-#: wppa-album-admin-autosave.php:1254
-msgid "Rating:"
-msgstr "投票:"
-
-#: wppa-album-admin-autosave.php:1260
-msgid "Entries:"
-msgstr "エントリ:"
-
-#: wppa-album-admin-autosave.php:1260
-msgid "Mean value:"
-msgstr "平均値:"
-
-#: wppa-album-admin-autosave.php:1267
-#, php-format
-msgid "Disliked by %d visitors"
-msgstr ""
-
-#: wppa-album-admin-autosave.php:1276
-#, fuzzy
-msgid "Photo order #:"
-msgstr "写真の順番:"
-
-#: wppa-album-admin-autosave.php:1285
-#, fuzzy
-msgid "Are you sure you want to move this photo?"
-msgstr "本当にこの写真を削除しますか？"
-
-#: wppa-album-admin-autosave.php:1285
-#, fuzzy
-msgid "Please select an album to move the photo to first."
-msgstr "写真のコピー先となるアルバムを先に選択してください。"
-
-#: wppa-album-admin-autosave.php:1285
-#, fuzzy
-msgid "Move photo to"
-msgstr "写真のコピー先: "
-
-#: wppa-album-admin-autosave.php:1294
-msgid "Are you sure you want to copy this photo?"
-msgstr "本当にこの写真をコピーしますか？"
-
-#: wppa-album-admin-autosave.php:1294
-msgid "Please select an album to copy the photo to first."
-msgstr "写真のコピー先となるアルバムを先に選択してください。"
-
-#: wppa-album-admin-autosave.php:1294
-msgid "Copy photo to"
-msgstr "写真のコピー先: "
-
-#: wppa-album-admin-autosave.php:1303
-msgid "Are you sure you want to delete this photo?"
-msgstr "本当にこの写真を削除しますか？"
-
-#: wppa-album-admin-autosave.php:1303
-msgid "Delete photo"
-msgstr "写真の削除"
-
-#: wppa-album-admin-autosave.php:1309
-msgid ""
-"Insert code for single image in Page or Post:\\nYou may change the size if "
-"you like."
-msgstr ""
-"ページまたは記事にこの画像を表示したい時に挿入するコード:\\n好みのサイズに変"
-"更できます。"
-
-#: wppa-album-admin-autosave.php:1309
-msgid "Insertion Code"
-msgstr "挿入コード"
-
-#: wppa-album-admin-autosave.php:1315
-#, fuzzy
-msgid "Link url:"
-msgstr "リンク先:"
-
-#: wppa-album-admin-autosave.php:1320
-#, fuzzy
-msgid "Same tab"
-msgstr "新しいアルバムの作成"
-
-#: wppa-album-admin-autosave.php:1321 wppa-settings-autosave.php:2225
-#: wppa-settings-autosave.php:2648
-#, fuzzy
-msgid "New tab"
-msgstr "新しいアルバムの作成"
-
-#: wppa-album-admin-autosave.php:1328
-#, fuzzy
-msgid "Link title:"
-msgstr "リンクタイプ:"
-
-#: wppa-album-admin-autosave.php:1339
-#, fuzzy
-msgid ""
-"If you want this link to be used, check 'PS Overrule' checkbox in table VI "
-"of the Photo Albums -> Settings admin page."
-msgstr ""
-"このウィジェットの内容と動作は、<b>フォトアルバム -> 設定</b>の管理ページで設"
-"定できます。"
-
-#: wppa-album-admin-autosave.php:1354
-#, fuzzy
-msgid ""
-"Type/alter the name of the photo. <small>It is NOT a filename and needs no "
-"file extension like .jpg.</small>"
-msgstr ""
-"写真の名称を入力／変更してください。ファイル名ではありませんので、.jpgなどの"
-"拡張子は不要です。"
-
-#: wppa-album-admin-autosave.php:1371
-#, fuzzy
-msgid "Update Photo description"
-msgstr "サムネイルの下に表示する名称と説明。"
-
-#: wppa-album-admin-autosave.php:1384
-msgid "Tags:"
-msgstr ""
-
-#: wppa-album-admin-autosave.php:1392
-msgid "Separate tags with commas."
-msgstr ""
-
-#: wppa-album-admin-autosave.php:1393
-#, fuzzy
-msgid "Examples:"
-msgstr "名称"
-
-#: wppa-album-admin-autosave.php:1397
-#, fuzzy
-msgid "- select -"
-msgstr "- アルバムの選択 -"
-
-#: wppa-album-admin-autosave.php:1403
-#, fuzzy
-msgid "No tags yet"
-msgstr "写真がありません"
-
-#: wppa-album-admin-autosave.php:1407
-#, fuzzy
-msgid "Select to add"
-msgstr "選択:"
-
-#: wppa-album-admin-autosave.php:1415
-#, fuzzy
-msgid "Status:"
-msgstr "開始"
-
-#: wppa-album-admin-autosave.php:1419 wppa-comment-admin.php:336
-#, fuzzy
-msgid "Pending"
-msgstr "降順:"
-
-#: wppa-album-admin-autosave.php:1420
-msgid "Publish"
-msgstr ""
-
-#: wppa-album-admin-autosave.php:1421
-#, fuzzy
-msgid "Featured"
-msgstr "機能:"
-
-#: wppa-album-admin-autosave.php:1423
-msgid ""
-"Note: Featured photos should have a descriptive name; a name a search engine "
-"will look for!"
-msgstr ""
-
-#: wppa-album-admin-autosave.php:1430
-#, fuzzy
-msgid "Watermark:"
-msgstr "カバーフォト:"
-
-#: wppa-album-admin-autosave.php:1436 wppa-album-admin-autosave.php:1449
-msgid "File:"
-msgstr ""
-
-#: wppa-album-admin-autosave.php:1441 wppa-album-admin-autosave.php:1449
-msgid "Pos:"
-msgstr ""
-
-#: wppa-album-admin-autosave.php:1445 wppa-album-admin-autosave.php:1450
-#, fuzzy
-msgid "Apply watermark"
-msgstr "写真のアップロード"
-
-#: wppa-album-admin-autosave.php:1445 wppa-album-admin-autosave.php:1450
-msgid ""
-"Are you sure?\\n\\nOnce applied it can not be removed!\\nAnd I do not know "
-"if there is already a watermark on this photo"
-msgstr ""
-
-#: wppa-album-admin-autosave.php:1456
-msgid "Not configured"
-msgstr ""
-
-#: wppa-album-admin-autosave.php:1464
-msgid "Remark:"
-msgstr ""
-
-#: wppa-album-admin-autosave.php:1467
-#, php-format
-msgid "Photo %s is not modified yet"
-msgstr ""
-
-#: wppa-album-admin-autosave.php:1575
 msgid "Album Name cannot be empty."
 msgstr "アルバムの名称は空欄にできません。"
 
-#: wppa-album-admin-autosave.php:1583
+#: wppa-album-admin-autosave.php:1231
 #, php-format
 msgid "Unable to move photos to album %s. Album not deleted."
 msgstr ""
 
-#: wppa-album-admin-autosave.php:1618
+#: wppa-album-admin-autosave.php:1266
 msgid "Album Deleted."
 msgstr "アルバムを削除しました。"
 
-#: wppa-album-admin-autosave.php:1631
+#: wppa-album-admin-autosave.php:1279
 msgid "--- random ---"
 msgstr "--- ランダム ---"
 
-#: wppa-album-admin-autosave.php:1647
+#: wppa-album-admin-autosave.php:1295
 msgid "No photos yet"
 msgstr "写真がありません"
 
@@ -1740,7 +1460,7 @@ msgid "Linkpage:"
 msgstr "リンクタイプ:"
 
 #: wppa-comment-admin.php:197 wppa-settings-autosave.php:2272
-#: wppa-settings-autosave.php:3162
+#: wppa-settings-autosave.php:3170
 #, fuzzy
 msgid "--- Please select a page ---"
 msgstr "--- 同一記事またはページ ---"
@@ -1821,11 +1541,11 @@ msgstr "アルバム:"
 #: wppa-settings-autosave.php:1571 wppa-settings-autosave.php:2017
 #: wppa-settings-autosave.php:2038 wppa-settings-autosave.php:2196
 #: wppa-settings-autosave.php:2220 wppa-settings-autosave.php:2643
-#: wppa-settings-autosave.php:2796 wppa-settings-autosave.php:2817
-#: wppa-settings-autosave.php:2952 wppa-settings-autosave.php:2974
-#: wppa-settings-autosave.php:3394 wppa-settings-autosave.php:3415
-#: wppa-settings-autosave.php:3453 wppa-settings-autosave.php:3475
-#: wppa-settings-autosave.php:3513
+#: wppa-settings-autosave.php:2804 wppa-settings-autosave.php:2825
+#: wppa-settings-autosave.php:2960 wppa-settings-autosave.php:2982
+#: wppa-settings-autosave.php:3402 wppa-settings-autosave.php:3423
+#: wppa-settings-autosave.php:3461 wppa-settings-autosave.php:3483
+#: wppa-settings-autosave.php:3521
 msgid "#"
 msgstr ""
 
@@ -1865,11 +1585,20 @@ msgstr ""
 msgid "Reply"
 msgstr ""
 
-#: wppa-comment-admin.php:337
+#: wppa-comment-admin.php:336 wppa-photo-admin-autosave.php:278
+#: wppa-photo-admin-autosave.php:284 wppa-photo-admin-autosave.php:375
+#: wppa-photo-admin-autosave.php:385
+#, fuzzy
+msgid "Pending"
+msgstr "降順:"
+
+#: wppa-comment-admin.php:337 wppa-photo-admin-autosave.php:376
+#: wppa-photo-admin-autosave.php:386
 msgid "Approved"
 msgstr ""
 
-#: wppa-comment-admin.php:338
+#: wppa-comment-admin.php:338 wppa-photo-admin-autosave.php:377
+#: wppa-photo-admin-autosave.php:387
 msgid "Spam"
 msgstr ""
 
@@ -1902,86 +1631,128 @@ msgstr "WPPA+ のトップ10フォト"
 msgid "Comments on Photos"
 msgstr "%件のコメント"
 
-#: wppa-common-functions.php:608
+#: wppa-common-functions.php:609
 #, fuzzy
 msgid "Default photo album for"
 msgstr "インポート用デフォルトアルバム:"
 
-#: wppa-common-functions.php:903
+#: wppa-common-functions.php:904
 msgid "1 second"
 msgstr ""
 
-#: wppa-common-functions.php:904
+#: wppa-common-functions.php:905
 msgid "seconds"
 msgstr ""
 
-#: wppa-common-functions.php:908
+#: wppa-common-functions.php:909
 msgid "1 minute"
 msgstr ""
 
-#: wppa-common-functions.php:909
+#: wppa-common-functions.php:910
 msgid "minutes"
 msgstr ""
 
-#: wppa-common-functions.php:913
+#: wppa-common-functions.php:914
 #, fuzzy
 msgid "1 hour"
 msgstr "時。"
 
-#: wppa-common-functions.php:914
+#: wppa-common-functions.php:915
 #, fuzzy
 msgid "hours"
 msgstr "時。"
 
-#: wppa-common-functions.php:918
+#: wppa-common-functions.php:919
 #, fuzzy
 msgid "1 day"
 msgstr "日。"
 
-#: wppa-common-functions.php:919
+#: wppa-common-functions.php:920
 #, fuzzy
 msgid "days"
 msgstr "日。"
 
-#: wppa-common-functions.php:923
+#: wppa-common-functions.php:924
 #, fuzzy
 msgid "1 week"
 msgstr "週。"
 
-#: wppa-common-functions.php:924
+#: wppa-common-functions.php:925
 #, fuzzy
 msgid "weeks"
 msgstr "週。"
 
-#: wppa-common-functions.php:928
+#: wppa-common-functions.php:929
 #, fuzzy
 msgid "1 month"
 msgstr "1件のコメント"
 
-#: wppa-common-functions.php:929
+#: wppa-common-functions.php:930
 msgid "months"
 msgstr ""
 
-#: wppa-common-functions.php:932
+#: wppa-common-functions.php:933
 msgid "1 year"
 msgstr ""
 
-#: wppa-common-functions.php:933
+#: wppa-common-functions.php:934
 #, fuzzy
 msgid "years"
 msgstr "はい。"
 
-#: wppa-common-functions.php:1141 wppa-common-functions.php:1142
+#: wppa-common-functions.php:1142 wppa-common-functions.php:1143
 msgid "ERROR: Resized or copied image could not be created."
 msgstr ""
 "【エラー】サイズを調整したか、または、コピーした画像を作成できませんでした。"
 
-#: wppa-common-functions.php:1160 wppa-common-functions.php:1161
+#: wppa-common-functions.php:1161 wppa-common-functions.php:1162
 #, php-format
 msgid "ERROR: File %s is not a valid picture file."
 msgstr ""
 
-#: wppa-common-functions.php:1972
+#: wppa-common-functions.php:1562 wppa-photo-admin-autosave.php:59
+msgid "top - left"
+msgstr ""
+
+#: wppa-common-functions.php:1562 wppa-photo-admin-autosave.php:59
+#, fuzzy
+msgid "top - center"
+msgstr "センター"
+
+#: wppa-common-functions.php:1562 wppa-photo-admin-autosave.php:59
+#, fuzzy
+msgid "top - right"
+msgstr "右 "
+
+#: wppa-common-functions.php:1563 wppa-photo-admin-autosave.php:60
+#, fuzzy
+msgid "center - left"
+msgstr "センター"
+
+#: wppa-common-functions.php:1563 wppa-photo-admin-autosave.php:60
+msgid "center - center"
+msgstr ""
+
+#: wppa-common-functions.php:1563 wppa-photo-admin-autosave.php:60
+#, fuzzy
+msgid "center - right"
+msgstr "センター"
+
+#: wppa-common-functions.php:1564 wppa-photo-admin-autosave.php:61
+#, fuzzy
+msgid "bottom - left"
+msgstr "ボトム"
+
+#: wppa-common-functions.php:1564 wppa-photo-admin-autosave.php:61
+msgid "bottom - center"
+msgstr ""
+
+#: wppa-common-functions.php:1564 wppa-photo-admin-autosave.php:61
+#, fuzzy
+msgid "bottom - right"
+msgstr "ボトム"
+
+#: wppa-common-functions.php:1973
 #, php-format
 msgid ""
 "Based on your server memory limit you should not upload images larger then "
@@ -2731,6 +2502,258 @@ msgstr "写真の名称"
 msgid "No of columns:"
 msgstr ""
 
+#: wppa-photo-admin-autosave.php:31
+#, fuzzy
+msgid "Edit photos"
+msgstr "写真"
+
+#: wppa-photo-admin-autosave.php:56 wppa-widget-admin.php:186
+msgid "No photos yet in this album."
+msgstr "このアルバムには写真がありません。"
+
+#: wppa-photo-admin-autosave.php:78
+msgid "Preview:"
+msgstr "プレビュー:"
+
+#: wppa-photo-admin-autosave.php:81 wppa-photo-admin-autosave.php:84
+#, fuzzy
+msgid "Are you sure you want to rotate this photo?"
+msgstr "本当にこの写真を削除しますか？"
+
+#: wppa-photo-admin-autosave.php:81
+msgid "Rotate left"
+msgstr ""
+
+#: wppa-photo-admin-autosave.php:84
+msgid "Rotate right"
+msgstr ""
+
+#: wppa-photo-admin-autosave.php:88
+msgid ""
+"If it says 'Photo rotated', the photo is rotated. If you do not see it "
+"happen here, clear your browser cache."
+msgstr ""
+
+#: wppa-photo-admin-autosave.php:94
+#, fuzzy
+msgid "Preview fullsize photo"
+msgstr "前の写真"
+
+#: wppa-photo-admin-autosave.php:102
+#, fuzzy
+msgid "Upload:"
+msgstr "写真のアップロード"
+
+#: wppa-photo-admin-autosave.php:106
+msgid "On:"
+msgstr ""
+
+#: wppa-photo-admin-autosave.php:106
+msgid "By:"
+msgstr ""
+
+#: wppa-photo-admin-autosave.php:112
+msgid "Rating:"
+msgstr "投票:"
+
+#: wppa-photo-admin-autosave.php:118
+msgid "Entries:"
+msgstr "エントリ:"
+
+#: wppa-photo-admin-autosave.php:118
+msgid "Mean value:"
+msgstr "平均値:"
+
+#: wppa-photo-admin-autosave.php:125
+#, php-format
+msgid "Disliked by %d visitors"
+msgstr ""
+
+#: wppa-photo-admin-autosave.php:134
+#, fuzzy
+msgid "Photo order #:"
+msgstr "写真の順番:"
+
+#: wppa-photo-admin-autosave.php:143
+#, fuzzy
+msgid "Are you sure you want to move this photo?"
+msgstr "本当にこの写真を削除しますか？"
+
+#: wppa-photo-admin-autosave.php:143
+#, fuzzy
+msgid "Please select an album to move the photo to first."
+msgstr "写真のコピー先となるアルバムを先に選択してください。"
+
+#: wppa-photo-admin-autosave.php:143
+#, fuzzy
+msgid "Move photo to"
+msgstr "写真のコピー先: "
+
+#: wppa-photo-admin-autosave.php:152
+msgid "Are you sure you want to copy this photo?"
+msgstr "本当にこの写真をコピーしますか？"
+
+#: wppa-photo-admin-autosave.php:152
+msgid "Please select an album to copy the photo to first."
+msgstr "写真のコピー先となるアルバムを先に選択してください。"
+
+#: wppa-photo-admin-autosave.php:152
+msgid "Copy photo to"
+msgstr "写真のコピー先: "
+
+#: wppa-photo-admin-autosave.php:161
+msgid "Are you sure you want to delete this photo?"
+msgstr "本当にこの写真を削除しますか？"
+
+#: wppa-photo-admin-autosave.php:161
+msgid "Delete photo"
+msgstr "写真の削除"
+
+#: wppa-photo-admin-autosave.php:167
+msgid ""
+"Insert code for single image in Page or Post:\\nYou may change the size if "
+"you like."
+msgstr ""
+"ページまたは記事にこの画像を表示したい時に挿入するコード:\\n好みのサイズに変"
+"更できます。"
+
+#: wppa-photo-admin-autosave.php:167
+msgid "Insertion Code"
+msgstr "挿入コード"
+
+#: wppa-photo-admin-autosave.php:173
+#, fuzzy
+msgid "Link url:"
+msgstr "リンク先:"
+
+#: wppa-photo-admin-autosave.php:178
+#, fuzzy
+msgid "Same tab"
+msgstr "新しいアルバムの作成"
+
+#: wppa-photo-admin-autosave.php:179 wppa-settings-autosave.php:2225
+#: wppa-settings-autosave.php:2648
+#, fuzzy
+msgid "New tab"
+msgstr "新しいアルバムの作成"
+
+#: wppa-photo-admin-autosave.php:186
+#, fuzzy
+msgid "Link title:"
+msgstr "リンクタイプ:"
+
+#: wppa-photo-admin-autosave.php:197
+#, fuzzy
+msgid ""
+"If you want this link to be used, check 'PS Overrule' checkbox in table VI "
+"of the Photo Albums -> Settings admin page."
+msgstr ""
+"このウィジェットの内容と動作は、<b>フォトアルバム -> 設定</b>の管理ページで設"
+"定できます。"
+
+#: wppa-photo-admin-autosave.php:212
+#, fuzzy
+msgid ""
+"Type/alter the name of the photo. <small>It is NOT a filename and needs no "
+"file extension like .jpg.</small>"
+msgstr ""
+"写真の名称を入力／変更してください。ファイル名ではありませんので、.jpgなどの"
+"拡張子は不要です。"
+
+#: wppa-photo-admin-autosave.php:229
+#, fuzzy
+msgid "Update Photo description"
+msgstr "サムネイルの下に表示する名称と説明。"
+
+#: wppa-photo-admin-autosave.php:242
+msgid "Tags:"
+msgstr ""
+
+#: wppa-photo-admin-autosave.php:250
+msgid "Separate tags with commas."
+msgstr ""
+
+#: wppa-photo-admin-autosave.php:251
+#, fuzzy
+msgid "Examples:"
+msgstr "名称"
+
+#: wppa-photo-admin-autosave.php:255
+#, fuzzy
+msgid "- select -"
+msgstr "- アルバムの選択 -"
+
+#: wppa-photo-admin-autosave.php:261
+#, fuzzy
+msgid "No tags yet"
+msgstr "写真がありません"
+
+#: wppa-photo-admin-autosave.php:265
+#, fuzzy
+msgid "Select to add"
+msgstr "選択:"
+
+#: wppa-photo-admin-autosave.php:273
+#, fuzzy
+msgid "Status:"
+msgstr "開始"
+
+#: wppa-photo-admin-autosave.php:279 wppa-photo-admin-autosave.php:285
+msgid "Publish"
+msgstr ""
+
+#: wppa-photo-admin-autosave.php:280
+#, fuzzy
+msgid "Featured"
+msgstr "機能:"
+
+#: wppa-photo-admin-autosave.php:288
+msgid ""
+"Note: Featured photos should have a descriptive name; a name a search engine "
+"will look for!"
+msgstr ""
+
+#: wppa-photo-admin-autosave.php:295
+#, fuzzy
+msgid "Watermark:"
+msgstr "カバーフォト:"
+
+#: wppa-photo-admin-autosave.php:301 wppa-photo-admin-autosave.php:314
+msgid "File:"
+msgstr ""
+
+#: wppa-photo-admin-autosave.php:306 wppa-photo-admin-autosave.php:314
+msgid "Pos:"
+msgstr ""
+
+#: wppa-photo-admin-autosave.php:310 wppa-photo-admin-autosave.php:315
+#, fuzzy
+msgid "Apply watermark"
+msgstr "写真のアップロード"
+
+#: wppa-photo-admin-autosave.php:310 wppa-photo-admin-autosave.php:315
+msgid ""
+"Are you sure?\\n\\nOnce applied it can not be removed!\\nAnd I do not know "
+"if there is already a watermark on this photo"
+msgstr ""
+
+#: wppa-photo-admin-autosave.php:321
+msgid "Not configured"
+msgstr ""
+
+#: wppa-photo-admin-autosave.php:329
+msgid "Remark:"
+msgstr ""
+
+#: wppa-photo-admin-autosave.php:332
+#, php-format
+msgid "Photo %s is not modified yet"
+msgstr ""
+
+#: wppa-photo-admin-autosave.php:378 wppa-photo-admin-autosave.php:388
+msgid "Trash"
+msgstr ""
+
 #: wppa-potd-widget.php:13
 msgid "WPPA+ Photo Of The Day"
 msgstr "フォトアルバムの本日の写真"
@@ -2912,8 +2935,8 @@ msgstr "ボトム"
 msgid "action that causes page reload."
 msgstr ""
 
-#: wppa-settings-autosave.php:189 wppa-settings-autosave.php:3914
-#: wppa-settings-autosave.php:3924
+#: wppa-settings-autosave.php:189 wppa-settings-autosave.php:3922
+#: wppa-settings-autosave.php:3932
 #, fuzzy
 msgid "Are you sure?"
 msgstr "本当にこの写真をコピーしますか？"
@@ -2922,11 +2945,11 @@ msgstr "本当にこの写真をコピーしますか？"
 msgid "action that does not cause page reload."
 msgstr ""
 
-#: wppa-settings-autosave.php:192 wppa-settings-autosave.php:3219
-#: wppa-settings-autosave.php:3221 wppa-settings-autosave.php:3732
-#: wppa-settings-autosave.php:3746 wppa-settings-autosave.php:3771
-#: wppa-settings-autosave.php:3784 wppa-settings-autosave.php:3800
-#: wppa-settings-autosave.php:3837 wppa-settings-autosave.php:3867
+#: wppa-settings-autosave.php:192 wppa-settings-autosave.php:3227
+#: wppa-settings-autosave.php:3229 wppa-settings-autosave.php:3740
+#: wppa-settings-autosave.php:3754 wppa-settings-autosave.php:3779
+#: wppa-settings-autosave.php:3792 wppa-settings-autosave.php:3808
+#: wppa-settings-autosave.php:3845 wppa-settings-autosave.php:3875
 msgid "Setting unmodified"
 msgstr ""
 
@@ -2967,8 +2990,8 @@ msgstr ""
 #: wppa-settings-autosave.php:223 wppa-settings-autosave.php:690
 #: wppa-settings-autosave.php:711 wppa-settings-autosave.php:1359
 #: wppa-settings-autosave.php:1574 wppa-settings-autosave.php:2020
-#: wppa-settings-autosave.php:2799 wppa-settings-autosave.php:2977
-#: wppa-settings-autosave.php:3397
+#: wppa-settings-autosave.php:2807 wppa-settings-autosave.php:2985
+#: wppa-settings-autosave.php:3405
 #, fuzzy
 msgid "Setting"
 msgstr "設定"
@@ -2979,11 +3002,11 @@ msgstr "設定"
 #: wppa-settings-autosave.php:1575 wppa-settings-autosave.php:2021
 #: wppa-settings-autosave.php:2045 wppa-settings-autosave.php:2203
 #: wppa-settings-autosave.php:2227 wppa-settings-autosave.php:2650
-#: wppa-settings-autosave.php:2800 wppa-settings-autosave.php:2822
-#: wppa-settings-autosave.php:2957 wppa-settings-autosave.php:2978
-#: wppa-settings-autosave.php:3398 wppa-settings-autosave.php:3420
-#: wppa-settings-autosave.php:3458 wppa-settings-autosave.php:3480
-#: wppa-settings-autosave.php:3518
+#: wppa-settings-autosave.php:2808 wppa-settings-autosave.php:2830
+#: wppa-settings-autosave.php:2965 wppa-settings-autosave.php:2986
+#: wppa-settings-autosave.php:3406 wppa-settings-autosave.php:3428
+#: wppa-settings-autosave.php:3466 wppa-settings-autosave.php:3488
+#: wppa-settings-autosave.php:3526
 msgid "Help"
 msgstr ""
 
@@ -3087,7 +3110,7 @@ msgstr ""
 #: wppa-settings-autosave.php:2111 wppa-settings-autosave.php:2126
 #: wppa-settings-autosave.php:2141 wppa-settings-autosave.php:2156
 #: wppa-settings-autosave.php:2171 wppa-settings-autosave.php:2186
-#: wppa-settings-autosave.php:3372
+#: wppa-settings-autosave.php:3380
 #, fuzzy
 msgid "pixels"
 msgstr "ピクセル"
@@ -3775,7 +3798,7 @@ msgid "Enter the maximum number of rated photos in the TopTen widget."
 msgstr "トップ10ウィジェットに表示する写真の最大数を入力してください。"
 
 #: wppa-settings-autosave.php:588 wppa-settings-autosave.php:620
-#: wppa-settings-autosave.php:636 wppa-settings-autosave.php:3115
+#: wppa-settings-autosave.php:636 wppa-settings-autosave.php:3123
 msgid "photos"
 msgstr "写真"
 
@@ -4965,7 +4988,7 @@ msgstr ""
 msgid "Overlay slide desc"
 msgstr ""
 
-#: wppa-settings-autosave.php:1244 wppa-settings-autosave.php:1260
+#: wppa-settings-autosave.php:1244
 #, fuzzy
 msgid "Show description if from slide."
 msgstr "説明:"
@@ -4999,6 +5022,11 @@ msgstr ""
 #: wppa-settings-autosave.php:1259
 msgid "Overlay thumb desc"
 msgstr ""
+
+#: wppa-settings-autosave.php:1260
+#, fuzzy
+msgid "Show description if from thumb."
+msgstr "説明:"
 
 #: wppa-settings-autosave.php:1261
 msgid ""
@@ -5304,8 +5332,8 @@ msgstr ""
 msgid "Enter valid CSS colors for comment box backgrounds and borders."
 msgstr "ナビゲーションの背景とボーダーのCSS色を入力してください。"
 
-#: wppa-settings-autosave.php:1464 wppa-settings-autosave.php:3249
-#: wppa-settings-autosave.php:3292
+#: wppa-settings-autosave.php:1464 wppa-settings-autosave.php:3257
+#: wppa-settings-autosave.php:3300
 #, fuzzy
 msgid "Custom"
 msgstr "カスタムリンク:"
@@ -5715,8 +5743,8 @@ msgid "This is the time it takes a photo to fade in or out."
 msgstr ""
 
 #: wppa-settings-autosave.php:1698 wppa-settings-autosave.php:2008
-#: wppa-settings-autosave.php:2786 wppa-settings-autosave.php:3081
-#: wppa-settings-autosave.php:3090
+#: wppa-settings-autosave.php:2794 wppa-settings-autosave.php:3089
+#: wppa-settings-autosave.php:3098
 msgid "--- off ---"
 msgstr "--- オフ ---"
 
@@ -6506,26 +6534,26 @@ msgstr ""
 #: wppa-settings-autosave.php:2238 wppa-settings-autosave.php:2255
 #: wppa-settings-autosave.php:2257 wppa-settings-autosave.php:2259
 #: wppa-settings-autosave.php:2261 wppa-settings-autosave.php:2553
-#: wppa-settings-autosave.php:3884
+#: wppa-settings-autosave.php:3892
 msgid "no link at all."
 msgstr "リンクなし。"
 
 #: wppa-settings-autosave.php:2239 wppa-settings-autosave.php:2255
 #: wppa-settings-autosave.php:2257 wppa-settings-autosave.php:2259
 #: wppa-settings-autosave.php:2261 wppa-settings-autosave.php:2553
-#: wppa-settings-autosave.php:3885
+#: wppa-settings-autosave.php:3893
 msgid "the plain photo (file)."
 msgstr ""
 
 #: wppa-settings-autosave.php:2240 wppa-settings-autosave.php:2255
 #: wppa-settings-autosave.php:2257 wppa-settings-autosave.php:2259
-#: wppa-settings-autosave.php:3886
+#: wppa-settings-autosave.php:3894
 msgid "the full size photo in a slideshow."
 msgstr "スライドショーのフルサイズフォト"
 
 #: wppa-settings-autosave.php:2241 wppa-settings-autosave.php:2255
 #: wppa-settings-autosave.php:2257 wppa-settings-autosave.php:2259
-#: wppa-settings-autosave.php:3887
+#: wppa-settings-autosave.php:3895
 msgid "the fullsize photo on its own."
 msgstr "フォト自身のフルサイズ"
 
@@ -6546,20 +6574,20 @@ msgid "lightbox."
 msgstr ""
 
 #: wppa-settings-autosave.php:2255 wppa-settings-autosave.php:2257
-#: wppa-settings-autosave.php:2259 wppa-settings-autosave.php:3889
+#: wppa-settings-autosave.php:2259 wppa-settings-autosave.php:3897
 #, fuzzy
 msgid "the content of the album."
 msgstr "アルバムの内容をサムネイルで"
 
-#: wppa-settings-autosave.php:2257 wppa-settings-autosave.php:3890
+#: wppa-settings-autosave.php:2257 wppa-settings-autosave.php:3898
 msgid "defined at widget activation."
 msgstr ""
 
-#: wppa-settings-autosave.php:2259 wppa-settings-autosave.php:3891
+#: wppa-settings-autosave.php:2259 wppa-settings-autosave.php:3899
 msgid "defined on widget admin page."
 msgstr ""
 
-#: wppa-settings-autosave.php:2261 wppa-settings-autosave.php:3892
+#: wppa-settings-autosave.php:2261 wppa-settings-autosave.php:3900
 msgid "same as title."
 msgstr ""
 
@@ -6917,35 +6945,15 @@ msgstr ""
 
 #: wppa-settings-autosave.php:2720
 #, fuzzy
-msgid "User upload login"
-msgstr "最新の写真"
-
-#: wppa-settings-autosave.php:2721
-#, fuzzy
-msgid "Users must be logged in to be able to upload."
-msgstr "写真の投票にはログインが必須。"
-
-#: wppa-settings-autosave.php:2722
-msgid "If you uncheck this box, make sure you check the next 3 items."
-msgstr ""
-
-#: wppa-settings-autosave.php:2723
-msgid ""
-"Set the owner to ---public--- of the albums that are allowed to be uploaded "
-"to."
-msgstr ""
-
-#: wppa-settings-autosave.php:2728
-#, fuzzy
 msgid "Owners only"
 msgstr "所有者"
 
-#: wppa-settings-autosave.php:2729
+#: wppa-settings-autosave.php:2721
 #, fuzzy
 msgid "Limit album access to the album owners only."
 msgstr "アルバムアクセス権をアルバム所有者に限定する。"
 
-#: wppa-settings-autosave.php:2730
+#: wppa-settings-autosave.php:2722
 #, fuzzy
 msgid ""
 "If checked, users who can edit albums and/or upload/import photos can do "
@@ -6954,7 +6962,7 @@ msgstr ""
 "チェックすると、アルバムの編集や写真のアップロード／インポートが許可されてい"
 "るユーザに対し、そのような操作を自分の所有するアルバムに限定します。"
 
-#: wppa-settings-autosave.php:2731
+#: wppa-settings-autosave.php:2723
 msgid ""
 "Users can give their albums to another user. Administrators can change "
 "ownership and access all albums always."
@@ -6962,21 +6970,41 @@ msgstr ""
 "ユーザは他のユーザにアルバムを渡すことができます。管理者は所有権を変更するこ"
 "とができるほか、いつでも全てのアルバムにアクセスできます。"
 
-#: wppa-settings-autosave.php:2736
+#: wppa-settings-autosave.php:2728
 #, fuzzy
 msgid "User upload"
 msgstr "最新の写真"
 
-#: wppa-settings-autosave.php:2737
+#: wppa-settings-autosave.php:2729
 #, fuzzy
 msgid "Enable visitors to upload photos."
 msgstr "写真をアップロードしてください。"
 
-#: wppa-settings-autosave.php:2738
+#: wppa-settings-autosave.php:2730
 msgid ""
 "If you check this item, visitors who are logged in and have wppa+ upload "
 "rights and have access to the album will see an upload photo link on album "
 "covers and thumbnail displays."
+msgstr ""
+
+#: wppa-settings-autosave.php:2736
+#, fuzzy
+msgid "User upload login"
+msgstr "最新の写真"
+
+#: wppa-settings-autosave.php:2737
+#, fuzzy
+msgid "Users must be logged in to be able to upload."
+msgstr "写真の投票にはログインが必須。"
+
+#: wppa-settings-autosave.php:2738
+msgid "If you uncheck this box, make sure you check the next 3 items."
+msgstr ""
+
+#: wppa-settings-autosave.php:2739
+msgid ""
+"Set the owner to ---public--- of the albums that are allowed to be uploaded "
+"to."
 msgstr ""
 
 #: wppa-settings-autosave.php:2744
@@ -7006,296 +7034,315 @@ msgstr ""
 
 #: wppa-settings-autosave.php:2753
 #, fuzzy
-msgid "Upload notify"
+msgid "Uploader Edit"
 msgstr "写真のアップロード"
 
 #: wppa-settings-autosave.php:2754
-msgid "Notify admin at frontend upload."
+msgid "Allow the uploader to edit the photo info"
 msgstr ""
 
 #: wppa-settings-autosave.php:2755
+msgid ""
+"If checked, any logged in user that has upload rights and uploads an image "
+"has the capability to edit the photo information."
+msgstr ""
+
+#: wppa-settings-autosave.php:2756
+msgid "Note: This may be AFTER moderation!!"
+msgstr ""
+
+#: wppa-settings-autosave.php:2761
+#, fuzzy
+msgid "Upload notify"
+msgstr "写真のアップロード"
+
+#: wppa-settings-autosave.php:2762
+msgid "Notify admin at frontend upload."
+msgstr ""
+
+#: wppa-settings-autosave.php:2763
 msgid "If checked, admin will receive a notification by email."
 msgstr ""
 
-#: wppa-settings-autosave.php:2760
+#: wppa-settings-autosave.php:2768
 msgid "Upload memory check frontend"
 msgstr ""
 
-#: wppa-settings-autosave.php:2761 wppa-settings-autosave.php:2768
+#: wppa-settings-autosave.php:2769 wppa-settings-autosave.php:2776
 msgid "Disable uploading photos that are too large."
 msgstr ""
 
-#: wppa-settings-autosave.php:2762 wppa-settings-autosave.php:2769
+#: wppa-settings-autosave.php:2770 wppa-settings-autosave.php:2777
 msgid ""
 "To prevent out of memory crashes during upload and possible database "
 "inconsistencies, uploads can be prevented if the photos are too big."
 msgstr ""
 
-#: wppa-settings-autosave.php:2767
+#: wppa-settings-autosave.php:2775
 #, fuzzy
 msgid "Upload memory check admin"
 msgstr "投票オプション:"
 
-#: wppa-settings-autosave.php:2774
+#: wppa-settings-autosave.php:2782
 #, fuzzy
 msgid "Comment captcha"
 msgstr "1件のコメント"
 
-#: wppa-settings-autosave.php:2775
+#: wppa-settings-autosave.php:2783
 msgid "Use a simple calculate captcha on comments form."
 msgstr ""
 
-#: wppa-settings-autosave.php:2782
+#: wppa-settings-autosave.php:2790
 msgid "Spam lifetime"
 msgstr ""
 
-#: wppa-settings-autosave.php:2783
+#: wppa-settings-autosave.php:2791
 msgid "Delete spam comments when older than."
 msgstr ""
 
-#: wppa-settings-autosave.php:2786
+#: wppa-settings-autosave.php:2794
 msgid "10 minutes"
 msgstr ""
 
-#: wppa-settings-autosave.php:2786
+#: wppa-settings-autosave.php:2794
 #, fuzzy
 msgid "half an hour"
 msgstr "時。"
 
-#: wppa-settings-autosave.php:2786
+#: wppa-settings-autosave.php:2794
 #, fuzzy
 msgid "one hour"
 msgstr "時。"
 
-#: wppa-settings-autosave.php:2786
+#: wppa-settings-autosave.php:2794
 #, fuzzy
 msgid "one day"
 msgstr "日。"
 
-#: wppa-settings-autosave.php:2786
+#: wppa-settings-autosave.php:2794
 #, fuzzy
 msgid "one week"
 msgstr "週。"
 
-#: wppa-settings-autosave.php:2809
+#: wppa-settings-autosave.php:2817
 msgid "Table VIII:"
 msgstr ""
 
-#: wppa-settings-autosave.php:2809
+#: wppa-settings-autosave.php:2817
 #, fuzzy
 msgid "Actions:"
 msgstr "説明:"
 
-#: wppa-settings-autosave.php:2810
+#: wppa-settings-autosave.php:2818
 msgid "This table lists all actions that can be taken to the wppa+ system"
 msgstr ""
 
-#: wppa-settings-autosave.php:2820 wppa-settings-autosave.php:2955
+#: wppa-settings-autosave.php:2828 wppa-settings-autosave.php:2963
 msgid "Specification"
 msgstr ""
 
-#: wppa-settings-autosave.php:2821 wppa-settings-autosave.php:2956
-#: wppa-settings-autosave.php:3907 wppa-settings-autosave.php:3920
+#: wppa-settings-autosave.php:2829 wppa-settings-autosave.php:2964
+#: wppa-settings-autosave.php:3915 wppa-settings-autosave.php:3928
 msgid "Do it!"
 msgstr ""
 
-#: wppa-settings-autosave.php:2829
+#: wppa-settings-autosave.php:2837
 msgid "Harmless and reverseable actions"
 msgstr ""
 
-#: wppa-settings-autosave.php:2831
+#: wppa-settings-autosave.php:2839
 msgid "Setup"
 msgstr ""
 
-#: wppa-settings-autosave.php:2832
+#: wppa-settings-autosave.php:2840
 msgid "Re-initialize plugin."
 msgstr ""
 
-#: wppa-settings-autosave.php:2833
+#: wppa-settings-autosave.php:2841
 msgid ""
 "Re-initilizes the plugin, (re)creates database tables and sets up default "
 "settings and directories if required."
 msgstr ""
 
-#: wppa-settings-autosave.php:2834
+#: wppa-settings-autosave.php:2842
 msgid ""
 "This action may be required to setup blogs in a multiblog (network) site as "
 "well as in rare cases to correct initilization errors."
 msgstr ""
 
-#: wppa-settings-autosave.php:2841
+#: wppa-settings-autosave.php:2849
 #, fuzzy
 msgid "Backup settings"
 msgstr "アクセス権の設定"
 
-#: wppa-settings-autosave.php:2842
+#: wppa-settings-autosave.php:2850
 msgid "Save all settings into a backup file."
 msgstr ""
 
-#: wppa-settings-autosave.php:2843
+#: wppa-settings-autosave.php:2851
 msgid "Saves all the settings into a backup file"
 msgstr ""
 
-#: wppa-settings-autosave.php:2850
+#: wppa-settings-autosave.php:2858
 #, fuzzy
 msgid "Load settings"
 msgstr "アクセス権の設定"
 
-#: wppa-settings-autosave.php:2851
+#: wppa-settings-autosave.php:2859
 msgid "Restore all settings from defaults, a backup or skin file."
 msgstr ""
 
-#: wppa-settings-autosave.php:2852
+#: wppa-settings-autosave.php:2860
 msgid ""
 "Restores all the settings from the factory supplied defaults, the backup you "
 "created or from a skin file."
 msgstr ""
 
-#: wppa-settings-autosave.php:2859
+#: wppa-settings-autosave.php:2867
 #, fuzzy
 msgid "--- set to defaults ---"
 msgstr "--- デフォルト ---"
 
-#: wppa-settings-autosave.php:2862
+#: wppa-settings-autosave.php:2870
 msgid "--- restore backup ---"
 msgstr ""
 
-#: wppa-settings-autosave.php:2880
+#: wppa-settings-autosave.php:2888
 msgid "Regenerate"
 msgstr ""
 
-#: wppa-settings-autosave.php:2881 wppa-settings-autosave.php:2882
+#: wppa-settings-autosave.php:2889 wppa-settings-autosave.php:2890
 #, fuzzy
 msgid "Regenerate all thumbnails."
 msgstr "サムネイル画像再生成の準備完了"
 
-#: wppa-settings-autosave.php:2889
+#: wppa-settings-autosave.php:2897
 #, fuzzy
 msgid "Rerate"
 msgstr "FTP などで「"
 
-#: wppa-settings-autosave.php:2890
+#: wppa-settings-autosave.php:2898
 #, fuzzy
 msgid "Recalculate ratings."
 msgstr "全投票のリセット:"
 
-#: wppa-settings-autosave.php:2891
+#: wppa-settings-autosave.php:2899
 msgid ""
 "This function will recalculate all mean photo ratings from the ratings table."
 msgstr ""
 
-#: wppa-settings-autosave.php:2892
+#: wppa-settings-autosave.php:2900
 msgid ""
 "You may need this function after the re-import of previously exported photos"
 msgstr ""
 
-#: wppa-settings-autosave.php:2899
+#: wppa-settings-autosave.php:2907
 msgid "Cleanup"
 msgstr ""
 
-#: wppa-settings-autosave.php:2900
+#: wppa-settings-autosave.php:2908
 msgid "Fix and secure WPPA+ system consistency"
 msgstr ""
 
-#: wppa-settings-autosave.php:2901
+#: wppa-settings-autosave.php:2909
 msgid ""
 "This function will cleanup incomplete db entries and recover lost photos."
 msgstr ""
 
-#: wppa-settings-autosave.php:2908
+#: wppa-settings-autosave.php:2916
 #, fuzzy
 msgid "Recuperate"
 msgstr "FTP などで「"
 
-#: wppa-settings-autosave.php:2910
+#: wppa-settings-autosave.php:2918
 msgid ""
 "This action will attempt to find and register IPTC and EXIF data from photos "
 "in the WPPA+ system."
 msgstr ""
 
-#: wppa-settings-autosave.php:2911
+#: wppa-settings-autosave.php:2919
 msgid ""
 "WARNING: Photos that have been downzised during upload/import will have NO "
 "IPTC and/or EXIF data."
 msgstr ""
 
-#: wppa-settings-autosave.php:2912
+#: wppa-settings-autosave.php:2920
 msgid ""
 "If you want that data, you will have to re-import the original files. Use "
 "the update switch. You may resize them again."
 msgstr ""
 
-#: wppa-settings-autosave.php:2919
+#: wppa-settings-autosave.php:2927
 msgid "Clearing and other irreverseable actions"
 msgstr ""
 
-#: wppa-settings-autosave.php:2921
+#: wppa-settings-autosave.php:2929
 #, fuzzy
 msgid "Clear ratings"
 msgstr "投票をクリアできません"
 
-#: wppa-settings-autosave.php:2922
+#: wppa-settings-autosave.php:2930
 #, fuzzy
 msgid "Reset all ratings."
 msgstr "全投票のリセット:"
 
-#: wppa-settings-autosave.php:2923
+#: wppa-settings-autosave.php:2931
 msgid "WARNING: If checked, this will clear all ratings in the system!"
 msgstr "警告: チェックすると全ての投票結果が消去されます！"
 
-#: wppa-settings-autosave.php:2930
+#: wppa-settings-autosave.php:2938
 msgid "Reset IPTC"
 msgstr ""
 
-#: wppa-settings-autosave.php:2931
-msgid "Clear all IPTC data."
-msgstr ""
-
-#: wppa-settings-autosave.php:2932
-#, fuzzy
-msgid "WARNING: If checked, this will clear all IPTC data in the system!"
-msgstr "警告: チェックすると全ての投票結果が消去されます！"
-
 #: wppa-settings-autosave.php:2939
-msgid "Reset EXIF"
+msgid "Clear all IPTC data."
 msgstr ""
 
 #: wppa-settings-autosave.php:2940
 #, fuzzy
+msgid "WARNING: If checked, this will clear all IPTC data in the system!"
+msgstr "警告: チェックすると全ての投票結果が消去されます！"
+
+#: wppa-settings-autosave.php:2947
+msgid "Reset EXIF"
+msgstr ""
+
+#: wppa-settings-autosave.php:2948
+#, fuzzy
 msgid "Clear all EXIF data."
 msgstr "全投票のリセット:"
 
-#: wppa-settings-autosave.php:2941
+#: wppa-settings-autosave.php:2949
 #, fuzzy
 msgid "WARNING: If checked, this will clear all EXIF data in the system!"
 msgstr "警告: チェックすると全ての投票結果が消去されます！"
 
-#: wppa-settings-autosave.php:2966
+#: wppa-settings-autosave.php:2974
 msgid "Table IX:"
 msgstr ""
 
-#: wppa-settings-autosave.php:2966
+#: wppa-settings-autosave.php:2974
 msgid "Miscellaneous:"
 msgstr "その他:"
 
-#: wppa-settings-autosave.php:2967
+#: wppa-settings-autosave.php:2975
 msgid "This table lists all settings that do not fit into an other table"
 msgstr ""
 
-#: wppa-settings-autosave.php:2985
+#: wppa-settings-autosave.php:2993
 msgid "WPPA+ System related miscellaneous settings"
 msgstr ""
 
-#: wppa-settings-autosave.php:2987
+#: wppa-settings-autosave.php:2995
 msgid "Allow HTML"
 msgstr ""
 
-#: wppa-settings-autosave.php:2988
+#: wppa-settings-autosave.php:2996
 #, fuzzy
 msgid "Allow HTML in album and photo descriptions."
 msgstr "アルバムおよび写真の説明でのHTMLの使用:"
 
-#: wppa-settings-autosave.php:2989
+#: wppa-settings-autosave.php:2997
 msgid ""
 "If checked: html is allowed. WARNING: No checks on syntax, it is your own "
 "responsability to close tags properly!"
@@ -7303,285 +7350,285 @@ msgstr ""
 "チェックするとHTMLが使用できます。注意: 構文チェックは行いません。タグの閉じ"
 "忘れは自己責任になります！"
 
-#: wppa-settings-autosave.php:2994
+#: wppa-settings-autosave.php:3002
 msgid "Check tag balance"
 msgstr ""
 
-#: wppa-settings-autosave.php:2995
+#: wppa-settings-autosave.php:3003
 msgid "Check if the HTML tags are properly closed: \"balanced\"."
 msgstr ""
 
-#: wppa-settings-autosave.php:2996
+#: wppa-settings-autosave.php:3004
 msgid ""
 "If the HTML tags in an album or a photo description are not in balance, the "
 "description is not updated, an errormessage is displayed"
 msgstr ""
 
-#: wppa-settings-autosave.php:3001
+#: wppa-settings-autosave.php:3009
 msgid "Allow WPPA+ Debugging"
 msgstr ""
 
-#: wppa-settings-autosave.php:3002
+#: wppa-settings-autosave.php:3010
 msgid "Allow the use of &amp;debug=.. in urls to this site."
 msgstr ""
 
-#: wppa-settings-autosave.php:3003
+#: wppa-settings-autosave.php:3011
 msgid ""
 "If checked: appending (?)(&)debug or (?)(&)debug=<int> to an url to this "
 "site will generate the display of special WPPA+ diagnostics, as well as php "
 "warnings"
 msgstr ""
 
-#: wppa-settings-autosave.php:3008
+#: wppa-settings-autosave.php:3016
 msgid "Autoclean"
 msgstr ""
 
-#: wppa-settings-autosave.php:3009
+#: wppa-settings-autosave.php:3017
 msgid "Auto cleanup invalid database entries."
 msgstr ""
 
-#: wppa-settings-autosave.php:3010
+#: wppa-settings-autosave.php:3018
 msgid ""
 "If checked, the database consistency will be automaticly secured after an "
 "interrupted upload or import procedure."
 msgstr ""
 
-#: wppa-settings-autosave.php:3015
+#: wppa-settings-autosave.php:3023
 msgid "WPPA+ Filter priority"
 msgstr ""
 
-#: wppa-settings-autosave.php:3016
+#: wppa-settings-autosave.php:3024
 msgid "Sets the priority of the wppa+ content filter."
 msgstr ""
 
-#: wppa-settings-autosave.php:3017
+#: wppa-settings-autosave.php:3025
 msgid ""
 "If you encounter conflicts with the theme or other plugins, increasing this "
 "value sometimes helps. Use with great care!"
 msgstr ""
 
-#: wppa-settings-autosave.php:3022
+#: wppa-settings-autosave.php:3030
 #, fuzzy
 msgid "Lightbox keyname"
 msgstr "右 "
 
-#: wppa-settings-autosave.php:3023
+#: wppa-settings-autosave.php:3031
 msgid "The identifier of lightbox."
 msgstr ""
 
-#: wppa-settings-autosave.php:3024
+#: wppa-settings-autosave.php:3032
 msgid ""
 "If you use a lightbox plugin that uses rel=\"lbox-id\" you can enter the "
 "lbox-id here."
 msgstr ""
 
-#: wppa-settings-autosave.php:3030
+#: wppa-settings-autosave.php:3038
 msgid "Foreign shortcodes"
 msgstr ""
 
-#: wppa-settings-autosave.php:3031
+#: wppa-settings-autosave.php:3039
 #, fuzzy
 msgid "Enable the use of non-wppa+ shortcodes in fullsize photo descriptions."
 msgstr "フルサイズの写真の説明のフォント:"
 
-#: wppa-settings-autosave.php:3032
+#: wppa-settings-autosave.php:3040
 msgid ""
 "When checked, you can use shortcodes from other plugins in the description "
 "of photos."
 msgstr ""
 
-#: wppa-settings-autosave.php:3033
+#: wppa-settings-autosave.php:3041
 #, fuzzy
 msgid "The shortcodes will be expanded in the descriptions of fullsize images."
 msgstr ""
 "チェックすると、名称や説明がフルサイズ画像とスライドショーの下に表示されま"
 "す。"
 
-#: wppa-settings-autosave.php:3034
+#: wppa-settings-autosave.php:3042
 msgid "You will most likely need also to check Table IX-A1 (Allow HTML)."
 msgstr ""
 
-#: wppa-settings-autosave.php:3039
+#: wppa-settings-autosave.php:3047
 msgid "Arrow color"
 msgstr ""
 
-#: wppa-settings-autosave.php:3040
+#: wppa-settings-autosave.php:3048
 #, fuzzy
 msgid "Left/right browsing arrow color."
 msgstr "左右の矢印の色:"
 
-#: wppa-settings-autosave.php:3041
+#: wppa-settings-autosave.php:3049
 msgid "Enter the color of the navigation arrows."
 msgstr "ナビゲーション用矢印の色を入力してください。"
 
-#: wppa-settings-autosave.php:3046
+#: wppa-settings-autosave.php:3054
 #, fuzzy
 msgid "Meta on page"
 msgstr "次のページ"
 
-#: wppa-settings-autosave.php:3047
+#: wppa-settings-autosave.php:3055
 #, fuzzy
 msgid "Meta tags for photos on the page."
 msgstr "写真を検索する"
 
-#: wppa-settings-autosave.php:3048
+#: wppa-settings-autosave.php:3056
 msgid ""
 "If checked, the header of the page will contain metatags that refer to "
 "featured photos on the page in the page context."
 msgstr ""
 
-#: wppa-settings-autosave.php:3053
+#: wppa-settings-autosave.php:3061
 #, fuzzy
 msgid "Meta all"
 msgstr "平均値:"
 
-#: wppa-settings-autosave.php:3054
+#: wppa-settings-autosave.php:3062
 msgid "Meta tags for all featured photos."
 msgstr ""
 
-#: wppa-settings-autosave.php:3055
+#: wppa-settings-autosave.php:3063
 msgid ""
 "If checked, the header of the page will contain metatags that refer to all "
 "featured photo files."
 msgstr ""
 
-#: wppa-settings-autosave.php:3056
+#: wppa-settings-autosave.php:3064
 msgid ""
 "If you have many featured photos, you might wish to uncheck this item to "
 "reduce the size of the page header."
 msgstr ""
 
-#: wppa-settings-autosave.php:3061
+#: wppa-settings-autosave.php:3069
 msgid "Use WP editor"
 msgstr ""
 
-#: wppa-settings-autosave.php:3062
+#: wppa-settings-autosave.php:3070
 msgid "Use the wp editor for multiline text fields."
 msgstr ""
 
-#: wppa-settings-autosave.php:3068
+#: wppa-settings-autosave.php:3076
 msgid "Album sel hierarchic"
 msgstr ""
 
-#: wppa-settings-autosave.php:3069
+#: wppa-settings-autosave.php:3077
 msgid "Show albums with (grand)parents in selection lists."
 msgstr ""
 
-#: wppa-settings-autosave.php:3075
+#: wppa-settings-autosave.php:3083
 msgid "New Album and New Photo related miscellaneous settings"
 msgstr ""
 
-#: wppa-settings-autosave.php:3078
+#: wppa-settings-autosave.php:3086
 msgid "Maximum time an album is indicated as New!"
 msgstr ""
 
-#: wppa-settings-autosave.php:3081 wppa-settings-autosave.php:3090
+#: wppa-settings-autosave.php:3089 wppa-settings-autosave.php:3098
 #, fuzzy
 msgid "One hour"
 msgstr "時。"
 
-#: wppa-settings-autosave.php:3081 wppa-settings-autosave.php:3090
+#: wppa-settings-autosave.php:3089 wppa-settings-autosave.php:3098
 #, fuzzy
 msgid "One day"
 msgstr "日。"
 
-#: wppa-settings-autosave.php:3081 wppa-settings-autosave.php:3090
+#: wppa-settings-autosave.php:3089 wppa-settings-autosave.php:3098
 #, fuzzy
 msgid "One week"
 msgstr "週。"
 
-#: wppa-settings-autosave.php:3081 wppa-settings-autosave.php:3090
+#: wppa-settings-autosave.php:3089 wppa-settings-autosave.php:3098
 #, fuzzy
 msgid "One month"
 msgstr "1件のコメント"
 
-#: wppa-settings-autosave.php:3086
+#: wppa-settings-autosave.php:3094
 #, fuzzy
 msgid "New Photo"
 msgstr "写真"
 
-#: wppa-settings-autosave.php:3087
+#: wppa-settings-autosave.php:3095
 msgid "Maximum time a photo is indicated as New!"
 msgstr ""
 
-#: wppa-settings-autosave.php:3095
+#: wppa-settings-autosave.php:3103
 msgid "Apply Newphoto desc"
 msgstr ""
 
-#: wppa-settings-autosave.php:3096
+#: wppa-settings-autosave.php:3104
 msgid "Give each new photo a standard description."
 msgstr ""
 
-#: wppa-settings-autosave.php:3097
+#: wppa-settings-autosave.php:3105
 msgid ""
 "If checked, each new photo will get the description (template) as specified "
 "in the next item."
 msgstr ""
 
-#: wppa-settings-autosave.php:3102
+#: wppa-settings-autosave.php:3110
 #, fuzzy
 msgid "New photo desc"
 msgstr "写真"
 
-#: wppa-settings-autosave.php:3103
+#: wppa-settings-autosave.php:3111
 msgid "The description (template) to add to a new photo."
 msgstr ""
 
-#: wppa-settings-autosave.php:3104
+#: wppa-settings-autosave.php:3112
 #, fuzzy
 msgid "Enter the default description."
 msgstr "このアルバムの説明を入力してください。"
 
-#: wppa-settings-autosave.php:3105
+#: wppa-settings-autosave.php:3113
 msgid "If you use html, please check item A-1 of this table."
 msgstr ""
 
-#: wppa-settings-autosave.php:3111
+#: wppa-settings-autosave.php:3119
 msgid "New albums are created with this upload limit."
 msgstr ""
 
-#: wppa-settings-autosave.php:3112
+#: wppa-settings-autosave.php:3120
 msgid ""
 "Administrators can change the limit settings in the \"Edit Album Information"
 "\" admin page."
 msgstr ""
 
-#: wppa-settings-autosave.php:3113
+#: wppa-settings-autosave.php:3121
 msgid "A value of 0 means: no limit."
-msgstr ""
-
-#: wppa-settings-autosave.php:3127
-#, fuzzy
-msgid "Grant an album"
-msgstr "親アルバム:"
-
-#: wppa-settings-autosave.php:3128
-msgid "Create an album for each user logging in."
-msgstr ""
-
-#: wppa-settings-autosave.php:3134
-msgid "Grant parent"
 msgstr ""
 
 #: wppa-settings-autosave.php:3135
 #, fuzzy
+msgid "Grant an album"
+msgstr "親アルバム:"
+
+#: wppa-settings-autosave.php:3136
+msgid "Create an album for each user logging in."
+msgstr ""
+
+#: wppa-settings-autosave.php:3142
+msgid "Grant parent"
+msgstr ""
+
+#: wppa-settings-autosave.php:3143
+#, fuzzy
 msgid "The parent album of the auto created albums."
 msgstr "- アルバムの選択 -"
 
-#: wppa-settings-autosave.php:3150
+#: wppa-settings-autosave.php:3158
 msgid "Search Albums and Photos related settings"
 msgstr ""
 
-#: wppa-settings-autosave.php:3152
+#: wppa-settings-autosave.php:3160
 #, fuzzy
 msgid "Search page"
 msgstr "検索ページ:"
 
-#: wppa-settings-autosave.php:3153
+#: wppa-settings-autosave.php:3161
 msgid "Display the search results on page."
 msgstr ""
 
-#: wppa-settings-autosave.php:3154
+#: wppa-settings-autosave.php:3162
 #, fuzzy, php-format
 msgid ""
 "Select the page to be used to display search results. The page MUST contain "
@@ -7590,28 +7637,28 @@ msgstr ""
 "検索結果の表示に使用するページを選択してください。ページには %%wppa%% と記入"
 "されていなければなりません。"
 
-#: wppa-settings-autosave.php:3155
+#: wppa-settings-autosave.php:3163
 msgid "You may give it the title \"Search results\" or something alike."
 msgstr ""
 "ページのタイトルは「検索結果」などわかりやすいものにすることができます。"
 
-#: wppa-settings-autosave.php:3156
+#: wppa-settings-autosave.php:3164
 msgid ""
 "Or you ou may use the standard page on which you display the generic album."
 msgstr ""
 "あるいは、アルバムを表示する基本のページをそのまま利用しても構いません。"
 
-#: wppa-settings-autosave.php:3179
+#: wppa-settings-autosave.php:3187
 #, fuzzy
 msgid "Exclude separate"
 msgstr "セパレートの除外:"
 
-#: wppa-settings-autosave.php:3180
+#: wppa-settings-autosave.php:3188
 #, fuzzy
 msgid "Do not search 'separate' albums."
 msgstr "アルバムが作成できません。"
 
-#: wppa-settings-autosave.php:3181
+#: wppa-settings-autosave.php:3189
 msgid ""
 "When checked, albums (and photos in them) that have the parent set to --- "
 "separate --- will be excluded from being searched."
@@ -7619,49 +7666,49 @@ msgstr ""
 "チェックすると、「--- セパレート ---」にセットした親を持つアルバム（およびア"
 "ルバムに含まれている写真）を検索対象から外します。"
 
-#: wppa-settings-autosave.php:3186
+#: wppa-settings-autosave.php:3194
 #, fuzzy
 msgid "Photos only"
 msgstr "ポートレイトのみ:"
 
-#: wppa-settings-autosave.php:3187
+#: wppa-settings-autosave.php:3195
 #, fuzzy
 msgid "Search for photos only."
 msgstr "写真を検索する"
 
-#: wppa-settings-autosave.php:3188
+#: wppa-settings-autosave.php:3196
 #, fuzzy
 msgid "When checked, only photos will be searched for."
 msgstr "チェックすると写真の投票システムが有効になります。"
 
-#: wppa-settings-autosave.php:3193
+#: wppa-settings-autosave.php:3201
 #, fuzzy
 msgid "Watermark related settings"
 msgstr "一般設定:"
 
-#: wppa-settings-autosave.php:3195
+#: wppa-settings-autosave.php:3203
 msgid "Watermark"
 msgstr ""
 
-#: wppa-settings-autosave.php:3196
+#: wppa-settings-autosave.php:3204
 #, fuzzy
 msgid "Enable the application of watermarks."
 msgstr "投票システムの有効化:"
 
-#: wppa-settings-autosave.php:3197
+#: wppa-settings-autosave.php:3205
 #, fuzzy
 msgid "If checked, photos can be watermarked during upload / import."
 msgstr "このアルバムでの写真の並べ方を指定してください。"
 
-#: wppa-settings-autosave.php:3203
+#: wppa-settings-autosave.php:3211
 msgid "User Watermark"
 msgstr ""
 
-#: wppa-settings-autosave.php:3204
+#: wppa-settings-autosave.php:3212
 msgid "Uploading users may select watermark settings"
 msgstr ""
 
-#: wppa-settings-autosave.php:3205
+#: wppa-settings-autosave.php:3213
 #, fuzzy
 msgid ""
 "If checked, anyone who can upload and/or import photos can overrule the "
@@ -7670,459 +7717,459 @@ msgstr ""
 "チェックすると、アルバムの編集や写真のアップロード／インポートが許可されてい"
 "るユーザに対し、そのような操作を自分の所有するアルバムに限定します。"
 
-#: wppa-settings-autosave.php:3211
+#: wppa-settings-autosave.php:3219
 msgid "Watermark file"
 msgstr ""
 
-#: wppa-settings-autosave.php:3212
+#: wppa-settings-autosave.php:3220
 msgid "The default watermarkfile to be used."
 msgstr ""
 
-#: wppa-settings-autosave.php:3213
+#: wppa-settings-autosave.php:3221
 msgid "Watermark files are of type png and reside in"
 msgstr ""
 
-#: wppa-settings-autosave.php:3214
+#: wppa-settings-autosave.php:3222
 msgid ""
 "A suitable watermarkfile typically consists of a transparent background and "
 "a black text or drawing."
 msgstr ""
 
-#: wppa-settings-autosave.php:3215
+#: wppa-settings-autosave.php:3223
 msgid "The watermark image will be overlaying the photo with 80% transparency."
 msgstr ""
 
-#: wppa-settings-autosave.php:3220
+#: wppa-settings-autosave.php:3228
 #, fuzzy
 msgid "position:"
 msgstr "説明:"
 
-#: wppa-settings-autosave.php:3224
+#: wppa-settings-autosave.php:3232
 #, fuzzy
 msgid "Upload watermark"
 msgstr "写真のアップロード"
 
-#: wppa-settings-autosave.php:3225
+#: wppa-settings-autosave.php:3233
 msgid "Upload a new watermark file"
 msgstr ""
 
-#: wppa-settings-autosave.php:3229
+#: wppa-settings-autosave.php:3237
 #, fuzzy
 msgid "Upload it!"
 msgstr "写真のアップロード"
 
-#: wppa-settings-autosave.php:3233
+#: wppa-settings-autosave.php:3241
 #, fuzzy
 msgid "You can set the intensity of watermarks here."
 msgstr "投票システムの有効化:"
 
-#: wppa-settings-autosave.php:3234
+#: wppa-settings-autosave.php:3242
 msgid ""
 "The higher the number, the intenser the watermark. Value must be > 0 and <= "
 "100."
 msgstr ""
 
-#: wppa-settings-autosave.php:3239
+#: wppa-settings-autosave.php:3247
 msgid "Slideshow elements sequence order settings"
 msgstr ""
 
-#: wppa-settings-autosave.php:3245 wppa-settings-autosave.php:3289
+#: wppa-settings-autosave.php:3253 wppa-settings-autosave.php:3297
 #, fuzzy
 msgid "StartStop"
 msgstr "開始"
 
-#: wppa-settings-autosave.php:3246 wppa-settings-autosave.php:3290
+#: wppa-settings-autosave.php:3254 wppa-settings-autosave.php:3298
 msgid "SlideFrame"
 msgstr ""
 
-#: wppa-settings-autosave.php:3248
+#: wppa-settings-autosave.php:3256
 #, fuzzy
 msgid "Desc"
 msgstr "名称"
 
-#: wppa-settings-autosave.php:3251 wppa-settings-autosave.php:3294
+#: wppa-settings-autosave.php:3259 wppa-settings-autosave.php:3302
 #, fuzzy
 msgid "FilmStrip"
 msgstr "フィルムストリップナビゲータ:"
 
-#: wppa-settings-autosave.php:3252 wppa-settings-autosave.php:3295
+#: wppa-settings-autosave.php:3260 wppa-settings-autosave.php:3303
 #, fuzzy
 msgid "Browsebar"
 msgstr "写真のブラウズバー"
 
-#: wppa-settings-autosave.php:3254 wppa-settings-autosave.php:3297
+#: wppa-settings-autosave.php:3262 wppa-settings-autosave.php:3305
 msgid "IPTC data"
 msgstr ""
 
-#: wppa-settings-autosave.php:3255 wppa-settings-autosave.php:3298
+#: wppa-settings-autosave.php:3263 wppa-settings-autosave.php:3306
 msgid "EXIF data"
 msgstr ""
 
-#: wppa-settings-autosave.php:3256 wppa-settings-autosave.php:3299
+#: wppa-settings-autosave.php:3264 wppa-settings-autosave.php:3307
 msgid "Share box"
 msgstr ""
 
-#: wppa-settings-autosave.php:3258 wppa-settings-autosave.php:3301
+#: wppa-settings-autosave.php:3266 wppa-settings-autosave.php:3309
 msgid "Enabled"
 msgstr ""
 
-#: wppa-settings-autosave.php:3259 wppa-settings-autosave.php:3302
+#: wppa-settings-autosave.php:3267 wppa-settings-autosave.php:3310
 msgid "Disabled"
 msgstr ""
 
-#: wppa-settings-autosave.php:3261 wppa-settings-autosave.php:3304
+#: wppa-settings-autosave.php:3269 wppa-settings-autosave.php:3312
 #, fuzzy
 msgid "Start/Stop & Slower/Faster navigation bar"
 msgstr "フィルムストリップナビゲータ:"
 
-#: wppa-settings-autosave.php:3262 wppa-settings-autosave.php:3305
+#: wppa-settings-autosave.php:3270 wppa-settings-autosave.php:3313
 msgid "The Slide Frame"
 msgstr ""
 
-#: wppa-settings-autosave.php:3262 wppa-settings-autosave.php:3305
+#: wppa-settings-autosave.php:3270 wppa-settings-autosave.php:3313
 msgid "( Always )"
 msgstr ""
 
-#: wppa-settings-autosave.php:3263
+#: wppa-settings-autosave.php:3271
 #, fuzzy
 msgid "Photo Name Box"
 msgstr "写真の名称"
 
-#: wppa-settings-autosave.php:3264
+#: wppa-settings-autosave.php:3272
 #, fuzzy
 msgid "Photo Description Box"
 msgstr "名称と説明:"
 
-#: wppa-settings-autosave.php:3265 wppa-settings-autosave.php:3307
+#: wppa-settings-autosave.php:3273 wppa-settings-autosave.php:3315
 #, fuzzy
 msgid "Custom Box"
 msgstr "カスタムリンク:"
 
-#: wppa-settings-autosave.php:3266 wppa-settings-autosave.php:3308
+#: wppa-settings-autosave.php:3274 wppa-settings-autosave.php:3316
 #, fuzzy
 msgid "Rating Bar"
 msgstr "投票"
 
-#: wppa-settings-autosave.php:3267 wppa-settings-autosave.php:3309
+#: wppa-settings-autosave.php:3275 wppa-settings-autosave.php:3317
 msgid "Film Strip with embedded Start/Stop and Goto functionality"
 msgstr ""
 
-#: wppa-settings-autosave.php:3268 wppa-settings-autosave.php:3310
+#: wppa-settings-autosave.php:3276 wppa-settings-autosave.php:3318
 msgid "Browse Bar with Photo X of Y counter"
 msgstr ""
 
-#: wppa-settings-autosave.php:3269 wppa-settings-autosave.php:3311
+#: wppa-settings-autosave.php:3277 wppa-settings-autosave.php:3319
 #, fuzzy
 msgid "Comments Box"
 msgstr "%件のコメント"
 
-#: wppa-settings-autosave.php:3270 wppa-settings-autosave.php:3312
+#: wppa-settings-autosave.php:3278 wppa-settings-autosave.php:3320
 msgid "IPTC box"
 msgstr ""
 
-#: wppa-settings-autosave.php:3271 wppa-settings-autosave.php:3313
+#: wppa-settings-autosave.php:3279 wppa-settings-autosave.php:3321
 msgid "EXIF box"
 msgstr ""
 
-#: wppa-settings-autosave.php:3272 wppa-settings-autosave.php:3314
+#: wppa-settings-autosave.php:3280 wppa-settings-autosave.php:3322
 msgid "Social media share box"
 msgstr ""
 
-#: wppa-settings-autosave.php:3278 wppa-settings-autosave.php:3320
+#: wppa-settings-autosave.php:3286 wppa-settings-autosave.php:3328
 #, fuzzy
 msgid "Move Up"
 msgstr "移動:"
 
-#: wppa-settings-autosave.php:3291
+#: wppa-settings-autosave.php:3299
 #, fuzzy
 msgid "NameDesc"
 msgstr "名称"
 
-#: wppa-settings-autosave.php:3306
+#: wppa-settings-autosave.php:3314
 #, fuzzy
 msgid "Photo Name & Description Box"
 msgstr "名称と説明:"
 
-#: wppa-settings-autosave.php:3328
+#: wppa-settings-autosave.php:3336
 #, fuzzy
 msgid "Swap Namedesc"
 msgstr "名称"
 
-#: wppa-settings-autosave.php:3329
+#: wppa-settings-autosave.php:3337
 msgid "Swap the order sequence of name and description"
 msgstr ""
 
-#: wppa-settings-autosave.php:3336
+#: wppa-settings-autosave.php:3344
 #, fuzzy
 msgid "Split Name and Desc"
 msgstr "名称"
 
-#: wppa-settings-autosave.php:3337
+#: wppa-settings-autosave.php:3345
 #, fuzzy
 msgid "Put Name and Description in separate boxes"
 msgstr "名称と説明:"
 
-#: wppa-settings-autosave.php:3340
+#: wppa-settings-autosave.php:3348
 msgid "Please reload this page after the green checkmark appears!"
 msgstr ""
 
-#: wppa-settings-autosave.php:3343
+#: wppa-settings-autosave.php:3351
 msgid "Other plugins settings"
 msgstr ""
 
-#: wppa-settings-autosave.php:3345
+#: wppa-settings-autosave.php:3353
 msgid "Cube Points Comment"
 msgstr ""
 
-#: wppa-settings-autosave.php:3346
+#: wppa-settings-autosave.php:3354
 #, fuzzy
 msgid "Number of points for a comment"
 msgstr "ウィジェットに表示する写真の数:"
 
-#: wppa-settings-autosave.php:3347 wppa-settings-autosave.php:3354
-#: wppa-settings-autosave.php:3361
+#: wppa-settings-autosave.php:3355 wppa-settings-autosave.php:3362
+#: wppa-settings-autosave.php:3369
 #, fuzzy
 msgid "This setting requires the plugin Cube Points"
 msgstr "チェックすると写真の投票システムが有効になります。"
 
-#: wppa-settings-autosave.php:3349
+#: wppa-settings-autosave.php:3357
 #, fuzzy
 msgid "points per comment"
 msgstr "写真が更新できません。"
 
-#: wppa-settings-autosave.php:3352
+#: wppa-settings-autosave.php:3360
 msgid "Cube Points Rating"
 msgstr ""
 
-#: wppa-settings-autosave.php:3353
+#: wppa-settings-autosave.php:3361
 #, fuzzy
 msgid "Number of points for a rating vote"
 msgstr "ウィジェットに表示する写真の数:"
 
-#: wppa-settings-autosave.php:3356
+#: wppa-settings-autosave.php:3364
 msgid "points per vote"
 msgstr ""
 
-#: wppa-settings-autosave.php:3359
+#: wppa-settings-autosave.php:3367
 #, fuzzy
 msgid "Cube Points Upload"
 msgstr "アップロード時にサイズ調整:"
 
-#: wppa-settings-autosave.php:3360
+#: wppa-settings-autosave.php:3368
 #, fuzzy
 msgid "Number of points for a successfull frontend upload"
 msgstr "ウィジェットに表示する写真の数:"
 
-#: wppa-settings-autosave.php:3363
+#: wppa-settings-autosave.php:3371
 #, fuzzy
 msgid "points per upload"
 msgstr "最新の写真"
 
-#: wppa-settings-autosave.php:3366
+#: wppa-settings-autosave.php:3374
 msgid ""
 "QR Code widget settings. The colors also apply to the QR code in the Share "
 "box."
 msgstr ""
 
-#: wppa-settings-autosave.php:3368
+#: wppa-settings-autosave.php:3376
 #, fuzzy
 msgid "QR size"
 msgstr "投票システム"
 
-#: wppa-settings-autosave.php:3369
+#: wppa-settings-autosave.php:3377
 #, fuzzy
 msgid "The size of the QR display."
 msgstr "サムネイル画像にポップアップの効果を使う。"
 
-#: wppa-settings-autosave.php:3375
+#: wppa-settings-autosave.php:3383
 #, fuzzy
 msgid "QR color"
 msgstr "ボーダー色:"
 
-#: wppa-settings-autosave.php:3376
+#: wppa-settings-autosave.php:3384
 msgid "The display color of the qr code (dark)"
 msgstr ""
 
-#: wppa-settings-autosave.php:3377
+#: wppa-settings-autosave.php:3385
 msgid "This color MUST be given in hexadecimal format!"
 msgstr ""
 
-#: wppa-settings-autosave.php:3382
+#: wppa-settings-autosave.php:3390
 #, fuzzy
 msgid "QR background color"
 msgstr "背景色:"
 
-#: wppa-settings-autosave.php:3383
+#: wppa-settings-autosave.php:3391
 msgid "The background color of the qr code (light)"
 msgstr ""
 
-#: wppa-settings-autosave.php:3407
+#: wppa-settings-autosave.php:3415
 msgid "Table X:"
 msgstr ""
 
-#: wppa-settings-autosave.php:3407
+#: wppa-settings-autosave.php:3415
 msgid "IPTC Configuration:"
 msgstr ""
 
-#: wppa-settings-autosave.php:3408
+#: wppa-settings-autosave.php:3416
 msgid "This table defines the IPTC configuration"
 msgstr ""
 
-#: wppa-settings-autosave.php:3416 wppa-settings-autosave.php:3454
-#: wppa-settings-autosave.php:3476 wppa-settings-autosave.php:3514
+#: wppa-settings-autosave.php:3424 wppa-settings-autosave.php:3462
+#: wppa-settings-autosave.php:3484 wppa-settings-autosave.php:3522
 msgid "Tag"
 msgstr ""
 
-#: wppa-settings-autosave.php:3439 wppa-settings-autosave.php:3499
+#: wppa-settings-autosave.php:3447 wppa-settings-autosave.php:3507
 #, fuzzy
 msgid "Display"
 msgstr "表示方法:"
 
-#: wppa-settings-autosave.php:3439 wppa-settings-autosave.php:3499
+#: wppa-settings-autosave.php:3447 wppa-settings-autosave.php:3507
 msgid "Hide"
 msgstr ""
 
-#: wppa-settings-autosave.php:3439 wppa-settings-autosave.php:3499
+#: wppa-settings-autosave.php:3447 wppa-settings-autosave.php:3507
 msgid "Optional"
 msgstr ""
 
-#: wppa-settings-autosave.php:3467
+#: wppa-settings-autosave.php:3475
 msgid "Table XI:"
 msgstr ""
 
-#: wppa-settings-autosave.php:3467
+#: wppa-settings-autosave.php:3475
 msgid "EXIF Configuration:"
 msgstr ""
 
-#: wppa-settings-autosave.php:3468
+#: wppa-settings-autosave.php:3476
 msgid "This table defines the EXIF configuration"
 msgstr ""
 
-#: wppa-settings-autosave.php:3527
+#: wppa-settings-autosave.php:3535
 msgid "Table XII:"
 msgstr ""
 
-#: wppa-settings-autosave.php:3527
+#: wppa-settings-autosave.php:3535
 msgid "WPPA+ and PHP Configuration:"
 msgstr ""
 
-#: wppa-settings-autosave.php:3528
+#: wppa-settings-autosave.php:3536
 msgid ""
 "This table lists all WPPA+ constants and PHP server configuration parameters "
 "and is read only"
 msgstr ""
 
-#: wppa-settings-autosave.php:3543
+#: wppa-settings-autosave.php:3551
 msgid "Value"
 msgstr ""
 
-#: wppa-settings-autosave.php:3548
+#: wppa-settings-autosave.php:3556
 #, fuzzy
 msgid "Albums db table name."
 msgstr "アルバムが更新できません。"
 
-#: wppa-settings-autosave.php:3553
+#: wppa-settings-autosave.php:3561
 msgid "Photos db table name."
 msgstr ""
 
-#: wppa-settings-autosave.php:3558
+#: wppa-settings-autosave.php:3566
 #, fuzzy
 msgid "Rating db table name."
 msgstr "投票を削除しました"
 
-#: wppa-settings-autosave.php:3563
+#: wppa-settings-autosave.php:3571
 #, fuzzy
 msgid "Comments db table name."
 msgstr "%件のコメント"
 
-#: wppa-settings-autosave.php:3568
+#: wppa-settings-autosave.php:3576
 #, fuzzy
 msgid "IPTC db table name."
 msgstr "%件のコメント"
 
-#: wppa-settings-autosave.php:3573
+#: wppa-settings-autosave.php:3581
 #, fuzzy
 msgid "EXIF db table name."
 msgstr "アルバムが更新できません。"
 
-#: wppa-settings-autosave.php:3578
+#: wppa-settings-autosave.php:3586
 #, fuzzy
 msgid "Plugins main file name."
 msgstr "プラグイン管理機能"
 
-#: wppa-settings-autosave.php:3583
+#: wppa-settings-autosave.php:3591
 #, fuzzy
 msgid "Path to plugins directory."
 msgstr "ソースディレクトリの設定"
 
-#: wppa-settings-autosave.php:3588
+#: wppa-settings-autosave.php:3596
 msgid "Plugins directory name."
 msgstr ""
 
-#: wppa-settings-autosave.php:3593
+#: wppa-settings-autosave.php:3601
 #, fuzzy
 msgid "Plugins directory url."
 msgstr "プラグイン管理機能"
 
-#: wppa-settings-autosave.php:3598
+#: wppa-settings-autosave.php:3606
 #, fuzzy
 msgid "The relative upload directory."
 msgstr "アップロード用ディレクトリを作成しました。"
 
-#: wppa-settings-autosave.php:3603
+#: wppa-settings-autosave.php:3611
 msgid "The upload directory path."
 msgstr ""
 
-#: wppa-settings-autosave.php:3608
+#: wppa-settings-autosave.php:3616
 msgid "The upload directory url."
 msgstr ""
 
-#: wppa-settings-autosave.php:3613
+#: wppa-settings-autosave.php:3621
 #, fuzzy
 msgid "The relative depot directory."
 msgstr "ディレクトリが作成できません"
 
-#: wppa-settings-autosave.php:3618
+#: wppa-settings-autosave.php:3626
 msgid "The depot directory path."
 msgstr ""
 
-#: wppa-settings-autosave.php:3623
+#: wppa-settings-autosave.php:3631
 #, fuzzy
 msgid "The depot directory url."
 msgstr "ディレクトリが作成できません"
 
-#: wppa-settings-autosave.php:3704
+#: wppa-settings-autosave.php:3712
 msgid "The default for this setting is:"
 msgstr ""
 
-#: wppa-settings-autosave.php:3712
+#: wppa-settings-autosave.php:3720
 msgid "Click for help"
 msgstr ""
 
-#: wppa-settings-autosave.php:3882
+#: wppa-settings-autosave.php:3890
 msgid "Checked"
 msgstr ""
 
-#: wppa-settings-autosave.php:3883
+#: wppa-settings-autosave.php:3891
 msgid "Unchecked"
 msgstr ""
 
-#: wppa-settings-autosave.php:3888
+#: wppa-settings-autosave.php:3896
 msgid "the photo specific link."
 msgstr ""
 
-#: wppa-settings-autosave.php:3932
+#: wppa-settings-autosave.php:3940
 #, fuzzy
 msgid "Not done yet"
 msgstr "写真がありません"
 
-#: wppa-settings-autosave.php:3941
+#: wppa-settings-autosave.php:3949
 msgid ""
 "You can not have popup and lightbox on thumbnails at the same time. Uncheck "
 "either Table IV-C8 or choose a different linktype in Table VI-2."
 msgstr ""
 
-#: wppa-settings-autosave.php:3944
+#: wppa-settings-autosave.php:3952
 #, fuzzy, php-format
 msgid ""
 "It is important that you select a page that contains at least %%wppa%% or "
@@ -8131,7 +8178,7 @@ msgstr ""
 "検索結果の表示に使用するページを選択してください。ページには %%wppa%% と記入"
 "されていなければなりません。"
 
-#: wppa-settings-autosave.php:3945
+#: wppa-settings-autosave.php:3953
 msgid ""
 "If you ommit this, the link will not work at all or simply refresh the (home)"
 "page."
@@ -8185,85 +8232,85 @@ msgid ""
 "span>"
 msgstr ""
 
-#: wppa-setup.php:785
+#: wppa-setup.php:786
 msgid "Type your custom url here"
 msgstr "カスタムURLを入力してください"
 
-#: wppa-setup.php:786
+#: wppa-setup.php:787
 msgid "Type the title here"
 msgstr "タイトルを入力してください"
 
-#: wppa-setup.php:796 wppa-topten-widget.php:14 wppa-topten-widget.php:118
+#: wppa-setup.php:797 wppa-topten-widget.php:14 wppa-topten-widget.php:118
 msgid "Top Ten Photos"
 msgstr "トップ10フォト"
 
-#: wppa-setup.php:799 wppa-thumbnail-widget.php:14
+#: wppa-setup.php:800 wppa-thumbnail-widget.php:14
 #: wppa-thumbnail-widget.php:124
 #, fuzzy
 msgid "Thumbnail Photos"
 msgstr "サムネイル:"
 
-#: wppa-setup.php:802
+#: wppa-setup.php:803
 msgid "Search photos"
 msgstr "写真を検索する"
 
-#: wppa-setup.php:846
+#: wppa-setup.php:847
 msgid ""
 "The uploads directory does not exist, please do a regular WP upload first."
 msgstr ""
 "「uploads」ディレクトリが存在しません。まず最初に通常のアップロード方法をお試"
 "しください。"
 
-#: wppa-setup.php:850
+#: wppa-setup.php:851
 msgid "Successfully created uploads directory."
 msgstr "アップロード用ディレクトリを作成しました。"
 
-#: wppa-setup.php:861
+#: wppa-setup.php:862
 msgid "Could not create the wppa directory."
 msgstr "「wppa」ディレクトリは作成できませんでした。"
 
-#: wppa-setup.php:865
+#: wppa-setup.php:866
 msgid "Successfully created wppa directory."
 msgstr "wppa用ディレクトリを作成しました。"
 
-#: wppa-setup.php:875
+#: wppa-setup.php:876
 msgid "Could not create the wppa thumbs directory."
 msgstr "「wppa/thumbs」ディレクトリは作成できませんでした。"
 
-#: wppa-setup.php:879
+#: wppa-setup.php:880
 msgid "Successfully created wppa thumbs directory."
 msgstr "wppaの「サムネイル」ディレクトリを作成しました。"
 
-#: wppa-setup.php:889
+#: wppa-setup.php:890
 #, fuzzy
 msgid "Could not create the wppa watermarks directory."
 msgstr "「wppa/thumbs」ディレクトリは作成できませんでした。"
 
-#: wppa-setup.php:893
+#: wppa-setup.php:894
 #, fuzzy
 msgid "Successfully created wppa watermarks directory."
 msgstr "wppaの「サムネイル」ディレクトリを作成しました。"
 
-#: wppa-setup.php:905
+#: wppa-setup.php:906
 #, fuzzy
 msgid "Unable to create depot directory."
 msgstr "ディレクトリが作成できません"
 
-#: wppa-setup.php:909
+#: wppa-setup.php:910
 #, fuzzy
 msgid "Successfully created wppa depot directory."
 msgstr "wppaのユーザ用「デポ」ディレクトリを作成しました。"
 
-#: wppa-setup.php:920
+#: wppa-setup.php:921
 #, fuzzy
 msgid "Unable to create user depot directory"
 msgstr "ユーザ用「デポ」ディレクトリは作成できませんでした。"
 
-#: wppa-setup.php:924
+#: wppa-setup.php:925
 msgid "Successfully created wppa user depot directory."
 msgstr "wppaのユーザ用「デポ」ディレクトリを作成しました。"
 
-#: wppa-setup.php:932
+#: wppa-setup.php:933
 #, php-format
 msgid ""
 "Ask your administrator to give you more rights, or create <b>%s</b> manually "

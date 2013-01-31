@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains the admin menu and startups the admin pages
-* Version 4.8.6
+* Version 4.9.7
 *
 */
 
@@ -54,6 +54,10 @@ function wppa_add_admin() {
 	//                 parent_slug        page_title                             menu_title                             capability            menu_slug               function
 	add_submenu_page( 'wppa_admin_menu',  __('Album Admin', 'wppa'),			 __('Album Admin', 'wppa').$upl_pending,'wppa_admin',        'wppa_admin_menu',      'wppa_admin' );
     add_submenu_page( 'wppa_admin_menu',  __('Upload Photos', 'wppa'),           __('Upload Photos', 'wppa'),          'wppa_upload',        'wppa_upload_photos',   'wppa_page_upload' );
+	// Uploader without album admin rights, but when the upload_edit switch set, may edit his own photos
+	if ( ! current_user_can('wppa_admin') && get_option('wppa_upload_edit', 'yes') == 'yes' ) {
+		add_submenu_page( 'wppa_admin_menu',  __('Edit Photos', 'wppa'), 		 __('Edit Photos', 'wppa'), 		   'wppa_upload', 		 'wppa_edit_photo', 	 'wppa_edit_photo' );
+	}
 	add_submenu_page( 'wppa_admin_menu',  __('Import Photos', 'wppa'),           __('Import Photos', 'wppa'),          'wppa_import',        'wppa_import_photos',   'wppa_page_import' );
 	add_submenu_page( 'wppa_admin_menu',  __('Export Photos', 'wppa'),           __('Export Photos', 'wppa'),          'wppa_export',     	 'wppa_export_photos',   'wppa_page_export' );
     add_submenu_page( 'wppa_admin_menu',  __('Settings', 'wppa'),                __('Settings', 'wppa'),               'wppa_settings',      'wppa_options',         'wppa_page_options' );
@@ -86,12 +90,18 @@ function wppa_admin_scripts() {
 // Album admin page
 function wppa_admin() {
 	require_once 'wppa-album-admin-autosave.php';
+	require_once 'wppa-photo-admin-autosave.php';
 	_wppa_admin();
 }
 // Upload admin page
 function wppa_page_upload() {
 	require_once 'wppa-upload.php';
 	_wppa_page_upload();
+}
+// Edit photo(s)
+function wppa_edit_photo() {
+	require_once 'wppa-photo-admin-autosave.php';
+	_wppa_edit_photo();
 }
 // Import admin page
 function wppa_page_import() {

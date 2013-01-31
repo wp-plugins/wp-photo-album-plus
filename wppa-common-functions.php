@@ -2,11 +2,11 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 4.9.6
+* version 4.9.7
 *
 */
 global $wppa_api_version;
-$wppa_api_version = '4-9-6-000';
+$wppa_api_version = '4-9-7-000';
 // Initialize globals and option settings
 function wppa_initialize_runtime($force = false) {
 global $wppa;
@@ -452,6 +452,7 @@ global $wppa_initruntimetime;
 						'wppa_owner_only' 			=> '',
 						'wppa_user_upload_on'		=> '',
 						'wppa_upload_moderate'		=> '',
+						'wppa_upload_edit'			=> '',
 						'wppa_upload_notify' 		=> '',
 						'wppa_memcheck_frontend'	=> '',
 						'wppa_memcheck_admin'		=> '',
@@ -1856,7 +1857,7 @@ function wppa_allow_uploads($album = '0') {
 global $wpdb;
 
 	if ( ! $album ) return '0';
-
+	
 	$limits = $wpdb->get_var($wpdb->prepare("SELECT `upload_limit` FROM `".WPPA_ALBUMS."` WHERE `id` = %s", $album));
 	wppa_dbg_q('Q225');
 	$temp = explode('/', $limits);
