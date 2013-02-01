@@ -153,7 +153,7 @@ global $wppa_opt;
 								$value = '#comten';
 								$comments = $wpdb->get_results( "SELECT `id`, `photo` FROM `".WPPA_COMMENTS."` ORDER BY `timestamp` DESC", ARRAY_A );
 								$photos = false;
-								$done = false;
+								$done = array();
 								if ( $comments ) foreach ( $comments as $comment ) {
 									if ( count($done) < $wppa_opt['wppa_comten_count'] && ! in_array($comment['photo'], $done) ) {
 										$done[] = $comment['photo'];
