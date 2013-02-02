@@ -2,7 +2,7 @@
 //
 // conatins slideshow, theme, ajax and lightbox code
 //
-// Version 4.9.4
+// Version 4.9.7
 
 // Part 1: Slideshow
 //
@@ -2496,7 +2496,7 @@ var wppaKbAction = function(e) {
 		escapeKey = 27;
 	} else { // mozilla
 		keycode = e.keyCode;
-		escapeKey = e.DOM_VK_ESCAPE;
+		escapeKey = 27; //e.DOM_VK_ESCAPE;
 	}
 
 	key = String.fromCharCode(keycode).toLowerCase();
