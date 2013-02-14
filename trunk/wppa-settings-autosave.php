@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 4.9.7
+* Version 4.9.8
 *
 */
 
@@ -818,6 +818,13 @@ global $wppa_revno;
 							$values = array('top', 'bottom', 'both');
 							$html = wppa_select($slug, $options, $values);
 							wppa_setting($slug, '8', $name, $desc, $html, $help);
+							
+							$name = __('Thumblink on slideshow', 'wppa');
+							$desc = __('Show a thumb link on slideshow bc.', 'wppa');
+							$help = esc_js(__('Show a link to thumbnail display on an breadcrumb above a slideshow', 'wppa'));
+							$slug = 'wppa_bc_slide_thumblink';
+							$html = wppa_checkbox($slug);
+							wppa_setting($slug, '9', $name, $desc, $html, $help);
 
 							wppa_setting_subheader('B', '1', __('Slideshow related settings', 'wppa'));
 							
@@ -855,6 +862,13 @@ global $wppa_revno;
 							$slug = 'wppa_show_full_name';
 							$html = wppa_checkbox($slug);
 							wppa_setting($slug, '5', $name, $desc, $html, $help);
+							
+							$name = __('Add (Owner)', 'wppa');
+							$desc = __('Add the uploaders display name in parenthesis to the name.', 'wppa');
+							$help = '';
+							$slug = 'wppa_show_full_owner';
+							$html = wppa_checkbox($slug);
+							wppa_setting($slug, '5.1', $name, $desc, $html, $help, $class);
 							
 							$name = __('Photo desc', 'wppa');
 							$desc = __('Display Photo description.', 'wppa');
@@ -1095,6 +1109,14 @@ global $wppa_revno;
 							$html = wppa_checkbox($slug);
 							$class = 'tt_normal';
 							wppa_setting($slug, '1', $name, $desc, $html, $help, $class);
+							
+							$name = __('Add (Owner)', 'wppa');
+							$desc = __('Add the uploaders display name in parenthesis to the name.', 'wppa');
+							$help = '';
+							$slug = 'wppa_thumb_text_owner';
+							$html = wppa_checkbox($slug);
+							$class = 'tt_normal';
+							wppa_setting($slug, '1.1', $name, $desc, $html, $help, $class);
 							
 							$name = __('Thumbnail desc', 'wppa');
 							$desc = __('Display Thumbnail description.', 'wppa');
@@ -1964,8 +1986,22 @@ global $wppa_revno;
 							$desc = __('Select who must receive an e-mail notification of a new comment.', 'wppa');
 							$help = '';
 							$slug = 'wppa_comment_notify';
-							$options = array(__('--- None ---', 'wppa'), __('--- Admin ---', 'wppa'), __('--- Album owner ---'), __('--- Admin & Owner ---', 'wppa'));
-							$values = array('none', 'admin', 'owner', 'both');
+							$options = array(	__('--- None ---', 'wppa'), 
+												__('--- Admin ---', 'wppa'), 
+												__('--- Album owner ---'), 
+												__('--- Admin & Owner ---', 'wppa'),
+												__('--- Uploader ---', 'wppa'),
+												__('--- Up & admin ---', 'wppa'),
+												__('--- Up & Owner ---', 'wppa')
+												);
+							$values = array(	'none', 
+												'admin', 
+												'owner', 
+												'both', 
+												'upload', 
+												'upadmin', 
+												'upowner'
+												);
 							$users = wppa_get_users();
 							foreach ($users as $usr) {
 								$options[] = $usr['display_name'];
