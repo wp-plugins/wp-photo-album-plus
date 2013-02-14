@@ -2,11 +2,11 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 4.9.7
+* version 4.9.8
 *
 */
 global $wppa_api_version;
-$wppa_api_version = '4-9-7-000';
+$wppa_api_version = '4-9-8-000';
 // Initialize globals and option settings
 function wppa_initialize_runtime($force = false) {
 global $wppa;
@@ -87,7 +87,8 @@ global $wppa_initruntimetime;
 			'is_landing'				=> '0',
 			'is_comten'					=> false,
 			'comten_count'				=> '0',
-			'is_tag'					=> false
+			'is_tag'					=> false,
+			'photos_only'				=> false
 
 		);
 
@@ -178,12 +179,14 @@ global $wppa_initruntimetime;
 						'wppa_bc_txt' 						=> '',	// 6
 						'wppa_bc_url' 						=> '',	// 7
 						'wppa_pagelink_pos'					=> '', 	// 8
+						'wppa_bc_slide_thumblink'			=> '',	// 9
 						// B Slideshow
 						'wppa_show_startstop_navigation' 	=> '',	// 1
 						'wppa_show_browse_navigation' 		=> '',	// 2
 						'wppa_filmstrip' 					=> '',	// 3
 						'wppa_film_show_glue' 				=> '',	// 4
 						'wppa_show_full_name' 				=> '',	// 5
+						'wppa_show_full_owner'				=> '',	// 5.1
 						'wppa_show_full_desc' 				=> '',	// 6
 						'wppa_hide_when_empty'				=> '',	// 6.1
 						'wppa_rating_on' 					=> '',	// 7
@@ -215,6 +218,7 @@ global $wppa_initruntimetime;
 
 						// C Thumbnails
 						'wppa_thumb_text_name' 				=> '',	// 1
+						'wppa_thumb_text_owner'				=> '',	// 1.1
 						'wppa_thumb_text_desc' 				=> '',	// 2
 						'wppa_thumb_text_rating' 			=> '',	// 3
 						'wppa_popup_text_name' 				=> '',	// 4

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains low-level utility routines
-* Version 4.9.5
+* Version 4.9.8
 *
 */
 
@@ -89,12 +89,19 @@ global $thumb;
 }
 
 // get the name of a full sized image
-function wppa_get_photo_name($id) {
+function wppa_get_photo_name($id, $add_owner = false) {
 global $thumb;
 
 	if ( ! is_numeric($id) || $id < '1' ) wppa_dbg_msg('Invalid arg wppa_get_photo_name('.$id.')', 'red');
 	wppa_cache_thumb($id);
-	return __(stripslashes($thumb['name']));
+	$result = __(stripslashes($thumb['name']));
+	if ( $add_owner ) {
+		$user = get_user_by('login', $thumb['owner']);
+		if ( $user ) {
+			$result .= ' ('.$user->display_name.')';
+		}
+	}
+	return $result;
 }
 
 // get the description of an image

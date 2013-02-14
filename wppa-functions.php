@@ -3,12 +3,12 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions and API modules
-* Version 4.9.7
+* Version 4.9.8
 *
 */
 /* Moved to wppa-common-functions.php:
 global $wppa_api_version;
-$wppa_api_version = '4-9-7-000';
+$wppa_api_version = '4-9-8-000';
 */
 
 if ( ! defined( 'ABSPATH' ) )
@@ -168,6 +168,18 @@ global $wpdb;
 			$wppa['out'] .= wppa_nltab().'<span class="wppa-nav-text b11" style="'.__wcs('wppa-nav-text').__wcs('wppa-black').'" ><b>'.__a('Tagged photos:').'&nbsp;'.$wppa['is_tag'].'</b></span>';
 		}
 
+	if ( $wppa['is_slide'] ) {
+		if ( $wppa_opt['wppa_bc_slide_thumblink'] ) {
+			$onclick = "wppaDoAjaxRender(".$wppa['master_occur'].", '".wppa_get_album_url_ajax($wppa['start_album'], '0')."&wppa-photos-only=1', '".wppa_convert_to_pretty(wppa_get_album_url($wppa['start_album'], '0').'&wppa-photos-only=1')."')";
+			$fs = $wppa_opt['wppa_fontsize_nav'];	
+			if ($fs != '') $fs += 3; else $fs = '15';	// iconsize = fontsize+3, Default to 15
+			$imgs = 'height: '.$fs.'px; margin:0 0 -3px 0; padding:0; box-shadow:none;';
+			$wppa['out'] .= '<a href="javascript:void()" title="'.__a('Thumbnail view', 'wppa').'" class="wppa-nav-text" style="'.__wcs('wppa-nav-text').'float:right; cursor:pointer;" onclick="'.$onclick.'" >'.
+				'<img src="'.wppa_get_imgdir().'application_view_icons.png" alt="'.__('Thumbs', 'wppa_theme').'" style="'.$imgs.'" />'.
+			'</a>';
+		}
+	}
+	
 	$wppa['out'] .= wppa_nltab('-').'</div>';
 }
 function wppa_crumb_ancestors($sep, $alb, $occur, $to_cover) {
@@ -258,7 +270,7 @@ global $wppa_opt;
 		$wppa['out'] .= wppa_dbg_msg('Querystring applied', 'brown', false, true);
 		$wppa['start_album'] 	= wppa_get_get('album', '');
 		$wppa['is_cover'] 		= wppa_get_get('cover', '0');
-		$wppa['is_slide'] 		= wppa_get_get('slide', '0') || ( wppa_get_get('album', false) !== false && wppa_get_get('photo') );
+		$wppa['is_slide'] 		= wppa_get_get('slide', false) !== false || ( wppa_get_get('album', false) !== false && wppa_get_get('photo') );
 		$wppa['is_slideonly'] 	= '0';
 		$wppa['is_slideonlyf'] 	= '0';
 		$wppa['single_photo'] 	= $wppa['is_slide'] ? '0' : wppa_get_get('photo', '');
@@ -274,6 +286,7 @@ global $wppa_opt;
 		$wppa['comten_count'] 	= wppa_get_get('comten', '0');
 		$wppa['is_comten']		= $wppa['comten_count'] != '0';
 		$wppa['is_tag']			= trim(strip_tags(wppa_get_get('tag', false)), ',');
+		$wppa['photos_only'] 	= wppa_get_get('photos-only', false);
 	}
 	// 2. wppa_albums is called directly. Assume any arg. If not, no worry, system defaults are used == generic
 	elseif ( $id != '' || $type != '' || $size != '' || $align != '' ) {
@@ -492,6 +505,7 @@ global $album;
 	$wppa['film_on'] 		= '0';
 	$wppa['is_landing'] 	= '0';
 	$wppa['start_photo'] 	= '0';
+	$wppa['photos_only']	= false;
 
 }
 
@@ -609,6 +623,7 @@ global $wppa_opt;
 	if ( $wppa['is_lasten'] ) return false;
 	if ( $wppa['is_comten'] ) return false;
 	if ( $wppa['is_tag'] ) return false;
+	if ( $wppa['photos_only'] ) return false;
 	
 	if ( $wppa['master_occur'] == '1' ) $src = wppa_get_searchstring();
 	else $src = '';
@@ -1118,7 +1133,9 @@ if ( $wppa['is_single'] ) $url .= 'wppa-single=1&';
 	// Name
 	$name = esc_js(wppa_get_photo_name($id));
 	if ( ! $name ) $name = '&nbsp;';
-
+	$fullname = esc_js(wppa_get_photo_name($id, $wppa_opt['wppa_show_full_owner']));
+	if ( ! $fullname ) $fullname = '&nbsp;';
+	
 	// Shareurl
 	$shareurl = wppa_get_image_page_url_by_id($id, false, $wppa['start_album']);
 	$shareurl = wppa_convert_to_pretty($shareurl);
@@ -1170,6 +1187,7 @@ if ( $wppa['is_single'] ) $url .= 'wppa-single=1&';
 	$result .= $style_a['style']."','";
 	$result .= $style_a['width']."','";
 	$result .= $style_a['height']."','";
+	$result .= $fullname."','";
 	$result .= $name."','";
 	$result .= $desc."','";
 	$result .= $id."','";
@@ -1401,7 +1419,9 @@ global $wppa_done;
 					$cont['1'] = '<blockquote><em> '.$comment.'</em></blockquote>';
 					$cont2     = '<a href="'.get_admin_url().'admin.php?page=wppa_manage_comments&commentid='.$key.'" >'.__a('Moderate comment admin').'</a>';
 					$cont3     = '<a href="'.get_admin_url().'admin.php?page=wppa_admin_menu&tab=cmod&photo='.$id.'" >'.__a('Moderate manage photo').'</a>';
+					$cont3a	   = '<a href="'.get_admin_url().'admin.php?page=wppa_edit_photo&photo='.$id.'" >'.__a('Edit photo').'</a>';
 					
+					$sentto = array();
 					if ( is_numeric($wppa_opt['wppa_comment_notify']) ) {	// single user
 						// Mail specific user
 						$moduser 	= get_userdata($wppa_opt['wppa_comment_notify']);
@@ -1411,29 +1431,53 @@ global $wppa_done;
 						$cont['4'] 	= __a('You receive this email as you are assigned to moderate');
 						// Send!
 						wppa_send_mail($to, $subj, $cont, $photo, $email);
+						$sentto[] = $moduser->login_name;
 					}
-					if ( $wppa_opt['wppa_comment_notify'] == 'admin' || $wppa_opt['wppa_comment_notify'] == 'both' ) {
+					if ( $wppa_opt['wppa_comment_notify'] == 'admin' || $wppa_opt['wppa_comment_notify'] == 'both' || $wppa_opt['wppa_comment_notify'] == 'upadmin' ) {
 						// Mail admin
-						$to      	= get_bloginfo('admin_email');
-						$cont['2'] = $cont2;
-						$cont['3'] = $cont3;
-						$cont['4'] = __a('You receive this email as administrator of the site');
-						// Send!
-						wppa_send_mail($to, $subj, $cont, $photo, $email);
+						$moduser   = get_user_by('login', 'admin');
+						if ( ! in_array( $moduser->login_name, $sentto ) ) {	// Already sent him?
+							$to        = get_bloginfo('admin_email');
+							$cont['2'] = $cont2;
+							$cont['3'] = $cont3;
+							$cont['4'] = __a('You receive this email as administrator of the site');
+							// Send!
+							wppa_send_mail($to, $subj, $cont, $photo, $email);
+							$sentto[] = $moduser->login_name;
+						}
 					}
-					if ( $wppa_opt['wppa_comment_notify'] == 'owner' || $wppa_opt['wppa_comment_notify'] == 'both' ) {
-						// Mail owner
+					if ( $wppa_opt['wppa_comment_notify'] == 'upload' || $wppa_opt['wppa_comment_notify'] == 'upadmin' || $wppa_opt['wppa_comment_notify'] == 'upowner' ) {
+						// Mail uploader
+						$uploader = $wpdb->get_var($wpdb->prepare("SELECT `owner` FROM `".WPPA_PHOTOS."` WHERE `id` = %d", $id));
+						$moduser = get_user_by('login', $uploader);
+						if ( $moduser ) {	// else it's an ip address (anonymus uploader)
+							if ( ! in_array( $moduser->login_name, $sentto ) ) {	// Already sent him?
+								$to = $moduser->user_email;
+								$cont['2'] = user_can( $moduser, 'wppa_comments' ) ? $cont2 : '';
+								if ( user_can( $moduser, 'wppa_admin' ) ) $cont['3'] = $cont3;
+								elseif ( $wppa_opt['wppa_upload_edit'] ) $cont['3'] = $cont3a;
+								else $cont['3'] = '';
+								$cont['4'] = __a('You receive this email as uploader of the photo');
+								// Send!
+								wppa_send_mail($to, $subj, $cont, $photo, $email);
+								$sentto[] = $moduser->login_name;
+							}
+						}
+					}
+					if ( $wppa_opt['wppa_comment_notify'] == 'owner' || $wppa_opt['wppa_comment_notify'] == 'both' || $wppa_opt['wppa_comment_notify'] == 'upowner' ) {
+						// Mail album owner
 						$alb     = $wpdb->get_var($wpdb->prepare("SELECT `album` FROM `".WPPA_PHOTOS."` WHERE `id` = %d", $id));
 						$owner   = $wpdb->get_var($wpdb->prepare("SELECT `owner` FROM `".WPPA_ALBUMS."` WHERE `id` = %d", $alb));
 						if ( $owner == '--- public ---' ) $owner = 'admin';
-						if ( $owner != 'admin' || $wppa_opt['wppa_comment_notify'] != 'both' ) { // Prevent dup to admin
-							$moduser = get_user_by('login', $owner);
-							$to      = $moduser->user_email;
+						$moduser = get_user_by('login', $owner);
+						if ( ! in_array( $moduser->login_name, $sentto ) ) {	// Already sent him?
+							$to = $moduser->user_email;
 							if ( user_can( $moduser, 'wppa_comments' ) ) $cont['2'] = $cont2; else $cont['2'] = '';
 							if ( user_can( $moduser, 'wppa_admin' ) ) 	 $cont['3'] = $cont3; else $cont['3'] = '';
 							$cont['4'] = __a('You receive this email as owner of the album');
 							// Send!
 							wppa_send_mail($to, $subj, $cont, $photo, $email);
+							$sentto[] = $moduser->login_name;
 						}
 					}
 					// Notyfy user
@@ -2213,6 +2257,9 @@ global $wppa_opt;
 	// Search?
 	if ( $wppa['src'] ) $extra_url .= '&amp;wppa-searchstring='.$wppa['searchstring'];
 	
+	// Photos only?
+	if ( $wppa['photos_only'] ) $extra_url .= '&amp;wppa-photos-only=1';
+	
 	// Almost ready
 	$link_url .= $extra_url;
 	$ajax_url .= $extra_url;
@@ -2880,7 +2927,7 @@ global $wpdb;
 				$href_title = wppa_get_slideshow_url('', $linkpage);
 //echo 'album_url2='.$href_title.' ajax_url='.wppa_get_album_url_ajax($album['id'], $linkpage);
 				if ( $wppa_opt['wppa_allow_ajax'] ) {
-					$onclick_title = "wppaDoAjaxRender(".$wppa['master_occur'].", '".wppa_get_slideshow_url_ajax($album['id'], $linkpage)."', '".$href_title."')";
+					$onclick_title = "wppaDoAjaxRender(".$wppa['master_occur'].", '".wppa_get_slideshow_url_ajax($album['id'], wppa_convert_to_pretty($linkpage))."', '".$href_title."')";
 					$href_title = "#";
 				}
 				break;
@@ -3358,7 +3405,7 @@ global $wpdb;
 	$new = wppa_is_photo_new($thumb['id']);		
 	if ($wppa_opt['wppa_thumb_text_name'] || $new) {
 		$wppa['out'] .= wppa_nltab().'<div class="wppa-thumb-text" style="'.__wcs('wppa-thumb-text').'" >';
-			if ($wppa_opt['wppa_thumb_text_name']) $wppa['out'] .= wppa_qtrans(stripslashes($thumb['name']));
+			if ($wppa_opt['wppa_thumb_text_name']) $wppa['out'] .= wppa_get_photo_name($thumb['id'], $wppa_opt['wppa_thumb_text_owner']); // wppa_qtrans(stripslashes($thumb['name']));
 			if ($new) $wppa['out'] .= '&nbsp;<img src="'.WPPA_URL.'/images/new.png" title="New!" class="wppa-thumbnew" style="border:none; margin:0; padding:0; box-shadow:none; " />';
 		$wppa['out'] .= '</div>';
 	}
@@ -3986,6 +4033,15 @@ global $wppa_locale;
 			break;
 	}
 	
+	if ( isset($_GET['lang']) ) {
+		if ( $key == 'js' ) $pl .= 'lang='.$_GET['lang'].'&';
+		else $pl .= 'lang='.$_GET['lang'].'&amp;';
+	}
+	elseif ( $wppa_locale ) {
+		if ( $key == 'js' ) $pl .= 'locale='.$wppa_locale.'&';
+		else $pl .= 'locale='.$wppa_locale.'&amp;';
+	}
+	
 	if ($wppa['debug']) {
 		if ( $key == 'js' ) $pl .= 'debug='.$wppa['debug'].'&';
 		else $pl .= 'debug='.$wppa['debug'].'&amp;';
@@ -4028,6 +4084,7 @@ global $wppa_opt;
 // Like get_permalink but for ajax use
 function wppa_get_ajaxlink($key = '') {
 global $wppa;
+global $wppa_locale;
 
 	$al = admin_url('admin-ajax.php').'?action=wppa&amp;wppa-action=render';
 	// See if this call is from an ajax operation or...
@@ -4055,6 +4112,14 @@ global $wppa;
 		}
 		$al .= '&amp;wppa-fromp='.get_the_ID();
 	}
+		
+	if ( isset($_GET['lang']) ) {
+		$al .= '&amp;lang='.$_GET['lang'];
+	}
+	elseif ( $wppa_locale ) {
+		$al .= 'locale='.$wppa_locale.'&amp;';
+	}
+
 	return $al.'&amp;';
 }
 
@@ -5600,6 +5665,9 @@ global $wppa_opt;
 				case 'tg':
 					$newuri .= 'wppa-tag=';
 					break;
+				case 'po':
+					$newuri .= 'wppa-photos-only=';
+					break;
 					
 			}
 //			if ( $code == 'ss' ) $newuri .= str_replace('|', ' ', substr($arg, 2));
@@ -5632,7 +5700,7 @@ global $wppa_opt;
 	
 	// explode querystring
 	$args = explode('&', substr($uri, $qpos+1));
-	$support = array('album', 'photo', 'slide', 'cover', 'occur', 'page', 'searchstring', 'topten', 'lasten', 'comten', 'lang', 'locale', 'single', 'tag');
+	$support = array('album', 'photo', 'slide', 'cover', 'occur', 'page', 'searchstring', 'topten', 'lasten', 'comten', 'lang', 'locale', 'single', 'tag', 'photos-only');
 	if ( count($args) > 0 ) {
 		foreach ( $args as $arg ) {
 			$t = explode('=', $arg);
@@ -5682,6 +5750,9 @@ global $wppa_opt;
 						break;
 					case 'tag':
 						$newuri .= 'tg';
+						break;
+					case 'photos-only':
+						$newuri .= 'po';
 						break;
 				}
 				if ( $val !== false ) {

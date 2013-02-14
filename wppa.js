@@ -2,7 +2,7 @@
 //
 // conatins slideshow, theme, ajax and lightbox code
 //
-// Version 4.9.7
+// Version 4.9.8
 
 // Part 1: Slideshow
 //
@@ -112,6 +112,7 @@ var _wppaExifHtml = new Array();
 var _wppaToTheSame = false;
 var _wppaSlides = new Array();
 var _wppaNames = new Array();
+var _wppaFullNames = new Array();
 var _wppaDsc = new Array();
 var _wppaCurIdx = new Array();
 var _wppaNxtIdx = new Array();
@@ -153,11 +154,12 @@ jQuery(document).ready(function(){
 // These functions check the validity and store the users request to be executed later if busy and if applicable.
 
 // This is an entrypoint to load the slide data
-function wppaStoreSlideInfo(mocc, id, url, size, width, height, name, desc, photoid, avgrat, myrat, rateurl, linkurl, linktitle, linktarget, iwtimeout, commenthtml, iptchtml, exifhtml, lbtitle, shareurl, smhtml) {
+function wppaStoreSlideInfo(mocc, id, url, size, width, height, fullname, name, desc, photoid, avgrat, myrat, rateurl, linkurl, linktitle, linktarget, iwtimeout, commenthtml, iptchtml, exifhtml, lbtitle, shareurl, smhtml) {
 var cursor;
 	if ( ! _wppaSlides[mocc] ) {
 		_wppaSlides[mocc] = new Array();
 		_wppaNames[mocc] = new Array();
+		_wppaFullNames[mocc] = new Array();
 		_wppaDsc[mocc] = new Array();
 		_wppaCurIdx[mocc] = -1;
 		_wppaNxtIdx[mocc] = 0;
@@ -202,6 +204,7 @@ var cursor;
 		// Add 'old' width and height only for non-auto
 		if ( ! wppaAutoColumnWidth[mocc] ) _wppaSlides[mocc][id] += 'width="' + width + '" height="' + height + '" ';
 	_wppaSlides[mocc][id] += 'style="' + size + '; cursor:'+cursor+'; display:none;">';	// was block
+    _wppaFullNames[mocc][id] = fullname;
     _wppaNames[mocc][id] = name;
     _wppaDsc[mocc][id] = desc;
 	_wppaId[mocc][id] = photoid;		// reqd for rating and comment and monkey
@@ -742,10 +745,10 @@ var result;
 	switch (wppaArtMonkyLink) {
 	case 'file':
 	case 'zip':
-		result = '<a title="Download" style="cursor:pointer;" onclick="wppaAjaxMakeOrigName('+mocc+', '+_wppaId[mocc][_wppaCurIdx[mocc]]+');" >'+_wppaNames[mocc][_wppaCurIdx[mocc]]+'</a>';
+		result = '<a title="Download" style="cursor:pointer;" onclick="wppaAjaxMakeOrigName('+mocc+', '+_wppaId[mocc][_wppaCurIdx[mocc]]+');" >'+_wppaFullNames[mocc][_wppaCurIdx[mocc]]+'</a>';
 		break;
 	case 'none':
-		result = _wppaNames[mocc][_wppaCurIdx[mocc]];
+		result = _wppaFullNames[mocc][_wppaCurIdx[mocc]];
 		break;
 	}
 	return result;

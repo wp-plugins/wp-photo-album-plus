@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 4.9.7
+* Version 4.9.8
 *
 */
 
@@ -442,12 +442,14 @@ Hide Camera info
 						'wppa_bc_txt' 						=> htmlspecialchars('<span style="color:red; font_size:24px;">&bull;</span>'),	// 6
 						'wppa_bc_url' 						=> wppa_get_imgdir().'arrow.gif',	// 7
 						'wppa_pagelink_pos'					=> 'bottom',	// 8
+						'wppa_bc_slide_thumblink'			=> 'no',
 						// B Slideshow
 						'wppa_show_startstop_navigation' 	=> 'yes',		// 1
 						'wppa_show_browse_navigation' 		=> 'yes',		// 2
 						'wppa_filmstrip' 					=> 'yes',		// 3
 						'wppa_film_show_glue' 				=> 'yes',		// 4
 						'wppa_show_full_name' 				=> 'yes',		// 5
+						'wppa_show_full_owner'				=> 'no', 		// 5.1
 						'wppa_show_full_desc' 				=> 'yes',		// 6
 						'wppa_hide_when_empty'				=> 'no',		// 6.1
 						'wppa_rating_on' 					=> 'yes',		// 7
@@ -477,6 +479,7 @@ Hide Camera info
 						'wppa_share_single_image'			=> 'no',
 						// C Thumbnails
 						'wppa_thumb_text_name' 				=> 'yes',	// 1
+						'wppa_thumb_text_owner'				=> 'no',	// 1.1
 						'wppa_thumb_text_desc' 				=> 'yes',	// 2
 						'wppa_thumb_text_rating' 			=> 'yes',	// 3
 						'wppa_popup_text_name' 				=> 'yes',	// 4

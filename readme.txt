@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile
-Version: 4.9.7
+Version: 4.9.8
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -170,6 +170,21 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 4.9.8 =
+
+= Bug Fixes =
+
+* Fixed a spurious error that caused the shortcode generator to display an empty dialogbox (pathed during 4.9.7).
+* Under some circumstances the language setting was lost during navigation. Fixed.
+
+= New Features =
+
+* If Table II-B5.1 is checked: add the uploaders display name in parenthesis to the photo name in the slideshow photo name box.
+* If Table II-C1.1 is checked: add the uploaders display name in parenthesis to the photo name under the thumbnail.
+* Comment notify ( Table IV-F5 ) has been extended with 3 new selection options: Uploader, Uploader and admin, Uploader and Albumowner. 
+There will be no duplicate emails to the same user when there is more than one reasons to send him an email notification.
+* If Table II-A9 is checked: display in the breadcrumb box an iconic link to a thumbnail display of the photos in a slideshow.
 
 = 4.9.7 =
 
