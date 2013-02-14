@@ -364,7 +364,7 @@ global $wppa_opt;
 			}
 		}
 	
-		$pad = round($wppa_opt['wppa_ratspacing'] / 2);
+		$pad = round(($wppa_opt['wppa_ratspacing'] - $fs) / 2);
 		if ( $pad < 5 ) $pad = '5';
 		$tdstyle = 'style="height:'.$fs.'px; margin:0 0 -3px 0; padding:0 '.$pad.'px; box-shadow:none;"';
 		if ( $wppa_opt['wppa_dislike_mail_every'] ) {
