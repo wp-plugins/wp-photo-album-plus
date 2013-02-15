@@ -262,7 +262,7 @@ global $wppa_opt;
 	// 1. The given query string applies to this invocation (occurrance)
 	//    This invocation requires the ignorance of the filter results and the interpretation of the querystring.
 	if ( ( wppa_get_get('occur') || wppa_get_get('woccur') ) &&								// There IS a query string. For bw compat, occur is required ...
-		 ( wppa_get_get('album', false) !== false || wppa_get_get('photo') ) &&				// ... but not sufficient. Must have at least also album or photo
+//		 ( wppa_get_get('album', false) !== false || wppa_get_get('photo') ) &&				// ... but not sufficient. Must have at least also album or photo
 		 ( ( $wppa['in_widget'] && $wppa['widget_occur'] == wppa_get_get('woccur') ) ||		// and it applies to ...
 		 ( ! $wppa['in_widget'] && $wppa['occur'] == wppa_get_get('occur') ) )				// this occurrance
 		 ) {
@@ -271,6 +271,8 @@ global $wppa_opt;
 		$wppa['start_album'] 	= wppa_get_get('album', '');
 		$wppa['is_cover'] 		= wppa_get_get('cover', '0');
 		$wppa['is_slide'] 		= wppa_get_get('slide', false) !== false || ( wppa_get_get('album', false) !== false && wppa_get_get('photo') );
+if ( $wppa['is_slide'] ) wppa_dbg_msg('Is Slide');
+else wppa_dbg_msg('Is NOT Slide');
 		$wppa['is_slideonly'] 	= '0';
 		$wppa['is_slideonlyf'] 	= '0';
 		$wppa['single_photo'] 	= $wppa['is_slide'] ? '0' : wppa_get_get('photo', '');
@@ -286,6 +288,8 @@ global $wppa_opt;
 		$wppa['comten_count'] 	= wppa_get_get('comten', '0');
 		$wppa['is_comten']		= $wppa['comten_count'] != '0';
 		$wppa['is_tag']			= trim(strip_tags(wppa_get_get('tag', false)), ',');
+if ( $wppa['is_tag'] ) wppa_dbg_msg('Is Tag');
+else wppa_dbg_msg('Is NOT Tag');
 		$wppa['photos_only'] 	= wppa_get_get('photos-only', false);
 	}
 	// 2. wppa_albums is called directly. Assume any arg. If not, no worry, system defaults are used == generic
