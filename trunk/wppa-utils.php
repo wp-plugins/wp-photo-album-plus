@@ -126,6 +126,7 @@ global $thumb;
 // See if an album is in a separate tree
 function wppa_is_separate($id) {
 
+	if ( $id == '' ) return false;
 	if ( ! is_numeric($id) ) {
 		wppa_dbg_msg('Invalid arg wppa_is_separate('.$id.')', 'red');
 		return false;
