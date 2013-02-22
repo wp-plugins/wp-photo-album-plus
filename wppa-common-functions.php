@@ -2,11 +2,11 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 4.9.8
+* version 4.9.10
 *
 */
 global $wppa_api_version;
-$wppa_api_version = '4-9-8-000';
+$wppa_api_version = '4-9-10-000';
 // Initialize globals and option settings
 function wppa_initialize_runtime($force = false) {
 global $wppa;
@@ -167,7 +167,8 @@ global $wppa_initruntimetime;
 						
 						// Table II: Visibility
 						// A Breadcrumb
-						'wppa_show_bread' 					=> '',	// 1
+						'wppa_show_bread_posts' 			=> '',	// 1a
+						'wppa_show_bread_pages'				=> '', 	// 1b
 						'wppa_bc_on_search'					=> '',	// 2
 						'wppa_bc_on_topten'					=> '',	// 3
 						'wppa_bc_on_lasten'					=> '',	// 3
@@ -483,6 +484,7 @@ global $wppa_initruntimetime;
 						'wppa_arrow_color' 				=> '',
 						'wppa_search_linkpage' 			=> '',
 						'wppa_excl_sep' 				=> '',
+						'wppa_search_tags'				=> '',
 						'wppa_photos_only'				=> '',	// 3
 						
 						'wppa_meta_page'				=> '',	// 9
@@ -493,6 +495,7 @@ global $wppa_initruntimetime;
 
 						'wppa_use_wp_editor'			=> '',	//A 11
 						'wppa_hier_albsel' 				=> '',
+						'wppa_alt_type'					=> '',
 						
 						'wppa_html' 					=> '',
 						'wppa_allow_debug' 				=> '',

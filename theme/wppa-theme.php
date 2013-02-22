@@ -3,11 +3,11 @@
 * Package: wp-photo-album-plus
 *
 * display the albums/photos/slideshow in a page or post
-* Version 4.9.3
+* Version 4.9.10
 */
 function wppa_theme() {
 
-global $wppa_version; $wppa_version = '4-8-7';		// The version number of this file, please change if you modify this file
+global $wppa_version; $wppa_version = '4-9-10';		// The version number of this file, please change if you modify this file
 global $wppa;
 global $wppa_opt;
 global $wppa_show_statistics;						// Can be set to true by a custom page template
@@ -102,6 +102,7 @@ wppa_container('open');																// Open container
 	
 	elseif (wppa_page('slide') || wppa_page('single')) {							// Page 'Slideshow' or 'Single' in browsemode requested
 		$thumbs = wppa_get_thumbs();
+		wppa_dbg_msg('From theme: #thumbs='.($thumbs ? count($thumbs) : '0'));
 		if ( $thumbs ) {
 			wppa_the_slideshow();													// Producs all the html required for the slideshow
 			wppa_run_slidecontainer('slideshow');									// Fill in the photo array and display it.

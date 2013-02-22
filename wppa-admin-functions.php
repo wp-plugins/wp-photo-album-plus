@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 * gp admin functions
-* version 4.9.0
+* version 4.9.10
 *
 * 
 */
@@ -82,7 +82,7 @@ global $wppa;
 					$slug = substr($buffer, 0, $cpos);
 					$value = stripslashes(substr($buffer, $cpos+1, $delta_l));
 					//wppa_dbg_msg('Doing|'.$slug.'|'.$value);
-					if ( ! in_array($slug, $void_these)) wppa_wppa_update_option($slug, $value);
+					if ( ! in_array($slug, $void_these)) wppa_update_option($slug, $value);
 					else wppa_dbg_msg($slug.' skipped');
 				}
 			}
@@ -267,7 +267,7 @@ global $wpdb;
 	// Make new db table entry
 	$id = wppa_nextkey(WPPA_PHOTOS);
 	$owner = wppa_get_user();
-	$query = $wpdb->prepare('INSERT INTO `' . WPPA_PHOTOS . '` (`id`, `album`, `ext`, `name`, `p_order`, `description`, `mean_rating`, `linkurl`, `linktitle`, `linktarget`, `timestamp`, `owner`, `status`, `tags`) VALUES (%s, %s, %s, %s, %s, %s, \'\', %s, %s, %s, %s, %s, %s, %s)', $id, $album, $ext, $name, $porder, $desc, $linkurl, $linktitle, $linktarget, time(), $owner, $status, '');
+	$query = $wpdb->prepare('INSERT INTO `' . WPPA_PHOTOS . '` (`id`, `album`, `ext`, `name`, `p_order`, `description`, `mean_rating`, `linkurl`, `linktitle`, `linktarget`, `timestamp`, `owner`, `status`, `tags`, `alt`) VALUES (%s, %s, %s, %s, %s, %s, \'\', %s, %s, %s, %s, %s, %s, %s, %s)', $id, $album, $ext, $name, $porder, $desc, $linkurl, $linktitle, $linktarget, time(), $owner, $status, '', '');
 	if ($wpdb->query($query) === false) return $err;
 
 	$err = '4';

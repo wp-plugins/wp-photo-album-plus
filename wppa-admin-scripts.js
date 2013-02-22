@@ -1,7 +1,7 @@
 /* admin-scripts.js */
 /* Package: wp-photo-album-plus
 /*
-/* Version 4.9.2
+/* Version 4.9.10
 /* Various js routines used in admin pages		
 */
 
@@ -260,7 +260,9 @@ function wppaCheckUseCoverOpacity() {
 
 /* Enables or disables secundairy breadcrumb settings */
 function wppaCheckBreadcrumb() {
-	var Bc = document.getElementById('wppa_show_bread').checked;
+	var Bca = document.getElementById('wppa_show_bread_posts').checked;
+	var Bcb = document.getElementById('wppa_show_bread_pages').checked;
+	var Bc = Bca || Bcb;
 	if (Bc) {
 		jQuery('.wppa_bc').css('display', '');
 		jQuery('.wppa_bc_html').css('display', '');

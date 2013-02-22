@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains low-level utility routines
-* Version 4.9.8
+* Version 4.9.10
 *
 */
 
@@ -461,4 +461,31 @@ function wppa_send_mail($to, $subj, $cont, $photo, $email = '') {
 				
 	$iret = mail( $to , '['.str_replace('&#039;', '', get_bloginfo('name')).'] '.$subj , $message , $from . $extraheaders, '' );
 	if ( ! $iret ) echo 'Mail sending Failed';
+}
+
+function wppa_get_imgalt($id) {
+global $thumb;
+global $wppa_opt;
+
+	wppa_cache_thumb($id);
+	switch ( $wppa_opt['wppa_alt_type'] ) {
+		case 'fullname':
+			$result = ' alt="'.esc_attr(wppa_get_photo_name($id)).'" ';
+			break;
+		case 'namenoext':
+			$temp = wppa_get_photo_name($id);
+			$ext = strrchr($temp, '.');
+			if ( $ext ) {
+				$temp = strstr($temp, $ext, true);
+			}
+			$result = ' alt="'.esc_attr($temp).'" ';
+			break;
+		case 'custom':
+			$result = ' alt="'.esc_attr($thumb['alt']).'" ';
+			break;
+		default:
+			$result = '';
+			break;
+	}
+	return $result;
 }

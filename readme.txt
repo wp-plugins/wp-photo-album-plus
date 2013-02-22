@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile
-Version: 4.9.9
+Version: 4.9.10
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -170,6 +170,19 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 4.9.10 =
+
+= Bug Fixes =
+
+* Due to a typo it was not possible to restore a settings back-up file. Fixed.
+
+= New Features =
+
+* The visitor can now select wether photos should have *all* tags (and) or *any* tag (or) set in the Photo Tags Filter widget.
+* Setting Table II-A1: Show breadcrumb, has been split into 1a (for posts) and 1b (for pages).
+* If Table IX-C2.1 is checked, searching will include the tags to be searched.
+* HTML img alt attribute type can be set in Table IX-A13.
 
 = 4.9.9 =
 

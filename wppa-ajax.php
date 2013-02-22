@@ -2,7 +2,7 @@
 /* wppa-ajax.php
 *
 * Functions used in ajax requests
-* version 4.9.4
+* version 4.9.10
 *
 */
 add_action('wp_ajax_wppa', 'wppa_ajax_callback');
@@ -517,6 +517,7 @@ global $wppa;
 				case 'linktarget':
 				case 'tags':
 				case 'status':
+				case 'alt':
 					switch ($item) {
 						case 'name':
 							$value = strip_tags($value);
@@ -578,6 +579,10 @@ global $wppa;
 							break;
 						case 'status':
 							$itemname = __('Status', 'wppa');
+							break;
+						case 'alt':
+							$itemname = __('HTML Alt', 'wppa');
+							$value = strip_tags(stripslashes($value));
 							break;
 						default:
 							$itemname = $item;
