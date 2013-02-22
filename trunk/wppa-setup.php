@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 4.9.8
+* Version 4.9.10
 *
 */
 
@@ -72,6 +72,7 @@ global $silent;
 					status tinytext NOT NULL,
 					rating_count bigint(20) NOT NULL default '0',
 					tags tinytext NOT NULL,
+					alt tinytext NOT NULL,
 					PRIMARY KEY  (id) 
 					) DEFAULT CHARACTER SET utf8;";
 
@@ -248,6 +249,11 @@ global $silent;
 			wppa_rename_setting('wppa_comment_count', 'wppa_comten_count');
 			wppa_rename_setting('wppa_comment_size', 'wppa_comten_size');
 		}
+		if ( $old_rev <= '4910' ) {
+			wppa_copy_setting('wppa_show_bread', 'wppa_show_bread_posts');
+			wppa_copy_setting('wppa_show_bread', 'wppa_show_bread_pages');
+			wppa_remove_setting('wppa_show_bread');
+		}
 
 	}
 	
@@ -270,7 +276,7 @@ global $silent;
 	// Check if this update comes with a new wppa-theme.php and/or a new wppa-style.css
 	// If so, produce message
 	$key = '0';
-	if ( $old_rev < '4903' ) {		// theme changed since...
+	if ( $old_rev < '4910' ) {		// theme changed since...
 		$usertheme_old 	= ABSPATH.'wp-content/themes/'.get_option('template').'/wppa_theme.php';
 		$usertheme 		= ABSPATH.'wp-content/themes/'.get_option('template').'/wppa-theme.php';
 		if ( is_file( $usertheme ) || is_file( $usertheme_old ) ) $key += '2';
@@ -430,7 +436,8 @@ Hide Camera info
 
 						// Table II: Visibility
 						// A Breadcrumb
-						'wppa_show_bread' 					=> 'yes',	// 1
+						'wppa_show_bread_posts' 			=> 'yes',	// 1a
+						'wppa_show_bread_pages'				=> 'yes',	// 1b
 						'wppa_bc_on_search'					=> 'yes',	// 2
 						'wppa_bc_on_topten'					=> 'yes',	// 3
 						'wppa_bc_on_lasten'					=> 'yes',	// 3
@@ -752,6 +759,7 @@ Hide Camera info
 						'wppa_meta_all'					=> 'yes',		// 10
 						'wppa_use_wp_editor'			=> 'no',
 						'wppa_hier_albsel' 				=> 'no',
+						'wppa_alt_type'					=> 'fullname',
 
 						// B New
 						'wppa_max_album_newtime'		=> '0',		// 1
@@ -765,6 +773,7 @@ Hide Camera info
 						// C Search
 						'wppa_search_linkpage' 			=> '0',		// 1
 						'wppa_excl_sep' 				=> 'no',	// 2
+						'wppa_search_tags'				=> 'no',
 						'wppa_photos_only'				=> 'no',	// 3
 						// D Watermark
 						'wppa_watermark_on'				=> 'no',

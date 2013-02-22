@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 4.9.8
+* Version 4.9.10
 *
 */
 
@@ -718,13 +718,21 @@ global $wppa_revno;
 							
 							wppa_setting_subheader('A', '1', __('Breadcrumb related settings', 'wppa'));
 							
-							$name = __('Breadcrumb', 'wppa');
+							$name = __('Breadcrumb on posts', 'wppa');
 							$desc = __('Show breadcrumb navigation bars.', 'wppa');
 							$help = esc_js(__('Indicate whether a breadcrumb navigation should be displayed', 'wppa'));
-							$slug = 'wppa_show_bread';
+							$slug = 'wppa_show_bread_posts';
 							$onchange = 'wppaCheckBreadcrumb()';
 							$html = wppa_checkbox($slug, $onchange);
-							wppa_setting($slug, '1', $name, $desc, $html, $help);
+							wppa_setting($slug, '1a', $name, $desc, $html, $help);
+
+							$name = __('Breadcrumb on pages', 'wppa');
+							$desc = __('Show breadcrumb navigation bars.', 'wppa');
+							$help = esc_js(__('Indicate whether a breadcrumb navigation should be displayed', 'wppa'));
+							$slug = 'wppa_show_bread_pages';
+							$onchange = 'wppaCheckBreadcrumb()';
+							$html = wppa_checkbox($slug, $onchange);
+							wppa_setting($slug, '1b', $name, $desc, $html, $help);
 
 							$name = __('Breadcrumb on search results', 'wppa');
 							$desc = __('Show breadcrumb navigation bars on the search results page.', 'wppa');
@@ -3116,6 +3124,15 @@ global $wppa_revno;
 							$html = wppa_checkbox($slug);
 							wppa_setting($slug, '12', $name, $desc, $html, $help);
 							
+							$name = __('Image Alt attribute type');
+							$desc = __('Select kind of HTML alt="" content for images.', 'wppa');
+							$help = '';
+							$slug = 'wppa_alt_type';
+							$options = array( __('--- none ---', 'wppa'), __('photo name', 'wppa'), __('name without file-ext', 'wppa'), __('set in album admin', 'wppa') );
+							$values = array( 'none', 'fullname', 'namenoext', 'custom');
+							$html = wppa_select($slug, $options, $values);
+							wppa_setting($slug, '13', $name, $desc, $html, $help);
+							
 							wppa_setting_subheader('B', '1', __('New Album and New Photo related miscellaneous settings', 'wppa'));
 
 							$name = __('New Album', 'wppa');
@@ -3199,6 +3216,7 @@ global $wppa_revno;
 							$help .= '\n'.esc_js(__('You may give it the title "Search results" or something alike.', 'wppa'));
 							$help .= '\n'.esc_js(__('Or you ou may use the standard page on which you display the generic album.', 'wppa'));
 							$slug = 'wppa_search_linkpage';
+							wppa_verify_page($slug);
 							$query = "SELECT ID, post_title, post_content FROM " . $wpdb->posts . " WHERE post_type = 'page' AND post_status = 'publish' ORDER BY post_title ASC";
 							$pages = $wpdb->get_results($query, ARRAY_A);
 							$options = false;
@@ -3226,6 +3244,13 @@ global $wppa_revno;
 							$slug = 'wppa_excl_sep';
 							$html = wppa_checkbox($slug);
 							wppa_setting($slug, '2', $name, $desc, $html, $help);
+
+							$name = __('Include tags', 'wppa');
+							$desc = __('Do also search the photo tags.', 'wppa');
+							$help = esc_js(__('When checked, the tags of the photo will also be searched.', 'wppa'));
+							$slug = 'wppa_search_tags';
+							$html = wppa_checkbox($slug);
+							wppa_setting($slug, '2.1', $name, $desc, $html, $help);
 							
 							$name = __('Photos only', 'wppa');
 							$desc = __('Search for photos only.', 'wppa');

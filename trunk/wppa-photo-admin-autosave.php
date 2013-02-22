@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * edit and delete photos
-* version 4.9.7
+* version 4.9.10
 *
 */
 
@@ -189,13 +189,26 @@ function wppa_album_photos($album = '', $photo = '', $owner = '') {
 									<input type="text" style="width:100%;" onchange="wppaAjaxUpdatePhoto(<?php echo $photo['id'] ?>, 'linktitle', this)" value="<?php echo(stripslashes($photo['linktitle'])) ?>" />
 								</td>
 							</tr>
+							<tr style="padding-left:10px; font-size:9px; line-height:10px; color:#666;" >
+								<td colspan="2" style="padding-top:0" >
+									<?php _e('If you want this link to be used, check \'PS Overrule\' checkbox in table VI.', 'wppa') ?>
+								</td>
+							</tr>
+							<!-- Alt custom field -->
+							<?php
+							if ( $wppa_opt['wppa_alt_type'] == 'custom' ) { ?>
+							<tr style="vertical-align:top;" >
+								<th scope="row" style="padding-top:0; padding-bottom:0;">
+									<label><?php _e('HTML Alt attribute:', 'wppa') ?></label>
+								</th>
+								<td style="padding-top:0; padding-bottom:0;">
+									<input type="text" style="width:100%;" onchange="wppaAjaxUpdatePhoto(<?php echo $photo['id'] ?>, 'alt', this)" value="<?php echo(stripslashes($photo['alt'])) ?>" />
+								</td>
+							</tr>
+							<?php } ?>
 
 						</tbody>
-					</table>
-				
-					<p style="padding-left:10px; font-size:9px; line-height:10px; color:#666;" >
-						<?php _e('If you want this link to be used, check \'PS Overrule\' checkbox in table VI of the Photo Albums -> Settings admin page.', 'wppa') ?>
-					</p>
+					</table>	
 				</div>
 				
 				<!-- Right half starts here -->

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the search widget
-* Version 4.7.0
+* Version 4.9.10
 *
 */
 
@@ -20,6 +20,7 @@ class SearchPhotos extends WP_Widget {
 		global $widget_content;
 		global $wppa;
 		global $wppa_opt;
+		global $wpdb;
 
         extract( $args );
 
@@ -30,11 +31,13 @@ class SearchPhotos extends WP_Widget {
 		// Display the widget
 		echo $before_widget;
 			
-		if ( !empty( $widget_title ) ) { echo $before_title . $widget_title . $after_title; }
+		if ( ! empty( $widget_title ) ) { echo $before_title . $widget_title . $after_title; }
 		
 		$page = $wppa_opt['wppa_search_linkpage'];
-		if ($page == '0') {
-			_e('Warning. No page defined for search results!', 'wppa');
+		$iret = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `" . $wpdb->posts . "` WHERE `post_type` = 'page' AND `post_status` = 'publish' AND `ID` = %s", $page));
+		if ( ! $iret ) $page = '0';	// Page vanished
+		if ( $page == '0' ) {
+			echo __a('Please select a search results landing page in Table IX-C1');
 		}
 		else {
 			$pagelink = wppa_dbg_url(get_page_link($page));
