@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 4.9.10
+* Version 4.9.11
 *
 */
 
@@ -3079,14 +3079,23 @@ global $wppa_revno;
 							$html = wppa_input($slug, '100px');
 							wppa_setting($slug, '6', $name, $desc, $html, $help, $class);
 							
-							$name = __('Foreign shortcodes', 'wppa');
+							$name = __('Foreign shortcodes fullsize', 'wppa');
 							$desc = __('Enable the use of non-wppa+ shortcodes in fullsize photo descriptions.', 'wppa');
 							$help = esc_js(__('When checked, you can use shortcodes from other plugins in the description of photos.', 'wppa'));
 							$help .= '\n\n'.esc_js(__('The shortcodes will be expanded in the descriptions of fullsize images.', 'wppa'));
 							$help .= '\n'.esc_js(__('You will most likely need also to check Table IX-A1 (Allow HTML).', 'wppa'));
 							$slug = 'wppa_allow_foreign_shortcodes';
 							$html = wppa_checkbox($slug);
-							wppa_setting($slug, '7', $name, $desc, $html, $help);
+							wppa_setting($slug, '7.1', $name, $desc, $html, $help);
+							
+							$name = __('Foreign shortcodes thumbnails', 'wppa');
+							$desc = __('Enable the use of non-wppa+ shortcodes in thumbnail photo descriptions.', 'wppa');
+							$help = esc_js(__('When checked, you can use shortcodes from other plugins in the description of photos.', 'wppa'));
+							$help .= '\n\n'.esc_js(__('The shortcodes will be expanded in the descriptions of thumbnail images.', 'wppa'));
+							$help .= '\n'.esc_js(__('You will most likely need also to check Table IX-A1 (Allow HTML).', 'wppa'));
+							$slug = 'wppa_allow_foreign_shortcodes_thumbs';
+							$html = wppa_checkbox($slug);
+							wppa_setting($slug, '7.2', $name, $desc, $html, $help);
 							
 							$name = __('Arrow color', 'wppa');
 							$desc = __('Left/right browsing arrow color.', 'wppa');

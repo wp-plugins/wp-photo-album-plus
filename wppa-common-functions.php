@@ -2,11 +2,11 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 4.9.10
+* version 4.9.11
 *
 */
 global $wppa_api_version;
-$wppa_api_version = '4-9-10-000';
+$wppa_api_version = '4-9-11-000';
 // Initialize globals and option settings
 function wppa_initialize_runtime($force = false) {
 global $wppa;
@@ -522,6 +522,7 @@ global $wppa_initruntimetime;
 						'wppa_watermark_upload'			=> '',
 						'wppa_watermark_opacity'		=> '',
 						'wppa_allow_foreign_shortcodes' => '',
+						'wppa_allow_foreign_shortcodes_thumbs' 	=> '',
 
 						// Photo of the day widget admin
 						'wppa_widgettitle'			=> '',
