@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains low-level utility routines
-* Version 4.9.10
+* Version 4.9.11
 *
 */
 
@@ -105,7 +105,7 @@ global $thumb;
 }
 
 // get the description of an image
-function wppa_get_photo_desc($id) {
+function wppa_get_photo_desc($id, $do_shortcodes = false) {
 global $thumb;
 
 	if ( ! is_numeric($id) || $id < '1' ) wppa_dbg_msg('Invalid arg wppa_get_photo_desc('.$id.')', 'red');
@@ -113,13 +113,18 @@ global $thumb;
 	$desc = $thumb['description'];			// Raw data
 	$desc = stripslashes($desc);			// Unescape
 	$desc = __($desc);						// qTranslate 
+
+	// To prevent recursive rendering of scripts or shortcodes:
+	$desc = str_replace(array('%%wppa%%', '[wppa', '[/wppa]'), array('%-wppa-%', '{wppa', '{/wppa}'), $desc);
+
+	if ( $do_shortcodes ) $desc = do_shortcode($desc);	// Do shortcodes if wanted
+	else $desc = strip_shortcodes($desc);				// Remove shortcodes if not wanted
+
 	$desc = wppa_html($desc);				// Enable html
 	$desc = balanceTags($desc, true);		// Balance tags
 	$desc = wppa_filter_iptc($desc, $id);	// Render IPTC tags
 	$desc = wppa_filter_exif($desc, $id);	// Render EXIF tags
 	
-	// To prevent recursive rendering of scripts or shortcodes:
-	$desc = str_replace(array('%%wppa%%', '[wppa', '[/wppa]'), array('%-wppa-%', '{wppa', '{/wppa}'), $desc);
 	return $desc;
 }
 

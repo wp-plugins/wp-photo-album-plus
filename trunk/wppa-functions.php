@@ -3,12 +3,12 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions and API modules
-* Version 4.9.10
+* Version 4.9.11
 *
 */
 /* Moved to wppa-common-functions.php:
 global $wppa_api_version;
-$wppa_api_version = '4-9-10-000';
+$wppa_api_version = '4-9-11-000';
 */
 
 if ( ! defined( 'ABSPATH' ) )
@@ -1184,7 +1184,7 @@ if ( $wppa['is_single'] ) $url .= 'wppa-single=1&';
 	
 	// Make photo desc, filtered
 	if ( !$wppa['is_slideonly'] || $wppa['desc_on'] ) {
-		$desc = wppa_get_photo_desc($id);
+		$desc = wppa_get_photo_desc($id, $wppa_opt['wppa_allow_foreign_shortcodes']);	// Foreign shortcodes is handled here
 		
 		// Run wpautop on description?
 		if ( $wppa_opt['wppa_run_wppautop_on_desc'] ) {
@@ -1192,9 +1192,9 @@ if ( $wppa['is_single'] ) $url .= 'wppa-single=1&';
 		}
 
 		// Further filtering required?
-		if ( $wppa_opt['wppa_allow_foreign_shortcodes'] ) {
-			$desc = do_shortcode($desc); //apply_filters('the_content', $desc);
-		}
+	//	if ( $wppa_opt['wppa_allow_foreign_shortcodes'] ) {
+	//		$desc = do_shortcode($desc); //apply_filters('the_content', $desc);
+	//	}
 		// And format
 		$desc = wppa_html(esc_js(stripslashes($desc)));
 
@@ -3467,7 +3467,7 @@ global $wpdb;
 	}
 	
 	if ($wppa_opt['wppa_thumb_text_desc'] || $thumb['status'] == 'pending') {
-		$desc = $thumb['status'] == 'pending' ? '<span style="color:red">'.__a('Awaiting moderation').'</span>' : wppa_get_photo_desc($thumb['id']);
+		$desc = $thumb['status'] == 'pending' ? '<span style="color:red">'.__a('Awaiting moderation').'</span>' : wppa_get_photo_desc($thumb['id'], $wppa_opt['wppa_allow_foreign_shortcodes_thumbs']);
 		$wppa['out'] .= wppa_nltab().'<div class="wppa-thumb-text" style="'.__wcs('wppa-thumb-text').'" >'.$desc.'</div>';
 	}
 	

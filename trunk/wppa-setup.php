@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 4.9.10
+* Version 4.9.11
 *
 */
 
@@ -754,6 +754,7 @@ Hide Camera info
 						'wppa_filter_priority'			=> '1001',		// 5
 						'wppa_lightbox_name'			=> 'wppa',		// 6
 						'wppa_allow_foreign_shortcodes' => 'no',		// 7
+						'wppa_allow_foreign_shortcodes_thumbs' 	=> 'no',
 						'wppa_arrow_color' 				=> 'black',
 						'wppa_meta_page'				=> 'yes',		// 9
 						'wppa_meta_all'					=> 'yes',		// 10
