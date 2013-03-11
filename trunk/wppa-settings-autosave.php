@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 4.9.11
+* Version 4.9.12
 *
 */
 
@@ -3440,6 +3440,19 @@ global $wppa_revno;
 							$slug = 'wppa_cp_points_upload';
 							$html = wppa_input($slug, '50px', '', __('points per upload', 'wppa'));
 							wppa_setting($slug, '3', $name, $desc, $html, $help);
+							
+							$name = __('Use SCABN', 'wppa');
+							$desc = __('Use the wppa interface to Simple Cart & Buy Now plugin.', 'wppa');
+							$help = esc_js(__('If checked, the shortcode to use for the "add to cart" button in photo descriptions is [cart ...]', 'wppa'));
+							$help .= '\n'.esc_js(__('as opposed to [scabn ...] for the original scabn "add to cart" button.', 'wppa'));
+							$help .= '\n'.esc_js(__('The shortcode for the check-out page is still [scabn]', 'wppa'));
+							$help .= '\n\n'.esc_js(__('The arguments are the same, the defaults are: name = photoname, price = 0.01.', 'wppa'));
+							$help .= '\n'.esc_js(__('Supplying the price should be sufficient; supply a name only when it differs from the photo name.', 'wppa'));
+							$help .= '\n\n'.esc_js(__('This shortcode handler will also work with Ajax enabled.', 'wppa'));
+							$help .= '\n\n'.esc_js(__('Using this interface makes sure that the item urls and callback action urls are correct.', 'wppa'));
+							$slug = 'wppa_use_scabn';
+							$html = wppa_checkbox($slug);
+							wppa_setting($slug, '4', $name, $desc, $html, $help);
 							
 							wppa_setting_subheader('G', '1', __('QR Code widget settings. The colors also apply to the QR code in the Share box.', 'wppa'));
 							

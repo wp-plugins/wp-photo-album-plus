@@ -2,11 +2,11 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 4.9.11
+* version 4.9.12
 *
 */
 global $wppa_api_version;
-$wppa_api_version = '4-9-11-000';
+$wppa_api_version = '4-9-12-000';
 // Initialize globals and option settings
 function wppa_initialize_runtime($force = false) {
 global $wppa;
@@ -88,7 +88,8 @@ global $wppa_initruntimetime;
 			'is_comten'					=> false,
 			'comten_count'				=> '0',
 			'is_tag'					=> false,
-			'photos_only'				=> false
+			'photos_only'				=> false,
+			'page'						=> ''
 
 		);
 
@@ -492,6 +493,7 @@ global $wppa_initruntimetime;
 						'wppa_cp_points_comment'		=> '',
 						'wppa_cp_points_rating'			=> '',
 						'wppa_cp_points_upload'			=> '',
+						'wppa_use_scabn'				=> '',
 
 						'wppa_use_wp_editor'			=> '',	//A 11
 						'wppa_hier_albsel' 				=> '',
