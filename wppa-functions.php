@@ -3,12 +3,12 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions and API modules
-* Version 4.9.11
+* Version 4.9.12
 *
 */
 /* Moved to wppa-common-functions.php:
 global $wppa_api_version;
-$wppa_api_version = '4-9-11-000';
+$wppa_api_version = '4-9-12-000';
 */
 
 if ( ! defined( 'ABSPATH' ) )
@@ -184,7 +184,7 @@ global $wpdb;
 			if ($fs != '') $fs += 3; else $fs = '15';	// iconsize = fontsize+3, Default to 15
 			$imgs = 'height: '.$fs.'px; margin:0 0 -3px 0; padding:0; box-shadow:none;';
 			$wppa['out'] .= '<a href="javascript:void()" title="'.__a('Thumbnail view', 'wppa').'" class="wppa-nav-text" style="'.__wcs('wppa-nav-text').'float:right; cursor:pointer;" onclick="'.$onclick.'" >'.
-				'<img src="'.wppa_get_imgdir().'application_view_icons.png" alt="'.__('Thumbs', 'wppa_theme').'" style="'.$imgs.'" />'.
+				'<img src="'.wppa_get_imgdir().'application_view_icons.png" alt="'.__a('Thumbs', 'wppa_theme').'" style="'.$imgs.'" />'.
 			'</a>';
 		}
 	}
@@ -309,6 +309,7 @@ else wppa_dbg_msg('Is NOT Slide');
 if ( $wppa['is_tag'] ) wppa_dbg_msg('Is Tag');
 else wppa_dbg_msg('Is NOT Tag');
 		$wppa['photos_only'] 	= wppa_get_get('photos-only', false);
+		$wppa['page'] 			= wppa_get_get('page', '');
 	}
 	// 2. wppa_albums is called directly. Assume any arg. If not, no worry, system defaults are used == generic
 	elseif ( $id != '' || $type != '' || $size != '' || $align != '' ) {
@@ -531,6 +532,7 @@ global $album;
 	$wppa['is_landing'] 	= '0';
 	$wppa['start_photo'] 	= '0';
 	$wppa['photos_only']	= false;
+	$wppa['page'] 			= '';
 
 }
 
@@ -711,6 +713,17 @@ global $wppa_opt;
 		}
 		else $albums = false;
 	}
+	
+	// Check for empty albums
+	$user = wppa_get_user();
+	if ( is_array($albums) ) foreach (array_keys($albums) as $albumkey) {
+		$albumid 	= $albums[$albumkey]['id'];
+		$albumowner = $albums[$albumkey]['owner'];
+		$photocount = wppa_get_photo_count($albumid);
+		$albumcount = wppa_get_album_count($albumid);
+		if ( ! $photocount && ! $albumcount && ! current_user_can('administrator') && $user != $albumowner ) unset($albums[$albumkey]);
+	}
+	
 	$wppa['album_count'] = count($albums);
 	return $albums;
 }
@@ -1045,6 +1058,8 @@ global $thumb;
 	$photo = wppa_get_get('photo', '0');
 	$ratingphoto = wppa_get_get('rating-id', '0');
 	
+	if ( ! $callbackid ) $callbackid = $id;
+	
 	// Process a comment if given for this photo
 	$comment_request = (wppa_get_post('commentbtn') && ($id == $photo));
 	$comment_allowed = (!$wppa_opt['wppa_comment_login'] || is_user_logged_in());
@@ -1089,47 +1104,10 @@ global $thumb;
 	// Find comments
 	$comment = $wppa_opt['wppa_show_comments'] ? wppa_comment_html($id, $comment_allowed) : '';
 	
-	// Compose the rating request callback url.
+	// Get the callback url.
 	if ( $wppa_opt['wppa_rating_on'] ) {
-		$url = wppa_get_permalink('js');
-		if ( $wppa['start_album'] ) $url .= 'wppa-album='.$wppa['start_album'].'&';
-		else $url .= 'wppa-album=0&';
-//		if ( wppa_get_get('album', false) !== false ) $url .= 'wppa-album='.wppa_get_get('album').'&';
-//		if (wppa_get_get('cover')) 
-		$url .= 'wppa-cover=0&';
-//		if ( wppa_get_get('slide') !== false ) 
-$url .= 'wppa-slide&';
-if ( $wppa['is_single'] ) $url .= 'wppa-single=1&';
-
-		if ($wppa['in_widget']) {
-			$url .= 'wppa-woccur='.$wppa['widget_occur'].'&';
-		}
-		else {
-		   $url .= 'wppa-occur='.$wppa['occur'].'&';
-		}
-
-//		if (wppa_get_get('topten')) {
-//			$url .= 'wppa-topten='.wppa_get_get('topten').'&';
-//		}
-//		else
-		if ( $wppa['is_topten'] ) {
-			$url .= 'wppa-topten='.$wppa['topten_count'].'&';
-		}
-
-		if ( $wppa['is_lasten'] ) {
-			$url .= 'wppa-lasten='.$wppa['lasten_count'].'&';
-		}
-
-		if ( $wppa['is_comten'] ) {
-			$url .= 'wppa-comten='.$wppa['comten_count'].'&';
-		}
-
-		if ( $wppa['is_tag'] ) {
-			$url .= 'wppa-tag='.$wppa['is_tag'].'&';
-		}
-
-		if ( $callbackid ) $url .= 'wppa-photo=' . $callbackid;
-		else $url .= 'wppa-photo=' . $id;
+		$url = wppa_get_slide_callback_url($callbackid);
+		$url = str_replace('&amp;', '&', $url);	// js use
 	}
 	else {
 		$url = '';
@@ -2858,7 +2836,7 @@ global $album;
 		if ($wppa_alt == 'even') $wppa_alt = 'alt'; else $wppa_alt = 'even';
 	}
 	elseif ($action == 'close') {
-		wppa_user_upload_html($wppa['current_album'], wppa_get_container_width('netto'));
+		wppa_user_upload_html($wppa['current_album'], wppa_get_container_width('netto'), false);
 		$wppa['out'] .= wppa_nltab().'<div style="clear:both;"></div>';		
 
 		$wppa['out'] .= wppa_nltab('-').'</div><!-- wppa-thumbarea-'.$wppa['master_occur'].' -->';
@@ -3166,7 +3144,7 @@ global $wpdb;
 		
 		$wppa['out'] .= wppa_nltab().'<div style="clear:both;"></div>';		
 		
-		wppa_user_upload_html($album['id'], wppa_get_cover_width('cover'));
+		wppa_user_upload_html($album['id'], wppa_get_cover_width('cover'), true);
 
 	$wppa['out'] .= wppa_nltab('-').'</div><!-- #album-'.$album['id'].'-'.$wppa['master_occur'].' -->';
 	if ($wppa_alt == 'even') $wppa_alt = 'alt'; else $wppa_alt = 'even';
@@ -3569,8 +3547,9 @@ global $thumb;
 				echo 'Unexpected error unknown wppa_start_slide in wppa_run_slidecontainer';
 		}
 		// A requested photo id overrules the method. $startid >0 is requested photo id, -1 means: no id requested
-		if (wppa_get_get('photo')) $startid = wppa_get_get('photo');	// Still slideshow at photo id $startid
-		else if ( $wppa['start_photo'] ) $startid = $wppa['start_photo'];
+//?		if (wppa_get_get('photo')) $startid = wppa_get_get('photo');	// Still slideshow at photo id $startid
+//?		else 
+		if ( $wppa['start_photo'] ) $startid = $wppa['start_photo'];
 		else $startid = -1;
 		
 		// Find album
@@ -4930,7 +4909,7 @@ global $allalbums;
 	return $result;	
 }
 
-function wppa_user_upload_html($alb, $width) {
+function wppa_user_upload_html($alb, $width, $oncover = true) {
 global $wppa;
 global $wppa_opt;
 
@@ -4949,15 +4928,17 @@ global $wppa_opt;
 		return;											// Max quota reached
 	}
 
-	// Prepare the required extra url args
-	$album = wppa_get_get('album', '');
-	$cover = wppa_get_get('cover', '');
-
+	// Create the return url
 	$returnurl = wppa_get_permalink();
-	if ($album) 	$returnurl .= 'wppa-album='.$album.'&amp;';
-	if ($cover) 	$returnurl .= 'wppa-cover='.$cover.'&amp;';
-					$returnurl .= 'wppa-occur='.$wppa['occur'];
+	if ( $oncover ) {
+		$returnurl .= 'wppa-album='.wppa_get_parentalbumid($alb).'&amp;wppa-cover=0&amp;wppa-occur='.$wppa['occur'];
+	}
+	else {
+		$returnurl .= 'wppa-album='.$alb.'&amp;wppa-cover=0&amp;wppa-occur='.$wppa['occur'];
+	}
+	if ( $wppa['page'] ) $returnurl .= '&amp;wppa-page='.$wppa['page'];
 	
+	// Make the HTML
 	$wppa['out'] .= wppa_nltab().'<a id="wppa-up-'.$alb.'-'.$wppa['master_occur'].'" onclick="jQuery(\'#wppa-up-'.$alb.'-'.$wppa['master_occur'].'\').css(\'display\',\'none\');jQuery(\'#wppa-file-'.$alb.'-'.$wppa['master_occur'].'\').css(\'display\',\'block\');wppaColWidth['.$wppa['master_occur'].']=0;" class="" style="float:left; cursor:pointer;">'.__a('Upload Photo').'</a>';
 	$wppa['out'] .= wppa_nltab('+').'<div id="wppa-file-'.$alb.'-'.$wppa['master_occur'].'" class="wppa-file" style="width:'.$width.'px;text-align:center;display:none" >';
 		$wppa['out'] .= wppa_nltab('+').'<form action="'.$returnurl.'" method="post" enctype="multipart/form-data">';
@@ -5846,7 +5827,7 @@ global $thumb;
 	$photo_name = __(stripslashes($thumb['name']));
 	
 	// The share description
-	$photo_desc = wppa_strip_tags(wppa_html(__(stripslashes($thumb['description']))), 'all');
+	$photo_desc = strip_shortcodes(wppa_strip_tags(wppa_html(__(stripslashes($thumb['description']))), 'all'));
 	
 	// The default description
 	$see_on_site = sprintf(__a('See this image on %s'), str_replace('&amp;', __a('and'), get_bloginfo('name')));

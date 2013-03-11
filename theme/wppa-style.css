@@ -8,7 +8,7 @@
 /*
 /* You may always look into a newer version of this file to see what new classes and id's come with an upgrade
 /*
-/* This is version 4.9.2
+/* This is version 4.9.12
 */
 
 .wppa-container img {
@@ -303,6 +303,11 @@ text-align:left;
 .wppa-multitag {
 	padding-top:6px;
 }
+
+.wppa-cartform {
+	margin: 0;
+}
+
 /* phpinfo */
 #phpinfo {background-color: #ffffff; color: #000000;}
 #phpinfo, #phpinfo td, #phpinfo th, #phpinfo h1, #phpinfo h2 {font-family: sans-serif;}

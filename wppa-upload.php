@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the upload/import pages and functions
-* Version 4.9.10
+* Version 4.9.12
 *
 */
 
@@ -32,17 +32,29 @@ global $wppa_revno;
 		check_admin_referer( '$wppa_nonce', WPPA_NONCE );
 		wppa_upload_multiple();
 		if ( isset( $_POST['wppa-go-edit-multiple'] ) ) {
-			wppa_ok_message(__('Connecting to edit album...', 'wppa')); ?>
-			<script type="text/javascript">document.location = '<?php echo(wppa_dbg_url(get_admin_url().'admin.php?page=wppa_admin_menu&tab=edit&edit_id='.$_POST['wppa-album'], 'js')) ?>';</script>
-		<?php }
+			if ( current_user_can('wppa_admin') ) {
+				wppa_ok_message(__('Connecting to edit album...', 'wppa')); ?>
+				<script type="text/javascript">document.location = '<?php echo(wppa_dbg_url(get_admin_url().'admin.php?page=wppa_admin_menu&tab=edit&edit_id='.$_POST['wppa-album'], 'js')) ?>';</script>
+			<?php }
+			else {
+				wppa_ok_message(__('Connecting to edit photos...', 'wppa')); ?>
+				<script type="text/javascript">document.location = '<?php echo(wppa_dbg_url(get_admin_url().'admin.php?page=wppa_edit_photo', 'js')) ?>';</script>
+			<?php }
+		}
 	}
 	if ( isset( $_POST['wppa-upload'] ) ) {
 		check_admin_referer( '$wppa_nonce', WPPA_NONCE );
 		wppa_upload_photos();
 		if ( isset( $_POST['wppa-go-edit-single'] ) ) {
-			wppa_ok_message(__('Connecting to edit album...', 'wppa')); ?>
-			<script type="text/javascript">document.location = '<?php echo(wppa_dbg_url(get_admin_url().'admin.php?page=wppa_admin_menu&tab=edit&edit_id='.$_POST['wppa-album'], 'js')) ?>';</script>
-		<?php }
+			if ( current_user_can('wppa_admin') ) {
+				wppa_ok_message(__('Connecting to edit album...', 'wppa')); ?>
+				<script type="text/javascript">document.location = '<?php echo(wppa_dbg_url(get_admin_url().'admin.php?page=wppa_admin_menu&tab=edit&edit_id='.$_POST['wppa-album'], 'js')) ?>';</script>
+			<?php }
+			else {
+				wppa_ok_message(__('Connecting to edit photos...', 'wppa')); ?>
+				<script type="text/javascript">document.location = '<?php echo(wppa_dbg_url(get_admin_url().'admin.php?page=wppa_edit_photo', 'js')) ?>';</script>
+			<?php }
+		}
 	} 
 	if ( isset( $_POST['wppa-upload-zip'] ) ) {
 		check_admin_referer( '$wppa_nonce', WPPA_NONCE );
@@ -153,7 +165,7 @@ global $wppa_revno;
 					</script>
 					<p>
 						<label for="wppa-album"><?php _e('Album:', 'wppa'); ?> </label>
-						<select name="wppa-album" id="wppa-album">
+						<select name="wppa-album" id="wppa-album-s">
 							<?php echo wppa_album_select_a(array('path' => wppa_switch('wppa_hier_albsel'),'addpleaseselect' => true, 'checkaccess' => true, 'checkupload' => true));//echo(wppa_album_select('', '', false, false, false, false, false, true)); ?>
 						</select>
 					</p>
@@ -170,12 +182,20 @@ global $wppa_revno;
 							</select>
 						</p>
 					<?php } ?>
-					<input type="submit" class="button-primary" name="wppa-upload-multiple" value="<?php _e('Upload Multiple Photos', 'wppa') ?>" />
+					<input  type="submit" class="button-primary" name="wppa-upload-multiple" value="<?php _e('Upload Multiple Photos', 'wppa') ?>" onclick="if ( document.getElementById('wppa-album-s').value == 0 ) { alert('<?php _e('Please select an album', 'wppa') ?>'); return false; }" />
 					<input type="checkbox" id="wppa-go-edit-multiple" name="wppa-go-edit-multiple" onchange="wppaCookieCheckbox(this, 'wppa-go-edit-multiple')" />&nbsp;
 					<script type="text/javascript" >
 						if ( wppa_getCookie('wppa-go-edit-multiple') == 'on' ) document.getElementById('wppa-go-edit-multiple').checked = 'checked';
 					</script>
-					<?php _e('After upload: Go to the <b>Edit Album</b> page.', 'wppa') ?>				</form>
+					<?php 
+					if ( current_user_can('wppa_admin') ) { 
+						_e('After upload: Go to the <b>Edit Album</b> page.', 'wppa');
+					} 
+					else {
+						_e('After upload: Go to the <b>Edit Photos</b> page.', 'wppa');
+					}
+					?>
+				</form>
 			</div>
 			<?php /* End multiple */ ?>
 
@@ -192,7 +212,7 @@ global $wppa_revno;
 					</div>
 					<p>
 						<label for="wppa-album"><?php _e('Album:', 'wppa'); ?> </label>
-						<select name="wppa-album" id="wppa-album">
+						<select name="wppa-album" id="wppa-album-m">
 							<?php echo wppa_album_select_a(array('path' => wppa_switch('wppa_hier_albsel'), 'addpleaseselect' => true, 'checkaccess' => true, 'checkupload' => true));//('', '', false, false, false, false, false, true)); ?>
 						</select>
 					</p>
@@ -209,13 +229,19 @@ global $wppa_revno;
 							</select>
 						</p>
 					<?php } ?>
-					<input type="submit" class="button-primary" name="wppa-upload" value="<?php _e('Upload Single Photos', 'wppa') ?>" />
-<input type="checkbox" id="wppa-go-edit-single" name="wppa-go-edit-single" onchange="wppaCookieCheckbox(this, 'wppa-go-edit-single')" />&nbsp;
-				
-<script type="text/javascript" >
-	if ( wppa_getCookie('wppa-go-edit-single') == 'on' ) document.getElementById('wppa-go-edit-single').checked = 'checked';
-</script>
-<?php _e('After upload: Go to the <b>Edit Album</b> page.', 'wppa') ?>	
+					<input type="submit" class="button-primary" name="wppa-upload" value="<?php _e('Upload Single Photos', 'wppa') ?>" onclick="if ( document.getElementById('wppa-album-m').value == 0 ) { alert('<?php _e('Please select an album', 'wppa') ?>'); return false; }" />
+					<input type="checkbox" id="wppa-go-edit-single" name="wppa-go-edit-single" onchange="wppaCookieCheckbox(this, 'wppa-go-edit-single')" />&nbsp;
+					<script type="text/javascript" >
+						if ( wppa_getCookie('wppa-go-edit-single') == 'on' ) document.getElementById('wppa-go-edit-single').checked = 'checked';
+					</script>
+					<?php 
+					if ( current_user_can('wppa_admin') ) {
+						_e('After upload: Go to the <b>Edit Album</b> page.', 'wppa');
+					}
+					else {
+						_e('After upload: Go to the <b>Edit Photos</b> page.', 'wppa');
+					} 
+					?>
 				</form>
 				<script type="text/javascript">
 				<!-- Create an instance of the multiSelector class, pass it the output target and the max number of files -->
@@ -227,28 +253,29 @@ global $wppa_revno;
 			<?php /* End single photos */ ?>
 
 			<?php /* Single zips */ ?>
-			
-			<?php if (PHP_VERSION_ID >= 50207) { ?>
-				<div style="border:1px solid #ccc; padding:10px; width: 600px;">
-					<h3 style="margin-top:0px;"><?php  _e('Box C:', 'wppa'); echo ' ';_e('Zipped Photos in one selection', 'wppa'); ?></h3>
-					<?php echo sprintf(__('You can upload one zipfile. It will be placed in your personal wppa-depot: <b>.../%s</b><br/>Once uploaded, use <b>Import Photos</b> to unzip the file and place the photos in any album.', 'wppa'), WPPA_DEPOT) ?>
-					<form enctype="multipart/form-data" action="<?php echo(wppa_dbg_url(get_admin_url().'admin.php?page=wppa_upload_photos')) ?>" method="post">
-					<?php wp_nonce_field('$wppa_nonce', WPPA_NONCE); ?>
-						<input id="my_zipfile_element" type="file" name="file_zip" /><br/><br/>
-						<input type="submit" class="button-primary" name="wppa-upload-zip" value="<?php _e('Upload Zipped Photos', 'wppa') ?>" />
-						<input type="checkbox" id="wppa-go-import" name="wppa-go-import" onchange="wppaCookieCheckbox(this, 'wppa-go-import')" />&nbsp;
-<script type="text/javascript" >
-	if ( wppa_getCookie('wppa-go-import') == 'on' ) document.getElementById('wppa-go-import').checked = 'checked';
-</script>
-						<?php _e('After upload: Go to the <b>Import Photos</b> page.', 'wppa') ?>
-					</form>
-				</div>
-			<?php }
-			else { ?>
-				<div style="border:1px solid #ccc; padding:10px; width: 600px;">
-				<?php _e('<small>Ask your administrator to upgrade php to version 5.2.7 or later. This will enable you to upload zipped photos.</small>', 'wppa') ?>
-				</div>
-			<?php }
+			<?php if ( current_user_can('wppa_import') ) { ?>
+				<?php if (PHP_VERSION_ID >= 50207) { ?>
+					<div style="border:1px solid #ccc; padding:10px; width: 600px;">
+						<h3 style="margin-top:0px;"><?php  _e('Box C:', 'wppa'); echo ' ';_e('Zipped Photos in one selection', 'wppa'); ?></h3>
+						<?php echo sprintf(__('You can upload one zipfile. It will be placed in your personal wppa-depot: <b>.../%s</b><br/>Once uploaded, use <b>Import Photos</b> to unzip the file and place the photos in any album.', 'wppa'), WPPA_DEPOT) ?>
+						<form enctype="multipart/form-data" action="<?php echo(wppa_dbg_url(get_admin_url().'admin.php?page=wppa_upload_photos')) ?>" method="post">
+						<?php wp_nonce_field('$wppa_nonce', WPPA_NONCE); ?>
+							<input id="my_zipfile_element" type="file" name="file_zip" /><br/><br/>
+							<input type="submit" class="button-primary" name="wppa-upload-zip" value="<?php _e('Upload Zipped Photos', 'wppa') ?>" />
+							<input type="checkbox" id="wppa-go-import" name="wppa-go-import" onchange="wppaCookieCheckbox(this, 'wppa-go-import')" />&nbsp;
+							<script type="text/javascript" >
+								if ( wppa_getCookie('wppa-go-import') == 'on' ) document.getElementById('wppa-go-import').checked = 'checked';
+							</script>
+							<?php _e('After upload: Go to the <b>Import Photos</b> page.', 'wppa') ?>
+						</form>
+					</div>
+				<?php }
+				else { ?>
+					<div style="border:1px solid #ccc; padding:10px; width: 600px;">
+					<?php _e('<small>Ask your administrator to upgrade php to version 5.2.7 or later. This will enable you to upload zipped photos.</small>', 'wppa') ?>
+					</div>
+				<?php }
+			} 
 		}
 	else { ?>
 			<?php $url = wppa_dbg_url(get_admin_url().'admin.php?page=wppa_admin_menu'); ?>
@@ -852,7 +879,7 @@ function wppa_insert_photo ($file = '', $album = '', $name = '', $desc = '', $po
 			return false;
 		}
 		// Add photo to db
-		$status = ( $wppa_opt['wppa_upload_moderate'] && !current_user_can('wppa_admin') ) ? 'pending' : 'publish';
+		$status = ( $wppa_opt['wppa_upload_moderate'] == 'yes' && !current_user_can('wppa_admin') ) ? 'pending' : 'publish';
 		$linktarget = '_self';
 		$query = $wpdb->prepare('INSERT INTO `' . WPPA_PHOTOS . '` (`id`, `album`, `ext`, `name`, `p_order`, `description`, `mean_rating`, `linkurl`, `linktitle`, `linktarget`, `timestamp`, `owner`, `status`, `tags`, `alt`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)', $id, $album, $ext, $name, $porder, $desc, $mrat, $linkurl, $linktitle, $linktarget, time(), $owner, $status, '', '');
 		if ($wpdb->query($query) === false) {

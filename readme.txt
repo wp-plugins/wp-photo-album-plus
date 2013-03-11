@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile
-Version: 4.9.11
+Version: 4.9.12
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -170,6 +170,28 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 4.9.12 =
+
+= Bug Fixes =
+
+* On admin upload: If upload moderate is off and the user has no album admin rights, the initial status of new uploads was pending, is now publish.
+* On admin upload: The checkboxes 'After upload go to the edit album admin page' will read 'After upload go to the edit photo admin page' if the user has no album admin rights and will work as indicated.
+* On admin upload: Box C ( Upload zip ) will only show up now if the user has import rights.
+* On admin upload: If no album is selected, a warning will be displayed and no upload done before an unknown album error message is displayed.
+* Fixed erroneous return url after frontend upload. The visitor will come back to the same page in all circumstances.
+* Fixed the fact that a photo number in the querystring was applied to all slideshows on the page that contained the photo. 
+Now it works only on the occurrence it is intented for.
+* Shortcodes are no longer displayed in share descriptions.
+
+= New Features =
+
+* Implemented an interface to the plugin **Simple Cart And Buy Now**, enabling a smooth co-operation of a shopping cart system.
+See <a href="http://wppa.opajaap.nl/simple-cart-and-buy-now/">This documentation page</a> for detailed information.
+
+= Other Changes =
+
+* The covers of empty albums will only be displayed for administrators and for the owner of the albums.
 
 = 4.9.11 =
 

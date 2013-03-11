@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains low-level utility routines
-* Version 4.9.11
+* Version 4.9.12
 *
 */
 
@@ -494,3 +494,44 @@ global $wppa_opt;
 	}
 	return $result;
 }
+
+function wppa_get_slide_callback_url($callbackid) {
+global $wppa;
+
+	$url = wppa_get_permalink();
+	if ( $wppa['start_album'] ) $url .= 'wppa-album='.$wppa['start_album'].'&amp;';
+	else $url .= 'wppa-album=0&amp;';
+	$url .= 'wppa-cover=0&amp;';
+	$url .= 'wppa-slide&amp;';
+	if ( $wppa['is_single'] ) $url .= 'wppa-single=1&amp;';
+	if ( $wppa['in_widget'] ) $url .= 'wppa-woccur='.$wppa['widget_occur'].'&amp;';
+	else $url .= 'wppa-occur='.$wppa['occur'].'&amp;';
+	if ( $wppa['is_topten'] ) $url .= 'wppa-topten='.$wppa['topten_count'].'&amp;';
+	if ( $wppa['is_lasten'] ) $url .= 'wppa-lasten='.$wppa['lasten_count'].'&amp;';
+	if ( $wppa['is_comten'] ) $url .= 'wppa-comten='.$wppa['comten_count'].'&amp;';
+	if ( $wppa['is_tag'] ) $url .= 'wppa-tag='.$wppa['is_tag'].'&amp;';
+	$url .= 'wppa-photo=' . $callbackid;
+		
+	return $url;
+}
+
+function wppa_get_thumb_callback_url() {
+global $wppa;
+
+	$url = wppa_get_permalink();
+	if ( $wppa['start_album'] ) $url .= 'wppa-album='.$wppa['start_album'].'&amp;';
+	else $url .= 'wppa-album=0&amp;';
+	$url .= 'wppa-cover=0&amp;';
+	if ( $wppa['is_single'] ) $url .= 'wppa-single=1&amp;';
+	if ( $wppa['in_widget'] ) $url .= 'wppa-woccur='.$wppa['widget_occur'].'&amp;';
+	else $url .= 'wppa-occur='.$wppa['occur'].'&amp;';
+	if ( $wppa['is_topten'] ) $url .= 'wppa-topten='.$wppa['topten_count'].'&amp;';
+	if ( $wppa['is_lasten'] ) $url .= 'wppa-lasten='.$wppa['lasten_count'].'&amp;';
+	if ( $wppa['is_comten'] ) $url .= 'wppa-comten='.$wppa['comten_count'].'&amp;';
+	if ( $wppa['is_tag'] ) $url .= 'wppa-tag='.$wppa['is_tag'].'&amp;';
+
+	$url = substr($url, 0, strlen($url) - 5);	// remove last '&amp;'
+		
+	return $url;
+}
+

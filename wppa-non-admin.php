@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the non admin stuff
-* Version 4.9.4
+* Version 4.9.12
 *
 */
 
@@ -11,6 +11,7 @@
 require_once 'wppa-filter.php';
 require_once 'wppa-slideshow.php';
 require_once 'wppa-functions.php';
+require_once 'wppa-cart.php';
 	
 /* LOAD STYLESHEET */
 add_action('wp_print_styles', 'wppa_add_style');
