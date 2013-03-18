@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the upload/import pages and functions
-* Version 4.9.12
+* Version 4.9.13
 *
 */
 
@@ -716,7 +716,7 @@ global $warning_given;
 						$id = basename($album);
 						$id = substr($id, 0, strpos($id, '.'));
 						if (!wppa_is_id_free('album', $id)) $id = wppa_nextkey(WPPA_ALBUMS);
-						$query = $wpdb->prepare( 'INSERT INTO `' . WPPA_ALBUMS . '` (`id`, `name`, `description`, `a_order`, `a_parent`, `p_order_by`, `main_photo`, `cover_linktype`, `cover_linkpage`, `owner`, `timestamp`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)', $id, stripslashes($name), stripslashes($desc), $aord, $parent, $porder, '0', 'content', '0', $owner, time());
+						$query = $wpdb->prepare( "INSERT INTO `" . WPPA_ALBUMS . "` (`id`, `name`, `description`, `a_order`, `a_parent`, `p_order_by`, `main_photo`, `cover_linktype`, `cover_linkpage`, `owner`, `timestamp`, `default_tags`, `cover_type`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, '', '')", $id, stripslashes($name), stripslashes($desc), $aord, $parent, $porder, '0', 'content', '0', $owner, time());
 						$iret = $wpdb->query($query);
 
 						if ($iret === FALSE) wppa_error_message(__('Could not create album.', 'wppa'));
@@ -816,17 +816,20 @@ global $warning_given;
 	}
 }
 
-function wppa_insert_photo ($file = '', $album = '', $name = '', $desc = '', $porder = '0', $id = '0', $linkurl = '', $linktitle = '') {
+function wppa_insert_photo ($file = '', $alb = '', $name = '', $desc = '', $porder = '0', $id = '0', $linkurl = '', $linktitle = '') {
 	global $wpdb;
 	global $warning_given_small;
 	global $wppa_opt;
+	global $album;
 	
-	if ( ! wppa_allow_uploads($album) ) {
-			wppa_err_alert(__('Max uploads reached for album', 'wppa').' '.wppa_get_album_name($album));
+	wppa_cache_album($alb);
+	
+	if ( ! wppa_allow_uploads($alb) ) {
+			wppa_err_alert(__('Max uploads reached for album', 'wppa').' '.wppa_get_album_name($alb));
 			return false;
 	}
 
-	if ($file != '' && $album != '' ) {
+	if ($file != '' && $alb != '' ) {
 		// Get the name if not given
 		if ($name == '') $name = basename($file);
 		// Sanitize name
@@ -870,18 +873,18 @@ function wppa_insert_photo ($file = '', $album = '', $name = '', $desc = '', $po
 		// Find (new) owner
 		$owner = wppa_get_user();
 		// Validate album
-		if ( !is_numeric($album) || $album < '1' ) {
+		if ( !is_numeric($alb) || $alb < '1' ) {
 			wppa_error_message(__('Album not known while trying to add a photo', 'wppa'));
 			return false;
 		}
-		if ( !wppa_have_access($album) ) {
-			wppa_error_message(sprintf(__('Album %s does not exist or is not accessable while trying to add a photo', 'wppa'), $album));
+		if ( !wppa_have_access($alb) ) {
+			wppa_error_message(sprintf(__('Album %s does not exist or is not accessable while trying to add a photo', 'wppa'), $alb));
 			return false;
 		}
 		// Add photo to db
 		$status = ( $wppa_opt['wppa_upload_moderate'] == 'yes' && !current_user_can('wppa_admin') ) ? 'pending' : 'publish';
 		$linktarget = '_self';
-		$query = $wpdb->prepare('INSERT INTO `' . WPPA_PHOTOS . '` (`id`, `album`, `ext`, `name`, `p_order`, `description`, `mean_rating`, `linkurl`, `linktitle`, `linktarget`, `timestamp`, `owner`, `status`, `tags`, `alt`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)', $id, $album, $ext, $name, $porder, $desc, $mrat, $linkurl, $linktitle, $linktarget, time(), $owner, $status, '', '');
+		$query = $wpdb->prepare('INSERT INTO `' . WPPA_PHOTOS . '` (`id`, `album`, `ext`, `name`, `p_order`, `description`, `mean_rating`, `linkurl`, `linktitle`, `linktarget`, `timestamp`, `owner`, `status`, `tags`, `alt`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)', $id, $alb, $ext, $name, $porder, $desc, $mrat, $linkurl, $linktitle, $linktarget, time(), $owner, $status, $album['default_tags'], '');
 		if ($wpdb->query($query) === false) {
 			wppa_error_message(__('Could not insert photo. query=', 'wppa').$query);
 		}

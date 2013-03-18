@@ -3,12 +3,12 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions and API modules
-* Version 4.9.12
+* Version 4.9.13
 *
 */
 /* Moved to wppa-common-functions.php:
 global $wppa_api_version;
-$wppa_api_version = '4-9-12-000';
+$wppa_api_version = '4-9-13-000';
 */
 
 if ( ! defined( 'ABSPATH' ) )
@@ -3104,6 +3104,10 @@ global $wpdb;
 					if ($has_content) {
 						if ($wppa_opt['wppa_thumbtype'] == 'none') $photocount = '0'; 	// Fake photocount to prevent link to empty page
 						if ($photocount > $mincount || $albumcount) {					// Still has content
+							if ( $wppa_opt['wppa_show_treecount'] ) {
+								$treecount = wppa_treecount_a($album['id']);
+							}
+							else $treecount = false;
 							if ( $href_content == '#' ) {
 								$wppa['out'] .= wppa_nltab('+').'<a onclick="'.$onclick_content.'" title="'.__a('View the album').' '.esc_attr(stripslashes(wppa_qtrans($album['name']))).'" style="'.__wcs('wppa-box-text', 'nocolor').'" >';
 							}
@@ -3118,16 +3122,27 @@ global $wpdb;
 								else {
 									$wppa['out'] .= ' '.$albumcount.' '.__a('albums');
 								}
+								if ( $treecount ) {
+									if ( $treecount['albums'] != $albumcount ) {
+										$wppa['out'] .= ' ('.$treecount['albums'].')';
+									}
+								}
 							}
 							if ($photocount > $mincount && $albumcount) {
 								$wppa['out'] .= ' '.__a('and'); 
 							}
-							if ($photocount > $mincount) { 
+							if ($photocount > $mincount || $treecount) { 
+								if ( $photocount <= $mincount ) $photocount = '0';
 								if ($photocount == '1') {
 									$wppa['out'] .= ' 1 '.__a('photo');
 								}
 								else {
 									$wppa['out'] .= ' '.$photocount.' '.__a('photos'); 
+								}
+								if ( $treecount ) {
+									if ( $treecount['photos'] != $photocount ) {
+										$wppa['out'] .= ' ('.$treecount['photos'].')';
+									}
 								}
 							} 
 							$wppa['out'] .= wppa_nltab('-').'</a>'; 
@@ -5065,6 +5080,9 @@ global $wppa_opt;
 function wppa_do_frontend_file_upload($file, $alb) {
 global $wpdb;
 global $wppa_opt;
+global $album;
+
+	wppa_cache_album($alb);
 				
 	if ( ! wppa_allow_uploads($alb) ) {
 		wppa_err_alert(__a('Max uploads reached'));
@@ -5112,7 +5130,7 @@ global $wppa_opt;
 	$linktarget = '_self';
 	$owner = wppa_get_user();
 	$status = ( $wppa_opt['wppa_upload_moderate'] && !current_user_can('wppa_admin') ) ? 'pending' : 'publish';
-	$query = $wpdb->prepare('INSERT INTO `' . WPPA_PHOTOS . '` (`id`, `album`, `ext`, `name`, `p_order`, `description`, `mean_rating`, `linkurl`, `linktitle`, `linktarget`, `timestamp`, `owner`, `status`, `tags`, `alt`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)', $id, $alb, $ext, $name, $porder, $desc, $mrat, $linkurl, $linktitle, $linktarget, time(), $owner, $status, '', '');
+	$query = $wpdb->prepare('INSERT INTO `' . WPPA_PHOTOS . '` (`id`, `album`, `ext`, `name`, `p_order`, `description`, `mean_rating`, `linkurl`, `linktitle`, `linktarget`, `timestamp`, `owner`, `status`, `tags`, `alt`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)', $id, $alb, $ext, $name, $porder, $desc, $mrat, $linkurl, $linktitle, $linktarget, time(), $owner, $status, $album['default_tags'], '');
 	wppa_dbg_q('Q58');
 	
 	if ($wpdb->query($query) === false) {

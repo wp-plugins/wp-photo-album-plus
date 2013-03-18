@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * edit and delete photos
-* version 4.9.10
+* version 4.9.13
 *
 */
 
@@ -41,14 +41,25 @@ function wppa_album_photos($album = '', $photo = '', $owner = '') {
 	global $q_config;
 	global $wppa_opt;
 	
+	$pagesize 	= $wppa_opt['wppa_photo_admin_pagesize'];
+	$page 		= isset ( $_GET['wppa-page'] ) ? $_GET['wppa-page'] : '1';
+	$skip 		= ( $page - '1') * $pagesize;
+	$limit 		= ( $pagesize < '1' ) ? '' : ' LIMIT '.$skip.','.$pagesize;
+	
 	if ( $album ) {
-		$photos = $wpdb->get_results($wpdb->prepare('SELECT * FROM `'.WPPA_PHOTOS.'` WHERE `album` = %s '.wppa_get_photo_order($album, 'norandom'), $album), ARRAY_A);
+		$count = $wpdb->get_var($wpdb->prepare('SELECT COUNT(*) FROM `'.WPPA_PHOTOS.'` WHERE `album` = %s', $album));
+		$photos = $wpdb->get_results($wpdb->prepare('SELECT * FROM `'.WPPA_PHOTOS.'` WHERE `album` = %s '.wppa_get_photo_order($album, 'norandom').$limit, $album), ARRAY_A);
+		$link = wppa_dbg_url(get_admin_url().'admin.php?page=wppa_admin_menu&tab=edit&edit_id='.$album);
 	}
 	elseif ( $photo ) {
-		$photos = $wpdb->get_results($wpdb->prepare('SELECT * FROM `'.WPPA_PHOTOS.'` WHERE `id` = %s ', $photo), ARRAY_A);
+		$count = '1';
+		$photos = $wpdb->get_results($wpdb->prepare('SELECT * FROM `'.WPPA_PHOTOS.'` WHERE `id` = %s', $photo), ARRAY_A);
+		$link = '';
 	}
 	elseif ( $owner ) {
-		$photos = $wpdb->get_results($wpdb->prepare('SELECT * FROM `'.WPPA_PHOTOS.'` WHERE `owner` = %s ORDER BY `timestamp` DESC', $owner), ARRAY_A);
+		$count = $wpdb->get_var($wpdb->prepare('SELECT COUNT(*) FROM `'.WPPA_PHOTOS.'` WHERE `owner` = %s', $owner));
+		$photos = $wpdb->get_results($wpdb->prepare('SELECT * FROM `'.WPPA_PHOTOS.'` WHERE `owner` = %s ORDER BY `timestamp` DESC'.$limit, $owner), ARRAY_A);
+		$link = wppa_dbg_url(get_admin_url().'admin.php?page=wppa_edit_photo');
 	}
 	else wppa_dbg_msg('Missing required argument in wppa_album_photos()', 'red', 'force');
 	
@@ -62,6 +73,8 @@ function wppa_album_photos($album = '', $photo = '', $owner = '') {
 		$temp = wppa_get_water_file_and_pos();
 		$wmfile = $temp['file'];
 		$wmpos = $wms[$temp['pos']];
+		
+		wppa_admin_page_links($page, $pagesize, $count, $link);
 		
 		foreach ($photos as $photo) { ?>
 
@@ -412,6 +425,7 @@ function wppa_album_photos($album = '', $photo = '', $owner = '') {
 			</div>
 <?php
 		} /* foreach photo */
+		wppa_admin_page_links($page, $pagesize, $count, $link);
 	} /* photos not empty */
 } /* function */
 

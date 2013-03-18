@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 4.9.12
+* Version 4.9.13
 *
 */
 
@@ -53,6 +53,8 @@ global $silent;
 					timestamp tinytext NOT NULL,
 					upload_limit tinytext NOT NULL,
 					alt_thumbsize tinytext NOT NULL,
+					default_tags tinytext NOT NULL,
+					cover_type tinytext NOT NULL,
 					PRIMARY KEY  (id) 
 					) DEFAULT CHARACTER SET utf8;";
 					
@@ -501,6 +503,7 @@ Hide Camera info
 						'wppa_enable_slideshow' 			=> 'yes',	// 2
 						'wppa_show_slideshowbrowselink' 	=> 'yes',	// 3
 						'wppa_show_viewlink'				=> 'yes',	// 4
+						'wppa_show_treecount'				=> 'no',
 						// E Widgets
 						'wppa_show_bbb_widget'				=> 'no',	// 1
 						// F Overlay
@@ -761,6 +764,8 @@ Hide Camera info
 						'wppa_use_wp_editor'			=> 'no',
 						'wppa_hier_albsel' 				=> 'no',
 						'wppa_alt_type'					=> 'fullname',
+						'wppa_photo_admin_pagesize'		=> '20',
+						'wppa_comment_admin_pagesize'	=> '10',
 
 						// B New
 						'wppa_max_album_newtime'		=> '0',		// 1

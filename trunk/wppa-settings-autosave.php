@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 4.9.12
+* Version 4.9.13
 *
 */
 
@@ -1232,6 +1232,13 @@ global $wppa_revno;
 							$slug = 'wppa_show_viewlink';
 							$html = wppa_checkbox($slug);
 							wppa_setting($slug, '4', $name, $desc, $html, $help);
+							
+							$name = __('Treecount', 'wppa');
+							$desc = __('Disaplay the total number of (sub)albums and photos in subalbums', 'wppa');
+							$help = esc_js(__('Displays the total number of sub albums and photos in the entire album tree in parenthesis if the numbers differ from the direct content of the album.', 'wppa'));
+							$slug = 'wppa_show_treecount';
+							$html = wppa_checkbox($slug);
+							wppa_setting($slug, '5', $name, $desc, $html, $help);
 							
 							wppa_setting_subheader('E', '1', __('Widget related settings', 'wppa'));
 							
@@ -3133,7 +3140,7 @@ global $wppa_revno;
 							$html = wppa_checkbox($slug);
 							wppa_setting($slug, '12', $name, $desc, $html, $help);
 							
-							$name = __('Image Alt attribute type');
+							$name = __('Image Alt attribute type', 'wppa');
 							$desc = __('Select kind of HTML alt="" content for images.', 'wppa');
 							$help = '';
 							$slug = 'wppa_alt_type';
@@ -3142,6 +3149,24 @@ global $wppa_revno;
 							$html = wppa_select($slug, $options, $values);
 							wppa_setting($slug, '13', $name, $desc, $html, $help);
 							
+							$name = __('Photo admin page size', 'wppa');
+							$desc = __('The number of photos per page on the Edit Album -> Manage photos and Edit Photos admin pages.', 'wppa');
+							$help = '';
+							$slug = 'wppa_photo_admin_pagesize';
+							$options = array( __('--- off ---', 'wppa'), '10', '20', '50', '100', '200');
+							$values = array('0', '10', '20', '50', '100', '200');
+							$html = wppa_select($slug, $options, $values);
+							wppa_setting($slug, '14', $name, $desc, $html, $help);
+							
+							$name = __('Comment admin page size', 'wppa');
+							$desc = __('The number of comments per page on the Comments admin pages.', 'wppa');
+							$help = '';
+							$slug = 'wppa_comment_admin_pagesize';
+							$options = array( __('--- off ---', 'wppa'), '10', '20', '50', '100', '200');
+							$values = array('0', '10', '20', '50', '100', '200');
+							$html = wppa_select($slug, $options, $values);
+							wppa_setting($slug, '15', $name, $desc, $html, $help);
+
 							wppa_setting_subheader('B', '1', __('New Album and New Photo related miscellaneous settings', 'wppa'));
 
 							$name = __('New Album', 'wppa');

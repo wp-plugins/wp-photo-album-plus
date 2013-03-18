@@ -8,13 +8,14 @@
 /*
 /* You may always look into a newer version of this file to see what new classes and id's come with an upgrade
 /*
-/* This is version 4.9.12
+/* This is version 4.9.13
 */
 
 .wppa-container img {
 	border:none;
 	padding:0;
 	margin:0;
+	display:inline;
 }
 
 /* Navigation */
