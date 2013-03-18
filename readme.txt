@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile
-Version: 4.9.12
+Version: 4.9.13
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -99,7 +99,7 @@ See Table I-A1 and Table I-B1,2 of the Photo Albums -> Settings admin page.
 
 = Which other plugins do you recommand to use with WPPA+, and which not? =
 
-* Recommanded plugins: qTranslate, WP Super Cache, Cube Points.
+* Recommanded plugins: qTranslate, WP Super Cache, Cube Points, Simple Cart & Buy Now.
 * Plugins that break up WPPA+: My Live Signature.
 * Google Analytics for WordPress will break the slideshow in most cases when *Track outbound clicks & downloads:* has been checked in its configuration.
 
@@ -170,6 +170,19 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 4.9.13 =
+
+= New Features =
+
+* Pagination on Manage photos. Pagesize settable in Table IX-A14.
+* Page size of Comment admin settable in Table IX-A15.
+* Default tags on album basis.
+* Treecount. Table II-D5. If checked: displays on the album cover in parenthesis the total number of albums and photos in the album subtree if the numbers differ from the content of the album.
+
+= Other Changes =
+
+* Cosmetic and performance improvements Comment Admin.
 
 = 4.9.12 =
 

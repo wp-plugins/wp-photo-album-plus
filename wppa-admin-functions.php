@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 * gp admin functions
-* version 4.9.10
+* version 4.9.13
 *
 * 
 */
@@ -474,7 +474,7 @@ if ( is_multisite() ) return; // temp disabled for 4.0 bug, must be tested in a 
 		$album = wppa_get_album_id(__('Orphan Photos', 'wppa'));
 		if ($album == '') {
 			$key = wppa_nextkey(WPPA_ALBUMS);
-			$query = $wpdb->prepare('INSERT INTO `' . WPPA_ALBUMS . '` (`id`, `name`, `description`, `a_order`, `a_parent`, `p_order_by`, `main_photo`, `cover_linktype`, `cover_linkpage`, `owner`, `timestamp`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)', $key, __('Orphan Photos', 'wppa'), '', '0', '0', '0', '0', 'content', '0', 'admin', time());
+			$query = $wpdb->prepare("INSERT INTO `" . WPPA_ALBUMS . "` (`id`, `name`, `description`, `a_order`, `a_parent`, `p_order_by`, `main_photo`, `cover_linktype`, `cover_linkpage`, `owner`, `timestamp`, `default_tags`, `cover_type`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, '', '')", $key, __('Orphan Photos', 'wppa'), '', '0', '0', '0', '0', 'content', '0', 'admin', time());
 			$iret = $wpdb->query($query);
 			if ($iret === false) {
 				wppa_error_message('Could not create album: Orphan Photos', 'wppa');
@@ -884,4 +884,35 @@ function wppa_has_children($alb) {
 global $wpdb;
 
 	return $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `".WPPA_ALBUMS."` WHERE `a_parent` = %s", $alb['id']) );
+}
+
+function wppa_admin_page_links($curpage, $pagesize, $count, $link) {
+
+	if ( $pagesize < '1' ) return;	// Pagination is off
+	
+	$prevpage 	= $curpage - '1';
+	$nextpage 	= $curpage + '1'; 
+	$prevurl 	= $link.'&wppa-page='.$prevpage;
+	$pagurl 	= $link.'&wppa-page=';
+	$nexturl 	= $link.'&wppa-page='.$nextpage;
+	$npages 	= ceil($count / $pagesize);
+
+	if ($npages > '1') {
+		if ($curpage != '1') {
+			?><a href="<?php echo($prevurl) ?>"><?php _e('Prev page', 'wppa') ?></a><?php
+		}
+		$i = '1';
+		while ($i <= $npages) {
+			if ($i == $curpage) {
+				echo(' '.$i.' ');
+			}
+			else {
+				?>&nbsp;<a href="<?php echo($pagurl.$i) ?>"><?php echo($i) ?></a>&nbsp;<?php
+			}
+			$i++;
+		}
+		if ($curpage != $npages) {
+			?><a href="<?php echo($nexturl) ?>"><?php _e('Next page', 'wppa') ?></a><?php
+		}
+	}
 }

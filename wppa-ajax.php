@@ -2,7 +2,7 @@
 /* wppa-ajax.php
 *
 * Functions used in ajax requests
-* version 4.9.10
+* version 4.9.13
 *
 */
 add_action('wp_ajax_wppa', 'wppa_ajax_callback');
@@ -338,6 +338,44 @@ global $wppa;
 					}
 					exit;
 					break;
+				case 'set_deftags':
+					$photos = $wpdb->get_results($wpdb->prepare('SELECT COUNT(*) FROM `'.WPPA_PHOTOS.'` WHERE `album` = %s', $album), ARRAY_A);
+					$deftag = $wpdb->get_var($wpdb->prepare('SELECT `default_tags` FROM `'.WPPA_ALBUMS.'` WHERE `id` = %s', $album));
+					$iret = $wpdb->query($wpdb->prepare('UPDATE `'.WPPA_PHOTOS.'` SET `tags` = %s WHERE `album` = %s', $deftag, $album));
+					if ( $photos && $iret !== false ) {
+						echo '||97||'.__('<b>Tags set to defaults</b> (reload)', 'wppa');
+					}
+					elseif ($photos) {
+						echo '||1||'.__('An error occurred while setting tags', 'wppa');
+					}
+					else {
+						echo '||97||'.__('<b>No photos in this album</b>', 'wppa');
+					}
+					wppa_clear_taglist();
+					exit;
+					break;
+				case 'add_deftags':
+					$photos = $wpdb->get_results($wpdb->prepare('SELECT `id`, `tags` FROM `'.WPPA_PHOTOS.'` WHERE `album` = %s', $album), ARRAY_A);
+					$deftag = $wpdb->get_var($wpdb->prepare('SELECT `default_tags` FROM `'.WPPA_ALBUMS.'` WHERE `id` = %s', $album));
+					$iret = true;
+					if ( $photos ) foreach ( $photos as $photo ) {
+						if ( $iret ) {
+							$tags = wppa_sanitize_tags($photo['tags'].','.$deftag);
+							$iret = $wpdb->query($wpdb->prepare('UPDATE `'.WPPA_PHOTOS.'` SET `tags` = %s WHERE `id` = %s', $tags, $photo['id']));
+						}					
+					}
+					if ( $photos && $iret !== false ) {
+						echo '||97||'.__('<b>Tags added width defaults</b> (reload)', 'wppa');
+					}
+					elseif ($photos) {
+						echo '||1||'.__('An error occurred while adding tags', 'wppa');
+					}
+					else {
+						echo '||97||'.__('<b>No photos in this album</b>', 'wppa');
+					}
+					wppa_clear_taglist();
+					exit;
+					break;
 				case 'name':
 					$value = strip_tags($value);
 					$itemname = __('Name', 'wppa');
@@ -391,6 +429,10 @@ global $wppa;
 					$value = $temp[0].'/'.$value;
 					$item = 'upload_limit';
 					$itemname = __('Upload limit time', 'wppa');
+					break;
+				case 'default_tags':
+					$value = wppa_sanitize_tags($value);
+					$itemname = __('Default tags', 'wppa');
 					break;
 				default:
 					$itemname = $item;
@@ -550,30 +592,7 @@ global $wppa;
 							break;
 						case 'tags':
 							// Sanitize tags
-							$value = strip_tags($value);
-							$value = str_replace(' ', '', $value);
-							$value = str_replace(';', ',', $value);
-							$temp = explode(',', $value);
-							if ( is_array($temp) ) {
-								asort($temp);
-								$value = '';
-								$first = true;
-								$previdx = '';
-								foreach ( array_keys($temp) as $idx ) {
-									$temp[$idx] = strtoupper(substr($temp[$idx], 0, 1)).strtolower(substr($temp[$idx], 1));
-									if ( $temp[$idx] ) {
-										if ( $first ) {
-											$first = false;
-											$value .= $temp[$idx];
-											$previdx = $idx;
-										}
-										elseif ( $temp[$idx] !=  $temp[$previdx] ) {	// Skip duplicates
-											$value .= ','.$temp[$idx];
-											$previdx = $idx;
-										}
-									}									
-								}
-							}
+							$value = wppa_sanitize_tags($value);
 							wppa_clear_taglist();
 							$itemname = __('Photo Tags', 'wppa');
 							break;
@@ -976,4 +995,36 @@ global $wppa;
 			else $wppa['out'] .= '. ' . __('You may also leave/set this blank', 'wppa');
 		}
 	}
+}
+
+function wppa_sanitize_tags($value) {
+	$value = strip_tags($value);
+	$value = str_replace(' ', '', $value);
+	$value = str_replace(';', ',', $value);
+	$value = str_replace('"', '', $value);
+	$value = str_replace('\'', '', $value);
+	$value = str_replace('\\', '', $value);
+	$value = stripslashes($value);
+	$temp = explode(',', $value);
+	if ( is_array($temp) ) {
+		asort($temp);
+		$value = '';
+		$first = true;
+		$previdx = '';
+		foreach ( array_keys($temp) as $idx ) {
+			$temp[$idx] = strtoupper(substr($temp[$idx], 0, 1)).strtolower(substr($temp[$idx], 1));
+			if ( $temp[$idx] ) {
+				if ( $first ) {
+					$first = false;
+					$value .= $temp[$idx];
+					$previdx = $idx;
+				}
+				elseif ( $temp[$idx] !=  $temp[$previdx] ) {	// Skip duplicates
+					$value .= ','.$temp[$idx];
+					$previdx = $idx;
+				}
+			}									
+		}
+	}
+	return $value;
 }

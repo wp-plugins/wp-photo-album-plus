@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * create, edit and delete albums
-* version 4.9.7
+* version 4.9.13
 *
 */
 
@@ -58,7 +58,7 @@ function _wppa_admin() {
 				$name = __('New Album', 'wppa');
 				$id = wppa_nextkey(WPPA_ALBUMS);
 				$uplim = $wppa_opt['wppa_upload_limit_count'].'/'.$wppa_opt['wppa_upload_limit_time'];
-				$query = $wpdb->prepare('INSERT INTO `' . WPPA_ALBUMS . '` (`id`, `name`, `description`, `a_order`, `a_parent`, `p_order_by`, `main_photo`, `cover_linktype`, `cover_linkpage`, `owner`, `timestamp`, `upload_limit`, `alt_thumbsize`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)', $id, $name, '', '0', '0', '0', '0', 'content', '0', wppa_get_user(), time(), $uplim, '0');
+				$query = $wpdb->prepare("INSERT INTO `" . WPPA_ALBUMS . "` (`id`, `name`, `description`, `a_order`, `a_parent`, `p_order_by`, `main_photo`, `cover_linktype`, `cover_linkpage`, `owner`, `timestamp`, `upload_limit`, `alt_thumbsize`, `default_tags`, `cover_type`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, '', '')", $id, $name, '', '0', '0', '0', '0', 'content', '0', wppa_get_user(), time(), $uplim, '0');
 				$iret = $wpdb->query($query);
 				if ($iret === FALSE) {
 					wppa_error_message(__('Could not create album.', 'wppa').'<br/>Query = '.$query);
@@ -278,6 +278,32 @@ function _wppa_admin() {
 								?>
 								</td>
 							</tr>
+							
+							<!-- Default tags -->
+							<tr style="vertical-align:top;" >
+								<th style="padding-top:0; padding-bottom:0;" scope="row">
+									<label ><?php _e('Default tags:', 'wppa') ?></label>
+								</th>
+								<td style="padding-top:0; padding-bottom:0;">
+									<input type="text" id="default_tags" value="<?php echo $albuminfo['default_tags'] ?>" style="width: 100%" onchange="wppaAjaxUpdateAlbum(<?php echo $edit_id ?>, 'default_tags', this)" />
+								</td>
+								<td style="padding-top:6px; padding-bottom:4px;">
+									<span class="description"><?php _e('Enter the tags that you want to be assigned to new photos in this album.', 'wppa') ?></span>
+								</td>
+							</tr>
+							
+							<!-- Apply default tags -->
+							<?php $onc1 = 'if (confirm(\''.__('Are you sure you want to set the default tags to all photos in this album?', 'wppa').'\')) wppaAjaxUpdateAlbum('.$edit_id.', \'set_deftags\', 0 ); '; ?>
+							<?php $onc2 = 'if (confirm(\''.__('Are you sure you want to add the default tags to all photos in this album?', 'wppa').'\')) wppaAjaxUpdateAlbum('.$edit_id.', \'add_deftags\', 0 ); '; ?>
+							<tr style="vertical-align:top;" >
+								<th style="padding-top:0; padding-bottom:0;" scope="row">
+									<input type="button" class="button-secundary" style="color:blue; width:100%;" onclick="<?php echo $onc1 ?>" value="Apply default tags" />
+								</th>
+								<td style="padding-top:0; padding-bottom:0;">
+									<input type="button" class="button-secundary" style="color:blue; width:100%;" onclick="<?php echo $onc2 ?>" value="Add default tags" />
+								</td>
+							</tr>
+
 							<!-- Link type -->
 							<tr style="vertical-align:top;" >
 								<th style="padding-top:0; padding-bottom:0;" scope="row">
@@ -294,6 +320,7 @@ function _wppa_admin() {
 									</select>
 								</td>
 							</tr>
+							
 							<!-- Link page -->
 							<tr style="vertical-align:top;" >
 								<th style="padding-top:0; padding-bottom:0;" scope="row">
@@ -1182,6 +1209,7 @@ global $wpdb;
 }
 
 // add an album 
+/*
 function wppa_add_album() {
 	global $wpdb;
 	global $q_config;
@@ -1211,7 +1239,7 @@ function wppa_add_album() {
 
 	if (!empty($name)) {
 		error_reporting(E_ALL);
-		$query = $wpdb->prepare('INSERT INTO `' . WPPA_ALBUMS . '` (`id`, `name`, `description`, `a_order`, `a_parent`, `p_order_by`, `main_photo`, `cover_linktype`, `cover_linkpage`, `owner`, `timestamp`) VALUES (0, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)', $name, $desc, $order, $parent, $porder, '0', 'content', '0', $owner, time());
+		$query = $wpdb->prepare("INSERT INTO `" . WPPA_ALBUMS . "` (`id`, `name`, `description`, `a_order`, `a_parent`, `p_order_by`, `main_photo`, `cover_linktype`, `cover_linkpage`, `owner`, `timestamp`, `default_tags`, `cover_type`) VALUES (0, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, '', '')", $name, $desc, $order, $parent, $porder, '0', 'content', '0', $owner, time());
 		$iret = $wpdb->query($query);
         if ($iret === FALSE) wppa_error_message(__('Could not create album.', 'wppa').'<br/>Query = '.$query);
 		else {
@@ -1222,6 +1250,7 @@ function wppa_add_album() {
 	} 
     else wppa_error_message(__('Album Name cannot be empty.', 'wppa'));
 }
+*/
 
 // delete an album 
 function wppa_del_album($id, $move = '') {
@@ -1285,7 +1314,7 @@ function wppa_main_photo($cur = '') {
 			else { 
 				$selected = ''; 
 			}
-			$name = wppa_qtrans($photo['name']);
+			$name = __(stripslashes($photo['name']));
 			if ( strlen($name) > 45 ) $name = substr($name, 0, 45).'...';
 			$output .= '<option value="'.$photo['id'].'" '.$selected.'>'.$name.'</option>';
 		}

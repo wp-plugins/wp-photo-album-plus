@@ -2,11 +2,11 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 4.9.12
+* version 4.9.13
 *
 */
 global $wppa_api_version;
-$wppa_api_version = '4-9-12-000';
+$wppa_api_version = '4-9-13-000';
 // Initialize globals and option settings
 function wppa_initialize_runtime($force = false) {
 global $wppa;
@@ -235,6 +235,7 @@ global $wppa_initruntimetime;
 						'wppa_enable_slideshow' 			=> '',	// 2
 						'wppa_show_slideshowbrowselink' 	=> '',	// 3
 						'wppa_show_viewlink'				=> '',	// 4
+						'wppa_show_treecount'				=> '',
 						// E Widgets
 						'wppa_show_bbb_widget'				=> '',	// 1
 						// F Overlay
@@ -498,6 +499,8 @@ global $wppa_initruntimetime;
 						'wppa_use_wp_editor'			=> '',	//A 11
 						'wppa_hier_albsel' 				=> '',
 						'wppa_alt_type'					=> '',
+						'wppa_photo_admin_pagesize'		=> '',
+						'wppa_comment_admin_pagesize'	=> '',
 						
 						'wppa_html' 					=> '',
 						'wppa_allow_debug' 				=> '',
@@ -616,10 +619,15 @@ global $wppa_initruntimetime;
 			if ( ! $albs ) {	// make an album for this user
 				$id = wppa_nextkey(WPPA_ALBUMS);
 				$name = $user;
-				$desc = __('Default photo album for', 'wppa').' '.$user;
+				if ( is_admin ) {
+					$desc = __('Default photo album for', 'wppa').' '.$user;
+				}
+				else {
+					$desc = __a('Default photo album for').' '.$user;
+				}
 				$uplim = $wppa_opt['wppa_upload_limit_count'].'/'.$wppa_opt['wppa_upload_limit_time'];
 				$parent = $wppa_opt['wppa_grant_parent'];
-				$query = $wpdb->prepare('INSERT INTO `' . WPPA_ALBUMS . '` (`id`, `name`, `description`, `a_order`, `a_parent`, `p_order_by`, `main_photo`, `cover_linktype`, `cover_linkpage`, `owner`, `timestamp`, `upload_limit`, `alt_thumbsize`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)', $id, $name, $desc, '0', $parent, '0', '0', 'content', '0', $owner, time(), $uplim, '0');
+				$query = $wpdb->prepare("INSERT INTO `" . WPPA_ALBUMS . "` (`id`, `name`, `description`, `a_order`, `a_parent`, `p_order_by`, `main_photo`, `cover_linktype`, `cover_linkpage`, `owner`, `timestamp`, `upload_limit`, `alt_thumbsize`, `default_tags`, `cover_type`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, '', '')", $id, $name, $desc, '0', $parent, '0', '0', 'content', '0', $owner, time(), $uplim, '0');
 				$iret = $wpdb->query($query);
 
 			}

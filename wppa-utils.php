@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains low-level utility routines
-* Version 4.9.12
+* Version 4.9.13
 *
 */
 
@@ -535,3 +535,19 @@ global $wppa;
 	return $url;
 }
 
+function wppa_treecount_a($alb) {
+global $wpdb;
+
+	$albums = $wpdb->get_results($wpdb->prepare('SELECT `id` FROM `'.WPPA_ALBUMS.'` WHERE `a_parent` = %s', $alb), ARRAY_A);
+	$album_count = empty($albums) ? '0' : count($albums);
+	$photo_count = $wpdb->get_var($wpdb->prepare('SELECT COUNT(*) FROM `'.WPPA_PHOTOS.'`  WHERE `album` = %s AND `status` <> "pending"', $alb));
+	
+	$result = array('albums' => $album_count, 'photos' => $photo_count);
+	if ( empty($albums) ) {}
+	else foreach ( $albums as $album ) {
+		$subcount = wppa_treecount_a($album['id']);
+		$result['albums'] += $subcount['albums'];
+		$result['photos'] += $subcount['photos'];
+	}
+	return $result;
+}

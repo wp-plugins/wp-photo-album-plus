@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wppa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-03-11 14:23+0100\n"
-"PO-Revision-Date: 2013-03-11 14:23+0100\n"
+"POT-Creation-Date: 2013-03-18 11:38+0100\n"
+"PO-Revision-Date: 2013-03-18 11:38+0100\n"
 "Last-Translator: J.N. Breetvelt <OpaJaap@OpaJaap.nl>\n"
 "Language-Team: oVa <ova13lastar@gmail.com>\n"
 "Language: fr_FR\n"
@@ -18,7 +18,7 @@ msgstr ""
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Poedit-KeywordsList: __a\n"
 "X-Poedit-Basepath: ..\n"
-"X-Generator: Poedit 1.5.4\n"
+"X-Generator: Poedit 1.5.5\n"
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPath-1: theme\n"
 
@@ -91,59 +91,63 @@ msgstr ""
 msgid "Photo not found."
 msgstr "Photo non trouvée."
 
-#: wppa-common-functions.php:950
+#: wppa-common-functions.php:626
+msgid "Default photo album for"
+msgstr ""
+
+#: wppa-common-functions.php:958
 msgid "1 second"
 msgstr "1 seconde"
 
-#: wppa-common-functions.php:951 wppa-functions.php:5595
+#: wppa-common-functions.php:959 wppa-functions.php:5613
 msgid "seconds"
 msgstr "secondes"
 
-#: wppa-common-functions.php:955
+#: wppa-common-functions.php:963
 msgid "1 minute"
 msgstr "1 minute"
 
-#: wppa-common-functions.php:956 wppa-functions.php:5594
+#: wppa-common-functions.php:964 wppa-functions.php:5612
 msgid "minutes"
 msgstr "minutes"
 
-#: wppa-common-functions.php:960
+#: wppa-common-functions.php:968
 msgid "1 hour"
 msgstr "1 heure"
 
-#: wppa-common-functions.php:961 wppa-functions.php:5593
+#: wppa-common-functions.php:969 wppa-functions.php:5611
 msgid "hours"
 msgstr "heures"
 
-#: wppa-common-functions.php:965
+#: wppa-common-functions.php:973
 msgid "1 day"
 msgstr "1 jour"
 
-#: wppa-common-functions.php:966 wppa-functions.php:5592
+#: wppa-common-functions.php:974 wppa-functions.php:5610
 msgid "days"
 msgstr "jours"
 
-#: wppa-common-functions.php:970
+#: wppa-common-functions.php:978
 msgid "1 week"
 msgstr "1 semaine"
 
-#: wppa-common-functions.php:971 wppa-functions.php:5591
+#: wppa-common-functions.php:979 wppa-functions.php:5609
 msgid "weeks"
 msgstr "semaines"
 
-#: wppa-common-functions.php:975
+#: wppa-common-functions.php:983
 msgid "1 month"
 msgstr "1 mois"
 
-#: wppa-common-functions.php:976
+#: wppa-common-functions.php:984
 msgid "months"
 msgstr "mois"
 
-#: wppa-common-functions.php:979
+#: wppa-common-functions.php:987
 msgid "1 year"
 msgstr "1 an"
 
-#: wppa-common-functions.php:980
+#: wppa-common-functions.php:988
 msgid "years"
 msgstr "ans"
 
@@ -199,13 +203,17 @@ msgstr "Photos les mieux cotées"
 msgid "Thumbnail view"
 msgstr "Taille vignette:"
 
+#: wppa-functions.php:187
+msgid "Thumbs"
+msgstr ""
+
 #: wppa-functions.php:1191 wppa-functions.php:1194
 #, fuzzy
 msgid "Edit"
 msgstr "Éditer !"
 
-#: wppa-functions.php:1197 wppa-functions.php:1628 wppa-functions.php:3274
-#: wppa-functions.php:3448
+#: wppa-functions.php:1197 wppa-functions.php:1628 wppa-functions.php:3289
+#: wppa-functions.php:3463
 msgid "Awaiting moderation"
 msgstr "En attente de modération"
 
@@ -231,7 +239,7 @@ msgstr "Visualiser les photos"
 msgid "Moderate comment admin"
 msgstr ""
 
-#: wppa-functions.php:1440 wppa-functions.php:5129
+#: wppa-functions.php:1440 wppa-functions.php:5147
 #, fuzzy
 msgid "Moderate manage photo"
 msgstr "Gérer les photos"
@@ -371,7 +379,7 @@ msgstr "<b>ERREUR: Tentative incorrecte d'entrer un commentaire.</b>"
 msgid "Link to"
 msgstr "Lien vers"
 
-#: wppa-functions.php:2969 wppa-functions.php:3108 wppa-functions.php:3111
+#: wppa-functions.php:2969 wppa-functions.php:3112 wppa-functions.php:3115
 msgid "View the album"
 msgstr "Visualiser l'album"
 
@@ -387,52 +395,52 @@ msgstr "Visualiser les photos de couverture"
 msgid "Browse photos"
 msgstr "Visualiser les photos"
 
-#: wppa-functions.php:3113
+#: wppa-functions.php:3117
 msgid "View"
 msgstr "Visualiser"
 
-#: wppa-functions.php:3116
+#: wppa-functions.php:3120
 msgid "album"
 msgstr "album"
 
-#: wppa-functions.php:3119
+#: wppa-functions.php:3123
 msgid "albums"
 msgstr "albums"
 
-#: wppa-functions.php:3123 wppa-functions.php:5594 wppa-functions.php:5833
+#: wppa-functions.php:3132 wppa-functions.php:5612 wppa-functions.php:5851
 #: wppa-non-admin.php:47
 msgid "and"
 msgstr "et"
 
-#: wppa-functions.php:3127
+#: wppa-functions.php:3137
 msgid "photo"
 msgstr "photo"
 
-#: wppa-functions.php:3130
+#: wppa-functions.php:3140
 msgid "photos"
 msgstr "photos"
 
-#: wppa-functions.php:3368 wppa-topten-widget.php:50
+#: wppa-functions.php:3383 wppa-topten-widget.php:50
 msgid "View the top rated photos"
 msgstr "Voir les photos les mieux cotées"
 
-#: wppa-functions.php:3660
+#: wppa-functions.php:3675
 msgid "Double click to start/stop slideshow running"
 msgstr "Double-cliquez pour lancer/arrêter le diaporama"
 
-#: wppa-functions.php:4926 wppa-functions.php:5070
+#: wppa-functions.php:4941 wppa-functions.php:5088
 msgid "Max uploads reached"
 msgstr "Ajout maximum ateind"
 
-#: wppa-functions.php:4942
+#: wppa-functions.php:4957
 msgid "Upload Photo"
 msgstr "Télécharger une photo"
 
-#: wppa-functions.php:4948
+#: wppa-functions.php:4963
 msgid "Upload Photo(s)"
 msgstr "Charger une(des) Photo(s)"
 
-#: wppa-functions.php:4951
+#: wppa-functions.php:4966
 #, php-format
 msgid ""
 "You may upload up to %s photos at once if your browser supports HTML-5 "
@@ -441,24 +449,24 @@ msgstr ""
 "Vous pouvez télécharger jusqu'à %s à la fois si votre navigateur prend en "
 "charge le téléchargement multiple de fichiers avec la technologie HTML-5"
 
-#: wppa-functions.php:4954
+#: wppa-functions.php:4969
 #, php-format
 msgid "Max photo size: %d x %d (%2.1f MegaPixel)"
 msgstr ""
 
-#: wppa-functions.php:4964
+#: wppa-functions.php:4979
 msgid "Apply watermark file:"
 msgstr "Appliquer le filigrane:"
 
-#: wppa-functions.php:4972
+#: wppa-functions.php:4987
 msgid "Position:"
 msgstr "Position:"
 
-#: wppa-functions.php:4984
+#: wppa-functions.php:4999
 msgid "Enter photo name"
 msgstr "Entrer un nom de photo"
 
-#: wppa-functions.php:4984
+#: wppa-functions.php:4999
 msgid ""
 "If you leave this blank, the original filename(s) will be used as photo name"
 "(s)."
@@ -466,41 +474,41 @@ msgstr ""
 "Si vous laisser cela vide, le(s) nom(s) original(s) sera utilisé(s) pour le"
 "(s) nom(s) de la (des) photo(s)"
 
-#: wppa-functions.php:4992
+#: wppa-functions.php:5007
 msgid "Enter/modify photo description"
 msgstr "Entrez/modifiez la description de la photo"
 
-#: wppa-functions.php:5018
+#: wppa-functions.php:5033
 msgid "<b>ERROR: Illegal attempt to upload a file.</b>"
 msgstr "<b>ERREUR: tentative incorrecte de télécharger un fichier.</b>"
 
-#: wppa-functions.php:5056
+#: wppa-functions.php:5071
 msgid "Photo successfully uploaded."
 msgstr ""
 
-#: wppa-functions.php:5056
+#: wppa-functions.php:5071
 #, php-format
 msgid "%s photos successfully uploaded."
 msgstr ""
 
-#: wppa-functions.php:5057
+#: wppa-functions.php:5072
 #, fuzzy, php-format
 msgid "%s points added."
 msgstr "Commentaire ajouté"
 
-#: wppa-functions.php:5060
+#: wppa-functions.php:5075
 msgid "Upload failed"
 msgstr ""
 
-#: wppa-functions.php:5074
+#: wppa-functions.php:5092
 msgid "Error during upload"
 msgstr "Erreur durant le téléchargement"
 
-#: wppa-functions.php:5079
+#: wppa-functions.php:5097
 msgid "Uploaded file is not an image"
 msgstr "Le fichier téléchargé n'est pas une image"
 
-#: wppa-functions.php:5083
+#: wppa-functions.php:5101
 #, fuzzy, php-format
 msgid ""
 "Only gif, jpg and png image files are supported. Returned filetype = %d."
@@ -508,279 +516,279 @@ msgstr ""
 "Seulement les formats .GIF, .JPG et .PNG sont supportés pour les fichiers "
 "d'images"
 
-#: wppa-functions.php:5090
+#: wppa-functions.php:5108
 #, php-format
 msgid "The image is too big. Max photo size: %d x %d (%2.1f MegaPixel)"
 msgstr ""
 
-#: wppa-functions.php:5119
+#: wppa-functions.php:5137
 msgid "Could not insert photo into db."
 msgstr ""
 
-#: wppa-functions.php:5125
+#: wppa-functions.php:5143
 #, php-format
 msgid "New photo uploaded: %s"
 msgstr ""
 
-#: wppa-functions.php:5126
+#: wppa-functions.php:5144
 #, fuzzy, php-format
 msgid "User %s uploaded photo %s into album %s"
 msgstr "Pas encore de photos dans cet album."
 
-#: wppa-functions.php:5128
+#: wppa-functions.php:5146
 msgid "This upload requires moderation"
 msgstr ""
 
-#: wppa-functions.php:5132
+#: wppa-functions.php:5150
 msgid "Details:"
 msgstr ""
 
-#: wppa-functions.php:5133
+#: wppa-functions.php:5151
 #, fuzzy
 msgid "Manage photo"
 msgstr "Gérer les photos"
 
-#: wppa-functions.php:5259 wppa-functions.php:5319
+#: wppa-functions.php:5277 wppa-functions.php:5337
 msgid "n.a."
 msgstr ""
 
-#: wppa-functions.php:5397
+#: wppa-functions.php:5415
 msgid "Not Defined"
 msgstr ""
 
-#: wppa-functions.php:5398
+#: wppa-functions.php:5416
 msgid "Manual"
 msgstr ""
 
-#: wppa-functions.php:5399
+#: wppa-functions.php:5417
 msgid "Program AE"
 msgstr ""
 
-#: wppa-functions.php:5400
+#: wppa-functions.php:5418
 msgid "Aperture-priority AE"
 msgstr ""
 
-#: wppa-functions.php:5401
+#: wppa-functions.php:5419
 msgid "Shutter speed priority AE"
 msgstr ""
 
-#: wppa-functions.php:5402
+#: wppa-functions.php:5420
 msgid "Creative (Slow speed)"
 msgstr ""
 
-#: wppa-functions.php:5403
+#: wppa-functions.php:5421
 msgid "Action (High speed)"
 msgstr ""
 
-#: wppa-functions.php:5404
+#: wppa-functions.php:5422
 msgid "Portrait"
 msgstr ""
 
-#: wppa-functions.php:5405
+#: wppa-functions.php:5423
 msgid "Landscape"
 msgstr ""
 
-#: wppa-functions.php:5406
+#: wppa-functions.php:5424
 msgid "Bulb"
 msgstr ""
 
-#: wppa-functions.php:5428
+#: wppa-functions.php:5446
 #, fuzzy
 msgid "Average"
 msgstr "moyen"
 
-#: wppa-functions.php:5429
+#: wppa-functions.php:5447
 msgid "Center-weighted average"
 msgstr ""
 
-#: wppa-functions.php:5430
+#: wppa-functions.php:5448
 msgid "Spot"
 msgstr ""
 
-#: wppa-functions.php:5431
+#: wppa-functions.php:5449
 msgid "Multi-spot"
 msgstr ""
 
-#: wppa-functions.php:5432
+#: wppa-functions.php:5450
 msgid "Multi-segment"
 msgstr ""
 
-#: wppa-functions.php:5433
+#: wppa-functions.php:5451
 msgid "Partial"
 msgstr ""
 
-#: wppa-functions.php:5434
+#: wppa-functions.php:5452
 msgid "Other"
 msgstr ""
 
-#: wppa-functions.php:5470
+#: wppa-functions.php:5488
 msgid "No Flash"
 msgstr ""
 
-#: wppa-functions.php:5472
+#: wppa-functions.php:5490
 msgid "Fired"
 msgstr ""
 
-#: wppa-functions.php:5474
+#: wppa-functions.php:5492
 msgid "Fired, Return not detected"
 msgstr ""
 
-#: wppa-functions.php:5476
+#: wppa-functions.php:5494
 msgid "Fired, Return detected"
 msgstr ""
 
-#: wppa-functions.php:5478
+#: wppa-functions.php:5496
 msgid "On, Did not fire"
 msgstr ""
 
-#: wppa-functions.php:5480
+#: wppa-functions.php:5498
 msgid "On, Fired"
 msgstr ""
 
-#: wppa-functions.php:5482
+#: wppa-functions.php:5500
 msgid "On, Return not detected"
 msgstr ""
 
-#: wppa-functions.php:5484
+#: wppa-functions.php:5502
 msgid "On, Return detected"
 msgstr ""
 
-#: wppa-functions.php:5486
+#: wppa-functions.php:5504
 msgid "Off, Did not fire"
 msgstr ""
 
-#: wppa-functions.php:5488
+#: wppa-functions.php:5506
 msgid "Off, Did not fire, Return not detected"
 msgstr ""
 
-#: wppa-functions.php:5490
+#: wppa-functions.php:5508
 msgid "Auto, Did not fire"
 msgstr ""
 
-#: wppa-functions.php:5492
+#: wppa-functions.php:5510
 msgid "Auto, Fired"
 msgstr ""
 
-#: wppa-functions.php:5494
+#: wppa-functions.php:5512
 msgid "Auto, Fired, Return not detected"
 msgstr ""
 
-#: wppa-functions.php:5496
+#: wppa-functions.php:5514
 msgid "Auto, Fired, Return detected"
 msgstr ""
 
-#: wppa-functions.php:5498
+#: wppa-functions.php:5516
 msgid "No flash function"
 msgstr ""
 
-#: wppa-functions.php:5500
+#: wppa-functions.php:5518
 msgid "Off, No flash function"
 msgstr ""
 
-#: wppa-functions.php:5502
+#: wppa-functions.php:5520
 msgid "Fired, Red-eye reduction"
 msgstr ""
 
-#: wppa-functions.php:5504
+#: wppa-functions.php:5522
 msgid "Fired, Red-eye reduction, Return not detected"
 msgstr ""
 
-#: wppa-functions.php:5506
+#: wppa-functions.php:5524
 msgid "Fired, Red-eye reduction, Return detected"
 msgstr ""
 
-#: wppa-functions.php:5508
+#: wppa-functions.php:5526
 msgid "On, Red-eye reduction"
 msgstr ""
 
-#: wppa-functions.php:5510
+#: wppa-functions.php:5528
 msgid "Red-eye reduction, Return not detected"
 msgstr ""
 
-#: wppa-functions.php:5512
+#: wppa-functions.php:5530
 msgid "On, Red-eye reduction, Return detected"
 msgstr ""
 
-#: wppa-functions.php:5514
+#: wppa-functions.php:5532
 msgid "Off, Red-eye reduction"
 msgstr ""
 
-#: wppa-functions.php:5516
+#: wppa-functions.php:5534
 msgid "Auto, Did not fire, Red-eye reduction"
 msgstr ""
 
-#: wppa-functions.php:5518
+#: wppa-functions.php:5536
 msgid "Auto, Fired, Red-eye reduction"
 msgstr ""
 
-#: wppa-functions.php:5520
+#: wppa-functions.php:5538
 msgid "Auto, Fired, Red-eye reduction, Return not detected"
 msgstr ""
 
-#: wppa-functions.php:5522
+#: wppa-functions.php:5540
 msgid "Auto, Fired, Red-eye reduction, Return detected"
 msgstr ""
 
-#: wppa-functions.php:5589
+#: wppa-functions.php:5607
 msgid "You can upload after"
 msgstr "Vous pouvez charger après"
 
-#: wppa-functions.php:5623
+#: wppa-functions.php:5641
 msgid "Zoom in"
 msgstr ""
 
-#: wppa-functions.php:5833 wppa-non-admin.php:47
+#: wppa-functions.php:5851 wppa-non-admin.php:47
 #, php-format
 msgid "See this image on %s"
 msgstr ""
 
-#: wppa-functions.php:5852
+#: wppa-functions.php:5870
 #, php-format
 msgid "Share %s on Facebook"
 msgstr ""
 
-#: wppa-functions.php:5894
+#: wppa-functions.php:5912
 #, php-format
 msgid "Tweet %s on Twitter"
 msgstr ""
 
-#: wppa-functions.php:5906
+#: wppa-functions.php:5924
 #, php-format
 msgid "Tip %s on Hyves"
 msgstr ""
 
-#: wppa-functions.php:5919
+#: wppa-functions.php:5937
 #, php-format
 msgid "Share %s on Google+"
 msgstr ""
 
-#: wppa-functions.php:5934
+#: wppa-functions.php:5952
 #, php-format
 msgid "Share %s on Pinterest"
 msgstr ""
 
-#: wppa-functions.php:5966
+#: wppa-functions.php:5984
 msgid "Please select a tagcloud landing page in Table VI-C3b"
 msgstr ""
 
-#: wppa-functions.php:6002
+#: wppa-functions.php:6020
 msgid "Please select a multitag landing page in Table VI-C4b"
 msgstr ""
 
-#: wppa-functions.php:6024
+#: wppa-functions.php:6042
 msgid "Please check the tag(s) that the photos must have"
 msgstr ""
 
-#: wppa-functions.php:6045
+#: wppa-functions.php:6063
 #, fuzzy
 msgid "And"
 msgstr "et"
 
-#: wppa-functions.php:6048
+#: wppa-functions.php:6066
 msgid "Or"
 msgstr ""
 
-#: wppa-functions.php:6074
+#: wppa-functions.php:6092
 msgid "Find!"
 msgstr ""
 
