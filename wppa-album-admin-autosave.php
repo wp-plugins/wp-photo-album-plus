@@ -554,7 +554,7 @@ function _wppa_admin() {
 			if ( wppa_can_create_top_album() ) {
 				$url = wppa_dbg_url(get_admin_url().'admin.php?page=wppa_admin_menu&amp;tab=edit&amp;edit_id=new');
 				$vfy = __('Are you sure you want to create a new album?', 'wppa');
-				echo '<input type="button" class="button-primary" onclick="if (confirm(\''.$vfy.'\')) document.location='.$url.';" value="'.__('Create New Empty Album', 'wppa').'" />';
+				echo '<input type="button" class="button-primary" onclick="if (confirm(\''.$vfy.'\')) document.location=\''.$url.'\';" value="'.__('Create New Empty Album', 'wppa').'" />';
 			}
 			// The switch to button(s)
 			if ( wppa_extended_access() ) {
