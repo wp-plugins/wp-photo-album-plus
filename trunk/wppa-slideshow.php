@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the slideshow high level functions
-* Version 4.9.8
+* Version 4.9.14
 *
 */
 
@@ -348,7 +348,7 @@ global $wppa_opt;
 		else for ( $i = '1'; $i <= '10'; $i++ ) $r[$i] = $i;
 
 		if ($fs != '') $fs += 3; else $fs = '15';	// iconsize = fontsize+3, Default to 15
-		$style = 'style="height:'.$fs.'px; margin:0 0 -3px 0; padding:0; box-shadow:none;"';
+		$style = 'style="height:'.$fs.'px; margin:0 0 -3px 0; padding:0; box-shadow:none; display:inline;"';
 		$icon = 'star.png';
 
 		if ( $wppa_opt['wppa_show_avg_rating'] ) {

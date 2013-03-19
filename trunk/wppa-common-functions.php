@@ -2,11 +2,11 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 4.9.13
+* version 4.9.14
 *
 */
 global $wppa_api_version;
-$wppa_api_version = '4-9-13-000';
+$wppa_api_version = '4-9-14-000';
 // Initialize globals and option settings
 function wppa_initialize_runtime($force = false) {
 global $wppa;
@@ -518,6 +518,10 @@ global $wppa_initruntimetime;
 						'wppa_upload_limit_time'		=> '',		// 5b
 						'wppa_grant_an_album'			=> '',
 						'wppa_grant_parent'				=> '',
+						'wppa_max_albums'				=> '',
+						'wppa_alt_is_restricted'		=> '',
+						'wppa_link_is_restricted'		=> '',
+
 
 						'wppa_autoclean'				=> '',
 						'wppa_watermark_on'				=> '',

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the tagcloud widget
-* Version 4.9.0
+* Version 4.9.14
 *
 */
 
@@ -33,7 +33,7 @@ class TagcloudPhotos extends WP_Widget {
 		if ( !empty( $widget_title ) ) { echo $before_title . $widget_title . $after_title; }
 		
 		echo '<div class="wppa-tagcloud" >'.wppa_get_tagcloud_html().'</div>';
-		
+		echo '<div style="clear:both"></div>';
 		echo $after_widget;
     }
 	

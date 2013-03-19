@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the top rated photos
-* Version 4.8.10
+* Version 4.9.14
 */
 
 class TopTenWidget extends WP_Widget {
@@ -91,9 +91,11 @@ class TopTenWidget extends WP_Widget {
 			else {	// No image
 				$widget_content .= __a('Photo not found.', 'wppa_theme');
 			}
+			
 		}	
 		else $widget_content .= 'There are no rated photos (yet).';
 		
+		$widget_content .= '<div style="clear:both"></div>';
 		$widget_content .= "\n".'<!-- WPPA+ TopTen Widget end -->';
 
 		echo "\n" . $before_widget;

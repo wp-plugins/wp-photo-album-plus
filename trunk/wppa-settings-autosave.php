@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 4.9.13
+* Version 4.9.14
 *
 */
 
@@ -3241,6 +3241,28 @@ global $wppa_revno;
 							}
 							$html = wppa_select($slug, $opts, $vals);
 							wppa_setting($slug, '7', $name, $desc, $html, $help);
+							
+							$name = __('Max user albums', 'wppa');
+							$desc = __('The max number of albums a user can create.', 'wppa');
+							$help = esc_js(__('The maximum number of albums a user can create when he is not admin and owner only is active', 'wppa'));
+							$help .= '\n\n'.esc_js(__('A number of 0 means No limit', 'wppa'));
+							$slug = 'wppa_max_albums';
+							$html = wppa_input($slug, '50px', '', 'albums');
+							wppa_setting($slug, '8', $name, $desc, $html, $help);
+							
+							$name = __('Alt thumb is restricted', 'wppa');
+							$desc = __('Using <b>alt thumbsize</b> is a restricted action.', 'wppa');
+							$help = esc_js(__('If checked: alt thumbsize can not be set in album admin by users not having admin rights.', 'wppa'));
+							$slug = 'wppa_alt_is_restricted';
+							$html = wppa_checkbox($slug);
+							wppa_setting($slug, '9', $name, $desc, $html, $help);
+							
+							$name = __('Link is restricted', 'wppa');
+							$desc = __('Using <b>Link to</b> is a restricted action.', 'wppa');
+							$help = esc_js(__('If checked: Link to: can not be set in album admin by users not having admin rights.', 'wppa'));
+							$slug = 'wppa_link_is_restricted';
+							$html = wppa_checkbox($slug);
+							wppa_setting($slug, '10', $name, $desc, $html, $help);
 							
 							wppa_setting_subheader('C', '1', __('Search Albums and Photos related settings', 'wppa'));
 							
