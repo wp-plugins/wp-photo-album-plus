@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile
-Version: 4.9.13
+Version: 4.9.14
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -170,6 +170,27 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 4.9.14 =
+
+= Bug Fixes =
+
+* All widget contents end with a div clear:both now.
+* The stars of the rating have display: inline now.
+
+= New Features =
+
+* Sub albums can be created on the Album admin table.
+* You can limit the number of albums a user not having administrator rights can create in Table IX-B8.
+* Table IX-B9: if checked: selecting alt thumbsize in album admin requires administrator rights.
+* Table IX-B10: if checked: selecting a link page in album admin requires administrator rights.
+
+= Other Changes =
+
+* If owner only is on, a user not having administrator rights will only see the flat album table.
+* If owner only is on, grant an album is on and a grant parent is defined, the user not having administrator rights can no longer create top-level albums.
+* The ownership of an album can only be changed by an administrator.
+* If owner only is on, a user not having administrator rights can set the parent of his albums only to other albums he owns or to a public album.
 
 = 4.9.13 =
 

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display thumbnail photos
-* Version 4.8.10
+* Version 4.9.14
 */
 
 class ThumbnailWidget extends WP_Widget {
@@ -98,7 +98,7 @@ class ThumbnailWidget extends WP_Widget {
 			$widget_content .= "\n".'</div>';
 		}	
 		else $widget_content .= 'There are no photos (yet).';
-		
+		$widget_content .= '<div style="clear:both"></div>';
 		$widget_content .= "\n".'<!-- WPPA+ thumbnail Widget end -->';
 
 		echo "\n" . $before_widget;

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the last uploaded photos
-* Version 4.8.10
+* Version 4.9.14
 */
 
 class LasTenWidget extends WP_Widget {
@@ -93,9 +93,11 @@ class LasTenWidget extends WP_Widget {
 				$widget_content .= '</span>';
 			}
 			$widget_content .= "\n".'</div>';
+			
 		}	
 		else $widget_content .= 'There are no uploaded photos (yet).';
 		
+		$widget_content .= '<div style="clear:both"></div>';
 		$widget_content .= "\n".'<!-- WPPA+ LasTen Widget end -->';
 
 		echo "\n" . $before_widget;

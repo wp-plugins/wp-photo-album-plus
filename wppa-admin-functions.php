@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 * gp admin functions
-* version 4.9.13
+* version 4.9.14
 *
 * 
 */
@@ -634,6 +634,7 @@ global $wpdb;
 											'addnone' 			=> false, 
 											'addall' 			=> false,
 											'addblank' 			=> false,
+											'addselected'		=> false,
 											'addseparate' 		=> false, 
 											'disableancestors' 	=> false,
 											'checkaccess' 		=> false,
@@ -694,7 +695,9 @@ global $wpdb;
 			 ( $args['disableancestors'] && wppa_is_ancestor($args['exclude'], $album['id']) )
 			) $disabled = ' disabled="disabled"'; else $disabled = '';
 		if ( $args['selected'] == $album['id'] && ! $disabled ) $selected = ' selected="selected"'; else $selected = '';
-		if ( ! $args['checkaccess'] || wppa_have_access($album['id']) ) {
+		if ( ( ! $args['checkaccess'] || wppa_have_access($album['id']) ) ||
+			 ( $selected && $args['addselected'] )	
+			) {
 			if ( $args['addnumbers'] ) $number = ' ('.$album['id'].')'; else $number = '';
 			$result .= '<option value="' . $album['id'] . '" ' . $selected . $disabled . '>' . $album['name'] . $number . '</option>';
 		}

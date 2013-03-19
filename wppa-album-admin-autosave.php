@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * create, edit and delete albums
-* version 4.9.13
+* version 4.9.14
 *
 */
 
@@ -55,10 +55,23 @@ function _wppa_admin() {
 		// album edit page
 		if ($_GET['tab'] == 'edit'){
 			if ($_GET['edit_id'] == 'new') {
-				$name = __('New Album', 'wppa');
+				if ( ! wppa_can_create_album() ) wp_die('No rights to create an album');
 				$id = wppa_nextkey(WPPA_ALBUMS);
+				if (isset($_GET['parent_id'])) {
+					$parent = $_GET['parent_id'];
+					$name = wppa_get_album_name($parent).'-#'.$id;
+					if ( ! current_user_can('administrator') ) {	// someone creating an album for someone else?
+						$parentowner = $wpdb->get_var($wpdb->prepare("SELECT `owner` FROM `".WPPA_ALBUMS."` WHERE `id` = %s", $parent));
+						if ( $parentowner !== wppa_get_user() ) wp_die('You are not allowed to create an album for someone else');
+					}
+				}
+				else {
+					$parent = '0';
+					$name = __('New Album', 'wppa');
+					if ( ! wppa_can_create_top_album() ) wp_die('No rights to create a top-level album');
+				}				
 				$uplim = $wppa_opt['wppa_upload_limit_count'].'/'.$wppa_opt['wppa_upload_limit_time'];
-				$query = $wpdb->prepare("INSERT INTO `" . WPPA_ALBUMS . "` (`id`, `name`, `description`, `a_order`, `a_parent`, `p_order_by`, `main_photo`, `cover_linktype`, `cover_linkpage`, `owner`, `timestamp`, `upload_limit`, `alt_thumbsize`, `default_tags`, `cover_type`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, '', '')", $id, $name, '', '0', '0', '0', '0', 'content', '0', wppa_get_user(), time(), $uplim, '0');
+				$query = $wpdb->prepare("INSERT INTO `" . WPPA_ALBUMS . "` (`id`, `name`, `description`, `a_order`, `a_parent`, `p_order_by`, `main_photo`, `cover_linktype`, `cover_linkpage`, `owner`, `timestamp`, `upload_limit`, `alt_thumbsize`, `default_tags`, `cover_type`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, '', '')", $id, $name, '', '0', $parent, '0', '0', 'content', '0', wppa_get_user(), time(), $uplim, '0');
 				$iret = $wpdb->query($query);
 				if ($iret === FALSE) {
 					wppa_error_message(__('Could not create album.', 'wppa').'<br/>Query = '.$query);
@@ -141,7 +154,9 @@ function _wppa_admin() {
 								<?php } ?>
 							</tr>
 							<!-- Owner -->
-							<?php if ( $wppa_opt['wppa_owner_only'] == 'yes' ) { ?>
+							<?php // if ( $wppa_opt['wppa_owner_only'] == 'yes' ) { 
+							if ( current_user_can('administrator') ) {
+							?>
 								<tr style="vertical-align:top;" >
 									<th style="padding-top:0; padding-bottom:0;" scope="row">
 										<label ><?php _e('Owned by:', 'wppa'); ?></label>
@@ -185,7 +200,11 @@ function _wppa_admin() {
 									<label ><?php _e('Parent album:', 'wppa'); ?> </label>
 								</th>
 								<td style="padding-top:0; padding-bottom:0; max-width:210px;">
-									<select id="wppa-parsel" style="max-width:100%;" onchange="wppaAjaxUpdateAlbum(<?php echo $edit_id ?>, 'a_parent', this)" ><?php echo wppa_album_select_a(array('checkaccess' => true, 'exclude' => $albuminfo['id'], 'selected' => $albuminfo['a_parent'], 'addnone' => true, 'addseparate' => true, 'disableancestors' => true, 'path' => wppa_switch('wppa_hier_albsel'))) /*$albuminfo["id"], $albuminfo["a_parent"], TRUE, TRUE, TRUE)) */?></select>
+									<?php if ( wppa_extended_access() ) { ?>
+										<select id="wppa-parsel" style="max-width:100%;" onchange="wppaAjaxUpdateAlbum(<?php echo $edit_id ?>, 'a_parent', this)" ><?php echo wppa_album_select_a(array('checkaccess' => true, 'exclude' => $albuminfo['id'], 'selected' => $albuminfo['a_parent'], 'addnone' => true, 'addseparate' => true, 'disableancestors' => true, 'path' => wppa_switch('wppa_hier_albsel'))) ?></select>
+									<?php } else { ?>
+										<select id="wppa-parsel" style="max-width:100%;" onchange="wppaAjaxUpdateAlbum(<?php echo $edit_id ?>, 'a_parent', this)" ><?php echo wppa_album_select_a(array('checkaccess' => true, 'exclude' => $albuminfo['id'], 'selected' => $albuminfo['a_parent'], 'addselected' => true, 'disableancestors' => true, 'path' => wppa_switch('wppa_hier_albsel'))) ?></select>
+									<?php } ?>
 								</td>
 								<td style="padding-top:0; padding-bottom:0;">
 									<span class="description">
@@ -210,6 +229,7 @@ function _wppa_admin() {
 								</td>
 							</tr>
 							<!-- Alternative thumbnail size? -->
+							<?php if ( $wppa_opt['wppa_alt_is_restricted'] == 'no' || current_user_can('administrator') ) { ?>
 							<tr style="vertical-align:top;" >
 								<th style="padding-top:0; padding-bottom:0;">
 									<label ><?php _e('Use alt thumbsize:', 'wppa'); ?></label>
@@ -226,6 +246,7 @@ function _wppa_admin() {
 									</span>
 								</td>
 							</tr>
+							<?php } ?>
 							<!-- Cover photo -->
 							<tr style="vertical-align:top;" >
 								<th style="padding-top:0; padding-bottom:0;">
@@ -322,6 +343,7 @@ function _wppa_admin() {
 							</tr>
 							
 							<!-- Link page -->
+							<?php if ( $wppa_opt['wppa_link_is_restricted'] == 'no' || current_user_can('administrator') ) { ?>
 							<tr style="vertical-align:top;" >
 								<th style="padding-top:0; padding-bottom:0;" scope="row">
 									<label ><?php _e('Link to:', 'wppa'); ?></label>
@@ -348,6 +370,7 @@ function _wppa_admin() {
 									<?php }	?>
 								</td>
 							</tr>
+							<?php } ?>
 
 							<!-- Reset Ratings -->
 							<?php if ( $wppa_opt['wppa_rating_on'] == 'yes' ) { ?>
@@ -510,8 +533,11 @@ function _wppa_admin() {
 			}
 		}
 		
-		if ( isset($_GET['switchto']) ) update_option('wppa_album_table_'.wppa_get_user(), $_GET['switchto']);
-		$style = get_option('wppa_album_table_'.wppa_get_user(), 'collapsable');
+		if ( wppa_extended_access() ) {
+			if ( isset($_GET['switchto']) ) update_option('wppa_album_table_'.wppa_get_user(), $_GET['switchto']);
+			$style = get_option('wppa_album_table_'.wppa_get_user(), 'flat');
+		}
+		else $style = 'flat';
 		
 		// The Manage Album page 
 ?>	
@@ -523,15 +549,22 @@ function _wppa_admin() {
 
 			<h2><?php _e('Manage Albums', 'wppa'); ?></h2>
 			<br />
-			<?php // The Create new album button ?>
-			<?php $url = wppa_dbg_url(get_admin_url().'admin.php?page=wppa_admin_menu&amp;tab=edit&amp;edit_id=new'); ?>
-			<?php $vfy = __('Are you sure you want to create a new album?', 'wppa') ?>
-			<input type="button" class="button-primary" onclick="if (confirm('<?php echo $vfy ?>')) document.location='<?php echo $url ?>';" value="<?php _e('Create New Empty Album', 'wppa') ?>" />
-			<?php if ( $style == 'flat' ) { ?>
-			<input type="button" class="button-secundary" onclick="document.location='<?php echo wppa_dbg_url(get_admin_url().'admin.php?page=wppa_admin_menu&amp;switchto=collapsable') ?>'" value="<?php _e('Switch to Collapsable table', 'wppa'); ?>" />		
-			<?php } if ( $style == 'collapsable' ) { ?>
-			<input type="button" class="button-secundary" onclick="document.location='<?php echo wppa_dbg_url(get_admin_url().'admin.php?page=wppa_admin_menu&amp;switchto=flat') ?>'" value="<?php _e('Switch to Flat table', 'wppa'); ?>" />		
-			<?php } ?>
+			<?php 
+			// The Create new album button
+			if ( wppa_can_create_top_album() ) {
+				$url = wppa_dbg_url(get_admin_url().'admin.php?page=wppa_admin_menu&amp;tab=edit&amp;edit_id=new');
+				$vfy = __('Are you sure you want to create a new album?', 'wppa');
+				echo '<input type="button" class="button-primary" onclick="if (confirm(\''.$vfy.'\')) document.location='.$url.';" value="'.__('Create New Empty Album', 'wppa').'" />';
+			}
+			// The switch to button(s)
+			if ( wppa_extended_access() ) {
+				if ( $style == 'flat' ) { ?>
+					<input type="button" class="button-secundary" onclick="document.location='<?php echo wppa_dbg_url(get_admin_url().'admin.php?page=wppa_admin_menu&amp;switchto=collapsable') ?>'" value="<?php _e('Switch to Collapsable table', 'wppa'); ?>" />		
+				<?php } 
+				if ( $style == 'collapsable' ) { ?>
+					<input type="button" class="button-secundary" onclick="document.location='<?php echo wppa_dbg_url(get_admin_url().'admin.php?page=wppa_admin_menu&amp;switchto=flat') ?>'" value="<?php _e('Switch to Flat table', 'wppa'); ?>" />		
+				<?php } 
+			} ?>
 			
 			<br />
 			<?php // The table of existing albums 
@@ -690,6 +723,7 @@ function wppa_admin_albums_flat() {
 				</th>
 				<th scope="col"><?php _e('Edit', 'wppa'); ?></th>
 				<th scope="col"><?php _e('Delete', 'wppa'); ?></th>	
+				<?php if ( wppa_can_create_album() ) echo '<th scope="col">'.__('Create', 'wppa').'</th>'; ?>
 			</tr>
 			</thead>
 			<tbody>
@@ -718,15 +752,20 @@ function wppa_admin_albums_flat() {
 							<?php $nm = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `".WPPA_PHOTOS."` WHERE album=%s AND status=%s", $album['id'], 'pending')); ?>
 							<td><?php echo $na.'/'.$np; if ($nm) echo '/<span style="font-weight:bold; color:red">'.$nm.'</span>'; ?></td>
 							<?php if ( $album['owner'] != '--- public ---' || current_user_can('administrator') ) { ?>
-							<?php $url = wppa_ea_url($album['id']) ?>
-							<td><a href="<?php echo($url) ?>" class="wppaedit"><?php _e('Edit', 'wppa'); ?></a></td>
-							<?php $url = wppa_dbg_url(get_admin_url().'admin.php?page=wppa_admin_menu&amp;tab=del&amp;id='.$album['id']); ?>
-							
-							<?php $url = wppa_ea_url($album['id'], 'del') ?>
-							<td><a href="<?php echo($url) ?>" class="wppadelete"><?php _e('Delete', 'wppa'); ?></a></td>
-							<?php }
+								<?php $url = wppa_ea_url($album['id']) ?>
+								<td><a href="<?php echo($url) ?>" class="wppaedit"><?php _e('Edit', 'wppa'); ?></a></td>
+								<?php $url = wppa_dbg_url(get_admin_url().'admin.php?page=wppa_admin_menu&amp;tab=del&amp;id='.$album['id']); ?>
+								
+								<?php $url = wppa_ea_url($album['id'], 'del') ?>
+								<td><a href="<?php echo($url) ?>" class="wppadelete"><?php _e('Delete', 'wppa'); ?></a></td>
+								<?php if ( wppa_can_create_album() ) {
+									$url = wppa_dbg_url(get_admin_url().'admin.php?page=wppa_admin_menu&amp;tab=edit&amp;edit_id=new&amp;parent_id='.$album['id']);
+									$onc = 'if (confirm(\''.__('Are you sure you want to create a subalbum?', 'wppa').'\')) document.location=\''.$url.'\';';
+									echo '<td><span onclick="'.$onc.'" class="wppacreate">'.__('Create', 'wppa').'</span></td>'; 
+								}
+							}
 							else { ?>
-							<td></td><td></td>
+							<td></td><td></td><?php if ( wppa_can_create_album() ) echo '<td></td' ?>
 							<?php } ?>
 						</tr>		
 						<?php if ($alt == '') { $alt = ' class="alternate" '; } else { $alt = '';}
@@ -806,6 +845,7 @@ function wppa_admin_albums_flat() {
 				</th>
 				<th scope="col"><?php _e('Edit', 'wppa'); ?></th>
 				<th scope="col"><?php _e('Delete', 'wppa'); ?></th>	
+				<?php if ( wppa_can_create_album() ) echo '<th scope="col">'.__('Create', 'wppa').'</th>'; ?>
 			</tr>
 			</tfoot>
 		
@@ -983,6 +1023,7 @@ function wppa_admin_albums_collapsable() {
 				</th>
 				<th scope="col"><?php _e('Edit', 'wppa'); ?></th>
 				<th scope="col"><?php _e('Delete', 'wppa'); ?></th>	
+				<?php if ( wppa_can_create_album() ) echo '<th scope="col">'.__('Create', 'wppa').'</th>'; ?>
 			</tr>
 			</thead>
 			<tbody>
@@ -1070,6 +1111,7 @@ function wppa_admin_albums_collapsable() {
 				</th>
 				<th scope="col"><?php _e('Edit', 'wppa'); ?></th>
 				<th scope="col"><?php _e('Delete', 'wppa'); ?></th>	
+				<?php if ( wppa_can_create_album() ) echo '<th scope="col">'.__('Create', 'wppa').'</th>'; ?>
 			</tr>
 			</tfoot>
 		
@@ -1176,15 +1218,20 @@ global $wpdb;
 							<?php $nm = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `".WPPA_PHOTOS."` WHERE album=%s AND status=%s", $album['id'], 'pending')); ?>
 							<td><?php echo $na.'/'.$np; if ($nm) echo '/<span style="font-weight:bold; color:red">'.$nm.'</span>'; ?></td>
 							<?php if ( $album['owner'] != '--- public ---' || current_user_can('administrator') ) { ?>
-							<?php $url = wppa_ea_url($album['id']) ?>
-							<td><a href="<?php echo($url) ?>" class="wppaedit"><?php _e('Edit', 'wppa'); ?></a></td>
-							<?php $url = wppa_dbg_url(get_admin_url().'admin.php?page=wppa_admin_menu&amp;tab=del&amp;id='.$album['id']); ?>
-							
-							<?php $url = wppa_ea_url($album['id'], 'del') ?>
-							<td><a href="<?php echo($url) ?>" class="wppadelete"><?php _e('Delete', 'wppa'); ?></a></td>
-							<?php }
+								<?php $url = wppa_ea_url($album['id']) ?>
+								<td><a href="<?php echo($url) ?>" class="wppaedit"><?php _e('Edit', 'wppa'); ?></a></td>
+								<?php $url = wppa_dbg_url(get_admin_url().'admin.php?page=wppa_admin_menu&amp;tab=del&amp;id='.$album['id']); ?>
+								
+								<?php $url = wppa_ea_url($album['id'], 'del') ?>
+								<td><a href="<?php echo($url) ?>" class="wppadelete"><?php _e('Delete', 'wppa'); ?></a></td>
+								<?php if ( wppa_can_create_album() ) {
+									$url = wppa_dbg_url(get_admin_url().'admin.php?page=wppa_admin_menu&amp;tab=edit&amp;edit_id=new&amp;parent_id='.$album['id']);
+									$onc = 'if (confirm(\''.__('Are you sure you want to create a subalbum?', 'wppa').'\')) document.location=\''.$url.'\';';
+									echo '<td><span onclick="'.$onc.'" class="wppacreate">'.__('Create', 'wppa').'</span></td>'; 
+								}
+							}
 							else { ?>
-							<td></td><td></td>
+							<td></td><td></td><?php if ( wppa_can_create_album() ) echo '<td></td' ?>
 							<?php } ?>
 						</tr>		
 						<?php if ($alt == '') { $alt = ' class="alternate" '; } else { $alt = '';}
@@ -1207,50 +1254,6 @@ global $wpdb;
 	}
 	return false;
 }
-
-// add an album 
-/*
-function wppa_add_album() {
-	global $wpdb;
-	global $q_config;
-	
-	if (!wppa_qtrans_enabled()) {
-		$name = $_POST['wppa-name'];
-		$desc = $_POST['wppa-desc'];
-	}
-	else {
-		$name = '';
-		$desc = '';
-		foreach ($q_config['enabled_languages'] as $lcode) {
-			$n = $_POST['wppa-name-'.$lcode];
-			$d = $_POST['wppa-desc-'.$lcode];
-			if ($n != '') $name .= '[:'.$lcode.']'.$n;
-			if ($d != '') $desc .= '[:'.$lcode.']'.$d;
-		}
-	}
-	$name = esc_attr($name);
-	$desc = esc_attr($desc);
-
-	$order = (is_numeric($_POST['wppa-order']) ? $_POST['wppa-order'] : 0);
-	$parent = (is_numeric($_POST['wppa-parent']) ? $_POST['wppa-parent'] : 0);
-	$porder = (is_numeric($_POST['wppa-photo-order-by']) ? $_POST['wppa-photo-order-by'] : 0);
-	
-	$owner = wppa_get_user();
-
-	if (!empty($name)) {
-		error_reporting(E_ALL);
-		$query = $wpdb->prepare("INSERT INTO `" . WPPA_ALBUMS . "` (`id`, `name`, `description`, `a_order`, `a_parent`, `p_order_by`, `main_photo`, `cover_linktype`, `cover_linkpage`, `owner`, `timestamp`, `default_tags`, `cover_type`) VALUES (0, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, '', '')", $name, $desc, $order, $parent, $porder, '0', 'content', '0', $owner, time());
-		$iret = $wpdb->query($query);
-        if ($iret === FALSE) wppa_error_message(__('Could not create album.', 'wppa').'<br/>Query = '.$query);
-		else {
-            $id = wppa_get_album_id($name);
-            wppa_set_last_album($id);
-			wppa_update_message(__('Album #', 'wppa') . ' ' . $id . ' ' . __('Added.', 'wppa'));
-        }
-	} 
-    else wppa_error_message(__('Album Name cannot be empty.', 'wppa'));
-}
-*/
 
 // delete an album 
 function wppa_del_album($id, $move = '') {
@@ -1333,3 +1336,31 @@ function wppa_ea_url($edit_id, $tab = 'edit') {
 	return wppa_dbg_url(get_admin_url().'admin.php?page=wppa_admin_menu&amp;tab='.$tab.'&amp;edit_id='.$edit_id.'&amp;wppa_nonce='.$nonce);
 }
 
+function wppa_extended_access() {
+global $wppa_opt;
+
+	if ( current_user_can('administrator') ) return true;
+	if ( $wppa_opt['wppa_owner_only'] == 'no' ) return true;
+	return false;
+}
+
+function wppa_can_create_album() {
+global $wppa_opt;
+global $wpdb;
+
+	if ( wppa_extended_access() ) return true;
+	if ( $wppa_opt['wppa_max_albums'] == '0' ) return true;	// 0 = unlimited
+	$user = wppa_get_user();
+	$albs = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `".WPPA_ALBUMS."` WHERE `owner` = %s", $user));
+	if ( $albs < $wppa_opt['wppa_max_albums'] ) return true;
+	return false;
+}
+
+function wppa_can_create_top_album() {
+global $wppa_opt;
+
+	if ( current_user_can('administrator') ) return true;
+	if ( ! wppa_can_create_album() ) return false;
+	if ( $wppa_opt['wppa_grant_an_album'] == 'yes' && $wppa_opt['wppa_grant_parent'] != '0' ) return false;
+	return true;
+}
