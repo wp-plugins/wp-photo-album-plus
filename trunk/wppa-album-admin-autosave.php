@@ -1227,7 +1227,7 @@ global $wpdb;
 								<?php if ( wppa_can_create_album() ) {
 									$url = wppa_dbg_url(get_admin_url().'admin.php?page=wppa_admin_menu&amp;tab=edit&amp;edit_id=new&amp;parent_id='.$album['id']);
 									$onc = 'if (confirm(\''.__('Are you sure you want to create a subalbum?', 'wppa').'\')) document.location=\''.$url.'\';';
-									echo '<td><span onclick="'.$onc.'" class="wppacreate">'.__('Create', 'wppa').'</span></td>'; 
+									echo '<td><a onclick="'.$onc.'" class="wppacreate">'.__('Create', 'wppa').'</a></td>'; 
 								}
 							}
 							else { ?>
