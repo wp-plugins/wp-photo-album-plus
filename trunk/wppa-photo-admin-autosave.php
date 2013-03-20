@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * edit and delete photos
-* version 4.9.13
+* version 4.9.16
 *
 */
 
@@ -175,11 +175,14 @@ function wppa_album_photos($album = '', $photo = '', $owner = '') {
 								</th>
 							</tr>
 							<!-- Insert code -->
+							<?php if ( current_user_can('edit_posts') || current_user_can('edit_pages') ) { ?>
 							<tr style="vertical-align:bottom;" >
 								<th scope="row" style="padding-top:0; padding-bottom:0;">
 									<input type="button" class="button-secundary" style="width:90%" onclick="prompt('<?php _e('Insert code for single image in Page or Post:\nYou may change the size if you like.', 'wppa') ?>', '%%wppa%% %%photo=<?php echo($photo['id']); ?>%% %%size=<?php echo $wppa_opt['wppa_fullsize'] ?>%%')" value="<?php _e('Insertion Code', 'wppa'); ?>" />
 								</th>
 							</tr>
+							<?php } ?>
+							<?php if ( $wppa_opt['wppa_link_is_restricted'] == 'no' || current_user_can('administrator') ) { ?>
 							<!-- Link url -->
 							<tr style="vertical-align:top;" >
 								<th scope="row" style="padding-top:0; padding-bottom:0;">
@@ -202,11 +205,14 @@ function wppa_album_photos($album = '', $photo = '', $owner = '') {
 									<input type="text" style="width:100%;" onchange="wppaAjaxUpdatePhoto(<?php echo $photo['id'] ?>, 'linktitle', this)" value="<?php echo(stripslashes($photo['linktitle'])) ?>" />
 								</td>
 							</tr>
+							<?php if ( current_user_can('wppa_settings') ) { ?>
 							<tr style="padding-left:10px; font-size:9px; line-height:10px; color:#666;" >
 								<td colspan="2" style="padding-top:0" >
 									<?php _e('If you want this link to be used, check \'PS Overrule\' checkbox in table VI.', 'wppa') ?>
 								</td>
 							</tr>
+							<?php } ?>
+							<?php } ?>
 							<!-- Alt custom field -->
 							<?php
 							if ( $wppa_opt['wppa_alt_type'] == 'custom' ) { ?>
@@ -337,9 +343,8 @@ function wppa_album_photos($album = '', $photo = '', $owner = '') {
 											<?php
 										}
 										else {
-											echo __('File:','wppa').' '.$wmfile.' '.__('Pos:', 'wppa').' '.$wmpos; ?>
-											<input type="button" class="button-secundary" value="<?php _e('Apply watermark', 'wppa') ?>" onclick="if (confirm('<?php _e('Are you sure?\n\nOnce applied it can not be removed!\nAnd I do not know if there is already a watermark on this photo', 'wppa') ?>')) wppaAjaxApplyWatermark(<?php echo $photo['id'] ?>, '', '')" />
-											<?php
+											echo __('File:','wppa').' '.__($wmfile, 'wppa'); 
+											if ( $wmfile != '--- none ---' ) echo ' '.__('Pos:', 'wppa').' '.$wmpos; 
 										} ?>
 										<img id="wppa-water-spin-<?php echo $photo['id'] ?>" src="<?php echo wppa_get_imgdir().'wpspin.gif' ?>" style="visibility:hidden" /><?php
 									}

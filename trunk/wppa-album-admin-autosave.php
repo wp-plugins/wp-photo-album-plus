@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * create, edit and delete albums
-* version 4.9.14
+* version 4.9.16
 *
 */
 
@@ -224,7 +224,7 @@ function _wppa_admin() {
 								<td style="padding-top:0; padding-bottom:0;">
 									<span class="description">
 										<?php _e('Specify the way the photos should be ordered in this album.', 'wppa'); ?><br />
-										<?php _e('The default setting can be changed in the <b>Photo Albums -> Settings</b> page <b>Table IV-C1</b>.', 'wppa'); ?>
+										<?php if ( current_user_can('wppa_settings') ) _e('The default setting can be changed in the <b>Photo Albums -> Settings</b> page <b>Table IV-C1</b>.', 'wppa'); ?>
 									</span>
 								</td>
 							</tr>
@@ -761,7 +761,7 @@ function wppa_admin_albums_flat() {
 								<?php if ( wppa_can_create_album() ) {
 									$url = wppa_dbg_url(get_admin_url().'admin.php?page=wppa_admin_menu&amp;tab=edit&amp;edit_id=new&amp;parent_id='.$album['id']);
 									$onc = 'if (confirm(\''.__('Are you sure you want to create a subalbum?', 'wppa').'\')) document.location=\''.$url.'\';';
-									echo '<td><span onclick="'.$onc.'" class="wppacreate">'.__('Create', 'wppa').'</span></td>'; 
+									echo '<td><a onclick="'.$onc.'" class="wppacreate">'.__('Create', 'wppa').'</a></td>'; 
 								}
 							}
 							else { ?>
