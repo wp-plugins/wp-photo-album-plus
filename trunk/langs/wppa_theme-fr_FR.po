@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wppa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-03-18 11:38+0100\n"
-"PO-Revision-Date: 2013-03-18 11:38+0100\n"
+"POT-Creation-Date: 2013-03-22 14:52+0100\n"
+"PO-Revision-Date: 2013-03-22 14:52+0100\n"
 "Last-Translator: J.N. Breetvelt <OpaJaap@OpaJaap.nl>\n"
 "Language-Team: oVa <ova13lastar@gmail.com>\n"
 "Language: fr_FR\n"
@@ -91,63 +91,63 @@ msgstr ""
 msgid "Photo not found."
 msgstr "Photo non trouvée."
 
-#: wppa-common-functions.php:626
+#: wppa-common-functions.php:630
 msgid "Default photo album for"
 msgstr ""
 
-#: wppa-common-functions.php:958
+#: wppa-common-functions.php:962
 msgid "1 second"
 msgstr "1 seconde"
 
-#: wppa-common-functions.php:959 wppa-functions.php:5613
+#: wppa-common-functions.php:963 wppa-functions.php:5613
 msgid "seconds"
 msgstr "secondes"
 
-#: wppa-common-functions.php:963
+#: wppa-common-functions.php:967
 msgid "1 minute"
 msgstr "1 minute"
 
-#: wppa-common-functions.php:964 wppa-functions.php:5612
+#: wppa-common-functions.php:968 wppa-functions.php:5612
 msgid "minutes"
 msgstr "minutes"
 
-#: wppa-common-functions.php:968
+#: wppa-common-functions.php:972
 msgid "1 hour"
 msgstr "1 heure"
 
-#: wppa-common-functions.php:969 wppa-functions.php:5611
+#: wppa-common-functions.php:973 wppa-functions.php:5611
 msgid "hours"
 msgstr "heures"
 
-#: wppa-common-functions.php:973
+#: wppa-common-functions.php:977
 msgid "1 day"
 msgstr "1 jour"
 
-#: wppa-common-functions.php:974 wppa-functions.php:5610
+#: wppa-common-functions.php:978 wppa-functions.php:5610
 msgid "days"
 msgstr "jours"
 
-#: wppa-common-functions.php:978
+#: wppa-common-functions.php:982
 msgid "1 week"
 msgstr "1 semaine"
 
-#: wppa-common-functions.php:979 wppa-functions.php:5609
+#: wppa-common-functions.php:983 wppa-functions.php:5609
 msgid "weeks"
 msgstr "semaines"
 
-#: wppa-common-functions.php:983
+#: wppa-common-functions.php:987
 msgid "1 month"
 msgstr "1 mois"
 
-#: wppa-common-functions.php:984
+#: wppa-common-functions.php:988
 msgid "months"
 msgstr "mois"
 
-#: wppa-common-functions.php:987
+#: wppa-common-functions.php:991
 msgid "1 year"
 msgstr "1 an"
 
-#: wppa-common-functions.php:988
+#: wppa-common-functions.php:992
 msgid "years"
 msgstr "ans"
 
@@ -167,7 +167,7 @@ msgstr ", un sous-album de"
 msgid "Home"
 msgstr "Accueil"
 
-#: wppa-functions.php:148 wppa-functions.php:3090 wppa-non-admin.php:224
+#: wppa-functions.php:148 wppa-functions.php:3090 wppa-non-admin.php:233
 msgid "Slideshow"
 msgstr "le diaporama"
 
@@ -194,9 +194,8 @@ msgid "Recently commented photos"
 msgstr "Photos commentées récemment"
 
 #: wppa-functions.php:177
-#, fuzzy
 msgid "Tagged photos:"
-msgstr "Photos les mieux cotées"
+msgstr "Mot-Clé:"
 
 #: wppa-functions.php:186
 #, fuzzy
@@ -408,7 +407,7 @@ msgid "albums"
 msgstr "albums"
 
 #: wppa-functions.php:3132 wppa-functions.php:5612 wppa-functions.php:5851
-#: wppa-non-admin.php:47
+#: wppa-non-admin.php:56
 msgid "and"
 msgstr "et"
 
@@ -737,7 +736,7 @@ msgstr "Vous pouvez charger après"
 msgid "Zoom in"
 msgstr ""
 
-#: wppa-functions.php:5851 wppa-non-admin.php:47
+#: wppa-functions.php:5851 wppa-non-admin.php:56
 #, php-format
 msgid "See this image on %s"
 msgstr ""
@@ -797,77 +796,77 @@ msgstr ""
 msgid "View the most recent uploaded photos"
 msgstr "Voir les photos les mieux cotées"
 
-#: wppa-non-admin.php:225 wppa-slideshow.php:141
+#: wppa-non-admin.php:234 wppa-slideshow.php:141
 msgid "Start"
 msgstr "Démarrer"
 
-#: wppa-non-admin.php:226
+#: wppa-non-admin.php:235
 msgid "Stop"
 msgstr "Arrêter"
 
-#: wppa-non-admin.php:227 wppa-slideshow.php:140
+#: wppa-non-admin.php:236 wppa-slideshow.php:140
 msgid "Slower"
 msgstr "Ralentir"
 
-#: wppa-non-admin.php:228 wppa-slideshow.php:142
+#: wppa-non-admin.php:237 wppa-slideshow.php:142
 msgid "Faster"
 msgstr "Accélérer"
 
-#: wppa-non-admin.php:229
+#: wppa-non-admin.php:238
 msgid "Photo"
 msgstr "Photo"
 
-#: wppa-non-admin.php:230
+#: wppa-non-admin.php:239
 msgid "of"
 msgstr "de"
 
-#: wppa-non-admin.php:231
+#: wppa-non-admin.php:240
 msgid "Previous photo"
 msgstr "Photo précédente"
 
-#: wppa-non-admin.php:232
+#: wppa-non-admin.php:241
 msgid "Next photo"
 msgstr "Photo suivante"
 
-#: wppa-non-admin.php:233
+#: wppa-non-admin.php:242
 msgid "Prev."
 msgstr "Préc."
 
-#: wppa-non-admin.php:234 wppa-slideshow.php:486
+#: wppa-non-admin.php:243 wppa-slideshow.php:486
 msgid "Next"
 msgstr "Suiv."
 
-#: wppa-non-admin.php:235 wppa-slideshow.php:355 wppa-slideshow.php:359
+#: wppa-non-admin.php:244 wppa-slideshow.php:355 wppa-slideshow.php:359
 #: wppa-slideshow.php:395
 msgid "Average&nbsp;rating"
 msgstr "Évaluation&nbsp;moyenne"
 
-#: wppa-non-admin.php:236 wppa-slideshow.php:378 wppa-slideshow.php:382
+#: wppa-non-admin.php:245 wppa-slideshow.php:378 wppa-slideshow.php:382
 #: wppa-slideshow.php:386 wppa-slideshow.php:401
 msgid "My&nbsp;rating"
 msgstr "Mon&nbsp;évaluation"
 
-#: wppa-non-admin.php:237
+#: wppa-non-admin.php:246
 msgid "Avg."
 msgstr ""
 
-#: wppa-non-admin.php:238
+#: wppa-non-admin.php:247
 msgid "Mine"
 msgstr ""
 
-#: wppa-non-admin.php:239
+#: wppa-non-admin.php:248
 msgid "You marked this image as inappropriate."
 msgstr ""
 
-#: wppa-non-admin.php:243
+#: wppa-non-admin.php:252
 msgid "Please enter your name"
 msgstr "SVP entrer votre nom"
 
-#: wppa-non-admin.php:244
+#: wppa-non-admin.php:253
 msgid "Please enter a valid email address"
 msgstr "SVP entrer une adresse email valide"
 
-#: wppa-non-admin.php:245
+#: wppa-non-admin.php:254
 msgid "Please enter a comment"
 msgstr "SVP entrer un commentaire"
 

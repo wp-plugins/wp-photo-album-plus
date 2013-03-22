@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the non admin stuff
-* Version 4.9.12
+* Version 4.9.17
 *
 */
 
@@ -17,14 +17,23 @@ require_once 'wppa-cart.php';
 add_action('wp_print_styles', 'wppa_add_style');
 
 function wppa_add_style() {
+	// In child theme?
+	$userstyle = ABSPATH . 'wp-content/themes/' . get_option('stylesheet') . '/wppa-style.css';
+	if ( is_file($userstyle) ) {
+		wp_register_style('wppa_style', '/wp-content/themes/' . get_option('stylesheet')  . '/wppa-style.css');
+		wp_enqueue_style('wppa_style');
+		return;
+	}
+	// In theme?
 	$userstyle = ABSPATH . 'wp-content/themes/' . get_option('template') . '/wppa-style.css';
 	if ( is_file($userstyle) ) {
 		wp_register_style('wppa_style', '/wp-content/themes/' . get_option('template')  . '/wppa-style.css');
 		wp_enqueue_style('wppa_style');
-	} else {
-		wp_register_style('wppa_style', WPPA_URL.'/theme/wppa-style.css');
-		wp_enqueue_style('wppa_style');
+		return;
 	}
+	// Use standard
+	wp_register_style('wppa_style', WPPA_URL.'/theme/wppa-style.css');
+	wp_enqueue_style('wppa_style');
 }
 
 /* SEO META TAGS AND SM SHARE DATA */
