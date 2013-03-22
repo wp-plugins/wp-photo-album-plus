@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 4.9.14
+* Version 4.9.17
 *
 */
 
@@ -279,14 +279,20 @@ global $silent;
 	// If so, produce message
 	$key = '0';
 	if ( $old_rev < '4910' ) {		// theme changed since...
-		$usertheme_old 	= ABSPATH.'wp-content/themes/'.get_option('template').'/wppa_theme.php';
-		$usertheme 		= ABSPATH.'wp-content/themes/'.get_option('template').'/wppa-theme.php';
-		if ( is_file( $usertheme ) || is_file( $usertheme_old ) ) $key += '2';
+		$usertheme = ABSPATH.'wp-content/themes/'.get_option('template').'/wppa-theme.php';
+		if ( is_file( $usertheme ) ) $key += '2';
 	}
 	if ( $old_rev < '4912' ) {		// css changed since...
-		$userstyle_old 	= ABSPATH.'wp-content/themes/'.get_option('template').'/wppa_style.css';
-		$userstyle 		= ABSPATH.'wp-content/themes/'.get_option('template').'/wppa-style.css';
-		if ( is_file( $userstyle ) || is_file( $userstyle_old ) ) $key += '1';
+		$userstyle = ABSPATH.'wp-content/themes/'.get_option('stylesheet').'/wppa-style.css';
+		if ( is_file( $userstyle ) ) {
+			$key += '1';
+		}
+		else {
+			$userstyle = ABSPATH.'wp-content/themes/'.get_option('template').'/wppa-style.css';
+			if ( is_file( $userstyle ) ) {
+				$key += '1';
+			}
+		}
 	}
 	if ( $key ) {
 		$msg = '<center>' . __('IMPORTANT UPGRADE NOTICE', 'wppa') . '</center><br/>';

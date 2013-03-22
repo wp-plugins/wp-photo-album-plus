@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the slideshow high level functions
-* Version 4.9.14
+* Version 4.9.17
 *
 */
 
@@ -366,7 +366,7 @@ global $wppa_opt;
 	
 		$pad = round(($wppa_opt['wppa_ratspacing'] - $fs) / 2);
 		if ( $pad < 5 ) $pad = '5';
-		$tdstyle = 'style="height:'.$fs.'px; margin:0 0 -3px 0; padding:0 '.$pad.'px; box-shadow:none;"';
+		$tdstyle = 'style="height:'.$fs.'px; margin:0 0 -3px 0; padding:0 '.$pad.'px; box-shadow:none; display:inline;"';
 		if ( $wppa_opt['wppa_dislike_mail_every'] ) {
 			$evnts = 'onmouseover="jQuery(this).stop().fadeTo(100, 1.0)" onmouseout="jQuery(this).stop().fadeTo(100, wppaStarOpacity)" onclick="if (confirm(\''.__a('Are you sure you want to mark this image as inappropriate?').'\')) wppaRateIt('.$wppa['master_occur'].', -1)"';
 			$title = 'title="'.__a('Click this if you do NOT like this image!', 'wppa_theme').'"';

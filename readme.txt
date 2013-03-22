@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile
-Version: 4.9.16
+Version: 4.9.17
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -170,6 +170,19 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 4.9.17 =
+
+= Bug Fixes =
+
+* Fixed some obsolete information in the Help & Info admin page; changed the scripts to the shortcodes, to help beginners into the right direction.
+
+= Other Changes =
+
+* You can now put your customized wppa-style.css in a child themes directory ( stylesheet directory ). 
+This will have the highest priority. If not found there, the themes dir wil be searched ( template directory ).
+If still nothing: the wppa-style.css in the plugins dir wil be used (standard).
+* Language files update.
 
 = 4.9.16 =
 

@@ -1,7 +1,7 @@
 /* admin-styles.css 
 *
 * wp-photo-album-plus
-* version 4.9.14
+* version 4.9.17
 */
 #files_list, #files_list2
 {
@@ -170,6 +170,7 @@ tt {
 .wppacreate {
 	font-weight: bold;
 	color: blue;
+	cursor: pointer;
 }
 
 .alternate {
