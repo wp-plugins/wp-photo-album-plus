@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 4.9.17
+* Version 4.9.18
 *
 */
 
@@ -565,6 +565,7 @@ Hide Camera info
 						'wppa_allow_ajax'				=> 'no',
 						'wppa_use_photo_names_in_urls'	=> 'no',
 						'wppa_use_pretty_links'			=> 'no',
+						'wppa_update_addressline'		=> 'yes',
 						// B Full size and Slideshow
 						'wppa_fullvalign' 				=> 'fit',
 						'wppa_fullhalign' 				=> 'center',

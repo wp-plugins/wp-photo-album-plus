@@ -3,12 +3,12 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions and API modules
-* Version 4.9.13
+* Version 4.9.18
 *
 */
 /* Moved to wppa-common-functions.php:
 global $wppa_api_version;
-$wppa_api_version = '4-9-13-000';
+$wppa_api_version = '4-9-18-000';
 */
 
 if ( ! defined( 'ABSPATH' ) )
@@ -2626,6 +2626,13 @@ global $wppa_numqueries;
 			$wppa['out'] .= wppa_nltab('+').'<div id="wppa-container-'.$wppa['master_occur'].'" style="'.wppa_get_container_style().'" class="wppa-container wppa-container-'.$wppa['master_occur'].' wppa-rev-'.$wppa['revno'].' wppa-prevrev-'.$wppa_opt['wppa_prevrev'].' wppa-theme-'.$wppa_version.' wppa-api-'.$wppa['api_version'].'" >';
 		}
 //		$wppa['out'] .= wppa_nltab().'<a name="wppa-loc-'.$wppa['master_occur'].'"></a>';
+
+		// Spinner for Ajax
+		if ( $wppa_opt['wppa_allow_ajax'] ) {
+			if ( ! $wppa['in_widget'] ) {
+				$wppa['out'] .= wppa_nltab('+').'<div class="wppa-container-'.$wppa['master_occur'].'" style="text-align:center; width:'.wppa_get_container_width().'px;" ><img id="wppa-ajax-spin-'.$wppa['master_occur'].'" src="'.wppa_get_imgdir().'loader.gif" style="box-shadow:none; z-index:1010; position:absolute; margin-top: 200px; margin-left:-32px; display:none;"></div>';
+			}
+		}
 		
 		// Start timer if in debug mode
 		if ($wppa['debug']) {
@@ -3405,7 +3412,7 @@ global $wpdb;
 				// Get the album info
 				wppa_cache_album($thumb['album']);
 			
-				$onclick = "wppaDoAjaxRender(".$wppa['master_occur'].", '".wppa_get_slideshow_url_ajax($wppa['start_album'], '0').'&amp;wppa-photo='.$thumb['id']."', '".wppa_get_slideshow_url($wppa['start_album'], '0')."&amp;wppa-photo=".$thumb['id']."')";
+				$onclick = "wppaDoAjaxRender(".$wppa['master_occur'].", '".wppa_get_slideshow_url_ajax($wppa['start_album'], '0').'&amp;wppa-photo='.$thumb['id']."', '".wppa_convert_to_pretty(wppa_get_slideshow_url($wppa['start_album'], '0')."&amp;wppa-photo=".$thumb['id'])."')";
 
 				$wppa['out'] .= wppa_nltab('+').'<a style="position:static;" class="thumb-img" id="x-'.$thumb['id'].'-'.$wppa['master_occur'].'">';
 					$wppa['out'] .= wppa_nltab().'<img onclick="'.$onclick.'" id="i-'.$thumb['id'].'-'.$wppa['master_occur'].'" src="'.$url.'" '.$imgalt.' title="'.$title.'" width="'.$imgwidth.'" height="'.$imgheight.'" style="'.$imgstyle.' cursor:pointer;" '.$events.' />';
@@ -4172,7 +4179,7 @@ global $wppa_locale;
 		$al .= '&amp;lang='.$_GET['lang'];
 	}
 	elseif ( $wppa_locale ) {
-		$al .= 'locale='.$wppa_locale.'&amp;';
+		$al .= '&amp;locale='.$wppa_locale;
 	}
 
 	return $al.'&amp;';

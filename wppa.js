@@ -2,7 +2,7 @@
 //
 // conatins slideshow, theme, ajax and lightbox code
 //
-// Version 4.9.10
+// Version 4.9.18
 
 // Part 1: Slideshow
 //
@@ -97,6 +97,7 @@ var wppaMinThumbSpace = 4;
 var wppaMagnifierCursor = '';
 var wppaArtMonkyLink = 'none';
 var wppaAutoOpenComments = false;
+var wppaUpdateAddressLine = false;
 
 // 'Internal' variables (private)
 var _wppaId = new Array();
@@ -2057,7 +2058,7 @@ function wppaDoAjaxRender(mocc, ajaxurl, newurl) {
 			
 				// Update the wppa container
 				jQuery('#wppa-container-'+mocc).html(xmlhttp.responseText);
-				if ( wppaCanPushState ) {
+				if ( wppaCanPushState && wppaUpdateAddressLine ) {
 					// Push state on stack
 					wppaHis++;
 					cont = xmlhttp.responseText;
@@ -2086,12 +2087,16 @@ function wppaDoAjaxRender(mocc, ajaxurl, newurl) {
 				// The ajax stuff gets the admin language while we need the frontend language
 				jQuery('#speed0-'+mocc).html(wppaSlower);
 				jQuery('#speed1-'+mocc).html(wppaFaster);
-
+				
+				// Remove spinner
+				jQuery('#wppa-ajax-spin-'+mocc).css('display', 'none');
 			}
 		}
 
 		// If it is a slideshow: Stop slideshow before pushing it on the stack
 		if ( _wppaSSRuns[mocc] ) _wppaStop(mocc);
+		// Display the spinner
+		jQuery('#wppa-ajax-spin-'+mocc).css('display', '');
 		// Do the Ajax action
 		ajaxurl += '&locale='+wppaLocale;
 		xmlhttp.open('GET',ajaxurl,true);
@@ -2108,7 +2113,7 @@ function wppaDoAjaxRender(mocc, ajaxurl, newurl) {
 function wppaPushStateSlide(mocc, slide, url) {
 
 	if ( ! wppaIsMini[mocc] ) {	// Not from a widget
-		if ( wppaCanPushState ) {
+		if ( wppaCanPushState && wppaUpdateAddressLine ) {
 //			var url = wppaGetCurrentFullUrl(mocc, _wppaCurIdx[mocc]);
 			if (url != '') {
 				try {

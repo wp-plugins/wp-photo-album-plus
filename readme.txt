@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile
-Version: 4.9.17
+Version: 4.9.18
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -170,6 +170,17 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 4.9.18 =
+
+= Bug Fixes =
+
+* Ajax new url from a thumbnail to a slideshow is now also converted to pretty if pretty links is on.
+
+= New Features =
+
+* The inside page history tracking in modern browsers ( not being IE ) can now be switched off in Table IV-A4: Update addressline.
+* A spinner is displayed during an ajax action so visitors know that there is something happening after their mouseclick.
 
 = 4.9.17 =
 
