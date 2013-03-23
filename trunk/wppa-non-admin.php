@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the non admin stuff
-* Version 4.9.17
+* Version 4.9.18
 *
 */
 
@@ -289,6 +289,7 @@ global $wppa_locale;
 	wppaMagnifierCursor = "'.$wppa_opt['wppa_magnifier'].'";
 	wppaArtMonkyLink = "'.$wppa_opt['wppa_art_monkey_link'].'";
 	wppaAutoOpenComments = '.( $wppa_opt['wppa_auto_open_comments'] ? 'true' : 'false' ).';
+	wppaUpdateAddressLine = '.( $wppa_opt['wppa_update_addressline'] ? 'true' : 'false' ).';
 	/* ]]> */
 </script>
 ';

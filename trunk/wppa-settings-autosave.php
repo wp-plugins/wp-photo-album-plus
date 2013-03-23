@@ -1647,6 +1647,16 @@ global $wppa_revno;
 							$html = wppa_checkbox($slug);
 							wppa_setting($slug, '3', $name, $desc, $html, $help);
 							
+							$name = __('Update addressline', 'wppa');
+							$desc = __('Update the addressline after an ajax action or next slide.', 'wppa');
+							$help = esc_js(__('If checked, refreshing the page will show the current content and the browsers back and forth arrows will browse the history on the page.', 'wppa'));
+							$help .= '\n'.esc_js(__('If unchecked, refreshing the page will re-display the content of the original page.', 'wppa'));
+							$help .= '\n\n'.esc_js(__('This will only work on browsers that support history.pushState() and therefor NOT in IE', 'wppa'));
+							$warning = esc_js(__('Switching this off will affect the browsers behaviour.', 'wppa'));
+							$slug = 'wppa_update_addressline';
+							$html = wppa_checkbox_warn_off($slug, '', '', $warning);
+							wppa_setting($slug, '4', $name, $desc, $html, $help);
+							
 							wppa_setting_subheader('B', '1', __('Slideshow related settings', 'wppa'));
 
 							$name = __('V align', 'wppa');
@@ -3917,6 +3927,22 @@ function wppa_checkbox($slug, $onchange = '', $class = '') {
 	if (get_option($slug) == 'yes') $html .= ' checked="checked"';
 	if ($onchange != '') $html .= ' onchange="'.$onchange.';wppaAjaxUpdateOptionCheckBox(\''.$slug.'\', this)"';
 	else $html .= ' onchange="wppaAjaxUpdateOptionCheckBox(\''.$slug.'\', this)"';
+
+	if ($class != '') $html .= ' class="'.$class.'"';
+	$html .= ' /><img id="img_'.$slug.'" src="'.wppa_get_imgdir().'star.png" title="'.__('Setting unmodified', 'wppa').'" style="padding-left:4px; float:left; height:16px; width:16px;"';
+	if ($class != '') $html .= ' class="'.$class.'"';
+	$html .= ' />';
+	
+	return $html;
+}
+
+function wppa_checkbox_warn_off($slug, $onchange = '', $class = '', $warning) {
+
+	$warning = esc_js(__('Warning!', 'wppa')).'\n\n'.$warning.'\n\n'.esc_js(__('Please read the help', 'wppa'));
+	$html = '<input style="float:left; height: 15px; margin: 0px; padding: 0px;" type="checkbox" id="'.$slug.'"'; 
+	if (get_option($slug) == 'yes') $html .= ' checked="checked"';
+	if ($onchange != '') $html .= ' onchange="if (!this.checked) alert(\''.$warning.'\'); '.$onchange.';wppaAjaxUpdateOptionCheckBox(\''.$slug.'\', this)}"';
+	else $html .= ' onchange="if (!this.checked) alert(\''.$warning.'\'); wppaAjaxUpdateOptionCheckBox(\''.$slug.'\', this)"';
 
 	if ($class != '') $html .= ' class="'.$class.'"';
 	$html .= ' /><img id="img_'.$slug.'" src="'.wppa_get_imgdir().'star.png" title="'.__('Setting unmodified', 'wppa').'" style="padding-left:4px; float:left; height:16px; width:16px;"';
