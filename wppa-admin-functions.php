@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 * gp admin functions
-* version 4.9.14
+* version 5.0.0
 *
 * 
 */
@@ -33,6 +33,7 @@ global $wppa;
 }
 function wppa_save_an_option($value, $key, $file) {
 global $wppa_bu_err;
+	$value = str_replace("\n", "\\n", $value);
 	if (fwrite($file, $key.":".$value."\n") === false) {
 		if ($wppa_bu_err !== true) {
 			wppa_error_message(__('Error writing to settings backup file', 'wppa'));
@@ -80,7 +81,9 @@ global $wppa;
 				$delta_l = $buflen - $cpos - 2;
 				if ($cpos && $delta_l >= 0) {
 					$slug = substr($buffer, 0, $cpos);
-					$value = stripslashes(substr($buffer, $cpos+1, $delta_l));
+					$value = substr($buffer, $cpos+1, $delta_l);
+					$value = str_replace('\n', "\n", $value);	// Replace substr '\n' by nl char value
+					$value = stripslashes($value);
 					//wppa_dbg_msg('Doing|'.$slug.'|'.$value);
 					if ( ! in_array($slug, $void_these)) wppa_update_option($slug, $value);
 					else wppa_dbg_msg($slug.' skipped');
@@ -110,16 +113,94 @@ function wppa_regenerate_thumbs() {
 
 	$photos = $wpdb->get_results($wpdb->prepare('SELECT * FROM `' . WPPA_PHOTOS . '` WHERE `id` > %s ORDER BY `id`', $start), ARRAY_A);
 	
-	if (!empty($photos)) {
+	if ( ! empty($photos) ) {
 		$count = count($photos);
 		foreach ($photos as $photo) {
 			$newimage = WPPA_UPLOAD_PATH.'/'.$photo['id'].'.'.$photo['ext'];
-			wppa_create_thumbnail($newimage, $thumbsize, '' );
-            wppa_update_option('wppa_lastthumb', $photo['id']);
-			wppa_clear_cache();
-            echo '.';
+			if ( is_file($newimage) ) {
+				wppa_create_thumbnail($newimage, $thumbsize, '' );
+				wppa_update_option('wppa_lastthumb', $photo['id']);
+				wppa_clear_cache();
+				echo '.';
+			}
+			else {
+				wppa_dbg_msg('Unexpected error: file '.$newimage.' was expected but is missing', 'force', 'red');
+			}
+			if ( wppa_is_time_up() ) {
+				wppa_error_message(sprintf(__('Time is up. Please restart this operation', 'wppa')));
+				return false;
+			}
 		}
-	}		
+		return true;
+	}
+	else return false;
+}
+
+// Remake
+function wppa_remake_files( $alb = '', $pid = '' ) {
+global $wpdb;
+global $wppa_opt;
+
+	// Init
+	$count = '0';
+	
+	// Find the album(s) if any
+	if ( ! $alb && ! $pid ) { 
+		$start_time = get_option('wppa_remake_start', '0');
+		$albums = $wpdb->get_results('SELECT `id` FROM `'.WPPA_ALBUMS.'`', ARRAY_A);
+	}
+	elseif ( $alb ) {
+		$start_time = get_option('wppa_remake_start_album_'.$alb, '0');
+		$albums = array( array( 'id' => $alb ) );
+	}
+	else $albums = false;
+	
+	// Do it with albums
+	if ( $albums ) foreach ( $albums as $album ) {
+		$source_dir = $wppa_opt['wppa_source_dir'].'/album-'.$album['id'];
+		if ( is_dir($source_dir) ) {
+			$files = glob($source_dir.'/*');
+			if ( $files ) foreach ( $files as $file ) {
+				if ( ! is_dir($file) ) {
+					$filename = basename($file);
+					$photos = $wpdb->get_results($wpdb->prepare("SELECT * FROM `".WPPA_PHOTOS."` WHERE `filename` = %s OR ( `filename` = '' AND `name` = %s )", $filename, $filename), ARRAY_A);
+					if ( $photos ) foreach ( $photos as $photo ) {	// Photo exists
+						$modified_time = $photo['modified'];
+						if ( $modified_time < $start_time ) {
+							wppa_update_single_photo($file, $photo['id'], $filename);
+//							$wpdb->query($wpdb->prepare('UPDATE `'.WPPA_PHOTOS.'` SET `modified` = %s WHERE `id` = %s', time(), $photo['id']));
+							$count++;
+						}			
+						if ( wppa_is_time_up() ) {
+							wppa_error_message(sprintf(__('Time is up after processing %s items. Please restart this operation', 'wppa'), $count));
+							return false;
+						}
+					}
+					else {	// No photo yet
+						if ( $wppa_opt['wppa_remake_add'] ) {
+							wppa_insert_photo($file, $album['id'], $filename);
+						//	$wpdb->query($wpdb->prepare('UPDATE `'.WPPA_PHOTOS.'` SET `modified` = %s WHERE `id` = %s', time(), $photo['id']));
+							$count++;
+						}
+					}
+					if ( wppa_is_time_up() ) {
+						wppa_error_message(sprintf(__('Time is up after processing %s items. Please restart this operation', 'wppa'), $count));
+						return false;
+					}
+				}
+			}
+		}
+	}
+	// Do it with a single photo
+	elseif ( $pid ) {
+		$photo = $wpdb->get_row($wpdb->prepare("SELECT * FROM `".WPPA_PHOTOS."` WHERE `id` = %s", $pid), ARRAY_A);
+		if ( $photo ) {
+			$file = $wppa_opt['wppa_source_dir'].'/album-'.$photo['album'].'/'.$photo['filename'];
+			wppa_update_single_photo($file, $pid, $photo['filename']);
+		}
+		else return false;
+	}
+	return true;
 }
 
 // set last album 
@@ -251,24 +332,27 @@ global $wpdb;
 	// Find photo details
 	$photo = $wpdb->get_row($wpdb->prepare( 'SELECT * FROM '.WPPA_PHOTOS.' WHERE id = %s', $photoid ), 'ARRAY_A');
 	if (!$photo) return $err;
-	$album = $albumto;
-	$ext = $photo['ext'];
-	$name = $photo['name'];
-	$porder = '0';
-	$desc = $photo['description'];
-	$linkurl = $photo['linkurl'];
-	$linktitle = $photo['linktitle'];
+	$albumfrom 	= $photo['album'];
+	$album 		= $albumto;
+	$ext 		= $photo['ext'];
+	$name 		= $photo['name'];
+	$porder		= '0';
+	$desc 		= $photo['description'];
+	$linkurl 	= $photo['linkurl'];
+	$linktitle 	= $photo['linktitle'];
 	$linktarget = $photo['linktarget'];
-	$status = $photo['status'];
-	$oldimage = WPPA_UPLOAD_PATH.'/'.$photo['id'].'.'.$ext;
-	$oldthumb = WPPA_UPLOAD_PATH.'/thumbs/'.$photo['id'].'.'.$ext;
+	$status 	= $photo['status'];
+	$filename 	= $photo['filename'];
+	$oldimage 	= WPPA_UPLOAD_PATH.'/'.$photo['id'].'.'.$ext;
+	$oldthumb 	= WPPA_UPLOAD_PATH.'/thumbs/'.$photo['id'].'.'.$ext;
 	
 	$err = '3';
 	// Make new db table entry
 	$id = wppa_nextkey(WPPA_PHOTOS);
 	$owner = wppa_get_user();
-	$query = $wpdb->prepare('INSERT INTO `' . WPPA_PHOTOS . '` (`id`, `album`, `ext`, `name`, `p_order`, `description`, `mean_rating`, `linkurl`, `linktitle`, `linktarget`, `timestamp`, `owner`, `status`, `tags`, `alt`) VALUES (%s, %s, %s, %s, %s, %s, \'\', %s, %s, %s, %s, %s, %s, %s, %s)', $id, $album, $ext, $name, $porder, $desc, $linkurl, $linktitle, $linktarget, time(), $owner, $status, '', '');
+	$query = $wpdb->prepare('INSERT INTO `' . WPPA_PHOTOS . '` (`id`, `album`, `ext`, `name`, `p_order`, `description`, `mean_rating`, `linkurl`, `linktitle`, `linktarget`, `timestamp`, `owner`, `status`, `tags`, `alt`, `filename`, `modified`, `location`) VALUES (%s, %s, %s, %s, %s, %s, \'\', %s, %s, %s, %s, %s, %s, %s, %s, %s, \'0\', \'\')', $id, $album, $ext, $name, $porder, $desc, $linkurl, $linktitle, $linktarget, time(), $owner, $status, '', '', $filename);
 	if ($wpdb->query($query) === false) return $err;
+	wppa_flush_treecounts($album);
 
 	$err = '4';
 	// Find copied photo details
@@ -282,6 +366,8 @@ global $wpdb;
 	if (!copy($oldimage, $newimage)) return $err;
 	$err = '6';
 	if (!copy($oldthumb, $newthumb)) return $err;
+	// Copy source
+	wppa_copy_source($filename, $albumfrom, $albumto);
 	
 	return false;	// No error
 }
@@ -376,6 +462,9 @@ function wppa_cleanup_photos($alb = '') {
 	global $wppa_opt;
 	global $wppa_error_displayed;
 //echo('WPPADBG'.$alb);
+
+// return; // temp patch for ivan
+
 if ( is_multisite() ) return; // temp disabled for 4.0 bug, must be tested in a real multisite first before enabling
 	
 	// Check the users php config. sometimes a user 'reconfigures' his server to not having GD support...
@@ -398,25 +487,12 @@ if ( is_multisite() ) return; // temp disabled for 4.0 bug, must be tested in a 
 		foreach ( $entries as $entry ) {
 			$thumbpath = WPPA_UPLOAD_PATH.'/thumbs/'.$entry['id'].'.'.$entry['ext'];
 			$imagepath = WPPA_UPLOAD_PATH.'/'.$entry['id'].'.'.$entry['ext'];
-			if ( !is_file($thumbpath) ) {	// No thumb: delete fullimage conditionally 
-				if ( $wppa_opt['wppa_autoclean'] == 'yes' ) {
-					if (is_file($imagepath)) unlink($imagepath);
-				}
-				else {
-					wppa_dbg_msg('Error: expected thumbnail image file does not exist: '.$thumbpath, 'red', true);
-				}
+			if ( !is_file($thumbpath) ) {	// No thumb 
+				wppa_dbg_msg('Error: expected thumbnail image file does not exist: '.$thumbpath, 'red', true);
 			}
-			if ( !is_file($imagepath) ) { // No fullimage: delete db entry
-				if ( $wppa_opt['wppa_autoclean'] == 'yes' ) {
-					if ($wpdb->query($wpdb->prepare('DELETE FROM `'.WPPA_PHOTOS.'` WHERE `id` = %s LIMIT 1', $entry['id']))) {
-						$no_photos .= ' '.$entry['name'];
-						$delcount++;
-					}
-				}
-				else {
-					wppa_dbg_msg('Error: expected fullsize image file does not exist: '.$thumbpath, 'red', true);
-					wppa_dbg_msg('Please delete photo '.$entry['name'].' with id='.$entry['id'], 'red', true);
-				}
+			if ( !is_file($imagepath) ) { // No fullimage
+				wppa_dbg_msg('Error: expected fullsize image file does not exist: '.$thumbpath, 'red', true);
+				wppa_dbg_msg('Please delete photo '.$entry['name'].' with id='.$entry['id'], 'red', true);
 			}
 		}
 	}
@@ -474,12 +550,13 @@ if ( is_multisite() ) return; // temp disabled for 4.0 bug, must be tested in a 
 		$album = wppa_get_album_id(__('Orphan Photos', 'wppa'));
 		if ($album == '') {
 			$key = wppa_nextkey(WPPA_ALBUMS);
-			$query = $wpdb->prepare("INSERT INTO `" . WPPA_ALBUMS . "` (`id`, `name`, `description`, `a_order`, `a_parent`, `p_order_by`, `main_photo`, `cover_linktype`, `cover_linkpage`, `owner`, `timestamp`, `default_tags`, `cover_type`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, '', '')", $key, __('Orphan Photos', 'wppa'), '', '0', '0', '0', '0', 'content', '0', 'admin', time());
+			$query = $wpdb->prepare("INSERT INTO `" . WPPA_ALBUMS . "` (`id`, `name`, `description`, `a_order`, `a_parent`, `p_order_by`, `main_photo`, `cover_linktype`, `cover_linkpage`, `owner`, `timestamp`, `default_tags`, `cover_type`, `suba_order_by`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, '', '', '')", $key, __('Orphan Photos', 'wppa'), '', '0', '0', '0', '0', 'content', '0', 'admin', time());
 			$iret = $wpdb->query($query);
 			if ($iret === false) {
 				wppa_error_message('Could not create album: Orphan Photos', 'wppa');
 			}
 			else {
+				wppa_flush_treecounts();
 				wppa_ok_message('Album: Orphan Photos created.', 'wppa');
 			}
 			$album = wppa_get_album_id(__('Orphan Photos', 'wppa')); // retry
@@ -505,6 +582,7 @@ if ( is_multisite() ) return; // temp disabled for 4.0 bug, must be tested in a 
 		if ($alb == '0' && $delcount == 0 && $fixcount == 0) {
 //		wppa_ok_message(__('Done. No errors found. Have a nice upload!', 'wppa'));
 	}
+	wppa_flush_treecounts();
 }
 
 
@@ -512,7 +590,7 @@ function wppa_walktree($relroot, $source, $allowwppa = false, $subdirsonly = fal
 
 	if ( !$subdirsonly ) {
 		if ($relroot == $source) $sel=' selected="selected"'; else $sel = ' ';
-		echo('<option value="'.$relroot.'"'.$sel.'>'.$relroot.'</option>');
+		echo('<option value="'.$relroot.'"'.$sel.'>'.str_replace(WPPA_DEPOT, __('--- My depot ---', 'wppa'), $relroot).'</option>');
 	}
 	
 	if ($handle = opendir(ABSPATH.$relroot)) {
@@ -770,7 +848,11 @@ global $wpdb;
 											'cover_linkpage' => 'bigint(20) NOT NULL',
 											'owner' => 'text NOT NULL',
 											'timestamp' => 'tinytext NOT NULL',
-											'upload_limit' => 'tinytext NOT NULL',											
+											'upload_limit' => 'tinytext NOT NULL',	
+											'alt_thumbsize' => 'tinytext NOT NULL',
+											'default_tags' => 'tinytext NOT NULL',
+											'cover_type' => 'tinytext NOT NULL',
+											'suba_order_by' => 'tinytext NOT NULL'											
 										), 
 					WPPA_PHOTOS => array(	'id' => 'bigint(20) NOT NULL', 
 											'album' => 'bigint(20) NOT NULL', 
@@ -785,7 +867,12 @@ global $wpdb;
 											'owner' => 'text NOT NULL',
 											'timestamp' => 'tinytext NOT NULL',
 											'status' => 'tinytext NOT NULL',
-											'rating_count' => "bigint(20) default '0'"
+											'rating_count' => "bigint(20) default '0'",
+											'tags' => 'tinytext NOT NULL',
+											'alt' => 'tinytext NOT NULL',
+											'filename' => 'tinytext NOT NULL',
+											'modified' => 'tinytext NOT NULL',
+											'location' => 'tinytext NOT NULL'
 										), 
 					WPPA_RATING => array(	'id' => 'bigint(20) NOT NULL',
 											'photo' => 'bigint(20) NOT NULL',
@@ -917,5 +1004,142 @@ function wppa_admin_page_links($curpage, $pagesize, $count, $link) {
 		if ($curpage != $npages) {
 			?><a href="<?php echo($nexturl) ?>"><?php _e('Next page', 'wppa') ?></a><?php
 		}
+	}
+}
+
+function wppa_update_single_photo($file, $id, $name) {
+global $wpdb;
+
+	$photo = $wpdb->get_row($wpdb->prepare( "SELECT `id`, `name`, `ext`, `album`, `filename` FROM `".WPPA_PHOTOS."` WHERE `id` = %s", $id), ARRAY_A );
+	wppa_make_the_photo_files($file, $id, $photo['ext']);
+	wppa_save_source($file, $name, $photo['album']);
+	$wpdb->query($wpdb->prepare('UPDATE `'.WPPA_PHOTOS.'` SET `filename` = %s WHERE `id` = %s', $name, $photo['id']));
+	wppa_update_modified($photo['id']);
+	wppa_dbg_msg('Update single photo: '.$name.' in album '.$photo['album'], 'green');
+}
+
+function wppa_update_photo($file, $xname) {
+global $wpdb;
+global $allphotos;
+
+	if ($xname == '') $name = basename($file);
+	else $name = __($xname);
+	
+//echo 'Trying: '.$name.' ';
+	$photos = $wpdb->get_results($wpdb->prepare( "SELECT `id`, `name`, `ext`, `album`, `filename` FROM `".WPPA_PHOTOS."` WHERE `filename` = %s OR ( `filename` = '' AND `name` = %s )", $name, $name), ARRAY_A );
+	if ( $photos ) {
+		foreach ( $photos as $photo ) {
+//echo 'found:'.count($photos);
+			wppa_make_the_photo_files($file, $photo['id'], $photo['ext']);
+			$album = $wpdb->get_var($wpdb->prepare('SELECT `album` FROM '.WPPA_PHOTOS.' WHERE `id` = %s', $photo['id']));
+//echo ' album='.$album.'<br/>';
+			wppa_save_source($file, $name, $album);
+			$wpdb->query($wpdb->prepare('UPDATE `'.WPPA_PHOTOS.'` SET `filename` = %s WHERE `id` = %s', $name, $photo['id']));
+			wppa_dbg_msg('Update photo: '.$name.' in album '.$album, 'green');
+		}
+		return count($photos);
+	}
+	return false;
+}
+
+function wppa_insert_photo ($file = '', $alb = '', $name = '', $desc = '', $porder = '0', $id = '0', $linkurl = '', $linktitle = '') {
+	global $wpdb;
+	global $warning_given_small;
+	global $wppa_opt;
+	global $album;
+	global $wppa;
+	
+	wppa_cache_album($alb);
+	
+	if ( ! wppa_allow_uploads($alb) ) {
+		if ( is_admin() && ! $wppa['ajax'] ) {
+			wppa_error_message(sprintf(__('Album %s is full', 'wppa'), wppa_get_album_name($alb)));
+		}
+		else {
+			wppa_err_alert(sprintf(__('Album %s is full', 'wppa'), wppa_get_album_name($alb)));
+		}
+		return false;
+	}
+
+	if ($file != '' && $alb != '' ) {
+		// Get the name if not given
+		if ($name == '') $name = basename($file);
+		// Sanitize name
+		$name = htmlspecialchars(strip_tags($name));
+		
+		// If not dups allowed and its already here, quit
+		if ( isset($_POST['wppa-nodups']) ) {
+			$exists = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `".WPPA_PHOTOS."` WHERE `album` = %s AND ( `filename` = %s OR ( `filename` = '' AND `name` = %s ) )", $alb, $name, $name));
+			if ( $exists ) {
+				wppa_warning_message(sprintf(__('Photo %s already exists in album number %s.', 'wppa'), $name, $alb));
+				return false;
+			}
+		}
+		
+		// Get and verify the size
+		$img_size = getimagesize($file);
+		
+		if ($img_size) { 
+			if ( wppa_check_memory_limit('', $img_size['0'], $img_size['1'] ) === false ) { 
+				wppa_error_message(sprintf(__('ERROR: Attempt to upload a photo that is too large to process (%s).', 'wppa'), $name).wppa_check_memory_limit());
+				return false;
+			}
+			if (!$warning_given_small && ($img_size['0'] < wppa_get_minisize() && $img_size['1'] < wppa_get_minisize())) {
+				wppa_warning_message(__('WARNING: You are uploading photos that are too small. Photos must be larger than the thumbnail size and larger than the coverphotosize.', 'wppa'));
+				$warning_given_small = true;
+			}
+		}
+		else {
+			wppa_error_message(__('ERROR: Unable to retrieve image size of', 'wppa').' '.$name.' '.__('Are you sure it is a photo?', 'wppa'));
+			return false;
+		}
+		// Get ext based on mimetype, regardless of ext
+		switch($img_size[2]) { 	// mime type
+			case 1: $ext = 'gif'; break;
+			case 2: $ext = 'jpg'; break;
+			case 3: $ext = 'png'; break;
+			default:
+				wppa_error_message(__('Unsupported mime type encountered:', 'wppa').' '.$img_size[2].'.');
+				return false;
+		}
+		// Get an id if not yet there
+		if ($id == '0') {
+			$id = wppa_nextkey(WPPA_PHOTOS);
+		}
+		// Get opt deflt desc if empty
+		if ( $desc == '' && $wppa_opt['wppa_apply_newphoto_desc'] == 'yes' ) {
+			$desc = stripslashes($wppa_opt['wppa_newphoto_description']);
+		}
+		// Reset rating
+		$mrat = '0';
+		// Find (new) owner
+		$owner = wppa_get_user();
+		// Validate album
+		if ( !is_numeric($alb) || $alb < '1' ) {
+			wppa_error_message(__('Album not known while trying to add a photo', 'wppa'));
+			return false;
+		}
+		if ( !wppa_have_access($alb) ) {
+			wppa_error_message(sprintf(__('Album %s does not exist or is not accessable while trying to add a photo', 'wppa'), $alb));
+			return false;
+		}
+		// Add photo to db
+		$status = ( $wppa_opt['wppa_upload_moderate'] == 'yes' && !current_user_can('wppa_admin') ) ? 'pending' : 'publish';
+		$linktarget = '_self';
+		$filename = $name;
+		$query = $wpdb->prepare('INSERT INTO `' . WPPA_PHOTOS . '` (`id`, `album`, `ext`, `name`, `p_order`, `description`, `mean_rating`, `linkurl`, `linktitle`, `linktarget`, `timestamp`, `owner`, `status`, `tags`, `alt`, `filename`, `modified`, `location`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, \'0\', \'\' )', $id, $alb, $ext, $name, $porder, $desc, $mrat, $linkurl, $linktitle, $linktarget, time(), $owner, $status, $album['default_tags'], '', $filename);
+		if ($wpdb->query($query) === false) {
+			wppa_error_message(__('Could not insert photo. query=', 'wppa').$query);
+		}
+		else {	// Save the source
+			wppa_save_source($file, $name, $alb);
+			wppa_flush_treecounts($alb);
+		}
+		// Make the photo files		
+		if ( wppa_make_the_photo_files($file, $id, $ext) ) return true;
+	}
+	else {
+		wppa_error_message(__('ERROR: Unknown file or album.', 'wppa'));
+		return false;
 	}
 }

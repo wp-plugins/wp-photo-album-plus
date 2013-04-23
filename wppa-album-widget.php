@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display thumbnail photos
-* Version 4.8.6
+* Version 5.0.0
 */
 
 class AlbumWidget extends WP_Widget {
@@ -22,6 +22,7 @@ class AlbumWidget extends WP_Widget {
 		global $wppa;
 		global $thumb;
 
+		$wppa['in_widget'] = 'alb';
 		$wppa['master_occur'] ++;
 		
         extract( $args );
@@ -46,7 +47,7 @@ class AlbumWidget extends WP_Widget {
 		$skip = $instance['skip'];
 		
 		if ( is_numeric($parent) ) {
-			$albums = $wpdb->get_results($wpdb->prepare( 'SELECT * FROM `'.WPPA_ALBUMS.'` WHERE `a_parent` = %s '.wppa_get_album_order(), $parent ), ARRAY_A );
+			$albums = $wpdb->get_results($wpdb->prepare( 'SELECT * FROM `'.WPPA_ALBUMS.'` WHERE `a_parent` = %s '.wppa_get_album_order($parent), $parent ), ARRAY_A );
 		}
 		else {
 			switch ($parent) {
@@ -148,6 +149,8 @@ class AlbumWidget extends WP_Widget {
 		echo "\n" . $before_widget;
 		if ( !empty( $widget_title ) ) { echo $before_title . $widget_title . $after_title; }
 		echo $widget_content . $after_widget;
+		
+		$wppa['in_widget'] = false;
     }
 	
     /** @see WP_Widget::update */

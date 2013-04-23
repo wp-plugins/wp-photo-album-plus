@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the slideshow high level functions
-* Version 4.9.17
+* Version 5.0.0
 *
 */
 
@@ -114,6 +114,7 @@ global $wppa_opt;
 	
 	// A single image slideshow needs no navigation
 	if ( $wppa['is_single'] ) return;
+	if ( $wppa['is_filmonly'] ) return;
 	
 	// we always need this for the functionality (through filmstrip etc).
 	// so if not wanted: hide it
@@ -156,6 +157,8 @@ global $wppa_opt;
 		}
 		return;
 	}
+if ( $wppa['is_filmonly'] ) return;
+	
 	$ontouch = 'ontouchstart="wppaTouchStart(event,\'slide_frame-'.$wppa['master_occur'].'\', '.$wppa['master_occur'].');"  ontouchend="wppaTouchEnd(event);" ontouchmove="wppaTouchMove(event);" ontouchcancel="wppaTouchCancel(event);"';
 	if ( $wppa_opt['wppa_slide_pause'] ) {
 		$pause = 'onmouseover="wppaSlidePause['.$wppa['master_occur'].'] = \''.__a('Paused', 'wppa_theme').'\'" onmouseout="wppaSlidePause['.$wppa['master_occur'].'] = false"';

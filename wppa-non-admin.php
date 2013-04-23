@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the non admin stuff
-* Version 4.9.18
+* Version 5.0.0
 *
 */
 
@@ -290,10 +290,18 @@ global $wppa_locale;
 	wppaArtMonkyLink = "'.$wppa_opt['wppa_art_monkey_link'].'";
 	wppaAutoOpenComments = '.( $wppa_opt['wppa_auto_open_comments'] ? 'true' : 'false' ).';
 	wppaUpdateAddressLine = '.( $wppa_opt['wppa_update_addressline'] ? 'true' : 'false' ).';
+	wppaSymCover = '.( ( $wppa_opt['wppa_coverphoto_pos'] == 'top' || $wppa_opt['wppa_coverphoto_pos'] == 'bottom' ) ? 'true' : 'false' ).';
 	/* ]]> */
 </script>
 ';
 
+		echo '
+<!-- Browser detected = '.$_SERVER["HTTP_USER_AGENT"].' -->';
+if ( strstr($_SERVER["HTTP_USER_AGENT"], 'Chrome') ) echo '
+<style type="text/css">
+	#wppa-overlay-ic { padding-top: 5px !important; } 
+	#wppa-overlay-qt-txt, #wppa-overlay-qt-img { top: 5px !important; }
+</style>';
 	// Pinterest js
 	if ( ( $wppa_opt['wppa_share_on'] || $wppa_opt['wppa_share_on_widget'] ) && $wppa_opt['wppa_share_pinterest'] ) {
 		echo '

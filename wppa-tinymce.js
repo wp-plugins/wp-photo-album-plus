@@ -2,7 +2,7 @@
 * Pachkage: wp-photo-album-plus
 *
 *
-* Version 4.8.11
+* Version 5.0.0
 *
 */
 
@@ -107,6 +107,10 @@
 							alert('Sorry, you made a mistake\n\nPlease select a photo\n\nPlease try again');
 							return;
 						}
+					}
+					if ( type == 'filmonly' && ! newstyle ) {
+						alert('Sorry, filmonly is as newstyle shortcode available only.\n\nPlease check the new style checkbox and try again.');
+						return;
 					}
 					
 					// Make the shortcode

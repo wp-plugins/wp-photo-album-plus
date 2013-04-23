@@ -304,6 +304,10 @@ text-align:left;
 	padding-top:6px;
 }
 
+.filmwindow {
+	position: absolute;
+}
+
 .wppa-cartform {
 	margin: 0;
 }

@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 *
-* Version 4.9.0
+* Version 5.0.0
 *
 */
 
@@ -80,6 +80,7 @@ global $wppa_opt;
 						'<option value="slide">'.__('A slideshow of the photos in an album', 'wppa').'</option>'.
 						'<option value="slideonly">'.__('A slideshow without supporting boxes', 'wppa').'</option>'.
 						'<option value="slideonlyf">'.__('A slideshow with a filmstrip only', 'wppa').'</option>'.
+						'<option value="filmonly">'.__('A filmstrip only', 'wppa').'</option>'.
 						'<option value="photo">'.__('A single photo', 'wppa').'</option>'.
 						'<option value="mphoto">'.__('A single photo with caption', 'wppa').'</option>'.
 						'<option value="slphoto">'.__('A single photo in the style of a slideshow', 'wppa').'</option>'.

@@ -2,7 +2,7 @@
 /* wppa-ajax.php
 *
 * Functions used in ajax requests
-* version 4.9.13
+* version 5.0.0
 *
 */
 add_action('wp_ajax_wppa', 'wppa_ajax_callback');
@@ -267,7 +267,9 @@ global $wppa;
 				if ( $wppa_opt[$s] == 'no' ) $wppa_opt[$s] = false;
 			}
 			$wppa['ajax'] = true;
-			// Do the dirty stuff
+			// Register geo shortcode if google-maps-gpx-vieuwer is on board. GPX does it in wp_head(), what is not done in an ajax call
+			if ( function_exists('gmapv3') ) add_shortcode('map', 'gmapv3');
+			// Render
 			echo wppa_albums();
 			break;
 			
@@ -280,22 +282,28 @@ global $wppa;
 				echo '||0||'.__('You do not have the rights to delete a photo', 'wppa').$nonce;
 				exit;																// Nonce check failed
 			}
+			$photoinfo = $wpdb->get_row($wpdb->prepare('SELECT * FROM `'.WPPA_PHOTOS.'` WHERE `id` = %s', $photo), ARRAY_A);
 			// Get file extension
-			$ext = $wpdb->get_var($wpdb->prepare('SELECT `ext` FROM `'.WPPA_PHOTOS.'` WHERE `id` = %s', $photo));
+			$ext = $photoinfo['ext']; //$wpdb->get_var($wpdb->prepare('SELECT `ext` FROM `'.WPPA_PHOTOS.'` WHERE `id` = %s', $photo));
 			// Get album
-			$album = $wpdb->get_var($wpdb->prepare('SELECT `album` FROM `'.WPPA_PHOTOS.'` WHERE `id` = %s', $photo));
+			$album = $photoinfo['album']; //$wpdb->get_var($wpdb->prepare('SELECT `album` FROM `'.WPPA_PHOTOS.'` WHERE `id` = %s', $photo));
+			// Get filename
+			$filename = $photoinfo['filename'];
 			// Delete fullsize image
 			$file = ABSPATH.'wp-content/uploads/wppa/'.$photo.'.'.$ext;
 			if (file_exists($file)) unlink($file);
 			// Delete thumbnail image
 			$file = ABSPATH.'wp-content/uploads/wppa/thumbs/'.$photo.'.'.$ext;
 			if (file_exists($file)) unlink($file);
+			// Delete sourcefile
+			wppa_delete_source($filename, $album);
 			// Delete db entries
 			$wpdb->query($wpdb->prepare('DELETE FROM `'.WPPA_PHOTOS.'` WHERE `id` = %s LIMIT 1', $photo));
 			$wpdb->query($wpdb->prepare('DELETE FROM `'.WPPA_RATING.'` WHERE `photo` = %s', $photo));
 			$wpdb->query($wpdb->prepare('DELETE FROM `'.WPPA_COMMENTS.'` WHERE `photo` = %s', $photo));
 			$wpdb->query($wpdb->prepare('DELETE FROM `'.WPPA_IPTC.'` WHERE `photo` = %s', $photo));
 			$wpdb->query($wpdb->prepare('DELETE FROM `'.WPPA_EXIF.'` WHERE `photo` = %s', $photo));
+			wppa_flush_treecounts();
 			// Delete dislikes
 			wppa_dislike_remove($photo);
 			
@@ -434,11 +442,16 @@ global $wppa;
 					$value = wppa_sanitize_tags($value);
 					$itemname = __('Default tags', 'wppa');
 					break;
+				case 'suba_order_by':
+					$itemname = __('Sub albums sort order', 'wppa');
+					break;
 				default:
 					$itemname = $item;
 			}
 			
-			$iret = $wpdb->query($wpdb->prepare('UPDATE '.WPPA_ALBUMS.' SET `'.$item.'` = %s WHERE `id` = %s', $value, $album));
+			$query = $wpdb->prepare('UPDATE '.WPPA_ALBUMS.' SET `'.$item.'` = %s WHERE `id` = %s', $value, $album);
+			// echo $query;
+			$iret = $wpdb->query($query);
 			if ($iret !== false ) {
 				echo '||0||'.sprintf(__('<b>%s</b> of album %s updated', 'wppa'), $itemname, $album);
 				if ( $item == 'upload_limit' ) {
@@ -514,12 +527,23 @@ global $wppa;
 			}
 			
 			switch ($item) {
+				case 'remake':
+					if ( wppa_remake_files('', $photo) ) {
+			//			wppa_update_modified($photo);
+						echo '||0||'.__('Photo files remade', 'wppa');
+					}
+					else {
+						echo '||2||'.__('Could not remake files', 'wppa');
+					}
+					exit;
+					break;
 				case 'rotright':
 				case 'rotleft':
 					$angle = $item == 'rotleft' ? '90' : '270';
 					$wppa['error'] = wppa_rotate($photo, $angle);
 					$leftorright = $item == 'rotleft' ? __('left', 'wppa') : __('right', 'wppa');
 					if ( ! $wppa['error'] ) {
+						wppa_update_modified($photo);
 						echo '||0||'.sprintf(__('Photo %s rotated %s', 'wppa'), $photo, $leftorright);
 					}
 					else {
@@ -529,8 +553,10 @@ global $wppa;
 					break;
 					
 				case 'moveto':
+					$photodata = $wpdb->query($wpdb->prepare('SELECT * FROM '.WPPA_PHOTOS.' WHERE `id` = %s', $photo));
 					$iret = $wpdb->query($wpdb->prepare('UPDATE '.WPPA_PHOTOS.' SET `album` = %s WHERE `id` = %s', $value, $photo));
 					if ($iret !== false ) {
+						wppa_move_source($photodata['filename'], $photodata['album'], $value);
 						echo '||99||'.sprintf(__('Photo %s has been moved to album %s (%s)', 'wppa'), $photo, wppa_get_album_name($value), $value);
 					}
 					else {
@@ -608,6 +634,7 @@ global $wppa;
 					}
 					$iret = $wpdb->query($wpdb->prepare('UPDATE '.WPPA_PHOTOS.' SET `'.$item.'` = %s WHERE `id` = %s', $value, $photo));
 					if ($iret !== false ) {
+						wppa_update_modified($photo);
 						echo '||0||'.sprintf(__('<b>%s</b> of photo %s updated', 'wppa'), $itemname, $photo);
 					}
 					else {
@@ -832,6 +859,12 @@ global $wppa;
 				case 'wppa_cp_points_upload':
 					wppa_ajax_check_range($value, false, '0', false, __('Cube Points points', 'wppa'));
 					break;
+				case 'wppa_jpeg_quality':
+					wppa_ajax_check_range($value, false, '20', '100', __('JPG Image quality', 'wppa'));
+					break;
+				case 'wppa_imgfact_count':
+					wppa_ajax_check_range($value, false, '2', '24', __('Number of coverphotos', 'wppa'));
+					break;
 				case 'wppa_rating_clear':
 					$iret1 = $wpdb->query( 'TRUNCATE TABLE '.WPPA_RATING );
 					$iret2 = $wpdb->query( 'UPDATE '.WPPA_PHOTOS.' SET mean_rating="0", rating_count="0" WHERE id > -1' );
@@ -923,6 +956,41 @@ global $wppa;
 					}
 					break;
 				
+				case 'wppa_keep_source':
+					$dir = $wppa_opt['wppa_source_dir'];
+					if ( ! is_dir($dir) ) @ mkdir($dir);
+					if ( ! is_dir($dir) || ! is_writable($dir) ) {
+						$wppa['error'] = '1';
+						$alert = sprintf(__('Unable to create or write to %s', 'wppa'), $dir);
+					}
+					break;
+				case 'wppa_source_dir':
+					$olddir = $wppa_opt['wppa_source_dir'];
+					$value = rtrim($value, '/');
+					$dir = $value;
+					if ( ! is_dir($dir) ) @ mkdir($dir);
+					if ( ! is_dir($dir) || ! is_writable($dir) ) {
+						$wppa['error'] = '1';
+						$alert = sprintf(__('Unable to create or write to %s', 'wppa'), $dir);
+					}
+					else {
+						@ rmdir($olddir); 	// try to remove when empty
+					}
+//					else $alert = $dir;
+					break;
+				case 'wppa_newpag_content':
+					if ( strpos($value, 'w#album') === false ) {
+						$alert = __('The content must contain w#album', 'wppa');
+						$wppa['error'] = '1';
+					}
+					break;
+				case 'wppa_gpx_shortcode':
+					if ( strpos($value, 'w#lat') === false || strpos($value, 'w#lon') === false ) {
+						$alert = __('The content must contain w#lat and w#lon', 'wppa');
+						$wppa['error'] = '1';
+					}
+					break;
+					
 				default:
 					// Do the update only
 					wppa_update_option($option, $value);

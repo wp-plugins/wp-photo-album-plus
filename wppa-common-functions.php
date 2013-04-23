@@ -2,11 +2,11 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 4.9.18
+* version 5.0.0
 *
 */
 global $wppa_api_version;
-$wppa_api_version = '4-9-18-000';
+$wppa_api_version = '5-0-0-000';
 // Initialize globals and option settings
 function wppa_initialize_runtime($force = false) {
 global $wppa;
@@ -38,6 +38,7 @@ global $wppa_initruntimetime;
 			'is_cover' 					=> '0',
 			'is_slide' 					=> '0',
 			'is_slideonly' 				=> '0',
+			'is_filmonly'				=> '0',
 			'film_on' 					=> '0',
 			'browse_on' 				=> '0',
 			'name_on' 					=> '0',
@@ -89,7 +90,8 @@ global $wppa_initruntimetime;
 			'comten_count'				=> '0',
 			'is_tag'					=> false,
 			'photos_only'				=> false,
-			'page'						=> ''
+			'page'						=> '',
+			'geo'						=> ''
 
 		);
 
@@ -143,7 +145,8 @@ global $wppa_initruntimetime;
 						'wppa_max_cover_width'			=> '',	// 1
 						'wppa_text_frame_height'		=> '',	// 2
 						'wppa_smallsize' 				=> '',	// 3
-						'wppa_coversize_is_height'		=> '',	// 3.1
+						'wppa_smallsize_multi'			=> '', 	// 3.1
+						'wppa_coversize_is_height'		=> '',	// 3.9
 						'wppa_album_page_size' 			=> '',	// 4
 						// E Rating & comments
 						'wppa_rating_max'				=> '',	// 1
@@ -236,6 +239,7 @@ global $wppa_initruntimetime;
 						'wppa_show_slideshowbrowselink' 	=> '',	// 3
 						'wppa_show_viewlink'				=> '',	// 4
 						'wppa_show_treecount'				=> '',
+						'wppa_skip_empty_albums'			=> '',
 						// E Widgets
 						'wppa_show_bbb_widget'				=> '',	// 1
 						// F Overlay
@@ -292,6 +296,7 @@ global $wppa_initruntimetime;
 						'wppa_use_photo_names_in_urls'	=> '',	// 2
 						'wppa_use_pretty_links'			=> '',
 						'wppa_update_addressline'		=> '',
+						'wppa_render_shortcode_always' 	=> '',
 						// B Full size and Slideshow
 						'wppa_fullvalign' 				=> '',	// 1
 						'wppa_fullhalign' 				=> '',	// 2
@@ -322,6 +327,8 @@ global $wppa_initruntimetime;
 						'wppa_coverphoto_pos'			=> '',	// 3
 						'wppa_use_cover_opacity' 		=> '',	// 4
 						'wppa_cover_opacity' 			=> '',	// 5
+						'wppa_cover_type'				=> '',
+						'wppa_imgfact_count'			=> '',
 						// E Rating
 						'wppa_rating_login' 			=> '',	// 1
 						'wppa_rating_change' 			=> '',	// 2
@@ -496,12 +503,14 @@ global $wppa_initruntimetime;
 						'wppa_cp_points_rating'			=> '',
 						'wppa_cp_points_upload'			=> '',
 						'wppa_use_scabn'				=> '',
+						'wppa_gpx_shortcode'			=> '',
 
 						'wppa_use_wp_editor'			=> '',	//A 11
 						'wppa_hier_albsel' 				=> '',
 						'wppa_alt_type'					=> '',
 						'wppa_photo_admin_pagesize'		=> '',
 						'wppa_comment_admin_pagesize'	=> '',
+						'wppa_jpeg_quality'				=> '',
 						
 						'wppa_html' 					=> '',
 						'wppa_allow_debug' 				=> '',
@@ -524,7 +533,6 @@ global $wppa_initruntimetime;
 						'wppa_link_is_restricted'		=> '',
 
 
-						'wppa_autoclean'				=> '',
 						'wppa_watermark_on'				=> '',
 						'wppa_watermark_user'			=> '',
 						'wppa_watermark_file'			=> '',
@@ -562,8 +570,21 @@ global $wppa_initruntimetime;
 						// QR code settings
 						'wppa_qr_size'				=> '',
 						'wppa_qr_color'				=> '',
-						'wppa_qr_bgcolor'			=> ''
+						'wppa_qr_bgcolor'			=> '',
 
+						// H Source file management and import/upload
+						'wppa_keep_source_admin'	=> '',
+						'wppa_keep_source_frontend' => '',
+						'wppa_source_dir'			=> '',
+						'wppa_keep_sync'			=> '',
+						'wppa_remake_add'			=> '',
+						'wppa_save_iptc'			=> '',
+						'wppa_save_exif'			=> '',
+						'wppa_chgsrc_is_restricted'		=> '',
+						'wppa_newpag_create'			=> '',
+						'wppa_newpag_content'			=> '',
+						'wppa_newpag_type'				=> '',
+						'wppa_newpag_status'			=> ''
 
 		);
 		
@@ -632,7 +653,8 @@ global $wppa_initruntimetime;
 				}
 				$uplim = $wppa_opt['wppa_upload_limit_count'].'/'.$wppa_opt['wppa_upload_limit_time'];
 				$parent = $wppa_opt['wppa_grant_parent'];
-				$query = $wpdb->prepare("INSERT INTO `" . WPPA_ALBUMS . "` (`id`, `name`, `description`, `a_order`, `a_parent`, `p_order_by`, `main_photo`, `cover_linktype`, `cover_linkpage`, `owner`, `timestamp`, `upload_limit`, `alt_thumbsize`, `default_tags`, `cover_type`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, '', '')", $id, $name, $desc, '0', $parent, '0', '0', 'content', '0', $owner, time(), $uplim, '0');
+				$query = $wpdb->prepare("INSERT INTO `" . WPPA_ALBUMS . "` (`id`, `name`, `description`, `a_order`, `a_parent`, `p_order_by`, `main_photo`, `cover_linktype`, `cover_linkpage`, `owner`, `timestamp`, `upload_limit`, `alt_thumbsize`, `default_tags`, `cover_type`, `suba_order_by`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, '', '', '')", $id, $name, $desc, '0', $parent, '0', '0', 'content', '0', $owner, time(), $uplim, '0');
+				wppa_flush_treecounts($parent);
 				$iret = $wpdb->query($query);
 
 			}
@@ -738,11 +760,47 @@ function wppa_get_imgdir() {
 }
 
 // get album order
-function wppa_get_album_order() {
+function wppa_get_album_order($parent = '0') {
 global $wppa;
 global $wppa_opt;
+global $album;
 
+	// Init
     $result = '';
+	
+	// Album given ?
+	if ( $parent ) { 	
+		wppa_cache_album($parent);
+		// Method not default ?
+		if ( $album['suba_order_by'] ) {
+			switch ( $album['suba_order_by'] ) {
+				case '1':
+					$result = 'ORDER BY a_order';
+					break;
+				case '-1':
+					$result = 'ORDER BY a_order DESC';
+					break;
+				case '2':
+					$result = 'ORDER BY name';
+					break;  
+				case '-2':
+					$result = 'ORDER BY name DESC';
+					break;  
+				case '3':
+					$result = 'ORDER BY RAND('.$wppa['randseed'].')';
+					break;
+				case '5':
+					$result = 'ORDER BY timestamp';
+					break;
+				case '-5':
+					$result = 'ORDER BY timestamp DESC';
+					break;
+			}
+			return $result;
+		}
+	}
+	
+	// No album given or album method is default
     $order = $wppa_opt['wppa_list_albums_by'];
     switch ($order)
     {
@@ -1106,6 +1164,7 @@ global $wppa_opt;
 
 function wppa_make_the_photo_files($file, $image_id, $ext) {
 global $wppa_opt;
+global $wppa;
 				
 	wppa_dbg_msg('make_the_photo_files called with file='.$file.' image_id='.$image_id.' ext='.$ext);
 	$img_size = getimagesize($file, $info);
@@ -1172,9 +1231,12 @@ global $wppa_opt;
 		
 		// Process the exif data
 		wppa_import_exif($image_id, $file);
+		
+		// GPS
+		wppa_get_coordinates($file, $image_id);
 
 		// Show progression
-		if (is_admin()) echo('.');
+		if ( is_admin() && ! $wppa['ajax'] ) echo('.');
 		
 		// Clear (super)cache
 		wppa_clear_cache();
@@ -1627,6 +1689,9 @@ global $wpdb;
 function wppa_import_iptc($id, $info) {
 global $wpdb;
 
+	// Do we need this?
+	if ( ! wppa_switch('wppa_save_iptc') ) return;
+	
 	wppa_dbg_msg('wppa_import_iptc called for id='.$id);
 	wppa_dbg_msg('array is'.( is_array($info) ? ' ' : ' NOT ' ).'available');
 	wppa_dbg_msg('APP13 is '.( isset($info['APP13']) ? 'set' : 'NOT set'));
@@ -1705,6 +1770,9 @@ global $wpdb;
 
 function wppa_import_exif($id, $file) {
 global $wpdb;
+
+	// Do we need this?
+	if ( ! wppa_switch('wppa_save_exif') ) return;
 
 	// Check filetype
 	if ( ! function_exists('exif_imagetype') ) return false;
@@ -2097,3 +2165,64 @@ function wppa_local_date($format, $timestamp = false) {
 	return $result;
 }
 
+// Get gps data from photofile
+function wppa_get_coordinates($picture_path, $photo_id) {
+global $wpdb;
+
+	// get exif data
+	if ( $exif = @exif_read_data($picture_path, 0 , false) ) {
+	
+		// any coordinates available?
+		if ( !isset ($exif['GPSLongitude'][0]) ) return false;	// No GPS data
+		
+		// north, east, south, west?
+		if ( $exif['GPSLatitudeRef'] == "S" ) {
+			$gps['latitude_string'] = -1; 
+			$gps['latitude_dicrection'] = "S";
+		} 
+		else {
+			$gps['latitude_string'] = 1; 
+			$gps['latitude_dicrection'] = "N";
+		}
+		if ( $exif['GPSLongitudeRef'] == "W" ) {
+			$gps['longitude_string'] = -1; 
+			$gps['longitude_dicrection'] = "W";
+		} 
+		else {
+			$gps['longitude_string'] = 1; 
+			$gps['longitude_dicrection'] = "E";
+		}
+		// location
+		$gps['latitude_hour'] = $exif["GPSLatitude"][0];
+		$gps['latitude_minute'] = $exif["GPSLatitude"][1];
+		$gps['latitude_second'] = $exif["GPSLatitude"][2];
+		$gps['longitude_hour'] = $exif["GPSLongitude"][0];
+		$gps['longitude_minute'] = $exif["GPSLongitude"][1];
+		$gps['longitude_second'] = $exif["GPSLongitude"][2]; 
+				
+		// calculating 
+		foreach($gps as $key => $value) {
+			$pos = strpos($value, '/');
+			if ( $pos !== false ) {
+				$temp = explode('/',$value); 
+				$gps[$key] = $temp[0] / $temp[1];
+			}
+		}
+		
+		$geo['latitude_format'] = $gps['latitude_dicrection']." ".$gps['latitude_hour']."&deg;".$gps['latitude_minute']."&#x27;".round ($gps['latitude_second'], 4).'&#x22;';
+		$geo['longitude_format'] = $gps['longitude_dicrection']." ".$gps['longitude_hour']."&deg;".$gps['longitude_minute']."&#x27;".round ($gps['longitude_second'], 4).'&#x22;';
+		 
+		$geo['latitude'] = $gps['latitude_string'] * ($gps['latitude_hour'] + ($gps['latitude_minute'] / 60) + ($gps['latitude_second'] / 3600));
+		$geo['longitude'] = $gps['longitude_string'] * ($gps['longitude_hour'] + ($gps['longitude_minute'] / 60) + ($gps['longitude_second'] / 3600));	
+		
+	}
+	else {	// No exif data
+		return false;
+	}
+
+	// Process result
+//	print_r($geo);	// debug
+	$result = implode('/', $geo);
+	$wpdb->query($wpdb->prepare("UPDATE `".WPPA_PHOTOS."` SET `location` = %s WHERE `id` = %s", $result, $photo_id));
+	return $geo;
+}

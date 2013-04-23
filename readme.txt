@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile
-Version: 4.9.18
+Version: 5.0.0
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -170,6 +170,44 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 5.0.0 =
+
+= Bug Fixes =
+
+* The GP widget now always supports new shortcodes.
+* Fixed the pretty link conversions for links from album covers.
+* Lightbox image position for mobile divices running Chrome fixed to 5 pixels from top.
+* The Last ten widget no longer shows photos with status pending.
+* Fixed the handling of multiline items in backup/restore settings and export/import albums ( album and photo descriptions ).
+* Fixed a fatal error when exporting while the php version is good but the class ZipArchive is not present.
+* Last ten widget on multiple albums did the first album only. Fixed.
+
+= New Features =
+
+* There is an alternative album cover display type: 'imagefactory' See Table IV-D6 with optionally up to 24 cover images (Table IV-D6.1). 
+When there are more than one coverimages, the alternate size is applied (Table I-D3.1).
+* Image source file management system introduced. See Table IX-H. The source filename is now preserved for more reliable updates of image files.
+* JPG Image quality is now settable in Table IX-A16.
+* New shortcode type: type="filmonly". Displays a filmstrip only. This is available as shortcode only, not as script.
+* The sequence order method of sub-albums can now be set in the parents album information screen.
+* Entire directories of photos can now be imported. The album name will be the directory name. 
+Optionally a wp page can be created that displays the cover of the album.
+* Display of geo maps if the photos exif contains geo data. Requires the plugin Google-Maps-GPX-Viewer, and the word **w#location** in the custom box content.
+The intermediate shortcode can be edited in Table IX-F5.
+* Hiding empty albums for non admin and non owners is now settable in Table IV-D7.
+
+= Other Changes =
+
+* Added code to prevent crash during import, upload and regenerate thumbnails due to max_execution_time limit exceeded. 
+This will only work when the servers php properly reports max_execution_time by a call to ini_get().
+* Import with the update check on will now update all photos in the system that have the name of the file.
+The name of the photo is no longer required to be the filename for update actions.
+The filename is saved along with the photo information.
+* You can switch off the saving of iptc and/or exif data during upload/import in Table IX-H.
+* Cosmetic changes to Album admin and Photo admin.
+* Auto clean of db and photofiles is discontinued ( Table IX-A4 ) as it is too dangerous, especially during migrations to a different server.
+You can only cleanup on Table VIII-A6 now; no files will be deleted, only error messages will be priinted.
 
 = 4.9.18 =
 

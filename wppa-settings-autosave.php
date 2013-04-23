@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 4.9.14
+* Version 5.0.0
 *
 */
 
@@ -125,6 +125,11 @@ global $wppa_revno;
 				}
 				break;
 
+			// Se if a remake is pending
+			case 'wppa_remake':
+				update_option('wppa_remake_start', time());
+				break;
+				
 			default: wppa_error_message('Unimplemnted action key: '.$key);
 		}
 		
@@ -133,7 +138,28 @@ global $wppa_revno;
 
 	} // wppa-settings-submit
 	
+	// See if a remake is pending
+	if ( get_option('wppa_remake_start', '0') != '0' ) {
 	
+		$msg = __('Remaking image files from the available source photo files. Please wait...<br />', 'wppa');
+		$msg .= __('If the line of dots stops growing or your browser reports Ready but you did NOT get a \'READY remaking image files\' message, your server has given up. In that case: continue this action by clicking', 'wppa');
+		$msg .= ' <a href="'.wppa_dbg_url(get_admin_url().'admin.php?page=wppa_options').'">'.__('here', 'wppa').'</a>';
+		$max_time = ini_get('max_execution_time');	
+		if ($max_time > '0') {
+			$msg .= sprintf(__('<br /><br />Your server reports that the elapsed time for this operation is limited to %s seconds.', 'wppa'), $max_time);
+			$msg .= __('<br />There may also be other restrictions set by the server, like cpu time limit.', 'wppa');
+		}
+
+		wppa_ok_message($msg);	// Creates element with id "wppa-ok-p"
+
+		if ( wppa_remake_files() ) {
+			?>
+			<script type="text/javascript">document.getElementById("wppa-ok-p").innerHTML="<strong><?php _e('READY remaking image files.', 'wppa') ?></strong>"</script>
+			<?php				
+			update_option('wppa_remake_start', '0');
+		}
+	}
+
 	// See if a regeneration of thumbs is pending
 	$start = get_option('wppa_lastthumb', '-2');
 	if ($start != '-2') {
@@ -149,12 +175,13 @@ global $wppa_revno;
 		}
 		
 		wppa_ok_message($msg);	// Creates element with id "wppa-ok-p"
-	
-		wppa_regenerate_thumbs(); 
-		?>
-		<script type="text/javascript">document.getElementById("wppa-ok-p").innerHTML="<strong><?php _e('READY regenerating thumbnail images.', 'wppa') ?></strong>"</script>
-		<?php				
-		wppa_update_option('wppa_lastthumb', '-2');
+//ini_set('max_execution_time', '30');	// debug	
+		if ( wppa_regenerate_thumbs() ) {
+			?>
+			<script type="text/javascript">document.getElementById("wppa-ok-p").innerHTML="<strong><?php _e('READY regenerating thumbnail images.', 'wppa') ?></strong>"</script>
+			<?php				
+			wppa_update_option('wppa_lastthumb', '-2');
+		}
 	}
 	// Check database
 //	if ( get_option('wppa_revision') != $wppa_revno ) 
@@ -527,6 +554,14 @@ global $wppa_revno;
 							$html = wppa_input($slug, '40px', '', __('pixels', 'wppa'));
 							wppa_setting($slug, '3', $name, $desc, $html, $help);
 							
+							$name = __('Coverphoto size multi', 'wppa');
+							$desc = __('The size of coverphotos if more than one.', 'wppa');
+							$help = esc_js(__('This size applies to the width or height, whichever is the largest.', 'wppa'));
+							$help .= '\n'.esc_js(__('Changing the coverphoto size may result in all thumbnails being regenerated. this may take a while.', 'wppa'));
+							$slug = 'wppa_smallsize_multi';
+							$html = wppa_input($slug, '40px', '', __('pixels', 'wppa'));
+							wppa_setting($slug, '3.1', $name, $desc, $html, $help);
+							
 							$name = __('Size is height', 'wppa');
 							$desc = __('The size of the coverphoto is the height of it.', 'wppa');
 							$help = esc_js(__('If set: the previous setting is the height, if unset: the largest of width and height.', 'wppa'));
@@ -534,7 +569,7 @@ global $wppa_revno;
 							$help .= '\n'.esc_js(__('This makes it easyer to make the covers of equal height.', 'wppa'));
 							$slug = 'wppa_coversize_is_height';
 							$html = wppa_checkbox($slug);
-							wppa_setting($slug, '3.1', $name, $desc, $html, $help);
+							wppa_setting($slug, '3.9', $name, $desc, $html, $help);
 							
 							$name = __('Page size', 'wppa');
 							$desc = __('Max number of covers per page.', 'wppa');
@@ -1240,6 +1275,13 @@ global $wppa_revno;
 							$html = wppa_checkbox($slug);
 							wppa_setting($slug, '5', $name, $desc, $html, $help);
 							
+							$name = __('Skip empty albums', 'wppa');
+							$desc = __('Do not show empty albums, except for admin and owner.', 'wppa');
+							$help = '';
+							$slug = 'wppa_skip_empty_albums';
+							$html = wppa_checkbox($slug);
+							wppa_setting($slug, '6', $name, $desc, $html, $help);
+							
 							wppa_setting_subheader('E', '1', __('Widget related settings', 'wppa'));
 							
 							$name = __('Big Browse Buttons in widget', 'wppa');
@@ -1657,6 +1699,14 @@ global $wppa_revno;
 							$html = wppa_checkbox_warn_off($slug, '', '', $warning);
 							wppa_setting($slug, '4', $name, $desc, $html, $help);
 							
+							$name = __('Render shortcode always', 'wppa');
+							$desc = __('This will skip the check on proper initialisation.', 'wppa');
+							$help = esc_js(__('This setting is required for certain themes like Gantry to prevent the display of wppa placeholders like [WPPA+ Photo display].', 'wppa'));
+							$help .= '\n\n'.esc_js(__('If this check is needed, you can use shortcodes like [wppa ...] only, not scripts like %%wppa%%.', 'wppa'));
+							$slug = 'wppa_render_shortcode_always';
+							$html = wppa_checkbox($slug);
+							wppa_setting($slug, '5', $name, $desc, $html, $help);
+							
 							wppa_setting_subheader('B', '1', __('Slideshow related settings', 'wppa'));
 
 							$name = __('V align', 'wppa');
@@ -1900,7 +1950,8 @@ global $wppa_revno;
 							$slug = 'wppa_coverphoto_pos';
 							$options = array(__('Left', 'wppa'), __('Right', 'wppa'), __('Top', 'wppa'), __('Bottom', 'wppa'));
 							$values = array('left', 'right', 'top', 'bottom');
-							$html = wppa_select($slug, $options, $values);
+							$onchange = 'wppaCheckCoverType()';
+							$html = wppa_select($slug, $options, $values, $onchange);
 							wppa_setting($slug, '3', $name, $desc, $html, $help);
 
 							$name = __('Cover mouseover', 'wppa');
@@ -1918,6 +1969,24 @@ global $wppa_revno;
 							$html = '<span class="cover_opacity_html">'.wppa_input($slug, '50px', '', __('%', 'wppa')).'</span>';
 							$class = 'tt_normal';
 							wppa_setting($slug, '5', $name, $desc, $html, $help, $class);
+							
+							$name = __('Cover type', 'wppa');
+							$desc = __('Select the default cover type.', 'wppa');
+							$help = '';
+							$slug = 'wppa_cover_type';
+							$options = array(__('--- standard ---', 'wppa'), __('Image Factory', 'wppa'));
+							$values = array('default', 'imagefactory');
+							$onchange = 'wppaCheckCoverType()';
+							$html = wppa_select($slug, $options, $values, $onchange);
+							wppa_setting($slug, '6', $name, $desc, $html, $help);
+							
+							$name = __('Number of coverphotos', 'wppa');
+							$desc = __('The umber of coverphotos. Must be > 1 and < 25.', 'wppa');
+							$help = '';
+							$slug = 'wppa_imgfact_count';
+							$html = wppa_input($slug, '50px', '', __('photos', 'wppa'));
+							$class = 'wppa_imgfact_';
+							wppa_setting($slug, '6.1', $name, $desc, $html, $help, $class);
 
 							wppa_setting_subheader('E', '1', __('Rating related settings', 'wppa'), 'wppa_rating_');	
 
@@ -3074,13 +3143,6 @@ global $wppa_revno;
 							$html = wppa_checkbox($slug);
 							wppa_setting($slug, '3', $name, $desc, $html, $help);
 
-							$name = __('Autoclean', 'wppa');
-							$desc = __('Auto cleanup invalid database entries.', 'wppa');
-							$help = esc_js(__('If checked, the database consistency will be automaticly secured after an interrupted upload or import procedure.', 'wppa'));
-							$slug = 'wppa_autoclean';
-							$html = wppa_checkbox($slug);
-							wppa_setting($slug, '4', $name, $desc, $html, $help);
-
 							$name = __('WPPA+ Filter priority', 'wppa');
 							$desc = __('Sets the priority of the wppa+ content filter.', 'wppa');
 							$help = esc_js(__('If you encounter conflicts with the theme or other plugins, increasing this value sometimes helps. Use with great care!', 'wppa'));
@@ -3176,6 +3238,14 @@ global $wppa_revno;
 							$values = array('0', '10', '20', '50', '100', '200');
 							$html = wppa_select($slug, $options, $values);
 							wppa_setting($slug, '15', $name, $desc, $html, $help);
+							
+							$name = __('JPG image quality', 'wppa');
+							$desc = __('The jpg quality when photos are downsized', 'wppa');
+							$help = esc_js(__('The higher the number the better the quality but the larger the file', 'wppa'));
+							$help .= '\n'.esc_js(__('Possible values 20..100', 'wppa'));
+							$slug = 'wppa_jpeg_quality';
+							$html = wppa_input($slug, '50px');
+							wppa_setting($slug, '16', $name, $desc, $html, $help);
 
 							wppa_setting_subheader('B', '1', __('New Album and New Photo related miscellaneous settings', 'wppa'));
 
@@ -3511,6 +3581,13 @@ global $wppa_revno;
 							$html = wppa_checkbox($slug);
 							wppa_setting($slug, '4', $name, $desc, $html, $help);
 							
+							$name = __('GPX Shortcode', 'wppa');
+							$desc = __('The shortcode to be used for the gpx feature.', 'wppa');
+							$help = esc_js(__('Enter / modify the shortcode to be generated for the gpx plugin. It must contain w#lat and w#lon as placeholders for the lattitude and longitude.', 'wppa'));
+							$slug = 'wppa_gpx_shortcode';
+							$html = wppa_input($slug, '500px');
+							wppa_setting($slug, '5', $name, $desc, $html, $help);
+							
 							wppa_setting_subheader('G', '1', __('QR Code widget settings. The colors also apply to the QR code in the Share box.', 'wppa'));
 							
 							$name = __('QR size', 'wppa');
@@ -3522,7 +3599,7 @@ global $wppa_revno;
 							
 							$name = __('QR color', 'wppa');
 							$desc = __('The display color of the qr code (dark)', 'wppa');
-							$help = __('This color MUST be given in hexadecimal format!', 'wppa');
+							$help = esc_js(__('This color MUST be given in hexadecimal format!', 'wppa'));
 							$slug = 'wppa_qr_color';
 							$html = wppa_input($slug, '100px', '', '', "checkColor('".$slug."')") . wppa_color_box($slug);
 							wppa_setting($slug, '2', $name, $desc, $html, $help);
@@ -3533,6 +3610,115 @@ global $wppa_revno;
 							$slug = 'wppa_qr_bgcolor';
 							$html = wppa_input($slug, '100px', '', '', "checkColor('".$slug."')") . wppa_color_box($slug);
 							wppa_setting($slug, '3', $name, $desc, $html, $help);
+
+							wppa_setting_subheader('H', '1', __('Source file management and other upload/import settings and actions.', 'wppa'));
+							
+							$name = __('Keep sourcefiles admin', 'wppa');
+							$desc = __('Keep the original uploaded and imported photo files.', 'wppa');
+							$help = esc_js(__('The files will be kept in a separate directory with subdirectories for each album', 'wppa'));
+							$help .= '\n\n'.esc_js(__('These files can be used to update the photos used in displaying in wppa+ and optionally for downloading original, un-downsized images.', 'wppa'));
+							$slug = 'wppa_keep_source_admin';
+							$onchange = '';
+							$warn = __('Switching this on will require a lot of disk space!', 'wppa');
+							$html = wppa_checkbox_warn_on($slug, $onchange, '', $warn);
+							wppa_setting($slug, '1a', $name, $desc, $html, $help);
+
+							$name = __('Keep sourcefiles frontend', 'wppa');
+							$desc = __('Keep the original frontend uploaded photo files.', 'wppa');
+							$help = esc_js(__('The files will be kept in a separate directory with subdirectories for each album', 'wppa'));
+							$help .= '\n\n'.esc_js(__('These files can be used to update the photos used in displaying in wppa+ and optionally for downloading original, un-downsized images.', 'wppa'));
+							$slug = 'wppa_keep_source_frontend';
+							$warn = __('Switching this on will require a lot of disk space!', 'wppa');
+							$html = wppa_checkbox_warn_on($slug, '', '', $warn);
+							wppa_setting($slug, '1b', $name, $desc, $html, $help);
+							
+							$name = __('Source directory', 'wppa');
+							$desc = __('The path to the directory where the original photofiles will be saved.', 'wppa');
+							$help = esc_js(__('You may change the directory path, but it can not be an url.', 'wppa'));
+							$help .= '\n\n'.esc_js(__('The parent of the directory that you enter here must exist and be writable.', 'wppa'));
+							$help .= '\n'.esc_js(__('The directory itsself will be created if it does not exist yet.', 'wppa'));
+							$slug = 'wppa_source_dir';
+							$html = wppa_input($slug, '500px');
+							wppa_setting($slug, '2', $name, $desc, $html, $help);
+
+							$name = __('Keep sync', 'wppa');
+							$desc = __('Keep source synchronously with wppa system.', 'wppa');
+							$help = esc_js(__('If checked, photos that are deleted from wppa, will also be removed from the sourcefiles.', 'wppa'));
+							$help .= '\n'.esc_js(__('Also, copying or moving photos to different albums, will also copy/move the sourcefiles.', 'wppa'));
+							$slug = 'wppa_keep_sync';
+							$html = wppa_checkbox($slug);
+							wppa_setting($slug, '3', $name, $desc, $html, $help);
+							
+							$name = __('Remake', 'wppa');
+							$desc = __('Remake the photofiles.', 'wppa');
+							$help = esc_js(__('This action will remake the fullsize images, thumbnail images, and will refresh the iptc and exif data for all photos where the source is found in the corresponding album sub-directory of the source directory.', 'wppa'));
+							$slug = 'wppa_remake';
+							$html = wppa_doit_button('', $slug);
+							wppa_setting(false, '4', $name, $desc, $html, $help);
+							
+							$name = __('Remake add', 'wppa');
+							$desc = __('Photos will be added from the source pool', 'wppa');
+							$help = esc_js(__('If checked: If photo files are found in the source directory that do not exist in the corresponding album, they will be added to the album.', 'wppa'));
+							$slug = 'wppa_remake_add';
+							$html = wppa_checkbox($slug);
+							wppa_setting($slug, '4a', $name, $desc, $html, $help);
+							
+							$name = __('Save IPTC data', 'wppa');
+							$desc = __('Store the iptc data from the photo into the iptc db table', 'wppa');
+							$help = esc_js(__('You will need this if you enabled the display of iptc data in Table II-B17 or if you use it in the photo descriptions.', 'wppa'));
+							$slug = 'wppa_save_iptc';
+							$html = wppa_checkbox($slug);
+							wppa_setting($slug, '5', $name, $desc, $html, $help);
+							
+							$name = __('Save EXIF data', 'wppa');
+							$desc = __('Store the exif data from the photo into the exif db table', 'wppa');
+							$help = esc_js(__('You will need this if you enabled the display of exif data in Table II-B18 or if you use it in the photo descriptions.', 'wppa'));
+							$slug = 'wppa_save_exif';
+							$html = wppa_checkbox($slug);
+							wppa_setting($slug, '6', $name, $desc, $html, $help);
+							
+							$name = __('Change source restricted', 'wppa');
+							$desc = __('Changing the import source dir requires admin rights.', 'wppa');
+							$help = esc_js(__('If checked, the imput source for importing photos and albums is restricted to user role administrator.', 'wppa'));
+							$slug = 'wppa_chgsrc_is_restricted';
+							$html = wppa_checkbox($slug);
+							wppa_setting($slug, '7', $name, $desc, $html, $help);
+							
+							$name = __('Import Create page', 'wppa');
+							$desc = __('Create wp page when a directory to album is imported.', 'wppa');
+							$help = esc_js(__('As soon as an album is created when a directory is imported, a wp page is made that displays the album content.', 'wppa'));
+							$slug = 'wppa_newpag_create';
+							$onchange = 'wppaCheckNewpag()';
+							$html = wppa_checkbox($slug, $onchange);
+							wppa_setting($slug, '8', $name, $desc, $html, $help);
+							
+							$name = __('Page content', 'wppa');
+							$desc = __('The content of the page. Must contain <b>w#album</b>', 'wppa');
+							$help = esc_js(__('The content of the page. Note: it must contain w#album. This will be replaced by the album number in the generated shortcode.', 'wppa'));
+							$slug = 'wppa_newpag_content';
+							$class = 'wppa_newpag';
+							$html = wppa_input($slug, '500px');
+							wppa_setting($slug, '8.1', $name, $desc, $html, $help, $class);
+							
+							$name = __('Page type', 'wppa');
+							$desc = __('Select the type of page to create.', 'wppa');
+							$help = '';
+							$slug = 'wppa_newpag_type';
+							$class = 'wppa_newpag';
+							$options = array(__('Page', 'wppa'), __('Post', 'wppa'));
+							$values = array('page', 'post');
+							$html = wppa_select($slug, $options, $values);
+							wppa_setting($slug, '8.2', $name, $desc, $html, $help, $class);
+							
+							$name = __('Page status', 'wppa');
+							$desc = __('Select the initial status of the page.', 'wppa');
+							$help = '';
+							$slug = 'wppa_newpag_status';
+							$class = 'wppa_newpag';
+							$options = array(__('Published', 'wppa'), __('Draft', 'wppa'));
+							$values = array('publish', 'draft');	// 'draft' | 'publish' | 'pending'| 'future' | 'private'
+							$html = wppa_select($slug, $options, $values);
+							wppa_setting($slug, '8.3', $name, $desc, $html, $help, $class);
 
 							?>		
 			
@@ -3941,8 +4127,24 @@ function wppa_checkbox_warn_off($slug, $onchange = '', $class = '', $warning) {
 	$warning = esc_js(__('Warning!', 'wppa')).'\n\n'.$warning.'\n\n'.esc_js(__('Please read the help', 'wppa'));
 	$html = '<input style="float:left; height: 15px; margin: 0px; padding: 0px;" type="checkbox" id="'.$slug.'"'; 
 	if (get_option($slug) == 'yes') $html .= ' checked="checked"';
-	if ($onchange != '') $html .= ' onchange="if (!this.checked) alert(\''.$warning.'\'); '.$onchange.';wppaAjaxUpdateOptionCheckBox(\''.$slug.'\', this)}"';
+	if ($onchange != '') $html .= ' onchange="if (!this.checked) alert(\''.$warning.'\'); '.$onchange.';wppaAjaxUpdateOptionCheckBox(\''.$slug.'\', this)"';
 	else $html .= ' onchange="if (!this.checked) alert(\''.$warning.'\'); wppaAjaxUpdateOptionCheckBox(\''.$slug.'\', this)"';
+
+	if ($class != '') $html .= ' class="'.$class.'"';
+	$html .= ' /><img id="img_'.$slug.'" src="'.wppa_get_imgdir().'star.png" title="'.__('Setting unmodified', 'wppa').'" style="padding-left:4px; float:left; height:16px; width:16px;"';
+	if ($class != '') $html .= ' class="'.$class.'"';
+	$html .= ' />';
+	
+	return $html;
+}
+
+function wppa_checkbox_warn_on($slug, $onchange = '', $class = '', $warning) {
+
+	$warning = esc_js(__('Warning!', 'wppa')).'\n\n'.$warning.'\n\n'.esc_js(__('Please read the help', 'wppa'));
+	$html = '<input style="float:left; height: 15px; margin: 0px; padding: 0px;" type="checkbox" id="'.$slug.'"'; 
+	if (get_option($slug) == 'yes') $html .= ' checked="checked"';
+	if ($onchange != '') $html .= ' onchange="if (this.checked) alert(\''.$warning.'\'); '.$onchange.';wppaAjaxUpdateOptionCheckBox(\''.$slug.'\', this)"';
+	else $html .= ' onchange="if (this.checked) alert(\''.$warning.'\'); wppaAjaxUpdateOptionCheckBox(\''.$slug.'\', this)"';
 
 	if ($class != '') $html .= ' class="'.$class.'"';
 	$html .= ' /><img id="img_'.$slug.'" src="'.wppa_get_imgdir().'star.png" title="'.__('Setting unmodified', 'wppa').'" style="padding-left:4px; float:left; height:16px; width:16px;"';
