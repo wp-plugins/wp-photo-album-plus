@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains low-level utility routines
-* Version 4.9.13
+* Version 5.0.0
 *
 */
 
@@ -107,6 +107,8 @@ global $thumb;
 // get the description of an image
 function wppa_get_photo_desc($id, $do_shortcodes = false) {
 global $thumb;
+global $wppa;
+global $wppa_opt;
 
 	if ( ! is_numeric($id) || $id < '1' ) wppa_dbg_msg('Invalid arg wppa_get_photo_desc('.$id.')', 'red');
 	wppa_cache_thumb($id);
@@ -117,6 +119,18 @@ global $thumb;
 	// To prevent recursive rendering of scripts or shortcodes:
 	$desc = str_replace(array('%%wppa%%', '[wppa', '[/wppa]'), array('%-wppa-%', '{wppa', '{/wppa}'), $desc);
 
+	// Geo
+	if ( $thumb['location'] && ! $wppa['in_widget'] && strpos($wppa_opt['wppa_custom_content'], 'w#location') !== false) {
+		$temp = explode('/', $thumb['location']);
+		$lat = $temp['2'];
+		$lon = $temp['3'];
+		$geo = str_replace('w#lon', $lon, str_replace('w#lat', $lat, $wppa_opt['wppa_gpx_shortcode']));
+//		$geo = '[map style="width: auto; height:300px; margin:0; " marker="yes" lat="'.$lat.'" lon="'.$lon.'"]';
+		$geo = do_shortcode($geo);
+		$wppa['geo'] .= '<div id="geodiv-'.$wppa['master_occur'].'-'.$id.'" style="display:none;">'.$geo.'</div>';
+	}
+
+	// Shortcodes
 	if ( $do_shortcodes ) $desc = do_shortcode($desc);	// Do shortcodes if wanted
 	else $desc = strip_shortcodes($desc);				// Remove shortcodes if not wanted
 
@@ -124,7 +138,7 @@ global $thumb;
 	$desc = balanceTags($desc, true);		// Balance tags
 	$desc = wppa_filter_iptc($desc, $id);	// Render IPTC tags
 	$desc = wppa_filter_exif($desc, $id);	// Render EXIF tags
-	
+
 	return $desc;
 }
 
@@ -373,6 +387,11 @@ global $wpdb;
 	return $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `".WPPA_PHOTOS."` WHERE `id` = %s", $id));
 }
 
+function wppa_albumphoto_exists($alb, $photo) {
+global $wpdb;
+	return $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `".WPPA_PHOTOS."` WHERE `album` = %s AND `filename` = %s", $alb, $photo));
+}
+
 function wppa_dislike_add($photo) {
 global $wppa_opt;
 
@@ -535,19 +554,138 @@ global $wppa;
 	return $url;
 }
 
+function wppa_flush_treecounts($alb = '') {
+global $wppa;
+
+	if ( $alb ) {
+		$wppa['treecounts'] = get_option('wppa_treecounts', array());
+		if ( isset($wppa['treecounts'][$alb]) ) {
+			unset($wppa['treecounts'][$alb]['albums']);
+			unset($wppa['treecounts'][$alb]['photos']);
+			unset($wppa['treecounts'][$alb]);
+			update_option('wppa_treecounts', $wppa['treecounts']);
+		}
+		$parent = wppa_get_parentalbumid($alb);
+		if ( $parent > '0' ) wppa_flush_treecounts($parent);
+	}
+	else delete_option('wppa_treecounts');
+}
+
 function wppa_treecount_a($alb) {
 global $wpdb;
-
-	$albums = $wpdb->get_results($wpdb->prepare('SELECT `id` FROM `'.WPPA_ALBUMS.'` WHERE `a_parent` = %s', $alb), ARRAY_A);
-	$album_count = empty($albums) ? '0' : count($albums);
-	$photo_count = $wpdb->get_var($wpdb->prepare('SELECT COUNT(*) FROM `'.WPPA_PHOTOS.'`  WHERE `album` = %s AND `status` <> "pending"', $alb));
+global $wppa;
 	
-	$result = array('albums' => $album_count, 'photos' => $photo_count);
-	if ( empty($albums) ) {}
-	else foreach ( $albums as $album ) {
-		$subcount = wppa_treecount_a($album['id']);
-		$result['albums'] += $subcount['albums'];
-		$result['photos'] += $subcount['photos'];
+	// See if we have this in cache
+	if ( ! isset($wppa['treecounts']) ) {
+		$wppa['treecounts'] = get_option('wppa_treecounts', array());	// Initial fetch
 	}
-	return $result;
+	if ( isset($wppa['treecounts'][$alb]) ) {							// Album found
+		$result['albums'] = $wppa['treecounts'][$alb]['albums'];		// Use data
+		$result['photos'] = $wppa['treecounts'][$alb]['photos'];
+		return $result;													// And return
+	}
+	else {	// Not in cache
+		$albums = $wpdb->get_results($wpdb->prepare('SELECT `id` FROM `'.WPPA_ALBUMS.'` WHERE `a_parent` = %s', $alb), ARRAY_A);
+		$album_count = empty($albums) ? '0' : count($albums);
+		$photo_count = $wpdb->get_var($wpdb->prepare('SELECT COUNT(*) FROM `'.WPPA_PHOTOS.'`  WHERE `album` = %s AND `status` <> "pending"', $alb));
+		
+		$result = array('albums' => $album_count, 'photos' => $photo_count);
+		if ( empty($albums) ) {}
+		else foreach ( $albums as $album ) {
+			$subcount = wppa_treecount_a($album['id']);
+			$result['albums'] += $subcount['albums'];
+			$result['photos'] += $subcount['photos'];
+		}
+		// Save to cache
+		$wppa['treecounts'][$alb]['albums'] = $result['albums'];
+		$wppa['treecounts'][$alb]['photos'] = $result['photos'];
+		update_option('wppa_treecounts', $wppa['treecounts']);
+		return $result;
+	}
+}
+
+function wppa_is_time_up($count = '') {
+global $wppa_starttime;
+
+	$timnow = microtime(true);
+	$laptim = $timnow - $wppa_starttime;
+	
+	$maxtim = ini_get('max_execution_time');
+	wppa_dbg_msg('Maxtim = '.$maxtim.', elapsed = '.$laptim, 'red');
+	if ( ! $maxtim ) return false;	// No limit or no value
+	If ( ( $maxtim - $laptim ) > '5' ) return false;
+	if ( $count ) {
+		if ( is_admin() ) {
+			wppa_error_message(sprintf(__('Time up after processing %s items. Please restart this operation', 'wppa'), $count));
+		}
+		else {
+			wppa_err_alert(sprintf(__('Time up after processing %s items. Please restart this operation', 'wppa_theme'), $count));
+		}
+	}
+	return true;
+}
+
+function wppa_save_source($file, $name, $alb) {
+global $wppa_opt;
+
+	if ( ( wppa_switch('wppa_keep_source_admin') && is_admin() ) || ( wppa_switch('wppa_keep_source_frontend') && ! is_admin() ) ) {
+		$albdir = $wppa_opt['wppa_source_dir'].'/album-'.$alb;
+		if ( ! is_dir($albdir) ) @ mkdir($albdir);	// This is a gimic, do not bother on failure
+		$dest = $albdir.'/'.$name;
+		if ( $file != $dest ) @ copy($file, $dest);	// Do not copy to self, and do not bother on failure
+	}
+}
+
+function wppa_delete_source($name, $alb) {
+global $wppa_opt;
+	if ( wppa_switch('wppa_keep_sync') ) {
+		$path = $wppa_opt['wppa_source_dir'].'/album-'.$alb.'/'.$name;
+		@ unlink($path);										// Ignore error
+		@ rmdir($wppa_opt['wppa_source_dir'].'/album-'.$alb);	// Ignore error
+	}
+}
+
+function wppa_move_source($name, $from, $to) {
+global $wppa_opt;
+	if ( wppa_switch('wppa_keep_sync') ) {
+		$frompath 	= $wppa_opt['wppa_source_dir'].'/album-'.$from.'/'.$name;
+		if ( ! is_file($frompath) ) return;
+		$todir 		= $wppa_opt['wppa_source_dir'].'/album-'.$to;
+		$topath 	= $wppa_opt['wppa_source_dir'].'/album-'.$to.'/'.$name;
+		if ( ! is_dir($todir) ) @ mkdir($todir);
+		@ rename($frompath, $topath);		// will fail if target already exists
+		@ unlink($frompath);				// therefor attempt delete
+		@ rmdir($wppa_opt['wppa_source_dir'].'/album-'.$from);	// remove dir when empty Ignore error
+	}
+}
+
+function wppa_copy_source($name, $from, $to) {
+global $wppa_opt;
+	if ( wppa_switch('wppa_keep_sync') ) {
+		$frompath 	= $wppa_opt['wppa_source_dir'].'/album-'.$from.'/'.$name;
+		if ( ! is_file($frompath) ) return;
+		$todir 		= $wppa_opt['wppa_source_dir'].'/album-'.$to;
+		$topath 	= $wppa_opt['wppa_source_dir'].'/album-'.$to.'/'.$name;
+		if ( ! is_dir($todir) ) @ mkdir($todir);
+		@ copy($frompath, $topath); // !
+	}
+}
+
+function wppa_delete_album_source($album) {
+global $wppa_opt;
+	if ( wppa_switch('wppa_keep_sync') ) {
+		@ rmdir($wppa_opt['wppa_source_dir'].'/album-'.$album);
+	}
+}
+
+function wppa_update_modified($photo) {
+global $wpdb;
+	$wpdb->query($wpdb->prepare("UPDATE `".WPPA_PHOTOS."` SET `modified` = %s WHERE `id` = %s", time(), $photo));
+}
+
+function wppa_nl_to_txt($text) {
+	return str_replace("\n", "\\n", $text);
+}
+function wppa_txt_to_nl($text) {
+	return str_replace('\n', "\n", $text);
 }

@@ -1,7 +1,7 @@
 /* admin-scripts.js */
 /* Package: wp-photo-album-plus
 /*
-/* Version 4.9.10
+/* Version 5.0.0
 /* Various js routines used in admin pages		
 */
 
@@ -72,6 +72,9 @@ function wppaInitSettings() {
 	wppaCheckLinkPageErr('multitag');
 	wppaCheckSplitNamedesc();
 	wppaCheckShares();
+//	wppaCheckKeepSource();
+	wppaCheckCoverType();
+	wppaCheckNewpag();
 	
 	var tab=new Array('I','II','III','IV','V','VI','VII','VIII','IX','X','XI','XII');
 	var sub=new Array('A','B','C','D','E','F','G','H','I','J');
@@ -339,6 +342,29 @@ function wppaCheckShares() {
 	var Sh = document.getElementById('wppa_share_on').checked || document.getElementById('wppa_share_on_widget').checked;
 	if (Sh) jQuery('.wppa_share').css('display', '');
 	else jQuery('.wppa_share').css('display', 'none');
+}
+/*
+function wppaCheckKeepSource() {
+	var Ks = document.getElementById('wppa_keep_source').checked;
+	if ( Ks ) jQuery('.wppa_keep_source').css('display', '');
+	else jQuery('.wppa_keep_source').css('display', 'none');
+}
+*/
+function wppaCheckCoverType() {
+	var Type = document.getElementById('wppa_cover_type').value;
+	if ( Type == 'imagefactory' ) {
+		jQuery('.wppa_imgfact_').css('display', '');
+		var Pos = document.getElementById('wppa_coverphoto_pos').value;
+		if ( Pos == 'left' || Pos == 'right' )
+			alert('To avoid layout problems: please set Cover photo position ( Table IV-D3 ) to \'top\' or \'bottom\'!');
+	}
+	else jQuery('.wppa_imgfact_').css('display', 'none');
+}
+
+function wppaCheckNewpag() {
+	var Np = document.getElementById('wppa_newpag_create').checked;
+	if ( Np ) jQuery('.wppa_newpag').css('display', '');
+	else jQuery('.wppa_newpag').css('display', 'none');
 }
 
 function wppaCheckCustom() {
@@ -684,9 +710,11 @@ function checkAll(name, clas) {
 function impUpd(elm, id) {
 	if ( elm.checked ) {
 		jQuery(id).prop('value', wppa_update);
+		jQuery('.hideifupdate').css('display', 'none');
 	}
 	else {
 		jQuery(id).prop('value', wppa_import);
+		jQuery('.hideifupdate').css('display', '');
 	}
 }
 
@@ -848,6 +876,7 @@ function wppaAjaxUpdateAlbum(album, actionslug, elem) {
 	xmlhttp.open('POST',wppaAjaxUrl,true);
 	xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 	xmlhttp.send(data);
+	document.getElementById('albumstatus-'+album).innerHTML = 'Working, please wait...';
 
 	// Process the result
 	xmlhttp.onreadystatechange=function() {

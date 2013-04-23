@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the last uploaded photos
-* Version 4.9.14
+* Version 5.0.0
 */
 
 class LasTenWidget extends WP_Widget {
@@ -20,6 +20,7 @@ class LasTenWidget extends WP_Widget {
 		global $wppa_opt;
 		global $wppa;
 
+		$wppa['in_widget'] = 'lasten';
         extract( $args );
 		
 		$instance = wp_parse_args( (array) $instance, array( 'title' => '', 'album' => '', 'albumenum' => '', 'timesince' => 'yes' ) );
@@ -31,13 +32,15 @@ class LasTenWidget extends WP_Widget {
 		
 		$album = $instance['album'];
 		$albumenum = $instance['albumenum'];
-		if ($album == '-99') $album = implode(' OR `album` = ', explode(',', $albumenum));
+		if ($album == '-99') $album = implode("' OR `album` = '", explode(',', $albumenum));
 		if ($album) {
-			$thumbs = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM `".WPPA_PHOTOS."` WHERE `album` = %s ORDER BY `timestamp` DESC LIMIT " . $max, $album ), ARRAY_A );
+			$query = "SELECT * FROM `".WPPA_PHOTOS."` WHERE ( `album` = '".$album."' ) AND `status` <> 'pending' ORDER BY `timestamp` DESC LIMIT " . $max;
 		}
 		else {
-			$thumbs = $wpdb->get_results( "SELECT * FROM `".WPPA_PHOTOS."` ORDER BY `timestamp` DESC LIMIT " . $max, ARRAY_A );
+			$query = "SELECT * FROM `".WPPA_PHOTOS."` WHERE `status` <> 'pending' ORDER BY `timestamp` DESC LIMIT " . $max;
 		}
+			
+		$thumbs = $wpdb->get_results( $query, ARRAY_A );
 		$widget_content = "\n".'<!-- WPPA+ LasTen Widget start -->';
 		$maxw = $wppa_opt['wppa_lasten_size'];
 		$maxh = $maxw + 18;
@@ -103,6 +106,8 @@ class LasTenWidget extends WP_Widget {
 		echo "\n" . $before_widget;
 		if ( !empty( $widget_title ) ) { echo $before_title . $widget_title . $after_title; }
 		echo $widget_content . $after_widget;
+		
+		$wppa['in_widget'] = false;
     }
 	
     /** @see WP_Widget::update */

@@ -6,7 +6,7 @@
 *
 * A text widget that hooks the wppa+ filter
 *
-* Version 4.9.14
+* Version 5.0.0
 */
 
 class WppaGpWidget extends WP_Widget {
@@ -34,7 +34,7 @@ class WppaGpWidget extends WP_Widget {
 		
 		if ($instance['filter']) $text = wpautop($text);
 
-		$text = '<div class="wppa-gp-widget" style="margin-top:2px; margin-left:2px;" >'.wppa_albums_filter($text).'</div>';
+		$text = '<div class="wppa-gp-widget" style="margin-top:2px; margin-left:2px;" >'.wppa_albums_filter(do_shortcode($text)).'</div>';
 		
 		echo $text;
 		echo '<div style="clear:both"></div>';

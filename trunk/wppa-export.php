@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the export functions
-* Version 4.8.6
+* Version 5.0.0
 *
 */
 
@@ -11,10 +11,6 @@ function _wppa_page_export() {
 global $wpdb;
 
 	// Export Photos admin page
-
-    // sanitize system
-	wppa_cleanup_photos();
-	
 
 	// Do the export if requested
 	if (isset($_POST['wppa-export-submit'])) {
@@ -166,11 +162,24 @@ global $wppa_temp_idx;
 		$err = false;
 		if ($file) {
 			if (fwrite($file, "name=".$album['name']."\n") !== FALSE) {
-				if (fwrite($file, "desc=".$album['description']."\n") !== FALSE) {
+				if (fwrite($file, "desc=".wppa_nl_to_txt($album['description'])."\n") !== FALSE) {
 					if (fwrite($file, "aord=".$album['a_order']."\n") !== FALSE) {
 						if (fwrite($file, "prnt=".wppa_get_album_name($album['a_parent'], 'raw')."\n") !== FALSE) {
 							if (fwrite($file, "pord=".$album['p_order_by']."\n") !== FALSE) {
 								if (fwrite($file, "ownr=".$album['owner']."\n") !== FALSE) {
+								
+/*					
+					main_photo bigint(20) NOT NULL, 
+					cover_linktype tinytext NOT NULL,
+					cover_linkpage bigint(20) NOT NULL,
+					timestamp tinytext NOT NULL,
+					upload_limit tinytext NOT NULL,
+					alt_thumbsize tinytext NOT NULL,
+					default_tags tinytext NOT NULL,
+					cover_type tinytext NOT NULL,
+					suba_order_by tinytext NOT NULL,
+*/
+								
 								}
 								else $err = true;
 							}
@@ -190,7 +199,7 @@ global $wppa_temp_idx;
 			}
 			else {
 				fclose($file);
-				if (PHP_VERSION_ID >= 50207) {
+				if ( $wppa_zip ) {
 					$wppa_zip->addFile($fname, basename($fname));
 				}
 				$wppa_temp[$wppa_temp_idx] = $fname;
@@ -219,11 +228,27 @@ global $wppa_temp_idx;
 		$err = false;
 		if ($file) {
 			if (fwrite($file, "name=".$photo['name']."\n") !== FALSE) {
-				if (fwrite($file, "desc=".$photo['description']."\n") !== FALSE) {
+				if (fwrite($file, "desc=".wppa_nl_to_txt($photo['description'])."\n") !== FALSE) {
 					if (fwrite($file, "pord=".$photo['p_order']."\n") !== FALSE) {
 						if (fwrite($file, "albm=".wppa_get_album_name($photo['album'], 'raw')."\n") !== FALSE) {	
 							if (fwrite($file, "lnku=".$photo['linkurl']."\n") !== FALSE) {
 								if (fwrite($file, "lnkt=".$photo['linktitle']."\n") !== FALSE) {
+								
+/*													
+					ext tinytext NOT NULL, 
+					mean_rating tinytext NOT NULL,
+					linktarget tinytext NOT NULL,
+					owner text NOT NULL,
+					timestamp tinytext NOT NULL,
+					status tinytext NOT NULL,
+					rating_count bigint(20) NOT NULL default '0',
+					tags tinytext NOT NULL,
+					alt tinytext NOT NULL,
+					filename tinytext NOT NULL,
+					modified tinytext NOT NULL,
+					location tinytext NOT NULL,
+*/								
+								
 								}
 								else $err = true;
 							}

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * get the albums via filter
-* version 4.8.0
+* version 5.0.0
 *
 */
 
@@ -65,6 +65,7 @@ global $wppa;
 			$wppa['is_cover'] = '0';
 			$wppa['is_slide'] = '0';
 			$wppa['is_slideonly'] = '0';
+			$wppa['is_filmonly'] = '0';
 			$wppa['single_photo'] = '';
 			$wppa['is_mphoto'] = '0';
 			$wppa['film_on'] = '0';
@@ -179,7 +180,7 @@ global $wppa;
 				$post_new .= wppa_albums();			// Insert the HTML
 			}
 			else {									// Or an indicator
-				$post_new .= '<span style="color:blue; font-weight:bold; ">[WPPA+ Photo display]</span>';	
+				$post_new .= '<span style="color:blue; font-weight:bold; ">[WPPA+ Photo display (fsc)]</span>';	
 			}
 			
 			$wppa_pos = strpos($post_old, '%%wppa%%');						// Refresh the next invocation position, if any
@@ -222,6 +223,7 @@ function wppa_atoid($var) {
 function wppa_shortcodes( $atts, $content = null ) {
 global $wppa;
 global $wppa_postid;
+global $wppa_opt;
 
 	extract( shortcode_atts( array(
 		'type'  	=> 'generic',
@@ -243,6 +245,7 @@ global $wppa_postid;
 	$wppa['is_cover'] = '0';
 	$wppa['is_slide'] = '0';
 	$wppa['is_slideonly'] = '0';
+	$wppa['is_filmonly'] = '0';
 	$wppa['single_photo'] = '';
 	$wppa['is_mphoto'] = '0';
 	$wppa['film_on'] = '0';
@@ -284,6 +287,15 @@ global $wppa_postid;
 			$wppa['film_on'] = '1';
 			$wppa['start_photo'] = $photo;
 			break;
+			
+	case 'filmonly':
+		$wppa['start_album'] = $album;
+		$wppa['is_slideonly'] = '1';
+		$wppa['is_filmonly'] = '1';
+		$wppa['film_on'] = '1';
+		$wppa['start_photo'] = $photo;
+		break;
+		
 		case 'photo':
 			$wppa['single_photo'] = $photo;
 			break;
@@ -324,8 +336,10 @@ global $wppa_postid;
 		wppa_dbg_msg($msg);
 	}
 	
+	if ( $wppa_opt['wppa_render_shortcode_always'] ) $do_it = true;
+	
 	if ($do_it) $result =  wppa_albums();				// Return the HTML
-	else $result = '<span style="color:blue; font-weight:bold; ">[WPPA+ Photo display]</span>';	// Or an indicator
+	else $result = '<span style="color:blue; font-weight:bold; ">[WPPA+ Photo display (fsh)]</span>';	// Or an indicator
 
 	// Reset
 	$wppa['start_photo'] = '0';	// Start a slideshow here

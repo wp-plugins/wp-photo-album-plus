@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 4.9.18
+* Version 5.0.0
 *
 */
 
@@ -55,6 +55,7 @@ global $silent;
 					alt_thumbsize tinytext NOT NULL,
 					default_tags tinytext NOT NULL,
 					cover_type tinytext NOT NULL,
+					suba_order_by tinytext NOT NULL,
 					PRIMARY KEY  (id) 
 					) DEFAULT CHARACTER SET utf8;";
 					
@@ -75,7 +76,10 @@ global $silent;
 					rating_count bigint(20) NOT NULL default '0',
 					tags tinytext NOT NULL,
 					alt tinytext NOT NULL,
-					PRIMARY KEY  (id) 
+					filename tinytext NOT NULL,
+					modified tinytext NOT NULL,
+					location tinytext NOT NULL,
+					PRIMARY KEY  (id)
 					) DEFAULT CHARACTER SET utf8;";
 
 	$create_rating = "CREATE TABLE " . WPPA_RATING . " (
@@ -211,7 +215,7 @@ global $silent;
 		if ( $old_rev <= '474' ) {	// Convert album and photo descriptions to contain html in stead of htmlspecialchars. Allowing html is assumed, if not permitted, wppa_html will convert to specialcars.
 			// html
 			$at = 0; $ah = 0; $pt = 0; $ph = 0;
-			$albs = $wpdb->get_results('SELECT * FROM '.WPPA_ALBUMS, 'ARRAY_A');
+			$albs = $wpdb->get_results('SELECT `id`, `description` FROM '.WPPA_ALBUMS, ARRAY_A);
 			if ($albs) {
 				foreach($albs as $alb) {
 					$at++;
@@ -221,7 +225,7 @@ global $silent;
 					}
 				}
 			}
-			$phots = $wpdb->get_results('SELECT * FROM '.WPPA_PHOTOS, 'ARRAY_A');
+			$phots = $wpdb->get_results('SELECT `id`, `description` FROM '.WPPA_PHOTOS, ARRAY_A);
 			if ($phots) {
 				foreach($phots as $phot) {
 					$pt++;
@@ -255,6 +259,12 @@ global $silent;
 			wppa_copy_setting('wppa_show_bread', 'wppa_show_bread_posts');
 			wppa_copy_setting('wppa_show_bread', 'wppa_show_bread_pages');
 			wppa_remove_setting('wppa_show_bread');
+		}
+		if ( $old_rev <= '4990' ) {
+			$wpdb->query('ALTER TABLE `'.WPPA_PHOTOS.'` ADD INDEX ( `album` )');
+		}
+		if ( $old_rev <= '5000' ) {
+			wppa_remove_setting('wppa_autoclean');
 		}
 
 	}
@@ -402,7 +412,7 @@ Hide Camera info
 						'wppa_fullimage_border_width' 	=> '',		// 4
 						'wppa_numbar_max'				=> '10',	// 5
 						'wppa_share_size'				=> '32',
-						'wppa_mini_treshold'			=> '300',
+						'wppa_mini_treshold'			=> '500',
 						// C Thumbnails
 						'wppa_thumbsize' 				=> '100',		// 1
 						'wppa_thumbsize_alt'			=> '130',		// 1a
@@ -420,7 +430,8 @@ Hide Camera info
 						'wppa_max_cover_width'			=> '1024',	// 1
 						'wppa_text_frame_height'		=> '54',	// 2
 						'wppa_smallsize' 				=> '150',	// 3
-						'wppa_coversize_is_height'		=> 'no',	// 3.1
+						'wppa_smallsize_multi'			=> '100',	// 3.1
+						'wppa_coversize_is_height'		=> 'no',	// 3.9
 						'wppa_album_page_size' 			=> '0',		// 4
 						// E Rating & comments
 						'wppa_rating_max'				=> '5',		// 1
@@ -510,6 +521,7 @@ Hide Camera info
 						'wppa_show_slideshowbrowselink' 	=> 'yes',	// 3
 						'wppa_show_viewlink'				=> 'yes',	// 4
 						'wppa_show_treecount'				=> 'no',
+						'wppa_skip_empty_albums'			=> 'yes',
 						// E Widgets
 						'wppa_show_bbb_widget'				=> 'no',	// 1
 						// F Overlay
@@ -566,6 +578,7 @@ Hide Camera info
 						'wppa_use_photo_names_in_urls'	=> 'no',
 						'wppa_use_pretty_links'			=> 'no',
 						'wppa_update_addressline'		=> 'yes',
+						'wppa_render_shortcode_always'	=> 'no',
 						// B Full size and Slideshow
 						'wppa_fullvalign' 				=> 'fit',
 						'wppa_fullhalign' 				=> 'center',
@@ -596,6 +609,8 @@ Hide Camera info
 						'wppa_coverphoto_pos'			=> 'right',
 						'wppa_use_cover_opacity' 		=> 'yes',
 						'wppa_cover_opacity' 			=> '85',
+						'wppa_cover_type'				=> 'default',
+						'wppa_imgfact_count'			=> '10',
 						// E Rating
 						'wppa_rating_login' 			=> 'yes',
 						'wppa_rating_change' 			=> 'yes',
@@ -757,10 +772,10 @@ Hide Camera info
 
 						// Table IX: Miscellaneous
 						// A System
-						'wppa_html' 					=> 'no',		// 1
+						'wppa_html' 					=> 'yes',		// 1
 						'wppa_check_balance'			=> 'no',		// 2
 						'wppa_allow_debug' 				=> 'no',		// 3
-						'wppa_autoclean'				=> 'yes',		// 4
+						
 						'wppa_filter_priority'			=> '1001',		// 5
 						'wppa_lightbox_name'			=> 'wppa',		// 6
 						'wppa_allow_foreign_shortcodes' => 'no',		// 7
@@ -773,6 +788,7 @@ Hide Camera info
 						'wppa_alt_type'					=> 'fullname',
 						'wppa_photo_admin_pagesize'		=> '20',
 						'wppa_comment_admin_pagesize'	=> '10',
+						'wppa_jpeg_quality'				=> '95',
 
 						// B New
 						'wppa_max_album_newtime'		=> '0',		// 1
@@ -786,11 +802,13 @@ Hide Camera info
 						'wppa_max_albums'				=> '0',
 						'wppa_alt_is_restricted'		=> 'no',
 						'wppa_link_is_restricted'		=> 'no',
+						
 						// C Search
 						'wppa_search_linkpage' 			=> '0',		// 1
 						'wppa_excl_sep' 				=> 'no',	// 2
 						'wppa_search_tags'				=> 'no',
 						'wppa_photos_only'				=> 'no',	// 3
+						
 						// D Watermark
 						'wppa_watermark_on'				=> 'no',
 						'wppa_watermark_user'			=> 'no',
@@ -809,6 +827,7 @@ Hide Camera info
 						'wppa_cp_points_rating'			=> '0',
 						'wppa_cp_points_upload'			=> '0',
 						'wppa_use_scabn'				=> 'no',
+						'wppa_gpx_shortcode'			=> '[map style="width: auto; height:300px; margin:0; " marker="yes" lat="w#lat" lon="w#lon"]',
 
 						// Photo of the day widget
 						'wppa_widgettitle'			=> __('Photo of the day', 'wppa'),
@@ -838,9 +857,22 @@ Hide Camera info
 						// QR code settings
 						'wppa_qr_size'				=> '200',
 						'wppa_qr_color'				=> '#000000',
-						'wppa_qr_bgcolor'			=> '#FFFFFF'
+						'wppa_qr_bgcolor'			=> '#FFFFFF',
 						
-						
+						// H Source file management and import/upload
+						'wppa_keep_source_admin'	=> 'no',
+						'wppa_keep_source_frontend' => 'no',
+						'wppa_source_dir'			=> ABSPATH.WPPA_UPLOAD.'/wppa-source',
+						'wppa_keep_sync'			=> 'yes',
+						'wppa_remake_add'			=> 'yes',
+						'wppa_save_iptc'			=> 'yes',
+						'wppa_save_exif'			=> 'yes',
+						'wppa_chgsrc_is_restricted'		=> 'no',
+						'wppa_newpag_create'			=> 'no',
+						'wppa_newpag_content'			=> '[wppa type="cover" album="w#album" align="center"][/wppa]',
+						'wppa_newpag_type'				=> 'page',
+						'wppa_newpag_status'			=> 'publish'
+
 						);
 
 	array_walk($wppa_defaults, 'wppa_set_default', $force);

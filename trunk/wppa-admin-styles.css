@@ -1,7 +1,7 @@
 /* admin-styles.css 
 *
 * wp-photo-album-plus
-* version 4.9.17
+* version 5.0.0
 */
 #files_list, #files_list2
 {
@@ -86,6 +86,15 @@ ul.wppa_nav
 	border: 1px #ccc solid;
 }
 
+.phototable a, .albumtable a {
+	font-weight:bold;
+}
+
+.phototable a:hover, .albumtable a:hover, .phototable a:active, .albumtable a:active {
+	color: #d54e21 !important;
+	cursor: pointer;
+}
+
 .phototable {
 	margin-bottom: 0px;
 	margin-top: 0.5em;
@@ -102,7 +111,10 @@ ul.wppa_nav
 	width: 150px;
 }
 
-.albumtable label, .phototable label { font-weight: bold; }
+.albumtable label, .phototable label { 
+	font-weight: bold; 
+	cursor: default;
+}
 
 /* .photoitem img { float: right; } */
 .photoitem .clear { clear: both; }

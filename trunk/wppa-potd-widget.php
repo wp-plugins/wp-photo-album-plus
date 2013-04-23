@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the widget
-* Version 4.8.5
+* Version 5.0.0
 */
 
 class PhotoOfTheDay extends WP_Widget {
@@ -18,6 +18,9 @@ class PhotoOfTheDay extends WP_Widget {
     function widget($args, $instance) {		
 		global $wpdb;
 		global $wppa_opt;
+		global $wppa;
+		
+		$wppa['in_widget'] = 'potd';
 
         extract( $args );
 
@@ -93,6 +96,8 @@ class PhotoOfTheDay extends WP_Widget {
 		echo "\n" . $before_widget;
 		if ( !empty( $widget_title ) ) { echo $before_title . $widget_title . $after_title; }
 		echo $widget_content . $after_widget;
+		
+		$wppa['in_widget'] = false;
     }
 	
     /** @see WP_Widget::update */

@@ -1,7 +1,7 @@
 <?php
 /*
 *
-* WPPA+ version 4.2.2
+* WPPA+ version 5.0.0
 *
 * PHP Image Resize Class
 *
@@ -205,6 +205,10 @@ class wppa_ImageResize {
    */ 
 
    function saveImage($numQuality = 95){
+   
+		global $wppa_opt;
+		$numQuality = $wppa_opt['wppa_jpeg_quality'];
+		
       switch($this->arrResizedDetails['mime']){
          case "image/jpeg":
             if ( !imagejpeg($this->resResizedImage, $this->strResizedImagePath, $numQuality) ) wppa_dbg_msg('Error: imagejpeg failed in class-resize', 'red', true);

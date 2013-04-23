@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display thumbnail photos
-* Version 4.9.14
+* Version 5.0.0
 */
 
 class ThumbnailWidget extends WP_Widget {
@@ -21,6 +21,8 @@ class ThumbnailWidget extends WP_Widget {
 		global $wppa_opt;
 		global $wppa;
 
+		$wppa['in_widget'] = 'tn';
+		
         extract( $args );
 		
 		$instance = wp_parse_args( (array) $instance, array( 
@@ -104,6 +106,8 @@ class ThumbnailWidget extends WP_Widget {
 		echo "\n" . $before_widget;
 		if ( !empty( $widget_title ) ) { echo $before_title . $widget_title . $after_title; }
 		echo $widget_content . $after_widget;
+		
+		$wppa['in_widget'] = false;
     }
 	
     /** @see WP_Widget::update */
