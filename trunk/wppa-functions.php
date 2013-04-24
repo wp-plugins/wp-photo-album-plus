@@ -3,12 +3,12 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions and API modules
-* Version 5.0.0
+* Version 5.0.1
 *
 */
 /* Moved to wppa-common-functions.php:
 global $wppa_api_version;
-$wppa_api_version = '5-0-0-000';
+$wppa_api_version = '5-0-0-001';
 */
 
 if ( ! defined( 'ABSPATH' ) )
@@ -193,15 +193,18 @@ global $wpdb;
 }
 function wppa_crumb_ancestors($sep, $alb, $occur, $to_cover) {
 global $wppa;
+global $wpdb;
 
     $parent = wppa_get_parentalbumid($alb);
 	if ( $parent < '1' ) return;
     
     wppa_crumb_ancestors($sep, $parent, $wppa['occur'], $to_cover);
 
-$slide = ( wppa_get_album_title_linktype($parent) == 'slide' ) ? '&amp;wppa-slide' : '';
+	$slide = ( wppa_get_album_title_linktype($parent) == 'slide' ) ? '&amp;wppa-slide' : '';
+	
+$pagid = $wpdb->get_var($wpdb->prepare("SELECT `cover_linkpage` FROM `".WPPA_ALBUMS."` WHERE `id` = %s", $parent));
 
-    $wppa['out'] .= wppa_nltab().'<a href="'.wppa_get_permalink().'wppa-album='.$parent.'&amp;wppa-cover='.$to_cover.$slide.'&amp;wppa-occur='.$occur.'" class="wppa-nav-text b20" style="'.__wcs('wppa-nav-text').'" >'.__(wppa_get_album_name($parent)).'</a>';
+    $wppa['out'] .= wppa_nltab().'<a href="'.wppa_get_permalink($pagid).'wppa-album='.$parent.'&amp;wppa-cover='.$to_cover.$slide.'&amp;wppa-occur='.$occur.'" class="wppa-nav-text b20" style="'.__wcs('wppa-nav-text').'" >'.__(wppa_get_album_name($parent)).'</a>';
 	$wppa['out'] .= wppa_nltab().'<span class="wppa-nav-text" style="'.__wcs('wppa-nav-text').'">'.$sep.'</span>';
     return;
 }

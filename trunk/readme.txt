@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile
-Version: 5.0.0
+Version: 5.0.1
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -99,7 +99,7 @@ See Table I-A1 and Table I-B1,2 of the Photo Albums -> Settings admin page.
 
 = Which other plugins do you recommand to use with WPPA+, and which not? =
 
-* Recommanded plugins: qTranslate, WP Super Cache, Cube Points, Simple Cart & Buy Now.
+* Recommanded plugins: qTranslate, WP Super Cache, Cube Points, Simple Cart & Buy Now, Google-Maps-GPX-Viewer.
 * Plugins that break up WPPA+: My Live Signature.
 * Google Analytics for WordPress will break the slideshow in most cases when *Track outbound clicks & downloads:* has been checked in its configuration.
 
@@ -171,6 +171,13 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
 
+= 5.0.1 =
+
+= Bug Fixes =
+
+* The album in the breadcrumb now links to the page as defined in the manage album information admmin page.
+* The shortcode type type="landing" now works as designed. I.e. displays only when the querystring specifies it, otherwise nothing.
+
 = 5.0.0 =
 
 = Bug Fixes =
@@ -208,6 +215,7 @@ The filename is saved along with the photo information.
 * Cosmetic changes to Album admin and Photo admin.
 * Auto clean of db and photofiles is discontinued ( Table IX-A4 ) as it is too dangerous, especially during migrations to a different server.
 You can only cleanup on Table VIII-A6 now; no files will be deleted, only error messages will be priinted.
+* Some themes require a switch to prevent the display of a placeholder like [WPPA+ Photo display]. Setting is Table IV-A5.
 
 = 4.9.18 =
 
