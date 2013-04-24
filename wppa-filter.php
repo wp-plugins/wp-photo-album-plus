@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * get the albums via filter
-* version 5.0.0
+* version 5.0.1
 *
 */
 
@@ -259,7 +259,7 @@ global $wppa_opt;
 	// Find type
 	switch ( $type ) {
 		case 'landing':
-			$wppa['is_landing'] = '0';
+			$wppa['is_landing'] = '1';
 		case 'generic':
 			break;
 		case 'cover':
