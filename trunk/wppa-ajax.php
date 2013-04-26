@@ -2,7 +2,7 @@
 /* wppa-ajax.php
 *
 * Functions used in ajax requests
-* version 5.0.0
+* version 5.0.2
 *
 */
 add_action('wp_ajax_wppa', 'wppa_ajax_callback');
@@ -23,6 +23,23 @@ global $wppa;
 	$wppa_action = $_REQUEST['wppa-action'];
 	
 	switch ($wppa_action) {
+		case 'approve':
+			if ( ! current_user_can('wppa_moderate') ) {
+				echo __('You do not have the rights to moderate photos this way', 'wppa');
+				exit;
+			}
+			if ( ! is_numeric($_REQUEST['photo-id']) ) {
+				echo __('Security check failure', 'wppa');
+				exit;
+			}
+			$iret = $wpdb->query($wpdb->prepare("UPDATE `".WPPA_PHOTOS."` SET `status` = 'publish' WHERE `id` = %s", $_REQUEST['photo-id']));
+			if ( $iret ) {
+				echo 'OK';
+			}
+			else {
+				echo sprintf(__('Failed to update stutus of photo %s', 'wppa'), $_REQUEST['photo-id']);
+			}
+			exit;
 		case 'makeorigname':
 			$photo = $_REQUEST['photo-id'];
 			$from = $_REQUEST['from'];

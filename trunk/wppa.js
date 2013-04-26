@@ -2,7 +2,7 @@
 //
 // conatins slideshow, theme, ajax and lightbox code
 //
-// Version 5.0.0
+// Version 5.0.2
 
 // Part 1: Slideshow
 //
@@ -2126,6 +2126,26 @@ function wppaDoAjaxRender(mocc, ajaxurl, newurl) {
 		/* Autocol? */
 		wppaColWidth[mocc] = 0;	// clear: forces recalc
 	}
+}
+
+function wppaAjaxApprovePhoto(photoid) {
+	var xmlhttp = wppaGetXmlHttp();
+
+	xmlhttp.onreadystatechange = function() {
+		if ( xmlhttp.readyState == 4 && xmlhttp.status == 200 ) {
+			if ( xmlhttp.responseText == 'OK' ) {
+				jQuery('.wppa-approve-'+photoid).css('display', 'none');
+			}
+			else {
+				alert( xmlhttp.responseText );
+			}
+		}
+	}
+	// Do the Ajax action
+	ajaxurl = wppaAjaxUrl+'?action=wppa&wppa-action=approve&photo-id='+photoid;
+	xmlhttp.open('GET',ajaxurl,true);
+	xmlhttp.send();	
+	
 }
 
 function wppaPushStateSlide(mocc, slide, url) {
