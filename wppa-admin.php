@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains the admin menu and startups the admin pages
-* Version 4.9.7
+* Version 5.0.2
 *
 */
 
@@ -24,6 +24,7 @@ function wppa_add_admin() {
 		$wp_roles->add_cap( 'administrator', 'wppa_admin' );
 		$wp_roles->add_cap( 'administrator', 'wppa_upload' );
 		$wp_roles->add_cap( 'administrator', 'wppa_import' );
+		$wp_roles->add_cap( 'administrator', 'wppa_moderate' );
 		$wp_roles->add_cap( 'administrator', 'wppa_export' );
 		$wp_roles->add_cap( 'administrator', 'wppa_settings' );
 		$wp_roles->add_cap( 'administrator', 'wppa_potd' );

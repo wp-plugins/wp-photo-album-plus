@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 5.0.0
+* Version 5.0.2
 *
 */
 
@@ -629,6 +629,7 @@ Hide Camera info
 						'wppa_ovl_opacity'				=> '80',
 						'wppa_ovl_onclick'				=> 'none',
 						'wppa_ovl_anim'					=> '300',
+						'wppa_ovl_chrome_at_top'		=> 'yes',
 						
 						// Table V: Fonts
 						'wppa_fontfamily_title' 	=> '',

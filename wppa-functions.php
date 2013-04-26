@@ -3,12 +3,12 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions and API modules
-* Version 5.0.1
+* Version 5.0.2
 *
 */
 /* Moved to wppa-common-functions.php:
 global $wppa_api_version;
-$wppa_api_version = '5-0-0-001';
+$wppa_api_version = '5-0-0-002';
 */
 
 if ( ! defined( 'ABSPATH' ) )
@@ -341,9 +341,9 @@ else wppa_dbg_msg('Is NOT Tag');
 	// 3. The filter supplied the data
 	else {
 		// Do Nothing in $wppa, all is set by filter
-		if ( $wppa['is_landing'] ) {
+		if ( $wppa['is_landing'] && ! $wppa['src'] ) {
 			wppa_reset_occurrance();
-			return;	// Do nothing on a landing page without a querystring
+			return;	// Do nothing on a landing page without a querystring while it is also not a search operation
 		}
 	}
 	
@@ -930,13 +930,19 @@ global $wppa_opt;
 		$max = $wppa['lasten_count'];
 		$alb = $wppa['start_album'];
 		if (wppa_is_enum($alb)) $alb = explode(',', $alb);
-		if ( is_array($alb) ) $alb = implode(' OR `album` = ', $alb);
-		if ($alb) $thumbs = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM `'.WPPA_PHOTOS.'` WHERE `album` = %s ORDER BY `timestamp` DESC LIMIT %d', $alb, $max ) , ARRAY_A );
-		else $thumbs = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM `'.WPPA_PHOTOS.'` ORDER BY `timestamp` DESC LIMIT %d', $max ) , ARRAY_A );
+		if ( is_array($alb) ) $alb = implode("' OR `album` = '", $alb);
+		if ( current_user_can('wppa_moderate') ) {
+			if ($alb) $thumbs = $wpdb->get_results( "SELECT * FROM `".WPPA_PHOTOS."` WHERE `album` = '".$album."' ORDER BY `timestamp` DESC LIMIT " . $max, ARRAY_A );
+			else $thumbs = $wpdb->get_results( "SELECT * FROM `".WPPA_PHOTOS."` ORDER BY `timestamp` DESC LIMIT " . $max, ARRAY_A );
+		}
+		else {
+			if ($alb) $thumbs = $wpdb->get_results( "SELECT * FROM `".WPPA_PHOTOS."` WHERE ( `album` = '".$album."' ) AND `status` <> 'pending' ORDER BY `timestamp` DESC LIMIT " . $max, ARRAY_A );
+			else $thumbs = $wpdb->get_results( "SELECT * FROM `".WPPA_PHOTOS."` WHERE `status` <> 'pending' ORDER BY `timestamp` DESC LIMIT " . $max, ARRAY_A );
+		}
 		wppa_dbg_q('Q21');
 	}
 	// Comten?
-	elseif ( $wppa['is_comten'] ) { //(wppa_get_get('comten')) {
+	elseif ( $wppa['is_comten'] ) {
 		$comments = $wpdb->get_results( "SELECT * FROM `".WPPA_COMMENTS."` WHERE `status` = 'approved' ORDER BY `timestamp` DESC", ARRAY_A );
 		wppa_dbg_q('Q23');
 		$max = $wppa_opt['wppa_comten_count'];
@@ -960,7 +966,12 @@ global $wppa_opt;
 	}
 	// Tagcloud or multitag?
 	elseif ( $wppa['is_tag'] ) {
-		$temp = $wpdb->get_results( "SELECT * FROM `".WPPA_PHOTOS."` WHERE `status` <> 'pending' AND `tags` <> '' ".wppa_get_photo_order('0'), ARRAY_A ); 
+		if ( current_user_can('wppa_moderate') ) {
+			$temp = $wpdb->get_results( "SELECT * FROM `".WPPA_PHOTOS."` WHERE `tags` <> '' ".wppa_get_photo_order('0'), ARRAY_A ); 
+		}
+		else {
+			$temp = $wpdb->get_results( "SELECT * FROM `".WPPA_PHOTOS."` WHERE `status` <> 'pending' AND `tags` <> '' ".wppa_get_photo_order('0'), ARRAY_A ); 
+		}
 		$tags = wppa_get_taglist();
 		$thumbs = false;
 		$andor = 'and';
@@ -990,7 +1001,13 @@ global $wppa_opt;
 	}
 	// Search?
 	elseif ( strlen($src) && $wppa['master_occur'] == '1' ) {	// Search is in occur 1 only
-		$tmbs = $wpdb->get_results( "SELECT * FROM `" . WPPA_PHOTOS . "` WHERE status <> 'pending' " . wppa_get_photo_order('0'), ARRAY_A );
+		if ( current_user_can('wppa_moderate') ) {
+			$tmbs = $wpdb->get_results( "SELECT * FROM `" . WPPA_PHOTOS . "` " . wppa_get_photo_order('0'), ARRAY_A );
+		}
+		else {
+			$tmbs = $wpdb->get_results( "SELECT * FROM `" . WPPA_PHOTOS . "` WHERE status <> 'pending' " . wppa_get_photo_order('0'), ARRAY_A );
+		}
+
 		wppa_dbg_q('Q25');
 		$thumbs = array();
 		foreach ( $tmbs as $thumb ) {
@@ -1028,11 +1045,21 @@ global $wppa_opt;
 		if (is_numeric($id)) {
 			$wppa['current_album'] = $id;
 			if ( $id == -2 ) {	// album == -2 is now: all albums
-				$thumbs = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM ".WPPA_PHOTOS." WHERE ( status <> %s OR owner = %s) ".wppa_get_photo_order('0'), 'pending', wppa_get_user() ), ARRAY_A ); 
+				if ( current_user_can('wppa_moderate') ) {
+					$thumbs = $wpdb->get_results( "SELECT * FROM `".WPPA_PHOTOS."` ".wppa_get_photo_order('0'), ARRAY_A ); 
+				}
+				else {
+					$thumbs = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM ".WPPA_PHOTOS." WHERE ( status <> %s OR owner = %s) ".wppa_get_photo_order('0'), 'pending', wppa_get_user() ), ARRAY_A ); 
+				}
 				wppa_dbg_q('Q26');
 			}
 			else {
-				$thumbs = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM ".WPPA_PHOTOS." WHERE album = %s AND ( status <> %s OR owner = %s) ".wppa_get_photo_order($id), $id, 'pending', wppa_get_user() ), ARRAY_A ); 
+				if ( current_user_can('wppa_moderate') ) {
+					$thumbs = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM ".WPPA_PHOTOS." WHERE album = %s ".wppa_get_photo_order($id), $id ), ARRAY_A ); 
+				}
+				else {
+					$thumbs = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM ".WPPA_PHOTOS." WHERE album = %s AND ( status <> %s OR owner = %s) ".wppa_get_photo_order($id), $id, 'pending', wppa_get_user() ), ARRAY_A ); 
+				}
 				wppa_dbg_q('Q27');
 			}
 		}
@@ -1245,7 +1272,12 @@ global $thumb;
 		}
 	}
 	
-	if ( $thumb['status'] == 'pending' ) $desc .= wppa_html(esc_js('<span style="color:red">'.__a('Awaiting moderation').'</span>'));
+	if ( $thumb['status'] == 'pending' ) {
+		$desc .= wppa_html(esc_js('<br class="wppa-approve-'.$id.'" /><span class="wppa-approve-'.$id.'" style="color:red">'.__a('Awaiting moderation').'</span>'));
+		if ( current_user_can('wppa_moderate') ) {
+			$desc .= wppa_html(esc_js(wppa_approve_photo_button($id)));
+		}
+	}
 
 	// Share HTML 
 	$sharehtml = ( $wppa['is_filmonly'] || $wppa['is_slideonly'] ) ? '' : wppa_get_share_html();
@@ -3727,7 +3759,7 @@ global $thlinkmsggiven;
 			$wppa['out'] .= wppa_nltab('+').'<h2 class="wppa-title" style="clear:none;">';
 				$wppa['out'] .= wppa_nltab().'<a href="'.$href.'" target="'.$target.'" title="'.$title.'" style="'.__wcs('wppa-title').'" >'.wppa_qtrans(stripslashes($thumb['name'])).'</a>';
 			$wppa['out'] .= wppa_nltab('-').'</h2>';
-			$desc = $thumb['status'] == 'pending' ? '<span style="color:red">'.__a('Awaiting moderation').'</span>' : wppa_get_photo_desc($thumb['id']);
+			$desc = $thumb['status'] == 'pending' ? '<span style="color:red" class="wppa-approve-'.$thumb['id'].'" >'.__a('Awaiting moderation').'</span>' : wppa_get_photo_desc($thumb['id']);
 			$wppa['out'] .= wppa_nltab().'<p class="wppa-box-text wppa-black" style="'.__wcs('wppa-box-text').__wcs('wppa-black').'" >'.$desc.'</p>';
 		$wppa['out'] .= wppa_nltab('-').'</div>';
 //		$wppa['out'] .= wppa_nltab().'<div style="clear:both;"></div>';
@@ -3901,7 +3933,14 @@ global $wpdb;
 	}
 	
 	if ($wppa_opt['wppa_thumb_text_desc'] || $thumb['status'] == 'pending') {
-		$desc = $thumb['status'] == 'pending' ? '<span style="color:red">'.__a('Awaiting moderation').'</span>' : wppa_get_photo_desc($thumb['id'], $wppa_opt['wppa_allow_foreign_shortcodes_thumbs']);
+		$desc = '';
+		if ( $thumb['status'] == 'pending' ) {
+			$desc .= '<span style="color:red" class="wppa-approve-'.$thumb['id'].'" >'.__a('Awaiting moderation').'</span>';
+			if ( current_user_can('wppa_moderate') ) {
+				$desc .= wppa_approve_photo_button($thumb['id']);
+			}
+		}
+		$desc .= wppa_get_photo_desc($thumb['id'], $wppa_opt['wppa_allow_foreign_shortcodes_thumbs']);
 		$wppa['out'] .= wppa_nltab().'<div class="wppa-thumb-text" style="'.__wcs('wppa-thumb-text').'" >'.$desc.'</div>';
 	}
 	
@@ -6547,5 +6586,14 @@ global $wppa;
 		$result .= '</table>';
 		$result .= '<input type="button" onclick="wppaProcessMultiTagRequest()" value="'.__a('Find!').'" />';
 	}
+	return $result;
+}
+
+function wppa_approve_photo_button($id) {
+	
+	$result = '
+	<br class="wppa-approve-'.$id.'" />
+		<a class="wppa-approve-'.$id.'" style="font-weight:bold; color:green; cursor:pointer;" onclick="wppaAjaxApprovePhoto(\''.$id.'\')">'.__a('Approve').'</a>
+	<br class="wppa-approve-'.$id.'"/>';
 	return $result;
 }

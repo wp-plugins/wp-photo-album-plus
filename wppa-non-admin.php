@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the non admin stuff
-* Version 5.0.0
+* Version 5.0.2
 *
 */
 
@@ -297,7 +297,7 @@ global $wppa_locale;
 
 		echo '
 <!-- Browser detected = '.$_SERVER["HTTP_USER_AGENT"].' -->';
-if ( strstr($_SERVER["HTTP_USER_AGENT"], 'Chrome') ) echo '
+if ( strstr($_SERVER["HTTP_USER_AGENT"], 'Chrome') && wppa_switch('wppa_ovl_chrome_at_top') ) echo '
 <style type="text/css">
 	#wppa-overlay-ic { padding-top: 5px !important; } 
 	#wppa-overlay-qt-txt, #wppa-overlay-qt-img { top: 5px !important; }

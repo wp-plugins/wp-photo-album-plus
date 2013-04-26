@@ -2,11 +2,11 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 5.0.1
+* version 5.0.2
 *
 */
 global $wppa_api_version;
-$wppa_api_version = '5-0-0-001';
+$wppa_api_version = '5-0-0-002';
 // Initialize globals and option settings
 function wppa_initialize_runtime($force = false) {
 global $wppa;
@@ -347,6 +347,7 @@ global $wppa_initruntimetime;
 						'wppa_ovl_opacity'				=> '',
 						'wppa_ovl_onclick'				=> '',
 						'wppa_ovl_anim'					=> '',
+						'wppa_ovl_chrome_at_top' 		=> '',
 
 
 						// Table V: Fonts

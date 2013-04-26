@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 5.0.0
+* Version 5.0.2
 *
 */
 
@@ -2140,6 +2140,13 @@ global $wppa_revno;
 							$html = wppa_select($slug, $options, $values);
 							wppa_setting($slug, '3', $name, $desc, $html, $help);
 							
+							$name = __('Overlay at top in Chrome', 'wppa');
+							$desc = __('Place the overlay (lightbox) image at the top of the page in Chrome browsers.', 'wppa');
+							$help = esc_js(__('This is required for certain mobime devices.', 'wppa'));
+							$slug = 'wppa_ovl_chrome_at_top';
+							$html = wppa_checkbox($slug);
+							wppa_setting($slug, '4', $name, $desc, $html, $help);
+							
 							?>
 						</tbody>
 						<tfoot style="font-weight: bold;" class="wppa_table_4">
@@ -2798,6 +2805,7 @@ global $wppa_revno;
 									$wppacaps = array(	'wppa_admin', 
 														'wppa_upload', 
 														'wppa_import', 
+														'wppa_moderate',
 														'wppa_export', 
 														'wppa_settings', 
 														'wppa_potd', 
@@ -2807,6 +2815,7 @@ global $wppa_revno;
 									$wppanames = array( 'Album Admin', 
 														'Upload Photos', 
 														'Import Photos', 
+														'Moderate',
 														'Export Photos', 
 														'Settings', 
 														'Photo of the day', 
