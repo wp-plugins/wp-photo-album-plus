@@ -2,7 +2,7 @@
 //
 // conatins slideshow, theme, ajax and lightbox code
 //
-// Version 5.0.2
+// Version 5.0.3
 
 // Part 1: Slideshow
 //
@@ -2148,6 +2148,76 @@ function wppaAjaxApprovePhoto(photoid) {
 	
 }
 
+function wppaAjaxRemovePhoto(photoid, isslide) {
+	var xmlhttp = wppaGetXmlHttp();
+
+	xmlhttp.onreadystatechange = function() {
+		if ( xmlhttp.readyState == 4 && xmlhttp.status == 200 ) {
+			var rtxt = xmlhttp.responseText.split('||');
+			if ( rtxt[0] == 'OK' ) {
+				if ( isslide ) {
+					alert(rtxt[1]);
+					document.location = document.location;
+				}
+				else {
+					jQuery('.wppa-approve-'+photoid).css('display', 'none');
+					jQuery('.thumbnail-frame-photo-'+photoid).css('display', 'none');
+				}
+			}
+			else {
+				alert( xmlhttp.responseText );
+			}
+		}
+	}
+	// Do the Ajax action
+	ajaxurl = wppaAjaxUrl+'?action=wppa&wppa-action=remove&photo-id='+photoid;
+	xmlhttp.open('GET',ajaxurl,true);
+	xmlhttp.send();	
+	
+}
+
+function wppaAjaxApproveComment(commentid) {
+	var xmlhttp = wppaGetXmlHttp();
+
+	xmlhttp.onreadystatechange = function() {
+		if ( xmlhttp.readyState == 4 && xmlhttp.status == 200 ) {
+			if ( xmlhttp.responseText == 'OK' ) {
+				jQuery('.wppa-approve-'+commentid).css('display', 'none');
+			}
+			else {
+				alert( xmlhttp.responseText );
+			}
+		}
+	}
+	// Do the Ajax action
+	ajaxurl = wppaAjaxUrl+'?action=wppa&wppa-action=approve&comment-id='+commentid;
+	xmlhttp.open('GET',ajaxurl,true);
+	xmlhttp.send();	
+	
+}
+
+function wppaAjaxRemoveComment(commentid) {
+	var xmlhttp = wppaGetXmlHttp();
+
+	xmlhttp.onreadystatechange = function() {
+		if ( xmlhttp.readyState == 4 && xmlhttp.status == 200 ) {
+			var rtxt = xmlhttp.responseText.split('||');
+			if ( rtxt[0] == 'OK' ) {
+				jQuery('.wppa-approve-'+commentid).css('display', 'none');
+				jQuery('.wppa-comment-'+commentid).css('display', 'none');
+			}
+			else {
+				alert( xmlhttp.responseText );
+			}
+		}
+	}
+	// Do the Ajax action
+	ajaxurl = wppaAjaxUrl+'?action=wppa&wppa-action=remove&comment-id='+commentid;
+	xmlhttp.open('GET',ajaxurl,true);
+	xmlhttp.send();	
+	
+}
+
 function wppaPushStateSlide(mocc, slide, url) {
 
 	if ( ! wppaIsMini[mocc] ) {	// Not from a widget
@@ -2324,7 +2394,7 @@ _wppaLog('wppaOvlShow4', 1);
 		
 		var html = 	'<img src="'+wppaImageDirectory+'prev-'+wppaOvlTheme+'.gif" style="position:relative; top:-8px; float:left; '+vl+'; box-shadow:none;" onclick="wppaOvlShowPrev()" / >'+
 					'<img src="'+wppaImageDirectory+'next-'+wppaOvlTheme+'.gif" style="position:relative; top:-8px; float:right;'+vr+'; box-shadow:none;" onclick="wppaOvlShowNext()" / >'+
-					'<div id="wppa-overlay-txt" style="text-align:center; min-height:36px; '+ht+' overflow:hidden; box-shadow:none; width:'+(cw-80)+'px;" >';
+					'<div id="wppa-overlay-txt" style="text-align:center; min-height:36px; '+ht+' overflow:auto; box-shadow:none; width:'+(cw-80)+'px;" >';
 					if ( wppaOvlShowCounter ) html += (wppaOvlIdx+1)+'/'+wppaOvlUrls.length+'<br />';
 					html += wppaOvlTitle+'</div>';
 		jQuery('#wppa-overlay-txt-container').html(html);

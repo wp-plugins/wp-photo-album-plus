@@ -2,7 +2,7 @@
 /* wppa-ajax.php
 *
 * Functions used in ajax requests
-* version 5.0.2
+* version 5.0.3
 *
 */
 add_action('wp_ajax_wppa', 'wppa_ajax_callback');
@@ -19,26 +19,68 @@ global $wppa;
 
 	// ALTHOUGH IF WE ARE HERE AS FRONT END VISITOR, is_admin() is true. 
 	// So, $wppa_opt switches are 'yes' or 'no' and not true or false.
+
+	wppa_vfy_arg('wppa-action', true);
+	wppa_vfy_arg('photo-id');
+	wppa_vfy_arg('comment-id');
 	
 	$wppa_action = $_REQUEST['wppa-action'];
 	
 	switch ($wppa_action) {
 		case 'approve':
-			if ( ! current_user_can('wppa_moderate') ) {
+
+			$iret = '0';
+			
+			if ( ! current_user_can('wppa_moderate') && ! current_user_can('wppa_comments') ) {
 				echo __('You do not have the rights to moderate photos this way', 'wppa');
 				exit;
 			}
-			if ( ! is_numeric($_REQUEST['photo-id']) ) {
-				echo __('Security check failure', 'wppa');
-				exit;
+			
+			if ( isset($_REQUEST['photo-id']) && current_user_can('wppa_moderate') ) {
+				$iret = $wpdb->query($wpdb->prepare("UPDATE `".WPPA_PHOTOS."` SET `status` = 'publish' WHERE `id` = %s", $_REQUEST['photo-id']));
 			}
-			$iret = $wpdb->query($wpdb->prepare("UPDATE `".WPPA_PHOTOS."` SET `status` = 'publish' WHERE `id` = %s", $_REQUEST['photo-id']));
+			if ( isset($_REQUEST['comment-id']) ) {
+				$iret = $wpdb->query($wpdb->prepare("UPDATE `".WPPA_COMMENTS."` SET `status` = 'approved' WHERE `id` = %s", $_REQUEST['comment-id']));
+			}
 			if ( $iret ) {
 				echo 'OK';
 			}
 			else {
-				echo sprintf(__('Failed to update stutus of photo %s', 'wppa'), $_REQUEST['photo-id']);
+				if ( isset($_REQUEST['photo-id']) ) {
+					if ( current_user_can('wppa_moderate') ) {
+						echo sprintf(__('Failed to update stutus of photo %s', 'wppa'), $_REQUEST['photo-id'])."\n".__('Please refresh the page', 'wppa');
+					}
+					else {
+						echo __('Security check failure', 'wppa');
+					}
+				}
+				if ( isset($_REQUEST['comment-id']) ) {
+					echo sprintf(__('Failed to update stutus of comment %s', 'wppa'), $_REQUEST['comment-id'])."\n".__('Please refresh the page', 'wppa');
+				}
 			}
+			exit;
+		case 'remove':
+
+			if ( ! current_user_can('wppa_moderate') && ! current_user_can('wppa_comments') ) {
+				echo __('You do not have the rights to moderate photos this way', 'wppa');
+				exit;
+			}
+			if ( isset($_REQUEST['photo-id']) ) {	// Remove photo
+				if ( ! current_user_can('wppa_moderate') ) {
+					echo __('Security check failure', 'wppa');
+					exit;
+				}
+				wppa_delete_photo($_REQUEST['photo-id']);
+				echo 'OK||'.__('Photo removed', 'wppa');
+				exit;
+			}
+			if ( isset($_REQUEST['comment-id']) ) {	// Remove comment
+				$iret = $wpdb->query($wpdb->prepare("DELETE FROM `".WPPA_COMMENTS."` WHERE `id`= %s", $_REQUEST['comment-id']));
+				if ( $iret ) echo 'OK||'.__('Comment removed', 'wppa');
+				else echo __('Could not remove comment', 'wppa');
+				exit;
+			}
+			echo __('Unexpected error', 'wppa');
 			exit;
 		case 'makeorigname':
 			$photo = $_REQUEST['photo-id'];
@@ -296,34 +338,14 @@ global $wppa;
 			
 			// Check validity
 			if ( ! wp_verify_nonce($nonce, 'wppa_nonce_'.$photo) ) {
-				echo '||0||'.__('You do not have the rights to delete a photo', 'wppa').$nonce;
+				echo '||0||'.__('You do not have the rights to delete a photo', 'wppa');
 				exit;																// Nonce check failed
 			}
-			$photoinfo = $wpdb->get_row($wpdb->prepare('SELECT * FROM `'.WPPA_PHOTOS.'` WHERE `id` = %s', $photo), ARRAY_A);
-			// Get file extension
-			$ext = $photoinfo['ext']; //$wpdb->get_var($wpdb->prepare('SELECT `ext` FROM `'.WPPA_PHOTOS.'` WHERE `id` = %s', $photo));
-			// Get album
-			$album = $photoinfo['album']; //$wpdb->get_var($wpdb->prepare('SELECT `album` FROM `'.WPPA_PHOTOS.'` WHERE `id` = %s', $photo));
-			// Get filename
-			$filename = $photoinfo['filename'];
-			// Delete fullsize image
-			$file = ABSPATH.'wp-content/uploads/wppa/'.$photo.'.'.$ext;
-			if (file_exists($file)) unlink($file);
-			// Delete thumbnail image
-			$file = ABSPATH.'wp-content/uploads/wppa/thumbs/'.$photo.'.'.$ext;
-			if (file_exists($file)) unlink($file);
-			// Delete sourcefile
-			wppa_delete_source($filename, $album);
-			// Delete db entries
-			$wpdb->query($wpdb->prepare('DELETE FROM `'.WPPA_PHOTOS.'` WHERE `id` = %s LIMIT 1', $photo));
-			$wpdb->query($wpdb->prepare('DELETE FROM `'.WPPA_RATING.'` WHERE `photo` = %s', $photo));
-			$wpdb->query($wpdb->prepare('DELETE FROM `'.WPPA_COMMENTS.'` WHERE `photo` = %s', $photo));
-			$wpdb->query($wpdb->prepare('DELETE FROM `'.WPPA_IPTC.'` WHERE `photo` = %s', $photo));
-			$wpdb->query($wpdb->prepare('DELETE FROM `'.WPPA_EXIF.'` WHERE `photo` = %s', $photo));
-			wppa_flush_treecounts();
-			// Delete dislikes
-			wppa_dislike_remove($photo);
-			
+			if ( ! is_numeric($photo) ) {
+				echo '||0||'.__('Security check failure', 'wppa');
+				exit;																// Nonce check failed
+			}
+			wppa_delete_photo($photo);
 			echo '||1||<span style="color:red" >'.sprintf(__('Photo %s has been deleted', 'wppa'), $photo).'</span>';
 			wppa_clear_cache();
 			echo '||';
@@ -544,6 +566,34 @@ global $wppa;
 			}
 			
 			switch ($item) {
+				case 'lat':
+					if ( ! is_numeric($value) || $value < '-90.0' || $value > '90.0' ) {
+						echo '||1||'.__('Enter a value > -90 and < 90', 'wppa');
+						exit;
+					}					
+					$photodata = $wpdb->get_row($wpdb->prepare('SELECT * FROM '.WPPA_PHOTOS.' WHERE `id` = %s', $photo), ARRAY_A);
+					$geo = $photodata['location'] ? $photodata['location'] : '///';
+					$geo = explode('/', $geo);
+					$geo = wppa_format_geo($value, $geo['3']);
+					$iret = $wpdb->query($wpdb->prepare('UPDATE `'.WPPA_PHOTOS.'` SET `location` = %s WHERE `id` = %s', $geo, $photo));
+					if ( $iret ) echo '||0||'.__('Lattitude updated', 'wppa');
+					else echo '||1||'.__('Could not update lattitude', 'wppa');
+					exit;
+					break;
+				case 'lon':
+					if ( ! is_numeric($value) || $value < '-180.0' || $value > '180.0' ) {
+						echo '||1||'.__('Enter a value > -180 and < 180', 'wppa');
+						exit;
+					}					
+					$photodata = $wpdb->get_row($wpdb->prepare('SELECT * FROM '.WPPA_PHOTOS.' WHERE `id` = %s', $photo), ARRAY_A);
+					$geo = $photodata['location'] ? $photodata['location'] : '///';
+					$geo = explode('/', $geo);
+					$geo = wppa_format_geo($geo['2'], $value);
+					$iret = $wpdb->query($wpdb->prepare('UPDATE `'.WPPA_PHOTOS.'` SET `location` = %s WHERE `id` = %s', $geo, $photo));
+					if ( $iret ) echo '||0||'.__('Longitude updated', 'wppa');
+					else echo '||1||'.__('Could not update longitude', 'wppa');
+					exit;
+					break;
 				case 'remake':
 					if ( wppa_remake_files('', $photo) ) {
 			//			wppa_update_modified($photo);
@@ -570,7 +620,7 @@ global $wppa;
 					break;
 					
 				case 'moveto':
-					$photodata = $wpdb->query($wpdb->prepare('SELECT * FROM '.WPPA_PHOTOS.' WHERE `id` = %s', $photo));
+					$photodata = $wpdb->get_row($wpdb->prepare('SELECT * FROM '.WPPA_PHOTOS.' WHERE `id` = %s', $photo), ARRAY_A);
 					$iret = $wpdb->query($wpdb->prepare('UPDATE '.WPPA_PHOTOS.' SET `album` = %s WHERE `id` = %s', $value, $photo));
 					if ($iret !== false ) {
 						wppa_move_source($photodata['filename'], $photodata['album'], $value);
@@ -871,6 +921,9 @@ global $wppa;
 				case 'wppa_dislike_mail_every':
 					wppa_ajax_check_range($value, false, '0', false, __('Notify inappropriate', 'wppa'));
 					break;
+				case 'wppa_max_execution_time':
+					wppa_ajax_check_range($value, false, '0', '900', __('Max execution time', 'wppa'));
+					break;
 				case 'wppa_cp_points_comment':
 				case 'wppa_cp_points_rating':
 				case 'wppa_cp_points_upload':
@@ -1112,4 +1165,34 @@ function wppa_sanitize_tags($value) {
 		}
 	}
 	return $value;
+}
+
+function wppa_delete_photo($photo) {
+global $wpdb;
+
+	$photoinfo = $wpdb->get_row($wpdb->prepare('SELECT * FROM `'.WPPA_PHOTOS.'` WHERE `id` = %s', $photo), ARRAY_A);
+	// Get file extension
+	$ext = $photoinfo['ext']; 
+	// Get album
+	$album = $photoinfo['album'];
+	// Get filename
+	$filename = $photoinfo['filename'];
+	// Delete fullsize image
+	$file = ABSPATH.'wp-content/uploads/wppa/'.$photo.'.'.$ext;
+	if (file_exists($file)) unlink($file);
+	// Delete thumbnail image
+	$file = ABSPATH.'wp-content/uploads/wppa/thumbs/'.$photo.'.'.$ext;
+	if (file_exists($file)) unlink($file);
+	// Delete sourcefile
+	wppa_delete_source($filename, $album);
+	// Delete db entries
+	$wpdb->query($wpdb->prepare('DELETE FROM `'.WPPA_PHOTOS.'` WHERE `id` = %s LIMIT 1', $photo));
+	$wpdb->query($wpdb->prepare('DELETE FROM `'.WPPA_RATING.'` WHERE `photo` = %s', $photo));
+	$wpdb->query($wpdb->prepare('DELETE FROM `'.WPPA_COMMENTS.'` WHERE `photo` = %s', $photo));
+	$wpdb->query($wpdb->prepare('DELETE FROM `'.WPPA_IPTC.'` WHERE `photo` = %s', $photo));
+	$wpdb->query($wpdb->prepare('DELETE FROM `'.WPPA_EXIF.'` WHERE `photo` = %s', $photo));
+	wppa_flush_treecounts();
+	// Delete dislikes
+	wppa_dislike_remove($photo);
+
 }

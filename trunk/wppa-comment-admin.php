@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all comments
-* Version 4.9.13
+* Version 5.0.3
 *
 */
 
@@ -13,6 +13,13 @@ global $wppa;
 global $wppa_opt;
 
 	$continue = true;
+	
+	// Check input
+	wppa_vfy_arg('tab', true);
+	wppa_vfy_arg('edit_id');
+	wppa_vfy_arg('wppa-page');
+	wppa_vfy_arg('commentid');
+	wppa_vfy_arg('delete_id');
 	
 	if (isset($_GET['tab'])) {
 		if ($_GET['tab'] == 'edit') {
@@ -27,8 +34,12 @@ global $wppa_opt;
 				</div>
 				<h2><?php _e('Photo Albums -> Edit Comment', 'wppa'); ?></h2>
 				<?php $action = wppa_dbg_url(get_admin_url().'admin.php?page=wppa_manage_comments');
-					if ( isset($_GET['wppa-page']) ) $action .= '&compage='.$_GET['wppa-page'];
-					if ( isset($_GET['commentid']) ) $action .= '&commentid='.$_GET['commentid'];
+					if ( isset($_GET['wppa-page']) ) {
+						$action .= '&compage='.$_GET['wppa-page'];
+					}
+					if ( isset($_GET['commentid']) ) {
+						$action .= '&commentid='.$_GET['commentid'];
+					}
 				?>
 				<form action="<?php echo $action ?>" method="post">
 		
@@ -139,7 +150,7 @@ global $wppa_opt;
 		$query = "DELETE FROM " . WPPA_COMMENTS . " WHERE status = 'trash'";
 		$wpdb->query($query);
 		
-		// Initialize normal diaplay
+		// Initialize normal display
 		$wppa_comadmin_linkpage = get_option('wppa_comadmin_linkpage', '0');
 		$moderating = isset($_REQUEST['commentid']);
 ?>

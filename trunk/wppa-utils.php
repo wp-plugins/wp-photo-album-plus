@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains low-level utility routines
-* Version 5.0.0
+* Version 5.0.3
 *
 */
 
@@ -606,6 +606,7 @@ global $wppa;
 
 function wppa_is_time_up($count = '') {
 global $wppa_starttime;
+global $wppa_opt;
 
 	$timnow = microtime(true);
 	$laptim = $timnow - $wppa_starttime;
@@ -616,7 +617,12 @@ global $wppa_starttime;
 	If ( ( $maxtim - $laptim ) > '5' ) return false;
 	if ( $count ) {
 		if ( is_admin() ) {
-			wppa_error_message(sprintf(__('Time up after processing %s items. Please restart this operation', 'wppa'), $count));
+			if ( wppa_switch('wppa_auto_continue') ) {
+				wppa_warning_message(sprintf(__('Time up after processing %s items.', 'wppa'), $count));
+			}
+			else {
+				wppa_error_message(sprintf(__('Time up after processing %s items. Please restart this operation', 'wppa'), $count));
+			}
 		}
 		else {
 			wppa_err_alert(sprintf(__('Time up after processing %s items. Please restart this operation', 'wppa_theme'), $count));
@@ -688,4 +694,17 @@ function wppa_nl_to_txt($text) {
 }
 function wppa_txt_to_nl($text) {
 	return str_replace('\n', "\n", $text);
+}
+
+function wppa_vfy_arg($arg, $txt = false) {
+	if ( isset($_REQUEST[$arg]) ) {
+		if ( $txt ) {	// Text is allowed, but without tags
+			$reason = ( defined('WP_DEBUG') && WP_DEBUG ) ? ': '.$arg.' contains tags.' : '';
+			if ( $_REQUEST[$arg] != strip_tags($_REQUEST[$arg]) ) wp_die('Security check failue'.$reason);
+		}
+		else {
+			$reason = ( defined('WP_DEBUG') && WP_DEBUG ) ? ': '.$arg.' is not numeric.' : '';
+			if ( ! is_numeric($_REQUEST[$arg]) ) wp_die('Security check failue'.$reason);
+		}
+	}
 }

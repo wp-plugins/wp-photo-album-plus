@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile
-Version: 5.0.2
+Version: 5.0.3
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -170,6 +170,24 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 5.0.3 =
+
+= Bug Fixes =
+
+* Source files are now correctly moved when a photo is moved to an other album.
+* Fixed a security issue in comment admin.
+
+= New Features =
+
+* The location (GPX Coordinates) is now editable if that is enabled in Table IX-A17.
+
+= Other Changes =
+
+* Greatly improved functionality for moderating photos and comments. 
+See the photo descriptions under thumbnails and slideshow when you have the capabilities wppa_moderate and/or wppa_comments.
+* When time-up happens during regeneration of thumbnails or remaking files from source files, an attempt will be made to automatic restart. 
+A prerequisite is that the server has set its max_execution_time correctly. Enable it in Table IX-A18. You can set max_execution_time in Table IX-A19.
 
 = 5.0.2 =
 

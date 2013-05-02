@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the upload/import pages and functions
-* Version 5.0.0
+* Version 5.0.3
 *
 */
 
@@ -288,7 +288,8 @@ global $wppa_revno;
 function _wppa_page_import() {
 global $wppa_opt;
 global $wppa_revno;
-
+global $wppa;
+//ini_set('max_execution_time', '15');
 	// Check database
 //	if ( get_option('wppa_revision') != $wppa_revno ) 
 	wppa_check_database(true);
@@ -312,7 +313,7 @@ global $wppa_revno;
 		check_admin_referer( '$wppa_nonce', WPPA_NONCE );
 		update_option('wppa_import_source_'.$user, $_POST['wppa-source']);
 	}
-	elseif (isset($_POST['wppa-import-submit'])) {
+	elseif ( isset($_POST['wppa-import-submit']) ) {
 		check_admin_referer( '$wppa_nonce', WPPA_NONCE );
         if (isset($_POST['del-after-p'])) $delp = true; else $delp = false;
 		if (isset($_POST['del-after-a'])) $dela = true; else $dela = false;	
@@ -320,6 +321,9 @@ global $wppa_revno;
 //		if (isset($_POST['del-after-d'])) $deld = true; else $deld = false;
 		wppa_import_photos($delp, $dela, $delz);
 	} 
+	elseif ( isset($_GET['continue']) ) {
+		if ( wp_verify_nonce( $_GET['nonce'], 'dirimport' ) ) wppa_import_photos();
+	}
 	// Sanitize again
 	$count = wppa_sanitize_files();
 	if ($count) wppa_error_message($count.' '.__('illegal files deleted.', 'wppa'));
@@ -617,7 +621,12 @@ global $wppa_revno;
 	else { ?>
 		<?php $url = wppa_dbg_url(get_admin_url().'admin.php?page=wppa_admin_menu'); ?>
 		<p><?php _e('No albums exist. You must', 'wppa'); ?> <a href="<?php echo($url) ?>"><?php _e('create one', 'wppa'); ?></a> <?php _e('beofre you can upload your photos.', 'wppa'); ?></p>
-<?php } ?>
+<?php } 
+	if ( $wppa['continue'] ) {
+		wppa_warning_message(__('Trying to continue...', 'wppa'));
+		echo '<script type="text/javascript">document.location=\''.get_admin_url().'admin.php?page=wppa_import_photos&continue&nonce='.wp_create_nonce('dirimport').'\';</script>';
+	}
+?>
 	</div>
 <?php
 }
@@ -709,6 +718,7 @@ global $target;
 function wppa_import_photos($delp = false, $dela = false, $delz = false) {
 global $wpdb;
 global $warning_given;
+global $wppa;
 
 	$warning_given = false;
 	
@@ -905,9 +915,12 @@ global $warning_given;
 //	$files = glob($depot.'/*');
 
 	foreach ($files as $file) {
-		if ( basename($file) != '.' &&  basename($file) != '..' && isset($_POST['file-'.$idx])) {
+		if ( basename($file) != '.' &&  basename($file) != '..' && ( isset($_POST['file-'.$idx]) || isset($_GET['continue']) ) ) {
 			if ( is_dir($file) ) {
 				$iret = wppa_import_dir_to_album($file, '0');
+				if ( wppa_is_time_up() && wppa_switch('wppa_auto_continue') ) {
+					$wppa['continue'] = 'continue';
+				}
 				$dircount++;
 			}
 		}

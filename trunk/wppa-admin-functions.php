@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 * gp admin functions
-* version 5.0.0
+* version 5.0.3
 *
 * 
 */
@@ -115,6 +115,7 @@ function wppa_regenerate_thumbs() {
 	
 	if ( ! empty($photos) ) {
 		$count = count($photos);
+		$done = '0';
 		foreach ($photos as $photo) {
 			$newimage = WPPA_UPLOAD_PATH.'/'.$photo['id'].'.'.$photo['ext'];
 			if ( is_file($newimage) ) {
@@ -122,18 +123,18 @@ function wppa_regenerate_thumbs() {
 				wppa_update_option('wppa_lastthumb', $photo['id']);
 				wppa_clear_cache();
 				echo '.';
+				$done++;
 			}
 			else {
 				wppa_dbg_msg('Unexpected error: file '.$newimage.' was expected but is missing', 'force', 'red');
 			}
-			if ( wppa_is_time_up() ) {
-				wppa_error_message(sprintf(__('Time is up. Please restart this operation', 'wppa')));
-				return false;
+			if ( wppa_is_time_up($done) ) {
+				return false;	// NOT Done, have to go on
 			}
 		}
-		return true;
+		return true;	// Done, did them all
 	}
-	else return false;
+	else return true;	// Done, nothing left to do
 }
 
 // Remake
@@ -171,8 +172,7 @@ global $wppa_opt;
 //							$wpdb->query($wpdb->prepare('UPDATE `'.WPPA_PHOTOS.'` SET `modified` = %s WHERE `id` = %s', time(), $photo['id']));
 							$count++;
 						}			
-						if ( wppa_is_time_up() ) {
-							wppa_error_message(sprintf(__('Time is up after processing %s items. Please restart this operation', 'wppa'), $count));
+						if ( wppa_is_time_up($count) ) {
 							return false;
 						}
 					}
@@ -183,8 +183,7 @@ global $wppa_opt;
 							$count++;
 						}
 					}
-					if ( wppa_is_time_up() ) {
-						wppa_error_message(sprintf(__('Time is up after processing %s items. Please restart this operation', 'wppa'), $count));
+					if ( wppa_is_time_up($count) ) {
 						return false;
 					}
 				}

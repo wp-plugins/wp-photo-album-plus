@@ -2,7 +2,7 @@
 /*
 Plugin Name: WP Photo Album Plus
 Description: Easily manage and display your photo albums and slideshows within your WordPress site.
-Version: 5.0.2
+Version: 5.0.3
 Author: J.N. Breetvelt a.k.a OpaJaap
 Author URI: http://wppa.opajaap.nl/
 Plugin URI: http://wordpress.org/extend/plugins/wp-photo-album-plus/
@@ -17,7 +17,7 @@ global $wpdb;
 /* when new options are added and when the wppa_setup() routine 
 /* must be called right after update for any other reason.
 */
-global $wppa_revno; $wppa_revno = '5002';	
+global $wppa_revno; $wppa_revno = '5003';	
 
 /* CONSTANTS
 /*
@@ -25,9 +25,10 @@ global $wppa_revno; $wppa_revno = '5002';
 /* PHP_VERSION_ID is available as of PHP 5.2.7, if our 
 /* version is lower than that, then emulate it
 */
-// If your server does not properly have max_execution_time set, you can do it here:
+// If your server does not properly have max_execution_time set, it can be done here ( From Table IX-A19 )
 // This is to make sure a timeout during upload/import/regen thumbs will be properly handled
-// ini_set('max_execution_time', '60');
+if ( get_option('wppa_max_execution_time', '0') ) ini_set('max_execution_time', get_option('wppa_max_execution_time'));
+//
 global $wppa_starttime; $wppa_starttime = microtime(true);
 global $wppa_loadtime; $wppa_loadtime = - microtime(true);
 if ( ! defined( 'PHP_VERSION_ID' ) ) {
