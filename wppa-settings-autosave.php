@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 5.0.2
+* Version 5.0.3
 *
 */
 
@@ -158,6 +158,7 @@ global $wppa_revno;
 			<?php				
 			update_option('wppa_remake_start', '0');
 		}
+		elseif ( wppa_switch('wppa_auto_continue') ) wppa_ok_message('Trying to continue...<script type="text/javascript">document.location=document.location</script>');
 	}
 
 	// See if a regeneration of thumbs is pending
@@ -175,13 +176,14 @@ global $wppa_revno;
 		}
 		
 		wppa_ok_message($msg);	// Creates element with id "wppa-ok-p"
-//ini_set('max_execution_time', '30');	// debug	
+
 		if ( wppa_regenerate_thumbs() ) {
 			?>
 			<script type="text/javascript">document.getElementById("wppa-ok-p").innerHTML="<strong><?php _e('READY regenerating thumbnail images.', 'wppa') ?></strong>"</script>
 			<?php				
 			wppa_update_option('wppa_lastthumb', '-2');
 		}
+		elseif ( wppa_switch('wppa_auto_continue') ) wppa_ok_message('Trying to continue...<script type="text/javascript">document.location=document.location</script>');
 	}
 	// Check database
 //	if ( get_option('wppa_revision') != $wppa_revno ) 
@@ -3255,6 +3257,29 @@ global $wppa_revno;
 							$slug = 'wppa_jpeg_quality';
 							$html = wppa_input($slug, '50px');
 							wppa_setting($slug, '16', $name, $desc, $html, $help);
+							
+							$name = __('Geo info edit', 'wppa');
+							$desc = __('Lattitude and longitude may be edited in photo admin.', 'wppa');
+							$help = '';
+							$slug = 'wppa_geo_edit';
+							$html = wppa_checkbox($slug);
+							wppa_setting($slug, '17', $name, $desc, $html, $help);
+							
+							$name = __('Auto continue', 'wppa');
+							$desc = __('Continue automatic after time up', 'wppa');
+							$help = esc_js(__('If checked, an attempt will be made to restart an admin process when the time is up.', 'wppa'));
+							$help .= '\n'.esc_js(__('It is required that your server has set the php configuration max_execution_time correctly.', 'wppa'));
+							$slug = 'wppa_auto_continue';
+							$html = wppa_checkbox($slug);
+							wppa_setting($slug, '18', $name, $desc, $html, $help);
+							
+							$name = __('Max execution time', 'wppa');
+							$desc = __('Set max execution time here.', 'wppa');
+							$help = esc_js(__('If your php config does not properly set the max execution time, you can set it here. Seconds, 0 means do not change.', 'wppa'));
+							$help .= '\n'.esc_js(__('Use only if you know what you are doing!!', 'wppa'));
+							$slug = 'wppa_max_execution_time';
+							$html = wppa_input($slug, '50px', '', 'seconds');
+							wppa_setting($slug, '19', $name, $desc, $html, $help);
 
 							wppa_setting_subheader('B', '1', __('New Album and New Photo related miscellaneous settings', 'wppa'));
 

@@ -2,11 +2,11 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 5.0.2
+* version 5.0.3
 *
 */
 global $wppa_api_version;
-$wppa_api_version = '5-0-0-002';
+$wppa_api_version = '5-0-3-000';
 // Initialize globals and option settings
 function wppa_initialize_runtime($force = false) {
 global $wppa;
@@ -91,7 +91,8 @@ global $wppa_initruntimetime;
 			'is_tag'					=> false,
 			'photos_only'				=> false,
 			'page'						=> '',
-			'geo'						=> ''
+			'geo'						=> '',
+			'continue'					=> ''
 
 		);
 
@@ -512,6 +513,9 @@ global $wppa_initruntimetime;
 						'wppa_photo_admin_pagesize'		=> '',
 						'wppa_comment_admin_pagesize'	=> '',
 						'wppa_jpeg_quality'				=> '',
+						'wppa_geo_edit' 				=> '',
+						'wppa_auto_continue'			=> '',
+						'wppa_max_execution_time'		=> '',
 						
 						'wppa_html' 					=> '',
 						'wppa_allow_debug' 				=> '',
@@ -2109,6 +2113,7 @@ global $wppa;
 		case 'init':
 			break;
 		case 'print':
+			if ( ! is_array($wppa['queries']) ) return;	// Did nothing
 			$qtot = 0;
 			$gtot = 0;
 			$keys = array_keys($wppa['queries']);
@@ -2226,4 +2231,30 @@ global $wpdb;
 	$result = implode('/', $geo);
 	$wpdb->query($wpdb->prepare("UPDATE `".WPPA_PHOTOS."` SET `location` = %s WHERE `id` = %s", $result, $photo_id));
 	return $geo;
+}
+
+function wppa_format_geo($lat, $lon) {
+
+	if ( ! $lat && ! $lon ) return '';	// Both zero: clear
+
+	if ( ! $lat ) $lat = '0.0';
+	if ( ! $lon ) $lon = '0.0';
+
+	$geo['latitude_format'] = $lat >= '0.0' ? 'N ' : 'S ';
+	$d = floor($lat);
+	$m = floor(( $lat - $d ) * 60 );
+	$s = round(((( $lat - $d ) * 60 - $m ) * 60 ), 4 );
+	$geo['latitude_format'] .= $d.'&deg;'.$m.'&#x27;'.$s.'&#x22;';
+	
+	$geo['longitude_format'] = $lon >= '0.0' ? 'E ' : 'W ';
+	$d = floor($lon);
+	$m = floor(( $lon - $d ) * 60 );
+	$s = round(((( $lon - $d ) * 60 - $m ) * 60 ), 4 );
+	$geo['longitude_format'] .= $d.'&deg;'.$m.'&#x27;'.$s.'&#x22;';
+	
+	$geo['latitude'] = $lat;
+	$geo['longitude'] = $lon;
+	
+	$result = implode('/', $geo);
+	return $result;
 }

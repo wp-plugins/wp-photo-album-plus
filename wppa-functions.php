@@ -3,12 +3,12 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions and API modules
-* Version 5.0.2
+* Version 5.0.3
 *
 */
 /* Moved to wppa-common-functions.php:
 global $wppa_api_version;
-$wppa_api_version = '5-0-0-002';
+$wppa_api_version = '5-0-3-000';
 */
 
 if ( ! defined( 'ABSPATH' ) )
@@ -1273,10 +1273,11 @@ global $thumb;
 	}
 	
 	if ( $thumb['status'] == 'pending' ) {
-		$desc .= wppa_html(esc_js('<br class="wppa-approve-'.$id.'" /><span class="wppa-approve-'.$id.'" style="color:red">'.__a('Awaiting moderation').'</span>'));
-		if ( current_user_can('wppa_moderate') ) {
-			$desc .= wppa_html(esc_js(wppa_approve_photo_button($id)));
-		}
+		$desc .= wppa_html(esc_js(wppa_moderate_links('slide', $id)));
+//		$desc .= wppa_html(esc_js('<br class="wppa-approve-'.$id.'" /><span class="wppa-approve-'.$id.'" style="color:red">'.__a('Awaiting moderation').'</span>'));
+//		if ( current_user_can('wppa_moderate') ) {
+//			$desc .= wppa_html(esc_js(wppa_approve_photo_button($id)));
+//		}
 	}
 
 	// Share HTML 
@@ -1674,10 +1675,10 @@ global $wppa_first_comment_html;
 		$result .= '<div id="wppa-comtable-wrap-'.$wppa['master_occur'].'" style="display:none;" >';
 			$result .= '<table id="wppacommentstable-'.$wppa['master_occur'].'" class="wppa-comment-form" style="margin:0; "><tbody>';
 			foreach($comments as $comment) {
-				// Show a comment either when it is approved, or it is pending and mine
-				if ($comment['status'] == 'approved' || (($comment['status'] == 'pending' || $comment['status'] == 'spam') && $comment['user'] == $wppa['comment_user'])) {
+				// Show a comment either when it is approved, or it is pending and mine or i am a moderator
+				if ($comment['status'] == 'approved' || current_user_can('wppa_moderate') || current_user_can('wppa_comments') || (($comment['status'] == 'pending' || $comment['status'] == 'spam') && $comment['user'] == $wppa['comment_user'])) {
 					$n_comments++;
-					$result .= '<tr valign="top" style="border-bottom:0 none; border-top:0 none; border-left: 0 none; border-right: 0 none; " >';
+					$result .= '<tr class="wppa-comment-'.$comment['id'].'" valign="top" style="border-bottom:0 none; border-top:0 none; border-left: 0 none; border-right: 0 none; " >';
 						$result .= '<td valign="top" class="wppa-box-text wppa-td" style="vertical-align:top; width:30%; border-width: 0 0 0 0; '.__wcs('wppa-box-text').__wcs('wppa-td').'" >';
 							$result .= $comment['user'].' '.__a('wrote:');
 							$result .= '<br /><span style="font-size:9px; ">'.wppa_get_time_since($comment['timestamp']).'</span>';
@@ -1707,17 +1708,21 @@ global $wppa_first_comment_html;
 										'<p class="wppa-comment-textarea-'.$wppa['master_occur'].'" style="margin:0; background-color:transparent; width:'.$txtwidth.'; max-height:90px; overflow:auto; word-wrap:break-word;'.__wcs('wppa-box-text').__wcs('wppa-td').'" >'.
 											html_entity_decode(esc_js(stripslashes(convert_smilies($comment['comment']))));
 										
-											if ($comment['status'] == 'pending' && $comment['user'] == $wppa['comment_user']) {
+											if ( $comment['status'] != 'approved' && ( current_user_can('wppa_moderate') || current_user_can('wppa_comments') ) ) {
+												$result .= wppa_html(esc_js(wppa_moderate_links('comment', $id, $comment['id'])));
+											}
+											elseif ($comment['status'] == 'pending' && $comment['user'] == $wppa['comment_user']) {
 												$result .= '<br /><span style="color:red; font-size:9px;" >'.__a('Awaiting moderation').'</span>';
 											}
-											if ($comment['status'] == 'spam' && $comment['user'] == $wppa['comment_user']) {
+											elseif ($comment['status'] == 'spam' && $comment['user'] == $wppa['comment_user']) {
 												$result .= '<br /><span style="color:red; font-size:9px;" >'.__a('Marked as spam').'</span>';
 											}
+											
 											
 											$result .= '</p>';
 						$result .= '</td>';
 					$result .= '</tr>';
-					$result .= '<tr><td colspan="2" style="padding:0"><hr style="background-color:'.$color.'; margin:0;" /></td></tr>';
+					$result .= '<tr class="wppa-comment-'.$comment['id'].'"><td colspan="2" style="padding:0"><hr style="background-color:'.$color.'; margin:0;" /></td></tr>';
 				}
 			}
 			$result .= '</tbody></table>';
@@ -3759,7 +3764,8 @@ global $thlinkmsggiven;
 			$wppa['out'] .= wppa_nltab('+').'<h2 class="wppa-title" style="clear:none;">';
 				$wppa['out'] .= wppa_nltab().'<a href="'.$href.'" target="'.$target.'" title="'.$title.'" style="'.__wcs('wppa-title').'" >'.wppa_qtrans(stripslashes($thumb['name'])).'</a>';
 			$wppa['out'] .= wppa_nltab('-').'</h2>';
-			$desc = $thumb['status'] == 'pending' ? '<span style="color:red" class="wppa-approve-'.$thumb['id'].'" >'.__a('Awaiting moderation').'</span>' : wppa_get_photo_desc($thumb['id']);
+			$desc =  wppa_get_photo_desc($thumb['id']);
+			if ( $thumb['status'] == 'pending' ) $desc .= wppa_moderate_links('thumb', $thumb['id']);
 			$wppa['out'] .= wppa_nltab().'<p class="wppa-box-text wppa-black" style="'.__wcs('wppa-box-text').__wcs('wppa-black').'" >'.$desc.'</p>';
 		$wppa['out'] .= wppa_nltab('-').'</div>';
 //		$wppa['out'] .= wppa_nltab().'<div style="clear:both;"></div>';
@@ -3849,7 +3855,7 @@ global $wpdb;
 	}
 	
 	
-	$wppa['out'] .= wppa_nltab('+').'<div id="thumbnail_frame_'.$thumb['id'].'_'.$wppa['master_occur'].'" class="thumbnail-frame thumbnail-frame-'.$wppa['master_occur'].'" style="'.wppa_get_thumb_frame_style().'" >';
+	$wppa['out'] .= wppa_nltab('+').'<div id="thumbnail_frame_'.$thumb['id'].'_'.$wppa['master_occur'].'" class="thumbnail-frame thumbnail-frame-'.$wppa['master_occur'].' thumbnail-frame-photo-'.$thumb['id'].'" style="'.wppa_get_thumb_frame_style().'" >';
 
 	if ($wppa['is_topten']) {
 		$no_album = !$wppa['start_album'];
@@ -3935,10 +3941,13 @@ global $wpdb;
 	if ($wppa_opt['wppa_thumb_text_desc'] || $thumb['status'] == 'pending') {
 		$desc = '';
 		if ( $thumb['status'] == 'pending' ) {
-			$desc .= '<span style="color:red" class="wppa-approve-'.$thumb['id'].'" >'.__a('Awaiting moderation').'</span>';
-			if ( current_user_can('wppa_moderate') ) {
-				$desc .= wppa_approve_photo_button($thumb['id']);
-			}
+			$desc .= wppa_moderate_links('thumb', $thumb['id']);
+//			$desc .= '<span style="color:red" class="wppa-approve-'.$thumb['id'].'" >'.__a('Awaiting moderation').'</span>';
+//			if ( current_user_can('wppa_moderate') ) {
+//				$desc .= wppa_approve_photo_button($thumb['id']);
+//				$desc .' ';
+//				$desc .= wppa_moderate_photo_button($thumb['id']);
+//			}
 		}
 		$desc .= wppa_get_photo_desc($thumb['id'], $wppa_opt['wppa_allow_foreign_shortcodes_thumbs']);
 		$wppa['out'] .= wppa_nltab().'<div class="wppa-thumb-text" style="'.__wcs('wppa-thumb-text').'" >'.$desc.'</div>';
@@ -6589,11 +6598,88 @@ global $wppa;
 	return $result;
 }
 
+function wppa_moderate_links($type, $id, $comid = '') {
+
+	if ( current_user_can('wppa_moderate') || ( current_user_can('wppa_comments') && $type == 'comment' ) ) {
+		switch ( $type ) {
+			case 'thumb':
+				$app = __a('App');
+				$mod = __a('Mod');
+				$del = __a('Del');
+				$result = '
+				<br class="wppa-approve-'.$id.'" />
+				<a class="wppa-approve-'.$id.'" style="font-weight:bold; color:green; cursor:pointer;" onclick="if ( confirm(\''.__a('Are you sure you want to publish this photo?').'\') ) wppaAjaxApprovePhoto(\''.$id.'\')">
+					'.$app.
+				'</a>
+				<a class="wppa-approve-'.$id.'" style="font-weight:bold; color:blue; cursor:pointer;" onclick="document.location=\''.get_admin_url().'admin.php?page=wppa_moderate_photos&amp;photo='.$id.'\'" >
+					'.$mod.
+				'</a>
+				<a class="wppa-approve-'.$id.'" style="font-weight:bold; color:red; cursor:pointer;" onclick="if ( confirm(\''.__a('Are you sure you want to remove this photo?').'\') ) wppaAjaxRemovePhoto(\''.$id.'\', true)">
+					'.$del.
+				'</a><br class="wppa-approve-'.$id.'" />';
+				break;
+			case 'slide':
+				$app = __a('Approve');
+				$mod = __a('Moderate');
+				$del = __a('Delete');
+				$result = '
+				<br class="wppa-approve-'.$id.'" />
+				<a class="wppa-approve-'.$id.'" style="font-weight:bold; color:green; cursor:pointer;" onclick="if ( confirm(\''.__a('Are you sure you want to publish this photo?').'\') ) wppaAjaxApprovePhoto(\''.$id.'\')">
+					'.$app.
+				'</a>
+				<a class="wppa-approve-'.$id.'" style="font-weight:bold; color:blue; cursor:pointer;" onclick="document.location=\''.get_admin_url().'admin.php?page=wppa_moderate_photos&amp;photo='.$id.'\'" >
+					'.$mod.
+				'</a>
+				<a class="wppa-approve-'.$id.'" style="font-weight:bold; color:red; cursor:pointer;" onclick="if ( confirm(\''.__a('Are you sure you want to remove this photo?').'\') ) wppaAjaxRemovePhoto(\''.$id.'\', true)">
+					'.$del.
+				'</a><br class="wppa-approve-'.$id.'" />';
+				break;
+			case 'comment':
+				$app = __a('Approve');
+				$mod1 = __a('PhotoAdmin');
+				$mod2 = __a('CommentAdmin');
+				$del = __a('Delete');
+				$result = '
+				<br class="wppa-approve-'.$comid.'" />
+				<a class="wppa-approve-'.$comid.'" style="font-weight:bold; color:green; cursor:pointer;" onclick="if ( confirm(\''.__a('Are you sure you want to publish this comment?').'\') ) wppaAjaxApproveComment(\''.$comid.'\')">
+					'.$app.
+				'</a>';
+				if ( current_user_can('wppa_moderate') ) $result .= '
+				<a class="wppa-approve-'.$comid.'" style="font-weight:bold; color:blue; cursor:pointer;" onclick="document.location=\''.get_admin_url().'admin.php?page=wppa_moderate_photos&amp;photo='.$id.'\'" >
+					'.$mod1.
+				'</a>';
+				if ( current_user_can('wppa_comments') ) $result .= '
+				<a class="wppa-approve-'.$comid.'" style="font-weight:bold; color:blue; cursor:pointer;" onclick="document.location=\''.get_admin_url().'admin.php?page=wppa_manage_comments&amp;commentid='.$comid.'\'" > 
+					'.$mod2.
+				'</a>';
+				$result .= '
+				<a class="wppa-approve-'.$comid.'" style="font-weight:bold; color:red; cursor:pointer;" onclick="if ( confirm(\''.__a('Are you sure you want to remove this comment?').'\') ) wppaAjaxRemoveComment(\''.$comid.'\', true)">
+					'.$del.
+				'</a><br class="wppa-approve-'.$comid.'" />';
+				break;
+			default:
+			echo 'error type='.$type;
+				break;
+		}
+	}
+	else {
+		$result = '<br /><span style="color:red">'.__a('Awaiting moderation').'</span>';
+	}
+	return $result;
+}
+/*
 function wppa_approve_photo_button($id) {
 	
 	$result = '
 	<br class="wppa-approve-'.$id.'" />
-		<a class="wppa-approve-'.$id.'" style="font-weight:bold; color:green; cursor:pointer;" onclick="wppaAjaxApprovePhoto(\''.$id.'\')">'.__a('Approve').'</a>
+	<a class="wppa-approve-'.$id.'" style="font-weight:bold; color:green; cursor:pointer;" onclick="wppaAjaxApprovePhoto(\''.$id.'\')">'.__a('Approve').'</a>';
+	return $result;
+}
+function wppa_moderate_photo_button($id) {
+	
+	$result = '
+	<a class="wppa-approve-'.$id.'" style="font-weight:bold; color:blue; cursor:pointer;" onclick="document.location=\''.get_admin_url().'admin.php?page=wppa_moderate_photos&amp;photo='.$id.'\'" >'.__a('Moderate').'</a>
 	<br class="wppa-approve-'.$id.'"/>';
 	return $result;
 }
+*/

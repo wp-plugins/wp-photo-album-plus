@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains the admin menu and startups the admin pages
-* Version 5.0.2
+* Version 5.0.3
 *
 */
 
@@ -43,8 +43,8 @@ function wppa_add_admin() {
 	// Compute total pending moderation
 	$tot_pending = '';
 	$tot_pending_count = '0';
-	if ( current_user_can('administrator') ) $tot_pending_count += $com_pending_count;
-	if ( current_user_can('wppa_admin') ) $tot_pending_count+= $upl_pending_count;	
+	if ( current_user_can('wppa_comments') || current_user_can('wppa_moderate') ) $tot_pending_count += $com_pending_count;
+	if ( current_user_can('wppa_admin') || current_user_can('wppa_moderate') ) $tot_pending_count+= $upl_pending_count;	
 	if ( $tot_pending_count ) $tot_pending = '<span class="update-plugins"><span class="plugin-count">'.'<b>'.$tot_pending_count.'</b>'.'</span></span>';
 
 	$icon_url = WPPA_URL . '/images/camera16.png';
@@ -60,6 +60,7 @@ function wppa_add_admin() {
 		add_submenu_page( 'wppa_admin_menu',  __('Edit Photos', 'wppa'), 		 __('Edit Photos', 'wppa'), 		   'wppa_upload', 		 'wppa_edit_photo', 	 'wppa_edit_photo' );
 	}
 	add_submenu_page( 'wppa_admin_menu',  __('Import Photos', 'wppa'),           __('Import Photos', 'wppa'),          'wppa_import',        'wppa_import_photos',   'wppa_page_import' );
+	add_submenu_page( 'wppa_admin_menu',  __('Moderate Photos', 'wppa'),		 __('Moderate Photos', 'wppa').$tot_pending, 'wppa_moderate', 	 'wppa_moderate_photos', 'wppa_page_moderate' );
 	add_submenu_page( 'wppa_admin_menu',  __('Export Photos', 'wppa'),           __('Export Photos', 'wppa'),          'wppa_export',     	 'wppa_export_photos',   'wppa_page_export' );
     add_submenu_page( 'wppa_admin_menu',  __('Settings', 'wppa'),                __('Settings', 'wppa'),               'wppa_settings',      'wppa_options',         'wppa_page_options' );
 	add_submenu_page( 'wppa_admin_menu',  __('Photo of the day Widget', 'wppa'), __('Photo of the day', 'wppa'),       'wppa_potd', 		 'wppa_photo_of_the_day', 'wppa_sidebar_page_options' );
@@ -109,6 +110,11 @@ function wppa_page_import() {
 	require_once 'wppa-upload.php';
 	echo '<script type="text/javascript">/* <![CDATA[ */wppa_import = "'.__('Import', 'wppa').'"; wppa_update = "'.__('Update', 'wppa').'";/* ]]> */</script>';
 	_wppa_page_import();
+}
+// Moderate admin page
+function wppa_page_moderate() {
+	require_once 'wppa-photo-admin-autosave.php';
+	_wppa_moderate_photos();
 }
 // Export admin page
 function wppa_page_export() {

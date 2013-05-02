@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * edit and delete photos
-* version 5.0.0
+* version 5.0.3
 *
 */
 
@@ -11,6 +11,9 @@
 function _wppa_edit_photo() {
 global $thumb;
 
+	// Check input
+	wppa_vfy_arg('photo');
+	
 	// Edit Photo
 	if ( isset($_GET['photo']) ) {
 		$photo = $_GET['photo'];
@@ -35,12 +38,33 @@ global $thumb;
 	}
 }
 
+// Moderate photos
+function _wppa_moderate_photos() {
+
+	// Check input
+	wppa_vfy_arg('photo');
+
+	if ( isset($_GET['photo']) ) {
+		$photo = $_GET['photo'];
+	}
+	else $photo = '';
+	?>
+		<div class="wrap">
+			<h2><?php _e('Moderate photos', 'wppa') ?></h2>
+			<?php wppa_album_photos('', $photo, '', true) ?>
+		</div>				
+	<?php
+}
+
 // The photo edit list. Also used in wppa-album-admin-autosave.php
-function wppa_album_photos($album = '', $photo = '', $owner = '') {
+function wppa_album_photos($album = '', $photo = '', $owner = '', $moderate = false) {
 	global $wpdb;
 	global $q_config;
 	global $wppa_opt;
 	
+	// Check input
+	wppa_vfy_arg('wppa-page');
+
 	$pagesize 	= $wppa_opt['wppa_photo_admin_pagesize'];
 	$page 		= isset ( $_GET['wppa-page'] ) ? $_GET['wppa-page'] : '1';
 	$skip 		= ( $page - '1') * $pagesize;
@@ -51,7 +75,7 @@ function wppa_album_photos($album = '', $photo = '', $owner = '') {
 		$photos = $wpdb->get_results($wpdb->prepare('SELECT * FROM `'.WPPA_PHOTOS.'` WHERE `album` = %s '.wppa_get_photo_order($album, 'norandom').$limit, $album), ARRAY_A);
 		$link = wppa_dbg_url(get_admin_url().'admin.php?page=wppa_admin_menu&tab=edit&edit_id='.$album);
 	}
-	elseif ( $photo ) {
+	elseif ( $photo && ! $moderate) {
 		$count = '1';
 		$photos = $wpdb->get_results($wpdb->prepare('SELECT * FROM `'.WPPA_PHOTOS.'` WHERE `id` = %s', $photo), ARRAY_A);
 		$link = '';
@@ -60,6 +84,36 @@ function wppa_album_photos($album = '', $photo = '', $owner = '') {
 		$count = $wpdb->get_var($wpdb->prepare('SELECT COUNT(*) FROM `'.WPPA_PHOTOS.'` WHERE `owner` = %s', $owner));
 		$photos = $wpdb->get_results($wpdb->prepare('SELECT * FROM `'.WPPA_PHOTOS.'` WHERE `owner` = %s ORDER BY `timestamp` DESC'.$limit, $owner), ARRAY_A);
 		$link = wppa_dbg_url(get_admin_url().'admin.php?page=wppa_edit_photo');
+	}
+	elseif ( $moderate ) {
+		if ( ! current_user_can('wppa_moderate') ) wp_die(__('You do not have the rights to do this', 'wppa'));
+		if ( $photo ) {
+			$count = '1';
+			$photos = $wpdb->get_results($wpdb->prepare('SELECT * FROM `'.WPPA_PHOTOS.'` WHERE `id` = %s', $photo), ARRAY_A);
+			$link = '';
+		}
+		else {
+			// Photos with pending comments?
+			$cmt = $wpdb->get_results("SELECT `photo` FROM `".WPPA_COMMENTS."` WHERE `status` = 'pending'", ARRAY_A);
+//print_r($cmt);
+			if ( $cmt ) {
+				$orphotois = '';
+				foreach ( $cmt as $c ) {
+					$orphotois .= "OR `id` = ".$c['photo']." ";
+				}
+			}
+			else $orphotois = '';
+			$count = $wpdb->get_var($wpdb->prepare('SELECT COUNT(*) FROM `'.WPPA_PHOTOS.'` WHERE `status` = %s '.$orphotois, 'pending'));
+//echo 'Q1='.$wpdb->prepare('SELECT COUNT(*) FROM `'.WPPA_PHOTOS.'` WHERE `status` = %s '.$orphotois, 'pending').'<br />';
+//echo 'Q2='.$wpdb->prepare('SELECT * FROM `'.WPPA_PHOTOS.'` WHERE `status` = %s '.$orphotois.' ORDER BY `timestamp` DESC'.$limit, 'pending').'<br />';
+			$photos = $wpdb->get_results($wpdb->prepare('SELECT * FROM `'.WPPA_PHOTOS.'` WHERE `status` = %s '.$orphotois.' ORDER BY `timestamp` DESC'.$limit, 'pending'), ARRAY_A);
+			$link = wppa_dbg_url(get_admin_url().'admin.php?page=wppa_page_moderate');
+		}
+		if ( empty($photos) ) {
+			if ( $photo ) echo '<p>'.__('This photo is no longer awaiting moderation.', 'wppa').'</p>';
+			else echo '<p>'.__('There are no photos awaiting moderation at this time.', 'wppa').'</p>';
+			return;
+		}
 	}
 	else wppa_dbg_msg('Missing required argument in wppa_album_photos()', 'red', 'force');
 	
@@ -266,16 +320,21 @@ function wppa_album_photos($album = '', $photo = '', $owner = '') {
 							<?php } ?>
 							
 							<!-- Location -->
-							<?php if ( $photo['location'] ) { ?>
+							<?php if ( $photo['location'] || wppa_switch('wppa_geo_edit') ) { ?>
 							<tr style="vertical-align:top;" >
 								<th scope="row" >
 									<label><?php _e('Location:', 'wppa'); ?></label>
 								</th>
 								<td>
 									<?php
-									$geo = explode('/', $photo['location']);
-									echo $geo['0'].' '.$geo['1'];
-									?>
+									$loc = $photo['location'] ? $photo['location'] : '///';
+									$geo = explode('/', $loc);
+									echo $geo['0'].' '.$geo['1'].' ';
+									if ( wppa_switch('wppa_geo_edit') ) { ?>
+									<?php _e('Lat:', 'wppa') ?><input type="text" style="width:100px;" id="lat-<?php echo $photo['id'] ?>" onchange="wppaAjaxUpdatePhoto(<?php echo $photo['id'] ?>, 'lat', this);" value="<?php echo $geo['2'] ?>" />
+									<?php _e('Lon:', 'wppa') ?><input type="text" style="width:100px;" id="lon-<?php echo $photo['id'] ?>" onchange="wppaAjaxUpdatePhoto(<?php echo $photo['id'] ?>, 'lon', this);" value="<?php echo $geo['3'] ?>" />
+									<span class="description"><br /><?php _e('Refresh the page after changing to see the degrees being updated', 'wppa') ?></span>
+									<?php } ?>
 								</td>
 							</tr>
 							<?php } ?>
@@ -286,7 +345,7 @@ function wppa_album_photos($album = '', $photo = '', $owner = '') {
 									<label><?php _e('Photoname:', 'wppa'); ?></label>
 								</th>
 								<td>
-									<input type="text" style="width:100%;" id="pname-<?php echo $photo['id'] ?>" onchange="wppaAjaxUpdatePhoto(<?php echo $photo['id'] ?>, 'name', this); wppaPhotoStatusChange(<?php echo $photo['id'] ?>); " value="<?php echo esc_attr(stripslashes($photo['name'])) ?>" />
+									<input type="text" style="width:100%;" id="pname-<?php echo $photo['id'] ?>" onchange="wppaAjaxUpdatePhoto(<?php echo $photo['id'] ?>, 'name', this);" value="<?php echo esc_attr(stripslashes($photo['name'])) ?>" />
 								<!--	<span class="description"><br/><?php _e('Type/alter the name of the photo. <small>It is NOT a filename and needs no file extension like .jpg.</small>', 'wppa'); ?></span> -->
 								</td>
 							</tr>
@@ -352,7 +411,7 @@ function wppa_album_photos($album = '', $photo = '', $owner = '') {
 									<label ><?php _e('Status:', 'wppa') ?></label>
 								</th>
 								<td>
-								<?php if ( current_user_can('wppa_admin') ) { ?>
+								<?php if ( current_user_can('wppa_admin') || current_user_can('wppa_moderate') ) { ?>
 									<select id="status-<?php echo $photo['id'] ?>" onchange="wppaAjaxUpdatePhoto(<?php echo $photo['id'] ?>, 'status', this); wppaPhotoStatusChange(<?php echo $photo['id'] ?>); ">
 										<option value="pending" <?php if ($photo['status']=='pending') echo 'selected="selected"'?> ><?php _e('Pending', 'wppa') ?></option>
 										<option value="publish" <?php if ($photo['status']=='publish') echo 'selected="selected"'?> ><?php _e('Publish', 'wppa') ?></option>
@@ -442,7 +501,7 @@ function wppa_album_photos($album = '', $photo = '', $owner = '') {
 								<td style="padding:0 4px;" >'.$comment['id'].'</td>
 								<td style="padding:0 4px;" >'.$comment['user'].'</td>
 								<td style="padding:0 4px;" >'.wppa_get_time_since($comment['timestamp']).'</td>';
-								if ( current_user_can('wppa_comments') ) {
+								if ( current_user_can('wppa_comments') || current_user_can('wppa_moderate') ) {
 									$p = ($comment['status'] == 'pending') ? 'selected="selected" ' : '';
 									$a = ($comment['status'] == 'approved') ? 'selected="selected" ' : '';
 									$s = ($comment['status'] == 'spam') ? 'selected="selected" ' : '';
