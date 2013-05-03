@@ -6,7 +6,7 @@
 *
 */
 global $wppa_api_version;
-$wppa_api_version = '5-0-3-000';
+$wppa_api_version = '5-0-3-001';
 // Initialize globals and option settings
 function wppa_initialize_runtime($force = false) {
 global $wppa;
@@ -536,6 +536,7 @@ global $wppa_initruntimetime;
 						'wppa_max_albums'				=> '',
 						'wppa_alt_is_restricted'		=> '',
 						'wppa_link_is_restricted'		=> '',
+						'wppa_strip_file_ext'			=> '',
 
 
 						'wppa_watermark_on'				=> '',

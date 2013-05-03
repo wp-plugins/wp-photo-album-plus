@@ -806,6 +806,7 @@ Hide Camera info
 						'wppa_max_albums'				=> '0',
 						'wppa_alt_is_restricted'		=> 'no',
 						'wppa_link_is_restricted'		=> 'no',
+						'wppa_strip_file_ext'			=> 'no',
 						
 						// C Search
 						'wppa_search_linkpage' 			=> '0',		// 1

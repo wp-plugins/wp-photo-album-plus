@@ -171,6 +171,12 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
 
+= 5.0.3.001 =
+
+= New Features =
+
+* You can strip the file-extension at upload/import for the default photoname. Table IX-B11.
+
 = 5.0.3 =
 
 = Bug Fixes =

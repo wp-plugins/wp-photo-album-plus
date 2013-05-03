@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: wp-photo-album-plus-zh_TW\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-05-02 13:20+0100\n"
-"PO-Revision-Date: 2013-05-02 13:20+0100\n"
+"PO-Revision-Date: 2013-05-03 09:34+0100\n"
 "Last-Translator: J.N. Breetvelt <OpaJaap@OpaJaap.nl>\n"
 "Language-Team: <>\n"
 "Language: nl_NL\n"
@@ -18,7 +18,7 @@ msgstr ""
 
 #: theme/photo-album-page.php:30 theme/photo-album-search-page.php:52
 msgid "Pages:"
-msgstr "頁數："
+msgstr "頁數:"
 
 #: theme/photo-album-page.php:31 theme/photo-album-search-page.php:53
 #: wppa-album-admin-autosave.php:798 wppa-album-admin-autosave.php:830
@@ -31,7 +31,7 @@ msgstr "編輯"
 
 #: theme/photo-album-search-page.php:30
 msgid "Warning. No page defined for search results!"
-msgstr "警告。搜索結果沒有設定頁面！"
+msgstr "警告。搜索結果沒有設定頁面!"
 
 #: theme/photo-album-search-page.php:39 wppa-search-widget.php:49
 msgid "Search"
@@ -89,7 +89,7 @@ msgstr "次序 #"
 #: wppa-settings-autosave.php:3763 wppa-settings-autosave.php:3909
 #: wppa-upload.php:128
 msgid "Name"
-msgstr "名稱和描述"
+msgstr "名字"
 
 #: wppa-admin-functions.php:246 wppa-album-admin-autosave.php:268
 #: wppa-settings-autosave.php:1860 wppa-settings-autosave.php:1937
@@ -123,7 +123,7 @@ msgstr "請檢查你的PHP配置。目前，它不支持所需的功能來處理
 
 #: wppa-admin-functions.php:502
 msgid "Trying to fix "
-msgstr "嘗試修復"
+msgstr "嘗試修復 "
 
 #: wppa-admin-functions.php:533
 msgid "Fixed extension for "
@@ -162,16 +162,15 @@ msgstr "已恢復孤立相片。"
 
 #: wppa-admin-functions.php:576
 msgid "invalid entries removed:"
-msgstr "已刪除無效的項目："
+msgstr "已刪除無效的項目:"
 
 #: wppa-admin-functions.php:579
 msgid "missing file extensions recovered."
 msgstr "恢復丟失的檔案擴展名。"
 
 #: wppa-admin-functions.php:592 wppa-upload.php:371
-#, fuzzy
 msgid "--- My depot ---"
-msgstr "--- 默認 ---"
+msgstr "--- 我的倉庫 ---"
 
 #: wppa-admin-functions.php:628
 #, php-format
@@ -222,7 +221,7 @@ msgstr "沒有相片或閱讀錯誤"
 #: wppa-admin-functions.php:912 wppa-admin-functions.php:952
 #: wppa-admin-functions.php:956 wppa-admin-functions.php:960
 msgid "Unexpected error:"
-msgstr "意想不到的錯誤："
+msgstr "意想不到的錯誤:"
 
 #: wppa-admin-functions.php:912
 msgid "Missing database table:"
@@ -234,11 +233,11 @@ msgstr "目錄遺失:"
 
 #: wppa-admin-functions.php:956
 msgid "Directory is not writable:"
-msgstr "無法寫入目錄："
+msgstr "無法寫入目錄:"
 
 #: wppa-admin-functions.php:960
 msgid "Directory is not readable:"
-msgstr "無法讀取目錄："
+msgstr "無法讀取目錄:"
 
 #: wppa-admin-functions.php:966
 msgid ""
@@ -255,19 +254,19 @@ msgid "Next page"
 msgstr "下一頁"
 
 #: wppa-admin-functions.php:1055 wppa-admin-functions.php:1058
-#, fuzzy, php-format
+#, php-format
 msgid "Album %s is full"
-msgstr "相簿標題"
+msgstr "相簿%s已滿"
 
 #: wppa-admin-functions.php:1073
-#, fuzzy, php-format
+#, php-format
 msgid "Photo %s already exists in album number %s."
-msgstr "上傳相簿中的相片星期"
+msgstr "相片%s已經存在%s相簿。"
 
 #: wppa-admin-functions.php:1083
 #, php-format
 msgid "ERROR: Attempt to upload a photo that is too large to process (%s)."
-msgstr ""
+msgstr "錯誤：上傳相片太大（%s）。"
 
 #: wppa-admin-functions.php:1087
 msgid ""
@@ -281,11 +280,11 @@ msgstr "錯誤：無法檢索圖像尺寸"
 
 #: wppa-admin-functions.php:1092
 msgid "Are you sure it is a photo?"
-msgstr "你確定這是一個相片？"
+msgstr "你確定這是一個相片?"
 
 #: wppa-admin-functions.php:1101
 msgid "Unsupported mime type encountered:"
-msgstr "遇到不支持的MIME類型："
+msgstr "遇到不支持的MIME類型:"
 
 #: wppa-admin-functions.php:1118
 msgid "Album not known while trying to add a photo"
@@ -326,9 +325,8 @@ msgid "Import Photos"
 msgstr "匯入相片"
 
 #: wppa-admin.php:63
-#, fuzzy
 msgid "Moderate Photos"
-msgstr "管理相片"
+msgstr "相片審核"
 
 #: wppa-admin.php:64 wppa-export.php:32
 msgid "Export Photos"
@@ -357,7 +355,7 @@ msgstr "留言"
 
 #: wppa-admin.php:68
 msgid "Help &amp; Info"
-msgstr "幫助及信息"
+msgstr "幫助及信息(&A)"
 
 #: wppa-admin.php:111 wppa-upload.php:607
 msgid "Import"
@@ -368,42 +366,38 @@ msgid "Update"
 msgstr "更新"
 
 #: wppa-ajax.php:35 wppa-ajax.php:65
-#, fuzzy
 msgid "You do not have the rights to moderate photos this way"
-msgstr "你沒有權限更新刪除相片"
+msgstr "你沒有相片審核權利"
 
 #: wppa-ajax.php:51
-#, fuzzy, php-format
+#, php-format
 msgid "Failed to update stutus of photo %s"
-msgstr "無法設定%s到%s"
+msgstr "無法更新相片%s狀態"
 
 #: wppa-ajax.php:51 wppa-ajax.php:58
 msgid "Please refresh the page"
-msgstr ""
+msgstr "請刷新此頁"
 
 #: wppa-ajax.php:54 wppa-ajax.php:70 wppa-ajax.php:345
 msgid "Security check failure"
-msgstr ""
+msgstr "安全檢查失敗"
 
 #: wppa-ajax.php:58
-#, fuzzy, php-format
+#, php-format
 msgid "Failed to update stutus of comment %s"
-msgstr "無法更新留言。錯誤="
+msgstr "無法更新相片%s的狀態"
 
 #: wppa-ajax.php:74
-#, fuzzy
 msgid "Photo removed"
-msgstr "Foto gedraaid"
+msgstr "相片已刪除"
 
 #: wppa-ajax.php:79
-#, fuzzy
 msgid "Comment removed"
-msgstr "Reacties login goedgekeurd"
+msgstr "留言已刪除"
 
 #: wppa-ajax.php:80
-#, fuzzy
 msgid "Could not remove comment"
-msgstr "無法創建相簿。"
+msgstr "無法刪除留言"
 
 #: wppa-ajax.php:83 wppa-ajax.php:271
 msgid "Unexpected error"
@@ -445,11 +439,11 @@ msgstr "你可以重新整理頁面，然後再試一次。"
 msgid ""
 "Althoug an error occurred while processing your rating, your vote has been "
 "registered."
-msgstr ""
+msgstr "雖然發生錯誤 但你的評級已處理。"
 
 #: wppa-ajax.php:187
 msgid "However, this may not be reflected in the current pageview"
-msgstr ""
+msgstr "但是，這不能反映目前的瀏覽量"
 
 #: wppa-ajax.php:217
 msgid "Illegal attempt to enter a second vote."
@@ -470,7 +464,7 @@ msgstr "你沒有權限更新相簿信息"
 
 #: wppa-ajax.php:378
 msgid "<b>Ratings cleared</b>"
-msgstr "<b>評級已清除</b>"
+msgstr "b>評級已清除</b"
 
 #: wppa-ajax.php:378 wppa-ajax.php:384 wppa-photo-admin-autosave.php:199
 msgid "No ratings for this photo."
@@ -482,7 +476,7 @@ msgstr "清除評級時發生錯誤"
 
 #: wppa-ajax.php:384 wppa-ajax.php:399 wppa-ajax.php:421
 msgid "<b>No photos in this album</b>"
-msgstr "<b>相簿中沒有相片</b>"
+msgstr "b>相簿中沒有相片</b"
 
 #: wppa-ajax.php:393
 msgid "<b>Tags set to defaults</b> (reload)"
@@ -519,7 +513,7 @@ msgstr "描述"
 
 #: wppa-ajax.php:435
 msgid "Unbalanced tags in album description!"
-msgstr "相簿描述有不平衡標籤！"
+msgstr "相簿描述有不平衡標籤!"
 
 #: wppa-ajax.php:441
 msgid "Album order #"
@@ -566,12 +560,11 @@ msgstr "上載限制時間"
 
 #: wppa-ajax.php:482
 msgid "Default tags"
-msgstr "默認標籤"
+msgstr "默認:標籤"
 
 #: wppa-ajax.php:485
-#, fuzzy
 msgid "Sub albums sort order"
-msgstr "相簿順序"
+msgstr "子相簿排序"
 
 #: wppa-ajax.php:495
 #, php-format
@@ -594,12 +587,12 @@ msgstr "你沒有權限更新註釋狀態"
 #: wppa-ajax.php:526
 #, php-format
 msgid "Status of comment #%s updated"
-msgstr ""
+msgstr "留言狀態%s已更新"
 
 #: wppa-ajax.php:529
 #, php-format
 msgid "Error updating status comment #%s"
-msgstr ""
+msgstr "更新留言狀態%s發生錯誤"
 
 #: wppa-ajax.php:540
 msgid "You do not have the rights to change photos"
@@ -619,41 +612,35 @@ msgstr "你沒有權限更新相片信息"
 
 #: wppa-ajax.php:571
 msgid "Enter a value > -90 and < 90"
-msgstr ""
+msgstr "輸入數值 .> -90 和 < 90"
 
 #: wppa-ajax.php:579
-#, fuzzy
 msgid "Lattitude updated"
-msgstr "設定"
+msgstr "緯度己更新"
 
 #: wppa-ajax.php:580
-#, fuzzy
 msgid "Could not update lattitude"
-msgstr "無法批量更新狀態"
+msgstr "無法更新緯度"
 
 #: wppa-ajax.php:585
 msgid "Enter a value > -180 and < 180"
-msgstr ""
+msgstr "輸入數值 .> -180 和 < 180"
 
 #: wppa-ajax.php:593
-#, fuzzy
 msgid "Longitude updated"
-msgstr "設定"
+msgstr "經度己更新"
 
 #: wppa-ajax.php:594
-#, fuzzy
 msgid "Could not update longitude"
-msgstr "Kan de foto niet updaten."
+msgstr "無法更新經度"
 
 #: wppa-ajax.php:600
-#, fuzzy
 msgid "Photo files remade"
-msgstr "Foto Verwijderd."
+msgstr "相片檔案重制"
 
 #: wppa-ajax.php:603
-#, fuzzy
 msgid "Could not remake files"
-msgstr "無法創建相簿。"
+msgstr "無法重制檔案"
 
 #: wppa-ajax.php:611 wppa-settings-autosave.php:1731 wppa-tinymce.php:238
 #: wppa-widget-admin.php:76
@@ -697,7 +684,7 @@ msgstr "複製%s相片時發生錯誤"
 
 #: wppa-ajax.php:666 wppa-ajax.php:1019
 msgid "Unbalanced tags in photo description!"
-msgstr "相片描述有不平衡標籤！"
+msgstr "相片描述有不平衡標籤!"
 
 #: wppa-ajax.php:672
 msgid "Photo order #"
@@ -767,7 +754,7 @@ msgstr "最大高度。"
 
 #: wppa-ajax.php:829
 msgid "Thumbnail size."
-msgstr "縮圖大小。"
+msgstr "縮圖 大小。"
 
 #: wppa-ajax.php:832
 msgid "Thumbnail frame width"
@@ -855,7 +842,7 @@ msgstr "透明度。"
 
 #: wppa-ajax.php:904
 msgid "Filter priority"
-msgstr ""
+msgstr "過濾器優先序"
 
 #: wppa-ajax.php:907 wppa-settings-autosave.php:605
 msgid "Avatar size"
@@ -867,7 +854,7 @@ msgstr "水印透明度"
 
 #: wppa-ajax.php:913 wppa-settings-autosave.php:703
 msgid "Number of text lines"
-msgstr "TopTenwidget相片的數量"
+msgstr "文字行數"
 
 #: wppa-ajax.php:916 wppa-settings-autosave.php:2120
 msgid "Overlay opacity"
@@ -883,20 +870,19 @@ msgstr "通知不適當"
 
 #: wppa-ajax.php:925 wppa-settings-autosave.php:3276
 msgid "Max execution time"
-msgstr ""
+msgstr "最長執行時間"
 
 #: wppa-ajax.php:930
 msgid "Cube Points points"
-msgstr ""
+msgstr "立方點"
 
 #: wppa-ajax.php:933
 msgid "JPG Image quality"
-msgstr ""
+msgstr "JPG圖像質量"
 
 #: wppa-ajax.php:936 wppa-settings-autosave.php:1985
-#, fuzzy
 msgid "Number of coverphotos"
-msgstr "TopTen相片編號"
+msgstr "封面相片數量"
 
 #: wppa-ajax.php:943
 msgid "Ratings cleared"
@@ -912,7 +898,7 @@ msgstr "IPTC資料已清除"
 
 #: wppa-ajax.php:957
 msgid "Refresh this page to clear table X"
-msgstr ""
+msgstr "刷新此頁面以清除表X"
 
 #: wppa-ajax.php:960
 msgid "Could not clear IPTC data"
@@ -924,7 +910,7 @@ msgstr "清除評級"
 
 #: wppa-ajax.php:971
 msgid "Refresh this page to clear table XI"
-msgstr ""
+msgstr "刷新此頁面以清除表XI"
 
 #: wppa-ajax.php:974
 msgid "Could not clear EXIF data"
@@ -932,21 +918,20 @@ msgstr "無清除EXIF數據"
 
 #: wppa-ajax.php:982
 msgid "Recuperation performed"
-msgstr ""
+msgstr "執行療養"
 
 #: wppa-ajax.php:1034 wppa-ajax.php:1044
-#, fuzzy, php-format
+#, php-format
 msgid "Unable to create or write to %s"
-msgstr "無法建立目錄庫。"
+msgstr "無法建立或寫入到%s"
 
 #: wppa-ajax.php:1053
-#, fuzzy
 msgid "The content must contain w#album"
-msgstr "該相簿的內容。"
+msgstr "內容必須包含w#相簿"
 
 #: wppa-ajax.php:1059
 msgid "The content must contain w#lat and w#lon"
-msgstr ""
+msgstr "內容必須包含w#經度和緯度"
 
 #: wppa-ajax.php:1071
 #, php-format
@@ -956,7 +941,7 @@ msgstr "無法設定%s到%s"
 #: wppa-ajax.php:1076
 #, php-format
 msgid "Setting %s updated to %s"
-msgstr ""
+msgstr "設定%s更新到%s"
 
 #: wppa-ajax.php:1083
 msgid ""
@@ -966,11 +951,11 @@ msgstr "你更改了一個設定，需要重建縮圖。"
 #: wppa-ajax.php:1084
 msgid ""
 "This process will start as soon as you refresh or re-enter the settings page."
-msgstr ""
+msgstr "只要你刷新或重新進入設定頁面,程序便會開始。"
 
 #: wppa-ajax.php:1125 wppa-ajax.php:1132
 msgid "You may also enter:"
-msgstr "你可以輸入："
+msgstr "你可以輸入:"
 
 #: wppa-ajax.php:1126 wppa-ajax.php:1133
 msgid "You may also leave/set this blank"
@@ -982,7 +967,7 @@ msgstr "上載至這相簿"
 
 #: wppa-album-admin-autosave.php:35
 msgid "Warning:"
-msgstr "警告："
+msgstr "警告:"
 
 #: wppa-album-admin-autosave.php:35
 #, php-format
@@ -993,11 +978,11 @@ msgstr "該上傳目錄不存在或不是由服務器可寫。請確保%s是由�
 
 #: wppa-album-admin-autosave.php:70 wppa-settings-autosave.php:3286
 msgid "New Album"
-msgstr "創建新相簿"
+msgstr "建立新相簿"
 
 #: wppa-album-admin-autosave.php:77 wppa-upload.php:817 wppa-upload.php:1173
 msgid "Could not create album."
-msgstr "無法創建相簿。"
+msgstr "無法建立相簿。"
 
 #: wppa-album-admin-autosave.php:84 wppa-upload.php:821 wppa-upload.php:1180
 msgid "Album #"
@@ -1019,23 +1004,23 @@ msgstr "自動儲存"
 msgid ""
 "In this version of the album admin page, all modifications are instantly "
 "updated on the server."
-msgstr ""
+msgstr "這個版本的相簿管理頁，所有修改均立即在服務器上更新。"
 
 #: wppa-album-admin-autosave.php:130
 msgid ""
 "Edit fields are updated the moment you click anywhere outside the edit box."
-msgstr ""
+msgstr "當你點擊編輯框以外的任何地方，編輯字段會立即更新。"
 
 #: wppa-album-admin-autosave.php:131
 msgid ""
 "Selections are updated instantly, except for those that require a button "
 "push."
-msgstr ""
+msgstr "選擇即時更新，除了那些需要點擊按鈕。"
 
 #: wppa-album-admin-autosave.php:132
 msgid ""
 "The status fields keep you informed on the actions taken at the background."
-msgstr ""
+msgstr "狀態欄讓您了解在這個背景下所採取的行動。"
 
 #: wppa-album-admin-autosave.php:135
 msgid "Album number:"
@@ -1051,7 +1036,7 @@ msgstr "輸入相簿名稱。不留空白。"
 
 #: wppa-album-admin-autosave.php:156 wppa-photo-admin-autosave.php:356
 msgid "Description:"
-msgstr "描述："
+msgstr "描述:"
 
 #: wppa-album-admin-autosave.php:166
 msgid "Update Album description"
@@ -1063,7 +1048,7 @@ msgstr "進入/修改為這張相簿的描述。"
 
 #: wppa-album-admin-autosave.php:187
 msgid "Owned by:"
-msgstr "擁有者："
+msgstr "擁有者:"
 
 #: wppa-album-admin-autosave.php:199
 msgid ""
@@ -1072,9 +1057,8 @@ msgid ""
 msgstr "警告：如果你更改所有者，你將不再能夠修改這張相簿和上傳或匯入相片了!"
 
 #: wppa-album-admin-autosave.php:209
-#, fuzzy
 msgid "Album sort order #:"
-msgstr "相簿順序 #"
+msgstr "相簿排序："
 
 #: wppa-album-admin-autosave.php:217
 msgid ""
@@ -1110,7 +1094,7 @@ msgstr "--- 默認 ---"
 #: wppa-album-admin-autosave.php:250 wppa-settings-autosave.php:3489
 #: wppa-settings-autosave.php:3532
 msgid "Rating"
-msgstr ""
+msgstr "等級"
 
 #: wppa-album-admin-autosave.php:250 wppa-album-admin-autosave.php:273
 #: wppa-settings-autosave.php:1860 wppa-settings-autosave.php:1937
@@ -1128,35 +1112,30 @@ msgid ""
 msgstr "改變默認設定在選項頁面。"
 
 #: wppa-album-admin-autosave.php:263
-#, fuzzy
 msgid "Sub album sort order:"
-msgstr "排序順序#:"
+msgstr "子專輯排序："
 
 #: wppa-album-admin-autosave.php:267
-#, fuzzy
 msgid "See Table IV-D1"
-msgstr "表 IV："
+msgstr "表IV-D1"
 
 #: wppa-album-admin-autosave.php:270
-#, fuzzy
 msgid "Order # reverse"
-msgstr "次序 #"
+msgstr "排序逆轉"
 
 #: wppa-album-admin-autosave.php:272
-#, fuzzy
 msgid "Name reverse"
-msgstr "名稱和描述"
+msgstr "名稱逆轉"
 
 #: wppa-album-admin-autosave.php:274
-#, fuzzy
 msgid "Timestamp reverse"
-msgstr "時間標記"
+msgstr "時間戳逆轉"
 
 #: wppa-album-admin-autosave.php:279
 msgid ""
 "Specify the sequence order method to be used for the sub albums of this "
 "album."
-msgstr ""
+msgstr "子相簿順序方法。"
 
 #: wppa-album-admin-autosave.php:288
 msgid "Use alt thumbsize:"
@@ -1164,7 +1143,7 @@ msgstr "使用替代縮圖:"
 
 #: wppa-album-admin-autosave.php:292
 msgid "no"
-msgstr "沒有"
+msgstr "否"
 
 #: wppa-album-admin-autosave.php:293
 msgid "yes"
@@ -1175,10 +1154,12 @@ msgid ""
 "If set to <b>yes</b> The settings in <b>Table I-C1a,3a</b> and <b>4a</b> "
 "apply rather than <b>I-C1,3</b> and <b>4</b>."
 msgstr ""
+"如果設定為<b>是</b>。 <b>表 I-C1a,3a</b>和<b>4a</b> 便適用，而不是<b>I-C1,3</"
+"b>和<b>4</b>。"
 
 #: wppa-album-admin-autosave.php:307
 msgid "Cover Photo:"
-msgstr "封面相片："
+msgstr "封面相片:"
 
 #: wppa-album-admin-autosave.php:315
 msgid "Select the photo you want to appear on the cover of this album."
@@ -1188,11 +1169,11 @@ msgstr "選擇你想要的相片出現在這張相簿的封面。"
 msgid ""
 "Select the way the cover photos of this album are selected, or select a "
 "single image."
-msgstr ""
+msgstr "選擇相簿封面照片選擇方式，或者選擇一張照片。"
 
 #: wppa-album-admin-autosave.php:325
 msgid "Upload limit:"
-msgstr "上載限制："
+msgstr "上載限制:"
 
 #: wppa-album-admin-autosave.php:333 wppa-settings-autosave.php:3326
 msgid "for ever"
@@ -1225,7 +1206,7 @@ msgstr "每年"
 
 #: wppa-album-admin-autosave.php:342
 msgid "Set the upload limit (0 means unlimited) and the upload limit period."
-msgstr ""
+msgstr "設定上載限制（0表示無限制）和上傳限制期。"
 
 #: wppa-album-admin-autosave.php:347
 msgid "Unlimited"
@@ -1243,22 +1224,20 @@ msgstr "選擇你想要的相片出現在這張相簿的封面。"
 #: wppa-album-admin-autosave.php:377
 msgid ""
 "Are you sure you want to set the default tags to all photos in this album?"
-msgstr "你確定要刪除此相簿？"
+msgstr "你確定要刪除此相簿?"
 
 #: wppa-album-admin-autosave.php:378
 msgid ""
 "Are you sure you want to add the default tags to all photos in this album?"
-msgstr "你確定要刪除此相簿？"
+msgstr "你確定要刪除此相簿?"
 
 #: wppa-album-admin-autosave.php:381
-#, fuzzy
 msgid "Apply default tags"
-msgstr "默認標籤"
+msgstr "應用默認標籤"
 
 #: wppa-album-admin-autosave.php:386
-#, fuzzy
 msgid "Add default tags"
-msgstr "默認標籤"
+msgstr "添加默認標籤"
 
 #: wppa-album-admin-autosave.php:393
 msgid "Link type:"
@@ -1300,7 +1279,7 @@ msgstr ""
 
 #: wppa-album-admin-autosave.php:441
 msgid "Are you sure you want to clear the ratings in this album?"
-msgstr "你確定要刪除此相簿？"
+msgstr "你確定要刪除此相簿?"
 
 #: wppa-album-admin-autosave.php:441
 msgid "Reset ratings"
@@ -1308,7 +1287,7 @@ msgstr "重設評級"
 
 #: wppa-album-admin-autosave.php:458
 msgid "Change the upload limit or remove photos to enable new uploads."
-msgstr ""
+msgstr "更改上傳限制或刪除相片讓新相片可以上傳。"
 
 #: wppa-album-admin-autosave.php:462
 #, php-format
@@ -1324,9 +1303,8 @@ msgid "Apply new photo desc"
 msgstr "相片"
 
 #: wppa-album-admin-autosave.php:485
-#, fuzzy
 msgid "Remake all"
-msgstr "全部Meta"
+msgstr "全部改造"
 
 #: wppa-album-admin-autosave.php:496
 #, php-format
@@ -1339,11 +1317,11 @@ msgstr "管理相片"
 
 #: wppa-album-admin-autosave.php:513
 msgid "Moderate comment"
-msgstr "管理相片"
+msgstr "審核留言"
 
 #: wppa-album-admin-autosave.php:529
 msgid "Moderate photo"
-msgstr "管理相片"
+msgstr "審核相片"
 
 #: wppa-album-admin-autosave.php:530 wppa-photo-admin-autosave.php:23
 msgid "Edit photo"
@@ -1358,15 +1336,15 @@ msgstr "刪除相簿"
 #: wppa-thumbnail-widget.php:136 wppa-topten-widget.php:128
 #: wppa-upload.php:166 wppa-upload.php:213
 msgid "Album:"
-msgstr "相簿："
+msgstr "相簿:"
 
 #: wppa-album-admin-autosave.php:557
 msgid "Are you sure you want to delete this album?"
-msgstr "你確定要刪除此相簿？"
+msgstr "你確定要刪除此相簿嗎?"
 
 #: wppa-album-admin-autosave.php:558
 msgid "Press Delete to continue, and Cancel to go back."
-msgstr "按Delete鍵繼續，並返回。"
+msgstr "按 刪除 繼續，按 取消 返回。"
 
 #: wppa-album-admin-autosave.php:563
 msgid "What would you like to do with photos currently in the album?"
@@ -1395,23 +1373,23 @@ msgstr "無法移動相片。相簿不會被刪除。"
 
 #: wppa-album-admin-autosave.php:624
 msgid "Manage Albums"
-msgstr "管理相簿"
+msgstr "相簿管理"
 
 #: wppa-album-admin-autosave.php:630
 msgid "Are you sure you want to create a new album?"
-msgstr "你確定要刪除此相簿？"
+msgstr "你確定要刪除此相簿?"
 
 #: wppa-album-admin-autosave.php:631
 msgid "Create New Empty Album"
-msgstr "創建新相簿"
+msgstr "建立新相簿"
 
 #: wppa-album-admin-autosave.php:636
 msgid "Switch to Collapsable table"
-msgstr ""
+msgstr "切換到折疊式表"
 
 #: wppa-album-admin-autosave.php:639
 msgid "Switch to Flat table"
-msgstr ""
+msgstr "切換到平板表"
 
 #: wppa-album-admin-autosave.php:735 wppa-album-admin-autosave.php:857
 #: wppa-album-admin-autosave.php:1034 wppa-album-admin-autosave.php:1122
@@ -1426,7 +1404,7 @@ msgstr "次序"
 #: wppa-album-admin-autosave.php:787 wppa-album-admin-autosave.php:909
 #: wppa-album-admin-autosave.php:1087 wppa-album-admin-autosave.php:1175
 msgid "Parent"
-msgstr "母"
+msgstr "母相簿"
 
 #: wppa-album-admin-autosave.php:795 wppa-album-admin-autosave.php:917
 #: wppa-album-admin-autosave.php:1095 wppa-album-admin-autosave.php:1183
@@ -1442,18 +1420,18 @@ msgstr "A/P/PM"
 #: wppa-album-admin-autosave.php:922 wppa-album-admin-autosave.php:1100
 #: wppa-album-admin-autosave.php:1188 wppa-album-admin-autosave.php:1304
 msgid "Create"
-msgstr "創建"
+msgstr "建立"
 
 #: wppa-album-admin-autosave.php:837 wppa-album-admin-autosave.php:1303
 msgid "Are you sure you want to create a subalbum?"
-msgstr "你確定要刪除此相簿？"
+msgstr "你確定要刪除此相簿?"
 
 #: wppa-album-admin-autosave.php:933 wppa-album-admin-autosave.php:1214
 #, php-format
 msgid ""
 "There are <strong>%d</strong> albums and <strong>%d</strong> photos in the "
 "system."
-msgstr ""
+msgstr "系統一共有<strong>%d</strong>個相簿和<strong>%d</strong>張照片。"
 
 #: wppa-album-admin-autosave.php:934 wppa-album-admin-autosave.php:1215
 #, php-format
@@ -1486,7 +1464,7 @@ msgstr "展開子相簿"
 msgid ""
 "The following albums are ---separate--- and do not show up in the generic "
 "album display"
-msgstr ""
+msgstr "下面的相簿是---獨立--- 將不會在一般相簿中顯示"
 
 #: wppa-album-admin-autosave.php:1337
 #, php-format
@@ -1504,12 +1482,12 @@ msgstr "--- 隨機 ---"
 #: wppa-album-admin-autosave.php:1412
 #, php-format
 msgid "auto select max %s random"
-msgstr ""
+msgstr "自動選擇最大%s隨機"
 
 #: wppa-album-admin-autosave.php:1414
 #, php-format
 msgid "auto select max %s featured"
-msgstr ""
+msgstr "自動選擇最大%s精選"
 
 #: wppa-album-admin-autosave.php:1431
 msgid "No photos yet"
@@ -1534,7 +1512,7 @@ msgstr "標題:"
 
 #: wppa-album-widget.php:183
 msgid "Album selection or Parent album:"
-msgstr "選擇相簿或母相簿："
+msgstr "選擇相簿或母相簿:"
 
 #: wppa-album-widget.php:187
 msgid "--- all albums ---"
@@ -1562,7 +1540,7 @@ msgstr "顯示圖片名稱:"
 #: wppa-slideshow-widget.php:232 wppa-slideshow-widget.php:239
 #: wppa-slideshow-widget.php:246 wppa-thumbnail-widget.php:146
 msgid "no."
-msgstr "沒有。"
+msgstr "否。"
 
 #: wppa-album-widget.php:205 wppa-album-widget.php:212
 #: wppa-lasten-widget.php:156 wppa-slideshow-widget.php:199
@@ -1574,7 +1552,7 @@ msgstr "是。"
 
 #: wppa-album-widget.php:209
 msgid "Skip \"empty\" albums:"
-msgstr ""
+msgstr "略過“空”相簿："
 
 #: wppa-album-widget.php:216 wppa-comment-widget.php:113
 #: wppa-lasten-widget.php:161 wppa-thumbnail-widget.php:151
@@ -1592,15 +1570,15 @@ msgstr "WP Photo Album Plus 設定"
 
 #: wppa-comment-admin.php:61
 msgid "Photo:"
-msgstr "相片："
+msgstr "相片:"
 
 #: wppa-comment-admin.php:72
 msgid "User:"
-msgstr "用戶："
+msgstr "用戶:"
 
 #: wppa-comment-admin.php:76
 msgid "Email:"
-msgstr "電子郵件："
+msgstr "電子郵件:"
 
 #: wppa-comment-admin.php:80
 msgid "Comment:"
@@ -1642,23 +1620,23 @@ msgstr ""
 
 #: wppa-comment-admin.php:175
 msgid "Total:"
-msgstr "合計："
+msgstr "合計:"
 
 #: wppa-comment-admin.php:179
 msgid "Approved:"
-msgstr "已批准："
+msgstr "已批准:"
 
 #: wppa-comment-admin.php:183
 msgid "Pending:"
-msgstr "待決："
+msgstr "待決:"
 
 #: wppa-comment-admin.php:187
 msgid "Spam:"
-msgstr "垃圾留言："
+msgstr "垃圾:"
 
 #: wppa-comment-admin.php:192
 msgid "Auto deleted spam:"
-msgstr "自動刪除垃圾留言："
+msgstr "自動刪除垃圾留言:"
 
 #: wppa-comment-admin.php:207
 msgid "Linkpage:"
@@ -1673,7 +1651,7 @@ msgstr "--- 請選擇網頁 ---"
 msgid ""
 "You can see the photo and all its comments on the selected page by clicking "
 "on the thumbnail image"
-msgstr ""
+msgstr "點擊選定頁面縮略圖便看到照片和留言"
 
 #: wppa-comment-admin.php:229
 msgid "Display status:"
@@ -1709,7 +1687,7 @@ msgstr "相片"
 
 #: wppa-comment-admin.php:242
 msgid "Bulk action:"
-msgstr "批量操作："
+msgstr "批量操作:"
 
 #: wppa-comment-admin.php:245
 msgid "Approve all pending"
@@ -1725,7 +1703,7 @@ msgstr "刪除所有垃圾留言"
 
 #: wppa-comment-admin.php:249
 msgid "Save Settings / Perform bulk action"
-msgstr ""
+msgstr "保存設定/執行批次動作"
 
 #: wppa-comment-admin.php:288 wppa-comment-admin.php:376
 msgid "Photo"
@@ -1733,7 +1711,7 @@ msgstr "相片"
 
 #: wppa-comment-admin.php:289 wppa-comment-admin.php:377
 msgid "(Album)"
-msgstr "(相簿)"
+msgstr "相簿"
 
 #: wppa-comment-admin.php:290 wppa-comment-admin.php:378
 #: wppa-settings-autosave.php:249 wppa-settings-autosave.php:724
@@ -1777,7 +1755,7 @@ msgstr "按此看原大相片小及留言"
 #: wppa-comment-admin.php:345
 #, php-format
 msgid "Reply to your comment on photo: %s on %s"
-msgstr ""
+msgstr "回覆你在相片%s留言: %s"
 
 #: wppa-comment-admin.php:346
 msgid "Reply"
@@ -1797,11 +1775,11 @@ msgstr "已批准"
 #: wppa-comment-admin.php:359 wppa-photo-admin-autosave.php:514
 #: wppa-photo-admin-autosave.php:524
 msgid "Spam"
-msgstr "垃圾留言"
+msgstr "垃圾"
 
 #: wppa-comment-admin.php:368
 msgid "Are you sure you want to delete this comment?"
-msgstr "你確定要刪除此相片嗎？"
+msgstr "你確定要刪除此相片嗎?"
 
 #: wppa-comment-admin.php:408 wppa-comment-admin.php:414
 msgid "Unable to update comment. Err ="
@@ -1837,7 +1815,7 @@ msgstr "分鐘"
 
 #: wppa-common-functions.php:1000
 msgid "1 hour"
-msgstr "小時"
+msgstr "1小時"
 
 #: wppa-common-functions.php:1001
 msgid "hours"
@@ -1857,7 +1835,7 @@ msgstr "1週"
 
 #: wppa-common-functions.php:1011
 msgid "weeks"
-msgstr "週"
+msgstr "星期"
 
 #: wppa-common-functions.php:1015
 msgid "1 month"
@@ -1882,7 +1860,7 @@ msgstr "錯誤：無法調整大小或複製的圖像。"
 #: wppa-common-functions.php:1251 wppa-common-functions.php:1252
 #, php-format
 msgid "ERROR: File %s is not a valid picture file."
-msgstr ""
+msgstr "錯誤：檔案%s不是一個有效的相片檔案。"
 
 #: wppa-common-functions.php:1652 wppa-photo-admin-autosave.php:124
 msgid "top - left"
@@ -1926,6 +1904,8 @@ msgid ""
 "Based on your server memory limit you should not upload images larger then "
 "<strong>%d x %d (%2.1f MP)</strong>"
 msgstr ""
+"根據您的服務器上的內存限制，你不應該上傳相片大於<strong>%d x %d (%2.1f MP)</"
+"strong>"
 
 #: wppa-export.php:36
 #, php-format
@@ -1959,13 +1939,13 @@ msgstr "失敗<br/>"
 msgid ""
 "Can export albums and photos, but cannot make a zipfile. Your php version is "
 "< 5.2.7."
-msgstr ""
+msgstr "可以匯出相簿和相片，但不能建立zip文件。你的PHP版本是5.2.7。"
 
 #: wppa-export.php:99
 msgid ""
 "Can export albums and photos, but cannot make a zipfile. Your php version "
 "does not support ZipArchive."
-msgstr ""
+msgstr "可以匯出相簿和相片，但不能建立zip文件。你的PHP版本不支援ZipArchive。"
 
 #: wppa-export.php:109
 msgid "<br/>Processing album"
@@ -1997,7 +1977,7 @@ msgstr "<br/>刪除臨時檔案。"
 
 #: wppa-export.php:150
 msgid "<br/>Done!"
-msgstr "<br/>完成！"
+msgstr "<br/>完成!"
 
 #: wppa-export.php:196 wppa-export.php:265
 #, php-format
@@ -2140,11 +2120,11 @@ msgstr "存在下面的子菜單。"
 
 #: wppa-help.php:44
 msgid "Photo Albums: Create and manage Albums."
-msgstr "相簿：創建和管理相簿。"
+msgstr "相簿：建立和管理相簿。"
 
 #: wppa-help.php:45
 msgid "Upload photos: To upload photos to an album you created."
-msgstr "上傳相片：上傳相片到相簿你創建的。"
+msgstr "上傳相片：上傳相片到相簿你建立的。"
 
 #: wppa-help.php:46
 msgid ""
@@ -2168,7 +2148,7 @@ msgstr "留言。"
 
 #: wppa-help.php:50
 msgid "Help & Info: The screen you are watching now."
-msgstr "幫助及信息：您現在正在觀看的的畫面。"
+msgstr "幫助及信息：您現在正在觀看的的畫面(& )。"
 
 #: wppa-help.php:53
 msgid "Installation"
@@ -2241,8 +2221,8 @@ msgid ""
 "Create at least two albums in the \"Photo Albums\" tab. Leave \"Parent\" at "
 "\"--- none ---\"."
 msgstr ""
-"建立在\"Photo Albums\"標籤至少有兩個相簿。只需輸入名稱和簡要說明，然後按\"創"
-"建相簿\"。給\"父級\"設定為\"---無---\"或者為默認。"
+"建立在\"Photo Albums\"標籤至少有兩個相簿。只需輸入名稱和簡要說明，然後按\"建"
+"立相簿\"。給\"父級\"設定為\"---無---\"或者為默認。"
 
 #: wppa-help.php:76
 msgid ""
@@ -2257,7 +2237,7 @@ msgstr ""
 msgid ""
 "Create a new WP Page, name it something like \"Photo Gallery\" and put in "
 "the content:"
-msgstr "創建一個新的WP頁面，命名為\"圖片庫\"，並增加以下內容:"
+msgstr "建立一個新的WP頁面，命名為\"圖片庫\"，並增加以下內容:"
 
 #: wppa-help.php:78
 msgid "Publish the page, and view the page from your WP site."
@@ -2282,7 +2262,7 @@ msgstr ""
 
 #: wppa-help.php:83
 msgid "Creating a Photo Album Page or a Post with photos - Advanced"
-msgstr "創建具有高級權限的相片相簿頁"
+msgstr "建立具有高級權限的相片相簿頁"
 
 #: wppa-help.php:85
 msgid ""
@@ -2290,7 +2270,7 @@ msgid ""
 "Template\". In my example, give it the page title of \"Photo Gallery\". In "
 "the Page Content section add the following code:"
 msgstr ""
-"創建一個默認頁面，通常會在WordPress中使用\"默認模板\"。例如我的，頁面標題\"相"
+"建立一個默認頁面，通常會在WordPress中使用\"默認模板\"。例如我的，頁面標題\"相"
 "片廊\"。在頁面內容部分添加以下代碼:"
 
 #: wppa-help.php:87
@@ -2348,7 +2328,7 @@ msgstr ""
 msgid ""
 "You can also create a custom page template by dropping the following code "
 "into a page template:"
-msgstr "你還可以創建一個由下降到一個頁面模板下面的代碼自定義頁面模板:"
+msgstr "你還可以建立一個由下降到一個頁面模板下面的代碼自定義頁面模板:"
 
 #: wppa-help.php:102
 msgid ""
@@ -2380,12 +2360,12 @@ msgstr ""
 
 #: wppa-help.php:111
 msgid "For more information on creating custom page templates, click"
-msgstr "點擊創建有關自定義頁面模板的信息，"
+msgstr "點擊建立有關自定義頁面模板的信息，"
 
 #: wppa-help.php:111 wppa-settings-autosave.php:146
 #: wppa-settings-autosave.php:171
 msgid "here"
-msgstr "這裡"
+msgstr "在這裡"
 
 #: wppa-help.php:114
 msgid "Facts to remember"
@@ -2402,6 +2382,7 @@ msgid ""
 "If you go back in version no, run the Setup procedure in <b>Table VIII-A1</"
 "b> of the Photo Albums->Settings admin page."
 msgstr ""
+"如果安裝之前版本，請在<b>Table VIII-A1</b> 相簿 -> 設定管理頁 執行 安裝程序。"
 
 #: wppa-help.php:120
 msgid "Plugin Support And Feature Request"
@@ -2459,7 +2440,7 @@ msgstr ""
 
 #: wppa-help.php:133
 msgid "About and credits"
-msgstr "關於和信貸"
+msgstr "關於和感謝"
 
 #: wppa-help.php:135
 msgid ""
@@ -2479,7 +2460,7 @@ msgstr "感謝E.S. Rosenberg 提供安全問題的編程技巧。"
 
 #: wppa-help.php:138
 msgid "Thanx to Pavel &#352;orejs for the Numbar code."
-msgstr ""
+msgstr "感謝Pavel &#352;orejs提供Numbar的編程技巧。"
 
 #: wppa-help.php:139
 msgid ""
@@ -2498,7 +2479,7 @@ msgstr "WP Photo Album是下發佈的"
 
 #: wppa-help.php:144
 msgid "licence."
-msgstr "許可證。"
+msgstr "許可。"
 
 #: wppa-lasten-widget.php:13
 msgid "WPPA+ Last Ten Uploaded Photos"
@@ -2510,13 +2491,13 @@ msgstr "最新10張相片"
 
 #: wppa-lasten-widget.php:147
 msgid "Albums:"
-msgstr "相簿："
+msgstr "相簿:"
 
 #: wppa-lasten-widget.php:148
 msgid ""
 "Select --- multiple see below --- in the Album selection box. Then enter "
 "album numbers seperated by commas"
-msgstr ""
+msgstr "選擇 ---多 見下文---。然後輸入用逗號分隔的相簿數字"
 
 #: wppa-lasten-widget.php:153
 msgid "Show time since:"
@@ -2532,30 +2513,27 @@ msgstr "相片名稱"
 
 #: wppa-multitag-widget.php:59
 msgid "No of columns:"
-msgstr ""
+msgstr "列數："
 
 #: wppa-photo-admin-autosave.php:34
 msgid "Edit photos"
 msgstr "編輯相片"
 
 #: wppa-photo-admin-autosave.php:53
-#, fuzzy
 msgid "Moderate photos"
-msgstr "管理相片"
+msgstr "審核相片"
 
 #: wppa-photo-admin-autosave.php:89
-#, fuzzy
 msgid "You do not have the rights to do this"
-msgstr "你沒有權限更新設定"
+msgstr "你沒有權這樣做"
 
 #: wppa-photo-admin-autosave.php:113
-#, fuzzy
 msgid "This photo is no longer awaiting moderation."
-msgstr "相片已不存在"
+msgstr "這張相片不再等待審核。"
 
 #: wppa-photo-admin-autosave.php:114
 msgid "There are no photos awaiting moderation at this time."
-msgstr ""
+msgstr "沒有相片等待審核。"
 
 #: wppa-photo-admin-autosave.php:121 wppa-widget-admin.php:186
 msgid "No photos yet in this album."
@@ -2567,7 +2545,7 @@ msgstr "預覽:"
 
 #: wppa-photo-admin-autosave.php:147 wppa-photo-admin-autosave.php:149
 msgid "Are you sure you want to rotate this photo?"
-msgstr "你確定要旋轉此相片嗎？"
+msgstr "你確定要旋轉此相片嗎?"
 
 #: wppa-photo-admin-autosave.php:147
 msgid "Rotate left"
@@ -2590,24 +2568,23 @@ msgstr "完整分辨率大小的相片"
 
 #: wppa-photo-admin-autosave.php:168
 msgid "Upload:"
-msgstr "上載："
+msgstr "上載:"
 
 #: wppa-photo-admin-autosave.php:172 wppa-photo-admin-autosave.php:183
-#, fuzzy
 msgid "local time"
-msgstr "上載限制時間"
+msgstr "本地時間"
 
 #: wppa-photo-admin-autosave.php:172
 msgid "By:"
-msgstr "由："
+msgstr "由:"
 
 #: wppa-photo-admin-autosave.php:179
 msgid "Modified:"
-msgstr ""
+msgstr "修改："
 
 #: wppa-photo-admin-autosave.php:190
 msgid "Rating:"
-msgstr ""
+msgstr "評級："
 
 #: wppa-photo-admin-autosave.php:196
 msgid "Entries:"
@@ -2620,16 +2597,15 @@ msgstr "平均值:"
 #: wppa-photo-admin-autosave.php:203
 #, php-format
 msgid "Disliked by %d visitors"
-msgstr ""
+msgstr "%d 個訪者不喜歡"
 
 #: wppa-photo-admin-autosave.php:213
-#, fuzzy
 msgid "Photo sort order #:"
-msgstr "相片順序#:"
+msgstr "照片排序："
 
 #: wppa-photo-admin-autosave.php:223
 msgid "Are you sure you want to move this photo?"
-msgstr "你確定要旋轉此相片嗎？"
+msgstr "你確定要旋轉此相片嗎?"
 
 #: wppa-photo-admin-autosave.php:223
 msgid "Please select an album to move the photo to first."
@@ -2641,7 +2617,7 @@ msgstr "複製相片到"
 
 #: wppa-photo-admin-autosave.php:233
 msgid "Are you sure you want to copy this photo?"
-msgstr "你確定要複製此相片嗎？"
+msgstr "你確定要複製此相片嗎?"
 
 #: wppa-photo-admin-autosave.php:233
 msgid "Please select an album to copy the photo to first."
@@ -2653,7 +2629,7 @@ msgstr "複製相片到"
 
 #: wppa-photo-admin-autosave.php:242
 msgid "Are you sure you want to delete this photo?"
-msgstr "你確定要刪除此相片嗎？"
+msgstr "你確定要刪除此相片嗎?"
 
 #: wppa-photo-admin-autosave.php:242
 msgid "Delete photo"
@@ -2671,7 +2647,7 @@ msgstr "插入代碼"
 
 #: wppa-photo-admin-autosave.php:257
 msgid "Link url:"
-msgstr "鏈接地址："
+msgstr "鏈接地址:"
 
 #: wppa-photo-admin-autosave.php:262
 msgid "Same tab"
@@ -2680,7 +2656,7 @@ msgstr "相同標籤"
 #: wppa-photo-admin-autosave.php:263 wppa-settings-autosave.php:2364
 #: wppa-settings-autosave.php:2787
 msgid "New tab"
-msgstr "創建新相簿"
+msgstr "建立新相簿"
 
 #: wppa-photo-admin-autosave.php:270
 msgid "Link title:"
@@ -2696,36 +2672,32 @@ msgid "HTML Alt attribute:"
 msgstr "HTML Alt 屬性:"
 
 #: wppa-photo-admin-autosave.php:310
-#, fuzzy
 msgid "Filename:"
-msgstr "檔案："
+msgstr "檔案名稱："
 
 #: wppa-photo-admin-autosave.php:315
-#, fuzzy
 msgid "Source file available."
-msgstr "Geen backup bestand beschikbaar"
+msgstr "源文件。"
 
 #: wppa-photo-admin-autosave.php:326
-#, fuzzy
 msgid "Location:"
-msgstr "操作:"
+msgstr "地點："
 
 #: wppa-photo-admin-autosave.php:334
 msgid "Lat:"
-msgstr ""
+msgstr "緯度："
 
 #: wppa-photo-admin-autosave.php:335
 msgid "Lon:"
-msgstr ""
+msgstr "經度："
 
 #: wppa-photo-admin-autosave.php:336
 msgid "Refresh the page after changing to see the degrees being updated"
-msgstr ""
+msgstr "刷新頁面後 改變角度"
 
 #: wppa-photo-admin-autosave.php:345
-#, fuzzy
 msgid "Photoname:"
-msgstr "圖片名稱"
+msgstr "照片名稱："
 
 #: wppa-photo-admin-autosave.php:349
 msgid ""
@@ -2740,11 +2712,11 @@ msgstr "更新相片說明"
 
 #: wppa-photo-admin-autosave.php:380
 msgid "Tags:"
-msgstr "標籤："
+msgstr "標籤:"
 
 #: wppa-photo-admin-autosave.php:388
 msgid "Separate tags with commas."
-msgstr ""
+msgstr "用逗號分隔標籤。"
 
 #: wppa-photo-admin-autosave.php:389
 msgid "Examples:"
@@ -2768,7 +2740,7 @@ msgstr "狀態:"
 
 #: wppa-photo-admin-autosave.php:417 wppa-photo-admin-autosave.php:423
 msgid "Publish"
-msgstr ""
+msgstr "發布"
 
 #: wppa-photo-admin-autosave.php:418
 msgid "Featured"
@@ -2782,15 +2754,15 @@ msgstr ""
 
 #: wppa-photo-admin-autosave.php:433
 msgid "Watermark:"
-msgstr "水印："
+msgstr "水印:"
 
 #: wppa-photo-admin-autosave.php:439 wppa-photo-admin-autosave.php:452
 msgid "File:"
-msgstr "檔案："
+msgstr "檔案:"
 
 #: wppa-photo-admin-autosave.php:444 wppa-photo-admin-autosave.php:453
 msgid "Pos:"
-msgstr "位置："
+msgstr "位置:"
 
 #: wppa-photo-admin-autosave.php:448
 msgid "Apply watermark"
@@ -2808,7 +2780,7 @@ msgstr "未設定"
 
 #: wppa-photo-admin-autosave.php:466
 msgid "Remark:"
-msgstr "備註："
+msgstr "備註:"
 
 #: wppa-photo-admin-autosave.php:469
 #, php-format
@@ -2861,7 +2833,7 @@ msgstr "搜索相片"
 
 #: wppa-search-widget.php:75
 msgid "Text:"
-msgstr "文字："
+msgstr "文字:"
 
 #: wppa-search-widget.php:76
 msgid ""
@@ -2910,21 +2882,17 @@ msgid "No file selected or error on upload"
 msgstr ""
 
 #: wppa-settings-autosave.php:144
-#, fuzzy
 msgid ""
 "Remaking image files from the available source photo files. Please wait..."
 "<br />"
-msgstr "重建縮圖中，開始ID=%s, 請稍候...<br/>"
+msgstr ""
 
 #: wppa-settings-autosave.php:145
-#, fuzzy
 msgid ""
 "If the line of dots stops growing or your browser reports Ready but you did "
 "NOT get a 'READY remaking image files' message, your server has given up. In "
 "that case: continue this action by clicking"
 msgstr ""
-"如果點線停止增長或你的瀏覽器報告準備好，但你沒有得到一個'做好準備再生縮圖'消"
-"息，你的服務器已經放棄了。在這種情況下：繼續通過點擊這個動作"
 
 #: wppa-settings-autosave.php:149 wppa-settings-autosave.php:174
 #, php-format
@@ -2940,9 +2908,8 @@ msgid ""
 msgstr "<br />也可能有他限制，　如CPU時限。"
 
 #: wppa-settings-autosave.php:157
-#, fuzzy
 msgid "READY remaking image files."
-msgstr "準備生成縮圖。"
+msgstr ""
 
 #: wppa-settings-autosave.php:169
 #, php-format
@@ -2972,7 +2939,7 @@ msgstr "數據庫修改:"
 
 #: wppa-settings-autosave.php:199
 msgid "WP Charset:"
-msgstr "WP 字元集："
+msgstr "WP 字元集:"
 
 #: wppa-settings-autosave.php:202
 msgid "Multisite in singlesite mode."
@@ -3005,7 +2972,7 @@ msgstr "操作導致頁面重載。"
 #: wppa-settings-autosave.php:218 wppa-settings-autosave.php:4314
 #: wppa-settings-autosave.php:4324
 msgid "Are you sure?"
-msgstr "你確定嗎？"
+msgstr "你確定嗎?"
 
 #: wppa-settings-autosave.php:219
 msgid "action that does not cause page reload."
@@ -3038,11 +3005,11 @@ msgstr "隱藏"
 
 #: wppa-settings-autosave.php:241
 msgid "Table I:"
-msgstr "表 I："
+msgstr "表 I:"
 
 #: wppa-settings-autosave.php:241
 msgid "Sizes:"
-msgstr "尺寸："
+msgstr "尺寸:"
 
 #: wppa-settings-autosave.php:242
 msgid ""
@@ -3515,7 +3482,7 @@ msgstr "縮圖框的高度。"
 
 #: wppa-settings-autosave.php:486
 msgid "Thumbnail spacing"
-msgstr "縮圖間距"
+msgstr "縮圖 間距"
 
 #: wppa-settings-autosave.php:487
 msgid "The spacing between adjacent thumbnail frames."
@@ -3616,7 +3583,7 @@ msgstr ""
 
 #: wppa-settings-autosave.php:533 wppa-settings-autosave.php:1239
 msgid "Album cover related settings"
-msgstr "相簿創建"
+msgstr "相簿建立"
 
 #: wppa-settings-autosave.php:536
 msgid "Maximum width for a album cover display."
@@ -3667,14 +3634,12 @@ msgid ""
 msgstr "更改封面相片的大小可能會導致所有縮圖正在恢復中。這可能需要一段時間。"
 
 #: wppa-settings-autosave.php:559
-#, fuzzy
 msgid "Coverphoto size multi"
-msgstr "封面相片尺寸"
+msgstr ""
 
 #: wppa-settings-autosave.php:560
-#, fuzzy
 msgid "The size of coverphotos if more than one."
-msgstr "封面的相片尺寸。"
+msgstr ""
 
 #: wppa-settings-autosave.php:567
 msgid "Size is height"
@@ -3815,7 +3780,7 @@ msgstr "輸入widget中的TopTen額定相片的最大數量。"
 
 #: wppa-settings-autosave.php:641
 msgid "entries"
-msgstr "項目"
+msgstr "條目"
 
 #: wppa-settings-autosave.php:644
 msgid "Comment size"
@@ -3948,11 +3913,11 @@ msgstr "大"
 
 #: wppa-settings-autosave.php:737
 msgid "Table II:"
-msgstr "表 II："
+msgstr "表 II:"
 
 #: wppa-settings-autosave.php:737
 msgid "Visibility:"
-msgstr "可見性："
+msgstr "可見性:"
 
 #: wppa-settings-autosave.php:738
 msgid "This table describes the visibility of certain wppa+ elements."
@@ -4790,11 +4755,11 @@ msgstr ""
 
 #: wppa-settings-autosave.php:1280
 msgid "Skip empty albums"
-msgstr ""
+msgstr "略過空相簿"
 
 #: wppa-settings-autosave.php:1281
 msgid "Do not show empty albums, except for admin and owner."
-msgstr ""
+msgstr "不要顯示空的相簿，除了管理員和擁有者。"
 
 #: wppa-settings-autosave.php:1289
 msgid "Big Browse Buttons in widget"
@@ -4810,7 +4775,7 @@ msgstr "重疊關閉標籤文字"
 
 #: wppa-settings-autosave.php:1301
 msgid "The text label for the cross exit symbol."
-msgstr ""
+msgstr "交叉退出符號的文本標籤。"
 
 #: wppa-settings-autosave.php:1302
 msgid ""
@@ -5056,7 +5021,7 @@ msgstr ""
 
 #: wppa-settings-autosave.php:1450
 msgid "Table III:"
-msgstr "表 III："
+msgstr "表 III:"
 
 #: wppa-settings-autosave.php:1450
 msgid "Backgrounds:"
@@ -5257,7 +5222,7 @@ msgstr "導航輸入有效的CSS背景和邊框顏色。"
 
 #: wppa-settings-autosave.php:1644
 msgid "Table IV:"
-msgstr "表 IV："
+msgstr "表 IV:"
 
 #: wppa-settings-autosave.php:1644
 msgid "Behaviour:"
@@ -5269,7 +5234,7 @@ msgstr "此表描述了一些wppa+元素的動態行為。"
 
 #: wppa-settings-autosave.php:1663
 msgid "System related settings"
-msgstr ""
+msgstr "系統相關設定"
 
 #: wppa-settings-autosave.php:1665
 msgid "Use Ajax"
@@ -5297,7 +5262,7 @@ msgstr ""
 msgid ""
 "the photo names will be displayed in the generated urls in the browser "
 "address line."
-msgstr "相片名稱將顯示在瀏覽器地URL上。"
+msgstr "相片名稱將顯示在瀏覽器地url上。"
 
 #: wppa-settings-autosave.php:1677
 msgid "These urls are valid and can be saved for use later."
@@ -5337,12 +5302,11 @@ msgstr ""
 #: wppa-settings-autosave.php:1689
 msgid ""
 "Table IV-A2 (Photo names in urls) must be UNchecked for this setting to work!"
-msgstr "表 IV-A2 （相片名稱網址）設定必須是未選中！"
+msgstr "表 IV-A2 （相片名稱網址）設定必須是未選中!"
 
 #: wppa-settings-autosave.php:1694
-#, fuzzy
 msgid "Update addressline"
-msgstr "更新失敗"
+msgstr ""
 
 #: wppa-settings-autosave.php:1695
 msgid "Update the addressline after an ajax action or next slide."
@@ -5371,9 +5335,8 @@ msgid "Switching this off will affect the browsers behaviour."
 msgstr ""
 
 #: wppa-settings-autosave.php:1704
-#, fuzzy
 msgid "Render shortcode always"
-msgstr "縮圖的文字字體"
+msgstr ""
 
 #: wppa-settings-autosave.php:1705
 msgid "This will skip the check on proper initialisation."
@@ -5872,24 +5835,20 @@ msgid "Cover opacity"
 msgstr "封面透明度"
 
 #: wppa-settings-autosave.php:1975
-#, fuzzy
 msgid "Cover type"
-msgstr "封面文字"
+msgstr "封面類型"
 
 #: wppa-settings-autosave.php:1976
-#, fuzzy
 msgid "Select the default cover type."
-msgstr "選擇的副標題內容。"
+msgstr "選擇默認封面類型。"
 
 #: wppa-settings-autosave.php:1979
-#, fuzzy
 msgid "--- standard ---"
-msgstr "--- 隨機 ---"
+msgstr "--- 標準 ---"
 
 #: wppa-settings-autosave.php:1979
-#, fuzzy
 msgid "Image Factory"
-msgstr "圖像 URL"
+msgstr "圖像工廠"
 
 #: wppa-settings-autosave.php:1986
 msgid "The umber of coverphotos. Must be > 1 and < 25."
@@ -6066,7 +6025,7 @@ msgstr "--- 相簿擁有人 ---"
 
 #: wppa-settings-autosave.php:2088
 msgid "--- Admin & Owner ---"
-msgstr "--- 管理及擁有人 ---"
+msgstr "--- 管理及擁有人 ---(& )"
 
 #: wppa-settings-autosave.php:2089
 msgid "--- Uploader ---"
@@ -6074,11 +6033,11 @@ msgstr "--- 上載者 ---"
 
 #: wppa-settings-autosave.php:2090
 msgid "--- Up & admin ---"
-msgstr "--- 上載及管理 ---"
+msgstr "--- 上載及管理 ---(& )"
 
 #: wppa-settings-autosave.php:2091
 msgid "--- Up & Owner ---"
-msgstr "--- 上載及擁有人 ---"
+msgstr "--- 上載及擁有人 ---(& )"
 
 #: wppa-settings-autosave.php:2110
 msgid "Comment ntfy added"
@@ -6145,9 +6104,8 @@ msgid "extremely slow (2 s.)"
 msgstr "極慢(4 s.)"
 
 #: wppa-settings-autosave.php:2145
-#, fuzzy
 msgid "Overlay at top in Chrome"
-msgstr "重疊sphoto名稱"
+msgstr ""
 
 #: wppa-settings-autosave.php:2146
 msgid ""
@@ -6160,7 +6118,7 @@ msgstr ""
 
 #: wppa-settings-autosave.php:2169
 msgid "Table V:"
-msgstr "表 V："
+msgstr "表 V:"
 
 #: wppa-settings-autosave.php:2169
 msgid "Fonts:"
@@ -6306,7 +6264,7 @@ msgstr "輸入字體名稱，大小和顏色相簿封面標題。"
 
 #: wppa-settings-autosave.php:2351
 msgid "Table VI:"
-msgstr "表 VI："
+msgstr "表 VI:"
 
 #: wppa-settings-autosave.php:2351
 msgid "Links:"
@@ -6326,7 +6284,7 @@ msgstr "相片中的具體鏈接"
 
 #: wppa-settings-autosave.php:2365 wppa-settings-autosave.php:2788
 msgid "PSO"
-msgstr ""
+msgstr "PSO"
 
 #: wppa-settings-autosave.php:2377 wppa-settings-autosave.php:2394
 #: wppa-settings-autosave.php:2396 wppa-settings-autosave.php:2398
@@ -6395,7 +6353,7 @@ msgstr "--- 還沒有鏈接到網頁 ---"
 
 #: wppa-settings-autosave.php:2437
 msgid "Links from images in WPPA+ Widgets"
-msgstr ""
+msgstr "WPPA+ Widgets 相片鏈接"
 
 #: wppa-settings-autosave.php:2439
 msgid "PotdWidget"
@@ -6499,7 +6457,7 @@ msgstr "選擇鏈接類型的十大相片指向。"
 
 #: wppa-settings-autosave.php:2590
 msgid "Links from other WPPA+ images"
-msgstr ""
+msgstr "WPPA+ Widgets 其它相片鏈接"
 
 #: wppa-settings-autosave.php:2592
 msgid "Cover Image"
@@ -6672,11 +6630,11 @@ msgstr ""
 
 #: wppa-settings-autosave.php:2798
 msgid "Table VII:"
-msgstr "表 VII："
+msgstr "表 VII:"
 
 #: wppa-settings-autosave.php:2798
 msgid "Access and Security:"
-msgstr "訪問和安全："
+msgstr "訪問和安全:"
 
 #: wppa-settings-autosave.php:2799
 msgid "This table describes the access settings for wppa+ elements and pages."
@@ -6700,7 +6658,7 @@ msgstr "只有擁有人"
 
 #: wppa-settings-autosave.php:2862
 msgid "Limit album access to the album owners only."
-msgstr "相簿訪問權限只限制到相簿創建者。"
+msgstr "相簿訪問權限只限制到相簿建立者。"
 
 #: wppa-settings-autosave.php:2863
 msgid ""
@@ -6857,7 +6815,7 @@ msgstr "一周"
 
 #: wppa-settings-autosave.php:2958
 msgid "Table VIII:"
-msgstr "表 VIII："
+msgstr "表 VIII:"
 
 #: wppa-settings-autosave.php:2958
 msgid "Actions:"
@@ -6893,7 +6851,7 @@ msgid ""
 "Re-initilizes the plugin, (re)creates database tables and sets up default "
 "settings and directories if required."
 msgstr ""
-"重新初始化插件，（重新）創建數據庫表，並設定了默認的設定和目錄，如果需要的"
+"重新初始化插件，（重新）建立數據庫表，並設定了默認的設定和目錄，如果需要的"
 "話。"
 
 #: wppa-settings-autosave.php:2983
@@ -6928,7 +6886,7 @@ msgstr "還原默認設定，備份或皮膚檔案的所有設定。"
 msgid ""
 "Restores all the settings from the factory supplied defaults, the backup you "
 "created or from a skin file."
-msgstr "恢復工廠提供的默認設定，你創建的備份或從皮膚檔案中的所有設定。"
+msgstr "恢復工廠提供的默認設定，你建立的備份或從皮膚檔案中的所有設定。"
 
 #: wppa-settings-autosave.php:3008
 msgid "--- set to defaults ---"
@@ -7013,7 +6971,7 @@ msgstr "重設所有評級。"
 
 #: wppa-settings-autosave.php:3072
 msgid "WARNING: If checked, this will clear all ratings in the system!"
-msgstr "警告：如勾選將會清除系統所有的評級！"
+msgstr "警告：如勾選將會清除系統所有的評級!"
 
 #: wppa-settings-autosave.php:3079
 msgid "Reset IPTC"
@@ -7025,7 +6983,7 @@ msgstr "清除所有IPTC資料。"
 
 #: wppa-settings-autosave.php:3081
 msgid "WARNING: If checked, this will clear all IPTC data in the system!"
-msgstr "警告：如勾選將會清除系統所有的ＩPTC數據！"
+msgstr "警告：如勾選將會清除系統所有的ＩPTC數據!"
 
 #: wppa-settings-autosave.php:3088
 msgid "Reset EXIF"
@@ -7037,11 +6995,11 @@ msgstr "清除所有EXIF資料。"
 
 #: wppa-settings-autosave.php:3090
 msgid "WARNING: If checked, this will clear all EXIF data in the system!"
-msgstr "警告：如勾選將會清除系統所有的EXIF數據！"
+msgstr "警告：如勾選將會清除系統所有的EXIF數據!"
 
 #: wppa-settings-autosave.php:3115
 msgid "Table IX:"
-msgstr "表 IX："
+msgstr "表 IX:"
 
 #: wppa-settings-autosave.php:3115
 msgid "Miscellaneous:"
@@ -7237,7 +7195,7 @@ msgstr ""
 
 #: wppa-settings-autosave.php:3230
 msgid "photo name"
-msgstr "相片名稱"
+msgstr "圖片名稱"
 
 #: wppa-settings-autosave.php:3230
 msgid "name without file-ext"
@@ -7267,49 +7225,47 @@ msgstr "輸入widget中的TopTen額定相片的最大數量。"
 
 #: wppa-settings-autosave.php:3253
 msgid "JPG image quality"
-msgstr ""
+msgstr "JPG圖像質量"
 
 #: wppa-settings-autosave.php:3254
 msgid "The jpg quality when photos are downsized"
-msgstr ""
+msgstr "JPG縮圖質量"
 
 #: wppa-settings-autosave.php:3255
-#, fuzzy
 msgid "The higher the number the better the quality but the larger the file"
-msgstr "Hoe hoger het getal, hoe sneller de animatie"
+msgstr "數字越高質量越好，但檔案較大"
 
 #: wppa-settings-autosave.php:3256
 msgid "Possible values 20..100"
-msgstr ""
+msgstr "可能的值為20.. 100"
 
 #: wppa-settings-autosave.php:3261
 msgid "Geo info edit"
-msgstr ""
+msgstr "編輯地理信息"
 
 #: wppa-settings-autosave.php:3262
 msgid "Lattitude and longitude may be edited in photo admin."
-msgstr ""
+msgstr "經度和緯度 可以在照片管理中編輯。"
 
 #: wppa-settings-autosave.php:3268
-#, fuzzy
 msgid "Auto continue"
-msgstr "自定義Box"
+msgstr "自動繼續"
 
 #: wppa-settings-autosave.php:3269
 msgid "Continue automatic after time up"
-msgstr ""
+msgstr "時間到後自動繼續"
 
 #: wppa-settings-autosave.php:3270
 msgid ""
 "If checked, an attempt will be made to restart an admin process when the "
 "time is up."
-msgstr ""
+msgstr "如勾選，時間到後將嘗試重新啟動管理工作。"
 
 #: wppa-settings-autosave.php:3271
 msgid ""
 "It is required that your server has set the php configuration "
 "max_execution_time correctly."
-msgstr ""
+msgstr "你的服務器php max_execution_time 設定必須正確。"
 
 #: wppa-settings-autosave.php:3277
 msgid "Set max execution time here."
@@ -7343,7 +7299,7 @@ msgstr "天"
 
 #: wppa-settings-autosave.php:3290 wppa-settings-autosave.php:3299
 msgid "One week"
-msgstr "星期"
+msgstr "一周"
 
 #: wppa-settings-autosave.php:3290 wppa-settings-autosave.php:3299
 msgid "One month"
@@ -7584,7 +7540,7 @@ msgstr ""
 
 #: wppa-settings-autosave.php:3459
 msgid "position:"
-msgstr "位置："
+msgstr "位置:"
 
 #: wppa-settings-autosave.php:3463
 msgid "Upload watermark"
@@ -7596,7 +7552,7 @@ msgstr "上載新的水印檔案"
 
 #: wppa-settings-autosave.php:3468
 msgid "Upload it!"
-msgstr "上載吧！"
+msgstr "上載吧!"
 
 #: wppa-settings-autosave.php:3472
 msgid "You can set the intensity of watermarks here."
@@ -7787,7 +7743,7 @@ msgstr "使用SCABN"
 
 #: wppa-settings-autosave.php:3606
 msgid "Use the wppa interface to Simple Cart & Buy Now plugin."
-msgstr "Simple Cart 和 Buy Now插件使用wppa接口。"
+msgstr "Simple Cart 和 Buy Now插件使用wppa接口(& )。"
 
 #: wppa-settings-autosave.php:3607
 msgid ""
@@ -7830,9 +7786,8 @@ msgid "GPX Shortcode"
 msgstr ""
 
 #: wppa-settings-autosave.php:3619
-#, fuzzy
 msgid "The shortcode to be used for the gpx feature."
-msgstr "上述序列可多次使用的單頁或POST。"
+msgstr ""
 
 #: wppa-settings-autosave.php:3620
 msgid ""
@@ -7904,16 +7859,15 @@ msgstr ""
 
 #: wppa-settings-autosave.php:3660
 msgid "Keep sourcefiles frontend"
-msgstr ""
+msgstr "保留源文件前台"
 
 #: wppa-settings-autosave.php:3661
 msgid "Keep the original frontend uploaded photo files."
-msgstr ""
+msgstr "保持原上傳相片檔案。"
 
 #: wppa-settings-autosave.php:3669
-#, fuzzy
 msgid "Source directory"
-msgstr "設定源目錄"
+msgstr "源目錄"
 
 #: wppa-settings-autosave.php:3670
 msgid "The path to the directory where the original photofiles will be saved."
@@ -7934,11 +7888,11 @@ msgstr ""
 
 #: wppa-settings-autosave.php:3678
 msgid "Keep sync"
-msgstr ""
+msgstr "保持同步"
 
 #: wppa-settings-autosave.php:3679
 msgid "Keep source synchronously with wppa system."
-msgstr ""
+msgstr "來源與wppa系統同步。"
 
 #: wppa-settings-autosave.php:3680
 msgid ""
@@ -7953,14 +7907,12 @@ msgid ""
 msgstr ""
 
 #: wppa-settings-autosave.php:3686
-#, fuzzy
 msgid "Remake"
-msgstr "備註："
+msgstr "再作"
 
 #: wppa-settings-autosave.php:3687
-#, fuzzy
 msgid "Remake the photofiles."
-msgstr "簡單的相片（檔案）。"
+msgstr "再作相片檔案。"
 
 #: wppa-settings-autosave.php:3688
 msgid ""
@@ -7971,12 +7923,11 @@ msgstr ""
 
 #: wppa-settings-autosave.php:3693
 msgid "Remake add"
-msgstr ""
+msgstr "再作添加"
 
 #: wppa-settings-autosave.php:3694
-#, fuzzy
 msgid "Photos will be added from the source pool"
-msgstr "匯入相片過程中將被精簡。"
+msgstr "從Source pool 添加相片"
 
 #: wppa-settings-autosave.php:3695
 msgid ""
@@ -7985,14 +7936,12 @@ msgid ""
 msgstr ""
 
 #: wppa-settings-autosave.php:3700
-#, fuzzy
 msgid "Save IPTC data"
-msgstr "IPTC資料"
+msgstr "儲存IPTC數據"
 
 #: wppa-settings-autosave.php:3701
-#, fuzzy
 msgid "Store the iptc data from the photo into the iptc db table"
-msgstr "顯示。"
+msgstr "相片IPTC數據存儲到IPTC數據庫中"
 
 #: wppa-settings-autosave.php:3702
 msgid ""
@@ -8001,13 +7950,12 @@ msgid ""
 msgstr ""
 
 #: wppa-settings-autosave.php:3707
-#, fuzzy
 msgid "Save EXIF data"
-msgstr "EXIF資料"
+msgstr "儲存EXIF數據"
 
 #: wppa-settings-autosave.php:3708
 msgid "Store the exif data from the photo into the exif db table"
-msgstr ""
+msgstr "相片EXIF數據存儲到EXIF數據庫中"
 
 #: wppa-settings-autosave.php:3709
 msgid ""
@@ -8016,9 +7964,8 @@ msgid ""
 msgstr ""
 
 #: wppa-settings-autosave.php:3714
-#, fuzzy
 msgid "Change source restricted"
-msgstr "鏈接標題"
+msgstr "更改來源限制"
 
 #: wppa-settings-autosave.php:3715
 msgid "Changing the import source dir requires admin rights."
@@ -8032,11 +7979,11 @@ msgstr ""
 
 #: wppa-settings-autosave.php:3721
 msgid "Import Create page"
-msgstr ""
+msgstr "匯入建立頁"
 
 #: wppa-settings-autosave.php:3722
 msgid "Create wp page when a directory to album is imported."
-msgstr ""
+msgstr "匯入相簿目錄時 建立WP頁。"
 
 #: wppa-settings-autosave.php:3723
 msgid ""
@@ -8045,9 +7992,8 @@ msgid ""
 msgstr ""
 
 #: wppa-settings-autosave.php:3729
-#, fuzzy
 msgid "Page content"
-msgstr "inhoud"
+msgstr "頁面內容"
 
 #: wppa-settings-autosave.php:3730
 msgid "The content of the page. Must contain <b>w#album</b>"
@@ -8060,40 +8006,36 @@ msgid ""
 msgstr ""
 
 #: wppa-settings-autosave.php:3737
-#, fuzzy
 msgid "Page type"
-msgstr "頁數量"
+msgstr "頁面類型"
 
 #: wppa-settings-autosave.php:3738
-#, fuzzy
 msgid "Select the type of page to create."
-msgstr "選擇的副標題內容。"
+msgstr "選擇頁面建立類型。"
 
 #: wppa-settings-autosave.php:3742
 msgid "Post"
-msgstr ""
+msgstr "發布"
 
 #: wppa-settings-autosave.php:3747
-#, fuzzy
 msgid "Page status"
-msgstr "顯示方式:"
+msgstr "頁面狀態"
 
 #: wppa-settings-autosave.php:3748
-#, fuzzy
 msgid "Select the initial status of the page."
-msgstr "選擇的副標題內容。"
+msgstr "選擇頁面的初始狀態。"
 
 #: wppa-settings-autosave.php:3752
 msgid "Published"
-msgstr ""
+msgstr "己發布"
 
 #: wppa-settings-autosave.php:3752
 msgid "Draft"
-msgstr ""
+msgstr "草稿"
 
 #: wppa-settings-autosave.php:3775
 msgid "Table X:"
-msgstr "表 IX："
+msgstr "表 IX:"
 
 #: wppa-settings-autosave.php:3775
 msgid "IPTC Configuration:"
@@ -8122,7 +8064,7 @@ msgstr "可選"
 
 #: wppa-settings-autosave.php:3835
 msgid "Table XI:"
-msgstr "表 XI："
+msgstr "表 XI:"
 
 #: wppa-settings-autosave.php:3835
 msgid "EXIF Configuration:"
@@ -8134,11 +8076,11 @@ msgstr "該表定義了鏈接類型和頁面"
 
 #: wppa-settings-autosave.php:3895
 msgid "Table XII:"
-msgstr "表 XII："
+msgstr "表 XII:"
 
 #: wppa-settings-autosave.php:3895
 msgid "WPPA+ and PHP Configuration:"
-msgstr "WPPA+ 和PHP配置："
+msgstr "WPPA+ 和PHP配置:"
 
 #: wppa-settings-autosave.php:3896
 msgid ""
@@ -8192,7 +8134,7 @@ msgstr "插件管理功能。"
 
 #: wppa-settings-autosave.php:3966
 msgid "The relative upload directory."
-msgstr "成功創建上傳目錄。"
+msgstr "成功建立上傳目錄。"
 
 #: wppa-settings-autosave.php:3971
 msgid "The upload directory path."
@@ -8223,17 +8165,16 @@ msgid "Click for help"
 msgstr "按此顯示幫助"
 
 #: wppa-settings-autosave.php:4161 wppa-settings-autosave.php:4177
-#, fuzzy
 msgid "Warning!"
-msgstr "警告："
+msgstr "警告：!"
 
 #: wppa-settings-autosave.php:4161 wppa-settings-autosave.php:4177
 msgid "Please read the help"
-msgstr ""
+msgstr "請閱讀 幫助"
 
 #: wppa-settings-autosave.php:4282
 msgid "Checked"
-msgstr ""
+msgstr "勾選"
 
 #: wppa-settings-autosave.php:4283
 msgid "Unchecked"
@@ -8266,7 +8207,7 @@ msgstr "選擇網頁用來顯示搜索結果。網頁必須包含%%wppa%%。"
 msgid ""
 "If you ommit this, the link will not work at all or simply refresh the (home)"
 "page."
-msgstr ""
+msgstr "如果省略，此鏈接將不會有用，或者乾脆刷新頁面（首頁）。"
 
 #: wppa-setup.php:308
 msgid "IMPORTANT UPGRADE NOTICE"
@@ -8309,7 +8250,7 @@ msgstr "在更新過程中發生錯誤"
 msgid ""
 "<span style=\"color:red\" >Warning: Do not upload copyrighted material!</"
 "span>"
-msgstr "<span style=\"color:red\">警告：不要上載受版權保護的材料！</span>"
+msgstr "span style=\"color:red\">警告：不要上載受版權保護的材料！</span"
 
 #: wppa-setup.php:838
 msgid "Type your custom url here"
@@ -8330,7 +8271,7 @@ msgstr "縮圖 相片"
 
 #: wppa-setup.php:855
 msgid "Search photos"
-msgstr "搜索相片"
+msgstr "搜索 相片"
 
 #: wppa-setup.php:912
 msgid ""
@@ -8339,31 +8280,31 @@ msgstr "該上傳目錄不存在，請確保 upload檔案可WP上傳。"
 
 #: wppa-setup.php:916
 msgid "Successfully created uploads directory."
-msgstr "成功創建上傳目錄。"
+msgstr "成功建立上傳目錄。"
 
 #: wppa-setup.php:927
 msgid "Could not create the wppa directory."
-msgstr "無法創建wppa目錄。"
+msgstr "無法建立wppa目錄。"
 
 #: wppa-setup.php:931
 msgid "Successfully created wppa directory."
-msgstr "成功創建wppa目錄。"
+msgstr "成功建立wppa目錄。"
 
 #: wppa-setup.php:941
 msgid "Could not create the wppa thumbs directory."
-msgstr "無法創建wppa縮圖目錄。"
+msgstr "無法建立wppa縮圖目錄。"
 
 #: wppa-setup.php:945
 msgid "Successfully created wppa thumbs directory."
-msgstr "成功創建wppa首個目錄。"
+msgstr "成功建立wppa首個目錄。"
 
 #: wppa-setup.php:955
 msgid "Could not create the wppa watermarks directory."
-msgstr "無法創建wppa水印目錄。"
+msgstr "無法建立wppa水印目錄。"
 
 #: wppa-setup.php:959
 msgid "Successfully created wppa watermarks directory."
-msgstr "成功創建wppa首個目錄。"
+msgstr "成功建立wppa首個目錄。"
 
 #: wppa-setup.php:971
 msgid "Unable to create depot directory."
@@ -8371,15 +8312,15 @@ msgstr "無法建立目錄庫。"
 
 #: wppa-setup.php:975
 msgid "Successfully created wppa depot directory."
-msgstr "成功創建wppa用戶庫目錄。"
+msgstr "成功建立wppa用戶庫目錄。"
 
 #: wppa-setup.php:986
 msgid "Unable to create user depot directory"
-msgstr "無法創建用戶庫目錄"
+msgstr "無法建立用戶庫目錄"
 
 #: wppa-setup.php:990
 msgid "Successfully created wppa user depot directory."
-msgstr "成功創建wppa用戶庫目錄。"
+msgstr "成功建立wppa用戶庫目錄。"
 
 #: wppa-setup.php:998
 #, php-format
@@ -8388,7 +8329,7 @@ msgid ""
 "using an FTP program."
 msgstr ""
 "要求你的管理員，給你更多的權利，嘗試從表七的相簿1項CHMOD - >設定管理頁面，或"
-"使用一個FTP程序手動創建<b>%s</b>。"
+"使用一個FTP程序手動建立<b>%s</b>。"
 
 #: wppa-slideshow-widget.php:16
 msgid "WPPA+ Sidebar Slideshow"
@@ -8405,6 +8346,8 @@ msgid ""
 "value for the height will be ignored if you set the vertical alignment to "
 "'fit'."
 msgstr ""
+"輸入的寬度和任選的區域的高度，其特徵在於，所述幻燈片將出現。如果你指定的高度"
+"為0，將被計算。如果你的垂直對齊方式設置為“適應”，高度值將被忽略。"
 
 #: wppa-slideshow-widget.php:193
 msgid "Width:"
@@ -8437,7 +8380,7 @@ msgstr "如果被設定為 'yes',豎直對齊將被迫 'fit'。"
 
 #: wppa-slideshow-widget.php:204
 msgid "Vertical alignment:"
-msgstr "垂直對齊："
+msgstr "垂直對齊:"
 
 #: wppa-slideshow-widget.php:210
 msgid "Set the desired vertical alignment method."
@@ -8517,7 +8460,7 @@ msgstr "相片順序"
 
 #: wppa-tinymce.php:75
 msgid "Type of Gallery display:"
-msgstr "顯示相簿類型："
+msgstr "顯示相簿類型:"
 
 #: wppa-tinymce.php:78
 msgid "The cover of an album"
@@ -8540,9 +8483,8 @@ msgid "A slideshow with a filmstrip only"
 msgstr "幻燈片只播出膠片條"
 
 #: wppa-tinymce.php:83
-#, fuzzy
 msgid "A filmstrip only"
-msgstr "幻燈片只播出膠片條"
+msgstr "只用膠片"
 
 #: wppa-tinymce.php:84
 msgid "A single photo"
@@ -8562,11 +8504,11 @@ msgstr "顯示普通的相簿"
 
 #: wppa-tinymce.php:90
 msgid "Specify the type of gallery"
-msgstr ""
+msgstr "指定相簿類型"
 
 #: wppa-tinymce.php:95
 msgid "Explanation:"
-msgstr "說明："
+msgstr "說明:"
 
 #: wppa-tinymce.php:97
 msgid "Use this gallerytype to display all the top-level album covers."
@@ -8576,11 +8518,11 @@ msgstr "使用此相簿類別來顯示所有頂級相簿封面。"
 msgid ""
 "Also, make a page with this type of gallery display to be used as a target "
 "for the Search results and for links set in Table VI."
-msgstr ""
+msgstr "另外，使一個頁面相簿顯示搜索結果和在表VI中設定的鏈接。"
 
 #: wppa-tinymce.php:103
 msgid "The Album to be used:"
-msgstr "要使用的相簿："
+msgstr "要使用的相簿:"
 
 #: wppa-tinymce.php:114 wppa-upload.php:184 wppa-upload.php:231
 msgid "Please select an album"
@@ -8612,7 +8554,7 @@ msgstr "沒有相簿目錄或相片"
 
 #: wppa-tinymce.php:187
 msgid "Specify the album to be used or --- A special selection of photos ---"
-msgstr ""
+msgstr "使用指定相簿或---特選相片---"
 
 #: wppa-tinymce.php:188
 msgid "* Album contains less than the minimun number of photos"
@@ -8620,7 +8562,7 @@ msgstr "* 相簿少於最小數目的相片"
 
 #: wppa-tinymce.php:194
 msgid "The Photo to be used:"
-msgstr "要使用的相片："
+msgstr "要使用的相片:"
 
 #: wppa-tinymce.php:199
 msgid "Please select a photo"
@@ -8644,17 +8586,17 @@ msgstr "指定動畫的速度將用於幻燈片"
 
 #: wppa-tinymce.php:216
 msgid "You can select from a maximum of 100 most recently added photos"
-msgstr ""
+msgstr "您可以選擇最多100張最近添加的相片"
 
 #: wppa-tinymce.php:222
 msgid "The size of the display:"
-msgstr ""
+msgstr "顯示器的大小："
 
 #: wppa-tinymce.php:227
 msgid ""
 "Specify the horizontal size in pixels or <span style=\"color:blue\" >auto</"
 "span>."
-msgstr ""
+msgstr "指定水平像素大小或<span style=\"color:blue\" >自動</span>。"
 
 #: wppa-tinymce.php:228
 msgid ""
@@ -8662,6 +8604,8 @@ msgid ""
 "interpreted as a <span style=\"color:blue\" >percentage</span> of the "
 "available space."
 msgstr ""
+"值少了過 <span style=\"color:blue\" >100</span>自動會被解釋為一個<span style="
+"\"color:blue\" >百分比</span>的可用空間。"
 
 #: wppa-tinymce.php:229
 msgid "Leave this blank for default size"
@@ -8673,7 +8617,7 @@ msgstr "垂直對齊:"
 
 #: wppa-tinymce.php:243
 msgid "Specify the alignment to be used or --- none ---"
-msgstr ""
+msgstr "指定使用對齊或 ---沒有---"
 
 #: wppa-tinymce.php:249
 msgid "Insert Gallery"
@@ -8681,7 +8625,7 @@ msgstr "插入相簿"
 
 #: wppa-tinymce.php:250
 msgid "Create new style shortcode"
-msgstr ""
+msgstr "建立新的風格簡碼"
 
 #: wppa-topten-widget.php:13
 msgid "WPPA+ Top Ten Rated Photos"
@@ -8689,7 +8633,7 @@ msgstr "WPPA+ 十大高分相片"
 
 #: wppa-topten-widget.php:135
 msgid "Sort by:"
-msgstr "排序方式："
+msgstr "排序方式:"
 
 #: wppa-topten-widget.php:137
 msgid "Mean value"
@@ -8734,16 +8678,16 @@ msgstr "此外，你的托管服務提供商可能已設定上傳檔案的其他
 
 #: wppa-upload.php:110
 msgid "Box A:"
-msgstr "A框："
+msgstr "A框:"
 
 #: wppa-upload.php:110
 msgid "Multiple Photos in one selection"
-msgstr ""
+msgstr "一次選擇多張相片"
 
 #: wppa-upload.php:111
 #, php-format
 msgid "You can select up to %s photos in one selection and upload them."
-msgstr ""
+msgstr "你可以一次選擇最多%s張相片並將它們上傳。"
 
 #: wppa-upload.php:112
 msgid "You need a modern browser that supports HTML-5 to select multiple files"
@@ -8751,7 +8695,7 @@ msgstr "你需要用支持HTML 5的瀏覽器來選擇多個檔案"
 
 #: wppa-upload.php:117 wppa-upload.php:126 wppa-upload.php:209
 msgid "Selected Files:"
-msgstr "選擇檔案："
+msgstr "選擇檔案:"
 
 #: wppa-upload.php:128
 msgid "Size"
@@ -8763,19 +8707,19 @@ msgstr "類型"
 
 #: wppa-upload.php:149
 msgid "Too many!"
-msgstr "太多了！"
+msgstr "太多了!"
 
 #: wppa-upload.php:153
 msgid "Too big!"
-msgstr "太大了！"
+msgstr "太大了!"
 
 #: wppa-upload.php:157
 msgid "Try again!"
-msgstr "再試一次！"
+msgstr "再試一次!"
 
 #: wppa-upload.php:159
 msgid "Total"
-msgstr "總數"
+msgstr "合計"
 
 #: wppa-upload.php:173 wppa-upload.php:220 wppa-upload.php:499
 msgid "Apply watermark file:"
@@ -8783,7 +8727,7 @@ msgstr "套用浮水印檔案:"
 
 #: wppa-upload.php:178 wppa-upload.php:225 wppa-upload.php:503
 msgid "Position:"
-msgstr "位置："
+msgstr "位置:"
 
 #: wppa-upload.php:184
 msgid "Upload Multiple Photos"
@@ -8799,16 +8743,16 @@ msgstr "After upload: Go to the <b>Import Photos</b> page。"
 
 #: wppa-upload.php:203
 msgid "Box B:"
-msgstr "B框："
+msgstr "B框:"
 
 #: wppa-upload.php:203
 msgid "Single Photos in multiple selections"
-msgstr ""
+msgstr "相片多重選擇"
 
 #: wppa-upload.php:204
 #, php-format
 msgid "You can select up to %s photos one by one and upload them at once."
-msgstr ""
+msgstr "你可以選擇最多%s張相片 並將它們一起上傳。"
 
 #: wppa-upload.php:231
 msgid "Upload Single Photos"
@@ -8816,7 +8760,7 @@ msgstr "上載單張相片"
 
 #: wppa-upload.php:258
 msgid "Box C:"
-msgstr "C框："
+msgstr "C框:"
 
 #: wppa-upload.php:258
 msgid "Zipped Photos in one selection"
@@ -8829,6 +8773,8 @@ msgid ""
 "<b>.../%s</b><br/>Once uploaded, use <b>Import Photos</b> to unzip the file "
 "and place the photos in any album."
 msgstr ""
+"您可以上傳一個zip文件。將被放置在您的個人wppa-倉庫：<b>.../%s</b><br/>一旦上"
+"傳，使用<b>匯入相片</ b>解壓縮文件並效在任何相簿。"
 
 #: wppa-upload.php:263
 msgid "Upload Zipped Photos"
@@ -8843,8 +8789,8 @@ msgid ""
 "<small>Ask your administrator to upgrade php to version 5.2.7 or later. This "
 "will enable you to upload zipped photos.</small>"
 msgstr ""
-"<small>請要求你的管理員將php升級到5.27或更高的版本。這將使系統支援Zipped相片"
-"上載。</small>"
+"small>請要求你的管理員將php升級到5.27或更高的版本。這將使系統支援Zipped相片上"
+"載。</small"
 
 #: wppa-upload.php:281 wppa-upload.php:623
 msgid "No albums exist. You must"
@@ -8867,9 +8813,8 @@ msgid "Import photos from:"
 msgstr "匯入相片由:"
 
 #: wppa-upload.php:370
-#, fuzzy
 msgid "Please select a location"
-msgstr "--- 同一個帖子或者一個單獨的網頁 ---"
+msgstr "請選擇位置"
 
 #: wppa-upload.php:375
 msgid "Set source directory"
@@ -8887,7 +8832,7 @@ msgstr "zip檔案存放在儲藏倉庫。"
 #: wppa-upload.php:400 wppa-upload.php:447 wppa-upload.php:513
 #: wppa-upload.php:565
 msgid "Check/uncheck all"
-msgstr ""
+msgstr "勾選/取消所有"
 
 #: wppa-upload.php:404
 msgid "Delete after successful extraction."
@@ -8931,16 +8876,15 @@ msgstr "更新現有的相片"
 
 #: wppa-upload.php:524
 msgid "Do not create duplicates"
-msgstr ""
+msgstr "不要重複建立"
 
 #: wppa-upload.php:559
-#, fuzzy
 msgid "albumdirectories in the depot."
-msgstr "相簿的存放定義。"
+msgstr "倉庫的albumdirectories。"
 
 #: wppa-upload.php:568
 msgid "Create WP page for album to be displayed."
-msgstr ""
+msgstr "在WP建立頁顯示相簿。"
 
 #: wppa-upload.php:614
 msgid "There are no archives, albums or photos in directory:"
@@ -8951,14 +8895,13 @@ msgid "There are no albums or photos in directory:"
 msgstr "沒有相簿目錄或相片:"
 
 #: wppa-upload.php:626
-#, fuzzy
 msgid "Trying to continue..."
-msgstr "嘗試修復"
+msgstr "嘗試繼續..."
 
 #: wppa-upload.php:647
-#, fuzzy, php-format
+#, php-format
 msgid "Time is up. %s photos uploaded in album nr %s."
-msgstr "上傳相簿中的相片星期"
+msgstr "時間到。相片%s上傳到相簿%s。"
 
 #: wppa-upload.php:657 wppa-upload.php:687 wppa-upload.php:891
 msgid "Error inserting photo"
@@ -8986,7 +8929,7 @@ msgstr "在上載中。"
 
 #: wppa-upload.php:792
 msgid "Unknown parent album:"
-msgstr "未知的父相簿："
+msgstr "未知的父相簿:"
 
 #: wppa-upload.php:792
 msgid "--- none --- used."
@@ -9011,12 +8954,12 @@ msgstr "在這裡。"
 #: wppa-upload.php:895
 #, php-format
 msgid "Error inserting photo %s, unknown or non existent album."
-msgstr ""
+msgstr "錯誤插入相片%s，相簿未知的或不存在。"
 
 #: wppa-upload.php:902
 #, php-format
 msgid "Time is up. %s photos imported. Please restart this operation."
-msgstr ""
+msgstr "時間到。相片%s己匯入。請重新啟動此操作。"
 
 #: wppa-upload.php:932
 msgid "Done processing files."
@@ -9035,29 +8978,26 @@ msgid "Albums created."
 msgstr "新增了相簿。"
 
 #: wppa-upload.php:941
-#, fuzzy
 msgid "Directory to album imports."
-msgstr "默認匯入相簿:"
+msgstr "相簿匯入目錄。"
 
 #: wppa-upload.php:942
 #, php-format
 msgid "With total %s photos."
-msgstr ""
+msgstr "共%s張相片。"
 
 #: wppa-upload.php:945
-#, fuzzy
 msgid "Photos updated"
-msgstr "相片匯入。"
+msgstr "相片匯入"
 
 #: wppa-upload.php:947
 #, php-format
 msgid "to %s locations"
-msgstr ""
+msgstr "去位置%s"
 
 #: wppa-upload.php:951
-#, fuzzy
 msgid "single photos imported."
-msgstr "相片匯入。"
+msgstr "匯入了一張相片。"
 
 #: wppa-upload.php:1039
 msgid "Error: unexpected fgets() fail in wppa_get_meta_data()."
@@ -9078,12 +9018,11 @@ msgstr "提取失敗"
 #: wppa-upload.php:1194
 #, php-format
 msgid "Page <a href=\"%s\" target=\"_blank\" >%s</a> created."
-msgstr ""
+msgstr "頁面<a href=\"%s\" target=\"_blank\" >%s</a>己建立。"
 
 #: wppa-upload.php:1198
-#, fuzzy
 msgid "Could not create page."
-msgstr "無法創建相簿。"
+msgstr "無法建立頁面。"
 
 #: wppa-utils.php:193 wppa-utils.php:213
 msgid "--- deleted ---"
@@ -9107,14 +9046,14 @@ msgid "Manage photo"
 msgstr "管理相片"
 
 #: wppa-utils.php:621
-#, fuzzy, php-format
+#, php-format
 msgid "Time up after processing %s items."
-msgstr "處理完的檔案。"
+msgstr "逾時 - 已處理%s個項目。"
 
 #: wppa-utils.php:624 wppa-utils.php:628
 #, php-format
 msgid "Time up after processing %s items. Please restart this operation"
-msgstr ""
+msgstr "逾時 - 已處理%s個項目。請重新啟動此操作"
 
 #: wppa-widget-admin.php:34
 msgid "Widget Photo Width."
@@ -9122,7 +9061,7 @@ msgstr "Widget 相片寬度。"
 
 #: wppa-widget-admin.php:39
 msgid "Changes Saved. Don't forget to activate the widget!"
-msgstr "保存更改。不要忘了激活widget！"
+msgstr "保存更改。不要忘了激活widget!"
 
 #: wppa-widget-admin.php:49
 msgid "WP Photo Album Plus Sidebar Widget Settings"
@@ -9130,7 +9069,7 @@ msgstr "WP Photo Album Plus邊欄Widget設定"
 
 #: wppa-widget-admin.php:58
 msgid "Widget Title:"
-msgstr "Widget 標題："
+msgstr "Widget 標題:"
 
 #: wppa-widget-admin.php:62
 msgid ""
@@ -9140,7 +9079,7 @@ msgstr "輸入/修改widget的標題。這是默認，可以在 widget激活覆�
 
 #: wppa-widget-admin.php:67
 msgid "Widget Photo Width:"
-msgstr "Widget 相片寬度："
+msgstr "Widget 相片寬度:"
 
 #: wppa-widget-admin.php:80
 msgid ""
@@ -9153,11 +9092,11 @@ msgstr "使用相簿:"
 
 #: wppa-widget-admin.php:101
 msgid "Select:"
-msgstr "選擇："
+msgstr "選擇:"
 
 #: wppa-widget-admin.php:103
 msgid "Or Edit:"
-msgstr "或編輯："
+msgstr "或編輯:"
 
 #: wppa-widget-admin.php:104
 msgid "Update thumbnails"
@@ -9173,6 +9112,8 @@ msgid ""
 "If you want a <b>- special -</b> selection or get rid of it, you may need to "
 "use <b>- start over -</b> first."
 msgstr ""
+"如果你想要<b>- 特別 -</b>的選擇或擺脫它，你可能需要選擇<b> - 從頭再來 - </b>"
+"先。"
 
 #: wppa-widget-admin.php:114
 msgid "Display method:"
@@ -9208,7 +9149,7 @@ msgstr "週。"
 
 #: wppa-widget-admin.php:131
 msgid "month."
-msgstr "一個月。"
+msgstr "月。"
 
 #: wppa-widget-admin.php:132
 msgid "day of month is order#"
@@ -9232,11 +9173,11 @@ msgstr "輸入標題和URL。別忘記HTTP://"
 
 #: wppa-widget-admin.php:166
 msgid "Subtitle:"
-msgstr "副標題："
+msgstr "副標題:"
 
 #: wppa-widget-admin.php:172
 msgid "Photo Name"
-msgstr "相片名稱"
+msgstr "圖片名稱"
 
 #: wppa-widget-admin.php:175
 msgid "Select the content of the subtitle."
