@@ -3378,6 +3378,13 @@ global $wppa_revno;
 							$html = wppa_checkbox($slug);
 							wppa_setting($slug, '10', $name, $desc, $html, $help);
 							
+							$name = __('Strip file extension', 'wppa');
+							$desc = __('Default photo name is filename without extension.', 'wppa');
+							$help = '';
+							$slug = 'wppa_strip_file_ext';
+							$html = wppa_checkbox($slug);
+							wppa_setting($slug, '11', $name, $desc, $html, $help);
+							
 							wppa_setting_subheader('C', '1', __('Search Albums and Photos related settings', 'wppa'));
 							
 							$name = __('Search page', 'wppa');
