@@ -20,9 +20,9 @@ class wppaGallery
 		// only hook up these filters if we're in the admin panel, and the current user has permission
 		// to edit posts or pages
 		if ( current_user_can( 'edit_posts' ) || current_user_can( 'edit_pages' ) ) {
-			if (!is_plugin_active('ultimate-tinymce/main.php')) {
+//			if (!is_plugin_active('ultimate-tinymce/main.php')) {
 				add_filter( 'mce_buttons', array( $this, 'filter_mce_button' ) );
-			}
+//			}
 			add_filter( 'mce_external_plugins', array( $this, 'filter_mce_plugin' ) );	
 		}
 	}
