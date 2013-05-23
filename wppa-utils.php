@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains low-level utility routines
-* Version 5.0.3
+* Version 5.0.4
 *
 */
 
@@ -160,13 +160,27 @@ function wppa_is_separate($id) {
 // Get the albums parent
 function wppa_get_parentalbumid($id) {
 global $album;
+global $prev_album_id;
 
 	if ( ! is_numeric($id) || $id < '1' ) wppa_dbg_msg('Invalid arg wppa_get_parentalbumid('.$id.')', 'red');
 	if ( ! wppa_cache_album($id) ) {
-		wppa_dbg_msg('Album '.$id.' no longer exists, but is still set as a parent. Please correct this.', 'red');
+		wppa_dbg_msg('Album '.$id.' no longer exists, but is still set as a parent of '.$prev_album_id.'. Please correct this.', 'red');
 		return '-9';	// Album does not exist
 	}
+	$prev_album_id = $id;
 	return $album['a_parent'];
+}
+
+function wppa_html($str) {
+global $wppa_opt;
+// It is assumed that the raw data contains html.
+// If html not allowed, filter specialchars
+// To prevent duplicate filtering, first entity_decode
+	$result = html_entity_decode($str);
+	if ( ! $wppa_opt['wppa_html'] ) {
+		$result = htmlspecialchars($str);
+	}
+	return $result;
 }
 
 // get album name
@@ -205,7 +219,8 @@ global $album;
 		}
 	}
 	
-	if ( ! is_numeric($id) || $id < '1' ) {
+	if ( ! $id ) return '';
+	elseif ( ! is_numeric($id) || $id < '1' ) {
 		wppa_dbg_msg('Invalid arg wppa_get_album_name('.$id.', '.$extended.')', 'red');
 		return '';
 	}
@@ -562,6 +577,9 @@ global $wppa;
 		if ( isset($wppa['treecounts'][$alb]) ) {
 			unset($wppa['treecounts'][$alb]['albums']);
 			unset($wppa['treecounts'][$alb]['photos']);
+			unset($wppa['treecounts'][$alb]['selfalbums']);
+			unset($wppa['treecounts'][$alb]['selfphotos']);
+			unset($wppa['treecounts'][$alb]['pendphotos']);
 			unset($wppa['treecounts'][$alb]);
 			update_option('wppa_treecounts', $wppa['treecounts']);
 		}
@@ -582,14 +600,18 @@ global $wppa;
 	if ( isset($wppa['treecounts'][$alb]) ) {							// Album found
 		$result['albums'] = $wppa['treecounts'][$alb]['albums'];		// Use data
 		$result['photos'] = $wppa['treecounts'][$alb]['photos'];
+		$result['selfalbums'] = $wppa['treecounts'][$alb]['selfalbums'];
+		$result['selfphotos'] = $wppa['treecounts'][$alb]['selfphotos'];
+		$result['pendphotos'] = $wppa['treecounts'][$alb]['pendphotos'];
 		return $result;													// And return
 	}
 	else {	// Not in cache
-		$albums = $wpdb->get_results($wpdb->prepare('SELECT `id` FROM `'.WPPA_ALBUMS.'` WHERE `a_parent` = %s', $alb), ARRAY_A);
+		$albums 	 = $wpdb->get_results($wpdb->prepare('SELECT `id` FROM `'.WPPA_ALBUMS.'` WHERE `a_parent` = %s', $alb), ARRAY_A);
 		$album_count = empty($albums) ? '0' : count($albums);
 		$photo_count = $wpdb->get_var($wpdb->prepare('SELECT COUNT(*) FROM `'.WPPA_PHOTOS.'`  WHERE `album` = %s AND `status` <> "pending"', $alb));
+		$pend_count  = $wpdb->get_var($wpdb->prepare('SELECT COUNT(*) FROM `'.WPPA_PHOTOS.'`  WHERE `album` = %s AND `status` = "pending"', $alb));
 		
-		$result = array('albums' => $album_count, 'photos' => $photo_count);
+		$result = array('albums' => $album_count, 'photos' => $photo_count, 'selfalbums' => $album_count, 'selfphotos' => $photo_count, 'pendphotos' => $pend_count);
 		if ( empty($albums) ) {}
 		else foreach ( $albums as $album ) {
 			$subcount = wppa_treecount_a($album['id']);
@@ -599,6 +621,9 @@ global $wppa;
 		// Save to cache
 		$wppa['treecounts'][$alb]['albums'] = $result['albums'];
 		$wppa['treecounts'][$alb]['photos'] = $result['photos'];
+		$wppa['treecounts'][$alb]['selfalbums'] = $result['selfalbums'];
+		$wppa['treecounts'][$alb]['selfphotos'] = $result['selfphotos'];
+		$wppa['treecounts'][$alb]['pendphotos'] = $result['pendphotos'];
 		update_option('wppa_treecounts', $wppa['treecounts']);
 		return $result;
 	}
@@ -610,11 +635,18 @@ global $wppa_opt;
 
 	$timnow = microtime(true);
 	$laptim = $timnow - $wppa_starttime;
+
+	$maxwppatim = get_option('wppa_max_execution_time');
+	$maxinitim = ini_get('max_execution_time');
 	
-	$maxtim = ini_get('max_execution_time');
+	if ( $maxwppatim && $maxinitim ) $maxtim = min($maxwppatim, $maxinitim);
+	elseif ( $maxwppatim ) $maxtim = $maxwppatim;
+	elseif ( $maxinitim ) $maxtim = $maxinitim;
+	else return false;
+	
 	wppa_dbg_msg('Maxtim = '.$maxtim.', elapsed = '.$laptim, 'red');
 	if ( ! $maxtim ) return false;	// No limit or no value
-	If ( ( $maxtim - $laptim ) > '5' ) return false;
+	if ( ( $maxtim - $laptim ) > '5' ) return false;
 	if ( $count ) {
 		if ( is_admin() ) {
 			if ( wppa_switch('wppa_auto_continue') ) {
@@ -707,4 +739,133 @@ function wppa_vfy_arg($arg, $txt = false) {
 			if ( ! is_numeric($_REQUEST[$arg]) ) wp_die('Security check failue'.$reason);
 		}
 	}
+}
+
+function wppa_strip_tags($text, $key = '') {
+
+	if ($key == 'all') {
+		$text = preg_replace(	array	(	'@<a[^>]*?>.*?</a>@siu',				// unescaped <a> tag
+											'@&lt;a[^>]*?&gt;.*?&lt;/a&gt;@siu',	// escaped <a> tag
+											'@<table[^>]*?>.*?</table>@siu',
+											'@<style[^>]*?>.*?</style>@siu',
+											'@<div[^>]*?>.*?</div>@siu'
+										),
+								array	( ' ', ' ', ' ', ' ', ' '
+										),
+								$text );
+		$text = str_replace(array('<br/>', '<br />'), ' ', $text);
+		$text = strip_tags($text);
+	}
+	elseif ( $key == 'script' ) {
+		$text = preg_replace('@<script[^>]*?>.*?</script>@siu', ' ', $text );
+	}
+	elseif ( $key == 'div' ) {
+		$text = preg_replace('@<div[^>]*?>.*?</div>@siu', ' ', $text );
+	}
+	elseif ( $key == 'script&style' ) {
+		$text = preg_replace(	array	(	'@<script[^>]*?>.*?</script>@siu',
+											'@<style[^>]*?>.*?</style>@siu'
+										),
+								array	( ' ', ' '
+										),
+								$text );
+	}
+	else {
+		$text = preg_replace(	array	(	'@<a[^>]*?>.*?</a>@siu',				// unescaped <a> tag
+											'@&lt;a[^>]*?&gt;.*?&lt;/a&gt;@siu'		// escaped <a> tag
+										),
+								array	( ' ', ' '
+										),
+								$text );
+	}
+	return trim($text);
+}
+
+// Expand compressed string
+function wppa_index_string_to_array($string) {
+	// Anything?
+	if ( ! $string ) return array();
+	// Any ranges?
+	if ( ! strstr($string, '..') ) return explode(',', $string);	// No
+	// Yes
+	$temp = explode(',', $string);
+	$result = array();
+	foreach ( $temp as $t ) {
+		if ( ! strstr($t, '..') ) $result[] = $t;
+		else {
+			$range = explode('..', $t);
+			$from = $range['0'];
+			$to = $range['1'];
+			while ( $from <= $to ) {
+				$result[] = $from;
+				$from++;
+			}
+		}
+	}
+	return $result;
+}
+
+// Compress array ranges and convert to string
+function wppa_index_array_to_string($array) {
+	$result = '';
+	$lastitem = '-1';
+	$isrange = false;
+	foreach ( $array as $item ) {
+		if ( $item == $lastitem+'1' ) {
+			$isrange = true;
+		}
+		else {
+			if ( $isrange ) {	// Close range
+				$result .= '..'.$lastitem.','.$item;
+				$isrange = false;
+			}
+			else {				// Add single item
+				$result .= ','.$item;
+			}
+				
+			
+		}
+		$lastitem = $item;
+	}
+	if ( $isrange ) {	// Don't forget the last if it ends in a range
+		$result .= '..'.$lastitem;
+	}
+	$result = trim($result, ',');
+	return $result;
+}
+
+// Convert raw data string to indexable word array
+function wppa_index_raw_to_words($xtext, $noskips = false) {
+
+	$ignore = array( '"', "'", '\\', '>', '<', ',', ':', ';', '!', '?', '=', '_', '[', ']', '(', ')', '{', '}', '..', '...', '....', "\n", "\r", "\t", '.jpg', '.png', '.gif', '&#039', '&amp' );
+	if ( $noskips ) $skips = array();
+	else $skips = get_option('wppa_index_skips', array());
+	
+	$result = array();
+	if ( $xtext ) {
+		$text = strtolower($xtext);
+		$text = html_entity_decode($text);
+		$text = wppa_strip_tags($text, 'script&style');	// strip style and script tags inclusive content
+		$text = str_replace('>', '> ', $text);			// Make sure <td>word1</td><td>word2</td> will not endup in 'word1word2', but in 'word1' 'word2'
+		$text = strip_tags($text);						// Now strip the tags
+		$text = str_replace($ignore, ' ', $text);		// Remove funny chars
+		$text = trim($text);
+		$text = trim($text, " ./-");
+		while ( strpos($text, '  ') ) $text = str_replace('  ', ' ', $text);	// Compress spaces
+		$words = explode(' ', $text);
+		foreach ( $words as $word ) {
+			$word = trim($word);
+			$word = trim($word, " ./-");
+			if ( strlen($word) > '1' && ! in_array($word, $skips) ) $result[] = $word;
+			if ( strpos($word, '-') !== false ) {
+				$fracts = explode('-', $word);
+				foreach ( $fracts as $fract ) {
+					$fract = trim($fract);
+					$fract = trim($fract, " ./-");
+					if ( strlen($fract) > '1' && ! in_array($fract, $skips) ) $result[] = $fract;
+				}
+			}
+		}
+	}
+	return $result;
 }

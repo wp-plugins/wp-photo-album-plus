@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 5.0.3
+* Version 5.0.4
 *
 */
 
@@ -120,13 +120,21 @@ global $silent;
 					PRIMARY KEY  (id)					
 					) DEFAULT CHARACTER SET utf8;";
 					
+	$create_index = "CREATE TABLE " . WPPA_INDEX . " (
+					id bigint(20) NOT NULL,
+					slug tinytext NOT NULL,
+					albums text NOT NULL,
+					photos text NOT NULL,
+					PRIMARY KEY  (id)
+					) DEFAULT CHARACTER SET utf8;";
+					
 	require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 	
 	// Create or update db tables
-	$tn = array( WPPA_ALBUMS, WPPA_PHOTOS, WPPA_RATING, WPPA_COMMENTS, WPPA_IPTC, WPPA_EXIF );
-	$tc = array( $create_albums, $create_photos, $create_rating, $create_comments, $create_iptc, $create_exif );
+	$tn = array( WPPA_ALBUMS, WPPA_PHOTOS, WPPA_RATING, WPPA_COMMENTS, WPPA_IPTC, WPPA_EXIF, WPPA_INDEX );
+	$tc = array( $create_albums, $create_photos, $create_rating, $create_comments, $create_iptc, $create_exif, $create_index );
 	$idx = 0;
-	while ($idx < 6) {
+	while ($idx < 7) {
 		$a0 = wppa_table_exists($tn[$idx]);
 		dbDelta($tc[$idx]);
 		$a1 = wppa_table_exists($tn[$idx]);
@@ -266,7 +274,13 @@ global $silent;
 		if ( $old_rev <= '5000' ) {
 			wppa_remove_setting('wppa_autoclean');
 		}
+		if ( $old_rev <= '5004' ) {
+			$wpdb->query('ALTER TABLE `'.WPPA_INDEX.'` ADD INDEX ( `slug`(10) )');
+		}
 
+		
+		
+		wppa_flush_treecounts();
 	}
 	
 	// Set default values for new options
@@ -730,6 +744,7 @@ Hide Camera info
 						
 						'wppa_art_monkey_link'				=> 'none',
 						'wppa_art_monkey_popup_link'		=> 'file',
+						'wppa_artmonkey_use_source'			=> 'no',
 
 						'wppa_album_widget_linktype'		=> 'content',
 						'wppa_album_widget_linkpage'		=> '0',
@@ -770,6 +785,9 @@ Hide Camera info
 						'wppa_rating_clear' 		=> 'no',
 						'wppa_iptc_clear'			=> '',
 						'wppa_exif_clear'			=> '',
+						'wppa_remake_index'			=> '',
+						'wppa_extend_index' 		=> '',
+						'wppa_list_index'			=> '',
 
 						// Table IX: Miscellaneous
 						// A System
@@ -791,8 +809,8 @@ Hide Camera info
 						'wppa_comment_admin_pagesize'	=> '10',
 						'wppa_jpeg_quality'				=> '95',
 						'wppa_geo_edit' 				=> 'no',
-						'wppa_auto_continue'			=> 'no',
-						'wppa_max_execution_time'		=> '0',
+						'wppa_auto_continue'			=> 'yes',
+						'wppa_max_execution_time'		=> '60',
 
 						// B New
 						'wppa_max_album_newtime'		=> '0',		// 1
@@ -813,6 +831,9 @@ Hide Camera info
 						'wppa_excl_sep' 				=> 'no',	// 2
 						'wppa_search_tags'				=> 'no',
 						'wppa_photos_only'				=> 'no',	// 3
+						'wppa_indexed_search'			=> 'no',
+						'wppa_max_search_photos'		=> '250',
+						'wppa_max_search_albums'		=> '25',
 						
 						// D Watermark
 						'wppa_watermark_on'				=> 'no',

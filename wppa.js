@@ -2,7 +2,7 @@
 //
 // conatins slideshow, theme, ajax and lightbox code
 //
-// Version 5.0.3
+// Version 5.0.4
 
 // Part 1: Slideshow
 //
@@ -961,6 +961,26 @@ function _wppaAdjustFilmstrip(mocc) {
 	}
 	else {
 		_wppaFilmNoMove[mocc] = false; // reset
+	}
+	
+	// make them visible...
+	if ( _wppaCurIdx[mocc] != -1 ) {
+		var from = _wppaCurIdx[mocc] - 10; if ( from < 0 ) from = 0;
+		var to = _wppaCurIdx[mocc] + 10; if ( to > _wppaSlides[mocc].length ) to = _wppaSlides[mocc].length;
+		var index = from;
+		while ( index <= to ) {
+			if ( typeof ( _wppaId[mocc][index] ) != 'undefined' ) {
+				if ( typeof ( document.getElementById('film_wppatnf_'+_wppaId[mocc][index]+'_'+mocc) ) != 'undefined' ) {
+					var html = document.getElementById('film_wppatnf_'+_wppaId[mocc][index]+'_'+mocc).innerHTML;
+					if ( html.search('<!--') != -1 ) {
+						html = html.replace('<!--', '');
+						html = html.replace('-->', '');
+						document.getElementById('film_wppatnf_'+_wppaId[mocc][index]+'_'+mocc).innerHTML = html;
+					}
+				}
+			}
+			index++;
+		}
 	}
 }
 

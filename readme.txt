@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile
-Version: 5.0.3
+Version: 5.0.4
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -74,7 +74,7 @@ There are translations in many languages. The frontend and admin sides are separ
 * The theme should not use remove_action() or remove_all_actions() when it affects actions added by wppa+.
 Most themes comply with these requirements. 
 However, check these requirements in case of problems with new installations with themes you never had used before with wppa+ or when you modifies your theme.
-* The server should have at least 32MB of memory, 64MB or more is recommended.
+* The server should have at least 64MB of memory.
 
 = Upgrade notice =
 This version is: Major rev# 4, Minor rev# 9, Fix rev# 6, Hotfix rev# 000.
@@ -138,8 +138,8 @@ Further, activate the plugin for all other blogs that require it.
 * A space between words means AND, a comma between words means OR.
 Example: search for 'one two, three four, five' gives a result when either 'one' AND 'two' appears in the same (combination of) name and description. 
 If it matches the name and description of an album, you get the album, and photo vice versa.
-OR this might apply for ('three' AND 'four') OR 'five'. Albums and photos are returned on one page, regardless of pagination settings, if any. 
-That's the way it is designed.
+OR this might apply for ('three' AND 'four') OR 'five'.
+If you use indexed search, the tokens must be at least 3 characters in length.
 
 = How can i translate the plugin into my language? =
 
@@ -171,11 +171,24 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
 
-= 5.0.3.001 =
+= 5.0.4 =
+
+= Bug Fixes =
+
+* You can no longer copy or move photos to the album where it already is.
+* Fixed a css issue that caused problems with lightbox in Weaver II theme.
+* Fixed a silent death after upload one image when the php had no exif functions configured.
 
 = New Features =
 
 * You can strip the file-extension at upload/import for the default photoname. Table IX-B11.
+* Indexed search. See Table IX-C5.
+* If source is available, it can be used for the art monkey link (Table VI-C1.1)
+
+= Other changes =
+
+* Performance improvement in album admin.
+* Hughe performance improvements in large slideshows with filmstrip.
 
 = 5.0.3 =
 

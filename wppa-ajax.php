@@ -2,7 +2,7 @@
 /* wppa-ajax.php
 *
 * Functions used in ajax requests
-* version 5.0.3
+* version 5.0.4
 *
 */
 add_action('wp_ajax_wppa', 'wppa_ajax_callback');
@@ -71,6 +71,7 @@ global $wppa;
 					exit;
 				}
 				wppa_delete_photo($_REQUEST['photo-id']);
+				wppa_index_remove('photo', $_REQUEST['photo-id']);
 				echo 'OK||'.__('Photo removed', 'wppa');
 				exit;
 			}
@@ -98,16 +99,27 @@ global $wppa;
 			$data = $wpdb->get_row($wpdb->prepare("SELECT * FROM `".WPPA_PHOTOS."` WHERE `id` = %s", $photo), ARRAY_A);
 			if ($data) {	// The photo is supposed to exist
 				// Make the name
-				$name = __($data['name']);
-				$name = sanitize_file_name($name);
-				$dotpos = strrpos($name, '.');
-				if ( $dotpos !== false ) $name = substr($name, '0', $dotpos);
-				if ( strlen($name) == '0' ) {
-					echo '||1||'.__('Empty filename', 'wppa');
-					exit;
+				if ( $data['filename'] ) {
+					$name = $data['filename'];
+					$name = preg_replace('/\.[^.]*$/', '', $name);
+				}
+				else {
+					$name = __($data['name']);
+					$name = sanitize_file_name($name);
+					$dotpos = strrpos($name, '.');
+					if ( $dotpos !== false ) $name = substr($name, '0', $dotpos);
+					if ( strlen($name) == '0' ) {
+						echo '||1||'.__('Empty filename', 'wppa');
+						exit;
+					}
 				}
 				// Make the filenames
-				$source = WPPA_UPLOAD_PATH.'/'.$photo.'.'.$data['ext'];
+				if ( wppa_switch('wppa_artmonkey_use_source') && is_file($wppa_opt['wppa_source_dir'].'/album-'.$data['album'].'/'.$data['filename']) ) {
+					$source = $wppa_opt['wppa_source_dir'].'/album-'.$data['album'].'/'.$data['filename'];
+				}
+				else {
+					$source = WPPA_UPLOAD_PATH.'/'.$photo.'.'.$data['ext'];
+				}
 				$dest = WPPA_UPLOAD_PATH.'/temp/'.$name.'.'.$data['ext'];
 				$zipfile = WPPA_UPLOAD_PATH.'/temp/'.$name.'.zip';
 				$tempdir = WPPA_UPLOAD_PATH.'/temp';
@@ -346,8 +358,9 @@ global $wppa;
 				exit;																// Nonce check failed
 			}
 			wppa_delete_photo($photo);
-			echo '||1||<span style="color:red" >'.sprintf(__('Photo %s has been deleted', 'wppa'), $photo).'</span>';
+			wppa_index_remove('photo', $photo);
 			wppa_clear_cache();
+			echo '||1||<span style="color:red" >'.sprintf(__('Photo %s has been deleted', 'wppa'), $photo).'</span>';
 			echo '||';
 			$a = wppa_allow_uploads($album);
 			if ( ! $a ) echo 'full';
@@ -385,11 +398,14 @@ global $wppa;
 					}
 					exit;
 					break;
-				case 'set_deftags':
+				case 'set_deftags':	// to be changed for large albums
 					$photos = $wpdb->get_results($wpdb->prepare('SELECT COUNT(*) FROM `'.WPPA_PHOTOS.'` WHERE `album` = %s', $album), ARRAY_A);
 					$deftag = $wpdb->get_var($wpdb->prepare('SELECT `default_tags` FROM `'.WPPA_ALBUMS.'` WHERE `id` = %s', $album));
 					$iret = $wpdb->query($wpdb->prepare('UPDATE `'.WPPA_PHOTOS.'` SET `tags` = %s WHERE `album` = %s', $deftag, $album));
 					if ( $photos && $iret !== false ) {
+						foreach ( $photos as $photo ) {
+							wppa_index_update('photo', $photo['id']);
+						}
 						echo '||97||'.__('<b>Tags set to defaults</b> (reload)', 'wppa');
 					}
 					elseif ($photos) {
@@ -409,6 +425,7 @@ global $wppa;
 						if ( $iret ) {
 							$tags = wppa_sanitize_tags($photo['tags'].','.$deftag);
 							$iret = $wpdb->query($wpdb->prepare('UPDATE `'.WPPA_PHOTOS.'` SET `tags` = %s WHERE `id` = %s', $tags, $photo['id']));
+							wppa_index_update('photo', $photo['id']);
 						}					
 					}
 					if ( $photos && $iret !== false ) {
@@ -489,9 +506,9 @@ global $wppa;
 			}
 			
 			$query = $wpdb->prepare('UPDATE '.WPPA_ALBUMS.' SET `'.$item.'` = %s WHERE `id` = %s', $value, $album);
-			// echo $query;
 			$iret = $wpdb->query($query);
 			if ($iret !== false ) {
+				if ( $item == 'name' || $item == 'description' ) wppa_index_update('album', $album);
 				echo '||0||'.sprintf(__('<b>%s</b> of album %s updated', 'wppa'), $itemname, $album);
 				if ( $item == 'upload_limit' ) {
 					echo '||';
@@ -577,7 +594,9 @@ global $wppa;
 					$geo = wppa_format_geo($value, $geo['3']);
 					$iret = $wpdb->query($wpdb->prepare('UPDATE `'.WPPA_PHOTOS.'` SET `location` = %s WHERE `id` = %s', $geo, $photo));
 					if ( $iret ) echo '||0||'.__('Lattitude updated', 'wppa');
-					else echo '||1||'.__('Could not update lattitude', 'wppa');
+					else {
+						echo '||1||'.__('Could not update lattitude', 'wppa');
+					}
 					exit;
 					break;
 				case 'lon':
@@ -591,7 +610,9 @@ global $wppa;
 					$geo = wppa_format_geo($geo['2'], $value);
 					$iret = $wpdb->query($wpdb->prepare('UPDATE `'.WPPA_PHOTOS.'` SET `location` = %s WHERE `id` = %s', $geo, $photo));
 					if ( $iret ) echo '||0||'.__('Longitude updated', 'wppa');
-					else echo '||1||'.__('Could not update longitude', 'wppa');
+					else {
+						echo '||1||'.__('Could not update longitude', 'wppa');
+					}
 					exit;
 					break;
 				case 'remake':
@@ -641,6 +662,7 @@ global $wppa;
 						echo '||4||'.sprintf(__('An error occurred while trying to copy photo %s', 'wppa'), $photo);
 						echo '<br>'.__('Press CTRL+F5 and try again.', 'wppa');
 					}
+					exit;
 					break;
 					
 				case 'name':
@@ -684,7 +706,6 @@ global $wppa;
 							$itemname = __('Link target', 'wppa');
 							break;
 						case 'tags':
-							// Sanitize tags
 							$value = wppa_sanitize_tags($value);
 							wppa_clear_taglist();
 							$itemname = __('Photo Tags', 'wppa');
@@ -699,7 +720,9 @@ global $wppa;
 						default:
 							$itemname = $item;
 					}
+					if ( $item == 'name' || $item == 'description' || $item == 'tags' ) wppa_index_quick_remove('photo', $photo);
 					$iret = $wpdb->query($wpdb->prepare('UPDATE '.WPPA_PHOTOS.' SET `'.$item.'` = %s WHERE `id` = %s', $value, $photo));
+					if ( $item == 'name' || $item == 'description' || $item == 'tags' ) wppa_index_add('photo', $photo);
 					if ($iret !== false ) {
 						wppa_update_modified($photo);
 						echo '||0||'.sprintf(__('<b>%s</b> of photo %s updated', 'wppa'), $itemname, $photo);
@@ -707,8 +730,8 @@ global $wppa;
 					else {
 						echo '||2||'.sprintf(__('An error occurred while trying to update <b>%s</b> of photo %s', 'wppa'), $itemname, $photo);
 						echo '<br>'.__('Press CTRL+F5 and try again.', 'wppa');
+						exit;
 					}
-					exit;
 					break;
 
 					
