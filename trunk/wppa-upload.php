@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the upload/import pages and functions
-* Version 5.0.3
+* Version 5.0.4
 *
 */
 
@@ -818,6 +818,7 @@ global $wppa;
 						else {
 							//$id = wppa_get_album_id($name);
 							wppa_set_last_album($id);
+							wppa_index_add('album', $id);
 							wppa_ok_message(__('Album #', 'wppa') . ' ' . $id . ': '.stripslashes($name).' ' . __('Added.', 'wppa'));
 							if ($dela) unlink($album);
 							$acount++;
@@ -1177,6 +1178,7 @@ global $wppa_opt;
 				$edit_id = $id;
 				wppa_set_last_album($edit_id);
 				wppa_flush_treecounts();
+				wppa_index_add('album', $id);
 				wppa_ok_message(__('Album #', 'wppa') . ' ' . $edit_id . ' ('.$name.') ' . __('Added.', 'wppa'));
 				if ( $wppa_opt['wppa_newpag_create'] == 'yes' /*isset($_POST['wppa-crepag']) */ && $parent <= '0' ) {
 				

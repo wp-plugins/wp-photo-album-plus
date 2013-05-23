@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the slideshow high level functions
-* Version 5.0.0
+* Version 5.0.4
 *
 */
 
@@ -422,21 +422,21 @@ global $thumb;
 	if ( $wppa['is_single'] ) return;
 
 	$do_it = false;												// Init
-	if (is_feed()) $do_it = true;								// feed -> do it to indicate that there is a slideshow
+	if ( is_feed() ) $do_it = true;								// feed -> do it to indicate that there is a slideshow
 	else {														// Not a feed
-		if ($opt != 'optional') $do_it = true;						// not optional -> do it
-		else {														// optional
-			if ($wppa_opt['wppa_filmstrip']) {							// optional and option on
-				if (!$wppa['is_slideonly']) $do_it = true;					// always except slideonly
+		if ( $opt != 'optional' ) $do_it = true;				// not optional -> do it
+		else {													// optional
+			if ( wppa_switch('wppa_filmstrip') ) {				// optional and option on
+				if ( ! $wppa['is_slideonly'] ) $do_it = true;	// always except slideonly
 			}
-			if ($wppa['film_on']) $do_it = true;						// explicitly turned on
+			if ( $wppa['film_on'] ) $do_it = true;				// explicitly turned on
 		}
 	}
-	if (!$do_it) return;										// Don't do it
+	if ( ! $do_it ) return;										// Don't do it
 	
-//	if (isset($_GET['album'])) $alb = $_GET['album'];
-//	else $alb = '';	// Album id is in $wppa['start_album']
-	$alb = wppa_get_get('album', '');
+	$t = -microtime(true);
+	
+	$alb = wppa_get_get('album', '');	// To be tested: // Album id is in $wppa['start_album']
 	
 	$thumbs = wppa_get_thumbs($alb);
 	if (!$thumbs || count($thumbs) < 1) return;
@@ -497,6 +497,8 @@ global $thumb;
 	$start = $cnt - $preambule;
 	$end = $cnt;
 	$idx = $start;
+	$wppa['out'] .= '
+			<style type="text/css" >#wppa-container-'.$wppa['master_occur'].' .thumbnail-frame { '.wppa_get_thumb_frame_style(false, 'film').' }</style>';
 	while ($idx < $end) {
 		$glue = $cnt == ($idx + 1) ? true : false;
 		$ix = $idx;
@@ -521,6 +523,8 @@ global $thumb;
 		wppa_do_filmthumb($ix, false);
 		$idx++;
 	}
+	$wppa['out'] .= '
+			<!-- hier 2 -->';
 	
 	if (is_feed()) {
 		$wppa['out'] .= wppa_nltab('-').'</div>';
@@ -530,6 +534,9 @@ global $thumb;
 		$wppa['out'] .= wppa_nltab('-').'</div>';
 	$wppa['out'] .= wppa_nltab('-').'</div>';
 	}
+	
+	$t += microtime(true);
+	wppa_dbg_msg('Filmstrip took '.$t.' seconds.', 'red');
 }
 
 function wppa_numberbar($opt = '') {

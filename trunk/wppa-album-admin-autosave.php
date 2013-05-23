@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * create, edit and delete albums
-* version 5.0.0
+* version 5.0.4
 *
 */
 
@@ -81,6 +81,7 @@ function _wppa_admin() {
 					$edit_id = $id;
 					wppa_set_last_album($edit_id);
 					wppa_flush_treecounts();
+					wppa_index_add('album', $id);
 					wppa_update_message(__('Album #', 'wppa') . ' ' . $edit_id . ' ' . __('Added.', 'wppa'));
 				}
 			}
@@ -809,7 +810,9 @@ function wppa_admin_albums_flat() {
 				foreach (array_keys($seq) as $s) {
 					$album = $albums[$s];
 					if (wppa_have_access($album)) {
-						$pendcount = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `".WPPA_PHOTOS."` WHERE album=%s AND status=%s", $album['id'], 'pending')); 
+						$counts = wppa_treecount_a($album['id']);
+						$pendcount = $counts['pendphotos'];
+//						$pendcount = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `".WPPA_PHOTOS."` WHERE album=%s AND status=%s", $album['id'], 'pending')); 
 						?>
 						<tr <?php echo($alt); if ($pendcount) echo 'style="background-color:#ffdddd"' ?>>
 							<td><?php echo($album['id']) ?></td>
@@ -821,9 +824,12 @@ function wppa_admin_albums_flat() {
 							<td><?php echo($album['a_order']) ?></td>
 							<td><?php echo wppa_get_album_name($album['a_parent'], 'extended') ?></td>
 							<?php $url = wppa_dbg_url(get_admin_url().'admin.php?page=wppa_admin_menu&amp;tab=edit&amp;edit_id='.$album['id']); ?>
-							<?php $na = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `".WPPA_ALBUMS."` WHERE a_parent=%s", $album['id'])); ?>
-							<?php $np = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `".WPPA_PHOTOS."` WHERE album=%s", $album['id'])); ?>
-							<?php $nm = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `".WPPA_PHOTOS."` WHERE album=%s AND status=%s", $album['id'], 'pending')); ?>
+							<?php $na = $counts['selfalbums'];
+									// $na = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `".WPPA_ALBUMS."` WHERE a_parent=%s", $album['id'])); ?>
+							<?php $np = $counts['selfphotos'];
+									// $np = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `".WPPA_PHOTOS."` WHERE album=%s", $album['id'])); ?>
+							<?php $nm = $counts['pendphotos'];
+									// $nm = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `".WPPA_PHOTOS."` WHERE album=%s AND status=%s", $album['id'], 'pending')); ?>
 							<td><?php echo $na.'/'.$np; if ($nm) echo '/<span style="font-weight:bold; color:red">'.$nm.'</span>'; ?></td>
 							<?php if ( $album['owner'] != '--- public ---' || current_user_can('administrator') ) { ?>
 								<?php $url = wppa_ea_url($album['id']) ?>
@@ -1236,7 +1242,9 @@ global $wpdb;
 			$album = $albums[$s];
 			if ( $album['a_parent'] == $parent ) {
 				if (wppa_have_access($album)) {
-					$pendcount = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `".WPPA_PHOTOS."` WHERE album=%s AND status=%s", $album['id'], 'pending')); 
+					$counts = wppa_treecount_a($album['id']);
+					$pendcount = $counts['pendphotos'];
+					// $pendcount = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `".WPPA_PHOTOS."` WHERE album=%s AND status=%s", $album['id'], 'pending')); 
 					$haschildren = wppa_have_accessable_children($album); 
 					{
 						$class = '';
@@ -1287,9 +1295,9 @@ global $wpdb;
 							<td><?php echo($album['a_order']) ?></td>
 							<td><?php echo wppa_get_album_name($album['a_parent'], 'extended') ?></td>
 							<?php $url = wppa_dbg_url(get_admin_url().'admin.php?page=wppa_admin_menu&amp;tab=edit&amp;edit_id='.$album['id']); ?>
-							<?php $na = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `".WPPA_ALBUMS."` WHERE a_parent=%s", $album['id'])); ?>
-							<?php $np = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `".WPPA_PHOTOS."` WHERE album=%s", $album['id'])); ?>
-							<?php $nm = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `".WPPA_PHOTOS."` WHERE album=%s AND status=%s", $album['id'], 'pending')); ?>
+							<?php $na = $counts['selfalbums']; //$wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `".WPPA_ALBUMS."` WHERE a_parent=%s", $album['id'])); ?>
+							<?php $np = $counts['selfphotos']; //$wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `".WPPA_PHOTOS."` WHERE album=%s", $album['id'])); ?>
+							<?php $nm = $counts['pendphotos']; //$wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `".WPPA_PHOTOS."` WHERE album=%s AND status=%s", $album['id'], 'pending')); ?>
 							<td><?php echo $na.'/'.$np; if ($nm) echo '/<span style="font-weight:bold; color:red">'.$nm.'</span>'; ?></td>
 							<?php if ( $album['owner'] != '--- public ---' || current_user_can('administrator') ) { ?>
 								<?php $url = wppa_ea_url($album['id']) ?>
@@ -1331,7 +1339,7 @@ global $wpdb;
 
 // delete an album 
 function wppa_del_album($id, $move = '') {
-	global $wpdb;
+global $wpdb;
 
 	if ( $move && !wppa_have_access($move) ) {
 		wppa_error_message(__('Unable to move photos to album %s. Album not deleted.', 'wppa'));
@@ -1343,7 +1351,9 @@ function wppa_del_album($id, $move = '') {
 	
 	if (empty($move)) { // will delete all the album's photos
 		if (is_array($photos)) {
+			$cnt = '0';
 			foreach ($photos as $photo) {
+				$t = -microtime(true);
 				// remove the photos and thumbs
 				$file = ABSPATH . 'wp-content/uploads/wppa/' . $photo['id'] . '.' . $photo['ext'];
 				if (file_exists($file)) {
@@ -1361,16 +1371,23 @@ function wppa_del_album($id, $move = '') {
 				$wpdb->query($wpdb->prepare('DELETE FROM `' . WPPA_COMMENTS . '` WHERE `photo` = %s', $photo['id']));
 				// Delete source
 				wppa_delete_source($photo['filename'], $id);
+				// Delete indexes
+				wppa_index_quick_remove('photo', $photo['id']);
+				// remove the database entry
+				$wpdb->query($wpdb->prepare('DELETE FROM `'.WPPA_PHOTOS.'` WHERE `id` = %s', $photo['id']));
+
+				$cnt++;
+				$t += microtime(true);
+//				wppa_dbg_msg('Del photo took :'.$t, 'red', 'force');
 				// Time up?
 				if ( wppa_is_time_up() ) {
-					wppa_error_message('Time is up. Please redo this operation');
+					wppa_flush_treecounts($id);
+					wppa_error_message('Time is up after '.$cnt.' photo deletes. Please redo this operation');
 					return;
 				}
 			} 
 		}
-		
-		// remove the database entries
-		$wpdb->query($wpdb->prepare('DELETE FROM `'.WPPA_PHOTOS.'` WHERE `album` = %s', $id));
+
 	} 
 	else {	// Move
 		if (is_array($photos)) {
@@ -1389,6 +1406,7 @@ function wppa_del_album($id, $move = '') {
 	$wpdb->query($wpdb->prepare('DELETE FROM `' . WPPA_ALBUMS . '` WHERE `id` = %s LIMIT 1', $id));
 	wppa_delete_album_source($id);
 	wppa_flush_treecounts($id);
+	wppa_index_remove('album', $id);
 	
 	wppa_update_message(__('Album Deleted.', 'wppa'));
 }
@@ -1404,11 +1422,12 @@ global $wppa_opt;
 	$output = '';
 	if (!empty($photos)) {
 		$output .= '<select name="wppa-main" onchange="wppaAjaxUpdateAlbum('.$a_id.', \'main_photo\', this)" >';
+		$output .= '<option value="">'.__('--- please select ---', 'wppa').'</option>';
 		if ( $wppa_opt['wppa_cover_type'] == 'default' ) {
 			$output .= '<option value="0">'.__('--- random ---', 'wppa').'</option>';
 		}
 		if ( $wppa_opt['wppa_cover_type'] == 'imagefactory' ) {
-			if ( ! $cur ) $selected = 'selected="selected"'; else $selected = '';
+			if ( $cur == '0' ) $selected = 'selected="selected"'; else $selected = '';
 			$output .= '<option value="0" '.$selected.'>'.sprintf(__('auto select max %s random', 'wppa'), $wppa_opt['wppa_imgfact_count']).'</option>';
 			if ( $cur == '-1' ) $selected = 'selected="selected"'; else $selected = '';
 			$output .= '<option value="-1" '.$selected.'>'.sprintf(__('auto select max %s featured', 'wppa'), $wppa_opt['wppa_imgfact_count']).'</option>';

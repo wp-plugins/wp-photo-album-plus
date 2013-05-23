@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 * gp admin functions
-* version 5.0.3
+* version 5.0.4
 *
 * 
 */
@@ -352,6 +352,7 @@ global $wpdb;
 	$query = $wpdb->prepare('INSERT INTO `' . WPPA_PHOTOS . '` (`id`, `album`, `ext`, `name`, `p_order`, `description`, `mean_rating`, `linkurl`, `linktitle`, `linktarget`, `timestamp`, `owner`, `status`, `tags`, `alt`, `filename`, `modified`, `location`) VALUES (%s, %s, %s, %s, %s, %s, \'\', %s, %s, %s, %s, %s, %s, %s, %s, %s, \'0\', \'\')', $id, $album, $ext, $name, $porder, $desc, $linkurl, $linktitle, $linktarget, time(), $owner, $status, '', '', $filename);
 	if ($wpdb->query($query) === false) return $err;
 	wppa_flush_treecounts($album);
+	wppa_index_add('photo', $id);
 
 	$err = '4';
 	// Find copied photo details
@@ -556,6 +557,7 @@ if ( is_multisite() ) return; // temp disabled for 4.0 bug, must be tested in a 
 			}
 			else {
 				wppa_flush_treecounts();
+				wppa_index_add('album', $key);
 				wppa_ok_message('Album: Orphan Photos created.', 'wppa');
 			}
 			$album = wppa_get_album_id(__('Orphan Photos', 'wppa')); // retry
@@ -835,7 +837,7 @@ global $wpdb;
 	$any_error = false;
 	// Check db tables
 	// This is to test if dbdelta did his job in adding tables and columns
-	$tn = array( WPPA_ALBUMS, WPPA_PHOTOS, WPPA_RATING, WPPA_COMMENTS, WPPA_IPTC, WPPA_EXIF );
+	$tn = array( WPPA_ALBUMS, WPPA_PHOTOS, WPPA_RATING, WPPA_COMMENTS, WPPA_IPTC, WPPA_EXIF, WPPA_INDEX );
 	$flds = array( 	WPPA_ALBUMS => array(	'id' => 'bigint(20) NOT NULL', 
 											'name' => 'text NOT NULL', 
 											'description' => 'text NOT NULL', 
@@ -901,11 +903,17 @@ global $wpdb;
 											'tag' => 'tinytext NOT NULL',
 											'description' => 'text NOT NULL',
 											'status' => 'tinytext NOT NULL'
-										) 
+										),
+					WPPA_INDEX => array(
+											'id' => 'bigint(20) NOT NULL',
+											'slug' => 'tinytext NOT NULL',
+											'albums' => 'text NOT NULL',
+											'photos' => 'text NOT NULL'
+										)
 				);
 	$errtxt = '';
 	$idx = 0;
-	while ($idx < 6) {
+	while ($idx < 7) {
 		// Test existence of table
 		$ext = wppa_table_exists($tn[$idx]);
 		if ( ! $ext ) {
@@ -1138,10 +1146,269 @@ function wppa_insert_photo ($file = '', $alb = '', $name = '', $desc = '', $pord
 			wppa_flush_treecounts($alb);
 		}
 		// Make the photo files		
-		if ( wppa_make_the_photo_files($file, $id, $ext) ) return true;
+		if ( wppa_make_the_photo_files($file, $id, $ext) ) {
+			// Index
+			wppa_index_add('photo', $id);
+			return true;
+		}
 	}
 	else {
 		wppa_error_message(__('ERROR: Unknown file or album.', 'wppa'));
 		return false;
 	}
+}
+
+// Index search maintenance modules
+function wppa_remake_index() {
+global $wpdb;
+global $album;
+global $thumb;
+global $acount;
+global $pcount;
+
+	// Init
+	update_option('wppa_index_need_remake', 'no');	// I'm doing it now...
+	ini_set('output_buffering', '128');
+	$lastalbum = get_option('wppa_last_index_albums', '-2');
+	if ( ! is_numeric($lastalbum) ) die ('Unexpected error in wppa_remake_index # 1');
+	$acount = '0';
+	$lastphoto = get_option('wppa_last_index_photos', '-2');
+	if ( ! is_numeric($lastphoto) ) die ('Unexpected error in wppa_remake_index # 2');
+	$pcount = '0';
+	
+	
+	// All over ?
+	if ( $lastalbum == '-1' && $lastphoto == '-1' ) {	// Start all over
+		$wpdb->query("TRUNCATE TABLE `".WPPA_INDEX."` ");
+		delete_option('wppa_'.WPPA_INDEX.'_lastkey');
+		wppa_index_compute_skips();
+	}
+	
+	// Do the albums
+	if ( $lastalbum != '-2' ) {
+		wppa_ok_message('Starting Albums at id = '.($lastalbum > '0' ? $lastalbum + '1' : '1'));
+		// dirty work
+		$albums = $wpdb->get_results($wpdb->prepare("SELECT `id`, `name`, `description` FROM `".WPPA_ALBUMS."` WHERE `id` > %d ORDER BY `id`", $lastalbum), ARRAY_A );
+		foreach ( $albums as $album ) {
+			wppa_index_add('album', $album);
+			update_option('wppa_last_index_albums', $album['id']);
+			if ( wppa_is_time_up($acount) ) return false;
+		}
+//		update_option('wppa_last_album_indexed', get_option('wppa_last_index_albums'));	// To possibly expand index
+		update_option('wppa_last_index_albums', '-2'); // Mark as Done
+		wppa_ok_message('Done with Albums');
+	}
+	
+	// Do the photos
+	if ( $lastphoto != '-2' ) {
+		// dirty work	
+		wppa_ok_message('Starting Photos at id = '.($lastphoto > '0' ? $lastphoto + '1' : '1'));
+		// note : excl seps moet nog!!!
+		$thumbs = $wpdb->get_results($wpdb->prepare("SELECT `id`, `filename`, `name`, `tags`, `description` FROM `".WPPA_PHOTOS."` WHERE `id` > %d ORDER BY `id`", $lastphoto), ARRAY_A );
+		foreach ( $thumbs as $thumb ) {
+			wppa_index_add('photo');
+			update_option('wppa_last_index_photos', $thumb['id']);
+			if ( wppa_is_time_up($pcount) ) return false;
+		}
+//		update_option('wppa_last_photo_indexed', get_option('wppa_last_index_photos'));	// To possibly expand index
+		update_option('wppa_last_index_photos', '-2'); 	// Mark as Done
+		wppa_ok_message('Done with Photos');
+		
+		delete_option('wppa_indexing_user');			// Nobody
+	}
+	return true;	// Done!!	
+}
+
+// Add an item to the index
+function wppa_index_add($type, $id = '') {
+global $album;	
+global $thumb;	
+global $wpdb;
+global $acount;
+global $pcount;
+global $wppa;
+
+	if ( ! wppa_switch('wppa_indexed_search') ) {
+		update_option('wppa_index_need_remake', 'yes');
+		return;
+	}
+	
+	if ( $type == 'album' ) {
+		if ( is_numeric($id) ) wppa_cache_album($id);
+		$words = __($album['name']);
+		if ( $album['description'] ) {
+			$words .= ' '.wppa_get_album_desc($album['id']);
+		}
+		$words = wppa_index_raw_to_words($words);
+		foreach ( $words as $word ) {
+			$indexline = $wpdb->get_row($wpdb->prepare("SELECT * FROM `".WPPA_INDEX."` WHERE `slug` = %s", $word), ARRAY_A);
+			if ( ! $indexline ) {	// create new entry
+				$id = wppa_nextkey(WPPA_INDEX);
+				$wpdb->query($wpdb->prepare( "INSERT INTO `".WPPA_INDEX."` ( `id`, `slug`, `albums`, `photos` ) VALUES ( %s, %s, %s, %s  )", $id, $word, $album['id'], ''));
+//				if ( ! $wppa['ajax'] ) echo $id.' => '.$word.'; ';
+			}
+			else { 	// Add to entry
+				$oldalbums = wppa_index_string_to_array($indexline['albums']);
+				if ( ! in_array($album['id'], $oldalbums) ) {
+					$oldalbums[] = $album['id'];
+					sort($oldalbums);
+					$newalbums = wppa_index_array_to_string($oldalbums);
+					$wpdb->query($wpdb->prepare( "UPDATE `".WPPA_INDEX."` SET `albums` = %s WHERE `id` = %s", $newalbums, $indexline['id']));
+				}
+			}
+		}
+		$acount ++;
+	}
+	
+	elseif ( $type == 'photo' ) {
+		if ( is_numeric($id) ) wppa_cache_thumb($id);
+		
+		// Find the rew text
+		$words = __($thumb['name']);																							// Name
+		$words .= ' '.$thumb['filename'];																						// Filename
+		if ( $thumb['description'] ) { 
+			$words .= ' '.wppa_filter_exif(wppa_filter_iptc(__(stripslashes($thumb['description'])),$thumb['id']),$thumb['id']);	// Description
+		}
+		if ( wppa_switch('wppa_search_tags') ) {
+			$words .= ' '.$thumb['tags'];																						// Tags
+		}
+		
+		$words = wppa_index_raw_to_words($words);	// convert raw string to sanitized array
+		foreach ( $words as $word ) {
+			$indexline = $wpdb->get_row($wpdb->prepare("SELECT * FROM `".WPPA_INDEX."` WHERE `slug` = %s", $word), ARRAY_A);
+			if ( ! $indexline ) {	// create new entry
+				$id = wppa_nextkey(WPPA_INDEX);
+				$wpdb->query($wpdb->prepare( "INSERT INTO `".WPPA_INDEX."` ( `id`, `slug`, `albums`, `photos` ) VALUES ( %s, %s, %s, %s  )", $id, $word, '', $thumb['id']));
+//				if ( ! $wppa['ajax'] ) echo $id.' => '.$word.'; ';
+			}
+			else { 	// Add to entry
+				$oldphotos = wppa_index_string_to_array($indexline['photos']);
+				if ( ! in_array($thumb['id'], $oldphotos) ) {
+					$oldphotos[] = $thumb['id'];
+					sort($oldphotos);
+					$newphotos = wppa_index_array_to_string($oldphotos);
+					$wpdb->query($wpdb->prepare( "UPDATE `".WPPA_INDEX."` SET `photos` = %s WHERE `id` = %s", $newphotos, $indexline['id']));
+				}
+			}
+			
+		}
+		$pcount ++;
+	}
+	
+	else wppa_dbg_msg('Error, unimplemented type in wppa_index_add().', 'red', 'force');
+}
+
+// Remove an item from the index Use this function if you do NOT know the current photo data matches the index info
+function wppa_index_remove($type, $id) {
+global $wpdb;
+
+	if ( $type == 'album' ) {
+		$indexes = $wpdb->get_results("SELECT * FROM `".WPPA_INDEX."` WHERE `albums` <> ''", ARRAY_A);
+		if ( $indexes ) foreach ( $indexes as $indexline ) {
+			$array = wppa_index_string_to_array($indexline['albums']);
+			foreach ( array_keys($array) as $k ) {
+				if ( $array[$k] == $id ) {
+					unset ( $array[$k] );
+					$string = wppa_index_array_to_string($array);
+					$wpdb->query("UPDATE `".WPPA_INDEX."` SET `albums` = '".$string."' WHERE `id` = ".$indexline['id']);
+				}
+			}
+		}
+	}
+	elseif ( $type == 'photo') {
+		$indexes = $wpdb->get_results("SELECT * FROM `".WPPA_INDEX."` WHERE `photos` <> ''", ARRAY_A);
+		if ( $indexes ) foreach ( $indexes as $indexline ) {
+			$array = wppa_index_string_to_array($indexline['photos']);
+			foreach ( array_keys($array) as $k ) {
+				if ( $array[$k] == $id ) {
+					unset ( $array[$k] );
+					$string = wppa_index_array_to_string($array);
+					$wpdb->query("UPDATE `".WPPA_INDEX."` SET `photos` = '".$string."' WHERE `id` = ".$indexline['id']);
+				}
+			}
+		}
+	}
+	else wppa_dbg_msg('Error, unimplemented type in wppa_index_remove().', 'red', 'force');
+	$wpdb->query("DELETE FROM `".WPPA_INDEX."` WHERE `albums` = '' AND `photos` = ''");
+}
+
+// Use this function if you know the current photo data matches the index info
+function wppa_index_quick_remove($type, $id) {
+global $thumb;
+global $wpdb;
+global $album;
+
+	if ( $type == 'album' ) {
+		if ( is_numeric($id) ) wppa_cache_album($id);
+		
+		$words = __($album['name']);
+		if ( $album['description'] ) {
+			$words .= ' '.wppa_get_album_desc($album['id']);
+		}
+		$words = wppa_index_raw_to_words($words);
+		
+		foreach ( $words as $word ) {
+			$indexline = $wpdb->get_row("SELECT * FROM `".WPPA_INDEX."` WHERE `slug` = '".$word."'", ARRAY_A);
+			$array = wppa_index_string_to_array($indexline['albums']);
+			foreach ( array_keys($array) as $k ) {
+				if ( $array[$k] == $id ) {
+					unset ( $array[$k] );
+					$string = wppa_index_array_to_string($array);
+					$wpdb->query("UPDATE `".WPPA_INDEX."` SET `albums` = '".$string."' WHERE `id` = ".$indexline['id']);
+				}
+			}
+		}
+		
+	}
+	elseif ( $type == 'photo') {
+		if ( is_numeric($id) ) wppa_cache_thumb($id);
+
+		// Find the raw text
+		$words = __($thumb['name']);																							// Name
+		$words .= ' '.$thumb['filename'];																						// Filename
+		if ( $thumb['description'] ) { 
+			$words .= ' '.wppa_filter_exif(wppa_filter_iptc(__(stripslashes($thumb['description'])),$thumb['id']),$thumb['id']);	// Description
+		}
+		if ( wppa_switch('wppa_search_tags') ) {
+			$words .= ' '.$thumb['tags'];																						// Tags
+		}
+		$words = wppa_index_raw_to_words($words, 'noskips');	// convert raw string to sanitized array
+		
+		foreach ( $words as $word ) {
+			$indexline = $wpdb->get_row("SELECT * FROM `".WPPA_INDEX."` WHERE `slug` = '".$word."'", ARRAY_A);
+			$array = wppa_index_string_to_array($indexline['photos']);
+			foreach ( array_keys($array) as $k ) {
+				if ( $array[$k] == $id ) {
+					unset ( $array[$k] );
+					$string = wppa_index_array_to_string($array);
+					$wpdb->query("UPDATE `".WPPA_INDEX."` SET `photos` = '".$string."' WHERE `id` = ".$indexline['id']);
+				}
+			}
+		}
+	}
+}
+
+// Re-index an edited item
+function wppa_index_update($type, $id) {
+	wppa_index_remove($type, $id);
+	wppa_index_add($type, $id);
+}
+
+// The words in the new photo description should be left out
+function wppa_index_compute_skips() {
+global $wppa_opt;
+
+	$user_skips = '';
+	$words = wppa_index_raw_to_words($wppa_opt['wppa_newphoto_description'].' '.$user_skips, 'noskips');
+	sort($words);
+
+	$result = array();
+	$last = '';
+	foreach ( $words as $word ) {	// Remove dups
+		if ( $word != $last ) {
+			$result[] = $word;
+			$last = $word;
+		}
+	}
+	update_option('wppa_index_skips', $result);
 }

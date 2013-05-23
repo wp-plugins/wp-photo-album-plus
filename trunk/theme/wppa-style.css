@@ -332,3 +332,10 @@ text-align:left;
 #phpinfo .vr {background-color: #cccccc; text-align: right; color: #000000;}
 #phpinfo img {float: right; border: 0px;}
 #phpinfo hr {width: 600px; background-color: #cccccc; border: 0px; height: 1px; color: #000000;}
+
+/* Fix for weaver II	*/
+#wppa-overlay-ic img {
+    -webkit-box-sizing:content-box;
+    -moz-box-sizing:content-box;
+    box-sizing:content-box;
+}

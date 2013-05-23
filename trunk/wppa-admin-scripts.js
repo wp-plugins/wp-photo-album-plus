@@ -1,7 +1,7 @@
 /* admin-scripts.js */
 /* Package: wp-photo-album-plus
 /*
-/* Version 5.0.0
+/* Version 5.0.4
 /* Various js routines used in admin pages		
 */
 
@@ -75,6 +75,7 @@ function wppaInitSettings() {
 //	wppaCheckKeepSource();
 	wppaCheckCoverType();
 	wppaCheckNewpag();
+	wppaCheckIndexSearch();
 	
 	var tab=new Array('I','II','III','IV','V','VI','VII','VIII','IX','X','XI','XII');
 	var sub=new Array('A','B','C','D','E','F','G','H','I','J');
@@ -651,6 +652,15 @@ function wppaCheckSplitNamedesc() {
 	}
 }
 
+function wppaCheckIndexSearch() {
+	if (document.getElementById('wppa_indexed_search').checked) {
+		jQuery('.index_search').css('display', '');
+	}
+	else {
+		jQuery('.index_search').css('display', 'none');
+	}
+}
+
 function wppa_tablecookieon(i) {
 	wppa_setCookie('table_'+i, 'on', '365');
 }
@@ -822,6 +832,7 @@ function wppaAjaxUpdatePhoto(photo, actionslug, elem) {
 	xmlhttp.open('POST',wppaAjaxUrl,true);
 	xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 	xmlhttp.send(data);
+	document.getElementById('photostatus-'+photo).innerHTML = 'Working, please wait...';
 
 	// Process the result
 	xmlhttp.onreadystatechange=function() {

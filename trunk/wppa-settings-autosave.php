@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 5.0.3
+* Version 5.0.4
 *
 */
 
@@ -33,6 +33,7 @@ global $wppa_revno;
 	echo("/* ]]> */\n");
 	echo("</script>\n");
 
+	$key = '';
 	// Someone hit a submit button or the like?
 	if ( isset($_REQUEST['wppa_settings_submit']) ) {	// Yep!
 		check_admin_referer(  'wppa-nonce', 'wppa-nonce' );
@@ -129,6 +130,22 @@ global $wppa_revno;
 			case 'wppa_remake':
 				update_option('wppa_remake_start', time());
 				break;
+			
+			// Indexing actions
+			case 'wppa_remake_index':
+				$usr = get_option('wppa_indexing_user', wppa_get_user('login'));
+				if ( $usr != wppa_get_user('login') ) {
+					wppa_error_message('This action is already started by '.$usr.'. Please wait until he has finished.');
+				}
+				else {
+					update_option('wppa_indexing_user', $usr);
+					update_option('wppa_last_index_albums', '-1');
+					update_option('wppa_last_index_photos', '-1');
+				}
+				break;
+
+			case 'wppa_list_index':
+				break;
 				
 			default: wppa_error_message('Unimplemnted action key: '.$key);
 		}
@@ -183,8 +200,36 @@ global $wppa_revno;
 			<?php				
 			wppa_update_option('wppa_lastthumb', '-2');
 		}
-		elseif ( wppa_switch('wppa_auto_continue') ) wppa_ok_message('Trying to continue...<script type="text/javascript">document.location=document.location</script>');
+		elseif ( wppa_switch('wppa_auto_continue') ) wppa_ok_message(__('Trying to continue...<script type="text/javascript">document.location=document.location</script>', 'wppa'));
 	}
+	
+	// See if a remake index is pending
+	$a = get_option('wppa_last_index_albums', '-2');
+	$p = get_option('wppa_last_index_photos', '-2');
+	if ( $a != '-2' || $p != '-2' ) {
+		$usr = get_option('wppa_indexing_user', wppa_get_user('login'));
+		if ( $usr == wppa_get_user('login') ) {	// My task
+			$start++;
+			wppa_ok_message(__('Creating index. Please wait...<br />', 'wppa'));
+			if ( wppa_remake_index() )  {
+				wppa_ok_message('Index created');
+			}
+			elseif ( wppa_switch('wppa_auto_continue') ) wppa_ok_message(__('Trying to continue...<script type="text/javascript">document.location=document.location</script>', 'wppa'));
+		}
+	}
+	elseif ( wppa_switch('wppa_indexed_search') ) {
+		$indexes = $wpdb->get_var("SELECT COUNT(*) FROM `".WPPA_INDEX."` ");
+		$albums  = $wpdb->get_var("SELECT COUNT(*) FROM `".WPPA_ALBUMS."` ");
+		if ( $albums && ! $indexes ) {	// No index yet
+			update_option('wppa_index_need_remake', 'yes');
+		}
+		if ( get_option('wppa_index_need_remake', 'no') == 'yes' ) {
+			wppa_error_message(__('The search index database table must be rebuilt. Please run Table VIII-A8', 'wppa'));
+		}
+	}
+	
+	
+	
 	// Check database
 //	if ( get_option('wppa_revision') != $wppa_revno ) 
 		wppa_check_database(true);
@@ -228,6 +273,37 @@ global $wppa_revno;
 			<br />
 			&nbsp;<a style="cursor:pointer;" onclick="jQuery('#wppa-legenda').css('display', 'none'); jQuery('#wppa-legon').css('display', ''); return false;" ><?php _e('Hide this', 'wppa') ?></a> 
 		</div>
+
+<?php
+// Display index?
+			if ( $key == 'wppa_list_index' ) {
+				$indexes = $wpdb->get_results("SELECT * FROM `".WPPA_INDEX."` ORDER BY `slug`", ARRAY_A);
+				echo '
+					<h2>List of Indexes</h2>
+					<div style="float:left; clear:both; width:100%; height:400px; overflow:auto; background-color:#f1f1f1; border:1px solid #ddd;" >
+						<table>
+							<thead>
+								<tr>
+									<th><span style="float:left;" >Word</span></th>
+									<th style="max-width:400px;" ><span style="float:left;" >Albums</span></th>
+									<th><span style="float:left;" >Photos</span></th>
+								</tr>
+							</thead>
+							<tbody>';
+				foreach ( $indexes as $index ) {
+					echo '
+								<tr>
+									<td>'.$index['slug'].'</td>
+									<td style="max-width:400px; word-wrap: break-word;" >'.$index['albums'].'</td>
+									<td>'.$index['photos'].'</td>
+								</tr>';
+				}
+				echo '
+							</tbody>
+						</table>
+					</div><div style="clear:both;"></div>';
+			}
+?>
 		
 		<form enctype="multipart/form-data" action="<?php echo(wppa_dbg_url(get_admin_url().'admin.php?page=wppa_options')) ?>" method="post">
 
@@ -1241,8 +1317,6 @@ global $wppa_revno;
 							$name = __('Covertext', 'wppa');
 							$desc = __('Show the text on the album cover.', 'wppa');
 							$help = esc_js(__('Display the album decription on the album cover', 'wppa'));
-//							$help .= '\n'.esc_js(__('If switched off, you can only link to the album using the covertitle or the coverphoto.', 'wppa'));
-//							$help .= '\n'.esc_js(__('Make sure you configure the coverphoto link as desired.', 'wppa'));
 							$slug = 'wppa_show_cover_text';
 							$html = wppa_checkbox($slug);
 							wppa_setting($slug, '1', $name, $desc, $html, $help);
@@ -2720,6 +2794,13 @@ global $wppa_revno;
 							$html = wppa_select($slug, $options, $values);
 							wppa_setting($slug, '1', $name, $desc, $html.'</td><td></td><td></td><td>', $help);
 							
+							$name = __('Art Monkey Source', 'wppa');
+							$desc = __('Use Source file for art monkey link if available.', 'wppa');
+							$help = '';
+							$slug = 'wppa_artmonkey_use_source';
+							$html = wppa_checkbox($slug);
+							wppa_setting($slug, '1.1', $name, $desc, $html.'</td><td></td><td></td><td>', $help);
+							
 							$name = __('Popup Download Link', 'wppa');
 							$desc = __('Configure the download link on fullsize popups.', 'wppa');
 							$help = esc_js(__('Link fullsize popup download button to either image or zip file.', 'wppa'));
@@ -3065,6 +3146,47 @@ global $wppa_revno;
 							$html = array($html1, $html2);
 							wppa_setting(false, '7', $name, $desc, $html, $help);
 							
+							$name = __('Remake Index', 'wppa');
+							$desc = __('Remakes the index database table.', 'wppa');
+							$help = '';
+							$slug = 'wppa_remake_index';
+							$html1 = '';
+							$usr = get_option('wppa_indexing_user', '');
+							if ( $usr && $usr != wppa_get_user('login') ) {
+								$html2 = '<b style="color:red" >'.sprintf(__('Is currently being executed by %s', 'wppa'), $usr);
+							}
+							else {
+								$html2 = wppa_doit_button('', $slug);
+							}
+							$html = array($html1, $html2);
+							$class = 'index_search';
+							wppa_setting(false, '8', $name, $desc, $html, $help, $class);
+/*							
+							$name = __('Extend Index', 'wppa');
+							$desc = __('Extends the index with indexef to new photos.', 'wppa');
+							$help = '';
+							$slug = 'wppa_extend_index';
+							$html1 = '';
+							$usr = get_option('wppa_indexing_user', '');
+							if ( $usr && $usr != wppa_get_user('login') ) {
+								$html2 = '<b style="color:red" >'.sprintf(__('Is currently being executed by %s', 'wppa'), $usr);
+							}
+							else {
+								$html2 = wppa_doit_button('', $slug);
+							}
+							$html = array($html1, $html2);
+							wppa_setting(false, '4.1', $name, $desc, $html, $help);
+*/							
+							$name = __('List Index', 'wppa');
+							$desc = __('Show the content if the index table.', 'wppa');
+							$help = '';
+							$slug = 'wppa_list_index';
+							$html1 = '';
+							$html2 = wppa_doit_button('', $slug);
+							$class = 'index_search';
+							$html = array($html1, $html2);
+							wppa_setting(false, '9', $name, $desc, $html, $help, $class);
+
 							wppa_setting_subheader('B', '2', __('Clearing and other irreverseable actions', 'wppa'));
 							
 							$name = __('Clear ratings', 'wppa');
@@ -3093,7 +3215,7 @@ global $wppa_revno;
 							$html2 = wppa_ajax_button('', $slug);
 							$html = array($html1, $html2);
 							wppa_setting(false, '3', $name, $desc, $html, $help);
-
+							
 							?>
 						</tbody>
 						<tfoot style="font-weight: bold;" class="wppa_table_8">
@@ -3268,7 +3390,6 @@ global $wppa_revno;
 							$name = __('Auto continue', 'wppa');
 							$desc = __('Continue automatic after time up', 'wppa');
 							$help = esc_js(__('If checked, an attempt will be made to restart an admin process when the time is up.', 'wppa'));
-							$help .= '\n'.esc_js(__('It is required that your server has set the php configuration max_execution_time correctly.', 'wppa'));
 							$slug = 'wppa_auto_continue';
 							$html = wppa_checkbox($slug);
 							wppa_setting($slug, '18', $name, $desc, $html, $help);
@@ -3276,7 +3397,7 @@ global $wppa_revno;
 							$name = __('Max execution time', 'wppa');
 							$desc = __('Set max execution time here.', 'wppa');
 							$help = esc_js(__('If your php config does not properly set the max execution time, you can set it here. Seconds, 0 means do not change.', 'wppa'));
-							$help .= '\n'.esc_js(__('Use only if you know what you are doing!!', 'wppa'));
+							$help .= '\n'.esc_js(__('A safe value is 45', 'wppa'));
 							$slug = 'wppa_max_execution_time';
 							$html = wppa_input($slug, '50px', '', 'seconds');
 							wppa_setting($slug, '19', $name, $desc, $html, $help);
@@ -3427,14 +3548,36 @@ global $wppa_revno;
 							$help = esc_js(__('When checked, the tags of the photo will also be searched.', 'wppa'));
 							$slug = 'wppa_search_tags';
 							$html = wppa_checkbox($slug);
-							wppa_setting($slug, '2.1', $name, $desc, $html, $help);
+							wppa_setting($slug, '3', $name, $desc, $html, $help);
 							
 							$name = __('Photos only', 'wppa');
 							$desc = __('Search for photos only.', 'wppa');
 							$help = esc_js(__('When checked, only photos will be searched for.', 'wppa'));
 							$slug = 'wppa_photos_only';
 							$html = wppa_checkbox($slug);
-							wppa_setting($slug, '3', $name, $desc, $html, $help);
+							wppa_setting($slug, '4', $name, $desc, $html, $help);
+							
+							$name = __('Indexed search', 'wppa');
+							$desc = __('Searching uses index db table.', 'wppa');
+							$help = '';
+							$slug = 'wppa_indexed_search';
+							$onchange = 'wppaCheckIndexSearch()';
+							$html = wppa_checkbox($slug, $onchange);
+							wppa_setting($slug, '5', $name, $desc, $html, $help);
+							
+							$name = __('Max albums found', 'wppa');
+							$desc = __('The maximum number of albums to be displayed.', 'wppa');
+							$help = '';
+							$slug = 'wppa_max_search_albums';
+							$html = wppa_input($slug, '50px');
+							wppa_setting($slug, '6', $name, $desc, $html, $help);
+
+							$name = __('Max photos found', 'wppa');
+							$desc = __('The maximum number of photos to be displayed.', 'wppa');
+							$help = '';
+							$slug = 'wppa_max_search_photos';
+							$html = wppa_input($slug, '50px');
+							wppa_setting($slug, '7', $name, $desc, $html, $help);
 							
 							wppa_setting_subheader('D', '1', __('Watermark related settings', 'wppa'));
 							
@@ -4007,6 +4150,7 @@ global $wppa_revno;
 
 		</form>
 		<script type="text/javascript">wppaInitSettings();wppaCheckInconsistencies();</script>
+		<?php echo sprintf(__('<br />Memory used on this page: %6.2f Mb.', 'wppa'), memory_get_peak_usage(true)/(1024*1024)); ?>
 	</div>
 	
 <?php
