@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 5.0.4
+* Version 5.0.6
 *
 */
 
@@ -277,31 +277,7 @@ global $wppa_revno;
 <?php
 // Display index?
 			if ( $key == 'wppa_list_index' ) {
-				$indexes = $wpdb->get_results("SELECT * FROM `".WPPA_INDEX."` ORDER BY `slug`", ARRAY_A);
-				echo '
-					<h2>List of Indexes</h2>
-					<div style="float:left; clear:both; width:100%; height:400px; overflow:auto; background-color:#f1f1f1; border:1px solid #ddd;" >
-						<table>
-							<thead>
-								<tr>
-									<th><span style="float:left;" >Word</span></th>
-									<th style="max-width:400px;" ><span style="float:left;" >Albums</span></th>
-									<th><span style="float:left;" >Photos</span></th>
-								</tr>
-							</thead>
-							<tbody>';
-				foreach ( $indexes as $index ) {
-					echo '
-								<tr>
-									<td>'.$index['slug'].'</td>
-									<td style="max-width:400px; word-wrap: break-word;" >'.$index['albums'].'</td>
-									<td>'.$index['photos'].'</td>
-								</tr>';
-				}
-				echo '
-							</tbody>
-						</table>
-					</div><div style="clear:both;"></div>';
+				wppa_list_index();
 			}
 ?>
 		

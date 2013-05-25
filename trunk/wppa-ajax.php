@@ -2,7 +2,7 @@
 /* wppa-ajax.php
 *
 * Functions used in ajax requests
-* version 5.0.4
+* version 5.0.6
 *
 */
 add_action('wp_ajax_wppa', 'wppa_ajax_callback');
