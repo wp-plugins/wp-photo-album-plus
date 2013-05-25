@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile
-Version: 5.0.4
+Version: 5.0.5
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -171,6 +171,16 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
 
+= 5.0.5 =
+
+= Bug Fixes =
+
+* Fixed a fatal error in front end upload *
+
+= Other Changes =
+
+* Language files update
+
 = 5.0.4 =
 
 = Bug Fixes =
@@ -185,7 +195,7 @@ See for additional information: http://wppa.opajaap.nl/?page_id=1459
 * Indexed search. See Table IX-C5.
 * If source is available, it can be used for the art monkey link (Table VI-C1.1)
 
-= Other changes =
+= Other Changes =
 
 * Performance improvement in album admin.
 * Hughe performance improvements in large slideshows with filmstrip.
