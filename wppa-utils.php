@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains low-level utility routines
-* Version 5.0.4
+* Version 5.0.6
 *
 */
 
@@ -781,91 +781,3 @@ function wppa_strip_tags($text, $key = '') {
 	return trim($text);
 }
 
-// Expand compressed string
-function wppa_index_string_to_array($string) {
-	// Anything?
-	if ( ! $string ) return array();
-	// Any ranges?
-	if ( ! strstr($string, '..') ) return explode(',', $string);	// No
-	// Yes
-	$temp = explode(',', $string);
-	$result = array();
-	foreach ( $temp as $t ) {
-		if ( ! strstr($t, '..') ) $result[] = $t;
-		else {
-			$range = explode('..', $t);
-			$from = $range['0'];
-			$to = $range['1'];
-			while ( $from <= $to ) {
-				$result[] = $from;
-				$from++;
-			}
-		}
-	}
-	return $result;
-}
-
-// Compress array ranges and convert to string
-function wppa_index_array_to_string($array) {
-	$result = '';
-	$lastitem = '-1';
-	$isrange = false;
-	foreach ( $array as $item ) {
-		if ( $item == $lastitem+'1' ) {
-			$isrange = true;
-		}
-		else {
-			if ( $isrange ) {	// Close range
-				$result .= '..'.$lastitem.','.$item;
-				$isrange = false;
-			}
-			else {				// Add single item
-				$result .= ','.$item;
-			}
-				
-			
-		}
-		$lastitem = $item;
-	}
-	if ( $isrange ) {	// Don't forget the last if it ends in a range
-		$result .= '..'.$lastitem;
-	}
-	$result = trim($result, ',');
-	return $result;
-}
-
-// Convert raw data string to indexable word array
-function wppa_index_raw_to_words($xtext, $noskips = false) {
-
-	$ignore = array( '"', "'", '\\', '>', '<', ',', ':', ';', '!', '?', '=', '_', '[', ']', '(', ')', '{', '}', '..', '...', '....', "\n", "\r", "\t", '.jpg', '.png', '.gif', '&#039', '&amp' );
-	if ( $noskips ) $skips = array();
-	else $skips = get_option('wppa_index_skips', array());
-	
-	$result = array();
-	if ( $xtext ) {
-		$text = strtolower($xtext);
-		$text = html_entity_decode($text);
-		$text = wppa_strip_tags($text, 'script&style');	// strip style and script tags inclusive content
-		$text = str_replace('>', '> ', $text);			// Make sure <td>word1</td><td>word2</td> will not endup in 'word1word2', but in 'word1' 'word2'
-		$text = strip_tags($text);						// Now strip the tags
-		$text = str_replace($ignore, ' ', $text);		// Remove funny chars
-		$text = trim($text);
-		$text = trim($text, " ./-");
-		while ( strpos($text, '  ') ) $text = str_replace('  ', ' ', $text);	// Compress spaces
-		$words = explode(' ', $text);
-		foreach ( $words as $word ) {
-			$word = trim($word);
-			$word = trim($word, " ./-");
-			if ( strlen($word) > '1' && ! in_array($word, $skips) ) $result[] = $word;
-			if ( strpos($word, '-') !== false ) {
-				$fracts = explode('-', $word);
-				foreach ( $fracts as $fract ) {
-					$fract = trim($fract);
-					$fract = trim($fract, " ./-");
-					if ( strlen($fract) > '1' && ! in_array($fract, $skips) ) $result[] = $fract;
-				}
-			}
-		}
-	}
-	return $result;
-}
