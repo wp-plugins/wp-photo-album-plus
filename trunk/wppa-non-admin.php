@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the non admin stuff
-* Version 5.0.4
+* Version 5.0.7
 *
 */
 
@@ -189,7 +189,9 @@ function wppa_redirect() {
 	if ( $wppapos && get_option('permalink_structure') && get_option('wppa_use_pretty_links') == 'yes' ) {
 		$newuri = wppa_convert_from_pretty($uri);
 		if ( $newuri == $uri ) return;
-		wp_redirect($newuri);
+		// Although the searchstring is urlencoded it is damaged by wp_redirect when it contains chars like ë, so in that case we do a header() call
+		if ( strpos($newuri, '&wppa-searchstring=') || strpos($newuri, '&s=') ) header('Location: '.$newuri, true, 302);
+		else wp_redirect($newuri);
 		exit;
 	}
 }

@@ -3,12 +3,12 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions and API modules
-* Version 5.0.4
+* Version 5.0.7
 *
 */
 /* Moved to wppa-common-functions.php:
 global $wppa_api_version;
-$wppa_api_version = '5-0-4-000';
+$wppa_api_version = '5-0-7-000';
 */
 
 if ( ! defined( 'ABSPATH' ) )
@@ -179,7 +179,7 @@ global $wpdb;
 
 	if ( $wppa['is_slide'] ) {
 		if ( $wppa_opt['wppa_bc_slide_thumblink'] ) {
-			$s = $wppa['src'] ? '&wppa-searchstring='.$wppa['searchstring'] : '';
+			$s = $wppa['src'] ? '&wppa-searchstring='.urlencode($wppa['searchstring']) : '';
 			$onclick = "wppaDoAjaxRender(".$wppa['master_occur'].", '".wppa_get_album_url_ajax($wppa['start_album'], '0')."&wppa-photos-only=1".$s."', '".wppa_convert_to_pretty(wppa_get_album_url($wppa['start_album'], '0').'&wppa-photos-only=1'.$s)."')";
 			$fs = $wppa_opt['wppa_fontsize_nav'];	
 			if ($fs != '') $fs += 3; else $fs = '15';	// iconsize = fontsize+3, Default to 15
@@ -2534,7 +2534,7 @@ global $wppa_opt;
 	// Tag?
 	if ( $wppa['is_tag'] ) $extra_url .= '&amp;wppa-tag='.$wppa['is_tag'];
 	// Search?
-	if ( $wppa['src'] ) $extra_url .= '&amp;wppa-searchstring='.$wppa['searchstring'];
+	if ( $wppa['src'] ) $extra_url .= '&amp;wppa-searchstring='.urlencode($wppa['searchstring']);
 	
 	// Photos only?
 	if ( $wppa['photos_only'] ) $extra_url .= '&amp;wppa-photos-only=1';
@@ -4316,7 +4316,7 @@ global $thumb;
 		}
 		
 			if ( $tmp == 'film' ) $wppa['out'] .= '<!--';
-				$wppa['out'] .= '<img src="'.$url.'" alt="'.$thumbname.'" title="'.$title.'" '.
+				$wppa['out'] .= '<img id="wppa-'.$tmp.'-'.$idx.'-'.$wppa['master_occur'].'" class="wppa-'.$tmp.'-'.$wppa['master_occur'].'" src="'.$url.'" alt="'.$thumbname.'" title="'.$title.'" '.
 					//width="'.$imgwidth.'" height="'.$imgheight.'" 
 					'style="'.$imgstyle.$cursor.'" '.$events.' />';
 			if ( $tmp == 'film' ) $wppa['out'].='-->';
@@ -5342,8 +5342,8 @@ if ( $wppa['is_tag'] ) $album='0';
 			break;
 	}
 	
-	if (isset($_REQUEST['wppa-searchstring'])) {
-		$result['url'] .= '&amp;wppa-searchstring='.strip_tags($_REQUEST['wppa-searchstring']);
+	if ( $wppa['src'] ) { //(isset($_REQUEST['wppa-searchstring'])) {
+		$result['url'] .= '&amp;wppa-searchstring='.urlencode($wppa['searchstring']);//strip_tags($_REQUEST['wppa-searchstring']));
 	}
 
 	if ($wich == 'topten') {
@@ -5587,8 +5587,10 @@ global $wppa_opt;
 	$allow = wppa_allow_uploads($alb);
 
 	if ( ! $allow ) {
-		$wppa['out'] .= __a('Max uploads reached');
-		$wppa['out'] .= wppa_time_to_wait_html($alb);
+		if ( wppa_switch('wppa_show_album_full') ) {
+			$wppa['out'] .= '<a>'.__a('Max uploads reached').'</a>';
+			$wppa['out'] .= wppa_time_to_wait_html($alb);
+		}
 		return;											// Max quota reached
 	}
 
@@ -5628,7 +5630,7 @@ global $wppa_opt;
 							$wppa['out'] .= wppa_nltab('+').__a('Apply watermark file:');
 						$wppa['out'] .= wppa_nltab('-').'</td>';
 						$wppa['out'] .= wppa_nltab(   ).'<td class="wppa-box-text wppa-td" style="'.__wcs('wppa-box-text').__wcs('wppa-td').'" >';
-							$wppa['out'] .= wppa_nltab('+').'<select style="margin:0; padding:0; " name="wppa-watermark-file" id="wppa-watermark-file">'.wppa_watermark_file_select().'</select>';
+							$wppa['out'] .= wppa_nltab('+').'<select style="margin:0; padding:0; text-align:left; width:auto; " name="wppa-watermark-file" id="wppa-watermark-file">'.wppa_watermark_file_select().'</select>';
 						$wppa['out'] .= wppa_nltab('-').'</td>';
 					$wppa['out'] .= wppa_nltab('-').'</tr>';
 					$wppa['out'] .= wppa_nltab(   ).'<tr valign="top" style="border: 0 none; " >';
@@ -5636,7 +5638,7 @@ global $wppa_opt;
 							$wppa['out'] .= wppa_nltab('+').__a('Position:');
 						$wppa['out'] .= wppa_nltab('-').'</td>';
 						$wppa['out'] .= wppa_nltab(   ).'<td class="wppa-box-text wppa-td" style="'.__wcs('wppa-box-text').__wcs('wppa-td').'" >';
-							$wppa['out'] .= wppa_nltab('+').'<select style="margin:0; padding:0; " name="wppa-watermark-pos" id="wppa-watermark-pos">'.wppa_watermark_pos_select().'</select>';
+							$wppa['out'] .= wppa_nltab('+').'<select style="margin:0; padding:0; text-align:left; width:auto; " name="wppa-watermark-pos" id="wppa-watermark-pos">'.wppa_watermark_pos_select().'</select>';
 						$wppa['out'] .= wppa_nltab('-').'</td>';
 					$wppa['out'] .= wppa_nltab('-').'</tr>';
 				$wppa['out'] .= wppa_nltab('-').'</table>';
@@ -6084,11 +6086,11 @@ global $wppa_opt;
 	if ( ! $wppa_opt['wppa_use_pretty_links'] ) return $xuri;
 	if ( ! get_option('permalink_structure') ) return $xuri;
 	if ( ! isset($_ENV["SCRIPT_URI"]) ) return $xuri;
-	
+
 	// Do some preprocessing
 	$uri = str_replace('&amp;', '&', $xuri);
 	$uri = str_replace('wppa-', '', $uri);
-	
+
 	// Test if querystring exists
 	$qpos = stripos($uri, '?');
 	if ( ! $qpos ) return $uri;

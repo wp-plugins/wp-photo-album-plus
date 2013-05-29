@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 5.0.6
+* Version 5.0.7
 *
 */
 
@@ -3429,6 +3429,13 @@ global $wppa_revno;
 							$values = array( '0', '3600', '86400', '604800', '2592000', '31449600');
 							$html .= wppa_select($slug, $options, $values);
 							wppa_setting(false, '5', $name, $desc, $html, $help);
+							
+							$name = __('Show album full', 'wppa');
+							$desc = __('Show the Upload limit reached message if appropriate.', 'wppa');
+							$help = '';
+							$slug = 'wppa_show_album_full';
+							$html = wppa_checkbox($slug);
+							wppa_setting($slug, '5.1', $name, $desc, $html, $help);
 							
 							$name = __('Grant an album', 'wppa');
 							$desc = __('Create an album for each user logging in.', 'wppa');

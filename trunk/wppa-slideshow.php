@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the slideshow high level functions
-* Version 5.0.4
+* Version 5.0.7
 *
 */
 
@@ -497,8 +497,13 @@ global $thumb;
 	$start = $cnt - $preambule;
 	$end = $cnt;
 	$idx = $start;
+	
 	$wppa['out'] .= '
-			<style type="text/css" >#wppa-container-'.$wppa['master_occur'].' .thumbnail-frame { '.wppa_get_thumb_frame_style(false, 'film').' }</style>';
+			<style type="text/css" >
+				#wppa-container-'.$wppa['master_occur'].' .thumbnail-frame { '.wppa_get_thumb_frame_style(false, 'film').' }
+				.wppa-filmthumb-active { -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; }
+			</style>';
+				
 	while ($idx < $end) {
 		$glue = $cnt == ($idx + 1) ? true : false;
 		$ix = $idx;
@@ -523,9 +528,7 @@ global $thumb;
 		wppa_do_filmthumb($ix, false);
 		$idx++;
 	}
-	$wppa['out'] .= '
-			<!-- hier 2 -->';
-	
+		
 	if (is_feed()) {
 		$wppa['out'] .= wppa_nltab('-').'</div>';
 	}

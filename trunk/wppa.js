@@ -2,7 +2,7 @@
 //
 // conatins slideshow, theme, ajax and lightbox code
 //
-// Version 5.0.4
+// Version 5.0.7
 
 // Part 1: Slideshow
 //
@@ -953,6 +953,9 @@ function _wppaAdjustFilmstrip(mocc) {
 
 	if ( ! document.getElementById('wppa-filmstrip-'+mocc) ) return;	// No filmstrip this mocc
 	
+	// Remove class from active thumb
+	jQuery('.wppa-film-'+mocc).removeClass('wppa-filmthumb-active');
+	
 	if ( ! _wppaFilmNoMove[mocc] ) {
 		var xoffset;
 		xoffset = wppaFilmStripLength[mocc] / 2 - (_wppaCurIdx[mocc] + 0.5 + wppaPreambule) * wppaThumbnailPitch[mocc] - wppaFilmStripMargin[mocc];
@@ -982,6 +985,9 @@ function _wppaAdjustFilmstrip(mocc) {
 			index++;
 		}
 	}
+	
+	// Apply class to active filmthumb
+	jQuery('#wppa-film-'+_wppaCurIdx[mocc]+'-'+mocc).addClass('wppa-filmthumb-active');
 }
 
 function wppaUpdateLightboxes() {
@@ -2016,6 +2022,7 @@ jQuery(document).ready(function(e) {
 			wppaStartHtml[i] = jQuery('#wppa-container-'+i).html();
 			i++;
 		}
+//if ( wppaUpdateAddressLine )
 		wppaCanPushState = true;
 	}
 });

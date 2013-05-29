@@ -80,6 +80,7 @@
 
 /* Wrapper for coverphoto background */
 .coverphoto-frame, .thumbphoto-frame {
+	text-decoration: none;
 }
 
 /* Coverphoto */
@@ -308,6 +309,10 @@ text-align:left;
 	position: absolute;
 }
 
+.wppa-filmthumb-active { 
+/*	border: 1px solid black !important; */
+}
+
 .wppa-cartform {
 	margin: 0;
 }
@@ -335,7 +340,8 @@ text-align:left;
 
 /* Fix for weaver II	*/
 #wppa-overlay-ic img {
-    -webkit-box-sizing:content-box;
-    -moz-box-sizing:content-box;
-    box-sizing:content-box;
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
 }
+
