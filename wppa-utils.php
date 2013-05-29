@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains low-level utility routines
-* Version 5.0.6
+* Version 5.0.7
 *
 */
 
@@ -177,7 +177,7 @@ global $wppa_opt;
 // If html not allowed, filter specialchars
 // To prevent duplicate filtering, first entity_decode
 	$result = html_entity_decode($str);
-	if ( ! $wppa_opt['wppa_html'] ) {
+	if ( ! $wppa_opt['wppa_html'] && ! current_user_can('wppa_moderate') ) {
 		$result = htmlspecialchars($str);
 	}
 	return $result;

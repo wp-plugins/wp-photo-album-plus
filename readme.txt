@@ -171,12 +171,25 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
 
+= 5.0.7 =
+
+= Bug Fixes =
+
+* Moderate links show up now also when allow html is unchecked.
+* You can have accented chars in search strings that do not disappear when using prettylinks.
+
+= Other Changes =
+
+* A class .wppa-filmthumb-active has been added to the wppa-style.css file. 
+This class will be added to the filmstrib thumbnail that is currently the active one.
+* The Max uploads reached message can now be switched off in Table IX-B5.1.
+
 = 5.0.6 =
 
 = Bug Fixes =
 
-* Fixed a fatal error in front end upload *
-* Update of indexes at edit album/photo corrected *
+* Fixed a fatal error in front end upload
+* Update of indexes at edit album/photo corrected
 
 = Other Changes =
 

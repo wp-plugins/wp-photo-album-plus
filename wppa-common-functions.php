@@ -2,11 +2,11 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 5.0.6
+* version 5.0.7
 *
 */
 global $wppa_api_version;
-$wppa_api_version = '5-0-6-000';
+$wppa_api_version = '5-0-7-000';
 // Initialize globals and option settings
 function wppa_initialize_runtime($force = false) {
 global $wppa;
@@ -540,6 +540,7 @@ global $wppa_initruntimetime;
 						'wppa_newphoto_description'		=> '',
 						'wppa_upload_limit_count'		=> '',		// 5a
 						'wppa_upload_limit_time'		=> '',		// 5b
+						'wppa_show_album_full'			=> '',
 						'wppa_grant_an_album'			=> '',
 						'wppa_grant_parent'				=> '',
 						'wppa_max_albums'				=> '',
@@ -1441,10 +1442,10 @@ global $wppa;
 	
 	if (isset($_REQUEST['wppa-searchstring'])) {
 		$src = $_REQUEST['wppa-searchstring'];
-		$src = str_replace('_', ' ', $src);
+//		$src = str_replace('_', ' ', $src);
 	}
-	elseif (isset($_GET['s'])) {	// wp search
-		$src = $_GET['s'];
+	elseif (isset($_REQUEST['s'])) {	// wp search
+		$src = $_REQUEST['s'];
 	}
 
 	return strip_tags(stripslashes($src));
