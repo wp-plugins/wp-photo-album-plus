@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the non admin stuff
-* Version 5.0.7
+* Version 5.0.8
 *
 */
 
@@ -306,6 +306,8 @@ global $wppa_locale;
 </script>
 ';
 
+	// Patch for chrome?
+if ( isset($_SERVER["HTTP_USER_AGENT"]) ) {
 		echo '
 <!-- Browser detected = '.$_SERVER["HTTP_USER_AGENT"].' -->';
 if ( strstr($_SERVER["HTTP_USER_AGENT"], 'Chrome') && wppa_switch('wppa_ovl_chrome_at_top') ) echo '
@@ -313,6 +315,8 @@ if ( strstr($_SERVER["HTTP_USER_AGENT"], 'Chrome') && wppa_switch('wppa_ovl_chro
 	#wppa-overlay-ic { padding-top: 5px !important; } 
 	#wppa-overlay-qt-txt, #wppa-overlay-qt-img { top: 5px !important; }
 </style>';
+}
+
 	// Pinterest js
 	if ( ( $wppa_opt['wppa_share_on'] || $wppa_opt['wppa_share_on_widget'] ) && $wppa_opt['wppa_share_pinterest'] ) {
 		echo '

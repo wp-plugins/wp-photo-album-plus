@@ -2,7 +2,7 @@
 //
 // conatins slideshow, theme, ajax and lightbox code
 //
-// Version 5.0.7
+// Version 5.0.8
 
 // Part 1: Slideshow
 //
@@ -1172,8 +1172,8 @@ function _wppaLoadSpinner(mocc) {
 	if (document.getElementById('theimg1-'+mocc)) { 
 		if (document.getElementById('theimg1-'+mocc).complete) flag = false;
 	}
-	if ( !flag ) return;	// There is an image visible: no spinner
-
+//	if ( !flag ) return;	// There is an image visible: no spinner
+/*
 	top = jQuery('#slide_frame-'+mocc).css('height');
 	if (top > 0) {
 		top = parseInt(parseInt(top/2) - 16)+'px';
@@ -1191,6 +1191,9 @@ function _wppaLoadSpinner(mocc) {
 	if (lft > 0) {
 		lft = parseInt(lft/2 - 16)+'px';
 	}
+*/	
+top = parseInt(document.getElementById('slide_frame-'+mocc).clientHeight / 2) - 16;
+lft = parseInt(document.getElementById('slide_frame-'+mocc).clientWidth / 2) - 16;
 
 	jQuery('#spinner-'+mocc).css('top',top);
 	jQuery('#spinner-'+mocc).css('left',lft);

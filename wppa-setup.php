@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 5.0.7
+* Version 5.0.8
 *
 */
 
@@ -280,7 +280,7 @@ global $silent;
 
 		
 		
-		wppa_flush_treecounts();
+//		wppa_flush_treecounts();
 	}
 	
 	// Set default values for new options
