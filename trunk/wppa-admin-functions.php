@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * gp admin functions
-* version 5.0.6
+* version 5.0.8
 *
 * 
 */
@@ -556,7 +556,7 @@ if ( is_multisite() ) return; // temp disabled for 4.0 bug, must be tested in a 
 				wppa_error_message('Could not create album: Orphan Photos', 'wppa');
 			}
 			else {
-				wppa_flush_treecounts();
+				wppa_flush_treecounts($key);
 				wppa_index_add('album', $key);
 				wppa_ok_message('Album: Orphan Photos created.', 'wppa');
 			}
@@ -583,7 +583,7 @@ if ( is_multisite() ) return; // temp disabled for 4.0 bug, must be tested in a 
 		if ($alb == '0' && $delcount == 0 && $fixcount == 0) {
 //		wppa_ok_message(__('Done. No errors found. Have a nice upload!', 'wppa'));
 	}
-	wppa_flush_treecounts();
+//	wppa_flush_treecounts();
 }
 
 

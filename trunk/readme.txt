@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile
-Version: 5.0.6
+Version: 5.0.8
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -170,6 +170,20 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 5.0.8 =
+
+= Bug Fixes =
+
+* A normal wp search when there were wppa widgets but no wppa on page or post resulted in a nothing found message in the first wppa widget. Fixed.
+
+= Other Changes =
+
+* Performane improvements in Album Admin, especially in systems with 100+ albums.
+* When the browser is not known to the server it no longer generates an errormessage in the server error log.
+* Filenames will always be sanitized for the art-monkey link.
+* Albums that contain new sub-albums will also have the new indicator displayed.
+* If you set z-index:1000; in wppa-style.css in class .spinner, the spinner will show up when the next slide is being loaded.
 
 = 5.0.7 =
 

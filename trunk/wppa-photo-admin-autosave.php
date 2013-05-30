@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * edit and delete photos
-* version 5.0.4
+* version 5.0.8
 *
 */
 
@@ -216,13 +216,14 @@ function wppa_album_photos($album = '', $photo = '', $owner = '', $moderate = fa
 								</td>
 							</tr>
 							
+							<?php if ( ! isset($album_select[$photo['album']]) ) $album_select[$photo['album']] = wppa_album_select_a(array('checkaccess' => true, 'path' => wppa_switch('wppa_hier_albsel'), 'exclude' => $photo['album'], 'selected' => '0', 'addblank' => true)) ?>
 							<!-- Move -->
 							<tr style="vertical-align:bottom;" >
 								<th scope="row" style="padding-top:0; padding-bottom:0;">
 									<a style="" onclick="if(document.getElementById('moveto-<?php echo($photo['id']) ?>').value != 0) { if (confirm('<?php _e('Are you sure you want to move this photo?', 'wppa') ?>')) wppaAjaxUpdatePhoto(<?php echo $photo['id'] ?>, 'moveto', document.getElementById('moveto-<?php echo($photo['id']) ?>') ) } else { alert('<?php _e('Please select an album to move the photo to first.', 'wppa') ?>'); return false;}" ><?php _e('Move photo to', 'wppa') ?></a> 
 								</th>
 								<td style="padding-top:0; padding-bottom:0;">							
-									<select id="moveto-<?php echo $photo['id'] ?>" style="width:100%;" ><?php echo wppa_album_select_a(array('checkaccess' => true, 'path' => wppa_switch('wppa_hier_albsel'), 'exclude' => $photo['album'], 'selected' => '0', 'addblank' => true)) ?></select>
+									<select id="moveto-<?php echo $photo['id'] ?>" style="width:100%;" ><?php echo $album_select[$photo['album']] ?></select>
 								</td>
 							</tr>
 							
@@ -232,7 +233,7 @@ function wppa_album_photos($album = '', $photo = '', $owner = '', $moderate = fa
 								 	<a style="cursor:pointer; font-weight:bold;" onclick="if (document.getElementById('copyto-<?php echo($photo['id']) ?>').value != 0) { if (confirm('<?php _e('Are you sure you want to copy this photo?', 'wppa') ?>')) wppaAjaxUpdatePhoto(<?php echo $photo['id'] ?>, 'copyto', document.getElementById('copyto-<?php echo($photo['id']) ?>') ) } else { alert('<?php _e('Please select an album to copy the photo to first.', 'wppa') ?>'); return false;}" ><?php _e('Copy photo to', 'wppa') ?></a>
 								</th>
 								<td style="padding-top:0; padding-bottom:0;">
-									<select id="copyto-<?php echo($photo['id']) ?>" style="width:100%;" ><?php echo wppa_album_select_a(array('checkaccess' => true, 'path' => wppa_switch('wppa_hier_albsel'), 'exclude' => $photo['album'], 'selected' => '0', 'addblank' => true)) ?></select>
+									<select id="copyto-<?php echo($photo['id']) ?>" style="width:100%;" ><?php echo $album_select[$photo['album']] ?></select>
 								</td>
 							</tr>
 							<!-- Delete -->

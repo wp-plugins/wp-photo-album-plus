@@ -2,7 +2,7 @@
 /* wppa-ajax.php
 *
 * Functions used in ajax requests
-* version 5.0.6
+* version 5.0.8
 *
 */
 add_action('wp_ajax_wppa', 'wppa_ajax_callback');
@@ -101,7 +101,7 @@ global $wppa;
 				// Make the name
 				if ( $data['filename'] ) {
 					$name = $data['filename'];
-					$name = preg_replace('/\.[^.]*$/', '', $name);
+					$name = sanitize_file_name($name); // preg_replace('/\.[^.]*$/', '', $name);
 				}
 				else {
 					$name = __($data['name']);
@@ -113,7 +113,7 @@ global $wppa;
 						exit;
 					}
 				}
-				// Make the filenames
+				// Make the file
 				if ( wppa_switch('wppa_artmonkey_use_source') && is_file($wppa_opt['wppa_source_dir'].'/album-'.$data['album'].'/'.$data['filename']) ) {
 					$source = $wppa_opt['wppa_source_dir'].'/album-'.$data['album'].'/'.$data['filename'];
 				}
@@ -1214,7 +1214,7 @@ global $wpdb;
 	$wpdb->query($wpdb->prepare('DELETE FROM `'.WPPA_COMMENTS.'` WHERE `photo` = %s', $photo));
 	$wpdb->query($wpdb->prepare('DELETE FROM `'.WPPA_IPTC.'` WHERE `photo` = %s', $photo));
 	$wpdb->query($wpdb->prepare('DELETE FROM `'.WPPA_EXIF.'` WHERE `photo` = %s', $photo));
-	wppa_flush_treecounts();
+	wppa_flush_treecounts($album);
 	// Delete dislikes
 	wppa_dislike_remove($photo);
 

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * create, edit and delete albums
-* version 5.0.4
+* version 5.0.8
 *
 */
 
@@ -80,7 +80,7 @@ function _wppa_admin() {
 				else {
 					$edit_id = $id;
 					wppa_set_last_album($edit_id);
-					wppa_flush_treecounts();
+					wppa_flush_treecounts($edit_id);
 					wppa_index_add('album', $id);
 					wppa_update_message(__('Album #', 'wppa') . ' ' . $edit_id . ' ' . __('Added.', 'wppa'));
 				}
