@@ -766,7 +766,7 @@ Hide Camera info
 						'wppa_upload_moderate'		=> 'no',
 						'wppa_upload_edit'			=> 'no',
 						'wppa_upload_notify' 		=> 'no',
-						'wppa_upload_one_only'		=> 'yes',
+						'wppa_upload_one_only'		=> 'no',
 						'wppa_memcheck_frontend'	=> 'yes',
 						'wppa_memcheck_admin'		=> 'yes',
 						'wppa_comment_captcha'		=> 'no',
