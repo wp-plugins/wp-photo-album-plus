@@ -2,7 +2,7 @@
 //
 // conatins slideshow, theme, ajax and lightbox code
 //
-// Version 5.0.8
+// Version 5.0.9
 
 // Part 1: Slideshow
 //
@@ -99,6 +99,7 @@ var wppaArtMonkyLink = 'none';
 var wppaAutoOpenComments = false;
 var wppaUpdateAddressLine = false;
 var wppaSymCover = false;
+var wppaFilmThumbTitle = '';
 
 // 'Internal' variables (private)
 var _wppaId = new Array();
@@ -137,6 +138,7 @@ var wppaColWidth = new Array();
 var _wppaShareUrl = new Array();
 var _wppaShareHtml = new Array();
 var _wppaFilmNoMove = new Array();
+var wppaUploadUrl = '';
 
 jQuery(document).ready(function(){
 	
@@ -201,7 +203,7 @@ var cursor;
 	else if (wppaLightBox=='wppa') cursor =  'url('+wppaImageDirectory+wppaMagnifierCursor+'),pointer';
 
 	
-    _wppaSlides[mocc][id] = ' src="' + url + '" alt="' + name + '" class="theimg theimg-'+mocc+' big" ';
+    _wppaSlides[mocc][id] = ' src="' + wppaUploadUrl + url + '" alt="' + wppaTrimAlt(name) + '" class="theimg theimg-'+mocc+' big" ';
 	
 		// Add swipe
 		_wppaSlides[mocc][id] += 'ontouchstart="wppaTouchStart(event, this.id, '+mocc+');"  ontouchend="wppaTouchEnd(event);" ontouchmove="wppaTouchMove(event);" ontouchcancel="wppaTouchCancel(event);" ';
@@ -226,7 +228,7 @@ var cursor;
 	_wppaCommentHtml[mocc][id] = commenthtml;
 	_wppaIptcHtml[mocc][id] = iptchtml;
 	_wppaExifHtml[mocc][id] = exifhtml;
-	_wppaUrl[mocc][id] = url;
+	_wppaUrl[mocc][id] = wppaUploadUrl + url;
 	_wppaLbTitle[mocc][id] = lbtitle;
 	_wppaShareUrl[mocc][id] = shareurl;
 	_wppaShareHtml[mocc][id] = smhtml;
@@ -979,6 +981,7 @@ function _wppaAdjustFilmstrip(mocc) {
 						html = html.replace('<!--', '');
 						html = html.replace('-->', '');
 						document.getElementById('film_wppatnf_'+_wppaId[mocc][index]+'_'+mocc).innerHTML = html;
+						document.getElementById('wppa-film-'+index+'-'+mocc).title = wppaFilmThumbTitle;
 					}
 				}
 			}
@@ -2728,4 +2731,13 @@ function wppaRepairScriptTags(text) {
 		newtext += temp[idx];
 	}
 	return newtext;
+}
+
+function wppaTrimAlt(text) {
+var result;
+	if ( text.length > 13 ) {
+		result = text.substr(0,10) + '...';
+	}
+	else result = text;
+	return result;
 }

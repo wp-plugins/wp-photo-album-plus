@@ -2,7 +2,7 @@
 /* wppa-ajax.php
 *
 * Functions used in ajax requests
-* version 5.0.8
+* version 5.0.9
 *
 */
 add_action('wp_ajax_wppa', 'wppa_ajax_callback');
@@ -83,6 +83,7 @@ global $wppa;
 			}
 			echo __('Unexpected error', 'wppa');
 			exit;
+			
 		case 'makeorigname':
 			$photo = $_REQUEST['photo-id'];
 			$from = $_REQUEST['from'];
@@ -98,21 +99,21 @@ global $wppa;
 			}
 			$data = $wpdb->get_row($wpdb->prepare("SELECT * FROM `".WPPA_PHOTOS."` WHERE `id` = %s", $photo), ARRAY_A);
 			if ($data) {	// The photo is supposed to exist
+			
 				// Make the name
 				if ( $data['filename'] ) {
 					$name = $data['filename'];
-					$name = sanitize_file_name($name); // preg_replace('/\.[^.]*$/', '', $name);
 				}
 				else {
 					$name = __($data['name']);
-					$name = sanitize_file_name($name);
-					$dotpos = strrpos($name, '.');
-					if ( $dotpos !== false ) $name = substr($name, '0', $dotpos);
-					if ( strlen($name) == '0' ) {
-						echo '||1||'.__('Empty filename', 'wppa');
-						exit;
-					}
 				}
+				$name = sanitize_file_name($name); 				// Remove illegal chars
+				$name = preg_replace('/\.[^.]*$/', '', $name);	// Remove file extension
+				if ( strlen($name) == '0' ) {
+					echo '||1||'.__('Empty filename', 'wppa');
+					exit;
+				}
+				
 				// Make the file
 				if ( wppa_switch('wppa_artmonkey_use_source') && is_file($wppa_opt['wppa_source_dir'].'/album-'.$data['album'].'/'.$data['filename']) ) {
 					$source = $wppa_opt['wppa_source_dir'].'/album-'.$data['album'].'/'.$data['filename'];
@@ -357,6 +358,7 @@ global $wppa;
 				echo '||0||'.__('Security check failure', 'wppa');
 				exit;																// Nonce check failed
 			}
+			$album = $wpdb->get_var($wpdb->prepare('SELECT `album` FROM `'.WPPA_PHOTOS.'` WHERE `id` = %s', $photo));
 			wppa_delete_photo($photo);
 			wppa_index_remove('photo', $photo);
 			wppa_clear_cache();
@@ -462,6 +464,8 @@ global $wppa;
 					break;
 				case 'a_parent':
 					$itemname = __('Parent album', 'wppa');
+					wppa_flush_treecounts($album);	// Myself and my parents
+					wppa_flush_treecounts($value);	// My new parent
 					break;
 				case 'p_order_by':
 					$itemname = __('Photo order', 'wppa');
@@ -642,6 +646,8 @@ global $wppa;
 					
 				case 'moveto':
 					$photodata = $wpdb->get_row($wpdb->prepare('SELECT * FROM '.WPPA_PHOTOS.' WHERE `id` = %s', $photo), ARRAY_A);
+					wppa_flush_treecounts($photodata['album']);	// Current album
+					wppa_flush_treecounts($value);				// New album
 					$iret = $wpdb->query($wpdb->prepare('UPDATE '.WPPA_PHOTOS.' SET `album` = %s WHERE `id` = %s', $value, $photo));
 					if ($iret !== false ) {
 						wppa_move_source($photodata['filename'], $photodata['album'], $value);
@@ -655,6 +661,7 @@ global $wppa;
 					
 				case 'copyto':
 					$wppa['error'] = wppa_copy_photo($photo, $value);
+					wppa_flush_treecounts($value);				// New album
 					if ( ! $wppa['error'] ) {
 						echo '||0||'.sprintf(__('Photo %s copied to album %s (%s)', 'wppa'), $photo, wppa_get_album_name($value), $value);
 					}
@@ -665,6 +672,8 @@ global $wppa;
 					exit;
 					break;
 					
+				case 'status':
+					wppa_flush_treecounts($wpdb->get_var($wpdb->prepare("SELECT `album` FROM `".WPPA_PHOTOS."` WHERE `id` = %s",$value)));
 				case 'name':
 				case 'description':
 				case 'p_order':
@@ -673,7 +682,6 @@ global $wppa;
 				case 'linktitle':
 				case 'linktarget':
 				case 'tags':
-				case 'status':
 				case 'alt':
 					switch ($item) {
 						case 'name':

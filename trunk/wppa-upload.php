@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the upload/import pages and functions
-* Version 5.0.8
+* Version 5.0.9
 *
 */
 
@@ -98,183 +98,216 @@ global $wppa_revno;
 		$max_time = ini_get('max_input_time');	
 		if ($max_time < '1') $max_time = __('unknown', 'wppa');
 		// chek if albums exist before allowing upload
-		if(wppa_has_albums()) { ?>
-			<div style="border:1px solid #ccc; padding:10px; margin-bottom:10px; width: 600px; background-color:#fffbcc; border-color:#e6db55;">
-			<?php echo(sprintf(__('<b>Notice:</b> your server allows you to upload <b>%s</b> files of maximum total <b>%s</b> bytes and allows <b>%s</b> seconds to complete.', 'wppa'), $max_files_txt, $max_size, $max_time)) ?>
-			<?php _e('If your request exceeds these limitations, it will fail, probably without an errormessage.', 'wppa') ?>
-			<?php _e('Additionally your hosting provider may have set other limitations on uploading files.', 'wppa') ?>
-			<?php echo '<br />'.wppa_check_memory_limit() ?>
-			</div>
-			<?php /* Multple photos */ ?>
-			<div style="border:1px solid #ccc; padding:10px; margin-bottom:10px; width: 600px;">
-				<h3 style="margin-top:0px;"><?php _e('Box A:', 'wppa'); echo ' ';_e('Multiple Photos in one selection', 'wppa'); ?></h3>
-				<?php echo sprintf(__('You can select up to %s photos in one selection and upload them.', 'wppa'), $max_files_txt); ?>
-				<br /><small style="color:blue" ><?php _e('You need a modern browser that supports HTML-5 to select multiple files', 'wppa') ?></small>
-				<form enctype="multipart/form-data" action="<?php echo(wppa_dbg_url(get_admin_url().'admin.php?page=wppa_upload_photos')) ?>" method="post">
-				<?php wp_nonce_field('$wppa_nonce', WPPA_NONCE); ?>
-					<input id="my_files" type="file" multiple="multiple" name="my_files[]" onchange="showit()" />
-					<div id="files_list2">
-						<h3><?php _e('Selected Files:', 'wppa'); ?></h3>
-						
-					</div>
-					<script type="text/javascript">
-						function showit() {
-							var maxsize = parseInt('<?php echo $max_size ?>') * 1024 * 1024;
-							var maxcount = parseInt('<?php echo $max_files_txt ?>');
-							var totsize = 0;
-							var files = document.getElementById('my_files').files;
-							var tekst = '<h3><?php _e('Selected Files:', 'wppa') ?></h3>';
-							tekst += '<table><thead><tr>';
-									tekst += '<td><?php _e('Name', 'wppa') ?></td><td><?php _e('Size', 'wppa') ?></td><td><?php _e('Type', 'wppa') ?></td>';
-								tekst += '</tr></thead>';
-								tekst += '<tbody>';
-									tekst += '<tr><td><hr /></td><td><hr /></td><td><hr /></td></tr>';
-									for (var i=0;i<files.length;i++) {
-										tekst += '<tr>';
-											tekst += '<td>' + files[i].name + '</td>';
-											tekst += '<td>' + files[i].size + '</td>';
-											totsize += files[i].size;
-											tekst += '<td>' + files[i].type + '</td>';
-										tekst += '</tr>';
+		if ( wppa_has_albums() ) {
+			if ( wppa_switch('wppa_upload_one_only') && ! current_user_can('administrator') ) {
+				/* One only */ ?>
+				<div style="border:1px solid #ccc; padding:10px; margin-bottom:10px; width: 600px;">
+					<h3 style="margin-top:0px;"><?php _e('Upload a single photo', 'wppa'); ?></h3>
+					<form enctype="multipart/form-data" action="<?php echo(wppa_dbg_url(get_admin_url().'admin.php?page=wppa_upload_photos')) ?>" method="post">
+					<?php wp_nonce_field('$wppa_nonce', WPPA_NONCE); ?>
+						<input id="my_files" type="file" name="my_files[]" />
+						<p>
+							<label for="wppa-album"><?php _e('Album:', 'wppa'); ?> </label>
+							<select name="wppa-album" id="wppa-album-s">
+								<?php echo wppa_album_select_a(array('path' => wppa_switch('wppa_hier_albsel'),'addpleaseselect' => true, 'checkaccess' => true, 'checkupload' => true));//echo(wppa_album_select('', '', false, false, false, false, false, true)); ?>
+							</select>
+						</p>
+						<?php if ( $wppa_opt['wppa_watermark_on'] == 'yes' && ( $wppa_opt['wppa_watermark_user'] == 'yes' || current_user_can('wppa_settings') ) ) { ?>		
+							<p>		
+								<?php _e('Apply watermark file:', 'wppa') ?>
+								<select name="wppa-watermark-file" id="wppa-watermark-file">
+									<?php echo(wppa_watermark_file_select()) ?>
+								</select>
+
+								<?php _e('Position:', 'wppa') ?>
+								<select name="wppa-watermark-pos" id="wppa-watermark-pos">
+									<?php echo(wppa_watermark_pos_select()) ?>
+								</select>
+							</p>
+						<?php } ?>
+						<input type="submit" class="button-primary" name="wppa-upload-multiple" value="<?php _e('Upload Photo', 'wppa') ?>" onclick="if ( document.getElementById('wppa-album-s').value == 0 ) { alert('<?php _e('Please select an album', 'wppa') ?>'); return false; }" />
+						<input type="checkbox" id="wppa-go-edit-multiple" name="wppa-go-edit-multiple" style="display:none" checked="checked" />&nbsp;
+					</form>
+				</div>
+<?php		}
+			else { ?>
+				<div style="border:1px solid #ccc; padding:10px; margin-bottom:10px; width: 600px; background-color:#fffbcc; border-color:#e6db55;">
+				<?php echo(sprintf(__('<b>Notice:</b> your server allows you to upload <b>%s</b> files of maximum total <b>%s</b> bytes and allows <b>%s</b> seconds to complete.', 'wppa'), $max_files_txt, $max_size, $max_time)) ?>
+				<?php _e('If your request exceeds these limitations, it will fail, probably without an errormessage.', 'wppa') ?>
+				<?php _e('Additionally your hosting provider may have set other limitations on uploading files.', 'wppa') ?>
+				<?php echo '<br />'.wppa_check_memory_limit() ?>
+				</div>
+				<?php /* Multple photos */ ?>
+				<div style="border:1px solid #ccc; padding:10px; margin-bottom:10px; width: 600px;">
+					<h3 style="margin-top:0px;"><?php _e('Box A:', 'wppa'); echo ' ';_e('Multiple Photos in one selection', 'wppa'); ?></h3>
+					<?php echo sprintf(__('You can select up to %s photos in one selection and upload them.', 'wppa'), $max_files_txt); ?>
+					<br /><small style="color:blue" ><?php _e('You need a modern browser that supports HTML-5 to select multiple files', 'wppa') ?></small>
+					<form enctype="multipart/form-data" action="<?php echo(wppa_dbg_url(get_admin_url().'admin.php?page=wppa_upload_photos')) ?>" method="post">
+					<?php wp_nonce_field('$wppa_nonce', WPPA_NONCE); ?>
+						<input id="my_files" type="file" multiple="multiple" name="my_files[]" onchange="showit()" />
+						<div id="files_list2">
+							<h3><?php _e('Selected Files:', 'wppa'); ?></h3>
+							
+						</div>
+						<script type="text/javascript">
+							function showit() {
+								var maxsize = parseInt('<?php echo $max_size ?>') * 1024 * 1024;
+								var maxcount = parseInt('<?php echo $max_files_txt ?>');
+								var totsize = 0;
+								var files = document.getElementById('my_files').files;
+								var tekst = '<h3><?php _e('Selected Files:', 'wppa') ?></h3>';
+								tekst += '<table><thead><tr>';
+										tekst += '<td><?php _e('Name', 'wppa') ?></td><td><?php _e('Size', 'wppa') ?></td><td><?php _e('Type', 'wppa') ?></td>';
+									tekst += '</tr></thead>';
+									tekst += '<tbody>';
+										tekst += '<tr><td><hr /></td><td><hr /></td><td><hr /></td></tr>';
+										for (var i=0;i<files.length;i++) {
+											tekst += '<tr>';
+												tekst += '<td>' + files[i].name + '</td>';
+												tekst += '<td>' + files[i].size + '</td>';
+												totsize += files[i].size;
+												tekst += '<td>' + files[i].type + '</td>';
+											tekst += '</tr>';
+										}
+										tekst += '<tr><td><hr /></td><td><hr /></td><td><hr /></td></tr>';
+									var style1 = '';
+									var style2 = '';
+									var style3 = '';
+									var warn1 = '';
+									var warn2 = '';
+									var warn3 = '';
+									if ( maxcount > 0 && files.length > maxcount ) {
+										style1 = 'color:red';
+										warn1 = '<?php _e('Too many!', 'wppa') ?>';
 									}
-									tekst += '<tr><td><hr /></td><td><hr /></td><td><hr /></td></tr>';
-								var style1 = '';
-								var style2 = '';
-								var style3 = '';
-								var warn1 = '';
-								var warn2 = '';
-								var warn3 = '';
-								if ( maxcount > 0 && files.length > maxcount ) {
-									style1 = 'color:red';
-									warn1 = '<?php _e('Too many!', 'wppa') ?>';
-								}
-								if ( maxsize > 0 && totsize > maxsize ) {
-									style2 = 'color:red';
-									warn2 = '<?php _e('Too big!', 'wppa') ?>';
-								}
-								if ( warn1 || warn2 ) {
-									style3 = 'color:green';
-									warn3 = '<?php _e('Try again!', 'wppa') ?>';
-								}
-								tekst += '<tr><td style="'+style1+'" ><?php _e('Total', 'wppa') ?>: '+files.length+' '+warn1+'</td><td style="'+style2+'" >'+totsize+' '+warn2+'</td><td style="'+style3+'" >'+warn3+'</td></tr>';
-								tekst += '</tbody>';
-							tekst += '</table>';
-							jQuery('#files_list2').html(tekst); 
+									if ( maxsize > 0 && totsize > maxsize ) {
+										style2 = 'color:red';
+										warn2 = '<?php _e('Too big!', 'wppa') ?>';
+									}
+									if ( warn1 || warn2 ) {
+										style3 = 'color:green';
+										warn3 = '<?php _e('Try again!', 'wppa') ?>';
+									}
+									tekst += '<tr><td style="'+style1+'" ><?php _e('Total', 'wppa') ?>: '+files.length+' '+warn1+'</td><td style="'+style2+'" >'+totsize+' '+warn2+'</td><td style="'+style3+'" >'+warn3+'</td></tr>';
+									tekst += '</tbody>';
+								tekst += '</table>';
+								jQuery('#files_list2').html(tekst); 
+							}
+						</script>
+						<p>
+							<label for="wppa-album"><?php _e('Album:', 'wppa'); ?> </label>
+							<select name="wppa-album" id="wppa-album-s">
+								<?php echo wppa_album_select_a(array('path' => wppa_switch('wppa_hier_albsel'),'addpleaseselect' => true, 'checkaccess' => true, 'checkupload' => true));//echo(wppa_album_select('', '', false, false, false, false, false, true)); ?>
+							</select>
+						</p>
+						<?php if ( $wppa_opt['wppa_watermark_on'] == 'yes' && ( $wppa_opt['wppa_watermark_user'] == 'yes' || current_user_can('wppa_settings') ) ) { ?>		
+							<p>		
+								<?php _e('Apply watermark file:', 'wppa') ?>
+								<select name="wppa-watermark-file" id="wppa-watermark-file">
+									<?php echo(wppa_watermark_file_select()) ?>
+								</select>
+
+								<?php _e('Position:', 'wppa') ?>
+								<select name="wppa-watermark-pos" id="wppa-watermark-pos">
+									<?php echo(wppa_watermark_pos_select()) ?>
+								</select>
+							</p>
+						<?php } ?>
+						<input  type="submit" class="button-primary" name="wppa-upload-multiple" value="<?php _e('Upload Multiple Photos', 'wppa') ?>" onclick="if ( document.getElementById('wppa-album-s').value == 0 ) { alert('<?php _e('Please select an album', 'wppa') ?>'); return false; }" />
+						<input type="checkbox" id="wppa-go-edit-multiple" name="wppa-go-edit-multiple" onchange="wppaCookieCheckbox(this, 'wppa-go-edit-multiple')" />&nbsp;
+						<script type="text/javascript" >
+							if ( wppa_getCookie('wppa-go-edit-multiple') == 'on' ) document.getElementById('wppa-go-edit-multiple').checked = 'checked';
+						</script>
+						<?php 
+						if ( current_user_can('wppa_admin') ) { 
+							_e('After upload: Go to the <b>Edit Album</b> page.', 'wppa');
+						} 
+						else {
+							_e('After upload: Go to the <b>Edit Photos</b> page.', 'wppa');
 						}
-					</script>
-					<p>
-						<label for="wppa-album"><?php _e('Album:', 'wppa'); ?> </label>
-						<select name="wppa-album" id="wppa-album-s">
-							<?php echo wppa_album_select_a(array('path' => wppa_switch('wppa_hier_albsel'),'addpleaseselect' => true, 'checkaccess' => true, 'checkupload' => true));//echo(wppa_album_select('', '', false, false, false, false, false, true)); ?>
-						</select>
-					</p>
-					<?php if ( $wppa_opt['wppa_watermark_on'] == 'yes' && ( $wppa_opt['wppa_watermark_user'] == 'yes' || current_user_can('wppa_settings') ) ) { ?>		
-						<p>		
-							<?php _e('Apply watermark file:', 'wppa') ?>
-							<select name="wppa-watermark-file" id="wppa-watermark-file">
-								<?php echo(wppa_watermark_file_select()) ?>
-							</select>
+						?>
+					</form>
+				</div>
+				<?php /* End multiple */ ?>
 
-							<?php _e('Position:', 'wppa') ?>
-							<select name="wppa-watermark-pos" id="wppa-watermark-pos">
-								<?php echo(wppa_watermark_pos_select()) ?>
-							</select>
-						</p>
-					<?php } ?>
-					<input  type="submit" class="button-primary" name="wppa-upload-multiple" value="<?php _e('Upload Multiple Photos', 'wppa') ?>" onclick="if ( document.getElementById('wppa-album-s').value == 0 ) { alert('<?php _e('Please select an album', 'wppa') ?>'); return false; }" />
-					<input type="checkbox" id="wppa-go-edit-multiple" name="wppa-go-edit-multiple" onchange="wppaCookieCheckbox(this, 'wppa-go-edit-multiple')" />&nbsp;
-					<script type="text/javascript" >
-						if ( wppa_getCookie('wppa-go-edit-multiple') == 'on' ) document.getElementById('wppa-go-edit-multiple').checked = 'checked';
-					</script>
-					<?php 
-					if ( current_user_can('wppa_admin') ) { 
-						_e('After upload: Go to the <b>Edit Album</b> page.', 'wppa');
-					} 
-					else {
-						_e('After upload: Go to the <b>Edit Photos</b> page.', 'wppa');
-					}
-					?>
-				</form>
-			</div>
-			<?php /* End multiple */ ?>
-
-			<?php /* Single photos */ ?>
-			<div style="border:1px solid #ccc; padding:10px; margin-bottom:10px; width: 600px;">
-				<h3 style="margin-top:0px;"><?php  _e('Box B:', 'wppa'); echo ' ';_e('Single Photos in multiple selections', 'wppa'); ?></h3>
-				<?php echo sprintf(__('You can select up to %s photos one by one and upload them at once.', 'wppa'), $max_files_txt); ?>
-				<form enctype="multipart/form-data" action="<?php echo(wppa_dbg_url(get_admin_url().'admin.php?page=wppa_upload_photos')) ?>" method="post">
-				<?php wp_nonce_field('$wppa_nonce', WPPA_NONCE); ?>
-					<input id="my_file_element" type="file" name="file_1" />
-					<div id="files_list">
-						<h3><?php _e('Selected Files:', 'wppa'); ?></h3>
-						
-					</div>
-					<p>
-						<label for="wppa-album"><?php _e('Album:', 'wppa'); ?> </label>
-						<select name="wppa-album" id="wppa-album-m">
-							<?php echo wppa_album_select_a(array('path' => wppa_switch('wppa_hier_albsel'), 'addpleaseselect' => true, 'checkaccess' => true, 'checkupload' => true));//('', '', false, false, false, false, false, true)); ?>
-						</select>
-					</p>
-					<?php if ( $wppa_opt['wppa_watermark_on'] == 'yes' && ( $wppa_opt['wppa_watermark_user'] == 'yes' || current_user_can('wppa_settings') ) ) { ?>		
-						<p>		
-							<?php _e('Apply watermark file:', 'wppa') ?>
-							<select name="wppa-watermark-file" id="wppa-watermark-file">
-								<?php echo(wppa_watermark_file_select()) ?>
-							</select>
-
-							<?php _e('Position:', 'wppa') ?>
-							<select name="wppa-watermark-pos" id="wppa-watermark-pos">
-								<?php echo(wppa_watermark_pos_select()) ?>
+				<?php /* Single photos */ ?>
+				<div style="border:1px solid #ccc; padding:10px; margin-bottom:10px; width: 600px;">
+					<h3 style="margin-top:0px;"><?php  _e('Box B:', 'wppa'); echo ' ';_e('Single Photos in multiple selections', 'wppa'); ?></h3>
+					<?php echo sprintf(__('You can select up to %s photos one by one and upload them at once.', 'wppa'), $max_files_txt); ?>
+					<form enctype="multipart/form-data" action="<?php echo(wppa_dbg_url(get_admin_url().'admin.php?page=wppa_upload_photos')) ?>" method="post">
+					<?php wp_nonce_field('$wppa_nonce', WPPA_NONCE); ?>
+						<input id="my_file_element" type="file" name="file_1" />
+						<div id="files_list">
+							<h3><?php _e('Selected Files:', 'wppa'); ?></h3>
+							
+						</div>
+						<p>
+							<label for="wppa-album"><?php _e('Album:', 'wppa'); ?> </label>
+							<select name="wppa-album" id="wppa-album-m">
+								<?php echo wppa_album_select_a(array('path' => wppa_switch('wppa_hier_albsel'), 'addpleaseselect' => true, 'checkaccess' => true, 'checkupload' => true));//('', '', false, false, false, false, false, true)); ?>
 							</select>
 						</p>
-					<?php } ?>
-					<input type="submit" class="button-primary" name="wppa-upload" value="<?php _e('Upload Single Photos', 'wppa') ?>" onclick="if ( document.getElementById('wppa-album-m').value == 0 ) { alert('<?php _e('Please select an album', 'wppa') ?>'); return false; }" />
-					<input type="checkbox" id="wppa-go-edit-single" name="wppa-go-edit-single" onchange="wppaCookieCheckbox(this, 'wppa-go-edit-single')" />&nbsp;
-					<script type="text/javascript" >
-						if ( wppa_getCookie('wppa-go-edit-single') == 'on' ) document.getElementById('wppa-go-edit-single').checked = 'checked';
-					</script>
-					<?php 
-					if ( current_user_can('wppa_admin') ) {
-						_e('After upload: Go to the <b>Edit Album</b> page.', 'wppa');
-					}
-					else {
-						_e('After upload: Go to the <b>Edit Photos</b> page.', 'wppa');
-					} 
-					?>
-				</form>
-				<script type="text/javascript">
-				<!-- Create an instance of the multiSelector class, pass it the output target and the max number of files -->
-					var multi_selector = new MultiSelector( document.getElementById( 'files_list' ), <?php echo($max_files) ?> );
-				<!-- Pass in the file element -->
-					multi_selector.addElement( document.getElementById( 'my_file_element' ) );
-				</script>
-			</div>
-			<?php /* End single photos */ ?>
+						<?php if ( $wppa_opt['wppa_watermark_on'] == 'yes' && ( $wppa_opt['wppa_watermark_user'] == 'yes' || current_user_can('wppa_settings') ) ) { ?>		
+							<p>		
+								<?php _e('Apply watermark file:', 'wppa') ?>
+								<select name="wppa-watermark-file" id="wppa-watermark-file">
+									<?php echo(wppa_watermark_file_select()) ?>
+								</select>
 
-			<?php /* Single zips */ ?>
-			<?php if ( current_user_can('wppa_import') ) { ?>
-				<?php if (PHP_VERSION_ID >= 50207) { ?>
-					<div style="border:1px solid #ccc; padding:10px; width: 600px;">
-						<h3 style="margin-top:0px;"><?php  _e('Box C:', 'wppa'); echo ' ';_e('Zipped Photos in one selection', 'wppa'); ?></h3>
-						<?php echo sprintf(__('You can upload one zipfile. It will be placed in your personal wppa-depot: <b>.../%s</b><br/>Once uploaded, use <b>Import Photos</b> to unzip the file and place the photos in any album.', 'wppa'), WPPA_DEPOT) ?>
-						<form enctype="multipart/form-data" action="<?php echo(wppa_dbg_url(get_admin_url().'admin.php?page=wppa_upload_photos')) ?>" method="post">
-						<?php wp_nonce_field('$wppa_nonce', WPPA_NONCE); ?>
-							<input id="my_zipfile_element" type="file" name="file_zip" /><br/><br/>
-							<input type="submit" class="button-primary" name="wppa-upload-zip" value="<?php _e('Upload Zipped Photos', 'wppa') ?>" />
-							<input type="checkbox" id="wppa-go-import" name="wppa-go-import" onchange="wppaCookieCheckbox(this, 'wppa-go-import')" />&nbsp;
-							<script type="text/javascript" >
-								if ( wppa_getCookie('wppa-go-import') == 'on' ) document.getElementById('wppa-go-import').checked = 'checked';
-							</script>
-							<?php _e('After upload: Go to the <b>Import Photos</b> page.', 'wppa') ?>
-						</form>
-					</div>
-				<?php }
-				else { ?>
-					<div style="border:1px solid #ccc; padding:10px; width: 600px;">
-					<?php _e('<small>Ask your administrator to upgrade php to version 5.2.7 or later. This will enable you to upload zipped photos.</small>', 'wppa') ?>
-					</div>
-				<?php }
-			} 
+								<?php _e('Position:', 'wppa') ?>
+								<select name="wppa-watermark-pos" id="wppa-watermark-pos">
+									<?php echo(wppa_watermark_pos_select()) ?>
+								</select>
+							</p>
+						<?php } ?>
+						<input type="submit" class="button-primary" name="wppa-upload" value="<?php _e('Upload Single Photos', 'wppa') ?>" onclick="if ( document.getElementById('wppa-album-m').value == 0 ) { alert('<?php _e('Please select an album', 'wppa') ?>'); return false; }" />
+						<input type="checkbox" id="wppa-go-edit-single" name="wppa-go-edit-single" onchange="wppaCookieCheckbox(this, 'wppa-go-edit-single')" />&nbsp;
+						<script type="text/javascript" >
+							if ( wppa_getCookie('wppa-go-edit-single') == 'on' ) document.getElementById('wppa-go-edit-single').checked = 'checked';
+						</script>
+						<?php 
+						if ( current_user_can('wppa_admin') ) {
+							_e('After upload: Go to the <b>Edit Album</b> page.', 'wppa');
+						}
+						else {
+							_e('After upload: Go to the <b>Edit Photos</b> page.', 'wppa');
+						} 
+						?>
+					</form>
+					<script type="text/javascript">
+					<!-- Create an instance of the multiSelector class, pass it the output target and the max number of files -->
+						var multi_selector = new MultiSelector( document.getElementById( 'files_list' ), <?php echo($max_files) ?> );
+					<!-- Pass in the file element -->
+						multi_selector.addElement( document.getElementById( 'my_file_element' ) );
+					</script>
+				</div>
+				<?php /* End single photos */ ?>
+
+				<?php /* Single zips */ ?>
+				<?php if ( current_user_can('wppa_import') ) { ?>
+					<?php if (PHP_VERSION_ID >= 50207) { ?>
+						<div style="border:1px solid #ccc; padding:10px; width: 600px;">
+							<h3 style="margin-top:0px;"><?php  _e('Box C:', 'wppa'); echo ' ';_e('Zipped Photos in one selection', 'wppa'); ?></h3>
+							<?php echo sprintf(__('You can upload one zipfile. It will be placed in your personal wppa-depot: <b>.../%s</b><br/>Once uploaded, use <b>Import Photos</b> to unzip the file and place the photos in any album.', 'wppa'), WPPA_DEPOT) ?>
+							<form enctype="multipart/form-data" action="<?php echo(wppa_dbg_url(get_admin_url().'admin.php?page=wppa_upload_photos')) ?>" method="post">
+							<?php wp_nonce_field('$wppa_nonce', WPPA_NONCE); ?>
+								<input id="my_zipfile_element" type="file" name="file_zip" /><br/><br/>
+								<input type="submit" class="button-primary" name="wppa-upload-zip" value="<?php _e('Upload Zipped Photos', 'wppa') ?>" />
+								<input type="checkbox" id="wppa-go-import" name="wppa-go-import" onchange="wppaCookieCheckbox(this, 'wppa-go-import')" />&nbsp;
+								<script type="text/javascript" >
+									if ( wppa_getCookie('wppa-go-import') == 'on' ) document.getElementById('wppa-go-import').checked = 'checked';
+								</script>
+								<?php _e('After upload: Go to the <b>Import Photos</b> page.', 'wppa') ?>
+							</form>
+						</div>
+					<?php }
+					else { ?>
+						<div style="border:1px solid #ccc; padding:10px; width: 600px;">
+						<?php _e('<small>Ask your administrator to upgrade php to version 5.2.7 or later. This will enable you to upload zipped photos.</small>', 'wppa') ?>
+						</div>
+					<?php }
+				} 
+			}
 		}
 	else { ?>
 			<?php $url = wppa_dbg_url(get_admin_url().'admin.php?page=wppa_admin_menu'); ?>
