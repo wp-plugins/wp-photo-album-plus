@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * edit and delete photos
-* version 5.0.8
+* version 5.0.9
 *
 */
 
@@ -216,7 +216,7 @@ function wppa_album_photos($album = '', $photo = '', $owner = '', $moderate = fa
 								</td>
 							</tr>
 							
-							<?php if ( ! isset($album_select[$photo['album']]) ) $album_select[$photo['album']] = wppa_album_select_a(array('checkaccess' => true, 'path' => wppa_switch('wppa_hier_albsel'), 'exclude' => $photo['album'], 'selected' => '0', 'addblank' => true)) ?>
+							<?php if ( ! isset($album_select[$photo['album']]) ) $album_select[$photo['album']] = wppa_album_select_a(array('checkaccess' => true, 'path' => wppa_switch('wppa_hier_albsel'), 'exclude' => $photo['album'], 'selected' => '0', 'addpleaseselect' => true)) ?>
 							<!-- Move -->
 							<tr style="vertical-align:bottom;" >
 								<th scope="row" style="padding-top:0; padding-bottom:0;">

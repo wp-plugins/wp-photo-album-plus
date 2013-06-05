@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile
-Version: 5.0.8
+Version: 5.0.9
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -36,6 +36,7 @@ This plugin is designed to easily manage and display your photo albums and slide
 * There is an album widget that displays thumbnail images that link to album contents.
 * There is a QR code widget that will be updated when the content of the page changes.
 * There is a tag cloud widget and a multi tag widget to quickly get a selection of photos with (a) certain tag(s).
+* There is an upload widget that allows for frontend uploads even when no wppa+ display is on the page.
 * Almost all appearance settings can be done in the settings admin page. No php, html or css knowledge is required to customize the appearence of the photo display.
 * International language support for static text: Currently included foreign languages files: Dutch, Japanese, French(outdated), Spanish, German.
 * International language support for dynamic text: Album and photo names and descriptions fully support the qTranslate multilanguage rules.
@@ -170,6 +171,22 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 5.0.9 =
+
+= Bug Fixes =
+
+* The counts and treecounts of albums and photos are now properly maintained during copy/move and change parent.
+* No more double file-extensions in Art Monkey links.
+
+= New Features =
+
+* There is a new widget: Upload photos.
+
+= Other Changes =
+
+* Uploads can be limited to One photo only at a time for non-admin users. Table VII-B7.
+* More performance improvements in large slideshows.
 
 = 5.0.8 =
 

@@ -2,11 +2,11 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 5.0.7
+* version 5.0.9
 *
 */
 global $wppa_api_version;
-$wppa_api_version = '5-0-7-000';
+$wppa_api_version = '5-0-9-000';
 // Initialize globals and option settings
 function wppa_initialize_runtime($force = false) {
 global $wppa;
@@ -474,6 +474,7 @@ global $wppa_initruntimetime;
 						'wppa_upload_moderate'		=> '',
 						'wppa_upload_edit'			=> '',
 						'wppa_upload_notify' 		=> '',
+						'wppa_upload_one_only' 		=> '',
 						'wppa_memcheck_frontend'	=> '',
 						'wppa_memcheck_admin'		=> '',
 						'wppa_comment_captcha'		=> '',
@@ -2272,3 +2273,90 @@ function wppa_format_geo($lat, $lon) {
 	$result = implode('/', $geo);
 	return $result;
 }
+
+
+function wppa_album_select_a($args) {
+global $wpdb;
+
+	$args = wp_parse_args( $args, array(	'exclude' 			=> '', 
+											'selected' 			=> '', 
+											'disabled' 			=> '',
+											'addpleaseselect' 	=> false,
+											'addnone' 			=> false, 
+											'addall' 			=> false,
+											'addblank' 			=> false,
+											'addselected'		=> false,
+											'addseparate' 		=> false, 
+											'disableancestors' 	=> false,
+											'checkaccess' 		=> false,
+											'checkupload' 		=> false,
+											'addmultiple' 		=> false,
+											'addnumbers' 		=> false,
+											'path' 				=> false) );
+											
+	// Provide default selection if no selected given
+	if ( $args['selected'] == '' ) {
+        $args['selected'] = wppa_get_last_album();
+    }
+	// See if selection is valid
+	if ( ( $args['selected'] == $args['exclude'] ) || 
+		 ( $args['checkupload'] && ! wppa_allow_uploads($args['selected']) ) ||
+		 ( $args['disableancestors'] && wppa_is_ancestor($args['exclude'], $args['selected']) )
+	   ) {
+		$args['selected'] = '0';
+	}
+												
+	$albums = $wpdb->get_results( "SELECT `id`, `name` FROM `".WPPA_ALBUMS, ARRAY_A);	
+	
+	if ( $albums ) {
+		// Add paths
+		if ( $args['path'] ) {
+			$albums = wppa_add_paths($albums);
+		}
+		// Or just translate
+		else foreach ( array_keys($albums) as $index ) {
+			$albums[$index]['name'] = __(stripslashes($albums[$index]['name']));
+		}
+		// Sort
+		$albums = wppa_array_sort($albums, 'name');
+	}
+	
+	// Output
+	$result = '';
+	
+	$selected = $args['selected'] == '0' ? ' selected="selected"' : '';
+	if ( $args['addpleaseselect'] ) $result .= '<option value="0" disabled="disabled" '.$selected.' >' . __('- select an album -', 'wppa') . '</option>';
+	
+	$selected = $args['selected'] == '0' ? ' selected="selected"' : '';
+	if ( $args['addnone'] ) $result .= '<option value="0"'.$selected.' >' . __('--- none ---', 'wppa') . '</option>';
+	
+	$selected = $args['selected'] == '0' ? ' selected="selected"' : '';
+	if ( $args['addall'] ) $result .= '<option value="0"'.$selected.' >' . __('--- all ---', 'wppa') . '</option>';
+	
+	$selected = $args['selected'] == '0' ? ' selected="selected"' : '';
+	if ( $args['addblank'] ) $result .= '<option value="0"'.$selected.' ></option>';
+	
+	$selected = $args['selected'] == '-99' ? ' selected="selected"' : '';
+	if ( $args['addmultiple'] ) $result .= '<option value="-99"'.$selected.' >' . __('--- multiple see below ---', 'wppa') . '</option>';
+	
+	if ( $albums ) foreach ( $albums as $album ) {
+		if ( ( $args['disabled'] == $album['id'] ) || 
+			 ( $args['exclude'] == $album['id'] ) ||
+			 ( $args['checkupload'] && ! wppa_allow_uploads($album['id']) ) ||
+			 ( $args['disableancestors'] && wppa_is_ancestor($args['exclude'], $album['id']) )
+			) $disabled = ' disabled="disabled"'; else $disabled = '';
+		if ( $args['selected'] == $album['id'] && ! $disabled ) $selected = ' selected="selected"'; else $selected = '';
+		if ( ( ! $args['checkaccess'] || wppa_have_access($album['id']) ) ||
+			 ( $selected && $args['addselected'] )	
+			) {
+			if ( $args['addnumbers'] ) $number = ' ('.$album['id'].')'; else $number = '';
+			$result .= '<option value="' . $album['id'] . '" ' . $selected . $disabled . '>' . $album['name'] . $number . '</option>';
+		}
+	}
+	
+	$selected = $args['selected'] == '-1' ? ' selected="selected"' : '';
+	if ( $args['addseparate'] ) $result .= '<option value="-1"' . $selected . '>' . __('--- separate ---', 'wppa') . '</option>';
+	
+	return $result;
+}
+

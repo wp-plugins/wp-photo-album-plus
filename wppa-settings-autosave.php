@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 5.0.7
+* Version 5.0.9
 *
 */
 
@@ -2963,19 +2963,26 @@ global $wppa_revno;
 							$html = wppa_checkbox($slug);
 							wppa_setting($slug, '6', $name, $desc, $html, $help);
 							
+							$name = __('Upload one only', 'wppa');
+							$desc = __('Non admin users can upload only one photo at a time.', 'wppa');
+							$help = '';
+							$slug = 'wppa_upload_one_only';
+							$html = wppa_checkbox($slug);
+							wppa_setting($slug, '7', $name, $desc, $html, $help);
+							
 							$name = __('Upload memory check frontend', 'wppa');
 							$desc = __('Disable uploading photos that are too large.', 'wppa');
 							$help = esc_js(__('To prevent out of memory crashes during upload and possible database inconsistencies, uploads can be prevented if the photos are too big.', 'wppa'));
 							$slug = 'wppa_memcheck_frontend';
 							$html = wppa_checkbox($slug);
-							wppa_setting($slug, '7', $name, $desc, $html, $help);
+							wppa_setting($slug, '8.1', $name, $desc, $html, $help);
 							
 							$name = __('Upload memory check admin', 'wppa');
 							$desc = __('Disable uploading photos that are too large.', 'wppa');
 							$help = esc_js(__('To prevent out of memory crashes during upload and possible database inconsistencies, uploads can be prevented if the photos are too big.', 'wppa'));
 							$slug = 'wppa_memcheck_admin';
 							$html = wppa_checkbox($slug);
-							wppa_setting($slug, '8', $name, $desc, $html, $help);
+							wppa_setting($slug, '8.2', $name, $desc, $html, $help);
 							
 							$name = __('Comment captcha', 'wppa');
 							$desc = __('Use a simple calculate captcha on comments form.', 'wppa');

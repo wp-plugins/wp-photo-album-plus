@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains low-level utility routines
-* Version 5.0.7
+* Version 5.0.9
 *
 */
 
@@ -571,60 +571,80 @@ global $wppa;
 
 function wppa_flush_treecounts($alb = '') {
 global $wppa;
-
+/*
+	$albums = '0';
+	$photos = '1';
+	$selfalbums = '3';
+	$selfphotos = '4';
+	$pendphotos = '5';
+*/	
 	if ( $alb ) {
-		$wppa['treecounts'] = get_option('wppa_treecounts', array());
+		$wppa['counts'] = get_option('wppa_counts', array());
+		$wppa['treecounts'] = get_option('wppa_counts_tree', array());
+		if ( isset($wppa['counts'][$alb]) ) {
+			unset($wppa['counts'][$alb]);
+			update_option('wppa_counts', $wppa['counts']);
+		}
 		if ( isset($wppa['treecounts'][$alb]) ) {
-			unset($wppa['treecounts'][$alb]['albums']);
-			unset($wppa['treecounts'][$alb]['photos']);
-			unset($wppa['treecounts'][$alb]['selfalbums']);
-			unset($wppa['treecounts'][$alb]['selfphotos']);
-			unset($wppa['treecounts'][$alb]['pendphotos']);
 			unset($wppa['treecounts'][$alb]);
-			update_option('wppa_treecounts', $wppa['treecounts']);
+			update_option('wppa_counts_tree', $wppa['treecounts']);
 		}
 		$parent = wppa_get_parentalbumid($alb);
 		if ( $parent > '0' ) wppa_flush_treecounts($parent);
 	}
-	else delete_option('wppa_treecounts');
+	else {
+		delete_option('wppa_counts');
+		delete_option('wppa_counts_tree');
+	}
 }
 
 function wppa_treecount_a($alb) {
 global $wpdb;
 global $wppa;
 	
+	$albums = '0';
+	$photos = '1';
+	$selfalbums = '3';
+	$selfphotos = '4';
+	$pendphotos = '5';
+
 	// See if we have this in cache
-	if ( ! isset($wppa['treecounts']) ) {
-		$wppa['treecounts'] = get_option('wppa_treecounts', array());	// Initial fetch
+	if ( ! isset($wppa['counts']) ) {
+		$wppa['counts'] = get_option('wppa_counts', array());			// Initial fetch
 	}
-	if ( isset($wppa['treecounts'][$alb]) ) {							// Album found
-		$result['albums'] = $wppa['treecounts'][$alb]['albums'];		// Use data
-		$result['photos'] = $wppa['treecounts'][$alb]['photos'];
-		$result['selfalbums'] = $wppa['treecounts'][$alb]['selfalbums'];
-		$result['selfphotos'] = $wppa['treecounts'][$alb]['selfphotos'];
-		$result['pendphotos'] = $wppa['treecounts'][$alb]['pendphotos'];
+	if ( ! isset($wppa['treecounts']) ) {
+		$wppa['treecounts'] = get_option('wppa_counts_tree', array());	// Initial fetch
+	}
+	if ( isset($wppa['counts'][$alb]) && isset($wppa['treecounts']) ) {	// Album found
+		$result['albums'] = $wppa['treecounts'][$alb][$albums];			// Use data
+		$result['photos'] = $wppa['treecounts'][$alb][$photos];
+		$result['selfalbums'] = $wppa['counts'][$alb][$selfalbums];
+		$result['selfphotos'] = $wppa['counts'][$alb][$selfphotos];
+		$result['pendphotos'] = $wppa['counts'][$alb][$pendphotos];
 		return $result;													// And return
 	}
 	else {	// Not in cache
-		$albums 	 = $wpdb->get_results($wpdb->prepare('SELECT `id` FROM `'.WPPA_ALBUMS.'` WHERE `a_parent` = %s', $alb), ARRAY_A);
-		$album_count = empty($albums) ? '0' : count($albums);
+		$albs	 	 = $wpdb->get_results($wpdb->prepare('SELECT `id` FROM `'.WPPA_ALBUMS.'` WHERE `a_parent` = %s', $alb), ARRAY_A);
+		$album_count = empty($albs) ? '0' : count($albs);
 		$photo_count = $wpdb->get_var($wpdb->prepare('SELECT COUNT(*) FROM `'.WPPA_PHOTOS.'`  WHERE `album` = %s AND `status` <> "pending"', $alb));
 		$pend_count  = $wpdb->get_var($wpdb->prepare('SELECT COUNT(*) FROM `'.WPPA_PHOTOS.'`  WHERE `album` = %s AND `status` = "pending"', $alb));
-		
+		// Result this level
 		$result = array('albums' => $album_count, 'photos' => $photo_count, 'selfalbums' => $album_count, 'selfphotos' => $photo_count, 'pendphotos' => $pend_count);
-		if ( empty($albums) ) {}
-		else foreach ( $albums as $album ) {
-			$subcount = wppa_treecount_a($album['id']);
+		// Subalbums to process?
+		if ( empty($albs) ) {}
+		else foreach ( $albs as $albm ) {
+			$subcount = wppa_treecount_a($albm['id']);
 			$result['albums'] += $subcount['albums'];
 			$result['photos'] += $subcount['photos'];
 		}
 		// Save to cache
-		$wppa['treecounts'][$alb]['albums'] = $result['albums'];
-		$wppa['treecounts'][$alb]['photos'] = $result['photos'];
-		$wppa['treecounts'][$alb]['selfalbums'] = $result['selfalbums'];
-		$wppa['treecounts'][$alb]['selfphotos'] = $result['selfphotos'];
-		$wppa['treecounts'][$alb]['pendphotos'] = $result['pendphotos'];
-		update_option('wppa_treecounts', $wppa['treecounts']);
+		$wppa['treecounts'][$alb][$albums] = $result['albums'];
+		$wppa['treecounts'][$alb][$photos] = $result['photos'];
+		$wppa['counts'][$alb][$selfalbums] = $result['selfalbums'];
+		$wppa['counts'][$alb][$selfphotos] = $result['selfphotos'];
+		$wppa['counts'][$alb][$pendphotos] = $result['pendphotos'];
+		update_option('wppa_counts', $wppa['counts']);
+		update_option('wppa_counts_tree', $wppa['treecounts']);
 		return $result;
 	}
 }
@@ -781,3 +801,75 @@ function wppa_strip_tags($text, $key = '') {
 	return trim($text);
 }
 
+function wppa_update_album_timestamp($album) {
+global $wpdb;
+
+	$wpdb->query($wpdb->prepare('UPDATE `'.WPPA_ALBUMS.'` SET `timestamp` = %s WHERE `id` = %s', time(), $album));
+}
+
+// set last album 
+function wppa_set_last_album($id = '') {
+    global $albumid;
+	
+	$opt = 'wppa_last_album_used-'.wppa_get_user('login');
+			
+	if ( is_numeric($id) && wppa_have_access($id) ) $albumid = $id; else $albumid = '';
+
+    wppa_update_option($opt, $albumid);
+}
+
+// get last album
+function wppa_get_last_album() {
+    global $albumid;
+    
+    if ( is_numeric($albumid) ) $result = $albumid;
+    else {
+		$opt = 'wppa_last_album_used-'.wppa_get_user('login');
+		$result = get_option($opt, get_option('wppa_last_album_used', ''));
+	}
+    if ( !is_numeric($result) ) $result = '';
+    else $albumid = $result;
+
+	return $result; 
+}
+
+// Combine margin or padding style
+function wppa_combine_style($type, $top = '0', $left = '0', $right = '0', $bottom = '0') {
+// echo $top.' '.$left.' '.$right.' '.$bottom.'<br />';
+	$result = $type.':';			// Either 'margin:' or 'padding:'
+	if ( $left == $right ) {
+		if ( $top == $bottom ) {
+			if ( $top == $left ) {	// All the same: one size fits all
+				$result .= $top;
+				if ( is_numeric($top) && $top > '0' ) $result .= 'px';
+			}
+			else {					// Top=Bot and Lft=Rht: two sizes
+				$result .= $top;
+				if ( is_numeric($top) && $top > '0' ) $result .= 'px '; else $result .= ' ';
+				$result .= $left;
+				if ( is_numeric($left) && $left > '0' ) $result .= 'px';
+			}
+		}
+		else {						// Top, Lft=Rht, Bot: 3 sizes
+			$result .= $top;
+			if ( is_numeric($top) && $top > '0' ) $result .= 'px '; else $result .= ' ';
+			$result .= $left;
+			if ( is_numeric($left) && $left > '0' ) $result .= 'px '; else $result .= ' ';
+			$result .= $bottom;
+			if ( is_numeric($bottom) && $bottom > '0' ) $result .= 'px';
+		}
+	}
+	else {							// Top, Rht, Bot, Lft: 4 sizes
+		$result .= $top;
+		if ( is_numeric($top) && $top > '0' ) $result .= 'px '; else $result .= ' ';
+		$result .= $right;
+		if ( is_numeric($right) && $right > '0' ) $result .= 'px '; else $result .= ' ';
+		$result .= $bottom;
+		if ( is_numeric($bottom) && $bottom > '0' ) $result .= 'px '; else $result .= ' ';
+		$result .= $left;
+		if ( is_numeric($left) && $left > '0' ) $result .= 'px';
+	}
+	$result .= ';';
+//echo $result.'<br />';
+	return $result;
+}
