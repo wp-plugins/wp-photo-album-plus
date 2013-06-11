@@ -2,11 +2,11 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 5.0.9
+* version 5.0.10
 *
 */
 global $wppa_api_version;
-$wppa_api_version = '5-0-9-000';
+$wppa_api_version = '5-0-10-000';
 // Initialize globals and option settings
 function wppa_initialize_runtime($force = false) {
 global $wppa;
@@ -61,7 +61,7 @@ global $wppa_initruntimetime;
 			'out' 						=> '',
 			'auto_colwidth' 			=> false,
 			'permalink' 				=> '',
-			'randseed' 					=> time() % '4711',
+			'randseed' 					=> isset ( $_REQUEST['wppa-randseed'] ) ? $_REQUEST['wppa-randseed'] : time() % '4711',
 			'rendering_enabled' 		=> false,
 			'tabcount' 					=> '0',
 			'comment_id' 				=> '',
@@ -85,6 +85,8 @@ global $wppa_initruntimetime;
 			'topten_count'				=> '0',
 			'is_lasten'					=> false,
 			'lasten_count'				=> '0',
+			'is_featen'					=> false,
+			'featen_count'				=> '0',
 			'start_photo'				=> '0',
 			'is_single'					=> false,
 			'is_landing'				=> '0',
@@ -161,6 +163,8 @@ global $wppa_initruntimetime;
 						'wppa_topten_size' 				=> '',	// 2
 						'wppa_comten_count'			=> '',	// 3
 						'wppa_comten_size'				=> '',	// 4
+						'wppa_featen_count'				=> '',			// Moet nog in settings
+						'wppa_featen_size'				=> '',
 						'wppa_thumbnail_widget_count'	=> '',	// 5
 						'wppa_thumbnail_widget_size'	=> '',	// 6
 						'wppa_lasten_count' 			=> '',	// 1
@@ -180,6 +184,7 @@ global $wppa_initruntimetime;
 						'wppa_bc_on_topten'					=> '',	// 3
 						'wppa_bc_on_lasten'					=> '',	// 3
 						'wppa_bc_on_comten'					=> '',	// 3
+						'wppa_bc_on_featen'					=> '',
 						'wppa_bc_on_tag'					=> '',	// 3
 						'wppa_show_home' 					=> '',	// 4
 						'wppa_show_page' 					=> '',	// 4
@@ -414,6 +419,11 @@ global $wppa_initruntimetime;
 						'wppa_topten_blank'					=> '',
 						'wppa_topten_overrule'				=> '',
 						
+						'wppa_featen_widget_linktype' 		=> '',
+						'wppa_featen_widget_linkpage' 		=> '',
+						'wppa_featen_blank'					=> '',
+						'wppa_featen_overrule'				=> '',
+
 						'wppa_slideonly_widget_linktype' 	=> '',
 						'wppa_slideonly_widget_linkpage' 	=> '',
 						'wppa_sswidget_blank'				=> '',
@@ -519,6 +529,7 @@ global $wppa_initruntimetime;
 
 						'wppa_use_wp_editor'			=> '',	//A 11
 						'wppa_hier_albsel' 				=> '',
+						'wppa_hier_pagesel'				=> '',
 						'wppa_alt_type'					=> '',
 						'wppa_photo_admin_pagesize'		=> '',
 						'wppa_comment_admin_pagesize'	=> '',
@@ -2359,4 +2370,3 @@ global $wpdb;
 	
 	return $result;
 }
-

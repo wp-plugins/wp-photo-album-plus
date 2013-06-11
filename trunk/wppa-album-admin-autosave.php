@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * create, edit and delete albums
-* version 5.0.8
+* version 5.0.10
 *
 */
 
@@ -797,6 +797,7 @@ function wppa_admin_albums_flat() {
 					<?php _e('A/P/PM', 'wppa'); ?>
 				</th>
 				<th scope="col"><?php _e('Edit', 'wppa'); ?></th>
+				<th scope="col"><?php _e('Q-edit', 'wppa'); ?></th>
 				<th scope="col"><?php _e('Delete', 'wppa'); ?></th>	
 				<?php if ( wppa_can_create_album() ) echo '<th scope="col">'.__('Create', 'wppa').'</th>'; ?>
 			</tr>
@@ -834,7 +835,8 @@ function wppa_admin_albums_flat() {
 							<?php if ( $album['owner'] != '--- public ---' || current_user_can('administrator') ) { ?>
 								<?php $url = wppa_ea_url($album['id']) ?>
 								<td><a href="<?php echo($url) ?>" class="wppaedit"><?php _e('Edit', 'wppa'); ?></a></td>
-								<?php $url = wppa_dbg_url(get_admin_url().'admin.php?page=wppa_admin_menu&amp;tab=del&amp;id='.$album['id']); ?>
+								<?php $url .= '&quick'; ?>
+								<td><a href="<?php echo($url) ?>" class="wppaedit"><?php _e('Q-edit', 'wppa'); ?></a></td>
 								
 								<?php $url = wppa_ea_url($album['id'], 'del') ?>
 								<td><a href="<?php echo($url) ?>" class="wppadelete"><?php _e('Delete', 'wppa'); ?></a></td>
@@ -924,6 +926,7 @@ function wppa_admin_albums_flat() {
 					<?php _e('A/P/PM', 'wppa'); ?>
 				</th>
 				<th scope="col"><?php _e('Edit', 'wppa'); ?></th>
+				<th scope="col"><?php _e('Q-edit', 'wppa'); ?></th>
 				<th scope="col"><?php _e('Delete', 'wppa'); ?></th>	
 				<?php if ( wppa_can_create_album() ) echo '<th scope="col">'.__('Create', 'wppa').'</th>'; ?>
 			</tr>
@@ -1102,6 +1105,7 @@ function wppa_admin_albums_collapsable() {
 					<?php _e('A/P/PM', 'wppa'); ?>
 				</th>
 				<th scope="col"><?php _e('Edit', 'wppa'); ?></th>
+				<th scope="col"><?php _e('Q-edit', 'wppa'); ?></th>
 				<th scope="col"><?php _e('Delete', 'wppa'); ?></th>	
 				<?php if ( wppa_can_create_album() ) echo '<th scope="col">'.__('Create', 'wppa').'</th>'; ?>
 			</tr>
@@ -1190,6 +1194,7 @@ function wppa_admin_albums_collapsable() {
 					<?php _e('A/P/PM', 'wppa'); ?>
 				</th>
 				<th scope="col"><?php _e('Edit', 'wppa'); ?></th>
+				<th scope="col"><?php _e('Q-edit', 'wppa'); ?></th>
 				<th scope="col"><?php _e('Delete', 'wppa'); ?></th>	
 				<?php if ( wppa_can_create_album() ) echo '<th scope="col">'.__('Create', 'wppa').'</th>'; ?>
 			</tr>
@@ -1302,7 +1307,8 @@ global $wpdb;
 							<?php if ( $album['owner'] != '--- public ---' || current_user_can('administrator') ) { ?>
 								<?php $url = wppa_ea_url($album['id']) ?>
 								<td><a href="<?php echo($url) ?>" class="wppaedit"><?php _e('Edit', 'wppa'); ?></a></td>
-								<?php $url = wppa_dbg_url(get_admin_url().'admin.php?page=wppa_admin_menu&amp;tab=del&amp;id='.$album['id']); ?>
+								<?php $url .= '&quick'; ?>
+								<td><a href="<?php echo($url) ?>" class="wppaedit"><?php _e('Q-edit', 'wppa'); ?></a></td>
 								
 								<?php $url = wppa_ea_url($album['id'], 'del') ?>
 								<td><a href="<?php echo($url) ?>" class="wppadelete"><?php _e('Delete', 'wppa'); ?></a></td>

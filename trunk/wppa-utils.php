@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains low-level utility routines
-* Version 5.0.9
+* Version 5.0.10
 *
 */
 
@@ -303,6 +303,23 @@ function wppa_add_paths($albums) {
 		}
 	}
 	return $albums;
+}
+
+function wppa_add_parents($pages) {
+global $wpdb;
+
+	if ( is_array($pages) ) foreach ( array_keys($pages) as $index ) {
+		$tempid = $pages[$index]['ID'];
+		$pages[$index]['post_title'] = __(stripslashes($pages[$index]['post_title']));
+		while ( $tempid > '0') {
+			$tempid = $wpdb->get_var($wpdb->prepare("SELECT `post_parent` FROM `" . $wpdb->posts . "` WHERE `ID` = %s", $tempid));
+			if ( $tempid > '0' ) {
+				$pages[$index]['post_title'] = __(stripslashes($wpdb->get_var($wpdb->prepare("SELECT `post_title` FROM `" . $wpdb->posts . "` WHERE `ID` = %s", $tempid)))).' > '.$pages[$index]['post_title'];
+			}
+			else $tempid = '0';			
+		}
+	}
+	return $pages;
 }
 	
 function wppa_array_sort($array, $on, $order=SORT_ASC) {
@@ -872,4 +889,39 @@ function wppa_combine_style($type, $top = '0', $left = '0', $right = '0', $botto
 	$result .= ';';
 //echo $result.'<br />';
 	return $result;
+}
+
+function wppa_fix_source_extensions() {
+global $wpdb;
+global $wppa_opt;
+
+	$start_time = time();
+	$end = $start_time + '15';
+	$count = '0';
+	$start = get_option('wppa_sourcefile_fix_start', '0');
+	if ( $start == '-1' ) return; // Done!
+	
+	$photos = $wpdb->get_results("SELECT `id`, `album`, `name`, `filename` FROM `".WPPA_PHOTOS."` WHERE `filename` <> ''  AND `filename` <> `name` AND `id` > ".$start." ORDER BY `id`", ARRAY_A);
+	if ( $photos ) {
+		foreach ( $photos as $data ) {
+			$faulty_sourcefile_name = $wppa_opt['wppa_source_dir'].'/album-'.$data['album'].'/'.preg_replace('/\.[^.]*$/', '', $data['filename']);
+			if ( is_file($faulty_sourcefile_name) ) {
+				$proper_sourcefile_name = $wppa_opt['wppa_source_dir'].'/album-'.$data['album'].'/'.$data['filename'];
+				if ( is_file($proper_sourcefile_name) ) {
+					unlink($faulty_sourcefile_name);
+				}
+				else {
+					rename($faulty_sourcefile_name, $proper_sourcefile_name);
+				}
+				$count++;
+			}
+			if ( time() > $end ) {
+				wppa_ok_message('Fixed '.$count.' faulty sourcefile names. Last was '.$data['id'].'. Not finished yet. I will continue fixing next time you enter this page. Sorry for the inconvenience.');
+				update_option('wppa_sourcefile_fix_start', $data['id']);
+				return;
+			}
+		}
+	}
+	echo $count.' source file extensions repaired';
+	update_option('wppa_sourcefile_fix_start', '-1');
 }

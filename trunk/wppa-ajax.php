@@ -2,7 +2,7 @@
 /* wppa-ajax.php
 *
 * Functions used in ajax requests
-* version 5.0.9
+* version 5.0.10
 *
 */
 add_action('wp_ajax_wppa', 'wppa_ajax_callback');
@@ -107,7 +107,7 @@ global $wppa;
 				else {
 					$name = __($data['name']);
 				}
-				$name = sanitize_file_name($name); 				// Remove illegal chars
+/**/				$name = sanitize_file_name($name); 				// Remove illegal chars
 				$name = preg_replace('/\.[^.]*$/', '', $name);	// Remove file extension
 				if ( strlen($name) == '0' ) {
 					echo '||1||'.__('Empty filename', 'wppa');
@@ -115,8 +115,13 @@ global $wppa;
 				}
 				
 				// Make the file
-				if ( wppa_switch('wppa_artmonkey_use_source') && is_file($wppa_opt['wppa_source_dir'].'/album-'.$data['album'].'/'.$data['filename']) ) {
-					$source = $wppa_opt['wppa_source_dir'].'/album-'.$data['album'].'/'.$data['filename'];
+				if ( wppa_switch('wppa_artmonkey_use_source') ) {
+					if ( is_file($wppa_opt['wppa_source_dir'].'/album-'.$data['album'].'/'.$data['filename']) ) {
+						$source = $wppa_opt['wppa_source_dir'].'/album-'.$data['album'].'/'.$data['filename'];
+					}
+					else {
+						$source = WPPA_UPLOAD_PATH.'/'.$photo.'.'.$data['ext'];
+					}
 				}
 				else {
 					$source = WPPA_UPLOAD_PATH.'/'.$photo.'.'.$data['ext'];

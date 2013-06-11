@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 5.0.9
+* Version 5.0.10
 *
 */
 
@@ -457,6 +457,8 @@ Hide Camera info
 						'wppa_topten_size' 				=> '86',	// 2
 						'wppa_comten_count'				=> '10',	// 3
 						'wppa_comten_size'				=> '86',	// 4
+						'wppa_featen_count'				=> '10',
+						'wppa_featen_size'				=> '86',
 						'wppa_thumbnail_widget_count'	=> '10',	// 5
 						'wppa_thumbnail_widget_size'	=> '86',	// 6
 						'wppa_lasten_count'				=> '10',	// 7
@@ -475,6 +477,7 @@ Hide Camera info
 						'wppa_bc_on_topten'					=> 'yes',	// 3
 						'wppa_bc_on_lasten'					=> 'yes',	// 3
 						'wppa_bc_on_comten'					=> 'yes',	// 3
+						'wppa_bc_on_featen'					=> 'yes',
 						'wppa_bc_on_tag'					=> 'yes',	// 3
 						'wppa_show_home' 					=> 'yes',	// 4
 						'wppa_show_page' 					=> 'yes',	// 4
@@ -705,6 +708,11 @@ Hide Camera info
 						'wppa_topten_widget_linkpage' 		=> '0',
 						'wppa_topten_blank'					=> 'no',
 						'wppa_topten_overrule'				=> 'no',
+
+						'wppa_featen_widget_linktype' 		=> 'photo',
+						'wppa_featen_widget_linkpage' 		=> '0',
+						'wppa_featen_blank'					=> 'no',
+						'wppa_featen_overrule'				=> 'no',
 						
 						'wppa_slideonly_widget_linktype' 	=> 'widget',
 						'wppa_slideonly_widget_linkpage' 	=> '0',
@@ -805,6 +813,7 @@ Hide Camera info
 						'wppa_meta_all'					=> 'yes',		// 10
 						'wppa_use_wp_editor'			=> 'no',
 						'wppa_hier_albsel' 				=> 'no',
+						'wppa_hier_pagesel'				=> 'no',
 						'wppa_alt_type'					=> 'fullname',
 						'wppa_photo_admin_pagesize'		=> '20',
 						'wppa_comment_admin_pagesize'	=> '10',

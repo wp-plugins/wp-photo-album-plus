@@ -2,7 +2,7 @@
 * Pachkage: wp-photo-album-plus
 *
 *
-* Version 5.0.0
+* Version 5.0.10
 *
 */
 
@@ -91,7 +91,7 @@
 
 					// Check for inconsistencies
 					if ( type == 'cover' ) {
-						if ( album == '#topten' || album == '#lasten' || album == '#comten' || album == '#all' ) {
+						if ( album == '#topten' || album == '#lasten' || album == '#comten' || album == '#featen' || album == '#all' ) {
 							alert('Sorry, you made a mistake\n\nA --- special --- selection has no album cover\n\nPlease try again');
 							return;
 						}
@@ -123,7 +123,7 @@
 					}
 					else {
 						var temp = album.split('|');
-						if ( temp[0] == '#topten'|| temp[0] == '#lasten' || temp[0] == '#comten' ) {
+						if ( temp[0] == '#topten'|| temp[0] == '#lasten' || temp[0] == '#comten' || temp[0] == '#featen' ) {
 							if ( cnt != '0' ) {
 								shortcode += ' %%'+type+'='+temp[0]+','+alb+','+cnt+'%%';
 							}
@@ -155,7 +155,7 @@
 					}
 					else {
 						var temp = album.split('|');
-						if ( temp[0] == '#topten' || temp[0] == '#lasten' || temp[0] == '#comten' ) {
+						if ( temp[0] == '#topten' || temp[0] == '#lasten' || temp[0] == '#comten' || temp[0] == '#featen' ) {
 							if ( cnt != '0' ) {
 								newShortcode += ' album="'+temp[0]+','+alb+','+cnt+'"';
 							}
@@ -229,7 +229,7 @@ function wppaTinyMceAlbumPreview(id) {
 	}
 	jQuery('#mygallery-album-preview').html(html);
 	
-	if ( temp[0] == '#topten' || temp[0] == '#lasten' || temp[0] == '#comten' ) { 
+	if ( temp[0] == '#topten' || temp[0] == '#lasten' || temp[0] == '#comten' || temp[0] == '#featen' ) { 
 		jQuery('.mygallery-extra').show();
 	}
 	else {

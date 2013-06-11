@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 *
-* Version 5.0.4
+* Version 5.0.10
 *
 */
 
@@ -149,7 +149,15 @@ global $wppa_opt;
 									$value .= '|'.$photo['id'].'.'.$photo['ext'];
 								}
 								else $value .= '|';
-								$result .= '<option value = "'.$value.'" >'.__('--- The most recently uploaded photos ---', 'wppa').'</option>';	
+								$result .= '<option value = "'.$value.'" >'.__('--- The most recently uploaded photos ---', 'wppa').'</option>';
+							// #featen
+								$value = '#featen';
+								$photos = $wpdb->get_results( "SELECT `id`, `name`, `album`, `ext` FROM `".WPPA_PHOTOS."` WHERE `status` = 'featured' ORDER BY RAND() DESC LIMIT ".$wppa_opt['wppa_featen_count'], ARRAY_A );
+								if ( $photos ) foreach ( $photos as $photo ) {
+									$value .= '|'.$photo['id'].'.'.$photo['ext'];
+								}
+								else $value .= '|';
+								$result .= '<option value = "'.$value.'" >'.__('--- A random selection of featured photos ---', 'wppa').'</option>';
 							// #comten
 								$value = '#comten';
 								$comments = $wpdb->get_results( "SELECT `id`, `photo` FROM `".WPPA_COMMENTS."` ORDER BY `timestamp` DESC", ARRAY_A );

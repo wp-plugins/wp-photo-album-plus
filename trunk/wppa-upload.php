@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the upload/import pages and functions
-* Version 5.0.9
+* Version 5.0.10
 *
 */
 
@@ -1111,82 +1111,6 @@ function wppa_extract($path, $delz) {
 	}
 	return $err;
 }
-
-/*
-function wppa_update_photo($file, $xname) {
-global $wpdb;
-global $allphotos;
-
-	if ($xname == '') $name = basename($file);
-	else $name = __($xname);
-	
-//echo 'Trying: '.$name.' ';
-	$photos = $wpdb->get_results($wpdb->prepare( "SELECT `id`, `name`, `ext`, `album`, `filename` FROM `".WPPA_PHOTOS."` WHERE `name` = %s OR `filename` = %s", $name, $name), ARRAY_A );
-	if ( $photos ) {
-		foreach ( $photos as $photo ) {
-//echo 'found:'.count($photos);
-			wppa_make_the_photo_files($file, $photo['id'], $photo['ext']);
-			$album = $wpdb->get_var($wpdb->prepare('SELECT `album` FROM '.WPPA_PHOTOS.' WHERE `id` = %s', $photo['id']));
-//echo ' album='.$album.'<br/>';
-			wppa_save_source($file, $name, $album);
-			$wpdb->query($wpdb->prepare('UPDATE `'.WPPA_PHOTOS.'` SET `filename` = %s WHERE `id` = %s', $name, $photo['id']));
-			wppa_dbg_msg('Update photo: '.$name.' in album '.$album, 'green');
-		}
-		return count($photos);
-	}
-	return false;
-}
-/*	
-// oud:	
-	wppa_dbg_msg('Trying to update '.$name);
-	// Fill the names array
-	if ( ! $allphotos ) {
-	wppa_dbg_msg('Filling');
-		$allphotos = $wpdb->get_results( "SELECT `id`, `name`, `ext`, `album`, `filename` FROM `".WPPA_PHOTOS."`", ARRAY_A );
-		if ( is_array($allphotos) ) {
-			$index = '0';
-			$count = count($allphotos);
-			while ( $index < $count ) {
-				$allphotos[$index]['name'] = wppa_qtrans($allphotos[$index]['name']);
-				$index++;
-			}
-		}
-	}
-	// Search
-	if ( is_array($allphotos) ) {
-		$index = '0';
-		$count = count($allphotos);
-		$hits = '0';
-		$lasthit = '0';
-		$ext = '';
-		while ( $index < $count ) {
-			if ($name == $allphotos[$index]['name'] || $name == $allphotos[$index]['filename']) {
-				$hits++;
-				$lasthit = $allphotos[$index]['id'];
-				$ext = $allphotos[$index]['ext'];
-			}
-			$index++;
-		}
-	wppa_dbg_msg('Found '.$hits.' times photo '.$name.' id='.$lasthit.', ext='.$ext);
-	}
-	// If one, proceed
-	if ( $hits == '1' ) {
-		wppa_make_the_photo_files($file, $lasthit, $ext);
-		$album = $wpdb->get_var($wpdb->prepare('SELECT `album` FROM '.WPPA_PHOTOS.' WHERE `id` = %s', $lasthit));
-		wppa_save_source($file, $name, $album);
-		$wpdb->query($wpdb->prepare('UPDATE `'.WPPA_PHOTOS.'` SET `filename` = %s WHERE `id` = %s', $name, $lasthit));
-	}
-	elseif ( $hits ) {
-		wppa_error_message('Found '.$hits.' copies of photo '.$name.', update skipped');
-		return false;
-	}
-	else {
-		wppa_error_message('Photo '.$name.' not found, update skipped');
-		return false;
-	}
-	return true;
-}
-*/
 
 function wppa_import_dir_to_album($file, $parent) {
 global $photocount;

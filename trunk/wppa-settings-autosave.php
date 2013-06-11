@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 5.0.9
+* Version 5.0.10
 *
 */
 
@@ -233,7 +233,9 @@ global $wppa_revno;
 	// Check database
 //	if ( get_option('wppa_revision') != $wppa_revno ) 
 		wppa_check_database(true);
-	
+
+// Fix sourcefile bug
+wppa_fix_source_extensions();		
 ?>		
 	<div class="wrap">
 		<?php $iconurl = WPPA_URL.'/images/settings32.png'; ?>
@@ -750,6 +752,22 @@ global $wppa_revno;
 							$html = wppa_input($slug, '40px', '', __('pixels', 'wppa'));
 							wppa_setting($slug, '10', $name, $desc, $html, $help);
 							
+							$name = __('FeaTen count', 'wppa');
+							$desc = __('Number of photos in Featured Ten widget.', 'wppa');
+							$help = esc_js(__('Enter the maximum number of rated photos in the FeaTen widget.', 'wppa'));
+							$slug = 'wppa_featen_count';
+							$html = wppa_input($slug, '40px', '', __('photos', 'wppa'));
+							wppa_setting($slug, '11', $name, $desc, $html, $help);
+							
+							$name = __('FeaTen size', 'wppa');
+							$desc = __('Size of thumbnails in Featured Ten widget.', 'wppa');
+							$help = esc_js(__('Enter the size for the mini photos in the FeaTen widget.', 'wppa'));
+							$help .= '\n'.esc_js(__('The size applies to the width or height, whatever is the largest.', 'wppa'));
+							$help .= '\n'.esc_js(__('Recommended values: 86 for a two column and 56 for a three column display.', 'wppa'));
+							$slug = 'wppa_featen_size';
+							$html = wppa_input($slug, '40px', '', __('pixels', 'wppa'));
+							wppa_setting($slug, '12', $name, $desc, $html, $help);
+
 							wppa_setting_subheader('G', '1', __('Lightbox related settings. These settings have effect only when Table IX-A6 is set to wppa', 'wppa'));
 							
 							$name = __('Number of text lines', 'wppa');
@@ -2401,7 +2419,7 @@ global $wppa_revno;
 				__('Table VI:', 'wppa').' '.__('Links:', 'wppa').' '.
 				__('This table defines the link types and pages.', 'wppa')
 			); ?>
-			
+		
 				<div id="wppa_table_6" style="display:none" >
 					<table class="widefat">
 						<thead style="font-weight: bold; " class="wppa_table_6">
@@ -2461,9 +2479,16 @@ global $wppa_revno;
 							$options_page[] = __('--- Please select a page ---', 'wppa');
 							$values_page[] = '0';
 							// Pages if any
-							$query = "SELECT ID, post_title, post_content FROM " . $wpdb->posts . " WHERE post_type = 'page' AND post_status = 'publish' ORDER BY post_title ASC";
+							$query = "SELECT ID, post_title, post_content, post_parent FROM " . $wpdb->posts . " WHERE post_type = 'page' AND post_status = 'publish' ORDER BY post_title ASC";
 							$pages = $wpdb->get_results ($query, ARRAY_A);
 							if ($pages) {
+								if ( $wppa_opt['wppa_hier_pagesel'] ) $pages = wppa_add_parents($pages);
+								else {	// Just translate
+									foreach ( array_keys($pages) as $index ) {
+										$pages[$index]['post_title'] = __(stripslashes($pages[$index]['post_title']));
+									}
+								}
+								$pages = wppa_array_sort($pages, 'post_title');
 								foreach ($pages as $page) {
 									if (strpos($page['post_content'], '%%wppa%%') !== false || strpos($page['post_content'], '[wppa') !== false) {
 										$options_page[] = __($page['post_title']);
@@ -2637,6 +2662,27 @@ global $wppa_revno;
 							$html = array($html1, $htmlerr.$html2, $html3, $html4);
 							wppa_setting($slug, '7a,b,c,d', $name, $desc, $html, $help);
 							
+							$name = __('FeaTenWidget', 'wppa');
+							$desc = __('FeaTen widget photo link.', 'wppa');
+							$help = esc_js(__('Select the type of link the featured ten photos point to.', 'wppa')); 
+							$slug1 = 'wppa_featen_widget_linktype'; 
+							$slug2 = 'wppa_featen_widget_linkpage';
+							wppa_verify_page($slug2);
+							$slug3 = 'wppa_featen_blank';
+							$slug4 = 'wppa_featen_overrule';
+							$slug = array($slug1, $slug2, $slug3, $slug4);
+							$onchange = 'wppaCheckFeaTenLink(); wppaCheckLinkPageErr(\'featen_widget\');';
+							$html1 = wppa_select($slug1, $options_linktype, $values_linktype, $onchange);
+							$class = 'wppa_ftlp';
+							$onchange = 'wppaCheckLinkPageErr(\'featen_widget\');';
+							$html2 = wppa_select($slug2, $options_page, $values_page, $onchange, $class, true);
+							$class = 'wppa_ftlb';
+							$html3 = wppa_checkbox($slug3, '', $class);
+							$html4 = wppa_checkbox($slug4);
+							$htmlerr = wppa_htmlerr('featen_widget');
+							$html = array($html1, $htmlerr.$html2, $html3, $html4);
+							wppa_setting($slug, '8a,b,c,d', $name, $desc, $html, $help);
+
 							wppa_setting_subheader('B', '4', __('Links from other WPPA+ images', 'wppa'));
 							
 							$name = __('Cover Image', 'wppa');
@@ -3327,6 +3373,14 @@ global $wppa_revno;
 							$slug = 'wppa_hier_albsel';
 							$html = wppa_checkbox($slug);
 							wppa_setting($slug, '12', $name, $desc, $html, $help);
+
+							$name = __('Page sel hierarchic', 'wppa');
+							$desc = __('Show pages with (grand)parents in selection lists.', 'wppa');
+							$help = '';
+							$slug = 'wppa_hier_pagesel';
+							$warn = 'This setting will be effective after reload of the page';
+							$html = wppa_checkbox_warn($slug, '', '', $warn);
+							wppa_setting($slug, '12.1', $name, $desc, $html, $help);
 							
 							$name = __('Image Alt attribute type', 'wppa');
 							$desc = __('Select kind of HTML alt="" content for images.', 'wppa');
@@ -3512,6 +3566,13 @@ global $wppa_revno;
 							$options[] = __('--- Please select a page ---', 'wppa');
 							$values[] = '0';
 							if ($pages) {
+								if ( $wppa_opt['wppa_hier_pagesel'] ) $pages = wppa_add_parents($pages);
+								else {	// Just translate
+									foreach ( array_keys($pages) as $index ) {
+										$pages[$index]['post_title'] = __(stripslashes($pages[$index]['post_title']));
+									}
+								}
+								$pages = wppa_array_sort($pages, 'post_title');
 								foreach ($pages as $page) {
 									if ( strpos($page['post_content'], '%%wppa%%') !== false || strpos($page['post_content'], '[wppa') !== false ) {
 										$options[] = __($page['post_title']);
@@ -4297,6 +4358,22 @@ function wppa_checkbox($slug, $onchange = '', $class = '') {
 	return $html;
 }
 
+function wppa_checkbox_warn($slug, $onchange = '', $class = '', $warning) {
+
+	$warning = esc_js(__('Warning!', 'wppa')).'\n\n'.$warning;
+	$html = '<input style="float:left; height: 15px; margin: 0px; padding: 0px;" type="checkbox" id="'.$slug.'"'; 
+	if (get_option($slug) == 'yes') $html .= ' checked="checked"';
+	if ($onchange != '') $html .= ' onchange="alert(\''.$warning.'\'); '.$onchange.';wppaAjaxUpdateOptionCheckBox(\''.$slug.'\', this)"';
+	else $html .= ' onchange="alert(\''.$warning.'\'); wppaAjaxUpdateOptionCheckBox(\''.$slug.'\', this)"';
+
+	if ($class != '') $html .= ' class="'.$class.'"';
+	$html .= ' /><img id="img_'.$slug.'" src="'.wppa_get_imgdir().'star.png" title="'.__('Setting unmodified', 'wppa').'" style="padding-left:4px; float:left; height:16px; width:16px;"';
+	if ($class != '') $html .= ' class="'.$class.'"';
+	$html .= ' />';
+	
+	return $html;
+}
+
 function wppa_checkbox_warn_off($slug, $onchange = '', $class = '', $warning) {
 
 	$warning = esc_js(__('Warning!', 'wppa')).'\n\n'.$warning.'\n\n'.esc_js(__('Please read the help', 'wppa'));
@@ -4352,7 +4429,7 @@ function wppa_select($slug, $options, $values, $onchange = '', $class = '', $fir
 		return $html;
 	}
 	
-	$html = '<select style="float:left; font-size: 11px; height: 20px; margin: 0px; padding: 0px;" id="'.$slug.'"';
+	$html = '<select style="float:left; font-size: 11px; height: 20px; margin: 0px; padding: 0px; max-width:220px;" id="'.$slug.'"';
 	if ($onchange != '') $html .= ' onchange="'.$onchange.';wppaAjaxUpdateOptionValue(\''.$slug.'\', this)"';
 	else $html .= ' onchange="wppaAjaxUpdateOptionValue(\''.$slug.'\', this)"';
 

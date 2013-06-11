@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile
-Version: 5.0.9
+Version: 5.0.10
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -171,6 +171,24 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 5.0.10 =
+
+= Bug Fixes =
+
+* The sourcefiles did not have a file extension when strip file extension was checked (Table IX-B11). Fixed. The files will be renamed on entering the settings page.
+After that, they will be back findable by the Art Monkey links and the remake procedure.
+
+= New Features =
+
+* New imaginary album type #featured, displays a random selection of featured photos.
+* Featured photos widget.
+* Quick edit in Photo albums -> Edit Album. This skips the copy to and move to selection boxes in Edit Photo Information. Speeds up load time for very large installations.
+
+= Other Changes =
+
+* Page selection boxes can display the pages hierarchic. Table IX-A12.1.
+* The filename will be preserved when front end uploaded photos get a user supplied photo name.
 
 = 5.0.9 =
 

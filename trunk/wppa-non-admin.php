@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the non admin stuff
-* Version 5.0.9
+* Version 5.0.10
 *
 */
 
@@ -166,16 +166,16 @@ global $wppa;
 		'.( $wppa_opt['wppa_fontsize_lightbox'] ? 'wppaOvlLineHeight = "'.($wppa_opt['wppa_fontsize_lightbox'] + '2').'"' : '').'
 	</script>
 <!-- end WPPA+ Footer data -->';
-
-		wppa_dbg_q('print');
-		if ( $wppa['debug'] ) {
-			$plugins = get_option('active_plugins');
-			wppa_dbg_msg('Active Plugins');
-			foreach ( $plugins as $plugin ) {
-				wppa_dbg_msg($plugin);
-			}
-			wppa_dbg_msg('End Active Plugins');
+	}
+	
+	wppa_dbg_q('print');
+	if ( $wppa['debug'] ) {
+		$plugins = get_option('active_plugins');
+		wppa_dbg_msg('Active Plugins');
+		foreach ( $plugins as $plugin ) {
+			wppa_dbg_msg($plugin);
 		}
+		wppa_dbg_msg('End Active Plugins');
 	}
 }
 
