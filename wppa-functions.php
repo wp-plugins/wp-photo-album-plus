@@ -3,12 +3,12 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions and API modules
-* Version 5.0.9
+* Version 5.0.10
 *
 */
 /* Moved to wppa-common-functions.php:
 global $wppa_api_version;
-$wppa_api_version = '5-0-9-000';
+$wppa_api_version = '5-0-10-000';
 */
 
 if ( ! defined( 'ABSPATH' ) )
@@ -65,6 +65,7 @@ global $wpdb;
 	if ($wppa['is_topten'] && !$wppa_opt['wppa_bc_on_topten']) return;
 	if ($wppa['is_lasten'] && !$wppa_opt['wppa_bc_on_lasten']) return;
 	if ($wppa['is_comten'] && !$wppa_opt['wppa_bc_on_comten']) return;
+	if ($wppa['is_featen'] && !$wppa_opt['wppa_bc_on_featen']) return;
 	if ($wppa['is_tag'] && !$wppa_opt['wppa_bc_on_tag']) return;
 	if (wppa_get_searchstring() && !$wppa_opt['wppa_bc_on_search']) return;
 
@@ -167,6 +168,10 @@ global $wpdb;
 		elseif ( $wppa['is_comten'] ) {
 			$wppa['out'] .= wppa_nltab().'<span class="b12" >'.$sep.'</span>';
 			$wppa['out'] .= wppa_nltab().'<span class="wppa-nav-text b11" style="'.__wcs('wppa-nav-text').__wcs('wppa-black').'" ><b>'.__a('Recently commented photos').'</b></span>';
+		}
+		elseif ( $wppa['is_featen'] ) {
+			$wppa['out'] .= wppa_nltab().'<span class="b12" >'.$sep.'</span>';
+			$wppa['out'] .= wppa_nltab().'<span class="wppa-nav-text b11" style="'.__wcs('wppa-nav-text').__wcs('wppa-black').'" ><b>'.__a('Featured photos').'</b></span>';
 		}
 		elseif ( $wppa['is_tag'] ) {
 			$wppa['out'] .= wppa_nltab().'<span class="b12" >'.$sep.'</span>';
@@ -311,6 +316,8 @@ else wppa_dbg_msg('Is NOT Slide');
 		$wppa['is_lasten'] 		= $wppa['lasten_count'] != '0';
 		$wppa['comten_count'] 	= wppa_get_get('comten', '0');
 		$wppa['is_comten']		= $wppa['comten_count'] != '0';
+		$wppa['featen_count']	= wppa_get_get('featen', '0');
+		$wppa['is_featen']		= $wppa['featen_count'] != '0';
 		$wppa['is_tag']			= trim(trim(strip_tags(wppa_get_get('tag', false)), ','), ';');
 if ( $wppa['is_tag'] ) wppa_dbg_msg('Is Tag');
 else wppa_dbg_msg('Is NOT Tag');
@@ -398,6 +405,17 @@ else wppa_dbg_msg('Is NOT Tag');
 					$wppa['is_comten'] = true;
 					if ( $wppa['is_cover'] ) {
 						wppa_dbg_msg('A comten album has no cover. '.$wppa['start_album'], 'red', 'force');
+						wppa_reset_occurrance();
+						return;	// Give up this occurence
+					}
+					break;
+				case '#featen':
+					$temp = explode(',',$wppa['start_album']);
+					$id = isset($temp[1]) ? $temp[1] : '0';
+					$wppa['featen_count'] = isset($temp[2]) ? $temp[2] : $wppa_opt['wppa_featen_count'];
+					$wppa['is_featen'] = true;
+					if ( $wppa['is_cover'] ) {
+						wppa_dbg_msg('A featen album has no cover. '.$wppa['start_album'], 'red', 'force');
 						wppa_reset_occurrance();
 						return;	// Give up this occurence
 					}
@@ -534,6 +552,8 @@ global $thumbs;
 	$wppa['is_lasten'] 		= false;
 	$wppa['comten_count'] 	= '0';
 	$wppa['is_comten']		= false;
+	$wppa['is_featen']		= false;
+	$wppa['featen_count'] 	= '0';
 	$wppa['is_tag']			= false;
 	
 	$wppa['is_single'] 		= false;
@@ -698,6 +718,7 @@ global $wppa_opt;
 	if ( $wppa['is_topten'] ) return false;
 	if ( $wppa['is_lasten'] ) return false;
 	if ( $wppa['is_comten'] ) return false;
+	if ( $wppa['is_featen'] ) return false;
 	if ( $wppa['is_tag'] ) return false;
 	if ( $wppa['photos_only'] ) return false;
 	
@@ -1015,6 +1036,14 @@ global $thumbs;
 		else $thumbs = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM `'.WPPA_PHOTOS.'` WHERE `mean_rating` > 0 ORDER BY `mean_rating` DESC LIMIT %d', $max ) , ARRAY_A );
 		wppa_dbg_q('Q19');
 	}
+	// Featen?
+	elseif ( $wppa['is_featen'] ) {
+		$max = $wppa['featen_count'];
+		$alb = $wppa['start_album'];
+		if ($alb) $thumbs = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM `'.WPPA_PHOTOS.'` WHERE `status` = %s AND `album` = %s ORDER BY RAND('.$wppa['randseed'].') DESC LIMIT %d', 'featured', $alb, $max ) , ARRAY_A );
+		else $thumbs = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM `'.WPPA_PHOTOS.'` WHERE `status` = %s ORDER BY RAND('.$wppa['randseed'].') DESC LIMIT %d', 'featured', $max ) , ARRAY_A );
+		wppa_dbg_q('Q20');
+	}	
 	// Lasten?
 	elseif ( $wppa['is_lasten'] ) {
 		$max = $wppa['lasten_count'];
@@ -2559,6 +2588,8 @@ global $wppa_opt;
 	if ( $wppa['is_lasten'] ) $extra_url .= '&amp;wppa-lasten='.$wppa['lasten_count'];
 	// Comten?
 	if ( $wppa['is_comten'] ) $extra_url .= '&amp;wppa-comten='.$wppa['comten_count'];
+	// Featen?
+	if ( $wppa['is_featen'] ) $extra_url .= '&amp;wppa-featen='.$wppa['featen_count'];
 	// Tag?
 	if ( $wppa['is_tag'] ) $extra_url .= '&amp;wppa-tag='.$wppa['is_tag'];
 	// Search?
@@ -4062,6 +4093,7 @@ global $wpdb;
 				&& ! $wppa['is_topten']													// no topten selection
 				&& ! $wppa['is_lasten']													// no lasten selection
 				&& ! $wppa['is_comten']													// no comten selection
+				&& ! $wppa['is_featen']
 				&& ! $wppa['is_tag']													// no tag selection
 				&& ! wppa_get_searchstring()											// no search findings
 				&& ( is_numeric($wppa['start_album']) || $wppa['start_album'] == '' )	// no set of albums
@@ -4114,7 +4146,7 @@ global $wpdb;
 		}
 	}
 	
-	if ( $wppa['src'] || ( ( $wppa['is_comten'] || $wppa['is_topten'] || $wppa['is_lasten'] ) && $wppa['start_album'] != $thumb['album'] ) ) {
+	if ( $wppa['src'] || ( ( $wppa['is_comten'] || $wppa['is_topten'] || $wppa['is_lasten'] || $wppa['is_featen'] ) && $wppa['start_album'] != $thumb['album'] ) ) {
 		$wppa['out'] .= wppa_nltab().'<div class="wppa-thumb-text" style="'.__wcs('wppa-thumb-text').'" >(<a href="'.wppa_get_album_url($thumb['album']).'">'.stripslashes(__(wppa_get_album_name($thumb['album']))).'</a>)</div>';
 	}
 	
@@ -4159,6 +4191,7 @@ global $wppa_opt;
 	if ( $wppa['is_topten'] ) return '0';
 	if ( $wppa['is_lasten'] ) return '0';
 	if ( $wppa['is_comten'] ) return '0';
+	if ( $wppa['is_featen'] ) return '0';
 	if ( $wppa['is_tag'] ) return '0';
 
 	return $wppa_opt['wppa_min_thumbs'];
@@ -5056,6 +5089,7 @@ global $wpdb;
 		 ( $wich == 'mphoto'     && $wppa_opt['wppa_mphoto_overrule'] ) ||
 		 ( $wich == 'thumb'      && $wppa_opt['wppa_thumb_overrule'] ) ||
 		 ( $wich == 'topten'     && $wppa_opt['wppa_topten_overrule'] ) ||
+		 ( $wich == 'featen'	 && $wppa_opt['wppa_featen_overrule'] ) ||
 		 ( $wich == 'lasten'     && $wppa_opt['wppa_lasten_overrule'] ) ||
 		 ( $wich == 'sswidget'   && $wppa_opt['wppa_sswidget_overrule'] ) ||
 		 ( $wich == 'potdwidget' && $wppa_opt['wppa_potdwidget_overrule'] ) ||
@@ -5114,6 +5148,12 @@ global $wpdb;
 			$page = $wppa_opt['wppa_topten_widget_linkpage'];
 			if ($page == '0') $page = '-1';
 			if ($wppa_opt['wppa_topten_blank']) $result['target'] = '_blank';
+			break;
+		case 'featen':
+			$type = $wppa_opt['wppa_featen_widget_linktype'];
+			$page = $wppa_opt['wppa_featen_widget_linkpage'];
+			if ($page == '0') $page = '-1';
+			if ($wppa_opt['wppa_featen_blank']) $result['target'] = '_blank';
 			break;
 		case 'lasten':
 			$type = $wppa_opt['wppa_lasten_widget_linktype'];
@@ -5404,6 +5444,13 @@ if ( $wppa['is_tag'] ) $album='0';
 	}
 	elseif ($wppa['is_comten']) {
 		$result['url'] .= '&amp;wppa-comten='.$wppa['comten_count'];
+	}
+
+	if ($wich == 'featen') {
+		$result['url'] .= '&amp;wppa-featen='.$wppa_opt['wppa_featen_count'].'&amp;wppa-randseed='.$wppa['randseed'];
+	}
+	elseif ($wppa['is_featen']) {
+		$result['url'] .= '&amp;wppa-featen='.$wppa['featen_count'].'&amp;wppa-randseed='.$wppa['randseed'];
 	}
 	
 	if ( $wppa['is_tag'] ) {
@@ -5857,6 +5904,9 @@ global $album;
 		$name = $file['name'];
 	}
 	$name = htmlspecialchars($name);
+	if ( wppa_switch('wppa_strip_file_ext') ) {
+		$name = preg_replace('/\.[^.]*$/', '', $name);
+	}
 	$porder = '0';
 	$desc = balanceTags(wppa_get_post('user-desc'), true);
 	$mrat = '0';
@@ -5865,10 +5915,7 @@ global $album;
 	$linktarget = '_self';
 	$owner = wppa_get_user();
 	$status = ( $wppa_opt['wppa_upload_moderate'] && !current_user_can('wppa_admin') ) ? 'pending' : 'publish';
-	$filename = $name;
-	if ( wppa_switch('wppa_strip_file_ext') ) {
-		$name = preg_replace('/\.[^.]*$/', '', $name);
-	}
+	$filename = $file['name'];
 	$query = $wpdb->prepare('INSERT INTO `' . WPPA_PHOTOS . '` (`id`, `album`, `ext`, `name`, `p_order`, `description`, `mean_rating`, `linkurl`, `linktitle`, `linktarget`, `timestamp`, `owner`, `status`, `tags`, `alt`, `filename`, `modified`, `location`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, \'0\', \'\')', $id, $alb, $ext, $name, $porder, $desc, $mrat, $linkurl, $linktitle, $linktarget, time(), $owner, $status, $album['default_tags'], '', $filename);
 	wppa_flush_treecounts($alb);
 	wppa_dbg_q('Q58');
@@ -5878,7 +5925,7 @@ global $album;
 		return false;
 	}
 	else {
-		wppa_save_source($file['tmp_name'], $name, $alb);
+		wppa_save_source($file['tmp_name'], $filename, $alb);
 		wppa_update_album_timestamp($alb);
 	}
 	if ( wppa_make_the_photo_files($file['tmp_name'], $id, $ext) ) {
@@ -6141,6 +6188,9 @@ global $wppa_opt;
 				case 'ct':
 					$newuri .= 'wppa-comten=';
 					break;
+				case 'ft':
+					$newuri .= 'wppa-featen=';
+					break;
 				case 'ln':
 					$newuri .= 'lang=';
 					break;
@@ -6155,6 +6205,9 @@ global $wppa_opt;
 					break;
 				case 'po':
 					$newuri .= 'wppa-photos-only=';
+					break;
+				case 'rs':
+					$newuri .= 'wppa-randseed=';
 					break;
 					
 			}
@@ -6188,7 +6241,7 @@ global $wppa_opt;
 	
 	// explode querystring
 	$args = explode('&', substr($uri, $qpos+1));
-	$support = array('album', 'photo', 'slide', 'cover', 'occur', 'page', 'searchstring', 'topten', 'lasten', 'comten', 'lang', 'locale', 'single', 'tag', 'photos-only');
+	$support = array('album', 'photo', 'slide', 'cover', 'occur', 'page', 'searchstring', 'topten', 'lasten', 'comten', 'featen', 'randseed', 'lang', 'locale', 'single', 'tag', 'photos-only');
 	if ( count($args) > 0 ) {
 		foreach ( $args as $arg ) {
 			$t = explode('=', $arg);
@@ -6227,6 +6280,9 @@ global $wppa_opt;
 					case 'comten':
 						$newuri .= 'ct';
 						break;
+					case 'featen':
+						$newuri .= 'ft';
+						break;
 					case 'lang':
 						$newuri .= 'ln';
 						break;
@@ -6241,6 +6297,9 @@ global $wppa_opt;
 						break;
 					case 'photos-only':
 						$newuri .= 'po';
+						break;
+					case 'randseed':
+						$newuri .= 'rs';
 						break;
 				}
 				if ( $val !== false ) {

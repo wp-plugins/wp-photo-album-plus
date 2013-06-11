@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * gp admin functions
-* version 5.0.9
+* version 5.0.10
 *
 * 
 */
@@ -926,7 +926,7 @@ global $allphotos;
 			wppa_make_the_photo_files($file, $photo['id'], $photo['ext']);
 			$album = $wpdb->get_var($wpdb->prepare('SELECT `album` FROM '.WPPA_PHOTOS.' WHERE `id` = %s', $photo['id']));
 //echo ' album='.$album.'<br/>';
-			wppa_save_source($file, $name, $album);
+			wppa_save_source($file, basename($file), $album);
 			$wpdb->query($wpdb->prepare('UPDATE `'.WPPA_PHOTOS.'` SET `filename` = %s WHERE `id` = %s', $name, $photo['id']));
 			wppa_dbg_msg('Update photo: '.$name.' in album '.$album, 'green');
 		}
@@ -1028,7 +1028,7 @@ function wppa_insert_photo ($file = '', $alb = '', $name = '', $desc = '', $pord
 			wppa_error_message(__('Could not insert photo. query=', 'wppa').$query);
 		}
 		else {	// Save the source
-			wppa_save_source($file, $name, $alb);
+			wppa_save_source($file, $filename, $alb);
 			wppa_flush_treecounts($alb);
 			wppa_update_album_timestamp($alb);
 		}
