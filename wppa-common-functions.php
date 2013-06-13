@@ -2317,7 +2317,7 @@ global $wpdb;
 		$args['selected'] = '0';
 	}
 												
-	$albums = $wpdb->get_results( "SELECT `id`, `name` FROM `".WPPA_ALBUMS, ARRAY_A);	
+	$albums = $wpdb->get_results( "SELECT `id`, `name` FROM `".WPPA_ALBUMS."`", ARRAY_A);	
 	
 	if ( $albums ) {
 		// Add paths
