@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the non admin stuff
-* Version 5.0.10
+* Version 5.0.11
 *
 */
 
@@ -165,7 +165,8 @@ global $wppa;
 		'.( $wppa_opt['wppa_fontweight_lightbox'] ? 'wppaOvlFontWeight = "'.$wppa_opt['wppa_fontweight_lightbox'].'"' : '').'
 		'.( $wppa_opt['wppa_fontsize_lightbox'] ? 'wppaOvlLineHeight = "'.($wppa_opt['wppa_fontsize_lightbox'] + '2').'"' : '').'
 	</script>
-<!-- end WPPA+ Footer data -->';
+<!-- end WPPA+ Footer data -->
+';
 	}
 	
 	wppa_dbg_q('print');
@@ -177,6 +178,12 @@ global $wppa;
 		}
 		wppa_dbg_msg('End Active Plugins');
 	}
+	
+	echo '
+<!-- Do user upload -->';
+	wppa_user_upload();	// Do the upload if required and not yet done
+	echo '
+<!-- Done user upload -->';
 }
 
 /* CHECK REDIRECTION */
@@ -301,7 +308,6 @@ global $wppa_locale;
 	wppaArtMonkyLink = "'.$wppa_opt['wppa_art_monkey_link'].'";
 	wppaAutoOpenComments = '.( $wppa_opt['wppa_auto_open_comments'] ? 'true' : 'false' ).';
 	wppaUpdateAddressLine = '.( $wppa_opt['wppa_update_addressline'] ? 'true' : 'false' ).';
-	wppaSymCover = '.( ( $wppa_opt['wppa_coverphoto_pos'] == 'top' || $wppa_opt['wppa_coverphoto_pos'] == 'bottom' ) ? 'true' : 'false' ).';
 	wppaUploadUrl = "'.WPPA_UPLOAD_URL.'";
 	wppaFilmThumbTitle = "'.( $wppa_opt['wppa_film_linktype'] == 'lightbox' ? wppa_zoom_in() : __a('Double click to start/stop slideshow running') ).'";
 	/* ]]> */

@@ -2,11 +2,11 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 5.0.10
+* version 5.0.11
 *
 */
 global $wppa_api_version;
-$wppa_api_version = '5-0-10-000';
+$wppa_api_version = '5-0-11-000';
 // Initialize globals and option settings
 function wppa_initialize_runtime($force = false) {
 global $wppa;
@@ -96,7 +96,8 @@ global $wppa_initruntimetime;
 			'photos_only'				=> false,
 			'page'						=> '',
 			'geo'						=> '',
-			'continue'					=> ''
+			'continue'					=> '',
+			'is_upload'					=> false
 
 		);
 
@@ -297,6 +298,8 @@ global $wppa_initruntimetime;
 						'wppa_bcolor_exif' 				=> '',
 						'wppa_bgcolor_share'			=> '',
 						'wppa_bcolor_share' 			=> '',
+						'wppa_bgcolor_upload'				=> '',
+						'wppa_bcolor_upload'				=> '',
 
 						// Table IV: Behaviour
 						// A System
@@ -549,6 +552,7 @@ global $wppa_initruntimetime;
 						'wppa_lightbox_name'			=> '',
 						'wppa_filter_priority'			=> '',
 						'wppa_apply_newphoto_desc'		=> '',
+						'wppa_apply_newphoto_desc_user'	=> '',
 						'wppa_newphoto_description'		=> '',
 						'wppa_upload_limit_count'		=> '',		// 5a
 						'wppa_upload_limit_time'		=> '',		// 5b
@@ -558,6 +562,7 @@ global $wppa_initruntimetime;
 						'wppa_max_albums'				=> '',
 						'wppa_alt_is_restricted'		=> '',
 						'wppa_link_is_restricted'		=> '',
+						'wppa_covertype_is_restricted'	=> '',
 						'wppa_strip_file_ext'			=> '',
 
 
@@ -1966,9 +1971,10 @@ global $cache_path;
 function wppa_err_alert($msg) {
 global $wppa;
 
-	$fullmsg = '<script type="text/javascript" >jQuery(document).ready(function(e) { alert(\''.$msg.'\') } )</script>';
-	if ( is_admin() ) echo $fullmsg;
-	else $wppa['out'] .= $fullmsg;	
+	$fullmsg = '<script type="text/javascript" >alert(\''.$msg.'\')</script>';
+//	if ( is_admin() ) 
+	echo $fullmsg;
+//	else $wppa['out'] .= $fullmsg;	
 }
 
 // Return the allowed number to upload in an album. -1 = unlimited
@@ -2298,6 +2304,7 @@ global $wpdb;
 											'addblank' 			=> false,
 											'addselected'		=> false,
 											'addseparate' 		=> false, 
+											'addselbox'			=> false,
 											'disableancestors' 	=> false,
 											'checkaccess' 		=> false,
 											'checkupload' 		=> false,
@@ -2306,7 +2313,7 @@ global $wpdb;
 											'path' 				=> false) );
 											
 	// Provide default selection if no selected given
-	if ( $args['selected'] == '' ) {
+	if ( $args['selected'] === '' ) {
         $args['selected'] = wppa_get_last_album();
     }
 	// See if selection is valid
@@ -2349,6 +2356,9 @@ global $wpdb;
 	
 	$selected = $args['selected'] == '-99' ? ' selected="selected"' : '';
 	if ( $args['addmultiple'] ) $result .= '<option value="-99"'.$selected.' >' . __('--- multiple see below ---', 'wppa') . '</option>';
+	
+	$selected = $args['selected'] == '0' ? ' selected="selected"' : '';
+	if ( $args['addselbox'] ) $result .= '<option value="0"'.$selected.' >' . __('--- a selection box ---', 'wppa') . '</option>';
 	
 	if ( $albums ) foreach ( $albums as $album ) {
 		if ( ( $args['disabled'] == $album['id'] ) || 

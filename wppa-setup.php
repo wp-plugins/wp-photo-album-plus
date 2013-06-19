@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 5.0.10
+* Version 5.0.11
 *
 */
 
@@ -276,6 +276,9 @@ global $silent;
 		}
 		if ( $old_rev <= '5004' ) {
 			$wpdb->query('ALTER TABLE `'.WPPA_INDEX.'` ADD INDEX ( `slug`(10) )');
+		}
+		if ( $old_rev <= '5010' ) {
+			wppa_copy_setting('wppa_apply_newphoto_desc', 'wppa_apply_newphoto_desc_user');
 		}
 
 		
@@ -588,6 +591,8 @@ Hide Camera info
 						'wppa_bcolor_exif' 				=> '#bbbbbb',
 						'wppa_bgcolor_share'			=> '#dddddd',
 						'wppa_bcolor_share' 			=> '#bbbbbb',
+						'wppa_bgcolor_upload'				=> '#dddddd',
+						'wppa_bcolor_upload'				=> '#bbbbbb',
 
 						// Table IV: Behaviour
 						// A System
@@ -826,6 +831,7 @@ Hide Camera info
 						'wppa_max_album_newtime'		=> '0',		// 1
 						'wppa_max_photo_newtime'		=> '0',		// 2
 						'wppa_apply_newphoto_desc'		=> 'no',	// 3
+						'wppa_apply_newphoto_desc_user'	=> 'no',
 						'wppa_newphoto_description'		=> $npd,	// 4
 						'wppa_upload_limit_count'		=> '0',		// 5a
 						'wppa_upload_limit_time'		=> '0',		// 5b
@@ -835,6 +841,7 @@ Hide Camera info
 						'wppa_max_albums'				=> '0',
 						'wppa_alt_is_restricted'		=> 'no',
 						'wppa_link_is_restricted'		=> 'no',
+						'wppa_covertype_is_restricted'	=> 'no',
 						'wppa_strip_file_ext'			=> 'no',
 						
 						// C Search

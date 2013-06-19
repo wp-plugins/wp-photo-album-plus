@@ -2,7 +2,7 @@
 /* wppa_widgetfunctions.php
 /* Package: wp-photo-album-plus
 /*
-/* Version 4.8.6
+/* Version 5.0.11
 /*
 */
 
@@ -74,6 +74,11 @@ function wppa_get_widgetphotos($alb, $option = '') {
 		$query = 'SELECT * FROM ' . WPPA_PHOTOS . ' ORDER BY mean_rating DESC LIMIT ' . $wppa_opt['wppa_topten_count'];
 		$photos = $wpdb->get_results( $query, ARRAY_A );
 	}
+	// Is is Featured?
+	elseif ( $alb == 'featured' ) {
+		$query = "SELECT * FROM `" . WPPA_PHOTOS . "` WHERE `status` = 'featured' " . $option;
+		$photos = $wpdb->get_results( $query, ARRAY_A );
+	}
 
 	return $photos;
 }
@@ -93,6 +98,7 @@ function wppa_walbum_select($sel = '') {
 	elseif ($sel == 'sep') $type = 4;		// Separate only
 	elseif ($sel == 'all-sep') $type = 5;	// All minus separate
 	elseif ($sel == 'topten') $type = 6;	// Topten
+	elseif ($sel == 'featured') $type = 7;	// Featured
 	else $type = 0;							// Nothing yet
     
     $result = '<option value="" >'.__('- select (another) album or a set -', 'wppa').'</option>';
@@ -117,6 +123,9 @@ function wppa_walbum_select($sel = '') {
 			case 6:
 				$dis = false;
 				break;
+			case 7:
+				$dis = false;
+				break;
 			default:
 				$dis = false;
 		}
@@ -136,6 +145,8 @@ function wppa_walbum_select($sel = '') {
 	$result .= '<option value="all-sep" '.$sel.' >'.__('- all albums except -separate-', 'wppa').'</option>';
 	if ($type == 6) $sel = 'selected="selected"'; else $sel = '';
 	$result .= '<option value="topten" '.$sel.' >'.__('- top rated photos -', 'wppa').'</option>';
+	if ( $type == 7 ) $sel = 'selected="selected"'; else $sel = '';
+	$result .= '<option value="featured" '.$sel.' >'.__('- featured photos -', 'wppa').'</option>';
 	$result .= '<option value="clr" >'.__('- start over -', 'wppa').'</option>';
 	return $result;
 }

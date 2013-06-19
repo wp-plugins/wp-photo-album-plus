@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * create, edit and delete albums
-* version 5.0.10
+* version 5.0.11
 *
 */
 
@@ -54,11 +54,20 @@ function _wppa_admin() {
 	if (isset($_GET['tab'])) {		
 		// album edit page
 		if ($_GET['tab'] == 'edit'){
+			if ( isset($_GET['edit_id']) ) {
+				$ei = $_GET['edit_id'];
+				if ( $ei != 'new' && ! is_numeric($ei) ) {
+					wp_die('Security check failure 1');
+				}
+			}
 			if ($_GET['edit_id'] == 'new') {
 				if ( ! wppa_can_create_album() ) wp_die('No rights to create an album');
 				$id = wppa_nextkey(WPPA_ALBUMS);
 				if (isset($_GET['parent_id'])) {
 					$parent = $_GET['parent_id'];
+					if ( ! is_numeric($parent) ) {
+						wp_die('Security check failure 2');
+					}
 					$name = wppa_get_album_name($parent).'-#'.$id;
 					if ( ! current_user_can('administrator') ) {	// someone creating an album for someone else?
 						$parentowner = $wpdb->get_var($wpdb->prepare("SELECT `owner` FROM `".WPPA_ALBUMS."` WHERE `id` = %s", $parent));
@@ -297,6 +306,32 @@ function _wppa_admin() {
 								<td style="padding-top:6px; padding-bottom:0;">
 									<span class="description">
 										<?php _e('If set to <b>yes</b> The settings in <b>Table I-C1a,3a</b> and <b>4a</b> apply rather than <b>I-C1,3</b> and <b>4</b>.', 'wppa') ?>
+									</span>
+								</td>
+							</tr>
+							<?php } ?>
+							
+							<!-- Cover type -->
+							<?php if ( $wppa_opt['wppa_covertype_is_restricted'] == 'no' || current_user_can('administrator') ) { ?>
+							<tr style="vertical-align:top;" >
+								<th style="padding-top:0; padding-bottom:0;">
+									<label ><?php _e('Cover Type:', 'wppa'); ?></label>
+								</th>
+								<td style="padding-top:0; padding-bottom:0;">
+									<?php $sel = 'selected="selected"' ?>
+									<select onchange="wppaAjaxUpdateAlbum(<?php echo $edit_id ?>, 'cover_type', this)" >
+										<option value="" <?php if ( $albuminfo['cover_type'] == '' ) echo $sel ?> ><?php _e('--- default ---', 'wppa') ?></option>
+										<option value="default" <?php if ( $albuminfo['cover_type'] == 'default' ) echo $sel ?> ><?php _e('Standard', 'wppa') ?></option>
+										<option value="longdesc" <?php if ( $albuminfo['cover_type'] == 'longdesc' ) echo $sel ?> ><?php _e('Long Descriptions', 'wppa') ?></option>
+										<option value="imagefactory" <?php if ( $albuminfo['cover_type'] == 'imagefactory' ) echo $sel ?> ><?php _e('Image Factory', 'wppa') ?></option>
+									</select>
+								</td>
+								<td style="padding-top:6px; padding-bottom:0;">
+									<span class="description">
+										<?php 
+											_e('The default cover type is the systems standard set in the <b>Photo Albums -> Settings</b> page <b>Table IV-D6</b>.<br />', 'wppa'); 
+											_e('If changing this attribute changes the number of possible coverphotos, reload the page!.', 'wppa');
+										?>
 									</span>
 								</td>
 							</tr>
@@ -935,17 +970,8 @@ function wppa_admin_albums_flat() {
 		</table>
 <!--	</div> -->
 <?php
-	$albcount = $wpdb->get_var( "SELECT COUNT(*) FROM `".WPPA_ALBUMS."`" );
-	$photocount = $wpdb->get_var( "SELECT COUNT(*) FROM `".WPPA_PHOTOS."`" );
-	$pendingcount = $wpdb->get_var( "SELECT COUNT(*) FROM `".WPPA_PHOTOS."` WHERE `status` = 'pending'" );
-	
-	echo sprintf(__('There are <strong>%d</strong> albums and <strong>%d</strong> photos in the system.', 'wppa'), $albcount, $photocount);
-	if ( $pendingcount ) echo ' '.sprintf(__('<strong>%d</strong> photos are pending moderation.', 'wppa'), $pendingcount);
-	
-	$lastalbum = $wpdb->get_row( "SELECT `id`, `name` FROM `".WPPA_ALBUMS."` ORDER BY `timestamp` DESC LIMIT 1", ARRAY_A );
-	if ( $lastalbum ) echo '<br />'.sprintf(__('The most recently added album is <strong>%s</strong> (%d).', 'wppa'), __(stripslashes($lastalbum['name'])), $lastalbum['id']);
-	$lastphoto = $wpdb->get_row( "SELECT `id`, `name` FROM `".WPPA_PHOTOS."` ORDER BY `timestamp` DESC LIMIT 1", ARRAY_A );
-	if ( $lastphoto ) echo '<br />'.sprintf(__('The most recently added photo is <strong>%s</strong> (%d).', 'wppa'), __(stripslashes($lastphoto['name'])), $lastphoto['id']);
+	wppa_album_admin_footer();
+
 ?>
 <?php	
 	} else { 
@@ -1218,23 +1244,33 @@ function wppa_admin_albums_collapsable() {
 		</script>
 <!--	</div> -->
 <?php
-	$albcount = $wpdb->get_var( "SELECT COUNT(*) FROM `".WPPA_ALBUMS."`" );
-	$photocount = $wpdb->get_var( "SELECT COUNT(*) FROM `".WPPA_PHOTOS."`" );
-	$pendingcount = $wpdb->get_var( "SELECT COUNT(*) FROM `".WPPA_PHOTOS."` WHERE `status` = 'pending'" );
-
-	echo sprintf(__('There are <strong>%d</strong> albums and <strong>%d</strong> photos in the system.', 'wppa'), $albcount, $photocount);
-	if ( $pendingcount ) echo ' '.sprintf(__('<strong>%d</strong> photos are pending moderation.', 'wppa'), $pendingcount);
-	
-	$lastalbum = $wpdb->get_row( "SELECT `id`, `name` FROM `".WPPA_ALBUMS."` ORDER BY `timestamp` DESC LIMIT 1", ARRAY_A );
-	if ( $lastalbum ) echo '<br />'.sprintf(__('The most recently added album is <strong>%s</strong> (%d).', 'wppa'), __(stripslashes($lastalbum['name'])), $lastalbum['id']);
-	$lastphoto = $wpdb->get_row( "SELECT `id`, `name` FROM `".WPPA_PHOTOS."` ORDER BY `timestamp` DESC LIMIT 1", ARRAY_A );
-	if ( $lastphoto ) echo '<br />'.sprintf(__('The most recently added photo is <strong>%s</strong> (%d).', 'wppa'), __(stripslashes($lastphoto['name'])), $lastphoto['id']);
+	wppa_album_admin_footer();
 ?>
 <?php	
 	} else { 
 ?>
 	<p><?php _e('No albums yet.', 'wppa'); ?></p>
 <?php
+	}
+}
+
+function wppa_album_admin_footer() {
+global $wpdb;
+
+	$albcount = $wpdb->get_var( "SELECT COUNT(*) FROM `".WPPA_ALBUMS."`" );
+	$photocount = $wpdb->get_var( "SELECT COUNT(*) FROM `".WPPA_PHOTOS."`" );
+	$pendingcount = $wpdb->get_var( "SELECT COUNT(*) FROM `".WPPA_PHOTOS."` WHERE `status` = 'pending'" );
+	
+	echo sprintf(__('There are <strong>%d</strong> albums and <strong>%d</strong> photos in the system.', 'wppa'), $albcount, $photocount);
+	if ( $pendingcount ) echo ' '.sprintf(__('<strong>%d</strong> photos are pending moderation.', 'wppa'), $pendingcount);
+	
+	$lastalbum = $wpdb->get_row( "SELECT `id`, `name` FROM `".WPPA_ALBUMS."` ORDER BY `id` DESC LIMIT 1", ARRAY_A );
+	if ( $lastalbum ) echo '<br />'.sprintf(__('The most recently added album is <strong>%s</strong> (%d).', 'wppa'), __(stripslashes($lastalbum['name'])), $lastalbum['id']);
+	$lastphoto = $wpdb->get_row( "SELECT `id`, `name`, `album` FROM `".WPPA_PHOTOS."` ORDER BY `timestamp` DESC LIMIT 1", ARRAY_A );
+	$lastphotoalbum = $wpdb->get_row($wpdb->prepare( "SELECT `id`, `name` FROM `".WPPA_ALBUMS."` WHERE `id` = %s", $lastphoto['album']), ARRAY_A );
+	if ( $lastphoto ) {
+		echo '<br />'.sprintf(__('The most recently added photo is <strong>%s</strong> (%d)', 'wppa'), __(stripslashes($lastphoto['name'])), $lastphoto['id']);
+		echo ' '.sprintf(__('in album <strong>%s</strong> (%d).', 'wppa'), __(stripslashes($lastphotoalbum['name'])), $lastphotoalbum['id']);
 	}
 }
 

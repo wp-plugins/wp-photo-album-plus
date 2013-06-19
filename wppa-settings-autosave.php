@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 5.0.10
+* Version 5.0.11
 *
 */
 
@@ -1689,6 +1689,17 @@ wppa_fix_source_extensions();
 							$html = array($html1, $html2);
 							wppa_setting($slug, '3', $name, $desc, $html, $help);
 							
+							$name = __('Upload', 'wppa');
+							$desc = __('Upload box background.', 'wppa');
+							$help = esc_js(__('Enter valid CSS colors for upload box backgrounds and borders.', 'wppa'));
+							$slug1 = 'wppa_bgcolor_upload';
+							$slug2 = 'wppa_bcolor_upload';
+							$slug = array($slug1, $slug2);
+							$html1 = wppa_input($slug1, '100px', '', '', "checkColor('".$slug1."')") . '</td><td>' . wppa_color_box($slug1);
+							$html2 = wppa_input($slug2, '100px', '', '', "checkColor('".$slug2."')") . '</td><td>' . wppa_color_box($slug2);
+							$html = array($html1, $html2);
+							wppa_setting($slug, '4', $name, $desc, $html, $help);
+
 							?>
 						</tbody>
 						<tfoot style="font-weight: bold;" class="wppa_table_3">
@@ -2016,7 +2027,9 @@ wppa_fix_source_extensions();
 							
 							$name = __('Placement', 'wppa');
 							$desc = __('Cover image position.', 'wppa');
-							$help = esc_js(__('Indicate the placement position of the coverphoto you wish.', 'wppa'));
+							$help = esc_js(__('Enter the position that you want to be used for the default album cover selected in Table IV-D6.', 'wppa'));
+							$help .= '\n\n'.esc_js(__('For covertype Image Factory: left will be treated as top and right will be treted as bottom.', 'wppa'));
+							$help .= '\n'.esc_js(__('For covertype Long Descriptions: top will be treated as left and bottom will be treted as right.', 'wppa'));
 							$slug = 'wppa_coverphoto_pos';
 							$options = array(__('Left', 'wppa'), __('Right', 'wppa'), __('Top', 'wppa'), __('Bottom', 'wppa'));
 							$values = array('left', 'right', 'top', 'bottom');
@@ -2044,8 +2057,8 @@ wppa_fix_source_extensions();
 							$desc = __('Select the default cover type.', 'wppa');
 							$help = '';
 							$slug = 'wppa_cover_type';
-							$options = array(__('--- standard ---', 'wppa'), __('Image Factory', 'wppa'));
-							$values = array('default', 'imagefactory');
+							$options = array(__('--- standard ---', 'wppa'), __('Long Descriptions', 'wppa'), __('Image Factory', 'wppa'));
+							$values = array('default', 'longdesc', 'imagefactory');
 							$onchange = 'wppaCheckCoverType()';
 							$html = wppa_select($slug, $options, $values, $onchange);
 							wppa_setting($slug, '6', $name, $desc, $html, $help);
@@ -3466,6 +3479,13 @@ wppa_fix_source_extensions();
 							$html = wppa_checkbox($slug);
 							wppa_setting($slug, '3', $name, $desc, $html, $help);
 
+							$name = __('Apply Newphoto desc user', 'wppa');
+							$desc = __('Give each new frontend uploaded photo a standard description.', 'wppa');
+							$help = esc_js(__('If checked, each new photo will get the description (template) as specified in the next item.', 'wppa'));
+							$slug = 'wppa_apply_newphoto_desc_user';
+							$html = wppa_checkbox($slug);
+							wppa_setting($slug, '3.1', $name, $desc, $html, $help);
+
 							$name = __('New photo desc', 'wppa');
 							$desc = __('The description (template) to add to a new photo.', 'wppa');
 							$help = esc_js(__('Enter the default description.', 'wppa'));
@@ -3534,14 +3554,21 @@ wppa_fix_source_extensions();
 							$help = esc_js(__('If checked: alt thumbsize can not be set in album admin by users not having admin rights.', 'wppa'));
 							$slug = 'wppa_alt_is_restricted';
 							$html = wppa_checkbox($slug);
-							wppa_setting($slug, '9', $name, $desc, $html, $help);
+							wppa_setting($slug, '9.1', $name, $desc, $html, $help);
 							
 							$name = __('Link is restricted', 'wppa');
 							$desc = __('Using <b>Link to</b> is a restricted action.', 'wppa');
 							$help = esc_js(__('If checked: Link to: can not be set in album admin by users not having admin rights.', 'wppa'));
 							$slug = 'wppa_link_is_restricted';
 							$html = wppa_checkbox($slug);
-							wppa_setting($slug, '10', $name, $desc, $html, $help);
+							wppa_setting($slug, '9.2', $name, $desc, $html, $help);
+							
+							$name = __('CoverType is restricted', 'wppa');
+							$desc = __('Changing <b>Cover Type</b> is a restricted action.', 'wppa');
+							$help = esc_js(__('If checked: Cover Type: can not be set in album admin by users not having admin rights.', 'wppa'));
+							$slug = 'wppa_covertype_is_restricted';
+							$html = wppa_checkbox($slug);
+							wppa_setting($slug, '9.3', $name, $desc, $html, $help);
 							
 							$name = __('Strip file extension', 'wppa');
 							$desc = __('Default photo name is filename without extension.', 'wppa');
@@ -4202,6 +4229,7 @@ wppa_fix_source_extensions();
 		</form>
 		<script type="text/javascript">wppaInitSettings();wppaCheckInconsistencies();</script>
 		<?php echo sprintf(__('<br />Memory used on this page: %6.2f Mb.', 'wppa'), memory_get_peak_usage(true)/(1024*1024)); ?>
+		<?php echo sprintf(__('<br />There are %d settings and %d runtime parameters.', 'wppa'), count($wppa_opt), count($wppa)); ?>
 	</div>
 	
 <?php

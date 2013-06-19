@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile
-Version: 5.0.10
+Version: 5.0.11
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -171,6 +171,24 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 5.0.11 =
+
+= Bug Fixes =
+
+* IPTC and EXIF data will also be copied when a photo is copied to another album.
+* The front-end upload will now also be performend when the return page has no wppa shortcode or script.
+* Security vulnerability fix.
+
+= New Features =
+
+* New cover type, suitable for long album descriptions. See Table IV-D4.
+* You can select the virtual album of featured photos for the photo of the day widget.
+* New shortcode type: [wppa type="upload" {album="<album identifier>"}][/wppa]. Only available in shortcode syntax.
+If the optional album id is omitted, a selectionbox of albums where the user has the rights to upload to will be displayed.
+The Upload box will not show up if the user has no rights or the album(s) is/are full.
+* You can now optionally select a specific album for the upload widget.
+* Covertypes can be set for individual albums. If you want this action te be reserved for admin users only, check Table IX-B9.3: Cover Type is restricted.
 
 = 5.0.10 =
 

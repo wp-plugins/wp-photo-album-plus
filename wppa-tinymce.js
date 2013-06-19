@@ -2,7 +2,7 @@
 * Pachkage: wp-photo-album-plus
 *
 *
-* Version 5.0.10
+* Version 5.0.11
 *
 */
 
@@ -96,7 +96,7 @@
 							return;
 						}
 					}
-					if ( type != 'photo' && type != 'mphoto' && type != 'slphoto' && type != 'generic' )	{
+					if ( type != 'photo' && type != 'mphoto' && type != 'slphoto' && type != 'generic' && type != 'upload' ) {
 						if ( album == 0 ) {
 							alert('Sorry, you made a mistake\n\nPlease select an album\n\nPlease try again');
 							return;
@@ -110,6 +110,10 @@
 					}
 					if ( type == 'filmonly' && ! newstyle ) {
 						alert('Sorry, filmonly is as newstyle shortcode available only.\n\nPlease check the new style checkbox and try again.');
+						return;
+					}
+					if ( type == 'upload' && ! newstyle ) {
+						alert('Sorry, the upload box is as newstyle shortcode available only.\n\nPlease check the new style checkbox and try again.');
 						return;
 					}
 					
@@ -167,7 +171,9 @@
 							}
 						}
 						else {
-							newShortcode += ' album="'+album+'"';
+							if ( album || type != 'upload' ) {
+								newShortcode += ' album="'+album+'"';
+							}
 						}
 					}
 					
