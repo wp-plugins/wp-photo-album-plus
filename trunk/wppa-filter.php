@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * get the albums via filter
-* version 5.0.1
+* version 5.0.11
 *
 */
 
@@ -253,6 +253,7 @@ global $wppa_opt;
 	// Undocumented
 	$wppa['start_photo'] = '0';	// Start a slideshow here
 	$wppa['is_single'] = false;	// Is a one image slideshow
+	$wppa['is_upload'] = false;
 //	$size = '';
 //	$align = '';
 
@@ -288,13 +289,13 @@ global $wppa_opt;
 			$wppa['start_photo'] = $photo;
 			break;
 			
-	case 'filmonly':
-		$wppa['start_album'] = $album;
-		$wppa['is_slideonly'] = '1';
-		$wppa['is_filmonly'] = '1';
-		$wppa['film_on'] = '1';
-		$wppa['start_photo'] = $photo;
-		break;
+		case 'filmonly':
+			$wppa['start_album'] = $album;
+			$wppa['is_slideonly'] = '1';
+			$wppa['is_filmonly'] = '1';
+			$wppa['film_on'] = '1';
+			$wppa['start_photo'] = $photo;
+			break;
 		
 		case 'photo':
 			$wppa['single_photo'] = $photo;
@@ -307,6 +308,10 @@ global $wppa_opt;
 			$wppa['is_slide'] = '1';
 			$wppa['start_photo'] = $photo;
 			$wppa['is_single'] = '1';
+			break;
+		case 'upload':
+			$wppa['start_album'] = $album;
+			$wppa['is_upload'] = true;
 			break;
 	}
 	

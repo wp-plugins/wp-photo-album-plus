@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 *
-* Version 5.0.10
+* Version 5.0.11
 *
 */
 
@@ -85,6 +85,7 @@ global $wppa_opt;
 						'<option value="mphoto">'.__('A single photo with caption', 'wppa').'</option>'.
 						'<option value="slphoto">'.__('A single photo in the style of a slideshow', 'wppa').'</option>'.
 						'<option value="generic">'.__('A generic albums display', 'wppa').'</option>'.
+						'<option value="upload">'.__('An upload box', 'wppa').'</option>'.
 					'</select>'.
 					'<br />'.
 					'<small>'.__('Specify the type of gallery', 'wppa').'</small>'.
@@ -193,6 +194,7 @@ global $wppa_opt;
 					'<br />'.
 					'<small class="mygallery-album" >'.
 						__('Specify the album to be used or --- A special selection of photos ---', 'wppa').'<br />'.
+						__('In an upload box, the album is optional. No album will display a selection box', 'wppa').'<br />'.
 						__('* Album contains less than the minimun number of photos', 'wppa').
 					'</small>'.
 				'</td>'.

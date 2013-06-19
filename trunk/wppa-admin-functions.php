@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * gp admin functions
-* version 5.0.10
+* version 5.0.11
 *
 * 
 */
@@ -339,9 +339,31 @@ global $wpdb;
 	if (!copy($oldthumb, $newthumb)) return $err;
 	// Copy source
 	wppa_copy_source($filename, $albumfrom, $albumto);
+	// Copy Exif and iptc
+	wppa_copy_exif($photoid, $id);
+	wppa_copy_iptc($photoid, $id);
 	
 	return false;	// No error
 }
+function wppa_copy_exif($fromphoto, $tophoto) {
+global $wpdb;
+
+	$exiflines = $wpdb->get_results($wpdb->prepare("SELECT * FROM `".WPPA_EXIF."` WHERE `photo` = %s", $fromphoto), ARRAY_A);
+	if ( $exiflines ) foreach ( $exiflines as $line ) {
+		$id = wppa_nextkey(WPPA_EXIF);
+		$wpdb->query($wpdb->prepare("INSERT INTO `".WPPA_EXIF."` (`id`, `photo`, `tag`, `description`, `status`) VALUES (%s, %s, %s, %s, %s)", $id, $tophoto, $line['tag'], $line['description'], $line['status']));
+	}
+}
+function wppa_copy_iptc($fromphoto, $tophoto) {
+global $wpdb;
+
+	$iptclines = $wpdb->get_results($wpdb->prepare("SELECT * FROM `".WPPA_IPTC."` WHERE `photo` = %s", $fromphoto), ARRAY_A);
+	if ( $iptclines ) foreach ( $iptclines as $line ) {
+		$id = wppa_nextkey(WPPA_IPTC);
+		$wpdb->query($wpdb->prepare("INSERT INTO `".WPPA_IPTC."` (`id`, `photo`, `tag`, `description`, `status`) VALUES (%s, %s, %s, %s, %s)", $id, $tophoto, $line['tag'], $line['description'], $line['status']));
+	}
+}
+
 
 function wppa_rotate($id, $ang) {
 global $wpdb;

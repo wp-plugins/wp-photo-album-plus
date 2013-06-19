@@ -6,7 +6,7 @@
 *
 * A wppa widget to upload photos
 *
-* Version 5.0.9
+* Version 5.0.11
 */
 
 class WppaUploadWidget extends WP_Widget {
@@ -23,7 +23,12 @@ class WppaUploadWidget extends WP_Widget {
 		global $wppa_opt;
 
 		extract($args);
+		$instance = wp_parse_args( (array) $instance, 
+									array( 	'title' 	=> '', 
+											'album' 	=> '0'
+										));
  		$title = apply_filters('widget_title', $instance['title']);
+		$album = $instance['album'];
 
 		wppa_user_upload();	// Do the upload if required
 		
@@ -31,7 +36,7 @@ class WppaUploadWidget extends WP_Widget {
 				
 		$wppa['master_occur']++;
 		$wppa['out'] = '';
-		wppa_user_upload_html('0', $wppa_opt['wppa_widget_width'], 'widget');
+		wppa_user_upload_html($album, $wppa_opt['wppa_widget_width'], 'widget');
 		if ( ! $wppa['out'] ) return;	// No possibility to upload, skip the widget
 		
 		$text = '<div class="wppa-upload-widget" style="margin-top:2px; margin-left:2px;" >'.$wppa['out'].'</div>';
@@ -49,18 +54,24 @@ class WppaUploadWidget extends WP_Widget {
 	function update( $new_instance, $old_instance ) {
 		$instance = $old_instance;
 		$instance['title'] = strip_tags($new_instance['title']);
+		$instance['album'] = $new_instance['album'];
 		return $instance;
 	}
 
 	function form( $instance ) {
 		global $wppa_opt;
-		$instance = wp_parse_args( (array) $instance, array( 'title' => __('Upload Photos', 'wppa') ) );
+		$instance = wp_parse_args( (array) $instance, array( 'title' => __('Upload Photos', 'wppa'), 'album' => '0' ) );
 		$title = $instance['title'];
+		$album = $instance['album'];
 ?>
-		<p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:'); ?></label>
+		<p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:', 'wppa'); ?></label>
 		<input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo esc_attr($title); ?>" /></p>
+		<p><label for="<?php echo $this->get_field_id('album'); ?>"><?php _e('Album:', 'wppa'); ?></label>
+		<select class="widefat" id="<?php echo $this->get_field_id('album'); ?>" name="<?php echo $this->get_field_name('album'); ?>" >
+			<?php echo wppa_album_select_a(array('path' => wppa_switch('wppa_hier_albsel'), 'selected' => $album, 'addselbox' => true)) ?>
+		</select>
 <?php
 	}
 }
-// register WppauploadWidget widget
+// register WppaUploadWidget
 add_action('widgets_init', create_function('', 'return register_widget("WppaUploadWidget");'));

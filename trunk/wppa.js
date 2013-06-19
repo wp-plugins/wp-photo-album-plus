@@ -2,7 +2,7 @@
 //
 // conatins slideshow, theme, ajax and lightbox code
 //
-// Version 5.0.9
+// Version 5.0.11
 
 // Part 1: Slideshow
 //
@@ -98,7 +98,6 @@ var wppaMagnifierCursor = '';
 var wppaArtMonkyLink = 'none';
 var wppaAutoOpenComments = false;
 var wppaUpdateAddressLine = false;
-var wppaSymCover = false;
 var wppaFilmThumbTitle = '';
 
 // 'Internal' variables (private)
@@ -1236,9 +1235,7 @@ function _wppaDoAutocol(mocc) {
 	jQuery(".wppa-container-"+mocc).css('width',w);
 
 	// Covers
-	if ( ! wppaSymCover ) {
-		jQuery(".wppa-text-frame-"+mocc).css('width',w - wppaTextFrameDelta);
-	}
+	jQuery(".wppa-asym-text-frame-"+mocc).css('width',w - wppaTextFrameDelta);
 	jQuery(".wppa-cover-box-"+mocc).css('width',w - wppaBoxDelta);
 
 	// Thumbnail area
@@ -1257,7 +1254,7 @@ function _wppaDoAutocol(mocc) {
 		}
 	}
 	// User upload
-	jQuery(".wppa-file").css('width',w - 16); 
+	jQuery(".wppa-file-"+mocc).css('width',w - 16); 
 	
 	// Slide
 	wppaFormatSlide(mocc);

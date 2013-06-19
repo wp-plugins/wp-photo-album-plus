@@ -2,7 +2,7 @@
 /* wppa-ajax.php
 *
 * Functions used in ajax requests
-* version 5.0.10
+* version 5.0.11
 *
 */
 add_action('wp_ajax_wppa', 'wppa_ajax_callback');
@@ -477,6 +477,9 @@ global $wppa;
 					break;
 				case 'alt_thumbsize':
 					$itemname = __('Use Alt thumbsize', 'wppa');
+					break;
+				case 'cover_type':
+					$itemname = __('Cover Type', 'wppa');
 					break;
 				case 'cover_linktype':
 					$itemname = __('Link type', 'wppa');

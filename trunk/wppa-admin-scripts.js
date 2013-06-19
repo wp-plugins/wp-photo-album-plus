@@ -1,7 +1,7 @@
 /* admin-scripts.js */
 /* Package: wp-photo-album-plus
 /*
-/* Version 5.0.10
+/* Version 5.0.11
 /* Various js routines used in admin pages		
 */
 
@@ -352,15 +352,22 @@ function wppaCheckKeepSource() {
 	else jQuery('.wppa_keep_source').css('display', 'none');
 }
 */
+
 function wppaCheckCoverType() {
 	var Type = document.getElementById('wppa_cover_type').value;
+	var Pos = document.getElementById('wppa_coverphoto_pos').value;
+	
 	if ( Type == 'imagefactory' ) {
 		jQuery('.wppa_imgfact_').css('display', '');
-		var Pos = document.getElementById('wppa_coverphoto_pos').value;
-		if ( Pos == 'left' || Pos == 'right' )
+/*		if ( Pos == 'left' || Pos == 'right' )
 			alert('To avoid layout problems: please set Cover photo position ( Table IV-D3 ) to \'top\' or \'bottom\'!');
-	}
+*/	}
 	else jQuery('.wppa_imgfact_').css('display', 'none');
+	
+	if ( Type == 'longdesc' ) {
+/*		if ( Pos == 'top' || Pos == 'bottom' ) 
+			alert('To avoid layout problems: please set Cover photo position ( Table IV-D3 ) to \'left\' or \'right\'!');
+*/	}
 }
 
 function wppaCheckNewpag() {
