@@ -3,12 +3,12 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions and API modules
-* Version 5.0.11
+* Version 5.0.12
 *
 */
 /* Moved to wppa-common-functions.php:
 global $wppa_api_version;
-$wppa_api_version = '5-0-11-000';
+$wppa_api_version = '5-0-12-000';
 */
 
 if ( ! defined( 'ABSPATH' ) )
@@ -6056,7 +6056,7 @@ global $wppa_opt;
 		$wppa['out'] .= wppa_nltab('+').'<form action="'.$returnurl.'" method="post" enctype="multipart/form-data">';
 			$wppa['out'] .= wppa_nltab().wp_nonce_field('wppa-check' , 'wppa-nonce', false, false);		
 			if ( ! $alb ) {	// No album given: select one
-				$wppa['out'] .= wppa_nltab().'<select name="wppa-upload-album" style="float:left; max-width: '.$width.'px; ">'.wppa_album_select_a(	array (	'addpleaseselect' 	=> true, 
+				$wppa['out'] .= wppa_nltab().'<select id="wppa-upload-'.$wppa['master_occur'].'" name="wppa-upload-album" style="float:left; max-width: '.$width.'px; ">'.wppa_album_select_a(	array (	'addpleaseselect' 	=> true, 
 																												'checkaccess'		=> true,
 																												'checkupload' 		=> true,
 																												'path' 				=> wppa_switch('wppa_hier_albsel') )).
@@ -6071,7 +6071,9 @@ global $wppa_opt;
 			else {
 				$wppa['out'] .= wppa_nltab().'<input type="file" multiple="multiple" class="wppa-user-file" style="max-width: '.$width.'; margin: 6px 0; float:left; '.__wcs('wppa-box-text').'" id="wppa-user-upload-'.$alb.'-'.$wppa['master_occur'].'" name="wppa-user-upload-'.$alb.'-'.$wppa['master_occur'].'[]" onchange="jQuery(\'#wppa-user-submit-'.$alb.'-'.$wppa['master_occur'].'\').css(\'display\', \'block\')" />';
 			}
-			$wppa['out'] .= wppa_nltab().'<input type="submit" id="wppa-user-submit-'.$alb.'-'.$wppa['master_occur'].'" style="display:none; margin: 6px 0; float:right; '.__wcs('wppa-box-text').'" class="wppa-user-submit" name="wppa-user-submit-'.$alb.'-'.$wppa['master_occur'].'" value="'.__a('Upload').'" /><br />';
+			
+			$onclick = $alb ? '' : ' onclick="if ( document.getElementById(\'wppa-upload-'.$wppa['master_occur'].'\').value == 0 ) {alert(\''.esc_js(__a('Please select an album and try again')).'\');return false;}"';
+			$wppa['out'] .= wppa_nltab().'<input type="submit" id="wppa-user-submit-'.$alb.'-'.$wppa['master_occur'].'"'.$onclick.' style="display:none; margin: 6px 0; float:right; '.__wcs('wppa-box-text').'" class="wppa-user-submit" name="wppa-user-submit-'.$alb.'-'.$wppa['master_occur'].'" value="'.__a('Upload').'" /><br />';
 			
 			if ( ! wppa_switch('wppa_upload_one_only') && ! current_user_can('administrator') ) {
 				$max = ini_get('max_file_uploads');

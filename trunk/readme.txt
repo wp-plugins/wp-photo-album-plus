@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile
-Version: 5.0.11
+Version: 5.0.12
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -171,6 +171,22 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 5.0.12 =
+
+= Bug Fixes =
+
+* Grant an album now also works when user logs in on admin page.
+
+= New Features =
+
+* More options for display name for granted album. Table IX-B6.1.
+
+= Other Changes =
+
+* Popups now also function as expected when Jetpack Photon is activated. Sizes are no longer modified by Photon.
+* If no album is selected in frontend upload, an errormessage will be displayed.
+* Improved auto cache flushing after plugin update.
 
 = 5.0.11 =
 

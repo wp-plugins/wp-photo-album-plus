@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wppa_theme-zh_CN\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-06-19 12:28+0100\n"
-"PO-Revision-Date: 2013-06-19 12:28+0100\n"
+"POT-Creation-Date: 2013-06-24 13:49+0100\n"
+"PO-Revision-Date: 2013-06-24 13:49+0100\n"
 "Last-Translator: J.N. Breetvelt <OpaJaap@OpaJaap.nl>\n"
 "Language-Team: delthink <delthink@gmail.com>\n"
 "Language: zh_CN\n"
@@ -96,63 +96,63 @@ msgstr ""
 msgid "Photo not found."
 msgstr "照片没有找到。"
 
-#: wppa-common-functions.php:685
+#: wppa-common-functions.php:686
 msgid "Default photo album for"
 msgstr ""
 
-#: wppa-common-functions.php:1054
+#: wppa-common-functions.php:1063
 msgid "1 second"
 msgstr "1秒"
 
-#: wppa-common-functions.php:1055 wppa-functions.php:6418
+#: wppa-common-functions.php:1064 wppa-functions.php:6420
 msgid "seconds"
 msgstr "秒"
 
-#: wppa-common-functions.php:1059
+#: wppa-common-functions.php:1068
 msgid "1 minute"
 msgstr "1分钟"
 
-#: wppa-common-functions.php:1060 wppa-functions.php:6417
+#: wppa-common-functions.php:1069 wppa-functions.php:6419
 msgid "minutes"
 msgstr "分钟"
 
-#: wppa-common-functions.php:1064
+#: wppa-common-functions.php:1073
 msgid "1 hour"
 msgstr "1小时"
 
-#: wppa-common-functions.php:1065 wppa-functions.php:6416
+#: wppa-common-functions.php:1074 wppa-functions.php:6418
 msgid "hours"
 msgstr "小时"
 
-#: wppa-common-functions.php:1069
+#: wppa-common-functions.php:1078
 msgid "1 day"
 msgstr "1天"
 
-#: wppa-common-functions.php:1070 wppa-functions.php:6415
+#: wppa-common-functions.php:1079 wppa-functions.php:6417
 msgid "days"
 msgstr "天"
 
-#: wppa-common-functions.php:1074
+#: wppa-common-functions.php:1083
 msgid "1 week"
 msgstr "1星期"
 
-#: wppa-common-functions.php:1075 wppa-functions.php:6414
+#: wppa-common-functions.php:1084 wppa-functions.php:6416
 msgid "weeks"
 msgstr "星期"
 
-#: wppa-common-functions.php:1079
+#: wppa-common-functions.php:1088
 msgid "1 month"
 msgstr "1个月"
 
-#: wppa-common-functions.php:1080
+#: wppa-common-functions.php:1089
 msgid "months"
 msgstr "月"
 
-#: wppa-common-functions.php:1083
+#: wppa-common-functions.php:1092
 msgid "1 year"
 msgstr "一年"
 
-#: wppa-common-functions.php:1084
+#: wppa-common-functions.php:1093
 msgid "years"
 msgstr "年"
 
@@ -430,7 +430,7 @@ msgstr "浏览照片"
 msgid "Moderate comment admin"
 msgstr ""
 
-#: wppa-functions.php:1754 wppa-functions.php:6269
+#: wppa-functions.php:1754 wppa-functions.php:6271
 #, fuzzy
 msgid "Moderate manage photo"
 msgstr "浏览照片"
@@ -475,7 +475,7 @@ msgstr "无法处理评论"
 msgid "wrote:"
 msgstr ""
 
-#: wppa-functions.php:1945 wppa-functions.php:6979
+#: wppa-functions.php:1945 wppa-functions.php:6981
 msgid "Awaiting moderation"
 msgstr ""
 
@@ -604,7 +604,7 @@ msgid "albums"
 msgstr "相簿"
 
 #: wppa-functions.php:3500 wppa-functions.php:3796 wppa-functions.php:4075
-#: wppa-functions.php:6417 wppa-functions.php:6668 wppa-non-admin.php:56
+#: wppa-functions.php:6419 wppa-functions.php:6670 wppa-non-admin.php:56
 msgid "and"
 msgstr "和"
 
@@ -621,7 +621,7 @@ msgstr "照片"
 msgid "View the top rated photos"
 msgstr "查看相册封面"
 
-#: wppa-functions.php:6027 wppa-functions.php:6200
+#: wppa-functions.php:6027 wppa-functions.php:6202
 msgid "Max uploads reached"
 msgstr ""
 
@@ -629,223 +629,227 @@ msgstr ""
 msgid "Upload Photo"
 msgstr ""
 
-#: wppa-functions.php:6074
+#: wppa-functions.php:6075
+msgid "Please select an album and try again"
+msgstr ""
+
+#: wppa-functions.php:6076
 #, fuzzy
 msgid "Upload"
 msgstr "照片"
 
-#: wppa-functions.php:6079
+#: wppa-functions.php:6081
 #, php-format
 msgid ""
 "You may upload up to %s photos at once if your browser supports HTML-5 "
 "multiple file upload"
 msgstr ""
 
-#: wppa-functions.php:6082
+#: wppa-functions.php:6084
 #, php-format
 msgid "Max photo size: %d x %d (%2.1f MegaPixel)"
 msgstr ""
 
-#: wppa-functions.php:6093
+#: wppa-functions.php:6095
 msgid "Apply watermark file:"
 msgstr ""
 
-#: wppa-functions.php:6102
+#: wppa-functions.php:6104
 msgid "Position:"
 msgstr ""
 
-#: wppa-functions.php:6115
+#: wppa-functions.php:6117
 msgid "Enter photo name."
 msgstr ""
 
-#: wppa-functions.php:6115
+#: wppa-functions.php:6117
 msgid ""
 "If you leave this blank, the original filename will be used as photo name."
 msgstr ""
 
-#: wppa-functions.php:6123
+#: wppa-functions.php:6125
 msgid "Enter/modify photo description"
 msgstr ""
 
-#: wppa-functions.php:6145
+#: wppa-functions.php:6147
 #, fuzzy
 msgid "<b>ERROR: Illegal attempt to upload a file.</b>"
 msgstr "<b>错误：尝试输入一个无效的评级。</b>"
 
-#: wppa-functions.php:6183
+#: wppa-functions.php:6185
 msgid "Photo successfully uploaded."
 msgstr ""
 
-#: wppa-functions.php:6183
+#: wppa-functions.php:6185
 #, php-format
 msgid "%s photos successfully uploaded."
 msgstr ""
 
-#: wppa-functions.php:6184
+#: wppa-functions.php:6186
 #, fuzzy, php-format
 msgid "%s points added."
 msgstr "添加评论"
 
-#: wppa-functions.php:6187
+#: wppa-functions.php:6189
 msgid "Upload failed"
 msgstr ""
 
-#: wppa-functions.php:6204
+#: wppa-functions.php:6206
 msgid "Error during upload"
 msgstr ""
 
-#: wppa-functions.php:6209
+#: wppa-functions.php:6211
 msgid "Uploaded file is not an image"
 msgstr ""
 
-#: wppa-functions.php:6213
+#: wppa-functions.php:6215
 #, php-format
 msgid ""
 "Only gif, jpg and png image files are supported. Returned filetype = %d."
 msgstr ""
 
-#: wppa-functions.php:6220
+#: wppa-functions.php:6222
 #, php-format
 msgid "The image is too big. Max photo size: %d x %d (%2.1f MegaPixel)"
 msgstr ""
 
-#: wppa-functions.php:6254
+#: wppa-functions.php:6256
 msgid "Could not insert photo into db."
 msgstr ""
 
-#: wppa-functions.php:6265
+#: wppa-functions.php:6267
 #, php-format
 msgid "New photo uploaded: %s"
 msgstr ""
 
-#: wppa-functions.php:6266
+#: wppa-functions.php:6268
 #, php-format
 msgid "User %s uploaded photo %s into album %s"
 msgstr ""
 
-#: wppa-functions.php:6268
+#: wppa-functions.php:6270
 msgid "This upload requires moderation"
 msgstr ""
 
-#: wppa-functions.php:6272
+#: wppa-functions.php:6274
 msgid "Details:"
 msgstr ""
 
-#: wppa-functions.php:6273
+#: wppa-functions.php:6275
 #, fuzzy
 msgid "Manage photo"
 msgstr "浏览照片"
 
-#: wppa-functions.php:6412
+#: wppa-functions.php:6414
 msgid "You can upload after"
 msgstr ""
 
-#: wppa-functions.php:6446
+#: wppa-functions.php:6448
 msgid "Zoom in"
 msgstr ""
 
-#: wppa-functions.php:6668 wppa-non-admin.php:56
+#: wppa-functions.php:6670 wppa-non-admin.php:56
 #, php-format
 msgid "See this image on %s"
 msgstr ""
 
-#: wppa-functions.php:6687
+#: wppa-functions.php:6689
 #, php-format
 msgid "Share %s on Facebook"
 msgstr ""
 
-#: wppa-functions.php:6729
+#: wppa-functions.php:6731
 #, php-format
 msgid "Tweet %s on Twitter"
 msgstr ""
 
-#: wppa-functions.php:6741
+#: wppa-functions.php:6743
 #, php-format
 msgid "Tip %s on Hyves"
 msgstr ""
 
-#: wppa-functions.php:6754
+#: wppa-functions.php:6756
 #, php-format
 msgid "Share %s on Google+"
 msgstr ""
 
-#: wppa-functions.php:6769
+#: wppa-functions.php:6771
 #, php-format
 msgid "Share %s on Pinterest"
 msgstr ""
 
-#: wppa-functions.php:6801
+#: wppa-functions.php:6803
 msgid "Please select a tagcloud landing page in Table VI-C3b"
 msgstr ""
 
-#: wppa-functions.php:6837
+#: wppa-functions.php:6839
 msgid "Please select a multitag landing page in Table VI-C4b"
 msgstr ""
 
-#: wppa-functions.php:6859
+#: wppa-functions.php:6861
 msgid "Please check the tag(s) that the photos must have"
 msgstr ""
 
-#: wppa-functions.php:6880
+#: wppa-functions.php:6882
 #, fuzzy
 msgid "And"
 msgstr "和"
 
-#: wppa-functions.php:6883
+#: wppa-functions.php:6885
 msgid "Or"
 msgstr ""
 
-#: wppa-functions.php:6909
+#: wppa-functions.php:6911
 msgid "Find!"
 msgstr ""
 
-#: wppa-functions.php:6919
+#: wppa-functions.php:6921
 msgid "App"
 msgstr ""
 
-#: wppa-functions.php:6920
+#: wppa-functions.php:6922
 msgid "Mod"
 msgstr ""
 
-#: wppa-functions.php:6921
+#: wppa-functions.php:6923
 msgid "Del"
 msgstr ""
 
-#: wppa-functions.php:6924 wppa-functions.php:6940
+#: wppa-functions.php:6926 wppa-functions.php:6942
 msgid "Are you sure you want to publish this photo?"
 msgstr ""
 
-#: wppa-functions.php:6930 wppa-functions.php:6946
+#: wppa-functions.php:6932 wppa-functions.php:6948
 msgid "Are you sure you want to remove this photo?"
 msgstr ""
 
-#: wppa-functions.php:6935 wppa-functions.php:6951
+#: wppa-functions.php:6937 wppa-functions.php:6953
 msgid "Approve"
 msgstr ""
 
-#: wppa-functions.php:6936
+#: wppa-functions.php:6938
 msgid "Moderate"
 msgstr ""
 
-#: wppa-functions.php:6937 wppa-functions.php:6954
+#: wppa-functions.php:6939 wppa-functions.php:6956
 msgid "Delete"
 msgstr ""
 
-#: wppa-functions.php:6952
+#: wppa-functions.php:6954
 #, fuzzy
 msgid "PhotoAdmin"
 msgstr "相片"
 
-#: wppa-functions.php:6953
+#: wppa-functions.php:6955
 #, fuzzy
 msgid "CommentAdmin"
 msgstr "%d的评论"
 
-#: wppa-functions.php:6957
+#: wppa-functions.php:6959
 msgid "Are you sure you want to publish this comment?"
 msgstr ""
 
-#: wppa-functions.php:6969
+#: wppa-functions.php:6971
 msgid "Are you sure you want to remove this comment?"
 msgstr ""
 
