@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 5.0.11
+* Version 5.0.12
 *
 */
 
@@ -35,7 +35,7 @@ global $silent;
 
 	if ( $old_rev >= $wppa_revno && ! $force ) return; // Nothing to do here
 	
-	wppa_clear_cache();	// Clear wp supercache
+	wppa_clear_cache(true);	// Clear cache
 	
 	$wppa['error'] = false;	// Init no error
 		
@@ -837,7 +837,9 @@ Hide Camera info
 						'wppa_upload_limit_time'		=> '0',		// 5b
 						'wppa_show_album_full'			=> 'yes',
 						'wppa_grant_an_album'		=> 'no',
+						'wppa_grant_name'			=> 'display',
 						'wppa_grant_parent'			=> '0',
+						
 						'wppa_max_albums'				=> '0',
 						'wppa_alt_is_restricted'		=> 'no',
 						'wppa_link_is_restricted'		=> 'no',

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 5.0.11
+* Version 5.0.12
 *
 */
 
@@ -254,6 +254,15 @@ wppa_fix_source_extensions();
 				_e('Blogid =', 'wppa');
 				echo ' '.$blog_id;
 			}			
+		}
+		
+		// Blacklist
+		
+		$blacklist_plugins = array('performance-optimization-order-styles-and-javascript/order-styles-js.php');
+		$plugins = get_option('active_plugins');
+		$matches = array_intersect($blacklist_plugins, $plugins);
+		foreach ( $matches as $bad ) {
+			wppa_error_message(__('Please de-activate plugin <i style="font-size:14px;">', 'wppa').substr($bad, 0, strpos($bad, '/')).__('. </i>This plugin will cause wppa+ to function not properly.', 'wppa'));
 		}
 ?>
 		<!--<br /><a href="javascript:window.print();"><?php //_e('Print settings', 'wppa') ?></a><br />-->
@@ -3524,6 +3533,15 @@ wppa_fix_source_extensions();
 							$slug = 'wppa_grant_an_album';
 							$html = wppa_checkbox($slug);
 							wppa_setting($slug, '6', $name, $desc, $html, $help);
+
+							$name = __('Grant album name', 'wppa');
+							$desc = __('The name to be used for the album.', 'wppa');
+							$help = '';
+							$slug = 'wppa_grant_name';
+							$opts = array(__('Login name', 'wppa'), __('Display name', 'wppa'), __('Id', 'wppa'), __('Firstname Lastname', 'wppa'));
+							$vals = array('login', 'display', 'id', 'firstlast');
+							$html = wppa_select($slug, $opts, $vals);
+							wppa_setting($slug, '6.1', $name, $desc, $html, $help);
 							
 							$name = __('Grant parent', 'wppa');
 							$desc = __('The parent album of the auto created albums.', 'wppa');

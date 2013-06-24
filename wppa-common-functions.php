@@ -2,11 +2,11 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 5.0.11
+* version 5.0.12
 *
 */
 global $wppa_api_version;
-$wppa_api_version = '5-0-11-000';
+$wppa_api_version = '5-0-12-000';
 // Initialize globals and option settings
 function wppa_initialize_runtime($force = false) {
 global $wppa;
@@ -558,6 +558,7 @@ global $wppa_initruntimetime;
 						'wppa_upload_limit_time'		=> '',		// 5b
 						'wppa_show_album_full'			=> '',
 						'wppa_grant_an_album'			=> '',
+						'wppa_grant_name'				=> '',
 						'wppa_grant_parent'				=> '',
 						'wppa_max_albums'				=> '',
 						'wppa_alt_is_restricted'		=> '',
@@ -673,12 +674,12 @@ global $wppa_initruntimetime;
 		&& is_user_logged_in() 
 		&& current_user_can('wppa_upload') ) {
 			$owner = wppa_get_user('login');
-			$user = wppa_get_user('display');
+			$user = wppa_get_user(get_option('wppa_grant_name', 'display'));
 			$albs = $wpdb->get_var($wpdb->prepare( "SELECT COUNT(*) FROM `".WPPA_ALBUMS."` WHERE `owner` = %s", $owner ));
 			if ( ! $albs ) {	// make an album for this user
 				$id = wppa_nextkey(WPPA_ALBUMS);
 				$name = $user;
-				if ( is_admin ) {
+				if ( is_admin() ) {
 					$desc = __('Default photo album for', 'wppa').' '.$user;
 				}
 				else {
@@ -918,15 +919,23 @@ function wppa_get_user($type = 'login') {
 global $current_user;
 
 	if (is_user_logged_in()) {
-		if ( $type == 'login' ) {
-			get_currentuserinfo();
-			$user = $current_user->user_login;
-			return $user;
-		}
-		if ( $type == 'display' ) {
-			get_currentuserinfo();
-			$user = $current_user->display_name;
-			return $user;
+		get_currentuserinfo();
+		switch ( $type ) {
+			case 'login':
+				return $current_user->user_login;
+				break;
+			case 'display':
+				return $current_user->display_name;
+				break;
+			case 'id':
+				return $current_user->ID;
+				break;
+			case 'firstlast':
+				return $current_user->user_firstname.' '.$current_user->user_lastname;
+				break;
+			default:
+				wppa_dbg_msg('Un-implemented type: '.$type.' in wppa_get_user()');
+				return '';
 		}
 	}
 	else {
@@ -1958,13 +1967,38 @@ global $wpdb;
 	return $out;
 }
 
-function wppa_clear_cache() {
+function wppa_clear_cache($force = false) {
 global $cache_path;
 
 	// If wp-super-cache is on board, clear cache
 	if ( function_exists('prune_super_cache') ) {
 		prune_super_cache( $cache_path . 'supercache/', true );
 		prune_super_cache( $cache_path, true );
+	}
+	// W3 Total cache
+	if ( function_exists('w3tc_pgcache_flush') ) {
+		w3tc_pgcache_flush();
+	}
+	
+	if ( $force ) { 	// At a setup or update operation
+		if ( is_dir(ABSPATH.'wp-content/cache/') ) {
+			// W3 has no flush all api call, we do it by hand
+			wppa_tree_empty(ABSPATH.'wp-content/cache');
+		}
+	}
+}
+
+// Removes the content of $dir, ignore errors
+function wppa_tree_empty($dir) {
+	$files = glob($dir.'/*');
+	if ( is_array($files) ) foreach ( $files as $file ) {
+		$name = basename($file);
+		if ( $name == '.' || $name == '..' ) {}
+		elseif ( is_dir($file) ) {
+			wppa_tree_empty($file);
+			@ unlink($file);
+		}
+		else @ unlink($file);
 	}
 }
 

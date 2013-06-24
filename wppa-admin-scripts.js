@@ -1,7 +1,7 @@
 /* admin-scripts.js */
 /* Package: wp-photo-album-plus
 /*
-/* Version 5.0.11
+/* Version 5.0.12
 /* Various js routines used in admin pages		
 */
 
@@ -15,7 +15,7 @@ var wppaUploadToThisAlbum = 'Upload to this album';
 jQuery(document).ready(function() {
 /* alert( 'You are running jQuery version: ' + jQuery.fn.jquery ); */
 
-	jQuery(".fade").fadeTo(20000, 0.0)
+	jQuery(".fade").fadeTo(200000, 0.0)
 	});
 
 /* Check if jQuery library revision is high enough, othewise give a message and uncheck checkbox elm */

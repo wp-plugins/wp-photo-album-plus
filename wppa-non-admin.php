@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the non admin stuff
-* Version 5.0.11
+* Version 5.0.12
 *
 */
 
@@ -346,3 +346,11 @@ if ( strstr($_SERVER["HTTP_USER_AGENT"], 'Chrome') && wppa_switch('wppa_ovl_chro
 
 /* ADD ADMIN BAR */
 require_once 'wppa-adminbar.php';
+
+/* SKIP JETPACK FOTON ON WPPA+ IMAGES */
+add_filter('jetpack_photon_skip_image', 'wppa_skip_photon', 10, 3);
+function wppa_skip_photon($val, $src, $tag) {
+	$result = $val;
+	if ( strpos($src, WPPA_UPLOAD_URL) !== false ) $result = true;
+	return $result;
+}
