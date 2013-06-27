@@ -3,14 +3,14 @@
 * Package: wp-photo-album-plus
 *
 * Contains the admin menu and startups the admin pages
-* Version 5.0.6
+* Version 5.0.13
 *
 */
 
 /* CHECK INSTALLATION */
 // Check setup
 require_once 'wppa-setup.php';
-add_action ( 'admin_init', 'wppa_setup' );
+add_action ( 'admin_init', 'wppa_setup' );	// admin_init
 
 /* ADMIN MENU */
 add_action( 'admin_menu', 'wppa_add_admin' );
@@ -148,3 +148,4 @@ function wppa_page_help() {
 require_once 'wppa-admin-functions.php';
 require_once 'wppa-tinymce.php';
 require_once 'wppa-index-backend.php';
+

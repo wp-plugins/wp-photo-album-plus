@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 5.0.12
+* Version 5.0.13
 *
 */
 
@@ -3460,6 +3460,20 @@ wppa_fix_source_extensions();
 							$slug = 'wppa_max_execution_time';
 							$html = wppa_input($slug, '50px', '', 'seconds');
 							wppa_setting($slug, '19', $name, $desc, $html, $help);
+							
+							$name = __('Admin bar menu admin', 'wppa');
+							$desc = __('Show menu on admin bar on admin pages.', 'wppa');
+							$help = '';
+							$slug = 'wppa_adminbarmenu_admin';
+							$html = wppa_checkbox($slug);
+							wppa_setting($slug, '20', $name, $desc, $html, $help);
+
+							$name = __('Admin bar menu frontend', 'wppa');
+							$desc = __('Show menu on admin bar on frontend pages.', 'wppa');
+							$help = '';
+							$slug = 'wppa_adminbarmenu_frontend';
+							$html = wppa_checkbox($slug);
+							wppa_setting($slug, '21', $name, $desc, $html, $help);
 
 							wppa_setting_subheader('B', '1', __('New Album and New Photo related miscellaneous settings', 'wppa'));
 

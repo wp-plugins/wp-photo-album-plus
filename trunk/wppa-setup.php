@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 5.0.12
+* Version 5.0.13
 *
 */
 
@@ -826,6 +826,9 @@ Hide Camera info
 						'wppa_geo_edit' 				=> 'no',
 						'wppa_auto_continue'			=> 'yes',
 						'wppa_max_execution_time'		=> '60',
+						'wppa_adminbarmenu_admin'		=> 'yes',
+						'wppa_adminbarmenu_frontend'	=> 'yes',
+
 
 						// B New
 						'wppa_max_album_newtime'		=> '0',		// 1

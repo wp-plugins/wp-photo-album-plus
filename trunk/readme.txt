@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile
-Version: 5.0.12
+Version: 5.0.13
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -171,6 +171,22 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 5.0.13 =
+
+= Bug Fixes =
+
+* Front-end upload set last album used.
+
+= New Features =
+
+* The following keywords can be used in photo descriptions: w#name, w#filename, w#owner, w#id, w#tags
+Example use in photo description: This is photo number w#id. Its filename is w#filename, its photo name is w#name.
+It has been uploaded by w#owner and has the tags w#tags.
+
+= Other Changes =
+
+* The admin bar Photo Albums menu can be switched on/off for admin and frontend in Table IX-A20,21.
 
 = 5.0.12 =
 

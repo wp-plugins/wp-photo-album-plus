@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the non admin stuff
-* Version 5.0.12
+* Version 5.0.13
 *
 */
 
@@ -343,9 +343,6 @@ if ( strstr($_SERVER["HTTP_USER_AGENT"], 'Chrome') && wppa_switch('wppa_ovl_chro
 		add_action('wp_footer', 'wppa_phpinfo');
 	}
 }
-
-/* ADD ADMIN BAR */
-require_once 'wppa-adminbar.php';
 
 /* SKIP JETPACK FOTON ON WPPA+ IMAGES */
 add_filter('jetpack_photon_skip_image', 'wppa_skip_photon', 10, 3);

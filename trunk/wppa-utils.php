@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains low-level utility routines
-* Version 5.0.10
+* Version 5.0.13
 *
 */
 
@@ -128,6 +128,12 @@ global $wppa_opt;
 //		$geo = '[map style="width: auto; height:300px; margin:0; " marker="yes" lat="'.$lat.'" lon="'.$lon.'"]';
 		$geo = do_shortcode($geo);
 		$wppa['geo'] .= '<div id="geodiv-'.$wppa['master_occur'].'-'.$id.'" style="display:none;">'.$geo.'</div>';
+	}
+	
+	// Keywords
+	$keywords = array('name', 'filename', 'owner', 'id', 'tags');
+	foreach ( $keywords as $keyword ) {
+		$desc = str_replace('w#'.$keyword, __(stripslashes($thumb[$keyword])), $desc);
 	}
 
 	// Shortcodes
