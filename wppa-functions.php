@@ -3,12 +3,12 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions and API modules
-* Version 5.0.12
+* Version 5.0.13
 *
 */
 /* Moved to wppa-common-functions.php:
 global $wppa_api_version;
-$wppa_api_version = '5-0-12-000';
+$wppa_api_version = '5-0-13-000';
 */
 
 if ( ! defined( 'ABSPATH' ) )
@@ -905,6 +905,7 @@ global $wppa;
 	elseif (isset($album['id'])) {
 		$id = $album['id'];
 	}
+	else $id = '';
 	if ($id != '') {
 		$link = wppa_get_permalink($pag).'wppa-album='.$id.'&amp;wppa-cover=0&amp;wppa-'.$w.'occur='.$occur;
 	}
@@ -922,6 +923,7 @@ global $wppa;
 	elseif (isset($album['id'])) {
 		$id = $album['id'];
 	}
+	else $id = '';
 	if ($id != '') {
 		$link = wppa_get_ajaxlink($pag).'wppa-album='.$id.'&amp;wppa-cover=0&amp;wppa-'.$w.'occur='.$occur;
 	}
@@ -6259,6 +6261,7 @@ global $album;
 	else {
 		wppa_save_source($file['tmp_name'], $filename, $alb);
 		wppa_update_album_timestamp($alb);
+		wppa_set_last_album($alb);
 	}
 	if ( wppa_make_the_photo_files($file['tmp_name'], $id, $ext) ) {
 		wppa_index_add('photo', $id);

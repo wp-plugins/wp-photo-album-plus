@@ -2,11 +2,11 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 5.0.12
+* version 5.0.13
 *
 */
 global $wppa_api_version;
-$wppa_api_version = '5-0-12-000';
+$wppa_api_version = '5-0-13-000';
 // Initialize globals and option settings
 function wppa_initialize_runtime($force = false) {
 global $wppa;
@@ -540,6 +540,8 @@ global $wppa_initruntimetime;
 						'wppa_geo_edit' 				=> '',
 						'wppa_auto_continue'			=> '',
 						'wppa_max_execution_time'		=> '',
+						'wppa_adminbarmenu_admin'		=> '',
+						'wppa_adminbarmenu_frontend'	=> '',
 						
 						'wppa_html' 					=> '',
 						'wppa_allow_debug' 				=> '',
@@ -693,7 +695,7 @@ global $wppa_initruntimetime;
 				wppa_index_add('album', $id);
 			}
 	}
-	
+		
 	$wppa_initruntimetime += microtime(true);
 }
 
@@ -993,7 +995,7 @@ function wppa_qtrans($output, $lang = '') {
 
 function wppa_dbg_msg($txt='', $color = 'blue', $force = false, $return = false) {
 global $wppa;
-	if ( $wppa['debug'] || $force ) {
+	if ( $wppa['debug'] || $force || ( is_admin() && ! $wppa['ajax'] && WPPA_DEBUG ) ) {
 		$result = '<span style="color:'.$color.';"><small>[WPPA+ dbg msg: '.$txt.']<br /></small></span>';
 		if ( $return ) {
 			return $result;
@@ -1815,16 +1817,19 @@ global $wpdb;
 
 	// Do we need this?
 	if ( ! wppa_switch('wppa_save_exif') ) return;
-
+wppa_dbg_msg('Sav EXIF is on');
 	// Check filetype
 	if ( ! function_exists('exif_imagetype') ) return false;
+wppa_dbg_msg('Fn exif_imagetype() exists');
 	$image_type = exif_imagetype($file);
 	if ( $image_type != IMAGETYPE_JPEG ) return false;	// Not supported image type
-
+wppa_dbg_msg('Img type is jpeg');
 	// Get exif data
 	if ( ! function_exists('exif_read_data') ) return false;	// Not supported by the server
+wppa_dbg_msg('Fn exif_read_data exists');
 	$exif = @ exif_read_data($file, 'EXIF');
 	if ( ! is_array($exif) ) return false;			// No data present
+wppa_dbg_msg('Exif data present');
 //var_dump($exif);
 	// There is exif data for this image.
 	// First delete any existing exif data for this image
@@ -1865,7 +1870,8 @@ global $wpdb;
 			$query 	= $wpdb->prepare("INSERT INTO `".WPPA_EXIF."` (`id`, `photo`, `tag`, `description`, `status`) VALUES (%s, %s, %s, %s, %s)", $key, $photo, $tag, $desc, $status); 
 			wppa_dbg_q('Q220');
 			$iret 	= $wpdb->query($query);
-			if ( ! $iret ) wppa_dbg_msg('Error: '.$query);
+wppa_dbg_msg('Insert lnew label');
+			if ( ! $iret ) wppa_dbg_msg('Error: '.$query, false, 'red');
 		}
 		// Now add poto specific data item
 		// If its an array...
@@ -1879,7 +1885,8 @@ global $wpdb;
 				$query  = $wpdb->prepare("INSERT INTO `".WPPA_EXIF."` (`id`, `photo`, `tag`, `description`, `status`) VALUES (%s, %s, %s, %s, %s)", $key, $photo, $tag, $desc, $status); 
 				wppa_dbg_q('Q221');
 				$iret 	= $wpdb->query($query);
-				if ( ! $iret ) wppa_dbg_msg('Error: '.$query);
+wppa_dbg_msg('Insert 1. Query = '.$query);
+				if ( ! $iret ) wppa_dbg_msg('Error: '.$query, false, 'red');
 			
 			}
 		}
@@ -1892,7 +1899,8 @@ global $wpdb;
 			$query  = $wpdb->prepare("INSERT INTO `".WPPA_EXIF."` (`id`, `photo`, `tag`, `description`, `status`) VALUES (%s, %s, %s, %s, %s)", $key, $photo, $tag, $desc, $status); 
 			wppa_dbg_q('Q222');
 			$iret 	= $wpdb->query($query);
-			if ( ! $iret ) wppa_dbg_msg('Error: '.$query);
+wppa_dbg_msg('Insert 2. Query = '.$query);
+			if ( ! $iret ) wppa_dbg_msg('Error: '.$query, false, 'red');
 		}
 	}
 }
@@ -2238,7 +2246,13 @@ function wppa_local_date($format, $timestamp = false) {
 function wppa_get_coordinates($picture_path, $photo_id) {
 global $wpdb;
 
+	// Exif on board?
 	if ( ! function_exists('exif_read_data') ) return false;
+	
+	// Check filetype
+	if ( ! function_exists('exif_imagetype') ) return false;
+	$image_type = exif_imagetype($file);
+	if ( $image_type != IMAGETYPE_JPEG ) return false;	// Not supported image type
 	
 	// get exif data
 	if ( $exif = exif_read_data($picture_path, 0 , false) ) {
