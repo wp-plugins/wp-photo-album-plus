@@ -2251,7 +2251,7 @@ global $wpdb;
 	
 	// Check filetype
 	if ( ! function_exists('exif_imagetype') ) return false;
-	$image_type = exif_imagetype($file);
+	$image_type = exif_imagetype($picture_path);
 	if ( $image_type != IMAGETYPE_JPEG ) return false;	// Not supported image type
 	
 	// get exif data

@@ -135,6 +135,17 @@ global $wppa_opt;
 	foreach ( $keywords as $keyword ) {
 		$desc = str_replace('w#'.$keyword, __(stripslashes($thumb[$keyword])), $desc);
 	}
+	
+	// Timestamps
+	$timestamps = array('timestamp', 'modified');
+	foreach ( $timestamps as $timestamp ) {
+		if ( $thumb[$timestamp] ) {
+			$desc = str_replace('w#'.$timestamp, wppa_local_date(get_option('date_format', "F j, Y,").' '.get_option('time_format', "g:i a"), $thumb[$timestamp]), $desc);
+		}
+		else {
+			$desc = str_replace('w#'.$timestamp, __a('unknown'), $desc);
+		}
+	}
 
 	// Shortcodes
 	if ( $do_shortcodes ) $desc = do_shortcode($desc);	// Do shortcodes if wanted
