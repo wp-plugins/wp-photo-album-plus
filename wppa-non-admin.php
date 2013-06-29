@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the non admin stuff
-* Version 5.0.13
+* Version 5.0.14
 *
 */
 
@@ -17,22 +17,23 @@ require_once 'wppa-cart.php';
 add_action('wp_print_styles', 'wppa_add_style');
 
 function wppa_add_style() {
+global $wppa_api_version;
 	// In child theme?
 	$userstyle = ABSPATH . 'wp-content/themes/' . get_option('stylesheet') . '/wppa-style.css';
 	if ( is_file($userstyle) ) {
-		wp_register_style('wppa_style', '/wp-content/themes/' . get_option('stylesheet')  . '/wppa-style.css');
+		wp_register_style('wppa_style', '/wp-content/themes/' . get_option('stylesheet')  . '/wppa-style.css', array(), $wppa_api_version);
 		wp_enqueue_style('wppa_style');
 		return;
 	}
 	// In theme?
 	$userstyle = ABSPATH . 'wp-content/themes/' . get_option('template') . '/wppa-style.css';
 	if ( is_file($userstyle) ) {
-		wp_register_style('wppa_style', '/wp-content/themes/' . get_option('template')  . '/wppa-style.css');
+		wp_register_style('wppa_style', '/wp-content/themes/' . get_option('template')  . '/wppa-style.css', array(), $wppa_api_version);
 		wp_enqueue_style('wppa_style');
 		return;
 	}
 	// Use standard
-	wp_register_style('wppa_style', WPPA_URL.'/theme/wppa-style.css');
+	wp_register_style('wppa_style', WPPA_URL.'/theme/wppa-style.css', array(), $wppa_api_version);
 	wp_enqueue_style('wppa_style');
 }
 
@@ -111,11 +112,12 @@ global $thumb;
 add_action('init', 'wppa_add_javascripts');
 	
 function wppa_add_javascripts() {
+global $wppa_api_version;
 	if ( is_file(WPPA_PATH.'/wppa.min.js') ) {
-		wp_enqueue_script('wppa', WPPA_URL.'/wppa.min.js', array('jquery'));
+		wp_enqueue_script('wppa', WPPA_URL.'/wppa.min.js', array('jquery'), $wppa_api_version);
 	}
 	else {
-		wp_enqueue_script('wppa', WPPA_URL.'/wppa.js', array('jquery'));
+		wp_enqueue_script('wppa', WPPA_URL.'/wppa.js', array('jquery'), $wppa_api_version);
 	}
 }
 	

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 5.0.13
+* Version 5.0.14
 *
 */
 
@@ -799,6 +799,7 @@ Hide Camera info
 						'wppa_rating_clear' 		=> 'no',
 						'wppa_iptc_clear'			=> '',
 						'wppa_exif_clear'			=> '',
+						'wppa_apply_new_photodec_all'	=> '',
 						'wppa_remake_index'			=> '',
 						'wppa_extend_index' 		=> '',
 						'wppa_list_index'			=> '',

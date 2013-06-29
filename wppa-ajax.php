@@ -2,7 +2,7 @@
 /* wppa-ajax.php
 *
 * Functions used in ajax requests
-* version 5.0.11
+* version 5.0.14
 *
 */
 add_action('wp_ajax_wppa', 'wppa_ajax_callback');
@@ -1011,6 +1011,18 @@ global $wppa;
 					}
 					else {
 						$title = __('Could not clear EXIF data', 'wppa');
+						$alert = $title;
+						$wppa['error'] = '1';
+					}
+					break;
+					
+				case 'wppa_apply_new_photodec_all':
+					$iret = $wpdb->query($wpdb->prepare( "UPDATE `".WPPA_PHOTOS."` SET `description` = %s", $wppa_opt['wppa_newphoto_description'] ) );
+					if ($iret !== false) {
+						$title = __('New photo description applied', 'wppa');
+					}
+					else {
+						$title = __('Could not apply New photo description', 'wppa');
 						$alert = $title;
 						$wppa['error'] = '1';
 					}

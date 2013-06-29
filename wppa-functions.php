@@ -3,12 +3,8 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions and API modules
-* Version 5.0.13
+* Version 5.0.14
 *
-*/
-/* Moved to wppa-common-functions.php:
-global $wppa_api_version;
-$wppa_api_version = '5-0-13-000';
 */
 
 if ( ! defined( 'ABSPATH' ) )
@@ -5130,8 +5126,11 @@ global $wppa_locale;
 	}
 	
 	if ( isset($_GET['lang']) ) {
-		if ( $key == 'js' ) $pl .= 'lang='.$_GET['lang'].'&';
-		else $pl .= 'lang='.$_GET['lang'].'&amp;';
+		$lang = strip_tags($_GET['lang']);
+		if ( strpos($pl, 'lang=') === false ) { 	// Not yet
+			if ( $key == 'js' ) $pl .= 'lang='.$lang.'&';
+			else $pl .= 'lang='.$lang.'&amp;';
+		}
 	}
 	elseif ( $wppa_locale ) {
 		if ( $key == 'js' ) $pl .= 'locale='.$wppa_locale.'&';
@@ -5208,9 +5207,12 @@ global $wppa_locale;
 		}
 		$al .= '&amp;wppa-fromp='.get_the_ID();
 	}
-		
+	
 	if ( isset($_GET['lang']) ) {
-		$al .= '&amp;lang='.$_GET['lang'];
+		$lang = strip_tags($_GET['lang']);
+		if ( strpos($al, 'lang=') === false ) { 	// Not yet
+			$al .= '&amp;lang='.$lang;
+		}
 	}
 	elseif ( $wppa_locale ) {
 		$al .= '&amp;locale='.$wppa_locale;
@@ -5420,6 +5422,9 @@ global $wppa_opt;
 global $thumb;
 global $wpdb;
 
+	// make sure the photo data ia available
+	wppa_cache_thumb($photo);
+	
 	// For cases it is appropriate...
 	if ( ( $wich == 'sphoto'     && $wppa_opt['wppa_sphoto_overrule'] ) ||
 		 ( $wich == 'mphoto'     && $wppa_opt['wppa_mphoto_overrule'] ) ||
@@ -5434,7 +5439,7 @@ global $wpdb;
 		 ( $wich == 'slideshow'  && $wppa_opt['wppa_slideshow_overrule'] ) ||
 		 ( $wich == 'tnwidget' 	 && $wppa_opt['wppa_thumbnail_widget_overrule'] )) {
 		// Look for a photo specific link
-		wppa_cache_thumb($photo);
+		
 		$data = $thumb;
 //		if ( isset($thumb['id']) && $thumb['id'] == $photo ) {
 //			$data = $thumb;
@@ -5648,6 +5653,27 @@ if ( $wppa['is_tag'] ) $album='0';
 					break;
 			}
 			break;
+		case 'thumbalbum':
+			$album = $thumb['album'];
+			$album_name = wppa_get_album_name($album);
+			switch ($page) {
+				case '-1':
+					return false;
+					break;
+				case '0':
+					$result['url'] = wppa_get_permalink().'wppa-album='.$album.'&amp;wppa-cover=0';
+					$result['title'] = $album_name;
+					$result['is_url'] = true;
+					$result['is_lightbox'] = false;
+					break;
+				default:
+					$result['url'] = wppa_get_permalink($page).'wppa-album='.$album.'&amp;wppa-cover=0';
+					$result['title'] = $album_name;//'a++';
+					$result['is_url'] = true;
+					$result['is_lightbox'] = false;
+					break;
+			}
+			break;
 		case 'photo':
 		case 'slphoto':
 			if ( $type == 'slphoto' ) {
@@ -5768,11 +5794,13 @@ if ( $wppa['is_tag'] ) $album='0';
 		$result['url'] .= '&amp;wppa-topten='.$wppa['topten_count'];
 	}
 	
-	if ($wich == 'lasten') {
-		$result['url'] .= '&amp;wppa-lasten='.$wppa_opt['wppa_lasten_count'];
-	}
- 	elseif ($wppa['is_lasten']) {
-		$result['url'] .= '&amp;wppa-lasten='.$wppa['lasten_count'];
+	if ( $type != 'thumbalbum' ) {
+		if ($wich == 'lasten') {
+			$result['url'] .= '&amp;wppa-lasten='.$wppa_opt['wppa_lasten_count'];
+		}
+		elseif ($wppa['is_lasten']) {
+			$result['url'] .= '&amp;wppa-lasten='.$wppa['lasten_count'];
+		}
 	}
 
 	if ($wich == 'comten') {
