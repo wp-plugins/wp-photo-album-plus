@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the last uploaded photos
-* Version 5.0.0
+* Version 5.0.14
 */
 
 class LasTenWidget extends WP_Widget {
@@ -23,12 +23,13 @@ class LasTenWidget extends WP_Widget {
 		$wppa['in_widget'] = 'lasten';
         extract( $args );
 		
-		$instance = wp_parse_args( (array) $instance, array( 'title' => '', 'album' => '', 'albumenum' => '', 'timesince' => 'yes' ) );
+		$instance = wp_parse_args( (array) $instance, array( 'title' => '', 'album' => '', 'albumenum' => '', 'timesince' => 'yes', 'display' => 'thumbs' ) );
 
  		$widget_title = apply_filters('widget_title', $instance['title'] );
 		$page = $wppa_opt['wppa_lasten_widget_linkpage'];
 		$max  = $wppa_opt['wppa_lasten_count'];
 		$timesince = $instance['timesince'];
+		$display = $instance['display'];
 		
 		$album = $instance['album'];
 		$albumenum = $instance['albumenum'];
@@ -49,7 +50,12 @@ class LasTenWidget extends WP_Widget {
 			global $thumb;
 			$thumb = $image;
 			// Make the HTML for current picture
-			$widget_content .= "\n".'<div class="wppa-widget" style="width:'.$maxw.'px; height:'.$maxh.'px; margin:4px; display:inline; text-align:center; float:left;">'; 
+			if ( $display == 'thumbs' ) {
+				$widget_content .= "\n".'<div class="wppa-widget" style="width:'.$maxw.'px; height:'.$maxh.'px; margin:4px; display:inline; text-align:center; float:left;">'; 
+			}
+			else {
+				$widget_content .= "\n".'<div class="wppa-widget" >';
+			}
 			if ($image) {
 				$no_album = !$album;
 				if ($no_album) $tit = __a('View the most recent uploaded photos', 'wppa_theme'); else $tit = esc_attr(wppa_qtrans(stripslashes($image['description'])));
@@ -71,21 +77,45 @@ class LasTenWidget extends WP_Widget {
 				if ($link) {
 					if ( $link['is_url'] ) {	// Is a href
 						$widget_content .= "\n\t".'<a href="'.$link['url'].'" title="'.$title.'" target="'.$link['target'].'" >';
-							$widget_content .= "\n\t\t".'<img id="i-'.$image['id'].'-'.$wppa['master_occur'].'" title="'.$title.'" src="'.$imgurl.'" width="'.$width.'" height="'.$height.'" style="'.$imgstyle.' cursor:pointer;" '.$imgevents.' alt="'.esc_attr(wppa_qtrans($image['name'])).'">';
+							$widget_content .= "\n\t\t";
+							if ( $display == 'thumbs' ) {
+								$widget_content .= '<img id="i-'.$image['id'].'-'.$wppa['master_occur'].'" title="'.$title.'" src="'.$imgurl.'" width="'.$width.'" height="'.$height.'" style="'.$imgstyle.' cursor:pointer;" '.$imgevents.' alt="'.esc_attr(wppa_qtrans($image['name'])).'" />';
+							}
+							else {
+								$widget_content .= wppa_get_photo_name($image['id']);
+							}
 						$widget_content .= "\n\t".'</a>';
 					}
 					elseif ( $link['is_lightbox'] ) {
 						$title = wppa_get_lbtitle('thumb', $image['id']);
 						$widget_content .= "\n\t".'<a href="'.$link['url'].'" rel="'.$wppa_opt['wppa_lightbox_name'].'[lasten-'.$album.']" title="'.$title.'" target="'.$link['target'].'" >';
-							$widget_content .= "\n\t\t".'<img id="i-'.$image['id'].'-'.$wppa['master_occur'].'" title="'.wppa_zoom_in().'" src="'.$imgurl.'" width="'.$width.'" height="'.$height.'" style="'.$imgstyle.$cursor.'" '.$imgevents.' alt="'.esc_attr(wppa_qtrans($image['name'])).'">';
+							$widget_content .= "\n\t\t";
+							if ( $display == 'thumbs' ) {
+								$widget_content .= '<img id="i-'.$image['id'].'-'.$wppa['master_occur'].'" title="'.wppa_zoom_in().'" src="'.$imgurl.'" width="'.$width.'" height="'.$height.'" style="'.$imgstyle.$cursor.'" '.$imgevents.' alt="'.esc_attr(wppa_qtrans($image['name'])).'" />';
+							}
+							else {
+								$widget_content .= wppa_get_photo_name($image['id']);
+							}
 						$widget_content .= "\n\t".'</a>';
 					}
 					else { // Is an onclick unit
-						$widget_content .= "\n\t".'<img id="i-'.$image['id'].'-'.$wppa['master_occur'].'" title="'.$title.'" src="'.$imgurl.'" width="'.$width.'" height="'.$height.'" style="'.$imgstyle.' cursor:pointer;" '.$imgevents.' onclick="'.$link['url'].'" alt="'.esc_attr(wppa_qtrans($image['name'])).'">';					
+						$widget_content .= "\n\t";
+						if ( $display == 'thumbs' ) {
+							$widget_content .= '<img id="i-'.$image['id'].'-'.$wppa['master_occur'].'" title="'.$title.'" src="'.$imgurl.'" width="'.$width.'" height="'.$height.'" style="'.$imgstyle.' cursor:pointer;" '.$imgevents.' onclick="'.$link['url'].'" alt="'.esc_attr(wppa_qtrans($image['name'])).'" />';	
+						}
+						else {
+							$widget_content .= '<a href="" style="cursor:pointer;" onclick="'.$link['url'].'">'.wppa_get_photo_name($image['id']).'</a>';
+						}		
 					}
 				}
 				else {
-					$widget_content .= "\n\t".'<img id="i-'.$image['id'].'-'.$wppa['master_occur'].'" title="'.$title.'" src="'.$imgurl.'" width="'.$width.'" height="'.$height.'" style="'.$imgstyle.'" '.$imgevents.' alt="'.esc_attr(wppa_qtrans($image['name'])).'">';
+					$widget_content .= "\n\t";
+					if ( $display == 'thumbs' ) {
+						$widget_content .= '<img id="i-'.$image['id'].'-'.$wppa['master_occur'].'" title="'.$title.'" src="'.$imgurl.'" width="'.$width.'" height="'.$height.'" style="'.$imgstyle.'" '.$imgevents.' alt="'.esc_attr(wppa_qtrans($image['name'])).'" />';
+					}
+					else {
+						$widget_content .= wppa_get_photo_name($image['id']);
+					}
 				}
 			}
 			else {	// No image
@@ -118,6 +148,7 @@ class LasTenWidget extends WP_Widget {
 		$instance['albumenum'] = $new_instance['albumenum'];
 		if ( $instance['album'] != '-99' ) $instance['albumenum'] = '';
 		$instance['timesince'] = $new_instance['timesince'];
+		$instance['display'] = $new_instance['display'];
 		
         return $instance;
     }
@@ -126,11 +157,12 @@ class LasTenWidget extends WP_Widget {
     function form($instance) {	
 		global $wppa_opt;
 		//Defaults
-		$instance = wp_parse_args( (array) $instance, array( 'title' => __('Last Ten Photos', 'wppa'), 'album' => '0', 'albumenum' => '', 'timesince' => 'yes' ) );
- 		$widget_title = apply_filters('widget_title', $instance['title']);
+		$instance 		= wp_parse_args( (array) $instance, array( 'title' => __('Last Ten Photos', 'wppa'), 'album' => '0', 'albumenum' => '', 'timesince' => 'yes', 'display' => 'thumbs' ) );
+ 		$widget_title 	= apply_filters('widget_title', $instance['title']);
 
-		$album = $instance['album'];
-		$timesince = $instance['timesince'];
+		$album 			= $instance['album'];
+		$timesince 		= $instance['timesince'];
+		$display 		= $instance['display'];
 ?>
 		<p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:', 'wppa'); ?></label> 
 			<input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $widget_title; ?>" />
@@ -157,6 +189,14 @@ class LasTenWidget extends WP_Widget {
 			</select>
 		</p>
 
+		<p>
+			<?php _e('Display:', 'wppa'); ?>
+			<select id="<?php echo $this->get_field_id('display'); ?>" name="<?php echo $this->get_field_name('display'); ?>">
+				<option value="thumbs" <?php if ($display == 'thumbs') echo 'selected="selected"' ?>><?php _e('thumbnail images', 'wppa'); ?></option>
+				<option value="names" <?php if ($display == 'names') echo 'selected="selected"' ?>><?php _e('photo names', 'wppa'); ?></option>
+			</select>
+			
+		</p>
 
 		<p><?php _e('You can set the sizes in this widget in the <b>Photo Albums -> Settings</b> admin page.', 'wppa'); ?></p>
 <?php

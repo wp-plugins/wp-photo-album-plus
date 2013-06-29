@@ -2,11 +2,10 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 5.0.13
+* version 5.0.14
 *
 */
-global $wppa_api_version;
-$wppa_api_version = '5-0-13-000';
+
 // Initialize globals and option settings
 function wppa_initialize_runtime($force = false) {
 global $wppa;
@@ -30,7 +29,7 @@ global $wppa_initruntimetime;
 		$wppa = array (
 			'debug' 					=> false,
 			'revno' 					=> $wppa_revno,				// set in wppa.php
-			'api_version' 				=> $wppa_api_version,		// set in wppa_functions.php
+			'api_version' 				=> $wppa_api_version,		// set in wppa.php
 			'fullsize' 					=> '',
 			'enlarge' 					=> false,
 			'occur' 					=> '0',
@@ -507,6 +506,7 @@ global $wppa_initruntimetime;
 						'wppa_rating_clear' 		=> '',
 						'wppa_iptc_clear'			=> '',
 						'wppa_exif_clear'			=> '',
+						'wppa_apply_new_photodec_all' 	=> '',
 						'wppa_remake_index' 		=> '',
 						'wppa_extend_index'			=> '',
 						'wppa_list_index'			=> '',

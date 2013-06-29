@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains low-level utility routines
-* Version 5.0.13
+* Version 5.0.14
 *
 */
 
@@ -130,20 +130,24 @@ global $wppa_opt;
 		$wppa['geo'] .= '<div id="geodiv-'.$wppa['master_occur'].'-'.$id.'" style="display:none;">'.$geo.'</div>';
 	}
 	
-	// Keywords
-	$keywords = array('name', 'filename', 'owner', 'id', 'tags');
-	foreach ( $keywords as $keyword ) {
-		$desc = str_replace('w#'.$keyword, __(stripslashes($thumb[$keyword])), $desc);
-	}
-	
-	// Timestamps
-	$timestamps = array('timestamp', 'modified');
-	foreach ( $timestamps as $timestamp ) {
-		if ( $thumb[$timestamp] ) {
-			$desc = str_replace('w#'.$timestamp, wppa_local_date(get_option('date_format', "F j, Y,").' '.get_option('time_format', "g:i a"), $thumb[$timestamp]), $desc);
+	if ( strpos($desc, 'w#') !== false ) {	// Is there any 'w#' ?
+		// Keywords
+		$keywords = array('name', 'filename', 'owner', 'id', 'tags');
+		foreach ( $keywords as $keyword ) {
+			$replacement = __(trim(stripslashes($thumb[$keyword])));
+			if ( ! $replacement ) $replacement = '&lsaquo;'.__a('none', 'wppa').'&rsaquo;';
+			$desc = str_replace('w#'.$keyword, $replacement, $desc);
 		}
-		else {
-			$desc = str_replace('w#'.$timestamp, __a('unknown'), $desc);
+		
+		// Timestamps
+		$timestamps = array('timestamp', 'modified');
+		foreach ( $timestamps as $timestamp ) {
+			if ( $thumb[$timestamp] ) {
+				$desc = str_replace('w#'.$timestamp, wppa_local_date(get_option('date_format', "F j, Y,").' '.get_option('time_format', "g:i a"), $thumb[$timestamp]), $desc);
+			}
+			else {
+				$desc = str_replace('w#'.$timestamp, '&lsaquo;'.__a('unknown').'&rsaquo;', $desc);
+			}
 		}
 	}
 

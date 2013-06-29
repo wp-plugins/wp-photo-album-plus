@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 5.0.13
+* Version 5.0.14
 *
 */
 
@@ -2481,14 +2481,50 @@ wppa_fix_source_extensions();
 								'fullpopup', 
 								'lightbox'
 							);
-							$options_linktype_album = array(__('no link at all.', 'wppa'), __('the plain photo (file).', 'wppa'), __('the content of the album.', 'wppa'), __('the full size photo in a slideshow.', 'wppa'), __('the fullsize photo on its own.', 'wppa'), __('lightbox.', 'wppa'));
+							$options_linktype_album = array(
+								__('no link at all.', 'wppa'), 
+								__('the plain photo (file).', 'wppa'), 
+								__('the content of the album.', 'wppa'), 
+								__('the full size photo in a slideshow.', 'wppa'), 
+								__('the fullsize photo on its own.', 'wppa'), 
+								__('lightbox.', 'wppa')
+							);
 							$values_linktype_album = array('none', 'file', 'album', 'photo', 'single', 'lightbox'); //, 'indiv');
-							$options_linktype_ss_widget = array(__('no link at all.', 'wppa'), __('the plain photo (file).', 'wppa'), __('defined at widget activation.', 'wppa'), __('the content of the album.', 'wppa'), __('the full size photo in a slideshow.', 'wppa'), __('the fullsize photo on its own.', 'wppa')); //, __('the photo specific link.', 'wppa'));
+							$options_linktype_ss_widget = array(
+								__('no link at all.', 'wppa'), 
+								__('the plain photo (file).', 'wppa'), 
+								__('defined at widget activation.', 'wppa'), 
+								__('the content of the album.', 'wppa'), 
+								__('the full size photo in a slideshow.', 'wppa'), 
+								__('the fullsize photo on its own.', 'wppa')
+							);
 							$values_linktype_ss_widget = array('none', 'file', 'widget', 'album', 'photo', 'single'); //, 'indiv');
 							$options_linktype_potd_widget = array(__('no link at all.', 'wppa'), __('the plain photo (file).', 'wppa'), __('defined on widget admin page.', 'wppa'), __('the content of the album.', 'wppa'), __('the full size photo in a slideshow.', 'wppa'), __('the fullsize photo on its own.', 'wppa'), __('lightbox.', 'wppa')); //, __('the photo specific link.', 'wppa'));
 							$values_linktype_potd_widget = array('none', 'file', 'custom', 'album', 'photo', 'single', 'lightbox'); //, 'indiv');
 							$options_linktype_cover_image = array(__('no link at all.', 'wppa'), __('the plain photo (file).', 'wppa'), __('same as title.', 'wppa'), __('lightbox.', 'wppa'));
 							$values_linktype_cover_image = array('none', 'file', 'same', 'lightbox');
+							$options_linktype_lasten = array(
+								__('no link at all.', 'wppa'), 
+								__('the plain photo (file).', 'wppa'), 
+								__('the content of the virtual lasten album.', 'wppa'),
+								__('the content of the thumbnails album.', 'wppa'),
+								__('the full size photo in a slideshow.', 'wppa'), 
+								__('the fullsize photo on its own.', 'wppa'), 
+								__('the single photo in the style of a slideshow.', 'wppa'),
+								__('the fs photo with download and print buttons.', 'wppa'), 
+								__('lightbox.', 'wppa')
+							);
+							$values_linktype_lasten = array(
+								'none', 
+								'file', 
+								'album',
+								'thumbalbum',
+								'photo', 
+								'single', 
+								'slphoto', 
+								'fullpopup', 
+								'lightbox'
+							);
 
 							// Linkpages
 							$options_page = false;
@@ -2652,7 +2688,7 @@ wppa_fix_source_extensions();
 							$slug4 = 'wppa_lasten_overrule';
 							$slug = array($slug1, $slug2, $slug3, $slug4);
 							$onchange = 'wppaCheckLasTenLink(); wppaCheckLinkPageErr(\'lasten_widget\');';
-							$html1 = wppa_select($slug1, $options_linktype, $values_linktype, $onchange);
+							$html1 = wppa_select($slug1, $options_linktype_lasten, $values_linktype_lasten, $onchange);
 							$class = 'wppa_ltlp';
 							$onchange = 'wppaCheckLinkPageErr(\'lasten_widget\');';
 							$html2 = wppa_select($slug2, $options_page, $values_page, $onchange, $class, true);
@@ -3266,6 +3302,15 @@ wppa_fix_source_extensions();
 							$html2 = wppa_ajax_button('', $slug);
 							$html = array($html1, $html2);
 							wppa_setting(false, '3', $name, $desc, $html, $help);
+							
+							$name = __('Apply New Photodesc', 'wppa');
+							$desc = __('Apply New photo description on all photos in the system.', 'wppa');
+							$help = '';
+							$slug = 'wppa_apply_new_photodec_all';
+							$html1 = '';
+							$html2 = wppa_ajax_button('', $slug);
+							$html = array($html1, $html2);
+							wppa_setting(false, '4', $name, $desc, $html, $help);
 							
 							?>
 						</tbody>
@@ -4053,7 +4098,7 @@ wppa_fix_source_extensions();
 							$wppa_table = 'X';
 							
 							$wppa_subtable = 'Z';
-							
+
 							$labels = $wpdb->get_results( "SELECT * FROM `".WPPA_IPTC."` WHERE `photo` = '0' ORDER BY `tag`", ARRAY_A );
 							if ( is_array( $labels ) ) {
 								$i = '1';
@@ -4113,7 +4158,13 @@ wppa_fix_source_extensions();
 							$wppa_table = 'XI';
 							
 							$wppa_subtable = 'Z';
-							
+
+							if ( ! function_exists('exif_read_data') ) {
+								wppa_setting_subheader('', '1', '</b><span style="color:red;">'.
+									__('Function exif_read_data() does not exist. This means that <b>EXIF</b> is not enabled. If you want to use <b>EXIF</b> data, ask your hosting provider to add <b>\'--enable-exif\'</b> to the php <b>Configure Command</b>.', 'wppa').
+									'<b></span>');
+							}
+													
 							$labels = $wpdb->get_results( "SELECT * FROM `".WPPA_EXIF."` WHERE `photo` = '0' ORDER BY `tag`", ARRAY_A);
 							if ( is_array( $labels ) ) {
 								$i = '1';
@@ -4200,6 +4251,11 @@ wppa_fix_source_extensions();
 									<td>WPPA_EXIF</td>
 									<td><small><?php _e('EXIF db table name.', 'wppa') ?></small></td>
 									<td><?php echo(WPPA_EXIF) ?></td>
+								</tr>
+								<tr style="color:#333;">
+									<td>WPPA_INDEX</td>
+									<td><small><?php _e('Index db table name.', 'wppa') ?></small></td>
+									<td><?php echo(WPPA_INDEX) ?></td>
 								</tr>
 								<tr style="color:#333;">
 									<td>WPPA_FILE</td>
