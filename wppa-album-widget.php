@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display thumbnail photos
-* Version 5.0.0
+* Version 5.0.15
 */
 
 class AlbumWidget extends WP_Widget {
@@ -72,10 +72,10 @@ class AlbumWidget extends WP_Widget {
 			if ( $count < $max ) {
 				global $thumb;
 				
-				$imageid = wppa_get_coverphoto_id($album['id']);
-				$image = $wpdb->get_row($wpdb->prepare('SELECT * FROM `'.WPPA_PHOTOS.'` WHERE `id` = %s', $imageid), ARRAY_A);
-				$imgcount = $wpdb->get_var($wpdb->prepare('SELECT COUNT(*) FROM '.WPPA_PHOTOS.' WHERE `album` = %s', $album['id']));
-				$thumb = $image;
+				$imageid 	= wppa_get_coverphoto_id($album['id']);
+				$image 		= $wpdb->get_row($wpdb->prepare('SELECT * FROM `'.WPPA_PHOTOS.'` WHERE `id` = %s', $imageid), ARRAY_A);
+				$imgcount 	= $wpdb->get_var($wpdb->prepare('SELECT COUNT(*) FROM '.WPPA_PHOTOS.' WHERE `album` = %s', $album['id']));
+				$thumb 		= $image;
 				// Make the HTML for current picture
 				if ( $image && $imgcount > $wppa_opt['wppa_min_thumbs'] ) {
 					$link       = wppa_get_imglnk_a('albwidget', $image['id']);
@@ -87,8 +87,7 @@ class AlbumWidget extends WP_Widget {
 					$height     = $imgstyle_a['height'];
 					$cursor		= $imgstyle_a['cursor'];
 					$title 		= esc_attr(strip_tags(__(stripslashes($album['description']))));
-					$usethumb	= wppa_use_thumb_file($image['id'], $width, $height) ? '/thumbs' : '';
-					$imgurl 	= WPPA_UPLOAD_URL . $usethumb . '/' . $image['id'] . '.' . $image['ext'];
+					$imgurl 	= wppa_get_thumb_url($image['id']);
 				}
 				else {
 					$link       = '';

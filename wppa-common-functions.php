@@ -2,7 +2,7 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 5.0.14
+* version 5.0.15
 *
 */
 
@@ -133,6 +133,7 @@ global $wppa_initruntimetime;
 						'wppa_numbar_max'				=> '',	// 5
 						'wppa_share_size'				=> '',
 						'wppa_mini_treshold'			=> '',
+						'wppa_slideshow_pagesize'		=> '',
 						// C Thumbnails
 						'wppa_thumbsize' 				=> '',	// 1
 						'wppa_thumbsize_alt' 			=> '',	// 1a
@@ -204,6 +205,9 @@ global $wppa_initruntimetime;
 						'wppa_hide_when_empty'				=> '',	// 6.1
 						'wppa_rating_on' 					=> '',	// 7
 						'wppa_dislike_mail_every'			=> '',	// 7.1
+						'wppa_dislike_set_pending'			=> '',
+						'wppa_dislike_delete'				=> '',
+						'wppa_dislike_show_count'			=> '',
 						'wppa_rating_display_type'			=> '',	// 8
 						'wppa_show_avg_rating'				=> '',	// 9
 						'wppa_show_comments' 				=> '',	// 10
@@ -343,7 +347,8 @@ global $wppa_initruntimetime;
 						'wppa_rating_login' 			=> '',	// 1
 						'wppa_rating_change' 			=> '',	// 2
 						'wppa_rating_multi' 			=> '',	// 3
-						'wppa_rating_use_ajax'			=> '',	// 4
+						'wppa_dislike_value'			=> '',
+//						'wppa_rating_use_ajax'			=> '',	// 4
 						'wppa_next_on_callback'			=> '',	// 5
 						'wppa_star_opacity'				=> '',	// 6
 						// F Comments
@@ -492,6 +497,19 @@ global $wppa_initruntimetime;
 						'wppa_comment_captcha'		=> '',
 						'wppa_spam_maxage'			=> '',
 						
+						'wppa_editor_upload_limit_count'		=> '',
+						'wppa_editor_upload_limit_time'			=> '',
+						'wppa_author_upload_limit_count'		=> '',
+						'wppa_author_upload_limit_time'			=> '',
+						'wppa_contributor_upload_limit_count'	=> '',
+						'wppa_contributor_upload_limit_time'	=> '',
+						'wppa_subscriber_upload_limit_count'	=> '',
+						'wppa_subscriber_upload_limit_time'		=> '',
+						'wppa_loggedout_upload_limit_count'		=> '',
+						'wppa_loggedout_upload_limit_time' 		=> '',
+
+
+						
 						// Table VIII: Actions
 						// A Harmless
 						'wppa_setup' 				=> '',
@@ -506,7 +524,7 @@ global $wppa_initruntimetime;
 						'wppa_rating_clear' 		=> '',
 						'wppa_iptc_clear'			=> '',
 						'wppa_exif_clear'			=> '',
-						'wppa_apply_new_photodec_all' 	=> '',
+						'wppa_apply_new_photodesc_all' 	=> '',
 						'wppa_remake_index' 		=> '',
 						'wppa_extend_index'			=> '',
 						'wppa_list_index'			=> '',
@@ -1213,7 +1231,7 @@ global $wppa;
 	wppa_dbg_msg('make_the_photo_files called with file='.$file.' image_id='.$image_id.' ext='.$ext);
 	$img_size = getimagesize($file, $info);
 	if ($img_size) {
-		$newimage = WPPA_UPLOAD_PATH . '/' . $image_id . '.' . $ext;
+		$newimage = wppa_get_photo_path($image_id);
 		wppa_dbg_msg('newimage='.$newimage);
 		
 		if (get_option('wppa_resize_on_upload', 'no') == 'yes') {
@@ -1293,25 +1311,34 @@ global $wppa;
 	}
 }
 
+// Get the max size, rounded up to a multiple of 25 px, of all the possible small images 
+// in order to create the thumbnail file big enough but not too big.
 function wppa_get_minisize() {
 global $wppa_opt;
 
 	$result = '100';
-	
-	$tmp = get_option('wppa_thumbsize', 'nil');
-	if (is_numeric($tmp) && $tmp > $result) $result = $tmp;
 
-	$tmp = get_option('wppa_thumbsize_alt', 'nil');
-	if (is_numeric($tmp) && $tmp > $result) $result = $tmp;
-	
-	$tmp = get_option('wppa_smallsize', 'nil');
+	$things = array(	'wppa_thumbsize', 
+						'wppa_thumbsize_alt', 
+						'wppa_topten_size', 
+						'wppa_comten_size', 
+						'wppa_thumbnail_widget_size', 
+						'wppa_lasten_size', 
+						'wppa_album_widget_size', 
+						'wppa_featen_size', 
+						'wppa_popupsize',
+						'wppa_smallsize'
+						);
+	foreach ( $things as $thing) {
+		$tmp = get_option($thing, 'nil');
+		if ( is_numeric($tmp) && $tmp > $result ) $result = $tmp;
+	}
+
+	$temp = get_option('wppa_smallsize', 'nil');
 	if ( $wppa_opt['wppa_coversize_is_height'] ) {
 		$tmp = round($tmp * 4 / 3);		// assume aspectratio 4:3
 	}
-	if (is_numeric($tmp) && $tmp > $result) $result = $tmp;
-	
-	$tmp = get_option('wppa_popupsize', 'nil');
-	if (is_numeric($tmp) && $tmp > $result) $result = $tmp;
+	if ( is_numeric($tmp) && $tmp > $result ) $result = $tmp;
 	
 	$result = ceil($result / 25) * 25;
 	return $result;
@@ -2048,6 +2075,58 @@ global $wpdb;
 	else $result = $limit_max - $curcount;
 
 	return $result;
+}
+
+// Return the allowed number of uploads for a certain user. -1 = unlimited
+function wppa_allow_user_uploads() {
+global $wpdb;
+global $wppa_opt;
+
+	// Get the limits
+	$limits = wppa_get_user_upload_limits();
+	
+	$temp = explode('/', $limits);
+	$limit_max  = isset($temp[0]) ? $temp[0] : '0';
+	$limit_time = isset($temp[1]) ? $temp[1] : '0';
+	
+	if ( ! $limit_max ) return '-1';		// Unlimited max
+	
+	$user = wppa_get_user('login');
+	if ( ! $limit_time ) {					// For ever
+		$curcount = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `".WPPA_PHOTOS."` WHERE `owner` = %s", $user));
+		wppa_dbg_q('Q326');
+	}
+	else {									// Time criterium in place
+		$timnow = time();
+		$timthen = $timnow - $limit_time;
+		$curcount = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `".WPPA_PHOTOS."` WHERE `owner` = %s AND `timestamp` > %s", $user, $timthen));
+		wppa_dbg_q('Q327');
+	}
+	
+	if ( $curcount >= $limit_max ) $result = '0';	// No more allowed
+	else $result = $limit_max - $curcount;
+
+	return $result;	
+}
+function wppa_get_user_upload_limits() {
+global $wp_roles;
+
+	$limits = '';
+	if ( is_user_logged_in() ) {
+		if ( current_user_can('wppa_upload') ) $limits = '0/0';		// Unlimited if you have wppa_upload capabilities
+		else {
+			$roles = $wp_roles->roles;
+			$roles['loggedout'] = '';
+			unset ($roles['administrator']);
+			foreach ( array_keys($roles) as $role ) if ( ! $limits ) {
+				if ( current_user_can($role) ) $limits = get_option('wppa_'.$role.'_upload_limit_count', '0').'/'.get_option('wppa_'.$role.'_upload_limit_time', '0');
+			}
+		}
+	}
+	else {
+		$limits = get_option('wppa_loggedout_upload_limit_count', '0').'/'.get_option('wppa_loggedout_upload_limit_time', '0');
+	}
+	return $limits;
 }
 
 // See if a string is a comma seperated list of numbers, a single num returns false

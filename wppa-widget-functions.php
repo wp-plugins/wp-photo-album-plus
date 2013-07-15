@@ -2,7 +2,7 @@
 /* wppa_widgetfunctions.php
 /* Package: wp-photo-album-plus
 /*
-/* Version 5.0.11
+/* Version 5.0.15
 /*
 */
 
@@ -264,4 +264,57 @@ global $wppa_opt;
 	$thumb = $image;
 	
 	return $image;
+}
+
+
+// Do the widget thumb
+function wppa_do_the_widget_thumb($type, $image, $album, $display, $link, $title, $imgurl, $imgstyle_a, $imgevents) {
+global $wppa;
+global $wppa_opt;
+global $widget_content;
+
+	if ($link) {
+		if ( $link['is_url'] ) {	// Is a href
+			$widget_content .= "\n\t".'<a href="'.$link['url'].'" title="'.$title.'" target="'.$link['target'].'" >';
+				$widget_content .= "\n\t\t";
+				if ( $display == 'thumbs' ) {
+					$widget_content .= '<img id="i-'.$image['id'].'-'.$wppa['master_occur'].'" title="'.$title.'" src="'.$imgurl.'" width="'.$imgstyle_a['width'].'" height="'.$imgstyle_a['height'].'" style="'.$imgstyle_a['style'].' cursor:pointer;" '.$imgevents.' alt="'.esc_attr(wppa_qtrans($image['name'])).'" />';
+				}
+				else {
+					$widget_content .= wppa_get_photo_name($image['id']);
+				}
+			$widget_content .= "\n\t".'</a>';
+		}
+		elseif ( $link['is_lightbox'] ) {
+			$title = wppa_get_lbtitle('thumb', $image['id']);
+			$widget_content .= "\n\t".'<a href="'.$link['url'].'" rel="'.$wppa_opt['wppa_lightbox_name'].'['.$type.'-'.$album.']" title="'.$title.'" target="'.$link['target'].'" >';
+				$widget_content .= "\n\t\t";
+				if ( $display == 'thumbs' ) {
+					$widget_content .= '<img id="i-'.$image['id'].'-'.$wppa['master_occur'].'" title="'.wppa_zoom_in().'" src="'.$imgurl.'" width="'.$imgstyle_a['width'].'" height="'.$imgstyle_a['height'].'" style="'.$imgstyle_a['style'].$imgstyle_a['cursor'].'" '.$imgevents.' alt="'.esc_attr(wppa_qtrans($image['name'])).'" />';
+				}
+				else {
+					$widget_content .= wppa_get_photo_name($image['id']);
+				}
+			$widget_content .= "\n\t".'</a>';
+		}
+		else { // Is an onclick unit
+			$widget_content .= "\n\t";
+			if ( $display == 'thumbs' ) {
+				$widget_content .= '<img id="i-'.$image['id'].'-'.$wppa['master_occur'].'" title="'.$title.'" src="'.$imgurl.'" width="'.$imgstyle_a['width'].'" height="'.$imgstyle_a['height'].'" style="'.$imgstyle_a['imgstyle'].' cursor:pointer;" '.$imgevents.' onclick="'.$link['url'].'" alt="'.esc_attr(wppa_qtrans($image['name'])).'" />';
+			}
+			else {
+				$widget_content .= '<a href="" style="cursor:pointer;" onclick="'.$link['url'].'">'.wppa_get_photo_name($image['id']).'</a>';
+
+			}	
+		}
+	}
+	else {
+		$widget_content .= "\n\t";
+		if ( $display == 'thumbs' ) {
+			$widget_content .= '<img id="i-'.$image['id'].'-'.$wppa['master_occur'].'" title="'.$title.'" src="'.$imgurl.'" width="'.$imgstyle_a['width'].'" height="'.$imgstyle_a['height'].'" style="'.$imgstyle_a['imgstyle'].'" '.$imgevents.' alt="'.esc_attr(wppa_qtrans($image['name'])).'" />';
+		}
+		else {
+			$widget_content .= wppa_get_photo_name($image['id']);
+		}
+	}
 }

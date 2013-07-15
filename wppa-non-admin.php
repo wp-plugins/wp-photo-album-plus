@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the non admin stuff
-* Version 5.0.14
+* Version 5.0.15
 *
 */
 
@@ -53,7 +53,7 @@ global $thumb;
 			wppa_cache_thumb($id);
 			if ( $thumb ) {
 				$title  = __(stripslashes($thumb['name']));
-				$imgurl = WPPA_UPLOAD_URL.'/thumbs/'.$id.'.'.$thumb['ext'];
+				$imgurl = wppa_get_thumb_url($id);
 				$desc   = sprintf(__a('See this image on %s'), str_replace('&amp;', __a('and'), get_bloginfo('name')));
 				$pdesc  = wppa_strip_tags(wppa_html(__(stripslashes($thumb['description']))), 'all');
 				$url    = wppa_convert_to_pretty(str_replace('&amp;', '&', wppa_get_image_page_url_by_id($thumb['id'], $wppa_opt['wppa_share_single_image'])));
@@ -97,10 +97,9 @@ global $thumb;
 		if ( $photos ) {
 			echo("\n<!-- WPPA+ BEGIN Featured photos on this site -->");
 			foreach ( $photos as $photo ) {
-				$id = $photo['id'];
-				$name = esc_attr(__($photo['name']));
-				$ext = $photo['ext'];
-				$content = WPPA_UPLOAD_URL.'/'.$id.'.'.$ext;
+				$id 		= $photo['id'];
+				$name 		= esc_attr(wppa_get_photo_name($id));
+				$content 	= wppa_get_photo_url($id);
 				echo("\n<meta name=\"".$name."\" content=\"".$content."\" >");
 			}
 			echo("\n<!-- WPPA+ END Featured photos on this site -->\n");
@@ -266,6 +265,11 @@ global $wppa_locale;
 	wppaAvgRat = "'.__a('Avg.').'";
 	wppaMyRat = "'.__a('Mine').'";
 	wppaDislikeMsg = "'.__a('You marked this image as inappropriate.').'";
+	wppaShowDislikeCount = '.( $wppa_opt['wppa_dislike_show_count'] ? 'true' : 'false' ).';
+	wppaNoDislikes = "'.__a('No dislikes').'";
+	wppa1Dislike = "'.__a('1 dislike').'";
+	wppaDislikes = "'.__a('dislikes').'";
+	wppaIncludingMine = "'.__a('including mine').'";
 	wppaMiniTreshold = '.$wppa_opt['wppa_mini_treshold'].';
 	wppaUserName = "'.wppa_get_user().'";
 	wppaRatingOnce = '.( $wppa_opt['wppa_rating_change'] || $wppa_opt['wppa_rating_multi'] ? 'false' : 'true' ).';
@@ -289,7 +293,7 @@ global $wppa_locale;
 	wppaLocale = "'.$wppa_locale.'";
 	wppaAjaxUrl = "'.admin_url('admin-ajax.php').'";
 	wppaNextOnCallback = '.( $wppa_opt['wppa_next_on_callback'] ? 'true' : 'false' ).';
-	wppaRatingUseAjax = '.( $wppa_opt['wppa_rating_use_ajax'] ? 'true' : 'false' ).';
+	wppaRatingUseAjax = true;
 	wppaStarOpacity = '.( $wppa_opt['wppa_star_opacity']/'100' ).';
 	wppaTickImg.src = "'.wppa_get_imgdir().'tick.png";
 	wppaClockImg.src = "'.wppa_get_imgdir().'clock.png";

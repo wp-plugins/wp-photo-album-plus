@@ -2,7 +2,7 @@
 //
 // conatins slideshow, theme, ajax and lightbox code
 //
-// Version 5.0.11
+// Version 5.0.15
 
 // Part 1: Slideshow
 //
@@ -46,6 +46,11 @@ var wppaMyRating;
 var wppaAvgRat;
 var wppaMyRat;
 var wppaDislikeMsg;
+var wppaShowDislikeCount = false;
+var wppaNoDislikes = 'no dislikes';
+var wppa1Dislike = '1 dislike';
+var wppaDislikes = 'dislikes';
+var wppaIncludingMine = 'including mine';
 var wppaMiniTreshold = 300;
 var wppaStart = 'Start';		// defaults
 var wppaStop = 'Stop';			//
@@ -103,6 +108,7 @@ var wppaFilmThumbTitle = '';
 // 'Internal' variables (private)
 var _wppaId = new Array();
 var _wppaAvg = new Array();
+var _wppaDisc = new Array();
 var _wppaMyr = new Array();
 var _wppaVRU = new Array();
 var _wppaLinkUrl = new Array();
@@ -157,12 +163,12 @@ jQuery(document).ready(function(){
 // These functions check the validity and store the users request to be executed later if busy and if applicable.
 
 // This is an entrypoint to load the slide data
-function wppaStoreSlideInfo(mocc, id, url, size, width, height, fullname, name, desc, photoid, avgrat, myrat, rateurl, linkurl, linktitle, linktarget, iwtimeout, commenthtml, iptchtml, exifhtml, lbtitle, shareurl, smhtml) {
+function wppaStoreSlideInfo(mocc, id, url, size, width, height, fullname, name, desc, photoid, avgrat, discount, myrat, rateurl, linkurl, linktitle, linktarget, iwtimeout, commenthtml, iptchtml, exifhtml, lbtitle, shareurl, smhtml) {
 var cursor;
 
 	desc = wppaRepairScriptTags(desc);
 
-	if ( ! _wppaSlides[mocc] ) {
+	if ( ! _wppaSlides[mocc] || id == '0' ) {	// First or next page
 		_wppaSlides[mocc] = new Array();
 		_wppaNames[mocc] = new Array();
 		_wppaFullNames[mocc] = new Array();
@@ -178,6 +184,7 @@ var cursor;
 		_wppaFirst[mocc] = true;
 		_wppaId[mocc] = new Array();
 		_wppaAvg[mocc] = new Array();
+		_wppaDisc[mocc] = new Array();
 		_wppaMyr[mocc] = new Array();
 		_wppaVRU[mocc] = new Array();
 		_wppaLinkUrl[mocc] = new Array(); // linkurl;
@@ -215,7 +222,8 @@ var cursor;
     _wppaDsc[mocc][id] = desc;
 	_wppaId[mocc][id] = photoid;		// reqd for rating and comment and monkey
 	_wppaAvg[mocc][id] = avgrat;		// avg ratig value
-	_wppaMyr[mocc][id] = myrat;		// my rating
+	_wppaDisc[mocc][id] = discount;		// Dislike count
+	_wppaMyr[mocc][id] = myrat;			// my rating
 	_wppaVRU[mocc][id] = rateurl;		// url that performs the vote and returns to the page
 	_wppaLinkUrl[mocc][id] = linkurl;
 	_wppaLinkTitle[mocc][id] = linktitle;
@@ -1334,58 +1342,57 @@ function _wppaCheckRewind(mocc) {
 
 function _wppaSetRatingDisplay(mocc) {
 
-	var idx, avg, myr;
+	var idx, avg, tmp, cnt, dsc, myr, dsctxt;
 	if (!document.getElementById('wppa-rating-'+mocc)) return; 	// No rating bar
 	
 	avg = _wppaAvg[mocc][_wppaCurIdx[mocc]];
+	tmp = avg.split('|');
+	avg = tmp[0];
+	cnt = tmp[1];
+	
+	dsc = _wppaDisc[mocc][_wppaCurIdx[mocc]];
 	myr = _wppaMyr[mocc][_wppaCurIdx[mocc]];
 	
+	
+	// Graphic display ?
 	if (wppaRatingDisplayType == 'graphic') {
 		// Set Avg rating
 		_wppaSetRd(mocc, avg, '#wppa-avg-');
 		// Set My rating
 		_wppaSetRd(mocc, myr, '#wppa-rate-');
-	}
-	else { 	// Numeric
-		// Set Avg rating
-		switch (wppaRatingPrec) {
-			case 1:
-				avg = parseInt(avg * 10 + 0.5)/10;
-				break;
-			case 2:
-				avg = parseInt(avg * 100 + 0.5)/100;
-				break;
-			case 3:
-				avg = parseInt(avg * 1000 + 0.5)/1000;
-				break;
-			case 4:
-				avg = parseInt(avg * 10000 + 0.5)/10000;
-				break;
+		
+		// Display dislike
+		if (myr == 0) {	// If i did not vote yet, enable the thumb down
+			jQuery('#wppa-dislike-'+mocc).css('display', 'inline');
+			jQuery('#wppa-dislike-imgdiv-'+mocc).css('display', 'inline');
+			jQuery('#wppa-filler-'+mocc).css('display', 'none');
+			jQuery('#wppa-dislike-'+mocc).stop().fadeTo(100, wppaStarOpacity);
 		}
-		jQuery('#wppa-numrate-avg-'+mocc).html(avg);
+		else {			// If i voted, disable thumb down
+			jQuery('#wppa-dislike-'+mocc).css('display', 'none');
+			jQuery('#wppa-dislike-imgdiv-'+mocc).css('display', 'none');
+			jQuery('#wppa-filler-'+mocc).css('display', 'inline');
+			jQuery('#wppa-filler-'+mocc).stop().fadeTo(100, wppaStarOpacity);
+						// Show filler with dislike count
+			if ( wppaShowDislikeCount ) {
+				dsctxt = wppaGetDislikeText(dsc,myr,true);
+				jQuery('#wppa-filler-'+mocc).attr('title', dsctxt);
+			}
+		}
+	}
+	// Numeric display
+	else { 	
+		// Set avg rating
+		jQuery('#wppa-numrate-avg-'+mocc).html(avg+' ('+cnt+') ');
 		
 		// Set My rating
-		if (wppaRatingOnce && myr > 0) {
+		if (wppaRatingOnce && myr > 0) {	// I did a rating and one allowed
 			jQuery('#wppa-numrate-mine-'+mocc).html(myr);
 		}
-		else {
-			// Format my rating
-			switch (wppaRatingPrec) {
-				case 1:
-					myr = parseInt(myr * 10 + 0.5)/10;
-					break;
-				case 2:
-					myr = parseInt(myr * 100 + 0.5)/100;
-					break;
-				case 3:
-					myr = parseInt(myr * 1000 + 0.5)/1000;
-					break;
-				case 4:
-					myr = parseInt(myr * 10000 + 0.5)/10000;
-					break;
-			}
-
-			/* Row of numbers */
+		else if (myr < 0) {					// I did a dislike
+			jQuery('#wppa-numrate-mine-'+mocc).html(' dislike');
+		}
+		else {								// Multiple allowed or change allowed or not rated yet
 			var htm = '';
 			for (i=1;i<=wppaRatingMax;i++) {
 				if (myr == i) {
@@ -1396,10 +1403,41 @@ function _wppaSetRatingDisplay(mocc) {
 					htm += '<span style="cursor:pointer;" onclick="_wppaRateIt('+mocc+', '+i+')" onmouseover="this.style.fontWeight=\'bold\'" onmouseout="this.style.fontWeight=\'normal\'" >&nbsp;'+i+'&nbsp;</span>';
 				}
 			}
-			/* end row */
 			jQuery('#wppa-numrate-mine-'+mocc).html(htm);
-		}		
+		}	
+		
+		// Display dislike
+		if (myr == 0) {	// If i did not vote yet, enable the thumb down
+			jQuery('#wppa-dislike-'+mocc).css('display', 'inline');
+			jQuery('#wppa-dislike-imgdiv-'+mocc).css('display', 'inline');
+			jQuery('#wppa-filler-'+mocc).css('display', 'none');
+			jQuery('#wppa-dislike-'+mocc).stop().fadeTo(100, wppaStarOpacity);
+		}
+		else {			// If i voted, disable thumb down
+			jQuery('#wppa-dislike-'+mocc).css('display', 'none');
+			jQuery('#wppa-dislike-imgdiv-'+mocc).css('display', 'none');
+			jQuery('#wppa-filler-'+mocc).css('display', 'inline');
+		}
+		if ( wppaShowDislikeCount ) {
+			dsctxt = wppaGetDislikeText(dsc,myr,false);
+			dsctxt += '&bull; ';
+			jQuery('#wppa-discount-'+mocc).html(dsctxt);	// Show count
+			jQuery('#wppa-filler-'+mocc).css('display', 'none');
+		}
+		else {
+			jQuery('#wppa-discount-'+mocc).html('');	
+//			jQuery('#wppa-filler-'+mocc).css('display', 'inline');
+		}
 	}
+}
+	
+function wppaGetDislikeText(dsc,myr,incmine) {
+
+	if ( dsc == 0 && myr != 0 ) dsctxt = ' '+wppaNoDislikes+' ';
+	else if ( dsc == 1 ) dsctxt = ' '+wppa1Dislike+' ';
+	else dsctxt = ' '+dsc+' '+wppaDislikes+' ';
+	if ( incmine && myr < 0 ) dsctxt+=wppaIncludingMine;
+	return dsctxt;
 }
 		
 function _wppaSetRd(mocc, avg, where) {
@@ -1425,7 +1463,7 @@ function _wppaSetRd(mocc, avg, where) {
 			jQuery(where+mocc+'-'+idx).stop().fadeTo(100, wppaStarOpacity);
 		}
 	}
-	jQuery('#wppa-dislike-'+mocc).stop().fadeTo(100, wppaStarOpacity);
+//	jQuery('#wppa-dislike-'+mocc).stop().fadeTo(100, wppaStarOpacity);
 }
 
 function _wppaFollowMe(mocc, idx) {
@@ -1433,6 +1471,7 @@ function _wppaFollowMe(mocc, idx) {
 	if (_wppaSSRuns[mocc]) return;				// Do not rate on a running show, what only works properly in Firefox								
 
 	if (_wppaMyr[mocc][_wppaCurIdx[mocc]] != 0 && wppaRatingOnce) return;	// Already rated
+	if (_wppaMyr[mocc][_wppaCurIdx[mocc]] < 0) return; 	// Disliked aleady
 	if (_wppaVIP) return;
 	_wppaSetRd(mocc, idx, '#wppa-rate-');
 }
@@ -1442,6 +1481,7 @@ function _wppaLeaveMe(mocc, idx) {
 	if (_wppaSSRuns[mocc]) return;				// Do not rate on a running show, what only works properly in Firefox	
 
 	if (_wppaMyr[mocc][_wppaCurIdx[mocc]] != 0 && wppaRatingOnce) return;	// Already rated
+	if (_wppaMyr[mocc][_wppaCurIdx[mocc]] < 0) return; 	// Disliked aleady
 	if (_wppaVIP) return;
 	_wppaSetRd(mocc, _wppaMyr[mocc][_wppaCurIdx[mocc]], '#wppa-rate-');
 }
@@ -1456,7 +1496,8 @@ if (value == 0) return;
 	
 	if (_wppaSSRuns[mocc]) return;								// Do not rate a running show								
 	if (oldval != 0 && wppaRatingOnce) return;							// Already rated, and once allowed only
-																			
+	if (oldval < 0) return; 	// Disliked aleady
+		
 	_wppaVIP = true;											// Keeps opacity as it is now
 	_wppaLastVote = value;
 	
@@ -1475,24 +1516,24 @@ if (value == 0) return;
 		url += '&locale='+wppaLocale;
 		
 		// Setup process the result
-		xmlhttp.onreadystatechange=function() 
-		{
+		xmlhttp.onreadystatechange=function() {
 			if (xmlhttp.readyState==4 && xmlhttp.status==200) {
 				var ArrValues = xmlhttp.responseText.split("||");
-				
+//alert(xmlhttp.responseText);				
 				if (ArrValues[0] == '0') {	// Error
 					alert('Error Code='+ArrValues[1]+'\n\n'+ArrValues[2]);
 				}
-				else if ( value == -1 ) {	// -1 is the dislike button
-					alert(wppaDislikeMsg);
-				}
-				else {
+				else {	// No error
+					if ( value == -1 ) {	// -1 is the dislike button
+//						alert(wppaDislikeMsg);
+					}
 					// Store new values
 					_wppaMyr[ArrValues[0]][ArrValues[2]] = ArrValues[3];
 					_wppaAvg[ArrValues[0]][ArrValues[2]] = ArrValues[4];
+					_wppaDisc[ArrValues[0]][ArrValues[2]] = ArrValues[5];
 					// Update display
 					_wppaSetRatingDisplay(mocc);
-					jQuery('#wppa-rate-'+mocc+'-'+value).attr('src', wppaTickImg.src);			// Set icon
+//					jQuery('#wppa-rate-'+mocc+'-'+value).attr('src', wppaTickImg.src);			// Set icon
 
 					if (wppaNextOnCallback) _wppaNextOnCallback(mocc);
 				}
@@ -1502,9 +1543,9 @@ if (value == 0) return;
 		xmlhttp.open('GET',url,true);
 		xmlhttp.send();	
 	}
-	else {						// use NON-ajax method, either to setting or browser does not support ajax
-		setTimeout('_wppaGo("'+url+'")', 200);	// 200 ms to display tick
-	}
+//	else {						// use NON-ajax method, either to setting or browser does not support ajax
+//		setTimeout('_wppaGo("'+url+'")', 200);	// 200 ms to display tick
+//	}
 }
 
 function _wppaValidateComment(mocc) {

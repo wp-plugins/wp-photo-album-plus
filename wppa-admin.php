@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains the admin menu and startups the admin pages
-* Version 5.0.13
+* Version 5.0.15
 *
 */
 
@@ -80,9 +80,10 @@ function wppa_admin_styles() {
 add_action( 'admin_init', 'wppa_admin_scripts' );
 
 function wppa_admin_scripts() {
-	wp_register_script( 'wppa_upload_script', WPPA_URL.'/wppa-multifile-compressed.js' );
+global $wppa_api_version;
+	wp_register_script( 'wppa_upload_script', WPPA_URL.'/wppa-multifile-compressed.js', '', $wppa_api_version );
 	wp_enqueue_script( 'wppa_upload_script' );
-	wp_register_script( 'wppa_admin_script', WPPA_URL.'/wppa-admin-scripts.js' );
+	wp_register_script( 'wppa_admin_script', WPPA_URL.'/wppa-admin-scripts.js', '', $wppa_api_version );
 	wp_enqueue_script( 'wppa_admin_script' );
 	wp_enqueue_script( 'jquery' );
 }

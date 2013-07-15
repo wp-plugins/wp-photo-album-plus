@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 5.0.14
+* Version 5.0.15
 *
 */
 
@@ -430,6 +430,7 @@ Hide Camera info
 						'wppa_numbar_max'				=> '10',	// 5
 						'wppa_share_size'				=> '32',
 						'wppa_mini_treshold'			=> '500',
+						'wppa_slideshow_pagesize'		=> '0',
 						// C Thumbnails
 						'wppa_thumbsize' 				=> '100',		// 1
 						'wppa_thumbsize_alt'			=> '130',		// 1a
@@ -500,6 +501,9 @@ Hide Camera info
 						'wppa_hide_when_empty'				=> 'no',		// 6.1
 						'wppa_rating_on' 					=> 'yes',		// 7
 						'wppa_dislike_mail_every'			=> '5', 		// 7.1
+						'wppa_dislike_set_pending'			=> '0',
+						'wppa_dislike_delete'				=> '0',
+						'wppa_dislike_show_count'			=> 'yes',		// 7.2
 						'wppa_rating_display_type'			=> 'graphic',	// 8
 						'wppa_show_avg_rating'				=> 'yes',		// 9
 						'wppa_show_comments' 				=> 'yes',		// 10
@@ -637,7 +641,8 @@ Hide Camera info
 						'wppa_rating_login' 			=> 'yes',
 						'wppa_rating_change' 			=> 'yes',
 						'wppa_rating_multi' 			=> 'no',
-						'wppa_rating_use_ajax'			=> 'no',
+						'wppa_dislike_value'			=> '-5',
+		//				'wppa_rating_use_ajax'			=> 'no',
 						'wppa_next_on_callback'			=> 'no',
 						'wppa_star_opacity'				=> '20',
 						// F Comments
@@ -785,6 +790,17 @@ Hide Camera info
 						'wppa_comment_captcha'		=> 'no',
 						'wppa_spam_maxage'			=> 'none',
 						
+						'wppa_editor_upload_limit_count'		=> '0',
+						'wppa_editor_upload_limit_time'			=> '0',
+						'wppa_author_upload_limit_count'		=> '0',
+						'wppa_author_upload_limit_time'			=> '0',
+						'wppa_contributor_upload_limit_count'	=> '0',
+						'wppa_contributor_upload_limit_time'	=> '0',
+						'wppa_subscriber_upload_limit_count'	=> '0',
+						'wppa_subscriber_upload_limit_time'		=> '0',
+						'wppa_loggedout_upload_limit_count'		=> '0',
+						'wppa_loggedout_upload_limit_time' 		=> '0',
+						
 						// Table VIII: Actions
 						// A Harmless
 						'wppa_setup' 				=> '',
@@ -799,7 +815,7 @@ Hide Camera info
 						'wppa_rating_clear' 		=> 'no',
 						'wppa_iptc_clear'			=> '',
 						'wppa_exif_clear'			=> '',
-						'wppa_apply_new_photodec_all'	=> '',
+						'wppa_apply_new_photodesc_all'	=> '',
 						'wppa_remake_index'			=> '',
 						'wppa_extend_index' 		=> '',
 						'wppa_list_index'			=> '',

@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile
-Version: 5.0.14
+Version: 5.0.15
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -171,6 +171,34 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 5.0.15 =
+
+= Bug Fixes =
+
+* If a user has no rights on any wppa+ menu item, the Photo Albums menuitem in the admin bar will be hidden regardless of the setting in Table IX-A20,21.
+* If Login is required for voting, it is also required for the dislike button.
+
+= New Features =
+
+* The slideshow can be paginated ( Table I-B8 ). This reveals the practical limit ( due to performance ) of 1000 photos in an album when using slideshows.
+* The Thumbnail widget and the TopTen widget can have the photo names displayed as opposed to the thumbnail images.
+* You can now limit uploads to user roles like the limits on albums. See Table VII-B. These limits only apply to front-end uploads when the corresponding role does NOT have the upload checkbox checked in Table VII-A.
+Make sure you have the Owners only box checked in Table VII-C1 when you enable frontend upload.
+* You can assign a negative value to a dislike vote that will be taken into account when calculating the avarage rating for the photo. Table IV-E4.
+Changing this value after dislikes have been done requires Rerating ( Table VIII-A5 ).
+
+= Other Changes =
+
+* The rating system has been revised and gained expanded functionality. One has the possibility to either rate a photo, or press the dislike button. 
+Even if multi voting or changing voting is enabled, this choice can not be undone. Disliking is now also possible on Numeric rating display.
+You can automatic change status to pending after a configurable number of dislikes, or auto delete photo. A mail will be sent to the admin.
+* Enabling the rating system is still in Table II Visibility,
+* All configuring the behaviour is now in Table IV-E Behaviour: Rating
+* Table VII has been re-organized, expanded and renumbered.
+* The use of CTRL+F5 should no longer be required. 
+Javascript files are now loaded with the wppa+ api version number included and photo urls have a version argument 
+that changes when the files are modified or remade.
 
 = 5.0.14 =
 
