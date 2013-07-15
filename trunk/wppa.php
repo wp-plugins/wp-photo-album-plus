@@ -2,7 +2,7 @@
 /*
 Plugin Name: WP Photo Album Plus
 Description: Easily manage and display your photo albums and slideshows within your WordPress site.
-Version: 5.0.14
+Version: 5.0.15
 Author: J.N. Breetvelt a.k.a OpaJaap
 Author URI: http://wppa.opajaap.nl/
 Plugin URI: http://wordpress.org/extend/plugins/wp-photo-album-plus/
@@ -17,11 +17,11 @@ global $wpdb;
 /* when new options are added and when the wppa_setup() routine 
 /* must be called right after update for any other reason.
 */
-global $wppa_revno; 		$wppa_revno = '5014';	
+global $wppa_revno; 		$wppa_revno = '5015';	
 /* This is the api interface version number
 /* It is incremented at any code change.
 */
-global $wppa_api_version; 	$wppa_api_version = '5-0-14-000';
+global $wppa_api_version; 	$wppa_api_version = '5-0-15-003';
 
 /* CONSTANTS
 /*
@@ -123,6 +123,16 @@ function wppa_donate_link($links, $file) {
 add_action('admin_bar_init', 'wppa_admin_bar_init');
 function wppa_admin_bar_init() {
 	if ( ( is_admin() && get_option('wppa_adminbarmenu_admin') == 'yes' ) || ( ! is_admin() && get_option('wppa_adminbarmenu_frontend') == 'yes' ) ) {
-		require_once 'wppa-adminbar.php';
+		if ( current_user_can('wppa_admin') || 
+			 current_user_can('wppa_upload') ||
+			 current_user_can('wppa_import') ||
+			 current_user_can('wppa_moderate') ||
+			 current_user_can('wppa_export') ||
+			 current_user_can('wppa_settings') ||
+			 current_user_can('wppa_potd') ||
+			 current_user_can('wppa_comments') ||
+			 current_user_can('wppa_help') ) {
+				require_once 'wppa-adminbar.php';
+		}
 	}
 }

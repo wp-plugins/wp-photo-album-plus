@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * edit and delete photos
-* version 5.0.10
+* version 5.0.15
 *
 */
 
@@ -132,7 +132,7 @@ function wppa_album_photos($album = '', $photo = '', $owner = '', $moderate = fa
 		wppa_admin_page_links($page, $pagesize, $count, $link);
 		
 		foreach ($photos as $photo) { ?>
-
+			<a id="photo_<?php echo $photo['id'] ?>" name="photo_<?php echo $photo['id'] ?>"></a>
 			<div class="photoitem" id="photoitem-<?php echo $photo['id'] ?>" style="width:100%;" >
 			
 				<!-- Left half starts here -->
@@ -140,7 +140,6 @@ function wppa_album_photos($album = '', $photo = '', $owner = '', $moderate = fa
 					<input type="hidden" id="photo-nonce-<?php echo $photo['id'] ?>" value="<?php echo wp_create_nonce('wppa_nonce_'.$photo['id']);  ?>" />
 					<table class="form-table phototable"  >
 						<tbody>	
-
 							<tr style="vertical-align:top;" >
 								<th scope="row">
 									<label ><?php echo 'ID = '.$photo['id'].' '.__('Preview:', 'wppa'); ?></label>
@@ -151,12 +150,13 @@ function wppa_album_photos($album = '', $photo = '', $owner = '', $moderate = fa
 									<br />
 									
 									<span style="font-size: 9px; line-height: 10px; color:#666;">
-										<?php _e('If it says \'Photo rotated\', the photo is rotated. If you do not see it happen here, clear your browser cache.', 'wppa') ?>
+										<?php $refresh = '<a onclick="wppaReload()" >'.__('Refresh', 'wppa').'</a>'; ?>
+										<?php echo sprintf(__('If it says \'Photo rotated\', the photo is rotated. %s the page.', 'wppa'), $refresh); ?>
 									</span>
 								</th>
 								<td style="text-align:center;">
-									<?php $src = WPPA_UPLOAD_URL.'/thumbs/' . $photo['id'] . '.' . $photo['ext']; ?>
-									<?php $big = WPPA_UPLOAD_URL.'/' . $photo['id'] . '.' . $photo['ext']; ?>
+									<?php $src = wppa_get_thumb_url($photo['id']); ?>
+									<?php $big = wppa_get_photo_url($photo['id']); ?>
 									<a href="<?php echo $big ?>" target="_blank" title="<?php _e('Preview fullsize photo', 'wppa') ?>" >
 										<img src="<?php echo($src) ?>" alt="<?php echo($photo['name']) ?>" style="max-width: 160px;" />
 									</a>
@@ -201,7 +201,7 @@ function wppa_album_photos($album = '', $photo = '', $owner = '', $moderate = fa
 									}
 									$dislikes = wppa_dislike_get($photo['id']);
 									if ( $dislikes ) {
-										echo ' <span style="color:red" >'.sprintf(__('Disliked by %d visitors', 'wppa'), count($dislikes)).'</span>';
+										echo ' <span style="color:red" >'.sprintf(__('Disliked by %d visitors', 'wppa'), $dislikes).'</span>';
 									}
 									?>
 									

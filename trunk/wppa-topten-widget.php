@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the top rated photos
-* Version 4.9.14
+* Version 5.0.15
 */
 
 class TopTenWidget extends WP_Widget {
@@ -20,78 +20,64 @@ class TopTenWidget extends WP_Widget {
 		global $wppa_opt;
 		global $wppa;
 
-        extract( $args );
+        $wppa['in_widget'] = 'topten';
+		extract( $args );
 		
-		$instance = wp_parse_args( (array) $instance, array( 'sortby' => 'mean_rating', 'title' => '', 'album' => '' ) );
+		$instance 		= wp_parse_args( (array) $instance, array( 
+														'title' => '',
+														'sortby' => 'mean_rating', 
+														'title' => '', 
+														'album' => '',
+														'display' => 'thumbs'
+														) );
+ 		$widget_title 	= apply_filters('widget_title', $instance['title'] );
+		$page 			= $wppa_opt['wppa_topten_widget_linkpage'];
+		$max  			= $wppa_opt['wppa_topten_count'];
+		$album 			= $instance['album'];
+		$display 		= $instance['display'];
 
- 		$widget_title = apply_filters('widget_title', $instance['title'] );
-		$page = $wppa_opt['wppa_topten_widget_linkpage'];
-		$max  = $wppa_opt['wppa_topten_count'];
-		
-		$album = $instance['album'];
-		
 		if ($album) {
 			$thumbs = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM `".WPPA_PHOTOS."` WHERE `album` = %s ORDER BY `" . $instance['sortby'] . "` DESC LIMIT " . $max, $album ), ARRAY_A );
 		}
 		else {
 			$thumbs = $wpdb->get_results( "SELECT * FROM `".WPPA_PHOTOS."` ORDER BY `" . $instance['sortby'] . "` DESC LIMIT " . $max, ARRAY_A );
 		}
+		
+		global $widget_content;
 		$widget_content = "\n".'<!-- WPPA+ TopTen Widget start -->';
 		$maxw = $wppa_opt['wppa_topten_size'];
 		$maxh = $maxw + 18;
-		if ($thumbs) foreach ($thumbs as $image) {
-			
+		
+		if ( $thumbs ) foreach ( $thumbs as $image ) {
 			global $thumb;
 			$thumb = $image;
 			// Make the HTML for current picture
-			$widget_content .= "\n".'<div class="wppa-widget" style="width:'.$maxw.'px; height:'.$maxh.'px; margin:4px; display:inline; text-align:center; float:left;">'; 
-			if ($image) {
+			if ( $display == 'thumbs' ) {
+				$widget_content .= "\n".'<div class="wppa-widget" style="width:'.$maxw.'px; height:'.$maxh.'px; margin:4px; display:inline; text-align:center; float:left;">'; 
+			}
+			else {
+				$widget_content .= "\n".'<div class="wppa-widget" >';
+			}
+			if ( $image ) {
 				$no_album = !$album;
 				if ($no_album) $tit = __a('View the top rated photos', 'wppa_theme'); else $tit = esc_attr(wppa_qtrans(stripslashes($image['description'])));
 				$link       = wppa_get_imglnk_a('topten', $image['id'], '', $tit, '', $no_album);
 				$file       = wppa_get_thumb_path($image['id']);
 				$imgstyle_a = wppa_get_imgstyle_a($file, $maxw, 'center', 'ttthumb');
-				$imgstyle   = $imgstyle_a['style'];
-				$width      = $imgstyle_a['width'];
-				$height     = $imgstyle_a['height'];
-				$cursor		= $imgstyle_a['cursor'];
-				$usethumb	= wppa_use_thumb_file($image['id'], $width, $height) ? '/thumbs' : '';
-				$imgurl 	= WPPA_UPLOAD_URL . $usethumb . '/' . $image['id'] . '.' . $image['ext'];
+				$imgurl 	= wppa_get_thumb_url($image['id']);
+				$imgevents 	= wppa_get_imgevents('thumb', $image['id'], true);
+				$title 		= $link ? esc_attr(stripslashes($link['title'])) : '';
+				
+				wppa_do_the_widget_thumb('topten', $image, $album, $display, $link, $title, $imgurl, $imgstyle_a, $imgevents);
 
-				$imgevents = wppa_get_imgevents('thumb', $image['id'], true);
-
-				if ($link) $title = esc_attr(stripslashes($link['title']));
-				else $title = '';
-				
-				if ($link) {
-					if ( $link['is_url'] ) {	// Is a href
-						$widget_content .= "\n\t".'<a href="'.$link['url'].'" title="'.$title.'" target="'.$link['target'].'" >';
-							$widget_content .= "\n\t\t".'<img id="i-'.$image['id'].'-'.$wppa['master_occur'].'" title="'.$title.'" src="'.$imgurl.'" width="'.$width.'" height="'.$height.'" style="'.$imgstyle.' cursor:pointer;" '.$imgevents.' alt="'.esc_attr(wppa_qtrans($image['name'])).'">';
-						$widget_content .= "\n\t".'</a>';
-					}
-					elseif ( $link['is_lightbox'] ) {
-						$title = wppa_get_lbtitle('thumb', $image['id']);
-						$widget_content .= "\n\t".'<a href="'.$link['url'].'" rel="'.$wppa_opt['wppa_lightbox_name'].'[topten-'.$album.']" title="'.$title.'" target="'.$link['target'].'" >';
-							$widget_content .= "\n\t\t".'<img id="i-'.$image['id'].'-'.$wppa['master_occur'].'" title="'.wppa_zoom_in().'" src="'.$imgurl.'" width="'.$width.'" height="'.$height.'" style="'.$imgstyle.$cursor.'" '.$imgevents.' alt="'.esc_attr(wppa_qtrans($image['name'])).'">';
-						$widget_content .= "\n\t".'</a>';
-					}
-					else { // Is an onclick unit
-						$widget_content .= "\n\t".'<img id="i-'.$image['id'].'-'.$wppa['master_occur'].'" title="'.$title.'" src="'.$imgurl.'" width="'.$width.'" height="'.$height.'" style="'.$imgstyle.' cursor:pointer;" '.$imgevents.' onclick="'.$link['url'].'" alt="'.esc_attr(wppa_qtrans($image['name'])).'">';					
-					}
-				}
-				else {
-					$widget_content .= "\n\t".'<img id="i-'.$image['id'].'-'.$wppa['master_occur'].'" title="'.$title.'" src="'.$imgurl.'" width="'.$width.'" height="'.$height.'" style="'.$imgstyle.'" '.$imgevents.' alt="'.esc_attr(wppa_qtrans($image['name'])).'">';
-				}
-			$widget_content .= "\n\t".'<span style="font-size:9px;">'.wppa_get_rating_by_id($image['id']);
-				if ( $wppa_opt['wppa_show_rating_count'] ) $widget_content .= ' ('.wppa_get_rating_count_by_id($image['id']).')';
-			$widget_content .= '</span>'."\n".'</div>';
-				
-				
+				$widget_content .= "\n\t".'<span style="font-size:9px;">'.wppa_get_rating_by_id($image['id']);
+					if ( $wppa_opt['wppa_show_rating_count'] ) $widget_content .= ' ('.wppa_get_rating_count_by_id($image['id']).')';
+				$widget_content .= '</span>';
 			}
 			else {	// No image
 				$widget_content .= __a('Photo not found.', 'wppa_theme');
 			}
-			
+			$widget_content .= "\n".'</div>';
 		}	
 		else $widget_content .= 'There are no rated photos (yet).';
 		
@@ -106,9 +92,10 @@ class TopTenWidget extends WP_Widget {
     /** @see WP_Widget::update */
     function update($new_instance, $old_instance) {				
 		$instance = $old_instance;
-		$instance['title'] = strip_tags($new_instance['title']);
-		$instance['album'] = $new_instance['album'];
-		$instance['sortby'] = $new_instance['sortby'];
+		$instance['title'] 		= strip_tags($new_instance['title']);
+		$instance['album'] 		= $new_instance['album'];
+		$instance['sortby'] 	= $new_instance['sortby'];
+		$instance['display'] 	= $new_instance['display'];
 		
         return $instance;
     }
@@ -117,10 +104,16 @@ class TopTenWidget extends WP_Widget {
     function form($instance) {	
 		global $wppa_opt;
 		//Defaults
-		$instance = wp_parse_args( (array) $instance, array( 'sortby' => 'mean_rating', 'title' => __('Top Ten Photos', 'wppa'), 'album' => '0') );
- 		$widget_title = apply_filters('widget_title', $instance['title']);
-
-		$album = $instance['album'];
+		$instance 		= wp_parse_args( (array) $instance, array( 
+														'sortby' => 'mean_rating', 
+														'title' => __('Top Ten Photos', 'wppa'), 
+														'album' => '0',
+														'display' => 'thumbs'
+														) );
+ 		$widget_title 	= apply_filters('widget_title', $instance['title']);
+		$sortby 		= $instance['sortby'];
+		$album 			= $instance['album'];
+		$display 		= $instance['display'];
 ?>
 		<p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:', 'wppa'); ?></label> 
 			<input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $widget_title; ?>" />
@@ -131,6 +124,14 @@ class TopTenWidget extends WP_Widget {
 				<?php echo wppa_album_select_a(array('selected' => $album, 'addall' => true, 'path' => wppa_switch('wppa_hier_albsel'))) //('', $album, true, '', '', true); ?>
 
 			</select>
+		</p>
+		<p>
+			<?php _e('Display:', 'wppa'); ?>
+			<select id="<?php echo $this->get_field_id('display'); ?>" name="<?php echo $this->get_field_name('display'); ?>">
+				<option value="thumbs" <?php if ($display == 'thumbs') echo 'selected="selected"' ?>><?php _e('thumbnail images', 'wppa'); ?></option>
+				<option value="names" <?php if ($display == 'names') echo 'selected="selected"' ?>><?php _e('photo names', 'wppa'); ?></option>
+			</select>
+			
 		</p>
 		<p><label for="<?php echo $this->get_field_id('sortby'); ?>"><?php _e('Sort by:', 'wppa'); ?></label>
 			<select class="widefat" id="<?php echo $this->get_field_id('sortby'); ?>" name="<?php echo $this->get_field_name('sortby'); ?>" >

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the export functions
-* Version 5.0.0
+* Version 5.0.15
 *
 */
 
@@ -112,7 +112,7 @@ global $wppa_temp_idx;
 				$cnt = 0;
 				foreach($photos as $photo) {
 					// Copy the photo
-					$from = WPPA_UPLOAD_PATH.'/'.$photo['id'].'.'.$photo['ext'];
+					$from = wppa_get_photo_path($photo['id']);
 					$to = WPPA_DEPOT_PATH.'/'.$photo['id'].'.'.$photo['ext'];
 						
 					if ($wppa_zip) {

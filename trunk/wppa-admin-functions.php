@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * gp admin functions
-* version 5.0.11
+* version 5.0.15
 *
 * 
 */
@@ -117,7 +117,7 @@ function wppa_regenerate_thumbs() {
 		$count = count($photos);
 		$done = '0';
 		foreach ($photos as $photo) {
-			$newimage = WPPA_UPLOAD_PATH.'/'.$photo['id'].'.'.$photo['ext'];
+			$newimage = wppa_get_photo_path($photo['id']);
 			if ( is_file($newimage) ) {
 				wppa_create_thumbnail($newimage, $thumbsize, '' );
 				wppa_update_option('wppa_lastthumb', $photo['id']);
@@ -313,8 +313,8 @@ global $wpdb;
 	$linktarget = $photo['linktarget'];
 	$status 	= $photo['status'];
 	$filename 	= $photo['filename'];
-	$oldimage 	= WPPA_UPLOAD_PATH.'/'.$photo['id'].'.'.$ext;
-	$oldthumb 	= WPPA_UPLOAD_PATH.'/thumbs/'.$photo['id'].'.'.$ext;
+	$oldimage 	= wppa_get_photo_path($photo['id']);
+	$oldthumb 	= wppa_get_thumb_path($photo['id']);
 	
 	$err = '3';
 	// Make new db table entry
@@ -328,8 +328,8 @@ global $wpdb;
 	$err = '4';
 	// Find copied photo details
 	$image_id = $id;			
-	$newimage = WPPA_UPLOAD_PATH.'/'.$image_id.'.'.$ext;
-	$newthumb = WPPA_UPLOAD_PATH.'/thumbs/'.$image_id.'.'.$ext;
+	$newimage = wppa_get_photo_path($image_id);
+	$newthumb = wppa_get_thumb_path($image_id);
 	if (!$image_id) return $err;
 	
 	$err = '5';
@@ -379,7 +379,7 @@ global $wpdb;
 	
 	// Get the image
 	$err = '3';
-	$file = WPPA_UPLOAD_PATH.'/'.$id.'.'.$ext;
+	$file = wppa_get_photo_path($id);
 	if (!is_file($file)) return $err;
 	
 	// Get the imgdetails
@@ -478,8 +478,8 @@ if ( is_multisite() ) return; // temp disabled for 4.0 bug, must be tested in a 
 	else $entries = $wpdb->get_results($wpdb->prepare( "SELECT `id`, `ext`, `name` FROM `".WPPA_PHOTOS."` WHERE `album` = %s", $alb ), ARRAY_A);
 	if ($entries) {
 		foreach ( $entries as $entry ) {
-			$thumbpath = WPPA_UPLOAD_PATH.'/thumbs/'.$entry['id'].'.'.$entry['ext'];
-			$imagepath = WPPA_UPLOAD_PATH.'/'.$entry['id'].'.'.$entry['ext'];
+			$thumbpath = wppa_get_thumb_path($entry['id']);
+			$imagepath = wppa_get_photo_path($entry['id']);
 			if ( !is_file($thumbpath) ) {	// No thumb 
 				wppa_dbg_msg('Error: expected thumbnail image file does not exist: '.$thumbpath, 'red', true);
 			}
@@ -491,6 +491,7 @@ if ( is_multisite() ) return; // temp disabled for 4.0 bug, must be tested in a 
 	}
 	// Now fix missing exts for upload bug in 2.3.0
 	$fixcount = 0;
+/*
 	$entries = $wpdb->get_results( "SELECT `id`, `ext`, `name` FROM `".WPPA_PHOTOS."` WHERE `ext` = ''" , ARRAY_A );
 	if ($entries) {
 		wppa_ok_message(__('Trying to fix '.count($entries).' entries with missing file extension, Please wait.', 'wppa'));
@@ -511,14 +512,14 @@ if ( is_multisite() ) return; // temp disabled for 4.0 bug, must be tested in a 
 			if ($ext == 'jpg' || $ext == 'JPG' || $ext == 'png' || $ext == 'PNG' || $ext == 'gif' || $ext == 'GIF') {
 				
 				if ($wpdb->query($wpdb->prepare( "UPDATE `".WPPA_PHOTOS."` SET `ext` = %s WHERE `id` = %s", $ext, $entry['id'] ) ) ) {
-					$oldimg = WPPA_UPLOAD_PATH.'/'.$entry['id'].'.';
-					$newimg = WPPA_UPLOAD_PATH.'/'.$entry['id'].'.'.$ext;
+					$oldimg = WPPA_UP LOAD_PATH.'/'.$entry['id'].'.';
+					$newimg = WPPA_UP LOAD_PATH.'/'.$entry['id'].'.'.$ext;
 					if (is_file($oldimg)) {
 						copy($oldimg, $newimg);
 						unlink($oldimg);
 					}
-					$oldimg = WPPA_UPLOAD_PATH.'/thumbs/'.$entry['id'].'.';
-					$newimg = WPPA_UPLOAD_PATH.'/thumbs/'.$entry['id'].'.'.$ext;
+					$oldimg = WPPA_UP LOAD_PATH.'/thumbs/'.$entry['id'].'.';
+					$newimg = WPPA_UP LOAD_PATH.'/thumbs/'.$entry['id'].'.'.$ext;
 					if (is_file($oldimg)) {
 						copy($oldimg, $newimg);
 						unlink($oldimg);
@@ -535,7 +536,7 @@ if ( is_multisite() ) return; // temp disabled for 4.0 bug, must be tested in a 
 			}
 		}	
 	}
-	
+/**/	
 	// Now fix orphan photos
 	$orphcount = 0;
 	$entries = $wpdb->get_results( "SELECT `id` FROM `".WPPA_PHOTOS."` WHERE `album` = '0'", ARRAY_A);
@@ -698,6 +699,7 @@ global $wpdb;
 
 function wppa_recalculate_ratings() {
 global $wpdb;
+global $wppa_opt;
 
 	$photos = $wpdb->get_results( "SELECT `id` FROM `" . WPPA_PHOTOS . "`", ARRAY_A);
 	if ($photos) {
@@ -706,11 +708,12 @@ global $wpdb;
 			$the_value = '0';
 			$the_count = '0';
 			if ( $ratings ) foreach ($ratings as $rating) {
-				$the_value += $rating['value'];
+				if ( $rating['value'] == '-1' ) $the_value += $wppa_opt['wppa_dislike_value'];
+				else $the_value += $rating['value'];
 				$the_count++;
 			}
 			if ($the_count) $the_value /= $the_count;
-			if ($the_value == '10') $the_value = '9.99999';	// mean_rating is a text field. for sort order reasons we make 10 into 9.99999
+			if ($the_value == '10') $the_value = '9.9999999';	// mean_rating is a text field. for sort order reasons we make 10 into 9.99999
 			$iret = $wpdb->query($wpdb->prepare( 'UPDATE '.WPPA_PHOTOS.' SET mean_rating = %s WHERE id = %s', $the_value, $photo['id'] ) );
 			if ($iret === false) {
 				if ( $wppa['ajax'] ) {

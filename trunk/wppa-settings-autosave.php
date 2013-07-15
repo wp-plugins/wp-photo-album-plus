@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 5.0.14
+* Version 5.0.15
 *
 */
 
@@ -199,6 +199,7 @@ global $wppa_revno;
 			<script type="text/javascript">document.getElementById("wppa-ok-p").innerHTML="<strong><?php _e('READY regenerating thumbnail images.', 'wppa') ?></strong>"</script>
 			<?php				
 			wppa_update_option('wppa_lastthumb', '-2');
+			wppa_update_option('wppa_thumb_version', get_option('wppa_thumb_version', '1') + '1');
 		}
 		elseif ( wppa_switch('wppa_auto_continue') ) wppa_ok_message(__('Trying to continue...<script type="text/javascript">document.location=document.location</script>', 'wppa'));
 	}
@@ -447,6 +448,13 @@ wppa_fix_source_extensions();
 							$slug = 'wppa_mini_treshold';
 							$html = wppa_input($slug, '40px', '', __('pixels', 'wppa'));
 							wppa_setting($slug, '7', $name, $desc, $html, $help);
+							
+							$name = __('Slideshow pagesize', 'wppa');
+							$desc = __('The maximum number of slides in a certain view. 0 means no pagination', 'wppa');
+							$help = '';
+							$slug = 'wppa_slideshow_pagesize';
+							$html = wppa_input($slug, '40px', '', __('slides', 'wppa'));
+							wppa_setting($slug, '8', $name, $desc, $html, $help);
 
 							wppa_setting_subheader('C', '1', __('Thumbnail photos related settings', 'wppa'));
 							
@@ -1015,35 +1023,6 @@ wppa_fix_source_extensions();
 							$onchange = 'wppaCheckRating()';
 							$html = wppa_checkbox($slug, $onchange);
 							wppa_setting($slug, '7', $name, $desc, $html, $help);
-							
-							$name = __('Notify inappropriate', 'wppa');
-							$desc = __('Notify admin every x times.', 'wppa');
-							$help = esc_js(__('If this number is positive, there will be a red cross icon in the rating bar.', 'wppa'));
-							$help .= '\n\n'.esc_js(__('Cicking the icon indicates a user wants to report that an image is inappropiate.', 'wppa'));
-							$help .= '\n'.esc_js(__('Admin will be notified by email after every x reports.', 'wppa'));
-							$help .= '\n'.esc_js(__('A value of 0 disables this feature.', 'wppa'));
-							$slug = 'wppa_dislike_mail_every';
-							$html = wppa_input($slug, '40px', '', __('reports', 'wppa'));
-							wppa_setting($slug, '7.1', $name, $desc, $html, $help);
-							
-							$name = __('Rating display type', 'wppa');
-							$desc = __('Specify the type of the rating display.', 'wppa');
-							$help = '';
-							$slug = 'wppa_rating_display_type';
-							$options = array(__('Graphic', 'wppa'), __('Numeric', 'wppa'));
-							$values = array('graphic', 'numeric');
-							$html = wppa_select($slug, $options, $values);
-							$class = 'wppa_rating_';
-							wppa_setting($slug, '8', $name, $desc, $html, $help, $class);
-
-							$name = __('Show average rating', 'wppa');
-							$desc = __('Display the avarage rating on the rating bar', 'wppa');
-							$help = esc_js(__('If checked, the average rating as well as the current users rating is displayed in max 5 stars.', 'wppa'));
-							$help .= '\n\n'.esc_js(__('If unchecked, only the current users rating is displayed (if any).', 'wppa'));
-							$slug = 'wppa_show_avg_rating';
-							$html = wppa_checkbox($slug);
-							$class = 'wppa_rating_';
-							wppa_setting($slug, '9', $name, $desc, $html, $help, $class);
 							
 							$name = __('Comments system', 'wppa');
 							$desc = __('Enable the comments system.', 'wppa');
@@ -2105,13 +2084,12 @@ wppa_fix_source_extensions();
 							$html = wppa_checkbox($slug);
 							$class = 'wppa_rating_';
 							wppa_setting($slug, '3', $name, $desc, $html, $help, $class);
-
-							$name = __('Rating use Ajax', 'wppa');
-							$desc = __('Use Ajax technology in rating (voting)', 'wppa');
-							$help = esc_js(__('If checked, the page is updated rather than reloaded after clicking a rating star.', 'wppa'));
-							$help .= '\n\n'.esc_js(__('Enabling this feature ensures the fastest rating mechanism possible.', 'wppa'));
-							$slug = 'wppa_rating_use_ajax';
-							$html = wppa_checkbox($slug);
+							
+							$name = __('Dislike value', 'wppa');
+							$desc = __('This value counts dislike rating.', 'wppa');
+							$help = esc_js(__('This value will be used for a dislike rating on calculation of avarage ratings.', 'wppa'));
+							$slug = 'wppa_dislike_value';
+							$html = wppa_input($slug, '50px', '', __('points', 'wppa'));
 							$class = 'wppa_rating_';
 							wppa_setting($slug, '4', $name, $desc, $html, $help, $class);
 							
@@ -2130,6 +2108,60 @@ wppa_fix_source_extensions();
 							$html = wppa_input($slug, '50px', '', __('%', 'wppa'));
 							$class = 'wppa_rating_';
 							wppa_setting($slug, '6', $name, $desc, $html, $help, $class);
+							
+							$name = __('Notify inappropriate', 'wppa');
+							$desc = __('Notify admin every x times.', 'wppa');
+							$help = esc_js(__('If this number is positive, there will be a thumb down icon in the rating bar.', 'wppa'));
+							$help .= '\n\n'.esc_js(__('Cicking the icon indicates a user wants to report that an image is inappropiate.', 'wppa'));
+							$help .= '\n'.esc_js(__('Admin will be notified by email after every x reports.', 'wppa'));
+							$help .= '\n'.esc_js(__('A value of 0 disables this feature.', 'wppa'));
+							$slug = 'wppa_dislike_mail_every';
+							$html = wppa_input($slug, '40px', '', __('reports', 'wppa'));
+							$class = 'wppa_rating_';
+							wppa_setting($slug, '7', $name, $desc, $html, $help, $class);
+							
+							$name = __('Pending after', 'wppa');
+							$desc = __('Set status to pending after xx dislike votes.', 'wppa');
+							$help = esc_js(__('A value of 0 disables this feature.', 'wppa'));
+							$slug = 'wppa_dislike_set_pending';
+							$html = wppa_input($slug, '40px', '', __('reports', 'wppa'));
+							$class = 'wppa_rating_';
+							wppa_setting($slug, '8', $name, $desc, $html, $help, $class);
+							
+							$name = __('Delete after', 'wppa');
+							$desc = __('Deete photo after xx dislike votes.', 'wppa');
+							$help = esc_js(__('A value of 0 disables this feature.', 'wppa'));
+							$slug = 'wppa_dislike_delete';
+							$html = wppa_input($slug, '40px', '', __('reports', 'wppa'));
+							$class = 'wppa_rating_';
+							wppa_setting($slug, '9', $name, $desc, $html, $help, $class);
+							
+							$name = __('Show dislike count', 'wppa');
+							$desc = __('Show the number of dislikes in the rating bar.', 'wppa');
+							$help = esc_js(__('Displayes the total number of dislike votes for the current photo.', 'wppa'));
+							$slug = 'wppa_dislike_show_count';
+							$html = wppa_checkbox($slug, $onchange);
+							$class = 'wppa_rating_';
+							wppa_setting($slug, '10', $name, $desc, $html, $help, $class);
+							
+							$name = __('Rating display type', 'wppa');
+							$desc = __('Specify the type of the rating display.', 'wppa');
+							$help = '';
+							$slug = 'wppa_rating_display_type';
+							$options = array(__('Graphic', 'wppa'), __('Numeric', 'wppa'));
+							$values = array('graphic', 'numeric');
+							$html = wppa_select($slug, $options, $values);
+							$class = 'wppa_rating_';
+							wppa_setting($slug, '11', $name, $desc, $html, $help, $class);
+
+							$name = __('Show average rating', 'wppa');
+							$desc = __('Display the avarage rating on the rating bar', 'wppa');
+							$help = esc_js(__('If checked, the average rating as well as the current users rating is displayed in max 5 stars.', 'wppa'));
+							$help .= '\n\n'.esc_js(__('If unchecked, only the current users rating is displayed (if any).', 'wppa'));
+							$slug = 'wppa_show_avg_rating';
+							$html = wppa_checkbox($slug);
+							$class = 'wppa_rating_';
+							wppa_setting($slug, '12', $name, $desc, $html, $help, $class);
 							
 							wppa_setting_subheader('F', '1', __('Comments related settings', 'wppa'), 'wppa_comment_');
 							
@@ -2996,7 +3028,7 @@ wppa_fix_source_extensions();
 							
 							wppa_setting_subheader('A', '5', __('Roles and Capability settings', 'wppa'));
 
-							$roles = $wp_roles->roles;//get_option($wpdb->prefix . 'user_roles');
+							$roles = $wp_roles->roles;
 							foreach (array_keys($roles) as $key) {
 								$role = $roles[$key];
 								echo '<tr class="wppa-VII-A wppa-none" ><td>'.$role['name'].'</td>';
@@ -3017,7 +3049,76 @@ wppa_fix_source_extensions();
 					<table class="widefat" style="margin-top:-2px;" >
 						<tbody class="wppa_table_7">
 							<?php
-							wppa_setting_subheader('B', '1', __('Miscellaneous scurity settings', 'wppa'));
+							wppa_setting_subheader('B', '2', __('Frontend Upload settings', 'wppa'));
+							
+							$name = __('User upload', 'wppa');
+							$desc = __('Enable frontend upload.', 'wppa');
+							$help = esc_js(__('If you check this item, frontend upload will be enabled according to the rules set in the following items of this table.', 'wppa'));
+							$slug = 'wppa_user_upload_on';
+							$onchange = 'wppaCheckUserUpload()';
+							$html = wppa_checkbox($slug, $onchange);
+							wppa_setting($slug, '1', $name, $desc, $html, $help);
+							
+							$name = __('User upload login', 'wppa');
+							$desc = __('Frontend upload requires the user is logged in.', 'wppa');
+							$help = esc_js(__('If you uncheck this box, make sure you check the item Owners only in the next sub-table.', 'wppa'));
+							$help .= '\n'.esc_js(__('Set the owner to ---public--- of the albums that are allowed to be uploaded to.', 'wppa'));
+							$slug = 'wppa_user_upload_login';
+							$html = wppa_checkbox($slug);
+							wppa_setting($slug, '2', $name, $desc, $html, $help);
+							
+							// User upload limis
+							$options = array( 	__('for ever', 'wppa'), 
+												__('per hour', 'wppa'), 
+												__('per day', 'wppa'), 
+												__('per week', 'wppa'), 
+												__('per month', 'wppa'), 	// 30 days
+												__('per year', 'wppa'));	// 364 days
+							$values = array( '0', '3600', '86400', '604800', '2592000', '31449600');
+							
+							$roles = $wp_roles->roles;
+							$roles['loggedout'] = '';
+							unset ($roles['administrator']);
+							foreach (array_keys($roles) as $role) {
+								if ( get_option('wppa_'.$role.'_upload_limit_count', 'nil') == 'nil') update_option('wppa_'.$role.'_upload_limit_count', '0');
+								if ( get_option('wppa_'.$role.'_upload_limit_time', 'nil') == 'nil') update_option('wppa_'.$role.'_upload_limit_time', '0');
+								$name = sprintf(__('Upload limit %s', 'wppa'), $role);
+								if ( $role == 'loggedout' ) $desc = __('Limit upload capacity for logged out users.', 'wppa');
+								else $desc = sprintf(__('Limit upload capacity for the user role %s.', 'wppa'), $role);
+								if ( $role == 'loggedout' ) $help = esc_js(__('This setting has only effect when Table VII-B2 is unchecked.', 'wppa'));
+								else $help = esc_js(__('This limitation only applies to frontend uploads when the same userrole does not have the Upload checkbox checked in Table VII-A.', 'wppa'));
+								$help .= '\n'.esc_js(__('A value of 0 means: no limit.', 'wppa'));
+								$slug = 'wppa_'.$role.'_upload_limit_count';
+								$html = wppa_input($slug, '50px', '', __('photos', 'wppa'));
+								$slug = 'wppa_'.$role.'_upload_limit_time';
+								$html .= wppa_select($slug, $options, $values);
+								wppa_setting(false, '3.'.$role, $name, $desc, $html, $help);
+							}
+							
+							$name = __('Upload one only', 'wppa');
+							$desc = __('Non admin users can upload only one photo at a time.', 'wppa');
+							$help = '';
+							$slug = 'wppa_upload_one_only';
+							$html = wppa_checkbox($slug);
+							wppa_setting($slug, '4', $name, $desc, $html, $help);
+
+							$name = __('Upload moderation', 'wppa');
+							$desc = __('Uploaded photos need moderation.', 'wppa');
+							$help = esc_js(__('If checked, photos uploaded by users who do not have photo album admin access rights need moderation.', 'wppa'));
+							$help .= esc_js(__('Users who have photo album admin access rights can change the photo status to publish or featured.', 'wppa'));
+							$help .= '\n\n'.esc_js(__('You can set the album admin access rights in Table VII-A.', 'wppa'));
+							$slug = 'wppa_upload_moderate';
+							$html = wppa_checkbox($slug);
+							wppa_setting($slug, '5', $name, $desc, $html, $help);
+
+							$name = __('Upload notify', 'wppa');
+							$desc = __('Notify admin at frontend upload.', 'wppa');
+							$help = esc_js(__('If checked, admin will receive a notification by email.', 'wppa'));
+							$slug = 'wppa_upload_notify';
+							$html = wppa_checkbox($slug);
+							wppa_setting($slug, '6', $name, $desc, $html, $help);
+
+							wppa_setting_subheader('C', '1', __('Miscellaneous scurity settings', 'wppa'));
 							
 							$name = __('Owners only', 'wppa');
 							$desc = __('Limit album access to the album owners only.', 'wppa');
@@ -3026,67 +3127,28 @@ wppa_fix_source_extensions();
 							$slug = 'wppa_owner_only';
 							$html = wppa_checkbox($slug);
 							wppa_setting($slug, '1', $name, $desc, $html, $help);
-						
-							$name = __('User upload', 'wppa');
-							$desc = __('Enable visitors to upload photos.', 'wppa');
-							$help = esc_js(__('If you check this item, visitors who are logged in and have wppa+ upload rights and have access to the album will see an upload photo link on album covers and thumbnail displays.', 'wppa'));
-							$slug = 'wppa_user_upload_on';
-							$onchange = 'wppaCheckUserUpload()';
-							$html = wppa_checkbox($slug, $onchange);
-							wppa_setting($slug, '2', $name, $desc, $html, $help);
 							
-							$name = __('User upload login', 'wppa');
-							$desc = __('Users must be logged in to be able to upload.', 'wppa');
-							$help = esc_js(__('If you uncheck this box, make sure you check the next 3 items.', 'wppa'));
-							$help .= '\n'.esc_js(__('Set the owner to ---public--- of the albums that are allowed to be uploaded to.', 'wppa'));
-							$slug = 'wppa_user_upload_login';
-							$html = wppa_checkbox($slug);
-							wppa_setting($slug, '3', $name, $desc, $html, $help);
-							
-							$name = __('Upload moderation', 'wppa');
-							$desc = __('Uploaded photos need moderation.', 'wppa');
-							$help = esc_js(__('If checked, photos uploaded by users who do not have photo album admin access rights need moderation.', 'wppa'));
-							$help .= esc_js(__('Users who have photo album admin access rights can change the photo status to publish or featured.', 'wppa'));
-							$help .= '\n\n'.esc_js(__('You can set the album admin access rights in Table VII-A.', 'wppa'));
-							$slug = 'wppa_upload_moderate';
-							$html = wppa_checkbox($slug);
-							wppa_setting($slug, '4', $name, $desc, $html, $help);
-
 							$name = __('Uploader Edit', 'wppa');
 							$desc = __('Allow the uploader to edit the photo info', 'wppa');
 							$help = esc_js(__('If checked, any logged in user that has upload rights and uploads an image has the capability to edit the photo information.', 'wppa'));
 							$help .= '\n\n'.esc_js(__('Note: This may be AFTER moderation!!', 'wppa'));
 							$slug = 'wppa_upload_edit';
 							$html = wppa_checkbox($slug);
-							wppa_setting($slug, '5', $name, $desc, $html, $help);
-							
-							$name = __('Upload notify', 'wppa');
-							$desc = __('Notify admin at frontend upload.', 'wppa');
-							$help = esc_js(__('If checked, admin will receive a notification by email.', 'wppa'));
-							$slug = 'wppa_upload_notify';
-							$html = wppa_checkbox($slug);
-							wppa_setting($slug, '6', $name, $desc, $html, $help);
-							
-							$name = __('Upload one only', 'wppa');
-							$desc = __('Non admin users can upload only one photo at a time.', 'wppa');
-							$help = '';
-							$slug = 'wppa_upload_one_only';
-							$html = wppa_checkbox($slug);
-							wppa_setting($slug, '7', $name, $desc, $html, $help);
+							wppa_setting($slug, '2', $name, $desc, $html, $help);
 							
 							$name = __('Upload memory check frontend', 'wppa');
 							$desc = __('Disable uploading photos that are too large.', 'wppa');
 							$help = esc_js(__('To prevent out of memory crashes during upload and possible database inconsistencies, uploads can be prevented if the photos are too big.', 'wppa'));
 							$slug = 'wppa_memcheck_frontend';
 							$html = wppa_checkbox($slug);
-							wppa_setting($slug, '8.1', $name, $desc, $html, $help);
+							wppa_setting($slug, '3', $name, $desc, $html, $help);
 							
 							$name = __('Upload memory check admin', 'wppa');
 							$desc = __('Disable uploading photos that are too large.', 'wppa');
 							$help = esc_js(__('To prevent out of memory crashes during upload and possible database inconsistencies, uploads can be prevented if the photos are too big.', 'wppa'));
 							$slug = 'wppa_memcheck_admin';
 							$html = wppa_checkbox($slug);
-							wppa_setting($slug, '8.2', $name, $desc, $html, $help);
+							wppa_setting($slug, '4', $name, $desc, $html, $help);
 							
 							$name = __('Comment captcha', 'wppa');
 							$desc = __('Use a simple calculate captcha on comments form.', 'wppa');
@@ -3094,7 +3156,7 @@ wppa_fix_source_extensions();
 							$slug = 'wppa_comment_captcha';
 							$html = wppa_checkbox($slug);
 							$class = 'wppa_comment_';
-							wppa_setting($slug, '9', $name, $desc, $html, $help, $class);
+							wppa_setting($slug, '5', $name, $desc, $html, $help, $class);
 							
 							$name = __('Spam lifetime', 'wppa');
 							$desc = __('Delete spam comments when older than.', 'wppa');
@@ -3104,8 +3166,48 @@ wppa_fix_source_extensions();
 							$values = array('none', '600', '1800', '3600', '86400', '604800');
 							$html = wppa_select($slug, $options, $values);
 							$class = 'wppa_comment_';
-							wppa_setting($slug, '10', $name, $desc, $html, $help, $class);
+							wppa_setting($slug, '6', $name, $desc, $html, $help, $class);
+
+/*							$name = __('Upload limit author', 'wppa');
+							$desc = __('.', 'wppa');
+							$help = esc_js(__('.', 'wppa'));
+							$help .= '\n'.esc_js(__('A value of 0 means: no limit.', 'wppa'));
+							$slug = 'wppa_author_upload_limit_count';
+							$html = wppa_input($slug, '50px', '', __('photos', 'wppa'));
+							$slug = 'wppa_author_upload_limit_time';
+							$html .= wppa_select($slug, $options, $values);
+							wppa_setting(false, '12', $name, $desc, $html, $help);
 							
+							$name = __('Upload limit contributor', 'wppa');
+							$desc = __('.', 'wppa');
+							$help = esc_js(__('.', 'wppa'));
+							$help .= '\n'.esc_js(__('A value of 0 means: no limit.', 'wppa'));
+							$slug = 'wppa_contributor_upload_limit_count';
+							$html = wppa_input($slug, '50px', '', __('photos', 'wppa'));
+							$slug = 'wppa_contributor_upload_limit_time';
+							$html .= wppa_select($slug, $options, $values);
+							wppa_setting(false, '13', $name, $desc, $html, $help);
+
+							$name = __('Upload limit subscriber', 'wppa');
+							$desc = __('.', 'wppa');
+							$help = esc_js(__('.', 'wppa'));
+							$help .= '\n'.esc_js(__('A value of 0 means: no limit.', 'wppa'));
+							$slug = 'wppa_subscriber_upload_limit_count';
+							$html = wppa_input($slug, '50px', '', __('photos', 'wppa'));
+							$slug = 'wppa_subscriber_upload_limit_time';
+							$html .= wppa_select($slug, $options, $values);
+							wppa_setting(false, '14', $name, $desc, $html, $help);
+							
+							$name = __('Upload limit logged out', 'wppa');
+							$desc = __('.', 'wppa');
+							$help = esc_js(__('.', 'wppa'));
+							$help .= '\n'.esc_js(__('A value of 0 means: no limit.', 'wppa'));
+							$slug = 'wppa_loggedout_upload_limit_count';
+							$html = wppa_input($slug, '50px', '', __('photos', 'wppa'));
+							$slug = 'wppa_loggedout_upload_limit_time';
+							$html .= wppa_select($slug, $options, $values);
+							wppa_setting(false, '15', $name, $desc, $html, $help);
+*/
 							?>
 						</tbody>
 						<tfoot style="font-weight: bold;" class="wppa_table_7">
@@ -3306,7 +3408,7 @@ wppa_fix_source_extensions();
 							$name = __('Apply New Photodesc', 'wppa');
 							$desc = __('Apply New photo description on all photos in the system.', 'wppa');
 							$help = '';
-							$slug = 'wppa_apply_new_photodec_all';
+							$slug = 'wppa_apply_new_photodesc_all';
 							$html1 = '';
 							$html2 = wppa_ajax_button('', $slug);
 							$html = array($html1, $html2);

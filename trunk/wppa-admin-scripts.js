@@ -1,7 +1,7 @@
 /* admin-scripts.js */
 /* Package: wp-photo-album-plus
 /*
-/* Version 5.0.12
+/* Version 5.0.15
 /* Various js routines used in admin pages		
 */
 
@@ -889,6 +889,7 @@ function wppaAjaxUpdatePhoto(photo, actionslug, elem) {
 				}
 				// Hide spinner
 				if ( actionslug == 'description' ) jQuery('#wppa-photo-spin-'+photo).css({visibility:'hidden'});
+				if ( actionslug == 'rotleft' || actionslug == 'rotright' ) wppaRefresh('photo_'+photo);
 			}
 		}
 	}
@@ -1192,4 +1193,15 @@ function wppaAddTag(val, id) {
 			elm.value = val;
 		}
 	}
+}
+
+function wppaRefresh(label) {
+	var oldurl 	= new String(document.location);
+	var temp 	= oldurl.split("#");
+	var newurl 	= temp[0]+'#'+label;
+
+	document.location = newurl;
+}
+function wppaReload() {
+	location.reload(true);
 }

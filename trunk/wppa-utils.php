@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains low-level utility routines
-* Version 5.0.14
+* Version 5.0.15
 *
 */
 
@@ -58,7 +58,10 @@ global $thumb;
 
 	if ( ! is_numeric($id) || $id < '1' ) wppa_dbg_msg('Invalid arg wppa_get_thumb_url('.$id.')', 'red');
 	wppa_cache_thumb($id);
-	return WPPA_UPLOAD_URL.'/thumbs/' . $thumb['id'] . '.' . $thumb['ext'];
+	return WPPA_UPLOAD_URL.'/thumbs/' . $thumb['id'] . '.' . $thumb['ext'] . '?ver=' . get_option('wppa_thumb_version', '1');
+}
+function wppa_bump_thumb_rev() {
+	wppa_update_option('wppa_thumb_version', get_option('wppa_thumb_version', '1') + '1');
 }
 
 // get path of thumb
@@ -76,7 +79,10 @@ global $thumb;
 
 	if ( ! is_numeric($id) || $id < '1' ) wppa_dbg_msg('Invalid arg wppa_get_photo_url('.$id.')', 'red');
 	wppa_cache_thumb($id);
-	return WPPA_UPLOAD_URL.'/'.$id.'.'.$thumb['ext'];
+	return WPPA_UPLOAD_URL.'/'.$id.'.'.$thumb['ext'] . '?ver=' . get_option('wppa_photo_version', '1');
+}
+function wppa_bump_photo_rev() {
+	wppa_update_option('wppa_photo_version', get_option('wppa_photo_version', '1') + '1');
 }
 
 // get path of a full sized image
@@ -445,52 +451,54 @@ global $wpdb;
 	return $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `".WPPA_PHOTOS."` WHERE `album` = %s AND `filename` = %s", $alb, $photo));
 }
 
-function wppa_dislike_add($photo) {
+function wppa_dislike_check($photo) {
 global $wppa_opt;
-
-	$usr = wppa_get_user();
-	$data = get_option('wppa_dislikes', false);
+global $wpdb;
 	
-	if ( ! is_array($data) ) { 	// Empty
-		$data[$photo][] = $usr;
-		update_option('wppa_dislikes', $data);
-		return;
+	$count = $wpdb->get_var($wpdb->prepare( "SELECT COUNT(*) FROM `".WPPA_RATING."` WHERE `photo` = %s AND `value` = -1", $photo ));
+	
+	if ( $wppa_opt['wppa_dislike_mail_every'] > '0') {		// Feature enabled?
+		if ( $count % $wppa_opt['wppa_dislike_mail_every'] == '0' ) {	// Mail the admin
+			$to        = get_bloginfo('admin_email');
+			$subj 	   = __('Notification of inappropriate image', 'wppa');
+			$cont['0'] = sprintf(__('Photo %s has been marked as inappropriate by %s different visitors.', 'wppa'), $photo, $count);
+			$cont['1'] = '<a href="'.get_admin_url().'admin.php?page=wppa_admin_menu&tab=pmod&photo='.$photo.'" >'.__('Manage photo', 'wppa').'</a>';
+			wppa_send_mail($to, $subj, $cont, $photo);
+		}
 	}
-	else {
-		if ( ! isset($data[$photo]) || ! in_array($usr, $data[$photo]) ) {
-			$data[$photo][] = $usr;
-			update_option('wppa_dislikes', $data);
-			$count = count($data[$photo]);
-			
-			if ( $count % $wppa_opt['wppa_dislike_mail_every'] == '0' ) {	// Mail the admin
-				$to        = get_bloginfo('admin_email');
-				$subj 	   = __('Notification of inappropriate image', 'wppa');
-				$cont['0'] = sprintf(__('Photo %s has been marked as inappropriate by %s different visitors.', 'wppa'), $photo, $count);
-				$cont['1'] = '<a href="'.get_admin_url().'admin.php?page=wppa_admin_menu&tab=pmod&photo='.$photo.'" >'.__('Manage photo', 'wppa').'</a>';
-				wppa_send_mail($to, $subj, $cont, $photo);
-			}
+	
+	if ( $wppa_opt['wppa_dislike_set_pending'] > '0') {		// Feature enabled?
+		if ( $count == $wppa_opt['wppa_dislike_set_pending'] ) {
+			$wpdb->query($wpdb->prepare( "UPDATE `".WPPA_PHOTOS."` SET `status` = 'pending' WHERE `id` = %s", $photo ));
+			$to        = get_bloginfo('admin_email');
+			$subj 	   = __('Notification of inappropriate image', 'wppa');
+			$cont['0'] = sprintf(__('Photo %s has been marked as inappropriate by %s different visitors.', 'wppa'), $photo, $count);
+			$cont['0'] .= "\n".__('The status has been changed to \'pending\'.', 'wppa');
+			$cont['1'] = '<a href="'.get_admin_url().'admin.php?page=wppa_admin_menu&tab=pmod&photo='.$photo.'" >'.__('Manage photo', 'wppa').'</a>';
+			wppa_send_mail($to, $subj, $cont, $photo);
+		}
+	}
+	
+	if ( $wppa_opt['wppa_dislike_delete'] > '0') {			// Feature enabled?
+		if ( $count == $wppa_opt['wppa_dislike_delete'] ) {
+			$to        = get_bloginfo('admin_email');
+			$subj 	   = __('Notification of inappropriate image', 'wppa');
+			$cont['0'] = sprintf(__('Photo %s has been marked as inappropriate by %s different visitors.', 'wppa'), $photo, $count);
+			$cont['0'] .= "\n".__('It has been deleted.', 'wppa');
+			$cont['1'] = '';//<a href="'.get_admin_url().'admin.php?page=wppa_admin_menu&tab=pmod&photo='.$photo.'" >'.__('Manage photo', 'wppa').'</a>';
+			wppa_send_mail($to, $subj, $cont, $photo);
+			wppa_delete_photo($photo);
 		}
 	}
 }
 
-function wppa_dislike_remove($photo) {
 
-	$data = get_option('wppa_dislikes', false);
-	if ( is_array($data) ) {
-		if ( isset($data[$photo]) ) unset($data[$photo]);
-		update_option('wppa_dislikes', $data);
-	}
-}
 
 function wppa_dislike_get($photo) {
-	
-	$data = get_option('wppa_dislikes', false);
-	if ( is_array($data) ) {
-		if ( isset($data[$photo]) ) {
-			return $data[$photo];
-		}
-	}
-	return false;
+global $wpdb;
+
+	$count = $wpdb->get_var($wpdb->prepare( "SELECT COUNT(*) FROM `".WPPA_RATING."` WHERE `photo` = %s AND `value` = -1", $photo ));
+	return $count;
 }
 
 function wppa_send_mail($to, $subj, $cont, $photo, $email = '') {

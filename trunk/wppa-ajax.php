@@ -2,7 +2,7 @@
 /* wppa-ajax.php
 *
 * Functions used in ajax requests
-* version 5.0.14
+* version 5.0.15
 *
 */
 add_action('wp_ajax_wppa', 'wppa_ajax_callback');
@@ -120,15 +120,15 @@ global $wppa;
 						$source = $wppa_opt['wppa_source_dir'].'/album-'.$data['album'].'/'.$data['filename'];
 					}
 					else {
-						$source = WPPA_UPLOAD_PATH.'/'.$photo.'.'.$data['ext'];
+						$source = wppa_get_photo_path($photo);
 					}
 				}
 				else {
-					$source = WPPA_UPLOAD_PATH.'/'.$photo.'.'.$data['ext'];
+					$source = wppa_get_photo_path($photo);
 				}
-				$dest = WPPA_UPLOAD_PATH.'/temp/'.$name.'.'.$data['ext'];
-				$zipfile = WPPA_UPLOAD_PATH.'/temp/'.$name.'.zip';
-				$tempdir = WPPA_UPLOAD_PATH.'/temp';
+				$dest 		= WPPA_UPLOAD_PATH.'/temp/'.$name.'.'.$data['ext'];
+				$zipfile 	= WPPA_UPLOAD_PATH.'/temp/'.$name.'.zip';
+				$tempdir 	= WPPA_UPLOAD_PATH.'/temp';
 				if ( ! is_dir($tempdir) ) @ mkdir($tempdir);
 				if ( ! is_dir($tempdir) ) {
 					echo '||2||'.__('Unable to create tempdir', 'wppa');
@@ -210,7 +210,7 @@ global $wppa;
 				exit;																// Nonce check failed
 			}
 			if ( $wppa_opt['wppa_rating_max'] == '5' && ! in_array($rating, array('-1', '1', '2', '3', '4', '5')) ) {
-				echo '0||101||'.$errtxt.':'.$rating;
+				echo '0||106||'.$errtxt.':'.$rating;
 				exit;																// Value out of range
 			}
 			elseif ( $wppa_opt['wppa_rating_max'] == '10' && ! in_array($rating, array('-1', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10')) ) {
@@ -218,122 +218,149 @@ global $wppa;
 				exit;																// Value out of range
 			}
 			
-			// In case value = -1 this is a dislike vote
-			if ( $rating == '-1' ) {
-				wppa_dislike_add($photo);
-				echo $occur.'||'.$photo;
-				exit;
-			}
-			
 			// Get other data
-			$user     = wppa_get_user();
-			$mylast   = $wpdb->get_var($wpdb->prepare( 'SELECT * FROM `'.WPPA_RATING.'` WHERE `photo` = %s AND `user` = %s ORDER BY `id` DESC LIMIT 1', $photo, $user ) ); 
-			$myavgrat = '0';														// Init
-			
-			// Case 0: Illegal second vote
-			if ( $mylast && $wppa_opt['wppa_rating_change'] == 'no' && $wppa_opt['wppa_rating_multi'] == 'no' ) {
-				echo '0||109||'.__('Illegal attempt to enter a second vote.', 'wppa');
+			if ( ! file_exists(wppa_get_thumb_path($photo)) ) {
+				echo '0||999||'.__('Photo has been removed.', 'wppa');
 				exit;
 			}
-			// Case 1: This is my first vote for this photo
-			if ( ! $mylast ) {
-				$key = wppa_nextkey(WPPA_RATING);
-				$iret = $wpdb->query($wpdb->prepare('INSERT INTO `'.WPPA_RATING. '` (`id`, `photo`, `value`, `user`) VALUES (%s, %s, %s, %s)', $key, $photo, $rating, $user));
+			$user     = wppa_get_user();
+			$mylast   = $wpdb->get_row($wpdb->prepare( 'SELECT * FROM `'.WPPA_RATING.'` WHERE `photo` = %s AND `user` = %s ORDER BY `id` DESC LIMIT 1', $photo, $user ), ARRAY_A ); 
+			$myavgrat = '0';			// Init
+			
+			// When done, we have to echo $occur.'||'.$photo.'||'.$index.'||'.$myavgrat.'||'.$allavgrat.'||'.$discount;
+			// So we have to do: process rating and find new $myavgrat, $allavgrat and $discount ( $occur, $photo and $index are known )
+			
+			// Case 0: Illegal second vote. Frontend takes care of this, but a hacker could enter an ajaxlink manually
+			if ( $mylast && ( 	// I did vote already
+								( ! ( wppa_switch('wppa_rating_change') || wppa_switch('wppa_rating_multi') ) ) || 	// No rating change or rating multi
+								( $mylast['value'] < '0' ) ||														// I did a dislike, can not modify
+								( $mylast['value'] > '0' && $rating == '-1' )										// I did a rating, can not change into dislike
+							)
+						) {
+				echo '0||109||'.__('Security check failure.', 'wppa');
+				exit;
+			}
+			// Case 1: value = -1 this is a legal dislike vote
+			if ( $rating == '-1' ) {
+				// Add my dislike
+				$iret = $wpdb->query($wpdb->prepare("INSERT INTO `".WPPA_RATING."` (`id`, `photo`, `value`, `user`) VALUES (%s, %s, %s, %s)", wppa_nextkey(WPPA_RATING), $photo, $rating, $user));
+				if ( $iret === false ) {
+					echo '0||101||'.$errtxt;
+					exit;															// Fail on storing vote
+				}
+				// Add points
+				if( function_exists('cp_alterPoints') && is_user_logged_in() ) cp_alterPoints(cp_currentUser(), $wppa_opt['wppa_cp_points_rating']);
+				wppa_dislike_check($photo);	// Check for email to be sent every .. dislikes
+				if ( ! is_file(wppa_get_thumb_path($photo)) ) {	// Photo is removed
+					 echo $occur.'||'.$photo.'||'.$index.'||-1||-1|0||'.$wppa_opt['wppa_dislike_delete'];
+					 exit;
+				}
+			}
+			// Case 2: This is my first vote for this photo
+			elseif ( ! $mylast ) {
+				// Add my vote
+				$iret = $wpdb->query($wpdb->prepare('INSERT INTO `'.WPPA_RATING. '` (`id`, `photo`, `value`, `user`) VALUES (%s, %s, %s, %s)', wppa_nextkey(WPPA_RATING), $photo, $rating, $user));
 				if ( $iret === false ) {
 					echo '0||102||'.$errtxt;
 					exit;															// Fail on storing vote
 				}
-				else {
-					//SUCCESSFUL RATING, ADD POINTS
-					if( function_exists('cp_alterPoints') && is_user_logged_in() ) {
-						cp_alterPoints(cp_currentUser(), $wppa_opt['wppa_cp_points_rating']);
-					}
-				}
-				$myavgrat = $rating;
+				// Add points
+				if( function_exists('cp_alterPoints') && is_user_logged_in() ) cp_alterPoints(cp_currentUser(), $wppa_opt['wppa_cp_points_rating']);
 			}
-			// Case 2: I will change my previously given vote
+			// Case 3: I will change my previously given vote
 			elseif ( $wppa_opt['wppa_rating_change'] == 'yes' ) {					// Votechanging is allowed
-				$query = $wpdb->prepare( 'UPDATE `'.WPPA_RATING.'` SET `value` = %s WHERE `photo` = %s AND `user` = %s LIMIT 1', $rating, $photo, $user );
-				$iret = $wpdb->query($query);
+				$iret = $wpdb->query($wpdb->prepare( 'UPDATE `'.WPPA_RATING.'` SET `value` = %s WHERE `photo` = %s AND `user` = %s LIMIT 1', $rating, $photo, $user ) );
 				if ( $iret === false ) {
 					echo '0||103||'.$errtxt;
 					exit;															// Fail on update
 				}
-				$myavgrat = $rating;
 			}
-			// Case 3: Add another vote from me
+			// Case 4: Add another vote from me
 			elseif ( $wppa_opt['wppa_rating_multi'] == 'yes' ) {					// Rating multi is allowed
-				$key = wppa_nextkey(WPPA_RATING);
-				$query = $wpdb->prepare( 'INSERT INTO `'.WPPA_RATING. '` (`id`, `photo`, `value`, `user`) VALUES (%s, %s, %s, %s)', $key, $photo, $rating, $user );
-				$iret = $wpdb->query($query);
+				$iret = $wpdb->query($wpdb->prepare( 'INSERT INTO `'.WPPA_RATING. '` (`id`, `photo`, `value`, `user`) VALUES (%s, %s, %s, %s)', wppa_nextkey(WPPA_RATING), $photo, $rating, $user ) );
 				if ( $iret === false ) {
 					echo '0||104||'.$errtxt;
 					exit;															// Fail on storing vote
 				}
-				// Compute my avg rating
-				$query = $wpdb->prepare( 'SELECT * FROM `'.WPPA_RATING.'`  WHERE `photo` = %s AND `user` = %s', $photo, $user );
-				$myrats = $wpdb->get_results($query, ARRAY_A);
-				if ( ! $myrats) {
-					echo '0||105||'.$wartxt;
-					exit;															// Fail on retrieve
-				}
-				$sum = 0;
-				$cnt = 0;
-				foreach ($myrats as $rt) {
-					$sum += $rt['value'];
-					$cnt ++;
-				}
-				if ($cnt > 0) $myavgrat = $sum/$cnt; else $myavgrat = '0';
 			}
 			else { 																	// Should never get here....
 				echo '0||110||'.__('Unexpected error', 'wppa');
 				exit;
 			}
 
-			// Find Old avgrat
-			$oldavgrat = $wpdb->get_var($wpdb->prepare('SELECT `mean_rating` FROM '.WPPA_PHOTOS.' WHERE `id` = %s', $photo));
-			if ($oldavgrat === false) {
-				echo '0||108||'.$wartxt;
-				exit;																// Fail on read old avgrat
+			// Compute my avg rating
+			$myrats = $wpdb->get_results($wpdb->prepare( 'SELECT * FROM `'.WPPA_RATING.'`  WHERE `photo` = %s AND `user` = %s', $photo, $user ), ARRAY_A);
+			if ( ! $myrats ) {
+				echo '0||105||'.$wartxt;	// Fail on retrieve
+				exit;
 			}
+			$sum = 0;
+			$cnt = 0;
+			foreach ( $myrats as $rat ) {
+				if ( $rat['value'] == '-1' ) {
+					$sum += $wppa_opt['wppa_dislike_value'];
+				}
+				else {
+					$sum += $rat['value'];
+				}
+				$cnt ++;
+			}
+			$myavgrat = $sum/$cnt; 
+			$i = $wppa_opt['wppa_rating_prec'];
+			$j = $i + '1';
+			$myavgrat = sprintf('%'.$j.'.'.$i.'f', $myavgrat);
+			
 			// Compute new allavgrat
 			$ratings = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM '.WPPA_RATING.' WHERE `photo` = %s', $photo), ARRAY_A);
-			if ($ratings) {
+			if ( $ratings ) {
 				$sum = 0;
 				$cnt = 0;
-				foreach ($ratings as $rt) {
-					$sum += $rt['value'];
+				foreach ( $ratings as $rat ) {
+					if ( $rat['value'] == '-1' ) {
+						$sum += $wppa_opt['wppa_dislike_value'];
+					}
+					else {
+						$sum += $rat['value'];
+					}
 					$cnt ++;
 				}
-				if ($cnt > 0) $allavgrat = $sum/$cnt; else $allavgrat = '0';
-				if ($allavgrat == '10') $allavgrat = '9.99999';	// For sort order reasons text field
+				$allavgrat = $sum/$cnt;
+				if ( $allavgrat == '10' ) $allavgrat = '9.99999999';	// For sort order reasons text field
 			}
 			else $allavgrat = '0';
 
-			// Store it in the photo info if it has been changed
-			if ( $oldavgrat != $allavgrat ) {
-				$query = $wpdb->prepare('UPDATE `'.WPPA_PHOTOS. '` SET `mean_rating` = %s WHERE `id` = %s', $allavgrat, $photo);
-				$iret = $wpdb->query($query);
-				if ( $iret === false ) {
-					echo '0||106||'.$wartxt;
-					exit;																// Fail on save
-				}
+			// Store it in the photo info 
+			$iret = $wpdb->query($wpdb->prepare( 'UPDATE `'.WPPA_PHOTOS. '` SET `mean_rating` = %s WHERE `id` = %s', $allavgrat, $photo ) );
+			if ( $iret === false ) {
+				echo '0||106||'.$wartxt;
+				exit;																// Fail on save
 			}
 			
-			// Compute rating_count
+			// Compute rating_count and store in the photo info
 			$ratcount = $wpdb->get_var( $wpdb->prepare( 'SELECT COUNT(*) FROM `'.WPPA_RATING.'`  WHERE `photo` = %s', $photo));
 			if ( $ratcount !== false ) {
-				$query = $wpdb->prepare('UPDATE `'.WPPA_PHOTOS. '` SET `rating_count` = %s WHERE `id` = %s', $ratcount, $photo);
-				$iret = $wpdb->query($query);
+				$iret = $wpdb->query($wpdb->prepare('UPDATE `'.WPPA_PHOTOS. '` SET `rating_count` = %s WHERE `id` = %s', $ratcount, $photo));
 				if ( $iret === false ) {
 					echo '0||107||'.$wartxt;
 					exit;																// Fail on save
 				}
 			}
 
+			// Format $allavgrat for output
+			$allavgrat = wppa_get_rating_by_id($photo, 'nolabel').'|'.$ratcount;//wppa_get_rating_count_by_id($photo);
+
+			// Compute dsilike count
+//			if ( $rating == '-1' ) {	// I did a dislike, count dislikes of this photo
+				$discount = $wpdb->get_var($wpdb->prepare( "SELECT COUNT(*) FROM `".WPPA_RATING."` WHERE `photo` = %s AND `value` = -1", $photo));
+				if ( $discount === false ) {
+					echo '0||108||'.$wartxt;
+					exit;																// Fail on save
+				}
+//			}
+
 			// Success!
 			wppa_clear_cache();
-			echo $occur.'||'.$photo.'||'.$index.'||'.$myavgrat.'||'.$allavgrat;
+			echo $occur.'||'.$photo.'||'.$index.'||'.$myavgrat.'||'.$allavgrat.'||'.$discount;
 			break;
 		
 		case 'render':	
@@ -572,7 +599,7 @@ global $wppa;
 			
 			$ext = $wpdb->get_var($wpdb->prepare("SELECT `ext` FROM `".WPPA_PHOTOS."` WHERE `id` = %s", $photo));
 			
-			if ( wppa_add_watermark(WPPA_UPLOAD_PATH.'/'.$photo.'.'.$ext) ) {
+			if ( wppa_add_watermark(wppa_get_photo_path($photo)) ) {
 				echo '||0||'.__('Watermark applied', 'wppa');
 				exit;
 			}
@@ -629,7 +656,8 @@ global $wppa;
 					break;
 				case 'remake':
 					if ( wppa_remake_files('', $photo) ) {
-			//			wppa_update_modified($photo);
+						wppa_bump_photo_rev();
+						wppa_bump_thumb_rev();
 						echo '||0||'.__('Photo files remade', 'wppa');
 					}
 					else {
@@ -644,6 +672,8 @@ global $wppa;
 					$leftorright = $item == 'rotleft' ? __('left', 'wppa') : __('right', 'wppa');
 					if ( ! $wppa['error'] ) {
 						wppa_update_modified($photo);
+						wppa_bump_photo_rev();
+						wppa_bump_thumb_rev();
 						echo '||0||'.sprintf(__('Photo %s rotated %s', 'wppa'), $photo, $leftorright);
 					}
 					else {
@@ -960,6 +990,12 @@ global $wppa;
 				case 'wppa_dislike_mail_every':
 					wppa_ajax_check_range($value, false, '0', false, __('Notify inappropriate', 'wppa'));
 					break;
+				case 'wppa_dislike_set_pending':
+					wppa_ajax_check_range($value, false, '0', false, __('Dislike pending', 'wppa'));
+					break;
+				case 'wppa_dislike_delete':
+					wppa_ajax_check_range($value, false, '0', false, __('Dislike delete', 'wppa'));
+					break;
 				case 'wppa_max_execution_time':
 					wppa_ajax_check_range($value, false, '0', '900', __('Max execution time', 'wppa'));
 					break;
@@ -973,6 +1009,12 @@ global $wppa;
 					break;
 				case 'wppa_imgfact_count':
 					wppa_ajax_check_range($value, false, '2', '24', __('Number of coverphotos', 'wppa'));
+					break;
+				case 'wppa_dislike_value':
+					wppa_ajax_check_range($value, false, '-10', '0', __('Dislike value', 'wppa'));
+					break;
+				case 'wppa_slideshow_pagesize':
+					wppa_ajax_check_range($value, false, '0', false, __('Slideshow pagesize', 'wppa'));
 					break;
 				case 'wppa_rating_clear':
 					$iret1 = $wpdb->query( 'TRUNCATE TABLE '.WPPA_RATING );
@@ -1229,10 +1271,10 @@ global $wpdb;
 	// Get filename
 	$filename = $photoinfo['filename'];
 	// Delete fullsize image
-	$file = ABSPATH.'wp-content/uploads/wppa/'.$photo.'.'.$ext;
+	$file = wppa_get_photo_path($photo);//ABSPATH.'wp-content/uploads/wppa/'.$photo.'.'.$ext;
 	if (file_exists($file)) unlink($file);
 	// Delete thumbnail image
-	$file = ABSPATH.'wp-content/uploads/wppa/thumbs/'.$photo.'.'.$ext;
+	$file = wppa_get_thumb_path($photo);//ABSPATH.'wp-content/uploads/wppa/thumbs/'.$photo.'.'.$ext;
 	if (file_exists($file)) unlink($file);
 	// Delete sourcefile
 	wppa_delete_source($filename, $album);
@@ -1243,7 +1285,5 @@ global $wpdb;
 	$wpdb->query($wpdb->prepare('DELETE FROM `'.WPPA_IPTC.'` WHERE `photo` = %s', $photo));
 	$wpdb->query($wpdb->prepare('DELETE FROM `'.WPPA_EXIF.'` WHERE `photo` = %s', $photo));
 	wppa_flush_treecounts($album);
-	// Delete dislikes
-	wppa_dislike_remove($photo);
 
 }

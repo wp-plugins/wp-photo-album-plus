@@ -3,13 +3,17 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the slideshow high level functions
-* Version 5.0.7
+* Version 5.0.15
 *
 */
 
 function wppa_the_slideshow() {
 global $wppa_opt;
 
+	wppa_prepare_slideshow_pagination();
+	
+	if ( $wppa_opt['wppa_pagelink_pos'] == 'top' || $wppa_opt['wppa_pagelink_pos'] == 'both' ) wppa_slide_page_links();
+	
 	if ( $wppa_opt['wppa_split_namedesc'] ) {
 		$indexes = explode(',', $wppa_opt['wppa_slide_order_split']);
 		$i = '0';
@@ -101,6 +105,89 @@ global $wppa_opt;
 			$i++;
 		}
 	}
+	if ( $wppa_opt['wppa_pagelink_pos'] == 'bottom' || $wppa_opt['wppa_pagelink_pos'] == 'both' ) wppa_slide_page_links();
+}
+
+function wppa_prepare_slideshow_pagination() {
+global $wppa_opt;
+global $wppa;
+global $thumbs;
+
+	// Page size defined?
+	if ( ! $wppa_opt['wppa_slideshow_pagesize'] ) {
+		$wppa['slideshow_pagination'] = false;
+		return;
+	}
+	
+	// Not in a widget!
+	if ( $wppa['in_widget'] ) {
+		$wppa['slideshow_pagination'] = false;
+		return;
+	}
+	
+	// Not when slideonly
+	if ( $wppa['is_slideonly'] || $wppa['is_slideonlyf'] ) {
+		$wppa['slideshow_pagination'] = false;
+		return;
+	}
+	
+	// Fits in one page?
+	$pagsiz = $wppa_opt['wppa_slideshow_pagesize'];
+	if ( count($thumbs) <= $pagsiz ) {
+		$wppa['slideshow_pagination'] = false;
+		return;
+	}
+	
+	// Pagination on and required
+	$wppa['slideshow_pagination'] = true;
+	$nslides = count($thumbs);
+	$wppa['npages'] = ceil($nslides / $pagsiz);
+	
+	// Assume page = 1
+	$wppa['curpage'] = '1';
+		
+	// If a page is requested, find it
+	$pagreq = wppa_get_get('page');
+	if ( is_numeric($pagreq) && $pagreq > '0' ) {
+		$wppa['curpage'] = $pagreq;
+	}
+		
+	// If a photo requested, find the page where its on
+	elseif ( $wppa['start_photo'] ) {
+		$first = true;
+		foreach ( array_keys($thumbs) as $key ) {
+		if ( $first ) { wppa_dbg_msg('First index = '.$key); $first = false; }
+			if ( $thumbs[$key]['id'] == $wppa['start_photo'] ) {
+				$wppa['curpage'] = floor($key / $pagsiz) + '1';
+				wppa_dbg_msg('Startphoto is on page #'.$wppa['curpage']);
+			}
+		}
+	}
+	
+	// Filmstrip assumes array $thumbs to start at index 0.
+	// We shift the req'd part down to the beginning and unset the rest
+	$skips = ( $wppa['curpage'] - '1' ) * $pagsiz;
+	wppa_dbg_msg('Skips = '.$skips);
+	foreach ( array_keys($thumbs) as $key ) {
+		if ( $key < $pagsiz ) {
+			if ( isset($thumbs[$key + $skips]) ) {
+				if ( $skips ) $thumbs[$key] = $thumbs[$key + $skips];
+			}
+			else unset($thumbs[$key]);	// last page < pagesize
+		}
+		else unset ( $thumbs[$key] );
+	}
+	wppa_dbg_msg('Thumbs has '.count($thumbs).' elements.');
+}
+
+function wppa_slide_page_links() {
+global $wppa;
+global $thumbs;
+
+	if ( ! $wppa['slideshow_pagination'] ) return;	// No pagination
+
+	wppa_page_links($wppa['npages'], $wppa['curpage'], true);
+	
 }
 
 function wppaStartStop($opt = '') {
@@ -335,11 +422,14 @@ global $wppa_opt;
 		return;
 	}
 	$fs = $wppa_opt['wppa_fontsize_nav'];	
+	if ($fs != '') $fs += 3; else $fs = '15';	// iconsize = fontsize+3, Default to 15
 	$dh = $fs + '6';
 	$size = 'font-size:'.$fs.'px;';
 	
+	// Open the rating box
 	$wppa['out'] .= wppa_nltab('+').'<div id="wppa-rating-'.$wppa['master_occur'].'" class="wppa-box wppa-nav wppa-nav-text" style="'.__wcs('wppa-box').__wcs('wppa-nav').__wcs('wppa-nav-text').$size.' text-align:center;">';
 
+	// Graphic display ?
 	if ( $wppa_opt['wppa_rating_display_type'] == 'graphic' ) {
 		if ( $wppa_opt['wppa_rating_max'] == '5' ) {
 			$r['1'] = __a('very low', 'wppa_theme');
@@ -350,10 +440,10 @@ global $wppa_opt;
 		}
 		else for ( $i = '1'; $i <= '10'; $i++ ) $r[$i] = $i;
 
-		if ($fs != '') $fs += 3; else $fs = '15';	// iconsize = fontsize+3, Default to 15
 		$style = 'style="height:'.$fs.'px; margin:0 0 -3px 0; padding:0; box-shadow:none; display:inline;"';
 		$icon = 'star.png';
 
+		// Display avg rating
 		if ( $wppa_opt['wppa_show_avg_rating'] ) {
 			$wppa['out'] .= '<span id="wppa-avg-rat-'.$wppa['master_occur'].'">'.__a('Average&nbsp;rating', 'wppa_theme').'</span>&nbsp;';
 			
@@ -366,50 +456,75 @@ global $wppa_opt;
 				$wppa['out'] .= '<img src="'.wppa_get_imgdir().'transp.png" style="width:'.$wppa_opt['wppa_ratspacing'].'px; height:15px; box-shadow:none; padding:0; margin:0; border:none;" />';
 			}
 		}
-	
-		$pad = round(($wppa_opt['wppa_ratspacing'] - $fs) / 2);
-		if ( $pad < 5 ) $pad = '5';
-		$tdstyle = 'style="height:'.$fs.'px; margin:0 0 -3px 0; padding:0 '.$pad.'px; box-shadow:none; display:inline;"';
-		if ( $wppa_opt['wppa_dislike_mail_every'] ) {
-			$evnts = 'onmouseover="jQuery(this).stop().fadeTo(100, 1.0)" onmouseout="jQuery(this).stop().fadeTo(100, wppaStarOpacity)" onclick="if (confirm(\''.__a('Are you sure you want to mark this image as inappropriate?').'\')) wppaRateIt('.$wppa['master_occur'].', -1)"';
-			$title = 'title="'.__a('Click this if you do NOT like this image!', 'wppa_theme').'"';
-			$wppa['out'] .= '&nbsp;<img id="wppa-dislike-'.$wppa['master_occur'].'" '.$title.' src="'.wppa_get_imgdir().'thumbdown.png" '.$tdstyle.' class="no-shadow" '.$evnts.' />&nbsp;';
 
-		}
-		
-		if (!$wppa_opt['wppa_rating_login'] || is_user_logged_in()) {
+		// Display my rating
+		if ( ! $wppa_opt['wppa_rating_login'] || is_user_logged_in() ) {	// Logged in or do'nt care
+			// Show dislike icon?
+			$pad = round(($wppa_opt['wppa_ratspacing'] - $fs) / 2);
+			if ( $pad < 5 ) $pad = '5';
+			$tdstyle = 'style="height:'.$fs.'px; margin:0 0 -3px 0; padding:0 '.$pad.'px; box-shadow:none; display:inline;"';
+			if ( $wppa_opt['wppa_dislike_mail_every'] ) {
+				$evnts = 'onmouseover="jQuery(this).stop().fadeTo(100, 1.0)" onmouseout="jQuery(this).stop().fadeTo(100, wppaStarOpacity)" onclick="if (confirm(\''.__a('Are you sure you want to mark this image as inappropriate?').'\')) wppaRateIt('.$wppa['master_occur'].', -1)"';
+				$title = 'title="'.__a('Click this if you do NOT like this image!', 'wppa_theme').'"';
+				$wppa['out'] .= '<img id="wppa-dislike-'.$wppa['master_occur'].'" '.$title.' src="'.wppa_get_imgdir().'thumbdown.png" '.$tdstyle.' class="no-shadow" '.$evnts.' />';
+				if ( wppa_switch('wppa_dislike_show_count') ) $wppa['out'] .= '<span id="wppa-discount-'.$wppa['master_occur'].'" style="cursor:default" title="'.__a('Nuber of people who marked this photo as inapprpriate').'"></span>';
+			}
+			// Filler
+			$tfstyle = 'style="height:'.$fs.'px; width:'.$fs.'px; margin:0 0 -3px 0; padding:0 '.$pad.'px; box-shadow:none; display:none;"';
+			$wppa['out'] .= '<img id="wppa-filler-'.$wppa['master_occur'].'" src="'.wppa_get_imgdir().'thumbdown.png" '.$tfstyle.' class="no-shadow" onmouseover="jQuery(this).stop().fadeTo(100, 1.0)" onmouseout="jQuery(this).stop().fadeTo(100, wppaStarOpacity)"/>';
+
+			// Text left if no avg rating
 			if ( ! $wppa_opt['wppa_show_avg_rating'] ) $wppa['out'] .= __a('My&nbsp;rating', 'wppa_theme').':&nbsp;';
-			
+		
+			// Display the my rating stars
 			$i = '1';
 			while ($i <= $wppa_opt['wppa_rating_max']) {
 				$wppa['out'] .= wppa_nltab().'<img id="wppa-rate-'.$wppa['master_occur'].'-'.$i.'" class="wppa-rate-'.$wppa['master_occur'].' no-shadow" '.$style.' src="'.wppa_get_imgdir().$icon.'" alt="'.$i.'" title="'.__a('My&nbsp;rating', 'wppa_theme').': '.$r[$i].'" onmouseover="wppaFollowMe('.$wppa['master_occur'].', '.$i.')" onmouseout="wppaLeaveMe('.$wppa['master_occur'].', '.$i.')" onclick="wppaRateIt('.$wppa['master_occur'].', '.$i.')" />';
 				$i++;
 			}
 			
+			// Text right if avg rating diaplayed
 			if ( $wppa_opt['wppa_show_avg_rating'] ) $wppa['out'] .= '&nbsp;'.'<span id="wppa-my-rat-'.$wppa['master_occur'].'">'.__a('My&nbsp;rating', 'wppa_theme').'</span>';
 		}
 		else {
 			$wppa['out'] .= sprintf(__a('You must <a href="%s">login</a> to vote', 'wppa_theme'), site_url('wp-login.php', 'login'));
 
 		}
-	}	// display_type == graphic
+	}	
+	// display_type = numeric?
 	elseif ( $wppa_opt['wppa_rating_display_type'] == 'numeric' ) { 	
+		// Display avg rating
 		if ( $wppa_opt['wppa_show_avg_rating'] ) {
 			$wppa['out'] .= __a('Average&nbsp;rating', 'wppa_theme').':&nbsp;';
 			$wppa['out'] .= '<span id="wppa-numrate-avg-'.$wppa['master_occur'].'"></span>';
-			$wppa['out'] .= '&nbsp;-&nbsp;';
+			$wppa['out'] .= ' &bull;';
 		}
-		
-		if (!$wppa_opt['wppa_rating_login'] || is_user_logged_in()) {
-			$wppa['out'] .= __a('My&nbsp;rating', 'wppa_theme').':&nbsp;';
+
+		// Display my rating
+		if ( ! $wppa_opt['wppa_rating_login'] || is_user_logged_in() ) {	// Logged in or do'nt care
+			// Show dislike icon?
+			$pad = round(($wppa_opt['wppa_ratspacing'] - $fs) / 2);
+			if ( $pad < 5 ) $pad = '5';
+			$tdstyle = 'style="height:'.$fs.'px; margin:0 0 -3px 0; padding:0 '.$pad.'px; box-shadow:none; display:inline;"';
+			if ( $wppa_opt['wppa_dislike_mail_every'] ) {
+				$evnts = 'onmouseover="jQuery(this).stop().fadeTo(100, 1.0)" onmouseout="jQuery(this).stop().fadeTo(100, wppaStarOpacity)" onclick="if (confirm(\''.__a('Are you sure you want to mark this image as inappropriate?').'\')) wppaRateIt('.$wppa['master_occur'].', -1)"';
+				$title = 'title="'.__a('Click this if you do NOT like this image!', 'wppa_theme').'"';
+				$wppa['out'] .= '<div id="wppa-dislike-imgdiv-'.$wppa['master_occur'].'" style="display:inline" ><img id="wppa-dislike-'.$wppa['master_occur'].'" '.$title.' src="'.wppa_get_imgdir().'thumbdown.png" '.$tdstyle.' class="no-shadow" '.$evnts.' /> </div>';
+				if ( wppa_switch('wppa_dislike_show_count') ) $wppa['out'] .= '<span id="wppa-discount-'.$wppa['master_occur'].'" style="cursor:default" title="'.__a('Nuber of people who marked this photo as inapprpriate').'"></span>';
+			}
+			// Filler
+//			$wppa['out'] .= '<span id="wppa-filler-'.$wppa['master_occur'].'" > -</span>';
+
+			// 
+			$wppa['out'] .= ' '.__a('My rating:', 'wppa_theme');
 			$wppa['out'] .= '<span id="wppa-numrate-mine-'.$wppa['master_occur'].'"></span>';
 		}
 		else {
 			$wppa['out'] .= sprintf(__a('You must <a href="%s">login</a> to vote', 'wppa_theme'), site_url('wp-login.php', 'login'));
-
 		}
-	}	// display_type == numeric
+	}	
 	
+	// Close rating box
 	$wppa['out'] .= wppa_nltab('-').'</div><!-- wppa-rating-'.$wppa['master_occur'].' -->';
 }
 

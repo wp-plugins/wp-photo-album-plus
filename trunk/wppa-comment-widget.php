@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the recent commets on photos
-* Version 4.9.14
+* Version 5.0.15
 */
 
 class wppaCommentWidget extends WP_Widget {
@@ -51,8 +51,7 @@ class wppaCommentWidget extends WP_Widget {
 				$width      = $imgstyle_a['width'];
 				$height     = $imgstyle_a['height'];
 				$cursor		= $imgstyle_a['cursor'];
-				$usethumb	= wppa_use_thumb_file($image['id'], $width, $height) ? '/thumbs' : '';
-				$imgurl 	= WPPA_UPLOAD_URL . $usethumb . '/' . $image['id'] . '.' . $image['ext'];
+				$imgurl 	= wppa_get_thumb_url($image['id']);
 				
 				$imgevents = wppa_get_imgevents('thumb', $image['id'], true);	
 
