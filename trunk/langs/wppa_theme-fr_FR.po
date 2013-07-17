@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wppa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-07-14 15:32+0100\n"
-"PO-Revision-Date: 2013-07-14 15:32+0100\n"
-"Last-Translator: J.N. Breetvelt <OpaJaap@OpaJaap.nl>\n"
+"POT-Creation-Date: 2013-07-16 15:02+0100\n"
+"PO-Revision-Date: 2013-07-16 15:05+0100\n"
+"Last-Translator: Li-An <lian00@gmail.com>\n"
 "Language-Team: oVa <ova13lastar@gmail.com>\n"
 "Language: fr_FR\n"
 "MIME-Version: 1.0\n"
@@ -90,63 +90,63 @@ msgstr "Quté:"
 msgid "Photo not found."
 msgstr "Photo non trouvée."
 
-#: wppa-common-functions.php:704
+#: wppa-common-functions.php:706
 msgid "Default photo album for"
 msgstr "Album photo par défaut pour"
 
-#: wppa-common-functions.php:1081
+#: wppa-common-functions.php:1083
 msgid "1 second"
 msgstr "1 seconde"
 
-#: wppa-common-functions.php:1082 wppa-functions.php:6488
+#: wppa-common-functions.php:1084 wppa-functions.php:6488
 msgid "seconds"
 msgstr "secondes"
 
-#: wppa-common-functions.php:1086
+#: wppa-common-functions.php:1088
 msgid "1 minute"
 msgstr "1 minute"
 
-#: wppa-common-functions.php:1087 wppa-functions.php:6487
+#: wppa-common-functions.php:1089 wppa-functions.php:6487
 msgid "minutes"
 msgstr "minutes"
 
-#: wppa-common-functions.php:1091
+#: wppa-common-functions.php:1093
 msgid "1 hour"
 msgstr "1 heure"
 
-#: wppa-common-functions.php:1092 wppa-functions.php:6486
+#: wppa-common-functions.php:1094 wppa-functions.php:6486
 msgid "hours"
 msgstr "heures"
 
-#: wppa-common-functions.php:1096
+#: wppa-common-functions.php:1098
 msgid "1 day"
 msgstr "1 jour"
 
-#: wppa-common-functions.php:1097 wppa-functions.php:6485
+#: wppa-common-functions.php:1099 wppa-functions.php:6485
 msgid "days"
 msgstr "jours"
 
-#: wppa-common-functions.php:1101
+#: wppa-common-functions.php:1103
 msgid "1 week"
 msgstr "1 semaine"
 
-#: wppa-common-functions.php:1102 wppa-functions.php:6484
+#: wppa-common-functions.php:1104 wppa-functions.php:6484
 msgid "weeks"
 msgstr "semaines"
 
-#: wppa-common-functions.php:1106
+#: wppa-common-functions.php:1108
 msgid "1 month"
 msgstr "1 mois"
 
-#: wppa-common-functions.php:1107
+#: wppa-common-functions.php:1109
 msgid "months"
 msgstr "mois"
 
-#: wppa-common-functions.php:1110
+#: wppa-common-functions.php:1112
 msgid "1 year"
 msgstr "1 an"
 
-#: wppa-common-functions.php:1111
+#: wppa-common-functions.php:1113
 msgid "years"
 msgstr "ans"
 
@@ -904,19 +904,19 @@ msgstr "Vous avez marqué cette image comme inappropriée."
 
 #: wppa-non-admin.php:269
 msgid "No dislikes"
-msgstr ""
+msgstr "aucun avis négatif"
 
 #: wppa-non-admin.php:270
 msgid "1 dislike"
-msgstr ""
+msgstr "un avis négatif"
 
 #: wppa-non-admin.php:271
 msgid "dislikes"
-msgstr ""
+msgstr "avis négatif"
 
 #: wppa-non-admin.php:272
 msgid "including mine"
-msgstr ""
+msgstr "en comptant le mien"
 
 #: wppa-non-admin.php:276
 msgid "Please enter your name"
@@ -986,9 +986,8 @@ msgid "Click this if you do NOT like this image!"
 msgstr "Cliquez ici si vous N'aimez PAS cette image !"
 
 #: wppa-slideshow.php:470 wppa-slideshow.php:513
-#, fuzzy
 msgid "Nuber of people who marked this photo as inapprpriate"
-msgstr "Vous avez marqué cette image comme inappropriée."
+msgstr "Nombre de personnes qui ont marqué cette image comme inappropriée."
 
 #: wppa-slideshow.php:490 wppa-slideshow.php:523
 #, php-format
@@ -996,9 +995,8 @@ msgid "You must <a href=\"%s\">login</a> to vote"
 msgstr "Vous devez vous <a href=\"%s\">connecter</a> pour voter"
 
 #: wppa-slideshow.php:519
-#, fuzzy
 msgid "My rating:"
-msgstr "Mon&nbsp;évaluation"
+msgstr "Mon évaluation::"
 
 #: wppa-slideshow.php:600
 #, php-format
@@ -1037,7 +1035,7 @@ msgstr "- - - Boîte EXIF activée - - -"
 
 #: wppa-utils.php:144
 msgid "none"
-msgstr ""
+msgstr "aucun"
 
 #: wppa-utils.php:155
 msgid "unknown"
@@ -1068,18 +1066,18 @@ msgstr "Tous les albums"
 msgid "Rating: %s"
 msgstr "Évaluation: %s"
 
-#: wppa-utils.php:505
+#: wppa-utils.php:531
 #, php-format
 msgid "The visitors email address is: <a href=\"mailto:%s\">%s</a>"
 msgstr "L'adresse email des visiteurs est: <a href=\"mailto:%s\">%s</a>"
 
-#: wppa-utils.php:511
+#: wppa-utils.php:537
 #, php-format
 msgid "The visitor says his email address is: <a href=\"mailto:%s\">%s</a>"
 msgstr ""
 "Le visiteur dit que son adresse email est: <a href=\"mailto:%s\">%s</a>"
 
-#: wppa-utils.php:516
+#: wppa-utils.php:542
 #, php-format
 msgid ""
 "This message is automaticly generated at %s. It is useless to respond to it."
