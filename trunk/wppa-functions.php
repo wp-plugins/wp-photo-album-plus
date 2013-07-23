@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions and API modules
-* Version 5.0.15
+* Version 5.0.16
 *
 */
 
@@ -212,9 +212,6 @@ $pagid = $wpdb->get_var($wpdb->prepare("SELECT `cover_linkpage` FROM `".WPPA_ALB
 }
 function wppa_page_breadcrumb($sep) {
 
-//	if (isset($_REQUEST['page_id'])) $page = $_REQUEST['page_id'];
-//	elseif ( isset($_REQUEST['wppa-fromp']) ) $page = $_REQUEST['wppa-fromp'];
-//	else $page = '0';
 	$page = wppa_get_the_page_id();
 	wppa_crumb_page_ancestors($sep, $page); 
 }
@@ -255,8 +252,11 @@ function wppa_get_the_page_id() {
 function wppa_albums($id = '', $type = '', $size = '', $align = '') {
 global $wppa;
 global $wppa_opt;
+global $wppa_lang;
+global $wppa_locale;
 
 	wppa_dbg_msg('Entering wppa_albums');
+	wppa_dbg_msg('Lang='.$wppa_lang.', Locale='.$wppa_locale.', Ajax='.$wppa['ajax'], 'red');
 	
 	// Process a user upload request, if any. Do it here: it may affect this occurences display
 	wppa_user_upload();
@@ -296,8 +296,8 @@ global $wppa_opt;
 		$wppa['start_album'] 	= wppa_get_get('album', '');
 		$wppa['is_cover'] 		= wppa_get_get('cover', '0');
 		$wppa['is_slide'] 		= wppa_get_get('slide', false) !== false || ( wppa_get_get('album', false) !== false && wppa_get_get('photo') );
-if ( $wppa['is_slide'] ) wppa_dbg_msg('Is Slide');
-else wppa_dbg_msg('Is NOT Slide');
+		if ( $wppa['is_slide'] ) wppa_dbg_msg('Is Slide');
+		else wppa_dbg_msg('Is NOT Slide');
 		$wppa['is_slideonly'] 	= '0';
 		$wppa['is_slideonlyf'] 	= '0';
 		$wppa['single_photo'] 	= $wppa['is_slide'] ? '0' : wppa_get_get('photo', '');
@@ -315,8 +315,8 @@ else wppa_dbg_msg('Is NOT Slide');
 		$wppa['featen_count']	= wppa_get_get('featen', '0');
 		$wppa['is_featen']		= $wppa['featen_count'] != '0';
 		$wppa['is_tag']			= trim(trim(strip_tags(wppa_get_get('tag', false)), ','), ';');
-if ( $wppa['is_tag'] ) wppa_dbg_msg('Is Tag');
-else wppa_dbg_msg('Is NOT Tag');
+		if ( $wppa['is_tag'] ) wppa_dbg_msg('Is Tag');
+		else wppa_dbg_msg('Is NOT Tag');
 		$wppa['photos_only'] 	= wppa_get_get('photos-only', false);
 		$wppa['page'] 			= wppa_get_get('page', '');
 	}
@@ -623,7 +623,7 @@ global $wppa;
 		if ( ! wppa_have_access($wppa['start_album']) ) return;	// No access to this album
 	}
 	else {
-		if ( ! wppa_have_access('any') ) return;				// No access to any album
+		if ( ! wppa_have_access('0') ) return;				// No access to any album
 	}
 	
 	wppa_container('open');
@@ -706,13 +706,10 @@ global $thumb;
 	$occur = $wppa['in_widget'] ? $wppa['widget_occur'] : $wppa['occur'];
 	$w = $wppa['in_widget'] ? 'w' : '';
 
-if ( ! $alb ) $alb = $thumb['album'];
+	if ( ! $alb ) $alb = $thumb['album'];
 	
 	$result = wppa_get_permalink().'wppa-album='.$alb.'&amp;wppa-photo='.$thumb['id'].'&amp;wppa-cover=0&amp;wppa-'.$w.'occur='.$occur;	
 	if ( $single ) $result .= '&amp;wppa-single=1';
-	
-//	if ( $single ) $result = wppa_get_permalink().'wppa-single=1&amp;wppa-album='.$alb.'&amp;wppa-photo='.$thumb['id'].'&amp;wppa-cover=0&amp;wppa-'.$w.'occur='.$occur;	
-//	          else $result = wppa_get_permalink().                  'wppa-album='.$alb.'&amp;wppa-photo='.$thumb['id'].'&amp;wppa-cover=0&amp;wppa-'.$w.'occur='.$occur;	
 	
 	return $result;
 }
@@ -1360,11 +1357,6 @@ global $thumb;
 
 	// Process a rating if given for this photo
 	if ( $wppa_opt['wppa_rating_on'] ) {	// Ajax only
-//		$rating_request = (wppa_get_get('rating') && ($id == $ratingphoto));
-//		$rating_allowed = (!$wppa_opt['wppa_rating_login'] || is_user_logged_in());
-//		if ($wppa_opt['wppa_rating_on'] && $rating_request && $rating_allowed) {
-//			wppa_do_rating($id, $user);
-//		}
 		
 		// Find my (avg) rating
 		$rats = $wpdb->get_results( $wpdb->prepare( 'SELECT `value` FROM `'.WPPA_RATING.'` WHERE `photo` = %s AND `user` = %s', $id, $user ), ARRAY_A ); 
@@ -1476,10 +1468,6 @@ global $thumb;
 			$desc = wpautop($desc);	
 		}
 
-		// Further filtering required?
-	//	if ( $wppa_opt['wppa_allow_foreign_shortcodes'] ) {
-	//		$desc = do_shortcode($desc); //apply_filters('the_content', $desc);
-	//	}
 		// And format
 		$desc = wppa_html(esc_js(stripslashes($desc)));
 
@@ -1505,10 +1493,6 @@ global $thumb;
 	
 	if ( $thumb['status'] == 'pending' ) {
 		$desc .= wppa_html(esc_js(wppa_moderate_links('slide', $id)));
-//		$desc .= wppa_html(esc_js('<br class="wppa-approve-'.$id.'" /><span class="wppa-approve-'.$id.'" style="color:red">'.__a('Awaiting moderation').'</span>'));
-//		if ( current_user_can('wppa_moderate') ) {
-//			$desc .= wppa_html(esc_js(wppa_approve_photo_button($id)));
-//		}
 	}
 
 	// Share HTML 
@@ -1543,118 +1527,6 @@ global $thumb;
 	// Make sure there are no linebreaks in the result that would screw up Javascript.
 	return str_replace(array("\r\n", "\n", "\r"), " ", $result);	
 }
-
-/**
-// process a rating request
-function wppa_do_rating($id, $user) {
-global $wpdb;
-global $wppa;
-global $wppa_opt;
-global $wppa_done;
-global $thumb;
-
-	if ($wppa_done) return; // Prevent multiple
-	$wppa_done = true;
-
-	$rating = wppa_get_get('rating');
-	
-	if ( in_array($rating, array('1', '2', '3', '4', '5', '6', '7', '8', '9', '10')) && ( $wppa_opt['wppa_rating_max'] == '10' ) || $rating < '6' ) {}
-	else die(__a('<b>ERROR: Attempt to enter an invalid rating.</b>'));
-
-	$my_oldrat = $wpdb->get_var($wpdb->prepare( 'SELECT * FROM `'.WPPA_RATING.'` WHERE `photo` = %s AND `user` = %s LIMIT 1', $id, $user ) ); 
-	wppa_dbg_q('Q35');
-
-	if ($my_oldrat) {
-		if ($wppa_opt['wppa_rating_change']) {	// Modify my vote
-			$query = $wpdb->prepare( 'UPDATE `'.WPPA_RATING.'` SET `value` = %s WHERE `photo` = %s AND `user` = %s LIMIT 1', $rating, $id, $user );
-			wppa_dbg_q('Q36');
-			$iret = $wpdb->query($query);
-			if (!$iret) {
-				wppa_dbg_msg('Unable to update rating. Query = '.$query, 'red');
-				$myrat = $my_oldrat['value'];
-			}
-			else {
-				$myrat = $rating;
-			}
-		}
-		else if ($wppa_opt['wppa_rating_multi']) {	// Add another vote from me
-			$key = wppa_nextkey(WPPA_RATING);
-			$query = $wpdb->prepare( 'INSERT INTO `'.WPPA_RATING. '` (`id`, `photo`, `value`, `user`) VALUES (%s, %s, %s, %s)', $key, $id, $rating, $user );
-			wppa_dbg_q('Q37');
-			$iret = $wpdb->query($query);
-			if (!$iret) {
-				wppa_dbg_msg('Unable to add a rating. Query = '.$query, 'red');
-				$myrat = $my_oldrat['value'];
-			}
-			else {
-				$query = $wpdb->prepare( 'SELECT * FROM `'.WPPA_RATING.'`  WHERE `photo` = %s AND `user` = %s', $id, $user );
-				wppa_dbg_q('Q38');
-				$myrats = $wpdb->get_results($query, ARRAY_A );
-				if (!$myrats) {
-					wppa_dbg_msg('Unable to retrieve ratings. Query = '.$query, 'red');
-					$myrat = $my_oldrat['value'];
-				}
-				else {
-					$sum = 0;
-					$cnt = 0;
-					foreach ($myrats as $rt) {
-						$sum += $rt['value'];
-						$cnt ++;
-					}
-					if ($cnt > 0) $myrat = $sum/$cnt; else $myrat = $my_oldrat['value'];
-				}
-			}
-		}
-	}
-	else {	// This is the first and only rating for this photo/user combi
-		$key = wppa_nextkey(WPPA_RATING);
-		$iret = $wpdb->query($wpdb->prepare('INSERT INTO `'.WPPA_RATING. '` (`id`, `photo`, `value`, `user`) VALUES (%s, %s, %s, %s)', $key, $id, $rating, $user));
-		wppa_dbg_q('Q39');
-		if (!$iret) {
-			wppa_dbg_msg('Unable to save rating.', 'red');
-		}
-		else {
-			//SUCCESSFUL RATING, ADD POINTS
-			if( function_exists('cp_alterPoints') && is_user_logged_in() ) {
-				cp_alterPoints(cp_currentUser(), $wppa_opt['wppa_cp_points_rating']);
-			}
-		}
-		$myrat = $rating;
-	}
-
-	// Compute new avgrat
-	$ratings = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM '.WPPA_RATING.' WHERE photo = %s', $id), ARRAY_A );
-	wppa_dbg_q('Q40');
-	if ($ratings) {
-		$sum = 0;
-		$cnt = 0;
-		foreach ($ratings as $rt) {
-			$sum += $rt['value'];
-			$cnt ++;
-		}
-		if ($cnt > 0) $avgrat = $sum/$cnt; else $avgrat = '0';
-		if ( $avgrat == '10' ) $avgrat = '9.99999';	// for sort order reasons text field
-	}
-	else $avgrat = '0';
-	// Store it
-	$query = $wpdb->prepare('UPDATE `'.WPPA_PHOTOS. '` SET `mean_rating` = %s WHERE `id` = %s LIMIT 1', $avgrat, $id);
-	wppa_dbg_q('Q41');
-	$iret = $wpdb->query($query);
-	if (!$iret) wppa_dbg_msg('Error, could not update avg rating for photo '.$id.'. Query = '.$query, 'red');
-	else if ( isset($thumb['id']) && $thumb['id'] == $id ) $thumb['mean_rating'] = $avgrat;	// Update cache
-	
-	// Compute rating count
-	$ratcount = count($ratings);
-	$query = $wpdb->prepare('UPDATE `'.WPPA_PHOTOS. '` SET `rating_count` = %s WHERE `id` = %s LIMIT 1', $ratcount, $id);
-	wppa_dbg_q('Q42');
-	$iret = $wpdb->query($query);
-	if (!$iret) wppa_dbg_msg('Error, could not update rating count for photo '.$id.'. Query = '.$query, 'red');
-	else if ( isset($thumb['id']) && $thumb['id'] == $id ) $thumb['rating_count'] = $ratcount;
-	
-	// Clear (super)cache
-	wppa_clear_cache();
-}
-/**/
 
 // Process a comment request
 function wppa_do_comment($id) {
@@ -2370,9 +2242,6 @@ global $wppa_opt;
 			elseif ($linktyp == 'lightbox' ) $result['cursor'] = ' cursor:url('.wppa_get_imgdir().$wppa_opt['wppa_magnifier'].'),pointer;';
 			else $result['cursor'] = ' cursor:pointer;';
 			
-//			if ($type == 'thumb') && $wppa_opt['wppa_thumb_linktype'] != 'none') $result['style'] .= ' cursor:pointer;';
-//			if ($type == 'ttthumb' && $wppa_opt['wppa_topten_widget_linktype'] != 'none') $result['style'] .= ' cursor:pointer;';
-//			if ($type == 'fthumb') $result['style'] .= ' cursor:pointer;';
 			break;
 		case 'fullsize':
 			if ( $wppa['auto_colwidth'] ) {
@@ -2553,7 +2422,6 @@ global $wpdb;
 function wppa_onpage($type = '', $counter, $curpage) {
 global $wppa;
 
-//	if ($wppa['src']) return true;	//?
 	$pagesize = wppa_get_pagesize($type);
 	if ($pagesize == '0') {			// Pagination off
 		if ($curpage == '1') return true;	
@@ -5069,7 +4937,7 @@ function wppa_get_box_delta() {
 function wppa_get_permalink($key = '', $plain = false) {
 global $wppa;
 global $wppa_opt;
-global $wppa_locale;
+global $wppa_lang;
 //$z=-get_num_queries();	
 	if ( !$key && is_search() ) $key = $wppa_opt['wppa_search_linkpage'];
 	
@@ -5136,17 +5004,12 @@ global $wppa_locale;
 			else $pl .= '?';
 			break;
 	}
-	
-	if ( isset($_GET['lang']) ) {
-		$lang = strip_tags($_GET['lang']);
+
+	if ( isset($_GET['lang']) ) {	// If lang in querystring: keep it
 		if ( strpos($pl, 'lang=') === false ) { 	// Not yet
-			if ( $key == 'js' ) $pl .= 'lang='.$lang.'&';
-			else $pl .= 'lang='.$lang.'&amp;';
+			if ( $key == 'js' ) $pl .= 'lang='.$wppa_lang.'&';
+			else $pl .= 'lang='.$wppa_lang.'&amp;';
 		}
-	}
-	elseif ( $wppa_locale ) {
-		if ( $key == 'js' ) $pl .= 'locale='.$wppa_locale.'&';
-		else $pl .= 'locale='.$wppa_locale.'&amp;';
 	}
 	
 	if ($wppa['debug']) {
@@ -5156,42 +5019,11 @@ global $wppa_locale;
 	
 	return $pl;
 }
-/*
-// get permalink plus ? or & and possible debug switch
-function wppa_get_permalink($key = '') {
-global $wppa;
-global $wppa_opt;
-	
-	if ( !$key && is_search() ) $key = $wppa_opt['wppa_search_linkpage'];
-	
-	switch ($key) {
-		case '0':
-		case 'js':
-		case '':	// normal permalink
-			$pl = home_url();
-			if ( isset($_GET['p']) ) $pl .= '?p='.$_GET['p'];
-			if ( isset($_GET['page_id']) ) $pl .= '?page_id='.$_GET['page_id'];
-			break;
-		default:	// pagelink
-			$pl = get_page_link($key);
-			break;
-	}
-	
-	if (strpos($pl, '?')) $pl .= '&amp;';
-	else $pl .= '?';
-	
-	if ($wppa['debug']) {
-		$pl .= 'debug='.$wppa['debug'].'&amp;';
-	}
-	
-	if ( $key == 'js' ) $pl = str_replace('&amp;', '&', $pl);
-	return $pl;
-}
-*/
+
 // Like get_permalink but for ajax use
 function wppa_get_ajaxlink($key = '') {
 global $wppa;
-global $wppa_locale;
+global $wppa_lang;
 
 	$al = admin_url('admin-ajax.php').'?action=wppa&amp;wppa-action=render';
 	// See if this call is from an ajax operation or...
@@ -5220,14 +5052,15 @@ global $wppa_locale;
 		$al .= '&amp;wppa-fromp='.get_the_ID();
 	}
 	
-	if ( isset($_GET['lang']) ) {
-		$lang = strip_tags($_GET['lang']);
+	if ( isset($_GET['lang']) ) {	// If lang in querystring: keep it
 		if ( strpos($al, 'lang=') === false ) { 	// Not yet
-			$al .= '&amp;lang='.$lang;
+			if ( $key == 'js' ) $al .= 'lang='.$wppa_lang.'&';
+			else $al .= 'lang='.$wppa_lang.'&amp;';
 		}
 	}
-	elseif ( $wppa_locale ) {
-		$al .= '&amp;locale='.$wppa_locale;
+
+	if ($wppa['debug']) {
+		$al .= '&amp;debug='.$wppa['debug'];
 	}
 
 	return $al.'&amp;';
@@ -5548,7 +5381,7 @@ global $wpdb;
 			$type = $wppa_opt['wppa_slideshow_linktype'];	//'';
 			$page = '';
 			$result['url'] = '';
-			if ($type == 'lightbox') $result['title'] = wppa_zoom_in();
+			if ($type == 'lightbox' || $type == 'file') $result['title'] = wppa_zoom_in();
 			$result['target'] = '';
 			return $result;
 			break;
@@ -6044,7 +5877,7 @@ global $allalbums;
 	return $result;	
 }
 
-function wppa_user_upload_html($alb = 'any', $width, $where = '') {
+function wppa_user_upload_html($alb, $width, $where = '') {
 global $wppa;
 global $wppa_opt;
 
@@ -6053,7 +5886,9 @@ global $wppa_opt;
 	if ( wppa_switch('wppa_user_upload_login') ) {
 		if ( ! is_user_logged_in() ) return;					// Must login
 	}
-	if ( ! wppa_have_access($alb) ) return;						// No album access
+	if ( ! wppa_have_access($alb) ) {
+		return;						// No album access
+	}
 
 	// Find max files for the user
 	$allow_me = wppa_allow_user_uploads();
@@ -6061,7 +5896,9 @@ global $wppa_opt;
 		if ( wppa_switch('wppa_show_album_full') ) {
 			$wppa['out'] .= '<span style="color:red">';
 			$wppa['out'] .= __a('Max uploads reached');
-			$wppa['out'] .= wppa_time_to_wait_html('0', true);	// For the user
+			$time = wppa_time_to_wait_html('0', true);	// For the user
+			$wppa['out'] .= $time;
+			wppa_dbg_msg('Max for user '.wppa_get_user().' reached '.$time);
 			$wppa['out'] .= '</span>';
 		}
 		return;													// Max quota reached
@@ -6073,7 +5910,9 @@ global $wppa_opt;
 		if ( wppa_switch('wppa_show_album_full') ) {
 			$wppa['out'] .= '<span style="color:red">';
 			$wppa['out'] .= __a('Max uploads reached');
-			$wppa['out'] .= wppa_time_to_wait_html($alb);		// For the album
+			$time = wppa_time_to_wait_html($alb);		// For the album
+			$wppa['out'] .= $time;
+			wppa_dbg_msg('Max for album '.$alb.' reached '.$time);
 			$wppa['out'] .= '</span>';
 		}
 		return;													// Max quota reached
@@ -6102,6 +5941,7 @@ global $wppa_opt;
 	}
 	elseif ( $where == 'widget' || $where == 'uploadbox' ) {
 		// As is: permalink
+		//$returnurl .= 'wppa-dummy=13';
 	}
 	if ( $wppa['page'] ) $returnurl .= '&amp;wppa-page='.$wppa['page'];
 	
@@ -6189,6 +6029,8 @@ global $wpdb;
 global $wppa;
 global $wppa_opt;
 
+	wppa_dbg_msg('Usr_upl entered', 'red');
+	
 	if ($wppa['user_uploaded']) return;	// Already done
 	$wppa['user_uploaded'] = true;
 	if ( !$wppa_opt['wppa_user_upload_on'] ) return;	// Feature not enabled
@@ -6244,6 +6086,9 @@ global $wppa_opt;
 			else wppa_err_alert(__a('Upload failed'));
 		}		
 	}	
+	else {
+		wppa_dbg_msg('Unknown album', 'red');
+	}
 }
 
 function wppa_do_frontend_file_upload($file, $alb) {
@@ -6594,9 +6439,6 @@ global $wppa_opt;
 				case 'ln':
 					$newuri .= 'lang=';
 					break;
-				case 'lc':
-					$newuri .= 'locale=';
-					break;
 				case 'si':
 					$newuri .= 'wppa-single=';
 					break;
@@ -6609,6 +6451,8 @@ global $wppa_opt;
 				case 'rs':
 					$newuri .= 'wppa-randseed=';
 					break;
+				case 'db':
+					$newuri .= 'debug=';
 					
 			}
 //			if ( $code == 'ss' ) $newuri .= str_replace('|', ' ', substr($arg, 2));
@@ -6641,7 +6485,7 @@ global $wppa_opt;
 	
 	// explode querystring
 	$args = explode('&', substr($uri, $qpos+1));
-	$support = array('album', 'photo', 'slide', 'cover', 'occur', 'page', 'searchstring', 'topten', 'lasten', 'comten', 'featen', 'randseed', 'lang', 'locale', 'single', 'tag', 'photos-only');
+	$support = array('album', 'photo', 'slide', 'cover', 'occur', 'page', 'searchstring', 'topten', 'lasten', 'comten', 'featen', 'randseed', 'lang', 'single', 'tag', 'photos-only', 'debug');
 	if ( count($args) > 0 ) {
 		foreach ( $args as $arg ) {
 			$t = explode('=', $arg);
@@ -6686,9 +6530,6 @@ global $wppa_opt;
 					case 'lang':
 						$newuri .= 'ln';
 						break;
-					case 'locale':
-						$newuri .= 'lc';
-						break;
 					case 'single':
 						$newuri .= 'si';
 						break;
@@ -6700,6 +6541,9 @@ global $wppa_opt;
 						break;
 					case 'randseed':
 						$newuri .= 'rs';
+						break;
+					case 'debug':
+						$newuri .= 'db';
 						break;
 				}
 				if ( $val !== false ) {

@@ -2,7 +2,7 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 5.0.15
+* version 5.0.16
 *
 */
 
@@ -520,6 +520,7 @@ global $wppa_initruntimetime;
 						'wppa_rerate'				=> '',
 						'wppa_cleanup'				=> '',
 						'wppa_recup'				=> '',
+						'wppa_file_system'			=> '',
 						// B Irreversable
 						'wppa_rating_clear' 		=> '',
 						'wppa_iptc_clear'			=> '',
@@ -560,6 +561,7 @@ global $wppa_initruntimetime;
 						'wppa_max_execution_time'		=> '',
 						'wppa_adminbarmenu_admin'		=> '',
 						'wppa_adminbarmenu_frontend'	=> '',
+						'wppa_feed_use_thumb'			=> '',
 						
 						'wppa_html' 					=> '',
 						'wppa_allow_debug' 				=> '',
@@ -739,27 +741,37 @@ global $wppa_opt;
 }
 
 function wppa_load_language() {
-global $wppa_locale;
+//global $wppa_locale;
+global $wppa_lang;
 global $q_config;
 global $wppa;
+global $wppa_locale;
 
-	if ($wppa_locale) return; // Done already
-
-	// Locale in arg?
-	if (isset($_REQUEST['locale'])) {
-		$wppa_locale = $_REQUEST['locale'];
+	if ( $wppa_locale ) return; // Done already
+	
+	// See if qTranslate present and actve
+	if ( wppa_qtrans_enabled() ) {	
+		// Lang in arg?
+		if ( isset($_REQUEST['lang']) ) {
+			$wppa_lang = $_REQUEST['lang'];
+		}
+		// no. use q_configs lang
+		else {
+			$wppa_lang = isset($q_config['language']) ? $q_config['language'] : '';
+		}
+		// Find locale from lang
+		if ( $wppa_lang ) {
+			$wppa_locale = isset($q_config['locale'][$wppa_lang]) ? $q_config['locale'][$wppa_lang] : '';
+		}
+		wppa_dbg_msg('Lang='.$wppa_lang.', Locale='.$wppa_locale.', Ajax='.$wppa['ajax'], 'red');
 	}
-	// See if qTranslate present and actve, if so, get locale there
-	elseif (wppa_qtrans_enabled()) {	
-		if (isset($q_config['language'])) $lang = $q_config['language'];
-		if (isset($q_config['locale'][$lang])) $wppa_locale = $q_config['locale'][$lang];
-	}
-	// Get locale from wp-config
-	else {		
+	// If still not known, get locale from wp-config
+	if ( ! $wppa_locale ) {		
 		$wppa_locale = get_locale();
-		$lang = substr($wppa_locale, 0, 2);
+//		$lang = substr($wppa_locale, 0, 2);
 	}
 	
+	// Load the language file(s)
 	if ($wppa_locale) {
 		$domain = is_admin() ? 'wppa' : 'wppa_theme';
 		$mofile = WPPA_PATH.'/langs/'.$domain.'-'.$wppa_locale.'.mo';
@@ -1013,7 +1025,7 @@ function wppa_qtrans($output, $lang = '') {
 
 function wppa_dbg_msg($txt='', $color = 'blue', $force = false, $return = false) {
 global $wppa;
-	if ( $wppa['debug'] || $force || ( is_admin() && ! $wppa['ajax'] && WPPA_DEBUG ) ) {
+	if ( $wppa['debug'] || $force || ( is_admin() && WPPA_DEBUG ) ) {
 		$result = '<span style="color:'.$color.';"><small>[WPPA+ dbg msg: '.$txt.']<br /></small></span>';
 		if ( $return ) {
 			return $result;
@@ -1166,10 +1178,10 @@ global $wpdb;
 global $current_user;
 global $wppa_opt;
 
-	if ( !$alb ) return false;
+//	if ( !$alb ) $alb = 'any'; //return false;
 	
 	// See if there is any album accessable
-	if ($alb == 'any') {
+	if (!$alb) { // == 'any') {
 	
 		// Administrator has always access OR If all albums are public
 		if (current_user_can('administrator') || get_option('wppa_owner_only', 'no') == 'no') {
@@ -1355,7 +1367,8 @@ global $wppa_opt;
 	
 	// Retrieve additional required info
 	$asp_attr = explode(':', $wppa_opt['wppa_thumb_aspect']);
-	$thumbpath = str_replace( basename( $file ), 'thumbs/' . basename( $file ), $file );
+//	$thumbpath = str_replace( basename( $file ), 'thumbs/' . basename( $file ), $file );
+	$thumbpath = str_replace(WPPA_UPLOAD_PATH, WPPA_UPLOAD_PATH.'/thumbs', $file);
 	// Source size
 	$src_size_w = $img_attr[0];
 	$src_size_h = $img_attr[1];
@@ -1960,46 +1973,66 @@ global $wppa_inv_exiftags;
 function wppa_recuperate_iptc_exif() {
 global $wpdb;
 
-	$iptc_count = '0';
-	$exif_count = '0';
-	$out = '';
-	$files = glob( WPPA_UPLOAD_PATH.'/*.*' );
-	if ( $files ) {
-		foreach ( $files as $file ) {
-			if ( is_file ($file) ) {					// Not a dir
-				$attr = getimagesize($file, $info);
-				if ( is_array($attr) ) {				// Is a picturefile
-					if ( $attr[2] == IMAGETYPE_JPEG ) {	// Is a jpg
-						$id = basename($file);
-						$id = substr($id, 0, strpos($id, '.'));
-						// Now we have $id, $file and $info
-						if ( isset($info["APP13"]) ) {	// There is IPTC data
-							$is_iptc = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `".WPPA_IPTC."` WHERE `photo` = %s", $id));
-							wppa_dbg_q('Q223');
-							if ( ! $is_iptc ) { 	// No IPTC yet and there is: Recuperate
-								wppa_import_iptc($id, $info);
-								$iptc_count++;
-							}						
-						}
-						$image_type = exif_imagetype($file);
-						if ( $image_type == IMAGETYPE_JPEG ) {	// EXIF supported by server
-							$is_exif = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `".WPPA_EXIF."` WHERE `photo`=%s", $id));
-							wppa_dbg_q('Q224');
-							if ( ! $is_exif ) { 				// No EXIF yet
-								$exif = exif_read_data($file, 'EXIF');
-								if ( is_array($exif) )	{ 		// There is exif data present
-									wppa_import_exif($id, $file);
-									$exif_count++;
+	if ( wppa_switch('wppa_save_iptc') || wppa_switch('wppa_save_exif') ) {
+		$iptc_count = '0';
+		$exif_count = '0';
+		$tot_count = '0';
+		$start = get_option('wppa_last_recup', '0');
+		$photos = $wpdb->get_results("SELECT `id` FROM `".WPPA_PHOTOS."` WHERE `id` > ".$start." ORDER BY `id`", ARRAY_A);
+		if ( $photos ) {
+			wppa_update_message(sprintf('Recuperation started at photo id = %s.', $start+'1', 'wppa'));
+			foreach ( $photos as $photo ) {
+				$file = wppa_get_photo_path($photo['id']);
+				if ( is_file ($file) ) {					// Not a dir
+					$attr = getimagesize($file, $info);
+					if ( is_array($attr) ) {				// Is a picturefile
+						if ( $attr[2] == IMAGETYPE_JPEG ) {	// Is a jpg
+							$id = $photo['id'];
+							// Now we have $id, $file and $info
+							if ( wppa_switch('wppa_save_iptc') ) {	// Save iptc
+								if ( isset($info["APP13"]) ) {	// There is IPTC data
+									$is_iptc = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `".WPPA_IPTC."` WHERE `photo` = %s", $id));
+									wppa_dbg_q('Q223');
+									if ( ! $is_iptc ) { 	// No IPTC yet and there is: Recuperate
+										wppa_import_iptc($id, $info);
+										$iptc_count++;
+									}						
 								}
-							}						
-						}						
-					}					
+							}
+							if ( wppa_switch('wppa_save_exif') ) {	// Save exif
+								$image_type = exif_imagetype($file);
+								if ( $image_type == IMAGETYPE_JPEG ) {	// EXIF supported by server
+									$is_exif = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `".WPPA_EXIF."` WHERE `photo`=%s", $id));
+									wppa_dbg_q('Q224');
+									if ( ! $is_exif ) { 				// No EXIF yet
+										$exif = @ exif_read_data($file, 'EXIF');//@
+										if ( is_array($exif) )	{ 		// There is exif data present
+											wppa_import_exif($id, $file);
+											$exif_count++;
+										}
+									}						
+								}	
+							}
+							$tot_count++;							
+						}					
+					}
+				}
+				if ( wppa_is_time_up() ) {
+					wppa_error_message(__(sprintf('Time up after processing %s items. %s photos with IPTC data and %s photos with EXIF data.', $tot_count, $iptc_count, $exif_count), 'wppa'));
+					update_option('wppa_last_recup', $id);
+					return false;
 				}
 			}
 		}
+		wppa_ok_message(__(sprintf('Done! %s items processed. %s photos with IPTC data and %s photos with EXIF data.', $tot_count, $iptc_count, $exif_count), 'wppa'));
+		update_option('wppa_last_recup', '-2');
+		return true;
 	}
-	$out .= __(sprintf('%s photos with IPTC data and %s photos with EXIF data processed.', $iptc_count, $exif_count), 'wppa');
-	return $out;
+	else {
+		wppa_error_message(__('This is useless. Both saving IPTC and saving EXIF are switched off. See Table IX-H5 and 6', 'wppa'));
+		update_option('wppa_last_recup', '-2');
+		return true;
+	}
 }
 
 function wppa_clear_cache($force = false) {
@@ -2050,7 +2083,8 @@ global $wppa;
 function wppa_allow_uploads($album = '0') {
 global $wpdb;
 
-	if ( ! $album ) return '0';
+	if ( ! $album ) return '-1';//'0';
+//	if ( $album == 'any' ) return '-1';
 	
 	$limits = $wpdb->get_var($wpdb->prepare("SELECT `upload_limit` FROM `".WPPA_ALBUMS."` WHERE `id` = %s", $album));
 	wppa_dbg_q('Q225');
@@ -2334,9 +2368,10 @@ global $wpdb;
 	if ( $image_type != IMAGETYPE_JPEG ) return false;	// Not supported image type
 	
 	// get exif data
-	if ( $exif = exif_read_data($picture_path, 0 , false) ) {
+	if ( $exif = @ exif_read_data($picture_path, 0 , false) ) {
 	
 		// any coordinates available?
+		if ( !isset ($exif['GPSLatitude'][0]) ) return false;	// No GPS data
 		if ( !isset ($exif['GPSLongitude'][0]) ) return false;	// No GPS data
 		
 		// north, east, south, west?

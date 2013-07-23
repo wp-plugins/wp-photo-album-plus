@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile
-Version: 5.0.15
+Version: 5.0.16
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -171,6 +171,25 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 5.0.16 =
+
+= Bug Fixes =
+
+* The language selected in qTranslate is believed to no longer get lost sometimes when surfing through the site.
+* The upload widget now also works with an album selection box.
+
+= New Features =
+
+* For those who want to get a directory listing using an ftp program of the ../uploads/wppa/ or ../uploads/wppa/thumbs/ folder, 
+and for those who do not trust on their serevers os to be capable of handling directories with over 100.000 entries, 
+you can now convert the filesystem to a tree structure that will never have more than 210 entries in any folder.
+Coverting back is possible, this is required if you want to go back to a wppa+ version prior to 5.0.16.
+* You can decide to send only thumbnail images in rss feeds ( Table IX-A22 ).
+
+= Other Changes =
+
+* Recuperate will auto continue at time-out.
 
 = 5.0.15 =
 
