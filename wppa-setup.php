@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 5.0.15
+* Version 5.0.16
 *
 */
 
@@ -811,6 +811,7 @@ Hide Camera info
 						'wppa_rerate'				=> '',
 						'wppa_cleanup'				=> '',
 						'wppa_recup'				=> '',
+						'wppa_file_system'			=> 'flat',
 						// B Irreversable
 						'wppa_rating_clear' 		=> 'no',
 						'wppa_iptc_clear'			=> '',
@@ -845,6 +846,7 @@ Hide Camera info
 						'wppa_max_execution_time'		=> '60',
 						'wppa_adminbarmenu_admin'		=> 'yes',
 						'wppa_adminbarmenu_frontend'	=> 'yes',
+						'wppa_feed_use_thumb'			=> 'no',
 
 
 						// B New

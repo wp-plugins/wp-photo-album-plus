@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains low-level utility routines
-* Version 5.0.15
+* Version 5.0.16
 *
 */
 
@@ -53,45 +53,83 @@ global $thumb;
 }
 
 // get url of thumb
-function wppa_get_thumb_url($id) {
+function wppa_get_thumb_url($id, $system = 'flat') {
 global $thumb;
+$wppa_opt;
 
+	if ( get_option('wppa_file_system') == 'flat' ) $system = 'flat';	// Have been converted, ignore argument
+	if ( get_option('wppa_file_system') == 'tree' ) $system = 'tree';	// Have been converted, ignore argument
 	if ( ! is_numeric($id) || $id < '1' ) wppa_dbg_msg('Invalid arg wppa_get_thumb_url('.$id.')', 'red');
 	wppa_cache_thumb($id);
-	return WPPA_UPLOAD_URL.'/thumbs/' . $thumb['id'] . '.' . $thumb['ext'] . '?ver=' . get_option('wppa_thumb_version', '1');
+	if ( $system == 'tree' ) return WPPA_UPLOAD_URL.'/thumbs/'.wppa_expand_id($thumb['id']).'.'.$thumb['ext'].'?ver='.get_option('wppa_thumb_version', '1');
+	else return WPPA_UPLOAD_URL.'/thumbs/'.$thumb['id'].'.'.$thumb['ext'].'?ver='.get_option('wppa_thumb_version', '1');
 }
 function wppa_bump_thumb_rev() {
 	wppa_update_option('wppa_thumb_version', get_option('wppa_thumb_version', '1') + '1');
 }
 
 // get path of thumb
-function wppa_get_thumb_path($id) {
+function wppa_get_thumb_path($id, $system = 'flat' ) {
 global $thumb;
-	
+$wppa_opt;
+
+	if ( get_option('wppa_file_system') == 'flat' ) $system = 'flat';	// Have been converted, ignore argument
+	if ( get_option('wppa_file_system') == 'tree' ) $system = 'tree';	// Have been converted, ignore argument
 	if ( ! is_numeric($id) || $id < '1' ) wppa_dbg_msg('Invalid arg wppa_get_thumb_path('.$id.')', 'red');
 	wppa_cache_thumb($id);
-	return WPPA_UPLOAD_PATH.'/thumbs/'.$thumb['id'].'.'.$thumb['ext'];
+	if ( $system == 'tree' ) return WPPA_UPLOAD_PATH.'/thumbs/'.wppa_expand_id($thumb['id'], true).'.'.$thumb['ext'];
+	else return WPPA_UPLOAD_PATH.'/thumbs/'.$thumb['id'].'.'.$thumb['ext'];
 }
 
 // get url of a full sized image
-function wppa_get_photo_url($id) {
+function wppa_get_photo_url($id, $system = 'flat') {
 global $thumb;
+$wppa_opt;
 
+	if ( is_feed() && wppa_switch('wppa_feed_use_thumb') ) return wppa_get_thumb_url($id, $system);
+	
+	if ( get_option('wppa_file_system') == 'flat' ) $system = 'flat';	// Have been converted, ignore argument
+	if ( get_option('wppa_file_system') == 'tree' ) $system = 'tree';	// Have been converted, ignore argument
 	if ( ! is_numeric($id) || $id < '1' ) wppa_dbg_msg('Invalid arg wppa_get_photo_url('.$id.')', 'red');
 	wppa_cache_thumb($id);
-	return WPPA_UPLOAD_URL.'/'.$id.'.'.$thumb['ext'] . '?ver=' . get_option('wppa_photo_version', '1');
+	if ( $system == 'tree' ) return WPPA_UPLOAD_URL.'/'.wppa_expand_id($thumb['id']).'.'.$thumb['ext'].'?ver='.get_option('wppa_photo_version', '1');
+	else return WPPA_UPLOAD_URL.'/'.$thumb['id'].'.'.$thumb['ext'].'?ver='.get_option('wppa_photo_version', '1');
 }
 function wppa_bump_photo_rev() {
 	wppa_update_option('wppa_photo_version', get_option('wppa_photo_version', '1') + '1');
 }
 
 // get path of a full sized image
-function wppa_get_photo_path($id) {
+function wppa_get_photo_path($id, $system = 'flat') {
 global $thumb;
+$wppa_opt;
 
+	if ( get_option('wppa_file_system') == 'flat' ) $system = 'flat';	// Have been converted, ignore argument
+	if ( get_option('wppa_file_system') == 'tree' ) $system = 'tree';	// Have been converted, ignore argument
 	if ( ! is_numeric($id) || $id < '1' ) wppa_dbg_msg('Invalid arg wppa_get_photo_path('.$id.')', 'red');
 	wppa_cache_thumb($id);
-	return WPPA_UPLOAD_PATH.'/'.$id.'.'.$thumb['ext'];
+	if ( $system == 'tree' ) return WPPA_UPLOAD_PATH.'/'.wppa_expand_id($thumb['id'], true).'.'.$thumb['ext'];
+	else return WPPA_UPLOAD_PATH.'/'.$thumb['id'].'.'.$thumb['ext'];
+}
+
+// Expand id to subdir chain for new file structure
+function wppa_expand_id($xid, $makepath = false) {
+	$result = '';
+	$id = $xid;
+	$len = strlen($id);
+	while ( $len > '2' ) {
+		$result .= substr($id, '0', '2').'/';
+		$id = substr($id, '2');
+		$len = strlen($id);
+		if ( $makepath ) {
+			$path = WPPA_UPLOAD_PATH.'/'.$result;
+			if ( ! is_dir($path) ) mkdir($path);
+			$path = WPPA_UPLOAD_PATH.'/thumbs/'.$result;
+			if ( ! is_dir($path) ) mkdir($path);
+		}
+	}
+	$result .= $id;
+	return $result;
 }
 
 // get the name of a full sized image

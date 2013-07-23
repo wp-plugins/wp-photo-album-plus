@@ -2,7 +2,7 @@
 //
 // conatins slideshow, theme, ajax and lightbox code
 //
-// Version 5.0.15
+// Version 5.0.16
 
 // Part 1: Slideshow
 //
@@ -76,7 +76,7 @@ var wppaFontWeightNumbarActive = '';
 
 var wppaNumbarMax = '10';
 var wppaAjaxUrl = '';
-var wppaLocale = '';
+var wppaLang = '';
 var wppaNextOnCallback = false;
 var wppaRatingUseAjax = false;
 var wppaStarOpacity = 0.2;
@@ -1513,7 +1513,7 @@ if (value == 0) return;
 		url = wppaAjaxUrl+'?action=wppa&wppa-action=rate&wppa-rating='+value+'&wppa-rating-id='+photoid;
 		url += '&wppa-occur='+mocc+'&wppa-index='+_wppaCurIdx[mocc];
 		url += '&wppa-nonce='+jQuery('#wppa-nonce').attr('value');
-		url += '&locale='+wppaLocale;
+		if ( wppaLang != '' ) url += '&lang='+wppaLang;
 		
 		// Setup process the result
 		xmlhttp.onreadystatechange=function() {
@@ -2187,7 +2187,8 @@ function wppaDoAjaxRender(mocc, ajaxurl, newurl) {
 		// Display the spinner
 		jQuery('#wppa-ajax-spin-'+mocc).css('display', '');
 		// Do the Ajax action
-		ajaxurl += '&locale='+wppaLocale;
+//		ajaxurl += '&locale='+wppaLocale;
+		if ( wppaLang != '' ) ajaxurl += '&lang='+wppaLang;
 		xmlhttp.open('GET',ajaxurl,true);
 		xmlhttp.send();	
 	}

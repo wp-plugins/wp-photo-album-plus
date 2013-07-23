@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the non admin stuff
-* Version 5.0.15
+* Version 5.0.16
 *
 */
 
@@ -210,7 +210,7 @@ add_action('wp_head', 'wppa_kickoff', '100');
 function wppa_kickoff() {
 global $wppa;
 global $wppa_opt;
-global $wppa_locale;
+global $wppa_lang;
 
 	switch ($wppa_opt['wppa_slideshow_linktype']) {
 		case 'none':
@@ -290,7 +290,7 @@ global $wppa_locale;
 	wppaFontColorNumbarActive = "'.$wppa_opt['wppa_fontcolor_numbar_active'].'";
 	wppaFontWeightNumbarActive = "'.$wppa_opt['wppa_fontweight_numbar_active'].'";
 	wppaNumbarMax = "'.$wppa_opt['wppa_numbar_max'].'";
-	wppaLocale = "'.$wppa_locale.'";
+	wppaLang = "'.$wppa_lang.'";
 	wppaAjaxUrl = "'.admin_url('admin-ajax.php').'";
 	wppaNextOnCallback = '.( $wppa_opt['wppa_next_on_callback'] ? 'true' : 'false' ).';
 	wppaRatingUseAjax = true;

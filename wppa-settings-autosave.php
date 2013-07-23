@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 5.0.15
+* Version 5.0.16
 *
 */
 
@@ -130,7 +130,18 @@ global $wppa_revno;
 			case 'wppa_remake':
 				update_option('wppa_remake_start', time());
 				break;
-			
+				
+			// Recuperate
+			case 'wppa_recup':
+				update_option('wppa_last_recup', '0');
+				break;
+				
+			// See if a fileconversion is pending
+			case 'wppa_file_system':
+				if ( get_option('wppa_file_system') == 'flat' ) update_option('wppa_file_system', 'to-tree');
+				if ( get_option('wppa_file_system') == 'tree' ) update_option('wppa_file_system', 'to-flat');
+				break;
+				
 			// Indexing actions
 			case 'wppa_remake_index':
 				$usr = get_option('wppa_indexing_user', wppa_get_user('login'));
@@ -199,9 +210,16 @@ global $wppa_revno;
 			<script type="text/javascript">document.getElementById("wppa-ok-p").innerHTML="<strong><?php _e('READY regenerating thumbnail images.', 'wppa') ?></strong>"</script>
 			<?php				
 			wppa_update_option('wppa_lastthumb', '-2');
-			wppa_update_option('wppa_thumb_version', get_option('wppa_thumb_version', '1') + '1');
+			wppa_bump_thumb_rev();//wppa_update_option('wppa_thumb_version', get_option('wppa_thumb_version', '1') + '1');
 		}
 		elseif ( wppa_switch('wppa_auto_continue') ) wppa_ok_message(__('Trying to continue...<script type="text/javascript">document.location=document.location</script>', 'wppa'));
+	}
+	
+	// See if a Recuperatie is pending
+	if ( get_option('wppa_last_recup', '-2') != '-2' ) {
+		if ( ! wppa_recuperate_iptc_exif() ) {
+			if ( wppa_switch('wppa_auto_continue') ) wppa_ok_message(__('Trying to continue...<script type="text/javascript">document.location=document.location</script>', 'wppa'));
+		}
 	}
 	
 	// See if a remake index is pending
@@ -233,10 +251,50 @@ global $wppa_revno;
 	
 	// Check database
 //	if ( get_option('wppa_revision') != $wppa_revno ) 
-		wppa_check_database(true);
+//		wppa_check_database(true);
 
 // Fix sourcefile bug
-wppa_fix_source_extensions();		
+wppa_fix_source_extensions();	
+
+	// Convert to new file structure
+	$fs = get_option('wppa_file_system', 'flat');
+	if ( $fs == 'to-tree' || $fs == 'to-flat' ) {
+		$time_up = false;
+		$last_converted = get_option('wppa_last_converted', '0');
+		wppa_warning_message(__('Converting file structure, starting at id='.($last_converted+'1').', please wait...', 'wppa'));
+		$last_converted = get_option('wppa_last_converted', '0');
+		$photos = $wpdb->get_results( "SELECT * FROM `".WPPA_PHOTOS."` WHERE `id` > ".$last_converted." ORDER BY `id`", ARRAY_A );
+		$j = '0';
+		if ( $fs == 'to-tree' ) {
+			$from = 'flat';
+			$to = 'tree';
+		}
+		else {
+			$from = 'tree';
+			$to = 'flat';
+		}
+		foreach ( $photos as $photo ) {
+			if ( file_exists( wppa_get_photo_path($photo['id'], $from) ) ) {
+				rename ( wppa_get_photo_path($photo['id'], $from), wppa_get_photo_path($photo['id'], $to) );
+			}
+			if ( file_exists( wppa_get_thumb_path($photo['id'], $from ) ) ) {
+				rename ( wppa_get_thumb_path($photo['id'], $from), wppa_get_thumb_path($photo['id'], $to) );
+			}
+			$j++;
+			$time_up = wppa_is_time_up($j);
+			if ( $time_up ) {
+				update_option('wppa_last_converted', $photo['id']);
+				wppa_ok_message('Trying to continue...<script type="text/javascript">document.location=document.location</script>');
+			}
+		}
+		if ( ! $time_up ) {
+			wppa_update_option('wppa_last_converted', '0');
+			wppa_update_option('wppa_file_system', $to);
+			wppa_initialize_runtime();
+			wppa_ok_message(__('Done! converting filestructure.', 'wppa'));
+		}
+	}
+	// end file system conversion
 ?>		
 	<div class="wrap">
 		<?php $iconurl = WPPA_URL.'/images/settings32.png'; ?>
@@ -3331,7 +3389,7 @@ wppa_fix_source_extensions();
 							$help .= '\n'.esc_js(__('If you want that data, you will have to re-import the original files. Use the update switch. You may resize them again.', 'wppa'));
 							$slug = 'wppa_recup';
 							$html1 = '';
-							$html2 = wppa_ajax_button('', $slug);
+							$html2 = wppa_doit_button('', $slug);
 							$html = array($html1, $html2);
 							wppa_setting(false, '7', $name, $desc, $html, $help);
 							
@@ -3375,6 +3433,23 @@ wppa_fix_source_extensions();
 							$class = 'index_search';
 							$html = array($html1, $html2);
 							wppa_setting(false, '9', $name, $desc, $html, $help, $class);
+							
+							if ( get_option('wppa_file_system') == 'flat' || get_option('wppa_file_system') == 'tree' ) {	// Not if currently converting
+								if ( get_option('wppa_file_system') == 'flat' ) {
+									$name = __('Convert to tree', 'wppa');
+									$desc = __('Convert filesystem to tree structure.', 'wppa');
+								}
+								if ( get_option('wppa_file_system') == 'tree' ) {
+									$name = __('Convert to flat', 'wppa');
+									$desc = __('Convert filesystem to flat structure.', 'wppa');
+								}
+								$help = esc_js(__('If you want to go back to a wppa+ version prior to 5.0.16, you MUST convert to flat first.', 'wppa'));
+								$slug = 'wppa_file_system';
+								$html1 = '';
+								$html2 = wppa_doit_button('', $slug);
+								$html = array($html1, $html2);
+								wppa_setting(false, '10', $name, $desc, $html, $help);
+							}
 
 							wppa_setting_subheader('B', '2', __('Clearing and other irreverseable actions', 'wppa'));
 							
@@ -3621,6 +3696,13 @@ wppa_fix_source_extensions();
 							$slug = 'wppa_adminbarmenu_frontend';
 							$html = wppa_checkbox($slug);
 							wppa_setting($slug, '21', $name, $desc, $html, $help);
+							
+							$name = __('Feed use thumb', 'wppa');
+							$desc = __('Feeds use thumbnail pictures always.', 'wppa');
+							$help = '';
+							$slug = 'wppa_feed_use_thumb';
+							$html = wppa_checkbox($slug);
+							wppa_setting($slug, '22', $name, $desc, $html, $help);
 
 							wppa_setting_subheader('B', '1', __('New Album and New Photo related miscellaneous settings', 'wppa'));
 
