@@ -40,7 +40,7 @@ This plugin is designed to easily manage and display your photo albums and slide
 * Almost all appearance settings can be done in the settings admin page. No php, html or css knowledge is required to customize the appearence of the photo display.
 * International language support for static text: Currently included foreign languages files: Dutch, Japanese, French(outdated), Spanish, German.
 * International language support for dynamic text: Album and photo names and descriptions fully support the qTranslate multilanguage rules.
-* Suports lightbox 3.
+* Contains embedded lightbox support but also supports lightbox 3.
 * You can add watermarks to the photos.
 * The plugin supports IPTC and EXIF data.
 * Supports WP supercache. The cache will be cleared whenever required for wppa+.
@@ -184,7 +184,7 @@ See for additional information: http://wppa.opajaap.nl/?page_id=1459
 * For those who want to get a directory listing using an ftp program of the ../uploads/wppa/ or ../uploads/wppa/thumbs/ folder, 
 and for those who do not trust on their serevers os to be capable of handling directories with over 100.000 entries, 
 you can now convert the filesystem to a tree structure that will never have more than 210 entries in any folder.
-Coverting back is possible, this is required if you want to go back to a wppa+ version prior to 5.0.16.
+Coverting back is possible, this is required if you want to go back to a wppa+ version prior to 5.0.16. Table VIII-A10.
 * You can decide to send only thumbnail images in rss feeds ( Table IX-A22 ).
 
 = Other Changes =
