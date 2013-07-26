@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: wppa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-07-16 15:02+0100\n"
-"PO-Revision-Date: 2013-07-16 15:05+0100\n"
+"PO-Revision-Date: 2013-07-26 10:34+0100\n"
 "Last-Translator: Li-An <lian00@gmail.com>\n"
 "Language-Team: oVa <ova13lastar@gmail.com>\n"
 "Language: fr_FR\n"
@@ -606,7 +606,7 @@ msgstr "Ajout maximum ateind"
 
 #: wppa-functions.php:6109
 msgid "Upload Photo"
-msgstr "Télécharger une photo"
+msgstr "Uploader une photo"
 
 #: wppa-functions.php:6130
 msgid "Please select an album and try again"
