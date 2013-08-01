@@ -890,9 +890,9 @@ global $wppa;
 			break;
 		default:		// One assigned
 			// Check if id still exists and is in album alb
-			$ph_alb = $wpdb->get_var( $wpdb->prepare( "SELECT album FROM " . WPPA_PHOTOS . " WHERE id = %s", $id ) );
+			$ph_alb = $wpdb->get_var( $wpdb->prepare( "SELECT `album` FROM `".WPPA_PHOTOS."` WHERE `id` = %s", $id ) );
 			if ( $ph_alb && $ph_alb == $alb ) { 
-				$temp['0'] = $id;
+				$temp['0']['id'] = $id;
 			}
 			else {	// Treat as random
 				$temp = $wpdb->get_results( $wpdb->prepare( "SELECT `id` FROM `".WPPA_PHOTOS."` WHERE `album` = %s AND `status` <> 'pending' ORDER BY RAND(".$wppa['randseed'].") LIMIT %d", $alb, $count), ARRAY_A );
