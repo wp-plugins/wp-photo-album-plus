@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 5.0.16
+* Version 5.0.17
 *
 */
 
@@ -548,6 +548,7 @@ Hide Camera info
 						'wppa_skip_empty_albums'			=> 'yes',
 						// E Widgets
 						'wppa_show_bbb_widget'				=> 'no',	// 1
+						'wppa_show_albwidget_tooltip'		=> 'yes',
 						// F Overlay
 						'wppa_ovl_close_txt'				=> 'CLOSE',
 						'wppa_ovl_theme'					=> 'black',
@@ -696,6 +697,8 @@ Hide Camera info
 						'wppa_fontsize_lightbox'	=> '10',
 						'wppa_fontcolor_lightbox'	=> '',
 						'wppa_fontweight_lightbox'	=> 'bold',
+						
+						'wppa_fontsize_widget_thumb'	=> '9',
 
 						
 						// Table VI: Links
@@ -745,6 +748,7 @@ Hide Camera info
 						'wppa_comment_overrule'				=> 'no',
 
 						'wppa_slideshow_linktype'			=> 'none',
+						'wppa_slideshow_linkpage'			=> '0',
 						'wppa_slideshow_blank'				=> 'no',
 						'wppa_slideshow_overrule'			=> 'no',
 

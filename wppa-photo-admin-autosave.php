@@ -601,7 +601,7 @@ function wppa_album_photos_bulk($album) {
 					}
 					$count++;
 					if ( wppa_is_time_up() ) {
-						wppa_error_message(sprintf(__('Time is up after processing %d out of %d items.', 'wppa'), $count, $totcount));
+						wppa_error_message(sprintf(__('Time is out after processing %d out of %d items.', 'wppa'), $count, $totcount));
 						$abort = true;
 					}
 					if ( $abort ) break;

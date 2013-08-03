@@ -2,7 +2,7 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 5.0.16
+* version 5.0.17
 *
 */
 
@@ -254,6 +254,7 @@ global $wppa_initruntimetime;
 						'wppa_skip_empty_albums'			=> '',
 						// E Widgets
 						'wppa_show_bbb_widget'				=> '',	// 1
+						'wppa_show_albwidget_tooltip'		=> '',
 						// F Overlay
 						'wppa_ovl_close_txt'				=> '',
 						'wppa_ovl_theme'					=> '',
@@ -403,6 +404,8 @@ global $wppa_initruntimetime;
 						'wppa_fontsize_lightbox'	=> '',
 						'wppa_fontcolor_lightbox'	=> '',
 						'wppa_fontweight_lightbox'	=> '',
+						
+						'wppa_fontsize_widget_thumb'	=> '',
 
 						
 						// Table VI: Links
@@ -452,6 +455,7 @@ global $wppa_initruntimetime;
 						'wppa_comment_overrule'				=> '',
 
 						'wppa_slideshow_linktype'			=> '',
+						'wppa_slideshow_linkpage'			=> '',
 						'wppa_slideshow_blank'				=> '',
 						'wppa_slideshow_overrule'			=> '',
 
@@ -2018,7 +2022,7 @@ global $wpdb;
 					}
 				}
 				if ( wppa_is_time_up() ) {
-					wppa_error_message(__(sprintf('Time up after processing %s items. %s photos with IPTC data and %s photos with EXIF data.', $tot_count, $iptc_count, $exif_count), 'wppa'));
+					wppa_error_message(__(sprintf('Time out after processing %s items. %s photos with IPTC data and %s photos with EXIF data.', $tot_count, $iptc_count, $exif_count), 'wppa'));
 					update_option('wppa_last_recup', $id);
 					return false;
 				}

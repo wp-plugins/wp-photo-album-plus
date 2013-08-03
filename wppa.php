@@ -77,6 +77,7 @@ require_once 'wppa-common-functions.php';
 require_once 'wppa-utils.php';
 require_once 'wppa-exif-iptc-common.php';
 require_once 'wppa-index-common.php';
+require_once 'wppa-statistics.php';
 
 /* SET UP $wppa[], $wppa_opt[], URL and PATH constants and LANGUAGE */
 add_action('init', 'wppa_initialize_runtime', '100');
