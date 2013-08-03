@@ -613,46 +613,6 @@ global $wppa_opt;
 	return $result;
 }
 
-function wppa_get_slide_callback_url($callbackid) {
-global $wppa;
-
-	$url = wppa_get_permalink();
-	if ( $wppa['start_album'] ) $url .= 'wppa-album='.$wppa['start_album'].'&amp;';
-	else $url .= 'wppa-album=0&amp;';
-	$url .= 'wppa-cover=0&amp;';
-	$url .= 'wppa-slide&amp;';
-	if ( $wppa['is_single'] ) $url .= 'wppa-single=1&amp;';
-	if ( $wppa['in_widget'] ) $url .= 'wppa-woccur='.$wppa['widget_occur'].'&amp;';
-	else $url .= 'wppa-occur='.$wppa['occur'].'&amp;';
-	if ( $wppa['is_topten'] ) $url .= 'wppa-topten='.$wppa['topten_count'].'&amp;';
-	if ( $wppa['is_lasten'] ) $url .= 'wppa-lasten='.$wppa['lasten_count'].'&amp;';
-	if ( $wppa['is_comten'] ) $url .= 'wppa-comten='.$wppa['comten_count'].'&amp;';
-	if ( $wppa['is_tag'] ) $url .= 'wppa-tag='.$wppa['is_tag'].'&amp;';
-	$url .= 'wppa-photo=' . $callbackid;
-		
-	return $url;
-}
-
-function wppa_get_thumb_callback_url() {
-global $wppa;
-
-	$url = wppa_get_permalink();
-	if ( $wppa['start_album'] ) $url .= 'wppa-album='.$wppa['start_album'].'&amp;';
-	else $url .= 'wppa-album=0&amp;';
-	$url .= 'wppa-cover=0&amp;';
-	if ( $wppa['is_single'] ) $url .= 'wppa-single=1&amp;';
-	if ( $wppa['in_widget'] ) $url .= 'wppa-woccur='.$wppa['widget_occur'].'&amp;';
-	else $url .= 'wppa-occur='.$wppa['occur'].'&amp;';
-	if ( $wppa['is_topten'] ) $url .= 'wppa-topten='.$wppa['topten_count'].'&amp;';
-	if ( $wppa['is_lasten'] ) $url .= 'wppa-lasten='.$wppa['lasten_count'].'&amp;';
-	if ( $wppa['is_comten'] ) $url .= 'wppa-comten='.$wppa['comten_count'].'&amp;';
-	if ( $wppa['is_tag'] ) $url .= 'wppa-tag='.$wppa['is_tag'].'&amp;';
-
-	$url = substr($url, 0, strlen($url) - 5);	// remove last '&amp;'
-		
-	return $url;
-}
-
 function wppa_flush_treecounts($alb = '') {
 global $wppa;
 /*
@@ -754,14 +714,14 @@ global $wppa_opt;
 	if ( $count ) {
 		if ( is_admin() ) {
 			if ( wppa_switch('wppa_auto_continue') ) {
-				wppa_warning_message(sprintf(__('Time up after processing %s items.', 'wppa'), $count));
+				wppa_warning_message(sprintf(__('Time out after processing %s items.', 'wppa'), $count));
 			}
 			else {
-				wppa_error_message(sprintf(__('Time up after processing %s items. Please restart this operation', 'wppa'), $count));
+				wppa_error_message(sprintf(__('Time out after processing %s items. Please restart this operation', 'wppa'), $count));
 			}
 		}
 		else {
-			wppa_err_alert(sprintf(__('Time up after processing %s items. Please restart this operation', 'wppa_theme'), $count));
+			wppa_err_alert(sprintf(__('Time out after processing %s items. Please restart this operation', 'wppa_theme'), $count));
 		}
 	}
 	return true;
@@ -820,6 +780,7 @@ global $wppa_opt;
 	}
 }
 
+// Update photo modified timestamp
 function wppa_update_modified($photo) {
 global $wpdb;
 	$wpdb->query($wpdb->prepare("UPDATE `".WPPA_PHOTOS."` SET `modified` = %s WHERE `id` = %s", time(), $photo));
@@ -832,6 +793,7 @@ function wppa_txt_to_nl($text) {
 	return str_replace('\n', "\n", $text);
 }
 
+// Check query arg on tags
 function wppa_vfy_arg($arg, $txt = false) {
 	if ( isset($_REQUEST[$arg]) ) {
 		if ( $txt ) {	// Text is allowed, but without tags
@@ -845,6 +807,7 @@ function wppa_vfy_arg($arg, $txt = false) {
 	}
 }
 
+// Strip tags with content
 function wppa_strip_tags($text, $key = '') {
 
 	if ($key == 'all') {
@@ -885,6 +848,7 @@ function wppa_strip_tags($text, $key = '') {
 	return trim($text);
 }
 
+// Update album timestamp
 function wppa_update_album_timestamp($album) {
 global $wpdb;
 
@@ -954,10 +918,10 @@ function wppa_combine_style($type, $top = '0', $left = '0', $right = '0', $botto
 		if ( is_numeric($left) && $left > '0' ) $result .= 'px';
 	}
 	$result .= ';';
-//echo $result.'<br />';
 	return $result;
 }
 
+// A temp routine to fix an old bug
 function wppa_fix_source_extensions() {
 global $wpdb;
 global $wppa_opt;

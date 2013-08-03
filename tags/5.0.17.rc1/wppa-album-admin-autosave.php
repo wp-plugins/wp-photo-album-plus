@@ -1430,7 +1430,7 @@ global $wpdb;
 				// Time up?
 				if ( wppa_is_time_up() ) {
 					wppa_flush_treecounts($id);
-					wppa_error_message('Time is up after '.$cnt.' photo deletes. Please redo this operation');
+					wppa_error_message('Time is out after '.$cnt.' photo deletes. Please redo this operation');
 					return;
 				}
 			} 
@@ -1443,7 +1443,7 @@ global $wpdb;
 				$wpdb->query($wpdb->prepare('UPDATE `'.WPPA_PHOTOS.'` SET `album` = %s WHERE `id` = %s', $move, $photo['id']));
 				wppa_move_source($photo['filename'], $photo['album'], $move);
 				if ( wppa_is_time_up() ) {
-					wppa_error_message('Time is up. Please redo this operation');
+					wppa_error_message('Time is out. Please redo this operation');
 					return;
 				}
 			}

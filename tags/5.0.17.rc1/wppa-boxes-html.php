@@ -139,9 +139,7 @@ global $wppa;
 		$result .= '</tr>';
 		
 		$count = '0';
-		$checked = '';
-	//	$result .= '<table>';
-		
+		$checked = '';		
 		
 		$tropen = false;
 		foreach ( $tags as $tag ) {
@@ -376,12 +374,10 @@ global $wppa_opt;
 	$allow_sys = ini_get('max_file_uploads');
 	
 	// THE max
-//echo $allow_me.','.$allow_alb.','.$allow_sys.'<br />';	
-
 	if ( $allow_me == '-1' ) $allow_me = $allow_sys;
 	if ( $allow_alb == '-1' ) $allow_alb = $allow_sys;
 	$max = min($allow_me, $allow_alb, $allow_sys);
-//echo $allow_me.','.$allow_alb.','.$allow_sys.'<br />'.$max.'<br />';	
+
 	// In a widget?
 	$widget_upload = ( $wppa['in_widget'] == 'upload' );
 
@@ -395,7 +391,6 @@ global $wppa_opt;
 	}
 	elseif ( $where == 'widget' || $where == 'uploadbox' ) {
 		// As is: permalink
-		//$returnurl .= 'wppa-dummy=13';
 	}
 	if ( $wppa['page'] ) $returnurl .= '&amp;wppa-page='.$wppa['page'];
 	
@@ -426,8 +421,6 @@ global $wppa_opt;
 			$wppa['out'] .= '<div style="clear:both"></div>';
 			
 			if ( ! wppa_switch('wppa_upload_one_only') && ! current_user_can('administrator') ) {
-//				$max = ini_get('max_file_uploads');
-//				if ( $max && $allow > '0' && $allow < $max ) $max = $allow;
 				if ( $max ) $wppa['out'] .= wppa_nltab().'<span style="font-size:10px;" >'.sprintf(__a('You may upload up to %s photos at once if your browser supports HTML-5 multiple file upload'), $max).'</span>';
 				$maxsize = wppa_check_memory_limit(false);
 				if ( is_array($maxsize) ) {
@@ -461,8 +454,8 @@ global $wppa_opt;
 				$wppa['out'] .= wppa_nltab('-').'</table>';
 			}	
 			
-// Name
-$wppa['out'] .= '
+	// Name
+	$wppa['out'] .= '
 		<div class="wppa-box-text wppa-td" style="clear:both; float:left; text-align:left; '.__wcs('wppa-box-text').__wcs('wppa-td').'" >'.
 			__a('Enter photo name.').'&nbsp;<span style="font-size:10px;" >'.__a('If you leave this blank, the original filename will be used as photo name.').'</span>'.'
 		</div>
@@ -470,7 +463,7 @@ $wppa['out'] .= '
 
 		// Description
 		$desc = $wppa_opt['wppa_apply_newphoto_desc_user'] ? stripslashes($wppa_opt['wppa_newphoto_description']) : '';
-$wppa['out'] .= '
+	$wppa['out'] .= '
 		<div class="wppa-box-text wppa-td" style="clear:both; float:left; text-align:left; '.__wcs('wppa-box-text').__wcs('wppa-td').'" >'.
 			__a('Enter/modify photo description').'
 		</div>
@@ -677,6 +670,7 @@ global $wppa_first_comment_html;
 	return $result;
 }
 
+// IPTC box
 function wppa_iptc_html($photo) {
 global $wppa;
 global $wpdb;
@@ -744,6 +738,7 @@ global $wppaiptclabels;
 	return ($result);
 }
 
+// EXIF box
 function wppa_exif_html($photo) {
 global $wppa;
 global $wpdb;
@@ -810,3 +805,23 @@ global $wppaexiflabels;
 	
 	return ($result);
 }
+
+// Display the album description ( on a thumbnail display ) either on top or at the bottom of the thumbnail area
+function wppa_album_desc($key) {
+global $wppa;
+global $wppa_opt;
+global $wpdb;
+
+	$result = '';
+	if ( $wppa_opt['wppa_albdesc_on_thumbarea'] == $key && $wppa['current_album'] ) {
+		$desc = wppa_get_album_desc($wppa['current_album']);
+		if ( $key == 'top' ) {
+			$result .= '<div id="wppa-albdesc-'.$wppa['master_occur'].'" class="wppa-box-text wppa-black" style="padding-right:6px;'.__wcs('wppa-box-text').__wcs('wppa-black').'" >'.$desc.'</div><div style="clear:both" ></div>';
+		}
+		if ( $key == 'bottom' ) {
+			$result .= '<div class="wppa-box-text wppa-black" style="clear:both; padding-right:6px;'.__wcs('wppa-box-text').__wcs('wppa-black').'" >'.$desc.'</div>';
+		}
+	}
+	$wppa['out'] .= $result;
+}
+

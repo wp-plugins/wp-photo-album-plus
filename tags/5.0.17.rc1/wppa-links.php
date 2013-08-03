@@ -15,8 +15,8 @@ function wppa_get_permalink($key = '', $plain = false) {
 global $wppa;
 global $wppa_opt;
 global $wppa_lang;
-//$z=-get_num_queries();	
-	if ( !$key && is_search() ) $key = $wppa_opt['wppa_search_linkpage'];
+
+	if ( ! $key && is_search() ) $key = $wppa_opt['wppa_search_linkpage'];
 	
 	switch ($key) {
 		case '0':
@@ -43,7 +43,6 @@ global $wppa_lang;
 					if ( $plain ) return $pl;
 					if (strpos($pl, '?')) $pl .= '&amp;';
 					else $pl .= '?';
-//					$pl .= 'wppa-fromp='.get_the_ID().'&amp;';
 				}
 			}
 			break;
@@ -70,7 +69,6 @@ global $wppa_lang;
 					if ( $plain ) return $pl;
 					if (strpos($pl, '?')) $pl .= '&';
 					else $pl .= '?';
-//					$pl .= 'wppa-fromp='.get_the_ID().'&';
 				}
 			}
 			break;
@@ -521,4 +519,44 @@ global $wpdb;
 	wppa_dbg_q('Q59');
 
 	return $result;
+}
+
+function wppa_get_slide_callback_url($callbackid) {
+global $wppa;
+
+	$url = wppa_get_permalink();
+	if ( $wppa['start_album'] ) $url .= 'wppa-album='.$wppa['start_album'].'&amp;';
+	else $url .= 'wppa-album=0&amp;';
+	$url .= 'wppa-cover=0&amp;';
+	$url .= 'wppa-slide&amp;';
+	if ( $wppa['is_single'] ) $url .= 'wppa-single=1&amp;';
+	if ( $wppa['in_widget'] ) $url .= 'wppa-woccur='.$wppa['widget_occur'].'&amp;';
+	else $url .= 'wppa-occur='.$wppa['occur'].'&amp;';
+	if ( $wppa['is_topten'] ) $url .= 'wppa-topten='.$wppa['topten_count'].'&amp;';
+	if ( $wppa['is_lasten'] ) $url .= 'wppa-lasten='.$wppa['lasten_count'].'&amp;';
+	if ( $wppa['is_comten'] ) $url .= 'wppa-comten='.$wppa['comten_count'].'&amp;';
+	if ( $wppa['is_tag'] ) $url .= 'wppa-tag='.$wppa['is_tag'].'&amp;';
+	$url .= 'wppa-photo=' . $callbackid;
+		
+	return $url;
+}
+
+function wppa_get_thumb_callback_url() {
+global $wppa;
+
+	$url = wppa_get_permalink();
+	if ( $wppa['start_album'] ) $url .= 'wppa-album='.$wppa['start_album'].'&amp;';
+	else $url .= 'wppa-album=0&amp;';
+	$url .= 'wppa-cover=0&amp;';
+	if ( $wppa['is_single'] ) $url .= 'wppa-single=1&amp;';
+	if ( $wppa['in_widget'] ) $url .= 'wppa-woccur='.$wppa['widget_occur'].'&amp;';
+	else $url .= 'wppa-occur='.$wppa['occur'].'&amp;';
+	if ( $wppa['is_topten'] ) $url .= 'wppa-topten='.$wppa['topten_count'].'&amp;';
+	if ( $wppa['is_lasten'] ) $url .= 'wppa-lasten='.$wppa['lasten_count'].'&amp;';
+	if ( $wppa['is_comten'] ) $url .= 'wppa-comten='.$wppa['comten_count'].'&amp;';
+	if ( $wppa['is_tag'] ) $url .= 'wppa-tag='.$wppa['is_tag'].'&amp;';
+
+	$url = substr($url, 0, strlen($url) - 5);	// remove last '&amp;'
+		
+	return $url;
 }

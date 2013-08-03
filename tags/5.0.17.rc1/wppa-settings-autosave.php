@@ -1409,6 +1409,13 @@ wppa_fix_source_extensions();
 							$html = wppa_checkbox($slug);
 							wppa_setting($slug, '1', $name, $desc, $html, $help);
 
+							$name = __('Album widget tooltip', 'wppa');
+							$desc = __('Show the album description on hoovering thumbnail in album widget', 'wppa');
+							$help = '';
+							$slug = 'wppa_show_albwidget_tooltip';
+							$html = wppa_checkbox($slug);
+							wppa_setting($slug, '2', $name, $desc, $html, $help);
+							
 							wppa_setting_subheader('F', '1', __('Lightbox related settings. These settings have effect only when Table IX-A6 is set to wppa', 'wppa'));
 
 							$name = __('Overlay Close label text', 'wppa');
@@ -2508,6 +2515,21 @@ wppa_fix_source_extensions();
 							$html = array($html1, $html2, $html3, $html4);
 							wppa_setting($slug, '9a,b,c,d', $name, $desc, $html, $help);
 							
+							$name = __('Widget thumbs', 'wppa');
+							$desc = __('Font size for thumbnail subtext in widgets.', 'wppa');
+							$help = '';
+							$slug1 = '';
+							$slug2 = 'wppa_fontsize_widget_thumb';
+							$slug3 = '';
+							$slug4 = '';
+							$slug = array($slug1, $slug2, $slug3, $slug4);
+							$html1 = '';
+							$html2 = wppa_input($slug2, '40px', '', __('pixels', 'wppa'));
+							$html3 = '';
+							$html4 = '';
+							$html = array($html1, $html2, $html3, $html4);
+							wppa_setting($slug, '10', $name, $desc, $html, $help);
+							
 							?>
 						</tbody>
 						<tfoot style="font-weight: bold;" class="wppa_table_5">
@@ -2929,17 +2951,20 @@ wppa_fix_source_extensions();
 							$desc = __('Slideshow fullsize link', 'wppa');
 							$help = esc_js(__('You can overrule lightbox but not big browse buttons with the photo specifc link.', 'wppa'));
 							$slug1 = 'wppa_slideshow_linktype';
-							$slug2 = '';
+							$slug2 = 'wppa_slideshow_linkpage';
+							wppa_verify_page($slug2);
 							$slug3 = 'wppa_slideshow_blank';
 							$slug4 = 'wppa_slideshow_overrule';
 							$slug = array($slug1, $slug2, $slug3, $slug4);
-//		moet nog			$opts = array(__('no link at all.', 'wppa'), __('the plain photo (file).', 'wppa'), __('the fullsize photo on its own.', 'wppa'), __('lightbox.', 'wppa'));
-//							$vals = array('none', 'file', 'single', 'lightbox'); 
-							$opts = array(__('no link at all.', 'wppa'), __('the plain photo (file).', 'wppa'), __('lightbox.', 'wppa'));
-							$vals = array('none', 'file', 'lightbox'); 
-							$onchange = 'wppaCheckSlideLink()';
+							$onchange = 'wppaCheckSlidePhotoLink();';
+							$opts = array(__('no link at all.', 'wppa'), __('the plain photo (file).', 'wppa'), __('the fullsize photo on its own.', 'wppa'), __('lightbox.', 'wppa'));
+							$vals = array('none', 'file', 'single', 'lightbox'); 
+//							$opts = array(__('no link at all.', 'wppa'), __('the plain photo (file).', 'wppa'), __('lightbox.', 'wppa'));
+//							$vals = array('none', 'file', 'lightbox'); 
+							$onchange = 'wppaCheckSlidePhotoLink()';
 							$html1 = wppa_select($slug1, $opts, $vals, $onchange);
-							$html2 = '';
+							$class = 'wppa_sslp';
+							$html2 = wppa_select($slug2, $options_page_post, $values_page_post, $onchange, $class);
 							$class = 'wppa_sslb';
 							$html3 = wppa_checkbox($slug3, '', $class);
 							$html4 = wppa_checkbox($slug4);
@@ -3671,8 +3696,8 @@ wppa_fix_source_extensions();
 							wppa_setting($slug, '17', $name, $desc, $html, $help);
 							
 							$name = __('Auto continue', 'wppa');
-							$desc = __('Continue automatic after time up', 'wppa');
-							$help = esc_js(__('If checked, an attempt will be made to restart an admin process when the time is up.', 'wppa'));
+							$desc = __('Continue automatic after time out', 'wppa');
+							$help = esc_js(__('If checked, an attempt will be made to restart an admin process when the time is out.', 'wppa'));
 							$slug = 'wppa_auto_continue';
 							$html = wppa_checkbox($slug);
 							wppa_setting($slug, '18', $name, $desc, $html, $help);

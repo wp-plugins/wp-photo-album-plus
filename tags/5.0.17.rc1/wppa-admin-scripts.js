@@ -44,6 +44,7 @@ function wppaInitSettings() {
 	wppaCheckCommentLink();
 	wppaCheckMphotoLink();
 	wppaCheckSphotoLink();
+	wppaCheckSlidePhotoLink();
 	wppaCheckSlideOnlyLink();
 	wppaCheckAlbumWidgetLink();
 	wppaCheckSlideLink();
@@ -604,6 +605,22 @@ function wppaCheckSphotoLink() {
 	}
 	else {
 		jQuery('.wppa_slb').css('visibility', 'visible');
+	}
+}
+
+function wppaCheckSlidePhotoLink() {
+	var lvalue = document.getElementById('wppa_slideshow_linktype').value;
+	if (lvalue == 'none' || lvalue == 'file' || lvalue == 'lightbox' ) {
+		jQuery('.wppa_sslp').css('visibility', 'hidden');
+	}
+	else {
+		jQuery('.wppa_sslp').css('visibility', 'visible');
+	}
+	if (lvalue == 'none' || lvalue == 'lightbox' ) {
+		jQuery('.wppa_sslb').css('visibility', 'hidden');
+	}
+	else {
+		jQuery('.wppa_sslb').css('visibility', 'visible');
 	}
 }
 

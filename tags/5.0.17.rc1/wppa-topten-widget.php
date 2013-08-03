@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the top rated photos
-* Version 5.0.15
+* Version 5.0.17
 */
 
 class TopTenWidget extends WP_Widget {
@@ -70,7 +70,7 @@ class TopTenWidget extends WP_Widget {
 				
 				wppa_do_the_widget_thumb('topten', $image, $album, $display, $link, $title, $imgurl, $imgstyle_a, $imgevents);
 
-				$widget_content .= "\n\t".'<span style="font-size:9px;">'.wppa_get_rating_by_id($image['id']);
+				$widget_content .= "\n\t".'<span style="font-size:'.$wppa_opt['wppa_fontsize_widget_thumb'].'px;">'.wppa_get_rating_by_id($image['id']);
 					if ( $wppa_opt['wppa_show_rating_count'] ) $widget_content .= ' ('.wppa_get_rating_count_by_id($image['id']).')';
 				$widget_content .= '</span>';
 			}

@@ -218,14 +218,14 @@ global $wppa_opt;
 global $wppa_lang;
 
 	switch ($wppa_opt['wppa_slideshow_linktype']) {
-		case 'none':
-			$lbkey = ''; //echo("\t".'wppaLightBox = "";'."\n");		// results in omitting the anchor tag
-			break;
 		case 'file':
 			$lbkey = 'file'; //echo("\t".'wppaLightBox = "file";'."\n");	// gives anchor tag with rel="file"
 			break;
 		case 'lightbox':
 			$lbkey = $wppa_opt['wppa_lightbox_name']; //echo("\t".'wppaLightBox = "'.$wppa_opt['wppa_lightbox_name'].'";'."\n");	// gives anchor tag with rel="lightbox" or the like
+			break;
+		default:
+			$lbkey = ''; //echo("\t".'wppaLightBox = "";'."\n");		// results in omitting the anchor tag
 			break;
 	}
 	if ( is_numeric($wppa_opt['wppa_fullimage_border_width']) ) $fbw = $wppa_opt['wppa_fullimage_border_width'] + '1'; else $fbw = '0';

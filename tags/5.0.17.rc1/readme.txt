@@ -182,10 +182,13 @@ See for additional information: http://wppa.opajaap.nl/?page_id=1459
 
 * More selection options for cover image(s).
 * Bulk edit album content.
+* Added linktype *The fullsize photo on its own* as link option in Table VI-B5
 
 = Other Changes =
 
 * A comment by a moderator need no longer to be moderated.
+* The font size of widget thumbnail subtitles can be set in Table V-10.
+* The album description tooltip on the album widget can be switched off on Table II-E2.
 
 = 5.0.16 =
 

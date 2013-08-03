@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the upload/import pages and functions
-* Version 5.0.10
+* Version 5.0.17
 *
 */
 
@@ -677,7 +677,7 @@ function wppa_upload_multiple() {
 		if ( is_array($file['error']) ) {
 			for ($i = '0'; $i < count($file['error']); $i++) {
 				if ( wppa_is_time_up() ) {
-					wppa_error_message(sprintf(__('Time is up. %s photos uploaded in album nr %s.', 'wppa'), $count, $_POST['wppa-album']));
+					wppa_error_message(sprintf(__('Time out. %s photos uploaded in album nr %s.', 'wppa'), $count, $_POST['wppa-album']));
 					wppa_set_last_album($_POST['wppa-album']);
 					return;
 				}
@@ -933,7 +933,7 @@ global $wppa;
 		}
 		$idx++;
 		if ( wppa_is_time_up() ) {
-			wppa_error_message(sprintf(__('Time is up. %s photos imported. Please restart this operation.', 'wppa'), $pcount));
+			wppa_error_message(sprintf(__('Time out. %s photos imported. Please restart this operation.', 'wppa'), $pcount));
 			wppa_set_last_album($album);
 			return;
 		}
@@ -959,7 +959,7 @@ global $wppa;
 			}
 		}
 		$idx++;
-		if ( $iret == false ) break;	// Time up
+		if ( $iret == false ) break;	// Time out
 	}	
 	
 	
@@ -1170,7 +1170,7 @@ global $wppa_opt;
 				}
 				else {
 					$bret = wppa_insert_photo($photofile, $alb, basename($photofile));
-					if ( ! $bret ) return false;	// Time up
+					if ( ! $bret ) return false;	// Time out
 					unlink($photofile);
 					$photocount++;
 				}
@@ -1184,7 +1184,7 @@ global $wppa_opt;
 			if ( is_dir($subdir) ) {
 				if ( basename($subdir) != '.' && basename($subdir) != '..' ) {
 					$bret = wppa_import_dir_to_album($subdir, $alb);
-					if ( ! $bret ) return false;	// Time up
+					if ( ! $bret ) return false;	// Time out
 				}
 			}
 		}

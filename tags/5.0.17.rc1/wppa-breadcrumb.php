@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Functions for breadcrumbs
-* Version 5.0.16
+* Version 5.0.17
 *
 */
 
