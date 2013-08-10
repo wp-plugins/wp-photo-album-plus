@@ -1,9 +1,9 @@
 <?php
-/* wppa-adminfunctions.php
+/* wppa-admin-functions.php
 * Package: wp-photo-album-plus
 *
 * gp admin functions
-* version 5.0.16
+* version 5.0.17
 *
 * 
 */
@@ -894,15 +894,15 @@ global $wpdb;
 	return $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `".WPPA_ALBUMS."` WHERE `a_parent` = %s", $alb['id']) );
 }
 
-function wppa_admin_page_links($curpage, $pagesize, $count, $link) {
+function wppa_admin_page_links($curpage, $pagesize, $count, $link, $extra = '') {
 
 	if ( $pagesize < '1' ) return;	// Pagination is off
 	
 	$prevpage 	= $curpage - '1';
 	$nextpage 	= $curpage + '1'; 
-	$prevurl 	= $link.'&wppa-page='.$prevpage;
+	$prevurl 	= $link.'&wppa-page='.$prevpage.$extra;
 	$pagurl 	= $link.'&wppa-page=';
-	$nexturl 	= $link.'&wppa-page='.$nextpage;
+	$nexturl 	= $link.'&wppa-page='.$nextpage.$extra;
 	$npages 	= ceil($count / $pagesize);
 
 	if ($npages > '1') {
@@ -915,7 +915,7 @@ function wppa_admin_page_links($curpage, $pagesize, $count, $link) {
 				echo(' '.$i.' ');
 			}
 			else {
-				?>&nbsp;<a href="<?php echo($pagurl.$i) ?>"><?php echo($i) ?></a>&nbsp;<?php
+				?>&nbsp;<a href="<?php echo($pagurl.$i.$extra) ?>"><?php echo($i) ?></a>&nbsp;<?php
 			}
 			$i++;
 		}

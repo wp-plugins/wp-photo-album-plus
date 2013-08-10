@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the non admin stuff
-* Version 5.0.16
+* Version 5.0.17
 *
 */
 
@@ -11,6 +11,11 @@
 require_once 'wppa-filter.php';
 require_once 'wppa-slideshow.php';
 require_once 'wppa-functions.php';
+require_once 'wppa-breadcrumb.php';
+require_once 'wppa-album-covers.php';
+require_once 'wppa-links.php';
+require_once 'wppa-boxes-html.php';
+require_once 'wppa-styles.php';
 require_once 'wppa-cart.php';
 	
 /* LOAD STYLESHEET */
@@ -213,14 +218,14 @@ global $wppa_opt;
 global $wppa_lang;
 
 	switch ($wppa_opt['wppa_slideshow_linktype']) {
-		case 'none':
-			$lbkey = ''; //echo("\t".'wppaLightBox = "";'."\n");		// results in omitting the anchor tag
-			break;
 		case 'file':
 			$lbkey = 'file'; //echo("\t".'wppaLightBox = "file";'."\n");	// gives anchor tag with rel="file"
 			break;
 		case 'lightbox':
 			$lbkey = $wppa_opt['wppa_lightbox_name']; //echo("\t".'wppaLightBox = "'.$wppa_opt['wppa_lightbox_name'].'";'."\n");	// gives anchor tag with rel="lightbox" or the like
+			break;
+		default:
+			$lbkey = ''; //echo("\t".'wppaLightBox = "";'."\n");		// results in omitting the anchor tag
 			break;
 	}
 	if ( is_numeric($wppa_opt['wppa_fullimage_border_width']) ) $fbw = $wppa_opt['wppa_fullimage_border_width'] + '1'; else $fbw = '0';
