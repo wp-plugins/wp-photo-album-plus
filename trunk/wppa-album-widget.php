@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display thumbnail photos
-* Version 5.0.15
+* Version 5.0.17
 */
 
 class AlbumWidget extends WP_Widget {
@@ -86,7 +86,8 @@ class AlbumWidget extends WP_Widget {
 					$width      = $imgstyle_a['width'];
 					$height     = $imgstyle_a['height'];
 					$cursor		= $imgstyle_a['cursor'];
-					$title 		= esc_attr(strip_tags(__(stripslashes($album['description']))));
+					if ( $wppa_opt['wppa_show_albwidget_tooltip'] ) $title = esc_attr(strip_tags(__(stripslashes($album['description']))));
+					else $title = '';
 					$imgurl 	= wppa_get_thumb_url($image['id']);
 				}
 				else {
@@ -132,7 +133,7 @@ class AlbumWidget extends WP_Widget {
 						$widget_content .= "\n\t".'<img id="i-'.$image['id'].'-'.$wppa['master_occur'].'" title="'.$title.'" src="'.$imgurl.'" width="'.$width.'" height="'.$height.'" style="'.$imgstyle.'" '.$imgevents.' alt="'.esc_attr(wppa_qtrans($image['name'])).'">';
 					}
 				
-					if ($name == 'yes') $widget_content .= "\n\t".'<span style="font-size:9px; line-height:12px;">'.__(stripslashes($album['name'])).'</span>';
+					if ($name == 'yes') $widget_content .= "\n\t".'<span style="font-size:'.$wppa_opt['wppa_fontsize_widget_thumb'].'px; line-height:12px;">'.__(stripslashes($album['name'])).'</span>';
 
 					$widget_content .= "\n".'</div>';
 					$count++;

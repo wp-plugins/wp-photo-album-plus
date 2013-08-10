@@ -2,7 +2,7 @@
 /* wppa-ajax.php
 *
 * Functions used in ajax requests
-* version 5.0.15
+* version 5.0.17
 *
 */
 add_action('wp_ajax_wppa', 'wppa_ajax_callback');
@@ -71,7 +71,7 @@ global $wppa;
 					exit;
 				}
 				wppa_delete_photo($_REQUEST['photo-id']);
-				wppa_index_remove('photo', $_REQUEST['photo-id']);
+//				wppa_index_remove('photo', $_REQUEST['photo-id']);
 				echo 'OK||'.__('Photo removed', 'wppa');
 				exit;
 			}
@@ -392,7 +392,7 @@ global $wppa;
 			}
 			$album = $wpdb->get_var($wpdb->prepare('SELECT `album` FROM `'.WPPA_PHOTOS.'` WHERE `id` = %s', $photo));
 			wppa_delete_photo($photo);
-			wppa_index_remove('photo', $photo);
+//			wppa_index_remove('photo', $photo);
 			wppa_clear_cache();
 			echo '||1||<span style="color:red" >'.sprintf(__('Photo %s has been deleted', 'wppa'), $photo).'</span>';
 			echo '||';
@@ -1260,30 +1260,3 @@ function wppa_sanitize_tags($value) {
 	return $value;
 }
 
-function wppa_delete_photo($photo) {
-global $wpdb;
-
-	$photoinfo = $wpdb->get_row($wpdb->prepare('SELECT * FROM `'.WPPA_PHOTOS.'` WHERE `id` = %s', $photo), ARRAY_A);
-	// Get file extension
-	$ext = $photoinfo['ext']; 
-	// Get album
-	$album = $photoinfo['album'];
-	// Get filename
-	$filename = $photoinfo['filename'];
-	// Delete fullsize image
-	$file = wppa_get_photo_path($photo);//ABSPATH.'wp-content/uploads/wppa/'.$photo.'.'.$ext;
-	if (file_exists($file)) unlink($file);
-	// Delete thumbnail image
-	$file = wppa_get_thumb_path($photo);//ABSPATH.'wp-content/uploads/wppa/thumbs/'.$photo.'.'.$ext;
-	if (file_exists($file)) unlink($file);
-	// Delete sourcefile
-	wppa_delete_source($filename, $album);
-	// Delete db entries
-	$wpdb->query($wpdb->prepare('DELETE FROM `'.WPPA_PHOTOS.'` WHERE `id` = %s LIMIT 1', $photo));
-	$wpdb->query($wpdb->prepare('DELETE FROM `'.WPPA_RATING.'` WHERE `photo` = %s', $photo));
-	$wpdb->query($wpdb->prepare('DELETE FROM `'.WPPA_COMMENTS.'` WHERE `photo` = %s', $photo));
-	$wpdb->query($wpdb->prepare('DELETE FROM `'.WPPA_IPTC.'` WHERE `photo` = %s', $photo));
-	$wpdb->query($wpdb->prepare('DELETE FROM `'.WPPA_EXIF.'` WHERE `photo` = %s', $photo));
-	wppa_flush_treecounts($album);
-
-}

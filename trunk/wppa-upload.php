@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the upload/import pages and functions
-* Version 5.0.10
+* Version 5.0.17
 *
 */
 
@@ -322,29 +322,45 @@ function _wppa_page_import() {
 global $wppa_opt;
 global $wppa_revno;
 global $wppa;
-//ini_set('max_execution_time', '15');
+
+	// Init
+	$user = wppa_get_user();
+	
 	// Check database
-//	if ( get_option('wppa_revision') != $wppa_revno ) 
 	wppa_check_database(true);
 
 	// Sanitize system
-	$user = wppa_get_user();
 	$count = wppa_sanitize_files();
 	if ($count) wppa_error_message($count.' '.__('illegal files deleted.', 'wppa'));
 
+	// Update watermark settings
 	if ( $wppa_opt['wppa_watermark_on'] == 'yes' && ( $wppa_opt['wppa_watermark_user'] == 'yes' || current_user_can('wppa_settings') ) ) {
 		if ( isset( $_POST['wppa-watermark-file'] ) ) update_option('wppa_watermark_file_'.$user, $_POST['wppa-watermark-file']);
 		if ( isset( $_POST['wppa-watermark-pos'] ) ) update_option('wppa_watermark_pos_'.$user, $_POST['wppa-watermark-pos']);
 	}
 	
+//	print_r($_POST);
+	
 	// Do the dirty work
 	if (isset($_GET['zip'])) {
-	//	check_admin_referer( '$wppa_nonce', WPPA_NONCE );
 		wppa_extract($_GET['zip'], true);
 	}
-	if (isset($_POST['wppa-import-set-source'])) {
+	if ( isset($_POST['local-remote'])) {
 		check_admin_referer( '$wppa_nonce', WPPA_NONCE );
-		update_option('wppa_import_source_'.$user, $_POST['wppa-source']);
+		update_option('wppa_import_source_type_'.$user, $_POST['local-remote']);
+	}
+	if ( isset($_POST['wppa-import-set-source-dir'])) {
+		check_admin_referer( '$wppa_nonce', WPPA_NONCE );
+		if ( isset($_POST['wppa-source']) ) {
+			update_option('wppa_import_source_'.$user, $_POST['wppa-source']);
+		}
+	}
+	if ( isset($_POST['wppa-import-set-source-url'])) {
+		check_admin_referer( '$wppa_nonce', WPPA_NONCE );
+		if ( isset($_POST['wppa-source-remote'])) {
+			update_option('wppa_import_source_url_'.$user, $_POST['wppa-source-remote']);
+			update_option('wppa_import_source_url_found_'.$user, false);
+		}
 	}
 	elseif ( isset($_POST['wppa-import-submit']) ) {
 		check_admin_referer( '$wppa_nonce', WPPA_NONCE );
@@ -373,40 +389,85 @@ global $wppa;
 		<h2><?php _e('Import Photos', 'wppa'); ?></h2><br />
 <?php		
 		// Get this users current source directory setting
-		$source      = get_option('wppa_import_source_'.$user, WPPA_DEPOT);
-		if ( ! $source || ! is_dir(ABSPATH . $source) ) {
-			$source = WPPA_DEPOT;
-			update_option('wppa_import_source_'.$user, WPPA_DEPOT);
+		$can_remote = ini_get('allow_url_fopen') && function_exists('curl_init');
+		// $can_remote = false; // Debug
+		if ( ! $can_remote ) {
+			update_option('wppa_import_source_type_'.$user, 'local');
 		}
-		$source_path = ABSPATH . $source;
-		$source_url  = get_bloginfo('url') . '/' . $source;
-
-		// See if the current source is the 'home' directory
-		$is_depot 	= ( $source == WPPA_DEPOT );
-		// See if the current souce is a wp upload location or a wppa+ sourcefile location ( if so: no delete checkbox )
-		$is_sub_depot = ( substr($source, 0, strlen(WPPA_DEPOT) ) == WPPA_DEPOT ) && ( substr(ABSPATH.$source, 0, strlen($wppa_opt['wppa_source_dir'])) != $wppa_opt['wppa_source_dir'] );
-
-		// See what's in there
-		$files 		= glob($source_path . '/*');
-		$zipcount 	= wppa_get_zipcount($files);
-		$albumcount = wppa_get_albumcount($files);
-		$photocount = wppa_get_photocount($files);
-		$dircount	= wppa_get_dircount($files);
+		$source_type = get_option('wppa_import_source_type_'.$user, 'local');
+		if ( $source_type == 'local' ) {
+			$source      = get_option('wppa_import_source_'.$user, WPPA_DEPOT);
+			if ( ! $source || ! is_dir(ABSPATH . $source) ) {
+				$source = WPPA_DEPOT;
+				update_option('wppa_import_source_'.$user, WPPA_DEPOT);
+			}
+			$source_path = ABSPATH . $source;
+			$source_url  = get_bloginfo('url') . '/' . $source;
+			// See if the current source is the 'home' directory
+			$is_depot 	= ( $source == WPPA_DEPOT );
+			// See if the current souce is a wp upload location or a wppa+ sourcefile location ( if so: no delete checkbox )
+			$is_sub_depot = ( substr($source, 0, strlen(WPPA_DEPOT) ) == WPPA_DEPOT ) && ( substr(ABSPATH.$source, 0, strlen($wppa_opt['wppa_source_dir'])) != $wppa_opt['wppa_source_dir'] );
+			// See what's in there
+			$files 		= wppa_get_import_files();
+			$zipcount 	= wppa_get_zipcount($files);
+			$albumcount = wppa_get_albumcount($files);
+			$photocount = wppa_get_photocount($files);
+			$dircount	= wppa_get_dircount($files);
+		}
+		if ( $source_type == 'remote' ) {
+			$source     	= get_option('wppa_import_source_url_'.$user, 'http://');
+			$source_path 	= $source;
+			$source_url 	= $source;
+			$is_depot 		= false;
+			$is_sub_depot 	= false;
+			$files 			= wppa_get_import_files();
+			$zipcount 		= '0';
+			$albumcount 	= '0';
+			$photocount 	= $files ? count($files) : '0';
+			$dircount		= '0';
+		}
 
 ?>		
 		<form action="<?php echo(wppa_dbg_url(get_admin_url().'admin.php?page=wppa_import_photos')) ?>" method="post">
 		<?php if ( current_user_can('administrator') || $wppa_opt['wppa_chgsrc_is_restricted'] == 'no' ) { ?>
-<div style="border:1px solid gray; padding:4px; margin: 3px 0;" >
-		<?php wp_nonce_field('$wppa_nonce', WPPA_NONCE); ?>
-		<?php _e('Import photos from:', 'wppa'); ?>
+
+		<div style="border:1px solid gray; padding:4px; margin: 3px 0;" >
+			<?php 
+				wp_nonce_field('$wppa_nonce', WPPA_NONCE); 
+				_e('Select Local or Remote', 'wppa'); 
+				$disabled = $can_remote ? '' : 'disabled="disabled"';
+			?>
+			<select name="local-remote" >
+				<option value="local" <?php if ( $source_type == 'local' ) echo 'selected="selected"' ?>><?php _e('Local', 'wppa') ?></option>
+				<option value="remote" <?php echo $disabled; if ( $source_type == 'remote' ) echo 'selected="selected"' ?>><?php _e('Remote', 'wppa') ?></option>
+			</select>
+			<?php if ( $can_remote ) { ?>
+				<input type="submit" class="button-secundary" name="wppa-import-set-source" value="<?php _e('Set Local/Remote', 'wppa'); ?>" />
+			<?php } else { 
+				if ( ! ini_get('allow_url_fopen') )
+					_e('The server does not allow you to import from remote locations. ( The php directive allow_url_fopen is not set to 1 )', 'wppa');
+				if ( ! function_exists('curl_init') )
+					_e('The server does not allow you to import from remote locations. ( The curl functions are not set up )', 'wppa');
+			} ?>
+		</div>
+		<div style="border:1px solid gray; padding:4px; margin: 3px 0;" >
+			<?php wp_nonce_field('$wppa_nonce', WPPA_NONCE); ?>
+			<?php _e('Import photos from:', 'wppa'); ?>
+			<?php if ( $source_type == 'local' ) { ?>
 			<select name="wppa-source">
-				<!--<option value="" ><?php _e('Please select a location', 'wppa') ?></option>-->
 				<option value="<?php echo(WPPA_DEPOT) ?>" <?php if ($is_depot) echo('selected="selected"') ?>><?php _e('--- My depot ---', 'wppa') ?></option>
 				<?php wppa_walktree(WPPA_DEPOT, $source, true, true); /* Allow the name 'wppa', subdirs only */ ?>
 				<?php wppa_walktree(WPPA_UPLOAD, $source, false, false); /* Do NOT allow the name 'wppa', include topdir */ ?>	
 			</select>
-			<input type="submit" class="button-secundary" name="wppa-import-set-source" value="<?php _e('Set source directory', 'wppa'); ?>" />
-</div>
+			<input type="submit" class="button-secundary" name="wppa-import-set-source-dir" value="<?php _e('Set source directory', 'wppa'); ?>" />
+			<?php } else { ?>
+			<input type="text" style="width:50%" name="wppa-source-remote" value="<?php echo $source ?>" />
+			<input type="submit" onclick="jQuery('#rem-rem').css('display','inline'); return true;" class="button-secundary" name="wppa-import-set-source-url" value="<?php _e('Find remote photos', 'wppa'); ?>" />
+			<span id="rem-rem" style="display:none;"><?php _e('Working, please wait...', 'wppa') ?></span>
+			<?php _e('<br />You can enter either a web page adres ending in a slash (/) like <i>http://mysite.com/mypage/</i> or a full url to an image file like <i>http://mysite.com/wp-content/uploads/wppa/4711.jpg</i>', 'wppa'); ?>
+			<?php } ?>
+		</div>
+		
 		<?php } ?>
 		</form>
 
@@ -517,7 +578,10 @@ global $wppa;
 				if ($photocount > '0') { ?>
 <div style="border:1px solid gray; padding:4px; margin: 3px 0;" >
 				<p><b>
-					<?php _e('There are', 'wppa'); echo(' '.$photocount.' '); _e('photos in the depot.', 'wppa'); if ( $wppa_opt['wppa_resize_on_upload'] == 'yes' ) { echo(' '); _e('Photos will be downsized during import.', 'wppa'); } ?><br/>
+					<?php _e('There are', 'wppa'); echo(' '.$photocount.' '); 
+						if ( $source_type == 'local' ) _e('photos in the depot.', 'wppa'); 
+						else _e('possible photos found remote.', 'wppa');						
+						if ( $wppa_opt['wppa_resize_on_upload'] == 'yes' ) { echo(' '); _e('Photos will be downsized during import.', 'wppa'); } ?><br/>
 				</b></p>
 				<p class="hideifupdate" >
 					<?php _e('Default album for import:', 'wppa') ?>
@@ -543,7 +607,7 @@ global $wppa;
 					<thead>
 						<tr>
 							<th>
-								<input type="checkbox" id="all-pho" checked="checked" onchange="checkAll('all-pho', '.wppa-pho')" /><b>&nbsp;&nbsp;<?php _e('Check/uncheck all', 'wppa') ?></b>
+								<input type="checkbox" id="all-pho" <?php if ($is_sub_depot) echo('checked="checked"') ?> onchange="checkAll('all-pho', '.wppa-pho')" /><b>&nbsp;&nbsp;<?php _e('Check/uncheck all', 'wppa') ?></b>
 							</th>
 							<?php if ($is_sub_depot) { ?>
 								<th>
@@ -564,7 +628,7 @@ global $wppa;
 						<?php
 						$ct = 0;
 						$idx = '0';
-						foreach ($files as $file) {
+						if ( is_array($files) ) foreach ($files as $file) {
 							$ext = strtolower(substr(strrchr($file, "."), 1));
 							$meta =	substr($file, 0, strlen($file)-3).'pmf';
 							if ($ext == 'jpg' || $ext == 'png' || $ext == 'gif') { ?>
@@ -643,11 +707,16 @@ global $wppa;
 
 		<?php }
 		else {
-			if (PHP_VERSION_ID >= 50207) {
-				wppa_ok_message(__('There are no archives, albums or photos in directory:', 'wppa').' '.$source_url);
+			if ( $source_type == 'local' ) {
+				if (PHP_VERSION_ID >= 50207) {
+					wppa_ok_message(__('There are no archives, albums or photos in directory:', 'wppa').' '.$source_url);
+				}
+				else {
+					wppa_ok_message(__('There are no albums or photos in directory:', 'wppa').' '.$source_url);
+				}
 			}
 			else {
-				wppa_ok_message(__('There are no albums or photos in directory:', 'wppa').' '.$source_url);
+				wppa_ok_message(__('There are no photos found or left to process at url:', 'wppa').' '.$source_url);
 			}
 		}
 	}
@@ -664,6 +733,82 @@ global $wppa;
 <?php
 }
 
+// get array of files to import
+function wppa_get_import_files() {
+
+	// Init
+	$user 			= wppa_get_user();
+	$source_type 	= get_option('wppa_import_source_type_'.$user, 'local');
+	$files			= array();
+	
+	// Dispatch on source type
+	if ( $source_type == 'local' ) {
+		$source 		= get_option('wppa_import_source_'.$user, WPPA_DEPOT);
+		$source_path 	= ABSPATH . $source;	// Filesystem
+		$files 			= glob($source_path . '/*');
+	}
+	else { // remote
+		$setting 		= get_option('wppa_import_source_url_'.$user, 'http://');
+		$pattern		= '/src=".*?"/';
+		if ( substr($setting, -1) == '/' ) {	// page url
+			$files = get_option('wppa_import_source_url_found_'.$user, false);
+			if ( $files === false ) {
+			
+				// Init
+				$files = array();
+				
+				// Get page content
+				$curl = curl_init();
+				curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+				curl_setopt($curl, CURLOPT_URL, $setting);
+				$contents = curl_exec($curl);
+				curl_close($curl);
+				
+				// Process result
+				if ( $contents ) {
+				
+					// Preprocess
+					$contents = strip_tags($contents, '<img>');
+					$contents = preg_replace('@>.*?<@siu', '', $contents);
+					$contents = str_replace('\'', '"', $contents);
+					
+					// Find matches
+					preg_match_all($pattern, $contents, $matches, PREG_PATTERN_ORDER);
+					if ( is_array($matches[0]) ) {
+					
+						// Sort
+						sort($matches[0]);
+						
+						// Copy to $files, skipping dups
+						$val = '';
+						foreach ( array_keys($matches[0]) as $idx ) {
+							if ( $matches[0][$idx] != $val ) {
+								$val = $matches[0][$idx];
+								// End process found item
+								$match 		= substr($matches[0][$idx], 5);
+								$matchpos 	= strpos($contents, $match);
+								$match 		= trim($match, '"');
+								if ( strpos($match, '?') ) $match = substr($match, 0, strpos($match, '?') );
+								$match 		= str_replace('/uploads/wppa/thumbs/', '/uploads/wppa/', $match);
+								// Save it
+								$files[] = $match;
+							}
+						}
+					}
+				}
+				update_option('wppa_import_source_url_found_'.$user, $files);
+			}
+		}
+		else {									// image uri
+			if ( is_array( @ getimagesize($setting)) ) {
+				$files = array($setting);
+			}
+		}
+	}
+	// Done, return result
+	return $files;
+}
+
 // Upload multiple photos
 function wppa_upload_multiple() {
 	global $wpdb;
@@ -677,7 +822,7 @@ function wppa_upload_multiple() {
 		if ( is_array($file['error']) ) {
 			for ($i = '0'; $i < count($file['error']); $i++) {
 				if ( wppa_is_time_up() ) {
-					wppa_error_message(sprintf(__('Time is up. %s photos uploaded in album nr %s.', 'wppa'), $count, $_POST['wppa-album']));
+					wppa_error_message(sprintf(__('Time out. %s photos uploaded in album nr %s.', 'wppa'), $count, $_POST['wppa-album']));
 					wppa_set_last_album($_POST['wppa-album']);
 					return;
 				}
@@ -757,13 +902,14 @@ global $wppa;
 	
 	// Get this users current source directory setting
 	$user = wppa_get_user();
+	$source_type = get_option('wppa_import_source_type_'.$user, 'local');
 	$source = get_option('wppa_import_source_'.$user, WPPA_DEPOT); // removed /$user
 
 	$depot = ABSPATH . $source;	// Filesystem
 	$depoturl = get_bloginfo('wpurl').'/'.$source;	// url
 
 	// See what's in there
-	$files = glob($depot.'/*');
+	$files = wppa_get_import_files();//glob($depot.'/*');
 
 	// First extract zips if our php version is ok
 	$idx='0';
@@ -872,8 +1018,8 @@ global $wppa;
 	if (isset($_POST['wppa-album'])) $album = $_POST['wppa-album']; else $album = '0';
 
 	wppa_ok_message(__('Processing files, please wait...', 'wppa').' '.__('If the line of dots stops growing or your browser reports Ready, your server has given up. In that case: try again', 'wppa').' <a href="'.wppa_dbg_url(get_admin_url().'admin.php?page=wppa_import_photos').'">'.__('here.', 'wppa').'</a>');
-	foreach ($files as $file) {
-
+	foreach ( array_keys($files) as $file_idx ) {
+		$file = $files[$file_idx];
 		if (isset($_POST['file-'.$idx])) {
 			$ext = strtolower(substr(strrchr($file, "."), 1));
 			if ($ext == 'jpg' || $ext == 'png' || $ext == 'gif') {
@@ -933,11 +1079,14 @@ global $wppa;
 		}
 		$idx++;
 		if ( wppa_is_time_up() ) {
-			wppa_error_message(sprintf(__('Time is up. %s photos imported. Please restart this operation.', 'wppa'), $pcount));
+			wppa_error_message(sprintf(__('Time out. %s photos imported. Please restart this operation.', 'wppa'), $pcount));
 			wppa_set_last_album($album);
+			if ( $source_type == 'remote') update_option('wppa_import_source_url_found_'.$user, $files);
 			return;
 		}
+		if ( $source_type == 'remote') unset($files[$file_idx]);
 	} // foreach $files
+	if ( $source_type == 'remote') update_option('wppa_import_source_url_found_'.$user, $files);
 	
 	// Now the dirs to album imports
 	
@@ -959,7 +1108,7 @@ global $wppa;
 			}
 		}
 		$idx++;
-		if ( $iret == false ) break;	// Time up
+		if ( $iret == false ) break;	// Time out
 	}	
 	
 	
@@ -1170,7 +1319,7 @@ global $wppa_opt;
 				}
 				else {
 					$bret = wppa_insert_photo($photofile, $alb, basename($photofile));
-					if ( ! $bret ) return false;	// Time up
+					if ( ! $bret ) return false;	// Time out
 					unlink($photofile);
 					$photocount++;
 				}
@@ -1184,7 +1333,7 @@ global $wppa_opt;
 			if ( is_dir($subdir) ) {
 				if ( basename($subdir) != '.' && basename($subdir) != '..' ) {
 					$bret = wppa_import_dir_to_album($subdir, $alb);
-					if ( ! $bret ) return false;	// Time up
+					if ( ! $bret ) return false;	// Time out
 				}
 			}
 		}

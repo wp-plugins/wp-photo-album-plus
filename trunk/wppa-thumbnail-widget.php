@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display thumbnail photos
-* Version 5.0.15
+* Version 5.0.17
 */
 
 class ThumbnailWidget extends WP_Widget {
@@ -73,7 +73,7 @@ class ThumbnailWidget extends WP_Widget {
 				wppa_do_the_widget_thumb('thumbnail', $image, $album, $display, $link, $title, $imgurl, $imgstyle_a, $imgevents);
 
 				if ( $name == 'yes' && $display == 'thumbs' ) {
-					$widget_content .= "\n\t".'<span style="font-size:9px;">'.__(stripslashes($image['name'])).'</span>';
+					$widget_content .= "\n\t".'<span style="font-size:'.$wppa_opt['wppa_fontsize_widget_thumb'].'px;">'.__(stripslashes($image['name'])).'</span>';
 				}
 			}
 			else {	// No image

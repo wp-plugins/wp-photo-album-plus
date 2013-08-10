@@ -1,7 +1,7 @@
 /* admin-scripts.js */
 /* Package: wp-photo-album-plus
 /*
-/* Version 5.0.15
+/* Version 5.0.17
 /* Various js routines used in admin pages		
 */
 
@@ -44,6 +44,7 @@ function wppaInitSettings() {
 	wppaCheckCommentLink();
 	wppaCheckMphotoLink();
 	wppaCheckSphotoLink();
+	wppaCheckSlidePhotoLink();
 	wppaCheckSlideOnlyLink();
 	wppaCheckAlbumWidgetLink();
 	wppaCheckSlideLink();
@@ -607,6 +608,22 @@ function wppaCheckSphotoLink() {
 	}
 }
 
+function wppaCheckSlidePhotoLink() {
+	var lvalue = document.getElementById('wppa_slideshow_linktype').value;
+	if (lvalue == 'none' || lvalue == 'file' || lvalue == 'lightbox' ) {
+		jQuery('.wppa_sslp').css('visibility', 'hidden');
+	}
+	else {
+		jQuery('.wppa_sslp').css('visibility', 'visible');
+	}
+	if (lvalue == 'none' || lvalue == 'lightbox' ) {
+		jQuery('.wppa_sslb').css('visibility', 'hidden');
+	}
+	else {
+		jQuery('.wppa_sslb').css('visibility', 'visible');
+	}
+}
+
 function wppaCheckResize() {
 	var Rs = document.getElementById('wppa_resize_on_upload').checked;
 	if (Rs) {
@@ -948,6 +965,8 @@ function wppaAjaxUpdateAlbum(album, actionslug, elem) {
 				}
 				// Hide spinner
 				if ( actionslug == 'description' ) jQuery('#wppa-album-spin').css({visibility:'hidden'});
+				// Refresh for alt main_photo selections when cover type changed
+				if ( actionslug == 'cover_type' ) document.location = document.location;
 			}
 		}
 	}

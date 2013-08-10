@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * edit and delete photos
-* version 5.0.15
+* version 5.0.17
 *
 */
 
@@ -543,3 +543,277 @@ function wppa_album_photos($album = '', $photo = '', $owner = '', $moderate = fa
 	} /* photos not empty */
 } /* function */
 
+function wppa_album_photos_bulk($album) {
+	global $wpdb;
+	global $q_config;
+	global $wppa_opt;
+	
+	// Check input
+	wppa_vfy_arg('wppa-page');
+	
+	// Init
+	$count = '0';
+	$abort = false;
+
+	if ( isset ($_POST['wppa-bulk-action']) ) {
+		check_admin_referer( 'wppa-bulk', 'wppa-bulk' );
+		if ( isset ( $_POST['wppa-bulk-photo'] ) ) {
+			$ids 		= $_POST['wppa-bulk-photo'];
+			$newalb 	= isset ( $_POST['wppa-bulk-album'] ) ? $_POST['wppa-bulk-album'] : '0';
+			$status 	= isset ( $_POST['wppa-bulk-status'] ) ? $_POST['wppa-bulk-status'] : '';
+			$totcount 	= count($ids);
+			if ( ! is_numeric($newalb) ) wp_die('Security check failure 1');
+			if ( is_array($ids) ) {
+				foreach ( array_keys($ids) as $id ) {
+					switch ($_POST['wppa-bulk-action']) {
+						case 'wppa-bulk-delete':
+							wppa_delete_photo($id);
+							break;
+						case 'wppa-bulk-move-to':
+							if ( $newalb ) {
+								$photo = $wpdb->get_row($wpdb->prepare('SELECT * FROM '.WPPA_PHOTOS.' WHERE `id` = %s', $id), ARRAY_A);
+								wppa_flush_treecounts($photo['album']);		// Current album
+								wppa_flush_treecounts($newalb);				// New album
+								$wpdb->query($wpdb->prepare('UPDATE `'.WPPA_PHOTOS.'` SET `album` = %s WHERE `id` = %s', $newalb, $id));
+								wppa_move_source($photo['filename'], $photo['album'], $id);
+							}
+							else wppa_error_message('Unexpected error #4 in wppa_album_photos_bulk().');
+							break;
+						case 'wppa-bulk-copy-to':
+							if ( $newalb ) {
+								wppa_copy_photo($id, $newalb);
+								wppa_flush_treecounts($newalb);
+							}
+							else wppa_error_message('Unexpected error #3 in wppa_album_photos_bulk().');
+							break;
+						case 'wppa-bulk-status':
+							if ( current_user_can('wppa_admin') || current_user_can('wppa_moderate') ) {
+								if ( $status == 'publish' || $status == 'pending' || $status == 'featured' ) {
+									$wpdb->query("UPDATE `".WPPA_PHOTOS."` SET `status` = '".$status."' WHERE `id` = ".$id);
+								}	
+								else wp_die('Security check failure 2');
+							}
+							else wp_die('Security check failure 3');
+							break;
+						default:
+							wppa_error_message('Unimplemented bulk action requested in wppa_album_photos_bulk().');
+							break;
+					}
+					$count++;
+					if ( wppa_is_time_up() ) {
+						wppa_error_message(sprintf(__('Time is out after processing %d out of %d items.', 'wppa'), $count, $totcount));
+						$abort = true;
+					}
+					if ( $abort ) break;
+				}
+			}
+			else wppa_error_message('Unexpected error #2 in wppa_album_photos_bulk().');
+		}
+		else wppa_error_message('Unexpected error #1 in wppa_album_photos_bulk().');
+		
+		if ( $count && ! $abort ) {
+			switch ($_POST['wppa-bulk-action']) {
+				case 'wppa-bulk-delete':
+					$message = sprintf(__('%d photos deleted.', 'wppa'), $count);
+					break;
+				case 'wppa-bulk-move-to':
+					$message = sprintf(__('%d photos moved to album %s.', 'wppa'), $count, $newalb.': '.wppa_get_album_name($newalb));
+					break;
+				case 'wppa-bulk-copy-to':
+					$message = sprintf(__('%d photos copied to album %s.', 'wppa'), $count, $newalb.': '.wppa_get_album_name($newalb));
+					break;
+				case 'wppa-bulk-status':
+					$message = sprintf(__('Changed status to %s on %d photos.', 'wppa'), $status, $count);
+					break;
+				default:
+					$message = sprintf(__('%d photos processed.', 'wppa'), $count);
+					break;
+			}
+			wppa_ok_message($message);
+		}
+	}
+
+	$pagesize 	= $wppa_opt['wppa_photo_admin_pagesize'];
+	$page 		= isset ( $_GET['wppa-page'] ) ? $_GET['wppa-page'] : '1';
+	$skip 		= ( $page - '1') * $pagesize;
+	$limit 		= ( $pagesize < '1' ) ? '' : ' LIMIT '.$skip.','.$pagesize;
+	
+	if ( $album ) {
+		$counts = wppa_treecount_a($album);
+		$count = $counts['selfphotos'] + $counts['pendphotos']; //$wpdb->get_var($wpdb->prepare('SELECT COUNT(*) FROM `'.WPPA_PHOTOS.'` WHERE `album` = %s', $album));
+		$photos = $wpdb->get_results($wpdb->prepare('SELECT * FROM `'.WPPA_PHOTOS.'` WHERE `album` = %s '.wppa_get_photo_order($album, 'norandom').$limit, $album), ARRAY_A);
+		$link = wppa_dbg_url(get_admin_url().'admin.php?page=wppa_admin_menu&tab=edit&edit_id='.$album.'&bulk');
+	
+		if ( $photos ) {
+			wppa_admin_page_links($page, $pagesize, $count, $link, '#manage-photos');
+			?>
+			<script type="text/javascript" >
+				function wppaBulkActionChange(elm, id) {
+					wppa_setCookie('wppa_bulk_action',elm.value,365);
+					if ( elm.value == 'wppa-bulk-move-to' || elm.value == 'wppa-bulk-copy-to' ) jQuery('#wppa-bulk-album').css('display', 'inline');
+					else jQuery('#wppa-bulk-album').css('display', 'none');
+					if ( elm.value == 'wppa-bulk-status' ) jQuery('#wppa-bulk-status').css('display', 'inline');
+					else jQuery('#wppa-bulk-status').css('display', 'none');
+				}
+				function wppaBulkDoitOnClick() {
+					var photos = jQuery('.wppa-bulk-photo');
+					var count=0;
+					for ( i=0; i< photos.length; i++ ) {
+						var photo = photos[i];
+						if ( photo.checked ) count++;
+					}
+					if ( count == 0 ) {
+						alert('No photos selected');
+						return false;
+					}
+					var action = document.getElementById('wppa-bulk-action').value;
+					switch ( action ) {
+						case '':
+							alert('No action selected');
+							return false;
+							break;
+						case 'wppa-bulk-delete':
+							break;
+						case 'wppa-bulk-move-to':
+						case 'wppa-bulk-copy-to':
+							var album = document.getElementById('wppa-bulk-album').value;
+							if ( album == 0 ) {
+								alert('No album selected');
+								return false;
+							}
+							break;
+						case 'wppa-bulk-status':
+							var status = document.getElementById('wppa-bulk-status').value;
+							if ( status == 0 ) {
+								alert('No status selected');
+								return false;
+							}
+							break;
+						default:
+							alert('Unimplemented action requested: '+action);
+							return false;
+							break;
+							
+					}
+					return true;
+				}
+				jQuery(document).ready(function() {
+					var action = wppa_getCookie('wppa_bulk_action');
+					document.getElementById('wppa-bulk-action').value = action;
+					if ( action == 'wppa-bulk-move-to' || action == 'wppa-bulk-copy-to' ) {
+						jQuery('#wppa-bulk-album').css('display','inline');
+						document.getElementById('wppa-bulk-album').value = wppa_getCookie('wppa_bulk_album');
+					}
+					if ( action == 'wppa-bulk-status' ) {
+						jQuery('#wppa-bulk-status').css('display','inline');
+						document.getElementById('wppa-bulk-status').value = wppa_getCookie('wppa_bulk_status');
+					}
+				});
+				
+			</script>
+			<form action="<?php echo $link.'&wppa-page='.$page.'#manage-photos' ?>" method="post" >
+				<?php wp_nonce_field( 'wppa-bulk','wppa-bulk' ) ?>
+				<?php //print_r($_POST) ?>
+				<h3>
+				<span style="font-weight:bold;" ><?php _e('Bulk action:', 'wppa') ?></span>
+				<select id="wppa-bulk-action" name="wppa-bulk-action" onchange="wppaBulkActionChange(this, 'bulk-album')" >
+					<option value="" ></option>
+					<option value="wppa-bulk-delete" ><?php _e('Delete', 'wppa') ?></option>
+					<option value="wppa-bulk-move-to" ><?php _e('Move to', 'wppa') ?></option>
+					<option value="wppa-bulk-copy-to" ><?php _e('Copy to', 'wppa') ?></option>
+					<?php if ( current_user_can('wppa_admin') || current_user_can('wppa_moderate') ) { ?>
+						<option value="wppa-bulk-status" ><?php _e('Set status to', 'wppa') ?></option>
+					<?php } ?>
+				</select>
+				<select name="wppa-bulk-album" id="wppa-bulk-album" style="display:none;" onchange="wppa_setCookie('wppa_bulk_album',this.value,365);" >
+					<?php echo wppa_album_select_a(array('checkaccess' => true, 'path' => wppa_switch('wppa_hier_albsel'), 'exclude' => $album, 'selected' => '0', 'addpleaseselect' => true)) ?>
+				</select>
+				<select name="wppa-bulk-status" id="wppa-bulk-status" style="display:none;" onchange="wppa_setCookie('wppa_bulk_status',this.value,365);" >
+					<option value="" ><?php _e('- select a status -', 'wppa') ?></option>
+					<option value="pending" ><?php _e('Pending', 'wppa') ?></option>
+					<option value="publish" ><?php _e('Publish', 'wppa') ?></option>
+					<option value="featured" ><?php _e('Featured', 'wppa') ?></option>
+				</select>
+				<input type="submit" onclick="return wppaBulkDoitOnClick()" class="button-primary" value="<?php _e('Doit!', 'wppa') ?>" />
+				<span style="font-family:sans-serif; font-size:12px; font-style:italic; font-weight:normal;" >
+					<?php _e('Pressing this button will reload the page after executing the selected action', 'wppa') ?>
+				</span>
+				</h3>
+				<table class="widefat" >
+					<thead style="font-weight:bold;" >
+						<td><input type="checkbox" class="wppa-bulk-photo" onchange="jQuery('.wppa-bulk-photo').attr('checked', this.checked);" /></td>
+						<td><?php _e('ID', 'wppa') ?></td>
+						<td><?php _e('Preview', 'wppa') ?></td>
+						<td><?php _e('Name', 'wppa') ?></td>
+						<td><?php _e('Description', 'wppa') ?></td>
+						<td><?php _e('Status', 'wppa') ?></td>
+						<td><?php _e('Remark', 'wppa') ?></td>
+					</thead>
+					<tbody>
+						<?php foreach ( $photos as $photo ) { ?>
+						<tr id="photoitem-<?php echo $photo['id'] ?>" >
+							<td>
+								<input type="hidden" id="photo-nonce-<?php echo $photo['id'] ?>" value="<?php echo wp_create_nonce('wppa_nonce_'.$photo['id']);  ?>" />
+								<input type="checkbox" name="wppa-bulk-photo[<?php echo $photo['id'] ?>]" class="wppa-bulk-photo" />
+							</td>
+							<td><?php echo $photo['id'] ?></td>
+							<td>
+								<a href="<?php echo wppa_get_photo_url($photo['id']) ?>" target="_blank" title="Click to see fullsize" >
+									<img src="<?php echo wppa_get_thumb_url($photo['id']) ?>" style="max-width:100px; max-height:50px; " />
+								</a>
+							</td>
+							<td style="width:25%;" >
+								<input type="text" style="width:100%;" id="pname-<?php echo $photo['id'] ?>" onchange="wppaAjaxUpdatePhoto(<?php echo $photo['id'] ?>, 'name', this);" value="<?php echo esc_attr(stripslashes($photo['name'])) ?>" />
+							</td>
+							<td style="width:25%;" >
+								<textarea style="height:50px; width:100%" onchange="wppaAjaxUpdatePhoto(<?php echo $photo['id'] ?>, 'description', this)" ><?php echo(stripslashes($photo['description'])) ?></textarea>
+							</td>
+							<td>
+							<?php if ( current_user_can('wppa_admin') || current_user_can('wppa_moderate') ) { ?>
+								<select id="status-<?php echo $photo['id'] ?>" onchange="wppaAjaxUpdatePhoto(<?php echo $photo['id'] ?>, 'status', this); wppaPhotoStatusChange(<?php echo $photo['id'] ?>); ">
+									<option value="pending" <?php if ($photo['status']=='pending') echo 'selected="selected"'?> ><?php _e('Pending', 'wppa') ?></option>
+									<option value="publish" <?php if ($photo['status']=='publish') echo 'selected="selected"'?> ><?php _e('Publish', 'wppa') ?></option>
+									<option value="featured" <?php if ($photo['status']=='featured') echo 'selected="selected"'?> ><?php _e('Featured', 'wppa') ?></option>
+								</select>
+							<?php }
+								else { 
+									if ( $photo['status'] == 'pending' ) _e('Pending', 'wppa');
+									elseif ( $photo['status'] == 'publish' ) _e('Publish', 'wppa');
+									elseif ( $photo['status'] == 'featured' ) e('Featured', 'wppa');
+								} ?>
+							</td>
+							<td id="photostatus-<?php echo $photo['id'] ?>" style="width:25%;" >
+								<?php echo sprintf(__('Photo %s is not modified yet', 'wppa'), $photo['id']) ?>
+								<script type="text/javascript">wppaPhotoStatusChange(<?php echo $photo['id'] ?>)</script>
+							</td>
+						</tr>
+						<?php } ?>
+					</tbody>
+					<tfoot style="font-weight:bold;" >
+						<td><input type="checkbox" class="wppa-bulk-photo" onchange="jQuery('.wppa-bulk-photo').attr('checked', this.checked);" /></td>
+						<td><?php _e('ID', 'wppa') ?></td>
+						<td><?php _e('Preview', 'wppa') ?></td>
+						<td><?php _e('Name', 'wppa') ?></td>
+						<td><?php _e('Description', 'wppa') ?></td>
+						<td><?php _e('Status', 'wppa') ?></td>
+						<td><?php _e('Remark', 'wppa') ?></td>
+					</tfoot>
+				</table>
+			</form>
+			<?php
+			wppa_admin_page_links($page, $pagesize, $count, $link);
+		}
+		else {
+			if ( $page == '1' ) {
+				echo '<h3>'.__('The album is empty.', 'wppa').'</h3>';
+			}
+			else {
+				$page_1 = $page - '1';
+				echo '<h3>'.sprintf(__('Page %d is empty, try <a href="%s" >page %d</a>.', 'wppa'), $page, $link.'&wppa-page='.$page_1.'#manage-photos', $page_1);
+			}
+		}
+	}
+	else {
+		wppa_dbg_msg('Missing required argument in wppa_album_photos()', 'red', 'force');
+	}
+}

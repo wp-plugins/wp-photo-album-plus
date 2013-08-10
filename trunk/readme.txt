@@ -2,12 +2,12 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile
-Version: 5.0.16
+Version: 5.0.17
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
 Requires at least: 3.1
-Tested up to: 3.5.2
+Tested up to: 3.6
 
 This plugin is designed to easily manage and display your photo albums and slideshows in a single as well as in a network WordPress site.
 
@@ -171,6 +171,27 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 5.0.17 =
+
+= Bug Fixes =
+
+* When the default cover type is not set to Image Factory and the album type is set to Image Factory, you will now be able to select multiple random (featured) cover images for the album.
+* Under certain circumstances the wrong coverphoto was displayed when a specific photo was assigned. Fixed.
+
+= New Features =
+
+* More selection options for cover image(s).
+* Bulk edit album content.
+* Added linktype *The fullsize photo on its own* as link option in Table VI-B5.
+* Import photos from an url.
+
+= Other Changes =
+
+* A comment by a moderator need no longer to be moderated.
+* The font size of widget thumbnail subtitles can be set in Table V-10.
+* The album description tooltip on the album widget can be switched off on Table II-E2.
+* Dropped language files nl. The correct locale for dutch is nl_NL.
 
 = 5.0.16 =
 

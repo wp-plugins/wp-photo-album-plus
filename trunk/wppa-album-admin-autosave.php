@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * create, edit and delete albums
-* version 5.0.11
+* version 5.0.17
 *
 */
 
@@ -329,8 +329,7 @@ function _wppa_admin() {
 								<td style="padding-top:6px; padding-bottom:0;">
 									<span class="description">
 										<?php 
-											_e('The default cover type is the systems standard set in the <b>Photo Albums -> Settings</b> page <b>Table IV-D6</b>.<br />', 'wppa'); 
-											_e('If changing this attribute changes the number of possible coverphotos, reload the page!.', 'wppa');
+											_e('The default cover type is the systems standard set in the <b>Photo Albums -> Settings</b> page <b>Table IV-D6</b>.', 'wppa'); 
 										?>
 									</span>
 								</td>
@@ -343,7 +342,7 @@ function _wppa_admin() {
 									<label ><?php _e('Cover Photo:', 'wppa'); ?></label>
 								</th>
 								<td style="padding-top:0; padding-bottom:0;">
-									<?php echo(wppa_main_photo($albuminfo['main_photo'])) ?>
+									<?php echo(wppa_main_photo($albuminfo['main_photo'], $albuminfo['cover_type'])) ?>
 								</td>
 								<td style="padding-top:6px; padding-bottom:0;">
 									<span class="description">
@@ -534,9 +533,12 @@ function _wppa_admin() {
 							</tr>
 						</tbody>
 					</table>
-							
+<a name="manage-photos" id="manage-photos" ></a>							
 				<h2><?php _e('Manage Photos', 'wppa'); ?></h2>
-				<?php wppa_album_photos($edit_id) ?>
+				<?php 
+					if ( isset($_GET['bulk']) ) wppa_album_photos_bulk($edit_id);
+					else wppa_album_photos($edit_id) 
+				?>
 			</div>
 <?php 	} 
 
@@ -832,7 +834,8 @@ function wppa_admin_albums_flat() {
 					<?php _e('A/P/PM', 'wppa'); ?>
 				</th>
 				<th scope="col"><?php _e('Edit', 'wppa'); ?></th>
-				<th scope="col"><?php _e('Q-edit', 'wppa'); ?></th>
+				<th scope="col"><?php _e('Quick', 'wppa'); ?></th>
+				<th scope="col"><?php _e('Bulk', 'wppa'); ?></th>
 				<th scope="col"><?php _e('Delete', 'wppa'); ?></th>	
 				<?php if ( wppa_can_create_album() ) echo '<th scope="col">'.__('Create', 'wppa').'</th>'; ?>
 			</tr>
@@ -870,8 +873,8 @@ function wppa_admin_albums_flat() {
 							<?php if ( $album['owner'] != '--- public ---' || current_user_can('administrator') ) { ?>
 								<?php $url = wppa_ea_url($album['id']) ?>
 								<td><a href="<?php echo($url) ?>" class="wppaedit"><?php _e('Edit', 'wppa'); ?></a></td>
-								<?php $url .= '&quick'; ?>
-								<td><a href="<?php echo($url) ?>" class="wppaedit"><?php _e('Q-edit', 'wppa'); ?></a></td>
+								<td><a href="<?php echo($url.'&quick') ?>" class="wppaedit"><?php _e('Quick', 'wppa'); ?></a></td>
+								<td><a href="<?php echo($url.'&bulk') ?>" class="wppaedit"><?php _e('Bulk', 'wppa'); ?></a></td>
 								
 								<?php $url = wppa_ea_url($album['id'], 'del') ?>
 								<td><a href="<?php echo($url) ?>" class="wppadelete"><?php _e('Delete', 'wppa'); ?></a></td>
@@ -961,7 +964,8 @@ function wppa_admin_albums_flat() {
 					<?php _e('A/P/PM', 'wppa'); ?>
 				</th>
 				<th scope="col"><?php _e('Edit', 'wppa'); ?></th>
-				<th scope="col"><?php _e('Q-edit', 'wppa'); ?></th>
+				<th scope="col"><?php _e('Quick', 'wppa'); ?></th>
+				<th scope="col"><?php _e('Bulk', 'wppa'); ?></th>
 				<th scope="col"><?php _e('Delete', 'wppa'); ?></th>	
 				<?php if ( wppa_can_create_album() ) echo '<th scope="col">'.__('Create', 'wppa').'</th>'; ?>
 			</tr>
@@ -1131,7 +1135,8 @@ function wppa_admin_albums_collapsable() {
 					<?php _e('A/P/PM', 'wppa'); ?>
 				</th>
 				<th scope="col"><?php _e('Edit', 'wppa'); ?></th>
-				<th scope="col"><?php _e('Q-edit', 'wppa'); ?></th>
+				<th scope="col"><?php _e('Quick', 'wppa'); ?></th>
+				<th scope="col"><?php _e('Bulk', 'wppa'); ?></th>
 				<th scope="col"><?php _e('Delete', 'wppa'); ?></th>	
 				<?php if ( wppa_can_create_album() ) echo '<th scope="col">'.__('Create', 'wppa').'</th>'; ?>
 			</tr>
@@ -1220,7 +1225,8 @@ function wppa_admin_albums_collapsable() {
 					<?php _e('A/P/PM', 'wppa'); ?>
 				</th>
 				<th scope="col"><?php _e('Edit', 'wppa'); ?></th>
-				<th scope="col"><?php _e('Q-edit', 'wppa'); ?></th>
+				<th scope="col"><?php _e('Quick', 'wppa'); ?></th>
+				<th scope="col"><?php _e('Bulk', 'wppa'); ?></th>
 				<th scope="col"><?php _e('Delete', 'wppa'); ?></th>	
 				<?php if ( wppa_can_create_album() ) echo '<th scope="col">'.__('Create', 'wppa').'</th>'; ?>
 			</tr>
@@ -1343,8 +1349,8 @@ global $wpdb;
 							<?php if ( $album['owner'] != '--- public ---' || current_user_can('administrator') ) { ?>
 								<?php $url = wppa_ea_url($album['id']) ?>
 								<td><a href="<?php echo($url) ?>" class="wppaedit"><?php _e('Edit', 'wppa'); ?></a></td>
-								<?php $url .= '&quick'; ?>
-								<td><a href="<?php echo($url) ?>" class="wppaedit"><?php _e('Q-edit', 'wppa'); ?></a></td>
+								<td><a href="<?php echo($url.'&quick') ?>" class="wppaedit"><?php _e('Quick', 'wppa'); ?></a></td>
+								<td><a href="<?php echo($url.'&bulk') ?>" class="wppaedit"><?php _e('Bulk', 'wppa'); ?></a></td>
 								
 								<?php $url = wppa_ea_url($album['id'], 'del') ?>
 								<td><a href="<?php echo($url) ?>" class="wppadelete"><?php _e('Delete', 'wppa'); ?></a></td>
@@ -1424,7 +1430,7 @@ global $wpdb;
 				// Time up?
 				if ( wppa_is_time_up() ) {
 					wppa_flush_treecounts($id);
-					wppa_error_message('Time is up after '.$cnt.' photo deletes. Please redo this operation');
+					wppa_error_message('Time is out after '.$cnt.' photo deletes. Please redo this operation');
 					return;
 				}
 			} 
@@ -1437,7 +1443,7 @@ global $wpdb;
 				$wpdb->query($wpdb->prepare('UPDATE `'.WPPA_PHOTOS.'` SET `album` = %s WHERE `id` = %s', $move, $photo['id']));
 				wppa_move_source($photo['filename'], $photo['album'], $move);
 				if ( wppa_is_time_up() ) {
-					wppa_error_message('Time is up. Please redo this operation');
+					wppa_error_message('Time is out. Please redo this operation');
 					return;
 				}
 			}
@@ -1454,7 +1460,7 @@ global $wpdb;
 }
 
 // select main photo
-function wppa_main_photo($cur = '') {
+function wppa_main_photo($cur = '', $covertype) {
 global $wpdb;
 global $wppa_opt;
 	
@@ -1462,17 +1468,24 @@ global $wppa_opt;
 	$photos = $wpdb->get_results($wpdb->prepare('SELECT * FROM `'.WPPA_PHOTOS.'` WHERE `album` = %s '.wppa_get_photo_order($a_id), $a_id), ARRAY_A);
 	
 	$output = '';
-	if (!empty($photos)) {
+	if ( ! empty($photos) ) {
 		$output .= '<select name="wppa-main" onchange="wppaAjaxUpdateAlbum('.$a_id.', \'main_photo\', this)" >';
 		$output .= '<option value="">'.__('--- please select ---', 'wppa').'</option>';
-		if ( $wppa_opt['wppa_cover_type'] == 'default' ) {
-			$output .= '<option value="0">'.__('--- random ---', 'wppa').'</option>';
-		}
-		if ( $wppa_opt['wppa_cover_type'] == 'imagefactory' ) {
+		if ( $covertype == 'imagefactory' || ( $covertype == '' && $wppa_opt['wppa_cover_type'] == 'imagefactory' ) ) {
 			if ( $cur == '0' ) $selected = 'selected="selected"'; else $selected = '';
 			$output .= '<option value="0" '.$selected.'>'.sprintf(__('auto select max %s random', 'wppa'), $wppa_opt['wppa_imgfact_count']).'</option>';
 			if ( $cur == '-1' ) $selected = 'selected="selected"'; else $selected = '';
 			$output .= '<option value="-1" '.$selected.'>'.sprintf(__('auto select max %s featured', 'wppa'), $wppa_opt['wppa_imgfact_count']).'</option>';
+			if ( $cur == '-2' ) $selected = 'selected="selected"'; else $selected = '';
+			$output .= '<option value="-2" '.$selected.'>'.sprintf(__('max %s most recent added', 'wppa'), $wppa_opt['wppa_imgfact_count']).'</option>';
+		}
+		else {
+			if ( $cur == '0' ) $selected = 'selected="selected"'; else $selected = '';
+			$output .= '<option value="0" '.$selected.'>'.__('--- random ---', 'wppa').'</option>';
+			if ( $cur == '-1' ) $selected = 'selected="selected"'; else $selected = '';
+			$output .= '<option value="-1" '.$selected.'>'.__('--- random featured ---', 'wppa').'</option>';
+			if ( $cur == '-2' ) $selected = 'selected="selected"'; else $selected = '';
+			$output .= '<option value="-2" '.$selected.'>'.__('--- most recent added ---', 'wppa').'</option>';
 		}
 
 		foreach($photos as $photo) {
