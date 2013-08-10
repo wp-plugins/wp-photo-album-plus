@@ -464,7 +464,7 @@ global $wppa;
 			<input type="text" style="width:50%" name="wppa-source-remote" value="<?php echo $source ?>" />
 			<input type="submit" onclick="jQuery('#rem-rem').css('display','inline'); return true;" class="button-secundary" name="wppa-import-set-source-url" value="<?php _e('Find remote photos', 'wppa'); ?>" />
 			<span id="rem-rem" style="display:none;"><?php _e('Working, please wait...', 'wppa') ?></span>
-			<?php _e('<br />You can enter either a web page adres ending in a slash (/) like <i>http://mysite.com/mypage/</i> or a full url to an image file like <i>http://mysite.com/wp-content/uploads/wppa/4711.jpg</i>', 'wppa'); ?>
+			<?php _e('<br />You can enter either a web page address like <i>http://mysite.com/mypage/</i> or a full url to an image file like <i>http://mysite.com/wp-content/uploads/wppa/4711.jpg</i>', 'wppa'); ?>
 			<?php } ?>
 		</div>
 		
@@ -750,7 +750,11 @@ function wppa_get_import_files() {
 	else { // remote
 		$setting 		= get_option('wppa_import_source_url_'.$user, 'http://');
 		$pattern		= '/src=".*?"/';
-		if ( substr($setting, -1) == '/' ) {	// page url
+										
+		if ( is_array( @ getimagesize($setting)) ) {	// image uri
+			$files = array($setting);
+		}
+		else {	// page url
 			$files = get_option('wppa_import_source_url_found_'.$user, false);
 			if ( $files === false ) {
 			
@@ -768,8 +772,8 @@ function wppa_get_import_files() {
 				if ( $contents ) {
 				
 					// Preprocess
-					$contents = strip_tags($contents, '<img>');
-					$contents = preg_replace('@>.*?<@siu', '', $contents);
+		//			$contents = strip_tags($contents, '<img>');
+		//			$contents = preg_replace('@>.*?<@siu', '', $contents);
 					$contents = str_replace('\'', '"', $contents);
 					
 					// Find matches
@@ -781,27 +785,26 @@ function wppa_get_import_files() {
 						
 						// Copy to $files, skipping dups
 						$val = '';
+						$sfxs = array('jpg', 'gif', 'png', 'JPG', 'GIF', 'PNG');
 						foreach ( array_keys($matches[0]) as $idx ) {
 							if ( $matches[0][$idx] != $val ) {
 								$val = $matches[0][$idx];
-								// End process found item
+								// Post process found item
 								$match 		= substr($matches[0][$idx], 5);
 								$matchpos 	= strpos($contents, $match);
 								$match 		= trim($match, '"');
 								if ( strpos($match, '?') ) $match = substr($match, 0, strpos($match, '?') );
 								$match 		= str_replace('/uploads/wppa/thumbs/', '/uploads/wppa/', $match);
-								// Save it
-								$files[] = $match;
+								$sfx = substr($match, -3);
+								if ( in_array($sfx, $sfxs) ) {
+									// Save it
+									$files[] = $match;
+								}
 							}
 						}
 					}
 				}
 				update_option('wppa_import_source_url_found_'.$user, $files);
-			}
-		}
-		else {									// image uri
-			if ( is_array( @ getimagesize($setting)) ) {
-				$files = array($setting);
 			}
 		}
 	}
@@ -1078,13 +1081,13 @@ global $wppa;
 			}
 		}
 		$idx++;
+		if ( $source_type == 'remote') unset($files[$file_idx]);
 		if ( wppa_is_time_up() ) {
 			wppa_error_message(sprintf(__('Time out. %s photos imported. Please restart this operation.', 'wppa'), $pcount));
 			wppa_set_last_album($album);
 			if ( $source_type == 'remote') update_option('wppa_import_source_url_found_'.$user, $files);
 			return;
 		}
-		if ( $source_type == 'remote') unset($files[$file_idx]);
 	} // foreach $files
 	if ( $source_type == 'remote') update_option('wppa_import_source_url_found_'.$user, $files);
 	
