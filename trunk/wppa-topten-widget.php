@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the top rated photos
-* Version 5.0.17
+* Version 5.1.0
 */
 
 class TopTenWidget extends WP_Widget {
@@ -21,6 +21,7 @@ class TopTenWidget extends WP_Widget {
 		global $wppa;
 
         $wppa['in_widget'] = 'topten';
+		$wppa['master_occur']++;
 		extract( $args );
 		
 		$instance 		= wp_parse_args( (array) $instance, array( 
@@ -28,13 +29,21 @@ class TopTenWidget extends WP_Widget {
 														'sortby' => 'mean_rating', 
 														'title' => '', 
 														'album' => '',
-														'display' => 'thumbs'
+														'display' => 'thumbs',
+														'meanrat' => 'yes',
+														'ratcount' => 'yes',
+														'viewcount' => 'yes'
 														) );
  		$widget_title 	= apply_filters('widget_title', $instance['title'] );
 		$page 			= $wppa_opt['wppa_topten_widget_linkpage'];
 		$max  			= $wppa_opt['wppa_topten_count'];
 		$album 			= $instance['album'];
+		$sortby 		= $instance['sortby'];
 		$display 		= $instance['display'];
+		$meanrat		= $instance['meanrat'];
+		$ratcount 		= $instance['ratcount'];
+		$viewcount 		= $instance['viewcount'];
+
 
 		if ($album) {
 			$thumbs = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM `".WPPA_PHOTOS."` WHERE `album` = %s ORDER BY `" . $instance['sortby'] . "` DESC LIMIT " . $max, $album ), ARRAY_A );
@@ -70,8 +79,26 @@ class TopTenWidget extends WP_Widget {
 				
 				wppa_do_the_widget_thumb('topten', $image, $album, $display, $link, $title, $imgurl, $imgstyle_a, $imgevents);
 
-				$widget_content .= "\n\t".'<span style="font-size:'.$wppa_opt['wppa_fontsize_widget_thumb'].'px;">'.wppa_get_rating_by_id($image['id']);
-					if ( $wppa_opt['wppa_show_rating_count'] ) $widget_content .= ' ('.wppa_get_rating_count_by_id($image['id']).')';
+				$widget_content .= "\n\t".'<span style="font-size:'.$wppa_opt['wppa_fontsize_widget_thumb'].'px;">';
+				
+					$rating = wppa_get_rating_by_id($image['id']);
+					if ( $sortby != 'views' ) {	// Rating oriented use of this widget
+						if ( $rating ) {
+							if ( $meanrat == 'yes' ) $widget_content .= wppa_get_rating_by_id($image['id']);
+							if ( $ratcount == 'yes' ) $widget_content .= ' ('.wppa_get_rating_count_by_id($image['id']).')';
+							if ( $meanrat == 'yes' || $ratcount == 'yes' ) $widget_content .= '<br />';
+						}
+						if ( $viewcount == 'yes' && $image['views'] ) $widget_content .= __('Views:', 'wppa').' '.$image['views'];
+					}
+					else {						// Viewcount oriented use of this widget
+						if ( $viewcount == 'yes' && $image['views'] ) $widget_content .= __('Views:', 'wppa').' '.$image['views'];
+						if ( $viewcount == 'yes' && $rating ) $widget_content .= '<br />';
+						if ( $rating ) {
+							if ( $meanrat == 'yes' ) $widget_content .= $rating;
+							if ( $ratcount == 'yes' ) $widget_content .= ' ('.wppa_get_rating_count_by_id($image['id']).')';
+						}
+					}
+					
 				$widget_content .= '</span>';
 			}
 			else {	// No image
@@ -96,6 +123,9 @@ class TopTenWidget extends WP_Widget {
 		$instance['album'] 		= $new_instance['album'];
 		$instance['sortby'] 	= $new_instance['sortby'];
 		$instance['display'] 	= $new_instance['display'];
+		$instance['meanrat']	= $new_instance['meanrat'];
+		$instance['ratcount'] 	= $new_instance['ratcount'];
+		$instance['viewcount'] 	= $new_instance['viewcount'];
 		
         return $instance;
     }
@@ -108,12 +138,20 @@ class TopTenWidget extends WP_Widget {
 														'sortby' => 'mean_rating', 
 														'title' => __('Top Ten Photos', 'wppa'), 
 														'album' => '0',
-														'display' => 'thumbs'
+														'display' => 'thumbs',							
+														'meanrat' => 'yes',
+														'ratcount' => 'yes',
+														'viewcount' => 'yes'
+
 														) );
  		$widget_title 	= apply_filters('widget_title', $instance['title']);
 		$sortby 		= $instance['sortby'];
 		$album 			= $instance['album'];
 		$display 		= $instance['display'];
+		$meanrat		= $instance['meanrat'];
+		$ratcount 		= $instance['ratcount'];
+		$viewcount 		= $instance['viewcount'];
+
 ?>
 		<p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:', 'wppa'); ?></label> 
 			<input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $widget_title; ?>" />
@@ -133,10 +171,30 @@ class TopTenWidget extends WP_Widget {
 			</select>
 			
 		</p>
+		
 		<p><label for="<?php echo $this->get_field_id('sortby'); ?>"><?php _e('Sort by:', 'wppa'); ?></label>
 			<select class="widefat" id="<?php echo $this->get_field_id('sortby'); ?>" name="<?php echo $this->get_field_name('sortby'); ?>" >
 				<option value="mean_rating" <?php if ($instance['sortby'] == 'mean_rating') echo 'selected="selected"' ?>><?php _e('Mean value', 'wppa') ?></option>
 				<option value="rating_count" <?php if ($instance['sortby'] == 'rating_count') echo 'selected="selected"' ?>><?php _e('Number of votes', 'wppa') ?></option>
+				<option value="views" <?php if ( $instance['sortby'] == 'views' ) echo 'selected="selected"' ?>><?php _e('Number of views', 'wppa') ?></option>
+			</select>
+		</p>
+		
+		<p><label ><?php _e('Subtitle:', 'wppa'); ?></label>
+			<br /><?php _e('Mean rating:', 'wppa'); ?>
+			<select id="<?php echo $this->get_field_id('meanrat'); ?>" name="<?php echo $this->get_field_name('meanrat'); ?>" >
+				<option value="yes" <?php if ( $meanrat == 'yes' ) echo 'selected="selected"' ?>><?php _e('yes', 'wppa') ?></option>
+				<option value="no" <?php if ( $meanrat == 'no' ) echo 'selected="selected"' ?>><?php _e('no', 'wppa') ?></option>
+			</select>
+			<br /><?php _e('Rating count:', 'wppa'); ?>
+			<select id="<?php echo $this->get_field_id('ratcount'); ?>" name="<?php echo $this->get_field_name('ratcount'); ?>" >
+				<option value="yes" <?php if ( $ratcount == 'yes' ) echo 'selected="selected"' ?>><?php _e('yes', 'wppa') ?></option>
+				<option value="no" <?php if ( $ratcount == 'no' ) echo 'selected="selected"' ?>><?php _e('no', 'wppa') ?></option>
+			</select>
+			<br /><?php _e('View count:', 'wppa'); ?>
+			<select id="<?php echo $this->get_field_id('viewcount'); ?>" name="<?php echo $this->get_field_name('viewcount'); ?>" >
+				<option value="yes" <?php if ( $viewcount == 'yes' ) echo 'selected="selected"' ?>><?php _e('yes', 'wppa') ?></option>
+				<option value="no" <?php if ( $viewcount == 'no' ) echo 'selected="selected"' ?>><?php _e('no', 'wppa') ?></option>
 			</select>
 		</p>
 

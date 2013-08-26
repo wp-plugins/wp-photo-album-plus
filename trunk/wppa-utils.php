@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains low-level utility routines
-* Version 5.0.17
+* Version 5.1.0
 *
 */
 
@@ -176,10 +176,10 @@ global $wppa_opt;
 	
 	if ( strpos($desc, 'w#') !== false ) {	// Is there any 'w#' ?
 		// Keywords
-		$keywords = array('name', 'filename', 'owner', 'id', 'tags');
+		$keywords = array('name', 'filename', 'owner', 'id', 'tags', 'views');
 		foreach ( $keywords as $keyword ) {
 			$replacement = __(trim(stripslashes($thumb[$keyword])));
-			if ( ! $replacement ) $replacement = '&lsaquo;'.__a('none', 'wppa').'&rsaquo;';
+			if ( $replacement == '' ) $replacement = '&lsaquo;'.__a('none', 'wppa').'&rsaquo;';
 			$desc = str_replace('w#'.$keyword, $replacement, $desc);
 		}
 		
@@ -309,6 +309,27 @@ global $album;
 	$desc = wppa_html($desc);				// Enable html
 	$desc = balanceTags($desc, true);		// Balance tags
 
+	if ( strpos($desc, 'w#') !== false ) {	// Is there any 'w#' ?
+		// Keywords
+		$keywords = array('name', 'owner', 'id', 'views');
+		foreach ( $keywords as $keyword ) {
+			$replacement = __(trim(stripslashes($album[$keyword])));
+			if ( $replacement == '' ) $replacement = '&lsaquo;'.__a('none', 'wppa').'&rsaquo;';
+			$desc = str_replace('w#'.$keyword, $replacement, $desc);
+		}
+
+		// Timestamps
+		$timestamps = array('timestamp', 'modified');	// Identical, there is only timestamp, but it acts as modified
+		foreach ( $timestamps as $timestamp ) {
+			if ( $album['timestamp'] ) {
+				$desc = str_replace('w#'.$timestamp, wppa_local_date(get_option('date_format', "F j, Y,").' '.get_option('time_format', "g:i a"), $album['timestamp']), $desc);
+			}
+			else {
+				$desc = str_replace('w#'.$timestamp, '&lsaquo;'.__a('unknown').'&rsaquo;', $desc);
+			}
+		}
+	}
+	
 	// To prevent recursive rendering of scripts or shortcodes:
 	$desc = str_replace(array('%%wppa%%', '[wppa', '[/wppa]'), array('%-wppa-%', '{wppa', '{/wppa}'), $desc);
 	return $desc;
@@ -346,7 +367,7 @@ global $thumb;
 		if ($opt == 'nolabel') $result = $val;
 		else $result = sprintf(__a('Rating: %s', 'wppa_theme'), $val);
 	}
-	else $result = '';
+	else $result = '0';
 	return $result;
 }
 

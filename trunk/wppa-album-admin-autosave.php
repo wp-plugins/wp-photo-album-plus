@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * create, edit and delete albums
-* version 5.0.17
+* version 5.1.0
 *
 */
 
@@ -188,6 +188,16 @@ function _wppa_admin() {
 								<?php } ?>
 							</tr>
 							
+							<!-- Views -->
+							<tr style="vertical-align:top;" >
+								<th style="padding-top:0; padding-bottom:0;">
+									<label ><?php _e('Views:', 'wppa'); ?></label>
+								</th>
+								<td style="padding-top:0; padding-bottom:0;">
+									<?php echo $albuminfo['views'] ?>
+								</td>
+							</tr>
+
 							<!-- Owner -->
 							<?php // if ( $wppa_opt['wppa_owner_only'] == 'yes' ) { 
 							if ( current_user_can('administrator') ) {

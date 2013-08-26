@@ -2,7 +2,7 @@
 /* wppa-ajax.php
 *
 * Functions used in ajax requests
-* version 5.0.17
+* version 5.1.0
 *
 */
 add_action('wp_ajax_wppa', 'wppa_ajax_callback');
@@ -190,6 +190,17 @@ global $wppa;
 			exit;
 			break;
 			
+		case 'bumpviewcount':
+			$nonce  = $_REQUEST['wppa-nonce'];
+			if ( wp_verify_nonce($nonce, 'wppa-check') ) {
+				wppa_bump_viewcount('photo', $_REQUEST['wppa-photo']);
+			}
+			else {
+				_e('Security check failure', 'wppa');
+			}
+			exit;
+			break;
+			
 		case 'rate':
 			// Get commandline args
 			$photo  = $_REQUEST['wppa-rating-id'];
@@ -347,20 +358,18 @@ global $wppa;
 			}
 
 			// Format $allavgrat for output
-			$allavgrat = wppa_get_rating_by_id($photo, 'nolabel').'|'.$ratcount;//wppa_get_rating_count_by_id($photo);
+			$allavgratcombi = $allavgrat.'|'.$ratcount;
 
 			// Compute dsilike count
-//			if ( $rating == '-1' ) {	// I did a dislike, count dislikes of this photo
-				$discount = $wpdb->get_var($wpdb->prepare( "SELECT COUNT(*) FROM `".WPPA_RATING."` WHERE `photo` = %s AND `value` = -1", $photo));
-				if ( $discount === false ) {
-					echo '0||108||'.$wartxt;
-					exit;																// Fail on save
-				}
-//			}
+			$discount = $wpdb->get_var($wpdb->prepare( "SELECT COUNT(*) FROM `".WPPA_RATING."` WHERE `photo` = %s AND `value` = -1", $photo));
+			if ( $discount === false ) {
+				echo '0||108||'.$wartxt;
+				exit;																// Fail on save
+			}
 
 			// Success!
 			wppa_clear_cache();
-			echo $occur.'||'.$photo.'||'.$index.'||'.$myavgrat.'||'.$allavgrat.'||'.$discount;
+			echo $occur.'||'.$photo.'||'.$index.'||'.$myavgrat.'||'.$allavgratcombi.'||'.$discount;
 			break;
 		
 		case 'render':	
@@ -1058,7 +1067,7 @@ global $wppa;
 					}
 					break;
 					
-				case 'wppa_apply_new_photodec_all':
+				case 'wppa_apply_new_photodesc_all':
 					$iret = $wpdb->query($wpdb->prepare( "UPDATE `".WPPA_PHOTOS."` SET `description` = %s", $wppa_opt['wppa_newphoto_description'] ) );
 					if ($iret !== false) {
 						$title = __('New photo description applied', 'wppa');

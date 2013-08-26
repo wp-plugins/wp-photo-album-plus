@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 5.0.17
+* Version 5.1.0
 *
 */
 
@@ -56,6 +56,7 @@ global $silent;
 					default_tags tinytext NOT NULL,
 					cover_type tinytext NOT NULL,
 					suba_order_by tinytext NOT NULL,
+					views bigint(20) NOT NULL default '0',
 					PRIMARY KEY  (id) 
 					) DEFAULT CHARACTER SET utf8;";
 					
@@ -79,6 +80,7 @@ global $silent;
 					filename tinytext NOT NULL,
 					modified tinytext NOT NULL,
 					location tinytext NOT NULL,
+					views bigint(20) NOT NULL default '0',
 					PRIMARY KEY  (id)
 					) DEFAULT CHARACTER SET utf8;";
 
@@ -279,6 +281,10 @@ global $silent;
 		}
 		if ( $old_rev <= '5010' ) {
 			wppa_copy_setting('wppa_apply_newphoto_desc', 'wppa_apply_newphoto_desc_user');
+		}
+		if ( $old_rev <= '5018' ) {
+			$wpdb->query('ALTER TABLE `'.WPPA_IPTC.'` ADD INDEX ( `photo` )');
+			$wpdb->query('ALTER TABLE `'.WPPA_EXIF.'` ADD INDEX ( `photo` )');
 		}
 
 		
@@ -514,7 +520,9 @@ Hide Camera info
 						'wppa_custom_content' 				=> '<div style="color:red; font-size:24px; font-weight:bold; text-align:center;">Hello world!</div>',	// 15
 						'wppa_show_slideshownumbar'  		=> 'no',		// 16
 						'wppa_show_iptc'					=> 'no',		// 17
+						'wppa_show_iptc_open'				=> 'no',
 						'wppa_show_exif'					=> 'no',		// 18
+						'wppa_show_exif_open'				=> 'no',
 						'wppa_copyright_on'					=> 'yes',		// 19
 						'wppa_copyright_notice'				=> __('<span style="color:red" >Warning: Do not upload copyrighted material!</span>', 'wppa'),	// 20
 						'wppa_share_on'						=> 'no',
@@ -532,6 +540,7 @@ Hide Camera info
 						'wppa_thumb_text_owner'				=> 'no',	// 1.1
 						'wppa_thumb_text_desc' 				=> 'yes',	// 2
 						'wppa_thumb_text_rating' 			=> 'yes',	// 3
+						'wppa_thumb_text_viewcount'			=> 'no',
 						'wppa_popup_text_name' 				=> 'yes',	// 4
 						'wppa_popup_text_desc' 				=> 'yes',	// 5
 						'wppa_popup_text_desc_strip'		=> 'no',	// 5.1
@@ -780,6 +789,8 @@ Hide Camera info
 						'wppa_multitag_linkpage'			=> '0',
 						'wppa_multitag_blank'				=> 'no',
 						
+						'wppa_super_view_linkpage'			=> '0',
+						
 						// Table VII: Security
 						// B
 						'wppa_user_upload_login'	=> 'yes',
@@ -788,6 +799,7 @@ Hide Camera info
 						'wppa_upload_moderate'		=> 'no',
 						'wppa_upload_edit'			=> 'no',
 						'wppa_upload_notify' 		=> 'no',
+						'wppa_upload_backend_notify'	=> 'no',
 						'wppa_upload_one_only'		=> 'no',
 						'wppa_memcheck_frontend'	=> 'yes',
 						'wppa_memcheck_admin'		=> 'yes',
@@ -824,6 +836,8 @@ Hide Camera info
 						'wppa_remake_index'			=> '',
 						'wppa_extend_index' 		=> '',
 						'wppa_list_index'			=> '',
+						'wppa_append_text'			=> '',
+						'wppa_append_to_photodesc' 	=> '',
 
 						// Table IX: Miscellaneous
 						// A System
@@ -939,6 +953,7 @@ Hide Camera info
 						'wppa_remake_add'			=> 'yes',
 						'wppa_save_iptc'			=> 'yes',
 						'wppa_save_exif'			=> 'yes',
+						'wppa_exif_max_array_size'	=> '10',
 						'wppa_chgsrc_is_restricted'		=> 'no',
 						'wppa_newpag_create'			=> 'no',
 						'wppa_newpag_content'			=> '[wppa type="cover" album="w#album" align="center"][/wppa]',

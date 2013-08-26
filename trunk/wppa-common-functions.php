@@ -2,7 +2,7 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 5.0.17
+* version 5.1.0
 *
 */
 
@@ -218,7 +218,9 @@ global $wppa_initruntimetime;
 						'wppa_custom_content' 				=> '',	// 15
 						'wppa_show_slideshownumbar'  		=> '',	// 16
 						'wppa_show_iptc'					=> '',	// 17
+						'wppa_show_iptc_open'				=> '',
 						'wppa_show_exif'					=> '',	// 18
+						'wppa_show_exif_open'				=> '',
 						'wppa_copyright_on'					=> '',	// 19
 						'wppa_copyright_notice'				=> '',	// 20
 						'wppa_share_on'						=> '',
@@ -244,6 +246,7 @@ global $wppa_initruntimetime;
 						'wppa_popup_text_rating' 			=> '',	// 6
 						'wppa_popup_text_ncomments'			=> '',
 						'wppa_show_rating_count'			=> '',	// 7
+						'wppa_thumb_text_viewcount'				=> '',
 						'wppa_albdesc_on_thumbarea'			=> '',
 						// D Covers
 						'wppa_show_cover_text' 				=> '',	// 1
@@ -487,6 +490,8 @@ global $wppa_initruntimetime;
 						'wppa_multitag_linkpage'			=> '',
 						'wppa_multitag_blank'				=> '',
 
+						'wppa_super_view_linkpage'		=> '',
+						
 						// Table VII: Security
 						// B
 						'wppa_user_upload_login'	=> '',
@@ -495,6 +500,7 @@ global $wppa_initruntimetime;
 						'wppa_upload_moderate'		=> '',
 						'wppa_upload_edit'			=> '',
 						'wppa_upload_notify' 		=> '',
+						'wppa_upload_backend_notify'	=> '',
 						'wppa_upload_one_only' 		=> '',
 						'wppa_memcheck_frontend'	=> '',
 						'wppa_memcheck_admin'		=> '',
@@ -533,6 +539,8 @@ global $wppa_initruntimetime;
 						'wppa_remake_index' 		=> '',
 						'wppa_extend_index'			=> '',
 						'wppa_list_index'			=> '',
+						'wppa_append_text'			=> '',
+						'wppa_append_to_photodesc' 	=> '',
 
 						// Table IX: Miscellaneous
 						'wppa_check_balance'			=> '',
@@ -640,6 +648,7 @@ global $wppa_initruntimetime;
 						'wppa_remake_add'			=> '',
 						'wppa_save_iptc'			=> '',
 						'wppa_save_exif'			=> '',
+						'wppa_exif_max_array_size'	=> '',
 						'wppa_chgsrc_is_restricted'		=> '',
 						'wppa_newpag_create'			=> '',
 						'wppa_newpag_content'			=> '',
@@ -1774,8 +1783,9 @@ global $wpdb;
 }
 
 // Process the iptc data
-function wppa_import_iptc($id, $info) {
+function wppa_import_iptc($id, $info, $nodelete = false) {
 global $wpdb;
+static $labels;
 
 	// Do we need this?
 	if ( ! wppa_switch('wppa_save_iptc') ) return;
@@ -1793,16 +1803,22 @@ global $wpdb;
 	
 	// There is iptc data for this image.
 	// First delete any existing ipts data for this image
-	$wpdb->query($wpdb->prepare("DELETE FROM `".WPPA_IPTC."` WHERE `photo` = %s", $id));
-	wppa_dbg_q('Q214');
-	// Find defined labels
-	$result = $wpdb->get_results( "SELECT `tag` FROM `".WPPA_IPTC."` WHERE `photo` = '0' ORDER BY `tag`", ARRAY_N);
-	wppa_dbg_q('Q215');
-	if ( ! is_array($result) ) $result = array();
-	$labels = array();
-	foreach ($result as $res) {
-		$labels[] = $res['0'];
+	if ( ! $nodelete ) {
+		$wpdb->query($wpdb->prepare("DELETE FROM `".WPPA_IPTC."` WHERE `photo` = %s", $id));
+		wppa_dbg_q('Q214');
 	}
+	
+	// Find defined labels
+	if ( ! is_array($labels) ) {
+		$result = $wpdb->get_results( "SELECT `tag` FROM `".WPPA_IPTC."` WHERE `photo` = '0' ORDER BY `tag`", ARRAY_N);
+		wppa_dbg_q('Q215');
+		if ( ! is_array($result) ) $result = array();
+		$labels = array();
+		foreach ($result as $res) {
+			$labels[] = $res['0'];
+		}
+	}
+	
 	foreach (array_keys($iptc) as $s) {
 		if ( is_array($iptc[$s]) ) {
 			$c = count ($iptc[$s]);
@@ -1856,8 +1872,12 @@ global $wpdb;
 	}
 }
 
-function wppa_import_exif($id, $file) {
+function wppa_import_exif($id, $file, $nodelete = false) {
 global $wpdb;
+static $labels;
+static $names;
+global $wppa_opt;
+global $wppa;
 
 	// Do we need this?
 	if ( ! wppa_switch('wppa_save_exif') ) return;
@@ -1877,17 +1897,22 @@ wppa_dbg_msg('Exif data present');
 //var_dump($exif);
 	// There is exif data for this image.
 	// First delete any existing exif data for this image
-	$wpdb->query($wpdb->prepare("DELETE FROM `".WPPA_EXIF."` WHERE `photo` = %s", $id));
-	wppa_dbg_q('Q218');
+	if ( ! $nodelete ) {
+		$wpdb->query($wpdb->prepare("DELETE FROM `".WPPA_EXIF."` WHERE `photo` = %s", $id));
+		wppa_dbg_q('Q218');
+	}
+	
 	// Find defined labels
-	$result = $wpdb->get_results( "SELECT * FROM `".WPPA_EXIF."` WHERE `photo` = '0' ORDER BY `tag`", ARRAY_A );
-	wppa_dbg_q('Q219');
-	if ( ! is_array($result) ) $result = array();
-	$labels = array();
-	$names  = array();
-	foreach ($result as $res) {
-		$labels[] = $res['tag'];
-		$names[]  = $res['description'];
+	if ( ! is_array($labels) ) {
+		$result = $wpdb->get_results( "SELECT * FROM `".WPPA_EXIF."` WHERE `photo` = '0' ORDER BY `tag`", ARRAY_A );
+		wppa_dbg_q('Q219');
+		if ( ! is_array($result) ) $result = array();
+		$labels = array();
+		$names  = array();
+		foreach ($result as $res) {
+			$labels[] = $res['tag'];
+			$names[]  = $res['description'];
+		}
 	}
 	
 	foreach (array_keys($exif) as $s) {
@@ -1906,6 +1931,7 @@ wppa_dbg_msg('Exif data present');
 		if ( $tag == '' ) continue;
 		if ( ! in_array( $tag, $labels ) ) {
 			$labels[] = $tag;	// Add to labels
+			$names[]  = $s.':';
 			// Add to db
 			$key 	= wppa_nextkey(WPPA_EXIF);
 			$photo 	= '0';
@@ -1914,13 +1940,18 @@ wppa_dbg_msg('Exif data present');
 			$query 	= $wpdb->prepare("INSERT INTO `".WPPA_EXIF."` (`id`, `photo`, `tag`, `description`, `status`) VALUES (%s, %s, %s, %s, %s)", $key, $photo, $tag, $desc, $status); 
 			wppa_dbg_q('Q220');
 			$iret 	= $wpdb->query($query);
-wppa_dbg_msg('Insert lnew label');
+wppa_dbg_msg('Insert new label');
 			if ( ! $iret ) wppa_dbg_msg('Error: '.$query, false, 'red');
 		}
 		// Now add poto specific data item
 		// If its an array...
 		if ( is_array($exif[$s]) ) { // continue;
 			$c = count ($exif[$s]);
+			$max = $wppa_opt['wppa_exif_max_array_size'];
+			if ( $max != '0' && $c > $max ) {
+				wppa_dbg_msg('Exif tag '.$tag. ': array truncated form '.$c.' to '.$max.' elements for photo nr '.$id.'.', 'red');
+				$c = $max;
+			}
 			for ($i=0; $i <$c; $i++) {
 				$key 	= wppa_nextkey(WPPA_EXIF);
 				$photo 	= $id;
@@ -1998,7 +2029,7 @@ global $wpdb;
 									$is_iptc = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `".WPPA_IPTC."` WHERE `photo` = %s", $id));
 									wppa_dbg_q('Q223');
 									if ( ! $is_iptc ) { 	// No IPTC yet and there is: Recuperate
-										wppa_import_iptc($id, $info);
+										wppa_import_iptc($id, $info, 'nodelete');
 										$iptc_count++;
 									}						
 								}
@@ -2011,7 +2042,7 @@ global $wpdb;
 									if ( ! $is_exif ) { 				// No EXIF yet
 										$exif = @ exif_read_data($file, 'EXIF');//@
 										if ( is_array($exif) )	{ 		// There is exif data present
-											wppa_import_exif($id, $file);
+											wppa_import_exif($id, $file, 'nodelete');
 											$exif_count++;
 										}
 									}						
@@ -2020,10 +2051,11 @@ global $wpdb;
 							$tot_count++;							
 						}					
 					}
+					update_option('wppa_last_recup', $id);
 				}
 				if ( wppa_is_time_up() ) {
 					wppa_error_message(__(sprintf('Time out after processing %s items. %s photos with IPTC data and %s photos with EXIF data.', $tot_count, $iptc_count, $exif_count), 'wppa'));
-					update_option('wppa_last_recup', $id);
+//					update_option('wppa_last_recup', $id);
 					return false;
 				}
 			}
@@ -2467,6 +2499,7 @@ global $wpdb;
 											'addpleaseselect' 	=> false,
 											'addnone' 			=> false, 
 											'addall' 			=> false,
+											'addgeneric'		=> false,
 											'addblank' 			=> false,
 											'addselected'		=> false,
 											'addseparate' 		=> false, 
@@ -2476,7 +2509,10 @@ global $wpdb;
 											'checkupload' 		=> false,
 											'addmultiple' 		=> false,
 											'addnumbers' 		=> false,
-											'path' 				=> false) );
+											'path' 				=> false,
+											'root' 				=> false,
+											'content'			=> false
+											) );
 											
 	// Provide default selection if no selected given
 	if ( $args['selected'] === '' ) {
@@ -2493,6 +2529,33 @@ global $wpdb;
 	$albums = $wpdb->get_results( "SELECT `id`, `name` FROM `".WPPA_ALBUMS."`", ARRAY_A);	
 	
 	if ( $albums ) {
+		// Filter for root
+		if ( $args['root'] ) {
+			$root = $args['root'];
+			switch ( $root ) {	// case '0': all, will be skipped as it returns false in 'if ( $args['root'] )'
+				case '-2':	// Generic only
+				foreach ( array_keys( $albums ) as $albidx ) {
+					if ( wppa_is_separate($albums[$albidx]['id']) ) unset ( $albums[$albidx] );
+				}
+				break;
+				case '-1':	// Separate only
+				foreach ( array_keys( $albums ) as $albidx ) {
+					if ( ! wppa_is_separate($albums[$albidx]['id']) ) unset ( $albums[$albidx] );
+				}
+				break;
+				default:
+				foreach ( array_keys( $albums ) as $albidx ) {
+					if ( ! wppa_is_ancestor($root, $albums[$albidx]['id']) ) unset ( $albums[$albidx] );
+				}
+				break;
+			}
+		}
+		// Filter for must have content
+		if ( $args['content'] ) {
+			foreach ( array_keys( $albums ) as $albidx ) {
+				if ( wppa_get_photo_count($albums[$albidx]['id']) <= wppa_get_mincount() ) unset ( $albums[$albidx] );
+			}
+		}
 		// Add paths
 		if ( $args['path'] ) {
 			$albums = wppa_add_paths($albums);
@@ -2516,6 +2579,9 @@ global $wpdb;
 	
 	$selected = $args['selected'] == '0' ? ' selected="selected"' : '';
 	if ( $args['addall'] ) $result .= '<option value="0"'.$selected.' >' . __('--- all ---', 'wppa') . '</option>';
+
+	$selected = $args['selected'] == '-2' ? ' selected="selected"' : '';
+	if ( $args['addall'] ) $result .= '<option value="-2"'.$selected.' >' . __('--- generic ---', 'wppa') . '</option>';
 	
 	$selected = $args['selected'] == '0' ? ' selected="selected"' : '';
 	if ( $args['addblank'] ) $result .= '<option value="0"'.$selected.' ></option>';

@@ -1,7 +1,7 @@
 /* admin-scripts.js */
 /* Package: wp-photo-album-plus
 /*
-/* Version 5.0.17
+/* Version 5.1.0
 /* Various js routines used in admin pages		
 */
 
@@ -72,6 +72,7 @@ function wppaInitSettings() {
 	wppaCheckLinkPageErr('album_widget');
 	wppaCheckLinkPageErr('tagcloud');
 	wppaCheckLinkPageErr('multitag');
+	wppaCheckLinkPageErr('super_view');
 	wppaCheckSplitNamedesc();
 	wppaCheckShares();
 //	wppaCheckKeepSource();
@@ -1191,10 +1192,11 @@ function wppaPhotoStatusChange(id) {
 }
 
 function wppaCheckLinkPageErr(slug) {
-	var type = document.getElementById('wppa_'+slug+'_linktype').value;
+	var type = 'nil';
+		if ( document.getElementById('wppa_'+slug+'_linktype') ) type = document.getElementById('wppa_'+slug+'_linktype').value;
 	var page = document.getElementById('wppa_'+slug+'_linkpage').value;
 	
-	if ( page == '0' && ( type == 'photo' || type == 'single' || type == 'album' || type == 'content' || type == 'slide' )) {
+	if ( page == '0' && ( type == 'nil' || type == 'photo' || type == 'single' || type == 'album' || type == 'content' || type == 'slide' )) {
 		jQuery('#'+slug+'-err').css({display:''});
 	}
 	else {
