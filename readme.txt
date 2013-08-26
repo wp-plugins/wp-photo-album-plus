@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile
-Version: 5.0.17
+Version: 5.1.0
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -45,6 +45,7 @@ This plugin is designed to easily manage and display your photo albums and slide
 * The plugin supports IPTC and EXIF data.
 * Supports WP supercache. The cache will be cleared whenever required for wppa+.
 * Supports Cube Points. You can assign points to comments and votes.
+* There is an easy way to import existing NextGen galleries into WPPA+ albums.
 
 Plugin Admin Features:
 
@@ -171,6 +172,35 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 5.1.0 =
+
+= Bug Fixes =
+
+* Apply new photo desc systemwide ( Table VIII-B4 ) stopped working. Fixed.
+* The avarage rating will now be updated after issuing a vote.
+
+= New Features =
+
+* You can now easily convert NextGen galleries into WPPA+ Albums. See the Import photos from: selection box on the Photo Albums -> Import admin screen.
+* The number of views per album and per photo are registered. Only one view is counted per session. 
+Albums are counted on thumbnail displays, Photos on slideshows, single photos with or without caption and lightbox displays.
+* New keywords in photo description: w#views.
+* Keywords implemented for album descriptions: w#name, w#owner, w#id, w#views, w#timestamp and w#modified. 
+Note that there is only one timestamp that acts as modified, so both w#timestamp and w#modified will return the same value.
+* A new widget: Super View. The user can select an album and the type of display ( thumbnails or slideshow ).
+* You can append any text to all the descriptions of all photos in the system. Use carefully! Table VIII-B5.
+* For administrators only: If there are no photos pending moderation, the Moderate Photos page shows edit boxes for all photos by timestamp descending.
+Make sure you have a pagesize set in Table IX-A14: Photo admin pagesize.
+* User Admin can get a notification email at backend uploads. Table VII-B7. Admin will not send emails to himself.
+
+= Other Changes =
+
+* New switches to set the initial display of IPTC and EXIF data to open ( Table II-B17.1 and 18.1 ).
+* Dramatically performance improvement on the Recuperation action ( Table VIII-A7 ) and during upload/import when iptc/exif data is saved.
+* EXIF tags that form an array can be truncated. Default max size set to 10. Table IX-H6.1.
+* The topten widget has been modified to accomodate for top view count. 
+You may have to reconfigure the topten widgets currently in use to get the desired display.
 
 = 5.0.17 =
 

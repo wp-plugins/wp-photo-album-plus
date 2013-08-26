@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Various wppa boxes
-* Version 5.0.17
+* Version 5.1.0
 *
 */
 
@@ -22,6 +22,7 @@ global $album;
 		}
 		else {
 			$wppa['out'] .= wppa_nltab('+').'<div id="wppa-thumbarea-'.$wppa['master_occur'].'" style="clear: both; '.__wcs('wppa-box').__wcs('wppa-'.$wppa_alt).'width: '.wppa_get_thumbnail_area_width().'px;" class="thumbnail-area thumbnail-area-'.$wppa['master_occur'].' wppa-box wppa-'.$wppa_alt.'" >';
+			if ( is_array($album) ) wppa_bump_viewcount('album', $album['id']);
 		}		
 		if ($wppa_alt == 'even') $wppa_alt = 'alt'; else $wppa_alt = 'even';
 	}
@@ -700,14 +701,17 @@ global $wppaiptclabels;
 	if ( $iptcdata ) {
 		// Open the container content
 		$result = '<div id="iptccontent-'.$wppa['master_occur'].'" >';
+		// Open or closed?
+		$d1 = wppa_switch('wppa_show_exif_open') ? 'display:none;' : 'display:inline;';
+		$d2 = wppa_switch('wppa_show_exif_open') ? 'display:inline;' : 'display:none;';
 		// Process data
 		$onclick = esc_attr("wppaStopShow(".$wppa['master_occur']."); jQuery('.wppa-iptc-table-".$wppa['master_occur']."').css('display', ''); jQuery('.-wppa-iptc-table-".$wppa['master_occur']."').css('display', 'none')");
-		$result .= '<a class="-wppa-iptc-table-'.$wppa['master_occur'].'" onclick="'.$onclick.'" style="cursor:pointer;" >'.__a('Show IPTC data').'</a>';
+		$result .= '<a class="-wppa-iptc-table-'.$wppa['master_occur'].'" onclick="'.$onclick.'" style="cursor:pointer;'.$d1.'" >'.__a('Show IPTC data').'</a>';
 
 		$onclick = esc_attr("jQuery('.wppa-iptc-table-".$wppa['master_occur']."').css('display', 'none'); jQuery('.-wppa-iptc-table-".$wppa['master_occur']."').css('display', '')");
-		$result .= '<a class="wppa-iptc-table-'.$wppa['master_occur'].'" onclick="'.$onclick.'" style="display:none; cursor:pointer;" >'.__a('Hide IPTC data').'</a>';
+		$result .= '<a class="wppa-iptc-table-'.$wppa['master_occur'].'" onclick="'.$onclick.'" style="cursor:pointer;'.$d2.'" >'.__a('Hide IPTC data').'</a>';
 
-		$result .= '<table class="wppa-iptc-table-'.$wppa['master_occur'].' wppa-detail" style="display:none; border:0 none; margin:0;" ><tbody>';
+		$result .= '<div style="clear:both;" ></div><table class="wppa-iptc-table-'.$wppa['master_occur'].' wppa-detail" style="border:0 none; margin:0;'.$d2.'" ><tbody>';
 		$oldtag = '';
 		foreach ( $iptcdata as $iptcline ) {
 			if ( $iptcline['status'] == 'hide' ) continue;														// Photo status is hide
@@ -768,14 +772,17 @@ global $wppaexiflabels;
 	if ( $exifdata ) {
 		// Open the container content
 		$result = '<div id="exifcontent-'.$wppa['master_occur'].'" >';
+		// Open or closed?
+		$d1 = wppa_switch('wppa_show_exif_open') ? 'display:none;' : 'display:inline;';
+		$d2 = wppa_switch('wppa_show_exif_open') ? 'display:inline;' : 'display:none;';
 		// Process data
 		$onclick = esc_attr("wppaStopShow(".$wppa['master_occur']."); jQuery('.wppa-exif-table-".$wppa['master_occur']."').css('display', ''); jQuery('.-wppa-exif-table-".$wppa['master_occur']."').css('display', 'none')");
-		$result .= '<a class="-wppa-exif-table-'.$wppa['master_occur'].'" onclick="'.$onclick.'" style="cursor:pointer;" >'.__a('Show EXIF data').'</a>';
+		$result .= '<a class="-wppa-exif-table-'.$wppa['master_occur'].'" onclick="'.$onclick.'" style="cursor:pointer;'.$d1.'" >'.__a('Show EXIF data').'</a>';
 
 		$onclick = esc_attr("jQuery('.wppa-exif-table-".$wppa['master_occur']."').css('display', 'none'); jQuery('.-wppa-exif-table-".$wppa['master_occur']."').css('display', '')");
-		$result .= '<a class="wppa-exif-table-'.$wppa['master_occur'].'" onclick="'.$onclick.'" style="display:none; cursor:pointer;" >'.__a('Hide EXIF data').'</a>';
+		$result .= '<a class="wppa-exif-table-'.$wppa['master_occur'].'" onclick="'.$onclick.'" style="cursor:pointer;'.$d2.'" >'.__a('Hide EXIF data').'</a>';
 
-		$result .= '<table class="wppa-exif-table-'.$wppa['master_occur'].' wppa-detail" style="display:none; border:0 none; margin:0;" ><tbody>';
+		$result .= '<div style="clear:both;" ></div><table class="wppa-exif-table-'.$wppa['master_occur'].' wppa-detail" style="'.$d2.' border:0 none; margin:0;" ><tbody>';
 		$oldtag = '';
 		foreach ( $exifdata as $exifline ) {
 			if ( $exifline['status'] == 'hide' ) continue;														// Photo status is hide

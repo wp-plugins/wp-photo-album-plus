@@ -2,7 +2,7 @@
 /* wppa_widgetfunctions.php
 /* Package: wp-photo-album-plus
 /*
-/* Version 5.0.15
+/* Version 5.1.0
 /*
 */
 
@@ -287,7 +287,7 @@ global $widget_content;
 		}
 		elseif ( $link['is_lightbox'] ) {
 			$title = wppa_get_lbtitle('thumb', $image['id']);
-			$widget_content .= "\n\t".'<a href="'.$link['url'].'" rel="'.$wppa_opt['wppa_lightbox_name'].'['.$type.'-'.$album.']" title="'.$title.'" target="'.$link['target'].'" >';
+			$widget_content .= "\n\t".'<a href="'.$link['url'].'" rel="'.$wppa_opt['wppa_lightbox_name'].'['.$type.'-'.$album.'-'.$wppa['master_occur'].']" title="'.$title.'" target="'.$link['target'].'" >';
 				$widget_content .= "\n\t\t";
 				if ( $display == 'thumbs' ) {
 					$widget_content .= '<img id="i-'.$image['id'].'-'.$wppa['master_occur'].'" title="'.wppa_zoom_in().'" src="'.$imgurl.'" width="'.$imgstyle_a['width'].'" height="'.$imgstyle_a['height'].'" style="'.$imgstyle_a['style'].$imgstyle_a['cursor'].'" '.$imgevents.' alt="'.esc_attr(wppa_qtrans($image['name'])).'" />';

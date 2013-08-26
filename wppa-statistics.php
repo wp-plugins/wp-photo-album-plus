@@ -4,7 +4,7 @@
 *
 * Functions for counts etc
 * Common use front and admin
-* Version 5.0.17
+* Version 5.1.0
 *
 */
 
@@ -95,4 +95,29 @@ global $wpdb;
 	$result = $wpdb->get_var( "SELECT `name` FROM `" . WPPA_ALBUMS . "` ORDER BY `id` DESC LIMIT 1" );
 	wppa_dbg_q('Q17');
 	return stripslashes($result);
+}
+
+// Bump Viewcount
+function wppa_bump_viewcount($type, $id) {
+global $wpdb;
+
+	if ( $type != 'album' && $type != 'photo' ) die ( 'Illegal $type in wppa_bump_viewcount: '.$type);
+	if ( ! is_numeric($id) ) die ( 'Illegal $id in wppa_bump_viewcount: '.$id);
+	if ( ! session_id() ) session_start();
+	if ( ! isset($_SESSION['wppa']) ) $_SESSION['wppa'] = array();
+	if ( ! isset($_SESSION['wppa'][$type]) ) $_SESSION['wppa'][$type] = array();
+	
+	if ( ! isset($_SESSION['wppa'][$type][$id] ) ) {	// This one not done yest
+		$_SESSION['wppa'][$type][$id] = true;			// Mark as viewed
+		if ( $type == 'album' ) $table = WPPA_ALBUMS; else $table = WPPA_PHOTOS;
+		
+		$count = $wpdb->get_var("SELECT `views` FROM `".$table."` WHERE `id` = ".$id);
+		$count++;
+		
+		$wpdb->query("UPDATE `".$table."` SET `views` = ".$count." WHERE `id` = ".$id);
+		wppa_dbg_msg('Bumped viewcount for '.$type.' '.$id.' to '.$count, 'red');
+	}
+//global $wppa;		
+//if ( $wppa['debug'] )		print_r($_SESSION);	// Debug
+
 }

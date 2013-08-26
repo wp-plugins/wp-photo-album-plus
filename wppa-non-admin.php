@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the non admin stuff
-* Version 5.0.17
+* Version 5.1.0
 *
 */
 
@@ -171,6 +171,9 @@ global $wppa;
 		'.( $wppa_opt['wppa_fontweight_lightbox'] ? 'wppaOvlFontWeight = "'.$wppa_opt['wppa_fontweight_lightbox'].'"' : '').'
 		'.( $wppa_opt['wppa_fontsize_lightbox'] ? 'wppaOvlLineHeight = "'.($wppa_opt['wppa_fontsize_lightbox'] + '2').'"' : '').'
 	</script>
+	';
+	wp_nonce_field('wppa-check' , 'wppa-nonce', false, true);	// Nonce field for Ajax bump view counter from lightbox
+	echo '
 <!-- end WPPA+ Footer data -->
 ';
 	}
@@ -243,6 +246,7 @@ global $wppa_lang;
 ';	}
 	/* This goes into wppa.js */ 
 	echo '
+	wppaDebug = '.( $wppa['debug'] ? 'true' : 'false' ).';
 	wppaBackgroundColorImage = "'.$wppa_opt['wppa_bgcolor_img'].'";
 	wppaPopupLinkType = "'.$wppa_opt['wppa_thumb_linktype'].'";
 	wppaAnimationType = "'.$wppa_opt['wppa_animation_type'].'";

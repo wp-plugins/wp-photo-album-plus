@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * gp admin functions
-* version 5.0.17
+* version 5.1.0
 *
 * 
 */
@@ -581,19 +581,21 @@ if ( is_multisite() ) return; // temp disabled for 4.0 bug, must be tested in a 
 }
 
 
-function wppa_walktree($relroot, $source, $allowwppa = false, $subdirsonly = false) {
+function wppa_walktree($relroot, $source, $allowwppa = false, $subdirsonly = false, $allowthumbs = true) {
 
 	if ( !$subdirsonly ) {
 		if ($relroot == $source) $sel=' selected="selected"'; else $sel = ' ';
-		echo('<option value="'.$relroot.'"'.$sel.'>'.str_replace(WPPA_DEPOT, __('--- My depot ---', 'wppa'), $relroot).'</option>');
+		$display = str_replace(WPPA_DEPOT, __('--- My depot --- ', 'wppa'), $relroot);
+		$display = str_replace('wp-content/gallery', __('--- Ngg Galleries --- ', 'wppa'), $display);
+		echo('<option value="'.$relroot.'"'.$sel.'>'.$display.'</option>');
 	}
 	
 	if ($handle = opendir(ABSPATH.$relroot)) {
 		while (false !== ($file = readdir($handle))) {
-			if ( $file != "." && $file != ".." && ( $file != "wppa" || $allowwppa ) ) {
+			if ( $file != "." && $file != ".." && ( $file != "wppa" || $allowwppa ) && ( $file != "thumbs" || $allowthumbs ) ) {
 				$newroot = $relroot.'/'.$file;
 				if (is_dir(ABSPATH.$newroot)) {	
-					wppa_walktree($newroot, $source);
+					wppa_walktree($newroot, $source, $allowwppa, false, $allowthumbs);
 				}
 			}
 		}
@@ -1061,7 +1063,7 @@ function wppa_insert_photo ($file = '', $alb = '', $name = '', $desc = '', $pord
 		if ( wppa_make_the_photo_files($file, $id, $ext) ) {
 			// Index
 			wppa_index_add('photo', $id);
-			return true;
+			return $id;
 		}
 	}
 	else {

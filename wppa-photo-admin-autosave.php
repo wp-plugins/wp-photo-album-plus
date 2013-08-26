@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * edit and delete photos
-* version 5.0.17
+* version 5.1.0
 *
 */
 
@@ -106,12 +106,18 @@ function wppa_album_photos($album = '', $photo = '', $owner = '', $moderate = fa
 			else $orphotois = '';
 			$count = $wpdb->get_var($wpdb->prepare('SELECT COUNT(*) FROM `'.WPPA_PHOTOS.'` WHERE `status` = %s '.$orphotois, 'pending'));
 			$photos = $wpdb->get_results($wpdb->prepare('SELECT * FROM `'.WPPA_PHOTOS.'` WHERE `status` = %s '.$orphotois.' ORDER BY `timestamp` DESC'.$limit, 'pending'), ARRAY_A);
-			$link = wppa_dbg_url(get_admin_url().'admin.php?page=wppa_page_moderate');
+			$link = wppa_dbg_url(get_admin_url().'admin.php?page=wppa_moderate_photos');
 		}
 		if ( empty($photos) ) {
 			if ( $photo ) echo '<p>'.__('This photo is no longer awaiting moderation.', 'wppa').'</p>';
 			else echo '<p>'.__('There are no photos awaiting moderation at this time.', 'wppa').'</p>';
-			return;
+			if ( current_user_can('administrator') ) {
+				echo '<h3>'.__('Manage all photos by timestamp', 'wppa').'</h3>';
+				$count = $wpdb->get_var("SELECT COUNT(*) FROM `".WPPA_PHOTOS."`");
+				$photos = $wpdb->get_results("SELECT * FROM `".WPPA_PHOTOS."` ORDER BY `timestamp` DESC".$limit, ARRAY_A);
+				$link = wppa_dbg_url(get_admin_url().'admin.php?page=wppa_moderate_photos');
+			}
+			else return;
 		}
 	}
 	else wppa_dbg_msg('Missing required argument in wppa_album_photos()', 'red', 'force');
@@ -142,8 +148,10 @@ function wppa_album_photos($album = '', $photo = '', $owner = '', $moderate = fa
 						<tbody>	
 							<tr style="vertical-align:top;" >
 								<th scope="row">
-									<label ><?php echo 'ID = '.$photo['id'].' '.__('Preview:', 'wppa'); ?></label>
-									<br />&nbsp;<br />
+									<label ><?php echo 'ID = '.$photo['id'].'. '.__('Preview:', 'wppa'); ?></label>
+									<br />
+									<?php echo sprintf(__('Album: %d<br />(%s)', 'wppa'), $photo['album'], wppa_get_album_name($photo['album']) ) ?>
+									<br /><br />
 									<a style="cursor:pointer; font-weight:bold;" onclick="if (confirm('<?php _e('Are you sure you want to rotate this photo?', 'wppa') ?>')) wppaAjaxUpdatePhoto(<?php echo $photo['id'] ?>, 'rotleft', 0); " ><?php _e('Rotate left', 'wppa'); ?></a>
 									<br />
 									<a style="cursor:pointer; font-weight:bold;" onclick="if (confirm('<?php _e('Are you sure you want to rotate this photo?', 'wppa') ?>')) wppaAjaxUpdatePhoto(<?php echo $photo['id'] ?>, 'rotright', 0); " ><?php _e('Rotate right', 'wppa'); ?></a>
@@ -205,6 +213,16 @@ function wppa_album_photos($album = '', $photo = '', $owner = '', $moderate = fa
 									}
 									?>
 									
+								</td>
+							</tr>
+							
+							<!-- Views -->
+							<tr style="vertical-align:bottom;" >
+								<th scope="row" style="padding-top:0; padding-bottom:0;">
+									<label><?php _e('Views', 'wppa'); ?></label>
+								</th>
+								<td style="padding-top:0; padding-bottom:0;">
+									<?php echo $photo['views'] ?>
 								</td>
 							</tr>
 							

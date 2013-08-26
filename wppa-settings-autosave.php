@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 5.0.17
+* Version 5.1.0
 *
 */
 
@@ -133,7 +133,18 @@ global $wppa_revno;
 				
 			// Recuperate
 			case 'wppa_recup':
-				update_option('wppa_last_recup', '0');
+				$usr = get_option('wppa_recuperating_user', wppa_get_user('login'));
+				if ( $usr != wppa_get_user('login') ) {
+					wppa_error_message('This action is already started by '.$usr.'. Please wait until he has finished.');
+				}
+				else {
+					update_option('wppa_recuperating_user', $usr);
+					$wpdb->query( 'TRUNCATE TABLE '.WPPA_IPTC );
+					delete_option('wppa_'.WPPA_IPTC.'_lastkey');
+					$wpdb->query( 'TRUNCATE TABLE '.WPPA_EXIF );
+					delete_option('wppa_'.WPPA_EXIF.'_lastkey');
+					update_option('wppa_last_recup', '0');
+				}
 				break;
 				
 			// See if a fileconversion is pending
@@ -156,6 +167,35 @@ global $wppa_revno;
 				break;
 
 			case 'wppa_list_index':
+				break;
+				
+			case 'wppa_append_to_photodesc':
+				$start = get_option('wppa_last_append', '0');
+				$photos = $wpdb->get_results("SELECT `id`, `description` FROM `".WPPA_PHOTOS."` WHERE `id` > ".$start." ORDER BY `id`", ARRAY_A);
+				$value = trim($wppa_opt['wppa_append_text']);
+				$count = '0';
+				if ( $value && $photos ) {
+					wppa_ok_message('Appending <i>'.$value.'</i> to all photo descriptions. Starting at id = '.($start+'1').'. Please wait...');
+					foreach ( array_keys($photos) as $phidx ) {
+						if ( ! wppa_is_time_up() ) {
+							$newdesc = rtrim($photos[$phidx]['description']).' '.$value;
+							$wpdb->query("UPDATE `".WPPA_PHOTOS."` SET `description` = '".$newdesc."' WHERE `id` = ".$photos[$phidx]['id']);
+							$count++;
+							update_option('wppa_last_append', $photos[$phidx]['id']);
+						}
+						if ( wppa_is_time_up() ) break;					
+					}
+					if ( wppa_is_time_up($count) ) {
+						wppa_error_message('Restart this operation to continue.');
+					}
+					else {
+						wppa_ok_message('Done! Appending </strong><i>'.$value.'</i><strong> to all photodescriptions.');
+						delete_option('wppa_last_append');
+					}
+				}
+				else {
+					wppa_error_message('Empty string to append or no photos to process.');
+				}
 				break;
 				
 			default: wppa_error_message('Unimplemnted action key: '.$key);
@@ -217,8 +257,13 @@ global $wppa_revno;
 	
 	// See if a Recuperatie is pending
 	if ( get_option('wppa_last_recup', '-2') != '-2' ) {
-		if ( ! wppa_recuperate_iptc_exif() ) {
-			if ( wppa_switch('wppa_auto_continue') ) wppa_ok_message(__('Trying to continue...<script type="text/javascript">document.location=document.location</script>', 'wppa'));
+		$usr = get_option('wppa_recuperating_user', wppa_get_user('login'));
+		if ( $usr == wppa_get_user('login') ) {	// My task
+			if ( wppa_recuperate_iptc_exif() ) {
+				delete_option('wppa_recuperating_user');
+				wppa_ok_message('IPTC/EXIF Data Recuperated');
+			}
+			elseif ( wppa_switch('wppa_auto_continue') ) wppa_ok_message(__('Trying to continue...<script type="text/javascript">document.location=document.location</script>', 'wppa'));
 		}
 	}
 	
@@ -1166,6 +1211,14 @@ wppa_fix_source_extensions();
 							$html = wppa_checkbox($slug);
 							wppa_setting($slug, '17', $name, $desc, $html, $help);
 
+							$name = __('IPTC open', 'wppa');
+							$desc = __('Display the iptc box initially opened.', 'wppa');
+							$help = esc_js(__('Display the iptc box under the fullsize images initially open.', 'wppa'));
+							$slug = 'wppa_show_iptc_open';
+							$onchange = ''; 
+							$html = wppa_checkbox($slug);
+							wppa_setting($slug, '17.1', $name, $desc, $html, $help);
+
 							$name = __('EXIF system', 'wppa');
 							$desc = __('Enable the exif system.', 'wppa');
 							$help = esc_js(__('Display the exif box under the fullsize images.', 'wppa'));
@@ -1173,6 +1226,14 @@ wppa_fix_source_extensions();
 							$onchange = ''; 
 							$html = wppa_checkbox($slug); 
 							wppa_setting($slug, '18', $name, $desc, $html, $help);
+
+							$name = __('EXIF open', 'wppa');
+							$desc = __('Display the exif box initially opened.', 'wppa');
+							$help = esc_js(__('Display the exif box under the fullsize images initially open.', 'wppa'));
+							$slug = 'wppa_show_exif_open';
+							$onchange = ''; 
+							$html = wppa_checkbox($slug); 
+							wppa_setting($slug, '18.1', $name, $desc, $html, $help);
 							
 							$name = __('Show Copyright', 'wppa');
 							$desc = __('Show a copyright warning on the user upload screen.', 'wppa');
@@ -1295,6 +1356,14 @@ wppa_fix_source_extensions();
 							$class = 'wppa_rating_ tt_normal';
 							wppa_setting($slug, '3', $name, $desc, $html, $help, $class);
 							
+							$name = __('Thumbnail viewcount', 'wppa');
+							$desc = __('Display the number of views.', 'wppa');
+							$help = esc_js(__('Display the number of views under the thumbnail image.', 'wppa'));
+							$slug = 'wppa_thumb_text_viewcount';
+							$html = wppa_checkbox($slug);
+							$class = 'tt_normal';
+							wppa_setting($slug, '8', $name, $desc, $html, $help, $class);
+
 							$name = __('Popup name', 'wppa');
 							$desc = __('Display Thubnail name on popup.', 'wppa');
 							$help = esc_js(__('Display photo name under thumbnail images on the popup.', 'wppa'));
@@ -3053,6 +3122,26 @@ wppa_fix_source_extensions();
 							$html = array($html1, $htmlerr.$html2, $html3, $html4);
 							wppa_setting($slug, '4a,b,c', $name, $desc, $html, $help);
 							
+							$name = __('Super View Landing', 'wppa');
+							$desc = __('Select the landing page for the Super View widget.', 'wppa');
+							$help = '';
+							$slug1 = '';
+							$slug2 = 'wppa_super_view_linkpage';
+							wppa_verify_page($slug2);
+							$slug3 = '';
+							$slug4 = '';
+							$slug = array($slug1, $slug2, $slug3, $slug4);
+							$html1 = '';				
+							$class = '';
+							$onchange = 'wppaCheckLinkPageErr(\'super_view\');';
+							$html2 = wppa_select($slug2, $options_page, $values_page, $onchange, $class, true);
+							$class = '';
+							$html3 = '';
+							$html4 = '';
+							$htmlerr = wppa_htmlerr('super_view');
+							$html = array($html1, $htmlerr.$html2, $html3, $html4);
+							wppa_setting($slug, '5', $name, $desc, $html, $help);
+
 							?>
 						</tbody>
 						<tfoot style="font-weight: bold;" class="wppa_table_6">
@@ -3202,6 +3291,13 @@ wppa_fix_source_extensions();
 							$slug = 'wppa_upload_notify';
 							$html = wppa_checkbox($slug);
 							wppa_setting($slug, '6', $name, $desc, $html, $help);
+
+							$name = __('Upload backend notify', 'wppa');
+							$desc = __('Notify admin at backend upload.', 'wppa');
+							$help = esc_js(__('If checked, admin will receive a notification by email.', 'wppa'));
+							$slug = 'wppa_upload_backend_notify';
+							$html = wppa_checkbox($slug);
+							wppa_setting($slug, '7', $name, $desc, $html, $help);
 
 							wppa_setting_subheader('C', '1', __('Miscellaneous scurity settings', 'wppa'));
 							
@@ -3416,7 +3512,13 @@ wppa_fix_source_extensions();
 							$help .= '\n'.esc_js(__('If you want that data, you will have to re-import the original files. Use the update switch. You may resize them again.', 'wppa'));
 							$slug = 'wppa_recup';
 							$html1 = '';
-							$html2 = wppa_doit_button('', $slug);
+							$usr = get_option('wppa_recuperating_user', '');
+							if ( $usr && $usr != wppa_get_user('login') ) {
+								$html2 = '<b style="color:red" >'.sprintf(__('Is currently being executed by %s', 'wppa'), $usr);
+							}
+							else {
+								$html2 = wppa_doit_button('', $slug);
+							}
 							$html = array($html1, $html2);
 							wppa_setting(false, '7', $name, $desc, $html, $help);
 							
@@ -3516,6 +3618,21 @@ wppa_fix_source_extensions();
 							$html = array($html1, $html2);
 							wppa_setting(false, '4', $name, $desc, $html, $help);
 							
+							$name = __('Append to photodesc', 'wppa');
+							$desc = __('Append this text to all photo descriptions.', 'wppa');
+							$help = 'Appends a space character and the given text to the description of all photos.';
+							$help .= '\n\n'.esc_js('First edit the text to append, click outside the edit window and wait for the green checkmark to appear. Then click the Doit! button.');
+							$help .= '\n\n'.esc_js('If this operation does not finish with a green \"Done! Appending...\" message, but a \"Time out\" message or simply dies after a minute or so,');
+							$help .= esc_js('wait another minute, and press the Doit! button again. The process will continue where it ended.');
+							$help .= '\n\n'.esc_js('Go on this way until a \"Done!\" message appears. Do NOT change the append text in between!');
+							$slug1 = 'wppa_append_text';
+							$slug2 = 'wppa_append_to_photodesc';
+							$html1 = wppa_input($slug1, '200px');
+							$html2 = wppa_doit_button('', $slug2);
+							$html = array($html1, $html2);
+							wppa_setting(false, '5', $name, $desc, $html, $help);
+							
+
 							?>
 						</tbody>
 						<tfoot style="font-weight: bold;" class="wppa_table_8">
@@ -4227,6 +4344,13 @@ wppa_fix_source_extensions();
 							$html = wppa_checkbox($slug);
 							wppa_setting($slug, '6', $name, $desc, $html, $help);
 							
+							$name = __('Max EXIF tag array size', 'wppa');
+							$desc = __('Truncate array tags to ...', 'wppa');
+							$help = esc_js(__('A value of 0 disables this feature', 'wppa'));
+							$slug = 'wppa_exif_max_array_size';
+							$html = wppa_input($slug, '40px', '', __('elements', 'wppa'));
+							wppa_setting($slug, '6.1', $name, $desc, $html, $help);
+							
 							$name = __('Change source restricted', 'wppa');
 							$desc = __('Changing the import source dir requires admin rights.', 'wppa');
 							$help = esc_js(__('If checked, the imput source for importing photos and albums is restricted to user role administrator.', 'wppa'));
@@ -4906,7 +5030,7 @@ global $wpdb;
 global $wppa_opt;
 
 	if ( ! isset($wppa_opt[$slug]) ) {
-		wppa_err_msg('Unexpected error in wppa_verify_page()', 'red', 'force');
+		wppa_error_message('Unexpected error in wppa_verify_page()', 'red', 'force');
 		return;
 	}
 	$iret = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `" . $wpdb->posts . "` WHERE `post_type` = 'page' AND `post_status` = 'publish' AND `ID` = %s", $wppa_opt[$slug]));

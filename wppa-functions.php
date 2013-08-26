@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions
-* Version 5.0.17
+* Version 5.1.0
 *
 */
 
@@ -83,6 +83,10 @@ global $wppa_locale;
 		else wppa_dbg_msg('Is NOT Tag');
 		$wppa['photos_only'] 	= wppa_get_get('photos-only', false);
 		$wppa['page'] 			= wppa_get_get('page', '');
+		if ( wppa_get_get('superview', false) ) {
+			$_SESSION['wppa']['superview'] = $wppa['is_slide'] ? 'slide': 'thumbs';
+			$_SESSION['wppa']['superalbum'] = $wppa['start_album'];
+		}
 	}
 	// 2. wppa_albums is called directly. Assume any arg. If not, no worry, system defaults are used == generic
 	elseif ( $id != '' || $type != '' || $size != '' || $align != '' ) {
@@ -375,7 +379,6 @@ global $wppa;
 
 	if ($cur_page == $page) return true; else return false;
 }
-
 
 // loop album
 function wppa_get_albums($album = false, $type = '') {
@@ -1203,12 +1206,14 @@ function wppa_make_captcha($id) {
 	$capt = wppa_ll_captcha($id);
 	return $capt['text'];
 }
+
 // Check the comment security answer
 function wppa_check_captcha($id) {
 	$answer = wppa_get_post('wppa-captcha');
 	$capt = wppa_ll_captcha($id);
 	return $capt['ans'] == $answer;
 }
+
 // Low level captcha routine
 function wppa_ll_captcha($id) {
 	$nonce = wp_create_nonce('wppa_photo_comment_'.$id);
@@ -1903,11 +1908,13 @@ function wppa_thumb_list($action) {
 global $wppa;
 global $cover_count;
 global $cover_count_key;
+global $album;
 
 	if ($action == 'open') {
 		$cover_count = '0';
 		$cover_count_key = 'l';
 		$wppa['out'] .= wppa_nltab('+').'<div id="wppa-thumblist-'.$wppa['master_occur'].'" class="thumblist">';
+		if ( is_array($album) ) wppa_bump_viewcount('album', $album['id']);
 	}
 	elseif ($action == 'close') {
 		$wppa['out'] .= wppa_nltab('-').'</div><!-- wppa-thumblist-'.$wppa['master_occur'].' -->';
@@ -2214,6 +2221,10 @@ global $wpdb;
 		$rating = wppa_get_rating_by_id($thumb['id']);
 		if ( $rating && $wppa_opt['wppa_show_rating_count'] ) $rating .= ' ('.wppa_get_rating_count_by_id($thumb['id']).')';
 		$wppa['out'] .= wppa_nltab().'<div class="wppa-thumb-text" style="'.__wcs('wppa-thumb-text').'" >'.$rating.'</div>';
+	}
+	
+	if ( $wppa_opt['wppa_thumb_text_viewcount'] ) {
+		$wppa['out'] .= wppa_nltab().'<div class="wppa-thumb-text" style="clear:both;'.__wcs('wppa-thumb-text').'" >'.__('Views:', 'wppa').' '.$thumb['views'].'</div>';
 	}
 		
 	$wppa['out'] .= wppa_nltab('-').'</div><!-- #thumbnail_frame_'.$thumb['id'].'_'.$wppa['master_occur'].' -->';
@@ -2810,6 +2821,8 @@ global $wppa_opt;
 	$height 	= floor($width / wppa_get_ratio($wppa['single_photo']));
 	$usethumb	= wppa_use_thumb_file($wppa['single_photo'], $width, $height) ? 'thumbs/' : '';
 	$src 		= str_replace('/wppa/', '/wppa/'.$usethumb , wppa_get_photo_url($wppa['single_photo']));
+	
+	if ( ! $wppa['in_widget'] ) wppa_bump_viewcount('photo', $wppa['single_photo']);
 /**/
 	$autocol = $wppa['auto_colwidth'] || ($width > 0 && $width < 1.0);
 	if ( $autocol ) {
@@ -2872,6 +2885,8 @@ global $wppa_opt;
 	$height 	= floor($width / wppa_get_ratio($wppa['single_photo']));
 	$usethumb	= wppa_use_thumb_file($wppa['single_photo'], $width, $height) ? 'thumbs/' : '';
 	$src 		= str_replace('/wppa/', '/wppa/'.$usethumb , wppa_get_photo_url($wppa['single_photo']));
+
+	if ( ! $wppa['in_widget'] ) wppa_bump_viewcount('photo', $wppa['single_photo']);
 
 	$autocol = $wppa['auto_colwidth'] || ($width > 0 && $width < 1.0);
 	if ( $autocol ) {
@@ -3454,6 +3469,8 @@ global $wppa_get_get_cache;
 		$result = $_GET[$index];
 	}
 	else return $default;						// Nothing, return default
+	
+	if ( $result == 'nil' ) $result = $default;	// Nil simulates not set
 	
 	// Post processing needed?
 	if ( $index == 'photo' && ! is_numeric($result) ) {
