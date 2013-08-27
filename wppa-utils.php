@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains low-level utility routines
-* Version 5.1.0
+* Version 5.1.1
 *
 */
 
@@ -367,7 +367,7 @@ global $thumb;
 		if ($opt == 'nolabel') $result = $val;
 		else $result = sprintf(__a('Rating: %s', 'wppa_theme'), $val);
 	}
-	else $result = '0';
+	else $result = '';
 	return $result;
 }
 

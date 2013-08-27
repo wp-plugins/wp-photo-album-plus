@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * ask the album / display you want
-* Version 5.1.0
+* Version 5.1.1
 */
 
 
@@ -39,7 +39,7 @@ class SuperView extends WP_Widget {
 		else {
 		
 			$url = get_permalink($page);
-			if ( ! session_id() ) session_start();
+
 			if ( ! isset ( $_SESSION['wppa'] ) ) $_SESSION['wppa'] = array();
 			if ( ! isset ( $_SESSION['wppa']['superview'] ) ) {
 				$_SESSION['wppa']['superview'] = 'thumbs';

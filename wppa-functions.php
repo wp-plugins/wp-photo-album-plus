@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions
-* Version 5.1.0
+* Version 5.1.1
 *
 */
 
@@ -18,7 +18,7 @@ global $wppa;
 global $wppa_opt;
 global $wppa_lang;
 global $wppa_locale;
-
+if ( $wppa['debug'] ) print_r($_SESSION);
 	wppa_dbg_msg('Entering wppa_albums');
 	wppa_dbg_msg('Lang='.$wppa_lang.', Locale='.$wppa_locale.', Ajax='.$wppa['ajax'], 'red');
 	
@@ -27,17 +27,25 @@ global $wppa_locale;
 
 	// First calculate the occurance
 	if ( $wppa['ajax'] ) {
-		$wppa['master_occur'] = $_GET['wppa-moccur'];
-		if ( ! is_numeric($wppa['master_occur']) ) wp_die('Are you cheeting?');
+		if ( isset($_GET['master_occur']) ) {
+			$wppa['master_occur'] = $_GET['wppa-moccur'];
+			if ( ! is_numeric($wppa['master_occur']) ) wp_die('Are you cheeting? (1)');
+		}
+		else {
+			$wppa['master_occur'] = '1';
+		}
+		
 		$wppa['fullsize'] = $_GET['wppa-size'];
+		
 		if ( isset($_GET['wppa-occur']) ) {
 			$wppa['occur'] = $_GET['wppa-occur'];
-			if ( ! is_numeric($wppa['occur']) ) wp_die('Are you cheeting?');
+			if ( ! is_numeric($wppa['occur']) ) wp_die('Are you cheeting? (2)');
 		}
+		
 		if ( isset($_GET['wppa-woccur']) ) {
 			$wppa['widget_occur'] = $_GET['wppa-woccur'];
-			if ( ! is_numeric($wppa['widget-occur']) ) wp_die('Are you cheeting?');
 			$wppa['in_widget'] = true;
+			if ( ! is_numeric($wppa['widget-occur']) ) wp_die('Are you cheeting? (3)');
 		}
 	}
 	else {
@@ -865,7 +873,9 @@ global $thumb;
 		else $myrat = '0';
 
 		// Find the avg rating
-		$avgrat = wppa_get_rating_by_id($id, 'nolabel').'|'.wppa_get_rating_count_by_id($id);
+		$avgrat = wppa_get_rating_by_id($id, 'nolabel');
+		if ( ! $avgrat ) $avgrat = '0';
+		$avgrat .= '|'.wppa_get_rating_count_by_id($id);
 		
 		// Find the dilike count
 		$discount = $wpdb->get_var($wpdb->prepare( "SELECT COUNT(*) FROM `".WPPA_RATING."` WHERE `photo` = %s AND `value` = -1", $id) );
