@@ -4,7 +4,7 @@
 *
 * Functions for counts etc
 * Common use front and admin
-* Version 5.1.0
+* Version 5.1.1
 *
 */
 
@@ -103,10 +103,9 @@ global $wpdb;
 
 	if ( $type != 'album' && $type != 'photo' ) die ( 'Illegal $type in wppa_bump_viewcount: '.$type);
 	if ( ! is_numeric($id) ) die ( 'Illegal $id in wppa_bump_viewcount: '.$id);
-	if ( ! session_id() ) session_start();
-	if ( ! isset($_SESSION['wppa']) ) $_SESSION['wppa'] = array();
-	if ( ! isset($_SESSION['wppa'][$type]) ) $_SESSION['wppa'][$type] = array();
-	
+
+	if ( ! isset($_SESSION['wppa']) ) 					$_SESSION['wppa'] = array();
+	if ( ! isset($_SESSION['wppa'][$type]) ) 			$_SESSION['wppa'][$type] = array();
 	if ( ! isset($_SESSION['wppa'][$type][$id] ) ) {	// This one not done yest
 		$_SESSION['wppa'][$type][$id] = true;			// Mark as viewed
 		if ( $type == 'album' ) $table = WPPA_ALBUMS; else $table = WPPA_PHOTOS;
