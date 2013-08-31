@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the upload/import pages and functions
-* Version 5.1.0
+* Version 5.1.2
 *
 */
 
@@ -322,6 +322,8 @@ function _wppa_page_import() {
 global $wppa_opt;
 global $wppa_revno;
 global $wppa;
+
+	if ( $wppa['ajax'] ) ob_start();	// Suppress output if ajax operation
 	
 	// Init
 	$ngg_opts 	= get_option('ngg_options', false);
@@ -339,7 +341,8 @@ global $wppa;
 		if ( isset( $_POST['wppa-watermark-file'] ) ) update_option('wppa_watermark_file_'.$user, $_POST['wppa-watermark-file']);
 		if ( isset( $_POST['wppa-watermark-pos'] ) ) update_option('wppa_watermark_pos_'.$user, $_POST['wppa-watermark-pos']);
 	}
-	
+//print_r($_POST);
+//print_r($_GET);
 	// Do the dirty work
 	if (isset($_GET['zip'])) {
 		wppa_extract($_GET['zip'], true);
@@ -362,7 +365,15 @@ global $wppa;
 		}
 	}
 	elseif ( isset($_POST['wppa-import-submit']) ) {
-		check_admin_referer( '$wppa_nonce', WPPA_NONCE );
+		if ( $wppa['ajax'] ) {
+			if ( ! wp_verify_nonce( $_POST['wppa-update-check'], '$wppa_nonce' ) ) {
+				echo $_POST['wppa-update-check'].' Security check failure';
+				exit;
+			}
+		} 
+		else {
+			check_admin_referer( '$wppa_nonce', WPPA_NONCE );
+		}
         if (isset($_POST['del-after-p'])) $delp = true; else $delp = false;
 		if (isset($_POST['del-after-a'])) $dela = true; else $dela = false;	
 		if (isset($_POST['del-after-z'])) $delz = true; else $delz = false;
@@ -373,6 +384,13 @@ global $wppa;
 		if ( wp_verify_nonce( $_GET['nonce'], 'dirimport' ) ) wppa_import_photos();
 	}
 	
+if ( $wppa['ajax'] ) {
+	ob_end_clean();
+	if ( $wppa['ajax_import_files'] ) echo '<span style="color:green" >'.$wppa['ajax_import_files'].' '.__('Done!', 'wppa').'</span>';
+	else echo '<span style="color:red" >'.$wppa['ajax_import_files'].' '.__('Failed!', 'wppa').'</span>';
+	exit;
+}
+
 	// Sanitize again
 	$count = wppa_sanitize_files();
 	if ($count) wppa_error_message($count.' '.__('illegal files deleted.', 'wppa'));
@@ -508,7 +526,7 @@ global $wppa;
 									</th>
 									<?php if ($is_sub_depot) { ?>
 										<th>
-											<input type="checkbox" name="del-after-z" checked="checked" /><b>&nbsp;&nbsp;<?php _e('Delete after successful extraction.', 'wppa'); ?></b>
+											<input type="checkbox" id="del-after-z" name="del-after-z" checked="checked" /><b>&nbsp;&nbsp;<?php _e('Delete after successful extraction.', 'wppa'); ?></b>
 										</th>
 									<?php } ?>
 								</tr>
@@ -524,7 +542,7 @@ global $wppa;
 									$ext = strtolower(substr(strrchr($file, "."), 1));
 									if ($ext == 'zip') { ?>
 										<td>
-											<input type="checkbox" name="file-<?php echo($idx) ?>" class="wppa-zip" checked="checked" />&nbsp;&nbsp;<?php echo(basename($file)); ?>
+											<input type="checkbox" id="file-<?php echo($idx) ?>" name="file-<?php echo($idx) ?>" class="wppa-zip" checked="checked" />&nbsp;&nbsp;<?php echo(basename($file)); ?>
 										</td>
 										<?php if ($ct == 3) {
 											echo('</tr><tr>'); 
@@ -555,7 +573,7 @@ global $wppa;
 									</th>
 									<?php if ($is_sub_depot) { ?>
 										<th>
-											<input type="checkbox" name="del-after-a" checked="checked" /><b>&nbsp;&nbsp;<?php _e('Delete after successful import, or if the album already exits.', 'wppa'); ?></b>
+											<input type="checkbox" id="del-after-a" name="del-after-a" checked="checked" /><b>&nbsp;&nbsp;<?php _e('Delete after successful import, or if the album already exits.', 'wppa'); ?></b>
 										</th>
 									<?php } ?>
 								</tr>
@@ -570,7 +588,7 @@ global $wppa;
 									$ext = strtolower(substr(strrchr($file, "."), 1));
 									if ($ext == 'amf') { ?>
 										<td>
-											<input type="checkbox" name="file-<?php echo($idx) ?>" class="wppa-amf" checked="checked" />&nbsp;&nbsp;<?php echo(basename($file)); ?>&nbsp;<?php echo(stripslashes(wppa_get_meta_name($file, '('))) ?>
+											<input type="checkbox" id="file-<?php echo($idx) ?>" name="file-<?php echo($idx) ?>" class="wppa-amf" checked="checked" />&nbsp;&nbsp;<?php echo(basename($file)); ?>&nbsp;<?php echo(stripslashes(wppa_get_meta_name($file, '('))) ?>
 										</td>
 										<?php if ($ct == 3) {
 											echo('</tr><tr>'); 
@@ -629,20 +647,20 @@ global $wppa;
 									</th>
 									<?php if ($is_sub_depot) { ?>
 										<th>
-											<input type="checkbox" name="del-after-p" checked="checked" /><b>&nbsp;&nbsp;<?php _e('Delete after successful import.', 'wppa'); ?></b>
+											<input type="checkbox" id="del-after-p" name="del-after-p" checked="checked" /><b>&nbsp;&nbsp;<?php _e('Delete after successful import.', 'wppa'); ?></b>
 										</th>
 									<?php } ?>
 									<?php if ($is_ngg) { ?>
 										<th>
-											<input type="checkbox" name="cre-album" checked="checked" value="<?php echo esc_attr(basename($source)) ?>" /><b>&nbsp;&nbsp;<?php echo sprintf(__('Import into album <i>%s</i>.', 'wppa'), basename($source) ); ?></b>
+											<input type="checkbox" id="cre-album" name="cre-album" checked="checked" value="<?php echo esc_attr(basename($source)) ?>" /><b>&nbsp;&nbsp;<?php echo sprintf(__('Import into album <i>%s</i>.', 'wppa'), basename($source) ); ?></b>
 											<br /><small><?php _e('The album will be created if it does not exist', 'wppa') ?></small>
 										</th>
 										<th>
-											<input type="checkbox" name="use-backup" checked="checked" /><b>&nbsp;&nbsp;<?php _e('Use backup if available', 'wppa') ?></b>
+											<input type="checkbox" id="use-backup" name="use-backup" checked="checked" /><b>&nbsp;&nbsp;<?php _e('Use backup if available', 'wppa') ?></b>
 										</th>
 									<?php } ?>
 									<th>
-										<input type="checkbox" id="wppa-upd" onchange="impUpd(this, '#submit')" name="wppa-update"><b>&nbsp;&nbsp;<?php _e('Update existing photos', 'wppa') ?></b>
+										<input type="checkbox" id="wppa-update" onchange="impUpd(this, '#submit')" name="wppa-update"><b>&nbsp;&nbsp;<?php _e('Update existing photos', 'wppa') ?></b>
 									</th>
 									<th>
 										<input type="checkbox" id="wppa-nodups" name="wppa-nodups" checked="checked" ><b>&nbsp;&nbsp;<?php _e('Do not create duplicates', 'wppa') ?></b>
@@ -660,7 +678,7 @@ global $wppa;
 									$meta =	substr($file, 0, strlen($file)-3).'pmf';
 									if ($ext == 'jpg' || $ext == 'png' || $ext == 'gif') { ?>
 										<td>
-											<input type="checkbox" name="file-<?php echo($idx) ?>" class= "wppa-pho" <?php if ($is_sub_depot) echo('checked="checked"') ?> />&nbsp;&nbsp;<?php echo(basename($file)); ?>&nbsp;<?php echo(stripslashes(wppa_get_meta_name($meta, '('))) ?><?php echo(stripslashes(wppa_get_meta_album($meta, '['))) ?>
+											<input type="checkbox" id="file-<?php echo($idx) ?>" name="file-<?php echo($idx) ?>" title="<?php echo $file ?>" class= "wppa-pho" <?php if ($is_sub_depot) echo('checked="checked"') ?> /><span id="name-file-<?php echo($idx) ?>" >&nbsp;&nbsp;<?php echo(basename($file)); ?>&nbsp;<?php echo(stripslashes(wppa_get_meta_name($meta, '('))) ?><?php echo(stripslashes(wppa_get_meta_album($meta, '['))) ?></span>
 										</td>
 										<?php if ($ct == 3) {
 											echo('</tr><tr>'); 
@@ -706,7 +724,7 @@ global $wppa;
 									elseif ( is_dir($dir) ) { ?>
 										<tr>
 											<td>
-												<input type="checkbox" name="file-<?php echo($idx) ?>" class= "wppa-dir" checked="checked" />&nbsp;&nbsp;<b><?php echo(basename($dir)) ?></b>
+												<input type="checkbox" id="file-<?php echo($idx) ?>" name="file-<?php echo($idx) ?>" class= "wppa-dir" checked="checked" />&nbsp;&nbsp;<b><?php echo(basename($dir)) ?></b>
 												<?php
 													$subfiles = glob($dir.'/*');
 													$subdircount = '0';
@@ -745,6 +763,83 @@ global $wppa;
 						}
 					</script>
 					<input type="submit" onclick="return wppaCheckInputVars()" class="button-primary" id="submit" name="wppa-import-submit" value="<?php _e('Import', 'wppa'); ?>" />
+					<script type="text/javascript" >
+						var wppaImportRuns = false;
+						function wppaDoAjaxImport() {
+							wppaImportRuns = true;
+							var data = '';
+							data += 'wppa-update-check='+jQuery('#wppa-update-check').attr('value');
+							data += '&wppa-album='+jQuery('#wppa-album').attr('value');
+							data += '&wppa-watermark-file='+jQuery('#wppa-watermark-file').attr('value');
+							data += '&wppa-watermark-pos='+jQuery('#wppa-watermark-pos').attr('value');
+							if ( jQuery('#cre-album').attr('checked') ) data += '&cre-album='+jQuery('#cre-album').attr('value');
+							if ( jQuery('#use-backup').attr('checked') ) data += '&use-backup=on'; //+jQuery('#use-backup').attr('value');
+							if ( jQuery('#wppa-update').attr('checked') ) data += '&wppa-update=on'; //+jQuery('#wppa-update').attr('value');
+							if ( jQuery('#wppa-nodups').attr('checked') ) data += '&wppa-nodups=on'; //+jQuery('#wppa-nudups').attr('value');
+							if ( jQuery('#del-after-p').attr('checked') ) data += '&del-after-p=on';
+							data += '&wppa-import-submit=ajax';
+							
+							var files = jQuery(':checked');
+							var found = false;
+							var i=0;
+							var elm;
+							var fulldata;
+							for ( i=0; i<files.length; i++ ) {
+								found = false;	// assume done
+								elm = files[i];
+								// Is it a file checkbox?
+								var temp = elm.id.split('-');
+								if ( temp[0] != 'file' ) continue;	// no
+								fulldata = data+'&import-ajax-file='+elm.title;
+								found = true;
+								break;
+							}
+							//	alert(data);
+							if ( ! found ) return;	// nothing left
+							// found one, do it
+							var oldhtml=jQuery('#name-'+elm.id).html();
+							var xmlhttp = wppaGetXmlHttp();
+							xmlhttp.onreadystatechange = function() {
+								if (xmlhttp.readyState == 4) {
+									if (xmlhttp.status!=404) {
+										if ( jQuery('#del-after-p').attr('checked') ) {
+											elm.checked = '';
+											elm.disabled = 'disabled';
+											elm.title = '';
+											jQuery('#name-'+elm.id).html('&nbsp;&nbsp;<b>'+xmlhttp.responseText+'</b>');
+										}
+										else {
+											elm.checked = '';
+											
+											jQuery('#name-'+elm.id).html(oldhtml+'&nbsp;&nbsp;<b>'+xmlhttp.responseText+'</b>');
+										}
+										if ( wppaImportRuns ) {
+											setTimeout('wppaDoAjaxImport()', 100);
+										}
+									}
+									else {
+										jQuery('#name-'+elm.id).html('&nbsp;&nbsp;<b>Not found</b>');
+									}
+								}
+							}
+							var url = wppaAjaxUrl+'?action=wppa&wppa-action=import';
+							xmlhttp.open('POST',url,true);
+							xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+							xmlhttp.send(fulldata);
+							jQuery('#name-'+elm.id).html('&nbsp;&nbsp;<b style="color:blue" >Working...</b>');
+							jQuery('#wppa-start-ajax').css('display', 'none');
+							jQuery('#wppa-stop-ajax').css('display', 'inline');
+						}
+						function wppaStopAjaxImport() {
+							wppaImportRuns = false;
+							jQuery('#wppa-start-ajax').css('display', 'inline');
+							jQuery('#wppa-stop-ajax').css('display', 'none');
+						}
+					</script>
+					<?php if ( $photocount > '0' && ! $albumcount && ! $dircount && ! $zipcount ) { ?>
+					<input id="wppa-start-ajax" type="button" onclick="wppaDoAjaxImport()" class="button-secundary" value="Start Ajax" />
+					<input id="wppa-stop-ajax" style="display:none;" type="button" onclick="wppaStopAjaxImport()" class="button-secundary" value="Stop Ajax" />
+					<?php } ?>
 				</p>
 				</form>
 
@@ -785,9 +880,14 @@ function wppa_get_import_files() {
 	
 	// Dispatch on source type
 	if ( $source_type == 'local' ) {
-		$source 		= get_option('wppa_import_source_'.$user, WPPA_DEPOT);
-		$source_path 	= ABSPATH . $source;	// Filesystem
-		$files 			= glob($source_path . '/*');
+		if ( isset ($_POST['import-ajax-file']) ) {
+			$files = array($_POST['import-ajax-file']);
+		}
+		else {
+			$source 		= get_option('wppa_import_source_'.$user, WPPA_DEPOT);
+			$source_path 	= ABSPATH . $source;	// Filesystem
+			$files 			= glob($source_path . '/*');
+		}
 	}
 	else { // remote
 		$setting 		= get_option('wppa_import_source_url_'.$user, 'http://');
@@ -850,6 +950,8 @@ function wppa_get_import_files() {
 			}
 		}
 	}
+	// Sort to keep synchronicity when doing ajax import
+	if ( is_array($files) ) sort($files);
 	// Done, return result
 	return $files;
 }
@@ -1115,7 +1217,8 @@ global $wppa_opt;
 //			echo 'Using '.$file.'_backup in stead of '.$file.'<br />';
 			$file = $file.'_backup';
 		}
-		if (isset($_POST['file-'.$idx])) {
+		if ( isset($_POST['file-'.$idx]) || $wppa['ajax'] ) {
+if ( $wppa['ajax'] ) $wppa['ajax_import_files'] = basename($file);	/* */
 			$ext = strtolower(substr(strrchr($file, "."), 1));
 			$ext = str_replace('_backup', '', $ext);
 			if ($ext == 'jpg' || $ext == 'png' || $ext == 'gif') {
@@ -1231,6 +1334,7 @@ global $wppa_opt;
 		}
 		wppa_ok_message($msg); 
 		wppa_set_last_album($album);
+//		if ( $wppa['ajax'] ) $wppa['ajax_import_files'] = basename($files['0']);	/* */
 	}
 }
 

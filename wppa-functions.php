@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions
-* Version 5.1.1
+* Version 5.1.2
 *
 */
 
@@ -18,9 +18,15 @@ global $wppa;
 global $wppa_opt;
 global $wppa_lang;
 global $wppa_locale;
-if ( $wppa['debug'] ) print_r($_SESSION);
+
+	// Diagnostics
 	wppa_dbg_msg('Entering wppa_albums');
 	wppa_dbg_msg('Lang='.$wppa_lang.', Locale='.$wppa_locale.', Ajax='.$wppa['ajax'], 'red');
+	if ( $wppa['debug'] ) {
+		echo '<small style="color:red" >[WPPA+ dbg msg: $_SESSION = ';
+		print_r($_SESSION);
+		echo ']<br /></small>';
+	}
 	
 	// Process a user upload request, if any. Do it here: it may affect this occurences display
 	wppa_user_upload();
@@ -92,8 +98,8 @@ if ( $wppa['debug'] ) print_r($_SESSION);
 		$wppa['photos_only'] 	= wppa_get_get('photos-only', false);
 		$wppa['page'] 			= wppa_get_get('page', '');
 		if ( wppa_get_get('superview', false) ) {
-			$_SESSION['wppa']['superview'] = $wppa['is_slide'] ? 'slide': 'thumbs';
-			$_SESSION['wppa']['superalbum'] = $wppa['start_album'];
+			$_SESSION['wppa_session']['superview'] = $wppa['is_slide'] ? 'slide': 'thumbs';
+			$_SESSION['wppa_session']['superalbum'] = $wppa['start_album'];
 		}
 	}
 	// 2. wppa_albums is called directly. Assume any arg. If not, no worry, system defaults are used == generic

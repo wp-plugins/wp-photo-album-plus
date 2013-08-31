@@ -2,7 +2,7 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 5.1.0
+* version 5.1.2
 *
 */
 
@@ -96,7 +96,8 @@ global $wppa_initruntimetime;
 			'page'						=> '',
 			'geo'						=> '',
 			'continue'					=> '',
-			'is_upload'					=> false
+			'is_upload'					=> false,
+			'ajax_import_files'			=> false
 
 		);
 
@@ -541,6 +542,8 @@ global $wppa_initruntimetime;
 						'wppa_list_index'			=> '',
 						'wppa_append_text'			=> '',
 						'wppa_append_to_photodesc' 	=> '',
+						'wppa_remove_text'			=> '',
+						'wppa_remove_from_photodesc'	=> '',
 
 						// Table IX: Miscellaneous
 						'wppa_check_balance'			=> '',

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 5.1.0
+* Version 5.1.2
 *
 */
 
@@ -195,6 +195,35 @@ global $wppa_revno;
 				}
 				else {
 					wppa_error_message('Empty string to append or no photos to process.');
+				}
+				break;
+				
+			case 'wppa_remove_from_photodesc':
+				$start = get_option('wppa_last_remove', '0');
+				$photos = $wpdb->get_results("SELECT `id`, `description` FROM `".WPPA_PHOTOS."` WHERE `id` > ".$start." ORDER BY `id`", ARRAY_A);
+				$value = trim($wppa_opt['wppa_remove_text']);
+				$count = '0';
+				if ( $value && $photos ) {
+					wppa_ok_message('Removing <i>'.$value.'</i> from all photo descriptions. Starting at id = '.($start+'1').'. Please wait...');
+					foreach ( array_keys($photos) as $phidx ) {
+						if ( ! wppa_is_time_up() ) {
+							$newdesc = rtrim(str_replace($value, '', $photos[$phidx]['description']));
+							$wpdb->query("UPDATE `".WPPA_PHOTOS."` SET `description` = '".$newdesc."' WHERE `id` = ".$photos[$phidx]['id']);
+							$count++;
+							update_option('wppa_last_remove', $photos[$phidx]['id']);
+						}
+						if ( wppa_is_time_up() ) break;					
+					}
+					if ( wppa_is_time_up($count) ) {
+						wppa_error_message('Restart this operation to continue.');
+					}
+					else {
+						wppa_ok_message('Done! Removing </strong><i>'.$value.'</i><strong> to all photodescriptions.');
+						delete_option('wppa_last_remove');
+					}
+				}
+				else {
+					wppa_error_message('Empty string to remove or no photos to process.');
 				}
 				break;
 				
@@ -3632,6 +3661,19 @@ wppa_fix_source_extensions();
 							$html = array($html1, $html2);
 							wppa_setting(false, '5', $name, $desc, $html, $help);
 							
+							$name = __('Remove from photodesc', 'wppa');
+							$desc = __('Remove this text from all photo descriptions.', 'wppa');
+							$help = 'Removes all occurrencies of the given text from the description of all photos.';
+							$help .= '\n\n'.esc_js('First edit the text to remove, click outside the edit window and wait for the green checkmark to appear. Then click the Doit! button.');
+							$help .= '\n\n'.esc_js('If this operation does not finish with a green \"Done! Removing...\" message, but a \"Time out\" message or simply dies after a minute or so,');
+							$help .= esc_js('wait another minute, and press the Doit! button again. The process will continue where it ended.');
+							$help .= '\n\n'.esc_js('Go on this way until a \"Done!\" message appears. Do NOT change the remove text in between!');
+							$slug1 = 'wppa_remove_text';
+							$slug2 = 'wppa_remove_from_photodesc';
+							$html1 = wppa_input($slug1, '200px');
+							$html2 = wppa_doit_button('', $slug2);
+							$html = array($html1, $html2);
+							wppa_setting(false, '6', $name, $desc, $html, $help);
 
 							?>
 						</tbody>
