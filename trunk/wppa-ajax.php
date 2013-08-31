@@ -2,7 +2,7 @@
 /* wppa-ajax.php
 *
 * Functions used in ajax requests
-* version 5.1.0
+* version 5.1.2
 *
 */
 add_action('wp_ajax_wppa', 'wppa_ajax_callback');
@@ -27,6 +27,12 @@ global $wppa;
 	$wppa_action = $_REQUEST['wppa-action'];
 	
 	switch ($wppa_action) {
+		case 'import':
+			require_once 'wppa-upload.php';
+			_wppa_page_import();
+			exit;
+			break;
+			
 		case 'approve':
 
 			$iret = '0';

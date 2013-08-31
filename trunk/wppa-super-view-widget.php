@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * ask the album / display you want
-* Version 5.1.1
+* Version 5.1.2
 */
 
 
@@ -40,10 +40,10 @@ class SuperView extends WP_Widget {
 		
 			$url = get_permalink($page);
 
-			if ( ! isset ( $_SESSION['wppa'] ) ) $_SESSION['wppa'] = array();
-			if ( ! isset ( $_SESSION['wppa']['superview'] ) ) {
-				$_SESSION['wppa']['superview'] = 'thumbs';
-				$_SESSION['wppa']['superalbum'] = '0';
+			if ( ! isset ( $_SESSION['wppa_session'] ) ) $_SESSION['wppa_session'] = array();
+			if ( ! isset ( $_SESSION['wppa_session']['superview'] ) ) {
+				$_SESSION['wppa_session']['superview'] = 'thumbs';
+				$_SESSION['wppa_session']['superalbum'] = '0';
 			}
 
 			$checked = 'checked="checked"';
@@ -53,10 +53,10 @@ class SuperView extends WP_Widget {
 			<form action="'.$url.'" method = "get">
 				<label>'.__('Album:', 'wppa').'</label><br />
 				<select name="wppa-album">
-					'.wppa_album_select_a( array( 'selected' => $_SESSION['wppa']['superalbum'], 'addpleaseselect' => true, 'root' => $album_root, 'content' => true ) ).'
+					'.wppa_album_select_a( array( 'selected' => $_SESSION['wppa_session']['superalbum'], 'addpleaseselect' => true, 'root' => $album_root, 'content' => true ) ).'
 				</select><br />
-				<input type="radio" name="wppa-slide" value="nil" '.( $_SESSION['wppa']['superview'] == 'thumbs' ? $checked : '' ).'>'.__('Thumbnails', 'wppa').'<br />
-				<input type="radio" name="wppa-slide" value="1" '.( $_SESSION['wppa']['superview'] == 'slide' ? $checked : '' ).'>'.__('Slideshow', 'wppa').'<br />';
+				<input type="radio" name="wppa-slide" value="nil" '.( $_SESSION['wppa_session']['superview'] == 'thumbs' ? $checked : '' ).'>'.__('Thumbnails', 'wppa').'<br />
+				<input type="radio" name="wppa-slide" value="1" '.( $_SESSION['wppa_session']['superview'] == 'slide' ? $checked : '' ).'>'.__('Slideshow', 'wppa').'<br />';
 			$widget_content .= '
 				<input type="hidden" name="wppa-occur" value="1" />
 				<input type="hidden" name="wppa-superview" value="1" />

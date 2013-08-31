@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 5.1.0
+* Version 5.1.2
 *
 */
 
@@ -838,6 +838,8 @@ Hide Camera info
 						'wppa_list_index'			=> '',
 						'wppa_append_text'			=> '',
 						'wppa_append_to_photodesc' 	=> '',
+						'wppa_remove_text'			=> '',
+						'wppa_remove_from_photodesc'	=> '',
 
 						// Table IX: Miscellaneous
 						// A System

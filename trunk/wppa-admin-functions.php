@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * gp admin functions
-* version 5.1.0
+* version 5.1.2
 *
 * 
 */
@@ -991,7 +991,15 @@ function wppa_insert_photo ($file = '', $alb = '', $name = '', $desc = '', $pord
 		if ( isset($_POST['wppa-nodups']) ) {
 			$exists = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `".WPPA_PHOTOS."` WHERE `album` = %s AND ( `filename` = %s OR ( `filename` = '' AND `name` = %s ) )", $alb, $name, $name));
 			if ( $exists ) {
-				wppa_warning_message(sprintf(__('Photo %s already exists in album number %s.', 'wppa'), $name, $alb));
+				if ( isset($_POST['del-after-p']) ) {
+					unlink($file);
+					$msg = __('Photo %s already exists in album number %s. Removed from depot.', 'wppa');
+				}
+				else {
+					$msg = __('Photo %s already exists in album number %s.', 'wppa');
+				}
+				wppa_warning_message(sprintf($msg, $name, $alb));
+				
 				return false;
 			}
 		}
