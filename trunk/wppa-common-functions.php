@@ -2,7 +2,7 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 5.1.2
+* version 5.1.3
 *
 */
 
@@ -39,6 +39,7 @@ global $wppa_initruntimetime;
 			'is_cover' 					=> '0',
 			'is_slide' 					=> '0',
 			'is_slideonly' 				=> '0',
+			'is_slideonlyf'				=> '0',
 			'is_filmonly'				=> '0',
 			'film_on' 					=> '0',
 			'browse_on' 				=> '0',
@@ -97,7 +98,8 @@ global $wppa_initruntimetime;
 			'geo'						=> '',
 			'continue'					=> '',
 			'is_upload'					=> false,
-			'ajax_import_files'			=> false
+			'ajax_import_files'			=> false,
+			'ajax_import_files_done'	=> false
 
 		);
 
@@ -603,7 +605,8 @@ global $wppa_initruntimetime;
 						'wppa_covertype_is_restricted'	=> '',
 						'wppa_strip_file_ext'			=> '',
 
-
+						'wppa_copy_timestamp'			=> '',
+						
 						'wppa_watermark_on'				=> '',
 						'wppa_watermark_user'			=> '',
 						'wppa_watermark_file'			=> '',

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 5.1.2
+* Version 5.1.3
 *
 */
 
@@ -315,7 +315,7 @@ global $silent;
 		$usertheme = ABSPATH.'wp-content/themes/'.get_option('template').'/wppa-theme.php';
 		if ( is_file( $usertheme ) ) $key += '2';
 	}
-	if ( $old_rev < '4912' ) {		// css changed since...
+	if ( $old_rev < '5103' ) {		// css changed since...
 		$userstyle = ABSPATH.'wp-content/themes/'.get_option('stylesheet').'/wppa-style.css';
 		if ( is_file( $userstyle ) ) {
 			$key += '1';
@@ -887,6 +887,8 @@ Hide Camera info
 						'wppa_link_is_restricted'		=> 'no',
 						'wppa_covertype_is_restricted'	=> 'no',
 						'wppa_strip_file_ext'			=> 'no',
+						
+						'wppa_copy_timestamp'			=> 'no',
 						
 						// C Search
 						'wppa_search_linkpage' 			=> '0',		// 1

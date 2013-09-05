@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 5.1.2
+* Version 5.1.3
 *
 */
 
@@ -1029,6 +1029,14 @@ wppa_fix_source_extensions();
 							$html = wppa_checkbox($slug);
 							$class = 'wppa_bc';
 							wppa_setting($slug, '3.3', $name, $desc, $html, $help, $class);
+
+							$name = __('Breadcrumb on featured ten displays', 'wppa');
+							$desc = __('Show breadcrumb navigation bars on featured ten displays.', 'wppa');
+							$help = esc_js(__('Indicate whether a breadcrumb navigation should be displayed above the featured ten displays.', 'wppa'));
+							$slug = 'wppa_bc_on_featen';
+							$html = wppa_checkbox($slug);
+							$class = 'wppa_bc';
+							wppa_setting($slug, '3.4', $name, $desc, $html, $help, $class);
 
 							$name = __('Home', 'wppa');
 							$desc = __('Show "Home" in breadcrumb.', 'wppa');
@@ -4023,6 +4031,14 @@ wppa_fix_source_extensions();
 							$slug = 'wppa_strip_file_ext';
 							$html = wppa_checkbox($slug);
 							wppa_setting($slug, '11', $name, $desc, $html, $help);
+							
+							$name = __('Copy Timestamp', 'wppa');
+							$desc = __('Copy timestamp when copying photo.', 'wppa');
+							$help = esc_js('If checked, the copied photo is not "new"', 'wppa');
+							$slug = 'wppa_copy_timestamp';
+							$html = wppa_checkbox($slug);
+							wppa_setting($slug, '12', $name, $desc, $html, $help);
+							
 							
 							wppa_setting_subheader('C', '1', __('Search Albums and Photos related settings', 'wppa'));
 							

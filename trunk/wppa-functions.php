@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions
-* Version 5.1.2
+* Version 5.1.3
 *
 */
 
@@ -93,7 +93,7 @@ global $wppa_locale;
 		$wppa['featen_count']	= wppa_get_get('featen', '0');
 		$wppa['is_featen']		= $wppa['featen_count'] != '0';
 		$wppa['is_tag']			= trim(trim(strip_tags(wppa_get_get('tag', false)), ','), ';');
-		if ( $wppa['is_tag'] ) wppa_dbg_msg('Is Tag');
+		if ( $wppa['is_tag'] ) wppa_dbg_msg('Is Tag: '.$wppa['is_tag']);
 		else wppa_dbg_msg('Is NOT Tag');
 		$wppa['photos_only'] 	= wppa_get_get('photos-only', false);
 		$wppa['page'] 			= wppa_get_get('page', '');
@@ -197,6 +197,10 @@ global $wppa_locale;
 						wppa_reset_occurrance();
 						return;	// Give up this occurence
 					}
+					break;
+				case '#tags':
+					$wppa['is_tag'] = wppa_sanitize_tags(substr($wppa['start_album'], 6), true);
+					$wppa['start_album'] = '';
 					break;
 				case '#all':
 					$id = '-2';
@@ -1634,7 +1638,7 @@ global $wppa_opt;
 		}
 	}
 	if ($netto) {
-	$result -= 14; // 2*padding
+	$result -= 12; // 2*padding
 	$result -= 2 * $wppa_opt['wppa_bwidth'];
 	}
 	return $result;
@@ -1649,7 +1653,8 @@ function wppa_get_thumbnail_area_width() {
 function wppa_get_thumbnail_area_delta() {
 global $wppa_opt;
 
-	$result = 7 + 2 * $wppa_opt['wppa_bwidth'];	// 7 = .thumbnail_area padding-left
+//	$result = 7 + 2 * $wppa_opt['wppa_bwidth'];	// 7 = .thumbnail_area padding-left
+		$result = 12 + 2 * $wppa_opt['wppa_bwidth'];	// experimental
 	return $result;
 }
 
@@ -2782,7 +2787,7 @@ function wppa_get_box_width() {
 global $wppa_opt;
 
 	$result = wppa_get_container_width();
-	$result -= 14;	// 2 * padding
+	$result -= 12;	// 2 * padding
 	$result -= 2 * $wppa_opt['wppa_bwidth'];
 	return $result;
 }

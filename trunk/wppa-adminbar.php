@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * enhances the admin bar with wppa+ menu
-* version 4.9.7
+* version 4.1.3
 *
 */
 
@@ -62,6 +62,16 @@ function wppa_admin_bar_menu() {
 			'href'   => admin_url( 'admin.php?page=wppa_import_photos' )
 		);
 	}
+	if ( current_user_can( 'wppa_moderate' ) ) {
+		$menu_items['moderate'] = array(
+			'parent' => $wppaplus,
+			'title'	 => __a( 'Moderate Photos', 'wppa_theme').$tot_pending,
+			'href'   => admin_url( 'admin.php?page=wppa_moderate_photos' )
+		);
+	}
+//		add_submenu_page( 'wppa_admin_menu',  __('Moderate Photos', 'wppa'),		 __('Moderate Photos', 'wppa').$tot_pending, 'wppa_moderate', 	 'wppa_moderate_photos', 'wppa_page_moderate' );
+
+	
 	if ( current_user_can( 'wppa_export' ) ) {
 		$menu_items['export'] = array(
 			'parent' => $wppaplus,
