@@ -2,7 +2,7 @@
 * Pachkage: wp-photo-album-plus
 *
 *
-* Version 5.0.11
+* Version 5.1.3
 *
 */
 
@@ -67,6 +67,8 @@
 						if (table.find('#mygallery-album').val()) temp1 = table.find('#mygallery-album').val().split('|');
 						else temp1 = [''];
 					var album 	= temp1[0];
+					var tags 	= table.find('#mygallery-tags').val();
+					var andor	= document.getElementById('mygallery-andor').checked;
 					var size 	= table.find('#mygallery-size').val();
 					var align	= table.find('#mygallery-align').val();
 					var temp2;
@@ -91,7 +93,7 @@
 
 					// Check for inconsistencies
 					if ( type == 'cover' ) {
-						if ( album == '#topten' || album == '#lasten' || album == '#comten' || album == '#featen' || album == '#all' ) {
+						if ( album == '#topten' || album == '#lasten' || album == '#comten' || album == '#featen' || album == '#tags' || album == '#all' ) {
 							alert('Sorry, you made a mistake\n\nA --- special --- selection has no album cover\n\nPlease try again');
 							return;
 						}
@@ -116,6 +118,10 @@
 						alert('Sorry, the upload box is as newstyle shortcode available only.\n\nPlease check the new style checkbox and try again.');
 						return;
 					}
+					if ( album == '#tags' && ! tags ) {	
+						alert('Select at least one tag and try again.');
+						return;
+					}
 					
 					// Make the shortcode
 					var shortcode = '%%wppa%%';
@@ -124,6 +130,16 @@
 					}
 					else if ( type == 'photo' || type == 'mphoto' || type == 'slphoto' )	{			
 						shortcode += ' %%'+type+'='+photo+'%%';
+					}
+					else if ( album == '#tags' ) {
+						shortcode += ' %%album=#tags,';
+						var sep = andor ? ',' : ';';
+						var last = tags.length - 1;
+						for (var tag in tags) {
+							shortcode += tags[tag];
+							if ( tag != last ) shortcode += sep;
+						}
+						shortcode += '%%';
 					}
 					else {
 						var temp = album.split('|');
@@ -156,6 +172,16 @@
 					}
 					else if ( type == 'photo' || type == 'mphoto' || type == 'slphoto' )	{			
 						newShortcode += ' photo="'+photo+'"';
+					}
+					else if ( album == '#tags' ) {
+						newShortcode += ' album="#tags,';
+						var sep = andor ? ',' : ';';
+						var last = tags.length - 1;
+						for (var tag in tags) {
+							newShortcode += tags[tag];
+							if ( tag != last ) newShortcode += sep;
+						}
+						newShortcode += '"';
 					}
 					else {
 						var temp = album.split('|');
@@ -241,4 +267,9 @@ function wppaTinyMceAlbumPreview(id) {
 	else {
 		jQuery('.mygallery-extra').hide();
 	}
+}
+
+function wppaGalleryAlbumChange(value) {
+	if ( value == '#tags' ) jQuery('.mygallery-tags').css('display', '');
+	else jQuery('.mygallery-tags').css('display', 'none');
 }

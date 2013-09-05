@@ -2,7 +2,7 @@
 //
 // conatins slideshow, theme, ajax and lightbox code
 //
-// Version 5.1.0
+// Version 5.1.3
 
 // Part 1: Slideshow
 //
@@ -2398,6 +2398,7 @@ wppaConsoleLog('lft='+lft+', ptp='+ptp, 1);
 }
 function wppaUrlToId(url) {
 	var temp = url.split('/wppa/');
+	if ( temp.length == 1 ) return 0;	// '/wppa/' not found, not a wppa image, return 0
 	temp = temp[1];
 	temp = temp.split('.');
 	temp = temp[0].replace('/', '');

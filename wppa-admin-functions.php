@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * gp admin functions
-* version 5.1.2
+* version 5.1.3
 *
 * 
 */
@@ -320,7 +320,8 @@ global $wpdb;
 	// Make new db table entry
 	$id = wppa_nextkey(WPPA_PHOTOS);
 	$owner = wppa_get_user();
-	$query = $wpdb->prepare('INSERT INTO `' . WPPA_PHOTOS . '` (`id`, `album`, `ext`, `name`, `p_order`, `description`, `mean_rating`, `linkurl`, `linktitle`, `linktarget`, `timestamp`, `owner`, `status`, `tags`, `alt`, `filename`, `modified`, `location`) VALUES (%s, %s, %s, %s, %s, %s, \'\', %s, %s, %s, %s, %s, %s, %s, %s, %s, \'0\', \'\')', $id, $album, $ext, $name, $porder, $desc, $linkurl, $linktitle, $linktarget, time(), $owner, $status, '', '', $filename);
+	$time = wppa_switch('wppa_copy_timestamp') ? $photo['timestamp'] : time();
+	$query = $wpdb->prepare('INSERT INTO `' . WPPA_PHOTOS . '` (`id`, `album`, `ext`, `name`, `p_order`, `description`, `mean_rating`, `linkurl`, `linktitle`, `linktarget`, `timestamp`, `owner`, `status`, `tags`, `alt`, `filename`, `modified`, `location`) VALUES (%s, %s, %s, %s, %s, %s, \'\', %s, %s, %s, %s, %s, %s, %s, %s, %s, \'0\', \'\')', $id, $album, $ext, $name, $porder, $desc, $linkurl, $linktitle, $linktarget, $time, $owner, $status, '', '', $filename);
 	if ($wpdb->query($query) === false) return $err;
 	wppa_flush_treecounts($album);
 	wppa_index_add('photo', $id);
@@ -342,7 +343,8 @@ global $wpdb;
 	// Copy Exif and iptc
 	wppa_copy_exif($photoid, $id);
 	wppa_copy_iptc($photoid, $id);
-	
+	// Bubble album timestamp
+	if ( ! wppa_switch('wppa_copy_timestamp') ) wppa_update_album_timestamp($albumto);
 	return false;	// No error
 }
 function wppa_copy_exif($fromphoto, $tophoto) {

@@ -2,7 +2,7 @@
 /* wppa-ajax.php
 *
 * Functions used in ajax requests
-* version 5.1.2
+* version 5.1.3
 *
 */
 add_action('wp_ajax_wppa', 'wppa_ajax_callback');
@@ -1241,37 +1241,5 @@ global $wppa;
 			else $wppa['out'] .= '. ' . __('You may also leave/set this blank', 'wppa');
 		}
 	}
-}
-
-function wppa_sanitize_tags($value) {
-	$value = strip_tags($value);
-	$value = str_replace(' ', '', $value);
-	$value = str_replace(';', ',', $value);
-	$value = str_replace('"', '', $value);
-	$value = str_replace('\'', '', $value);
-	$value = str_replace('\\', '', $value);
-	$value = stripslashes($value);
-	$temp = explode(',', $value);
-	if ( is_array($temp) ) {
-		asort($temp);
-		$value = '';
-		$first = true;
-		$previdx = '';
-		foreach ( array_keys($temp) as $idx ) {
-			$temp[$idx] = strtoupper(substr($temp[$idx], 0, 1)).strtolower(substr($temp[$idx], 1));
-			if ( $temp[$idx] ) {
-				if ( $first ) {
-					$first = false;
-					$value .= $temp[$idx];
-					$previdx = $idx;
-				}
-				elseif ( $temp[$idx] !=  $temp[$previdx] ) {	// Skip duplicates
-					$value .= ','.$temp[$idx];
-					$previdx = $idx;
-				}
-			}									
-		}
-	}
-	return $value;
 }
 

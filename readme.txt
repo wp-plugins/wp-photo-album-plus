@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile
-Version: 5.1.2
+Version: 5.1.3
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -172,6 +172,30 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 5.1.3 =
+
+= Bug Fixes =
+
+* Fixed a layout issue ( width of album cover box and thumbnail area box ) in theme twentythirteen.
+* Photos that were too large to process looked as if they were Ajax imported properly. Prodece a 'Failed' message now.
+* Fixed a lightbox error where the photo was not an wppa+ photo, but had rel="wppa[xxx]" as attribute in its wrapping anchor tag.
+
+= New Features =
+
+* New virtual album keyword: #tags. You can use shortcode and scripts using #tags as an album name. 
+#tags must be followed by a comma (,) and at least one phototag.
+Multiple tags are allowed, seperated by commas to indicate that the photos must have all tags listed, 
+or a semicolon to indicate that the photos must have at least one of the listed tags.
+Example: #tags,Red,Flower gives all red flowers; #tags,Owl;Duck returns all owls and ducks.
+* Copy timestamp ( Table IX-B12 ) prevents the copied photos to appear as 'new'.
+
+= Other Changes =
+
+* Added sub-menu item *Moderate Photos* to the admin bar menu item *Photo Albums.*
+* Removed .filmwindow { position:absolute; } from wppa-style.css.
+* Added box-sizing:content-box; to class .wppa-container, .wppa-cover-box and .thumbnail-area in wppa-style.css.
+* Featured ten breadcrumb can now be switched off in Table II-A3.4
 
 = 5.1.2 =
 

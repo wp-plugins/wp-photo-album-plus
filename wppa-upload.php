@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the upload/import pages and functions
-* Version 5.1.2
+* Version 5.1.3
 *
 */
 
@@ -386,7 +386,7 @@ global $wppa;
 	
 if ( $wppa['ajax'] ) {
 	ob_end_clean();
-	if ( $wppa['ajax_import_files'] ) echo '<span style="color:green" >'.$wppa['ajax_import_files'].' '.__('Done!', 'wppa').'</span>';
+	if ( $wppa['ajax_import_files_done'] ) echo '<span style="color:green" >'.$wppa['ajax_import_files'].' '.__('Done!', 'wppa').'</span>';
 	else echo '<span style="color:red" >'.$wppa['ajax_import_files'].' '.__('Failed!', 'wppa').'</span>';
 	exit;
 }
@@ -795,7 +795,10 @@ if ( $wppa['ajax'] ) {
 								break;
 							}
 							//	alert(data);
-							if ( ! found ) return;	// nothing left
+							if ( ! found ) {
+								wppaStopAjaxImport();
+								return;	// nothing left
+							}
 							// found one, do it
 							var oldhtml=jQuery('#name-'+elm.id).html();
 							var xmlhttp = wppaGetXmlHttp();
@@ -1258,8 +1261,8 @@ if ( $wppa['ajax'] ) $wppa['ajax_import_files'] = basename($file);	/* */
 						$id = basename($file);
 						$id = substr($id, 0, strpos($id, '.'));
 						if (!is_numeric($id) || !wppa_is_id_free('photo', $id)) $id = 0;
-						if (wppa_insert_photo($file, $alb, stripslashes($name), stripslashes($desc), $porder, $id, stripslashes($linkurl), stripslashes($linktitle))) {
-
+						if ( wppa_insert_photo($file, $alb, stripslashes($name), stripslashes($desc), $porder, $id, stripslashes($linkurl), stripslashes($linktitle)) ) {
+							if ( $wppa['ajax'] ) $wppa['ajax_import_files_done'] = true;
 							$pcount++;
 							if ($delp) {
 								unlink($file);
@@ -1268,6 +1271,7 @@ if ( $wppa['ajax'] ) $wppa['ajax_import_files'] = basename($file);	/* */
 						}
 						else {
 							wppa_error_message(__('Error inserting photo', 'wppa') . ' ' . basename($file) . '.');
+							
 						}
 					}
 					else {

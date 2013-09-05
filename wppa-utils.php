@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains low-level utility routines
-* Version 5.1.1
+* Version 5.1.3
 *
 */
 
@@ -1021,3 +1021,48 @@ static $old;
 	}
 	else $old = $new;
 }
+
+function wppa_sanitize_tags($value, $keepsemi = false) {
+	// Sanitize
+	$value = strip_tags($value);					// Security
+	$value = str_replace('"', '', $value);			// Remove funny chars
+	$value = str_replace('\'', '', $value);			// ...
+	$value = str_replace('\\', '', $value);			// ...
+	$value = stripslashes($value);					// ...
+	$value = str_replace(' ', '', $value);			// Remove spaces
+	// Find separator
+	$sep = ',';										// Default seperator
+	if ( $keepsemi ) {								// ';' allowed
+		if ( strpos($value, ';') !== false ) {		// and found at least one ';'
+			$value = str_replace(',', ';', $value);	// convert all separators to ';'
+			$sep = ';';
+		}											// ... a mix is not permitted
+	}
+	else {	  
+		$value = str_replace(';', ',', $value);		// Convert all seps to default separator ','
+	}
+	
+	$temp = explode($sep, $value);
+	if ( is_array($temp) ) {
+		asort($temp);								// Sort
+		$value = '';
+		$first = true;
+		$previdx = '';
+		foreach ( array_keys($temp) as $idx ) {
+			$temp[$idx] = strtoupper(substr($temp[$idx], 0, 1)).strtolower(substr($temp[$idx], 1));
+			if ( $temp[$idx] ) {
+				if ( $first ) {
+					$first = false;
+					$value .= $temp[$idx];
+					$previdx = $idx;
+				}
+				elseif ( $temp[$idx] !=  $temp[$previdx] ) {	// Skip duplicates
+					$value .= $sep.$temp[$idx];
+					$previdx = $idx;
+				}
+			}									
+		}
+	}
+	return $value;
+}
+

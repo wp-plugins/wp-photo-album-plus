@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 *
-* Version 5.0.11
+* Version 5.1.3
 *
 */
 
@@ -103,7 +103,7 @@ global $wppa_opt;
 			'<tr class="mygallery-album" >'.
 				'<th><label for="mygallery-album" class="mygallery-album" >'.__('The Album to be used:', 'wppa').'</label></th>'.
 				'<td>'.
-					'<select id="mygallery-album" name="album" style=width:270px;" class="mygallery-album" onchange="wppaTinyMceAlbumPreview(this.value)">';
+					'<select id="mygallery-album" name="album" style=width:270px;" class="mygallery-album" onchange="wppaGalleryAlbumChange(this.value); wppaTinyMceAlbumPreview(this.value)">';
 						$albums = $wpdb->get_results( "SELECT `id`, `name` FROM `".WPPA_ALBUMS."` ORDER BY `timestamp` DESC", ARRAY_A );
 						if ($albums) {
 							if ( wppa_switch('wppa_hier_albsel') ) $albums = wppa_add_paths($albums);
@@ -174,7 +174,10 @@ global $wppa_opt;
 									$value .= '|'.$photo['id'].'.'.$photo['ext'];
 								}
 								else $value .= '|';
-								$result .= '<option value = "'.$value.'" >'.__('--- The most recently commented photos ---', 'wppa').'</option>';									
+								$result .= '<option value = "'.$value.'" >'.__('--- The most recently commented photos ---', 'wppa').'</option>';
+							// #tags
+								$value = '#tags';
+								$result .= '<option value = "'.$value.'" >'.__('--- Photos that have certain tags ---', 'wppa').'</option>';
 							// #all
 								$value = '#all';
 								$photos = $wpdb->get_results( "SELECT `id`, `name`, `album`, `ext` FROM `".WPPA_PHOTOS."` ".wppa_get_photo_order('0')." LIMIT 100", ARRAY_A );
@@ -225,6 +228,22 @@ global $wppa_opt;
 						__('Specify the photo to be used', 'wppa').'<br />'.
 						__('You can select from a maximum of 100 most recently added photos', 'wppa').'<br />'.
 					'</small>'.
+				'</td>'.
+			'</tr>'.
+			
+			'<tr class="mygallery-tags" style="display:none;" >'.
+				'<th><label for="mygallery-tags">'.__('The tags the photos should have:', 'wppa').'</label></th>'.
+				'<td>'.
+					'<select id="mygallery-tags" multiple="multiple">'.
+						'<option value="" >'.__('--- please select tag(s) ---', 'wppa').'</option>';
+						$tags = wppa_get_taglist();
+						if ( $tags ) foreach ( array_keys($tags) as $tag ) {
+							$result .= '<option value="'.$tag.'" >'.$tag.'</option>';
+						}
+						$result .= 					
+					'</select>'.
+					
+					'<div><input type="checkbox" id="mygallery-andor" />&nbsp;<small>'.__('If you want that the photos have all the selected tags, check this box. Leave it unchecked if the photo must have atleast only one of the selected tags', 'wppa').'</small></div>'.
 				'</td>'.
 			'</tr>'.
 
