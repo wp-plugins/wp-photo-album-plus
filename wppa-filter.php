@@ -75,7 +75,8 @@ global $wppa;
 			// examine album number
 			if (is_numeric($album_pos)) {				
 				$post_old = substr($post_old, $album_pos + 8);				// shift up to and including %%album= out
-				$wppa['start_album'] = wppa_atoid($post_old);				// get album #
+				$wppa['start_album'] = substr($post_old, 0, strpos($post_old, '%%'));
+										// wppa_atoid($post_old);				// get album #
 				$post_old = substr($post_old, strpos($post_old, '%%') + 2);	// shift album # and trailing %% out
 			}
 			elseif (is_numeric($cover_pos)) {
