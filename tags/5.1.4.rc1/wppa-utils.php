@@ -1070,27 +1070,52 @@ function wppa_series_to_array($xtxt) {
 	$txt = str_replace(' ', '', $xtxt);					// Remove spaces
 	if ( strpos($txt, '.') === false ) return false;	// Not an enum/series, the only legal way to return false
 	if ( strpos($txt, '...') !== false ) {
-		wppa_stx_err('Max 2 successive dots allowed. '.$txt) ;
+		wppa_stx_err('Max 2 successive dots allowed. '.$txt);
+		return false;
+	}
+	if ( substr($txt, 0, 1) == '.' ) {
+		wppa_stx_err('Missing starting number. '.$txt);
+		return false;
+	}
+	if ( substr($txt, -1) == '.' ) {
+		wppa_stx_err('Missing ending number. '.$txt);
+		return false;
+	}
+	$t = str_replace(array('.','0','1','2','3','4','5','6','7','8','9'), '',$txt);
+	if ( $t ) {
+		wppa_stx_err('Illegal character(s): "'.$t.'" found. '.$txt);
 		return false;
 	}
 	$temp = explode('.', $txt);
 	$tempcopy = $temp;
+	
+//global $wppa;
+//echo $wppa['start_album'].' ';
+//echo $xtxt.' ';
+//echo $txt.' ';
+//print_r($temp);
 	foreach ( array_keys($temp) as $i ) {
 		if ( ! $temp[$i] ) { 							// found a '..'
-			if ( $i == '0' ) {
-				wppa_stx_err('Missing start of range. '.$txt);
-				return false;
-			}
-			if ( isset($temp[$i+'1']) && ! $temp[$i+'1'] ) {
-				wppa_stx_err('Missing end of range. '.$txt);
-				return false;
-			}
+//			if ( $i == '0' ) {
+//				wppa_stx_err('Missing start of range. '.$txt);
+//				return false;
+//			}
+//			if ( isset($temp[$i+'1']) && ! $temp[$i+'1'] ) {
+//				wppa_stx_err('Missing end of range. '.$txt);
+//				return false;
+//			}
 			if ( $temp[$i-'1'] >= $temp[$i+'1'] ) {
 				wppa_stx_err('Start > end. '.$txt);
 				return false;
 			}
 			for ( $j=$temp[$i-'1']+'1'; $j<$temp[$i+'1']; $j++ ) {
 				$tempcopy[] = $j;
+			}
+		}
+		else {
+			if ( ! is_numeric($temp[$i] ) ) {
+				wppa_stx_err('A enum or range token must be a number. '.$txt);
+				return false;
 			}
 		}
 	}

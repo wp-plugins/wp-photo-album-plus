@@ -412,6 +412,8 @@ global $wpdb;
 global $wppa;
 global $wppa_opt;
 
+	wppa_dbg_msg('get_albums entered: '.$wppa['master_occur'].' S_a='.$wppa['start_album'].', Cvr='.$wppa['is_cover']);
+	
 	if ( $wppa['is_topten'] ) return false;
 	if ( $wppa['is_lasten'] ) return false;
 	if ( $wppa['is_comten'] ) return false;
@@ -515,28 +517,30 @@ global $wppa_opt;
 		
 		// Check if querystring given This has the highest priority in case of matching occurrance
 		// Obey querystring only if the global occurence matches the occurence in the querystring, or no query occurrence given.
-		$ref_occur = $wppa['in_widget'] ? $wppa['widget_occur'] : $wppa['occur'];
+//		$ref_occur = $wppa['in_widget'] ? $wppa['widget_occur'] : $wppa['occur'];
 
-		if (($occur == $ref_occur) && wppa_get_get('album')) {
-			$id = wppa_get_get('album');
-			$wppa['is_cover'] = wppa_get_get('cover');
-		}
+//		if (($occur == $ref_occur) && wppa_get_get('album')) {
+//			$id = wppa_get_get('album');
+//			$wppa['is_cover'] = wppa_get_get('cover');
+//		}
 		// Check if parameters set
-		elseif (is_numeric($album)) {
-			$id = $album;
-			if ($type == 'album') $wppa['is_cover'] = '0';
-			if ($type == 'cover') $wppa['is_cover'] = '1';
-		}
+//		elseif (is_numeric($album)) {
+//			$id = $album;
+//			if ($type == 'album') $wppa['is_cover'] = '0';
+//			if ($type == 'cover') $wppa['is_cover'] = '1';
+//		}
 		// Check if globals set
-		elseif (is_numeric($wppa['start_album'])) {
-			$id = $wppa['start_album'];
-		}
+//		elseif (is_numeric($wppa['start_album'])) {
+//			$id = $wppa['start_album'];
+//		}
 		// The default: all albums with parent = 0;
-		else $id = '0';
+//		else $id = '0';
 		
 		// Top-level album has no cover
-		if ($id == '0') $wppa['is_cover'] = '0';
-		
+//		if ($id == '0') $wppa['is_cover'] = '0';
+$id=$wppa['start_album'];
+if ( ! $id ) $id = '0';
+//if ( $id == '0' ) $wppa['is_cover'] = '0';		
 		// Do the query
 		if (is_numeric($id)) {
 			if ($wppa['is_cover']) $q = $wpdb->prepare('SELECT * FROM ' . WPPA_ALBUMS . ' WHERE `id`= %s', $id);
@@ -603,7 +607,7 @@ global $wppa;
 global $wppa_opt;
 global $thumbs;
 
-	wppa_dbg_msg('get_thumbs entered: '.$wppa['master_occur']);
+	wppa_dbg_msg('get_thumbs entered: '.$wppa['master_occur'].' S_a='.$wppa['start_album'].', Cvr='.$wppa['is_cover']);
 	
 	if ( is_array($thumbs) ) {	// Done already?
 		wppa_dbg_msg('cached thumbs used');
