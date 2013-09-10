@@ -783,7 +783,7 @@ global $wppa_locale;
 		if ( $wppa_lang ) {
 			$wppa_locale = isset($q_config['locale'][$wppa_lang]) ? $q_config['locale'][$wppa_lang] : '';
 		}
-		wppa_dbg_msg('Lang='.$wppa_lang.', Locale='.$wppa_locale.', Ajax='.$wppa['ajax'], 'red');
+		wppa_dbg_msg('Lang='.$wppa_lang.', Locale='.$wppa_locale.', Ajax='.$wppa['ajax']);
 	}
 	// If still not known, get locale from wp-config
 	if ( ! $wppa_locale ) {		

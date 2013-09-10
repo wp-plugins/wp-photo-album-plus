@@ -1089,21 +1089,8 @@ function wppa_series_to_array($xtxt) {
 	$temp = explode('.', $txt);
 	$tempcopy = $temp;
 	
-//global $wppa;
-//echo $wppa['start_album'].' ';
-//echo $xtxt.' ';
-//echo $txt.' ';
-//print_r($temp);
 	foreach ( array_keys($temp) as $i ) {
 		if ( ! $temp[$i] ) { 							// found a '..'
-//			if ( $i == '0' ) {
-//				wppa_stx_err('Missing start of range. '.$txt);
-//				return false;
-//			}
-//			if ( isset($temp[$i+'1']) && ! $temp[$i+'1'] ) {
-//				wppa_stx_err('Missing end of range. '.$txt);
-//				return false;
-//			}
 			if ( $temp[$i-'1'] >= $temp[$i+'1'] ) {
 				wppa_stx_err('Start > end. '.$txt);
 				return false;

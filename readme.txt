@@ -178,6 +178,8 @@ See for additional information: http://wppa.opajaap.nl/?page_id=1459
 = Bug Fixes =
 
 * Fixed a sizing issue in widgets that is too complicated to explain. However, nobody seems to have noticed.
+* Import from remote using Ajax now imports the images asked for.
+* Fixed erroneaous internal links in album covers in widgets when pretty links was on (woccur was not converted).
 
 = New Features =
 
