@@ -59,7 +59,8 @@ global $wpdb;
 	$alb = '0';
 	if ( $this_occur ) $alb = wppa_get_get('album');
 	if ( ! $alb && is_numeric($wppa['start_album']) ) $alb = $wppa['start_album'];
-	$separate = wppa_is_separate($alb);
+	if ( is_numeric($alb) ) $separate = wppa_is_separate($alb);
+	else $separate = false;
 	$slide = ( wppa_get_album_title_linktype($alb) == 'slide' ) ? '&amp;wppa-slide' : '';
 
 	// See if we link to covers or to contents
@@ -90,7 +91,7 @@ global $wpdb;
 				$wppa['out'] .= wppa_nltab().'<span class="wppa-nav-text wppa-black b1" style="'.__wcs('wppa-nav-text').__wcs('wppa-black').'" >'.$the_title.'</span>';
 			}
 		} else {	/* $alb != 0 */
-			if ( !$separate ) if ( $wppa_opt['wppa_show_page'] ) {
+			if ( ! $separate ) if ( $wppa_opt['wppa_show_page'] ) {
 				$wppa['out'] .= wppa_nltab().'<a href="'.wppa_get_permalink('', true).'" class="wppa-nav-text b2" style="'.__wcs('wppa-nav-text').'" >'.$the_title.'</a>';
 				$wppa['out'] .= wppa_nltab().'<span class="wppa-nav-text b3" style="'.__wcs('wppa-nav-text').'" >'.$sep.'</span>';
 			}
