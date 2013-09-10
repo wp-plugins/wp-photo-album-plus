@@ -221,11 +221,11 @@ function wppa_atoid($var) {
 }
 function wppa_atoid_a($var) {
 	if ( ( substr($var, 0, 1) == '#') || 							// A keyword
-		 ( substr($var, 0, 1) == '$') ||							// A name
-		 ( strpos($var, '.') == false ) ) return wppa_atoid($var); 	// Not an enum or range
-	// Its not a keyword, not a name but a enum/range. 
+		 ( substr($var, 0, 1) == '$') )	return wppa_atoid($var); 	// A name
+	// Its not a keyword, not a name. 
 	$result = substr($var, 0, strpos($var, '%%'));
-	return $result;
+	if ( strpos($result, '.') === false ) return wppa_atoid($var);	// Not an enum/range
+	return $result;													// Possible enum/range. Validity check will be in wppa_albums()
 }
 
 // New shortcodes
