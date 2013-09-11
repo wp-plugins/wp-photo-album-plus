@@ -1745,7 +1745,24 @@ global $wppa_numqueries;
 				$wppa['out'] .= wppa_nltab('+').'<div class="wppa-container-'.$wppa['master_occur'].'" style="text-align:center; width:'.wppa_get_container_width().'px;" ><img id="wppa-ajax-spin-'.$wppa['master_occur'].'" src="'.wppa_get_imgdir().'loader.gif" style="box-shadow:none; z-index:1010; position:absolute; margin-top: 200px; margin-left:-32px; display:none;"></div>';
 			}
 		}
-		
+/*		
+		// Facebook comments sdk
+		if ( true  && $wppa['master_occur'] == '1' ) {
+			$wppa['out'] .= '
+			<!-- Start FB comments sdk -->
+			<div id="fb-root"></div>
+			<script>
+				(function(d, s, id) {
+					var js, fjs = d.getElementsByTagName(s)[0];
+					if (d.getElementById(id)) return;
+					js = d.createElement(s); js.id = id;
+					js.src = "//connect.facebook.net/nl_NL/all.js#xfbml=1";
+					fjs.parentNode.insertBefore(js, fjs);
+				} (document, \'script\', \'facebook-jssdk\'));
+			</script>
+			<!-- End FB comments sdk -->';
+		}
+*/
 		// Start timer if in debug mode
 		if ($wppa['debug']) {
 			$wppa_microtime = - microtime(true);
@@ -3536,7 +3553,7 @@ global $allphotos;
 	}
 	// Do a first guess, assume no quotes and no language
 	$results = $wpdb->get_results($wpdb->prepare( "SELECT `id` FROM `".WPPA_PHOTOS."` WHERE `name` = %s AND ( `album` = %s )", $xname, $album), ARRAY_A );
-	$guess = $results ? $result[0]['id'] : false;
+	$guess = $results ? $results[0]['id'] : false;
 	if ( $guess ) {
 		wppa_dbg_msg('wppa_get_photo_id_by_name() first guess succesfull!');
 		return $guess;
