@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile
-Version: 5.1.3
+Version: 5.1.4
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -172,6 +172,26 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 5.1.4 =
+
+= Bug Fixes =
+
+* Fixed a sizing issue in widgets that is too complicated to explain. However, nobody seems to have noticed.
+* Import from remote using Ajax now imports the images asked for.
+* Fixed erroneaous internal links in album covers in widgets when pretty links was on.
+* If Photo names in urls is on and the photo name is a number, the number will now be seen as a name and be converted to its real number.
+* Fixed a possible db error in the actions in Table VIII-B5 and B6.
+
+= New Features =
+
+* In shortcodes and scripts: Where an album number can be given, you can now supply a ( combination of ) enumeration and range.
+Example: &#091;wppa type="album" album="2.4.7..9.34"]&#91;/wppa] displays the content of albums 2,4,7,8,9 and 34.
+Example: album="#lasten,3..6,12" displays the 12 most recently uploaded photos from albums 3,4,5 and 6.
+
+= Other Changes =
+
+* You can switch off the touch event handlers on slides in Table IV-B14.
 
 = 5.1.3 =
 

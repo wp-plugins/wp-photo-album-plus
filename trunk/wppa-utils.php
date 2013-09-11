@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains low-level utility routines
-* Version 5.1.3
+* Version 5.1.4
 *
 */
 
@@ -1066,3 +1066,52 @@ function wppa_sanitize_tags($value, $keepsemi = false) {
 	return $value;
 }
 
+function wppa_series_to_array($xtxt) {
+	$txt = str_replace(' ', '', $xtxt);					// Remove spaces
+	if ( strpos($txt, '.') === false ) return false;	// Not an enum/series, the only legal way to return false
+	if ( strpos($txt, '...') !== false ) {
+		wppa_stx_err('Max 2 successive dots allowed. '.$txt);
+		return false;
+	}
+	if ( substr($txt, 0, 1) == '.' ) {
+		wppa_stx_err('Missing starting number. '.$txt);
+		return false;
+	}
+	if ( substr($txt, -1) == '.' ) {
+		wppa_stx_err('Missing ending number. '.$txt);
+		return false;
+	}
+	$t = str_replace(array('.','0','1','2','3','4','5','6','7','8','9'), '',$txt);
+	if ( $t ) {
+		wppa_stx_err('Illegal character(s): "'.$t.'" found. '.$txt);
+		return false;
+	}
+	$temp = explode('.', $txt);
+	$tempcopy = $temp;
+	
+	foreach ( array_keys($temp) as $i ) {
+		if ( ! $temp[$i] ) { 							// found a '..'
+			if ( $temp[$i-'1'] >= $temp[$i+'1'] ) {
+				wppa_stx_err('Start > end. '.$txt);
+				return false;
+			}
+			for ( $j=$temp[$i-'1']+'1'; $j<$temp[$i+'1']; $j++ ) {
+				$tempcopy[] = $j;
+			}
+		}
+		else {
+			if ( ! is_numeric($temp[$i] ) ) {
+				wppa_stx_err('A enum or range token must be a number. '.$txt);
+				return false;
+			}
+		}
+	}
+	$result = $tempcopy;
+	foreach ( array_keys($result) as $i ) {
+		if ( ! $result[$i] ) unset($result[$i]);
+	}
+	return $result;
+}
+function wppa_stx_err($msg) {
+	echo 'Syntax error in album specification. '.$msg;
+}

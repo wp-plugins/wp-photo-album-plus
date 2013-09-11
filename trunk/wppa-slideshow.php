@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the slideshow high level functions
-* Version 5.0.15
+* Version 5.1.4
 *
 */
 
@@ -194,10 +194,7 @@ function wppaStartStop($opt = '') {
 global $wppa;
 global $wppa_opt;
 
-	if (is_feed()) {
-//		wppa_dummy_bar(__('- - - Start/stop slideshow navigation bar - - -', 'wppa_theme'));
-		return;
-	}
+	if (is_feed()) return;	// Not in a feed
 	
 	// A single image slideshow needs no navigation
 	if ( $wppa['is_single'] ) return;
@@ -206,11 +203,8 @@ global $wppa_opt;
 	// we always need this for the functionality (through filmstrip etc).
 	// so if not wanted: hide it
 	$hide = 'display:none; '; // assume hide
-	if ($opt != 'optional') $hide = '';								// not optional: show
-	if ($wppa_opt['wppa_show_startstop_navigation'] && !$wppa['is_slideonly']) $hide = '';	// we want it
-	
-	//if ($wppa['is_slideonly'] == '1') return;	/* Not when slideonly */
-	//$hide = $wppa_opt['wppa_enable_slideshow'] ? '' : ;
+	if ( $opt != 'optional' ) $hide = '';														// not optional: show
+	if ( $wppa_opt['wppa_show_startstop_navigation'] && !$wppa['is_slideonly'] ) $hide = '';	// we want it
 	
 	if ( $wppa_opt['wppa_start_slide'] || $wppa['in_widget'] ) {
 		$wppa['out'] .= "\n";
@@ -235,29 +229,26 @@ function wppa_slide_frame() {
 global $wppa;
 global $wppa_opt;
 
-	if (is_feed()) {
-		if (wppa_page('oneofone')) {
-//			wppa_dummy_bar(__('- - - Single photo - - -', 'wppa_theme'));
-		}
-		else {
-//			wppa_dummy_bar(__('- - - Slideshow - - -', 'wppa_theme'));
-		}
-		return;
-	}
-if ( $wppa['is_filmonly'] ) return;
+	if ( is_feed() ) return;
+	if ( $wppa['is_filmonly'] ) return;
 	
-	$ontouch = 'ontouchstart="wppaTouchStart(event,\'slide_frame-'.$wppa['master_occur'].'\', '.$wppa['master_occur'].');"  ontouchend="wppaTouchEnd(event);" ontouchmove="wppaTouchMove(event);" ontouchcancel="wppaTouchCancel(event);"';
-	if ( $wppa_opt['wppa_slide_pause'] ) {
+	if ( wppa_switch('wppa_slide_swipe') ) {
+		$ontouch = 'ontouchstart="wppaTouchStart(event,\'slide_frame-'.$wppa['master_occur'].'\', '.$wppa['master_occur'].');"  ontouchend="wppaTouchEnd(event);" ontouchmove="wppaTouchMove(event);" ontouchcancel="wppaTouchCancel(event);"';
+	}
+	else $ontouch = '';
+	if ( wppa_switch('wppa_slide_pause') ) {
 		$pause = 'onmouseover="wppaSlidePause['.$wppa['master_occur'].'] = \''.__a('Paused', 'wppa_theme').'\'" onmouseout="wppaSlidePause['.$wppa['master_occur'].'] = false"';
 	}
 	else $pause = '';
+	
 	// There are still users who turn off javascript...
 	$wppa['out'] .= wppa_nltab().'<noscript style="text-align:center; " ><span style="color:red; ">'.__a('To see the full size images, you need to enable javascript in your browser.', 'wppa').'</span></noscript>';
+	
 	$wppa['out'] .= wppa_nltab('+').'<div id="slide_frame-'.$wppa['master_occur'].'" '.$ontouch.' '.$pause.' class="slide-frame" style="overflow:hidden; '.wppa_get_slide_frame_style().'">';
 		$auto = false;
-		if ($wppa['auto_colwidth']) $auto = true;
-		elseif ($wppa_opt['wppa_colwidth'] == 'auto') $auto = true;
-		if ($auto) {
+		if ( $wppa['auto_colwidth'] ) $auto = true;
+		elseif ( $wppa_opt['wppa_colwidth'] == 'auto' ) $auto = true;
+		if ( $auto ) {
 			$wppa['out'] .= wppa_nltab().'<div id="theslide0-'.$wppa['master_occur'].'" class="theslide theslide-'.$wppa['master_occur'].'" style="width:100%; margin:auto;" ></div>';
 			$wppa['out'] .= wppa_nltab().'<div id="theslide1-'.$wppa['master_occur'].'" class="theslide theslide-'.$wppa['master_occur'].'" style="width:100%; margin:auto;" ></div>';
 		}
@@ -266,7 +257,7 @@ if ( $wppa['is_filmonly'] ) return;
 			$wppa['out'] .= wppa_nltab().'<div id="theslide1-'.$wppa['master_occur'].'" class="theslide theslide-'.$wppa['master_occur'].'" style="width:'.$wppa['slideframewidth'].'px; " ></div>';
 		}
 		$wppa['out'] .= wppa_nltab().'<div id="spinner-'.$wppa['master_occur'].'" class="spinner" ></div>';
-		if ( ! wppa_page('oneofone') ) {	
+		if ( ! wppa_page('oneofone') ) {
 			if (( $wppa_opt['wppa_show_bbb'] && ! $wppa['in_widget'] ) || ( $wppa_opt['wppa_show_bbb_widget'] && $wppa['in_widget'] )){	// big browsing buttons enabled
 				$wppa['out'] .= wppa_nltab().'<img id="bbb-'.$wppa['master_occur'].'-l" class="bbb-l bbb-'.$wppa['master_occur'].'" src="'.wppa_get_imgdir().'bbbl.png" style="background-color: transparent; border:none; z-index:83; position: absolute; float:left;  top: 0px; width: '.($wppa['slideframewidth']*0.5).'px; height: '.$wppa['slideframeheight'].'px; box-shadow: none; cursor:default;" onmouseover="wppaBbb('.$wppa['master_occur'].',\'l\',\'show\')" onmouseout="wppaBbb('.$wppa['master_occur'].',\'l\',\'hide\')" onclick="wppaBbb('.$wppa['master_occur'].',\'l\',\'click\')" />';
 				$wppa['out'] .= wppa_nltab().'<img id="bbb-'.$wppa['master_occur'].'-r" class="bbb-r bbb-'.$wppa['master_occur'].'" src="'.wppa_get_imgdir().'bbbr.png" style="background-color: transparent; border:none; z-index:83; position: absolute; float:right; top: 0px; width: '.($wppa['slideframewidth']*0.5).'px; height: '.$wppa['slideframeheight'].'px; box-shadow: none; cursor:default;" onmouseover="wppaBbb('.$wppa['master_occur'].',\'r\',\'show\')" onmouseout="wppaBbb('.$wppa['master_occur'].',\'r\',\'hide\')" onclick="wppaBbb('.$wppa['master_occur'].',\'r\',\'click\')" />';

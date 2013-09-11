@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the upload/import pages and functions
-* Version 5.1.3
+* Version 5.1.4
 *
 */
 
@@ -881,16 +881,15 @@ function wppa_get_import_files() {
 	$source_type 	= get_option('wppa_import_source_type_'.$user, 'local');
 	$files			= array();
 	
-	// Dispatch on source type
-	if ( $source_type == 'local' ) {
-		if ( isset ($_POST['import-ajax-file']) ) {
-			$files = array($_POST['import-ajax-file']);
-		}
-		else {
-			$source 		= get_option('wppa_import_source_'.$user, WPPA_DEPOT);
-			$source_path 	= ABSPATH . $source;	// Filesystem
-			$files 			= glob($source_path . '/*');
-		}
+	// Ajax? one file
+	if ( isset ($_POST['import-ajax-file']) ) {
+		$files = array($_POST['import-ajax-file']);
+	}
+	// Dispatch on source type local/remote
+	elseif ( $source_type == 'local' ) {
+		$source 		= get_option('wppa_import_source_'.$user, WPPA_DEPOT);
+		$source_path 	= ABSPATH . $source;	// Filesystem
+		$files 			= glob($source_path . '/*');
 	}
 	else { // remote
 		$setting 		= get_option('wppa_import_source_url_'.$user, 'http://');

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * get the albums via filter
-* version 5.0.11
+* version 5.1.4
 *
 */
 
@@ -75,37 +75,38 @@ global $wppa;
 			// examine album number
 			if (is_numeric($album_pos)) {				
 				$post_old = substr($post_old, $album_pos + 8);				// shift up to and including %%album= out
-				$wppa['start_album'] = wppa_atoid($post_old);				// get album #
+				$wppa['start_album'] = // substr($post_old, 0, strpos($post_old, '%%'));
+										 wppa_atoid_a($post_old);				// get album #
 				$post_old = substr($post_old, strpos($post_old, '%%') + 2);	// shift album # and trailing %% out
 			}
 			elseif (is_numeric($cover_pos)) {
 				$post_old = substr($post_old, $cover_pos + 8);				// shift up to and including %%cover= out
-				$wppa['start_album'] = wppa_atoid($post_old);				// get album #
+				$wppa['start_album'] = wppa_atoid_a($post_old);				// get album #
 				$wppa['is_cover'] = '1';
 				$post_old = substr($post_old, strpos($post_old, '%%') + 2);	// shift album # and trailing %% out
 			}
 			elseif (is_numeric($slide_pos)) {
 				$post_old = substr($post_old, $slide_pos + 8);				// shift up to and including %%slide= out
-				$wppa['start_album'] = wppa_atoid($post_old);				// get album #
+				$wppa['start_album'] = wppa_atoid_a($post_old);				// get album #
 				$wppa['is_slide'] = '1';
 				$post_old = substr($post_old, strpos($post_old, '%%') + 2);	// shift album # and trailing %% out
 			}
 			elseif (is_numeric($slidef_pos)) {
 				$post_old = substr($post_old, $slidef_pos + 9);				// shift up to and including %%slidef= out
-				$wppa['start_album'] = wppa_atoid($post_old);				// get album #
+				$wppa['start_album'] = wppa_atoid_a($post_old);				// get album #
 				$wppa['is_slide'] = '1';
 				$wppa['film_on'] = '1';
 				$post_old = substr($post_old, strpos($post_old, '%%') + 2);	// shift album # and trailing %% out
 			}
 			elseif (is_numeric($slideonly_pos)) {
 				$post_old = substr($post_old, $slideonly_pos + 12);			// shift up to and including %%slideonly= out
-				$wppa['start_album'] = wppa_atoid($post_old);				// get album #
+				$wppa['start_album'] = wppa_atoid_a($post_old);				// get album #
 				$wppa['is_slideonly'] = '1';
 				$post_old = substr($post_old, strpos($post_old, '%%') + 2);	// shift album # and trailing %% out
 			}
 			elseif (is_numeric($slideonlyf_pos)) {
 				$post_old = substr($post_old, $slideonlyf_pos + 13);		// shift up to and including %%slideonlyf= out
-				$wppa['start_album'] = wppa_atoid($post_old);				// get album #
+				$wppa['start_album'] = wppa_atoid_a($post_old);				// get album #
 				$wppa['is_slideonly'] = '1';
 				$wppa['film_on'] = '1';
 				$post_old = substr($post_old, strpos($post_old, '%%') + 2);	// shift album # and trailing %% out
@@ -217,6 +218,14 @@ function wppa_atoid($var) {
 		if ( $result < '0' ) $result = '0';	// Neg values not allwed, they are codes now
 	}
 	return $result;
+}
+function wppa_atoid_a($var) {
+	if ( ( substr($var, 0, 1) == '#') || 							// A keyword
+		 ( substr($var, 0, 1) == '$') )	return wppa_atoid($var); 	// A name
+	// Its not a keyword, not a name. 
+	$result = substr($var, 0, strpos($var, '%%'));
+	if ( strpos($result, '.') === false ) return wppa_atoid($var);	// Not an enum/range
+	return $result;													// Possible enum/range. Validity check will be in wppa_albums()
 }
 
 // New shortcodes
