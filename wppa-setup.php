@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 5.1.3
+* Version 5.1.4
 *
 */
 
@@ -630,6 +630,7 @@ Hide Camera info
 						'wppa_run_wppautop_on_desc'		=> 'no',
 						'wppa_auto_open_comments'		=> 'yes',
 						'wppa_film_hover_goto'			=> 'no',
+						'wppa_slide_swipe'				=> 'yes',
 						// C Thumbnail
 						'wppa_list_photos_by' 			=> '0',
 						'wppa_list_photos_desc' 		=> 'no',

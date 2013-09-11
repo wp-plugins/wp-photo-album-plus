@@ -2,7 +2,7 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 5.1.3
+* version 5.1.4
 *
 */
 
@@ -333,6 +333,7 @@ global $wppa_initruntimetime;
 						'wppa_run_wppautop_on_desc'		=> '',	// 11
 						'wppa_auto_open_comments'		=> '',
 						'wppa_film_hover_goto'			=> '',
+						'wppa_slide_swipe'				=> '',
 						// C Thumbnail
 						'wppa_list_photos_by' 			=> '',	// 1
 						'wppa_list_photos_desc' 		=> '',	// 2
@@ -782,7 +783,7 @@ global $wppa_locale;
 		if ( $wppa_lang ) {
 			$wppa_locale = isset($q_config['locale'][$wppa_lang]) ? $q_config['locale'][$wppa_lang] : '';
 		}
-		wppa_dbg_msg('Lang='.$wppa_lang.', Locale='.$wppa_locale.', Ajax='.$wppa['ajax'], 'red');
+		wppa_dbg_msg('Lang='.$wppa_lang.', Locale='.$wppa_locale.', Ajax='.$wppa['ajax']);
 	}
 	// If still not known, get locale from wp-config
 	if ( ! $wppa_locale ) {		
@@ -2206,6 +2207,7 @@ global $wp_roles;
 }
 
 // See if a string is a comma seperated list of numbers, a single num returns false
+/* obsolete?
 function wppa_is_enum($str) {
 
 	if ( is_numeric($str) ) return false;
@@ -2219,7 +2221,7 @@ function wppa_is_enum($str) {
 	
 	return true;
 }
-
+*/
 function wppa_alfa_id($id = '0') {
 	return str_replace( array('1', '2', '3', '4', '5', '6', '7', '8', '9', '0'), array('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'), $id );
 }

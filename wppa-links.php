@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Frontend links
-* Version 5.0.17
+* Version 5.1.4
 *
 */
 
@@ -299,6 +299,9 @@ global $wppa_opt;
 				case 'oc':
 					$newuri .= 'wppa-occur=';
 					break;
+				case 'wo':
+					$newuri .= 'wppa-woccur=';
+					break;
 				case 'pg':
 					$newuri .= 'wppa-page=';
 					break;
@@ -367,7 +370,7 @@ global $wppa_opt;
 	
 	// explode querystring
 	$args = explode('&', substr($uri, $qpos+1));
-	$support = array('album', 'photo', 'slide', 'cover', 'occur', 'page', 'searchstring', 'topten', 'lasten', 'comten', 'featen', 'randseed', 'lang', 'single', 'tag', 'photos-only', 'debug');
+	$support = array('album', 'photo', 'slide', 'cover', 'occur', 'woccur', 'page', 'searchstring', 'topten', 'lasten', 'comten', 'featen', 'randseed', 'lang', 'single', 'tag', 'photos-only', 'debug');
 	if ( count($args) > 0 ) {
 		foreach ( $args as $arg ) {
 			$t = explode('=', $arg);
@@ -390,6 +393,9 @@ global $wppa_opt;
 						break;
 					case 'occur':
 						$newuri .= 'oc';
+						break;
+					case 'woccur':
+						$newuri .= 'wo';
 						break;
 					case 'page':
 						$newuri .= 'pg';

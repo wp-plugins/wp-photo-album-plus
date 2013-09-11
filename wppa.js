@@ -2,7 +2,7 @@
 //
 // conatins slideshow, theme, ajax and lightbox code
 //
-// Version 5.1.3
+// Version 5.1.4
 
 // Part 1: Slideshow
 //
@@ -142,6 +142,7 @@ var wppaColWidth = new Array();
 var _wppaShareUrl = new Array();
 var _wppaShareHtml = new Array();
 var _wppaFilmNoMove = new Array();
+var wppaSlideSwipe = true;
 
 // Check for occurrences that are responsive
 jQuery(document).ready(function(){
@@ -205,15 +206,16 @@ var cursor;
 	if (linkurl != '') cursor = 'pointer';
 	else if (wppaLightBox=='wppa') cursor =  'url('+wppaImageDirectory+wppaMagnifierCursor+'),pointer';
 
-	
+	// Fill _wppaSlides[mocc][id]
     _wppaSlides[mocc][id] = ' src="' + wppaUploadUrl + url + '" alt="' + wppaTrimAlt(name) + '" class="theimg theimg-'+mocc+' big" ';
-	
-		// Add swipe
+	// Add swipe
+	if ( wppaSlideSwipe ) {
 		_wppaSlides[mocc][id] += 'ontouchstart="wppaTouchStart(event, this.id, '+mocc+');"  ontouchend="wppaTouchEnd(event);" ontouchmove="wppaTouchMove(event);" ontouchcancel="wppaTouchCancel(event);" ';
-
-		// Add 'old' width and height only for non-auto
-		if ( ! wppaAutoColumnWidth[mocc] ) _wppaSlides[mocc][id] += 'width="' + width + '" height="' + height + '" ';
+	}
+	// Add 'old' width and height only for non-auto
+	if ( ! wppaAutoColumnWidth[mocc] ) _wppaSlides[mocc][id] += 'width="' + width + '" height="' + height + '" ';
 	_wppaSlides[mocc][id] += 'style="' + size + '; cursor:'+cursor+'; display:none;">';	// was block
+	
     _wppaFullNames[mocc][id] = fullname;
     _wppaNames[mocc][id] = name;
     _wppaDsc[mocc][id] = desc;

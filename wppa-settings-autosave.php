@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 5.1.3
+* Version 5.1.4
 *
 */
 
@@ -179,7 +179,7 @@ global $wppa_revno;
 					foreach ( array_keys($photos) as $phidx ) {
 						if ( ! wppa_is_time_up() ) {
 							$newdesc = rtrim($photos[$phidx]['description']).' '.$value;
-							$wpdb->query("UPDATE `".WPPA_PHOTOS."` SET `description` = '".$newdesc."' WHERE `id` = ".$photos[$phidx]['id']);
+							$wpdb->query($wpdb->prepare("UPDATE `".WPPA_PHOTOS."` SET `description` = %s WHERE `id` = %s", $newdesc, $photos[$phidx]['id']));
 							$count++;
 							update_option('wppa_last_append', $photos[$phidx]['id']);
 						}
@@ -208,7 +208,7 @@ global $wppa_revno;
 					foreach ( array_keys($photos) as $phidx ) {
 						if ( ! wppa_is_time_up() ) {
 							$newdesc = rtrim(str_replace($value, '', $photos[$phidx]['description']));
-							$wpdb->query("UPDATE `".WPPA_PHOTOS."` SET `description` = '".$newdesc."' WHERE `id` = ".$photos[$phidx]['id']);
+							$wpdb->query($wpdb->prepare("UPDATE `".WPPA_PHOTOS."` SET `description` = %s WHERE `id` = %s", $newdesc, $photos[$phidx]['id']));
 							$count++;
 							update_option('wppa_last_remove', $photos[$phidx]['id']);
 						}
@@ -218,7 +218,7 @@ global $wppa_revno;
 						wppa_error_message('Restart this operation to continue.');
 					}
 					else {
-						wppa_ok_message('Done! Removing </strong><i>'.$value.'</i><strong> to all photodescriptions.');
+						wppa_ok_message('Done! Removing </strong><i>'.$value.'</i><strong> from all photodescriptions.');
 						delete_option('wppa_last_remove');
 					}
 				}
@@ -2088,6 +2088,13 @@ wppa_fix_source_extensions();
 							$slug = 'wppa_film_hover_goto';
 							$html = wppa_checkbox($slug);
 							wppa_setting($slug, '13', $name, $desc, $html, $help);
+							
+							$name = __('Slide swipe', 'wppa');
+							$desc = __('Enable touch events swipe left-right on slides on touch screens.', 'wppa');
+							$help = '';
+							$slug = 'wppa_slide_swipe';
+							$html = wppa_checkbox($slug);
+							wppa_setting($slug, '14', $name, $desc, $html, $help);
 							
 							wppa_setting_subheader('C', '1', __('Thumbnail related settings', 'wppa'));
 
