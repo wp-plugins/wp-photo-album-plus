@@ -2,7 +2,7 @@
 //
 // conatins slideshow, theme, ajax and lightbox code
 //
-// Version 5.1.4
+// Version 5.1.5
 
 // Part 1: Slideshow
 //
@@ -121,6 +121,7 @@ var _wppaSlides = new Array();
 var _wppaNames = new Array();
 var _wppaFullNames = new Array();
 var _wppaDsc = new Array();
+var _wppaOgDsc = new Array();
 var _wppaCurIdx = new Array();
 var _wppaNxtIdx = new Array();
 var _wppaTimeOut = new Array();
@@ -161,7 +162,7 @@ jQuery(document).ready(function(){
 // These functions check the validity and store the users request to be executed later if busy and if applicable.
 
 // This is an entrypoint to load the slide data
-function wppaStoreSlideInfo(mocc, id, url, size, width, height, fullname, name, desc, photoid, avgrat, discount, myrat, rateurl, linkurl, linktitle, linktarget, iwtimeout, commenthtml, iptchtml, exifhtml, lbtitle, shareurl, smhtml) {
+function wppaStoreSlideInfo(mocc, id, url, size, width, height, fullname, name, desc, photoid, avgrat, discount, myrat, rateurl, linkurl, linktitle, linktarget, iwtimeout, commenthtml, iptchtml, exifhtml, lbtitle, shareurl, smhtml, ogdsc) {
 var cursor;
 
 	desc = wppaRepairScriptTags(desc);
@@ -171,6 +172,7 @@ var cursor;
 		_wppaNames[mocc] = new Array();
 		_wppaFullNames[mocc] = new Array();
 		_wppaDsc[mocc] = new Array();
+		_wppaOgDsc[mocc] = new Array();
 		_wppaCurIdx[mocc] = -1;
 		_wppaNxtIdx[mocc] = 0;
 		if (parseInt(iwtimeout) > 0) _wppaTimeOut[mocc] = parseInt(iwtimeout);
@@ -219,6 +221,7 @@ var cursor;
     _wppaFullNames[mocc][id] = fullname;
     _wppaNames[mocc][id] = name;
     _wppaDsc[mocc][id] = desc;
+	_wppaOgDsc[mocc][id] = ogdsc;
 	_wppaId[mocc][id] = photoid;		// reqd for rating and comment and monkey and registering views
 	_wppaAvg[mocc][id] = avgrat;		// avg ratig value
 	_wppaDisc[mocc][id] = discount;		// Dislike count
@@ -234,10 +237,10 @@ var cursor;
 	_wppaCommentHtml[mocc][id] = commenthtml;
 	_wppaIptcHtml[mocc][id] = iptchtml;
 	_wppaExifHtml[mocc][id] = exifhtml;
-	_wppaUrl[mocc][id] = wppaUploadUrl + url;
+	_wppaUrl[mocc][id] = wppaUploadUrl + url;		// Image url
 	_wppaLbTitle[mocc][id] = lbtitle;
 	_wppaShareUrl[mocc][id] = shareurl;
-	_wppaShareHtml[mocc][id] = smhtml;
+	_wppaShareHtml[mocc][id] = wppaRepairScriptTags(smhtml);
 }
 
 function wppaSpeed(mocc, faster) {
@@ -688,6 +691,9 @@ function _wppaNextSlide_4(mocc) {
 	
 	// Set rating mechanism
 	_wppaSetRatingDisplay(mocc);
+	
+	// Update og: meta tags
+	_wppaUpdateOgMeta(mocc);
 	
 	// Wait for almost next slide
 	setTimeout('_wppaNextSlide_5('+mocc+')', _wppaTextDelay); 
@@ -2764,4 +2770,39 @@ var result;
 	}
 	else result = text;
 	return result;
+}
+
+function _wppaUpdateOgMeta(mocc) {
+	if ( wppaIsMini[mocc] ) return;	// Not in a widget
+	
+	var metas = jQuery("meta");
+	var i=0;
+	while ( i < metas.length ) {
+		elm = metas[i];
+		if ( jQuery(elm).attr("property") == "og:image" ) {
+			jQuery(elm).attr("content", _wppaUrl[mocc][_wppaCurIdx[mocc]]);
+		}
+		if ( jQuery(elm).attr("property") == "og:description" ) {
+			jQuery(elm).attr("content", _wppaOgDsc[mocc][_wppaCurIdx[mocc]]);
+		}
+		if ( jQuery(elm).attr("property") == "og:title" ) {
+			jQuery(elm).attr("content", _wppaNames[mocc][_wppaCurIdx[mocc]]);
+		}
+		if ( jQuery(elm).attr("property") == "og:url" ) {
+			jQuery(elm).attr("content", wppaGetCurrentFullUrl(mocc, _wppaCurIdx[mocc]));
+		}
+		i++;
+	}
+//	var fbc = jQuery(".fbc-comments");
+//	jQuery(fbc).attr("data-href", _wppaShareUrl[mocc][_wppaCurIdx[mocc]]);	// doet het niet
+}
+
+function wppaFbInit() {
+	if ( FB ) {
+		FB.init({status : true, xfbml : true });
+	}
+	else {
+		wppaConsoleLog('Fb wait');
+		SetTimeout('wppaFbInit()', 200);
+	}
 }

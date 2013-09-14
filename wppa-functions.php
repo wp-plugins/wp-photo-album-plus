@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions
-* Version 5.1.4
+* Version 5.1.5
 *
 */
 
@@ -1005,6 +1005,9 @@ global $thumb;
 
 	// Share HTML 
 	$sharehtml = ( $wppa['is_filmonly'] || $wppa['is_slideonly'] ) ? '' : wppa_get_share_html();
+	
+	// Og Description
+	$ogdsc = ( wppa_switch('wppa_facebook_comments') && ! $wppa['in_widget'] ) ? esc_js(wppa_get_og_desc($id)) : '';
 
 	// Produce final result
     $result = "'".$wppa['master_occur']."','";
@@ -1028,7 +1031,8 @@ global $thumb;
 	$result .= $exif."','";
 	$result .= $lbtitle."','";
 	$result .= $shareurl."','";	// Used for history.pushstate()
-	$result .= $sharehtml."'";	// The content of the SM (share) box
+	$result .= $sharehtml."','";	// The content of the SM (share) box
+	$result .= $ogdsc."'";
 	
 	// This is an ingenious line of code that is going to prevent us from very much trouble. 
 	// Created by OpaJaap on Jan 15 2012, 14:36 local time. Thanx.
@@ -1745,24 +1749,7 @@ global $wppa_numqueries;
 				$wppa['out'] .= wppa_nltab('+').'<div class="wppa-container-'.$wppa['master_occur'].'" style="text-align:center; width:'.wppa_get_container_width().'px;" ><img id="wppa-ajax-spin-'.$wppa['master_occur'].'" src="'.wppa_get_imgdir().'loader.gif" style="box-shadow:none; z-index:1010; position:absolute; margin-top: 200px; margin-left:-32px; display:none;"></div>';
 			}
 		}
-/*		
-		// Facebook comments sdk
-		if ( true  && $wppa['master_occur'] == '1' ) {
-			$wppa['out'] .= '
-			<!-- Start FB comments sdk -->
-			<div id="fb-root"></div>
-			<script>
-				(function(d, s, id) {
-					var js, fjs = d.getElementsByTagName(s)[0];
-					if (d.getElementById(id)) return;
-					js = d.createElement(s); js.id = id;
-					js.src = "//connect.facebook.net/nl_NL/all.js#xfbml=1";
-					fjs.parentNode.insertBefore(js, fjs);
-				} (document, \'script\', \'facebook-jssdk\'));
-			</script>
-			<!-- End FB comments sdk -->';
-		}
-*/
+		
 		// Start timer if in debug mode
 		if ($wppa['debug']) {
 			$wppa_microtime = - microtime(true);

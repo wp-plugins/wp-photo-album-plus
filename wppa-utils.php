@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains low-level utility routines
-* Version 5.1.4
+* Version 5.1.5
 *
 */
 
@@ -1114,4 +1114,12 @@ function wppa_series_to_array($xtxt) {
 }
 function wppa_stx_err($msg) {
 	echo 'Syntax error in album specification. '.$msg;
+}
+
+function wppa_get_og_desc($id) {
+
+	$result = sprintf(__a('See this image on %s'), str_replace('&amp;', __a('and'), get_bloginfo('name')));
+	$r2 	= strip_shortcodes(wppa_strip_tags(wppa_get_photo_desc($id)), 'all');
+	if ( $r2 ) $result .= ': '.$r2;
+	return $result;
 }

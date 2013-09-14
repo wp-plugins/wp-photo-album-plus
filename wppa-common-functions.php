@@ -2,7 +2,7 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 5.1.4
+* version 5.1.5
 *
 */
 
@@ -235,7 +235,7 @@ global $wppa_initruntimetime;
 						'wppa_share_google'					=> '',
 						'wppa_share_pinterest'				=> '',
 
-						
+						'wppa_facebook_comments'			=> '',
 						'wppa_share_single_image'			=> '',
 
 						// C Thumbnails

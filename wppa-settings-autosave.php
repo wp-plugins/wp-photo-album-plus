@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 5.1.4
+* Version 5.1.5
 *
 */
 
@@ -1352,6 +1352,14 @@ wppa_fix_source_extensions();
 							$html = wppa_checkbox($slug, $onchange);
 							wppa_setting($slug, '21.6', $name, $desc, $html, $help, $class);
 						
+							$name = __('Show Facebook comment box', 'wppa');
+							$desc = __('Display the Facebook comment dialog box in the share box.', 'wppa');
+							$help = '';
+							$slug = 'wppa_facebook_comments';
+							$class = 'wppa_share';
+							$html = wppa_checkbox($slug, $onchange);
+							wppa_setting($slug, '21.91', $name, $desc, $html, $help, $class);
+							
 							$name = __('Share single image', 'wppa');
 							$desc = __('Share a link to a single image, not the slideshow.', 'wppa');
 							$help = esc_js(__('The sharelink points to a page with a single image rather than to the page with the photo in the slideshow.', 'wppa'));
