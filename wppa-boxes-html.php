@@ -303,8 +303,8 @@ global $thumb;
 	else $pi = '';
 	
 	// Facebook comments
-	if ( $wppa_opt['wppa_facebook_comments'] ) {
-		$fbc = '<div class="fb-comments" data-href="'.$share_url.'" data-width="auto"></div>';
+	if ( $wppa_opt['wppa_facebook_comments'] && ! $wppa['in_widget'] ) {
+		$fbc = '<div class="fb-comments" data-href="'.$share_url.'" data-width="400"></div>';
 		$fbc .= '[script>wppaFbInit();[/script>';
 	}
 	else $fbc = '';
