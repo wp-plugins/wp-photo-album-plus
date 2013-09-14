@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Various wppa boxes
-* Version 5.1.0
+* Version 5.1.5
 *
 */
 
@@ -185,7 +185,8 @@ global $thumb;
 	$photo_name = __(stripslashes($thumb['name']));
 	
 	// The share description
-	$photo_desc = strip_shortcodes(wppa_strip_tags(wppa_html(__(stripslashes($thumb['description']))), 'all'));
+//	$photo_desc = strip_shortcodes(wppa_strip_tags(wppa_html(__(stripslashes($thumb['description']))), 'all'));
+	$photo_desc = strip_shortcodes(wppa_strip_tags(wppa_get_photo_desc($thumb['id'])), 'all');
 	
 	// The default description
 	$see_on_site = sprintf(__a('See this image on %s'), str_replace('&amp;', __a('and'), get_bloginfo('name')));
@@ -301,7 +302,14 @@ global $thumb;
 	}
 	else $pi = '';
 	
-	return $qr.$fb.$tw.$hv.$go.$pi.//.'<small>This box is under construction and may not yet properly work for all icons shown</small>'.
+	// Facebook comments
+	if ( $wppa_opt['wppa_facebook_comments'] ) {
+		$fbc = '<div class="fb-comments" data-href="'.$share_url.'" data-width="auto"></div>';
+		$fbc .= '[script>wppaFbInit();[/script>';
+	}
+	else $fbc = '';
+	
+	return $qr.$fb.$tw.$hv.$go.$pi.$fbc.//.'<small>This box is under construction and may not yet properly work for all icons shown</small>'.
 	'<div style="clear:both"></div>';
 
 }

@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile
-Version: 5.1.4
+Version: 5.1.5
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -172,6 +172,20 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 5.1.5 =
+
+= Bug Fixes =
+
+* Fixed a possible incomplete initialization resulting in displaying a debug message in stead of rendering the shortcode on certain server (mis)configurations.
+
+= New Features =
+
+* Facebook comments integrated in the share box. Table II-B21.91. Requires Table II-B21. No other plugin required!
+
+= Other Changes =
+
+* The og: metatags og:url, og:title, og:image and og:description are now dynamicly updated during slideshow/browse. Not in widgets.			
 
 = 5.1.4 =
 
