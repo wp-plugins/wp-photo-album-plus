@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Various wppa boxes
-* Version 5.1.5
+* Version 5.1.6
 *
 */
 
@@ -304,7 +304,8 @@ global $thumb;
 	
 	// Facebook comments
 	if ( $wppa_opt['wppa_facebook_comments'] && ! $wppa['in_widget'] ) {
-		$fbc = '<div class="fb-comments" data-href="'.$share_url.'" data-width="400"></div>';
+		$width = $wppa['fullsize'] == 'auto' ? 'auto' : min('470', wppa_get_container_width(true));
+		$fbc = '<div class="fb-comments" data-href="'.$share_url.'" data-width="'.$width.'"></div>';
 		$fbc .= '[script>wppaFbInit();[/script>';
 	}
 	else $fbc = '';

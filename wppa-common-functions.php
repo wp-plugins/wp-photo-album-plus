@@ -2,7 +2,7 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 5.1.5
+* version 5.1.6
 *
 */
 
@@ -1650,9 +1650,9 @@ global $wppa_opt;
 	switch ($photosize[2]) {
 		case 1: imagegif($photoimage, $file);
 			break;
-		case 2: imagejpeg($photoimage, $file, 100);
+		case 2: imagejpeg($photoimage, $file, $wppa_opt['wppa_jpeg_quality']);
 			break;
-		case 3: imagepng($photoimage, $file, 0);
+		case 3: imagepng($photoimage, $file, 7);
 			break;
 	}
 
