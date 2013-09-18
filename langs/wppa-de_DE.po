@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: WP Photo Album Plus v5.1.6\n"
+"Project-Id-Version: WP Photo Album Plus v5.1.7\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-09-18 13:00+0100\n"
-"PO-Revision-Date: 2013-09-18 13:00+0100\n"
+"POT-Creation-Date: 2013-09-18 17:05+0100\n"
+"PO-Revision-Date: 2013-09-18 17:05+0100\n"
 "Last-Translator: J.N. Breetvelt <OpaJaap@OpaJaap.nl>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -1603,20 +1603,24 @@ msgstr "die Sub-Alben und Miniaturansichten"
 msgid "the album photos as slideshow"
 msgstr "die Albumfotos in einer Diaschau."
 
+# @ wppa
 #: wppa-album-admin-autosave.php:447
 msgid "the link page with a clean url"
-msgstr ""
+msgstr "Dei Link-Seite mit einee sauberen url"
 
 # @ wppa
 #: wppa-album-admin-autosave.php:448
 msgid "no link at all"
 msgstr "überhaupt kein Verweis"
 
+# @ wppa
 #: wppa-album-admin-autosave.php:453
 msgid ""
 "If you select \"the link page with a clean url\", make sure you enter the "
 "correct shortcode on the target page."
 msgstr ""
+"Wenn die Option \" die Link-Seite mit einer sauberen url \" ausgewählt ist, "
+"stelle sicher, das der richtige Shortcode  auf der Zielseite eigegeben wurde."
 
 # @ wppa
 #: wppa-album-admin-autosave.php:462 wppa-slideshow-widget.php:213
@@ -8047,6 +8051,7 @@ msgstr "Rating Veränderung"
 msgid "Users may change their ratings."
 msgstr "Benutzer kann seine Bewertung ändern."
 
+# @ wppa
 #: wppa-settings-autosave.php:2261 wppa-settings-autosave.php:2278
 #: wppa-settings-autosave.php:2295 wppa-settings-autosave.php:2307
 #: wppa-settings-autosave.php:2316 wppa-settings-autosave.php:2325
@@ -8054,6 +8059,8 @@ msgstr "Benutzer kann seine Bewertung ändern."
 msgid ""
 "If \"One button vote\" is selected in Table I-E1, this setting has no meaning"
 msgstr ""
+"Wenn \"One button vote\" in der Tabelle I-E1 ausgewählt ist, hat diese "
+"Einstellung keine Bedeutung"
 
 # @ wppa
 #: wppa-settings-autosave.php:2267
@@ -8224,19 +8231,19 @@ msgstr "Zeigt die durchschnittliche Bewertung"
 
 # @ wppa
 #: wppa-settings-autosave.php:2351
-#, fuzzy
 msgid "Display the avarage rating and/or vote count on the rating bar"
-msgstr "Zeigt die Durchschnittliche Bewertung auf dem Bewertungsbalken"
+msgstr ""
+"Zeiget die durchschnittliche Bewertung und/oder Stimmenauszählung auf der "
+"Rating Leiste"
 
 # @ wppa
 #: wppa-settings-autosave.php:2352
-#, fuzzy
 msgid ""
 "If checked, the average rating as well as the current users rating is "
 "displayed in max 5 or 10 stars."
 msgstr ""
 "Wenn aktiviert, wird die durchschnittliche Bewertung sowie der aktuelle "
-"Benutzer Bewertung in max 5 Sternen angezeigt."
+"Benutzer Bewertung in max 5 oder 10 Sternen angezeigt."
 
 # @ wppa
 #: wppa-settings-autosave.php:2353
@@ -8245,33 +8252,39 @@ msgstr ""
 "Wenn nicht angehakt, wird nur die aktuelle Benutzer Bewertung angezeigt "
 "(falls vorhanden)."
 
+# @ wppa
 #: wppa-settings-autosave.php:2354
 msgid ""
 "If \"One button vote\" is selected in Table I-E1, this box checked will "
 "display the vote count."
 msgstr ""
+"Wenn \"One button vote\" in der Tabelle I-E1 ausgewählt ist, zeigt dieses "
+"Kontrollkästchen die Auszählung der Stimmen."
 
+# @ wppa
 #: wppa-settings-autosave.php:2360
 msgid "Single vote button text"
-msgstr ""
+msgstr "Single Abstimmungs-Schaltflächen-Text"
 
 # @ wppa
 #: wppa-settings-autosave.php:2361
-#, fuzzy
 msgid "The text on the voting button."
-msgstr "Zeigen Sie den Text auf dem Album-Cover."
+msgstr "Der Text auf der Abstimmungs-Schaltfläche."
 
+# @ wppa
 #: wppa-settings-autosave.php:2362 wppa-settings-autosave.php:2370
 msgid "This text may contain qTranslate compatible language tags."
-msgstr ""
+msgstr "Dieser Text enthält möglicherweise qTranslate kompatible Sprach Tags."
 
+# @ wppa
 #: wppa-settings-autosave.php:2368
 msgid "Single vote button text voted"
-msgstr ""
+msgstr "Single Abstimmungs-Schaltflächen-Text, abgestimmt"
 
+# @ wppa
 #: wppa-settings-autosave.php:2369
 msgid "The text on the voting button when voted."
-msgstr ""
+msgstr "Der Text auf dem Abstimmungs-Schaltfläche, wenn abgestimmt."
 
 # @ wppa
 #: wppa-settings-autosave.php:2376
@@ -10289,21 +10302,23 @@ msgstr ""
 
 # @ wppa
 #: wppa-settings-autosave.php:3940
-#, fuzzy
 msgid "Add og meta tags"
-msgstr "Füge Standard-Tags dazu"
+msgstr "Hinzufügen von og Meta Tags"
 
 # @ wppa
 #: wppa-settings-autosave.php:3941
-#, fuzzy
 msgid "Add og meta tags to the page header."
-msgstr "Meta Tags für Fotos auf der Seite."
+msgstr "Hinzufügen von og Meta Tags zum Seitenkopf."
 
+# @ wppa
 #: wppa-settings-autosave.php:3944
 msgid ""
 "Turning this off may affect the functionality of social media items in the "
 "share box that rely on open graph tags information."
 msgstr ""
+"Das Deaktivieren kann Auswirkungen auf die Funktionalität des Social-Media- "
+"Elemente in der Share Box , die sich auf Open Graph Tags Informationen "
+"verlassen ."
 
 # @ wppa
 #: wppa-settings-autosave.php:3948
@@ -11978,10 +11993,11 @@ msgstr "Text oberhalb der Fotos:"
 msgid "Text below photos:"
 msgstr "Text unterhalb der Fotos"
 
+# @ wppa
 #: wppa-slideshow.php:430
 #, php-format
 msgid "Nuber of votes: <span id=\"wppa-vote-count-%s\" >%s</span>&nbsp;"
-msgstr ""
+msgstr "Anzahl der Stimmen: <span id=\"wppa-vote-count-%s\" >%s</span>&nbsp;"
 
 # @ xxx
 #: wppa-super-view-widget.php:14
