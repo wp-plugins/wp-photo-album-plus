@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: WP Photo Album Plus in italiano\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-09-17 16:38+0100\n"
-"PO-Revision-Date: 2013-09-17 16:38+0100\n"
+"PO-Revision-Date: 2013-09-18 12:56+0100\n"
 "Last-Translator: J.N. Breetvelt <OpaJaap@OpaJaap.nl>\n"
 "Language-Team: Gianni Diurno | gidibao.net & charmingpress.com\n"
 "Language: it_IT\n"
@@ -625,6 +625,8 @@ msgid ""
 "There are %s albums found. Only the first %s will be shown. Please refine "
 "your search criteria."
 msgstr ""
+"Trovati %s album. Solo le prime %s saranno visualizzate. Per favore affinate "
+"la ricerca.ie cercate anche per data."
 
 #: wppa-functions.php:731
 #, php-format
@@ -632,6 +634,8 @@ msgid ""
 "There are %s photos found. Only the first %s will be shown. Please refine "
 "your search criteria."
 msgstr ""
+"Trovati %s foto. Solo le prime %s saranno visualizzate. Per favore affinate "
+"la ricerca.ie cercate anche per data."
 
 #: wppa-functions.php:996 wppa-functions.php:999
 #, fuzzy

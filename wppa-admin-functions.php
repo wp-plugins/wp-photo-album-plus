@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * gp admin functions
-* version 5.1.3
+* version 5.1.7
 *
 * 
 */
@@ -476,8 +476,8 @@ if ( is_multisite() ) return; // temp disabled for 4.0 bug, must be tested in a 
 	$no_photos = '';
 //	if ($alb == '0') wppa_ok_message(__('Checking database, please wait...', 'wppa'));
 	$delcount = 0;
-	if ($alb == '0') $entries = $wpdb->get_results( "SELECT `id`, `ext`, `name` FROM `".WPPA_PHOTOS, ARRAY_A);
-	else $entries = $wpdb->get_results($wpdb->prepare( "SELECT `id`, `ext`, `name` FROM `".WPPA_PHOTOS."` WHERE `album` = %s", $alb ), ARRAY_A);
+	if ($alb == '0') $entries = $wpdb->get_results( "SELECT * FROM `".WPPA_PHOTOS, ARRAY_A);
+	else $entries = $wpdb->get_results($wpdb->prepare( "SELECT * FROM `".WPPA_PHOTOS."` WHERE `album` = %s", $alb ), ARRAY_A);
 	if ($entries) {
 		foreach ( $entries as $entry ) {
 			$thumbpath = wppa_get_thumb_path($entry['id']);
@@ -541,7 +541,7 @@ if ( is_multisite() ) return; // temp disabled for 4.0 bug, must be tested in a 
 /**/	
 	// Now fix orphan photos
 	$orphcount = 0;
-	$entries = $wpdb->get_results( "SELECT `id` FROM `".WPPA_PHOTOS."` WHERE `album` = '0'", ARRAY_A);
+	$entries = $wpdb->get_results( "SELECT * FROM `".WPPA_PHOTOS."` WHERE `album` = '0'", ARRAY_A);
 	if ($entries) {
 		$album = wppa_get_album_id(__('Orphan Photos', 'wppa'));
 		if ($album == '') {

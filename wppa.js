@@ -2,7 +2,7 @@
 //
 // conatins slideshow, theme, ajax and lightbox code
 //
-// Version 5.1.5
+// Version 5.1.7
 
 // Part 1: Slideshow
 //
@@ -103,6 +103,8 @@ var wppaAutoOpenComments = false;
 var wppaUpdateAddressLine = false;
 var wppaFilmThumbTitle = '';
 var wppaUploadUrl = '';
+var wppaVoteForMe = '';
+var wppaVotedForMe = '';
 
 // 'Internal' variables (private)
 var _wppaId = new Array();
@@ -1407,6 +1409,14 @@ function _wppaSetRatingDisplay(mocc) {
 //			jQuery('#wppa-filler-'+mocc).css('display', 'inline');
 		}
 	}
+	// One Button Vote only?
+	if ( myr == 0 ) {
+		jQuery('#wppa-vote-button-'+mocc).attr('value', wppaVoteForMe);
+	}
+	else {
+		jQuery('#wppa-vote-button-'+mocc).attr('value', wppaVotedForMe);
+	}
+	jQuery('#wppa-vote-count-'+mocc).html(cnt);
 }
 	
 function wppaGetDislikeText(dsc,myr,incmine) {
@@ -1516,6 +1526,7 @@ if (value == 0) return;
 		// Setup process the result
 		xmlhttp.onreadystatechange=function() {
 			if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+				// alert(xmlhttp.responseText);
 				var ArrValues = xmlhttp.responseText.split("||");
 				wppaConsoleLog(xmlhttp.responseText);				
 				if (ArrValues[0] == '0') {	// Error

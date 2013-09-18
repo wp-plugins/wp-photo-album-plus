@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions
-* Version 5.1.5
+* Version 5.1.7
 *
 */
 
@@ -455,7 +455,6 @@ global $wppa_opt;
 						}
 						$album_array[] = wppa_index_string_to_array(trim($albums, ','));
 					}
-					else echo '<script type="text/javascript">alert(\'Search tokens smaller than 2 characters are ignored!\');</script>';
 				}
 				// Must meet all words: intersect photo sets			
 				foreach ( array_keys($album_array) as $idx ) {
@@ -464,7 +463,7 @@ global $wppa_opt;
 					}				
 				}
 				// Save partial result
-				$final_array = array_merge($final_array, $album_array['0']);
+				if ( isset($album_array['0']) ) $final_array = array_merge($final_array, $album_array['0']);
 			}
 			
 			// Compose WHERE clause
@@ -475,7 +474,8 @@ global $wppa_opt;
 
 			// Check maximum
 			if ( count($final_array) > $wppa_opt['wppa_max_search_albums'] && $wppa_opt['wppa_max_search_albums'] != '0' ) {
-				echo '<script type="text/javascript">alert(\'There are '.count($final_array).' albums found. Only the first '.$wppa_opt['wppa_max_search_albums'].' will be shown.\n Please refine your search criteria.\');</script>';
+				$alert_text = esc_js(sprintf(__a('There are %s albums found. Only the first %s will be shown. Please refine your search criteria.'), count($final_array), $wppa_opt['wppa_max_search_albums']));
+				echo '<script type="text/javascript">alert(\''.$alert_text.'\');</script>';
 				$limit = ' LIMIT '.$wppa_opt['wppa_max_search_albums'];
 			}
 			else $limit = '';
@@ -705,7 +705,6 @@ global $thumbs;
 						}
 						$photo_array[] = wppa_index_string_to_array(trim($photos, ','));
 					}
-					else echo '<script type="text/javascript">alert(\'Search tokens smaller than 2 characters are ignored!\');</script>';
 				}
 				// Must meet all words: intersect photo sets			
 				foreach ( array_keys($photo_array) as $idx ) {
@@ -714,7 +713,7 @@ global $thumbs;
 					}				
 				}
 				// Save partial result
-				$final_array = array_merge($final_array, $photo_array['0']);
+				if ( isset($photo_array['0']) ) $final_array = array_merge($final_array, $photo_array['0']);
 			}
 			
 			// Compose WHERE clause
@@ -729,7 +728,9 @@ global $thumbs;
 
 			// Check maximum
 			if ( count($final_array) > $wppa_opt['wppa_max_search_photos'] && $wppa_opt['wppa_max_search_photos'] != '0' ) {
-				echo '<script type="text/javascript">alert(\'There are '.count($final_array).' photos found. Only the first '.$wppa_opt['wppa_max_search_photos'].' will be shown.\n Please refine your search criteria.\');</script>';
+				$alert_text = esc_js(sprintf(__a('There are %s photos found. Only the first %s will be shown. Please refine your search criteria.'), count($final_array), $wppa_opt['wppa_max_search_photos']));
+
+				echo '<script type="text/javascript">alert(\''.$alert_text.'\');</script>';
 				$limit = ' LIMIT '.$wppa_opt['wppa_max_search_photos'];
 			}
 			else $limit = '';

@@ -2,12 +2,12 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile
-Version: 5.1.6
+Version: 5.1.7
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
 Requires at least: 3.1
-Tested up to: 3.6
+Tested up to: 3.6.1
 
 This plugin is designed to easily manage and display your photo albums and slideshows in a single as well as in a network WordPress site.
 
@@ -172,6 +172,24 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 5.1.7 =
+
+= Bug Fixes =
+
+* Indexed search did not always include w#-keywords in album and photo descriptions. Fixed. If you use indexed search and w#-keywords, you may need to remake index in Table VIII-A8.
+
+= New Features =
+
+* You can 'downgrade' the rating system to a simple 'One button vote' system. 
+See Table I-E1, Table IV-E12,13,14 and the changed helptext on other items from Table IV-E.
+
+= Other Changes =
+
+* Added an album cover linktype so you can link to the supplied linkpage as is, with a clean url. 
+See the Link Type selection box on the Edit Album information screen.
+* Increased the capacity of the internal taglist cache.
+* Added a switch to disable the generation of open graph metatags. ( Table IX-A23 ).
 
 = 5.1.6 =
 

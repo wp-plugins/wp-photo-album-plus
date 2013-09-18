@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the non admin stuff
-* Version 5.1.5
+* Version 5.1.7
 *
 */
 
@@ -53,7 +53,7 @@ global $thumb;
 	// Share info for sm that uses og
 	$id = wppa_get_get('photo', '0');
 	if ( ! is_numeric($id) ) $id = '0';
-	if ( true ) {
+	if ( get_option('wppa_og_tags_on', 'yes') == 'yes' ) {
 		wppa_cache_thumb($id);
 		if ( $thumb ) {
 			$title  = wppa_get_photo_name($thumb['id']);
@@ -348,6 +348,8 @@ global $wppa_lang;
 	wppaUpdateAddressLine = '.( $wppa_opt['wppa_update_addressline'] ? 'true' : 'false' ).';
 	wppaUploadUrl = "'.WPPA_UPLOAD_URL.'";
 	wppaFilmThumbTitle = "'.( $wppa_opt['wppa_film_linktype'] == 'lightbox' ? wppa_zoom_in() : __a('Double click to start/stop slideshow running') ).'";
+	wppaVoteForMe = "'.__($wppa_opt['wppa_vote_button_text']).'";
+	wppaVotedForMe = "'.__($wppa_opt['wppa_voted_button_text']).'";
 	wppaSlideSwipe = '.( wppa_switch('wppa_slide_swipe') ? 'true' : 'false' ).';
 	/* ]]> */
 </script>

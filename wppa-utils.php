@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains low-level utility routines
-* Version 5.1.5
+* Version 5.1.7
 *
 */
 
@@ -448,6 +448,11 @@ function wppa_get_taglist() {
 	if ( $result == 'nil' ) {
 		$result = wppa_create_taglist();
 	}
+	else {
+		foreach ( array_keys($result) as $tag ) {
+			$result[$tag]['ids'] = wppa_index_string_to_array($result[$tag]['ids']);
+		}
+	}
 	return $result;
 }
 
@@ -479,13 +484,18 @@ global $wpdb;
 			$total++;
 		}
 	}
+	$tosave = array();
 	if ( is_array($result) ) {
 		foreach ( array_keys($result) as $key ) {
-			$result[$key]['fraction'] = round($result[$key]['count'] * 100 / $total) / 100;
+			$result[$key]['fraction'] = sprintf('%4.2f', $result[$key]['count'] / $total);
 		}
 		$result = wppa_array_sort($result, 'tag');
+		$tosave = $result;
+		foreach ( array_keys($tosave) as $key ) {
+			$tosave[$key]['ids'] = wppa_index_array_to_string($tosave[$key]['ids']);
+		}
 	}
-	update_option('wppa_taglist', $result);
+	update_option('wppa_taglist', $tosave);
 	return $result;
 }
 
