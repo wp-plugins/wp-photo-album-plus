@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 5.1.5
+* Version 5.1.7
 *
 */
 
@@ -285,6 +285,9 @@ global $silent;
 		if ( $old_rev <= '5018' ) {
 			$wpdb->query('ALTER TABLE `'.WPPA_IPTC.'` ADD INDEX ( `photo` )');
 			$wpdb->query('ALTER TABLE `'.WPPA_EXIF.'` ADD INDEX ( `photo` )');
+		}
+		if ( $old_rev <= '5107' ) {
+			delete_option('wppa_taglist'); 	// Forces recreation
 		}
 
 		
@@ -658,6 +661,10 @@ Hide Camera info
 		//				'wppa_rating_use_ajax'			=> 'no',
 						'wppa_next_on_callback'			=> 'no',
 						'wppa_star_opacity'				=> '20',
+						
+						'wppa_vote_button_text'			=> 'Vote for me!',
+						'wppa_voted_button_text'		=> 'Voted for me',
+						
 						// F Comments
 						'wppa_comment_login' 			=> 'no',
 						'wppa_comments_desc'			=> 'no',
@@ -870,6 +877,7 @@ Hide Camera info
 						'wppa_adminbarmenu_admin'		=> 'yes',
 						'wppa_adminbarmenu_frontend'	=> 'yes',
 						'wppa_feed_use_thumb'			=> 'no',
+						'wppa_og_tags_on'				=> 'yes',
 
 
 						// B New

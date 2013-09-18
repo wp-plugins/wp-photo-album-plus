@@ -2,7 +2,7 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 5.1.6
+* version 5.1.7
 *
 */
 
@@ -359,6 +359,8 @@ global $wppa_initruntimetime;
 //						'wppa_rating_use_ajax'			=> '',	// 4
 						'wppa_next_on_callback'			=> '',	// 5
 						'wppa_star_opacity'				=> '',	// 6
+						'wppa_vote_button_text'			=> '',
+						'wppa_voted_button_text'		=> '',
 						// F Comments
 						'wppa_comment_login' 			=> '',	// 1
 						'wppa_comments_desc'			=> '',	// 2
@@ -580,6 +582,7 @@ global $wppa_initruntimetime;
 						'wppa_adminbarmenu_admin'		=> '',
 						'wppa_adminbarmenu_frontend'	=> '',
 						'wppa_feed_use_thumb'			=> '',
+						'wppa_og_tags_on'				=> '',
 						
 						'wppa_html' 					=> '',
 						'wppa_allow_debug' 				=> '',
