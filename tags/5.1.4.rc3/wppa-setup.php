@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 5.1.4
+* Version 5.1.8
 *
 */
 
@@ -286,6 +286,9 @@ global $silent;
 			$wpdb->query('ALTER TABLE `'.WPPA_IPTC.'` ADD INDEX ( `photo` )');
 			$wpdb->query('ALTER TABLE `'.WPPA_EXIF.'` ADD INDEX ( `photo` )');
 		}
+		if ( $old_rev <= '5107' ) {
+			delete_option('wppa_taglist'); 	// Forces recreation
+		}
 
 		
 		
@@ -534,7 +537,9 @@ Hide Camera info
 						'wppa_share_google'					=> 'yes',
 						'wppa_share_pinterest'				=> 'yes',
 						
+						'wppa_facebook_comments'			=> 'yes',
 						'wppa_share_single_image'			=> 'no',
+						
 						// C Thumbnails
 						'wppa_thumb_text_name' 				=> 'yes',	// 1
 						'wppa_thumb_text_owner'				=> 'no',	// 1.1
@@ -656,6 +661,11 @@ Hide Camera info
 		//				'wppa_rating_use_ajax'			=> 'no',
 						'wppa_next_on_callback'			=> 'no',
 						'wppa_star_opacity'				=> '20',
+						
+						'wppa_vote_button_text'			=> 'Vote for me!',
+						'wppa_voted_button_text'		=> 'Voted for me',
+						'wppa_vote_thumb'				=> 'no',
+						
 						// F Comments
 						'wppa_comment_login' 			=> 'no',
 						'wppa_comments_desc'			=> 'no',
@@ -841,6 +851,7 @@ Hide Camera info
 						'wppa_append_to_photodesc' 	=> '',
 						'wppa_remove_text'			=> '',
 						'wppa_remove_from_photodesc'	=> '',
+						'wppa_remove_empty_albums'	=> '',
 
 						// Table IX: Miscellaneous
 						// A System
@@ -868,6 +879,7 @@ Hide Camera info
 						'wppa_adminbarmenu_admin'		=> 'yes',
 						'wppa_adminbarmenu_frontend'	=> 'yes',
 						'wppa_feed_use_thumb'			=> 'no',
+						'wppa_og_tags_on'				=> 'yes',
 
 
 						// B New

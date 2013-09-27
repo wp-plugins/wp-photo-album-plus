@@ -2,7 +2,7 @@
 * Pachkage: wp-photo-album-plus
 *
 *
-* Version 5.1.3
+* Version 5.1.8
 *
 */
 
@@ -17,7 +17,7 @@
 			if (id == 'mygallery_button') {
 				// creates the button
 				var button = controlManager.createButton('mygallery_button', {
-					title : 'WPPA+ Gallery Shortcode', 				// title of the button
+					title : 'WPPA+ Shortcode Generator', 			// title of the button
 					image : wppaImageDirectory+'albumnew32.png',  	// path to the button's image
 					onclick : function() {
 						// triggers the thickbox
@@ -25,7 +25,7 @@
 						W = W - 80;
 						H = jQuery(window).height();
 						H = H - 115;
-						tb_show( 'WPPA+ Gallery Shortcode', '#TB_inline?width=' + W + '&height=' + H + '&inlineId=mygallery-form' );
+						tb_show( 'WPPA+ Shortcode Generator', '#TB_inline?width=' + W + '&height=' + H + '&inlineId=mygallery-form' );
 
 						var isNew = wppa_getCookie('wppanewstyle') == 'on';
 						if (isNew) document.getElementById('mygallery-newstyle').checked = 'checked';

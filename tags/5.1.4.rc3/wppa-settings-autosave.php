@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 5.1.4
+* Version 5.1.8
 *
 */
 
@@ -179,7 +179,7 @@ global $wppa_revno;
 					foreach ( array_keys($photos) as $phidx ) {
 						if ( ! wppa_is_time_up() ) {
 							$newdesc = rtrim($photos[$phidx]['description']).' '.$value;
-							$wpdb->query("UPDATE `".WPPA_PHOTOS."` SET `description` = '".$newdesc."' WHERE `id` = ".$photos[$phidx]['id']);
+							$wpdb->query($wpdb->prepare("UPDATE `".WPPA_PHOTOS."` SET `description` = %s WHERE `id` = %s", $newdesc, $photos[$phidx]['id']));
 							$count++;
 							update_option('wppa_last_append', $photos[$phidx]['id']);
 						}
@@ -208,7 +208,7 @@ global $wppa_revno;
 					foreach ( array_keys($photos) as $phidx ) {
 						if ( ! wppa_is_time_up() ) {
 							$newdesc = rtrim(str_replace($value, '', $photos[$phidx]['description']));
-							$wpdb->query("UPDATE `".WPPA_PHOTOS."` SET `description` = '".$newdesc."' WHERE `id` = ".$photos[$phidx]['id']);
+							$wpdb->query($wpdb->prepare("UPDATE `".WPPA_PHOTOS."` SET `description` = %s WHERE `id` = %s", $newdesc, $photos[$phidx]['id']));
 							$count++;
 							update_option('wppa_last_remove', $photos[$phidx]['id']);
 						}
@@ -218,7 +218,7 @@ global $wppa_revno;
 						wppa_error_message('Restart this operation to continue.');
 					}
 					else {
-						wppa_ok_message('Done! Removing </strong><i>'.$value.'</i><strong> to all photodescriptions.');
+						wppa_ok_message('Done! Removing </strong><i>'.$value.'</i><strong> from all photodescriptions.');
 						delete_option('wppa_last_remove');
 					}
 				}
@@ -391,7 +391,7 @@ wppa_fix_source_extensions();
 		
 		// Blacklist
 		
-		$blacklist_plugins = array('performance-optimization-order-styles-and-javascript/order-styles-js.php');
+		$blacklist_plugins = array('performance-optimization-order-styles-and-javascript/order-styles-js.php', 'wp-ultra-simple-paypal-shopping-cart/wp_ultra_simple_shopping_cart.php');
 		$plugins = get_option('active_plugins');
 		$matches = array_intersect($blacklist_plugins, $plugins);
 		foreach ( $matches as $bad ) {
@@ -789,8 +789,8 @@ wppa_fix_source_extensions();
 							$desc = __('Select the number of voting stars.', 'wppa');
 							$help = '';
 							$slug = 'wppa_rating_max';
-							$options = array('Standard: 5 stars', 'Extended: 10 stars');
-							$values = array('5', '10');
+							$options = array('Standard: 5 stars', 'Extended: 10 stars', 'One button vote');
+							$values = array('5', '10', '1');
 							$html = wppa_select($slug, $options, $values);
 							$class = 'wppa_rating_';
 							wppa_setting($slug, '1', $name, $desc, $html, $help, $class);
@@ -1352,6 +1352,14 @@ wppa_fix_source_extensions();
 							$html = wppa_checkbox($slug, $onchange);
 							wppa_setting($slug, '21.6', $name, $desc, $html, $help, $class);
 						
+							$name = __('Show Facebook comment box', 'wppa');
+							$desc = __('Display the Facebook comment dialog box in the share box.', 'wppa');
+							$help = '';
+							$slug = 'wppa_facebook_comments';
+							$class = 'wppa_share';
+							$html = wppa_checkbox($slug, $onchange);
+							wppa_setting($slug, '21.91', $name, $desc, $html, $help, $class);
+							
 							$name = __('Share single image', 'wppa');
 							$desc = __('Share a link to a single image, not the slideshow.', 'wppa');
 							$help = esc_js(__('The sharelink points to a page with a single image rather than to the page with the photo in the slideshow.', 'wppa'));
@@ -2250,6 +2258,7 @@ wppa_fix_source_extensions();
 							$name = __('Rating change', 'wppa');
 							$desc = __('Users may change their ratings.', 'wppa');
 							$help = esc_js(__('Users may change their ratings.', 'wppa'));
+							$help .= '\n\n'.esc_js(__('If "One button vote" is selected in Table I-E1, this setting has no meaning', 'wppa'));
 							$slug = 'wppa_rating_change';
 							$html = wppa_checkbox($slug);
 							$class = 'wppa_rating_';
@@ -2266,6 +2275,7 @@ wppa_fix_source_extensions();
 							$name = __('Dislike value', 'wppa');
 							$desc = __('This value counts dislike rating.', 'wppa');
 							$help = esc_js(__('This value will be used for a dislike rating on calculation of avarage ratings.', 'wppa'));
+							$help .= '\n\n'.esc_js(__('If "One button vote" is selected in Table I-E1, this setting has no meaning', 'wppa'));
 							$slug = 'wppa_dislike_value';
 							$html = wppa_input($slug, '50px', '', __('points', 'wppa'));
 							$class = 'wppa_rating_';
@@ -2282,6 +2292,7 @@ wppa_fix_source_extensions();
 							$name = __('Star off opacity', 'wppa');
 							$desc = __('Rating star off state opacity value.', 'wppa');
 							$help = esc_js(__('Enter percentage of opacity. 100% is opaque, 0% is transparant', 'wppa'));
+							$help .= '\n\n'.esc_js(__('If "One button vote" is selected in Table I-E1, this setting has no meaning', 'wppa'));
 							$slug = 'wppa_star_opacity';
 							$html = wppa_input($slug, '50px', '', __('%', 'wppa'));
 							$class = 'wppa_rating_';
@@ -2293,6 +2304,7 @@ wppa_fix_source_extensions();
 							$help .= '\n\n'.esc_js(__('Cicking the icon indicates a user wants to report that an image is inappropiate.', 'wppa'));
 							$help .= '\n'.esc_js(__('Admin will be notified by email after every x reports.', 'wppa'));
 							$help .= '\n'.esc_js(__('A value of 0 disables this feature.', 'wppa'));
+							$help .= '\n\n'.esc_js(__('If "One button vote" is selected in Table I-E1, this setting has no meaning', 'wppa'));
 							$slug = 'wppa_dislike_mail_every';
 							$html = wppa_input($slug, '40px', '', __('reports', 'wppa'));
 							$class = 'wppa_rating_';
@@ -2301,6 +2313,7 @@ wppa_fix_source_extensions();
 							$name = __('Pending after', 'wppa');
 							$desc = __('Set status to pending after xx dislike votes.', 'wppa');
 							$help = esc_js(__('A value of 0 disables this feature.', 'wppa'));
+							$help .= '\n\n'.esc_js(__('If "One button vote" is selected in Table I-E1, this setting has no meaning', 'wppa'));
 							$slug = 'wppa_dislike_set_pending';
 							$html = wppa_input($slug, '40px', '', __('reports', 'wppa'));
 							$class = 'wppa_rating_';
@@ -2309,6 +2322,7 @@ wppa_fix_source_extensions();
 							$name = __('Delete after', 'wppa');
 							$desc = __('Deete photo after xx dislike votes.', 'wppa');
 							$help = esc_js(__('A value of 0 disables this feature.', 'wppa'));
+							$help .= '\n\n'.esc_js(__('If "One button vote" is selected in Table I-E1, this setting has no meaning', 'wppa'));
 							$slug = 'wppa_dislike_delete';
 							$html = wppa_input($slug, '40px', '', __('reports', 'wppa'));
 							$class = 'wppa_rating_';
@@ -2317,6 +2331,7 @@ wppa_fix_source_extensions();
 							$name = __('Show dislike count', 'wppa');
 							$desc = __('Show the number of dislikes in the rating bar.', 'wppa');
 							$help = esc_js(__('Displayes the total number of dislike votes for the current photo.', 'wppa'));
+							$help .= '\n\n'.esc_js(__('If "One button vote" is selected in Table I-E1, this setting has no meaning', 'wppa'));
 							$slug = 'wppa_dislike_show_count';
 							$html = wppa_checkbox($slug, $onchange);
 							$class = 'wppa_rating_';
@@ -2324,7 +2339,7 @@ wppa_fix_source_extensions();
 							
 							$name = __('Rating display type', 'wppa');
 							$desc = __('Specify the type of the rating display.', 'wppa');
-							$help = '';
+							$help = esc_js(__('If "One button vote" is selected in Table I-E1, this setting has no meaning', 'wppa'));
 							$slug = 'wppa_rating_display_type';
 							$options = array(__('Graphic', 'wppa'), __('Numeric', 'wppa'));
 							$values = array('graphic', 'numeric');
@@ -2333,13 +2348,38 @@ wppa_fix_source_extensions();
 							wppa_setting($slug, '11', $name, $desc, $html, $help, $class);
 
 							$name = __('Show average rating', 'wppa');
-							$desc = __('Display the avarage rating on the rating bar', 'wppa');
-							$help = esc_js(__('If checked, the average rating as well as the current users rating is displayed in max 5 stars.', 'wppa'));
+							$desc = __('Display the avarage rating and/or vote count on the rating bar', 'wppa');
+							$help = esc_js(__('If checked, the average rating as well as the current users rating is displayed in max 5 or 10 stars.', 'wppa'));
 							$help .= '\n\n'.esc_js(__('If unchecked, only the current users rating is displayed (if any).', 'wppa'));
+							$help .= '\n\n'.esc_js(__('If "One button vote" is selected in Table I-E1, this box checked will display the vote count.', 'wppa'));
 							$slug = 'wppa_show_avg_rating';
 							$html = wppa_checkbox($slug);
 							$class = 'wppa_rating_';
 							wppa_setting($slug, '12', $name, $desc, $html, $help, $class);
+							
+							$name = __('Single vote button text', 'wppa');
+							$desc = __('The text on the voting button.', 'wppa');
+							$help = __('This text may contain qTranslate compatible language tags.', 'wppa');
+							$slug = 'wppa_vote_button_text';
+							$html = wppa_input($slug, '100');
+							$class = 'wppa_rating_';
+							wppa_setting($slug, '13', $name, $desc, $html, $help, $class);
+							
+							$name = __('Single vote button text voted', 'wppa');
+							$desc = __('The text on the voting button when voted.', 'wppa');
+							$help = __('This text may contain qTranslate compatible language tags.', 'wppa');
+							$slug = 'wppa_voted_button_text';
+							$html = wppa_input($slug, '100');
+							$class = 'wppa_rating_';
+							wppa_setting($slug, '14', $name, $desc, $html, $help, $class);
+							
+							$name = __('Single vote button thumbnail', 'wppa');
+							$desc = __('Display single vote button below thumbnails.', 'wppa');
+							$help = esc_js(__('This works only in single vote mode: Table I-E1 set to "one button vote"', 'wppa'));
+							$slug = 'wppa_vote_thumb';
+							$html = wppa_checkbox($slug);
+							$class = 'wppa_rating_';
+							wppa_setting($slug, '15', $name, $desc, $html, $help, $class);
 							
 							wppa_setting_subheader('F', '1', __('Comments related settings', 'wppa'), 'wppa_comment_');
 							
@@ -3690,6 +3730,15 @@ wppa_fix_source_extensions();
 							$html = array($html1, $html2);
 							wppa_setting(false, '6', $name, $desc, $html, $help);
 
+							$name = __('Remove empty albums', 'wppa');
+							$desc = __('Removes albums that are not used.', 'wppa');
+							$help = '';
+							$slug2 = 'wppa_remove_empty_albums';
+							$html1 = '';
+							$html2 = wppa_ajax_button('', $slug2);
+							$html = array($html1, $html2);
+							wppa_setting(false, '7', $name, $desc, $html, $help);
+							
 							?>
 						</tbody>
 						<tfoot style="font-weight: bold;" class="wppa_table_8">
@@ -3904,6 +3953,14 @@ wppa_fix_source_extensions();
 							$slug = 'wppa_feed_use_thumb';
 							$html = wppa_checkbox($slug);
 							wppa_setting($slug, '22', $name, $desc, $html, $help);
+							
+							$name = __('Add og meta tags', 'wppa');
+							$desc = __('Add og meta tags to the page header.', 'wppa');
+							$help = '';
+							$slug = 'wppa_og_tags_on';
+							$warn = esc_js(__('Turning this off may affect the functionality of social media items in the share box that rely on open graph tags information.', 'wppa'));
+							$html = wppa_checkbox_warn_off($slug, '', '', $warn, false);
+							wppa_setting($slug, '23', $name, $desc, $html, $help);
 
 							wppa_setting_subheader('B', '1', __('New Album and New Photo related miscellaneous settings', 'wppa'));
 
@@ -4890,9 +4947,10 @@ function wppa_checkbox_warn($slug, $onchange = '', $class = '', $warning) {
 	return $html;
 }
 
-function wppa_checkbox_warn_off($slug, $onchange = '', $class = '', $warning) {
+function wppa_checkbox_warn_off($slug, $onchange = '', $class = '', $warning, $is_help = true) {
 
-	$warning = esc_js(__('Warning!', 'wppa')).'\n\n'.$warning.'\n\n'.esc_js(__('Please read the help', 'wppa'));
+	$warning = esc_js(__('Warning!', 'wppa')).'\n\n'.$warning;
+	if ( $is_help) $warning .= '\n\n'.esc_js(__('Please read the help', 'wppa'));
 	$html = '<input style="float:left; height: 15px; margin: 0px; padding: 0px;" type="checkbox" id="'.$slug.'"'; 
 	if (get_option($slug) == 'yes') $html .= ' checked="checked"';
 	if ($onchange != '') $html .= ' onchange="if (!this.checked) alert(\''.$warning.'\'); '.$onchange.';wppaAjaxUpdateOptionCheckBox(\''.$slug.'\', this)"';

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains low-level utility routines
-* Version 5.1.4
+* Version 5.1.8
 *
 */
 
@@ -211,10 +211,7 @@ global $wppa_opt;
 function wppa_is_separate($id) {
 
 	if ( $id == '' ) return false;
-	if ( ! is_numeric($id) ) {
-		wppa_dbg_msg('Invalid arg wppa_is_separate('.$id.')', 'red');
-		return false;
-	}
+	if ( ! wppa_is_int($id) ) return false;
 	if ( $id == '-1' ) return true;
 	if ( $id < '1' ) return false;
 	$alb = wppa_get_parentalbumid($id);
@@ -227,7 +224,8 @@ function wppa_get_parentalbumid($id) {
 global $album;
 global $prev_album_id;
 
-	if ( ! is_numeric($id) || $id < '1' ) wppa_dbg_msg('Invalid arg wppa_get_parentalbumid('.$id.')', 'red');
+	if ( ! wppa_is_int($id) || $id < '1' ) return '0';
+
 	if ( ! wppa_cache_album($id) ) {
 		wppa_dbg_msg('Album '.$id.' no longer exists, but is still set as a parent of '.$prev_album_id.'. Please correct this.', 'red');
 		return '-9';	// Album does not exist
@@ -448,6 +446,11 @@ function wppa_get_taglist() {
 	if ( $result == 'nil' ) {
 		$result = wppa_create_taglist();
 	}
+	else {
+		foreach ( array_keys($result) as $tag ) {
+			$result[$tag]['ids'] = wppa_index_string_to_array($result[$tag]['ids']);
+		}
+	}
 	return $result;
 }
 
@@ -479,13 +482,18 @@ global $wpdb;
 			$total++;
 		}
 	}
+	$tosave = array();
 	if ( is_array($result) ) {
 		foreach ( array_keys($result) as $key ) {
-			$result[$key]['fraction'] = round($result[$key]['count'] * 100 / $total) / 100;
+			$result[$key]['fraction'] = sprintf('%4.2f', $result[$key]['count'] / $total);
 		}
 		$result = wppa_array_sort($result, 'tag');
+		$tosave = $result;
+		foreach ( array_keys($tosave) as $key ) {
+			$tosave[$key]['ids'] = wppa_index_array_to_string($tosave[$key]['ids']);
+		}
 	}
-	update_option('wppa_taglist', $result);
+	update_option('wppa_taglist', $tosave);
 	return $result;
 }
 
@@ -1114,4 +1122,21 @@ function wppa_series_to_array($xtxt) {
 }
 function wppa_stx_err($msg) {
 	echo 'Syntax error in album specification. '.$msg;
+}
+
+function wppa_get_og_desc($id) {
+
+	$result = sprintf(__a('See this image on %s'), str_replace('&amp;', __a('and'), get_bloginfo('name')));
+	$r2 	= strip_shortcodes(wppa_strip_tags(wppa_get_photo_desc($id)), 'all');
+	if ( $r2 ) $result .= ': '.$r2;
+	return $result;
+}
+
+// There is no php routine to test if a string var is an integer, like '3': yes, and '3.7' and '3..7': no.
+// is_numeric('3.7') returns true
+// intval('3..7') == '3..7' returns true
+// is_int('3') returns false
+// so we make it ourselves
+function wppa_is_int($var) {
+	return ( strval(intval($var)) == strval($var) );
 }
