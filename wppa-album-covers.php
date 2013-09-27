@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Functions for album covers
-* Version 5.0.17
+* Version 5.1.7
 *
 */
 
@@ -753,6 +753,9 @@ global $wppa_opt;
 				else {
 					$href_title = get_page_link($album['cover_linkpage']);
 				}
+				break;
+			case 'page':
+				$href_title = get_page_link($album['cover_linkpage']);
 				break;
 			case 'none':
 				break;

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the top rated photos
-* Version 5.1.0
+* Version 5.1.7
 */
 
 class TopTenWidget extends WP_Widget {
@@ -85,13 +85,14 @@ class TopTenWidget extends WP_Widget {
 					if ( $sortby != 'views' ) {	// Rating oriented use of this widget
 						if ( $rating ) {
 							if ( $meanrat == 'yes' ) $widget_content .= wppa_get_rating_by_id($image['id']);
-							if ( $ratcount == 'yes' ) $widget_content .= ' ('.wppa_get_rating_count_by_id($image['id']).')';
+							if ( $meanrat == 'yes' && $ratcount == 'yes' ) $widget_content .= '<br />';
+							if ( $ratcount == 'yes' ) $widget_content .= sprintf(__a('%s Votes'), wppa_get_rating_count_by_id($image['id']));
 							if ( $meanrat == 'yes' || $ratcount == 'yes' ) $widget_content .= '<br />';
 						}
-						if ( $viewcount == 'yes' && $image['views'] ) $widget_content .= __('Views:', 'wppa').' '.$image['views'];
+						if ( $viewcount == 'yes' && $image['views'] ) $widget_content .= sprintf(__a('Views: %s times', 'wppa_theme'),$image['views']);
 					}
 					else {						// Viewcount oriented use of this widget
-						if ( $viewcount == 'yes' && $image['views'] ) $widget_content .= __('Views:', 'wppa').' '.$image['views'];
+						if ( $viewcount == 'yes' && $image['views'] ) $widget_content .= sprintf(__a('Views: %s times', 'wppa_theme'),$image['views']);
 						if ( $viewcount == 'yes' && $rating ) $widget_content .= '<br />';
 						if ( $rating ) {
 							if ( $meanrat == 'yes' ) $widget_content .= $rating;

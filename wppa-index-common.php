@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * indexing common functions
-* version 5.0.6
+* version 5.1.7
 *
 * 
 */
@@ -68,7 +68,8 @@ global $wppa;
 		$words = __($thumb['name']);																							// Name
 		$words .= ' '.$thumb['filename'];																						// Filename
 		if ( $thumb['description'] ) { 
-			$words .= ' '.wppa_filter_exif(wppa_filter_iptc(__(stripslashes($thumb['description'])),$thumb['id']),$thumb['id']);	// Description
+			$words .= ' '.wppa_get_photo_desc($thumb['id']);
+			// wppa_filter_exif(wppa_filter_iptc(__(stripslashes($thumb['description'])),$thumb['id']),$thumb['id']);	// Description
 		}
 		if ( wppa_switch('wppa_search_tags') ) {
 			$words .= ' '.$thumb['tags'];																						// Tags

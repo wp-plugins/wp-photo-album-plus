@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * create, edit and delete albums
-* version 5.1.0
+* version 5.1.7
 *
 */
 
@@ -444,8 +444,14 @@ function _wppa_admin() {
 									<select onchange="wppaAjaxUpdateAlbum(<?php echo $edit_id ?>, 'cover_linktype', this)" >
 										<option value="content" <?php if ( $linktype == 'content' ) echo ($sel) ?>><?php _e('the sub-albums and thumbnails', 'wppa') ?></option>
 										<option value="slide" <?php if ( $linktype == 'slide' ) echo ($sel) ?>><?php _e('the album photos as slideshow', 'wppa') ?></option>
+										<option value="page" <?php if ( $linktype == 'page' ) echo ($sel) ?>><?php _e('the link page with a clean url', 'wppa') ?></option>
 										<option value="none" <?php if ( $linktype == 'none' ) echo($sel) ?>><?php _e('no link at all', 'wppa') ?></option>
 									</select>
+								</td>
+								<td style="padding-top:0; padding-bottom:0;">
+									<span class="description">
+										<?php _e('If you select "the link page with a clean url", make sure you enter the correct shortcode on the target page.', 'wppa'); ?>
+									</span>
 								</td>
 							</tr>
 							

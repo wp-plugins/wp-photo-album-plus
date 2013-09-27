@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Frontend links
-* Version 5.0.17
+* Version 5.1.4
 *
 */
 
