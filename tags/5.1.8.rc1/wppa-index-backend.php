@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * indexing admin functions
-* version 5.0.6
+* version 5.1.7
 *
 * 
 */
@@ -38,7 +38,7 @@ global $pcount;
 	if ( $lastalbum != '-2' ) {
 		wppa_ok_message('Starting Albums at id = '.($lastalbum > '0' ? $lastalbum + '1' : '1'));
 		// dirty work
-		$albums = $wpdb->get_results($wpdb->prepare("SELECT `id`, `name`, `description` FROM `".WPPA_ALBUMS."` WHERE `id` > %d ORDER BY `id`", $lastalbum), ARRAY_A );
+		$albums = $wpdb->get_results($wpdb->prepare("SELECT * FROM `".WPPA_ALBUMS."` WHERE `id` > %d ORDER BY `id`", $lastalbum), ARRAY_A );
 		foreach ( $albums as $album ) {
 			wppa_index_add('album');
 			update_option('wppa_last_index_albums', $album['id']);
@@ -54,7 +54,7 @@ global $pcount;
 		// dirty work	
 		wppa_ok_message('Starting Photos at id = '.($lastphoto > '0' ? $lastphoto + '1' : '1'));
 		// note : excl seps moet nog!!!
-		$thumbs = $wpdb->get_results($wpdb->prepare("SELECT `id`, `filename`, `name`, `tags`, `description` FROM `".WPPA_PHOTOS."` WHERE `id` > %d ORDER BY `id`", $lastphoto), ARRAY_A );
+		$thumbs = $wpdb->get_results($wpdb->prepare("SELECT * FROM `".WPPA_PHOTOS."` WHERE `id` > %d ORDER BY `id`", $lastphoto), ARRAY_A );
 		foreach ( $thumbs as $thumb ) {
 			wppa_index_add('photo');
 			update_option('wppa_last_index_photos', $thumb['id']);
