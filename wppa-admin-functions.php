@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * gp admin functions
-* version 5.1.3
+* version 5.1.8
 *
 * 
 */
@@ -126,7 +126,7 @@ function wppa_regenerate_thumbs() {
 				$done++;
 			}
 			else {
-				wppa_dbg_msg('Unexpected error: file '.$newimage.' was expected but is missing', 'force', 'red');
+				wppa_error_message('Unexpected error: file '.$newimage.' was expected but is missing', 'force', 'red');
 			}
 			if ( wppa_is_time_up($done) ) {
 				return false;	// NOT Done, have to go on
@@ -240,6 +240,7 @@ function wppa_error_message($msg, $fixed = false, $id = '') {
 ?>
 	<div id="wppa-er-<?php echo $id ?>" class="error <?php if ($fixed == 'fixed') echo fade ?>" <?php if ($fixed == 'hidden') echo 'style="display:none;"'; if ($fixed == 'fixed') echo 'style="position: fixed;"' ?>><p><strong><?php echo($msg); ?></strong></p></div>
 <?php
+	wppa_log('Error', $msg);
 }
 // display warning message
 function wppa_warning_message($msg, $fixed = false, $id = '') {
@@ -252,6 +253,12 @@ function wppa_ok_message($msg, $fixed = false, $id = '') {
 ?>
 	<div id="wppa-ok-<?php echo $id ?>" class="updated <?php if ($fixed == 'fixed') echo fade ?>" style="background-color: #e0ffe0; border-color: #55ee55;" ><p id="wppa-ok-p" ><strong><?php echo($msg); ?></strong></p></div>
 <?php
+}
+
+function wppa_log($type, $msg) {
+	if ( ! $file = fopen(ABSPATH.'wp-content/wppa-depot/admin/error.log', 'ab') ) return;	// Unable to open log file
+	fwrite($file, $type.': on:'.wppa_local_date(get_option('date_format', "F j, Y,").' '.get_option('time_format', "g:i a"), time()).': '.$msg."\n");
+	fclose($file);
 }
 
 function wppa_check_numeric($value, $minval, $target, $maxval = '') {
@@ -476,8 +483,8 @@ if ( is_multisite() ) return; // temp disabled for 4.0 bug, must be tested in a 
 	$no_photos = '';
 //	if ($alb == '0') wppa_ok_message(__('Checking database, please wait...', 'wppa'));
 	$delcount = 0;
-	if ($alb == '0') $entries = $wpdb->get_results( "SELECT `id`, `ext`, `name` FROM `".WPPA_PHOTOS, ARRAY_A);
-	else $entries = $wpdb->get_results($wpdb->prepare( "SELECT `id`, `ext`, `name` FROM `".WPPA_PHOTOS."` WHERE `album` = %s", $alb ), ARRAY_A);
+	if ($alb == '0') $entries = $wpdb->get_results( "SELECT * FROM `".WPPA_PHOTOS, ARRAY_A);
+	else $entries = $wpdb->get_results($wpdb->prepare( "SELECT * FROM `".WPPA_PHOTOS."` WHERE `album` = %s", $alb ), ARRAY_A);
 	if ($entries) {
 		foreach ( $entries as $entry ) {
 			$thumbpath = wppa_get_thumb_path($entry['id']);
@@ -541,7 +548,7 @@ if ( is_multisite() ) return; // temp disabled for 4.0 bug, must be tested in a 
 /**/	
 	// Now fix orphan photos
 	$orphcount = 0;
-	$entries = $wpdb->get_results( "SELECT `id` FROM `".WPPA_PHOTOS."` WHERE `album` = '0'", ARRAY_A);
+	$entries = $wpdb->get_results( "SELECT * FROM `".WPPA_PHOTOS."` WHERE `album` = '0'", ARRAY_A);
 	if ($entries) {
 		$album = wppa_get_album_id(__('Orphan Photos', 'wppa'));
 		if ($album == '') {
@@ -585,14 +592,15 @@ if ( is_multisite() ) return; // temp disabled for 4.0 bug, must be tested in a 
 
 function wppa_walktree($relroot, $source, $allowwppa = false, $subdirsonly = false, $allowthumbs = true) {
 
-	if ( !$subdirsonly ) {
+	if ( ! $subdirsonly ) {
 		if ($relroot == $source) $sel=' selected="selected"'; else $sel = ' ';
-		$display = str_replace(WPPA_DEPOT, __('--- My depot --- ', 'wppa'), $relroot);
-		$display = str_replace('wp-content/gallery', __('--- Ngg Galleries --- ', 'wppa'), $display);
+		$display  = str_replace(WPPA_DEPOT, __('--- My depot --- ', 'wppa'), $relroot);
+		$ngg_opts = get_option('ngg_options', false);
+		if ( $ngg_opts ) $display = str_replace($ngg_opts['gallerypath'], __('--- Ngg Galleries --- ', 'wppa'), $display);
 		echo('<option value="'.$relroot.'"'.$sel.'>'.$display.'</option>');
 	}
 	
-	if ($handle = opendir(ABSPATH.$relroot)) {
+	if ( $handle = opendir(ABSPATH.$relroot) ) {
 		while (false !== ($file = readdir($handle))) {
 			if ( $file != "." && $file != ".." && ( $file != "wppa" || $allowwppa ) && ( $file != "thumbs" || $allowthumbs ) ) {
 				$newroot = $relroot.'/'.$file;
@@ -614,7 +622,7 @@ function wppa_sanitize_files() {
 
 function __wppa_sanitize_files($root) {
 	// See what's in there
-	$allowed_types = array('zip', 'jpg', 'png', 'gif', 'amf', 'pmf', 'bak');
+	$allowed_types = array('zip', 'jpg', 'png', 'gif', 'amf', 'pmf', 'bak', 'log');
 
 	$paths = $root.'/*';
 	$files = glob($paths);

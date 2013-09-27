@@ -2,12 +2,12 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile
-Version: 5.1.4
+Version: 5.1.8
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
 Requires at least: 3.1
-Tested up to: 3.6
+Tested up to: 3.6.1
 
 This plugin is designed to easily manage and display your photo albums and slideshows in a single as well as in a network WordPress site.
 
@@ -173,13 +173,77 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
 
+= 5.1.8 =
+
+= Bug Fixes =
+
+* Fixed a thumbdown image appearing under some circumstances while not appropriate.
+* The shortcode generator did not show photo previews when the filestructure was set to tree. Fixed.
+
+= New Features =
+
+* Admin errors will now be logged in ..wp-content/wppa-depot/admin/error.log
+* Table VIII-B7 Remove empty albums. To cleanup member albums that are never used.
+* Extension to the #last album keyword in shortcodes. #last can be followed by two numbers, the parent album id ( 0 = systemwide ) and the number of albums to find.
+Example album="#last,0,3" finds the 3 most recently modified albums of the system, album="#last,7,4" finds the 4 most recently modified subalbums of album number 7.
+Works to find covers only.
+* The single button voting system button can now also be displayed below the thumbnails. Table IV-E15.
+
+= Other Changes =
+
+* When importing from NextGen galleries, the Set Source Directory selection list now clearly indicates ngg galleries even when the ngg folder is not the default location.
+* Included a check that the source folder can no longer be set as a subfolder of the wppa folder.
+* Facebook api will only be loaded when it ia actually used.
+* The breadcrumb box has been rewritten and gives more and better info.
+
+= 5.1.7 =
+
+= Bug Fixes =
+
+* Indexed search did not always include w#-keywords in album and photo descriptions. Fixed. If you use indexed search and w#-keywords, you may need to remake index in Table VIII-A8.
+
+= New Features =
+
+* You can 'downgrade' the rating system to a simple 'One button vote' system. 
+See Table I-E1, Table IV-E12,13,14 and the changed helptext on other items from Table IV-E.
+
+= Other Changes =
+
+* Added an album cover linktype so you can link to the supplied linkpage as is, with a clean url. 
+See the Link Type selection box on the Edit Album information screen.
+* Increased the capacity of the internal taglist cache.
+* Added a switch to disable the generation of open graph metatags. ( Table IX-A23 ).
+
+= 5.1.6 =
+
+= Bug Fixes =
+
+* Applying watermarks no longer results in dramatic increase of image filesize.
+* Fixed a sizing issue for the Facebook comments dialog box.
+
+= 5.1.5 =
+
+= Bug Fixes =
+
+* Fixed a possible incomplete initialization resulting in displaying a debug message in stead of rendering the shortcode on certain server (mis)configurations.
+
+= New Features =
+
+* Facebook comments integrated in the share box. Table II-B21.91. Requires Table II-B21. No other plugin required!
+
+= Other Changes =
+
+* The og: metatags og:url, og:title, og:image and og:description are now dynamicly updated during slideshow/browse. Not in widgets.			
+
 = 5.1.4 =
 
 = Bug Fixes =
 
 * Fixed a sizing issue in widgets that is too complicated to explain. However, nobody seems to have noticed.
 * Import from remote using Ajax now imports the images asked for.
-* Fixed erroneaous internal links in album covers in widgets when pretty links was on (woccur was not converted).
+* Fixed erroneaous internal links in album covers in widgets when pretty links was on.
+* If Photo names in urls is on and the photo name is a number, the number will now be seen as a name and be converted to its real number.
+* Fixed a possible db error in the actions in Table VIII-B5 and B6.
 
 = New Features =
 

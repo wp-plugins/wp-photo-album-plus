@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the non admin stuff
-* Version 5.1.4
+* Version 5.1.8
 *
 */
 
@@ -50,35 +50,38 @@ global $wpdb;
 global $wppa_opt;
 global $thumb;
 
-	// If a photo is given in the querystring, it may be a sm examinig the site for a share, do not supply metatags
-	if ( wppa_get_get('photo') ) {
-		// Share info for sm that uses og
-		$id = wppa_get_get('photo');
-		if ( is_numeric($id) ) {
-			wppa_cache_thumb($id);
-			if ( $thumb ) {
-				$title  = __(stripslashes($thumb['name']));
-				$imgurl = wppa_get_thumb_url($id);
-				$desc   = sprintf(__a('See this image on %s'), str_replace('&amp;', __a('and'), get_bloginfo('name')));
-				$pdesc  = wppa_strip_tags(wppa_html(__(stripslashes($thumb['description']))), 'all');
-				$url    = wppa_convert_to_pretty(str_replace('&amp;', '&', wppa_get_image_page_url_by_id($thumb['id'], $wppa_opt['wppa_share_single_image'])));
-				$site   = get_bloginfo('name');
-				if ( $pdesc ) $desc .= ': '.$pdesc;
-				echo "\n<!-- WPPA+ Share data -->".'
-	<meta property="og:type" content="article" />
-	<meta property="og:url" content="'.esc_attr($url).'" />
-	<meta property="og:site_name" content="'.esc_attr($site).'" />
-	<meta property="og:title" content="'.esc_attr($title).'" />
-	<meta property="og:image" content="'.esc_attr($imgurl).'" />
-	<meta property="og:description" content="'.esc_attr($desc).'" />';				
-				echo "\n<!-- WPPA+ End Share data -->\n";
-			}
+	// Share info for sm that uses og
+	$id = wppa_get_get('photo', '0');
+	if ( ! is_numeric($id) ) $id = '0';
+	if ( get_option('wppa_og_tags_on', 'yes') == 'yes' ) {
+		wppa_cache_thumb($id);
+		if ( $thumb ) {
+			$title  = wppa_get_photo_name($thumb['id']);
+			$imgurl = wppa_get_thumb_url($id);
+			$desc 	= wppa_get_og_desc($thumb['id']); 
+			$url    = wppa_convert_to_pretty(str_replace('&amp;', '&', wppa_get_image_page_url_by_id($thumb['id'], $wppa_opt['wppa_share_single_image'])));
 		}
+		else {
+			$title 	= '';
+			$imgurl = '';
+			$desc 	= '';
+			$url	= '';
+		}
+		$site   = get_bloginfo('name');
+
+		echo "\n<!-- WPPA+ Share data -->".'
+	<meta property="og:site_name" content="'.esc_attr($site).'" />
+	<meta property="og:type" content="article" />
+	<meta property="og:url" content="'.esc_attr($url).'" /><!-- dynamicly updated -->
+	<meta property="og:title" content="'.esc_attr($title).'" /><!-- dynamicly updated -->
+	<meta property="og:image" content="'.esc_attr($imgurl).'" /><!-- dynamicly updated -->
+	<meta property="og:description" content="'.esc_attr($desc).'" /><!-- dynamicly updated -->';				
+		echo "\n<!-- WPPA+ End Share data -->\n";
 	}
 
 	// To make sure we are on a page that contains at least %%wppa%% we check for $_GET['wppa-album']. 
 	// This also narrows the selection of featured photos to those that exist in the current album.
-	elseif ( wppa_get_get('album') ) {
+	if ( wppa_get_get('album') ) {
 		if ( $wppa_opt['wppa_meta_page'] ) {
 			$album = wppa_get_get('album');
 			$photos = $wpdb->get_results($wpdb->prepare( "SELECT `id`, `name` FROM `".WPPA_PHOTOS."` WHERE `album` = %s AND `status` = 'featured'", $album ), ARRAY_A);
@@ -194,6 +197,26 @@ global $wppa;
 	echo '
 <!-- Done user upload -->';
 }
+
+/* FACEBOOK COMMENTS */
+function wppa_fbc_setup() {
+	$wppa_app_id = '';
+	$wppa_lang = get_locale();
+	if ( ! $wppa_lang ) $wppa_lang = 'en_US';
+	?>
+<!-- Facebook Comments for WPPA+ -->
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/<?php echo $wppa_lang; ?>/all.js#xfbml=1&appId=<?php echo $wppa_app_id; ?>";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));
+</script>
+<?php 
+}
+if ( get_option('wppa_facebook_comments') == 'yes' && get_option('wppa_share_on') == 'yes' ) add_action('wp_footer', 'wppa_fbc_setup', 100);
 
 /* CHECK REDIRECTION */
 add_action('init', 'wppa_redirect');
@@ -325,35 +348,37 @@ global $wppa_lang;
 	wppaUpdateAddressLine = '.( $wppa_opt['wppa_update_addressline'] ? 'true' : 'false' ).';
 	wppaUploadUrl = "'.WPPA_UPLOAD_URL.'";
 	wppaFilmThumbTitle = "'.( $wppa_opt['wppa_film_linktype'] == 'lightbox' ? wppa_zoom_in() : __a('Double click to start/stop slideshow running') ).'";
+	wppaVoteForMe = "'.__($wppa_opt['wppa_vote_button_text']).'";
+	wppaVotedForMe = "'.__($wppa_opt['wppa_voted_button_text']).'";
 	wppaSlideSwipe = '.( wppa_switch('wppa_slide_swipe') ? 'true' : 'false' ).';
 	/* ]]> */
 </script>
 ';
 
 	// Patch for chrome?
-if ( isset($_SERVER["HTTP_USER_AGENT"]) ) {
+	if ( isset($_SERVER["HTTP_USER_AGENT"]) && isset($_SERVER["HTTP_USER_AGENT"]) ) {
 		echo '
-<!-- Browser detected = '.$_SERVER["HTTP_USER_AGENT"].' -->';
-if ( strstr($_SERVER["HTTP_USER_AGENT"], 'Chrome') && wppa_switch('wppa_ovl_chrome_at_top') ) echo '
-<style type="text/css">
-	#wppa-overlay-ic { padding-top: 5px !important; } 
-	#wppa-overlay-qt-txt, #wppa-overlay-qt-img { top: 5px !important; }
-</style>';
-}
+		<!-- Browser detected = '.$_SERVER["HTTP_USER_AGENT"].' -->';
+		if ( strstr($_SERVER["HTTP_USER_AGENT"], 'Chrome') && wppa_switch('wppa_ovl_chrome_at_top') ) echo '
+		<style type="text/css">
+			#wppa-overlay-ic { padding-top: 5px !important; } 
+			#wppa-overlay-qt-txt, #wppa-overlay-qt-img { top: 5px !important; }
+		</style>';
+	}
 
 	// Pinterest js
 	if ( ( $wppa_opt['wppa_share_on'] || $wppa_opt['wppa_share_on_widget'] ) && $wppa_opt['wppa_share_pinterest'] ) {
 		echo '
-<!-- WPPA+ Pinterest share -->
-	<script type="text/javascript" src="//assets.pinterest.com/js/pinit.js"></script>
-<!-- end WPPA+ Pinterest share -->
-';
+		<!-- WPPA+ Pinterest share -->
+			<script type="text/javascript" src="//assets.pinterest.com/js/pinit.js"></script>
+		<!-- end WPPA+ Pinterest share -->
+		';
 	}
 
 	$wppa['rendering_enabled'] = true;
 	echo '
-<!-- WPPA+ Rendering enabled -->
-';
+	<!-- WPPA+ Rendering enabled -->
+	';
 	if ($wppa['debug']) {
 		error_reporting($wppa['debug']);
 		add_action('wp_footer', 'wppa_phpinfo');

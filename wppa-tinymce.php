@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 *
-* Version 5.1.3
+* Version 5.1.8
 *
 */
 
@@ -119,7 +119,8 @@ global $wppa_opt;
 								$alb = $album['id'];
 								$photos = $wpdb->get_results($wpdb->prepare( "SELECT `id`, `name`, `album`, `ext` FROM `".WPPA_PHOTOS."` WHERE `album` = %s ".wppa_get_photo_order($alb)." LIMIT 100", $alb), ARRAY_A );
 								if ( $photos ) foreach ( $photos as $photo ) {
-									$value .= '|'.$photo['id'].'.'.$photo['ext'];
+									$photo_id = $wppa_opt['wppa_file_system'] == 'tree' ? wppa_expand_id($photo['id']) : $photo['id'];
+									$value .= '|'.$photo_id.'.'.$photo['ext'];
 								}
 								else $value .= '|';
 								$note = ' ('.$album['id'].')';
@@ -131,7 +132,8 @@ global $wppa_opt;
 								$alb = $albums[0]['id'];
 								$photos = $wpdb->get_results($wpdb->prepare( "SELECT `id`, `name`, `album`, `ext` FROM `".WPPA_PHOTOS."` WHERE `album` = %s ".wppa_get_photo_order($alb)." LIMIT 100", $alb), ARRAY_A );
 								if ( $photos ) foreach ( $photos as $photo ) {
-									$value .= '|'.$photo['id'].'.'.$photo['ext'];
+									$photo_id = $wppa_opt['wppa_file_system'] == 'tree' ? wppa_expand_id($photo['id']) : $photo['id'];
+									$value .= '|'.$photo_id.'.'.$photo['ext'];
 								}
 								else $value .= '|';
 								$result .= '<option value="'.$value.'" >'.__('- The latest created album -', 'wppa').'</option>';
@@ -139,7 +141,8 @@ global $wppa_opt;
 								$value = '#topten';
 								$photos = $wpdb->get_results( "SELECT `id`, `name`, `album`, `ext` FROM `".WPPA_PHOTOS."` ORDER BY `mean_rating` DESC LIMIT ".$wppa_opt['wppa_topten_count'], ARRAY_A );
 								if ( $photos ) foreach ( $photos as $photo ) {
-									$value .= '|'.$photo['id'].'.'.$photo['ext'];
+									$photo_id = $wppa_opt['wppa_file_system'] == 'tree' ? wppa_expand_id($photo['id']) : $photo['id'];
+									$value .= '|'.$photo_id.'.'.$photo['ext'];
 								}
 								else $value .= '|';
 								$result .= '<option value = "'.$value.'" >'.__('--- The top rated photos ---', 'wppa').'</option>';
@@ -147,7 +150,8 @@ global $wppa_opt;
 								$value = '#lasten';
 								$photos = $wpdb->get_results( "SELECT `id`, `name`, `album`, `ext` FROM `".WPPA_PHOTOS."` ORDER BY `timestamp` DESC LIMIT ".$wppa_opt['wppa_lasten_count'], ARRAY_A );
 								if ( $photos ) foreach ( $photos as $photo ) {
-									$value .= '|'.$photo['id'].'.'.$photo['ext'];
+									$photo_id = $wppa_opt['wppa_file_system'] == 'tree' ? wppa_expand_id($photo['id']) : $photo['id'];
+									$value .= '|'.$photo_id.'.'.$photo['ext'];
 								}
 								else $value .= '|';
 								$result .= '<option value = "'.$value.'" >'.__('--- The most recently uploaded photos ---', 'wppa').'</option>';
@@ -155,7 +159,8 @@ global $wppa_opt;
 								$value = '#featen';
 								$photos = $wpdb->get_results( "SELECT `id`, `name`, `album`, `ext` FROM `".WPPA_PHOTOS."` WHERE `status` = 'featured' ORDER BY RAND() DESC LIMIT ".$wppa_opt['wppa_featen_count'], ARRAY_A );
 								if ( $photos ) foreach ( $photos as $photo ) {
-									$value .= '|'.$photo['id'].'.'.$photo['ext'];
+									$photo_id = $wppa_opt['wppa_file_system'] == 'tree' ? wppa_expand_id($photo['id']) : $photo['id'];
+									$value .= '|'.$photo_id.'.'.$photo['ext'];
 								}
 								else $value .= '|';
 								$result .= '<option value = "'.$value.'" >'.__('--- A random selection of featured photos ---', 'wppa').'</option>';
@@ -171,7 +176,8 @@ global $wppa_opt;
 									}
 								}
 								if ( $photos ) foreach ( $photos as $photo ) {
-									$value .= '|'.$photo['id'].'.'.$photo['ext'];
+									$photo_id = $wppa_opt['wppa_file_system'] == 'tree' ? wppa_expand_id($photo['id']) : $photo['id'];
+									$value .= '|'.$photo_id.'.'.$photo['ext'];
 								}
 								else $value .= '|';
 								$result .= '<option value = "'.$value.'" >'.__('--- The most recently commented photos ---', 'wppa').'</option>';
@@ -182,7 +188,8 @@ global $wppa_opt;
 								$value = '#all';
 								$photos = $wpdb->get_results( "SELECT `id`, `name`, `album`, `ext` FROM `".WPPA_PHOTOS."` ".wppa_get_photo_order('0')." LIMIT 100", ARRAY_A );
 								if ( $photos ) foreach ( $photos as $photo ) {
-									$value .= '|'.$photo['id'].'.'.$photo['ext'];
+									$photo_id = $wppa_opt['wppa_file_system'] == 'tree' ? wppa_expand_id($photo['id']) : $photo['id'];
+									$value .= '|'.$photo_id.'.'.$photo['ext'];
 								}
 								else $value .= '|';
 								$result .= '<option value = "'.$value.'" >'.__('--- All photos in the system ---', 'wppa').'</option>';
