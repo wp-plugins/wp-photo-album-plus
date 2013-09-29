@@ -303,9 +303,15 @@ global $thumb;
 	else $pi = '';
 	
 	// Facebook comments
-	if ( $wppa_opt['wppa_facebook_comments'] && ! $wppa['in_widget'] ) {
+	if ( ( wppa_switch('wppa_facebook_comments') || wppa_switch('wppa_facebook_like') ) && ! $wppa['in_widget'] ) {
 		$width = $wppa['fullsize'] == 'auto' ? 'auto' : min('470', wppa_get_container_width(true));
-		$fbc = '<div class="fb-comments" data-href="'.$share_url.'" data-width="'.$width.'"></div>';
+		if ( wppa_switch('wppa_facebook_like') ) {
+			$fbc = '<div class="fb-like" data-href="'.$share_url.'" data-width="'.$width.'" data-show-faces="false" data-send="true"></div>';
+		}
+		if ( wppa_switch('wppa_facebook_comments') ) {
+			$fbc .= '<div style="color:blue;">'.__a('Comment on Facebook:').'</div>';
+			$fbc .= '<div class="fb-comments" data-href="'.$share_url.'" data-width='.$width.'></div>';
+		}
 		$fbc .= '[script>wppaFbInit();[/script>';
 	}
 	else $fbc = '';

@@ -186,8 +186,9 @@ See for additional information: http://wppa.opajaap.nl/?page_id=1459
 * Table VIII-B7 Remove empty albums. To cleanup member albums that are never used.
 * Extension to the #last album keyword in shortcodes. #last can be followed by two numbers, the parent album id ( 0 = systemwide ) and the number of albums to find.
 Example album="#last,0,3" finds the 3 most recently modified albums of the system, album="#last,7,4" finds the 4 most recently modified subalbums of album number 7.
-Works to find covers only.
 * The single button voting system button can now also be displayed below the thumbnails. Table IV-E15.
+* Facebook like button(s). Table II-B21.90.
+* All album cover types now have a version that supports multi column in responsive themes. Select the covertype with the addition: mcr.
 
 = Other Changes =
 
@@ -195,6 +196,7 @@ Works to find covers only.
 * Included a check that the source folder can no longer be set as a subfolder of the wppa folder.
 * Facebook api will only be loaded when it ia actually used.
 * The breadcrumb box has been rewritten and gives more and better info.
+* The Art Monkey link is now a button.
 
 = 5.1.7 =
 

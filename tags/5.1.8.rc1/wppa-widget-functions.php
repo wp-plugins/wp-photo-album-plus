@@ -300,7 +300,7 @@ global $widget_content;
 		else { // Is an onclick unit
 			$widget_content .= "\n\t";
 			if ( $display == 'thumbs' ) {
-				$widget_content .= '<img id="i-'.$image['id'].'-'.$wppa['master_occur'].'" title="'.$title.'" src="'.$imgurl.'" width="'.$imgstyle_a['width'].'" height="'.$imgstyle_a['height'].'" style="'.$imgstyle_a['imgstyle'].' cursor:pointer;" '.$imgevents.' onclick="'.$link['url'].'" alt="'.esc_attr(wppa_qtrans($image['name'])).'" />';
+				$widget_content .= '<img id="i-'.$image['id'].'-'.$wppa['master_occur'].'" title="'.$title.'" src="'.$imgurl.'" width="'.$imgstyle_a['width'].'" height="'.$imgstyle_a['height'].'" style="'.$imgstyle_a['style'].' cursor:pointer;" '.$imgevents.' onclick="'.$link['url'].'" alt="'.esc_attr(wppa_qtrans($image['name'])).'" />';
 			}
 			else {
 				$widget_content .= '<a href="" style="cursor:pointer;" onclick="'.$link['url'].'">'.wppa_get_photo_name($image['id']).'</a>';
@@ -311,7 +311,7 @@ global $widget_content;
 	else {
 		$widget_content .= "\n\t";
 		if ( $display == 'thumbs' ) {
-			$widget_content .= '<img id="i-'.$image['id'].'-'.$wppa['master_occur'].'" title="'.$title.'" src="'.$imgurl.'" width="'.$imgstyle_a['width'].'" height="'.$imgstyle_a['height'].'" style="'.$imgstyle_a['imgstyle'].'" '.$imgevents.' alt="'.esc_attr(wppa_qtrans($image['name'])).'" />';
+			$widget_content .= '<img id="i-'.$image['id'].'-'.$wppa['master_occur'].'" title="'.$title.'" src="'.$imgurl.'" width="'.$imgstyle_a['width'].'" height="'.$imgstyle_a['height'].'" style="'.$imgstyle_a['style'].'" '.$imgevents.' alt="'.esc_attr(wppa_qtrans($image['name'])).'" />';
 		}
 		else {
 			$widget_content .= wppa_get_photo_name($image['id']);

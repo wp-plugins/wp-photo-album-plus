@@ -105,6 +105,9 @@ var wppaFilmThumbTitle = '';
 var wppaUploadUrl = '';
 var wppaVoteForMe = '';
 var wppaVotedForMe = '';
+var wppaSlideSwipe = true;
+var wppaLightboxSingle = false;
+var wppaMaxCoverWidth = 300;	// For responsive multicolumn covers
 
 // 'Internal' variables (private)
 var _wppaId = new Array();
@@ -145,7 +148,6 @@ var wppaColWidth = new Array();
 var _wppaShareUrl = new Array();
 var _wppaShareHtml = new Array();
 var _wppaFilmNoMove = new Array();
-var wppaSlideSwipe = true;
 
 // Check for occurrences that are responsive
 jQuery(document).ready(function(){
@@ -771,7 +773,8 @@ var result;
 	switch (wppaArtMonkyLink) {
 	case 'file':
 	case 'zip':
-		result = '<a title="Download" style="cursor:pointer;" onclick="wppaAjaxMakeOrigName('+mocc+', '+_wppaId[mocc][_wppaCurIdx[mocc]]+');" >'+_wppaFullNames[mocc][_wppaCurIdx[mocc]]+'</a>';
+//		result = '<a title="Download" style="cursor:pointer;" onclick="wppaAjaxMakeOrigName('+mocc+', '+_wppaId[mocc][_wppaCurIdx[mocc]]+');" >'+_wppaFullNames[mocc][_wppaCurIdx[mocc]]+'</a>';
+		result = '<input type="button" title="Download" style="cursor:pointer;" class="wppa-download-button" onclick="wppaAjaxMakeOrigName('+mocc+', '+_wppaId[mocc][_wppaCurIdx[mocc]]+');" value="'+'Download: '+_wppaFullNames[mocc][_wppaCurIdx[mocc]]+'" />';
 		break;
 	case 'none':
 		result = _wppaFullNames[mocc][_wppaCurIdx[mocc]];
@@ -1224,6 +1227,33 @@ function _wppaDoAutocol(mocc) {
 	// Covers
 	jQuery(".wppa-asym-text-frame-"+mocc).css('width',w - wppaTextFrameDelta);
 	jQuery(".wppa-cover-box-"+mocc).css('width',w - wppaBoxDelta);
+	
+	// Multi Column Responsive covers
+	var exists = jQuery(".wppa-cover-box-mcr-"+mocc);
+	if ( exists.length > 0 ) {	// Yes there are
+		wppaConsoleLog('aantal='+exists.length);
+		var nCovers = parseInt((w + 8)/(wppaMaxCoverWidth+8)) + 1;
+		var coverMax1 = nCovers - 1;
+		var MCRWidth = parseInt(((w + 8)/nCovers) - 8);
+		var idx = 0;
+		while ( idx < exists.length ) {
+			var col = idx % nCovers;
+			switch ( col ) {
+				case 0:	/* left */
+					jQuery(exists[idx]).css({'marginLeft': '0px', 'clear': 'both', 'float': 'left'});
+					break;
+				case coverMax1:	/* right */
+					jQuery(exists[idx]).css({'marginLeft': '8px', 'clear': 'none', 'float': 'right'});
+					break;
+				default:
+					jQuery(exists[idx]).css({'marginLeft': '8px', 'clear': 'none', 'float': 'left'});
+			}
+			idx++;
+		}	
+	}
+
+	jQuery(".wppa-asym-text-frame-mcr-"+mocc).css('width',MCRWidth - wppaTextFrameDelta);
+	jQuery(".wppa-cover-box-mcr-"+mocc).css('width',MCRWidth - wppaBoxDelta);
 
 	// Thumbnail area
 	jQuery(".thumbnail-area-"+mocc).css('width',w - wppaThumbnailAreaDelta);
@@ -2766,6 +2796,7 @@ function wppaAjaxMakeOrigName(mocc, id) {
 }
 
 function wppaConsoleLog(arg) {
+//wppaDebug=true;
 	if ( typeof(console) != 'undefined' && wppaDebug ) {
 		console.log(arg);
 	}

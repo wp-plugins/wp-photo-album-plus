@@ -1352,6 +1352,14 @@ wppa_fix_source_extensions();
 							$html = wppa_checkbox($slug, $onchange);
 							wppa_setting($slug, '21.6', $name, $desc, $html, $help, $class);
 						
+							$name = __('Show Facebook like button', 'wppa');
+							$desc = __('Display the Facebook button in the share box.', 'wppa');
+							$help = '';
+							$slug = 'wppa_facebook_like';
+							$class = 'wppa_share';
+							$html = wppa_checkbox($slug, $onchange);
+							wppa_setting($slug, '21.90', $name, $desc, $html, $help, $class);
+						
 							$name = __('Show Facebook comment box', 'wppa');
 							$desc = __('Display the Facebook comment dialog box in the share box.', 'wppa');
 							$help = '';
@@ -2229,10 +2237,22 @@ wppa_fix_source_extensions();
 							
 							$name = __('Cover type', 'wppa');
 							$desc = __('Select the default cover type.', 'wppa');
-							$help = '';
+							$help = esc_js(__('Types with the addition mcr are suitable for Multi Column in a Responsive theme', 'wppa'));;
 							$slug = 'wppa_cover_type';
-							$options = array(__('--- standard ---', 'wppa'), __('Long Descriptions', 'wppa'), __('Image Factory', 'wppa'));
-							$values = array('default', 'longdesc', 'imagefactory');
+							$options = array(	__('Standard', 'wppa'), 
+												__('Long Descriptions', 'wppa'), 
+												__('Image Factory', 'wppa'), 
+												__('Standard mcr', 'wppa'),
+												__('Long Descriptions mcr', 'wppa'),
+												__('Image Factory mcr', 'wppa')
+											);
+							$values = array(	'default', 
+												'longdesc', 
+												'imagefactory', 
+												'default-mcr',
+												'longdesc-mcr',
+												'imagefactory-mcr'
+											);
 							$onchange = 'wppaCheckCoverType()';
 							$html = wppa_select($slug, $options, $values, $onchange);
 							wppa_setting($slug, '6', $name, $desc, $html, $help);
