@@ -538,6 +538,7 @@ Hide Camera info
 						'wppa_share_pinterest'				=> 'yes',
 						
 						'wppa_facebook_comments'			=> 'yes',
+						'wppa_facebook_like'				=> 'yes',
 						'wppa_share_single_image'			=> 'no',
 						
 						// C Thumbnails

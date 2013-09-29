@@ -238,6 +238,7 @@ global $wppa_initruntimetime;
 						'wppa_share_pinterest'				=> '',
 
 						'wppa_facebook_comments'			=> '',
+						'wppa_facebook_like'				=> '',
 						'wppa_share_single_image'			=> '',
 
 						// C Thumbnails
