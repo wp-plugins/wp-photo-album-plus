@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * gp admin functions
-* version 5.1.7
+* version 5.1.8
 *
 * 
 */
@@ -126,7 +126,7 @@ function wppa_regenerate_thumbs() {
 				$done++;
 			}
 			else {
-				wppa_dbg_msg('Unexpected error: file '.$newimage.' was expected but is missing', 'force', 'red');
+				wppa_error_message('Unexpected error: file '.$newimage.' was expected but is missing', 'force', 'red');
 			}
 			if ( wppa_is_time_up($done) ) {
 				return false;	// NOT Done, have to go on
@@ -240,6 +240,7 @@ function wppa_error_message($msg, $fixed = false, $id = '') {
 ?>
 	<div id="wppa-er-<?php echo $id ?>" class="error <?php if ($fixed == 'fixed') echo fade ?>" <?php if ($fixed == 'hidden') echo 'style="display:none;"'; if ($fixed == 'fixed') echo 'style="position: fixed;"' ?>><p><strong><?php echo($msg); ?></strong></p></div>
 <?php
+	wppa_log('Error', $msg);
 }
 // display warning message
 function wppa_warning_message($msg, $fixed = false, $id = '') {
@@ -585,14 +586,15 @@ if ( is_multisite() ) return; // temp disabled for 4.0 bug, must be tested in a 
 
 function wppa_walktree($relroot, $source, $allowwppa = false, $subdirsonly = false, $allowthumbs = true) {
 
-	if ( !$subdirsonly ) {
+	if ( ! $subdirsonly ) {
 		if ($relroot == $source) $sel=' selected="selected"'; else $sel = ' ';
-		$display = str_replace(WPPA_DEPOT, __('--- My depot --- ', 'wppa'), $relroot);
-		$display = str_replace('wp-content/gallery', __('--- Ngg Galleries --- ', 'wppa'), $display);
+		$display  = str_replace(WPPA_DEPOT, __('--- My depot --- ', 'wppa'), $relroot);
+		$ngg_opts = get_option('ngg_options', false);
+		if ( $ngg_opts ) $display = str_replace($ngg_opts['gallerypath'], __('--- Ngg Galleries --- ', 'wppa'), $display);
 		echo('<option value="'.$relroot.'"'.$sel.'>'.$display.'</option>');
 	}
 	
-	if ($handle = opendir(ABSPATH.$relroot)) {
+	if ( $handle = opendir(ABSPATH.$relroot) ) {
 		while (false !== ($file = readdir($handle))) {
 			if ( $file != "." && $file != ".." && ( $file != "wppa" || $allowwppa ) && ( $file != "thumbs" || $allowthumbs ) ) {
 				$newroot = $relroot.'/'.$file;
@@ -614,7 +616,7 @@ function wppa_sanitize_files() {
 
 function __wppa_sanitize_files($root) {
 	// See what's in there
-	$allowed_types = array('zip', 'jpg', 'png', 'gif', 'amf', 'pmf', 'bak');
+	$allowed_types = array('zip', 'jpg', 'png', 'gif', 'amf', 'pmf', 'bak', 'log');
 
 	$paths = $root.'/*';
 	$files = glob($paths);

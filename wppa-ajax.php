@@ -2,7 +2,7 @@
 /* wppa-ajax.php
 *
 * Functions used in ajax requests
-* version 5.1.7
+* version 5.1.8
 *
 */
 add_action('wp_ajax_wppa', 'wppa_ajax_callback');
@@ -1149,16 +1149,21 @@ global $wppa;
 				case 'wppa_source_dir':
 					$olddir = $wppa_opt['wppa_source_dir'];
 					$value = rtrim($value, '/');
-					$dir = $value;
-					if ( ! is_dir($dir) ) @ mkdir($dir);
-					if ( ! is_dir($dir) || ! is_writable($dir) ) {
+					if ( strpos($value.'/', WPPA_UPLOAD_PATH.'/') !== false ) {
 						$wppa['error'] = '1';
-						$alert = sprintf(__('Unable to create or write to %s', 'wppa'), $dir);
+						$alert = sprintf(__('Source can not be inside the wppa folder.', 'wppa'));
 					}
 					else {
-						@ rmdir($olddir); 	// try to remove when empty
+						$dir = $value;
+						if ( ! is_dir($dir) ) @ mkdir($dir);
+						if ( ! is_dir($dir) || ! is_writable($dir) ) {
+							$wppa['error'] = '1';
+							$alert = sprintf(__('Unable to create or write to %s', 'wppa'), $dir);
+						}
+						else {
+							@ rmdir($olddir); 	// try to remove when empty
+						}
 					}
-//					else $alert = $dir;
 					break;
 				case 'wppa_newpag_content':
 					if ( strpos($value, 'w#album') === false ) {
@@ -1173,7 +1178,19 @@ global $wppa;
 					}
 					break;
 					
+				case 'wppa_remove_empty_albums':
+					$albs = $wpdb->get_results("SELECT * FROM `".WPPA_ALBUMS."`", ARRAY_A);
+					if ( $albs ) foreach ( $albs as $alb ) {
+						$na = $wpdb->get_var("SELECT COUNT(*) FROM `".WPPA_ALBUMS."` WHERE `a_parent` = ".$alb['id']);
+						$np = $wpdb->get_var("SELECT COUNT(*) FROM `".WPPA_PHOTOS."` WHERE `album` = ".$alb['id']);
+						if ( ! $na && ! $np ) {
+							$wpdb->query("DELETE FROM `".WPPA_ALBUMS."` WHERE `id` = ".$alb['id']);
+						}
+					}
+					break;
+					
 				default:
+			
 					// Do the update only
 					wppa_update_option($option, $value);
 					$wppa['error'] = '0';

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the slideshow high level functions
-* Version 5.1.7
+* Version 5.1.8
 *
 */
 
@@ -502,9 +502,6 @@ global $wppa_opt;
 				$wppa['out'] .= '<img id="wppa-dislike-'.$wppa['master_occur'].'" '.$title.' src="'.wppa_get_imgdir().'thumbdown.png" '.$tdstyle.' class="no-shadow" '.$evnts.' />';
 				if ( wppa_switch('wppa_dislike_show_count') ) $wppa['out'] .= '<span id="wppa-discount-'.$wppa['master_occur'].'" style="cursor:default" title="'.__a('Nuber of people who marked this photo as inapprpriate').'"></span>';
 			}
-			// Filler
-			$tfstyle = 'style="height:'.$fs.'px; width:'.$fs.'px; margin:0 0 -3px 0; padding:0 '.$pad.'px; box-shadow:none; display:none;"';
-			$wppa['out'] .= '<img id="wppa-filler-'.$wppa['master_occur'].'" src="'.wppa_get_imgdir().'thumbdown.png" '.$tfstyle.' class="no-shadow" onmouseover="jQuery(this).stop().fadeTo(100, 1.0)" onmouseout="jQuery(this).stop().fadeTo(100, wppaStarOpacity)"/>';
 
 			// Text left if no avg rating
 			if ( ! $wppa_opt['wppa_show_avg_rating'] ) $wppa['out'] .= __a('My&nbsp;rating', 'wppa_theme').':&nbsp;';

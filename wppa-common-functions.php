@@ -2,7 +2,7 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 5.1.7
+* version 5.1.8
 *
 */
 
@@ -99,7 +99,9 @@ global $wppa_initruntimetime;
 			'continue'					=> '',
 			'is_upload'					=> false,
 			'ajax_import_files'			=> false,
-			'ajax_import_files_done'	=> false
+			'ajax_import_files_done'	=> false,
+			'last_albums'				=> false,
+			'last_albums_parent'		=> '0'
 
 		);
 
@@ -236,6 +238,7 @@ global $wppa_initruntimetime;
 						'wppa_share_pinterest'				=> '',
 
 						'wppa_facebook_comments'			=> '',
+						'wppa_facebook_like'				=> '',
 						'wppa_share_single_image'			=> '',
 
 						// C Thumbnails
@@ -361,6 +364,7 @@ global $wppa_initruntimetime;
 						'wppa_star_opacity'				=> '',	// 6
 						'wppa_vote_button_text'			=> '',
 						'wppa_voted_button_text'		=> '',
+						'wppa_vote_thumb'				=> '',
 						// F Comments
 						'wppa_comment_login' 			=> '',	// 1
 						'wppa_comments_desc'			=> '',	// 2
@@ -549,6 +553,7 @@ global $wppa_initruntimetime;
 						'wppa_append_to_photodesc' 	=> '',
 						'wppa_remove_text'			=> '',
 						'wppa_remove_from_photodesc'	=> '',
+						'wppa_remove_empty_albums'	=> '',
 
 						// Table IX: Miscellaneous
 						'wppa_check_balance'			=> '',
@@ -786,7 +791,7 @@ global $wppa_locale;
 		if ( $wppa_lang ) {
 			$wppa_locale = isset($q_config['locale'][$wppa_lang]) ? $q_config['locale'][$wppa_lang] : '';
 		}
-		wppa_dbg_msg('Lang='.$wppa_lang.', Locale='.$wppa_locale.', Ajax='.$wppa['ajax']);
+//		wppa_dbg_msg('Lang='.$wppa_lang.', Locale='.$wppa_locale.', Ajax='.$wppa['ajax']);
 	}
 	// If still not known, get locale from wp-config
 	if ( ! $wppa_locale ) {		
@@ -1411,17 +1416,24 @@ global $wppa_opt;
 	// Create the source image
 	switch ($mime) {	// mime type
 		case 1: // gif
-			$temp = imagecreatefromgif($file);
-			$src = imagecreatetruecolor($src_size_w, $src_size_h);
-			imagecopy($src, $temp, 0, 0, 0, 0, $src_size_w, $src_size_h);
-			imagedestroy($temp);
+			$temp = @ imagecreatefromgif($file);
+			if ( $temp ) {
+				$src = imagecreatetruecolor($src_size_w, $src_size_h);
+				imagecopy($src, $temp, 0, 0, 0, 0, $src_size_w, $src_size_h);
+				imagedestroy($temp);
+			}
+			else $src = false;
 			break;
 		case 2:	// jpeg
-			$src = imagecreatefromjpeg($file);
+			$src = @ imagecreatefromjpeg($file);
 			break;
 		case 3:	// png
-			$src = imagecreatefrompng($file);
+			$src = @ imagecreatefrompng($file);
 			break;
+	}
+	if ( ! $src ) {
+		wppa_log('Error', 'Image file '.$file.' is corrupt while creating thmbnail');
+		return true;
 	}
 	
 	// Compute the destination image size

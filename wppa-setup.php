@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 5.1.7
+* Version 5.1.8
 *
 */
 
@@ -538,6 +538,7 @@ Hide Camera info
 						'wppa_share_pinterest'				=> 'yes',
 						
 						'wppa_facebook_comments'			=> 'yes',
+						'wppa_facebook_like'				=> 'yes',
 						'wppa_share_single_image'			=> 'no',
 						
 						// C Thumbnails
@@ -664,6 +665,7 @@ Hide Camera info
 						
 						'wppa_vote_button_text'			=> 'Vote for me!',
 						'wppa_voted_button_text'		=> 'Voted for me',
+						'wppa_vote_thumb'				=> 'no',
 						
 						// F Comments
 						'wppa_comment_login' 			=> 'no',
@@ -850,6 +852,7 @@ Hide Camera info
 						'wppa_append_to_photodesc' 	=> '',
 						'wppa_remove_text'			=> '',
 						'wppa_remove_from_photodesc'	=> '',
+						'wppa_remove_empty_albums'	=> '',
 
 						// Table IX: Miscellaneous
 						// A System
