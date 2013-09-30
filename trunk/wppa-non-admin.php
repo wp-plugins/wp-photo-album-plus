@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the non admin stuff
-* Version 5.1.7
+* Version 5.1.8
 *
 */
 
@@ -54,7 +54,10 @@ global $thumb;
 	$id = wppa_get_get('photo', '0');
 	if ( ! is_numeric($id) ) $id = '0';
 	if ( get_option('wppa_og_tags_on', 'yes') == 'yes' ) {
-		wppa_cache_thumb($id);
+		if ( $id ) {
+			wppa_cache_thumb($id);
+		}
+		else $thumb = false;
 		if ( $thumb ) {
 			$title  = wppa_get_photo_name($thumb['id']);
 			$imgurl = wppa_get_thumb_url($id);
@@ -216,7 +219,7 @@ function wppa_fbc_setup() {
 </script>
 <?php 
 }
-if ( get_option('wppa_facebook_comments') == 'yes' ) add_action('wp_footer', 'wppa_fbc_setup', 100);
+if ( ( get_option('wppa_facebook_like') == 'yes' || get_option('wppa_facebook_comments') == 'yes' ) && get_option('wppa_share_on') == 'yes' ) add_action('wp_footer', 'wppa_fbc_setup', 100);
 
 /* CHECK REDIRECTION */
 add_action('init', 'wppa_redirect');
@@ -248,6 +251,7 @@ global $wppa_lang;
 			$lbkey = 'file'; //echo("\t".'wppaLightBox = "file";'."\n");	// gives anchor tag with rel="file"
 			break;
 		case 'lightbox':
+		case 'lightboxsingle':
 			$lbkey = $wppa_opt['wppa_lightbox_name']; //echo("\t".'wppaLightBox = "'.$wppa_opt['wppa_lightbox_name'].'";'."\n");	// gives anchor tag with rel="lightbox" or the like
 			break;
 		default:
@@ -351,6 +355,8 @@ global $wppa_lang;
 	wppaVoteForMe = "'.__($wppa_opt['wppa_vote_button_text']).'";
 	wppaVotedForMe = "'.__($wppa_opt['wppa_voted_button_text']).'";
 	wppaSlideSwipe = '.( wppa_switch('wppa_slide_swipe') ? 'true' : 'false' ).';
+	wppaMaxCoverWidth = '.$wppa_opt['wppa_max_cover_width'].';
+	wppaLightboxSingle = '.( $wppa_opt['wppa_slideshow_linktype'] == 'lightboxsingle' ? 'true': 'false' ).';
 	/* ]]> */
 </script>
 ';

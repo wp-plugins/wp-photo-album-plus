@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions
-* Version 5.1.7
+* Version 5.1.8
 *
 */
 
@@ -18,6 +18,7 @@ global $wppa;
 global $wppa_opt;
 global $wppa_lang;
 global $wppa_locale;
+global $wpdb;
 
 	// Diagnostics
 	wppa_dbg_msg('Entering wppa_albums');
@@ -154,6 +155,33 @@ global $wppa_locale;
 			switch ( $keyword ) {		//	( substr($wppa['start_album'], 0, 5) ) {	
 				case '#last':				// Last upload
 					$id = wppa_get_youngest_album_id();
+					if ( $wppa['is_cover'] ) {	// To make sure the ordering sequence is ok.
+						$temp = explode(',',$wppa['start_album']);
+						if ( isset($temp['1']) && is_numeric($temp['1']) ) $wppa['last_albums_parent'] = $temp['1'];
+						else $wppa['last_albums_parent'] = '0';
+						if ( isset($temp['2']) && is_numeric($temp['2']) ) $wppa['last_albums'] = $temp['2'];
+						else $wppa['last_albums'] = false;
+					}
+					else {		// Ordering seq is not important, convert to album enum
+/* moet nog */				
+						$temp = explode(',',$wppa['start_album']);
+						if ( isset($temp['1']) && is_numeric($temp['1']) ) $parent = $temp['1'];
+						else $parent = '0';
+						if ( isset($temp['2']) && is_numeric($temp['2']) ) $limit = $temp['2'];
+						else $limit = false;
+						if ( $limit ) {
+							if ( $parent ) {
+								$q = $wpdb->prepare("SELECT `id` FROM `".WPPA_ALBUMS."` WHERE `a_parent` = %s ORDER BY `timestamp` DESC LIMIT %d", $parent, $limit);
+							}
+							else {
+								$q = $wpdb->prepare("SELECT `id` FROM `".WPPA_ALBUMS."` ORDER BY `timestamp` DESC LIMIT %d", $limit);
+							}
+							$albs = $wpdb->get_results($q, ARRAY_A);
+							if ( is_array($albs) ) foreach ( array_keys($albs) as $key ) $albs[$key] = $albs[$key]['id'];
+							$id = implode('.', $albs);
+							echo 'Albs='.$id;
+						}					
+					}
 					break;
 				case '#topten':
 					$temp = explode(',',$wppa['start_album']);
@@ -368,6 +396,8 @@ global $thumbs;
 	$wppa['photos_only']	= false;
 	$wppa['page'] 			= '';
 	$wppa['is_upload'] 		= false;
+	$wppa['last_albums']	= false;
+	$wppa['last_albums_parent']	= '0';
 
 }
 
@@ -513,11 +543,22 @@ global $wppa_opt;
 		if ( ! $id ) $id = '0';
 	
 		// Do the query
-		if ( is_numeric($id) ) {
+		if ( $wppa['last_albums'] ) {	// is_cover = true. For the order sequence, see remark in wppa_albums()
+			if ( $wppa['last_albums_parent'] ) {
+				$q = $wpdb->prepare("SELECT * FROM `".WPPA_ALBUMS."` WHERE `a_parent` = %s ORDER BY `timestamp` DESC LIMIT %d", $wppa['last_albums_parent'], $wppa['last_albums']);
+			}
+			else {
+				$q = $wpdb->prepare("SELECT * FROM `".WPPA_ALBUMS."` ORDER BY `timestamp` DESC LIMIT %d", $wppa['last_albums']);
+			}
+			wppa_dbg_msg($q);
+			wppa_dbg_q('Q11a');
+			$albums = $wpdb->get_results($q, ARRAY_A );
+		}
+		elseif ( wppa_is_int($id) ) {
 			if ( $wppa['is_cover'] ) $q = $wpdb->prepare('SELECT * FROM ' . WPPA_ALBUMS . ' WHERE `id` = %s', $id);
 			else $q = $wpdb->prepare('SELECT * FROM ' . WPPA_ALBUMS . ' WHERE `a_parent` = %s '. wppa_get_album_order($id), $id);
 			wppa_dbg_msg($q);
-			wppa_dbg_q('Q11');
+			wppa_dbg_q('Q11b');
 			$albums = $wpdb->get_results($q, ARRAY_A );
 		}
 		elseif ( strpos($id, '.') !== false ) {
@@ -530,6 +571,7 @@ global $wppa_opt;
 			}
 
 			wppa_dbg_msg($q);
+			wppa_dbg_q('Q11c');
 			$albums = $wpdb->get_results($q, ARRAY_A );
 		}
 		else $albums = false;
@@ -942,7 +984,7 @@ global $thumb;
 	
 	// Lightbox subtitle
 	$doit = false;
-	if ( $wppa_opt['wppa_slideshow_linktype'] == 'lightbox' ) $doit = true;					// For fullsize
+	if ( $wppa_opt['wppa_slideshow_linktype'] == 'lightbox' || $wppa_opt['wppa_slideshow_linktype'] == 'lightboxsingle' ) $doit = true;	// For fullsize
 	if ( $wppa_opt['wppa_filmstrip'] && $wppa_opt['wppa_film_linktype'] == 'lightbox') {	// For filmstrip?
 		if ( ! $wppa['is_slideonly'] ) $doit = true;		// Film below fullsize
 		if ( $wppa['film_on'] ) $doit = true;				// Film explicitly on (slideonlyf)		
@@ -1019,6 +1061,7 @@ global $thumb;
 	$result .= $style_a['height']."','";
 	$result .= $fullname."','";
 	$result .= $name."','";
+	if ( $wppa['debug'] ) $result .= '/* desc: */';
 	$result .= $desc."','";
 	$result .= $id."','";
 	$result .= $avgrat."','";
@@ -1031,8 +1074,11 @@ global $thumb;
 	$result .= $iptc."','";
 	$result .= $exif."','";
 	$result .= $lbtitle."','";
+	if ( $wppa['debug'] ) $result .= '/* shareurl: */';
 	$result .= $shareurl."','";	// Used for history.pushstate()
+	if ( $wppa['debug'] ) $result .= '/* sharehtml: */';
 	$result .= $sharehtml."','";	// The content of the SM (share) box
+	if ( $wppa['debug'] ) $result .= '/* ogdesc: */';
 	$result .= $ogdsc."'";
 	
 	// This is an ingenious line of code that is going to prevent us from very much trouble. 
@@ -2140,7 +2186,7 @@ global $wpdb;
 		return;
 	}
 	
-	
+	// Open the thumbframe
 	$wppa['out'] .= wppa_nltab('+').'<div id="thumbnail_frame_'.$thumb['id'].'_'.$wppa['master_occur'].'" class="thumbnail-frame thumbnail-frame-'.$wppa['master_occur'].' thumbnail-frame-photo-'.$thumb['id'].'" style="'.wppa_get_thumb_frame_style().'" >';
 
 	if ($wppa['is_topten']) {
@@ -2212,7 +2258,14 @@ global $wpdb;
 			$wppa['out'] .= wppa_nltab().'<img src="'.$url.'" '.$imgalt.' title="'.$title.'" width="'.$imgwidth.'" height="'.$imgheight.'" style="'.$imgstyle.'" '.$events.' />';
 		}
 	}
-	
+
+// Single button voting system	
+if ( $wppa_opt['wppa_rating_max'] == '1' && wppa_switch('wppa_vote_thumb') ) {
+	$mylast  = $wpdb->get_row($wpdb->prepare( 'SELECT * FROM `'.WPPA_RATING.'` WHERE `photo` = %s AND `user` = %s ORDER BY `id` DESC LIMIT 1', $thumb['id'], wppa_get_user() ), ARRAY_A ); 
+	$buttext = $mylast ? __($wppa_opt['wppa_voted_button_text']) : __($wppa_opt['wppa_vote_button_text']);
+	$wppa['out'] .= '<input id="wppa-vote-button-'.$wppa['master_occur'].'-'.$thumb['id'].'" class="wppa-vote-button-thumb" style="margin:0;" type="button" onclick="wppaVoteThumb('.$wppa['master_occur'].', '.$thumb['id'].')" value="'.$buttext.'" />';
+}
+
 	if ( $wppa['src'] || ( ( $wppa['is_comten'] || $wppa['is_topten'] || $wppa['is_lasten'] || $wppa['is_featen'] ) && $wppa['start_album'] != $thumb['album'] ) ) {
 		$wppa['out'] .= wppa_nltab().'<div class="wppa-thumb-text" style="'.__wcs('wppa-thumb-text').'" >(<a href="'.wppa_get_album_url($thumb['album']).'">'.stripslashes(__(wppa_get_album_name($thumb['album']))).'</a>)</div>';
 	}
@@ -2249,7 +2302,8 @@ global $wpdb;
 	if ( $wppa_opt['wppa_thumb_text_viewcount'] ) {
 		$wppa['out'] .= wppa_nltab().'<div class="wppa-thumb-text" style="clear:both;'.__wcs('wppa-thumb-text').'" >'.__('Views:', 'wppa').' '.$thumb['views'].'</div>';
 	}
-		
+	
+	// Close the thumbframe
 	$wppa['out'] .= wppa_nltab('-').'</div><!-- #thumbnail_frame_'.$thumb['id'].'_'.$wppa['master_occur'].' -->';
 }	
 
@@ -2381,7 +2435,7 @@ global $thumb;
 			
 			// Start command with appropriate $startindex: -2 = at norate, -1 run from first, >=0 still at index
 			// If we use lightbox on slideshow, wait for documen.ready, if we do not use lightbox, go immediately.
-			if ( $wppa_opt['wppa_slideshow_linktype'] == 'lightbox' || $wppa_opt['wppa_film_linktype'] == 'lightbox' ) {
+			if ( $wppa_opt['wppa_slideshow_linktype'] == 'lightbox' || $wppa_opt['wppa_slideshow_linktype'] == 'lightboxsingle' || $wppa_opt['wppa_film_linktype'] == 'lightbox' ) {
 				$wppa['out'] .= wppa_nltab().'jQuery(document).ready(function() { wppaStartStop('.$wppa['master_occur'].', '.$startindex.'); });';
 			}
 			else {
@@ -3118,7 +3172,7 @@ global $wpdb;
 			$type = $wppa_opt['wppa_slideshow_linktype'];	//'';
 			$page = $wppa_opt['wppa_slideshow_linkpage'];
 			$result['url'] = '';
-			if ($type == 'lightbox' || $type == 'file') { 
+			if ( $type == 'lightbox' || $type == 'lightboxsingle' || $type == 'file' ) { 
 				$result['title'] = wppa_zoom_in();
 				$result['target'] = '';
 				return $result;
@@ -3191,6 +3245,7 @@ if ( $wppa['is_tag'] ) $album='0';
 			return $result;
 			break;
 		case 'lightbox':
+		case 'lightboxsingle':
 			$result['url'] = wppa_get_photo_url($photo);
 			$result['title'] = $title; 
 			$result['is_url'] = false;

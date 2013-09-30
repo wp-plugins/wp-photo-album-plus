@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * create, edit and delete albums
-* version 5.1.7
+* version 5.1.8
 *
 */
 
@@ -334,6 +334,9 @@ function _wppa_admin() {
 										<option value="default" <?php if ( $albuminfo['cover_type'] == 'default' ) echo $sel ?> ><?php _e('Standard', 'wppa') ?></option>
 										<option value="longdesc" <?php if ( $albuminfo['cover_type'] == 'longdesc' ) echo $sel ?> ><?php _e('Long Descriptions', 'wppa') ?></option>
 										<option value="imagefactory" <?php if ( $albuminfo['cover_type'] == 'imagefactory' ) echo $sel ?> ><?php _e('Image Factory', 'wppa') ?></option>
+										<option value="default-mcr" <?php if ($albuminfo['cover_type'] == 'default-mcr' ) echo $sel ?> ><?php _e('Standard mcr', 'wppa') ?></option>
+										<option value="longdesc-mcr" <?php if ( $albuminfo['cover_type'] == 'longdesc-mcr' ) echo $sel ?> ><?php _e('Long Descriptions mcr', 'wppa') ?></option>
+										<option value="imagefactory-mcr" <?php if ( $albuminfo['cover_type'] == 'imagefactory-mcr' ) echo $sel ?> ><?php _e('Image Factory mcr', 'wppa') ?></option>
 									</select>
 								</td>
 								<td style="padding-top:6px; padding-bottom:0;">

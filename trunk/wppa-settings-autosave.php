@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 5.1.7
+* Version 5.1.8
 *
 */
 
@@ -391,7 +391,7 @@ wppa_fix_source_extensions();
 		
 		// Blacklist
 		
-		$blacklist_plugins = array('performance-optimization-order-styles-and-javascript/order-styles-js.php');
+		$blacklist_plugins = array('performance-optimization-order-styles-and-javascript/order-styles-js.php', 'wp-ultra-simple-paypal-shopping-cart/wp_ultra_simple_shopping_cart.php');
 		$plugins = get_option('active_plugins');
 		$matches = array_intersect($blacklist_plugins, $plugins);
 		foreach ( $matches as $bad ) {
@@ -1352,6 +1352,14 @@ wppa_fix_source_extensions();
 							$html = wppa_checkbox($slug, $onchange);
 							wppa_setting($slug, '21.6', $name, $desc, $html, $help, $class);
 						
+							$name = __('Show Facebook like button', 'wppa');
+							$desc = __('Display the Facebook button in the share box.', 'wppa');
+							$help = '';
+							$slug = 'wppa_facebook_like';
+							$class = 'wppa_share';
+							$html = wppa_checkbox($slug, $onchange);
+							wppa_setting($slug, '21.90', $name, $desc, $html, $help, $class);
+						
 							$name = __('Show Facebook comment box', 'wppa');
 							$desc = __('Display the Facebook comment dialog box in the share box.', 'wppa');
 							$help = '';
@@ -2229,10 +2237,22 @@ wppa_fix_source_extensions();
 							
 							$name = __('Cover type', 'wppa');
 							$desc = __('Select the default cover type.', 'wppa');
-							$help = '';
+							$help = esc_js(__('Types with the addition mcr are suitable for Multi Column in a Responsive theme', 'wppa'));;
 							$slug = 'wppa_cover_type';
-							$options = array(__('--- standard ---', 'wppa'), __('Long Descriptions', 'wppa'), __('Image Factory', 'wppa'));
-							$values = array('default', 'longdesc', 'imagefactory');
+							$options = array(	__('Standard', 'wppa'), 
+												__('Long Descriptions', 'wppa'), 
+												__('Image Factory', 'wppa'), 
+												__('Standard mcr', 'wppa'),
+												__('Long Descriptions mcr', 'wppa'),
+												__('Image Factory mcr', 'wppa')
+											);
+							$values = array(	'default', 
+												'longdesc', 
+												'imagefactory', 
+												'default-mcr',
+												'longdesc-mcr',
+												'imagefactory-mcr'
+											);
 							$onchange = 'wppaCheckCoverType()';
 							$html = wppa_select($slug, $options, $values, $onchange);
 							wppa_setting($slug, '6', $name, $desc, $html, $help);
@@ -2372,6 +2392,14 @@ wppa_fix_source_extensions();
 							$html = wppa_input($slug, '100');
 							$class = 'wppa_rating_';
 							wppa_setting($slug, '14', $name, $desc, $html, $help, $class);
+							
+							$name = __('Single vote button thumbnail', 'wppa');
+							$desc = __('Display single vote button below thumbnails.', 'wppa');
+							$help = esc_js(__('This works only in single vote mode: Table I-E1 set to "one button vote"', 'wppa'));
+							$slug = 'wppa_vote_thumb';
+							$html = wppa_checkbox($slug);
+							$class = 'wppa_rating_';
+							wppa_setting($slug, '15', $name, $desc, $html, $help, $class);
 							
 							wppa_setting_subheader('F', '1', __('Comments related settings', 'wppa'), 'wppa_comment_');
 							
@@ -3102,8 +3130,8 @@ wppa_fix_source_extensions();
 							$slug4 = 'wppa_slideshow_overrule';
 							$slug = array($slug1, $slug2, $slug3, $slug4);
 							$onchange = 'wppaCheckSlidePhotoLink();';
-							$opts = array(__('no link at all.', 'wppa'), __('the plain photo (file).', 'wppa'), __('the fullsize photo on its own.', 'wppa'), __('lightbox.', 'wppa'));
-							$vals = array('none', 'file', 'single', 'lightbox'); 
+							$opts = array(__('no link at all.', 'wppa'), __('the plain photo (file).', 'wppa'), __('the fullsize photo on its own.', 'wppa'), __('lightbox.', 'wppa'), __('lightbox single photos.', 'wppa'));
+							$vals = array('none', 'file', 'single', 'lightbox', 'lightboxsingle'); 
 //							$opts = array(__('no link at all.', 'wppa'), __('the plain photo (file).', 'wppa'), __('lightbox.', 'wppa'));
 //							$vals = array('none', 'file', 'lightbox'); 
 							$onchange = 'wppaCheckSlidePhotoLink()';
@@ -3128,7 +3156,7 @@ wppa_fix_source_extensions();
 							wppa_setting_subheader('C', '4', __('Other links', 'wppa'));
 
 							$name = __('Art Monkey Link', 'wppa');
-							$desc = __('Enable the Art Monkey link on fullsize names.', 'wppa');
+							$desc = __('Makes the photo name under the slide into a download button.', 'wppa');
 							$help = esc_js(__('Link Photo name in slideshow to file or zip with photoname as filename.', 'wppa'));
 							$slug = 'wppa_art_monkey_link';
 							$options = array(__('--- none ---', 'wppa'), __('image file', 'wppa'), __('zipped image', 'wppa'));
@@ -3722,6 +3750,15 @@ wppa_fix_source_extensions();
 							$html = array($html1, $html2);
 							wppa_setting(false, '6', $name, $desc, $html, $help);
 
+							$name = __('Remove empty albums', 'wppa');
+							$desc = __('Removes albums that are not used.', 'wppa');
+							$help = '';
+							$slug2 = 'wppa_remove_empty_albums';
+							$html1 = '';
+							$html2 = wppa_ajax_button('', $slug2);
+							$html = array($html1, $html2);
+							wppa_setting(false, '7', $name, $desc, $html, $help);
+							
 							?>
 						</tbody>
 						<tfoot style="font-weight: bold;" class="wppa_table_8">

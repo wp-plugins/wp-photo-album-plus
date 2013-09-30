@@ -351,3 +351,10 @@ text-align:left;
     box-sizing: content-box;
 }
 
+.wppa-download-button, .wppa-vote-button {
+padding: 0 4px !important;
+}
+
+.wppa-viewlink { 
+/* min-height: 50px;	/* accomodate for 2 line */
+}
