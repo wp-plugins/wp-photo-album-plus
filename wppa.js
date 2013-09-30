@@ -774,7 +774,7 @@ var result;
 	case 'file':
 	case 'zip':
 //		result = '<a title="Download" style="cursor:pointer;" onclick="wppaAjaxMakeOrigName('+mocc+', '+_wppaId[mocc][_wppaCurIdx[mocc]]+');" >'+_wppaFullNames[mocc][_wppaCurIdx[mocc]]+'</a>';
-		result = '<input type="button" title="Download" style="cursor:pointer;" class="wppa-download-button" onclick="wppaAjaxMakeOrigName('+mocc+', '+_wppaId[mocc][_wppaCurIdx[mocc]]+');" value="'+'Download: '+_wppaFullNames[mocc][_wppaCurIdx[mocc]]+'" />';
+		result = '<input type="button" title="Download" style="cursor:pointer; margin-bottom:0px;" class="wppa-download-button" onclick="wppaAjaxMakeOrigName('+mocc+', '+_wppaId[mocc][_wppaCurIdx[mocc]]+');" value="'+'Download: '+_wppaFullNames[mocc][_wppaCurIdx[mocc]]+'" />';
 		break;
 	case 'none':
 		result = _wppaFullNames[mocc][_wppaCurIdx[mocc]];
