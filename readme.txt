@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile
-Version: 5.1.8
+Version: 5.1.9
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -172,6 +172,29 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 5.1.9 =
+
+= Bug Fixes =
+
+* Fixed faulty links from widget thumbnails while a searchstring was used in the latest pageload.
+* Incomplete search results and errors when Table IX-C2:( exclude separate ) was checked in indexed search. Fixed.
+* Fixed title ( tooltip ) album description in album widget.
+* Fixed a width issue on theme 2013.
+
+= New Features =
+
+* Added LinkedIn share button Table II-B21.7.
+* Added facebook user-id and app-id open graph metatags when filled in in Table II-B21.95 & 26.
+* In the Photo Tags Filter widget one can now select the tags to appear in the widget.
+* In the Photo TagCloud widget one can now select the tags to appear in the widget.
+* There are shortcodes possible to get a box with a Tags Filter or a TagCloud widget-like display. 
+Examples: [wppa type="multitag" taglist="Bird,Duck,Owl" cols="3"][/wppa] and [wppa type="tagcloud" taglist="Bird,Duck,Owl"][/wppa]
+
+= Other Changes =
+
+* Web and mail addresses in album and photo descriptions will now be automaticly made clickable.
+* Thumbnail size in bulk edit photos is now settable ( small, medium, large ).
 
 = 5.1.8 =
 

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Various wppa boxes
-* Version 5.1.8
+* Version 5.1.9
 *
 */
 
@@ -37,8 +37,19 @@ global $album;
 	}
 }
 
+// The tagcloud box
+function wppa_tagcloud_box($seltags = '', $minsize = '8', $maxsize = '24') {
+global $wppa;
+
+	wppa_container('open');
+	$wppa['out'] .= wppa_nltab('+').'<div id="wppa-upload-'.$wppa['master_occur'].'" class="wppa-box wppa-tagcloud" style="'.__wcs('wppa-box').__wcs('wppa-tagcloud').'">';
+		$wppa['out'] .= wppa_get_tagcloud_html($seltags, $minsize, $maxsize);
+	$wppa['out'] .= wppa_nltab('-').'<div style="clear:both;"></div></div>';
+	wppa_container('close');
+}
+
 // Get html for tagcloud
-function wppa_get_tagcloud_html() {
+function wppa_get_tagcloud_html($seltags = '', $minsize = '8', $maxsize = '24') {
 global $wppa_opt;
 global $wppa;
 
@@ -61,21 +72,35 @@ global $wppa;
 		foreach ( $tags as $tag ) {	// Find largest percentage
 			if ( $tag['fraction'] > $top ) $top = $tag['fraction'];
 		}
-		if ( $top ) $factor = '16' / $top;
+		if ( $top ) $factor = ($maxsize - $minsize) / $top;
 		else $factor = '1.0';
+		$selarr = $seltags ? explode( ',', $seltags ) : array();
 		foreach ( $tags as $tag ) {
-			$href 		= $hr . '&wppa-tag=' . $tag['tag'];
-			$title 		= sprintf('%d photos - %s%%', $tag['count'], $tag['fraction'] * '100');
-			$name 		= $tag['tag'];
-			$size 		= floor('8' + $tag['fraction'] * $factor);
-			$result    .= '<a href="'.$href.'" title="'.$title.'" style="font-size:'.$size.'px;" >'.$name.'</a> ';
+			if ( ! $seltags || in_array($tag['tag'], $selarr) ) {
+				$href 		= $hr . '&wppa-tag=' . $tag['tag'];
+				$title 		= sprintf('%d photos - %s%%', $tag['count'], $tag['fraction'] * '100');
+				$name 		= $tag['tag'];
+				$size 		= floor($minsize + $tag['fraction'] * $factor);
+				$result    .= '<a href="'.$href.'" title="'.$title.'" style="font-size:'.$size.'px;" >'.$name.'</a> ';
+			}
 		}
 	}
 	return $result;
 }
 
+// The multitag box
+function wppa_multitag_box($nperline = '2', $seltags = '') {
+global $wppa;
+
+	wppa_container('open');
+	$wppa['out'] .= wppa_nltab('+').'<div id="wppa-upload-'.$wppa['master_occur'].'" class="wppa-box wppa-multitag" style="'.__wcs('wppa-box').__wcs('wppa-multitag').'">';
+		$wppa['out'] .= wppa_get_multitag_html($nperline, $seltags);
+	$wppa['out'] .= wppa_nltab('-').'<div style="clear:both;"></div></div>';
+	wppa_container('close');
+}
+
 // The html for multitag widget
-function wppa_get_multitag_html($nperline = '2') {
+function wppa_get_multitag_html($nperline = '2', $seltags = '') {
 global $wppa_opt;
 global $wppa;
 
@@ -99,16 +124,19 @@ global $wppa;
 	var any = false;
 	var url="'.$hr.'&wppa-tag=";
 	var andor = "and";
-		if ( document.getElementById("andoror").checked ) andor = "or";
+		if ( document.getElementById("andoror-'.$wppa['master_occur'].'").checked ) andor = "or";
 	var sep;
 	if ( andor == "and" ) sep = ","; else sep = ";";
 	';
+	$selarr = $seltags ? explode( ',', $seltags ) : array();
 	if ( $tags ) foreach ( $tags as $tag ) {
-		$result .= '
-		if ( document.getElementById("wppa'.$tag['tag'].'").checked ) {
-			url+="'.$tag['tag'].'"+sep;
-			any = true;
-		}';
+		if ( ! $seltags || in_array($tag['tag'], $selarr) ) {
+			$result .= '
+			if ( document.getElementById("wppa'.$tag['tag'].'").checked ) {
+				url+="'.$tag['tag'].'"+sep;
+				any = true;
+			}';
+		}
 	}	
 	$result .= '
 	if ( any ) document.location = url;
@@ -131,31 +159,34 @@ global $wppa;
 	
 		$result .= '<table><tr>';
 	
-		$result .= '<td><input class="radio" name="andor" value="and" id="andorand" type="radio" ';
+		$result .= '<td><input class="radio" name="andor-'.$wppa['master_occur'].'" value="and" id="andorand-'.$wppa['master_occur'].'" type="radio" ';
 		if ( $andor == 'and' ) $result .= 'checked="checked" ';
-		$result .= 'size="30" />'.__a('And', 'wppa_theme').'</td>';
-		$result .= '<td><input class="radio" name="andor" value="or" id="andoror" type="radio" ';
+		$result .= 'size="30" />&nbsp;'.__a('And', 'wppa_theme').'</td>';
+		$result .= '<td><input class="radio" name="andor-'.$wppa['master_occur'].'" value="or" id="andoror-'.$wppa['master_occur'].'" type="radio" ';
 		if ( $andor == 'or' ) $result .= 'checked="checked" ';
-		$result .= 'size="30" />'.__a('Or', 'wppa_theme').'</td>';
+		$result .= 'size="30" />&nbsp;'.__a('Or', 'wppa_theme').'</td>';
 		$result .= '</tr>';
 		
 		$count = '0';
 		$checked = '';		
 		
 		$tropen = false;
+//		$selarr = $seltags ? explode( ',', $seltags ) : array();
 		foreach ( $tags as $tag ) {
-			if ( $count % $nperline == '0' ) {
-				$result .= '<tr>';
-				$tropen = true;
-			}
-			if ( is_array($querystringtags) ) {
-				$checked = in_array($tag['tag'], $querystringtags) ? 'checked="checked" ' : '';
-			}
-			$result .= '<td style="padding-right:4px;" ><input type="checkbox" id="wppa'.$tag['tag'].'" '.$checked.'/>'.$tag['tag'].'</td>';
-			$count++;
-			if ( $count % $nperline == '0' ) {
-				$result .= '</tr>';
-				$tropen = false;
+			if ( ! $seltags || in_array($tag['tag'], $selarr) ) {
+				if ( $count % $nperline == '0' ) {
+					$result .= '<tr>';
+					$tropen = true;
+				}
+				if ( is_array($querystringtags) ) {
+					$checked = in_array($tag['tag'], $querystringtags) ? 'checked="checked" ' : '';
+				}
+				$result .= '<td style="padding-right:4px;" ><input type="checkbox" id="wppa'.$tag['tag'].'" '.$checked.'/>&nbsp;'.$tag['tag'].'</td>';
+				$count++;
+				if ( $count % $nperline == '0' ) {
+					$result .= '</tr>';
+					$tropen = false;
+				}
 			}
 		}
 		if ( $tropen ) $result .= '</tr>';
@@ -170,6 +201,7 @@ function wppa_get_share_html() {
 global $wppa;
 global $wppa_opt;
 global $thumb;
+global $wppa_locale;
 
 	$do_it = false;
 	if ( ! $wppa['is_slideonly'] ) {
@@ -302,6 +334,15 @@ global $thumb;
 	}
 	else $pi = '';
 	
+	// LinkedIn
+	if ( $wppa_opt['wppa_share_linkedin'] ) {
+		$li = '[script src="//platform.linkedin.com/in.js" type="text/javascript">';
+		$li .= 'lang: '.$wppa_locale;
+		$li .= '[/script>';
+		$li .= '[script type="IN/Share" data-url="'.urlencode($share_url).'" data-counter="top">[/script>';
+	}
+	else $li = '';
+	
 	// Facebook comments
 	if ( ( wppa_switch('wppa_facebook_comments') || wppa_switch('wppa_facebook_like') ) && ! $wppa['in_widget'] ) {
 		$width = $wppa['fullsize'] == 'auto' ? 'auto' : min('470', wppa_get_container_width(true));
@@ -316,7 +357,7 @@ global $thumb;
 	}
 	else $fbc = '';
 	
-	return $qr.$fb.$tw.$hv.$go.$pi.$fbc.//.'<small>This box is under construction and may not yet properly work for all icons shown</small>'.
+	return $qr.$fb.$tw.$hv.$go.$pi.$li.$fbc.//.'<small>This box is under construction and may not yet properly work for all icons shown</small>'.
 	'<div style="clear:both"></div>';
 
 }

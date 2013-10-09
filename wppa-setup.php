@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 5.1.8
+* Version 5.1.9
 *
 */
 
@@ -536,9 +536,12 @@ Hide Camera info
 						'wppa_share_hyves'					=> 'yes',
 						'wppa_share_google'					=> 'yes',
 						'wppa_share_pinterest'				=> 'yes',
+						'wppa_share_linkedin'				=> 'yes',
 						
 						'wppa_facebook_comments'			=> 'yes',
 						'wppa_facebook_like'				=> 'yes',
+						'wppa_facebook_admin_id'			=> '',
+						'wppa_facebook_app_id'				=> '',
 						'wppa_share_single_image'			=> 'no',
 						
 						// C Thumbnails
@@ -611,8 +614,12 @@ Hide Camera info
 						'wppa_bcolor_exif' 				=> '#bbbbbb',
 						'wppa_bgcolor_share'			=> '#dddddd',
 						'wppa_bcolor_share' 			=> '#bbbbbb',
-						'wppa_bgcolor_upload'				=> '#dddddd',
-						'wppa_bcolor_upload'				=> '#bbbbbb',
+						'wppa_bgcolor_upload'			=> '#dddddd',
+						'wppa_bcolor_upload'			=> '#bbbbbb',
+						'wppa_bgcolor_multitag'			=> '#dddddd',
+						'wppa_bcolor_multitag'			=> '#bbbbbb',
+						'wppa_bgcolor_tagcloud'			=> '#dddddd',
+						'wppa_bcolor_tagcloud'			=> '#bbbbbb',
 
 						// Table IV: Behaviour
 						// A System

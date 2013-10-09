@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains low-level utility routines
-* Version 5.1.8
+* Version 5.1.9
 *
 */
 
@@ -16,7 +16,7 @@ function wppa_cache_album($id) {
 global $wpdb;
 global $album;
 
-	if ( ! is_numeric($id) || $id < '1' ) {
+	if ( ! wppa_is_int($id) || $id < '1' ) {
 		wppa_dbg_msg('Invalid arg wppa_cache_album('.$id.')', 'red');
 		return false;
 	}
@@ -24,7 +24,7 @@ global $album;
 		$album = $wpdb->get_row($wpdb->prepare("SELECT * FROM `".WPPA_ALBUMS."` WHERE `id` = %s", $id), 'ARRAY_A');
 		wppa_dbg_q('Q90');
 		if ( ! $album ) {
-			wppa_dbg_msg('Album does not exist', 'red');
+			wppa_dbg_msg('Album '.$id.' does not exist', 'red');
 			return false;
 		}
 	}
@@ -157,6 +157,7 @@ global $wppa_opt;
 	if ( ! is_numeric($id) || $id < '1' ) wppa_dbg_msg('Invalid arg wppa_get_photo_desc('.$id.')', 'red');
 	wppa_cache_thumb($id);
 	$desc = $thumb['description'];			// Raw data
+	if ( ! $desc ) return '';				// No content, need no filtering
 	$desc = stripslashes($desc);			// Unescape
 	$desc = __($desc);						// qTranslate 
 
@@ -203,6 +204,7 @@ global $wppa_opt;
 	$desc = balanceTags($desc, true);		// Balance tags
 	$desc = wppa_filter_iptc($desc, $id);	// Render IPTC tags
 	$desc = wppa_filter_exif($desc, $id);	// Render EXIF tags
+	$desc = make_clickable($desc);			// Auto make a tags for links
 
 	return $desc;
 }
@@ -302,6 +304,7 @@ global $album;
 	if ( ! is_numeric($id) || $id < '1' ) wppa_dbg_msg('Invalid arg wppa_get_album_desc('.$id.')', 'red');
 	wppa_cache_album($id);
 	$desc = $album['description'];			// Raw data
+	if ( ! $desc ) return '';				// No content, need no filtering
 	$desc = stripslashes($desc);			// Unescape
 	$desc = __($desc);						// qTranslate 
 	$desc = wppa_html($desc);				// Enable html
@@ -330,6 +333,10 @@ global $album;
 	
 	// To prevent recursive rendering of scripts or shortcodes:
 	$desc = str_replace(array('%%wppa%%', '[wppa', '[/wppa]'), array('%-wppa-%', '{wppa', '{/wppa}'), $desc);
+	
+	// Convert links and mailto:
+	$desc = make_clickable($desc);
+	
 	return $desc;
 }
 
@@ -1145,4 +1152,8 @@ function wppa_log($type, $msg) {
 	if ( ! $file = fopen(ABSPATH.'wp-content/wppa-depot/admin/error.log', 'ab') ) return;	// Unable to open log file
 	fwrite($file, $type.': on:'.wppa_local_date(get_option('date_format', "F j, Y,").' '.get_option('time_format', "g:i a"), time()).': '.$msg."\n");
 	fclose($file);
+}
+
+function wppa_is_landscape($img_attr) {
+	return ($img_attr[0] > $img_attr[1]);
 }

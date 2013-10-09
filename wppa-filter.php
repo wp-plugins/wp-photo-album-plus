@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * get the albums via filter
-* version 5.1.4
+* version 5.1.9
 *
 */
 
@@ -239,7 +239,9 @@ global $wppa_opt;
 		'album' 	=> '',
 		'photo' 	=> '',
 		'size'		=> '',
-		'align'		=> ''
+		'align'		=> '',
+		'taglist'	=> '',
+		'cols'		=> ''
 	), $atts ) );
 
 	// Find occur
@@ -263,6 +265,11 @@ global $wppa_opt;
 	$wppa['start_photo'] = '0';	// Start a slideshow here
 	$wppa['is_single'] = false;	// Is a one image slideshow
 	$wppa['is_upload'] = false;
+	$wppa['is_multitagbox'] = false;
+	$wppa['is_tagcloudbox'] = false;
+	$wppa['taglist'] 		= '';
+	$wppa['tagcols']		= '2';
+
 //	$size = '';
 //	$align = '';
 
@@ -321,6 +328,15 @@ global $wppa_opt;
 		case 'upload':
 			$wppa['start_album'] = $album;
 			$wppa['is_upload'] = true;
+			break;
+		case 'multitag':
+			$wppa['taglist'] = wppa_sanitize_tags($taglist);
+			$wppa['is_multitagbox'] = true;
+			if ( $cols ) $wppa['tagcols'] = $cols;
+			break;
+		case 'tagcloud':
+			$wppa['taglist'] = wppa_sanitize_tags($taglist);
+			$wppa['is_tagcloudbox'] = true;
 			break;
 	}
 	

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * edit and delete photos
-* version 5.1.0
+* version 5.1.9
 *
 */
 
@@ -715,6 +715,13 @@ function wppa_album_photos_bulk($album) {
 					}
 					return true;
 				}
+				function wppaSetThumbsize(elm) {
+					var thumbsize = elm.value;
+					wppa_setCookie('wppa_bulk_thumbsize',thumbsize,365);
+					jQuery('.wppa-bulk-thumb').css('max-width', thumbsize+'px');
+					jQuery('.wppa-bulk-thumb').css('max-height', (thumbsize/2)+'px');
+					jQuery('.wppa-bulk-dec').css('height', (thumbsize/2)+'px');
+				}
 				jQuery(document).ready(function() {
 					var action = wppa_getCookie('wppa_bulk_action');
 					document.getElementById('wppa-bulk-action').value = action;
@@ -726,6 +733,12 @@ function wppa_album_photos_bulk($album) {
 						jQuery('#wppa-bulk-status').css('display','inline');
 						document.getElementById('wppa-bulk-status').value = wppa_getCookie('wppa_bulk_status');
 					}
+					var thumbsize = wppa_getCookie('wppa_bulk_thumbsize');
+					if ( ! thumbsize ) thumbsize = 100;
+					document.getElementById('wppa-thumb-size').value = thumbsize;
+					jQuery('.wppa-bulk-thumb').css('max-width', thumbsize+'px');
+					jQuery('.wppa-bulk-thumb').css('max-height', (thumbsize/2)+'px');
+					jQuery('.wppa-bulk-dec').css('height', (thumbsize/2)+'px');
 				});
 				
 			</script>
@@ -756,6 +769,14 @@ function wppa_album_photos_bulk($album) {
 				<span style="font-family:sans-serif; font-size:12px; font-style:italic; font-weight:normal;" >
 					<?php _e('Pressing this button will reload the page after executing the selected action', 'wppa') ?>
 				</span>
+				<span style="float:right">
+					<?php _e('Thumbnail size:', 'wppa') ?>
+					<select name="wppa-thumb-size" id="wppa-thumb-size" onchange="wppaSetThumbsize(this);" >
+						<option value="100" ><?php _e('Small', 'wppa') ?></option>
+						<option value="140" ><?php _e('Medium', 'wppa') ?></option>
+						<option value="200" ><?php _e('Large', 'wppa') ?></option>
+					</select>
+				</span>
 				</h3>
 				<table class="widefat" >
 					<thead style="font-weight:bold;" >
@@ -777,14 +798,14 @@ function wppa_album_photos_bulk($album) {
 							<td><?php echo $photo['id'] ?></td>
 							<td>
 								<a href="<?php echo wppa_get_photo_url($photo['id']) ?>" target="_blank" title="Click to see fullsize" >
-									<img src="<?php echo wppa_get_thumb_url($photo['id']) ?>" style="max-width:100px; max-height:50px; " />
+									<img class="wppa-bulk-thumb" src="<?php echo wppa_get_thumb_url($photo['id']) ?>" style="max-width:100px; max-height:50px; " />
 								</a>
 							</td>
 							<td style="width:25%;" >
 								<input type="text" style="width:100%;" id="pname-<?php echo $photo['id'] ?>" onchange="wppaAjaxUpdatePhoto(<?php echo $photo['id'] ?>, 'name', this);" value="<?php echo esc_attr(stripslashes($photo['name'])) ?>" />
 							</td>
 							<td style="width:25%;" >
-								<textarea style="height:50px; width:100%" onchange="wppaAjaxUpdatePhoto(<?php echo $photo['id'] ?>, 'description', this)" ><?php echo(stripslashes($photo['description'])) ?></textarea>
+								<textarea class="wppa-bulk-dec" style="height:50px; width:100%" onchange="wppaAjaxUpdatePhoto(<?php echo $photo['id'] ?>, 'description', this)" ><?php echo(stripslashes($photo['description'])) ?></textarea>
 							</td>
 							<td>
 							<?php if ( current_user_can('wppa_admin') || current_user_can('wppa_moderate') ) { ?>

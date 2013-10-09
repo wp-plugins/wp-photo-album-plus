@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the non admin stuff
-* Version 5.1.8
+* Version 5.1.9
 *
 */
 
@@ -115,6 +115,18 @@ global $thumb;
 			}
 			echo("\n<!-- WPPA+ END Featured photos on this site -->\n");
 		}
+	}
+	
+	// Facebook Admin and App
+	if ( ( wppa_switch('wppa_share_on') ||  wppa_switch('wppa_share_on_widget') ) && ( wppa_switch('wppa_facebook_comments') || wppa_switch('wppa_facebook_like') ) ) {
+		echo("\n<!-- WPPA+ BEGIN Facebook meta tags -->");
+		if ( $wppa_opt['wppa_facebook_admin_id'] ) {
+			echo ("\n\t<meta property=\"fb:admins\" content=\"".$wppa_opt['wppa_facebook_admin_id']."\" />");
+		}
+		if ( $wppa_opt['wppa_facebook_app_id'] ) {
+			echo ("\n\t<meta property=\"fb:app_id\" content=\"".$wppa_opt['wppa_facebook_app_id']."\" />");
+		}
+		echo("\n<!-- WPPA+ END Facebook meta tags -->\n");
 	}
 }
 

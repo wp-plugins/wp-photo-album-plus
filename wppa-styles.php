@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Various style computation routines
-* Version 5.0.17
+* Version 5.1.9
 *
 */
 
@@ -308,5 +308,195 @@ global $wppa_opt;
 	}
 	$result['width'] = $width;
 	$result['height'] = $height;
+	return $result;
+}
+
+function __wcs($class = '', $nocolor = '') {
+global $wppa_opt;
+global $wppa;
+
+	$opt = '';
+	$result = '';
+	switch ($class) {
+		case 'wppa-box':
+			$opt = $wppa_opt['wppa_bwidth'];
+			if ($opt > '0') $result .= 'border-style: solid; border-width:'.$opt.'px; ';
+			$opt = $wppa_opt['wppa_bradius'];
+			if ($opt > '0') {
+				$result .= 'border-radius:'.$opt.'px; ';
+				$result .= '-moz-border-radius:'.$opt.'px; -khtml-border-radius:'.$opt.'px; -webkit-border-radius:'.$opt.'px; ';
+			}
+			$opt = $wppa_opt['wppa_box_spacing'];
+			if ( $opt != '' ) {
+				$result .= 'margin-bottom:'.$opt.'px; ';
+			}
+			break;
+		case 'wppa-mini-box':
+			$opt = $wppa_opt['wppa_bwidth'];
+			if ($opt > '0') {
+				$opt = floor(($opt + 2) / 3);
+				$result .= 'border-style: solid; border-width:'.$opt.'px; ';
+			}
+			$opt = $wppa_opt['wppa_bradius'];
+			if ($opt > '0') {
+				$opt = floor(($opt + 2) / 3);
+				$result .= 'border-radius:'.$opt.'px; ';
+				$result .= '-moz-border-radius:'.$opt.'px; -khtml-border-radius:'.$opt.'px; -webkit-border-radius:'.$opt.'px; ';
+			}
+			break;
+		case 'wppa-thumb-text':
+			$opt = $wppa_opt['wppa_fontfamily_thumb'];
+			if ($opt != '') $result .= 'font-family:'.$opt.'; ';
+			$opt = $wppa_opt['wppa_fontsize_thumb'];
+			if ($opt != '') {
+				$ls = floor($opt * 1.29);
+				$result .= 'font-size:'.$opt.'px; line-height:'.$ls.'px; ';
+			}
+			$opt = $wppa_opt['wppa_fontcolor_thumb'];
+			if ($opt != '') $result .= 'color:'.$opt.'; ';
+			$opt = $wppa_opt['wppa_fontweight_thumb'];
+			if ($opt != '') $result .= 'font-weight:'.$opt.'; ';
+			break;
+		case 'wppa-box-text':
+			$opt = $wppa_opt['wppa_fontfamily_box'];
+			if ($opt != '') $result .= 'font-family:'.$opt.'; ';
+			$opt = $wppa_opt['wppa_fontsize_box'];
+			if ($opt != '') $result .= 'font-size:'.$opt.'px; ';
+			$opt = $wppa_opt['wppa_fontcolor_box'];
+			if ($opt != '' && $nocolor != 'nocolor') $result .= 'color:'.$opt.'; ';
+			$opt = $wppa_opt['wppa_fontweight_box'];
+			if ($opt != '') $result .= 'font-weight:'.$opt.'; ';
+			break;
+		case 'wppa-comments':
+			$opt = $wppa_opt['wppa_bgcolor_com'];
+			if ($opt) $result .= 'background-color:'.$opt.'; ';
+			$opt = $wppa_opt['wppa_bcolor_com'];
+			if ($opt) $result .= 'border-color:'.$opt.'; ';
+			break;
+		case 'wppa-iptc':
+			$opt = $wppa_opt['wppa_bgcolor_iptc'];
+			if ($opt) $result .= 'background-color:'.$opt.'; ';
+			$opt = $wppa_opt['wppa_bcolor_iptc'];
+			if ($opt) $result .= 'border-color:'.$opt.'; ';
+			break;
+		case 'wppa-exif':
+			$opt = $wppa_opt['wppa_bgcolor_exif'];
+			if ($opt) $result .= 'background-color:'.$opt.'; ';
+			$opt = $wppa_opt['wppa_bcolor_exif'];
+			if ($opt) $result .= 'border-color:'.$opt.'; ';
+			break;
+		case 'wppa-share':
+			$opt = $wppa_opt['wppa_bgcolor_share'];
+			if ($opt) $result .= 'background-color:'.$opt.'; ';
+			$opt = $wppa_opt['wppa_bcolor_share'];
+			if ($opt) $result .= 'border-color:'.$opt.'; ';
+			break;
+		case 'wppa-name-desc':
+			$opt = $wppa_opt['wppa_bgcolor_namedesc'];
+			if ($opt) $result .= 'background-color:'.$opt.'; ';
+			$opt = $wppa_opt['wppa_bcolor_namedesc'];
+			if ($opt) $result .= 'border-color:'.$opt.'; ';
+			break;
+		case 'wppa-nav':
+			$opt = $wppa_opt['wppa_bgcolor_nav'];
+			if ($opt != '') $result .= 'background-color:'.$opt.'; ';
+			$opt = $wppa_opt['wppa_bcolor_nav'];
+			if ($opt != '') $result .= 'border-color:'.$opt.'; ';
+			break;
+		case 'wppa-nav-text':
+			$opt = $wppa_opt['wppa_fontfamily_nav'];
+			if ($opt != '') $result .= 'font-family:'.$opt.'; ';
+			$opt = $wppa_opt['wppa_fontsize_nav'];
+			if ($opt != '') $result .= 'font-size:'.$opt.'px; ';
+			$opt = $wppa_opt['wppa_fontcolor_nav'];
+			if ($opt != '') $result .= 'color:'.$opt.'; ';
+			$opt = $wppa_opt['wppa_fontweight_nav'];
+			if ($opt != '') $result .= 'font-weight:'.$opt.'; ';
+			break;
+		case 'wppa-even':
+			$opt = $wppa_opt['wppa_bgcolor_even'];
+			if ($opt != '') $result .= 'background-color:'.$opt.'; ';
+			$opt = $wppa_opt['wppa_bcolor_even'];
+			if ($opt != '') $result .= 'border-color:'.$opt.'; ';
+			break;
+		case 'wppa-alt':
+			$opt = $wppa_opt['wppa_bgcolor_alt'];
+			if ($opt != '') $result .= 'background-color:'.$opt.'; ';
+			$opt = $wppa_opt['wppa_bcolor_alt'];
+			if ($opt != '') $result .= 'border-color:'.$opt.'; ';
+			break;
+		case 'wppa-img':
+			$opt = $wppa_opt['wppa_bgcolor_img'];
+			if ($opt != '') $result .= 'background-color:'.$opt.'; ';
+			break;
+		case 'wppa-title':
+			$opt = $wppa_opt['wppa_fontfamily_title'];
+			if ($opt != '') $result .= 'font-family:'.$opt.'; ';
+			$opt = $wppa_opt['wppa_fontsize_title'];
+			if ($opt != '') $result .= 'font-size:'.$opt.'px; ';
+			$opt = $wppa_opt['wppa_fontcolor_title'];
+			if ($opt != '') $result .= 'color:'.$opt.'; ';
+			$opt = $wppa_opt['wppa_fontweight_title'];
+			if ($opt != '') $result .= 'font-weight:'.$opt.'; ';
+			break;
+		case 'wppa-fulldesc':
+			$opt = $wppa_opt['wppa_fontfamily_fulldesc'];
+			if ($opt != '') $result .= 'font-family:'.$opt.'; ';
+			$opt = $wppa_opt['wppa_fontsize_fulldesc'];
+			if ($opt != '') $result .= 'font-size:'.$opt.'px; ';
+			$opt = $wppa_opt['wppa_fontcolor_fulldesc'];
+			if ($opt != '') $result .= 'color:'.$opt.'; ';
+			$opt = $wppa_opt['wppa_fontweight_fulldesc'];
+			if ($opt != '') $result .= 'font-weight:'.$opt.'; ';
+			break;
+		case 'wppa-fulltitle':
+			$opt = $wppa_opt['wppa_fontfamily_fulltitle'];
+			if ($opt != '') $result .= 'font-family:'.$opt.'; ';
+			$opt = $wppa_opt['wppa_fontsize_fulltitle'];
+			if ($opt != '') $result .= 'font-size:'.$opt.'px; ';
+			$opt = $wppa_opt['wppa_fontcolor_fulltitle'];
+			if ($opt != '') $result .= 'color:'.$opt.'; ';
+			$opt = $wppa_opt['wppa_fontweight_fulltitle'];
+			if ($opt != '') $result .= 'font-weight:'.$opt.'; ';
+			break;
+		case 'wppa-custom':
+			$opt = $wppa_opt['wppa_bgcolor_cus'];
+			if ($opt) $result .= 'background-color:'.$opt.'; ';
+			$opt = $wppa_opt['wppa_bcolor_cus'];
+			if ($opt) $result .= 'border-color:'.$opt.'; ';
+			break;
+		case 'wppa-upload':
+			$opt = $wppa_opt['wppa_bgcolor_upload'];
+			if ($opt) $result .= 'background-color:'.$opt.'; ';
+			$opt = $wppa_opt['wppa_bcolor_upload'];
+			if ($opt) $result .= 'border-color:'.$opt.'; ';
+			break;
+		case 'wppa-multitag':
+			$opt = $wppa_opt['wppa_bgcolor_multitag'];
+			if ($opt) $result .= 'background-color:'.$opt.'; ';
+			$opt = $wppa_opt['wppa_bcolor_multitag'];
+			if ($opt) $result .= 'border-color:'.$opt.'; ';
+			break;
+		case 'wppa-tagcloud':
+			$opt = $wppa_opt['wppa_bgcolor_tagcloud'];
+			if ($opt) $result .= 'background-color:'.$opt.'; ';
+			$opt = $wppa_opt['wppa_bcolor_tagcloud'];
+			if ($opt) $result .= 'border-color:'.$opt.'; ';
+			break;
+		case 'wppa-black':
+//			$opt = $wppa_opt['wppa_black'];
+//			if ($opt != '') $result .= 'color:'.$opt.'; ';
+//			break;
+			break;
+		case 'wppa-arrow':
+			$opt = $wppa_opt['wppa_arrow_color'];
+			if ($opt != '') $result .= 'color:'.$opt.'; ';
+			break;
+		case 'wppa-td';
+			$result .= 'padding: 3px 2px 3px 0; border: 0';
+			break;
+		default:
+			wppa_dbg_msg('Unexpected error in __wcs, unknown class: '.$class, 'red');
+	}
 	return $result;
 }

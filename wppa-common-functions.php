@@ -2,7 +2,7 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 5.1.8
+* version 5.1.9
 *
 */
 
@@ -74,7 +74,7 @@ global $wppa_initruntimetime;
 			'in_widget_frame_width'		=> '',
 			'user_uploaded'				=> false,
 			'current_album'				=> '0',
-			'searchstring'				=> wppa_get_searchstring(),
+			'searchstring'				=> wppa_test_for_search(),
 			'searchresults'				=> '',
 			'any'						=> false,
 			'ajax'						=> false,
@@ -101,13 +101,15 @@ global $wppa_initruntimetime;
 			'ajax_import_files'			=> false,
 			'ajax_import_files_done'	=> false,
 			'last_albums'				=> false,
-			'last_albums_parent'		=> '0'
+			'last_albums_parent'		=> '0',
+			'is_multitagbox' 			=> false,
+			'is_tagcloudbox' 			=> false,
+			'taglist' 					=> '',
+			'tagcols'					=> '2'
+
+
 
 		);
-
-		if (isset($_REQUEST['wppa-searchstring'])) $wppa['src'] = true;		
-		if (isset($_GET['s'])) $wppa['src'] = true;
-
 	}
 	
 	if ( is_admin() ) {
@@ -236,9 +238,13 @@ global $wppa_initruntimetime;
 						'wppa_share_hyves'					=> '',
 						'wppa_share_google'					=> '',
 						'wppa_share_pinterest'				=> '',
+						'wppa_share_linkedin'				=> '',
 
 						'wppa_facebook_comments'			=> '',
 						'wppa_facebook_like'				=> '',
+						'wppa_facebook_admin_id'			=> '',
+						'wppa_facebook_app_id'				=> '',
+
 						'wppa_share_single_image'			=> '',
 
 						// C Thumbnails
@@ -311,8 +317,12 @@ global $wppa_initruntimetime;
 						'wppa_bcolor_exif' 				=> '',
 						'wppa_bgcolor_share'			=> '',
 						'wppa_bcolor_share' 			=> '',
-						'wppa_bgcolor_upload'				=> '',
-						'wppa_bcolor_upload'				=> '',
+						'wppa_bgcolor_upload'			=> '',
+						'wppa_bcolor_upload'			=> '',
+						'wppa_bgcolor_multitag'			=> '',
+						'wppa_bcolor_multitag'			=> '',
+						'wppa_bgcolor_tagcloud'			=> '',
+						'wppa_bcolor_tagcloud'			=> '',
 
 						// Table IV: Behaviour
 						// A System
@@ -1538,20 +1548,28 @@ global $wppa_opt;
 	return true;
 }
 
-function wppa_get_searchstring() {
+function wppa_test_for_search() {
 global $wppa;
 
-	$src = '';
+	if ( isset($_REQUEST['wppa-searchstring']) ) {	// wppa+ search
+		$str = $_REQUEST['wppa-searchstring'];
+	}
+	elseif ( isset($_REQUEST['s']) ) {				// wp search
+		$str = $_REQUEST['s'];
+	}
+	else $str = '';
 	
-	if (isset($_REQUEST['wppa-searchstring'])) {
-		$src = $_REQUEST['wppa-searchstring'];
-//		$src = str_replace('_', ' ', $src);
+	$str = strip_tags($str);						// Sanitize
+	
+	if ( is_array($wppa) ) {
+		$wppa['searchstring'] = $str;
+		if ( $wppa['searchstring'] && $wppa['occur'] == '1' && ! $wppa['in_widget'] ) $wppa['src'] = true;
+		else $wppa['src'] = false;
+		return $str;
 	}
-	elseif (isset($_REQUEST['s'])) {	// wp search
-		$src = $_REQUEST['s'];
+	else {
+		return $str;
 	}
-
-	return strip_tags(stripslashes($src));
 }
 
 function wppa_get_water_file_and_pos() {

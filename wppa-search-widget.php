@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the search widget
-* Version 4.9.10
+* Version 5.1.9
 *
 */
 
@@ -45,7 +45,7 @@ class SearchPhotos extends WP_Widget {
 			<form id="wppa_searchform" action="<?php echo($pagelink) ?>" method="post" class="widget_search">
 				<div>
 					<?php echo $instance['label'] ?>
-					<input type="text" name="wppa-searchstring" id="wppa_s" value="<?php echo $wppa['searchstring'] ?>" />
+					<input type="text" name="wppa-searchstring" id="wppa_s" value="<?php echo wppa_test_for_search() ?>" />
 					<input id = "wppa_searchsubmit" type="submit" value="<?php _e('Search', 'wppa'); ?>" />
 				</div>
 			</form>
