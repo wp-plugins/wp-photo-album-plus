@@ -1532,6 +1532,9 @@ function _bumpViewCount(photo) {
 }
 
 function wppaVoteThumb(mocc, photoid) {
+	// Create http object
+	var xmlhttp = wppaGetXmlHttp();	
+
 	// Make the Ajax url
 	url = wppaAjaxUrl+'?action=wppa&wppa-action=rate&wppa-rating=1&wppa-rating-id='+photoid;
 	url += '&wppa-occur='+mocc;
