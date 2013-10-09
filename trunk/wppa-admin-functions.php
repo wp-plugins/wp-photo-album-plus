@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * gp admin functions
-* version 5.1.8
+* version 5.1.9
 *
 * 
 */
@@ -453,6 +453,7 @@ global $wpdb;
 
 // Remove photo entries that have no fullsize image or thumbnail
 // Additionally check the php config
+// Photos that have a deleted album: album created
 function wppa_cleanup_photos($alb = '') {
 	global $wpdb;
 	global $wppa_opt;
@@ -483,12 +484,16 @@ if ( is_multisite() ) return; // temp disabled for 4.0 bug, must be tested in a 
 		foreach ( $entries as $entry ) {
 			$thumbpath = wppa_get_thumb_path($entry['id']);
 			$imagepath = wppa_get_photo_path($entry['id']);
-			if ( !is_file($thumbpath) ) {	// No thumb 
+			if ( ! is_file($thumbpath) ) {	// No thumb 
 				wppa_dbg_msg('Error: expected thumbnail image file does not exist: '.$thumbpath, 'red', true);
 			}
-			if ( !is_file($imagepath) ) { // No fullimage
+			if ( ! is_file($imagepath) ) { // No fullimage
 				wppa_dbg_msg('Error: expected fullsize image file does not exist: '.$thumbpath, 'red', true);
 				wppa_dbg_msg('Please delete photo '.$entry['name'].' with id='.$entry['id'], 'red', true);
+			}
+			if ( ! wppa_album_exists($entry['album']) ) {
+				wppa_dbg_msg('Photo '.$entry['id'].' has album='.$entry['album'].', but the album does not exist.');
+				$wpdb->query("UPDATE `".WPPA_PHOTOS."` SET `album` = 0 WHERE `id` = ".$entry['id']);
 			}
 		}
 	}
@@ -547,7 +552,7 @@ if ( is_multisite() ) return; // temp disabled for 4.0 bug, must be tested in a 
 		$album = wppa_get_album_id(__('Orphan Photos', 'wppa'));
 		if ($album == '') {
 			$key = wppa_nextkey(WPPA_ALBUMS);
-			$query = $wpdb->prepare("INSERT INTO `" . WPPA_ALBUMS . "` (`id`, `name`, `description`, `a_order`, `a_parent`, `p_order_by`, `main_photo`, `cover_linktype`, `cover_linkpage`, `owner`, `timestamp`, `default_tags`, `cover_type`, `suba_order_by`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, '', '', '')", $key, __('Orphan Photos', 'wppa'), '', '0', '0', '0', '0', 'content', '0', 'admin', time());
+			$query = $wpdb->prepare("INSERT INTO `" . WPPA_ALBUMS . "` (`id`, `name`, `description`, `a_order`, `a_parent`, `p_order_by`, `main_photo`, `cover_linktype`, `cover_linkpage`, `owner`, `timestamp`, `default_tags`, `cover_type`, `suba_order_by`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, '', '', '')", $key, __('Orphan Photos', 'wppa'), '', '0', '-1', '0', '0', 'content', '0', 'admin', time());
 			$iret = $wpdb->query($query);
 			if ($iret === false) {
 				wppa_error_message('Could not create album: Orphan Photos', 'wppa');

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the tagcloud widget
-* Version 4.9.14
+* Version 4.1.9
 *
 */
 
@@ -23,7 +23,7 @@ class TagcloudPhotos extends WP_Widget {
 
         extract( $args );
 
-		$instance = wp_parse_args( (array) $instance, array( 'title' => __('Photo Tags', 'wppa') ) );
+		$instance = wp_parse_args( (array) $instance, array( 'title' => __('Photo Tags', 'wppa'), 'tags' => '' ) );
         
  		$widget_title = apply_filters('widget_title', $instance['title']);
 
@@ -32,7 +32,7 @@ class TagcloudPhotos extends WP_Widget {
 			
 		if ( !empty( $widget_title ) ) { echo $before_title . $widget_title . $after_title; }
 		
-		echo '<div class="wppa-tagcloud" >'.wppa_get_tagcloud_html().'</div>';
+		echo '<div class="wppa-tagcloud" >'.wppa_get_tagcloud_html(implode(',', $instance['tags'])).'</div>';
 		echo '<div style="clear:both"></div>';
 		echo $after_widget;
     }
@@ -41,17 +41,30 @@ class TagcloudPhotos extends WP_Widget {
     function update($new_instance, $old_instance) {				
 		$instance = $old_instance;
 		$instance['title'] = strip_tags($new_instance['title']);
-		
+		$instance['tags'] = $new_instance['tags'];	
         return $instance;
     }
 
     /** @see WP_Widget::form */
     function form($instance) {				
 		//Defaults
-		$instance = wp_parse_args( (array) $instance, array( 'title' => __('Photo Tags', 'wppa') ) );
+		$instance = wp_parse_args( (array) $instance, array( 'title' => __('Photo Tags', 'wppa'), 'tags' => '' ) );
 		$title = $instance['title'];
+		$stags = $instance['tags'];
 		
 		echo '<p><label for="' . $this->get_field_id('title') . '">' . __('Title:', 'wppa') . '</label><input class="widefat" id="' . $this->get_field_id('title') . '" name="' . $this->get_field_name('title') . '" type="text" value="' . $title . '" /></p>';
+		echo '<p><label for="' . $this->get_field_id('tags') . '">' . __('Select multiple tags or --- all ---:', 'wppa') . '</label><br />';
+			echo '<select class="widefat" id="' . $this->get_field_id('tags') . '" name="' . $this->get_field_name('tags') . '[]" multiple="multiple" >'.
+					'<option value="" >'.__('--- all ---', 'wppa').'</option>';
+						$tags = wppa_get_taglist();
+						if ( $tags ) foreach ( array_keys($tags) as $tag ) {
+							if ( in_array($tag, $stags) ) $sel = ' selected="selected"'; else $sel = '';
+							echo '<option value="'.$tag.'"'.$sel.' >'.$tag.'</option>';
+						}
+			echo '</select>';
+		echo '</p>';
+		if ( isset($instance['tags']['0']) && $instance['tags']['0'] ) $s = implode(',', $instance['tags']); else $s = __('--- all ---', 'wppa');
+		echo '<p>Currently selected tags: <br /><b>'.$s.'</b></p>';
 
     }
 

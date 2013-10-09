@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 5.1.8
+* Version 5.1.9
 *
 */
 
@@ -1351,7 +1351,15 @@ wppa_fix_source_extensions();
 							$class = 'wppa_share';
 							$html = wppa_checkbox($slug, $onchange);
 							wppa_setting($slug, '21.6', $name, $desc, $html, $help, $class);
-						
+
+							$name = __('Show LinkedIn button', 'wppa');
+							$desc = __('Display the LinkedIn button in the share box.', 'wppa');
+							$help = '';
+							$slug = 'wppa_share_linkedin';
+							$class = 'wppa_share';
+							$html = wppa_checkbox($slug, $onchange);
+							wppa_setting($slug, '21.7', $name, $desc, $html, $help, $class);
+							
 							$name = __('Show Facebook like button', 'wppa');
 							$desc = __('Display the Facebook button in the share box.', 'wppa');
 							$help = '';
@@ -1368,6 +1376,22 @@ wppa_fix_source_extensions();
 							$html = wppa_checkbox($slug, $onchange);
 							wppa_setting($slug, '21.91', $name, $desc, $html, $help, $class);
 							
+							$name = __('Facebook User Id', 'wppa');
+							$desc = __('Enter your facebook user id to be able to moderate comments and sends', 'wppa');
+							$help = '';
+							$slug = 'wppa_facebook_admin_id';
+							$class = 'wppa_share';
+							$html = wppa_input($slug, '200px');
+							wppa_setting($slug, '21.95', $name, $desc, $html, $help, $class);
+							
+							$name = __('Facebook App Id', 'wppa');
+							$desc = __('Enter your facebook app id to be able to moderate comments and sends', 'wppa');
+							$help = '';
+							$slug = 'wppa_facebook_app_id';
+							$class = 'wppa_share';
+							$html = wppa_input($slug, '200px');
+							wppa_setting($slug, '21.96', $name, $desc, $html, $help, $class);
+
 							$name = __('Share single image', 'wppa');
 							$desc = __('Share a link to a single image, not the slideshow.', 'wppa');
 							$help = esc_js(__('The sharelink points to a page with a single image rather than to the page with the photo in the slideshow.', 'wppa'));
@@ -1874,6 +1898,28 @@ wppa_fix_source_extensions();
 							$html2 = wppa_input($slug2, '100px', '', '', "checkColor('".$slug2."')") . '</td><td>' . wppa_color_box($slug2);
 							$html = array($html1, $html2);
 							wppa_setting($slug, '4', $name, $desc, $html, $help);
+
+							$name = __('Multitag', 'wppa');
+							$desc = __('Multitag box background.', 'wppa');
+							$help = esc_js(__('Enter valid CSS colors for multitag box backgrounds and borders.', 'wppa'));
+							$slug1 = 'wppa_bgcolor_multitag';
+							$slug2 = 'wppa_bcolor_multitag';
+							$slug = array($slug1, $slug2);
+							$html1 = wppa_input($slug1, '100px', '', '', "checkColor('".$slug1."')") . '</td><td>' . wppa_color_box($slug1);
+							$html2 = wppa_input($slug2, '100px', '', '', "checkColor('".$slug2."')") . '</td><td>' . wppa_color_box($slug2);
+							$html = array($html1, $html2);
+							wppa_setting($slug, '5', $name, $desc, $html, $help);
+
+							$name = __('Tagcloud', 'wppa');
+							$desc = __('Tagcloud box background.', 'wppa');
+							$help = esc_js(__('Enter valid CSS colors for tagcloud box backgrounds and borders.', 'wppa'));
+							$slug1 = 'wppa_bgcolor_tagcloud';
+							$slug2 = 'wppa_bcolor_tagcloud';
+							$slug = array($slug1, $slug2);
+							$html1 = wppa_input($slug1, '100px', '', '', "checkColor('".$slug1."')") . '</td><td>' . wppa_color_box($slug1);
+							$html2 = wppa_input($slug2, '100px', '', '', "checkColor('".$slug2."')") . '</td><td>' . wppa_color_box($slug2);
+							$html = array($html1, $html2);
+							wppa_setting($slug, '6', $name, $desc, $html, $help);
 
 							?>
 						</tbody>

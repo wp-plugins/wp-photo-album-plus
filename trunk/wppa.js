@@ -2,7 +2,7 @@
 //
 // conatins slideshow, theme, ajax and lightbox code
 //
-// Version 5.1.8
+// Version 5.1.9
 
 // Part 1: Slideshow
 //
@@ -1200,13 +1200,16 @@ function _wppaUnloadSpinner(mocc) {
 
 function wppaGetContainerWidth(mocc) {
 	var elm = document.getElementById('wppa-container-'+mocc);
+	var w = 0;
 	
 	if ( !wppaAutoColumnWidth[mocc] ) return elm.clientWidth;
 	
-	while (elm.parentNode.clientWidth == 0) {
+	while ( w == 0 ) {
 		elm = elm.parentNode;
+		w = jQuery(elm).width();
 	}
-	return elm.parentNode.clientWidth * wppaAutoColumnFrac[mocc];
+
+	return w * wppaAutoColumnFrac[mocc];
 }
 
 function _wppaDoAutocol(mocc) {
@@ -1319,7 +1322,7 @@ function _wppaDoAutocol(mocc) {
 	jQuery(".wppa-mimg-"+mocc).css('height', '');
 
 	// Check again after 50 ms	
-	setTimeout('_wppaDoAutocol('+mocc+')', 50);
+	setTimeout('_wppaDoAutocol('+mocc+')', 10);
 }
 
 function _wppaCheckRewind(mocc) {

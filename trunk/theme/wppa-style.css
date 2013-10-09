@@ -358,3 +358,7 @@ padding: 0 4px !important;
 .wppa-viewlink { 
 /* min-height: 50px;	/* accomodate for 2 line */
 }
+
+.IN-widget {
+float:left;
+}
