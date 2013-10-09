@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions
-* Version 5.1.9
+* Version 5.1.10
 *
 */
 
@@ -546,7 +546,7 @@ global $wppa_opt;
 			$albums = '';
 			$idx = '0';
 			foreach ($albs as $album) if (!$wppa_opt['wppa_excl_sep'] || $album['a_parent'] != '-1') {
-				if (wppa_deep_stristr(wppa_qtrans($album['name']).' '.wppa_qtrans($album['description']), $src)) {
+				if (wppa_deep_stristr(wppa_qtrans($album['name']).' '.wppa_qtrans($album['description']), $wppa['searchstring'])) {
 					$albums[$idx] = $album;
 					$idx++;
 				}
