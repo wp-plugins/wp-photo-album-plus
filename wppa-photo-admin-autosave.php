@@ -593,7 +593,7 @@ function wppa_album_photos_bulk($album) {
 								wppa_flush_treecounts($photo['album']);		// Current album
 								wppa_flush_treecounts($newalb);				// New album
 								$wpdb->query($wpdb->prepare('UPDATE `'.WPPA_PHOTOS.'` SET `album` = %s WHERE `id` = %s', $newalb, $id));
-								wppa_move_source($photo['filename'], $photo['album'], $id);
+								wppa_move_source($photo['filename'], $photo['album'], $newalb);
 							}
 							else wppa_error_message('Unexpected error #4 in wppa_album_photos_bulk().');
 							break;

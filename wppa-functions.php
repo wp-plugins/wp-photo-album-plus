@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions
-* Version 5.1.10
+* Version 5.1.11
 *
 */
 
@@ -19,6 +19,7 @@ global $wppa_opt;
 global $wppa_lang;
 global $wppa_locale;
 global $wpdb;
+global $thumbs;
 
 	// Diagnostics
 	wppa_dbg_msg('Entering wppa_albums');
@@ -97,10 +98,22 @@ global $wpdb;
 		$wppa['is_comten']		= $wppa['comten_count'] != '0';
 		$wppa['featen_count']	= wppa_get_get('featen', '0');
 		$wppa['is_featen']		= $wppa['featen_count'] != '0';
-		$wppa['is_tag']			= trim(trim(strip_tags(wppa_get_get('tag', false)), ','), ';');
+		$wppa['photos_only'] 	= wppa_get_get('photos-only', false);
+		$wppa['related_count'] 	= wppa_get_get('relcount', '0');
+		$wppa['is_related'] 	= wppa_get_get('rel', false);
+		if ( $wppa['is_related'] == 'tags' ) {
+			$wppa['is_tag'] = wppa_get_related_data();
+			if ( $wppa['related_count'] == '0') $wppa['related_count'] = $wppa_opt['wppa_related_count'];
+		}
+		else $wppa['is_tag']	= trim(trim(strip_tags(wppa_get_get('tag', false)), ','), ';');
+		if ( $wppa['is_related'] == 'desc' ) {
+			$wppa['src'] = true;
+			if ( $wppa['related_count'] == '0') $wppa['related_count'] = $wppa_opt['wppa_related_count'];
+			$wppa['searchstring'] = str_replace(';', ',', wppa_get_related_data());
+			$wppa['photos_only'] = true;
+		}
 		if ( $wppa['is_tag'] ) wppa_dbg_msg('Is Tag: '.$wppa['is_tag']);
 		else wppa_dbg_msg('Is NOT Tag');
-		$wppa['photos_only'] 	= wppa_get_get('photos-only', false);
 		$wppa['page'] 			= wppa_get_get('page', '');
 		if ( wppa_get_get('superview', false) ) {
 			$_SESSION['wppa_session']['superview'] = $wppa['is_slide'] ? 'slide': 'thumbs';
@@ -133,19 +146,6 @@ global $wpdb;
 	}
 	// 3. The filter supplied the data
 	else {
-		// Do Nothing in $wppa, all is set by filter
-		/*
-		if (isset($_REQUEST['wppa-searchstring'])) {
-if ( $wppa['occur'] == '1' && ! $wppa['in_widget'] ) $wppa['src'] = true;
-wppa_dbg_msg('Oc='.$wppa['occur'].', Mocc='.$wppa['master_occur']);
-			wppa_dbg_msg('Searchstring = '.$_REQUEST['wppa-searchstring']);
-			if ( $wppa['src'] ) wppa_dbg_msg('src is true');
-			else wppa_dbg_msg('src is false');
-		}
-		else {
-			wppa_dbg_msg('Searchstring is not set');
-		}
-		*/
 		if ( $wppa['is_landing'] && ! $wppa['src'] ) {
 			wppa_dbg_msg('Nothing to do...');
 			wppa_reset_occurrance();
@@ -233,6 +233,24 @@ wppa_dbg_msg('Oc='.$wppa['occur'].', Mocc='.$wppa['master_occur']);
 						wppa_reset_occurrance();
 						return;	// Give up this occurence
 					}
+					break;
+				case '#related':
+					$temp = explode(',',$wppa['start_album']);
+					$type = isset($temp[1]) ? $temp[1] : 'tags';	// tags is default type
+					$wppa['related_count'] = isset($temp[2]) ? $temp[2] : $wppa_opt['wppa_related_count'];
+					$wppa['is_related'] = $type;
+					
+					$data = wppa_get_related_data();
+
+					if ( $type == 'tags' ) {
+						$wppa['is_tag'] = $data;
+					}
+					if ( $type == 'desc' ) {
+						$wppa['src'] = true;
+						$wppa['searchstring'] = str_replace(';', ',', $data);
+						$wppa['photos_only'] = true;
+					}
+					$wppa['start_album'] = '';
 					break;
 				case '#tags':
 					$wppa['is_tag'] = wppa_sanitize_tags(substr($wppa['start_album'], 6), true);
@@ -335,6 +353,18 @@ wppa_dbg_msg('Oc='.$wppa['occur'].', Mocc='.$wppa['master_occur']);
 		$wppa['align'] = $align;
 	}
 
+	// Empty related shortcode?
+	if ( $wppa['is_related'] ) {
+		$thumbs = false;
+		wppa_get_thumbs();
+		if ( empty($thumbs) ) {
+			wppa_errorbox(__a('No related photos found.', 'wppa_theme'));
+			$result = $wppa['out'];
+			wppa_reset_occurrance();	// Forget this occurrance
+			return $result;	
+		}
+	}
+	
 	// Is it the multitag box?
 	if ( $wppa['is_multitagbox'] ) {
 		wppa_multitag_box($wppa['tagcols'], $wppa['taglist']);
@@ -373,6 +403,19 @@ wppa_dbg_msg('Oc='.$wppa['occur'].', Mocc='.$wppa['master_occur']);
 	wppa_reset_occurrance();
 	return $out;		
 }
+
+function wppa_get_related_data() {
+global $wpdb;
+	$pagid = wppa_get_the_id();
+	$data = $wpdb->get_var("SELECT `post_content` FROM `".$wpdb->posts."` WHERE `ID` = ".$pagid);
+	$data = str_replace(array(' ', ',', '.', "\t", "\r", "0", "x0B", "\n"), ';', $data);
+	$data = strip_tags($data);
+	$data = strip_shortcodes($data);
+	$data = wppa_sanitize_tags($data, true);
+	$data = trim($data, "; \t\n\r\0\x0B");
+	return $data;
+}
+
 
 // Prepare for next occurance by resetting runtime vars
 function wppa_reset_occurrance() {
@@ -419,6 +462,8 @@ global $thumbs;
 	$wppa['is_tagcloudbox'] = false;
 	$wppa['taglist'] 		= '';
 	$wppa['tagcols']		= '2';
+	$wppa['is_related']		= false;
+	$wppa['related_count']	= '0';
 
 
 }
@@ -727,8 +772,11 @@ global $thumbs;
 					}
 				}
 			}
-			if ( $in ) $thumbs[] = $temp[$index];
+			if ( $in ) {
+				if ( $wppa['is_related'] != 'tags' || count($thumbs) < $wppa['related_count'] ) $thumbs[] = $temp[$index];
+			}
 		}
+		wppa_dbg_msg('Found:'.count($thumbs).' thumbs');
 	}
 	// Search?
 	elseif ( $wppa['src'] ) {	// Searching
@@ -1443,12 +1491,10 @@ global $wppa_opt;
 		$extra_url .= '&amp;wppa-'.$w.'occur='.$occur;
 	}
 	else {
-		if ( isset($_GET['wppa-occur']) ) $extra_url .= '&amp;wppa-occur='.$_GET['wppa-occur'];
-		if ( isset($_GET['wppa-woccur']) ) $extra_url .= '&amp;wppa-woccur='.$_GET['wppa-woccur'];
+		if ( isset($_GET['wppa-occur']) ) $extra_url .= '&amp;wppa-occur='.strip_tags($_GET['wppa-occur']);
+		if ( isset($_GET['wppa-woccur']) ) $extra_url .= '&amp;wppa-woccur='.strip_tags($_GET['wppa-woccur']);
 	}
 	// Topten?
-//	if ( wppa_get_get('topten') ) $extra_url .= '&amp;wppa-topten='.wppa_get_get('topten');
-//	else
 	if ( $wppa['is_topten'] ) $extra_url .= '&amp;wppa-topten='.$wppa['topten_count'];
 	// Lasten?
 	if ( $wppa['is_lasten'] ) $extra_url .= '&amp;wppa-lasten='.$wppa['lasten_count'];
@@ -1457,10 +1503,11 @@ global $wppa_opt;
 	// Featen?
 	if ( $wppa['is_featen'] ) $extra_url .= '&amp;wppa-featen='.$wppa['featen_count'];
 	// Tag?
-	if ( $wppa['is_tag'] ) $extra_url .= '&amp;wppa-tag='.$wppa['is_tag'];
+	if ( $wppa['is_tag'] && ! $wppa['is_related'] ) $extra_url .= '&amp;wppa-tag='.$wppa['is_tag'];
 	// Search?
-	if ( $wppa['src'] ) $extra_url .= '&amp;wppa-searchstring='.urlencode($wppa['searchstring']);
-	
+	if ( $wppa['src'] && ! $wppa['is_related'] ) $extra_url .= '&amp;wppa-searchstring='.urlencode($wppa['searchstring']);
+	// Related
+	if ( $wppa['is_related'] ) $extra_url = '&amp;wppa-rel='.$wppa['is_related'].'&amp;wppa-relcount='.$wppa['related_count'];
 	// Photos only?
 	if ( $wppa['photos_only'] ) $extra_url .= '&amp;wppa-photos-only=1';
 	
@@ -2028,7 +2075,7 @@ global $wppa_opt;
 		if ($wppa['is_cover'] == '1') {		// Cover has no thumbs: 0 pages
 			$result = '0';
 		} 
-		elseif ( $arraycount <= $wppa_opt['wppa_min_thumbs'] && ! $wppa['src'] && ! $wppa['is_tag'] ) {	// Less than treshold and not searching and not from tagcloud: 0
+		elseif ( $arraycount <= $wppa_opt['wppa_min_thumbs'] && ! $wppa['src'] && ! $wppa['is_tag'] && ! $wppa['is_related'] ) {	// Less than treshold and not searching and not from tagcloud: 0
 			$result = '0';
 		}
 		elseif ($tps != '0') {
@@ -3258,7 +3305,7 @@ if ( $wppa['is_tag'] ) $album='0';
 			break;
 	}
 	
-	if ( $wppa['src'] ) { 
+	if ( $wppa['src'] && ! $wppa['is_related'] ) { 
 		$result['url'] .= '&amp;wppa-searchstring='.urlencode($wppa['searchstring']);//strip_tags($_REQUEST['wppa-searchstring']));
 	}
 
@@ -3290,7 +3337,10 @@ if ( $wppa['is_tag'] ) $album='0';
 		$result['url'] .= '&amp;wppa-featen='.$wppa['featen_count'].'&amp;wppa-randseed='.$wppa['randseed'];
 	}
 	
-	if ( $wppa['is_tag'] ) {
+	if ( $wppa['is_related'] ) {
+		$result['url'] .= '&amp;wppa-rel='.$wppa['is_related'].'&amp;wppa-relcount='.$wppa['related_count'];
+	}
+	elseif ( $wppa['is_tag'] ) {
 		$result['url']  .= '&amp;wppa-tag='.$wppa['is_tag'];
 	}
 	
@@ -3381,6 +3431,8 @@ global $wppa_get_get_cache;
 	else return $default;						// Nothing, return default
 	
 	if ( $result == 'nil' ) $result = $default;	// Nil simulates not set
+	
+	$result = strip_tags($result);
 	
 	// Post processing needed?
 	if ( $index == 'photo' && ( ! is_numeric($result) || ! wppa_photo_exists($result) ) ) {

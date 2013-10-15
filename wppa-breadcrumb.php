@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Functions for breadcrumbs
-* Version 5.1.8
+* Version 5.1.11
 *
 */
 
@@ -32,8 +32,11 @@ global $wpdb;
 	if ( $wppa['is_lasten'] && ! wppa_switch('wppa_bc_on_lasten') ) return;
 	if ( $wppa['is_comten'] && ! wppa_switch('wppa_bc_on_comten') ) return;
 	if ( $wppa['is_featen'] && ! wppa_switch('wppa_bc_on_featen') ) return;
-	if ( $wppa['is_tag'] && ! wppa_switch('wppa_bc_on_tag') ) return;
-	if ( $wppa['src'] && ! wppa_switch('wppa_bc_on_search') ) return;
+	if ( $wppa['is_related'] && ! wppa_switch('wppa_bc_on_related') ) return;
+	else {
+		if ( $wppa['is_tag'] && ! wppa_switch('wppa_bc_on_tag') ) return;
+		if ( $wppa['src'] && ! wppa_switch('wppa_bc_on_search') ) return;
+	}
 
 	// Get the album number
 	$alb = wppa_is_int( $wppa['start_album'] ) ? $wppa['start_album'] : '0';	// A single album or all ( all = 0 here )
@@ -90,7 +93,7 @@ global $wpdb;
 		}
 		
 		// The album and optionall placeholder for photo
-		if ( $wppa['src'] && $wppa['master_occur'] == '1' ) {	// Search
+		if ( $wppa['src'] && $wppa['master_occur'] == '1' && ! $wppa['is_related'] ) {	// Search
 			if ( $wppa['is_slide'] ) {
 				$value 	= __a('Searchstring:').'&nbsp;'.stripslashes($wppa['searchstring']);
 				$href 	= wppa_get_permalink().'wppa-cover=0&amp;wppa-occur='.$wppa['occur'].'&amp;wppa-searchstring='.stripslashes($wppa['searchstring']);
@@ -170,6 +173,18 @@ global $wpdb;
 				wppa_bcitem($value, $href, $title, 'b8');
 			}
 			$value 	= __a('Featured photos');
+			$href 	= '';
+			$title	= '';
+			wppa_bcitem($value, $href, $title, 'b9');
+		}
+		elseif ( $wppa['is_related'] ) {						// Related photos
+			if ( $wppa['is_slide'] ) {
+				$value 	= __a('Related photos');
+				$href 	= wppa_get_permalink().'wppa-cover=0&amp;wppa-occur='.$wppa['occur'].'&amp;wppa-tags='.$wppa['is_tag'].'&amp;wppa-album='.$wppa['start_album'];
+				$title	= __a('View the thumbnails');
+				wppa_bcitem($value, $href, $title, 'b8');
+			}
+			$value 	= __a('Related photos');
 			$href 	= '';
 			$title	= '';
 			wppa_bcitem($value, $href, $title, 'b9');

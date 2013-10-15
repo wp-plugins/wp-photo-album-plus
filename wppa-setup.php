@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 5.1.9
+* Version 5.1.11
 *
 */
 
@@ -478,6 +478,9 @@ Hide Camera info
 						'wppa_lasten_size' 				=> '86',	// 8
 						'wppa_album_widget_count'		=> '10',
 						'wppa_album_widget_size'		=> '86',
+						
+						'wppa_related_count'			=> '10',
+						
 						// G Overlay
 						'wppa_ovl_txt_lines'			=> 'auto',	// 1
 						'wppa_magnifier'				=> 'magnifier-small.png',	// 2
@@ -492,6 +495,7 @@ Hide Camera info
 						'wppa_bc_on_comten'					=> 'yes',	// 3
 						'wppa_bc_on_featen'					=> 'yes',
 						'wppa_bc_on_tag'					=> 'yes',	// 3
+						'wppa_bc_on_related'				=> 'yes',
 						'wppa_show_home' 					=> 'yes',	// 4
 						'wppa_show_page' 					=> 'yes',	// 4
 						'wppa_bc_separator' 				=> 'raquo',	// 5
@@ -919,6 +923,7 @@ Hide Camera info
 						'wppa_indexed_search'			=> 'no',
 						'wppa_max_search_photos'		=> '250',
 						'wppa_max_search_albums'		=> '25',
+						'wppa_tags_or_only'				=> 'no',
 						
 						// D Watermark
 						'wppa_watermark_on'				=> 'no',

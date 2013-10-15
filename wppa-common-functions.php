@@ -2,7 +2,7 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 5.1.9
+* version 5.1.11
 *
 */
 
@@ -105,7 +105,9 @@ global $wppa_initruntimetime;
 			'is_multitagbox' 			=> false,
 			'is_tagcloudbox' 			=> false,
 			'taglist' 					=> '',
-			'tagcols'					=> '2'
+			'tagcols'					=> '2',
+			'is_related'				=> false,
+			'related_count'				=> '0'
 
 
 
@@ -179,6 +181,8 @@ global $wppa_initruntimetime;
 						'wppa_lasten_size' 				=> '',	// 2
 						'wppa_album_widget_count'		=> '',
 						'wppa_album_widget_size'		=> '',
+						
+						'wppa_related_count'			=> '',
 
 						// G Overlay
 						'wppa_ovl_txt_lines'			=> '',	// 1
@@ -189,11 +193,12 @@ global $wppa_initruntimetime;
 						'wppa_show_bread_posts' 			=> '',	// 1a
 						'wppa_show_bread_pages'				=> '', 	// 1b
 						'wppa_bc_on_search'					=> '',	// 2
-						'wppa_bc_on_topten'					=> '',	// 3
-						'wppa_bc_on_lasten'					=> '',	// 3
-						'wppa_bc_on_comten'					=> '',	// 3
-						'wppa_bc_on_featen'					=> '',
-						'wppa_bc_on_tag'					=> '',	// 3
+						'wppa_bc_on_topten'					=> '',	// 3.0
+						'wppa_bc_on_lasten'					=> '',	// 3.1
+						'wppa_bc_on_comten'					=> '',	// 3.2
+						'wppa_bc_on_featen'					=> '', 	// 3.3
+						'wppa_bc_on_tag'					=> '',	// 3.4
+						'wppa_bc_on_related'				=> '', 	// 3.5
 						'wppa_show_home' 					=> '',	// 4
 						'wppa_show_page' 					=> '',	// 4
 						'wppa_bc_separator' 				=> '',	// 5
@@ -575,6 +580,7 @@ global $wppa_initruntimetime;
 						'wppa_indexed_search'			=> '',
 						'wppa_max_search_photos'		=> '',
 						'wppa_max_search_albums'		=> '',
+						'wppa_tags_or_only'				=> '',
 						
 						'wppa_meta_page'				=> '',	// 9
 						'wppa_meta_all'					=> '',	// 10

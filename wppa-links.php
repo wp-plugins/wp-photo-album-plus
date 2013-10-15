@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Frontend links
-* Version 5.1.4
+* Version 5.1.11
 *
 */
 
@@ -337,6 +337,13 @@ global $wppa_opt;
 					break;
 				case 'db':
 					$newuri .= 'debug=';
+					break;
+				case 'rl':
+					$newuri .= 'wppa-rel=';
+					break;
+				case 'rc':
+					$newuri .= 'wppa-relcount=';
+					break;
 					
 			}
 //			if ( $code == 'ss' ) $newuri .= str_replace('|', ' ', substr($arg, 2));
@@ -370,7 +377,7 @@ global $wppa_opt;
 	
 	// explode querystring
 	$args = explode('&', substr($uri, $qpos+1));
-	$support = array('album', 'photo', 'slide', 'cover', 'occur', 'woccur', 'page', 'searchstring', 'topten', 'lasten', 'comten', 'featen', 'randseed', 'lang', 'single', 'tag', 'photos-only', 'debug');
+	$support = array('album', 'photo', 'slide', 'cover', 'occur', 'woccur', 'page', 'searchstring', 'topten', 'lasten', 'comten', 'featen', 'randseed', 'lang', 'single', 'tag', 'photos-only', 'debug', 'rel', 'relcount');
 	if ( count($args) > 0 ) {
 		foreach ( $args as $arg ) {
 			$t = explode('=', $arg);
@@ -432,6 +439,12 @@ global $wppa_opt;
 						break;
 					case 'debug':
 						$newuri .= 'db';
+						break;
+					case 'rel':
+						$newuri .= 'rl';
+						break;
+					case 'relcount':
+						$newuri .= 'rc';
 						break;
 				}
 				if ( $val !== false ) {
@@ -541,7 +554,8 @@ global $wppa;
 	if ( $wppa['is_topten'] ) $url .= 'wppa-topten='.$wppa['topten_count'].'&amp;';
 	if ( $wppa['is_lasten'] ) $url .= 'wppa-lasten='.$wppa['lasten_count'].'&amp;';
 	if ( $wppa['is_comten'] ) $url .= 'wppa-comten='.$wppa['comten_count'].'&amp;';
-	if ( $wppa['is_tag'] ) $url .= 'wppa-tag='.$wppa['is_tag'].'&amp;';
+	if ( $wppa['is_related'] ) $url .= 'wppa-rel='.$wppa['is_related'].'&amp;wppa-relcount='.$wppa['related_count'].'&amp;';
+	elseif ( $wppa['is_tag'] ) $url .= 'wppa-tag='.$wppa['is_tag'].'&amp;';
 	$url .= 'wppa-photo=' . $callbackid;
 		
 	return $url;
@@ -560,7 +574,8 @@ global $wppa;
 	if ( $wppa['is_topten'] ) $url .= 'wppa-topten='.$wppa['topten_count'].'&amp;';
 	if ( $wppa['is_lasten'] ) $url .= 'wppa-lasten='.$wppa['lasten_count'].'&amp;';
 	if ( $wppa['is_comten'] ) $url .= 'wppa-comten='.$wppa['comten_count'].'&amp;';
-	if ( $wppa['is_tag'] ) $url .= 'wppa-tag='.$wppa['is_tag'].'&amp;';
+	if ( $wppa['is_related'] ) $url .= 'wppa-rel='.$wppa['is_related'].'&amp;wppa-relcount='.$wppa['related_count'].'&amp;';
+	elseif ( $wppa['is_tag'] ) $url .= 'wppa-tag='.$wppa['is_tag'].'&amp;';
 
 	$url = substr($url, 0, strlen($url) - 5);	// remove last '&amp;'
 		
