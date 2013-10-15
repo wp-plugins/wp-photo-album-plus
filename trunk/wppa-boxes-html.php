@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Various wppa boxes
-* Version 5.1.9
+* Version 5.1.11
 *
 */
 
@@ -41,8 +41,10 @@ global $album;
 function wppa_tagcloud_box($seltags = '', $minsize = '8', $maxsize = '24') {
 global $wppa;
 
+	if ( is_feed() ) return;
+
 	wppa_container('open');
-	$wppa['out'] .= wppa_nltab('+').'<div id="wppa-upload-'.$wppa['master_occur'].'" class="wppa-box wppa-tagcloud" style="'.__wcs('wppa-box').__wcs('wppa-tagcloud').'">';
+	$wppa['out'] .= wppa_nltab('+').'<div id="wppa-tagcloud-'.$wppa['master_occur'].'" class="wppa-box wppa-tagcloud" style="'.__wcs('wppa-box').__wcs('wppa-tagcloud').'">';
 		$wppa['out'] .= wppa_get_tagcloud_html($seltags, $minsize, $maxsize);
 	$wppa['out'] .= wppa_nltab('-').'<div style="clear:both;"></div></div>';
 	wppa_container('close');
@@ -92,8 +94,10 @@ global $wppa;
 function wppa_multitag_box($nperline = '2', $seltags = '') {
 global $wppa;
 
+	if ( is_feed() ) return;
+	
 	wppa_container('open');
-	$wppa['out'] .= wppa_nltab('+').'<div id="wppa-upload-'.$wppa['master_occur'].'" class="wppa-box wppa-multitag" style="'.__wcs('wppa-box').__wcs('wppa-multitag').'">';
+	$wppa['out'] .= wppa_nltab('+').'<div id="wppa-multitag-'.$wppa['master_occur'].'" class="wppa-box wppa-multitag" style="'.__wcs('wppa-box').__wcs('wppa-multitag').'">';
 		$wppa['out'] .= wppa_get_multitag_html($nperline, $seltags);
 	$wppa['out'] .= wppa_nltab('-').'<div style="clear:both;"></div></div>';
 	wppa_container('close');
@@ -104,6 +108,8 @@ function wppa_get_multitag_html($nperline = '2', $seltags = '') {
 global $wppa_opt;
 global $wppa;
 
+	$or_only = wppa_switch('wppa_tags_or_only');
+	
 	$result 	= '';
 	if ( $wppa_opt['wppa_multitag_linkpage'] ) {
 		$hr = wppa_get_permalink($wppa_opt['wppa_multitag_linkpage']);
@@ -122,10 +128,18 @@ global $wppa;
 	<script type="text/javascript">
 	function wppaProcessMultiTagRequest() {
 	var any = false;
-	var url="'.$hr.'&wppa-tag=";
-	var andor = "and";
-		if ( document.getElementById("andoror-'.$wppa['master_occur'].'").checked ) andor = "or";
-	var sep;
+	var url="'.$hr.'&wppa-tag=";';
+	if ( $or_only ) {
+		$result .= '
+		var andor = "or";';
+	}
+	else {
+	$result .= '
+		var andor = "and";
+			if ( document.getElementById("andoror-'.$wppa['master_occur'].'").checked ) andor = "or";
+		var sep;';
+	}
+	$result .= '
 	if ( andor == "and" ) sep = ","; else sep = ";";
 	';
 	$selarr = $seltags ? explode( ',', $seltags ) : array();
@@ -145,7 +159,7 @@ global $wppa;
 	';
 	
 	$qtag = wppa_get_get('tag');
-	$andor = 'and'; // default
+	$andor = $or_only ? 'or' : 'and'; // default
 	if ( strpos($qtag, ',') ) {
 		$querystringtags = explode(',',wppa_get_get('tag'));
 	}
@@ -157,16 +171,17 @@ global $wppa;
 
 	if ( $tags ) {
 	
-		$result .= '<table><tr>';
-	
-		$result .= '<td><input class="radio" name="andor-'.$wppa['master_occur'].'" value="and" id="andorand-'.$wppa['master_occur'].'" type="radio" ';
-		if ( $andor == 'and' ) $result .= 'checked="checked" ';
-		$result .= 'size="30" />&nbsp;'.__a('And', 'wppa_theme').'</td>';
-		$result .= '<td><input class="radio" name="andor-'.$wppa['master_occur'].'" value="or" id="andoror-'.$wppa['master_occur'].'" type="radio" ';
-		if ( $andor == 'or' ) $result .= 'checked="checked" ';
-		$result .= 'size="30" />&nbsp;'.__a('Or', 'wppa_theme').'</td>';
-		$result .= '</tr>';
+		$result .= '<table>';
 		
+		if ( ! $or_only ) {
+			$result .= '<tr><td><input class="radio" name="andor-'.$wppa['master_occur'].'" value="and" id="andorand-'.$wppa['master_occur'].'" type="radio" ';
+			if ( $andor == 'and' ) $result .= 'checked="checked" ';
+			$result .= 'size="30" />&nbsp;'.__a('And', 'wppa_theme').'</td>';
+			$result .= '<td><input class="radio" name="andor-'.$wppa['master_occur'].'" value="or" id="andoror-'.$wppa['master_occur'].'" type="radio" ';
+			if ( $andor == 'or' ) $result .= 'checked="checked" ';
+			$result .= 'size="30" />&nbsp;'.__a('Or', 'wppa_theme').'</td>';
+			$result .= '</tr>';
+		}
 		$count = '0';
 		$checked = '';		
 		

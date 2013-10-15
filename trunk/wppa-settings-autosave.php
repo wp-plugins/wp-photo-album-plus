@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 5.1.9
+* Version 5.1.11
 *
 */
 
@@ -491,7 +491,7 @@ wppa_fix_source_extensions();
 							$desc = __('Number of thumbnails in an album must exceed.', 'wppa');
 							$help = esc_js(__('Photos do not show up in the album unless there are more than this number of photos in the album. This allows you to have cover photos on an album that contains only sub albums without seeing them in the list of sub albums. Usually set to 0 (always show) or 1 (for one cover photo).', 'wppa'));
 							$slug = 'wppa_min_thumbs';
-							$html = wppa_input($slug, '40px', '', __('pieces', 'wppa'));
+							$html = wppa_input($slug, '40px', '', __('photos', 'wppa'));
 							wppa_setting($slug, '4', $name, $desc, $html, $help);
 							
 							$name = __('Border thickness', 'wppa');
@@ -517,6 +517,13 @@ wppa_fix_source_extensions();
 							$slug = 'wppa_box_spacing';
 							$html = wppa_input($slug, '40px', '', __('pixels', 'wppa'));
 							wppa_setting($slug, '7', $name, $desc, $html, $help);
+							
+							$name = __('Related count', 'wppa');
+							$desc = __('The default maximum number of related photos to find.', 'wppa');
+							$help = esc_js(__('When using shortcodes like [wppa type="album" album="#related,desc,23"][/wppa], the maximum number is 23. Omitting the number gives the maximum of this setting.', 'wppa'));
+							$slug = 'wppa_related_count';
+							$html = wppa_input($slug, '40px', '', __('photos', 'wppa'));
+							wppa_setting($slug, '8', $name, $desc, $html, $help);
 
 							wppa_setting_subheader('B', '1', __('Slideshow related settings', 'wppa'));
 							
@@ -1004,7 +1011,7 @@ wppa_fix_source_extensions();
 							$slug = 'wppa_bc_on_topten';
 							$html = wppa_checkbox($slug);
 							$class = 'wppa_bc';
-							wppa_setting($slug, '3', $name, $desc, $html, $help, $class);
+							wppa_setting($slug, '3.0', $name, $desc, $html, $help, $class);
 							
 							$name = __('Breadcrumb on last ten displays', 'wppa');
 							$desc = __('Show breadcrumb navigation bars on last ten displays.', 'wppa');
@@ -1038,6 +1045,14 @@ wppa_fix_source_extensions();
 							$class = 'wppa_bc';
 							wppa_setting($slug, '3.4', $name, $desc, $html, $help, $class);
 
+							$name = __('Breadcrumb on related photos displays', 'wppa');
+							$desc = __('Show breadcrumb navigation bars on related photos displays.', 'wppa');
+							$help = esc_js(__('Indicate whether a breadcrumb navigation should be displayed above the related photos displays.', 'wppa'));
+							$slug = 'wppa_bc_on_related';
+							$html = wppa_checkbox($slug);
+							$class = 'wppa_bc';
+							wppa_setting($slug, '3.5', $name, $desc, $html, $help, $class);
+							
 							$name = __('Home', 'wppa');
 							$desc = __('Show "Home" in breadcrumb.', 'wppa');
 							$help = esc_js(__('Indicate whether the breadcrumb navigation should start with a "Home"-link', 'wppa'));
@@ -4249,6 +4264,13 @@ wppa_fix_source_extensions();
 							$slug = 'wppa_max_search_photos';
 							$html = wppa_input($slug, '50px');
 							wppa_setting($slug, '7', $name, $desc, $html, $help);
+							
+							$name = __('Tags OR only', 'wppa');
+							$desc = __('No and / or buttons', 'wppa');
+							$help = esc_js(__('Hide the and/or radiobuttons and do the or method in the multitag widget and shortcode.', 'wppa'));
+							$slug = 'wppa_tags_or_only';
+							$html = wppa_checkbox($slug);
+							wppa_setting($slug, '8', $name, $desc, $html, $help);
 							
 							wppa_setting_subheader('D', '1', __('Watermark related settings', 'wppa'));
 							

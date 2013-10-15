@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile
-Version: 5.1.10
+Version: 5.1.11
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -172,6 +172,21 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 5.1.11 =
+
+= Bug Fixes =
+
+* Import using Ajax with update checkbox checked always reported Failed! even when Done!. Fixed.
+* Bulk Edit Move moved the sourcefile to the wrong source dir. Fixed.
+
+= New Features =
+
+* New shortccode virtual album type: #related. Usage: [wppa type="album" album="#related{,tags | ,desc {,nn}}"][/wppa]. Type tags is default, nn is max number.
+Type=tags searches the page/post for words that are used as photo tags, Type=desc searches the page/post for words that appear in photo descriptions.
+If you use Type=desc, it is strongly recommended to use the indexed search method ( See Table IX-C5 ).
+* The radiobuttons And and Or can be hidden in the tags filter widget and also in the tags boxes created by shortcode while the method Or will be used. Table IX-C8.
+* New photo description keywords: w#amx and w#amy meaning the width and height in pixels of the image available for Art Monkey download.
 
 = 5.1.10 =
 

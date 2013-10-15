@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains low-level utility routines
-* Version 5.1.9
+* Version 5.1.11
 *
 */
 
@@ -182,6 +182,19 @@ global $wppa_opt;
 			$replacement = __(trim(stripslashes($thumb[$keyword])));
 			if ( $replacement == '' ) $replacement = '&lsaquo;'.__a('none', 'wppa').'&rsaquo;';
 			$desc = str_replace('w#'.$keyword, $replacement, $desc);
+		}
+		
+		// Art monkey sizes
+		if ( strpos($desc, 'w#amx') || strpos($desc, 'w#amy') ) {
+			$amxy = wppa_get_artmonkey_size_a($id);
+			if ( is_array($amxy ) ) {
+				$desc = str_replace('w#amx', $amxy['x'], $desc);
+				$desc = str_replace('w#amy', $amxy['y'], $desc);
+			}
+			else {
+				$desc = str_replace('w#amx', 'N.a.', $desc);
+				$desc = str_replace('w#amy', 'N.a.', $desc);
+			}
 		}
 		
 		// Timestamps
@@ -785,6 +798,8 @@ global $wppa_opt;
 
 function wppa_move_source($name, $from, $to) {
 global $wppa_opt;
+wppa_log('Debug', 'in move,');
+
 	if ( wppa_switch('wppa_keep_sync') ) {
 		$frompath 	= $wppa_opt['wppa_source_dir'].'/album-'.$from.'/'.$name;
 		if ( ! is_file($frompath) ) return;
@@ -1156,4 +1171,44 @@ function wppa_log($type, $msg) {
 
 function wppa_is_landscape($img_attr) {
 	return ($img_attr[0] > $img_attr[1]);
+}
+
+function wppa_get_the_id() {
+global $wppa;
+	$id = '0';
+	if ( $wppa['ajax'] ) {
+		if ( isset($_GET['page_id']) ) $id = $_GET['page_id'];
+		elseif ( isset($_GET['p']) ) $id = $_GET['p'];
+		elseif ( isset($_GET['wppa-fromp']) ) $id = $_GET['wppa-fromp'];
+	}
+	else {
+		$id = get_the_ID();
+	}
+	return $id;
+}
+
+function wppa_get_artmonkey_size_a($photo) {
+global $wppa_opt;
+global $wpdb;
+
+	$data = $wpdb->get_row($wpdb->prepare("SELECT * FROM `".WPPA_PHOTOS."` WHERE `id` = %s", $photo), ARRAY_A);
+	if ( $data ) {
+		if ( wppa_switch('wppa_artmonkey_use_source') ) {
+			if ( is_file($wppa_opt['wppa_source_dir'].'/album-'.$data['album'].'/'.$data['filename']) ) {
+				$source = $wppa_opt['wppa_source_dir'].'/album-'.$data['album'].'/'.$data['filename'];
+			}
+			else {
+				$source = wppa_get_photo_path($photo);
+			}
+		}
+		else {
+			$source = wppa_get_photo_path($photo);
+		}
+		$imgattr = @ getimagesize($source);
+		if ( is_array($imgattr) ) {
+			$result = array('x' => $imgattr['0'], 'y' => $imgattr['1']);
+			return $result;
+		}
+	}
+	return false;
 }

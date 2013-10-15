@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the upload/import pages and functions
-* Version 5.1.4
+* Version 5.1.11
 *
 */
 
@@ -1247,6 +1247,7 @@ if ( $wppa['ajax'] ) $wppa['ajax_import_files'] = basename($file);	/* */
 				if (isset($_POST['wppa-update'])) { 
 					$iret = wppa_update_photo($file, $name);
 					if ( $iret ) {
+						if ( $wppa['ajax'] ) $wppa['ajax_import_files_done'] = true;
 						$pcount++;
 						$totpcount += $iret;
 						if ($delp) {
