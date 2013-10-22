@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 5.1.11
+* Version 5.1.12
 *
 */
 
@@ -3217,7 +3217,7 @@ wppa_fix_source_extensions();
 							wppa_setting_subheader('C', '4', __('Other links', 'wppa'));
 
 							$name = __('Art Monkey Link', 'wppa');
-							$desc = __('Makes the photo name under the slide into a download button.', 'wppa');
+							$desc = __('Makes the photo name a download button.', 'wppa');
 							$help = esc_js(__('Link Photo name in slideshow to file or zip with photoname as filename.', 'wppa'));
 							$slug = 'wppa_art_monkey_link';
 							$options = array(__('--- none ---', 'wppa'), __('image file', 'wppa'), __('zipped image', 'wppa'));
@@ -4042,6 +4042,20 @@ wppa_fix_source_extensions();
 							$warn = esc_js(__('Turning this off may affect the functionality of social media items in the share box that rely on open graph tags information.', 'wppa'));
 							$html = wppa_checkbox_warn_off($slug, '', '', $warn, false);
 							wppa_setting($slug, '23', $name, $desc, $html, $help);
+							
+							$name = __('Add shortcode to posts', 'wppa');
+							$desc = __('Add a shortcode to the end of all posts.', 'wppa');
+							$help = '';
+							$slug = 'wppa_add_shortcode_to_post';
+							$html = wppa_checkbox($slug);
+							wppa_setting($slug, '24', $name, $desc, $html, $help);
+							
+							$name = __('Shortcode to add', 'wppa');
+							$desc = __('The shortcode to be added to the posts.', 'wppa');
+							$help = '';
+							$slug = 'wppa_shortcode_to_add';
+							$html = wppa_input($slug, '300px');
+							wppa_setting($slug, '25', $name, $desc, $html, $help);
 
 							wppa_setting_subheader('B', '1', __('New Album and New Photo related miscellaneous settings', 'wppa'));
 

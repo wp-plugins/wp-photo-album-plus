@@ -2,7 +2,7 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 5.1.11
+* version 5.1.12
 *
 */
 
@@ -94,6 +94,7 @@ global $wppa_initruntimetime;
 			'comten_count'				=> '0',
 			'is_tag'					=> false,
 			'photos_only'				=> false,
+			'albums_only'				=> false,
 			'page'						=> '',
 			'geo'						=> '',
 			'continue'					=> '',
@@ -107,7 +108,8 @@ global $wppa_initruntimetime;
 			'taglist' 					=> '',
 			'tagcols'					=> '2',
 			'is_related'				=> false,
-			'related_count'				=> '0'
+			'related_count'				=> '0',
+			'is_owner'					=> ''
 
 
 
@@ -581,6 +583,8 @@ global $wppa_initruntimetime;
 						'wppa_max_search_photos'		=> '',
 						'wppa_max_search_albums'		=> '',
 						'wppa_tags_or_only'				=> '',
+						'wppa_add_shortcode_to_post'	=> '',
+						'wppa_shortcode_to_add'			=> '',
 						
 						'wppa_meta_page'				=> '',	// 9
 						'wppa_meta_all'					=> '',	// 10

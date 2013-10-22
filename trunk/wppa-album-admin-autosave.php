@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * create, edit and delete albums
-* version 5.1.8
+* version 5.1.12
 *
 */
 
@@ -20,6 +20,7 @@ function _wppa_admin() {
 	/* <![CDATA[ */
 	wppaAjaxUrl = "'.admin_url('admin-ajax.php').'";
 	wppaUploadToThisAlbum = "'.__('Upload to this album', 'wppa').'";
+	wppaImageDirectory = "'.wppa_get_imgdir().'";
 	/* ]]> */
 </script>
 ';
@@ -553,9 +554,15 @@ function _wppa_admin() {
 						</tbody>
 					</table>
 <a name="manage-photos" id="manage-photos" ></a>							
-				<h2><?php _e('Manage Photos', 'wppa'); ?></h2>
+				<h2><?php _e('Manage Photos', 'wppa'); 
+					if ( isset($_GET['bulk']) ) echo ' - <small><i>'.__('Copy / move / delete / edit name / edit description / change status', 'wppa').'</i></small>';
+					elseif ( isset($_GET['seq']) ) echo ' - <small><i>'.__('Change sequence order by drag and drop', 'wppa').'</i></small>';
+					elseif ( isset($_REQUEST['quick']) ) echo ' - <small><i>'.__('Edit photo information except copy and move', 'wppa').'</i></small>';
+					else echo ' - <small><i>'.__('Edit photo information', 'wppa').'</i></small>';
+				?></h2>
 				<?php 
 					if ( isset($_GET['bulk']) ) wppa_album_photos_bulk($edit_id);
+					elseif ( isset($_GET['seq']) ) wppa_album_photos_sequence($edit_id);
 					else wppa_album_photos($edit_id) 
 				?>
 			</div>
@@ -855,6 +862,7 @@ function wppa_admin_albums_flat() {
 				<th scope="col"><?php _e('Edit', 'wppa'); ?></th>
 				<th scope="col"><?php _e('Quick', 'wppa'); ?></th>
 				<th scope="col"><?php _e('Bulk', 'wppa'); ?></th>
+				<th scope="col"><?php _e('Seq', 'wppa'); ?></th>
 				<th scope="col"><?php _e('Delete', 'wppa'); ?></th>	
 				<?php if ( wppa_can_create_album() ) echo '<th scope="col">'.__('Create', 'wppa').'</th>'; ?>
 			</tr>
@@ -894,6 +902,7 @@ function wppa_admin_albums_flat() {
 								<td><a href="<?php echo($url) ?>" class="wppaedit"><?php _e('Edit', 'wppa'); ?></a></td>
 								<td><a href="<?php echo($url.'&quick') ?>" class="wppaedit"><?php _e('Quick', 'wppa'); ?></a></td>
 								<td><a href="<?php echo($url.'&bulk') ?>" class="wppaedit"><?php _e('Bulk', 'wppa'); ?></a></td>
+								<td><a href="<?php echo($url.'&seq') ?>" class="wppaedit"><?php _e('Seq', 'wppa'); ?></a></td>
 								
 								<?php $url = wppa_ea_url($album['id'], 'del') ?>
 								<td><a href="<?php echo($url) ?>" class="wppadelete"><?php _e('Delete', 'wppa'); ?></a></td>
@@ -985,6 +994,7 @@ function wppa_admin_albums_flat() {
 				<th scope="col"><?php _e('Edit', 'wppa'); ?></th>
 				<th scope="col"><?php _e('Quick', 'wppa'); ?></th>
 				<th scope="col"><?php _e('Bulk', 'wppa'); ?></th>
+				<th scope="col"><?php _e('Seq', 'wppa'); ?></th>
 				<th scope="col"><?php _e('Delete', 'wppa'); ?></th>	
 				<?php if ( wppa_can_create_album() ) echo '<th scope="col">'.__('Create', 'wppa').'</th>'; ?>
 			</tr>
@@ -1156,6 +1166,7 @@ function wppa_admin_albums_collapsable() {
 				<th scope="col"><?php _e('Edit', 'wppa'); ?></th>
 				<th scope="col"><?php _e('Quick', 'wppa'); ?></th>
 				<th scope="col"><?php _e('Bulk', 'wppa'); ?></th>
+				<th scope="col"><?php _e('Seq', 'wppa'); ?></th>
 				<th scope="col"><?php _e('Delete', 'wppa'); ?></th>	
 				<?php if ( wppa_can_create_album() ) echo '<th scope="col">'.__('Create', 'wppa').'</th>'; ?>
 			</tr>
@@ -1246,6 +1257,7 @@ function wppa_admin_albums_collapsable() {
 				<th scope="col"><?php _e('Edit', 'wppa'); ?></th>
 				<th scope="col"><?php _e('Quick', 'wppa'); ?></th>
 				<th scope="col"><?php _e('Bulk', 'wppa'); ?></th>
+				<th scope="col"><?php _e('Seq', 'wppa'); ?></th>
 				<th scope="col"><?php _e('Delete', 'wppa'); ?></th>	
 				<?php if ( wppa_can_create_album() ) echo '<th scope="col">'.__('Create', 'wppa').'</th>'; ?>
 			</tr>
@@ -1370,6 +1382,7 @@ global $wpdb;
 								<td><a href="<?php echo($url) ?>" class="wppaedit"><?php _e('Edit', 'wppa'); ?></a></td>
 								<td><a href="<?php echo($url.'&quick') ?>" class="wppaedit"><?php _e('Quick', 'wppa'); ?></a></td>
 								<td><a href="<?php echo($url.'&bulk') ?>" class="wppaedit"><?php _e('Bulk', 'wppa'); ?></a></td>
+								<td><a href="<?php echo($url.'&seq') ?>" class="wppaedit"><?php _e('Seq', 'wppa'); ?></a></td>
 								
 								<?php $url = wppa_ea_url($album['id'], 'del') ?>
 								<td><a href="<?php echo($url) ?>" class="wppadelete"><?php _e('Delete', 'wppa'); ?></a></td>

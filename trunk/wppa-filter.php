@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * get the albums via filter
-* version 5.1.9
+* version 5.1.12
 *
 */
 
@@ -11,6 +11,20 @@ add_action('init', 'wppa_do_filter');
 
 function wppa_do_filter() {
 	add_filter('the_content', 'wppa_albums_filter', get_option('wppa_filter_priority', '1001'));
+	add_filter('the_content', 'wppa_add_shortcode_to_post');
+}
+
+function wppa_add_shortcode_to_post($post) {
+global $wppa_opt;
+global $wppa;
+
+	$new_post = $post;
+	if ( ! $wppa['ajax'] && wppa_switch('wppa_add_shortcode_to_post') ) {
+		$id = get_the_ID();
+		$p = get_post($id, ARRAY_A);
+		if ( $p['post_type'] == 'post' ) $new_post .= $wppa_opt['wppa_shortcode_to_add'];
+	}
+	return $new_post;
 }
 
 function wppa_albums_filter($post) {
@@ -379,3 +393,4 @@ global $wppa_opt;
 }
 
 add_shortcode( 'wppa', 'wppa_shortcodes' );
+

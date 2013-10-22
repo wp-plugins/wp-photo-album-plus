@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 5.1.11
+* Version 5.1.12
 *
 */
 
@@ -314,11 +314,11 @@ global $silent;
 	// Check if this update comes with a new wppa-theme.php and/or a new wppa-style.css
 	// If so, produce message
 	$key = '0';
-	if ( $old_rev < '4910' ) {		// theme changed since...
+	if ( $old_rev < '5112' ) {		// theme changed since...
 		$usertheme = ABSPATH.'wp-content/themes/'.get_option('template').'/wppa-theme.php';
 		if ( is_file( $usertheme ) ) $key += '2';
 	}
-	if ( $old_rev < '5103' ) {		// css changed since...
+	if ( $old_rev < '5112' ) {		// css changed since...
 		$userstyle = ABSPATH.'wp-content/themes/'.get_option('stylesheet').'/wppa-style.css';
 		if ( is_file( $userstyle ) ) {
 			$key += '1';
@@ -892,6 +892,8 @@ Hide Camera info
 						'wppa_adminbarmenu_frontend'	=> 'yes',
 						'wppa_feed_use_thumb'			=> 'no',
 						'wppa_og_tags_on'				=> 'yes',
+						'wppa_add_shortcode_to_post'	=> 'no',
+						'wppa_shortcode_to_add'			=> '[wppa type="album" album="#related,desc"][/wppa]',
 
 
 						// B New

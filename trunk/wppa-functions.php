@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions
-* Version 5.1.11
+* Version 5.1.12
 *
 */
 
@@ -169,8 +169,7 @@ global $thumbs;
 						if ( isset($temp['2']) && is_numeric($temp['2']) ) $wppa['last_albums'] = $temp['2'];
 						else $wppa['last_albums'] = false;
 					}
-					else {		// Ordering seq is not important, convert to album enum
-/* moet nog */				
+					else {		// Ordering seq is not important, convert to album enum				
 						$temp = explode(',',$wppa['start_album']);
 						if ( isset($temp['1']) && is_numeric($temp['1']) ) $parent = $temp['1'];
 						else $parent = '0';
@@ -186,7 +185,6 @@ global $thumbs;
 							$albs = $wpdb->get_results($q, ARRAY_A);
 							if ( is_array($albs) ) foreach ( array_keys($albs) as $key ) $albs[$key] = $albs[$key]['id'];
 							$id = implode('.', $albs);
-							echo 'Albs='.$id;
 						}					
 					}
 					break;
@@ -250,11 +248,31 @@ global $thumbs;
 						$wppa['searchstring'] = str_replace(';', ',', $data);
 						$wppa['photos_only'] = true;
 					}
-					$wppa['start_album'] = '';
+					$wppa['photos_only'] = true;
+					$id = '0';	//$wppa['start_album'] = '';
 					break;
 				case '#tags':
 					$wppa['is_tag'] = wppa_sanitize_tags(substr($wppa['start_album'], 6), true);
-					$wppa['start_album'] = '';
+					$id = '0';	//$wppa['start_album'] = '';
+					$wppa['photos_only'] = true;
+					break;
+				case '#owner':
+					$temp = explode(',',$wppa['start_album']);
+					$owner = isset($temp[1]) ? $temp[1] : '';
+					if ( ! $owner ) {
+						wppa_dbg_msg('Mossing owner in #owner album spec: '.$wppa['start_album'], 'red', 'force');
+						wppa_reset_occurrance();
+						return;	// Forget this occurrance
+					}
+					$parent = isset($temp[2]) ? $temp[2] : '0';
+					if ( ! wppa_is_int($parent) ) $parent = '0';
+					$albs = $wpdb->get_results($wpdb->prepare("SELECT `id` FROM `".WPPA_ALBUMS."` WHERE `owner` = %s AND `a_parent` = %s", $owner, $parent), ARRAY_A);
+					$id = '';
+					if ( $albs ) foreach ( $albs as $alb ) {
+						$id .= $alb['id'].'.';
+					}
+					$id = rtrim($id, '.');
+					$wppa['is_owner'] = $owner;
 					break;
 				case '#all':
 					$id = '-2';
@@ -390,7 +408,7 @@ global $thumbs;
 		if ( function_exists('wppa_theme') ) wppa_theme();	// Call the theme module
 		else $wppa['out'] = '<span style="color:red">ERROR: Missing function wppa_theme(), check the installation of WPPA+. Remove customized wppa_theme.php</span>';
 		global $wppa_version; 
-		$expected_version = '4-9-10';
+		$expected_version = '5-1-12';
 		if ( $wppa_version != $expected_version ) wppa_dbg_msg('WARNING: customized wppa-theme.php is out of rev. Expected version: '.$expected_version.' found: '.$wppa_version, 'red');	
 	}
 	
@@ -454,6 +472,7 @@ global $thumbs;
 	$wppa['is_landing'] 	= '0';
 	$wppa['start_photo'] 	= '0';
 	$wppa['photos_only']	= false;
+	$wppa['albums_only'] 	= false;
 	$wppa['page'] 			= '';
 	$wppa['is_upload'] 		= false;
 	$wppa['last_albums']	= false;
@@ -464,6 +483,7 @@ global $thumbs;
 	$wppa['tagcols']		= '2';
 	$wppa['is_related']		= false;
 	$wppa['related_count']	= '0';
+	$wppa['is_owner']		= '';
 
 
 }
@@ -519,7 +539,8 @@ global $wppa_opt;
 	if ( $wppa['is_tag'] ) return false;
 	if ( $wppa['photos_only'] ) return false;
 	
-	if ( $wppa['src'] && $wppa_opt['wppa_photos_only'] ) return false;
+	if ( /* $wppa['src'] && */ $wppa_opt['wppa_photos_only'] ) return false;
+	if ( $wppa['is_owner'] && ! $wppa['start_album'] ) return false; 	// No owner album(s)
 	
 	if ( $wppa['src'] ) {	// Searching
 
@@ -661,6 +682,8 @@ global $wppa;
 global $wppa_opt;
 global $thumbs;
 
+	if ( $wppa['is_owner'] && ! $wppa['start_album'] ) return false;	// No owner album(s) -> no photos
+	
 	wppa_dbg_msg('get_thumbs entered: '.$wppa['master_occur'].' Start_album='.$wppa['start_album'].', Cover='.$wppa['is_cover']);
 	if ( $wppa['is_cover'] ) {
 		wppa_dbg_msg('its cover, leave get_thumbs');
@@ -3433,7 +3456,9 @@ global $wppa_get_get_cache;
 	if ( $result == 'nil' ) $result = $default;	// Nil simulates not set
 	
 	$result = strip_tags($result);
-	
+	if ( strpos($result, '<?') !== false ) die('Security check failure #191');
+	if ( strpos($result, '?>') !== false ) die('Security check failure #192');
+
 	// Post processing needed?
 	if ( $index == 'photo' && ( ! is_numeric($result) || ! wppa_photo_exists($result) ) ) {
 		$result = wppa_get_photo_id_by_name($result, wppa_get_get('album'));
@@ -3458,10 +3483,16 @@ global $wppa_get_get_cache;
 
 function wppa_get_post($index, $default = false) {
 	if (isset($_POST['wppa-'.$index])) {		// New syntax first
-		return $_POST['wppa-'.$index];
+		$result = $_POST['wppa-'.$index];
+		if ( strpos($result, '<?') !== false ) die('Security check failure #291');
+		if ( strpos($result, '?>') !== false ) die('Security check failure #292');
+		return $result;
 	}
 	if (isset($_POST[$index])) {				// Old syntax
-		return $_POST[$index];
+		$result = $_POST[$index];
+		if ( strpos($result, '<?') !== false ) die('Security check failure #391');
+		if ( strpos($result, '?>') !== false ) die('Security check failure #392');
+		return $result;
 	}
 	return $default;
 }

@@ -8,7 +8,7 @@
 /*
 /* You may always look into a newer version of this file to see what new classes and id's come with an upgrade
 /*
-/* This is version 4.9.14
+/* This is version 5.1.12
 */
 
 .wppa-container, .wppa-cover-box, .thumbnail-area {
@@ -361,4 +361,10 @@ padding: 0 4px !important;
 
 .IN-widget {
 float:left;
+}
+
+/* Fix for css3 transition that interferes with jQuery animation */
+#wppa-overlay-ic img, .wppa-popup a img, .wppa-popup img {
+transition: width 0s ease-in-out 0s, left 0s ease-in-out 0s, right 0s ease-in-out 0s;
+-webkit-transition: width 0s ease-in-out 0s, left 0s ease-in-out 0s, right 0s ease-in-out 0s;
 }

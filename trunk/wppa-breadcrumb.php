@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Functions for breadcrumbs
-* Version 5.1.11
+* Version 5.1.12
 *
 */
 
@@ -21,7 +21,7 @@ global $wpdb;
 		$pid = wppa_get_the_page_id();
 		$type = $wpdb->get_var( $wpdb->prepare( "SELECT `post_type` FROM `" . $wpdb->posts . "` WHERE `ID` = %s", $pid ) );
 		if ( $type == 'post' && ! $wppa_opt['wppa_show_bread_posts'] ) return;	// Nothing to do here
-		if ( $type == 'page' && ! $wppa_opt['wppa_show_bread_pages'] ) return;	// Nothing to do here
+		if ( $type != 'post' && ! $wppa_opt['wppa_show_bread_pages'] ) return;	// Nothing to do here
 	}
 	if ( $wppa['is_single'] ) return;											// A single image slideshow needs no navigation 
 	if ( wppa_page('oneofone') ) return; 										// Never at a single image page
@@ -220,13 +220,20 @@ global $wpdb;
 			wppa_bcitem($value, $href, $title, 'b9');
 		}
 		else { 			// Maybe a simple normal standard album???
+			if ( $wppa['is_owner'] ) {
+				$usr = get_user_by('login', $wppa['is_owner']);
+				if ( $usr ) $dispname = $usr->display_name;
+				else $dispname = $wppa['is_owner'];	// User deleted
+				$various = sprintf(__a('Various albums by %s'), $dispname);
+			}
+			else $various = __a('Various albums');
 			if ( $wppa['is_slide'] ) {
-				$value 	= $is_albenum ? __a('Various albums') : wppa_get_album_name($alb);
+				$value 	= $is_albenum ? $various : wppa_get_album_name($alb);
 				$href 	= wppa_get_permalink().'wppa-cover=0&amp;wppa-occur='.$wppa['occur'].'&amp;wppa-album='.$wppa['start_album'];
 				$title	= $is_albenum ? __a('Albums:').' '.$wppa['start_album'] : __a('Album:').' '.$value;
 				wppa_bcitem($value, $href, $title, 'b7');
 			}
-			$value 	= $is_albenum ? __a('Various albums') : wppa_get_album_name($alb);
+			$value 	= $is_albenum ? $various : wppa_get_album_name($alb);
 			$href 	= '';
 			$title	= '';
 			$class 	= 'b10';
