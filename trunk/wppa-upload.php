@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the upload/import pages and functions
-* Version 5.1.12
+* Version 5.1.13
 *
 */
 
@@ -284,7 +284,7 @@ global $wppa_revno;
 				<?php /* End single photos */ ?>
 
 				<?php /* Single zips */ ?>
-				<?php if ( current_user_can('wppa_import') ) { ?>
+				<?php if ( current_user_can('administrator') && current_user_can('wppa_import') ) { ?>
 					<?php if (PHP_VERSION_ID >= 50207) { ?>
 						<div style="border:1px solid #ccc; padding:10px; width: 600px;">
 							<h3 style="margin-top:0px;"><?php  _e('Box C:', 'wppa'); echo ' ';_e('Zipped Photos in one selection', 'wppa'); ?></h3>
