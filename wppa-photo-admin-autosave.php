@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * edit and delete photos
-* version 5.1.9
+* version 5.1.12
 *
 */
 
@@ -267,7 +267,7 @@ function wppa_album_photos($album = '', $photo = '', $owner = '', $moderate = fa
 							<?php if ( current_user_can('edit_posts') || current_user_can('edit_pages') ) { ?>
 							<tr style="vertical-align:bottom;" >
 								<th scope="row" style="padding: 4px 10px; line-height:20px;">
-									<a style="cursor:pointer; font-weight:bold;" onclick="prompt('<?php _e('Insert code for single image in Page or Post:\nYou may change the size if you like.', 'wppa') ?>', '%%wppa%% %%photo=<?php echo($photo['id']); ?>%% %%size=<?php echo $wppa_opt['wppa_fullsize'] ?>%%')" ><?php _e('Insertion Code', 'wppa'); ?></a>
+									<a style="cursor:pointer; font-weight:bold;" onclick="prompt('<?php _e('Insert code for single image in Page or Post:\nYou may change the size if you like.', 'wppa') ?>', '<?php echo esc_js('[wppa type="photo" photo="'.$photo['id'].'" size="'.$wppa_opt['wppa_fullsize'].'"][/wppa]') ?>')" ><?php _e('Insertion Code', 'wppa'); ?></a>
 								</th>
 							</tr>
 							<?php } ?>
@@ -850,6 +850,149 @@ function wppa_album_photos_bulk($album) {
 				$page_1 = $page - '1';
 				echo '<h3>'.sprintf(__('Page %d is empty, try <a href="%s" >page %d</a>.', 'wppa'), $page, $link.'&wppa-page='.$page_1.'#manage-photos', $page_1);
 			}
+		}
+	}
+	else {
+		wppa_dbg_msg('Missing required argument in wppa_album_photos()', 'red', 'force');
+	}
+}
+
+function wppa_album_photos_sequence($album) {
+global $wpdb;
+global $q_config;
+global $wppa_opt;
+
+	if ( $album ) {
+		$photoorder 	= wppa_get_photo_order($album, 'norandom');
+		$is_descending 	= strpos($photoorder, 'DESC') !== false;
+		$is_p_order 	= strpos($photoorder, 'p_order') !== false;
+		$photos 		= $wpdb->get_results($wpdb->prepare('SELECT * FROM `'.WPPA_PHOTOS.'` WHERE `album` = %s '.$photoorder, $album), ARRAY_A);
+		$link 			= wppa_dbg_url(get_admin_url().'admin.php?page=wppa_admin_menu&tab=edit&edit_id='.$album.'&bulk');
+		$size 			= '180';
+	
+		if ( $photos ) {
+			?>
+			<style>
+				.sortable-placeholder {
+					width: <?php echo $size ?>px;
+					height: <?php echo $size ?>px;
+					margin: 5px;
+					border: 1px solid #cccccc;
+					border-radius:3px;
+					float: left;
+				}
+				.ui-state-default {
+					position: relative;
+					width: <?php echo $size ?>px;
+					height: <?php echo $size ?>px;
+					margin: 5px;
+					border-radius:3px;
+					float: left;
+				}
+				.wppa-publish {
+					border: 1px solid;
+					background-color: rgb(255, 255, 224); 
+					border-color: rgb(230, 219, 85);
+				}
+				.wppa-featured {
+					border: 1px solid;
+					background-color: rgb(224, 255, 224); 
+					border-color: rgb(85, 238, 85);
+				}
+				.wppa-pending {
+					border: 1px solid;
+					background-color: rgb(255, 235, 232); 
+					border-color: rgb(204, 0, 0);
+				}
+			</style>
+			<script>
+				jQuery(function() {
+					jQuery( "#sortable" ).sortable({ 
+						cursor: "move", 
+						placeholder: "sortable-placeholder", 
+						stop: function( event, ui ) {
+							var ids = jQuery(".wppa-sort-item");
+							var seq = jQuery(".wppa-sort-seqn");
+							var idx = 0;
+							var descend = <?php if ( $is_descending ) echo 'true'; else echo 'false' ?>;
+							while ( idx < ids.length ) {
+								var newvalue;
+								if ( descend ) newvalue = ids.length - idx;
+								else newvalue = idx + 1;
+								var oldvalue = seq[idx].value;
+								var photo = ids[idx].value;
+								if ( newvalue != oldvalue ) {
+									wppaDoSeqUpdate(photo, newvalue);
+								}
+								idx++;
+							}
+						} 
+					});
+				});
+				function wppaDoSeqUpdate(photo, seqno) {
+					var data = 'action=wppa&wppa-action=update-photo&photo-id='+photo+'&item=p_order&wppa-nonce='+document.getElementById('photo-nonce-'+photo).value+'&value='+seqno;
+					var xmlhttp = new XMLHttpRequest();
+					
+					xmlhttp.onreadystatechange = function() {
+						if ( xmlhttp.readyState == 4 && xmlhttp.status != 404 ) {
+							var ArrValues = xmlhttp.responseText.split("||");
+							if ( ArrValues[0] != '' ) {
+								alert('The server returned unexpected output:\n'+ArrValues[0]);
+							}
+							switch ( ArrValues[1] ) {
+								case '0':	// No error
+									jQuery('#wppa-seqno-'+photo).html(seqno);
+									break;
+								case '99':	// Photo is gone
+									jQuery('#wppa-seqno-'+photo).html('<span style="color"red" >deleted</span>');
+									break;
+								default:	// Any error
+									jQuery('#wppa-seqno-'+photo).html('<span style="color"red" >Err:'+ArrValues[1]+'</span>');
+									break;
+							}
+						}
+					}
+					xmlhttp.open('POST',wppaAjaxUrl,true);
+					xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+					xmlhttp.send(data);
+					jQuery("#wppa-sort-seqn-"+photo).attr('value', seqno);	// set hidden value to new value to prevent duplicate action
+					var spinnerhtml = '<img src="'+wppaImageDirectory+'wpspin.gif'+'" />';
+					jQuery('#wppa-seqno-'+photo).html(spinnerhtml);
+				}
+			</script>
+			<?php if ( ! $is_p_order ) wppa_warning_message(__('Setting photo sequence order has only effect if the photo order method is set to <b>Order#</b>', 'wppa')) ?>
+			<div class="widefat" style="border-color:#cccccc" >
+				<div id="sortable">
+					<?php foreach ( $photos as $photo ) { 
+						$imgs = getimagesize(wppa_get_thumb_path($photo['id']));
+						$mw = $size - '20';
+						$mh = $mw * '3' / '4';
+						if ( $imgs[1]/$imgs[0] > $mh/$mw ) {	// more portrait than 200x150, y is limit
+							$mt = '15';
+						}
+						else {	// x is limit
+							$mt = ( $mh - ( $imgs[1]/$imgs[0] * $mw ) ) / '2' + '15';
+						}
+					?>
+					<div id="photoitem-<?php echo $photo['id'] ?>" class="ui-state-default wppa-<?php echo $photo['status'] ?>" style="background-image:none; text-align:center; cursor:move;" >
+						<img class="wppa-bulk-thumb" src="<?php echo wppa_get_thumb_url($photo['id']) ?>" style="max-width:<?php echo $mw ?>px; max-height:<?php echo $mh ?>px; margin-top: <?php echo $mt ?>px;" />
+						<div style="font-size:9px; position:absolute; bottom:24px; text-align:center; width:<?php echo $size ?>px;" ><?php echo wppa_get_photo_name($photo['id']) ?></div>
+						<div style="text-align: center; width: <?php echo $size ?>px; position:absolute; bottom:8px;" >
+							<span style="margin-left:15px;float:left"><?php echo __('Id: ', 'wppa').$photo['id']?></span>
+							<span style="float:right; margin-right:15px;"><?php echo __('Ord: ', 'wppa').'<span id="wppa-seqno-'.$photo['id'].'" >'.$photo['p_order'] ?></span>
+						</div>
+						<input type="hidden" id="photo-nonce-<?php echo $photo['id'] ?>" value="<?php echo wp_create_nonce('wppa_nonce_'.$photo['id']);  ?>" />
+						<input type="hidden" class="wppa-sort-item" value="<?php echo $photo['id'] ?>" />
+						<input type="hidden" class="wppa-sort-seqn" id="wppa-sort-seqn-<?php echo $photo['id'] ?>" value="<?php echo $photo['p_order'] ?>" />
+					</div>
+					<?php } ?>
+				</div>
+				<div style="clear:both;"></div>
+			</div>
+			<?php
+		}
+		else {
+			echo '<h3>'.__('The album is empty.', 'wppa').'</h3>';
 		}
 	}
 	else {

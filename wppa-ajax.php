@@ -19,6 +19,13 @@ global $wppa;
 
 	// ALTHOUGH IF WE ARE HERE AS FRONT END VISITOR, is_admin() is true. 
 	// So, $wppa_opt switches are 'yes' or 'no' and not true or false.
+	
+	// Globally check query args to prevent php injection
+	
+	foreach ( $_REQUEST as $arg ) {
+		if ( strpos($arg, '<?') !== false ) die('Security check failure #91');
+		if ( strpos($arg, '?>') !== false ) die('Security check failure #92');
+	}
 
 	wppa_vfy_arg('wppa-action', true);
 	wppa_vfy_arg('photo-id');

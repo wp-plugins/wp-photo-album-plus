@@ -3,11 +3,11 @@
 * Package: wp-photo-album-plus
 *
 * display the albums/photos/slideshow in a page or post
-* Version 4.9.10
+* Version 5.1.12
 */
 function wppa_theme() {
 
-global $wppa_version; $wppa_version = '4-9-10';		// The version number of this file, please change if you modify this file
+global $wppa_version; $wppa_version = '5-1-12';		// The version number of this file, please change if you modify this file
 global $wppa;
 global $wppa_opt;
 global $wppa_show_statistics;						// Can be set to true by a custom page template
@@ -91,12 +91,17 @@ wppa_container('open');																// Open container
 		// Make pagelinkbar if requested on bottom
 		if ( $wppa_opt['wppa_pagelink_pos'] == 'bottom' || $wppa_opt['wppa_pagelink_pos'] == 'both' ) wppa_page_links($totpag, $curpage);	
 		
-		// Empty search results?
-		if ( ! $didsome && $wppa['src'] ) {
-			$wppa['out'] .= wppa_errorbox(__a('No albums or photos found matching your search criteria.', 'wppa_theme'));
-		}
-		if ( ! $didsome && $wppa['is_tag'] ) {
-			$wppa['out'] .= wppa_errorbox(__a('No photos found matching your search criteria.', 'wppa_theme'));
+		// Empty results?
+		if ( ! $didsome ) {
+			if ( $wppa['photos_only'] ) {
+				$wppa['out'] .= wppa_errorbox(__a('No photos found matching your search criteria.', 'wppa_theme'));
+			}
+			elseif ( $wppa['albums_only'] ) {
+				$wppa['out'] .= wppa_errorbox(__a('No albums found matching your search criteria.', 'wppa_theme'));
+			}
+			else {
+				$wppa['out'] .= wppa_errorbox(__a('No albums or photos found matching your search criteria.', 'wppa_theme'));
+			}
 		}
 	} // wppa_page('albums')
 	

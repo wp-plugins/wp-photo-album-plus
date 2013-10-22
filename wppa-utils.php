@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains low-level utility routines
-* Version 5.1.11
+* Version 5.1.12
 *
 */
 
@@ -185,15 +185,17 @@ global $wppa_opt;
 		}
 		
 		// Art monkey sizes
-		if ( strpos($desc, 'w#amx') || strpos($desc, 'w#amy') ) {
+		if ( strpos($desc, 'w#amx') !== false || strpos($desc, 'w#amy') !== false || strpos($desc, 'w#amfs') !== false ) {
 			$amxy = wppa_get_artmonkey_size_a($id);
 			if ( is_array($amxy ) ) {
 				$desc = str_replace('w#amx', $amxy['x'], $desc);
 				$desc = str_replace('w#amy', $amxy['y'], $desc);
+				$desc = str_replace('w#amfs', $amxy['s'], $desc);
 			}
 			else {
 				$desc = str_replace('w#amx', 'N.a.', $desc);
 				$desc = str_replace('w#amy', 'N.a.', $desc);
+				$desc = str_replace('w#amfs', 'N.a.', $desc);
 			}
 		}
 		
@@ -1206,7 +1208,10 @@ global $wpdb;
 		}
 		$imgattr = @ getimagesize($source);
 		if ( is_array($imgattr) ) {
-			$result = array('x' => $imgattr['0'], 'y' => $imgattr['1']);
+			$fs = filesize($source);
+			if ( $fs > 1024*1024 ) $fs = sprintf('%4.2f Mb', $fs/(1024*1024));
+			else $fs = sprintf('%4.2f Kb', $fs/1024);
+			$result = array('x' => $imgattr['0'], 'y' => $imgattr['1'], 's' => $fs);
 			return $result;
 		}
 	}

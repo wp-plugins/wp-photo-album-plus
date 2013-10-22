@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the upload/import pages and functions
-* Version 5.1.11
+* Version 5.1.12
 *
 */
 
@@ -347,9 +347,9 @@ global $wppa;
 	if (isset($_GET['zip'])) {
 		wppa_extract($_GET['zip'], true);
 	}
-	if ( isset($_POST['local-remote'])) {
+	if ( isset($_POST['wppa-local-remote'])) {
 		check_admin_referer( '$wppa_nonce', WPPA_NONCE );
-		update_option('wppa_import_source_type_'.$user, $_POST['local-remote']);
+		update_option('wppa_import_source_type_'.$user, $_POST['wppa-local-remote']);
 	}
 	if ( isset($_POST['wppa-import-set-source-dir'])) {
 		check_admin_referer( '$wppa_nonce', WPPA_NONCE );
@@ -462,7 +462,7 @@ if ( $wppa['ajax'] ) {
 				_e('Select Local or Remote', 'wppa'); 
 				$disabled = $can_remote ? '' : 'disabled="disabled"';
 			?>
-			<select name="local-remote" >
+			<select name="wppa-local-remote" >
 				<option value="local" <?php if ( $source_type == 'local' ) echo 'selected="selected"' ?>><?php _e('Local', 'wppa') ?></option>
 				<option value="remote" <?php echo $disabled; if ( $source_type == 'remote' ) echo 'selected="selected"' ?>><?php _e('Remote', 'wppa') ?></option>
 			</select>
