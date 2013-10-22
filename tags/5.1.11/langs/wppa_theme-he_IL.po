@@ -1,0 +1,1208 @@
+# Translation of the WordPress plugin   by .
+# Copyright (C) 2010
+# This file is distributed under the same license as the  package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2010.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: wppa\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-09-30 15:01+0100\n"
+"PO-Revision-Date: 2013-09-30 15:01+0100\n"
+"Last-Translator: J.N. Breetvelt <OpaJaap@OpaJaap.nl>\n"
+"Language-Team: OpaJaap <OpaJaap@OpaJaap.nl>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-KeywordsList: __a\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Generator: Poedit 1.5.7\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPath-1: theme\n"
+
+#: wppa-adminbar.php:40
+msgid "Album Admin"
+msgstr ""
+
+#: wppa-adminbar.php:47
+#, fuzzy
+msgid "Upload Photos"
+msgstr "תמונות"
+
+#: wppa-adminbar.php:53
+#, fuzzy
+msgid "Edit Photos"
+msgstr "תמונות"
+
+#: wppa-adminbar.php:61
+#, fuzzy
+msgid "Import Photos"
+msgstr "תמונות"
+
+#: wppa-adminbar.php:68
+#, fuzzy
+msgid "Moderate Photos"
+msgstr "דפדף בתמונות"
+
+#: wppa-adminbar.php:78
+#, fuzzy
+msgid "Export Photos"
+msgstr "תמונות"
+
+#: wppa-adminbar.php:85
+msgid "Settings"
+msgstr ""
+
+#: wppa-adminbar.php:92
+#, fuzzy
+msgid "Photo of the day"
+msgstr "תמונת היום"
+
+#: wppa-adminbar.php:99
+#, fuzzy
+msgid "Comments"
+msgstr "הערות %d"
+
+#: wppa-adminbar.php:106
+msgid "Help & Info"
+msgstr ""
+
+#: wppa-adminbar.php:113
+msgid "Docs & Demos"
+msgstr ""
+
+#: wppa-adminbar.php:122
+msgid "Photo Albums"
+msgstr ""
+
+#: wppa-album-covers.php:193 wppa-album-covers.php:376
+#: wppa-album-covers.php:542 wppa-non-admin.php:288
+msgid "Slideshow"
+msgstr "מצגת תמונות"
+
+#: wppa-album-covers.php:193 wppa-album-covers.php:376
+#: wppa-album-covers.php:542
+msgid "Browse photos"
+msgstr "דפדף בתמונות"
+
+#: wppa-album-covers.php:779
+msgid "Link to"
+msgstr "קישור ל"
+
+#: wppa-album-covers.php:803 wppa-album-covers.php:849
+#: wppa-album-covers.php:852
+msgid "View the album"
+msgstr "צפה באלבום"
+
+#: wppa-album-covers.php:822
+msgid "View the cover photo"
+msgstr "צפה בתמונת השער"
+
+#: wppa-album-covers.php:823
+msgid "View the cover photos"
+msgstr "צפה בתמונות השער"
+
+#: wppa-album-covers.php:854
+msgid "View"
+msgstr "צפייה"
+
+#: wppa-album-covers.php:857
+msgid "album"
+msgstr "אלבום"
+
+#: wppa-album-covers.php:860
+msgid "albums"
+msgstr "אלבומים"
+
+#: wppa-album-covers.php:869 wppa-boxes-html.php:192 wppa-breadcrumb.php:179
+#: wppa-breadcrumb.php:184 wppa-functions.php:3980 wppa-utils.php:1129
+msgid "and"
+msgstr "ו"
+
+#: wppa-album-covers.php:874
+msgid "photo"
+msgstr "תמונה"
+
+#: wppa-album-covers.php:877 wppa-album-covers.php:881
+msgid "photos"
+msgstr "תמונות"
+
+#: wppa-album-widget.php:101
+#, php-format
+msgid "Upload at least %d photos to this album!"
+msgstr ""
+
+#: wppa-boxes-html.php:56
+msgid "Please select a tagcloud landing page in Table VI-C3b"
+msgstr ""
+
+#: wppa-boxes-html.php:93
+msgid "Please select a multitag landing page in Table VI-C4b"
+msgstr ""
+
+#: wppa-boxes-html.php:115
+msgid "Please check the tag(s) that the photos must have"
+msgstr ""
+
+#: wppa-boxes-html.php:136
+#, fuzzy
+msgid "And"
+msgstr "ו"
+
+#: wppa-boxes-html.php:139
+msgid "Or"
+msgstr ""
+
+#: wppa-boxes-html.php:163
+msgid "Find!"
+msgstr ""
+
+#: wppa-boxes-html.php:192 wppa-utils.php:1129
+#, php-format
+msgid "See this image on %s"
+msgstr ""
+
+#: wppa-boxes-html.php:211
+#, php-format
+msgid "Share %s on Facebook"
+msgstr ""
+
+#: wppa-boxes-html.php:253
+#, php-format
+msgid "Tweet %s on Twitter"
+msgstr ""
+
+#: wppa-boxes-html.php:265
+#, php-format
+msgid "Tip %s on Hyves"
+msgstr ""
+
+#: wppa-boxes-html.php:278
+#, php-format
+msgid "Share %s on Google+"
+msgstr ""
+
+#: wppa-boxes-html.php:293
+#, php-format
+msgid "Share %s on Pinterest"
+msgstr ""
+
+#: wppa-boxes-html.php:312
+#, fuzzy
+msgid "Comment on Facebook:"
+msgstr "עשר התמונות המובילות"
+
+#: wppa-boxes-html.php:366 wppa-boxes-html.php:380 wppa-functions.php:3761
+msgid "Max uploads reached"
+msgstr ""
+
+#: wppa-boxes-html.php:416
+msgid "Upload Photo"
+msgstr ""
+
+#: wppa-boxes-html.php:441
+msgid "Please select an album and try again"
+msgstr ""
+
+#: wppa-boxes-html.php:444
+#, fuzzy
+msgid "Upload"
+msgstr "תמונות"
+
+#: wppa-boxes-html.php:450
+#, php-format
+msgid ""
+"You may upload up to %s photos at once if your browser supports HTML-5 "
+"multiple file upload"
+msgstr ""
+
+#: wppa-boxes-html.php:456
+#, php-format
+msgid "Max photo size: %d x %d (%2.1f MegaPixel)"
+msgstr ""
+
+#: wppa-boxes-html.php:472
+msgid "Apply watermark file:"
+msgstr ""
+
+#: wppa-boxes-html.php:484
+msgid "Position:"
+msgstr ""
+
+#: wppa-boxes-html.php:501
+msgid "Enter photo name."
+msgstr ""
+
+#: wppa-boxes-html.php:501
+msgid ""
+"If you leave this blank, the original filename will be used as photo name."
+msgstr ""
+
+#: wppa-boxes-html.php:509
+msgid "Enter/modify photo description"
+msgstr ""
+
+#: wppa-boxes-html.php:558
+msgid "wrote:"
+msgstr ""
+
+#: wppa-boxes-html.php:590 wppa-links.php:514
+msgid "Awaiting moderation"
+msgstr ""
+
+#: wppa-boxes-html.php:593
+msgid "Marked as spam"
+msgstr ""
+
+#: wppa-boxes-html.php:611
+msgid "Edit!"
+msgstr "עריכה!"
+
+#: wppa-boxes-html.php:615
+msgid "Send!"
+msgstr "שליחה!"
+
+#: wppa-boxes-html.php:654
+msgid "Your name:"
+msgstr "שמך:"
+
+#: wppa-boxes-html.php:659
+msgid "Your email:"
+msgstr "כתובת הדוא\"ל שלך:"
+
+#: wppa-boxes-html.php:664
+msgid "Your comment:"
+msgstr "ההערה שלך:"
+
+#: wppa-boxes-html.php:694
+#, fuzzy, php-format
+msgid "You must <a href=\"%s\">login</a> to enter a comment"
+msgstr "חייבים להתחבר על מנת להכניס הערה"
+
+#: wppa-boxes-html.php:701
+#, php-format
+msgid "%d  comments"
+msgstr "הערות %d"
+
+#: wppa-boxes-html.php:705
+msgid "Leave a comment"
+msgstr "השאר הערה"
+
+#: wppa-boxes-html.php:749
+msgid "Show IPTC data"
+msgstr ""
+
+#: wppa-boxes-html.php:752
+msgid "Hide IPTC data"
+msgstr ""
+
+#: wppa-boxes-html.php:779
+msgid "No IPTC data"
+msgstr ""
+
+#: wppa-boxes-html.php:820
+msgid "Show EXIF data"
+msgstr ""
+
+#: wppa-boxes-html.php:823
+msgid "Hide EXIF data"
+msgstr ""
+
+#: wppa-boxes-html.php:850
+msgid "No EXIF data"
+msgstr ""
+
+#: wppa-breadcrumb.php:68
+msgid "Home"
+msgstr "בית"
+
+#: wppa-breadcrumb.php:83
+msgid "Post:"
+msgstr ""
+
+#: wppa-breadcrumb.php:83
+msgid "Page:"
+msgstr ""
+
+#: wppa-breadcrumb.php:95 wppa-breadcrumb.php:100
+msgid "Searchstring:"
+msgstr "מחרוזת חיפוש:"
+
+#: wppa-breadcrumb.php:97 wppa-breadcrumb.php:115 wppa-breadcrumb.php:133
+#: wppa-breadcrumb.php:151 wppa-breadcrumb.php:169 wppa-breadcrumb.php:181
+#: wppa-breadcrumb.php:199
+#, fuzzy
+msgid "View the thumbnails"
+msgstr "צפה באלבום"
+
+#: wppa-breadcrumb.php:107 wppa-breadcrumb.php:125 wppa-breadcrumb.php:143
+#: wppa-breadcrumb.php:161 wppa-breadcrumb.php:209 wppa-breadcrumb.php:214
+#, fuzzy
+msgid "Various albums"
+msgstr "אלבומים"
+
+#: wppa-breadcrumb.php:109 wppa-breadcrumb.php:127 wppa-breadcrumb.php:145
+#: wppa-breadcrumb.php:163 wppa-breadcrumb.php:211
+#, fuzzy
+msgid "Albums:"
+msgstr "אלבומים"
+
+#: wppa-breadcrumb.php:109 wppa-breadcrumb.php:127 wppa-breadcrumb.php:145
+#: wppa-breadcrumb.php:163 wppa-breadcrumb.php:193 wppa-breadcrumb.php:211
+#, fuzzy
+msgid "Album:"
+msgstr "אלבום"
+
+#: wppa-breadcrumb.php:113 wppa-breadcrumb.php:118
+msgid "Top rated photos"
+msgstr "התמונות שמדורגות הכי גבוה"
+
+#: wppa-breadcrumb.php:131 wppa-breadcrumb.php:136 wppa-breadcrumb.php:149
+msgid "Recently uploaded photos"
+msgstr ""
+
+#: wppa-breadcrumb.php:154
+msgid "Recently commented photos"
+msgstr ""
+
+#: wppa-breadcrumb.php:167 wppa-breadcrumb.php:172
+#, fuzzy
+msgid "Featured photos"
+msgstr "התמונות שמדורגות הכי גבוה"
+
+#: wppa-breadcrumb.php:179 wppa-breadcrumb.php:184
+#, fuzzy
+msgid "Tagged photos:"
+msgstr "התמונות שמדורגות הכי גבוה"
+
+#: wppa-breadcrumb.php:179 wppa-breadcrumb.php:184
+msgid "or"
+msgstr ""
+
+#: wppa-breadcrumb.php:197 wppa-breadcrumb.php:202
+msgid "Recently updated albums"
+msgstr ""
+
+#: wppa-breadcrumb.php:229
+#, fuzzy
+msgid "Thumbnail view"
+msgstr "עשר התמונות המובילות"
+
+#: wppa-breadcrumb.php:230
+msgid "Thumbs"
+msgstr ""
+
+#: wppa-breadcrumb.php:315
+msgid "Unpublished"
+msgstr ""
+
+#: wppa-cart.php:23
+msgid "Buy now"
+msgstr ""
+
+#: wppa-cart.php:85
+#, php-format
+msgid "Unit Price: %s each"
+msgstr ""
+
+#: wppa-cart.php:89
+msgid "Qty:"
+msgstr ""
+
+#: wppa-comment-widget.php:81 wppa-featen-widget.php:92
+#: wppa-lasten-widget.php:83 wppa-potd-widget.php:74
+#: wppa-thumbnail-widget.php:80 wppa-topten-widget.php:106
+msgid "Photo not found."
+msgstr "תמונה לא נמצאה."
+
+#: wppa-common-functions.php:736
+msgid "Default photo album for"
+msgstr ""
+
+#: wppa-common-functions.php:1123
+msgid "1 second"
+msgstr "שנייה אחת"
+
+#: wppa-common-functions.php:1124 wppa-functions.php:3981
+msgid "seconds"
+msgstr "שניות"
+
+#: wppa-common-functions.php:1128
+msgid "1 minute"
+msgstr "דקה אחת"
+
+#: wppa-common-functions.php:1129 wppa-functions.php:3980
+msgid "minutes"
+msgstr "דקות"
+
+#: wppa-common-functions.php:1133
+msgid "1 hour"
+msgstr "שעה אחת"
+
+#: wppa-common-functions.php:1134 wppa-functions.php:3979
+msgid "hours"
+msgstr "שעות"
+
+#: wppa-common-functions.php:1138
+msgid "1 day"
+msgstr "יום אחד"
+
+#: wppa-common-functions.php:1139 wppa-functions.php:3978
+msgid "days"
+msgstr "ימים"
+
+#: wppa-common-functions.php:1143
+msgid "1 week"
+msgstr "שבוע אחד"
+
+#: wppa-common-functions.php:1144 wppa-functions.php:3977
+msgid "weeks"
+msgstr "שבועות"
+
+#: wppa-common-functions.php:1148
+msgid "1 month"
+msgstr "חודש אחד"
+
+#: wppa-common-functions.php:1149
+msgid "months"
+msgstr "חודשים"
+
+#: wppa-common-functions.php:1152
+msgid "1 year"
+msgstr "שנה אחת"
+
+#: wppa-common-functions.php:1153
+msgid "years"
+msgstr "שנים"
+
+#: wppa-exif-iptc-common.php:59 wppa-exif-iptc-common.php:119
+msgid "n.a."
+msgstr ""
+
+#: wppa-exif-iptc-common.php:197
+msgid "Not Defined"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:198
+msgid "Manual"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:199
+msgid "Program AE"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:200
+msgid "Aperture-priority AE"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:201
+msgid "Shutter speed priority AE"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:202
+msgid "Creative (Slow speed)"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:203
+msgid "Action (High speed)"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:204
+msgid "Portrait"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:205
+msgid "Landscape"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:206
+msgid "Bulb"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:228
+#, fuzzy
+msgid "Average"
+msgstr "ממוצע"
+
+#: wppa-exif-iptc-common.php:229
+msgid "Center-weighted average"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:230
+msgid "Spot"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:231
+msgid "Multi-spot"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:232
+msgid "Multi-segment"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:233
+msgid "Partial"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:234
+msgid "Other"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:270
+msgid "No Flash"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:272
+msgid "Fired"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:274
+msgid "Fired, Return not detected"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:276
+msgid "Fired, Return detected"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:278
+msgid "On, Did not fire"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:280
+msgid "On, Fired"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:282
+msgid "On, Return not detected"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:284
+msgid "On, Return detected"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:286
+msgid "Off, Did not fire"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:288
+msgid "Off, Did not fire, Return not detected"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:290
+msgid "Auto, Did not fire"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:292
+msgid "Auto, Fired"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:294
+msgid "Auto, Fired, Return not detected"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:296
+msgid "Auto, Fired, Return detected"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:298
+msgid "No flash function"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:300
+msgid "Off, No flash function"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:302
+msgid "Fired, Red-eye reduction"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:304
+msgid "Fired, Red-eye reduction, Return not detected"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:306
+msgid "Fired, Red-eye reduction, Return detected"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:308
+msgid "On, Red-eye reduction"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:310
+msgid "Red-eye reduction, Return not detected"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:312
+msgid "On, Red-eye reduction, Return detected"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:314
+msgid "Off, Red-eye reduction"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:316
+msgid "Auto, Did not fire, Red-eye reduction"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:318
+msgid "Auto, Fired, Red-eye reduction"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:320
+msgid "Auto, Fired, Red-eye reduction, Return not detected"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:322
+msgid "Auto, Fired, Red-eye reduction, Return detected"
+msgstr ""
+
+#: wppa-featen-widget.php:50
+#, fuzzy
+msgid "View the featured photos"
+msgstr "צפה בתמונות שמדורגות הכי גבוה"
+
+#: wppa-functions.php:507
+#, php-format
+msgid ""
+"There are %s albums found. Only the first %s will be shown. Please refine "
+"your search criteria."
+msgstr ""
+
+#: wppa-functions.php:773
+#, php-format
+msgid ""
+"There are %s photos found. Only the first %s will be shown. Please refine "
+"your search criteria."
+msgstr ""
+
+#: wppa-functions.php:1038 wppa-functions.php:1041
+#, fuzzy
+msgid "Edit"
+msgstr "עריכה!"
+
+#: wppa-functions.php:1170
+msgid "Comment edited"
+msgstr ""
+
+#: wppa-functions.php:1178
+#, fuzzy
+msgid "Comment on photo:"
+msgstr "עשר התמונות המובילות"
+
+#: wppa-functions.php:1185
+#, fuzzy
+msgid "wrote on photo"
+msgstr "דפדף בתמונות"
+
+#: wppa-functions.php:1187
+msgid "Moderate comment admin"
+msgstr ""
+
+#: wppa-functions.php:1188 wppa-functions.php:3831 wppa-upload.php:1042
+#, fuzzy
+msgid "Moderate manage photo"
+msgstr "דפדף בתמונות"
+
+#: wppa-functions.php:1189
+#, fuzzy
+msgid "Edit photo"
+msgstr "התמונה הבאה"
+
+#: wppa-functions.php:1198
+msgid "You receive this email as you are assigned to moderate"
+msgstr ""
+
+#: wppa-functions.php:1210
+msgid "You receive this email as administrator of the site"
+msgstr ""
+
+#: wppa-functions.php:1227
+msgid "You receive this email as uploader of the photo"
+msgstr ""
+
+#: wppa-functions.php:1244
+msgid "You receive this email as owner of the album"
+msgstr ""
+
+#: wppa-functions.php:1251
+msgid "Comment added"
+msgstr ""
+
+#: wppa-functions.php:1255
+msgid ""
+"Sorry, you gave a wrong answer.\\n\\nPlease try again to solve the "
+"computation."
+msgstr ""
+
+#: wppa-functions.php:1265
+msgid "Could not process comment.\\nProbably timed out."
+msgstr ""
+
+#: wppa-functions.php:1350
+#, fuzzy
+msgid "1 Comment"
+msgstr "הערות %d"
+
+#: wppa-functions.php:1351
+#, fuzzy, php-format
+msgid "%s Comments"
+msgstr "הערות %d"
+
+#: wppa-functions.php:1481 wppa-functions.php:1482
+msgid "Prev.&nbsp;page"
+msgstr "עמוד&nbsp;קודם"
+
+#: wppa-functions.php:1486 wppa-functions.php:1487
+msgid "Next&nbsp;page"
+msgstr "עמוד&nbsp;הבא"
+
+#: wppa-functions.php:1836
+#, fuzzy
+msgid "<b>ERROR: Illegal attempt to enter a rating.</b>"
+msgstr "<b>שגיאה: ניסיון להכניס דירוג לא תקין.</b>"
+
+#: wppa-functions.php:1849
+#, fuzzy
+msgid "<b>ERROR: Illegal attempt to enter a comment.</b>"
+msgstr "<b>שגיאה: ניסיון להכניס דירוג לא תקין.</b>"
+
+#: wppa-functions.php:2194 wppa-topten-widget.php:72
+msgid "View the top rated photos"
+msgstr "צפה בתמונות שמדורגות הכי גבוה"
+
+#: wppa-functions.php:3705
+#, fuzzy
+msgid "<b>ERROR: Illegal attempt to upload a file.</b>"
+msgstr "<b>שגיאה: ניסיון להכניס דירוג לא תקין.</b>"
+
+#: wppa-functions.php:3743
+msgid "Photo successfully uploaded."
+msgstr ""
+
+#: wppa-functions.php:3743
+#, php-format
+msgid "%s photos successfully uploaded."
+msgstr ""
+
+#: wppa-functions.php:3744
+#, php-format
+msgid "%s points added."
+msgstr ""
+
+#: wppa-functions.php:3747
+msgid "Upload failed"
+msgstr ""
+
+#: wppa-functions.php:3765
+msgid "Error during upload"
+msgstr ""
+
+#: wppa-functions.php:3770
+msgid "Uploaded file is not an image"
+msgstr ""
+
+#: wppa-functions.php:3774
+#, php-format
+msgid ""
+"Only gif, jpg and png image files are supported. Returned filetype = %d."
+msgstr ""
+
+#: wppa-functions.php:3781
+#, php-format
+msgid "The image is too big. Max photo size: %d x %d (%2.1f MegaPixel)"
+msgstr ""
+
+#: wppa-functions.php:3815
+msgid "Could not insert photo into db."
+msgstr ""
+
+#: wppa-functions.php:3827 wppa-upload.php:1038
+#, php-format
+msgid "New photo uploaded: %s"
+msgstr ""
+
+#: wppa-functions.php:3828 wppa-upload.php:1039
+#, php-format
+msgid "User %s uploaded photo %s into album %s"
+msgstr ""
+
+#: wppa-functions.php:3830 wppa-upload.php:1041
+msgid "This upload requires moderation"
+msgstr ""
+
+#: wppa-functions.php:3834 wppa-upload.php:1045
+msgid "Details:"
+msgstr ""
+
+#: wppa-functions.php:3835 wppa-upload.php:1046
+#, fuzzy
+msgid "Manage photo"
+msgstr "דפדף בתמונות"
+
+#: wppa-functions.php:3975
+msgid "You can upload after"
+msgstr ""
+
+#: wppa-functions.php:4010
+msgid "Zoom in"
+msgstr ""
+
+#: wppa-lasten-widget.php:67
+#, fuzzy
+msgid "View the most recent uploaded photos"
+msgstr "צפה בתמונות שמדורגות הכי גבוה"
+
+#: wppa-links.php:454
+msgid "App"
+msgstr ""
+
+#: wppa-links.php:455
+msgid "Mod"
+msgstr ""
+
+#: wppa-links.php:456
+msgid "Del"
+msgstr ""
+
+#: wppa-links.php:459 wppa-links.php:475
+msgid "Are you sure you want to publish this photo?"
+msgstr ""
+
+#: wppa-links.php:465 wppa-links.php:481
+msgid "Are you sure you want to remove this photo?"
+msgstr ""
+
+#: wppa-links.php:470 wppa-links.php:486
+msgid "Approve"
+msgstr ""
+
+#: wppa-links.php:471
+msgid "Moderate"
+msgstr ""
+
+#: wppa-links.php:472 wppa-links.php:489
+msgid "Delete"
+msgstr ""
+
+#: wppa-links.php:487
+#, fuzzy
+msgid "PhotoAdmin"
+msgstr "תמונה"
+
+#: wppa-links.php:488
+#, fuzzy
+msgid "CommentAdmin"
+msgstr "הערות %d"
+
+#: wppa-links.php:492
+msgid "Are you sure you want to publish this comment?"
+msgstr ""
+
+#: wppa-links.php:504
+msgid "Are you sure you want to remove this comment?"
+msgstr ""
+
+#: wppa-non-admin.php:289 wppa-slideshow.php:223
+msgid "Start"
+msgstr "התחל"
+
+#: wppa-non-admin.php:290
+msgid "Stop"
+msgstr "הפסק"
+
+#: wppa-non-admin.php:291 wppa-slideshow.php:222
+msgid "Slower"
+msgstr "לאט יותר"
+
+#: wppa-non-admin.php:292 wppa-slideshow.php:224
+msgid "Faster"
+msgstr "מהר יותר"
+
+#: wppa-non-admin.php:293
+msgid "Photo"
+msgstr "תמונה"
+
+#: wppa-non-admin.php:294
+msgid "of"
+msgstr "מ"
+
+#: wppa-non-admin.php:295
+msgid "Previous photo"
+msgstr "תמונה קודמת"
+
+#: wppa-non-admin.php:296
+msgid "Next photo"
+msgstr "התמונה הבאה"
+
+#: wppa-non-admin.php:297
+msgid "Prev."
+msgstr "אחורה"
+
+#: wppa-non-admin.php:298 wppa-slideshow.php:635
+msgid "Next"
+msgstr "קדימה"
+
+#: wppa-non-admin.php:299 wppa-slideshow.php:481 wppa-slideshow.php:485
+#: wppa-slideshow.php:528
+msgid "Average&nbsp;rating"
+msgstr "דירוג ממוצע"
+
+#: wppa-non-admin.php:300 wppa-slideshow.php:507 wppa-slideshow.php:512
+#: wppa-slideshow.php:517
+msgid "My&nbsp;rating"
+msgstr "הדירוג שלי"
+
+#: wppa-non-admin.php:301
+msgid "Avg."
+msgstr ""
+
+#: wppa-non-admin.php:302
+msgid "Mine"
+msgstr ""
+
+#: wppa-non-admin.php:303
+msgid "You marked this image as inappropriate."
+msgstr ""
+
+#: wppa-non-admin.php:305
+msgid "No dislikes"
+msgstr ""
+
+#: wppa-non-admin.php:306
+msgid "1 dislike"
+msgstr ""
+
+#: wppa-non-admin.php:307
+msgid "dislikes"
+msgstr ""
+
+#: wppa-non-admin.php:308
+msgid "including mine"
+msgstr ""
+
+#: wppa-non-admin.php:312
+msgid "Please enter your name"
+msgstr "אנא הכנס שמך"
+
+#: wppa-non-admin.php:313
+msgid "Please enter a valid email address"
+msgstr "אנא הכנס כתובת אימייל תקינה"
+
+#: wppa-non-admin.php:314
+msgid "Please enter a comment"
+msgstr "אנא הזן הערה"
+
+#: wppa-non-admin.php:354
+msgid "Double click to start/stop slideshow running"
+msgstr "הקלק קליק כפול להתחיל/לעצור מצגת תמונות"
+
+#: wppa-search-widget.php:40
+msgid "Please select a search results landing page in Table IX-C1"
+msgstr ""
+
+#: wppa-slideshow-widget.php:116
+msgid "No album defined yet."
+msgstr "לא הוגדר עדיין אלבום."
+
+#: wppa-slideshow.php:240
+msgid "Paused"
+msgstr ""
+
+#: wppa-slideshow.php:245
+msgid ""
+"To see the full size images, you need to enable javascript in your browser."
+msgstr "כדי לראות את התמונות בגודל מלא עליך לאפשר javascript בדפדפן שלה."
+
+#: wppa-slideshow.php:418
+#, fuzzy
+msgid "- - - Voting enabled - - -"
+msgstr "- - - דירוג מאופשר - - -"
+
+#: wppa-slideshow.php:435 wppa-slideshow.php:520 wppa-slideshow.php:553
+#, fuzzy, php-format
+msgid "You must <a href=\"%s\">login</a> to vote"
+msgstr "חובה להתחבר כדי להצביע"
+
+#: wppa-slideshow.php:451
+msgid "- - - Rating enabled - - -"
+msgstr "- - - דירוג מאופשר - - -"
+
+#: wppa-slideshow.php:468
+msgid "very low"
+msgstr "נמוך מאד"
+
+#: wppa-slideshow.php:469
+msgid "low"
+msgstr "נמוך"
+
+#: wppa-slideshow.php:470
+msgid "average"
+msgstr "ממוצע"
+
+#: wppa-slideshow.php:471
+msgid "high"
+msgstr "גבוה"
+
+#: wppa-slideshow.php:472
+msgid "very high"
+msgstr "גבוה מאד"
+
+#: wppa-slideshow.php:500 wppa-slideshow.php:540
+msgid "Are you sure you want to mark this image as inappropriate?"
+msgstr ""
+
+#: wppa-slideshow.php:501 wppa-slideshow.php:541
+msgid "Click this if you do NOT like this image!"
+msgstr ""
+
+#: wppa-slideshow.php:503 wppa-slideshow.php:543
+msgid "Nuber of people who marked this photo as inapprpriate"
+msgstr ""
+
+#: wppa-slideshow.php:549
+#, fuzzy
+msgid "My rating:"
+msgstr "הדירוג שלי"
+
+#: wppa-slideshow.php:631
+#, php-format
+msgid "%s back"
+msgstr ""
+
+#: wppa-slideshow.php:632
+#, fuzzy
+msgid "Previous"
+msgstr "תמונה קודמת"
+
+#: wppa-slideshow.php:636
+#, php-format
+msgid "%s forward"
+msgstr ""
+
+#: wppa-slideshow.php:752
+#, php-format
+msgid "Photo %s of %s"
+msgstr ""
+
+#: wppa-slideshow.php:783
+msgid "Click to start/stop"
+msgstr "הקלק כדי להתחיל/לעצור"
+
+#: wppa-slideshow.php:795
+#, fuzzy
+msgid "- - - Comments box activated - - -"
+msgstr "- - - דירוג מאופשר - - -"
+
+#: wppa-slideshow.php:816
+#, fuzzy
+msgid "- - - IPTC box activated - - -"
+msgstr "- - - דירוג מאופשר - - -"
+
+#: wppa-slideshow.php:836
+#, fuzzy
+msgid "- - - EXIF box activated - - -"
+msgstr "- - - דירוג מאופשר - - -"
+
+#: wppa-statistics.php:29
+msgid "There are"
+msgstr "ישנם"
+
+#: wppa-statistics.php:29
+msgid "photo albums. The last album added is"
+msgstr "אלבומי תמונות. האלבום האחרון שנוסף הוא"
+
+#: wppa-statistics.php:33
+msgid ", a subalbum of"
+msgstr ", תת אלבום של"
+
+#: wppa-super-view-widget.php:37
+msgid "Please select a super view widget landing page in Table VI-C"
+msgstr ""
+
+#: wppa-topten-widget.php:89
+#, php-format
+msgid "%s Votes"
+msgstr ""
+
+#: wppa-topten-widget.php:92 wppa-topten-widget.php:95
+#, php-format
+msgid "Views: %s times"
+msgstr ""
+
+#: wppa-utils.php:182 wppa-utils.php:315
+msgid "none"
+msgstr ""
+
+#: wppa-utils.php:193 wppa-utils.php:326
+msgid "unknown"
+msgstr ""
+
+#: wppa-utils.php:258
+msgid "--- none ---"
+msgstr "--- ריק ---"
+
+#: wppa-utils.php:262
+msgid "--- separate ---"
+msgstr "--- נפרד ---"
+
+#: wppa-utils.php:266
+#, fuzzy
+msgid "--- all ---"
+msgstr "--- ריק ---"
+
+#: wppa-utils.php:270 wppa-utils.php:291
+#, fuzzy
+msgid "--- deleted ---"
+msgstr "--- נפרד ---"
+
+#: wppa-utils.php:280
+#, fuzzy
+msgid "All Albums"
+msgstr "אלבומים"
+
+#: wppa-utils.php:366
+#, php-format
+msgid "Rating: %s"
+msgstr "דירוגים: %s"
+
+#: wppa-utils.php:598
+#, php-format
+msgid "The visitors email address is: <a href=\"mailto:%s\">%s</a>"
+msgstr ""
+
+#: wppa-utils.php:604
+#, php-format
+msgid "The visitor says his email address is: <a href=\"mailto:%s\">%s</a>"
+msgstr ""
+
+#: wppa-utils.php:609
+#, php-format
+msgid ""
+"This message is automaticly generated at %s. It is useless to respond to it."
+msgstr ""
+
+#: theme/wppa-theme.php:96
+msgid "No albums or photos found matching your search criteria."
+msgstr "לא נמצאו אלבומים או תמונות התואמים את שאילתת החיפוש שלך."
+
+#: theme/wppa-theme.php:99 theme/wppa-theme.php:111
+#, fuzzy
+msgid "No photos found matching your search criteria."
+msgstr "לא נמצאו אלבומים או תמונות התואמים את שאילתת החיפוש שלך."
+
+#, fuzzy
+#~ msgid "All albums"
+#~ msgstr "אלבומים"
+
+#~ msgid "<b>ERROR: Attempt to enter an invalid rating.</b>"
+#~ msgstr "<b>שגיאה: ניסיון להכניס דירוג לא תקין.</b>"
+
+#~ msgid "Top Ten Photos"
+#~ msgstr "עשר התמונות המובילות"
+
+#~ msgid "Page is not available."
+#~ msgstr "עמוד לא זמין"
+
+#~ msgid "Sidebar Slideshow"
+#~ msgstr "מצגת סרגל צד"
