@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wppa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-10-21 17:59+0100\n"
-"PO-Revision-Date: 2013-10-21 17:59+0100\n"
+"POT-Creation-Date: 2013-10-24 13:44+0100\n"
+"PO-Revision-Date: 2013-10-24 13:44+0100\n"
 "Last-Translator: J.N. Breetvelt <OpaJaap@OpaJaap.nl>\n"
 "Language-Team: \n"
 "Language: es\n"
@@ -71,7 +71,7 @@ msgid "Photo Albums"
 msgstr "Álbumes de fotos"
 
 #: wppa-album-covers.php:193 wppa-album-covers.php:376
-#: wppa-album-covers.php:542 wppa-non-admin.php:300
+#: wppa-album-covers.php:542 wppa-non-admin.php:303
 msgid "Slideshow"
 msgstr "Presentación"
 
@@ -110,7 +110,8 @@ msgid "albums"
 msgstr "álbumes"
 
 #: wppa-album-covers.php:869 wppa-boxes-html.php:239 wppa-breadcrumb.php:194
-#: wppa-breadcrumb.php:199 wppa-functions.php:3887 wppa-utils.php:1153
+#: wppa-breadcrumb.php:199 wppa-functions - kopie.php:3921
+#: wppa-functions.php:3895 wppa-utils.php:1153
 msgid "and"
 msgstr "y"
 
@@ -190,7 +191,8 @@ msgstr "Compartir %s on Pinterest"
 msgid "Comment on Facebook:"
 msgstr "Comenta sobre la foto:"
 
-#: wppa-boxes-html.php:422 wppa-boxes-html.php:436 wppa-functions.php:3668
+#: wppa-boxes-html.php:422 wppa-boxes-html.php:436 wppa-functions -
+#: kopie.php:3702 wppa-functions.php:3676
 msgid "Max uploads reached"
 msgstr "Número máximo de subidas alcanzado"
 
@@ -431,7 +433,8 @@ msgstr "Álbum de fotos predeterminado para"
 msgid "1 second"
 msgstr "1 segundo"
 
-#: wppa-common-functions.php:1144 wppa-functions.php:3888
+#: wppa-common-functions.php:1144 wppa-functions - kopie.php:3922
+#: wppa-functions.php:3896
 msgid "seconds"
 msgstr "segundos"
 
@@ -439,7 +442,8 @@ msgstr "segundos"
 msgid "1 minute"
 msgstr "1 minuto"
 
-#: wppa-common-functions.php:1149 wppa-functions.php:3887
+#: wppa-common-functions.php:1149 wppa-functions - kopie.php:3921
+#: wppa-functions.php:3895
 msgid "minutes"
 msgstr "minutos"
 
@@ -447,7 +451,8 @@ msgstr "minutos"
 msgid "1 hour"
 msgstr "1 hora"
 
-#: wppa-common-functions.php:1154 wppa-functions.php:3886
+#: wppa-common-functions.php:1154 wppa-functions - kopie.php:3920
+#: wppa-functions.php:3894
 msgid "hours"
 msgstr "horas"
 
@@ -455,7 +460,8 @@ msgstr "horas"
 msgid "1 day"
 msgstr "1 día"
 
-#: wppa-common-functions.php:1159 wppa-functions.php:3885
+#: wppa-common-functions.php:1159 wppa-functions - kopie.php:3919
+#: wppa-functions.php:3893
 msgid "days"
 msgstr "días"
 
@@ -463,7 +469,8 @@ msgstr "días"
 msgid "1 week"
 msgstr "1 semana"
 
-#: wppa-common-functions.php:1164 wppa-functions.php:3884
+#: wppa-common-functions.php:1164 wppa-functions - kopie.php:3918
+#: wppa-functions.php:3892
 msgid "weeks"
 msgstr "semanas"
 
@@ -667,74 +674,76 @@ msgstr ""
 msgid "View the featured photos"
 msgstr "Ver las fotos destacadas"
 
-#: wppa-functions.php:379
+#: wppa-functions - kopie.php:392 wppa-functions.php:379
 #, fuzzy
 msgid "No related photos found."
 msgstr "Fotos mas calificadas"
 
-#: wppa-functions.php:592
+#: wppa-functions - kopie.php:606 wppa-functions.php:592
 #, php-format
 msgid ""
 "There are %s albums found. Only the first %s will be shown. Please refine "
 "your search criteria."
 msgstr ""
 
-#: wppa-functions.php:857
+#: wppa-functions - kopie.php:879 wppa-functions.php:857
 #, php-format
 msgid ""
 "There are %s photos found. Only the first %s will be shown. Please refine "
 "your search criteria."
 msgstr ""
 
-#: wppa-functions.php:1127 wppa-functions.php:1130
+#: wppa-functions - kopie.php:1149 kopie.php:1152 wppa-functions.php:1127
+#: wppa-functions.php:1130
 msgid "Edit"
 msgstr "Editar"
 
-#: wppa-functions.php:1259
+#: wppa-functions - kopie.php:1281 wppa-functions.php:1259
 msgid "Comment edited"
 msgstr "Comentario editado"
 
-#: wppa-functions.php:1267
+#: wppa-functions - kopie.php:1289 wppa-functions.php:1267
 msgid "Comment on photo:"
 msgstr "Comenta sobre la foto:"
 
-#: wppa-functions.php:1274
+#: wppa-functions - kopie.php:1296 wppa-functions.php:1274
 msgid "wrote on photo"
 msgstr "Escribió sobre la foto"
 
-#: wppa-functions.php:1276
+#: wppa-functions - kopie.php:1298 wppa-functions.php:1276
 msgid "Moderate comment admin"
 msgstr "Aministración de comentarios moderados"
 
-#: wppa-functions.php:1277 wppa-functions.php:3738 wppa-upload.php:1042
+#: wppa-functions - kopie.php:1299 kopie.php:3772 wppa-functions.php:1277
+#: wppa-functions.php:3746 wppa-upload.php:1042
 msgid "Moderate manage photo"
 msgstr "Administración de fotos moderadas"
 
-#: wppa-functions.php:1278
+#: wppa-functions - kopie.php:1300 wppa-functions.php:1278
 msgid "Edit photo"
 msgstr "Editar foto"
 
-#: wppa-functions.php:1287
+#: wppa-functions - kopie.php:1309 wppa-functions.php:1287
 msgid "You receive this email as you are assigned to moderate"
 msgstr "Ha recibido este email debido a que está asignado como moderador"
 
-#: wppa-functions.php:1299
+#: wppa-functions - kopie.php:1321 wppa-functions.php:1299
 msgid "You receive this email as administrator of the site"
 msgstr "Ha recibido este email como administrador del web site"
 
-#: wppa-functions.php:1316
+#: wppa-functions - kopie.php:1338 wppa-functions.php:1316
 msgid "You receive this email as uploader of the photo"
 msgstr "Ha recibido este email debido a haber subido la foto"
 
-#: wppa-functions.php:1333
+#: wppa-functions - kopie.php:1355 wppa-functions.php:1333
 msgid "You receive this email as owner of the album"
 msgstr "Ha recibido este email como propietario del álbum"
 
-#: wppa-functions.php:1340
+#: wppa-functions - kopie.php:1362 wppa-functions.php:1340
 msgid "Comment added"
 msgstr "Comentario añadido"
 
-#: wppa-functions.php:1344
+#: wppa-functions - kopie.php:1366 wppa-functions.php:1344
 msgid ""
 "Sorry, you gave a wrong answer.\\n\\nPlease try again to solve the "
 "computation."
@@ -742,114 +751,122 @@ msgstr ""
 "Perdone, su respuesta es incorrecta.\\n\\nPor favor, intentelo de nuevo para "
 "resolver la operación"
 
-#: wppa-functions.php:1354
+#: wppa-functions - kopie.php:1376 wppa-functions.php:1354
 msgid "Could not process comment.\\nProbably timed out."
 msgstr ""
 "No se pudo procesar el comentario.\\nProbablemente se haya agotado el tiempo."
 
-#: wppa-functions.php:1435
+#: wppa-functions - kopie.php:1457 wppa-functions.php:1435
 msgid "1 Comment"
 msgstr "1 Comentario"
 
-#: wppa-functions.php:1436
+#: wppa-functions - kopie.php:1458 wppa-functions.php:1436
 #, php-format
 msgid "%s Comments"
 msgstr "%s Comentarios"
 
-#: wppa-functions.php:1565 wppa-functions.php:1566
+#: wppa-functions - kopie.php:1587 kopie.php:1588 wppa-functions.php:1565
+#: wppa-functions.php:1566
 msgid "Prev.&nbsp;page"
 msgstr "Página Anterior"
 
-#: wppa-functions.php:1570 wppa-functions.php:1571
+#: wppa-functions - kopie.php:1592 kopie.php:1593 wppa-functions.php:1570
+#: wppa-functions.php:1571
 msgid "Next&nbsp;page"
 msgstr "Página siguiente"
 
-#: wppa-functions.php:1919
+#: wppa-functions - kopie.php:1941 wppa-functions.php:1919
 msgid "<b>ERROR: Illegal attempt to enter a rating.</b>"
 msgstr "<b>ERROR: Intento ilegal de calificar.</b>"
 
-#: wppa-functions.php:1932
+#: wppa-functions - kopie.php:1954 wppa-functions.php:1932
 msgid "<b>ERROR: Illegal attempt to enter a comment.</b>"
 msgstr "<b>ERROR: Intento ilegal de comentar.</b>"
 
-#: wppa-functions.php:2277 wppa-topten-widget.php:72
+#: wppa-functions - kopie.php:2302 wppa-functions.php:2277
+#: wppa-topten-widget.php:72
 msgid "View the top rated photos"
 msgstr "Ver las fotos mejor calificadas"
 
-#: wppa-functions.php:3612
+#: wppa-functions - kopie.php:3646 wppa-functions.php:3620
 msgid "<b>ERROR: Illegal attempt to upload a file.</b>"
 msgstr "<b>ERROR: Intento ilegal de subir un archivo.</b>"
 
-#: wppa-functions.php:3650
+#: wppa-functions - kopie.php:3684 wppa-functions.php:3658
 msgid "Photo successfully uploaded."
 msgstr "Foto subida correctamente"
 
-#: wppa-functions.php:3650
+#: wppa-functions - kopie.php:3684 wppa-functions.php:3658
 #, php-format
 msgid "%s photos successfully uploaded."
 msgstr "%s fotos subidas correctamente"
 
-#: wppa-functions.php:3651
+#: wppa-functions - kopie.php:3685 wppa-functions.php:3659
 #, php-format
 msgid "%s points added."
 msgstr "%s puntos añadidos"
 
-#: wppa-functions.php:3654
+#: wppa-functions - kopie.php:3688 wppa-functions.php:3662
 msgid "Upload failed"
 msgstr "Ha fallado la subida"
 
-#: wppa-functions.php:3672
+#: wppa-functions - kopie.php:3706 wppa-functions.php:3680
 msgid "Error during upload"
 msgstr "Error al subir la foto"
 
-#: wppa-functions.php:3677
+#: wppa-functions - kopie.php:3711 wppa-functions.php:3685
 msgid "Uploaded file is not an image"
 msgstr "El archivo subido no es una imagen"
 
-#: wppa-functions.php:3681
+#: wppa-functions - kopie.php:3715 wppa-functions.php:3689
 #, php-format
 msgid ""
 "Only gif, jpg and png image files are supported. Returned filetype = %d."
 msgstr ""
 "Sólo se soportan ficheros gif, jpg y png. Tipo de fichero retornado = %d."
 
-#: wppa-functions.php:3688
+#: wppa-functions - kopie.php:3722 wppa-functions.php:3696
 #, php-format
 msgid "The image is too big. Max photo size: %d x %d (%2.1f MegaPixel)"
 msgstr ""
 "La foto es demasiado grande. Tamaño máximo de foto: %d x %d (%2.1f MegaPixel)"
 
-#: wppa-functions.php:3722
+#: wppa-functions - kopie.php:3756 wppa-functions.php:3730
 msgid "Could not insert photo into db."
 msgstr "No se puede insertar la foto en la base de datos."
 
-#: wppa-functions.php:3734 wppa-upload.php:1038
+#: wppa-functions - kopie.php:3768 wppa-functions.php:3742
+#: wppa-upload.php:1038
 #, php-format
 msgid "New photo uploaded: %s"
 msgstr "Nueva foto subida: %s"
 
-#: wppa-functions.php:3735 wppa-upload.php:1039
+#: wppa-functions - kopie.php:3769 wppa-functions.php:3743
+#: wppa-upload.php:1039
 #, php-format
 msgid "User %s uploaded photo %s into album %s"
 msgstr "El usuario %s ha subido %s fotos en el álbum %s"
 
-#: wppa-functions.php:3737 wppa-upload.php:1041
+#: wppa-functions - kopie.php:3771 wppa-functions.php:3745
+#: wppa-upload.php:1041
 msgid "This upload requires moderation"
 msgstr "Esta subida requiere moderación"
 
-#: wppa-functions.php:3741 wppa-upload.php:1045
+#: wppa-functions - kopie.php:3775 wppa-functions.php:3749
+#: wppa-upload.php:1045
 msgid "Details:"
 msgstr "Detalles:"
 
-#: wppa-functions.php:3742 wppa-upload.php:1046
+#: wppa-functions - kopie.php:3776 wppa-functions.php:3750
+#: wppa-upload.php:1046
 msgid "Manage photo"
 msgstr "Administrar Fotos"
 
-#: wppa-functions.php:3882
+#: wppa-functions - kopie.php:3916 wppa-functions.php:3890
 msgid "You can upload after"
 msgstr "Puede subir hasta."
 
-#: wppa-functions.php:3917
+#: wppa-functions - kopie.php:3951 wppa-functions.php:3925
 msgid "Zoom in"
 msgstr "Augmentar"
 
@@ -905,99 +922,103 @@ msgstr "Está seguro que quiere publicar este comentario?"
 msgid "Are you sure you want to remove this comment?"
 msgstr "Está seguro que quiere eliminar este comentario?"
 
-#: wppa-non-admin.php:301 wppa-slideshow.php:223
+#: wppa-non-admin.php:304 wppa-slideshow.php:223
 msgid "Start"
 msgstr "Comenzar"
 
-#: wppa-non-admin.php:302
+#: wppa-non-admin.php:305
 msgid "Stop"
 msgstr "Parar"
 
-#: wppa-non-admin.php:303 wppa-slideshow.php:222
+#: wppa-non-admin.php:306 wppa-slideshow.php:222
 msgid "Slower"
 msgstr "Más lento"
 
-#: wppa-non-admin.php:304 wppa-slideshow.php:224
+#: wppa-non-admin.php:307 wppa-slideshow.php:224
 msgid "Faster"
 msgstr "Más rápido"
 
-#: wppa-non-admin.php:305
+#: wppa-non-admin.php:308
 msgid "Photo"
 msgstr "Foto"
 
-#: wppa-non-admin.php:306
+#: wppa-non-admin.php:309
 msgid "of"
 msgstr "de"
 
-#: wppa-non-admin.php:307
+#: wppa-non-admin.php:310
 msgid "Previous photo"
 msgstr "Foto anterior"
 
-#: wppa-non-admin.php:308
+#: wppa-non-admin.php:311
 msgid "Next photo"
 msgstr "Foto siguiente"
 
-#: wppa-non-admin.php:309
+#: wppa-non-admin.php:312
 msgid "Prev."
 msgstr "Ant."
 
-#: wppa-non-admin.php:310 wppa-slideshow.php:635
+#: wppa-non-admin.php:313 wppa-slideshow.php:635
 msgid "Next"
 msgstr "Sig."
 
-#: wppa-non-admin.php:311 wppa-slideshow.php:481 wppa-slideshow.php:485
+#: wppa-non-admin.php:314 wppa-slideshow.php:481 wppa-slideshow.php:485
 #: wppa-slideshow.php:528
 msgid "Average&nbsp;rating"
 msgstr "Calificacion media"
 
-#: wppa-non-admin.php:312 wppa-slideshow.php:507 wppa-slideshow.php:512
+#: wppa-non-admin.php:315 wppa-slideshow.php:507 wppa-slideshow.php:512
 #: wppa-slideshow.php:517
 msgid "My&nbsp;rating"
 msgstr "Mi calificacion"
 
-#: wppa-non-admin.php:313
+#: wppa-non-admin.php:316
 msgid "Avg."
 msgstr "Media"
 
-#: wppa-non-admin.php:314
+#: wppa-non-admin.php:317
 msgid "Mine"
 msgstr "Mio"
 
-#: wppa-non-admin.php:315
+#: wppa-non-admin.php:318
 msgid "You marked this image as inappropriate."
 msgstr "Ha marcado esta imagen como inapropiada."
 
-#: wppa-non-admin.php:317
+#: wppa-non-admin.php:320
 msgid "No dislikes"
 msgstr ""
 
-#: wppa-non-admin.php:318
+#: wppa-non-admin.php:321
 msgid "1 dislike"
 msgstr ""
 
-#: wppa-non-admin.php:319
+#: wppa-non-admin.php:322
 msgid "dislikes"
 msgstr ""
 
-#: wppa-non-admin.php:320
+#: wppa-non-admin.php:323
 msgid "including mine"
 msgstr ""
 
-#: wppa-non-admin.php:324
+#: wppa-non-admin.php:327
 msgid "Please enter your name"
 msgstr "Por favor escriba su nombre"
 
-#: wppa-non-admin.php:325
+#: wppa-non-admin.php:328
 msgid "Please enter a valid email address"
 msgstr "Por favor introduzca un email correcto"
 
-#: wppa-non-admin.php:326
+#: wppa-non-admin.php:329
 msgid "Please enter a comment"
 msgstr "Deje su comentario"
 
-#: wppa-non-admin.php:366
+#: wppa-non-admin.php:369
 msgid "Double click to start/stop slideshow running"
 msgstr "Doble click para comenzar/parar la presentación"
+
+#: wppa-non-admin.php:375
+msgid "Download"
+msgstr ""
 
 #: wppa-search-widget.php:40
 msgid "Please select a search results landing page in Table IX-C1"

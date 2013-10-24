@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 5.1.12
+* Version 5.1.14
 *
 */
 
@@ -4285,6 +4285,14 @@ wppa_fix_source_extensions();
 							$slug = 'wppa_tags_or_only';
 							$html = wppa_checkbox($slug);
 							wppa_setting($slug, '8', $name, $desc, $html, $help);
+							
+							$name = __('Floating searchtoken', 'wppa');
+							$desc = __('A match need not start at the first char.', 'wppa');
+							$help = esc_js(__('A match is found while searching also when the entered token is somewhere in the middle of a word.', 'wppa'));
+							$help .= '\n\n'.esc_js(__('This works in indexed search only!', 'wppa'));
+							$slug = 'wppa_wild_front';
+							$html = wppa_checkbox($slug);
+							wppa_setting($slug, '9', $name, $desc, $html, $help);
 							
 							wppa_setting_subheader('D', '1', __('Watermark related settings', 'wppa'));
 							

@@ -2,7 +2,7 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 5.1.12
+* version 5.1.14
 *
 */
 
@@ -583,6 +583,8 @@ global $wppa_initruntimetime;
 						'wppa_max_search_photos'		=> '',
 						'wppa_max_search_albums'		=> '',
 						'wppa_tags_or_only'				=> '',
+						'wppa_wild_front'				=> '',
+						
 						'wppa_add_shortcode_to_post'	=> '',
 						'wppa_shortcode_to_add'			=> '',
 						

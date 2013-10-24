@@ -2,7 +2,7 @@
 //
 // conatins slideshow, theme, ajax and lightbox code
 //
-// Version 5.1.10
+// Version 5.1.14
 
 // Part 1: Slideshow
 //
@@ -108,6 +108,7 @@ var wppaVotedForMe = '';
 var wppaSlideSwipe = true;
 var wppaLightboxSingle = false;
 var wppaMaxCoverWidth = 300;	// For responsive multicolumn covers
+var wppaDownLoad = 'Download';
 
 // 'Internal' variables (private)
 var _wppaId = new Array();
@@ -774,7 +775,7 @@ var result;
 	case 'file':
 	case 'zip':
 //		result = '<a title="Download" style="cursor:pointer;" onclick="wppaAjaxMakeOrigName('+mocc+', '+_wppaId[mocc][_wppaCurIdx[mocc]]+');" >'+_wppaFullNames[mocc][_wppaCurIdx[mocc]]+'</a>';
-		result = '<input type="button" title="Download" style="cursor:pointer; margin-bottom:0px;" class="wppa-download-button" onclick="wppaAjaxMakeOrigName('+mocc+', '+_wppaId[mocc][_wppaCurIdx[mocc]]+');" value="'+'Download: '+_wppaFullNames[mocc][_wppaCurIdx[mocc]]+'" />';
+		result = '<input type="button" title="Download" style="cursor:pointer; margin-bottom:0px;" class="wppa-download-button" onclick="wppaAjaxMakeOrigName('+mocc+', '+_wppaId[mocc][_wppaCurIdx[mocc]]+');" value="'+wppaDownLoad+': '+_wppaFullNames[mocc][_wppaCurIdx[mocc]]+'" />';
 		break;
 	case 'none':
 		result = _wppaFullNames[mocc][_wppaCurIdx[mocc]];

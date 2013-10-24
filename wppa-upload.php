@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the upload/import pages and functions
-* Version 5.1.13
+* Version 5.1.14
 *
 */
 
@@ -284,7 +284,7 @@ global $wppa_revno;
 				<?php /* End single photos */ ?>
 
 				<?php /* Single zips */ ?>
-				<?php if ( current_user_can('administrator') && current_user_can('wppa_import') ) { ?>
+				<?php if ( current_user_can('wppa_import') ) { ?>
 					<?php if (PHP_VERSION_ID >= 50207) { ?>
 						<div style="border:1px solid #ccc; padding:10px; width: 600px;">
 							<h3 style="margin-top:0px;"><?php  _e('Box C:', 'wppa'); echo ' ';_e('Zipped Photos in one selection', 'wppa'); ?></h3>
@@ -1451,9 +1451,25 @@ function wppa_extract($path, $delz) {
 		if ($ext == 'zip') {
 			$zip = new ZipArchive;
 			if ($zip->open($path) === true) {
-				$zip->extractTo(WPPA_DEPOT_PATH);
+			
+				$supported_file_ext = array('jpg', 'png', 'gif', 'JPG', 'PNG', 'GIF');
+				$done = '0';
+				$skip = '0';
+				for( $i = 0; $i < $zip->numFiles; $i++ ){
+					$stat = $zip->statIndex( $i );
+					$file_ext = end(explode('.', $stat['name']));
+					if ( in_array($file_ext, $supported_file_ext) ) {
+						$zip->extractTo(WPPA_DEPOT_PATH, $stat['name']);
+						$done++;
+					}
+					else {
+						wppa_error_message(sprintf(__('File %s is of an unsupported filetype and has been ignored during extraction.', 'wppa'), $stat['name']));
+						$skip++;
+					}
+				}
+			
 				$zip->close();
-				wppa_ok_message(__('Zipfile', 'wppa').' '.basename($path).' '.__('extracted.', 'wppa'));
+				wppa_ok_message(sprintf(__('Zipfile %s processed. %s files extracted, %s files skipped.', 'wppa'), basename($path), $done, $skip));
 				if ($delz) unlink($path);
 			} else {
 				wppa_error_message(__('Failed to extract', 'wppa').' '.$path);
