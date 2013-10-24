@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wppa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-10-21 17:59+0100\n"
-"PO-Revision-Date: 2013-10-21 17:59+0100\n"
+"POT-Creation-Date: 2013-10-23 10:35+0100\n"
+"PO-Revision-Date: 2013-10-23 10:35+0100\n"
 "Last-Translator: J.N. Breetvelt <OpaJaap@OpaJaap.nl>\n"
 "Language-Team: oVa <ova13lastar@gmail.com>\n"
 "Language: fr_FR\n"
@@ -111,7 +111,7 @@ msgid "albums"
 msgstr "albums"
 
 #: wppa-album-covers.php:869 wppa-boxes-html.php:239 wppa-breadcrumb.php:194
-#: wppa-breadcrumb.php:199 wppa-functions.php:3887 wppa-utils.php:1153
+#: wppa-breadcrumb.php:199 wppa-functions.php:3895 wppa-utils.php:1153
 msgid "and"
 msgstr "et"
 
@@ -191,7 +191,7 @@ msgstr "Partager %s sur Pinterest"
 msgid "Comment on Facebook:"
 msgstr "Commentaire sur la photo"
 
-#: wppa-boxes-html.php:422 wppa-boxes-html.php:436 wppa-functions.php:3668
+#: wppa-boxes-html.php:422 wppa-boxes-html.php:436 wppa-functions.php:3676
 msgid "Max uploads reached"
 msgstr "Ajout maximum ateind"
 
@@ -433,7 +433,7 @@ msgstr "Album photo par défaut pour"
 msgid "1 second"
 msgstr "1 seconde"
 
-#: wppa-common-functions.php:1144 wppa-functions.php:3888
+#: wppa-common-functions.php:1144 wppa-functions.php:3896
 msgid "seconds"
 msgstr "secondes"
 
@@ -441,7 +441,7 @@ msgstr "secondes"
 msgid "1 minute"
 msgstr "1 minute"
 
-#: wppa-common-functions.php:1149 wppa-functions.php:3887
+#: wppa-common-functions.php:1149 wppa-functions.php:3895
 msgid "minutes"
 msgstr "minutes"
 
@@ -449,7 +449,7 @@ msgstr "minutes"
 msgid "1 hour"
 msgstr "1 heure"
 
-#: wppa-common-functions.php:1154 wppa-functions.php:3886
+#: wppa-common-functions.php:1154 wppa-functions.php:3894
 msgid "hours"
 msgstr "heures"
 
@@ -457,7 +457,7 @@ msgstr "heures"
 msgid "1 day"
 msgstr "1 jour"
 
-#: wppa-common-functions.php:1159 wppa-functions.php:3885
+#: wppa-common-functions.php:1159 wppa-functions.php:3893
 msgid "days"
 msgstr "jours"
 
@@ -465,7 +465,7 @@ msgstr "jours"
 msgid "1 week"
 msgstr "1 semaine"
 
-#: wppa-common-functions.php:1164 wppa-functions.php:3884
+#: wppa-common-functions.php:1164 wppa-functions.php:3892
 msgid "weeks"
 msgstr "semaines"
 
@@ -708,7 +708,7 @@ msgstr "écrire sur les photos"
 msgid "Moderate comment admin"
 msgstr "Admin modération de commentaire"
 
-#: wppa-functions.php:1277 wppa-functions.php:3738 wppa-upload.php:1042
+#: wppa-functions.php:1277 wppa-functions.php:3746 wppa-upload.php:1042
 msgid "Moderate manage photo"
 msgstr "Gérer la modération de photo"
 
@@ -779,37 +779,37 @@ msgstr "<b>ERREUR: Tentative incorrecte d'entrer un commentaire.</b>"
 msgid "View the top rated photos"
 msgstr "Voir les photos les mieux cotées"
 
-#: wppa-functions.php:3612
+#: wppa-functions.php:3620
 msgid "<b>ERROR: Illegal attempt to upload a file.</b>"
 msgstr "<b>ERREUR: tentative incorrecte de télécharger un fichier.</b>"
 
-#: wppa-functions.php:3650
+#: wppa-functions.php:3658
 msgid "Photo successfully uploaded."
 msgstr "Photo uploadée avec succès."
 
-#: wppa-functions.php:3650
+#: wppa-functions.php:3658
 #, php-format
 msgid "%s photos successfully uploaded."
 msgstr "%s photos uploadées avec succès."
 
-#: wppa-functions.php:3651
+#: wppa-functions.php:3659
 #, php-format
 msgid "%s points added."
 msgstr "%s points ajoutés."
 
-#: wppa-functions.php:3654
+#: wppa-functions.php:3662
 msgid "Upload failed"
 msgstr "Upload échoué"
 
-#: wppa-functions.php:3672
+#: wppa-functions.php:3680
 msgid "Error during upload"
 msgstr "Erreur durant le téléchargement"
 
-#: wppa-functions.php:3677
+#: wppa-functions.php:3685
 msgid "Uploaded file is not an image"
 msgstr "Le fichier téléchargé n'est pas une image"
 
-#: wppa-functions.php:3681
+#: wppa-functions.php:3689
 #, php-format
 msgid ""
 "Only gif, jpg and png image files are supported. Returned filetype = %d."
@@ -817,42 +817,42 @@ msgstr ""
 "Seulement les formats .GIF, .JPG et .PNG sont supportés. Type de fichier "
 "retourné= %d."
 
-#: wppa-functions.php:3688
+#: wppa-functions.php:3696
 #, php-format
 msgid "The image is too big. Max photo size: %d x %d (%2.1f MegaPixel)"
 msgstr "L'image est trop grande. Taille max photo: %d x %d (%2.1f MegaPixel)"
 
-#: wppa-functions.php:3722
+#: wppa-functions.php:3730
 msgid "Could not insert photo into db."
 msgstr "Impossible d'ajouter la photo dans la base de données"
 
-#: wppa-functions.php:3734 wppa-upload.php:1038
+#: wppa-functions.php:3742 wppa-upload.php:1038
 #, php-format
 msgid "New photo uploaded: %s"
 msgstr "Nouvelle photo uploadée: %s"
 
-#: wppa-functions.php:3735 wppa-upload.php:1039
+#: wppa-functions.php:3743 wppa-upload.php:1039
 #, php-format
 msgid "User %s uploaded photo %s into album %s"
 msgstr "L'utilisateur %s a uploadé la photo %s dans l'album %s"
 
-#: wppa-functions.php:3737 wppa-upload.php:1041
+#: wppa-functions.php:3745 wppa-upload.php:1041
 msgid "This upload requires moderation"
 msgstr "Cet upload nécessite une modération"
 
-#: wppa-functions.php:3741 wppa-upload.php:1045
+#: wppa-functions.php:3749 wppa-upload.php:1045
 msgid "Details:"
 msgstr "Détails:"
 
-#: wppa-functions.php:3742 wppa-upload.php:1046
+#: wppa-functions.php:3750 wppa-upload.php:1046
 msgid "Manage photo"
 msgstr "Gérer photo"
 
-#: wppa-functions.php:3882
+#: wppa-functions.php:3890
 msgid "You can upload after"
 msgstr "Vous pouvez charger après"
 
-#: wppa-functions.php:3917
+#: wppa-functions.php:3925
 msgid "Zoom in"
 msgstr "Zoom in"
 
@@ -1001,6 +1001,10 @@ msgstr "SVP entrer un commentaire"
 #: wppa-non-admin.php:366
 msgid "Double click to start/stop slideshow running"
 msgstr "Double-cliquez pour lancer/arrêter le diaporama"
+
+#: wppa-non-admin.php:372
+msgid "Download"
+msgstr "Telecharger"
 
 #: wppa-search-widget.php:40
 msgid "Please select a search results landing page in Table IX-C1"

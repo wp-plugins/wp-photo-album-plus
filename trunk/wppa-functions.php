@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions
-* Version 5.1.12
+* Version 5.1.14
 *
 */
 
@@ -539,7 +539,7 @@ global $wppa_opt;
 	if ( $wppa['is_tag'] ) return false;
 	if ( $wppa['photos_only'] ) return false;
 	
-	if ( /* $wppa['src'] && */ $wppa_opt['wppa_photos_only'] ) return false;
+	if ( $wppa['src'] && $wppa_opt['wppa_photos_only'] ) return false;
 	if ( $wppa['is_owner'] && ! $wppa['start_album'] ) return false; 	// No owner album(s)
 	
 	if ( $wppa['src'] ) {	// Searching
@@ -555,17 +555,23 @@ global $wppa_opt;
 				// all words in the searchstring
 				foreach ( $words as $word ) {	
 					$word = trim($word);
-					$vfy = $word;
-					$vlen = strlen($vfy);
+//					$vfy = $word;
+//					$vlen = strlen($vfy);
 					if ( strlen($word) > 1 ) {
 						if ( strlen($word) > 10 ) $word = substr($word, 0, 10);
-						$floor = $word;
-						$ceil = substr($floor, 0, strlen($floor) - 1).chr(ord(substr($floor, strlen($floor) - 1))+1);
-						$aidxs = $wpdb->get_results("SELECT `slug`, `albums` FROM `".WPPA_INDEX."` WHERE `slug` >= '".$floor."' AND `slug` < '".$ceil."'", ARRAY_A);
+//						$floor = $word;
+//						$ceil = substr($floor, 0, strlen($floor) - 1).chr(ord(substr($floor, strlen($floor) - 1))+1);
+						if ( wppa_switch('wppa_wild_front') ) {
+							$aidxs = $wpdb->get_results("SELECT `slug`, `albums` FROM `".WPPA_INDEX."` WHERE `slug` LIKE '%".$word."%'", ARRAY_A);
+						}
+						else {
+							$aidxs = $wpdb->get_results("SELECT `slug`, `albums` FROM `".WPPA_INDEX."` WHERE `slug` LIKE '".$word."%'", ARRAY_A);
+						}
 						$albums = '';
 						if ( $aidxs ) {
 							foreach ( $aidxs as $ai ) {
-								if ( substr($ai['slug'], 0, $vlen) == $vfy ) $albums .= $ai['albums'].',';
+//								if ( substr($ai['slug'], 0, $vlen) == $vfy ) 
+								$albums .= $ai['albums'].',';
 							}
 						}
 						$album_array[] = wppa_index_string_to_array(trim($albums, ','));
@@ -816,17 +822,23 @@ global $thumbs;
 				// all words in the searchstring
 				foreach ( $words as $word ) {	
 					$word = trim($word);
-					$vfy = $word;
-					$vlen = strlen($vfy);
+//					$vfy = $word;
+//					$vlen = strlen($vfy);
 					if ( strlen($word) > 1 ) {
 						if ( strlen($word) > 10 ) $word = substr($word, 0, 10);
-						$floor = $word;
-						$ceil = substr($floor, 0, strlen($floor) - 1).chr(ord(substr($floor, strlen($floor) - 1))+1);
-						$pidxs = $wpdb->get_results("SELECT `slug`, `photos` FROM `".WPPA_INDEX."` WHERE `slug` >= '".$floor."' AND `slug` < '".$ceil."'", ARRAY_A);
+//						$floor = $word;
+//						$ceil = substr($floor, 0, strlen($floor) - 1).chr(ord(substr($floor, strlen($floor) - 1))+1);
+						if ( wppa_switch('wppa_wild_front') ) {
+							$pidxs = $wpdb->get_results("SELECT `slug`, `photos` FROM `".WPPA_INDEX."` WHERE `slug` LIKE '%".$word."%'", ARRAY_A);
+						}
+						else {
+							$pidxs = $wpdb->get_results("SELECT `slug`, `photos` FROM `".WPPA_INDEX."` WHERE `slug` LIKE '".$word."%'", ARRAY_A);
+						}
 						$photos = '';
 						if ( $pidxs ) {
 							foreach ( $pidxs as $pi ) {
-								if ( substr($pi['slug'], 0, $vlen) == $vfy ) $photos .= $pi['photos'].',';
+//								if ( substr($pi['slug'], 0, $vlen) == $vfy ) 
+								$photos .= $pi['photos'].',';
 							}
 						}
 						$photo_array[] = wppa_index_string_to_array(trim($photos, ','));
@@ -2594,6 +2606,7 @@ global $thumb;
 			$wppa['out'] .= '<a href="'.$furl.'" rel="'.$wppa_opt['wppa_lightbox_name'].'[occ'.$wppa['master_occur'].']" title="'.wppa_get_lbtitle('slide', $thumb['id']).'" >';
 		}
 		
+			if ( $tmp == 'pre' && $wppa_opt['wppa_film_linktype'] == 'lightbox' ) $cursor = 'cursor:default;';
 			if ( $tmp == 'film' ) $wppa['out'] .= '<!--';
 				$wppa['out'] .= '<img id="wppa-'.$tmp.'-'.$idx.'-'.$wppa['master_occur'].'" class="wppa-'.$tmp.'-'.$wppa['master_occur'].'" src="'.$url.'" alt="'.$alt.'" '. //title="'.$title.'" '.
 					//width="'.$imgwidth.'" height="'.$imgheight.'" 

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains low-level utility routines
-* Version 5.1.12
+* Version 5.1.14
 *
 */
 
@@ -39,6 +39,10 @@ function wppa_cache_thumb($id) {
 global $wpdb;
 global $thumb;
 
+	if ( ! $id ) {
+		$thumb = false;
+		return;
+	}
 	if ( ! is_numeric($id) || $id < '1' ) {
 		wppa_dbg_msg('Invalid arg wppa_cache_thumb('.$id.')', 'red');
 		return;

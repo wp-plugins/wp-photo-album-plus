@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the non admin stuff
-* Version 5.1.9
+* Version 5.1.14
 *
 */
 
@@ -54,23 +54,13 @@ global $thumb;
 	$id = wppa_get_get('photo', '0');
 	if ( ! is_numeric($id) ) $id = '0';
 	if ( get_option('wppa_og_tags_on', 'yes') == 'yes' ) {
-		if ( $id ) {
-			wppa_cache_thumb($id);
-		}
-		else $thumb = false;
+		wppa_cache_thumb($id);
 		if ( $thumb ) {
 			$title  = wppa_get_photo_name($thumb['id']);
 			$imgurl = wppa_get_thumb_url($id);
 			$desc 	= wppa_get_og_desc($thumb['id']); 
 			$url    = wppa_convert_to_pretty(str_replace('&amp;', '&', wppa_get_image_page_url_by_id($thumb['id'], $wppa_opt['wppa_share_single_image'])));
-		}
-		else {
-			$title 	= '';
-			$imgurl = '';
-			$desc 	= '';
-			$url	= '';
-		}
-		$site   = get_bloginfo('name');
+			$site   = get_bloginfo('name');
 
 		echo "\n<!-- WPPA+ Share data -->".'
 	<meta property="og:site_name" content="'.esc_attr($site).'" />
@@ -80,6 +70,7 @@ global $thumb;
 	<meta property="og:image" content="'.esc_attr($imgurl).'" /><!-- dynamicly updated -->
 	<meta property="og:description" content="'.esc_attr($desc).'" /><!-- dynamicly updated -->';				
 		echo "\n<!-- WPPA+ End Share data -->\n";
+		}
 	}
 
 	// To make sure we are on a page that contains at least %%wppa%% we check for $_GET['wppa-album']. 
@@ -161,6 +152,8 @@ add_action('wp_footer', 'wppa_load_footer');
 function wppa_load_footer() {
 global $wppa_opt;
 global $wppa;
+global $wpdb;
+
 	if ($wppa_opt['wppa_lightbox_name'] == 'wppa') {
 		if ( ! $wppa_opt['wppa_fontsize_lightbox'] ) $wppa_opt['wppa_fontsize_lightbox'] = '10';
 		$d = $wppa_opt['wppa_ovl_show_counter'] ? 1 : 0;
@@ -204,6 +197,7 @@ global $wppa;
 			wppa_dbg_msg($plugin);
 		}
 		wppa_dbg_msg('End Active Plugins');
+		wppa_dbg_msg(htmlspecialchars($wpdb->get_var("SELECT `option_value` FROM ".$wpdb->prefix . 'options'." WHERE `option_name` = 'wppa_cached_options'")));
 	}
 	
 	echo '
@@ -369,6 +363,7 @@ global $wppa_lang;
 	wppaSlideSwipe = '.( wppa_switch('wppa_slide_swipe') ? 'true' : 'false' ).';
 	wppaMaxCoverWidth = '.$wppa_opt['wppa_max_cover_width'].';
 	wppaLightboxSingle = '.( $wppa_opt['wppa_slideshow_linktype'] == 'lightboxsingle' ? 'true': 'false' ).';
+	wppaDownLoad = "'.__a('Download').'";
 	/* ]]> */
 </script>
 ';

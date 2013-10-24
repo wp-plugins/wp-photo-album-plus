@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 5.1.12
+* Version 5.1.14
 *
 */
 
@@ -926,6 +926,7 @@ Hide Camera info
 						'wppa_max_search_photos'		=> '250',
 						'wppa_max_search_albums'		=> '25',
 						'wppa_tags_or_only'				=> 'no',
+						'wppa_wild_front'				=> 'no',
 						
 						// D Watermark
 						'wppa_watermark_on'				=> 'no',
