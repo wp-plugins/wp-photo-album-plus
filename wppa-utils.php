@@ -161,7 +161,7 @@ global $wppa_opt;
 	if ( ! is_numeric($id) || $id < '1' ) wppa_dbg_msg('Invalid arg wppa_get_photo_desc('.$id.')', 'red');
 	wppa_cache_thumb($id);
 	$desc = $thumb['description'];			// Raw data
-	if ( ! $desc ) return '';				// No content, need no filtering
+//	if ( ! $desc ) return '';				// No content, need no filtering except geo!!
 	$desc = stripslashes($desc);			// Unescape
 	$desc = __($desc);						// qTranslate 
 
