@@ -2,7 +2,7 @@
 /* wppa-ajax.php
 *
 * Functions used in ajax requests
-* version 5.1.8
+* version 5.1.15
 *
 */
 add_action('wp_ajax_wppa', 'wppa_ajax_callback');
@@ -51,6 +51,7 @@ global $wppa;
 			
 			if ( isset($_REQUEST['photo-id']) && current_user_can('wppa_moderate') ) {
 				$iret = $wpdb->query($wpdb->prepare("UPDATE `".WPPA_PHOTOS."` SET `status` = 'publish' WHERE `id` = %s", $_REQUEST['photo-id']));
+				wppa_flush_upldr_cache('photoid', $_REQUEST['photo-id']);
 			}
 			if ( isset($_REQUEST['comment-id']) ) {
 				$iret = $wpdb->query($wpdb->prepare("UPDATE `".WPPA_COMMENTS."` SET `status` = 'approved' WHERE `id` = %s", $_REQUEST['comment-id']));
@@ -738,6 +739,7 @@ global $wppa;
 					
 				case 'status':
 					wppa_flush_treecounts($wpdb->get_var($wpdb->prepare("SELECT `album` FROM `".WPPA_PHOTOS."` WHERE `id` = %s",$value)));
+					wppa_flush_upldr_cache('photoid', $photo);
 				case 'name':
 				case 'description':
 				case 'p_order':

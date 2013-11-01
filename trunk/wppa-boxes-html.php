@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Various wppa boxes
-* Version 5.1.11
+* Version 5.1.15
 *
 */
 
@@ -27,7 +27,7 @@ global $album;
 		if ($wppa_alt == 'even') $wppa_alt = 'alt'; else $wppa_alt = 'even';
 	}
 	elseif ($action == 'close') {
-		wppa_user_upload_html($wppa['current_album'], wppa_get_container_width('netto'), 'thumb');
+		if ( ! $wppa['is_upldr'] ) wppa_user_upload_html($wppa['current_album'], wppa_get_container_width('netto'), 'thumb');
 		$wppa['out'] .= wppa_nltab().'<div style="clear:both;"></div>';		
 
 		$wppa['out'] .= wppa_nltab('-').'</div><!-- wppa-thumbarea-'.$wppa['master_occur'].' -->';
@@ -55,9 +55,11 @@ function wppa_get_tagcloud_html($seltags = '', $minsize = '8', $maxsize = '24') 
 global $wppa_opt;
 global $wppa;
 
+	$page = wppa_get_the_landing_page('wppa_tagcloud_linkpage', __a('Tagged photos'));
+
 	$result 	= '';
 	if ( $wppa_opt['wppa_tagcloud_linkpage'] ) {
-		$hr = wppa_get_permalink($wppa_opt['wppa_tagcloud_linkpage']);
+		$hr = wppa_get_permalink($page);
 		if ( $wppa_opt['wppa_tagcloud_linktype'] == 'album' ) {
 			$hr .= 'wppa-album=0&wppa-cover=0&wppa-occur=1';
 		}
@@ -109,10 +111,11 @@ global $wppa_opt;
 global $wppa;
 
 	$or_only = wppa_switch('wppa_tags_or_only');
+	$page = wppa_get_the_landing_page('wppa_multitag_linkpage', __a('Multi Tagged photos'));
 	
 	$result 	= '';
 	if ( $wppa_opt['wppa_multitag_linkpage'] ) {
-		$hr = wppa_get_permalink($wppa_opt['wppa_multitag_linkpage']);
+		$hr = wppa_get_permalink($page);
 		if ( $wppa_opt['wppa_multitag_linktype'] == 'album' ) {
 			$hr .= 'wppa-album=0&wppa-cover=0&wppa-occur=1';
 		}
@@ -255,11 +258,11 @@ global $wppa_locale;
 	if ( $wppa_opt['wppa_share_facebook'] ) { 
 		$summary = $see_on_site . ': ' . $photo_desc;
 		$fb = 	'<div style="float:left; padding:2px;" >';
-		$fb .= 		'<a title="'.sprintf(__a('Share %s on Facebook', 'wppa'), esc_attr($photo_name)).'" ';
+		$fb .= 		'<a title="'.sprintf(__a('Share %s on Facebook'), esc_attr($photo_name)).'" ';
 		$fb .= 			'href="http://www.facebook.com/sharer.php?s=100&p[url]='.urlencode($share_url);
 		$fb .= 				'&p[images][0]='.$share_img.'&p[title]='.urlencode($photo_name).'&p[summary]='.urlencode($summary).'" ';
 		$fb .= 			'target="_blank" >';
-		$fb .= 				'<img src="'.wppa_get_imgdir().'facebook.png" style="height:'.$s.'px;" alt="Share on Facebook" />';
+		$fb .= 				'<img src="'.wppa_get_imgdir().'facebook.png" style="height:'.$s.'px;" alt="'.esc_attr(__a('Share on Facebook')).'" />';
 		$fb .= 		'</a>';
 		$fb .= 	'</div>';
 	}
@@ -297,10 +300,10 @@ global $wppa_locale;
 		}
 		
 		$tw = 	'<div style="float:left; padding:2px;" >';
-		$tw .= 		'<a title="'.sprintf(__a('Tweet %s on Twitter', 'wppa'), esc_attr($photo_name)).'" ';
+		$tw .= 		'<a title="'.sprintf(__a('Tweet %s on Twitter'), esc_attr($photo_name)).'" ';
 		$tw .= 			'href="https://twitter.com/intent/tweet?text='.$tweet.'" ';
 		$tw .= 			'target="_blank" >';
-		$tw .=				'<img src="'.wppa_get_imgdir().'twitter.png" style="height:'.$s.'px;" alt="Share on Twitter" />';
+		$tw .=				'<img src="'.wppa_get_imgdir().'twitter.png" style="height:'.$s.'px;" alt="'.esc_attr(__a('Share on Twitter')).'" />';
 		$tw .= 		'</a>';
 		$tw .=	'</div>';
 	}
@@ -309,11 +312,11 @@ global $wppa_locale;
 	// hyves
 	if ( $wppa_opt['wppa_share_hyves'] ) {
 		$hv = 	'<div style="float:left; padding:2px;" >';
-		$hv .= 		'<a title="'.sprintf(__a('Tip %s on Hyves', 'wppa'), esc_attr($photo_name)).'" ';
+		$hv .= 		'<a title="'.sprintf(__a('Tip %s on Hyves'), esc_attr($photo_name)).'" ';
 		$hv .= 			'href="http://www.hyves-share.nl/button/tip/?tipcategoryid=12&rating=5&title='.urlencode($photo_name);
 		$hv .= 				'&body='.str_replace('+', ' ', urlencode($see_on_site)).': '.urlencode($share_url).' '.str_replace('+', ' ', urlencode($photo_desc)).'" ';
 		$hv .= 			'target="_blank" >';
-		$hv .= 				'<img src="'.wppa_get_imgdir().'hyves.png" style="height:'.$s.'px;" alt="Share on Hyves" />';
+		$hv .= 				'<img src="'.wppa_get_imgdir().'hyves.png" style="height:'.$s.'px;" alt="'.esc_attr(__a('Share on Hyves')).'" />';
 		$hv .= 		'</a>';
 		$hv .= 	'</div>';		
 	}
@@ -322,11 +325,11 @@ global $wppa_locale;
 	// Google
 	if ( $wppa_opt['wppa_share_google'] ) {
 		$go = 	'<div style="float:left; padding:2px;" >';
-		$go .= 		'<a title="'.sprintf(__a('Share %s on Google+', 'wppa'), esc_attr($photo_name)).'" ';
+		$go .= 		'<a title="'.sprintf(__a('Share %s on Google+'), esc_attr($photo_name)).'" ';
 		$go .= 			'href="https://plus.google.com/share?url='.urlencode($share_url).'" ';
 		$go .= 			'onclick="javascript:window.open(this.href, \"\", \"menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600\");return false;" ';
 		$go .= 			'target="_blank" >';
-		$go .= 			'<img src="'.wppa_get_imgdir().'google.png" style="height:'.$s.'px;" alt="Share on Google+"/>';
+		$go .= 			'<img src="'.wppa_get_imgdir().'google.png" style="height:'.$s.'px;" alt="'.esc_attr(__a('Share on Google+')).'"/>';
 		$go .= 		'</a>';
 		$go .= 	'</div>';
 	}
@@ -337,12 +340,12 @@ global $wppa_locale;
 	if ( strlen($desc) > 500) $desc = substr($desc, 0, 495).'...';
 	if ( $wppa_opt['wppa_share_pinterest'] ) {
 		$pi = 	'<div style="float:left; padding:2px;" >';
-		$pi .= 		'<a title="'.sprintf(__a('Share %s on Pinterest', 'wppa'), esc_attr($photo_name)).'" ';
+		$pi .= 		'<a title="'.sprintf(__a('Share %s on Pinterest'), esc_attr($photo_name)).'" ';
 		$pi .= 			'href="http://pinterest.com/pin/create/button/?url='.urlencode($share_url);
 		$pi .=			'&media='.urlencode(str_replace('/thumbs/', '/', $share_img));						// Fullsize image
 		$pi .=			'&description='.$desc;
 		$pi .=			'target="_blank" >';//'class="pin-it-button" count-layout="horizontal" >';
-		$pi .=			'<img src="'.wppa_get_imgdir().'pinterest.png" style="height:'.$s.'px;" alt="Pin it!" />';	//border="0" src="//assets.pinterest.com/images/PinExt.png" title="Pin It" />';
+		$pi .=			'<img src="'.wppa_get_imgdir().'pinterest.png" style="height:'.$s.'px;" alt="'.esc_attr(__a('Share on Pinterest')).'" />';	//border="0" src="//assets.pinterest.com/images/PinExt.png" title="Pin It" />';
 		$pi .=		'</a>';
 		$pi .=	'</div>';
 
@@ -401,7 +404,7 @@ global $wppa;
 }
 
 // Frontend upload html, for use in the upload box, the widget or in the album and thumbnail box
-function wppa_user_upload_html($alb, $width, $where = '') {
+function wppa_user_upload_html($alb, $width, $where = '', $mcr = false) {
 global $wppa;
 global $wppa_opt;
 
@@ -450,8 +453,8 @@ global $wppa_opt;
 	if ( $allow_alb == '-1' ) $allow_alb = $allow_sys;
 	$max = min($allow_me, $allow_alb, $allow_sys);
 
-	// In a widget?
-	$widget_upload = ( $wppa['in_widget'] == 'upload' );
+	// In a widget or multi column responsive?
+	$small = ( $wppa['in_widget'] == 'upload' || $mcr );
 
 	// Create the return url
 	$returnurl = wppa_get_permalink();
@@ -467,12 +470,13 @@ global $wppa_opt;
 	if ( $wppa['page'] ) $returnurl .= '&amp;wppa-page='.$wppa['page'];
 	
 	// Make the HTML
+	$t = $mcr ? 'mcr-' : '';
 	$wppa['out'] .= '
-	<a id="wppa-up-'.$alb.'-'.$wppa['master_occur'].'" onclick="jQuery(\'#wppa-up-'.$alb.'-'.$wppa['master_occur'].'\').css(\'display\',\'none\');jQuery(\'#wppa-file-'.$alb.'-'.$wppa['master_occur'].'\').css(\'display\',\'block\');wppaColWidth['.$wppa['master_occur'].']=0;" class="" style="float:left; cursor:pointer;">
+	<a id="wppa-up-'.$alb.'-'.$wppa['master_occur'].'" onclick="jQuery(\'#wppa-up-'.$alb.'-'.$wppa['master_occur'].'\').css(\'display\',\'none\');jQuery(\'#wppa-file-'.$t.$alb.'-'.$wppa['master_occur'].'\').css(\'display\',\'block\');wppaColWidth['.$wppa['master_occur'].']=0;" class="" style="float:left; cursor:pointer;">
 		'.__a('Upload Photo').'
 	</a>
-	<div id="wppa-file-'.$alb.'-'.$wppa['master_occur'].'" class="wppa-file-'.$wppa['master_occur'].'" style="width:'.$width.'px;text-align:center;display:none" >
-		<form action="'.$returnurl.'" method="post" enctype="multipart/form-data">
+	<div id="wppa-file-'.$t.$alb.'-'.$wppa['master_occur'].'" class="wppa-file-'.$t.$wppa['master_occur'].'" style="width:'.$width.'px;text-align:center;display:none" >
+		<form id="wppa-uplform-'.$alb.'-'.$wppa['master_occur'].'" action="'.$returnurl.'" method="post" enctype="multipart/form-data">
 			'.wp_nonce_field('wppa-check' , 'wppa-nonce', false, false);		
 			if ( ! $alb ) {	// No album given: select one
 				$wppa['out'] .= '
@@ -485,6 +489,11 @@ global $wppa_opt;
 				$wppa['out'] .= '
 			<input type="hidden" name="wppa-upload-album" value="'.$alb.'" />';
 			}
+// Exp	
+$wppa['out'] .= '		
+<script>jQuery("#wppa-uplform-'.$alb.'-'.$wppa['master_occur'].'").attr("action", document.location.href);</script>';
+			
+// End exp
 			if ( wppa_switch('wppa_upload_one_only') && ! current_user_can('administrator') ) {
 				$wppa['out'] .= '
 			<input type="file" class="wppa-user-file" style="max-width: '.$width.'; margin: 6px 0; float:left; '.__wcs('wppa-box-text').'" id="wppa-user-upload-'.$alb.'-'.$wppa['master_occur'].'" name="wppa-user-upload-'.$alb.'-'.$wppa['master_occur'].'[]" onchange="jQuery(\'#wppa-user-submit-'.$alb.'-'.$wppa['master_occur'].'\').css(\'display\', \'block\')" />';
@@ -539,7 +548,7 @@ global $wppa_opt;
 						<td class="wppa-box-text wppa-td" style="width: '.$width.';'.__wcs('wppa-box-text').__wcs('wppa-td').'" >
 							'.__a('Position:').'
 						</td>';
-						if ( $widget_upload ) $wppa['out'] .= '</tr><tr>';
+						if ( $small ) $wppa['out'] .= '</tr><tr>';
 						$wppa['out'] .= '
 						<td class="wppa-box-text wppa-td" style="width: '.$width.';'.__wcs('wppa-box-text').__wcs('wppa-td').'" >
 							<select style="margin:0; padding:0; text-align:left; width:auto; " name="wppa-watermark-pos" id="wppa-watermark-pos">
@@ -556,7 +565,7 @@ global $wppa_opt;
 			<div class="wppa-box-text wppa-td" style="clear:both; float:left; text-align:left; '.__wcs('wppa-box-text').__wcs('wppa-td').'" >'.
 				__a('Enter photo name.').'&nbsp;<span style="font-size:10px;" >'.__a('If you leave this blank, the original filename will be used as photo name.').'</span>'.'
 			</div>
-			<input type="text" class="wppa-box-text wppa-file-'.$wppa['master_occur'].'" style="padding:0; width:'.($width-6).'px; '.__wcs('wppa-box-text').'" name="wppa-user-name" />';
+			<input type="text" class="wppa-box-text wppa-file-'.$t.$wppa['master_occur'].'" style="padding:0; width:'.($width-6).'px; '.__wcs('wppa-box-text').'" name="wppa-user-name" />';
 
 		// Description
 		$desc = $wppa_opt['wppa_apply_newphoto_desc_user'] ? stripslashes($wppa_opt['wppa_newphoto_description']) : '';
@@ -564,7 +573,7 @@ global $wppa_opt;
 			<div class="wppa-box-text wppa-td" style="clear:both; float:left; text-align:left; '.__wcs('wppa-box-text').__wcs('wppa-td').'" >'.
 				__a('Enter/modify photo description').'
 			</div>
-			<textarea class="wppa-user-textarea wppa-box-text wppa-file-'.$wppa['master_occur'].'" style="height:120px; width:'.($width-6).'px; '.__wcs('wppa-box-text').'" name="wppa-user-desc" >'.$desc.'</textarea>
+			<textarea class="wppa-user-textarea wppa-box-text wppa-file-'.$t.$wppa['master_occur'].'" style="height:120px; width:'.($width-6).'px; '.__wcs('wppa-box-text').'" name="wppa-user-desc" >'.$desc.'</textarea>
 		</form>
 	</div>';
 }
@@ -915,6 +924,8 @@ global $wppa;
 global $wppa_opt;
 global $wpdb;
 
+	if ( $wppa['is_upldr'] ) return;
+	
 	$result = '';
 	if ( $wppa_opt['wppa_albdesc_on_thumbarea'] == $key && $wppa['current_album'] ) {
 		$desc = wppa_get_album_desc($wppa['current_album']);

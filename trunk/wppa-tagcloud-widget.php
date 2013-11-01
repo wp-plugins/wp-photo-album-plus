@@ -32,7 +32,12 @@ class TagcloudPhotos extends WP_Widget {
 			
 		if ( !empty( $widget_title ) ) { echo $before_title . $widget_title . $after_title; }
 		
-		echo '<div class="wppa-tagcloud" >'.wppa_get_tagcloud_html(implode(',', $instance['tags'])).'</div>';
+		if ( empty($instance['tags']) ) {
+			echo '<div class="wppa-tagcloud" >'.__a('No tags defined yet').'</div>';
+		}
+		else {
+			echo '<div class="wppa-tagcloud" >'.wppa_get_tagcloud_html(implode(',', $instance['tags'])).'</div>';
+		}
 		echo '<div style="clear:both"></div>';
 		echo $after_widget;
     }

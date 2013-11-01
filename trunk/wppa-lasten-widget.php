@@ -31,7 +31,8 @@ class LasTenWidget extends WP_Widget {
 													'display' => 'thumbs' 
 													) );
 		$widget_title = apply_filters('widget_title', $instance['title'] );
-		$page 		= $wppa_opt['wppa_lasten_widget_linkpage'];
+		$page 		= wppa_get_the_landing_page('wppa_lasten_widget_linkpage', __a('Last Ten Uploaded Photos'));
+//		$page 		= $wppa_opt['wppa_lasten_widget_linkpage'];
 		$max  		= $wppa_opt['wppa_lasten_count'];
 		$album 		= $instance['album'];
 		$timesince 	= $instance['timesince'];

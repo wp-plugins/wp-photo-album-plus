@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 5.1.14
+* Version 5.1.15
 *
 */
 
@@ -546,6 +546,7 @@ Hide Camera info
 						'wppa_facebook_like'				=> 'yes',
 						'wppa_facebook_admin_id'			=> '',
 						'wppa_facebook_app_id'				=> '',
+						'wppa_load_facebook_sdk'			=> 'yes',
 						'wppa_share_single_image'			=> 'no',
 						
 						// C Thumbnails
@@ -813,6 +814,8 @@ Hide Camera info
 						'wppa_multitag_blank'				=> 'no',
 						
 						'wppa_super_view_linkpage'			=> '0',
+						
+						'wppa_upldr_widget_linkpage' 		=> '0',
 						
 						// Table VII: Security
 						// B

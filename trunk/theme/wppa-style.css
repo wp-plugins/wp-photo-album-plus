@@ -304,13 +304,6 @@ text-align:left;
 .wppa-sphoto {
 }
 
-.wppa-tagcloud {
-	padding-top:6px;
-}
-.wppa-multitag {
-	padding-top:6px;
-}
-
 .filmwindow {
 	/* position: absolute; */
 }
@@ -361,6 +354,11 @@ padding: 0 4px !important;
 
 .IN-widget {
 float:left;
+}
+
+/* widgets */
+.wppa-tagcloud, .wppa-multitag, .wppa-upldr {
+	margin-top:6px;
 }
 
 /* Fix for css3 transition that interferes with jQuery animation */

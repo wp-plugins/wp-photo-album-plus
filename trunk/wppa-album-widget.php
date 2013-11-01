@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display thumbnail photos
-* Version 5.1.9
+* Version 5.1.15
 */
 
 class AlbumWidget extends WP_Widget {
@@ -38,7 +38,8 @@ class AlbumWidget extends WP_Widget {
  
 		$widget_title = apply_filters('widget_title', $instance['title']);
 
-		$page = $wppa_opt['wppa_album_widget_linkpage'];
+		$page = wppa_get_the_landing_page('wppa_album_widget_linkpage', __a('Photo Albums'));
+//		$page = $wppa_opt['wppa_album_widget_linkpage'];
 		$max  = $wppa_opt['wppa_album_widget_count'];
 		if ( !$max ) $max = '10';
 		

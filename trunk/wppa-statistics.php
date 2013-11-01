@@ -4,7 +4,7 @@
 *
 * Functions for counts etc
 * Common use front and admin
-* Version 5.1.3
+* Version 5.1.15
 *
 */
 
@@ -121,4 +121,49 @@ global $wpdb;
 //global $wppa;		
 //if ( $wppa['debug'] )		print_r($_SESSION);	// Debug
 
+}
+
+function wppa_get_upldr_cache() {
+	$result = get_option('wppa_upldr_cache', array());
+	return $result;
+}
+
+function wppa_flush_upldr_cache($key = '', $id = '') {
+//delete_option('wppa_upldr_cache');return;
+global $wpdb;
+//echo $key.';'.$id.'.';
+	$upldrcache 	= get_option('wppa_upldr_cache', array());
+	switch ($key) {
+		case 'photoid':
+			$ow = $wpdb->get_var($wpdb->prepare("SELECT `owner` FROM `".WPPA_PHOTOS."` WHERE `id` = %s", $id));
+			$usr = $wpdb->get_var($wpdb->prepare("SELECT `ID` FROM `".$wpdb->prefix.'users'."` WHERE `user_login` = %s", $ow));
+			if ( $usr ) if ( isset ( $upldrcache[$usr] ) ) {
+				unset ( $upldrcache[$usr] );
+				update_option('wppa_upldr_cache', $upldrcache);
+			}
+			break;
+		case 'userid':
+			$usr = $id;
+			if ( $usr ) if ( isset ( $upldrcache[$usr] ) ) {
+				unset ( $upldrcache[$usr] );
+				update_option('wppa_upldr_cache', $upldrcache);
+			}
+			break;
+		case 'username':
+			$user = get_user_by('login', $id);
+			if ( $user ) {
+				$usr = $user->ID;
+				if ( $usr ) if ( isset ( $upldrcache[$usr] ) ) {
+					unset ( $upldrcache[$usr] );
+					update_option('wppa_upldr_cache', $upldrcache);
+				}
+			}
+			break;
+		case 'all':
+			delete_option('wppa_upldr_cache');
+			break;
+		default:
+			wppa_dbg_msg('Missing key in wppa_flush_upldr_cache()', 'red');
+			break;
+	}
 }

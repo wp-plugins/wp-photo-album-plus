@@ -2,7 +2,7 @@
 //
 // conatins slideshow, theme, ajax and lightbox code
 //
-// Version 5.1.14
+// Version 5.1.15
 
 // Part 1: Slideshow
 //
@@ -1235,11 +1235,12 @@ function _wppaDoAutocol(mocc) {
 	
 	// Multi Column Responsive covers
 	var exists = jQuery(".wppa-cover-box-mcr-"+mocc);
+	var MCRWidth;
 	if ( exists.length > 1 ) {	// Yes there are
 		wppaConsoleLog('aantal='+exists.length);
 		var nCovers = parseInt((w + 8)/(wppaMaxCoverWidth+8)) + 1;
 		var coverMax1 = nCovers - 1;
-		var MCRWidth = parseInt(((w + 8)/nCovers) - 8);
+		MCRWidth = parseInt(((w + 8)/nCovers) - 8);
 		var idx = 0;
 		while ( idx < exists.length ) {
 			var col = idx % nCovers;
@@ -1265,6 +1266,7 @@ function _wppaDoAutocol(mocc) {
 
 	// Thumbnail area
 	jQuery(".thumbnail-area-"+mocc).css('width',w - wppaThumbnailAreaDelta);
+	
 	// Thumbframes
 	if ( wppaThumbSpaceAuto ) {
 		var tfw = parseInt(jQuery(".thumbnail-frame-"+mocc).css('width'));
@@ -1278,8 +1280,12 @@ function _wppaDoAutocol(mocc) {
 			jQuery(".thumbnail-frame-"+mocc).css({marginLeft:newspc});
 		}
 	}
+	
 	// User upload
 	jQuery(".wppa-file-"+mocc).css('width',w - 16); 
+	
+	// User upload responsive covers
+	jQuery(".wppa-file-mcr-"+mocc).css('width', MCRWidth - wppaBoxDelta - 6);
 	
 	// Slide
 	wppaFormatSlide(mocc);

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * gp admin functions
-* version 5.1.9
+* version 5.1.15
 *
 * 
 */
@@ -314,6 +314,7 @@ global $wpdb;
 	$linktarget = $photo['linktarget'];
 	$status 	= $photo['status'];
 	$filename 	= $photo['filename'];
+	$location	= $photo['location'];
 	$oldimage 	= wppa_get_photo_path($photo['id']);
 	$oldthumb 	= wppa_get_thumb_path($photo['id']);
 	
@@ -322,7 +323,7 @@ global $wpdb;
 	$id = wppa_nextkey(WPPA_PHOTOS);
 	$owner = wppa_get_user();
 	$time = wppa_switch('wppa_copy_timestamp') ? $photo['timestamp'] : time();
-	$query = $wpdb->prepare('INSERT INTO `' . WPPA_PHOTOS . '` (`id`, `album`, `ext`, `name`, `p_order`, `description`, `mean_rating`, `linkurl`, `linktitle`, `linktarget`, `timestamp`, `owner`, `status`, `tags`, `alt`, `filename`, `modified`, `location`) VALUES (%s, %s, %s, %s, %s, %s, \'\', %s, %s, %s, %s, %s, %s, %s, %s, %s, \'0\', \'\')', $id, $album, $ext, $name, $porder, $desc, $linkurl, $linktitle, $linktarget, $time, $owner, $status, '', '', $filename);
+	$query = $wpdb->prepare('INSERT INTO `' . WPPA_PHOTOS . '` (`id`, `album`, `ext`, `name`, `p_order`, `description`, `mean_rating`, `linkurl`, `linktitle`, `linktarget`, `timestamp`, `owner`, `status`, `tags`, `alt`, `filename`, `modified`, `location`) VALUES (%s, %s, %s, %s, %s, %s, \'\', %s, %s, %s, %s, %s, %s, %s, %s, %s, \'0\', %s)', $id, $album, $ext, $name, $porder, $desc, $linkurl, $linktitle, $linktarget, $time, $owner, $status, '', '', $filename, $location);
 	if ($wpdb->query($query) === false) return $err;
 	wppa_flush_treecounts($album);
 	wppa_index_add('photo', $id);
@@ -1075,6 +1076,7 @@ function wppa_insert_photo ($file = '', $alb = '', $name = '', $desc = '', $pord
 			wppa_save_source($file, $filename, $alb);
 			wppa_flush_treecounts($alb);
 			wppa_update_album_timestamp($alb);
+			wppa_flush_upldr_cache('photoid', $id);
 		}
 		// Make the photo files		
 		if ( wppa_make_the_photo_files($file, $id, $ext) ) {
