@@ -2,12 +2,12 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile
-Version: 5.1.14
+Version: 5.1.15
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
 Requires at least: 3.1
-Tested up to: 3.6.1
+Tested up to: 3.7.1
 
 This plugin is designed to easily manage and display your photo albums and slideshows in a single as well as in a network WordPress site.
 
@@ -173,12 +173,37 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
 
+= 5.1.15 =
+
+= Bug Fixes =
+
+* Fixed Sizing issue of the frontend upload html in multi column responsive covers.
+* Fixed texts and made them translatable in the share box.
+* GPS info was lost during copy photo. Fixed.
+* Paginating did not work properly for #related. Fixed.
+
+= New Features =
+
+* New Widget: Uploader photos. Shows a list of users that uploaded photos. Links to a display of thumbnails, ordered by timestamp, newest first.
+Userlist can be sorted by name, latest upload or number of uploads ( most first ). A logged in user will always see his link at the top if he ever uploaded.
+* New virtual album name for use in shortcodes: #upldr. Usage: album="#upldr,loginname". Will return photos only, no albums.
+* New virtual loginname for use in shortcodes: #me. Usage: album="#owner,#me{,parent}" and album="#upldr,#me". Will return the albums or photos of the currently logged in user ( if any ).
+See: http://wppa.opajaap.nl/members/#shortcodes for more info on #upldr and #me.
+
+= Other Changes =
+
+* Loading of the Facebook js SDK can now be switched off in Table II-B21.97 when there is a conflict with another plugin.
+* The title of the thumbnail widget can have a manually entered link.
+* Speed up of page load with slideshow having gps data by removing redundant hidden duplicates.
+* Required Landing pages will now automaticly created when they do not already exist.
+
 = 5.1.14 =
 
 = Bug Fixes =
 
 * When photos only was checked in table IX-C4 ( Searching ) the album covers did not show up ( snince 5.1.12 ). Fixed.
 * Fixed a conflict with metatags.
+* Geo data stopped working when the photo desc was empty. Fixed.
 
 = New Features =
 

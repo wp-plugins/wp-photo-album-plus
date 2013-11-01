@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains low-level utility routines
-* Version 5.1.14
+* Version 5.1.15
 *
 */
 
@@ -153,7 +153,7 @@ global $thumb;
 }
 
 // get the description of an image
-function wppa_get_photo_desc($id, $do_shortcodes = false) {
+function wppa_get_photo_desc($id, $do_shortcodes = false, $do_geo = false) {
 global $thumb;
 global $wppa;
 global $wppa_opt;
@@ -169,7 +169,7 @@ global $wppa_opt;
 	$desc = str_replace(array('%%wppa%%', '[wppa', '[/wppa]'), array('%-wppa-%', '{wppa', '{/wppa}'), $desc);
 
 	// Geo
-	if ( $thumb['location'] && ! $wppa['in_widget'] && strpos($wppa_opt['wppa_custom_content'], 'w#location') !== false) {
+	if ( $thumb['location'] && ! $wppa['in_widget'] && strpos($wppa_opt['wppa_custom_content'], 'w#location') !== false && $do_geo == 'do_geo') {
 		$temp = explode('/', $thumb['location']);
 		$lat = $temp['2'];
 		$lon = $temp['3'];
@@ -595,6 +595,8 @@ global $wpdb;
 }
 
 function wppa_send_mail($to, $subj, $cont, $photo, $email = '') {
+
+	wppa_dbg_msg('Sending mail to '.$to.' !');
 
 	$from			= 'From: noreply@'.substr(home_url(), strpos(home_url(), '.') + '1');
 	$extraheaders 	= "\n" . 'MIME-Version: 1.0' . "\n" . 'Content-Transfer-Encoding: 8bit' . "\n" . 'Content-Type: text/html; charset="UTF-8"';
@@ -1042,6 +1044,7 @@ global $wpdb;
 	$wpdb->query($wpdb->prepare('DELETE FROM `'.WPPA_IPTC.'` WHERE `photo` = %s', $photo));
 	$wpdb->query($wpdb->prepare('DELETE FROM `'.WPPA_EXIF.'` WHERE `photo` = %s', $photo));
 	wppa_flush_treecounts($album);
+	wppa_flush_upldr_cache('photoid', $photo);
 
 }
 
@@ -1170,6 +1173,7 @@ function wppa_is_int($var) {
 }
 
 function wppa_log($type, $msg) {
+	@ mkdir(ABSPATH.'wp-content/wppa-depot/admin'); // Just in case...
 	if ( ! $file = fopen(ABSPATH.'wp-content/wppa-depot/admin/error.log', 'ab') ) return;	// Unable to open log file
 	fwrite($file, $type.': on:'.wppa_local_date(get_option('date_format', "F j, Y,").' '.get_option('time_format', "g:i a"), time()).': '.$msg."\n");
 	fclose($file);
@@ -1220,4 +1224,36 @@ global $wpdb;
 		}
 	}
 	return false;
+}
+
+function wppa_get_the_landing_page($slug, $title) {
+global $wppa_opt;
+
+	$page = $wppa_opt[$slug];
+	if ( ! $page || ! wppa_page_exists($page) ) {
+	$page = wppa_create_page($title);
+		wppa_update_option($slug, $page);
+		$wppa_opt[$slug] = $page;
+	}
+	return $page;
+}
+
+function wppa_create_page($title) {
+			
+	$my_page = array(
+				'post_title'    => $title,
+				'post_content'  => '[wppa type="landing"][/wppa]',
+				'post_status'   => 'publish',
+				'post_type'	  	=> 'page'
+			);
+
+	$page = wp_insert_post( $my_page );
+	return $page;
+}
+
+function wppa_page_exists($id) {
+global $wpdb;
+
+	$iret = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `" . $wpdb->posts . "` WHERE `post_type` = 'page' AND `post_status` = 'publish' AND `ID` = %s", $id));
+	return ( $iret > '0' );
 }

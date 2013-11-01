@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 5.1.14
+* Version 5.1.15
 *
 */
 
@@ -1406,13 +1406,21 @@ wppa_fix_source_extensions();
 							$class = 'wppa_share';
 							$html = wppa_input($slug, '200px');
 							wppa_setting($slug, '21.96', $name, $desc, $html, $help, $class);
+							
+							$name = __('Facebook js SDK', 'wppa');
+							$desc = __('Load Facebook js SDK', 'wppa');
+							$help = esc_js(__('Uncheck this box only when there is a conflict with an other plugin that also loads the Facebook js SDK.', 'wppa'));
+							$slug = 'wppa_load_facebook_sdk';
+							$class = 'wppa_share';
+							$html = wppa_checkbox($slug, $onchange);
+							wppa_setting($slug, '21.97', $name, $desc, $html, $help, $class);
 
 							$name = __('Share single image', 'wppa');
 							$desc = __('Share a link to a single image, not the slideshow.', 'wppa');
 							$help = esc_js(__('The sharelink points to a page with a single image rather than to the page with the photo in the slideshow.', 'wppa'));
 							$slug = 'wppa_share_single_image';
 							$html = wppa_checkbox($slug, $onchange);
-							wppa_setting($slug, '21.99', $name, $desc, $html, $help, $class);
+							wppa_setting($slug, '22', $name, $desc, $html, $help, $class);
 
 							wppa_setting_subheader('C', '1', __('Thumbnail display related settings', 'wppa'));
 							
@@ -3307,6 +3315,26 @@ wppa_fix_source_extensions();
 							$html = array($html1, $htmlerr.$html2, $html3, $html4);
 							wppa_setting($slug, '5', $name, $desc, $html, $help);
 
+							$name = __('Uploader Widget Landing', 'wppa');
+							$desc = __('Select the landing page for the Uploader Photos Widget', 'wppa');
+							$help = '';
+							$slug1 = '';
+							$slug2 = 'wppa_upldr_widget_linkpage';
+							wppa_verify_page($slug2);
+							$slug3 = '';
+							$slug4 = '';
+							$slug = array($slug1, $slug2, $slug3, $slug4);
+							$html1 = '';				
+							$class = '';
+							$onchange = 'wppaCheckLinkPageErr(\'upldr_widget\');';
+							$html2 = wppa_select($slug2, $options_page, $values_page, $onchange, $class, true);
+							$class = '';
+							$html3 = '';
+							$html4 = '';
+							$htmlerr = wppa_htmlerr('upldr_widget');
+							$html = array($html1, $htmlerr.$html2, $html3, $html4);
+							wppa_setting($slug, '6', $name, $desc, $html, $help);
+							
 							?>
 						</tbody>
 						<tfoot style="font-weight: bold;" class="wppa_table_6">

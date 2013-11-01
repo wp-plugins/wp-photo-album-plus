@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the featured photos
-* Version 5.0.17
+* Version 5.1.15
 */
 
 class FeaTenWidget extends WP_Widget {
@@ -25,7 +25,8 @@ class FeaTenWidget extends WP_Widget {
 		$instance = wp_parse_args( (array) $instance, array( 'title' => '', 'album' => '' ) );
 
  		$widget_title = apply_filters('widget_title', $instance['title'] );
-		$page = $wppa_opt['wppa_featen_widget_linkpage'];
+		$page = wppa_get_the_landing_page('wppa_featen_widget_linkpage', __a('Featured photos'));
+//		$page = $wppa_opt['wppa_featen_widget_linkpage'];
 		$max  = $wppa_opt['wppa_featen_count'];
 		
 		$album = $instance['album'];

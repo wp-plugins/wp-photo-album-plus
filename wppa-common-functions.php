@@ -2,7 +2,7 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 5.1.14
+* version 5.1.15
 *
 */
 
@@ -109,7 +109,8 @@ global $wppa_initruntimetime;
 			'tagcols'					=> '2',
 			'is_related'				=> false,
 			'related_count'				=> '0',
-			'is_owner'					=> ''
+			'is_owner'					=> '',
+			'is_upldr'					=> '',
 
 
 
@@ -251,7 +252,7 @@ global $wppa_initruntimetime;
 						'wppa_facebook_like'				=> '',
 						'wppa_facebook_admin_id'			=> '',
 						'wppa_facebook_app_id'				=> '',
-
+						'wppa_load_facebook_sdk' 			=> '',
 						'wppa_share_single_image'			=> '',
 
 						// C Thumbnails
@@ -517,7 +518,8 @@ global $wppa_initruntimetime;
 						'wppa_multitag_linkpage'			=> '',
 						'wppa_multitag_blank'				=> '',
 
-						'wppa_super_view_linkpage'		=> '',
+						'wppa_super_view_linkpage'			=> '',
+						'wppa_upldr_widget_linkpage' 		=> '',
 						
 						// Table VII: Security
 						// B

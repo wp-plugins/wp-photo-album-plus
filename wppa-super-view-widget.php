@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * ask the album / display you want
-* Version 5.1.2
+* Version 5.1.15
 */
 
 
@@ -30,9 +30,11 @@ class SuperView extends WP_Widget {
  		$widget_title 	= apply_filters('widget_title', $instance['title'] );
 		$album_root 	= $instance['root'];
 
-		$page = $wppa_opt['wppa_super_view_linkpage'];
-		$iret = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `" . $wpdb->posts . "` WHERE `post_type` = 'page' AND `post_status` = 'publish' AND `ID` = %s", $page));
-		if ( ! $iret ) $page = '0';	// Page vanished
+		$page 			= wppa_get_the_landing_page('wppa_super_view_linkpage', __a('Super View Photos'));
+
+//		$page = $wppa_opt['wppa_super_view_linkpage'];
+//		$iret = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `" . $wpdb->posts . "` WHERE `post_type` = 'page' AND `post_status` = 'publish' AND `ID` = %s", $page));
+//		if ( ! $iret ) $page = '0';	// Page vanished
 		if ( $page == '0' ) {
 			$widget_content = __a('Please select a super view widget landing page in Table VI-C');
 		}

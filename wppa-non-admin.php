@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the non admin stuff
-* Version 5.1.14
+* Version 5.1.15
 *
 */
 
@@ -225,7 +225,11 @@ function wppa_fbc_setup() {
 </script>
 <?php 
 }
-if ( ( get_option('wppa_facebook_like') == 'yes' || get_option('wppa_facebook_comments') == 'yes' ) && get_option('wppa_share_on') == 'yes' ) add_action('wp_footer', 'wppa_fbc_setup', 100);
+if ( ( get_option('wppa_facebook_like') == 'yes' || get_option('wppa_facebook_comments') == 'yes' ) 
+	&& get_option('wppa_share_on') == 'yes' 
+	&& get_option('wppa_load_facebook_sdk') == 'yes' ) {
+		add_action('wp_footer', 'wppa_fbc_setup', 100);
+	}
 
 /* CHECK REDIRECTION */
 add_action('init', 'wppa_redirect');

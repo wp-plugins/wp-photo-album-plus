@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Functions for breadcrumbs
-* Version 5.1.12
+* Version 5.1.15
 *
 */
 
@@ -42,7 +42,7 @@ global $wpdb;
 	$alb = wppa_is_int( $wppa['start_album'] ) ? $wppa['start_album'] : '0';	// A single album or all ( all = 0 here )
 	$is_albenum = strlen($wppa['start_album']) > '0' && ! wppa_is_int($wppa['start_album']);
 	wppa_dbg_msg('alb='.$alb.', albenum='.$is_albenum, 'green');
-	$virtual = ( $wppa['is_topten'] || $wppa['is_lasten'] || $wppa['is_comten'] || $wppa['is_featen'] || $wppa['is_tag'] || $wppa['last_albums'] );
+	$virtual = ( $wppa['is_topten'] || $wppa['is_lasten'] || $wppa['is_comten'] || $wppa['is_featen'] || $wppa['is_tag'] || $wppa['last_albums'] || $wppa['is_upldr'] );
 	if ( $wppa['last_albums'] ) {
 		$alb = $wppa['last_albums_parent'];
 	}
@@ -101,6 +101,20 @@ global $wpdb;
 				wppa_bcitem($value, $href, $title, 'b8');
 			}
 			$value 	= __a('Searchstring:').'&nbsp;'.stripslashes($wppa['searchstring']);
+			$href 	= '';
+			$title	= '';
+			wppa_bcitem($value, $href, $title, 'b9');
+		}
+		elseif ( $wppa['is_upldr'] ) {
+			$usr = get_user_by('login', $wppa['is_upldr']);
+			if ( $usr ) $user = $usr->display_name; else $user = $wppa['is_upldr'];
+			if ( $wppa['is_slide'] ) {
+				$value 	= sprintf(__a('Photos by %s'), $user);
+				$href 	= wppa_get_permalink().'wppa-cover=0&amp;wppa-occur='.$wppa['occur'].'&amp;wppa-upldr='.$wppa['is_upldr'];
+				$title	= __a('View the thumbnails');
+				wppa_bcitem($value, $href, $title, 'b8');
+			}
+			$value 	= sprintf(__a('Photos by %s'), $user);
 			$href 	= '';
 			$title	= '';
 			wppa_bcitem($value, $href, $title, 'b9');
