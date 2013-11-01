@@ -12,12 +12,6 @@ var wppaImageDirectory = '';
 var wppaAjaxUrl = '';
 var wppaUploadToThisAlbum = 'Upload to this album';
 
-jQuery(document).ready(function() {
-/* alert( 'You are running jQuery version: ' + jQuery.fn.jquery ); */
-
-	jQuery(".fade").fadeTo(200000, 0.0)
-	});
-
 /* Check if jQuery library revision is high enough, othewise give a message and uncheck checkbox elm */
 function checkjQueryRev(msg, elm, rev){
 	var version = parseFloat(jQuery.fn.jquery);
