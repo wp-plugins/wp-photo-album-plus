@@ -37,7 +37,7 @@ function _wppa_admin() {
 	}
 
 	// Fix orphan albums and deleted target pages
-	$albs = $wpdb->get_results("SELECT * FROM `".WPPA_ALBUMS, ARRAY_A);
+	$albs = $wpdb->get_results("SELECT * FROM `".WPPA_ALBUMS."`", ARRAY_A);
 	if ( $albs ) {
 		foreach ($albs as $alb) {
 			if ( $alb['a_parent'] > '0' && wppa_get_parentalbumid($alb['a_parent']) == '-9' ) {	// Parent died?
