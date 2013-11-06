@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions
-* Version 5.1.15
+* Version 5.1.16
 *
 */
 
@@ -1232,12 +1232,14 @@ global $wppa_done;
 	$wppa_done = true;
 	
 	$time = time();
-	$photo = wppa_get_get('photo');	
+	$photo = isset($_REQUEST['photo']) ? strval(intval($_REQUEST['photo'])) : '0';	//wppa_get_get('photo');
+	if ( ! $photo ) $photo = isset($_REQUEST['photo-id']) ? strval(intval($_REQUEST['photo-id'])) : '0';	//wppa_get_get('photo');
+	if ( ! $photo ) die('Photo id missing while processing a comment');
 	$user = wppa_get_post('comname');
-	if ( !$user ) die('Illegal attempt to enter a comment');
+	if ( ! $user ) die('Illegal attempt to enter a comment 1');
 	$email = wppa_get_post('comemail');
-	if ( !$email ) {
-		if ( $wppa_opt['wppa_comment_email_required'] ) die('Illegal attempt to enter a comment');
+	if ( ! $email ) {
+		if ( $wppa_opt['wppa_comment_email_required'] ) die('Illegal attempt to enter a comment 2');
 		else $email = wppa_get_user();	// If email not present and not required, use his IP
 	}
 	
@@ -1263,10 +1265,11 @@ global $wppa_done;
 	if ( current_user_can('wppa_moderate') ) $status = 'approved';	// Need not moderate comments issued by moderator
 
 	// Editing a comment?
-	$cedit = wppa_get_post('comment-edit');
-	
+	$cedit = wppa_get_post('comment-edit', '0');
+	if ( ! wppa_is_int($cedit) ) wp_die('Security check falure 14');
+
 	// Check captcha
-	if ( $wppa_opt['wppa_comment_captcha'] ) {
+	if ( wppa_switch('wppa_comment_captcha') ) {
 		$captkey = $id;
 		if ( $cedit ) $captkey = $wpdb->get_var($wpdb->prepare('SELECT `timestamp` FROM `'.WPPA_COMMENTS.'` WHERE `id` = %s', $cedit)); 
 		wppa_dbg_q('Q43');
@@ -1336,7 +1339,7 @@ global $wppa_done;
 					}
 					if ( $wppa_opt['wppa_comment_notify'] == 'admin' || $wppa_opt['wppa_comment_notify'] == 'both' || $wppa_opt['wppa_comment_notify'] == 'upadmin' ) {
 						// Mail admin
-						$moduser   = get_user_by('login', 'admin');
+						$moduser   = get_user_by('id', '1');
 						if ( ! in_array( $moduser->login_name, $sentto ) ) {	// Already sent him?
 							$to        = get_bloginfo('admin_email');
 							$cont['2'] = $cont2;

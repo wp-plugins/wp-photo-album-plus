@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the slideshow high level functions
-* Version 5.1.8
+* Version 5.1.16 
 *
 */
 
@@ -800,7 +800,7 @@ global $wppa_opt;
 	if ( !$wppa['is_slideonly'] && $wppa_opt['wppa_show_comments'] && !$wppa['in_widget'] ) $do_it = true;
 
 	if ($do_it) {
-		$wppa['out'] .= wppa_nltab('+').'<div id="comments-'.$wppa['master_occur'].'" class="wppa-box wppa-comments " style="text-align: center; '.__wcs('wppa-box').__wcs('wppa-comments').'">';
+		$wppa['out'] .= wppa_nltab('+').'<div id="wppa-comments-'.$wppa['master_occur'].'" class="wppa-box wppa-comments " style="text-align: center; '.__wcs('wppa-box').__wcs('wppa-comments').'">';
 
 		$wppa['out'] .= wppa_nltab('-').'</div><!-- #comments -->';
 	}

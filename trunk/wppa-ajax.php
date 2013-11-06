@@ -2,7 +2,7 @@
 /* wppa-ajax.php
 *
 * Functions used in ajax requests
-* version 5.1.15
+* version 5.1.16
 *
 */
 add_action('wp_ajax_wppa', 'wppa_ajax_callback');
@@ -30,10 +30,27 @@ global $wppa;
 	wppa_vfy_arg('wppa-action', true);
 	wppa_vfy_arg('photo-id');
 	wppa_vfy_arg('comment-id');
+	wppa_vfy_arg('moccur');
 	
 	$wppa_action = $_REQUEST['wppa-action'];
 	
 	switch ($wppa_action) {
+		case 'do-comment':
+			// Correct the fact that this is a non-admin operation
+			require_once 'wppa-non-admin.php';
+			foreach(array_keys($wppa_opt) as $s) {
+				if ( $wppa_opt[$s] == 'no' ) $wppa_opt[$s] = false;
+			}
+			$wppa['master_occur'] = $_REQUEST['moccur'];
+
+			$comment_allowed = ( ! wppa_switch('wppa_comment_login') || is_user_logged_in() );
+			if ( wppa_switch('wppa_show_comments') && $comment_allowed ) {
+				wppa_do_comment($_REQUEST['photo-id']);		// Process the comment
+			}
+			$wppa['no_esc'] = true;
+			echo stripslashes(wppa_comment_html($_REQUEST['photo-id'], $comment_allowed));	// Retrieve the new commentbox content
+			break;
+			
 		case 'import':
 			require_once 'wppa-upload.php';
 			_wppa_page_import();

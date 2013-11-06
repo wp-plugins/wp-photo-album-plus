@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Various style computation routines
-* Version 5.1.9
+* Version 5.1.16
 *
 */
 
@@ -204,8 +204,8 @@ global $wppa_opt;
 			break;
 		case 'fullsize':
 			if ( $wppa['auto_colwidth'] ) {
-				$result['style'] .= ' max-width:' . $width . 'px;';		// These sizes fit within the rectangle define by Table I-B1,2
-				$result['style'] .= ' max-height:' . $height . 'px;';	// and are supplied for ver 4 browsers as they have undifined natural sizes
+				$result['style'] .= ' max-width:' . ($width*2) . 'px;';		// These sizes fit within the rectangle define by Table I-B1,2 times 2 for responsive themes
+				$result['style'] .= ' max-height:' . ($height*2) . 'px;';	// and are supplied for ver 4 browsers as they have undifined natural sizes
 			}
 			else {
 				$result['style'] .= ' max-width:' . $width . 'px;';		// These sizes fit within the rectangle define by Table I-B1,2

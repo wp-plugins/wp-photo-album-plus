@@ -2,7 +2,7 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 5.1.15
+* version 5.1.16
 *
 */
 
@@ -111,6 +111,7 @@ global $wppa_initruntimetime;
 			'related_count'				=> '0',
 			'is_owner'					=> '',
 			'is_upldr'					=> '',
+			'no_esc'					=> false
 
 
 
@@ -395,6 +396,7 @@ global $wppa_initruntimetime;
 						'wppa_ovl_onclick'				=> '',
 						'wppa_ovl_anim'					=> '',
 						'wppa_ovl_chrome_at_top' 		=> '',
+						'wppa_lightbox_global'			=> '',
 
 
 						// Table V: Fonts

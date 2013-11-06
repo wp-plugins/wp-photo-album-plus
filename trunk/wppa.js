@@ -2,7 +2,7 @@
 //
 // conatins slideshow, theme, ajax and lightbox code
 //
-// Version 5.1.15
+// Version 5.1.16
 
 // Part 1: Slideshow
 //
@@ -443,7 +443,7 @@ function _wppaNextSlide(mocc, mode) {
 		// Display name, description and comments
 		jQuery("#imagedesc-"+mocc).html(_wppaDsc[mocc][_wppaCurIdx[mocc]]);
 		jQuery("#imagetitle-"+mocc).html(wppaMakeNameHtml(mocc));
-		jQuery("#comments-"+mocc).html(_wppaCommentHtml[mocc][_wppaCurIdx[mocc]]);
+		jQuery("#wppa-comments-"+mocc).html(_wppaCommentHtml[mocc][_wppaCurIdx[mocc]]);
 		jQuery("#iptc-"+mocc).html(_wppaIptcHtml[mocc][_wppaCurIdx[mocc]]);
 		jQuery("#exif-"+mocc).html(_wppaExifHtml[mocc][_wppaCurIdx[mocc]]);
 		
@@ -473,7 +473,9 @@ function _wppaNextSlide(mocc, mode) {
 	// See if the filmstrip needs wrap around before shifting to the right location
 	_wppaCheckRewind(mocc);
 
-	if (wppaAutoColumnWidth[mocc]) _wppaDoAutocol(mocc);
+////	if (wppaAutoColumnWidth[mocc]) _wppaDoAutocol(mocc);
+				wppaColWidth[mocc] = 0;	// force a recalc
+
 	// Give free for a while to enable rendering of what we have done so far
 	setTimeout('_wppaNextSlide_2('+mocc+')', 10);	// to be continued
 }
@@ -497,7 +499,7 @@ function _wppaNextSlide_2(mocc) {
 	// Remove spinner
 	_wppaUnloadSpinner(mocc);
 	// Do autocol if required
-	if (wppaAutoColumnWidth[mocc]) _wppaDoAutocol(mocc);
+////	if (wppaAutoColumnWidth[mocc]) _wppaDoAutocol(mocc);
 	// Hide subtitles
 	if (_wppaSSRuns[mocc] != -1) {	// not stop in progress
 		if (!_wppaToTheSame) {
@@ -716,7 +718,7 @@ function _wppaNextSlide_5(mocc) {
 		}
 		jQuery("#imagetitle-"+mocc).html(wppaMakeNameHtml(mocc));
 		// Restore comments html
-		jQuery("#comments-"+mocc).html(_wppaCommentHtml[mocc][_wppaCurIdx[mocc]]);
+		jQuery("#wppa-comments-"+mocc).html(_wppaCommentHtml[mocc][_wppaCurIdx[mocc]]);
 		// Restor IPTC
 		jQuery("#iptc-"+mocc).html(_wppaIptcHtml[mocc][_wppaCurIdx[mocc]]);
 		jQuery("#exif-"+mocc).html(_wppaExifHtml[mocc][_wppaCurIdx[mocc]]);
@@ -972,7 +974,7 @@ function _wppaAdjustFilmstrip(mocc) {
 		var xoffset;
 		xoffset = wppaFilmStripLength[mocc] / 2 - (_wppaCurIdx[mocc] + 0.5 + wppaPreambule) * wppaThumbnailPitch[mocc] - wppaFilmStripMargin[mocc];
 		if (wppaFilmShowGlue) xoffset -= (wppaFilmStripMargin[mocc] * 2 + 2);	// Glue
-		jQuery('#wppa-filmstrip-'+mocc).animate({marginLeft: xoffset+'px'});
+		jQuery('#wppa-filmstrip-'+mocc).stop().animate({marginLeft: xoffset+'px'});
 	}
 	else {
 		_wppaFilmNoMove[mocc] = false; // reset
@@ -1328,7 +1330,7 @@ function _wppaDoAutocol(mocc) {
 	jQuery(".wppa-mimg-"+mocc).css('width',w);
 	jQuery(".wppa-mimg-"+mocc).css('height', '');
 
-	// Check again after 50 ms	
+	// Check again after 10 ms	
 	setTimeout('_wppaDoAutocol('+mocc+')', 10);
 }
 
@@ -2221,7 +2223,7 @@ function wppaDoAjaxRender(mocc, ajaxurl, newurl) {
 				if ( typeof(wppaQRUpdate) != 'undefined') wppaQRUpdate(newurl);
 
 				/* Autocol? */
-				wppaColWidth[mocc] = 0;	// clear
+				wppaColWidth[mocc] = 0;	// force a recalc
 				//_wppaDoAutocol(mocc);
 				
 				// If it is a slideshow: Upate 'Faster' and 'Slower' to the desired language.
@@ -2810,6 +2812,46 @@ function wppaAjaxMakeOrigName(mocc, id) {
 		alert('Comm error encountered');
 		return false;
 	}
+}
+
+function wppaAjaxComment(mocc, id) {
+
+	// Show spinner
+	jQuery("#wppa-comment-spin-"+mocc).css('display', 'inline');
+	
+	// Create the http request object
+	var xmlhttp = wppaGetXmlHttp();
+
+	// Make the Ajax send data
+	var data = 'action=wppa&wppa-action=do-comment&photo-id='+id
+		+'&comname='+jQuery("#wppa-comname-"+mocc).attr('value')
+		+'&comment='+jQuery("#wppa-comment-"+mocc).attr('value')
+		+'&wppa-captcha='+jQuery("#wppa-captcha-"+mocc).attr('value')
+		+'&wppa-nonce='+jQuery("#wppa-nonce-"+mocc).attr('value')
+		+'&moccur='+mocc;
+		if ( typeof ( jQuery("#wppa-comemail-"+mocc).attr('value') ) != 'undefined' ) data += '&comemail='+jQuery("#wppa-comemail-"+mocc).attr('value');
+		if ( typeof ( jQuery("#wppa-comment-edit-"+mocc).attr('value') ) != 'undefined') data += '&comment-edit='+jQuery("#wppa-comment-edit-"+mocc).attr('value');
+				
+	// Do the Ajax action
+	xmlhttp.open('POST',wppaAjaxUrl,false);	// Synchronously !!
+	xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+	xmlhttp.send(data);
+	
+	// Process result
+	if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+		var result = xmlhttp.responseText;
+		jQuery("#wppa-comments-"+mocc).html(result);
+		_wppaCommentHtml[mocc][_wppaCurIdx[mocc]] = result;
+		wppaOpenComments(mocc);
+	}
+	else {
+		alert('Comm error encountered');
+		return false;
+	}
+	
+	// Hide spinner
+	jQuery("#wppa-comment-spin-"+mocc).css('display', 'none');
+
 }
 
 function wppaConsoleLog(arg) {
