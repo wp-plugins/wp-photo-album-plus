@@ -2,7 +2,7 @@
 //
 // conatins slideshow, theme, ajax and lightbox code
 //
-// Version 5.1.16
+// Version 5.1.16.001
 
 // Part 1: Slideshow
 //
@@ -1174,6 +1174,8 @@ function _wppaSpeed(mocc, faster) {
 }
 
 function _wppaLoadSpinner(mocc) {
+	
+	if ( ! document.getElementById('slide_frame-'+mocc) ) return;	// filmonly
 	
 	var top;
 	var lft;
