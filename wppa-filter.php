@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * get the albums via filter
-* version 5.1.12
+* version 5.1.16
 *
 */
 
@@ -394,3 +394,17 @@ global $wppa_opt;
 
 add_shortcode( 'wppa', 'wppa_shortcodes' );
 
+
+function wppa_lightbox_global($content) {
+global $wppa_opt;
+global $post;
+
+	if ( wppa_switch('wppa_lightbox_global') && $wppa_opt['wppa_lightbox_name'] == 'wppa' ) {
+		$pattern ="/<a(.*?)href=('|\")(.*?).(bmp|gif|jpeg|jpg|png)('|\")(.*?)>/i";
+		$replacement = '<a$1href=$2$3.$4$5 rel="wppa" title="'.$post->post_title.'"$6>';
+		$content = preg_replace($pattern, $replacement, $content);
+	}
+	return $content;
+}
+
+add_filter('the_content', 'wppa_lightbox_global');

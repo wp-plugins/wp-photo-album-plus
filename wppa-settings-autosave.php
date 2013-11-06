@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 5.1.15
+* Version 5.1.16 
 *
 */
 
@@ -2578,6 +2578,13 @@ wppa_fix_source_extensions();
 							$html = wppa_checkbox($slug);
 							wppa_setting($slug, '4', $name, $desc, $html, $help);
 							
+							$name = __('WPPA+ Lightbox global', 'wppa');
+							$desc = __('Use the wppa+ lightbox also for non-wppa images.', 'wppa');
+							$help = '';
+							$slug = 'wppa_lightbox_global';
+							$html = wppa_checkbox($slug);
+							wppa_setting($slug, '5', $name, $desc, $html, $help);
+							
 							?>
 						</tbody>
 						<tfoot style="font-weight: bold;" class="wppa_table_4">
@@ -3377,11 +3384,11 @@ wppa_fix_source_extensions();
 									$wppanames = array( 'Album Admin', 
 														'Upload Photos', 
 														'Import Photos', 
-														'Moderate',
+														'Moderate P+C',
 														'Export Photos', 
 														'Settings', 
 														'Photo of the day', 
-														'Comments', 
+														'Comment&nbsp;Admin', 
 														'Help & Info'
 														);
 									echo '<th scope="col" >'.__('Role', 'wppa').'</th>';
@@ -3393,7 +3400,7 @@ wppa_fix_source_extensions();
 							<?php 
 							$wppa_table = 'VII';
 							
-							wppa_setting_subheader('A', '5', __('Roles and Capability settings', 'wppa'));
+							wppa_setting_subheader('A', '6', __('Roles and Capability settings', 'wppa'));
 
 							$roles = $wp_roles->roles;
 							foreach (array_keys($roles) as $key) {

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Various wppa boxes
-* Version 5.1.15
+* Version 5.1.16
 *
 */
 
@@ -649,7 +649,8 @@ global $wppa_first_comment_html;
 											html_entity_decode(esc_js(stripslashes(convert_smilies($comment['comment']))));
 										
 											if ( $comment['status'] != 'approved' && ( current_user_can('wppa_moderate') || current_user_can('wppa_comments') ) ) {
-												$result .= wppa_html(esc_js(wppa_moderate_links('comment', $id, $comment['id'])));
+												if ( $wppa['no_esc'] ) $result .= wppa_moderate_links('comment', $id, $comment['id']);
+												else $result .= wppa_html(esc_js(wppa_moderate_links('comment', $id, $comment['id'])));
 											}
 											elseif ($comment['status'] == 'pending' && $comment['user'] == $wppa['comment_user']) {
 												$result .= '<br /><span style="color:red; font-size:9px;" >'.__a('Awaiting moderation').'</span>';
@@ -706,11 +707,11 @@ global $wppa_first_comment_html;
 	if ( $comment_allowed ) {
 		$result .= '<div id="wppa-comform-wrap-'.$wppa['master_occur'].'" style="display:none;" >';
 			$result .= '<form id="wppa-commentform-'.$wppa['master_occur'].'" class="wppa-comment-form" action="'.$returnurl.'" method="post" style="" onsubmit="return wppaValidateComment('.$wppa['master_occur'].')">';
-				$result .= wp_nonce_field('wppa-check' , 'wppa-nonce', false, false);
+				$result .= wp_nonce_field('wppa-check' , 'wppa-nonce-'.$wppa['master_occur'], false, false);
 				if ($album) $result .= '<input type="hidden" name="wppa-album" value="'.$album.'" />';
 				if ($cover) $result .= '<input type="hidden" name="wppa-cover" value="'.$cover.'" />';
 				if ($slide) $result .= '<input type="hidden" name="wppa-slide" value="'.$slide.'" />';
-				if ($is_current) $result .= '<input type="hidden" name="wppa-comment-edit" value="'.$wppa['comment_id'].'" />';
+				if ($is_current) $result .= '<input type="hidden" id="wppa-comment-edit-'.$wppa['master_occur'].'" name="wppa-comment-edit" value="'.$wppa['comment_id'].'" />';
 				$result .= '<input type="hidden" name="wppa-occur" value="'.$wppa['occur'].'" />';
 
 				$result .= '<table id="wppacommenttable-'.$wppa['master_occur'].'" style="margin:0;">';
@@ -732,9 +733,12 @@ global $wppa_first_comment_html;
 								if ( $wppa_opt['wppa_fontsize_box'] ) $wid = ($wppa_opt['wppa_fontsize_box'] * 1.5 ).'px';
 								$captkey = $id;
 								if ( $is_current ) $captkey = $wpdb->get_var($wpdb->prepare('SELECT `timestamp` FROM `'.WPPA_COMMENTS.'` WHERE `id` = %s', $wppa['comment_id'])); 
-								$result .= wppa_make_captcha($captkey).'<input type="text" name="wppa-captcha" style="width:'.$wid.'; '.__wcs('wppa-box-text').__wcs('wppa-td').'" />&nbsp;';
+								$result .= wppa_make_captcha($captkey).'<input type="text" id="wppa-captcha-'.$wppa['master_occur'].'" name="wppa-captcha" style="width:'.$wid.'; '.__wcs('wppa-box-text').__wcs('wppa-td').'" />&nbsp;';
 							}
-							$result .= '<input type="submit" name="commentbtn" value="'.$btn.'" style="margin:0;" /></td>';
+// orig							$result .= '<input type="submit" name="commentbtn" value="'.$btn.'" style="margin:0;" /></td>';
+							$result .= '<input type="button" name="commentbtn" onclick="wppaAjaxComment('.$wppa['master_occur'].', '.$id.' )" value="'.$btn.'" style="margin:0 4px 0 0;" />';
+							$result .= '<img id="wppa-comment-spin-'.$wppa['master_occur'].'" src="'.wppa_get_imgdir().'wpspin.gif" style="display:none;" />';
+							$result .= '</td>';
 							$result .= '<td valign="top" class="wppa-box-text wppa-td" style="vertical-align:top; width:70%; '.__wcs('wppa-box-text').__wcs('wppa-td').'" >';
 /*							if ( $wppa_opt['wppa_use_wp_editor'] ) {
 								$quicktags_settings = array( 'buttons' => 'strong,em,link,block,ins,ul,ol,li,code,close' );

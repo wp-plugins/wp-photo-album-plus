@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the non admin stuff
-* Version 5.1.15
+* Version 5.1.16
 *
 */
 
@@ -57,7 +57,7 @@ global $thumb;
 		wppa_cache_thumb($id);
 		if ( $thumb ) {
 			$title  = wppa_get_photo_name($thumb['id']);
-			$imgurl = wppa_get_thumb_url($id);
+			$imgurl = wppa_get_photo_url($id);
 			$desc 	= wppa_get_og_desc($thumb['id']); 
 			$url    = wppa_convert_to_pretty(str_replace('&amp;', '&', wppa_get_image_page_url_by_id($thumb['id'], $wppa_opt['wppa_share_single_image'])));
 			$site   = get_bloginfo('name');
