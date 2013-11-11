@@ -2,7 +2,7 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 5.1.8
+* version 5.1.16
 *
 */
 
@@ -74,7 +74,7 @@ global $wppa_initruntimetime;
 			'in_widget_frame_width'		=> '',
 			'user_uploaded'				=> false,
 			'current_album'				=> '0',
-			'searchstring'				=> wppa_get_searchstring(),
+			'searchstring'				=> wppa_test_for_search(),
 			'searchresults'				=> '',
 			'any'						=> false,
 			'ajax'						=> false,
@@ -94,6 +94,7 @@ global $wppa_initruntimetime;
 			'comten_count'				=> '0',
 			'is_tag'					=> false,
 			'photos_only'				=> false,
+			'albums_only'				=> false,
 			'page'						=> '',
 			'geo'						=> '',
 			'continue'					=> '',
@@ -101,13 +102,20 @@ global $wppa_initruntimetime;
 			'ajax_import_files'			=> false,
 			'ajax_import_files_done'	=> false,
 			'last_albums'				=> false,
-			'last_albums_parent'		=> '0'
+			'last_albums_parent'		=> '0',
+			'is_multitagbox' 			=> false,
+			'is_tagcloudbox' 			=> false,
+			'taglist' 					=> '',
+			'tagcols'					=> '2',
+			'is_related'				=> false,
+			'related_count'				=> '0',
+			'is_owner'					=> '',
+			'is_upldr'					=> '',
+			'no_esc'					=> false
+
+
 
 		);
-
-		if (isset($_REQUEST['wppa-searchstring'])) $wppa['src'] = true;		
-		if (isset($_GET['s'])) $wppa['src'] = true;
-
 	}
 	
 	if ( is_admin() ) {
@@ -177,6 +185,8 @@ global $wppa_initruntimetime;
 						'wppa_lasten_size' 				=> '',	// 2
 						'wppa_album_widget_count'		=> '',
 						'wppa_album_widget_size'		=> '',
+						
+						'wppa_related_count'			=> '',
 
 						// G Overlay
 						'wppa_ovl_txt_lines'			=> '',	// 1
@@ -187,11 +197,12 @@ global $wppa_initruntimetime;
 						'wppa_show_bread_posts' 			=> '',	// 1a
 						'wppa_show_bread_pages'				=> '', 	// 1b
 						'wppa_bc_on_search'					=> '',	// 2
-						'wppa_bc_on_topten'					=> '',	// 3
-						'wppa_bc_on_lasten'					=> '',	// 3
-						'wppa_bc_on_comten'					=> '',	// 3
-						'wppa_bc_on_featen'					=> '',
-						'wppa_bc_on_tag'					=> '',	// 3
+						'wppa_bc_on_topten'					=> '',	// 3.0
+						'wppa_bc_on_lasten'					=> '',	// 3.1
+						'wppa_bc_on_comten'					=> '',	// 3.2
+						'wppa_bc_on_featen'					=> '', 	// 3.3
+						'wppa_bc_on_tag'					=> '',	// 3.4
+						'wppa_bc_on_related'				=> '', 	// 3.5
 						'wppa_show_home' 					=> '',	// 4
 						'wppa_show_page' 					=> '',	// 4
 						'wppa_bc_separator' 				=> '',	// 5
@@ -236,9 +247,13 @@ global $wppa_initruntimetime;
 						'wppa_share_hyves'					=> '',
 						'wppa_share_google'					=> '',
 						'wppa_share_pinterest'				=> '',
+						'wppa_share_linkedin'				=> '',
 
 						'wppa_facebook_comments'			=> '',
 						'wppa_facebook_like'				=> '',
+						'wppa_facebook_admin_id'			=> '',
+						'wppa_facebook_app_id'				=> '',
+						'wppa_load_facebook_sdk' 			=> '',
 						'wppa_share_single_image'			=> '',
 
 						// C Thumbnails
@@ -311,8 +326,12 @@ global $wppa_initruntimetime;
 						'wppa_bcolor_exif' 				=> '',
 						'wppa_bgcolor_share'			=> '',
 						'wppa_bcolor_share' 			=> '',
-						'wppa_bgcolor_upload'				=> '',
-						'wppa_bcolor_upload'				=> '',
+						'wppa_bgcolor_upload'			=> '',
+						'wppa_bcolor_upload'			=> '',
+						'wppa_bgcolor_multitag'			=> '',
+						'wppa_bcolor_multitag'			=> '',
+						'wppa_bgcolor_tagcloud'			=> '',
+						'wppa_bcolor_tagcloud'			=> '',
 
 						// Table IV: Behaviour
 						// A System
@@ -377,6 +396,7 @@ global $wppa_initruntimetime;
 						'wppa_ovl_onclick'				=> '',
 						'wppa_ovl_anim'					=> '',
 						'wppa_ovl_chrome_at_top' 		=> '',
+						'wppa_lightbox_global'			=> '',
 
 
 						// Table V: Fonts
@@ -500,7 +520,8 @@ global $wppa_initruntimetime;
 						'wppa_multitag_linkpage'			=> '',
 						'wppa_multitag_blank'				=> '',
 
-						'wppa_super_view_linkpage'		=> '',
+						'wppa_super_view_linkpage'			=> '',
+						'wppa_upldr_widget_linkpage' 		=> '',
 						
 						// Table VII: Security
 						// B
@@ -565,6 +586,11 @@ global $wppa_initruntimetime;
 						'wppa_indexed_search'			=> '',
 						'wppa_max_search_photos'		=> '',
 						'wppa_max_search_albums'		=> '',
+						'wppa_tags_or_only'				=> '',
+						'wppa_wild_front'				=> '',
+						
+						'wppa_add_shortcode_to_post'	=> '',
+						'wppa_shortcode_to_add'			=> '',
 						
 						'wppa_meta_page'				=> '',	// 9
 						'wppa_meta_all'					=> '',	// 10
@@ -1416,17 +1442,24 @@ global $wppa_opt;
 	// Create the source image
 	switch ($mime) {	// mime type
 		case 1: // gif
-			$temp = imagecreatefromgif($file);
-			$src = imagecreatetruecolor($src_size_w, $src_size_h);
-			imagecopy($src, $temp, 0, 0, 0, 0, $src_size_w, $src_size_h);
-			imagedestroy($temp);
+			$temp = @ imagecreatefromgif($file);
+			if ( $temp ) {
+				$src = imagecreatetruecolor($src_size_w, $src_size_h);
+				imagecopy($src, $temp, 0, 0, 0, 0, $src_size_w, $src_size_h);
+				imagedestroy($temp);
+			}
+			else $src = false;
 			break;
 		case 2:	// jpeg
-			$src = imagecreatefromjpeg($file);
+			$src = @ imagecreatefromjpeg($file);
 			break;
 		case 3:	// png
-			$src = imagecreatefrompng($file);
+			$src = @ imagecreatefrompng($file);
 			break;
+	}
+	if ( ! $src ) {
+		wppa_log('Error', 'Image file '.$file.' is corrupt while creating thmbnail');
+		return true;
 	}
 	
 	// Compute the destination image size
@@ -1531,20 +1564,28 @@ global $wppa_opt;
 	return true;
 }
 
-function wppa_get_searchstring() {
+function wppa_test_for_search() {
 global $wppa;
 
-	$src = '';
+	if ( isset($_REQUEST['wppa-searchstring']) ) {	// wppa+ search
+		$str = $_REQUEST['wppa-searchstring'];
+	}
+	elseif ( isset($_REQUEST['s']) ) {				// wp search
+		$str = $_REQUEST['s'];
+	}
+	else $str = '';
 	
-	if (isset($_REQUEST['wppa-searchstring'])) {
-		$src = $_REQUEST['wppa-searchstring'];
-//		$src = str_replace('_', ' ', $src);
+	$str = strip_tags($str);						// Sanitize
+	
+	if ( is_array($wppa) ) {
+		$wppa['searchstring'] = $str;
+		if ( $wppa['searchstring'] && $wppa['occur'] == '1' && ! $wppa['in_widget'] ) $wppa['src'] = true;
+		else $wppa['src'] = false;
+		return $str;
 	}
-	elseif (isset($_REQUEST['s'])) {	// wp search
-		$src = $_REQUEST['s'];
+	else {
+		return $str;
 	}
-
-	return strip_tags(stripslashes($src));
 }
 
 function wppa_get_water_file_and_pos() {

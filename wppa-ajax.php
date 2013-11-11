@@ -2,7 +2,7 @@
 /* wppa-ajax.php
 *
 * Functions used in ajax requests
-* version 5.1.8
+* version 5.1.17
 *
 */
 add_action('wp_ajax_wppa', 'wppa_ajax_callback');
@@ -19,14 +19,53 @@ global $wppa;
 
 	// ALTHOUGH IF WE ARE HERE AS FRONT END VISITOR, is_admin() is true. 
 	// So, $wppa_opt switches are 'yes' or 'no' and not true or false.
+	
+	// Globally check query args to prevent php injection
+	
+	foreach ( $_REQUEST as $arg ) {
+		if ( strpos($arg, '<?') !== false ) die('Security check failure #91');
+		if ( strpos($arg, '?>') !== false ) die('Security check failure #92');
+	}
 
 	wppa_vfy_arg('wppa-action', true);
 	wppa_vfy_arg('photo-id');
 	wppa_vfy_arg('comment-id');
+	wppa_vfy_arg('moccur');
 	
 	$wppa_action = $_REQUEST['wppa-action'];
 	
 	switch ($wppa_action) {
+		case 'front-edit':
+			if ( ! isset($_REQUEST['photo-id']) ) die('Missing required argument');
+			$photo = $_REQUEST['photo-id'];
+			$ok = false;
+			if ( current_user_can('wppa_admin') ) $ok = true;
+			if ( wppa_get_user() == wppa_get_photo_owner($photo) && current_user_can('wppa_upload') && wppa_switch('wppa_upload_edit') ) $ok = true;
+			if ( ! $ok ) die('You do nat have sufficient rights to do this');
+			require_once 'wppa-photo-admin-autosave.php';
+			wppa_album_photos('', $photo);
+			exit;
+			break;
+			
+		case 'do-comment':
+			// Correct the fact that this is a non-admin operation, if it is only
+			if ( is_admin() ) {
+				require_once 'wppa-non-admin.php';
+				foreach(array_keys($wppa_opt) as $s) {
+					if ( $wppa_opt[$s] == 'no' ) $wppa_opt[$s] = false;
+				}
+			}
+			
+			$wppa['master_occur'] = $_REQUEST['moccur'];
+			$comment_allowed = ( ! wppa_switch('wppa_comment_login') || is_user_logged_in() );
+			if ( wppa_switch('wppa_show_comments') && $comment_allowed ) {
+				wppa_do_comment($_REQUEST['photo-id']);		// Process the comment
+			}
+			$wppa['no_esc'] = true;
+			echo stripslashes(wppa_comment_html($_REQUEST['photo-id'], $comment_allowed));	// Retrieve the new commentbox content
+			exit;
+			break;
+			
 		case 'import':
 			require_once 'wppa-upload.php';
 			_wppa_page_import();
@@ -44,6 +83,7 @@ global $wppa;
 			
 			if ( isset($_REQUEST['photo-id']) && current_user_can('wppa_moderate') ) {
 				$iret = $wpdb->query($wpdb->prepare("UPDATE `".WPPA_PHOTOS."` SET `status` = 'publish' WHERE `id` = %s", $_REQUEST['photo-id']));
+				wppa_flush_upldr_cache('photoid', $_REQUEST['photo-id']);
 			}
 			if ( isset($_REQUEST['comment-id']) ) {
 				$iret = $wpdb->query($wpdb->prepare("UPDATE `".WPPA_COMMENTS."` SET `status` = 'approved' WHERE `id` = %s", $_REQUEST['comment-id']));
@@ -383,13 +423,14 @@ global $wppa;
 			break;
 		
 		case 'render':	
-			// Correct the fact that this is a non-admin operation
-			require_once 'wppa-non-admin.php';
-			wppa_load_theme();
-			foreach(array_keys($wppa_opt) as $s) {
-				if ( $wppa_opt[$s] == 'no' ) $wppa_opt[$s] = false;
+			// Correct the fact that this is a non-admin operation, if it is
+			if ( is_admin() ) {
+				require_once 'wppa-non-admin.php';
+				foreach(array_keys($wppa_opt) as $s) {
+					if ( $wppa_opt[$s] == 'no' ) $wppa_opt[$s] = false;
+				}
 			}
-			$wppa['ajax'] = true;
+			wppa_load_theme();
 			// Register geo shortcode if google-maps-gpx-vieuwer is on board. GPX does it in wp_head(), what is not done in an ajax call
 			if ( function_exists('gmapv3') ) add_shortcode('map', 'gmapv3');
 			// Render
@@ -731,6 +772,7 @@ global $wppa;
 					
 				case 'status':
 					wppa_flush_treecounts($wpdb->get_var($wpdb->prepare("SELECT `album` FROM `".WPPA_PHOTOS."` WHERE `id` = %s",$value)));
+					wppa_flush_upldr_cache('photoid', $photo);
 				case 'name':
 				case 'description':
 				case 'p_order':

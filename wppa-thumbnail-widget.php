@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display thumbnail photos
-* Version 5.0.17
+* Version 5.1.17
 */
 
 class ThumbnailWidget extends WP_Widget {
@@ -28,15 +28,21 @@ class ThumbnailWidget extends WP_Widget {
 		$instance 		= wp_parse_args( (array) $instance, array( 
 														'title' => '',
 														'album' => 'no',
+														'link' => '',
+														'linktitle' => '',
 														'name' => 'no',
 														'display' => 'thumbs'
 														) );
-		$widget_title 	= apply_filters('widget_title', $instance['title']);
-		$page 			= $wppa_opt['wppa_thumbnail_widget_linkpage'];
+//		$widget_title 	= apply_filters('widget_title', $instance['title']);
+		$widget_title 	= apply_filters( 'widget_title', empty( $instance['title'] ) ? '' : $instance['title'], $instance, $this->id_base );
+
+		$widget_link	= $instance['link'];
+		$page 			= wppa_get_the_landing_page('wppa_thumbnail_widget_linkpage', __a('Thumbnail photos'));
 		$max  			= $wppa_opt['wppa_thumbnail_widget_count'];
 		$album 			= $instance['album'];
 		$name 			= $instance['name'];
 		$display 		= $instance['display'];
+		$linktitle 		= $instance['linktitle'];
 		
 		if ($album) {
 			$thumbs = $wpdb->get_results($wpdb->prepare( 'SELECT * FROM `'.WPPA_PHOTOS.'` WHERE `status` <> %s AND `album` = %s '.wppa_get_photo_order($album).' LIMIT '.$max, 'pending', $album ), 'ARRAY_A' );
@@ -87,9 +93,22 @@ class ThumbnailWidget extends WP_Widget {
 		$widget_content .= "\n".'<!-- WPPA+ thumbnail Widget end -->';
 
 		echo "\n" . $before_widget;
-		if ( !empty( $widget_title ) ) { echo $before_title . $widget_title . $after_title; }
-		echo $widget_content . $after_widget;
-		
+		if ( !empty( $widget_title ) ) { 
+
+			echo $before_title; 
+
+			if (!empty($widget_link)) { 
+				echo "\n".'<a href="'.$widget_link.'" title="'.$linktitle.'" >'.$widget_title.'</a>';
+			} 
+			else { 
+				echo $widget_title;
+			}
+
+			echo $after_title;
+		}
+
+		echo $widget_content . $after_widget; 
+
 		$wppa['in_widget'] = false;
     }
 	
@@ -97,10 +116,12 @@ class ThumbnailWidget extends WP_Widget {
     function update($new_instance, $old_instance) {				
 		$instance = $old_instance;
 		$instance['title'] 		= strip_tags($new_instance['title']);
+		$instance['link'] 		= strip_tags($new_instance['link']);
 		$instance['album'] 		= $new_instance['album'];
 		$instance['name'] 		= $new_instance['name'];
 		$instance['display'] 	= $new_instance['display'];
-		
+		$instance['linktitle']	= $new_instance['linktitle'];
+
         return $instance;
     }
 
@@ -110,6 +131,8 @@ class ThumbnailWidget extends WP_Widget {
 		//Defaults
 		$instance = wp_parse_args( (array) $instance, array( 
 															'title'		=> __('Thumbnail Photos', 'wppa'),
+															'link'	 	=> '',
+															'linktitle' => '',
 															'album' 	=> '0',
 															'name' 		=> 'no',
 															'display' 	=> 'thumbs'
@@ -117,12 +140,16 @@ class ThumbnailWidget extends WP_Widget {
  		$album 			= $instance['album'];
 		$name 			= $instance['name'];
 		$widget_title 	= $instance['title'];
+		$widget_link 	= $instance['link'];
+		$link_title 	= $instance['linktitle'];
 		$display 		= $instance['display'];
 ?>
 		<p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:', 'wppa'); ?></label> <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $widget_title; ?>" /></p>
 
+		<p><label for="<?php echo $this->get_field_id('link'); ?>"><?php _e('Link from the title:', 'wppa'); ?></label> <input class="widefat" id="<?php echo $this->get_field_id('link'); ?>" name="<?php echo $this->get_field_name('link'); ?>" type="text" value="<?php echo $widget_link; ?>" /></p>
+		<p><label for="<?php echo $this->get_field_id('link'); ?>"><?php _e('Link Title ( tooltip ):', 'wppa'); ?></label> <input class="widefat" id="<?php echo $this->get_field_id('linktitle'); ?>" name="<?php echo $this->get_field_name('linktitle'); ?>" type="text" value="<?php echo $widget_link; ?>" /></p>
 
-		<p><label for="<?php echo $this->get_field_id('album'); ?>"><?php _e('Album:', 'wppa'); ?></label> 
+		<p><label for="<?php echo $this->get_field_id('album'); ?>"><?php _e('Album:', 'wppa'); ?></label>
 			<select class="widefat" id="<?php echo $this->get_field_id('album'); ?>" name="<?php echo $this->get_field_name('album'); ?>" >
 
 				<?php echo wppa_album_select_a(array('selected' => $album, 'addall' => true, 'path' => wppa_switch('wppa_hier_albsel'))) //('', $album, true, '', '', true); ?>

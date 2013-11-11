@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the non admin stuff
-* Version 5.1.8
+* Version 5.1.17
 *
 */
 
@@ -54,23 +54,13 @@ global $thumb;
 	$id = wppa_get_get('photo', '0');
 	if ( ! is_numeric($id) ) $id = '0';
 	if ( get_option('wppa_og_tags_on', 'yes') == 'yes' ) {
-		if ( $id ) {
-			wppa_cache_thumb($id);
-		}
-		else $thumb = false;
+		wppa_cache_thumb($id);
 		if ( $thumb ) {
 			$title  = wppa_get_photo_name($thumb['id']);
-			$imgurl = wppa_get_thumb_url($id);
+			$imgurl = wppa_get_photo_url($id);
 			$desc 	= wppa_get_og_desc($thumb['id']); 
 			$url    = wppa_convert_to_pretty(str_replace('&amp;', '&', wppa_get_image_page_url_by_id($thumb['id'], $wppa_opt['wppa_share_single_image'])));
-		}
-		else {
-			$title 	= '';
-			$imgurl = '';
-			$desc 	= '';
-			$url	= '';
-		}
-		$site   = get_bloginfo('name');
+			$site   = get_bloginfo('name');
 
 		echo "\n<!-- WPPA+ Share data -->".'
 	<meta property="og:site_name" content="'.esc_attr($site).'" />
@@ -80,6 +70,7 @@ global $thumb;
 	<meta property="og:image" content="'.esc_attr($imgurl).'" /><!-- dynamicly updated -->
 	<meta property="og:description" content="'.esc_attr($desc).'" /><!-- dynamicly updated -->';				
 		echo "\n<!-- WPPA+ End Share data -->\n";
+		}
 	}
 
 	// To make sure we are on a page that contains at least %%wppa%% we check for $_GET['wppa-album']. 
@@ -116,6 +107,18 @@ global $thumb;
 			echo("\n<!-- WPPA+ END Featured photos on this site -->\n");
 		}
 	}
+	
+	// Facebook Admin and App
+	if ( ( wppa_switch('wppa_share_on') ||  wppa_switch('wppa_share_on_widget') ) && ( wppa_switch('wppa_facebook_comments') || wppa_switch('wppa_facebook_like') ) ) {
+		echo("\n<!-- WPPA+ BEGIN Facebook meta tags -->");
+		if ( $wppa_opt['wppa_facebook_admin_id'] ) {
+			echo ("\n\t<meta property=\"fb:admins\" content=\"".$wppa_opt['wppa_facebook_admin_id']."\" />");
+		}
+		if ( $wppa_opt['wppa_facebook_app_id'] ) {
+			echo ("\n\t<meta property=\"fb:app_id\" content=\"".$wppa_opt['wppa_facebook_app_id']."\" />");
+		}
+		echo("\n<!-- WPPA+ END Facebook meta tags -->\n");
+	}
 }
 
 /* LOAD SLIDESHOW, THEME, AJAX and LIGHTBOX js, all in one file nowadays */
@@ -149,6 +152,8 @@ add_action('wp_footer', 'wppa_load_footer');
 function wppa_load_footer() {
 global $wppa_opt;
 global $wppa;
+global $wpdb;
+
 	if ($wppa_opt['wppa_lightbox_name'] == 'wppa') {
 		if ( ! $wppa_opt['wppa_fontsize_lightbox'] ) $wppa_opt['wppa_fontsize_lightbox'] = '10';
 		$d = $wppa_opt['wppa_ovl_show_counter'] ? 1 : 0;
@@ -192,6 +197,7 @@ global $wppa;
 			wppa_dbg_msg($plugin);
 		}
 		wppa_dbg_msg('End Active Plugins');
+		wppa_dbg_msg(htmlspecialchars($wpdb->get_var("SELECT `option_value` FROM ".$wpdb->prefix . 'options'." WHERE `option_name` = 'wppa_cached_options'")));
 	}
 	
 	echo '
@@ -219,7 +225,11 @@ function wppa_fbc_setup() {
 </script>
 <?php 
 }
-if ( ( get_option('wppa_facebook_like') == 'yes' || get_option('wppa_facebook_comments') == 'yes' ) && get_option('wppa_share_on') == 'yes' ) add_action('wp_footer', 'wppa_fbc_setup', 100);
+if ( ( get_option('wppa_facebook_like') == 'yes' || get_option('wppa_facebook_comments') == 'yes' ) 
+	&& get_option('wppa_share_on') == 'yes' 
+	&& get_option('wppa_load_facebook_sdk') == 'yes' ) {
+		add_action('wp_footer', 'wppa_fbc_setup', 100);
+	}
 
 /* CHECK REDIRECTION */
 add_action('init', 'wppa_redirect');
@@ -245,12 +255,14 @@ function wppa_kickoff() {
 global $wppa;
 global $wppa_opt;
 global $wppa_lang;
+global $wppa_api_version;
 
 	switch ($wppa_opt['wppa_slideshow_linktype']) {
 		case 'file':
 			$lbkey = 'file'; //echo("\t".'wppaLightBox = "file";'."\n");	// gives anchor tag with rel="file"
 			break;
 		case 'lightbox':
+		case 'lightboxsingle':
 			$lbkey = $wppa_opt['wppa_lightbox_name']; //echo("\t".'wppaLightBox = "'.$wppa_opt['wppa_lightbox_name'].'";'."\n");	// gives anchor tag with rel="lightbox" or the like
 			break;
 		default:
@@ -273,6 +285,7 @@ global $wppa_lang;
 	/* This goes into wppa.js */ 
 	echo '
 	wppaDebug = '.( $wppa['debug'] ? 'true' : 'false' ).';
+	wppaVersion = "'.$wppa_api_version.'";
 	wppaBackgroundColorImage = "'.$wppa_opt['wppa_bgcolor_img'].'";
 	wppaPopupLinkType = "'.$wppa_opt['wppa_thumb_linktype'].'";
 	wppaAnimationType = "'.$wppa_opt['wppa_animation_type'].'";
@@ -327,6 +340,8 @@ global $wppa_lang;
 	wppaNumbarMax = "'.$wppa_opt['wppa_numbar_max'].'";
 	wppaLang = "'.$wppa_lang.'";
 	wppaAjaxUrl = "'.admin_url('admin-ajax.php').'";
+	wppaAjaxUrl = "'.WPPA_URL.'/wppa-ajax-front.php";
+	wppaSiteUrl = "'.site_url().'";
 	wppaNextOnCallback = '.( $wppa_opt['wppa_next_on_callback'] ? 'true' : 'false' ).';
 	wppaRatingUseAjax = true;
 	wppaStarOpacity = '.( $wppa_opt['wppa_star_opacity']/'100' ).';
@@ -355,6 +370,8 @@ global $wppa_lang;
 	wppaVotedForMe = "'.__($wppa_opt['wppa_voted_button_text']).'";
 	wppaSlideSwipe = '.( wppa_switch('wppa_slide_swipe') ? 'true' : 'false' ).';
 	wppaMaxCoverWidth = '.$wppa_opt['wppa_max_cover_width'].';
+	wppaLightboxSingle = '.( $wppa_opt['wppa_slideshow_linktype'] == 'lightboxsingle' ? 'true': 'false' ).';
+	wppaDownLoad = "'.__a('Download').'";
 	/* ]]> */
 </script>
 ';

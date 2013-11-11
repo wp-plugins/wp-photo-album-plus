@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Functions for breadcrumbs
-* Version 5.1.8
+* Version 5.1.15
 *
 */
 
@@ -21,7 +21,7 @@ global $wpdb;
 		$pid = wppa_get_the_page_id();
 		$type = $wpdb->get_var( $wpdb->prepare( "SELECT `post_type` FROM `" . $wpdb->posts . "` WHERE `ID` = %s", $pid ) );
 		if ( $type == 'post' && ! $wppa_opt['wppa_show_bread_posts'] ) return;	// Nothing to do here
-		if ( $type == 'page' && ! $wppa_opt['wppa_show_bread_pages'] ) return;	// Nothing to do here
+		if ( $type != 'post' && ! $wppa_opt['wppa_show_bread_pages'] ) return;	// Nothing to do here
 	}
 	if ( $wppa['is_single'] ) return;											// A single image slideshow needs no navigation 
 	if ( wppa_page('oneofone') ) return; 										// Never at a single image page
@@ -32,19 +32,21 @@ global $wpdb;
 	if ( $wppa['is_lasten'] && ! wppa_switch('wppa_bc_on_lasten') ) return;
 	if ( $wppa['is_comten'] && ! wppa_switch('wppa_bc_on_comten') ) return;
 	if ( $wppa['is_featen'] && ! wppa_switch('wppa_bc_on_featen') ) return;
-	if ( $wppa['is_tag'] && ! wppa_switch('wppa_bc_on_tag') ) return;
-	if ( $wppa['src'] && ! wppa_switch('wppa_bc_on_search') ) return;
+	if ( $wppa['is_related'] && ! wppa_switch('wppa_bc_on_related') ) return;
+	else {
+		if ( $wppa['is_tag'] && ! wppa_switch('wppa_bc_on_tag') ) return;
+		if ( $wppa['src'] && ! wppa_switch('wppa_bc_on_search') ) return;
+	}
 
 	// Get the album number
 	$alb = wppa_is_int( $wppa['start_album'] ) ? $wppa['start_album'] : '0';	// A single album or all ( all = 0 here )
 	$is_albenum = strlen($wppa['start_album']) > '0' && ! wppa_is_int($wppa['start_album']);
 	wppa_dbg_msg('alb='.$alb.', albenum='.$is_albenum, 'green');
-	$virtual = ( $wppa['is_topten'] || $wppa['is_lasten'] || $wppa['is_comten'] || $wppa['is_featen'] || $wppa['is_tag'] || $wppa['last_albums'] );
+	$virtual = ( $wppa['is_topten'] || $wppa['is_lasten'] || $wppa['is_comten'] || $wppa['is_featen'] || $wppa['is_tag'] || $wppa['last_albums'] || $wppa['is_upldr'] );
 	if ( $wppa['last_albums'] ) {
-//		if ( $wppa['last_albums_parent'] ) {
-			$alb = $wppa['last_albums_parent'];
-//		}
+		$alb = $wppa['last_albums_parent'];
 	}
+	
 	wppa_dbg_msg('alb='.$alb.', albenum='.$is_albenum.', l_a='.$wppa['last_albums'].', l_a_p='.$wppa['last_albums_parent'], 'green');
 	
 	// See if the album is a 'stand alone' album
@@ -59,20 +61,7 @@ global $wpdb;
 	// Photo number?
 	$photo = $wppa['start_photo'];
 	
-	// Info available at this point:
-	//
-	// $pid			the page/post id
-	// $type		'page' or 'post'
-//	// $this_occur	true or false
-	// $alb			the album or the parent album of multiple albums
-	// $separate	true if stand alone album
-	// $slide		link data in case the album links to a slideshow else ''
-	// $to_cover	1 in case we do not use thumbnails else 0
-	// $virtual		true if the album is a virtual album
-	// $photo		photo number or ''
-	// $is_albenum
-	
-wppa_dbg_msg('pid='.$pid.', type='.$type.', alb='.$alb.', sep='.$separate.', slide='.$slide.', t_c=0, ph='.$photo, 'green');
+	wppa_dbg_msg('pid='.$pid.', type='.$type.', alb='.$alb.', sep='.$separate.', slide='.$slide.', t_c=0, ph='.$photo, 'green');
 	
 	// Open the breadcrumb box
 	$wppa['out'] .= wppa_nltab('+').'<div id="wppa-bc-'.$wppa['master_occur'].'" class="wppa-nav wppa-box wppa-nav-text" style="'.__wcs('wppa-nav').__wcs('wppa-box').__wcs('wppa-nav-text').'">';
@@ -104,8 +93,7 @@ wppa_dbg_msg('pid='.$pid.', type='.$type.', alb='.$alb.', sep='.$separate.', sli
 		}
 		
 		// The album and optionall placeholder for photo
-		if ( $wppa['src'] && $wppa['master_occur'] == '1' ) {	// Search
-//echo 'Sr';
+		if ( $wppa['src'] && $wppa['master_occur'] == '1' && ! $wppa['is_related'] ) {	// Search
 			if ( $wppa['is_slide'] ) {
 				$value 	= __a('Searchstring:').'&nbsp;'.stripslashes($wppa['searchstring']);
 				$href 	= wppa_get_permalink().'wppa-cover=0&amp;wppa-occur='.$wppa['occur'].'&amp;wppa-searchstring='.stripslashes($wppa['searchstring']);
@@ -117,8 +105,21 @@ wppa_dbg_msg('pid='.$pid.', type='.$type.', alb='.$alb.', sep='.$separate.', sli
 			$title	= '';
 			wppa_bcitem($value, $href, $title, 'b9');
 		}
+		elseif ( $wppa['is_upldr'] ) {
+			$usr = get_user_by('login', $wppa['is_upldr']);
+			if ( $usr ) $user = $usr->display_name; else $user = $wppa['is_upldr'];
+			if ( $wppa['is_slide'] ) {
+				$value 	= sprintf(__a('Photos by %s'), $user);
+				$href 	= wppa_get_permalink().'wppa-cover=0&amp;wppa-occur='.$wppa['occur'].'&amp;wppa-upldr='.$wppa['is_upldr'];
+				$title	= __a('View the thumbnails');
+				wppa_bcitem($value, $href, $title, 'b8');
+			}
+			$value 	= sprintf(__a('Photos by %s'), $user);
+			$href 	= '';
+			$title	= '';
+			wppa_bcitem($value, $href, $title, 'b9');
+		}
 		elseif ( $wppa['is_topten'] ) {							// TopTen
-//echo 'Tt';
 			if ( $wppa['start_album'] ) {
 				$value 	= $is_albenum ? __a('Various albums') : wppa_get_album_name($alb);
 				$href 	= wppa_get_permalink().'wppa-cover=0&amp;wppa-occur='.$wppa['occur'].'&amp;wppa-album='.$wppa['start_album'];
@@ -137,7 +138,6 @@ wppa_dbg_msg('pid='.$pid.', type='.$type.', alb='.$alb.', sep='.$separate.', sli
 			wppa_bcitem($value, $href, $title, 'b9');
 		}
 		elseif ( $wppa['is_lasten'] ) {							// Lasten
-//echo 'Lt';
 			if ( $wppa['start_album'] ) {
 				$value 	= $is_albenum ? __a('Various albums') : wppa_get_album_name($alb);
 				$href 	= wppa_get_permalink().'wppa-cover=0&amp;wppa-occur='.$wppa['occur'].'&amp;wppa-album='.$wppa['start_album'];
@@ -156,7 +156,6 @@ wppa_dbg_msg('pid='.$pid.', type='.$type.', alb='.$alb.', sep='.$separate.', sli
 			wppa_bcitem($value, $href, $title, 'b9');
 		}
 		elseif ( $wppa['is_comten'] ) {							// Comten
-//echo 'Ct';
 			if ( $wppa['start_album'] ) {
 				$value 	= $is_albenum ? __a('Various albums') : wppa_get_album_name($alb);
 				$href 	= wppa_get_permalink().'wppa-cover=0&amp;wppa-occur='.$wppa['occur'].'&amp;wppa-album='.$wppa['start_album'];
@@ -175,7 +174,6 @@ wppa_dbg_msg('pid='.$pid.', type='.$type.', alb='.$alb.', sep='.$separate.', sli
 			wppa_bcitem($value, $href, $title, 'b9');
 		}
 		elseif ( $wppa['is_featen'] ) {							// Featen
-//echo 'Ft';
 			if ( $wppa['start_album'] ) {
 				$value 	= $is_albenum ? __a('Various albums') : wppa_get_album_name($alb);
 				$href 	= wppa_get_permalink().'wppa-cover=0&amp;wppa-occur='.$wppa['occur'].'&amp;wppa-album='.$wppa['start_album'];
@@ -193,8 +191,19 @@ wppa_dbg_msg('pid='.$pid.', type='.$type.', alb='.$alb.', sep='.$separate.', sli
 			$title	= '';
 			wppa_bcitem($value, $href, $title, 'b9');
 		}
+		elseif ( $wppa['is_related'] ) {						// Related photos
+			if ( $wppa['is_slide'] ) {
+				$value 	= __a('Related photos');
+				$href 	= wppa_get_permalink().'wppa-cover=0&amp;wppa-occur='.$wppa['occur'].'&amp;wppa-tags='.$wppa['is_tag'].'&amp;wppa-album='.$wppa['start_album'];
+				$title	= __a('View the thumbnails');
+				wppa_bcitem($value, $href, $title, 'b8');
+			}
+			$value 	= __a('Related photos');
+			$href 	= '';
+			$title	= '';
+			wppa_bcitem($value, $href, $title, 'b9');
+		}
 		elseif ( $wppa['is_tag'] ) {							// Tagged photos
-//echo 'Tg';
 			if ( $wppa['is_slide'] ) {
 				$value 	= __a('Tagged photos:').'&nbsp;'.str_replace(';', ' '.__a('or').' ', str_replace(',', ' '.__a('and').' ', trim( $wppa['is_tag'], ',;' ) ) );
 				$href 	= wppa_get_permalink().'wppa-cover=0&amp;wppa-occur='.$wppa['occur'].'&amp;wppa-tags='.$wppa['is_tag'].'&amp;wppa-album='.$wppa['start_album'];
@@ -207,7 +216,6 @@ wppa_dbg_msg('pid='.$pid.', type='.$type.', alb='.$alb.', sep='.$separate.', sli
 			wppa_bcitem($value, $href, $title, 'b9');
 		}
 		elseif ( $wppa['last_albums'] ) {							// Recently modified albums(s)
-//echo 'La';
 			if ( $wppa['last_albums_parent'] ) {
 				$value 	= wppa_get_album_name($alb);
 				$href 	= wppa_get_permalink().'wppa-cover=0&amp;wppa-occur='.$wppa['occur'].'&amp;wppa-album='.$wppa['start_album'];
@@ -226,14 +234,20 @@ wppa_dbg_msg('pid='.$pid.', type='.$type.', alb='.$alb.', sep='.$separate.', sli
 			wppa_bcitem($value, $href, $title, 'b9');
 		}
 		else { 			// Maybe a simple normal standard album???
-//echo 'Na';
+			if ( $wppa['is_owner'] ) {
+				$usr = get_user_by('login', $wppa['is_owner']);
+				if ( $usr ) $dispname = $usr->display_name;
+				else $dispname = $wppa['is_owner'];	// User deleted
+				$various = sprintf(__a('Various albums by %s'), $dispname);
+			}
+			else $various = __a('Various albums');
 			if ( $wppa['is_slide'] ) {
-				$value 	= $is_albenum ? __a('Various albums') : wppa_get_album_name($alb);
+				$value 	= $is_albenum ? $various : wppa_get_album_name($alb);
 				$href 	= wppa_get_permalink().'wppa-cover=0&amp;wppa-occur='.$wppa['occur'].'&amp;wppa-album='.$wppa['start_album'];
 				$title	= $is_albenum ? __a('Albums:').' '.$wppa['start_album'] : __a('Album:').' '.$value;
 				wppa_bcitem($value, $href, $title, 'b7');
 			}
-			$value 	= $is_albenum ? __a('Various albums') : wppa_get_album_name($alb);
+			$value 	= $is_albenum ? $various : wppa_get_album_name($alb);
 			$href 	= '';
 			$title	= '';
 			$class 	= 'b10';

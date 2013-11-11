@@ -1,7 +1,7 @@
 /* admin-styles.css 
 *
 * wp-photo-album-plus
-* version 5.0.0
+* version 5.1.17
 */
 #files_list, #files_list2
 {
@@ -105,15 +105,18 @@ ul.wppa_nav
 .phototable td {
 	font-size: 11px;
 	line-height: 20px;
+	text-align:left;
 }
 
 .phototable th {
 	width: 150px;
+	text-align:left;
 }
 
 .albumtable label, .phototable label { 
 	font-weight: bold; 
 	cursor: default;
+	text-align:left;
 }
 
 /* .photoitem img { float: right; } */

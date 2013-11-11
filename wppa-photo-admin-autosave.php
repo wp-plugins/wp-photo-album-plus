@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * edit and delete photos
-* version 5.1.0
+* version 5.1.17
 *
 */
 
@@ -139,12 +139,12 @@ function wppa_album_photos($album = '', $photo = '', $owner = '', $moderate = fa
 		
 		foreach ($photos as $photo) { ?>
 			<a id="photo_<?php echo $photo['id'] ?>" name="photo_<?php echo $photo['id'] ?>"></a>
-			<div class="photoitem" id="photoitem-<?php echo $photo['id'] ?>" style="width:100%;" >
+			<div class="photoitem" id="photoitem-<?php echo $photo['id'] ?>" style="width:99%;" >
 			
 				<!-- Left half starts here -->
 				<div style="width:49.5%; float:left; border-right:1px solid #ccc; margin-right:0;">
 					<input type="hidden" id="photo-nonce-<?php echo $photo['id'] ?>" value="<?php echo wp_create_nonce('wppa_nonce_'.$photo['id']);  ?>" />
-					<table class="form-table phototable"  >
+					<table class="form-table phototable" style="width:98%" >
 						<tbody>	
 							<tr style="vertical-align:top;" >
 								<th scope="row">
@@ -259,26 +259,28 @@ function wppa_album_photos($album = '', $photo = '', $owner = '', $moderate = fa
 							<?php } ?>
 							<!-- Delete -->
 							<tr style="vertical-align:bottom;" >
-								<th scope="row" style="padding-top:0; padding-bottom:0; line-height:20px;">
+								<th scope="row" style="padding-top:0; padding-bottom:4px;">
 									<a style="cursor:pointer; font-weight:bold; color:red;" onclick="if (confirm('<?php _e('Are you sure you want to delete this photo?', 'wppa') ?>')) wppaAjaxDeletePhoto(<?php echo $photo['id'] ?>)" ><?php _e('Delete photo', 'wppa'); ?></a>
 								</th>
 							</tr>
 							<!-- Insert code -->
 							<?php if ( current_user_can('edit_posts') || current_user_can('edit_pages') ) { ?>
 							<tr style="vertical-align:bottom;" >
-								<th scope="row" style="padding: 4px 10px; line-height:20px;">
-									<a style="cursor:pointer; font-weight:bold;" onclick="prompt('<?php _e('Insert code for single image in Page or Post:\nYou may change the size if you like.', 'wppa') ?>', '%%wppa%% %%photo=<?php echo($photo['id']); ?>%% %%size=<?php echo $wppa_opt['wppa_fullsize'] ?>%%')" ><?php _e('Insertion Code', 'wppa'); ?></a>
+								<th scope="row" style="padding-top:0; padding-bottom:4px;">
+									<label>
+										<a style="cursor:pointer; font-weight:bold;" onclick="prompt('<?php _e('Insert code for single image in Page or Post:\nYou may change the size if you like.', 'wppa') ?>', '<?php echo esc_js('[wppa type="photo" photo="'.$photo['id'].'" size="'.$wppa_opt['wppa_fullsize'].'"][/wppa]') ?>')" ><?php _e('Insertion Code', 'wppa'); ?></a>
+									</label>
 								</th>
 							</tr>
 							<?php } ?>
 							<?php if ( $wppa_opt['wppa_link_is_restricted'] == 'no' || current_user_can('administrator') ) { ?>
 							<!-- Link url -->
-							<tr style="vertical-align:top;" >
+							<tr style="vertical-align:bottom;" >
 								<th scope="row" style="padding-top:0; padding-bottom:0;">
 									<label><?php _e('Link url:', 'wppa') ?></label>
 								</th>
 								<td style="padding-top:0; padding-bottom:0;">
-									<input type="text" style="width:70%;" onchange="wppaAjaxUpdatePhoto(<?php echo $photo['id'] ?>, 'linkurl', this)" value="<?php echo(stripslashes($photo['linkurl'])) ?>" />
+									<input type="text" style="width:60%;" onchange="wppaAjaxUpdatePhoto(<?php echo $photo['id'] ?>, 'linkurl', this)" value="<?php echo(stripslashes($photo['linkurl'])) ?>" />
 									<select style="float:right;" onchange="wppaAjaxUpdatePhoto(<?php echo $photo['id'] ?>, 'linktarget', this)" >
 										<option value="_self" <?php if ( $photo['linktarget'] == '_self' ) echo 'selected="selected"' ?>><?php _e('Same tab', 'wppa') ?></option>
 										<option value="_blank" <?php if ( $photo['linktarget'] == '_blank' ) echo 'selected="selected"' ?>><?php _e('New tab', 'wppa') ?></option>
@@ -286,12 +288,12 @@ function wppa_album_photos($album = '', $photo = '', $owner = '', $moderate = fa
 								</td>
 							</tr>
 							<!-- Link title -->
-							<tr style="vertical-align:top;" >
+							<tr style="vertical-align:bottom;" >
 								<th scope="row" style="padding-top:0; padding-bottom:0;">
 									<label><?php _e('Link title:', 'wppa') ?></label>
 								</th>
 								<td style="padding-top:0; padding-bottom:0;">
-									<input type="text" style="width:100%;" onchange="wppaAjaxUpdatePhoto(<?php echo $photo['id'] ?>, 'linktitle', this)" value="<?php echo(stripslashes($photo['linktitle'])) ?>" />
+									<input type="text" style="width:97%;" onchange="wppaAjaxUpdatePhoto(<?php echo $photo['id'] ?>, 'linktitle', this)" value="<?php echo(stripslashes($photo['linktitle'])) ?>" />
 								</td>
 							</tr>
 							<?php if ( current_user_can('wppa_settings') ) { ?>
@@ -391,7 +393,7 @@ function wppa_album_photos($album = '', $photo = '', $owner = '', $moderate = fa
 								<?php }
 								else { ?>
 								<td>
-									<textarea style="width: 100%; height:160px;" onchange="wppaAjaxUpdatePhoto(<?php echo $photo['id'] ?>, 'description', this)" ><?php echo(stripslashes($photo['description'])) ?></textarea>
+									<textarea style="width: 100%; height:120px;" onchange="wppaAjaxUpdatePhoto(<?php echo $photo['id'] ?>, 'description', this)" ><?php echo(stripslashes($photo['description'])) ?></textarea>
 								</td>
 								<?php } ?>
 							</tr>
@@ -449,9 +451,9 @@ function wppa_album_photos($album = '', $photo = '', $owner = '', $moderate = fa
 								</td>
 							</tr>
 							<!-- Watermark -->
-							<tr style="vertical-align:bottom;" >
+							<tr style="vertical-align:middle;" >
 								<th scope="row" >
-									<label ><?php _e('Watermark:', 'wppa') ?></label>
+									<label style="padding-top:24px;"><?php _e('Watermark:', 'wppa') ?></label>
 								</th>
 								<td>
 									<?php 
@@ -462,7 +464,7 @@ function wppa_album_photos($album = '', $photo = '', $owner = '', $moderate = fa
 											<?php echo wppa_watermark_file_select() ?>
 											</select>
 											<?php
-											echo __('Pos:', 'wppa').' ' ?>
+											echo '<br />'.__('Pos:', 'wppa').' ' ?>
 											<select id="wmpsel_<?php echo $photo['id']?>">
 											<?php echo wppa_watermark_pos_select() ?>
 											</select> 
@@ -593,7 +595,7 @@ function wppa_album_photos_bulk($album) {
 								wppa_flush_treecounts($photo['album']);		// Current album
 								wppa_flush_treecounts($newalb);				// New album
 								$wpdb->query($wpdb->prepare('UPDATE `'.WPPA_PHOTOS.'` SET `album` = %s WHERE `id` = %s', $newalb, $id));
-								wppa_move_source($photo['filename'], $photo['album'], $id);
+								wppa_move_source($photo['filename'], $photo['album'], $newalb);
 							}
 							else wppa_error_message('Unexpected error #4 in wppa_album_photos_bulk().');
 							break;
@@ -715,6 +717,13 @@ function wppa_album_photos_bulk($album) {
 					}
 					return true;
 				}
+				function wppaSetThumbsize(elm) {
+					var thumbsize = elm.value;
+					wppa_setCookie('wppa_bulk_thumbsize',thumbsize,365);
+					jQuery('.wppa-bulk-thumb').css('max-width', thumbsize+'px');
+					jQuery('.wppa-bulk-thumb').css('max-height', (thumbsize/2)+'px');
+					jQuery('.wppa-bulk-dec').css('height', (thumbsize/2)+'px');
+				}
 				jQuery(document).ready(function() {
 					var action = wppa_getCookie('wppa_bulk_action');
 					document.getElementById('wppa-bulk-action').value = action;
@@ -726,6 +735,12 @@ function wppa_album_photos_bulk($album) {
 						jQuery('#wppa-bulk-status').css('display','inline');
 						document.getElementById('wppa-bulk-status').value = wppa_getCookie('wppa_bulk_status');
 					}
+					var thumbsize = wppa_getCookie('wppa_bulk_thumbsize');
+					if ( ! thumbsize ) thumbsize = 100;
+					document.getElementById('wppa-thumb-size').value = thumbsize;
+					jQuery('.wppa-bulk-thumb').css('max-width', thumbsize+'px');
+					jQuery('.wppa-bulk-thumb').css('max-height', (thumbsize/2)+'px');
+					jQuery('.wppa-bulk-dec').css('height', (thumbsize/2)+'px');
 				});
 				
 			</script>
@@ -756,6 +771,14 @@ function wppa_album_photos_bulk($album) {
 				<span style="font-family:sans-serif; font-size:12px; font-style:italic; font-weight:normal;" >
 					<?php _e('Pressing this button will reload the page after executing the selected action', 'wppa') ?>
 				</span>
+				<span style="float:right">
+					<?php _e('Thumbnail size:', 'wppa') ?>
+					<select name="wppa-thumb-size" id="wppa-thumb-size" onchange="wppaSetThumbsize(this);" >
+						<option value="100" ><?php _e('Small', 'wppa') ?></option>
+						<option value="140" ><?php _e('Medium', 'wppa') ?></option>
+						<option value="200" ><?php _e('Large', 'wppa') ?></option>
+					</select>
+				</span>
 				</h3>
 				<table class="widefat" >
 					<thead style="font-weight:bold;" >
@@ -777,14 +800,14 @@ function wppa_album_photos_bulk($album) {
 							<td><?php echo $photo['id'] ?></td>
 							<td>
 								<a href="<?php echo wppa_get_photo_url($photo['id']) ?>" target="_blank" title="Click to see fullsize" >
-									<img src="<?php echo wppa_get_thumb_url($photo['id']) ?>" style="max-width:100px; max-height:50px; " />
+									<img class="wppa-bulk-thumb" src="<?php echo wppa_get_thumb_url($photo['id']) ?>" style="max-width:100px; max-height:50px; " />
 								</a>
 							</td>
 							<td style="width:25%;" >
 								<input type="text" style="width:100%;" id="pname-<?php echo $photo['id'] ?>" onchange="wppaAjaxUpdatePhoto(<?php echo $photo['id'] ?>, 'name', this);" value="<?php echo esc_attr(stripslashes($photo['name'])) ?>" />
 							</td>
 							<td style="width:25%;" >
-								<textarea style="height:50px; width:100%" onchange="wppaAjaxUpdatePhoto(<?php echo $photo['id'] ?>, 'description', this)" ><?php echo(stripslashes($photo['description'])) ?></textarea>
+								<textarea class="wppa-bulk-dec" style="height:50px; width:100%" onchange="wppaAjaxUpdatePhoto(<?php echo $photo['id'] ?>, 'description', this)" ><?php echo(stripslashes($photo['description'])) ?></textarea>
 							</td>
 							<td>
 							<?php if ( current_user_can('wppa_admin') || current_user_can('wppa_moderate') ) { ?>
@@ -829,6 +852,149 @@ function wppa_album_photos_bulk($album) {
 				$page_1 = $page - '1';
 				echo '<h3>'.sprintf(__('Page %d is empty, try <a href="%s" >page %d</a>.', 'wppa'), $page, $link.'&wppa-page='.$page_1.'#manage-photos', $page_1);
 			}
+		}
+	}
+	else {
+		wppa_dbg_msg('Missing required argument in wppa_album_photos()', 'red', 'force');
+	}
+}
+
+function wppa_album_photos_sequence($album) {
+global $wpdb;
+global $q_config;
+global $wppa_opt;
+
+	if ( $album ) {
+		$photoorder 	= wppa_get_photo_order($album, 'norandom');
+		$is_descending 	= strpos($photoorder, 'DESC') !== false;
+		$is_p_order 	= strpos($photoorder, 'p_order') !== false;
+		$photos 		= $wpdb->get_results($wpdb->prepare('SELECT * FROM `'.WPPA_PHOTOS.'` WHERE `album` = %s '.$photoorder, $album), ARRAY_A);
+		$link 			= wppa_dbg_url(get_admin_url().'admin.php?page=wppa_admin_menu&tab=edit&edit_id='.$album.'&bulk');
+		$size 			= '180';
+	
+		if ( $photos ) {
+			?>
+			<style>
+				.sortable-placeholder {
+					width: <?php echo $size ?>px;
+					height: <?php echo $size ?>px;
+					margin: 5px;
+					border: 1px solid #cccccc;
+					border-radius:3px;
+					float: left;
+				}
+				.ui-state-default {
+					position: relative;
+					width: <?php echo $size ?>px;
+					height: <?php echo $size ?>px;
+					margin: 5px;
+					border-radius:3px;
+					float: left;
+				}
+				.wppa-publish {
+					border: 1px solid;
+					background-color: rgb(255, 255, 224); 
+					border-color: rgb(230, 219, 85);
+				}
+				.wppa-featured {
+					border: 1px solid;
+					background-color: rgb(224, 255, 224); 
+					border-color: rgb(85, 238, 85);
+				}
+				.wppa-pending {
+					border: 1px solid;
+					background-color: rgb(255, 235, 232); 
+					border-color: rgb(204, 0, 0);
+				}
+			</style>
+			<script>
+				jQuery(function() {
+					jQuery( "#sortable" ).sortable({ 
+						cursor: "move", 
+						placeholder: "sortable-placeholder", 
+						stop: function( event, ui ) {
+							var ids = jQuery(".wppa-sort-item");
+							var seq = jQuery(".wppa-sort-seqn");
+							var idx = 0;
+							var descend = <?php if ( $is_descending ) echo 'true'; else echo 'false' ?>;
+							while ( idx < ids.length ) {
+								var newvalue;
+								if ( descend ) newvalue = ids.length - idx;
+								else newvalue = idx + 1;
+								var oldvalue = seq[idx].value;
+								var photo = ids[idx].value;
+								if ( newvalue != oldvalue ) {
+									wppaDoSeqUpdate(photo, newvalue);
+								}
+								idx++;
+							}
+						} 
+					});
+				});
+				function wppaDoSeqUpdate(photo, seqno) {
+					var data = 'action=wppa&wppa-action=update-photo&photo-id='+photo+'&item=p_order&wppa-nonce='+document.getElementById('photo-nonce-'+photo).value+'&value='+seqno;
+					var xmlhttp = new XMLHttpRequest();
+					
+					xmlhttp.onreadystatechange = function() {
+						if ( xmlhttp.readyState == 4 && xmlhttp.status != 404 ) {
+							var ArrValues = xmlhttp.responseText.split("||");
+							if ( ArrValues[0] != '' ) {
+								alert('The server returned unexpected output:\n'+ArrValues[0]);
+							}
+							switch ( ArrValues[1] ) {
+								case '0':	// No error
+									jQuery('#wppa-seqno-'+photo).html(seqno);
+									break;
+								case '99':	// Photo is gone
+									jQuery('#wppa-seqno-'+photo).html('<span style="color"red" >deleted</span>');
+									break;
+								default:	// Any error
+									jQuery('#wppa-seqno-'+photo).html('<span style="color"red" >Err:'+ArrValues[1]+'</span>');
+									break;
+							}
+						}
+					}
+					xmlhttp.open('POST',wppaAjaxUrl,true);
+					xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+					xmlhttp.send(data);
+					jQuery("#wppa-sort-seqn-"+photo).attr('value', seqno);	// set hidden value to new value to prevent duplicate action
+					var spinnerhtml = '<img src="'+wppaImageDirectory+'wpspin.gif'+'" />';
+					jQuery('#wppa-seqno-'+photo).html(spinnerhtml);
+				}
+			</script>
+			<?php if ( ! $is_p_order ) wppa_warning_message(__('Setting photo sequence order has only effect if the photo order method is set to <b>Order#</b>', 'wppa')) ?>
+			<div class="widefat" style="border-color:#cccccc" >
+				<div id="sortable">
+					<?php foreach ( $photos as $photo ) { 
+						$imgs = getimagesize(wppa_get_thumb_path($photo['id']));
+						$mw = $size - '20';
+						$mh = $mw * '3' / '4';
+						if ( $imgs[1]/$imgs[0] > $mh/$mw ) {	// more portrait than 200x150, y is limit
+							$mt = '15';
+						}
+						else {	// x is limit
+							$mt = ( $mh - ( $imgs[1]/$imgs[0] * $mw ) ) / '2' + '15';
+						}
+					?>
+					<div id="photoitem-<?php echo $photo['id'] ?>" class="ui-state-default wppa-<?php echo $photo['status'] ?>" style="background-image:none; text-align:center; cursor:move;" >
+						<img class="wppa-bulk-thumb" src="<?php echo wppa_get_thumb_url($photo['id']) ?>" style="max-width:<?php echo $mw ?>px; max-height:<?php echo $mh ?>px; margin-top: <?php echo $mt ?>px;" />
+						<div style="font-size:9px; position:absolute; bottom:24px; text-align:center; width:<?php echo $size ?>px;" ><?php echo wppa_get_photo_name($photo['id']) ?></div>
+						<div style="text-align: center; width: <?php echo $size ?>px; position:absolute; bottom:8px;" >
+							<span style="margin-left:15px;float:left"><?php echo __('Id: ', 'wppa').$photo['id']?></span>
+							<span style="float:right; margin-right:15px;"><?php echo __('Ord: ', 'wppa').'<span id="wppa-seqno-'.$photo['id'].'" >'.$photo['p_order'] ?></span>
+						</div>
+						<input type="hidden" id="photo-nonce-<?php echo $photo['id'] ?>" value="<?php echo wp_create_nonce('wppa_nonce_'.$photo['id']);  ?>" />
+						<input type="hidden" class="wppa-sort-item" value="<?php echo $photo['id'] ?>" />
+						<input type="hidden" class="wppa-sort-seqn" id="wppa-sort-seqn-<?php echo $photo['id'] ?>" value="<?php echo $photo['p_order'] ?>" />
+					</div>
+					<?php } ?>
+				</div>
+				<div style="clear:both;"></div>
+			</div>
+			<?php
+		}
+		else {
+			echo '<h3>'.__('The album is empty.', 'wppa').'</h3>';
 		}
 	}
 	else {
