@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * get the albums via filter
-* version 5.1.4
+* version 5.1.16
 *
 */
 
@@ -11,6 +11,20 @@ add_action('init', 'wppa_do_filter');
 
 function wppa_do_filter() {
 	add_filter('the_content', 'wppa_albums_filter', get_option('wppa_filter_priority', '1001'));
+	add_filter('the_content', 'wppa_add_shortcode_to_post');
+}
+
+function wppa_add_shortcode_to_post($post) {
+global $wppa_opt;
+global $wppa;
+
+	$new_post = $post;
+	if ( ! $wppa['ajax'] && wppa_switch('wppa_add_shortcode_to_post') ) {
+		$id = get_the_ID();
+		$p = get_post($id, ARRAY_A);
+		if ( $p['post_type'] == 'post' ) $new_post .= $wppa_opt['wppa_shortcode_to_add'];
+	}
+	return $new_post;
 }
 
 function wppa_albums_filter($post) {
@@ -239,7 +253,9 @@ global $wppa_opt;
 		'album' 	=> '',
 		'photo' 	=> '',
 		'size'		=> '',
-		'align'		=> ''
+		'align'		=> '',
+		'taglist'	=> '',
+		'cols'		=> ''
 	), $atts ) );
 
 	// Find occur
@@ -263,6 +279,11 @@ global $wppa_opt;
 	$wppa['start_photo'] = '0';	// Start a slideshow here
 	$wppa['is_single'] = false;	// Is a one image slideshow
 	$wppa['is_upload'] = false;
+	$wppa['is_multitagbox'] = false;
+	$wppa['is_tagcloudbox'] = false;
+	$wppa['taglist'] 		= '';
+	$wppa['tagcols']		= '2';
+
 //	$size = '';
 //	$align = '';
 
@@ -322,6 +343,15 @@ global $wppa_opt;
 			$wppa['start_album'] = $album;
 			$wppa['is_upload'] = true;
 			break;
+		case 'multitag':
+			$wppa['taglist'] = wppa_sanitize_tags($taglist);
+			$wppa['is_multitagbox'] = true;
+			if ( $cols ) $wppa['tagcols'] = $cols;
+			break;
+		case 'tagcloud':
+			$wppa['taglist'] = wppa_sanitize_tags($taglist);
+			$wppa['is_tagcloudbox'] = true;
+			break;
 	}
 	
 	// Count (internally to wppa_albums)
@@ -363,3 +393,18 @@ global $wppa_opt;
 }
 
 add_shortcode( 'wppa', 'wppa_shortcodes' );
+
+
+function wppa_lightbox_global($content) {
+global $wppa_opt;
+global $post;
+
+	if ( wppa_switch('wppa_lightbox_global') && $wppa_opt['wppa_lightbox_name'] == 'wppa' ) {
+		$pattern ="/<a(.*?)href=('|\")(.*?).(bmp|gif|jpeg|jpg|png)('|\")(.*?)>/i";
+		$replacement = '<a$1href=$2$3.$4$5 rel="wppa" title="'.$post->post_title.'"$6>';
+		$content = preg_replace($pattern, $replacement, $content);
+	}
+	return $content;
+}
+
+add_filter('the_content', 'wppa_lightbox_global');

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Functions for album covers
-* Version 5.1.7
+* Version 5.1.15
 *
 */
 
@@ -151,7 +151,7 @@ global $wpdb;
 	$target = $wppa_opt['wppa_allow_ajax'] ? '_self' : $photolink['target'];
 	
 	// Open the album box
-	$wppa['out'] .= wppa_nltab('+').'<div id="album-'.$album['id'].'-'.$wppa['master_occur'].'" class="album wppa-box wppa-cover-box wppa-cover-box-'.$mcr.$wppa['master_occur'].' wppa-'.$wppa_alt.'" style="'.$style.'" >';
+	$wppa['out'] .= wppa_nltab('+').'<div id="album-'.$album['id'].'-'.$wppa['master_occur'].'" class="wppa-album-cover-standard album wppa-box wppa-cover-box wppa-cover-box-'.$mcr.$wppa['master_occur'].' wppa-'.$wppa_alt.'" style="'.$style.'" >';
 
 		if ( $photo_pos == 'left' || $photo_pos == 'top') {
 			// First The Cover photo
@@ -213,7 +213,7 @@ global $wpdb;
 		
 		$wppa['out'] .= wppa_nltab().'<div style="clear:both;"></div>';		
 		
-		wppa_user_upload_html($album['id'], wppa_get_cover_width('cover'), 'cover');
+		wppa_user_upload_html($album['id'], wppa_get_cover_width('cover'), 'cover', $multicolumnresponsive);
 
 	$wppa['out'] .= wppa_nltab('-').'</div><!-- #album-'.$album['id'].'-'.$wppa['master_occur'].' -->';
 	if ($wppa_alt == 'even') $wppa_alt = 'alt'; else $wppa_alt = 'even';
@@ -333,7 +333,7 @@ else $coverphoto = false;
 	$target = $wppa_opt['wppa_allow_ajax'] ? '_self' : $photolink['target'];
 	
 	// Open the album box
-	$wppa['out'] .= wppa_nltab('+').'<div id="album-'.$album['id'].'-'.$wppa['master_occur'].'" class="album wppa-box wppa-cover-box wppa-cover-box-'.$mcr.$wppa['master_occur'].' wppa-'.$wppa_alt.'" style="'.$style.'" >';
+	$wppa['out'] .= wppa_nltab('+').'<div id="album-'.$album['id'].'-'.$wppa['master_occur'].'" class="wppa-album-cover-imagefactory album wppa-box wppa-cover-box wppa-cover-box-'.$mcr.$wppa['master_occur'].' wppa-'.$wppa_alt.'" style="'.$style.'" >';
 
 		if ( $photo_pos == 'left' || $photo_pos == 'top') {
 			// First The Cover photo
@@ -396,7 +396,7 @@ else $coverphoto = false;
 		
 		$wppa['out'] .= wppa_nltab().'<div style="clear:both;"></div>';		
 		
-		wppa_user_upload_html($album['id'], wppa_get_cover_width('cover'), 'cover');
+		wppa_user_upload_html($album['id'], wppa_get_cover_width('cover'), 'cover', $multicolumnresponsive);
 
 	$wppa['out'] .= wppa_nltab('-').'</div><!-- #album-'.$album['id'].'-'.$wppa['master_occur'].' -->';
 	if ($wppa_alt == 'even') $wppa_alt = 'alt'; else $wppa_alt = 'even';
@@ -505,7 +505,7 @@ global $wpdb;
 	$target = $wppa_opt['wppa_allow_ajax'] ? '_self' : $photolink['target'];
 	
 	// Open the album box
-	$wppa['out'] .= wppa_nltab('+').'<div id="album-'.$album['id'].'-'.$wppa['master_occur'].'" class="album wppa-box wppa-cover-box wppa-cover-box-'.$mcr.$wppa['master_occur'].' wppa-'.$wppa_alt.'" style="'.$style.'" >';
+	$wppa['out'] .= wppa_nltab('+').'<div id="album-'.$album['id'].'-'.$wppa['master_occur'].'" class="wppa-album-cover-longdesc album wppa-box wppa-cover-box wppa-cover-box-'.$mcr.$wppa['master_occur'].' wppa-'.$wppa_alt.'" style="'.$style.'" >';
 
 		if ( $photo_pos == 'left' || $photo_pos == 'top') {
 			// First The Cover photo
@@ -570,7 +570,7 @@ global $wpdb;
 		
 		$wppa['out'] .= wppa_nltab().'<div style="clear:both;"></div>';		
 		
-		wppa_user_upload_html($album['id'], wppa_get_cover_width('cover'), 'cover');
+		wppa_user_upload_html($album['id'], wppa_get_cover_width('cover'), 'cover', $multicolumnresponsive);
 
 	$wppa['out'] .= wppa_nltab('-').'</div><!-- #album-'.$album['id'].'-'.$wppa['master_occur'].' -->';
 	if ($wppa_alt == 'even') $wppa_alt = 'alt'; else $wppa_alt = 'even';

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains low-level utility routines
-* Version 5.1.8
+* Version 5.1.17
 *
 */
 
@@ -16,7 +16,7 @@ function wppa_cache_album($id) {
 global $wpdb;
 global $album;
 
-	if ( ! is_numeric($id) || $id < '1' ) {
+	if ( ! wppa_is_int($id) || $id < '1' ) {
 		wppa_dbg_msg('Invalid arg wppa_cache_album('.$id.')', 'red');
 		return false;
 	}
@@ -24,7 +24,7 @@ global $album;
 		$album = $wpdb->get_row($wpdb->prepare("SELECT * FROM `".WPPA_ALBUMS."` WHERE `id` = %s", $id), 'ARRAY_A');
 		wppa_dbg_q('Q90');
 		if ( ! $album ) {
-			wppa_dbg_msg('Album does not exist', 'red');
+			wppa_dbg_msg('Album '.$id.' does not exist', 'red');
 			return false;
 		}
 	}
@@ -39,6 +39,10 @@ function wppa_cache_thumb($id) {
 global $wpdb;
 global $thumb;
 
+	if ( ! $id ) {
+		$thumb = false;
+		return;
+	}
 	if ( ! is_numeric($id) || $id < '1' ) {
 		wppa_dbg_msg('Invalid arg wppa_cache_thumb('.$id.')', 'red');
 		return;
@@ -149,7 +153,7 @@ global $thumb;
 }
 
 // get the description of an image
-function wppa_get_photo_desc($id, $do_shortcodes = false) {
+function wppa_get_photo_desc($id, $do_shortcodes = false, $do_geo = false) {
 global $thumb;
 global $wppa;
 global $wppa_opt;
@@ -157,6 +161,7 @@ global $wppa_opt;
 	if ( ! is_numeric($id) || $id < '1' ) wppa_dbg_msg('Invalid arg wppa_get_photo_desc('.$id.')', 'red');
 	wppa_cache_thumb($id);
 	$desc = $thumb['description'];			// Raw data
+//	if ( ! $desc ) return '';				// No content, need no filtering except geo!!
 	$desc = stripslashes($desc);			// Unescape
 	$desc = __($desc);						// qTranslate 
 
@@ -164,7 +169,7 @@ global $wppa_opt;
 	$desc = str_replace(array('%%wppa%%', '[wppa', '[/wppa]'), array('%-wppa-%', '{wppa', '{/wppa}'), $desc);
 
 	// Geo
-	if ( $thumb['location'] && ! $wppa['in_widget'] && strpos($wppa_opt['wppa_custom_content'], 'w#location') !== false) {
+	if ( $thumb['location'] && ! $wppa['in_widget'] && strpos($wppa_opt['wppa_custom_content'], 'w#location') !== false && $do_geo == 'do_geo') {
 		$temp = explode('/', $thumb['location']);
 		$lat = $temp['2'];
 		$lon = $temp['3'];
@@ -181,6 +186,21 @@ global $wppa_opt;
 			$replacement = __(trim(stripslashes($thumb[$keyword])));
 			if ( $replacement == '' ) $replacement = '&lsaquo;'.__a('none', 'wppa').'&rsaquo;';
 			$desc = str_replace('w#'.$keyword, $replacement, $desc);
+		}
+		
+		// Art monkey sizes
+		if ( strpos($desc, 'w#amx') !== false || strpos($desc, 'w#amy') !== false || strpos($desc, 'w#amfs') !== false ) {
+			$amxy = wppa_get_artmonkey_size_a($id);
+			if ( is_array($amxy ) ) {
+				$desc = str_replace('w#amx', $amxy['x'], $desc);
+				$desc = str_replace('w#amy', $amxy['y'], $desc);
+				$desc = str_replace('w#amfs', $amxy['s'], $desc);
+			}
+			else {
+				$desc = str_replace('w#amx', 'N.a.', $desc);
+				$desc = str_replace('w#amy', 'N.a.', $desc);
+				$desc = str_replace('w#amfs', 'N.a.', $desc);
+			}
 		}
 		
 		// Timestamps
@@ -203,6 +223,7 @@ global $wppa_opt;
 	$desc = balanceTags($desc, true);		// Balance tags
 	$desc = wppa_filter_iptc($desc, $id);	// Render IPTC tags
 	$desc = wppa_filter_exif($desc, $id);	// Render EXIF tags
+	$desc = make_clickable($desc);			// Auto make a tags for links
 
 	return $desc;
 }
@@ -302,6 +323,7 @@ global $album;
 	if ( ! is_numeric($id) || $id < '1' ) wppa_dbg_msg('Invalid arg wppa_get_album_desc('.$id.')', 'red');
 	wppa_cache_album($id);
 	$desc = $album['description'];			// Raw data
+	if ( ! $desc ) return '';				// No content, need no filtering
 	$desc = stripslashes($desc);			// Unescape
 	$desc = __($desc);						// qTranslate 
 	$desc = wppa_html($desc);				// Enable html
@@ -330,6 +352,10 @@ global $album;
 	
 	// To prevent recursive rendering of scripts or shortcodes:
 	$desc = str_replace(array('%%wppa%%', '[wppa', '[/wppa]'), array('%-wppa-%', '{wppa', '{/wppa}'), $desc);
+	
+	// Convert links and mailto:
+	$desc = make_clickable($desc);
+	
 	return $desc;
 }
 
@@ -570,6 +596,8 @@ global $wpdb;
 
 function wppa_send_mail($to, $subj, $cont, $photo, $email = '') {
 
+	wppa_dbg_msg('Sending mail to '.$to.' !');
+
 	$from			= 'From: noreply@'.substr(home_url(), strpos(home_url(), '.') + '1');
 	$extraheaders 	= "\n" . 'MIME-Version: 1.0' . "\n" . 'Content-Transfer-Encoding: 8bit' . "\n" . 'Content-Type: text/html; charset="UTF-8"';
 	$message 		= '
@@ -778,6 +806,8 @@ global $wppa_opt;
 
 function wppa_move_source($name, $from, $to) {
 global $wppa_opt;
+wppa_log('Debug', 'in move,');
+
 	if ( wppa_switch('wppa_keep_sync') ) {
 		$frompath 	= $wppa_opt['wppa_source_dir'].'/album-'.$from.'/'.$name;
 		if ( ! is_file($frompath) ) return;
@@ -1014,6 +1044,7 @@ global $wpdb;
 	$wpdb->query($wpdb->prepare('DELETE FROM `'.WPPA_IPTC.'` WHERE `photo` = %s', $photo));
 	$wpdb->query($wpdb->prepare('DELETE FROM `'.WPPA_EXIF.'` WHERE `photo` = %s', $photo));
 	wppa_flush_treecounts($album);
+	wppa_flush_upldr_cache('photoid', $photo);
 
 }
 
@@ -1139,4 +1170,97 @@ function wppa_get_og_desc($id) {
 // so we make it ourselves
 function wppa_is_int($var) {
 	return ( strval(intval($var)) == strval($var) );
+}
+
+function wppa_log($type, $msg) {
+	@ mkdir(ABSPATH.'wp-content/wppa-depot/admin'); // Just in case...
+	if ( ! $file = fopen(ABSPATH.'wp-content/wppa-depot/admin/error.log', 'ab') ) return;	// Unable to open log file
+	fwrite($file, $type.': on:'.wppa_local_date(get_option('date_format', "F j, Y,").' '.get_option('time_format', "g:i a"), time()).': '.$msg."\n");
+	fclose($file);
+}
+
+function wppa_is_landscape($img_attr) {
+	return ($img_attr[0] > $img_attr[1]);
+}
+
+function wppa_get_the_id() {
+global $wppa;
+	$id = '0';
+	if ( $wppa['ajax'] ) {
+		if ( isset($_GET['page_id']) ) $id = $_GET['page_id'];
+		elseif ( isset($_GET['p']) ) $id = $_GET['p'];
+		elseif ( isset($_GET['wppa-fromp']) ) $id = $_GET['wppa-fromp'];
+	}
+	else {
+		$id = get_the_ID();
+	}
+	return $id;
+}
+
+function wppa_get_artmonkey_size_a($photo) {
+global $wppa_opt;
+global $wpdb;
+
+	$data = $wpdb->get_row($wpdb->prepare("SELECT * FROM `".WPPA_PHOTOS."` WHERE `id` = %s", $photo), ARRAY_A);
+	if ( $data ) {
+		if ( wppa_switch('wppa_artmonkey_use_source') ) {
+			if ( is_file($wppa_opt['wppa_source_dir'].'/album-'.$data['album'].'/'.$data['filename']) ) {
+				$source = $wppa_opt['wppa_source_dir'].'/album-'.$data['album'].'/'.$data['filename'];
+			}
+			else {
+				$source = wppa_get_photo_path($photo);
+			}
+		}
+		else {
+			$source = wppa_get_photo_path($photo);
+		}
+		$imgattr = @ getimagesize($source);
+		if ( is_array($imgattr) ) {
+			$fs = filesize($source);
+			if ( $fs > 1024*1024 ) $fs = sprintf('%4.2f Mb', $fs/(1024*1024));
+			else $fs = sprintf('%4.2f Kb', $fs/1024);
+			$result = array('x' => $imgattr['0'], 'y' => $imgattr['1'], 's' => $fs);
+			return $result;
+		}
+	}
+	return false;
+}
+
+function wppa_get_the_landing_page($slug, $title) {
+global $wppa_opt;
+
+	$page = $wppa_opt[$slug];
+	if ( ! $page || ! wppa_page_exists($page) ) {
+	$page = wppa_create_page($title);
+		wppa_update_option($slug, $page);
+		$wppa_opt[$slug] = $page;
+	}
+	return $page;
+}
+
+function wppa_create_page($title) {
+			
+	$my_page = array(
+				'post_title'    => $title,
+				'post_content'  => '[wppa type="landing"][/wppa]',
+				'post_status'   => 'publish',
+				'post_type'	  	=> 'page'
+			);
+
+	$page = wp_insert_post( $my_page );
+	return $page;
+}
+
+function wppa_page_exists($id) {
+global $wpdb;
+
+	$iret = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `" . $wpdb->posts . "` WHERE `post_type` = 'page' AND `post_status` = 'publish' AND `ID` = %s", $id));
+	return ( $iret > '0' );
+}
+
+function wppa_get_photo_owner($id) {
+global $thumb;
+
+	wppa_cache_thumb($id);
+	return $thumb['owner'];
 }

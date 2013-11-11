@@ -2,12 +2,12 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile
-Version: 5.1.8
+Version: 5.1.17
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
 Requires at least: 3.1
-Tested up to: 3.6.1
+Tested up to: 3.7.1
 
 This plugin is designed to easily manage and display your photo albums and slideshows in a single as well as in a network WordPress site.
 
@@ -173,6 +173,148 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
 
+= 5.1.17 =
+
+= Bug Fixes =
+
+* Hovering the image in the comment widget stopped showing the comment. Fixed.
+
+= New Features =
+
+* Edit photo information initiated from the frontend no longer needs an admin screen or wp admin files.
+* All frontend Ajax operations no longer need files from the wp-admin directory.
+* wp-admin can now be password protected without the loss of any (ajax) functionality for logged-out users.
+
+= 5.1.16 =
+
+= Bug Fixes =
+
+* Fixed an error in comment admin when the linkpage to view the fullsize image was deleted.
+* Fixed a too small image error message in the og:image meta tag.
+* Fixed a slideshow layout issue where the theme is responsive and column width > 640
+
+= New Features =
+
+* WPPA+ Lightbox global. ( Table IV-G5 ). If checked, use the wppa+ embedded lightbox also for non wppa images. Requires Table IX-A6 to be set to wppa (default).
+* Commenting has been ajaxified.
+
+= Other Changes =
+
+* Performance improvement at the client side for slideshows in responsive themes.
+
+= 5.1.15 =
+
+= Bug Fixes =
+
+* Fixed Sizing issue of the frontend upload html in multi column responsive covers.
+* Fixed texts and made them translatable in the share box.
+* GPS info was lost during copy photo. Fixed.
+* Paginating did not work properly for #related. Fixed.
+
+= New Features =
+
+* New Widget: Uploader photos. Shows a list of users that uploaded photos. Links to a display of thumbnails, ordered by timestamp, newest first.
+Userlist can be sorted by name, latest upload or number of uploads ( most first ). A logged in user will always see his link at the top if he ever uploaded.
+* New virtual album name for use in shortcodes: #upldr. Usage: album="#upldr,loginname". Will return photos only, no albums.
+* New virtual loginname for use in shortcodes: #me. Usage: album="#owner,#me{,parent}" and album="#upldr,#me". Will return the albums or photos of the currently logged in user ( if any ).
+See: http://wppa.opajaap.nl/members/#shortcodes for more info on #upldr and #me.
+
+= Other Changes =
+
+* Loading of the Facebook js SDK can now be switched off in Table II-B21.97 when there is a conflict with another plugin.
+* The title of the thumbnail widget can have a manually entered link.
+* Speed up of page load with slideshow having gps data by removing redundant hidden duplicates.
+* Required Landing pages will now automaticly created when they do not already exist.
+
+= 5.1.14 =
+
+= Bug Fixes =
+
+* When photos only was checked in table IX-C4 ( Searching ) the album covers did not show up ( snince 5.1.12 ). Fixed.
+* Fixed a conflict with metatags.
+* Geo data stopped working when the photo desc was empty. Fixed.
+
+= New Features =
+
+* Table IX-C9. If checked: the searchword(s) need not start at the beginning of the words to be found. ( a wildcard is assumed in front of the entered search token(s) ).
+This setting applies to indexed search only.
+
+= Other Changes =
+
+* Restored upload feature of zips to any user role that has wppa_upload and wppa_import capabilities.
+* Unsupported filetypes will now be skipped during zip-extraction and will produce an errormessage.
+* The word Download on the ArtMonkeu download button is now tranlatable.
+* Minor cosmetic changes cursor filmstrip.
+
+= 5.1.13 =
+
+= Other Changes =
+
+* Uploading zipfiles is now - for security reasons - restricted to administrators only.
+
+= 5.1.12 =
+
+= New Features =
+
+* New album keyword: #owner. Example use: [wppa type="cover" album="#owner,opajaap"][/wppa] Shows all the top-level albums owned by opajaap.
+[wppa type="album" album="#owner,opajaap,13"][/wppa] Shows the content of all the sub-albums of album 13 that are owned by opajaap.
+* New photo description keyword: w#amfs filesize of the downloadeable image file ( Art Monkey File Size ).
+* You can add a standard shortcode to the end of all posts. 
+Example use: [wppa type="album" album="#related,desc"][/wppa] ( is the default value ). See Table IX-A24,25.
+* Photo sequence editor by drag and drop. See the link 'Seq' in the Album Admin table.
+
+= Other Changes =
+
+* Fixed a compatibility problem with certain themes and thumbnail popups and lightbox.
+* Various cosmetic changes.
+* Modified wppa-theme.php and wppa-style.css. Check your possible modified copies in your theme dir for compatibility!
+
+= 5.1.11 =
+
+= Bug Fixes =
+
+* Import using Ajax with update checkbox checked always reported Failed! even when Done!. Fixed.
+* Bulk Edit Move moved the sourcefile to the wrong source dir. Fixed.
+
+= New Features =
+
+* New shortccode virtual album type: #related. Usage: [wppa type="album" album="#related{,tags | ,desc {,nn}}"][/wppa]. Type tags is default, nn is max number.
+Type=tags searches the page/post for words that are used as photo tags, Type=desc searches the page/post for words that appear in photo descriptions.
+If you use Type=desc, it is strongly recommended to use the indexed search method ( See Table IX-C5 ).
+* The radiobuttons And and Or can be hidden in the tags filter widget and also in the tags boxes created by shortcode while the method Or will be used. Table IX-C8.
+* New photo description keywords: w#amx and w#amy meaning the width and height in pixels of the image available for Art Monkey download.
+
+= 5.1.10 =
+
+= Bug Fixes =
+
+* Classic search stopped working, fixed.
+* Single button vote under thumbnail did not work under specific circumstances, fixed.
+* Fixed warning messages in Tagcloud and Tags Filter widgets.
+
+= 5.1.9 =
+
+= Bug Fixes =
+
+* Fixed faulty links from widget thumbnails while a searchstring was used in the latest pageload.
+* Incomplete search results and errors when Table IX-C2:( exclude separate ) was checked in indexed search. Fixed.
+* Fixed title ( tooltip ) album description in album widget.
+* Fixed a width issue on theme 2013.
+
+= New Features =
+
+* Added LinkedIn share button Table II-B21.7.
+* Added facebook user-id and app-id open graph metatags when filled in in Table II-B21.95 & 26.
+* In the Photo Tags Filter widget one can now select the tags to appear in the widget.
+* In the Photo TagCloud widget one can now select the tags to appear in the widget.
+* There are shortcodes possible to get a box with a Tags Filter or a TagCloud widget-like display. 
+Examples: [wppa type="multitag" taglist="Bird,Duck,Owl" cols="3"][/wppa] and [wppa type="tagcloud" taglist="Bird,Duck,Owl"][/wppa]
+
+= Other Changes =
+
+* Web and mail addresses in album and photo descriptions will now be automaticly made clickable.
+* Thumbnail size in bulk edit photos is now settable ( small, medium, large ).
+
 = 5.1.8 =
 
 = Bug Fixes =
@@ -189,6 +331,7 @@ Example album="#last,0,3" finds the 3 most recently modified albums of the syste
 * The single button voting system button can now also be displayed below the thumbnails. Table IV-E15.
 * Facebook like button(s). Table II-B21.90.
 * All album cover types now have a version that supports multi column in responsive themes. Select the covertype with the addition: mcr.
+* New choice in Table VI-B5: Slideshow link type: lightbox single image. Is lightbox without navigation buttons.
 
 = Other Changes =
 

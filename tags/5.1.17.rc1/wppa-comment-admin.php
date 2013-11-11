@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all comments
-* Version 5.0.15
+* Version 5.0.16
 *
 */
 
@@ -152,6 +152,13 @@ global $wppa_opt;
 		
 		// Initialize normal display
 		$wppa_comadmin_linkpage = get_option('wppa_comadmin_linkpage', '0');
+		if ( $wppa_comadmin_linkpage ) {
+			$exists = $wpdb->get_var("SELECT `post_title` FROM `".$wpdb->posts."` WHERE `ID` = ".$wppa_comadmin_linkpage);
+			if ( ! $exists ) {
+				$wppa_comadmin_linkpage = '0';
+				update_option('wppa_comadmin_linkpage', '0');
+			}
+		}
 		$moderating = isset($_REQUEST['commentid']);
 ?>
 		<div class="wrap">
@@ -315,8 +322,7 @@ global $wppa_opt;
 									$alb = '';
 									$pname = '';
 									$albname = '';
-								}
-								
+								}								
 								if ($wppa_comadmin_linkpage == '0') { ?>
 									<td style="text-align:center">
 										<img src="<?php echo wppa_get_thumb_url($com['photo']); ?>" style="max-height:64px;max-width:64px;" />

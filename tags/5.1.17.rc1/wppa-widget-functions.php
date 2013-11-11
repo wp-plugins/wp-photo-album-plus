@@ -2,7 +2,7 @@
 /* wppa_widgetfunctions.php
 /* Package: wp-photo-album-plus
 /*
-/* Version 5.1.0
+/* Version 5.1.8
 /*
 */
 

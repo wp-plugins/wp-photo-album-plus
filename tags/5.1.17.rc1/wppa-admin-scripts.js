@@ -1,7 +1,7 @@
 /* admin-scripts.js */
 /* Package: wp-photo-album-plus
 /*
-/* Version 5.1.0
+/* Version 5.1.12
 /* Various js routines used in admin pages		
 */
 
@@ -11,12 +11,6 @@ var wppa_update = 'Update';
 var wppaImageDirectory = '';
 var wppaAjaxUrl = '';
 var wppaUploadToThisAlbum = 'Upload to this album';
-
-jQuery(document).ready(function() {
-/* alert( 'You are running jQuery version: ' + jQuery.fn.jquery ); */
-
-	jQuery(".fade").fadeTo(200000, 0.0)
-	});
 
 /* Check if jQuery library revision is high enough, othewise give a message and uncheck checkbox elm */
 function checkjQueryRev(msg, elm, rev){
@@ -611,13 +605,13 @@ function wppaCheckSphotoLink() {
 
 function wppaCheckSlidePhotoLink() {
 	var lvalue = document.getElementById('wppa_slideshow_linktype').value;
-	if (lvalue == 'none' || lvalue == 'file' || lvalue == 'lightbox' ) {
+	if (lvalue == 'none' || lvalue == 'file' || lvalue == 'lightbox' || lvalue == 'lightboxsingle' ) {
 		jQuery('.wppa_sslp').css('visibility', 'hidden');
 	}
 	else {
 		jQuery('.wppa_sslp').css('visibility', 'visible');
 	}
-	if (lvalue == 'none' || lvalue == 'lightbox' ) {
+	if (lvalue == 'none' || lvalue == 'lightbox' || lvalue == 'lightboxsingle' ) {
 		jQuery('.wppa_sslb').css('visibility', 'hidden');
 	}
 	else {

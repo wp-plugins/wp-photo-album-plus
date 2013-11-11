@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 5.1.8
+* Version 5.1.17
 *
 */
 
@@ -397,6 +397,11 @@ wppa_fix_source_extensions();
 		foreach ( $matches as $bad ) {
 			wppa_error_message(__('Please de-activate plugin <i style="font-size:14px;">', 'wppa').substr($bad, 0, strpos($bad, '/')).__('. </i>This plugin will cause wppa+ to function not properly.', 'wppa'));
 		}
+		// Shortcodes ultimate
+//		if ( get_option( 'su_disable_custom_formatting', 'on' ) != 'on' ) {
+//			wppa_error_message(__('You have <i>Shortcodes Ultimate</i> installed. The checkbox <i>Custom formatting</i> will be unchecked. This setting would damage the layout.', 'wppa'));
+//			set_option( 'su_disable_custom_formatting', 'on' );
+//		}
 ?>
 		<!--<br /><a href="javascript:window.print();"><?php //_e('Print settings', 'wppa') ?></a><br />-->
 		<a style="cursor:pointer;" id="wppa-legon" onclick="jQuery('#wppa-legenda').css('display', ''); jQuery('#wppa-legon').css('display', 'none'); return false;" ><?php _e('Show legenda', 'wppa') ?></a> 
@@ -491,7 +496,7 @@ wppa_fix_source_extensions();
 							$desc = __('Number of thumbnails in an album must exceed.', 'wppa');
 							$help = esc_js(__('Photos do not show up in the album unless there are more than this number of photos in the album. This allows you to have cover photos on an album that contains only sub albums without seeing them in the list of sub albums. Usually set to 0 (always show) or 1 (for one cover photo).', 'wppa'));
 							$slug = 'wppa_min_thumbs';
-							$html = wppa_input($slug, '40px', '', __('pieces', 'wppa'));
+							$html = wppa_input($slug, '40px', '', __('photos', 'wppa'));
 							wppa_setting($slug, '4', $name, $desc, $html, $help);
 							
 							$name = __('Border thickness', 'wppa');
@@ -517,6 +522,13 @@ wppa_fix_source_extensions();
 							$slug = 'wppa_box_spacing';
 							$html = wppa_input($slug, '40px', '', __('pixels', 'wppa'));
 							wppa_setting($slug, '7', $name, $desc, $html, $help);
+							
+							$name = __('Related count', 'wppa');
+							$desc = __('The default maximum number of related photos to find.', 'wppa');
+							$help = esc_js(__('When using shortcodes like [wppa type="album" album="#related,desc,23"][/wppa], the maximum number is 23. Omitting the number gives the maximum of this setting.', 'wppa'));
+							$slug = 'wppa_related_count';
+							$html = wppa_input($slug, '40px', '', __('photos', 'wppa'));
+							wppa_setting($slug, '8', $name, $desc, $html, $help);
 
 							wppa_setting_subheader('B', '1', __('Slideshow related settings', 'wppa'));
 							
@@ -1004,7 +1016,7 @@ wppa_fix_source_extensions();
 							$slug = 'wppa_bc_on_topten';
 							$html = wppa_checkbox($slug);
 							$class = 'wppa_bc';
-							wppa_setting($slug, '3', $name, $desc, $html, $help, $class);
+							wppa_setting($slug, '3.0', $name, $desc, $html, $help, $class);
 							
 							$name = __('Breadcrumb on last ten displays', 'wppa');
 							$desc = __('Show breadcrumb navigation bars on last ten displays.', 'wppa');
@@ -1038,6 +1050,14 @@ wppa_fix_source_extensions();
 							$class = 'wppa_bc';
 							wppa_setting($slug, '3.4', $name, $desc, $html, $help, $class);
 
+							$name = __('Breadcrumb on related photos displays', 'wppa');
+							$desc = __('Show breadcrumb navigation bars on related photos displays.', 'wppa');
+							$help = esc_js(__('Indicate whether a breadcrumb navigation should be displayed above the related photos displays.', 'wppa'));
+							$slug = 'wppa_bc_on_related';
+							$html = wppa_checkbox($slug);
+							$class = 'wppa_bc';
+							wppa_setting($slug, '3.5', $name, $desc, $html, $help, $class);
+							
 							$name = __('Home', 'wppa');
 							$desc = __('Show "Home" in breadcrumb.', 'wppa');
 							$help = esc_js(__('Indicate whether the breadcrumb navigation should start with a "Home"-link', 'wppa'));
@@ -1351,7 +1371,15 @@ wppa_fix_source_extensions();
 							$class = 'wppa_share';
 							$html = wppa_checkbox($slug, $onchange);
 							wppa_setting($slug, '21.6', $name, $desc, $html, $help, $class);
-						
+
+							$name = __('Show LinkedIn button', 'wppa');
+							$desc = __('Display the LinkedIn button in the share box.', 'wppa');
+							$help = '';
+							$slug = 'wppa_share_linkedin';
+							$class = 'wppa_share';
+							$html = wppa_checkbox($slug, $onchange);
+							wppa_setting($slug, '21.7', $name, $desc, $html, $help, $class);
+							
 							$name = __('Show Facebook like button', 'wppa');
 							$desc = __('Display the Facebook button in the share box.', 'wppa');
 							$help = '';
@@ -1368,12 +1396,36 @@ wppa_fix_source_extensions();
 							$html = wppa_checkbox($slug, $onchange);
 							wppa_setting($slug, '21.91', $name, $desc, $html, $help, $class);
 							
+							$name = __('Facebook User Id', 'wppa');
+							$desc = __('Enter your facebook user id to be able to moderate comments and sends', 'wppa');
+							$help = '';
+							$slug = 'wppa_facebook_admin_id';
+							$class = 'wppa_share';
+							$html = wppa_input($slug, '200px');
+							wppa_setting($slug, '21.95', $name, $desc, $html, $help, $class);
+							
+							$name = __('Facebook App Id', 'wppa');
+							$desc = __('Enter your facebook app id to be able to moderate comments and sends', 'wppa');
+							$help = '';
+							$slug = 'wppa_facebook_app_id';
+							$class = 'wppa_share';
+							$html = wppa_input($slug, '200px');
+							wppa_setting($slug, '21.96', $name, $desc, $html, $help, $class);
+							
+							$name = __('Facebook js SDK', 'wppa');
+							$desc = __('Load Facebook js SDK', 'wppa');
+							$help = esc_js(__('Uncheck this box only when there is a conflict with an other plugin that also loads the Facebook js SDK.', 'wppa'));
+							$slug = 'wppa_load_facebook_sdk';
+							$class = 'wppa_share';
+							$html = wppa_checkbox($slug, $onchange);
+							wppa_setting($slug, '21.97', $name, $desc, $html, $help, $class);
+
 							$name = __('Share single image', 'wppa');
 							$desc = __('Share a link to a single image, not the slideshow.', 'wppa');
 							$help = esc_js(__('The sharelink points to a page with a single image rather than to the page with the photo in the slideshow.', 'wppa'));
 							$slug = 'wppa_share_single_image';
 							$html = wppa_checkbox($slug, $onchange);
-							wppa_setting($slug, '21.99', $name, $desc, $html, $help, $class);
+							wppa_setting($slug, '22', $name, $desc, $html, $help, $class);
 
 							wppa_setting_subheader('C', '1', __('Thumbnail display related settings', 'wppa'));
 							
@@ -1874,6 +1926,28 @@ wppa_fix_source_extensions();
 							$html2 = wppa_input($slug2, '100px', '', '', "checkColor('".$slug2."')") . '</td><td>' . wppa_color_box($slug2);
 							$html = array($html1, $html2);
 							wppa_setting($slug, '4', $name, $desc, $html, $help);
+
+							$name = __('Multitag', 'wppa');
+							$desc = __('Multitag box background.', 'wppa');
+							$help = esc_js(__('Enter valid CSS colors for multitag box backgrounds and borders.', 'wppa'));
+							$slug1 = 'wppa_bgcolor_multitag';
+							$slug2 = 'wppa_bcolor_multitag';
+							$slug = array($slug1, $slug2);
+							$html1 = wppa_input($slug1, '100px', '', '', "checkColor('".$slug1."')") . '</td><td>' . wppa_color_box($slug1);
+							$html2 = wppa_input($slug2, '100px', '', '', "checkColor('".$slug2."')") . '</td><td>' . wppa_color_box($slug2);
+							$html = array($html1, $html2);
+							wppa_setting($slug, '5', $name, $desc, $html, $help);
+
+							$name = __('Tagcloud', 'wppa');
+							$desc = __('Tagcloud box background.', 'wppa');
+							$help = esc_js(__('Enter valid CSS colors for tagcloud box backgrounds and borders.', 'wppa'));
+							$slug1 = 'wppa_bgcolor_tagcloud';
+							$slug2 = 'wppa_bcolor_tagcloud';
+							$slug = array($slug1, $slug2);
+							$html1 = wppa_input($slug1, '100px', '', '', "checkColor('".$slug1."')") . '</td><td>' . wppa_color_box($slug1);
+							$html2 = wppa_input($slug2, '100px', '', '', "checkColor('".$slug2."')") . '</td><td>' . wppa_color_box($slug2);
+							$html = array($html1, $html2);
+							wppa_setting($slug, '6', $name, $desc, $html, $help);
 
 							?>
 						</tbody>
@@ -2509,6 +2583,13 @@ wppa_fix_source_extensions();
 							$html = wppa_checkbox($slug);
 							wppa_setting($slug, '4', $name, $desc, $html, $help);
 							
+							$name = __('WPPA+ Lightbox global', 'wppa');
+							$desc = __('Use the wppa+ lightbox also for non-wppa images.', 'wppa');
+							$help = '';
+							$slug = 'wppa_lightbox_global';
+							$html = wppa_checkbox($slug);
+							wppa_setting($slug, '5', $name, $desc, $html, $help);
+							
 							?>
 						</tbody>
 						<tfoot style="font-weight: bold;" class="wppa_table_4">
@@ -3130,8 +3211,8 @@ wppa_fix_source_extensions();
 							$slug4 = 'wppa_slideshow_overrule';
 							$slug = array($slug1, $slug2, $slug3, $slug4);
 							$onchange = 'wppaCheckSlidePhotoLink();';
-							$opts = array(__('no link at all.', 'wppa'), __('the plain photo (file).', 'wppa'), __('the fullsize photo on its own.', 'wppa'), __('lightbox.', 'wppa'));
-							$vals = array('none', 'file', 'single', 'lightbox'); 
+							$opts = array(__('no link at all.', 'wppa'), __('the plain photo (file).', 'wppa'), __('the fullsize photo on its own.', 'wppa'), __('lightbox.', 'wppa'), __('lightbox single photos.', 'wppa'));
+							$vals = array('none', 'file', 'single', 'lightbox', 'lightboxsingle'); 
 //							$opts = array(__('no link at all.', 'wppa'), __('the plain photo (file).', 'wppa'), __('lightbox.', 'wppa'));
 //							$vals = array('none', 'file', 'lightbox'); 
 							$onchange = 'wppaCheckSlidePhotoLink()';
@@ -3156,7 +3237,7 @@ wppa_fix_source_extensions();
 							wppa_setting_subheader('C', '4', __('Other links', 'wppa'));
 
 							$name = __('Art Monkey Link', 'wppa');
-							$desc = __('Enable the Art Monkey link on fullsize names.', 'wppa');
+							$desc = __('Makes the photo name a download button.', 'wppa');
 							$help = esc_js(__('Link Photo name in slideshow to file or zip with photoname as filename.', 'wppa'));
 							$slug = 'wppa_art_monkey_link';
 							$options = array(__('--- none ---', 'wppa'), __('image file', 'wppa'), __('zipped image', 'wppa'));
@@ -3246,6 +3327,26 @@ wppa_fix_source_extensions();
 							$html = array($html1, $htmlerr.$html2, $html3, $html4);
 							wppa_setting($slug, '5', $name, $desc, $html, $help);
 
+							$name = __('Uploader Widget Landing', 'wppa');
+							$desc = __('Select the landing page for the Uploader Photos Widget', 'wppa');
+							$help = '';
+							$slug1 = '';
+							$slug2 = 'wppa_upldr_widget_linkpage';
+							wppa_verify_page($slug2);
+							$slug3 = '';
+							$slug4 = '';
+							$slug = array($slug1, $slug2, $slug3, $slug4);
+							$html1 = '';				
+							$class = '';
+							$onchange = 'wppaCheckLinkPageErr(\'upldr_widget\');';
+							$html2 = wppa_select($slug2, $options_page, $values_page, $onchange, $class, true);
+							$class = '';
+							$html3 = '';
+							$html4 = '';
+							$htmlerr = wppa_htmlerr('upldr_widget');
+							$html = array($html1, $htmlerr.$html2, $html3, $html4);
+							wppa_setting($slug, '6', $name, $desc, $html, $help);
+							
 							?>
 						</tbody>
 						<tfoot style="font-weight: bold;" class="wppa_table_6">
@@ -3288,11 +3389,11 @@ wppa_fix_source_extensions();
 									$wppanames = array( 'Album Admin', 
 														'Upload Photos', 
 														'Import Photos', 
-														'Moderate',
+														'Moderate P+C',
 														'Export Photos', 
 														'Settings', 
 														'Photo of the day', 
-														'Comments', 
+														'Comment&nbsp;Admin', 
 														'Help & Info'
 														);
 									echo '<th scope="col" >'.__('Role', 'wppa').'</th>';
@@ -3304,7 +3405,7 @@ wppa_fix_source_extensions();
 							<?php 
 							$wppa_table = 'VII';
 							
-							wppa_setting_subheader('A', '5', __('Roles and Capability settings', 'wppa'));
+							wppa_setting_subheader('A', '6', __('Roles and Capability settings', 'wppa'));
 
 							$roles = $wp_roles->roles;
 							foreach (array_keys($roles) as $key) {
@@ -3981,6 +4082,20 @@ wppa_fix_source_extensions();
 							$warn = esc_js(__('Turning this off may affect the functionality of social media items in the share box that rely on open graph tags information.', 'wppa'));
 							$html = wppa_checkbox_warn_off($slug, '', '', $warn, false);
 							wppa_setting($slug, '23', $name, $desc, $html, $help);
+							
+							$name = __('Add shortcode to posts', 'wppa');
+							$desc = __('Add a shortcode to the end of all posts.', 'wppa');
+							$help = '';
+							$slug = 'wppa_add_shortcode_to_post';
+							$html = wppa_checkbox($slug);
+							wppa_setting($slug, '24', $name, $desc, $html, $help);
+							
+							$name = __('Shortcode to add', 'wppa');
+							$desc = __('The shortcode to be added to the posts.', 'wppa');
+							$help = '';
+							$slug = 'wppa_shortcode_to_add';
+							$html = wppa_input($slug, '300px');
+							wppa_setting($slug, '25', $name, $desc, $html, $help);
 
 							wppa_setting_subheader('B', '1', __('New Album and New Photo related miscellaneous settings', 'wppa'));
 
@@ -4203,6 +4318,21 @@ wppa_fix_source_extensions();
 							$slug = 'wppa_max_search_photos';
 							$html = wppa_input($slug, '50px');
 							wppa_setting($slug, '7', $name, $desc, $html, $help);
+							
+							$name = __('Tags OR only', 'wppa');
+							$desc = __('No and / or buttons', 'wppa');
+							$help = esc_js(__('Hide the and/or radiobuttons and do the or method in the multitag widget and shortcode.', 'wppa'));
+							$slug = 'wppa_tags_or_only';
+							$html = wppa_checkbox($slug);
+							wppa_setting($slug, '8', $name, $desc, $html, $help);
+							
+							$name = __('Floating searchtoken', 'wppa');
+							$desc = __('A match need not start at the first char.', 'wppa');
+							$help = esc_js(__('A match is found while searching also when the entered token is somewhere in the middle of a word.', 'wppa'));
+							$help .= '\n\n'.esc_js(__('This works in indexed search only!', 'wppa'));
+							$slug = 'wppa_wild_front';
+							$html = wppa_checkbox($slug);
+							wppa_setting($slug, '9', $name, $desc, $html, $help);
 							
 							wppa_setting_subheader('D', '1', __('Watermark related settings', 'wppa'));
 							
