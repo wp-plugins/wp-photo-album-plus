@@ -2104,7 +2104,7 @@ function wppaEditPhoto(mocc, id) {
 
 	if ( screen.availWidth < width ) width = screen.availWidth;
 
-	var wnd = window.open("", "_blank", "toolbar=no, location=no, directories=no, status=no, menubar=yes, scrollbars=yes, resizable=yes, copyhistory=yes, width="+width+", height="+height, true);
+	var wnd = window.open("", "_blank", "toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, copyhistory=yes, width="+width+", height="+height, true);
 
 	wnd.document.write('<!DOCTYPE html>');
 	wnd.document.write('<html>');
