@@ -771,6 +771,7 @@ global $wppa;
 					break;
 					
 				case 'status':
+				if ( ! current_user_can('wppa_moderate') ) die('Security check failure #78');
 					wppa_flush_treecounts($wpdb->get_var($wpdb->prepare("SELECT `album` FROM `".WPPA_PHOTOS."` WHERE `id` = %s",$value)));
 					wppa_flush_upldr_cache('photoid', $photo);
 				case 'name':

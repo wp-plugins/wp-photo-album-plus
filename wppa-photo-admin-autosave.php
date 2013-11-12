@@ -124,8 +124,15 @@ function wppa_album_photos($album = '', $photo = '', $owner = '', $moderate = fa
 	
 	if ( $link && isset($_REQUEST['quick']) ) $link .= '&quick';
 	
-	if (empty($photos)) { 
-		echo '<p>'.__('No photos yet in this album.', 'wppa').'</p>';
+	if ( empty( $photos ) ) { 
+		if ( $photo ) {
+			echo 	'<div id="photoitem-'.$photo.'" class="photoitem" style="width: 99%; background-color: rgb(255, 255, 224); border-color: rgb(230, 219, 85);">
+						<span style="color:red">'.sprintf(__a('Photo %s has been removed.'), $photo).'</span>
+					</div>';
+		}
+		else {
+			echo '<p>'.__('No photos yet in this album.', 'wppa').'</p>';
+		}
 	} 
 	else { 
 		$wms = array( 'toplft' => __('top - left', 'wppa'), 'topcen' => __('top - center', 'wppa'), 'toprht' => __('top - right', 'wppa'), 
@@ -444,7 +451,7 @@ function wppa_album_photos($album = '', $photo = '', $owner = '', $moderate = fa
 									else { 
 										if ( $photo['status'] == 'pending' ) _e('Pending', 'wppa');
 										elseif ( $photo['status'] == 'publish' ) _e('Publish', 'wppa');
-										elseif ( $photo['status'] == 'featured' ) e('Featured', 'wppa');
+										elseif ( $photo['status'] == 'featured' ) _e('Featured', 'wppa');
 									} ?>
 									<span id="psdesc-<?php echo $photo['id'] ?>" class="description" style="display:none;" ><?php _e('Note: Featured photos should have a descriptive name; a name a search engine will look for!', 'wppa'); ?></span>
 
