@@ -4224,6 +4224,14 @@ wppa_fix_source_extensions();
 							$html = wppa_checkbox($slug);
 							wppa_setting($slug, '9.3', $name, $desc, $html, $help);
 							
+							$name = __('Photo order# is restricted', 'wppa');
+							$desc = __('Changing <b>Photo sort order #</b> is a restricted action.', 'wppa');
+							$help = esc_js(__('If checked: Photo sort order #: can not be set in photo admin by users not having admin rights.', 'wppa'));
+							$slug = 'wppa_porder_restricted';
+							$html = wppa_checkbox($slug);
+							wppa_setting($slug, '10.1', $name, $desc, $html, $help);
+							
+							
 							$name = __('Strip file extension', 'wppa');
 							$desc = __('Default photo name is filename without extension.', 'wppa');
 							$help = '';

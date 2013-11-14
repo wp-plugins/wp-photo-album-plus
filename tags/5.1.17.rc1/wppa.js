@@ -2103,21 +2103,23 @@ function wppaEditPhoto(mocc, id) {
 	var height = 512;
 
 	if ( screen.availWidth < width ) width = screen.availWidth;
+	
+//	var hdoc = document;
 
 	var wnd = window.open("", "_blank", "toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, copyhistory=yes, width="+width+", height="+height, true);
 
 	wnd.document.write('<!DOCTYPE html>');
 	wnd.document.write('<html>');
 		wnd.document.write('<head>');	
-			wnd.document.write('<link rel="stylesheet" id="wppa_style-css"  href="'+wppaSiteUrl+'/wp-content/plugins/wp-photo-album-plus/wppa-admin-styles.css?ver='+wppaVersion+'" type="text/css" media="all" />');
-			wnd.document.write('<style>body {font-family: sans-serif; font-size: 12px; line-height: 1.4em;}a {color: #21759B;}</style>');
-			wnd.document.write('<script type="text/javascript" src="'+wppaSiteUrl+'/wp-includes/js/jquery/jquery.js?ver='+wppaVersion+'"></script>');
-			wnd.document.write('<script type="text/javascript" src="'+wppaSiteUrl+'/wp-includes/js/jquery/jquery-migrate.min.js?ver='+wppaVersion+'"></script>');
-			wnd.document.write('<script type="text/javascript" src="'+wppaSiteUrl+'/wp-content/plugins/wp-photo-album-plus/wppa-admin-scripts.js?ver='+wppaVersion+'"></script>');
-			wnd.document.write('<title>'+name+'</title>');
-			wnd.document.write('<script type="text/javascript">wppaAjaxUrl="'+wppaAjaxUrl+'";</script>');
+			// The following is one statement that fixes a bug in opera
+			wnd.document.write(	'<link rel="stylesheet" id="wppa_style-css"  href="'+wppaSiteUrl+'/wp-content/plugins/wp-photo-album-plus/wppa-admin-styles.css?ver='+wppaVersion+'" type="text/css" media="all" />'+
+								'<style>body {font-family: sans-serif; font-size: 12px; line-height: 1.4em;}a {color: #21759B;}</style>'+
+								'<script type="text/javascript" src="'+wppaSiteUrl+'/wp-includes/js/jquery/jquery.js?ver='+wppaVersion+'"></script>'+
+								'<script type="text/javascript" src="'+wppaSiteUrl+'/wp-content/plugins/wp-photo-album-plus/wppa-admin-scripts.js?ver='+wppaVersion+'"></script>'+
+								'<title>'+name+'</title>'+
+								'<script type="text/javascript">wppaAjaxUrl="'+wppaAjaxUrl+'";</script>');
 		wnd.document.write('</head>');
-		wnd.document.write('<body>');
+		wnd.document.write('<body onunload="window.opener.location.reload()">');
 		
 		var xmlhttp = wppaGetXmlHttp();
 		// Make the Ajax send data
@@ -2134,11 +2136,17 @@ function wppaEditPhoto(mocc, id) {
 			var result = xmlhttp.responseText;
 			wnd.document.write(result);
 		}
+		wnd.document.write('<script>wppaPhotoStatusChange('+id+')</script>'); 
 		wnd.document.write('</body>');
 	wnd.document.write('</html>');
 //
 }
-
+/*
+function wppaReloadWindow(hwnd) {
+alert(typeof(hwnd));
+	hwnd.document.location.reload(true);
+}
+*/
 // Part 3: Ajax
 // Additionally: functions to change the url during ajax and browse operations
 
@@ -2864,6 +2872,8 @@ function wppaAjaxMakeOrigName(mocc, id) {
 
 function wppaAjaxComment(mocc, id) {
 
+	if ( ! _wppaValidateComment(mocc) ) return;
+	
 	// Show spinner
 	jQuery("#wppa-comment-spin-"+mocc).css('display', 'inline');
 	

@@ -178,6 +178,7 @@ See for additional information: http://wppa.opajaap.nl/?page_id=1459
 = Bug Fixes =
 
 * Hovering the image in the comment widget stopped showing the comment. Fixed.
+* Form input validation was lost during ajaxification of commenting. Fixed.
 
 = New Features =
 
