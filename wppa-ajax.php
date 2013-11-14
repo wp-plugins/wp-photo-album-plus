@@ -43,6 +43,10 @@ global $wppa;
 			if ( wppa_get_user() == wppa_get_photo_owner($photo) && current_user_can('wppa_upload') && wppa_switch('wppa_upload_edit') ) $ok = true;
 			if ( ! $ok ) die('You do nat have sufficient rights to do this');
 			require_once 'wppa-photo-admin-autosave.php';
+			$wppa['front_edit'] = true;
+			echo '<span style="color:#777;" ><i>'.
+				__a('All modifications are instantly updated on the server. The <b style="color:#070" >Remark</b> field keeps you informed on the actions taken at the background.').
+				'</i></span>';
 			wppa_album_photos('', $photo);
 			exit;
 			break;
