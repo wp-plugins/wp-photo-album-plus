@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the recent commets on photos
-* Version 5.1.15
+* Version 5.1.17
 */
 
 class wppaCommentWidget extends WP_Widget {
@@ -56,8 +56,9 @@ class wppaCommentWidget extends WP_Widget {
 				
 				$imgevents = wppa_get_imgevents('thumb', $image['id'], true);	
 
-				if ($link) $title = esc_attr(stripslashes($link['title']));
-				else $title = $comment['comment'];
+//				if ($link) $title = esc_attr(stripslashes($link['title']));
+//				else 
+				$title = esc_attr($comment['comment']);
 				if ($link) {
 					if ( $link['is_url'] ) {	// Is a href
 						$widget_content .= "\n\t".'<a href="'.$link['url'].'" target="'.$link['target'].'" title="'.$title.'">';

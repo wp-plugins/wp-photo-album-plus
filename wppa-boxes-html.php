@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Various wppa boxes
-* Version 5.1.16
+* Version 5.1.17
 *
 */
 
@@ -308,7 +308,7 @@ global $wppa_locale;
 		$tw .=	'</div>';
 	}
 	else $tw = '';
-	
+/*	
 	// hyves
 	if ( $wppa_opt['wppa_share_hyves'] ) {
 		$hv = 	'<div style="float:left; padding:2px;" >';
@@ -321,6 +321,8 @@ global $wppa_locale;
 		$hv .= 	'</div>';		
 	}
 	else $hv = '';
+*/
+	$hv = '';
 	
 	// Google
 	if ( $wppa_opt['wppa_share_google'] ) {
@@ -363,7 +365,7 @@ global $wppa_locale;
 	
 	// Facebook comments
 	if ( ( wppa_switch('wppa_facebook_comments') || wppa_switch('wppa_facebook_like') ) && ! $wppa['in_widget'] ) {
-		$width = $wppa['fullsize'] == 'auto' ? 'auto' : min('470', wppa_get_container_width(true));
+		$width = $wppa['fullsize'] == 'auto' ? 'auto' : wppa_get_container_width(true);
 		if ( wppa_switch('wppa_facebook_like') ) {
 			$fbc = '<div class="fb-like" data-href="'.$share_url.'" data-width="'.$width.'" data-show-faces="false" data-send="true"></div>';
 		}
@@ -374,7 +376,7 @@ global $wppa_locale;
 		$fbc .= '[script>wppaFbInit();[/script>';
 	}
 	else $fbc = '';
-	
+
 	return $qr.$fb.$tw.$hv.$go.$pi.$li.$fbc.//.'<small>This box is under construction and may not yet properly work for all icons shown</small>'.
 	'<div style="clear:both"></div>';
 
@@ -605,7 +607,7 @@ global $wppa_first_comment_html;
 
 	// Loop the comments already there
 	$n_comments = 0;
-	if ($wppa_opt['wppa_comments_desc']) $ord = 'DESC'; else $ord = '';
+	if ( wppa_switch('wppa_comments_desc') ) $ord = 'DESC'; else $ord = '';
 	$comments = $wpdb->get_results($wpdb->prepare( 'SELECT * FROM '.WPPA_COMMENTS.' WHERE photo = %s ORDER BY id '.$ord, $id ), ARRAY_A );
 	wppa_dbg_q('Q46v');
 	$com_count = count($comments);
@@ -720,7 +722,7 @@ global $wppa_first_comment_html;
 							$result .= '<td class="wppa-box-text wppa-td" style="width:30%; '.__wcs('wppa-box-text').__wcs('wppa-td').'" >'.__a('Your name:').'</td>';
 							$result .= '<td class="wppa-box-text wppa-td" style="width:70%; '.__wcs('wppa-box-text').__wcs('wppa-td').'" ><input type="text" name="wppa-comname" id="wppa-comname-'.$wppa['master_occur'].'" style="width:100%; " value="'.$wppa['comment_user'].'" /></td>';
 						$result .= '</tr>';
-						if ( $wppa_opt['wppa_comment_email_required'] ) {
+						if ( wppa_switch('wppa_comment_email_required') ) {
 							$result .= '<tr valign="top" style="'.$vis.'">';
 								$result .= '<td class="wppa-box-text wppa-td" style="width:30%; '.__wcs('wppa-box-text').__wcs('wppa-td').'" >'.__a('Your email:').'</td>';
 								$result .= '<td class="wppa-box-text wppa-td" style="width:70%; '.__wcs('wppa-box-text').__wcs('wppa-td').'" ><input type="text" name="wppa-comemail" id="wppa-comemail-'.$wppa['master_occur'].'" style="width:100%; " value="'.$wppa['comment_email'].'" /></td>';
@@ -728,7 +730,7 @@ global $wppa_first_comment_html;
 						}
 						$result .= '<tr valign="top" style="vertical-align:top;">';	
 							$result .= '<td valign="top" class="wppa-box-text wppa-td" style="vertical-align:top; width:30%; '.__wcs('wppa-box-text').__wcs('wppa-td').'" >'.__a('Your comment:').'<br />'.$wppa['comment_user'].'<br />';
-							if ( $wppa_opt['wppa_comment_captcha'] ) {
+							if ( wppa_switch('wppa_comment_captcha') ) {
 								$wid = '20%';
 								if ( $wppa_opt['wppa_fontsize_box'] ) $wid = ($wppa_opt['wppa_fontsize_box'] * 1.5 ).'px';
 								$captkey = $id;

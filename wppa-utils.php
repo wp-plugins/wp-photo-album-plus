@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains low-level utility routines
-* Version 5.1.15
+* Version 5.1.17
 *
 */
 
@@ -1256,4 +1256,11 @@ global $wpdb;
 
 	$iret = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `" . $wpdb->posts . "` WHERE `post_type` = 'page' AND `post_status` = 'publish' AND `ID` = %s", $id));
 	return ( $iret > '0' );
+}
+
+function wppa_get_photo_owner($id) {
+global $thumb;
+
+	wppa_cache_thumb($id);
+	return $thumb['owner'];
 }

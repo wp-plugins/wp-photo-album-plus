@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions
-* Version 5.1.16
+* Version 5.1.17
 *
 */
 
@@ -1167,12 +1167,10 @@ global $thumb;
 		$desc = '';
 	}
 	
+	// Edit photo link
 	if ( ! $wppa['is_filmonly'] ) {
-		if ( current_user_can('wppa_admin') ) {
-			$desc = '<div style="float:right; margin-right:6px;" ><a href="'.get_admin_url().'admin.php?page=wppa_admin_menu&amp;tab=pedit&amp;photo='.$thumb['id'].'" target="_blank" >'.__a('Edit').'</a></div><br />'.$desc;
-		}
-		elseif ( current_user_can('wppa_upload') && $wppa_opt['wppa_upload_edit'] && $thumb['owner'] == wppa_get_user() ) {
-			$desc = '<div style="float:right; margin-right:6px;" ><a href="'.get_admin_url().'admin.php?page=wppa_edit_photo&amp;photo='.$thumb['id'].'" target="_blank" >'.__a('Edit').'</a></div><br />'.$desc;
+		if ( ( current_user_can('wppa_admin') ) || ( wppa_get_user() == wppa_get_photo_owner($id) && current_user_can('wppa_upload') && wppa_switch('wppa_upload_edit') ) ) {
+			$desc = '<div style="float:right; margin-right:6px;" ><a href="javascript:void();" onclick="wppaEditPhoto('.$wppa['master_occur'].', '.$thumb['id'].'); return false;" >'.__a('Edit').'</a></div><br />'.$desc;
 		}
 	}
 	
@@ -1239,7 +1237,7 @@ global $wppa_done;
 	if ( ! $user ) die('Illegal attempt to enter a comment 1');
 	$email = wppa_get_post('comemail');
 	if ( ! $email ) {
-		if ( $wppa_opt['wppa_comment_email_required'] ) die('Illegal attempt to enter a comment 2');
+		if ( wppa_switch('wppa_comment_email_required') ) die('Illegal attempt to enter a comment 2');
 		else $email = wppa_get_user();	// If email not present and not required, use his IP
 	}
 	
@@ -1304,7 +1302,7 @@ global $wppa_done;
 		if ( $iret !== false ) {
 			if ( $status != 'spam' ) {
 				if ($cedit) {
-					if ( $wppa_opt['wppa_comment_notify_added'] ) echo('<script type="text/javascript">alert("'.__a('Comment edited').'")</script>');
+					if ( wppa_switch('wppa_comment_notify_added') ) echo('<script type="text/javascript">alert("'.__a('Comment edited').'")</script>');
 				}
 				else {
 					// SUCCESSFUL COMMENT, ADD POINTS
@@ -1359,7 +1357,7 @@ global $wppa_done;
 								$to = $moduser->user_email;
 								$cont['2'] = user_can( $moduser, 'wppa_comments' ) ? $cont2 : '';
 								if ( user_can( $moduser, 'wppa_admin' ) ) $cont['3'] = $cont3;
-								elseif ( $wppa_opt['wppa_upload_edit'] ) $cont['3'] = $cont3a;
+								elseif ( wppa_switch('wppa_upload_edit') ) $cont['3'] = $cont3a;
 								else $cont['3'] = '';
 								$cont['4'] = __a('You receive this email as uploader of the photo');
 								// Send!
@@ -1385,7 +1383,7 @@ global $wppa_done;
 						}
 					}
 					// Notyfy user
-					if ( $wppa_opt['wppa_comment_notify_added'] ) echo('<script type="text/javascript">alert("'.__a('Comment added').'")</script>');
+					if ( wppa_switch('wppa_comment_notify_added') ) echo('<script type="text/javascript">alert("'.__a('Comment added').'")</script>');
 				}
 			}
 			else {
@@ -3261,8 +3259,8 @@ if ( $wppa['is_upldr'] ) $album='0';
 			break;
 	}
 	
-	if ( $wppa['src'] && ! $wppa['is_related'] ) { 
-		$result['url'] .= '&amp;wppa-searchstring='.urlencode($wppa['searchstring']);//strip_tags($_REQUEST['wppa-searchstring']));
+	if ( $wppa['src'] && ! $wppa['is_related'] && ! $wppa['in_widget'] ) { 
+		$result['url'] .= '&amp;wppa-searchstring='.urlencode($wppa['searchstring']);
 	}
 
 	if ($wich == 'topten') {

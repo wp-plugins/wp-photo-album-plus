@@ -2,7 +2,7 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 5.1.16
+* version 5.1.17
 *
 */
 
@@ -111,7 +111,8 @@ global $wppa_initruntimetime;
 			'related_count'				=> '0',
 			'is_owner'					=> '',
 			'is_upldr'					=> '',
-			'no_esc'					=> false
+			'no_esc'					=> false,
+			'front_edit'				=> false
 
 
 
@@ -638,6 +639,9 @@ global $wppa_initruntimetime;
 						'wppa_alt_is_restricted'		=> '',
 						'wppa_link_is_restricted'		=> '',
 						'wppa_covertype_is_restricted'	=> '',
+						'wppa_porder_restricted'		=> '',
+						
+						
 						'wppa_strip_file_ext'			=> '',
 
 						'wppa_copy_timestamp'			=> '',
