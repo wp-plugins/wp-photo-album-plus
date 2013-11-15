@@ -459,7 +459,9 @@ global $wppa;
 										<option value="featured" <?php if ($photo['status']=='featured') echo 'selected="selected"'?> ><?php _e('Featured', 'wppa') ?></option>
 									</select>
 								<?php }
-									else { 
+									else { ?>
+										<input type="hidden" id="status-<?php echo $photo['id'] ?>" value="<?php echo $photo['status'] ?>" />
+									<?php									
 										if ( $photo['status'] == 'pending' ) _e('Pending', 'wppa');
 										elseif ( $photo['status'] == 'publish' ) _e('Publish', 'wppa');
 										elseif ( $photo['status'] == 'featured' ) _e('Featured', 'wppa');

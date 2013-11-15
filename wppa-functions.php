@@ -1169,7 +1169,7 @@ global $thumb;
 	
 	// Edit photo link
 	if ( ! $wppa['is_filmonly'] ) {
-		if ( ( current_user_can('wppa_admin') ) || ( wppa_get_user() == wppa_get_photo_owner($photo) && current_user_can('wppa_upload') && wppa_switch('wppa_upload_edit') ) ) {
+		if ( ( current_user_can('wppa_admin') ) || ( wppa_get_user() == wppa_get_photo_owner($id) && current_user_can('wppa_upload') && wppa_switch('wppa_upload_edit') ) ) {
 			$desc = '<div style="float:right; margin-right:6px;" ><a href="javascript:void();" onclick="wppaEditPhoto('.$wppa['master_occur'].', '.$thumb['id'].'); return false;" >'.__a('Edit').'</a></div><br />'.$desc;
 		}
 	}

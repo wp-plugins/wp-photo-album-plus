@@ -390,18 +390,19 @@ wppa_fix_source_extensions();
 		}
 		
 		// Blacklist
-		
 		$blacklist_plugins = array('performance-optimization-order-styles-and-javascript/order-styles-js.php', 'wp-ultra-simple-paypal-shopping-cart/wp_ultra_simple_shopping_cart.php');
 		$plugins = get_option('active_plugins');
 		$matches = array_intersect($blacklist_plugins, $plugins);
 		foreach ( $matches as $bad ) {
 			wppa_error_message(__('Please de-activate plugin <i style="font-size:14px;">', 'wppa').substr($bad, 0, strpos($bad, '/')).__('. </i>This plugin will cause wppa+ to function not properly.', 'wppa'));
 		}
-		// Shortcodes ultimate
-//		if ( get_option( 'su_disable_custom_formatting', 'on' ) != 'on' ) {
-//			wppa_error_message(__('You have <i>Shortcodes Ultimate</i> installed. The checkbox <i>Custom formatting</i> will be unchecked. This setting would damage the layout.', 'wppa'));
-//			set_option( 'su_disable_custom_formatting', 'on' );
-//		}
+		// Graylist
+		$graylist_plugins = array('shortcodes-ultimate/shortcodes-ultimate.php');
+		$matches = array_intersect($graylist_plugins, $plugins);
+		foreach ( $matches as $bad ) {
+			wppa_warning_message(__('Please note that plugin <i style="font-size:14px;">', 'wppa').substr($bad, 0, strpos($bad, '/')).__('</i> can cause wppa+ to function not properly if it is misconfigured.', 'wppa'));
+		}
+
 ?>
 		<!--<br /><a href="javascript:window.print();"><?php //_e('Print settings', 'wppa') ?></a><br />-->
 		<a style="cursor:pointer;" id="wppa-legon" onclick="jQuery('#wppa-legenda').css('display', ''); jQuery('#wppa-legon').css('display', 'none'); return false;" ><?php _e('Show legenda', 'wppa') ?></a> 
@@ -1347,7 +1348,7 @@ wppa_fix_source_extensions();
 							$class = 'wppa_share';
 							$html = wppa_checkbox($slug, $onchange);
 							wppa_setting($slug, '21.3', $name, $desc, $html, $help, $class);
-
+/*
 							$name = __('Show Hyves button', 'wppa');
 							$desc = __('Display the Hyves button in the share box.', 'wppa');
 							$help = '';
@@ -1355,7 +1356,7 @@ wppa_fix_source_extensions();
 							$class = 'wppa_share';
 							$html = wppa_checkbox($slug, $onchange);
 							wppa_setting($slug, '21.4', $name, $desc, $html, $help, $class);
-							
+*/							
 							$name = __('Show Google+ button', 'wppa');
 							$desc = __('Display the Google+ button in the share box.', 'wppa');
 							$help = '';
