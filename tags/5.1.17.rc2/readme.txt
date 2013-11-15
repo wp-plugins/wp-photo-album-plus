@@ -184,7 +184,11 @@ See for additional information: http://wppa.opajaap.nl/?page_id=1459
 
 * Edit photo information initiated from the frontend no longer needs an admin screen or wp admin files.
 * All frontend Ajax operations no longer need files from the wp-admin directory.
-* wp-admin can now be password protected without the loss of any (ajax) functionality for logged-out users.
+* wp-admin can now be password protected without the loss of any (ajax) functionality.
+
+= Other Changes =
+
+* Removed Hyves from the share box. Hyves is dead...
 
 = 5.1.16 =
 

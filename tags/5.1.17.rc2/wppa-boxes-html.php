@@ -308,7 +308,7 @@ global $wppa_locale;
 		$tw .=	'</div>';
 	}
 	else $tw = '';
-	
+/*	
 	// hyves
 	if ( $wppa_opt['wppa_share_hyves'] ) {
 		$hv = 	'<div style="float:left; padding:2px;" >';
@@ -321,6 +321,8 @@ global $wppa_locale;
 		$hv .= 	'</div>';		
 	}
 	else $hv = '';
+*/
+	$hv = '';
 	
 	// Google
 	if ( $wppa_opt['wppa_share_google'] ) {
@@ -363,7 +365,7 @@ global $wppa_locale;
 	
 	// Facebook comments
 	if ( ( wppa_switch('wppa_facebook_comments') || wppa_switch('wppa_facebook_like') ) && ! $wppa['in_widget'] ) {
-		$width = $wppa['fullsize'] == 'auto' ? 'auto' : min('470', wppa_get_container_width(true));
+		$width = $wppa['fullsize'] == 'auto' ? 'auto' : wppa_get_container_width(true);
 		if ( wppa_switch('wppa_facebook_like') ) {
 			$fbc = '<div class="fb-like" data-href="'.$share_url.'" data-width="'.$width.'" data-show-faces="false" data-send="true"></div>';
 		}
@@ -374,7 +376,7 @@ global $wppa_locale;
 		$fbc .= '[script>wppaFbInit();[/script>';
 	}
 	else $fbc = '';
-	
+
 	return $qr.$fb.$tw.$hv.$go.$pi.$li.$fbc.//.'<small>This box is under construction and may not yet properly work for all icons shown</small>'.
 	'<div style="clear:both"></div>';
 
