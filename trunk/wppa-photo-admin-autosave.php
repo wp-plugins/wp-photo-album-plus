@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * edit and delete photos
-* version 5.1.12
+* version 5.1.17
 *
 */
 
@@ -58,9 +58,10 @@ function _wppa_moderate_photos() {
 
 // The photo edit list. Also used in wppa-album-admin-autosave.php
 function wppa_album_photos($album = '', $photo = '', $owner = '', $moderate = false) {
-	global $wpdb;
-	global $q_config;
-	global $wppa_opt;
+global $wpdb;
+global $q_config;
+global $wppa_opt;
+global $wppa;
 	
 	// Check input
 	wppa_vfy_arg('wppa-page');
@@ -124,8 +125,15 @@ function wppa_album_photos($album = '', $photo = '', $owner = '', $moderate = fa
 	
 	if ( $link && isset($_REQUEST['quick']) ) $link .= '&quick';
 	
-	if (empty($photos)) { 
-		echo '<p>'.__('No photos yet in this album.', 'wppa').'</p>';
+	if ( empty( $photos ) ) { 
+		if ( $photo ) {
+			echo 	'<div id="photoitem-'.$photo.'" class="photoitem" style="width: 99%; background-color: rgb(255, 255, 224); border-color: rgb(230, 219, 85);">
+						<span style="color:red">'.sprintf(__a('Photo %s has been removed.'), $photo).'</span>
+					</div>';
+		}
+		else {
+			echo '<p>'.__('No photos yet in this album.', 'wppa').'</p>';
+		}
 	} 
 	else { 
 		$wms = array( 'toplft' => __('top - left', 'wppa'), 'topcen' => __('top - center', 'wppa'), 'toprht' => __('top - right', 'wppa'), 
@@ -139,12 +147,12 @@ function wppa_album_photos($album = '', $photo = '', $owner = '', $moderate = fa
 		
 		foreach ($photos as $photo) { ?>
 			<a id="photo_<?php echo $photo['id'] ?>" name="photo_<?php echo $photo['id'] ?>"></a>
-			<div class="photoitem" id="photoitem-<?php echo $photo['id'] ?>" style="width:100%;" >
+			<div class="photoitem" id="photoitem-<?php echo $photo['id'] ?>" style="width:99%;" >
 			
 				<!-- Left half starts here -->
 				<div style="width:49.5%; float:left; border-right:1px solid #ccc; margin-right:0;">
 					<input type="hidden" id="photo-nonce-<?php echo $photo['id'] ?>" value="<?php echo wp_create_nonce('wppa_nonce_'.$photo['id']);  ?>" />
-					<table class="form-table phototable"  >
+					<table class="form-table phototable" style="width:98%" >
 						<tbody>	
 							<tr style="vertical-align:top;" >
 								<th scope="row">
@@ -152,14 +160,20 @@ function wppa_album_photos($album = '', $photo = '', $owner = '', $moderate = fa
 									<br />
 									<?php echo sprintf(__('Album: %d<br />(%s)', 'wppa'), $photo['album'], wppa_get_album_name($photo['album']) ) ?>
 									<br /><br />
-									<a style="cursor:pointer; font-weight:bold;" onclick="if (confirm('<?php _e('Are you sure you want to rotate this photo?', 'wppa') ?>')) wppaAjaxUpdatePhoto(<?php echo $photo['id'] ?>, 'rotleft', 0); " ><?php _e('Rotate left', 'wppa'); ?></a>
+									<a style="cursor:pointer; font-weight:bold;" onclick="if (confirm('<?php _e('Are you sure you want to rotate this photo?', 'wppa') ?>')) wppaAjaxUpdatePhoto(<?php echo $photo['id'] ?>, 'rotleft', 0, <?php echo ( $wppa['front_edit'] ? 'false' : 'true' ) ?>); " ><?php _e('Rotate left', 'wppa'); ?></a>
 									<br />
-									<a style="cursor:pointer; font-weight:bold;" onclick="if (confirm('<?php _e('Are you sure you want to rotate this photo?', 'wppa') ?>')) wppaAjaxUpdatePhoto(<?php echo $photo['id'] ?>, 'rotright', 0); " ><?php _e('Rotate right', 'wppa'); ?></a>
+									<a style="cursor:pointer; font-weight:bold;" onclick="if (confirm('<?php _e('Are you sure you want to rotate this photo?', 'wppa') ?>')) wppaAjaxUpdatePhoto(<?php echo $photo['id'] ?>, 'rotright', 0, <?php echo ( $wppa['front_edit'] ? 'false' : 'true' ) ?>); " ><?php _e('Rotate right', 'wppa'); ?></a>
 									<br />
 									
 									<span style="font-size: 9px; line-height: 10px; color:#666;">
-										<?php $refresh = '<a onclick="wppaReload()" >'.__('Refresh', 'wppa').'</a>'; ?>
-										<?php echo sprintf(__('If it says \'Photo rotated\', the photo is rotated. %s the page.', 'wppa'), $refresh); ?>
+										<?php if ( $wppa['front_edit'] ) {
+											_e('If it says \'Photo rotated\', the photo is rotated.', 'wppa'); 
+										}
+										else {
+											$refresh = '<a onclick="wppaReload()" >'.__('Refresh', 'wppa').'</a>'; 
+											echo sprintf(__('If it says \'Photo rotated\', the photo is rotated. %s the page.', 'wppa'), $refresh); 
+										}
+										?>
 									</span>
 								</th>
 								<td style="text-align:center;">
@@ -227,21 +241,23 @@ function wppa_album_photos($album = '', $photo = '', $owner = '', $moderate = fa
 							</tr>
 							
 							<!-- P_order -->
+							<?php if ( ! wppa_switch('wppa_porder_restricted') || current_user_can('administrator') ) { ?>
 							<tr style="vertical-align:bottom;" >
 								<th scope="row" style="padding-top:0; padding-bottom:0;">
 									<label><?php _e('Photo sort order #:', 'wppa'); ?></label>
 								</th>
 								<td style="padding-top:0; padding-bottom:0;">
-									<input type="text" id="porder-<?php echo $photo['id'] ?>" value="<?php echo($photo['p_order']) ?>" style="width: 50px" onchange="wppaAjaxUpdatePhoto(<?php echo $photo['id'] ?>, 'p_order', this)" />
+									<input type="text" id="porder-<?php echo $photo['id'] ?>" value="<?php echo($photo['p_order']) ?>" style="width: 50px" onkeyup="wppaAjaxUpdatePhoto(<?php echo $photo['id'] ?>, 'p_order', this)" onchange="wppaAjaxUpdatePhoto(<?php echo $photo['id'] ?>, 'p_order', this)" />
 								</td>
 							</tr>
+							<?php } ?>
 							
 							<?php if ( ! isset($_REQUEST['quick']) ) { ?>
 								<?php if ( ! isset($album_select[$photo['album']]) ) $album_select[$photo['album']] = wppa_album_select_a(array('checkaccess' => true, 'path' => wppa_switch('wppa_hier_albsel'), 'exclude' => $photo['album'], 'selected' => '0', 'addpleaseselect' => true)) ?>
 								<!-- Move -->
 								<tr style="vertical-align:bottom;" >
 									<th scope="row" style="padding-top:0; padding-bottom:0;">
-										<a style="" onclick="if(document.getElementById('moveto-<?php echo($photo['id']) ?>').value != 0) { if (confirm('<?php _e('Are you sure you want to move this photo?', 'wppa') ?>')) wppaAjaxUpdatePhoto(<?php echo $photo['id'] ?>, 'moveto', document.getElementById('moveto-<?php echo($photo['id']) ?>') ) } else { alert('<?php _e('Please select an album to move the photo to first.', 'wppa') ?>'); return false;}" ><?php _e('Move photo to', 'wppa') ?></a> 
+										<input type="button" style="" onclick="if(document.getElementById('moveto-<?php echo($photo['id']) ?>').value != 0) { if (confirm('<?php _e('Are you sure you want to move this photo?', 'wppa') ?>')) wppaAjaxUpdatePhoto(<?php echo $photo['id'] ?>, 'moveto', document.getElementById('moveto-<?php echo($photo['id']) ?>') ) } else { alert('<?php _e('Please select an album to move the photo to first.', 'wppa') ?>'); return false;}" value="<?php echo esc_attr(__('Move photo to', 'wppa')) ?>" /> 
 									</th>
 									<td style="padding-top:0; padding-bottom:0;">							
 										<select id="moveto-<?php echo $photo['id'] ?>" style="width:100%;" ><?php echo $album_select[$photo['album']] ?></select>
@@ -250,7 +266,7 @@ function wppa_album_photos($album = '', $photo = '', $owner = '', $moderate = fa
 								<!-- Copy -->
 								<tr style="vertical-align:bottom;" >
 									<th scope="row" style="padding-top:0; padding-bottom:0;">
-										<a style="cursor:pointer; font-weight:bold;" onclick="if (document.getElementById('copyto-<?php echo($photo['id']) ?>').value != 0) { if (confirm('<?php _e('Are you sure you want to copy this photo?', 'wppa') ?>')) wppaAjaxUpdatePhoto(<?php echo $photo['id'] ?>, 'copyto', document.getElementById('copyto-<?php echo($photo['id']) ?>') ) } else { alert('<?php _e('Please select an album to copy the photo to first.', 'wppa') ?>'); return false;}" ><?php _e('Copy photo to', 'wppa') ?></a>
+										<input type="button" style="" onclick="if (document.getElementById('copyto-<?php echo($photo['id']) ?>').value != 0) { if (confirm('<?php _e('Are you sure you want to copy this photo?', 'wppa') ?>')) wppaAjaxUpdatePhoto(<?php echo $photo['id'] ?>, 'copyto', document.getElementById('copyto-<?php echo($photo['id']) ?>') ) } else { alert('<?php _e('Please select an album to copy the photo to first.', 'wppa') ?>'); return false;}" value="<?php echo esc_attr(__('Copy photo to', 'wppa')) ?>" />
 									</th>
 									<td style="padding-top:0; padding-bottom:0;">
 										<select id="copyto-<?php echo($photo['id']) ?>" style="width:100%;" ><?php echo $album_select[$photo['album']] ?></select>
@@ -259,26 +275,28 @@ function wppa_album_photos($album = '', $photo = '', $owner = '', $moderate = fa
 							<?php } ?>
 							<!-- Delete -->
 							<tr style="vertical-align:bottom;" >
-								<th scope="row" style="padding-top:0; padding-bottom:0; line-height:20px;">
-									<a style="cursor:pointer; font-weight:bold; color:red;" onclick="if (confirm('<?php _e('Are you sure you want to delete this photo?', 'wppa') ?>')) wppaAjaxDeletePhoto(<?php echo $photo['id'] ?>)" ><?php _e('Delete photo', 'wppa'); ?></a>
+								<th scope="row" style="padding-top:0; padding-bottom:4px;">
+									<input type="button" style="color:red;" onclick="if (confirm('<?php _e('Are you sure you want to delete this photo?', 'wppa') ?>')) wppaAjaxDeletePhoto(<?php echo $photo['id'] ?>)" value="<?php echo esc_attr(__('Delete photo', 'wppa')) ?>" />
 								</th>
 							</tr>
 							<!-- Insert code -->
 							<?php if ( current_user_can('edit_posts') || current_user_can('edit_pages') ) { ?>
 							<tr style="vertical-align:bottom;" >
-								<th scope="row" style="padding: 4px 10px; line-height:20px;">
-									<a style="cursor:pointer; font-weight:bold;" onclick="prompt('<?php _e('Insert code for single image in Page or Post:\nYou may change the size if you like.', 'wppa') ?>', '<?php echo esc_js('[wppa type="photo" photo="'.$photo['id'].'" size="'.$wppa_opt['wppa_fullsize'].'"][/wppa]') ?>')" ><?php _e('Insertion Code', 'wppa'); ?></a>
+								<th scope="row" style="padding-top:0; padding-bottom:4px;">
+									<label>
+										<a style="cursor:pointer; font-weight:bold;" onclick="prompt('<?php _e('Insert code for single image in Page or Post:\nYou may change the size if you like.', 'wppa') ?>', '<?php echo esc_js('[wppa type="photo" photo="'.$photo['id'].'" size="'.$wppa_opt['wppa_fullsize'].'"][/wppa]') ?>')" ><?php _e('Insertion Code', 'wppa'); ?></a>
+									</label>
 								</th>
 							</tr>
 							<?php } ?>
-							<?php if ( $wppa_opt['wppa_link_is_restricted'] == 'no' || current_user_can('administrator') ) { ?>
+							<?php if ( ! wppa_switch('wppa_link_is_restricted') || current_user_can('administrator') ) { ?>
 							<!-- Link url -->
-							<tr style="vertical-align:top;" >
+							<tr style="vertical-align:bottom;" >
 								<th scope="row" style="padding-top:0; padding-bottom:0;">
 									<label><?php _e('Link url:', 'wppa') ?></label>
 								</th>
 								<td style="padding-top:0; padding-bottom:0;">
-									<input type="text" style="width:70%;" onchange="wppaAjaxUpdatePhoto(<?php echo $photo['id'] ?>, 'linkurl', this)" value="<?php echo(stripslashes($photo['linkurl'])) ?>" />
+									<input type="text" style="width:60%;" onkeyup="wppaAjaxUpdatePhoto(<?php echo $photo['id'] ?>, 'linkurl', this)" onchange="wppaAjaxUpdatePhoto(<?php echo $photo['id'] ?>, 'linkurl', this)" value="<?php echo(stripslashes($photo['linkurl'])) ?>" />
 									<select style="float:right;" onchange="wppaAjaxUpdatePhoto(<?php echo $photo['id'] ?>, 'linktarget', this)" >
 										<option value="_self" <?php if ( $photo['linktarget'] == '_self' ) echo 'selected="selected"' ?>><?php _e('Same tab', 'wppa') ?></option>
 										<option value="_blank" <?php if ( $photo['linktarget'] == '_blank' ) echo 'selected="selected"' ?>><?php _e('New tab', 'wppa') ?></option>
@@ -286,12 +304,12 @@ function wppa_album_photos($album = '', $photo = '', $owner = '', $moderate = fa
 								</td>
 							</tr>
 							<!-- Link title -->
-							<tr style="vertical-align:top;" >
+							<tr style="vertical-align:bottom;" >
 								<th scope="row" style="padding-top:0; padding-bottom:0;">
 									<label><?php _e('Link title:', 'wppa') ?></label>
 								</th>
 								<td style="padding-top:0; padding-bottom:0;">
-									<input type="text" style="width:100%;" onchange="wppaAjaxUpdatePhoto(<?php echo $photo['id'] ?>, 'linktitle', this)" value="<?php echo(stripslashes($photo['linktitle'])) ?>" />
+									<input type="text" style="width:97%;" onkeyup="wppaAjaxUpdatePhoto(<?php echo $photo['id'] ?>, 'linktitle', this)" onchange="wppaAjaxUpdatePhoto(<?php echo $photo['id'] ?>, 'linktitle', this)" value="<?php echo(stripslashes($photo['linktitle'])) ?>" />
 								</td>
 							</tr>
 							<?php if ( current_user_can('wppa_settings') ) { ?>
@@ -310,7 +328,7 @@ function wppa_album_photos($album = '', $photo = '', $owner = '', $moderate = fa
 									<label><?php _e('HTML Alt attribute:', 'wppa') ?></label>
 								</th>
 								<td style="padding-top:0; padding-bottom:0;">
-									<input type="text" style="width:100%;" onchange="wppaAjaxUpdatePhoto(<?php echo $photo['id'] ?>, 'alt', this)" value="<?php echo(stripslashes($photo['alt'])) ?>" />
+									<input type="text" style="width:100%;" onkeyup="wppaAjaxUpdatePhoto(<?php echo $photo['id'] ?>, 'alt', this)" onchange="wppaAjaxUpdatePhoto(<?php echo $photo['id'] ?>, 'alt', this)" value="<?php echo(stripslashes($photo['alt'])) ?>" />
 								</td>
 							</tr>
 							<?php } ?>
@@ -352,9 +370,11 @@ function wppa_album_photos($album = '', $photo = '', $owner = '', $moderate = fa
 									$geo = explode('/', $loc);
 									echo $geo['0'].' '.$geo['1'].' ';
 									if ( wppa_switch('wppa_geo_edit') ) { ?>
-									<?php _e('Lat:', 'wppa') ?><input type="text" style="width:100px;" id="lat-<?php echo $photo['id'] ?>" onchange="wppaAjaxUpdatePhoto(<?php echo $photo['id'] ?>, 'lat', this);" value="<?php echo $geo['2'] ?>" />
-									<?php _e('Lon:', 'wppa') ?><input type="text" style="width:100px;" id="lon-<?php echo $photo['id'] ?>" onchange="wppaAjaxUpdatePhoto(<?php echo $photo['id'] ?>, 'lon', this);" value="<?php echo $geo['3'] ?>" />
-									<span class="description"><br /><?php _e('Refresh the page after changing to see the degrees being updated', 'wppa') ?></span>
+										<?php _e('Lat:', 'wppa') ?><input type="text" style="width:100px;" id="lat-<?php echo $photo['id'] ?>" onkeyup="wppaAjaxUpdatePhoto(<?php echo $photo['id'] ?>, 'lat', this);" onchange="wppaAjaxUpdatePhoto(<?php echo $photo['id'] ?>, 'lat', this);" value="<?php echo $geo['2'] ?>" />
+										<?php _e('Lon:', 'wppa') ?><input type="text" style="width:100px;" id="lon-<?php echo $photo['id'] ?>" onkeyup="wppaAjaxUpdatePhoto(<?php echo $photo['id'] ?>, 'lon', this);" onchange="wppaAjaxUpdatePhoto(<?php echo $photo['id'] ?>, 'lon', this);" value="<?php echo $geo['3'] ?>" />
+										<?php if ( ! $wppa['front_edit'] ) { ?>
+											<span class="description"><br /><?php _e('Refresh the page after changing to see the degrees being updated', 'wppa') ?></span>
+										<?php } ?>
 									<?php } ?>
 								</td>
 							</tr>
@@ -366,7 +386,7 @@ function wppa_album_photos($album = '', $photo = '', $owner = '', $moderate = fa
 									<label><?php _e('Photoname:', 'wppa'); ?></label>
 								</th>
 								<td>
-									<input type="text" style="width:100%;" id="pname-<?php echo $photo['id'] ?>" onchange="wppaAjaxUpdatePhoto(<?php echo $photo['id'] ?>, 'name', this);" value="<?php echo esc_attr(stripslashes($photo['name'])) ?>" />
+									<input type="text" style="width:100%;" id="pname-<?php echo $photo['id'] ?>" onkeyup="wppaAjaxUpdatePhoto(<?php echo $photo['id'] ?>, 'name', this);" onchange="wppaAjaxUpdatePhoto(<?php echo $photo['id'] ?>, 'name', this);" value="<?php echo esc_attr(stripslashes($photo['name'])) ?>" />
 								<!--	<span class="description"><br/><?php _e('Type/alter the name of the photo. <small>It is NOT a filename and needs no file extension like .jpg.</small>', 'wppa'); ?></span> -->
 								</td>
 							</tr>
@@ -391,12 +411,12 @@ function wppa_album_photos($album = '', $photo = '', $owner = '', $moderate = fa
 								<?php }
 								else { ?>
 								<td>
-									<textarea style="width: 100%; height:160px;" onchange="wppaAjaxUpdatePhoto(<?php echo $photo['id'] ?>, 'description', this)" ><?php echo(stripslashes($photo['description'])) ?></textarea>
+									<textarea style="width: 100%; height:120px;" onkeyup="wppaAjaxUpdatePhoto(<?php echo $photo['id'] ?>, 'description', this)" onchange="wppaAjaxUpdatePhoto(<?php echo $photo['id'] ?>, 'description', this)" ><?php echo(stripslashes($photo['description'])) ?></textarea>
 								</td>
 								<?php } ?>
 							</tr>
 							<!-- Tags -->
-							<tr style="vertical-align:center;" >
+							<tr style="vertical-align:middle;" >
 								<th scope="row" >
 									<label ><?php _e('Tags:', 'wppa') ?></label>
 									<span class="description" >
@@ -427,7 +447,7 @@ function wppa_album_photos($album = '', $photo = '', $owner = '', $moderate = fa
 							</tr>
 
 							<!-- Status -->
-							<tr style="vertical-align:bottom;" >
+							<tr style="vertical-align:middle;" >
 								<th scope="row" >
 									<label ><?php _e('Status:', 'wppa') ?></label>
 								</th>
@@ -439,19 +459,21 @@ function wppa_album_photos($album = '', $photo = '', $owner = '', $moderate = fa
 										<option value="featured" <?php if ($photo['status']=='featured') echo 'selected="selected"'?> ><?php _e('Featured', 'wppa') ?></option>
 									</select>
 								<?php }
-									else { 
+									else { ?>
+										<input type="hidden" id="status-<?php echo $photo['id'] ?>" value="<?php echo $photo['status'] ?>" />
+									<?php									
 										if ( $photo['status'] == 'pending' ) _e('Pending', 'wppa');
 										elseif ( $photo['status'] == 'publish' ) _e('Publish', 'wppa');
-										elseif ( $photo['status'] == 'featured' ) e('Featured', 'wppa');
+										elseif ( $photo['status'] == 'featured' ) _e('Featured', 'wppa');
 									} ?>
 									<span id="psdesc-<?php echo $photo['id'] ?>" class="description" style="display:none;" ><?php _e('Note: Featured photos should have a descriptive name; a name a search engine will look for!', 'wppa'); ?></span>
 
 								</td>
 							</tr>
 							<!-- Watermark -->
-							<tr style="vertical-align:bottom;" >
+							<tr style="vertical-align:middle;" >
 								<th scope="row" >
-									<label ><?php _e('Watermark:', 'wppa') ?></label>
+									<label style="padding-top:24px;"><?php _e('Watermark:', 'wppa') ?></label>
 								</th>
 								<td>
 									<?php 
@@ -462,7 +484,7 @@ function wppa_album_photos($album = '', $photo = '', $owner = '', $moderate = fa
 											<?php echo wppa_watermark_file_select() ?>
 											</select>
 											<?php
-											echo __('Pos:', 'wppa').' ' ?>
+											echo '<br />'.__('Pos:', 'wppa').' ' ?>
 											<select id="wmpsel_<?php echo $photo['id']?>">
 											<?php echo wppa_watermark_pos_select() ?>
 											</select> 
@@ -482,9 +504,9 @@ function wppa_album_photos($album = '', $photo = '', $owner = '', $moderate = fa
 								</td>
 							</tr>
 							<!-- Remark -->
-							<tr style="vertical-align:bottom;" >
+							<tr style="vertical-align:middle;" >
 								<th scope="row">
-									<label ><?php _e('Remark:', 'wppa') ?></label>
+									<label style="color:#070"><?php _e('Remark:', 'wppa') ?></label>
 								</th>
 								<td id="photostatus-<?php echo $photo['id'] ?>" style="width:99%; padding-left:10px;">
 									<?php echo sprintf(__('Photo %s is not modified yet', 'wppa'), $photo['id']) ?>

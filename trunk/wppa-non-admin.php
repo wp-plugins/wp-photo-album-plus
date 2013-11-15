@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the non admin stuff
-* Version 5.1.16
+* Version 5.1.17
 *
 */
 
@@ -255,6 +255,7 @@ function wppa_kickoff() {
 global $wppa;
 global $wppa_opt;
 global $wppa_lang;
+global $wppa_api_version;
 
 	switch ($wppa_opt['wppa_slideshow_linktype']) {
 		case 'file':
@@ -284,6 +285,7 @@ global $wppa_lang;
 	/* This goes into wppa.js */ 
 	echo '
 	wppaDebug = '.( $wppa['debug'] ? 'true' : 'false' ).';
+	wppaVersion = "'.$wppa_api_version.'";
 	wppaBackgroundColorImage = "'.$wppa_opt['wppa_bgcolor_img'].'";
 	wppaPopupLinkType = "'.$wppa_opt['wppa_thumb_linktype'].'";
 	wppaAnimationType = "'.$wppa_opt['wppa_animation_type'].'";
@@ -338,6 +340,8 @@ global $wppa_lang;
 	wppaNumbarMax = "'.$wppa_opt['wppa_numbar_max'].'";
 	wppaLang = "'.$wppa_lang.'";
 	wppaAjaxUrl = "'.admin_url('admin-ajax.php').'";
+	wppaAjaxUrl = "'.WPPA_URL.'/wppa-ajax-front.php";
+	wppaSiteUrl = "'.site_url().'";
 	wppaNextOnCallback = '.( $wppa_opt['wppa_next_on_callback'] ? 'true' : 'false' ).';
 	wppaRatingUseAjax = true;
 	wppaStarOpacity = '.( $wppa_opt['wppa_star_opacity']/'100' ).';

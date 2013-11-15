@@ -1,7 +1,7 @@
 /* admin-scripts.js */
 /* Package: wp-photo-album-plus
 /*
-/* Version 5.1.12
+/* Version 5.1.17
 /* Various js routines used in admin pages		
 */
 
@@ -766,6 +766,8 @@ function impUpd(elm, id) {
 
 function wppaAjaxDeletePhoto(photo) {
 
+	jQuery('#wppa-fe-exit').css('display', 'none');	// For front end edit
+
 	var xmlhttp = wppaGetXmlHttp();
 	/*
 	if (window.XMLHttpRequest) {		// code for IE7+, Firefox, Chrome, Opera, Safari
@@ -797,7 +799,8 @@ function wppaAjaxDeletePhoto(photo) {
 			break;
 		case 4:
 			if (xmlhttp.status!=404) {
-				var ArrValues = xmlhttp.responseText.split("||");
+				var str = wppaTrim(xmlhttp.responseText);
+				var ArrValues = str.split("||");
 				if (ArrValues[0] != '') {
 					alert('The server returned unexpected output:\n'+ArrValues[0]);
 				}
@@ -807,6 +810,8 @@ function wppaAjaxDeletePhoto(photo) {
 					document.getElementById('photoitem-'+photo).innerHTML = ArrValues[2];	// OK
 					wppaProcessFull(ArrValues[3], ArrValues[4]);
 				}
+	jQuery('#wppa-fe-exit').css('display', '');	// For front end edit
+
 			}
 			
 		}
@@ -814,6 +819,8 @@ function wppaAjaxDeletePhoto(photo) {
 }
 
 function wppaAjaxApplyWatermark(photo, file, pos) {
+
+	jQuery('#wppa-fe-exit').css('display', 'none');	// For front end edit
 
 	var xmlhttp = wppaGetXmlHttp();
 
@@ -834,7 +841,9 @@ function wppaAjaxApplyWatermark(photo, file, pos) {
 	// Process the result
 	xmlhttp.onreadystatechange=function() {
 		if (xmlhttp.readyState == 4 && xmlhttp.status != 404) {
-			var ArrValues = xmlhttp.responseText.split("||");
+			var str = wppaTrim(xmlhttp.responseText);
+			var ArrValues = str.split("||");
+
 			if (ArrValues[0] != '') {
 				alert('The server returned unexpected output:\n'+ArrValues[0]);
 			}
@@ -847,11 +856,16 @@ function wppaAjaxApplyWatermark(photo, file, pos) {
 			}
 			// Hide spinner
 			jQuery('#wppa-water-spin-'+photo).css({visibility:'hidden'});
+			
+	jQuery('#wppa-fe-exit').css('display', '');	// For front end edit
+			
 		}
 	}
 }
 
-function wppaAjaxUpdatePhoto(photo, actionslug, elem) {
+function wppaAjaxUpdatePhoto(photo, actionslug, elem, refresh) {
+
+	jQuery('#wppa-fe-exit').css('display', 'none');	// For front end edit
 
 	var xmlhttp = wppaGetXmlHttp();
 
@@ -884,7 +898,9 @@ function wppaAjaxUpdatePhoto(photo, actionslug, elem) {
 			break;
 		case 4:
 			if (xmlhttp.status!=404) {
-				var ArrValues = xmlhttp.responseText.split("||");
+				var str = wppaTrim(xmlhttp.responseText);
+				var ArrValues = str.split("||");
+
 				if (ArrValues[0] != '') {
 					alert('The server returned unexpected output:\n'+ArrValues[0]);
 				}
@@ -901,7 +917,11 @@ function wppaAjaxUpdatePhoto(photo, actionslug, elem) {
 				}
 				// Hide spinner
 				if ( actionslug == 'description' ) jQuery('#wppa-photo-spin-'+photo).css({visibility:'hidden'});
-				if ( actionslug == 'rotleft' || actionslug == 'rotright' ) wppaRefresh('photo_'+photo);
+//				if ( actionslug == 'rotleft' || actionslug == 'rotright' ) 
+
+	jQuery('#wppa-fe-exit').css('display', '');	// For front end edit
+
+				if ( refresh ) wppaRefresh('photo_'+photo);
 			}
 		}
 	}
@@ -940,7 +960,9 @@ function wppaAjaxUpdateAlbum(album, actionslug, elem) {
 			break;
 		case 4:
 			if (xmlhttp.status!=404) {
-				var ArrValues = xmlhttp.responseText.split("||");
+				var str = wppaTrim(xmlhttp.responseText);
+				var ArrValues = str.split("||");
+
 				if (ArrValues[0] != '') {
 					alert('The server returned unexpected output:\n'+ArrValues[0]);
 				}
@@ -994,7 +1016,9 @@ function wppaAjaxUpdateCommentStatus(photo, id, value) {
 	
 	xmlhttp.onreadystatechange=function() {
 		if ( xmlhttp.readyState == 4 && xmlhttp.status != 404 ) {
-			var ArrValues = xmlhttp.responseText.split("||");
+			var str = wppaTrim(xmlhttp.responseText);
+			var ArrValues = str.split("||");
+
 			if (ArrValues[0] != '') {
 				alert('The server returned unexpected output:\n'+ArrValues[0]);
 			}
@@ -1036,7 +1060,9 @@ function wppaAjaxUpdateOptionCheckBox(slug, elem) {
 			document.getElementById('img_'+slug).src = wppaImageDirectory+'clock.png';
 			break;
 		case 4:
-			var ArrValues = xmlhttp.responseText.split("||");
+			var str = wppaTrim(xmlhttp.responseText);
+			var ArrValues = str.split("||");
+			
 			if (ArrValues[0] != '') {
 				alert('The server returned unexpected output:\n'+ArrValues[0]);
 			}
@@ -1075,7 +1101,8 @@ function wppaAjaxUpdateOptionValue(slug, elem) {
 			document.getElementById('img_'+slug).src = wppaImageDirectory+'clock.png';
 		}
 		else {	// Ready
-			var ArrValues = xmlhttp.responseText.split("||");
+			var str = wppaTrim(xmlhttp.responseText);
+			var ArrValues = str.split("||");
 
 			if (ArrValues[0] != '') {
 				alert('The server returned unexpected output:\n'+ArrValues[0]);
@@ -1219,4 +1246,7 @@ function wppaRefresh(label) {
 }
 function wppaReload() {
 	location.reload(true);
+}
+function wppaTrim (str) {
+    return str.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
 }

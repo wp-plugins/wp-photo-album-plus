@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Frontend links
-* Version 5.1.15
+* Version 5.1.17
 *
 */
 
@@ -100,7 +100,8 @@ function wppa_get_ajaxlink($key = '') {
 global $wppa;
 global $wppa_lang;
 
-	$al = admin_url('admin-ajax.php').'?action=wppa&amp;wppa-action=render';
+//	$al = admin_url('admin-ajax.php').'?action=wppa&amp;wppa-action=render';
+	$al = WPPA_URL.'/wppa-ajax-front.php?action=wppa&amp;wppa-action=render';
 	// See if this call is from an ajax operation or...
 	if ( $wppa['ajax'] ) {
 		if ( isset($_GET['wppa-size']) ) $al .= '&amp;wppa-size='.$_GET['wppa-size'];

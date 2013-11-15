@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display thumbnail photos
-* Version 5.1.15
+* Version 5.1.17
 */
 
 class ThumbnailWidget extends WP_Widget {
@@ -33,7 +33,9 @@ class ThumbnailWidget extends WP_Widget {
 														'name' => 'no',
 														'display' => 'thumbs'
 														) );
-		$widget_title 	= apply_filters('widget_title', $instance['title']);
+//		$widget_title 	= apply_filters('widget_title', $instance['title']);
+		$widget_title 	= apply_filters( 'widget_title', empty( $instance['title'] ) ? '' : $instance['title'], $instance, $this->id_base );
+
 		$widget_link	= $instance['link'];
 		$page 			= wppa_get_the_landing_page('wppa_thumbnail_widget_linkpage', __a('Thumbnail photos'));
 		$max  			= $wppa_opt['wppa_thumbnail_widget_count'];
@@ -93,16 +95,16 @@ class ThumbnailWidget extends WP_Widget {
 		echo "\n" . $before_widget;
 		if ( !empty( $widget_title ) ) { 
 
-			echo $before_title 
+			echo $before_title; 
 
-			?><?php if (!empty($widget_link)) { ?>
-				<a href="<?php echo $widget_link ?>" title="<?php echo $linktitle ?>" ><?php echo $widget_title; ?></a>
-			<?php } else { ?>
-				<?php echo $widget_title; ?>
-			<?php } ?>
+			if (!empty($widget_link)) { 
+				echo "\n".'<a href="'.$widget_link.'" title="'.$linktitle.'" >'.$widget_title.'</a>';
+			} 
+			else { 
+				echo $widget_title;
+			}
 
-			<?php  echo $after_title;
-
+			echo $after_title;
 		}
 
 		echo $widget_content . $after_widget; 

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * create, edit and delete albums
-* version 5.1.12
+* version 5.1.17
 *
 */
 
@@ -137,10 +137,8 @@ function _wppa_admin() {
 			<div class="wrap">
 				<h2><?php echo __('Edit Album Information', 'wppa').' <span style="color:blue">'.__('Auto Save', 'wppa').'</span>' ?></h2>
 				<p class="description">
-					<?php echo __('In this version of the album admin page, all modifications are instantly updated on the server.', 'wppa');
-						  echo ' '.__('Edit fields are updated the moment you click anywhere outside the edit box.', 'wppa');
-						  echo __('Selections are updated instantly, except for those that require a button push.', 'wppa');
-						  echo __('The status fields keep you informed on the actions taken at the background.', 'wppa');
+					<?php echo __('All modifications are instantly updated on the server, except for those that require a button push.', 'wppa');
+						  echo ' '.__('The <b style="color:#070" >Remark</b> fields keep you informed on the actions taken at the background.', 'wppa');
 					?>
 				</p>
 				<p><?php _e('Album number:', 'wppa'); echo(' ' . $edit_id . '.'); ?></p>
@@ -154,7 +152,7 @@ function _wppa_admin() {
 									<label ><?php _e('Name:', 'wppa'); ?></label>
 								</th>
 								<td style="padding-top:4px; padding-bottom:0;">
-									<input type="text" style="width: 100%;" onchange="wppaAjaxUpdateAlbum(<?php echo $edit_id ?>, 'name', this)" value="<?php echo esc_attr(stripslashes($albuminfo['name'])) ?>" />
+									<input type="text" style="width: 100%;" onkeyup="wppaAjaxUpdateAlbum(<?php echo $edit_id ?>, 'name', this)" onchange="wppaAjaxUpdateAlbum(<?php echo $edit_id ?>, 'name', this)" value="<?php echo esc_attr(stripslashes($albuminfo['name'])) ?>" />
 								</td>
 								<td style="padding-top:4px; padding-bottom:0;">
 									<span class="description"><?php _e('Type the name of the album. Do not leave this empty.', 'wppa'); ?></span>
@@ -181,7 +179,7 @@ function _wppa_admin() {
 								<?php }
 								else { ?>
 									<td style="padding-top:0; padding-bottom:0;">
-										<textarea style="width: 100%; height: 80px;" onchange="wppaAjaxUpdateAlbum(<?php echo $edit_id ?>, 'description', this)" ><?php echo(stripslashes($albuminfo['description'])) ?></textarea>
+										<textarea style="width: 100%; height: 80px;" onkeyup="wppaAjaxUpdateAlbum(<?php echo $edit_id ?>, 'description', this)" onchange="wppaAjaxUpdateAlbum(<?php echo $edit_id ?>, 'description', this)" ><?php echo(stripslashes($albuminfo['description'])) ?></textarea>
 									</td>
 									<td style="padding-top:0; padding-bottom:0;">
 										<span class="description"><?php _e('Enter / modify the description for this album.', 'wppa') ?></span>
@@ -230,7 +228,7 @@ function _wppa_admin() {
 									<label ><?php _e('Album sort order #:', 'wppa'); ?></label>
 								</th>
 								<td style="padding-top:0; padding-bottom:0;">
-									<input type="text" onchange="wppaAjaxUpdateAlbum(<?php echo $edit_id ?>, 'a_order', this)" value="<?php echo($albuminfo['a_order']) ?>" style="width: 50px;"/>
+									<input type="text" onkeyup="wppaAjaxUpdateAlbum(<?php echo $edit_id ?>, 'a_order', this)" onchange="wppaAjaxUpdateAlbum(<?php echo $edit_id ?>, 'a_order', this)" value="<?php echo($albuminfo['a_order']) ?>" style="width: 50px;"/>
 								</td>
 								<td style="padding-top:0; padding-bottom:0;">
 									<?php if ( $wppa_opt['wppa_list_albums_by'] != '1' && $albuminfo['a_order'] != '0' ) { ?>
@@ -415,7 +413,7 @@ function _wppa_admin() {
 									<label ><?php _e('Default tags:', 'wppa') ?></label>
 								</th>
 								<td style="padding-top:0; padding-bottom:0;">
-									<input type="text" id="default_tags" value="<?php echo $albuminfo['default_tags'] ?>" style="width: 100%" onchange="wppaAjaxUpdateAlbum(<?php echo $edit_id ?>, 'default_tags', this)" />
+									<input type="text" id="default_tags" value="<?php echo $albuminfo['default_tags'] ?>" style="width: 100%" onkeyup="wppaAjaxUpdateAlbum(<?php echo $edit_id ?>, 'default_tags', this)" onchange="wppaAjaxUpdateAlbum(<?php echo $edit_id ?>, 'default_tags', this)" />
 								</td>
 								<td style="padding-top:6px; padding-bottom:4px;">
 									<span class="description"><?php _e('Enter the tags that you want to be assigned to new photos in this album.', 'wppa') ?></span>
@@ -545,7 +543,7 @@ function _wppa_admin() {
 							<!-- Status -->
 							<tr style="vertical-align:bottom;" >
 								<th style="padding-top:4px; padding-bottom:4px; color:blue; " scope="row" >
-									<label ><?php _e('Status', 'wppa') ?></label>
+									<label style="color:#070"><?php _e('Remark:', 'wppa') ?></label>
 								</th>
 								<td id="albumstatus-<?php echo $edit_id ?>" style="padding-left:10px;padding-top:0; padding-bottom:2px;">
 									<?php echo sprintf(__('Album %s is not modified yet', 'wppa'), $edit_id) ?>

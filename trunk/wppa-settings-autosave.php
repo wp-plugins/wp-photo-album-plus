@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 5.1.16 
+* Version 5.1.17
 *
 */
 
@@ -390,13 +390,19 @@ wppa_fix_source_extensions();
 		}
 		
 		// Blacklist
-		
 		$blacklist_plugins = array('performance-optimization-order-styles-and-javascript/order-styles-js.php', 'wp-ultra-simple-paypal-shopping-cart/wp_ultra_simple_shopping_cart.php');
 		$plugins = get_option('active_plugins');
 		$matches = array_intersect($blacklist_plugins, $plugins);
 		foreach ( $matches as $bad ) {
 			wppa_error_message(__('Please de-activate plugin <i style="font-size:14px;">', 'wppa').substr($bad, 0, strpos($bad, '/')).__('. </i>This plugin will cause wppa+ to function not properly.', 'wppa'));
 		}
+		// Graylist
+		$graylist_plugins = array('shortcodes-ultimate/shortcodes-ultimate.php');
+		$matches = array_intersect($graylist_plugins, $plugins);
+		foreach ( $matches as $bad ) {
+			wppa_warning_message(__('Please note that plugin <i style="font-size:14px;">', 'wppa').substr($bad, 0, strpos($bad, '/')).__('</i> can cause wppa+ to function not properly if it is misconfigured.', 'wppa'));
+		}
+
 ?>
 		<!--<br /><a href="javascript:window.print();"><?php //_e('Print settings', 'wppa') ?></a><br />-->
 		<a style="cursor:pointer;" id="wppa-legon" onclick="jQuery('#wppa-legenda').css('display', ''); jQuery('#wppa-legon').css('display', 'none'); return false;" ><?php _e('Show legenda', 'wppa') ?></a> 
@@ -1342,7 +1348,7 @@ wppa_fix_source_extensions();
 							$class = 'wppa_share';
 							$html = wppa_checkbox($slug, $onchange);
 							wppa_setting($slug, '21.3', $name, $desc, $html, $help, $class);
-
+/*
 							$name = __('Show Hyves button', 'wppa');
 							$desc = __('Display the Hyves button in the share box.', 'wppa');
 							$help = '';
@@ -1350,7 +1356,7 @@ wppa_fix_source_extensions();
 							$class = 'wppa_share';
 							$html = wppa_checkbox($slug, $onchange);
 							wppa_setting($slug, '21.4', $name, $desc, $html, $help, $class);
-							
+*/							
 							$name = __('Show Google+ button', 'wppa');
 							$desc = __('Display the Google+ button in the share box.', 'wppa');
 							$help = '';
@@ -4218,6 +4224,14 @@ wppa_fix_source_extensions();
 							$slug = 'wppa_covertype_is_restricted';
 							$html = wppa_checkbox($slug);
 							wppa_setting($slug, '9.3', $name, $desc, $html, $help);
+							
+							$name = __('Photo order# is restricted', 'wppa');
+							$desc = __('Changing <b>Photo sort order #</b> is a restricted action.', 'wppa');
+							$help = esc_js(__('If checked: Photo sort order #: can not be set in photo admin by users not having admin rights.', 'wppa'));
+							$slug = 'wppa_porder_restricted';
+							$html = wppa_checkbox($slug);
+							wppa_setting($slug, '10.1', $name, $desc, $html, $help);
+							
 							
 							$name = __('Strip file extension', 'wppa');
 							$desc = __('Default photo name is filename without extension.', 'wppa');
