@@ -766,7 +766,7 @@ function impUpd(elm, id) {
 
 function wppaAjaxDeletePhoto(photo) {
 
-	jQuery('#wppa-fe-exit').css('display', 'none');	// For front end edit
+	wppaFeAjaxLog('in');
 
 	var xmlhttp = wppaGetXmlHttp();
 	/*
@@ -810,7 +810,7 @@ function wppaAjaxDeletePhoto(photo) {
 					document.getElementById('photoitem-'+photo).innerHTML = ArrValues[2];	// OK
 					wppaProcessFull(ArrValues[3], ArrValues[4]);
 				}
-	jQuery('#wppa-fe-exit').css('display', '');	// For front end edit
+	wppaFeAjaxLog('out');
 
 			}
 			
@@ -820,7 +820,7 @@ function wppaAjaxDeletePhoto(photo) {
 
 function wppaAjaxApplyWatermark(photo, file, pos) {
 
-	jQuery('#wppa-fe-exit').css('display', 'none');	// For front end edit
+	wppaFeAjaxLog('in');
 
 	var xmlhttp = wppaGetXmlHttp();
 
@@ -857,7 +857,7 @@ function wppaAjaxApplyWatermark(photo, file, pos) {
 			// Hide spinner
 			jQuery('#wppa-water-spin-'+photo).css({visibility:'hidden'});
 			
-	jQuery('#wppa-fe-exit').css('display', '');	// For front end edit
+	wppaFeAjaxLog('out');
 			
 		}
 	}
@@ -865,7 +865,7 @@ function wppaAjaxApplyWatermark(photo, file, pos) {
 
 function wppaAjaxUpdatePhoto(photo, actionslug, elem, refresh) {
 
-	jQuery('#wppa-fe-exit').css('display', 'none');	// For front end edit
+	wppaFeAjaxLog('in');
 
 	var xmlhttp = wppaGetXmlHttp();
 
@@ -919,7 +919,7 @@ function wppaAjaxUpdatePhoto(photo, actionslug, elem, refresh) {
 				if ( actionslug == 'description' ) jQuery('#wppa-photo-spin-'+photo).css({visibility:'hidden'});
 //				if ( actionslug == 'rotleft' || actionslug == 'rotright' ) 
 
-	jQuery('#wppa-fe-exit').css('display', '');	// For front end edit
+	wppaFeAjaxLog('out');
 
 				if ( refresh ) wppaRefresh('photo_'+photo);
 			}
@@ -1249,4 +1249,27 @@ function wppaReload() {
 }
 function wppaTrim (str) {
     return str.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
+}
+
+var wppaFeCount = 0;
+function wppaFeAjaxLog(key) {
+ 
+	if ( key == 'in' ) {
+		if ( wppaFeCount == 0 ) {
+			jQuery('#wppa-fe-exit').css('display', 'none');
+		}
+		wppaFeCount++;
+		jQuery('#wppa-fe-count').html(wppaFeCount);
+	}
+	if ( key == 'out' ) {
+		if ( wppaFeCount == 1 ) {
+			jQuery('#wppa-fe-count').html('');
+			jQuery('#wppa-fe-exit').css('display', 'inline');
+			wppaFeCount--;
+		}
+		if ( wppaFeCount > 1 ) {
+			wppaFeCount--;
+			jQuery('#wppa-fe-count').html(wppaFeCount);
+		}
+	}
 }
