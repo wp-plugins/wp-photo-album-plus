@@ -51,6 +51,7 @@ global $wppa;
 							'</i>
 						</span>
 						<input id="wppa-fe-exit" type="button" style="float:right;color:red;font-weight:bold;" onclick="window.opener.location.reload();window.close();" value="'.__a('Refresh & Exit').'" />
+						<div id="wppa-fe-count" style="float:right;" ></div>
 					</div>';
 			wppa_album_photos('', $photo);
 			exit;
