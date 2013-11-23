@@ -2,7 +2,7 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 5.1.17
+* version 5.1.18
 *
 */
 
@@ -130,6 +130,17 @@ global $wppa_initruntimetime;
 		$wppa_opt = array ( 'wppa_revision' 			=> '',
 							'wppa_prevrev'				=> '',
 	
+						// Table 0: Initial setup
+						'wppa_i_responsive'				=> '',
+						'wppa_i_downsize'				=> '',
+						'wppa_i_userupload'				=> '',
+						'wppa_i_rating'					=> '',
+						'wppa_i_comment'				=> '',
+						'wppa_i_share'					=> '',
+						'wppa_i_iptc'					=> '',
+						'wppa_i_exif'					=> '',
+						'wppa_i_done'					=> '',
+						
 						// Table I: Sizes
 						// A System
 						'wppa_colwidth' 				=> '',	// 1
@@ -242,6 +253,7 @@ global $wppa_initruntimetime;
 						'wppa_copyright_notice'				=> '',	// 20
 						'wppa_share_on'						=> '',
 						'wppa_share_on_widget'				=> '',
+						'wppa_share_on_thumbs'				=> '',
 						'wppa_share_qr'						=> '',
 						'wppa_share_facebook'				=> '',
 						'wppa_share_twitter'				=> '',
@@ -268,8 +280,9 @@ global $wppa_initruntimetime;
 						'wppa_popup_text_rating' 			=> '',	// 6
 						'wppa_popup_text_ncomments'			=> '',
 						'wppa_show_rating_count'			=> '',	// 7
-						'wppa_thumb_text_viewcount'				=> '',
+						'wppa_thumb_text_viewcount'			=> '',
 						'wppa_albdesc_on_thumbarea'			=> '',
+
 						// D Covers
 						'wppa_show_cover_text' 				=> '',	// 1
 						'wppa_enable_slideshow' 			=> '',	// 2
@@ -337,6 +350,7 @@ global $wppa_initruntimetime;
 						// Table IV: Behaviour
 						// A System
 						'wppa_allow_ajax'				=> '',	// 1
+						'wppa_ajax_non_admin'			=> '',
 						'wppa_use_photo_names_in_urls'	=> '',	// 2
 						'wppa_use_pretty_links'			=> '',
 						'wppa_update_addressline'		=> '',
@@ -392,6 +406,9 @@ global $wppa_initruntimetime;
 						'wppa_comment_email_required'	=> '',	// 4
 						'wppa_comment_notify'			=> '',
 						'wppa_comment_notify_added'		=> '',
+						'wppa_comten_alt_display'		=> '',
+						'wppa_comten_alt_thumbsize'		=> '',
+						
 						// G Overlay
 						'wppa_ovl_opacity'				=> '',
 						'wppa_ovl_onclick'				=> '',
@@ -749,10 +766,10 @@ global $wppa_initruntimetime;
 	}
 	
 	// Create an album if required
-	if ( $wppa_opt['wppa_grant_an_album'] == 'yes'
-		&& $wppa_opt['wppa_owner_only'] == 'yes'
+	if ( wppa_switch('wppa_grant_an_album') 
+		&& wppa_switch('wppa_owner_only')
 		&& is_user_logged_in() 
-		&& current_user_can('wppa_upload') ) {
+		&& ( current_user_can('wppa_upload') || wppa_switch('wppa_user_upload_on') ) ) {
 			$owner = wppa_get_user('login');
 			$user = wppa_get_user(get_option('wppa_grant_name', 'display'));
 			$albs = $wpdb->get_var($wpdb->prepare( "SELECT COUNT(*) FROM `".WPPA_ALBUMS."` WHERE `owner` = %s", $owner ));

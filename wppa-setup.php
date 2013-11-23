@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 5.1.17
+* Version 5.1.18
 *
 */
 
@@ -318,7 +318,7 @@ global $silent;
 		$usertheme = ABSPATH.'wp-content/themes/'.get_option('template').'/wppa-theme.php';
 		if ( is_file( $usertheme ) ) $key += '2';
 	}
-	if ( $old_rev < '5112' ) {		// css changed since...
+	if ( $old_rev < '5118' ) {		// css changed since...
 		$userstyle = ABSPATH.'wp-content/themes/'.get_option('stylesheet').'/wppa-style.css';
 		if ( is_file( $userstyle ) ) {
 			$key += '1';
@@ -422,6 +422,17 @@ Hide Camera info
 	$wppa_defaults = array ( 	'wppa_revision' 		=> '100',
 								'wppa_prevrev'			=> '100',
 	
+						// Table 0: Initial setup
+						'wppa_i_responsive'				=> '',
+						'wppa_i_downsize'				=> '',
+						'wppa_i_userupload'				=> '',
+						'wppa_i_rating'					=> '',
+						'wppa_i_comment'				=> '',
+						'wppa_i_share'					=> '',
+						'wppa_i_iptc'					=> '',
+						'wppa_i_exif'					=> '',
+						'wppa_i_done'					=> '',
+						
 						// Table I: Sizes
 						// A System
 						'wppa_colwidth' 				=> '640',	// 1
@@ -534,7 +545,8 @@ Hide Camera info
 						'wppa_copyright_notice'				=> __('<span style="color:red" >Warning: Do not upload copyrighted material!</span>', 'wppa'),	// 20
 						'wppa_share_on'						=> 'no',
 						'wppa_share_on_widget'				=> 'no',
-						'wppa_share_qr'						=> 'yes',
+						'wppa_share_on_thumbs'				=> 'no',
+						'wppa_share_qr'						=> 'no',
 						'wppa_share_facebook'				=> 'yes',
 						'wppa_share_twitter'				=> 'yes',
 						'wppa_share_hyves'					=> 'yes',
@@ -547,7 +559,7 @@ Hide Camera info
 						'wppa_facebook_admin_id'			=> '',
 						'wppa_facebook_app_id'				=> '',
 						'wppa_load_facebook_sdk'			=> 'yes',
-						'wppa_share_single_image'			=> 'no',
+						'wppa_share_single_image'			=> 'yes',
 						
 						// C Thumbnails
 						'wppa_thumb_text_name' 				=> 'yes',	// 1
@@ -562,6 +574,7 @@ Hide Camera info
 						'wppa_popup_text_ncomments'			=> 'yes', 	//
 						'wppa_show_rating_count'			=> 'no',	// 7
 						'wppa_albdesc_on_thumbarea'			=> 'none',
+
 						// D Covers
 						'wppa_show_cover_text' 				=> 'yes',	// 1
 						'wppa_enable_slideshow' 			=> 'yes',	// 2
@@ -629,6 +642,7 @@ Hide Camera info
 						// Table IV: Behaviour
 						// A System
 						'wppa_allow_ajax'				=> 'no',
+						'wppa_ajax_non_admin'			=> 'no',
 						'wppa_use_photo_names_in_urls'	=> 'no',
 						'wppa_use_pretty_links'			=> 'no',
 						'wppa_update_addressline'		=> 'yes',
@@ -686,6 +700,9 @@ Hide Camera info
 						'wppa_comment_email_required'	=> 'yes',
 						'wppa_comment_notify'			=> 'none',
 						'wppa_comment_notify_added'		=> 'yes',
+						'wppa_comten_alt_display'		=> 'no',
+						'wppa_comten_alt_thumbsize'		=> '75',
+
 						// G Overlay
 						'wppa_ovl_opacity'				=> '80',
 						'wppa_ovl_onclick'				=> 'none',
@@ -1011,7 +1028,8 @@ Hide Camera info
 function wppa_set_default($value, $key, $force) {
 	$void_these = array(
 		'wppa_revision',
-		'wppa_rating_max'
+		'wppa_rating_max',
+		'wppa_file_system'
 		);
 							
 	if ( $force ) {

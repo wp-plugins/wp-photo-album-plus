@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 5.1.17
+* Version 5.1.18
 *
 */
 
@@ -436,7 +436,137 @@ wppa_fix_source_extensions();
 			<?php wp_nonce_field('wppa-nonce', 'wppa-nonce'); ?>
 			<input type="hidden" name="wppa-key" id="wppa-key" value="" />
 			<input type="hidden" name="wppa-sub" id="wppa-sub" value="" />
+			<?php if ( get_option('wppa_i_done') == 'done' ) { ?>
+			<a class="-wppa-quick" onclick="jQuery('.wppa-quick').css('display','inline');jQuery('.-wppa-quick').css('display','none')" ><?php _e('Quick setup', 'wppa') ?></a>
+			<?php } else { ?>
+			<input type="button" class="-wppa-quick" onclick="jQuery('.wppa-quick').css('display','inline');jQuery('.-wppa-quick').css('display','none')" value="<?php _e('Do a quick initial setup', 'wppa') ?>" />
+			<input type="button" style="display:none;" class="wppa-quick" onclick="jQuery('.-wppa-quick').css('display','inline');jQuery('.wppa-quick').css('display','none')" value="<?php _e('Close quick setup', 'wppa') ?>" />
+			<?php } ?>
+			
+			<div class="wppa-quick" style="display:none;" >
+			<?php // Table 0: Quick Setup ?>
+			<?php wppa_settings_box_header(
+				'0',
+				__('Table O:', 'wppa').' '.__('Quick Setup:', 'wppa').' '.
+				__('This table enables you to quickly do an inital setup.', 'wppa')
+			); ?>
+			
+				<div id="wppa_table_0" style=" margin:0; padding:0; " class="inside" >
+					<table class="widefat">
+						<thead style="font-weight: bold; " class="wppa_table_1">
+							<tr>
+								<th scope="col"><?php _e('#', 'wppa') ?></th>
+								<th scope="col"><?php _e('Name', 'wppa') ?></th>
+								<th scope="col"><?php _e('Description', 'wppa') ?></th>
+								<th scope="col"><?php _e('Setting', 'wppa') ?></th>
+								<th scope="col"><?php _e('Help', 'wppa') ?></th>
+							</tr>
+						</thead>
+						<tbody class="wppa_table_0">
+							<?php 
+							$wppa_table = '0';
+							wppa_setting_subheader( '', '1', __('To quickly setup WPPA+ please answer the following questions. You can alway change any setting later. <span style="color:#700">Click on me!</span>', 'wppa'));
 
+							$name = __('Is your theme <i>responsive</i>?', 'wppa');
+							$desc = __('Responsive themes have a layout that varies with the size of the browser window.', 'wppa');
+							$help = esc_js(__('WPPA+ needs to know this to automaticly adept the width of the display to the available width on the page.', 'wppa'));
+							$slug = 'wppa_i_responsive';
+							$opts = array('', 'yes', 'no');
+							$vals = array('', 'yes', 'no');
+							$html = wppa_select($slug, $opts, $vals);
+							wppa_setting($slug, '1', $name, $desc, $html, $help);
+							
+							$name = __('Do you want to downsize photos during upload?', 'wppa');
+							$desc = __('Downsizing photos make them load faster to the visitor, without loosing display quality', 'wppa');
+							$help = esc_js(__('If you answer yes, the photos will be downsized to max 1024 x 768 pixels. You can change this later, if you like', 'wppa'));
+							$slug = 'wppa_i_downsize';
+							$opts = array('', 'yes', 'no');
+							$vals = array('', 'yes', 'no');
+							$html = wppa_select($slug, $opts, $vals);
+							wppa_setting($slug, '2', $name, $desc, $html, $help);
+				
+							$name = __('May visitors upload photos?', 'wppa');
+							$desc = __('It is safe to do so, but i will have to do some settings to keep it safe!', 'wppa');
+							$help = esc_js(__('If you answer yes, i will assume you want to enable logged in users to upload photos at the front-end of the website and allow them to edit their photos name and descriptions.', 'wppa'));
+							$help .= '\n\n'.esc_js(__('The photos will be hold for moderation, the admin will get notified by email.', 'wppa'));
+							$help .= '\n\n'.esc_js(__('Each user will get his own album to upload to. These settings can be changed later.', 'wppa'));
+							$slug = 'wppa_i_userupload';
+							$opts = array('', 'yes', 'no');
+							$vals = array('', 'yes', 'no');
+							$html = wppa_select($slug, $opts, $vals);
+							wppa_setting($slug, '3', $name, $desc, $html, $help);
+
+							$name = __('Do you want the rating system active?', 'wppa');
+							$desc = __('Enable the rating system and show the votes in the slideshow.', 'wppa');
+							$help = esc_js(__('You can configure the details of the rating system later', 'wppa'));
+							$slug = 'wppa_i_rating';
+							$opts = array('', 'yes', 'no');
+							$vals = array('', 'yes', 'no');
+							$html = wppa_select($slug, $opts, $vals);
+							wppa_setting($slug, '4', $name, $desc, $html, $help);
+
+							$name = __('Do you want the comment system active?', 'wppa');
+							$desc = __('Enable the comment system and show the comments in the slideshow.', 'wppa');
+							$help = esc_js(__('You can configure the details of the comment system later', 'wppa'));
+							$slug = 'wppa_i_comment';
+							$opts = array('', 'yes', 'no');
+							$vals = array('', 'yes', 'no');
+							$html = wppa_select($slug, $opts, $vals);
+							wppa_setting($slug, '5', $name, $desc, $html, $help);
+							
+							$name = __('Do you want the social media share buttons displayed?', 'wppa');
+							$desc = __('Display the social media buttons in the slideshow', 'wppa');;
+							$help = esc_js(__('These buttons share the specific photo rather than the page where it is displayed on', 'wppa'));
+							$slug = 'wppa_i_share';
+							$opts = array('', 'yes', 'no');
+							$vals = array('', 'yes', 'no');
+							$html = wppa_select($slug, $opts, $vals);
+							wppa_setting($slug, '6', $name, $desc, $html, $help);
+
+							$name = __('Are you going to use IPTC data?', 'wppa');
+							$desc = __('IPTC data is information you may have added in a photo manipulation program.', 'wppa');
+							$help = esc_js(__('The information can be displayed in slideshows and in photo descriptions.', 'wppa'));
+							$slug = 'wppa_i_iptc';
+							$opts = array('', 'yes', 'no');
+							$vals = array('', 'yes', 'no');
+							$html = wppa_select($slug, $opts, $vals);
+							wppa_setting($slug, '7', $name, $desc, $html, $help);
+
+							$name = __('Are you going to use EXIF data?', 'wppa');
+							$desc = __('EXIF data is information from the camera like model no, focal distance and aperture used.', 'wppa');
+							$help = esc_js(__('The information can be displayed in slideshows and in photo descriptions.', 'wppa'));
+							$slug = 'wppa_i_exif';
+							$opts = array('', 'yes', 'no');
+							$vals = array('', 'yes', 'no');
+							$html = wppa_select($slug, $opts, $vals);
+							wppa_setting($slug, '8', $name, $desc, $html, $help);
+							
+							$name = __('Done?', 'wppa');
+							$desc = __('If you are ready answering these questions, select <b>yes</b>', 'wppa');
+							$help = esc_js(__('You can change any setting later, and be more specific and add a lot of settings. For now it is enough, go create albums and upload photos!', 'wppa'));
+							$slug = 'wppa_i_done';
+							$opts = array('', 'yes');
+							$vals = array('', 'yes');
+							$closetext = esc_js(__('Thank you!. The most important settings are done now. You can refine your settings, the behaviour and appearance of WPPA+ in the Tables below.', 'wppa'));
+							$postaction = 'alert(\''.$closetext.'\');setTimeout(\'document.location.reload(true)\', 1000)';
+							$html = wppa_select($slug, $opts, $vals, '', '', false, $postaction);
+							wppa_setting($slug, '9', $name, $desc, $html, $help);
+							
+							?>
+						</tbody>
+						<tfoot style="font-weight: bold;" class="wppa_table_1">
+							<tr>
+								<th scope="col"><?php _e('#', 'wppa') ?></th>
+								<th scope="col"><?php _e('Name', 'wppa') ?></th>
+								<th scope="col"><?php _e('Description', 'wppa') ?></th>
+								<th scope="col"><?php _e('Setting', 'wppa') ?></th>
+								<th scope="col"><?php _e('Help', 'wppa') ?></th>
+							</tr>
+						</tfoot>
+					</table>
+				</div>	
+			</div>
+						
 			<?php // Table 1: Sizes ?>
 			<?php wppa_settings_box_header(
 				'1', 
@@ -1325,6 +1455,14 @@ wppa_fix_source_extensions();
 							$html = wppa_checkbox($slug, $onchange);
 							wppa_setting($slug, '21.0', $name, $desc, $html, $help);
 
+							$name = __('Show Share Buttons Thumbs', 'wppa');
+							$desc = __('Display the share social media buttons under thumbnails.', 'wppa');
+							$help = '';// __('This setting applies to normal slideshows in widgets, not to the slideshowwidget as that is a slideonly display.', 'wppa');
+							$slug = 'wppa_share_on_thumbs';
+							$onchange = 'wppaCheckShares()';
+							$html = wppa_checkbox($slug, $onchange);
+							wppa_setting($slug, '21.00', $name, $desc, $html, $help);
+
 							$name = __('Show QR Code', 'wppa');
 							$desc = __('Display the QR code in the share box.', 'wppa');
 							$help = '';
@@ -1999,6 +2137,15 @@ wppa_fix_source_extensions();
 							$html = wppa_checkbox($slug, $onchange);
 							wppa_setting($slug, '1', $name, $desc, $html, $help);
 							
+							$name = __('Ajax NON Admin', 'wppa');
+							$desc = __('Frontend ajax use no admin files.', 'wppa');
+							$help = esc_js(__('If you want to password protect wp-admin, check this box.', 'wppa'));
+							$help .= '\n\n'.esc_js(__('In rare cases changing page content does not work when this box is checked. Verify the functionality!', 'wppa'));
+							$slug = 'wppa_ajax_non_admin';
+							$html = wppa_checkbox($slug);
+							$class = 'wppa_allow_ajax_';
+							wppa_setting($slug, '1.1', $name, $desc, $html, $help, $class);
+							
 							$name = __('Photo names in urls', 'wppa');
 							$desc = __('Display photo names in urls, no numbers.', 'wppa');
 							$help = esc_js(__('While browsing through a slideshow and Use Ajax is checked, and the browser supports history.pushState,', 'wppa'));
@@ -2550,6 +2697,23 @@ wppa_fix_source_extensions();
 							$class = 'wppa_comment_';
 							wppa_setting($slug, '6', $name, $desc, $html, $help, $class);
 							
+							$name = __('ComTen alt display', 'wppa');
+							$desc = __('Display comments at comten thumbnails.', 'wppa');
+							$help = '';
+							$slug = 'wppa_comten_alt_display';
+							$html = wppa_checkbox($slug);
+							$class = 'wppa_comment_';
+							wppa_setting($slug, '7', $name, $desc, $html, $help, $class);
+							
+							$name = __('Comten Thumbnail width', 'wppa');
+							$desc = __('The width of the thumbnail in the alt comment display.', 'wppa');
+							$help = '';
+							$slug = 'wppa_comten_alt_thumbsize';
+							$html = wppa_input($slug, '50px', '', __('Pixels', 'wppa'));
+							$class = 'wppa_comment_';
+							wppa_setting($slug, '8', $name, $desc, $html, $help, $class);
+
+
 							wppa_setting_subheader('G', '1', __('Lightbox related settings. These settings have effect only when Table IX-A6 is set to wppa', 'wppa'));
 							
 							$name = __('Overlay opacity', 'wppa');
@@ -3212,8 +3376,8 @@ wppa_fix_source_extensions();
 							$slug4 = 'wppa_slideshow_overrule';
 							$slug = array($slug1, $slug2, $slug3, $slug4);
 							$onchange = 'wppaCheckSlidePhotoLink();';
-							$opts = array(__('no link at all.', 'wppa'), __('the plain photo (file).', 'wppa'), __('the fullsize photo on its own.', 'wppa'), __('lightbox.', 'wppa'), __('lightbox single photos.', 'wppa'));
-							$vals = array('none', 'file', 'single', 'lightbox', 'lightboxsingle'); 
+							$opts = array(__('no link at all.', 'wppa'), __('the plain photo (file).', 'wppa'), __('the fullsize photo on its own.', 'wppa'), __('lightbox.', 'wppa'), __('lightbox single photos.', 'wppa'), __('the fs photo with download and print buttons.', 'wppa'));
+							$vals = array('none', 'file', 'single', 'lightbox', 'lightboxsingle', 'fullpopup'); 
 //							$opts = array(__('no link at all.', 'wppa'), __('the plain photo (file).', 'wppa'), __('lightbox.', 'wppa'));
 //							$vals = array('none', 'file', 'lightbox'); 
 							$onchange = 'wppaCheckSlidePhotoLink()';
@@ -5155,7 +5319,7 @@ function wppa_checkbox_e($slug, $curval, $onchange = '', $class = '', $enabled =
 	return $html;
 }
 
-function wppa_select($slug, $options, $values, $onchange = '', $class = '', $first_disable = false) {
+function wppa_select($slug, $options, $values, $onchange = '', $class = '', $first_disable = false, $postaction = '') {
 
 	if (!is_array($options)) {
 		$html = __('There are no pages (yet) to link to.', 'wppa');
@@ -5163,8 +5327,9 @@ function wppa_select($slug, $options, $values, $onchange = '', $class = '', $fir
 	}
 	
 	$html = '<select style="float:left; font-size: 11px; height: 20px; margin: 0px; padding: 0px; max-width:220px;" id="'.$slug.'"';
-	if ($onchange != '') $html .= ' onchange="'.$onchange.';wppaAjaxUpdateOptionValue(\''.$slug.'\', this)"';
-	else $html .= ' onchange="wppaAjaxUpdateOptionValue(\''.$slug.'\', this)"';
+//	if ($onchange != '') 
+	$html .= ' onchange="'.$onchange.';wppaAjaxUpdateOptionValue(\''.$slug.'\', this);'.$postaction.'"';
+//	else $html .= ' onchange="wppaAjaxUpdateOptionValue(\''.$slug.'\', this)"';
 
 	if ($class != '') $html .= ' class="'.$class.'"';
 	$html .= '>';

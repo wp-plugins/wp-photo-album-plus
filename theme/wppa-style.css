@@ -8,7 +8,7 @@
 /*
 /* You may always look into a newer version of this file to see what new classes and id's come with an upgrade
 /*
-/* This is version 5.1.12
+/* This is version 5.1.18
 */
 
 .wppa-container, .wppa-cover-box, .thumbnail-area {
@@ -109,7 +109,7 @@
 }
 
 /* Wrapper for thumbnail background */
-.thumbnail-frame {
+.thumbnail-frame, .thumbnail-frame-comalt {
 	float: left;
 	background-color: transparent;
 	display: inline;

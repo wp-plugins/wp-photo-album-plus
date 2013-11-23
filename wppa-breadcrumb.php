@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Functions for breadcrumbs
-* Version 5.1.15
+* Version 5.1.18
 *
 */
 
@@ -163,7 +163,7 @@ global $wpdb;
 				wppa_bcitem($value, $href, $title, 'b7');
 			}
 			if ( $wppa['is_slide'] ) {
-				$value 	= __a('Recently uploaded photos');
+				$value 	= __a('Recently commented photos');
 				$href 	= wppa_get_permalink().'wppa-cover=0&amp;wppa-occur='.$wppa['occur'].'&amp;wppa-comten='.$wppa['comten_count'].'&amp;wppa-album='.$wppa['start_album'];
 				$title	= __a('View the thumbnails');
 				wppa_bcitem($value, $href, $title, 'b8');

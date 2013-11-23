@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display thumbnail photos
-* Version 5.1.17
+* Version 5.1.18
 */
 
 class ThumbnailWidget extends WP_Widget {
@@ -26,29 +26,32 @@ class ThumbnailWidget extends WP_Widget {
         extract( $args );
 		
 		$instance 		= wp_parse_args( (array) $instance, array( 
-														'title' => '',
-														'album' => 'no',
-														'link' => '',
+														'title' 	=> '',
+														'album' 	=> 'no',
+														'link' 		=> '',
 														'linktitle' => '',
-														'name' => 'no',
-														'display' => 'thumbs'
+														'name' 		=> 'no',
+														'display' 	=> 'thumbs',
+														'sortby' 	=> wppa_get_photo_order('0'),
+														'limit' 	=> $wppa_opt['wppa_thumbnail_widget_count']
 														) );
 //		$widget_title 	= apply_filters('widget_title', $instance['title']);
 		$widget_title 	= apply_filters( 'widget_title', empty( $instance['title'] ) ? '' : $instance['title'], $instance, $this->id_base );
 
 		$widget_link	= $instance['link'];
 		$page 			= wppa_get_the_landing_page('wppa_thumbnail_widget_linkpage', __a('Thumbnail photos'));
-		$max  			= $wppa_opt['wppa_thumbnail_widget_count'];
+		$max  			= $instance['limit']; // $wppa_opt['wppa_thumbnail_widget_count'];
+		$sortby 		= $instance['sortby'];
 		$album 			= $instance['album'];
 		$name 			= $instance['name'];
 		$display 		= $instance['display'];
 		$linktitle 		= $instance['linktitle'];
 		
 		if ($album) {
-			$thumbs = $wpdb->get_results($wpdb->prepare( 'SELECT * FROM `'.WPPA_PHOTOS.'` WHERE `status` <> %s AND `album` = %s '.wppa_get_photo_order($album).' LIMIT '.$max, 'pending', $album ), 'ARRAY_A' );
+			$thumbs = $wpdb->get_results($wpdb->prepare( "SELECT * FROM `".WPPA_PHOTOS."` WHERE `status` <> 'pending' AND `album` = %s ".$sortby." LIMIT %d", $album, $max ), 'ARRAY_A' );
 		}
 		else {
-			$thumbs = $wpdb->get_results($wpdb->prepare( 'SELECT * FROM '.WPPA_PHOTOS.' WHERE `status` <> %s '.wppa_get_photo_order('0').' LIMIT '.$max, 'pending' ), 'ARRAY_A' );
+			$thumbs = $wpdb->get_results($wpdb->prepare( "SELECT * FROM `".WPPA_PHOTOS."` WHERE `status` <> 'pending' ".$sortby." LIMIT %d", $max ), 'ARRAY_A' );
 		}
 
 		global $widget_content;
@@ -121,6 +124,8 @@ class ThumbnailWidget extends WP_Widget {
 		$instance['name'] 		= $new_instance['name'];
 		$instance['display'] 	= $new_instance['display'];
 		$instance['linktitle']	= $new_instance['linktitle'];
+		$instance['sortby'] 	= $new_instance['sortby'];
+		$instance['limit']		= strval(intval($new_instance['limit']));
 
         return $instance;
     }
@@ -135,7 +140,9 @@ class ThumbnailWidget extends WP_Widget {
 															'linktitle' => '',
 															'album' 	=> '0',
 															'name' 		=> 'no',
-															'display' 	=> 'thumbs'
+															'display' 	=> 'thumbs',
+															'sortby' 	=> wppa_get_photo_order('0'),
+															'limit' 	=> $wppa_opt['wppa_thumbnail_widget_count']
 															) );
  		$album 			= $instance['album'];
 		$name 			= $instance['name'];
@@ -143,6 +150,8 @@ class ThumbnailWidget extends WP_Widget {
 		$widget_link 	= $instance['link'];
 		$link_title 	= $instance['linktitle'];
 		$display 		= $instance['display'];
+		$sortby 		= $instance['sortby'];
+		$limit			= $instance['limit'];
 ?>
 		<p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:', 'wppa'); ?></label> <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $widget_title; ?>" /></p>
 
@@ -157,6 +166,24 @@ class ThumbnailWidget extends WP_Widget {
 			</select>
 		</p>
 
+		<p>
+			<?php _e('Sort by:', 'wppa'); ?>
+			<select class="widefat" id="<?php echo $this->get_field_id('sortby'); ?>" name="<?php echo $this->get_field_name('sortby'); ?>">
+				<option value="" <?php if ( $sortby == '' ) echo 'selected="selected"' ?>><?php _e('--- none ---', 'wppa') ?></option>
+				<option value="ORDER BY `p_order`" <?php if ( $sortby == 'ORDER BY `p_order`' ) echo 'selected="selected"' ?>><?php _e('Order #', 'wppa') ?></option>
+				<option value="ORDER BY `name`" <?php if ( $sortby == 'ORDER BY `name`' ) echo 'selected="selected"' ?>><?php _e('Name', 'wppa') ?></option>
+				<option value="ORDER BY RAND()" <?php if ( $sortby == 'ORDER BY RAND()' ) echo 'selected="selected"' ?>><?php _e('Random', 'wppa') ?></option>
+				<option value="ORDER BY `mean_rating` DESC" <?php if ( $sortby == 'ORDER BY `mean_rating` DESC' ) echo 'selected="selected"' ?>><?php _e('Rating mean value desc', 'wppa') ?></option>
+				<option value="ORDER BY `rating_count` DESC" <?php if ( $sortby == 'ORDER BY `rating_count` DESC' ) echo 'selected="selected"' ?>><?php _e('Number of votes desc', 'wppa') ?></option>
+				<option value="ORDER BY `timestamp` DESC" <?php if ( $sortby == 'ORDER BY `timestamp` DESC' ) echo 'selected="selected"' ?>><?php _e('Timestamp desc', 'wppa') ?></option>
+			</select>
+		</p>
+		
+		<p>
+			<?php _e('Max number:', 'wppa') ?>
+			<input id="<?php echo $this->get_field_id('limit'); ?>" name="<?php echo $this->get_field_name('limit'); ?>" value="<?php echo $limit ?>">
+		</p>
+		
 		<p>
 			<?php _e('Display:', 'wppa'); ?>
 			<select id="<?php echo $this->get_field_id('display'); ?>" name="<?php echo $this->get_field_name('display'); ?>">
