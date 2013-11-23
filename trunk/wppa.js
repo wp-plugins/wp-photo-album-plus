@@ -2,7 +2,7 @@
 //
 // conatins slideshow, theme, ajax and lightbox code
 //
-// Version 5.1.17
+// Version 5.1.18
 
 // Part 1: Slideshow
 //
@@ -111,6 +111,8 @@ var wppaLightboxSingle = false;
 var wppaMaxCoverWidth = 300;	// For responsive multicolumn covers
 var wppaDownLoad = 'Download';
 var wppaSiteUrl = '';
+var wppaSlideToFullpopup = false; 
+var wppaComAltSize = 75;
 
 // 'Internal' variables (private)
 var _wppaId = new Array();
@@ -789,11 +791,18 @@ var result;
 }
 
 function wppaMakeTheSlideHtml(mocc, bgfg, idx) {
- 
+
 	if (_wppaLinkUrl[mocc][idx] != '') {	// Link explicitly given
+		if ( wppaSlideToFullpopup ) {
+		jQuery("#theslide"+bgfg+"-"+mocc).html(	'<a onclick="'+_wppaLinkUrl[mocc][idx]+'" target="'+_wppaLinkTarget[mocc][idx]+'" title="'+_wppaLinkTitle[mocc][idx]+'">'+
+													'<img title="'+_wppaLinkTitle[mocc][idx]+'" id="theimg'+bgfg+'-'+mocc+'" '+_wppaSlides[mocc][idx]+
+												'</a>');
+		}
+		else {
 		jQuery("#theslide"+bgfg+"-"+mocc).html(	'<a href="'+_wppaLinkUrl[mocc][idx]+'" target="'+_wppaLinkTarget[mocc][idx]+'" title="'+_wppaLinkTitle[mocc][idx]+'">'+
 													'<img title="'+_wppaLinkTitle[mocc][idx]+'" id="theimg'+bgfg+'-'+mocc+'" '+_wppaSlides[mocc][idx]+
 												'</a>');
+		}
 	}
 	else {
 		if (wppaLightBox == '') {			// No link and no lightbox
@@ -1286,7 +1295,8 @@ function _wppaDoAutocol(mocc) {
 			jQuery(".thumbnail-frame-"+mocc).css({marginLeft:newspc});
 		}
 	}
-	
+	jQuery(".wppa-com-alt-"+mocc).css('width', w - wppaThumbnailAreaDelta - wppaComAltSize - 20);
+
 	// User upload
 	jQuery(".wppa-file-"+mocc).css('width',w - 16); 
 	
@@ -2036,7 +2046,7 @@ function wppaPopDown(mocc) {	//	 return; //debug
 }
 
 // Popup of fullsize image
-function wppaFullPopUp(mocc, id, url, xwidth, xheight, ajaxurl) {
+function wppaFullPopUp(mocc, id, url, xwidth, xheight) {
 	var height = xheight+50;
 	var width  = xwidth+14;
 	var name = '';
@@ -2056,7 +2066,7 @@ function wppaFullPopUp(mocc, id, url, xwidth, xheight, ajaxurl) {
 			wnd.document.write(
 			'<script type="text/javascript">function wppa_downl(id){'+
 				'var xmlhttp = new XMLHttpRequest();'+
-				'var url = "'+ajaxurl+'?action=wppa&wppa-action=makeorigname&photo-id='+id+'&from=popup";'+
+				'var url = "'+wppaAjaxUrl+'?action=wppa&wppa-action=makeorigname&photo-id='+id+'&from=popup";'+
 				'xmlhttp.open("GET",url,false);'+
 				'xmlhttp.send();'+
 				'if (xmlhttp.readyState==4 && xmlhttp.status==200) {'+
@@ -2253,8 +2263,8 @@ function wppaDoAjaxRender(mocc, ajaxurl, newurl) {
 	if ( wppaCanAjaxRender ) {	// Ajax possible
 		// Setup process the result
 		xmlhttp.onreadystatechange = function() {
-			if ( xmlhttp.readyState == 4 && xmlhttp.status == 200 ) {
-			
+			if ( xmlhttp.readyState == 4 ) {
+				if ( xmlhttp.status != 200 ) wppaConsoleLog('Ajax return statuscode '+xmlhttp.status);
 				// Update the wppa container
 				jQuery('#wppa-container-'+mocc).html(xmlhttp.responseText);
 				if ( wppaCanPushState && wppaUpdateAddressLine ) {

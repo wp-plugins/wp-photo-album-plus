@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the non admin stuff
-* Version 5.1.17
+* Version 5.1.18
 *
 */
 
@@ -339,8 +339,7 @@ global $wppa_api_version;
 	wppaFontWeightNumbarActive = "'.$wppa_opt['wppa_fontweight_numbar_active'].'";
 	wppaNumbarMax = "'.$wppa_opt['wppa_numbar_max'].'";
 	wppaLang = "'.$wppa_lang.'";
-	wppaAjaxUrl = "'.admin_url('admin-ajax.php').'";
-	wppaAjaxUrl = "'.WPPA_URL.'/wppa-ajax-front.php";
+	wppaAjaxUrl = "'.( $wppa_opt['wppa_ajax_non_admin'] ? WPPA_URL.'/wppa-ajax-front.php' : admin_url('admin-ajax.php') ).'";
 	wppaSiteUrl = "'.site_url().'";
 	wppaNextOnCallback = '.( $wppa_opt['wppa_next_on_callback'] ? 'true' : 'false' ).';
 	wppaRatingUseAjax = true;
@@ -372,6 +371,8 @@ global $wppa_api_version;
 	wppaMaxCoverWidth = '.$wppa_opt['wppa_max_cover_width'].';
 	wppaLightboxSingle = '.( $wppa_opt['wppa_slideshow_linktype'] == 'lightboxsingle' ? 'true': 'false' ).';
 	wppaDownLoad = "'.__a('Download').'";
+	wppaSlideToFullpopup = '.( $wppa_opt['wppa_slideshow_linktype'] == 'fullpopup' ? 'true' : 'false' ).'; 
+	wppaComAltSize = '.$wppa_opt['wppa_comten_alt_thumbsize'].';
 	/* ]]> */
 </script>
 ';

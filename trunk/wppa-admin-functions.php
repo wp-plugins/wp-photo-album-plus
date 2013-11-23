@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * gp admin functions
-* version 5.1.15
+* version 5.1.18
 *
 * 
 */
@@ -59,13 +59,15 @@ global $wppa;
 							'wppa_coverimg_linkpage',
 							'wppa_search_linkpage',
 							'permalink_structure',
-							'wppa_rating_max'
+							'wppa_rating_max',
+							'wppa_file_system'
 							);
 	}
 	else {
 		$void_these = array(
 							'wppa_revision',
-							'wppa_rating_max'
+							'wppa_rating_max',
+							'wppa_file_system'
 							);
 	}
 	
@@ -903,7 +905,7 @@ global $wpdb;
 function wppa_has_children($alb) {
 global $wpdb;
 
-	return $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `".WPPA_ALBUMS."` WHERE `a_parent` = %s", $alb['id']) );
+	return $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `".WPPA_ALBUMS."` WHERE `a_parent` = %s", $alb) );
 }
 
 function wppa_admin_page_links($curpage, $pagesize, $count, $link, $extra = '') {

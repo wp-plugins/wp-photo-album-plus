@@ -215,7 +215,7 @@ global $wppa;
 }
 
 // Make html for sharebox
-function wppa_get_share_html() {
+function wppa_get_share_html($key = '') {
 global $wppa;
 global $wppa_opt;
 global $thumb;
@@ -245,10 +245,10 @@ global $wppa_locale;
 	$share_img = wppa_get_thumb_url($thumb['id']);
 
 	// The icon size
-	$s = $wppa['in_widget'] ? '16' : $wppa_opt['wppa_share_size'];
+	$s = ( $wppa['in_widget'] || $key == 'thumb' ) ? '16' : $wppa_opt['wppa_share_size'];
 	
 	// qr code
-	if ( $wppa_opt['wppa_share_qr'] ) {	
+	if ( $wppa_opt['wppa_share_qr'] && $key != 'thumb' ) {	
 		$src = 'http://api.qrserver.com/v1/create-qr-code/?data='.urlencode($share_url).'&size=80x80&color='.trim($wppa_opt['wppa_qr_color'], '#').'&bgcolor='.trim($wppa_opt['wppa_qr_bgcolor'], '#');
 		$qr = '<div style="float:left; padding:2px;" ><img src="'.$src.'" title="'.esc_attr($share_url).'"/></div>';
 	}
@@ -355,7 +355,7 @@ global $wppa_locale;
 	else $pi = '';
 	
 	// LinkedIn
-	if ( $wppa_opt['wppa_share_linkedin'] ) {
+	if ( $wppa_opt['wppa_share_linkedin'] && $key != 'thumb' ) {
 		$li = '[script src="//platform.linkedin.com/in.js" type="text/javascript">';
 		$li .= 'lang: '.$wppa_locale;
 		$li .= '[/script>';
@@ -364,7 +364,7 @@ global $wppa_locale;
 	else $li = '';
 	
 	// Facebook comments
-	if ( ( wppa_switch('wppa_facebook_comments') || wppa_switch('wppa_facebook_like') ) && ! $wppa['in_widget'] ) {
+	if ( ( wppa_switch('wppa_facebook_comments') || wppa_switch('wppa_facebook_like') ) && ! $wppa['in_widget'] && $key != 'thumb' ) {
 		$width = $wppa['fullsize'] == 'auto' ? 'auto' : wppa_get_container_width(true);
 		if ( wppa_switch('wppa_facebook_like') ) {
 			$fbc = '<div class="fb-like" data-href="'.$share_url.'" data-width="'.$width.'" data-show-faces="false" data-send="true"></div>';

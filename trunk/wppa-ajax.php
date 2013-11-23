@@ -2,7 +2,7 @@
 /* wppa-ajax.php
 *
 * Functions used in ajax requests
-* version 5.1.17
+* version 5.1.18
 *
 */
 add_action('wp_ajax_wppa', 'wppa_ajax_callback');
@@ -50,7 +50,7 @@ global $wppa;
 								__a('All modifications are instantly updated on the server. The <b style="color:#070" >Remark</b> field keeps you informed on the actions taken at the background.').
 							'</i>
 						</span>
-						<input id="wppa-fe-exit" type="button" style="float:right;color:red;font-weight:bold;" onclick="window.opener.location.reload();window.close();" value="'.__a('Refresh & Exit').'" />
+						<input id="wppa-fe-exit" type="button" style="float:right;color:red;font-weight:bold;" onclick="window.opener.location.reload();window.close();" value="'.__a('Exit & Refresh').'" />
 						<div id="wppa-fe-count" style="float:right;" ></div>
 					</div>';
 			wppa_album_photos('', $photo);
@@ -442,7 +442,7 @@ global $wppa;
 			}
 			wppa_load_theme();
 			// Register geo shortcode if google-maps-gpx-vieuwer is on board. GPX does it in wp_head(), what is not done in an ajax call
-			if ( function_exists('gmapv3') ) add_shortcode('map', 'gmapv3');
+//			if ( function_exists('gmapv3') ) add_shortcode('map', 'gmapv3');
 			// Render
 			echo wppa_albums();
 			break;
@@ -1242,6 +1242,106 @@ global $wppa;
 					}
 					break;
 					
+				case 'wppa_i_responsive':
+					if ( $value == 'yes' ) { wppa_update_option('wppa_colwidth', 'auto'); }
+					if ( $value == 'no' ) { wppa_update_option('wppa_colwidth', '640'); }
+					break;
+				case 'wppa_i_downsize':
+					if ( $value == 'yes' ) { 
+						wppa_update_option('wppa_resize_on_upload', 'yes');
+						if ( get_option('wppa_resize_to') == '0' ) wppa_update_option('wppa_resize_to', '1024x768');
+					}
+					if ( $value == 'no' ) {
+						wppa_update_option('wppa_resize_on_upload', 'no');
+					}
+					break;
+				case 'wppa_i_userupload':
+					if ( $value == 'yes' ) { 
+						wppa_update_option('wppa_user_upload_on', 'yes');
+						wppa_update_option('wppa_user_upload_login', 'yes');
+						wppa_update_option('wppa_owner_only', 'yes');
+						wppa_update_option('wppa_upload_moderate', 'yes');
+						wppa_update_option('wppa_upload_edit', 'yes');
+						wppa_update_option('wppa_upload_notify', 'yes');
+						wppa_update_option('wppa_grant_an_album', 'yes');
+						$grantparent = get_option('wppa_grant_parent');
+						if ( ! wppa_album_exists($grantparent) ) {
+							$id = wppa_nextkey(WPPA_ALBUMS);
+							$iret = $wpdb->query($wpdb->prepare("INSERT INTO `" . WPPA_ALBUMS . 
+								"` (`id`, `name`, `description`, `a_order`, `a_parent`, `p_order_by`, `main_photo`, `cover_linktype`, `cover_linkpage`, `owner`, `timestamp`, `upload_limit`, `alt_thumbsize`, `default_tags`, `cover_type`, `suba_order_by`) ".
+								" VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, '', '', '')", 
+								$id, __('Members', 'wppa'), __('Parent of the member albums', 'wppa'), '0', '-1', '0', '0', 'content', '0', wppa_get_user(), time(), '0/0', '0') );
+							if ( $iret ) {
+								wppa_index_add('album', $id);
+								wppa_update_option('wppa_grant_parent', $id);
+							}
+							$my_post = array(
+								'post_title'    => __('Members', 'wppa'),
+								'post_content'  => '[wppa type="content" album="'.$id.'"][/wppa]',
+								'post_status'   => 'publish',
+								'post_type'	  	=> 'page'
+								);
+							$pagid = wp_insert_post( $my_post );
+						}
+						wppa_update_option('wppa_alt_is_restricted', 'yes');
+						wppa_update_option('wppa_link_is_restricted', 'yes');
+						wppa_update_option('wppa_covertype_is_restricted', 'yes');
+						wppa_update_option('wppa_porder_restricted', 'yes');
+					}
+					if ( $value == 'no' ) {
+						wppa_update_option('wppa_user_upload_on', 'no');
+					}
+					break;
+				case 'wppa_i_rating':
+					if ( $value == 'yes' ) { 
+						wppa_update_option('wppa_rating_on', 'yes');
+					}
+					if ( $value == 'no' ) {
+						wppa_update_option('wppa_rating_on', 'no');
+					}
+					break;
+				case 'wppa_i_comment':
+					if ( $value == 'yes' ) { 
+						wppa_update_option('wppa_show_comments', 'yes');
+						wppa_update_option('wppa_comment_moderation', 'all');
+						wppa_update_option('wppa_comment_notify', 'admin');
+					}
+					if ( $value == 'no' ) {
+						wppa_update_option('wppa_show_comments', 'no');
+					}
+					break;
+				case 'wppa_i_share':
+					if ( $value == 'yes' ) { 
+						wppa_update_option('wppa_share_on', 'yes');
+					}
+					if ( $value == 'no' ) {
+						wppa_update_option('wppa_share_on', 'no');
+					}
+					break;
+				case 'wppa_i_iptc':
+					if ( $value == 'yes' ) { 
+						wppa_update_option('wppa_show_iptc', 'yes');
+						wppa_update_option('wppa_save_iptc', 'yes');
+					}
+					if ( $value == 'no' ) {
+						wppa_update_option('wppa_show_iptc', 'no');
+						wppa_update_option('wppa_save_iptc', 'no');
+					}
+					break;
+				case 'wppa_i_exif':
+					if ( $value == 'yes' ) { 
+						wppa_update_option('wppa_show_exif', 'yes');
+						wppa_update_option('wppa_save_exif', 'yes');
+					}
+					if ( $value == 'no' ) {
+						wppa_update_option('wppa_show_exif', 'no');
+						wppa_update_option('wppa_save_exif', 'no');
+					}
+					break;
+				case 'wppa_i_done':
+					$value = 'done';
+					break;
+
 				default:
 			
 					// Do the update only

@@ -1,7 +1,7 @@
 /* admin-scripts.js */
 /* Package: wp-photo-album-plus
 /*
-/* Version 5.1.17
+/* Version 5.1.18
 /* Various js routines used in admin pages		
 */
 
@@ -74,7 +74,7 @@ function wppaInitSettings() {
 	wppaCheckNewpag();
 	wppaCheckIndexSearch();
 	
-	var tab=new Array('I','II','III','IV','V','VI','VII','VIII','IX','X','XI','XII');
+	var tab=new Array('O','I','II','III','IV','V','VI','VII','VIII','IX','X','XI','XII');
 	var sub=new Array('A','B','C','D','E','F','G','H','I','J');
 	
 	for (table=1; table<13; table++) {
@@ -605,13 +605,13 @@ function wppaCheckSphotoLink() {
 
 function wppaCheckSlidePhotoLink() {
 	var lvalue = document.getElementById('wppa_slideshow_linktype').value;
-	if (lvalue == 'none' || lvalue == 'file' || lvalue == 'lightbox' || lvalue == 'lightboxsingle' ) {
+	if (lvalue == 'none' || lvalue == 'file' || lvalue == 'lightbox' || lvalue == 'lightboxsingle' || lvalue == 'fullpopup' ) {
 		jQuery('.wppa_sslp').css('visibility', 'hidden');
 	}
 	else {
 		jQuery('.wppa_sslp').css('visibility', 'visible');
 	}
-	if (lvalue == 'none' || lvalue == 'lightbox' || lvalue == 'lightboxsingle' ) {
+	if (lvalue == 'none' || lvalue == 'lightbox' || lvalue == 'lightboxsingle' || lvalue == 'fullpopup' ) {
 		jQuery('.wppa_sslb').css('visibility', 'hidden');
 	}
 	else {
@@ -863,7 +863,19 @@ function wppaAjaxApplyWatermark(photo, file, pos) {
 	}
 }
 
+var wppaLastDesc = new Array();
 function wppaAjaxUpdatePhoto(photo, actionslug, elem, refresh) {
+
+	// For frontend edit, to avoid extra call whne pressing the refresh and exit button: 
+	// do NOT update for loosing focus if the last keyup produced same result
+	if ( actionslug == 'description' ) {
+		if ( wppaLastDesc[photo] ) {
+			if ( wppaLastDesc[photo] == wppaEncode(elem.value) ) {
+				return;
+			}
+		}
+		wppaLastDesc[photo] = wppaEncode(elem.value);
+	}
 
 	wppaFeAjaxLog('in');
 
