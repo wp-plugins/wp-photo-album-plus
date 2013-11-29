@@ -474,6 +474,7 @@ global $wppa_opt;
 	// Make the HTML
 	$t = $mcr ? 'mcr-' : '';
 	$wppa['out'] .= '
+	<div style="clear:both"></div>
 	<a id="wppa-up-'.$alb.'-'.$wppa['master_occur'].'" onclick="jQuery(\'#wppa-up-'.$alb.'-'.$wppa['master_occur'].'\').css(\'display\',\'none\');jQuery(\'#wppa-file-'.$t.$alb.'-'.$wppa['master_occur'].'\').css(\'display\',\'block\');wppaColWidth['.$wppa['master_occur'].']=0;" class="" style="float:left; cursor:pointer;">
 		'.__a('Upload Photo').'
 	</a>
