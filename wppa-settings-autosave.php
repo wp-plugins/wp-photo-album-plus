@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 5.2.0
+* Version 5.2.1
 *
 */
 
@@ -4911,38 +4911,52 @@ wppa_fix_source_extensions();
 							$html = wppa_select($slug, $opts, $vals, $onch);
 							wppa_setting($slug, '1', $name, $desc, $html, $help);
 							
-							$name = __('Cloud name', 'wppa');
-							$desc = '';
-							$help = '';
-							$slug = 'wppa_cdn_cloud_name';
-							$html = wppa_input($slug, '500px');
-							$class = 'cloudinary';
-							wppa_setting($slug, '2.1', $name, $desc, $html, $help, $class);
+							if ( PHP_VERSION_ID >= 50300 ) {
 							
-							$name = __('API key', 'wppa');
-							$desc = '';
-							$help = '';
-							$slug = 'wppa_cdn_api_key';
-							$html = wppa_input($slug, '500px');
-							$class = 'cloudinary';
-							wppa_setting($slug, '2.2', $name, $desc, $html, $help, $class);
+								$name = __('Cloud name', 'wppa');
+								$desc = '';
+								$help = '';
+								$slug = 'wppa_cdn_cloud_name';
+								$html = wppa_input($slug, '500px');
+								$class = 'cloudinary';
+								wppa_setting($slug, '2.1', $name, $desc, $html, $help, $class);
+								
+								$name = __('API key', 'wppa');
+								$desc = '';
+								$help = '';
+								$slug = 'wppa_cdn_api_key';
+								$html = wppa_input($slug, '500px');
+								$class = 'cloudinary';
+								wppa_setting($slug, '2.2', $name, $desc, $html, $help, $class);
+								
+								$name = __('API secret', 'wppa');
+								$desc = '';
+								$help = '';
+								$slug = 'wppa_cdn_api_secret';
+								$html = wppa_input($slug, '500px');
+								$class = 'cloudinary';
+								wppa_setting($slug, '2.3', $name, $desc, $html, $help, $class);
 							
-							$name = __('API secret', 'wppa');
-							$desc = '';
-							$help = '';
-							$slug = 'wppa_cdn_api_secret';
-							$html = wppa_input($slug, '500px');
-							$class = 'cloudinary';
-							wppa_setting($slug, '2.3', $name, $desc, $html, $help, $class);
+								$count = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `".WPPA_PHOTOS."` WHERE `id` > %s", get_option('wppa_last_cloud_upload', '0')));
+								$name = __('Update uploads', 'wppa');
+								$desc = sprintf(__('Add the new %s photos to the cloud.', 'wppa'), $count);
+								$help = esc_js(__('This function will add the new uploaded photos to Cloudinary.', 'wppa'));
+								$slug = 'wppa_cdn_service_update';
+								$html = wppa_doit_button('', $slug);
+								$class = 'cloudinary';
+								wppa_setting(false, '2.9', $name, $desc, $html, $help, $class);
+								
+							}
+							else {
 							
-							$count = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `".WPPA_PHOTOS."` WHERE `id` > %s", get_option('wppa_last_cloud_upload', '0')));
-							$name = __('Update uploads', 'wppa');
-							$desc = sprintf(__('Add the new %s photos to the cloud.', 'wppa'), $count);
-							$help = esc_js(__('This function will add the new uploaded photos to Cloudinary.', 'wppa'));
-							$slug = 'wppa_cdn_service_update';
-							$html = wppa_doit_button('', $slug);
-							$class = 'cloudinary';
-							wppa_setting(false, '2.9', $name, $desc, $html, $help, $class);
+								$name = __('Cloudinary', 'wppa');
+								$desc = __('<span style="color:red;">Requires at least PHP version 5.3</span>', 'wppa');
+								$help = '';
+								$html = '';
+								$class = 'cloudinary';
+								wppa_setting($slug, '2.3', $name, $desc, $html, $help, $class);
+								
+							}
 
 							?>		
 			
