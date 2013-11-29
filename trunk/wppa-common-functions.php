@@ -2,7 +2,7 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 5.1.18
+* version 5.2.0
 *
 */
 
@@ -282,6 +282,7 @@ global $wppa_initruntimetime;
 						'wppa_show_rating_count'			=> '',	// 7
 						'wppa_thumb_text_viewcount'			=> '',
 						'wppa_albdesc_on_thumbarea'			=> '',
+						'wppa_albname_on_thumbarea'			=> '',
 
 						// D Covers
 						'wppa_show_cover_text' 				=> '',	// 1
@@ -408,6 +409,7 @@ global $wppa_initruntimetime;
 						'wppa_comment_notify_added'		=> '',
 						'wppa_comten_alt_display'		=> '',
 						'wppa_comten_alt_thumbsize'		=> '',
+						'wppa_comment_smiley_picker' 	=> '',
 						
 						// G Overlay
 						'wppa_ovl_opacity'				=> '',
@@ -715,7 +717,15 @@ global $wppa_initruntimetime;
 						'wppa_newpag_create'			=> '',
 						'wppa_newpag_content'			=> '',
 						'wppa_newpag_type'				=> '',
-						'wppa_newpag_status'			=> ''
+						'wppa_newpag_status'			=> '',
+						
+						// J CDN Services
+						'wppa_cdn_service'			=> '',
+						'wppa_cdn_cloud_name'		=> '',
+						'wppa_cdn_api_key'			=> '',
+						'wppa_cdn_api_secret'		=> '',
+						'wppa_cdn_service_update'	=> ''
+
 
 		);
 		

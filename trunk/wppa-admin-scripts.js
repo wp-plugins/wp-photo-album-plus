@@ -1,7 +1,7 @@
 /* admin-scripts.js */
 /* Package: wp-photo-album-plus
 /*
-/* Version 5.1.18
+/* Version 5.2.0
 /* Various js routines used in admin pages		
 */
 
@@ -73,6 +73,7 @@ function wppaInitSettings() {
 	wppaCheckCoverType();
 	wppaCheckNewpag();
 	wppaCheckIndexSearch();
+	wppaCheckCDN();
 	
 	var tab=new Array('O','I','II','III','IV','V','VI','VII','VIII','IX','X','XI','XII');
 	var sub=new Array('A','B','C','D','E','F','G','H','I','J');
@@ -210,6 +211,13 @@ function wppaCheckFullHalign() {
 	else {
 		jQuery('.wppa_ha').css('display', 'none');
 	}
+}
+
+/* Check for CDN type */
+function wppaCheckCDN() {
+	var cdn = document.getElementById('wppa_cdn_service').value;
+	if ( cdn == 'cloudinary' ) jQuery('.cloudinary').css('display', '');
+	else jQuery('.cloudinary').css('display', 'none');
 }
 
 /* Enables or disables popup thumbnail settings according to availability */

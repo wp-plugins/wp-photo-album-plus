@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 5.1.18
+* Version 5.2.0
 *
 */
 
@@ -314,7 +314,7 @@ global $silent;
 	// Check if this update comes with a new wppa-theme.php and/or a new wppa-style.css
 	// If so, produce message
 	$key = '0';
-	if ( $old_rev < '5112' ) {		// theme changed since...
+	if ( $old_rev < '5200' ) {		// theme changed since...
 		$usertheme = ABSPATH.'wp-content/themes/'.get_option('template').'/wppa-theme.php';
 		if ( is_file( $usertheme ) ) $key += '2';
 	}
@@ -574,6 +574,7 @@ Hide Camera info
 						'wppa_popup_text_ncomments'			=> 'yes', 	//
 						'wppa_show_rating_count'			=> 'no',	// 7
 						'wppa_albdesc_on_thumbarea'			=> 'none',
+						'wppa_albname_on_thumbarea'			=> 'none',
 
 						// D Covers
 						'wppa_show_cover_text' 				=> 'yes',	// 1
@@ -702,6 +703,7 @@ Hide Camera info
 						'wppa_comment_notify_added'		=> 'yes',
 						'wppa_comten_alt_display'		=> 'no',
 						'wppa_comten_alt_thumbsize'		=> '75',
+						'wppa_comment_smiley_picker'	=> 'no',
 
 						// G Overlay
 						'wppa_ovl_opacity'				=> '80',
@@ -908,7 +910,7 @@ Hide Camera info
 						'wppa_jpeg_quality'				=> '95',
 						'wppa_geo_edit' 				=> 'no',
 						'wppa_auto_continue'			=> 'yes',
-						'wppa_max_execution_time'		=> '60',
+						'wppa_max_execution_time'		=> '30',
 						'wppa_adminbarmenu_admin'		=> 'yes',
 						'wppa_adminbarmenu_frontend'	=> 'yes',
 						'wppa_feed_use_thumb'			=> 'no',
@@ -1014,8 +1016,15 @@ Hide Camera info
 						'wppa_newpag_create'			=> 'no',
 						'wppa_newpag_content'			=> '[wppa type="cover" album="w#album" align="center"][/wppa]',
 						'wppa_newpag_type'				=> 'page',
-						'wppa_newpag_status'			=> 'publish'
+						'wppa_newpag_status'			=> 'publish',
 
+						// J CDN Services
+						'wppa_cdn_service'			=> '',
+						'wppa_cdn_cloud_name'		=> '',
+						'wppa_cdn_api_key'			=> '',
+						'wppa_cdn_api_secret'		=> '',
+						'wppa_cdn_service_update'	=> 'no'
+						
 						);
 
 	array_walk($wppa_defaults, 'wppa_set_default', $force);

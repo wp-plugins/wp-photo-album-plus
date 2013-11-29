@@ -3,11 +3,11 @@
 * Package: wp-photo-album-plus
 *
 * display the albums/photos/slideshow in a page or post
-* Version 5.1.12
+* Version 5.1.19
 */
 function wppa_theme() {
 
-global $wppa_version; $wppa_version = '5-1-12';		// The version number of this file, please change if you modify this file
+global $wppa_version; $wppa_version = '5-1-19';		// The version number of this file, please change if you modify this file
 global $wppa;
 global $wppa_opt;
 global $wppa_show_statistics;						// Can be set to true by a custom page template
@@ -63,26 +63,28 @@ wppa_container('open');																// Open container
 			$counter_thumbs = '0';
 			if ( $wppa_opt['wppa_thumbtype'] == 'ascovers' ) {						// Do the thumbs As covers
 				wppa_thumb_list('open');											// Open Thumblist sub-container
-					foreach ($thumbs as $tt) :  global $thumb; $thumb = $tt; 		// Loop the Thumbs
-						$counter_thumbs++;
-						if (wppa_onpage('thumbs', $counter_thumbs, $curpage - $n_album_pages)) {
-							$didsome = true;
-							wppa_thumb_ascover();									// Show Thumb as cover
-						} // End if on page
-					endforeach; 
+				foreach ($thumbs as $tt) :  global $thumb; $thumb = $tt; 			// Loop the Thumbs
+					$counter_thumbs++;
+					if (wppa_onpage('thumbs', $counter_thumbs, $curpage - $n_album_pages)) {
+						$didsome = true;
+						wppa_thumb_ascover();										// Show Thumb as cover
+					} // End if on page
+				endforeach; 
 				wppa_thumb_list('close');											// Close Thumblist sub-container
 			}	// As covers
 			else {																	// Do the thumbs As default
 				wppa_thumb_area('open');											// Open Thumbarea sub-container
+				wppa_popup();														// Prepare Popup box
+				wppa_album_name('top');												// Optionally display album name
 				wppa_album_desc('top');												// Optionally display album description
-					foreach ($thumbs as $tt) :  global $thumb; $thumb = $tt; 		// Loop the Thumbs
-						$counter_thumbs++;
-						if (wppa_onpage('thumbs', $counter_thumbs, $curpage - $n_album_pages)) {
-							$didsome = true;
-							wppa_thumb_default();									// Show Thumb as default
-						}	// End if on page
-					endforeach; 
-					wppa_popup();													// Prepare Popup box
+				foreach ($thumbs as $tt) :  global $thumb; $thumb = $tt; 			// Loop the Thumbs
+					$counter_thumbs++;
+					if (wppa_onpage('thumbs', $counter_thumbs, $curpage - $n_album_pages)) {
+						$didsome = true;
+						wppa_thumb_default();										// Show Thumb as default
+					}	// End if on page
+				endforeach; 
+				wppa_album_name('bottom');											// Optionally display album name
 				wppa_album_desc('bottom');											// Optionally display album description
 				wppa_thumb_area('close');											// Close Thumbarea sub-container
 			}	// As default

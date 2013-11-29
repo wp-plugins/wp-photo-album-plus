@@ -2,7 +2,7 @@
 //
 // conatins slideshow, theme, ajax and lightbox code
 //
-// Version 5.1.18
+// Version 5.2.0
 
 // Part 1: Slideshow
 //
@@ -218,7 +218,8 @@ var cursor;
 	else if (wppaLightBox=='wppa') cursor =  'url('+wppaImageDirectory+wppaMagnifierCursor+'),pointer';
 
 	// Fill _wppaSlides[mocc][id]
-    _wppaSlides[mocc][id] = ' src="' + wppaUploadUrl + url + '" alt="' + wppaTrimAlt(name) + '" class="theimg theimg-'+mocc+' big" ';
+//    _wppaSlides[mocc][id] = ' src="' + wppaUploadUrl + url + '" alt="' + wppaTrimAlt(name) + '" class="theimg theimg-'+mocc+' big" ';
+    _wppaSlides[mocc][id] = ' src="' + url + '" alt="' + wppaTrimAlt(name) + '" class="theimg theimg-'+mocc+' big" ';
 	// Add swipe
 	if ( wppaSlideSwipe ) {
 		_wppaSlides[mocc][id] += 'ontouchstart="wppaTouchStart(event, this.id, '+mocc+');"  ontouchend="wppaTouchEnd(event);" ontouchmove="wppaTouchMove(event);" ontouchcancel="wppaTouchCancel(event);" ';
@@ -1965,7 +1966,8 @@ function wppaPopUp(mocc, elm, id, name, desc, rating, ncom) {
 	clearTimeout(_wppaTimer[mocc]);
 	
 	// Vertical offset?
-	if (document.getElementById('wppa-albdesc-'+mocc)) vOffset = document.getElementById('wppa-albdesc-'+mocc).clientHeight;
+//	if (document.getElementById('wppa-albname-'+mocc)) vOffset += document.getElementById('wppa-albname-'+mocc).clientHeight;
+//	if (document.getElementById('wppa-albdesc-'+mocc)) vOffset += document.getElementById('wppa-albdesc-'+mocc).clientHeight;
 	
 	// Give this' occurrances popup its content
 	if (document.getElementById('x-'+id+'-'+mocc)) {
@@ -2254,8 +2256,74 @@ window.onpopstate = function(event) {
 //	wppaQRData = document.location.href; //????
 };  
 
-// The AJAX rendering routine
+// The AJAX rendering routine Sync
 function wppaDoAjaxRender(mocc, ajaxurl, newurl) {
+
+	// Fix the url
+	if ( wppaLang != '' ) ajaxurl += '&lang='+wppaLang;
+
+	// Create the http request object
+	var xmlhttp = wppaGetXmlHttp();
+		
+	// Ajax possible ?
+	if ( wppaCanAjaxRender ) {	
+
+		// If it is a slideshow: Stop slideshow before pushing it on the stack
+		if ( _wppaSSRuns[mocc] ) _wppaStop(mocc);
+
+		// Display the spinner
+		jQuery('#wppa-ajax-spin-'+mocc).css('display', '');
+
+		// Do the Ajax action
+		xmlhttp.open('GET',ajaxurl,false);
+		xmlhttp.send();	
+		
+		// Update the wppa container
+		jQuery('#wppa-container-'+mocc).html(xmlhttp.responseText);
+		
+		// Push the stack
+		if ( wppaCanPushState && wppaUpdateAddressLine ) {
+			wppaHis++;
+			cont = xmlhttp.responseText;
+			try {
+				history.pushState({page: wppaHis, occur: mocc, type: 'html', html: cont}, "---", newurl);
+				wppaConsoleLog('Ajax rendering: History stack updated');
+			}
+			catch(err) {
+				wppaConsoleLog('Ajax rendering: Failed to update history stack');
+			}
+			if ( wppaFirstOccur == 0 ) wppaFirstOccur = mocc;
+		}
+				
+		// If lightbox is on board, refresh the imagelist. It has just changed, you know!
+		wppaUpdateLightboxes();
+				
+		// Update qrcode
+		if ( typeof(wppaQRUpdate) != 'undefined') wppaQRUpdate(newurl);
+
+		// Run Autocol? 
+		wppaColWidth[mocc] = 0;	// force a recalc and triggers autocol if needed
+				
+		// If it is a slideshow: Upate 'Faster' and 'Slower' to the desired language.
+		// The ajax stuff may get the admin language while we need the frontend language
+		jQuery('#speed0-'+mocc).html(wppaSlower);
+		jQuery('#speed1-'+mocc).html(wppaFaster);
+		
+		// Remove spinner
+		jQuery('#wppa-ajax-spin-'+mocc).css('display', 'none');
+
+	}
+	else {	// Ajax NOT possible
+		document.location.href = newurl;
+
+		// Run Autocol? 
+		wppaColWidth[mocc] = 0;	// force a recalc and triggers autocol if needed
+	}
+}
+
+// The AJAX rendering routine Async
+/*
+function wppaDoAjaxRenderAsync(mocc, ajaxurl, newurl) {
 
 	// Create the http request object
 	var xmlhttp = wppaGetXmlHttp();
@@ -2285,10 +2353,10 @@ function wppaDoAjaxRender(mocc, ajaxurl, newurl) {
 //				if (typeof(myLightbox)!="undefined") myLightbox.updateImageList();
 				wppaUpdateLightboxes();
 				
-				/* qrcode */
+				// qrcode 
 				if ( typeof(wppaQRUpdate) != 'undefined') wppaQRUpdate(newurl);
 
-				/* Autocol? */
+				// Autocol? 
 				wppaColWidth[mocc] = 0;	// force a recalc
 				//_wppaDoAutocol(mocc);
 				
@@ -2315,10 +2383,11 @@ function wppaDoAjaxRender(mocc, ajaxurl, newurl) {
 	else {	// Ajax NOT possible
 		document.location.href = newurl;
 
-		/* Autocol? */
+		// Autocol? 
 		wppaColWidth[mocc] = 0;	// clear: forces recalc
 	}
 }
+*/
 
 function wppaAjaxApprovePhoto(photoid) {
 	var xmlhttp = wppaGetXmlHttp();
@@ -2992,4 +3061,25 @@ function wppaFbInit() {
 		wppaConsoleLog('Fb wait');
 		SetTimeout('wppaFbInit()', 200);
 	}
+}
+
+function wppaInsertAtCursor(elm, value) {
+    //IE support
+    if (document.selection) {
+        elm.focus();
+        sel = document.selection.createRange();
+        sel.text = value;
+    }
+    //MOZILLA and others
+    else if (elm.selectionStart || elm.selectionStart == '0') {
+        var startPos = elm.selectionStart;
+        var endPos = elm.selectionEnd;
+        elm.value = elm.value.substring(0, startPos)
+            + value
+            + elm.value.substring(endPos, elm.value.length);
+        elm.selectionStart = startPos + value.length;
+        elm.selectionEnd = startPos + value.length;
+    } else {
+        elm.value += value;
+    }
 }
