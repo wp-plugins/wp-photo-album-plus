@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * gp admin functions
-* version 5.1.18
+* version 5.2.0
 *
 * 
 */
@@ -113,30 +113,28 @@ function wppa_regenerate_thumbs() {
 
     $start = get_option('wppa_lastthumb', '-1');
 
-	$photos = $wpdb->get_results($wpdb->prepare('SELECT * FROM `' . WPPA_PHOTOS . '` WHERE `id` > %s ORDER BY `id`', $start), ARRAY_A);
+	$photos = $wpdb->get_results($wpdb->prepare('SELECT * FROM `' . WPPA_PHOTOS . '` WHERE `id` > %s ORDER BY `id` LIMIT 1000', $start), ARRAY_A);
 	
-	if ( ! empty($photos) ) {
-		$count = count($photos);
-		$done = '0';
-		foreach ($photos as $photo) {
-			$newimage = wppa_get_photo_path($photo['id']);
-			if ( is_file($newimage) ) {
-				wppa_create_thumbnail($newimage, $thumbsize, '' );
-				wppa_update_option('wppa_lastthumb', $photo['id']);
-				wppa_clear_cache();
-				echo '.';
-				$done++;
-			}
-			else {
-				wppa_error_message('Unexpected error: file '.$newimage.' was expected but is missing', 'force', 'red');
-			}
-			if ( wppa_is_time_up($done) ) {
-				return false;	// NOT Done, have to go on
-			}
+	if ( empty($photos) ) return true;		// Done, did them all
+	
+	$count = count($photos);
+	$done = '0';
+	foreach ($photos as $photo) {
+		$newimage = wppa_get_photo_path($photo['id']);
+		if ( is_file($newimage) ) {
+			wppa_create_thumbnail($newimage, $thumbsize, '' );
+			wppa_update_option('wppa_lastthumb', $photo['id']);
+			wppa_clear_cache();
+			echo '.';
+			$done++;
 		}
-		return true;	// Done, did them all
+		else {
+			wppa_error_message('Unexpected error: file '.$newimage.' was expected but is missing', 'force', 'red');
+		}
+		if ( wppa_is_time_up($done) ) {
+			return false;	// NOT Done, have to go on
+		}
 	}
-	else return true;	// Done, nothing left to do
 }
 
 // Remake

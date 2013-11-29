@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions
-* Version 5.1.18
+* Version 5.2.0
 *
 */
 
@@ -436,7 +436,7 @@ global $thumbs;
 		if ( function_exists('wppa_theme') ) wppa_theme();	// Call the theme module
 		else $wppa['out'] = '<span style="color:red">ERROR: Missing function wppa_theme(), check the installation of WPPA+. Remove customized wppa_theme.php</span>';
 		global $wppa_version; 
-		$expected_version = '5-1-12';
+		$expected_version = '5-1-19';
 		if ( $wppa_version != $expected_version ) wppa_dbg_msg('WARNING: customized wppa-theme.php is out of rev. Expected version: '.$expected_version.' found: '.$wppa_version, 'red');	
 	}
 	
@@ -1116,8 +1116,8 @@ global $thumb;
 	
 	// Find image url
 	$usethumb = wppa_use_thumb_file($id, $style_a['width'], $style_a['height']);
-	$photourl = $usethumb ? wppa_get_thumb_url($id) : wppa_get_photo_url($id);
-	$photourl = str_replace(WPPA_UPLOAD_URL, '', $photourl);
+	$photourl = $usethumb ? wppa_get_thumb_url($id) : wppa_get_photo_url($id, '', $style_a['width'], $style_a['height']);
+//	$photourl = str_replace(WPPA_UPLOAD_URL, '', $photourl);
 
 	// Find iptc data
 	$iptc = ( $wppa_opt['wppa_show_iptc'] && ! $wppa['is_slideonly'] && ! $wppa['is_filmonly'] ) ? wppa_iptc_html($id) : '';
@@ -2292,7 +2292,7 @@ global $wpdb;
 			if ( $comments ) foreach ( $comments as $com ) {
 				$wppa['out'] .= '<h6 style="font-size:10px;line-height:12px;font-weight:bold;padding:0 0 0 6px;margin:0;float:left;">'.$com['user'].' '.__a('wrote:').
 								' '.wppa_get_time_since($com['timestamp']).'</h6><br />'.
-								'<p style="font-size:10px;line-height:12px;padding:0 0 0 6px;text-align:left;margin:0;">'.$com['comment'].'</p>';
+								'<p style="font-size:10px;line-height:12px;padding:0 0 0 6px;text-align:left;margin:0;">'.html_entity_decode(convert_smilies($com['comment'])).'</p>';
 			}
 		$wppa['out'] .= '</div>';
 	}

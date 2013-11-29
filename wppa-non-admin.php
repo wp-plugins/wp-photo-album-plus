@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the non admin stuff
-* Version 5.1.18
+* Version 5.2.0
 *
 */
 
@@ -197,7 +197,7 @@ global $wpdb;
 			wppa_dbg_msg($plugin);
 		}
 		wppa_dbg_msg('End Active Plugins');
-		wppa_dbg_msg(htmlspecialchars($wpdb->get_var("SELECT `option_value` FROM ".$wpdb->prefix . 'options'." WHERE `option_name` = 'wppa_cached_options'")));
+//		wppa_dbg_msg(htmlspecialchars($wpdb->get_var("SELECT `option_value` FROM ".$wpdb->prefix . 'options'." WHERE `option_name` = 'wppa_cached_options'")));
 	}
 	
 	echo '

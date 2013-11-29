@@ -2,7 +2,7 @@
 /*
 Plugin Name: WP Photo Album Plus
 Description: Easily manage and display your photo albums and slideshows within your WordPress site.
-Version: 5.1.18
+Version: 5.2.0
 Author: J.N. Breetvelt a.k.a OpaJaap
 Author URI: http://wppa.opajaap.nl/
 Plugin URI: http://wordpress.org/extend/plugins/wp-photo-album-plus/
@@ -17,11 +17,11 @@ global $wpdb;
 /* when new options are added and when the wppa_setup() routine 
 /* must be called right after update for any other reason.
 */
-global $wppa_revno; 		$wppa_revno = '5118';	
+global $wppa_revno; 		$wppa_revno = '5200';	
 /* This is the api interface version number
 /* It is incremented at any code change.
 */
-global $wppa_api_version; 	$wppa_api_version = '5-1-18-000';
+global $wppa_api_version; 	$wppa_api_version = '5-2-00-000';
 
 /* CONSTANTS
 /*
@@ -142,3 +142,24 @@ function wppa_admin_bar_init() {
 		}
 	}
 }
+
+/* Load cloudinary if configured */
+add_action('init', 'wppa_load_cloudinary');
+function wppa_load_cloudinary() {
+	if ( get_option('wppa_cdn_service', 'nil') != 'cloudinary' ) return;
+	
+	require_once 'cloudinary/src/Cloudinary.php';
+	require_once 'cloudinary/src/Uploader.php';
+	require_once 'cloudinary/src/Api.php';
+	
+	\Cloudinary::config(array( 
+		"cloud_name" 	=> get_option('wppa_cdn_cloud_name'), 
+		"api_key" 		=> get_option('wppa_cdn_api_key'), 
+		"api_secret" 	=> get_option('wppa_cdn_api_secret')
+	));
+	
+	global $wppa_cloudinary_api;
+	$wppa_cloudinary_api = new \Cloudinary\Api();
+}
+	
+	

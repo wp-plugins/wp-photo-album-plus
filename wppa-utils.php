@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains low-level utility routines
-* Version 5.1.17
+* Version 5.2.0
 *
 */
 
@@ -86,11 +86,36 @@ $wppa_opt;
 }
 
 // get url of a full sized image
-function wppa_get_photo_url($id, $system = 'flat') {
+function wppa_get_photo_url($id, $system = 'flat', $x = '0', $y = '0') {
 global $thumb;
 $wppa_opt;
 
 	if ( is_feed() && wppa_switch('wppa_feed_use_thumb') ) return wppa_get_thumb_url($id, $system);
+	
+	// If in the cloud...
+	// It is a bit tricky to assume that id<lastupload will be present in the cloud, but it turns out that
+	// checking for existance is very expensive...
+	if ( $id <= get_option('wppa_last_cloud_upload') ) {
+	
+		switch ( wppa_cdn() ) {
+			case 'cloudinary':
+				global $blog_id;
+				$prefix = ( is_multisite() && ! WPPA_MULTISITE_GLOBAL ) ? $blog_id.'-' : '';
+				$sizespec = ( $x && $y ) ? 'w_'.$x.',h_'.$y.',c_fit/' : '';
+				$url = 'http://res.cloudinary.com/'.get_option('wppa_cdn_cloud_name').'/image/upload/'.$sizespec.$prefix.$thumb['id'].'.'.$thumb['ext'];
+
+	//			global $wppa_cloudinary_api;
+	//			$dtl = @ $wppa_cloudinary_api->resource($prefix.$thumb['id']);
+	//			if ( ! empty($dtl) ) return $url;
+	//	print_r($dtl);
+	//exit;
+		
+	//			if ( @ getimagesize($url) ) 
+				return $url;
+				break;
+				
+		}
+	}
 	
 	if ( get_option('wppa_file_system') == 'flat' ) $system = 'flat';	// Have been converted, ignore argument
 	if ( get_option('wppa_file_system') == 'tree' ) $system = 'tree';	// Have been converted, ignore argument
@@ -99,6 +124,8 @@ $wppa_opt;
 	if ( $system == 'tree' ) return WPPA_UPLOAD_URL.'/'.wppa_expand_id($thumb['id']).'.'.$thumb['ext'].'?ver='.get_option('wppa_photo_version', '1');
 	else return WPPA_UPLOAD_URL.'/'.$thumb['id'].'.'.$thumb['ext'].'?ver='.get_option('wppa_photo_version', '1');
 }
+
+
 function wppa_bump_photo_rev() {
 	wppa_update_option('wppa_photo_version', get_option('wppa_photo_version', '1') + '1');
 }
@@ -1045,7 +1072,14 @@ global $wpdb;
 	$wpdb->query($wpdb->prepare('DELETE FROM `'.WPPA_EXIF.'` WHERE `photo` = %s', $photo));
 	wppa_flush_treecounts($album);
 	wppa_flush_upldr_cache('photoid', $photo);
-
+	// Delete from cloud
+	switch ( wppa_cdn() ) {
+		case 'cloudinary':
+			global $wppa_cloudinary_api;
+			$prefix = ( is_multisite() && ! WPPA_MULTISITE_GLOBAL ) ? $blog_id.'-' : '';
+			$wppa_cloudinary_api->delete_resources(array($prefix.$photo));
+			break;
+	}
 }
 
 function wppa_microtime($txt = '') {
@@ -1263,4 +1297,28 @@ global $thumb;
 
 	wppa_cache_thumb($id);
 	return $thumb['owner'];
+}
+
+function wppa_cdn() {
+global $wppa_opt;
+
+	// What did we specify in the settings page?
+	$cdn = $wppa_opt['wppa_cdn_service'];
+	
+	// Check for fully configured and active
+	switch ( $cdn ) {
+		case 'cloudinary':
+			if ( $wppa_opt['wppa_cdn_cloud_name'] && $wppa_opt['wppa_cdn_api_key'] && $wppa_opt['wppa_cdn_api_secret'] ) {
+			}
+			else {
+				$cdn = '';	// Incomplete configuration
+			}
+			break;
+			
+		default:
+			$cdn = '';
+
+	}
+	
+	return $cdn;
 }

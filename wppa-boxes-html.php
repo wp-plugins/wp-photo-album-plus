@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Various wppa boxes
-* Version 5.1.17
+* Version 5.2.0
 *
 */
 
@@ -751,6 +751,7 @@ global $wppa_first_comment_html;
 							}
 							else {
 /**/
+								if ( wppa_switch('wppa_comment_smiley_picker') ) $result .= wppa_get_smiley_picker_html('wppa-comment-'.$wppa['master_occur']);
 								$result .= '<textarea name="wppa-comment" id="wppa-comment-'.$wppa['master_occur'].'" style="height:60px; width:100%; ">'.esc_textarea(stripslashes($txt)).'</textarea>';
 /*							}
 /* */
@@ -781,6 +782,30 @@ global $wppa_first_comment_html;
 
 	return $result;
 }
+
+function wppa_get_smiley_picker_html($elm_id) {
+static $wppa_smilies;
+global $wpsmiliestrans;
+
+	// Fill inverted smilies array if needed
+	if ( ! is_array($wppa_smilies) ) {
+		foreach( array_keys($wpsmiliestrans) as $idx) {
+			if ( ! isset ($wppa_smilies[$wpsmiliestrans[$idx]]) ) {
+				$wppa_smilies[$wpsmiliestrans[$idx]] = $idx;
+			}
+		}
+	}
+	
+	// Make the html
+	$result = '';
+	foreach ( array_keys($wppa_smilies) as $key ) {
+		$onclick = esc_attr('wppaInsertAtCursor(document.getElementById("'.$elm_id.'"), " '.$wppa_smilies[$key].' ")');
+		$title = substr(substr($key, 5), 0, -4);
+		$result .= '<img src="'.esc_attr(includes_url( 'images/smilies/' ).$key).'" onclick="'.$onclick.'" title="'.$title.'" /> ';
+	}
+	
+	return $result;
+} 
 
 // IPTC box
 function wppa_iptc_html($photo) {
@@ -924,6 +949,27 @@ global $wppaexiflabels;
 	return ($result);
 }
 
+// Display the album name ( on a thumbnail display ) either on top or at the bottom of the thumbnail area
+function wppa_album_name($key) {
+global $wppa;
+global $wppa_opt;
+global $wpdb;
+
+	if ( $wppa['is_upldr'] ) return;
+	
+	$result = '';
+	if ( $wppa_opt['wppa_albname_on_thumbarea'] == $key && $wppa['current_album'] ) {
+		$name = wppa_get_album_name($wppa['current_album']);
+		if ( $key == 'top' ) {
+			$result .= '<h3 id="wppa-albname-'.$wppa['master_occur'].'" class="wppa-box-text wppa-black" style="padding-right:6px; margin:0; '.__wcs('wppa-box-text').__wcs('wppa-black').'" >'.$name.'</h3><div style="clear:both" ></div>';
+		}
+		if ( $key == 'bottom' ) {
+			$result .= '<h3 id="wppa-albname-b-'.$wppa['master_occur'].'" class="wppa-box-text wppa-black" style="clear:both; padding-right:6px; margin:0; '.__wcs('wppa-box-text').__wcs('wppa-black').'" >'.$name.'</h3>';
+		}
+	}
+	$wppa['out'] .= $result;
+}
+
 // Display the album description ( on a thumbnail display ) either on top or at the bottom of the thumbnail area
 function wppa_album_desc($key) {
 global $wppa;
@@ -939,7 +985,7 @@ global $wpdb;
 			$result .= '<div id="wppa-albdesc-'.$wppa['master_occur'].'" class="wppa-box-text wppa-black" style="padding-right:6px;'.__wcs('wppa-box-text').__wcs('wppa-black').'" >'.$desc.'</div><div style="clear:both" ></div>';
 		}
 		if ( $key == 'bottom' ) {
-			$result .= '<div class="wppa-box-text wppa-black" style="clear:both; padding-right:6px;'.__wcs('wppa-box-text').__wcs('wppa-black').'" >'.$desc.'</div>';
+			$result .= '<div id="wppa-albdesc-b-'.$wppa['master_occur'].'" class="wppa-box-text wppa-black" style="clear:both; padding-right:6px;'.__wcs('wppa-box-text').__wcs('wppa-black').'" >'.$desc.'</div>';
 		}
 	}
 	$wppa['out'] .= $result;
