@@ -95,7 +95,7 @@ $wppa_opt;
 	// If in the cloud...
 	// It is a bit tricky to assume that id<lastupload will be present in the cloud, but it turns out that
 	// checking for existance is very expensive...
-	if ( $id <= get_option('wppa_last_cloud_upload') ) {
+	if ( $id <= get_option('wppa_last_cloud_upload', '0') ) {
 	
 		switch ( wppa_cdn() ) {
 			case 'cloudinary':
