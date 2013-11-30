@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions
-* Version 5.2.0
+* Version 5.2.2
 *
 */
 
@@ -2196,7 +2196,7 @@ global $wpdb;
 
 	$x = $com_alt ? 'margin-right:20px;' : '';
 
-	$url       	= wppa_get_thumb_url($thumb['id']); 
+	$url       	= wppa_get_thumb_url($thumb['id'], '', $imgattr_a['width'], $imgattr_a['height']); 
 	$events    	= wppa_get_imgevents('thumb', $thumb['id']); 
 	$imgalt		= wppa_get_imgalt($thumb['id']);	// returns something like ' alt="Any text" '
 	$title = esc_attr(wppa_get_photo_name($thumb['id']));
@@ -2524,7 +2524,7 @@ global $thumb;
 	$imgheight = $imgattr_a['height'];
 	$cursor    = $imgattr_a['cursor'];
 		
-	$url = wppa_get_thumb_url($thumb['id']); 
+	$url = wppa_get_thumb_url($thumb['id'], '', $imgwidth, $imgheight); 
 	$furl = str_replace('/thumbs', '', $url);
 	$events = wppa_get_imgevents('film', $thumb['id'], 'nopopup', $idx); 
 	$thumbname = esc_attr(wppa_qtrans($thumb['name']));
