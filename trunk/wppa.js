@@ -247,7 +247,7 @@ var cursor;
 	_wppaCommentHtml[mocc][id] = commenthtml;
 	_wppaIptcHtml[mocc][id] = iptchtml;
 	_wppaExifHtml[mocc][id] = exifhtml;
-	_wppaUrl[mocc][id] = wppaUploadUrl + url;		// Image url
+	_wppaUrl[mocc][id] = /* wppaUploadUrl + */ url;		// Image url
 	_wppaLbTitle[mocc][id] = lbtitle;
 	_wppaShareUrl[mocc][id] = shareurl;
 	_wppaShareHtml[mocc][id] = wppaRepairScriptTags(smhtml);
