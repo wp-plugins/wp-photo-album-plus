@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 5.2.1
+* Version 5.2.2
 *
 */
 
@@ -321,6 +321,10 @@ global $wppa_revno;
 	if ( $need_cloud ) { 
 		switch ( wppa_cdn() ) {
 			case 'cloudinary':
+				if ( ! function_exists( 'wppa_upload_to_cloudinary' ) ) {
+					wppa_error_message('Trying to upload to Cloudinary, but it is not configured');
+					exit;
+				}
 				$j = '0';
 				$last = get_option('wppa_last_cloud_upload', '0');
 				$photos = $wpdb->get_results( "SELECT * FROM `".WPPA_PHOTOS."` WHERE `id` > ".$last." ORDER BY `id` LIMIT 1000", ARRAY_A );
@@ -331,22 +335,18 @@ global $wppa_revno;
 				else {
 					$count = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `".WPPA_PHOTOS."` WHERE `id` > %s", $last));
 					wppa_update_message('Uploading to Cloudinary cloud name: '.get_option('wppa_cdn_cloud_name').'. '.$count.' images to go.');
+					
 					if ( $photos ) foreach ( $photos as $photo ) {
-						// See if its already there
-						$prefix = ( is_multisite() && ! WPPA_MULTISITE_GLOBAL ) ? $blog_id.'-' : '';
-						$url = 'http://res.cloudinary.com/'.get_option('wppa_cdn_cloud_name').'/image/upload/'.$prefix.$photo['id'].'.'.$photo['ext'];
-						if ( @ getimagesize($url) ) echo '.';
-						else {
-							$file = wppa_get_photo_path($photo['id']);
-							if ( file_exists($file) ) {
-								\Cloudinary\Uploader::upload($file, array(	"public_id" => $prefix.$photo['id'],
-																			"version"	=> get_option('wppa_photo_version', '1')
-								
-																		) );
-								$j++;										
-								echo '!';
-							}
+						
+						if ( wppa_exists_on_cloudinary( $photo['id'] ) ) {
+							echo '.';	// Already there
 						}
+						else {
+							wppa_upload_to_cloudinary( $photo['id'] );
+							echo '!';	// Done!
+						}
+						$j++;										
+
 						update_option('wppa_last_cloud_upload', $photo['id']);
 						
 						$time_up = wppa_is_time_up($j);
