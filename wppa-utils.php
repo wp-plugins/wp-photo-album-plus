@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains low-level utility routines
-* Version 5.2.2
+* Version 5.2.3
 *
 */
 
@@ -59,18 +59,20 @@ global $thumb;
 // get url of thumb
 function wppa_get_thumb_url($id, $system = 'flat', $x = '0', $y = '0') {
 global $thumb;
-$wppa_opt;
+global $wppa_opt;
+global $blog_id;
 
 	// If in the cloud...
-	// It is a bit tricky to assume that id<lastupload will be present in the cloud, but it turns out that
-	// checking for existance is very expensive...
-	if ( $id <= get_option('wppa_last_cloud_upload', '0') ) {
+	if ( wppa_cdn() ) {	
 		if ( $x && $y ) {		// Only when size is given !! To prevent download of the fullsize image
 			switch ( wppa_cdn() ) {
 				case 'cloudinary':
-					global $blog_id;
-					$prefix = ( is_multisite() && ! WPPA_MULTISITE_GLOBAL ) ? $blog_id.'-' : '';
-					$sizespec = ( $x && $y ) ? 'w_'.$x.',h_'.$y.',c_fit/' : '';
+					$transform	= explode( ':', $wppa_opt['wppa_thumb_aspect'] );
+					$t 			= 'limit';
+					if ( $transform['2'] == 'clip' ) $t = 'fill';
+					if ( $transform['2'] == 'padd' ) $t = 'pad,b_black';
+					$sizespec 	= ( $x && $y ) ? 'w_'.$x.',h_'.$y.',c_'.$t.'/' : '';
+					$prefix 	= ( is_multisite() && ! WPPA_MULTISITE_GLOBAL ) ? $blog_id.'-' : '';
 					$url = 'http://res.cloudinary.com/'.get_option('wppa_cdn_cloud_name').'/image/upload/'.$sizespec.$prefix.$thumb['id'].'.'.$thumb['ext'];
 					return $url;
 					break;
@@ -106,19 +108,18 @@ $wppa_opt;
 // get url of a full sized image
 function wppa_get_photo_url($id, $system = 'flat', $x = '0', $y = '0') {
 global $thumb;
+global $wppa_opt;
+global $blog_id;
 
 	if ( is_feed() && wppa_switch('wppa_feed_use_thumb') ) return wppa_get_thumb_url($id, $system);
 	
 	// If in the cloud...
-	// It is a bit tricky to assume that id<lastupload will be present in the cloud, but it turns out that
-	// checking for existance is very expensive...
-	if ( $id <= get_option('wppa_last_cloud_upload', '0') ) {
-	
+	if ( wppa_cdn() ) { 
 		switch ( wppa_cdn() ) {
 			case 'cloudinary':
-				global $blog_id;
-				$prefix = ( is_multisite() && ! WPPA_MULTISITE_GLOBAL ) ? $blog_id.'-' : '';
-				$sizespec = ( $x && $y ) ? 'w_'.$x.',h_'.$y.',c_fit/' : '';
+				$prefix 	= ( is_multisite() && ! WPPA_MULTISITE_GLOBAL ) ? $blog_id.'-' : '';
+				$t 			= wppa_switch('wppa_enlarge') ? 'fit' : 'limit';
+				$sizespec 	= ( $x && $y ) ? 'w_'.$x.',h_'.$y.',c_'.$t.'/' : '';
 				$url = 'http://res.cloudinary.com/'.get_option('wppa_cdn_cloud_name').'/image/upload/'.$sizespec.$prefix.$thumb['id'].'.'.$thumb['ext'];
 				return $url;
 				break;
@@ -1083,9 +1084,7 @@ global $wpdb;
 	// Delete from cloud
 	switch ( wppa_cdn() ) {
 		case 'cloudinary':
-			global $wppa_cloudinary_api;
-			$prefix = ( is_multisite() && ! WPPA_MULTISITE_GLOBAL ) ? $blog_id.'-' : '';
-			$wppa_cloudinary_api->delete_resources(array($prefix.$photo));
+			wppa_delete_from_cloudinary( $photo );
 			break;
 	}
 }

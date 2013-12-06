@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the featured photos
-* Version 5.1.15
+* Version 5.2.3
 */
 
 class FeaTenWidget extends WP_Widget {
@@ -56,7 +56,7 @@ class FeaTenWidget extends WP_Widget {
 				$width      = $imgstyle_a['width'];
 				$height     = $imgstyle_a['height'];
 				$cursor		= $imgstyle_a['cursor'];
-				$imgurl 	= wppa_get_thumb_url($image['id']);
+				$imgurl 	= wppa_get_thumb_url( $image['id'], '', $width, $height );
 
 				$imgevents = wppa_get_imgevents('thumb', $image['id'], true);
 

@@ -1,7 +1,7 @@
 /* admin-scripts.js */
 /* Package: wp-photo-album-plus
 /*
-/* Version 5.2.0
+/* Version 5.2.3
 /* Various js routines used in admin pages		
 */
 
@@ -777,14 +777,7 @@ function wppaAjaxDeletePhoto(photo) {
 	wppaFeAjaxLog('in');
 
 	var xmlhttp = wppaGetXmlHttp();
-	/*
-	if (window.XMLHttpRequest) {		// code for IE7+, Firefox, Chrome, Opera, Safari
-		xmlhttp=new XMLHttpRequest();
-	}
-	else {								// code for IE6, IE5
-		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-	}
-	*/
+
 	// Make the Ajax url
 	var url = wppaAjaxUrl+'?action=wppa&wppa-action=delete-photo&photo-id='+photo;
 	url += '&wppa-nonce='+document.getElementById('photo-nonce-'+photo).value;
@@ -806,7 +799,7 @@ function wppaAjaxDeletePhoto(photo) {
 			document.getElementById('photostatus-'+photo).innerHTML = 'processing request';
 			break;
 		case 4:
-			if (xmlhttp.status!=404) {
+			if ( xmlhttp.status == 200 ) {
 				var str = wppaTrim(xmlhttp.responseText);
 				var ArrValues = str.split("||");
 				if (ArrValues[0] != '') {
@@ -818,10 +811,11 @@ function wppaAjaxDeletePhoto(photo) {
 					document.getElementById('photoitem-'+photo).innerHTML = ArrValues[2];	// OK
 					wppaProcessFull(ArrValues[3], ArrValues[4]);
 				}
-	wppaFeAjaxLog('out');
-
+				wppaFeAjaxLog('out');
 			}
-			
+			else {	// status != 200
+				document.getElementById('photoitem-'+photo).innerHTML = '<span style="color:red;" >Comm error '+xmlhttp.status+': '+xmlhttp.statusText+'</span>';
+			}			
 		}
 	}
 }
@@ -848,29 +842,34 @@ function wppaAjaxApplyWatermark(photo, file, pos) {
 
 	// Process the result
 	xmlhttp.onreadystatechange=function() {
-		if (xmlhttp.readyState == 4 && xmlhttp.status != 404) {
-			var str = wppaTrim(xmlhttp.responseText);
-			var ArrValues = str.split("||");
+		if ( xmlhttp.readyState == 4 ) {
+			if ( xmlhttp.status == 200 ) {
+				var str = wppaTrim(xmlhttp.responseText);
+				var ArrValues = str.split("||");
 
-			if (ArrValues[0] != '') {
-				alert('The server returned unexpected output:\n'+ArrValues[0]);
+				if (ArrValues[0] != '') {
+					alert('The server returned unexpected output:\n'+ArrValues[0]);
+				}
+				switch (ArrValues[1]) {
+					case '0':		// No error
+						document.getElementById('photostatus-'+photo).innerHTML = ArrValues[2];
+						break;
+					default:
+						document.getElementById('photostatus-'+photo).innerHTML = '<span style="color:red">'+ArrValues[2]+'</span>';
+				}
+				// Hide spinner
+				jQuery('#wppa-water-spin-'+photo).css({visibility:'hidden'});
+				
+				wppaFeAjaxLog('out');
 			}
-			switch (ArrValues[1]) {
-				case '0':		// No error
-					document.getElementById('photostatus-'+photo).innerHTML = ArrValues[2];
-					break;
-				default:
-					document.getElementById('photostatus-'+photo).innerHTML = '<span style="color:red">'+ArrValues[2]+'</span>';
-			}
-			// Hide spinner
-			jQuery('#wppa-water-spin-'+photo).css({visibility:'hidden'});
-			
-	wppaFeAjaxLog('out');
-			
+			else {	// status != 200
+				document.getElementById('photostatus-'+photo).innerHTML = '<span style="color:red;" >Comm error '+xmlhttp.status+': '+xmlhttp.statusText+'</span>';
+			}			
 		}
 	}
 }
 
+var wppaAjaxPhotoCount = new Array();
 var wppaLastDesc = new Array();
 function wppaAjaxUpdatePhoto(photo, actionslug, elem, refresh) {
 
@@ -886,6 +885,8 @@ function wppaAjaxUpdatePhoto(photo, actionslug, elem, refresh) {
 	}
 
 	wppaFeAjaxLog('in');
+	if ( ! wppaAjaxPhotoCount[photo] ) wppaAjaxPhotoCount[photo] = 0;
+	wppaAjaxPhotoCount[photo]++;
 
 	var xmlhttp = wppaGetXmlHttp();
 
@@ -902,7 +903,7 @@ function wppaAjaxUpdatePhoto(photo, actionslug, elem, refresh) {
 	xmlhttp.open('POST',wppaAjaxUrl,true);
 	xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 	xmlhttp.send(data);
-	document.getElementById('photostatus-'+photo).innerHTML = 'Working, please wait...';
+	jQuery('#photostatus-'+photo).html('Working, please wait... ('+wppaAjaxPhotoCount[photo]+')');
 
 	// Process the result
 	xmlhttp.onreadystatechange=function() {
@@ -917,7 +918,8 @@ function wppaAjaxUpdatePhoto(photo, actionslug, elem, refresh) {
 			document.getElementById('photostatus-'+photo).innerHTML = 'processing request';
 			break;
 		case 4:
-			if (xmlhttp.status!=404) {
+			wppaAjaxPhotoCount[photo]--;
+			if ( xmlhttp.status == 200 ) {
 				var str = wppaTrim(xmlhttp.responseText);
 				var ArrValues = str.split("||");
 
@@ -926,7 +928,8 @@ function wppaAjaxUpdatePhoto(photo, actionslug, elem, refresh) {
 				}
 				switch (ArrValues[1]) {
 					case '0':		// No error
-						document.getElementById('photostatus-'+photo).innerHTML = ArrValues[2];
+						if ( wppaAjaxPhotoCount[photo] == 0 ) jQuery('#photostatus-'+photo).html(ArrValues[2]);
+						else jQuery('#photostatus-'+photo).html('Working, please wait... ('+wppaAjaxPhotoCount[photo]+')');
 						break;
 					case '99':	// Photo is gone
 						document.getElementById('photoitem-'+photo).innerHTML = '<span style="color:red">'+ArrValues[2]+'</span>';
@@ -939,16 +942,22 @@ function wppaAjaxUpdatePhoto(photo, actionslug, elem, refresh) {
 				if ( actionslug == 'description' ) jQuery('#wppa-photo-spin-'+photo).css({visibility:'hidden'});
 //				if ( actionslug == 'rotleft' || actionslug == 'rotright' ) 
 
-	wppaFeAjaxLog('out');
+				wppaFeAjaxLog('out');
 
 				if ( refresh ) wppaRefresh('photo_'+photo);
 			}
+			else {	// status != 200
+				document.getElementById('photostatus-'+photo).innerHTML = '<span style="color:red;" >Comm error '+xmlhttp.status+': '+xmlhttp.statusText+'</span>';
+			}			
 		}
 	}
 }
 
+var wppaAjaxAlbumCount = 0;
 function wppaAjaxUpdateAlbum(album, actionslug, elem) {
 
+	wppaAjaxAlbumCount++;
+	
 	var xmlhttp = wppaGetXmlHttp();
 
 	// Show spinner
@@ -964,7 +973,7 @@ function wppaAjaxUpdateAlbum(album, actionslug, elem) {
 	xmlhttp.open('POST',wppaAjaxUrl,true);
 	xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 	xmlhttp.send(data);
-	document.getElementById('albumstatus-'+album).innerHTML = 'Working, please wait...';
+	document.getElementById('albumstatus-'+album).innerHTML = 'Working, please wait... ('+wppaAjaxAlbumCount+')';
 
 	// Process the result
 	xmlhttp.onreadystatechange=function() {
@@ -979,7 +988,8 @@ function wppaAjaxUpdateAlbum(album, actionslug, elem) {
 			document.getElementById('albumstatus-'+album).innerHTML = 'processing request';
 			break;
 		case 4:
-			if (xmlhttp.status!=404) {
+			wppaAjaxAlbumCount--;
+			if ( xmlhttp.status == 200 ) {
 				var str = wppaTrim(xmlhttp.responseText);
 				var ArrValues = str.split("||");
 
@@ -988,7 +998,9 @@ function wppaAjaxUpdateAlbum(album, actionslug, elem) {
 				}
 				switch (ArrValues[1]) {
 					case '0':		// No error
-						document.getElementById('albumstatus-'+album).innerHTML = ArrValues[2];
+						// Update status
+						if ( wppaAjaxAlbumCount == 0 ) jQuery('#albumstatus-'+album).html(ArrValues[2]);
+						else jQuery('#albumstatus-'+album).html('Working, please wait... ('+wppaAjaxAlbumCount+')');
 						// Process full/notfull
 						if ( typeof(ArrValues[3]) != 'undefined' ) wppaProcessFull(ArrValues[3], ArrValues[4]);
 						break;
@@ -1005,6 +1017,9 @@ function wppaAjaxUpdateAlbum(album, actionslug, elem) {
 				// Refresh for alt main_photo selections when cover type changed
 				if ( actionslug == 'cover_type' ) document.location = document.location;
 			}
+			else {	// status != 200
+				document.getElementById('albumstatus-'+album).innerHTML = '<span style="color:red;" >Comm error '+xmlhttp.status+': '+xmlhttp.statusText+'</span>';
+			}			
 		}
 	}
 }
@@ -1035,24 +1050,27 @@ function wppaAjaxUpdateCommentStatus(photo, id, value) {
 							'&wppa-nonce='+document.getElementById('photo-nonce-'+photo).value;
 	
 	xmlhttp.onreadystatechange=function() {
-		if ( xmlhttp.readyState == 4 && xmlhttp.status != 404 ) {
-			var str = wppaTrim(xmlhttp.responseText);
-			var ArrValues = str.split("||");
+		if ( xmlhttp.readyState == 4 ) {
+			if ( xmlhttp.status == 200 ) {
+				var str = wppaTrim(xmlhttp.responseText);
+				var ArrValues = str.split("||");
 
-			if (ArrValues[0] != '') {
-				alert('The server returned unexpected output:\n'+ArrValues[0]);
+				if (ArrValues[0] != '') {
+					alert('The server returned unexpected output:\n'+ArrValues[0]);
+				}
+				switch (ArrValues[1]) {
+					case '0':		// No error
+						jQuery('#photostatus-'+photo).html(ArrValues[2]);
+						break;
+					default:	// Error
+						jQuery('#photostatus-'+photo).html('<span style="color:red">'+ArrValues[2]+'</span>');
+						break;
+				}
+				jQuery('#wppa-comment-spin-'+id).css('visibility', 'hidden');
 			}
-			switch (ArrValues[1]) {
-				case '0':		// No error
-					jQuery('#photostatus-'+photo).html(ArrValues[2]);
-//					document.getElementById('photostatus-'+photo).innerHTML = ArrValues[2];
-					break;
-				default:	// Error
-					jQuery('#photoitem-'+photo).html('<span style="color:red">'+ArrValues[2]+'</span>');
-//					document.getElementById('photoitem-'+photo).innerHTML = '<span style="color:red">'+ArrValues[2]+'</span>';
-					break;
-			}
-			jQuery('#wppa-comment-spin-'+id).css('visibility', 'hidden');
+			else {	// status != 200
+				jQuery('#photostatus-'+photo).html('<span style="color:red;" >Comm error '+xmlhttp.status+': '+xmlhttp.statusText+'</span>');
+			}			
 		}
 	}
 

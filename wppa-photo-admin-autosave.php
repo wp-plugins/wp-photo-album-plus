@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * edit and delete photos
-* version 5.1.17
+* version 5.2.3
 *
 */
 
@@ -385,10 +385,18 @@ global $wppa;
 								<th scope="row" >
 									<label><?php _e('Photoname:', 'wppa'); ?></label>
 								</th>
+								<?php if ( wppa_switch('wppa_use_wp_editor') ) { ?>
 								<td>
-									<input type="text" style="width:100%;" id="pname-<?php echo $photo['id'] ?>" onkeyup="wppaAjaxUpdatePhoto(<?php echo $photo['id'] ?>, 'name', this);" onchange="wppaAjaxUpdatePhoto(<?php echo $photo['id'] ?>, 'name', this);" value="<?php echo esc_attr(stripslashes($photo['name'])) ?>" />
-								<!--	<span class="description"><br/><?php _e('Type/alter the name of the photo. <small>It is NOT a filename and needs no file extension like .jpg.</small>', 'wppa'); ?></span> -->
+									<input type="text" style="width:100%;" id="pname-<?php echo $photo['id'] ?>" value="<?php echo esc_attr(stripslashes($photo['name'])) ?>" />
+								
+									<input type="button" class="button-secundary" value="<?php _e('Update Photo name', 'wppa') ?>" onclick="wppaAjaxUpdatePhoto(<?php echo $photo['id'] ?>, 'name', document.getElementById('pname-<?php echo $photo['id'] ?>'));" />
 								</td>
+								<?php }
+								else { ?>
+									<td>
+										<input type="text" style="width:100%;" id="pname-<?php echo $photo['id'] ?>" onkeyup="wppaAjaxUpdatePhoto(<?php echo $photo['id'] ?>, 'name', this);" onchange="wppaAjaxUpdatePhoto(<?php echo $photo['id'] ?>, 'name', this);" value="<?php echo esc_attr(stripslashes($photo['name'])) ?>" />
+									</td>
+								<?php } ?>
 							</tr>
 							
 							<!-- Description -->
@@ -396,7 +404,7 @@ global $wppa;
 								<th scope="row" >
 									<label><?php _e('Description:', 'wppa'); ?></label>
 								</th>
-								<?php if ( get_option('wppa_use_wp_editor') == 'yes' ) { ?>
+								<?php if ( wppa_switch('wppa_use_wp_editor') ) { ?>
 								<td>
 								
 									<?php 

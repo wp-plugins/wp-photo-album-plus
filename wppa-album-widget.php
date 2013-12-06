@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display thumbnail photos
-* Version 5.1.18
+* Version 5.2.3
 */
 
 class AlbumWidget extends WP_Widget {
@@ -89,7 +89,7 @@ class AlbumWidget extends WP_Widget {
 					$cursor		= $imgstyle_a['cursor'];
 					if ( $wppa_opt['wppa_show_albwidget_tooltip'] ) $title = esc_attr(strip_tags(wppa_get_album_desc($album['id'])));
 					else $title = '';
-					$imgurl 	= wppa_get_thumb_url($image['id']);
+					$imgurl 	= wppa_get_thumb_url( $image['id'], '', $width, $height );
 				}
 				else {
 					$link       = '';
@@ -118,7 +118,8 @@ class AlbumWidget extends WP_Widget {
 							$thumbs = $wpdb->get_results($wpdb->prepare("SELECT * FROM `".WPPA_PHOTOS."` WHERE `album` = %s ".wppa_get_photo_order($album['id']), $album['id']), 'ARRAY_A');
 							if ( $thumbs ) foreach ( $thumbs as $thumb ) {
 								$title = wppa_get_lbtitle('alw', $thumb['id']);
-								$link = wppa_get_photo_url($thumb['id']);
+								$siz = getimagesize( wppa_get_photo_path( $thumb['id'] ) );
+								$link = wppa_get_photo_url( $thumb['id'], '', $siz['0'], $siz['1'] );
 								$widget_content .= "\n\t".'<a href="'.$link.'" rel="'.$wppa_opt['wppa_lightbox_name'].'[alw-'.$wppa['master_occur'].'-'.$album['id'].']" title="'.$title.'" >';
 								if ( $thumb['id'] == $image['id'] ) {		// the cover image
 									$widget_content .= "\n\t\t".'<img id="i-'.$image['id'].'-'.$wppa['master_occur'].'" title="'.wppa_zoom_in().'" src="'.$imgurl.'" width="'.$width.'" height="'.$height.'" style="'.$imgstyle.$cursor.'" '.$imgevents.' alt="'.esc_attr(wppa_qtrans($image['name'])).'">';

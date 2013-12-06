@@ -2,7 +2,7 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 5.2.0
+* version 5.2.3
 *
 */
 
@@ -356,6 +356,8 @@ global $wppa_initruntimetime;
 						'wppa_use_pretty_links'			=> '',
 						'wppa_update_addressline'		=> '',
 						'wppa_render_shortcode_always' 	=> '',
+						'wppa_track_viewcounts'			=> '',
+
 						// B Full size and Slideshow
 						'wppa_fullvalign' 				=> '',	// 1
 						'wppa_fullhalign' 				=> '',	// 2
@@ -724,7 +726,8 @@ global $wppa_initruntimetime;
 						'wppa_cdn_cloud_name'		=> '',
 						'wppa_cdn_api_key'			=> '',
 						'wppa_cdn_api_secret'		=> '',
-						'wppa_cdn_service_update'	=> ''
+						'wppa_cdn_service_update'	=> '',
+						'wppa_delete_all_from_cloudinary' 	=> ''
 
 
 		);
@@ -1396,6 +1399,13 @@ global $wppa;
 
 		// Show progression
 		if ( is_admin() && ! $wppa['ajax'] ) echo('.');
+		
+		// Update CDN
+		switch ( wppa_cdn() ) {
+			case 'cloudinary':
+				wppa_upload_to_cloudinary( $image_id );
+				break;
+		}
 		
 		// Clear (super)cache
 		wppa_clear_cache();

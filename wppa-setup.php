@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 5.2.0
+* Version 5.2.3
 *
 */
 
@@ -648,6 +648,8 @@ Hide Camera info
 						'wppa_use_pretty_links'			=> 'no',
 						'wppa_update_addressline'		=> 'yes',
 						'wppa_render_shortcode_always'	=> 'no',
+						'wppa_track_viewcounts'			=> 'yes',
+
 						// B Full size and Slideshow
 						'wppa_fullvalign' 				=> 'fit',
 						'wppa_fullhalign' 				=> 'center',
@@ -1023,7 +1025,8 @@ Hide Camera info
 						'wppa_cdn_cloud_name'		=> '',
 						'wppa_cdn_api_key'			=> '',
 						'wppa_cdn_api_secret'		=> '',
-						'wppa_cdn_service_update'	=> 'no'
+						'wppa_cdn_service_update'	=> 'no',
+						'wppa_delete_all_from_cloudinary' 	=> ''
 						
 						);
 

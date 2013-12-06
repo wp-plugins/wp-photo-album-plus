@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the non admin stuff
-* Version 5.2.0
+* Version 5.2.3
 *
 */
 
@@ -373,6 +373,7 @@ global $wppa_api_version;
 	wppaDownLoad = "'.__a('Download').'";
 	wppaSlideToFullpopup = '.( $wppa_opt['wppa_slideshow_linktype'] == 'fullpopup' ? 'true' : 'false' ).'; 
 	wppaComAltSize = '.$wppa_opt['wppa_comten_alt_thumbsize'].';
+	wppaBumpViewCount = '.( wppa_switch('wppa_track_viewcounts') ? 'true' : 'false' ).'; 
 	/* ]]> */
 </script>
 ';

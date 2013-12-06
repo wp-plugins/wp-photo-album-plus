@@ -4,7 +4,7 @@
 *
 * Functions for counts etc
 * Common use front and admin
-* Version 5.1.15
+* Version 5.2.3
 *
 */
 
@@ -45,7 +45,14 @@ global $wpdb;
 global $album;
     
     if (is_numeric($xid)) $id = $xid; else $id = $album['id'];
-    $count = $wpdb->get_var($wpdb->prepare( "SELECT COUNT(*) FROM " . WPPA_PHOTOS . " WHERE album = %s AND ( status <> %s OR owner = %s )", $id, 'pending', wppa_get_user() ) );
+	
+	if ( current_user_can('wppa_moderate') ) {
+		$count = $wpdb->get_var($wpdb->prepare( "SELECT COUNT(*) FROM " . WPPA_PHOTOS . " WHERE album = %s", $id ) );
+	}
+	else {
+		$count = $wpdb->get_var($wpdb->prepare( "SELECT COUNT(*) FROM " . WPPA_PHOTOS . " WHERE album = %s AND ( status <> %s OR owner = %s )", $id, 'pending', wppa_get_user() ) );
+	}
+	
 	wppa_dbg_q('Q12v');
 	return $count;
 }
@@ -101,6 +108,8 @@ global $wpdb;
 function wppa_bump_viewcount($type, $id) {
 global $wpdb;
 
+	if ( ! wppa_switch('wppa_track_viewcounts') ) return;
+	
 	if ( $type != 'album' && $type != 'photo' ) die ( 'Illegal $type in wppa_bump_viewcount: '.$type);
 	if ( ! is_numeric($id) ) die ( 'Illegal $id in wppa_bump_viewcount: '.$id);
 

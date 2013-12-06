@@ -1,7 +1,7 @@
 <?php
 /* Only loads when php version >= 5.3 
 *
-* Version 5.2.2
+* Version 5.2.3
 *
 */
 
@@ -23,39 +23,67 @@ function wppa_load_cloudinary() {
 	$wppa_cloudinary_api = new \Cloudinary\Api();
 }
 
-function wppa_exists_on_cloudinary( $id ) {
-global $thumb;
-
-	wppa_cache_thumb($id);
-	
-	$prefix = ( is_multisite() && ! WPPA_MULTISITE_GLOBAL ) ? $blog_id.'-' : '';
-	$url 	= 'http://res.cloudinary.com/'.get_option('wppa_cdn_cloud_name').'/image/upload/'.$prefix.$id.'.'.$thumb['ext'];
-	
-	if ( @ getimagesize( $url ) ) {
-		return true;
-	}
-	
-	return false;
-	
-	//			global $wppa_cloudinary_api;
-	// try {
-	//			$dtl = $wppa_cloudinary_api->resource($prefix.$thumb['id']);
-	//			if ( ! empty($dtl) ) return true;
-	//		}
-	// catch {
-	//			return false;
-	//		}
-
-}
-
 function wppa_upload_to_cloudinary( $id ) {
 
 	$prefix = ( is_multisite() && ! WPPA_MULTISITE_GLOBAL ) ? $blog_id.'-' : '';
+	$pub_id = $prefix.$id;
 	$file 	= wppa_get_photo_path( $id );
-	$args 	= array(	"public_id" 	=> $prefix.$id,
-						"version"		=> get_option('wppa_photo_version', '1')
+	$args 	= array(	"public_id" 	=> $pub_id,
+						"version"		=> get_option('wppa_photo_version', '1'),
+						"invalidate" 	=> true
 					);
 					
 	\Cloudinary\Uploader::upload( $file, $args );
 	
+}
+
+function wppa_get_present_at_cloudinary_a() {
+global $wppa_cloudinary_api;
+
+	if ( ! session_id() ) @ session_start();
+	
+	if ( isset( $_SESSION['cloudinary_ids'] ) ) return $_SESSION['cloudinary_ids']; 	// Been here
+	$_SESSION['cloudinary_ids'] = array();
+	
+	$data = $wppa_cloudinary_api->resources( array( "type" => "upload", 
+													"max_results" => 500));
+	$done = false;
+	while ( ! $done ) {
+		$temp = get_object_vars ( $data );
+		foreach ( $temp['resources'] as $res ) {
+			$_SESSION['cloudinary_ids'][$res['public_id']] = true;
+		}
+		if ( isset( $temp['next_cursor'] ) ) {
+			$data = $wppa_cloudinary_api->resources( array( "type" => "upload", 
+															"next_cursor" => $temp['next_cursor'],
+															"max_results" => 500));
+		}
+		else {
+			$done = true;
+		}
+	}
+
+	return $_SESSION['cloudinary_ids'];
+}
+
+function wppa_ready_on_cloudinary() {
+	if ( ! session_id() ) @ session_start();
+	if ( isset ( $_SESSION['cloudinary_ids'] ) ) unset( $_SESSION['cloudinary_ids'] );
+}
+
+function wppa_delete_from_cloudinary( $id ) {
+
+	$prefix = ( is_multisite() && ! WPPA_MULTISITE_GLOBAL ) ? $blog_id.'-' : '';
+	$pub_id =  $prefix.$id;
+	$args 	= array(	"invalidate" 	=> true
+					);
+					
+	\Cloudinary\Uploader::destroy( $pub_id, $args );				
+
+}
+
+function wppa_delete_all_from_cloudinary() {
+global $wppa_cloudinary_api;
+
+	$wppa_cloudinary_api->delete_all_resources();
 }
