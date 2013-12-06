@@ -2,7 +2,7 @@
 /* wppa-ajax.php
 *
 * Functions used in ajax requests
-* version 5.1.18
+* version 5.2.3
 *
 */
 add_action('wp_ajax_wppa', 'wppa_ajax_callback');
@@ -50,7 +50,7 @@ global $wppa;
 								__a('All modifications are instantly updated on the server. The <b style="color:#070" >Remark</b> field keeps you informed on the actions taken at the background.').
 							'</i>
 						</span>
-						<input id="wppa-fe-exit" type="button" style="float:right;color:red;font-weight:bold;" onclick="window.opener.location.reload();window.close();" value="'.__a('Exit & Refresh').'" />
+						<input id="wppa-fe-exit" type="button" style="float:right;color:red;font-weight:bold;" onclick="window.opener.location.reload(true);window.close();" value="'.__a('Exit & Refresh').'" />
 						<div id="wppa-fe-count" style="float:right;" ></div>
 					</div>';
 			wppa_album_photos('', $photo);

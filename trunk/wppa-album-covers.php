@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Functions for album covers
-* Version 5.1.15
+* Version 5.2.3
 *
 */
 
@@ -56,24 +56,26 @@ global $wppa_alt;
 global $cover_count_key;
 global $wpdb;
 
+	// Multi column responsive?
 	if ( $multicolumnresponsive ) $mcr = 'mcr-'; else $mcr = '';
 	
-	$albumid = $album['id'];
-	
+	// Find album details
+	$albumid 	= $album['id'];
 	$coverphoto = wppa_get_coverphoto_id($albumid);
-	$image = $wpdb->get_row($wpdb->prepare("SELECT * FROM `".WPPA_PHOTOS."` WHERE `id` = %s", $coverphoto), ARRAY_A );
+	$image 		= $wpdb->get_row($wpdb->prepare("SELECT * FROM `".WPPA_PHOTOS."` WHERE `id` = %s", $coverphoto), ARRAY_A );
 	$photocount = wppa_get_photo_count($albumid);
 	$albumcount = wppa_get_album_count($albumid);
-	$mincount = wppa_get_mincount();
-	$title = '';
-	$linkpage = '';
+	$mincount 	= wppa_get_mincount();
 	
-	$href_title = '';
-	$href_slideshow = '';
-	$href_content = '';
-	$onclick_title = '';
-	$onclick_slideshow = '';
-	$onclick_content = '';
+	// Init links
+	$title 				= '';
+	$linkpage 			= '';
+	$href_title 		= '';
+	$href_slideshow 	= '';
+	$href_content 		= '';
+	$onclick_title 		= '';
+	$onclick_slideshow 	= '';
+	$onclick_content 	= '';
 
 	// See if there is substantial content to the album
 	$has_content = ($albumcount > '0') || ($photocount > $mincount);
@@ -110,25 +112,30 @@ global $wpdb;
 	if ( $coverphoto ) {
 		$photolink = wppa_get_imglnk_a('coverimg', $coverphoto, $href_title, $title, $onclick_title, '', $albumid);
 	}
-	else $photolink = false;
+	else {
+		$photolink = false;
+	}
 	
 	// Find the coverphoto details
 	if ( $coverphoto ) {
-		$src = wppa_get_thumb_url($coverphoto);	
-		$path = wppa_get_thumb_path($coverphoto);
-		$imgattr_a = wppa_get_imgstyle_a($path, $wppa_opt['wppa_smallsize'], '', 'cover');
+		$path 		= wppa_get_thumb_path( $coverphoto );
+		$imgattr_a 	= wppa_get_imgstyle_a( $path, $wppa_opt['wppa_smallsize'], '', 'cover' );
+		$src 		= wppa_get_thumb_url( $coverphoto, '', $imgattr_a['width'], $imgattr_a['height'] );	
 	}
 	else {
-		$src = '';
-		$path = '';
-		$imgattr_a = false;
+		$path 		= '';
+		$imgattr_a 	= false;
+		$src 		= '';
 	}
-	if (is_feed()) {
-		$events = '';
+	
+	// Feed?
+	if ( is_feed() ) {
+		$events  	= '';
 	}
 	else {
-		$events = wppa_get_imgevents('cover');
+		$events 	= wppa_get_imgevents('cover');
 	}
+	
 	$photo_pos = $wppa['coverphoto_pos'];
 	$class_asym = ( $photo_pos == 'left' || $photo_pos == 'right' ) ? 'wppa-asym-text-frame-'.$mcr.$wppa['master_occur'] : '';
 	
@@ -246,11 +253,12 @@ global $wpdb;
 	$imgattrs_a = array();
 	foreach ( $coverphotos as $coverphoto ) {
 		$images[] 		= $wpdb->get_row($wpdb->prepare("SELECT * FROM `".WPPA_PHOTOS."` WHERE `id` = %s", $coverphoto), ARRAY_A);
-		$srcs[] 		= wppa_get_thumb_url($coverphoto);
 		$path 			= wppa_get_thumb_path($coverphoto);
 		$paths[] 		= $path;
 		$cpsize 		= count($coverphotos) == '1' ? $wppa_opt['wppa_smallsize'] : $wppa_opt['wppa_smallsize_multi'];
-		$imgattrs_a[] 	= wppa_get_imgstyle_a($path, $cpsize, '', 'cover');
+		$imgattr_a		= wppa_get_imgstyle_a( $path, $cpsize, '', 'cover' );
+		$imgattrs_a[] 	= $imgattr_a;
+		$srcs[] 		= wppa_get_thumb_url( $coverphoto, '', $imgattr_a['width'], $imgattr_a['height'] );
 	}
 	
 	if (is_feed()) {
@@ -469,21 +477,24 @@ global $wpdb;
 	
 	// Find the coverphoto details
 	if ( $coverphoto ) {
-		$src = wppa_get_thumb_url($coverphoto);	
-		$path = wppa_get_thumb_path($coverphoto);
-		$imgattr_a = wppa_get_imgstyle_a($path, $wppa_opt['wppa_smallsize'], '', 'cover');
+		$path 		= wppa_get_thumb_path( $coverphoto );
+		$imgattr_a 	= wppa_get_imgstyle_a( $path, $wppa_opt['wppa_smallsize'], '', 'cover' );
+		$src 		= wppa_get_thumb_url( $coverphoto, '', $imgattr_a['width'], $imgattr_a['height'] );	
 	}
 	else {
-		$src = '';
-		$path = '';
-		$imgattr_a = false;
+		$path 		= '';
+		$imgattr_a 	= false;
+		$src 		= '';
 	}
+	
+	// Feed?
 	if (is_feed()) {
 		$events = '';
 	}
 	else {
 		$events = wppa_get_imgevents('cover');
 	}
+	
 	$photo_pos = $wppa['coverphoto_pos'];
 	
 	$style =  __wcs('wppa-box').__wcs('wppa-'.$wppa_alt);
@@ -616,7 +627,8 @@ global $wpdb;
 				$thumbs = $wpdb->get_results($wpdb->prepare("SELECT * FROM `".WPPA_PHOTOS."` WHERE `album` = %s ".wppa_get_photo_order($album['id']), $album['id']), ARRAY_A );
 				if ( $thumbs ) foreach ( $thumbs as $thumb ) {
 					$title = wppa_get_lbtitle('cover', $thumb['id']);
-					$link = wppa_get_photo_url($thumb['id']);
+					$siz = getimagesize( wppa_get_photo_path( $thumb['id'] ) );
+					$link = wppa_get_photo_url( $thumb['id'], '', $siz['0'], $siz['1'] );
 					$wppa['out'] .= "\n\t".'<a href="'.$link.'" rel="'.$wppa_opt['wppa_lightbox_name'].'[alw-'.$wppa['master_occur'].'-'.$album['id'].']" title="'.$title.'" >';
 					if ( $thumb['id'] == $image['id'] ) {		// the cover image
 						$wppa['out'] .= "\n\t\t".'<img class="image wppa-img" id="i-'.$image['id'].'-'.$wppa['master_occur'].'" title="'.wppa_zoom_in().'" src="'.$src.'" width="'.$imgwidth.'" height="'.$imgheight.'" style="'.__wcs('wppa-img').$imgattr.$imgattr_a['cursor'].'" '.$events.' alt="'.$title.'">';
@@ -662,7 +674,8 @@ global $wpdb;
 				if ( $photolink['is_lightbox'] ) {
 					$thumb = $image;
 					$title = wppa_get_lbtitle('cover', $thumb['id']);
-					$link = wppa_get_photo_url($thumb['id']);
+					$siz = getimagesize( wppa_get_photo_path( $thumb['id'] ) );
+					$link = wppa_get_photo_url( $thumb['id'], '', $siz['0'], $siz['1'] );
 					$wppa['out'] .= "\n\t".'<a href="'.$link.'" rel="'.$wppa_opt['wppa_lightbox_name'].'[alw-'.$wppa['master_occur'].'-'.$album['id'].']" title="'.$title.'" >';
 					if ( $thumb['id'] == $image['id'] ) {		// the cover image
 						$wppa['out'] .= "\n\t\t".'<img class="image wppa-img" id="i-'.$image['id'].'-'.$wppa['master_occur'].'" title="'.wppa_zoom_in().'" src="'.$src.'" width="'.$imgwidth.'" height="'.$imgheight.'" style="'.__wcs('wppa-img').$imgattr.$imgattr_a['cursor'].'" '.$events.' alt="'.$title.'">';
@@ -712,13 +725,23 @@ global $wppa;
 	$id = $wpdb->get_var( $wpdb->prepare( "SELECT `main_photo` FROM `".WPPA_ALBUMS."` WHERE `id` = %s", $alb ) );
 	switch ( $id ) {
 		case '-2':		// Last upload
-			$temp = $wpdb->get_results( $wpdb->prepare( "SELECT `id` FROM `".WPPA_PHOTOS."` WHERE `album` = %s AND `status` <> %s ORDER BY `timestamp` DESC LIMIT %d", $alb, 'pending', $count ), ARRAY_A );
+			if ( current_user_can('wppa_moderate') ) {
+				$temp = $wpdb->get_results( $wpdb->prepare( "SELECT `id` FROM `".WPPA_PHOTOS."` WHERE `album` = %s ORDER BY `timestamp` DESC LIMIT %d", $alb, $count ), ARRAY_A );
+			}
+			else {
+				$temp = $wpdb->get_results( $wpdb->prepare( "SELECT `id` FROM `".WPPA_PHOTOS."` WHERE `album` = %s AND ( `status` <> 'pending' OR `owner` = %s ) ORDER BY `timestamp` DESC LIMIT %d", $alb, wppa_get_user(), $count ), ARRAY_A );
+			}
 			break;
 		case '-1':		// Random featured
 			$temp = $wpdb->get_results( $wpdb->prepare( "SELECT `id` FROM `".WPPA_PHOTOS."` WHERE `album` = %s AND `status` = 'featured' ORDER BY RAND(".$wppa['randseed'].") LIMIT %d", $alb, $count), ARRAY_A );
 			break;
 		case '0':		// Random
-			$temp = $wpdb->get_results( $wpdb->prepare( "SELECT `id` FROM `".WPPA_PHOTOS."` WHERE `album` = %s AND `status` <> 'pending' ORDER BY RAND(".$wppa['randseed'].") LIMIT %d", $alb, $count), ARRAY_A );
+			if ( current_user_can('wppa_moderate') ) {
+				$temp = $wpdb->get_results( $wpdb->prepare( "SELECT `id` FROM `".WPPA_PHOTOS."` WHERE `album` = %s ORDER BY RAND(".$wppa['randseed'].") LIMIT %d", $alb, $count), ARRAY_A );
+			}
+			else {
+				$temp = $wpdb->get_results( $wpdb->prepare( "SELECT `id` FROM `".WPPA_PHOTOS."` WHERE `album` = %s AND ( `status` <> 'pending' OR `owner` = %s ) ORDER BY RAND(".$wppa['randseed'].") LIMIT %d", $alb, wppa_get_user(), $count), ARRAY_A );
+			}
 			break;
 		default:		// One assigned
 			// Check if id still exists and is in album alb
@@ -727,7 +750,12 @@ global $wppa;
 				$temp['0']['id'] = $id;
 			}
 			else {	// Treat as random
-				$temp = $wpdb->get_results( $wpdb->prepare( "SELECT `id` FROM `".WPPA_PHOTOS."` WHERE `album` = %s AND `status` <> 'pending' ORDER BY RAND(".$wppa['randseed'].") LIMIT %d", $alb, $count), ARRAY_A );
+				if ( current_user_can('wppa_moderate') ) {
+					$temp = $wpdb->get_results( $wpdb->prepare( "SELECT `id` FROM `".WPPA_PHOTOS."` WHERE `album` = %s ORDER BY RAND(".$wppa['randseed'].") LIMIT %d", $alb, $count), ARRAY_A );
+				}
+				else {
+					$temp = $wpdb->get_results( $wpdb->prepare( "SELECT `id` FROM `".WPPA_PHOTOS."` WHERE `album` = %s AND ( `status` <> 'pending' OR `owner` = %s ) ORDER BY RAND(".$wppa['randseed'].") LIMIT %d", $alb, wppa_get_user(), $count), ARRAY_A );
+				}
 			}
 			break;
 	}

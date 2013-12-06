@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 5.2.2
+* Version 5.2.3
 *
 */
 
@@ -231,6 +231,11 @@ global $wppa_revno;
 				update_option('wppa_cdn_service_update', 'yes');
 				break;
 				
+			case 'wppa_delete_all_from_cloudinary':
+				wppa_delete_all_from_cloudinary();
+				echo 'Done! wppa_delete_all_from_cloudinary';
+				break;
+				
 			default: wppa_error_message('Unimplemnted action key: '.$key);
 		}
 		
@@ -331,33 +336,45 @@ global $wppa_revno;
 				if ( empty($photos) ) {
 					wppa_ok_message(__('Ready uploading to Cloudinary', 'wppa'));
 					update_option('wppa_cdn_service_update', 'no');
+					update_option('wppa_last_cloud_upload', '0');
+					wppa_ready_on_cloudinary();
 				}
 				else {
 					$count = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `".WPPA_PHOTOS."` WHERE `id` > %s", $last));
 					wppa_update_message('Uploading to Cloudinary cloud name: '.get_option('wppa_cdn_cloud_name').'. '.$count.' images to go.');
-					
+					$present_at_cloudinary = wppa_get_present_at_cloudinary_a();
+
 					if ( $photos ) foreach ( $photos as $photo ) {
-						
-						if ( wppa_exists_on_cloudinary( $photo['id'] ) ) {
-							echo '.';	// Already there
+					
+						if ( ! isset( $present_at_cloudinary[$photo['id']] ) ) {
+							echo '['.$photo['id'].']';
+							$path = wppa_get_photo_path( $photo['id'] );
+							if ( file_exists( $path ) ) {
+								wppa_upload_to_cloudinary( $photo['id'] );
+							}
+							else {
+								wppa_error_message( sprintf( __( 'Unexpected error: Photo %s does not exist!', 'wppa' ), $photo['id'] ) );
+							}
+							$j++;
+							if ( $j % '10' == '0' ) echo '<br />';
 						}
 						else {
-							wppa_upload_to_cloudinary( $photo['id'] );
-							echo '!';	// Done!
+							echo '.';
 						}
-						$j++;										
-
-						update_option('wppa_last_cloud_upload', $photo['id']);
 						
+						update_option('wppa_last_cloud_upload', $photo['id']);
 						$time_up = wppa_is_time_up($j);
-						if ( $time_up ) {
-							wppa_update_message(sprintf(__('Time out after processing %s items.', 'wppa'), $j));
-							wppa_ok_message('Trying to continue...<script type="text/javascript">document.location=document.location</script>');
-						}
+						if ( ! $time_up ) continue;
+						wppa_ok_message('Trying to continue...<script type="text/javascript">document.location=document.location</script>');
+						break;
+						
 					}
+					
 					if ( $count < '1000' && ! $time_up ) {
 						wppa_ok_message(__('Ready uploading to Cloudinary', 'wppa'));
 						update_option('wppa_cdn_service_update', 'no');
+						update_option('wppa_last_cloud_upload', '0');
+						wppa_ready_on_cloudinary();
 					}
 				}
 				break;
@@ -434,7 +451,7 @@ wppa_fix_source_extensions();
 		}
 		
 		// Blacklist
-		$blacklist_plugins = array('performance-optimization-order-styles-and-javascript/order-styles-js.php', 'wp-ultra-simple-paypal-shopping-cart/wp_ultra_simple_shopping_cart.php');
+		$blacklist_plugins = array('performance-optimization-order-styles-and-javascript/order-styles-js.php', 'wp-ultra-simple-paypal-shopping-cart/wp_ultra_simple_shopping_cart.php', 'cachify/cachify.php');
 		$plugins = get_option('active_plugins');
 		$matches = array_intersect($blacklist_plugins, $plugins);
 		foreach ( $matches as $bad ) {
@@ -2238,6 +2255,13 @@ wppa_fix_source_extensions();
 							$html = wppa_checkbox($slug);
 							wppa_setting($slug, '5', $name, $desc, $html, $help);
 							
+							$name = __('Track viewcounts', 'wppa');
+							$desc = __('Register number of views of albums and photos.', 'wppa');
+							$help = '';
+							$slug = 'wppa_track_viewcounts';
+							$html = wppa_checkbox($slug);
+							wppa_setting($slug, '6', $name, $desc, $html, $help);
+
 							wppa_setting_subheader('B', '1', __('Slideshow related settings', 'wppa'));
 
 							$name = __('V align', 'wppa');
@@ -4321,7 +4345,7 @@ wppa_fix_source_extensions();
 							$slug = 'wppa_shortcode_to_add';
 							$html = wppa_input($slug, '300px');
 							wppa_setting($slug, '25', $name, $desc, $html, $help);
-
+							
 							wppa_setting_subheader('B', '1', __('New Album and New Photo related miscellaneous settings', 'wppa'));
 
 							$name = __('New Album', 'wppa');
@@ -4939,9 +4963,19 @@ wppa_fix_source_extensions();
 							
 								$count = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `".WPPA_PHOTOS."` WHERE `id` > %s", get_option('wppa_last_cloud_upload', '0')));
 								$name = __('Update uploads', 'wppa');
-								$desc = sprintf(__('Add the new %s photos to the cloud.', 'wppa'), $count);
-								$help = esc_js(__('This function will add the new uploaded photos to Cloudinary.', 'wppa'));
+								$desc = sprintf(__('Verify and upload photos to the cloud.', 'wppa'), $count);
+								$help = esc_js(__('This function will add the missing photos to Cloudinary.', 'wppa'));
+								$help .= '\n\n'.esc_js(__('You need to run this only when there are images that are not displayed.', 'wppa'));
+								$help .= '\n\n'.esc_js(__('This procedure may take much time!', 'wppa'));
 								$slug = 'wppa_cdn_service_update';
+								$html = wppa_doit_button('', $slug);
+								$class = 'cloudinary';
+								wppa_setting(false, '2.8', $name, $desc, $html, $help, $class);
+								
+								$name = __('Delete all', 'wppa');
+								$desc = __('<span style="color"red" >Deletes them all !!!</span>', 'wppa');
+								$help = '';
+								$slug = 'wppa_delete_all_from_cloudinary';
 								$html = wppa_doit_button('', $slug);
 								$class = 'cloudinary';
 								wppa_setting(false, '2.9', $name, $desc, $html, $help, $class);

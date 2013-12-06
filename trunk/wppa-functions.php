@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions
-* Version 5.2.2
+* Version 5.2.3
 *
 */
 
@@ -1115,9 +1115,8 @@ global $thumb;
 	}
 	
 	// Find image url
-	$usethumb = wppa_use_thumb_file($id, $style_a['width'], $style_a['height']);
-	$photourl = $usethumb ? wppa_get_thumb_url($id) : wppa_get_photo_url($id, '', $style_a['width'], $style_a['height']);
-//	$photourl = str_replace(WPPA_UPLOAD_URL, '', $photourl);
+	$usethumb = wppa_use_thumb_file( $id, $style_a['width'], $style_a['height'] );
+	$photourl = $usethumb ? wppa_get_thumb_url( $id, '', $style_a['width'], $style_a['height'] ) : wppa_get_photo_url( $id, '', $style_a['width'], $style_a['height'] );
 
 	// Find iptc data
 	$iptc = ( $wppa_opt['wppa_show_iptc'] && ! $wppa['is_slideonly'] && ! $wppa['is_filmonly'] ) ? wppa_iptc_html($id) : '';
@@ -2070,7 +2069,7 @@ global $thlinkmsggiven;
 	$path 		= wppa_get_thumb_path($thumb['id']); 
 	$imgattr_a 	= wppa_get_imgstyle_a($path, $wppa_opt['wppa_smallsize'], '', 'cover'); 
 	$events 	= is_feed() ? '' : wppa_get_imgevents('cover'); 
-	$src 		= wppa_get_thumb_url($thumb['id']); 
+	$src 		= wppa_get_thumb_url( $thumb['id'], '', $imgattr_a['width'], $imgattr_a['height'] ); 
 	$link 		= wppa_get_imglnk_a('thumb', $thumb['id']);
 
 	if ($link) {
@@ -2194,9 +2193,22 @@ global $wpdb;
 	}
 	$cursor	   	= $imgattr_a['cursor'];
 
-	$x = $com_alt ? 'margin-right:20px;' : '';
+	$x = $com_alt ? 'margin-right:20px;' : '';	// Extra style for comalt display
+	
+	$w = $imgattr_a['width'];
+	$h = $imgattr_a['height'];
+	if ( wppa_switch('wppa_use_thumb_popup') ) {
+		if ( $w > $h ) { 	// Landscape
+			$w = $wppa_opt['wppa_popupsize'];
+			$h = round( $w * $imgattr_a['height'] / $imgattr_a['width'] );
+		}
+		else { 				// Portrait
+			$h = $wppa_opt['wppa_popupsize'];
+			$w = round( $h * $imgattr_a['width'] / $imgattr_a['height'] );
+		}
+	}
 
-	$url       	= wppa_get_thumb_url($thumb['id'], '', $imgattr_a['width'], $imgattr_a['height']); 
+	$url       	= wppa_get_thumb_url( $thumb['id'], '', $w, $h ); 
 	$events    	= wppa_get_imgevents('thumb', $thumb['id']); 
 	$imgalt		= wppa_get_imgalt($thumb['id']);	// returns something like ' alt="Any text" '
 	$title = esc_attr(wppa_get_photo_name($thumb['id']));
@@ -2396,7 +2408,7 @@ global $thumb;
 		$width   = $style_a['width'];
 		$height  = $style_a['height'];
 		$imgalt	 = wppa_get_imgalt($wppa['start_photo']);
-		$wppa['out'] .= wppa_nltab().'<a href="'.get_permalink().'"><img src="'.wppa_get_photo_url($wppa['start_photo']).'" style="'.$style.'" width="'.$width.'" height="'.$height.'" '.$imgalt.'/></a>';
+		$wppa['out'] .= wppa_nltab().'<a href="'.get_permalink().'"><img src="'.wppa_get_photo_url( $wppa['start_photo'], '', $width, $height ).'" style="'.$style.'" width="'.$width.'" height="'.$height.'" '.$imgalt.'/></a>';
 		return;
 	}
 	elseif ($type == 'slideshow') {
@@ -2563,11 +2575,11 @@ global $thumb;
 		}
 		
 			if ( $tmp == 'pre' && $wppa_opt['wppa_film_linktype'] == 'lightbox' ) $cursor = 'cursor:default;';
-			if ( $tmp == 'film' && ! $com_alt ) $wppa['out'] .= '<!--';
+			if ( $tmp == 'film' && ! $com_alt && ! wppa_cdn() ) $wppa['out'] .= '<!--';
 				$wppa['out'] .= '<img id="wppa-'.$tmp.'-'.$idx.'-'.$wppa['master_occur'].'" class="wppa-'.$tmp.'-'.$wppa['master_occur'].'" src="'.$url.'" alt="'.$alt.'" '. //title="'.$title.'" '.
 					//width="'.$imgwidth.'" height="'.$imgheight.'" 
 					'style="'.$imgstyle.$cursor.'" '.$events.' />';
-			if ( $tmp == 'film' && ! $com_alt ) $wppa['out'].='-->';
+			if ( $tmp == 'film' && ! $com_alt && ! wppa_cdn() ) $wppa['out'].='-->';
 			
 		if ( $wppa_opt['wppa_film_linktype'] == 'lightbox' && $tmp == 'film' ) {
 			$wppa['out'] .= '</a>';
@@ -2769,8 +2781,8 @@ global $wppa_opt;
 
 	$width 		= wppa_get_container_width();
 	$height 	= floor($width / wppa_get_ratio($wppa['single_photo']));
-	$usethumb	= wppa_use_thumb_file($wppa['single_photo'], $width, $height) ? 'thumbs/' : '';
-	$src 		= str_replace('/wppa/', '/wppa/'.$usethumb , wppa_get_photo_url($wppa['single_photo']));
+	$usethumb	= wppa_use_thumb_file($wppa['single_photo'], $width, $height);
+	$src 		= $usethumb ? wppa_get_thumb_url( $wppa['single_photo'], '', $width, $height ) : wppa_get_photo_url( $wppa['single_photo'], '', $width, $height );
 	
 	if ( ! $wppa['in_widget'] ) wppa_bump_viewcount('photo', $wppa['single_photo']);
 /**/
@@ -2833,8 +2845,8 @@ global $wppa_opt;
 
 	$width 		= wppa_get_container_width();
 	$height 	= floor($width / wppa_get_ratio($wppa['single_photo']));
-	$usethumb	= wppa_use_thumb_file($wppa['single_photo'], $width, $height) ? 'thumbs/' : '';
-	$src 		= str_replace('/wppa/', '/wppa/'.$usethumb , wppa_get_photo_url($wppa['single_photo']));
+	$usethumb	= wppa_use_thumb_file($wppa['single_photo'], $width, $height);
+	$src 		= $usethumb ? wppa_get_thumb_url( $wppa['single_photo'], '', $width, $height ) : wppa_get_photo_url( $wppa['single_photo'], '', $width, $height );
 
 	if ( ! $wppa['in_widget'] ) wppa_bump_viewcount('photo', $wppa['single_photo']);
 
@@ -3112,7 +3124,8 @@ if ( $wppa['is_upldr'] ) $album='0';
 			return false;
 			break;
 		case 'file':		// The plain file
-			$result['url'] = wppa_get_photo_url($photo);
+			$siz = getimagesize( wppa_get_photo_path( $photo ) );
+			$result['url'] = wppa_get_photo_url( $photo, '', $siz['0'], $siz['1'] );
 			$result['title'] = $title; 
 			$result['is_url'] = true;
 			$result['is_lightbox'] = false;
@@ -3120,7 +3133,8 @@ if ( $wppa['is_upldr'] ) $album='0';
 			break;
 		case 'lightbox':
 		case 'lightboxsingle':
-			$result['url'] = wppa_get_photo_url($photo);
+			$siz = getimagesize( wppa_get_photo_path( $photo ) );
+			$result['url'] = wppa_get_photo_url( $photo, '', $siz['0'], $siz['1'] );
 			$result['title'] = $title; 
 			$result['is_url'] = false;
 			$result['is_lightbox'] = true;
@@ -3259,8 +3273,8 @@ if ( $wppa['is_upldr'] ) $album='0';
 			return $result;
 			break;
 		case 'fullpopup':
-			$url = wppa_get_photo_url($photo);
-			$imgsize = getimagesize(wppa_get_photo_path($photo));
+//			$url = wppa_get_photo_url($photo);
+			$imgsize = getimagesize( wppa_get_photo_path($photo) );
 			if ($imgsize) {
 				$wid = $imgsize['0'];
 				$hig = $imgsize['1'];
@@ -3269,6 +3283,7 @@ if ( $wppa['is_upldr'] ) $album='0';
 				$wid = '0';
 				$hig = '0';
 			}
+			$url = wppa_get_photo_url( $photo, '', $wid, $hig );
 
 			$result['url'] = "wppaFullPopUp(".$wppa['master_occur'].", ".$photo.", \'".$url."\', ".$wid.", ".$hig." )";
 

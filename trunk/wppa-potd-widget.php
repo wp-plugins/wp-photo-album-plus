@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the widget
-* Version 5.0.15
+* Version 5.2.3
 */
 
 class PhotoOfTheDay extends WP_Widget {
@@ -41,8 +41,12 @@ class PhotoOfTheDay extends WP_Widget {
 		$widget_content .= "\n".'<div class="wppa-widget-photo" style="'.$align.' padding-top:2px; ">';
 		if ($image) {
 			// make image url
+			$w = $wppa_opt['wppa_widget_width'];
+			$t = getimagesize( wppa_get_photo_path( $image['id'] ) );
+			$ratio = $t['1'] / $t['0'];
+			$h = round( $w * $ratio );
 			$usethumb	= wppa_use_thumb_file($image['id'], $wppa_opt['wppa_widget_width'], '0');
-			$imgurl 	= $usethumb ? wppa_get_thumb_url($image['id']) : wppa_get_photo_url($image['id']);
+			$imgurl 	= $usethumb ? wppa_get_thumb_url( $image['id'], '', $w, $h ) : wppa_get_photo_url( $image['id'], '', $w, $h );
 		
 			$name = wppa_qtrans($image['name']);
 			$link = wppa_get_imglnk_a('potdwidget', $image['id']);

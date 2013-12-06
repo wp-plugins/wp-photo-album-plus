@@ -2,7 +2,7 @@
 //
 // conatins slideshow, theme, ajax and lightbox code
 //
-// Version 5.2.0
+// Version 5.2.3
 
 // Part 1: Slideshow
 //
@@ -113,6 +113,7 @@ var wppaDownLoad = 'Download';
 var wppaSiteUrl = '';
 var wppaSlideToFullpopup = false; 
 var wppaComAltSize = 75;
+var wppaBumpViewCount = true;
 
 // 'Internal' variables (private)
 var _wppaId = new Array();
@@ -1536,6 +1537,9 @@ function _wppaLeaveMe(mocc, idx) {
 }
 
 function _bumpViewCount(photo) {
+
+	if ( ! wppaBumpViewCount ) return;
+	
 	// Create http object
 	var xmlhttp = wppaGetXmlHttp();	
 	
