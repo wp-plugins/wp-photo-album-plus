@@ -2,12 +2,12 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile
-Version: 5.2.3
+Version: 5.2.4
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
 Requires at least: 3.1
-Tested up to: 3.7.1
+Tested up to: 3.8
 
 This plugin is designed to easily manage and display your photo albums and slideshows in a single as well as in a network WordPress site.
 
@@ -172,6 +172,29 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 5.2.4 =
+
+= Bug Fixes =
+
+* Filetypes .amf and .pmf are allowed during Import. ( they were created by Export ).
+
+= New Features =
+
+* Auto Page. Show every fullsize photo on its own page. ( Table IV-A7 ). 
+This works on real albums only, i.e. not on virtual albums, and can be used to set up a ( limited ) wppa+ system with all clean urls.
+* Auto Page display types: Photo, Photo in the style of a wp media photo ( with subtitle ), Single photo in the style of a slaideshow. ( Table IV-A7.1 ).
+* Auto Page pagelinks: none, top, bottom or both. ( Table IV-A7.2 ).
+* Albums can have multiple categories assigned to. 
+Works exactly like tags on photos with the exception that only one category can be used in a shortcode and both covers and photos can be selected this way. 
+Example 1: [wppa type="cover" album="#cat,Animals"][/wppa] for a list of album covers that have the category Animals.
+Example 2: [wppa type="album" album="#cat,Birds"][/wppa] for a single display of thumbnails of photos in albums in category Birds.
+
+= Other Changes =
+
+* Cosmetic changes to the slideshow browsebar.
+* The internal width for photo of the day and upload widgets can now be set in Table I-F0 instead of in the photo of the day widget admin.
+* Lay-out adjustments admin pages for WP 3.8
 
 = 5.2.3 =
 

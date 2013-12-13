@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions
-* Version 5.2.3
+* Version 5.2.4
 *
 */
 
@@ -69,11 +69,11 @@ global $thumbs;
 	// in order of priority:
 	// 1. The given query string applies to this invocation (occurrance)
 	//    This invocation requires the ignorance of the filter results and the interpretation of the querystring.
-	if ( ( wppa_get_get('occur') || wppa_get_get('woccur') ) &&								// There IS a query string. For bw compat, occur is required ...
+	if ( ( ( wppa_get_get('occur') || wppa_get_get('woccur') ) &&								// There IS a query string. For bw compat, occur is required ...
 //		 ( wppa_get_get('album', false) !== false || wppa_get_get('photo') ) &&				// ... but not sufficient. Must have at least also album or photo
 		 ( ( $wppa['in_widget'] && $wppa['widget_occur'] == wppa_get_get('woccur') ) ||		// and it applies to ...
 		 ( ! $wppa['in_widget'] && $wppa['occur'] == wppa_get_get('occur') ) )				// this occurrance
-		 ) {
+		 ) && ! $wppa['is_autopage'] ) {
 		// Process query string
 		$wppa['out'] .= wppa_dbg_msg('Querystring applied', 'brown', false, true);
 		$wppa['start_album'] 	= wppa_get_get('album', '');
@@ -152,6 +152,29 @@ global $thumbs;
 			wppa_dbg_msg('Nothing to do...');
 			wppa_reset_occurrance();
 			return '';	// Do nothing on a landing page without a querystring while it is also not a search operation
+		}
+		elseif ( $wppa['is_autopage'] ) {
+			$wppa['single_photo'] = $wpdb->get_var( $wpdb->prepare( "SELECT `id` FROM `".WPPA_PHOTOS."` WHERE `page_id` = %d LIMIT 1", get_the_ID() ) );
+			if ( ! $wppa['single_photo'] ) {
+				wppa_dbg_msg('No photo found for page '.get_the_ID(), 'red', 'force' );
+				wppa_reset_occurrance();
+				return '';	// Give up
+			}
+			$type = $wppa_opt['wppa_auto_page_type'];
+			switch ( $type ) {
+				case 'photo':
+					break;
+				case 'mphoto':
+					$wppa['is_mphoto'] = true;
+					break;
+				case 'slphoto':
+					$wppa['is_slide'] = '1';
+					$wppa['start_photo'] = $wppa['single_photo'];
+					$wppa['is_single'] = '1';
+					break;
+				default:
+					wppa_dbg_msg('Unimplemented type autopage display: '.$type, 'red', 'force');
+			}
 		}
 	}
 	
@@ -258,6 +281,26 @@ global $thumbs;
 					$id = '0';	//$wppa['start_album'] = '';
 					$wppa['photos_only'] = true;
 					break;
+				case '#cat':
+					$temp = explode(',',$wppa['start_album']);
+					$cat = isset( $temp[1] ) ? $temp[1] : '';
+					$cat = wppa_sanitize_tags( $cat );
+					$wppa['is_cat'] = $cat;
+					if ( ! $cat ) {
+						wppa_dbg_msg('Missing cat #cat album spec: '.$wppa['start_album'], 'red', 'force');
+						wppa_reset_occurrance();
+						return;	// Forget this occurrance
+					}
+					$albs = $wpdb->get_results( "SELECT `id`, `cats` FROM `".WPPA_ALBUMS."`", ARRAY_A );
+					$id = '';
+					if ( $albs ) foreach ( $albs as $alb ) {
+						$temp = explode( ',', $alb['cats'] );
+						if ( in_array( $cat, $temp ) ) {
+							$id .= $alb['id'].'.';
+						}
+					}
+					$id = rtrim($id, '.');
+					break;
 				case '#owner':
 					$temp = explode(',',$wppa['start_album']);
 					$owner = isset($temp[1]) ? $temp[1] : '';
@@ -269,7 +312,7 @@ global $thumbs;
 						}
 					}
 					if ( ! $owner ) {
-						wppa_dbg_msg('Mossing owner in #owner album spec: '.$wppa['start_album'], 'red', 'force');
+						wppa_dbg_msg('Missing owner in #owner album spec: '.$wppa['start_album'], 'red', 'force');
 						wppa_reset_occurrance();
 						return;	// Forget this occurrance
 					}
@@ -425,15 +468,23 @@ global $thumbs;
 	}
 	// Is it newstyle single photo mediastyle?
 	elseif ( $wppa['is_mphoto'] == '1' ) {
+		if ( $wppa['is_autopage'] ) wppa_auto_page_links('top');
 		wppa_mphoto();
+		if ( $wppa['is_autopage'] ) wppa_auto_page_links('bottom');
 	}
 	// Is it newstyle single photo plain?
 	elseif ( wppa_page('oneofone') ) {
+		if ( $wppa['is_autopage'] ) wppa_auto_page_links('top');
 		wppa_sphoto();
+		if ( $wppa['is_autopage'] ) wppa_auto_page_links('bottom');
 	}
 	// The normal case
 	else {
-		if ( function_exists('wppa_theme') ) wppa_theme();	// Call the theme module
+		if ( function_exists('wppa_theme') ) {
+			if ( $wppa['is_autopage'] ) wppa_auto_page_links('top');
+			wppa_theme();	// Call the theme module
+			if ( $wppa['is_autopage'] ) wppa_auto_page_links('bottom');
+		}
 		else $wppa['out'] = '<span style="color:red">ERROR: Missing function wppa_theme(), check the installation of WPPA+. Remove customized wppa_theme.php</span>';
 		global $wppa_version; 
 		$expected_version = '5-1-19';
@@ -513,6 +564,7 @@ global $thumbs;
 	$wppa['related_count']	= '0';
 	$wppa['is_owner']		= '';
 	$wppa['is_upldr'] 		= '';
+	$wppa['is_cat'] 		= false;
 
 
 }
@@ -678,7 +730,7 @@ global $wppa_opt;
 			wppa_dbg_q('Q11b');
 			$albums = $wpdb->get_results($q, ARRAY_A );
 		}
-		elseif ( strpos($id, '.') !== false ) {
+		elseif ( strpos($id, '.') !== false ) {	// Album enum
 			$ids = wppa_series_to_array($id);
 			if ( $wppa['is_cover'] ) {
 				$q = "SELECT * FROM `".WPPA_ALBUMS."` WHERE `id` = ".implode(" OR `id` = ", $ids);
@@ -3303,6 +3355,18 @@ if ( $wppa['is_upldr'] ) $album='0';
 			break;
 		case 'slide':	// for album widget
 			$result['url'] = wppa_get_permalink($wppa_opt['wppa_album_widget_linkpage']).'wppa-album='.$album.'&amp;slide';
+			$result['title'] = '';
+			$result['is_url'] = true;
+			$result['is_lightbox'] = false;
+			break;
+		case 'autopage':
+			if ( ! wppa_switch('wppa_auto_page') ) {
+				wppa_dbg_msg('Auto page has been switched off, but there are still links to it ('.$wich.')', 'red', 'force');
+				$result['url'] = '';
+			}
+			else {
+				$result['url'] = wppa_get_permalink( wppa_get_the_auto_page( $photo ) );
+			}
 			$result['title'] = '';
 			$result['is_url'] = true;
 			$result['is_lightbox'] = false;

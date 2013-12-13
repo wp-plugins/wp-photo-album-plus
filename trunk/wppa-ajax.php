@@ -2,7 +2,7 @@
 /* wppa-ajax.php
 *
 * Functions used in ajax requests
-* version 5.2.3
+* version 5.2.4
 *
 */
 add_action('wp_ajax_wppa', 'wppa_ajax_callback');
@@ -44,7 +44,7 @@ global $wppa;
 			if ( ! $ok ) die('You do nat have sufficient rights to do this');
 			require_once 'wppa-photo-admin-autosave.php';
 			$wppa['front_edit'] = true;
-			echo '	<div style="padding-bottom:4px;" >
+			echo '	<div style="padding-bottom:4px;height:24px;" >
 						<span style="color:#777;" >
 							<i>'.
 								__a('All modifications are instantly updated on the server. The <b style="color:#070" >Remark</b> field keeps you informed on the actions taken at the background.').
@@ -52,7 +52,7 @@ global $wppa;
 						</span>
 						<input id="wppa-fe-exit" type="button" style="float:right;color:red;font-weight:bold;" onclick="window.opener.location.reload(true);window.close();" value="'.__a('Exit & Refresh').'" />
 						<div id="wppa-fe-count" style="float:right;" ></div>
-					</div>';
+					</div><div style="clear:both;"></div>';
 			wppa_album_photos('', $photo);
 			exit;
 			break;
@@ -606,6 +606,11 @@ global $wppa;
 				case 'default_tags':
 					$value = wppa_sanitize_tags($value);
 					$itemname = __('Default tags', 'wppa');
+					break;
+				case 'cats':
+					$value = wppa_sanitize_cats($value);
+					wppa_clear_catlist();
+					$itemname = __('Categories', 'wppa');
 					break;
 				case 'suba_order_by':
 					$itemname = __('Sub albums sort order', 'wppa');
@@ -1265,13 +1270,14 @@ global $wppa;
 						wppa_update_option('wppa_upload_notify', 'yes');
 						wppa_update_option('wppa_grant_an_album', 'yes');
 						$grantparent = get_option('wppa_grant_parent');
-						if ( ! wppa_album_exists($grantparent) ) {
-							$id = wppa_nextkey(WPPA_ALBUMS);
-							$iret = $wpdb->query($wpdb->prepare("INSERT INTO `" . WPPA_ALBUMS . 
-								"` (`id`, `name`, `description`, `a_order`, `a_parent`, `p_order_by`, `main_photo`, `cover_linktype`, `cover_linkpage`, `owner`, `timestamp`, `upload_limit`, `alt_thumbsize`, `default_tags`, `cover_type`, `suba_order_by`) ".
-								" VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, '', '', '')", 
-								$id, __('Members', 'wppa'), __('Parent of the member albums', 'wppa'), '0', '-1', '0', '0', 'content', '0', wppa_get_user(), time(), '0/0', '0') );
-							if ( $iret ) {
+						if ( ! wppa_album_exists( $grantparent ) ) {
+//							$id = wppa_nextkey(WPPA_ALBUMS);
+//							$iret = $wpdb->query($wpdb->prepare("INSERT INTO `" . WPPA_ALBUMS . 
+//								"` (`id`, `name`, `description`, `a_order`, `a_parent`, `p_order_by`, `main_photo`, `cover_linktype`, `cover_linkpage`, `owner`, `timestamp`, `upload_limit`, `alt_thumbsize`, `default_tags`, `cover_type`, `suba_order_by`) ".
+//								" VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, '', '', '')", 
+//								$id, __('Members', 'wppa'), __('Parent of the member albums', 'wppa'), '0', '-1', '0', '0', 'content', '0', wppa_get_user(), time(), '0/0', '0') );
+							$id = wppa_create_album_entry( array( 'name' => __('Members', 'wppa'), 'description' => __('Parent of the member albums', 'wppa'), 'a_parent' => '-1', 'upload_limit' => '0/0' ) );
+							if ( $id ) {
 								wppa_index_add('album', $id);
 								wppa_update_option('wppa_grant_parent', $id);
 							}

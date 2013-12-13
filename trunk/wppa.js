@@ -2,7 +2,7 @@
 //
 // conatins slideshow, theme, ajax and lightbox code
 //
-// Version 5.2.3
+// Version 5.2.4
 
 // Part 1: Slideshow
 //
@@ -1730,9 +1730,9 @@ function _wppaShowMetaData(mocc, key) {
 }
 			// Fade the browse arrows in
 			if ( wppaSlideWrap || ( _wppaCurIdx[mocc] != 0 ) )
-				jQuery('.wppa-prev-'+mocc).fadeIn(300);
+				jQuery('.wppa-prev-'+mocc).css('visibility', 'visible'); // fadeIn(300);
 			if ( wppaSlideWrap || ( _wppaCurIdx[mocc] != (_wppaSlides[mocc].length - 1) ) )
-				jQuery('.wppa-next-'+mocc).fadeIn(300);
+				jQuery('.wppa-next-'+mocc).css('visibility', 'visible'); // fadeIn(300);
 		}
 		else {							// Hide
 			// Hide existing comments
@@ -1768,8 +1768,8 @@ function _wppaShowMetaData(mocc, key) {
 		// Hide counter	
 		jQuery("#counter-"+mocc).css('visibility', 'hidden');
 		// Fade the browse arrows out
-		jQuery('.wppa-prev-'+mocc).fadeOut(300);	
-		jQuery('.wppa-next-'+mocc).fadeOut(300);
+		jQuery('.wppa-prev-'+mocc).css('visibility', 'hidden'); // fadeOut(300);	
+		jQuery('.wppa-next-'+mocc).css('visibility', 'hidden'); // fadeOut(300);
 		// Hide iptc
 		jQuery("#iptccontent-"+mocc).css('visibility', 'hidden'); 
 		jQuery("#exifcontent-"+mocc).css('visibility', 'hidden'); 

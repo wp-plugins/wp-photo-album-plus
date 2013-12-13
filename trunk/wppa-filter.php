@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * get the albums via filter
-* version 5.1.16
+* version 5.2.4
 *
 */
 
@@ -283,6 +283,7 @@ global $wppa_opt;
 	$wppa['is_tagcloudbox'] = false;
 	$wppa['taglist'] 		= '';
 	$wppa['tagcols']		= '2';
+	$wppa['is_autopage']	= false;
 
 //	$size = '';
 //	$align = '';
@@ -339,6 +340,9 @@ global $wppa_opt;
 			$wppa['start_photo'] = $photo;
 			$wppa['is_single'] = '1';
 			break;
+		case 'autopage':
+			$wppa['is_autopage'] = '1';
+			break;			
 		case 'upload':
 			$wppa['start_album'] = $album;
 			$wppa['is_upload'] = true;

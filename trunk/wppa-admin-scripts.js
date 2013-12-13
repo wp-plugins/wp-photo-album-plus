@@ -1,7 +1,7 @@
 /* admin-scripts.js */
 /* Package: wp-photo-album-plus
 /*
-/* Version 5.2.3
+/* Version 5.2.4
 /* Various js routines used in admin pages		
 */
 
@@ -74,6 +74,7 @@ function wppaInitSettings() {
 	wppaCheckNewpag();
 	wppaCheckIndexSearch();
 	wppaCheckCDN();
+	wppaCheckAutoPage();
 	
 	var tab=new Array('O','I','II','III','IV','V','VI','VII','VIII','IX','X','XI','XII');
 	var sub=new Array('A','B','C','D','E','F','G','H','I','J');
@@ -239,6 +240,12 @@ function wppaCheckThumbType() {
 		jQuery('.tt_ascovers').css('display', 'none');
 		jQuery('.tt_always').css('display', 'none');
 	}
+}
+
+function wppaCheckAutoPage() {
+	var auto = document.getElementById('wppa_auto_page').checked;
+	if ( auto ) jQuery('.autopage').css('display', '');
+	else jQuery('.autopage').css('display', 'none');
 }
 
 /* Enables or disables thumb opacity dependant on whether feature is selected */
@@ -1261,6 +1268,10 @@ function wppaCheckLinkPageErr(slug) {
 	else {
 		jQuery('#'+slug+'-err').css({display:'none'});
 	}
+}
+
+function wppaAddCat(val, id) {
+	wppaAddTag(val, id);
 }
 
 function wppaAddTag(val, id) {

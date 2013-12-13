@@ -2,7 +2,7 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 5.2.3
+* version 5.2.4
 *
 */
 
@@ -112,7 +112,9 @@ global $wppa_initruntimetime;
 			'is_owner'					=> '',
 			'is_upldr'					=> '',
 			'no_esc'					=> false,
-			'front_edit'				=> false
+			'front_edit'				=> false,
+			'is_autopage'				=> false,
+			'is_cat'					=> false
 
 
 
@@ -357,6 +359,10 @@ global $wppa_initruntimetime;
 						'wppa_update_addressline'		=> '',
 						'wppa_render_shortcode_always' 	=> '',
 						'wppa_track_viewcounts'			=> '',
+						'wppa_auto_page'				=> '',
+						'wppa_auto_page_type'			=> '',
+						'wppa_auto_page_links'			=> '',
+
 
 						// B Full size and Slideshow
 						'wppa_fullvalign' 				=> '',	// 1
@@ -787,7 +793,7 @@ global $wppa_initruntimetime;
 			$user = wppa_get_user(get_option('wppa_grant_name', 'display'));
 			$albs = $wpdb->get_var($wpdb->prepare( "SELECT COUNT(*) FROM `".WPPA_ALBUMS."` WHERE `owner` = %s", $owner ));
 			if ( ! $albs ) {	// make an album for this user
-				$id = wppa_nextkey(WPPA_ALBUMS);
+//				$id = wppa_nextkey(WPPA_ALBUMS);
 				$name = $user;
 				if ( is_admin() ) {
 					$desc = __('Default photo album for', 'wppa').' '.$user;
@@ -795,10 +801,11 @@ global $wppa_initruntimetime;
 				else {
 					$desc = __a('Default photo album for').' '.$user;
 				}
-				$uplim = $wppa_opt['wppa_upload_limit_count'].'/'.$wppa_opt['wppa_upload_limit_time'];
+//				$uplim = $wppa_opt['wppa_upload_limit_count'].'/'.$wppa_opt['wppa_upload_limit_time'];
 				$parent = $wppa_opt['wppa_grant_parent'];
-				$query = $wpdb->prepare("INSERT INTO `" . WPPA_ALBUMS . "` (`id`, `name`, `description`, `a_order`, `a_parent`, `p_order_by`, `main_photo`, `cover_linktype`, `cover_linkpage`, `owner`, `timestamp`, `upload_limit`, `alt_thumbsize`, `default_tags`, `cover_type`, `suba_order_by`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, '', '', '')", $id, $name, $desc, '0', $parent, '0', '0', 'content', '0', $owner, time(), $uplim, '0');
-				$iret = $wpdb->query($query);
+//				$query = $wpdb->prepare("INSERT INTO `" . WPPA_ALBUMS . "` (`id`, `name`, `description`, `a_order`, `a_parent`, `p_order_by`, `main_photo`, `cover_linktype`, `cover_linkpage`, `owner`, `timestamp`, `upload_limit`, `alt_thumbsize`, `default_tags`, `cover_type`, `suba_order_by`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, '', '', '')", $id, $name, $desc, '0', $parent, '0', '0', 'content', '0', $owner, time(), $uplim, '0');
+//				$iret = $wpdb->query($query);
+				$id = wppa_create_album_entry( array ( 'name' => $name, 'description' => $desc, 'a_parent' => $parent) );
 				wppa_flush_treecounts($parent);
 				wppa_index_add('album', $id);
 			}
@@ -2367,7 +2374,7 @@ global $wppa_opt;
 	//	$factor = '5.60';	//  5.60 for 17M: 386 x 289 (0.1 MP) thumb only
 	//	$factor = '5.10';	//  5.10 for 104M: 4900 x 3675 (17.2 MP) thumb only
 	$memlimmb = $memory_limit / ( 1024 * 1024 );
-	$factor = '5.68' - '0.58' * ( $memlimmb / 104 );
+	$factor = '6.00' - '0.58' * ( $memlimmb / 104 );
 
 	// Calculate max size
 	$maxpixels = ( $free_memory / $factor ) - $resizedpixels;
@@ -2609,7 +2616,8 @@ global $wpdb;
 											'addnumbers' 		=> false,
 											'path' 				=> false,
 											'root' 				=> false,
-											'content'			=> false
+											'content'			=> false,
+											'sort'				=> true
 											) );
 											
 	// Provide default selection if no selected given
@@ -2624,7 +2632,7 @@ global $wpdb;
 		$args['selected'] = '0';
 	}
 												
-	$albums = $wpdb->get_results( "SELECT `id`, `name` FROM `".WPPA_ALBUMS."`", ARRAY_A);	
+	$albums = $wpdb->get_results( "SELECT `id`, `name` FROM `".WPPA_ALBUMS."` ".wppa_get_album_order($args['root']), ARRAY_A);	
 	
 	if ( $albums ) {
 		// Filter for root
@@ -2663,7 +2671,7 @@ global $wpdb;
 			$albums[$index]['name'] = __(stripslashes($albums[$index]['name']));
 		}
 		// Sort
-		$albums = wppa_array_sort($albums, 'name');
+		if ( $args['sort'] ) $albums = wppa_array_sort($albums, 'name');
 	}
 	
 	// Output

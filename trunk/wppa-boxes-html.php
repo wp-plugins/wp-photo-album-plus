@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Various wppa boxes
-* Version 5.2.3
+* Version 5.2.4
 *
 */
 
@@ -992,3 +992,56 @@ global $wpdb;
 	$wppa['out'] .= $result;
 }
 
+function wppa_auto_page_links( $where ) {
+global $wppa_opt;
+global $wppa;
+global $wpdb;
+global $thumb;
+
+	$m = $where == 'bottom' ? 'margin-top:8px;' : '';
+	$mustwhere = $wppa_opt['wppa_auto_page_links'];
+	if ( ( $mustwhere == 'top' || $mustwhere == 'both' ) && ( $where == 'top' ) || ( ( $mustwhere == 'bottom' || $mustwhere == 'both' ) && ( $where == 'bottom' ) ) ) {
+		$wppa['out'] .= '
+			<div id="prevnext1-'.$wppa['master_occur'].'" class="wppa-box wppa-nav wppa-nav-text" style="text-align: center; '.__wcs('wppa-box').__wcs('wppa-nav').__wcs('wppa-nav-text').$m.'">';
+		$photo = $wppa['single_photo'];
+		wppa_cache_thumb( $photo );
+		$album = $thumb['album'];
+		$photos = $wpdb->get_results( $wpdb->prepare( "SELECT `id`, `page_id` FROM `".WPPA_PHOTOS."` WHERE `album` = %s ".wppa_get_photo_order( $album ), $album ), ARRAY_A );
+		$prevpag = '0';
+		$nextpag = '0';
+		$curpag  = get_the_ID();
+		$count = count( $photos );
+		$count_ = $count - 1;
+		$current = '0';
+		if ( $photos ) {
+			foreach ( array_keys( $photos ) as $idx ) {
+				if ( $photos[$idx]['page_id'] == $curpag ) {
+					if ( $idx != '0' ) $prevpag = wppa_get_the_auto_page( $photos[$idx-1]['id'] ); // ['page_id'];
+					if ( $idx != $count_ ) $nextpag = wppa_get_the_auto_page( $photos[$idx+1]['id'] ); // ['page_id'];
+					$current = $idx;
+				}
+			}
+		}
+		
+		if ( $prevpag ) {
+			$wppa['out'] .= '
+			<a href="'.get_permalink($prevpag).'" style="float:left" >'.__('< Previous', 'wppa').'</a>';
+		}
+		else {
+			$wppa['out'] .= '
+			<span style="visibility:hidden" >'.__('< Previous', 'wppa').'</span>';
+		}
+		$wppa['out'] .= ++$current.'/'.$count;
+		if ( $nextpag ) {
+			$wppa['out'] .= '
+			<a href="'.get_permalink($nextpag).'" style="float:right" >'.__('Next >', 'wppa').'</a>';
+		}
+		else {
+			$wppa['out'] .= '
+			<span style="visibility:hidden" >'.__('Next >', 'wppa').'</span>';
+		}
+
+		$wppa['out'] .= '
+			</div><div style="clear:both"></div>';
+	}
+}

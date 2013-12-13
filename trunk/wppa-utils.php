@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains low-level utility routines
-* Version 5.2.3
+* Version 5.2.4
 *
 */
 
@@ -559,6 +559,62 @@ global $wpdb;
 	return $result;
 }
 
+function wppa_get_catlist() {
+	$result = get_option('wppa_catlist', 'nil');
+	if ( $result == 'nil' ) {
+		$result = wppa_create_catlist();
+	}
+	else {
+		foreach ( array_keys($result) as $cat ) {
+			$result[$cat]['ids'] = wppa_index_string_to_array($result[$cat]['ids']);
+		}
+	}
+	return $result;
+}
+
+function wppa_clear_catlist() {
+	if ( get_option('wppa_catlist', 'nil') != 'nil' ) {
+		delete_option('wppa_catlist');
+	}
+}
+
+function wppa_create_catlist() {
+global $wpdb;
+	$result = false;
+	$total = '0';
+	$albums = $wpdb->get_results("SELECT `id`, `cats` FROM `".WPPA_ALBUMS."` WHERE `cats` <> ''", ARRAY_A);
+	if ( $albums ) foreach ( $albums as $album ) {
+		$cats = explode(',', $album['cats']);
+		if ( $cats ) foreach ( $cats as $cat ) {
+			if ( $cat ) {
+				if ( ! isset($result[$cat]) ) {	// A new cat
+					$result[$cat]['cat'] = $cat;
+					$result[$cat]['count'] = '1';
+					$result[$cat]['ids'][] = $album['id'];
+				}
+				else {							// An existing cat
+					$result[$cat]['count']++;
+					$result[$cat]['ids'][] = $album['id'];
+				}
+			}
+			$total++;
+		}
+	}
+	$tosave = array();
+	if ( is_array($result) ) {
+		foreach ( array_keys($result) as $key ) {
+			$result[$key]['fraction'] = sprintf('%4.2f', $result[$key]['count'] / $total);
+		}
+		$result = wppa_array_sort($result, 'cat');
+		$tosave = $result;
+		foreach ( array_keys($tosave) as $key ) {
+			$tosave[$key]['ids'] = wppa_index_array_to_string($tosave[$key]['ids']);
+		}
+	}
+	update_option('wppa_catlist', $tosave);
+	return $result;
+}
+
 function wppa_update_option($option, $value) {
 	update_option($option, $value);
 	delete_option('wppa_cached_options');
@@ -1102,6 +1158,9 @@ static $old;
 	else $old = $new;
 }
 
+function wppa_sanitize_cats($value) {
+	return wppa_sanitize_tags($value);
+}
 function wppa_sanitize_tags($value, $keepsemi = false) {
 	// Sanitize
 	$value = strip_tags($value);					// Security
@@ -1279,11 +1338,24 @@ global $wppa_opt;
 	return $page;
 }
 
-function wppa_create_page($title) {
+function wppa_get_the_auto_page($photo) {
+global $thumb;
+global $wpdb;
+
+	if ( ! $photo ) return '0';
+	wppa_cache_thumb($photo);
+	if ( wppa_page_exists( $thumb['page_id'] ) ) return $thumb['page_id'];
+	$page = wppa_create_page( $thumb['name'], '[wppa type="autopage"][/wppa]' );
+	$thumb['page_id'] = $page;
+	$wpdb->query( "UPDATE `".WPPA_PHOTOS."` SET `page_id` = ".$page." WHERE `id` = ".$photo );
+	return $page;
+}
+
+function wppa_create_page( $title, $shortcode = '[wppa type="landing"][/wppa]' ) {
 			
 	$my_page = array(
 				'post_title'    => $title,
-				'post_content'  => '[wppa type="landing"][/wppa]',
+				'post_content'  => $shortcode,
 				'post_status'   => 'publish',
 				'post_type'	  	=> 'page'
 			);
@@ -1295,6 +1367,7 @@ function wppa_create_page($title) {
 function wppa_page_exists($id) {
 global $wpdb;
 
+	if ( ! $id ) return false;
 	$iret = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `" . $wpdb->posts . "` WHERE `post_type` = 'page' AND `post_status` = 'publish' AND `ID` = %s", $id));
 	return ( $iret > '0' );
 }
@@ -1328,4 +1401,75 @@ global $wppa_opt;
 	}
 	
 	return $cdn;
+}
+
+function wppa_create_album_entry( $args ) {
+global $wpdb;
+global $wppa_opt;
+
+	$args = wp_parse_args( (array) $args, array ( 
+					'id' 				=> wppa_nextkey( WPPA_ALBUMS ),
+					'name' 				=> __('New Album', 'wppa'),
+					'description' 		=> '',
+					'a_order' 			=> '0',
+					'main_photo' 		=> '0',
+					'a_parent' 			=> '0',
+					'p_order_by' 		=> '0',
+					'cover_linktype' 	=> 'content',
+					'cover_linkpage' 	=> '0',
+					'owner' 			=> wppa_get_user(),
+					'timestamp' 		=> time(),
+					'upload_limit' 		=> $wppa_opt['wppa_upload_limit_count'].'/'.$wppa_opt['wppa_upload_limit_time'],
+					'alt_thumbsize' 	=> '0',
+					'default_tags' 		=> '',
+					'cover_type' 		=> '',
+					'suba_order_by' 	=> '',
+					'views' 			=> '0'
+					) );
+					
+	if ( ! wppa_is_id_free('album', $args['id'] ) ) $args['id'] = wppa_nextkey( WPPA_ALBUMS );
+					
+	$query = $wpdb->prepare("INSERT INTO `" . WPPA_ALBUMS . "` ( 	`id`, 
+																	`name`, 
+																	`description`, 
+																	`a_order`, 
+																	`main_photo`, 
+																	`a_parent`, 
+																	`p_order_by`, 
+																	`cover_linktype`, 
+																	`cover_linkpage`, 
+																	`owner`, 
+																	`timestamp`, 
+																	`upload_limit`, 
+																	`alt_thumbsize`, 
+																	`default_tags`, 
+																	`cover_type`, 
+																	`suba_order_by`,
+																	`views`,
+																	`cats`
+																	) 
+														VALUES ( %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s )", 
+																$args['id'], 
+																$args['name'],
+																$args['description'],
+																$args['a_order'],
+																$args['main_photo'],
+																$args['a_parent'],
+																$args['p_order_by'],
+																$args['cover_linktype'],
+																$args['cover_linkpage'],
+																$args['owner'],
+																$args['timestamp'],
+																$args['upload_limit'],
+																$args['alt_thumbsize'],
+																$args['default_tags'],
+																$args['cover_type'],
+																$args['suba_order_by'],
+																$args['views'],
+																$args['cats']
+														);
+	$iret = $wpdb->query($query);
+	
+	if ( $iret ) return $args['id'];
+	else return false;
 }

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * ask the album / display you want
-* Version 5.1.15
+* Version 5.2.4
 */
 
 
@@ -22,13 +22,15 @@ class SuperView extends WP_Widget {
 		global $wppa_opt;
 
         extract( $args );
-		wp_parse_args( (array) $instance, array( 
+		$instance = wp_parse_args( (array) $instance, array( 
 														'title' => '',
-														'root'	=> false
+														'root'	=> '0',
+														'sort'	=> true,
 														) );
         
  		$widget_title 	= apply_filters('widget_title', $instance['title'] );
 		$album_root 	= $instance['root'];
+		$sort 			= $instance['sort'];
 
 		$page 			= wppa_get_the_landing_page('wppa_super_view_linkpage', __a('Super View Photos'));
 
@@ -55,7 +57,12 @@ class SuperView extends WP_Widget {
 			<form action="'.$url.'" method = "get">
 				<label>'.__('Album:', 'wppa').'</label><br />
 				<select name="wppa-album">
-					'.wppa_album_select_a( array( 'selected' => $_SESSION['wppa_session']['superalbum'], 'addpleaseselect' => true, 'root' => $album_root, 'content' => true ) ).'
+					'.wppa_album_select_a( array( 	'selected' 			=> $_SESSION['wppa_session']['superalbum'], 
+													'addpleaseselect' 	=> true, 
+													'root' 				=> $album_root, 
+													'content' 			=> true,
+													'sort'				=> $sort
+													) ).'
 				</select><br />
 				<input type="radio" name="wppa-slide" value="nil" '.( $_SESSION['wppa_session']['superview'] == 'thumbs' ? $checked : '' ).'>'.__('Thumbnails', 'wppa').'<br />
 				<input type="radio" name="wppa-slide" value="1" '.( $_SESSION['wppa_session']['superview'] == 'slide' ? $checked : '' ).'>'.__('Slideshow', 'wppa').'<br />';
@@ -76,6 +83,7 @@ class SuperView extends WP_Widget {
 		$instance = $old_instance;
 		$instance['title'] 	= strip_tags($new_instance['title']);
 		$instance['root'] 	= $new_instance['root'];
+		$instance['sort']	= $new_instance['sort'];
 		
         return $instance;
     }
@@ -83,9 +91,13 @@ class SuperView extends WP_Widget {
     /** @see WP_Widget::form */
     function form($instance) {				
 		//Defaults
-		$instance = wp_parse_args( (array) $instance, array( 'title' => __( 'Super View Photos', 'wppa' ), 'root' => '0' ) );
+		$instance = wp_parse_args( (array) $instance, array( 	'title' => __( 'Super View Photos', 'wppa' ), 
+																'root' 	=> '0',
+																'sort'	=> true
+															) );
 		$title 	= esc_attr( $instance['title'] );
 		$root 	= $instance['root'];
+		$sort 	= $instance['sort'];
 	?>
 		<p>
 			<label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:', 'wppa'); ?></label> 
@@ -96,6 +108,13 @@ class SuperView extends WP_Widget {
 			<select class="widefat" id="<?php echo $this->get_field_id('root'); ?>" name="<?php echo $this->get_field_name('root'); ?>" >
 				<?php echo wppa_album_select_a( array( 'selected' => $root, 'addall' => true, 'addseparate' => true, 'addgeneric' => true, 'path' => true ) ) ?>
 			</select>
+		</p>
+			<label for="<?php echo $this->get_field_id('sort'); ?>"><?php _e('Sort alphabeticly:', 'wppa'); ?></label>
+			<select class="widefat" id="<?php echo $this->get_field_id('sort'); ?>" name="<?php echo $this->get_field_name('sort'); ?>" >
+				<option value="0" ><?php _e('no, use album sort method', 'wppa') ?></option>
+				<option value="1" <?php if ( $sort ) echo 'selected="selected"' ?> ><?php _e('yes', 'wppa') ?></option>
+			</select>
+		<p>
 		</p>
 <?php
     }

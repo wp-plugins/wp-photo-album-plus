@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the upload/import pages and functions
-* Version 5.1.14
+* Version 5.2.4
 *
 */
 
@@ -518,21 +518,21 @@ if ( $wppa['ajax'] ) {
 						<p><b>
 							<?php _e('There are', 'wppa'); echo(' '.$zipcount.' '); _e('zipfiles in the depot.', 'wppa') ?><br/>
 						</b></p>
-						<table class="form-table albumtable widefat" style="margin-bottom:0;" >
+						<table class="form-table wppa-table widefat" style="margin-bottom:0;" >
 							<thead>
 								<tr>
-									<th>
+									<td>
 										<input type="checkbox" id="all-zip" checked="checked" onchange="checkAll('all-zip', '.wppa-zip')" /><b>&nbsp;&nbsp;<?php _e('Check/uncheck all', 'wppa') ?></b>
-									</th>
+									</td>
 									<?php if ($is_sub_depot) { ?>
-										<th>
+										<td>
 											<input type="checkbox" id="del-after-z" name="del-after-z" checked="checked" /><b>&nbsp;&nbsp;<?php _e('Delete after successful extraction.', 'wppa'); ?></b>
-										</th>
+										</td>
 									<?php } ?>
 								</tr>
 							</thead>
 						</table>
-						<table class="form-table albumtable" style="margin-top:0;" >
+						<table class="form-table wppa-table widefat" style="margin-top:0;" >
 							<tr>
 								<?php
 								$ct = 0;
@@ -565,21 +565,21 @@ if ( $wppa['ajax'] ) {
 						<p><b>
 							<?php _e('There are', 'wppa'); echo(' '.$albumcount.' '); _e('albumdefinitions in the depot.', 'wppa') ?><br/>
 						</b></p>
-						<table class="form-table albumtable widefat" style="margin-bottom:0;" >
+						<table class="form-table wppa-table widefat" style="margin-bottom:0;" >
 							<thead>
 								<tr>
-									<th>
+									<td>
 										<input type="checkbox" id="all-amf" checked="checked" onchange="checkAll('all-amf', '.wppa-amf')" /><b>&nbsp;&nbsp;<?php _e('Check/uncheck all', 'wppa') ?></b>
-									</th>
+									</td>
 									<?php if ($is_sub_depot) { ?>
-										<th>
+										<td>
 											<input type="checkbox" id="del-after-a" name="del-after-a" checked="checked" /><b>&nbsp;&nbsp;<?php _e('Delete after successful import, or if the album already exits.', 'wppa'); ?></b>
-										</th>
+										</td>
 									<?php } ?>
 								</tr>
 							</thead>
 						</table>
-						<table class="form-table albumtable"  style="margin-top:0;" >
+						<table class="form-table wppa-table widefat"  style="margin-top:0;" >
 							<tr>
 								<?php
 								$ct = 0;
@@ -639,36 +639,36 @@ if ( $wppa['ajax'] ) {
 								</select>
 							</p>
 						<?php } ?>
-						<table class="form-table albumtable widefat" style="margin-bottom:0;" >
+						<table class="form-table wppa-table widefat" style="margin-bottom:0;" >
 							<thead>
 								<tr>
-									<th>
+									<td>
 										<input type="checkbox" id="all-pho" <?php if ($is_sub_depot) echo('checked="checked"') ?> onchange="checkAll('all-pho', '.wppa-pho')" /><b>&nbsp;&nbsp;<?php _e('Check/uncheck all', 'wppa') ?></b>
-									</th>
+									</td>
 									<?php if ($is_sub_depot) { ?>
-										<th>
+										<td>
 											<input type="checkbox" id="del-after-p" name="del-after-p" checked="checked" /><b>&nbsp;&nbsp;<?php _e('Delete after successful import.', 'wppa'); ?></b>
-										</th>
+										</td>
 									<?php } ?>
 									<?php if ($is_ngg) { ?>
-										<th>
+										<td>
 											<input type="checkbox" id="cre-album" name="cre-album" checked="checked" value="<?php echo esc_attr(basename($source)) ?>" /><b>&nbsp;&nbsp;<?php echo sprintf(__('Import into album <i>%s</i>.', 'wppa'), basename($source) ); ?></b>
 											<br /><small><?php _e('The album will be created if it does not exist', 'wppa') ?></small>
-										</th>
-										<th>
+										</td>
+										<td>
 											<input type="checkbox" id="use-backup" name="use-backup" checked="checked" /><b>&nbsp;&nbsp;<?php _e('Use backup if available', 'wppa') ?></b>
-										</th>
+										</td>
 									<?php } ?>
-									<th>
+									<td>
 										<input type="checkbox" id="wppa-update" onchange="impUpd(this, '#submit')" name="wppa-update"><b>&nbsp;&nbsp;<?php _e('Update existing photos', 'wppa') ?></b>
-									</th>
-									<th>
+									</td>
+									<td>
 										<input type="checkbox" id="wppa-nodups" name="wppa-nodups" checked="checked" ><b>&nbsp;&nbsp;<?php _e('Do not create duplicates', 'wppa') ?></b>
-									</th>
+									</td>
 								</tr>
 							</thead>
 						</table>				
-						<table class="form-table albumtable" style="margin-top:0;" >
+						<table class="form-table wppa-table widefat" style="margin-top:0;" >
 							<tr> 
 								<?php
 								$ct = 0;
@@ -700,20 +700,20 @@ if ( $wppa['ajax'] ) {
 						<p><b>
 							<?php _e('There are', 'wppa'); echo(' '.$dircount.' '); _e('albumdirectories in the depot.', 'wppa') ?><br/>
 						</b></p>
-						<table class="form-table albumtable widefat" style="margin-bottom:0;" >
+						<table class="form-table wppa-table widefat" style="margin-bottom:0;" >
 							<thead>
 								<tr>
-									<th>
+									<td>
 										<input type="checkbox" id="all-dir" checked="checked" onchange="checkAll('all-dir', '.wppa-dir')" /><b>&nbsp;&nbsp;<?php _e('Check/uncheck all', 'wppa') ?></b>
-									</th>
-		<!--							<th>
+									</td>
+		<!--							<td>
 										<input type="checkbox" id="wppa-crepag" name="wppa-crepag" checked="checked" ><b>&nbsp;&nbsp;<?php _e('Create WP page for album to be displayed.', 'wppa') ?></b>
-									</th>
+									</td>
 		-->
 								</tr>
 							</thead>
 						</table>				
-						<table class="form-table albumtable" style="margin-top:0;" >
+						<table class="form-table wppa-table widefat" style="margin-top:0;" >
 							<?php 
 								$ct = 0; 
 								$idx = '0';
@@ -1165,11 +1165,22 @@ global $wppa_opt;
 					else {
 						$id = basename($album);
 						$id = substr($id, 0, strpos($id, '.'));
-						if (!wppa_is_id_free('album', $id)) $id = wppa_nextkey(WPPA_ALBUMS);
-						$query = $wpdb->prepare( "INSERT INTO `" . WPPA_ALBUMS . "` (`id`, `name`, `description`, `a_order`, `a_parent`, `p_order_by`, `main_photo`, `cover_linktype`, `cover_linkpage`, `owner`, `timestamp`, `default_tags`, `cover_type`, `suba_order_by`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, '', '', '')", $id, stripslashes($name), stripslashes($desc), $aord, $parent, $porder, '0', 'content', '0', $owner, time());
-						$iret = $wpdb->query($query);
+//						if (!wppa_is_id_free('album', $id)) $id = wppa_nextkey(WPPA_ALBUMS);
+//						$query = $wpdb->prepare( "INSERT INTO `" . WPPA_ALBUMS . "` (`id`, `name`, `description`, `a_order`, `a_parent`, `p_order_by`, `main_photo`, `cover_linktype`, `cover_linkpage`, `owner`, `timestamp`, `default_tags`, `cover_type`, `suba_order_by`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, '', '', '')", $id, stripslashes($name), stripslashes($desc), $aord, $parent, $porder, '0', 'content', '0', $owner, time());
+//						$iret = $wpdb->query($query);
+						
+						$id = wppa_create_album_entry( array (	'id' 			=> $id, 
+																'name' 			=> stripslashes( $name ), 
+																'description' 	=> stripslashes( $description ),
+																'a_order' 		=> $aord, 
+																'a_parent' 		=> $parent, 
+																'p_order_by' 	=> $porder,
+																'owner' 		=> $owner	
+															) );
 
-						if ($iret === FALSE) wppa_error_message(__('Could not create album.', 'wppa'));
+						if ( $id === false ) {
+							wppa_error_message(__('Could not create album.', 'wppa'));
+						}
 						else {
 							//$id = wppa_get_album_id($name);
 							wppa_set_last_album($id);
@@ -1195,13 +1206,17 @@ global $wppa_opt;
 	if ( isset($_POST['cre-album']) ) {	// use album ngg gallery name for ngg conversion
 		$album 	= wppa_get_album_id(strip_tags($_POST['cre-album']));
 		if ( ! $album ) {				// the album does not exist yet, create it
-			$album 	= wppa_nextkey(WPPA_ALBUMS);
+//			$album 	= wppa_nextkey(WPPA_ALBUMS);
 			$name	= strip_tags($_POST['cre-album']);
 			$desc 	= sprintf(__('This album has been converted from ngg gallery %s', 'wppa'), $name);
 			$uplim	= '0/0';	// Unlimited not to destroy the conversion process!!
-			$query = $wpdb->prepare("INSERT INTO `" . WPPA_ALBUMS . "` (`id`, `name`, `description`, `a_order`, `a_parent`, `p_order_by`, `main_photo`, `cover_linktype`, `cover_linkpage`, `owner`, `timestamp`, `upload_limit`, `alt_thumbsize`, `default_tags`, `cover_type`, `suba_order_by`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, '', '', '')", $album, $name, $desc, '0', '0', '0', '0', 'content', '0', wppa_get_user(), time(), $uplim, '0');
-			$iret = $wpdb->query($query);
-			if ($iret === FALSE) {
+//			$query = $wpdb->prepare("INSERT INTO `" . WPPA_ALBUMS . "` (`id`, `name`, `description`, `a_order`, `a_parent`, `p_order_by`, `main_photo`, `cover_linktype`, `cover_linkpage`, `owner`, `timestamp`, `upload_limit`, `alt_thumbsize`, `default_tags`, `cover_type`, `suba_order_by`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, '', '', '')", $album, $name, $desc, '0', '0', '0', '0', 'content', '0', wppa_get_user(), time(), $uplim, '0');
+			$album = wppa_create_album_entry( array ( 	'name' 			=> $name,
+														'description' 	=> $desc,
+														'upload_limit' 	=> $uplim
+														) );
+//			$album = $wpdb->query($query);
+			if ( $album === false ) {
 				wppa_error_message(__('Could not create album.', 'wppa').'<br/>Query = '.$query);
 				wp_die('Sorry, cannot continue');
 			}
@@ -1452,7 +1467,7 @@ function wppa_extract($path, $delz) {
 			$zip = new ZipArchive;
 			if ($zip->open($path) === true) {
 			
-				$supported_file_ext = array('jpg', 'png', 'gif', 'JPG', 'PNG', 'GIF');
+				$supported_file_ext = array( 'jpg', 'png', 'gif', 'JPG', 'PNG', 'GIF', 'amf', 'pmf' );
 				$done = '0';
 				$skip = '0';
 				for( $i = 0; $i < $zip->numFiles; $i++ ){
@@ -1490,28 +1505,30 @@ global $wppa_opt;
 	if ( is_dir($file) ) {
 		$alb = wppa_get_album_id(basename($file));
 		if ( !$alb ) {	// Album must be created
-			$alb 	= wppa_nextkey(WPPA_ALBUMS);
-			$id 	= $alb;
+//			$alb 	= wppa_nextkey(WPPA_ALBUMS);
+//			$id 	= $alb;
 			$name	= basename($file);
 			$uplim	= $wppa_opt['wppa_upload_limit_count'].'/'.$wppa_opt['wppa_upload_limit_time'];
-			$query = $wpdb->prepare("INSERT INTO `" . WPPA_ALBUMS . "` (`id`, `name`, `description`, `a_order`, `a_parent`, `p_order_by`, `main_photo`, `cover_linktype`, `cover_linkpage`, `owner`, `timestamp`, `upload_limit`, `alt_thumbsize`, `default_tags`, `cover_type`, `suba_order_by`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, '', '', '')", $id, $name, '', '0', $parent, '0', '0', 'content', '0', wppa_get_user(), time(), $uplim, '0');
-			$iret = $wpdb->query($query);
-			if ($iret === FALSE) {
+//			$query = $wpdb->prepare("INSERT INTO `" . WPPA_ALBUMS . "` (`id`, `name`, `description`, `a_order`, `a_parent`, `p_order_by`, `main_photo`, `cover_linktype`, `cover_linkpage`, `owner`, `timestamp`, `upload_limit`, `alt_thumbsize`, `default_tags`, `cover_type`, `suba_order_by`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, '', '', '')", $id, $name, '', '0', $parent, '0', '0', 'content', '0', wppa_get_user(), time(), $uplim, '0');
+//			$iret = $wpdb->query($query);
+			$alb = wppa_create_album_entry( array ( 'name' 		=> $name,
+													'a_parent' 	=> $parent
+													) );
+			if ( $alb === false ) {
 				wppa_error_message(__('Could not create album.', 'wppa').'<br/>Query = '.$query);
 				wp_die('Sorry, cannot continue');
 			}
 			else {
-				$edit_id = $id;
-				wppa_set_last_album($edit_id);
-				wppa_flush_treecounts($edit_id);
-				wppa_index_add('album', $id);
-				wppa_ok_message(__('Album #', 'wppa') . ' ' . $edit_id . ' ('.$name.') ' . __('Added.', 'wppa'));
+				wppa_set_last_album($alb);
+				wppa_flush_treecounts($alb);
+				wppa_index_add('album', $alb);
+				wppa_ok_message(__('Album #', 'wppa') . ' ' . $alb . ' ('.$name.') ' . __('Added.', 'wppa'));
 				if ( $wppa_opt['wppa_newpag_create'] == 'yes' /*isset($_POST['wppa-crepag']) */ && $parent <= '0' ) {
 				
 					// Create post object
 					$my_post = array(
 					  'post_title'    => $name,
-					  'post_content'  => str_replace('w#album', $edit_id, $wppa_opt['wppa_newpag_content']),
+					  'post_content'  => str_replace('w#album', $alb, $wppa_opt['wppa_newpag_content']),
 					  'post_status'   => $wppa_opt['wppa_newpag_status'],
 					  'post_type'	  => $wppa_opt['wppa_newpag_type']
 					);
