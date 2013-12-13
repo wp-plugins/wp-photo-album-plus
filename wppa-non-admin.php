@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the non admin stuff
-* Version 5.2.3
+* Version 5.2.4
 *
 */
 
@@ -304,8 +304,8 @@ global $wppa_api_version;
 	wppaFaster = "'.__a('Faster').'";
 	wppaPhoto = "'.__a('Photo').'";
 	wppaOf = "'.__a('of').'";
-	wppaPreviousPhoto = "'.__a('Previous photo').'";
-	wppaNextPhoto = "'.__a('Next photo').'";
+	wppaPreviousPhoto = "&laquo;&nbsp;'.__a('Previous photo').'";
+	wppaNextPhoto = "'.__a('Next photo').'&nbsp;&raquo;";
 	wppaPrevP = "'.__a('Prev.').'";
 	wppaNextP = "'.__a('Next').'";
 	wppaAvgRating = "'.__a('Average&nbsp;rating').'";

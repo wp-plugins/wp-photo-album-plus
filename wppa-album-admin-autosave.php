@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * create, edit and delete albums
-* version 5.2.3
+* version 5.2.4
 *
 */
 
@@ -80,11 +80,12 @@ function _wppa_admin() {
 					$name = __('New Album', 'wppa');
 					if ( ! wppa_can_create_top_album() ) wp_die('No rights to create a top-level album');
 				}				
-				$uplim = $wppa_opt['wppa_upload_limit_count'].'/'.$wppa_opt['wppa_upload_limit_time'];
-				$query = $wpdb->prepare("INSERT INTO `" . WPPA_ALBUMS . "` (`id`, `name`, `description`, `a_order`, `a_parent`, `p_order_by`, `main_photo`, `cover_linktype`, `cover_linkpage`, `owner`, `timestamp`, `upload_limit`, `alt_thumbsize`, `default_tags`, `cover_type`, `suba_order_by`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, '', '', '')", $id, $name, '', '0', $parent, '0', '0', 'content', '0', wppa_get_user(), time(), $uplim, '0');
-				$iret = $wpdb->query($query);
-				if ($iret === FALSE) {
-					wppa_error_message(__('Could not create album.', 'wppa').'<br/>Query = '.$query);
+//				$uplim = $wppa_opt['wppa_upload_limit_count'].'/'.$wppa_opt['wppa_upload_limit_time'];
+//				$query = $wpdb->prepare("INSERT INTO `" . WPPA_ALBUMS . "` (`id`, `name`, `description`, `a_order`, `a_parent`, `p_order_by`, `main_photo`, `cover_linktype`, `cover_linkpage`, `owner`, `timestamp`, `upload_limit`, `alt_thumbsize`, `default_tags`, `cover_type`, `suba_order_by`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, '', '', '')", $id, $name, '', '0', $parent, '0', '0', 'content', '0', wppa_get_user(), time(), $uplim, '0');
+//				$iret = $wpdb->query($query);
+				$id = wppa_create_album_entry( array( 'id' => $id, 'name' => $name, 'a_parent' => $parent ) );
+				if ( $id === FALSE ) {
+					wppa_error_message( __('Could not create album.', 'wppa') );
 					wp_die('Sorry, cannot continue');
 				}
 				else {
@@ -141,41 +142,43 @@ function _wppa_admin() {
 						  echo ' '.__('The <b style="color:#070" >Remark</b> fields keep you informed on the actions taken at the background.', 'wppa');
 					?>
 				</p>
-				<p><?php _e('Album number:', 'wppa'); echo(' ' . $edit_id . '.'); ?></p>
+				<p>
+					<?php _e('Album number:', 'wppa'); echo(' ' . $edit_id . '.'); ?>
+				</p>
 					<input type="hidden" id="album-nonce-<?php echo $edit_id ?>" value="<?php echo wp_create_nonce('wppa_nonce_'.$edit_id);  ?>" />
-					<table class="form-table albumtable">
+					<table class="widefat wppa-table wppa-album-table">
 						<tbody>
 						
 							<!-- Name -->
-							<tr style="vertical-align:top;" >
-								<th style="padding-top:4px; padding-bottom:0;" scope="row">
-									<label ><?php _e('Name:', 'wppa'); ?></label>
+							<tr>
+								<th>
+									<label><?php _e('Name:', 'wppa'); ?></label>
 								</th>
 								<?php if ( wppa_switch('wppa_use_wp_editor') ) { ?>
-									<td style="padding-top:4px; padding-bottom:0;">
+									<td>
 										<input id="wppaalbumname" type="text" style="width: 100%;" value="<?php echo esc_attr(stripslashes($albuminfo['name'])) ?>" />
 									</td>
-									<td style="padding-top:4px; padding-bottom:0;">
+									<td>
 										<input type="button" class="button-secundary" value="<?php _e('Update Album name', 'wppa') ?>" onclick="wppaAjaxUpdateAlbum(<?php echo $edit_id ?>, 'name', document.getElementById('wppaalbumname') )" />
 									</td>
 								<?php } 
 								else { ?>
-									<td style="padding-top:4px; padding-bottom:0;">
+									<td>
 										<input type="text" style="width: 100%;" onkeyup="wppaAjaxUpdateAlbum(<?php echo $edit_id ?>, 'name', this)" onchange="wppaAjaxUpdateAlbum(<?php echo $edit_id ?>, 'name', this)" value="<?php echo esc_attr(stripslashes($albuminfo['name'])) ?>" />
 									</td>
-									<td style="padding-top:4px; padding-bottom:0;">
+									<td>
 										<span class="description"><?php _e('Type the name of the album. Do not leave this empty.', 'wppa'); ?></span>
 									</td>
 								<?php } ?>
 							</tr>
 							
 							<!-- Description -->
-							<tr style="vertical-align:top;" >
-								<th style="padding-top:0; padding-bottom:0;">
-									<label ><?php _e('Description:', 'wppa'); ?></label>
+							<tr>
+								<th>
+									<label><?php _e('Description:', 'wppa'); ?></label>
 								</th>
 								<?php if ( wppa_switch('wppa_use_wp_editor') ) { ?>
-									<td style="padding-top:0; padding-bottom:0;" colspan="2" >
+									<td colspan="2" >
 									
 										<?php 
 										$quicktags_settings = array( 'buttons' => 'strong,em,link,block,ins,ul,ol,li,code,close' );
@@ -188,21 +191,21 @@ function _wppa_admin() {
 									</td>
 								<?php }
 								else { ?>
-									<td style="padding-top:0; padding-bottom:0;">
+									<td>
 										<textarea style="width: 100%; height: 80px;" onkeyup="wppaAjaxUpdateAlbum(<?php echo $edit_id ?>, 'description', this)" onchange="wppaAjaxUpdateAlbum(<?php echo $edit_id ?>, 'description', this)" ><?php echo(stripslashes($albuminfo['description'])) ?></textarea>
 									</td>
-									<td style="padding-top:0; padding-bottom:0;">
+									<td>
 										<span class="description"><?php _e('Enter / modify the description for this album.', 'wppa') ?></span>
 									</td>
 								<?php } ?>
 							</tr>
 							
 							<!-- Views -->
-							<tr style="vertical-align:top;" >
-								<th style="padding-top:0; padding-bottom:0;">
-									<label ><?php _e('Views:', 'wppa'); ?></label>
+							<tr>
+								<th>
+									<label><?php _e('Views:', 'wppa'); ?></label>
 								</th>
-								<td style="padding-top:0; padding-bottom:0;">
+								<td>
 									<?php echo $albuminfo['views'] ?>
 								</td>
 							</tr>
@@ -211,19 +214,19 @@ function _wppa_admin() {
 							<?php // if ( $wppa_opt['wppa_owner_only'] == 'yes' ) { 
 							if ( current_user_can('administrator') ) {
 							?>
-								<tr style="vertical-align:top;" >
-									<th style="padding-top:0; padding-bottom:0;" scope="row">
-										<label ><?php _e('Owned by:', 'wppa'); ?></label>
+								<tr>
+									<th>
+										<label><?php _e('Owned by:', 'wppa'); ?></label>
 									</th>
 									<?php if ( $albuminfo['owner'] == '--- public ---' && !current_user_can('administrator') ) { ?>
-										<td style="padding-top:0; padding-bottom:0;">
+										<td>
 											<?php _e('--- public ---', 'wppa') ?>
 										</td>
 									<?php } else { ?>
-										<td style="padding-top:0; padding-bottom:0;">
+										<td>
 											<select onchange="wppaAjaxUpdateAlbum(<?php echo $edit_id ?>, 'owner', this)" ><?php wppa_user_select($albuminfo['owner']); ?></select>
 										</td>
-										<td style="padding-top:0; padding-bottom:0;">
+										<td>
 											<?php if (!current_user_can('administrator')) { ?>
 												<span class="description" style="color:orange;" ><?php _e('WARNING If you change the owner, you will no longer be able to modify this album and upload or import photos to it!', 'wppa'); ?></span>
 											<?php } ?>
@@ -233,14 +236,14 @@ function _wppa_admin() {
 							<?php } ?>
 							
 							<!-- Order # -->
-							<tr style="vertical-align:top;" >
-								<th style="padding-top:0; padding-bottom:0;">
-									<label ><?php _e('Album sort order #:', 'wppa'); ?></label>
+							<tr>
+								<th>
+									<label><?php _e('Album sort order #:', 'wppa'); ?></label>
 								</th>
-								<td style="padding-top:0; padding-bottom:0;">
+								<td>
 									<input type="text" onkeyup="wppaAjaxUpdateAlbum(<?php echo $edit_id ?>, 'a_order', this)" onchange="wppaAjaxUpdateAlbum(<?php echo $edit_id ?>, 'a_order', this)" value="<?php echo($albuminfo['a_order']) ?>" style="width: 50px;"/>
 								</td>
-								<td style="padding-top:0; padding-bottom:0;">
+								<td>
 									<?php if ( $wppa_opt['wppa_list_albums_by'] != '1' && $albuminfo['a_order'] != '0' ) { ?>
 										<span class="description" style="color:red">
 										<?php _e('Album order # has only effect if you set the album sort order method to <b>Order #</b> in the Photo Albums -> Settings screen.', 'wppa') ?>
@@ -251,18 +254,18 @@ function _wppa_admin() {
 							</tr>
 							
 							<!-- Parent -->
-							<tr style="vertical-align:top;" >
-								<th style="padding-top:0; padding-bottom:0;">
-									<label ><?php _e('Parent album:', 'wppa'); ?> </label>
+							<tr>
+								<th>
+									<label><?php _e('Parent album:', 'wppa'); ?> </label>
 								</th>
-								<td style="padding-top:0; padding-bottom:0; max-width:210px;">
+								<td style="max-width:210px;">
 									<?php if ( wppa_extended_access() ) { ?>
 										<select id="wppa-parsel" style="max-width:100%;" onchange="wppaAjaxUpdateAlbum(<?php echo $edit_id ?>, 'a_parent', this)" ><?php echo wppa_album_select_a(array('checkaccess' => true, 'exclude' => $albuminfo['id'], 'selected' => $albuminfo['a_parent'], 'addnone' => true, 'addseparate' => true, 'disableancestors' => true, 'path' => wppa_switch('wppa_hier_albsel'))) ?></select>
 									<?php } else { ?>
 										<select id="wppa-parsel" style="max-width:100%;" onchange="wppaAjaxUpdateAlbum(<?php echo $edit_id ?>, 'a_parent', this)" ><?php echo wppa_album_select_a(array('checkaccess' => true, 'exclude' => $albuminfo['id'], 'selected' => $albuminfo['a_parent'], 'addselected' => true, 'disableancestors' => true, 'path' => wppa_switch('wppa_hier_albsel'))) ?></select>
 									<?php } ?>
 								</td>
-								<td style="padding-top:0; padding-bottom:0;">
+								<td>
 									<span class="description">
 										<?php _e('If this is a sub album, select the album in which this album will appear.', 'wppa'); ?>
 									</span>					
@@ -270,15 +273,15 @@ function _wppa_admin() {
 							</tr>
 							
 							<!-- P-order-by -->
-							<tr style="vertical-align:top;" >
-								<th style="padding-top:0; padding-bottom:0;">
+							<tr>
+								<th>
 									<?php $order = $albuminfo['p_order_by']; ?>
-									<label ><?php _e('Photo order:', 'wppa'); ?></label>
+									<label><?php _e('Photo order:', 'wppa'); ?></label>
 								</th>
-								<td style="padding-top:0; padding-bottom:0;">
+								<td>
 									<select onchange="wppaAjaxUpdateAlbum(<?php echo $edit_id ?>, 'p_order_by', this)"><?php wppa_order_options($order, __('--- default ---', 'wppa'), __('Rating', 'wppa'), __('Timestamp', 'wppa')) ?></select>
 								</td>
-								<td style="padding-top:0; padding-bottom:0;">
+								<td>
 									<span class="description">
 										<?php _e('Specify the way the photos should be ordered in this album.', 'wppa'); ?><br />
 										<?php if ( current_user_can('wppa_settings') ) _e('The default setting can be changed in the <b>Photo Albums -> Settings</b> page <b>Table IV-C1</b>.', 'wppa'); ?>
@@ -287,11 +290,11 @@ function _wppa_admin() {
 							</tr>
 							
 							<!-- Child album order -->
-							<tr style="vertical-align:top;" >
-								<th style="padding-top:0; padding-bottom:0;">
-									<label ><?php _e('Sub album sort order:', 'wppa'); ?></label>
+							<tr>
+								<th>
+									<label><?php _e('Sub album sort order:', 'wppa'); ?></label>
 								</th>
-								<td style="padding-top:0; padding-bottom:0;">
+								<td>
 									<select onchange="wppaAjaxUpdateAlbum(<?php echo $edit_id ?>, 'suba_order_by', this)" >
 										<option value="0" <?php if ( ! $albuminfo['suba_order_by'] ) echo 'selected="selected"' ?>><?php _e('See Table IV-D1', 'wppa') ?></option>
 										<option value="3" <?php if ( $albuminfo['suba_order_by'] == '3' ) echo 'selected="selected"' ?>><?php _e('Random', 'wppa') ?></option>
@@ -303,7 +306,7 @@ function _wppa_admin() {
 										<option value="-5" <?php if ( $albuminfo['suba_order_by'] == '-5' ) echo 'selected="selected"' ?>><?php _e('Timestamp reverse', 'wppa') ?></option>
 									</select>
 								</td>
-								<td style="padding-top:6px; padding-bottom:0;">
+								<td>
 									<span class="description">
 										<?php _e('Specify the sequence order method to be used for the sub albums of this album.', 'wppa') ?>
 									</span>
@@ -312,17 +315,17 @@ function _wppa_admin() {
 							
 							<!-- Alternative thumbnail size? -->
 							<?php if ( $wppa_opt['wppa_alt_is_restricted'] == 'no' || current_user_can('administrator') ) { ?>
-							<tr style="vertical-align:top;" >
-								<th style="padding-top:0; padding-bottom:0;">
-									<label ><?php _e('Use alt thumbsize:', 'wppa'); ?></label>
+							<tr>
+								<th>
+									<label><?php _e('Use alt thumbsize:', 'wppa'); ?></label>
 								</th>
-								<td style="padding-top:0; padding-bottom:0;">
+								<td>
 									<select onchange="wppaAjaxUpdateAlbum(<?php echo $edit_id ?>, 'alt_thumbsize', this)" >
 										<option value="0" <?php if ( ! $albuminfo['alt_thumbsize'] ) echo 'selected="selected"' ?>><?php _e('no', 'wppa') ?></option>
 										<option value="yes" <?php if ( $albuminfo['alt_thumbsize'] ) echo 'selected="selected"' ?>><?php _e('yes', 'wppa') ?></option>
 									</select>
 								</td>
-								<td style="padding-top:6px; padding-bottom:0;">
+								<td>
 									<span class="description">
 										<?php _e('If set to <b>yes</b> The settings in <b>Table I-C1a,3a</b> and <b>4a</b> apply rather than <b>I-C1,3</b> and <b>4</b>.', 'wppa') ?>
 									</span>
@@ -332,11 +335,11 @@ function _wppa_admin() {
 							
 							<!-- Cover type -->
 							<?php if ( $wppa_opt['wppa_covertype_is_restricted'] == 'no' || current_user_can('administrator') ) { ?>
-							<tr style="vertical-align:top;" >
-								<th style="padding-top:0; padding-bottom:0;">
-									<label ><?php _e('Cover Type:', 'wppa'); ?></label>
+							<tr>
+								<th>
+									<label><?php _e('Cover Type:', 'wppa'); ?></label>
 								</th>
-								<td style="padding-top:0; padding-bottom:0;">
+								<td>
 									<?php $sel = 'selected="selected"' ?>
 									<select onchange="wppaAjaxUpdateAlbum(<?php echo $edit_id ?>, 'cover_type', this)" >
 										<option value="" <?php if ( $albuminfo['cover_type'] == '' ) echo $sel ?> ><?php _e('--- default ---', 'wppa') ?></option>
@@ -348,7 +351,7 @@ function _wppa_admin() {
 										<option value="imagefactory-mcr" <?php if ( $albuminfo['cover_type'] == 'imagefactory-mcr' ) echo $sel ?> ><?php _e('Image Factory mcr', 'wppa') ?></option>
 									</select>
 								</td>
-								<td style="padding-top:6px; padding-bottom:0;">
+								<td>
 									<span class="description">
 										<?php 
 											_e('The default cover type is the systems standard set in the <b>Photo Albums -> Settings</b> page <b>Table IV-D6</b>.', 'wppa'); 
@@ -359,14 +362,14 @@ function _wppa_admin() {
 							<?php } ?>
 							
 							<!-- Cover photo -->
-							<tr style="vertical-align:top;" >
-								<th style="padding-top:0; padding-bottom:0;">
-									<label ><?php _e('Cover Photo:', 'wppa'); ?></label>
+							<tr>
+								<th>
+									<label><?php _e('Cover Photo:', 'wppa'); ?></label>
 								</th>
-								<td style="padding-top:0; padding-bottom:0;">
+								<td>
 									<?php echo(wppa_main_photo($albuminfo['main_photo'], $albuminfo['cover_type'])) ?>
 								</td>
-								<td style="padding-top:6px; padding-bottom:0;">
+								<td>
 									<span class="description">
 										<?php 
 											if ( $wppa_opt['wppa_cover_type'] == 'default' ) _e('Select the photo you want to appear on the cover of this album.', 'wppa'); 
@@ -377,11 +380,11 @@ function _wppa_admin() {
 							</tr>
 						
 							<!-- Upload limit -->
-							<tr style="vertical-align:top;" >
-								<th style="padding-top:0; padding-bottom:4px;" scope="row">
-									<label ><?php _e('Upload limit:', 'wppa') ?></label>
+							<tr>
+								<th>
+									<label><?php _e('Upload limit:', 'wppa') ?></label>
 								</th>
-								<td style="padding-top:0px; padding-bottom:4px;">
+								<td>
 								<?php
 									$lims = explode('/', $albuminfo['upload_limit']);
 									if ( current_user_can('administrator') ) { ?>
@@ -395,7 +398,7 @@ function _wppa_admin() {
 											<option value="31536000" <?php if ($lims[1] == '31536000') echo 'selected="selected"' ?>><?php _e('per year', 'wppa') ?></option>
 										</select>
 										</td>
-										<td style="padding-top:6px; padding-bottom:4px;">
+										<td>
 										<span class="description"><?php _e('Set the upload limit (0 means unlimited) and the upload limit period.', 'wppa'); ?></span>
 										<?php
 									}
@@ -417,15 +420,50 @@ function _wppa_admin() {
 								</td>
 							</tr>
 							
-							<!-- Default tags -->
-							<tr style="vertical-align:top;" >
-								<th style="padding-top:0; padding-bottom:0;" scope="row">
-									<label ><?php _e('Default tags:', 'wppa') ?></label>
+							<!-- Cats -->
+							<tr>
+								<th>
+									<label><?php _e('Catogories:', 'wppa') ?></label>
+									<span class="description" >
+										<br />&nbsp;
+									</span>
 								</th>
-								<td style="padding-top:0; padding-bottom:0;">
+								<td>
+									<input id="cats" type="text" style="width:100%;" onchange="wppaAjaxUpdateAlbum(<?php echo $edit_id ?>, 'cats', this)" value="<?php echo(stripslashes($albuminfo['cats'])) ?>" />
+								</td>
+								<td>
+									<span class="description" >
+										<?php _e('Separate categories with commas.', 'wppa') ?>&nbsp;
+										<?php _e('Examples:', 'wppa');
+											$catlist = wppa_get_catlist(); 
+										?>
+										<select onchange="wppaAddCat(this.value, 'cats'); wppaAjaxUpdateAlbum(<?php echo $edit_id ?>, 'cats', document.getElementById('cats'))" >
+											<?php 
+											if ( is_array($catlist) ) {
+												echo '<option value="" >'.__('- select -', 'wppa').'</option>';
+												foreach ( $catlist as $cat ) {
+													echo '<option value="'.$cat['cat'].'" >'.$cat['cat'].'</option>';
+												}
+											}
+											else {
+												echo '<option value="0" >'.__('No categories yet', 'wppa').'</option>';
+											}
+											?>
+										</select>
+										<?php _e('Select to add', 'wppa') ?>
+									</span>
+								</td>
+							</tr>
+							
+							<!-- Default tags -->
+							<tr>
+								<th>
+									<label><?php _e('Default photo tags:', 'wppa') ?></label>
+								</th>
+								<td>
 									<input type="text" id="default_tags" value="<?php echo $albuminfo['default_tags'] ?>" style="width: 100%" onkeyup="wppaAjaxUpdateAlbum(<?php echo $edit_id ?>, 'default_tags', this)" onchange="wppaAjaxUpdateAlbum(<?php echo $edit_id ?>, 'default_tags', this)" />
 								</td>
-								<td style="padding-top:6px; padding-bottom:4px;">
+								<td>
 									<span class="description"><?php _e('Enter the tags that you want to be assigned to new photos in this album.', 'wppa') ?></span>
 								</td>
 							</tr>
@@ -433,23 +471,33 @@ function _wppa_admin() {
 							<!-- Apply default tags -->
 							<?php $onc1 = 'if (confirm(\''.__('Are you sure you want to set the default tags to all photos in this album?', 'wppa').'\')) wppaAjaxUpdateAlbum('.$edit_id.', \'set_deftags\', 0 ); '; ?>
 							<?php $onc2 = 'if (confirm(\''.__('Are you sure you want to add the default tags to all photos in this album?', 'wppa').'\')) wppaAjaxUpdateAlbum('.$edit_id.', \'add_deftags\', 0 ); '; ?>
-							<tr style="vertical-align:top;" >
-								<th style="padding-top:4px; padding-bottom:4px;" scope="row">
-									<a style="font-weight:bold; cursor:pointer;" onclick="<?php echo $onc1 ?>" ><?php _e('Apply default tags', 'wppa') ?></a>
+							<tr>
+								<th>
+									<a onclick="<?php echo $onc1 ?>" ><?php _e('Apply default tags', 'wppa') ?></a>
 								</th>
+								<td>
+								</td>
+								<td>
+									<span class="description"><?php _e('Tag all photos in this album with the default tags.', 'wppa') ?></span>
+								</td>
 							</tr>
-							<tr style="vertical-align:top;" >
-								<td style="padding-top:4px; padding-bottom:4px;">
-									<a style="font-weight:bold; cursor:pointer;" onclick="<?php echo $onc2 ?>" ><?php _e('Add default tags', 'wppa') ?></a>
+							<tr>
+								<th>
+									<a onclick="<?php echo $onc2 ?>" ><?php _e('Add default tags', 'wppa') ?></a>
+								</th>
+								<td>
+								</td>
+								<td>
+									<span class="description"><?php _e('Add the default tags to all photos in this album.', 'wppa') ?></span>
 								</td>
 							</tr>
 
 							<!-- Link type -->
-							<tr style="vertical-align:top;" >
-								<th style="padding-top:0; padding-bottom:0;" scope="row">
-									<label ><?php _e('Link type:', 'wppa') ?></label>
+							<tr>
+								<th>
+									<label><?php _e('Link type:', 'wppa') ?></label>
 								</th>
-								<td style="padding-top:0; padding-bottom:0;">
+								<td>
 									<?php $linktype = $albuminfo['cover_linktype']; ?>
 									<?php /* if ( !$linktype ) $linktype = 'content'; /* Default */ ?>	
 									<?php /* if ( $albuminfo['cover_linkpage'] == '-1' ) $linktype = 'none'; /* for backward compatibility */ ?>
@@ -460,20 +508,21 @@ function _wppa_admin() {
 										<option value="none" <?php if ( $linktype == 'none' ) echo($sel) ?>><?php _e('no link at all', 'wppa') ?></option>
 									</select>
 								</td>
-								<td style="padding-top:0; padding-bottom:0;">
+								<td>
 									<span class="description">
-										<?php _e('If you select "the link page with a clean url", make sure you enter the correct shortcode on the target page.', 'wppa'); ?>
+										<?php 	if ( wppa_switch( 'wppa_auto_page') ) _e('If you select "the link page with a clean url", select an Auto Page of one of the photos in this album.', 'wppa'); 
+												else _e('If you select "the link page with a clean url", make sure you enter the correct shortcode on the target page.', 'wppa'); ?>
 									</span>
 								</td>
 							</tr>
 							
 							<!-- Link page -->
 							<?php if ( $wppa_opt['wppa_link_is_restricted'] == 'no' || current_user_can('administrator') ) { ?>
-							<tr style="vertical-align:top;" >
-								<th style="padding-top:0; padding-bottom:0;" scope="row">
-									<label ><?php _e('Link to:', 'wppa'); ?></label>
+							<tr>
+								<th>
+									<label><?php _e('Link to:', 'wppa'); ?></label>
 								</th>
-								<td style="padding-top:0; padding-bottom:0;">
+								<td>
 									<?php $query = 'SELECT `ID`, `post_title` FROM `'.$wpdb->posts.'` WHERE `post_type` = \'page\' AND `post_status` = \'publish\' ORDER BY `post_title` ASC';
 									$pages = $wpdb->get_results($query, ARRAY_A);
 									if (empty($pages)) {
@@ -488,7 +537,7 @@ function _wppa_admin() {
 											<?php } ?>
 										</select>
 								</td>
-								<td style="padding-top:0; padding-bottom:0;">
+								<td>
 										<span class="description">
 											<?php _e('If you want, you can link the title to a WP page in stead of the album\'s content. If so, select the page the title links to.', 'wppa'); ?>
 										</span>
@@ -499,8 +548,8 @@ function _wppa_admin() {
 
 							<!-- Reset Ratings -->
 							<?php if ( $wppa_opt['wppa_rating_on'] == 'yes' ) { ?>
-								<tr style="vertical-align:top;" >
-									<th style="padding:4px 10px;" scope="row">
+								<tr>
+									<th>
 										<a onclick="if (confirm('<?php _e('Are you sure you want to clear the ratings in this album?', 'wppa') ?>')) wppaAjaxUpdateAlbum(<?php echo $edit_id ?>, 'clear_ratings', 0 )" ><?php _e('Reset ratings', 'wppa') ?></a> 
 									</th>
 								</tr>
@@ -520,8 +569,8 @@ function _wppa_admin() {
 								$onc = 'document.location = \''.wppa_dbg_url(get_admin_url()).'/admin.php?page=wppa_upload_photos&wppa-set-album='.$albuminfo['id'].'\'';
 								$oncfull = 'alert(\''.__('Change the upload limit or remove photos to enable new uploads.', 'wppa').'\')';
 								?>
-								<tr style="vertical-align:top;" >
-									<th style="padding:4px 10px;" scope="row">
+								<tr>
+									<th>
 										<a id="notfull" style="display:<?php echo $notfull ?>" onclick="<?php echo $onc ?>" ><?php _e('Upload to this album', 'wppa'); if ( $a > '0') echo ' '.sprintf(__('(max %d)', 'wppa'), $a) ?></a> 
 										<a id="full" style="display:<?php echo $full ?>" onclick="<?php echo $oncfull ?>" ><?php _e('Album is full', 'wppa') ?></a> 
 									</th>
@@ -532,9 +581,9 @@ function _wppa_admin() {
 							<?php if ( wppa_switch('wppa_apply_newphoto_desc') ) { 
 							$onc = 'if ( confirm(\'Are you sure you want to set the description of all photos to \n\n'.esc_js($wppa_opt['wppa_newphoto_description']).'\')) document.location=\''.wppa_ea_url($albuminfo['id'], 'edit').'&applynewdesc\'';
 							?>
-								<tr style="vertical-align:top;" >
-									<th style="padding-top:4px; padding-bottom:4px;" scope="row">
-										<a style="font-weight:bold; cursor:pointer;" onclick="<?php echo $onc ?>" ><?php _e('Apply new photo desc', 'wppa') ?></a>
+								<tr>
+									<th>
+										<a onclick="<?php echo $onc ?>" ><?php _e('Apply new photo desc', 'wppa') ?></a>
 									</th>
 								</tr>
 							<?php } ?>
@@ -543,19 +592,19 @@ function _wppa_admin() {
 							<?php if ( current_user_can('administrator') ) { 
 							$onc = 'if ( confirm(\'Are you sure you want to remake the files for all photos in this album?\')) document.location=\''.wppa_ea_url($albuminfo['id'], 'edit').'&remakealbum\'';
 							?>
-								<tr style="vertical-align:top;" >
-									<th style="padding-top:4px; padding-bottom:4px;" scope="row">
-										<a style="font-weight: bold; cursor:pointer;" onclick="<?php echo $onc ?>" ><?php _e('Remake all', 'wppa') ?></a>
+								<tr>
+									<th>
+										<a onclick="<?php echo $onc ?>" ><?php _e('Remake all', 'wppa') ?></a>
 									</th>
 								</tr>
 							<?php } ?>
 							
 							<!-- Status -->
-							<tr style="vertical-align:bottom;" >
-								<th style="padding-top:4px; padding-bottom:4px; color:blue; " scope="row" >
+							<tr >
+								<th style="color:blue;" >
 									<label style="color:#070"><?php _e('Remark:', 'wppa') ?></label>
 								</th>
-								<td id="albumstatus-<?php echo $edit_id ?>" style="padding-left:10px;padding-top:0; padding-bottom:2px;">
+								<td id="albumstatus-<?php echo $edit_id ?>" >
 									<?php echo sprintf(__('Album %s is not modified yet', 'wppa'), $edit_id) ?>
 								</td>
 							</tr>
@@ -803,11 +852,11 @@ function wppa_admin_albums_flat() {
 		$upimg   = '<img src="'.wppa_get_imgdir().'up.png" alt="up" style=" height:12px; position:relative; top:2px; " />';
 ?>	
 <!--	<div class="table_wrapper">	-->
-		<table class="widefat" style="margin-top:12px;" >
+		<table class="wppa-table widefat wppa-setting-table" style="margin-top:12px;" >
 			<thead>
 			<tr>
 				<?php $url = get_admin_url().'admin.php?page=wppa_admin_menu&amp;order_by='; ?>
-				<th scope="col" style="min-width: 50px;" >
+				<td  style="min-width: 50px;" >
 					<a href="<?php echo wppa_dbg_url($url.'id') ?>">
 						<?php _e('ID', 'wppa');
 							if ($order == 'id') {
@@ -816,8 +865,8 @@ function wppa_admin_albums_flat() {
 							}
 						?>					
 					</a>
-				</th>
-				<th scope="col" style="min-width: 120px;">
+				</td>
+				<td  style="min-width: 120px;">
 					<a href="<?php echo wppa_dbg_url($url.'name') ?>">
 						<?php _e('Name', 'wppa'); 
 							if ($order == 'name') {
@@ -826,8 +875,8 @@ function wppa_admin_albums_flat() {
 							}
 						?>
 					</a>
-				</th>
-				<th scope="col">
+				</td>
+				<td >
 					<a href="<?php echo wppa_dbg_url($url.'description') ?>">
 						<?php _e('Description', 'wppa'); 
 							if ($order == 'description') {
@@ -836,9 +885,9 @@ function wppa_admin_albums_flat() {
 							}
 						?>
 					</a>
-				</th>
+				</td>
 				<?php if (current_user_can('administrator')) { ?>
-				<th scope="col" style="min-width: 100px;">
+				<td  style="min-width: 100px;">
 					<a href="<?php echo wppa_dbg_url($url.'owner') ?>">
 						<?php _e('Owner', 'wppa'); 
 							if ($order == 'owner') {
@@ -847,9 +896,9 @@ function wppa_admin_albums_flat() {
 							}
 						?>
 					</a>
-				</th>
+				</td>
 				<?php } ?>
-                <th scope="col" style="min-width: 100px;" >
+                <td  style="min-width: 100px;" >
 					<a href="<?php echo wppa_dbg_url($url.'a_order') ?>">
 						<?php _e('Order', 'wppa'); 
 							if ($order == 'a_order') {
@@ -858,8 +907,8 @@ function wppa_admin_albums_flat() {
 							}
 						?>
 					</a>
-				</th>
-                <th scope="col" style="width: 120px;">
+				</td>
+                <td  style="width: 120px;">
 					<a href="<?php echo wppa_dbg_url($url.'a_parent') ?>">
 						<?php _e('Parent', 'wppa'); 
 							if ($order == 'a_parent') {
@@ -868,16 +917,16 @@ function wppa_admin_albums_flat() {
 							}
 						?>
 					</a>
-				</th>
-				<th scope="col" title="<?php _e('Albums/Photos/Photos that need Moderation', 'wppa') ?>" >
+				</td>
+				<td  title="<?php _e('Albums/Photos/Photos that need Moderation', 'wppa') ?>" >
 					<?php _e('A/P/PM', 'wppa'); ?>
-				</th>
-				<th scope="col"><?php _e('Edit', 'wppa'); ?></th>
-				<th scope="col"><?php _e('Quick', 'wppa'); ?></th>
-				<th scope="col"><?php _e('Bulk', 'wppa'); ?></th>
-				<th scope="col"><?php _e('Seq', 'wppa'); ?></th>
-				<th scope="col"><?php _e('Delete', 'wppa'); ?></th>	
-				<?php if ( wppa_can_create_album() ) echo '<th scope="col">'.__('Create', 'wppa').'</th>'; ?>
+				</td>
+				<td ><?php _e('Edit', 'wppa'); ?></td>
+				<td ><?php _e('Quick', 'wppa'); ?></td>
+				<td ><?php _e('Bulk', 'wppa'); ?></td>
+				<td ><?php _e('Seq', 'wppa'); ?></td>
+				<td ><?php _e('Delete', 'wppa'); ?></td>	
+				<?php if ( wppa_can_create_album() ) echo '<td >'.__('Create', 'wppa').'</td>'; ?>
 			</tr>
 			</thead>
 			<tbody>
@@ -939,7 +988,7 @@ function wppa_admin_albums_flat() {
 			<tfoot>
 			<tr>
 				<?php $url = get_admin_url().'admin.php?page=wppa_admin_menu&amp;order_by='; ?>
-				<th scope="col">
+				<td >
 					<a href="<?php echo wppa_dbg_url($url.'id') ?>">
 						<?php _e('ID', 'wppa');
 							if ($order == 'id') {
@@ -948,8 +997,8 @@ function wppa_admin_albums_flat() {
 							}
 						?>					
 					</a>
-				</th>
-				<th scope="col" style="width: 120px;">
+				</td>
+				<td  style="width: 120px;">
 					<a href="<?php echo wppa_dbg_url($url.'name') ?>">
 						<?php _e('Name', 'wppa'); 
 							if ($order == 'name') {
@@ -958,8 +1007,8 @@ function wppa_admin_albums_flat() {
 							}
 						?>
 					</a>
-				</th>
-				<th scope="col">
+				</td>
+				<td >
 					<a href="<?php echo wppa_dbg_url($url.'description') ?>">
 						<?php _e('Description', 'wppa'); 
 							if ($order == 'description') {
@@ -968,9 +1017,9 @@ function wppa_admin_albums_flat() {
 							}
 						?>
 					</a>
-				</th>
+				</td>
 				<?php if (current_user_can('administrator')) { ?>
-				<th scope="col" style="width: 100px;">
+				<td  style="width: 100px;">
 					<a href="<?php echo wppa_dbg_url($url.'owner') ?>">
 						<?php _e('Owner', 'wppa'); 
 							if ($order == 'owner') {
@@ -979,9 +1028,9 @@ function wppa_admin_albums_flat() {
 							}
 						?>
 					</a>
-				</th>
+				</td>
 				<?php } ?>
-                <th scope="col">
+                <td >
 					<a href="<?php echo wppa_dbg_url($url.'a_order') ?>">
 						<?php _e('Order', 'wppa'); 
 							if ($order == 'a_order') {
@@ -990,8 +1039,8 @@ function wppa_admin_albums_flat() {
 							}
 						?>
 					</a>
-				</th>
-                <th scope="col" style="width: 120px;">
+				</td>
+                <td  style="width: 120px;">
 					<a href="<?php echo wppa_dbg_url($url.'a_parent') ?>">
 						<?php _e('Parent', 'wppa'); 
 							if ($order == 'a_parent') {
@@ -1000,16 +1049,16 @@ function wppa_admin_albums_flat() {
 							}
 						?>
 					</a>
-				</th>
-				<th scope="col" title="<?php _e('Albums/Photos/Photos that need Moderation', 'wppa') ?>" >
+				</td>
+				<td  title="<?php _e('Albums/Photos/Photos that need Moderation', 'wppa') ?>" >
 					<?php _e('A/P/PM', 'wppa'); ?>
-				</th>
-				<th scope="col"><?php _e('Edit', 'wppa'); ?></th>
-				<th scope="col"><?php _e('Quick', 'wppa'); ?></th>
-				<th scope="col"><?php _e('Bulk', 'wppa'); ?></th>
-				<th scope="col"><?php _e('Seq', 'wppa'); ?></th>
-				<th scope="col"><?php _e('Delete', 'wppa'); ?></th>	
-				<?php if ( wppa_can_create_album() ) echo '<th scope="col">'.__('Create', 'wppa').'</th>'; ?>
+				</td>
+				<td ><?php _e('Edit', 'wppa'); ?></td>
+				<td ><?php _e('Quick', 'wppa'); ?></td>
+				<td ><?php _e('Bulk', 'wppa'); ?></td>
+				<td ><?php _e('Seq', 'wppa'); ?></td>
+				<td ><?php _e('Delete', 'wppa'); ?></td>	
+				<?php if ( wppa_can_create_album() ) echo '<td >'.__('Create', 'wppa').'</td>'; ?>
 			</tr>
 			</tfoot>
 		
@@ -1102,15 +1151,15 @@ function wppa_admin_albums_collapsable() {
 		$upimg   = '<img src="'.wppa_get_imgdir().'up.png" alt="up" style=" height:12px; position:relative; top:2px; " />';
 ?>	
 <!--	<div class="table_wrapper">	-->
-		<table class="widefat" style="margin-top:12px;" >
+		<table class="widefat wppa-table wppa-setting-table" style="margin-top:12px;" >
 			<thead>
 			<tr>
-				<th style="min-width:20px;" >
+				<td style="min-width:20px;" >
 					<img src="<?php echo wppa_get_imgdir().'backarrow.gif' ?>" style="height:16px;" title="<?php _e('Collapse subalbums', 'wppa') ?>" />
 					<img src="<?php echo wppa_get_imgdir().'arrow.gif' ?>" style="height:16px;" title="<?php _e('Expand subalbums', 'wppa') ?>" />
-				</th>
+				</td>
 				<?php $url = get_admin_url().'admin.php?page=wppa_admin_menu&amp;order_by='; ?>
-				<th scope="col" colspan="6" style="min-width: 50px;" >
+				<td  colspan="6" style="min-width: 50px;" >
 					<a href="<?php echo wppa_dbg_url($url.'id') ?>">
 						<?php _e('ID', 'wppa');
 							if ($order == 'id') {
@@ -1119,9 +1168,9 @@ function wppa_admin_albums_collapsable() {
 							}
 						?>					
 					</a>
-				</th>
+				</td>
 				
-				<th scope="col" style="min-width: 120px;">
+				<td  style="min-width: 120px;">
 					<a href="<?php echo wppa_dbg_url($url.'name') ?>">
 						<?php _e('Name', 'wppa'); 
 							if ($order == 'name') {
@@ -1130,8 +1179,8 @@ function wppa_admin_albums_collapsable() {
 							}
 						?>
 					</a>
-				</th>
-				<th scope="col">
+				</td>
+				<td >
 					<a href="<?php echo wppa_dbg_url($url.'description') ?>">
 						<?php _e('Description', 'wppa'); 
 							if ($order == 'description') {
@@ -1140,9 +1189,9 @@ function wppa_admin_albums_collapsable() {
 							}
 						?>
 					</a>
-				</th>
+				</td>
 				<?php if (current_user_can('administrator')) { ?>
-				<th scope="col" style="min-width: 100px;">
+				<td  style="min-width: 100px;">
 					<a href="<?php echo wppa_dbg_url($url.'owner') ?>">
 						<?php _e('Owner', 'wppa'); 
 							if ($order == 'owner') {
@@ -1151,9 +1200,9 @@ function wppa_admin_albums_collapsable() {
 							}
 						?>
 					</a>
-				</th>
+				</td>
 				<?php } ?>
-                <th scope="col" style="min-width: 100px;" >
+                <td  style="min-width: 100px;" >
 					<a href="<?php echo wppa_dbg_url($url.'a_order') ?>">
 						<?php _e('Order', 'wppa'); 
 							if ($order == 'a_order') {
@@ -1162,8 +1211,8 @@ function wppa_admin_albums_collapsable() {
 							}
 						?>
 					</a>
-				</th>
-                <th scope="col" style="width: 120px;">
+				</td>
+                <td  style="width: 120px;">
 					<a href="<?php echo wppa_dbg_url($url.'a_parent') ?>">
 						<?php _e('Parent', 'wppa'); 
 							if ($order == 'a_parent') {
@@ -1172,16 +1221,16 @@ function wppa_admin_albums_collapsable() {
 							}
 						?>
 					</a>
-				</th>
-				<th scope="col" title="<?php _e('Albums/Photos/Photos that need Moderation', 'wppa') ?>" >
+				</td>
+				<td  title="<?php _e('Albums/Photos/Photos that need Moderation', 'wppa') ?>" >
 					<?php _e('A/P/PM', 'wppa'); ?>
-				</th>
-				<th scope="col"><?php _e('Edit', 'wppa'); ?></th>
-				<th scope="col"><?php _e('Quick', 'wppa'); ?></th>
-				<th scope="col"><?php _e('Bulk', 'wppa'); ?></th>
-				<th scope="col"><?php _e('Seq', 'wppa'); ?></th>
-				<th scope="col"><?php _e('Delete', 'wppa'); ?></th>	
-				<?php if ( wppa_can_create_album() ) echo '<th scope="col">'.__('Create', 'wppa').'</th>'; ?>
+				</td>
+				<td ><?php _e('Edit', 'wppa'); ?></td>
+				<td ><?php _e('Quick', 'wppa'); ?></td>
+				<td ><?php _e('Bulk', 'wppa'); ?></td>
+				<td ><?php _e('Seq', 'wppa'); ?></td>
+				<td ><?php _e('Delete', 'wppa'); ?></td>	
+				<?php if ( wppa_can_create_album() ) echo '<td >'.__('Create', 'wppa').'</td>'; ?>
 			</tr>
 			</thead>
 			<tbody>
@@ -1196,12 +1245,12 @@ function wppa_admin_albums_collapsable() {
 			</tbody>
 			<tfoot>
 			<tr>
-				<th>
+				<td>
 					<img src="<?php echo wppa_get_imgdir().'backarrow.gif' ?>" style="height:16px;" />
 					<img src="<?php echo wppa_get_imgdir().'arrow.gif' ?>" style="height:16px;" />
-				</th>
+				</td>
 				<?php $url = get_admin_url().'admin.php?page=wppa_admin_menu&amp;order_by='; ?>
-				<th scope="col" colspan="6" >
+				<td  colspan="6" >
 					<a href="<?php echo wppa_dbg_url($url.'id') ?>">
 						<?php _e('ID', 'wppa');
 							if ($order == 'id') {
@@ -1210,9 +1259,9 @@ function wppa_admin_albums_collapsable() {
 							}
 						?>					
 					</a>
-				</th>
+				</td>
 				
-				<th scope="col" style="width: 120px;">
+				<td  style="width: 120px;">
 					<a href="<?php echo wppa_dbg_url($url.'name') ?>">
 						<?php _e('Name', 'wppa'); 
 							if ($order == 'name') {
@@ -1221,8 +1270,8 @@ function wppa_admin_albums_collapsable() {
 							}
 						?>
 					</a>
-				</th>
-				<th scope="col">
+				</td>
+				<td >
 					<a href="<?php echo wppa_dbg_url($url.'description') ?>">
 						<?php _e('Description', 'wppa'); 
 							if ($order == 'description') {
@@ -1231,9 +1280,9 @@ function wppa_admin_albums_collapsable() {
 							}
 						?>
 					</a>
-				</th>
+				</td>
 				<?php if (current_user_can('administrator')) { ?>
-				<th scope="col" style="width: 100px;">
+				<td  style="width: 100px;">
 					<a href="<?php echo wppa_dbg_url($url.'owner') ?>">
 						<?php _e('Owner', 'wppa'); 
 							if ($order == 'owner') {
@@ -1242,9 +1291,9 @@ function wppa_admin_albums_collapsable() {
 							}
 						?>
 					</a>
-				</th>
+				</td>
 				<?php } ?>
-                <th scope="col">
+                <td >
 					<a href="<?php echo wppa_dbg_url($url.'a_order') ?>">
 						<?php _e('Order', 'wppa'); 
 							if ($order == 'a_order') {
@@ -1253,8 +1302,8 @@ function wppa_admin_albums_collapsable() {
 							}
 						?>
 					</a>
-				</th>
-                <th scope="col" style="width: 120px;">
+				</td>
+                <td  style="width: 120px;">
 					<a href="<?php echo wppa_dbg_url($url.'a_parent') ?>">
 						<?php _e('Parent', 'wppa'); 
 							if ($order == 'a_parent') {
@@ -1263,16 +1312,16 @@ function wppa_admin_albums_collapsable() {
 							}
 						?>
 					</a>
-				</th>
-				<th scope="col" title="<?php _e('Albums/Photos/Photos that need Moderation', 'wppa') ?>" >
+				</td>
+				<td  title="<?php _e('Albums/Photos/Photos that need Moderation', 'wppa') ?>" >
 					<?php _e('A/P/PM', 'wppa'); ?>
-				</th>
-				<th scope="col"><?php _e('Edit', 'wppa'); ?></th>
-				<th scope="col"><?php _e('Quick', 'wppa'); ?></th>
-				<th scope="col"><?php _e('Bulk', 'wppa'); ?></th>
-				<th scope="col"><?php _e('Seq', 'wppa'); ?></th>
-				<th scope="col"><?php _e('Delete', 'wppa'); ?></th>	
-				<?php if ( wppa_can_create_album() ) echo '<th scope="col">'.__('Create', 'wppa').'</th>'; ?>
+				</td>
+				<td ><?php _e('Edit', 'wppa'); ?></td>
+				<td ><?php _e('Quick', 'wppa'); ?></td>
+				<td ><?php _e('Bulk', 'wppa'); ?></td>
+				<td ><?php _e('Seq', 'wppa'); ?></td>
+				<td ><?php _e('Delete', 'wppa'); ?></td>	
+				<?php if ( wppa_can_create_album() ) echo '<td >'.__('Create', 'wppa').'</td>'; ?>
 			</tr>
 			</tfoot>
 		

@@ -1,7 +1,7 @@
 /* admin-styles.css 
 *
 * wp-photo-album-plus
-* version 5.1.17
+* version 5.2.4
 */
 #files_list, #files_list2
 {
@@ -80,12 +80,72 @@ ul.wppa_nav
 	overflow: auto;
 }
 
+.wppa-table-wrap {
+	border: 1px solid #ccc;
+}
+.wppa-table {
+	padding: 5px;
+	margin: 0 0 7px 0;
+	font-size: 13px;
+	line-height: 15px;
+}
+.wppa-table tr {
+	
+}
+.wppa-table th {
+	font-weight: bold;
+	padding:3px 5px;
+	vertical-align: middle;
+	float: left;
+	text-align: left;
+	font-size: 13px;
+	line-height: 15px;
+}
+
+.wppa-table td {
+	padding:3px 5px;
+	vertical-align: middle;
+	font-size: 13px;
+	line-height: 15px;
+	height: 20px;
+}
+.wppa-table input, .wppa-table textarea, .wppa-table select {
+	vertical-align: middle !important;
+	border: 1px solid #DDDDDD;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.07) inset;
+	font-size: 13px;
+	line-height: 15px;
+}
+.wppa-table a {
+	cursor: pointer;
+}
+.wppa-table thead td, .wppa-table tfoot td {
+	font-weight: bold;
+	font-size: 13px;
+	line-height: 15px;
+}
+.wppa-photo-table {
+	float: left;
+}
+.wppa-photo-table th {
+	max-width: 150px;
+}
+.wppa-photo-table input, .wppa-photo-table textarea, .wppa-photo-table select, .wppa-album-table input, .wppa-album-table textarea, .wppa-album-table select {
+	padding: 3px 5px !important;
+}
+.wppa-setting-table td{
+	border-bottom: 1px solid #ddd;
+	font-size: 13px;
+	line-height: 15px;
+}
+/**/
+
 .photoitem, .albumtable, .table_wrapper {
 	margin: 7px 0;
 	padding: 5px;
 	border: 1px #ccc solid;
 }
-
+/*
 .phototable a, .albumtable a {
 	font-weight:bold;
 }
@@ -95,31 +155,38 @@ ul.wppa_nav
 	cursor: pointer;
 }
 
-.phototable {
+.phototable, .albumtable {
 	margin-bottom: 0px;
 	margin-top: 0.5em;
 	float: left;
 /*	width: 45%;*/
+/*
 }
 
-.phototable td {
+.phototable td, .albumtable td {
 	font-size: 11px;
 	line-height: 20px;
 	text-align:left;
+	vertical-align:top;
+	padding:4px 0;
 }
 
-.phototable th {
+.phototable th, .albumtable th {
 	width: 150px;
 	text-align:left;
+	vertical-align:top;
+	padding:4px 0;
 }
 
 .albumtable label, .phototable label { 
 	font-weight: bold; 
 	cursor: default;
 	text-align:left;
+	vertical-align:top;
+	padding:4px 0;
 }
 
-/* .photoitem img { float: right; } */
+/* .photoitem img { float: right; } 
 .photoitem .clear { clear: both; }
 .photoitem .details { float: left; }
 .photoitem .details label {float: left; }

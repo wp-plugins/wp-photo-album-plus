@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 5.2.3
+* Version 5.2.4
 *
 */
 
@@ -513,14 +513,14 @@ wppa_fix_source_extensions();
 			); ?>
 			
 				<div id="wppa_table_0" style=" margin:0; padding:0; " class="inside" >
-					<table class="widefat">
+					<table class="widefat wppa-table wppa-setting-table">
 						<thead style="font-weight: bold; " class="wppa_table_1">
 							<tr>
-								<th scope="col"><?php _e('#', 'wppa') ?></th>
-								<th scope="col"><?php _e('Name', 'wppa') ?></th>
-								<th scope="col"><?php _e('Description', 'wppa') ?></th>
-								<th scope="col"><?php _e('Setting', 'wppa') ?></th>
-								<th scope="col"><?php _e('Help', 'wppa') ?></th>
+								<td><?php _e('#', 'wppa') ?></td>
+								<td><?php _e('Name', 'wppa') ?></td>
+								<td><?php _e('Description', 'wppa') ?></td>
+								<td><?php _e('Setting', 'wppa') ?></td>
+								<td><?php _e('Help', 'wppa') ?></td>
 							</tr>
 						</thead>
 						<tbody class="wppa_table_0">
@@ -617,11 +617,11 @@ wppa_fix_source_extensions();
 						</tbody>
 						<tfoot style="font-weight: bold;" class="wppa_table_1">
 							<tr>
-								<th scope="col"><?php _e('#', 'wppa') ?></th>
-								<th scope="col"><?php _e('Name', 'wppa') ?></th>
-								<th scope="col"><?php _e('Description', 'wppa') ?></th>
-								<th scope="col"><?php _e('Setting', 'wppa') ?></th>
-								<th scope="col"><?php _e('Help', 'wppa') ?></th>
+								<td><?php _e('#', 'wppa') ?></td>
+								<td><?php _e('Name', 'wppa') ?></td>
+								<td><?php _e('Description', 'wppa') ?></td>
+								<td><?php _e('Setting', 'wppa') ?></td>
+								<td><?php _e('Help', 'wppa') ?></td>
 							</tr>
 						</tfoot>
 					</table>
@@ -636,14 +636,14 @@ wppa_fix_source_extensions();
 			); ?>
 						
 				<div id="wppa_table_1" style=" margin:0; padding:0; " class="inside" >
-					<table class="widefat">
+					<table class="widefat wppa-table wppa-setting-table">
 						<thead style="font-weight: bold; " class="wppa_table_1">
 							<tr>
-								<th scope="col"><?php _e('#', 'wppa') ?></th>
-								<th scope="col"><?php _e('Name', 'wppa') ?></th>
-								<th scope="col"><?php _e('Description', 'wppa') ?></th>
-								<th scope="col"><?php _e('Setting', 'wppa') ?></th>
-								<th scope="col"><?php _e('Help', 'wppa') ?></th>
+								<td><?php _e('#', 'wppa') ?></td>
+								<td><?php _e('Name', 'wppa') ?></td>
+								<td><?php _e('Description', 'wppa') ?></td>
+								<td><?php _e('Setting', 'wppa') ?></td>
+								<td><?php _e('Help', 'wppa') ?></td>
 							</tr>
 						</thead>
 						<tbody class="wppa_table_1">
@@ -1025,6 +1025,13 @@ wppa_fix_source_extensions();
 							
 							wppa_setting_subheader('F', '1', __('Widget related settings', 'wppa'));
 							
+							$name = __('Widget width', 'wppa');
+							$desc = __('The useable width within widgets.', 'wppa');
+							$help = esc_js(__('Widget width for photo of the day, general purpose (default), slideshow (default) and upload widgets.', 'wppa'));
+							$slug = 'wppa_widget_width';
+							$html = wppa_input($slug, '40px', '', __('pixels', 'wppa'));
+							wppa_setting($slug, '0', $name, $desc, $html, $help);
+							
 							$name = __('TopTen count', 'wppa');
 							$desc = __('Number of photos in TopTen widget.', 'wppa');
 							$help = esc_js(__('Enter the maximum number of rated photos in the TopTen widget.', 'wppa'));
@@ -1144,11 +1151,11 @@ wppa_fix_source_extensions();
 						</tbody>
 						<tfoot style="font-weight: bold;" class="wppa_table_1">
 							<tr>
-								<th scope="col"><?php _e('#', 'wppa') ?></th>
-								<th scope="col"><?php _e('Name', 'wppa') ?></th>
-								<th scope="col"><?php _e('Description', 'wppa') ?></th>
-								<th scope="col"><?php _e('Setting', 'wppa') ?></th>
-								<th scope="col"><?php _e('Help', 'wppa') ?></th>
+								<td><?php _e('#', 'wppa') ?></td>
+								<td><?php _e('Name', 'wppa') ?></td>
+								<td><?php _e('Description', 'wppa') ?></td>
+								<td><?php _e('Setting', 'wppa') ?></td>
+								<td><?php _e('Help', 'wppa') ?></td>
 							</tr>
 						</tfoot>
 					</table>
@@ -1162,14 +1169,14 @@ wppa_fix_source_extensions();
 			); ?>
 			
 				<div id="wppa_table_2" style="display:none" >
-					<table class="widefat">
+					<table class="widefat wppa-table wppa-setting-table">
 						<thead style="font-weight: bold; " class="wppa_table_2">
 							<tr>
-								<th scope="col"><?php _e('#', 'wppa') ?></th>
-								<th scope="col"><?php _e('Name', 'wppa') ?></th>
-								<th scope="col"><?php _e('Description', 'wppa') ?></th>
-								<th scope="col"><?php _e('Setting', 'wppa') ?></th>
-								<th scope="col"><?php _e('Help', 'wppa') ?></th>
+								<td><?php _e('#', 'wppa') ?></td>
+								<td><?php _e('Name', 'wppa') ?></td>
+								<td><?php _e('Description', 'wppa') ?></td>
+								<td><?php _e('Setting', 'wppa') ?></td>
+								<td><?php _e('Help', 'wppa') ?></td>
 							</tr>
 						</thead>
 						<tbody class="wppa_table_2">
@@ -1938,11 +1945,11 @@ wppa_fix_source_extensions();
 						</tbody>
 						<tfoot style="font-weight: bold;" class="wppa_table_2">
 							<tr>
-								<th scope="col"><?php _e('#', 'wppa') ?></th>
-								<th scope="col"><?php _e('Name', 'wppa') ?></th>
-								<th scope="col"><?php _e('Description', 'wppa') ?></th>
-								<th scope="col"><?php _e('Setting', 'wppa') ?></th>
-								<th scope="col"><?php _e('Help', 'wppa') ?></th>
+								<td><?php _e('#', 'wppa') ?></td>
+								<td><?php _e('Name', 'wppa') ?></td>
+								<td><?php _e('Description', 'wppa') ?></td>
+								<td><?php _e('Setting', 'wppa') ?></td>
+								<td><?php _e('Help', 'wppa') ?></td>
 							</tr>
 						</tfoot>
 					</table>
@@ -1956,17 +1963,17 @@ wppa_fix_source_extensions();
 			); ?>
 			
 				<div id="wppa_table_3" style="display:none" >
-					<table class="widefat">
+					<table class="widefat wppa-table wppa-setting-table">
 						<thead style="font-weight: bold; " class="wppa_table_3">
 							<tr>
-								<th scope="col"><?php _e('#', 'wppa') ?></th>
-								<th scope="col"><?php _e('Name', 'wppa') ?></th>
-								<th scope="col"><?php _e('Description', 'wppa') ?></th>
-								<th scope="col"><?php _e('Background color', 'wppa') ?></th>
-								<th scope="col"><?php _e('Sample', 'wppa') ?></th>
-								<th scope="col"><?php _e('Border color', 'wppa') ?></th>
-								<th scope="col"><?php _e('Sample', 'wppa') ?></th>
-								<th scope="col"><?php _e('Help', 'wppa') ?></th>
+								<td><?php _e('#', 'wppa') ?></td>
+								<td><?php _e('Name', 'wppa') ?></td>
+								<td><?php _e('Description', 'wppa') ?></td>
+								<td><?php _e('Background color', 'wppa') ?></td>
+								<td><?php _e('Sample', 'wppa') ?></td>
+								<td><?php _e('Border color', 'wppa') ?></td>
+								<td><?php _e('Sample', 'wppa') ?></td>
+								<td><?php _e('Help', 'wppa') ?></td>
 							</tr>
 						</thead>
 						<tbody class="wppa_table_3">
@@ -2162,14 +2169,14 @@ wppa_fix_source_extensions();
 						</tbody>
 						<tfoot style="font-weight: bold;" class="wppa_table_3">
 							<tr>
-								<th scope="col"><?php _e('#', 'wppa') ?></th>
-								<th scope="col"><?php _e('Name', 'wppa') ?></th>
-								<th scope="col"><?php _e('Description', 'wppa') ?></th>
-								<th scope="col"><?php _e('Background color', 'wppa') ?></th>
-								<th scope="col"><?php _e('Sample', 'wppa') ?></th>
-								<th scope="col"><?php _e('Border color', 'wppa') ?></th>
-								<th scope="col"><?php _e('Sample', 'wppa') ?></th>
-								<th scope="col"><?php _e('Help', 'wppa') ?></th>
+								<td><?php _e('#', 'wppa') ?></td>
+								<td><?php _e('Name', 'wppa') ?></td>
+								<td><?php _e('Description', 'wppa') ?></td>
+								<td><?php _e('Background color', 'wppa') ?></td>
+								<td><?php _e('Sample', 'wppa') ?></td>
+								<td><?php _e('Border color', 'wppa') ?></td>
+								<td><?php _e('Sample', 'wppa') ?></td>
+								<td><?php _e('Help', 'wppa') ?></td>
 							</tr>
 						</tfoot>
 					</table>
@@ -2183,14 +2190,14 @@ wppa_fix_source_extensions();
 			); ?>
 
 				<div id="wppa_table_4" style="display:none" >
-					<table class="widefat">
+					<table class="widefat wppa-table wppa-setting-table">
 						<thead style="font-weight: bold; " class="wppa_table_4">
 							<tr>
-								<th scope="col"><?php _e('#', 'wppa') ?></th>
-								<th scope="col"><?php _e('Name', 'wppa') ?></th>
-								<th scope="col"><?php _e('Description', 'wppa') ?></th>
-								<th scope="col"><?php _e('Setting', 'wppa') ?></th>
-								<th scope="col"><?php _e('Help', 'wppa') ?></th>
+								<td><?php _e('#', 'wppa') ?></td>
+								<td><?php _e('Name', 'wppa') ?></td>
+								<td><?php _e('Description', 'wppa') ?></td>
+								<td><?php _e('Setting', 'wppa') ?></td>
+								<td><?php _e('Help', 'wppa') ?></td>
 							</tr>
 						</thead>
 						<tbody class="wppa_table_4">
@@ -2261,6 +2268,34 @@ wppa_fix_source_extensions();
 							$slug = 'wppa_track_viewcounts';
 							$html = wppa_checkbox($slug);
 							wppa_setting($slug, '6', $name, $desc, $html, $help);
+							
+							$name = __('Auto page', 'wppa');
+							$desc = __('Create a wp page for every fullsize image.', 'wppa');
+							$help = '';
+							$slug = 'wppa_auto_page';
+							$onchange = 'wppaCheckAutoPage()';
+							$warn = esc_js(__('Please reload this page after changing!', 'wppa'));
+							$html = wppa_checkbox_warn($slug, $onchange, '', $warn);
+							wppa_setting($slug, '7', $name, $desc, $html, $help);
+							
+							$name = __('Auto page display', 'wppa');
+							$desc = __('The type of display on the autopage pages.', 'wppa');
+							$help = '';
+							$slug = 'wppa_auto_page_type';
+							$opts = array(__('Single photo', 'wppa'), __('Media type photo', 'wppa'), __('In the style of a slideshow', 'wppa') );
+							$vals = array('photo', 'mphoto', 'slphoto');
+							$html = wppa_select($slug, $opts, $vals);
+							$class = 'autopage';
+							wppa_setting($slug, '7.1', $name, $desc, $html, $help, $class);
+							
+							$name = __('Auto page links', 'wppa');
+							$desc = __('The location for the pagelinks.', 'wppa');
+							$slug = 'wppa_auto_page_links';
+							$opts = array(__('none', 'wppa'), __('At the top', 'wppa'), __('At the bottom', 'wppa'), __('At top and bottom', 'wppa'));
+							$vals = array('none', 'top', 'bottom', 'both');
+							$html = wppa_select($slug, $opts, $vals);
+							$class = 'autopage';
+							wppa_setting($slug, '7.2', $name, $desc, $html, $help, $class);
 
 							wppa_setting_subheader('B', '1', __('Slideshow related settings', 'wppa'));
 
@@ -2843,11 +2878,11 @@ wppa_fix_source_extensions();
 						</tbody>
 						<tfoot style="font-weight: bold;" class="wppa_table_4">
 							<tr>
-								<th scope="col"><?php _e('#', 'wppa') ?></th>
-								<th scope="col"><?php _e('Name', 'wppa') ?></th>
-								<th scope="col"><?php _e('Description', 'wppa') ?></th>
-								<th scope="col"><?php _e('Setting', 'wppa') ?></th>
-								<th scope="col"><?php _e('Help', 'wppa') ?></th>
+								<td><?php _e('#', 'wppa') ?></td>
+								<td><?php _e('Name', 'wppa') ?></td>
+								<td><?php _e('Description', 'wppa') ?></td>
+								<td><?php _e('Setting', 'wppa') ?></td>
+								<td><?php _e('Help', 'wppa') ?></td>
 							</tr>
 						</tfoot>
 					</table>
@@ -2861,17 +2896,17 @@ wppa_fix_source_extensions();
 			); ?>
 			
 				<div id="wppa_table_5" style="display:none" >
-					<table class="widefat">
+					<table class="widefat wppa-table wppa-setting-table">
 						<thead style="font-weight: bold; " class="wppa_table_5">
 							<tr>
-								<th scope="col"><?php _e('#', 'wppa') ?></th>
-								<th scope="col"><?php _e('Name', 'wppa') ?></th>
-								<th scope="col"><?php _e('Description', 'wppa') ?></th>
-								<th scope="col" style="min-width:250px;" ><?php _e('Font family', 'wppa') ?></th>
-								<th scope="col"><?php _e('Font size', 'wppa') ?></th>
-								<th scope="col"><?php _e('Font color', 'wppa') ?></th>
-								<th scope="col"><?php _e('Font weight', 'wppa') ?></th>
-								<th scope="col"><?php _e('Help', 'wppa') ?></th>
+								<td><?php _e('#', 'wppa') ?></td>
+								<td><?php _e('Name', 'wppa') ?></td>
+								<td><?php _e('Description', 'wppa') ?></td>
+								<th scope="col" style="min-width:250px;" ><?php _e('Font family', 'wppa') ?></td>
+								<td><?php _e('Font size', 'wppa') ?></td>
+								<td><?php _e('Font color', 'wppa') ?></td>
+								<td><?php _e('Font weight', 'wppa') ?></td>
+								<td><?php _e('Help', 'wppa') ?></td>
 							</tr>
 						</thead>
 						<tbody class="wppa_table_5">
@@ -3037,14 +3072,14 @@ wppa_fix_source_extensions();
 						</tbody>
 						<tfoot style="font-weight: bold;" class="wppa_table_5">
 							<tr>
-								<th scope="col"><?php _e('#', 'wppa') ?></th>
-								<th scope="col"><?php _e('Name', 'wppa') ?></th>
-								<th scope="col"><?php _e('Description', 'wppa') ?></th>
-								<th scope="col"><?php _e('Font family', 'wppa') ?></th>
-								<th scope="col"><?php _e('Font size', 'wppa') ?></th>
-								<th scope="col"><?php _e('Font color', 'wppa') ?></th>
-								<th scope="col"><?php _e('Font weight', 'wppa') ?></th>
-								<th scope="col"><?php _e('Help', 'wppa') ?></th>
+								<td><?php _e('#', 'wppa') ?></td>
+								<td><?php _e('Name', 'wppa') ?></td>
+								<td><?php _e('Description', 'wppa') ?></td>
+								<td><?php _e('Font family', 'wppa') ?></td>
+								<td><?php _e('Font size', 'wppa') ?></td>
+								<td><?php _e('Font color', 'wppa') ?></td>
+								<td><?php _e('Font weight', 'wppa') ?></td>
+								<td><?php _e('Help', 'wppa') ?></td>
 							</tr>
 						</tfoot>
 					</table>
@@ -3058,17 +3093,17 @@ wppa_fix_source_extensions();
 			); ?>
 		
 				<div id="wppa_table_6" style="display:none" >
-					<table class="widefat">
+					<table class="widefat wppa-table wppa-setting-table">
 						<thead style="font-weight: bold; " class="wppa_table_6">
 							<tr>
-								<th scope="col"><?php _e('#', 'wppa') ?></th>
-								<th scope="col"><?php _e('Name', 'wppa') ?></th>
-								<th scope="col"><?php _e('Description', 'wppa') ?></th>
-								<th scope="col"><?php _e('Link type', 'wppa') ?></th>
-								<th scope="col"><?php _e('Link page', 'wppa') ?></th>
-								<th scope="col"><?php _e('New tab', 'wppa') ?></th>
-								<th scope="col" title="<?php _e('Photo specific link overrules', 'wppa') ?>" style="cursor: default"><?php _e('PSO', 'wppa') ?></th>
-								<th scope="col"><?php _e('Help', 'wppa') ?></th>
+								<td><?php _e('#', 'wppa') ?></td>
+								<td><?php _e('Name', 'wppa') ?></td>
+								<td><?php _e('Description', 'wppa') ?></td>
+								<td><?php _e('Link type', 'wppa') ?></td>
+								<td><?php _e('Link page', 'wppa') ?></td>
+								<td><?php _e('New tab', 'wppa') ?></td>
+								<th scope="col" title="<?php _e('Photo specific link overrules', 'wppa') ?>" style="cursor: default"><?php _e('PSO', 'wppa') ?></td>
+								<td><?php _e('Help', 'wppa') ?></td>
 							</tr>
 						</thead>
 						<tbody class="wppa_table_6">
@@ -3393,7 +3428,13 @@ wppa_fix_source_extensions();
 							$slug4 = 'wppa_thumb_overrule';
 							$slug = array($slug1, $slug2, $slug3, $slug4);
 							$onchange = 'wppaCheckThumbLink()';
-							$html1 = wppa_select($slug1, $options_linktype, $values_linktype, $onchange);
+							$opts = $options_linktype;
+							$vals = $values_linktype;
+							if ( wppa_switch('wppa_auto_page') ) {
+								$opts[] = __('Auto Page', 'wppa');
+								$vals[] = 'autopage';
+							}
+							$html1 = wppa_select($slug1, $opts, $vals, $onchange);
 							$class = 'wppa_tlp';
 							$html2 = wppa_select($slug2, $options_page_post, $values_page_post, '', $class);
 							$class = 'wppa_tlb';
@@ -3600,14 +3641,14 @@ wppa_fix_source_extensions();
 						</tbody>
 						<tfoot style="font-weight: bold;" class="wppa_table_6">
 							<tr>
-								<th scope="col"><?php _e('#', 'wppa') ?></th>
-								<th scope="col"><?php _e('Name', 'wppa') ?></th>
-								<th scope="col"><?php _e('Description', 'wppa') ?></th>
-								<th scope="col"><?php _e('Link type', 'wppa') ?></th>
-								<th scope="col"><?php _e('Link page', 'wppa') ?></th>
-								<th scope="col"><?php _e('New tab', 'wppa') ?></th>
-								<th scope="col" title="<?php _e('Photo specific link overrules', 'wppa') ?>" style="cursor: default"><?php _e('PSO', 'wppa') ?></th>
-								<th scope="col"><?php _e('Help', 'wppa') ?></th>
+								<td><?php _e('#', 'wppa') ?></td>
+								<td><?php _e('Name', 'wppa') ?></td>
+								<td><?php _e('Description', 'wppa') ?></td>
+								<td><?php _e('Link type', 'wppa') ?></td>
+								<td><?php _e('Link page', 'wppa') ?></td>
+								<td><?php _e('New tab', 'wppa') ?></td>
+								<th scope="col" title="<?php _e('Photo specific link overrules', 'wppa') ?>" style="cursor: default"><?php _e('PSO', 'wppa') ?></td>
+								<td><?php _e('Help', 'wppa') ?></td>
 							</tr>
 						</tfoot>
 					</table>
@@ -3621,7 +3662,7 @@ wppa_fix_source_extensions();
 			); ?>
 
 				<div id="wppa_table_7" style="display:none" >
-					<table class="widefat">
+					<table class="widefat wppa-table wppa-setting-table" style="padding-bottom:0; margin-bottom:0;" >
 						<thead style="font-weight: bold; " class="wppa_table_7">
 							<tr>
 								<?php
@@ -3645,8 +3686,8 @@ wppa_fix_source_extensions();
 														'Comment&nbsp;Admin', 
 														'Help & Info'
 														);
-									echo '<th scope="col" >'.__('Role', 'wppa').'</th>';
-									for ($i = 0; $i < count($wppacaps); $i++) echo '<th scope="col" style="width:11%;">'.$wppanames[$i].'</th>';
+									echo '<td>'.__('Role', 'wppa').'</td>';
+									for ($i = 0; $i < count($wppacaps); $i++) echo '<td style="width:11%;">'.$wppanames[$i].'</td>';
 								?>
 							</tr>
 						</thead>
@@ -3674,7 +3715,7 @@ wppa_fix_source_extensions();
 							?>
 						</tbody>
 					</table>
-					<table class="widefat" style="margin-top:-2px;" >
+					<table class="widefat wppa-table wppa-setting-table" style="margin-top:-2px;padding-top:0;" >
 						<tbody class="wppa_table_7">
 							<?php
 							wppa_setting_subheader('B', '2', __('Frontend Upload settings', 'wppa'));
@@ -3847,11 +3888,11 @@ wppa_fix_source_extensions();
 						</tbody>
 						<tfoot style="font-weight: bold;" class="wppa_table_7">
 							<tr>
-								<th scope="col"><?php _e('#', 'wppa') ?></th>
-								<th scope="col"><?php _e('Name', 'wppa') ?></th>
-								<th scope="col"><?php _e('Description', 'wppa') ?></th>
-								<th scope="col"><?php _e('Setting', 'wppa') ?></th>
-								<th scope="col"><?php _e('Help', 'wppa') ?></th>
+								<td><?php _e('#', 'wppa') ?></td>
+								<td><?php _e('Name', 'wppa') ?></td>
+								<td><?php _e('Description', 'wppa') ?></td>
+								<td><?php _e('Setting', 'wppa') ?></td>
+								<td><?php _e('Help', 'wppa') ?></td>
 							</tr>
 						</tfoot>
 					</table>
@@ -3865,15 +3906,15 @@ wppa_fix_source_extensions();
 			); ?>
 			
 				<div id="wppa_table_8" style="display:none" >
-					<table class="widefat">
+					<table class="widefat wppa-table wppa-setting-table">
 						<thead style="font-weight: bold; " class="wppa_table_8">
 							<tr>
-								<th scope="col"><?php _e('#', 'wppa') ?></th>
-								<th scope="col"><?php _e('Name', 'wppa') ?></th>
-								<th scope="col"><?php _e('Description', 'wppa') ?></th>
-								<th scope="col"><?php _e('Specification', 'wppa') ?></th>
-								<th scope="col"><?php _e('Do it!', 'wppa') ?></th>
-								<th scope="col"><?php _e('Help', 'wppa') ?></th>
+								<td><?php _e('#', 'wppa') ?></td>
+								<td><?php _e('Name', 'wppa') ?></td>
+								<td><?php _e('Description', 'wppa') ?></td>
+								<td><?php _e('Specification', 'wppa') ?></td>
+								<td><?php _e('Do it!', 'wppa') ?></td>
+								<td><?php _e('Help', 'wppa') ?></td>
 							</tr>
 						</thead>
 						<tbody class="wppa_table_8">
@@ -4113,12 +4154,12 @@ wppa_fix_source_extensions();
 						</tbody>
 						<tfoot style="font-weight: bold;" class="wppa_table_8">
 							<tr>
-								<th scope="col"><?php _e('#', 'wppa') ?></th>
-								<th scope="col"><?php _e('Name', 'wppa') ?></th>
-								<th scope="col"><?php _e('Description', 'wppa') ?></th>
-								<th scope="col"><?php _e('Specification', 'wppa') ?></th>
-								<th scope="col"><?php _e('Do it!', 'wppa') ?></th>
-								<th scope="col"><?php _e('Help', 'wppa') ?></th>
+								<td><?php _e('#', 'wppa') ?></td>
+								<td><?php _e('Name', 'wppa') ?></td>
+								<td><?php _e('Description', 'wppa') ?></td>
+								<td><?php _e('Specification', 'wppa') ?></td>
+								<td><?php _e('Do it!', 'wppa') ?></td>
+								<td><?php _e('Help', 'wppa') ?></td>
 							</tr>
 						</tfoot>
 					</table>
@@ -4132,14 +4173,14 @@ wppa_fix_source_extensions();
 			); ?>
 			
 				<div id="wppa_table_9" style="display:none" >
-					<table class="widefat">
+					<table class="widefat wppa-table wppa-setting-table">
 						<thead style="font-weight: bold; " class="wppa_table_9">
 							<tr>
-								<th scope="col"><?php _e('#', 'wppa') ?></th>
-								<th scope="col"><?php _e('Name', 'wppa') ?></th>
-								<th scope="col"><?php _e('Description', 'wppa') ?></th>
-								<th scope="col"><?php _e('Setting', 'wppa') ?></th>
-								<th scope="col"><?php _e('Help', 'wppa') ?></th>
+								<td><?php _e('#', 'wppa') ?></td>
+								<td><?php _e('Name', 'wppa') ?></td>
+								<td><?php _e('Description', 'wppa') ?></td>
+								<td><?php _e('Setting', 'wppa') ?></td>
+								<td><?php _e('Help', 'wppa') ?></td>
 							</tr>
 						</thead>
 						<tbody class="wppa_table_9">
@@ -4997,11 +5038,11 @@ wppa_fix_source_extensions();
 						</tbody>
 						<tfoot style="font-weight: bold;" class="wppa_table_9">
 							<tr>
-								<th scope="col"><?php _e('#', 'wppa') ?></th>
-								<th scope="col"><?php _e('Name', 'wppa') ?></th>
-								<th scope="col"><?php _e('Description', 'wppa') ?></th>
-								<th scope="col"><?php _e('Setting', 'wppa') ?></th>
-								<th scope="col"><?php _e('Help', 'wppa') ?></th>
+								<td><?php _e('#', 'wppa') ?></td>
+								<td><?php _e('Name', 'wppa') ?></td>
+								<td><?php _e('Description', 'wppa') ?></td>
+								<td><?php _e('Setting', 'wppa') ?></td>
+								<td><?php _e('Help', 'wppa') ?></td>
 							</tr>
 						</tfoot>
 					</table>
@@ -5015,15 +5056,15 @@ wppa_fix_source_extensions();
 			); ?>
 			
 				<div id="wppa_table_10" style="display:none" >
-					<table class="widefat">
+					<table class="widefat wppa-table wppa-setting-table">
 						<thead style="font-weight: bold; " class="wppa_table_10">
 							<tr>
-								<th scope="col"><?php _e('#', 'wppa') ?></th>
-								<th scope="col"><?php _e('Tag', 'wppa') ?></th>
-								<th scope="col"></th>
-								<th scope="col"><?php _e('Description', 'wppa') ?></th>
-								<th scope="col"><?php _e('Status', 'wppa') ?></th>
-								<th scope="col"><?php _e('Help', 'wppa') ?></th>
+								<td><?php _e('#', 'wppa') ?></td>
+								<td><?php _e('Tag', 'wppa') ?></td>
+								<td></td>
+								<td><?php _e('Description', 'wppa') ?></td>
+								<td><?php _e('Status', 'wppa') ?></td>
+								<td><?php _e('Help', 'wppa') ?></td>
 							</tr>
 						</thead>
 						<tbody class="wppa_table_10">
@@ -5056,12 +5097,12 @@ wppa_fix_source_extensions();
 						</tbody>
 						<tfoot style="font-weight: bold;" class="wppa_table_10">
 							<tr>
-								<th scope="col"><?php _e('#', 'wppa') ?></th>
-								<th scope="col"><?php _e('Tag', 'wppa') ?></th>
-								<th scope="col"></th>
-								<th scope="col"><?php _e('Description', 'wppa') ?></th>
-								<th scope="col"><?php _e('Status', 'wppa') ?></th>
-								<th scope="col"><?php _e('Help', 'wppa') ?></th>
+								<td><?php _e('#', 'wppa') ?></td>
+								<td><?php _e('Tag', 'wppa') ?></td>
+								<td></td>
+								<td><?php _e('Description', 'wppa') ?></td>
+								<td><?php _e('Status', 'wppa') ?></td>
+								<td><?php _e('Help', 'wppa') ?></td>
 							</tr>
 						</tfoot>
 					</table>
@@ -5075,15 +5116,15 @@ wppa_fix_source_extensions();
 			); ?>
 			
 				<div id="wppa_table_11" style="display:none" >
-					<table class="widefat">
+					<table class="widefat wppa-table wppa-setting-table">
 						<thead style="font-weight: bold; " class="wppa_table_11">
 							<tr>
-								<th scope="col"><?php _e('#', 'wppa') ?></th>
-								<th scope="col"><?php _e('Tag', 'wppa') ?></th>
-								<th scope="col"></th>
-								<th scope="col"><?php _e('Description', 'wppa') ?></th>
-								<th scope="col"><?php _e('Status', 'wppa') ?></th>
-								<th scope="col"><?php _e('Help', 'wppa') ?></th>
+								<td><?php _e('#', 'wppa') ?></td>
+								<td><?php _e('Tag', 'wppa') ?></td>
+								<td></td>
+								<td><?php _e('Description', 'wppa') ?></td>
+								<td><?php _e('Status', 'wppa') ?></td>
+								<td><?php _e('Help', 'wppa') ?></td>
 							</tr>
 						</thead>
 						<tbody class="wppa_table_11">
@@ -5122,12 +5163,12 @@ wppa_fix_source_extensions();
 						</tbody>
 						<tfoot style="font-weight: bold;" class="wppa_table_11">
 							<tr>
-								<th scope="col"><?php _e('#', 'wppa') ?></th>
-								<th scope="col"><?php _e('Tag', 'wppa') ?></th>
-								<th scope="col"></th>
-								<th scope="col"><?php _e('Description', 'wppa') ?></th>
-								<th scope="col"><?php _e('Status', 'wppa') ?></th>
-								<th scope="col"><?php _e('Help', 'wppa') ?></th>
+								<td><?php _e('#', 'wppa') ?></td>
+								<td><?php _e('Tag', 'wppa') ?></td>
+								<td></td>
+								<td><?php _e('Description', 'wppa') ?></td>
+								<td><?php _e('Status', 'wppa') ?></td>
+								<td><?php _e('Help', 'wppa') ?></td>
 							</tr>
 						</tfoot>
 					</table>
@@ -5147,12 +5188,12 @@ wppa_fix_source_extensions();
 
 				<div id="wppa_table_12" style="display:none" >
 		<!--		<div class="wppa_table_12" style="margin-top:20px; text-align:left; ">	-->
-						<table class="widefat">
+						<table class="widefat wppa-table wppa-setting-table">
 							<thead style="font-weight: bold; " class="wppa_table_12">
 								<tr>
-									<th scope="col"><?php _e('Name', 'wppa') ?></th>
-									<th scope="col"><?php _e('Description', 'wppa') ?></th>
-									<th scope="col"><?php _e('Value', 'wppa') ?></th>
+									<td><?php _e('Name', 'wppa') ?></td>
+									<td><?php _e('Description', 'wppa') ?></td>
+									<td><?php _e('Value', 'wppa') ?></td>
 								</tr>
 							<tbody class="wppa_table_12">
 								<tr style="color:#333;">

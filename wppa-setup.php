@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 5.2.3
+* Version 5.2.4
 *
 */
 
@@ -57,6 +57,7 @@ global $silent;
 					cover_type tinytext NOT NULL,
 					suba_order_by tinytext NOT NULL,
 					views bigint(20) NOT NULL default '0',
+					cats tinytext NOT NULL,
 					PRIMARY KEY  (id) 
 					) DEFAULT CHARACTER SET utf8;";
 					
@@ -81,6 +82,7 @@ global $silent;
 					modified tinytext NOT NULL,
 					location tinytext NOT NULL,
 					views bigint(20) NOT NULL default '0',
+					page_id bigint(20) NOT NULL default '0',
 					PRIMARY KEY  (id)
 					) DEFAULT CHARACTER SET utf8;";
 
@@ -649,6 +651,9 @@ Hide Camera info
 						'wppa_update_addressline'		=> 'yes',
 						'wppa_render_shortcode_always'	=> 'no',
 						'wppa_track_viewcounts'			=> 'yes',
+						'wppa_auto_page'				=> 'no',
+						'wppa_auto_page_type'			=> 'photo',
+						'wppa_auto_page_links'			=> 'bottom',
 
 						// B Full size and Slideshow
 						'wppa_fullvalign' 				=> 'fit',
@@ -985,6 +990,7 @@ Hide Camera info
 						'wppa_potd_align' 			=> 'center',
 						'wppa_widget_method'		=> '1',
 						'wppa_widget_period'		=> '168',
+						
 						'wppa_widget_width'			=> '200',
 						
 						// Topten widget

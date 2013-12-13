@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Functions for breadcrumbs
-* Version 5.1.18
+* Version 5.2.4
 *
 */
 
@@ -215,6 +215,19 @@ global $wpdb;
 			$title	= '';
 			wppa_bcitem($value, $href, $title, 'b9');
 		}
+		elseif ( $wppa['is_cat'] ) {							// Categorized albums
+			if ( $wppa['is_slide'] ) {
+				$value 	= __a('Category:').'&nbsp;'.$wppa['is_cat'];//str_replace(';', ' '.__a('or').' ', str_replace(',', ' '.__a('and').' ', trim( $wppa['is_tag'], ',;' ) ) );
+				$href 	= wppa_get_permalink().'wppa-cover=0&amp;wppa-occur='.$wppa['occur'].'&amp;wppa-tags='.$wppa['is_tag'].'&amp;wppa-album='.$wppa['start_album'];
+				$title	= __a('View the thumbnails');
+				wppa_bcitem($value, $href, $title, 'b8');
+			}
+			$value 	= __a('Category:').'&nbsp;'.$wppa['is_cat'];//str_replace(';', ' '.__a('or').' ', str_replace(',', ' '.__a('and').' ', trim( $wppa['is_tag'], ',;' ) ) );
+			$href 	= '';
+			$title	= '';
+			wppa_bcitem($value, $href, $title, 'b9');
+		}
+
 		elseif ( $wppa['last_albums'] ) {							// Recently modified albums(s)
 			if ( $wppa['last_albums_parent'] ) {
 				$value 	= wppa_get_album_name($alb);
