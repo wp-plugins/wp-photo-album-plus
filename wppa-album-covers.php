@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Functions for album covers
-* Version 5.2.3
+* Version 5.2.5
 *
 */
 
@@ -221,7 +221,16 @@ global $wpdb;
 		$wppa['out'] .= wppa_nltab().'<div style="clear:both;"></div>';		
 		
 		wppa_user_upload_html($album['id'], wppa_get_cover_width('cover'), 'cover', $multicolumnresponsive);
-
+/**
+		if ( $album['cats'] ) {
+			if ( strpos( $album['cats'] ,',' ) ) {
+				$wppa['out'] .= '<span style="float:right;">'.__a('Categories:').' <b>'.$album['cats'].'</b></span>';
+			}
+			else {
+				$wppa['out'] .= '<span style="float:right;">'.__a('Category:').' <b>'.$album['cats'].'</b></span>';
+			}
+		}
+/**/
 	$wppa['out'] .= wppa_nltab('-').'</div><!-- #album-'.$album['id'].'-'.$wppa['master_occur'].' -->';
 	if ($wppa_alt == 'even') $wppa_alt = 'alt'; else $wppa_alt = 'even';
 }

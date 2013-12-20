@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains low-level utility routines
-* Version 5.2.4
+* Version 5.2.5
 *
 */
 
@@ -88,6 +88,8 @@ global $blog_id;
 	if ( $system == 'tree' ) return WPPA_UPLOAD_URL.'/thumbs/'.wppa_expand_id($thumb['id']).'.'.$thumb['ext'].'?ver='.get_option('wppa_thumb_version', '1');
 	else return WPPA_UPLOAD_URL.'/thumbs/'.$thumb['id'].'.'.$thumb['ext'].'?ver='.get_option('wppa_thumb_version', '1');
 }
+
+// Bump thumbnail version number
 function wppa_bump_thumb_rev() {
 	wppa_update_option('wppa_thumb_version', get_option('wppa_thumb_version', '1') + '1');
 }
@@ -135,7 +137,7 @@ global $blog_id;
 	else return WPPA_UPLOAD_URL.'/'.$thumb['id'].'.'.$thumb['ext'].'?ver='.get_option('wppa_photo_version', '1');
 }
 
-
+// Bump Fullsize photo version number
 function wppa_bump_photo_rev() {
 	wppa_update_option('wppa_photo_version', get_option('wppa_photo_version', '1') + '1');
 }
@@ -876,58 +878,61 @@ global $wppa_opt;
 	return true;
 }
 
-function wppa_save_source($file, $name, $alb) {
+function wppa_save_source( $file, $name, $alb ) {
 global $wppa_opt;
 
 	if ( ( wppa_switch('wppa_keep_source_admin') && is_admin() ) || ( wppa_switch('wppa_keep_source_frontend') && ! is_admin() ) ) {
-		$albdir = $wppa_opt['wppa_source_dir'].'/album-'.$alb;
-		if ( ! is_dir($albdir) ) @ mkdir($albdir);	// This is a gimic, do not bother on failure
+		if ( ! is_dir( $wppa_opt['wppa_source_dir'] ) ) @ mkdir( $wppa_opt['wppa_source_dir'] );
+		$sourcedir = wppa_get_source_dir();
+		if ( ! is_dir( $sourcedir ) ) @ mkdir( $sourcedir );
+		$albdir = wppa_get_source_album_dir( $alb ); 
+		if ( ! is_dir( $albdir ) ) @ mkdir( $albdir );	
 		$dest = $albdir.'/'.$name;
-		if ( $file != $dest ) @ copy($file, $dest);	// Do not copy to self, and do not bother on failure
+		if ( $file != $dest ) @ copy(  $file, $dest );	// Do not copy to self, and do not bother on failure
 	}
 }
 
-function wppa_delete_source($name, $alb) {
+function wppa_delete_source( $name, $alb ) {
 global $wppa_opt;
 	if ( wppa_switch('wppa_keep_sync') ) {
-		$path = $wppa_opt['wppa_source_dir'].'/album-'.$alb.'/'.$name;
-		@ unlink($path);										// Ignore error
-		@ rmdir($wppa_opt['wppa_source_dir'].'/album-'.$alb);	// Ignore error
+		$path = wppa_get_source_album_dir( $alb ).'/'.$name;
+		@ unlink( $path );										// Ignore error
+		@ rmdir( wppa_get_source_album_dir( $alb ) );	// Ignore error
 	}
 }
 
-function wppa_move_source($name, $from, $to) {
+function wppa_move_source( $name, $from, $to ) {
 global $wppa_opt;
 wppa_log('Debug', 'in move,');
 
 	if ( wppa_switch('wppa_keep_sync') ) {
-		$frompath 	= $wppa_opt['wppa_source_dir'].'/album-'.$from.'/'.$name;
-		if ( ! is_file($frompath) ) return;
-		$todir 		= $wppa_opt['wppa_source_dir'].'/album-'.$to;
-		$topath 	= $wppa_opt['wppa_source_dir'].'/album-'.$to.'/'.$name;
-		if ( ! is_dir($todir) ) @ mkdir($todir);
-		@ rename($frompath, $topath);		// will fail if target already exists
-		@ unlink($frompath);				// therefor attempt delete
-		@ rmdir($wppa_opt['wppa_source_dir'].'/album-'.$from);	// remove dir when empty Ignore error
+		$frompath 	= wppa_get_source_album_dir( $from ).'/'.$name;
+		if ( ! is_file( $frompath ) ) return;
+		$todir 		= wppa_get_source_album_dir( $to );
+		$topath 	= wppa_get_source_album_dir( $to ).'/'.$name;
+		if ( ! is_dir( $todir ) ) @ mkdir( $todir );
+		@ rename( $frompath, $topath );		// will fail if target already exists
+		@ unlink( $frompath );				// therefor attempt delete
+		@ rmdir( wppa_get_source_album_dir( $from ) );	// remove dir when empty Ignore error
 	}
 }
 
-function wppa_copy_source($name, $from, $to) {
+function wppa_copy_source( $name, $from, $to ) {
 global $wppa_opt;
 	if ( wppa_switch('wppa_keep_sync') ) {
-		$frompath 	= $wppa_opt['wppa_source_dir'].'/album-'.$from.'/'.$name;
-		if ( ! is_file($frompath) ) return;
-		$todir 		= $wppa_opt['wppa_source_dir'].'/album-'.$to;
-		$topath 	= $wppa_opt['wppa_source_dir'].'/album-'.$to.'/'.$name;
-		if ( ! is_dir($todir) ) @ mkdir($todir);
+		$frompath 	= wppa_get_source_album_dir( $from ).'/'.$name;
+		if ( ! is_file( $frompath ) ) return;
+		$todir 		= wppa_get_source_album_dir( $to );
+		$topath 	= wppa_get_source_album_dir( $to ).'/'.$name;
+		if ( ! is_dir( $todir ) ) @ mkdir( $todir );
 		@ copy($frompath, $topath); // !
 	}
 }
 
-function wppa_delete_album_source($album) {
+function wppa_delete_album_source( $album ) {
 global $wppa_opt;
 	if ( wppa_switch('wppa_keep_sync') ) {
-		@ rmdir($wppa_opt['wppa_source_dir'].'/album-'.$album);
+		@ rmdir( wppa_get_source_album_dir( $album ) );
 	}
 }
 
@@ -1403,73 +1408,56 @@ global $wppa_opt;
 	return $cdn;
 }
 
-function wppa_create_album_entry( $args ) {
-global $wpdb;
+function wppa_get_source_path( $id ) {
 global $wppa_opt;
+global $blog_id;
+global $thumb;
 
-	$args = wp_parse_args( (array) $args, array ( 
-					'id' 				=> wppa_nextkey( WPPA_ALBUMS ),
-					'name' 				=> __('New Album', 'wppa'),
-					'description' 		=> '',
-					'a_order' 			=> '0',
-					'main_photo' 		=> '0',
-					'a_parent' 			=> '0',
-					'p_order_by' 		=> '0',
-					'cover_linktype' 	=> 'content',
-					'cover_linkpage' 	=> '0',
-					'owner' 			=> wppa_get_user(),
-					'timestamp' 		=> time(),
-					'upload_limit' 		=> $wppa_opt['wppa_upload_limit_count'].'/'.$wppa_opt['wppa_upload_limit_time'],
-					'alt_thumbsize' 	=> '0',
-					'default_tags' 		=> '',
-					'cover_type' 		=> '',
-					'suba_order_by' 	=> '',
-					'views' 			=> '0'
-					) );
-					
-	if ( ! wppa_is_id_free('album', $args['id'] ) ) $args['id'] = wppa_nextkey( WPPA_ALBUMS );
-					
-	$query = $wpdb->prepare("INSERT INTO `" . WPPA_ALBUMS . "` ( 	`id`, 
-																	`name`, 
-																	`description`, 
-																	`a_order`, 
-																	`main_photo`, 
-																	`a_parent`, 
-																	`p_order_by`, 
-																	`cover_linktype`, 
-																	`cover_linkpage`, 
-																	`owner`, 
-																	`timestamp`, 
-																	`upload_limit`, 
-																	`alt_thumbsize`, 
-																	`default_tags`, 
-																	`cover_type`, 
-																	`suba_order_by`,
-																	`views`,
-																	`cats`
-																	) 
-														VALUES ( %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s )", 
-																$args['id'], 
-																$args['name'],
-																$args['description'],
-																$args['a_order'],
-																$args['main_photo'],
-																$args['a_parent'],
-																$args['p_order_by'],
-																$args['cover_linktype'],
-																$args['cover_linkpage'],
-																$args['owner'],
-																$args['timestamp'],
-																$args['upload_limit'],
-																$args['alt_thumbsize'],
-																$args['default_tags'],
-																$args['cover_type'],
-																$args['suba_order_by'],
-																$args['views'],
-																$args['cats']
-														);
-	$iret = $wpdb->query($query);
+	wppa_cache_thumb( $id );
 	
-	if ( $iret ) return $args['id'];
-	else return false;
+	$multi = is_multisite();
+//	$multi = true;	// debug
+	if ( $multi && ! WPPA_MULTISITE_GLOBAL ) {
+		$blog = '/blog-'.$blog_id;
+	}
+	else {
+		$blog = '';
+	}
+	$source_path = $wppa_opt['wppa_source_dir'].$blog.'/album-'.$thumb['album'].'/'.$thumb['filename'];
+	
+	return $source_path;
+}
+
+function wppa_get_source_dir() {
+global $wppa_opt;
+global $blog_id;
+
+	$multi = is_multisite();
+//	$multi = true;	// debug
+	if ( $multi && ! WPPA_MULTISITE_GLOBAL ) {
+		$blog = '/blog-'.$blog_id;
+	}
+	else {
+		$blog = '';
+	}
+	$source_dir = $wppa_opt['wppa_source_dir'].$blog;
+	
+	return $source_dir;
+}
+
+function wppa_get_source_album_dir( $alb ) {
+global $wppa_opt;
+global $blog_id;
+
+	$multi = is_multisite();
+//	$multi = true;	// debug
+	if ( $multi && ! WPPA_MULTISITE_GLOBAL ) {
+		$blog = '/blog-'.$blog_id;
+	}
+	else {
+		$blog = '';
+	}
+	$source_album_dir = $wppa_opt['wppa_source_dir'].$blog.'/album-'.$alb;
+	
+	return $source_album_dir;
 }

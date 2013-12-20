@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all comments
-* Version 5.0.16
+* Version 5.2.5
 *
 */
 
@@ -92,9 +92,15 @@ global $wppa_opt;
 		}
 		if ($_GET['tab'] == 'delete') {
 			$id = $_GET['delete_id'];
-			$iret = $wpdb->query($wpdb->prepare( "DELETE FROM ".WPPA_COMMENTS." WHERE id = %s LIMIT 1", $id ) );
-			if ($iret !== false) wppa_update_message('Comment deleted', 'wppa');
-			else wppa_error_message('Error deleting comment', 'wppa');
+			$photo = $wpdb->get_var( $wpdb->prepare( "SELECT `photo` FROM `".WPPA_COMMENTS."` WHERE `id` = %s", $id ) );
+			$iret = $wpdb->query($wpdb->prepare( "DELETE FROM `".WPPA_COMMENTS."` WHERE `id` = %s LIMIT 1", $id ) );
+			if ( $iret !== false ) {
+				if ( wppa_switch( 'wppa_search_comments' ) ) wppa_index_update( 'photo', $photo );
+				wppa_update_message(__('Comment deleted', 'wppa') );
+			}
+			else {
+				wppa_error_message('Error deleting comment', 'wppa');
+			}
 			$continue = true;
 		}
 	}

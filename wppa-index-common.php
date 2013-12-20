@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * indexing common functions
-* version 5.1.7
+* version 5.2.5
 *
 * 
 */
@@ -29,19 +29,17 @@ global $wppa;
 			wppa_cache_album($id);
 		}		
 		
-		// Find the rew text
-		$words = __($album['name']);
-		if ( $album['description'] ) {
-			$words .= ' '.wppa_get_album_desc($album['id']);
+		// Find the raw text
+		$words = __( $album['name'] ).' '.wppa_get_album_desc($album['id']);
+		if ( wppa_switch( 'wppa_search_cats' ) ) {
+			$words .= ' '.$album['cats'];
 		}
 		
 		$words = wppa_index_raw_to_words($words);
 		foreach ( $words as $word ) {
 			$indexline = $wpdb->get_row($wpdb->prepare("SELECT * FROM `".WPPA_INDEX."` WHERE `slug` = %s", $word), ARRAY_A);
 			if ( ! $indexline ) {	// create new entry
-				$id = wppa_nextkey(WPPA_INDEX);
-				$wpdb->query($wpdb->prepare( "INSERT INTO `".WPPA_INDEX."` ( `id`, `slug`, `albums`, `photos` ) VALUES ( %s, %s, %s, %s  )", $id, $word, $album['id'], ''));
-//				if ( ! $wppa['ajax'] ) echo $id.' => '.$word.'; ';
+				$id = wppa_create_index_entry( array( 'slug' => $word, 'albums' => $album['id'] ) );
 			}
 			else { 	// Add to entry
 				$oldalbums = wppa_index_string_to_array($indexline['albums']);
@@ -65,22 +63,22 @@ global $wppa;
 		}
 		
 		// Find the rew text
-		$words = __($thumb['name']);																							// Name
-		$words .= ' '.$thumb['filename'];																						// Filename
-		if ( $thumb['description'] ) { 
-			$words .= ' '.wppa_get_photo_desc($thumb['id']);
-			// wppa_filter_exif(wppa_filter_iptc(__(stripslashes($thumb['description'])),$thumb['id']),$thumb['id']);	// Description
-		}
-		if ( wppa_switch('wppa_search_tags') ) {
-			$words .= ' '.$thumb['tags'];																						// Tags
+		$words = __( $thumb['name'] ).' '.$thumb['filename'].' '.wppa_get_photo_desc( $thumb['id'] );
+		if ( wppa_switch( 'wppa_search_tags' ) ) $words .= ' '.$thumb['tags'];																					// Tags
+		if ( wppa_switch( 'wppa_search_comments' ) ) {
+			$coms = $wpdb->get_results($wpdb->prepare( "SELECT `comment` FROM `" . WPPA_COMMENTS . "` WHERE `photo` = %s AND `status` = 'approved'", $thumb['id'] ), ARRAY_A );
+			if ( $coms ) {
+				foreach ( $coms as $com ) {
+					$words .= ' '.stripslashes( $com['comment'] );
+				}
+			}
 		}
 		
 		$words = wppa_index_raw_to_words($words);	// convert raw string to sanitized array
 		foreach ( $words as $word ) {
 			$indexline = $wpdb->get_row($wpdb->prepare("SELECT * FROM `".WPPA_INDEX."` WHERE `slug` = %s", $word), ARRAY_A);
 			if ( ! $indexline ) {	// create new entry
-				$id = wppa_nextkey(WPPA_INDEX);
-				$wpdb->query($wpdb->prepare( "INSERT INTO `".WPPA_INDEX."` ( `id`, `slug`, `albums`, `photos` ) VALUES ( %s, %s, %s, %s  )", $id, $word, '', $thumb['id']));
+				$id = wppa_create_index_entry( array( 'slug' => $word, 'photos' => $thumb['id'] ) );
 			}
 			else { 	// Add to entry
 				$oldphotos = wppa_index_string_to_array($indexline['photos']);

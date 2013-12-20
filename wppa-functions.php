@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions
-* Version 5.2.4
+* Version 5.2.5
 *
 */
 
@@ -694,18 +694,22 @@ global $wppa_opt;
 			}
 		}
 		else { // Classic search
-			$albs = $wpdb->get_results( 'SELECT * FROM ' . WPPA_ALBUMS . ' ' . wppa_get_album_order() , ARRAY_A );
+			$albs = $wpdb->get_results( "SELECT * FROM `" . WPPA_ALBUMS . "` " . wppa_get_album_order() , ARRAY_A );
 			wppa_dbg_q('Q10');
 			$albums = '';
 			$idx = '0';
-			foreach ($albs as $album) if (!$wppa_opt['wppa_excl_sep'] || $album['a_parent'] != '-1') {
-				if (wppa_deep_stristr(wppa_qtrans($album['name']).' '.wppa_qtrans($album['description']), $wppa['searchstring'])) {
+			foreach ( $albs as $album ) if ( ! $wppa_opt['wppa_excl_sep'] || $album['a_parent'] != '-1' ) {
+				$haystack = __( $album['name'] ).' '.__( $album['description'] );
+				if ( wppa_switch( 'wppa_search_cats' ) ) {
+					$haystack .= ' '.str_replace( ',', ' ', $album['cats'] );
+				}
+				if ( wppa_deep_stristr( strtolower( $haystack ), $wppa['searchstring'] ) ) {
 					$albums[$idx] = $album;
 					$idx++;
 				}
 			}
 		}
-		if (is_array($albums)) $wppa['any'] = true;
+		if ( is_array( $albums ) ) $wppa['any'] = true;
 	}
 	else {	// Its not search
 		$id = $wppa['start_album'];
@@ -723,9 +727,9 @@ global $wppa_opt;
 			wppa_dbg_q('Q11a');
 			$albums = $wpdb->get_results($q, ARRAY_A );
 		}
-		elseif ( wppa_is_int($id) ) {
+		elseif ( wppa_is_int( $id ) ) {
 			if ( $wppa['is_cover'] ) $q = $wpdb->prepare('SELECT * FROM ' . WPPA_ALBUMS . ' WHERE `id` = %s', $id);
-			else $q = $wpdb->prepare('SELECT * FROM ' . WPPA_ALBUMS . ' WHERE `a_parent` = %s '. wppa_get_album_order($id), $id);
+			else $q = $wpdb->prepare( 'SELECT * FROM ' . WPPA_ALBUMS . ' WHERE `a_parent` = %s '. wppa_get_album_order( $id ), $id );
 			wppa_dbg_msg($q);
 			wppa_dbg_q('Q11b');
 			$albums = $wpdb->get_results($q, ARRAY_A );
@@ -919,7 +923,7 @@ global $thumbs;
 //					$vfy = $word;
 //					$vlen = strlen($vfy);
 					if ( strlen($word) > 1 ) {
-						if ( strlen($word) > 10 ) $word = substr($word, 0, 10);
+						if ( strlen($word) > 20 ) $word = substr($word, 0, 20);
 //						$floor = $word;
 //						$ceil = substr($floor, 0, strlen($floor) - 1).chr(ord(substr($floor, strlen($floor) - 1))+1);
 						if ( wppa_switch('wppa_wild_front') ) {
@@ -1007,6 +1011,12 @@ global $thumbs;
 					$haystack = __($thumb['name']).' '.wppa_filter_exif(wppa_filter_iptc(__(stripslashes($thumb['description'])),$thumb['id']),$thumb['id']);
 					if ( wppa_switch('wppa_search_tags') ) {
 						$haystack .= ' '.str_replace(',', ' ', $thumb['tags']);
+					}
+					if ( wppa_switch( 'wppa_search_comments' ) ) {
+						$comms = $wpdb->get_results($wpdb->prepare(" SELECT * FROM `".WPPA_COMMENTS."` WHERE `photo` = %s", $thumb['id'] ), ARRAY_A );
+						if ( $comms ) foreach ( $comms as $comm ) {
+							$haystack .= $comm['comment'];
+						}
 					}
 					if ( wppa_deep_stristr(strtolower($haystack), $wppa['searchstring']) ) {
 						$thumbs[] = $thumb;
@@ -1124,7 +1134,7 @@ global $thumb;
 		if ( ! $avgrat ) $avgrat = '0';
 		$avgrat .= '|'.wppa_get_rating_count_by_id($id);
 		
-		// Find the dilike count
+		// Find the dislike count
 		$discount = $wpdb->get_var($wpdb->prepare( "SELECT COUNT(*) FROM `".WPPA_RATING."` WHERE `photo` = %s AND `value` = -1", $id) );
 	}
 	else {	// Rating off
@@ -1304,9 +1314,10 @@ global $wppa_done;
 	// Retrieve and filter comment
 	$comment = wppa_get_post('comment');
 	$comment = trim($comment);
-	$comment = stripslashes($comment);
-	$comment = wppa_strip_tags($comment, 'script&style');
-	$comment = htmlspecialchars($comment);
+//	$comment = stripslashes($comment);
+	$comment = strip_tags($comment); //wppa_strip_tags($comment, 'script&style');
+//	$comment = htmlspecialchars($comment);
+	$save_comment = str_replace("\n", '<br />', $comment);	// Resque newline chars
 	
 	$policy = $wppa_opt['wppa_comment_moderation'];
 	switch ($policy) {
@@ -1335,11 +1346,11 @@ global $wppa_done;
 				$status = 'spam';
 		}
 	}
-	
+
 	// Process (edited) comment
 	if ($comment) {
 		if ($cedit) {
-			$query = $wpdb->prepare('UPDATE `'.WPPA_COMMENTS.'` SET `comment` = %s, `user` = %s, `email` = %s, `status` = %s, `timestamp` = %s WHERE `id` = %s LIMIT 1', $comment, $user, $email, $status, time(), $cedit);
+			$query = $wpdb->prepare('UPDATE `'.WPPA_COMMENTS.'` SET `comment` = %s, `user` = %s, `email` = %s, `status` = %s, `timestamp` = %s WHERE `id` = %s LIMIT 1', $save_comment, $user, $email, $status, time(), $cedit);
 			wppa_dbg_q('Q44');
 			$iret = $wpdb->query($query);
 			if ($iret !== false) {
@@ -1348,21 +1359,22 @@ global $wppa_done;
 		}
 		else {
 			// See if a refresh happened
-			$old_entry = $wpdb->prepare('SELECT * FROM `'.WPPA_COMMENTS.'` WHERE `photo` = %s AND `user` = %s AND `comment` = %s LIMIT 1', $photo, $user, $comment);
+			$old_entry = $wpdb->prepare('SELECT * FROM `'.WPPA_COMMENTS.'` WHERE `photo` = %s AND `user` = %s AND `comment` = %s LIMIT 1', $photo, $user, $save_comment);
 			$iret = $wpdb->query($old_entry);
 			if ($iret) {
 				if ($wppa['debug']) echo('<script type="text/javascript">alert("Duplicate comment ignored")</script>');
 				return;
 			}
-			$key = wppa_nextkey(WPPA_COMMENTS);
-			$query = $wpdb->prepare('INSERT INTO `'.WPPA_COMMENTS.'` (`id`, `timestamp`, `photo`, `user`, `email`, `comment`, `status`, `ip`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s )', $key, $time, $photo, $user, $email, $comment, $status, $_SERVER['REMOTE_ADDR']);
-			$iret = $wpdb->query($query);
-			if ($iret !== false) $wppa['comment_id'] = $key;
+//			$key = wppa_nextkey(WPPA_COMMENTS);
+//			$query = $wpdb->prepare('INSERT INTO `'.WPPA_COMMENTS.'` (`id`, `timestamp`, `photo`, `user`, `email`, `comment`, `status`, `ip`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s )', $key, $time, $photo, $user, $email, $save_comment, $status, $_SERVER['REMOTE_ADDR']);
+//			$iret = $wpdb->query($query);
+			$key = wppa_create_comments_entry( array( 'photo' => $photo, 'user' => $user, 'email' => $email, 'comment' => $save_comment, 'status' => $status ) );
+			if ( $iret ) $wppa['comment_id'] = $key;
 		}
 		if ( $iret !== false ) {
 			if ( $status != 'spam' ) {
 				if ($cedit) {
-					if ( wppa_switch('wppa_comment_notify_added') ) echo('<script type="text/javascript">alert("'.__a('Comment edited').'")</script>');
+					if ( wppa_switch('wppa_comment_notify_added') ) echo('<script id="cme" type="text/javascript">alert("'.__a('Comment edited').'");jQuery("#cme").html("");</script>');
 				}
 				else {
 					// SUCCESSFUL COMMENT, ADD POINTS
@@ -1443,7 +1455,7 @@ global $wppa_done;
 						}
 					}
 					// Notyfy user
-					if ( wppa_switch('wppa_comment_notify_added') ) echo('<script type="text/javascript">alert("'.__a('Comment added').'")</script>');
+					if ( wppa_switch('wppa_comment_notify_added') ) echo('<script id="cma" type="text/javascript">alert("'.__a('Comment added').'");jQuery("#cma").html("")</script>');
 				}
 			}
 			else {
@@ -3755,9 +3767,9 @@ global $album;
 		case 2: $ext = 'jpg'; break;
 		case 3: $ext = 'png'; break;
 	}
-	$id = wppa_nextkey(WPPA_PHOTOS);
-	if ( wppa_get_post('user-name') ) {
-		$name = wppa_get_post('user-name');
+//	$id = wppa_nextkey(WPPA_PHOTOS);
+	if ( wppa_get_post( 'user-name' ) ) {
+		$name = strip_tags( wppa_get_post( 'user-name' ) );
 	}
 	else {
 		$name = $file['name'];
@@ -3766,20 +3778,22 @@ global $album;
 	if ( wppa_switch('wppa_strip_file_ext') ) {
 		$name = preg_replace('/\.[^.]*$/', '', $name);
 	}
-	$porder = '0';
-	$desc = balanceTags(wppa_get_post('user-desc'), true);
-	$mrat = '0';
-	$linkurl = '';
-	$linktitle = '';
+//	$porder = '0';
+	$desc = balanceTags( wppa_get_post( 'user-desc' ), true );
+//	$mrat = '0';
+//	$linkurl = '';
+//	$linktitle = '';
 	$linktarget = '_self';
-	$owner = wppa_get_user();
+//	$owner = wppa_get_user();
 	$status = ( $wppa_opt['wppa_upload_moderate'] && !current_user_can('wppa_admin') ) ? 'pending' : 'publish';
 	$filename = $file['name'];
-	$query = $wpdb->prepare('INSERT INTO `' . WPPA_PHOTOS . '` (`id`, `album`, `ext`, `name`, `p_order`, `description`, `mean_rating`, `linkurl`, `linktitle`, `linktarget`, `timestamp`, `owner`, `status`, `tags`, `alt`, `filename`, `modified`, `location`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, \'0\', \'\')', $id, $alb, $ext, $name, $porder, $desc, $mrat, $linkurl, $linktitle, $linktarget, time(), $owner, $status, $album['default_tags'], '', $filename);
-	wppa_flush_treecounts($alb);
-	wppa_dbg_q('Q58');
+	$id = wppa_create_photo_entry( array( 'album' => $alb, 'ext' => $ext, 'name' => $name, 'description' => $desc, 'status' => $status, 'filename' => $filename, ) );
+//	(`id`, `album`, `ext`, `name`, `p_order`, `description`, `mean_rating`, `linkurl`, `linktitle`, `linktarget`, `timestamp`, `owner`, `status`, `tags`, `alt`, `filename`, `modified`, `location`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, \'0\', \'\')', 
+//	$id, $alb, $ext, $name, $porder, $desc, $mrat, $linkurl, $linktitle, $linktarget, time(), $owner, $status, $album['default_tags'], '', $filename);
+//
+//	wppa_dbg_q('Q58');
 	
-	if ($wpdb->query($query) === false) {
+	if ( ! $id ) {
 		wppa_err_alert(__a('Could not insert photo into db.'));
 		return false;
 	}
@@ -3787,13 +3801,14 @@ global $album;
 		wppa_save_source($file['tmp_name'], $filename, $alb);
 		wppa_update_album_timestamp($alb);
 		wppa_set_last_album($alb);
+		wppa_flush_treecounts($alb);
 	}
 	if ( wppa_make_the_photo_files($file['tmp_name'], $id, $ext) ) {
 		wppa_index_add('photo', $id);
 		if ( $wppa_opt['wppa_upload_notify'] ) {
 			$to = get_bloginfo('admin_email');
 			$subj = sprintf(__a('New photo uploaded: %s'), $name);
-			$cont['0'] = sprintf(__a('User %s uploaded photo %s into album %s'), $owner, $id, wppa_get_album_name($alb));
+			$cont['0'] = sprintf(__a('User %s uploaded photo %s into album %s'), wppa_get_user(), $id, wppa_get_album_name($alb));
 			if ( $wppa_opt['wppa_upload_moderate'] && !current_user_can('wppa_admin') ) {
 				$cont['1'] = __a('This upload requires moderation');
 				$cont['2'] = '<a href="'.get_admin_url().'admin.php?page=wppa_admin_menu&tab=pmod&photo='.$id.'" >'.__a('Moderate manage photo').'</a>';

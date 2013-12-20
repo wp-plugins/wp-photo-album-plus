@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the upload/import pages and functions
-* Version 5.2.4
+* Version 5.2.5
 *
 */
 
@@ -69,7 +69,6 @@ global $wppa_revno;
 	wppa_sanitize_files();
 	
 	// Check database
-	// if ( get_option('wppa_revision') != $wppa_revno ) 
 	wppa_check_database(true);
 
 	?>
@@ -1166,7 +1165,7 @@ global $wppa_opt;
 						$id = basename($album);
 						$id = substr($id, 0, strpos($id, '.'));
 //						if (!wppa_is_id_free('album', $id)) $id = wppa_nextkey(WPPA_ALBUMS);
-//						$query = $wpdb->prepare( "INSERT INTO `" . WPPA_ALBUMS . "` (`id`, `name`, `description`, `a_order`, `a_parent`, `p_order_by`, `main_photo`, `cover_linktype`, `cover_linkpage`, `owner`, `timestamp`, `default_tags`, `cover_type`, `suba_order_by`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, '', '', '')", $id, stripslashes($name), stripslashes($desc), $aord, $parent, $porder, '0', 'content', '0', $owner, time());
+//						$query = $wpdb->prepare( "INSERT IN TO `" . WPPA_ALBUMS . "` (`id`, `name`, `description`, `a_order`, `a_parent`, `p_order_by`, `main_photo`, `cover_linktype`, `cover_linkpage`, `owner`, `timestamp`, `default_tags`, `cover_type`, `suba_order_by`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, '', '', '')", $id, stripslashes($name), stripslashes($desc), $aord, $parent, $porder, '0', 'content', '0', $owner, time());
 //						$iret = $wpdb->query($query);
 						
 						$id = wppa_create_album_entry( array (	'id' 			=> $id, 
@@ -1210,7 +1209,7 @@ global $wppa_opt;
 			$name	= strip_tags($_POST['cre-album']);
 			$desc 	= sprintf(__('This album has been converted from ngg gallery %s', 'wppa'), $name);
 			$uplim	= '0/0';	// Unlimited not to destroy the conversion process!!
-//			$query = $wpdb->prepare("INSERT INTO `" . WPPA_ALBUMS . "` (`id`, `name`, `description`, `a_order`, `a_parent`, `p_order_by`, `main_photo`, `cover_linktype`, `cover_linkpage`, `owner`, `timestamp`, `upload_limit`, `alt_thumbsize`, `default_tags`, `cover_type`, `suba_order_by`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, '', '', '')", $album, $name, $desc, '0', '0', '0', '0', 'content', '0', wppa_get_user(), time(), $uplim, '0');
+//			$query = $wpdb->prepare("INSERT IN TO `" . WPPA_ALBUMS . "` (`id`, `name`, `description`, `a_order`, `a_parent`, `p_order_by`, `main_photo`, `cover_linktype`, `cover_linkpage`, `owner`, `timestamp`, `upload_limit`, `alt_thumbsize`, `default_tags`, `cover_type`, `suba_order_by`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, '', '', '')", $album, $name, $desc, '0', '0', '0', '0', 'content', '0', wppa_get_user(), time(), $uplim, '0');
 			$album = wppa_create_album_entry( array ( 	'name' 			=> $name,
 														'description' 	=> $desc,
 														'upload_limit' 	=> $uplim
@@ -1509,7 +1508,7 @@ global $wppa_opt;
 //			$id 	= $alb;
 			$name	= basename($file);
 			$uplim	= $wppa_opt['wppa_upload_limit_count'].'/'.$wppa_opt['wppa_upload_limit_time'];
-//			$query = $wpdb->prepare("INSERT INTO `" . WPPA_ALBUMS . "` (`id`, `name`, `description`, `a_order`, `a_parent`, `p_order_by`, `main_photo`, `cover_linktype`, `cover_linkpage`, `owner`, `timestamp`, `upload_limit`, `alt_thumbsize`, `default_tags`, `cover_type`, `suba_order_by`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, '', '', '')", $id, $name, '', '0', $parent, '0', '0', 'content', '0', wppa_get_user(), time(), $uplim, '0');
+//			$query = $wpdb->prepare("INSERT IN TO `" . WPPA_ALBUMS . "` (`id`, `name`, `description`, `a_order`, `a_parent`, `p_order_by`, `main_photo`, `cover_linktype`, `cover_linkpage`, `owner`, `timestamp`, `upload_limit`, `alt_thumbsize`, `default_tags`, `cover_type`, `suba_order_by`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, '', '', '')", $id, $name, '', '0', $parent, '0', '0', 'content', '0', wppa_get_user(), time(), $uplim, '0');
 //			$iret = $wpdb->query($query);
 			$alb = wppa_create_album_entry( array ( 'name' 		=> $name,
 													'a_parent' 	=> $parent

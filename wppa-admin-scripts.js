@@ -1,7 +1,7 @@
 /* admin-scripts.js */
 /* Package: wp-photo-album-plus
 /*
-/* Version 5.2.4
+/* Version 5.2.5
 /* Various js routines used in admin pages		
 */
 
@@ -877,19 +877,50 @@ function wppaAjaxApplyWatermark(photo, file, pos) {
 }
 
 var wppaAjaxPhotoCount = new Array();
-var wppaLastDesc = new Array();
+var wppaPhotoUpdateMatrix = new Array();
+
 function wppaAjaxUpdatePhoto(photo, actionslug, elem, refresh) {
 
-	// For frontend edit, to avoid extra call whne pressing the refresh and exit button: 
-	// do NOT update for loosing focus if the last keyup produced same result
-	if ( actionslug == 'description' ) {
-		if ( wppaLastDesc[photo] ) {
-			if ( wppaLastDesc[photo] == wppaEncode(elem.value) ) {
-				return;
-			}
+	var count = wppaPhotoUpdateMatrix.length;
+	var i = 0;
+	var found = false;
+	var index;
+	while ( i < count ) {
+		if ( wppaPhotoUpdateMatrix[i][0] == photo && wppaPhotoUpdateMatrix[i][1] == actionslug ) {
+			found = true;
+			index = i;
 		}
-		wppaLastDesc[photo] = wppaEncode(elem.value);
+		i++;
 	}
+	if ( ! found ) {
+		var oldval = false;
+		var newval = false;
+		var busy = false;
+		var refresh = false;
+		wppaPhotoUpdateMatrix[count] = [photo, actionslug, oldval, newval, busy, refresh];
+		index = count;
+	}
+	wppaPhotoUpdateMatrix[index][3] = elem.value;
+	wppaPhotoUpdateMatrix[index][5] = refresh;
+
+	wppaAjaxUpdatePhotoMonitor();	
+}
+
+function wppaAjaxUpdatePhotoMonitor() {
+
+	var count = wppaPhotoUpdateMatrix.length;
+	var i = 0;
+
+	while ( i < count ) {
+		if ( ( wppaPhotoUpdateMatrix[i][2] != wppaPhotoUpdateMatrix[i][3] ) && ! wppaPhotoUpdateMatrix[i][4] ) {
+			wppaPhotoUpdateMatrix[i][4] = true;
+			_wppaAjaxUpdatePhoto( wppaPhotoUpdateMatrix[i][0], wppaPhotoUpdateMatrix[i][1], wppaPhotoUpdateMatrix[i][3], wppaPhotoUpdateMatrix[i][5] );
+		}
+		i++;
+	}
+}
+
+function _wppaAjaxUpdatePhoto(photo, actionslug, value, refresh) {
 
 	wppaFeAjaxLog('in');
 	if ( ! wppaAjaxPhotoCount[photo] ) wppaAjaxPhotoCount[photo] = 0;
@@ -903,8 +934,7 @@ function wppaAjaxUpdatePhoto(photo, actionslug, elem, refresh) {
 	// Make the Ajax send data
 	var data = 'action=wppa&wppa-action=update-photo&photo-id='+photo+'&item='+actionslug;
 	data += '&wppa-nonce='+document.getElementById('photo-nonce-'+photo).value;
-	if (elem != 0) data += '&value='+wppaEncode(elem.value);
-	else data += '&value=0';
+	data += '&value='+wppaEncode(value);
 
 	// Do the Ajax action
 	xmlhttp.open('POST',wppaAjaxUrl,true);
@@ -949,7 +979,23 @@ function wppaAjaxUpdatePhoto(photo, actionslug, elem, refresh) {
 				if ( actionslug == 'description' ) jQuery('#wppa-photo-spin-'+photo).css({visibility:'hidden'});
 //				if ( actionslug == 'rotleft' || actionslug == 'rotright' ) 
 
+				// Update matrix
+				var i = 0;
+				var index;
+				count = wppaPhotoUpdateMatrix.length;
+				while ( i < count ) {
+					if ( wppaPhotoUpdateMatrix[i][0] == photo && wppaPhotoUpdateMatrix[i][1] == actionslug ) {
+						index = i;
+					}
+					i++;
+				}
+				wppaPhotoUpdateMatrix[index][2] = value;
+				wppaPhotoUpdateMatrix[index][4] = false;	// no more busy
+				wppaPhotoUpdateMatrix[index][5] = false;	// reset refresh
+				
 				wppaFeAjaxLog('out');
+				
+				wppaAjaxUpdatePhotoMonitor();	// check for more
 
 				if ( refresh ) wppaRefresh('photo_'+photo);
 			}
@@ -961,7 +1007,48 @@ function wppaAjaxUpdatePhoto(photo, actionslug, elem, refresh) {
 }
 
 var wppaAjaxAlbumCount = 0;
+var wppaAlbumUpdateMatrix = new Array();
+
 function wppaAjaxUpdateAlbum(album, actionslug, elem) {
+
+	var count = wppaAlbumUpdateMatrix.length;
+	var i = 0;
+	var found = false;
+	var index;
+	while ( i < count ) {
+		if ( wppaAlbumUpdateMatrix[i][0] == album && wppaAlbumUpdateMatrix[i][1] == actionslug ) {
+			found = true;
+			index = i;
+		}
+		i++;
+	}
+	if ( ! found ) {
+		var oldval = false;
+		var newval = false;
+		var busy = false;
+		wppaAlbumUpdateMatrix[count] = [album, actionslug, oldval, newval, busy];
+		index = count;
+	}
+	wppaAlbumUpdateMatrix[index][3] = elem.value;
+	
+	wppaAjaxUpdateAlbumMonitor();
+}
+
+function wppaAjaxUpdateAlbumMonitor() {
+
+	var count = wppaAlbumUpdateMatrix.length;
+	var i = 0;
+
+	while ( i < count ) {
+		if ( ( wppaAlbumUpdateMatrix[i][2] != wppaAlbumUpdateMatrix[i][3] ) && ! wppaAlbumUpdateMatrix[i][4] ) {
+			wppaAlbumUpdateMatrix[i][4] = true;
+			_wppaAjaxUpdateAlbum( wppaAlbumUpdateMatrix[i][0], wppaAlbumUpdateMatrix[i][1], wppaAlbumUpdateMatrix[i][3] );
+		}
+		i++;
+	}
+}
+
+function _wppaAjaxUpdateAlbum(album, actionslug, value) {
 
 	wppaAjaxAlbumCount++;
 	
@@ -973,8 +1060,7 @@ function wppaAjaxUpdateAlbum(album, actionslug, elem) {
 	// Make the Ajax send data
 	var data = 'action=wppa&wppa-action=update-album&album-id='+album+'&item='+actionslug;
 	data += '&wppa-nonce='+document.getElementById('album-nonce-'+album).value;
-	if (elem != 0) data += '&value='+wppaEncode(elem.value);
-	else data += '&value=0';
+	data += '&value='+wppaEncode(value);
 
 	// Do the Ajax action
 	xmlhttp.open('POST',wppaAjaxUrl,true);
@@ -1021,8 +1107,24 @@ function wppaAjaxUpdateAlbum(album, actionslug, elem) {
 				}
 				// Hide spinner
 				if ( actionslug == 'description' ) jQuery('#wppa-album-spin').css({visibility:'hidden'});
+				
+				// Update Matrix
+				var i = 0;
+				var index;
+				var count = wppaAlbumUpdateMatrix.length;
+				while ( i < count ) {
+					if ( wppaAlbumUpdateMatrix[i][0] == album && wppaAlbumUpdateMatrix[i][1] == actionslug ) {
+						index = i;
+					}
+					i++;
+				}
+				wppaAlbumUpdateMatrix[index][2] = value;
+				wppaAlbumUpdateMatrix[index][4] = false;
+					
+				wppaAjaxUpdateAlbumMonitor();	// Check for more to do
+				
 				// Refresh for alt main_photo selections when cover type changed
-				if ( actionslug == 'cover_type' ) document.location = document.location;
+//				if ( actionslug == 'cover_type' ) document.location = document.location;
 			}
 			else {	// status != 200
 				document.getElementById('albumstatus-'+album).innerHTML = '<span style="color:red;" >Comm error '+xmlhttp.status+': '+xmlhttp.statusText+'</span>';

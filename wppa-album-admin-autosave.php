@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * create, edit and delete albums
-* version 5.2.4
+* version 5.2.5
 *
 */
 
@@ -76,7 +76,7 @@ function _wppa_admin() {
 					}
 				}
 				else {
-					$parent = '0';
+					$parent = $wppa_opt['wppa_default_parent'];
 					$name = __('New Album', 'wppa');
 					if ( ! wppa_can_create_top_album() ) wp_die('No rights to create a top-level album');
 				}				
@@ -84,7 +84,7 @@ function _wppa_admin() {
 //				$query = $wpdb->prepare("INSERT INTO `" . WPPA_ALBUMS . "` (`id`, `name`, `description`, `a_order`, `a_parent`, `p_order_by`, `main_photo`, `cover_linktype`, `cover_linkpage`, `owner`, `timestamp`, `upload_limit`, `alt_thumbsize`, `default_tags`, `cover_type`, `suba_order_by`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, '', '', '')", $id, $name, '', '0', $parent, '0', '0', 'content', '0', wppa_get_user(), time(), $uplim, '0');
 //				$iret = $wpdb->query($query);
 				$id = wppa_create_album_entry( array( 'id' => $id, 'name' => $name, 'a_parent' => $parent ) );
-				if ( $id === FALSE ) {
+				if ( ! $id ) {
 					wppa_error_message( __('Could not create album.', 'wppa') );
 					wp_die('Sorry, cannot continue');
 				}
@@ -246,7 +246,7 @@ function _wppa_admin() {
 								<td>
 									<?php if ( $wppa_opt['wppa_list_albums_by'] != '1' && $albuminfo['a_order'] != '0' ) { ?>
 										<span class="description" style="color:red">
-										<?php _e('Album order # has only effect if you set the album sort order method to <b>Order #</b> in the Photo Albums -> Settings screen.', 'wppa') ?>
+										<?php _e('Album order # has only effect if you set the album sort order method to <b>Order #</b> in the Photo Albums -> Settings screen.<br />', 'wppa') ?>
 										</span>
 									<?php } ?>
 									<span class="description"><?php _e('If you want to sort the albums by order #, enter / modify the order number here.', 'wppa'); ?></span>
@@ -279,7 +279,46 @@ function _wppa_admin() {
 									<label><?php _e('Photo order:', 'wppa'); ?></label>
 								</th>
 								<td>
-									<select onchange="wppaAjaxUpdateAlbum(<?php echo $edit_id ?>, 'p_order_by', this)"><?php wppa_order_options($order, __('--- default ---', 'wppa'), __('Rating', 'wppa'), __('Timestamp', 'wppa')) ?></select>
+									<?php 
+									$options = array(	__('--- default ---', 'wppa'), 
+														__('Order #', 'wppa'), 
+														__('Name', 'wppa'), 
+														__('Random', 'wppa'), 
+														__('Rating mean value', 'wppa'), 
+														__('Number of votes', 'wppa'), 
+														__('Timestamp', 'wppa'),
+														__('EXIF Date', 'wppa'),
+														__('Order # desc', 'wppa'), 
+														__('Name desc', 'wppa'), 
+														__('Rating mean value desc', 'wppa'), 
+														__('Number of votes desc', 'wppa'), 
+														__('Timestamp desc', 'wppa'),
+														__('EXIF Date desc', 'wppa')
+														);
+									$values = array(	'0', 
+														'1', 
+														'2', 
+														'3', 
+														'4', 
+														'6', 
+														'5', 
+														'7', 
+														'-1', 
+														'-2', 
+														'-4', 
+														'-5', 
+														'-6', 
+														'-7'
+														);
+									?>
+									<select onchange="wppaAjaxUpdateAlbum(<?php echo $edit_id ?>, 'p_order_by', this)">
+									<?php
+										foreach ( array_keys( $options ) as $key ) {
+											$sel = $values[$key] == $order ? ' selected="selected"' : '';
+											echo '<option value="'.$values[$key].'"'.$sel.' >'.$options[$key].'</option>';
+										}
+									?>
+									</select>
 								</td>
 								<td>
 									<span class="description">
@@ -700,11 +739,11 @@ function _wppa_admin() {
 	else {	//  'tab' not set. default, album manage page.
 		
 		// if add form has been submitted
-		if (isset($_POST['wppa-na-submit'])) {
-			check_admin_referer( '$wppa_nonce', WPPA_NONCE );
+//		if (isset($_POST['wppa-na-submit'])) {
+//			check_admin_referer( '$wppa_nonce', WPPA_NONCE );
 
-			wppa_add_album();
-		}
+//			wppa_add_album();
+//		}
 		
 		// if album deleted
 		if (isset($_POST['wppa-del-confirm'])) {
@@ -1499,29 +1538,6 @@ global $wpdb;
 				
 				wppa_delete_photo($photo['id']);
 				
-				/*
-				// remove the photos and thumbs
-				$file = ABSPATH . 'wp-content/uploads/wppa/' . $photo['id'] . '.' . $photo['ext'];
-				if (file_exists($file)) {
-					unlink($file);
-				}
-				
-				$file = ABSPATH . 'wp-content/uploads/wppa/thumbs/' . $photo['id'] . '.' . $photo['ext'];
-				if (file_exists($file)) {
-					unlink($file);
-				}
-				
-				// remove the photo's ratings
-				$wpdb->query($wpdb->prepare('DELETE FROM `' . WPPA_RATING . '` WHERE `photo` = %s', $photo['id']));
-				// remove the photo's comments
-				$wpdb->query($wpdb->prepare('DELETE FROM `' . WPPA_COMMENTS . '` WHERE `photo` = %s', $photo['id']));
-				// Delete source
-				wppa_delete_source($photo['filename'], $id);
-				// Delete indexes
-				wppa_index_quick_remove('photo', $photo['id']);
-				// remove the database entry
-				$wpdb->query($wpdb->prepare('DELETE FROM `'.WPPA_PHOTOS.'` WHERE `id` = %s', $photo['id']));
-*/
 				$cnt++;
 				$t += microtime(true);
 //				wppa_dbg_msg('Del photo took :'.$t, 'red', 'force');

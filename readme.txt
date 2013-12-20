@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile
-Version: 5.2.4
+Version: 5.2.5
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -172,6 +172,27 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 5.2.5 =
+
+= Bug Fixes =
+
+* Newlines in comments will work now.
+* When Slides link to lightbox and Cloudinary is active, the fullsize images are used for lightbox in stead of the (downsized) transformed images.
+* There will no longer be redundant db table indexes generated during plugin update or running Setup in Table VIII-A1.
+* Converting fielsystem from/to flat to/from tree will now also work and auto continue on very large systems ( > 100.000 photos ).
+
+= New Features =
+
+* Search on categories and on comment content ( Table IX-C3.2 and 3.3 ).
+* Increased options for album and photo sequence ordering. The reverse switch ( descending ) is no longer systemwide.
+* EXIF date is saved into the photo data and can be used for sequence ordering.
+* Default parent album settable in Table IX-
+
+= Other Changes =
+
+* Dramatc performance improvements in Album and Photo Admin Autosave.
+* Source file saving on multiblog sites will have a root folder for each blog under the global source folder.
 
 = 5.2.4 =
 
