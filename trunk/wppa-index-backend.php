@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * indexing admin functions
-* version 5.1.7
+* version 5.2.5
 *
 * 
 */
@@ -112,10 +112,7 @@ global $album;
 	if ( $type == 'album' ) {
 		if ( is_numeric($id) ) wppa_cache_album($id);
 		
-		$words = __($album['name']);
-		if ( $album['description'] ) {
-			$words .= ' '.wppa_get_album_desc($album['id']);
-		}
+		$words = __( $album['name'] ).' '.wppa_get_album_desc( $album['id'] ).' '.$album['cats'];
 		$words = wppa_index_raw_to_words($words);
 		
 		foreach ( $words as $word ) {
@@ -125,7 +122,12 @@ global $album;
 				if ( $array[$k] == $id ) {
 					unset ( $array[$k] );
 					$string = wppa_index_array_to_string($array);
-					$wpdb->query("UPDATE `".WPPA_INDEX."` SET `albums` = '".$string."' WHERE `id` = ".$indexline['id']);
+					if ( $string || $indexline['photos'] ) {
+						$wpdb->query("UPDATE `".WPPA_INDEX."` SET `albums` = '".$string."' WHERE `id` = ".$indexline['id']);
+					}
+					else {
+						$wpdb->query("DELETE FROM `".WPPA_INDEX."` WHERE `id` = ".$indexline['id']);
+					}
 				}
 			}
 		}
@@ -135,15 +137,12 @@ global $album;
 		if ( is_numeric($id) ) wppa_cache_thumb($id);
 
 		// Find the raw text
-		$words = __($thumb['name']);																							// Name
-		$words .= ' '.$thumb['filename'];																						// Filename
-		if ( $thumb['description'] ) { 
-			$words .= ' '.wppa_filter_exif(wppa_filter_iptc(__(stripslashes($thumb['description'])),$thumb['id']),$thumb['id']);	// Description
+		$words = __( $thumb['name'] ).' '.$thumb['filename'].' '.wppa_get_photo_desc( $thumb['id'] ).' '.$thumb['tags'];
+		$coms = $wpdb->get_results($wpdb->prepare( "SELECT `comment` FROM `" . WPPA_COMMENTS . "` WHERE `photo` = %s AND `status` = 'approved'", $thumb['id'] ), ARRAY_A );
+		if ( $coms ) foreach ( $coms as $com ) {
+			$words .= ' '.stripslashes( $com['comment'] );
 		}
-		if ( wppa_switch('wppa_search_tags') ) {
-			$words .= ' '.$thumb['tags'];																						// Tags
-		}
-		$words = wppa_index_raw_to_words($words, 'noskips');	// convert raw string to sanitized array
+		$words = wppa_index_raw_to_words($words, 'noskips');
 		
 		foreach ( $words as $word ) {
 			$indexline = $wpdb->get_row("SELECT * FROM `".WPPA_INDEX."` WHERE `slug` = '".$word."'", ARRAY_A);
@@ -152,7 +151,12 @@ global $album;
 				if ( $array[$k] == $id ) {
 					unset ( $array[$k] );
 					$string = wppa_index_array_to_string($array);
-					$wpdb->query("UPDATE `".WPPA_INDEX."` SET `photos` = '".$string."' WHERE `id` = ".$indexline['id']);
+					if ( $string || $indexline['albums'] ) {
+						$wpdb->query("UPDATE `".WPPA_INDEX."` SET `photos` = '".$string."' WHERE `id` = ".$indexline['id']);
+					}
+					else {
+						$wpdb->query("DELETE FROM `".WPPA_INDEX."` WHERE `id` = ".$indexline['id']);
+					}
 				}
 			}
 		}

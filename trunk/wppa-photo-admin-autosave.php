@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * edit and delete photos
-* version 5.2.4
+* version 5.2.5
 *
 */
 
@@ -207,6 +207,18 @@ global $wppa;
 								</td>
 							</tr>
 							
+							<!-- EXIF Date -->
+							<?php if ( $photo['exifdtm'] ) { ?>
+							<tr>
+								<th>
+									<label><?php _e('EXIF Date', 'wppa') ?></label>
+								</th>
+								<td>
+									<?php echo $photo['exifdtm'] ?>
+								</td>
+							</tr>
+							<?php } ?>
+							
 							<!-- Rating -->
 							<tr  >
 								<th  >
@@ -369,7 +381,7 @@ global $wppa;
 								</th>
 								<td>
 									<?php echo $photo['filename'] ?>
-									<?php if ( current_user_can('administrator') && is_file($wppa_opt['wppa_source_dir'].'/album-'.$photo['album'].'/'.$photo['filename']) ) {
+									<?php if ( current_user_can('administrator') && is_file( wppa_get_source_path( $photo['id'] ) ) ) {
 										echo ' '.__('Source file available.', 'wppa'); ?>
 										<a style="cursor:pointer; font-weight:bold;" onclick="wppaAjaxUpdatePhoto(<?php echo $photo['id'] ?>, 'remake', this)">Remake files</a>
 									<?php } ?>

@@ -2,7 +2,7 @@
 //
 // conatins slideshow, theme, ajax and lightbox code
 //
-// Version 5.2.4
+// Version 5.2.5
 
 // Part 1: Slideshow
 //
@@ -817,13 +817,27 @@ function wppaMakeTheSlideHtml(mocc, bgfg, idx) {
 			// Before current slide	// This does NOT work on lightbox 3 !
 			if (wppaLightBox=='wppa') {
 				while (i<idx) {
-					var url = _wppaUrl[mocc][i].replace('/thumbs/', '/');
+					// Make sure fullsize
+					url = wppaMakeFullsizeUrl( _wppaUrl[mocc][i] );
+//					var url = _wppaUrl[mocc][i].replace('/thumbs/', '/');	// Not a thumb
+					// Remove sizespec for Cloudinary
+//					var temp = url.split('//');
+//					var temp2 = temp[1].split('/');
+//					url = temp[0]+'/';
+//					var j = 0;
+//					while ( j < temp2.length ) {
+//						var chunk = temp2[j];
+//						var w = chunk.split('_');
+//						if ( w[0] != 'w' ) url += '/'+chunk;
+//						j++;
+//					}
 					html += '<a href="'+url+'" title="'+_wppaLbTitle[mocc][i]+'" rel="'+wppaLightBox+set+'"></a>';
-						i++;
+					i++;
 				}
 			}
 			// Current slide
-			var url = _wppaUrl[mocc][idx].replace('/thumbs/', '/');
+			var url = wppaMakeFullsizeUrl( _wppaUrl[mocc][idx] );
+			//_wppaUrl[mocc][idx].replace('/thumbs/', '/');
 			html += '<a href="'+url+'" target="'+_wppaLinkTarget[mocc][idx]+'" title="'+_wppaLbTitle[mocc][idx]+'" rel="'+wppaLightBox+set+'">'+
 					'<img title="'+_wppaLinkTitle[mocc][idx]+'" id="theimg'+bgfg+'-'+mocc+'" '+_wppaSlides[mocc][idx]+
 					'</a>';
@@ -831,7 +845,8 @@ function wppaMakeTheSlideHtml(mocc, bgfg, idx) {
 			if (wppaLightBox=='wppa') {
 				i = idx + 1;
 				while (i<_wppaUrl[mocc].length) {
-					var url = _wppaUrl[mocc][i].replace('/thumbs/', '/');
+					var url = wppaMakeFullsizeUrl( _wppaUrl[mocc][i] );
+					//_wppaUrl[mocc][i].replace('/thumbs/', '/');
 					html += '<a href="'+url+'" title="'+_wppaLbTitle[mocc][i]+'" rel="'+wppaLightBox+set+'"></a>';
 					i++;
 				}
@@ -839,6 +854,23 @@ function wppaMakeTheSlideHtml(mocc, bgfg, idx) {
 			jQuery("#theslide"+bgfg+"-"+mocc).html(html);
 		}
 	}
+}
+
+function wppaMakeFullsizeUrl(url) {
+
+	url = url.replace('/thumbs/', '/');	// Not a thumb
+	// Remove sizespec for Cloudinary
+	var temp = url.split('//');
+	var temp2 = temp[1].split('/');
+	url = temp[0]+'/';
+	var j = 0;
+	while ( j < temp2.length ) {
+		var chunk = temp2[j];
+		var w = chunk.split('_');
+		if ( w[0] != 'w' ) url += '/'+chunk;
+		j++;
+	}
+	return url;
 }
 
 function wppaFormatSlide(mocc) {

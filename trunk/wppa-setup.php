@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 5.2.4
+* Version 5.2.5
 *
 */
 
@@ -43,10 +43,10 @@ global $silent;
 					id bigint(20) NOT NULL, 
 					name text NOT NULL, 
 					description text NOT NULL, 
-					a_order smallint(5) unsigned NOT NULL, 
+					a_order smallint(5) NOT NULL, 
 					main_photo bigint(20) NOT NULL, 
 					a_parent bigint(20) NOT NULL,
-					p_order_by int unsigned NOT NULL,
+					p_order_by smallint(5) NOT NULL,
 					cover_linktype tinytext NOT NULL,
 					cover_linkpage bigint(20) NOT NULL,
 					owner text NOT NULL,
@@ -58,7 +58,7 @@ global $silent;
 					suba_order_by tinytext NOT NULL,
 					views bigint(20) NOT NULL default '0',
 					cats tinytext NOT NULL,
-					PRIMARY KEY  (id) 
+					PRIMARY KEY  (id)
 					) DEFAULT CHARACTER SET utf8;";
 					
 	$create_photos = "CREATE TABLE " . WPPA_PHOTOS . " (
@@ -67,7 +67,7 @@ global $silent;
 					ext tinytext NOT NULL, 
 					name text NOT NULL, 
 					description longtext NOT NULL, 
-					p_order smallint(5) unsigned NOT NULL,
+					p_order smallint(5) NOT NULL,
 					mean_rating tinytext NOT NULL,
 					linkurl text NOT NULL,
 					linktitle text NOT NULL,
@@ -83,7 +83,9 @@ global $silent;
 					location tinytext NOT NULL,
 					views bigint(20) NOT NULL default '0',
 					page_id bigint(20) NOT NULL default '0',
-					PRIMARY KEY  (id)
+					exifdtm tinytext NOT NULL,
+					PRIMARY KEY  (id),
+					KEY album (album)
 					) DEFAULT CHARACTER SET utf8;";
 
 	$create_rating = "CREATE TABLE " . WPPA_RATING . " (
@@ -91,7 +93,8 @@ global $silent;
 					photo bigint(20) NOT NULL,
 					value smallint(5) NOT NULL,
 					user text NOT NULL,
-					PRIMARY KEY  (id)
+					PRIMARY KEY  (id),
+					KEY photo (photo)
 					) DEFAULT CHARACTER SET utf8;";
 					
 	$create_comments = "CREATE TABLE " . WPPA_COMMENTS . " (
@@ -103,7 +106,8 @@ global $silent;
 					email text NOT NULL,
 					comment text NOT NULL,
 					status tinytext NOT NULL,
-					PRIMARY KEY  (id)	
+					PRIMARY KEY  (id),
+					KEY photo (photo)
 					) DEFAULT CHARACTER SET utf8;";
 					
 	$create_iptc = "CREATE TABLE " . WPPA_IPTC . " (
@@ -112,7 +116,8 @@ global $silent;
 					tag tinytext NOT NULL,
 					description text NOT NULL,
 					status tinytext NOT NULL,
-					PRIMARY KEY  (id)					
+					PRIMARY KEY  (id),
+					KEY photo (photo)
 					) DEFAULT CHARACTER SET utf8;";
 
 	$create_exif = "CREATE TABLE " . WPPA_EXIF . " (
@@ -121,7 +126,8 @@ global $silent;
 					tag tinytext NOT NULL,
 					description text NOT NULL,
 					status tinytext NOT NULL,
-					PRIMARY KEY  (id)					
+					PRIMARY KEY  (id),
+					KEY photo (photo)
 					) DEFAULT CHARACTER SET utf8;";
 					
 	$create_index = "CREATE TABLE " . WPPA_INDEX . " (
@@ -129,7 +135,8 @@ global $silent;
 					slug tinytext NOT NULL,
 					albums text NOT NULL,
 					photos text NOT NULL,
-					PRIMARY KEY  (id)
+					PRIMARY KEY  (id),
+					KEY slug (slug(20))
 					) DEFAULT CHARACTER SET utf8;";
 					
 	require_once ABSPATH . 'wp-admin/includes/upgrade.php';
@@ -272,24 +279,36 @@ global $silent;
 			wppa_copy_setting('wppa_show_bread', 'wppa_show_bread_pages');
 			wppa_remove_setting('wppa_show_bread');
 		}
-		if ( $old_rev <= '4990' ) {
-			$wpdb->query('ALTER TABLE `'.WPPA_PHOTOS.'` ADD INDEX ( `album` )');
-		}
+//		if ( $old_rev <= '4990' ) {
+//			$wpdb->query('ALTER TABLE `'.WPPA_PHOTOS.'` ADD INDEX ( `album` )');
+//		}
 		if ( $old_rev <= '5000' ) {
 			wppa_remove_setting('wppa_autoclean');
 		}
-		if ( $old_rev <= '5004' ) {
-			$wpdb->query('ALTER TABLE `'.WPPA_INDEX.'` ADD INDEX ( `slug`(10) )');
-		}
+//		if ( $old_rev <= '5004' ) {
+//			$wpdb->query('ALTER TABLE `'.WPPA_INDEX.'` ADD INDEX ( `slug`(20) )');
+//		}
 		if ( $old_rev <= '5010' ) {
 			wppa_copy_setting('wppa_apply_newphoto_desc', 'wppa_apply_newphoto_desc_user');
 		}
 		if ( $old_rev <= '5018' ) {
-			$wpdb->query('ALTER TABLE `'.WPPA_IPTC.'` ADD INDEX ( `photo` )');
-			$wpdb->query('ALTER TABLE `'.WPPA_EXIF.'` ADD INDEX ( `photo` )');
+//			$wpdb->query('ALTER TABLE `'.WPPA_IPTC.'` ADD INDEX ( `photo` )');
+//			$wpdb->query('ALTER TABLE `'.WPPA_EXIF.'` ADD INDEX ( `photo` )');
 		}
 		if ( $old_rev <= '5107' ) {
 			delete_option('wppa_taglist'); 	// Forces recreation
+		}
+		if ( $old_rev <= '5205' ) {
+			if ( get_option('wppa_list_albums_desc', 'nil') == 'yes' ) {
+				$value = get_option('wppa_list_albums_by', '0') * '-1';
+				wppa_update_option('wppa_list_albums_by', $value);
+				wppa_remove_setting('wppa_list_albums_desc');
+			}
+			if ( get_option('wppa_list_photos_desc', 'nil') == 'yes' ) {
+				$value = get_option('wppa_list_photos_by', '0') * '-1';
+				wppa_update_option('wppa_list_photos_by', $value);
+				wppa_remove_setting('wppa_list_photos_desc');
+			}
 		}
 
 		
@@ -938,6 +957,7 @@ Hide Camera info
 						'wppa_grant_an_album'		=> 'no',
 						'wppa_grant_name'			=> 'display',
 						'wppa_grant_parent'			=> '0',
+						'wppa_default_parent' 		=> '0',
 						
 						'wppa_max_albums'				=> '0',
 						'wppa_alt_is_restricted'		=> 'no',
@@ -953,6 +973,8 @@ Hide Camera info
 						'wppa_search_linkpage' 			=> '0',		// 1
 						'wppa_excl_sep' 				=> 'no',	// 2
 						'wppa_search_tags'				=> 'no',
+						'wppa_search_cats'				=> 'no',
+						'wppa_search_comments' 			=> 'no',
 						'wppa_photos_only'				=> 'no',	// 3
 						'wppa_indexed_search'			=> 'no',
 						'wppa_max_search_photos'		=> '250',

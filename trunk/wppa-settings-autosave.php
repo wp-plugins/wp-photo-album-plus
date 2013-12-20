@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 5.2.4
+* Version 5.2.5
 *
 */
 
@@ -19,6 +19,7 @@ global $wp_roles;
 global $wppa_table;
 global $wppa_subtable;
 global $wppa_revno;
+global $thumb;
 			
 
 	// Initialize
@@ -396,9 +397,11 @@ wppa_fix_source_extensions();
 	if ( $fs == 'to-tree' || $fs == 'to-flat' ) {
 		$time_up = false;
 		$last_converted = get_option('wppa_last_converted', '0');
+		$upto = $wpdb->get_var( "SELECT `id` FROM `".WPPA_PHOTOS."` ORDER BY `id` DESC LIMIT 1" );
+		$upto++;
+		
 		wppa_warning_message(__('Converting file structure, starting at id='.($last_converted+'1').', please wait...', 'wppa'));
-		$last_converted = get_option('wppa_last_converted', '0');
-		$photos = $wpdb->get_results( "SELECT * FROM `".WPPA_PHOTOS."` WHERE `id` > ".$last_converted." ORDER BY `id`", ARRAY_A );
+		
 		$j = '0';
 		if ( $fs == 'to-tree' ) {
 			$from = 'flat';
@@ -408,19 +411,26 @@ wppa_fix_source_extensions();
 			$from = 'tree';
 			$to = 'flat';
 		}
-		foreach ( $photos as $photo ) {
-			if ( file_exists( wppa_get_photo_path($photo['id'], $from) ) ) {
-				rename ( wppa_get_photo_path($photo['id'], $from), wppa_get_photo_path($photo['id'], $to) );
+		
+		$time_up = false;
+		$id = $last_converted + '1';
+		while ( $id < $upto && ! $time_up ) {
+			wppa_cache_thumb( $id );
+			if ( $thumb ) {
+				if ( file_exists( wppa_get_photo_path( $id, $from ) ) ) {
+					@ rename ( wppa_get_photo_path( $id, $from ), wppa_get_photo_path( $id, $to ) );
+					$j++;
+				}
+				if ( file_exists( wppa_get_thumb_path( $id, $from ) ) ) {
+					@ rename ( wppa_get_thumb_path( $id, $from ), wppa_get_thumb_path( $id, $to ) );
+				}
+				update_option('wppa_last_converted', $id);
+				$time_up = wppa_is_time_up($j);
+				if ( $time_up ) {
+					wppa_ok_message('Trying to continue...<script type="text/javascript">document.location=document.location</script>');
+				}
 			}
-			if ( file_exists( wppa_get_thumb_path($photo['id'], $from ) ) ) {
-				rename ( wppa_get_thumb_path($photo['id'], $from), wppa_get_thumb_path($photo['id'], $to) );
-			}
-			$j++;
-			$time_up = wppa_is_time_up($j);
-			if ( $time_up ) {
-				update_option('wppa_last_converted', $photo['id']);
-				wppa_ok_message('Trying to continue...<script type="text/javascript">document.location=document.location</script>');
-			}
+			$id++;
 		}
 		if ( ! $time_up ) {
 			wppa_update_option('wppa_last_converted', '0');
@@ -2452,11 +2462,39 @@ wppa_fix_source_extensions();
 							$desc = __('Photo ordering sequence method.', 'wppa');
 							$help = esc_js(__('Specify the way the photos should be ordered. This is the default setting. You can overrule the default sorting order on a per album basis.', 'wppa'));
 							$slug = 'wppa_list_photos_by';
-							$options = array(__('--- none ---', 'wppa'), __('Order #', 'wppa'), __('Name', 'wppa'), __('Random', 'wppa'), __('Rating mean value', 'wppa'), __('Number of votes', 'wppa'), __('Timestamp', 'wppa'));
-							$values = array('0', '1', '2', '3', '4', '6', '5');
+							$options = array(	__('--- none ---', 'wppa'), 
+												__('Order #', 'wppa'), 
+												__('Name', 'wppa'), 
+												__('Random', 'wppa'), 
+												__('Rating mean value', 'wppa'), 
+												__('Number of votes', 'wppa'), 
+												__('Timestamp', 'wppa'),
+												__('EXIF Date', 'wppa'),
+												__('Order # desc', 'wppa'), 
+												__('Name desc', 'wppa'), 
+												__('Rating mean value desc', 'wppa'), 
+												__('Number of votes desc', 'wppa'), 
+												__('Timestamp desc', 'wppa'),
+												__('EXIF Date desc', 'wppa')
+												);
+							$values = array(	'0', 
+												'1', 
+												'2', 
+												'3', 
+												'4', 
+												'6', 
+												'5', 
+												'7', 
+												'-1', 
+												'-2', 
+												'-4', 
+												'-5', 
+												'-6', 
+												'-7'
+												);
 							$html = wppa_select($slug, $options, $values);
 							wppa_setting($slug, '1', $name, $desc, $html, $help);
-							
+/*							
 							$name = __('Descending', 'wppa');
 							$desc = __('Descending order.', 'wppa');
 							$help = esc_js(__('If checked: largest first', 'wppa'));
@@ -2464,7 +2502,7 @@ wppa_fix_source_extensions();
 							$slug = 'wppa_list_photos_desc';
 							$html = wppa_checkbox($slug);
 							wppa_setting($slug, '2', $name, $desc, $html, $help);
-							
+*/							
 							$name = __('Thumbnail type', 'wppa');
 							$desc = __('The way the thumbnail images are displayed.', 'wppa');
 							$help = esc_js(__('You may select an altenative display method for thumbnails. Note that some of the thumbnail settings do not apply to all available display methods.', 'wppa'));
@@ -2529,18 +2567,34 @@ wppa_fix_source_extensions();
 							$desc = __('Album ordering sequence method.', 'wppa');
 							$help = esc_js(__('Specify the way the albums should be ordered.', 'wppa'));
 							$slug = 'wppa_list_albums_by';
-							$options = array(__('--- none ---', 'wppa'), __('Order #', 'wppa'), __('Name', 'wppa'), __('Random', 'wppa'), __('Timestamp', 'wppa'));
-							$values = array('0', '1', '2', '3', '5');
+							$options = array(	__('--- none ---', 'wppa'),
+												__('Order #', 'wppa'), 
+												__('Name', 'wppa'), 
+												__('Random', 'wppa'), 
+												__('Timestamp', 'wppa'),
+												__('Order # desc', 'wppa'), 
+												__('Name desc', 'wppa'),
+												__('Timestamp desc', 'wppa'),
+												);
+							$values = array(	'0', 
+												'1', 
+												'2', 
+												'3', 
+												'5',
+												'-1',
+												'-2',
+												'-5'
+												);
 							$html = wppa_select($slug, $options, $values);
 							wppa_setting($slug, '1', $name, $desc, $html, $help);
-							
+/*							
 							$name = __('Descending', 'wppa');
 							$desc = __('Descending order.', 'wppa');
 							$help = esc_js(__('If checked: largest first', 'wppa'));
 							$slug = 'wppa_list_albums_desc';
 							$html = wppa_checkbox($slug);
 							wppa_setting($slug, '2', $name, $desc, $html, $help);
-							
+*/							
 							$name = __('Placement', 'wppa');
 							$desc = __('Cover image position.', 'wppa');
 							$help = esc_js(__('Enter the position that you want to be used for the default album cover selected in Table IV-D6.', 'wppa'));
@@ -4453,12 +4507,28 @@ wppa_fix_source_extensions();
 							$html = wppa_checkbox($slug);
 							wppa_setting($slug, '5.1', $name, $desc, $html, $help);
 							
+							$name = __('Default parent', 'wppa');
+							$desc = __('The parent album of new albums.', 'wppa');
+							$help = '';
+							$slug = 'wppa_default_parent';
+							$opts = array( __('--- none ---', 'wppa'), __('--- separate ---', 'wppa') );
+							$vals = array( '0', '-1');
+							$albs = $wpdb->get_results( "SELECT `id`, `name` FROM`" . WPPA_ALBUMS . "` ORDER BY `name`", ARRAY_A );
+							if ( $albs ) {
+								foreach ( $albs as $alb ) {
+									$opts[] = __(stripslashes($alb['name']));
+									$vals[] = $alb['id'];
+								}
+							}
+							$html = wppa_select($slug, $opts, $vals);
+							wppa_setting($slug, '5.5', $name, $desc, $html, $help);
+
 							$name = __('Grant an album', 'wppa');
 							$desc = __('Create an album for each user logging in.', 'wppa');
 							$help = '';
 							$slug = 'wppa_grant_an_album';
 							$html = wppa_checkbox($slug);
-							wppa_setting($slug, '6', $name, $desc, $html, $help);
+							wppa_setting($slug, '6.1', $name, $desc, $html, $help);
 
 							$name = __('Grant album name', 'wppa');
 							$desc = __('The name to be used for the album.', 'wppa');
@@ -4586,7 +4656,21 @@ wppa_fix_source_extensions();
 							$help = esc_js(__('When checked, the tags of the photo will also be searched.', 'wppa'));
 							$slug = 'wppa_search_tags';
 							$html = wppa_checkbox($slug);
-							wppa_setting($slug, '3', $name, $desc, $html, $help);
+							wppa_setting($slug, '3.1', $name, $desc, $html, $help);
+							
+							$name = __('Include categries', 'wppa');
+							$desc = __('Do also search the album categories.', 'wppa');
+							$help = esc_js(__('When checked, the categories of the album will also be searched.', 'wppa'));
+							$slug = 'wppa_search_cats';
+							$html = wppa_checkbox($slug);
+							wppa_setting($slug, '3.2', $name, $desc, $html, $help);
+							
+							$name = __('Include comments', 'wppa');
+							$desc = __('Do also search the comments on photos.', 'wppa');
+							$help = esc_js(__('When checked, the comments of the photos will also be searched.', 'wppa'));
+							$slug = 'wppa_search_comments' ;
+							$html = wppa_checkbox($slug);
+							wppa_setting($slug, '3.3', $name, $desc, $html, $help);
 							
 							$name = __('Photos only', 'wppa');
 							$desc = __('Search for photos only.', 'wppa');

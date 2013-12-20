@@ -2,7 +2,7 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 5.2.4
+* version 5.2.5
 *
 */
 
@@ -610,6 +610,8 @@ global $wppa_initruntimetime;
 						'wppa_search_linkpage' 			=> '',
 						'wppa_excl_sep' 				=> '',
 						'wppa_search_tags'				=> '',
+						'wppa_search_cats'				=> '',
+						'wppa_search_comments' 			=> '',
 						'wppa_photos_only'				=> '',	// 3
 						'wppa_indexed_search'			=> '',
 						'wppa_max_search_photos'		=> '',
@@ -662,6 +664,7 @@ global $wppa_initruntimetime;
 						'wppa_grant_an_album'			=> '',
 						'wppa_grant_name'				=> '',
 						'wppa_grant_parent'				=> '',
+						'wppa_default_parent' 			=> '',
 						'wppa_max_albums'				=> '',
 						'wppa_alt_is_restricted'		=> '',
 						'wppa_link_is_restricted'		=> '',
@@ -801,10 +804,7 @@ global $wppa_initruntimetime;
 				else {
 					$desc = __a('Default photo album for').' '.$user;
 				}
-//				$uplim = $wppa_opt['wppa_upload_limit_count'].'/'.$wppa_opt['wppa_upload_limit_time'];
 				$parent = $wppa_opt['wppa_grant_parent'];
-//				$query = $wpdb->prepare("INSERT INTO `" . WPPA_ALBUMS . "` (`id`, `name`, `description`, `a_order`, `a_parent`, `p_order_by`, `main_photo`, `cover_linktype`, `cover_linkpage`, `owner`, `timestamp`, `upload_limit`, `alt_thumbsize`, `default_tags`, `cover_type`, `suba_order_by`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, '', '', '')", $id, $name, $desc, '0', $parent, '0', '0', 'content', '0', $owner, time(), $uplim, '0');
-//				$iret = $wpdb->query($query);
 				$id = wppa_create_album_entry( array ( 'name' => $name, 'description' => $desc, 'a_parent' => $parent) );
 				wppa_flush_treecounts($parent);
 				wppa_index_add('album', $id);
@@ -921,7 +921,7 @@ function wppa_get_imgdir() {
 }
 
 // get album order
-function wppa_get_album_order($parent = '0') {
+function wppa_get_album_order( $parent = '0' ) {
 global $wppa;
 global $wppa_opt;
 global $album;
@@ -932,95 +932,113 @@ global $album;
 	// Album given ?
 	if ( $parent ) { 	
 		wppa_cache_album($parent);
-		// Method not default ?
-		if ( $album['suba_order_by'] ) {
-			switch ( $album['suba_order_by'] ) {
-				case '1':
-					$result = 'ORDER BY a_order';
-					break;
-				case '-1':
-					$result = 'ORDER BY a_order DESC';
-					break;
-				case '2':
-					$result = 'ORDER BY name';
-					break;  
-				case '-2':
-					$result = 'ORDER BY name DESC';
-					break;  
-				case '3':
-					$result = 'ORDER BY RAND('.$wppa['randseed'].')';
-					break;
-				case '5':
-					$result = 'ORDER BY timestamp';
-					break;
-				case '-5':
-					$result = 'ORDER BY timestamp DESC';
-					break;
-			}
-			return $result;
-		}
+		$order = $album['suba_order_by'];
+	}
+	else {
+		$order = '0';
+	}
+	if ( ! $order ) $order = $wppa_opt['wppa_list_albums_by'];
+
+	switch ( $order ) {
+		case '':
+		case '0':
+			$result = '';
+			break;
+		case '1':
+			$result = 'ORDER BY a_order';
+			break;
+		case '-1':
+			$result = 'ORDER BY a_order DESC';
+			break;
+		case '2':
+			$result = 'ORDER BY name';
+			break;  
+		case '-2':
+			$result = 'ORDER BY name DESC';
+			break;  
+		case '3':
+			$result = 'ORDER BY RAND('.$wppa['randseed'].')';
+			break;
+		case '5':
+			$result = 'ORDER BY timestamp';
+			break;
+		case '-5':
+			$result = 'ORDER BY timestamp DESC';
+			break;
+		default:
+			wppa_dbg_msg('Unimplemented album order: '.$order, 'red');
 	}
 	
-	// No album given or album method is default
-    $order = $wppa_opt['wppa_list_albums_by'];
-    switch ($order)
-    {
-    case '1':
-        $result = 'ORDER BY a_order';
-        break;
-    case '2':
-        $result = 'ORDER BY name';
-        break;  
-    case '3':
-        $result = 'ORDER BY RAND('.$wppa['randseed'].')';
-        break;
-	case '5':
-		$result = 'ORDER BY timestamp';
-		break;
-    default:
-        $result = 'ORDER BY id';
-    }
-    if ( get_option('wppa_list_albums_desc', 'no') == 'yes' ) $result .= ' DESC';
-    return $result;
+	return $result;
 }
 
 // get photo order
-function wppa_get_photo_order($id = '0', $no_random = false) {
+function wppa_get_photo_order( $id = '0', $no_random = false ) {
 global $wpdb;
 global $wppa;
 global $wppa_opt;
     
-	if ($id == '0') $order = '0';
+	if ( $id == '0' ) $order = '0';
 	else {
 		$order = $wpdb->get_var( $wpdb->prepare( "SELECT `p_order_by` FROM `" . WPPA_ALBUMS . "` WHERE `id` = %s", $id) );
 		wppa_dbg_q('Q201');
 	}
-    if ($order == '0') $order = $wppa_opt['wppa_list_photos_by'];
+    if ( ! $order ) $order = $wppa_opt['wppa_list_photos_by'];
+	
     switch ($order)
     {
+	case '':
+	case '0':
+		break;
     case '1':
         $result = 'ORDER BY p_order';
         break;
+	case '-1':
+		$result = 'ORDER BY p_order DESC';
+		break;
     case '2':
         $result = 'ORDER BY name';
+        break;
+    case '-2':
+        $result = 'ORDER BY name DESC';
         break;
     case '3':
 		if ($no_random) $result = 'ORDER BY name';
         else $result = 'ORDER BY RAND('.$wppa['randseed'].')';
         break;
+    case '-3':
+		if ($no_random) $result = 'ORDER BY name DESC';
+        else $result = 'ORDER BY RAND('.$wppa['randseed'].') DESC';
+        break;
 	case '4':
 		$result = 'ORDER BY mean_rating';
+		break;
+	case '-4':
+		$result = 'ORDER BY mean_rating DESC';
 		break;
 	case '5':
 		$result = 'ORDER BY timestamp';
 		break;
+	case '-5':
+		$result = 'ORDER BY timestamp DESC';
+		break;
 	case '6':
 		$result = 'ORDER BY rating_count';
 		break;
+	case '-6':
+		$result = 'ORDER BY rating_count DESC';
+		break;
+	case '7':
+		$result = 'ORDER BY exifdtm';
+		break;
+	case '-7':
+		$result = 'ORDER BY exifdtm DESC';
+		break;
+		
     default:
-        $result = 'ORDER BY id';
+        wppa_dbg_msg('Unimplemented photo order: '.$order, 'red');
     }
-    if ( get_option('wppa_list_photos_desc', 'no') == 'yes' ) $result .= ' DESC';
+
     return $result;
 }
 
@@ -1221,52 +1239,6 @@ function wppa_get_time_since($oldtime) {
 	}
 }
 
-function wppa_nextkey($table) {
-// Creating a keyvalue of an auto increment primary key incidently returns the value of MAXINT
-// and thereby making it impossible to add a next record.
-// This routine will find a free keyvalue larger than any key used, ignoring the fact that the MAXINT key may be used.
-global $wpdb;
-
-	$name = 'wppa_'.$table.'_lastkey';
-	$lastkey = get_option($name, 'nil');
-	
-	if ( $lastkey == 'nil' ) {	// Init option
-		$lastkey = $wpdb->get_var( "SELECT `id` FROM `".$table."` WHERE `id` < '9223372036854775806' ORDER BY `id` DESC LIMIT 1" );
-		wppa_dbg_q('Q207');
-		if ( ! is_numeric($lastkey) ) $lastkey = '0';
-		add_option( $name, $lastkey, '', 'no');
-	}
-	wppa_dbg_msg('Lastkey in '.$table.' = '.$lastkey);
-	
-	$result = $lastkey + '1';
-	while ( ! wppa_is_id_free($table, $result) ) {
-		$result++;
-	}
-	wppa_update_option($name, $result);
-	return $result;
-}
-
-function wppa_is_id_free($type, $id) {
-global $wpdb;
-	if (!is_numeric($id)) return false;
-	if ($id == '0') return false;
-	
-	$table = '';
-	if ($type == 'album') $table = WPPA_ALBUMS;
-	elseif ($type == 'photo') $table = WPPA_PHOTOS;
-	else $table = $type;	// $type may be the tablename itsself
-	
-	if ($table == '') {
-		echo('Unexpected error in wppa_is_id_free()');
-		return false;
-	}
-	
-	$exists = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM `".$table."` WHERE `id` = %s", $id ), ARRAY_A );
-	wppa_dbg_q('Q208');
-	if ( $exists ) return false;
-	return true;
-}
-
 // See if an album or any album is accessable for the current user
 function wppa_have_access($alb) {
 global $wpdb;
@@ -1334,8 +1306,10 @@ global $wppa_opt;
 function wppa_make_the_photo_files($file, $image_id, $ext) {
 global $wppa_opt;
 global $wppa;
-				
+global $wpdb;
+
 	wppa_dbg_msg('make_the_photo_files called with file='.$file.' image_id='.$image_id.' ext='.$ext);
+
 	$img_size = getimagesize($file, $info);
 	if ($img_size) {
 		$newimage = wppa_get_photo_path($image_id);
@@ -1404,6 +1378,12 @@ global $wppa;
 		// GPS
 		wppa_get_coordinates($file, $image_id);
 
+		// Set ( update ) exif date-time if available
+		$exdt = wppa_get_exif_datetime($file);
+		if ( $exdt ) {
+			$wpdb->query($wpdb->prepare( "UPDATE `".WPPA_PHOTOS."` SET `exifdtm` = %s WHERE `id` = %s", $exdt, $image_id ) );
+		}
+		
 		// Show progression
 		if ( is_admin() && ! $wppa['ajax'] ) echo('.');
 		
@@ -1933,7 +1913,7 @@ static $labels;
 				if ( ! in_array( $s, $labels ) ) {
 					$labels[] = $s;	// Add to labels
 					// Add to db
-					$key 	= wppa_nextkey(WPPA_IPTC);
+//					$key 	= wppa_nextkey(WPPA_IPTC);
 					$photo 	= '0';
 					$tag 	= $s;
 					$desc 	= $s.':';
@@ -1956,24 +1936,40 @@ static $labels;
 					$status = 'display';
 						if ( $s == '1#090' ) $status = 'hide';
 						if ( $s == '2#000' ) $status = 'hide';
-					$query 	= $wpdb->prepare("INSERT INTO `".WPPA_IPTC."` (`id`, `photo`, `tag`, `description`, `status`) VALUES (%s, %s, %s, %s, %s)", $key, $photo, $tag, $desc, $status); 
-					wppa_dbg_q('Q216');
-					$iret 	= $wpdb->query($query);
+//					$query 	= $wpdb->prepare("INSERT INTO `".WPPA_IPTC."` (`id`, `photo`, `tag`, `description`, `status`) VALUES (%s, %s, %s, %s, %s)", $key, $photo, $tag, $desc, $status); 
+//					wppa_dbg_q('Q216');
+//					$iret 	= $wpdb->query($query);
+					$iret = wppa_create_iptc_entry( array( 'photo' => $photo, 'tag' => $tag, 'description' => $desc, 'status' => $status ) );
 					if ( ! $iret ) wppa_dbg_msg('Error: '.$query);
 				}
 				// Now add poto specific data item
-				$key 	= wppa_nextkey(WPPA_IPTC);
+//				$key 	= wppa_nextkey(WPPA_IPTC);
 				$photo 	= $id;
 				$tag 	= $s;
 				$desc 	= $iptc[$s][$i];
 				$status = 'default';
-				$query  = $wpdb->prepare("INSERT INTO `".WPPA_IPTC."` (`id`, `photo`, `tag`, `description`, `status`) VALUES (%s, %s, %s, %s, %s)", $key, $photo, $tag, $desc, $status); 
-				wppa_dbg_q('Q217');
-				$iret 	= $wpdb->query($query);
+//				$query  = $wpdb->prepare("INSERT INTO `".WPPA_IPTC."` (`id`, `photo`, `tag`, `description`, `status`) VALUES (%s, %s, %s, %s, %s)", $key, $photo, $tag, $desc, $status); 
+//				wppa_dbg_q('Q217');
+//				$iret 	= $wpdb->query($query);
+				$iret = wppa_create_iptc_entry( array( 'photo' => $photo, 'tag' => $tag, 'description' => $desc, 'status' => $status ) );
 				if ( ! $iret ) wppa_dbg_msg('Error: '.$query);
 			}
 		}
 	}
+}
+
+function wppa_get_exif_datetime($file) {
+	// Check filetype
+	if ( ! function_exists('exif_imagetype') ) return false;	// Exif functions absent
+	$image_type = exif_imagetype($file);
+	if ( $image_type != IMAGETYPE_JPEG ) return false;			// Not supported image type
+	// Get exif data
+	if ( ! function_exists('exif_read_data') ) return false;	// Not supported by the server
+	$exif = @ exif_read_data($file, 'EXIF');
+	if ( ! is_array($exif) ) return false;						// No data present
+	// Data present
+	if ( isset( $exif['DateTimeOriginal'] ) ) return $exif['DateTimeOriginal'];
+	return false;
 }
 
 function wppa_import_exif($id, $file, $nodelete = false) {
@@ -2037,14 +2033,15 @@ wppa_dbg_msg('Exif data present');
 			$labels[] = $tag;	// Add to labels
 			$names[]  = $s.':';
 			// Add to db
-			$key 	= wppa_nextkey(WPPA_EXIF);
+//			$key 	= wppa_nextkey(WPPA_EXIF);
 			$photo 	= '0';
 			$desc 	= $s.':';
 			$status = 'display';
-			$query 	= $wpdb->prepare("INSERT INTO `".WPPA_EXIF."` (`id`, `photo`, `tag`, `description`, `status`) VALUES (%s, %s, %s, %s, %s)", $key, $photo, $tag, $desc, $status); 
-			wppa_dbg_q('Q220');
-			$iret 	= $wpdb->query($query);
-wppa_dbg_msg('Insert new label');
+//			$query 	= $wpdb->prepare("INSERT INTO `".WPPA_EXIF."` (`id`, `photo`, `tag`, `description`, `status`) VALUES (%s, %s, %s, %s, %s)", $key, $photo, $tag, $desc, $status); 
+//			wppa_dbg_q('Q220');
+//			$iret 	= $wpdb->query($query);
+//wppa_dbg_msg('Insert new label');
+			$iret = wppa_create_exif_entry( array( 'photo' => $photo, 'tag' => $tag, 'description' => $desc, 'status' => $status ) );
 			if ( ! $iret ) wppa_dbg_msg('Error: '.$query, false, 'red');
 		}
 		// Now add poto specific data item
@@ -2057,28 +2054,30 @@ wppa_dbg_msg('Insert new label');
 				$c = $max;
 			}
 			for ($i=0; $i <$c; $i++) {
-				$key 	= wppa_nextkey(WPPA_EXIF);
+//				$key 	= wppa_nextkey(WPPA_EXIF);
 				$photo 	= $id;
 				$desc 	= $exif[$s][$i];
 				$status = 'default';
-				$query  = $wpdb->prepare("INSERT INTO `".WPPA_EXIF."` (`id`, `photo`, `tag`, `description`, `status`) VALUES (%s, %s, %s, %s, %s)", $key, $photo, $tag, $desc, $status); 
-				wppa_dbg_q('Q221');
-				$iret 	= $wpdb->query($query);
-wppa_dbg_msg('Insert 1. Query = '.$query);
+//				$query  = $wpdb->prepare("INSERT INTO `".WPPA_EXIF."` (`id`, `photo`, `tag`, `description`, `status`) VALUES (%s, %s, %s, %s, %s)", $key, $photo, $tag, $desc, $status); 
+//				wppa_dbg_q('Q221');
+//				$iret 	= $wpdb->query($query);
+//wppa_dbg_msg('Insert 1. Query = '.$query);
+				$iret = wppa_create_exif_entry( array( 'photo' => $photo, 'tag' => $tag, 'description' => $desc, 'status' => $status ) );
 				if ( ! $iret ) wppa_dbg_msg('Error: '.$query, false, 'red');
 			
 			}
 		}
 		// Its not an array
 		else {
-			$key 	= wppa_nextkey(WPPA_EXIF);
+//			$key 	= wppa_nextkey(WPPA_EXIF);
 			$photo 	= $id;
 			$desc 	= $exif[$s];
 			$status = 'default';
-			$query  = $wpdb->prepare("INSERT INTO `".WPPA_EXIF."` (`id`, `photo`, `tag`, `description`, `status`) VALUES (%s, %s, %s, %s, %s)", $key, $photo, $tag, $desc, $status); 
-			wppa_dbg_q('Q222');
-			$iret 	= $wpdb->query($query);
-wppa_dbg_msg('Insert 2. Query = '.$query);
+//			$query  = $wpdb->prepare("INSERT INTO `".WPPA_EXIF."` (`id`, `photo`, `tag`, `description`, `status`) VALUES (%s, %s, %s, %s, %s)", $key, $photo, $tag, $desc, $status); 
+//			wppa_dbg_q('Q222');
+//			$iret 	= $wpdb->query($query);
+//wppa_dbg_msg('Insert 2. Query = '.$query);
+			$iret = wppa_create_exif_entry( array( 'photo' => $photo, 'tag' => $tag, 'description' => $desc, 'status' => $status ) );
 			if ( ! $iret ) wppa_dbg_msg('Error: '.$query, false, 'red');
 		}
 	}
@@ -2213,7 +2212,7 @@ function wppa_tree_empty($dir) {
 function wppa_err_alert($msg) {
 global $wppa;
 
-	$fullmsg = '<script type="text/javascript" >alert(\''.$msg.'\')</script>';
+	$fullmsg = '<script id="wppaer" type="text/javascript" >alert(\''.$msg.'\');jQuery("#wppaer").html("");</script>';
 //	if ( is_admin() ) 
 	echo $fullmsg;
 //	else $wppa['out'] .= $fullmsg;	

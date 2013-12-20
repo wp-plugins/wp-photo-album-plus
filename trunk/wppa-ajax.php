@@ -2,7 +2,7 @@
 /* wppa-ajax.php
 *
 * Functions used in ajax requests
-* version 5.2.4
+* version 5.2.5
 *
 */
 add_action('wp_ajax_wppa', 'wppa_ajax_callback');
@@ -69,10 +69,12 @@ global $wppa;
 			$wppa['master_occur'] = $_REQUEST['moccur'];
 			$comment_allowed = ( ! wppa_switch('wppa_comment_login') || is_user_logged_in() );
 			if ( wppa_switch('wppa_show_comments') && $comment_allowed ) {
+				if ( wppa_switch('wppa_search_comments') ) wppa_index_quick_remove('photo', $_REQUEST['photo-id']);
 				wppa_do_comment($_REQUEST['photo-id']);		// Process the comment
+				if ( wppa_switch('wppa_search_comments') ) wppa_index_add('photo', $_REQUEST['photo-id']);
 			}
 			$wppa['no_esc'] = true;
-			echo stripslashes(wppa_comment_html($_REQUEST['photo-id'], $comment_allowed));	// Retrieve the new commentbox content
+			echo wppa_comment_html($_REQUEST['photo-id'], $comment_allowed);	// Retrieve the new commentbox content
 			exit;
 			break;
 			
@@ -172,9 +174,12 @@ global $wppa;
 				
 				// Make the file
 				if ( wppa_switch('wppa_artmonkey_use_source') ) {
-					if ( is_file($wppa_opt['wppa_source_dir'].'/album-'.$data['album'].'/'.$data['filename']) ) {
-						$source = $wppa_opt['wppa_source_dir'].'/album-'.$data['album'].'/'.$data['filename'];
+					if ( is_file ( wppa_get_source_path( $photo ) ) ) {
+						$source = wppa_get_source_path( $photo );
 					}
+//					if ( is_file($wppa_opt['wppa_source_dir'].'/album-'.$data['album'].'/'.$data['filename']) ) {
+//						$source = $wppa_opt['wppa_source_dir'].'/album-'.$data['album'].'/'.$data['filename'];
+//					}
 					else {
 						$source = wppa_get_photo_path($photo);
 					}
@@ -314,8 +319,9 @@ global $wppa;
 			// Case 1: value = -1 this is a legal dislike vote
 			if ( $rating == '-1' ) {
 				// Add my dislike
-				$iret = $wpdb->query($wpdb->prepare("INSERT INTO `".WPPA_RATING."` (`id`, `photo`, `value`, `user`) VALUES (%s, %s, %s, %s)", wppa_nextkey(WPPA_RATING), $photo, $rating, $user));
-				if ( $iret === false ) {
+//				$iret = $wpdb->query($wpdb->prepare("INSERT INTO `".WPPA_RATING."` (`id`, `photo`, `value`, `user`) VALUES (%s, %s, %s, %s)", wppa_nextkey(WPPA_RATING), $photo, $rating, $user));
+				$iret = wppa_create_rating_entry( array( 'photo' => $photo, 'rating' => $rating, 'user' => $user ) );
+				if ( ! $iret ) {
 					echo '0||101||'.$errtxt;
 					exit;															// Fail on storing vote
 				}
@@ -330,8 +336,9 @@ global $wppa;
 			// Case 2: This is my first vote for this photo
 			elseif ( ! $mylast ) {
 				// Add my vote
-				$iret = $wpdb->query($wpdb->prepare('INSERT INTO `'.WPPA_RATING. '` (`id`, `photo`, `value`, `user`) VALUES (%s, %s, %s, %s)', wppa_nextkey(WPPA_RATING), $photo, $rating, $user));
-				if ( $iret === false ) {
+//				$iret = $wpdb->query($wpdb->prepare('INSERT INTO `'.WPPA_RATING. '` (`id`, `photo`, `value`, `user`) VALUES (%s, %s, %s, %s)', wppa_nextkey(WPPA_RATING), $photo, $rating, $user));
+				$iret = wppa_create_rating_entry( array( 'photo' => $photo, 'rating' => $rating, 'user' => $user ) );
+				if ( ! $iret ) {
 					echo '0||102||'.$errtxt;
 					exit;															// Fail on storing vote
 				}
@@ -348,8 +355,9 @@ global $wppa;
 			}
 			// Case 4: Add another vote from me
 			elseif ( $wppa_opt['wppa_rating_multi'] == 'yes' ) {					// Rating multi is allowed
-				$iret = $wpdb->query($wpdb->prepare( 'INSERT INTO `'.WPPA_RATING. '` (`id`, `photo`, `value`, `user`) VALUES (%s, %s, %s, %s)', wppa_nextkey(WPPA_RATING), $photo, $rating, $user ) );
-				if ( $iret === false ) {
+//				$iret = $wpdb->query($wpdb->prepare( 'INSERT INTO `'.WPPA_RATING. '` (`id`, `photo`, `value`, `user`) VALUES (%s, %s, %s, %s)', wppa_nextkey(WPPA_RATING), $photo, $rating, $user ) );
+				$iret = wppa_create_rating_entry( array( 'photo' => $photo, 'rating' => $rating, 'user' => $user ) );
+				if ( ! $iret ) {
 					echo '0||104||'.$errtxt;
 					exit;															// Fail on storing vote
 				}
@@ -622,7 +630,7 @@ global $wppa;
 			$query = $wpdb->prepare('UPDATE '.WPPA_ALBUMS.' SET `'.$item.'` = %s WHERE `id` = %s', $value, $album);
 			$iret = $wpdb->query($query);
 			if ($iret !== false ) {
-				if ( $item == 'name' || $item == 'description' ) wppa_index_update('album', $album);
+				if ( $item == 'name' || $item == 'description' || $item == 'cats' ) wppa_index_update('album', $album);
 				echo '||0||'.sprintf(__('<b>%s</b> of album %s updated', 'wppa'), $itemname, $album);
 				if ( $item == 'upload_limit' ) {
 					echo '||';
@@ -651,7 +659,9 @@ global $wppa;
 				exit;																// Nonce check failed
 			}
 
+			if ( wppa_switch( 'wppa_search_comments' ) ) wppa_index_quick_remove('photo', $photo);
 			$iret = $wpdb->query($wpdb->prepare('UPDATE `'.WPPA_COMMENTS.'` SET `status` = %s WHERE `id` = %s', $comstat, $comid));
+			if ( wppa_switch( 'wppa_search_comments' ) ) wppa_index_add('photo', $photo);
 			
 			if ( $iret !== false ) {
 				echo '||0||'.sprintf(__('Status of comment #%s updated', 'wppa'), $comid);
@@ -1113,6 +1123,7 @@ global $wppa;
 						delete_option('wppa_'.WPPA_IPTC.'_lastkey');
 						$title = __('IPTC data cleared', 'wppa');
 						$alert = __('Refresh this page to clear table X', 'wppa');
+						update_option('wppa_index_need_remake', 'yes');
 					}
 					else {
 						$title = __('Could not clear IPTC data', 'wppa');
@@ -1127,6 +1138,7 @@ global $wppa;
 						delete_option('wppa_'.WPPA_EXIF.'_lastkey');
 						$title = __('EXIF data cleared', 'wppa');
 						$alert = __('Refresh this page to clear table XI', 'wppa');
+						update_option('wppa_index_need_remake', 'yes');
 					}
 					else {
 						$title = __('Could not clear EXIF data', 'wppa');
@@ -1139,6 +1151,7 @@ global $wppa;
 					$iret = $wpdb->query($wpdb->prepare( "UPDATE `".WPPA_PHOTOS."` SET `description` = %s", $wppa_opt['wppa_newphoto_description'] ) );
 					if ($iret !== false) {
 						$title = __('New photo description applied', 'wppa');
+						update_option('wppa_index_need_remake', 'yes');
 					}
 					else {
 						$title = __('Could not apply New photo description', 'wppa');
@@ -1346,6 +1359,12 @@ global $wppa;
 					break;
 				case 'wppa_i_done':
 					$value = 'done';
+					break;
+					
+				case 'wppa_search_tags':
+				case 'wppa_search_cats':
+				case 'wppa_search_comments':
+					update_option('wppa_index_need_remake', 'yes');
 					break;
 
 				default:
