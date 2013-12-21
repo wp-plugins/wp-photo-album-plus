@@ -468,7 +468,7 @@ function _wppa_admin() {
 									</span>
 								</th>
 								<td>
-									<input id="cats" type="text" style="width:100%;" onchange="wppaAjaxUpdateAlbum(<?php echo $edit_id ?>, 'cats', this)" value="<?php echo(stripslashes($albuminfo['cats'])) ?>" />
+									<input id="cats" type="text" style="width:100%;" onkeyup="wppaAjaxUpdateAlbum(<?php echo $edit_id ?>, 'cats', this)" onchange="wppaAjaxUpdateAlbum(<?php echo $edit_id ?>, 'cats', this)" value="<?php echo(stripslashes($albuminfo['cats'])) ?>" />
 								</td>
 								<td>
 									<span class="description" >
