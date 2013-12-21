@@ -451,6 +451,13 @@ global $wppa;
 			wppa_load_theme();
 			// Register geo shortcode if google-maps-gpx-vieuwer is on board. GPX does it in wp_head(), what is not done in an ajax call
 //			if ( function_exists('gmapv3') ) add_shortcode('map', 'gmapv3');
+			// Get the post we are working for
+			if ( isset ( $_REQUEST['wppa-fromp'] ) ) {
+				$p = $_REQUEST['wppa-fromp'];
+				if ( wppa_is_int( $p ) ) {
+					$GLOBALS['post'] = get_post( $p );
+				}
+			}
 			// Render
 			echo wppa_albums();
 			break;
