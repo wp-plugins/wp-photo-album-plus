@@ -310,6 +310,9 @@ global $silent;
 				wppa_remove_setting('wppa_list_photos_desc');
 			}
 		}
+		if ( $old_rev <= '5206' ) {
+			$wpdb->query( "DELETE FROM `".WPPA_RATING."` WHERE `value` = '0'" );
+		}
 
 		
 		
