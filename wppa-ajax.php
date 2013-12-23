@@ -320,7 +320,7 @@ global $wppa;
 			if ( $rating == '-1' ) {
 				// Add my dislike
 //				$iret = $wpdb->query($wpdb->prepare("INSERT INTO `".WPPA_RATING."` (`id`, `photo`, `value`, `user`) VALUES (%s, %s, %s, %s)", wppa_nextkey(WPPA_RATING), $photo, $rating, $user));
-				$iret = wppa_create_rating_entry( array( 'photo' => $photo, 'rating' => $rating, 'user' => $user ) );
+				$iret = wppa_create_rating_entry( array( 'photo' => $photo, 'value' => $rating, 'user' => $user ) );
 				if ( ! $iret ) {
 					echo '0||101||'.$errtxt;
 					exit;															// Fail on storing vote
@@ -337,7 +337,7 @@ global $wppa;
 			elseif ( ! $mylast ) {
 				// Add my vote
 //				$iret = $wpdb->query($wpdb->prepare('INSERT INTO `'.WPPA_RATING. '` (`id`, `photo`, `value`, `user`) VALUES (%s, %s, %s, %s)', wppa_nextkey(WPPA_RATING), $photo, $rating, $user));
-				$iret = wppa_create_rating_entry( array( 'photo' => $photo, 'rating' => $rating, 'user' => $user ) );
+				$iret = wppa_create_rating_entry( array( 'photo' => $photo, 'value' => $rating, 'user' => $user ) );
 				if ( ! $iret ) {
 					echo '0||102||'.$errtxt;
 					exit;															// Fail on storing vote
