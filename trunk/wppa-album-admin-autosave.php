@@ -1611,6 +1611,7 @@ global $wppa_opt;
 			}
 			$name = __(stripslashes($photo['name']));
 			if ( strlen($name) > 45 ) $name = substr($name, 0, 45).'...';
+			if ( ! $name ) $name = __('Nameless, filename = ', 'wppa').$photo['filename'];
 			$output .= '<option value="'.$photo['id'].'" '.$selected.'>'.$name.'</option>';
 		}
 		
