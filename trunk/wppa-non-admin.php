@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the non admin stuff
-* Version 5.2.4
+* Version 5.2.7
 *
 */
 
@@ -126,11 +126,20 @@ add_action('init', 'wppa_add_javascripts');
 	
 function wppa_add_javascripts() {
 global $wppa_api_version;
+
 	if ( is_file(WPPA_PATH.'/wppa.min.js') ) {
 		wp_enqueue_script('wppa', WPPA_URL.'/wppa.min.js', array('jquery'), $wppa_api_version);
 	}
 	else {
 		wp_enqueue_script('wppa', WPPA_URL.'/wppa.js', array('jquery'), $wppa_api_version);
+	}
+	if ( get_option('wppa_gpx_implementation', 'nil') == 'wppa-plus-embedded' ) {
+		if ( get_option('wppa_map_apikey', false) ) {
+			wp_enqueue_script('geo', 'https://maps.googleapis.com/maps/api/js?key='.get_option('wppa_map_apikey').'&sensor=false', '', $wppa_api_version);
+		}
+		else {
+			wp_enqueue_script('geo', 'https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false', '', $wppa_api_version);
+		}
 	}
 }
 	

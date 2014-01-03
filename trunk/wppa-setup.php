@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 5.2.5
+* Version 5.2.7
 *
 */
 
@@ -570,6 +570,8 @@ Hide Camera info
 						'wppa_share_on'						=> 'no',
 						'wppa_share_on_widget'				=> 'no',
 						'wppa_share_on_thumbs'				=> 'no',
+						'wppa_share_on_lightbox' 			=> 'no',
+						'wppa_share_on_mphoto' 				=> 'no',
 						'wppa_share_qr'						=> 'no',
 						'wppa_share_facebook'				=> 'yes',
 						'wppa_share_twitter'				=> 'yes',
@@ -880,6 +882,8 @@ Hide Camera info
 						'wppa_memcheck_admin'		=> 'yes',
 						'wppa_comment_captcha'		=> 'no',
 						'wppa_spam_maxage'			=> 'none',
+						'wppa_user_create_on'		=> 'no',
+						'wppa_user_create_login'	=> 'yes',
 						
 						'wppa_editor_upload_limit_count'		=> '0',
 						'wppa_editor_upload_limit_time'			=> '0',
@@ -903,6 +907,8 @@ Hide Camera info
 						'wppa_cleanup'				=> '',
 						'wppa_recup'				=> '',
 						'wppa_file_system'			=> 'flat',
+						'wppa_blacklist_user' 		=> '',
+						'wppa_un_blacklist_user' 	=> '',
 						// B Irreversable
 						'wppa_rating_clear' 		=> 'no',
 						'wppa_iptc_clear'			=> '',
@@ -1003,6 +1009,9 @@ Hide Camera info
 						'wppa_cp_points_rating'			=> '0',
 						'wppa_cp_points_upload'			=> '0',
 						'wppa_use_scabn'				=> 'no',
+						'wppa_gpx_implementation' 		=> 'wppa-plus-embedded',
+						'wppa_map_height' 				=> '300',
+						'wppa_map_apikey' 				=> '',
 						'wppa_gpx_shortcode'			=> '[map style="width: auto; height:300px; margin:0; " marker="yes" lat="w#lat" lon="w#lon"]',
 
 						// Photo of the day widget

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Functions for album covers
-* Version 5.2.5
+* Version 5.2.7
 *
 */
 
@@ -220,7 +220,9 @@ global $wpdb;
 		
 		$wppa['out'] .= wppa_nltab().'<div style="clear:both;"></div>';		
 		
+		wppa_user_create_html($album['id'], wppa_get_cover_width('cover'), 'cover', $multicolumnresponsive);
 		wppa_user_upload_html($album['id'], wppa_get_cover_width('cover'), 'cover', $multicolumnresponsive);
+
 /**
 		if ( $album['cats'] ) {
 			if ( strpos( $album['cats'] ,',' ) ) {
@@ -413,6 +415,7 @@ else $coverphoto = false;
 		
 		$wppa['out'] .= wppa_nltab().'<div style="clear:both;"></div>';		
 		
+		wppa_user_create_html($album['id'], wppa_get_cover_width('cover'), 'cover', $multicolumnresponsive);
 		wppa_user_upload_html($album['id'], wppa_get_cover_width('cover'), 'cover', $multicolumnresponsive);
 
 	$wppa['out'] .= wppa_nltab('-').'</div><!-- #album-'.$album['id'].'-'.$wppa['master_occur'].' -->';
@@ -590,6 +593,7 @@ global $wpdb;
 		
 		$wppa['out'] .= wppa_nltab().'<div style="clear:both;"></div>';		
 		
+		wppa_user_create_html($album['id'], wppa_get_cover_width('cover'), 'cover', $multicolumnresponsive);
 		wppa_user_upload_html($album['id'], wppa_get_cover_width('cover'), 'cover', $multicolumnresponsive);
 
 	$wppa['out'] .= wppa_nltab('-').'</div><!-- #album-'.$album['id'].'-'.$wppa['master_occur'].' -->';

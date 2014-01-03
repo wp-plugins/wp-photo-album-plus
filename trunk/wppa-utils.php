@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains low-level utility routines
-* Version 5.2.5
+* Version 5.2.7
 *
 */
 
@@ -208,15 +208,10 @@ global $wppa_opt;
 
 	// Geo
 	if ( $thumb['location'] && ! $wppa['in_widget'] && strpos($wppa_opt['wppa_custom_content'], 'w#location') !== false && $do_geo == 'do_geo') {
-		$temp = explode('/', $thumb['location']);
-		$lat = $temp['2'];
-		$lon = $temp['3'];
-		$geo = str_replace('w#lon', $lon, str_replace('w#lat', $lat, $wppa_opt['wppa_gpx_shortcode']));
-//		$geo = '[map style="width: auto; height:300px; margin:0; " marker="yes" lat="'.$lat.'" lon="'.$lon.'"]';
-		$geo = do_shortcode($geo);
-		$wppa['geo'] .= '<div id="geodiv-'.$wppa['master_occur'].'-'.$id.'" style="display:none;">'.$geo.'</div>';
+		wppa_do_geo();
 	}
 	
+	// Other keywords
 	if ( strpos($desc, 'w#') !== false ) {	// Is there any 'w#' ?
 		// Keywords
 		$keywords = array('name', 'filename', 'owner', 'id', 'tags', 'views');
@@ -264,6 +259,40 @@ global $wppa_opt;
 	$desc = make_clickable($desc);			// Auto make a tags for links
 
 	return $desc;
+}
+
+function wppa_do_geo() {
+global $thumb;
+global $wppa;
+global $wppa_opt;
+
+	$id 	= $thumb['id'];
+	$temp 	= explode('/', $thumb['location']);
+	$lat 	= $temp['2'];
+	$lon 	= $temp['3'];
+	
+	$type 	= $wppa_opt['wppa_gpx_implementation'];
+	
+	// Switch on implementation type
+	switch ( $type ) {
+		case 'google-maps-gpx-viewer':
+			$geo = str_replace('w#lon', $lon, str_replace('w#lat', $lat, $wppa_opt['wppa_gpx_shortcode']));
+			$geo = do_shortcode($geo);
+			$wppa['geo'] .= '<div id="geodiv-'.$wppa['master_occur'].'-'.$id.'" style="display:none;">'.$geo.'</div>';
+			break;
+		case 'wppa-plus-embedded':
+			if ( $wppa['geo'] == '' ) { 	// First
+				$wppa['geo'] = '
+<div id="map-canvas-'.$wppa['master_occur'].'" style="height:'.$wppa_opt['wppa_map_height'].'px; width:100%; padding:0; margin:0; font-size: 10px;" ></div>
+<script type="text/javascript" >
+	if ( typeof ( _wppaLat ) == "undefined" ) { var _wppaLat = new Array();	var _wppaLon = new Array(); }
+	_wppaLat['.$wppa['master_occur'].'] = new Array(); _wppaLon['.$wppa['master_occur'].'] = new Array();
+</script>';
+			}	// End first
+			$wppa['geo'] .= '
+<script type="text/javascript">_wppaLat['.$wppa['master_occur'].']['.$id.'] = '.$lat.'; _wppaLon['.$wppa['master_occur'].']['.$id.'] = '.$lon.';</script>';
+			break;	// End native
+	}
 }
 
 // See if an album is in a separate tree
@@ -1460,4 +1489,72 @@ global $blog_id;
 	$source_album_dir = $wppa_opt['wppa_source_dir'].$blog.'/album-'.$alb;
 	
 	return $source_album_dir;
+}
+
+function wppa_extended_access() {
+global $wppa_opt;
+
+	if ( current_user_can('administrator') ) return true;
+	if ( $wppa_opt['wppa_owner_only'] == 'no' ) return true;
+	return false;
+}
+
+function wppa_can_create_album() {
+global $wppa_opt;
+global $wpdb;
+
+	if ( wppa_extended_access() ) return true;
+	if ( $wppa_opt['wppa_max_albums'] == '0' ) return true;	// 0 = unlimited
+	$user = wppa_get_user();
+	$albs = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `".WPPA_ALBUMS."` WHERE `owner` = %s", $user));
+	if ( $albs < $wppa_opt['wppa_max_albums'] ) return true;
+	return false;
+}
+
+function wppa_can_create_top_album() {
+global $wppa_opt;
+
+	if ( current_user_can('administrator') ) return true;
+	if ( ! wppa_can_create_album() ) return false;
+	if ( $wppa_opt['wppa_grant_an_album'] == 'yes' && $wppa_opt['wppa_grant_parent'] != '0' ) return false;
+	return true;
+}
+
+function wppa_get_users() {
+global $wpdb;
+	$users = $wpdb->get_results( "SELECT * FROM `".$wpdb->users."` ORDER BY `display_name`", ARRAY_A );
+	return $users;
+}
+
+function wppa_user_is( $role, $user_id = null ) {
+ 
+ 	if ( ! is_user_logged_in() ) return false;
+
+	if ( is_numeric( $user_id ) ) {
+		$user = get_userdata( $user_id );
+	}
+    else {
+        $user = wp_get_current_user();
+	}
+ 
+    if ( empty( $user ) )
+	return false;
+ 
+    return in_array( $role, (array) $user->roles );
+}
+
+function wppa_is_user_blacklisted( $user = null ) {
+global $wpdb;
+
+	if ( ! is_user_logged_in() ) return false;
+	
+	if ( empty( $user ) ) {
+		$user = get_current_user_id();
+	}
+	if ( is_numeric( $user ) ) {
+		$user = $wpdb->get_var( $wpdb->prepare( "SELECT `user_login` FROM `".$wpdb->users."` WHERE `ID` = %d", $user ) );
+	}
+	$blacklist = get_option( 'wppa_black_listed_users', array() );
+
+	return in_array( $user, $blacklist );
 }

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the multitag widget
-* Version 5.1.10
+* Version 5.2.7
 *
 */
 
@@ -32,7 +32,9 @@ class MultitagPhotos extends WP_Widget {
 			
 		if ( !empty( $widget_title ) ) { echo $before_title . $widget_title . $after_title; }
 		
-		echo '<div class="wppa-multitag" >'.wppa_get_multitag_html($instance['cols'], implode(',', $instance['tags'])).'</div>';
+		$tags = is_array( $instance['tags'] ) ? implode( ',', $instance['tags'] ) : '';
+		
+		echo '<div class="wppa-multitag" >'.wppa_get_multitag_html( $instance['cols'], $tags ).'</div>';
 		echo '<div style="clear:both"></div>';
 		echo $after_widget;
     }

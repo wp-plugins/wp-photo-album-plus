@@ -6,7 +6,7 @@
 *
 * A wppa widget to upload photos
 *
-* Version 5.0.11
+* Version 5.2.7
 */
 
 class WppaUploadWidget extends WP_Widget {
@@ -36,8 +36,10 @@ class WppaUploadWidget extends WP_Widget {
 				
 		$wppa['master_occur']++;
 		$wppa['out'] = '';
-		wppa_user_upload_html($album, $wppa_opt['wppa_widget_width'], 'widget');
-		if ( ! $wppa['out'] ) return;	// No possibility to upload, skip the widget
+		if ( wppa_switch('wppa_user_upload_login') && ! is_user_logged_in() ) return;	// Not logged in while login req'd for upload, no create also
+		wppa_user_create_html( $album, $wppa_opt['wppa_widget_width'], 'widget' );
+		wppa_user_upload_html( $album, $wppa_opt['wppa_widget_width'], 'widget' );
+		if ( ! $wppa['out'] ) return;	// No possibility to upload or create, skip the widget
 		
 		$text = '<div class="wppa-upload-widget" style="margin-top:2px; margin-left:2px;" >'.$wppa['out'].'</div>';
 		$wppa['out'] = '';

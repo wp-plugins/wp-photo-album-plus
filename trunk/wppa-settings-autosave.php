@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 5.2.5
+* Version 5.2.7
 *
 */
 
@@ -20,6 +20,7 @@ global $wppa_table;
 global $wppa_subtable;
 global $wppa_revno;
 global $thumb;
+global $no_default;
 			
 
 	// Initialize
@@ -390,7 +391,7 @@ global $thumb;
 //		wppa_check_database(true);
 
 // Fix sourcefile bug
-wppa_fix_source_extensions();	
+//wppa_fix_source_extensions();	
 
 	// Convert to new file structure
 	$fs = get_option('wppa_file_system', 'flat');
@@ -535,6 +536,8 @@ wppa_fix_source_extensions();
 						</thead>
 						<tbody class="wppa_table_0">
 							<?php 
+							$no_default = true;
+							
 							$wppa_table = '0';
 							wppa_setting_subheader( '', '1', __('To quickly setup WPPA+ please answer the following questions. You can alway change any setting later. <span style="color:#700">Click on me!</span>', 'wppa'));
 
@@ -623,6 +626,7 @@ wppa_fix_source_extensions();
 							$html = wppa_select($slug, $opts, $vals, '', '', false, $postaction);
 							wppa_setting($slug, '9', $name, $desc, $html, $help);
 							
+							$no_default = false;
 							?>
 						</tbody>
 						<tfoot style="font-weight: bold;" class="wppa_table_1">
@@ -1540,6 +1544,22 @@ wppa_fix_source_extensions();
 							$onchange = 'wppaCheckShares()';
 							$html = wppa_checkbox($slug, $onchange);
 							wppa_setting($slug, '21.00', $name, $desc, $html, $help);
+
+							$name = __('Show Share Buttons Lightbox', 'wppa');
+							$desc = __('Display the share social media buttons on lightbox displays.', 'wppa');
+							$help = '';// __('This setting applies to normal slideshows in widgets, not to the slideshowwidget as that is a slideonly display.', 'wppa');
+							$slug = 'wppa_share_on_lightbox';
+							$onchange = 'wppaCheckShares()';
+							$html = wppa_checkbox($slug, $onchange);
+							wppa_setting($slug, '21.01', $name, $desc, $html, $help);
+
+							$name = __('Show Share Buttons Mphoto', 'wppa');
+							$desc = __('Display the share social media buttons on mphoto displays.', 'wppa');
+							$help = '';// __('This setting applies to normal slideshows in widgets, not to the slideshowwidget as that is a slideonly display.', 'wppa');
+							$slug = 'wppa_share_on_mphoto';
+							$onchange = 'wppaCheckShares()';
+							$html = wppa_checkbox($slug, $onchange);
+							wppa_setting($slug, '21.02', $name, $desc, $html, $help);
 
 							$name = __('Show QR Code', 'wppa');
 							$desc = __('Display the QR code in the share box.', 'wppa');
@@ -2488,8 +2508,8 @@ wppa_fix_source_extensions();
 												'-1', 
 												'-2', 
 												'-4', 
-												'-5', 
 												'-6', 
+												'-5', 
 												'-7'
 												);
 							$html = wppa_select($slug, $options, $values);
@@ -3848,6 +3868,38 @@ wppa_fix_source_extensions();
 							$html = wppa_checkbox($slug);
 							wppa_setting($slug, '7', $name, $desc, $html, $help);
 
+							$name = __('User create', 'wppa');
+							$desc = __('Enable frontend album creation.', 'wppa');
+							$help = esc_js(__('If you check this item, frontend album creation will be enabled.', 'wppa'));
+							$slug = 'wppa_user_create_on';
+							$onchange = '';//wppaCheckUserUpload()';
+							$html = wppa_checkbox($slug, $onchange);
+							wppa_setting($slug, '8', $name, $desc, $html, $help);
+							
+							$name = __('User create login', 'wppa');
+							$desc = __('Frontend album creation requires the user is logged in.', 'wppa');
+							$help = '';//esc_js(__('If you uncheck this box, make sure you check the item Owners only in the next sub-table.', 'wppa'));
+//							$help .= '\n'.esc_js(__('Set the owner to ---public--- of the albums that are allowed to be uploaded to.', 'wppa'));
+							$slug = 'wppa_user_create_login';
+							$html = wppa_checkbox($slug);
+							wppa_setting($slug, '9', $name, $desc, $html, $help);
+
+							$name = __('Default parent', 'wppa');
+							$desc = __('The parent album of new albums.', 'wppa');
+							$help = '';
+							$slug = 'wppa_default_parent';
+							$opts = array( __('--- none ---', 'wppa'), __('--- separate ---', 'wppa') );
+							$vals = array( '0', '-1');
+							$albs = $wpdb->get_results( "SELECT `id`, `name` FROM`" . WPPA_ALBUMS . "` ORDER BY `name`", ARRAY_A );
+							if ( $albs ) {
+								foreach ( $albs as $alb ) {
+									$opts[] = __(stripslashes($alb['name']));
+									$vals[] = $alb['id'];
+								}
+							}
+							$html = wppa_select($slug, $opts, $vals);
+							wppa_setting($slug, '10', $name, $desc, $html, $help);
+							
 							wppa_setting_subheader('C', '1', __('Miscellaneous scurity settings', 'wppa'));
 							
 							$name = __('Owners only', 'wppa');
@@ -4128,6 +4180,49 @@ wppa_fix_source_extensions();
 								$html = array($html1, $html2);
 								wppa_setting(false, '10', $name, $desc, $html, $help);
 							}
+							
+							$name = __('Blacklist user', 'wppa');
+							$desc = __('Set the status of all the users photos to \'pending\'.', 'wppa');
+							$help = esc_js(__('Set the status of all the users photos to \'pending\'.', 'wppa'));
+							$help .= '\n\n'.esc_js(__('Also inhibits further uploads.', 'wppa'));
+							$slug = 'wppa_blacklist_user';
+					//		$users = wppa_get_users();	// Already known
+							$blacklist = get_option( 'wppa_black_listed_users', array() );
+							$options = array( __('-- select a user to blacklist ---', 'wppa') );
+							$values = array( '0' );
+							foreach ( $users as $usr ) {
+								if ( ! wppa_user_is( 'administrator', $usr['ID'] ) ) {	// an administrator can not be blacklisted
+									if ( ! in_array( $usr['user_login'], $blacklist ) ) {	// skip already on blacklist
+										$options[] = $usr['display_name'].' ('.$usr['user_login'].')';
+										$values[]  = $usr['user_login'];
+									}
+								}
+							}
+							$onchange = 'alert(\''.__('The page will be reloaded after the action has taken place.', 'wppa').'\');wppaRefreshAfter();';
+							$html1 = wppa_select($slug, $options, $values, $onchange);
+							$html2 = '';
+							$html = array( $html1, $html2 );
+							wppa_setting(false, '11', $name, $desc, $html, $help);
+
+							$name = __('Unblacklist user', 'wppa');
+							$desc = __('Set the status of all the users photos to \'publish\'.', 'wppa');
+							$help = '';
+							$slug = 'wppa_un_blacklist_user';
+							$blacklist = get_option( 'wppa_black_listed_users', array() );
+							$options = array( __('-- select a user to unblacklist ---', 'wppa') );
+							$values = array( '0' );
+					//		$users = wppa_get_users();	// Already known
+							foreach ( $users as $usr ) {
+								if ( in_array( $usr['user_login'], $blacklist ) ) {
+									$options[] = $usr['display_name'].' ('.$usr['user_login'].')';
+									$values[]  = $usr['user_login'];
+								}
+							}
+							$onchange = 'alert(\''.__('The page will be reloaded after the action has taken place.', 'wppa').'\');wppaRefreshAfter();';
+							$html1 = wppa_select($slug, $options, $values, $onchange);
+							$html2 = '';
+							$html = array( $html1, $html2 );
+							wppa_setting(false, '12', $name, $desc, $html, $help);
 
 							wppa_setting_subheader('B', '2', __('Clearing and other irreverseable actions', 'wppa'));
 							
@@ -4507,22 +4602,6 @@ wppa_fix_source_extensions();
 							$html = wppa_checkbox($slug);
 							wppa_setting($slug, '5.1', $name, $desc, $html, $help);
 							
-							$name = __('Default parent', 'wppa');
-							$desc = __('The parent album of new albums.', 'wppa');
-							$help = '';
-							$slug = 'wppa_default_parent';
-							$opts = array( __('--- none ---', 'wppa'), __('--- separate ---', 'wppa') );
-							$vals = array( '0', '-1');
-							$albs = $wpdb->get_results( "SELECT `id`, `name` FROM`" . WPPA_ALBUMS . "` ORDER BY `name`", ARRAY_A );
-							if ( $albs ) {
-								foreach ( $albs as $alb ) {
-									$opts[] = __(stripslashes($alb['name']));
-									$vals[] = $alb['id'];
-								}
-							}
-							$html = wppa_select($slug, $opts, $vals);
-							wppa_setting($slug, '5.5', $name, $desc, $html, $help);
-
 							$name = __('Grant an album', 'wppa');
 							$desc = __('Create an album for each user logging in.', 'wppa');
 							$help = '';
@@ -4902,13 +4981,6 @@ wppa_fix_source_extensions();
 							$html = wppa_checkbox($slug);
 							wppa_setting($slug, '4', $name, $desc, $html, $help);
 							
-							$name = __('GPX Shortcode', 'wppa');
-							$desc = __('The shortcode to be used for the gpx feature.', 'wppa');
-							$help = esc_js(__('Enter / modify the shortcode to be generated for the gpx plugin. It must contain w#lat and w#lon as placeholders for the lattitude and longitude.', 'wppa'));
-							$slug = 'wppa_gpx_shortcode';
-							$html = wppa_input($slug, '500px');
-							wppa_setting($slug, '5', $name, $desc, $html, $help);
-							
 							wppa_setting_subheader('G', '1', __('QR Code widget settings. The colors also apply to the QR code in the Share box.', 'wppa'));
 							
 							$name = __('QR size', 'wppa');
@@ -5117,6 +5189,45 @@ wppa_fix_source_extensions();
 								
 							}
 
+							wppa_setting_subheader('K', '1', __('GPX settings.', 'wppa'));
+							
+							$name = __('GPX Implementation', 'wppa');
+							$desc = __('The way the maps are produced.', 'wppa');
+							$help = esc_js(__('Select the way the maps are produced.', 'wppa'));
+							$help .= '\n\n'.esc_js(__('When using Google maps GPX viewer plugin, you can not use Ajax (Table IV-A1)', 'wppa'));
+							$help .= '\n'.esc_js(__('When using WPPA+ Embedded code, you can use Ajax, but there are less display options.', 'wppa'));
+							$slug = 'wppa_gpx_implementation';
+							$opts = array( __('WPPA+ Embedded code', 'wppa'), __('Google maps GPX viewer plugin', 'wppa') );
+							$vals = array( 'wppa-plus-embedded', 'google-maps-gpx-viewer' );
+							$onch = 'wppaCheckGps()';
+							$html = wppa_select($slug, $opts, $vals, $onch);
+							wppa_setting($slug, '5', $name, $desc, $html, $help);
+							
+							$name = __('Map height', 'wppa');
+							$desc = __('The height of the map display.', 'wppa');
+							$help = '';
+							$slug = 'wppa_map_height';
+							$html = wppa_input($slug, '40px', '', __('pixels', 'wppa'));
+							$class = 'wppa_gpx_native';
+							wppa_setting($slug, '6.1', $name, $desc, $html, $help, $class);
+							
+							$name = __('Google maps API key', 'wppa');
+							$desc = __('Enter your Google maps api key here if you have one.', 'wppa');
+							$help = '';
+							$slug = 'wppa_map_apikey';
+							$html = wppa_input($slug, '200px', '');
+							$class = 'wppa_gpx_native';
+							wppa_setting($slug, '6.2', $name, $desc, $html, $help, $class);
+							
+							$name = __('GPX Shortcode', 'wppa');
+							$desc = __('The shortcode to be used for the gpx feature.', 'wppa');
+							$help = esc_js(__('Enter / modify the shortcode to be generated for the gpx plugin. It must contain w#lat and w#lon as placeholders for the lattitude and longitude.', 'wppa'));
+							$help .= '\n\n'.esc_js(__('This item is required for using Google maps GPX viewer plugin only', 'wppa'));
+							$slug = 'wppa_gpx_shortcode';
+							$html = wppa_input($slug, '500px');
+							$class = 'wppa_gpx_plugin';
+							wppa_setting($slug, '7.1', $name, $desc, $html, $help, $class);
+							
 							?>		
 			
 						</tbody>
@@ -5413,6 +5524,7 @@ global $wppa_status;
 global $wppa_defaults;
 global $wppa_table;
 global $wppa_subtable;
+global $no_default;
 
 	if ( is_array($slug) ) $slugs = $slug;
 	else {
@@ -5444,13 +5556,15 @@ global $wppa_subtable;
 	
 	if ( $help ) {
 		$hlp = $name.':\n\n'.$help;
-		if ( $slugs ) {
-			$hlp .= '\n\n'.__('The default for this setting is:', 'wppa');
-			if ( count($slugs) == 1) {
-				if ( $slugs[0] != '' ) $hlp .= ' '.esc_js(wppa_dflt($slugs[0]));
-			}
-			else foreach ( array_keys($slugs) as $slugidx ) {
-				if ( $slugs[$slugidx] != '' && isset($nums[$slugidx]) ) $hlp .= ' '.$nums[$slugidx].'. '.esc_js(wppa_dflt($slugs[$slugidx]));
+		if ( ! $no_default ) {
+			if ( $slugs ) {
+				$hlp .= '\n\n'.__('The default for this setting is:', 'wppa');
+				if ( count($slugs) == 1) {
+					if ( $slugs[0] != '' ) $hlp .= ' '.esc_js(wppa_dflt($slugs[0]));
+				}
+				else foreach ( array_keys($slugs) as $slugidx ) {
+					if ( $slugs[$slugidx] != '' && isset($nums[$slugidx]) ) $hlp .= ' '.$nums[$slugidx].'. '.esc_js(wppa_dflt($slugs[$slugidx]));
+				}
 			}
 		}
 		$result .= '<td><input type="button" style="font-size: 11px; height:20px; padding:0; cursor: pointer;" title="'.__('Click for help', 'wppa').'" onclick="alert('."'".$hlp."'".')" value="&nbsp;?&nbsp;"></td>';
@@ -5666,8 +5780,10 @@ function wppa_select_e($slug, $curval, $options, $values, $onchange = '', $class
 function wppa_dflt($slug) {
 global $wppa_defaults;
 global $wppa;
+global $no_default;
 
-	if ($slug == '') return '';
+	if ( $slug == '' ) return '';
+	if ( $no_default ) return '';
 	
 	$dflt = $wppa_defaults[$slug];
 

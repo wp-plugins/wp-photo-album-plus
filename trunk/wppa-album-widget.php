@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display thumbnail photos
-* Version 5.2.3
+* Version 5.2.7
 */
 
 class AlbumWidget extends WP_Widget {
@@ -135,12 +135,12 @@ class AlbumWidget extends WP_Widget {
 						$widget_content .= "\n\t".'<img id="i-'.$image['id'].'-'.$wppa['master_occur'].'" title="'.$title.'" src="'.$imgurl.'" width="'.$width.'" height="'.$height.'" style="'.$imgstyle.'" '.$imgevents.' alt="'.esc_attr(wppa_qtrans($image['name'])).'">';
 					}
 				
-					if ($name == 'yes') $widget_content .= "\n\t".'<span style="font-size:'.$wppa_opt['wppa_fontsize_widget_thumb'].'px; line-height:12px;">'.__(stripslashes($album['name'])).'</span>';
+					if ($name == 'yes') $widget_content .= "\n\t".'<span style="font-size:'.$wppa_opt['wppa_fontsize_widget_thumb'].'px; min-height:100%;">'.__(stripslashes($album['name'])).'</span>';
 
 					$widget_content .= "\n".'</div>';
 					
+					$count++;
 				}
-				$count++;
 			}
 		}			
 		else $widget_content .= 'There are no albums (yet).';

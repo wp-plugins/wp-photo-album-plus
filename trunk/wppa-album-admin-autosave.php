@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * create, edit and delete albums
-* version 5.2.5
+* version 5.2.7
 *
 */
 
@@ -306,8 +306,8 @@ function _wppa_admin() {
 														'-1', 
 														'-2', 
 														'-4', 
-														'-5', 
 														'-6', 
+														'-5', 
 														'-7'
 														);
 									?>
@@ -1628,31 +1628,3 @@ function wppa_ea_url($edit_id, $tab = 'edit') {
 	return wppa_dbg_url(get_admin_url().'admin.php?page=wppa_admin_menu&amp;tab='.$tab.'&amp;edit_id='.$edit_id.'&amp;wppa_nonce='.$nonce);
 }
 
-function wppa_extended_access() {
-global $wppa_opt;
-
-	if ( current_user_can('administrator') ) return true;
-	if ( $wppa_opt['wppa_owner_only'] == 'no' ) return true;
-	return false;
-}
-
-function wppa_can_create_album() {
-global $wppa_opt;
-global $wpdb;
-
-	if ( wppa_extended_access() ) return true;
-	if ( $wppa_opt['wppa_max_albums'] == '0' ) return true;	// 0 = unlimited
-	$user = wppa_get_user();
-	$albs = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `".WPPA_ALBUMS."` WHERE `owner` = %s", $user));
-	if ( $albs < $wppa_opt['wppa_max_albums'] ) return true;
-	return false;
-}
-
-function wppa_can_create_top_album() {
-global $wppa_opt;
-
-	if ( current_user_can('administrator') ) return true;
-	if ( ! wppa_can_create_album() ) return false;
-	if ( $wppa_opt['wppa_grant_an_album'] == 'yes' && $wppa_opt['wppa_grant_parent'] != '0' ) return false;
-	return true;
-}
