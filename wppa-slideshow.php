@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the slideshow high level functions
-* Version 5.2.4
+* Version 5.2.7
 *
 */
 
@@ -485,10 +485,9 @@ global $wppa_opt;
 				$wppa['out'] .= wppa_nltab().'<img id="wppa-avg-'.$wppa['master_occur'].'-'.$i.'" class="wppa-avg-'.$wppa['master_occur'].' no-shadow" '.$style.' src="'.wppa_get_imgdir().$icon.'" alt="'.$i.'" title="'.__a('Average&nbsp;rating', 'wppa_theme').': '.$r[$i].'" />';
 				$i++;
 			}
-			if ( ! $wppa_opt['wppa_dislike_mail_every'] ) {
-				$wppa['out'] .= '<img src="'.wppa_get_imgdir().'transp.png" style="width:'.$wppa_opt['wppa_ratspacing'].'px; height:15px; box-shadow:none; padding:0; margin:0; border:none;" />';
-			}
 		}
+
+		$wppa['out'] .= '<img id="wppa-filler-'.$wppa['master_occur'].'" src="'.wppa_get_imgdir().'transp.png" style="width:'.$wppa_opt['wppa_ratspacing'].'px; height:15px; box-shadow:none; padding:0; margin:0; border:none;" />';
 
 		// Display my rating
 		if ( ! $wppa_opt['wppa_rating_login'] || is_user_logged_in() ) {	// Logged in or do'nt care

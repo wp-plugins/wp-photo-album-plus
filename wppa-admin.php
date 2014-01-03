@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains the admin menu and startups the admin pages
-* Version 5.1.12
+* Version 5.2.7
 *
 */
 
@@ -100,16 +100,19 @@ function wppa_admin() {
 }
 // Upload admin page
 function wppa_page_upload() {
+	if ( wppa_is_user_blacklisted() ) wp_die(__( 'Uploading is temporary diabled for you', 'wppa' ) );
 	require_once 'wppa-upload.php';
 	_wppa_page_upload();
 }
 // Edit photo(s)
 function wppa_edit_photo() {
+	if ( wppa_is_user_blacklisted() ) wp_die(__( 'Editing is temporary diabled for you', 'wppa' ) );
 	require_once 'wppa-photo-admin-autosave.php';
 	_wppa_edit_photo();
 }
 // Import admin page
 function wppa_page_import() {
+	if ( wppa_is_user_blacklisted() ) wp_die(__( 'Importing is temporary diabled for you', 'wppa' ) );
 	require_once 'wppa-upload.php';
 	echo '<script type="text/javascript">/* <![CDATA[ */wppa_import = "'.__('Import', 'wppa').'"; wppa_update = "'.__('Update', 'wppa').'";/* ]]> */</script>';
 	_wppa_page_import();

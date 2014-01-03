@@ -2,7 +2,7 @@
 /* wppa-ajax.php
 *
 * Functions used in ajax requests
-* version 5.2.5
+* version 5.2.7
 *
 */
 add_action('wp_ajax_wppa', 'wppa_ajax_callback');
@@ -1373,6 +1373,29 @@ global $wppa;
 				case 'wppa_search_comments':
 					update_option('wppa_index_need_remake', 'yes');
 					break;
+					
+				case 'wppa_blacklist_user':
+					$wpdb->query($wpdb->prepare( "UPDATE `".WPPA_PHOTOS."` SET `status` = 'pending' WHERE `owner` = %s", $value ) );
+					$black_listed_users = get_option( 'wppa_black_listed_users', array() );
+					if ( ! in_array( $value, $black_listed_users ) ) {
+						$black_listed_users[] = $value;
+						update_option( 'wppa_black_listed_users', $black_listed_users );
+					}
+					$value = '0';
+					break;
+					
+				case 'wppa_un_blacklist_user':
+					$wpdb->query($wpdb->prepare( "UPDATE `".WPPA_PHOTOS."` SET `status` = 'publish' WHERE `owner` = %s", $value ) );
+					$black_listed_users = get_option( 'wppa_black_listed_users', array() );
+					if ( in_array( $value, $black_listed_users ) ) {
+						foreach ( array_keys( $black_listed_users ) as $usr ) {
+							if ( $black_listed_users[$usr] == $value ) unset ( $black_listed_users[$usr] );
+						}
+						update_option( 'wppa_black_listed_users', $black_listed_users );
+					}
+					$value = '0';
+					break;
+				
 
 				default:
 			

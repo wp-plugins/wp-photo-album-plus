@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions
-* Version 5.2.5
+* Version 5.2.7
 *
 */
 
@@ -1239,8 +1239,10 @@ global $thumb;
 	
 	// Edit photo link
 	if ( ! $wppa['is_filmonly'] ) {
-		if ( ( current_user_can('wppa_admin') ) || ( wppa_get_user() == wppa_get_photo_owner($id) && current_user_can('wppa_upload') && wppa_switch('wppa_upload_edit') ) ) {
-			$desc = '<div style="float:right; margin-right:6px;" ><a href="javascript:void();" onclick="_wppaStop('.$wppa['master_occur'].');wppaEditPhoto('.$wppa['master_occur'].', '.$thumb['id'].'); return false;" >'.__a('Edit').'</a></div><br />'.$desc;
+		if ( ! wppa_is_user_blacklisted() ) {
+			if ( ( current_user_can('wppa_admin') ) || ( wppa_get_user() == wppa_get_photo_owner($id) && current_user_can('wppa_upload') && wppa_switch('wppa_upload_edit') ) ) {
+				$desc = '<div style="float:right; margin-right:6px;" ><a href="javascript:void();" onclick="_wppaStop('.$wppa['master_occur'].');wppaEditPhoto('.$wppa['master_occur'].', '.$thumb['id'].'); return false;" >'.__a('Edit').'</a></div><br />'.$desc;
+			}
 		}
 	}
 	
@@ -2889,12 +2891,18 @@ global $wppa_opt;
 		else {
 			$style = '';
 		}
-		
 		$wppa['out'] .= wppa_nltab().'<img src="'.$src.'" alt="" style="'.$style.'" class="size-medium wppa-mphoto wppa-mimg-'.$wppa['master_occur'].'" title="'.$title.'" width="'.$width.'" height="'.$height.'" />';
 		if ($link) {
 			$wppa['out'] .= wppa_nltab('-').'</a>';
 		}
+		
+		// The subtitle
 		$wppa['out'] .= '<p class="wp-caption-text">'.wppa_get_photo_desc($wppa['single_photo']).'</p>';
+		
+		// The share buttons
+		if ( wppa_switch('wppa_share_on_mphoto') ) {
+			$wppa['out'] .= wppa_get_share_html( 'mphoto', false );
+		}
 
 		// Add diagnostic <p> if debug is 1
 		if ( $wppa['debug'] == '1' && $wppa['master_occur'] == '1' ) $wppa['out'] .= wppa_nltab().'<p id="wppa-debug-'.$wppa['master_occur'].'" style="font-size:9px; color:#070; line-size:12px;" ></p>';	
@@ -3678,11 +3686,31 @@ global $wppa_opt;
 	if ( $wppa_opt['wppa_user_upload_login'] ) {
 		if ( !is_user_logged_in() ) return;					// Must login
 //		if ( !current_user_can('wppa_upload') ) return;		// No upload rights
-	}	
-	if (wppa_get_post('wppa-upload-album')) {
+	}
+//print_r($_POST);
+//return;
+	if ( wppa_get_post('wppa-album-name') ) {	// Create album
+		$nonce = wppa_get_post('nonce');
+		$ok = wp_verify_nonce($nonce, 'wppa-album-check');
+		if ( ! $ok ) die(__a('<b>ERROR: Illegal attempt to create an album.</b>'));
+		// Check captcha
+		$captkey = $wppa['randseed'];
+		if ( ! wppa_check_captcha($captkey) ) {
+			wppa_err_alert(__a('Wrong captcha, please try again'));
+			return;
+		}
+		$album = wppa_create_album_entry( array( 	'name' => strip_tags( wppa_get_post('wppa-album-name') ), 
+													'description' => strip_tags( wppa_get_post('wppa-album-desc') ),
+													'a_parent' => strval( intval( wppa_get_post('wppa-album-parent') ) ),
+													) );
+		if ( $album ) wppa_err_alert( sprintf( __a('Album #%s created'), $album ) );
+		else wppa_err_alert( __a('Could not create album') );
+	}
+	
+	if ( wppa_get_post('wppa-upload-album') ) {	// Upload photo
 		$nonce = wppa_get_post('nonce');
 		$ok = wp_verify_nonce($nonce, 'wppa-check');
-		if ( !$ok ) die(__a('<b>ERROR: Illegal attempt to upload a file.</b>'));
+		if ( ! $ok ) die(__a('<b>ERROR: Illegal attempt to upload a file.</b>'));
 		
 		$alb = wppa_get_post('wppa-upload-album');
 
@@ -3976,14 +4004,17 @@ global $thumb;
 
 	wppa_cache_thumb($id);
 
-	$do_name = $wppa_opt['wppa_ovl_'.$type.'_name'];
-	$do_desc = $wppa_opt['wppa_ovl_'.$type.'_desc'];
+	$do_name 	= wppa_switch('wppa_ovl_'.$type.'_name');
+	$do_desc 	= wppa_switch('wppa_ovl_'.$type.'_desc');
+	$do_sm 		= wppa_switch('wppa_share_on_lightbox');
 
 	$result = '';
 	if ( $do_name ) $result .= wppa_get_photo_name($thumb['id']); 
 	if ( $do_name && $do_desc ) $result .= '<br />';
 	if ( $do_desc ) $result .= wppa_get_photo_desc($thumb['id']);
-
+	if ( ( $do_name || $do_desc ) && $do_sm ) $result .= '<br />';
+	if ( $do_sm ) $result .= wppa_get_share_html( 'lightbox' );
+	
 	$result = esc_attr($result);
 	return $result;
 }

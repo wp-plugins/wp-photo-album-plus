@@ -1,7 +1,7 @@
 /* admin-scripts.js */
 /* Package: wp-photo-album-plus
 /*
-/* Version 5.2.5
+/* Version 5.2.7
 /* Various js routines used in admin pages		
 */
 
@@ -75,9 +75,10 @@ function wppaInitSettings() {
 	wppaCheckIndexSearch();
 	wppaCheckCDN();
 	wppaCheckAutoPage();
+	wppaCheckGps();
 	
 	var tab=new Array('O','I','II','III','IV','V','VI','VII','VIII','IX','X','XI','XII');
-	var sub=new Array('A','B','C','D','E','F','G','H','I','J');
+	var sub=new Array('A','B','C','D','E','F','G','H','I','J','K');
 	
 	for (table=1; table<13; table++) {
 		var cookie = wppa_getCookie('table_'+table);
@@ -87,7 +88,7 @@ function wppaInitSettings() {
 		else {
 			wppaHideTable(table);	// Refreshes cookie, so it 'never' forgets
 		}
-		for (subtab=0; subtab<10; subtab++) {
+		for (subtab=0; subtab<11; subtab++) {
 			cookie = wppa_getCookie('table_'+tab[table-1]+'-'+sub[subtab]);
 			if (cookie == 'on') {
 				wppaToggleSubTable(tab[table-1],sub[subtab]);
@@ -137,7 +138,12 @@ function wppaShowTable(table) {
 	jQuery('#wppa_tableShow-'+table).css('display', 'none');
 	wppa_tablecookieon(table);
 }
-	
+
+var _wppaRefreshAfter = false;
+function wppaRefreshAfter() {
+	_wppaRefreshAfter = true;
+}
+
 /* Adjust visibility of selection radiobutton if fixed photo is chosen or not */				
 function wppaCheckWidgetMethod() {
 	var ph;
@@ -219,6 +225,19 @@ function wppaCheckCDN() {
 	var cdn = document.getElementById('wppa_cdn_service').value;
 	if ( cdn == 'cloudinary' ) jQuery('.cloudinary').css('display', '');
 	else jQuery('.cloudinary').css('display', 'none');
+}
+
+/* Check GPX Implementation */
+function wppaCheckGps() {
+	var gpx = document.getElementById('wppa_gpx_implementation').value;
+	if ( gpx == 'wppa-plus-embedded' ) {
+		jQuery('.wppa_gpx_native').css('display', '');
+		jQuery('.wppa_gpx_plugin').css('display', 'none');
+	}
+	else {
+		jQuery('.wppa_gpx_native').css('display', 'none');
+		jQuery('.wppa_gpx_plugin').css('display', '');
+	}
 }
 
 /* Enables or disables popup thumbnail settings according to availability */
@@ -352,7 +371,7 @@ function wppaCheckAjax() {
 }
 
 function wppaCheckShares() {
-	var Sh = document.getElementById('wppa_share_on').checked || document.getElementById('wppa_share_on_widget').checked;
+	var Sh = document.getElementById('wppa_share_on').checked || document.getElementById('wppa_share_on_widget').checked || document.getElementById('wppa_share_on_lightbox').checked || document.getElementById('wppa_share_on_thumbs').checked || document.getElementById('wppa_share_on_mphoto').checked;
 	if (Sh) jQuery('.wppa_share').css('display', '');
 	else jQuery('.wppa_share').css('display', 'none');
 }
@@ -1258,6 +1277,10 @@ function wppaAjaxUpdateOptionValue(slug, elem) {
 				switch (ArrValues[1]) {
 					case '0':	// No error
 						document.getElementById('img_'+slug).src = wppaImageDirectory+'tick.png';
+						if ( _wppaRefreshAfter ) {
+							_wppaRefreshAfter = false;
+							document.location.reload(true);
+						}
 						break;
 					default:
 						document.getElementById('img_'+slug).src = wppaImageDirectory+'cross.png';

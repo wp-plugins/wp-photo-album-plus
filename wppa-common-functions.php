@@ -2,7 +2,7 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 5.2.5
+* version 5.2.7
 *
 */
 
@@ -256,6 +256,8 @@ global $wppa_initruntimetime;
 						'wppa_share_on'						=> '',
 						'wppa_share_on_widget'				=> '',
 						'wppa_share_on_thumbs'				=> '',
+						'wppa_share_on_lightbox' 			=> '',
+						'wppa_share_on_mphoto' 				=> '',
 						'wppa_share_qr'						=> '',
 						'wppa_share_facebook'				=> '',
 						'wppa_share_twitter'				=> '',
@@ -565,6 +567,8 @@ global $wppa_initruntimetime;
 						'wppa_memcheck_admin'		=> '',
 						'wppa_comment_captcha'		=> '',
 						'wppa_spam_maxage'			=> '',
+						'wppa_user_create_on'		=> '',
+						'wppa_user_create_login'	=> '',
 						
 						'wppa_editor_upload_limit_count'		=> '',
 						'wppa_editor_upload_limit_time'			=> '',
@@ -590,6 +594,8 @@ global $wppa_initruntimetime;
 						'wppa_cleanup'				=> '',
 						'wppa_recup'				=> '',
 						'wppa_file_system'			=> '',
+						'wppa_blacklist_user' 		=> '',
+						'wppa_un_blacklist_user' 	=> '',
 						// B Irreversable
 						'wppa_rating_clear' 		=> '',
 						'wppa_iptc_clear'			=> '',
@@ -628,6 +634,9 @@ global $wppa_initruntimetime;
 						'wppa_cp_points_rating'			=> '',
 						'wppa_cp_points_upload'			=> '',
 						'wppa_use_scabn'				=> '',
+						'wppa_gpx_implementation' 		=> '',
+						'wppa_map_height' 				=> '',
+						'wppa_map_apikey' 				=> '',
 						'wppa_gpx_shortcode'			=> '',
 
 						'wppa_use_wp_editor'			=> '',	//A 11
@@ -989,6 +998,7 @@ global $wppa_opt;
     {
 	case '':
 	case '0':
+		$result = '';
 		break;
     case '1':
         $result = 'ORDER BY p_order';
@@ -1037,6 +1047,7 @@ global $wppa_opt;
 		
     default:
         wppa_dbg_msg('Unimplemented photo order: '.$order, 'red');
+		$result = '';
     }
 
     return $result;
@@ -1240,7 +1251,7 @@ function wppa_get_time_since($oldtime) {
 }
 
 // See if an album or any album is accessable for the current user
-function wppa_have_access($alb) {
+function wppa_have_access( $alb ) {
 global $wpdb;
 global $current_user;
 global $wppa_opt;
@@ -1248,7 +1259,7 @@ global $wppa_opt;
 //	if ( !$alb ) $alb = 'any'; //return false;
 	
 	// See if there is any album accessable
-	if (!$alb) { // == 'any') {
+	if ( ! $alb ) { // == 'any') {
 	
 		// Administrator has always access OR If all albums are public
 		if (current_user_can('administrator') || get_option('wppa_owner_only', 'no') == 'no') {
@@ -1263,24 +1274,31 @@ global $wppa_opt;
 		wppa_dbg_q('Q210');
 		if ($albs) return true;
 		
-		// Any albums owned by this user?
-		get_currentuserinfo();
-		$user = $current_user->user_login;
-		$albs = $wpdb->get_results($wpdb->prepare( "SELECT `id` FROM `".WPPA_ALBUMS."` WHERE `owner` = %s", $user) );
-		wppa_dbg_q('Q211');
-		if ($albs) return true;
-		else return false;	// No albums for user accessable
+		// Any logged out created albums? ( owner = ip )
+		$albs = $wpdb->get_results( "SELECT `owner` FROM `".WPPA_ALBUMS."`", ARRAY_A );
+		if ( $albs ) foreach ( $albs as $a ) {
+			if ( wppa_is_int( str_replace( '.', '', $a['owner'] ) ) ) return true;
+		}
 		
+		// Any albums owned by this user?
+		if ( is_user_logged_in() ) {
+			get_currentuserinfo();
+			$user = $current_user->user_login;
+			$albs = $wpdb->get_results( $wpdb->prepare( "SELECT `id` FROM `".WPPA_ALBUMS."` WHERE `owner` = %s", $user ) );
+			wppa_dbg_q('Q211');
+			if ( $albs ) return true;
+			else return false;	// No albums for user accessable
+		}
 	}
 	
 	// See for given album data array or album number
 	else {
 	
 		// Administrator has always access
-		if (current_user_can('administrator')) return true;
+		if ( current_user_can('administrator') ) return true;
 		
 		// If all albums are public
-		if (get_option('wppa_owner_only', 'no') == 'no') return true;
+		if ( get_option( 'wppa_owner_only', 'no' ) == 'no' ) return true;
 		
 		// Find the owner
 		$owner = '';
@@ -1294,11 +1312,13 @@ global $wppa_opt;
 		
 		// -- public --- ?
 		if ( $owner == '--- public ---' ) return true;
+		if ( wppa_is_int( str_replace( '.', '', $owner ) ) ) return true;
 		
 		// Find the user
-		get_currentuserinfo();
-		
-		if ( $current_user->user_login == $owner ) return true;
+		if ( is_user_logged_in() ) {
+			get_currentuserinfo();
+			if ( $current_user->user_login == $owner ) return true;
+		}
 	}
 	return false;
 }
@@ -2046,7 +2066,7 @@ wppa_dbg_msg('Exif data present');
 		}
 		// Now add poto specific data item
 		// If its an array...
-		if ( is_array($exif[$s]) ) { // continue;
+		if ( is_array( $exif[$s] ) ) { // continue;
 			$c = count ($exif[$s]);
 			$max = $wppa_opt['wppa_exif_max_array_size'];
 			if ( $max != '0' && $c > $max ) {
@@ -2544,7 +2564,8 @@ global $wpdb;
 			$pos = strpos($value, '/');
 			if ( $pos !== false ) {
 				$temp = explode('/',$value); 
-				$gps[$key] = $temp[0] / $temp[1];
+				if ( $temp[1] ) $gps[$key] = $temp[0] / $temp[1];
+				else $gps[$key] = 0;
 			}
 		}
 		

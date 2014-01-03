@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile
-Version: 5.2.6
+Version: 5.2.7
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -173,6 +173,30 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
 
+= 5.2.7 =
+
+= Bug Fixes =
+
+* Fixed space between avg and my rating.
+* Fixed the erroneous swap between <strong>'Number of votes desc'</strong> and <strong>'Timestamp desc'</strong> in Settings page and album admin.
+* Number of displayed albums corrected when empty albums skipped in thumbnail albums widget.
+
+= New Features =
+
+* Frontend create album. Table VII-B8,9. If configured and the user has the right to create: 
+Shows up in the upload widget and the upload box with the default parent, on album covers and thumbnail displays with the current album set as parent.
+* WPPA+ embedded gpx map solution. Works with Ajax, is faster but less configurable, is set to the default. Old implementation using Google maps GPX viewer plugin is continued for backward compatebility. Settable in Table IX-K.
+* Share buttons on lightbox. Table II-B21.01.
+* Share buttons on mphoto. Table II-B21.02.
+* Users can be blacklisted and un-blacklisted. 
+A blacklisted user will find all his photos 'awaiting moderation' ( and therefor only visible for homself and administrators ) 
+and will be unable to upload, import or edit photos. Settable in Table VIII-A11,12.
+
+= Other Changes =
+
+* Default parent album setting moved from Table IX-B5.5 to Table VII-B10.
+* Titles of non-wppa images remain untouched when Table IV-G5 ( WPPA+ lightbox global ) is checked, and the magnifier glass cursor will be shown.
+
 = 5.2.6 =
 
 = Bug Fixes =
@@ -193,7 +217,7 @@ See for additional information: http://wppa.opajaap.nl/?page_id=1459
 * Search on categories and on comment content ( Table IX-C3.2 and 3.3 ).
 * Increased options for album and photo sequence ordering. The reverse switch ( descending ) is no longer systemwide.
 * EXIF date is saved into the photo data and can be used for sequence ordering.
-* Default parent album settable in Table IX-
+* Default parent album settable in Table IX-B5.5
 
 = Other Changes =
 

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * gp admin functions
-* version 5.2.5
+* version 5.2.7
 *
 * 
 */
@@ -244,12 +244,6 @@ function wppa_check_numeric($value, $minval, $target, $maxval = '') {
 // check if albums 'exists'
 function wppa_has_albums() {
 	return wppa_have_access('0');
-}
-
-function wppa_get_users() {
-global $wpdb;
-	$users = $wpdb->get_results( 'SELECT * FROM '.$wpdb->users, ARRAY_A);
-	return $users;
 }
 
 function wppa_user_select($select = '') {
