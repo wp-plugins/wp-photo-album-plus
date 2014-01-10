@@ -6,7 +6,7 @@
 * Version 5.2.8
 *
 */
-
+ 
 function __a($txt, $dom = 'wppa_theme') {
 	return __($txt, $dom);
 }
