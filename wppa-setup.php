@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 5.2.7
+* Version 5.2.8
 *
 */
 
@@ -313,8 +313,12 @@ global $silent;
 		if ( $old_rev <= '5206' ) {
 			$wpdb->query( "DELETE FROM `".WPPA_RATING."` WHERE `value` = '0'" );
 		}
-
-		
+		if ( $old_rev <= '5207' ) {
+			if ( get_option( 'wppa_strip_file_ext', 'nil' ) == 'yes' ) {
+				wppa_update_option( 'wppa_newphoto_name_method', 'noext' );
+				delete_option( 'wppa_strip_file_ext' );
+			}
+		}		
 		
 //		wppa_flush_treecounts();
 	}
@@ -568,6 +572,7 @@ Hide Camera info
 						'wppa_copyright_on'					=> 'yes',		// 19
 						'wppa_copyright_notice'				=> __('<span style="color:red" >Warning: Do not upload copyrighted material!</span>', 'wppa'),	// 20
 						'wppa_share_on'						=> 'no',
+						'wppa_share_hide_when_running'		=> 'no',
 						'wppa_share_on_widget'				=> 'no',
 						'wppa_share_on_thumbs'				=> 'no',
 						'wppa_share_on_lightbox' 			=> 'no',
@@ -974,7 +979,8 @@ Hide Camera info
 						'wppa_covertype_is_restricted'	=> 'no',
 						'wppa_porder_restricted'		=> 'no',
 						
-						'wppa_strip_file_ext'			=> 'no',
+//						'wppa_strip_file_ext'			=> 'no',
+						'wppa_newphoto_name_method' 	=> 'filename',
 						
 						'wppa_copy_timestamp'			=> 'no',
 						

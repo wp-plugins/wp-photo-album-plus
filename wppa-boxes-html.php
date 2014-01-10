@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Various wppa boxes
-* Version 5.2.7
+* Version 5.2.8
 *
 */
 
@@ -660,9 +660,19 @@ $wppa['out'] .= '
 			}
 			
 		// Name
+		switch ( $wppa_opt['wppa_newphoto_name_method'] ) {
+			case '2#005':
+				$expl = __a('If you leave this blank, iptc tag 005 (Graphic name) will be used as photoname if available, else the original filename will be used as photo name.');
+				break;
+			case '2#120':
+				$expl = __a('If you leave this blank, iptc tag 120 (Caption) will be used as photoname if available, else the original filename will be used as photo name.');
+				break;
+			default:
+				$expl = __a('If you leave this blank, the original filename will be used as photo name.');
+		}
 		$wppa['out'] .= '
 			<div class="wppa-box-text wppa-td" style="clear:both; float:left; text-align:left; '.__wcs('wppa-box-text').__wcs('wppa-td').'" >'.
-				__a('Enter photo name.').'&nbsp;<span style="font-size:10px;" >'.__a('If you leave this blank, the original filename will be used as photo name.').'</span>'.'
+				__a('Enter photo name.').'&nbsp;<span style="font-size:10px;" >'.$expl.'</span>'.'
 			</div>
 			<input type="text" class="wppa-box-text wppa-file-'.$t.$wppa['master_occur'].'" style="padding:0; width:'.($width-6).'px; '.__wcs('wppa-box-text').'" name="wppa-user-name" />';
 

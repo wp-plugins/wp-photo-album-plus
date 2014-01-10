@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * enhances the admin bar with wppa+ menu
-* version 4.1.3
+* version 5.2.8
 *
 */
 
@@ -69,9 +69,6 @@ function wppa_admin_bar_menu() {
 			'href'   => admin_url( 'admin.php?page=wppa_moderate_photos' )
 		);
 	}
-//		add_submenu_page( 'wppa_admin_menu',  __('Moderate Photos', 'wppa'),		 __('Moderate Photos', 'wppa').$tot_pending, 'wppa_moderate', 	 'wppa_moderate_photos', 'wppa_page_moderate' );
-
-	
 	if ( current_user_can( 'wppa_export' ) ) {
 		$menu_items['export'] = array(
 			'parent' => $wppaplus,
@@ -114,7 +111,6 @@ function wppa_admin_bar_menu() {
 			'href'   => 'http://wppa.opajaap.nl'
 		);
 	}
-	
 		
 	// Add top-level item
 	$wp_admin_bar->add_menu( array(
@@ -131,7 +127,7 @@ function wppa_admin_bar_menu() {
 
 		// Add meta target to each item where it's not already set, so links open in new tab
 		if ( ! isset( $menu_item['meta']['target'] ) )		
-			$menu_item['meta']['target'] = '_blank';
+			$menu_item['meta']['target'] = '_self';
 
 		// Add class to links that open up in a new tab
 		if ( '_blank' === $menu_item['meta']['target'] ) {

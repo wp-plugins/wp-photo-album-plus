@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains low-level utility routines
-* Version 5.2.7
+* Version 5.2.8
 *
 */
 
@@ -1222,18 +1222,20 @@ function wppa_sanitize_tags($value, $keepsemi = false) {
 		$first = true;
 		$previdx = '';
 		foreach ( array_keys($temp) as $idx ) {
-			$temp[$idx] = strtoupper(substr($temp[$idx], 0, 1)).strtolower(substr($temp[$idx], 1));
-			if ( $temp[$idx] ) {
-				if ( $first ) {
-					$first = false;
-					$value .= $temp[$idx];
-					$previdx = $idx;
-				}
-				elseif ( $temp[$idx] !=  $temp[$previdx] ) {	// Skip duplicates
-					$value .= $sep.$temp[$idx];
-					$previdx = $idx;
-				}
-			}									
+			if ( strlen( $temp[$idx] ) > '1' ) {
+				$temp[$idx] = strtoupper(substr($temp[$idx], 0, 1)).strtolower(substr($temp[$idx], 1));
+				if ( $temp[$idx] ) {
+					if ( $first ) {
+						$first = false;
+						$value .= $temp[$idx];
+						$previdx = $idx;
+					}
+					elseif ( $temp[$idx] !=  $temp[$previdx] ) {	// Skip duplicates
+						$value .= $sep.$temp[$idx];
+						$previdx = $idx;
+					}
+				}		
+			}
 		}
 	}
 	return $value;
@@ -1491,70 +1493,52 @@ global $blog_id;
 	return $source_album_dir;
 }
 
-function wppa_extended_access() {
-global $wppa_opt;
 
-	if ( current_user_can('administrator') ) return true;
-	if ( $wppa_opt['wppa_owner_only'] == 'no' ) return true;
-	return false;
-}
-
-function wppa_can_create_album() {
-global $wppa_opt;
+function wppa_set_default_name( $id ) {
 global $wpdb;
-
-	if ( wppa_extended_access() ) return true;
-	if ( $wppa_opt['wppa_max_albums'] == '0' ) return true;	// 0 = unlimited
-	$user = wppa_get_user();
-	$albs = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `".WPPA_ALBUMS."` WHERE `owner` = %s", $user));
-	if ( $albs < $wppa_opt['wppa_max_albums'] ) return true;
-	return false;
-}
-
-function wppa_can_create_top_album() {
 global $wppa_opt;
+global $thumb;
 
-	if ( current_user_can('administrator') ) return true;
-	if ( ! wppa_can_create_album() ) return false;
-	if ( $wppa_opt['wppa_grant_an_album'] == 'yes' && $wppa_opt['wppa_grant_parent'] != '0' ) return false;
-	return true;
-}
-
-function wppa_get_users() {
-global $wpdb;
-	$users = $wpdb->get_results( "SELECT * FROM `".$wpdb->users."` ORDER BY `display_name`", ARRAY_A );
-	return $users;
-}
-
-function wppa_user_is( $role, $user_id = null ) {
- 
- 	if ( ! is_user_logged_in() ) return false;
-
-	if ( is_numeric( $user_id ) ) {
-		$user = get_userdata( $user_id );
-	}
-    else {
-        $user = wp_get_current_user();
-	}
- 
-    if ( empty( $user ) )
-	return false;
- 
-    return in_array( $role, (array) $user->roles );
-}
-
-function wppa_is_user_blacklisted( $user = null ) {
-global $wpdb;
-
-	if ( ! is_user_logged_in() ) return false;
+	if ( ! wppa_is_int( $id ) ) return;
+	wppa_cache_thumb( $id );
 	
-	if ( empty( $user ) ) {
-		$user = get_current_user_id();
+	$name 		= $thumb['filename']; 	// The default default
+	$filename 	= $thumb['filename'];
+	
+	switch ( $wppa_opt['wppa_newphoto_name_method'] ) {
+		case 'filename':
+			break;
+		case 'noext':
+			$name = preg_replace('/\.[^.]*$/', '', $name);
+			break;
+		case '2#005':
+			$tag = '2#005';
+			$name = $wpdb->get_var( $wpdb->prepare( "SELECT `description` FROM `".WPPA_IPTC."` WHERE `photo` = %s AND `tag` = %s", $id, $tag ) );
+			break;
+		case '2#120':
+			$tag = '2#120';
+			$name = $wpdb->get_var( $wpdb->prepare( "SELECT `description` FROM `".WPPA_IPTC."` WHERE `photo` = %s AND `tag` = %s", $id, $tag ) );
+			break;
 	}
-	if ( is_numeric( $user ) ) {
-		$user = $wpdb->get_var( $wpdb->prepare( "SELECT `user_login` FROM `".$wpdb->users."` WHERE `ID` = %d", $user ) );
+	if ( $name && ( $name != $filename ) ) {	// Update name
+		$wpdb->query( $wpdb->prepare( "UPDATE `".WPPA_PHOTOS."` SET `name` = %s WHERE `id` = %s", $name, $id ) );
+		$thumb['name'] = $name;	// Update cache
 	}
-	$blacklist = get_option( 'wppa_black_listed_users', array() );
+	if ( ! wppa_switch('wppa_save_iptc') ) { 	// He doesn't want to keep the iptc data, so...
+		$wpdb->query($wpdb->prepare( "DELETE FROM `".WPPA_IPTC."` WHERE `photo` = %s", $id ) );
+	}
+}
 
-	return in_array( $user, $blacklist );
+function wppa_set_default_tags( $id ) {
+global $wpdb;
+global $thumb;
+global $album;
+
+	wppa_cache_thumb( $id );
+	$alb = $thumb['album'];
+	wppa_cache_album( $alb );
+	
+	$tags = wppa_sanitize_tags( str_replace( array( ' ', '\'', '"'), ',', wppa_filter_iptc( wppa_filter_exif( $album['default_tags'], $id ), $id ) ) );
+	
+	$wpdb->query( $wpdb->prepare( "UPDATE `".WPPA_PHOTOS."` SET `tags` = %s WHERE `id` = %s", $tags, $id ) );
 }

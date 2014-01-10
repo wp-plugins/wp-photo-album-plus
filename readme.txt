@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile
-Version: 5.2.7
+Version: 5.2.8
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -172,6 +172,25 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 5.2.8 =
+
+= Bug Fixes =
+
+* Setting fields to an empty value or to --none-- sometimes did not work in the album and photo admin. Fixed.
+* The wppa+ specific cart interface to <b>Simple Cart & Buy Now</b> stopped working. Fixed.
+* Fixed a layout issue in the rating bar when the thumbdown was disabled.
+
+= New Features =
+
+* You can select the way the name of new photos is determined. Table IX-D13.
+* You can now enter also exif and iptc tags in the photo tags field and the albums default tags field.
+* You can now hide the social media buttons when the slideshow is running, to disable shooting on a moving target. Table II-C2.
+
+= Other Changes =
+
+* Table II, VII and IX Have been restructured, renamed and renumbered.
+* The Photo Albums admin bar menu tems no longer open a new tab. If you still want a new tab, hold CTRL when clicking the menu.
 
 = 5.2.7 =
 

@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions
-* Version 5.2.7
+* Version 5.2.8
 *
 */
 
@@ -3803,9 +3803,9 @@ global $album;
 		$name = $file['name'];
 	}
 	$name = htmlspecialchars($name);
-	if ( wppa_switch('wppa_strip_file_ext') ) {
-		$name = preg_replace('/\.[^.]*$/', '', $name);
-	}
+//	if ( wppa_switch('wppa_strip_file_ext') ) {
+//		$name = preg_replace('/\.[^.]*$/', '', $name);
+//	}
 //	$porder = '0';
 	$desc = balanceTags( wppa_get_post( 'user-desc' ), true );
 //	$mrat = '0';
@@ -3831,8 +3831,16 @@ global $album;
 		wppa_set_last_album($alb);
 		wppa_flush_treecounts($alb);
 	}
-	if ( wppa_make_the_photo_files($file['tmp_name'], $id, $ext) ) {
+	if ( wppa_make_the_photo_files( $file['tmp_name'], $id, $ext ) ) {
+		// Repair photoname if not standard
+		if ( ! wppa_get_post( 'user-name' ) ) {
+			wppa_set_default_name( $id );
+		}
+		// Defaul tags
+		wppa_set_default_tags( $id );
+		// Index
 		wppa_index_add('photo', $id);
+		// Mail
 		if ( $wppa_opt['wppa_upload_notify'] ) {
 			$to = get_bloginfo('admin_email');
 			$subj = sprintf(__a('New photo uploaded: %s'), $name);
