@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wppa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-01-02 16:40+0100\n"
-"PO-Revision-Date: 2014-01-02 16:40+0100\n"
+"POT-Creation-Date: 2014-01-09 16:48+0100\n"
+"PO-Revision-Date: 2014-01-09 16:48+0100\n"
 "Last-Translator: J.N. Breetvelt <OpaJaap@OpaJaap.nl>\n"
 "Language-Team: OpaJaap <OpaJaap@OpaJaap.nl>\n"
 "MIME-Version: 1.0\n"
@@ -41,31 +41,31 @@ msgstr ""
 msgid "Moderate Photos"
 msgstr ""
 
-#: wppa-adminbar.php:78
+#: wppa-adminbar.php:75
 msgid "Export Photos"
 msgstr ""
 
-#: wppa-adminbar.php:85
+#: wppa-adminbar.php:82
 msgid "Settings"
 msgstr ""
 
-#: wppa-adminbar.php:92
+#: wppa-adminbar.php:89
 msgid "Photo of the day"
 msgstr ""
 
-#: wppa-adminbar.php:99
+#: wppa-adminbar.php:96
 msgid "Comments"
 msgstr ""
 
-#: wppa-adminbar.php:106
+#: wppa-adminbar.php:103
 msgid "Help & Info"
 msgstr ""
 
-#: wppa-adminbar.php:113
+#: wppa-adminbar.php:110
 msgid "Docs & Demos"
 msgstr ""
 
-#: wppa-adminbar.php:122 wppa-album-widget.php:41
+#: wppa-adminbar.php:118 wppa-album-widget.php:41
 msgid "Photo Albums"
 msgstr ""
 
@@ -120,7 +120,7 @@ msgid "albums"
 msgstr ""
 
 #: wppa-album-covers.php:910 wppa-boxes-html.php:246 wppa-breadcrumb.php:208
-#: wppa-breadcrumb.php:213 wppa-functions.php:3991 wppa-utils.php:1294
+#: wppa-breadcrumb.php:213 wppa-functions.php:3999 wppa-utils.php:1296
 msgid "and"
 msgstr ""
 
@@ -169,7 +169,7 @@ msgstr ""
 msgid "Find!"
 msgstr ""
 
-#: wppa-boxes-html.php:246 wppa-utils.php:1294
+#: wppa-boxes-html.php:246 wppa-utils.php:1296
 #, php-format
 msgid "See this image on %s"
 msgstr ""
@@ -271,85 +271,98 @@ msgid "Position:"
 msgstr ""
 
 #: wppa-boxes-html.php:665
-msgid "Enter photo name."
+msgid ""
+"If you leave this blank, iptc tag 005 (Graphic name) will be used as "
+"photoname if available, else the original filename will be used as photo "
+"name."
 msgstr ""
 
-#: wppa-boxes-html.php:665
+#: wppa-boxes-html.php:668
+msgid ""
+"If you leave this blank, iptc tag 120 (Caption) will be used as photoname if "
+"available, else the original filename will be used as photo name."
+msgstr ""
+
+#: wppa-boxes-html.php:671
 msgid ""
 "If you leave this blank, the original filename will be used as photo name."
 msgstr ""
 
-#: wppa-boxes-html.php:673
+#: wppa-boxes-html.php:675
+msgid "Enter photo name."
+msgstr ""
+
+#: wppa-boxes-html.php:683
 msgid "Enter/modify photo description"
 msgstr ""
 
-#: wppa-boxes-html.php:722 wppa-functions.php:2371
+#: wppa-boxes-html.php:732 wppa-functions.php:2371
 msgid "wrote:"
 msgstr ""
 
-#: wppa-boxes-html.php:755 wppa-links.php:537
+#: wppa-boxes-html.php:765 wppa-links.php:537
 msgid "Awaiting moderation"
 msgstr ""
 
-#: wppa-boxes-html.php:758
+#: wppa-boxes-html.php:768
 msgid "Marked as spam"
 msgstr ""
 
-#: wppa-boxes-html.php:776
+#: wppa-boxes-html.php:786
 msgid "Edit!"
 msgstr ""
 
-#: wppa-boxes-html.php:780
+#: wppa-boxes-html.php:790
 msgid "Send!"
 msgstr ""
 
-#: wppa-boxes-html.php:819
+#: wppa-boxes-html.php:829
 msgid "Your name:"
 msgstr ""
 
-#: wppa-boxes-html.php:824
+#: wppa-boxes-html.php:834
 msgid "Your email:"
 msgstr ""
 
-#: wppa-boxes-html.php:829
+#: wppa-boxes-html.php:839
 msgid "Your comment:"
 msgstr ""
 
-#: wppa-boxes-html.php:863
+#: wppa-boxes-html.php:873
 #, php-format
 msgid "You must <a href=\"%s\">login</a> to enter a comment"
 msgstr ""
 
-#: wppa-boxes-html.php:870
+#: wppa-boxes-html.php:880
 #, php-format
 msgid "%d  comments"
 msgstr ""
 
-#: wppa-boxes-html.php:874
+#: wppa-boxes-html.php:884
 msgid "Leave a comment"
 msgstr ""
 
-#: wppa-boxes-html.php:942
+#: wppa-boxes-html.php:952
 msgid "Show IPTC data"
 msgstr ""
 
-#: wppa-boxes-html.php:945
+#: wppa-boxes-html.php:955
 msgid "Hide IPTC data"
 msgstr ""
 
-#: wppa-boxes-html.php:972
+#: wppa-boxes-html.php:982
 msgid "No IPTC data"
 msgstr ""
 
-#: wppa-boxes-html.php:1013
+#: wppa-boxes-html.php:1023
 msgid "Show EXIF data"
 msgstr ""
 
-#: wppa-boxes-html.php:1016
+#: wppa-boxes-html.php:1026
 msgid "Hide EXIF data"
 msgstr ""
 
-#: wppa-boxes-html.php:1043
+#: wppa-boxes-html.php:1053
 msgid "No EXIF data"
 msgstr ""
 
@@ -453,12 +466,12 @@ msgstr ""
 msgid "Buy now"
 msgstr ""
 
-#: wppa-cart.php:85
+#: wppa-cart.php:87
 #, php-format
 msgid "Unit Price: %s each"
 msgstr ""
 
-#: wppa-cart.php:89
+#: wppa-cart.php:91
 msgid "Qty:"
 msgstr ""
 
@@ -468,63 +481,63 @@ msgstr ""
 msgid "Photo not found."
 msgstr ""
 
-#: wppa-common-functions.php:814
+#: wppa-common-functions.php:816
 msgid "Default photo album for"
 msgstr ""
 
-#: wppa-common-functions.php:1219
+#: wppa-common-functions.php:1193
 msgid "1 second"
 msgstr ""
 
-#: wppa-common-functions.php:1220 wppa-functions.php:3992
+#: wppa-common-functions.php:1194 wppa-functions.php:4000
 msgid "seconds"
 msgstr ""
 
-#: wppa-common-functions.php:1224
+#: wppa-common-functions.php:1198
 msgid "1 minute"
 msgstr ""
 
-#: wppa-common-functions.php:1225 wppa-functions.php:3991
+#: wppa-common-functions.php:1199 wppa-functions.php:3999
 msgid "minutes"
 msgstr ""
 
-#: wppa-common-functions.php:1229
+#: wppa-common-functions.php:1203
 msgid "1 hour"
 msgstr ""
 
-#: wppa-common-functions.php:1230 wppa-functions.php:3990
+#: wppa-common-functions.php:1204 wppa-functions.php:3998
 msgid "hours"
 msgstr ""
 
-#: wppa-common-functions.php:1234
+#: wppa-common-functions.php:1208
 msgid "1 day"
 msgstr ""
 
-#: wppa-common-functions.php:1235 wppa-functions.php:3989
+#: wppa-common-functions.php:1209 wppa-functions.php:3997
 msgid "days"
 msgstr ""
 
-#: wppa-common-functions.php:1239
+#: wppa-common-functions.php:1213
 msgid "1 week"
 msgstr ""
 
-#: wppa-common-functions.php:1240 wppa-functions.php:3988
+#: wppa-common-functions.php:1214 wppa-functions.php:3996
 msgid "weeks"
 msgstr ""
 
-#: wppa-common-functions.php:1244
+#: wppa-common-functions.php:1218
 msgid "1 month"
 msgstr ""
 
-#: wppa-common-functions.php:1245
+#: wppa-common-functions.php:1219
 msgid "months"
 msgstr ""
 
-#: wppa-common-functions.php:1248
+#: wppa-common-functions.php:1222
 msgid "1 year"
 msgstr ""
 
-#: wppa-common-functions.php:1249
+#: wppa-common-functions.php:1223
 msgid "years"
 msgstr ""
 
@@ -750,7 +763,7 @@ msgstr ""
 msgid "Moderate comment admin"
 msgstr ""
 
-#: wppa-functions.php:1397 wppa-functions.php:3842 wppa-upload.php:1041
+#: wppa-functions.php:1397 wppa-functions.php:3850 wppa-upload.php:1041
 msgid "Moderate manage photo"
 msgstr ""
 
@@ -871,33 +884,33 @@ msgstr ""
 msgid "Could not insert photo into db."
 msgstr ""
 
-#: wppa-functions.php:3838 wppa-upload.php:1037
+#: wppa-functions.php:3846 wppa-upload.php:1037
 #, php-format
 msgid "New photo uploaded: %s"
 msgstr ""
 
-#: wppa-functions.php:3839 wppa-upload.php:1038
+#: wppa-functions.php:3847 wppa-upload.php:1038
 #, php-format
 msgid "User %s uploaded photo %s into album %s"
 msgstr ""
 
-#: wppa-functions.php:3841 wppa-upload.php:1040
+#: wppa-functions.php:3849 wppa-upload.php:1040
 msgid "This upload requires moderation"
 msgstr ""
 
-#: wppa-functions.php:3845 wppa-upload.php:1044
+#: wppa-functions.php:3853 wppa-upload.php:1044
 msgid "Details:"
 msgstr ""
 
-#: wppa-functions.php:3846 wppa-upload.php:1045
+#: wppa-functions.php:3854 wppa-upload.php:1045
 msgid "Manage photo"
 msgstr ""
 
-#: wppa-functions.php:3986
+#: wppa-functions.php:3994
 msgid "You can upload after"
 msgstr ""
 
-#: wppa-functions.php:4024
+#: wppa-functions.php:4032
 msgid "Zoom in"
 msgstr ""
 

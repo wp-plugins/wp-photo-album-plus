@@ -2,7 +2,7 @@
 //
 // conatins slideshow, theme, ajax and lightbox code
 //
-// Version 5.2.7
+// Version 5.2.8
 
 // Part 1: Slideshow
 //
@@ -154,6 +154,7 @@ var wppaColWidth = new Array();
 var _wppaShareUrl = new Array();
 var _wppaShareHtml = new Array();
 var _wppaFilmNoMove = new Array();
+var wppaShareHideWhenRunning = false;
 
 // Check for occurrences that are responsive
 jQuery(document).ready(function(){
@@ -744,7 +745,7 @@ function _wppaNextSlide_5(mocc) {
 		jQuery("#iptc-"+mocc).html(_wppaIptcHtml[mocc][_wppaCurIdx[mocc]]);
 		jQuery("#exif-"+mocc).html(_wppaExifHtml[mocc][_wppaCurIdx[mocc]]);
 		// Restore share html
-		jQuery("#share-"+mocc).html(_wppaShareHtml[mocc][_wppaCurIdx[mocc]]);
+		jQuery("#wppa-share-"+mocc).html(_wppaShareHtml[mocc][_wppaCurIdx[mocc]]);
 
 	}
 	_wppaToTheSame = false;					// This has now been worked out
@@ -1455,7 +1456,8 @@ if ( typeof( avg ) == 'undefined' ) return;
 		if (myr == 0) {	// If i did not vote yet, enable the thumb down
 			jQuery('#wppa-dislike-'+mocc).css('display', 'inline');
 			jQuery('#wppa-dislike-imgdiv-'+mocc).css('display', 'inline');
-			jQuery('#wppa-filler-'+mocc).css('display', 'none');
+			// Hide the filler only when there is a thumbdown
+			if ( document.getElementById('wppa-dislike-'+mocc) ) jQuery('#wppa-filler-'+mocc).css('display', 'none');
 			jQuery('#wppa-dislike-'+mocc).stop().fadeTo(100, wppaStarOpacity);
 		}
 		else {			// If i voted, disable thumb down
@@ -1767,20 +1769,23 @@ function _wppaShowMetaData(mocc, key) {
 	// What to do when the slideshow is NOT running
 	if ( ! _wppaSSRuns[mocc] ) {	
 		if (key == 'show') {			// Show
-		
-		if (wppaAutoOpenComments) {
-			// Show existing comments
-			jQuery('#wppa-comtable-wrap-'+mocc).css('display', 'block');
-			// Show the input form table
-			jQuery('#wppa-comform-wrap-'+mocc).css('display', 'block');
-			// Hide the comment footer
-			jQuery('#wppa-comfooter-wrap-'+mocc).css('display', 'none');
-}
+			if (wppaAutoOpenComments) {
+				// Show existing comments
+				jQuery('#wppa-comtable-wrap-'+mocc).css('display', 'block');
+				// Show the input form table
+				jQuery('#wppa-comform-wrap-'+mocc).css('display', 'block');
+				// Hide the comment footer
+				jQuery('#wppa-comfooter-wrap-'+mocc).css('display', 'none');
+			}
 			// Fade the browse arrows in
 			if ( wppaSlideWrap || ( _wppaCurIdx[mocc] != 0 ) )
 				jQuery('.wppa-prev-'+mocc).css('visibility', 'visible'); // fadeIn(300);
 			if ( wppaSlideWrap || ( _wppaCurIdx[mocc] != (_wppaSlides[mocc].length - 1) ) )
 				jQuery('.wppa-next-'+mocc).css('visibility', 'visible'); // fadeIn(300);
+			// SM box
+			if ( wppaShareHideWhenRunning ) {
+				jQuery('#wppa-share-'+mocc).css('display', '');
+			}
 		}
 		else {							// Hide
 			// Hide existing comments
@@ -1796,6 +1801,14 @@ function _wppaShowMetaData(mocc, key) {
 	}
 	// What to do when the slideshow is running
 	else {	// Slideshow is running
+		if ( key == 'show' ) {
+		}
+		else {
+			// SM box
+			if ( wppaShareHideWhenRunning ) {
+				jQuery('#wppa-share-'+mocc).css('display', 'none');
+			}
+		}
 	}
 	
 	// What to do always, independant of slideshow is running

@@ -1,7 +1,7 @@
 /* admin-scripts.js */
 /* Package: wp-photo-album-plus
 /*
-/* Version 5.2.7
+/* Version 5.2.8
 /* Various js routines used in admin pages		
 */
 
@@ -77,8 +77,8 @@ function wppaInitSettings() {
 	wppaCheckAutoPage();
 	wppaCheckGps();
 	
-	var tab=new Array('O','I','II','III','IV','V','VI','VII','VIII','IX','X','XI','XII');
-	var sub=new Array('A','B','C','D','E','F','G','H','I','J','K');
+	var tab = new Array('O','I','II','III','IV','V','VI','VII','VIII','IX','X','XI','XII');
+	var sub = new Array('A','B','C','D','E','F','G','H','I','J','K');
 	
 	for (table=1; table<13; table++) {
 		var cookie = wppa_getCookie('table_'+table);
@@ -912,7 +912,7 @@ function wppaAjaxUpdatePhoto(photo, actionslug, elem, refresh) {
 		i++;
 	}
 	if ( ! found ) {
-		var oldval = false;
+		var oldval = 'undefined';
 		var newval = false;
 		var busy = false;
 		var refresh = false;
@@ -1030,6 +1030,12 @@ var wppaAlbumUpdateMatrix = new Array();
 
 function wppaAjaxUpdateAlbum(album, actionslug, elem) {
 
+	// Links
+	if ( actionslug == 'set_deftags' || actionslug == 'add_deftags' ) {
+		_wppaAjaxUpdateAlbum(album, actionslug, elem.value);
+		return;
+	}
+	
 	var count = wppaAlbumUpdateMatrix.length;
 	var i = 0;
 	var found = false;
@@ -1042,7 +1048,7 @@ function wppaAjaxUpdateAlbum(album, actionslug, elem) {
 		i++;
 	}
 	if ( ! found ) {
-		var oldval = false;
+		var oldval = 'undefined';
 		var newval = false;
 		var busy = false;
 		wppaAlbumUpdateMatrix[count] = [album, actionslug, oldval, newval, busy];
@@ -1067,6 +1073,7 @@ function wppaAjaxUpdateAlbumMonitor() {
 	}
 }
 
+var _wppaRefreshAfter = false;
 function _wppaAjaxUpdateAlbum(album, actionslug, value) {
 
 	wppaAjaxAlbumCount++;
@@ -1124,6 +1131,13 @@ function _wppaAjaxUpdateAlbum(album, actionslug, value) {
 						document.getElementById('albumstatus-'+album).innerHTML = '<span style="color:red">'+ArrValues[2]+' ('+ArrValues[1]+')</span>';
 						break;
 				}
+				
+				// Need refresh?
+				if ( _wppaRefreshAfter ) {
+					_wppaRefreshAfter = false;
+					document.location.reload(true);
+				}
+
 				// Hide spinner
 				if ( actionslug == 'description' ) jQuery('#wppa-album-spin').css({visibility:'hidden'});
 				

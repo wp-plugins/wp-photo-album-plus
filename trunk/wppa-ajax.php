@@ -2,7 +2,7 @@
 /* wppa-ajax.php
 *
 * Functions used in ajax requests
-* version 5.2.7
+* version 5.2.8
 *
 */
 add_action('wp_ajax_wppa', 'wppa_ajax_callback');
@@ -518,16 +518,17 @@ global $wppa;
 					exit;
 					break;
 				case 'set_deftags':	// to be changed for large albums
-					$photos = $wpdb->get_results($wpdb->prepare('SELECT COUNT(*) FROM `'.WPPA_PHOTOS.'` WHERE `album` = %s', $album), ARRAY_A);
-					$deftag = $wpdb->get_var($wpdb->prepare('SELECT `default_tags` FROM `'.WPPA_ALBUMS.'` WHERE `id` = %s', $album));
-					$iret = $wpdb->query($wpdb->prepare('UPDATE `'.WPPA_PHOTOS.'` SET `tags` = %s WHERE `album` = %s', $deftag, $album));
+					$photos = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM `'.WPPA_PHOTOS.'` WHERE `album` = %s', $album ), ARRAY_A );
+					$deftag = $wpdb->get_var( $wpdb->prepare( 'SELECT `default_tags` FROM `'.WPPA_ALBUMS.'` WHERE `id` = %s', $album ) );
+					if ( is_array( $photos ) ) foreach ( $photos as $photo ) {
+						$tags = wppa_sanitize_tags( str_replace( array( ' ', '\'', '"'), ',', wppa_filter_iptc( wppa_filter_exif( $deftag, $photo['id'] ), $photo['id'] ) ) );
+						$iret = $wpdb->query( $wpdb->prepare( 'UPDATE `'.WPPA_PHOTOS.'` SET `tags` = %s WHERE `id` = %s', $tags, $photo['id'] ) );
+						wppa_index_update('photo', $photo['id']);
+					}
 					if ( $photos && $iret !== false ) {
-						foreach ( $photos as $photo ) {
-							wppa_index_update('photo', $photo['id']);
-						}
 						echo '||97||'.__('<b>Tags set to defaults</b> (reload)', 'wppa');
 					}
-					elseif ($photos) {
+					elseif ( $photos ) {
 						echo '||1||'.__('An error occurred while setting tags', 'wppa');
 					}
 					else {
@@ -537,15 +538,12 @@ global $wppa;
 					exit;
 					break;
 				case 'add_deftags':
-					$photos = $wpdb->get_results($wpdb->prepare('SELECT `id`, `tags` FROM `'.WPPA_PHOTOS.'` WHERE `album` = %s', $album), ARRAY_A);
-					$deftag = $wpdb->get_var($wpdb->prepare('SELECT `default_tags` FROM `'.WPPA_ALBUMS.'` WHERE `id` = %s', $album));
-					$iret = true;
-					if ( $photos ) foreach ( $photos as $photo ) {
-						if ( $iret ) {
-							$tags = wppa_sanitize_tags($photo['tags'].','.$deftag);
-							$iret = $wpdb->query($wpdb->prepare('UPDATE `'.WPPA_PHOTOS.'` SET `tags` = %s WHERE `id` = %s', $tags, $photo['id']));
-							wppa_index_update('photo', $photo['id']);
-						}					
+					$photos = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM `'.WPPA_PHOTOS.'` WHERE `album` = %s', $album ), ARRAY_A );
+					$deftag = $wpdb->get_var( $wpdb->prepare( 'SELECT `default_tags` FROM `'.WPPA_ALBUMS.'` WHERE `id` = %s', $album ) );
+					if ( is_array( $photos ) ) foreach ( $photos as $photo ) {
+						$tags = wppa_sanitize_tags( str_replace( array( ' ', '\'', '"'), ',', wppa_filter_iptc( wppa_filter_exif( $photo['tags'].','.$deftag, $photo['id'] ), $photo['id'] ) ) );
+						$iret = $wpdb->query( $wpdb->prepare( 'UPDATE `'.WPPA_PHOTOS.'` SET `tags` = %s WHERE `id` = %s', $tags, $photo['id'] ) );
+						wppa_index_update('photo', $photo['id']);
 					}
 					if ( $photos && $iret !== false ) {
 						echo '||97||'.__('<b>Tags added width defaults</b> (reload)', 'wppa');
@@ -713,10 +711,10 @@ global $wppa;
 				exit;																// Nonce check failed
 			}
 			
-			switch ($item) {
+			switch ( $item ) {
 				case 'lat':
 					if ( ! is_numeric($value) || $value < '-90.0' || $value > '90.0' ) {
-						echo '||1||'.__('Enter a value > -90 and < 90', 'wppa');
+						echo '||1||'.__( 'Enter a value > -90 and < 90', 'wppa' );
 						exit;
 					}					
 					$photodata = $wpdb->get_row($wpdb->prepare('SELECT * FROM '.WPPA_PHOTOS.' WHERE `id` = %s', $photo), ARRAY_A);
@@ -846,7 +844,7 @@ global $wppa;
 							$itemname = __('Link target', 'wppa');
 							break;
 						case 'tags':
-							$value = wppa_sanitize_tags($value);
+							$value = wppa_sanitize_tags( wppa_filter_iptc( wppa_filter_exif( $value, $photo ), $photo ) );
 							wppa_clear_taglist();
 							$itemname = __('Photo Tags', 'wppa');
 							break;

@@ -2,7 +2,7 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 5.2.7
+* version 5.2.8
 *
 */
 
@@ -254,6 +254,7 @@ global $wppa_initruntimetime;
 						'wppa_copyright_on'					=> '',	// 19
 						'wppa_copyright_notice'				=> '',	// 20
 						'wppa_share_on'						=> '',
+						'wppa_share_hide_when_running' 		=> '',
 						'wppa_share_on_widget'				=> '',
 						'wppa_share_on_thumbs'				=> '',
 						'wppa_share_on_lightbox' 			=> '',
@@ -681,7 +682,8 @@ global $wppa_initruntimetime;
 						'wppa_porder_restricted'		=> '',
 						
 						
-						'wppa_strip_file_ext'			=> '',
+//						'wppa_strip_file_ext'			=> '',
+						'wppa_newphoto_name_method' 	=> '',
 
 						'wppa_copy_timestamp'			=> '',
 						
@@ -1070,34 +1072,6 @@ function wppa_is_ancestor($anc, $xchild) {
 }
 
 
-// get user
-function wppa_get_user($type = 'login') {
-global $current_user;
-
-	if (is_user_logged_in()) {
-		get_currentuserinfo();
-		switch ( $type ) {
-			case 'login':
-				return $current_user->user_login;
-				break;
-			case 'display':
-				return $current_user->display_name;
-				break;
-			case 'id':
-				return $current_user->ID;
-				break;
-			case 'firstlast':
-				return $current_user->user_firstname.' '.$current_user->user_lastname;
-				break;
-			default:
-				wppa_dbg_msg('Un-implemented type: '.$type.' in wppa_get_user()');
-				return '';
-		}
-	}
-	else {
-		return $_SERVER['REMOTE_ADDR'];
-	}
-}
 
 function wppa_get_album_id($name = '') {
 global $wpdb;
@@ -1890,9 +1864,13 @@ global $wpdb;
 function wppa_import_iptc($id, $info, $nodelete = false) {
 global $wpdb;
 static $labels;
+global $wppa_opt;
 
+	$doit = false;
 	// Do we need this?
-	if ( ! wppa_switch('wppa_save_iptc') ) return;
+	if ( wppa_switch('wppa_save_iptc') ) $doit = true;
+	if ( substr( $wppa_opt['wppa_newphoto_name_method'], 0, 2) == '2#' ) $doit = true;
+	if ( ! $doit ) return;
 	
 	wppa_dbg_msg('wppa_import_iptc called for id='.$id);
 	wppa_dbg_msg('array is'.( is_array($info) ? ' ' : ' NOT ' ).'available');

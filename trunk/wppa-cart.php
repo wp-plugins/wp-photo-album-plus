@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains the interface to SCABN
-* Version 4.9.12
+* Version 5.2.8
 *
 */
 
@@ -28,6 +28,7 @@ global $wppa;
 		'weight'		=> ''
 	), $atts ) );
 	
+	$cart =& $_SESSION['wfcart']; // load the cart from the session
 	$scabn_options = get_option('scabn_options');	
 	$currency = apply_filters('scabn_display_currency_symbol',NULL);
    
@@ -53,6 +54,7 @@ global $wppa;
 			'.wp_nonce_field( 'add_to_cart', 'scabn-add', false, false ).'
 			<input type="hidden" value="add_item" name="action" />
 			<input type="hidden" class="item_url" value="'.$item_url.'" name="item_url" />
+			<input type="hidden" value="'.$cart->random().'" name="randomid" />
 			<input type="hidden" value="'.$name.'" name="item_id" />
 			<input type="hidden" class="item_name" value="'.$name.'" name="item_name" />
 			<input type="hidden" class="item_price" value="'.$price.'" name="item_price" />';

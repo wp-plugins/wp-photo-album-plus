@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * create, edit and delete albums
-* version 5.2.7
+* version 5.2.8
 *
 */
 
@@ -508,8 +508,8 @@ function _wppa_admin() {
 							</tr>
 							
 							<!-- Apply default tags -->
-							<?php $onc1 = 'if (confirm(\''.__('Are you sure you want to set the default tags to all photos in this album?', 'wppa').'\')) wppaAjaxUpdateAlbum('.$edit_id.', \'set_deftags\', 0 ); '; ?>
-							<?php $onc2 = 'if (confirm(\''.__('Are you sure you want to add the default tags to all photos in this album?', 'wppa').'\')) wppaAjaxUpdateAlbum('.$edit_id.', \'add_deftags\', 0 ); '; ?>
+							<?php $onc1 = 'if (confirm(\''.__('Are you sure you want to set the default tags to all photos in this album?', 'wppa').'\')) { alert(\'The page will be reloaded after the action has taken place.\');wppaRefreshAfter(); wppaAjaxUpdateAlbum('.$edit_id.', \'set_deftags\', 0 ); }'; ?>
+							<?php $onc2 = 'if (confirm(\''.__('Are you sure you want to add the default tags to all photos in this album?', 'wppa').'\')) { alert(\'The page will be reloaded after the action has taken place.\');wppaRefreshAfter(); wppaAjaxUpdateAlbum('.$edit_id.', \'add_deftags\', 0 ); }'; ?>
 							<tr>
 								<th>
 									<a onclick="<?php echo $onc1 ?>" ><?php _e('Apply default tags', 'wppa') ?></a>

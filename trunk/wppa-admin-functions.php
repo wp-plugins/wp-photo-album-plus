@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * gp admin functions
-* version 5.2.7
+* version 5.2.8
 *
 * 
 */
@@ -945,12 +945,12 @@ global $allphotos;
 	return false;
 }
 
-function wppa_insert_photo ($file = '', $alb = '', $name = '', $desc = '', $porder = '0', $id = '0', $linkurl = '', $linktitle = '') {
-	global $wpdb;
-	global $warning_given_small;
-	global $wppa_opt;
-	global $album;
-	global $wppa;
+function wppa_insert_photo( $file = '', $alb = '', $name = '', $desc = '', $porder = '0', $id = '0', $linkurl = '', $linktitle = '' ) {
+global $wpdb;
+global $warning_given_small;
+global $wppa_opt;
+global $album;
+global $wppa;
 	
 	wppa_cache_album($alb);
 	
@@ -1038,13 +1038,15 @@ function wppa_insert_photo ($file = '', $alb = '', $name = '', $desc = '', $pord
 		$status = ( $wppa_opt['wppa_upload_moderate'] == 'yes' && !current_user_can('wppa_admin') ) ? 'pending' : 'publish';
 //		$linktarget = '_self';
 		$filename = $name;
-		if ( wppa_switch('wppa_strip_file_ext') ) {
-			$name = preg_replace('/\.[^.]*$/', '', $name);
-		}
+
+//		if ( wppa_switch('wppa_strip_file_ext') ) {
+//			$name = preg_replace('/\.[^.]*$/', '', $name);
+//		}
 //		$query = $wpdb->prepare('INSERT INTO `' . WPPA_PHOTOS . '` (`id`, `album`, `ext`, `name`, `p_order`, `description`, `mean_rating`, `linkurl`, `linktitle`, `linktarget`, `timestamp`, `owner`, `status`, `tags`, `alt`, `filename`, `modified`, `location`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, \'0\', \'\' )', 
 //$id, $alb, $ext, $name, $porder, $desc, $mrat, $linkurl, $linktitle, $linktarget, time(), $owner, $status, $album['default_tags'], '', $filename);
 //		if ($wpdb->query($query) === false) {
-		$id = wppa_create_photo_entry( array( 'id' => $id, 'album' => $alb, 'ext' => $ext, 'name' => $name, 'p_order' => $porder, 'description' => $desc, 'linkurl' => $linkurl, 'linktitle' => $linktitle,  'owner' => $owner, 'status' => $status, 'tags' => $album['default_tags'], 'filename' => $filename) );
+
+		$id = wppa_create_photo_entry( array( 'id' => $id, 'album' => $alb, 'ext' => $ext, 'name' => $name, 'p_order' => $porder, 'description' => $desc, 'linkurl' => $linkurl, 'linktitle' => $linktitle,  'owner' => $owner, 'status' => $status, 'filename' => $filename) );
 		if ( ! $id ) {
 			wppa_error_message(__('Could not insert photo. query=', 'wppa').$query);
 		}
@@ -1055,9 +1057,14 @@ function wppa_insert_photo ($file = '', $alb = '', $name = '', $desc = '', $pord
 			wppa_flush_upldr_cache('photoid', $id);
 		}
 		// Make the photo files		
-		if ( wppa_make_the_photo_files($file, $id, $ext) ) {
+		if ( wppa_make_the_photo_files( $file, $id, $ext ) ) {
+			// Repair photoname if not supplied and not standard
+			wppa_set_default_name( $id );
+			// Tags
+			wppa_set_default_tags( $id );
 			// Index
-			wppa_index_add('photo', $id);
+			wppa_index_add( 'photo', $id );
+			// Done!
 			return $id;
 		}
 	}
