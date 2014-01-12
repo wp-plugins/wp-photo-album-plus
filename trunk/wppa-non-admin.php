@@ -135,10 +135,10 @@ global $wppa_api_version;
 	}
 	if ( get_option('wppa_gpx_implementation', 'nil') == 'wppa-plus-embedded' ) {
 		if ( get_option('wppa_map_apikey', false) ) {
-			wp_enqueue_script('geo', 'https://maps.googleapis.com/maps/api/js?key='.get_option('wppa_map_apikey').'&sensor=false', '', $wppa_api_version);
+			wp_enqueue_script('wppa-geo', 'https://maps.googleapis.com/maps/api/js?key='.get_option('wppa_map_apikey').'&sensor=false', '', $wppa_api_version);
 		}
 		else {
-			wp_enqueue_script('geo', 'https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false', '', $wppa_api_version);
+			wp_enqueue_script('wppa-geo', 'https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false', '', $wppa_api_version);
 		}
 	}
 }

@@ -356,7 +356,7 @@ global $wppa;
 			// Case 4: Add another vote from me
 			elseif ( $wppa_opt['wppa_rating_multi'] == 'yes' ) {					// Rating multi is allowed
 //				$iret = $wpdb->query($wpdb->prepare( 'INSERT INTO `'.WPPA_RATING. '` (`id`, `photo`, `value`, `user`) VALUES (%s, %s, %s, %s)', wppa_nextkey(WPPA_RATING), $photo, $rating, $user ) );
-				$iret = wppa_create_rating_entry( array( 'photo' => $photo, 'rating' => $rating, 'user' => $user ) );
+				$iret = wppa_create_rating_entry( array( 'photo' => $photo, 'value' => $rating, 'user' => $user ) );
 				if ( ! $iret ) {
 					echo '0||104||'.$errtxt;
 					exit;															// Fail on storing vote
@@ -401,7 +401,7 @@ global $wppa;
 					else {
 						$sum += $rat['value'];
 					}
-					$cnt ++;
+					$cnt++;
 				}
 				$allavgrat = $sum/$cnt;
 				if ( $allavgrat == '10' ) $allavgrat = '9.99999999';	// For sort order reasons text field
