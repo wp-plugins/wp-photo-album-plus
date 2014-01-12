@@ -3017,6 +3017,7 @@ global $wpdb;
 
 	// make sure the photo data ia available
 	wppa_cache_thumb($photo);
+	if ( ! $thumb ) return false;
 	
 	// For cases it is appropriate...
 	if ( ( $wich == 'sphoto'     && $wppa_opt['wppa_sphoto_overrule'] ) ||

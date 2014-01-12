@@ -434,6 +434,10 @@ global $no_default;
 		}
 	}
 	// end file system conversion
+	
+	// Fix invalid ratings
+	$iret = $wpdb->query("DELETE FROM `".WPPA_RATING."` WHERE `value` = 0");
+	if ( $iret ) wppa_update_message( sprintf( __( '%s invalid ratings removed. Please run Table VIII-A5: Rerate to fix the averages.', 'wppa' ), $iret ) );
 ?>		
 	<div class="wrap">
 		<?php $iconurl = WPPA_URL.'/images/settings32.png'; ?>

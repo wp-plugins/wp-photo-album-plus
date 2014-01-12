@@ -777,10 +777,11 @@ global $wppa_opt;
 			break;
 		case 'namenoext':
 			$temp = wppa_get_photo_name($id);
-			$ext = strrchr($temp, '.');
-			if ( $ext ) {
-				$temp = strstr($temp, $ext, true);
-			}
+			$temp = preg_replace('/\.[^.]*$/', '', $temp);	// Remove file extension
+//			$ext = strrchr($temp, '.');
+//			if ( $ext ) {
+//				$temp = strstr($temp, $ext, true);
+//			}
 			$result = ' alt="'.esc_attr($temp).'" ';
 			break;
 		case 'custom':
