@@ -366,3 +366,27 @@ float:left;
 transition: width 0s ease-in-out 0s, left 0s ease-in-out 0s, right 0s ease-in-out 0s;
 -webkit-transition: width 0s ease-in-out 0s, left 0s ease-in-out 0s, right 0s ease-in-out 0s;
 }
+
+.FotomotoBar {
+padding: 0 !important;
+margin: 0 !important;
+}
+.wppa-fotomoto-checkout a {
+text-decoration: none;
+font-weight: bold;
+vertical-align: baseline;
+float:right;
+margin-top: -3px;
+}
+.wppa-fotomoto-checkout a:hover {
+	text-decoration: underline;
+}
+.FotomotoBarLink {
+float:left: !important;
+}
+.FotomotoECardButton {
+float:left !important;
+}
+.FotomotoClear {
+display:none;
+}

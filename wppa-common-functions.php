@@ -2,7 +2,7 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 5.2.8
+* version 5.2.10
 *
 */
 
@@ -538,6 +538,7 @@ global $wppa_initruntimetime;
 						'wppa_art_monkey_link'				=> '',
 						'wppa_art_monkey_popup_link'		=> '',
 						'wppa_artmonkey_use_source'			=> '',
+						'wppa_art_monkey_display' 			=> '',
 						
 						'wppa_album_widget_linktype'		=> '',
 						'wppa_album_widget_linkpage'		=> '',
@@ -747,7 +748,9 @@ global $wppa_initruntimetime;
 						'wppa_cdn_api_key'			=> '',
 						'wppa_cdn_api_secret'		=> '',
 						'wppa_cdn_service_update'	=> '',
-						'wppa_delete_all_from_cloudinary' 	=> ''
+						'wppa_delete_all_from_cloudinary' 	=> '',
+						
+						'wppa_fotomoto_on' 			=> ''
 
 
 		);

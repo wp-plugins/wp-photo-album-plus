@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile
-Version: 5.2.9
+Version: 5.2.10
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -172,6 +172,23 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 5.2.10 =
+
+= Bug Fixes =
+
+* Entering &amp; in comments caused the comment being truncated. Fixed.
+* The ability to edit the most recent comment stopped working. Fixed.
+* Dutch language files contained an error that prevented applying watermarks in the Album admin screen. Fixed.
+
+= New Features =
+
+* Fotomoto support phase 1. Works on slideshows. Display width must be >= 500 pixels. See Table IX-K6. Read the Help [?] !
+
+= Other Changes =
+
+* Loading Google gpx can be suppressed by selecting ---none-- in Table IX-K5: GPX Implementation.
+* You can select textlink rather than button for the Art Monkey link in Table VI-C1.2.
 
 = 5.2.9 =
 

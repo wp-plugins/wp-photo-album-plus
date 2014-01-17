@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the non admin stuff
-* Version 5.2.8
+* Version 5.2.10
 *
 */
 
@@ -141,6 +141,9 @@ global $wppa_api_version;
 			wp_enqueue_script('wppa-geo', 'https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false', '', $wppa_api_version);
 		}
 	}
+//	if ( true ) {
+//		wp_enqueue_script('wppa-fotomoto', 'http://widget.fotomoto.com/stores/script/be53373cd51248dad2c101b4dbbc8cec228491c2.js', '', $wppa_api_version);
+//	}
 }
 	
 /* LOAD WPPA+ THEME */
@@ -384,6 +387,8 @@ global $wppa_api_version;
 	wppaComAltSize = '.$wppa_opt['wppa_comten_alt_thumbsize'].';
 	wppaBumpViewCount = '.( wppa_switch('wppa_track_viewcounts') ? 'true' : 'false' ).';
 	wppaShareHideWhenRunning = '.( wppa_switch('wppa_share_hide_when_running') ? 'true' : 'false' ).';
+	wppaFotomoto = '.( wppa_switch('wppa_fotomoto_on') ? 'true' : 'false' ).';
+	wppaArtMonkeyButton = '.( $wppa_opt['wppa_art_monkey_display'] == 'button' ? 'true' : 'false' ).';
 	/* ]]> */
 </script>
 ';

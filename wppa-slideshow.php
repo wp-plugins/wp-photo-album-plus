@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the slideshow high level functions
-* Version 5.2.8
+* Version 5.2.10
 *
 */
 
@@ -386,15 +386,24 @@ global $album;
 		return;
 	}
 	
-	$content = __(stripslashes($wppa_opt['wppa_custom_content']));
+	$content = __( stripslashes( $wppa_opt['wppa_custom_content'] ) );
 
-	if ( is_numeric($wppa['start_album']) && $wppa['start_album'] > '0' ) {
-		wppa_cache_album($wppa['start_album']);
-		$content = str_replace('w#albdesc', __(stripslashes($album['description'])), $content);
+	// w#albdesc
+	if ( is_numeric( $wppa['start_album'] ) && $wppa['start_album'] > '0' ) {
+		wppa_cache_album( $wppa['start_album'] );
+		$content = str_replace( 'w#albdesc', __( stripslashes( $album['description'] ) ), $content );
 	}
 	else {
-		$content = str_replace('w#albdesc', '', $content);
+		$content = str_replace( 'w#albdesc', '', $content );
 	}
+	// w#fotomoto
+	if ( wppa_switch('wppa_fotomoto_on') ) {
+		$content = str_replace( 'w#fotomoto', '<div id="wppa-fotomoto-container-'.$wppa['master_occur'].'" ></div><div id="wppa-fotomoto-checkout-'.$wppa['master_occur'].'" class="wppa-fotomoto-checkout" ><a href="javascript:void();" onclick="FOTOMOTO.API.checkout(); return false;" >'.__('Checkout').'</a></div><div style="clear:both;"></div>', $content );
+	}
+	else {
+		$content = str_replace( 'w#fotomoto', '', $content );
+	}
+	
 	$content = wppa_html($content);
 	
 	$wppa['out'] .= wppa_nltab('+').'<div id="wppa-custom-'.$wppa['master_occur'].'" class="wppa-box wppa-custom" style="'.__wcs('wppa-box').__wcs('wppa-custom').'">';

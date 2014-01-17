@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions
-* Version 5.2.8
+* Version 5.2.10
 *
 */
 
@@ -1255,6 +1255,9 @@ global $thumb;
 	
 	// Og Description
 	$ogdsc = ( wppa_switch('wppa_facebook_comments') && ! $wppa['in_widget'] ) ? esc_js(wppa_get_og_desc($id)) : '';
+	
+	// Hires url
+	$hiresurl = wppa_get_hires_url( $id );
 
 	// Produce final result
     $result = "'".$wppa['master_occur']."','";
@@ -1283,7 +1286,8 @@ global $thumb;
 	if ( $wppa['debug'] ) $result .= '/* sharehtml: */';
 	$result .= $sharehtml."','";	// The content of the SM (share) box
 	if ( $wppa['debug'] ) $result .= '/* ogdesc: */';
-	$result .= $ogdsc."'";
+	$result .= $ogdsc."','";
+	$result .= $hiresurl."'";
 	
 	// This is an ingenious line of code that is going to prevent us from very much trouble. 
 	// Created by OpaJaap on Jan 15 2012, 14:36 local time. Thanx.
@@ -1316,6 +1320,7 @@ global $wppa_done;
 	// Retrieve and filter comment
 	$comment = wppa_get_post('comment');
 	$comment = trim($comment);
+	$comment = wppa_decode($comment);
 //	$comment = stripslashes($comment);
 	$comment = strip_tags($comment); //wppa_strip_tags($comment, 'script&style');
 //	$comment = htmlspecialchars($comment);
@@ -1371,7 +1376,7 @@ global $wppa_done;
 //			$query = $wpdb->prepare('INSERT INTO `'.WPPA_COMMENTS.'` (`id`, `timestamp`, `photo`, `user`, `email`, `comment`, `status`, `ip`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s )', $key, $time, $photo, $user, $email, $save_comment, $status, $_SERVER['REMOTE_ADDR']);
 //			$iret = $wpdb->query($query);
 			$key = wppa_create_comments_entry( array( 'photo' => $photo, 'user' => $user, 'email' => $email, 'comment' => $save_comment, 'status' => $status ) );
-			if ( $iret ) $wppa['comment_id'] = $key;
+			if ( $key ) $wppa['comment_id'] = $key;
 		}
 		if ( $iret !== false ) {
 			if ( $status != 'spam' ) {

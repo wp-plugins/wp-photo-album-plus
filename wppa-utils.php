@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains low-level utility routines
-* Version 5.2.8
+* Version 5.2.10
 *
 */
  
@@ -1458,6 +1458,22 @@ global $thumb;
 	$source_path = $wppa_opt['wppa_source_dir'].$blog.'/album-'.$thumb['album'].'/'.$thumb['filename'];
 	
 	return $source_path;
+}
+
+// Get url of photo with highest available resolution.
+// Not for display ( need not to download fast ) but for external services like Fotomoto
+function wppa_get_hires_url( $id ) {
+	$source_path = wppa_get_source_path( $id );
+	if ( file_exists( $source_path ) ) {
+		$temp = explode( 'wp-content', $source_path );		
+		$hires_url = get_bloginfo('wpurl').'/wp-content'.$temp['1'];
+	}
+	else {
+		$hires_url = wppa_get_photo_url( $id );
+	}
+	$temp = explode( '?', $hires_url );
+	$hires_url = $temp['0'];
+	return $hires_url;
 }
 
 function wppa_get_source_dir() {

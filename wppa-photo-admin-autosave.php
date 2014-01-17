@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * edit and delete photos
-* version 5.2.5
+* version 5.2.10
 *
 */
 
@@ -528,7 +528,7 @@ global $wppa;
 											<select id="wmpsel_<?php echo $photo['id']?>">
 											<?php echo wppa_watermark_pos_select() ?>
 											</select> 
-											<input type="button" class="button-secundary" value="<?php _e('Apply watermark', 'wppa') ?>" onclick="if (confirm('<?php _e('Are you sure?\n\nOnce applied it can not be removed!\nAnd I do not know if there is already a watermark on this photo', 'wppa') ?>')) wppaAjaxApplyWatermark(<?php echo $photo['id'] ?>, document.getElementById('wmfsel_<?php echo $photo['id']?>').value, document.getElementById('wmpsel_<?php echo $photo['id']?>').value)" />
+											<input type="button" class="button-secundary" value="<?php _e('Apply watermark', 'wppa') ?>" onclick="if (confirm('<?php echo esc_js(__('Are you sure? Once applied it can not be removed!', 'wppa')).'\n\n'.esc_js(__('And I do not know if there is already a watermark on this photo', 'wppa') ) ?>')) wppaAjaxApplyWatermark(<?php echo $photo['id'] ?>, document.getElementById('wmfsel_<?php echo $photo['id']?>').value, document.getElementById('wmpsel_<?php echo $photo['id']?>').value)" />
 											<?php
 										}
 										else {

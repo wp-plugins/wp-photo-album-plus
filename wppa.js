@@ -2,7 +2,7 @@
 //
 // conatins slideshow, theme, ajax and lightbox code
 //
-// Version 5.2.8
+// Version 5.2.10
 
 // Part 1: Slideshow
 //
@@ -114,6 +114,8 @@ var wppaSiteUrl = '';
 var wppaSlideToFullpopup = false; 
 var wppaComAltSize = 75;
 var wppaBumpViewCount = true;
+var wppaFotomoto = false;
+var wppaArtMonkeyButton = true;
 
 // 'Internal' variables (private)
 var _wppaId = new Array();
@@ -155,6 +157,7 @@ var _wppaShareUrl = new Array();
 var _wppaShareHtml = new Array();
 var _wppaFilmNoMove = new Array();
 var wppaShareHideWhenRunning = false;
+var _wppaHiresUrl = new Array();
 
 // Check for occurrences that are responsive
 jQuery(document).ready(function(){
@@ -173,7 +176,7 @@ jQuery(document).ready(function(){
 // These functions check the validity and store the users request to be executed later if busy and if applicable.
 
 // This is an entrypoint to load the slide data
-function wppaStoreSlideInfo(mocc, id, url, size, width, height, fullname, name, desc, photoid, avgrat, discount, myrat, rateurl, linkurl, linktitle, linktarget, iwtimeout, commenthtml, iptchtml, exifhtml, lbtitle, shareurl, smhtml, ogdsc) {
+function wppaStoreSlideInfo(mocc, id, url, size, width, height, fullname, name, desc, photoid, avgrat, discount, myrat, rateurl, linkurl, linktitle, linktarget, iwtimeout, commenthtml, iptchtml, exifhtml, lbtitle, shareurl, smhtml, ogdsc, hiresurl) {
 var cursor;
 
 	desc = wppaRepairScriptTags(desc);
@@ -212,6 +215,7 @@ var cursor;
 		_wppaShareUrl[mocc] = new Array();
 		_wppaShareHtml[mocc] = new Array();
 		_wppaFilmNoMove[mocc] = false;
+		_wppaHiresUrl[mocc] = new Array();
 //		_wppaLat[mocc] = new Array();
 //		_wppaLon[mocc] = new Array();
 	}
@@ -255,6 +259,7 @@ var cursor;
 	_wppaLbTitle[mocc][id] = lbtitle;
 	_wppaShareUrl[mocc][id] = shareurl;
 	_wppaShareHtml[mocc][id] = wppaRepairScriptTags(smhtml);
+	_wppaHiresUrl[mocc][id] = hiresurl;
 }
 
 function wppaSpeed(mocc, faster) {
@@ -798,8 +803,12 @@ var result;
 	switch (wppaArtMonkyLink) {
 	case 'file':
 	case 'zip':
-//		result = '<a title="Download" style="cursor:pointer;" onclick="wppaAjaxMakeOrigName('+mocc+', '+_wppaId[mocc][_wppaCurIdx[mocc]]+');" >'+_wppaFullNames[mocc][_wppaCurIdx[mocc]]+'</a>';
-		result = '<input type="button" title="Download" style="cursor:pointer; margin-bottom:0px;" class="wppa-download-button" onclick="wppaAjaxMakeOrigName('+mocc+', '+_wppaId[mocc][_wppaCurIdx[mocc]]+');" value="'+wppaDownLoad+': '+_wppaFullNames[mocc][_wppaCurIdx[mocc]]+'" />';
+		if ( wppaArtMonkeyButton ) {
+			result = '<input type="button" title="Download" style="cursor:pointer; margin-bottom:0px;" class="wppa-download-button" onclick="wppaAjaxMakeOrigName('+mocc+', '+_wppaId[mocc][_wppaCurIdx[mocc]]+');" value="'+wppaDownLoad+': '+_wppaFullNames[mocc][_wppaCurIdx[mocc]]+'" />';
+		}
+		else {
+			result = '<a title="Download" style="cursor:pointer;" onclick="wppaAjaxMakeOrigName('+mocc+', '+_wppaId[mocc][_wppaCurIdx[mocc]]+');" >'+wppaDownLoad+': '+_wppaFullNames[mocc][_wppaCurIdx[mocc]]+'</a>';
+		}
 		break;
 	case 'none':
 		result = _wppaFullNames[mocc][_wppaCurIdx[mocc]];
@@ -1786,6 +1795,16 @@ function _wppaShowMetaData(mocc, key) {
 			if ( wppaShareHideWhenRunning ) {
 				jQuery('#wppa-share-'+mocc).css('display', '');
 			}
+			
+			// Fotomoto
+			wppaFotomotoToolbar(mocc, _wppaHiresUrl[mocc][_wppaCurIdx[mocc]] );
+//			wppaFotomotoToolbar(mocc, _wppaUrl[mocc][_wppaCurIdx[mocc]] );
+//			if ( wppaFotomoto && document.getElementById('wppa-fotomoto-container-'+mocc) ) {
+//				var url = _wppaUrl[mocc][_wppaCurIdx[mocc]];
+			//	FOTOMOTO.API.setBoxImage(url);
+			//	FOTOMOTO.API.removeBoxToolbar();
+//				FOTOMOTO.API.showToolbar('wppa-fotomoto-container-'+mocc, url);
+//			}
 		}
 		else {							// Hide
 			// Hide existing comments
@@ -1797,6 +1816,7 @@ function _wppaShowMetaData(mocc, key) {
 			// Fade the browse arrows out
 //			jQuery('.wppa-prev-'+mocc).fadeOut(300);	
 //			jQuery('.wppa-next-'+mocc).fadeOut(300);
+			wppaFotomotoHide(mocc);
 		}
 	}
 	// What to do when the slideshow is running
@@ -1808,6 +1828,8 @@ function _wppaShowMetaData(mocc, key) {
 			if ( wppaShareHideWhenRunning ) {
 				jQuery('#wppa-share-'+mocc).css('display', 'none');
 			}
+			// Fotomoto
+			wppaFotomotoHide(mocc);
 		}
 	}
 	
@@ -1836,6 +1858,47 @@ function _wppaShowMetaData(mocc, key) {
 		jQuery("#exifcontent-"+mocc).css('visibility', 'hidden'); 
 
 	}
+}
+
+var wppaFotomotoLoaded = false;
+
+function fotomoto_loaded() {
+	wppaFotomotoLoaded = true;
+}
+
+var wppaFotomotoToolbarIds = new Array();
+
+function wppaFotomotoToolbar( mocc, url ) {
+	if ( wppaColWidth[mocc] >= 500 ) {	// Space enough to show the toolbar
+		jQuery('#wppa-fotomoto-container-'+mocc).css('display','inline');
+		jQuery('#wppa-fotomoto-checkout-'+mocc).css('display','inline');
+	}
+	else {
+		jQuery('#wppa-fotomoto-container-'+mocc).css('display','none');
+		jQuery('#wppa-fotomoto-checkout-'+mocc).css('display','none');
+		return;	// Too small
+	}
+	if ( wppaFotomoto && document.getElementById('wppa-fotomoto-container-'+mocc) ) { // Configured and container present
+		if ( wppaFotomotoLoaded ) {
+			FOTOMOTO.API.checkinImage(url);
+//			if ( wppaFotomotoToolbarIds[mocc] ) {	// Not the first in this container
+//				FOTOMOTO.API.updateToolbar(wppaFotomotoToolbarIds[mocc], url);		// This usually fails, especially when the url is not yest checked in
+//				alert(wppaFotomotoToolbarIds[mocc]+' '+url)
+//			}
+//			else {									// The first in this container
+				wppaFotomotoToolbarIds[mocc] = FOTOMOTO.API.showToolbar('wppa-fotomoto-container-'+mocc, url);
+//			}
+		}
+		else { // Not loaded yet, retry after 200 ms
+			setTimeout('wppaFotomotoToolbar('+mocc+',"'+url+'")', 200);
+			wppaConsoleLog('Waiting for Fotomoto');
+		}
+	}
+}
+
+function wppaFotomotoHide(mocc) {
+	jQuery('#wppa-fotomoto-container-'+mocc).css('display','none');
+	jQuery('#wppa-fotomoto-checkout-'+mocc).css('display','none');
 }
 
 function wppaGetCurrentFullUrl(mocc, idx) {
@@ -2738,6 +2801,14 @@ wppaConsoleLog('wppaOvlShow4', 1);
 					'<div id="wppa-overlay-txt" style="text-align:center; min-height:36px; '+ht+' overflow:auto; box-shadow:none; width:'+(cw-80)+'px;" >';
 					if ( wppaOvlShowCounter ) html += (wppaOvlIdx+1)+'/'+wppaOvlUrls.length+'<br />';
 					html += wppaOvlTitle+'</div>';
+					
+	//			if ( wppaFotomoto ) {
+	//				html += '<span class="FotomotoToolbarPosition"></span>';
+	//				html += '<script style="text/javascript" >FOTOMOTO.API.setBoxImage("'+wppaOvlUrl+'");</script>';
+	//			}
+
+					
+					
 		jQuery('#wppa-overlay-txt-container').html(html);
 		wppaOvlIsSingle = false;
 	}
@@ -3027,7 +3098,7 @@ function wppaAjaxComment(mocc, id) {
 	// Make the Ajax send data
 	var data = 'action=wppa&wppa-action=do-comment&photo-id='+id
 		+'&comname='+jQuery("#wppa-comname-"+mocc).attr('value')
-		+'&comment='+jQuery("#wppa-comment-"+mocc).attr('value')
+		+'&comment='+wppaEncode(jQuery("#wppa-comment-"+mocc).attr('value'))
 		+'&wppa-captcha='+jQuery("#wppa-captcha-"+mocc).attr('value')
 		+'&wppa-nonce='+jQuery("#wppa-nonce-"+mocc).attr('value')
 		+'&moccur='+mocc;
@@ -3181,4 +3252,28 @@ function wppaGeoInit( mocc, lat, lon ) {
 		  map.panTo(marker.getPosition());
 		}, 1000);
 	});
+}
+
+function wppaEncode(xtext) {
+	var text, result;
+	
+	if (typeof(xtext)=='undefined') return;
+	
+	text = xtext;
+	result = text.replace(/#/g, '||HASH||');
+	text = result;
+	result = text.replace(/&/g, '||AMP||');
+	text = result;
+//	result = text.replace(/+/g, '||PLUS||');
+	var temp = text.split('+');
+	var idx = 0;
+	result = '';
+	while (idx < temp.length) {
+		result += temp[idx];
+		idx++;
+		if (idx < temp.length) result += '||PLUS||';
+	}
+
+//	alert('encoded result='+result);
+	return result;
 }
