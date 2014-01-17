@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 5.2.8
+* Version 5.2.10
 *
 */
 
@@ -856,6 +856,7 @@ Hide Camera info
 						'wppa_art_monkey_link'				=> 'none',
 						'wppa_art_monkey_popup_link'		=> 'file',
 						'wppa_artmonkey_use_source'			=> 'no',
+						'wppa_art_monkey_display'			=> 'button',
 
 						'wppa_album_widget_linktype'		=> 'content',
 						'wppa_album_widget_linkpage'		=> '0',
@@ -1010,15 +1011,18 @@ Hide Camera info
 						'wppa_swap_namedesc' 			=> 'no',
 						'wppa_split_namedesc'			=> 'no',
 
-						// F Other plugins
+						// J Other plugins
 						'wppa_cp_points_comment'		=> '0',
 						'wppa_cp_points_rating'			=> '0',
 						'wppa_cp_points_upload'			=> '0',
 						'wppa_use_scabn'				=> 'no',
+						
+						// K External services
 						'wppa_gpx_implementation' 		=> 'wppa-plus-embedded',
 						'wppa_map_height' 				=> '300',
 						'wppa_map_apikey' 				=> '',
 						'wppa_gpx_shortcode'			=> '[map style="width: auto; height:300px; margin:0; " marker="yes" lat="w#lat" lon="w#lon"]',
+						'wppa_fotomoto_on'				=> 'no',
 
 						// Photo of the day widget
 						'wppa_widgettitle'			=> __('Photo of the day', 'wppa'),

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 5.2.8
+* Version 5.2.10
 *
 */
 
@@ -3607,6 +3607,15 @@ global $no_default;
 							$html = wppa_checkbox($slug);
 							wppa_setting($slug, '1.1', $name, $desc, $html.'</td><td></td><td></td><td>', $help);
 							
+							$name = __('Art Monkey Display', 'wppa');
+							$desc = __('Select button or link ( text ).', 'wppa');
+							$help = '';
+							$slug = 'wppa_art_monkey_display';
+							$options = array(__('Button', 'wppa'), __('Textlink', 'wppa'));
+							$values = array('button', 'text');
+							$html = wppa_select($slug, $options, $values);
+							wppa_setting($slug, '1.2', $name, $desc, $html.'</td><td></td><td></td><td>', $help);						
+							
 							$name = __('Popup Download Link', 'wppa');
 							$desc = __('Configure the download link on fullsize popups.', 'wppa');
 							$help = esc_js(__('Link fullsize popup download button to either image or zip file.', 'wppa'));
@@ -3817,7 +3826,7 @@ global $no_default;
 							$html = wppa_checkbox($slug);
 							wppa_setting($slug, '4', $name, $desc, $html, $help);
 							
-							// User upload limis
+							// User upload limits
 							$options = array( 	__('for ever', 'wppa'), 
 												__('per hour', 'wppa'), 
 												__('per day', 'wppa'), 
@@ -5132,8 +5141,8 @@ global $no_default;
 							$help .= '\n\n'.esc_js(__('When using Google maps GPX viewer plugin, you can not use Ajax (Table IV-A1)', 'wppa'));
 							$help .= '\n'.esc_js(__('When using WPPA+ Embedded code, you can use Ajax, but there are less display options.', 'wppa'));
 							$slug = 'wppa_gpx_implementation';
-							$opts = array( __('WPPA+ Embedded code', 'wppa'), __('Google maps GPX viewer plugin', 'wppa') );
-							$vals = array( 'wppa-plus-embedded', 'google-maps-gpx-viewer' );
+							$opts = array( __('--- none ---', 'wppa'), __('WPPA+ Embedded code', 'wppa'), __('Google maps GPX viewer plugin', 'wppa') );
+							$vals = array( 'none', 'wppa-plus-embedded', 'google-maps-gpx-viewer' );
 							$onch = 'wppaCheckGps()';
 							$html = wppa_select($slug, $opts, $vals, $onch);
 							wppa_setting($slug, '5', $name, $desc, $html, $help);
@@ -5162,6 +5171,18 @@ global $no_default;
 							$html = wppa_input($slug, '500px');
 							$class = 'wppa_gpx_plugin';
 							wppa_setting($slug, '5.3', $name, $desc, $html, $help, $class);
+							
+							$name = __('Fotomoto', 'wppa');
+							$desc = __('Yes, we use Fotomoto on this site. Read the help text!', 'wppa');
+							$help = esc_js(__('In order to function properly:', 'wppa'));
+							$help .= '\n\n'.esc_js(__('1. Get yourself a Fotomoto account.', 'wppa'));
+							$help .= '\n'.esc_js(__('2. Install the Fotomoto plugin, enter the "Fotomoto Site Key:" and check the "Use API Mode:" checkbox.', 'wppa'));
+							$help .= '\n'.esc_js(__('3. Enable the Custom box in Table II-B14.', 'wppa'));
+							$help .= '\n'.esc_js(__('4. Put the text w#fotomoto anywhere in the Custombox ( Table II-B15 ).', 'wppa'));
+							$slug = 'wppa_fotomoto_on';
+							$html = wppa_checkbox($slug);
+							wppa_setting($slug, '6', $name, $desc, $html, $help);
+							
 							}
 							?>		
 			

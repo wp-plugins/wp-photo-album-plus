@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Various wppa boxes
-* Version 5.2.8
+* Version 5.2.10
 *
 */
 
@@ -781,6 +781,7 @@ global $wppa_first_comment_html;
 	
 	// See if we are currently in the process of adding/editing this comment
 	$is_current = ($id == $wppa['comment_photo'] && $wppa['comment_id']);
+	// $debugtext=' (id='.$id.', comment_photo='.$wppa['comment_photo'].', comment_id='.$wppa['comment_id'].')';
 	if ($is_current) {
 		$txt = $wppa['comment_text'];
 		$btn = __a('Edit!');
@@ -867,6 +868,7 @@ global $wppa_first_comment_html;
 					$result .= '</tbody>';
 				$result .= '</table>';
 			$result .= '</form>';
+			// $result.=$debugtext;
 		$result .= '</div>';
 	}
 	else {

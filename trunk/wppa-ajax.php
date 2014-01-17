@@ -2,7 +2,7 @@
 /* wppa-ajax.php
 *
 * Functions used in ajax requests
-* version 5.2.8
+* version 5.2.10
 *
 */
 add_action('wp_ajax_wppa', 'wppa_ajax_callback');
@@ -66,7 +66,10 @@ global $wppa;
 				}
 			}
 			
-			$wppa['master_occur'] = $_REQUEST['moccur'];
+			$wppa['master_occur'] 	= $_REQUEST['moccur'];
+			$wppa['comment_photo'] 	= isset( $_REQUEST['photo-id'] ) ? $_REQUEST['photo-id'] : '0';
+			$wppa['comment_id'] 	= isset( $_REQUEST['comment-edit'] ) ? $_REQUEST['comment-edit'] : '0';
+			
 			$comment_allowed = ( ! wppa_switch('wppa_comment_login') || is_user_logged_in() );
 			if ( wppa_switch('wppa_show_comments') && $comment_allowed ) {
 				if ( wppa_switch('wppa_search_comments') ) wppa_index_quick_remove('photo', $_REQUEST['photo-id']);
