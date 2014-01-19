@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: wppa_theme_v5.2.3 HU\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-01-09 14:04+0100\n"
-"PO-Revision-Date: 2014-01-09 14:04+0100\n"
+"PO-Revision-Date: 2014-01-19 17:01+0100\n"
 "Last-Translator: J.N. Breetvelt <OpaJaap@OpaJaap.nl>\n"
 "Language-Team: FYGureout <wpfordito@wpforditas.farkasonline.net>\n"
 "Language: hu\n"
@@ -941,7 +941,7 @@ msgstr "Feltöltési lehetőség még"
 
 #: wppa-functions.php:4032
 msgid "Zoom in"
-msgstr "Kicsinyítés"
+msgstr "Nagyítás"
 
 #: wppa-lasten-widget.php:34
 #, fuzzy
