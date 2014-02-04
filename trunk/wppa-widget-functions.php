@@ -2,7 +2,7 @@
 /* wppa_widgetfunctions.php
 /* Package: wp-photo-album-plus
 /*
-/* Version 5.1.8
+/* Version 5.2.11
 /*
 */
 
@@ -173,9 +173,10 @@ function wppa_walbum_sanitize($walbum) {
 function wppa_get_potd() {
 global $wpdb;
 global $wppa_opt;
+global $thumb;
 
 	$image = '';
-		switch ($wppa_opt['wppa_widget_method']) {
+		switch ( $wppa_opt['wppa_widget_method'] ) {
 			case '1':	// Fixed photo
 				$id = $wppa_opt['wppa_widget_photo'];
 				if ($id != '') {
@@ -256,11 +257,12 @@ global $wppa_opt;
 					$image = '';
 				}
 				break;
+								
 			default:
 				$image = '';
 		}
 		
-	global $thumb;
+	
 	$thumb = $image;
 	
 	return $image;
@@ -273,6 +275,11 @@ global $wppa;
 global $wppa_opt;
 global $widget_content;
 
+	if ( $display == 'thumbs' ) {
+		$size = max( $imgstyle_a['width'], $imgstyle_a['height'] );
+		$widget_content .= '<div style="width:'.$size.'px; height:'.$size.'px; overflow:hidden;" >';
+	}
+	
 	if ($link) {
 		if ( $link['is_url'] ) {	// Is a href
 			$widget_content .= "\n\t".'<a href="'.$link['url'].'" title="'.$title.'" target="'.$link['target'].'" >';
@@ -317,4 +324,12 @@ global $widget_content;
 			$widget_content .= wppa_get_photo_name($image['id']);
 		}
 	}
+	if ( $display == 'thumbs' ) {
+		$widget_content .= wppa_get_medal_html( $image['id'], max( $imgstyle_a['height'], $imgstyle_a['width'] ) );
+	}
+	
+	if ( $display == 'thumbs' ) {
+		$widget_content .= '</div>';
+	}
+
 }

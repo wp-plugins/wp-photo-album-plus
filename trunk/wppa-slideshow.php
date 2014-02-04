@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the slideshow high level functions
-* Version 5.2.10
+* Version 5.2.11
 *
 */
 
@@ -258,10 +258,14 @@ global $wppa_opt;
 		}
 		$wppa['out'] .= wppa_nltab().'<div id="spinner-'.$wppa['master_occur'].'" class="spinner" ></div>';
 		if ( ! wppa_page('oneofone') ) {
-			if (( $wppa_opt['wppa_show_bbb'] && ! $wppa['in_widget'] ) || ( $wppa_opt['wppa_show_bbb_widget'] && $wppa['in_widget'] )){	// big browsing buttons enabled
+			if ( ( $wppa_opt['wppa_show_bbb'] && ! $wppa['in_widget'] ) || ( $wppa_opt['wppa_show_bbb_widget'] && $wppa['in_widget'] ) ){	// big browsing buttons enabled
 				$wppa['out'] .= wppa_nltab().'<img id="bbb-'.$wppa['master_occur'].'-l" class="bbb-l bbb-'.$wppa['master_occur'].'" src="'.wppa_get_imgdir().'bbbl.png" style="background-color: transparent; border:none; z-index:83; position: absolute; float:left;  top: 0px; width: '.($wppa['slideframewidth']*0.5).'px; height: '.$wppa['slideframeheight'].'px; box-shadow: none; cursor:default;" onmouseover="wppaBbb('.$wppa['master_occur'].',\'l\',\'show\')" onmouseout="wppaBbb('.$wppa['master_occur'].',\'l\',\'hide\')" onclick="wppaBbb('.$wppa['master_occur'].',\'l\',\'click\')" />';
 				$wppa['out'] .= wppa_nltab().'<img id="bbb-'.$wppa['master_occur'].'-r" class="bbb-r bbb-'.$wppa['master_occur'].'" src="'.wppa_get_imgdir().'bbbr.png" style="background-color: transparent; border:none; z-index:83; position: absolute; float:right; top: 0px; width: '.($wppa['slideframewidth']*0.5).'px; height: '.$wppa['slideframeheight'].'px; box-shadow: none; cursor:default;" onmouseover="wppaBbb('.$wppa['master_occur'].',\'r\',\'show\')" onmouseout="wppaBbb('.$wppa['master_occur'].',\'r\',\'hide\')" onclick="wppaBbb('.$wppa['master_occur'].',\'r\',\'click\')" />';
 			} /***/
+			if ( ( $wppa_opt['wppa_show_ubb'] && ! $wppa['in_widget'] ) || ( $wppa_opt['wppa_show_ubb_widget'] && $wppa['in_widget'] ) ) { // Ugly browse buttons
+				$wppa['out'] .= wppa_nltab().'<img id="ubb-'.$wppa['master_occur'].'-l" class="ubb-l ubb-'.$wppa['master_occur'].'" src="'.wppa_get_imgdir().'ubbl.png" style="background-color: transparent; border:none; z-index:183; position: absolute; top: 100px; left:0; box-shadow: none; cursor:pointer; top:'.($wppa['slideframeheight']/2-10).'px;" onmouseover="wppaUbb('.$wppa['master_occur'].',\'l\',\'show\')" onmouseout="wppaUbb('.$wppa['master_occur'].',\'l\',\'hide\')" onclick="wppaUbb('.$wppa['master_occur'].',\'l\',\'click\')" />';
+				$wppa['out'] .= wppa_nltab().'<img id="ubb-'.$wppa['master_occur'].'-r" class="ubb-r ubb-'.$wppa['master_occur'].'" src="'.wppa_get_imgdir().'ubbr.png" style="background-color: transparent; border:none; z-index:183; position: absolute; top: 100px; right:0; box-shadow: none; cursor:pointer; top:'.($wppa['slideframeheight']/2-10).'px;" onmouseover="wppaUbb('.$wppa['master_occur'].',\'r\',\'show\')" onmouseout="wppaUbb('.$wppa['master_occur'].',\'r\',\'hide\')" onclick="wppaUbb('.$wppa['master_occur'].',\'r\',\'click\')" />';
+			}
 		}
 		wppa_numberbar();
 		
@@ -398,7 +402,12 @@ global $album;
 	}
 	// w#fotomoto
 	if ( wppa_switch('wppa_fotomoto_on') ) {
-		$content = str_replace( 'w#fotomoto', '<div id="wppa-fotomoto-container-'.$wppa['master_occur'].'" ></div><div id="wppa-fotomoto-checkout-'.$wppa['master_occur'].'" class="wppa-fotomoto-checkout" ><a href="javascript:void();" onclick="FOTOMOTO.API.checkout(); return false;" >'.__('Checkout').'</a></div><div style="clear:both;"></div>', $content );
+		$fontsize = $wppa_opt['wppa_fotomoto_fontsize'];
+		if ( $fontsize ) {	
+			$s = '<style>.FotomotoToolbarClass{font-size:'.$wppa_opt['wppa_fotomoto_fontsize'].'px !important;}</style>';
+		}
+		else $s = '';
+		$content = str_replace( 'w#fotomoto', $s.'<div id="wppa-fotomoto-container-'.$wppa['master_occur'].'" class="wppa-fotomoto-container" ></div><div id="wppa-fotomoto-checkout-'.$wppa['master_occur'].'" class="wppa-fotomoto-checkout FotomotoToolbarClass" style="float:right; clear:none; " ><ul class="FotomotoBar" style="list-style:none outside none;" ><li><a href="javascript:void();" onclick="FOTOMOTO.API.checkout(); return false;" >'.__('Checkout').'</a></li></ul></div><div style="clear:both;"></div>', $content );
 	}
 	else {
 		$content = str_replace( 'w#fotomoto', '', $content );
@@ -590,7 +599,7 @@ global $thumb;
 	
 	$t = -microtime(true);
 	
-	$alb = wppa_get_get('album', '');	// To be tested: // Album id is in $wppa['start_album']
+	$alb = wppa_get_get('album');	// To be tested: // Album id is in $wppa['start_album']
 	
 	$thumbs = wppa_get_thumbs($alb);
 	if (!$thumbs || count($thumbs) < 1) return;

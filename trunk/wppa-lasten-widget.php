@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the last uploaded photos
-* Version 5.2.3
+* Version 5.2.11
 */
 
 class LasTenWidget extends WP_Widget {
@@ -39,6 +39,12 @@ class LasTenWidget extends WP_Widget {
 		$display 	= $instance['display'];
 		$albumenum 	= $instance['albumenum'];
 		
+		$generic = ( $album == '-2' );
+		if ( $generic ) {
+			$album = '0';
+			$max += '1000';
+		}
+
 		if ( $album == '-99' ) $album = implode("' OR `album` = '", explode(',', $albumenum));
 
 		if ( $album ) {
@@ -51,11 +57,18 @@ class LasTenWidget extends WP_Widget {
 		global $widget_content;
 		$widget_content = "\n".'<!-- WPPA+ LasTen Widget start -->';
 		$maxw = $wppa_opt['wppa_lasten_size'];
-		$maxh = $maxw + 18;
+		$maxh = $maxw;
+		$lineheight = $wppa_opt['wppa_fontsize_widget_thumb'] * 1.5;
+		$maxh += $lineheight;
+		if ( $timesince == 'yes' ) $maxh += $lineheight;
 
+		$count = '0';
 		if ( $thumbs ) foreach ( $thumbs as $image ) {
 			global $thumb;
 			$thumb = $image;
+			
+			if ( $generic && wppa_is_separate( $thumb['album'] ) ) continue;
+
 			// Make the HTML for current picture
 			if ( $display == 'thumbs' ) {
 				$widget_content .= "\n".'<div class="wppa-widget" style="width:'.$maxw.'px; height:'.$maxh.'px; margin:4px; display:inline; text-align:center; float:left;">'; 
@@ -75,15 +88,19 @@ class LasTenWidget extends WP_Widget {
 
 				wppa_do_the_widget_thumb('lasten', $image, $album, $display, $link, $title, $imgurl, $imgstyle_a, $imgevents);
 				
-				if ($timesince == 'yes') {
-					$widget_content .= "\n\t".'<span style="font-size:'.$wppa_opt['wppa_fontsize_widget_thumb'].'px;">'.wppa_get_time_since($image['timestamp']);
-					$widget_content .= '</span>';
+				$widget_content .= "\n\t".'<div style="font-size:'.$wppa_opt['wppa_fontsize_widget_thumb'].'px; line-height:'.$lineheight.'px;">';
+				if ( $timesince == 'yes' ) {
+					$widget_content .= "\n\t".'<div>'.wppa_get_time_since( $image['timestamp'] ).'</div>';
 				}
+				$widget_content .= '</div>';
 			}
 			else {	// No image
 				$widget_content .= __a('Photo not found.', 'wppa_theme');
 			}
 			$widget_content .= "\n".'</div>';
+			$count++;
+			if ( $count == $wppa_opt['wppa_lasten_count'] ) break;
+
 		}	
 		else $widget_content .= 'There are no uploaded photos (yet).';
 		

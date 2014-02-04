@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the top rated photos
-* Version 5.2.3
+* Version 5.2.11
 */
 
 class TopTenWidget extends WP_Widget {
@@ -38,24 +38,38 @@ class TopTenWidget extends WP_Widget {
 		$page 			= wppa_get_the_landing_page('wppa_topten_widget_linkpage', __a('Top Ten Photos'));
 		$max  			= $wppa_opt['wppa_topten_count'];
 		$album 			= $instance['album'];
-		$sortby 		= $instance['sortby'];
+		switch ( $instance['sortby'] ) {
+			case 'mean_rating':
+				$sortby = '`mean_rating` DESC, `rating_count` DESC, `views` DESC';
+				break;
+			case 'rating_count':
+				$sortby = '`rating_count` DESC, `mean_rating` DESC, `views` DESC';
+				break;
+			case 'views':
+				$sortby = '`views` DESC, `mean_rating` DESC, `rating_count` DESC';
+				break;
+		}
 		$display 		= $instance['display'];
-		$meanrat		= $instance['meanrat'];
-		$ratcount 		= $instance['ratcount'];
-		$viewcount 		= $instance['viewcount'];
-
+		$meanrat		= $instance['meanrat'] == 'yes';
+		$ratcount 		= $instance['ratcount'] == 'yes';
+		$viewcount 		= $instance['viewcount'] == 'yes';
 
 		if ($album) {
-			$thumbs = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM `".WPPA_PHOTOS."` WHERE `album` = %s ORDER BY `" . $instance['sortby'] . "` DESC LIMIT " . $max, $album ), ARRAY_A );
+			$thumbs = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM `".WPPA_PHOTOS."` WHERE `album` = %s ORDER BY " . $sortby . " LIMIT " . $max, $album ), ARRAY_A );
 		}
 		else {
-			$thumbs = $wpdb->get_results( "SELECT * FROM `".WPPA_PHOTOS."` ORDER BY `" . $instance['sortby'] . "` DESC LIMIT " . $max, ARRAY_A );
+			$thumbs = $wpdb->get_results( "SELECT * FROM `".WPPA_PHOTOS."` ORDER BY " . $sortby . " LIMIT " . $max, ARRAY_A );
 		}
 		
 		global $widget_content;
 		$widget_content = "\n".'<!-- WPPA+ TopTen Widget start -->';
 		$maxw = $wppa_opt['wppa_topten_size'];
-		$maxh = $maxw + 18;
+		$maxh = $maxw;
+		$lineheight = $wppa_opt['wppa_fontsize_widget_thumb'] * 1.5;
+		$maxh += $lineheight;
+		if ( $meanrat ) 	$maxh += $lineheight;
+		if ( $ratcount ) 	$maxh += $lineheight;
+		if ( $viewcount ) 	$maxh += $lineheight;
 		
 		if ( $thumbs ) foreach ( $thumbs as $image ) {
 			global $thumb;
@@ -79,9 +93,28 @@ class TopTenWidget extends WP_Widget {
 				
 				wppa_do_the_widget_thumb('topten', $image, $album, $display, $link, $title, $imgurl, $imgstyle_a, $imgevents);
 
-				$widget_content .= "\n\t".'<span style="font-size:'.$wppa_opt['wppa_fontsize_widget_thumb'].'px;">';
-				
-					$rating = wppa_get_rating_by_id($image['id']);
+				$widget_content .= "\n\t".'<div style="font-size:'.$wppa_opt['wppa_fontsize_widget_thumb'].'px; line-height:'.$lineheight.'px;">';
+
+					$rating = wppa_get_rating_by_id( $image['id'] );
+					switch ( $instance['sortby'] ) {
+						case 'mean_rating':
+							if ( $meanrat  	== 'yes' ) $widget_content .= '<div>'.wppa_get_rating_by_id( $image['id'] ).'</div>';
+							if ( $ratcount 	== 'yes' ) $widget_content .= '<div>'.sprintf( __a( '%s Votes' ), wppa_get_rating_count_by_id( $image['id'] ) ).'</div>';
+							if ( $viewcount == 'yes' && $image['views'] ) $widget_content .= '<div>'.sprintf( __a( 'Views: %s times', 'wppa_theme' ), $image['views'] ).'</div>';
+							break;
+						case 'rating_count':
+							if ( $ratcount 	== 'yes' ) $widget_content .= '<div>'.sprintf( __a( '%s Votes' ), wppa_get_rating_count_by_id( $image['id'] ) ).'</div>';
+							if ( $meanrat  	== 'yes' ) $widget_content .= '<div>'.wppa_get_rating_by_id( $image['id'] ).'</div>';
+							if ( $viewcount == 'yes' && $image['views'] ) $widget_content .= '<div>'.sprintf( __a( 'Views: %s times', 'wppa_theme' ), $image['views'] ).'</div>';
+							break;
+						case 'views':
+							if ( $viewcount == 'yes' && $image['views'] ) $widget_content .= '<div>'.sprintf( __a( 'Views: %s times', 'wppa_theme' ), $image['views'] ).'</div>';
+							if ( $meanrat  	== 'yes' ) $widget_content .= '<div>'.wppa_get_rating_by_id( $image['id'] ).'</div>';
+							if ( $ratcount 	== 'yes' ) $widget_content .= '<div>'.sprintf( __a( '%s Votes' ), wppa_get_rating_count_by_id( $image['id'] ) ).'</div>';
+							break;
+					}
+					
+/*					
 					if ( $sortby != 'views' ) {	// Rating oriented use of this widget
 						if ( $rating ) {
 							if ( $meanrat == 'yes' ) $widget_content .= wppa_get_rating_by_id($image['id']);
@@ -99,8 +132,8 @@ class TopTenWidget extends WP_Widget {
 							if ( $ratcount == 'yes' ) $widget_content .= ' ('.wppa_get_rating_count_by_id($image['id']).')';
 						}
 					}
-					
-				$widget_content .= '</span>';
+*/					
+				$widget_content .= '</div>';
 			}
 			else {	// No image
 				$widget_content .= __a('Photo not found.', 'wppa_theme');

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the upload/import pages and functions
-* Version 5.2.5
+* Version 5.2.11
 *
 */
 
@@ -87,6 +87,11 @@ global $wppa_revno;
 		<h2><?php _e('Upload Photos', 'wppa'); ?></h2>
 
 		<?php	
+		// Check for trivial requirements
+		if ( ! function_exists('imagecreatefromjpeg') ) {
+			wppa_error_message(__('There is a serious misconfiguration in your servers PHP config. Function imagecreatefromjpeg() does not exist. You will encounter problems when uploading photos and not be able to generate thumbnail images. Ask your hosting provider to add GD support with a minimal version 1.8.', 'wppa'));
+		}
+
 		$max_files = ini_get('max_file_uploads');
 		$max_files_txt = $max_files;
 		if ($max_files < '1') {

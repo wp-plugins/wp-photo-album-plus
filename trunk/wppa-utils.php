@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains low-level utility routines
-* Version 5.2.10
+* Version 5.2.11
 *
 */
  
@@ -119,6 +119,8 @@ global $blog_id;
 	if ( wppa_cdn() ) { 
 		switch ( wppa_cdn() ) {
 			case 'cloudinary':
+				$x = round($x);
+				$y = round($y);
 				$prefix 	= ( is_multisite() && ! WPPA_MULTISITE_GLOBAL ) ? $blog_id.'-' : '';
 				$t 			= wppa_switch('wppa_enlarge') ? 'fit' : 'limit';
 				$sizespec 	= ( $x && $y ) ? 'w_'.$x.',h_'.$y.',c_'.$t.'/' : '';
@@ -175,8 +177,9 @@ function wppa_expand_id($xid, $makepath = false) {
 }
 
 // get the name of a full sized image
-function wppa_get_photo_name($id, $add_owner = false) {
+function wppa_get_photo_name($id, $add_owner = false, $add_medal = false, $esc_js = false ) {
 global $thumb;
+global $wppa_opt;
 
 	if ( ! is_numeric($id) || $id < '1' ) wppa_dbg_msg('Invalid arg wppa_get_photo_name('.$id.')', 'red');
 	wppa_cache_thumb($id);
@@ -186,6 +189,14 @@ global $thumb;
 		if ( $user ) {
 			$result .= ' ('.$user->display_name.')';
 		}
+	}
+//$result = str_replace("'", 'kwoot', $result);
+	if ( $esc_js ) $result = esc_js( $result );
+	if ( $add_medal ) {
+		$color = $wppa_opt['wppa_medal_color'];
+		if ( $thumb['status'] == 'gold' ) $result .= '<img src="'.WPPA_URL.'/images/medal_gold_'.$color.'.png" title="'.esc_attr(__a('Gold medal award!')).'" style="border:none; margin:0; padding:0; box-shadow:none; height:32px;" />';
+		if ( $thumb['status'] == 'silver' ) $result .= '<img src="'.WPPA_URL.'/images/medal_silver_'.$color.'.png" title="'.esc_attr(__a('Silver medal award!')).'" style="border:none; margin:0; padding:0; box-shadow:none; height:32px;" />';
+		if ( $thumb['status'] == 'bronze' ) $result .= '<img src="'.WPPA_URL.'/images/medal_bronze_'.$color.'.png" title="'.esc_attr(__a('Bronze medal award!')).'" style="border:none; margin:0; padding:0; box-shadow:none; height:32px;" />';
 	}
 	return $result;
 }
@@ -220,6 +231,9 @@ global $wppa_opt;
 			if ( $replacement == '' ) $replacement = '&lsaquo;'.__a('none', 'wppa').'&rsaquo;';
 			$desc = str_replace('w#'.$keyword, $replacement, $desc);
 		}
+		$desc = str_replace( 'w#url', wppa_get_lores_url( $id ), $desc );
+		$desc = str_replace( 'w#hrurl', esc_attr(wppa_get_hires_url( $id )), $desc );
+		$desc = str_replace( 'w#tnurl', wppa_get_tnres_url( $id ), $desc );
 		
 		// Art monkey sizes
 		if ( strpos($desc, 'w#amx') !== false || strpos($desc, 'w#amy') !== false || strpos($desc, 'w#amfs') !== false ) {
@@ -498,7 +512,8 @@ global $wpdb;
 	}
 	return $pages;
 }
-	
+
+// Sort an array on a column, keeping the indexes
 function wppa_array_sort($array, $on, $order=SORT_ASC) {
 
     $new_array = array();
@@ -1475,6 +1490,18 @@ function wppa_get_hires_url( $id ) {
 	$hires_url = $temp['0'];
 	return $hires_url;
 }
+function wppa_get_lores_url( $id ) {
+	$lores_url = wppa_get_photo_url( $id );
+	$temp = explode( '?', $lores_url );
+	$lores_url = $temp['0'];
+	return $lores_url;
+}
+function wppa_get_tnres_url( $id ) {
+	$tnres_url = wppa_get_thumb_url( $id );
+	$temp = explode( '?', $tnres_url );
+	$tnres_url = $temp['0'];
+	return $tnres_url;
+}
 
 function wppa_get_source_dir() {
 global $wppa_opt;
@@ -1558,4 +1585,52 @@ global $album;
 	$tags = wppa_sanitize_tags( str_replace( array( ' ', '\'', '"'), ',', wppa_filter_iptc( wppa_filter_exif( $album['default_tags'], $id ), $id ) ) );
 	
 	$wpdb->query( $wpdb->prepare( "UPDATE `".WPPA_PHOTOS."` SET `tags` = %s WHERE `id` = %s", $tags, $id ) );
+}
+
+function wppa_test_for_medal( $id ) {
+global $thumb;
+global $wpdb;
+global $wppa_opt;
+
+	wppa_cache_thumb( $id );
+	$status = $thumb['status'];
+	
+	if ( $wppa_opt['wppa_medal_bronze_when'] || $wppa_opt['wppa_medal_silver_when'] || $wppa_opt['wppa_medal_gold_when'] ) {
+		$max_score = $wppa_opt['wppa_rating_max'];
+		$max_ratings = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM `".WPPA_RATING."` WHERE `photo` = %s AND `value` = %s", $id, $max_score ) );
+		if ( $max_ratings >= $wppa_opt['wppa_medal_gold_when'] ) $status = 'gold';
+		elseif ( $max_ratings >= $wppa_opt['wppa_medal_silver_when'] ) $status = 'silver';
+		elseif ( $max_ratings >= $wppa_opt['wppa_medal_bronze_when'] ) $status = 'bronze';
+	}
+	
+	if ( $status != $thumb['status'] ) {
+		$thumb['status'] = $status;	// Update cache
+		$wpdb->query( $wpdb->prepare( "UPDATE `".WPPA_PHOTOS."` SET `status` = %s WHERE `id` = %s", $status, $id ) );
+	}
+}
+
+function wppa_get_medal_html( $id, $imgheight ) {
+global $thumb;
+global $wppa_opt;
+
+	$result = '';
+	$color 	= $wppa_opt['wppa_medal_color'];
+	$pos 	= $wppa_opt['wppa_medal_position'];
+	$size 	= '16';
+	if ( $imgheight > '75' ) 	$size = '24';
+	if ( $imgheight > '150' ) 	$size = '32';
+	$top 	= ( strpos( $pos, 'top' )  === false ? $size : $imgheight ) + '6';
+	$float 	= strpos( $pos, 'left' ) === false ? 'right' : 'left';
+	
+	// The medal
+	if ( $thumb['status'] == 'bronze' ) $result .= '<img src="'.WPPA_URL.'/images/medal_bronze_'.$color.'.png" title="'.esc_attr(__a('Bronze medal award!')).'" style="position:relative; top:-'.$top.'px; float:'.$float.'; border:none; margin:0; padding:0; box-shadow:none; height:'.$size.'px;" />';
+	if ( $thumb['status'] == 'silver' ) $result .= '<img src="'.WPPA_URL.'/images/medal_silver_'.$color.'.png" title="'.esc_attr(__a('Silver medal award!')).'" style="position:relative; top:-'.$top.'px; float:'.$float.'; border:none; margin:0; padding:0; box-shadow:none; height:'.$size.'px;" />';
+	if ( $thumb['status'] == 'gold' ) 	$result .= '<img src="'.WPPA_URL.'/images/medal_gold_'.$color.'.png" title="'.esc_attr(__a('Gold medal award!')).'" style="position:relative; top:-'.$top.'px; float:'.$float.'; border:none; margin:0; padding:0; box-shadow:none; height:'.$size.'px;" />';
+
+	$size 	= round( $size * 20 / 32 );
+	$top 	= ( strpos( $pos, 'top' )  === false ? $size : $imgheight ) + '6';
+	// The new indicator
+	if ( wppa_is_photo_new( $id ) ) 	$result .= '<img src="'.WPPA_URL.'/images/new.png" title="'.esc_attr( __a('New!') ).'" class="wppa-thumbnew" style="position:relative; top:-'.$top.'px; float:'.$float.'; border:none; margin:0; padding:0; box-shadow:none; height:'.$size.'px;" />';
+
+	return $result;
 }

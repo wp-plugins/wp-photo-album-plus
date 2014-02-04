@@ -1,13 +1,13 @@
 === WP Photo Album Plus ===
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
-Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile
-Version: 5.2.10
+Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile, cloudinary, fotomoto
+Version: 5.2.11
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
 Requires at least: 3.1
-Tested up to: 3.8
+Tested up to: 3.8.1
 
 This plugin is designed to easily manage and display your photo albums and slideshows in a single as well as in a network WordPress site.
 
@@ -173,6 +173,34 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
 
+= 5.2.11 =
+
+= Bug Fixes =
+
+* Superview Thumbnails showed Slideshow. Fixed.
+* Refreshing a single photo in the style of a slideshow page no longer opens a slideshow.
+* Fixed various layout issues of thumbnail subtext displays. If you want to align thumbnail subtitles horizontally, tick the box in Table IV-C9.
+* Fixed BBB Tooltip text.
+* Pixelsizes are nou rounded to integer values for the request of derived images on Cloudinary.
+
+= New Features =
+
+* You can limit the front-end upload pixelsize in Table VII-B10.
+* New Photo description keywords: w#tnurl ( thumnail ), w#url ( fullsize ) and w#hrurl, the latter giving the url to the local available picture with the highest resu;lution ( a sourcefile if available ).
+* You can use &wppa-owner=[loginname] in querystrings to get the owners albums as an album enumeration.
+* Photo status can now also be 'gold, 'silver' and 'bronze'; these will be displayed with a medal.
+* Automatic medalling can be configured in Table IV-E.
+* New widget: Best Of. A kind of topten widget based upon the ratings given in a certain period of time.
+* Ugly browse buttons, like big browse buttons, but small and visible. See Table II-B13.1 and II-F1.1.
+
+= Other Changes =
+
+* TopTen displays are now secundary and tertiary sorted to reflect a more logical sort sequence.
+* Google maps api is now only loaded when it is actually needed ( w#location is in the custom box ).
+* Expanded configurability of Fotomoto external service. Table IX-K6.x.
+* Ratings have a timestamp now.
+* Language files are now loaded using load_plugin_textdomain().
+
 = 5.2.10 =
 
 = Bug Fixes =
@@ -180,6 +208,7 @@ See for additional information: http://wppa.opajaap.nl/?page_id=1459
 * Entering &amp; in comments caused the comment being truncated. Fixed.
 * The ability to edit the most recent comment stopped working. Fixed.
 * Dutch language files contained an error that prevented applying watermarks in the Album admin screen. Fixed.
+* Selecting ---generic--- for albums in widgets now skips photos in ---separate--- albums.
 
 = New Features =
 
@@ -189,6 +218,7 @@ See for additional information: http://wppa.opajaap.nl/?page_id=1459
 
 * Loading Google gpx can be suppressed by selecting ---none-- in Table IX-K5: GPX Implementation.
 * You can select textlink rather than button for the Art Monkey link in Table VI-C1.2.
+* Required keywords in the custom box for GPX and Fotomoto will be added automaticly when you enable the services.
 
 = 5.2.9 =
 

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 5.2.10
+* Version 5.2.11
 *
 */
 
@@ -90,6 +90,7 @@ global $silent;
 
 	$create_rating = "CREATE TABLE " . WPPA_RATING . " (
 					id bigint(20) NOT NULL,
+					timestamp tinytext NOT NULL,
 					photo bigint(20) NOT NULL,
 					value smallint(5) NOT NULL,
 					user text NOT NULL,
@@ -310,9 +311,9 @@ global $silent;
 				wppa_remove_setting('wppa_list_photos_desc');
 			}
 		}
-		if ( $old_rev <= '5206' ) {
-			$wpdb->query( "DELETE FROM `".WPPA_RATING."` WHERE `value` = '0'" );
-		}
+//		if ( $old_rev <= '5206' ) {
+//			$wpdb->query( "DELETE FROM `".WPPA_RATING."` WHERE `value` = '0'" );
+//		}
 		if ( $old_rev <= '5207' ) {
 			if ( get_option( 'wppa_strip_file_ext', 'nil' ) == 'yes' ) {
 				wppa_update_option( 'wppa_newphoto_name_method', 'noext' );
@@ -346,7 +347,7 @@ global $silent;
 		$usertheme = ABSPATH.'wp-content/themes/'.get_option('template').'/wppa-theme.php';
 		if ( is_file( $usertheme ) ) $key += '2';
 	}
-	if ( $old_rev < '5118' ) {		// css changed since...
+	if ( $old_rev < '5211' ) {		// css changed since...
 		$userstyle = ABSPATH.'wp-content/themes/'.get_option('stylesheet').'/wppa-style.css';
 		if ( is_file( $userstyle ) ) {
 			$key += '1';
@@ -459,6 +460,8 @@ Hide Camera info
 						'wppa_i_share'					=> '',
 						'wppa_i_iptc'					=> '',
 						'wppa_i_exif'					=> '',
+						'wppa_i_gpx'					=> '',
+						'wppa_i_fotomoto'				=> '',
 						'wppa_i_done'					=> '',
 						
 						// Table I: Sizes
@@ -562,6 +565,7 @@ Hide Camera info
 						'wppa_comment_gravatar'				=> 'none',		// 11
 						'wppa_comment_gravatar_url'			=> 'http://',	// 12
 						'wppa_show_bbb'						=> 'no',		// 13
+						'wppa_show_ubb' 					=> 'no',
 						'wppa_custom_on' 					=> 'no',		// 14
 						'wppa_custom_content' 				=> '<div style="color:red; font-size:24px; font-weight:bold; text-align:center;">Hello world!</div>',	// 15
 						'wppa_show_slideshownumbar'  		=> 'no',		// 16
@@ -616,6 +620,7 @@ Hide Camera info
 						'wppa_skip_empty_albums'			=> 'yes',
 						// E Widgets
 						'wppa_show_bbb_widget'				=> 'no',	// 1
+						'wppa_show_ubb_widget'				=> 'no',	// 1
 						'wppa_show_albwidget_tooltip'		=> 'yes',
 						// F Overlay
 						'wppa_ovl_close_txt'				=> 'CLOSE',
@@ -709,6 +714,7 @@ Hide Camera info
 						'wppa_use_thumb_opacity' 		=> 'yes',
 						'wppa_thumb_opacity' 			=> '85',
 						'wppa_use_thumb_popup' 			=> 'yes',
+						'wppa_align_thumbtext' 			=> 'no',
 						// D Albums and covers
 						'wppa_list_albums_by' 			=> '0',
 						'wppa_list_albums_desc' 		=> 'no',
@@ -729,6 +735,11 @@ Hide Camera info
 						'wppa_vote_button_text'			=> 'Vote for me!',
 						'wppa_voted_button_text'		=> 'Voted for me',
 						'wppa_vote_thumb'				=> 'no',
+						'wppa_medal_bronze_when'		=> '5',
+						'wppa_medal_silver_when'		=> '10',
+						'wppa_medal_gold_when'			=> '15',
+						'wppa_medal_color' 				=> '2',
+						'wppa_medal_position' 			=> 'botright',
 						
 						// F Comments
 						'wppa_comment_login' 			=> 'no',
@@ -874,6 +885,8 @@ Hide Camera info
 						
 						'wppa_upldr_widget_linkpage' 		=> '0',
 						
+						'wppa_bestof_widget_linkpage'		=> '0',
+						
 						// Table VII: Security
 						// B
 						'wppa_user_upload_login'	=> 'yes',
@@ -890,6 +903,7 @@ Hide Camera info
 						'wppa_spam_maxage'			=> 'none',
 						'wppa_user_create_on'		=> 'no',
 						'wppa_user_create_login'	=> 'yes',
+						'wppa_upload_fronend_maxsize' 	=> '0',
 						
 						'wppa_editor_upload_limit_count'		=> '0',
 						'wppa_editor_upload_limit_time'			=> '0',
@@ -1018,11 +1032,14 @@ Hide Camera info
 						'wppa_use_scabn'				=> 'no',
 						
 						// K External services
-						'wppa_gpx_implementation' 		=> 'wppa-plus-embedded',
+						'wppa_gpx_implementation' 		=> 'none',
 						'wppa_map_height' 				=> '300',
 						'wppa_map_apikey' 				=> '',
 						'wppa_gpx_shortcode'			=> '[map style="width: auto; height:300px; margin:0; " marker="yes" lat="w#lat" lon="w#lon"]',
 						'wppa_fotomoto_on'				=> 'no',
+						'wppa_fotomoto_fontsize'		=> '',
+						'wppa_fotomoto_hide_when_running'	=> 'no',
+						'wppa_fotomoto_min_width' 		=> '400',
 
 						// Photo of the day widget
 						'wppa_widgettitle'			=> __('Photo of the day', 'wppa'),

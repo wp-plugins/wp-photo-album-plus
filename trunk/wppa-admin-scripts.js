@@ -1,7 +1,7 @@
 /* admin-scripts.js */
 /* Package: wp-photo-album-plus
 /*
-/* Version 5.2.8
+/* Version 5.2.11
 /* Various js routines used in admin pages		
 */
 
@@ -55,6 +55,7 @@ function wppaInitSettings() {
 	wppaCheckGravatar();
 	wppaCheckUserUpload();
 	wppaCheckAjax();
+	wppaCheckFotomoto();
 	wppaCheckLinkPageErr('sphoto');
 	wppaCheckLinkPageErr('mphoto');
 	wppaCheckLinkPageErr('topten_widget');
@@ -142,6 +143,16 @@ function wppaShowTable(table) {
 var _wppaRefreshAfter = false;
 function wppaRefreshAfter() {
 	_wppaRefreshAfter = true;
+}
+
+function wppaCheckFotomoto() {
+	var on = document.getElementById("wppa_fotomoto_on").checked;
+	if ( on ) {
+		jQuery(".wppa_fotomoto").css('display', '');
+	}
+	else {
+		jQuery(".wppa_fotomoto").css('display', 'none');
+	}
 }
 
 /* Adjust visibility of selection radiobutton if fixed photo is chosen or not */				
@@ -1251,6 +1262,11 @@ function wppaAjaxUpdateOptionCheckBox(slug, elem) {
 					case '0':	// No error
 						document.getElementById('img_'+slug).src = wppaImageDirectory+'tick.png';
 						document.getElementById('img_'+slug).title = ArrValues[2];
+						if ( ArrValues[3] != '' ) alert(ArrValues[3]);
+						if ( _wppaRefreshAfter ) {
+							_wppaRefreshAfter = false;
+							document.location.reload(true);
+						}
 						break;
 					default:
 						document.getElementById('img_'+slug).src = wppaImageDirectory+'cross.png';
@@ -1291,6 +1307,7 @@ function wppaAjaxUpdateOptionValue(slug, elem) {
 				switch (ArrValues[1]) {
 					case '0':	// No error
 						document.getElementById('img_'+slug).src = wppaImageDirectory+'tick.png';
+						if ( ArrValues[3] != '' ) alert(ArrValues[3]);
 						if ( _wppaRefreshAfter ) {
 							_wppaRefreshAfter = false;
 							document.location.reload(true);
@@ -1300,7 +1317,6 @@ function wppaAjaxUpdateOptionValue(slug, elem) {
 						document.getElementById('img_'+slug).src = wppaImageDirectory+'cross.png';
 				}
 				document.getElementById('img_'+slug).title = ArrValues[2];
-				if ( ArrValues[3] != '' ) alert(ArrValues[3]);
 			}
 			else {						// Not found
 				document.getElementById('img_'+slug).src = wppaImageDirectory+'cross.png';
@@ -1393,6 +1409,15 @@ function wppaPhotoStatusChange(id) {
 				i++;
 			}
 		}
+	}
+	if (elm.value=='gold') {
+		jQuery('#photoitem-'+id).css({backgroundColor:'#eeeecc', borderColor:'#ddddbb'}); 
+	}
+	if (elm.value=='silver') {
+		jQuery('#photoitem-'+id).css({backgroundColor:'#ffffff', borderColor:'#eeeeee'}); 
+	}
+	if (elm.value=='bronze') {
+		jQuery('#photoitem-'+id).css({backgroundColor:'#ddddbb', borderColor:'#ccccaa'}); 
 	}
 }
 

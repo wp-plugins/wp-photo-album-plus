@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Frontend links
-* Version 5.1.17
+* Version 5.2.11
 *
 */
 
@@ -352,6 +352,9 @@ global $wppa_opt;
 				case 'ul':
 					$newuri .= 'wppa-upldr=';
 					break;
+				case 'ow':
+					$newuri .= 'wppa-owner=';
+					break;
 			}
 //			if ( $code == 'ss' ) $newuri .= str_replace('|', ' ', substr($arg, 2));
 //			else 
@@ -384,7 +387,7 @@ global $wppa_opt;
 	
 	// explode querystring
 	$args = explode('&', substr($uri, $qpos+1));
-	$support = array('album', 'photo', 'slide', 'cover', 'occur', 'woccur', 'page', 'searchstring', 'topten', 'lasten', 'comten', 'featen', 'randseed', 'lang', 'single', 'tag', 'photos-only', 'debug', 'rel', 'relcount', 'upldr');
+	$support = array('album', 'photo', 'slide', 'cover', 'occur', 'woccur', 'page', 'searchstring', 'topten', 'lasten', 'comten', 'featen', 'randseed', 'lang', 'single', 'tag', 'photos-only', 'debug', 'rel', 'relcount', 'upldr', 'owner' );
 	if ( count($args) > 0 ) {
 		foreach ( $args as $arg ) {
 			$t = explode('=', $arg);
@@ -455,6 +458,9 @@ global $wppa_opt;
 						break;
 					case 'upldr':
 						$newuri .= 'ul';
+						break;
+					case 'owner':
+						$newuri .= 'ow';
 						break;
 				}
 				if ( $val !== false ) {
@@ -625,15 +631,15 @@ global $wppa_opt;
 	$ajax_url = wppa_get_ajaxlink();
 
 	// cover
-	if (wppa_get_get('cover')) $ic = wppa_get_get('cover');
+	if ( wppa_get_get( 'cover' ) ) $ic = wppa_get_get( 'cover' );
 	else {
-		if ($wppa['is_cover'] == '1') $ic = '1'; else $ic = '0';
+		if ( $wppa['is_cover'] == '1' ) $ic = '1'; else $ic = '0';
 	}
 	$extra_url = 'wppa-cover='.$ic;
 	// album
 //	if ( $wppa['start_album'] ) $alb = $wppa['start_album'];
 //	elseif (wppa_get_get('album')) $alb = wppa_get_get('album');
-	$occur = $wppa['in_widget'] ? wppa_get_get('woccur', '0') : wppa_get_get('occur', '0');
+	$occur = $wppa['in_widget'] ? wppa_get_get('woccur') : wppa_get_get('occur');
 	$ref_occur = $wppa['in_widget'] ? $wppa['widget_occur'] : $wppa['occur'];
 	if (($occur == $ref_occur || $wppa['ajax'] ) && wppa_get_get('album')) {
 			$alb = wppa_get_get('album');
