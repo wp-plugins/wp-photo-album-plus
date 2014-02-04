@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 5.2.10
+* Version 5.2.11
 *
 */
 
@@ -459,7 +459,7 @@ global $no_default;
 		}
 		
 		// Blacklist
-		$blacklist_plugins = array('performance-optimization-order-styles-and-javascript/order-styles-js.php', 'wp-ultra-simple-paypal-shopping-cart/wp_ultra_simple_shopping_cart.php', 'cachify/cachify.php');
+		$blacklist_plugins = array('performance-optimization-order-styles-and-javascript/order-styles-js.php', 'wp-ultra-simple-paypal-shopping-cart/wp_ultra_simple_shopping_cart.php', 'cachify/cachify.php', 'wp-deferred-javascripts/wp-deferred-javascripts.php');
 		$plugins = get_option('active_plugins');
 		$matches = array_intersect($blacklist_plugins, $plugins);
 		foreach ( $matches as $bad ) {
@@ -470,6 +470,11 @@ global $no_default;
 		$matches = array_intersect($graylist_plugins, $plugins);
 		foreach ( $matches as $bad ) {
 			wppa_warning_message(__('Please note that plugin <i style="font-size:14px;">', 'wppa').substr($bad, 0, strpos($bad, '/')).__('</i> can cause wppa+ to function not properly if it is misconfigured.', 'wppa'));
+		}
+		
+		// Check for trivial requirements
+		if ( ! function_exists('imagecreatefromjpeg') ) {
+			wppa_error_message(__('There is a serious misconfiguration in your servers PHP config. Function imagecreatefromjpeg() does not exist. You will encounter problems when uploading photos and not be able to generate thumbnail images. Ask your hosting provider to add GD support with a minimal version 1.8.', 'wppa'));
 		}
 
 ?>
@@ -612,6 +617,24 @@ global $no_default;
 							$html = wppa_select($slug, $opts, $vals);
 							wppa_setting($slug, '8', $name, $desc, $html, $help);
 							
+							$name = __('Are you going to use GPX data?', 'wppa');
+							$desc = __('Some cameras and mobile devices save the geographic location where the photo is taken.', 'wppa');
+							$help = esc_js(__('A Google map can be displayed in slideshows.', 'wppa'));
+							$slug = 'wppa_i_gpx';
+							$opts = array('', 'yes', 'no');
+							$vals = array('', 'yes', 'no');
+							$html = wppa_select($slug, $opts, $vals);
+							wppa_setting($slug, '9', $name, $desc, $html, $help);
+
+							$name = __('Are you going to use Fotomoto?', 'wppa');
+							$desc = __('<a href="http://www.fotomoto.com/" target="_blank" >Fotomoto</a> is an on-line print service.', 'wppa');
+							$help = esc_js(__('If you answer Yes, you will have to open an account on Fotomoto.', 'wppa'));
+							$slug = 'wppa_i_fotomoto';
+							$opts = array('', 'yes', 'no');
+							$vals = array('', 'yes', 'no');
+							$html = wppa_select($slug, $opts, $vals);
+							wppa_setting($slug, '10', $name, $desc, $html, $help);
+							
 							$name = __('Done?', 'wppa');
 							$desc = __('If you are ready answering these questions, select <b>yes</b>', 'wppa');
 							$help = esc_js(__('You can change any setting later, and be more specific and add a lot of settings. For now it is enough, go create albums and upload photos!', 'wppa'));
@@ -621,7 +644,7 @@ global $no_default;
 							$closetext = esc_js(__('Thank you!. The most important settings are done now. You can refine your settings, the behaviour and appearance of WPPA+ in the Tables below.', 'wppa'));
 							$postaction = 'alert(\''.$closetext.'\');setTimeout(\'document.location.reload(true)\', 1000)';
 							$html = wppa_select($slug, $opts, $vals, '', '', false, $postaction);
-							wppa_setting($slug, '9', $name, $desc, $html, $help);
+							wppa_setting($slug, '99', $name, $desc, $html, $help);
 							
 							$no_default = false;
 							}
@@ -1440,10 +1463,16 @@ global $no_default;
 							$desc = __('Enable invisible browsing buttons.', 'wppa');
 							$help = esc_js(__('If checked, the fullsize image is covered by two invisible areas that act as browse buttons.', 'wppa'));
 							$help .= '\n\n'.esc_js(__('Make sure the Full height (Table I-B2) is properly configured to prevent these areas to overlap unwanted space.', 'wppa'));
-							$help .= '\n\n'.esc_js(__('A side effect of this setting is that right clicking the image no longer enables the visitor to download the image.', 'wppa'));
 							$slug = 'wppa_show_bbb';
 							$html = wppa_checkbox($slug);
 							wppa_setting($slug, '13', $name, $desc, $html, $help);
+
+							$name = __('Ugly Browse Buttons', 'wppa');
+							$desc = __('Enable the ugly browsing buttons.', 'wppa');
+							$help = esc_js(__('If checked, the fullsize image is covered by two browse buttons.', 'wppa'));
+							$slug = 'wppa_show_ubb';
+							$html = wppa_checkbox($slug);
+							wppa_setting($slug, '13.1', $name, $desc, $html, $help);
 
 							$name = __('Show custom box', 'wppa');
 							$desc = __('Display the custom box in the slideshow', 'wppa');
@@ -1807,10 +1836,17 @@ global $no_default;
 							$desc = __('Enable invisible browsing buttons in widget slideshows.', 'wppa');
 							$help = esc_js(__('If checked, the fullsize image is covered by two invisible areas that act as browse buttons.', 'wppa'));
 							$help .= '\n\n'.esc_js(__('Make sure the Full height (Table I-B2) is properly configured to prevent these areas to overlap unwanted space.', 'wppa'));
-							$help .= '\n\n'.esc_js(__('A side effect of this setting is that right clicking the image no longer enables the visitor to download the image.', 'wppa'));
 							$slug = 'wppa_show_bbb_widget';
 							$html = wppa_checkbox($slug);
 							wppa_setting($slug, '1', $name, $desc, $html, $help);
+
+							$name = __('Ugly Browse Buttons in widget', 'wppa');
+							$desc = __('Enable ugly browsing buttons in widget slideshows.', 'wppa');
+							$help = esc_js(__('If checked, the fullsize image is covered by browse buttons.', 'wppa'));
+							$help .= '\n\n'.esc_js(__('Make sure the Full height (Table I-B2) is properly configured to prevent these areas to overlap unwanted space.', 'wppa'));
+							$slug = 'wppa_show_ubb_widget';
+							$html = wppa_checkbox($slug);
+							wppa_setting($slug, '1.1', $name, $desc, $html, $help);
 
 							$name = __('Album widget tooltip', 'wppa');
 							$desc = __('Show the album description on hoovering thumbnail in album widget', 'wppa');
@@ -2586,6 +2622,14 @@ global $no_default;
 							$htmlerr = wppa_htmlerr('popup-lightbox');
 							$class = 'tt_normal';
 							wppa_setting($slug, '8', $name, $desc, $html.$htmlerr, $help, $class);
+							
+							$name = __('Align subtext', 'wppa');
+							$desc = __('Set thumbnail subtext on equal height.', 'wppa');
+							$help = '';
+							$slug = 'wppa_align_thumbtext';
+							$html = wppa_checkbox($slug);
+							$class = 'tt_normal';
+							wppa_setting($slug, '9', $name, $desc, $html, $help, $class);
 							}
 							wppa_setting_subheader( 'D', '1', __( 'Album and covers related settings', 'wppa' ) );
 							{
@@ -2814,6 +2858,51 @@ global $no_default;
 							$html = wppa_checkbox($slug);
 							$class = 'wppa_rating_';
 							wppa_setting($slug, '15', $name, $desc, $html, $help, $class);
+							
+							$name = __('Medal bronze when', 'wppa');
+							$desc = __('Photo gets medal bronze when number of top-scores ( 5 or 10 ).', 'wppa');
+							$help = esc_js(__('When the photo has this number of topscores ( 5 or 10 stars ), it will get a bronze medal. A value of 0 indicates that you do not want this feature.', 'wppa'));
+							$slug = 'wppa_medal_bronze_when';
+							$html = wppa_input($slug, '50px', '', __('Topscores', 'wppa'));
+							$class = 'wppa_rating_';
+							wppa_setting($slug, '16.1', $name, $desc, $html, $help, $class);
+							
+							$name = __('Medal silver when', 'wppa');
+							$desc = __('Photo gets medal silver when number of top-scores ( 5 or 10 ).', 'wppa');
+							$help = esc_js(__('When the photo has this number of topscores ( 5 or 10 stars ), it will get a silver medal. A value of 0 indicates that you do not want this feature.', 'wppa'));
+							$slug = 'wppa_medal_silver_when';
+							$html = wppa_input($slug, '50px', '', __('Topscores', 'wppa'));
+							$class = 'wppa_rating_';
+							wppa_setting($slug, '16.2', $name, $desc, $html, $help, $class);
+
+							$name = __('Medal gold when', 'wppa');
+							$desc = __('Photo gets medal bronze when number of top-scores ( 5 or 10 ).', 'wppa');
+							$help = esc_js(__('When the photo has this number of topscores ( 5 or 10 stars ), it will get a bronze medal. A value of 0 indicates that you do not want this feature.', 'wppa'));
+							$slug = 'wppa_medal_gold_when';
+							$html = wppa_input($slug, '50px', '', __('Topscores', 'wppa'));
+							$class = 'wppa_rating_';
+							wppa_setting($slug, '16.3', $name, $desc, $html, $help, $class);
+
+							$name = __('Medal tag color', 'wppa');
+							$desc = __('The color of the tag on the medal.', 'wppa');
+							$help = '';
+							$slug = 'wppa_medal_color';
+							$opts = array( __('Red', 'wppa'), __('Green', 'wppa'), __('Blue', 'wppa') );
+							$vals = array( '1', '2', '3' );
+							$html = wppa_select($slug, $opts, $vals);
+							$class = 'wppa_rating_';
+							wppa_setting($slug, '16.4', $name, $desc, $html, $help, $class);
+							
+							$name = __('Medal position', 'wppa');
+							$desc = __('The position of the medal on the image.', 'wppa');
+							$help = '';
+							$slug = 'wppa_medal_position';
+							$opts = array( __('Top left', 'wppa'), __('Top right', 'wppa'), __('Bottom left', 'wppa'), __('Bottom right', 'wppa') );
+							$vals = array( 'topleft', 'topright', 'botleft', 'botright' );
+							$html = wppa_select($slug, $opts, $vals);
+							$class = 'wppa_rating_';
+							wppa_setting($slug, '16.5', $name, $desc, $html, $help, $class);
+
 							}
 							wppa_setting_subheader( 'F', '1', __( 'Comments related settings', 'wppa' ), 'wppa_comment_' );
 							{
@@ -3672,7 +3761,7 @@ global $no_default;
 							wppa_setting($slug, '4a,b,c', $name, $desc, $html, $help);
 							
 							$name = __('Super View Landing', 'wppa');
-							$desc = __('Select the landing page for the Super View widget.', 'wppa');
+							$desc = __('The landing page for the Super View widget.', 'wppa');
 							$help = '';
 							$slug1 = '';
 							$slug2 = 'wppa_super_view_linkpage';
@@ -3691,8 +3780,8 @@ global $no_default;
 							$html = array($html1, $htmlerr.$html2, $html3, $html4);
 							wppa_setting($slug, '5', $name, $desc, $html, $help);
 
-							$name = __('Uploader Widget Landing', 'wppa');
-							$desc = __('Select the landing page for the Uploader Photos Widget', 'wppa');
+							$name = __('Uploader Landing', 'wppa');
+							$desc = __('Select the landing page for the Uploader Widget', 'wppa');
 							$help = '';
 							$slug1 = '';
 							$slug2 = 'wppa_upldr_widget_linkpage';
@@ -3883,6 +3972,13 @@ global $no_default;
 							$slug = 'wppa_upload_backend_notify';
 							$html = wppa_checkbox($slug);
 							wppa_setting($slug, '9', $name, $desc, $html, $help);
+							
+							$name = __('Max size in pixels', 'wppa');
+							$desc = __('Max size for height and width for front-end uploads.', 'wppa');
+							$help = esc_js(__('Enter the maximum size. 0 is unlimited','wppa'));
+							$slug = 'wppa_upload_fronend_maxsize';
+							$html = wppa_input($slug, '40px', '', __('pixels', 'wppa'));
+							wppa_setting($slug, '10', $name, $desc, $html, $help);
 							
 							wppa_setting_subheader( 'C', '1', __('Admin Functionality restrictions for non administrators', 'wppa' ) );
 							
@@ -5143,7 +5239,7 @@ global $no_default;
 							$slug = 'wppa_gpx_implementation';
 							$opts = array( __('--- none ---', 'wppa'), __('WPPA+ Embedded code', 'wppa'), __('Google maps GPX viewer plugin', 'wppa') );
 							$vals = array( 'none', 'wppa-plus-embedded', 'google-maps-gpx-viewer' );
-							$onch = 'wppaCheckGps()';
+							$onch = 'wppaCheckGps();alert(\''.__('The page will be reloaded after the action has taken place.', 'wppa').'\');wppaRefreshAfter();';
 							$html = wppa_select($slug, $opts, $vals, $onch);
 							wppa_setting($slug, '5', $name, $desc, $html, $help);
 							
@@ -5177,12 +5273,36 @@ global $no_default;
 							$help = esc_js(__('In order to function properly:', 'wppa'));
 							$help .= '\n\n'.esc_js(__('1. Get yourself a Fotomoto account.', 'wppa'));
 							$help .= '\n'.esc_js(__('2. Install the Fotomoto plugin, enter the "Fotomoto Site Key:" and check the "Use API Mode:" checkbox.', 'wppa'));
-							$help .= '\n'.esc_js(__('3. Enable the Custom box in Table II-B14.', 'wppa'));
-							$help .= '\n'.esc_js(__('4. Put the text w#fotomoto anywhere in the Custombox ( Table II-B15 ).', 'wppa'));
+							$help .= '\n\n'.esc_js(__('Note: Do NOT Disable the Custom box in Table II-B14.', 'wppa'));
+							$help .= '\n'.esc_js(__('Do NOT remove the text w#fotomoto from the Custombox ( Table II-B15 ).', 'wppa'));
 							$slug = 'wppa_fotomoto_on';
-							$html = wppa_checkbox($slug);
+							$onchange = 'wppaCheckFotomoto();alert(\''.__('The page will be reloaded after the action has taken place.', 'wppa').'\');wppaRefreshAfter();';
+							$html = wppa_checkbox($slug, $onchange);
 							wppa_setting($slug, '6', $name, $desc, $html, $help);
 							
+							$name = __('Fotomoto fontsize', 'wppa');
+							$desc = __('Fontsize for the Fotomoto toolbar.', 'wppa');
+							$help = esc_js(__('If you set it here, it overrules a possible setting for font-size in .FotomotoToolbarClass on the Fotomoto dashboard.', 'wppa'));
+							$slug = 'wppa_fotomoto_fontsize';
+							$html = wppa_input($slug, '40px', '', __('pixels', 'wppa'));
+							$class = 'wppa_fotomoto';
+							wppa_setting($slug, '6.1', $name, $desc, $html, $help, $class);
+							
+							$name = __('Hide when running', 'wppa');
+							$desc = __('Hide toolbar on running slideshows', 'wppa');
+							$help = esc_js(__('The Fotomoto toolbar will re-appear when the slidshow stops.', 'wppa'));
+							$slug = 'wppa_fotomoto_hide_when_running';
+							$html = wppa_checkbox($slug);
+							$class = 'wppa_fotomoto';
+							wppa_setting($slug, '6.2', $name, $desc, $html, $help, $class);
+
+							$name = __('Fotomoto minwidth', 'wppa');
+							$desc = __('Minimum width to display Fotomoto toolbar.', 'wppa');
+							$help = esc_js(__('The display of the Fotomoto Toolbar will be suppressed on smaller slideshows.', 'wppa'));
+							$slug = 'wppa_fotomoto_min_width';
+							$html = wppa_input($slug, '40px', '', __('pixels', 'wppa'));
+							$class = 'wppa_fotomoto';
+							wppa_setting($slug, '6.3', $name, $desc, $html, $help, $class);
 							}
 							?>		
 			

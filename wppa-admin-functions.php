@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * gp admin functions
-* version 5.2.8
+* version 5.2.11
 *
 * 
 */
@@ -712,6 +712,7 @@ global $wppa_opt;
 			}
 			$ratcount = count($ratings);
 			$iret = $wpdb->query($wpdb->prepare( 'UPDATE '.WPPA_PHOTOS.' SET rating_count = %s WHERE id = %s', $ratcount, $photo['id'] ) );
+			wppa_test_for_medal( $photo['id'] );
 		}
 		return true;
 	}

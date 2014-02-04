@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the featured photos
-* Version 5.2.3
+* Version 5.2.11
 */
 
 class FeaTenWidget extends WP_Widget {
@@ -30,8 +30,14 @@ class FeaTenWidget extends WP_Widget {
 		$max  = $wppa_opt['wppa_featen_count'];
 		
 		$album = $instance['album'];
+
+		$generic = ( $album == '-2' );
+		if ( $generic ) {
+			$album = '0';
+			$max += '1000';
+		}
 		
-		if ($album) {
+		if ( $album ) {
 			$thumbs = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM `".WPPA_PHOTOS."` WHERE `status`= 'featured' AND `album` = %s ORDER BY RAND(".$wppa['randseed'].") DESC LIMIT " . $max, $album ), ARRAY_A );
 		}
 		else {
@@ -39,11 +45,19 @@ class FeaTenWidget extends WP_Widget {
 		}
 		$widget_content = "\n".'<!-- WPPA+ FeaTen Widget start -->';
 		$maxw = $wppa_opt['wppa_featen_size'];
-		$maxh = $maxw + 18;
+		$maxh = $maxw;
+		$lineheight = $wppa_opt['wppa_fontsize_widget_thumb'] * 1.5;
+		$maxh += $lineheight;
+		if ( false ) 	$maxh += $lineheight;
+
+		$count = '0';
 		if ($thumbs) foreach ($thumbs as $image) {
 			
 			global $thumb;
 			$thumb = $image;
+
+			if ( $generic && wppa_is_separate( $thumb['album'] ) ) continue;
+
 			// Make the HTML for current picture
 			$widget_content .= "\n".'<div class="wppa-widget" style="width:'.$maxw.'px; height:'.$maxh.'px; margin:4px; display:inline; text-align:center; float:left;">'; 
 			if ($image) {
@@ -85,13 +99,15 @@ class FeaTenWidget extends WP_Widget {
 //			$widget_content .= "\n\t".'<span style="font-size:'.$wppa_opt['wppa_fontsize_widget_thumb'].'px;">'.wppa_get_rating_by_id($image['id']);
 //				if ( $wppa_opt['wppa_show_rating_count'] ) $widget_content .= ' ('.wppa_get_rating_count_by_id($image['id']).')';
 //			$widget_content .= '</span>'.
-			$widget_content .= "\n".'</div>';
+				$widget_content .= "\n".'</div>';
 				
 				
 			}
 			else {	// No image
 				$widget_content .= __a('Photo not found.', 'wppa_theme');
 			}
+			$count++;
+			if ( $count == $wppa_opt['wppa_featen_count'] ) break;
 			
 		}	
 		else $widget_content .= 'There are no featured photos (yet).';

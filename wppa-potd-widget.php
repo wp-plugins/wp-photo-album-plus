@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the widget
-* Version 5.2.4
+* Version 5.2.11
 */
 
 class PhotoOfTheDay extends WP_Widget {
@@ -73,6 +73,8 @@ class PhotoOfTheDay extends WP_Widget {
 				$widget_content .= "\n\t\t".'<img src="'.$imgurl.'" style="width: '.$wppa_opt['wppa_widget_width'].'px;'.$cursor.'" alt="'.$name.'" title="'.$title.'"/>';
 
 			if ($link) $widget_content .= "\n\t".'</a>';
+			
+			$widget_content .= wppa_get_medal_html( $image['id'], $h );
 		} 
 		else {	// No image
 			$widget_content .= __a('Photo not found.', 'wppa_theme');
@@ -93,6 +95,11 @@ class PhotoOfTheDay extends WP_Widget {
 					$widget_content .= "\n".'<div class="wppa-widget-text wppa-potd-text" style="'.$align.'">' . wppa_qtrans(wppa_html(stripslashes($image['description']))) . '</div>'; 
 				}
 				break;
+			case 'owner':
+				$owner = $image['owner'];
+				$user = get_user_by('login', $owner);
+				$owner = $user->display_name;
+				$widget_content .= "\n".'<div class="wppa-widget-text wppa-potd-text" style="'.$align.'">By: ' . $owner . '</div>';
 		}
 
 		$widget_content .= "\n".'<!-- WPPA+ Photo of the day Widget end -->';

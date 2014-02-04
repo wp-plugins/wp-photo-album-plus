@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Various wppa boxes
-* Version 5.2.10
+* Version 5.2.11
 *
 */
 
@@ -377,9 +377,10 @@ global $wppa_locale;
 	
 	// Facebook comments
 	if ( ( wppa_switch('wppa_facebook_comments') || wppa_switch('wppa_facebook_like') ) && ! $wppa['in_widget'] && $key != 'thumb' && $key != 'lightbox') {
+		$fbc = '';
 		$width = $wppa['auto_colwidth'] ? '470' : wppa_get_container_width(true);
 		if ( wppa_switch('wppa_facebook_like') ) {
-			$fbc = '<div class="fb-like" data-href="'.$share_url.'" data-width="'.$width.'" data-show-faces="false" data-send="true"></div>';
+			$fbc .= '<div class="fb-like" data-href="'.$share_url.'" data-width="'.$width.'" data-show-faces="false" data-send="true"></div>';
 		}
 		if ( wppa_switch('wppa_facebook_comments') ) {
 			$fbc .= '<div style="color:blue;">'.__a('Comment on Facebook:').'</div>';

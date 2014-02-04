@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * edit and delete photos
-* version 5.2.10
+* version 5.2.11
 *
 */
 
@@ -497,6 +497,9 @@ global $wppa;
 										<option value="pending" <?php if ($photo['status']=='pending') echo 'selected="selected"'?> ><?php _e('Pending', 'wppa') ?></option>
 										<option value="publish" <?php if ($photo['status']=='publish') echo 'selected="selected"'?> ><?php _e('Publish', 'wppa') ?></option>
 										<option value="featured" <?php if ($photo['status']=='featured') echo 'selected="selected"'?> ><?php _e('Featured', 'wppa') ?></option>
+										<option value="gold" <?php if ( $photo['status'] == 'gold' ) echo 'selected="selected"' ?> ><?php _e('Gold', 'wppa') ?></option>
+										<option value="silver" <?php if ( $photo['status'] == 'silver' ) echo 'selected="selected"' ?> ><?php _e('Silver', 'wppa') ?></option>
+										<option value="bronze" <?php if ( $photo['status'] == 'bronze' ) echo 'selected="selected"' ?> ><?php _e('Bronze', 'wppa') ?></option>
 									</select>
 								<?php }
 									else { ?>
@@ -505,6 +508,9 @@ global $wppa;
 										if ( $photo['status'] == 'pending' ) _e('Pending', 'wppa');
 										elseif ( $photo['status'] == 'publish' ) _e('Publish', 'wppa');
 										elseif ( $photo['status'] == 'featured' ) _e('Featured', 'wppa');
+										elseif ( $photo['status'] == 'gold' ) _e('Gold', 'wppa');
+										elseif ( $photo['status'] == 'silver' ) _e('Silver', 'wppa');
+										elseif ( $photo['status'] == 'bronze' ) _e('Bronze', 'wppa');
 									} ?>
 									<span id="psdesc-<?php echo $photo['id'] ?>" class="description" style="display:none;" ><?php _e('Note: Featured photos should have a descriptive name; a name a search engine will look for!', 'wppa'); ?></span>
 

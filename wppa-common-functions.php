@@ -2,7 +2,7 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 5.2.10
+* version 5.2.11
 *
 */
 
@@ -141,6 +141,8 @@ global $wppa_initruntimetime;
 						'wppa_i_share'					=> '',
 						'wppa_i_iptc'					=> '',
 						'wppa_i_exif'					=> '',
+						'wppa_i_gpx'					=> '',
+						'wppa_i_fotomoto'				=> '',
 						'wppa_i_done'					=> '',
 						
 						// Table I: Sizes
@@ -244,6 +246,7 @@ global $wppa_initruntimetime;
 						'wppa_comment_gravatar'				=> '',	// 11
 						'wppa_comment_gravatar_url'			=> '',	// 12
 						'wppa_show_bbb'						=> '',	// 13
+						'wppa_show_ubb'						=> '',	// 13
 						'wppa_custom_on' 					=> '',	// 14
 						'wppa_custom_content' 				=> '',	// 15
 						'wppa_show_slideshownumbar'  		=> '',	// 16
@@ -298,6 +301,7 @@ global $wppa_initruntimetime;
 						'wppa_skip_empty_albums'			=> '',
 						// E Widgets
 						'wppa_show_bbb_widget'				=> '',	// 1
+						'wppa_show_ubb_widget'				=> '',	// 1
 						'wppa_show_albwidget_tooltip'		=> '',
 						// F Overlay
 						'wppa_ovl_close_txt'				=> '',
@@ -392,6 +396,7 @@ global $wppa_initruntimetime;
 						'wppa_use_thumb_opacity' 		=> '',	// 6
 						'wppa_thumb_opacity' 			=> '',	// 7
 						'wppa_use_thumb_popup' 			=> '',	// 8
+						'wppa_align_thumbtext' 			=> '',
 						// D Albums and covers
 						'wppa_list_albums_by' 			=> '',	// 1
 						'wppa_list_albums_desc' 		=> '',	// 2
@@ -411,6 +416,12 @@ global $wppa_initruntimetime;
 						'wppa_vote_button_text'			=> '',
 						'wppa_voted_button_text'		=> '',
 						'wppa_vote_thumb'				=> '',
+						'wppa_medal_bronze_when'		=> '',
+						'wppa_medal_silver_when'		=> '',
+						'wppa_medal_gold_when'			=> '',
+						'wppa_medal_color' 				=> '',
+						'wppa_medal_position' 			=> '',
+						
 						// F Comments
 						'wppa_comment_login' 			=> '',	// 1
 						'wppa_comments_desc'			=> '',	// 2
@@ -554,6 +565,7 @@ global $wppa_initruntimetime;
 
 						'wppa_super_view_linkpage'			=> '',
 						'wppa_upldr_widget_linkpage' 		=> '',
+						'wppa_bestof_widget_linkpage' 		=> '',
 						
 						// Table VII: Security
 						// B
@@ -582,6 +594,7 @@ global $wppa_initruntimetime;
 						'wppa_subscriber_upload_limit_time'		=> '',
 						'wppa_loggedout_upload_limit_count'		=> '',
 						'wppa_loggedout_upload_limit_time' 		=> '',
+						'wppa_upload_fronend_maxsize' 			=> '',
 
 
 						
@@ -750,7 +763,10 @@ global $wppa_initruntimetime;
 						'wppa_cdn_service_update'	=> '',
 						'wppa_delete_all_from_cloudinary' 	=> '',
 						
-						'wppa_fotomoto_on' 			=> ''
+						'wppa_fotomoto_on' 			=> '',
+						'wppa_fotomoto_fontsize'	=> '',
+						'wppa_fotomoto_hide_when_running' 	=> '',
+						'wppa_fotomoto_min_width' 	=> ''
 
 
 		);
@@ -881,18 +897,13 @@ global $wppa_locale;
 	}
 	
 	// Load the language file(s)
-	if ($wppa_locale) {
+	if ( $wppa_locale ) {
 		$domain = is_admin() ? 'wppa' : 'wppa_theme';
-		$mofile = WPPA_PATH.'/langs/'.$domain.'-'.$wppa_locale.'.mo';
-		$bret = load_textdomain($domain, $mofile);
-//		wppa_dbg_msg('Domain: '.$domain.', mofile: '.$mofile.', loaded='.$bret);
-		
+		load_plugin_textdomain( $domain, false, WPPA_NAME.'/langs/' );
+
 		// Load theme language file also, for Ajax
 		if ( is_admin() ) {
-			$domain2 = 'wppa_theme';
-			$mofile2 = WPPA_PATH.'/langs/'.$domain2.'-'.$wppa_locale.'.mo';
-			$bret2 = load_textdomain($domain2, $mofile2);
-//			wppa_dbg_msg('Domain: '.$domain2.', mofile: '.$mofile2.', loaded='.$bret2);
+			load_plugin_textdomain( 'wppa_theme', false, WPPA_NAME.'/langs/' );
 		}
 	}
 }
@@ -1476,6 +1487,7 @@ global $wppa_opt;
 			else $src = false;
 			break;
 		case 2:	// jpeg
+			if ( ! function_exists('imagecreatefromjpeg') ) wppa_log('Error', 'Function imagecreatefromjpeg does not exist.');
 			$src = @ imagecreatefromjpeg($file);
 			break;
 		case 3:	// png
@@ -1601,6 +1613,7 @@ global $wppa;
 	else $str = '';
 	
 	$str = strip_tags($str);						// Sanitize
+	$str = stripslashes($str);
 	
 	if ( is_array($wppa) ) {
 		$wppa['searchstring'] = $str;
@@ -1652,7 +1665,9 @@ global $wppa_opt;
 	$waterfile = WPPA_UPLOAD_PATH . '/watermarks/' . $temp['file'];
 	$waterpos = $temp['pos'];										// default
 	
-	if ( basename($waterfile) == '--- none ---' ) return false;	// No watermark this time
+	if ( basename($waterfile) == '--- none ---' ) {
+		return false;	// No watermark this time
+	}
 	// Open the watermark file
 	$watersize = @getimagesize($waterfile);
 	if ( !is_array($watersize) ) return false;	// Not a valid picture file

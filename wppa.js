@@ -2,7 +2,7 @@
 //
 // conatins slideshow, theme, ajax and lightbox code
 //
-// Version 5.2.10
+// Version 5.2.11
 
 // Part 1: Slideshow
 //
@@ -158,6 +158,8 @@ var _wppaShareHtml = new Array();
 var _wppaFilmNoMove = new Array();
 var wppaShareHideWhenRunning = false;
 var _wppaHiresUrl = new Array();
+var wppaFotomotoHideWhenRunning = false;
+var wppaFotomotoMinWidth = 400;
 
 // Check for occurrences that are responsive
 jQuery(document).ready(function(){
@@ -295,6 +297,13 @@ function wppaBbb(mocc, where, act) {
 	// Big Browsing Buttons only work when stopped
 	if ( ! _wppaSSRuns[mocc] ) {
 		_wppaBbb(mocc, where, act);
+	}
+}
+
+function wppaUbb(mocc, where, act) {
+	// Big Browsing Buttons only work when stopped
+	if ( ! _wppaSSRuns[mocc] ) {
+		_wppaUbb(mocc, where, act);
 	}
 }
 
@@ -476,14 +485,14 @@ function _wppaNextSlide(mocc, mode) {
 		
 		// Display counter and arrow texts
 		if ( wppaIsMini[mocc] || wppaGetContainerWidth(mocc) < wppaMiniTreshold ) {
-			jQuery('#prev-arrow-'+mocc).html(wppaPrevP);
-			jQuery('#next-arrow-'+mocc).html(wppaNextP);
+			jQuery('#prev-arrow-'+mocc).html('&laquo;&nbsp;'+wppaPrevP);
+			jQuery('#next-arrow-'+mocc).html(wppaNextP+'&nbsp;&raquo;');
 			jQuery('#wppa-avg-rat-'+mocc).html(wppaAvgRat);
 			jQuery('#wppa-my-rat-'+mocc).html(wppaMyRat);
 		}
 		else {
-			jQuery('#prev-arrow-'+mocc).html(wppaPreviousPhoto);
-			jQuery('#next-arrow-'+mocc).html(wppaNextPhoto);
+			jQuery('#prev-arrow-'+mocc).html('&laquo;&nbsp;'+wppaPreviousPhoto);
+			jQuery('#next-arrow-'+mocc).html(wppaNextPhoto+'&nbsp;&raquo;');
 			jQuery('#wppa-avg-rat-'+mocc).html(wppaAvgRating);
 			jQuery('#wppa-my-rat-'+mocc).html(wppaMyRating);
 		}
@@ -782,8 +791,8 @@ function _wppaNextSlide_5(mocc) {
 			// Update possible QR Widget
 			if ( typeof(wppaQRUpdate) != 'undefined') wppaQRUpdate(_wppaShareUrl[mocc][_wppaCurIdx[mocc]]);
 			if ( ! _wppaSSRuns[mocc] ) {	// This is not running
-				// Push state
-				wppaPushStateSlide(mocc, _wppaCurIdx[mocc], visurl);
+				// Push state if not slphoto
+				if ( _wppaSlides[mocc].length > 1 ) wppaPushStateSlide(mocc, _wppaCurIdx[mocc], visurl);
 			}
 		}
 		// If running: Wait for next slide
@@ -800,11 +809,18 @@ function _wppaNextSlide_5(mocc) {
  
 function wppaMakeNameHtml(mocc) {
 var result;
-	switch (wppaArtMonkyLink) {
+	if ( wppaIsMini[mocc] ) {
+		result = _wppaFullNames[mocc][_wppaCurIdx[mocc]];
+	}
+	else switch (wppaArtMonkyLink) {
 	case 'file':
 	case 'zip':
 		if ( wppaArtMonkeyButton ) {
-			result = '<input type="button" title="Download" style="cursor:pointer; margin-bottom:0px;" class="wppa-download-button" onclick="wppaAjaxMakeOrigName('+mocc+', '+_wppaId[mocc][_wppaCurIdx[mocc]]+');" value="'+wppaDownLoad+': '+_wppaFullNames[mocc][_wppaCurIdx[mocc]]+'" />';
+			if ( _wppaFullNames[mocc][_wppaCurIdx[mocc]] ) {
+				var label = _wppaFullNames[mocc][_wppaCurIdx[mocc]].split('<img');
+				result = '<input type="button" title="Download" style="cursor:pointer; margin-bottom:0px;" class="wppa-download-button" onclick="wppaAjaxMakeOrigName('+mocc+', '+_wppaId[mocc][_wppaCurIdx[mocc]]+');" value="'+wppaDownLoad+': '+label[0]+'" />';
+				if ( label[1] ) result += '<img'+label[1];
+			}
 		}
 		else {
 			result = '<a title="Download" style="cursor:pointer;" onclick="wppaAjaxMakeOrigName('+mocc+', '+_wppaId[mocc][_wppaCurIdx[mocc]]+');" >'+wppaDownLoad+': '+_wppaFullNames[mocc][_wppaCurIdx[mocc]]+'</a>';
@@ -1671,7 +1687,7 @@ if (value == 0) return;
 		// Setup process the result
 		xmlhttp.onreadystatechange=function() {
 			if (xmlhttp.readyState==4 && xmlhttp.status==200) {
-				// alert(xmlhttp.responseText);
+// alert(xmlhttp.responseText);
 				var ArrValues = xmlhttp.responseText.split("||");
 				wppaConsoleLog(xmlhttp.responseText);				
 				if (ArrValues[0] == '0') {	// Error
@@ -1762,6 +1778,35 @@ function _wppaBbb(mocc,where,act) {
 	}
 }
 
+function _wppaUbb(mocc,where,act) {
+	
+	if (_wppaSSRuns[mocc]) return;
+	
+	var elm = '#ubb-'+mocc+'-'+where;
+
+	switch (act) {
+		case 'show':
+//			jQuery(elm).stop().fadeTo(100, 0.2);
+			if (where == 'l') jQuery(elm).attr('title', wppaPreviousPhoto);
+			if (where == 'r') jQuery(elm).attr('title', wppaNextPhoto);
+			jQuery('.ubb-'+mocc).css('cursor', 'pointer');
+			jQuery('.ubb-'+mocc).fadeTo(200, 0.8);
+			break;
+		case 'hide':
+//			jQuery(elm).stop().fadeTo(400, 0);
+			jQuery('.ubb-'+mocc).removeAttr('title');
+			jQuery('.ubb-'+mocc).css('cursor', 'default');
+			jQuery('.ubb-'+mocc).fadeTo(200, 0.2);
+			break;
+		case 'click':
+			if (where == 'l') wppaPrev(mocc);
+			if (where == 'r') wppaNext(mocc);
+			break;
+		default:
+			alert('Unimplemented instruction: '+act+' on: '+elm);
+	}
+}
+
 function wppaOpenComments(mocc) {
 
 	if ( _wppaSSRuns[mocc] ) _wppaStop(mocc);
@@ -1822,6 +1867,8 @@ function _wppaShowMetaData(mocc, key) {
 	// What to do when the slideshow is running
 	else {	// Slideshow is running
 		if ( key == 'show' ) {
+			// Fotomoto
+			if ( ! wppaFotomotoHideWhenRunning ) wppaFotomotoToolbar(mocc, _wppaHiresUrl[mocc][_wppaCurIdx[mocc]] );
 		}
 		else {
 			// SM box
@@ -1829,7 +1876,8 @@ function _wppaShowMetaData(mocc, key) {
 				jQuery('#wppa-share-'+mocc).css('display', 'none');
 			}
 			// Fotomoto
-			wppaFotomotoHide(mocc);
+		//	if ( wppaFotomotoHideWhenRunning ) 
+		//	wppaFotomotoHide(mocc);
 		}
 	}
 	
@@ -1869,7 +1917,7 @@ function fotomoto_loaded() {
 var wppaFotomotoToolbarIds = new Array();
 
 function wppaFotomotoToolbar( mocc, url ) {
-	if ( wppaColWidth[mocc] >= 500 ) {	// Space enough to show the toolbar
+	if ( wppaColWidth[mocc] >= wppaFotomotoMinWidth ) {	// Space enough to show the toolbar
 		jQuery('#wppa-fotomoto-container-'+mocc).css('display','inline');
 		jQuery('#wppa-fotomoto-checkout-'+mocc).css('display','inline');
 	}

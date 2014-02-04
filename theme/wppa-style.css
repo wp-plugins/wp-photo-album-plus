@@ -120,6 +120,7 @@
 /* Text under thumbnail images */
 .wppa-thumb-text {
 	font-size: 10px;
+	line-height: 15px;
 	text-align: center;
 }
 
@@ -367,16 +368,18 @@ transition: width 0s ease-in-out 0s, left 0s ease-in-out 0s, right 0s ease-in-ou
 -webkit-transition: width 0s ease-in-out 0s, left 0s ease-in-out 0s, right 0s ease-in-out 0s;
 }
 
+.wppa-fotomoto-checkout, .wppa-fotomoto-container {
+margin-bottom: 3px;
+}
 .FotomotoBar {
 padding: 0 !important;
 margin: 0 !important;
+/* font-size:12px !important; */
 }
 .wppa-fotomoto-checkout a {
 text-decoration: none;
 font-weight: bold;
-vertical-align: baseline;
 float:right;
-margin-top: -3px;
 }
 .wppa-fotomoto-checkout a:hover {
 	text-decoration: underline;

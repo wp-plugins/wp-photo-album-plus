@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the non admin stuff
-* Version 5.2.10
+* Version 5.2.11
 *
 */
 
@@ -51,33 +51,36 @@ global $wppa_opt;
 global $thumb;
 
 	// Share info for sm that uses og
-	$id = wppa_get_get('photo', '0');
-	if ( ! is_numeric($id) ) $id = '0';
-	if ( get_option('wppa_og_tags_on', 'yes') == 'yes' ) {
-		wppa_cache_thumb($id);
-		if ( $thumb ) {
-			$title  = wppa_get_photo_name($thumb['id']);
-			$imgurl = wppa_get_photo_url($id);
-			$desc 	= wppa_get_og_desc($thumb['id']); 
-			$url    = wppa_convert_to_pretty(str_replace('&amp;', '&', wppa_get_image_page_url_by_id($thumb['id'], $wppa_opt['wppa_share_single_image'])));
-			$site   = get_bloginfo('name');
+	$id = wppa_get_get( 'photo' );
+	if ( $id ) {
+		if ( wppa_switch( 'wppa_og_tags_on' ) ) {
+			wppa_cache_thumb( $id );
+			if ( $thumb ) {
+				$title  = wppa_get_photo_name($thumb['id']);
+				$imgurl = wppa_get_photo_url($id);
+				$desc 	= wppa_get_og_desc($thumb['id']); 
+				$url    = wppa_convert_to_pretty(str_replace('&amp;', '&', wppa_get_image_page_url_by_id($thumb['id'], $wppa_opt['wppa_share_single_image'])));
+				$site   = get_bloginfo('name');
 
-		echo "\n<!-- WPPA+ Share data -->".'
-	<meta property="og:site_name" content="'.esc_attr($site).'" />
-	<meta property="og:type" content="article" />
-	<meta property="og:url" content="'.esc_attr($url).'" /><!-- dynamicly updated -->
-	<meta property="og:title" content="'.esc_attr($title).'" /><!-- dynamicly updated -->
-	<meta property="og:image" content="'.esc_attr($imgurl).'" /><!-- dynamicly updated -->
-	<meta property="og:description" content="'.esc_attr($desc).'" /><!-- dynamicly updated -->';				
-		echo "\n<!-- WPPA+ End Share data -->\n";
+				echo '
+<!-- WPPA+ Share data -->
+<meta property="og:site_name" content="'.esc_attr($site).'" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="'.esc_attr($url).'" /><!-- dynamicly updated -->
+<meta property="og:title" content="'.esc_attr($title).'" /><!-- dynamicly updated -->
+<meta property="og:image" content="'.esc_attr($imgurl).'" /><!-- dynamicly updated -->
+<meta property="og:description" content="'.esc_attr($desc).'" /><!-- dynamicly updated -->
+<!-- WPPA+ End Share data -->
+';
+			}
 		}
 	}
 
 	// To make sure we are on a page that contains at least %%wppa%% we check for $_GET['wppa-album']. 
 	// This also narrows the selection of featured photos to those that exist in the current album.
-	if ( wppa_get_get('album') ) {
+	if ( wppa_get_get( 'album' ) ) {
 		if ( $wppa_opt['wppa_meta_page'] ) {
-			$album = wppa_get_get('album');
+			$album = wppa_get_get( 'album' );
 			$photos = $wpdb->get_results($wpdb->prepare( "SELECT `id`, `name` FROM `".WPPA_PHOTOS."` WHERE `album` = %s AND `status` = 'featured'", $album ), ARRAY_A);
 			if ( $photos ) {
 				echo("\n<!-- WPPA+ BEGIN Featured photos on this page -->");
@@ -133,7 +136,7 @@ global $wppa_api_version;
 	else {
 		wp_enqueue_script('wppa', WPPA_URL.'/wppa.js', array('jquery'), $wppa_api_version);
 	}
-	if ( get_option('wppa_gpx_implementation', 'nil') == 'wppa-plus-embedded' ) {
+	if ( get_option('wppa_gpx_implementation', 'nil') == 'wppa-plus-embedded' && strpos( get_option('wppa_custom_content' ), 'w#location' ) !== false) {
 		if ( get_option('wppa_map_apikey', false) ) {
 			wp_enqueue_script('wppa-geo', 'https://maps.googleapis.com/maps/api/js?key='.get_option('wppa_map_apikey').'&sensor=false', '', $wppa_api_version);
 		}
@@ -141,9 +144,7 @@ global $wppa_api_version;
 			wp_enqueue_script('wppa-geo', 'https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false', '', $wppa_api_version);
 		}
 	}
-//	if ( true ) {
-//		wp_enqueue_script('wppa-fotomoto', 'http://widget.fotomoto.com/stores/script/be53373cd51248dad2c101b4dbbc8cec228491c2.js', '', $wppa_api_version);
-//	}
+
 }
 	
 /* LOAD WPPA+ THEME */
@@ -316,8 +317,8 @@ global $wppa_api_version;
 	wppaFaster = "'.__a('Faster').'";
 	wppaPhoto = "'.__a('Photo').'";
 	wppaOf = "'.__a('of').'";
-	wppaPreviousPhoto = "&laquo;&nbsp;'.__a('Previous photo').'";
-	wppaNextPhoto = "'.__a('Next photo').'&nbsp;&raquo;";
+	wppaPreviousPhoto = "'.__a('Previous photo').'";
+	wppaNextPhoto = "'.__a('Next photo').'";
 	wppaPrevP = "'.__a('Prev.').'";
 	wppaNextP = "'.__a('Next').'";
 	wppaAvgRating = "'.__a('Average&nbsp;rating').'";
@@ -389,6 +390,8 @@ global $wppa_api_version;
 	wppaShareHideWhenRunning = '.( wppa_switch('wppa_share_hide_when_running') ? 'true' : 'false' ).';
 	wppaFotomoto = '.( wppa_switch('wppa_fotomoto_on') ? 'true' : 'false' ).';
 	wppaArtMonkeyButton = '.( $wppa_opt['wppa_art_monkey_display'] == 'button' ? 'true' : 'false' ).';
+	wppaFotomotoHideHideWhenRunning = '.( wppa_switch('wppa_fotomoto_hide_when_running') ? 'true' : 'false' ).';
+	wppaFotomotoMinWidth = '.$wppa_opt['wppa_fotomoto_min_width'].';
 	/* ]]> */
 </script>
 ';

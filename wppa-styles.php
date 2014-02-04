@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Various style computation routines
-* Version 5.1.16
+* Version 5.2.11
 *
 */
 
@@ -44,7 +44,7 @@ function wppa_get_imgstyle_a($file, $xmax_size, $xvalign = '', $type = '') {
 global $wppa;
 global $wppa_opt;
 
-	$result = Array( 'style' => '', 'width' => '', 'height' => '', 'cursor' => '' );	// Init 
+	$result = Array( 'style' => '', 'width' => '', 'height' => '', 'cursor' => '', 'margin-top' => '', 'margin-bottom' => '' );	// Init 
 	
 	if ($file == '') return $result;					// no image: no dimensions
 	if ( !is_file($file) ) {
@@ -149,27 +149,35 @@ global $wppa_opt;
 				if ($delta > '0') $result['style'] .= ' margin-left:' . $delta . 'px; margin-right:' . $delta . 'px;';
 			} 
 						
-			switch ($valign) {
+			switch ( $valign ) {
 				case 'top':
-					$result['style'] .= ' margin-top: 0px;';
+					$delta = $max_size - $height;
+					if ( $delta < '0' ) $delta = '0';
+					$result['style'] .= ' margin-bottom: ' . $delta . 'px;';
+					$result['margin-bottom'] = $delta;
 					break;
 				case 'center':
-					$delta = round(($max_size - $height) / 2);
-					if ($delta < '0') $delta = '0';
-					$result['style'] .= ' margin-top: ' . $delta . 'px;';
+					$delta = round( ( $max_size - $height ) / 2 );
+					if ( $delta < '0' ) $delta = '0';
+					$result['style'] .= ' margin-top: ' . $delta . 'px; margin-bottom: ' . $delta . 'px;';
+					$result['margin-top'] = $delta;
+					$result['margin-bottom'] = $delta;
 					break;
 				case 'bottom':
 					$delta = $max_size - $height;
-					if ($delta < '0') $delta = '0';
+					if ( $delta < '0' ) $delta = '0';
 					$result['style'] .= ' margin-top: ' . $delta . 'px;';
+					$result['margin-top'] = $delta;
 					break;
 				default:
-					if (is_numeric($valign)) {
+					if ( is_numeric( $valign ) ) {
 						$delta = $valign;
 						$result['style'] .= ' margin-top: '.$delta.'px; margin-bottom: '.$delta.'px;';
+						$result['margin-top'] = $delta;
+						$result['margin-bottom'] = $delta;
 					}
 			}
-			if ($wppa_opt['wppa_use_thumb_opacity'] && !is_feed()) {
+			if ( $wppa_opt['wppa_use_thumb_opacity'] && !is_feed() ) {
 				$opac = $wppa_opt['wppa_thumb_opacity'];
 				$result['style'] .= ' opacity:' . $opac/100 . '; filter:alpha(opacity=' . $opac . ');';
 			}

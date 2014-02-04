@@ -2,7 +2,7 @@
 /* wppa-ajax.php
 *
 * Functions used in ajax requests
-* version 5.2.10
+* version 5.2.11
 *
 */
 add_action('wp_ajax_wppa', 'wppa_ajax_callback');
@@ -438,6 +438,9 @@ global $wppa;
 				exit;																// Fail on save
 			}
 
+			// Test for possible medal
+			wppa_test_for_medal( $photo );
+			
 			// Success!
 			wppa_clear_cache();
 			echo $occur.'||'.$photo.'||'.$index.'||'.$myavgrat.'||'.$allavgratcombi.'||'.$discount;
@@ -1365,6 +1368,34 @@ global $wppa;
 						wppa_update_option('wppa_save_exif', 'no');
 					}
 					break;
+				case 'wppa_i_gpx':
+					if ( $value == 'yes' ) {
+						$custom_content = get_option( 'wppa_custom_content' );
+						if ( strpos( $custom_content, 'w#location' ) === false ) {
+							$custom_content = $custom_content.' w#location';
+							wppa_update_option( 'wppa_custom_content', $custom_content );
+						}
+						if ( $wppa_opt['wppa_custom_on'] == 'no' ) {
+							wppa_update_option( 'wppa_custom_on', 'yes' );
+						}
+						if ( $wppa_opt['wppa_gpx_implementation'] == 'none' ) {
+							wppa_update_option( 'wppa_gpx_implementation', 'wppa-plus-embedded' );
+						}
+					}
+					break;
+				case 'wppa_i_fotomoto':
+					if ( $value == 'yes' ) {
+						$custom_content = get_option( 'wppa_custom_content' );
+						if ( strpos( $custom_content, 'w#fotomoto' ) === false ) {
+							$custom_content = 'w#fotomoto '.$custom_content;
+							wppa_update_option( 'wppa_custom_content', $custom_content );
+						}
+						if ( $wppa_opt['wppa_custom_on'] == 'no' ) {
+							wppa_update_option( 'wppa_custom_on', 'yes' );
+						}
+						wppa_update_option( 'wppa_fotomoto_on', 'yes' );
+					}
+					break;
 				case 'wppa_i_done':
 					$value = 'done';
 					break;
@@ -1397,11 +1428,40 @@ global $wppa;
 					$value = '0';
 					break;
 				
+				case 'wppa_fotomoto_on':
+					if ( $value == 'yes' ) {
+						$custom_content = get_option( 'wppa_custom_content' );
+						if ( strpos( $custom_content, 'w#fotomoto' ) === false ) {
+							$custom_content = 'w#fotomoto '.$custom_content;
+							wppa_update_option( 'wppa_custom_content', $custom_content );
+							$alert = __('The content of the Custom box has been changed to display the Fotomoto toolbar.', 'wppa').' ';
+						}
+						if ( $wppa_opt['wppa_custom_on'] == 'no' ) {
+							wppa_update_option( 'wppa_custom_on', 'yes' );
+							$alert .= __('The display of the custom box has been enabled', 'wppa');
+						}
+					}
+					break;
+					
+				case 'wppa_gpx_implementation':
+					if ( $value != 'none' ) {
+						$custom_content = get_option( 'wppa_custom_content' );
+						if ( strpos( $custom_content, 'w#location' ) === false ) {
+							$custom_content = $custom_content.' w#location';
+							wppa_update_option( 'wppa_custom_content', $custom_content );
+							$alert = __('The content of the Custom box has been changed to display maps.', 'wppa').' ';
+						}
+						if ( $wppa_opt['wppa_custom_on'] == 'no' ) {
+							wppa_update_option( 'wppa_custom_on', 'yes' );
+							$alert .= __('The display of the custom box has been enabled', 'wppa');
+						}
+					}
+					break;
 
 				default:
 			
 					// Do the update only
-					wppa_update_option($option, $value);
+				//	wppa_update_option($option, $value);
 					$wppa['error'] = '0';
 					$alert = '';
 			}

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display thumbnail photos
-* Version 5.2.3
+* Version 5.2.11
 */
 
 class ThumbnailWidget extends WP_Widget {
@@ -46,8 +46,19 @@ class ThumbnailWidget extends WP_Widget {
 		$name 			= $instance['name'];
 		$display 		= $instance['display'];
 		$linktitle 		= $instance['linktitle'];
+
+		$generic = ( $album == '-2' );
+		if ( $generic ) {
+			$album = '0';
+			$max += '1000';
+		}
+		$separate = ( $album == '-1' );
+		if ( $separate ) {
+			$album = '0';
+			$max += '1000';
+		}
 		
-		if ($album) {
+		if ( $album ) {
 			$thumbs = $wpdb->get_results($wpdb->prepare( "SELECT * FROM `".WPPA_PHOTOS."` WHERE `status` <> 'pending' AND `album` = %s ".$sortby." LIMIT %d", $album, $max ), 'ARRAY_A' );
 		}
 		else {
@@ -58,12 +69,19 @@ class ThumbnailWidget extends WP_Widget {
 		$widget_content = "\n".'<!-- WPPA+ thumbnail Widget start -->';
 		$maxw = $wppa_opt['wppa_thumbnail_widget_size'];
 		$maxh = $maxw;
-
-		if ( $name == 'yes' ) $maxh += 18;
+		$lineheight = $wppa_opt['wppa_fontsize_widget_thumb'] * 1.5;
+		$maxh += $lineheight;
+		if ( $name == 'yes' ) $maxh += $lineheight;
 		
+		$count = '0';
 		if ( $thumbs ) foreach ( $thumbs as $image ) {
+			
 			global $thumb;
 			$thumb = $image;
+
+			if ( $generic && wppa_is_separate( $thumb['album'] ) ) continue;
+			if ( $separate && ! wppa_is_separate( $thumb['album'] ) ) continue;
+			
 			// Make the HTML for current picture
 			if ( $display == 'thumbs' ) {
 				$widget_content .= "\n".'<div class="wppa-widget" style="width:'.$maxw.'px; height:'.$maxh.'px; margin:4px; display:inline; text-align:center; float:left;">'; 
@@ -81,14 +99,19 @@ class ThumbnailWidget extends WP_Widget {
 				
 				wppa_do_the_widget_thumb('thumbnail', $image, $album, $display, $link, $title, $imgurl, $imgstyle_a, $imgevents);
 
+				$widget_content .= "\n\t".'<div style="font-size:'.$wppa_opt['wppa_fontsize_widget_thumb'].'px; line-height:'.$lineheight.'px;">';
 				if ( $name == 'yes' && $display == 'thumbs' ) {
-					$widget_content .= "\n\t".'<span style="font-size:'.$wppa_opt['wppa_fontsize_widget_thumb'].'px;">'.__(stripslashes($image['name'])).'</span>';
+					$widget_content .= "\n\t".'<div>'.__(stripslashes($image['name'])).'</div>';
 				}
+				$widget_content .= "\n\t".'</div>';
 			}
 			else {	// No image
 				$widget_content .= __a('Photo not found.', 'wppa_theme');
 			}
 			$widget_content .= "\n".'</div>';
+			$count++;
+			if ( $count == $instance['limit'] ) break;
+			
 		}	
 		else $widget_content .= 'There are no photos (yet).';
 
@@ -161,7 +184,7 @@ class ThumbnailWidget extends WP_Widget {
 		<p><label for="<?php echo $this->get_field_id('album'); ?>"><?php _e('Album:', 'wppa'); ?></label>
 			<select class="widefat" id="<?php echo $this->get_field_id('album'); ?>" name="<?php echo $this->get_field_name('album'); ?>" >
 
-				<?php echo wppa_album_select_a(array('selected' => $album, 'addall' => true, 'path' => wppa_switch('wppa_hier_albsel'))) //('', $album, true, '', '', true); ?>
+				<?php echo wppa_album_select_a(array('selected' => $album, 'addseparate' => true, 'addall' => true, 'path' => wppa_switch('wppa_hier_albsel'))) //('', $album, true, '', '', true); ?>
 
 			</select>
 		</p>

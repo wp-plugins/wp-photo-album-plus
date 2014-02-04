@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains low-level wpdb routines that add new records
-* Version 5.2.5
+* Version 5.2.11
 *
 */
 
@@ -156,6 +156,7 @@ global $wppa_opt;
 
 	$args = wp_parse_args( (array) $args, array (
 					'id' 				=> '0',
+					'timestamp' 		=> time(),
 					'photo' 			=> '0',
 					'value' 			=> '0',
 					'user' 				=> ''
@@ -164,12 +165,14 @@ global $wppa_opt;
 	if ( ! wppa_is_id_free( WPPA_RATING, $args['id'] ) ) $args['id'] = wppa_nextkey( WPPA_RATING );
 	
 	$query = $wpdb->prepare("INSERT INTO `" . WPPA_RATING . "` ( 	`id`,
+																	`timestamp`,
 																	`photo`,
 																	`value`,
 																	`user`
 																)
-														VALUES ( %s, %s, %s, %s )",
+														VALUES ( %s, %s, %s, %s, %s )",
 																$args['id'],
+																$args['timestamp'],
 																$args['photo'],
 																$args['value'],
 																$args['user']

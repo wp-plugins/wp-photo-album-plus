@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the tagcloud widget
-* Version 4.1.10
+* Version 5.2.11
 *
 */
 
@@ -32,12 +32,8 @@ class TagcloudPhotos extends WP_Widget {
 			
 		if ( !empty( $widget_title ) ) { echo $before_title . $widget_title . $after_title; }
 		
-		if ( empty($instance['tags']) ) {
-			echo '<div class="wppa-tagcloud" >'.__a('No tags defined yet').'</div>';
-		}
-		else {
-			echo '<div class="wppa-tagcloud" >'.wppa_get_tagcloud_html(implode(',', $instance['tags'])).'</div>';
-		}
+		echo '<div class="wppa-tagcloud" >'.wppa_get_tagcloud_html(implode(',', $instance['tags'])).'</div>';
+
 		echo '<div style="clear:both"></div>';
 		echo $after_widget;
     }

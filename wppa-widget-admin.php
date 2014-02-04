@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 * admin sidebar widget
-* version 5.2.4
+* version 5.2.11
 *
 */
 
@@ -173,6 +173,7 @@ function _wppa_sidebar_page_options() {
 								<option value="none" <?php if ($subtit == 'none') echo($sel); ?>><?php _e('--- none ---', 'wppa'); ?></option>
 								<option value="name" <?php if ($subtit == 'name') echo($sel); ?>><?php _e('Photo Name', 'wppa'); ?></option>
 								<option value="desc" <?php if ($subtit == 'desc') echo($sel); ?>><?php _e('Description', 'wppa'); ?></option>
+								<option value="owner" <?php if ( $subtit == 'owner' ) echo $sel ?>><?php _e('Owner', 'wppa'); ?></option>
 							</select>
 							<span class="description"><br/><?php _e('Select the content of the subtitle.', 'wppa'); ?></span>	
 						</td>
