@@ -1,0 +1,1409 @@
+# Translation of the WordPress plugin   by .
+# Copyright (C) 2010
+# This file is distributed under the same license as the  package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2010.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: wppa\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-01-09 16:44+0100\n"
+"PO-Revision-Date: 2014-01-09 16:45+0100\n"
+"Last-Translator: J.N. Breetvelt <OpaJaap@OpaJaap.nl>\n"
+"Language-Team: OpaJaap <OpaJaap@OpaJaap.nl>\n"
+"Language: tr_TR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-KeywordsList: __a\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Generator: Poedit 1.6.2\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPath-1: theme\n"
+
+#: wppa-adminbar.php:40
+msgid "Album Admin"
+msgstr "Albüm Yöneticisi"
+
+#: wppa-adminbar.php:47
+msgid "Upload Photos"
+msgstr "Fotoğraf Yükle"
+
+#: wppa-adminbar.php:53
+#, fuzzy
+msgid "Edit Photos"
+msgstr "Düzenle!"
+
+#: wppa-adminbar.php:61
+msgid "Import Photos"
+msgstr "Fotoğrafları İçe Aktar"
+
+#: wppa-adminbar.php:68
+#, fuzzy
+msgid "Moderate Photos"
+msgstr "fotoğraf var."
+
+#: wppa-adminbar.php:75
+msgid "Export Photos"
+msgstr "Fotoğrafları Dışa Aktar"
+
+#: wppa-adminbar.php:82
+msgid "Settings"
+msgstr "Ayarlar"
+
+#: wppa-adminbar.php:89
+msgid "Photo of the day"
+msgstr "Günün Fotoğrafı"
+
+#: wppa-adminbar.php:96
+msgid "Comments"
+msgstr "Yorumlar"
+
+#: wppa-adminbar.php:103
+msgid "Help & Info"
+msgstr "Yardım ve Bilgi"
+
+#: wppa-adminbar.php:110
+msgid "Docs & Demos"
+msgstr "Dokümanlar ve Demolar"
+
+#: wppa-adminbar.php:118 wppa-album-widget.php:41
+msgid "Photo Albums"
+msgstr "Fotoğraf Albümleri"
+
+#: wppa-ajax.php:50
+#, fuzzy
+msgid ""
+"All modifications are instantly updated on the server. The <b style=\"color:"
+"#070\" >Remark</b> field keeps you informed on the actions taken at the "
+"background."
+msgstr "<b>HATA: Geçersiz puanlama girişimi.</b>"
+
+#: wppa-ajax.php:53
+msgid "Exit & Refresh"
+msgstr ""
+
+#: wppa-album-covers.php:200 wppa-album-covers.php:395
+#: wppa-album-covers.php:565 wppa-non-admin.php:309
+msgid "Slideshow"
+msgstr "Slayt Gösterisi"
+
+#: wppa-album-covers.php:200 wppa-album-covers.php:395
+#: wppa-album-covers.php:565
+msgid "Browse photos"
+msgstr "Fotoğraflara gözat"
+
+#: wppa-album-covers.php:820
+msgid "Link to"
+msgstr "Bağlantı: "
+
+#: wppa-album-covers.php:844 wppa-album-covers.php:890
+#: wppa-album-covers.php:893
+msgid "View the album"
+msgstr "Görüntülenecek albüm:"
+
+#: wppa-album-covers.php:863
+msgid "View the cover photo"
+msgstr "Kapak fotoğrafını görüntüle"
+
+#: wppa-album-covers.php:864
+msgid "View the cover photos"
+msgstr "Kapak fotoğraflarını görüntüle"
+
+#: wppa-album-covers.php:895
+msgid "View"
+msgstr "Toplam"
+
+#: wppa-album-covers.php:898
+msgid "album"
+msgstr "albüm var."
+
+#: wppa-album-covers.php:901
+msgid "albums"
+msgstr "albüm var."
+
+#: wppa-album-covers.php:910 wppa-boxes-html.php:246 wppa-breadcrumb.php:208
+#: wppa-breadcrumb.php:213 wppa-functions.php:3999 wppa-utils.php:1296
+msgid "and"
+msgstr "ve"
+
+#: wppa-album-covers.php:915
+msgid "photo"
+msgstr "fotoğraf var."
+
+#: wppa-album-covers.php:918 wppa-album-covers.php:922
+msgid "photos"
+msgstr "fotoğraf var."
+
+#: wppa-album-widget.php:102
+#, fuzzy, php-format
+msgid "Upload at least %d photos to this album!"
+msgstr "Fotoğraf Yükle"
+
+#: wppa-boxes-html.php:61
+#, fuzzy
+msgid "Tagged photos"
+msgstr "fotoğraf var."
+
+#: wppa-boxes-html.php:74
+#, fuzzy
+msgid "Please select a tagcloud landing page in Table VI-C3b"
+msgstr "Lütfen isminizi girin"
+
+#: wppa-boxes-html.php:117
+#, fuzzy
+msgid "Multi Tagged photos"
+msgstr "fotoğraf var."
+
+#: wppa-boxes-html.php:130
+#, fuzzy
+msgid "Please select a multitag landing page in Table VI-C4b"
+msgstr "Lütfen isminizi girin"
+
+#: wppa-boxes-html.php:163
+#, fuzzy
+msgid "Please check the tag(s) that the photos must have"
+msgstr "Yorum yapmak için <a href=\"%s\">giriş</a> yapmanız gerekiyor"
+
+#: wppa-boxes-html.php:185
+#, fuzzy
+msgid "And"
+msgstr "ve"
+
+#: wppa-boxes-html.php:188
+msgid "Or"
+msgstr ""
+
+#: wppa-boxes-html.php:215
+msgid "Find!"
+msgstr ""
+
+#: wppa-boxes-html.php:246 wppa-utils.php:1296
+#, fuzzy, php-format
+msgid "See this image on %s"
+msgstr "Yüklenen dosya bir resim dosyası değil"
+
+#: wppa-boxes-html.php:265
+#, fuzzy, php-format
+msgid "Share %s on Facebook"
+msgstr "%s / %s"
+
+#: wppa-boxes-html.php:269
+#, fuzzy
+msgid "Share on Facebook"
+msgstr "Yorum eklendi"
+
+#: wppa-boxes-html.php:307
+#, fuzzy, php-format
+msgid "Tweet %s on Twitter"
+msgstr "%s / %s"
+
+#: wppa-boxes-html.php:310
+msgid "Share on Twitter"
+msgstr ""
+
+#: wppa-boxes-html.php:334
+#, fuzzy, php-format
+msgid "Share %s on Google+"
+msgstr "%s / %s"
+
+#: wppa-boxes-html.php:338
+msgid "Share on Google+"
+msgstr ""
+
+#: wppa-boxes-html.php:349
+#, fuzzy, php-format
+msgid "Share %s on Pinterest"
+msgstr "%s / %s"
+
+#: wppa-boxes-html.php:354
+msgid "Share on Pinterest"
+msgstr ""
+
+#: wppa-boxes-html.php:385
+#, fuzzy
+msgid "Comment on Facebook:"
+msgstr "Yorumunuz:"
+
+#: wppa-boxes-html.php:467
+#, fuzzy
+msgid "Create Album"
+msgstr "albüm var."
+
+#: wppa-boxes-html.php:477
+#, fuzzy
+msgid "Enter album name."
+msgstr "Lütfen isminizi girin"
+
+#: wppa-boxes-html.php:477
+#, fuzzy
+msgid "Don't leave this blank!"
+msgstr "Yorum yapın"
+
+#: wppa-boxes-html.php:486
+#, fuzzy
+msgid "Enter album description"
+msgstr "Fotoğraf tanımı gir veya düzenle"
+
+#: wppa-boxes-html.php:497
+#, fuzzy
+msgid "Create album"
+msgstr "albüm var."
+
+#: wppa-boxes-html.php:521 wppa-boxes-html.php:535 wppa-functions.php:3769
+msgid "Max uploads reached"
+msgstr "Yükleme sınırına erişildi"
+
+#: wppa-boxes-html.php:575
+msgid "Upload Photo"
+msgstr "Fotoğraf Yükle"
+
+#: wppa-boxes-html.php:605
+#, fuzzy
+msgid "Please select an album and try again"
+msgstr ""
+"Üzgünüz, cevabınız doğru değil.\\n\\nLütfen hesaplamayı tekrar deneyin."
+
+#: wppa-boxes-html.php:608
+#, fuzzy
+msgid "Upload photo"
+msgstr "Fotoğraf Yükle"
+
+#: wppa-boxes-html.php:614
+#, php-format
+msgid ""
+"You may upload up to %s photos at once if your browser supports HTML-5 "
+"multiple file upload"
+msgstr ""
+"Tarayıcınız HTML-5 çoklu dosya yüklemeyi destekliyorsa bir kerede en fazla "
+"%s fotoğraf yükleyebilirsiniz"
+
+#: wppa-boxes-html.php:620
+#, fuzzy, php-format
+msgid "Max photo size: %d x %d (%2.1f MegaPixel)"
+msgstr "%d yorum"
+
+#: wppa-boxes-html.php:636
+msgid "Apply watermark file:"
+msgstr "Filigran dosyası:"
+
+#: wppa-boxes-html.php:648
+msgid "Position:"
+msgstr "Konum:"
+
+#: wppa-boxes-html.php:665
+#, fuzzy
+msgid ""
+"If you leave this blank, iptc tag 005 (Graphic name) will be used as "
+"photoname if available, else the original filename will be used as photo "
+"name."
+msgstr "İsminiz:"
+
+#: wppa-boxes-html.php:668
+#, fuzzy
+msgid ""
+"If you leave this blank, iptc tag 120 (Caption) will be used as photoname if "
+"available, else the original filename will be used as photo name."
+msgstr "Yorum yapın"
+
+#: wppa-boxes-html.php:671
+#, fuzzy
+msgid ""
+"If you leave this blank, the original filename will be used as photo name."
+msgstr "Yorum yapın"
+
+#: wppa-boxes-html.php:675
+#, fuzzy
+msgid "Enter photo name."
+msgstr "Lütfen isminizi girin"
+
+#: wppa-boxes-html.php:683
+msgid "Enter/modify photo description"
+msgstr "Fotoğraf tanımı gir veya düzenle"
+
+#: wppa-boxes-html.php:732 wppa-functions.php:2371
+msgid "wrote:"
+msgstr "dedi ki:"
+
+#: wppa-boxes-html.php:765 wppa-links.php:537
+msgid "Awaiting moderation"
+msgstr "Yönetici onayı bekliyor"
+
+#: wppa-boxes-html.php:768
+msgid "Marked as spam"
+msgstr "Spam olarak işaretlendi"
+
+#: wppa-boxes-html.php:786
+msgid "Edit!"
+msgstr "Düzenle!"
+
+#: wppa-boxes-html.php:790
+msgid "Send!"
+msgstr "Gönder!"
+
+#: wppa-boxes-html.php:829
+msgid "Your name:"
+msgstr "İsminiz:"
+
+#: wppa-boxes-html.php:834
+msgid "Your email:"
+msgstr "E-posta Adresiniz:"
+
+#: wppa-boxes-html.php:839
+msgid "Your comment:"
+msgstr "Yorumunuz:"
+
+#: wppa-boxes-html.php:873
+#, php-format
+msgid "You must <a href=\"%s\">login</a> to enter a comment"
+msgstr "Yorum yapmak için <a href=\"%s\">giriş</a> yapmanız gerekiyor"
+
+#: wppa-boxes-html.php:880
+#, php-format
+msgid "%d  comments"
+msgstr "%d yorum"
+
+#: wppa-boxes-html.php:884
+msgid "Leave a comment"
+msgstr "Yorum yapın"
+
+#: wppa-boxes-html.php:952
+msgid "Show IPTC data"
+msgstr "IPTC verilerini göster"
+
+#: wppa-boxes-html.php:955
+msgid "Hide IPTC data"
+msgstr "IPTC verilerini gizle"
+
+#: wppa-boxes-html.php:982
+msgid "No IPTC data"
+msgstr "IPTC verisi yok"
+
+#: wppa-boxes-html.php:1023
+msgid "Show EXIF data"
+msgstr "EXIF verilerini göster"
+
+#: wppa-boxes-html.php:1026
+msgid "Hide EXIF data"
+msgstr "EXIF verilerini gizle"
+
+#: wppa-boxes-html.php:1053
+msgid "No EXIF data"
+msgstr "EXIF verisi yok"
+
+#: wppa-breadcrumb.php:71
+msgid "Home"
+msgstr "Anasayfa"
+
+#: wppa-breadcrumb.php:86
+msgid "Post:"
+msgstr ""
+
+#: wppa-breadcrumb.php:86
+#, fuzzy
+msgid "Page:"
+msgstr "Sonraki&nbsp;sayfa"
+
+#: wppa-breadcrumb.php:98 wppa-breadcrumb.php:103
+msgid "Searchstring:"
+msgstr "Arama Dizesi:"
+
+#: wppa-breadcrumb.php:100 wppa-breadcrumb.php:114 wppa-breadcrumb.php:132
+#: wppa-breadcrumb.php:150 wppa-breadcrumb.php:168 wppa-breadcrumb.php:186
+#: wppa-breadcrumb.php:198 wppa-breadcrumb.php:210 wppa-breadcrumb.php:222
+#: wppa-breadcrumb.php:241
+#, fuzzy
+msgid "View the thumbnails"
+msgstr "Toplam"
+
+#: wppa-breadcrumb.php:112 wppa-breadcrumb.php:117
+#, fuzzy, php-format
+msgid "Photos by %s"
+msgstr ""
+"Tarayıcınız HTML-5 çoklu dosya yüklemeyi destekliyorsa bir kerede en fazla "
+"%s fotoğraf yükleyebilirsiniz"
+
+#: wppa-breadcrumb.php:124 wppa-breadcrumb.php:142 wppa-breadcrumb.php:160
+#: wppa-breadcrumb.php:178 wppa-breadcrumb.php:256
+#, fuzzy
+msgid "Various albums"
+msgstr "albüm var."
+
+#: wppa-breadcrumb.php:126 wppa-breadcrumb.php:144 wppa-breadcrumb.php:162
+#: wppa-breadcrumb.php:180 wppa-breadcrumb.php:260
+#, fuzzy
+msgid "Albums:"
+msgstr "albüm var."
+
+#: wppa-breadcrumb.php:126 wppa-breadcrumb.php:144 wppa-breadcrumb.php:162
+#: wppa-breadcrumb.php:180 wppa-breadcrumb.php:235 wppa-breadcrumb.php:260
+#, fuzzy
+msgid "Album:"
+msgstr "albüm var."
+
+#: wppa-breadcrumb.php:130 wppa-breadcrumb.php:135
+msgid "Top rated photos"
+msgstr "En yüksek puan alan fotoğraflar"
+
+#: wppa-breadcrumb.php:148 wppa-breadcrumb.php:153
+msgid "Recently uploaded photos"
+msgstr "En son yüklenen fotoğraflar"
+
+#: wppa-breadcrumb.php:166 wppa-breadcrumb.php:171 wppa-comment-widget.php:25
+msgid "Recently commented photos"
+msgstr "En son yorum yapılan fotoğraflar"
+
+#: wppa-breadcrumb.php:184 wppa-breadcrumb.php:189 wppa-featen-widget.php:28
+#, fuzzy
+msgid "Featured photos"
+msgstr "fotoğraf var."
+
+#: wppa-breadcrumb.php:196 wppa-breadcrumb.php:201
+#, fuzzy
+msgid "Related photos"
+msgstr "fotoğraf var."
+
+#: wppa-breadcrumb.php:208 wppa-breadcrumb.php:213
+#, fuzzy
+msgid "Tagged photos:"
+msgstr "fotoğraf var."
+
+#: wppa-breadcrumb.php:208 wppa-breadcrumb.php:213
+msgid "or"
+msgstr ""
+
+#: wppa-breadcrumb.php:220 wppa-breadcrumb.php:225
+msgid "Category:"
+msgstr ""
+
+#: wppa-breadcrumb.php:239 wppa-breadcrumb.php:244
+#, fuzzy
+msgid "Recently updated albums"
+msgstr "En son yüklenen fotoğraflar"
+
+#: wppa-breadcrumb.php:254
+#, fuzzy, php-format
+msgid "Various albums by %s"
+msgstr "albüm var."
+
+#: wppa-breadcrumb.php:278
+#, fuzzy
+msgid "Thumbnail view"
+msgstr "Toplam"
+
+#: wppa-breadcrumb.php:279
+msgid "Thumbs"
+msgstr ""
+
+#: wppa-breadcrumb.php:364
+msgid "Unpublished"
+msgstr ""
+
+#: wppa-cart.php:23
+msgid "Buy now"
+msgstr ""
+
+#: wppa-cart.php:87
+#, fuzzy, php-format
+msgid "Unit Price: %s each"
+msgstr "%s / %s"
+
+#: wppa-cart.php:91
+msgid "Qty:"
+msgstr ""
+
+#: wppa-comment-widget.php:83 wppa-featen-widget.php:93
+#: wppa-lasten-widget.php:84 wppa-potd-widget.php:78
+#: wppa-thumbnail-widget.php:89 wppa-topten-widget.php:106
+msgid "Photo not found."
+msgstr "Fotoğraf bulunamadı."
+
+#: wppa-common-functions.php:816
+#, fuzzy
+msgid "Default photo album for"
+msgstr "fotoğraf albümü vardır. Son eklenen albüm: "
+
+#: wppa-common-functions.php:1193
+msgid "1 second"
+msgstr "1 saniye"
+
+#: wppa-common-functions.php:1194 wppa-functions.php:4000
+msgid "seconds"
+msgstr "saniye"
+
+#: wppa-common-functions.php:1198
+msgid "1 minute"
+msgstr "1 dakika"
+
+#: wppa-common-functions.php:1199 wppa-functions.php:3999
+msgid "minutes"
+msgstr "dakika"
+
+#: wppa-common-functions.php:1203
+msgid "1 hour"
+msgstr "1 saat"
+
+#: wppa-common-functions.php:1204 wppa-functions.php:3998
+msgid "hours"
+msgstr "saat"
+
+#: wppa-common-functions.php:1208
+msgid "1 day"
+msgstr "1 gün"
+
+#: wppa-common-functions.php:1209 wppa-functions.php:3997
+msgid "days"
+msgstr "gün"
+
+#: wppa-common-functions.php:1213
+msgid "1 week"
+msgstr "1 hafta"
+
+#: wppa-common-functions.php:1214 wppa-functions.php:3996
+msgid "weeks"
+msgstr "hafta"
+
+#: wppa-common-functions.php:1218
+msgid "1 month"
+msgstr "1 ay"
+
+#: wppa-common-functions.php:1219
+msgid "months"
+msgstr "ay"
+
+#: wppa-common-functions.php:1222
+msgid "1 year"
+msgstr "1 yıl"
+
+#: wppa-common-functions.php:1223
+msgid "years"
+msgstr "yıl"
+
+#: wppa-exif-iptc-common.php:59 wppa-exif-iptc-common.php:119
+msgid "n.a."
+msgstr ""
+
+#: wppa-exif-iptc-common.php:197
+#, fuzzy
+msgid "Not Defined"
+msgstr "Henüz bir albüm tanımlanmadı."
+
+#: wppa-exif-iptc-common.php:198
+msgid "Manual"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:199
+msgid "Program AE"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:200
+msgid "Aperture-priority AE"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:201
+msgid "Shutter speed priority AE"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:202
+msgid "Creative (Slow speed)"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:203
+#, fuzzy
+msgid "Action (High speed)"
+msgstr "yüksek"
+
+#: wppa-exif-iptc-common.php:204
+msgid "Portrait"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:205
+msgid "Landscape"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:206
+msgid "Bulb"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:228
+#, fuzzy
+msgid "Average"
+msgstr "ortalama"
+
+#: wppa-exif-iptc-common.php:229
+#, fuzzy
+msgid "Center-weighted average"
+msgstr "ortalama"
+
+#: wppa-exif-iptc-common.php:230
+msgid "Spot"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:231
+msgid "Multi-spot"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:232
+msgid "Multi-segment"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:233
+msgid "Partial"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:234
+msgid "Other"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:270
+msgid "No Flash"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:272
+msgid "Fired"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:274
+msgid "Fired, Return not detected"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:276
+msgid "Fired, Return detected"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:278
+msgid "On, Did not fire"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:280
+msgid "On, Fired"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:282
+msgid "On, Return not detected"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:284
+msgid "On, Return detected"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:286
+msgid "Off, Did not fire"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:288
+msgid "Off, Did not fire, Return not detected"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:290
+msgid "Auto, Did not fire"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:292
+msgid "Auto, Fired"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:294
+msgid "Auto, Fired, Return not detected"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:296
+msgid "Auto, Fired, Return detected"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:298
+msgid "No flash function"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:300
+msgid "Off, No flash function"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:302
+msgid "Fired, Red-eye reduction"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:304
+msgid "Fired, Red-eye reduction, Return not detected"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:306
+msgid "Fired, Red-eye reduction, Return detected"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:308
+msgid "On, Red-eye reduction"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:310
+msgid "Red-eye reduction, Return not detected"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:312
+msgid "On, Red-eye reduction, Return detected"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:314
+msgid "Off, Red-eye reduction"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:316
+msgid "Auto, Did not fire, Red-eye reduction"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:318
+msgid "Auto, Fired, Red-eye reduction"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:320
+msgid "Auto, Fired, Red-eye reduction, Return not detected"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:322
+msgid "Auto, Fired, Red-eye reduction, Return detected"
+msgstr ""
+
+#: wppa-featen-widget.php:51
+#, fuzzy
+msgid "View the featured photos"
+msgstr "Kapak fotoğraflarını görüntüle"
+
+#: wppa-functions.php:450
+#, fuzzy
+msgid "No related photos found."
+msgstr "Arama kriterlerine uyan albüm veya fotoğraf bulunamadı."
+
+#: wppa-functions.php:679
+#, fuzzy, php-format
+msgid ""
+"There are %s albums found. Only the first %s will be shown. Please refine "
+"your search criteria."
+msgstr "Arama kriterlerine uyan albüm veya fotoğraf bulunamadı."
+
+#: wppa-functions.php:967
+#, fuzzy, php-format
+msgid ""
+"There are %s photos found. Only the first %s will be shown. Please refine "
+"your search criteria."
+msgstr "Arama kriterlerine uyan albüm veya fotoğraf bulunamadı."
+
+#: wppa-functions.php:1244
+#, fuzzy
+msgid "Edit"
+msgstr "Düzenle!"
+
+#: wppa-functions.php:1379
+msgid "Comment edited"
+msgstr "Yorum düzenlendi"
+
+#: wppa-functions.php:1387
+#, fuzzy
+msgid "Comment on photo:"
+msgstr "Yorumunuz:"
+
+#: wppa-functions.php:1394
+#, fuzzy
+msgid "wrote on photo"
+msgstr "dedi ki:"
+
+#: wppa-functions.php:1396
+#, fuzzy
+msgid "Moderate comment admin"
+msgstr "Albüm Yöneticisi"
+
+#: wppa-functions.php:1397 wppa-functions.php:3850 wppa-upload.php:1041
+#, fuzzy
+msgid "Moderate manage photo"
+msgstr "fotoğraf var."
+
+#: wppa-functions.php:1398
+#, fuzzy
+msgid "Edit photo"
+msgstr "Düzenle!"
+
+#: wppa-functions.php:1407
+#, fuzzy
+msgid "You receive this email as you are assigned to moderate"
+msgstr "Yüklemenize şu kadar kaldı:"
+
+#: wppa-functions.php:1419
+#, fuzzy
+msgid "You receive this email as administrator of the site"
+msgstr "E-posta Adresiniz:"
+
+#: wppa-functions.php:1436
+#, fuzzy
+msgid "You receive this email as uploader of the photo"
+msgstr "E-posta Adresiniz:"
+
+#: wppa-functions.php:1453
+#, fuzzy
+msgid "You receive this email as owner of the album"
+msgstr "E-posta Adresiniz:"
+
+#: wppa-functions.php:1460
+msgid "Comment added"
+msgstr "Yorum eklendi"
+
+#: wppa-functions.php:1464
+msgid ""
+"Sorry, you gave a wrong answer.\\n\\nPlease try again to solve the "
+"computation."
+msgstr ""
+"Üzgünüz, cevabınız doğru değil.\\n\\nLütfen hesaplamayı tekrar deneyin."
+
+#: wppa-functions.php:1474
+msgid "Could not process comment.\\nProbably timed out."
+msgstr "Yorum işlenemedi.\\nYüksek olasılıkla zaman aşımına uğradı."
+
+#: wppa-functions.php:1555
+#, fuzzy
+msgid "1 Comment"
+msgstr "1 saniye"
+
+#: wppa-functions.php:1556
+#, fuzzy, php-format
+msgid "%s Comments"
+msgstr "Yorumlar"
+
+#: wppa-functions.php:1924
+msgid "<b>ERROR: Illegal attempt to enter a rating.</b>"
+msgstr "<b>HATA: Geçersiz puanlama girişimi.</b>"
+
+#: wppa-functions.php:1937
+msgid "<b>ERROR: Illegal attempt to enter a comment.</b>"
+msgstr "<b>HATA: Geçersiz yorum yapma girişimi.</b>"
+
+#: wppa-functions.php:2297 wppa-topten-widget.php:72
+msgid "View the top rated photos"
+msgstr "En yüksek puan alan fotoğrafları görüntüle"
+
+#: wppa-functions.php:3695
+#, fuzzy
+msgid "<b>ERROR: Illegal attempt to create an album.</b>"
+msgstr "<b>HATA: Geçersiz dosya yükleme girişimi.</b>"
+
+#: wppa-functions.php:3699
+#, fuzzy
+msgid "Wrong captcha, please try again"
+msgstr ""
+"Üzgünüz, cevabınız doğru değil.\\n\\nLütfen hesaplamayı tekrar deneyin."
+
+#: wppa-functions.php:3706
+#, fuzzy, php-format
+msgid "Album #%s created"
+msgstr "albüm var."
+
+#: wppa-functions.php:3707
+#, fuzzy
+msgid "Could not create album"
+msgstr "albüm var."
+
+#: wppa-functions.php:3713
+msgid "<b>ERROR: Illegal attempt to upload a file.</b>"
+msgstr "<b>HATA: Geçersiz dosya yükleme girişimi.</b>"
+
+#: wppa-functions.php:3751
+#, fuzzy
+msgid "Photo successfully uploaded."
+msgstr "En son yüklenen fotoğraflar"
+
+#: wppa-functions.php:3751
+#, fuzzy, php-format
+msgid "%s photos successfully uploaded."
+msgstr "En son yüklenen fotoğraflar"
+
+#: wppa-functions.php:3752
+#, fuzzy, php-format
+msgid "%s points added."
+msgstr "Yorum eklendi"
+
+#: wppa-functions.php:3755
+#, fuzzy
+msgid "Upload failed"
+msgstr "Fotoğraf Yükle"
+
+#: wppa-functions.php:3773
+msgid "Error during upload"
+msgstr "Yükleme sırasında hata oluştu"
+
+#: wppa-functions.php:3778
+msgid "Uploaded file is not an image"
+msgstr "Yüklenen dosya bir resim dosyası değil"
+
+#: wppa-functions.php:3782
+#, fuzzy, php-format
+msgid ""
+"Only gif, jpg and png image files are supported. Returned filetype = %d."
+msgstr "%d yorum"
+
+#: wppa-functions.php:3789
+#, fuzzy, php-format
+msgid "The image is too big. Max photo size: %d x %d (%2.1f MegaPixel)"
+msgstr "%d yorum"
+
+#: wppa-functions.php:3825
+#, fuzzy
+msgid "Could not insert photo into db."
+msgstr "Yorum işlenemedi.\\nYüksek olasılıkla zaman aşımına uğradı."
+
+#: wppa-functions.php:3846 wppa-upload.php:1037
+#, fuzzy, php-format
+msgid "New photo uploaded: %s"
+msgstr "%s / %s"
+
+#: wppa-functions.php:3847 wppa-upload.php:1038
+#, fuzzy, php-format
+msgid "User %s uploaded photo %s into album %s"
+msgstr "%s / %s"
+
+#: wppa-functions.php:3849 wppa-upload.php:1040
+#, fuzzy
+msgid "This upload requires moderation"
+msgstr "Yönetici onayı bekliyor"
+
+#: wppa-functions.php:3853 wppa-upload.php:1044
+msgid "Details:"
+msgstr ""
+
+#: wppa-functions.php:3854 wppa-upload.php:1045
+#, fuzzy
+msgid "Manage photo"
+msgstr "fotoğraf var."
+
+#: wppa-functions.php:3994
+msgid "You can upload after"
+msgstr "Yüklemenize şu kadar kaldı:"
+
+#: wppa-functions.php:4032
+msgid "Zoom in"
+msgstr "Yaklaştır"
+
+#: wppa-lasten-widget.php:34
+#, fuzzy
+msgid "Last Ten Uploaded Photos"
+msgstr "En son yüklenen fotoğraflar"
+
+#: wppa-lasten-widget.php:68
+msgid "View the most recent uploaded photos"
+msgstr "En son yüklenen fotoğrafları görüntüle"
+
+#: wppa-links.php:477
+msgid "App"
+msgstr ""
+
+#: wppa-links.php:478
+msgid "Mod"
+msgstr ""
+
+#: wppa-links.php:479
+msgid "Del"
+msgstr ""
+
+#: wppa-links.php:482 wppa-links.php:498
+#, fuzzy
+msgid "Are you sure you want to publish this photo?"
+msgstr "Yüklemenize şu kadar kaldı:"
+
+#: wppa-links.php:488 wppa-links.php:504
+#, fuzzy
+msgid "Are you sure you want to remove this photo?"
+msgstr "Yüklemenize şu kadar kaldı:"
+
+#: wppa-links.php:493 wppa-links.php:509
+msgid "Approve"
+msgstr ""
+
+#: wppa-links.php:494
+msgid "Moderate"
+msgstr ""
+
+#: wppa-links.php:495 wppa-links.php:512
+msgid "Delete"
+msgstr ""
+
+#: wppa-links.php:510
+#, fuzzy
+msgid "PhotoAdmin"
+msgstr " "
+
+#: wppa-links.php:511
+#, fuzzy
+msgid "CommentAdmin"
+msgstr "Yorumlar"
+
+#: wppa-links.php:515
+#, fuzzy
+msgid "Are you sure you want to publish this comment?"
+msgstr "Yorum yapmak için <a href=\"%s\">giriş</a> yapmanız gerekiyor"
+
+#: wppa-links.php:527
+#, fuzzy
+msgid "Are you sure you want to remove this comment?"
+msgstr "Yorum yapmak için <a href=\"%s\">giriş</a> yapmanız gerekiyor"
+
+#: wppa-links.php:716 wppa-links.php:717
+msgid "Prev.&nbsp;page"
+msgstr "Önceki&nbsp;sayfa"
+
+#: wppa-links.php:721 wppa-links.php:722
+msgid "Next&nbsp;page"
+msgstr "Sonraki&nbsp;sayfa"
+
+#: wppa-non-admin.php:310 wppa-slideshow.php:223
+msgid "Start"
+msgstr " "
+
+#: wppa-non-admin.php:311
+msgid "Stop"
+msgstr "Durdur"
+
+#: wppa-non-admin.php:312 wppa-slideshow.php:222
+msgid "Slower"
+msgstr "Daha yavaş"
+
+#: wppa-non-admin.php:313 wppa-slideshow.php:224
+msgid "Faster"
+msgstr "Daha hızlı"
+
+#: wppa-non-admin.php:314
+msgid "Photo"
+msgstr " "
+
+#: wppa-non-admin.php:315
+msgid "of"
+msgstr "/"
+
+#: wppa-non-admin.php:316
+msgid "Previous photo"
+msgstr "Önceki fotoğraf"
+
+#: wppa-non-admin.php:317
+msgid "Next photo"
+msgstr "Sonraki fotoğraf"
+
+#: wppa-non-admin.php:318
+msgid "Prev."
+msgstr "Önceki"
+
+#: wppa-non-admin.php:319 wppa-slideshow.php:634
+msgid "Next"
+msgstr "Sonraki"
+
+#: wppa-non-admin.php:320 wppa-slideshow.php:481 wppa-slideshow.php:485
+#: wppa-slideshow.php:527
+msgid "Average&nbsp;rating"
+msgstr "Ortalama&nbsp;puan"
+
+#: wppa-non-admin.php:321 wppa-slideshow.php:506 wppa-slideshow.php:511
+#: wppa-slideshow.php:516
+msgid "My&nbsp;rating"
+msgstr "Benim&nbsp;puanlamam"
+
+#: wppa-non-admin.php:322
+msgid "Avg."
+msgstr ""
+
+#: wppa-non-admin.php:323
+msgid "Mine"
+msgstr ""
+
+#: wppa-non-admin.php:324
+#, fuzzy
+msgid "You marked this image as inappropriate."
+msgstr "Spam olarak işaretlendi"
+
+#: wppa-non-admin.php:326
+msgid "No dislikes"
+msgstr ""
+
+#: wppa-non-admin.php:327
+#, fuzzy
+msgid "1 dislike"
+msgstr "1 saniye"
+
+#: wppa-non-admin.php:328
+msgid "dislikes"
+msgstr ""
+
+#: wppa-non-admin.php:329
+msgid "including mine"
+msgstr ""
+
+#: wppa-non-admin.php:333
+msgid "Please enter your name"
+msgstr "Lütfen isminizi girin"
+
+#: wppa-non-admin.php:334
+msgid "Please enter a valid email address"
+msgstr "Lütfen geçerli bir e-posta adresi girin"
+
+#: wppa-non-admin.php:335
+msgid "Please enter a comment"
+msgstr "Lütfen bir yorum girin"
+
+#: wppa-non-admin.php:376
+msgid "Double click to start/stop slideshow running"
+msgstr "Slayt gösterisini başlatmak/durdurmak için çift tıklayın"
+
+#: wppa-non-admin.php:382
+msgid "Download"
+msgstr ""
+
+#: wppa-photo-admin-autosave.php:131
+#, fuzzy, php-format
+msgid "Photo %s has been removed."
+msgstr "%s / %s"
+
+#: wppa-search-widget.php:36
+#, fuzzy
+msgid "Photo search results"
+msgstr "Arama kriterlerine uyan albüm veya fotoğraf bulunamadı."
+
+#: wppa-search-widget.php:42
+#, fuzzy
+msgid "Please select a search results landing page in Table IX-C1"
+msgstr "Lütfen isminizi girin"
+
+#: wppa-slideshow-widget.php:116
+msgid "No album defined yet."
+msgstr "Henüz bir albüm tanımlanmadı."
+
+#: wppa-slideshow.php:240
+msgid "Paused"
+msgstr "Durduruldu"
+
+#: wppa-slideshow.php:245
+msgid ""
+"To see the full size images, you need to enable javascript in your browser."
+msgstr ""
+"Görsellerin tam boyutlarını görmek için tarayıcınızda javascript'i aktive "
+"etmeniz gerekiyor."
+
+#: wppa-slideshow.php:418
+#, fuzzy
+msgid "- - - Voting enabled - - -"
+msgstr "- - - Puanlama aktif - - -"
+
+#: wppa-slideshow.php:435 wppa-slideshow.php:519 wppa-slideshow.php:552
+#, php-format
+msgid "You must <a href=\"%s\">login</a> to vote"
+msgstr "Oy vermek için <a href=\"%s\">giriş</a> yapmanız gerekiyor"
+
+#: wppa-slideshow.php:451
+msgid "- - - Rating enabled - - -"
+msgstr "- - - Puanlama aktif - - -"
+
+#: wppa-slideshow.php:468
+msgid "very low"
+msgstr "çok düşük"
+
+#: wppa-slideshow.php:469
+msgid "low"
+msgstr "düşük"
+
+#: wppa-slideshow.php:470
+msgid "average"
+msgstr "ortalama"
+
+#: wppa-slideshow.php:471
+msgid "high"
+msgstr "yüksek"
+
+#: wppa-slideshow.php:472
+msgid "very high"
+msgstr "çok yüksek"
+
+#: wppa-slideshow.php:499 wppa-slideshow.php:539
+#, fuzzy
+msgid "Are you sure you want to mark this image as inappropriate?"
+msgstr "Yüklemenize şu kadar kaldı:"
+
+#: wppa-slideshow.php:500 wppa-slideshow.php:540
+#, fuzzy
+msgid "Click this if you do NOT like this image!"
+msgstr "Başlatmak/durdurmak için tıklayın"
+
+#: wppa-slideshow.php:502 wppa-slideshow.php:542
+#, fuzzy
+msgid "Nuber of people who marked this photo as inapprpriate"
+msgstr "Spam olarak işaretlendi"
+
+#: wppa-slideshow.php:548
+#, fuzzy
+msgid "My rating:"
+msgstr "Ortalama&nbsp;puan"
+
+#: wppa-slideshow.php:630
+#, php-format
+msgid "%s back"
+msgstr "%s geri"
+
+#: wppa-slideshow.php:631
+msgid "Previous"
+msgstr "Önceki"
+
+#: wppa-slideshow.php:635
+#, php-format
+msgid "%s forward"
+msgstr "%s ileri"
+
+#: wppa-slideshow.php:751
+#, php-format
+msgid "Photo %s of %s"
+msgstr "%s / %s"
+
+#: wppa-slideshow.php:782
+msgid "Click to start/stop"
+msgstr "Başlatmak/durdurmak için tıklayın"
+
+#: wppa-slideshow.php:794
+msgid "- - - Comments box activated - - -"
+msgstr "- - - Yorum kutusu aktif - - -"
+
+#: wppa-slideshow.php:815
+msgid "- - - IPTC box activated - - -"
+msgstr "- - - IPTC kutusu aktif - - -"
+
+#: wppa-slideshow.php:835
+msgid "- - - EXIF box activated - - -"
+msgstr "- - - EXIF kutusu aktif - - -"
+
+#: wppa-statistics.php:29
+msgid "There are"
+msgstr "Burada"
+
+#: wppa-statistics.php:29
+msgid "photo albums. The last album added is"
+msgstr "fotoğraf albümü vardır. Son eklenen albüm: "
+
+#: wppa-statistics.php:33
+msgid ", a subalbum of"
+msgstr "; ana albümü: "
+
+#: wppa-super-view-widget.php:35
+#, fuzzy
+msgid "Super View Photos"
+msgstr "Kapak fotoğraflarını görüntüle"
+
+#: wppa-super-view-widget.php:41
+#, fuzzy
+msgid "Please select a super view widget landing page in Table VI-C"
+msgstr "Toplam"
+
+#: wppa-tagcloud-widget.php:36
+#, fuzzy
+msgid "No tags defined yet"
+msgstr "Henüz bir albüm tanımlanmadı."
+
+#: wppa-thumbnail-widget.php:42
+#, fuzzy
+msgid "Thumbnail photos"
+msgstr "fotoğraf var."
+
+#: wppa-topten-widget.php:38
+#, fuzzy
+msgid "Top Ten Photos"
+msgstr "En yüksek puan alan fotoğraflar"
+
+#: wppa-topten-widget.php:89
+#, fuzzy, php-format
+msgid "%s Votes"
+msgstr "%s / %s"
+
+#: wppa-topten-widget.php:92 wppa-topten-widget.php:95
+#, fuzzy, php-format
+msgid "Views: %s times"
+msgstr "%s / %s"
+
+#: wppa-upldr-widget.php:33
+#, fuzzy
+msgid "User uploaded photos"
+msgstr "En son yüklenen fotoğraflar"
+
+#: wppa-upldr-widget.php:83 wppa-upldr-widget.php:90
+#, fuzzy
+msgid "Photos uploaded by"
+msgstr "En son yüklenen fotoğraflar"
+
+#: wppa-utils.php:220 wppa-utils.php:404
+#, fuzzy
+msgid "none"
+msgstr "--- boş ---"
+
+#: wppa-utils.php:246 wppa-utils.php:415
+msgid "unknown"
+msgstr ""
+
+#: wppa-utils.php:346
+msgid "--- none ---"
+msgstr "--- boş ---"
+
+#: wppa-utils.php:350
+msgid "--- separate ---"
+msgstr "--- ayrı ---"
+
+#: wppa-utils.php:354
+#, fuzzy
+msgid "--- all ---"
+msgstr "--- boş ---"
+
+#: wppa-utils.php:358 wppa-utils.php:379
+#, fuzzy
+msgid "--- deleted ---"
+msgstr "--- ayrı ---"
+
+#: wppa-utils.php:368
+#, fuzzy
+msgid "All Albums"
+msgstr "albüm var."
+
+#: wppa-utils.php:459
+#, php-format
+msgid "Rating: %s"
+msgstr "Puan: %s"
+
+#: wppa-utils.php:749
+#, fuzzy, php-format
+msgid "The visitors email address is: <a href=\"mailto:%s\">%s</a>"
+msgstr "Yorum yapmak için <a href=\"%s\">giriş</a> yapmanız gerekiyor"
+
+#: wppa-utils.php:755
+#, fuzzy, php-format
+msgid "The visitor says his email address is: <a href=\"mailto:%s\">%s</a>"
+msgstr "Yorum yapmak için <a href=\"%s\">giriş</a> yapmanız gerekiyor"
+
+#: wppa-utils.php:760
+#, fuzzy, php-format
+msgid ""
+"This message is automaticly generated at %s. It is useless to respond to it."
+msgstr "%s / %s"
+
+#: theme/wppa-theme.php:99 theme/wppa-theme.php:118
+#, fuzzy
+msgid "No photos found matching your search criteria."
+msgstr "Arama kriterlerine uyan albüm veya fotoğraf bulunamadı."
+
+#: theme/wppa-theme.php:102
+#, fuzzy
+msgid "No albums found matching your search criteria."
+msgstr "Arama kriterlerine uyan albüm veya fotoğraf bulunamadı."
+
+#: theme/wppa-theme.php:105
+msgid "No albums or photos found matching your search criteria."
+msgstr "Arama kriterlerine uyan albüm veya fotoğraf bulunamadı."
+
+#, fuzzy
+#~ msgid "Upload"
+#~ msgstr "Fotoğraf Yükle"
+
+#, fuzzy
+#~ msgid "All albums"
+#~ msgstr "Fotoğraf Albümleri"
+
+#~ msgid "<b>ERROR: Attempt to enter an invalid rating.</b>"
+#~ msgstr "<b>HATA: Geçersiz puanlama girişimi.</b>"
+
+#~ msgid "Upload Photo(s)"
+#~ msgstr "Fotoğraf Yükle"

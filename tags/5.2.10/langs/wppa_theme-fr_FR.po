@@ -1,0 +1,2304 @@
+# Translation of the WordPress plugin   by .
+# Copyright (C) 2010
+# This file is distributed under the same license as the  package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2010.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: wppa\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-01-09 14:04+0100\n"
+"PO-Revision-Date: 2014-01-09 14:04+0100\n"
+"Last-Translator: J.N. Breetvelt <OpaJaap@OpaJaap.nl>\n"
+"Language-Team: oVa <ova13lastar@gmail.com>\n"
+"Language: fr_FR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-KeywordsList: __a\n"
+"X-Poedit-Basepath: ..\n"
+"X-Generator: Poedit 1.6.2\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPath-1: theme\n"
+
+#: wppa-adminbar.php:40
+msgid "Album Admin"
+msgstr "Administration de l'album"
+
+#: wppa-adminbar.php:47
+msgid "Upload Photos"
+msgstr "Charger des photos"
+
+#: wppa-adminbar.php:53
+msgid "Edit Photos"
+msgstr "Éditer les photos"
+
+#: wppa-adminbar.php:61
+msgid "Import Photos"
+msgstr "Importer des photos"
+
+#: wppa-adminbar.php:68
+msgid "Moderate Photos"
+msgstr "Modérez les photos"
+
+#: wppa-adminbar.php:78
+msgid "Export Photos"
+msgstr "Exporter des photos"
+
+#: wppa-adminbar.php:85
+msgid "Settings"
+msgstr "Options"
+
+#: wppa-adminbar.php:92
+msgid "Photo of the day"
+msgstr "Photo du jour"
+
+#: wppa-adminbar.php:99
+msgid "Comments"
+msgstr "Commentaires"
+
+#: wppa-adminbar.php:106
+msgid "Help & Info"
+msgstr "Aide &amp; Info"
+
+#: wppa-adminbar.php:113
+msgid "Docs & Demos"
+msgstr "Docs & Démos"
+
+#: wppa-adminbar.php:122 wppa-album-widget.php:41
+msgid "Photo Albums"
+msgstr "Albums Photo"
+
+#: wppa-ajax.php:50
+#, fuzzy
+msgid ""
+"All modifications are instantly updated on the server. The <b style=\"color:"
+"#070\" >Remark</b> field keeps you informed on the actions taken at the "
+"background."
+msgstr ""
+"Si vous souhaitez afficher le <b>contenu</b> d'un seul album dans le modèle "
+"- disons l'album n° 19 - le code devrait être:"
+
+#: wppa-ajax.php:53
+msgid "Exit & Refresh"
+msgstr ""
+
+#: wppa-album-covers.php:200 wppa-album-covers.php:395
+#: wppa-album-covers.php:565 wppa-non-admin.php:309
+msgid "Slideshow"
+msgstr "le diaporama"
+
+#: wppa-album-covers.php:200 wppa-album-covers.php:395
+#: wppa-album-covers.php:565
+msgid "Browse photos"
+msgstr "Visualiser les photos"
+
+#: wppa-album-covers.php:820
+msgid "Link to"
+msgstr "Lien vers"
+
+#: wppa-album-covers.php:844 wppa-album-covers.php:890
+#: wppa-album-covers.php:893
+msgid "View the album"
+msgstr "Visualiser l'album"
+
+#: wppa-album-covers.php:863
+msgid "View the cover photo"
+msgstr "Visualiser la photo de couverture"
+
+#: wppa-album-covers.php:864
+msgid "View the cover photos"
+msgstr "Visualiser les photos de couverture"
+
+#: wppa-album-covers.php:895
+msgid "View"
+msgstr "Visualiser"
+
+#: wppa-album-covers.php:898
+msgid "album"
+msgstr "album"
+
+#: wppa-album-covers.php:901
+msgid "albums"
+msgstr "albums"
+
+#: wppa-album-covers.php:910 wppa-boxes-html.php:246 wppa-breadcrumb.php:208
+#: wppa-breadcrumb.php:213 wppa-functions.php:3999 wppa-utils.php:1296
+msgid "and"
+msgstr "et"
+
+#: wppa-album-covers.php:915
+msgid "photo"
+msgstr "photo"
+
+#: wppa-album-covers.php:918 wppa-album-covers.php:922
+msgid "photos"
+msgstr "photos"
+
+#: wppa-album-widget.php:102
+#, php-format
+msgid "Upload at least %d photos to this album!"
+msgstr "Uploadez au moins %d photos dans cet album !"
+
+#: wppa-boxes-html.php:61
+msgid "Tagged photos"
+msgstr "Photos avec mots-clef"
+
+#: wppa-boxes-html.php:74
+msgid "Please select a tagcloud landing page in Table VI-C3b"
+msgstr ""
+"Veuillez sélectionner une page d'arrivée  pour le nuage de mots-clef dans "
+"la  Table VI-C3b"
+
+#: wppa-boxes-html.php:117
+msgid "Multi Tagged photos"
+msgstr "Photos avec mots-clef multiples"
+
+#: wppa-boxes-html.php:130
+msgid "Please select a multitag landing page in Table VI-C4b"
+msgstr ""
+"Veuillez sélectionner une page d'arrivée pour les mots-clef multiples dans "
+"la Table VI-C4b"
+
+#: wppa-boxes-html.php:163
+msgid "Please check the tag(s) that the photos must have"
+msgstr "Veuillez vérifier le/les mot(s) clef que les photos doivent avoir"
+
+#: wppa-boxes-html.php:185
+msgid "And"
+msgstr "Et"
+
+#: wppa-boxes-html.php:188
+msgid "Or"
+msgstr "Ou"
+
+#: wppa-boxes-html.php:215
+msgid "Find!"
+msgstr "Trouver !"
+
+#: wppa-boxes-html.php:246 wppa-utils.php:1296
+#, php-format
+msgid "See this image on %s"
+msgstr "Allez voir cette image sur %s"
+
+#: wppa-boxes-html.php:265
+#, php-format
+msgid "Share %s on Facebook"
+msgstr "Partager %s sur Facebook"
+
+#: wppa-boxes-html.php:269
+msgid "Share on Facebook"
+msgstr "Partager sur Facebook"
+
+#: wppa-boxes-html.php:307
+#, php-format
+msgid "Tweet %s on Twitter"
+msgstr "Tweet %s sur Twitter"
+
+#: wppa-boxes-html.php:310
+msgid "Share on Twitter"
+msgstr "Partager sur Pinterest"
+
+#: wppa-boxes-html.php:334
+#, php-format
+msgid "Share %s on Google+"
+msgstr "Partager %s sir Google+"
+
+#: wppa-boxes-html.php:338
+msgid "Share on Google+"
+msgstr "Partager sur Google+"
+
+#: wppa-boxes-html.php:349
+#, php-format
+msgid "Share %s on Pinterest"
+msgstr "Partager %s sur Pinterest"
+
+#: wppa-boxes-html.php:354
+msgid "Share on Pinterest"
+msgstr "Partager sur Pinterest"
+
+#: wppa-boxes-html.php:385
+msgid "Comment on Facebook:"
+msgstr "Commenter sur Facebook:"
+
+#: wppa-boxes-html.php:467
+#, fuzzy
+msgid "Create Album"
+msgstr "Impossible de créer l'album."
+
+#: wppa-boxes-html.php:477
+#, fuzzy
+msgid "Enter album name."
+msgstr "Entrer un nom de photo."
+
+#: wppa-boxes-html.php:477
+#, fuzzy
+msgid "Don't leave this blank!"
+msgstr ""
+"Si vous laisser cela vide, le nom de fichier original sera utilisé comme nom "
+"de photo."
+
+#: wppa-boxes-html.php:486
+#, fuzzy
+msgid "Enter album description"
+msgstr "Entrez / modifiez la description de cet album."
+
+#: wppa-boxes-html.php:497
+#, fuzzy
+msgid "Create album"
+msgstr "Impossible de créer l'album."
+
+#: wppa-boxes-html.php:521 wppa-boxes-html.php:535 wppa-functions.php:3769
+msgid "Max uploads reached"
+msgstr "Ajout maximum ateind"
+
+#: wppa-boxes-html.php:575
+msgid "Upload Photo"
+msgstr "Uploader une photo"
+
+#: wppa-boxes-html.php:605
+msgid "Please select an album and try again"
+msgstr "Veuillez sélectionner un album et recommencer"
+
+#: wppa-boxes-html.php:608
+#, fuzzy
+msgid "Upload photo"
+msgstr "Uploader une photo"
+
+#: wppa-boxes-html.php:614
+#, php-format
+msgid ""
+"You may upload up to %s photos at once if your browser supports HTML-5 "
+"multiple file upload"
+msgstr ""
+"Vous pouvez télécharger jusqu'à %s à la fois si votre navigateur prend en "
+"charge le téléchargement multiple de fichiers avec la technologie HTML-5"
+
+#: wppa-boxes-html.php:620
+#, php-format
+msgid "Max photo size: %d x %d (%2.1f MegaPixel)"
+msgstr "Taille photo max: %d x %d (%2.1f MegaPixel)"
+
+#: wppa-boxes-html.php:636
+msgid "Apply watermark file:"
+msgstr "Appliquer le filigrane:"
+
+#: wppa-boxes-html.php:648
+msgid "Position:"
+msgstr "Position:"
+
+#: wppa-boxes-html.php:665
+#, fuzzy
+msgid ""
+"If you leave this blank, iptc tag 005 (Graphic name) will be used as "
+"photoname if available, else the original filename will be used as photo "
+"name."
+msgstr ""
+"Si vous laisser cela vide, le nom de fichier original sera utilisé comme nom "
+"de photo."
+
+#: wppa-boxes-html.php:668
+#, fuzzy
+msgid ""
+"If you leave this blank, iptc tag 120 (Caption) will be used as photoname if "
+"available, else the original filename will be used as photo name."
+msgstr ""
+"Si vous laisser cela vide, le nom de fichier original sera utilisé comme nom "
+"de photo."
+
+#: wppa-boxes-html.php:671
+msgid ""
+"If you leave this blank, the original filename will be used as photo name."
+msgstr ""
+"Si vous laisser cela vide, le nom de fichier original sera utilisé comme nom "
+"de photo."
+
+#: wppa-boxes-html.php:675
+msgid "Enter photo name."
+msgstr "Entrer un nom de photo."
+
+#: wppa-boxes-html.php:683
+msgid "Enter/modify photo description"
+msgstr "Entrez/modifiez la description de la photo"
+
+#: wppa-boxes-html.php:732 wppa-functions.php:2371
+msgid "wrote:"
+msgstr "a écrit:"
+
+#: wppa-boxes-html.php:765 wppa-links.php:537
+msgid "Awaiting moderation"
+msgstr "En attente de modération"
+
+#: wppa-boxes-html.php:768
+msgid "Marked as spam"
+msgstr "Marqué comme indésirable"
+
+#: wppa-boxes-html.php:786
+msgid "Edit!"
+msgstr "Éditer !"
+
+#: wppa-boxes-html.php:790
+msgid "Send!"
+msgstr "Transmettre !"
+
+#: wppa-boxes-html.php:829
+msgid "Your name:"
+msgstr "Votre nom:"
+
+#: wppa-boxes-html.php:834
+msgid "Your email:"
+msgstr "Votre email:"
+
+#: wppa-boxes-html.php:839
+msgid "Your comment:"
+msgstr "Votre commentaire:"
+
+#: wppa-boxes-html.php:873
+#, php-format
+msgid "You must <a href=\"%s\">login</a> to enter a comment"
+msgstr "Vous devez vous<a href=\"%s\">connecter</a> pour entrer un commentaire"
+
+#: wppa-boxes-html.php:880
+#, php-format
+msgid "%d  comments"
+msgstr "%d commentaires"
+
+#: wppa-boxes-html.php:884
+msgid "Leave a comment"
+msgstr "Laisser un commentaire"
+
+#: wppa-boxes-html.php:952
+msgid "Show IPTC data"
+msgstr "Afficher les données IPTC"
+
+#: wppa-boxes-html.php:955
+msgid "Hide IPTC data"
+msgstr "Cacher les données IPTC"
+
+#: wppa-boxes-html.php:982
+msgid "No IPTC data"
+msgstr "Pas de données IPTC"
+
+#: wppa-boxes-html.php:1023
+msgid "Show EXIF data"
+msgstr "Afficher les données EXIF"
+
+#: wppa-boxes-html.php:1026
+msgid "Hide EXIF data"
+msgstr "Cacher les données EXIF"
+
+#: wppa-boxes-html.php:1053
+msgid "No EXIF data"
+msgstr "Pas de données EXIF"
+
+#: wppa-breadcrumb.php:71
+msgid "Home"
+msgstr "Accueil"
+
+#: wppa-breadcrumb.php:86
+msgid "Post:"
+msgstr "Billet:"
+
+#: wppa-breadcrumb.php:86
+msgid "Page:"
+msgstr "Page:"
+
+#: wppa-breadcrumb.php:98 wppa-breadcrumb.php:103
+msgid "Searchstring:"
+msgstr "Chaîne de recherche:"
+
+#: wppa-breadcrumb.php:100 wppa-breadcrumb.php:114 wppa-breadcrumb.php:132
+#: wppa-breadcrumb.php:150 wppa-breadcrumb.php:168 wppa-breadcrumb.php:186
+#: wppa-breadcrumb.php:198 wppa-breadcrumb.php:210 wppa-breadcrumb.php:222
+#: wppa-breadcrumb.php:241
+msgid "View the thumbnails"
+msgstr "Visualiser les miniatures"
+
+#: wppa-breadcrumb.php:112 wppa-breadcrumb.php:117
+#, php-format
+msgid "Photos by %s"
+msgstr "Photo de %s"
+
+#: wppa-breadcrumb.php:124 wppa-breadcrumb.php:142 wppa-breadcrumb.php:160
+#: wppa-breadcrumb.php:178 wppa-breadcrumb.php:256
+msgid "Various albums"
+msgstr "Divers albums"
+
+#: wppa-breadcrumb.php:126 wppa-breadcrumb.php:144 wppa-breadcrumb.php:162
+#: wppa-breadcrumb.php:180 wppa-breadcrumb.php:260
+msgid "Albums:"
+msgstr "Albums:"
+
+#: wppa-breadcrumb.php:126 wppa-breadcrumb.php:144 wppa-breadcrumb.php:162
+#: wppa-breadcrumb.php:180 wppa-breadcrumb.php:235 wppa-breadcrumb.php:260
+msgid "Album:"
+msgstr "Album:"
+
+#: wppa-breadcrumb.php:130 wppa-breadcrumb.php:135
+msgid "Top rated photos"
+msgstr "Photos les mieux cotées"
+
+#: wppa-breadcrumb.php:148 wppa-breadcrumb.php:153
+msgid "Recently uploaded photos"
+msgstr "Photos uploadées récemment"
+
+#: wppa-breadcrumb.php:166 wppa-breadcrumb.php:171 wppa-comment-widget.php:25
+msgid "Recently commented photos"
+msgstr "Photos commentées récemment"
+
+#: wppa-breadcrumb.php:184 wppa-breadcrumb.php:189 wppa-featen-widget.php:28
+msgid "Featured photos"
+msgstr "Photos à la une"
+
+#: wppa-breadcrumb.php:196 wppa-breadcrumb.php:201
+msgid "Related photos"
+msgstr "Photos relatives"
+
+#: wppa-breadcrumb.php:208 wppa-breadcrumb.php:213
+msgid "Tagged photos:"
+msgstr "Mot-Clé:"
+
+#: wppa-breadcrumb.php:208 wppa-breadcrumb.php:213
+msgid "or"
+msgstr "ou"
+
+#: wppa-breadcrumb.php:220 wppa-breadcrumb.php:225
+msgid "Category:"
+msgstr ""
+
+#: wppa-breadcrumb.php:239 wppa-breadcrumb.php:244
+msgid "Recently updated albums"
+msgstr "Photos mises à jour récemment"
+
+#: wppa-breadcrumb.php:254
+#, php-format
+msgid "Various albums by %s"
+msgstr "Divers albums de %s"
+
+#: wppa-breadcrumb.php:278
+msgid "Thumbnail view"
+msgstr "Vue vignette"
+
+#: wppa-breadcrumb.php:279
+msgid "Thumbs"
+msgstr "Miniatures"
+
+#: wppa-breadcrumb.php:364
+msgid "Unpublished"
+msgstr "Non publiés"
+
+#: wppa-cart.php:23
+msgid "Buy now"
+msgstr "Acheter tout de suite"
+
+#: wppa-cart.php:87
+#, php-format
+msgid "Unit Price: %s each"
+msgstr "Prix à l'unité: %s each"
+
+#: wppa-cart.php:91
+msgid "Qty:"
+msgstr "Quté:"
+
+#: wppa-comment-widget.php:83 wppa-featen-widget.php:93
+#: wppa-lasten-widget.php:84 wppa-potd-widget.php:78
+#: wppa-thumbnail-widget.php:89 wppa-topten-widget.php:106
+msgid "Photo not found."
+msgstr "Photo non trouvée."
+
+#: wppa-common-functions.php:816
+msgid "Default photo album for"
+msgstr "Album photo par défaut pour"
+
+#: wppa-common-functions.php:1193
+msgid "1 second"
+msgstr "1 seconde"
+
+#: wppa-common-functions.php:1194 wppa-functions.php:4000
+msgid "seconds"
+msgstr "secondes"
+
+#: wppa-common-functions.php:1198
+msgid "1 minute"
+msgstr "1 minute"
+
+#: wppa-common-functions.php:1199 wppa-functions.php:3999
+msgid "minutes"
+msgstr "minutes"
+
+#: wppa-common-functions.php:1203
+msgid "1 hour"
+msgstr "1 heure"
+
+#: wppa-common-functions.php:1204 wppa-functions.php:3998
+msgid "hours"
+msgstr "heures"
+
+#: wppa-common-functions.php:1208
+msgid "1 day"
+msgstr "1 jour"
+
+#: wppa-common-functions.php:1209 wppa-functions.php:3997
+msgid "days"
+msgstr "jours"
+
+#: wppa-common-functions.php:1213
+msgid "1 week"
+msgstr "1 semaine"
+
+#: wppa-common-functions.php:1214 wppa-functions.php:3996
+msgid "weeks"
+msgstr "semaines"
+
+#: wppa-common-functions.php:1218
+msgid "1 month"
+msgstr "1 mois"
+
+#: wppa-common-functions.php:1219
+msgid "months"
+msgstr "mois"
+
+#: wppa-common-functions.php:1222
+msgid "1 year"
+msgstr "1 an"
+
+#: wppa-common-functions.php:1223
+msgid "years"
+msgstr "ans"
+
+#: wppa-exif-iptc-common.php:59 wppa-exif-iptc-common.php:119
+msgid "n.a."
+msgstr "non disponible"
+
+#: wppa-exif-iptc-common.php:197
+msgid "Not Defined"
+msgstr "Non défini"
+
+#: wppa-exif-iptc-common.php:198
+msgid "Manual"
+msgstr "Manuel"
+
+#: wppa-exif-iptc-common.php:199
+msgid "Program AE"
+msgstr "Programme AE"
+
+#: wppa-exif-iptc-common.php:200
+msgid "Aperture-priority AE"
+msgstr "Priorité ouverture AR"
+
+#: wppa-exif-iptc-common.php:201
+msgid "Shutter speed priority AE"
+msgstr "Priorité vitesse d'obturation AE"
+
+#: wppa-exif-iptc-common.php:202
+msgid "Creative (Slow speed)"
+msgstr "Créatif (vitesse lente)"
+
+#: wppa-exif-iptc-common.php:203
+msgid "Action (High speed)"
+msgstr "Action (vitesse haute)"
+
+#: wppa-exif-iptc-common.php:204
+msgid "Portrait"
+msgstr "Portrait"
+
+#: wppa-exif-iptc-common.php:205
+msgid "Landscape"
+msgstr "Paysage"
+
+#: wppa-exif-iptc-common.php:206
+msgid "Bulb"
+msgstr "Ampoule électrique"
+
+#: wppa-exif-iptc-common.php:228
+msgid "Average"
+msgstr "Moyen"
+
+#: wppa-exif-iptc-common.php:229
+msgid "Center-weighted average"
+msgstr "Mesure centrale pondérée"
+
+#: wppa-exif-iptc-common.php:230
+msgid "Spot"
+msgstr "Faisceau"
+
+#: wppa-exif-iptc-common.php:231
+msgid "Multi-spot"
+msgstr "Multi-faisceaux"
+
+#: wppa-exif-iptc-common.php:232
+msgid "Multi-segment"
+msgstr "Multi-segments"
+
+#: wppa-exif-iptc-common.php:233
+msgid "Partial"
+msgstr "Partiel"
+
+#: wppa-exif-iptc-common.php:234
+msgid "Other"
+msgstr "Autre"
+
+#: wppa-exif-iptc-common.php:270
+msgid "No Flash"
+msgstr "Pas de flash"
+
+#: wppa-exif-iptc-common.php:272
+msgid "Fired"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:274
+msgid "Fired, Return not detected"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:276
+msgid "Fired, Return detected"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:278
+msgid "On, Did not fire"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:280
+msgid "On, Fired"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:282
+msgid "On, Return not detected"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:284
+msgid "On, Return detected"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:286
+msgid "Off, Did not fire"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:288
+msgid "Off, Did not fire, Return not detected"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:290
+msgid "Auto, Did not fire"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:292
+msgid "Auto, Fired"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:294
+msgid "Auto, Fired, Return not detected"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:296
+msgid "Auto, Fired, Return detected"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:298
+#, fuzzy
+msgid "No flash function"
+msgstr "Pas de flash"
+
+#: wppa-exif-iptc-common.php:300
+#, fuzzy
+msgid "Off, No flash function"
+msgstr "Pas de flash"
+
+#: wppa-exif-iptc-common.php:302
+msgid "Fired, Red-eye reduction"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:304
+msgid "Fired, Red-eye reduction, Return not detected"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:306
+msgid "Fired, Red-eye reduction, Return detected"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:308
+msgid "On, Red-eye reduction"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:310
+msgid "Red-eye reduction, Return not detected"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:312
+msgid "On, Red-eye reduction, Return detected"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:314
+msgid "Off, Red-eye reduction"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:316
+msgid "Auto, Did not fire, Red-eye reduction"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:318
+msgid "Auto, Fired, Red-eye reduction"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:320
+msgid "Auto, Fired, Red-eye reduction, Return not detected"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:322
+msgid "Auto, Fired, Red-eye reduction, Return detected"
+msgstr ""
+
+#: wppa-featen-widget.php:51
+msgid "View the featured photos"
+msgstr "Voir les photos à la une"
+
+#: wppa-functions.php:450
+msgid "No related photos found."
+msgstr "Aucune photo relative de trouvée."
+
+#: wppa-functions.php:679
+#, php-format
+msgid ""
+"There are %s albums found. Only the first %s will be shown. Please refine "
+"your search criteria."
+msgstr ""
+"Il y a %s albums découverts. Uniquement les  %s premiers seront affichés. "
+"Veuillez redéfinir vos critères de recherche."
+
+#: wppa-functions.php:967
+#, php-format
+msgid ""
+"There are %s photos found. Only the first %s will be shown. Please refine "
+"your search criteria."
+msgstr ""
+"Il y a %s photos découvertes. Seules les %s premières seront affichées. "
+"Veuillez redéfinir vos critères de recherches."
+
+#: wppa-functions.php:1244
+msgid "Edit"
+msgstr "Éditer"
+
+#: wppa-functions.php:1379
+msgid "Comment edited"
+msgstr "Commentaire édité"
+
+#: wppa-functions.php:1387
+msgid "Comment on photo:"
+msgstr "Commentaire sur la photo"
+
+#: wppa-functions.php:1394
+msgid "wrote on photo"
+msgstr "écrire sur les photos"
+
+#: wppa-functions.php:1396
+msgid "Moderate comment admin"
+msgstr "Admin modération de commentaire"
+
+#: wppa-functions.php:1397 wppa-functions.php:3850 wppa-upload.php:1041
+msgid "Moderate manage photo"
+msgstr "Gérer la modération de photo"
+
+#: wppa-functions.php:1398
+msgid "Edit photo"
+msgstr "Éditer photo"
+
+#: wppa-functions.php:1407
+msgid "You receive this email as you are assigned to moderate"
+msgstr "Vous avez reçu cet email car vous êtes modérateur"
+
+#: wppa-functions.php:1419
+msgid "You receive this email as administrator of the site"
+msgstr "Vous avez reçu cet email en tant qu'administrateur du site"
+
+#: wppa-functions.php:1436
+msgid "You receive this email as uploader of the photo"
+msgstr "Vous avez reçu cet email en tant qu'uploadeur de la photo"
+
+#: wppa-functions.php:1453
+msgid "You receive this email as owner of the album"
+msgstr "Vous avez reçu cet email en tant que gérant de l'album"
+
+#: wppa-functions.php:1460
+msgid "Comment added"
+msgstr "Commentaire ajouté"
+
+#: wppa-functions.php:1464
+msgid ""
+"Sorry, you gave a wrong answer.\\n\\nPlease try again to solve the "
+"computation."
+msgstr ""
+"Désolé, vous avez donné une mauvaise réponse.\\n\\nVeuillez essayé de "
+"résoudre l'équation à nouveau."
+
+#: wppa-functions.php:1474
+msgid "Could not process comment.\\nProbably timed out."
+msgstr ""
+"Impossible de traiter le commentaire.\\nProbablement que le temps est "
+"dépassé."
+
+#: wppa-functions.php:1555
+msgid "1 Comment"
+msgstr "1 commentaire"
+
+#: wppa-functions.php:1556
+#, php-format
+msgid "%s Comments"
+msgstr "%s commentaires"
+
+#: wppa-functions.php:1924
+msgid "<b>ERROR: Illegal attempt to enter a rating.</b>"
+msgstr "<b>ERREUR: Tentative incorrecte d'entrer une évaluation.</b>"
+
+#: wppa-functions.php:1937
+msgid "<b>ERROR: Illegal attempt to enter a comment.</b>"
+msgstr "<b>ERREUR: Tentative incorrecte d'entrer un commentaire.</b>"
+
+#: wppa-functions.php:2297 wppa-topten-widget.php:72
+msgid "View the top rated photos"
+msgstr "Voir les photos les mieux cotées"
+
+#: wppa-functions.php:3695
+#, fuzzy
+msgid "<b>ERROR: Illegal attempt to create an album.</b>"
+msgstr "<b>ERREUR: Tentative incorrecte d'entrer une évaluation.</b>"
+
+#: wppa-functions.php:3699
+#, fuzzy
+msgid "Wrong captcha, please try again"
+msgstr "Veuillez sélectionner un album et recommencer"
+
+#: wppa-functions.php:3706
+#, fuzzy, php-format
+msgid "Album #%s created"
+msgstr ""
+"Upload photos: Pour uploader vos photos dans un album que vous avez créé."
+
+#: wppa-functions.php:3707
+#, fuzzy
+msgid "Could not create album"
+msgstr "Impossible de créer l'album."
+
+#: wppa-functions.php:3713
+msgid "<b>ERROR: Illegal attempt to upload a file.</b>"
+msgstr "<b>ERREUR: tentative incorrecte de télécharger un fichier.</b>"
+
+#: wppa-functions.php:3751
+msgid "Photo successfully uploaded."
+msgstr "Photo uploadée avec succès."
+
+#: wppa-functions.php:3751
+#, php-format
+msgid "%s photos successfully uploaded."
+msgstr "%s photos uploadées avec succès."
+
+#: wppa-functions.php:3752
+#, php-format
+msgid "%s points added."
+msgstr "%s points ajoutés."
+
+#: wppa-functions.php:3755
+msgid "Upload failed"
+msgstr "Upload échoué"
+
+#: wppa-functions.php:3773
+msgid "Error during upload"
+msgstr "Erreur durant le téléchargement"
+
+#: wppa-functions.php:3778
+msgid "Uploaded file is not an image"
+msgstr "Le fichier téléchargé n'est pas une image"
+
+#: wppa-functions.php:3782
+#, php-format
+msgid ""
+"Only gif, jpg and png image files are supported. Returned filetype = %d."
+msgstr ""
+"Seulement les formats .GIF, .JPG et .PNG sont supportés. Type de fichier "
+"retourné= %d."
+
+#: wppa-functions.php:3789
+#, php-format
+msgid "The image is too big. Max photo size: %d x %d (%2.1f MegaPixel)"
+msgstr "L'image est trop grande. Taille max photo: %d x %d (%2.1f MegaPixel)"
+
+#: wppa-functions.php:3825
+msgid "Could not insert photo into db."
+msgstr "Impossible d'ajouter la photo dans la base de données"
+
+#: wppa-functions.php:3846 wppa-upload.php:1037
+#, php-format
+msgid "New photo uploaded: %s"
+msgstr "Nouvelle photo uploadée: %s"
+
+#: wppa-functions.php:3847 wppa-upload.php:1038
+#, php-format
+msgid "User %s uploaded photo %s into album %s"
+msgstr "L'utilisateur %s a uploadé la photo %s dans l'album %s"
+
+#: wppa-functions.php:3849 wppa-upload.php:1040
+msgid "This upload requires moderation"
+msgstr "Cet upload nécessite une modération"
+
+#: wppa-functions.php:3853 wppa-upload.php:1044
+msgid "Details:"
+msgstr "Détails:"
+
+#: wppa-functions.php:3854 wppa-upload.php:1045
+msgid "Manage photo"
+msgstr "Gérer photo"
+
+#: wppa-functions.php:3994
+msgid "You can upload after"
+msgstr "Vous pouvez charger après"
+
+#: wppa-functions.php:4032
+msgid "Zoom in"
+msgstr "Zoom in"
+
+#: wppa-lasten-widget.php:34
+msgid "Last Ten Uploaded Photos"
+msgstr "Dix dernières photos uploadées"
+
+#: wppa-lasten-widget.php:68
+msgid "View the most recent uploaded photos"
+msgstr "Voir les photos uploadées les plus récentes"
+
+#: wppa-links.php:477
+msgid "App"
+msgstr "App"
+
+#: wppa-links.php:478
+msgid "Mod"
+msgstr "Mod"
+
+#: wppa-links.php:479
+msgid "Del"
+msgstr "Supprimer"
+
+#: wppa-links.php:482 wppa-links.php:498
+msgid "Are you sure you want to publish this photo?"
+msgstr "Etes-vous sûr de vouloir publier cette photo ?"
+
+#: wppa-links.php:488 wppa-links.php:504
+msgid "Are you sure you want to remove this photo?"
+msgstr "Etes-vous sûr de vouloir supprimer cette photo ?"
+
+#: wppa-links.php:493 wppa-links.php:509
+msgid "Approve"
+msgstr "Approuver"
+
+#: wppa-links.php:494
+msgid "Moderate"
+msgstr "Modérer"
+
+#: wppa-links.php:495 wppa-links.php:512
+msgid "Delete"
+msgstr "Supprimer"
+
+#: wppa-links.php:510
+msgid "PhotoAdmin"
+msgstr "Admin Photo"
+
+#: wppa-links.php:511
+msgid "CommentAdmin"
+msgstr "Admin Commentaires"
+
+#: wppa-links.php:515
+msgid "Are you sure you want to publish this comment?"
+msgstr "Etes-vous sûr de vouloir publier ce commentaire ?"
+
+#: wppa-links.php:527
+msgid "Are you sure you want to remove this comment?"
+msgstr "Etes-vous sûr de vouloir supprimer ce commentaire ?"
+
+#: wppa-links.php:716 wppa-links.php:717
+msgid "Prev.&nbsp;page"
+msgstr "page&nbsp;préc."
+
+#: wppa-links.php:721 wppa-links.php:722
+msgid "Next&nbsp;page"
+msgstr "Page&nbsp;suiv."
+
+#: wppa-non-admin.php:310 wppa-slideshow.php:223
+msgid "Start"
+msgstr "Démarrer"
+
+#: wppa-non-admin.php:311
+msgid "Stop"
+msgstr "Arrêter"
+
+#: wppa-non-admin.php:312 wppa-slideshow.php:222
+msgid "Slower"
+msgstr "Ralentir"
+
+#: wppa-non-admin.php:313 wppa-slideshow.php:224
+msgid "Faster"
+msgstr "Accélérer"
+
+#: wppa-non-admin.php:314
+msgid "Photo"
+msgstr "Photo"
+
+#: wppa-non-admin.php:315
+msgid "of"
+msgstr "de"
+
+#: wppa-non-admin.php:316
+msgid "Previous photo"
+msgstr "Photo précédente"
+
+#: wppa-non-admin.php:317
+msgid "Next photo"
+msgstr "Photo suivante"
+
+#: wppa-non-admin.php:318
+msgid "Prev."
+msgstr "Préc."
+
+#: wppa-non-admin.php:319 wppa-slideshow.php:634
+msgid "Next"
+msgstr "Suiv."
+
+#: wppa-non-admin.php:320 wppa-slideshow.php:481 wppa-slideshow.php:485
+#: wppa-slideshow.php:527
+msgid "Average&nbsp;rating"
+msgstr "Évaluation&nbsp;moyenne"
+
+#: wppa-non-admin.php:321 wppa-slideshow.php:506 wppa-slideshow.php:511
+#: wppa-slideshow.php:516
+msgid "My&nbsp;rating"
+msgstr "Mon&nbsp;évaluation"
+
+#: wppa-non-admin.php:322
+msgid "Avg."
+msgstr "Moyen"
+
+#: wppa-non-admin.php:323
+msgid "Mine"
+msgstr "Mon"
+
+#: wppa-non-admin.php:324
+msgid "You marked this image as inappropriate."
+msgstr "Vous avez marqué cette image comme inappropriée."
+
+#: wppa-non-admin.php:326
+msgid "No dislikes"
+msgstr "aucun avis négatif"
+
+#: wppa-non-admin.php:327
+msgid "1 dislike"
+msgstr "un avis négatif"
+
+#: wppa-non-admin.php:328
+msgid "dislikes"
+msgstr "avis négatif"
+
+#: wppa-non-admin.php:329
+msgid "including mine"
+msgstr "en comptant le mien"
+
+#: wppa-non-admin.php:333
+msgid "Please enter your name"
+msgstr "SVP entrer votre nom"
+
+#: wppa-non-admin.php:334
+msgid "Please enter a valid email address"
+msgstr "SVP entrer une adresse email valide"
+
+#: wppa-non-admin.php:335
+msgid "Please enter a comment"
+msgstr "SVP entrer un commentaire"
+
+#: wppa-non-admin.php:376
+msgid "Double click to start/stop slideshow running"
+msgstr "Double-cliquez pour lancer/arrêter le diaporama"
+
+#: wppa-non-admin.php:382
+msgid "Download"
+msgstr "Telecharger"
+
+#: wppa-photo-admin-autosave.php:131
+#, fuzzy, php-format
+msgid "Photo %s has been removed."
+msgstr "Photo %s de %s"
+
+#: wppa-search-widget.php:36
+#, fuzzy
+msgid "Photo search results"
+msgstr ""
+"Veullez sélectionner une page d'arrivée des résultats de recherche dans la "
+"Table IX-C1"
+
+#: wppa-search-widget.php:42
+msgid "Please select a search results landing page in Table IX-C1"
+msgstr ""
+"Veullez sélectionner une page d'arrivée des résultats de recherche dans la "
+"Table IX-C1"
+
+#: wppa-slideshow-widget.php:116
+msgid "No album defined yet."
+msgstr "Pas encore d'album défini."
+
+#: wppa-slideshow.php:240
+msgid "Paused"
+msgstr "Pause"
+
+#: wppa-slideshow.php:245
+msgid ""
+"To see the full size images, you need to enable javascript in your browser."
+msgstr "Vous devez activer le Javascript pour voir les images pleine grandeur"
+
+#: wppa-slideshow.php:418
+msgid "- - - Voting enabled - - -"
+msgstr "- - - Vote activé - - -"
+
+#: wppa-slideshow.php:435 wppa-slideshow.php:519 wppa-slideshow.php:552
+#, php-format
+msgid "You must <a href=\"%s\">login</a> to vote"
+msgstr "Vous devez vous <a href=\"%s\">connecter</a> pour voter"
+
+#: wppa-slideshow.php:451
+msgid "- - - Rating enabled - - -"
+msgstr "- - - Évaluations activées - - -"
+
+#: wppa-slideshow.php:468
+msgid "very low"
+msgstr "très basse"
+
+#: wppa-slideshow.php:469
+msgid "low"
+msgstr "bas"
+
+#: wppa-slideshow.php:470
+msgid "average"
+msgstr "moyen"
+
+#: wppa-slideshow.php:471
+msgid "high"
+msgstr "haute"
+
+#: wppa-slideshow.php:472
+msgid "very high"
+msgstr "très haute"
+
+#: wppa-slideshow.php:499 wppa-slideshow.php:539
+msgid "Are you sure you want to mark this image as inappropriate?"
+msgstr "Etes-vous sûr de vouloir marquer cette image comme inappropriée ?"
+
+#: wppa-slideshow.php:500 wppa-slideshow.php:540
+msgid "Click this if you do NOT like this image!"
+msgstr "Cliquez ici si vous N'aimez PAS cette image !"
+
+#: wppa-slideshow.php:502 wppa-slideshow.php:542
+msgid "Nuber of people who marked this photo as inapprpriate"
+msgstr "Nombre de personnes qui ont marqué cette image comme inappropriée."
+
+#: wppa-slideshow.php:548
+msgid "My rating:"
+msgstr "Mon évaluation::"
+
+#: wppa-slideshow.php:630
+#, php-format
+msgid "%s back"
+msgstr "%s retour"
+
+#: wppa-slideshow.php:631
+msgid "Previous"
+msgstr "Précedent"
+
+#: wppa-slideshow.php:635
+#, php-format
+msgid "%s forward"
+msgstr "%s suivant"
+
+#: wppa-slideshow.php:751
+#, php-format
+msgid "Photo %s of %s"
+msgstr "Photo %s de %s"
+
+#: wppa-slideshow.php:782
+msgid "Click to start/stop"
+msgstr "Cliquer pour démarrer/arrêter"
+
+#: wppa-slideshow.php:794
+msgid "- - - Comments box activated - - -"
+msgstr "- - - Boîte de commentaires activée - - -"
+
+#: wppa-slideshow.php:815
+msgid "- - - IPTC box activated - - -"
+msgstr "- - - Boîte IPTC activée - - -"
+
+#: wppa-slideshow.php:835
+msgid "- - - EXIF box activated - - -"
+msgstr "- - - Boîte EXIF activée - - -"
+
+#: wppa-statistics.php:29
+msgid "There are"
+msgstr "Il y a"
+
+#: wppa-statistics.php:29
+msgid "photo albums. The last album added is"
+msgstr "album photos.  Le dernier album ajouté est"
+
+#: wppa-statistics.php:33
+msgid ", a subalbum of"
+msgstr ", un sous-album de"
+
+#: wppa-super-view-widget.php:35
+msgid "Super View Photos"
+msgstr "Photos en Super View"
+
+#: wppa-super-view-widget.php:41
+msgid "Please select a super view widget landing page in Table VI-C"
+msgstr ""
+"Veuillez sélectionner une page d'arrivée pour le widget super vue dans la "
+"Table VI-C "
+
+#: wppa-tagcloud-widget.php:36
+msgid "No tags defined yet"
+msgstr "Pas de mot clef défini pour le moment"
+
+#: wppa-thumbnail-widget.php:42
+msgid "Thumbnail photos"
+msgstr "Photos miniatures"
+
+#: wppa-topten-widget.php:38
+msgid "Top Ten Photos"
+msgstr "Dix meilleures photos"
+
+#: wppa-topten-widget.php:89
+#, php-format
+msgid "%s Votes"
+msgstr "%s votes"
+
+#: wppa-topten-widget.php:92 wppa-topten-widget.php:95
+#, php-format
+msgid "Views: %s times"
+msgstr "Vues: %s fois"
+
+#: wppa-upldr-widget.php:33
+msgid "User uploaded photos"
+msgstr "Photos uploadées par l'utilisateur"
+
+#: wppa-upldr-widget.php:83 wppa-upldr-widget.php:90
+msgid "Photos uploaded by"
+msgstr "Photos uploadées par"
+
+#: wppa-utils.php:220 wppa-utils.php:404
+msgid "none"
+msgstr "aucun"
+
+#: wppa-utils.php:246 wppa-utils.php:415
+msgid "unknown"
+msgstr "inconnu"
+
+#: wppa-utils.php:346
+msgid "--- none ---"
+msgstr "- - - aucun - - -"
+
+#: wppa-utils.php:350
+msgid "--- separate ---"
+msgstr "- - - séparé - - -"
+
+#: wppa-utils.php:354
+msgid "--- all ---"
+msgstr "--- tout ---"
+
+#: wppa-utils.php:358 wppa-utils.php:379
+msgid "--- deleted ---"
+msgstr "--- supprimer ---"
+
+#: wppa-utils.php:368
+msgid "All Albums"
+msgstr "Tous les albums"
+
+#: wppa-utils.php:459
+#, php-format
+msgid "Rating: %s"
+msgstr "Évaluation: %s"
+
+#: wppa-utils.php:749
+#, php-format
+msgid "The visitors email address is: <a href=\"mailto:%s\">%s</a>"
+msgstr "L'adresse email des visiteurs est: <a href=\"mailto:%s\">%s</a>"
+
+#: wppa-utils.php:755
+#, php-format
+msgid "The visitor says his email address is: <a href=\"mailto:%s\">%s</a>"
+msgstr ""
+"Le visiteur dit que son adresse email est: <a href=\"mailto:%s\">%s</a>"
+
+#: wppa-utils.php:760
+#, php-format
+msgid ""
+"This message is automaticly generated at %s. It is useless to respond to it."
+msgstr ""
+"Ce message est automatiquement généré à %s. Il est inutile d'y répondre."
+
+#: theme/wppa-theme.php:99 theme/wppa-theme.php:118
+msgid "No photos found matching your search criteria."
+msgstr "Aucune  photo de trouvée correspondant à vos critères de recherche."
+
+#: theme/wppa-theme.php:102
+msgid "No albums found matching your search criteria."
+msgstr "Aucun album trouvé correspondant à vos critères de recherche."
+
+#: theme/wppa-theme.php:105
+msgid "No albums or photos found matching your search criteria."
+msgstr "Aucun album ou photo trouvé correspondant à vos critères de recherche."
+
+#~ msgid "Upload"
+#~ msgstr "Upload"
+
+#~ msgid "Tip %s on Hyves"
+#~ msgstr "Tip %s sur Hyves"
+
+#~ msgid "Share on Hyves"
+#~ msgstr "Partager sur Pinterest"
+
+#~ msgid "All albums"
+#~ msgstr "Tous les albums"
+
+#~ msgid "<b>ERROR: Attempt to enter an invalid rating.</b>"
+#~ msgstr "<b>ERREUR: Tentative d'entrer une évaluation invalide.</b>"
+
+#~ msgid "Upload Photo(s)"
+#~ msgstr "Charger une(des) Photo(s)"
+
+#~ msgid "Click to browse in fullsize"
+#~ msgstr "Cliquer pour visualiser en plein écran"
+
+#~ msgid "Image"
+#~ msgstr "Image"
+
+#~ msgid "Page is not available."
+#~ msgstr "Page non disponible."
+
+#, fuzzy
+#~ msgid "Sidebar Slideshow"
+#~ msgstr "Widget"
+
+#, fuzzy
+#~ msgid "View the cover phots"
+#~ msgstr "Voir la photo de couverture"
+
+#~ msgid "s"
+#~ msgstr "s"
+
+#~ msgid "Warning:"
+#~ msgstr "Attention:"
+
+#~ msgid ""
+#~ "The uploads directory does not exist or is not writable by the server. "
+#~ "Please make sure that <tt>wp-content/uploads/</tt> is writeable by the "
+#~ "server."
+#~ msgstr ""
+#~ "Le répertoire d'upload n'existe pas ou n'est pas accessible en écriture "
+#~ "par le serveur. Veuillez vous assurez-vous que <tt>wp-content/uploads/</"
+#~ "tt> est accessible en écriture par le serveur."
+
+#~ msgid "Photo Deleted."
+#~ msgstr "Photo Supprimée."
+
+#~ msgid "Edit Ablum Information"
+#~ msgstr "Modifier les informations de l'album"
+
+#~ msgid "Album number:"
+#~ msgstr "Numéro Album:"
+
+#~ msgid "Name:"
+#~ msgstr "Nom:"
+
+#~ msgid "Type the name of the album. Do not leave this empty."
+#~ msgstr "Entrez le nom de l'album. Ne pas laisser ce champ vide."
+
+#~ msgid "Sort order #:"
+#~ msgstr "Ordre de tri #:"
+
+#~ msgid ""
+#~ "If you want to sort the albums by order #, enter / modify the order "
+#~ "number here."
+#~ msgstr ""
+#~ "Si vous souhaitez trier les albums par ordre #, entrer / modifier le "
+#~ "numéro d'ordre ici."
+
+#~ msgid "Parent album:"
+#~ msgstr "Album parent:"
+
+#~ msgid ""
+#~ "If this is a sub album, select the album in which this album will appear."
+#~ msgstr ""
+#~ "S'il s'agit d'un sous-album, sélectionner l'album dans lequel cet album "
+#~ "apparaît."
+
+#~ msgid "Photo order:"
+#~ msgstr "Ordre des photos:"
+
+#~ msgid "Specify the way the photos should be ordered in this album."
+#~ msgstr ""
+#~ "Spécifiez la manière dont les photos devraient être classés dans cet "
+#~ "album."
+
+#~ msgid "The default setting can be changed in the Options page."
+#~ msgstr "Le réglage par défaut peut être modifié dans la page Options."
+
+#~ msgid "Cover Photo:"
+#~ msgstr "Photo de couverture:"
+
+#~ msgid "Select the photo you want to appear on the cover of this album."
+#~ msgstr ""
+#~ "Sélectionnez la photo que vous souhaitez voir apparaître sur la "
+#~ "couverture de cet album."
+
+#~ msgid "Link to:"
+#~ msgstr "Lien vers:"
+
+#~ msgid "There are no pages (yet) to link to."
+#~ msgstr "Il n'y a pas (encore) de page vers lesquelles pointer."
+
+#~ msgid "--- the album's content ---"
+#~ msgstr "--- contenu de l'album ---"
+
+#~ msgid ""
+#~ "If you want, you can link the title and the coverphoto to a WP page in "
+#~ "stead of the album's content. If so, select the page the cover photo "
+#~ "links to."
+#~ msgstr ""
+#~ "Si vous le souhaitez, vous pouvez lier le titre et la photo de couverture "
+#~ "à une page de WP au lieu du contenu de l'album. Si oui, sélectionnez la "
+#~ "page vers laquelle la photo de couverture doit pointer."
+
+#~ msgid "Delete Album"
+#~ msgstr "Supprimer Album"
+
+#~ msgid "Press Delete to continue, and Cancel to go back."
+#~ msgstr ""
+#~ "Appuyez sur Supprimer pour continuer, ou Annuler pour revenir en arrière."
+
+#~ msgid "What would you like to do with photos currently in the album?"
+#~ msgstr "Que voulez-vous faire avec les photos actuellement dans l'album?"
+
+#~ msgid "Move to:"
+#~ msgstr "Déplacer vers:"
+
+#~ msgid "Cancel"
+#~ msgstr "Annuler"
+
+#~ msgid "Manage Albums"
+#~ msgstr "Gérer Albums"
+
+#~ msgid "Create New Album"
+#~ msgstr "Créer un nouvel album"
+
+#~ msgid "Type the name of the new album. Do not leave this empty."
+#~ msgstr "Entrez le nom du nouvel album. Ne pas laisser ce champ vide."
+
+#~ msgid "Order #:"
+#~ msgstr "Ordre #:"
+
+#~ msgid ""
+#~ "If you want to sort the albums by order #, enter the order number here."
+#~ msgstr ""
+#~ "Si vous souhaitez trier les albums par ordre #, entrez le numéro d'ordre "
+#~ "ici."
+
+#~ msgid "Order photos by:"
+#~ msgstr "Trier les photos par:"
+
+#~ msgid ""
+#~ "If you want to sort the photos in this album different from the system "
+#~ "setting, select the order method here."
+#~ msgstr ""
+#~ "Si vous souhaitez trier les photos de cet album différemment de la "
+#~ "configuration du système, sélectionnez la méthode de tri ici."
+
+#~ msgid ""
+#~ "You can change all these settings later by clicking the \"Edit\" link in "
+#~ "the table above."
+#~ msgstr ""
+#~ "Vous pourrez changer tous ces paramètres plus tard en cliquant sur le "
+#~ "lien \"Modifier\" dans le tableau ci-dessus."
+
+#~ msgid "Selected Files:"
+#~ msgstr "Fichiers sélectionnés:"
+
+#~ msgid "No albums exist. You must"
+#~ msgstr "Aucun album n'existe. Vous devez"
+
+#~ msgid "create one"
+#~ msgstr "en créer un"
+
+#~ msgid "beofre you can upload your photos."
+#~ msgstr "avant de vouloir uploader vos photos."
+
+#~ msgid "Cover photo size."
+#~ msgstr "Taille de la photo de couverture."
+
+#~ msgid "Regenerating thumbnail images, starting at"
+#~ msgstr "Régénération de vignettes, à partir de"
+
+#~ msgid "please wait."
+#~ msgstr "merci de patienter."
+
+#~ msgid ""
+#~ "If the line of dots stops growing and you do not get a <strong>READY</"
+#~ "strong> message, please continue this action by clicking"
+#~ msgstr ""
+#~ "Si la ligne de points cesse de croître et que vous n'obtenez pas un "
+#~ "<strong>READY</ strong>, veuillez continuer cette action en cliquant sur"
+
+#~ msgid "HERE"
+#~ msgstr "ICI"
+
+#~ msgid "and click \"Save Changes\" again."
+#~ msgstr "et cliquez sur \"Enregistrer les modifications\" à nouveau."
+
+#~ msgid "READY regenerating thumbnail images."
+#~ msgstr "PRET à regénérer les vignettes."
+
+#~ msgid "Photocount treshold."
+#~ msgstr "Seuil d'affichage."
+
+#~ msgid "Full size."
+#~ msgstr "Taille réelle."
+
+#~ msgid "Changes Saved"
+#~ msgstr "Modifications enregistrées."
+
+#~ msgid ""
+#~ "Regeneration of thumbnail images interrupted. Please press \"Save Changes"
+#~ "\""
+#~ msgstr ""
+#~ "La regénération des vignettes a été interrompue. Merci de cliquer sur "
+#~ "\"Enregistrer les modifications\""
+
+#~ msgid "WP Photo Album Plus Settings"
+#~ msgstr "Options de WP Photo Album Plus"
+
+#~ msgid "Database revision:"
+#~ msgstr "Révision de la base de données:"
+
+#~ msgid "Full Size:"
+#~ msgstr "Taille réelle:"
+
+#~ msgid ""
+#~ "The size of the full images is controled with html, the photo itself will "
+#~ "not be resized."
+#~ msgstr ""
+#~ "La taille des grandes images est contrôlée par html, la photo elle-même "
+#~ "n'est pas redimmensionnée."
+
+#~ msgid "Enlarge if needed:"
+#~ msgstr "Agrandir si nécessaire:"
+
+#~ msgid ""
+#~ "Fullsize images will be enlarged to the Full Size if needed. Leaving "
+#~ "unchecked is recommended. It is better to upload photos that fit well the "
+#~ "sizes you use!"
+#~ msgstr ""
+#~ "Les images de taille réelle seront agrandies vers la taille réelle si "
+#~ "nécessaire. Il est recommandé de laisser la case non cochée. Il est "
+#~ "préférable de télécharger des photos qui correspondent bien la taille que "
+#~ "vous utilisez!"
+
+#~ msgid ""
+#~ "Changing the thumbnail size may result in all thumbnails being "
+#~ "regenerated. this may take a while."
+#~ msgstr ""
+#~ "Changer la taille des vignettes peut entraîner que toutes les vignettes "
+#~ "soient régénérer. Cela peut prendre un certain temps."
+
+#~ msgid "Vertical alignment:"
+#~ msgstr "Alignement vertical:"
+
+#~ msgid "center"
+#~ msgstr "milieu"
+
+#~ msgid "bottom"
+#~ msgstr "bas"
+
+#~ msgid ""
+#~ "Specify the vertical alignment of thumbnail images. Use this setting only "
+#~ "when albums contain both portrait and landscape photos."
+#~ msgstr ""
+#~ "Spécifier l'alignement vertical des vignettes. Utilisez ce paramètre "
+#~ "uniquement lorsque des albums contiennent à la fois des portraits et des "
+#~ "photos en mode paysage."
+
+#~ msgid "Coverphoto Size:"
+#~ msgstr "Taille de la photo de couverture:"
+
+#~ msgid ""
+#~ "Changing the coverphoto size may result in all thumbnails being "
+#~ "regenerated. this may take a while."
+#~ msgstr ""
+#~ "Changer la taille de la photo de couverture peut entraîner que toutes les "
+#~ "vignettes soient régénérer. Cela peut prendre un certain temps."
+
+#~ msgid "Photocount treshold:"
+#~ msgstr "Seuil d'affichage:"
+
+#~ msgid ""
+#~ "Photos do not show up in the album unless there are more than this number "
+#~ "of photos in the album. This allows you to have cover photos on an album "
+#~ "that contains only sub albums without seeing them in the list of sub "
+#~ "albums. Usually set to 0 (always show) or 1 (for one cover photo)."
+#~ msgstr ""
+#~ "Les photos ne s'affichent pas dans l'album à moins qu'il n'existe plus de "
+#~ "ce nombre de photos dans l'album. Cela vous permet d'avoir des photos de "
+#~ "couverture sur un album qui contient seulement des sous-albums, sans les "
+#~ "voir dans la liste des sous-albums. Habituellement mettre la valeur 0 "
+#~ "(Toujours afficher) ou 1 (pour une photo de couverture)."
+
+#~ msgid "Album order:"
+#~ msgstr "Ordre Album:"
+
+#~ msgid "Specify the way the albums should be ordered."
+#~ msgstr "Spécifiez la manière dont les albums doivent être ordonnés."
+
+#~ msgid "Descending:"
+#~ msgstr "Descendant:"
+
+#~ msgid "If checked: largest first"
+#~ msgstr "Si coché: la plus grande en premier"
+
+#~ msgid ""
+#~ "Specify the way the photos should be ordered. This is the default "
+#~ "setting. You can overrule the default sorting order on a per album basis."
+#~ msgstr ""
+#~ "Spécifiez la manière dont les photos doivent être ordonnées. C'est le "
+#~ "réglage par défaut. Vous pouvez annuler l'ordre de tri par défaut sur une "
+#~ "base par album."
+
+#~ msgid "This is a system wide setting."
+#~ msgstr "Il s'agit d'un système de réglage de largeur."
+
+#~ msgid "Show breadcrumb:"
+#~ msgstr "Afficher le chemin de fer:"
+
+#~ msgid "Indicate whether a breadcrumb navigation should be displayed"
+#~ msgstr "Indiquez si un chemin de fer de navigation doit être affiché"
+
+#~ msgid "Show \"Home\" in breadcrumb:"
+#~ msgstr "Afficher \"Home\" dans le chemin de fer:"
+
+#~ msgid ""
+#~ "Indicate whether the breadcrumb navigation should start with a \"Home\"-"
+#~ "link"
+#~ msgstr ""
+#~ "Indiquez si le chemin de fer de navigation doit démarrer par un lien "
+#~ "\"Home\""
+
+#~ msgid "Access Level:"
+#~ msgstr "Niveau d'accès:"
+
+#~ msgid "Administrator"
+#~ msgstr "Administrateur"
+
+#~ msgid "Editor"
+#~ msgstr "Editeur"
+
+#~ msgid "Author"
+#~ msgstr "Auteur"
+
+#~ msgid "Contributor"
+#~ msgstr "Contributeur"
+
+#~ msgid "The minmum user level that can access the photo album admin."
+#~ msgstr ""
+#~ "Le niveau d'accès minimum qui peut accéder à l'administration de WP Photo "
+#~ "Album"
+
+#~ msgid "Widget Photo Width."
+#~ msgstr "Largeur Photo Widget."
+
+#~ msgid "Changes Saved. Don't forget to activate the widget!"
+#~ msgstr "Modifications enregistrées. N'oubliez pas d'activer le widget!"
+
+#~ msgid "WP Photo Album Plus Sidebar Widget Settings"
+#~ msgstr "Options de la barre latéral du widget WP Photo Album Plus"
+
+#~ msgid "Widget Title:"
+#~ msgstr "Titre Widget:"
+
+#~ msgid "Enter the caption to be displayed for the widget."
+#~ msgstr "Entrez la légende à afficher pour le widget."
+
+#~ msgid "Widget Photo Width:"
+#~ msgstr "Largeur Photo Widget:"
+
+#~ msgid "Enter the desired display width of the photo in the sidebar."
+#~ msgstr ""
+#~ "Entrez la largeur d'affichage souhaitée de la photo dans la barre "
+#~ "latérale."
+
+#~ msgid "Use album:"
+#~ msgstr "Utilisez album:"
+
+#~ msgid "Select the album that contains the widget photos."
+#~ msgstr "Sélectionnez l'album qui contient les photos widget."
+
+#~ msgid "Display method:"
+#~ msgstr "Méthode d'affichage:"
+
+#~ msgid "Fixed photo"
+#~ msgstr "Photo fixe"
+
+#~ msgid "Random"
+#~ msgstr "Aléatoire"
+
+#~ msgid "Last upload"
+#~ msgstr "Dernier upload"
+
+#~ msgid "Change every"
+#~ msgstr "Changer tous les"
+
+#~ msgid "Select how the widget should display."
+#~ msgstr "Sélectionnez la façon dont le widget doit s'afficher."
+
+#~ msgid "Select the page the photo links to."
+#~ msgstr "Sélectionnez la page vers laquelle la photo pointe."
+
+#~ msgid "Subtitle:"
+#~ msgstr "Sous-titre:"
+
+#~ msgid "Description"
+#~ msgstr "Description"
+
+#~ msgid "Select the content of the subtitle."
+#~ msgstr "Sélectionnez le contenu des sous-titres."
+
+#~ msgid "Help and Information"
+#~ msgstr "Aide et information"
+
+#~ msgid "Plugin Description"
+#~ msgstr "Description du plugin"
+
+#~ msgid ""
+#~ "This plugin is designed to easily manage and display your photo albums "
+#~ "within your WordPress site."
+#~ msgstr ""
+#~ "Ce plugin est conçu pour facilement gérer et afficher vos albums photos "
+#~ "sur votre site WordPress."
+
+#~ msgid "Features:"
+#~ msgstr "Caractéristiques:"
+
+#~ msgid ""
+#~ "You can create various albums that contain photos as well as sub albums "
+#~ "at the same time."
+#~ msgstr ""
+#~ "Vous pouvez créer des albums différents qui contiennent des photos ainsi "
+#~ "que des albums sous en même temps."
+
+#~ msgid "There is no limitation to the number of albums and photos."
+#~ msgstr "Il n'y a aucune limite au nombre d'albums et de photos."
+
+#~ msgid "There is no limitation to the nesting depth of sub-albums."
+#~ msgstr ""
+#~ "Il n'y a pas de limitation dans la profondeur d'imbrication des sous-"
+#~ "albums."
+
+#~ msgid "You have full control over the display sizes of the photos."
+#~ msgstr "Vous avez le plein contrôle sur la taille d'affichage des photos."
+
+#~ msgid "You can specify the way the albums are ordered."
+#~ msgstr "Vous pouvez spécifier la manière dont les albums sont ordonnés."
+
+#~ msgid ""
+#~ "You can specify the way the photos are ordered within the albums, both on "
+#~ "a system-wide as well as an per album basis."
+#~ msgstr ""
+#~ "Vous pouvez spécifier la manière dont les photos sont classés dans les "
+#~ "albums, les deux sur une échelle du système ainsi que sur une base par "
+#~ "album."
+
+#~ msgid ""
+#~ "The visitor of your site can run a slideshow from the photos in an album "
+#~ "by a single mouseclick."
+#~ msgstr ""
+#~ "Le visiteur de votre site peut lancer un diaporama de photos dans un "
+#~ "album via un simple clic de souris."
+
+#~ msgid ""
+#~ "The visitor can see an overview of thumbnail images of the photos in "
+#~ "album."
+#~ msgstr ""
+#~ "Le visiteur peut voir un aperçu des vignettes des photos dans l'album."
+
+#~ msgid ""
+#~ "The visitor can browse through the photos in each album you decide to "
+#~ "publish."
+#~ msgstr ""
+#~ "Le visiteur peut parcourir les photos dans chaque album que vous avez "
+#~ "décidé de publier."
+
+#~ msgid ""
+#~ "You can add a Sidebar Widget that displays a photo which can be changed "
+#~ "every hour, day or week."
+#~ msgstr ""
+#~ "Vous pouvez ajouter un widget qui affiche une barre latérale avec des "
+#~ "photos qui peuvent être changées à chaque heure, jour ou semaine...."
+
+#~ msgid "Plugin Admin Features"
+#~ msgstr "Caractéristiques d'administration du plugin"
+
+#~ msgid ""
+#~ "You can find the plugin admin section under Menu Photo Albums on the "
+#~ "admin screen."
+#~ msgstr ""
+#~ "Vous pouvez trouver la section d'administration du plugin dans un menu "
+#~ "spécifique : \"Albums photo\"."
+
+#~ msgid "The following submenus exist."
+#~ msgstr "Les sous-menus suivants existent."
+
+#~ msgid "Photo Albums: Create and manage Albums."
+#~ msgstr "Albums Photo: Créer et gérer des albums."
+
+#~ msgid "Upload photos: To upload photos to an album you created."
+#~ msgstr ""
+#~ "Upload photos: Pour uploader vos photos dans un album que vous avez créé."
+
+#~ msgid "Settings: To control the various settings to customize your needs."
+#~ msgstr ""
+#~ "Options: Pour contrôler les différentes options afin de personnaliser vos "
+#~ "besoins."
+
+#~ msgid ""
+#~ "Sidebar Widget: To specify the behaviour for an optional sidebar widget."
+#~ msgstr "Widget: Pour spécifier le comportement du widget en option."
+
+#~ msgid "Help & Info: The screen you are watching now."
+#~ msgstr "Aide & Info: L'écran que vous êtes en train de lire."
+
+#~ msgid "Installation"
+#~ msgstr "Installation"
+
+#~ msgid "Unzip and upload the wppa plugin folder to"
+#~ msgstr "Dezipper and uploader le dossier du plugin wppa vers"
+
+#~ msgid "Make sure that the folder"
+#~ msgstr "Soyez sûr que le dossier"
+
+#~ msgid "exists and is writable by the server (CHMOD 755)"
+#~ msgstr "existe et est accessible en écriture par le serveur (CHMOD 755)"
+
+#~ msgid "Activate the plugin in WP Admin -> Plugins."
+#~ msgstr "Activer le plugin dans l'administration WP -> Extensions."
+
+#~ msgid "Upgrading from WP Photo Album"
+#~ msgstr "Mettre à jour depuis WP Photo Album"
+
+#~ msgid ""
+#~ "When upgrading from WP Photo Album to WP Photo Album Plus be aware of:"
+#~ msgstr ""
+#~ "Lorsque vous passez de WP Album Photo à WP Album Photo Plus, lisez "
+#~ "attentivement ceci:"
+
+#~ msgid ""
+#~ "First de-activate WP Photo Album before activating WP Photo Album Plus!!"
+#~ msgstr ""
+#~ "D'abord, désactiver WP Photo Album avant d'activer WP Photo Album Plus!!"
+
+#~ msgid "YOU CAN NOT RUN BOTH VERSIONS AT THE SAME TIME!!"
+#~ msgstr "VOUS NE POUVEZ PAS EXECUTER LES DEUX VERSIONS EN MEME TEMPS!!"
+
+#~ msgid "The existing database and albums and photos will be preserved."
+#~ msgstr ""
+#~ "La base de données existante, les albums et les photos seront préservés."
+
+#~ msgid "YOU DO NOT NEED TO RE-UPLOAD YOUR PHOTOS"
+#~ msgstr "VOUS N'AVEZ PAS BESOIN DE RE-UPLOADER VOS PHOTOS"
+
+#~ msgid ""
+#~ "You will need to use (and probably modify) the newly supplied default "
+#~ "theme file \"wppa_theme.php\"."
+#~ msgstr ""
+#~ "Vous aurez besoin d'utiliser (et probablement modifier) le nouveau "
+#~ "fichier du thème par défaut fourni : \"wppa_theme.php\"."
+
+#~ msgid ""
+#~ "You can use existing albums to make sub-albums, simply by specifying in "
+#~ "which album they belong."
+#~ msgstr ""
+#~ "Vous pouvez utiliser des albums existants pour créer des sous-albums, "
+#~ "simplement en spécifiant à quel album ils appartiennent."
+
+#~ msgid "How to start"
+#~ msgstr "Comment démarrer"
+
+#~ msgid ""
+#~ "Install WP Photo ALbum Plus as described above under \"Installation\"."
+#~ msgstr ""
+#~ "Installer WP Photo ALbum Plus comme décrit au dessous de \"Installation\"."
+
+#~ msgid ""
+#~ "Create at least two albums in the \"Photo Albums\" tab. Just enter the "
+#~ "name and a brief description and press \"Create Album\". Leave \"Parent\" "
+#~ "at \"--- none ---\"."
+#~ msgstr ""
+#~ "Créer au moins deux albums dans l'onglet \"Albums photos\". Il suffit "
+#~ "d'entrer le nom et une brève description puis d'appuyez sur \"Créer Album"
+#~ "\". Laissez \" Parent\" à \" --- aucun ---\"."
+
+#~ msgid ""
+#~ "In the uploads tab, you can now upload you photots. Upload at least 2 "
+#~ "photos to each album. Make sure the photos you are uploading are of "
+#~ "reasonable size (say up to 1024x768 pixels). Do not upload the full 7MP "
+#~ "images!"
+#~ msgstr ""
+#~ "Dans l'onglet d'upload, vous pouvez maintenant uploader vous photos. "
+#~ "Uploadez au moins 2 photos à chaque album. Assurez-vous que les photos "
+#~ "que vous uploadez sont de taille raisonnable (disons jusqu'à 1024x768 "
+#~ "pixels). Ne pas uploader des images 7 MPixels!"
+
+#~ msgid ""
+#~ "Create a new WP Page, name it something like \"Photo Gallery\" and put in "
+#~ "the content:"
+#~ msgstr ""
+#~ "Créer une nouvelle page WP, nommez-la avec quelque chose comme \"Gallerie "
+#~ "Photo\" and placez ceci dans le contenu:"
+
+#~ msgid "Publish the page, and view the page from your WP site."
+#~ msgstr "Publiez la page, et visualisez la page depuis votre site WP."
+
+#~ msgid ""
+#~ "Now, go playing with the settings in the \"Settings\" panel, discover all "
+#~ "the configurable options and watch what is happening when you re-open the "
+#~ "\"Photo Gallery\" page."
+#~ msgstr ""
+#~ "Maintenant, allez jouer avec les options du menu \"Options\", découvrez "
+#~ "toutes les options configurables et regarder ce qui se passe lorsque vous "
+#~ "ré-ouvrez la page \"Gallerie Photo\"."
+
+#~ msgid ""
+#~ "If you want a \"Photo of the week\" sidebar widget you can use an album "
+#~ "for that purpose. See all the options in the \"Sidebar Widget\" submenu."
+#~ msgstr ""
+#~ "Si vous voulez mettre une \"Photo de la semaine\" dans votre barre "
+#~ "latérale, vous pouvez utiliser un album à cette fin. Voir toutes les "
+#~ "options dans le sous-menu \"Widget\"."
+
+#~ msgid "Creating a Photo Album Page or a Post with photos - Advanced"
+#~ msgstr "Créer une page Album Photo ou un article avec des photos - Avancé"
+
+#~ msgid ""
+#~ "Create a page like you normally would in WordPress, using the \"Default "
+#~ "Template\". In my example, give it the page title of \"Photo Gallery\". "
+#~ "In the Page Content section add the following code:"
+#~ msgstr ""
+#~ "Créer une page comme vous le feriez normalement dans WordPress, en "
+#~ "utilisant le \"Modèle par défaut\". Pour mon exemple, donnez-lui le titre "
+#~ "de la page de la \"Gallerie Photo\". Dans la section de contenu de la "
+#~ "page ajoutez le code suivant:"
+
+#~ msgid ""
+#~ "This will result in a gallery of all Albums that have their parent set to "
+#~ "\"--- none ---\"."
+#~ msgstr ""
+#~ "Cela se traduira par une galerie de tous les albums qui ont leurs parents "
+#~ "réglé sur \" --- aucun ---\"."
+
+#~ msgid ""
+#~ "If you want to display a single album - say album number 19 - in a WP "
+#~ "page or WP post (they act exactly the same), add a second line like this:"
+#~ msgstr ""
+#~ "Si vous souhaitez afficher un seul album - par exemple l'album n° 19 - "
+#~ "dans une page WP ou dans un article WP (ils agissent exactement de la "
+#~ "même manière), ajouter une deuxième ligne comme ceci:"
+
+#~ msgid "This will result in the display of the"
+#~ msgstr "Cela se traduira par l'affichage du"
+
+#~ msgid "of album nr 19."
+#~ msgstr "de l'album n° 19."
+
+#~ msgid "If you want to display the"
+#~ msgstr "Si vous souhaitez affiche la"
+
+#~ msgid "\"cover\""
+#~ msgstr "\"couverture\""
+
+#~ msgid ""
+#~ "of the album, i.e. like one of the albums in the \"Photo Gallery\" as "
+#~ "used above, add (instead of \"%%album=...\") a second line like this:"
+#~ msgstr ""
+#~ "de l'album, c'est à dire comme l'un des albums dans la \"Gallerie Photo\" "
+#~ "utilisé ci-dessus, ajoutez (au lieu de \"%%album=...\"), une deuxième "
+#~ "ligne comme ceci:"
+
+#~ msgid ""
+#~ "Alternatively, you can create an extra album (say it has number 22) and "
+#~ "set the \"parent\" property of album 19 to this new album. Then your "
+#~ "second line should read:"
+#~ msgstr ""
+#~ "Alternativement, vous pouvez créer un album supplémentaire (disons qu'il "
+#~ "a le numéro 22) et réglez la la propriété \"parent\" de l'album de 19 à "
+#~ "ce nouvel album. Ensuite, votre deuxième ligne doit se lire:"
+
+#~ msgid ""
+#~ "This method enables you to add more than one album to a specific page or "
+#~ "post as long as they have the same parent."
+#~ msgstr ""
+#~ "Cette méthode vous permet d'ajouter plus d'un album à une page spécifique "
+#~ "ou par article aussi longtemps qu'ils ont le même parent."
+
+#~ msgid ""
+#~ "Additionally, if you set the parent of this album (nr 22 in this example) "
+#~ "to \"--- separate ---\", it will not be listed in the \"generic\" photo "
+#~ "gallery and the breadcrumb will display the best."
+#~ msgstr ""
+#~ "En outre, si vous définissez le parent de cet album (n° 22 dans cet "
+#~ "exemple) à \"--- separateur ---\", il ne sera pas répertorié dans la "
+#~ "gallerie photo \"générique\" et le chemin de fer affichera les meilleures."
+
+#~ msgid ""
+#~ "You can add a third line if you want the photos to be displayed at a "
+#~ "different size than normal. You can \"overrule\" the \"Full size\" "
+#~ "setting by adding the line (for e.g. 300px):"
+#~ msgstr ""
+#~ "Vous pouvez ajouter une troisième ligne si vous voulez que les photos qui "
+#~ "seront exposées aient une taille différente de la normale. Vous pouvez "
+#~ "\"annuler\" le paramètre \"Taille réelle\" en ajoutant la ligne (pour par "
+#~ "exemple 300px):"
+
+#~ msgid ""
+#~ "Note: all information between the %% tags including newlines will be lost."
+#~ msgstr ""
+#~ "Note: toutes les informations entre les balises %% (y compris les "
+#~ "nouvelles lignes) seront perdues."
+
+#~ msgid ""
+#~ "The sequence above may be used more than once in a single page or post."
+#~ msgstr ""
+#~ "La séquence ci-dessus peut être utilisée plusieurs fois dans une seule "
+#~ "page ou un seul article."
+
+#~ msgid ""
+#~ "The text before the first sequence, the text between 2 sequences, as well "
+#~ "as the text after the last sequence will be preserved."
+#~ msgstr ""
+#~ "Le texte avant la première séquence, le texte entre 2 séquences, ainsi "
+#~ "que le texte après la dernière séquence sera conservé."
+
+#~ msgid ""
+#~ "You can also create a custom page template by dropping the following code "
+#~ "into a page template:"
+#~ msgstr ""
+#~ "Vous pouvez également créer une page template personnalisée en plaçant le "
+#~ "code suivant dans un modèle de page:"
+
+#~ msgid ""
+#~ "If you want to display the <b>contents</b> of a single album in the "
+#~ "template - say album number 19 - the code would be:"
+#~ msgstr ""
+#~ "Si vous souhaitez afficher le <b>contenu</b> d'un seul album dans le "
+#~ "modèle - disons l'album n° 19 - le code devrait être:"
+
+#~ msgid ""
+#~ "If you want the <b>cover</b> to be displayed instead, add the following "
+#~ "code:"
+#~ msgstr ""
+#~ "Si vous souhaitez que la <b>couverture</b> soit affichée à la place, "
+#~ "ajoutez le code suivant:"
+
+#~ msgid "If you want to specify a size, add the following code:"
+#~ msgstr "Si vous souhaitez spécifier une taille, ajoutez le code suivant:"
+
+#~ msgid "You can combine the above as follows: (example)"
+#~ msgstr "Vous pouvez combiner ce qui précède comme suit: (exemple)"
+
+#~ msgid ""
+#~ "In order to work properly, the wppa_albums() tag needs to be within the"
+#~ msgstr ""
+#~ "Pour fonctionner correctement, la balise wppa_albums() doit être dans le"
+
+#~ msgid "For more information on creating custom page templates, click"
+#~ msgstr ""
+#~ "Pour plus d'informations sur la création de pages de modèles "
+#~ "personnalisés, cliquez sur"
+
+#~ msgid "Adjusting CSS and Template Styling"
+#~ msgstr "Réglage des CSS et des modèles de styles (Templates)"
+
+#~ msgid "WP Photo Album Plus comes with a default layout and theme."
+#~ msgstr ""
+#~ "WP Photo Album Plus est livré avec une mise en page par défaut et un "
+#~ "thème."
+
+#~ msgid ""
+#~ "To change the style and layout of the photo album, copy <tt>.../wp-"
+#~ "content/plugins/wp-photo-album-plus/theme/wppa_theme.php</tt> and <tt>.../"
+#~ "wp-content/plugins/wp-photo-album-plus/theme/wppa_style.css</tt> to your "
+#~ "active theme's folder, and edit them."
+#~ msgstr ""
+#~ "Pour modifier le style et la présentation de l'album photo, copiez "
+#~ "<tt>.../wp-content/plugins/wp-photo-album-plus/theme/wppa_theme.php</tt> "
+#~ "et <tt>.../wp-content/plugins/wp-photo-album-plus/theme/wppa_style.css</"
+#~ "tt> vers le dossier de votre thème actif, et modifiez-les."
+
+#~ msgid "Facts to remember"
+#~ msgstr "Choses à retenir"
+
+#~ msgid "An album can have only <b>ONE</b> parent."
+#~ msgstr "Un album ne peut avoir qu'<b>un seul</b> parent."
+
+#~ msgid ""
+#~ "If the number of photos in an album is less than or equal to the treshold "
+#~ "value, they will not display in the album. They will be used for the "
+#~ "cover only."
+#~ msgstr ""
+#~ "Si le nombre de photos dans un album est inférieure ou égale à la valeur "
+#~ "seuil, ils ne s'affichent pas dans l'album. Ils seront utilisés seulement "
+#~ "pour la couverture."
+
+#~ msgid ""
+#~ "An album that has it's parent set to \"--- separate ---\" will not be "
+#~ "displayed in the \"generic\" gallery. This enables you to have albums for "
+#~ "use solely for single posts or pages."
+#~ msgstr ""
+#~ "Un album qui a son parent mis à \"--- separateur --- \" ne sera pas "
+#~ "affiché dans la gallerie \"générique\". Cela vous permet d'avoir des "
+#~ "albums pour les utiliser exclusivement pour des articles ou des pages "
+#~ "uniques."
+
+#~ msgid ""
+#~ "Specifying <tt>%%album=...</tt> causes the <b>content</b> of the album to "
+#~ "be displayed."
+#~ msgstr ""
+#~ "La spécification de <tt>%%album=...</tt> provoque l'affichage du "
+#~ "<b>contenu</b> de l'album."
+
+#~ msgid ""
+#~ "Specifying <tt>%%cover=...</tt> causes the <b>cover</b> of the album to "
+#~ "be displayed."
+#~ msgstr ""
+#~ "La spécification de <tt>%%cover=...</tt> provoque l'affichage de la "
+#~ "<b>couverture</b> de l'album."
+
+#~ msgid ""
+#~ "Keep the sequence intact: 1. <tt>%%wppa%%</tt>, 2. <tt>%%album=</tt> or "
+#~ "<tt>%%cover=</tt>, 3. <tt>%%size=</tt>. (2. being optional even when "
+#~ "using 3.)."
+#~ msgstr ""
+#~ "Gardez cette séquence intacte: 1. <tt>%%wppa%%</tt>, 2. <tt>%%album=</tt> "
+#~ "or <tt>%%cover=</tt>, 3. <tt>%%size=</tt>. (2. peut être optionnel si 3. "
+#~ "utilisé)."
+
+#~ msgid ""
+#~ "Use the default page template, or create one yourself. In this case, "
+#~ "study the example (actually the version i use myself): <tt>...wp-content/"
+#~ "plugins/wp-photo-album-plus/examples/page-photo-album.php</tt>"
+#~ msgstr ""
+#~ "Utilisez la page de template par défaut, ou en créer-une vous-même. Dans "
+#~ "ce cas, étudier l'exemple (en fait la version que j'utilise moi-même): "
+#~ "<tt>...wp-content/plugins/wp-photo-album-plus/examples/page-photo-album."
+#~ "php</tt>"
+
+#~ msgid ""
+#~ "WPPA uses a system of tags similar to the WordPress theme system. To view "
+#~ "a list of available tags, please read tags.txt"
+#~ msgstr ""
+#~ "WPPA utilise un système de tags similaires au système de thème WordPress. "
+#~ "Pour afficher une liste des balises disponibles, veuillez lire le fichier "
+#~ "tags.txt"
+
+#~ msgid "Plugin Support And Feature Request"
+#~ msgstr "Support du plugin et requêtes"
+
+#~ msgid ""
+#~ "If you've read over this readme carefully and are still having issues, if "
+#~ "you've discovered a bug,"
+#~ msgstr ""
+#~ "Si vous avez lu ce readme avec soin, que vous avez toujours des "
+#~ "problèmes, si vous avez découvert un bug,"
+
+#~ msgid "or have a feature request, please contact me via my"
+#~ msgstr "ou que vous avez une requête, merci de me contacter via mon "
+
+#~ msgid "If you love this plugin, I would appreciate a donation, either in"
+#~ msgstr "Si vous aimez ce plugin, j'apprécierais un don, soit en"
+
+#~ msgid "or in"
+#~ msgstr "ou en"
+
+#~ msgid "About and credits"
+#~ msgstr "A propos et crédits"
+
+#~ msgid ""
+#~ "WP Photo Album Plus is extended with many new features and is maintained "
+#~ "by J.N. Breetvelt, a.k.a."
+#~ msgstr ""
+#~ "WP Photo Album Plus a été étendu avec de nombreuses fonctionnalités et "
+#~ "est maintenu par J.N. Breetvelt, a.k.a."
+
+#~ msgid "Thanx to R.J. Kaplan for WP Photo Album 1.5.1."
+#~ msgstr "Merci à R.J. Kaplan pour WP Photo Album 1.5.1."
+
+#~ msgid "Licence"
+#~ msgstr "Licence"
+
+#~ msgid "WP Photo Album is released under the"
+#~ msgstr "WP Photo Album est publié sous la"
+
+#~ msgid "licence."
+#~ msgstr "licence."
+
+#~ msgid "Name"
+#~ msgstr "Nom"
+
+#~ msgid "ID"
+#~ msgstr "ID"
+
+#~ msgid "Order"
+#~ msgstr "Ordre"
+
+#~ msgid "Parent"
+#~ msgstr "Parent"
+
+#~ msgid "Order:"
+#~ msgstr "Ordre:"
+
+#~ msgid "Added."
+#~ msgstr "Ajouté."
+
+#~ msgid "Album Name cannot be empty."
+#~ msgstr "Le nom de l'album ne peut pas être vide."
+
+#~ msgid "Album could not be updated."
+#~ msgstr "L'album ne peut pas être mis à jour."
+
+#~ msgid "Album information edited."
+#~ msgstr "Informations sur l'album modifiées."
+
+#~ msgid "Back to album management."
+#~ msgstr "Retour à la gestion de l'album."
+
+#~ msgid "--- random ---"
+#~ msgstr "--- aléatoire ---"
+
+#~ msgid "No photos yet"
+#~ msgstr "Pas encore de photo."
+
+#~ msgid "Filetype not supported. Thumbnail not created."
+#~ msgstr "Type de fichier non supporté. Vignette non créée."
+
+#~ msgid "Thumbnail path invalid"
+#~ msgstr "Chemin des vignettes invalide."
+
+#~ msgid "File not found"
+#~ msgstr "Fichier non trouvé"
+
+#~ msgid "Order #"
+#~ msgstr "Ordre #"
+
+#~ msgid "Please supply a numeric value greater than or equal to"
+#~ msgstr "Veuillez fournir une valeur numérique supérieure ou égale à"
+
+#~ msgid "Not implemented yet (5)"
+#~ msgstr "Pas encore implémenté (5)"
+
+#~ msgid "Not implemented yet (6)"
+#~ msgstr "Pas encore implémenté (6)"
