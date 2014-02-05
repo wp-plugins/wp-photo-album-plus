@@ -60,7 +60,6 @@ var wppaPleaseName;
 var wppaPleaseEmail;
 var wppaPleaseComment;
 var wppaRatingOnce = true;
-var wppaUserName;
 var wppaBGcolorNumbar = 'transparent';
 var wppaBcolorNumbar = 'transparent';
 var wppaBGcolorNumbarActive = 'transparent';
