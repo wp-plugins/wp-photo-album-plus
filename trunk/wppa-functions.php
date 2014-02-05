@@ -2329,7 +2329,7 @@ global $wpdb;
 	$wppa['out'] .= wppa_nltab().'<div id="thumbnail_frame_'.$imgid.'_'.$wppa['master_occur'].'" class="'.$class.'" style="'.$framestyle.'" >';
 	// Open the image container
 	$imgcontheight = $com_alt ? $imgheight : max( $imgwidth,$imgheight );
-	$wppa['out'] .= wppa_nltab('+').'<div style="height:'.$imgcontheight.'px; width:'.$imgwidth.'px; '.( $com_alt ? 'float:left;' : '' ).'overflow:hidden;"><!-- image container -->';
+	$wppa['out'] .= wppa_nltab('+').'<div class="wppa-tn-img-container" style="height:'.$imgcontheight.'px; width:'.$framewidth.'px; '.( $com_alt ? 'float:left;' : '' ).'overflow:hidden;"><!-- image container -->';
 
 	if ($wppa['is_topten']) {
 		$no_album = !$wppa['start_album'];

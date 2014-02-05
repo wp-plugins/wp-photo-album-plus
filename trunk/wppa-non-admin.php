@@ -125,26 +125,31 @@ global $thumb;
 }
 
 /* LOAD SLIDESHOW, THEME, AJAX and LIGHTBOX js, all in one file nowadays */
-add_action('init', 'wppa_add_javascripts');
+add_action('init', 'wppa_add_javascripts', '101');
 	
 function wppa_add_javascripts() {
 global $wppa_api_version;
+global $wppa_lang;
 
 	if ( is_file(WPPA_PATH.'/wppa.min.js') ) {
-		wp_enqueue_script('wppa', WPPA_URL.'/wppa.min.js', array('jquery'), $wppa_api_version);
+		wp_enqueue_script( 'wppa', WPPA_URL.'/wppa.min.js', array('jquery'), $wppa_api_version );
 	}
 	else {
-		wp_enqueue_script('wppa', WPPA_URL.'/wppa.js', array('jquery'), $wppa_api_version);
+		wp_enqueue_script( 'wppa', WPPA_URL.'/wppa.js', array('jquery'), $wppa_api_version );
 	}
 	if ( get_option('wppa_gpx_implementation', 'nil') == 'wppa-plus-embedded' && strpos( get_option('wppa_custom_content' ), 'w#location' ) !== false) {
 		if ( get_option('wppa_map_apikey', false) ) {
-			wp_enqueue_script('wppa-geo', 'https://maps.googleapis.com/maps/api/js?key='.get_option('wppa_map_apikey').'&sensor=false', '', $wppa_api_version);
+			wp_enqueue_script( 'wppa-geo', 'https://maps.googleapis.com/maps/api/js?key='.get_option('wppa_map_apikey').'&sensor=false', '', $wppa_api_version);
 		}
 		else {
-			wp_enqueue_script('wppa-geo', 'https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false', '', $wppa_api_version);
+			wp_enqueue_script( 'wppa-geo', 'https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false', '', $wppa_api_version);
 		}
 	}
-
+	if ( ! file_exists( WPPA_PATH.'/wppa.init.'.$wppa_lang.'.js' ) ) {
+		wppa_create_wppa_init_js();
+		update_option( 'wppa_ini_js_version_'.$wppa_lang, get_option( 'wppa_ini_js_version_'.$wppa_lang, '0' ) + '1' );
+	}
+	if ( file_exists( WPPA_PATH.'/wppa.init.'.$wppa_lang.'.js' ) ) wp_enqueue_script( 'wppa-init', WPPA_URL.'/wppa.init.'.$wppa_lang.'.js', array('wppa'), get_option( 'wppa_ini_js_version' ) );
 }
 	
 /* LOAD WPPA+ THEME */
@@ -210,7 +215,6 @@ global $wpdb;
 			wppa_dbg_msg($plugin);
 		}
 		wppa_dbg_msg('End Active Plugins');
-//		wppa_dbg_msg(htmlspecialchars($wpdb->get_var("SELECT `option_value` FROM ".$wpdb->prefix . 'options'." WHERE `option_name` = 'wppa_cached_options'")));
 	}
 	
 	echo '
@@ -245,7 +249,7 @@ if ( ( get_option('wppa_facebook_like') == 'yes' || get_option('wppa_facebook_co
 	}
 
 /* CHECK REDIRECTION */
-add_action('init', 'wppa_redirect');
+add_action( 'init', 'wppa_redirect' );
 
 function wppa_redirect() {
 	if ( ! isset($_ENV["SCRIPT_URI"]) ) return;
@@ -261,8 +265,8 @@ function wppa_redirect() {
 	}
 }
 
-/* LOAD JS VARS AND ENABLE RENDERING */
-add_action('wp_head', 'wppa_kickoff', '100');
+/* ENABLE RENDERING */
+add_action( 'wp_head', 'wppa_kickoff', '100' );
 
 function wppa_kickoff() {
 global $wppa;
@@ -270,33 +274,84 @@ global $wppa_opt;
 global $wppa_lang;
 global $wppa_api_version;
 
-	switch ($wppa_opt['wppa_slideshow_linktype']) {
+	// Patch for chrome?
+	if ( isset($_SERVER["HTTP_USER_AGENT"]) && isset($_SERVER["HTTP_USER_AGENT"]) ) {
+		echo '
+		
+<!-- WPPA+ Kickoff -->
+<!-- Browser detected = '.$_SERVER["HTTP_USER_AGENT"].' -->';
+		if ( strstr($_SERVER["HTTP_USER_AGENT"], 'Chrome') && wppa_switch('wppa_ovl_chrome_at_top') ) echo '
+<style type="text/css">
+	#wppa-overlay-ic { padding-top: 5px !important; } 
+	#wppa-overlay-qt-txt, #wppa-overlay-qt-img { top: 5px !important; }
+</style>';
+	}
+
+	// Pinterest js
+	if ( ( $wppa_opt['wppa_share_on'] || $wppa_opt['wppa_share_on_widget'] ) && $wppa_opt['wppa_share_pinterest'] ) {
+		echo '
+<!-- Pinterest share -->
+<script type="text/javascript" src="//assets.pinterest.com/js/pinit.js"></script>';
+	}
+
+	$wppa['rendering_enabled'] = true;
+	echo '
+<!-- Rendering enabled -->
+<!-- /WPPA Kickoff -->
+
+	';
+	if ( $wppa['debug'] ) {
+		error_reporting( $wppa['debug'] );
+		add_action( 'wp_footer', 'wppa_phpinfo' );
+	}
+}
+
+/* SKIP JETPACK FOTON ON WPPA+ IMAGES */
+add_filter('jetpack_photon_skip_image', 'wppa_skip_photon', 10, 3);
+function wppa_skip_photon($val, $src, $tag) {
+	$result = $val;
+	if ( strpos($src, WPPA_UPLOAD_URL) !== false ) $result = true;
+	return $result;
+}
+
+/* Create dynamic js init file */
+function wppa_create_wppa_init_js() {
+global $wppa_api_version;
+global $wppa_lang;
+global $wppa_opt;
+global $wppa;
+
+	// Init
+	switch ( $wppa_opt['wppa_slideshow_linktype'] ) {
 		case 'file':
-			$lbkey = 'file'; //echo("\t".'wppaLightBox = "file";'."\n");	// gives anchor tag with rel="file"
+			$lbkey = 'file'; // gives anchor tag with rel="file"
 			break;
 		case 'lightbox':
 		case 'lightboxsingle':
-			$lbkey = $wppa_opt['wppa_lightbox_name']; //echo("\t".'wppaLightBox = "'.$wppa_opt['wppa_lightbox_name'].'";'."\n");	// gives anchor tag with rel="lightbox" or the like
+			$lbkey = $wppa_opt['wppa_lightbox_name']; // gives anchor tag with rel="lightbox" or the like
 			break;
 		default:
-			$lbkey = ''; //echo("\t".'wppaLightBox = "";'."\n");		// results in omitting the anchor tag
+			$lbkey = ''; // results in omitting the anchor tag
 			break;
 	}
 	if ( is_numeric($wppa_opt['wppa_fullimage_border_width']) ) $fbw = $wppa_opt['wppa_fullimage_border_width'] + '1'; else $fbw = '0';
 		
-	echo '
-<!-- WPPA+ Runtime parameters -->
-	<script type="text/javascript">
-	/* <![CDATA[ */
+	// Make content
+	$content = 
+'/* -- WPPA+ Runtime parameters
+/*
+/* Dynamicly Created on '.date('c').'
+/*
+*/
 ';
 	if ( WPPA_DEBUG || isset($_GET['wppa-debug']) || WP_DEBUG ) {
-	echo '
+	$content .= '
 	/* Check if wppa.js and jQuery are present */
 	if (typeof(_wppaSlides) == \'undefined\') alert(\'There is a problem with your theme. The file wppa.js is not loaded when it is expected (Errloc = wppa_kickoff).\');
 	if (typeof(jQuery) == \'undefined\') alert(\'There is a problem with your theme. The jQuery library is not loaded when it is expected (Errloc = wppa_kickoff).\');
 ';	}
 	/* This goes into wppa.js */ 
-	echo '
+	$content .= '
 	wppaDebug = '.( $wppa['debug'] ? 'true' : 'false' ).';
 	wppaVersion = "'.$wppa_api_version.'";
 	wppaBackgroundColorImage = "'.$wppa_opt['wppa_bgcolor_img'].'";
@@ -332,7 +387,6 @@ global $wppa_api_version;
 	wppaDislikes = "'.__a('dislikes').'";
 	wppaIncludingMine = "'.__a('including mine').'";
 	wppaMiniTreshold = '.$wppa_opt['wppa_mini_treshold'].';
-	wppaUserName = "'.wppa_get_user().'";
 	wppaRatingOnce = '.( $wppa_opt['wppa_rating_change'] || $wppa_opt['wppa_rating_multi'] ? 'false' : 'true' ).';
 	wppaPleaseName = "'.__a('Please enter your name').'";
 	wppaPleaseEmail = "'.__a('Please enter a valid email address').'";
@@ -391,45 +445,12 @@ global $wppa_api_version;
 	wppaFotomoto = '.( wppa_switch('wppa_fotomoto_on') ? 'true' : 'false' ).';
 	wppaArtMonkeyButton = '.( $wppa_opt['wppa_art_monkey_display'] == 'button' ? 'true' : 'false' ).';
 	wppaFotomotoHideHideWhenRunning = '.( wppa_switch('wppa_fotomoto_hide_when_running') ? 'true' : 'false' ).';
-	wppaFotomotoMinWidth = '.$wppa_opt['wppa_fotomoto_min_width'].';
-	/* ]]> */
-</script>
-';
+	wppaFotomotoMinWidth = '.$wppa_opt['wppa_fotomoto_min_width'].';';
 
-	// Patch for chrome?
-	if ( isset($_SERVER["HTTP_USER_AGENT"]) && isset($_SERVER["HTTP_USER_AGENT"]) ) {
-		echo '
-		<!-- Browser detected = '.$_SERVER["HTTP_USER_AGENT"].' -->';
-		if ( strstr($_SERVER["HTTP_USER_AGENT"], 'Chrome') && wppa_switch('wppa_ovl_chrome_at_top') ) echo '
-		<style type="text/css">
-			#wppa-overlay-ic { padding-top: 5px !important; } 
-			#wppa-overlay-qt-txt, #wppa-overlay-qt-img { top: 5px !important; }
-		</style>';
-	}
-
-	// Pinterest js
-	if ( ( $wppa_opt['wppa_share_on'] || $wppa_opt['wppa_share_on_widget'] ) && $wppa_opt['wppa_share_pinterest'] ) {
-		echo '
-		<!-- WPPA+ Pinterest share -->
-			<script type="text/javascript" src="//assets.pinterest.com/js/pinit.js"></script>
-		<!-- end WPPA+ Pinterest share -->
-		';
-	}
-
-	$wppa['rendering_enabled'] = true;
-	echo '
-	<!-- WPPA+ Rendering enabled -->
-	';
-	if ($wppa['debug']) {
-		error_reporting($wppa['debug']);
-		add_action('wp_footer', 'wppa_phpinfo');
-	}
-}
-
-/* SKIP JETPACK FOTON ON WPPA+ IMAGES */
-add_filter('jetpack_photon_skip_image', 'wppa_skip_photon', 10, 3);
-function wppa_skip_photon($val, $src, $tag) {
-	$result = $val;
-	if ( strpos($src, WPPA_UPLOAD_URL) !== false ) $result = true;
-	return $result;
+	// Open file
+	$file = fopen( WPPA_PATH.'/wppa.init.'.$wppa_lang.'.js', 'wb' );
+	// Write file
+	fwrite( $file, $content );
+	// Close file
+	fclose( $file );
 }

@@ -1175,7 +1175,7 @@ global $wppa_opt;
 						
 						$id = wppa_create_album_entry( array (	'id' 			=> $id, 
 																'name' 			=> stripslashes( $name ), 
-																'description' 	=> stripslashes( $description ),
+																'description' 	=> stripslashes( $desc ),
 																'a_order' 		=> $aord, 
 																'a_parent' 		=> $parent, 
 																'p_order_by' 	=> $porder,

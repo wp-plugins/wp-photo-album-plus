@@ -665,6 +665,12 @@ function wppa_update_option($option, $value) {
 	update_option($option, $value);
 	delete_option('wppa_cached_options');
 	delete_option('wppa_cached_options_admin');
+	$files = glob( WPPA_PATH.'/wppa.init.*.js' );
+	if ( $files ) {
+		foreach ( $files as $file ) {
+			unlink ( $file );
+		}
+	}
 }
 
 function wppa_album_exists($id) {

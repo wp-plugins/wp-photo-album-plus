@@ -114,14 +114,14 @@ global $wppa_temp_idx;
 					// Copy the photo
 					$from = wppa_get_photo_path($photo['id']);
 					$to = WPPA_DEPOT_PATH.'/'.$photo['id'].'.'.$photo['ext'];
-						
-					if ($wppa_zip) {
-						$wppa_zip->addFile($from, basename($from));
+			
+					if ( $wppa_zip ) {
+						$wppa_zip->addFile ( $from, basename ( $to ) );
 					}
-					else copy($from, $to);
+					else copy ( $from, $to );
 					
 					// Create the metadata
-					if (!wppa_write_photo_file($photo)) {
+					if ( ! wppa_write_photo_file ( $photo ) ) {
 						return false;
 					}
 					else $cnt++;

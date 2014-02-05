@@ -173,6 +173,17 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
 
+= 5.2.12 =
+
+= Bug Fixes =
+
+* Photos got wrong names during export when filesystem is tree. Fixed.
+* Portrait thumbnails were clipped at the righthand side. Fixed.
+
+= Other Changes =
+
+* The js init is now placed in a file and loaded through wp_enqueue_script() like wppa.min.js already was for years.
+
 = 5.2.11 =
 
 = Bug Fixes =
