@@ -445,7 +445,7 @@ global $wppa_opt;
 	if ( ! $wppa_opt['wppa_rating_login'] || is_user_logged_in() ) {	// Logged in or do'nt care
 		$cnt = '0';
 		if ( wppa_switch('wppa_show_avg_rating') ) {
-			$wppa['out'] .= sprintf(__('Nuber of votes: <span id="wppa-vote-count-%s" >%s</span>&nbsp;', 'wppa'), $wppa['master_occur'], $cnt);
+			$wppa['out'] .= sprintf(__a('Number of votes: <span id="wppa-vote-count-%s" >%s</span>&nbsp;', 'wppa'), $wppa['master_occur'], $cnt);
 		}
 		$wppa['out'] .= '<input id="wppa-vote-button-'.$wppa['master_occur'].'" class="wppa-vote-button" style="margin:0;" type="button" onclick="wppaRateIt('.$wppa['master_occur'].', 1)" value="'.$wppa_opt['wppa_vote_button_text'].'" />';
 	}
@@ -517,7 +517,7 @@ global $wppa_opt;
 				$evnts = 'onmouseover="jQuery(this).stop().fadeTo(100, 1.0)" onmouseout="jQuery(this).stop().fadeTo(100, wppaStarOpacity)" onclick="if (confirm(\''.__a('Are you sure you want to mark this image as inappropriate?').'\')) wppaRateIt('.$wppa['master_occur'].', -1)"';
 				$title = 'title="'.__a('Click this if you do NOT like this image!', 'wppa_theme').'"';
 				$wppa['out'] .= '<img id="wppa-dislike-'.$wppa['master_occur'].'" '.$title.' src="'.wppa_get_imgdir().'thumbdown.png" '.$tdstyle.' class="no-shadow" '.$evnts.' />';
-				if ( wppa_switch('wppa_dislike_show_count') ) $wppa['out'] .= '<span id="wppa-discount-'.$wppa['master_occur'].'" style="cursor:default" title="'.__a('Nuber of people who marked this photo as inapprpriate').'"></span>';
+				if ( wppa_switch('wppa_dislike_show_count') ) $wppa['out'] .= '<span id="wppa-discount-'.$wppa['master_occur'].'" style="cursor:default" title="'.__a('Number of people who marked this photo as inapprpriate').'"></span>';
 			}
 
 			// Text left if no avg rating
@@ -557,7 +557,7 @@ global $wppa_opt;
 				$evnts = 'onmouseover="jQuery(this).stop().fadeTo(100, 1.0)" onmouseout="jQuery(this).stop().fadeTo(100, wppaStarOpacity)" onclick="if (confirm(\''.__a('Are you sure you want to mark this image as inappropriate?').'\')) wppaRateIt('.$wppa['master_occur'].', -1)"';
 				$title = 'title="'.__a('Click this if you do NOT like this image!', 'wppa_theme').'"';
 				$wppa['out'] .= '<div id="wppa-dislike-imgdiv-'.$wppa['master_occur'].'" style="display:inline" ><img id="wppa-dislike-'.$wppa['master_occur'].'" '.$title.' src="'.wppa_get_imgdir().'thumbdown.png" '.$tdstyle.' class="no-shadow" '.$evnts.' /> </div>';
-				if ( wppa_switch('wppa_dislike_show_count') ) $wppa['out'] .= '<span id="wppa-discount-'.$wppa['master_occur'].'" style="cursor:default" title="'.__a('Nuber of people who marked this photo as inapprpriate').'"></span>';
+				if ( wppa_switch('wppa_dislike_show_count') ) $wppa['out'] .= '<span id="wppa-discount-'.$wppa['master_occur'].'" style="cursor:default" title="'.__a('Number of people who marked this photo as inapprpriate').'"></span>';
 			}
 			// Filler
 //			$wppa['out'] .= '<span id="wppa-filler-'.$wppa['master_occur'].'" > -</span>';

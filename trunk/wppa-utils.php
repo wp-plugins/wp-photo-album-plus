@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains low-level utility routines
-* Version 5.2.11
+* Version 5.2.14
 *
 */
  
@@ -1639,4 +1639,189 @@ global $wppa_opt;
 	if ( wppa_is_photo_new( $id ) ) 	$result .= '<img src="'.WPPA_URL.'/images/new.png" title="'.esc_attr( __a('New!') ).'" class="wppa-thumbnew" style="position:relative; top:-'.$top.'px; float:'.$float.'; border:none; margin:0; padding:0; box-shadow:none; height:'.$size.'px;" />';
 
 	return $result;
+}
+
+function wppa_get_the_bestof( $count, $period, $sortby, $what ) {
+global $wppa_opt;
+global $wpdb;
+global $thumb;
+
+	// Phase 1, find the period we are talking about
+	// find $start and $end
+	switch ( $period ) {
+		case 'lastweek':
+			$start 	= wppa_get_timestamp( 'lastweekstart' );
+			$end   	= wppa_get_timestamp( 'lastweekend' );
+			break;
+		case 'thisweek':
+			$start 	= wppa_get_timestamp( 'thisweekstart' );
+			$end   	= wppa_get_timestamp( 'thisweekend' );
+			break;
+		case 'lastmonth':
+			$start 	= wppa_get_timestamp( 'lastmonthstart' );
+			$end 	= wppa_get_timestamp( 'lastmonthend' );
+			break;
+		case 'thismonth':
+			$start 	= wppa_get_timestamp( 'thismonthstart' );
+			$end 	= wppa_get_timestamp( 'thismonthend' );
+			break;
+		case 'lastyear':
+			$start 	= wppa_get_timestamp( 'lastyearstart' );
+			$end 	= wppa_get_timestamp( 'lastyearend' );
+			break;
+		case 'thisyear':
+			$start 	= wppa_get_timestamp( 'thisyearstart' );
+			$end 	= wppa_get_timestamp( 'thisyearend' );
+			break;
+		default:
+			return 'Unimplemented period: '.$period;
+	}
+	
+	// Phase 2, get the ratings of the period
+	// find $ratings, ordered by photo id
+	$ratings 	= $wpdb->get_results( $wpdb->prepare( "SELECT * FROM `".WPPA_RATING."` WHERE `timestamp` >= %s AND `timestamp` < %s ORDER BY `photo`", $start, $end ), ARRAY_A );
+
+	// Phase 3, set up an array with data we need
+	// There are two methods: photo oriented and owner oriented, depending on 
+	
+	// Each element reflects a photo ( key = photo id ) and is an array with items: maxratings, meanrating, ratings, totvalue.
+	$ratmax	= $wppa_opt['wppa_rating_max'];
+	$data 	= array();
+	foreach ( $ratings as $rating ) {
+		$key = $rating['photo'];
+		if ( ! isset( $data[$key] ) ) {
+			$data[$key] = array();
+			$data[$key]['ratingcount'] 		= '1';
+			$data[$key]['maxratingcount'] 	= $rating['value'] == $ratmax ? '1' : '0';
+			$data[$key]['totvalue'] 		= $rating['value'];
+		}
+		else {
+			$data[$key]['ratingcount'] 		+= '1';
+			$data[$key]['maxratingcount'] 	+= $rating['value'] == $ratmax ? '1' : '0';
+			$data[$key]['totvalue'] 		+= $rating['value'];
+		}
+	}
+	foreach ( array_keys( $data ) as $key ) {
+		wppa_cache_thumb( $key );
+		$data[$key]['meanrating'] = $data[$key]['totvalue'] / $data[$key]['ratingcount'];
+		$user = get_user_by( 'login', $thumb['owner'] );
+		if ( $user ) {
+			$data[$key]['user'] = $user->display_name;
+		}
+		else { // user deleted
+			$data[$key]['user'] = $thumb['owner'];
+		}
+		$data[$key]['owner'] = $thumb['owner'];
+	}
+	
+	// Now we split into search for photos and search for owners
+	
+	if ( $what == 'photo' ) {
+	
+		// Pase 4, sort to the required sequence
+		$data = wppa_array_sort( $data, $sortby, SORT_DESC );
+		
+	}
+	else { 	// $what == 'owner'
+	
+		// Phase 4, combine all photos of the same owner
+		wppa_array_sort( $data, 'user' );
+		$temp = $data;
+		$data = array();
+		foreach ( array_keys( $temp ) as $key ) {
+			if ( ! isset( $data[$temp[$key]['user']] ) ) {
+				$data[$temp[$key]['user']]['photos'] 			= '1';
+				$data[$temp[$key]['user']]['ratingcount'] 		= $temp[$key]['ratingcount'];
+				$data[$temp[$key]['user']]['maxratingcount'] 	= $temp[$key]['maxratingcount'];
+				$data[$temp[$key]['user']]['totvalue'] 			= $temp[$key]['totvalue'];
+				$data[$temp[$key]['user']]['owner'] 			= $temp[$key]['owner'];
+			}
+			else {
+				$data[$temp[$key]['user']]['photos'] 			+= '1';
+				$data[$temp[$key]['user']]['ratingcount'] 		+= $temp[$key]['ratingcount'];
+				$data[$temp[$key]['user']]['maxratingcount'] 	+= $temp[$key]['maxratingcount'];
+				$data[$temp[$key]['user']]['totvalue'] 			+= $temp[$key]['totvalue'];
+			}
+		}
+		foreach ( array_keys( $data ) as $key ) {
+			$data[$key]['meanrating'] = $data[$key]['totvalue'] / $data[$key]['ratingcount'];
+		}
+		$data = wppa_array_sort( $data, $sortby, SORT_DESC );
+	}
+	
+	// Phase 5, truncate to the desired length
+	$c = '0';
+	foreach ( array_keys( $data ) as $key ) {
+		$c += '1';
+		if ( $c > $count ) unset ( $data[$key] );
+	}
+
+	// Phase 6, return the result
+	if ( count( $data ) ) {
+		return $data;
+	}
+	else {
+		return 'There are no ratings between <br />'.wppa_local_date( 'F j, Y, H:i s', $start ).' and <br />'.wppa_local_date( 'F j, Y, H:i s', $end ).'.';
+	}
+}
+
+function wppa_get_timestamp( $key = false ) {
+	
+	$timnow = time();
+	$format = 'Y:z:n:j:W:w:G:i:s';
+	//         0 1 2 3 4 5 6 7 8
+	// Year(2014):dayofyear(0-365):month(1-12):dayofmonth(1-31):Weeknumber(1-53):dayofweek(0-6):hour(0-23):min(0-59):sec(0-59)
+	$local_date_time = wppa_local_date( $format, $timnow );
+
+	$data = explode( ':', $local_date_time );
+	$data[4] = ltrim( '0', $data[4] );
+	
+	$today_start = $timnow - $data[8] - 60 * $data[7] - 3600 * $data[6];
+	if ( $key == 'todaystart' ) return $today_start;
+	
+	$daysec = 24 * 3600;
+	
+	if ( ! $data[5] ) $data[5] = 7;	// Sunday
+	$thisweek_start = $today_start - $daysec * ( $data[5] - 1 );	// Week starts on monday
+	if ( $key == 'thisweekstart' ) return $thisweek_start;
+	if ( $key == 'lastweekend' ) return $thisweek_start;
+	
+	$thisweek_end = $thisweek_start + 7 * $daysec;
+	if ( $key == 'thisweekend' ) return $thisweek_end;
+	
+	$lastweek_start = $thisweek_start - 7 * $daysec;
+	if ( $key == 'lastweekstart' ) return $lastweek_start;
+	
+	$thismonth_start = $today_start - ( $data[3] - 1 ) * $daysec;
+	if ( $key == 'thismonthstart' ) return $thismonth_start;
+	if ( $key == 'lastmonthend' ) return $thismonth_start;
+	
+	$monthdays = array ( '0', '31', '28', '31', '30', '31', '30', '31', '31', '30', '31', '30', '31' );
+	$monthdays[2] += wppa_local_date('L', $timnow );	// Leap year correction
+
+	$thismonth_end = $thismonth_start + $monthdays[$data[2]] * $daysec;
+	if ( $key == 'thismonthend' ) return $thismonth_end;
+	
+	$lm = $data[2] > 1 ? $data[2] - 1 : 12;
+	$lastmonth_start = $thismonth_start - $monthdays[$lm] * $daysec;
+	if ( $key == 'lastmonthstart' ) return $lastmonth_start;
+	
+	$thisyear_start = $thismonth_start;
+	$idx = $data[2];
+	while ( $idx > 1 ) {
+		$idx--;
+		$thisyear_start -= $monthdays[$idx] * $daysec;
+	}
+	if ( $key == 'thisyearstart' ) return $thisyear_start;
+	if ( $key == 'lastyearend' ) return $thisyear_start;
+	
+	$thisyear_end = $thisyear_start;
+	foreach ( $monthdays as $month ) $thisyear_end += $month * $daysec;
+	if ( $key == 'thisyearend' ) return $thisyear_end;
+	
+	$lastyear_start = $thisyear_start - 365 * $daysec;
+	if ( wppa_local_date('L', $thisyear_start - $daysec) ) $lastyear_start -= $daysec;	// Last year was a leap year
+	if ( $key == 'lastyearstart' ) return $lastyear_start;
+	
+	return $timnow;
 }

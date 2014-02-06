@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Various style computation routines
-* Version 5.2.11
+* Version 5.2.14
 *
 */
 
@@ -483,6 +483,12 @@ global $wppa;
 			$opt = $wppa_opt['wppa_bgcolor_multitag'];
 			if ($opt) $result .= 'background-color:'.$opt.'; ';
 			$opt = $wppa_opt['wppa_bcolor_multitag'];
+			if ($opt) $result .= 'border-color:'.$opt.'; ';
+			break;
+		case 'wppa-bestof':
+			$opt = $wppa_opt['wppa_bgcolor_bestof'];
+			if ($opt) $result .= 'background-color:'.$opt.'; ';
+			$opt = $wppa_opt['wppa_bcolor_bestof'];
 			if ($opt) $result .= 'border-color:'.$opt.'; ';
 			break;
 		case 'wppa-tagcloud':

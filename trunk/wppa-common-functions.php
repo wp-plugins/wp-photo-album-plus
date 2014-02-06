@@ -2,7 +2,7 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 5.2.11
+* version 5.2.14
 *
 */
 
@@ -114,9 +114,8 @@ global $wppa_initruntimetime;
 			'no_esc'					=> false,
 			'front_edit'				=> false,
 			'is_autopage'				=> false,
-			'is_cat'					=> false
-
-
+			'is_cat'					=> false,
+			'bestof' 					=> false
 
 		);
 	}
@@ -356,6 +355,8 @@ global $wppa_initruntimetime;
 						'wppa_bcolor_multitag'			=> '',
 						'wppa_bgcolor_tagcloud'			=> '',
 						'wppa_bcolor_tagcloud'			=> '',
+						'wppa_bgcolor_bestof'			=> '',
+						'wppa_bcolor_bestof'			=> '',
 
 						// Table IV: Behaviour
 						// A System

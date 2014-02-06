@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile, cloudinary, fotomoto
-Version: 5.2.11
+Version: 5.2.14
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -172,6 +172,21 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 5.2.14 =
+
+= Bug Fixes =
+
+* Fixed the init js problem.
+
+= New Features =
+
+* New shortcode: [wppa 	type="bestof" count="{ <b>1</b> | 2 | 3 | ... }" period="{ lastweek | <b>thisweek</b> | lastmonth | thismonth | lastyear | thisyear }" display="{ <b>photo</b> | owner }" sortby="{ <b>maxratingcount</b> | meanrating | ratingcount }" height="{ <b>200</b> | {image height} }" maxratings="{ <b>yes</b> | no }" meanrat="{ <b>yes</b> | no }" ratcount="{ <b>yes</b> | no }" linktype="{ <b>none</b> | owneralbums | ownerphotos | upldrphotos }" page="{ <b>0</b> | {page id} }" size="{ {<b>Setting I-A1</b>} | auto | {wppa box size} }" fontsize="{ {<b>Setting II-H3</b>} | font size }" lineheight"{ {<b>Setting II-H3 * 1.5</b>} | line size }" ][/wppa]
+Does the same as the Best Of widget. See also Table III-B7 for the backgrounds.
+
+= Other Changes =
+
+* Performance fix in Settings page for systems with over 1000 users.
 
 = 5.2.12 =
 

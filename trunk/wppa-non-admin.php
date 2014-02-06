@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the non admin stuff
-* Version 5.2.11
+* Version 5.2.14
 *
 */
 
@@ -273,7 +273,11 @@ global $wppa;
 global $wppa_opt;
 global $wppa_lang;
 global $wppa_api_version;
+global $wppa_init_js_data;
 
+	// init.js failed?
+	if ( $wppa_init_js_data ) echo $wppa_init_js_data;
+	
 	// Patch for chrome?
 	if ( isset($_SERVER["HTTP_USER_AGENT"]) && isset($_SERVER["HTTP_USER_AGENT"]) ) {
 		echo '
@@ -320,6 +324,7 @@ global $wppa_api_version;
 global $wppa_lang;
 global $wppa_opt;
 global $wppa;
+global $wppa_init_js_data;
 
 	// Init
 	switch ( $wppa_opt['wppa_slideshow_linktype'] ) {
@@ -344,7 +349,7 @@ global $wppa;
 /*
 */
 ';
-	if ( WPPA_DEBUG || isset($_GET['wppa-debug']) || WP_DEBUG ) {
+	if ( WPPA_DEBUG || isset( $_GET['wppa-debug'] ) || WP_DEBUG ) {
 	$content .= '
 	/* Check if wppa.js and jQuery are present */
 	if (typeof(_wppaSlides) == \'undefined\') alert(\'There is a problem with your theme. The file wppa.js is not loaded when it is expected (Errloc = wppa_kickoff).\');
@@ -448,9 +453,22 @@ global $wppa;
 	wppaFotomotoMinWidth = '.$wppa_opt['wppa_fotomoto_min_width'].';';
 
 	// Open file
-	$file = fopen( WPPA_PATH.'/wppa.init.'.$wppa_lang.'.js', 'wb' );
-	// Write file
-	fwrite( $file, $content );
-	// Close file
-	fclose( $file );
+	$file = @ fopen ( WPPA_PATH.'/wppa.init.'.$wppa_lang.'.js', 'wb' );
+	if ( $file ) {
+		// Write file
+		fwrite ( $file, $content );
+		// Close file
+		fclose ( $file );
+		$wppa_init_js_data = '';
+	}
+	else {
+		$wppa_init_js_data = 
+'<script type="text/javascript">
+/* Warning: file wppa.init.'.$wppa_lang.'.js could not be created */
+/* The content is therefor output here */
+
+'.$content.'
+</script>
+';
+	}
 }
