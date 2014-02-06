@@ -1207,11 +1207,11 @@ global $wppa_opt;
 					$imgsize 		= getimagesize( wppa_get_thumb_path( $id ) );
 					if ( $widget ) {
 						$maxw 		= $size;
-						$maxh 		= $maxw * $imgsize['1'] / $imgsize['0'];
+						$maxh 		= round ( $maxw * $imgsize['1'] / $imgsize['0'] );
 					}
 					else {
 						$maxh 		= $size;
-						$maxw 		= $maxh * $imgsize['0'] / $imgsize['1'];
+						$maxw 		= round ( $maxh * $imgsize['0'] / $imgsize['1'] );
 					}
 					$totalh 		= $maxh + $lineheight;
 					if ( $maxratings == 'yes' ) $totalh += $lineheight;
