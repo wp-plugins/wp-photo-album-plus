@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 5.2.11
+* Version 5.2.14
 *
 */
 
@@ -675,6 +675,8 @@ Hide Camera info
 						'wppa_bcolor_multitag'			=> '#bbbbbb',
 						'wppa_bgcolor_tagcloud'			=> '#dddddd',
 						'wppa_bcolor_tagcloud'			=> '#bbbbbb',
+						'wppa_bgcolor_bestof'			=> '#dddddd',
+						'wppa_bcolor_bestof'			=> '#bbbbbb',
 
 						// Table IV: Behaviour
 						// A System

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * get the albums via filter
-* version 5.2.7
+* version 5.2.14
 *
 */
 
@@ -243,11 +243,13 @@ function wppa_atoid_a($var) {
 }
 
 // New shortcodes
-function wppa_shortcodes( $atts, $content = null ) {
+function wppa_shortcodes( $xatts, $content = null ) {
 global $wppa;
 global $wppa_postid;
 global $wppa_opt;
 
+	$atts = $xatts;
+	
 	extract( shortcode_atts( array(
 		'type'  	=> 'generic',
 		'album' 	=> '',
@@ -356,6 +358,14 @@ global $wppa_opt;
 			$wppa['taglist'] = wppa_sanitize_tags($taglist);
 			$wppa['is_tagcloudbox'] = true;
 			break;
+		case 'bestof':
+			$wppa['bestof'] = true;
+			$wppa['bestof_args'] = $xatts;
+			break;
+			
+		default:
+			wppa_dbg_msg ( 'Invalid type: '.$type.' in wppa shortcode.', 'red', 'force' );
+			return '';
 	}
 	
 	// Count (internally to wppa_albums)

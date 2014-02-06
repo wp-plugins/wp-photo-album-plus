@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions
-* Version 5.2.11
+* Version 5.2.14
 *
 */
 
@@ -159,7 +159,15 @@ global $thumbs;
 	}
 	// 3. The filter supplied the data
 	else {
-		if ( $wppa['is_landing'] && ! $wppa['src'] ) {
+		if ( $wppa['bestof'] ) {
+			$args = $wppa['bestof_args'];
+			wppa_bestof_box ( $args );
+			$out = $wppa['out'];
+			$wppa['out'] = ''; 
+			wppa_reset_occurrance();
+			return $out;		
+		}
+		elseif ( $wppa['is_landing'] && ! $wppa['src'] ) {
 			wppa_dbg_msg('Nothing to do...');
 			wppa_reset_occurrance();
 			return '';	// Do nothing on a landing page without a querystring while it is also not a search operation
@@ -576,6 +584,7 @@ global $thumbs;
 	$wppa['is_owner']		= '';
 	$wppa['is_upldr'] 		= '';
 	$wppa['is_cat'] 		= false;
+	$wppa['bestof'] 		= false;
 
 
 }
@@ -2064,7 +2073,7 @@ global $wppa_numqueries;
 			if (!is_numeric($wppa_microtime_cum)) $wppa_mcrotime_cum = '0';
 			$wppa_microtime_cum += $laptim;
 			wppa_dbg_msg('Time elapsed occ '.$wppa['master_occur'].':'.substr($laptim, 0, 5).'s. Tot:'.substr($wppa_microtime_cum, 0, 5).'s.');
-			wppa_dbg_msg('Nuber of queries occ '.$wppa['master_occur'].':'.$wppa_numqueries);
+			wppa_dbg_msg('Number of queries occ '.$wppa['master_occur'].':'.$wppa_numqueries);
 			wppa_dbg_q('print');
 		}
 	}

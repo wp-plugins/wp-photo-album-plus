@@ -2,7 +2,7 @@
 /* wppa-ajax.php
 *
 * Functions used in ajax requests
-* version 5.2.11
+* version 5.2.14
 *
 */
 add_action('wp_ajax_wppa', 'wppa_ajax_callback');
@@ -1407,13 +1407,22 @@ global $wppa;
 					break;
 					
 				case 'wppa_blacklist_user':
-					$wpdb->query($wpdb->prepare( "UPDATE `".WPPA_PHOTOS."` SET `status` = 'pending' WHERE `owner` = %s", $value ) );
-					$black_listed_users = get_option( 'wppa_black_listed_users', array() );
-					if ( ! in_array( $value, $black_listed_users ) ) {
-						$black_listed_users[] = $value;
-						update_option( 'wppa_black_listed_users', $black_listed_users );
+					// Does user exist?
+					$value = trim ( $value );
+					$user = get_user_by ( 'login', $value );	// seems to be case insensitive
+					if ( $user && $user->user_login === $value ) {
+						$wpdb->query($wpdb->prepare( "UPDATE `".WPPA_PHOTOS."` SET `status` = 'pending' WHERE `owner` = %s", $value ) );
+						$black_listed_users = get_option( 'wppa_black_listed_users', array() );
+						if ( ! in_array( $value, $black_listed_users ) ) {
+							$black_listed_users[] = $value;
+							update_option( 'wppa_black_listed_users', $black_listed_users );
+						}
+						$alert = esc_js( sprintf( __( 'User %s has been blacklisted.', 'wppa' ), $value ) ); 
 					}
-					$value = '0';
+					else {
+						$alert = esc_js( sprintf( __( 'User %s does not exist.', 'wppa' ), $value ) ); 
+					}
+					$value = '';
 					break;
 					
 				case 'wppa_un_blacklist_user':

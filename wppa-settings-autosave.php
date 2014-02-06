@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 5.2.11
+* Version 5.2.14
 *
 */
 
@@ -795,7 +795,7 @@ global $no_default;
 							wppa_setting($slug, '4', $name, $desc, $html, $help);
 						
 							$name = __('Numbar Max', 'wppa');
-							$desc = __('Maximum nubers to display.', 'wppa');
+							$desc = __('Maximum numbers to display.', 'wppa');
 							$help = esc_js(__('In order to attemt to fit on one line, the numbers will be replaced by dots - except the current - when there are more than this number of photos in a slideshow.', 'wppa'));
 							$slug = 'wppa_numbar_max';
 							$html = wppa_input($slug, '40px', '', __('numbers', 'wppa'));
@@ -2244,6 +2244,17 @@ global $no_default;
 							$html2 = wppa_input($slug2, '100px', '', '', "checkColor('".$slug2."')") . '</td><td>' . wppa_color_box($slug2);
 							$html = array($html1, $html2);
 							wppa_setting($slug, '6', $name, $desc, $html, $help);
+
+							$name = __('BestOf', 'wppa');
+							$desc = __('BestOf box background.', 'wppa');
+							$help = esc_js(__('Enter valid CSS colors for bestof box backgrounds and borders.', 'wppa'));
+							$slug1 = 'wppa_bgcolor_bestof';
+							$slug2 = 'wppa_bcolor_bestof';
+							$slug = array($slug1, $slug2);
+							$html1 = wppa_input($slug1, '100px', '', '', "checkColor('".$slug1."')") . '</td><td>' . wppa_color_box($slug1);
+							$html2 = wppa_input($slug2, '100px', '', '', "checkColor('".$slug2."')") . '</td><td>' . wppa_color_box($slug2);
+							$html = array($html1, $html2);
+							wppa_setting($slug, '7', $name, $desc, $html, $help);
 							}
 							?>
 						</tbody>
@@ -2962,7 +2973,7 @@ global $no_default;
 												'upowner'
 												);
 							$users = wppa_get_users();
-							foreach ($users as $usr) {
+							if ( count ( $users ) <= 1000 ) foreach ($users as $usr) {
 								$options[] = $usr['display_name'];
 								$values[]  = $usr['ID'];
 							}							
@@ -4250,19 +4261,28 @@ global $no_default;
 							$slug = 'wppa_blacklist_user';
 					//		$users = wppa_get_users();	// Already known
 							$blacklist = get_option( 'wppa_black_listed_users', array() );
-							$options = array( __('-- select a user to blacklist ---', 'wppa') );
-							$values = array( '0' );
-							foreach ( $users as $usr ) {
-								if ( ! wppa_user_is( 'administrator', $usr['ID'] ) ) {	// an administrator can not be blacklisted
-									if ( ! in_array( $usr['user_login'], $blacklist ) ) {	// skip already on blacklist
-										$options[] = $usr['display_name'].' ('.$usr['user_login'].')';
-										$values[]  = $usr['user_login'];
+							
+							if ( count( $users ) <= 1000 ) {
+								$options = array( __('-- select a user to blacklist ---', 'wppa') );
+								$values = array( '0' );
+								foreach ( $users as $usr ) {
+									if ( ! wppa_user_is( 'administrator', $usr['ID'] ) ) {	// an administrator can not be blacklisted
+										if ( ! in_array( $usr['user_login'], $blacklist ) ) {	// skip already on blacklist
+											$options[] = $usr['display_name'].' ('.$usr['user_login'].')';
+											$values[]  = $usr['user_login'];
+										}
 									}
 								}
+								$onchange = 'alert(\''.__('The page will be reloaded after the action has taken place.', 'wppa').'\');wppaRefreshAfter();';
+								$html1 = wppa_select($slug, $options, $values, $onchange);
+								$html2 = '';
 							}
-							$onchange = 'alert(\''.__('The page will be reloaded after the action has taken place.', 'wppa').'\');wppaRefreshAfter();';
-							$html1 = wppa_select($slug, $options, $values, $onchange);
-							$html2 = '';
+							else { // over 1000 users
+								$onchange = 'alert(\''.__('The page will be reloaded after the action has taken place.', 'wppa').'\');wppaRefreshAfter();';
+								$html1 = __( 'User login name <b>( case sensitive! )</b>:', 'wppa' );
+								$html2 = wppa_input ( $slug, '150px', '', '', $onchange );
+							}
+							
 							$html = array( $html1, $html2 );
 							wppa_setting(false, '11', $name, $desc, $html, $help);
 

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the best rated photos
-* Version 5.2.11
+* Version 5.2.14
 */
 
 class BestOfWidget extends WP_Widget {
@@ -50,127 +50,25 @@ class BestOfWidget extends WP_Widget {
 		$ratcount 		= $instance['ratcount'];
 		$linktype 		= $instance['linktype'];
 		$size 			= $wppa_opt['wppa_widget_width'];
-		$data 			= wppa_get_the_bestof( $count, $period, $sortby, $display );
+//		$data 			= wppa_get_the_bestof( $count, $period, $sortby, $display );
 		$lineheight 	= $wppa_opt['wppa_fontsize_widget_thumb'] * 1.5;
 
 		$widget_content = "\n".'<!-- WPPA+ BestOf Widget start -->';
-
-		if ( $display == 'photo' ) {
-			if ( is_array( $data ) ) {
-				foreach ( array_keys( $data ) as $id ) {
-					wppa_cache_thumb( $id );
-					if ( $thumb ) {
-						$maxw 			= $size;
-						$imgsize 		= getimagesize( wppa_get_thumb_path( $id ) );
-						$maxh 			= $maxw * $imgsize['1'] / $imgsize['0'];
-						$totalh 		= $maxh + $lineheight;
-						if ( $maxratings == 'yes' ) $totalh += $lineheight;
-						if ( $meanrat == 'yes' ) 	$totalh += $lineheight;
-						if ( $ratcount == 'yes' ) 	$totalh += $lineheight;
-
-						$widget_content .= "\n".'<div class="wppa-widget" style="clear:both; width:'.$maxw.'px; height:'.$totalh.'px; margin:4px; display:inline; text-align:center; float:left;">'; 
-					
-
-							// The link if any
-							if ( $linktype != 'none' ) {
-								switch ( $linktype ) {
-									case 'owneralbums':
-										$href = wppa_get_permalink($page).'wppa-cover=1&wppa-owner='.$thumb['owner'].'&wppa-occur=1';
-										$title = __a('See the authors albums', 'wppa');
-										break;
-									case 'ownerphotos':
-										$href = wppa_get_permalink($page).'wppa-cover=0&wppa-owner='.$thumb['owner'].'&photos-only&wppa-occur=1';
-										$title = __a('See the authors photos', 'wppa');
-										break;
-									case 'upldrphotos':
-										$href = wppa_get_permalink($page).'wppa-cover=0&wppa-upldr='.$thumb['owner'].'&wppa-occur=1';
-										$title = __a('See all the authors photos', 'wppa');
-										break;
-								}
-								$widget_content .= '<a href="'.$href.'" title="'.$title.'" >';
-							}
-							
-							// The image
-							$widget_content .= '<img style="height:'.$maxh.'px; width:'.$maxw.'px;" src="'.wppa_get_photo_url( $id, '', $maxw, $maxh ).'" />';
-							
-							// The /link
-							if ( $linktype != 'none' ) {
-								$widget_content .= '</a>';
-							}
-							
-							// The medal
-							$widget_content .= wppa_get_medal_html( $id, $maxh );
-
-							// The subtitles
-							$widget_content .= "\n\t".'<div style="font-size:'.$wppa_opt['wppa_fontsize_widget_thumb'].'px; line-height:'.$lineheight.'px; position:absolute; width:'.$size.'px;">';
-								$widget_content .= sprintf( __a( 'Photo by: %s' ), $data[$id]['user'] ).'<br />';
-								if ( $maxratings 	== 'yes' ) $widget_content .= sprintf( __a( 'Max ratings: %s.' ), $data[$id]['maxratingcount'] ).'<br />';
-								if ( $ratcount 		== 'yes' ) $widget_content .= sprintf( __a( 'Votes: %s.' ), $data[$id]['ratingcount'] ).'<br />';
-								if ( $meanrat  		== 'yes' ) $widget_content .= sprintf( __a( 'Mean value: %4.2f.' ), $data[$id]['meanrating'] ).'<br />';
-							$widget_content .= '</div>';
-							$widget_content .= '<div style="clear:both" ></div>';
-							
-						$widget_content .= "\n".'</div>';
-					}
-					else {	// No image
-						$widget_content .= '<div>'.sprintf( __a('Photo %s not found.'), $id ).'</div>';
-					}
-				}
-			}	
-			else {
-				$widget_content .= $data;	// No array, print message
-			}
-		}
-		else {	// Display = owner
-			if ( is_array( $data ) ) {
-				$widget_content .= '<ul>';
-				foreach ( array_keys( $data ) as $author ) {
-					$widget_content .= '<li>';
-					// The link if any
-					if ( $linktype != 'none' ) {
-						switch ( $linktype ) {
-							case 'owneralbums':
-								$href = wppa_get_permalink($page).'wppa-cover=1&wppa-owner='.$data[$author]['owner'].'&wppa-occur=1';
-								$title = __a('See the authors albums', 'wppa');
-								break;
-							case 'ownerphotos':
-								$href = wppa_get_permalink($page).'wppa-cover=0&wppa-owner='.$data[$author]['owner'].'&photos-only&wppa-occur=1';
-								$title = __a('See the authors photos', 'wppa');
-								break;
-							case 'upldrphotos':
-								$href = wppa_get_permalink($page).'wppa-cover=0&wppa-upldr='.$data[$author]['owner'].'&wppa-occur=1';
-								$title = __a('See all the authors photos', 'wppa');
-								break;
-						}
-						$widget_content .= '<a href="'.$href.'" title="'.$title.'" >';
-					}
-					
-					// The name
-					$widget_content .= $author;
-
-					// The /link
-					if ( $linktype != 'none' ) {
-						$widget_content .= '</a>';
-					}
-					
-					$widget_content .= '<br/>';
-					
-					// The subtitles
-					$widget_content .= "\n\t".'<div style="font-size:'.$wppa_opt['wppa_fontsize_widget_thumb'].'px; line-height:'.$lineheight.'px; ">';
-								if ( $maxratings 	== 'yes' ) $widget_content .= sprintf( __a( 'Max ratings: %s.' ), $data[$author]['maxratingcount'] ).'<br />';
-								if ( $ratcount 		== 'yes' ) $widget_content .= sprintf( __a( 'Votes: %s.' ), $data[$author]['ratingcount'] ).'<br />';
-								if ( $meanrat  		== 'yes' ) $widget_content .= sprintf( __a( 'Mean value: %4.2f.' ), $data[$author]['meanrating'] ).'<br />';
-					
-					$widget_content .= '</div>';
-					$widget_content .= '</li>';
-				}
-				$widget_content .= '</ul>';
-			}
-			else {
-				$widget_content .= $data;	// No array, print message
-			}
-		}
 		
+		$widget_content .= wppa_bestof_html( array ( 	'page' 			=> $page,
+														'count' 		=> $count,
+														'sortby' 		=> $sortby,
+														'display' 		=> $display,
+														'period' 		=> $period,
+														'maxratings' 	=> $maxratings,
+														'meanrat' 		=> $meanrat,
+														'ratcount' 		=> $ratcount,
+														'linktype' 		=> $linktype,
+														'size' 			=> $size,
+														'lineheight' 	=> $lineheight
+
+														) );
+
 		$widget_content .= '<div style="clear:both"></div>';
 		$widget_content .= "\n".'<!-- WPPA+ BestOf Widget end -->';
 
@@ -304,187 +202,3 @@ class BestOfWidget extends WP_Widget {
 // register BestOfWidget widget
 if ( get_option( 'wppa_rating_on', 'yes' ) == 'yes' ) add_action( 'widgets_init', create_function( '', 'return register_widget("BestOfWidget" );' ) );
 
-function wppa_get_the_bestof( $count, $period, $sortby, $what ) {
-global $wppa_opt;
-global $wpdb;
-global $thumb;
-
-	// Phase 1, find the period we are talking about
-	// find $start and $end
-	switch ( $period ) {
-		case 'lastweek':
-			$start 	= wppa_get_timestamp( 'lastweekstart' );
-			$end   	= wppa_get_timestamp( 'lastweekend' );
-			break;
-		case 'thisweek':
-			$start 	= wppa_get_timestamp( 'thisweekstart' );
-			$end   	= wppa_get_timestamp( 'thisweekend' );
-			break;
-		case 'lastmonth':
-			$start 	= wppa_get_timestamp( 'lastmonthstart' );
-			$end 	= wppa_get_timestamp( 'lastmonthend' );
-			break;
-		case 'thismonth':
-			$start 	= wppa_get_timestamp( 'thismonthstart' );
-			$end 	= wppa_get_timestamp( 'thismonthend' );
-			break;
-		case 'lastyear':
-			$start 	= wppa_get_timestamp( 'lastyearstart' );
-			$end 	= wppa_get_timestamp( 'lastyearend' );
-			break;
-		case 'thisyear':
-			$start 	= wppa_get_timestamp( 'thisyearstart' );
-			$end 	= wppa_get_timestamp( 'thisyearend' );
-			break;
-		default:
-			return 'Unimplemented period: '.$period;
-	}
-	
-	// Phase 2, get the ratings of the period
-	// find $ratings, ordered by photo id
-	$ratings 	= $wpdb->get_results( $wpdb->prepare( "SELECT * FROM `".WPPA_RATING."` WHERE `timestamp` >= %s AND `timestamp` < %s ORDER BY `photo`", $start, $end ), ARRAY_A );
-
-	// Phase 3, set up an array with data we need
-	// There are two methods: photo oriented and owner oriented, depending on 
-	
-	// Each element reflects a photo ( key = photo id ) and is an array with items: maxratings, meanrating, ratings, totvalue.
-	$ratmax	= $wppa_opt['wppa_rating_max'];
-	$data 	= array();
-	foreach ( $ratings as $rating ) {
-		$key = $rating['photo'];
-		if ( ! isset( $data[$key] ) ) {
-			$data[$key] = array();
-			$data[$key]['ratingcount'] 		= '1';
-			$data[$key]['maxratingcount'] 	= $rating['value'] == $ratmax ? '1' : '0';
-			$data[$key]['totvalue'] 		= $rating['value'];
-		}
-		else {
-			$data[$key]['ratingcount'] 		+= '1';
-			$data[$key]['maxratingcount'] 	+= $rating['value'] == $ratmax ? '1' : '0';
-			$data[$key]['totvalue'] 		+= $rating['value'];
-		}
-	}
-	foreach ( array_keys( $data ) as $key ) {
-		wppa_cache_thumb( $key );
-		$data[$key]['meanrating'] = $data[$key]['totvalue'] / $data[$key]['ratingcount'];
-		$user = get_user_by( 'login', $thumb['owner'] );
-		if ( $user ) {
-			$data[$key]['user'] = $user->display_name;
-		}
-		else { // user deleted
-			$data[$key]['user'] = $thumb['owner'];
-		}
-		$data[$key]['owner'] = $thumb['owner'];
-	}
-	
-	// Now we split into search for photos and search for owners
-	
-	if ( $what == 'photo' ) {
-	
-		// Pase 4, sort to the required sequence
-		$data = wppa_array_sort( $data, $sortby, SORT_DESC );
-		
-	}
-	else { 	// $what == 'owner'
-	
-		// Phase 4, combine all photos of the same owner
-		wppa_array_sort( $data, 'user' );
-		$temp = $data;
-		$data = array();
-		foreach ( array_keys( $temp ) as $key ) {
-			if ( ! isset( $data[$temp[$key]['user']] ) ) {
-				$data[$temp[$key]['user']]['photos'] 			= '1';
-				$data[$temp[$key]['user']]['ratingcount'] 		= $temp[$key]['ratingcount'];
-				$data[$temp[$key]['user']]['maxratingcount'] 	= $temp[$key]['maxratingcount'];
-				$data[$temp[$key]['user']]['totvalue'] 			= $temp[$key]['totvalue'];
-				$data[$temp[$key]['user']]['owner'] 			= $temp[$key]['owner'];
-			}
-			else {
-				$data[$temp[$key]['user']]['photos'] 			+= '1';
-				$data[$temp[$key]['user']]['ratingcount'] 		+= $temp[$key]['ratingcount'];
-				$data[$temp[$key]['user']]['maxratingcount'] 	+= $temp[$key]['maxratingcount'];
-				$data[$temp[$key]['user']]['totvalue'] 			+= $temp[$key]['totvalue'];
-			}
-		}
-		foreach ( array_keys( $data ) as $key ) {
-			$data[$key]['meanrating'] = $data[$key]['totvalue'] / $data[$key]['ratingcount'];
-		}
-		$data = wppa_array_sort( $data, $sortby, SORT_DESC );
-	}
-	
-	// Phase 5, truncate to the desired length
-	$c = '0';
-	foreach ( array_keys( $data ) as $key ) {
-		$c += '1';
-		if ( $c > $count ) unset ( $data[$key] );
-	}
-
-	// Phase 6, return the result
-	if ( count( $data ) ) {
-		return $data;
-	}
-	else {
-		return 'There are no ratings between <br />'.wppa_local_date( 'F j, Y, H:i s', $start ).' and <br />'.wppa_local_date( 'F j, Y, H:i s', $end ).'.';
-	}
-}
-
-function wppa_get_timestamp( $key = false ) {
-	
-	$timnow = time();
-	$format = 'Y:z:n:j:W:w:G:i:s';
-	//         0 1 2 3 4 5 6 7 8
-	// Year(2014):dayofyear(0-365):month(1-12):dayofmonth(1-31):Weeknumber(1-53):dayofweek(0-6):hour(0-23):min(0-59):sec(0-59)
-	$local_date_time = wppa_local_date( $format, $timnow );
-
-	$data = explode( ':', $local_date_time );
-	$data[4] = ltrim( '0', $data[4] );
-	
-	$today_start = $timnow - $data[8] - 60 * $data[7] - 3600 * $data[6];
-	if ( $key == 'todaystart' ) return $today_start;
-	
-	$daysec = 24 * 3600;
-	
-	if ( ! $data[5] ) $data[5] = 7;	// Sunday
-	$thisweek_start = $today_start - $daysec * ( $data[5] - 1 );	// Week starts on monday
-	if ( $key == 'thisweekstart' ) return $thisweek_start;
-	if ( $key == 'lastweekend' ) return $thisweek_start;
-	
-	$thisweek_end = $thisweek_start + 7 * $daysec;
-	if ( $key == 'thisweekend' ) return $thisweek_end;
-	
-	$lastweek_start = $thisweek_start - 7 * $daysec;
-	if ( $key == 'lastweekstart' ) return $lastweek_start;
-	
-	$thismonth_start = $today_start - ( $data[3] - 1 ) * $daysec;
-	if ( $key == 'thismonthstart' ) return $thismonth_start;
-	if ( $key == 'lastmonthend' ) return $thismonth_start;
-	
-	$monthdays = array ( '0', '31', '28', '31', '30', '31', '30', '31', '31', '30', '31', '30', '31' );
-	$monthdays[2] += wppa_local_date('L', $timnow );	// Leap year correction
-
-	$thismonth_end = $thismonth_start + $monthdays[$data[2]] * $daysec;
-	if ( $key == 'thismonthend' ) return $thismonth_end;
-	
-	$lm = $data[2] > 1 ? $data[2] - 1 : 12;
-	$lastmonth_start = $thismonth_start - $monthdays[$lm] * $daysec;
-	if ( $key == 'lastmonthstart' ) return $lastmonth_start;
-	
-	$thisyear_start = $thismonth_start;
-	$idx = $data[2];
-	while ( $idx > 1 ) {
-		$idx--;
-		$thisyear_start -= $monthdays[$idx] * $daysec;
-	}
-	if ( $key == 'thisyearstart' ) return $thisyear_start;
-	if ( $key == 'lastyearend' ) return $thisyear_start;
-	
-	$thisyear_end = $thisyear_start;
-	foreach ( $monthdays as $month ) $thisyear_end += $month * $daysec;
-	if ( $key == 'thisyearend' ) return $thisyear_end;
-	
-	$lastyear_start = $thisyear_start - 365 * $daysec;
-	if ( wppa_local_date('L', $thisyear_start - $daysec) ) $lastyear_start -= $daysec;	// Last year was a leap year
-	if ( $key == 'lastyearstart' ) return $lastyear_start;
-	
-	return $timnow;
-}

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Various wppa boxes
-* Version 5.2.11
+* Version 5.2.14
 *
 */
 
@@ -1153,4 +1153,174 @@ global $thumb;
 		$wppa['out'] .= '
 			</div><div style="clear:both"></div>';
 	}
+}
+
+// The bestof box
+function wppa_bestof_box ( $args ) {
+global $wppa;
+
+	wppa_container ( 'open' );
+	$wppa['out'] .= wppa_nltab ( '+' ).'<div id="wppa-bestof-'.$wppa['master_occur'].'" class="wppa-box wppa-bestof" style="'.__wcs('wppa-box').__wcs('wppa-bestof').'">';
+		$wppa['out'] .= wppa_bestof_html( $args, false );
+	$wppa['out'] .= wppa_nltab ( '-' ).'<div style="clear:both; height:4px;"></div></div>';
+	wppa_container ( 'close' );
+}
+
+function wppa_bestof_html( $args, $widget = true ) {
+global $thumb;
+global $wppa_opt;
+
+	// Copletify args
+	$args = wp_parse_args( (array) $args, array( 	'page' 			=> '0',
+													'count' 		=> '1',
+													'sortby' 		=> 'maxratingcount', 
+													'display' 		=> 'photo',
+													'period' 		=> 'thisweek',
+													'maxratings'	=> 'yes',
+													'meanrat' 		=> 'yes',
+													'ratcount' 		=> 'yes',
+													'linktype' 		=> 'none',
+													'size' 			=> $wppa_opt['wppa_widget_width'],
+													'fontsize' 		=> $wppa_opt['wppa_fontsize_widget_thumb'],
+													'lineheight' 	=> $wppa_opt['wppa_fontsize_widget_thumb'] * 1.5,
+													'height' 		=> '200'
+											) );
+											
+	// Make args into eperate vars
+	extract ( $args );
+	
+	// Validate args
+	if ( ! in_array( $sortby, array ( 'maxratingcount', 'meanrating', 'ratingcount' ) ) ) wppa_dbg_msg ( 'Invalid arg sortby "'.$sortby.'" must be "maxratingcount", "meanrating" or "ratingcount"', 'red', 'force' );
+	if ( ! in_array( $display, array ( 'photo', 'owner' ) ) ) wppa_dbg_msg ( 'Invalid arg display "'.$display.'" must be "photo" or "owner"', 'red', 'force' );
+	if ( ! in_array( $period, array ( 'lastweek', 'thisweek', 'lastmonth', 'thismonth', 'lastyear', 'thisyear' ) ) ) wppa_dbg_msg ( 'Invalid arg period "'.$period.'" must be "lastweek", "thisweek", "lastmonth", "thismonth", "lastyear" or "thisyear"', 'red', 'force' );
+	if ( ! $widget ) $size = $height;
+	
+	$result = '';
+	
+	$data = wppa_get_the_bestof( $count, $period, $sortby, $display );
+			
+	if ( $display == 'photo' ) {
+		if ( is_array( $data ) ) {
+			foreach ( array_keys( $data ) as $id ) {
+				wppa_cache_thumb( $id );
+				if ( $thumb ) {
+					$imgsize 		= getimagesize( wppa_get_thumb_path( $id ) );
+					if ( $widget ) {
+						$maxw 		= $size;
+						$maxh 		= $maxw * $imgsize['1'] / $imgsize['0'];
+					}
+					else {
+						$maxh 		= $size;
+						$maxw 		= $maxh * $imgsize['0'] / $imgsize['1'];
+					}
+					$totalh 		= $maxh + $lineheight;
+					if ( $maxratings == 'yes' ) $totalh += $lineheight;
+					if ( $meanrat == 'yes' ) 	$totalh += $lineheight;
+					if ( $ratcount == 'yes' ) 	$totalh += $lineheight;
+
+					if ( $widget ) $clear = 'clear:both; '; else $clear = '';
+					$result .= "\n".'<div class="wppa-widget" style="'.$clear.'width:'.$maxw.'px; height:'.$totalh.'px; margin:4px; display:inline; text-align:center; float:left;">'; 
+				
+
+						// The link if any
+						if ( $linktype != 'none' ) {
+							switch ( $linktype ) {
+								case 'owneralbums':
+									$href = wppa_get_permalink($page).'wppa-cover=1&wppa-owner='.$thumb['owner'].'&wppa-occur=1';
+									$title = __a('See the authors albums', 'wppa');
+									break;
+								case 'ownerphotos':
+									$href = wppa_get_permalink($page).'wppa-cover=0&wppa-owner='.$thumb['owner'].'&photos-only&wppa-occur=1';
+									$title = __a('See the authors photos', 'wppa');
+									break;
+								case 'upldrphotos':
+									$href = wppa_get_permalink($page).'wppa-cover=0&wppa-upldr='.$thumb['owner'].'&wppa-occur=1';
+									$title = __a('See all the authors photos', 'wppa');
+									break;
+							}
+							$result .= '<a href="'.$href.'" title="'.$title.'" >';
+						}
+						
+						// The image
+						$result .= '<img style="height:'.$maxh.'px; width:'.$maxw.'px;" src="'.wppa_get_photo_url( $id, '', $maxw, $maxh ).'" />';
+						
+						// The /link
+						if ( $linktype != 'none' ) {
+							$result .= '</a>';
+						}
+						
+						// The medal
+						$result .= wppa_get_medal_html( $id, $maxh );
+
+						// The subtitles
+						$result .= "\n\t".'<div style="font-size:'.$fontsize.'px; line-height:'.$lineheight.'px; position:absolute; width:'.$maxw.'px; ">';
+							$result .= sprintf( __a( 'Photo by: %s' ), $data[$id]['user'] ).'<br />';
+							if ( $maxratings 	== 'yes' ) $result .= sprintf( __a( 'Max ratings: %s.' ), $data[$id]['maxratingcount'] ).'<br />';
+							if ( $ratcount 		== 'yes' ) $result .= sprintf( __a( 'Votes: %s.' ), $data[$id]['ratingcount'] ).'<br />';
+							if ( $meanrat  		== 'yes' ) $result .= sprintf( __a( 'Mean value: %4.2f.' ), $data[$id]['meanrating'] ).'<br />';
+						$result .= '</div>';
+						$result .= '<div style="clear:both" ></div>';
+						
+					$result .= "\n".'</div>';
+				}
+				else {	// No image
+					$result .= '<div>'.sprintf( __a('Photo %s not found.'), $id ).'</div>';
+				}
+			}
+		}	
+		else {
+			$result .= $data;	// No array, print message
+		}
+	}
+	else {	// Display = owner
+		if ( is_array( $data ) ) {
+			$result .= '<ul>';
+			foreach ( array_keys( $data ) as $author ) {
+				$result .= '<li>';
+				// The link if any
+				if ( $linktype != 'none' ) {
+					switch ( $linktype ) {
+						case 'owneralbums':
+							$href = wppa_get_permalink($page).'wppa-cover=1&wppa-owner='.$data[$author]['owner'].'&wppa-occur=1';
+							$title = __a('See the authors albums', 'wppa');
+							break;
+						case 'ownerphotos':
+							$href = wppa_get_permalink($page).'wppa-cover=0&wppa-owner='.$data[$author]['owner'].'&photos-only&wppa-occur=1';
+							$title = __a('See the authors photos', 'wppa');
+							break;
+						case 'upldrphotos':
+							$href = wppa_get_permalink($page).'wppa-cover=0&wppa-upldr='.$data[$author]['owner'].'&wppa-occur=1';
+							$title = __a('See all the authors photos', 'wppa');
+							break;
+					}
+					$result .= '<a href="'.$href.'" title="'.$title.'" >';
+				}
+				
+				// The name
+				$result .= $author;
+
+				// The /link
+				if ( $linktype != 'none' ) {
+					$result .= '</a>';
+				}
+				
+				$result .= '<br/>';
+				
+				// The subtitles
+				$result .= "\n\t".'<div style="font-size:'.$wppa_opt['wppa_fontsize_widget_thumb'].'px; line-height:'.$lineheight.'px; ">';
+							if ( $maxratings 	== 'yes' ) $result .= sprintf( __a( 'Max ratings: %s.' ), $data[$author]['maxratingcount'] ).'<br />';
+							if ( $ratcount 		== 'yes' ) $result .= sprintf( __a( 'Votes: %s.' ), $data[$author]['ratingcount'] ).'<br />';
+							if ( $meanrat  		== 'yes' ) $result .= sprintf( __a( 'Mean value: %4.2f.' ), $data[$author]['meanrating'] ).'<br />';
+				
+				$result .= '</div>';
+				$result .= '</li>';
+			}
+			$result .= '</ul>';
+		}
+		else {
+			$result .= $data;	// No array, print message
+		}
+	}
+	
+	return $result;
 }
