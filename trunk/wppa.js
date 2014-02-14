@@ -2,7 +2,7 @@
 //
 // conatins slideshow, theme, ajax and lightbox code
 //
-// Version 5.2.11
+// Version 5.2.15
 
 // Part 1: Slideshow
 //
@@ -3237,12 +3237,12 @@ function _wppaUpdateOgMeta(mocc) {
 }
 
 function wppaFbInit() {
-	if ( FB ) {
+	if ( typeof(FB) != 'undefined' ) {
 		FB.init({status : true, xfbml : true });
 	}
 	else {
 		wppaConsoleLog('Fb wait');
-		SetTimeout('wppaFbInit()', 200);
+		setTimeout('wppaFbInit()', 200);
 	}
 }
 

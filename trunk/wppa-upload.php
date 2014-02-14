@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the upload/import pages and functions
-* Version 5.2.11
+* Version 5.2.15
 *
 */
 
@@ -390,8 +390,15 @@ global $wppa;
 	
 if ( $wppa['ajax'] ) {
 	ob_end_clean();
-	if ( $wppa['ajax_import_files_done'] ) echo '<span style="color:green" >'.$wppa['ajax_import_files'].' '.__('Done!', 'wppa').'</span>';
-	else echo '<span style="color:red" >'.$wppa['ajax_import_files'].' '.__('Failed!', 'wppa').'</span>';
+	if ( $wppa['ajax_import_files_done'] ) {
+		echo '<span style="color:green" >'.$wppa['ajax_import_files'].' '.__('Done!', 'wppa').'</span>';
+	}
+	elseif ( $wppa['ajax_import_files_error'] ) {
+		echo '<span style="color:red" >'.$wppa['ajax_import_files'].' '.$wppa['ajax_import_files_error'].'</span>';
+	}
+	else {
+		echo '<span style="color:red" >'.$wppa['ajax_import_files'].' '.__('Failed!', 'wppa').'</span>';
+	}
 	exit;
 }
 
@@ -667,7 +674,11 @@ if ( $wppa['ajax'] ) {
 										<input type="checkbox" id="wppa-update" onchange="impUpd(this, '#submit')" name="wppa-update"><b>&nbsp;&nbsp;<?php _e('Update existing photos', 'wppa') ?></b>
 									</td>
 									<td>
+									<?php if ( wppa_switch('wppa_void_dups') ) { ?>
+										<input type="hidden" id="wppa-nodups" name="wppa-nodups" value="true" />
+									<?php } else { ?>
 										<input type="checkbox" id="wppa-nodups" name="wppa-nodups" checked="checked" ><b>&nbsp;&nbsp;<?php _e('Do not create duplicates', 'wppa') ?></b>
+									<?php } ?>
 									</td>
 								</tr>
 							</thead>
@@ -1278,19 +1289,24 @@ if ( $wppa['ajax'] ) $wppa['ajax_import_files'] = basename($file);	/* */
 				else { 
 					if (is_numeric($alb) && $alb != '0') {
 						$id = basename($file);
-						$id = substr($id, 0, strpos($id, '.'));
-						if (!is_numeric($id) || !wppa_is_id_free('photo', $id)) $id = 0;
-						if ( wppa_insert_photo($file, $alb, stripslashes($name), stripslashes($desc), $porder, $id, stripslashes($linkurl), stripslashes($linktitle)) ) {
-							if ( $wppa['ajax'] ) $wppa['ajax_import_files_done'] = true;
-							$pcount++;
-							if ($delp) {
-								unlink($file);
-								if (is_file($meta)) unlink($meta);
-							}
+						if ( wppa_switch( 'wppa_void_dups' ) && wppa_file_is_in_album( $id, $alb ) ) {
+							wppa_error_message( sprintf( __('Photo %s already exists in album %s.', 'wppa'), $id, $alb ) );
+							$wppa['ajax_import_files_error'] = __('Duplicate', 'wppa');
 						}
 						else {
-							wppa_error_message(__('Error inserting photo', 'wppa') . ' ' . basename($file) . '.');
-							
+							$id = substr($id, 0, strpos($id, '.'));
+							if (!is_numeric($id) || !wppa_is_id_free('photo', $id)) $id = 0;
+							if ( wppa_insert_photo($file, $alb, stripslashes($name), stripslashes($desc), $porder, $id, stripslashes($linkurl), stripslashes($linktitle)) ) {
+								if ( $wppa['ajax'] ) $wppa['ajax_import_files_done'] = true;
+								$pcount++;
+								if ($delp) {
+									unlink($file);
+									if (is_file($meta)) unlink($meta);
+								}
+							}
+							else {
+								wppa_error_message(__('Error inserting photo', 'wppa') . ' ' . basename($file) . '.');
+							}
 						}
 					}
 					else {

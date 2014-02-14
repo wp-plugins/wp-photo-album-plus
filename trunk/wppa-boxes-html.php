@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Various wppa boxes
-* Version 5.2.14
+* Version 5.2.15
 *
 */
 
@@ -428,6 +428,7 @@ global $wppa;
 function wppa_user_create_html($alb, $width, $where = '', $mcr = false) {
 global $wppa;
 global $wppa_opt;
+global $album;
 
 	// May I?
 	if ( ! $wppa_opt['wppa_user_create_on'] ) return;			// Feature not enabled
@@ -440,6 +441,12 @@ global $wppa_opt;
 	if ( is_user_logged_in() ) {
 		if ( ! $alb && ! wppa_can_create_top_album() ) return;	// Current logged in user can not create a toplevel album
 		if ( $alb && ! wppa_can_create_album() ) return;		// Current logged in user can not create a sub-album
+	}
+	if ( ! wppa_user_is('administrator') && wppa_switch('wppa_owner_only') ) {
+		if ( $alb ) {
+			wppa_cache_album($alb);
+			if ( $album['owner'] == '--- public ---' ) return;	// Need to be admin to create public subalbums
+		}
 	}
 	
 	if ( wppa_is_user_blacklisted() ) return;

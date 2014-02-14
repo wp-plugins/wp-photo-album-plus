@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * edit and delete photos
-* version 5.2.11
+* version 5.2.15
 *
 */
 
@@ -651,6 +651,7 @@ function wppa_album_photos_bulk($album) {
 			if ( ! is_numeric($newalb) ) wp_die('Security check failure 1');
 			if ( is_array($ids) ) {
 				foreach ( array_keys($ids) as $id ) {
+					$skip = false;
 					switch ($_POST['wppa-bulk-action']) {
 						case 'wppa-bulk-delete':
 							wppa_delete_photo($id);
@@ -658,6 +659,14 @@ function wppa_album_photos_bulk($album) {
 						case 'wppa-bulk-move-to':
 							if ( $newalb ) {
 								$photo = $wpdb->get_row($wpdb->prepare('SELECT * FROM '.WPPA_PHOTOS.' WHERE `id` = %s', $id), ARRAY_A);
+								if ( wppa_switch('wppa_void_dups') ) {	// Check for already exists
+									$exists = $wpdb->get_var ( $wpdb->prepare ( "SELECT COUNT(*) FROM `".WPPA_PHOTOS."` WHERE `filename` = %s AND `album` = %s", $photo['filename'], $newalb ) );
+									if ( $exists ) {	// Already exists
+										wppa_error_message ( sprintf ( __( 'A photo with filename %s already exists in album %s.', 'wppa' ), $photo['filename'], $newalb ) );
+										$skip = true;
+									}
+								}
+								if ( $skip ) continue;
 								wppa_flush_treecounts($photo['album']);		// Current album
 								wppa_flush_treecounts($newalb);				// New album
 								$wpdb->query($wpdb->prepare('UPDATE `'.WPPA_PHOTOS.'` SET `album` = %s WHERE `id` = %s', $newalb, $id));
@@ -667,6 +676,15 @@ function wppa_album_photos_bulk($album) {
 							break;
 						case 'wppa-bulk-copy-to':
 							if ( $newalb ) {
+								$photo = $wpdb->get_row($wpdb->prepare('SELECT * FROM '.WPPA_PHOTOS.' WHERE `id` = %s', $id), ARRAY_A);
+								if ( wppa_switch('wppa_void_dups') ) {	// Check for already exists
+									$exists = $wpdb->get_var ( $wpdb->prepare ( "SELECT COUNT(*) FROM `".WPPA_PHOTOS."` WHERE `filename` = %s AND `album` = %s", $photo['filename'], $newalb ) );
+									if ( $exists ) {	// Already exists
+										wppa_error_message ( sprintf ( __( $exists.'A photo with filename %s already exists in album %s.', 'wppa' ), $photo['filename'], $newalb ) );
+										$skip = true;
+									}
+								}
+								if ( $skip ) continue;
 								wppa_copy_photo($id, $newalb);
 								wppa_flush_treecounts($newalb);
 							}
@@ -685,7 +703,7 @@ function wppa_album_photos_bulk($album) {
 							wppa_error_message('Unimplemented bulk action requested in wppa_album_photos_bulk().');
 							break;
 					}
-					$count++;
+					if ( ! $skip ) $count++;
 					if ( wppa_is_time_up() ) {
 						wppa_error_message(sprintf(__('Time is out after processing %d out of %d items.', 'wppa'), $count, $totcount));
 						$abort = true;

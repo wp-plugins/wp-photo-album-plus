@@ -1,7 +1,7 @@
 <?php
 /* Only loads when php version >= 5.3 
 *
-* Version 5.2.3
+* Version 5.2.15
 *
 */
 
@@ -32,8 +32,9 @@ function wppa_upload_to_cloudinary( $id ) {
 						"version"		=> get_option('wppa_photo_version', '1'),
 						"invalidate" 	=> true
 					);
-					
-	\Cloudinary\Uploader::upload( $file, $args );
+	if ( file_exists ( $file ) ) {
+		\Cloudinary\Uploader::upload( $file, $args );
+	}
 	
 }
 

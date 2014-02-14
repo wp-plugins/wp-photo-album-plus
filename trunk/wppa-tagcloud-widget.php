@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the tagcloud widget
-* Version 5.2.11
+* Version 5.2.15
 *
 */
 
@@ -24,7 +24,8 @@ class TagcloudPhotos extends WP_Widget {
         extract( $args );
 
 		$instance = wp_parse_args( (array) $instance, array( 'title' => __('Photo Tags', 'wppa'), 'tags' => array() ) );
-        
+        if ( empty( $instance['tags'] ) ) $instance['tags'] = array();
+		
  		$widget_title = apply_filters('widget_title', $instance['title']);
 
 		// Display the widget

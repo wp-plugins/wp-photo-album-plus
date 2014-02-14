@@ -2,7 +2,7 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 5.2.14
+* version 5.2.15
 *
 */
 
@@ -101,6 +101,7 @@ global $wppa_initruntimetime;
 			'is_upload'					=> false,
 			'ajax_import_files'			=> false,
 			'ajax_import_files_done'	=> false,
+			'ajax_import_files_error' 	=> '',
 			'last_albums'				=> false,
 			'last_albums_parent'		=> '0',
 			'is_multitagbox' 			=> false,
@@ -115,7 +116,9 @@ global $wppa_initruntimetime;
 			'front_edit'				=> false,
 			'is_autopage'				=> false,
 			'is_cat'					=> false,
-			'bestof' 					=> false
+			'bestof' 					=> false,
+			'is_subsearch' 				=> false,
+			'is_rootsearch' 			=> false
 
 		);
 	}
@@ -596,6 +599,7 @@ global $wppa_initruntimetime;
 						'wppa_loggedout_upload_limit_count'		=> '',
 						'wppa_loggedout_upload_limit_time' 		=> '',
 						'wppa_upload_fronend_maxsize' 			=> '',
+						'wppa_void_dups' 						=> '',
 
 
 						
@@ -614,6 +618,7 @@ global $wppa_initruntimetime;
 						'wppa_un_blacklist_user' 	=> '',
 						// B Irreversable
 						'wppa_rating_clear' 		=> '',
+						'wppa_viewcount_clear' 		=> '',
 						'wppa_iptc_clear'			=> '',
 						'wppa_exif_clear'			=> '',
 						'wppa_apply_new_photodesc_all' 	=> '',
@@ -1610,11 +1615,24 @@ global $wppa;
 	elseif ( isset($_REQUEST['s']) ) {				// wp search
 		$str = $_REQUEST['s'];
 	}
-	else $str = '';
+	else { // Not search
+		$str = '';
+	}
 	
-	$str = strip_tags($str);						// Sanitize
+	// Sanitze
+	$str = strip_tags($str);						
 	$str = stripslashes($str);
+	$str = trim($str);
+	$inter = chr(226).chr(136).chr(169);
+	$union = chr(226).chr(136).chr(170);
+	$str = str_replace ( $inter, ' ', $str );
+	$str = str_replace ( $union, ',', $str );
+	while ( strpos ( $str, '  ' ) !== false ) $str = str_replace ( '  ', ' ', $str );	// reduce spaces
+	while ( strpos ( $str, ',,' ) !== false ) $str = str_replace ( ',,', ',', $str );	// reduce commas
+	while ( strpos ( $str, ', ' ) !== false ) $str = str_replace ( ', ', ',', $str );	// trim commas
+	while ( strpos ( $str, ' ,' ) !== false ) $str = str_replace ( ' ,', ',', $str );	// trim commas
 	
+	// Did we do wppa_initialize_runtime() ?
 	if ( is_array($wppa) ) {
 		$wppa['searchstring'] = $str;
 		if ( $wppa['searchstring'] && $wppa['occur'] == '1' && ! $wppa['in_widget'] ) $wppa['src'] = true;
@@ -2228,7 +2246,7 @@ function wppa_tree_empty($dir) {
 function wppa_err_alert($msg) {
 global $wppa;
 
-	$fullmsg = '<script id="wppaer" type="text/javascript" >alert(\''.$msg.'\');jQuery("#wppaer").html("");</script>';
+	$fullmsg = '<script id="wppaer" type="text/javascript" >alert(\''.esc_js($msg).'\');jQuery("#wppaer").html("");</script>';
 //	if ( is_admin() ) 
 	echo $fullmsg;
 //	else $wppa['out'] .= $fullmsg;	
