@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Frontend links
-* Version 5.2.11
+* Version 5.2.15
 *
 */
 
@@ -87,6 +87,11 @@ global $wppa_lang;
 		}
 	}
 	
+	if ( $wppa['is_rootsearch'] ) {
+		if ( $key == 'js' ) $pl .= 'rootsearch=1&';
+		else $pl .= 'rootsearch=1&amp;';
+	}
+	
 	if ($wppa['debug']) {
 		if ( $key == 'js' ) $pl .= 'debug='.$wppa['debug'].'&';
 		else $pl .= 'debug='.$wppa['debug'].'&amp;';
@@ -133,6 +138,11 @@ global $wppa_lang;
 			if ( $key == 'js' ) $al .= 'lang='.$wppa_lang.'&';
 			else $al .= 'lang='.$wppa_lang.'&amp;';
 		}
+	}
+
+	if ( $wppa['is_rootsearch'] ) {
+		if ( $key == 'js' ) $al .= 'rootsearch=1&';
+		else $al .= 'rootsearch=1&amp;';
 	}
 
 	if ($wppa['debug']) {
@@ -355,6 +365,9 @@ global $wppa_opt;
 				case 'ow':
 					$newuri .= 'wppa-owner=';
 					break;
+				case 'rt':
+					$newuri .= 'wppa-rootsearch=';
+					break;
 			}
 //			if ( $code == 'ss' ) $newuri .= str_replace('|', ' ', substr($arg, 2));
 //			else 
@@ -387,7 +400,7 @@ global $wppa_opt;
 	
 	// explode querystring
 	$args = explode('&', substr($uri, $qpos+1));
-	$support = array('album', 'photo', 'slide', 'cover', 'occur', 'woccur', 'page', 'searchstring', 'topten', 'lasten', 'comten', 'featen', 'randseed', 'lang', 'single', 'tag', 'photos-only', 'debug', 'rel', 'relcount', 'upldr', 'owner' );
+	$support = array('album', 'photo', 'slide', 'cover', 'occur', 'woccur', 'page', 'searchstring', 'topten', 'lasten', 'comten', 'featen', 'randseed', 'lang', 'single', 'tag', 'photos-only', 'debug', 'rel', 'relcount', 'upldr', 'owner', 'rootsearch' );
 	if ( count($args) > 0 ) {
 		foreach ( $args as $arg ) {
 			$t = explode('=', $arg);
@@ -461,6 +474,9 @@ global $wppa_opt;
 						break;
 					case 'owner':
 						$newuri .= 'ow';
+						break;
+					case 'rootsearch':
+						$newuri .= 'rt';
 						break;
 				}
 				if ( $val !== false ) {

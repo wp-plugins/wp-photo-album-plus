@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile, cloudinary, fotomoto
-Version: 5.2.14
+Version: 5.2.15
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -172,6 +172,29 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 5.2.15 =
+
+= Bug Fixes =
+
+* With Cloudinary active, bulk edit showed the wrong fullsize images when clicking the thumbnail image. Fixed.
+* Update uploads to Cloudinary failed when a fullsize image was missing. Fixed.
+* Slideshow did not run when facebook sdk was not active while required. Fixed.
+
+= New Features =
+
+* Table VII-D7: Avoid duplicates. When checked: will prevent duplicate photos in the same album during copy, move, upload and import.
+* Search Photos Widget: Subsearch in current selection.
+* Search Photos Widget: Treesearch in current album and sub albums.
+* You can now also clear the viewcounts. Table VIII-B1.1.
+
+= Other Changes =
+
+* Changed the default thumbnail opacity from 85 to 95% ( Table IV-C7 ).
+* Last album used will no longer be recorded for front-end uploads, it is useless and takes many rows in the options db table on sites with many users.
+* If Owners only is checked ( Table VII-D1 ) only administrators can create sub-albums of ---public--- albums.
+* When Ajax import Fails on a photo, the reason of failure is displayed most of the times.
+* album="#owner,..." will now also return --seperate-- albums by the owner if no parent album is given.
 
 = 5.2.14 =
 

@@ -2,7 +2,7 @@
 /* wppa-ajax.php
 *
 * Functions used in ajax requests
-* version 5.2.14
+* version 5.2.15
 *
 */
 add_action('wp_ajax_wppa', 'wppa_ajax_callback');
@@ -780,6 +780,14 @@ global $wppa;
 					
 				case 'moveto':
 					$photodata = $wpdb->get_row($wpdb->prepare('SELECT * FROM '.WPPA_PHOTOS.' WHERE `id` = %s', $photo), ARRAY_A);
+					if ( wppa_switch('wppa_void_dups') ) {	// Check for already exists
+						$exists = wppa_file_is_in_album( $photodata['filename'], $value );
+						if ( $exists ) {	// Already exists
+							echo '||3||' . sprintf ( __( 'A photo with filename %s already exists in album %s.', 'wppa' ), $photodata['filename'], $value );
+							exit;
+							break;
+						}
+					}
 					wppa_flush_treecounts($photodata['album']);	// Current album
 					wppa_flush_treecounts($value);				// New album
 					$iret = $wpdb->query($wpdb->prepare('UPDATE '.WPPA_PHOTOS.' SET `album` = %s WHERE `id` = %s', $value, $photo));
@@ -794,6 +802,15 @@ global $wppa;
 					break;
 					
 				case 'copyto':
+					$photodata = $wpdb->get_row($wpdb->prepare('SELECT * FROM '.WPPA_PHOTOS.' WHERE `id` = %s', $photo), ARRAY_A);
+					if ( wppa_switch('wppa_void_dups') ) {	// Check for already exists
+						$exists = wppa_file_is_in_album( $photodata['filename'], $value );
+						if ( $exists ) {	// Already exists
+							echo '||4||' . sprintf ( __( 'A photo with filename %s already exists in album %s.', 'wppa' ), $photodata['filename'], $value );
+							exit;
+							break;
+						}
+					}
 					$wppa['error'] = wppa_copy_photo($photo, $value);
 					wppa_flush_treecounts($value);				// New album
 					if ( ! $wppa['error'] ) {
@@ -1123,6 +1140,18 @@ global $wppa;
 					}
 					else {
 						$title = __('Could not clear ratings', 'wppa');
+						$alert = $title;
+						$wppa['error'] = '1';
+					}
+					break;
+				case 'wppa_viewcount_clear':
+					$iret = $wpdb->query( "UPDATE `".WPPA_PHOTOS."` SET `views` = '0'" ) &&
+							$wpdb->query( "UPDATE `".WPPA_ALBUMS."` SET `views` = '0'" );
+					if ( $iret !== false ) {
+						$title = __('Viewcounts cleared', 'wppa');
+					}
+					else {
+						$title = __('Could not clear viewcounts', 'wppa');
 						$alert = $title;
 						$wppa['error'] = '1';
 					}

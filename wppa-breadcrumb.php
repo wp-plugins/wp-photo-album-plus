@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Functions for breadcrumbs
-* Version 5.2.4
+* Version 5.2.15
 *
 */
 
@@ -94,13 +94,15 @@ global $wpdb;
 		
 		// The album and optionall placeholder for photo
 		if ( $wppa['src'] && $wppa['master_occur'] == '1' && ! $wppa['is_related'] ) {	// Search
+			$albtxt = $wppa['is_rootsearch'] ? ' <span style="cursor:pointer;" title="'.esc_attr( sprintf( __a( 'Searchresults from album %s and its subalbums' ), wppa_get_album_name( $_SESSION['wppa_session']['search_root'] ) ) ).'">*</span> ' : '';
 			if ( $wppa['is_slide'] ) {
-				$value 	= __a('Searchstring:').'&nbsp;'.stripslashes($wppa['searchstring']);
+//				$value 	= __a('Searchstring:').'&nbsp;'.stripslashes($wppa['searchstring']);
+				$value  = __a('Searchstring:') . ' ' . ( isset ( $_SESSION['wppa_session']['display_searchstring'] ) ? $_SESSION['wppa_session']['display_searchstring'] : stripslashes( $wppa['searchstring'] ) ) . $albtxt;
 				$href 	= wppa_get_permalink().'wppa-cover=0&amp;wppa-occur='.$wppa['occur'].'&amp;wppa-searchstring='.stripslashes($wppa['searchstring']);
 				$title  = __a('View the thumbnails');
 				wppa_bcitem($value, $href, $title, 'b8');
 			}
-			$value 	= __a('Searchstring:').'&nbsp;'.stripslashes($wppa['searchstring']);
+			$value  = __a('Searchstring:') . ' ' . ( isset ( $_SESSION['wppa_session']['display_searchstring'] ) ? $_SESSION['wppa_session']['display_searchstring'] : stripslashes( $wppa['searchstring'] ) ) . $albtxt;
 			$href 	= '';
 			$title	= '';
 			wppa_bcitem($value, $href, $title, 'b9');

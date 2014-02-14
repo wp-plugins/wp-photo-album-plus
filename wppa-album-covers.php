@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Functions for album covers
-* Version 5.2.7
+* Version 5.2.15
 *
 */
 
@@ -182,7 +182,7 @@ global $wpdb;
 					$wppa['out'] .= wppa_qtrans(stripslashes($album['name'])); 
 				} 
 				if ( wppa_is_album_new($album['id']) ) {
-					$wppa['out'] .= wppa_nltab().'<img src="'.WPPA_URL.'/images/new.png" title="New!" class="wppa-albumnew" style="border:none; margin:0; padding:0; box-shadow:none; " />';
+					$wppa['out'] .= wppa_nltab().'<img src="'.WPPA_URL.'/images/new.png" title="'.__a('New!').'" class="wppa-albumnew" style="border:none; margin:0; padding:0; box-shadow:none; " />';
 				}
 			$wppa['out'] .= wppa_nltab('-').'</h2>';
 			

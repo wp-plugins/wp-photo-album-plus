@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 5.2.14
+* Version 5.2.15
 *
 */
 
@@ -3831,7 +3831,7 @@ global $no_default;
 			<?php // Table 7: Security ?>
 			<?php wppa_settings_box_header(
 				'7',
-				__('Table VII:', 'wppa').' '.__('Permittings and Restrictions:', 'wppa').' '.
+				__('Table VII:', 'wppa').' '.__('Permissions and Restrictions:', 'wppa').' '.
 				__('This table describes the access settings for admin and front-end activities.', 'wppa')
 			); ?>
 
@@ -4077,7 +4077,14 @@ global $no_default;
 							$html = wppa_select($slug, $options, $values);
 							$class = 'wppa_comment_';
 							wppa_setting($slug, '6', $name, $desc, $html, $help, $class);
-
+							
+							$name = __('Avoid duplicates', 'wppa');
+							$desc = __('Prevent the creation of duplicate photos.', 'wppa');
+							$help = esc_js(__('If checked: uploading, importing, copying or moving photos to other albums will be prevented when the desitation album already contains a photo with the same filename.', 'wppa'));
+							$slug = 'wppa_void_dups';
+							$html = wppa_checkbox($slug);
+							wppa_setting($slug, '7', $name, $desc, $html, $help);
+							
 							?>
 						</tbody>
 						<tfoot style="font-weight: bold;" class="wppa_table_7">
@@ -4315,7 +4322,16 @@ global $no_default;
 							$html1 = '';
 							$html2 = wppa_ajax_button('', $slug);
 							$html = array($html1, $html2);
-							wppa_setting(false, '1', $name, $desc, $html, $help);
+							wppa_setting(false, '1.0', $name, $desc, $html, $help);
+
+							$name = __('Clear viewcounts', 'wppa');
+							$desc = __('Reset all viewcounts.', 'wppa');
+							$help = esc_js(__('WARNING: If checked, this will clear all viewcounts in the system!', 'wppa'));
+							$slug = 'wppa_viewcount_clear';
+							$html1 = '';
+							$html2 = wppa_ajax_button('', $slug);
+							$html = array($html1, $html2);
+							wppa_setting(false, '1.1', $name, $desc, $html, $help);
 							
 							$name = __('Reset IPTC', 'wppa');
 							$desc = __('Clear all IPTC data.', 'wppa');

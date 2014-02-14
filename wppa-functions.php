@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions
-* Version 5.2.14
+* Version 5.2.15
 *
 */
 
@@ -62,7 +62,7 @@ global $thumbs;
 		else $wppa['occur']++;
 	}
 
-	// Set $wppa['src'] = true and $wppa['searcgstring'] if this occurrance processes a search request.
+	// Set $wppa['src'] = true and $wppa['searchstring'] if this occurrance processes a search request.
 	wppa_test_for_search();
 	
 	// There are 3 ways to get here:
@@ -337,7 +337,12 @@ global $thumbs;
 					}
 					$parent = isset($temp[2]) ? $temp[2] : '0';
 					if ( ! wppa_is_int($parent) ) $parent = '0';
-					$albs = $wpdb->get_results($wpdb->prepare("SELECT `id` FROM `".WPPA_ALBUMS."` WHERE `owner` = %s AND `a_parent` = %s", $owner, $parent), ARRAY_A);
+					if ( $parent ) {
+						$albs = $wpdb->get_results($wpdb->prepare("SELECT `id` FROM `".WPPA_ALBUMS."` WHERE `owner` = %s AND `a_parent` = %s", $owner, $parent), ARRAY_A);
+					}
+					else {	// Generic plus separate if owner requested
+						$albs = $wpdb->get_results($wpdb->prepare("SELECT `id` FROM `".WPPA_ALBUMS."` WHERE `owner` = %s AND `a_parent` < '1'", $owner), ARRAY_A);
+					}
 					$id = '';
 					if ( $albs ) foreach ( $albs as $alb ) {
 						$id .= $alb['id'].'.';
@@ -473,6 +478,46 @@ global $thumbs;
 		}
 	}
 	
+	// Subsearch or rootsearch?
+	if ( $wppa['src'] ) {
+		$wppa['is_subsearch'] = wppa_get_post('subsearch');
+wppa_dbg_msg('Subsearch='.( $wppa['is_subsearch'] ? 'yes' : 'no') );
+		$_SESSION['wppa_session']['subbox'] = $wppa['is_subsearch'];
+		if ( $wppa['is_subsearch'] && isset ( $_SESSION['wppa_session']['use_searchstring'] ) ) {
+			$_SESSION['wppa_session']['use_searchstring'] .= ' '.$wppa['searchstring'];
+		}
+		else {
+			$_SESSION['wppa_session']['use_searchstring'] = $wppa['searchstring'];
+		}
+		$wppa['is_rootsearch'] = wppa_get_get('rootsearch') || wppa_get_post('rootsearch');
+wppa_dbg_msg('Rootsearch='.( $wppa['is_rootsearch'] ? 'yes' : 'no') );
+		$_SESSION['wppa_session']['rootbox'] = $wppa['is_rootsearch'];
+	}
+	if ( 	! isset ( $_REQUEST['wppa-searchstring'] ) && 
+			! isset ( $_REQUEST['s'] ) && 
+			! $wppa['ajax'] && 
+			! isset ( $_REQUEST['wppa-search-submit'] ) &&
+			! $wppa['in_widget'] &&
+			$wppa['occur'] == '1' 
+		) {
+		unset ( $_SESSION['wppa_session']['use_searchstring'] );
+		unset ( $_SESSION['wppa_session']['display_searchstring'] );
+	}
+	if ( isset ( $_SESSION['wppa_session']['use_searchstring'] ) ) {
+		$_SESSION['wppa_session']['display_searchstring'] = str_replace ( ',', ' &#8746 ', str_replace ( ' ', ' &#8745 ', $_SESSION['wppa_session']['use_searchstring'] ) );
+	}
+	else { 	// Not search. Find (future) search root if occur = 1 and not in a widget
+		if ( ! $wppa['in_widget'] && $wppa['occur'] == '1' ) {
+			if ( wppa_is_int( $wppa['start_album'] ) ) {
+//				echo 'Potential root = '.$wppa['start_album'];
+				$_SESSION['wppa_session']['search_root'] = $wppa['start_album'];
+			}
+			else {
+				unset ( $_SESSION['wppa_session']['search_root'] );
+			}
+		}
+	}
+
 	// Is it the multitag box?
 	if ( $wppa['is_multitagbox'] ) {
 		wppa_multitag_box($wppa['tagcols'], $wppa['taglist']);
@@ -585,6 +630,8 @@ global $thumbs;
 	$wppa['is_upldr'] 		= '';
 	$wppa['is_cat'] 		= false;
 	$wppa['bestof'] 		= false;
+	$wppa['is_subsearch'] 	= false;
+	$wppa['is_rootsearch']  = false;
 
 
 }
@@ -605,23 +652,6 @@ global $wppa;
 	if ( $wppa['is_slide'] == '1' ) $cur_page = 'slide';				// Do slide or single when explixitly on
 	elseif ( $wppa['is_slideonly'] == '1' ) $cur_page = 'slide';		// Slideonly is a subset of slide
 	elseif ( is_numeric($wppa['single_photo']) ) $cur_page = 'oneofone';
-/*
-	elseif ( $occur == $ref_occur ) {									// Interprete $_GET only if occur is current
-		if ( wppa_get_get('slide') !== false ) {
-			$cur_page = 'slide';
-		}
-		elseif (wppa_get_get('photo')) {
-			if (wppa_get_get('album') !== false ) {
-				$cur_page = 'single';
-			}
-			else {
-				$cur_page = 'oneofone';
-				$wppa['single_photo'] = wppa_get_get('photo');
-			}
-		}
-		else $cur_page = 'albums';
-	}
-*/
 	else $cur_page = 'albums';	
 
 	if ($cur_page == $page) return true; else return false;
@@ -652,18 +682,13 @@ global $wppa_opt;
 			$chunks = explode(',', stripslashes(strtolower($wppa['searchstring'])));
 			// all chunks
 			foreach ( $chunks as $chunk ) if ( strlen(trim($chunk)) ) {
-			//	$words = explode(' ', trim($chunk));
 				$words = wppa_index_raw_to_words($chunk);
 				$album_array = array();
 				// all words in the searchstring
 				foreach ( $words as $word ) {	
 					$word = trim($word);
-//					$vfy = $word;
-//					$vlen = strlen($vfy);
 					if ( strlen($word) > 1 ) {
 						if ( strlen($word) > 10 ) $word = substr($word, 0, 10);
-//						$floor = $word;
-//						$ceil = substr($floor, 0, strlen($floor) - 1).chr(ord(substr($floor, strlen($floor) - 1))+1);
 						if ( wppa_switch('wppa_wild_front') ) {
 							$aidxs = $wpdb->get_results("SELECT `slug`, `albums` FROM `".WPPA_INDEX."` WHERE `slug` LIKE '%".$word."%'", ARRAY_A);
 						}
@@ -673,7 +698,6 @@ global $wppa_opt;
 						$albums = '';
 						if ( $aidxs ) {
 							foreach ( $aidxs as $ai ) {
-//								if ( substr($ai['slug'], 0, $vlen) == $vfy ) 
 								$albums .= $ai['albums'].',';
 							}
 						}
@@ -696,22 +720,22 @@ global $wppa_opt;
 				$selection .= "OR `id` = '".$final_array[$p]."' ";
 			}
 
-			// Check maximum
-			if ( count($final_array) > $wppa_opt['wppa_max_search_albums'] && $wppa_opt['wppa_max_search_albums'] != '0' ) {
+/*			// Check maximum
+			if ( count($final_array) > $wppa_opt['wppa_max_search_albums'] && $wppa_opt['wppa_max_search_albums'] != '0' && ! $wppa['is_subsearch'] && ! $wppa['is_rootsearch'] ) {
 				$alert_text = esc_js(sprintf(__a('There are %s albums found. Only the first %s will be shown. Please refine your search criteria.'), count($final_array), $wppa_opt['wppa_max_search_albums']));
 				echo '<script type="text/javascript">alert(\''.$alert_text.'\');</script>';
 				$limit = ' LIMIT '.$wppa_opt['wppa_max_search_albums'];
 			}
 			else $limit = '';
-
+*/
 			// Get them
-			$albums = $wpdb->get_results( "SELECT * FROM `" . WPPA_ALBUMS . "` WHERE " . $selection . " " . wppa_get_album_order('0') . $limit, ARRAY_A );
+			$albums = $wpdb->get_results( "SELECT * FROM `" . WPPA_ALBUMS . "` WHERE " . $selection . " " . wppa_get_album_order('0'), ARRAY_A );
 			wppa_dbg_q('Q10');
 			
 			// Exclusive separate albums?
 			if ( wppa_switch('wppa_excl_sep') ) {
-				foreach ( array_keys($albums) as $idx ) {
-					if ( wppa_is_separate($albums[$idx]['id']) ) unset ( $albums[$idx] );
+				foreach ( array_keys( $albums ) as $idx ) {
+					if ( wppa_is_separate( $albums[$idx]['id'] ) ) unset ( $albums[$idx] );
 				}
 			}
 		}
@@ -731,6 +755,29 @@ global $wppa_opt;
 				}
 			}
 		}
+		
+		// Rootsearch?
+		if ( $wppa['is_rootsearch'] && isset ( $_SESSION['wppa_session']['search_root'] ) ) {
+			$root = $_SESSION['wppa_session']['search_root'];
+			if ( is_array( $albums ) ) {
+$c1=count($albums);
+				foreach ( array_keys ( $albums ) as $idx ) {
+					if ( ! wppa_is_ancestor( $root, $albums[$idx]['id'] ) ) unset ( $albums[$idx] );
+				}
+$c2=count($albums);
+wppa_dbg_msg('Rootsearch albums:'.$c1.' -> '.$c2);
+			}
+		}
+
+		// Check maximum
+		if ( is_array( $albums ) && count( $albums) > $wppa_opt['wppa_max_search_albums'] && $wppa_opt['wppa_max_search_albums'] != '0' ) {
+			$alert_text = sprintf( __a('There are %s albums found. Only the first %s will be shown. Please refine your search criteria.' ), count( $albums ), $wppa_opt['wppa_max_search_albums'] );
+			wppa_err_alert( $alert_text );
+			foreach ( array_keys( $albums ) as $idx ) {
+				if ( $idx >= $wppa_opt['wppa_max_search_albums'] ) unset ( $albums[$idx] );
+			}
+		}
+		
 		if ( is_array( $albums ) ) $wppa['any'] = true;
 	}
 	else {	// Its not search
@@ -929,25 +976,23 @@ global $thumbs;
 	}
 	// Search?
 	elseif ( $wppa['src'] ) {	// Searching
+	
+		$searchstring = $wppa['searchstring'];
+		if ( isset ( $_SESSION['wppa_session']['use_searchstring'] ) && ! empty ( $_SESSION['wppa_session']['use_searchstring'] ) ) $searchstring = $_SESSION['wppa_session']['use_searchstring'];
 
 		// Indexed search??
 		if ( wppa_switch('wppa_indexed_search') ) { 
 			$final_array = array();
-			$chunks = explode(',', stripslashes(strtolower($wppa['searchstring'])));
+			$chunks = explode( ',', stripslashes( strtolower( $searchstring ) ) );
 			// all chunks
 			foreach ( $chunks as $chunk ) if ( strlen(trim($chunk)) ) {
-			//	$words = explode(' ', trim($chunk));
 				$words = wppa_index_raw_to_words($chunk);
 				$photo_array = array();
 				// all words in the searchstring
 				foreach ( $words as $word ) {	
 					$word = trim($word);
-//					$vfy = $word;
-//					$vlen = strlen($vfy);
 					if ( strlen($word) > 1 ) {
 						if ( strlen($word) > 20 ) $word = substr($word, 0, 20);
-//						$floor = $word;
-//						$ceil = substr($floor, 0, strlen($floor) - 1).chr(ord(substr($floor, strlen($floor) - 1))+1);
 						if ( wppa_switch('wppa_wild_front') ) {
 							$pidxs = $wpdb->get_results("SELECT `slug`, `photos` FROM `".WPPA_INDEX."` WHERE `slug` LIKE '%".$word."%'", ARRAY_A);
 						}
@@ -957,7 +1002,6 @@ global $thumbs;
 						$photos = '';
 						if ( $pidxs ) {
 							foreach ( $pidxs as $pi ) {
-//								if ( substr($pi['slug'], 0, $vlen) == $vfy ) 
 								$photos .= $pi['photos'].',';
 							}
 						}
@@ -978,40 +1022,47 @@ global $thumbs;
 			$selection = " `id` = '0' ";
 			$count = '0';
 			foreach ( array_keys($final_array) as $p ) {
-				if ( $wppa_opt['wppa_max_search_photos'] && $count < $wppa_opt['wppa_max_search_photos'] ) {
+				if ( $wppa_opt['wppa_max_search_photos'] ) { //&& $count < $wppa_opt['wppa_max_search_photos'] ) {
 					$selection .= "OR `id` = '".$final_array[$p]."' ";
 					$count++;
 				}
 			}
 
-			// Check maximum
-			if ( count($final_array) > $wppa_opt['wppa_max_search_photos'] && $wppa_opt['wppa_max_search_photos'] != '0' ) {
+/*			// Check maximum
+			if ( count($final_array) > $wppa_opt['wppa_max_search_photos'] && $wppa_opt['wppa_max_search_photos'] != '0' && ! $wppa['is_subsearch'] && ! $wppa['is_rootsearch'] ) {
 				$alert_text = esc_js(sprintf(__a('There are %s photos found. Only the first %s will be shown. Please refine your search criteria.'), count($final_array), $wppa_opt['wppa_max_search_photos']));
 
 				echo '<script type="text/javascript">alert(\''.$alert_text.'\');</script>';
 				$limit = ' LIMIT '.$wppa_opt['wppa_max_search_photos'];
 			}
 			else $limit = '';
+*/
 			// Get them, depending of 'pending' criteria
 			if ( current_user_can('wppa_moderate') ) {
-				$thumbs = $wpdb->get_results( "SELECT * FROM `" . WPPA_PHOTOS . "` WHERE " . $selection . wppa_get_photo_order('0') . $limit, ARRAY_A );
+				$thumbs = $wpdb->get_results( "SELECT * FROM `" . WPPA_PHOTOS . "` WHERE " . $selection . wppa_get_photo_order('0'), ARRAY_A );
 			}
 			else {
-				$thumbs = $wpdb->get_results( "SELECT * FROM `" . WPPA_PHOTOS . "` WHERE status <> 'pending' AND (" . $selection . ") " . wppa_get_photo_order('0') . $limit, ARRAY_A );
+				$thumbs = $wpdb->get_results( "SELECT * FROM `" . WPPA_PHOTOS . "` WHERE status <> 'pending' AND (" . $selection . ") " . wppa_get_photo_order('0'), ARRAY_A );
 			}
 			wppa_dbg_q('Q25');
 			
 			// Check on seperate albums?
 			if ( wppa_switch('wppa_excl_sep') ) {
+				$broken = false;
 				foreach ( array_keys($thumbs) as $idx ) {
 					$alb = $thumbs[$idx]['album'];
-					if ( wppa_is_separate($alb) ) unset ( $thumbs[$idx] );
+					if ( wppa_is_separate($alb) ) {
+						unset ( $thumbs[$idx] );
+						$broken = true;
+					}
 				}
-				// Sequence broken, create new indexes for thumbs array
-				$temp = $thumbs;
-				$thumbs = array();
-				foreach($temp as $item) {
-					$thumbs[] = $item;
+				// Sequence broken?, create new indexes for thumbs array
+				if ( $broken ) {
+					$temp = $thumbs;
+					$thumbs = array();
+					foreach($temp as $item) {
+						$thumbs[] = $item;
+					}
 				}
 			}
 		}
@@ -1040,24 +1091,63 @@ global $thumbs;
 							$haystack .= $comm['comment'];
 						}
 					}
-					if ( wppa_deep_stristr(strtolower($haystack), $wppa['searchstring']) ) {
+					if ( wppa_deep_stristr( strtolower( $haystack ), $searchstring ) ) {
 						$thumbs[] = $thumb;
 					}
 				}
 			}
-		}
+		} // end conventional search
 
+		// Rootsearch?
+		if ( $wppa['is_rootsearch'] && isset ( $_SESSION['wppa_session']['search_root'] ) ) {
+			// Find all albums below root
+			$root = $_SESSION['wppa_session']['search_root'];
+			$albs = array( $root );
+			$albs = array_merge ( $albs, wppa_get_all_children( $root ) );
+			
+			// Now remove the thumbs that are not in any of these albums
+$c1=count($thumbs);
+			$broken = false;
+			foreach ( array_keys( $thumbs ) as $idx ) {
+				if ( ! in_array( $thumbs[$idx]['album'], $albs ) ) {
+					unset ( $thumbs[$idx] );
+					$broken = true;
+				}
+			}
+$c2=count($thumbs);
+wppa_dbg_msg('Rootsearch thumbs:'.$c1.' -> '.$c2);
+			// Sequence broken?, create new indexes for thumbs array. required for filmstrip to be able to use the cached thumbs. It relies on uninterrupted sequence
+			if ( $broken ) {
+				$temp = $thumbs;
+				$thumbs = array();
+				foreach($temp as $item) {
+					$thumbs[] = $item;
+				}
+			}
+		}
+//echo count($thumbs);		
+		// Check maximum
+		if ( is_array( $thumbs ) && count( $thumbs ) > $wppa_opt['wppa_max_search_photos'] && $wppa_opt['wppa_max_search_photos'] != '0' ) {
+			$alert_text = sprintf( __a( 'There are %s photos found. Only the first %s will be shown. Please refine your search criteria.' ), count( $thumbs ), $wppa_opt['wppa_max_search_photos'] );
+			wppa_err_alert( $alert_text );
+			foreach ( array_keys( $thumbs ) as $idx ) {
+				if ( $idx >= $wppa_opt['wppa_max_search_photos'] ) unset ( $thumbs[$idx] );
+			}
+		}
+		
 		$wppa['any'] = ! empty ( $thumbs );
 	}
-	else {
-		
+	else {	// Not search, normal
+	
 		// Init $thumbs
 		$thumbs = array();
+		
 		// On which album(s)?
 		if ( strpos($wppa['start_album'], '.') !== false ) $allalb = wppa_series_to_array($wppa['start_album']);
 		else $allalb = array($wppa['start_album']);
 
-		foreach ( $allalb as $id ) {	// Do each album
+		// Do each album
+		foreach ( $allalb as $id ) {	
 			if (is_numeric($id)) {
 				$wppa['current_album'] = $id;
 				if ( $id == -2 ) {	// album == -2 is now: all albums
@@ -1093,21 +1183,20 @@ global $thumbs;
 	return $thumbs;
 }
 
-/*
-// Applies querystring to this occur?
-function wppa_is_this_occur() {
-global $wppa;
-	if ($wppa['in_widget']) {
-		$occur = wppa_get_get('woccur');
-	}
-	else {
-		$occur = wppa_get_get('occur');
-	}
-	$ref_occur = $wppa['in_widget'] ? $wppa['widget_occur'] : $wppa['occur'];
+function wppa_get_all_children( $root ) {
+global $wpdb;
 
-	return ($occur == $ref_occur);
+	$result = array();
+	$albs = $wpdb->get_results( $wpdb->prepare( "SELECT `id` FROM `".WPPA_ALBUMS."` WHERE `a_parent` = %s", $root ), ARRAY_A );
+	if ( ! $albs ) return $result;
+	foreach ( $albs as $alb ) {
+		$result[] = $alb['id'];
+		$part = wppa_get_all_children( $alb['id'] );
+		if ( $part ) $result = array_merge( $result, $part );
+	}
+	return $result;
 }
-*/
+
 // get slide info
 function wppa_get_slide_info($index, $id, $callbackid = '') {
 global $wpdb;
@@ -2442,7 +2531,7 @@ global $wpdb;
 
 		// searching, link to album
 		if ( $wppa['src'] || ( ( $wppa['is_comten'] || $wppa['is_topten'] || $wppa['is_lasten'] || $wppa['is_featen'] ) && $wppa['start_album'] != $thumb['album'] ) ) {
-			$wppa['out'] .= wppa_nltab().'<div class="wppa-thumb-text" style="'.$x.__wcs('wppa-thumb-text').'" >(<a href="'.wppa_get_album_url($thumb['album']).'">'.stripslashes(__(wppa_get_album_name($thumb['album']))).'</a>)</div>';
+			$wppa['out'] .= wppa_nltab().'<div class="wppa-thumb-text" style="'.__wcs('wppa-thumb-text').'" >(<a href="'.wppa_get_album_url($thumb['album']).'">'.stripslashes(__(wppa_get_album_name($thumb['album']))).'</a>)</div>';
 		}
 
 		// Name
@@ -3783,41 +3872,50 @@ global $wppa_opt;
 			$bret = true;
 			$filecount = '1';
 			$done = '0';
+			$fail = '0';
 			foreach ($_FILES as $file) {
-				if ( $bret ) {
-					if ( ! is_array($file['error']) ) {
-						$file['name'] = strip_tags($file['name']);
-						$bret = wppa_do_frontend_file_upload($file, $alb);	// this should no longer happen since the name is incl []
-						if ( $bret ) $done++;
-					}
-					else {
-						$filecount = count($file['error']);
-						for ($i = '0'; $i < $filecount; $i++) {
-							if ( $bret ) {
-								$f['error'] = $file['error'][$i];
-								$f['tmp_name'] = $file['tmp_name'][$i];
-								$f['name'] = strip_tags($file['name'][$i]);
-								$f['type'] = $file['type'][$i];
-								$f['size'] = $file['size'][$i];
-								$bret = wppa_do_frontend_file_upload($f, $alb);
-								if ( $bret ) $done++;
-							}
+				if ( ! is_array($file['error']) ) {
+					$file['name'] = strip_tags($file['name']);
+					$bret = wppa_do_frontend_file_upload($file, $alb);	// this should no longer happen since the name is incl []
+					if ( $bret ) $done++;
+					else $fail++;
+				}
+				else {
+					$filecount = count($file['error']);
+					for ($i = '0'; $i < $filecount; $i++) {
+						if ( $bret ) {
+							$f['error'] = $file['error'][$i];
+							$f['tmp_name'] = $file['tmp_name'][$i];
+							$f['name'] = strip_tags($file['name'][$i]);
+							$f['type'] = $file['type'][$i];
+							$f['size'] = $file['size'][$i];
+							$bret = wppa_do_frontend_file_upload($f, $alb);
+							if ( $bret ) $done++;
+							else $fail++;
 						}
 					}
 				}
 			}
+			$cbpoints = '0';
+			$alert = '';
 			if ( $done ) {
 				//SUCCESSFUL UPLOAD, ADD POINTS
 				if( function_exists('cp_alterPoints') && is_user_logged_in() ) {
 					$cbpoints = $wppa_opt['wppa_cp_points_upload'] * $done;
 					cp_alterPoints(cp_currentUser(), $cbpoints);
 				}
-				else $cbpoints = '0';
-				$alert = $done == '1' ? __a('Photo successfully uploaded.') : sprintf(__a('%s photos successfully uploaded.'), $done);
+				$alert .= $done == '1' ? __a('Photo successfully uploaded.') : sprintf(__a('%s photos successfully uploaded.'), $done);
 				if ( $cbpoints ) $alert .= '\n'.sprintf(__a('%s points added.'), $cbpoints);
-				wppa_err_alert($alert);
 			}
-			else wppa_err_alert(__a('Upload failed'));
+			if ( $fail ) {
+				if ( ! $done ) {
+					$alert .= __a('Upload failed');
+				}
+				else {
+					$alert .= $fail == '1' ? '\n'.__a('1 Upload failed') : '\n'.sprintf(__a('%s uploads failed.'), $fail);
+				}
+			}
+			wppa_err_alert($alert);
 		}		
 	}	
 }
@@ -3851,6 +3949,12 @@ global $album;
 	if ( $ms ) {	// Max size configured
 		if ( $imgsize[0] > $ms || $imgsize[0] > $ms ) {
 			wppa_err_alert( sprintf( __a( 'Uploaded file is larger than the allowed maximum of %d x %d pixels.' ), $ms, $ms ) );
+			return false;
+		}
+	}
+	if ( wppa_switch('wppa_void_dups') ) {	// Check for already exists
+		if ( wppa_file_is_in_album( $file['name'], $alb ) ) {
+			wppa_err_alert( sprintf( __a( 'Uploaded file %s already exists in this album.' ), $file['name'] ) );
 			return false;
 		}
 	}
@@ -3900,7 +4004,7 @@ global $album;
 	else {
 		wppa_save_source($file['tmp_name'], $filename, $alb);
 		wppa_update_album_timestamp($alb);
-		wppa_set_last_album($alb);
+//		wppa_set_last_album($alb);
 		wppa_flush_treecounts($alb);
 	}
 	if ( wppa_make_the_photo_files( $file['tmp_name'], $id, $ext ) ) {

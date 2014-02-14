@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 5.2.14
+* Version 5.2.15
 *
 */
 
@@ -714,7 +714,7 @@ Hide Camera info
 						'wppa_thumbphoto_left' 			=> 'no',
 						'wppa_valign' 					=> 'center',
 						'wppa_use_thumb_opacity' 		=> 'yes',
-						'wppa_thumb_opacity' 			=> '85',
+						'wppa_thumb_opacity' 			=> '95',
 						'wppa_use_thumb_popup' 			=> 'yes',
 						'wppa_align_thumbtext' 			=> 'no',
 						// D Albums and covers
@@ -906,6 +906,7 @@ Hide Camera info
 						'wppa_user_create_on'		=> 'no',
 						'wppa_user_create_login'	=> 'yes',
 						'wppa_upload_fronend_maxsize' 	=> '0',
+						'wppa_void_dups' 			=> 'no',
 						
 						'wppa_editor_upload_limit_count'		=> '0',
 						'wppa_editor_upload_limit_time'			=> '0',
@@ -933,6 +934,7 @@ Hide Camera info
 						'wppa_un_blacklist_user' 	=> '',
 						// B Irreversable
 						'wppa_rating_clear' 		=> 'no',
+						'wppa_viewcount_clear' 		=> 'no',
 						'wppa_iptc_clear'			=> '',
 						'wppa_exif_clear'			=> '',
 						'wppa_apply_new_photodesc_all'	=> '',

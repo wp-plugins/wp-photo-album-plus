@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains low-level utility routines
-* Version 5.2.14
+* Version 5.2.15
 *
 */
  
@@ -113,6 +113,8 @@ global $thumb;
 global $wppa_opt;
 global $blog_id;
 
+	wppa_cache_thumb($id);
+
 	if ( is_feed() && wppa_switch('wppa_feed_use_thumb') ) return wppa_get_thumb_url($id, $system);
 	
 	// If in the cloud...
@@ -134,7 +136,7 @@ global $blog_id;
 	if ( get_option('wppa_file_system') == 'flat' ) $system = 'flat';	// Have been converted, ignore argument
 	if ( get_option('wppa_file_system') == 'tree' ) $system = 'tree';	// Have been converted, ignore argument
 	if ( ! is_numeric($id) || $id < '1' ) wppa_dbg_msg('Invalid arg wppa_get_photo_url('.$id.')', 'red');
-	wppa_cache_thumb($id);
+
 	if ( $system == 'tree' ) return WPPA_UPLOAD_URL.'/'.wppa_expand_id($thumb['id']).'.'.$thumb['ext'].'?ver='.get_option('wppa_photo_version', '1');
 	else return WPPA_UPLOAD_URL.'/'.$thumb['id'].'.'.$thumb['ext'].'?ver='.get_option('wppa_photo_version', '1');
 }
@@ -1824,4 +1826,13 @@ function wppa_get_timestamp( $key = false ) {
 	if ( $key == 'lastyearstart' ) return $lastyear_start;
 	
 	return $timnow;
+}
+
+// To check on possible duplicate
+function wppa_file_is_in_album( $filename, $alb ) {
+global $wpdb;
+
+	if ( ! $filename ) return false;	// Copy/move very old photo, before filnametracking
+	$ext = $wpdb->get_var ( $wpdb->prepare ( "SELECT COUNT(*) FROM `".WPPA_PHOTOS."` WHERE `filename` = %s AND `album` = %s", $filename, $alb ) );
+	return ( $ext > '0' );			
 }
