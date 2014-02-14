@@ -91,7 +91,7 @@ class SearchPhotos extends WP_Widget {
     /** @see WP_Widget::form */
     function form($instance) {				
 		//Defaults
-		$instance = wp_parse_args( (array) $instance, array( 'title' => __('Search Photos', 'wppa'), 'label' => '' ) );
+		$instance = wp_parse_args( (array) $instance, array( 'title' => __('Search Photos', 'wppa'), 'label' => '', 'root' => false, 'sub' => false ) );
 		$title = $instance['title'];
 		$label = $instance['label'];
 		$root  = $instance['root'];
