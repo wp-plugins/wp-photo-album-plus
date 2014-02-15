@@ -2,7 +2,7 @@
 /* wppa-ajax.php
 *
 * Functions used in ajax requests
-* version 5.2.15
+* version 5.2.16
 *
 */
 add_action('wp_ajax_wppa', 'wppa_ajax_callback');
@@ -762,15 +762,30 @@ global $wppa;
 					exit;
 					break;
 				case 'rotright':
+				case 'rot180':
 				case 'rotleft':
-					$angle = $item == 'rotleft' ? '90' : '270';
+					switch ( $item ) {
+						case 'rotleft':
+							$angle = '90';
+							$dir = __('left', 'wppa');
+							break;
+						case 'rot180':
+							$angle = '180';
+							$dir = __('180&deg;', 'wppa');
+							break;
+						case 'rotright':
+							$angle = '270';
+							$dir = __('right', 'wppa');
+							break;
+					}
+				//	$angle = $item == 'rotleft' ? '90' : '270';
 					$wppa['error'] = wppa_rotate($photo, $angle);
-					$leftorright = $item == 'rotleft' ? __('left', 'wppa') : __('right', 'wppa');
+				//	$leftorright = $item == 'rotleft' ? __('left', 'wppa') : __('right', 'wppa');
 					if ( ! $wppa['error'] ) {
 						wppa_update_modified($photo);
 						wppa_bump_photo_rev();
 						wppa_bump_thumb_rev();
-						echo '||0||'.sprintf(__('Photo %s rotated %s', 'wppa'), $photo, $leftorright);
+						echo '||0||'.sprintf(__('Photo %s rotated %s', 'wppa'), $photo, $dir);
 					}
 					else {
 						echo '||'.$wppa['error'].'||'.sprintf(__('An error occurred while trying to rotate photo %s', 'wppa'), $photo);

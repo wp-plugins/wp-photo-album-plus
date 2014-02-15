@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * edit and delete photos
-* version 5.2.15
+* version 5.2.16
 *
 */
 
@@ -160,9 +160,12 @@ global $wppa;
 									<br />
 									<?php echo sprintf(__('Album: %d<br />(%s)', 'wppa'), $photo['album'], wppa_get_album_name($photo['album']) ) ?>
 									<br /><br />
-									<a onclick="if (confirm('<?php _e('Are you sure you want to rotate this photo?', 'wppa') ?>')) wppaAjaxUpdatePhoto(<?php echo $photo['id'] ?>, 'rotleft', 0, <?php echo ( $wppa['front_edit'] ? 'false' : 'true' ) ?>); " ><?php _e('Rotate left', 'wppa'); ?></a>
-									<br />
-									<a onclick="if (confirm('<?php _e('Are you sure you want to rotate this photo?', 'wppa') ?>')) wppaAjaxUpdatePhoto(<?php echo $photo['id'] ?>, 'rotright', 0, <?php echo ( $wppa['front_edit'] ? 'false' : 'true' ) ?>); " ><?php _e('Rotate right', 'wppa'); ?></a>
+									<?php _e('Rotate', 'wppa') ?>
+									<a onclick="if (confirm('<?php _e('Are you sure you want to rotate this photo left?', 'wppa') ?>')) wppaAjaxUpdatePhoto(<?php echo $photo['id'] ?>, 'rotleft', 0, <?php echo ( $wppa['front_edit'] ? 'false' : 'true' ) ?>); " ><?php _e('left', 'wppa'); ?></a>
+									
+									<a onclick="if (confirm('<?php _e('Are you sure you want to rotate this photo 180&deg;?', 'wppa') ?>')) wppaAjaxUpdatePhoto(<?php echo $photo['id'] ?>, 'rot180', 0, <?php echo ( $wppa['front_edit'] ? 'false' : 'true' ) ?>); " ><?php _e('180&deg;', 'wppa'); ?></a>
+									
+									<a onclick="if (confirm('<?php _e('Are you sure you want to rotate this photo right?', 'wppa') ?>')) wppaAjaxUpdatePhoto(<?php echo $photo['id'] ?>, 'rotright', 0, <?php echo ( $wppa['front_edit'] ? 'false' : 'true' ) ?>); " ><?php _e('right', 'wppa'); ?></a>
 									<br />
 									
 									<span style="font-size: 9px; line-height: 10px; color:#666;">
