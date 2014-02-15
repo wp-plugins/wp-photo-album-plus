@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 * Various funcions
-* Version 5.2.15
+* Version 5.2.16
 *
 */
 
@@ -2427,6 +2427,7 @@ global $wpdb;
 	$wppa['out'] .= wppa_nltab().'<div id="thumbnail_frame_'.$imgid.'_'.$wppa['master_occur'].'" class="'.$class.'" style="'.$framestyle.'" >';
 	// Open the image container
 	$imgcontheight = $com_alt ? $imgheight : max( $imgwidth,$imgheight );
+/*?*/	if ( $com_alt ) $framewidth = $imgwidth + '4';
 	$wppa['out'] .= wppa_nltab('+').'<div class="wppa-tn-img-container" style="height:'.$imgcontheight.'px; width:'.$framewidth.'px; '.( $com_alt ? 'float:left;' : '' ).'overflow:hidden;"><!-- image container -->';
 
 	if ($wppa['is_topten']) {

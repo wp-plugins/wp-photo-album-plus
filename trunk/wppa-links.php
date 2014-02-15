@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Frontend links
-* Version 5.2.15
+* Version 5.2.16
 *
 */
 
@@ -135,14 +135,14 @@ global $wppa_lang;
 	
 	if ( isset($_GET['lang']) ) {	// If lang in querystring: keep it
 		if ( strpos($al, 'lang=') === false ) { 	// Not yet
-			if ( $key == 'js' ) $al .= 'lang='.$wppa_lang.'&';
-			else $al .= 'lang='.$wppa_lang.'&amp;';
+			if ( $key == 'js' ) $al .= '&lang='.$wppa_lang;
+			else $al .= '&amp;lang='.$wppa_lang;
 		}
 	}
 
 	if ( $wppa['is_rootsearch'] ) {
-		if ( $key == 'js' ) $al .= 'rootsearch=1&';
-		else $al .= 'rootsearch=1&amp;';
+		if ( $key == 'js' ) $al .= '&rootsearch=1';
+		else $al .= '&amp;rootsearch=1';
 	}
 
 	if ($wppa['debug']) {
