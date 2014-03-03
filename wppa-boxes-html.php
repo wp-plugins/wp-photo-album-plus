@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Various wppa boxes
-* Version 5.2.15
+* Version 5.2.17
 *
 */
 
@@ -245,8 +245,8 @@ global $wppa_locale;
 	// The default description
 	$see_on_site = sprintf(__a('See this image on %s'), str_replace('&amp;', __a('and'), get_bloginfo('name')));
 	
-	// The share thumbnail
-	$share_img = wppa_get_thumb_url($thumb['id']);
+	// The share image. Must be the fullsize image for facebook. If you take the thumbnail, facebook takes a different image at random.
+	$share_img = wppa_get_photo_url($thumb['id']);
 
 	// The icon size
 	$s = ( ( $wppa['in_widget'] && $key != 'lightbox' ) || $key == 'thumb' ) ? '16' : $wppa_opt['wppa_share_size'];
@@ -457,7 +457,7 @@ global $album;
 	// Create the return url
 	$returnurl = wppa_get_permalink();
 	if ( $where == 'cover' ) {
-		$returnurl .= 'wppa-album='.wppa_get_parentalbumid($alb).'&amp;wppa-cover=0&amp;wppa-occur='.$wppa['occur'];
+		$returnurl .= 'wppa-album='.$alb.'&amp;wppa-cover=0&amp;wppa-occur='.$wppa['occur'];
 	}
 	elseif ( $where == 'thumb' ) {
 		$returnurl .= 'wppa-album='.$alb.'&amp;wppa-cover=0&amp;wppa-occur='.$wppa['occur'];
@@ -565,7 +565,7 @@ global $wppa_opt;
 	// Create the return url
 	$returnurl = wppa_get_permalink();
 	if ( $where == 'cover' ) {
-		$returnurl .= 'wppa-album='.wppa_get_parentalbumid($alb).'&amp;wppa-cover=0&amp;wppa-occur='.$wppa['occur'];
+		$returnurl .= 'wppa-album='.$alb.'&amp;wppa-cover=0&amp;wppa-occur='.$wppa['occur'];
 	}
 	elseif ( $where == 'thumb' ) {
 		$returnurl .= 'wppa-album='.$alb.'&amp;wppa-cover=0&amp;wppa-occur='.$wppa['occur'];
@@ -574,7 +574,7 @@ global $wppa_opt;
 		// As is: permalink
 	}
 	if ( $wppa['page'] ) $returnurl .= '&amp;wppa-page='.$wppa['page'];
-	
+
 	// Make the HTML
 	$t = $mcr ? 'mcr-' : '';
 	$wppa['out'] .= '
@@ -597,8 +597,8 @@ global $wppa_opt;
 			<input type="hidden" name="wppa-upload-album" value="'.$alb.'" />';
 			}
 // Exp	
-$wppa['out'] .= '		
-<script>jQuery("#wppa-uplform-'.$alb.'-'.$wppa['master_occur'].'").attr("action", document.location.href);</script>';
+//$wppa['out'] .= '		
+//<script>jQuery("#wppa-uplform-'.$alb.'-'.$wppa['master_occur'].'").attr("action", document.location.href);</script>';
 			
 // End exp
 			if ( wppa_switch('wppa_upload_one_only') && ! current_user_can('administrator') ) {
@@ -1211,7 +1211,7 @@ global $wppa_opt;
 			foreach ( array_keys( $data ) as $id ) {
 				wppa_cache_thumb( $id );
 				if ( $thumb ) {
-					$imgsize 		= getimagesize( wppa_get_thumb_path( $id ) );
+					$imgsize 		= getimagesize( wppa_get_photo_path( $id ) );
 					if ( $widget ) {
 						$maxw 		= $size;
 						$maxh 		= round ( $maxw * $imgsize['1'] / $imgsize['0'] );

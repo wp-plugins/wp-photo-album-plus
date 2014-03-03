@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Frontend links
-* Version 5.2.16
+* Version 5.2.17
 *
 */
 
@@ -165,6 +165,8 @@ global $thumb;
 	$w = $wppa['in_widget'] ? 'w' : '';
 
 	if ( ! $alb ) $alb = $thumb['album'];
+	
+	if ( ! $occur ) $occur = '1';
 	
 	$result = wppa_get_permalink().'wppa-album='.$alb.'&amp;wppa-photo='.$thumb['id'].'&amp;wppa-cover=0&amp;wppa-'.$w.'occur='.$occur;	
 	if ( $single ) $result .= '&amp;wppa-single=1';

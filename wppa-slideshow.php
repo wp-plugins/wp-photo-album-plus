@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the slideshow high level functions
-* Version 5.2.11
+* Version 5.2.17
 *
 */
 
@@ -208,14 +208,14 @@ global $wppa_opt;
 	
 	if ( $wppa_opt['wppa_start_slide'] || $wppa['in_widget'] ) {
 		$wppa['out'] .= "\n";
-		$wppa['out'] .= '<script type="text/javascript">'."\n";
-		$wppa['out'] .= '/* <![CDATA[ */'."\n";
+		wppa_add_js_page_data( '<script type="text/javascript">' );
+//		$wppa['out'] .= '/* <![CDATA[ */'."\n";
 
-		$wppa['out'] .= 'wppaSlideInitRunning['.$wppa['master_occur'].'] = true;';
-		$wppa['out'] .= 'wppaMaxOccur = '.$wppa['master_occur'].';';
+		wppa_add_js_page_data( 'wppaSlideInitRunning['.$wppa['master_occur'].'] = true;' );
+		wppa_add_js_page_data( 'wppaMaxOccur = '.$wppa['master_occur'].';' );
 		
-		$wppa['out'] .= "/* ]]> */\n";
-		$wppa['out'] .= "</script>\n";
+//		$wppa['out'] .= "/* ]]> */\n";
+		wppa_add_js_page_data( "</script>" );
 	}
 
 	$wppa['out'] .= wppa_nltab('+').'<div id="prevnext1-'.$wppa['master_occur'].'" class="wppa-box wppa-nav wppa-nav-text" style="text-align: center; '.__wcs('wppa-box').__wcs('wppa-nav').__wcs('wppa-nav-text').$hide.'">';
@@ -632,11 +632,11 @@ global $thumb;
 	$pagsiz = round($w / ($wppa_opt['wppa_thumbsize'] + $wppa_opt['wppa_tn_margin']));
 	if ($wppa['in_widget']) $pagsiz = round($w / ($wppa_opt['wppa_thumbsize']/2 + $wppa_opt['wppa_tn_margin']/2));
 	
-	$wppa['out'] .= wppa_nltab().'<script type="text/javascript">';
-		$wppa['out'] .= wppa_nltab('+').'/* <![CDATA[ */';
-			$wppa['out'] .= wppa_nltab().'wppaFilmPageSize['.$wppa['master_occur'].'] = '.$pagsiz.';';
-		$wppa['out'] .= wppa_nltab('-').'/* ]]> */';
-	$wppa['out'] .= wppa_nltab().'</script>';
+	wppa_add_js_page_data( '<script type="text/javascript">' );
+//		$wppa['out'] .= wppa_nltab('+').'/* <![CDATA[ */';
+			wppa_add_js_page_data( 'wppaFilmPageSize['.$wppa['master_occur'].'] = '.$pagsiz.';' );
+//		$wppa['out'] .= wppa_nltab('-').'/* ]]> */';
+	wppa_add_js_page_data( '</script>' );
 	
 	if (is_feed()) {
 		$wppa['out'] .= wppa_nltab().'<div style="'.__wcs('wppa-box').__wcs('wppa-nav').'">';

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains low-level utility routines
-* Version 5.2.15
+* Version 5.2.17
 *
 */
  
@@ -1357,6 +1357,7 @@ global $wppa;
 	return $id;
 }
 
+
 function wppa_get_artmonkey_size_a($photo) {
 global $wppa_opt;
 global $wpdb;
@@ -1364,8 +1365,8 @@ global $wpdb;
 	$data = $wpdb->get_row($wpdb->prepare("SELECT * FROM `".WPPA_PHOTOS."` WHERE `id` = %s", $photo), ARRAY_A);
 	if ( $data ) {
 		if ( wppa_switch('wppa_artmonkey_use_source') ) {
-			if ( is_file($wppa_opt['wppa_source_dir'].'/album-'.$data['album'].'/'.$data['filename']) ) {
-				$source = $wppa_opt['wppa_source_dir'].'/album-'.$data['album'].'/'.$data['filename'];
+			if ( is_file( wppa_get_source_path($photo) ) ) {			
+				$source = wppa_get_source_path($photo); 
 			}
 			else {
 				$source = wppa_get_photo_path($photo);
@@ -1835,4 +1836,10 @@ global $wpdb;
 	if ( ! $filename ) return false;	// Copy/move very old photo, before filnametracking
 	$ext = $wpdb->get_var ( $wpdb->prepare ( "SELECT COUNT(*) FROM `".WPPA_PHOTOS."` WHERE `filename` = %s AND `album` = %s", $filename, $alb ) );
 	return ( $ext > '0' );			
+}
+
+function wppa_has_children($alb) {
+global $wpdb;
+
+	return $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `".WPPA_ALBUMS."` WHERE `a_parent` = %s", $alb) );
 }

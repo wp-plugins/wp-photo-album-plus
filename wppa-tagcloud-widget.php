@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the tagcloud widget
-* Version 5.2.15
+* Version 5.2.17
 *
 */
 
@@ -53,6 +53,7 @@ class TagcloudPhotos extends WP_Widget {
 		$instance = wp_parse_args( (array) $instance, array( 'title' => __('Photo Tags', 'wppa'), 'tags' => '' ) );
 		$title = $instance['title'];
 		$stags = $instance['tags'];
+		if ( ! $stags ) $stags = array();
 		
 		echo '<p><label for="' . $this->get_field_id('title') . '">' . __('Title:', 'wppa') . '</label><input class="widefat" id="' . $this->get_field_id('title') . '" name="' . $this->get_field_name('title') . '" type="text" value="' . $title . '" /></p>';
 		echo '<p><label for="' . $this->get_field_id('tags') . '">' . __('Select multiple tags or --- all ---:', 'wppa') . '</label><br />';

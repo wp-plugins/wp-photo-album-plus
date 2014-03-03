@@ -2,7 +2,7 @@
 /* wppa-ajax.php
 *
 * Functions used in ajax requests
-* version 5.2.16
+* version 5.2.17
 *
 */
 add_action('wp_ajax_wppa', 'wppa_ajax_callback');
@@ -121,7 +121,13 @@ global $wppa;
 			}
 			exit;
 		case 'remove':
-
+			if ( isset( $_REQUEST['photo-id'] ) ) {	// Remove photo
+				if ( ( wppa_user_is( 'administrator' ) ) || ( wppa_get_user() == wppa_get_photo_owner( $_REQUEST['photo-id'] ) && wppa_switch( 'wppa_upload_edit' ) ) ) { // Frontend delete?
+					wppa_delete_photo( $_REQUEST['photo-id'] );
+					echo 'OK||'.__('Photo removed', 'wppa');
+					exit;
+				}
+			}
 			if ( ! current_user_can('wppa_moderate') && ! current_user_can('wppa_comments') ) {
 				echo __('You do not have the rights to moderate photos this way', 'wppa');
 				exit;
@@ -198,24 +204,10 @@ global $wppa;
 					echo '||2||'.__('Unable to create tempdir', 'wppa');
 					exit;
 				}
+
 				// Remove obsolete files
-				// To prevent filling up diskspace, divide lifetime by 2 and repeat removing obsolete files until count <= 10
-				$filecount = 100;
-				$lifetime = 3600;
-				while ( $filecount > 10 ) {
-					$files = glob(WPPA_UPLOAD_PATH.'/temp/*');
-					$filecount = 0;
-					if ( $files ) {	
-						$timnow = time();
-						$expired = $timnow - $lifetime;
-						foreach ( $files as $file ) {
-							$modified = filemtime($file);
-							if ( $modified < $expired ) unlink($file);
-							else $filecount++;
-						}
-					}
-					$lifetime /= 2;
-				}
+				wppa_delete_obsolete_tempfiles();
+				
 				// Make the files
 				if ( $type == 'file' ) {
 					copy($source, $dest);
@@ -1087,9 +1079,6 @@ global $wppa;
 				case 'wppa_comment_size':
 					wppa_ajax_check_range($value, false, '32', wppa_get_minisize(), __('Comment Widget image thumbnail size', 'wppa'), wppa_get_minisize());
 					break;
-				case 'wppa_rerate':
-					if ( wppa_recalculate_ratings() ) $title = __('Ratings recalculated', 'wppa');
-					break;
 				case 'wppa_thumb_opacity':
 					wppa_ajax_check_range($value, false, '0', '100', __('Opacity.', 'wppa'));
 					break;
@@ -1202,31 +1191,14 @@ global $wppa;
 					}
 					break;
 					
-				case 'wppa_apply_new_photodesc_all':
-					$iret = $wpdb->query($wpdb->prepare( "UPDATE `".WPPA_PHOTOS."` SET `description` = %s", $wppa_opt['wppa_newphoto_description'] ) );
-					if ($iret !== false) {
-						$title = __('New photo description applied', 'wppa');
-						update_option('wppa_index_need_remake', 'yes');
-					}
-					else {
-						$title = __('Could not apply New photo description', 'wppa');
-						$alert = $title;
-						$wppa['error'] = '1';
-					}
-					break;
-					
 				case 'wppa_recup':
 					$result = wppa_recuperate_iptc_exif();
 					echo '||0||'.__('Recuperation performed', 'wppa').'||'.$result;
 					exit;
 					break;
 
-				case 'wppa_regen':
 				case 'wppa_thumb_aspect':
-					if ( get_option('wppa_lastthumb', '-2') == '-2' ) {
-						wppa_update_option('wppa_lastthumb', '-1');	// Trigger regen if not doing already
-						$old_minisize--;
-					}				
+					$old_minisize--;	// Trigger regen message
 					break;
 
 				case 'wppa_rating_max':
@@ -1261,6 +1233,7 @@ global $wppa;
 						wppa_update_option($option, $value);
 						$wppa['error'] = '0';
 						$alert = '';
+						wppa_index_compute_skips();
 					}
 					break;
 				
@@ -1301,17 +1274,6 @@ global $wppa;
 					if ( strpos($value, 'w#lat') === false || strpos($value, 'w#lon') === false ) {
 						$alert = __('The content must contain w#lat and w#lon', 'wppa');
 						$wppa['error'] = '1';
-					}
-					break;
-					
-				case 'wppa_remove_empty_albums':
-					$albs = $wpdb->get_results("SELECT * FROM `".WPPA_ALBUMS."`", ARRAY_A);
-					if ( $albs ) foreach ( $albs as $alb ) {
-						$na = $wpdb->get_var("SELECT COUNT(*) FROM `".WPPA_ALBUMS."` WHERE `a_parent` = ".$alb['id']);
-						$np = $wpdb->get_var("SELECT COUNT(*) FROM `".WPPA_PHOTOS."` WHERE `album` = ".$alb['id']);
-						if ( ! $na && ! $np ) {
-							$wpdb->query("DELETE FROM `".WPPA_ALBUMS."` WHERE `id` = ".$alb['id']);
-						}
 					}
 					break;
 					
@@ -1530,9 +1492,9 @@ global $wppa;
 			// Did we do something that will require regen?
 			$new_minisize = wppa_get_minisize();
 			if ( $old_minisize != $new_minisize ) {
-				wppa_update_option('wppa_lastthumb', '-1');	// Trigger regen
+				update_option ( 'wppa_regen_thumbs_status', 'Required' );
 				$alert .= __('You just changed a setting that requires the regeneration of thumbnails.', 'wppa');
-				$alert .= ' '.__('This process will start as soon as you refresh or re-enter the settings page.', 'wppa');
+				$alert .= ' '.__('Please run the appropriate action in Table VIII.', 'wppa');
 			}
 			
 			// Produce the response text
@@ -1542,7 +1504,29 @@ global $wppa;
 			wppa_clear_cache();
 			exit;
 			break;	// End update-option
+		
+		case 'maintenance':
+			$slug 	= $_POST['slug'];
+			$nonce  = $_REQUEST['wppa-nonce'];
+			if ( ! wp_verify_nonce($nonce, 'wppa-nonce') ) {
+				echo 'Security check failure||'.$slug.'||Error||0';
+				exit;
+			}
+			echo wppa_do_maintenance_proc( $slug );
+			exit;
+			break;
 			
+		case 'maintenancepopup':
+			$slug 	= $_POST['slug'];
+			$nonce  = $_REQUEST['wppa-nonce'];
+			if ( ! wp_verify_nonce($nonce, 'wppa-nonce') ) {
+				echo 'Security check failure||'.$slug.'||Error||0';
+				exit;
+			}
+			echo wppa_do_maintenance_popup( $slug );
+			exit;
+			break;
+
 		default:	// Unimplemented $wppa-action
 		die('-1');
 	}

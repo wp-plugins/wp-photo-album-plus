@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile, cloudinary, fotomoto
-Version: 5.2.16
+Version: 5.2.17
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -172,6 +172,29 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 5.2.17 =
+
+= Bug Fixes =
+
+* Fixed return urls from front-end upload and album create.
+* Fixed shortcode generator previews when filesystem is tree.
+* Facebook share: On some installations the displayed thumbnail on facebook was not the same as the photo that was shared. Fixed.
+* Fixed devision by zero error when a thumbnail image file was missing.
+
+= New Features =
+
+* New widget: Album Navigator widget.
+* EXPERIMENTAL: Defer javascript. Table IV-A8. Use with care. May fix layout problems and broken slideshows. Do NOT check Ajax ( Table IV-A1 ) to test fixes to these problems.
+
+= Other Changes =
+
+* If, after moving to a different host, the path to the photo files source directory became invalid, it will be attempted to be fixed automaticly on entering the settings page.
+* The delete button has been removed from the front-end poto edit. There is now a delete link on the slide description if the user is administrator or the user is the uploader and uploader edit is enabled.
+* The single images on a page with wppa+ embedded lightbox will now belong to a set and are therefor now browseable within lightbox, if the box in Table IV-G5 ( Lightbox global ) has been ticked.
+* Table VIII has been mainly reprogrammed. Time consuming actions no longer hang up the settings page. The procedures are interruptable. Status updates at approx 5 seconds interval time.
+* Blacklist/unblacklist user has been moved from Table VIII to Table VII-D.
+* Remake photofiles from sourcefiles has been moved from Table IX-H5 to Table VIII-A11.
 
 = 5.2.16 =
 

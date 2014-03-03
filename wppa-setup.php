@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 5.2.15
+* Version 5.2.17
 *
 */
 
@@ -690,6 +690,7 @@ Hide Camera info
 						'wppa_auto_page'				=> 'no',
 						'wppa_auto_page_type'			=> 'photo',
 						'wppa_auto_page_links'			=> 'bottom',
+						'wppa_defer_javascript' 		=> 'no',
 
 						// B Full size and Slideshow
 						'wppa_fullvalign' 				=> 'fit',
@@ -889,6 +890,8 @@ Hide Camera info
 						
 						'wppa_bestof_widget_linkpage'		=> '0',
 						
+						'wppa_album_navigator_widget_linkpage' 	=> '0', 
+						
 						// Table VII: Security
 						// B
 						'wppa_user_upload_login'	=> 'yes',
@@ -925,7 +928,7 @@ Hide Camera info
 						'wppa_backup' 				=> '',
 						'wppa_load_skin' 			=> '',
 						'wppa_skinfile' 			=> 'default',
-						'wppa_regen' 				=> '',
+						'wppa_regen_thumbs' 				=> '',
 						'wppa_rerate'				=> '',
 						'wppa_cleanup'				=> '',
 						'wppa_recup'				=> '',
@@ -941,6 +944,7 @@ Hide Camera info
 						'wppa_remake_index'			=> '',
 						'wppa_extend_index' 		=> '',
 						'wppa_list_index'			=> '',
+						'wppa_list_index_display_start' 	=> '',
 						'wppa_append_text'			=> '',
 						'wppa_append_to_photodesc' 	=> '',
 						'wppa_remove_text'			=> '',

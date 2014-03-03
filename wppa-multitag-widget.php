@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the multitag widget
-* Version 5.2.7
+* Version 5.2.17
 *
 */
 
@@ -57,6 +57,7 @@ class MultitagPhotos extends WP_Widget {
 		$title = $instance['title'];
 		$cols = $instance['cols'];
 		$stags = $instance['tags'];
+		if ( ! $stags ) $stags = array();
 		
 		echo '<p><label for="' . $this->get_field_id('title') . '">' . __('Title:', 'wppa') . '</label><input class="widefat" id="' . $this->get_field_id('title') . '" name="' . $this->get_field_name('title') . '" type="text" value="' . $title . '" /></p>';
 		echo '<p><label for="' . $this->get_field_id('cols') . '">' . __('No of columns:', 'wppa') . '</label><input class="widefat" id="' . $this->get_field_id('cols') . '" name="' . $this->get_field_name('cols') . '" type="text" value="' . $cols . '" /></p>';

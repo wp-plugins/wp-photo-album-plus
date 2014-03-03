@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 *
-* Version 5.1.8
+* Version 5.2.17
 *
 */
 
@@ -46,13 +46,17 @@ $wppagallery = new wppaGallery();
 add_action('admin_head', 'wppa_inject_js');
 
 function wppa_inject_js() {
-	// Things that wppa-tinymce.js needs to know
+global $wppa_api_version;
+
+	// Things that wppa-tinymce.js AND OTHER MODULES!!! need to know
 	echo('<script type="text/javascript">'."\n");
 	echo('/* <![CDATA[ */'."\n");
 		echo("\t".'wppaImageDirectory = "'.wppa_get_imgdir().'";'."\n");
 		echo("\t".'wppaAjaxUrl = "'.admin_url('admin-ajax.php').'";'."\n");
 		echo("\t".'wppaThumbDirectory = "'.WPPA_UPLOAD_URL.'/thumbs/";'."\n");
 		echo("\t".'wppaNoPreview = "'.__('No Preview available', 'wppa').'";'."\n");
+		echo("\t".'wppaVersion = "'.$wppa_api_version.'";'."\n");
+		echo("\t".'wppaSiteUrl = "'.site_url().'"'."\n");
 	echo("/* ]]> */\n");
 	echo("</script>\n");
 }
@@ -220,7 +224,12 @@ global $wppa_opt;
 							foreach ( $photos as $photo ) {
 								$name = stripslashes(__($photo['name']));
 								if ( strlen($name) > '50') $name = substr($name, '0', '50').'...';
-								$result .= '<option value="'.$photo['id'].'.'.$photo['ext'].'" >'.$name.' ('.wppa_get_album_name($photo['album']).')'.'</option>';
+								if ( get_option( 'wppa_file_system' ) == 'flat' ) {
+									$result .= '<option value="'.$photo['id'].'.'.$photo['ext'].'" >'.$name.' ('.wppa_get_album_name($photo['album']).')'.'</option>';
+								}
+								else {
+									$result .= '<option value="'.wppa_expand_id($photo['id']).'.'.$photo['ext'].'" >'.$name.' ('.wppa_get_album_name($photo['album']).')'.'</option>';
+								}
 							}
 							$result .=  '<option value="#last" >'.__('--- The most recently uploaded photo ---', 'wppa').'</option>'.
 										'<option value="#potd" >'.__('--- The photo of the day ---', 'wppa').'</option>';
