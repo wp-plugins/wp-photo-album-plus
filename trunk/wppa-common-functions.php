@@ -2,7 +2,7 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 5.2.15
+* version 5.2.17
 *
 */
 
@@ -373,6 +373,7 @@ global $wppa_initruntimetime;
 						'wppa_auto_page'				=> '',
 						'wppa_auto_page_type'			=> '',
 						'wppa_auto_page_links'			=> '',
+						'wppa_defer_javascript' 		=> '',
 
 
 						// B Full size and Slideshow
@@ -570,6 +571,7 @@ global $wppa_initruntimetime;
 						'wppa_super_view_linkpage'			=> '',
 						'wppa_upldr_widget_linkpage' 		=> '',
 						'wppa_bestof_widget_linkpage' 		=> '',
+						'wppa_album_navigator_widget_linkpage' 	=> '',
 						
 						// Table VII: Security
 						// B
@@ -609,7 +611,7 @@ global $wppa_initruntimetime;
 						'wppa_backup' 				=> '',
 						'wppa_load_skin' 			=> '',
 						'wppa_skinfile' 			=> '',
-						'wppa_regen' 				=> '',
+						'wppa_regen_thumbs' 				=> '',
 						'wppa_rerate'				=> '',
 						'wppa_cleanup'				=> '',
 						'wppa_recup'				=> '',
@@ -625,6 +627,7 @@ global $wppa_initruntimetime;
 						'wppa_remake_index' 		=> '',
 						'wppa_extend_index'			=> '',
 						'wppa_list_index'			=> '',
+						'wppa_list_index_display_start' => '',
 						'wppa_append_text'			=> '',
 						'wppa_append_to_photodesc' 	=> '',
 						'wppa_remove_text'			=> '',
@@ -2141,6 +2144,7 @@ global $wppa_inv_exiftags;
 	else return '';
 }
 
+/*
 // This function attemps to recover iptc and exif data from existing files in the wppa dir.
 function wppa_recuperate_iptc_exif() {
 global $wpdb;
@@ -2207,6 +2211,7 @@ global $wpdb;
 		return true;
 	}
 }
+*/
 
 function wppa_clear_cache($force = false) {
 global $cache_path;

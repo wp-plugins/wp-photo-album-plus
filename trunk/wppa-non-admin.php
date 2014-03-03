@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the non admin stuff
-* Version 5.2.14
+* Version 5.2.17
 *
 */
 
@@ -59,7 +59,7 @@ global $thumb;
 				$title  = wppa_get_photo_name($thumb['id']);
 				$imgurl = wppa_get_photo_url($id);
 				$desc 	= wppa_get_og_desc($thumb['id']); 
-				$url    = wppa_convert_to_pretty(str_replace('&amp;', '&', wppa_get_image_page_url_by_id($thumb['id'], $wppa_opt['wppa_share_single_image'])));
+				$url    = wppa_convert_to_pretty(str_replace('&amp;', '&', wppa_get_image_page_url_by_id($thumb['id'], wppa_switch('wppa_share_single_image'))));
 				$site   = get_bloginfo('name');
 
 				echo '
@@ -130,28 +130,103 @@ add_action('init', 'wppa_add_javascripts', '101');
 function wppa_add_javascripts() {
 global $wppa_api_version;
 global $wppa_lang;
+global $wppa_js_page_data_file;
 
-	if ( is_file(WPPA_PATH.'/wppa.min.js') ) {
-		wp_enqueue_script( 'wppa', WPPA_URL.'/wppa.min.js', array('jquery'), $wppa_api_version );
-	}
-	else {
-		wp_enqueue_script( 'wppa', WPPA_URL.'/wppa.js', array('jquery'), $wppa_api_version );
-	}
-	if ( get_option('wppa_gpx_implementation', 'nil') == 'wppa-plus-embedded' && strpos( get_option('wppa_custom_content' ), 'w#location' ) !== false) {
-		if ( get_option('wppa_map_apikey', false) ) {
-			wp_enqueue_script( 'wppa-geo', 'https://maps.googleapis.com/maps/api/js?key='.get_option('wppa_map_apikey').'&sensor=false', '', $wppa_api_version);
+	$footer = ( wppa_switch( 'wppa_defer_javascript' ) );
+
+	// If the user wants the js in the footer, try to open a tempfile to collect the js data during processing the page
+	// If opening a tempfile fails, revert to js in the header.
+	if ( $footer ) {
+		$tempdir 	= WPPA_UPLOAD_PATH.'/temp';
+		if ( ! is_dir( $tempdir ) ) @ mkdir( $tempdir );
+		wppa_delete_obsolete_tempfiles();
+		
+		$wppa_js_page_data_file = WPPA_UPLOAD_PATH.'/temp/wppa.'.session_id().'.js';
+		$handle = fopen ( $wppa_js_page_data_file, 'wb' );
+
+		if ( $handle ) {
+			fwrite( $handle, '/* WPPA+ Generated Page dependant javascript */'."\n" );
 		}
 		else {
-			wp_enqueue_script( 'wppa-geo', 'https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false', '', $wppa_api_version);
+			$wppa_js_page_data_file = '';
+			$footer = false;
+		}
+		fclose ( $handle );
+	}
+
+	// wppa.js
+	if ( is_file(WPPA_PATH.'/wppa.min.js') ) {
+		wp_enqueue_script( 'wppa', WPPA_URL.'/wppa.min.js', array('jquery'), $wppa_api_version, $footer );
+	}
+	else {
+		wp_enqueue_script( 'wppa', WPPA_URL.'/wppa.js', array('jquery'), $wppa_api_version, $footer );
+	}
+	// google maps
+	if ( get_option('wppa_gpx_implementation', 'nil') == 'wppa-plus-embedded' && strpos( get_option('wppa_custom_content' ), 'w#location' ) !== false) {
+		if ( get_option('wppa_map_apikey', false) ) {
+			wp_enqueue_script( 'wppa-geo', 'https://maps.googleapis.com/maps/api/js?key='.get_option('wppa_map_apikey').'&sensor=false', '', $wppa_api_version, $footer );
+		}
+		else {
+			wp_enqueue_script( 'wppa-geo', 'https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false', '', $wppa_api_version, $footer );
 		}
 	}
+	// wppa.init
 	if ( ! file_exists( WPPA_PATH.'/wppa.init.'.$wppa_lang.'.js' ) ) {
 		wppa_create_wppa_init_js();
 		update_option( 'wppa_ini_js_version_'.$wppa_lang, get_option( 'wppa_ini_js_version_'.$wppa_lang, '0' ) + '1' );
 	}
-	if ( file_exists( WPPA_PATH.'/wppa.init.'.$wppa_lang.'.js' ) ) wp_enqueue_script( 'wppa-init', WPPA_URL.'/wppa.init.'.$wppa_lang.'.js', array('wppa'), get_option( 'wppa_ini_js_version' ) );
+	if ( file_exists( WPPA_PATH.'/wppa.init.'.$wppa_lang.'.js' ) ) {
+		wp_enqueue_script( 'wppa-init', WPPA_URL.'/wppa.init.'.$wppa_lang.'.js', array('wppa'), get_option( 'wppa_ini_js_version_'.$wppa_lang, $footer ) );
+	}
+	// wppa.pagedata
+	wp_enqueue_script( 'wppa-pagedata', WPPA_UPLOAD_URL.'/temp/wppa.'.session_id().'.js', array('wppa-init'), rand(0,4711), $footer );
 }
 	
+function wppa_add_js_page_data( $txt ) {
+global $wppa_js_page_data_file;
+global $wppa;
+	
+	if ( $wppa_js_page_data_file && ! $wppa['ajax'] ) {
+		$handle = fopen( $wppa_js_page_data_file, 'ab' );
+	}
+	else {
+		$handle = false;
+	}
+	
+	if ( $handle ) {
+		$txt = str_replace( '<script type="text/javascript">', '', $txt );
+		$txt = str_replace( '</script>', '', $txt );
+		$txt = str_replace( "\t", '', $txt );
+		$txt = str_replace( "\n", '', $txt );
+		$txt = trim( $txt );
+		if ( $txt ) fwrite( $handle, "\n".$txt );
+		fclose( $handle );
+	}
+	else {
+		$wppa['out'] .= $txt;
+	}
+}
+
+function wppa_delete_obsolete_tempfiles() {
+	// To prevent filling up diskspace, divide lifetime by 2 and repeat removing obsolete files until count <= 10
+	$filecount = 100;
+	$lifetime = 3600;
+	while ( $filecount > 10 ) {
+		$files = glob( WPPA_UPLOAD_PATH.'/temp/*' );
+		$filecount = 0;
+		if ( $files ) {	
+			$timnow = time();
+			$expired = $timnow - $lifetime;
+			foreach ( $files as $file ) {
+				$modified = filemtime($file);
+				if ( $modified < $expired ) unlink($file);
+				else $filecount++;
+			}
+		}
+		$lifetime /= 2;
+	}
+}
+
 /* LOAD WPPA+ THEME */
 add_action('init', 'wppa_load_theme');
 	
@@ -304,7 +379,7 @@ global $wppa_init_js_data;
 <!-- /WPPA Kickoff -->
 
 	';
-	if ( $wppa['debug'] ) {
+	if ( isset( $wppa['debug'] ) && $wppa['debug'] ) {
 		error_reporting( $wppa['debug'] );
 		add_action( 'wp_footer', 'wppa_phpinfo' );
 	}
@@ -349,7 +424,7 @@ global $wppa_init_js_data;
 /*
 */
 ';
-	if ( WPPA_DEBUG || isset( $_GET['wppa-debug'] ) || WP_DEBUG ) {
+	if ( ( WPPA_DEBUG || isset( $_GET['wppa-debug'] ) || WP_DEBUG ) && ! wppa_switch( 'wppa_defer_javascript' ) ) {
 	$content .= '
 	/* Check if wppa.js and jQuery are present */
 	if (typeof(_wppaSlides) == \'undefined\') alert(\'There is a problem with your theme. The file wppa.js is not loaded when it is expected (Errloc = wppa_kickoff).\');

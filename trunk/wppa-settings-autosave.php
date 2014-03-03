@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 5.2.15
+* Version 5.2.17
 *
 */
 
@@ -101,10 +101,6 @@ global $no_default;
 					// Error printed by wppa_restore_settings()
 				}
 				break;
-			// kan naar ajax
-			case 'wppa_cleanup':
-				wppa_cleanup_photos('0');
-				break;
 			// Must be here
 			case 'wppa_watermark_upload':
 				if ( isset($_FILES['file_1']) && $_FILES['file_1']['error'] != 4 ) { // Expected a fileupload for a watermark
@@ -128,107 +124,6 @@ global $no_default;
 				}
 				break;
 
-			// Se if a remake is pending
-			case 'wppa_remake':
-				update_option('wppa_remake_start', time());
-				break;
-				
-			// Recuperate
-			case 'wppa_recup':
-				$usr = get_option('wppa_recuperating_user', wppa_get_user('login'));
-				if ( $usr != wppa_get_user('login') ) {
-					wppa_error_message('This action is already started by '.$usr.'. Please wait until he has finished.');
-				}
-				else {
-					update_option('wppa_recuperating_user', $usr);
-					$wpdb->query( 'TRUNCATE TABLE '.WPPA_IPTC );
-					delete_option('wppa_'.WPPA_IPTC.'_lastkey');
-					$wpdb->query( 'TRUNCATE TABLE '.WPPA_EXIF );
-					delete_option('wppa_'.WPPA_EXIF.'_lastkey');
-					update_option('wppa_last_recup', '0');
-				}
-				break;
-				
-			// See if a fileconversion is pending
-			case 'wppa_file_system':
-				if ( get_option('wppa_file_system') == 'flat' ) update_option('wppa_file_system', 'to-tree');
-				if ( get_option('wppa_file_system') == 'tree' ) update_option('wppa_file_system', 'to-flat');
-				break;
-				
-			// Indexing actions
-			case 'wppa_remake_index':
-				$usr = get_option('wppa_indexing_user', wppa_get_user('login'));
-				if ( $usr != wppa_get_user('login') ) {
-					wppa_error_message('This action is already started by '.$usr.'. Please wait until he has finished.');
-				}
-				else {
-					update_option('wppa_indexing_user', $usr);
-					update_option('wppa_last_index_albums', '-1');
-					update_option('wppa_last_index_photos', '-1');
-				}
-				break;
-
-			case 'wppa_list_index':
-				break;
-				
-			case 'wppa_append_to_photodesc':
-				$start = get_option('wppa_last_append', '0');
-				$photos = $wpdb->get_results("SELECT `id`, `description` FROM `".WPPA_PHOTOS."` WHERE `id` > ".$start." ORDER BY `id`", ARRAY_A);
-				$value = trim($wppa_opt['wppa_append_text']);
-				$count = '0';
-				if ( $value && $photos ) {
-					wppa_ok_message('Appending <i>'.$value.'</i> to all photo descriptions. Starting at id = '.($start+'1').'. Please wait...');
-					foreach ( array_keys($photos) as $phidx ) {
-						if ( ! wppa_is_time_up() ) {
-							$newdesc = rtrim($photos[$phidx]['description']).' '.$value;
-							$wpdb->query($wpdb->prepare("UPDATE `".WPPA_PHOTOS."` SET `description` = %s WHERE `id` = %s", $newdesc, $photos[$phidx]['id']));
-							$count++;
-							update_option('wppa_last_append', $photos[$phidx]['id']);
-						}
-						if ( wppa_is_time_up() ) break;					
-					}
-					if ( wppa_is_time_up($count) ) {
-						wppa_error_message('Restart this operation to continue.');
-					}
-					else {
-						wppa_ok_message('Done! Appending </strong><i>'.$value.'</i><strong> to all photodescriptions.');
-						delete_option('wppa_last_append');
-					}
-				}
-				else {
-					wppa_error_message('Empty string to append or no photos to process.');
-				}
-				break;
-				
-			case 'wppa_remove_from_photodesc':
-				$start = get_option('wppa_last_remove', '0');
-				$photos = $wpdb->get_results("SELECT `id`, `description` FROM `".WPPA_PHOTOS."` WHERE `id` > ".$start." ORDER BY `id`", ARRAY_A);
-				$value = trim($wppa_opt['wppa_remove_text']);
-				$count = '0';
-				if ( $value && $photos ) {
-					wppa_ok_message('Removing <i>'.$value.'</i> from all photo descriptions. Starting at id = '.($start+'1').'. Please wait...');
-					foreach ( array_keys($photos) as $phidx ) {
-						if ( ! wppa_is_time_up() ) {
-							$newdesc = rtrim(str_replace($value, '', $photos[$phidx]['description']));
-							$wpdb->query($wpdb->prepare("UPDATE `".WPPA_PHOTOS."` SET `description` = %s WHERE `id` = %s", $newdesc, $photos[$phidx]['id']));
-							$count++;
-							update_option('wppa_last_remove', $photos[$phidx]['id']);
-						}
-						if ( wppa_is_time_up() ) break;					
-					}
-					if ( wppa_is_time_up($count) ) {
-						wppa_error_message('Restart this operation to continue.');
-					}
-					else {
-						wppa_ok_message('Done! Removing </strong><i>'.$value.'</i><strong> from all photodescriptions.');
-						delete_option('wppa_last_remove');
-					}
-				}
-				else {
-					wppa_error_message('Empty string to remove or no photos to process.');
-				}
-				break;
-				
 			case 'wppa_cdn_service_update':
 				update_option('wppa_cdn_service_update', 'yes');
 				break;
@@ -245,82 +140,6 @@ global $no_default;
 		wppa_initialize_runtime(true);
 
 	} // wppa-settings-submit
-	
-	// See if a remake is pending
-	if ( get_option('wppa_remake_start', '0') != '0' ) {
-	
-		$msg = __('Remaking image files from the available source photo files. Please wait...<br />', 'wppa');
-		$msg .= __('If the line of dots stops growing or your browser reports Ready but you did NOT get a \'READY remaking image files\' message, your server has given up. In that case: continue this action by clicking', 'wppa');
-		$msg .= ' <a href="'.wppa_dbg_url(get_admin_url().'admin.php?page=wppa_options').'">'.__('here', 'wppa').'</a>';
-		$max_time = ini_get('max_execution_time');	
-		if ($max_time > '0') {
-			$msg .= sprintf(__('<br /><br />Your server reports that the elapsed time for this operation is limited to %s seconds.', 'wppa'), $max_time);
-			$msg .= __('<br />There may also be other restrictions set by the server, like cpu time limit.', 'wppa');
-		}
-
-		wppa_ok_message($msg);	// Creates element with id "wppa-ok-p"
-
-		if ( wppa_remake_files() ) {
-			?>
-			<script type="text/javascript">document.getElementById("wppa-ok-p").innerHTML="<strong><?php _e('READY remaking image files.', 'wppa') ?></strong>"</script>
-			<?php				
-			update_option('wppa_remake_start', '0');
-		}
-		elseif ( wppa_switch('wppa_auto_continue') ) wppa_ok_message('Trying to continue...<script type="text/javascript">document.location=document.location</script>');
-	}
-
-	// See if a regeneration of thumbs is pending
-	$start = get_option('wppa_lastthumb', '-2');
-	if ( $start != '-2' ) {
-		$start++; 
-		$count = $wpdb->get_var($wpdb->prepare('SELECT COUNT(*) FROM `' . WPPA_PHOTOS . '` WHERE `id` > %s ', $start));
-		$msg = sprintf(__('Regenerating thumbnail images, starting at id=%s. To go: %s. Please wait...<br />', 'wppa'), $start, $count);
-		wppa_ok_message($msg);	// Creates element with id "wppa-ok-p"
-
-		if ( wppa_regenerate_thumbs() ) {
-			wppa_ok_message(__('READY regenerating thumbnail images.', 'wppa'));			
-			wppa_update_option('wppa_lastthumb', '-2');
-			wppa_bump_thumb_rev();//wppa_update_option('wppa_thumb_version', get_option('wppa_thumb_version', '1') + '1');
-		}
-		elseif ( wppa_switch('wppa_auto_continue') ) wppa_ok_message(__('Trying to continue...<script type="text/javascript">document.location=document.location</script>', 'wppa'));
-	}
-	
-	// See if a Recuperatie is pending
-	if ( get_option('wppa_last_recup', '-2') != '-2' ) {
-		$usr = get_option('wppa_recuperating_user', wppa_get_user('login'));
-		if ( $usr == wppa_get_user('login') ) {	// My task
-			if ( wppa_recuperate_iptc_exif() ) {
-				delete_option('wppa_recuperating_user');
-				wppa_ok_message('IPTC/EXIF Data Recuperated');
-			}
-			elseif ( wppa_switch('wppa_auto_continue') ) wppa_ok_message(__('Trying to continue...<script type="text/javascript">document.location=document.location</script>', 'wppa'));
-		}
-	}
-	
-	// See if a remake index is pending
-	$a = get_option('wppa_last_index_albums', '-2');
-	$p = get_option('wppa_last_index_photos', '-2');
-	if ( $a != '-2' || $p != '-2' ) {
-		$usr = get_option('wppa_indexing_user', wppa_get_user('login'));
-		if ( $usr == wppa_get_user('login') ) {	// My task
-			$start++;
-			wppa_ok_message(__('Creating index. Please wait...<br />', 'wppa'));
-			if ( wppa_remake_index() )  {
-				wppa_ok_message('Index created');
-			}
-			elseif ( wppa_switch('wppa_auto_continue') ) wppa_ok_message(__('Trying to continue...<script type="text/javascript">document.location=document.location</script>', 'wppa'));
-		}
-	}
-	elseif ( wppa_switch('wppa_indexed_search') ) {
-		$indexes = $wpdb->get_var("SELECT COUNT(*) FROM `".WPPA_INDEX."` ");
-		$albums  = $wpdb->get_var("SELECT COUNT(*) FROM `".WPPA_ALBUMS."` ");
-		if ( $albums && ! $indexes ) {	// No index yet
-			update_option('wppa_index_need_remake', 'yes');
-		}
-		if ( get_option('wppa_index_need_remake', 'no') == 'yes' ) {
-			wppa_error_message(__('The search index database table must be rebuilt. Please run Table VIII-A8', 'wppa'));
-		}
-	}
 	
 	// See if a cloudinary upload is pending
 	$need_cloud = get_option('wppa_cdn_service_update', 'no') == 'yes'; 
@@ -386,58 +205,21 @@ global $no_default;
 		}
 	}
 	
-	// Convert to new file structure
-	$fs = get_option('wppa_file_system', 'flat');
-	if ( $fs == 'to-tree' || $fs == 'to-flat' ) {
-		$time_up = false;
-		$last_converted = get_option('wppa_last_converted', '0');
-		$upto = $wpdb->get_var( "SELECT `id` FROM `".WPPA_PHOTOS."` ORDER BY `id` DESC LIMIT 1" );
-		$upto++;
-		
-		wppa_warning_message(__('Converting file structure, starting at id='.($last_converted+'1').', please wait...', 'wppa'));
-		
-		$j = '0';
-		if ( $fs == 'to-tree' ) {
-			$from = 'flat';
-			$to = 'tree';
-		}
-		else {
-			$from = 'tree';
-			$to = 'flat';
-		}
-		
-		$time_up = false;
-		$id = $last_converted + '1';
-		while ( $id < $upto && ! $time_up ) {
-			wppa_cache_thumb( $id );
-			if ( $thumb ) {
-				if ( file_exists( wppa_get_photo_path( $id, $from ) ) ) {
-					@ rename ( wppa_get_photo_path( $id, $from ), wppa_get_photo_path( $id, $to ) );
-					$j++;
-				}
-				if ( file_exists( wppa_get_thumb_path( $id, $from ) ) ) {
-					@ rename ( wppa_get_thumb_path( $id, $from ), wppa_get_thumb_path( $id, $to ) );
-				}
-				update_option('wppa_last_converted', $id);
-				$time_up = wppa_is_time_up($j);
-				if ( $time_up ) {
-					wppa_ok_message('Trying to continue...<script type="text/javascript">document.location=document.location</script>');
-				}
-			}
-			$id++;
-		}
-		if ( ! $time_up ) {
-			wppa_update_option('wppa_last_converted', '0');
-			wppa_update_option('wppa_file_system', $to);
-			wppa_initialize_runtime();
-			wppa_ok_message(__('Done! converting filestructure.', 'wppa'));
-		}
-	}
-	// end file system conversion
-	
+
 	// Fix invalid ratings
-	$iret = $wpdb->query("DELETE FROM `".WPPA_RATING."` WHERE `value` = 0");
+	$iret = $wpdb->query( "DELETE FROM `".WPPA_RATING."` WHERE `value` = 0" );
 	if ( $iret ) wppa_update_message( sprintf( __( '%s invalid ratings removed. Please run Table VIII-A5: Rerate to fix the averages.', 'wppa' ), $iret ) );
+	
+	// Fix invalid source path
+	wppa_fix_source_path();
+	
+	// Check database
+	wppa_check_database(true);
+
+	// Cleanup obsolete settings
+	$iret = $wpdb->query( "DELETE FROM `".$wpdb->prefix.'options'."` WHERE `option_name` LIKE 'wppa_last_album_used-%'" );
+	if ( $iret > '10' ) wppa_update_message( sprintf( __( '%s obsolete settings removed.', 'wppa'), $iret ) );
+
 ?>		
 	<div class="wrap">
 		<?php $iconurl = WPPA_URL.'/images/settings32.png'; ?>
@@ -465,6 +247,7 @@ global $no_default;
 		foreach ( $matches as $bad ) {
 			wppa_error_message(__('Please de-activate plugin <i style="font-size:14px;">', 'wppa').substr($bad, 0, strpos($bad, '/')).__('. </i>This plugin will cause wppa+ to function not properly.', 'wppa'));
 		}
+		
 		// Graylist
 		$graylist_plugins = array('shortcodes-ultimate/shortcodes-ultimate.php');
 		$matches = array_intersect($graylist_plugins, $plugins);
@@ -476,6 +259,16 @@ global $no_default;
 		if ( ! function_exists('imagecreatefromjpeg') ) {
 			wppa_error_message(__('There is a serious misconfiguration in your servers PHP config. Function imagecreatefromjpeg() does not exist. You will encounter problems when uploading photos and not be able to generate thumbnail images. Ask your hosting provider to add GD support with a minimal version 1.8.', 'wppa'));
 		}
+		
+		// Check for pending actions
+		if ( get_option( 'wppa_remake_index_albums_status' ) 		&& get_option( 'wppa_remake_index_albums_user', 	wppa_get_user() == wppa_get_user() ) ) wppa_warning_message( __( 'Rebeuiling the Album index needs completion. See Table VIII', 'wppa' ) );
+		if ( get_option( 'wppa_remake_index_photos_status' ) 		&& get_option( 'wppa_remake_index_photos_user', 	wppa_get_user() == wppa_get_user() ) ) wppa_warning_message( __( 'Rebuilding the Photo index needs completion. See Table VIII', 'wppa' ) );
+		if ( get_option( 'wppa_remove_empty_albums_status'	) 		&& get_option( 'wppa_remove_empty_albums_user', 	wppa_get_user() == wppa_get_user() ) ) wppa_warning_message( __( 'Remove empty albums needs completion. See Table VIII', 'wppa') );
+		if ( get_option( 'wppa_apply_new_photodesc_all_status' ) 	&& get_option( 'wppa_apply_new_photodesc_all_user', wppa_get_user() == wppa_get_user() ) ) wppa_warning_message( __( 'Applying new photo description needs completion. See Table VIII', 'wppa') );
+		if ( get_option( 'wppa_append_to_photodesc_status' ) 		&& get_option( 'wppa_append_to_photodesc_user', 	wppa_get_user() == wppa_get_user() ) ) wppa_warning_message( __( 'Appending to photo description needs completion. See Table VIII', 'wppa' ) );
+		if ( get_option( 'wppa_remove_from_photodesc_status' ) 		&& get_option( 'wppa_remove_from_photodesc_user', 	wppa_get_user() == wppa_get_user() ) ) wppa_warning_message( __( 'Removing from photo description needs completion. See Table VIII', 'wppa' ) );
+		if ( get_option( 'wppa_remove_file_extensions_status' ) 	&& get_option( 'wppa_remove_file_extensions_user', 	wppa_get_user() == wppa_get_user() ) ) wppa_warning_message( __( 'Removing file extensions needs completion. See Table VIII', 'wppa' ) );
+		if ( get_option( 'wppa_regen_thumbs_status' ) 				&& get_option( 'wppa_regen_thumbs_user', 			wppa_get_user() == wppa_get_user() ) ) wppa_warning_message( __( 'Regenerating the Thumbnails needs completion. See Table VIII', 'wppa' ) );
 
 ?>
 		<!--<br /><a href="javascript:window.print();"><?php //_e('Print settings', 'wppa') ?></a><br />-->
@@ -498,13 +291,6 @@ global $no_default;
 			&nbsp;<a style="cursor:pointer;" onclick="jQuery('#wppa-legenda').css('display', 'none'); jQuery('#wppa-legon').css('display', ''); return false;" ><?php _e('Hide this', 'wppa') ?></a> 
 		</div>
 
-<?php
-// Display index?
-			if ( $key == 'wppa_list_index' ) {
-				wppa_list_index();
-			}
-?>
-		
 		<form enctype="multipart/form-data" action="<?php echo(wppa_dbg_url(get_admin_url().'admin.php?page=wppa_options')) ?>" method="post">
 
 			<?php wp_nonce_field('wppa-nonce', 'wppa-nonce'); ?>
@@ -2381,12 +2167,20 @@ global $no_default;
 							
 							$name = __('Auto page links', 'wppa');
 							$desc = __('The location for the pagelinks.', 'wppa');
+							$help = '';
 							$slug = 'wppa_auto_page_links';
 							$opts = array(__('none', 'wppa'), __('At the top', 'wppa'), __('At the bottom', 'wppa'), __('At top and bottom', 'wppa'));
 							$vals = array('none', 'top', 'bottom', 'both');
 							$html = wppa_select($slug, $opts, $vals);
 							$class = 'autopage';
 							wppa_setting($slug, '7.2', $name, $desc, $html, $help, $class);
+							
+							$name = __('Defer javascript', 'wppa');
+							$desc = __('<span style="color:red;">Experimental</span> put javascript near the end of the page.', 'wppa');
+							$help = esc_js(__('May fix layout problems and broken slideshows.', 'wppa'));
+							$slug = 'wppa_defer_javascript';
+							$html = wppa_checkbox($slug);
+							wppa_setting($slug, '8', $name, $desc, $html, $help);
 							}
 							wppa_setting_subheader( 'B', '1', __( 'Slideshow related settings', 'wppa' ) );
 							{
@@ -3899,7 +3693,9 @@ global $no_default;
 							$help = esc_js(__('If you check this item, frontend album creation will be enabled.', 'wppa'));
 							$slug = 'wppa_user_create_on';
 							$onchange = '';//wppaCheckUserUpload()';
-							$html = wppa_checkbox($slug, $onchange);
+							$html1 = wppa_checkbox($slug, $onchange);
+							$html2 = '';
+							$html = array( $html1, $html2 );
 							wppa_setting($slug, '1', $name, $desc, $html, $help);
 							
 							$name = __('User create Albums login', 'wppa');
@@ -3907,7 +3703,9 @@ global $no_default;
 							$help = '';//esc_js(__('If you uncheck this box, make sure you check the item Owners only in the next sub-table.', 'wppa'));
 //							$help .= '\n'.esc_js(__('Set the owner to ---public--- of the albums that are allowed to be uploaded to.', 'wppa'));
 							$slug = 'wppa_user_create_login';
-							$html = wppa_checkbox($slug);
+							$html1 = wppa_checkbox($slug);
+							$html2 = '';
+							$html = array( $html1, $html2 );
 							wppa_setting($slug, '2', $name, $desc, $html, $help);
 							
 							$name = __('User upload Photos', 'wppa');
@@ -3915,7 +3713,9 @@ global $no_default;
 							$help = esc_js(__('If you check this item, frontend upload will be enabled according to the rules set in the following items of this table.', 'wppa'));
 							$slug = 'wppa_user_upload_on';
 							$onchange = 'wppaCheckUserUpload()';
-							$html = wppa_checkbox($slug, $onchange);
+							$html1 = wppa_checkbox($slug, $onchange);
+							$html2 = '';
+							$html = array( $html1, $html2 );
 							wppa_setting($slug, '3', $name, $desc, $html, $help);
 							
 							$name = __('User upload Photos login', 'wppa');
@@ -3923,7 +3723,9 @@ global $no_default;
 							$help = esc_js(__('If you uncheck this box, make sure you check the item Owners only in the next sub-table.', 'wppa'));
 							$help .= '\n'.esc_js(__('Set the owner to ---public--- of the albums that are allowed to be uploaded to.', 'wppa'));
 							$slug = 'wppa_user_upload_login';
-							$html = wppa_checkbox($slug);
+							$html1 = wppa_checkbox($slug);
+							$html2 = '';
+							$html = array( $html1, $html2 );
 							wppa_setting($slug, '4', $name, $desc, $html, $help);
 							
 							// User upload limits
@@ -3947,10 +3749,11 @@ global $no_default;
 								if ( $role == 'loggedout' ) $help = esc_js(__('This setting has only effect when Table VII-B2 is unchecked.', 'wppa'));
 								else $help = esc_js(__('This limitation only applies to frontend uploads when the same userrole does not have the Upload checkbox checked in Table VII-A.', 'wppa'));
 								$help .= '\n'.esc_js(__('A value of 0 means: no limit.', 'wppa'));
-								$slug = 'wppa_'.$role.'_upload_limit_count';
-								$html = wppa_input($slug, '50px', '', __('photos', 'wppa'));
-								$slug = 'wppa_'.$role.'_upload_limit_time';
-								$html .= wppa_select($slug, $options, $values);
+								$slug1 = 'wppa_'.$role.'_upload_limit_count';
+								$html1 = wppa_input($slug1, '50px', '', __('photos', 'wppa'));
+								$slug2 = 'wppa_'.$role.'_upload_limit_time';
+								$html2 = wppa_select($slug2, $options, $values);
+								$html = array( $html1, $html2 );
 								wppa_setting(false, '5.'.$role, $name, $desc, $html, $help);
 							}
 							
@@ -3958,7 +3761,9 @@ global $no_default;
 							$desc = __('Non admin users can upload only one photo at a time.', 'wppa');
 							$help = '';
 							$slug = 'wppa_upload_one_only';
-							$html = wppa_checkbox($slug);
+							$html1 = wppa_checkbox($slug);
+							$html2 = '';
+							$html = array( $html1, $html2 );
 							wppa_setting($slug, '6', $name, $desc, $html, $help);
 
 							$name = __('Upload moderation', 'wppa');
@@ -3967,75 +3772,95 @@ global $no_default;
 							$help .= esc_js(__('Users who have photo album admin access rights can change the photo status to publish or featured.', 'wppa'));
 							$help .= '\n\n'.esc_js(__('You can set the album admin access rights in Table VII-A.', 'wppa'));
 							$slug = 'wppa_upload_moderate';
-							$html = wppa_checkbox($slug);
+							$html1 = wppa_checkbox($slug);
+							$html2 = '';
+							$html = array( $html1, $html2 );
 							wppa_setting($slug, '7', $name, $desc, $html, $help);
 
 							$name = __('Upload notify', 'wppa');
 							$desc = __('Notify admin at frontend upload.', 'wppa');
 							$help = esc_js(__('If checked, admin will receive a notification by email.', 'wppa'));
 							$slug = 'wppa_upload_notify';
-							$html = wppa_checkbox($slug);
+							$html1 = wppa_checkbox($slug);
+							$html2 = '';
+							$html = array( $html1, $html2 );
 							wppa_setting($slug, '8', $name, $desc, $html, $help);
 
 							$name = __('Upload backend notify', 'wppa');
 							$desc = __('Notify admin at backend upload.', 'wppa');
 							$help = esc_js(__('If checked, admin will receive a notification by email.', 'wppa'));
 							$slug = 'wppa_upload_backend_notify';
-							$html = wppa_checkbox($slug);
+							$html1 = wppa_checkbox($slug);
+							$html2 = '';
+							$html = array( $html1, $html2 );
 							wppa_setting($slug, '9', $name, $desc, $html, $help);
 							
 							$name = __('Max size in pixels', 'wppa');
 							$desc = __('Max size for height and width for front-end uploads.', 'wppa');
 							$help = esc_js(__('Enter the maximum size. 0 is unlimited','wppa'));
 							$slug = 'wppa_upload_fronend_maxsize';
-							$html = wppa_input($slug, '40px', '', __('pixels', 'wppa'));
+							$html1 = wppa_input($slug, '40px', '', __('pixels', 'wppa'));
+							$html2 = '';
+							$html = array( $html1, $html2 );
 							wppa_setting($slug, '10', $name, $desc, $html, $help);
 							
-							wppa_setting_subheader( 'C', '1', __('Admin Functionality restrictions for non administrators', 'wppa' ) );
+							wppa_setting_subheader( 'C', '2', __('Admin Functionality restrictions for non administrators', 'wppa' ) );
 							
 							$name = __('Alt thumb is restricted', 'wppa');
 							$desc = __('Using <b>alt thumbsize</b> is a restricted action.', 'wppa');
 							$help = esc_js(__('If checked: alt thumbsize can not be set in album admin by users not having admin rights.', 'wppa'));
 							$slug = 'wppa_alt_is_restricted';
-							$html = wppa_checkbox($slug);
+							$html1 = wppa_checkbox($slug);
+							$html2 = '';
+							$html = array( $html1, $html2 );
 							wppa_setting($slug, '1', $name, $desc, $html, $help);
 							
 							$name = __('Link is restricted', 'wppa');
 							$desc = __('Using <b>Link to</b> is a restricted action.', 'wppa');
 							$help = esc_js(__('If checked: Link to: can not be set in album admin by users not having admin rights.', 'wppa'));
 							$slug = 'wppa_link_is_restricted';
-							$html = wppa_checkbox($slug);
+							$html1 = wppa_checkbox($slug);
+							$html2 = '';
+							$html = array( $html1, $html2 );
 							wppa_setting($slug, '2', $name, $desc, $html, $help);
 							
 							$name = __('CoverType is restricted', 'wppa');
 							$desc = __('Changing <b>Cover Type</b> is a restricted action.', 'wppa');
 							$help = esc_js(__('If checked: Cover Type: can not be set in album admin by users not having admin rights.', 'wppa'));
 							$slug = 'wppa_covertype_is_restricted';
-							$html = wppa_checkbox($slug);
+							$html1 = wppa_checkbox($slug);
+							$html2 = '';
+							$html = array( $html1, $html2 );
 							wppa_setting($slug, '3', $name, $desc, $html, $help);
 							
 							$name = __('Photo order# is restricted', 'wppa');
 							$desc = __('Changing <b>Photo sort order #</b> is a restricted action.', 'wppa');
 							$help = esc_js(__('If checked: Photo sort order #: can not be set in photo admin by users not having admin rights.', 'wppa'));
 							$slug = 'wppa_porder_restricted';
-							$html = wppa_checkbox($slug);
+							$html1 = wppa_checkbox($slug);
+							$html2 = '';
+							$html = array( $html1, $html2 );
 							wppa_setting($slug, '4', $name, $desc, $html, $help);
 							
 							$name = __('Change source restricted', 'wppa');
 							$desc = __('Changing the import source dir requires admin rights.', 'wppa');
 							$help = esc_js(__('If checked, the imput source for importing photos and albums is restricted to user role administrator.', 'wppa'));
 							$slug = 'wppa_chgsrc_is_restricted';
-							$html = wppa_checkbox($slug);
+							$html1 = wppa_checkbox($slug);
+							$html2 = '';
+							$html = array( $html1, $html2 );
 							wppa_setting($slug, '5', $name, $desc, $html, $help);
 
-							wppa_setting_subheader('D', '1', __('Miscellaneous limiting settings', 'wppa'));
+							wppa_setting_subheader('D', '2', __('Miscellaneous limiting settings', 'wppa'));
 							
 							$name = __('Owners only', 'wppa');
 							$desc = __('Limit album access to the album owners only.', 'wppa');
 							$help = esc_js(__('If checked, users who can edit albums and/or upload/import photos can do that with their own albums and --- public --- albums only.', 'wppa')); 
 							$help .= '\n'.esc_js(__('Users can give their albums to another user. Administrators can change ownership and access all albums always.', 'wppa'));
 							$slug = 'wppa_owner_only';
-							$html = wppa_checkbox($slug);
+							$html1 = wppa_checkbox($slug);
+							$html2 = '';
+							$html = array( $html1, $html2 );
 							wppa_setting($slug, '1', $name, $desc, $html, $help);
 							
 							$name = __('Uploader Edit', 'wppa');
@@ -4043,29 +3868,37 @@ global $no_default;
 							$help = esc_js(__('If checked, any logged in user that has upload rights and uploads an image has the capability to edit the photo information.', 'wppa'));
 							$help .= '\n\n'.esc_js(__('Note: This may be AFTER moderation!!', 'wppa'));
 							$slug = 'wppa_upload_edit';
-							$html = wppa_checkbox($slug);
+							$html1 = wppa_checkbox($slug);
+							$html2 = '';
+							$html = array( $html1, $html2 );
 							wppa_setting($slug, '2', $name, $desc, $html, $help);
 							
 							$name = __('Upload memory check frontend', 'wppa');
 							$desc = __('Disable uploading photos that are too large.', 'wppa');
 							$help = esc_js(__('To prevent out of memory crashes during upload and possible database inconsistencies, uploads can be prevented if the photos are too big.', 'wppa'));
 							$slug = 'wppa_memcheck_frontend';
-							$html = wppa_checkbox($slug);
+							$html1 = wppa_checkbox($slug);
+							$html2 = '';
+							$html = array( $html1, $html2 );
 							wppa_setting($slug, '3', $name, $desc, $html, $help);
 							
 							$name = __('Upload memory check admin', 'wppa');
 							$desc = __('Disable uploading photos that are too large.', 'wppa');
 							$help = esc_js(__('To prevent out of memory crashes during upload and possible database inconsistencies, uploads can be prevented if the photos are too big.', 'wppa'));
 							$slug = 'wppa_memcheck_admin';
-							$html = wppa_checkbox($slug);
+							$html1 = wppa_checkbox($slug);
+							$html2 = '';
+							$html = array( $html1, $html2 );
 							wppa_setting($slug, '4', $name, $desc, $html, $help);
 							
 							$name = __('Comment captcha', 'wppa');
 							$desc = __('Use a simple calculate captcha on comments form.', 'wppa');
 							$help = '';
 							$slug = 'wppa_comment_captcha';
-							$html = wppa_checkbox($slug);
+							$html1 = wppa_checkbox($slug);
 							$class = 'wppa_comment_';
+							$html2 = '';
+							$html = array( $html1, $html2 );
 							wppa_setting($slug, '5', $name, $desc, $html, $help, $class);
 							
 							$name = __('Spam lifetime', 'wppa');
@@ -4074,192 +3907,20 @@ global $no_default;
 							$slug = 'wppa_spam_maxage';
 							$options = array(__('--- off ---', 'wppa'), __('10 minutes', 'wppa'), __('half an hour', 'wppa'), __('one hour', 'wppa'), __('one day', 'wppa'), __('one week', 'wppa'));
 							$values = array('none', '600', '1800', '3600', '86400', '604800');
-							$html = wppa_select($slug, $options, $values);
+							$html1 = wppa_select($slug, $options, $values);
 							$class = 'wppa_comment_';
+							$html2 = '';
+							$html = array( $html1, $html2 );
 							wppa_setting($slug, '6', $name, $desc, $html, $help, $class);
 							
 							$name = __('Avoid duplicates', 'wppa');
 							$desc = __('Prevent the creation of duplicate photos.', 'wppa');
 							$help = esc_js(__('If checked: uploading, importing, copying or moving photos to other albums will be prevented when the desitation album already contains a photo with the same filename.', 'wppa'));
 							$slug = 'wppa_void_dups';
-							$html = wppa_checkbox($slug);
+							$html1 = wppa_checkbox($slug);
+							$html2 = '';
+							$html = array( $html1, $html2 );
 							wppa_setting($slug, '7', $name, $desc, $html, $help);
-							
-							?>
-						</tbody>
-						<tfoot style="font-weight: bold;" class="wppa_table_7">
-							<tr>
-								<td><?php _e('#', 'wppa') ?></td>
-								<td><?php _e('Name', 'wppa') ?></td>
-								<td><?php _e('Description', 'wppa') ?></td>
-								<td><?php _e('Setting', 'wppa') ?></td>
-								<td><?php _e('Help', 'wppa') ?></td>
-							</tr>
-						</tfoot>
-					</table>
-				</div>
-			
-			<?php // Table 8: Actions ?>
-			<?php wppa_settings_box_header(
-				'8',
-				__('Table VIII:', 'wppa').' '.__('Actions:', 'wppa').' '.
-				__('This table lists all actions that can be taken to the wppa+ system', 'wppa')
-			); ?>
-			
-				<div id="wppa_table_8" style="display:none" >
-					<table class="widefat wppa-table wppa-setting-table">
-						<thead style="font-weight: bold; " class="wppa_table_8">
-							<tr>
-								<td><?php _e('#', 'wppa') ?></td>
-								<td><?php _e('Name', 'wppa') ?></td>
-								<td><?php _e('Description', 'wppa') ?></td>
-								<td><?php _e('Specification', 'wppa') ?></td>
-								<td><?php _e('Do it!', 'wppa') ?></td>
-								<td><?php _e('Help', 'wppa') ?></td>
-							</tr>
-						</thead>
-						<tbody class="wppa_table_8">
-							<?php 
-							$wppa_table = 'VIII';
-							
-							wppa_setting_subheader('A', '2', __('Harmless and reverseable actions', 'wppa'));
-							
-							$name = __('Setup', 'wppa');
-							$desc = __('Re-initialize plugin.', 'wppa');
-							$help = esc_js(__('Re-initilizes the plugin, (re)creates database tables and sets up default settings and directories if required.', 'wppa'));
-							$help .= '\n\n'.esc_js(__('This action may be required to setup blogs in a multiblog (network) site as well as in rare cases to correct initilization errors.', 'wppa'));
-							$slug = 'wppa_setup';
-							$html1 = '';
-							$html2 = wppa_doit_button('', $slug);
-							$html = array($html1, $html2);
-							wppa_setting(false, '1', $name, $desc, $html, $help);
-
-							$name = __('Backup settings', 'wppa');
-							$desc = __('Save all settings into a backup file.', 'wppa');
-							$help = esc_js(__('Saves all the settings into a backup file', 'wppa'));
-							$slug = 'wppa_backup';
-							$html1 = '';
-							$html2 = wppa_doit_button('', $slug);
-							$html = array($html1, $html2);
-							wppa_setting(false, '2', $name, $desc, $html, $help);
-							
-							$name = __('Load settings', 'wppa');
-							$desc = __('Restore all settings from defaults, a backup or skin file.', 'wppa');
-							$help = esc_js(__('Restores all the settings from the factory supplied defaults, the backup you created or from a skin file.', 'wppa'));
-							$slug1 = 'wppa_skinfile';
-							$slug2 = 'wppa_load_skin';
-							$files = glob(WPPA_PATH.'/theme/*.skin');
-							
-							$options = false;
-							$values = false;
-							$options[] = __('--- set to defaults ---', 'wppa');
-							$values[] = 'default';
-							if (is_file(WPPA_DEPOT_PATH.'/settings.bak')) {
-								$options[] = __('--- restore backup ---', 'wppa');
-								$values[] = 'restore';
-							}
-							if ( count($files) ) {
-								foreach ($files as $file) {
-									$fname = basename($file);
-									$ext = strrchr($fname, '.');
-									if ( $ext == '.skin' )  {
-										$options[] = $fname;
-										$values[] = $file;
-									}
-								}
-							}
-							$html1 = wppa_select($slug1, $options, $values);
-							$html2 = wppa_doit_button('', $slug2);
-							$html = array($html1, $html2);
-							wppa_setting(false, '3', $name, $desc, $html, $help);
-
-							$name = __('Regenerate', 'wppa');
-							$desc = __('Regenerate all thumbnails.', 'wppa');
-							$help = esc_js(__('Regenerate all thumbnails.', 'wppa'));
-							$slug = 'wppa_regen';
-							$html1 = '';
-							$html2 = wppa_ajax_button('', $slug);
-							$html = array($html1, $html2);
-							wppa_setting(false, '4', $name, $desc, $html, $help);
-
-							$name = __('Rerate', 'wppa');
-							$desc = __('Recalculate ratings.', 'wppa');
-							$help = esc_js(__('This function will recalculate all mean photo ratings from the ratings table.', 'wppa'));
-							$help .= '\n'.esc_js(__('You may need this function after the re-import of previously exported photos', 'wppa'));
-							$slug = 'wppa_rerate';
-							$html1 = '';
-							$html2 = wppa_ajax_button('', $slug);
-							$html = array($html1, $html2);
-							wppa_setting(false, '5', $name, $desc, $html, $help);
-
-							$name = __('Cleanup', 'wppa');
-							$desc = __('Fix and secure WPPA+ system consistency', 'wppa');
-							$help = esc_js(__('This function will cleanup incomplete db entries and recover lost photos.', 'wppa'));
-							$slug = 'wppa_cleanup';
-							$html1 = '';
-							$html2 = wppa_doit_button('', $slug);
-							$html = array($html1, $html2);
-							wppa_setting(false, '6', $name, $desc, $html, $help);
-							
-							$name = __('Recuperate', 'wppa');
-							$desc = 'Recuperate IPTC and EXIF data from photos in WPPA+.';
-							$help = esc_js(__('This action will attempt to find and register IPTC and EXIF data from photos in the WPPA+ system.', 'wppa'));
-							$help .= '\n\n'.esc_js(__('WARNING: Photos that have been downzised during upload/import will have NO IPTC and/or EXIF data.', 'wppa'));
-							$help .= '\n'.esc_js(__('If you want that data, you will have to re-import the original files. Use the update switch. You may resize them again.', 'wppa'));
-							$slug = 'wppa_recup';
-							$html1 = '';
-							$usr = get_option('wppa_recuperating_user', '');
-							if ( $usr && $usr != wppa_get_user('login') ) {
-								$html2 = '<b style="color:red" >'.sprintf(__('Is currently being executed by %s', 'wppa'), $usr);
-							}
-							else {
-								$html2 = wppa_doit_button('', $slug);
-							}
-							$html = array($html1, $html2);
-							wppa_setting(false, '7', $name, $desc, $html, $help);
-							
-							$name = __('Remake Index', 'wppa');
-							$desc = __('Remakes the index database table.', 'wppa');
-							$help = '';
-							$slug = 'wppa_remake_index';
-							$html1 = '';
-							$usr = get_option('wppa_indexing_user', '');
-							if ( $usr && $usr != wppa_get_user('login') ) {
-								$html2 = '<b style="color:red" >'.sprintf(__('Is currently being executed by %s', 'wppa'), $usr);
-							}
-							else {
-								$html2 = wppa_doit_button('', $slug);
-							}
-							$html = array($html1, $html2);
-							$class = 'index_search';
-							wppa_setting(false, '8', $name, $desc, $html, $help, $class);
-							
-							$name = __('List Index', 'wppa');
-							$desc = __('Show the content if the index table.', 'wppa');
-							$help = '';
-							$slug = 'wppa_list_index';
-							$html1 = '';
-							$html2 = wppa_doit_button('', $slug);
-							$class = 'index_search';
-							$html = array($html1, $html2);
-							wppa_setting(false, '9', $name, $desc, $html, $help, $class);
-							
-							if ( get_option('wppa_file_system') == 'flat' || get_option('wppa_file_system') == 'tree' ) {	// Not if currently converting
-								if ( get_option('wppa_file_system') == 'flat' ) {
-									$name = __('Convert to tree', 'wppa');
-									$desc = __('Convert filesystem to tree structure.', 'wppa');
-								}
-								if ( get_option('wppa_file_system') == 'tree' ) {
-									$name = __('Convert to flat', 'wppa');
-									$desc = __('Convert filesystem to flat structure.', 'wppa');
-								}
-								$help = esc_js(__('If you want to go back to a wppa+ version prior to 5.0.16, you MUST convert to flat first.', 'wppa'));
-								$slug = 'wppa_file_system';
-								$html1 = '';
-								$html2 = wppa_doit_button('', $slug);
-								$html = array($html1, $html2);
-								wppa_setting(false, '10', $name, $desc, $html, $help);
-							}
 							
 							$name = __('Blacklist user', 'wppa');
 							$desc = __('Set the status of all the users photos to \'pending\'.', 'wppa');
@@ -4289,9 +3950,8 @@ global $no_default;
 								$html1 = __( 'User login name <b>( case sensitive! )</b>:', 'wppa' );
 								$html2 = wppa_input ( $slug, '150px', '', '', $onchange );
 							}
-							
 							$html = array( $html1, $html2 );
-							wppa_setting(false, '11', $name, $desc, $html, $help);
+							wppa_setting(false, '8', $name, $desc, $html, $help);
 
 							$name = __('Unblacklist user', 'wppa');
 							$desc = __('Set the status of all the users photos to \'publish\'.', 'wppa');
@@ -4311,9 +3971,218 @@ global $no_default;
 							$html1 = wppa_select($slug, $options, $values, $onchange);
 							$html2 = '';
 							$html = array( $html1, $html2 );
-							wppa_setting(false, '12', $name, $desc, $html, $help);
+							wppa_setting(false, '9', $name, $desc, $html, $help);
 
-							wppa_setting_subheader('B', '2', __('Clearing and other irreverseable actions', 'wppa'));
+							?>
+						</tbody>
+						<tfoot style="font-weight: bold;" class="wppa_table_7">
+							<tr>
+								<td><?php _e('#', 'wppa') ?></td>
+								<td><?php _e('Name', 'wppa') ?></td>
+								<td><?php _e('Description', 'wppa') ?></td>
+								<td><?php _e('Setting', 'wppa') ?></td>
+								<td></td>
+								<td><?php _e('Help', 'wppa') ?></td>
+							</tr>
+						</tfoot>
+					</table>
+				</div>
+			
+			<?php // Table 8: Actions ?>
+			<?php wppa_settings_box_header(
+				'8',
+				__('Table VIII:', 'wppa').' '.__('Actions:', 'wppa').' '.
+				__('This table lists all actions that can be taken to the wppa+ system', 'wppa')
+			); ?>
+			
+				<div id="wppa_table_8" style="display:none" >
+					<table class="widefat wppa-table wppa-setting-table">
+						<thead style="font-weight: bold; " class="wppa_table_8">
+							<tr>
+								<td><?php _e('#', 'wppa') ?></td>
+								<td><?php _e('Name', 'wppa') ?></td>
+								<td><?php _e('Description', 'wppa') ?></td>
+								<td><?php _e('Specification', 'wppa') ?></td>
+								<td><?php _e('Do it!', 'wppa') ?></td>
+								<td><?php _e('Status', 'wppa') ?></td>
+								<td><?php _e('To Go', 'wppa') ?></td>
+								<td><?php _e('Help', 'wppa') ?></td>
+							</tr>
+						</thead>
+						<tbody class="wppa_table_8">
+							<?php 
+							$wppa_table = 'VIII';
+							
+							wppa_setting_subheader('A', '4', __('Harmless and reverseable actions', 'wppa'));
+							
+							$name = __('Setup', 'wppa');
+							$desc = __('Re-initialize plugin.', 'wppa');
+							$help = esc_js(__('Re-initilizes the plugin, (re)creates database tables and sets up default settings and directories if required.', 'wppa'));
+							$help .= '\n\n'.esc_js(__('This action may be required to setup blogs in a multiblog (network) site as well as in rare cases to correct initilization errors.', 'wppa'));
+							$slug = 'wppa_setup';
+							$html1 = '';
+							$html2 = wppa_doit_button('', $slug);
+							$html3 = '';
+							$html4 = '';
+							$html = array($html1, $html2, $html3, $html4);
+							wppa_setting(false, '1', $name, $desc, $html, $help);
+
+							$name = __('Backup settings', 'wppa');
+							$desc = __('Save all settings into a backup file.', 'wppa');
+							$help = esc_js(__('Saves all the settings into a backup file', 'wppa'));
+							$slug = 'wppa_backup';
+							$html1 = '';
+							$html2 = wppa_doit_button('', $slug);
+							$html3 = '';
+							$html4 = '';
+							$html = array($html1, $html2, $html3, $html4);
+							wppa_setting(false, '2', $name, $desc, $html, $help);
+							
+							$name = __('Load settings', 'wppa');
+							$desc = __('Restore all settings from defaults, a backup or skin file.', 'wppa');
+							$help = esc_js(__('Restores all the settings from the factory supplied defaults, the backup you created or from a skin file.', 'wppa'));
+							$slug1 = 'wppa_skinfile';
+							$slug2 = 'wppa_load_skin';
+							$files = glob(WPPA_PATH.'/theme/*.skin');
+							
+							$options = false;
+							$values = false;
+							$options[] = __('--- set to defaults ---', 'wppa');
+							$values[] = 'default';
+							if (is_file(WPPA_DEPOT_PATH.'/settings.bak')) {
+								$options[] = __('--- restore backup ---', 'wppa');
+								$values[] = 'restore';
+							}
+							if ( count($files) ) {
+								foreach ($files as $file) {
+									$fname = basename($file);
+									$ext = strrchr($fname, '.');
+									if ( $ext == '.skin' )  {
+										$options[] = $fname;
+										$values[] = $file;
+									}
+								}
+							}
+							$html1 = wppa_select($slug1, $options, $values);
+							$html2 = wppa_doit_button('', $slug2);
+							$html3 = '';
+							$html4 = '';
+							$html = array($html1, $html2, $html3, $html4);
+							wppa_setting(false, '3', $name, $desc, $html, $help);
+
+							$name = __('Regenerate', 'wppa');
+							$desc = __('Regenerate all thumbnails.', 'wppa');
+							$help = esc_js(__('Regenerate all thumbnails.', 'wppa'));
+							$slug2 = 'wppa_regen_thumbs';
+							$html1 = '';
+							$html2 = wppa_maintenance_button( $slug2 );
+							$html3 = wppa_status_field( $slug2 );
+							$html4 = wppa_togo_field( $slug2 );
+							$html = array($html1, $html2, $html3, $html4);
+							wppa_setting(false, '4', $name, $desc, $html, $help);
+
+							$name = __('Rerate', 'wppa');
+							$desc = __('Recalculate ratings.', 'wppa');
+							$help = esc_js(__('This function will recalculate all mean photo ratings from the ratings table.', 'wppa'));
+							$help .= '\n'.esc_js(__('You may need this function after the re-import of previously exported photos', 'wppa'));
+							$slug2 = 'wppa_rerate';
+							$html1 = '';
+							$html2 = wppa_maintenance_button( $slug2 );
+							$html3 = wppa_status_field( $slug2 );
+							$html4 = wppa_togo_field( $slug2 );
+							$html = array($html1, $html2, $html3, $html4);
+							wppa_setting(false, '5', $name, $desc, $html, $help);
+
+							$name = __('Cleanup', 'wppa');
+							$desc = __('Fix WPPA+ system consistency', 'wppa');
+							$help = esc_js(__('This function will remove photo db entries for missing photo files and attempt to create missing thumbnails.', 'wppa'));
+							$slug2 = 'wppa_cleanup';
+							$html1 = '';
+							$html2 = wppa_maintenance_button( $slug2 );
+							$html3 = wppa_status_field( $slug2 );
+							$html4 = wppa_togo_field( $slug2 );
+							$html = array($html1, $html2, $html3, $html4);
+							wppa_setting(false, '6', $name, $desc, $html, $help);
+							
+							$name = __('Recuperate', 'wppa');
+							$desc = 'Recuperate IPTC and EXIF data from photos in WPPA+.';
+							$help = esc_js(__('This action will attempt to find and register IPTC and EXIF data from photos in the WPPA+ system.', 'wppa'));
+							$slug2 = 'wppa_recup';
+							$html1 = '';
+							$html2 = wppa_maintenance_button( $slug2 );
+							$html3 = wppa_status_field( $slug2 );
+							$html4 = wppa_togo_field( $slug2 );
+							$html = array($html1, $html2, $html3, $html4);
+							wppa_setting(false, '7', $name, $desc, $html, $help);
+							
+							$name = __('Remake Index Albums', 'wppa');
+							$desc = __('Remakes the index database table for albums.', 'wppa');
+							$help = '';
+							$slug2 = 'wppa_remake_index_albums';
+							$html1 = '';
+							$html2 = wppa_maintenance_button( $slug2 );
+							$html3 = wppa_status_field( $slug2 );
+							$html4 = wppa_togo_field( $slug2 );
+							$html = array($html1, $html2, $html3, $html4);
+							$class = 'index_search';
+							wppa_setting(false, '8a', $name, $desc, $html, $help, $class);
+
+							$name = __('Remake Index Photos', 'wppa');
+							$desc = __('Remakes the index database table for photos.', 'wppa');
+							$help = '';
+							$slug2 = 'wppa_remake_index_photos';
+							$html1 = '';
+							$html2 = wppa_maintenance_button( $slug2 );
+							$html3 = wppa_status_field( $slug2 );
+							$html4 = wppa_togo_field( $slug2 );
+							$html = array($html1, $html2, $html3, $html4);
+							$class = 'index_search';
+							wppa_setting(false, '8b', $name, $desc, $html, $help, $class);
+
+						
+							$name = __('List Index', 'wppa');
+							$desc = __('Show the content if the index table.', 'wppa');
+							$help = '';
+							$slug1 = 'wppa_list_index_display_start';
+							$slug2 = 'wppa_list_index';
+							$html1 = '<small style="float:left;">'.__('Start at text:', 'wppa').'</small>'.wppa_input( $slug1, '150px' );
+							$html2 = wppa_popup_button( $slug2 );
+							$html3 = '';
+							$html4 = '';
+							$class = 'index_search';
+							$html = array($html1, $html2, $html3, $html4);
+							wppa_setting(false, '9', $name, $desc, $html, $help, $class);
+							
+							$fs = get_option('wppa_file_system');
+							if ( $fs == 'flat' || $fs == 'to-tree' ) {
+								$name = __('Convert to tree', 'wppa');
+								$desc = __('Convert filesystem to tree structure.', 'wppa');
+							}
+							if ( $fs == 'tree' || $fs == 'to-flat' ) {
+								$name = __('Convert to flat', 'wppa');
+								$desc = __('Convert filesystem to flat structure.', 'wppa');
+							}
+							$help = esc_js(__('If you want to go back to a wppa+ version prior to 5.0.16, you MUST convert to flat first.', 'wppa'));
+							$slug2 = 'wppa_file_system';
+							$html1 = '';
+							$html2 = wppa_maintenance_button( $slug2 );
+							$html3 = wppa_status_field( $slug2 );
+							$html4 = wppa_togo_field( $slug2 );
+							$html = array($html1, $html2, $html3, $html4);
+							wppa_setting(false, '10', $name, $desc, $html, $help);
+							
+							$name = __('Remake', 'wppa');
+							$desc = __('Remake the photofiles from photo sourcefiles.', 'wppa');
+							$help = esc_js(__('This action will remake the fullsize images, thumbnail images, and will refresh the iptc and exif data for all photos where the source is found in the corresponding album sub-directory of the source directory.', 'wppa'));
+							$slug2 = 'wppa_remake';
+							$html1 = '';
+							$html2 = wppa_maintenance_button( $slug2 );
+							$html3 = wppa_status_field( $slug2 );
+							$html4 = wppa_togo_field( $slug2 );
+							$html = array($html1, $html2, $html3, $html4);
+							wppa_setting(false, '11', $name, $desc, $html, $help);
+
+							wppa_setting_subheader('B', '4', __('Clearing and other irreverseable actions', 'wppa'));
 							
 							$name = __('Clear ratings', 'wppa');
 							$desc = __('Reset all ratings.', 'wppa');
@@ -4321,7 +4190,9 @@ global $no_default;
 							$slug = 'wppa_rating_clear';
 							$html1 = '';
 							$html2 = wppa_ajax_button('', $slug);
-							$html = array($html1, $html2);
+							$html3 = '';
+							$html4 = '';
+							$html = array($html1, $html2, $html3, $html4);
 							wppa_setting(false, '1.0', $name, $desc, $html, $help);
 
 							$name = __('Clear viewcounts', 'wppa');
@@ -4330,7 +4201,9 @@ global $no_default;
 							$slug = 'wppa_viewcount_clear';
 							$html1 = '';
 							$html2 = wppa_ajax_button('', $slug);
-							$html = array($html1, $html2);
+							$html3 = '';
+							$html4 = '';
+							$html = array($html1, $html2, $html3, $html4);
 							wppa_setting(false, '1.1', $name, $desc, $html, $help);
 							
 							$name = __('Reset IPTC', 'wppa');
@@ -4339,7 +4212,9 @@ global $no_default;
 							$slug = 'wppa_iptc_clear';
 							$html1 = '';
 							$html2 = wppa_ajax_button('', $slug);
-							$html = array($html1, $html2);
+							$html3 = '';
+							$html4 = '';
+							$html = array($html1, $html2, $html3, $html4);
 							wppa_setting(false, '2', $name, $desc, $html, $help);
 
 							$name = __('Reset EXIF', 'wppa');
@@ -4348,54 +4223,70 @@ global $no_default;
 							$slug = 'wppa_exif_clear';
 							$html1 = '';
 							$html2 = wppa_ajax_button('', $slug);
-							$html = array($html1, $html2);
+							$html3 = '';
+							$html4 = '';
+							$html = array($html1, $html2, $html3, $html4);
 							wppa_setting(false, '3', $name, $desc, $html, $help);
 							
 							$name = __('Apply New Photodesc', 'wppa');
 							$desc = __('Apply New photo description on all photos in the system.', 'wppa');
-							$help = '';
-							$slug = 'wppa_apply_new_photodesc_all';
+							$help = esc_js('Puts the content of Table IX-D5 in all photo descriptions.');
+							$slug2 = 'wppa_apply_new_photodesc_all';
 							$html1 = '';
-							$html2 = wppa_ajax_button('', $slug);
-							$html = array($html1, $html2);
+							$html2 = wppa_maintenance_button( $slug2 );
+							$html3 = wppa_status_field( $slug2 );
+							$html4 = wppa_togo_field( $slug2 );
+							$html = array($html1, $html2, $html3, $html4);
 							wppa_setting(false, '4', $name, $desc, $html, $help);
 							
 							$name = __('Append to photodesc', 'wppa');
 							$desc = __('Append this text to all photo descriptions.', 'wppa');
-							$help = 'Appends a space character and the given text to the description of all photos.';
-							$help .= '\n\n'.esc_js('First edit the text to append, click outside the edit window and wait for the green checkmark to appear. Then click the Doit! button.');
-							$help .= '\n\n'.esc_js('If this operation does not finish with a green \"Done! Appending...\" message, but a \"Time out\" message or simply dies after a minute or so,');
-							$help .= esc_js('wait another minute, and press the Doit! button again. The process will continue where it ended.');
-							$help .= '\n\n'.esc_js('Go on this way until a \"Done!\" message appears. Do NOT change the append text in between!');
+							$help = esc_js('Appends a space character and the given text to the description of all photos.');
+							$help .= '\n\n'.esc_js('First edit the text to append, click outside the edit window and wait for the green checkmark to appear. Then click the Start! button.');
 							$slug1 = 'wppa_append_text';
 							$slug2 = 'wppa_append_to_photodesc';
-							$html1 = wppa_input($slug1, '200px');
-							$html2 = wppa_doit_button('', $slug2);
-							$html = array($html1, $html2);
+							$html1 = wppa_input( $slug1, '200px' );
+							$html2 = wppa_maintenance_button( $slug2 );
+							$html3 = wppa_status_field( $slug2 );
+							$html4 = wppa_togo_field( $slug2 );
+							$html = array($html1, $html2, $html3, $html4);
 							wppa_setting(false, '5', $name, $desc, $html, $help);
 							
 							$name = __('Remove from photodesc', 'wppa');
 							$desc = __('Remove this text from all photo descriptions.', 'wppa');
-							$help = 'Removes all occurrencies of the given text from the description of all photos.';
-							$help .= '\n\n'.esc_js('First edit the text to remove, click outside the edit window and wait for the green checkmark to appear. Then click the Doit! button.');
-							$help .= '\n\n'.esc_js('If this operation does not finish with a green \"Done! Removing...\" message, but a \"Time out\" message or simply dies after a minute or so,');
-							$help .= esc_js('wait another minute, and press the Doit! button again. The process will continue where it ended.');
-							$help .= '\n\n'.esc_js('Go on this way until a \"Done!\" message appears. Do NOT change the remove text in between!');
+							$help = esc_js('Removes all occurrencies of the given text from the description of all photos.');
+							$help .= '\n\n'.esc_js('First edit the text to remove, click outside the edit window and wait for the green checkmark to appear. Then click the Start! button.');
 							$slug1 = 'wppa_remove_text';
 							$slug2 = 'wppa_remove_from_photodesc';
-							$html1 = wppa_input($slug1, '200px');
-							$html2 = wppa_doit_button('', $slug2);
-							$html = array($html1, $html2);
+							$html1 = wppa_input( $slug1, '200px' );
+							$html2 = wppa_maintenance_button( $slug2 );
+							$html3 = wppa_status_field( $slug2 );
+							$html4 = wppa_togo_field( $slug2 );
+							$html = array($html1, $html2, $html3, $html4);
 							wppa_setting(false, '6', $name, $desc, $html, $help);
 
 							$name = __('Remove empty albums', 'wppa');
 							$desc = __('Removes albums that are not used.', 'wppa');
-							$help = '';
+							$help = esc_js('Removes all albums that have no photos and no sub albums in it.');
 							$slug2 = 'wppa_remove_empty_albums';
 							$html1 = '';
-							$html2 = wppa_ajax_button('', $slug2);
-							$html = array($html1, $html2);
+							$html2 = wppa_maintenance_button( $slug2 );
+							$html3 = wppa_status_field( $slug2 );
+							$html4 = wppa_togo_field( $slug2 );
+							$html = array($html1, $html2, $html3, $html4);
 							wppa_setting(false, '7', $name, $desc, $html, $help);
+							
+							$name = __('Remove file-ext', 'wppa');
+							$desc = __('Remove possible file extension from photo name.', 'wppa');
+							$help = esc_js(__('This may be required for old photos, uploaded when the option in Table IX-D3 was not yet available/selected.', 'wppa'));
+							$slug2 = 'wppa_remove_file_extensions';
+							$html1 = '';
+							$html2 = wppa_maintenance_button( $slug2 );
+							$html3 = wppa_status_field( $slug2 );
+							$html4 = wppa_togo_field( $slug2 );
+							$html = array($html1, $html2, $html3, $html4);
+							wppa_setting(false, '8', $name, $desc, $html, $help);
+							
 							
 							?>
 						</tbody>
@@ -4406,6 +4297,8 @@ global $no_default;
 								<td><?php _e('Description', 'wppa') ?></td>
 								<td><?php _e('Specification', 'wppa') ?></td>
 								<td><?php _e('Do it!', 'wppa') ?></td>
+								<td><?php _e('Status', 'wppa') ?></td>
+								<td><?php _e('To Go', 'wppa') ?></td>
 								<td><?php _e('Help', 'wppa') ?></td>
 							</tr>
 						</tfoot>
@@ -5043,14 +4936,14 @@ global $no_default;
 							$slug = 'wppa_keep_sync';
 							$html = wppa_checkbox($slug);
 							wppa_setting($slug, '4', $name, $desc, $html, $help);
-							
+/*							
 							$name = __('Remake', 'wppa');
 							$desc = __('Remake the photofiles.', 'wppa');
 							$help = esc_js(__('This action will remake the fullsize images, thumbnail images, and will refresh the iptc and exif data for all photos where the source is found in the corresponding album sub-directory of the source directory.', 'wppa'));
 							$slug = 'wppa_remake';
 							$html = wppa_doit_button('', $slug);
 							wppa_setting(false, '5', $name, $desc, $html, $help);
-							
+*/							
 							$name = __('Remake add', 'wppa');
 							$desc = __('Photos will be added from the source pool', 'wppa');
 							$help = esc_js(__('If checked: If photo files are found in the source directory that do not exist in the corresponding album, they will be added to the album.', 'wppa'));
@@ -5938,6 +5831,15 @@ function wppa_doit_button( $label = '', $key = '', $sub = '' ) {
 	return $result;
 }
 
+function wppa_popup_button( $slug ) {
+
+	$label 	= __('Show!', 'wppa');
+	$result = '<input type="button" class="button-secundary" style="float:left; border-radius:3px; font-size: 11px; height: 18px; margin: 0 4px; padding: 0px;" value="'.$label.'"';
+	$result .= ' onclick="wppaAjaxPopupWindow(\''.$slug.'\')" />';
+	
+	return $result;
+}
+
 function wppa_ajax_button( $label = '', $slug, $elmid = '0', $no_confirm = false ) {
 	if ( $label == '' ) $label = __('Do it!', 'wppa');
 
@@ -5956,6 +5858,40 @@ function wppa_ajax_button( $label = '', $slug, $elmid = '0', $no_confirm = false
 	return $result;
 }
 
+function wppa_maintenance_button( $slug ) {
+
+	$label 	= __('Start!', 'wppa');
+	$me 	= wppa_get_user();
+	$user 	= get_option( $slug.'_user', $me );
+	
+	if ( $user && $user != $me ) {
+		$label = __('Locked!', 'wppa');
+		$locked = true;
+	}
+	else {
+		$locked = false;
+	}
+	
+	$result = '<input id="'.$slug.'_button" type="button" class="button-secundary" style="float:left; border-radius:3px; font-size: 11px; height: 18px; margin: 0 4px; padding: 0px;" value="'.$label.'"';
+	if ( ! $locked ) {
+		$result .= ' onclick="if ( jQuery(\'#'.$slug.'_status\').html() != \'\' || confirm(\'Are you sure ?\') ) wppaMaintenanceProc(\''.$slug.'\', false);" />';
+	}
+	else {
+		$result .= ' onclick="alert(\'Is currently being executed by '.$user.'.\')" />';
+	}
+	$result .= '<input id="'.$slug.'_continue" type="hidden" value="no" />';
+	
+	return $result;
+}
+function wppa_status_field( $slug ) {
+	$result = '<span id="'.$slug.'_status" >'.get_option( $slug.'_status', '' ).'</span>';
+	return $result;
+}
+function wppa_togo_field( $slug ) {
+	$result = '<span id="'.$slug.'_togo" >'.get_option($slug.'_togo', '' ).'</span>';
+	return $result;
+}
+							
 function wppa_htmlerr($slug) {
 	
 	switch ($slug) {

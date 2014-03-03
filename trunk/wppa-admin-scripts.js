@@ -1,7 +1,7 @@
 /* admin-scripts.js */
 /* Package: wp-photo-album-plus
 /*
-/* Version 5.2.11
+/* Version 5.2.17
 /* Various js routines used in admin pages		
 */
 
@@ -1287,6 +1287,130 @@ function wppaAjaxUpdateOptionCheckBox(slug, elem) {
 	xmlhttp.send();	
 }
 
+function wppaMaintenanceProc(slug, intern) {
+
+	// If running: stop
+	if ( ! intern && document.getElementById(slug+"_continue").value == 'yes' ) {
+		document.getElementById(slug+"_continue").value = 'no';
+		document.getElementById(slug+"_button").value = 'Start!';
+		if ( jQuery("#"+slug+"_togo").html() > 0 ) {
+			jQuery("#"+slug+"_status").html('Pausing...');
+			jQuery("#"+slug+"_button").css('display', 'none');
+		}
+		return;
+	}
+
+	// Start
+	document.getElementById(slug+"_continue").value = 'yes';
+	document.getElementById(slug+"_button").value = 'Stop!';
+	jQuery("#"+slug+"_status").html('Working');
+
+	var  xmlhttp = wppaGetXmlHttp();
+	
+	// Response on-unit
+	xmlhttp.onreadystatechange=function() {
+		if ( xmlhttp.readyState == 4 ) {
+			if ( xmlhttp.status = 200 ) {
+				var resp 	= xmlhttp.responseText;			// sample: '<error>||<slug>||<status>||<togo>'
+				var resparr = resp.split("||");
+				var slug 	= resparr[1];
+				var error 	= false;
+				
+				// Check for error
+				if ( resparr[0] != '' ) {
+					alert('The server returned unexpected output:\n'+resparr[0]);
+					error = true;
+				}
+				
+				// Update status and togo
+				jQuery("#"+slug+"_status").html(resparr[2]);
+				jQuery("#"+slug+"_togo").html(resparr[3]);
+				jQuery("#"+slug+"_button").css('display', '');
+
+				// Stop on error or on ready
+				if ( error || resparr[3] == '0' ) {
+					if ( resparr[4] == 'reload' ) {
+						alert('This page will now be reloaded to finish the operation. Please stay tuned...');
+						wppaReload();
+						return;
+					}
+					else {
+						setTimeout('wppaMaintenanceProc(\''+slug+'\', false)', 20);	// fake extern to stop it
+					}
+					return;
+				}
+
+				// Continue if not stopped by user
+				if ( document.getElementById(slug+"_continue").value == 'yes' ) {
+					setTimeout('wppaMaintenanceProc(\''+slug+'\', true)', 20);
+					return;
+				}
+			}
+			else {	// Status not 200
+				jQuery("#"+slug+"_status").html('Comm err '+xmlhttp.status);
+				setTimeout('wppaMaintenanceProc(\''+slug+'\', false)', 20);	// fake extern to stop it
+				return;
+			}
+
+		}
+	}
+	
+	// Compose ajax url
+	var data = 'action=wppa&wppa-action=maintenance&slug='+slug;
+	data += '&wppa-nonce='+document.getElementById('wppa-nonce').value;
+
+	// Do the Ajax action
+	xmlhttp.open('POST',wppaAjaxUrl,true);
+	xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+	xmlhttp.send(data);
+}
+
+function wppaAjaxPopupWindow( slug ) {
+	
+	var name = 'Admin popup info ';
+	var desc = '';
+	var width = 960;
+	var height = 512;
+
+	if ( screen.availWidth < width ) width = screen.availWidth;
+
+	var wnd = window.open("", "_blank", "toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, copyhistory=yes, width="+width+", height="+height, true);
+
+	wnd.document.write('<!DOCTYPE html>');
+	wnd.document.write('<html>');
+	wnd.document.write('<head>');	
+		// The following is one statement that fixes a bug in opera
+		wnd.document.write(	'<link rel="stylesheet" id="wppa_style-css"  href="'+wppaSiteUrl+'/wp-content/plugins/wp-photo-album-plus/wppa-admin-styles.css?ver='+wppaVersion+'" type="text/css" media="all" />'+
+							'<style>body {font-family: sans-serif; font-size: 12px; line-height: 1.4em;}a {color: #21759B;}</style>'+
+							'<script type="text/javascript" src="'+wppaSiteUrl+'/wp-includes/js/jquery/jquery.js?ver='+wppaVersion+'"></script>'+
+							'<script type="text/javascript" src="'+wppaSiteUrl+'/wp-content/plugins/wp-photo-album-plus/wppa-admin-scripts.js?ver='+wppaVersion+'"></script>'+
+							'<title>'+name+'</title>'+
+							'<script type="text/javascript">wppaAjaxUrl="'+wppaAjaxUrl+'";</script>');
+	wnd.document.write('</head>');
+	wnd.document.write('<body>'); // onunload="window.opener.location.reload()">');	// This does not work in Opera
+	
+	var xmlhttp = wppaGetXmlHttp();
+	
+	// Make the Ajax send data
+	var url = wppaAjaxUrl;
+	var data = 'action=wppa&wppa-action=maintenancepopup&slug='+slug;
+	data += '&wppa-nonce='+document.getElementById('wppa-nonce').value;
+			
+	// Do the Ajax action
+	xmlhttp.open('POST', url, false);	// Synchronously !!
+	xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+	xmlhttp.send(data);
+
+	// Process result
+	if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+		var result = xmlhttp.responseText;
+		wnd.document.write(result);
+	}
+	wnd.document.write('</body>');
+	wnd.document.write('</html>');
+
+}
+
 function wppaAjaxUpdateOptionValue(slug, elem) {
 
 	var xmlhttp = wppaGetXmlHttp();
@@ -1458,7 +1582,7 @@ function wppaRefresh(label) {
 	document.location = newurl;
 }
 function wppaReload() {
-	location.reload(true);
+	document.location.reload( true );
 }
 function wppaTrim (str) {
     return str.replace(/^\s\s*/, '').replace(/\s\s*$/, '');

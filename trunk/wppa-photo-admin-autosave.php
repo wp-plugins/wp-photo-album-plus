@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * edit and delete photos
-* version 5.2.16
+* version 5.2.17
 *
 */
 
@@ -289,12 +289,13 @@ global $wppa;
 								</tr>
 							<?php } ?>
 							<!-- Delete -->
+							<?php if ( ! $wppa['front_edit'] ) { ?>
 							<tr  >
 								<th  style="padding-top:0; padding-bottom:4px;">
 									<input type="button" style="color:red;" onclick="if (confirm('<?php _e('Are you sure you want to delete this photo?', 'wppa') ?>')) wppaAjaxDeletePhoto(<?php echo $photo['id'] ?>)" value="<?php echo esc_attr(__('Delete photo', 'wppa')) ?>" />
 								</th>
 							</tr>
-							
+							<?php } ?>
 							<!-- Insert code -->
 							<?php if ( current_user_can('edit_posts') || current_user_can('edit_pages') ) { ?>
 							<tr  >
@@ -385,7 +386,9 @@ global $wppa;
 								<td>
 									<?php echo $photo['filename'] ?>
 									<?php if ( current_user_can('administrator') && is_file( wppa_get_source_path( $photo['id'] ) ) ) {
-										echo ' '.__('Source file available.', 'wppa'); ?>
+										$sp = wppa_get_source_path( $photo['id'] );
+										$ima = getimagesize($sp);
+										echo ' '.__('Source file available.', 'wppa').' ('.$ima['0'].'x'.$ima['1'].')'; ?>
 										<a style="cursor:pointer; font-weight:bold;" onclick="wppaAjaxUpdatePhoto(<?php echo $photo['id'] ?>, 'remake', this)">Remake files</a>
 									<?php } ?>
 								</td>
@@ -892,6 +895,15 @@ function wppa_album_photos_bulk($album) {
 							</td>
 							<td style="width:25%;" >
 								<input type="text" style="width:100%;" id="pname-<?php echo $photo['id'] ?>" onchange="wppaAjaxUpdatePhoto(<?php echo $photo['id'] ?>, 'name', this);" value="<?php echo esc_attr(stripslashes($photo['name'])) ?>" />
+								<?php
+								$sp = wppa_get_source_path( $photo['id'] );
+								if ( is_file( $sp ) ) {
+									$ima = getimagesize( $sp );
+									if ( is_array( $ima ) ) {
+										echo '<br />'.$ima['0'].' x '.$ima['1'].' px.';
+									}
+								}
+								?>
 							</td>
 							<td style="width:25%;" >
 								<textarea class="wppa-bulk-dec" style="height:50px; width:100%" onchange="wppaAjaxUpdatePhoto(<?php echo $photo['id'] ?>, 'description', this)" ><?php echo(stripslashes($photo['description'])) ?></textarea>

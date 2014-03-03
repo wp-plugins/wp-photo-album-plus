@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the upload/import pages and functions
-* Version 5.2.15
+* Version 5.2.17
 *
 */
 
@@ -68,9 +68,6 @@ global $wppa_revno;
 	// sanitize system again
 	wppa_sanitize_files();
 	
-	// Check database
-	wppa_check_database(true);
-
 	?>
 	
 	<div class="wrap">

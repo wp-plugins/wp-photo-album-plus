@@ -2,7 +2,7 @@
 * Pachkage: wp-photo-album-plus
 *
 *
-* Version 5.1.8
+* Version 5.2.17
 *
 */
 
@@ -74,7 +74,11 @@
 					var temp2;
 						if (table.find('#mygallery-photo').val()) temp2 = table.find('#mygallery-photo').val().split('.');
 						else temp2 = [''];
-					var photo	= temp2[0];						
+					var photo	= temp2[0];		
+					var temp3 	= photo.split('/');
+						photo = '';
+						for ( i=0; i<temp3.length; i++ ) photo += temp3[i];
+						
 					var alb 	= table.find('#mygallery-alb').val();
 						if ( alb == '' ) alb = '0'; else alb = parseInt(alb);
 					var cnt		= table.find('#mygallery-cnt').val();

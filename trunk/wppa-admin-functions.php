@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * gp admin functions
-* version 5.2.15
+* version 5.2.17
 *
 * 
 */
@@ -60,14 +60,14 @@ global $wppa;
 							'wppa_search_linkpage',
 							'permalink_structure',
 							'wppa_rating_max',
-							'wppa_file_system'
+							'wppa_file_system',
 							);
 	}
 	else {
 		$void_these = array(
 							'wppa_revision',
 							'wppa_rating_max',
-							'wppa_file_system'
+							'wppa_file_system',
 							);
 	}
 	
@@ -102,38 +102,6 @@ global $wppa;
 	else {
 		wppa_error_message(__('Settings file not found', 'wppa'));
 		return false;
-	}
-}
-
-// update all thumbs 
-function wppa_regenerate_thumbs() {
-	global $wpdb;
-	
-	$thumbsize = wppa_get_minisize();
-
-    $start = get_option('wppa_lastthumb', '-1');
-
-	$photos = $wpdb->get_results($wpdb->prepare('SELECT * FROM `' . WPPA_PHOTOS . '` WHERE `id` > %s ORDER BY `id` LIMIT 1000', $start), ARRAY_A);
-	
-	if ( empty($photos) ) return true;		// Done, did them all
-	
-	$count = count($photos);
-	$done = '0';
-	foreach ($photos as $photo) {
-		$newimage = wppa_get_photo_path($photo['id']);
-		if ( is_file($newimage) ) {
-			wppa_create_thumbnail($newimage, $thumbsize, '' );
-			wppa_update_option('wppa_lastthumb', $photo['id']);
-			wppa_clear_cache();
-			echo '.';
-			$done++;
-		}
-		else {
-			wppa_error_message('Unexpected error: file '.$newimage.' was expected but is missing', 'force', 'red');
-		}
-		if ( wppa_is_time_up($done) ) {
-			return false;	// NOT Done, have to go on
-		}
 	}
 }
 
@@ -195,7 +163,10 @@ global $wppa_opt;
 		$photo = $wpdb->get_row($wpdb->prepare("SELECT * FROM `".WPPA_PHOTOS."` WHERE `id` = %s", $pid), ARRAY_A);
 		if ( $photo ) {
 			$file = wppa_get_source_path( $photo['id'] ); 
-			wppa_update_single_photo($file, $pid, $photo['filename']);
+			if ( is_file( $file ) ) {
+				wppa_update_single_photo($file, $pid, $photo['filename']);
+			}
+			else return false;
 		}
 		else return false;
 	}
@@ -427,6 +398,7 @@ global $wpdb;
 // Rport photo entries that have no fullsize image or thumbnail
 // Additionally check the php config
 // Photos that have a deleted album: create album
+/*
 function wppa_cleanup_photos( $alb = '' ) {
 global $wpdb;
 global $wppa_opt;
@@ -500,7 +472,7 @@ global $wppa_opt;
 	if ( $count ) wppa_update_message( sprintf( __( '%s obsolete settings removed.', 'wppa'), $count ) );
 	wppa_ok_message(__('Done checking system integrety.', 'wppa'));
 }
-
+*/
 
 function wppa_walktree($relroot, $source, $allowwppa = false, $subdirsonly = false, $allowthumbs = true) {
 
@@ -620,7 +592,7 @@ global $wpdb;
     if ($addseparate) $result .= '<option value="-1"' . $selected . '>' . __('--- separate ---', 'wppa') . '</option>';
 	return $result;
 }
-
+/*
 function wppa_recalculate_ratings() {
 global $wpdb;
 global $wppa_opt;
@@ -666,7 +638,7 @@ global $wppa_opt;
 		return false;
 	}
 }
-
+*/
 function wppa_check_database($verbose = false) {
 global $wpdb;
 
@@ -813,12 +785,6 @@ global $wpdb;
 	return ! $any_error;	// True = no error
 }
 
-function wppa_has_children($alb) {
-global $wpdb;
-
-	return $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `".WPPA_ALBUMS."` WHERE `a_parent` = %s", $alb) );
-}
-
 function wppa_admin_page_links($curpage, $pagesize, $count, $link, $extra = '') {
 
 	if ( $pagesize < '1' ) return;	// Pagination is off
@@ -837,15 +803,15 @@ function wppa_admin_page_links($curpage, $pagesize, $count, $link, $extra = '') 
 		$i = '1';
 		while ($i <= $npages) {
 			if ($i == $curpage) {
-				echo(' '.$i.' ');
+				echo(' '.$i);
 			}
 			else {
-				?>&nbsp;<a href="<?php echo($pagurl.$i.$extra) ?>"><?php echo($i) ?></a>&nbsp;<?php
+				?> <a href="<?php echo($pagurl.$i.$extra) ?>"><?php echo($i) ?></a><?php
 			}
 			$i++;
 		}
 		if ($curpage != $npages) {
-			?><a href="<?php echo($nexturl) ?>"><?php _e('Next page', 'wppa') ?></a><?php
+			?> <a href="<?php echo($nexturl) ?>"><?php _e('Next page', 'wppa') ?></a><?php
 		}
 	}
 }
