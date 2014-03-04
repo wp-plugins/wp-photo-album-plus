@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 5.2.17
+* Version 5.2.18
 *
 */
 
@@ -929,12 +929,16 @@ Hide Camera info
 						'wppa_load_skin' 			=> '',
 						'wppa_skinfile' 			=> 'default',
 						'wppa_regen_thumbs' 				=> '',
+						'wppa_regen_thumbs_skip_one' 	=> '',
 						'wppa_rerate'				=> '',
 						'wppa_cleanup'				=> '',
 						'wppa_recup'				=> '',
 						'wppa_file_system'			=> 'flat',
 						'wppa_blacklist_user' 		=> '',
 						'wppa_un_blacklist_user' 	=> '',
+						'wppa_remake' 				=> '',
+						'wppa_remake_skip_one'		=> '',
+
 						// B Irreversable
 						'wppa_rating_clear' 		=> 'no',
 						'wppa_viewcount_clear' 		=> 'no',
@@ -958,6 +962,7 @@ Hide Camera info
 						'wppa_allow_debug' 				=> 'no',		// 3
 						
 						'wppa_filter_priority'			=> '1001',		// 5
+						'wppa_shortcode_priority' 		=> '11',
 						'wppa_lightbox_name'			=> 'wppa',		// 6
 						'wppa_allow_foreign_shortcodes' => 'no',		// 7
 						'wppa_allow_foreign_shortcodes_thumbs' 	=> 'no',

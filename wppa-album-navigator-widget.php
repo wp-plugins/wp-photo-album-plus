@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display thumbnail photos
-* Version 5.2.17
+* Version 5.2.18
 */
 
 class AlbumNavigatorWidget extends WP_Widget {
@@ -140,7 +140,7 @@ class AlbumNavigatorWidget extends WP_Widget {
 		$w = $this->get_widget_id();
 		$p = $parent;
 		$result = '';
-		$albums = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM `".WPPA_ALBUMS."` WHERE `a_parent` = %s ".wppa_get_album_order( $parent ), $parent ), ARRAY_A );
+		$albums = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM `".WPPA_ALBUMS."` WHERE `a_parent` = %s ".wppa_get_album_order( max( '0', $parent ) ), $parent ), ARRAY_A );
 		if ( $albums ) {
 			$result .= '<ul>';
 			foreach ( $albums as $album ) {

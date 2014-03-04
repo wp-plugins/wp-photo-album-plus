@@ -2,7 +2,7 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 5.2.17
+* version 5.2.18
 *
 */
 
@@ -612,12 +612,16 @@ global $wppa_initruntimetime;
 						'wppa_load_skin' 			=> '',
 						'wppa_skinfile' 			=> '',
 						'wppa_regen_thumbs' 				=> '',
+						'wppa_regen_thumbs_skip_one' 	=> '',
 						'wppa_rerate'				=> '',
 						'wppa_cleanup'				=> '',
 						'wppa_recup'				=> '',
 						'wppa_file_system'			=> '',
 						'wppa_blacklist_user' 		=> '',
 						'wppa_un_blacklist_user' 	=> '',
+						'wppa_remake' 				=> '',
+						'wppa_remake_skip_one'		=> '',
+
 						// B Irreversable
 						'wppa_rating_clear' 		=> '',
 						'wppa_viewcount_clear' 		=> '',
@@ -688,6 +692,7 @@ global $wppa_initruntimetime;
 						'wppa_max_photo_newtime'		=> '',
 						'wppa_lightbox_name'			=> '',
 						'wppa_filter_priority'			=> '',
+						'wppa_shortcode_priority' 		=> '',
 						'wppa_apply_newphoto_desc'		=> '',
 						'wppa_apply_newphoto_desc_user'	=> '',
 						'wppa_newphoto_description'		=> '',

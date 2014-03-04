@@ -2,7 +2,7 @@
 /* wppa-ajax.php
 *
 * Functions used in ajax requests
-* version 5.2.17
+* version 5.2.18
 *
 */
 add_action('wp_ajax_wppa', 'wppa_ajax_callback');
@@ -1472,7 +1472,19 @@ global $wppa;
 						}
 					}
 					break;
-
+					
+				case 'wppa_regen_thumbs_skip_one':
+					$last = get_option( 'wppa_regen_thumbs_last', '0' );
+					$skip = $last + '1';
+					update_option( 'wppa_regen_thumbs_last',  $skip );
+					break;
+					
+				case 'wppa_remake_skip_one':
+					$last = get_option( 'wppa_remake_last', '0' );
+					$skip = $last + '1';
+					update_option( 'wppa_remake_last',  $skip );
+					break;
+					
 				default:
 			
 					// Do the update only

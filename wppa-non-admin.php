@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the non admin stuff
-* Version 5.2.17
+* Version 5.2.18
 *
 */
 
@@ -547,3 +547,18 @@ global $wppa_init_js_data;
 ';
 	}
 }
+
+add_action( 'init', 'wppa_set_shortcode_priority', 100 );
+
+function wppa_set_shortcode_priority() {
+	
+	$newpri = get_option( 'wppa_shortcode_priority', '11' );
+	if ( $newpri == '11' ) return;	// Default, do not change
+	
+	$oldpri = has_filter( 'the_content', 'do_shortcode' );
+	if ( $oldpri ) {
+		remove_filter( 'the_content', 'do_shortcode', $oldpri );
+		add_filter( 'the_content', 'do_shortcode', $newpri );
+	}
+}
+

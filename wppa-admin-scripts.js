@@ -1,7 +1,7 @@
 /* admin-scripts.js */
 /* Package: wp-photo-album-plus
 /*
-/* Version 5.2.17
+/* Version 5.2.18
 /* Various js routines used in admin pages		
 */
 
@@ -1317,9 +1317,10 @@ function wppaMaintenanceProc(slug, intern) {
 				var error 	= false;
 				
 				// Check for error
-				if ( resparr[0] != '' ) {
-					alert('The server returned unexpected output:\n'+resparr[0]);
-					error = true;
+				if ( xmlhttp.responseText == '' || resparr[0] != '' ) {
+					alert('The server returned unexpected output:\n'+resparr[0]+'\nIf the current procedure has a Skip One button, press it before retrying. Reloading page...');
+					wppaReload();
+					return;	// give up;
 				}
 				
 				// Update status and togo
@@ -1550,7 +1551,7 @@ function wppaCheckLinkPageErr(slug) {
 		if ( document.getElementById('wppa_'+slug+'_linktype') ) type = document.getElementById('wppa_'+slug+'_linktype').value;
 	var page = document.getElementById('wppa_'+slug+'_linkpage').value;
 	
-	if ( page == '0' && ( type == 'nil' || type == 'photo' || type == 'single' || type == 'album' || type == 'content' || type == 'slide' )) {
+	if ( page == '0' && ( type == 'nil' || type == 'photo' || type == 'single' || type == 'album' || type == 'content' || type == 'slide' || type == 'plainpage' )) {
 		jQuery('#'+slug+'-err').css({display:''});
 	}
 	else {
