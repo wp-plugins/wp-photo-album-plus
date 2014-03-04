@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 5.2.17
+* Version 5.2.18
 *
 */
 
@@ -3079,6 +3079,7 @@ global $no_default;
 								__('the fullsize photo on its own.', 'wppa'), 
 								__('the single photo in the style of a slideshow.', 'wppa'),
 								__('the fs photo with download and print buttons.', 'wppa'), 
+								__('a plain page without a querystring.', 'wppa'),
 								__('lightbox.', 'wppa')
 							);
 							$values_linktype = array(
@@ -3087,7 +3088,8 @@ global $no_default;
 								'photo', 
 								'single', 
 								'slphoto', 
-								'fullpopup', 
+								'fullpopup',
+								'plainpage',							
 								'lightbox'
 							);
 							$options_linktype_album = array(
@@ -3105,11 +3107,21 @@ global $no_default;
 								__('defined at widget activation.', 'wppa'), 
 								__('the content of the album.', 'wppa'), 
 								__('the full size photo in a slideshow.', 'wppa'), 
-								__('the fullsize photo on its own.', 'wppa')
+								__('the fullsize photo on its own.', 'wppa'),
+								__('a plain page without a querystring.', 'wppa')
 							);
-							$values_linktype_ss_widget = array('none', 'file', 'widget', 'album', 'photo', 'single'); //, 'indiv');
-							$options_linktype_potd_widget = array(__('no link at all.', 'wppa'), __('the plain photo (file).', 'wppa'), __('defined on widget admin page.', 'wppa'), __('the content of the album.', 'wppa'), __('the full size photo in a slideshow.', 'wppa'), __('the fullsize photo on its own.', 'wppa'), __('lightbox.', 'wppa')); //, __('the photo specific link.', 'wppa'));
-							$values_linktype_potd_widget = array('none', 'file', 'custom', 'album', 'photo', 'single', 'lightbox'); //, 'indiv');
+							$values_linktype_ss_widget = array('none', 'file', 'widget', 'album', 'photo', 'single', 'plainpage'); 
+							$options_linktype_potd_widget = array(
+								__('no link at all.', 'wppa'), 
+								__('the plain photo (file).', 'wppa'), 
+								__('defined on widget admin page.', 'wppa'), 
+								__('the content of the album.', 'wppa'), 
+								__('the full size photo in a slideshow.', 'wppa'), 
+								__('the fullsize photo on its own.', 'wppa'), 
+								__('a plain page without a querystring.', 'wppa'),
+								__('lightbox.', 'wppa')
+							); 
+							$values_linktype_potd_widget = array('none', 'file', 'custom', 'album', 'photo', 'single', 'plainpage', 'lightbox');
 							$options_linktype_cover_image = array(__('no link at all.', 'wppa'), __('the plain photo (file).', 'wppa'), __('same as title.', 'wppa'), __('lightbox.', 'wppa'));
 							$values_linktype_cover_image = array('none', 'file', 'same', 'lightbox');
 							$options_linktype_lasten = array(
@@ -3120,7 +3132,8 @@ global $no_default;
 								__('the full size photo in a slideshow.', 'wppa'), 
 								__('the fullsize photo on its own.', 'wppa'), 
 								__('the single photo in the style of a slideshow.', 'wppa'),
-								__('the fs photo with download and print buttons.', 'wppa'), 
+								__('the fs photo with download and print buttons.', 'wppa'),
+								__('a plain page without a querystring.', 'wppa'),								
 								__('lightbox.', 'wppa')
 							);
 							$values_linktype_lasten = array(
@@ -3132,6 +3145,7 @@ global $no_default;
 								'single', 
 								'slphoto', 
 								'fullpopup', 
+								'plainpage',
 								'lightbox'
 							);
 
@@ -3231,8 +3245,18 @@ global $no_default;
 						//	$slug4 = 'wppa_album_widget_overrule';	// useless
 							$slug = array($slug1, $slug2, $slug3);
 							$onchange = 'wppaCheckAlbumWidgetLink(); wppaCheckLinkPageErr(\'album_widget\');';
-							$options_linktype_album_widget = array(__('subalbums and thumbnails.', 'wppa'), __('slideshow.', 'wppa'), __('lightbox.', 'wppa'));
-							$values_linktype_album_widget = array('content', 'slide', 'lightbox');
+							$options_linktype_album_widget = array(
+								__('subalbums and thumbnails.', 'wppa'), 
+								__('slideshow.', 'wppa'),
+								__('a plain page without a querystring.', 'wppa'),
+								__('lightbox.', 'wppa')
+							);
+							$values_linktype_album_widget = array(
+								'content', 
+								'slide', 
+								'plainpage',
+								'lightbox'
+							);
 							$html1 = wppa_select($slug1, $options_linktype_album_widget, $values_linktype_album_widget, $onchange);
 							$class = 'wppa_awlp';
 							$onchange = 'wppaCheckLinkPageErr(\'album_widget\');';
@@ -4073,8 +4097,9 @@ global $no_default;
 							$name = __('Regenerate', 'wppa');
 							$desc = __('Regenerate all thumbnails.', 'wppa');
 							$help = esc_js(__('Regenerate all thumbnails.', 'wppa'));
+							$slug1 = 'wppa_regen_thumbs_skip_one';
 							$slug2 = 'wppa_regen_thumbs';
-							$html1 = '';
+							$html1 = wppa_ajax_button(__('Skip one', 'wppa'), $slug1, '0', true );
 							$html2 = wppa_maintenance_button( $slug2 );
 							$html3 = wppa_status_field( $slug2 );
 							$html4 = wppa_togo_field( $slug2 );
@@ -4174,8 +4199,9 @@ global $no_default;
 							$name = __('Remake', 'wppa');
 							$desc = __('Remake the photofiles from photo sourcefiles.', 'wppa');
 							$help = esc_js(__('This action will remake the fullsize images, thumbnail images, and will refresh the iptc and exif data for all photos where the source is found in the corresponding album sub-directory of the source directory.', 'wppa'));
+							$slug1 = 'wppa_remake_skip_one';
 							$slug2 = 'wppa_remake';
-							$html1 = '';
+							$html1 = wppa_ajax_button(__('Skip one', 'wppa'), $slug1, '0', true );
 							$html2 = wppa_maintenance_button( $slug2 );
 							$html3 = wppa_status_field( $slug2 );
 							$html4 = wppa_togo_field( $slug2 );
@@ -4332,10 +4358,19 @@ global $no_default;
 							$name = __('WPPA+ Filter priority', 'wppa');
 							$desc = __('Sets the priority of the wppa+ content filter.', 'wppa');
 							$help = esc_js(__('If you encounter conflicts with the theme or other plugins, increasing this value sometimes helps. Use with great care!', 'wppa'));
+							$help .= '\n\n'.esc_js(__('For use with %%wppa%% scripting.', 'wppa'));
 							$slug = 'wppa_filter_priority';
 							$html = wppa_input($slug, '50px');
-							wppa_setting($slug, '1', $name, $desc, $html, $help);
+							wppa_setting($slug, '1.1', $name, $desc, $html, $help);
 			
+							$name = __('Do_shortcode priority', 'wppa');
+							$desc = __('Sets the priority of the do_shortcode() content filter.', 'wppa');
+							$help = esc_js(__('If you encounter conflicts with the theme or other plugins, increasing this value sometimes helps. Use with great care!', 'wppa'));
+							$help .= '\n\n'.esc_js(__('For use with [wppa][/wppa] shortcodes.', 'wppa'));
+							$slug = 'wppa_shortcode_priority';
+							$html = wppa_input($slug, '50px');
+							wppa_setting($slug, '1.2', $name, $desc, $html, $help);
+							
 							$name = __('JPG image quality', 'wppa');
 							$desc = __('The jpg quality when photos are downsized', 'wppa');
 							$help = esc_js(__('The higher the number the better the quality but the larger the file', 'wppa'));

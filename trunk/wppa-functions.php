@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Various funcions
-* Version 5.2.17
+* Version 5.2.18
 *
 */
 
@@ -30,6 +30,20 @@ global $thumbs;
 		echo ']<br /></small>';
 	}
 	
+	// List content filters
+	//	$wp_filter[$tag][$priority][$idx] = array('function' => $function_to_add, 'accepted_args' => $accepted_args);
+	if ( $wppa['debug'] ) {
+		global $wp_filter;
+		
+		wppa_dbg_msg( 'Start content filters', 'green' );
+		foreach ( array_keys( $wp_filter['the_content'] ) as $key ) {
+			foreach ( array_keys( $wp_filter['the_content'][$key] ) as $key2 ) {
+				wppa_dbg_msg( 'Pri:'.$key.', func: '.$wp_filter['the_content'][$key][$key2]['function'].', args: '.$wp_filter['the_content'][$key][$key2]['accepted_args'] );
+			}
+		}
+		wppa_dbg_msg('End content filters', 'green');
+	}
+
 	// Process a user upload request, if any. Do it here: it may affect this occurences display
 	wppa_user_upload();
 
@@ -3197,7 +3211,7 @@ global $wpdb;
 	wppa_cache_thumb($photo);
 	if ( ! $thumb ) return false;
 	
-	// For cases it is appropriate...
+	// Photo Specific Overrule?
 	if ( ( $wich == 'sphoto'     && $wppa_opt['wppa_sphoto_overrule'] ) ||
 		 ( $wich == 'mphoto'     && $wppa_opt['wppa_mphoto_overrule'] ) ||
 		 ( $wich == 'thumb'      && $wppa_opt['wppa_thumb_overrule'] ) ||
@@ -3213,14 +3227,7 @@ global $wpdb;
 		// Look for a photo specific link
 		
 		$data = $thumb;
-//		if ( isset($thumb['id']) && $thumb['id'] == $photo ) {
-//			$data = $thumb;
-//			wppa_dbg_q('G53');
-//		}
-//		else {
-//			$data = $wpdb->get_row( $wpdb->prepare( 'SELECT * FROM '.WPPA_PHOTOS.' WHERE id=%s LIMIT 1', $photo ) , ARRAY_A );
-//			wppa_dbg_q('Q53');
-//		}
+
 		if ($data) {
 			// If it is there...
 			if ($data['linkurl'] != '') {
@@ -3347,18 +3354,6 @@ if ( $wppa['is_upldr'] ) $album='0';
 	}
 	else $photo_name = '';
 	
-/*	
-	$photo_name = false;
-	
-	if (is_array($thumb)) {
-		if ($thumb['id'] == $photo) {
-			$photo_name = wppa_qtrans(stripslashes($thumb['name']));
-		}
-	}
-	
-	if (!$photo_name) $photo_name = wppa_get_photo_name($photo);
-*/
-
 	$photo_name_js = esc_js($photo_name);
 	$photo_name = esc_attr($photo_name);
 	
@@ -3454,8 +3449,8 @@ if ( $wppa['is_upldr'] ) $album='0';
 					break;
 			}
 			break;
-		case 'photo':
-		case 'slphoto':
+		case 'photo':		// This means: The fullsize photo in a slideshow
+		case 'slphoto':		// This means: The single photo in the style of a slideshow
 			if ( $type == 'slphoto' ) {
 				$si = '&amp;wppa-single=1';
 			}
@@ -3524,7 +3519,6 @@ if ( $wppa['is_upldr'] ) $album='0';
 			return $result;
 			break;
 		case 'fullpopup':
-//			$url = wppa_get_photo_url($photo);
 			$imgsize = getimagesize( wppa_get_photo_path($photo) );
 			if ($imgsize) {
 				$wid = $imgsize['0'];
@@ -3536,9 +3530,7 @@ if ( $wppa['is_upldr'] ) $album='0';
 			}
 			$url = wppa_get_photo_url( $photo, '', $wid, $hig );
 
-//			$result['url'] = "wppaFullPopUp(".$wppa['master_occur'].", ".$photo.", \'".$url."\', ".$wid.", ".$hig." )";
 			$result['url'] = esc_attr( 'wppaFullPopUp('.$wppa['master_occur'].', '.$photo.', "'.$url.'", '.$wid.', '.$hig.' )' );
-
 			$result['title'] = $title; //$photo_name;
 			$result['is_url'] = false;
 			$result['is_lightbox'] = false;
@@ -3570,6 +3562,13 @@ if ( $wppa['is_upldr'] ) $album='0';
 			$result['title'] = '';
 			$result['is_url'] = true;
 			$result['is_lightbox'] = false;
+			break;
+		case 'plainpage':
+			$result['url'] = get_permalink( $page );
+			$result['title'] = $wpdb->get_var( $wpdb->prepare( "SELECT `post_title` FROM `".$wpdb->prefix."posts` WHERE `ID` = %s", $page ) );
+			$result['is_url'] = true;
+			$result['is_lightbox'] = false;
+			return $result;
 			break;
 		default:
 			wppa_dbg_msg('Error, wrong type: '.$type.' in wppa_get_imglink_a', 'red');

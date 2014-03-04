@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains (not yet, but in the future maybe) all the maintenance routines
-* Version 5.2.17
+* Version 5.2.18
 *
 */
 
@@ -388,6 +388,9 @@ global $wpdb;
 					</table>
 				</div><div style="clear:both;"></div>
 				';
+			break;
+			
+		case 'wppa_list_errorlog':
 			break;
 			
 		default:
