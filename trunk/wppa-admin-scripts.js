@@ -1316,11 +1316,17 @@ function wppaMaintenanceProc(slug, intern) {
 				var slug 	= resparr[1];
 				var error 	= false;
 				
-				// Check for error
-				if ( xmlhttp.responseText == '' || resparr[0] != '' ) {
-					alert('The server returned unexpected output:\n'+resparr[0]+'\nIf the current procedure has a Skip One button, press it before retrying. Reloading page...');
+				// Check for unrecoverable error
+				if ( ! slug ) {
+					alert('The server returned unexpected output:\n'+xmlhttp.responseText+'\nIf the current procedure has a Skip One button, press it before retrying. Reloading page...');
 					wppaReload();
 					return;	// give up;
+				}
+				
+				// Check for recoverable error
+				if ( resparr[0] != '' ) {
+					alert('An error occurred:\n'+resparr[0]);
+					error = true;
 				}
 				
 				// Update status and togo

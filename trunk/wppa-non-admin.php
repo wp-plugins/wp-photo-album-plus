@@ -424,7 +424,7 @@ global $wppa_init_js_data;
 /*
 */
 ';
-	if ( ( WPPA_DEBUG || isset( $_GET['wppa-debug'] ) || WP_DEBUG ) && ! wppa_switch( 'wppa_defer_javascript' ) ) {
+	if ( ( WPPA_DEBUG || isset( $_GET['wppa-debug'] ) || isset( $_GET['debug'] ) || WP_DEBUG ) && ! wppa_switch( 'wppa_defer_javascript' ) ) {
 	$content .= '
 	/* Check if wppa.js and jQuery are present */
 	if (typeof(_wppaSlides) == \'undefined\') alert(\'There is a problem with your theme. The file wppa.js is not loaded when it is expected (Errloc = wppa_kickoff).\');
@@ -432,7 +432,7 @@ global $wppa_init_js_data;
 ';	}
 	/* This goes into wppa.js */ 
 	$content .= '
-	wppaDebug = '.( $wppa['debug'] ? 'true' : 'false' ).';
+	wppaDebug = '.( ( isset( $_GET['wppa-debug'] ) || isset( $_GET['debug'] ) || WPPA_DEBUG || WP_DEBUG ) ? 'true' : 'false' ).';
 	wppaVersion = "'.$wppa_api_version.'";
 	wppaBackgroundColorImage = "'.$wppa_opt['wppa_bgcolor_img'].'";
 	wppaPopupLinkType = "'.$wppa_opt['wppa_thumb_linktype'].'";
