@@ -2,7 +2,7 @@
 //
 // conatins slideshow, theme, ajax and lightbox code
 //
-// Version 5.2.15
+// Version 5.2.15.001
 
 // Part 1: Slideshow
 //
@@ -1304,6 +1304,8 @@ function wppaGetContainerWidth(mocc) {
 
 function _wppaDoAutocol(mocc) {
 	
+	wppaConsoleLog('Doing autocol '+mocc);
+
 	var w;
 	var h;
 	if (!wppaAutoColumnWidth[mocc]) return;
