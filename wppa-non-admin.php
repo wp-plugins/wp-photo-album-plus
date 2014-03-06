@@ -179,7 +179,9 @@ global $wppa_js_page_data_file;
 		wp_enqueue_script( 'wppa-init', WPPA_URL.'/wppa.init.'.$wppa_lang.'.js', array('wppa'), get_option( 'wppa_ini_js_version_'.$wppa_lang, $footer ) );
 	}
 	// wppa.pagedata
-	wp_enqueue_script( 'wppa-pagedata', WPPA_UPLOAD_URL.'/temp/wppa.'.session_id().'.js', array('wppa-init'), rand(0,4711), $footer );
+	if ( $footer ) {
+		wp_enqueue_script( 'wppa-pagedata', WPPA_UPLOAD_URL.'/temp/wppa.'.session_id().'.js', array('wppa-init'), rand(0,4711), $footer );
+	}
 }
 	
 function wppa_add_js_page_data( $txt ) {
