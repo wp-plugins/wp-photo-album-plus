@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the non admin stuff
-* Version 5.2.18
+* Version 5.2.19
 *
 */
 
@@ -206,26 +206,6 @@ global $wppa;
 	}
 	else {
 		$wppa['out'] .= $txt;
-	}
-}
-
-function wppa_delete_obsolete_tempfiles() {
-	// To prevent filling up diskspace, divide lifetime by 2 and repeat removing obsolete files until count <= 10
-	$filecount = 100;
-	$lifetime = 3600;
-	while ( $filecount > 10 ) {
-		$files = glob( WPPA_UPLOAD_PATH.'/temp/*' );
-		$filecount = 0;
-		if ( $files ) {	
-			$timnow = time();
-			$expired = $timnow - $lifetime;
-			foreach ( $files as $file ) {
-				$modified = filemtime($file);
-				if ( $modified < $expired ) unlink($file);
-				else $filecount++;
-			}
-		}
-		$lifetime /= 2;
 	}
 }
 

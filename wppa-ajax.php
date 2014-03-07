@@ -2,7 +2,7 @@
 /* wppa-ajax.php
 *
 * Functions used in ajax requests
-* version 5.2.18
+* version 5.2.19
 *
 */
 add_action('wp_ajax_wppa', 'wppa_ajax_callback');
@@ -1483,6 +1483,10 @@ global $wppa;
 					$last = get_option( 'wppa_remake_last', '0' );
 					$skip = $last + '1';
 					update_option( 'wppa_remake_last',  $skip );
+					break;
+					
+				case 'wppa_errorlog_purge':
+					@ unlink(ABSPATH.'wp-content/wppa-depot/admin/error.log');
 					break;
 					
 				default:

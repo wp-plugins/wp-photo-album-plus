@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains low-level utility routines
-* Version 5.2.17
+* Version 5.2.19
 *
 */
  
@@ -956,8 +956,6 @@ global $wppa_opt;
 
 function wppa_move_source( $name, $from, $to ) {
 global $wppa_opt;
-wppa_log('Debug', 'in move,');
-
 	if ( wppa_switch('wppa_keep_sync') ) {
 		$frompath 	= wppa_get_source_album_dir( $from ).'/'.$name;
 		if ( ! is_file( $frompath ) ) return;

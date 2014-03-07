@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains (not yet, but in the future maybe) all the maintenance routines
-* Version 5.2.18
+* Version 5.2.19
 *
 */
 
@@ -351,6 +351,7 @@ global $thumb;
 
 function wppa_do_maintenance_popup( $slug ) {
 global $wpdb;
+global $thumb;
 
 	$result = '';
 	
@@ -359,38 +360,126 @@ global $wpdb;
 			$start = get_option( 'wppa_list_index_display_start', '' );
 			$total = $wpdb->get_var( "SELECT COUNT(*) FROM `".WPPA_INDEX."`" );
 			$indexes = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM `".WPPA_INDEX."` WHERE `slug` >= %s ORDER BY `slug` LIMIT 1000", $start ), ARRAY_A );
+
 			$result .= '
-				<style>td, th { border-right: 1px solid darkgray; } </style>
-				<h2>List of Searcheable words <small>( Max 1000 entries of total '.$total.' )</small></h2>
-				<div style="float:left; clear:both; width:100%; height:450px; overflow:auto; background-color:#f1f1f1; border:1px solid #ddd;" >
-					<table>
-						<thead>
-							<tr>
-								<th><span style="float:left;" >Word</span></th>
-								<th style="max-width:400px;" ><span style="float:left;" >Albums</span></th>
-								<th><span style="float:left;" >Photos</span></th>
-							</tr>
-							<tr><td colspan="3"><hr /></td></tr>
-						</thead>
-						<tbody>';
-							
-			foreach ( $indexes as $index ) {
+			<style>td, th { border-right: 1px solid darkgray; } </style>
+			<h2>List of Searcheable words <small>( Max 1000 entries of total '.$total.' )</small></h2>
+			<div style="float:left; clear:both; width:100%; height:450px; overflow:auto; background-color:#f1f1f1; border:1px solid #ddd;" >';
+			if ( $indexes ) {
 				$result .= '
-							<tr>
-								<td>'.$index['slug'].'</td>
-								<td style="max-width:400px; word-wrap: break-word;" >'.$index['albums'].'</td>
-								<td>'.$index['photos'].'</td>
-							</tr>';
+				<table>
+					<thead>
+						<tr>
+							<th><span style="float:left;" >Word</span></th>
+							<th style="max-width:400px;" ><span style="float:left;" >Albums</span></th>
+							<th><span style="float:left;" >Photos</span></th>
+						</tr>
+						<tr><td colspan="3"><hr /></td></tr>
+					</thead>
+					<tbody>';
+						
+				foreach ( $indexes as $index ) {
+					$result .= '
+						<tr>
+							<td>'.$index['slug'].'</td>
+							<td style="max-width:400px; word-wrap: break-word;" >'.$index['albums'].'</td>
+							<td>'.$index['photos'].'</td>
+						</tr>';
+				}
+		
+				$result .= '
+					</tbody>
+				</table>';
 			}
-			
+			else {
+				$result .= __('There are no index items.', 'wppa');
+			}
 			$result .= '
-						</tbody>
-					</table>
-				</div><div style="clear:both;"></div>
-				';
+				</div><div style="clear:both;"></div>';
+
 			break;
 			
 		case 'wppa_list_errorlog':
+			$filename = ABSPATH.'wp-content/wppa-depot/admin/error.log';
+			$result .= '
+				<h2>List of WPPA+ error messages <small>( Newest first )</small></h2>
+				<div style="float:left; clear:both; width:100%; height:450px; overflow:auto; word-wrap:none; background-color:#f1f1f1; border:1px solid #ddd;" >';
+
+			if ( ! $file = @ fopen( $filename, 'r' ) ) {
+				$result .= __('There are no error log messages', 'wppa');
+			}
+			else {
+				$size = filesize( $filename );
+				$data = fread( $file, $size );
+				$messages = explode( "\n", $data );
+				$count = count( $messages );
+				$idx = $count - '2';
+				while ( $idx >= '0' ) {
+					$result .= $messages[$idx].'<br />';
+					$idx--;
+				}
+			}
+			
+			$result .= '
+				</div><div style="clear:both;"></div>
+				';
+			break;
+
+		case 'wppa_list_rating':
+			$total = $wpdb->get_var( "SELECT COUNT(*) FROM `".WPPA_RATING."`" );
+			$ratings = $wpdb->get_results( "SELECT * FROM `".WPPA_RATING."` ORDER BY `timestamp` DESC LIMIT 1000", ARRAY_A );
+			$result .= '
+			<style>td, th { border-right: 1px solid darkgray; } </style>
+			<h2>List of recent ratings <small>( Max 1000 entries of total '.$total.' )</small></h2>
+			<div style="float:left; clear:both; width:100%; height:450px; overflow:auto; background-color:#f1f1f1; border:1px solid #ddd;" >';
+			if ( $ratings ) {
+				$result .= '
+				<table>
+					<thead>
+						<tr>
+							<th>Id</th>
+							<th>Timestamp</th>
+							<th>Date/time</th>
+							<th>User</th>
+							<th>Value</th>
+							<th>Photo id</th>
+							<th></th>
+							<th># ratings</th>
+							<th>Average</th>
+						</tr>
+						<tr><td colspan="9"><hr /></td></tr>
+					</thead>
+					<tbody>';
+								
+				foreach ( $ratings as $rating ) {
+					wppa_cache_thumb($rating['photo']);
+					$result .= '
+						<tr>
+							<td>'.$rating['id'].'</td>
+							<td>'.$rating['timestamp'].'</td>
+							<td>'.( $rating['timestamp'] ? wppa_local_date(get_option('date_format', "F j, Y,").' '.get_option('time_format', "g:i a"), $rating['timestamp']) : 'pre-historic' ).'</td>
+							<td>'.$rating['user'].'</td>
+							<td>'.$rating['value'].'</td>
+							<td>'.$rating['photo'].'</td>
+							<td style="width:250px; text-align:center;"><img src="'.wppa_get_thumb_url($rating['photo']).'" 
+								style="height: 40px;" 
+								onmouseover="jQuery(this).stop().animate({height:this.naturalHeight}, 200);"
+								onmouseout="jQuery(this).stop().animate({height:\'40px\'}, 200);" /></td>
+							<td>'.$thumb['rating_count'].'</td>
+							<td>'.$thumb['mean_rating'].'</td>
+						</tr>';
+				}
+				
+				$result .= '
+					</tbody>
+				</table>';
+			}
+			else {
+				$result .= __('There are no ratings', 'wppa');
+			}
+			$result .= '
+				</div><div style="clear:both;"></div>';
+
 			break;
 			
 		default:

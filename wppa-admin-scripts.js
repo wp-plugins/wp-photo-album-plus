@@ -1,7 +1,7 @@
 /* admin-scripts.js */
 /* Package: wp-photo-album-plus
 /*
-/* Version 5.2.18
+/* Version 5.2.19
 /* Various js routines used in admin pages		
 */
 
@@ -1374,7 +1374,17 @@ function wppaMaintenanceProc(slug, intern) {
 
 function wppaAjaxPopupWindow( slug ) {
 	
-	var name = 'Admin popup info ';
+	var name;
+	switch ( slug ) {
+		case 'wppa_list_index':
+			name = 'Search index table';
+			break;
+		case 'wppa_list_errorlog':
+			name = 'WPPA+ Error log';
+			break;
+		case 'wppa_list_rating':
+			name = 'Recent ratings';
+	}
 	var desc = '';
 	var width = 960;
 	var height = 512;

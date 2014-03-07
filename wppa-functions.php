@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Various funcions
-* Version 5.2.18
+* Version 5.2.19
 *
 */
 
@@ -890,8 +890,10 @@ global $thumbs;
 	elseif ( $wppa['is_topten'] ) {
 		$max = $wppa['topten_count'];
 		$alb = $fullalb;
-		if ($alb) $thumbs = $wpdb->get_results( "SELECT * FROM `".WPPA_PHOTOS."` WHERE `mean_rating` > 0 AND ( `album` = ".$alb." ) ORDER BY `mean_rating` DESC, `rating_count` DESC, `views` DESC LIMIT ".$max, ARRAY_A );
-		else $thumbs = $wpdb->get_results( "SELECT * FROM `".WPPA_PHOTOS."` WHERE `mean_rating` > 0 ORDER BY `mean_rating` DESC, `rating_count` DESC, `views` DESC LIMIT ".$max, ARRAY_A );
+//		if ($alb) $thumbs = $wpdb->get_results( "SELECT * FROM `".WPPA_PHOTOS."` WHERE `mean_rating` > 0 AND ( `album` = ".$alb." ) ORDER BY `mean_rating` DESC, `rating_count` DESC, `views` DESC LIMIT ".$max, ARRAY_A );
+//		else $thumbs = $wpdb->get_results( "SELECT * FROM `".WPPA_PHOTOS."` WHERE `mean_rating` > 0 ORDER BY `mean_rating` DESC, `rating_count` DESC, `views` DESC LIMIT ".$max, ARRAY_A );
+		if ($alb) $thumbs = $wpdb->get_results( "SELECT * FROM `".WPPA_PHOTOS."` WHERE ( `album` = ".$alb." ) ORDER BY `mean_rating` DESC, `rating_count` DESC, `views` DESC LIMIT ".$max, ARRAY_A );
+		else $thumbs = $wpdb->get_results( "SELECT * FROM `".WPPA_PHOTOS."` ORDER BY `mean_rating` DESC, `rating_count` DESC, `views` DESC LIMIT ".$max, ARRAY_A );
 		wppa_dbg_q('Q19');
 	}
 	// Featen?

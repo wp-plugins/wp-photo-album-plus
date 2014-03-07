@@ -2,7 +2,7 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 5.2.18
+* version 5.2.19
 *
 */
 
@@ -621,6 +621,7 @@ global $wppa_initruntimetime;
 						'wppa_un_blacklist_user' 	=> '',
 						'wppa_remake' 				=> '',
 						'wppa_remake_skip_one'		=> '',
+						'wppa_errorlog_purge' 		=> '',
 
 						// B Irreversable
 						'wppa_rating_clear' 		=> '',
@@ -2761,4 +2762,24 @@ global $wpdb;
 	if ( $args['addseparate'] ) $result .= '<option value="-1"' . $selected . '>' . __('--- separate ---', 'wppa') . '</option>';
 	
 	return $result;
+}
+
+function wppa_delete_obsolete_tempfiles() {
+	// To prevent filling up diskspace, divide lifetime by 2 and repeat removing obsolete files until count <= 10
+	$filecount = 100;
+	$lifetime = 3600;
+	while ( $filecount > 10 ) {
+		$files = glob( WPPA_UPLOAD_PATH.'/temp/*' );
+		$filecount = 0;
+		if ( $files ) {	
+			$timnow = time();
+			$expired = $timnow - $lifetime;
+			foreach ( $files as $file ) {
+				$modified = filemtime($file);
+				if ( $modified < $expired ) unlink($file);
+				else $filecount++;
+			}
+		}
+		$lifetime /= 2;
+	}
 }

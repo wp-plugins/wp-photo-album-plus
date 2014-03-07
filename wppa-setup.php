@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 5.2.18
+* Version 5.2.19
 *
 */
 
@@ -938,6 +938,7 @@ Hide Camera info
 						'wppa_un_blacklist_user' 	=> '',
 						'wppa_remake' 				=> '',
 						'wppa_remake_skip_one'		=> '',
+						'wppa_errorlog_purge' 		=> '',
 
 						// B Irreversable
 						'wppa_rating_clear' 		=> 'no',
