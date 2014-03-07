@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * edit and delete photos
-* version 5.2.17
+* version 5.2.19
 *
 */
 
@@ -825,18 +825,11 @@ function wppa_album_photos_bulk($album) {
 						jQuery('#wppa-bulk-status').css('display','inline');
 						document.getElementById('wppa-bulk-status').value = wppa_getCookie('wppa_bulk_status');
 					}
-					var thumbsize = wppa_getCookie('wppa_bulk_thumbsize');
-					if ( ! thumbsize ) thumbsize = 100;
-					document.getElementById('wppa-thumb-size').value = thumbsize;
-					jQuery('.wppa-bulk-thumb').css('max-width', thumbsize+'px');
-					jQuery('.wppa-bulk-thumb').css('max-height', (thumbsize/2)+'px');
-					jQuery('.wppa-bulk-dec').css('height', (thumbsize/2)+'px');
 				});
 				
 			</script>
 			<form action="<?php echo $link.'&wppa-page='.$page.'#manage-photos' ?>" method="post" >
 				<?php wp_nonce_field( 'wppa-bulk','wppa-bulk' ) ?>
-				<?php //print_r($_POST) ?>
 				<h3>
 				<span style="font-weight:bold;" ><?php _e('Bulk action:', 'wppa') ?></span>
 				<select id="wppa-bulk-action" name="wppa-bulk-action" onchange="wppaBulkActionChange(this, 'bulk-album')" >
@@ -861,14 +854,6 @@ function wppa_album_photos_bulk($album) {
 				<span style="font-family:sans-serif; font-size:12px; font-style:italic; font-weight:normal;" >
 					<?php _e('Pressing this button will reload the page after executing the selected action', 'wppa') ?>
 				</span>
-				<span style="float:right">
-					<?php _e('Thumbnail size:', 'wppa') ?>
-					<select name="wppa-thumb-size" id="wppa-thumb-size" onchange="wppaSetThumbsize(this);" >
-						<option value="100" ><?php _e('Small', 'wppa') ?></option>
-						<option value="140" ><?php _e('Medium', 'wppa') ?></option>
-						<option value="200" ><?php _e('Large', 'wppa') ?></option>
-					</select>
-				</span>
 				</h3>
 				<table class="widefat" >
 					<thead style="font-weight:bold;" >
@@ -888,9 +873,9 @@ function wppa_album_photos_bulk($album) {
 								<input type="checkbox" name="wppa-bulk-photo[<?php echo $photo['id'] ?>]" class="wppa-bulk-photo" />
 							</td>
 							<td><?php echo $photo['id'] ?></td>
-							<td>
+							<td style="min-width:240px; text-align:center;" >
 								<a href="<?php echo wppa_get_photo_url($photo['id']) ?>" target="_blank" title="Click to see fullsize" >
-									<img class="wppa-bulk-thumb" src="<?php echo wppa_get_thumb_url($photo['id']) ?>" style="max-width:100px; max-height:50px; " />
+									<img class="wppa-bulk-thumb" src="<?php echo wppa_get_thumb_url($photo['id']) ?>" style="height:60px;" onmouseover="jQuery(this).stop().animate({height:this.naturalHeight})" onmouseout="jQuery(this).stop().animate({height:60})" />
 								</a>
 							</td>
 							<td style="width:25%;" >

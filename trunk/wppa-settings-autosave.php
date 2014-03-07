@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 5.2.18
+* Version 5.2.19
 *
 */
 
@@ -4164,7 +4164,6 @@ global $no_default;
 							$class = 'index_search';
 							wppa_setting(false, '8b', $name, $desc, $html, $help, $class);
 
-						
 							$name = __('List Index', 'wppa');
 							$desc = __('Show the content if the index table.', 'wppa');
 							$help = '';
@@ -4207,6 +4206,19 @@ global $no_default;
 							$html4 = wppa_togo_field( $slug2 );
 							$html = array($html1, $html2, $html3, $html4);
 							wppa_setting(false, '11', $name, $desc, $html, $help);
+							
+							$name = __('List Errorlog', 'wppa');
+							$desc = __('Show the content if wppa+ error log.', 'wppa');
+							$help = '';
+							$slug1 = 'wppa_errorlog_purge';
+							$slug2 = 'wppa_list_errorlog';
+							$html1 = wppa_ajax_button(__('Purge logfile', 'wppa'), $slug1, '0', true );
+							$html2 = wppa_popup_button( $slug2 );
+							$html3 = '';
+							$html4 = '';
+							$html = array($html1, $html2, $html3, $html4);
+							wppa_setting(false, '12', $name, $desc, $html, $help);
+							
 
 							wppa_setting_subheader('B', '4', __('Clearing and other irreverseable actions', 'wppa'));
 							
@@ -4220,7 +4232,19 @@ global $no_default;
 							$html4 = '';
 							$html = array($html1, $html2, $html3, $html4);
 							wppa_setting(false, '1.0', $name, $desc, $html, $help);
-
+							
+							$name = __('List Ratings', 'wppa');
+							$desc = __('Show the most recent ratings.', 'wppa');
+							$help = '';
+							$slug1 = '';
+							$slug2 = 'wppa_list_rating';
+							$html1 = '';//wppa_ajax_button(__('Purge logfile', 'wppa'), $slug1, '0', true );
+							$html2 = wppa_popup_button( $slug2 );
+							$html3 = '';
+							$html4 = '';
+							$html = array($html1, $html2, $html3, $html4);
+							wppa_setting(false, '1.01', $name, $desc, $html, $help);
+							
 							$name = __('Clear viewcounts', 'wppa');
 							$desc = __('Reset all viewcounts.', 'wppa');
 							$help = esc_js(__('WARNING: If checked, this will clear all viewcounts in the system!', 'wppa'));

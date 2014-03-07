@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile, cloudinary, fotomoto
-Version: 5.2.18
+Version: 5.2.19
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -172,6 +172,18 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 5.2.19 =
+
+= Bug Fixes =
+
+* Fixed a problem with Art Monkey link when Table IV-A1.1 was NOT ticked.
+* If deferred javascript is not selected, the non existent file will no longer be enqueued
+
+= New Features =
+
+* You can list and purge the wppa+ internal error log. Table VIII-A12
+* You can list the most recent ratings. Table VIII-B1.01
 
 = 5.2.18 =
 
