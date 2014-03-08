@@ -414,7 +414,6 @@ global $wppa_init_js_data;
 ';	}
 	/* This goes into wppa.js */ 
 	$content .= '
-	wppaDebug = '.( ( isset( $_GET['wppa-debug'] ) || isset( $_GET['debug'] ) || WPPA_DEBUG || WP_DEBUG ) ? 'true' : 'false' ).';
 	wppaVersion = "'.$wppa_api_version.'";
 	wppaBackgroundColorImage = "'.$wppa_opt['wppa_bgcolor_img'].'";
 	wppaPopupLinkType = "'.$wppa_opt['wppa_thumb_linktype'].'";
