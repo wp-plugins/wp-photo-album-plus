@@ -1420,8 +1420,8 @@ function _wppaDoAutocol(mocc) {
 	jQuery(".wppa-mimg-"+mocc).css('width',w);
 	jQuery(".wppa-mimg-"+mocc).css('height', '');
 
-	// Check again after 10 ms	
-	setTimeout('_wppaDoAutocol('+mocc+')', 10);
+	// Check again after 100 ms	
+	setTimeout('_wppaDoAutocol('+mocc+')', 100);
 }
 
 function _wppaCheckRewind(mocc) {

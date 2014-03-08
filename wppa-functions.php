@@ -25,6 +25,7 @@ global $thumbs;
 	wppa_dbg_msg('Entering wppa_albums');
 	wppa_dbg_msg('Lang='.$wppa_lang.', Locale='.$wppa_locale.', Ajax='.$wppa['ajax']);
 	if ( $wppa['debug'] ) {
+		echo '<script type="text/javascript">wppaDebug = true;</script>';
 		echo '<small>[WPPA+ dbg msg: $_SESSION = ';
 		print_r($_SESSION);
 		echo ']<br /></small>';
