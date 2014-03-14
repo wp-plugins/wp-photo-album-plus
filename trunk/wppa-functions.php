@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Various funcions
-* Version 5.2.19
+* Version 5.2.20
 *
 */
 
@@ -214,7 +214,7 @@ global $thumbs;
 	
 	// Convert any keywords and / or names to numbers
 	// Search for album keyword
-	if ($wppa['start_album'] && !is_numeric($wppa['start_album'])) {
+	if ( $wppa['start_album'] && ! wppa_is_int( $wppa['start_album'] ) ) {
 		if (substr($wppa['start_album'], 0, 1) == '#') {		// Keyword
 			$keyword = $wppa['start_album'];
 			if ( strpos($keyword, ',') ) $keyword = substr($keyword, 0, strpos($keyword, ','));
@@ -223,23 +223,34 @@ global $thumbs;
 					$id = wppa_get_youngest_album_id();
 					if ( $wppa['is_cover'] ) {	// To make sure the ordering sequence is ok.
 						$temp = explode(',',$wppa['start_album']);
-						if ( isset($temp['1']) && is_numeric($temp['1']) ) $wppa['last_albums_parent'] = $temp['1'];
+						if ( isset( $temp['1'] ) ) $wppa['last_albums_parent'] = $temp['1'];
 						else $wppa['last_albums_parent'] = '0';
-						if ( isset($temp['2']) && is_numeric($temp['2']) ) $wppa['last_albums'] = $temp['2'];
+						if ( isset( $temp['2'] ) ) $wppa['last_albums'] = $temp['2'];
 						else $wppa['last_albums'] = false;
 					}
 					else {		// Ordering seq is not important, convert to album enum				
 						$temp = explode(',',$wppa['start_album']);
-						if ( isset($temp['1']) && is_numeric($temp['1']) ) $parent = $temp['1'];
+						if ( isset( $temp['1'] ) ) $parent = wppa_album_name_to_number( $temp['1'] );
 						else $parent = '0';
-						if ( isset($temp['2']) && is_numeric($temp['2']) ) $limit = $temp['2'];
+						if ( $parent === false ) return;
+						if ( isset( $temp['2'] ) ) $limit = $temp['2'];
 						else $limit = false;
 						if ( $limit ) {
 							if ( $parent ) {
-								$q = $wpdb->prepare("SELECT `id` FROM `".WPPA_ALBUMS."` WHERE `a_parent` = %s ORDER BY `timestamp` DESC LIMIT %d", $parent, $limit);
+								if ( $limit ) {
+									$q = $wpdb->prepare( "SELECT `id` FROM `".WPPA_ALBUMS."` WHERE `a_parent` = %s ORDER BY `timestamp` DESC LIMIT %d", $parent, $limit );
+								}
+								else {
+									$q = $wpdb->prepare( "SELECT `id` FROM `".WPPA_ALBUMS."` WHERE `a_parent` = %s ORDER BY `timestamp` DESC", $parent );
+								}
 							}
 							else {
-								$q = $wpdb->prepare("SELECT `id` FROM `".WPPA_ALBUMS."` ORDER BY `timestamp` DESC LIMIT %d", $limit);
+								if ( $limit ) {
+									$q = $wpdb->prepare( "SELECT `id` FROM `".WPPA_ALBUMS."` ORDER BY `timestamp` DESC LIMIT %d", $limit );
+								}
+								else { 
+									$q = "SELECT `id` FROM `".WPPA_ALBUMS."` ORDER BY `timestamp` DESC";
+								}
 							}
 							$albs = $wpdb->get_results($q, ARRAY_A);
 							if ( is_array($albs) ) foreach ( array_keys($albs) as $key ) $albs[$key] = $albs[$key]['id'];
@@ -350,8 +361,8 @@ global $thumbs;
 						wppa_reset_occurrance();
 						return;	// Forget this occurrance
 					}
-					$parent = isset($temp[2]) ? $temp[2] : '0';
-					if ( ! wppa_is_int($parent) ) $parent = '0';
+					$parent = isset( $temp[2] ) ? wppa_album_name_to_number( $temp[2] ) : '0';
+					if ( $parent === false ) return;
 					if ( $parent ) {
 						$albs = $wpdb->get_results($wpdb->prepare("SELECT `id` FROM `".WPPA_ALBUMS."` WHERE `owner` = %s AND `a_parent` = %s", $owner, $parent), ARRAY_A);
 					}
@@ -397,22 +408,11 @@ global $thumbs;
 	}
 	
 	// See if the album id is a name and convert it if possible
-	if ($wppa['start_album'] && !is_numeric($wppa['start_album'])) {
-		if (substr($wppa['start_album'], 0, 1) == '$') {		// Name
-			$id = wppa_get_album_id_by_name(substr($wppa['start_album'], 1), 'report_dups');
-			if ( $id > '0' ) $wppa['start_album'] = $id;
-			elseif ( $id < '0' ) {
-				wppa_dbg_msg('Duplicate album names found: '.$wppa['start_album'], 'red', 'force');
-				wppa_reset_occurrance();
-				return;	// Forget this occurrance
-			}
-			else {
-				wppa_dbg_msg('Album name not found: '.$wppa['start_album'], 'red', 'force');
-				wppa_reset_occurrance();
-				return;	// Forget this occurrance
-			}
-		}
-	}
+	$wppa['start_album'] = wppa_album_name_to_number( $wppa['start_album'] );
+	if ( $wppa['start_album'] === false ) return;
+	// Also for parents
+	$wppa['last_albums_parent'] = wppa_album_name_to_number( $wppa['last_albums_parent'] );
+	if ( $wppa['last_albums_parent'] === false ) return;
 	
 	// Check if album is valid
 	if ( strpos($wppa['start_album'], '.') !== false ) {	// Album may be enum
@@ -578,6 +578,28 @@ global $thumbs;
 	$wppa['geo'] = '';
 	wppa_reset_occurrance();
 	return $out;		
+}
+
+function wppa_album_name_to_number( $xalb ) {
+	$xalb = strip_tags( $xalb );
+	if ( $xalb && ! wppa_is_int( $xalb ) ) {
+		if ( substr( $xalb, 0, 1 ) == '$' ) {		// Name
+			$id = wppa_get_album_id_by_name( substr( $xalb, 1 ), 'report_dups' );
+			if ( $id > '0' ) return $id;
+			elseif ( $id < '0' ) {
+				wppa_dbg_msg( 'Duplicate album names found: '.$xalb, 'red', 'force' );
+				wppa_reset_occurrance();
+				return false;	// Forget this occurrance
+			}
+			else {
+				wppa_dbg_msg( 'Album name not found: '.$xalb, 'red', 'force' );
+				wppa_reset_occurrance();
+				return false;	// Forget this occurrance
+			}
+		}
+		else return $xalb; // Is album enum
+	}
+	else return $xalb; // Is non zero integer
 }
 
 function wppa_get_related_data() {
@@ -1375,7 +1397,7 @@ global $thumb;
 					</div>';
 				$dellink = '
 					<div style="float:right; margin-right:6px;" >
-						<a href="javascript:void();" style="color:red;" onclick="_wppaStop('.$wppa['master_occur'].');'.esc_attr('if ( confirm("'.__a('Are you sure you want to remove this photo?').'") ) wppaAjaxRemovePhoto('.$thumb['id'].', true)' ).'">
+						<a href="javascript:void();" style="color:red;" onclick="_wppaStop('.$wppa['master_occur'].');'.esc_attr('if ( confirm("'.__a('Are you sure you want to remove this photo?').'") ) wppaAjaxRemovePhoto('.$wppa['master_occur'].', '.$thumb['id'].', true); return false;' ).'">
 							'.__a('Delete').'
 						</a>
 					</div>';
@@ -1881,6 +1903,7 @@ global $album;
 
 	$tfw = $wppa_opt['wppa_tf_width'.$alt];
 	$tfh = $wppa_opt['wppa_tf_height'.$alt];
+	if ( $film == 'film' ) $tfh = $wppa_opt['wppa_thumbsize'.$alt];
 	$mgl = $wppa_opt['wppa_tn_margin'];
 	if ($film == 'film' && $wppa['in_widget']) {
 		$tfw /= 2;

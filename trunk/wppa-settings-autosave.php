@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 5.2.19
+* Version 5.2.20
 *
 */
 
@@ -261,7 +261,7 @@ global $no_default;
 		}
 		
 		// Check for pending actions
-		if ( get_option( 'wppa_remake_index_albums_status' ) 		&& get_option( 'wppa_remake_index_albums_user', 	wppa_get_user() == wppa_get_user() ) ) wppa_warning_message( __( 'Rebeuiling the Album index needs completion. See Table VIII', 'wppa' ) );
+		if ( get_option( 'wppa_remake_index_albums_status' ) 		&& get_option( 'wppa_remake_index_albums_user', 	wppa_get_user() == wppa_get_user() ) ) wppa_warning_message( __( 'Rebuilding the Album index needs completion. See Table VIII', 'wppa' ) );
 		if ( get_option( 'wppa_remake_index_photos_status' ) 		&& get_option( 'wppa_remake_index_photos_user', 	wppa_get_user() == wppa_get_user() ) ) wppa_warning_message( __( 'Rebuilding the Photo index needs completion. See Table VIII', 'wppa' ) );
 		if ( get_option( 'wppa_remove_empty_albums_status'	) 		&& get_option( 'wppa_remove_empty_albums_user', 	wppa_get_user() == wppa_get_user() ) ) wppa_warning_message( __( 'Remove empty albums needs completion. See Table VIII', 'wppa') );
 		if ( get_option( 'wppa_apply_new_photodesc_all_status' ) 	&& get_option( 'wppa_apply_new_photodesc_all_user', wppa_get_user() == wppa_get_user() ) ) wppa_warning_message( __( 'Applying new photo description needs completion. See Table VIII', 'wppa') );
@@ -2832,8 +2832,17 @@ global $no_default;
 							$options = array(__('--- off ---', 'wppa'), __('very fast (100 ms.)', 'wppa'), __('fast (200 ms.)', 'wppa'), __('normal (300 ms.)', 'wppa'),  __('slow (500 ms.)', 'wppa'), __('very slow (1 s.)', 'wppa'), __('extremely slow (2 s.)', 'wppa'));
 							$values = array('0', '100', '200', '300', '500', '1000', '2000');
 							$html = wppa_select($slug, $options, $values);
-							wppa_setting($slug, '3', $name, $desc, $html, $help);
-							
+							wppa_setting($slug, '3.1', $name, $desc, $html, $help);
+
+							$name = __('Overlay slideshow speed', 'wppa');
+							$desc = __('The time the lightbox images stay', 'wppa');
+							$help = '';
+							$slug = 'wppa_ovl_slide';
+							$options = array(__('fast (3 s.)', 'wppa'), __('normal (5 s.)', 'wppa'),  __('slow (8 s.)', 'wppa'), __('very slow (13 s.)', 'wppa'), __('extremely slow (20 s.)', 'wppa'));
+							$values = array('3000', '5000', '8000', '13000', '20000');
+							$html = wppa_select($slug, $options, $values);
+							wppa_setting($slug, '3.2', $name, $desc, $html, $help);
+						
 							$name = __('Overlay at top in Chrome', 'wppa');
 							$desc = __('Place the overlay (lightbox) image at the top of the page in Chrome browsers.', 'wppa');
 							$help = esc_js(__('This is required for certain mobime devices.', 'wppa'));

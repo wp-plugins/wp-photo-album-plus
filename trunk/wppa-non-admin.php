@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the non admin stuff
-* Version 5.2.19
+* Version 5.2.20
 *
 */
 
@@ -248,6 +248,7 @@ global $wpdb;
 		wppaOvlOnclickType = "'.$wppa_opt['wppa_ovl_onclick'].'";
 		wppaOvlTheme = "'.$wppa_opt['wppa_ovl_theme'].'";
 		wppaOvlAnimSpeed = '.$wppa_opt['wppa_ovl_anim'].';
+		wppaOvlSlideSpeed = '.$wppa_opt['wppa_ovl_slide'].';
 		wppaVer4WindowWidth = 800;
 		wppaVer4WindowHeight = 600;
 		wppaOvlShowCounter = '.( $wppa_opt['wppa_ovl_show_counter'] ? 'true' : 'false' ).';

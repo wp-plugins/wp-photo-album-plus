@@ -1,15 +1,15 @@
 /* admin-scripts.js */
 /* Package: wp-photo-album-plus
 /*
-/* Version 5.2.19
+/* Version 5.2.20
 /* Various js routines used in admin pages		
 */
 
 var wppa_moveup_url = '#';
 var wppa_import = 'Import';
 var wppa_update = 'Update';
-var wppaImageDirectory = '';
-var wppaAjaxUrl = '';
+var wppaImageDirectory;
+var wppaAjaxUrl;
 var wppaUploadToThisAlbum = 'Upload to this album';
 
 /* Check if jQuery library revision is high enough, othewise give a message and uncheck checkbox elm */
@@ -794,6 +794,50 @@ function checkAll(name, clas) {
 		}
 		else {
 			jQuery(clas).prop('checked', '');
+		}
+	}
+}
+
+function checkOrg(name, clas) {
+	var elm = document.getElementById(name);
+	if (elm) {
+		var all = jQuery(clas); 
+		var idx = 0;
+		var checkboxid;
+		var photoname;
+		var lastdash;
+		var isorig;
+		var sizespec;
+		var pointpos;
+		var temparr;
+		while ( idx < all.length ) {
+			isorig = false;
+			checkboxid = jQuery(all[idx]).attr('id');
+			photoname = jQuery('#name-'+checkboxid).html();
+			photoname = photoname.replace(/&nbsp;/g, '');
+			photoname = photoname.replace(' ', '');
+			lastdash = photoname.lastIndexOf('-');
+			if ( lastdash == -1 ) {
+				isorig = true;
+			}
+			else {
+				sizespec = photoname.substr(lastdash+1);
+				pointpos = sizespec.indexOf('.');
+				if ( pointpos > 0 ) sizespec = sizespec.substr(0, pointpos);
+				temparr = sizespec.split('x');
+				if ( temparr.length != 2 || parseInt(temparr[0]) == 0 || parseInt(temparr[1]) == 0 ) {
+					isorig = true;
+				}
+			}
+			if ( isorig ) {
+				if ( elm.checked ) {
+					jQuery('#'+checkboxid).prop('checked', 'checked');
+				}
+				else {
+					jQuery('#'+checkboxid).prop('checked', '');
+				}
+			}
+			idx++;
 		}
 	}
 }
