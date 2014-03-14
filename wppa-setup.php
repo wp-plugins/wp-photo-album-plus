@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 5.2.19
+* Version 5.2.20
 *
 */
 
@@ -759,6 +759,7 @@ Hide Camera info
 						'wppa_ovl_opacity'				=> '80',
 						'wppa_ovl_onclick'				=> 'none',
 						'wppa_ovl_anim'					=> '300',
+						'wppa_ovl_slide'				=> '5000',
 						'wppa_ovl_chrome_at_top'		=> 'yes',
 						'wppa_lightbox_global'			=> 'no',
 						

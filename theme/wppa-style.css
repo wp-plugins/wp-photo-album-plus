@@ -37,6 +37,9 @@
 /* All boxes. Admin settings page defines border thickness and border radius */
 .wppa-box {
 	padding: 2px 6px 2px 6px;
+	-moz-box-sizing: content-box;
+	-webkit-box-sizing:content-box;
+	box-sizing: content-box;
 }
 .wppa-mini-box {
 }

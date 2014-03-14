@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile, cloudinary, fotomoto
-Version: 5.2.19
+Version: 5.2.20
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -172,6 +172,25 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 5.2.20 =
+
+= Big Fixes =
+
+* Fixed filmstrip layout, especially for themes that have non-standard box-sizing in the css.
+* Browse and exit buttons on the lightbox display now also work on touch screens.
+* Fixed a reporting bug in mainenace procedures.
+* Fixed a spurious bug in album name in breadcrumb during search on all albums.
+
+= New Features =
+
+* Although it is discouraged to use album names in shortcodes, you can use the $name construction now also for parent album ids in album specifications for album="#last..."and album="#owner...".
+* The overlay can now do an automatic slideshow if it is a set.
+* On the Import photos admin page, there is now a <b>Check/uncheck originals</b> checkbox, leaving photo names that end in -NNNxMMM.ext untouched.
+
+= Other Changes =
+
+* Front-end delete no longer refreshes the page, but removes the filmstrip thumbnails of deleted photos.
 
 = 5.2.19 =
 

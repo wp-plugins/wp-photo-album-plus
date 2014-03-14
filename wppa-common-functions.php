@@ -2,7 +2,7 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 5.2.19
+* version 5.2.20
 *
 */
 
@@ -442,6 +442,7 @@ global $wppa_initruntimetime;
 						'wppa_ovl_opacity'				=> '',
 						'wppa_ovl_onclick'				=> '',
 						'wppa_ovl_anim'					=> '',
+						'wppa_ovl_slide' 				=> '',
 						'wppa_ovl_chrome_at_top' 		=> '',
 						'wppa_lightbox_global'			=> '',
 

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the upload/import pages and functions
-* Version 5.2.17
+* Version 5.2.20
 *
 */
 
@@ -652,6 +652,9 @@ if ( $wppa['ajax'] ) {
 								<tr>
 									<td>
 										<input type="checkbox" id="all-pho" <?php if ($is_sub_depot) echo('checked="checked"') ?> onchange="checkAll('all-pho', '.wppa-pho')" /><b>&nbsp;&nbsp;<?php _e('Check/uncheck all', 'wppa') ?></b>
+									</td>
+									<td>
+										<input type="checkbox" id="org-pho" <?php if ($is_sub_depot) echo('checked="checked"') ?> onchange="checkOrg('org-pho', '.wppa-pho')" /><b>&nbsp;&nbsp;<?php _e('Check/uncheck originals', 'wppa') ?></b>
 									</td>
 									<?php if ($is_sub_depot) { ?>
 										<td>

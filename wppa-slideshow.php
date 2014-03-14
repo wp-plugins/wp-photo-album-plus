@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the slideshow high level functions
-* Version 5.2.17
+* Version 5.2.20
 *
 */
 
@@ -608,7 +608,7 @@ global $thumb;
 		
 	$width = ($wppa_opt['wppa_tf_width'] + $wppa_opt['wppa_tn_margin']) * (count($thumbs) + 2 * $preambule);
 	$width += $wppa_opt['wppa_tn_margin'] + 2;
-	$topmarg = $wppa_opt['wppa_thumbsize'] / 2 - 12 + 7;
+	$topmarg = $wppa_opt['wppa_thumbsize'] / 2 - 16;
 	$height = $wppa_opt['wppa_thumbsize']+$wppa_opt['wppa_tn_margin'];
 	$height1 = $wppa_opt['wppa_thumbsize'];
 	$marg = '42';	// 32
@@ -652,7 +652,7 @@ global $thumb;
 			$wppa['out'] .= wppa_nltab().'<a class="wppa-next-'.$wppa['master_occur'].' wppa-arrow" style="'.__wcs('wppa-arrow').'" id="next-film-arrow-1-'.$wppa['master_occur'].'" onclick="wppaNext('.$wppa['master_occur'].');" title="'.__a('Next', 'wppa_theme').'" >&rsaquo;</a>';
 			$wppa['out'] .= wppa_nltab().'<a class="wppa-next-'.$wppa['master_occur'].' wppa-arrow" style="'.__wcs('wppa-arrow').'" id="next-film-arrow-'.$wppa['master_occur'].'" onclick="wppaNextN('.$wppa['master_occur'].','.$pagsiz.');" title="'.sprintf(__a('%s forward', 'wppa_theme'), $pagsiz).'" >&raquo;</a>';
 		$wppa['out'] .= wppa_nltab().'</div>';
-		$wppa['out'] .= wppa_nltab().'<div id="filmwindow-'.$wppa['master_occur'].'" class="filmwindow" style="'.$IE6.' display: block; height:'.$height.'px; margin: -1px 0 0 '.$marg.'px; overflow:hidden;">';
+		$wppa['out'] .= wppa_nltab().'<div id="filmwindow-'.$wppa['master_occur'].'" class="filmwindow" style="'.$IE6.' display: block; height:'.$height.'px; margin: 0 0 0 '.$marg.'px; overflow:hidden;">';
 			$wppa['out'] .= wppa_nltab('+').'<div id="wppa-filmstrip-'.$wppa['master_occur'].'" style="height:'.$height1.'px; width:'.$width.'px; margin-left: -100px;">';
 	}
 	

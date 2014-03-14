@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains (not yet, but in the future maybe) all the maintenance routines
-* Version 5.2.19
+* Version 5.2.20
 *
 */
 
@@ -311,6 +311,7 @@ global $thumb;
 	else {	// Really done
 	
 		// Report fixed/skipped/deleted
+		if ( ! isset( $_SESSION['wppa_session'] ) ) $_SESSION['wppa_session'] = array();
 		if ( $_SESSION['wppa_session'][$slug.'_fixed'] ) $status .= ' '.$_SESSION['wppa_session'][$slug.'_fixed'].' fixed';
 		if ( $_SESSION['wppa_session'][$slug.'_skipped'] ) $status .= ' '.$_SESSION['wppa_session'][$slug.'_skipped'].' skipped';
 		if ( $_SESSION['wppa_session'][$slug.'_deleted'] ) $status .= ' '.$_SESSION['wppa_session'][$slug.'_deleted'].' deleted';

@@ -2,7 +2,7 @@
 //
 // conatins slideshow, theme, ajax and lightbox code
 //
-// Version 5.2.15.001
+// Version 5.2.20
 
 // Part 1: Slideshow
 //
@@ -2586,7 +2586,7 @@ function wppaAjaxApprovePhoto(photoid) {
 	
 }
 
-function wppaAjaxRemovePhoto(photoid, isslide) {
+function wppaAjaxRemovePhoto(mocc, photoid, isslide) {
 	var xmlhttp = wppaGetXmlHttp();
 
 	xmlhttp.onreadystatechange = function() {
@@ -2594,8 +2594,15 @@ function wppaAjaxRemovePhoto(photoid, isslide) {
 			var rtxt = xmlhttp.responseText.split('||');
 			if ( rtxt[0] == 'OK' ) {
 				if ( isslide ) {
-					alert(rtxt[1]);
-					document.location = document.location;
+//					alert(rtxt[1]);
+//					document.location = document.location;
+//					_wppaUrl[mocc][_wppaCurIdx[mocc]] = '';
+//					_wppaSlides[mocc][_wppaCurIdx[mocc]] = ' src=""';
+jQuery('#wppa-film-'+_wppaCurIdx[mocc]+'-'+mocc).attr('src', '');
+jQuery('#wppa-pre-'+_wppaCurIdx[mocc]+'-'+mocc).attr('src', '');
+jQuery('#wppa-film-'+_wppaCurIdx[mocc]+'-'+mocc).attr('alt', 'removed');
+jQuery('#wppa-pre-'+_wppaCurIdx[mocc]+'-'+mocc).attr('alt', 'removed');
+					wppaNext(mocc);
 				}
 				else {
 					jQuery('.wppa-approve-'+photoid).css('display', 'none');
@@ -2688,6 +2695,7 @@ var wppaOvlPadTop = 5;
 var wppaWindowInnerWidth;
 var wppaWindowInnerHeight;
 var wppaOvlIsSingle;
+var wppaOvlRunning = false;
 
 // The next var values become overwritten in wppa-non-admin.php -> wppa_load_footer()
 var wppaOvlCloseTxt = 'CLOSE';
@@ -2696,6 +2704,7 @@ var wppaOvlOpacity = 0.8;
 var wppaOvlOnclickType = 'none';
 var wppaOvlTheme = 'black';
 var wppaOvlAnimSpeed = 300;
+var wppaOvlSlideSpeed = 3000;
 var wppaVer4WindowWidth = 800;
 var wppaVer4WindowHeight = 600;
 var wppaOvlFontFamily = 'Helvetica';
@@ -2784,8 +2793,10 @@ wppaConsoleLog('lft='+lft+', ptp='+ptp, 1);
 	var txtcol = wppaOvlTheme == 'black' ? '#a7a7a7' : '#272727';	// Normal font
 	var qtxtcol = wppaOvlTheme == 'black' ? '#a7a7a7' : '#575757';	// Bold font
 	if (wppaOvlFontColor) txtcol = wppaOvlFontColor;
-	var html = 	'<div id="wppa-overlay-qt-txt"  style="position:absolute; right:16px; top:'+(wppaOvlPadTop-1)+'px; visibility:hidden; box-shadow:none; font-family:helvetica; font-weight:bold; font-size:14px; color:'+qtxtcol+'; cursor:pointer; " onclick="wppaOvlHide()" >'+wppaOvlCloseTxt+'&nbsp;&nbsp;</div>'+
-				'<img id="wppa-overlay-qt-img"  src="'+wppaImageDirectory+'smallcross-'+wppaOvlTheme+'.gif'+'" style="position:absolute; right:0; top:'+wppaOvlPadTop+'px; visibility:hidden; box-shadow:none; cursor:pointer" onclick="wppaOvlHide()" >'+
+	var startstop = wppaOvlRunning ? wppaStop : wppaStart;
+	var html = 	'<div id="wppa-overlay-start-stop" style="position:absolute; left:0px; top:'+(wppaOvlPadTop-1)+'px; visibility:hidden; box-shadow:none; font-family:helvetica; font-weight:bold; font-size:14px; color:'+qtxtcol+'; cursor:pointer; " onclick="wppaOvlStartStop()" ontouchstart="wppaOvlStartStop()" >'+startstop+'</div>'+
+				'<div id="wppa-overlay-qt-txt"  style="position:absolute; right:16px; top:'+(wppaOvlPadTop-1)+'px; visibility:hidden; box-shadow:none; font-family:helvetica; font-weight:bold; font-size:14px; color:'+qtxtcol+'; cursor:pointer; " onclick="wppaOvlHide()" ontouchstart="wppaOvlHide()" >'+wppaOvlCloseTxt+'&nbsp;&nbsp;</div>'+
+				'<img id="wppa-overlay-qt-img"  src="'+wppaImageDirectory+'smallcross-'+wppaOvlTheme+'.gif'+'" style="position:absolute; right:0; top:'+wppaOvlPadTop+'px; visibility:hidden; box-shadow:none; cursor:pointer" onclick="wppaOvlHide()" ontouchstart="wppaOvlHide()" >'+
 				'<img id="wppa-overlay-img"'+
 				' ontouchstart="wppaTouchStart(event, \'wppa-overlay-img\', -1);"  ontouchend="wppaTouchEnd(event);" ontouchmove="wppaTouchMove(event);" ontouchcancel="wppaTouchCancel(event);" '+
 				' src="'+wppaOvlUrl+'" style="border-width:16px; border-style:solid; border-color:'+wppaOvlTheme+'; margin-bottom:-15px; max-width:'+mw+'px; visibility:hidden; box-shadow:none;" />'+
@@ -2836,18 +2847,27 @@ function wppaOvlShow4() {
 wppaConsoleLog('wppaOvlShow4', 1);
 
 	var cw = document.getElementById('wppa-overlay-img').clientWidth;
-	if (wppaOvlIdx != -1) {	// One out of a set
+	if ( wppaOvlIdx != -1 ) {	// One out of a set
 		var vl = 'visibility:hidden;';
 		var vr = 'visibility:hidden;';
 		var ht = 'height:'+wppaOvlTxtHeight+'px;';
 		
-		if (wppaOvlIdx != 0) vl = 'visible';
-		if (wppaOvlIdx != (wppaOvlUrls.length-1)) vr = 'visible';
-		if (wppaOvlTxtHeight == 'auto') ht = '';
+		var txtwidth;
+		if ( wppaOvlRunning ) txtwidth = cw + 12;
+		else txtwidth = cw - 80;
 		
-		var html = 	'<img src="'+wppaImageDirectory+'prev-'+wppaOvlTheme+'.gif" style="position:relative; top:-8px; float:left; '+vl+'; box-shadow:none;" onclick="wppaOvlShowPrev()" / >'+
-					'<img src="'+wppaImageDirectory+'next-'+wppaOvlTheme+'.gif" style="position:relative; top:-8px; float:right;'+vr+'; box-shadow:none;" onclick="wppaOvlShowNext()" / >'+
-					'<div id="wppa-overlay-txt" style="text-align:center; min-height:36px; '+ht+' overflow:auto; box-shadow:none; width:'+(cw-80)+'px;" >';
+		if ( wppaOvlIdx != 0 ) vl = 'visible';
+		if ( wppaOvlIdx != ( wppaOvlUrls.length-1 ) ) vr = 'visible';
+		if ( wppaOvlTxtHeight == 'auto' ) ht = '';
+		
+		var html = 	'';
+		if ( ! wppaOvlRunning ) {
+			html += 
+					'<img src="'+wppaImageDirectory+'prev-'+wppaOvlTheme+'.gif" style="position:relative; top:-8px; float:left; '+vl+'; box-shadow:none;" onclick="wppaOvlShowPrev()" ontouchstart="wppaOvlShowPrev()" />'+
+					'<img src="'+wppaImageDirectory+'next-'+wppaOvlTheme+'.gif" style="position:relative; top:-8px; float:right;'+vr+'; box-shadow:none;" onclick="wppaOvlShowNext()" ontouchstart="wppaOvlShowNext()" />';
+		}
+		html +=			
+					'<div id="wppa-overlay-txt" style="text-align:center; min-height:36px; '+ht+' overflow:auto; box-shadow:none; width:'+txtwidth+'px;" >';
 					if ( wppaOvlShowCounter ) html += (wppaOvlIdx+1)+'/'+wppaOvlUrls.length+'<br />';
 					html += wppaOvlTitle+'</div>';
 					
@@ -2868,6 +2888,7 @@ wppaConsoleLog('wppaOvlShow4', 1);
 	jQuery('#wppa-overlay-txt-container').css('visibility', 'visible');
 	jQuery('#wppa-overlay-qt-txt').css({visibility: 'visible'});
 	jQuery('#wppa-overlay-qt-img').css({visibility: 'visible'});
+	if (!wppaOvlIsSingle) jQuery('#wppa-overlay-start-stop').css({visibility: 'visible'});
 
 	// Almost done, Install eventhandlers
 	if (wppaOvlFirst) {
@@ -2888,6 +2909,25 @@ wppaConsoleLog('wppaOvlShow4', 1);
 	return false;
 }
 
+function wppaOvlStartStop() {
+	if ( wppaOvlRunning ) {
+		jQuery('#wppa-overlay-start-stop').html(wppaStart);
+		wppaOvlRunning = false;
+	}
+	else {
+		jQuery('#wppa-overlay-start-stop').html(wppaStop);
+		wppaOvlRunning = true;
+		wppaOvlRun();
+	}
+}
+function wppaOvlRun() {
+	var next;
+	if ( ! wppaOvlRunning ) return;
+	if (wppaOvlIdx >= (wppaOvlUrls.length-1)) next = 0;
+	else next = wppaOvlIdx + 1;
+	wppaOvlShow(next);
+	setTimeout('wppaOvlRun()', wppaOvlSlideSpeed);
+}
 function wppaOvlShowPrev() {
 wppaConsoleLog('wppaOvlShowPrev', 1);
 	if (wppaOvlIsSingle) return false;
@@ -2985,12 +3025,14 @@ wppaConsoleLog('wppaOvlSize', 1);
 		jQuery('#wppa-overlay-img').css({width:wid, maxWidth: wid, visibility: 'visible'});
 		jQuery('#wppa-overlay-ic').css({width: cwid, left: lft, paddingTop: pt});
 		jQuery('#wppa-overlay-qt-txt').css({top: (pt-1)});
+		jQuery('#wppa-overlay-start-stop').css({top: (pt-1)});
 		jQuery('#wppa-overlay-qt-img').css({top: pt});
 	}
 	else {
 		jQuery('#wppa-overlay-img').stop().animate({width:wid, maxWidth: wid}, speed);
 		jQuery('#wppa-overlay-ic').stop().animate({width: cwid, left: lft, paddingTop: pt}, speed);
 		jQuery('#wppa-overlay-qt-txt').stop().animate({top: (pt-1)}, speed);
+		jQuery('#wppa-overlay-start-stop').stop().animate({top: (pt-1)}, speed);
 		jQuery('#wppa-overlay-qt-img').stop().animate({top: pt}, speed);
 	}
 	
@@ -2999,17 +3041,20 @@ wppaConsoleLog('wppaOvlSize', 1);
 		// Hide during resize if sizing takes longer than 10 ms.
 		if (speed > 10) jQuery('#wppa-overlay-txt').css({visibility: 'hidden'});
 	}		
-	setTimeout('wppaOvlSize2()', speed+20);
+	setTimeout('wppaOvlSize2()', 20);
 	return true;
 }
 function wppaOvlSize2() {
 wppaConsoleLog('wppaOvlSize2', 1);
 	
 	var cw = document.getElementById('wppa-overlay-img').clientWidth;
+	var txtwidth;
+	if ( wppaOvlRunning ) txtwidth = cw + 12;
+	else txtwidth = cw - 80;
 
 	jQuery('#wppa-overlay-img').css({width: cw});	// Req'd for ver 4 browsers
 	jQuery('#wppa-overlay-ic').css({width: cw+32});	// ditto
-	jQuery('#wppa-overlay-txt').css({width:(cw-80)+'px', visibility: 'visible'});
+	jQuery('#wppa-overlay-txt').css({width: txtwidth+'px', visibility: 'visible'});
 
 	return true;
 }
@@ -3027,6 +3072,7 @@ wppaConsoleLog('wppaOvlHide', 1);
 	window.onresize = wppaOvlSizeHandler;
 	// Reset switch
 	wppaOvlFirst = true;
+	wppaOvlRunning = false;
 }
 
 function wppaOvlOnclick(event) {
@@ -3064,6 +3110,7 @@ wppaConsoleLog('wppaInitOverlay', 1);
 			}
 		}
 	}
+	wppaOvlRunning = false;
 }
 
 var wppaKbAction = function(e) {
@@ -3088,8 +3135,8 @@ var wppaKbAction = function(e) {
 	}
 }
 
-// This module is intented to be used in any onclick definition that opens or closes a psrt of the photo descrioption.
-// this will automaticly adjust the picturesize sonthat the full description will be visible.
+// This module is intented to be used in any onclick definition that opens or closes a part of the photo description.
+// this will automaticly adjust the picturesize so that the full description will be visible.
 // Example: <a href="javascript://" onclick="myproc()" >Show Details</a>
 // Change to: <a href="javascript://" onclick="myproc(); wppaOvlResize()" >Show Details</a>
 // Isn't it simple?
@@ -3099,8 +3146,8 @@ wppaConsoleLog('wppaOvlResize', 1);
 //	if ( wppaLightBox != 'wppa' ) return;	// No, not this time.
 	// Wait for completeion of text and do a size operation
 	setTimeout('wppaOvlSize(10)', 50);		// After resizing, the number of lines may have changed
-	setTimeout('wppaOvlSize(10)', 200);
-	setTimeout('wppaOvlSize(10)', 500);
+	setTimeout('wppaOvlSize(10)', 100);
+	setTimeout('wppaOvlSize(10)', 150);
 }
 
 function wppaAjaxMakeOrigName(mocc, id) {
@@ -3177,7 +3224,7 @@ function wppaAjaxComment(mocc, id) {
 }
 
 function wppaConsoleLog(arg) {
-//wppaDebug=true;
+wppaDebug=true;
 	if ( typeof(console) != 'undefined' && wppaDebug ) {
 		console.log(arg);
 	}
