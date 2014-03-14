@@ -175,7 +175,7 @@ See for additional information: http://wppa.opajaap.nl/?page_id=1459
 
 = 5.2.20 =
 
-= Big Fixes =
+= Bug Fixes =
 
 * Fixed filmstrip layout, especially for themes that have non-standard box-sizing in the css.
 * Browse and exit buttons on the lightbox display now also work on touch screens.
