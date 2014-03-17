@@ -131,6 +131,7 @@ function _wppa_sidebar_page_options() {
 								<option value="24" <?php if ($period == '24') echo($sel); ?>><?php _e('day.', 'wppa'); ?></option>
 								<option value="168" <?php if ($period == '168') echo($sel); ?>><?php _e('week.', 'wppa'); ?></option>
 								<option value="736" <?php if ($period == '736') echo($sel); ?>><?php _e('month.', 'wppa'); ?></option>
+								<option value="day-of-week" <?php if ($period == 'day-of-week') echo($sel); ?>><?php _e('day of week is order#', 'wppa'); ?></option>
 								<option value="day-of-month" <?php if ($period == 'day-of-month') echo($sel); ?>><?php _e('day of month is order#', 'wppa'); ?></option>
 							</select>
 							<span class="description"><br/><?php _e('Select how the widget should display.', 'wppa'); ?></span>								
