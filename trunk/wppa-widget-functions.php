@@ -228,6 +228,16 @@ global $thumb;
 						}
 						else $image = '';
 					}
+					elseif ($per == 'day-of-week') {
+						$image = '';
+						if ($photos) {
+							$d = wppa_local_date('w');
+							if ( ! $d ) $d = '7';
+							foreach ($photos as $img) {
+								if ( $img['p_order'] == $d ) $image = $img;
+							}
+						}
+					}
 					elseif ($per == 'day-of-month') {
 						$image = '';
 						if ($photos) {
