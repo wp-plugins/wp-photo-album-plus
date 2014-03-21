@@ -538,7 +538,7 @@ global $thumbs;
 		wppa_search_box('', $wppa['may_sub'], $wppa['may_root'] );
 	}
 	// Is it the superview box?
-	if ( $wppa['is_superviewbox'] ) {
+	elseif ( $wppa['is_superviewbox'] ) {
 		wppa_superview_box($wppa['start_album']);
 	}
 	// Is it the multitag box?
