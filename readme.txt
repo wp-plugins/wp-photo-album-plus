@@ -194,6 +194,7 @@ See for additional information: http://wppa.opajaap.nl/?page_id=1459
 = Other Changes =
 
 * Top ten widget will also be available when rating is turned off.
+* You can change the max number of pagelinks in Table I-A9.
 
 = 5.2.20 =
 
