@@ -2,7 +2,7 @@
 /* wppa-ajax.php
 *
 * Functions used in ajax requests
-* version 5.2.19
+* version 5.2.21
 *
 */
 add_action('wp_ajax_wppa', 'wppa_ajax_callback');
@@ -1135,6 +1135,9 @@ global $wppa;
 				case 'wppa_slideshow_pagesize':
 					wppa_ajax_check_range($value, false, '0', false, __('Slideshow pagesize', 'wppa'));
 					break;
+				case 'wppa_pagelinks_max':
+					wppa_ajax_check_range($value, false, '3', false, __('Max Pagelinks', 'wppa'));
+					break;
 				case 'wppa_rating_clear':
 					$iret1 = $wpdb->query( 'TRUNCATE TABLE '.WPPA_RATING );
 					$iret2 = $wpdb->query( 'UPDATE '.WPPA_PHOTOS.' SET mean_rating="0", rating_count="0" WHERE id > -1' );
@@ -1195,6 +1198,20 @@ global $wppa;
 					$result = wppa_recuperate_iptc_exif();
 					echo '||0||'.__('Recuperation performed', 'wppa').'||'.$result;
 					exit;
+					break;
+
+				case 'wppa_bgcolor_thumbnail':
+					$value = trim( strtolower( $value ) );
+					if ( strlen( $value ) != '7' || substr( $value, 0, 1 ) != '#' ) {
+						$wppa['error'] = '1';
+					}
+					else for ( $i=1; $i<7; $i++ ) {
+						if ( ! in_array( substr( $value, $i, 1 ), array('0','1','2','3','4','5','6','7','8','9','a','b','c','d','e','f') ) ) {
+							$wppa['error'] = '1';
+						}
+					}
+					if ( ! $wppa['error'] ) $old_minisize--;	// Trigger regen message
+					else $alert = __('Illegal format. Please enter a 6 digit hexadecimal color value. Example: #77bbff', 'wppa');
 					break;
 
 				case 'wppa_thumb_aspect':

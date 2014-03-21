@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Functions for album covers
-* Version 5.2.15
+* Version 5.2.21
 *
 */
 
@@ -199,10 +199,10 @@ global $wpdb;
 					if ($photocount > $mincount) { 
 						$label = $wppa_opt['wppa_enable_slideshow'] ?  __a('Slideshow') : __a('Browse photos');
 						if ( $href_slideshow == '#' ) {
-							$wppa['out'] .= wppa_nltab().'<a onclick="'.$onclick_slideshow.'" title="'.$label.'" style="'.__wcs('wppa-box-text', 'nocolor').'" >'.$label.'</a>';
+							$wppa['out'] .= wppa_nltab().'<a onclick="'.$onclick_slideshow.'" title="'.$label.'" style="'.__wcs('wppa-box-text-nocolor').'" >'.$label.'</a>';
 						}
 						else {
-							$wppa['out'] .= wppa_nltab().'<a href="'.$href_slideshow.'" target="'.$target.'" onclick="'.$onclick_slideshow.'" title="'.$label.'" style="'.__wcs('wppa-box-text', 'nocolor').'" >'.$label.'</a>';
+							$wppa['out'] .= wppa_nltab().'<a href="'.$href_slideshow.'" target="'.$target.'" onclick="'.$onclick_slideshow.'" title="'.$label.'" style="'.__wcs('wppa-box-text-nocolor').'" >'.$label.'</a>';
 						}
 					} else $wppa['out'] .= '&nbsp;'; 
 				$wppa['out'] .= wppa_nltab('-').'</div>';
@@ -394,10 +394,10 @@ else $coverphoto = false;
 					if ($photocount > $mincount) { 
 						$label = $wppa_opt['wppa_enable_slideshow'] ?  __a('Slideshow') : __a('Browse photos');
 						if ( $href_slideshow == '#' ) {
-							$wppa['out'] .= wppa_nltab().'<a onclick="'.$onclick_slideshow.'" title="'.$label.'" style="'.__wcs('wppa-box-text', 'nocolor').'" >'.$label.'</a>';
+							$wppa['out'] .= wppa_nltab().'<a onclick="'.$onclick_slideshow.'" title="'.$label.'" style="'.__wcs('wppa-box-text-nocolor').'" >'.$label.'</a>';
 						}
 						else {
-							$wppa['out'] .= wppa_nltab().'<a href="'.$href_slideshow.'" target="'.$target.'" onclick="'.$onclick_slideshow.'" title="'.$label.'" style="'.__wcs('wppa-box-text', 'nocolor').'" >'.$label.'</a>';
+							$wppa['out'] .= wppa_nltab().'<a href="'.$href_slideshow.'" target="'.$target.'" onclick="'.$onclick_slideshow.'" title="'.$label.'" style="'.__wcs('wppa-box-text-nocolor').'" >'.$label.'</a>';
 						}
 					} else $wppa['out'] .= '&nbsp;'; 
 				$wppa['out'] .= wppa_nltab('-').'</div>';
@@ -564,10 +564,10 @@ global $wpdb;
 					if ($photocount > $mincount) { 
 						$label = $wppa_opt['wppa_enable_slideshow'] ?  __a('Slideshow') : __a('Browse photos');
 						if ( $href_slideshow == '#' ) {
-							$wppa['out'] .= wppa_nltab().'<a onclick="'.$onclick_slideshow.'" title="'.$label.'" style="'.__wcs('wppa-box-text', 'nocolor').'" >'.$label.'</a>';
+							$wppa['out'] .= wppa_nltab().'<a onclick="'.$onclick_slideshow.'" title="'.$label.'" style="'.__wcs('wppa-box-text-nocolor').'" >'.$label.'</a>';
 						}
 						else {
-							$wppa['out'] .= wppa_nltab().'<a href="'.$href_slideshow.'" target="'.$target.'" onclick="'.$onclick_slideshow.'" title="'.$label.'" style="'.__wcs('wppa-box-text', 'nocolor').'" >'.$label.'</a>';
+							$wppa['out'] .= wppa_nltab().'<a href="'.$href_slideshow.'" target="'.$target.'" onclick="'.$onclick_slideshow.'" title="'.$label.'" style="'.__wcs('wppa-box-text-nocolor').'" >'.$label.'</a>';
 						}
 					} else $wppa['out'] .= '&nbsp;'; 
 				$wppa['out'] .= wppa_nltab('-').'</div>';
@@ -887,10 +887,10 @@ global $album;
 					}
 					else $treecount = false;
 					if ( $href_content == '#' ) {
-						$wppa['out'] .= wppa_nltab('+').'<a onclick="'.$onclick_content.'" title="'.__a('View the album').' '.esc_attr(stripslashes(wppa_qtrans($album['name']))).'" style="'.__wcs('wppa-box-text', 'nocolor').'" >';
+						$wppa['out'] .= wppa_nltab('+').'<a onclick="'.$onclick_content.'" title="'.__a('View the album').' '.esc_attr(stripslashes(wppa_qtrans($album['name']))).'" style="'.__wcs('wppa-box-text-nocolor').'" >';
 					}
 					else {
-						$wppa['out'] .= wppa_nltab('+').'<a href="'.$href_content.'" target="'.$target.'" onclick="'.$onclick_content.'" title="'.__a('View the album').' '.esc_attr(stripslashes(wppa_qtrans($album['name']))).'" style="'.__wcs('wppa-box-text', 'nocolor').'" >';
+						$wppa['out'] .= wppa_nltab('+').'<a href="'.$href_content.'" target="'.$target.'" onclick="'.$onclick_content.'" title="'.__a('View the album').' '.esc_attr(stripslashes(wppa_qtrans($album['name']))).'" style="'.__wcs('wppa-box-text-nocolor').'" >';
 					}
 					$wppa['out'] .= __a('View');
 					if ($albumcount) { 

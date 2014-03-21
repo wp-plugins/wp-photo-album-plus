@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the non admin stuff
-* Version 5.2.20
+* Version 5.2.21
 *
 */
 
@@ -23,6 +23,7 @@ add_action('wp_print_styles', 'wppa_add_style');
 
 function wppa_add_style() {
 global $wppa_api_version;
+
 	// In child theme?
 	$userstyle = ABSPATH . 'wp-content/themes/' . get_option('stylesheet') . '/wppa-style.css';
 	if ( is_file($userstyle) ) {
@@ -30,6 +31,7 @@ global $wppa_api_version;
 		wp_enqueue_style('wppa_style');
 		return;
 	}
+	
 	// In theme?
 	$userstyle = ABSPATH . 'wp-content/themes/' . get_option('template') . '/wppa-style.css';
 	if ( is_file($userstyle) ) {
@@ -37,9 +39,21 @@ global $wppa_api_version;
 		wp_enqueue_style('wppa_style');
 		return;
 	}
+	
 	// Use standard
 	wp_register_style('wppa_style', WPPA_URL.'/theme/wppa-style.css', array(), $wppa_api_version);
 	wp_enqueue_style('wppa_style');
+	
+	// Dynamic css
+	if ( get_option( 'wppa_inline_css', 'yes' ) == 'no' ) {
+		if ( ! file_exists( WPPA_PATH.'/wppa-dynamic.css' ) ) {
+			wppa_create_wppa_dynamic_css();
+			update_option( 'wppa_dynamic_css_version', get_option( 'wppa_dynamic_css_version', '0' ) + '1' );
+		}
+		if ( file_exists( WPPA_PATH.'/wppa-dynamic.css' ) ) {
+			wp_enqueue_style( 'wppa-dynamic', WPPA_URL.'/wppa-dynamic.css', array('wppa_style'), get_option( 'wppa_dynamic_css_version' ) );
+		}
+	}
 }
 
 /* SEO META TAGS AND SM SHARE DATA */
@@ -170,13 +184,13 @@ global $wppa_js_page_data_file;
 			wp_enqueue_script( 'wppa-geo', 'https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false', '', $wppa_api_version, $footer );
 		}
 	}
-	// wppa.init
-	if ( ! file_exists( WPPA_PATH.'/wppa.init.'.$wppa_lang.'.js' ) ) {
+	// wppa-init
+	if ( ! file_exists( WPPA_PATH.'/wppa-init.'.$wppa_lang.'.js' ) ) {
 		wppa_create_wppa_init_js();
 		update_option( 'wppa_ini_js_version_'.$wppa_lang, get_option( 'wppa_ini_js_version_'.$wppa_lang, '0' ) + '1' );
 	}
-	if ( file_exists( WPPA_PATH.'/wppa.init.'.$wppa_lang.'.js' ) ) {
-		wp_enqueue_script( 'wppa-init', WPPA_URL.'/wppa.init.'.$wppa_lang.'.js', array('wppa'), get_option( 'wppa_ini_js_version_'.$wppa_lang, $footer ) );
+	if ( file_exists( WPPA_PATH.'/wppa-init.'.$wppa_lang.'.js' ) ) {
+		wp_enqueue_script( 'wppa-init', WPPA_URL.'/wppa-init.'.$wppa_lang.'.js', array('wppa'), get_option( 'wppa_ini_js_version_'.$wppa_lang, $footer ) );
 	}
 	// wppa.pagedata
 	if ( $footer ) {
@@ -332,7 +346,11 @@ global $wppa_opt;
 global $wppa_lang;
 global $wppa_api_version;
 global $wppa_init_js_data;
+global $wppa_dynamic_css_data;
 
+	// init.css failed?
+	if ( $wppa_dynamic_css_data ) echo $wppa_dynamic_css_data;
+	
 	// init.js failed?
 	if ( $wppa_init_js_data ) echo $wppa_init_js_data;
 	
@@ -346,6 +364,15 @@ global $wppa_init_js_data;
 <style type="text/css">
 	#wppa-overlay-ic { padding-top: 5px !important; } 
 	#wppa-overlay-qt-txt, #wppa-overlay-qt-img { top: 5px !important; }
+</style>';
+	}
+	
+	// Inline styles?
+	if ( wppa_switch('wppa_inline_css') ) {
+		echo '
+<!-- WPPA+ Custom styles -->
+<style type="text/css" >
+'.$wppa_opt['wppa_custom_style'].'
 </style>';
 	}
 
@@ -510,7 +537,7 @@ global $wppa_init_js_data;
 	wppaFotomotoMinWidth = '.$wppa_opt['wppa_fotomoto_min_width'].';';
 
 	// Open file
-	$file = @ fopen ( WPPA_PATH.'/wppa.init.'.$wppa_lang.'.js', 'wb' );
+	$file = @ fopen ( WPPA_PATH.'/wppa-init.'.$wppa_lang.'.js', 'wb' );
 	if ( $file ) {
 		// Write file
 		fwrite ( $file, $content );
@@ -521,7 +548,7 @@ global $wppa_init_js_data;
 	else {
 		$wppa_init_js_data = 
 '<script type="text/javascript">
-/* Warning: file wppa.init.'.$wppa_lang.'.js could not be created */
+/* Warning: file wppa-init.'.$wppa_lang.'.js could not be created */
 /* The content is therefor output here */
 
 '.$content.'

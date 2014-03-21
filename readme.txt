@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile, cloudinary, fotomoto
-Version: 5.2.20
+Version: 5.2.21
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -172,6 +172,28 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 5.2.21 =
+
+= Bug Fixes =
+
+* If no album is selected in the Upload box, an alert message is given and no attempt is made to upload, like in the upload widget.
+* The random sequence order of photos is now preserved between wppa pages.
+
+= New Features =
+
+* New selection for the photo of the day widget: Day of week is order #. 1 for Monday ... 7 for Sunday.
+* EXPERIMENTAL: Inline css is now partially off-switcheable. This feature is not fully worked out yet, but in progress. Table IV-A9. Use with care. May generate layout problems when UNchecked. Default is checked ( ON ).
+* You can now decide if you want the non-wppa images that link to lightbox are scrollable as a set. Table IV-G5.1.
+* New shortcode type="superview", does the same as the superview widget, except that the albums are represented hierarchical.
+* New shortcode type="search" with optional: sub="1" to enable subsearch and root="1" to enable rootsearch.
+* You can set the padding (background) color for thumbnails with a padded aspect ratio setting. See Table I-C2 and Table III-B3.1.
+* You can include sub albums in the topten widget. See the widget activation screen.
+* You can add custom style specs in Table IV-A10.
+
+= Other Changes =
+
+* Top ten widget will also be available when rating is turned off.
 
 = 5.2.20 =
 

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all indexing functions
-* version 5.2.17
+* version 5.2.21
 *
 * 
 */
@@ -159,6 +159,7 @@ function wppa_index_string_to_array($string) {
 
 // Compress array ranges and convert to string
 function wppa_index_array_to_string($array) {
+	sort($array, SORT_NUMERIC);
 	$result = '';
 	$lastitem = '-1';
 	$isrange = false;

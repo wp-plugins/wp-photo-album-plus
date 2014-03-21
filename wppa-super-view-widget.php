@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * ask the album / display you want
-* Version 5.2.4
+* Version 5.2.21
 */
 
 
@@ -20,6 +20,7 @@ class SuperView extends WP_Widget {
 		global $wpdb;
 		global $widget_content;
 		global $wppa_opt;
+		global $wppa;
 
         extract( $args );
 		$instance = wp_parse_args( (array) $instance, array( 
@@ -31,50 +32,14 @@ class SuperView extends WP_Widget {
  		$widget_title 	= apply_filters('widget_title', $instance['title'] );
 		$album_root 	= $instance['root'];
 		$sort 			= $instance['sort'];
-
-		$page 			= wppa_get_the_landing_page('wppa_super_view_linkpage', __a('Super View Photos'));
-
-//		$page = $wppa_opt['wppa_super_view_linkpage'];
-//		$iret = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `" . $wpdb->posts . "` WHERE `post_type` = 'page' AND `post_status` = 'publish' AND `ID` = %s", $page));
-//		if ( ! $iret ) $page = '0';	// Page vanished
-		if ( $page == '0' ) {
-			$widget_content = __a('Please select a super view widget landing page in Table VI-C');
-		}
-		else {
 		
-			$url = get_permalink($page);
+		$wppa['master_occur']++;
+		$wppa['in_widget'] = 'superview';
 
-			if ( ! isset ( $_SESSION['wppa_session'] ) ) $_SESSION['wppa_session'] = array();
-			if ( ! isset ( $_SESSION['wppa_session']['superview'] ) ) {
-				$_SESSION['wppa_session']['superview'] = 'thumbs';
-				$_SESSION['wppa_session']['superalbum'] = '0';
-			}
+		$widget_content = wppa_get_superview_html( $album_root, $sort );
+		
+		$wppa['in_widget'] = false;
 
-			$checked = 'checked="checked"';
-			
-			$widget_content = '
-			<div>
-			<form action="'.$url.'" method = "get">
-				<label>'.__('Album:', 'wppa').'</label><br />
-				<select name="wppa-album">
-					'.wppa_album_select_a( array( 	'selected' 			=> $_SESSION['wppa_session']['superalbum'], 
-													'addpleaseselect' 	=> true, 
-													'root' 				=> $album_root, 
-													'content' 			=> true,
-													'sort'				=> $sort
-													) ).'
-				</select><br />
-				<input type="radio" name="wppa-slide" value="nil" '.( $_SESSION['wppa_session']['superview'] == 'thumbs' ? $checked : '' ).'>'.__('Thumbnails', 'wppa').'<br />
-				<input type="radio" name="wppa-slide" value="1" '.( $_SESSION['wppa_session']['superview'] == 'slide' ? $checked : '' ).'>'.__('Slideshow', 'wppa').'<br />';
-			$widget_content .= '
-				<input type="hidden" name="wppa-occur" value="1" />
-				<input type="hidden" name="wppa-superview" value="1" />
-				<input type="submit" value="'.__('Show!', 'wppa').'" />
-			</form>
-			</div>
-			';
-		}
-	
 		echo $before_widget . $before_title . $widget_title . $after_title . $widget_content . $after_widget;
     }
 	

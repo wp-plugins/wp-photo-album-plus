@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Various funcions
-* Version 5.2.20
+* Version 5.2.21
 *
 */
 
@@ -532,9 +532,17 @@ global $thumbs;
 			}
 		}
 	}
-
+	
+	// Is it the search box?
+	if ( $wppa['is_searchbox'] ) {
+		wppa_search_box('', $wppa['may_sub'], $wppa['may_root'] );
+	}
+	// Is it the superview box?
+	if ( $wppa['is_superviewbox'] ) {
+		wppa_superview_box($wppa['start_album']);
+	}
 	// Is it the multitag box?
-	if ( $wppa['is_multitagbox'] ) {
+	elseif ( $wppa['is_multitagbox'] ) {
 		wppa_multitag_box($wppa['tagcols'], $wppa['taglist']);
 	}
 	// Is it the tagcloud box?
@@ -668,6 +676,10 @@ global $thumbs;
 	$wppa['bestof'] 		= false;
 	$wppa['is_subsearch'] 	= false;
 	$wppa['is_rootsearch']  = false;
+	$wppa['is_superviewbox'] = false;
+	$wppa['is_searchbox'] 	= false;
+	$wppa['may_sub'] 		= false;
+	$wppa['may_root'] 		= false;
 
 }
 
@@ -2591,7 +2603,7 @@ global $wpdb;
 		$margtop = wppa_switch('wppa_align_thumbtext') ? '' : 'margin-top:'.-$imgmargbottom.'px;';
 		$subtextcontheight = $frameheight - max( $imgwidth,$imgheight );
 		if ( ! wppa_switch('wppa_align_thumbtext') ) $subtextcontheight += $imgmargbottom;
-		$wppa['out'].='<div style="height: '.$subtextcontheight.'px; width:'.max( $imgheight, $imgwidth ).'px; position:absolute; '.$margtop.'overflow:hidden;" ><!-- subtext container -->';// width:
+		$wppa['out'].='<div style="height: '.$subtextcontheight.'px; width:'.$framewidth.'px; position:absolute; '.$margtop.' overflow:hidden;" ><!-- subtext container -->';// width:
 		
 		// Single button voting system	
 		if ( $wppa_opt['wppa_rating_max'] == '1' && wppa_switch('wppa_vote_thumb') ) {

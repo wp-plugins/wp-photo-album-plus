@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains (not yet, but in the future maybe) all the maintenance routines
-* Version 5.2.20
+* Version 5.2.21
 *
 */
 
@@ -89,6 +89,7 @@ global $thumb;
 		case 'wppa_remove_empty_albums':
 
 			// Process albums
+			$table 		= WPPA_ALBUMS;
 			$topid 		= $wpdb->get_var( "SELECT `id` FROM `".WPPA_ALBUMS."` ORDER BY `id` DESC LIMIT 1" );
 			$albums 	= $wpdb->get_results( "SELECT * FROM `".WPPA_ALBUMS."` WHERE `id` > ".$lastid." ORDER BY `id` LIMIT 100", ARRAY_A );
 			
@@ -139,6 +140,7 @@ global $thumb;
 		
 			// Process photos
 			$thumbsize 	= wppa_get_minisize();
+			$table 		= WPPA_PHOTOS;
 			$topid 		= $wpdb->get_var( "SELECT `id` FROM `".WPPA_PHOTOS."` ORDER BY `id` DESC LIMIT 1" );
 			$photos 	= $wpdb->get_results( "SELECT * FROM `".WPPA_PHOTOS."` WHERE `id` > ".$lastid." ORDER BY `id` LIMIT ".$chunksize, ARRAY_A );
 			
@@ -241,8 +243,8 @@ global $thumb;
 						$thumbpath = wppa_get_thumb_path( $id );
 						$imagepath = wppa_get_photo_path( $id );
 						if ( ! is_file( $imagepath ) ) {
-			//				$wpdb->query( $wpdb->prepare( "DELETE FROM `".WPPA_PHOTOS."` WHERE `id` = %s", $id ) );
-			//				if ( is_file( $thumbpath ) ) unlink( $thumbpath );
+							$wpdb->query( $wpdb->prepare( "DELETE FROM `".WPPA_PHOTOS."` WHERE `id` = %s", $id ) );
+							if ( is_file( $thumbpath ) ) unlink( $thumbpath );
 							$_SESSION['wppa_session'][$slug.'_deleted']++;
 						}
 						else {
@@ -302,7 +304,8 @@ global $thumb;
 	}
 	
 	// either $albums / $photos has been exhousted ( for this try ) or time is up
-	$togo 	= $topid - $lastid;
+//	$togo 	= $topid - $lastid;
+	$togo 	= $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM `".$table."` WHERE `id` > %s ", $lastid ) );
 	$status = $togo ? 'Pending' : 'Ready';
 	if ( $togo ) {
 		update_option( $slug.'_togo', $togo );

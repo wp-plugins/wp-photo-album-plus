@@ -2,7 +2,7 @@
 //
 // conatins slideshow, theme, ajax and lightbox code
 //
-// Version 5.2.20
+// Version 5.2.21
 
 // Part 1: Slideshow
 //
@@ -1356,7 +1356,7 @@ function _wppaDoAutocol(mocc) {
 	}
 
 	// Thumbnail area
-	jQuery(".thumbnail-area-"+mocc).css('width',w - wppaThumbnailAreaDelta);
+	jQuery(".wppa-thumb-area-"+mocc).css('width',w - wppaThumbnailAreaDelta);
 	
 	// Thumbframes
 	if ( wppaThumbSpaceAuto ) {

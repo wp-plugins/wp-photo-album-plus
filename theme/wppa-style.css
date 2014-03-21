@@ -1,17 +1,17 @@
-/* This is the standard wppa_style.css file. See http://wppa.opajaap.nl/ where it is used
-/* If you want to modify the layout make a copy of this file and place it in your theme's directory
+/* This is the standard wppa_style.css file. 
+/* If you want to modify this file, make a copy of this file and place it in your theme's directory
 /* The copy in your theme's directory has precedense over the original version in wp-photo-album-pls/theme
 /* This assures that your version is not overwritten after an upgrade of the plugin.
 /* 
-/* NOTE: As per version 2.1.0 most of the settings you would like to change are now configurable in the wppa admin settings screen.
+/* NOTE: Most of the settings you would like to change are configurable in the wppa admin settings screen.
 /* It is strongly reccomended that you try to achieve the appearance you like by those settings as they will be independant of future updates.
 /*
 /* You may always look into a newer version of this file to see what new classes and id's come with an upgrade
 /*
-/* This is version 5.1.18
+/* This is version 5.2.21
 */
 
-.wppa-container, .wppa-cover-box, .thumbnail-area {
+.wppa-container, .wppa-cover-box, .wppa-thumb-area {
 	-moz-box-sizing:content-box;
 	-webkit-box-sizing:content-box;
 	box-sizing:content-box;
@@ -21,6 +21,14 @@
 	border:none;
 	padding:0;
 	margin:0;
+}
+
+.wppa-clear {
+	clear: both;
+}
+
+.wppa-multitag-table tr td {
+	padding-right:4px;
 }
 
 /* Navigation */
@@ -106,7 +114,7 @@
 }
 
 /* Wrapper for thumbnail area */
-.thumbnail-area {
+.wppa-thumb-area {
 /*	padding: 7px 0 7px 7px; experimental */ 
 	position: relative;
 }
@@ -200,10 +208,13 @@ box-shadow: none !important;
 	text-decoration: none;
 }
 
-/* Sidebar widget */
+/* Sidebar widgets */
 .wppa-widget {
 }
-
+.wppa-multitag-widget {
+}
+.wppa-tagcloud-widget {
+}
 .wppa-widget-text {
 	margin: 5px;
 	text-align: center;
@@ -306,6 +317,11 @@ text-align:left;
 .wppa-mphoto {
 }
 .wppa-sphoto {
+}
+
+.wppa-td {
+padding: 3px 2px 3px 0; 
+border: 0;
 }
 
 .filmwindow {

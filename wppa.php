@@ -2,7 +2,7 @@
 /*
 Plugin Name: WP Photo Album Plus
 Description: Easily manage and display your photo albums and slideshows within your WordPress site.
-Version: 5.2.20
+Version: 5.2.21
 Author: J.N. Breetvelt a.k.a OpaJaap
 Author URI: http://wppa.opajaap.nl/
 Plugin URI: http://wordpress.org/extend/plugins/wp-photo-album-plus/
@@ -17,11 +17,11 @@ global $wpdb;
 /* when new options are added and when the wppa_setup() routine 
 /* must be called right after update for any other reason.
 */
-global $wppa_revno; 		$wppa_revno = '5220';	
+global $wppa_revno; 		$wppa_revno = '5221';	
 /* This is the api interface version number
 /* It is incremented at any code change.
 */
-global $wppa_api_version; 	$wppa_api_version = '5-2-20-000';
+global $wppa_api_version; 	$wppa_api_version = '5-2-21-000';
 
 /* CONSTANTS
 /*
@@ -50,7 +50,7 @@ define( 'WPPA_INDEX', 	 $wppa_prefix . 'wppa_index' );
 define( 'WPPA_FILE', basename( __FILE__ ) );					// wppa.php
 define( 'WPPA_PATH', dirname( __FILE__ ) );						// /.../wp-content/plugins/wp-photo-album-plus
 define( 'WPPA_NAME', basename( dirname( __FILE__ ) ) );			// wp-photo-album-plus
-define( 'WPPA_URL',  plugins_url() . '/' . WPPA_NAME );			// http://...../wp-photo-album-plus
+define( 'WPPA_URL',  site_url() . '/wp-content/plugins/' . WPPA_NAME );			// http://...../wp-photo-album-plus	// plugins_url() does not supply https !!! WP bug
 
 define( 'WPPA_NONCE' , 'wppa-update-check');
 

@@ -2,7 +2,7 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 5.2.20
+* version 5.2.21
 *
 */
 
@@ -61,7 +61,7 @@ global $wppa_initruntimetime;
 			'out' 						=> '',
 			'auto_colwidth' 			=> false,
 			'permalink' 				=> '',
-			'randseed' 					=> isset ( $_REQUEST['wppa-randseed'] ) ? $_REQUEST['wppa-randseed'] : time() % '4711',
+			'randseed' 					=> wppa_get_randseed(),
 			'rendering_enabled' 		=> false,
 			'tabcount' 					=> '0',
 			'comment_id' 				=> '',
@@ -118,7 +118,11 @@ global $wppa_initruntimetime;
 			'is_cat'					=> false,
 			'bestof' 					=> false,
 			'is_subsearch' 				=> false,
-			'is_rootsearch' 			=> false
+			'is_rootsearch' 			=> false,
+			'is_superviewbox' 			=> false,
+			'is_searchbox'				=> false,
+			'may_sub'					=> false,
+			'may_root'					=> false
 
 		);
 	}
@@ -156,6 +160,7 @@ global $wppa_initruntimetime;
 						'wppa_bwidth' 					=> '',	// 5
 						'wppa_bradius' 					=> '',	// 6
 						'wppa_box_spacing'				=> '',	// 7
+						'wppa_pagelinks_max' 			=> '',
 						// B Fullsize
 						'wppa_fullsize' 				=> '',	// 1
 						'wppa_maxheight' 				=> '',	// 2
@@ -330,6 +335,8 @@ global $wppa_initruntimetime;
 						'wppa_bcolor_even' 				=> '',
 						'wppa_bgcolor_alt' 				=> '',
 						'wppa_bcolor_alt' 				=> '',
+						'wppa_bgcolor_thumbnail' 		=> '',
+					//	'wppa_bcolor_thumbnail'			=> '',
 						'wppa_bgcolor_nav' 				=> '',
 						'wppa_bcolor_nav' 				=> '',
 						'wppa_bgcolor_namedesc' 		=> '',
@@ -358,6 +365,11 @@ global $wppa_initruntimetime;
 						'wppa_bcolor_multitag'			=> '',
 						'wppa_bgcolor_tagcloud'			=> '',
 						'wppa_bcolor_tagcloud'			=> '',
+						'wppa_bgcolor_superview'		=> '',
+						'wppa_bcolor_superview'			=> '',
+						'wppa_bgcolor_search'			=> '',
+						'wppa_bcolor_search'			=> '',
+
 						'wppa_bgcolor_bestof'			=> '',
 						'wppa_bcolor_bestof'			=> '',
 
@@ -374,6 +386,8 @@ global $wppa_initruntimetime;
 						'wppa_auto_page_type'			=> '',
 						'wppa_auto_page_links'			=> '',
 						'wppa_defer_javascript' 		=> '',
+						'wppa_inline_css' 				=> '',
+						'wppa_custom_style' 			=> '',
 
 
 						// B Full size and Slideshow
@@ -445,6 +459,7 @@ global $wppa_initruntimetime;
 						'wppa_ovl_slide' 				=> '',
 						'wppa_ovl_chrome_at_top' 		=> '',
 						'wppa_lightbox_global'			=> '',
+						'wppa_lightbox_global_set' 		=> '',
 
 
 						// Table V: Fonts
@@ -858,6 +873,14 @@ global $wppa_initruntimetime;
 	}
 		
 	$wppa_initruntimetime += microtime(true);
+}
+
+function wppa_get_randseed() {
+
+	if ( isset( $_REQUEST['wppa-randseed'] ) ) $randseed = $_REQUEST['wppa-randseed'];
+	elseif ( isset( $_REQUEST['randseed'] ) ) $randseed = $_REQUEST['randseed'];
+	else $randseed = time() % '4711';
+	return $randseed;
 }
 
 function wppa_set_options($value, $key) {
@@ -1532,7 +1555,16 @@ global $wppa_opt;
 		imagealphablending($dst, false);
 		imagesavealpha($dst, true);
 	}
-
+	// Fill with the required color
+	$c = strtolower( $wppa_opt['wppa_bgcolor_thumbnail'] );
+	if ( $c != '#000000' ) {
+		$r = substr( $c, 1, 2 );
+		$g = substr( $c, 3, 2 );
+		$b = substr( $c, 5, 2 );
+		$color = imagecolorallocate($dst, '0x'.$r, '0x'.$g, '0x'.$b);
+		imagefilledrectangle($dst, 0, 0, $dst_size_w, $dst_size_h, $color);
+	}
+	
 	// Switch on what we have to do
 	switch ($type) {
 		case 'none':	// Use aspect from fullsize image
@@ -2232,6 +2264,13 @@ global $cache_path;
 	if ( function_exists('w3tc_pgcache_flush') ) {
 		w3tc_pgcache_flush();
 	}
+	// SG_CachePress
+	/*
+	if ( class_exists('SG_CachePress_Supercacher') ) {
+		$c = new SG_CachePress_Supercacher();
+		@ $c->purge_cache();
+	}
+	*/
 	
 	if ( $force ) { 	// At a setup or update operation
 		if ( is_dir(ABSPATH.'wp-content/cache/') ) {

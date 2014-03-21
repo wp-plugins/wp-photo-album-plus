@@ -1,14 +1,222 @@
 <?php
 /* wppa-styles.php
-* Package: wp-photo-album-plus
-*
-* Various style computation routines
-* Version 5.2.14
-*
+/* Package: wp-photo-album-plus
+/*
+/* Various style computation routines
+/* Version 5.2.21
+/*
 */
 
 if ( ! defined( 'ABSPATH' ) )
     die( "Can't load this file directly" );
+
+// Create dynamic css file
+// This function creates the dynamic css file with styles that depend on the settings.
+// Any updates to this routine must also be implemented in __wcs()
+function wppa_create_wppa_dynamic_css() {
+global $wppa_opt;
+global $wppa_dynamic_css_data;
+
+	$header = 
+'/* -- WPPA+ css
+/*
+/* Dynamicly Created on '.date('c').'
+/*
+*/
+';	
+
+	$content = '
+.wppa-box {
+	'.( $wppa_opt['wppa_bwidth'] > '0' ? 'border-style: solid; border-width:'.$wppa_opt['wppa_bwidth'].'px; ' : '' ).'
+	'.( $wppa_opt['wppa_bradius'] > '0' ? 'border-radius:'.$wppa_opt['wppa_bradius'].'px; -moz-border-radius:'.$wppa_opt['wppa_bradius'].'px; -khtml-border-radius:'.$wppa_opt['wppa_bradius'].'px; -webkit-border-radius:'.$wppa_opt['wppa_bradius'].'px; ' : '' ).'
+	'.( $wppa_opt['wppa_box_spacing'] ? 'margin-bottom:'.$wppa_opt['wppa_box_spacing'].'px; ' : '' ).'
+}';
+
+	$content .= '
+.wppa-mini-box {
+	'.( $wppa_opt['wppa_bwidth'] > '0' ? 'border-style: solid; border-width:'.floor( ( $wppa_opt['wppa_bwidth'] + 2 ) / 3 ).'px; ' : '' ).'
+	'.( $wppa_opt['wppa_bradius'] > '0' ? 'border-radius:'.floor(($wppa_opt['wppa_bradius'] + 2) / 3).'px; -moz-border-radius:'.floor(($wppa_opt['wppa_bradius'] + 2) / 3).'px; -khtml-border-radius:'.floor(($wppa_opt['wppa_bradius'] + 2) / 3).'px; -webkit-border-radius:'.floor(($wppa_opt['wppa_bradius'] + 2) / 3).'px; ' : '' ).'
+}';
+
+	$content .= '
+.wppa-box-text {
+	'.( $wppa_opt['wppa_fontcolor_box'] ? 'color:'.$wppa_opt['wppa_fontcolor_box'].'; ' : '' ).'
+}
+.wppa-box-text, .wppa-box-text-nocolor {
+	'.( $wppa_opt['wppa_fontfamily_box'] ? 'font-family:'.$wppa_opt['wppa_fontfamily_box'].'; ' : '' ).'
+	'.( $wppa_opt['wppa_fontsize_box'] ? 'font-size:'.$wppa_opt['wppa_fontsize_box'].'px; ' : '' ).'
+	'.( $wppa_opt['wppa_fontweight_box'] ? 'font-weight:'.$wppa_opt['wppa_fontweight_box'].'; ' : '' ).'
+}';
+
+	$content .= '
+.wppa-thumb-text {
+	'.( $wppa_opt['wppa_fontfamily_thumb'] ? 'font-family:'.$wppa_opt['wppa_fontfamily_thumb'].'; ' : '' ).'
+	'.( $wppa_opt['wppa_fontsize_thumb'] ? 'font-size:'.$wppa_opt['wppa_fontsize_thumb'].'px; line-height:'.floor( $wppa_opt['wppa_fontsize_thumb'] * 1.29 ).'px; ' : '' ).'
+	'.( $wppa_opt['wppa_fontcolor_thumb'] ? 'color:'.$wppa_opt['wppa_fontcolor_thumb'].'; ' : '' ).'
+	'.( $wppa_opt['wppa_fontweight_thumb'] ? 'font-weight:'.$wppa_opt['wppa_fontweight_thumb'].'; ' : '' ).'
+}';
+
+	$content .= '
+.wppa-comments {
+	'.( $wppa_opt['wppa_bgcolor_com'] ? 'background-color:'.$wppa_opt['wppa_bgcolor_com'].'; ' : '' ).'
+	'.( $wppa_opt['wppa_bcolor_com'] ? 'border-color:'.$wppa_opt['wppa_bcolor_com'].'; ' : '' ).'
+}';
+
+	$content .= '
+.wppa-iptc {
+	'.( $wppa_opt['wppa_bgcolor_iptc'] ? 'background-color:'.$wppa_opt['wppa_bgcolor_iptc'].'; ' : '' ).'
+	'.( $wppa_opt['wppa_bcolor_iptc'] ? 'border-color:'.$wppa_opt['wppa_bcolor_iptc'].'; ' : '' ).'
+}';
+
+	$content .= '
+.wppa-exif {
+	'.( $wppa_opt['wppa_bgcolor_exif'] ? 'background-color:'.$wppa_opt['wppa_bgcolor_exif'].'; ' : '' ).'
+	'.( $wppa_opt['wppa_bcolor_exif'] ? 'border-color:'.$wppa_opt['wppa_bcolor_exif'].'; ' : '' ).'
+}';
+
+	$content .= '
+.wppa-share {
+	'.( $wppa_opt['wppa_bgcolor_share'] ? 'background-color:'.$wppa_opt['wppa_bgcolor_share'].'; ' : '' ).'
+	'.( $wppa_opt['wppa_bcolor_share'] ? 'border-color:'.$wppa_opt['wppa_bcolor_share'].'; ' : '' ).'
+}';
+
+	$content .= '
+.wppa-name-desc {
+	'.( $wppa_opt['wppa_bgcolor_namedesc'] ? 'background-color:'.$wppa_opt['wppa_bgcolor_namedesc'].'; ' : '' ).'
+	'.( $wppa_opt['wppa_bcolor_namedesc'] ? 'border-color:'.$wppa_opt['wppa_bcolor_namedesc'].'; ' : '' ).'
+}';
+
+	$content .= '
+.wppa-nav {
+	'.( $wppa_opt['wppa_bgcolor_nav'] ? 'background-color:'.$wppa_opt['wppa_bgcolor_nav'].'; ' : '' ).'
+	'.( $wppa_opt['wppa_bcolor_nav'] ? 'border-color:'.$wppa_opt['wppa_bcolor_nav'].'; ' : '' ).'
+}';
+
+	$content .= '
+.wppa-nav-text {
+	'.( $wppa_opt['wppa_fontfamily_nav'] ? 'font-family:'.$wppa_opt['wppa_fontfamily_nav'].'; ' : '' ).'
+	'.( $wppa_opt['wppa_fontsize_nav'] ? 'font-size:'.$wppa_opt['wppa_fontsize_nav'].'px; ' : '' ).'
+	'.( $wppa_opt['wppa_fontcolor_nav'] ? 'color:'.$wppa_opt['wppa_fontcolor_nav'].'; ' : '' ).'
+	'.( $wppa_opt['wppa_fontweight_nav'] ? 'font-weight:'.$wppa_opt['wppa_fontweight_nav'].'; ' : '' ).'
+}';
+
+	$content .= '
+.wppa-even {
+	'.( $wppa_opt['wppa_bgcolor_even'] ? 'background-color:'.$wppa_opt['wppa_bgcolor_even'].'; ' : '' ).'
+	'.( $wppa_opt['wppa_bcolor_even'] ? 'border-color:'.$wppa_opt['wppa_bcolor_even'].'; ' : '' ).'
+}';
+
+	$content .= '
+.wppa-alt {
+	'.( $wppa_opt['wppa_bgcolor_alt'] ? 'background-color:'.$wppa_opt['wppa_bgcolor_alt'].'; ' : '' ).'
+	'.( $wppa_opt['wppa_bcolor_alt'] ? 'border-color:'.$wppa_opt['wppa_bcolor_alt'].'; ' : '').'
+}';
+
+	$content .= '
+.wppa-img {
+	'.( $wppa_opt['wppa_bgcolor_img'] ? 'background-color:'.$wppa_opt['wppa_bgcolor_img'].'; ' : '' ).'
+}';
+
+	$content .= '
+.wppa-title {
+	'.( $wppa_opt['wppa_fontfamily_title'] ? 'font-family:'.$wppa_opt['wppa_fontfamily_title'].'; ' : '' ).'
+	'.( $wppa_opt['wppa_fontsize_title'] ? 'font-size:'.$wppa_opt['wppa_fontsize_title'].'px; ' : '' ).'
+	'.( $wppa_opt['wppa_fontcolor_title'] ? 'color:'.$wppa_opt['wppa_fontcolor_title'].'; ' : '' ).'
+	'.( $wppa_opt['wppa_fontweight_title'] ? 'font-weight:'.$wppa_opt['wppa_fontweight_title'].'; ' : '' ).'
+}';
+
+	$content .= '
+.wppa-fulldesc {
+	'.( $wppa_opt['wppa_fontfamily_fulldesc'] ? 'font-family:'.$wppa_opt['wppa_fontfamily_fulldesc'].'; ' : '' ).'
+	'.( $wppa_opt['wppa_fontsize_fulldesc'] ? 'font-size:'.$wppa_opt['wppa_fontsize_fulldesc'].'px; ' : '' ).'
+	'.( $wppa_opt['wppa_fontcolor_fulldesc'] ? 'color:'.$wppa_opt['wppa_fontcolor_fulldesc'].'; ' : '' ).'
+	'.( $wppa_opt['wppa_fontweight_fulldesc'] ? 'font-weight:'.$wppa_opt['wppa_fontweight_fulldesc'].'; ' : '' ).'
+}';
+
+	$content .= '
+.wppa-fulltitle {
+	'.( $wppa_opt['wppa_fontfamily_fulltitle'] ? 'font-family:'.$wppa_opt['wppa_fontfamily_fulltitle'].'; ' : '' ).'
+	'.( $wppa_opt['wppa_fontsize_fulltitle'] ? 'font-size:'.$wppa_opt['wppa_fontsize_fulltitle'].'px; ' : '' ).'
+	'.( $wppa_opt['wppa_fontcolor_fulltitle'] ? 'color:'.$wppa_opt['wppa_fontcolor_fulltitle'].'; ' : '' ).'
+	'.( $wppa_opt['wppa_fontweight_fulltitle'] ? 'font-weight:'.$wppa_opt['wppa_fontweight_fulltitle'].'; ' : '' ).'
+}';
+
+	$content .= '
+.wppa-custom {
+	'.( $wppa_opt['wppa_bgcolor_cus'] ? 'background-color:'.$wppa_opt['wppa_bgcolor_cus'].'; ' : '' ).'
+	'.( $wppa_opt['wppa_bcolor_cus'] ? 'border-color:'.$wppa_opt['wppa_bcolor_cus'].'; ' : '' ).'
+}';
+
+	$content .= '
+.wppa-upload {
+	'.( $wppa_opt['wppa_bgcolor_upload'] ? 'background-color:'.$wppa_opt['wppa_bgcolor_upload'].'; ' : '' ).'
+	'.( $wppa_opt['wppa_bcolor_upload'] ? 'border-color:'.$wppa_opt['wppa_bcolor_upload'].'; ' : '' ).'
+}';
+
+	$content .= '
+.wppa-multitag {
+	'.( $wppa_opt['wppa_bgcolor_multitag'] ? 'background-color:'.$wppa_opt['wppa_bgcolor_multitag'].'; ' : '' ).'
+	'.( $wppa_opt['wppa_bcolor_multitag'] ? 'border-color:'.$wppa_opt['wppa_bcolor_multitag'].'; ' : '' ).'
+}';
+
+	$content .= '
+.wppa-bestof {
+	'.( $wppa_opt['wppa_bgcolor_bestof'] ? 'background-color:'.$wppa_opt['wppa_bgcolor_bestof'].'; ' : '' ).'
+	'.( $wppa_opt['wppa_bcolor_bestof'] ? 'border-color:'.$wppa_opt['wppa_bcolor_bestof'].'; ' : '' ).'
+}';
+
+	$content .= '
+.wppa-tagcloud {
+	'.( $wppa_opt['wppa_bgcolor_tagcloud'] ? 'background-color:'.$wppa_opt['wppa_bgcolor_tagcloud'].'; ' : '' ).'
+	'.( $wppa_opt['wppa_bcolor_tagcloud'] ? 'border-color:'.$wppa_opt['wppa_bcolor_tagcloud'].'; ' : '' ).'
+}';
+
+	$content .= '
+.wppa-superview {
+	'.( $wppa_opt['wppa_bgcolor_superview'] ? 'background-color:'.$wppa_opt['wppa_bgcolor_superview'].'; ' : '' ).'
+	'.( $wppa_opt['wppa_bcolor_superview'] ? 'border-color:'.$wppa_opt['wppa_bcolor_superview'].'; ' : '' ).'
+}';
+
+	$content .= '
+.wppa-search {
+	'.( $wppa_opt['wppa_bgcolor_search'] ? 'background-color:'.$wppa_opt['wppa_bgcolor_search'].'; ' : '' ).'
+	'.( $wppa_opt['wppa_bcolor_search'] ? 'border-color:'.$wppa_opt['wppa_bcolor_search'].'; ' : '' ).'
+}';
+
+	$content .= '
+.wppa-arrow {
+	'.( $wppa_opt['wppa_arrow_color'] ? 'color:'.$wppa_opt['wppa_arrow_color'].'; ' : '' ).'
+}';
+
+	$content .= $wppa_opt['wppa_custom_style'];
+
+	// Open file
+	$file = @ fopen ( WPPA_PATH.'/wppa-dynamic.css', 'wb' );
+	if ( $file ) {
+		// Minify
+		$content = str_replace( ' ', '', $content );
+		$content = str_replace( "\t", '', $content );
+		$content = str_replace( "\n", '', $content );
+		$content = str_replace( '.', "\n.", $content );
+		$content = str_replace( '*/', "*/\n", $content );
+		$content = str_replace( ",\n", ',', $content );
+		// Write file
+		fwrite ( $file, $header.$content );
+		// Close file
+		fclose ( $file );
+		$wppa_dynamic_css_data = '';
+	}
+	else {
+		$wppa_dynamic_css_data = 
+'<style type="text/css">
+/* Warning: file wppa-dynamic.css could not be created */
+/* The content is therefor output here */
+
+'.$content.'
+</style>
+';
+	}
+}
 
 // get full img style
 function wppa_get_fullimgstyle($id = '') {
@@ -319,12 +527,25 @@ global $wppa_opt;
 	return $result;
 }
 
-function __wcs($class = '', $nocolor = '') {
+// This function is used to either provide inline styles or hide them, dependant of the wppa_inline_css switch.
+// Styles should be passed as is. They must be independatnt of settings, and appear in the standard wppa-styles.css file
+function __wis( $style ) {
+	if ( ! wppa_switch( 'wppa_inline_css' ) ) return '';	// No inline styles
+	else return $style;
+}
+
+// This function returns styles dependant of settings or hides them, dependant of the wppa_inline_css switch. 
+// The class is passed and the corresponding inline styles are returned.
+// Any updates to this routine must also be implemented in wppa_create_wppa_dynamic_css()
+function __wcs( $class = '' ) {
 global $wppa_opt;
 global $wppa;
 
+	if ( ! wppa_switch( 'wppa_inline_css' ) ) return '';	// No inline styles
+	
 	$opt = '';
 	$result = '';
+	
 	switch ($class) {
 		case 'wppa-box':
 			$opt = $wppa_opt['wppa_bwidth'];
@@ -366,12 +587,13 @@ global $wppa;
 			if ($opt != '') $result .= 'font-weight:'.$opt.'; ';
 			break;
 		case 'wppa-box-text':
+			$opt = $wppa_opt['wppa_fontcolor_box'];
+			if ( $opt != '' ) $result .= 'color:'.$opt.'; ';
+		case 'wppa-box-text-nocolor':
 			$opt = $wppa_opt['wppa_fontfamily_box'];
 			if ($opt != '') $result .= 'font-family:'.$opt.'; ';
 			$opt = $wppa_opt['wppa_fontsize_box'];
 			if ($opt != '') $result .= 'font-size:'.$opt.'px; ';
-			$opt = $wppa_opt['wppa_fontcolor_box'];
-			if ($opt != '' && $nocolor != 'nocolor') $result .= 'color:'.$opt.'; ';
 			$opt = $wppa_opt['wppa_fontweight_box'];
 			if ($opt != '') $result .= 'font-weight:'.$opt.'; ';
 			break;
@@ -495,6 +717,18 @@ global $wppa;
 			$opt = $wppa_opt['wppa_bgcolor_tagcloud'];
 			if ($opt) $result .= 'background-color:'.$opt.'; ';
 			$opt = $wppa_opt['wppa_bcolor_tagcloud'];
+			if ($opt) $result .= 'border-color:'.$opt.'; ';
+			break;
+		case 'wppa-superview':
+			$opt = $wppa_opt['wppa_bgcolor_superview'];
+			if ($opt) $result .= 'background-color:'.$opt.'; ';
+			$opt = $wppa_opt['wppa_bcolor_superview'];
+			if ($opt) $result .= 'border-color:'.$opt.'; ';
+			break;
+		case 'wppa-search':
+			$opt = $wppa_opt['wppa_bgcolor_search'];
+			if ($opt) $result .= 'background-color:'.$opt.'; ';
+			$opt = $wppa_opt['wppa_bcolor_search'];
 			if ($opt) $result .= 'border-color:'.$opt.'; ';
 			break;
 		case 'wppa-black':

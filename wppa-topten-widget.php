@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the top rated photos
-* Version 5.2.11
+* Version 5.2.21
 */
 
 class TopTenWidget extends WP_Widget {
@@ -32,7 +32,8 @@ class TopTenWidget extends WP_Widget {
 														'display' => 'thumbs',
 														'meanrat' => 'yes',
 														'ratcount' => 'yes',
-														'viewcount' => 'yes'
+														'viewcount' => 'yes',
+														'includesubs' => 'yes'
 														) );
  		$widget_title 	= apply_filters('widget_title', $instance['title'] );
 		$page 			= wppa_get_the_landing_page('wppa_topten_widget_linkpage', __a('Top Ten Photos'));
@@ -53,9 +54,15 @@ class TopTenWidget extends WP_Widget {
 		$meanrat		= $instance['meanrat'] == 'yes';
 		$ratcount 		= $instance['ratcount'] == 'yes';
 		$viewcount 		= $instance['viewcount'] == 'yes';
-
-		if ($album) {
-			$thumbs = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM `".WPPA_PHOTOS."` WHERE `album` = %s ORDER BY " . $sortby . " LIMIT " . $max, $album ), ARRAY_A );
+		$includesubs 	= $instance['includesubs'] == 'yes';
+		$albenum 		= '';
+		
+		if ( $album ) {
+			if ( $includesubs ) {
+				$albenum = wppa_alb_to_enum_children( $album );
+				$album = str_replace( '.', ',', $albenum );
+			}
+			$thumbs = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM `".WPPA_PHOTOS."` WHERE `album` IN (".$album.") ORDER BY " . $sortby . " LIMIT " . $max, $album ), ARRAY_A );
 		}
 		else {
 			$thumbs = $wpdb->get_results( "SELECT * FROM `".WPPA_PHOTOS."` ORDER BY " . $sortby . " LIMIT " . $max, ARRAY_A );
@@ -84,7 +91,9 @@ class TopTenWidget extends WP_Widget {
 			if ( $image ) {
 				$no_album = !$album;
 				if ($no_album) $tit = __a('View the top rated photos', 'wppa_theme'); else $tit = esc_attr(wppa_qtrans(stripslashes($image['description'])));
-				$link       = wppa_get_imglnk_a('topten', $image['id'], '', $tit, '', $no_album);
+				$compressed_albumenum = wppa_compress_enum( $albenum );
+//echo 'Opajaap debug msg='.$compressed_albumenum;
+				$link       = wppa_get_imglnk_a('topten', $image['id'], '', $tit, '', $no_album, $compressed_albumenum );
 				$file       = wppa_get_thumb_path($image['id']);
 				$imgstyle_a = wppa_get_imgstyle_a($file, $maxw, 'center', 'ttthumb');
 				$imgurl 	= wppa_get_thumb_url($image['id'], '', $imgstyle_a['width'], $imgstyle_a['height']);
@@ -153,13 +162,14 @@ class TopTenWidget extends WP_Widget {
     /** @see WP_Widget::update */
     function update($new_instance, $old_instance) {				
 		$instance = $old_instance;
-		$instance['title'] 		= strip_tags($new_instance['title']);
-		$instance['album'] 		= $new_instance['album'];
-		$instance['sortby'] 	= $new_instance['sortby'];
-		$instance['display'] 	= $new_instance['display'];
-		$instance['meanrat']	= $new_instance['meanrat'];
-		$instance['ratcount'] 	= $new_instance['ratcount'];
-		$instance['viewcount'] 	= $new_instance['viewcount'];
+		$instance['title'] 			= strip_tags($new_instance['title']);
+		$instance['album'] 			= $new_instance['album'];
+		$instance['sortby'] 		= $new_instance['sortby'];
+		$instance['display'] 		= $new_instance['display'];
+		$instance['meanrat']		= $new_instance['meanrat'];
+		$instance['ratcount'] 		= $new_instance['ratcount'];
+		$instance['viewcount'] 		= $new_instance['viewcount'];
+		$instance['includesubs'] 	= $new_instance['includesubs'];
 		
         return $instance;
     }
@@ -175,7 +185,8 @@ class TopTenWidget extends WP_Widget {
 														'display' => 'thumbs',							
 														'meanrat' => 'yes',
 														'ratcount' => 'yes',
-														'viewcount' => 'yes'
+														'viewcount' => 'yes',
+														'includesubs' => 'yes'
 
 														) );
  		$widget_title 	= apply_filters('widget_title', $instance['title']);
@@ -185,6 +196,7 @@ class TopTenWidget extends WP_Widget {
 		$meanrat		= $instance['meanrat'];
 		$ratcount 		= $instance['ratcount'];
 		$viewcount 		= $instance['viewcount'];
+		$includesubs 	= $instance['includesubs'];
 
 ?>
 		<p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:', 'wppa'); ?></label> 
@@ -214,6 +226,13 @@ class TopTenWidget extends WP_Widget {
 			</select>
 		</p>
 		
+		<p><label for="<?php echo $this->get_field_id('includesubs'); ?>"><?php _e('Include sub albums:', 'wppa'); ?></label>
+			<select id="<?php echo $this->get_field_id('includesubs'); ?>" name="<?php echo $this->get_field_name('includesubs'); ?>" >
+				<option value="yes" <?php if ( $includesubs == 'yes' ) echo 'selected="selected"' ?>><?php _e('yes', 'wppa') ?></option>
+				<option value="no" <?php if ( $includesubs == 'no' ) echo 'selected="selected"' ?>><?php _e('no', 'wppa') ?></option>
+			</select>
+		</p>
+		
 		<p><label ><?php _e('Subtitle:', 'wppa'); ?></label>
 			<br /><?php _e('Mean rating:', 'wppa'); ?>
 			<select id="<?php echo $this->get_field_id('meanrat'); ?>" name="<?php echo $this->get_field_name('meanrat'); ?>" >
@@ -239,4 +258,4 @@ class TopTenWidget extends WP_Widget {
 } // class TopTenWidget
 
 // register TopTenWidget widget
-if (get_option('wppa_rating_on', 'yes') == 'yes') add_action('widgets_init', create_function('', 'return register_widget("TopTenWidget");'));
+add_action('widgets_init', create_function('', 'return register_widget("TopTenWidget");'));

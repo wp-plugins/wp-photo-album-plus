@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 5.2.20
+* Version 5.2.21
 *
 */
 
@@ -542,6 +542,13 @@ global $no_default;
 							$slug = 'wppa_related_count';
 							$html = wppa_input($slug, '40px', '', __('photos', 'wppa'));
 							wppa_setting($slug, '8', $name, $desc, $html, $help);
+							
+							$name = __('Max Pagelinks', 'wppa');
+							$desc = __('The maximum number of pagelinks to be displayed.', 'wppa');
+							$help = '';
+							$slug = 'wppa_pagelinks_max';
+							$html = wppa_input($slug, '40px', '', __('photos', 'wppa'));
+							wppa_setting($slug, '9', $name, $desc, $html, $help);
 							}
 							wppa_setting_subheader( 'B', '1', __( 'Slideshow related size settings', 'wppa' ) );
 							{
@@ -1987,6 +1994,17 @@ global $no_default;
 							$html = array($html1, $html2);
 							wppa_setting($slug, '2', $name, $desc, $html, $help);
 
+							$name = __('Thumbnail padding', 'wppa');
+							$desc = __('Thumbnail padding color if thumbnail aspect is a padded setting.', 'wppa');
+							$help = esc_js(__('Enter valid CSS color hexadecimal like #000000 for black or #ffffff for white for the padded thumbnails.', 'wppa'));
+							$slug1 = 'wppa_bgcolor_thumbnail';
+							$slug2 = '';
+							$slug = array($slug1, $slug2);
+							$html1 = wppa_input($slug1, '100px', '', '', "checkColor('".$slug1."')") . '</td><td>' . wppa_color_box($slug1);
+							$html2 = '</td><td>';//wppa_input($slug2, '100px', '', '', "checkColor('".$slug2."')") . '</td><td>' . wppa_color_box($slug2);
+							$html = array($html1, $html2);
+							wppa_setting($slug, '3.1', $name, $desc, $html, $help);
+							
 							$name = __('Img', 'wppa');
 							$desc = __('Cover Photos and popups.', 'wppa');
 							$help = esc_js(__('Enter valid CSS colors for Cover photo and popup backgrounds and borders.', 'wppa'));
@@ -1996,7 +2014,7 @@ global $no_default;
 							$html1 = wppa_input($slug1, '100px', '', '', "checkColor('".$slug1."')") . '</td><td>' . wppa_color_box($slug1);
 							$html2 = wppa_input($slug2, '100px', '', '', "checkColor('".$slug2."')") . '</td><td>' . wppa_color_box($slug2);
 							$html = array($html1, $html2);
-							wppa_setting($slug, '3', $name, $desc, $html, $help);
+							wppa_setting($slug, '3.2', $name, $desc, $html, $help);
 							
 							$name = __('Upload', 'wppa');
 							$desc = __('Upload box background.', 'wppa');
@@ -2031,6 +2049,28 @@ global $no_default;
 							$html = array($html1, $html2);
 							wppa_setting($slug, '6', $name, $desc, $html, $help);
 
+							$name = __('Superview', 'wppa');
+							$desc = __('Superview box background.', 'wppa');
+							$help = esc_js(__('Enter valid CSS colors for superview box backgrounds and borders.', 'wppa'));
+							$slug1 = 'wppa_bgcolor_superview';
+							$slug2 = 'wppa_bcolor_superview';
+							$slug = array($slug1, $slug2);
+							$html1 = wppa_input($slug1, '100px', '', '', "checkColor('".$slug1."')") . '</td><td>' . wppa_color_box($slug1);
+							$html2 = wppa_input($slug2, '100px', '', '', "checkColor('".$slug2."')") . '</td><td>' . wppa_color_box($slug2);
+							$html = array($html1, $html2);
+							wppa_setting($slug, '7', $name, $desc, $html, $help);
+
+							$name = __('Search', 'wppa');
+							$desc = __('Search box background.', 'wppa');
+							$help = esc_js(__('Enter valid CSS colors for search box backgrounds and borders.', 'wppa'));
+							$slug1 = 'wppa_bgcolor_search';
+							$slug2 = 'wppa_bcolor_search';
+							$slug = array($slug1, $slug2);
+							$html1 = wppa_input($slug1, '100px', '', '', "checkColor('".$slug1."')") . '</td><td>' . wppa_color_box($slug1);
+							$html2 = wppa_input($slug2, '100px', '', '', "checkColor('".$slug2."')") . '</td><td>' . wppa_color_box($slug2);
+							$html = array($html1, $html2);
+							wppa_setting($slug, '8', $name, $desc, $html, $help);
+
 							$name = __('BestOf', 'wppa');
 							$desc = __('BestOf box background.', 'wppa');
 							$help = esc_js(__('Enter valid CSS colors for bestof box backgrounds and borders.', 'wppa'));
@@ -2040,7 +2080,7 @@ global $no_default;
 							$html1 = wppa_input($slug1, '100px', '', '', "checkColor('".$slug1."')") . '</td><td>' . wppa_color_box($slug1);
 							$html2 = wppa_input($slug2, '100px', '', '', "checkColor('".$slug2."')") . '</td><td>' . wppa_color_box($slug2);
 							$html = array($html1, $html2);
-							wppa_setting($slug, '7', $name, $desc, $html, $help);
+							wppa_setting($slug, '9', $name, $desc, $html, $help);
 							}
 							?>
 						</tbody>
@@ -2176,11 +2216,25 @@ global $no_default;
 							wppa_setting($slug, '7.2', $name, $desc, $html, $help, $class);
 							
 							$name = __('Defer javascript', 'wppa');
-							$desc = __('<span style="color:red;">Experimental</span> put javascript near the end of the page.', 'wppa');
-							$help = esc_js(__('May fix layout problems and broken slideshows.', 'wppa'));
+							$desc = __('<span style="color:red;">Experimental</span> Put javascript near the end of the page.', 'wppa');
+							$help = esc_js(__('If checkd: May fix layout problems and broken slideshows. May speed up or slow down page appearing.', 'wppa'));
 							$slug = 'wppa_defer_javascript';
 							$html = wppa_checkbox($slug);
 							wppa_setting($slug, '8', $name, $desc, $html, $help);
+							
+							$name = __('Inline styles', 'wppa');
+							$desc = __('<span style="color:red;">Experimental</span> Set style specifications inline.', 'wppa');
+							$help = esc_js(__('If checked: May fix layout problems, but slows down page appearing.', 'wppa'));
+							$slug = 'wppa_inline_css';
+							$html = wppa_checkbox($slug);
+							wppa_setting($slug, '9', $name, $desc, $html, $help);
+							
+							$name = __('Custom style', 'wppa');
+							$desc = __('Enter custom style specs here.', 'wppa');
+							$help = '';
+							$slug = 'wppa_custom_style';
+							$html = wppa_textarea($slug, $name);
+							wppa_setting($slug, '10', $name, $desc, $html, $help);
 							}
 							wppa_setting_subheader( 'B', '1', __( 'Slideshow related settings', 'wppa' ) );
 							{
@@ -2856,6 +2910,13 @@ global $no_default;
 							$slug = 'wppa_lightbox_global';
 							$html = wppa_checkbox($slug);
 							wppa_setting($slug, '5', $name, $desc, $html, $help);
+
+							$name = __('WPPA+ Lightbox global is a set', 'wppa');
+							$desc = __('Treat the other images as a set.', 'wppa');
+							$help = esc_js(__('If checked, you can scroll through the images in the lightbox view. Requires item 5 to be checked.', 'wppa'));
+							$slug = 'wppa_lightbox_global_set';
+							$html = wppa_checkbox($slug);
+							wppa_setting($slug, '5.1', $name, $desc, $html, $help);
 							}
 							?>
 						</tbody>

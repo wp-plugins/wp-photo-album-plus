@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the search widget
-* Version 5.1.15
+* Version 5.2.21
 *
 */
 
@@ -34,46 +34,9 @@ class SearchPhotos extends WP_Widget {
 		echo $before_widget;
 			
 		if ( ! empty( $widget_title ) ) { echo $before_title . $widget_title . $after_title; }
-		
-		$page = wppa_get_the_landing_page('wppa_search_linkpage', __a('Photo search results'));
 
-//		$page = $wppa_opt['wppa_search_linkpage'];
-//		$iret = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `" . $wpdb->posts . "` WHERE `post_type` = 'page' AND `post_status` = 'publish' AND `ID` = %s", $page));
-//		if ( ! $iret ) $page = '0';	// Page vanished
-		if ( $page == '0' ) {
-			echo __a('Please select a search results landing page in Table IX-C1');
-		}
-		else {
-			$pagelink = wppa_dbg_url(get_page_link($page));
-			
-			$cansubsearch  	= $instance['sub'] && isset ( $_SESSION['wppa_session']['use_searchstring'] ) && ! empty ( $_SESSION['wppa_session']['use_searchstring'] );
-			$subboxset 		= isset ( $_SESSION['wppa_session']['subbox'] ) && $_SESSION['wppa_session']['subbox'] ? 'checked="checked"' : '';
-			$canrootsearch 	= $instance['root'] && ( wppa_switch('wppa_allow_ajax') || ( isset ( $_SESSION['wppa_session']['search_root'] ) && ! empty ( $_SESSION['wppa_session']['search_root'] ) ) );
-			$rootboxset 	= isset ( $_SESSION['wppa_session']['rootbox'] ) && $_SESSION['wppa_session']['rootbox'] ? 'checked="checked"' : '';
-
-			$value = $cansubsearch ? '' : wppa_test_for_search();
-?>
-			<form id="wppa_searchform" action="<?php echo($pagelink) ?>" method="post" class="widget_search">
-				<div>
-					<?php echo $instance['label'] ?>
-					<?php 
-						if ( $cansubsearch ) {
-							echo '<small>'.$_SESSION['wppa_session']['display_searchstring'].'<br /></small>';
-						}
-					?>
-					<input type="text" name="wppa-searchstring" id="wppa_s-<?php echo $wppa['master_occur']?>" value="<?php echo $value ?>" />
-					<input id="wppa_searchsubmit" type="submit" name="wppa-search-submit" value="<?php _e('Search', 'wppa'); ?>" onclick="if ( document.getElementById('wppa_s-<?php echo $wppa['master_occur']?>').value == '' ) return false;" />
-					<?php if ( $canrootsearch ) { ?>
-						<div style="font-size: 9px;" ><input type="checkbox" name="wppa-rootsearch" <?php echo $rootboxset ?>/> <?php echo __a('Search in current section') ?></div>
-					<?php } ?>
-					<?php if ( $cansubsearch ) { ?>
-						<div style="font-size: 9px;" ><input type="checkbox" name="wppa-subsearch" <?php echo $subboxset ?>/> <?php echo __a('Search in current results') ?></div>
-					<?php } ?>
-				</div>
-			</form>
-<?php
-		}
-		
+		echo wppa_get_search_html( $instance['label'], $instance['sub'], $instance['root'] );
+	
 		echo $after_widget;
     }
 	

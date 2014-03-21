@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains low-level utility routines
-* Version 5.2.19
+* Version 5.2.21
 *
 */
  
@@ -480,7 +480,12 @@ global $thumb;
 
 function wppa_switch($key) {
 global $wppa_opt;
-	return $wppa_opt[$key] === true || $wppa_opt[$key] == 'yes';
+	if ( is_array( $wppa_opt ) && isset( $wppa_opt[$key] ) ) {
+		return $wppa_opt[$key] === true || $wppa_opt[$key] == 'yes';
+	}
+	else {
+		return ( get_option( $key, 'no' ) == 'yes' );
+	}
 }
 
 function wppa_add_paths($albums) {
@@ -667,12 +672,13 @@ function wppa_update_option($option, $value) {
 	update_option($option, $value);
 	delete_option('wppa_cached_options');
 	delete_option('wppa_cached_options_admin');
-	$files = glob( WPPA_PATH.'/wppa.init.*.js' );
+	$files = glob( WPPA_PATH.'/wppa-init.*.js' );
 	if ( $files ) {
 		foreach ( $files as $file ) {
 			unlink ( $file );
 		}
 	}
+	@ unlink ( WPPA_PATH.'/wppa-dynamic.css' );
 }
 
 function wppa_album_exists($id) {
@@ -1263,6 +1269,7 @@ function wppa_sanitize_tags($value, $keepsemi = false) {
 	return $value;
 }
 
+// Does the same as wppa_index_string_to_array() but with format validation and error reporting
 function wppa_series_to_array($xtxt) {
 	$txt = str_replace(' ', '', $xtxt);					// Remove spaces
 	if ( strpos($txt, '.') === false ) return false;	// Not an enum/series, the only legal way to return false
@@ -1840,4 +1847,41 @@ function wppa_has_children($alb) {
 global $wpdb;
 
 	return $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `".WPPA_ALBUMS."` WHERE `a_parent` = %s", $alb) );
+}
+
+function wppa_alb_to_enum_children( $alb ) {
+	$result = _wppa_alb_to_enum_children( $alb );
+	if ( strpos( $result, '.' ) !== false ) {
+		$result = explode( '.', $result );
+		sort( $result, SORT_NUMERIC );
+		$result = implode( '.', $result );
+	}
+	return $result;
+}
+
+function _wppa_alb_to_enum_children( $alb ) {
+global $wpdb;
+
+	$result = $alb;
+	$children = $wpdb->get_results( $wpdb->prepare( "SELECT `id` FROM `".WPPA_ALBUMS."` WHERE `a_parent` = %s", $alb ), ARRAY_A );
+	if ( $children ) foreach ( $children as $child ) {
+		$result .= '.'._wppa_alb_to_enum_children( $child['id'] );
+	}
+	return $result;
+}
+
+function wppa_compress_enum( $enum ) {
+	$result = $enum;
+	if ( strpos( $enum, '.' ) !== false ) {
+		$result = explode( '.', $enum );
+		sort( $result, SORT_NUMERIC );
+		$old = '-99';
+		foreach ( array_keys( $result ) as $key ) { 	// Remove dups
+			if ( $result[$key] == $old ) unset ( $result[$key] );
+			else $old = $result[$key];
+		}
+		$result = wppa_index_array_to_string( $result );
+		$result = str_replace( ',', '.', $result );
+	}
+	return $result;
 }

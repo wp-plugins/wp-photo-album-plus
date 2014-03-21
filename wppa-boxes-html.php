@@ -3,14 +3,14 @@
 * Package: wp-photo-album-plus
 *
 * Various wppa boxes
-* Version 5.2.17
+* Version 5.2.21
 *
 */
 
 if ( ! defined( 'ABSPATH' ) )
     die( "Can't load this file directly" );
 
-// The box conaining the thumbnails
+// The box containing the thumbnails
 function wppa_thumb_area($action) {
 global $wppa;
 global $wppa_alt;
@@ -18,10 +18,10 @@ global $album;
 
 	if ($action == 'open') {
 		if (is_feed()) {
-			$wppa['out'] .= wppa_nltab('+').'<div id="wppa-thumbarea-'.$wppa['master_occur'].'" style="clear: both: '.__wcs('wppa-box').__wcs('wppa-'.$wppa_alt).'">';
+			$wppa['out'] .= wppa_nltab('+').'<div id="wppa-thumb-area-'.$wppa['master_occur'].'" class="wppa-thumb-area" style="'.__wcs('wppa-box').__wcs('wppa-'.$wppa_alt).'" >';
 		}
 		else {
-			$wppa['out'] .= wppa_nltab('+').'<div id="wppa-thumbarea-'.$wppa['master_occur'].'" style="clear: both; '.__wcs('wppa-box').__wcs('wppa-'.$wppa_alt).'width: '.wppa_get_thumbnail_area_width().'px;" class="thumbnail-area thumbnail-area-'.$wppa['master_occur'].' wppa-box wppa-'.$wppa_alt.'" >';
+			$wppa['out'] .= wppa_nltab('+').'<div id="wppa-thumb-area-'.$wppa['master_occur'].'" class="wppa-thumb-area wppa-thumb-area-'.$wppa['master_occur'].' wppa-box wppa-'.$wppa_alt.'" style="'.__wcs('wppa-box').__wcs('wppa-'.$wppa_alt).'width: '.wppa_get_thumbnail_area_width().'px;" >';
 			if ( is_array($album) ) wppa_bump_viewcount('album', $album['id']);
 		}		
 		if ($wppa_alt == 'even') $wppa_alt = 'alt'; else $wppa_alt = 'even';
@@ -31,13 +31,114 @@ global $album;
 			wppa_user_create_html($wppa['current_album'], wppa_get_container_width('netto'), 'thumb');
 			wppa_user_upload_html($wppa['current_album'], wppa_get_container_width('netto'), 'thumb');
 		}
-		$wppa['out'] .= wppa_nltab().'<div style="clear:both;"></div>';		
+		$wppa['out'] .= wppa_nltab().'<div class="wppa-clear" style="'.__wis('clear:both;').'" ></div>';		
 
-		$wppa['out'] .= wppa_nltab('-').'</div><!-- wppa-thumbarea-'.$wppa['master_occur'].' -->';
+		$wppa['out'] .= wppa_nltab('-').'</div><!-- wppa-thumb-area-'.$wppa['master_occur'].' -->';
 	}
 	else {
 		$wppa['out'] .= wppa_nltab().'<span style="color:red;">Error, wppa_thumb_area() called with wrong argument: '.$action.'. Possible values: \'open\' or \'close\'</span>';
 	}
+}
+
+// Search box
+function wppa_search_box(  ) {
+global $wppa;
+
+	if ( is_feed() ) return;
+	
+	wppa_container('open');
+	$wppa['out'] .= wppa_nltab('+').'<div id="wppa-search-'.$wppa['master_occur'].'" class="wppa-box wppa-search" style="'.__wcs('wppa-box').__wcs('wppa-search').'">';
+		$wppa['out'] .= wppa_get_search_html( '', $wppa['may_sub'], $wppa['may_root'] );
+	$wppa['out'] .= wppa_nltab('-').'<div class="wppa-clear" style="'.__wis('clear:both;').'" ></div></div>';
+	wppa_container('close');
+}
+
+// Get search html
+function wppa_get_search_html( $label = '', $sub = false, $root = false ) {
+global $wppa;
+
+	$page 			= wppa_get_the_landing_page('wppa_search_linkpage', __a('Photo search results'));
+	$pagelink 		= wppa_dbg_url(get_page_link($page));
+	$cansubsearch  	= $sub && isset ( $_SESSION['wppa_session']['use_searchstring'] ) && ! empty ( $_SESSION['wppa_session']['use_searchstring'] );
+	$subboxset 		= isset ( $_SESSION['wppa_session']['subbox'] ) && $_SESSION['wppa_session']['subbox'] ? 'checked="checked"' : '';
+	$canrootsearch 	= $root && ( wppa_switch('wppa_allow_ajax') || ( isset ( $_SESSION['wppa_session']['search_root'] ) && ! empty ( $_SESSION['wppa_session']['search_root'] ) ) );
+	$rootboxset 	= isset ( $_SESSION['wppa_session']['rootbox'] ) && $_SESSION['wppa_session']['rootbox'] ? 'checked="checked"' : '';
+	$value 			= $cansubsearch ? '' : wppa_test_for_search();
+
+	$fontsize = $wppa['in_widget'] ? 'font-size: 9px;' : '';
+	$result = '
+	<form id="wppa_searchform_'.$wppa['master_occur'].'" action="'.$pagelink.'" method="post" class="widget_search" >
+		<div>
+			'.$label;
+			if ( $cansubsearch ) {
+				$result .= '<small>'.$_SESSION['wppa_session']['display_searchstring'].'<br /></small>';
+			}
+			$result .= '
+			<input type="text" name="wppa-searchstring" id="wppa_s-'.$wppa['master_occur'].'" value="'.$value.'" />
+			<input id="wppa_searchsubmit-'.$wppa['master_occur'].'" type="submit" name="wppa-search-submit" value="'.__a('Search').'" onclick="if ( document.getElementById(\'wppa_s-'.$wppa['master_occur'].'\').value == \'\' ) return false;" />';
+			if ( $canrootsearch ) { 
+				$result .= '<div style="'.$fontsize.'" ><input type="checkbox" name="wppa-rootsearch" '.$rootboxset.'/> '.__a('Search in current section').'</div>';
+			}
+			if ( $cansubsearch ) {
+				$result .= '<div style="'.$fontsize.'" ><input type="checkbox" name="wppa-subsearch" '.$subboxset.'/> '.__a('Search in current results').'</div>';
+			} 
+			$result .= '
+		</div>
+	</form>';
+
+	return $result;
+}
+
+// Superview box
+function wppa_superview_box( $album_root = '0', $sort = true ) {
+global $wppa;
+
+	if ( is_feed() ) return;
+	
+	wppa_container('open');
+	$wppa['out'] .= wppa_nltab('+').'<div id="wppa-superview-'.$wppa['master_occur'].'" class="wppa-box wppa-superview" style="'.__wcs('wppa-box').__wcs('wppa-superview').'">';
+		$wppa['out'] .= wppa_get_superview_html( $album_root, $sort );
+	$wppa['out'] .= wppa_nltab('-').'<div class="wppa-clear" style="'.__wis('clear:both;').'" ></div></div>';
+	wppa_container('close');
+}
+
+// Get superview html
+function wppa_get_superview_html( $album_root = '0', $sort = true ) {
+global $wppa;
+
+	$page = wppa_get_the_landing_page('wppa_super_view_linkpage', __a('Super View Photos'));
+	$url = get_permalink($page);
+
+	if ( ! isset ( $_SESSION['wppa_session'] ) ) $_SESSION['wppa_session'] = array();
+	if ( ! isset ( $_SESSION['wppa_session']['superview'] ) ) {
+		$_SESSION['wppa_session']['superview'] = 'thumbs';
+		$_SESSION['wppa_session']['superalbum'] = '0';
+	}
+
+	$checked = 'checked="checked"';
+			
+	$result = '
+	<div>
+		<form action="'.$url.'" method = "get">
+			<label>'.__('Album:', 'wppa').'</label><br />
+			<select name="wppa-album">
+				'.wppa_album_select_a( array( 	'selected' 			=> $_SESSION['wppa_session']['superalbum'], 
+												'addpleaseselect' 	=> true, 
+												'root' 				=> $album_root, 
+												'content' 			=> true,
+												'sort'				=> $sort,
+												'path' 				=> ( ! $wppa['in_widget'] )
+												) ).'
+			</select><br />
+			<input type="radio" name="wppa-slide" value="nil" '.( $_SESSION['wppa_session']['superview'] == 'thumbs' ? $checked : '' ).'>'.__('Thumbnails', 'wppa').'<br />
+			<input type="radio" name="wppa-slide" value="1" '.( $_SESSION['wppa_session']['superview'] == 'slide' ? $checked : '' ).'>'.__('Slideshow', 'wppa').'<br />
+			<input type="hidden" name="wppa-occur" value="1" />
+			<input type="hidden" name="wppa-superview" value="1" />
+			<input type="submit" value="'.__('Show!', 'wppa').'" />
+		</form>
+	</div>
+	';
+	return $result;
 }
 
 // The tagcloud box
@@ -49,7 +150,7 @@ global $wppa;
 	wppa_container('open');
 	$wppa['out'] .= wppa_nltab('+').'<div id="wppa-tagcloud-'.$wppa['master_occur'].'" class="wppa-box wppa-tagcloud" style="'.__wcs('wppa-box').__wcs('wppa-tagcloud').'">';
 		$wppa['out'] .= wppa_get_tagcloud_html($seltags, $minsize, $maxsize);
-	$wppa['out'] .= wppa_nltab('-').'<div style="clear:both;"></div></div>';
+	$wppa['out'] .= wppa_nltab('-').'<div class="wppa-clear" style="'.__wis('clear:both;').'" ></div></div>';
 	wppa_container('close');
 }
 
@@ -104,7 +205,7 @@ global $wppa;
 	wppa_container('open');
 	$wppa['out'] .= wppa_nltab('+').'<div id="wppa-multitag-'.$wppa['master_occur'].'" class="wppa-box wppa-multitag" style="'.__wcs('wppa-box').__wcs('wppa-multitag').'">';
 		$wppa['out'] .= wppa_get_multitag_html($nperline, $seltags);
-	$wppa['out'] .= wppa_nltab('-').'<div style="clear:both;"></div></div>';
+	$wppa['out'] .= wppa_nltab('-').'<div class="wppa-clear" style="'.__wis('clear:both;').'" ></div></div>';
 	wppa_container('close');
 }
 
@@ -177,7 +278,7 @@ global $wppa;
 
 	if ( $tags ) {
 	
-		$result .= '<table>';
+		$result .= '<table class="wppa-multitag-table">';
 		
 		if ( ! $or_only ) {
 			$result .= '<tr><td><input class="radio" name="andor-'.$wppa['master_occur'].'" value="and" id="andorand-'.$wppa['master_occur'].'" type="radio" ';
@@ -202,7 +303,7 @@ global $wppa;
 				if ( is_array($querystringtags) ) {
 					$checked = in_array($tag['tag'], $querystringtags) ? 'checked="checked" ' : '';
 				}
-				$result .= '<td style="padding-right:4px;" ><input type="checkbox" id="wppa'.$tag['tag'].'" '.$checked.'/>&nbsp;'.$tag['tag'].'</td>';
+				$result .= '<td style="'.__wis('padding-right:4px;').'" ><input type="checkbox" id="wppa'.$tag['tag'].'" '.$checked.'/>&nbsp;'.$tag['tag'].'</td>';
 				$count++;
 				if ( $count % $nperline == '0' ) {
 					$result .= '</tr>';
@@ -417,7 +518,7 @@ global $wppa;
 	}
 	
 	wppa_container('open');
-	$wppa['out'] .= wppa_nltab('+').'<div id="wppa-upload-'.$wppa['master_occur'].'" class="wppa-box wppa-upload" style="'.__wcs('wppa-box').__wcs('wppa-upload').'">';
+	$wppa['out'] .= wppa_nltab('+').'<div id="wppa-upload-box-'.$wppa['master_occur'].'" class="wppa-box wppa-upload" style="'.__wcs('wppa-box').__wcs('wppa-upload').'">';
 		wppa_user_create_html($wppa['start_album'], wppa_get_container_width('netto'), 'uploadbox');
 		wppa_user_upload_html($wppa['start_album'], wppa_get_container_width('netto'), 'uploadbox');
 	$wppa['out'] .= wppa_nltab('-').'<div style="clear:both;"></div></div>';

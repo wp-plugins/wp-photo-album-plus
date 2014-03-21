@@ -1,7 +1,7 @@
 /* admin-scripts.js */
 /* Package: wp-photo-album-plus
 /*
-/* Version 5.2.20
+/* Version 5.2.21
 /* Various js routines used in admin pages		
 */
 
@@ -1483,6 +1483,7 @@ function wppaAjaxUpdateOptionValue(slug, elem) {
 		}
 		else {	// Ready
 			var str = wppaTrim(xmlhttp.responseText);
+//alert(str);
 			var ArrValues = str.split("||");
 
 			if (ArrValues[0] != '') {
@@ -1500,6 +1501,7 @@ function wppaAjaxUpdateOptionValue(slug, elem) {
 						break;
 					default:
 						document.getElementById('img_'+slug).src = wppaImageDirectory+'cross.png';
+						if ( ArrValues[3] != '' ) alert(ArrValues[3]);
 				}
 				document.getElementById('img_'+slug).title = ArrValues[2];
 			}

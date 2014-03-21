@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * get the albums via filter
-* version 5.2.17
+* version 5.2.21
 *
 */
 
@@ -362,6 +362,15 @@ global $wppa_opt;
 			$wppa['bestof'] = true;
 			$wppa['bestof_args'] = $xatts;
 			break;
+		case 'superview':
+			$wppa['is_superviewbox'] = true;
+			$wppa['start_album'] = $album;
+			break;
+		case 'search':
+			$wppa['is_searchbox'] = true;
+			$wppa['may_sub'] = isset( $xatts['sub'] ) && $xatts['sub'];
+			$wppa['may_root'] = isset( $xatts['root'] ) && $xatts['root'];
+			break;
 			
 		default:
 			wppa_dbg_msg ( 'Invalid type: '.$type.' in wppa shortcode.', 'red', 'force' );
@@ -408,17 +417,25 @@ global $wppa_opt;
 
 add_shortcode( 'wppa', 'wppa_shortcodes' );
 
-
-function wppa_lightbox_global($content) {
+// Add filter for the use of our lightbox implementation for non wppa+ images
+if ( wppa_switch( 'wppa_lightbox_global' ) ) {
+	add_filter( 'the_content', 'wppa_lightbox_global' );
+}
+function wppa_lightbox_global( $content ) {
 global $wppa_opt;
-global $post;
 
-	if ( wppa_switch('wppa_lightbox_global') && $wppa_opt['wppa_lightbox_name'] == 'wppa' ) {
-		$pattern ="/<a(.*?)href=('|\")(.*?).(bmp|gif|jpeg|jpg|png)('|\")(.*?)>/i";
-		$replacement = '<a$1href=$2$3.$4$5 rel="wppa[single]" style="'.' cursor:url('.wppa_get_imgdir().$wppa_opt['wppa_magnifier'].'),pointer;'.'"$6>';
-		$content = preg_replace($pattern, $replacement, $content);
+	if ( $wppa_opt['wppa_lightbox_name'] == 'wppa' ) {	// Our lightbox
+		if ( wppa_switch( 'wppa_lightbox_global_set' )  ) { // A set
+			$pattern ="/<a(.*?)href=('|\")(.*?).(bmp|gif|jpeg|jpg|png)('|\")(.*?)>/i";
+			$replacement = '<a$1href=$2$3.$4$5 rel="wppa[single]" style="'.' cursor:url('.wppa_get_imgdir().$wppa_opt['wppa_magnifier'].'),pointer;'.'"$6>';
+			$content = preg_replace($pattern, $replacement, $content);
+		}
+		else {	// Not a set
+			$pattern ="/<a(.*?)href=('|\")(.*?).(bmp|gif|jpeg|jpg|png)('|\")(.*?)>/i";
+			$replacement = '<a$1href=$2$3.$4$5 rel="wppa" style="'.' cursor:url('.wppa_get_imgdir().$wppa_opt['wppa_magnifier'].'),pointer;'.'"$6>';
+			$content = preg_replace($pattern, $replacement, $content);
+		}
 	}
 	return $content;
 }
 
-add_filter('the_content', 'wppa_lightbox_global');

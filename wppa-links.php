@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Frontend links
-* Version 5.2.17
+* Version 5.2.21
 *
 */
 
@@ -712,6 +712,9 @@ global $wppa_opt;
 	// Slideshow?
 	if ( $slide ) $extra_url .= '&amp;wppa-slide';
 	
+	// Add the random seed
+	$extra_url .= '&amp;wppa-randseed='.$wppa['randseed'];
+	
 	// Almost ready
 	$link_url .= $extra_url;
 	$ajax_url .= $extra_url;
@@ -719,9 +722,10 @@ global $wppa_opt;
 	// Adjust display range
 	$from = 1;
 	$to = $npages;
-	if ($npages > '7') {
-		$from = $curpage - '3';
-		$to = $curpage + 3;
+	if ( $npages > $wppa_opt['wppa_pagelinks_max'] ) {
+		$delta = floor( $wppa_opt['wppa_pagelinks_max'] / 2 );
+		$from = $curpage - $delta;
+		$to = $curpage + $delta;
 		while ($from < '1') {
 			$from++;
 			$to++;

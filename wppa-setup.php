@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 5.2.20
+* Version 5.2.21
 *
 */
 
@@ -473,6 +473,7 @@ Hide Camera info
 						'wppa_bwidth' 					=> '1',		// 5
 						'wppa_bradius' 					=> '6',		// 6
 						'wppa_box_spacing'				=> '8',		// 7
+						'wppa_pagelinks_max' 			=> '7',
 						// B Fullsize
 						'wppa_fullsize' 				=> '640',	// 1
 						'wppa_maxheight' 				=> '480',	// 2
@@ -647,6 +648,8 @@ Hide Camera info
 						'wppa_bcolor_even' 				=> '#cccccc',
 						'wppa_bgcolor_alt' 				=> '#dddddd',
 						'wppa_bcolor_alt' 				=> '#bbbbbb',
+						'wppa_bgcolor_thumbnail' 		=> '#000000',
+					//	'wppa_bcolor_thumbnail'			=> '#000000',
 						'wppa_bgcolor_nav' 				=> '#dddddd',
 						'wppa_bcolor_nav' 				=> '#bbbbbb',
 						'wppa_bgcolor_namedesc' 		=> '#dddddd',
@@ -675,6 +678,10 @@ Hide Camera info
 						'wppa_bcolor_multitag'			=> '#bbbbbb',
 						'wppa_bgcolor_tagcloud'			=> '#dddddd',
 						'wppa_bcolor_tagcloud'			=> '#bbbbbb',
+						'wppa_bgcolor_superview'		=> '#dddddd',
+						'wppa_bcolor_superview'			=> '#bbbbbb',
+						'wppa_bgcolor_search'			=> '#dddddd',
+						'wppa_bcolor_search'			=> '#bbbbbb',
 						'wppa_bgcolor_bestof'			=> '#dddddd',
 						'wppa_bcolor_bestof'			=> '#bbbbbb',
 
@@ -691,6 +698,8 @@ Hide Camera info
 						'wppa_auto_page_type'			=> 'photo',
 						'wppa_auto_page_links'			=> 'bottom',
 						'wppa_defer_javascript' 		=> 'no',
+						'wppa_inline_css' 				=> 'yes',
+						'wppa_custom_style' 			=> '',
 
 						// B Full size and Slideshow
 						'wppa_fullvalign' 				=> 'fit',
@@ -762,6 +771,7 @@ Hide Camera info
 						'wppa_ovl_slide'				=> '5000',
 						'wppa_ovl_chrome_at_top'		=> 'yes',
 						'wppa_lightbox_global'			=> 'no',
+						'wppa_lightbox_global_set'		=> 'no',
 						
 						// Table V: Fonts
 						'wppa_fontfamily_title' 	=> '',
