@@ -117,6 +117,7 @@
 .wppa-thumb-area {
 /*	padding: 7px 0 7px 7px; experimental */ 
 	position: relative;
+	clear: both;
 }
 
 /* Wrapper for thumbnail background */
