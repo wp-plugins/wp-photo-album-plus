@@ -293,6 +293,7 @@ global $wppa_opt;
 	switch ( $type ) {
 		case 'google-maps-gpx-viewer':
 			$geo = str_replace('w#lon', $lon, str_replace('w#lat', $lat, $wppa_opt['wppa_gpx_shortcode']));
+			$geo = str_replace('w#ip', $_SERVER['REMOTE_ADDR'], $geo);
 			$geo = do_shortcode($geo);
 			$wppa['geo'] .= '<div id="geodiv-'.$wppa['master_occur'].'-'.$id.'" style="display:none;">'.$geo.'</div>';
 			break;
