@@ -7,7 +7,7 @@
 *
 */
 
-if ( ! defined( 'ABSPATH' ) )
+if ( ! defined( 'WPPA_ABSPATH' ) )
     die( "Can't load this file directly" );
  
 class wppaGallery
@@ -55,6 +55,7 @@ global $wppa_api_version;
 		echo("\t".'wppaAjaxUrl = "'.admin_url('admin-ajax.php').'";'."\n");
 		echo("\t".'wppaThumbDirectory = "'.WPPA_UPLOAD_URL.'/thumbs/";'."\n");
 		echo("\t".'wppaTempDirectory = "'.WPPA_UPLOAD_URL.'/temp/";'."\n");
+		echo("\t".'wppaFontDirectory = "'.WPPA_UPLOAD_URL.'/fonts/";'."\n");
 		echo("\t".'wppaNoPreview = "'.__('No Preview available', 'wppa').'";'."\n");
 		echo("\t".'wppaVersion = "'.$wppa_api_version.'";'."\n");
 		echo("\t".'wppaSiteUrl = "'.site_url().'";'."\n");

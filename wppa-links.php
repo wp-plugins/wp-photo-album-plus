@@ -3,11 +3,11 @@
 * Package: wp-photo-album-plus
 *
 * Frontend links
-* Version 5.2.21
+* Version 5.3.0
 *
 */
 
-if ( ! defined( 'ABSPATH' ) )
+if ( ! defined( 'WPPA_ABSPATH' ) )
     die( "Can't load this file directly" );
 
 // get permalink plus ? or & and possible debug switch

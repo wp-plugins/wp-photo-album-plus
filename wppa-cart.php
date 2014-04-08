@@ -101,4 +101,4 @@ global $wppa;
 	return $output;
 }
 
-if ( get_option('wppa_use_scabn') == 'yes' ) add_shortcode('cart', 'wppa_add_to_cart');
+if ( get_option('wppa_use_scabn', 'no') == 'yes' ) add_shortcode('cart', 'wppa_add_to_cart');

@@ -77,6 +77,7 @@ function wppaInitSettings() {
 	wppaCheckCDN();
 	wppaCheckAutoPage();
 	wppaCheckGps();
+	wppaCheckFontPreview();
 	
 	var tab = new Array('O','I','II','III','IV','V','VI','VII','VIII','IX','X','XI','XII');
 	var sub = new Array('A','B','C','D','E','F','G','H','I','J','K');
@@ -157,11 +158,11 @@ function wppaCheckFotomoto() {
 
 function wppaCheckFontPreview() {
 	var font = document.getElementById('wppa_textual_watermark_font').value;
-	var src = wppaTempDirectory+'wmf'+font+'.png';
-	jQuery('#wm-font-preview').attr('src', src);
 	var type = document.getElementById('wppa_textual_watermark_type').value;
-		src = wppaTempDirectory+'wmf'+type+'.png';
-	jQuery('#wm-type-preview').attr('src', src);
+	var fsrc = wppaFontDirectory+'wmf'+font+'-'+type+'.png';
+	var tsrc = wppaFontDirectory+'wmf'+type+'-'+font+'.png';
+	jQuery('#wm-font-preview').attr('src', fsrc);
+	jQuery('#wm-type-preview').attr('src', tsrc);
 }
 
 /* Adjust visibility of selection radiobutton if fixed photo is chosen or not */				

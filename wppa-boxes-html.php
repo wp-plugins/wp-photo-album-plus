@@ -7,7 +7,7 @@
 *
 */
 
-if ( ! defined( 'ABSPATH' ) )
+if ( ! defined( 'WPPA_ABSPATH' ) )
     die( "Can't load this file directly" );
 
 // The box containing the thumbnails

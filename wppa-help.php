@@ -58,7 +58,7 @@ global $wppa_revno;
         <ol class="wppa-help-ol">
 		<?php $temp = wp_upload_dir();
 				$ud = $temp['basedir'];
-				$ud = str_replace(ABSPATH, '', $ud);
+				$ud = str_replace(WPPA_ABSPATH, '', $ud);
 				?>
 			<li><?php _e('Unzip and upload the wppa plugin folder to', 'wppa'); ?> <tt>...<?php echo str_replace(home_url(), '', plugins_url()) ?></tt></li>
 			<li><?php _e('Make sure that the folder', 'wppa'); ?> <tt>.../<?php echo $ud ?></tt> <?php _e('exists and is writable by the server (CHMOD 755)', 'wppa'); ?></li>

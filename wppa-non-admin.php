@@ -45,7 +45,7 @@ global $wppa_api_version;
 	wp_enqueue_style('wppa_style');
 	
 	// Dynamic css
-	if ( get_option( 'wppa_inline_css', 'yes' ) == 'no' ) {
+	if ( ! wppa_switch( 'wppa_inline_css' ) ) {
 		if ( ! file_exists( WPPA_PATH.'/wppa-dynamic.css' ) ) {
 			wppa_create_wppa_dynamic_css();
 			update_option( 'wppa_dynamic_css_version', get_option( 'wppa_dynamic_css_version', '0' ) + '1' );
@@ -145,6 +145,7 @@ function wppa_add_javascripts() {
 global $wppa_api_version;
 global $wppa_lang;
 global $wppa_js_page_data_file;
+global $wppa_opt;
 
 	$footer = ( wppa_switch( 'wppa_defer_javascript' ) );
 
@@ -176,9 +177,9 @@ global $wppa_js_page_data_file;
 		wp_enqueue_script( 'wppa', WPPA_URL.'/wppa.js', array('jquery'), $wppa_api_version, $footer );
 	}
 	// google maps
-	if ( get_option('wppa_gpx_implementation', 'nil') == 'wppa-plus-embedded' && strpos( get_option('wppa_custom_content' ), 'w#location' ) !== false) {
-		if ( get_option('wppa_map_apikey', false) ) {
-			wp_enqueue_script( 'wppa-geo', 'https://maps.googleapis.com/maps/api/js?key='.get_option('wppa_map_apikey').'&sensor=false', '', $wppa_api_version, $footer );
+	if ( $wppa_opt['wppa_gpx_implementation'] == 'wppa-plus-embedded' && strpos( $wppa_opt['wppa_custom_content'], 'w#location' ) !== false ) {
+		if ( $wppa_opt['wppa_map_apikey'] ) {
+			wp_enqueue_script( 'wppa-geo', 'https://maps.googleapis.com/maps/api/js?key='.$wppa_opt['wppa_map_apikey'].'&sensor=false', '', $wppa_api_version, $footer );
 		}
 		else {
 			wp_enqueue_script( 'wppa-geo', 'https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false', '', $wppa_api_version, $footer );
@@ -297,28 +298,27 @@ global $wpdb;
 }
 
 /* FACEBOOK COMMENTS */
+add_action('wp_footer', 'wppa_fbc_setup', 100);
+
 function wppa_fbc_setup() {
-	$wppa_app_id = '';
-	$wppa_lang = get_locale();
-	if ( ! $wppa_lang ) $wppa_lang = 'en_US';
-	?>
-<!-- Facebook Comments for WPPA+ -->
-<div id="fb-root"></div>
-<script>(function(d, s, id) {
-  var js, fjs = d.getElementsByTagName(s)[0];
-  if (d.getElementById(id)) return;
-  js = d.createElement(s); js.id = id;
-  js.src = "//connect.facebook.net/<?php echo $wppa_lang; ?>/all.js#xfbml=1&appId=<?php echo $wppa_app_id; ?>";
-  fjs.parentNode.insertBefore(js, fjs);
-}(document, 'script', 'facebook-jssdk'));
-</script>
-<?php 
-}
-if ( ( get_option('wppa_facebook_like') == 'yes' || get_option('wppa_facebook_comments') == 'yes' ) 
-	&& get_option('wppa_share_on') == 'yes' 
-	&& get_option('wppa_load_facebook_sdk') == 'yes' ) {
-		add_action('wp_footer', 'wppa_fbc_setup', 100);
+	if ( ( wppa_switch('wppa_facebook_like') || wppa_switch('wppa_facebook_comments') )	&& wppa_switch('wppa_share_on') && wppa_switch('wppa_load_facebook_sdk') ) {
+		$wppa_app_id = '';
+		$wppa_lang = get_locale();
+		if ( ! $wppa_lang ) $wppa_lang = 'en_US';
+		?>
+		<!-- Facebook Comments for WPPA+ -->
+		<div id="fb-root"></div>
+		<script>(function(d, s, id) {
+		  var js, fjs = d.getElementsByTagName(s)[0];
+		  if (d.getElementById(id)) return;
+		  js = d.createElement(s); js.id = id;
+		  js.src = "//connect.facebook.net/<?php echo $wppa_lang; ?>/all.js#xfbml=1&appId=<?php echo $wppa_app_id; ?>";
+		  fjs.parentNode.insertBefore(js, fjs);
+		}(document, 'script', 'facebook-jssdk'));
+		</script>
+	<?php 
 	}
+}
 
 /* CHECK REDIRECTION */
 add_action( 'init', 'wppa_redirect' );
@@ -327,7 +327,7 @@ function wppa_redirect() {
 	if ( ! isset($_ENV["SCRIPT_URI"]) ) return;
 	$uri = $_ENV["SCRIPT_URI"];
 	$wppapos = stripos($uri, '/wppaspec/');
-	if ( $wppapos && get_option('permalink_structure') && get_option('wppa_use_pretty_links') == 'yes' ) {
+	if ( $wppapos && get_option('permalink_structure') && wppa_switch('wppa_use_pretty_links') ) {
 		$newuri = wppa_convert_from_pretty($uri);
 		if ( $newuri == $uri ) return;
 		// Although the searchstring is urlencoded it is damaged by wp_redirect when it contains chars like ë, so in that case we do a header() call
@@ -562,8 +562,9 @@ global $wppa_init_js_data;
 add_action( 'init', 'wppa_set_shortcode_priority', 100 );
 
 function wppa_set_shortcode_priority() {
+global $wppa_opt;
 	
-	$newpri = get_option( 'wppa_shortcode_priority', '11' );
+	$newpri = $wppa_opt['wppa_shortcode_priority'];
 	if ( $newpri == '11' ) return;	// Default, do not change
 	
 	$oldpri = has_filter( 'the_content', 'do_shortcode' );

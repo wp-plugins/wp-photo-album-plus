@@ -6,73 +6,88 @@
 *
 */
 
-function wppa_create_textual_watermark_file( $arg, $pos = '', $xfont_name = '', $xtype = '' ) {
+function wppa_create_textual_watermark_file( $args ) {
 global $thumb;
 global $wppa_opt;
 
-	// We may have been called from wppa_get_water_file_and_pos() just to find the settings
-	// In this case there may be no reliable data in $thumb, we may return, the file is not needed.
-	if ( ! isset( $thumb['id'] ) && ! $xfont_name ) return false;
+	// See what we have
+	$args = wp_parse_args( (array) $args, array( 	'content' 		=> '---preview---', 
+													'pos' 			=> 'cencen',
+													'id'			=> '',
+													'font' 			=> $wppa_opt['wppa_textual_watermark_font'], 
+													'text' 			=> '', 
+													'style' 		=> $wppa_opt['wppa_textual_watermark_type'],
+													'filebasename' 	=> 'dummy',
+													'url' 			=> false,
+													'width'			=> '',
+													'height' 		=> '',
+													'transp' 		=> '0',
+													) );
 
-	// First cleanup a bit
-	wppa_delete_obsolete_tempfiles();
+	// We may have been called from wppa_get_water_file_and_pos() just to find the settings
+	// In this case there is no id given.
+	if ( ! $args['id'] && $args['content'] != '---preview---' ) return false;
 	
-	// Check the font
-	if ( $arg == '---preview---' ) {
+	if ( $args['id'] ) wppa_cache_thumb( $args['id'] );
+	
+	// Set special values in case of preview
+	if ( $args['content'] == '---preview---' ) {
 		$preview = true;
-		$font_name 		= $xfont_name;
-		$font_type 		= $font_name == 'system' ? 'system' : 'truetype';
-		$font_size 		= $font_type == 'system' ? 5 : 12;
-		$padding   		= 2;
-		$linespacing 	= 2;
+		$fontsize 		= $args['font'] == 'system' ? 5 : 12;
+		$padding   		= 6;
+		$linespacing 	= ceil( $fontsize * 2 / 3 );
 	}
 	else {
 		$preview = false;
-		$font_name 		= $wppa_opt['wppa_textual_watermark_font'];
-		$font_type 		= $font_name == 'system' ? 'system' : 'truetype';
-		$font_size 		= $font_type == 'system' ? 5 : $wppa_opt['wppa_textual_watermark_size'];
-		$padding   		= 5;
-		$linespacing 	= floor( $font_size / 4 );
+		$fontsize 		= $wppa_opt['wppa_textual_watermark_size'];
+		if ( $args['font'] == 'system' ) $fontsize = min( $fontsize, 5 );
+		$padding   		= 12;
+		$linespacing 	= ceil( $fontsize * 2 / 3 );
 	}
-	$font_file 		= $font_type == 'system' ? '' : WPPA_UPLOAD_PATH.'/fonts/'.$font_name.'.ttf';
+	
+	// Set font specific vars
+	$fontfile 			= $args['font'] == 'system' ? '' : WPPA_UPLOAD_PATH.'/fonts/'.$args['font'].'.ttf';
+	
+	// Output file
+	if ( $preview ) $filename 	= WPPA_UPLOAD_PATH.'/fonts/wmf'.$args['filebasename'].'.png';
+	else $filename 	= WPPA_UPLOAD_PATH.'/temp/wmf'.$args['filebasename'].'.png';
 
 	// Preprocess the text
-	$text = '';
-	switch ( $arg ) {
-		case '---preview---':
-			if ( $xtype ) {
-				$text = strtoupper(substr($xtype,0,1)).strtolower(substr($xtype,1));
-			}
-			else {
-				$text = strtoupper(substr($font_name,0,1)).strtolower(substr($font_name,1));
-			}
-			break;
-		case '---filename---':
-			$text = trim( $thumb['filename'] );
-			break;
-		case '---name---':
-			$text = trim( wppa_get_photo_name( $thumb['id'] ) );
-			break;
-		case '---description---':
-			$text = trim( strip_tags( wppa_get_photo_desc( $thumb['id'] ) ) );
-			break;
-		case '---predef---':
-			$text = $wppa_opt['wppa_textual_watermark_text'];
-			if ( $font_type != 'system' ) {
-				$text = str_replace( '(c)', '&copy;', $text );
-				$text = str_replace( '(R)', '&reg;', $text );
-			}
-			$text = html_entity_decode( $text );
-			$text = str_replace( 'w#site', get_bloginfo('url'), $text );
-			$text = str_replace( 'w#owner', $thumb['owner'], $text );
-			$text = str_replace( 'w#name', wppa_get_photo_name( $thumb['id'] ), $text );
-			$text = str_replace( 'w#filename', $thumb['filename'], $text );
-			$text = trim( $text );
-			break;
-			
-		default:
-			wppa_log( 'Error', 'Unimplemented arg '.$arg.' in wppa_create_textual_watermark_file()' );
-			return false;
+	if ( ! $args['text'] ) {
+		switch ( $args['content'] ) {
+			case '---preview---':
+				$text = strtoupper(substr($args['font'],0,1)).strtolower(substr($args['font'],1));
+				break;
+			case '---filename---':
+				$text = trim( $thumb['filename'] );
+				break;
+			case '---name---':
+				$text = trim( wppa_get_photo_name( $thumb['id'] ) );
+				break;
+			case '---description---':
+				$text = trim( strip_tags( wppa_strip_tags( wppa_get_photo_desc( $thumb['id'] ), 'style&script' ) ) );
+				break;
+			case '---predef---':
+				$text = $wppa_opt['wppa_textual_watermark_text'];
+				if ( $args['font'] != 'system' ) {
+					$text = str_replace( '(c)', '&copy;', $text );
+					$text = str_replace( '(R)', '&reg;', $text );
+				}
+				$text = html_entity_decode( $text );
+				$text = str_replace( 'w#site', get_bloginfo('url'), $text );
+				$text = str_replace( 'w#owner', $thumb['owner'], $text );
+				$text = str_replace( 'w#name', wppa_get_photo_name( $thumb['id'] ), $text );
+				$text = str_replace( 'w#filename', $thumb['filename'], $text );
+				$text = trim( $text );
+				break;
+				
+			default:
+				wppa_log( 'Error', 'Unimplemented arg '.$arg.' in wppa_create_textual_watermark_file()' );
+				return false;
+		}
+	}
+	else {
+		$text = $args['text'];
 	}
 
 	// Any text anyway?
@@ -85,23 +100,34 @@ global $wppa_opt;
 	$text 	= str_replace( "\n", '\n', $text );
 	$lines 	= explode( '\n', $text );
 	
+	// Trim and remove empty lines
+	$temp = $lines;
+	$lines = array();
+	foreach ( $temp as $line ) {
+		$line = trim( $line );
+		if ( $line ) $lines[] = $line;
+	}
+	
 	// Find pixel linelengths
 	foreach ( array_keys( $lines ) as $key ) {
 		$lines[$key] = trim( $lines[$key] );
-		if ( $font_type == 'system' ) {
-			$lengths[$key] = strlen( $lines[$key] ) * imagefontwidth( 5 );
+		if ( $args['font'] == 'system' ) {
+			$lengths[$key] = strlen( $lines[$key] ) * imagefontwidth( $fontsize );
 		}
 		else {
-			$temp = imagettfbbox ( $font_size , 0.0 , $font_file , $lines[$key] );
+			$temp = imagettfbbox ( $fontsize , 0.0 , $fontfile , $lines[$key] );
 			$lengths[$key] = $temp[2] - $temp[0];
 		}
 	}
 	$maxlen = wppa_array_max( $lengths );
 
 	// Find image width
+	if ( $args['width'] ) $image_width = $args['width']; else $image_width = '';
+	if ( $args['height'] ) $image_height = $args['height']; else $image_height = '';
+	
 	if ( $preview ) {
-		$image_width 	= 200;
-		$image_height 	= 50;
+		if ( ! $image_width ) $image_width = 2000;
+		if ( ! $image_height ) $image_height = 1000;
 	}
 	else {
 		$temp = getimagesize( wppa_get_photo_path( $thumb['id'] ) );
@@ -109,21 +135,21 @@ global $wppa_opt;
 			wppa_log( 'Error', 'Trying to apply a waterark on a non image file. Id = '.$thumb['id'] );
 			return false;	// not an image
 		}
-		$image_width 	= $temp[0];
-		$image_height 	= $temp[1];
+		if ( ! $image_width ) $image_width = $temp[0];
+		if ( ! $image_height ) $image_height = $temp[1];
 	}
 
 	// Find canvas size
 	$nlines 	= count( $lines );
-	if ( $font_type == 'system' ) {
-		$line_height 	= imagefontheight( 5 );
+	if ( $args['font'] == 'system' ) {
+		$lineheight 	= imagefontheight( $fontsize );
 	}
 	else {
-		$temp = imagettfbbox ( $font_size , 0.0 , $font_file , $lines[0] );
-		$line_height = $temp[3] - $temp[7];
+		$temp = imagettfbbox ( $fontsize , 0.0 , $fontfile , $lines[0] );
+		$lineheight = $temp[3] - $temp[7];
 	}
 	$canvas_width 	= wppa_array_max( $lengths ) + 4 * $padding;
-	$canvas_height 	= ( $line_height + $linespacing ) * count( $lines ) + $linespacing + 2 * $padding;
+	$canvas_height 	= ( $lineheight + $linespacing ) * count( $lines ) + 2 * $padding;
 
 	// Does it fit?
 	if ( $canvas_width > $image_width ) {
@@ -137,26 +163,15 @@ global $wppa_opt;
 
 	// Create canvas
 	$canvas 	= imagecreatetruecolor( $canvas_width, $canvas_height );
-	$bgcolor 	= imagecolorallocatealpha( $canvas, 0, 0, 0, 127 );	// Transparent
-	$white 		= imagecolorallocate( $canvas, 255, 255, 255 );
-	$black 		= imagecolorallocate( $canvas, 0, 0, 0 );
+	$bgcolor 	= imagecolorallocatealpha( $canvas,   0,   0,   0, 127 );	// Transparent
+	$white 		= imagecolorallocatealpha( $canvas, 255, 255, 255, $args['transp'] );
+	$black 		= imagecolorallocatealpha( $canvas,   0,   0,   0, $args['transp'] );
 
-	if ( $preview ) {
-		if ( $xtype ) {
-			$filename = WPPA_UPLOAD_PATH.'/temp/wmf'.$xtype.'.png';
-		}
-		else {
-			$filename = WPPA_UPLOAD_PATH.'/temp/wmf'.$font_name.'.png';
-		}
-	}
-	else {
-		$filename 	= WPPA_UPLOAD_PATH.'/temp/wmf'.$thumb['id'].'.png';
-	}
 	imagefill( $canvas, 0, 0, $bgcolor );
+//	imagerectangle( $canvas, 0, 0, $canvas_width-1, $canvas_height-1, $white);	// debug
 
 	// Define the text colors
-	$type 		= $xtype ? $xtype : $wppa_opt['wppa_textual_watermark_type'];
-	switch ( $type ) {
+	switch ( $args['style'] ) {
 		case 'tvstyle':
 		case 'whiteonblack':
 			$fg = $white;
@@ -179,39 +194,49 @@ global $wppa_opt;
 
 	// Plot the text
 	foreach ( array_keys( $lines ) as $lineno ) {
-		if ( strpos( $pos, 'lft' ) !== false ) $indent = 0;
-		elseif ( strpos( $pos, 'rht' ) !== false ) $indent = $maxlen - $lengths[$lineno];
+		if ( strpos( $args['pos'], 'lft' ) !== false ) $indent = 0;
+		elseif ( strpos( $args['pos'], 'rht' ) !== false ) $indent = $maxlen - $lengths[$lineno];
 		else $indent = floor( ( $maxlen - $lengths[$lineno] ) / 2 );
-		switch ( $type ) {
+		switch ( $args['style'] ) {
 			case 'tvstyle':
 			case 'utopia':
 				for ( $i=-1; $i<=1; $i++ ) {
 					for ( $j=-1; $j<=1; $j++ ) {
-						if ( $font_type == 'system' ) {
-							imagestring( $canvas, $font_size, 2 * $padding + $i + $indent, $padding + $lineno * ( $line_height + $linespacing ) + $j,  $lines[$lineno], $bg );
+						if ( $args['font'] == 'system' ) {
+							imagestring( $canvas, $fontsize, 2 * $padding + $i + $indent, $padding + $lineno * ( $lineheight + $linespacing ) + $j,  $lines[$lineno], $bg );
 						}
 						else {
-							imagettftext ( $canvas, $font_size, 0, 2 * $padding + $i + $indent, $padding + ( $lineno + 1 ) * $line_height + $lineno * $linespacing + $j, $bg, $font_file, $lines[$lineno] );
+							imagettftext ( $canvas, $fontsize, 0, 2 * $padding + $i + $indent, $padding + ( $lineno + 1 ) * $lineheight + $lineno * $linespacing + $j, $bg, $fontfile, $lines[$lineno] );
 						}
 					}
 				}
-				if ( $font_type == 'system' ) {
-					imagestring( $canvas, $font_size, 2 * $padding + $indent, $padding + $lineno * ( $line_height + $linespacing ),  $lines[$lineno], $fg );
+				if ( $args['font'] == 'system' ) {
+					imagestring( $canvas, $fontsize, 2 * $padding + $indent, $padding + $lineno * ( $lineheight + $linespacing ),  $lines[$lineno], $fg );
 				}
 				else {
-					imagettftext ( $canvas, $font_size, 0, 2 * $padding + $indent, $padding + ( $lineno + 1 ) * $line_height + $lineno * $linespacing, $fg, $font_file, $lines[$lineno] );
+					imagettftext ( $canvas, $fontsize, 0, 2 * $padding + $indent, $padding + ( $lineno + 1 ) * $lineheight + $lineno * $linespacing, $fg, $fontfile, $lines[$lineno] );
 				}
 				break;
 			case 'blackonwhite':
 			case 'whiteonblack':
 			case 'white':
-			case 'black':
-				imagefilledrectangle( $canvas, $padding + $indent, $lineno * ( $line_height + $linespacing ) + $padding, 3 * $padding + $indent + $lengths[$lineno], ( $lineno + 1 ) * ( $line_height + $linespacing ) + $padding + $linespacing, $bg );
-				if ( $font_type == 'system' ) {
-					imagestring( $canvas, $font_size, 2 * $padding + $indent, $padding + $lineno * ( $line_height + $linespacing ),  $lines[$lineno], $fg );
+			case 'black':	
+				$lft = $padding + $indent;
+				$rht = 3 * $padding + $indent + $lengths[$lineno];
+				$top = $lineno * ( $lineheight + $linespacing ) + $padding;
+				$bot = ( $lineno + 1 ) * ( $lineheight + $linespacing ) + $padding;
+				
+				imagefilledrectangle( $canvas, $lft, $top+1, $rht, $bot, $bg );
+//				imagerectangle( $canvas, $lft, $top, $rht, $bot, $fg );	// debug
+				
+				$top = $padding + $lineno * ( $lineheight + $linespacing ) + floor( $linespacing/2 );
+				$lft = 2 * $padding + $indent;
+				$bot = $padding + ( $lineno + 1 ) * ( $lineheight + $linespacing ) - ceil( $linespacing/2 );
+				if ( $args['font'] == 'system' ) {
+					imagestring( $canvas, $fontsize, $lft, $top,  $lines[$lineno], $fg );
 				}
 				else {
-					imagettftext ( $canvas, $font_size, 0, 2 * $padding + $indent, $padding + ( $lineno + 1 ) * $line_height + $lineno * $linespacing, $fg, $font_file, $lines[$lineno] );
+					imagettftext ( $canvas, $fontsize, 0, $lft, $bot-1, $fg, $fontfile, $lines[$lineno] );
 				}
 				break;
 		}
@@ -219,7 +244,7 @@ global $wppa_opt;
 	imagesavealpha( $canvas, true);
 	imagepng( $canvas, $filename );
 	imagedestroy( $canvas );
-	if ( $preview ) {
+	if ( $preview || $args['url'] ) {
 		$url = str_replace( WPPA_UPLOAD_PATH, WPPA_UPLOAD_URL, $filename );
 		return $url;
 	}
@@ -237,13 +262,14 @@ function wppa_array_max( $array ) {
 
 function wppa_get_water_file_and_pos() {
 global $wppa_opt;
+global $thumb;
 
 	$result['file'] = $wppa_opt['wppa_watermark_file'];	// default
 	$result['pos'] = $wppa_opt['wppa_watermark_pos'];	// default
 
 	$user = wppa_get_user();
 	
-	if ( get_option('wppa_watermark_user') == 'yes' || current_user_can('wppa_settings') ) {									// user overrule?
+	if ( wppa_switch('wppa_watermark_user') || current_user_can('wppa_settings') ) {									// user overrule?
 		if ( isset($_POST['wppa-watermark-file'] ) ) {
 			$result['file'] = $_POST['wppa-watermark-file'];
 			update_option('wppa_watermark_file_' . $user, $_POST['wppa-watermark-file']);
@@ -262,7 +288,8 @@ global $wppa_opt;
 	$result['select'] = $result['file'];
 
 	if ( substr( $result['file'], 0, 3 ) == '---' && $result['file'] != '--- none ---' ) {			// Special identifier, not a file
-		$result['file'] = wppa_create_textual_watermark_file( $result['file'], $result['pos'] );
+		if ( is_array( $thumb ) ) $id = $thumb['id']; else $id = '0';
+		$result['file'] = wppa_create_textual_watermark_file( array( 'content' => $result['file'], 'pos' => $result['pos'], 'id' => $id ) );
 	}
 	else {
 		$result['file'] = WPPA_UPLOAD_PATH . '/watermarks/' . $result['file'];
@@ -275,7 +302,7 @@ function wppa_add_watermark($file) {
 global $wppa_opt;
 
 	// Init
-	if ( get_option('wppa_watermark_on') != 'yes' ) return false;	// Watermarks off
+	if ( ! wppa_switch('wppa_watermark_on') ) return false;	// Watermarks off
 	
 	// Find the watermark file and location
 	$temp = wppa_get_water_file_and_pos();
@@ -437,7 +464,7 @@ global $wppa_opt;
 	
 	// Find current selection
 	$select = $wppa_opt['wppa_watermark_file'];	// default
-	if ( !$default && ( get_option('wppa_watermark_user') == 'yes' || current_user_can('wppa_settings') ) && get_option('wppa_watermark_file_' . $user, 'nil') !== 'nil' ) {
+	if ( ! $default && ( wppa_switch('wppa_watermark_user') || current_user_can('wppa_settings') ) && get_option('wppa_watermark_file_' . $user, 'nil') !== 'nil' ) {
 		$select = get_option('wppa_watermark_file_' . $user);
 	}
 	
@@ -477,7 +504,7 @@ global $wppa_opt;
 
 	// Find current selection
 	$select = $wppa_opt['wppa_watermark_pos'];	// default
-	if ( !$default && ( get_option('wppa_watermark_user') == 'yes' || current_user_can('wppa_settings') ) && get_option('wppa_watermark_pos_' . $user, 'nil') !== 'nil' ) {
+	if ( ! $default && ( wppa_switch('wppa_watermark_user') || current_user_can('wppa_settings') ) && get_option('wppa_watermark_pos_' . $user, 'nil') !== 'nil' ) {
 		$select = get_option('wppa_watermark_pos_' . $user);
 	}
 	

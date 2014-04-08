@@ -178,10 +178,12 @@ See for additional information: http://wppa.opajaap.nl/?page_id=1459
 = Bug Fixes =
 
 * You can now repeatedly do Remake Photofiles on an individual photo without the need to reload the page.
+* Empty albums that contain empty albums only will now be seen as empty and will therefor be hidden when Table II-E6 is checked.
 
 = New Features =
 
 * Text based watermarks, with dynamic text and the ability to upload new truetype fonts. See Table IX-F.
+* Watermark all photos. Table VIII-B9.
 
 = Other Changes =
 

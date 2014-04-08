@@ -481,12 +481,16 @@ global $thumb;
 
 function wppa_switch($key) {
 global $wppa_opt;
-	if ( is_array( $wppa_opt ) && isset( $wppa_opt[$key] ) ) {
-		return $wppa_opt[$key] === true || $wppa_opt[$key] == 'yes';
+	if ( is_array( $wppa_opt ) ) {
+		if ( isset( $wppa_opt[$key] ) ) {
+			if ( $wppa_opt[$key] == 'yes' ) return true;
+			elseif ( $wppa_opt[$key] == 'no' ) return false;
+			else wppa_dbg_msg('Error: $wppa_opt['.$key.'] is not a yes/no setting', 'red', 'force');
+		}
+		else wppa_dbg_msg('Error: $wppa_opt['.$key.'] is not a setting', 'red', 'force');
 	}
-	else {
-		return ( get_option( $key, 'no' ) == 'yes' );
-	}
+	else wppa_dbg_msg('Error: $wppa_opt[] is not initialized while testing '.$key, 'red', 'force');
+	return false;
 }
 
 function wppa_add_paths($albums) {
@@ -911,7 +915,7 @@ global $wppa_opt;
 	$timnow = microtime(true);
 	$laptim = $timnow - $wppa_starttime;
 
-	$maxwppatim = get_option('wppa_max_execution_time');
+	$maxwppatim = $wppa_opt['wppa_max_execution_time'];
 	$maxinitim = ini_get('max_execution_time');
 	
 	if ( $maxwppatim && $maxinitim ) $maxtim = min($maxwppatim, $maxinitim);
@@ -1043,7 +1047,7 @@ function wppa_strip_tags($text, $key = '') {
 	elseif ( $key == 'div' ) {
 		$text = preg_replace('@<div[^>]*?>.*?</div>@siu', ' ', $text );
 	}
-	elseif ( $key == 'script&style' ) {
+	elseif ( $key == 'script&style' || $key == 'style&script' ) {
 		$text = preg_replace(	array	(	'@<script[^>]*?>.*?</script>@siu',
 											'@<style[^>]*?>.*?</style>@siu'
 										),
@@ -1082,14 +1086,14 @@ function wppa_set_last_album($id = '') {
 
 // get last album
 function wppa_get_last_album() {
-    global $albumid;
+global $albumid;
     
-    if ( is_numeric($albumid) ) $result = $albumid;
+    if ( is_numeric( $albumid ) ) $result = $albumid;
     else {
 		$opt = 'wppa_last_album_used-'.wppa_get_user('login');
 		$result = get_option($opt, get_option('wppa_last_album_used', ''));
 	}
-    if ( !is_numeric($result) ) $result = '';
+    if ( !is_numeric( $result ) ) $result = '';
     else $albumid = $result;
 
 	return $result; 

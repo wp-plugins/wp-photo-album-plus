@@ -442,9 +442,6 @@ global $wppa;
 			// Correct the fact that this is a non-admin operation, if it is
 			if ( is_admin() ) {
 				require_once 'wppa-non-admin.php';
-				foreach(array_keys($wppa_opt) as $s) {
-					if ( $wppa_opt[$s] == 'no' ) $wppa_opt[$s] = false;
-				}
 			}
 			wppa_load_theme();
 			// Register geo shortcode if google-maps-gpx-vieuwer is on board. GPX does it in wp_head(), what is not done in an ajax call
@@ -1318,7 +1315,7 @@ global $wppa;
 				case 'wppa_i_downsize':
 					if ( $value == 'yes' ) { 
 						wppa_update_option('wppa_resize_on_upload', 'yes');
-						if ( get_option('wppa_resize_to') == '0' ) wppa_update_option('wppa_resize_to', '1024x768');
+						if ( $wppa_opt['wppa_resize_to'] == '0' ) wppa_update_option('wppa_resize_to', '1024x768');
 					}
 					if ( $value == 'no' ) {
 						wppa_update_option('wppa_resize_on_upload', 'no');
@@ -1333,13 +1330,8 @@ global $wppa;
 						wppa_update_option('wppa_upload_edit', 'yes');
 						wppa_update_option('wppa_upload_notify', 'yes');
 						wppa_update_option('wppa_grant_an_album', 'yes');
-						$grantparent = get_option('wppa_grant_parent');
+						$grantparent = $wppa_opt['wppa_grant_parent'];
 						if ( ! wppa_album_exists( $grantparent ) ) {
-//							$id = wppa_nextkey(WPPA_ALBUMS);
-//							$iret = $wpdb->query($wpdb->prepare("INSERT INTO `" . WPPA_ALBUMS . 
-//								"` (`id`, `name`, `description`, `a_order`, `a_parent`, `p_order_by`, `main_photo`, `cover_linktype`, `cover_linkpage`, `owner`, `timestamp`, `upload_limit`, `alt_thumbsize`, `default_tags`, `cover_type`, `suba_order_by`) ".
-//								" VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, '', '', '')", 
-//								$id, __('Members', 'wppa'), __('Parent of the member albums', 'wppa'), '0', '-1', '0', '0', 'content', '0', wppa_get_user(), time(), '0/0', '0') );
 							$id = wppa_create_album_entry( array( 'name' => __('Members', 'wppa'), 'description' => __('Parent of the member albums', 'wppa'), 'a_parent' => '-1', 'upload_limit' => '0/0' ) );
 							if ( $id ) {
 								wppa_index_add('album', $id);
@@ -1410,7 +1402,7 @@ global $wppa;
 					break;
 				case 'wppa_i_gpx':
 					if ( $value == 'yes' ) {
-						$custom_content = get_option( 'wppa_custom_content' );
+						$custom_content = $wppa_opt['wppa_custom_content'];
 						if ( strpos( $custom_content, 'w#location' ) === false ) {
 							$custom_content = $custom_content.' w#location';
 							wppa_update_option( 'wppa_custom_content', $custom_content );
@@ -1425,7 +1417,7 @@ global $wppa;
 					break;
 				case 'wppa_i_fotomoto':
 					if ( $value == 'yes' ) {
-						$custom_content = get_option( 'wppa_custom_content' );
+						$custom_content = $wppa_opt['wppa_custom_content'];
 						if ( strpos( $custom_content, 'w#fotomoto' ) === false ) {
 							$custom_content = 'w#fotomoto '.$custom_content;
 							wppa_update_option( 'wppa_custom_content', $custom_content );
@@ -1479,7 +1471,7 @@ global $wppa;
 				
 				case 'wppa_fotomoto_on':
 					if ( $value == 'yes' ) {
-						$custom_content = get_option( 'wppa_custom_content' );
+						$custom_content = $wppa_opt['wppa_custom_content'];
 						if ( strpos( $custom_content, 'w#fotomoto' ) === false ) {
 							$custom_content = 'w#fotomoto '.$custom_content;
 							wppa_update_option( 'wppa_custom_content', $custom_content );
@@ -1494,7 +1486,7 @@ global $wppa;
 					
 				case 'wppa_gpx_implementation':
 					if ( $value != 'none' ) {
-						$custom_content = get_option( 'wppa_custom_content' );
+						$custom_content = $wppa_opt['wppa_custom_content'];
 						if ( strpos( $custom_content, 'w#location' ) === false ) {
 							$custom_content = $custom_content.' w#location';
 							wppa_update_option( 'wppa_custom_content', $custom_content );

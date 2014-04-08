@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the upload/import pages and functions
-* Version 5.2.20
+* Version 5.3.0
 *
 */
 
@@ -424,16 +424,16 @@ if ( $wppa['ajax'] ) {
 		$source_type = get_option('wppa_import_source_type_'.$user, 'local');
 		if ( $source_type == 'local' ) {
 			$source      = get_option('wppa_import_source_'.$user, WPPA_DEPOT);
-			if ( ! $source || ! is_dir(ABSPATH . $source) ) {
+			if ( ! $source || ! is_dir(WPPA_ABSPATH . $source) ) {
 				$source = WPPA_DEPOT;
 				update_option('wppa_import_source_'.$user, WPPA_DEPOT);
 			}
-			$source_path = ABSPATH . $source;
+			$source_path = WPPA_ABSPATH . $source;
 			$source_url  = get_bloginfo('url') . '/' . $source;
 			// See if the current source is the 'home' directory
 			$is_depot 	= ( $source == WPPA_DEPOT );
 			// See if the current souce is a wp upload location or a wppa+ sourcefile location ( if so: no delete checkbox )
-			$is_sub_depot = ( substr($source, 0, strlen(WPPA_DEPOT) ) == WPPA_DEPOT ) && ( substr(ABSPATH.$source, 0, strlen($wppa_opt['wppa_source_dir'])) != $wppa_opt['wppa_source_dir'] );
+			$is_sub_depot = ( substr($source, 0, strlen(WPPA_DEPOT) ) == WPPA_DEPOT ) && ( substr(WPPA_ABSPATH.$source, 0, strlen($wppa_opt['wppa_source_dir'])) != $wppa_opt['wppa_source_dir'] );
 			// See what's in there
 			$files 		= wppa_get_import_files();
 			$zipcount 	= wppa_get_zipcount($files);
@@ -903,7 +903,7 @@ function wppa_get_import_files() {
 	// Dispatch on source type local/remote
 	elseif ( $source_type == 'local' ) {
 		$source 		= get_option('wppa_import_source_'.$user, WPPA_DEPOT);
-		$source_path 	= ABSPATH . $source;	// Filesystem
+		$source_path 	= WPPA_ABSPATH . $source;	// Filesystem
 		$files 			= glob($source_path . '/*');
 	}
 	else { // remote
@@ -1096,7 +1096,7 @@ global $wppa_opt;
 	$source_type = get_option('wppa_import_source_type_'.$user, 'local');
 	$source = get_option('wppa_import_source_'.$user, WPPA_DEPOT); // removed /$user
 
-	$depot = ABSPATH . $source;	// Filesystem
+	$depot = WPPA_ABSPATH . $source;	// Filesystem
 	$depoturl = get_bloginfo('wpurl').'/'.$source;	// url
 
 	// See what's in there

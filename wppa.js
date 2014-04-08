@@ -1319,6 +1319,8 @@ function _wppaDoAutocol(mocc) {
 		return;
 	}
 
+//	wppaConsoleLog('Cont-w = '+w);
+	
 	wppaColWidth[mocc] = w;
 	jQuery(".wppa-container-"+mocc).css('width',w);
 

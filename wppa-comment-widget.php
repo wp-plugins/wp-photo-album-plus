@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the recent commets on photos
-* Version 5.2.3
+* Version 5.3.0
 */
 
 class wppaCommentWidget extends WP_Widget {
@@ -118,4 +118,4 @@ class wppaCommentWidget extends WP_Widget {
 } // class wppaCommentWidget
 
 // register wppaCommentWidget widget only if comment system is enabled
-if (get_option('wppa_show_comments', 'yes') == 'yes') add_action('widgets_init', create_function('', 'return register_widget("wppaCommentWidget");'));
+add_action('widgets_init', create_function('', 'return register_widget("wppaCommentWidget");'));

@@ -3,15 +3,16 @@
 * Package: wp-photo-album-plus
 *
 * get the albums via filter
-* version 5.2.21
+* version 5.3.0
 *
 */
 
 add_action('init', 'wppa_do_filter');
 
 function wppa_do_filter() {
-	add_filter('the_content', 'wppa_albums_filter', get_option('wppa_filter_priority', '1001'));
-	add_filter('the_content', 'wppa_add_shortcode_to_post');
+global $wppa_opt;
+	add_filter( 'the_content', 'wppa_albums_filter', $wppa_opt['wppa_filter_priority'] );
+	add_filter( 'the_content', 'wppa_add_shortcode_to_post' );
 }
 
 function wppa_add_shortcode_to_post($post) {
@@ -418,24 +419,24 @@ global $wppa_opt;
 add_shortcode( 'wppa', 'wppa_shortcodes' );
 
 // Add filter for the use of our lightbox implementation for non wppa+ images
-if ( wppa_switch( 'wppa_lightbox_global' ) ) {
-	add_filter( 'the_content', 'wppa_lightbox_global' );
-}
+add_filter( 'the_content', 'wppa_lightbox_global' );
+
 function wppa_lightbox_global( $content ) {
 global $wppa_opt;
 
-	if ( $wppa_opt['wppa_lightbox_name'] == 'wppa' ) {	// Our lightbox
-		if ( wppa_switch( 'wppa_lightbox_global_set' )  ) { // A set
-			$pattern ="/<a(.*?)href=('|\")(.*?).(bmp|gif|jpeg|jpg|png)('|\")(.*?)>/i";
-			$replacement = '<a$1href=$2$3.$4$5 rel="wppa[single]" style="'.' cursor:url('.wppa_get_imgdir().$wppa_opt['wppa_magnifier'].'),pointer;'.'"$6>';
-			$content = preg_replace($pattern, $replacement, $content);
-		}
-		else {	// Not a set
-			$pattern ="/<a(.*?)href=('|\")(.*?).(bmp|gif|jpeg|jpg|png)('|\")(.*?)>/i";
-			$replacement = '<a$1href=$2$3.$4$5 rel="wppa" style="'.' cursor:url('.wppa_get_imgdir().$wppa_opt['wppa_magnifier'].'),pointer;'.'"$6>';
-			$content = preg_replace($pattern, $replacement, $content);
+	if ( wppa_switch( 'wppa_lightbox_global' ) ) {
+		if ( $wppa_opt['wppa_lightbox_name'] == 'wppa' ) {	// Our lightbox
+			if ( wppa_switch( 'wppa_lightbox_global_set' )  ) { // A set
+				$pattern ="/<a(.*?)href=('|\")(.*?).(bmp|gif|jpeg|jpg|png)('|\")(.*?)>/i";
+				$replacement = '<a$1href=$2$3.$4$5 rel="wppa[single]" style="'.' cursor:url('.wppa_get_imgdir().$wppa_opt['wppa_magnifier'].'),pointer;'.'"$6>';
+				$content = preg_replace($pattern, $replacement, $content);
+			}
+			else {	// Not a set
+				$pattern ="/<a(.*?)href=('|\")(.*?).(bmp|gif|jpeg|jpg|png)('|\")(.*?)>/i";
+				$replacement = '<a$1href=$2$3.$4$5 rel="wppa" style="'.' cursor:url('.wppa_get_imgdir().$wppa_opt['wppa_magnifier'].'),pointer;'.'"$6>';
+				$content = preg_replace($pattern, $replacement, $content);
+			}
 		}
 	}
 	return $content;
 }
-

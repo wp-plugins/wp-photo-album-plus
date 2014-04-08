@@ -140,7 +140,7 @@ global $silent;
 					KEY slug (slug(20))
 					) DEFAULT CHARACTER SET utf8;";
 					
-	require_once ABSPATH . 'wp-admin/includes/upgrade.php';
+	require_once WPPA_ABSPATH . 'wp-admin/includes/upgrade.php';
 	
 	// Create or update db tables
 	$tn = array( WPPA_ALBUMS, WPPA_PHOTOS, WPPA_RATING, WPPA_COMMENTS, WPPA_IPTC, WPPA_EXIF, WPPA_INDEX );
@@ -280,21 +280,11 @@ global $silent;
 			wppa_copy_setting('wppa_show_bread', 'wppa_show_bread_pages');
 			wppa_remove_setting('wppa_show_bread');
 		}
-//		if ( $old_rev <= '4990' ) {
-//			$wpdb->query('ALTER TABLE `'.WPPA_PHOTOS.'` ADD INDEX ( `album` )');
-//		}
 		if ( $old_rev <= '5000' ) {
 			wppa_remove_setting('wppa_autoclean');
 		}
-//		if ( $old_rev <= '5004' ) {
-//			$wpdb->query('ALTER TABLE `'.WPPA_INDEX.'` ADD INDEX ( `slug`(20) )');
-//		}
 		if ( $old_rev <= '5010' ) {
 			wppa_copy_setting('wppa_apply_newphoto_desc', 'wppa_apply_newphoto_desc_user');
-		}
-		if ( $old_rev <= '5018' ) {
-//			$wpdb->query('ALTER TABLE `'.WPPA_IPTC.'` ADD INDEX ( `photo` )');
-//			$wpdb->query('ALTER TABLE `'.WPPA_EXIF.'` ADD INDEX ( `photo` )');
 		}
 		if ( $old_rev <= '5107' ) {
 			delete_option('wppa_taglist'); 	// Forces recreation
@@ -311,9 +301,7 @@ global $silent;
 				wppa_remove_setting('wppa_list_photos_desc');
 			}
 		}
-//		if ( $old_rev <= '5206' ) {
-//			$wpdb->query( "DELETE FROM `".WPPA_RATING."` WHERE `value` = '0'" );
-//		}
+
 		if ( $old_rev <= '5207' ) {
 			if ( get_option( 'wppa_strip_file_ext', 'nil' ) == 'yes' ) {
 				wppa_update_option( 'wppa_newphoto_name_method', 'noext' );
@@ -321,11 +309,10 @@ global $silent;
 			}
 		}		
 		
-//		wppa_flush_treecounts();
 	}
 	
-	// Set default values for new options
-	wppa_set_defaults();					
+	// Set Defaults
+	wppa_set_defaults();
 	
 	// Check required directories
 	if ( ! wppa_check_dirs() ) $wppa['error'] = true;
@@ -340,13 +327,15 @@ global $silent;
 		}
 	}
 
-	// Copy factory supplied watermarks
+	// Copy factory supplied watermark fonts
 	$frompath = WPPA_PATH . '/fonts';
-	$fonts = glob($frompath . '/*.ttf');
+	$fonts = glob($frompath . '/*');
 	if ( is_array($fonts) ) {
 		foreach ($fonts as $fromfile) {
-			$tofile = WPPA_UPLOAD_PATH . '/fonts/' . basename($fromfile);
-			@ copy($fromfile, $tofile);
+			if ( is_file ( $fromfile ) ) {
+				$tofile = WPPA_UPLOAD_PATH . '/fonts/' . basename($fromfile);
+				@ copy($fromfile, $tofile);
+			}
 		}
 	}
 
@@ -424,8 +413,8 @@ function wppa_revalue_setting($oldname, $oldvalue, $newvalue) {
 	if ( get_option($oldname, 'nil') == $oldvalue ) wppa_update_option($oldname, $newvalue);
 }
 
-// Set default option values if the option does not exist.
-// With $force = true, all options will be set to their default value.
+// Set default option values in global $wppa_defaults
+// With $force = true, all non default options will be deleted
 function wppa_set_defaults($force = false) {
 global $wppa_defaults;
 
@@ -476,7 +465,7 @@ Hide Camera info
 						
 						// Table I: Sizes
 						// A System
-						'wppa_colwidth' 				=> '640',	// 1
+						'wppa_colwidth' 				=> 'auto',	// 1
 						'wppa_resize_on_upload' 		=> 'no',	// 2
 						'wppa_resize_to'				=> '0',		// 3
 						'wppa_min_thumbs' 				=> '1',		// 4
@@ -976,6 +965,7 @@ Hide Camera info
 						'wppa_remove_text'			=> '',
 						'wppa_remove_from_photodesc'	=> '',
 						'wppa_remove_empty_albums'	=> '',
+						'wppa_watermark_all' 		=> '',
 
 						// Table IX: Miscellaneous
 						// A System
@@ -1116,7 +1106,7 @@ Hide Camera info
 						// H Source file management and import/upload
 						'wppa_keep_source_admin'	=> 'no',
 						'wppa_keep_source_frontend' => 'no',
-						'wppa_source_dir'			=> ABSPATH.WPPA_UPLOAD.'/wppa-source',
+						'wppa_source_dir'			=> WPPA_ABSPATH.WPPA_UPLOAD.'/wppa-source',
 						'wppa_keep_sync'			=> 'yes',
 						'wppa_remake_add'			=> 'yes',
 						'wppa_save_iptc'			=> 'yes',
@@ -1138,10 +1128,7 @@ Hide Camera info
 						
 						);
 
-	array_walk($wppa_defaults, 'wppa_set_default', $force);
-	
-	// Check for upgrade right after conversion from old wppa
-	if ( ! is_numeric(get_option('wppa_fullsize')) ) wppa_update_option('wppa_fullsize', '640');
+	array_walk( $wppa_defaults, 'wppa_set_default', $force );
 	
 	return true;
 }
@@ -1153,10 +1140,12 @@ function wppa_set_default($value, $key, $force) {
 		);
 							
 	if ( $force ) {
-		if ( ! in_array($key, $void_these) ) wppa_update_option($key, $value);
+		// Delete all options except the voids
+		if ( ! in_array( $key, $void_these ) ) delete_option( $key );
 	}
 	else {
-		if ( get_option($key, 'nil') == 'nil' ) wppa_update_option($key, $value);
+		// Delete all options that have the default value, except the voids
+		if ( ! in_array( $key, $void_these ) && get_option( $key, 'nil' ) == $value ) delete_option( $key );
 	}
 }
 

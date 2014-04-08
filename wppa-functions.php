@@ -7,7 +7,7 @@
 *
 */
 
-if ( ! defined( 'ABSPATH' ) )
+if ( ! defined( 'WPPA_ABSPATH' ) )
     die( "Can't load this file directly" );
 
 // Get the albums by calling the theme module and do some parameter processing
@@ -893,9 +893,10 @@ wppa_dbg_msg('Rootsearch albums:'.$c1.' -> '.$c2);
 		if ( is_array($albums) ) foreach (array_keys($albums) as $albumkey) {
 			$albumid 	= $albums[$albumkey]['id'];
 			$albumowner = $albums[$albumkey]['owner'];
-			$photocount = wppa_get_photo_count($albumid);
-			$albumcount = wppa_get_album_count($albumid);
-			if ( ! $photocount && ! $albumcount && ! current_user_can('administrator') && $user != $albumowner ) unset($albums[$albumkey]);
+			$treecount 	= wppa_treecount_a($albums[$albumkey]['id']);
+			$photocount = $treecount['photos'];		// wppa_get_photo_count($albumid);
+//			$albumcount = wppa_get_album_count($albumid);
+			if ( ! $photocount /* && ! $albumcount */ && ! current_user_can('administrator') && $user != $albumowner ) unset($albums[$albumkey]);
 		}
 	}
 	
@@ -2082,6 +2083,8 @@ global $wppa_loadtime;
 global $wppa_initruntimetime;
 global $wppa_numqueries;
 
+static $auto;
+
 	if (is_feed()) return;		// Need no container in RSS feeds
 	
 	if ($action == 'open') {
@@ -2244,6 +2247,9 @@ global $wppa_numqueries;
 		
 	}
 	elseif ($action == 'close')	{
+	
+//		if ( $auto ) $wppa['out'] .= '<script type="text/javascript">wppaColWidth['.$wppa['master_occur'].'] = 0;</script>';
+	
 		if (wppa_page('oneofone')) $wppa['portrait_only'] = false;
 		if (!$wppa['in_widget']) $wppa['out'] .= ('<div style="clear:both;"></div>');
 		

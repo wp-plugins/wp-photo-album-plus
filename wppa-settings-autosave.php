@@ -47,8 +47,8 @@ global $no_default;
 							
 			// Must be here
 			case 'wppa_moveup':
-				if ( get_option('wppa_split_namedesc') == 'yes' ) {
-					$sequence = get_option('wppa_slide_order_split');
+				if ( wppa_switch('wppa_split_namedesc') ) {
+					$sequence = $wppa_opt['wppa_slide_order_split'];
 					$indices = explode(',', $sequence);
 					$temp = $indices[$sub];
 					$indices[$sub] = $indices[$sub - '1'];
@@ -56,7 +56,7 @@ global $no_default;
 					wppa_update_option('wppa_slide_order_split', implode(',', $indices));
 				}
 				else {
-					$sequence = get_option('wppa_slide_order');
+					$sequence = $wppa_opt['wppa_slide_order'];
 					$indices = explode(',', $sequence);
 					$temp = $indices[$sub];
 					$indices[$sub] = $indices[$sub - '1'];
@@ -74,7 +74,7 @@ global $no_default;
 				break;
 			// Must be here
 			case 'wppa_load_skin':
-				$fname = get_option('wppa_skinfile');
+				$fname = $wppa_opt['wppa_skinfile'];
 
 				if ($fname == 'restore') {
 					if (wppa_restore_settings(WPPA_DEPOT_PATH.'/settings.bak', 'backup')) {
@@ -163,7 +163,7 @@ global $no_default;
 	} // wppa-settings-submit
 	
 	// See if a cloudinary upload is pending
-	$need_cloud = get_option('wppa_cdn_service_update', 'no') == 'yes'; 
+	$need_cloud = wppa_switch( 'wppa_cdn_service_update' ); 
 	global $blog_id;
 	if ( $need_cloud ) { 
 		switch ( wppa_cdn() ) {
@@ -183,7 +183,7 @@ global $no_default;
 				}
 				else {
 					$count = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `".WPPA_PHOTOS."` WHERE `id` > %s", $last));
-					wppa_update_message('Uploading to Cloudinary cloud name: '.get_option('wppa_cdn_cloud_name').'. '.$count.' images to go.');
+					wppa_update_message('Uploading to Cloudinary cloud name: '.$wppa_opt['wppa_cdn_cloud_name'].'. '.$count.' images to go.');
 					$present_at_cloudinary = wppa_get_present_at_cloudinary_a();
 
 					if ( $photos ) foreach ( $photos as $photo ) {
@@ -4455,7 +4455,20 @@ global $no_default;
 							$html = array($html1, $html2, $html3, $html4);
 							wppa_setting(false, '8', $name, $desc, $html, $help);
 							
+							wppa_update_option('wppa_watermark_file_' . wppa_get_user(), $wppa_opt['wppa_watermark_file'] );
+							wppa_update_option('wppa_watermark_pos_' . wppa_get_user(), $wppa_opt['wppa_watermark_pos'] );
 							
+							$name = __('Watermark all', 'wppa');
+							$desc = __('Apply watermark according to current settings to all photos.', 'wppa');
+							$help = esc_js(__('See Table IX_F for the current watermark settings', 'wppa'));
+							$slug2 = 'wppa_watermark_all';
+							$html1 = '';
+							$html2 = wppa_maintenance_button( $slug2 );
+							$html3 = wppa_status_field( $slug2 );
+							$html4 = wppa_togo_field( $slug2 );
+							$html = array($html1, $html2, $html3, $html4);
+							wppa_setting(false, '9', $name, $desc, $html, $help);
+
 							?>
 						</tbody>
 						<tfoot style="font-weight: bold;" class="wppa_table_8">
@@ -4589,7 +4602,7 @@ global $no_default;
 							wppa_setting($slug, '5', $name, $desc, $html, $help);
 							
 							$name = __('Photo admin page size', 'wppa');
-							$desc = __('The number of photos per page on the Edit Album -> Manage photos and Edit Photos admin pages.', 'wppa');
+							$desc = __('The number of photos per page on the <br/>Edit Album -> Manage photos and Edit Photos admin pages.', 'wppa');
 							$help = '';
 							$slug = 'wppa_photo_admin_pagesize';
 							$options = array( __('--- off ---', 'wppa'), '10', '20', '50', '100', '200');
@@ -4948,7 +4961,8 @@ global $no_default;
 							$desc = __('The default watermarkfile to be used.', 'wppa');
 							$help = esc_js(__('Watermark files are of type png and reside in', 'wppa') . ' ' . WPPA_UPLOAD_URL . '/watermarks/');
 							$help .= '\n\n'.esc_js(__('A suitable watermarkfile typically consists of a transparent background and a black text or drawing.', 'wppa'));
-							$help .= '\n'.esc_js(__('The watermark image will be overlaying the photo with 80% transparency.', 'wppa'));
+							$help .= '\n'.esc_js(__(sprintf('The watermark image will be overlaying the photo with %s%% transparency.', (100-$wppa_opt['wppa_watermark_opacity'])), 'wppa'));
+							$help .= '\n\n'.esc_js(__('You may also select one of the textual watermark types at the bottom of the selection list.', 'wppa'));
 							$slug = 'wppa_watermark_file';
 							$class = 'wppa_watermark';
 							$html = '<select style="float:left; font-size:11px; height:20px; margin:0 4px 0 0; padding:0; " id="wppa_watermark_file" onchange="wppaAjaxUpdateOptionValue(\'wppa_watermark_file\', this)" >' . wppa_watermark_file_select('default') . '</select>';
@@ -4961,14 +4975,16 @@ global $no_default;
 							$desc = __('Upload a new watermark file', 'wppa');
 							$help = '';
 							$slug = 'wppa_watermark_upload';
+							$class = 'wppa_watermark';
 							$html = '<input id="my_file_element" type="file" name="file_1" style="float:left; font-size: 11px;" />';
-							$html .= wppa_doit_button(__('Upload it!', 'wppa'), $slug);
+							$html .= wppa_doit_button(__('Upload watermark image', 'wppa'), $slug, '', '31', '16');
 							wppa_setting(false, '4', $name, $desc, $html, $help, $class);
 													
 							$name = __('Watermark opacity image', 'wppa');
 							$desc = __('You can set the intensity of image watermarks here.', 'wppa');
 							$help = esc_js(__('The higher the number, the intenser the watermark. Value must be > 0 and <= 100.', 'wppa'));
 							$slug = 'wppa_watermark_opacity';
+							$class = 'wppa_watermark';
 							$html = wppa_input($slug, '50px', '', '%');
 							wppa_setting($slug, '5', $name, $desc, $html, $help, $class);
 
@@ -4977,17 +4993,13 @@ global $no_default;
 							$help = '';
 							$slug = 'wppa_textual_watermark_type';
 							$class = 'wppa_watermark';
-							$opts = array( __('TV subtitle style', 'wppa'), __('White text on black background', 'wppa'), __('Black text on white background', 'wppa'), __('Reverse TV style (Utopia)', 'wppa'), __('White on transparent background', 'wppa'), __('Black on transparent background', 'wppa') );
-							$vals = array( 'tvstyle', 'whiteonblack', 'blackonwhite', 'utopia', 'white', 'black' );
-							wppa_create_textual_watermark_file( '---preview---', '', get_option( 'wppa_textual_watermark_font' ), 'tvstyle' );
-							wppa_create_textual_watermark_file( '---preview---', '', get_option( 'wppa_textual_watermark_font' ), 'whiteonblack' );
-							wppa_create_textual_watermark_file( '---preview---', '', get_option( 'wppa_textual_watermark_font' ), 'blackonwhite' );
-							wppa_create_textual_watermark_file( '---preview---', '', get_option( 'wppa_textual_watermark_font' ), 'utopia' );
-							wppa_create_textual_watermark_file( '---preview---', '', get_option( 'wppa_textual_watermark_font' ), 'white' );
-							wppa_create_textual_watermark_file( '---preview---', '', get_option( 'wppa_textual_watermark_font' ), 'black' );
-							$preview = '<img style="background-color:#777;" id="wm-type-preview" src="'.wppa_create_textual_watermark_file( '---preview---', '', get_option( 'wppa_textual_watermark_font' ), get_option( $slug ) ).'" />';
+							$sopts = array( __('TV subtitle style', 'wppa'), __('White text on black background', 'wppa'), __('Black text on white background', 'wppa'), __('Reverse TV style (Utopia)', 'wppa'), __('White on transparent background', 'wppa'), __('Black on transparent background', 'wppa') );
+							$svals = array( 'tvstyle', 'whiteonblack', 'blackonwhite', 'utopia', 'white', 'black' );
+							$font = $wppa_opt['wppa_textual_watermark_font'];
 							$onchange = 'wppaCheckFontPreview()';
-							$html = wppa_select($slug, $opts, $vals, $onchange);
+							$class = 'wppa_watermark';
+							$html = wppa_select($slug, $sopts, $svals, $onchange);
+							$preview = '<img style="background-color:#777;" id="wm-type-preview" src="" />';
 							wppa_setting($slug, '6', $name, $desc, $html.' '.$preview, $help, $class);
 
 							$name = __('Predefined watermark text', 'wppa');
@@ -5004,52 +5016,73 @@ global $no_default;
 							$help = esc_js(__('Except for the system font, are font files of type ttf and reside in', 'wppa') . ' ' . WPPA_UPLOAD_URL . '/fonts/');
 							$slug = 'wppa_textual_watermark_font';
 							$class = 'wppa_watermark';
-							$opts = array( 'System' );
-							$vals = array( 'system' );
-							$preview = '<img style="background-color:#777;" id="wm-font-preview" src="'.wppa_create_textual_watermark_file( '---preview---', '', 'system' ).'" />';
+							$fopts = array( 'System' );
+							$fvals = array( 'system' );
+							$style = $wppa_opt['wppa_textual_watermark_type'];
 							$fonts = glob( WPPA_UPLOAD_PATH . '/fonts/*.ttf' );
 							sort($fonts);
 							foreach ( $fonts as $font ) {
 								$f = basename($font);
 								$f = preg_replace('/\.[^.]*$/', '', $f);
 								$F = strtoupper(substr($f,0,1)).substr($f,1);
-								if ( get_option($slug) == $f ) {
-									$preview = '<img style="background-color:#777;" id="wm-font-preview" src="'.wppa_create_textual_watermark_file( '---preview---', '', $f ).'" />';
-								}
-								else wppa_create_textual_watermark_file( '---preview---', '', $f );	// just make it
-								$opts[] = $F;
-								$vals[] = $f;
+								$fopts[] = $F;
+								$fvals[] = $f;
 							}
 							$onchange = 'wppaCheckFontPreview()';
-							$html = wppa_select($slug, $opts, $vals, $onchange);
+							$class = 'wppa_watermark';
+							$html = wppa_select($slug, $fopts, $fvals, $onchange);
+							$preview = '<img style="background-color:#777;" id="wm-font-preview" src="" />';
 							wppa_setting($slug, '8', $name, $desc, $html.' '.$preview, $help, $class);
+
+							foreach ( array_keys( $sopts ) as $skey ) {
+								foreach ( array_keys( $fopts ) as $fkey ) {
+									wppa_create_textual_watermark_file( array( 'content' => '---preview---', 'font' => $fvals[$fkey], 'text' => $sopts[$skey], 'style' => $svals[$skey], 'filebasename' => $svals[$skey].'-'.$fvals[$fkey] ) );
+									wppa_create_textual_watermark_file( array( 'content' => '---preview---', 'font' => $fvals[$fkey], 'text' => $fopts[$fkey], 'style' => $svals[$skey], 'filebasename' => $fvals[$fkey].'-'.$svals[$skey] ) );
+								}
+							}
 							
 							$name = __('Textual watermark font size', 'wppa');
 							$desc = __('You can set the size of the truetype fonts only.', 'wppa');
-							$help = '';
+							$help = esc_js(__('System font can have size 1,2,3,4 or 5, in some stoneage fontsize units. Any value > 5 will be treated as 5.', 'wppa'));
+							$help .= '\n\n'.esc_js(__('Truetype fonts can have any positive integer size, if your PHPs GD version is 1, in pixels, in GD2 in points.', 'wppa'));
+							$help .= '\n'.esc_js(__('It is unclear howmany pixels a point is...', 'wppa'));
 							$slug = 'wppa_textual_watermark_size';
+							$class = 'wppa_watermark';
 							$html = wppa_input($slug, '50px', '', 'points');
-							wppa_setting($slug, '8.1', $name, $desc, $html, $help, $class);
+							wppa_setting($slug, '9', $name, $desc, $html, $help, $class);
 
 							$name = __('Upload watermark font', 'wppa');
 							$desc = __('Upload a new watermark font file', 'wppa');
 							$help = esc_js(__('Upload truetype fonts (.ttf) only, and test if they work on your server platform.', 'wppa'));
 							$slug = 'wppa_watermark_font_upload';
+							$class = 'wppa_watermark';
 							$html = '<input id="my_file_element" type="file" name="file_2" style="float:left; font-size: 11px;" />';
-							$html .= wppa_doit_button(__('Upload it!', 'wppa'), $slug);
+							$html .= wppa_doit_button(__('Upload TrueType font', 'wppa'), $slug, '', '31', '16');
 							wppa_setting(false, '9', $name, $desc, $html, $help, $class);
 
 							$name = __('Watermark opacity text', 'wppa');
 							$desc = __('You can set the intensity of a text watermarks here.', 'wppa');
 							$help = esc_js(__('The higher the number, the intenser the watermark. Value must be > 0 and <= 100.', 'wppa'));
 							$slug = 'wppa_watermark_opacity_text';
+							$class = 'wppa_watermark';
 							$html = wppa_input($slug, '50px', '', '%');
 							wppa_setting($slug, '10', $name, $desc, $html, $help, $class);
+							
+							$name = __('Preview', 'wppa');
+							$desc = __('A real life preview. To update: refresh the page.', 'wppa');
+							$help = '';
+							$slug = 'wppa_watermark_preview';
+							$class = 'wppa_watermark';
+							$id = $wpdb->get_var( "SELECT `id` FROM `".WPPA_PHOTOS."` ORDER BY RAND() LIMIT 1" );
+							$tr = floor( 127 * ( 100 - $wppa_opt['wppa_watermark_opacity_text'] ) / 100 );
+							$args = array( 'id' => $id, 'content' => '---predef---', 'pos' => 'cencen', 'url' => true, 'width' => '1000', 'height' => '400', 'transp' => $tr );
+							$html = '<div style="text-align:center; max-width:400px; overflow:hidden; background-image:url('.WPPA_UPLOAD_URL.'/fonts/turkije.jpg);" ><img src="'.wppa_create_textual_watermark_file( $args ).'" /></div><div style="clear:both;"></div>';
+							wppa_setting($slug, '11', $name, $desc, $html, $help, $class);
 							}
 							wppa_setting_subheader( 'G', '1', __( 'Slideshow elements sequence order settings', 'wppa' ) );
 							{
-							if ( get_option('wppa_split_namedesc') == 'yes' ) {
-								$indexopt = get_option('wppa_slide_order_split');
+							if ( wppa_switch('wppa_split_namedesc') ) {
+								$indexopt = $wppa_opt['wppa_slide_order_split'];
 								$indexes  = explode(',', $indexopt);
 								$names    = array(
 									__('StartStop', 'wppa'), 
@@ -5093,7 +5126,7 @@ global $no_default;
 								}
 							}
 							else {
-								$indexopt = get_option('wppa_slide_order');
+								$indexopt = $wppa_opt['wppa_slide_order'];
 								$indexes  = explode(',', $indexopt);
 								$names    = array(
 									__('StartStop', 'wppa'), 
@@ -5187,14 +5220,7 @@ global $no_default;
 							$slug = 'wppa_keep_sync';
 							$html = wppa_checkbox($slug);
 							wppa_setting($slug, '4', $name, $desc, $html, $help);
-/*							
-							$name = __('Remake', 'wppa');
-							$desc = __('Remake the photofiles.', 'wppa');
-							$help = esc_js(__('This action will remake the fullsize images, thumbnail images, and will refresh the iptc and exif data for all photos where the source is found in the corresponding album sub-directory of the source directory.', 'wppa'));
-							$slug = 'wppa_remake';
-							$html = wppa_doit_button('', $slug);
-							wppa_setting(false, '5', $name, $desc, $html, $help);
-*/							
+						
 							$name = __('Remake add', 'wppa');
 							$desc = __('Photos will be added from the source pool', 'wppa');
 							$help = esc_js(__('If checked: If photo files are found in the source directory that do not exist in the corresponding album, they will be added to the album.', 'wppa'));
@@ -5841,13 +5867,15 @@ global $no_default;
 }
 
 function wppa_input($slug, $width, $minwidth = '', $text = '', $onchange = '') {
+global $wppa_opt;
 
+	$val = isset ( $wppa_opt[$slug] ) ? esc_attr( $wppa_opt[$slug] ) : '';
 	$html = '<input style="float:left; width: '.$width.'; height:20px;';
 	if ($minwidth != '') $html .= ' min-width:'.$minwidth.';';
 	$html .= ' font-size: 11px; margin: 0px; padding: 0px;" type="text" id="'.$slug.'"';
 	if ($onchange != '') $html .= ' onchange="'.$onchange.';wppaAjaxUpdateOptionValue(\''.$slug.'\', this)"';
 	else $html .= ' onchange="wppaAjaxUpdateOptionValue(\''.$slug.'\', this)"';
-	$html .= ' value="'.esc_attr(get_option($slug)).'" />';	// changed stripslashes into esc_attr
+	$html .= ' value="'.$val.'" />';
 	$html .= '<img id="img_'.$slug.'" src="'.wppa_get_imgdir().'star.png" title="'.__('Setting unmodified', 'wppa').'" style="padding:0 4px; float:left; height:16px; width:16px;" />';
 	$html .= '<span style="float:left">'.$text.'</span>';
 	
@@ -5870,12 +5898,13 @@ function wppa_edit($slug, $value, $width = '90%', $minwidth = '', $text = '', $o
 }
 
 function wppa_textarea($slug, $buttonlabel = '') {
+global $wppa_opt;
 
-	if ( get_option('wppa_use_wp_editor') == 'yes' ) {	// New style textarea, use wp_editor
+	if ( wppa_switch('wppa_use_wp_editor') ) {	// New style textarea, use wp_editor
 		$editor_id = str_replace( '_', '', $slug);
 		ob_start();
 			$quicktags_settings = array( 'buttons' => 'strong,em,link,block,ins,ul,ol,li,code,close' );
-			wp_editor( get_option($slug), $editor_id, $settings = array('wpautop' => false, 'media_buttons' => false, 'textarea_rows' => '6', 'textarea_name' => $slug, 'tinymce' => false, 'quicktags' => $quicktags_settings ) );
+			wp_editor( $wppa_opt[$slug], $editor_id, $settings = array('wpautop' => false, 'media_buttons' => false, 'textarea_rows' => '6', 'textarea_name' => $slug, 'tinymce' => false, 'quicktags' => $quicktags_settings ) );
 		$html = ob_get_clean();
 		$blbl = __('Update', 'wppa');
 		if ( $buttonlabel ) $blbl .= ' '.$buttonlabel;
@@ -5884,7 +5913,7 @@ function wppa_textarea($slug, $buttonlabel = '') {
 	}
 	else {
 		$html = '<textarea id="'.$slug.'" style="float:left; width:300px;" onchange="wppaAjaxUpdateOptionValue(\''.$slug.'\', this)" >';
-		$html .= esc_textarea(stripslashes(get_option($slug))); //htmlspecialchars(stripslashes(get_option($slug)));
+		$html .= esc_textarea( stripslashes( $wppa_opt[$slug]));
 		$html .= '</textarea>';
 	
 		$html .= '<img id="img_'.$slug.'" src="'.wppa_get_imgdir().'star.png" title="'.__('Setting unmodified', 'wppa').'" style="padding:0 4px; float:left; height:16px; width:16px;" />';
@@ -5895,7 +5924,7 @@ function wppa_textarea($slug, $buttonlabel = '') {
 function wppa_checkbox($slug, $onchange = '', $class = '') {
 
 	$html = '<input style="float:left; height: 15px; margin: 0px; padding: 0px;" type="checkbox" id="'.$slug.'"'; 
-	if (get_option($slug) == 'yes') $html .= ' checked="checked"';
+	if ( wppa_switch( $slug ) ) $html .= ' checked="checked"';
 	if ($onchange != '') $html .= ' onchange="'.$onchange.';wppaAjaxUpdateOptionCheckBox(\''.$slug.'\', this)"';
 	else $html .= ' onchange="wppaAjaxUpdateOptionCheckBox(\''.$slug.'\', this)"';
 
@@ -5911,7 +5940,7 @@ function wppa_checkbox_warn($slug, $onchange = '', $class = '', $warning) {
 
 	$warning = esc_js(__('Warning!', 'wppa')).'\n\n'.$warning;
 	$html = '<input style="float:left; height: 15px; margin: 0px; padding: 0px;" type="checkbox" id="'.$slug.'"'; 
-	if (get_option($slug) == 'yes') $html .= ' checked="checked"';
+	if ( wppa_switch( $slug ) ) $html .= ' checked="checked"';
 	if ($onchange != '') $html .= ' onchange="alert(\''.$warning.'\'); '.$onchange.';wppaAjaxUpdateOptionCheckBox(\''.$slug.'\', this)"';
 	else $html .= ' onchange="alert(\''.$warning.'\'); wppaAjaxUpdateOptionCheckBox(\''.$slug.'\', this)"';
 
@@ -5928,7 +5957,7 @@ function wppa_checkbox_warn_off($slug, $onchange = '', $class = '', $warning, $i
 	$warning = esc_js(__('Warning!', 'wppa')).'\n\n'.$warning;
 	if ( $is_help) $warning .= '\n\n'.esc_js(__('Please read the help', 'wppa'));
 	$html = '<input style="float:left; height: 15px; margin: 0px; padding: 0px;" type="checkbox" id="'.$slug.'"'; 
-	if (get_option($slug) == 'yes') $html .= ' checked="checked"';
+	if ( wppa_switch( $slug ) ) $html .= ' checked="checked"';
 	if ($onchange != '') $html .= ' onchange="if (!this.checked) alert(\''.$warning.'\'); '.$onchange.';wppaAjaxUpdateOptionCheckBox(\''.$slug.'\', this)"';
 	else $html .= ' onchange="if (!this.checked) alert(\''.$warning.'\'); wppaAjaxUpdateOptionCheckBox(\''.$slug.'\', this)"';
 
@@ -5944,7 +5973,7 @@ function wppa_checkbox_warn_on($slug, $onchange = '', $class = '', $warning) {
 
 	$warning = esc_js(__('Warning!', 'wppa')).'\n\n'.$warning.'\n\n'.esc_js(__('Please read the help', 'wppa'));
 	$html = '<input style="float:left; height: 15px; margin: 0px; padding: 0px;" type="checkbox" id="'.$slug.'"'; 
-	if (get_option($slug) == 'yes') $html .= ' checked="checked"';
+	if ( wppa_switch( $slug ) ) $html .= ' checked="checked"';
 	if ($onchange != '') $html .= ' onchange="if (this.checked) alert(\''.$warning.'\'); '.$onchange.';wppaAjaxUpdateOptionCheckBox(\''.$slug.'\', this)"';
 	else $html .= ' onchange="if (this.checked) alert(\''.$warning.'\'); wppaAjaxUpdateOptionCheckBox(\''.$slug.'\', this)"';
 
@@ -5973,6 +6002,7 @@ function wppa_checkbox_e($slug, $curval, $onchange = '', $class = '', $enabled =
 }
 
 function wppa_select($slug, $options, $values, $onchange = '', $class = '', $first_disable = false, $postaction = '') {
+global $wppa_opt;
 
 	if (!is_array($options)) {
 		$html = __('There are no pages (yet) to link to.', 'wppa');
@@ -5987,7 +6017,7 @@ function wppa_select($slug, $options, $values, $onchange = '', $class = '', $fir
 	if ($class != '') $html .= ' class="'.$class.'"';
 	$html .= '>';
 	
-	$val = get_option($slug);
+	$val = isset ( $wppa_opt[$slug] ) ? $wppa_opt[$slug] : '';
 	$idx = 0;
 	$cnt = count($options);
 	while ($idx < $cnt) {
@@ -6008,9 +6038,9 @@ function wppa_select($slug, $options, $values, $onchange = '', $class = '', $fir
 	return $html;
 }
 
-function wppa_select_e($slug, $curval, $options, $values, $onchange = '', $class = '') {
+function wppa_select_e( $slug, $curval, $options, $values, $onchange = '', $class = '' ) {
 
-	if (!is_array($options)) {
+	if ( ! is_array( $options ) ) {
 		$html = __('There are no pages (yet) to link to.', 'wppa');
 		return $html;
 	}
@@ -6022,7 +6052,7 @@ function wppa_select_e($slug, $curval, $options, $values, $onchange = '', $class
 	if ($class != '') $html .= ' class="'.$class.'"';
 	$html .= '>';
 	
-	$val = $curval; // get_option($slug);
+	$val = $curval;
 	$idx = 0;
 	$cnt = count($options);
 	while ($idx < $cnt) {
@@ -6074,11 +6104,11 @@ global $wppa_opt;
 
 }
 
-function wppa_doit_button( $label = '', $key = '', $sub = '' ) {
+function wppa_doit_button( $label = '', $key = '', $sub = '', $height = '16', $fontsize = '11' ) {
 	if ( $label == '' ) $label = __('Do it!', 'wppa');
 
-	$result = '<input type="submit" class="button-primary" style="float:left; font-size: 11px; height: 16px; margin: 0 4px; padding: 0px;"';
-	$result .= ' name="wppa_settings_submit" value="'.$label.'"';
+	$result = '<input type="submit" class="button-primary" style="float:left; font-size:'.$fontsize.'px; height:'.$height.'px; margin: 0 4px; padding: 0px;"';
+	$result .= ' name="wppa_settings_submit" value="&nbsp;'.$label.'&nbsp;"';
 	$result .= ' onclick="';
 	if ( $key ) $result .= 'document.getElementById(\'wppa-key\').value=\''.$key.'\';';
 	if ( $sub ) $result .= 'document.getElementById(\'wppa-sub\').value=\''.$sub.'\';';

@@ -484,11 +484,11 @@ function wppa_walktree($relroot, $source, $allowwppa = false, $subdirsonly = fal
 		echo('<option value="'.$relroot.'"'.$sel.'>'.$display.'</option>');
 	}
 	
-	if ( $handle = opendir(ABSPATH.$relroot) ) {
+	if ( $handle = opendir(WPPA_ABSPATH.$relroot) ) {
 		while (false !== ($file = readdir($handle))) {
 			if ( $file != "." && $file != ".." && ( $file != "wppa" || $allowwppa ) && ( $file != "thumbs" || $allowthumbs ) ) {
 				$newroot = $relroot.'/'.$file;
-				if (is_dir(ABSPATH.$newroot)) {	
+				if (is_dir(WPPA_ABSPATH.$newroot)) {	
 					wppa_walktree($newroot, $source, $allowwppa, false, $allowthumbs);
 				}
 			}
@@ -753,7 +753,7 @@ global $wpdb;
 		$any_error = true;
 	}
 	// Check directories
-	$dn = array( ABSPATH.WPPA_UPLOAD, WPPA_UPLOAD_PATH, WPPA_UPLOAD_PATH.'/thumbs', WPPA_UPLOAD_PATH.'/temp', WPPA_UPLOAD_PATH.'/fonts', WPPA_DEPOT_PATH);
+	$dn = array( WPPA_ABSPATH.WPPA_UPLOAD, WPPA_UPLOAD_PATH, WPPA_UPLOAD_PATH.'/thumbs', WPPA_UPLOAD_PATH.'/temp', WPPA_UPLOAD_PATH.'/fonts', WPPA_DEPOT_PATH);
 	$idx = 0;
 	while ($idx < 6) {
 		if ( ! file_exists($dn[$idx]) ) {	// First try to repair

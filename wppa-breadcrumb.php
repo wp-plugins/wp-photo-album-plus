@@ -3,11 +3,11 @@
 * Package: wp-photo-album-plus
 *
 * Functions for breadcrumbs
-* Version 5.2.20.imagefactory
+* Version 5.3.0
 *
 */
 
-if ( ! defined( 'ABSPATH' ) )
+if ( ! defined( 'WPPA_ABSPATH' ) )
     die( "Can't load this file directly" );
 
 // shows the breadcrumb navigation 
@@ -97,7 +97,6 @@ global $wpdb;
 			if ( isset( $_SESSION['wppa_session']['search_root'] ) ) $searchroot = $_SESSION['wppa_session']['search_root'];
 			else $searchroot = '-2';
 			$albtxt = $wppa['is_rootsearch'] ? ' <span style="cursor:pointer;" title="'.esc_attr( sprintf( __a( 'Searchresults from album %s and its subalbums' ), wppa_get_album_name( $searchroot ) ) ).'">*</span> ' : '';
-if ( $wppa['is_rootsearch'] && isset ( $_SESSION['wppa_session']['search_root'] ) ) wppa_dbg_msg('On line 99 in wppa-breadcrumb.php: $_SESSION[\'wppa_session\'][\'search_root\'] = '.$_SESSION['wppa_session']['search_root'].' meaning: '.wppa_get_album_name($_SESSION['wppa_session']['search_root']), 'red', 'force');
 			if ( $wppa['is_slide'] ) {
 //				$value 	= __a('Searchstring:').'&nbsp;'.stripslashes($wppa['searchstring']);
 				$value  = __a('Searchstring:') . ' ' . ( isset ( $_SESSION['wppa_session']['display_searchstring'] ) ? $_SESSION['wppa_session']['display_searchstring'] : stripslashes( $wppa['searchstring'] ) ) . $albtxt;

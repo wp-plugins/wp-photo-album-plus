@@ -530,8 +530,8 @@ global $wppa;
 								<td>
 									<?php 
 									$user = wppa_get_user();
-									if ( get_option('wppa_watermark_on') == 'yes' ) { 
-										if ( get_option('wppa_watermark_user') == 'yes' || current_user_can('wppa_settings') ) {	
+									if ( wppa_switch('wppa_watermark_on') ) { 
+										if ( wppa_switch('wppa_watermark_user') || current_user_can('wppa_settings') ) {	
 											echo __('File:','wppa').' ' ?>
 											<select id="wmfsel_<?php echo $photo['id']?>" onchange="wppaAjaxUpdatePhoto(<?php echo $photo['id'] ?>, 'wppa_watermark_file_<?php echo $user ?>', this);" >
 											<?php echo wppa_watermark_file_select() ?>

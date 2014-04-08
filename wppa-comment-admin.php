@@ -237,7 +237,7 @@ global $wppa_opt;
 						</select>
 						<?php _e('You can see the photo and all its comments on the selected page by clicking on the thumbnail image', 'wppa'); ?>
 					</p>
-					<?php $comment_show = get_option('wppa_comadmin_show') ?>
+					<?php $comment_show = $wppa_opt['wppa_comadmin_show'] ?>
 					<p>
 						<?php _e('Display status:', 'wppa') ?>
 						<select name="wppa_comadmin_show">
@@ -246,7 +246,7 @@ global $wppa_opt;
 							<option value="approved" <?php if ($comment_show == 'approved') echo('selected="selected"') ?>><?php _e('approved', 'wppa') ?></option>
 							<option value="spam" <?php if ($comment_show == 'spam') echo('selected="selected"') ?>><?php _e('spam', 'wppa') ?></option>
 						</select>
-						<?php $comment_order = get_option('wppa_comadmin_order', 'wppa') ?>
+						<?php $comment_order = $wppa_opt['wppa_comadmin_order'] ?>
 						<?php _e('Display order:', 'wppa') ?>
 						<select name="wppa_comadmin_order">
 							<option value="timestamp" <?php if ($comment_order == 'timestamp') echo('selected="selected"') ?>><?php _e('timestamp', 'wppa') ?></option>
