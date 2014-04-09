@@ -73,8 +73,10 @@ global $blog_id;
 	// Our version ( WPPA_UPLOAD ) of the relative part of the path/url to the uploads dir is calculated form wp_upload_dir() by substracting ABSPATH from the uploads basedir
 	$wp_uploaddir = wp_upload_dir();
 	$rel_uploads_path = trim( str_replace( WPPA_ABSPATH, '', str_replace( "\\", "/", $wp_uploaddir['basedir'] ) ), '/' );	// will normally return wp-content/uploads
-	// The depot dir is also relative to ABSPATH but on the same level as uploads
-	$rel_depot_path   = trim( str_replace( 'uploads', '', $rel_uploads_path ), '/' ); 					// will normally return wp-content, but may be empty
+	
+	// The depot dir is also relative to ABSPATH but on the same level as uploads		
+	$rel_depot_path = trim( str_replace( WPPA_ABSPATH, '', WPPA_CONTENT_PATH ), '/' );					// will normally return wp-content, but may be empty
+	
 	// For multisite the uploads are in /wp-content/blogs.dir/<blogid>/, so we hope still below ABSPATH
 	$wp_content_multi = trim( str_replace( WPPA_ABSPATH, '', WPPA_CONTENT_PATH ), '/' );
 
@@ -97,6 +99,9 @@ global $blog_id;
 		define( 'WPPA_DEPOT_PATH', WPPA_ABSPATH.WPPA_DEPOT );
 		define( 'WPPA_DEPOT_URL', site_url().'/'.WPPA_DEPOT );
 	}
+	
+	wppa_mktree( WPPA_UPLOAD_PATH );	// Whatever ( faulty ) path has been calculated, it will be created and not prevent plugin to activate or function
+	wppa_mktree( WPPA_DEPOT_PATH );
 }
 define( 'WPPA_NONCE' , 'wppa-update-check' );
 

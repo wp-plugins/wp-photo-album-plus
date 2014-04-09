@@ -5076,7 +5076,7 @@ global $no_default;
 							$id = $wpdb->get_var( "SELECT `id` FROM `".WPPA_PHOTOS."` ORDER BY RAND() LIMIT 1" );
 							$tr = floor( 127 * ( 100 - $wppa_opt['wppa_watermark_opacity_text'] ) / 100 );
 							$args = array( 'id' => $id, 'content' => '---predef---', 'pos' => 'cencen', 'url' => true, 'width' => '1000', 'height' => '400', 'transp' => $tr );
-							$html = '<div style="text-align:center; max-width:400px; overflow:hidden; background-image:url('.WPPA_UPLOAD_URL.'/fonts/turkije.jpg);" ><img src="'.wppa_create_textual_watermark_file( $args ).'" /></div><div style="clear:both;"></div>';
+							$html = '<div style="text-align:center; max-width:400px; overflow:hidden; background-image:url('.WPPA_UPLOAD_URL.'/fonts/turkije.jpg);" ><img src="'.wppa_create_textual_watermark_file( $args ).'?ver='.rand(0, 4711).'" /></div><div style="clear:both;"></div>';
 							wppa_setting($slug, '11', $name, $desc, $html, $help, $class);
 							}
 							wppa_setting_subheader( 'G', '1', __( 'Slideshow elements sequence order settings', 'wppa' ) );

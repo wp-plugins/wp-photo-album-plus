@@ -1892,3 +1892,14 @@ function wppa_compress_enum( $enum ) {
 	}
 	return $result;
 }
+
+function wppa_mktree( $path ) {
+	if ( is_dir( $path ) ) return true;
+	@ mkdir( $path );
+	if ( ! is_dir( $path ) ) {
+		$bret = wppa_mktree( dirname( $path ) );
+		if ( $bret ) return true;
+	}
+	@ mkdir( $path );
+	return ( is_dir( $path ) );
+}
