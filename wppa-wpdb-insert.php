@@ -3,14 +3,57 @@
 * Package: wp-photo-album-plus
 *
 * Contains low-level wpdb routines that add new records
-* Version 5.2.11
+* Version 5.3.0
 *
 */
 
+if ( ! defined( 'ABSPATH' ) ) die( "Can't load this file directly" );
+
+// Session
+function wppa_create_session_entry( $args ) {
+global $wpdb;
+
+	$args = wp_parse_args( (array) $args, array (
+					'id' 				=> '0',
+					'session' 			=> wppa_get_session_id(),
+					'timestamp' 		=> time(),
+					'user'				=> wppa_get_user(),
+					'ip'				=> $_SERVER['REMOTE_ADDR'],
+					'status' 			=> 'valid',
+					'data'				=> false,
+					'count' 			=> '1'
+					) );
+					
+	if ( ! wppa_is_id_free( WPPA_SESSION, $args['id'] ) ) $args['id'] = wppa_nextkey( WPPA_SESSION );
+	
+	$query = $wpdb->prepare("INSERT INTO `" . WPPA_SESSION ."` 	(	`id`,
+																	`session`,
+																	`timestamp`,
+																	`user`,
+																	`ip`,
+																	`status`,
+																	`data`,
+																	`count`
+																)
+														VALUES ( %s, %s, %s, %s, %s, %s, %s, %s )",
+																$args['id'],
+																$args['session'],
+																$args['timestamp'],
+																$args['user'],
+																$args['ip'],
+																$args['status'],
+																$args['data'],
+																$args['count']
+														);
+	$iret = $wpdb->query($query);
+	
+	if ( $iret ) return $args['id'];
+	else return false;
+}	
+														
 // Index
 function wppa_create_index_entry( $args ) {
 global $wpdb;
-global $wppa_opt;
 
 	$args = wp_parse_args( (array) $args, array (
 					'id'				=> '0',
@@ -41,7 +84,6 @@ global $wppa_opt;
 // EXIF
 function wppa_create_exif_entry( $args ) {
 global $wpdb;
-global $wppa_opt;
 
 	$args = wp_parse_args( (array) $args, array (
 					'id' 				=> '0',
@@ -75,7 +117,6 @@ global $wppa_opt;
 // IPTC
 function wppa_create_iptc_entry( $args ) {
 global $wpdb;
-global $wppa_opt;
 
 	$args = wp_parse_args( (array) $args, array (
 					'id' 				=> '0',
@@ -109,7 +150,6 @@ global $wppa_opt;
 // Comments
 function wppa_create_comments_entry( $args ) {
 global $wpdb;
-global $wppa_opt;
 
 	$args = wp_parse_args( (array) $args, array (
 					'id' 				=> '0',
@@ -152,7 +192,6 @@ global $wppa_opt;
 // Rating
 function wppa_create_rating_entry( $args ) {
 global $wpdb;
-global $wppa_opt;
 
 	$args = wp_parse_args( (array) $args, array (
 					'id' 				=> '0',
@@ -186,7 +225,6 @@ global $wppa_opt;
 // Photo
 function wppa_create_photo_entry( $args ) {
 global $wpdb;
-global $wppa_opt;
 
 	$args = wp_parse_args( (array) $args, array (
 					'id'				=> '0', 

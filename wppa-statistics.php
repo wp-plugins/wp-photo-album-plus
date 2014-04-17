@@ -4,12 +4,11 @@
 *
 * Functions for counts etc
 * Common use front and admin
-* Version 5.2.3
+* Version 5.3.0
 *
 */
 
-if ( ! defined( 'ABSPATH' ) )
-    die( "Can't load this file directly" );
+if ( ! defined( 'ABSPATH' ) ) die( "Can't load this file directly" );
 
 // show system statistics
 function wppa_statistics() {
@@ -107,6 +106,7 @@ global $wpdb;
 // Bump Viewcount
 function wppa_bump_viewcount($type, $id) {
 global $wpdb;
+global $wppa_session;
 
 	if ( ! wppa_switch('wppa_track_viewcounts') ) return;
 	
@@ -115,10 +115,9 @@ global $wpdb;
 
 	if ( ! $id ) return;	// Not a wppa image
 	
-	if ( ! isset($_SESSION['wppa_session']) ) 					$_SESSION['wppa_session'] = array();
-	if ( ! isset($_SESSION['wppa_session'][$type]) ) 			$_SESSION['wppa_session'][$type] = array();
-	if ( ! isset($_SESSION['wppa_session'][$type][$id] ) ) {	// This one not done yest
-		$_SESSION['wppa_session'][$type][$id] = true;			// Mark as viewed
+	if ( ! isset($wppa_session[$type]) ) 			$wppa_session[$type] = array();
+	if ( ! isset($wppa_session[$type][$id] ) ) {	// This one not done yest
+		$wppa_session[$type][$id] = true;			// Mark as viewed
 		if ( $type == 'album' ) $table = WPPA_ALBUMS; else $table = WPPA_PHOTOS;
 		
 		$count = $wpdb->get_var("SELECT `views` FROM `".$table."` WHERE `id` = ".$id);
@@ -127,9 +126,6 @@ global $wpdb;
 		$wpdb->query("UPDATE `".$table."` SET `views` = ".$count." WHERE `id` = ".$id);
 		wppa_dbg_msg('Bumped viewcount for '.$type.' '.$id.' to '.$count, 'red');
 	}
-//global $wppa;		
-//if ( $wppa['debug'] )		print_r($_SESSION);	// Debug
-
 }
 
 function wppa_get_upldr_cache() {

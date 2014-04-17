@@ -3,13 +3,12 @@
 * Package: wp-photo-album-plus
 *
 * exif and iptc common functions
-* version 5.0.17
+* version 5.3.0
 *
 * 
 */
 
-if ( ! defined( 'ABSPATH' ) )
-    die( "Can't load this file directly" );
+if ( ! defined( 'ABSPATH' ) ) die( "Can't load this file directly" );
 	
 // Translate iptc tags into  photo dependant data inside a text
 function wppa_filter_iptc($desc, $photo) {

@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 * admin help page
-* version 4.9.17
+* version 5.3.0
 */ 
 
 function _wppa_page_help() {
@@ -56,8 +56,12 @@ global $wppa_revno;
 			<li><?php _e('If you want to do it manually, follow the next steps:', 'wppa'); ?></li>
 		</ul>
         <ol class="wppa-help-ol">
-			<li><?php _e('Unzip and upload the wppa plugin folder to', 'wppa'); ?> <tt>wp-content/plugins/</tt></li>
-			<li><?php _e('Make sure that the folder', 'wppa'); ?> <tt>wp-content/uploads/</tt> <?php _e('exists and is writable by the server (CHMOD 755)', 'wppa'); ?></li>
+		<?php $temp = wp_upload_dir();
+				$ud = $temp['basedir'];
+				$ud = str_replace(WPPA_ABSPATH, '', $ud);
+				?>
+			<li><?php _e('Unzip and upload the wppa plugin folder to', 'wppa'); ?> <tt>...<?php echo str_replace(home_url(), '', plugins_url()) ?></tt></li>
+			<li><?php _e('Make sure that the folder', 'wppa'); ?> <tt>.../<?php echo $ud ?></tt> <?php _e('exists and is writable by the server (CHMOD 755)', 'wppa'); ?></li>
 			<li><?php _e('Activate the plugin in WP Admin -> Plugins.', 'wppa'); ?></li>
 		</ol>
 

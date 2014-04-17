@@ -3,9 +3,11 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 5.2.21
+* Version 5.3.0
 *
 */
+
+if ( ! defined( 'ABSPATH' ) ) die( "Can't load this file directly" );
 
 function _wppa_page_options() {
 global $wpdb;
@@ -24,7 +26,7 @@ global $no_default;
 			
 
 	// Initialize
-	wppa_set_defaults();
+	wppa_initialize_runtime( true );
 	$options_error = false;
 	
 	// Things that wppa-admin-scripts.js needs to know
@@ -47,8 +49,8 @@ global $no_default;
 							
 			// Must be here
 			case 'wppa_moveup':
-				if ( get_option('wppa_split_namedesc') == 'yes' ) {
-					$sequence = get_option('wppa_slide_order_split');
+				if ( wppa_switch('wppa_split_namedesc') ) {
+					$sequence = $wppa_opt['wppa_slide_order_split'];
 					$indices = explode(',', $sequence);
 					$temp = $indices[$sub];
 					$indices[$sub] = $indices[$sub - '1'];
@@ -56,7 +58,7 @@ global $no_default;
 					wppa_update_option('wppa_slide_order_split', implode(',', $indices));
 				}
 				else {
-					$sequence = get_option('wppa_slide_order');
+					$sequence = $wppa_opt['wppa_slide_order'];
 					$indices = explode(',', $sequence);
 					$temp = $indices[$sub];
 					$indices[$sub] = $indices[$sub - '1'];
@@ -74,7 +76,7 @@ global $no_default;
 				break;
 			// Must be here
 			case 'wppa_load_skin':
-				$fname = get_option('wppa_skinfile');
+				$fname = $wppa_opt['wppa_skinfile'];
 
 				if ($fname == 'restore') {
 					if (wppa_restore_settings(WPPA_DEPOT_PATH.'/settings.bak', 'backup')) {
@@ -124,6 +126,27 @@ global $no_default;
 				}
 				break;
 
+			case 'wppa_watermark_font_upload':
+				if ( isset($_FILES['file_2']) && $_FILES['file_2']['error'] != 4 ) { // Expected a fileupload for a watermark font file
+					$file = $_FILES['file_2'];
+					if ( $file['error'] ) {
+						wppa_error_message(sprintf(__('Upload error %s', 'wppa'), $file['error']));
+					} 
+					else {
+						if ( substr($file['name'], -4) != '.ttf' ) {
+							wppa_error_message(sprintf(__('Uploaded file %s is not a .ttf file', 'wppa'), $file['name']).' (Type='.$file['type'].').');
+						}
+						else {
+							copy($file['tmp_name'], WPPA_UPLOAD_PATH . '/fonts/' . basename($file['name']));
+							wppa_err_alert(sprintf(__('Upload of %s done', 'wppa'), basename($file['name'])));
+						}
+					}
+				}
+				else {
+					wppa_error_message(__('No file selected or error on upload', 'wppa'));
+				}
+				break;
+
 			case 'wppa_cdn_service_update':
 				update_option('wppa_cdn_service_update', 'yes');
 				break;
@@ -142,7 +165,7 @@ global $no_default;
 	} // wppa-settings-submit
 	
 	// See if a cloudinary upload is pending
-	$need_cloud = get_option('wppa_cdn_service_update', 'no') == 'yes'; 
+	$need_cloud = wppa_switch( 'wppa_cdn_service_update' ); 
 	global $blog_id;
 	if ( $need_cloud ) { 
 		switch ( wppa_cdn() ) {
@@ -162,7 +185,7 @@ global $no_default;
 				}
 				else {
 					$count = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `".WPPA_PHOTOS."` WHERE `id` > %s", $last));
-					wppa_update_message('Uploading to Cloudinary cloud name: '.get_option('wppa_cdn_cloud_name').'. '.$count.' images to go.');
+					wppa_update_message('Uploading to Cloudinary cloud name: '.$wppa_opt['wppa_cdn_cloud_name'].'. '.$count.' images to go.');
 					$present_at_cloudinary = wppa_get_present_at_cloudinary_a();
 
 					if ( $photos ) foreach ( $photos as $photo ) {
@@ -241,7 +264,7 @@ global $no_default;
 		}
 		
 		// Blacklist
-		$blacklist_plugins = array('performance-optimization-order-styles-and-javascript/order-styles-js.php', 'wp-ultra-simple-paypal-shopping-cart/wp_ultra_simple_shopping_cart.php', 'cachify/cachify.php', 'wp-deferred-javascripts/wp-deferred-javascripts.php');
+		$blacklist_plugins = array('wp-fluid-images/plugin.php', 'performance-optimization-order-styles-and-javascript/order-styles-js.php', 'wp-ultra-simple-paypal-shopping-cart/wp_ultra_simple_shopping_cart.php', 'cachify/cachify.php', 'wp-deferred-javascripts/wp-deferred-javascripts.php');
 		$plugins = get_option('active_plugins');
 		$matches = array_intersect($blacklist_plugins, $plugins);
 		foreach ( $matches as $bad ) {
@@ -269,6 +292,7 @@ global $no_default;
 		if ( get_option( 'wppa_remove_from_photodesc_status' ) 		&& get_option( 'wppa_remove_from_photodesc_user', 	wppa_get_user() == wppa_get_user() ) ) wppa_warning_message( __( 'Removing from photo description needs completion. See Table VIII', 'wppa' ) );
 		if ( get_option( 'wppa_remove_file_extensions_status' ) 	&& get_option( 'wppa_remove_file_extensions_user', 	wppa_get_user() == wppa_get_user() ) ) wppa_warning_message( __( 'Removing file extensions needs completion. See Table VIII', 'wppa' ) );
 		if ( get_option( 'wppa_regen_thumbs_status' ) 				&& get_option( 'wppa_regen_thumbs_user', 			wppa_get_user() == wppa_get_user() ) ) wppa_warning_message( __( 'Regenerating the Thumbnails needs completion. See Table VIII', 'wppa' ) );
+		if ( get_option( 'wppa_rerate_status' ) 					&& get_option( 'wppa_rerate_user', 					wppa_get_user() == wppa_get_user() ) ) wppa_warning_message( __( 'Rerating needs completion. See Table VIII', 'wppa' ) );
 
 ?>
 		<!--<br /><a href="javascript:window.print();"><?php //_e('Print settings', 'wppa') ?></a><br />-->
@@ -2360,7 +2384,7 @@ global $no_default;
 							$name = __('Run wpautop on description', 'wppa');
 							$desc = __('Adds &lt;p> and &lt;br> tags in fullsize descriptions.', 'wppa');
 							$help = '';
-							$slug = 'wppa_run_wppautop_on_desc';
+							$slug = 'wppa_run_wpautop_on_desc';
 							$html = wppa_checkbox($slug);
 							wppa_setting($slug, '11', $name, $desc, $html, $help);
 							
@@ -3233,7 +3257,7 @@ global $no_default;
 							$query = "SELECT ID, post_title, post_content, post_parent FROM " . $wpdb->posts . " WHERE post_type = 'page' AND post_status = 'publish' ORDER BY post_title ASC";
 							$pages = $wpdb->get_results ($query, ARRAY_A);
 							if ($pages) {
-								if ( $wppa_opt['wppa_hier_pagesel'] ) $pages = wppa_add_parents($pages);
+								if ( wppa_switch('wppa_hier_pagesel') ) $pages = wppa_add_parents($pages);
 								else {	// Just translate
 									foreach ( array_keys($pages) as $index ) {
 										$pages[$index]['post_title'] = __(stripslashes($pages[$index]['post_title']));
@@ -3259,6 +3283,9 @@ global $no_default;
 								$options_page[] = __('--- No page to link to (yet) ---', 'wppa');
 								$values_page[] = '0';
 							}
+							
+							$options_page_auto = $options_page;
+							$options_page_auto[0] = __('--- Will be auto created ---', 'wppa');
 
 							wppa_setting_subheader('A', '4', __('Links from images in WPPA+ Widgets', 'wppa'));
 							
@@ -3272,16 +3299,15 @@ global $no_default;
 							$slug3 = 'wppa_potd_blank';
 							$slug4 = 'wppa_potdwidget_overrule';
 							$slug = array($slug1, $slug2, $slug3, $slug4);
-							$onchange = 'wppaCheckPotdLink(); wppaCheckLinkPageErr(\'widget\');';
+							$onchange = 'wppaCheckPotdLink();';
 							$html1 = wppa_select($slug1, $options_linktype_potd_widget, $values_linktype_potd_widget, $onchange);
 							$class = 'wppa_potdlp';
-							$onchange = 'wppaCheckLinkPageErr(\'widget\');';
-							$html2 = wppa_select($slug2, $options_page, $values_page, $onchange, $class, true);
+							$html2 = wppa_select($slug2, $options_page_auto, $values_page, '', $class);
 							$class = 'wppa_potdlb';
 							$html3 = wppa_checkbox($slug3, '', $class);
 							$html4 = wppa_checkbox($slug4);
 							$htmlerr = wppa_htmlerr('widget');
-							$html = array($html1, $htmlerr.$html2, $html3, $html4);
+							$html = array($html1, $html2, $html3, $html4);
 							wppa_setting($slug, '1a,b,c,d', $name, $desc, $html, $help);
 							
 							$name = __('SlideWidget', 'wppa');
@@ -3293,16 +3319,15 @@ global $no_default;
 							$slug3 = 'wppa_sswidget_blank';
 							$slug4 = 'wppa_sswidget_overrule';
 							$slug = array($slug1, $slug2, $slug3, $slug4);
-							$onchange = 'wppaCheckSlideOnlyLink(); wppaCheckLinkPageErr(\'slideonly_widget\');';
+							$onchange = 'wppaCheckSlideOnlyLink();';
 							$html1 = wppa_select($slug1, $options_linktype_ss_widget, $values_linktype_ss_widget, $onchange);
 							$class = 'wppa_solp';
-							$onchange = 'wppaCheckLinkPageErr(\'slideonly_widget\');';
-							$html2 = wppa_select($slug2, $options_page, $values_page, $onchange, $class, true);
+							$onchange = '';
+							$html2 = wppa_select($slug2, $options_page_auto, $values_page, $onchange, $class);
 							$class = 'wppa_solb';
 							$html3 = wppa_checkbox($slug3, '', $class);
 							$html4 = wppa_checkbox($slug4);
-							$htmlerr = wppa_htmlerr('slideonly_widget');
-							$html = array($html1, $htmlerr.$html2, $html3, $html4);
+							$html = array($html1, $html2, $html3, $html4);
 							wppa_setting($slug, '2a,b,c,d', $name, $desc, $html, $help);
 							
 							$name = __('Album widget', 'wppa');
@@ -3314,7 +3339,7 @@ global $no_default;
 							$slug3 = 'wppa_album_widget_blank';
 						//	$slug4 = 'wppa_album_widget_overrule';	// useless
 							$slug = array($slug1, $slug2, $slug3);
-							$onchange = 'wppaCheckAlbumWidgetLink(); wppaCheckLinkPageErr(\'album_widget\');';
+							$onchange = 'wppaCheckAlbumWidgetLink();';
 							$options_linktype_album_widget = array(
 								__('subalbums and thumbnails.', 'wppa'), 
 								__('slideshow.', 'wppa'),
@@ -3329,13 +3354,12 @@ global $no_default;
 							);
 							$html1 = wppa_select($slug1, $options_linktype_album_widget, $values_linktype_album_widget, $onchange);
 							$class = 'wppa_awlp';
-							$onchange = 'wppaCheckLinkPageErr(\'album_widget\');';
-							$html2 = wppa_select($slug2, $options_page, $values_page, $onchange, $class, true);
+							$onchange = '';
+							$html2 = wppa_select($slug2, $options_page_auto, $values_page, $onchange, $class);
 							$class = 'wppa_awlb';
 							$html3 = wppa_checkbox($slug3, '', $class);
 							$html4 = ''; // wppa_checkbox($slug4);
-							$htmlerr = wppa_htmlerr('album_widget');
-							$html = array($html1, $htmlerr.$html2, $html3, $html4);
+							$html = array($html1, $html2, $html3, $html4);
 							wppa_setting($slug, '3a,b,c', $name, $desc, $html, $help);
 
 							$name = __('ThumbnailWidget', 'wppa');
@@ -3347,16 +3371,15 @@ global $no_default;
 							$slug3 = 'wppa_thumbnail_widget_blank';
 							$slug4 = 'wppa_thumbnail_widget_overrule';
 							$slug = array($slug1, $slug2, $slug3, $slug4);
-							$onchange = 'wppaCheckThumbnailWLink(); wppaCheckLinkPageErr(\'thumbnail_widget\');';
+							$onchange = 'wppaCheckThumbnailWLink();';
 							$html1 = wppa_select($slug1, $options_linktype, $values_linktype, $onchange);
 							$class = 'wppa_tnlp';
-							$onchange = 'wppaCheckLinkPageErr(\'thumbnail_widget\');';
-							$html2 = wppa_select($slug2, $options_page, $values_page, $onchange, $class, true);
+							$onchange = '';
+							$html2 = wppa_select($slug2, $options_page_auto, $values_page, $onchange, $class);
 							$class = 'wppa_tnlb';
 							$html3 = wppa_checkbox($slug3, '', $class);
 							$html4 = wppa_checkbox($slug4);
-							$htmlerr = wppa_htmlerr('thumbnail_widget');
-							$html = array($html1, $htmlerr.$html2, $html3, $html4);
+							$html = array($html1, $html2, $html3, $html4);
 							wppa_setting($slug, '4a,b,c,d', $name, $desc, $html, $help);
 
 							$name = __('TopTenWidget', 'wppa');
@@ -3368,16 +3391,15 @@ global $no_default;
 							$slug3 = 'wppa_topten_blank';
 							$slug4 = 'wppa_topten_overrule';
 							$slug = array($slug1, $slug2, $slug3, $slug4);
-							$onchange = 'wppaCheckTopTenLink(); wppaCheckLinkPageErr(\'topten_widget\');';
+							$onchange = 'wppaCheckTopTenLink();';
 							$html1 = wppa_select($slug1, $options_linktype, $values_linktype, $onchange);
 							$class = 'wppa_ttlp';
-							$onchange = 'wppaCheckLinkPageErr(\'topten_widget\');';
-							$html2 = wppa_select($slug2, $options_page, $values_page, $onchange, $class, true);
+							$onchange = '';
+							$html2 = wppa_select($slug2, $options_page_auto, $values_page, $onchange, $class);
 							$class = 'wppa_ttlb';
 							$html3 = wppa_checkbox($slug3, '', $class);
 							$html4 = wppa_checkbox($slug4);
-							$htmlerr = wppa_htmlerr('topten_widget');
-							$html = array($html1, $htmlerr.$html2, $html3, $html4);
+							$html = array($html1, $html2, $html3, $html4);
 							$class = 'wppa_rating';
 							wppa_setting($slug, '5a,b,c,d', $name, $desc, $html, $help, $class);
 							
@@ -3390,16 +3412,15 @@ global $no_default;
 							$slug3 = 'wppa_lasten_blank';
 							$slug4 = 'wppa_lasten_overrule';
 							$slug = array($slug1, $slug2, $slug3, $slug4);
-							$onchange = 'wppaCheckLasTenLink(); wppaCheckLinkPageErr(\'lasten_widget\');';
+							$onchange = 'wppaCheckLasTenLink();';
 							$html1 = wppa_select($slug1, $options_linktype_lasten, $values_linktype_lasten, $onchange);
 							$class = 'wppa_ltlp';
-							$onchange = 'wppaCheckLinkPageErr(\'lasten_widget\');';
-							$html2 = wppa_select($slug2, $options_page, $values_page, $onchange, $class, true);
+							$onchange = '';
+							$html2 = wppa_select($slug2, $options_page_auto, $values_page, $onchange, $class);
 							$class = 'wppa_ltlb';
 							$html3 = wppa_checkbox($slug3, '', $class);
 							$html4 = wppa_checkbox($slug4);
-							$htmlerr = wppa_htmlerr('lasten_widget');
-							$html = array($html1, $htmlerr.$html2, $html3, $html4);
+							$html = array($html1, $html2, $html3, $html4);
 							wppa_setting($slug, '6a,b,c,d', $name, $desc, $html, $help);
 
 							$name = __('CommentWidget', 'wppa');
@@ -3411,16 +3432,15 @@ global $no_default;
 							$slug3 = 'wppa_comment_blank';
 							$slug4 = 'wppa_comment_overrule';
 							$slug = array($slug1, $slug2, $slug3, $slug4);
-							$onchange = 'wppaCheckCommentLink(); wppaCheckLinkPageErr(\'comment_widget\');';
+							$onchange = 'wppaCheckCommentLink();';
 							$html1 = wppa_select($slug1, $options_linktype, $values_linktype, $onchange);
 							$class = 'wppa_cmlp';
-							$onchange = 'wppaCheckLinkPageErr(\'comment_widget\');';
-							$html2 = wppa_select($slug2, $options_page, $values_page, $onchange, $class, true);
+							$onchange = '';
+							$html2 = wppa_select($slug2, $options_page_auto, $values_page, $onchange, $class);
 							$class = 'wppa_cmlb';
 							$html3 = wppa_checkbox($slug3, '', $class);
 							$html4 = wppa_checkbox($slug4);
-							$htmlerr = wppa_htmlerr('comment_widget');
-							$html = array($html1, $htmlerr.$html2, $html3, $html4);
+							$html = array($html1, $html2, $html3, $html4);
 							wppa_setting($slug, '7a,b,c,d', $name, $desc, $html, $help);
 							
 							$name = __('FeaTenWidget', 'wppa');
@@ -3432,18 +3452,17 @@ global $no_default;
 							$slug3 = 'wppa_featen_blank';
 							$slug4 = 'wppa_featen_overrule';
 							$slug = array($slug1, $slug2, $slug3, $slug4);
-							$onchange = 'wppaCheckFeaTenLink(); wppaCheckLinkPageErr(\'featen_widget\');';
+							$onchange = 'wppaCheckFeaTenLink();';
 							$html1 = wppa_select($slug1, $options_linktype, $values_linktype, $onchange);
 							$class = 'wppa_ftlp';
-							$onchange = 'wppaCheckLinkPageErr(\'featen_widget\');';
-							$html2 = wppa_select($slug2, $options_page, $values_page, $onchange, $class, true);
+							$onchange = '';
+							$html2 = wppa_select($slug2, $options_page_auto, $values_page, $onchange, $class, true);
 							$class = 'wppa_ftlb';
 							$html3 = wppa_checkbox($slug3, '', $class);
 							$html4 = wppa_checkbox($slug4);
-							$htmlerr = wppa_htmlerr('featen_widget');
-							$html = array($html1, $htmlerr.$html2, $html3, $html4);
-							wppa_setting($slug, '8a,b,c,d', $name, $desc, $html, $help);
-
+							$html = array($html1, $html2, $html3, $html4);
+							wppa_setting($slug, '8a,b,c,d', $name, $desc, $html, $help);	
+							
 							wppa_setting_subheader('B', '4', __('Links from other WPPA+ images', 'wppa'));
 							
 							$name = __('Cover Image', 'wppa');
@@ -3624,16 +3643,15 @@ global $no_default;
 							$slug = array($slug1, $slug2, $slug3, $slug4);
 							$opts = array(__('thumbnails', 'wppa'), __('slideshow', 'wppa'));
 							$vals = array('album', 'slide'); 
-							$onchange = 'wppaCheckTagLink(); wppaCheckLinkPageErr(\'tagcloud\');';
+							$onchange = 'wppaCheckTagLink();';
 							$html1 = wppa_select($slug1, $opts, $vals, $onchange);						
 							$class = 'wppa_tglp';
-							$onchange = 'wppaCheckLinkPageErr(\'tagcloud\');';
-							$html2 = wppa_select($slug2, $options_page, $values_page, $onchange, $class, true);
+							$onchange = '';
+							$html2 = wppa_select($slug2, $options_page_auto, $values_page, $onchange, $class);
 							$class = 'wppa_tglb';
 							$html3 = wppa_checkbox($slug3, '', $class);
 							$html4 = '';
-							$htmlerr = wppa_htmlerr('tagcloud');
-							$html = array($html1, $htmlerr.$html2, $html3, $html4);
+							$html = array($html1, $html2, $html3, $html4);
 							wppa_setting($slug, '3a,b,c', $name, $desc, $html, $help);
 
 							$name = __('Multitag Link', 'wppa');
@@ -3647,16 +3665,15 @@ global $no_default;
 							$slug = array($slug1, $slug2, $slug3, $slug4);
 							$opts = array(__('thumbnails', 'wppa'), __('slideshow', 'wppa'));
 							$vals = array('album', 'slide'); 
-							$onchange = 'wppaCheckMTagLink(); wppaCheckLinkPageErr(\'multitag\');';
+							$onchange = 'wppaCheckMTagLink();';
 							$html1 = wppa_select($slug1, $opts, $vals, $onchange);						
 							$class = 'wppa_tglp';
-							$onchange = 'wppaCheckLinkPageErr(\'multitag\');';
-							$html2 = wppa_select($slug2, $options_page, $values_page, $onchange, $class, true);
+							$onchange = '';
+							$html2 = wppa_select($slug2, $options_page_auto, $values_page, $onchange, $class);
 							$class = 'wppa_tglb';
 							$html3 = wppa_checkbox($slug3, '', $class);
 							$html4 = '';
-							$htmlerr = wppa_htmlerr('multitag');
-							$html = array($html1, $htmlerr.$html2, $html3, $html4);
+							$html = array($html1, $html2, $html3, $html4);
 							wppa_setting($slug, '4a,b,c', $name, $desc, $html, $help);
 							
 							$name = __('Super View Landing', 'wppa');
@@ -3668,15 +3685,14 @@ global $no_default;
 							$slug3 = '';
 							$slug4 = '';
 							$slug = array($slug1, $slug2, $slug3, $slug4);
-							$html1 = '';				
+							$html1 = __('Defined by the visitor', 'wppa');				
 							$class = '';
-							$onchange = 'wppaCheckLinkPageErr(\'super_view\');';
-							$html2 = wppa_select($slug2, $options_page, $values_page, $onchange, $class, true);
+							$onchange = '';
+							$html2 = wppa_select($slug2, $options_page_auto, $values_page, $onchange, $class);
 							$class = '';
 							$html3 = '';
 							$html4 = '';
-							$htmlerr = wppa_htmlerr('super_view');
-							$html = array($html1, $htmlerr.$html2, $html3, $html4);
+							$html = array($html1, $html2, $html3, $html4);
 							wppa_setting($slug, '5', $name, $desc, $html, $help);
 
 							$name = __('Uploader Landing', 'wppa');
@@ -3690,14 +3706,48 @@ global $no_default;
 							$slug = array($slug1, $slug2, $slug3, $slug4);
 							$html1 = '';				
 							$class = '';
-							$onchange = 'wppaCheckLinkPageErr(\'upldr_widget\');';
-							$html2 = wppa_select($slug2, $options_page, $values_page, $onchange, $class, true);
+							$html2 = wppa_select($slug2, $options_page_auto, $values_page, $onchange, $class);
 							$class = '';
 							$html3 = '';
 							$html4 = '';
-							$htmlerr = wppa_htmlerr('upldr_widget');
-							$html = array($html1, $htmlerr.$html2, $html3, $html4);
+							$html = array($html1, $html2, $html3, $html4);
 							wppa_setting($slug, '6', $name, $desc, $html, $help);
+
+							$name = __('Bestof Landing', 'wppa');
+							$desc = __('Select the landing page for the BestOf Widget / Box', 'wppa');
+							$help = '';
+							$slug1 = '';
+							$slug2 = 'wppa_bestof_widget_linkpage';
+							wppa_verify_page($slug2);
+							$slug3 = '';
+							$slug4 = '';
+							$slug = array($slug1, $slug2, $slug3, $slug4);
+							$html1 = '';				
+							$class = '';
+							$html2 = wppa_select($slug2, $options_page_auto, $values_page, $onchange, $class);
+							$class = '';
+							$html3 = '';
+							$html4 = '';
+							$html = array($html1, $html2, $html3, $html4);
+							wppa_setting($slug, '7', $name, $desc, $html, $help);
+
+							$name = __('Album navigator Landing', 'wppa');
+							$desc = __('Select the landing page for the Album navigator Widget', 'wppa');
+							$help = '';
+							$slug1 = '';
+							$slug2 = 'wppa_album_navigator_widget_linkpage';
+							wppa_verify_page($slug2);
+							$slug3 = '';
+							$slug4 = '';
+							$slug = array($slug1, $slug2, $slug3, $slug4);
+							$html1 = '';				
+							$class = '';
+							$html2 = wppa_select($slug2, $options_page_auto, $values_page, $onchange, $class);
+							$class = '';
+							$html3 = '';
+							$html4 = '';
+							$html = array($html1, $html2, $html3, $html4);
+							wppa_setting($slug, '8', $name, $desc, $html, $help);
 							
 							?>
 						</tbody>
@@ -4407,7 +4457,20 @@ global $no_default;
 							$html = array($html1, $html2, $html3, $html4);
 							wppa_setting(false, '8', $name, $desc, $html, $help);
 							
+							wppa_update_option('wppa_watermark_file_' . wppa_get_user(), $wppa_opt['wppa_watermark_file'] );
+							wppa_update_option('wppa_watermark_pos_' . wppa_get_user(), $wppa_opt['wppa_watermark_pos'] );
 							
+							$name = __('Watermark all', 'wppa');
+							$desc = __('Apply watermark according to current settings to all photos.', 'wppa');
+							$help = esc_js(__('See Table IX_F for the current watermark settings', 'wppa'));
+							$slug2 = 'wppa_watermark_all';
+							$html1 = '';
+							$html2 = wppa_maintenance_button( $slug2 );
+							$html3 = wppa_status_field( $slug2 );
+							$html4 = wppa_togo_field( $slug2 );
+							$html = array($html1, $html2, $html3, $html4);
+							wppa_setting(false, '9', $name, $desc, $html, $help);
+
 							?>
 						</tbody>
 						<tfoot style="font-weight: bold;" class="wppa_table_8">
@@ -4541,7 +4604,7 @@ global $no_default;
 							wppa_setting($slug, '5', $name, $desc, $html, $help);
 							
 							$name = __('Photo admin page size', 'wppa');
-							$desc = __('The number of photos per page on the Edit Album -> Manage photos and Edit Photos admin pages.', 'wppa');
+							$desc = __('The number of photos per page on the <br/>Edit Album -> Manage photos and Edit Photos admin pages.', 'wppa');
 							$help = '';
 							$slug = 'wppa_photo_admin_pagesize';
 							$options = array( __('--- off ---', 'wppa'), '10', '20', '50', '100', '200');
@@ -4756,9 +4819,10 @@ global $no_default;
 							$opts = array( 	__('Filename', 'wppa'), 
 											__('Filename without extension', 'wppa'), 
 											__('IPTC Tag 2#005 (Graphic name)', 'wppa'),
-											__('IPTC Tag 2#120 (Caption)', 'wppa')											
+											__('IPTC Tag 2#120 (Caption)', 'wppa'),
+											__('No name al all', 'wppa')											
 										);
-							$vals = array( 'filename', 'noext', '2#005', '2#120' );
+							$vals = array( 'filename', 'noext', '2#005', '2#120', 'none' );
 							$html = wppa_select($slug, $opts, $vals);
 							wppa_setting($slug, '13', $name, $desc, $html, $help);
 							
@@ -4785,7 +4849,7 @@ global $no_default;
 							$options[] = __('--- Please select a page ---', 'wppa');
 							$values[] = '0';
 							if ($pages) {
-								if ( $wppa_opt['wppa_hier_pagesel'] ) $pages = wppa_add_parents($pages);
+								if ( wppa_switch('wppa_hier_pagesel') ) $pages = wppa_add_parents($pages);
 								else {	// Just translate
 									foreach ( array_keys($pages) as $index ) {
 										$pages[$index]['post_title'] = __(stripslashes($pages[$index]['post_title']));
@@ -4877,6 +4941,15 @@ global $no_default;
 							$slug = 'wppa_wild_front';
 							$html = wppa_checkbox($slug);
 							wppa_setting($slug, '11', $name, $desc, $html, $help);
+
+							$name = __('Search results display', 'wppa');
+							$desc = __('Select the way the search results should be displayed.', 'wppa');
+							$help = esc_js(__('If you select anything different from "Albums and thumbnails", "Photos only" is assumed (Table IX-E6).'));
+							$slug = 'wppa_search_display_type';
+							$opts = array( __('Albums and thumbnails', 'wppa'), __('Slideshow', 'wppa'), __('Slideonly slideshow', 'wppa') );
+							$vals = array( 'content', 'slide', 'slideonly' );
+							$html = wppa_select( $slug, $opts, $vals);
+							wppa_setting($slug, '12', $name, $desc, $html, $help);
 							}
 							wppa_setting_subheader( 'F', '1', __( 'Watermark related settings', 'wppa' ) );
 							{
@@ -4900,7 +4973,8 @@ global $no_default;
 							$desc = __('The default watermarkfile to be used.', 'wppa');
 							$help = esc_js(__('Watermark files are of type png and reside in', 'wppa') . ' ' . WPPA_UPLOAD_URL . '/watermarks/');
 							$help .= '\n\n'.esc_js(__('A suitable watermarkfile typically consists of a transparent background and a black text or drawing.', 'wppa'));
-							$help .= '\n'.esc_js(__('The watermark image will be overlaying the photo with 80% transparency.', 'wppa'));
+							$help .= '\n'.esc_js(__(sprintf('The watermark image will be overlaying the photo with %s%% transparency.', (100-$wppa_opt['wppa_watermark_opacity'])), 'wppa'));
+							$help .= '\n\n'.esc_js(__('You may also select one of the textual watermark types at the bottom of the selection list.', 'wppa'));
 							$slug = 'wppa_watermark_file';
 							$class = 'wppa_watermark';
 							$html = '<select style="float:left; font-size:11px; height:20px; margin:0 4px 0 0; padding:0; " id="wppa_watermark_file" onchange="wppaAjaxUpdateOptionValue(\'wppa_watermark_file\', this)" >' . wppa_watermark_file_select('default') . '</select>';
@@ -4911,23 +4985,116 @@ global $no_default;
 		
 							$name = __('Upload watermark', 'wppa');
 							$desc = __('Upload a new watermark file', 'wppa');
-							// $help = ''; SAME AS PREVIOUS
+							$help = '';
 							$slug = 'wppa_watermark_upload';
-							$html = '<input id="my_file_element" type="file" name="file_1" style="float:left; height:18px; font-size: 11px;" />';
-							$html .= wppa_doit_button(__('Upload it!', 'wppa'), $slug);
+							$class = 'wppa_watermark';
+							$html = '<input id="my_file_element" type="file" name="file_1" style="float:left; font-size: 11px;" />';
+							$html .= wppa_doit_button(__('Upload watermark image', 'wppa'), $slug, '', '31', '16');
 							wppa_setting(false, '4', $name, $desc, $html, $help, $class);
 													
-							$name = __('Watermark opacity', 'wppa');
-							$desc = __('You can set the intensity of watermarks here.', 'wppa');
+							$name = __('Watermark opacity image', 'wppa');
+							$desc = __('You can set the intensity of image watermarks here.', 'wppa');
 							$help = esc_js(__('The higher the number, the intenser the watermark. Value must be > 0 and <= 100.', 'wppa'));
 							$slug = 'wppa_watermark_opacity';
+							$class = 'wppa_watermark';
 							$html = wppa_input($slug, '50px', '', '%');
 							wppa_setting($slug, '5', $name, $desc, $html, $help, $class);
+
+							$name = __('Textual watermark style', 'wppa');
+							$desc = __('The way the textual watermarks look like', 'wppa');
+							$help = '';
+							$slug = 'wppa_textual_watermark_type';
+							$class = 'wppa_watermark';
+							$sopts = array( __('TV subtitle style', 'wppa'), __('White text on black background', 'wppa'), __('Black text on white background', 'wppa'), __('Reverse TV style (Utopia)', 'wppa'), __('White on transparent background', 'wppa'), __('Black on transparent background', 'wppa') );
+							$svals = array( 'tvstyle', 'whiteonblack', 'blackonwhite', 'utopia', 'white', 'black' );
+							$font = $wppa_opt['wppa_textual_watermark_font'];
+							$onchange = 'wppaCheckFontPreview()';
+							$class = 'wppa_watermark';
+							$html = wppa_select($slug, $sopts, $svals, $onchange);
+							$preview = '<img style="background-color:#777;" id="wm-type-preview" src="" />';
+							wppa_setting($slug, '6', $name, $desc, $html.' '.$preview, $help, $class);
+
+							$name = __('Predefined watermark text', 'wppa');
+							$desc = __('The text to use when --- pre-defined --- is selected.', 'wppa');
+							$help = esc_js(__('You may use the following keywords:', 'wppa'));
+							$help .= '\n'.esc_js(__('w#site, w#owner, w#name, w#filename', 'wppa'));
+							$slug = 'wppa_textual_watermark_text';
+							$class = 'wppa_watermark';
+							$html = wppa_textarea($slug, $name);
+							wppa_setting($slug, '7', $name, $desc, $html, $help, $class);
+							
+							$name = __('Textual watermark font', 'wppa');
+							$desc = __('The font to use with textusl watermarks.', 'wppa');
+							$help = esc_js(__('Except for the system font, are font files of type ttf and reside in', 'wppa') . ' ' . WPPA_UPLOAD_URL . '/fonts/');
+							$slug = 'wppa_textual_watermark_font';
+							$class = 'wppa_watermark';
+							$fopts = array( 'System' );
+							$fvals = array( 'system' );
+							$style = $wppa_opt['wppa_textual_watermark_type'];
+							$fonts = glob( WPPA_UPLOAD_PATH . '/fonts/*.ttf' );
+							sort($fonts);
+							foreach ( $fonts as $font ) {
+								$f = basename($font);
+								$f = preg_replace('/\.[^.]*$/', '', $f);
+								$F = strtoupper(substr($f,0,1)).substr($f,1);
+								$fopts[] = $F;
+								$fvals[] = $f;
+							}
+							$onchange = 'wppaCheckFontPreview()';
+							$class = 'wppa_watermark';
+							$html = wppa_select($slug, $fopts, $fvals, $onchange);
+							$preview = '<img style="background-color:#777;" id="wm-font-preview" src="" />';
+							wppa_setting($slug, '8', $name, $desc, $html.' '.$preview, $help, $class);
+
+							foreach ( array_keys( $sopts ) as $skey ) {
+								foreach ( array_keys( $fopts ) as $fkey ) {
+									wppa_create_textual_watermark_file( array( 'content' => '---preview---', 'font' => $fvals[$fkey], 'text' => $sopts[$skey], 'style' => $svals[$skey], 'filebasename' => $svals[$skey].'-'.$fvals[$fkey] ) );
+									wppa_create_textual_watermark_file( array( 'content' => '---preview---', 'font' => $fvals[$fkey], 'text' => $fopts[$fkey], 'style' => $svals[$skey], 'filebasename' => $fvals[$fkey].'-'.$svals[$skey] ) );
+								}
+							}
+							
+							$name = __('Textual watermark font size', 'wppa');
+							$desc = __('You can set the size of the truetype fonts only.', 'wppa');
+							$help = esc_js(__('System font can have size 1,2,3,4 or 5, in some stoneage fontsize units. Any value > 5 will be treated as 5.', 'wppa'));
+							$help .= '\n\n'.esc_js(__('Truetype fonts can have any positive integer size, if your PHPs GD version is 1, in pixels, in GD2 in points.', 'wppa'));
+							$help .= '\n'.esc_js(__('It is unclear howmany pixels a point is...', 'wppa'));
+							$slug = 'wppa_textual_watermark_size';
+							$class = 'wppa_watermark';
+							$html = wppa_input($slug, '50px', '', 'points');
+							wppa_setting($slug, '9', $name, $desc, $html, $help, $class);
+
+							$name = __('Upload watermark font', 'wppa');
+							$desc = __('Upload a new watermark font file', 'wppa');
+							$help = esc_js(__('Upload truetype fonts (.ttf) only, and test if they work on your server platform.', 'wppa'));
+							$slug = 'wppa_watermark_font_upload';
+							$class = 'wppa_watermark';
+							$html = '<input id="my_file_element" type="file" name="file_2" style="float:left; font-size: 11px;" />';
+							$html .= wppa_doit_button(__('Upload TrueType font', 'wppa'), $slug, '', '31', '16');
+							wppa_setting(false, '9', $name, $desc, $html, $help, $class);
+
+							$name = __('Watermark opacity text', 'wppa');
+							$desc = __('You can set the intensity of a text watermarks here.', 'wppa');
+							$help = esc_js(__('The higher the number, the intenser the watermark. Value must be > 0 and <= 100.', 'wppa'));
+							$slug = 'wppa_watermark_opacity_text';
+							$class = 'wppa_watermark';
+							$html = wppa_input($slug, '50px', '', '%');
+							wppa_setting($slug, '10', $name, $desc, $html, $help, $class);
+							
+							$name = __('Preview', 'wppa');
+							$desc = __('A real life preview. To update: refresh the page.', 'wppa');
+							$help = '';
+							$slug = 'wppa_watermark_preview';
+							$class = 'wppa_watermark';
+							$id = $wpdb->get_var( "SELECT `id` FROM `".WPPA_PHOTOS."` ORDER BY RAND() LIMIT 1" );
+							$tr = floor( 127 * ( 100 - $wppa_opt['wppa_watermark_opacity_text'] ) / 100 );
+							$args = array( 'id' => $id, 'content' => '---predef---', 'pos' => 'cencen', 'url' => true, 'width' => '1000', 'height' => '400', 'transp' => $tr );
+							$html = '<div style="text-align:center; max-width:400px; overflow:hidden; background-image:url('.WPPA_UPLOAD_URL.'/fonts/turkije.jpg);" ><img src="'.wppa_create_textual_watermark_file( $args ).'?ver='.rand(0, 4711).'" /></div><div style="clear:both;"></div>';
+							wppa_setting($slug, '11', $name, $desc, $html, $help, $class);
 							}
 							wppa_setting_subheader( 'G', '1', __( 'Slideshow elements sequence order settings', 'wppa' ) );
 							{
-							if ( get_option('wppa_split_namedesc') == 'yes' ) {
-								$indexopt = get_option('wppa_slide_order_split');
+							if ( wppa_switch('wppa_split_namedesc') ) {
+								$indexopt = $wppa_opt['wppa_slide_order_split'];
 								$indexes  = explode(',', $indexopt);
 								$names    = array(
 									__('StartStop', 'wppa'), 
@@ -4946,18 +5113,18 @@ global $no_default;
 								$enabled  = '<span style="color:green; float:right;">( '.__('Enabled', 'wppa');
 								$disabled = '<span style="color:orange; float:right;">( '.__('Disabled', 'wppa');
 								$descs = array(
-									__('Start/Stop & Slower/Faster navigation bar', 'wppa') . ( $wppa_opt['wppa_show_startstop_navigation'] == 'yes' ? $enabled : $disabled ) . ' II-B1 )</span>',
+									__('Start/Stop & Slower/Faster navigation bar', 'wppa') . ( wppa_switch('wppa_show_startstop_navigation') ? $enabled : $disabled ) . ' II-B1 )</span>',
 									__('The Slide Frame', 'wppa') . '<span style="float:right;">'.__('( Always )', 'wppa').'</span>',
-									__('Photo Name Box', 'wppa') . ( $wppa_opt['wppa_show_full_name'] == 'yes' ? $enabled : $disabled ) .' II-B5 )</span>',
-									__('Photo Description Box', 'wppa') . ( $wppa_opt['wppa_show_full_desc'] == 'yes' ? $enabled : $disabled ) .' II-B6 )</span>',
-									__('Custom Box', 'wppa') . ( $wppa_opt['wppa_custom_on'] == 'yes' ? $enabled : $disabled ).' II-B14 )</span>',
-									__('Rating Bar', 'wppa') . ( $wppa_opt['wppa_rating_on'] == 'yes' ? $enabled : $disabled ).' II-B7 )</span>',
-									__('Film Strip with embedded Start/Stop and Goto functionality', 'wppa') . ( $wppa_opt['wppa_filmstrip'] == 'yes' ? $enabled : $disabled ).' II-B3 )</span>',
-									__('Browse Bar with Photo X of Y counter', 'wppa') . ( $wppa_opt['wppa_show_browse_navigation'] == 'yes' ? $enabled : $disabled ).' II-B2 )</span>',
-									__('Comments Box', 'wppa') . ( $wppa_opt['wppa_show_comments'] == 'yes' ? $enabled : $disabled ).' II-B10 )</span>',
-									__('IPTC box', 'wppa') . ( $wppa_opt['wppa_show_iptc'] == 'yes' ? $enabled : $disabled ).' II-B17 )</span>',
-									__('EXIF box', 'wppa') . ( $wppa_opt['wppa_show_exif'] == 'yes' ? $enabled : $disabled ).' II-B18 )</span>',
-									__('Social media share box', 'wppa') . ( $wppa_opt['wppa_share_on'] == 'yes' ? $enabled : $disabled ).' II-C1 )</span>'
+									__('Photo Name Box', 'wppa') . ( wppa_switch('wppa_show_full_name') ? $enabled : $disabled ) .' II-B5 )</span>',
+									__('Photo Description Box', 'wppa') . ( wppa_switch('wppa_show_full_desc') ? $enabled : $disabled ) .' II-B6 )</span>',
+									__('Custom Box', 'wppa') . ( wppa_switch('wppa_custom_on') ? $enabled : $disabled ).' II-B14 )</span>',
+									__('Rating Bar', 'wppa') . ( wppa_switch('wppa_rating_on') ? $enabled : $disabled ).' II-B7 )</span>',
+									__('Film Strip with embedded Start/Stop and Goto functionality', 'wppa') . ( wppa_switch('wppa_filmstrip') ? $enabled : $disabled ).' II-B3 )</span>',
+									__('Browse Bar with Photo X of Y counter', 'wppa') . ( wppa_switch('wppa_show_browse_navigation') ? $enabled : $disabled ).' II-B2 )</span>',
+									__('Comments Box', 'wppa') . ( wppa_switch('wppa_show_comments') ? $enabled : $disabled ).' II-B10 )</span>',
+									__('IPTC box', 'wppa') . ( wppa_switch('wppa_show_iptc') ? $enabled : $disabled ).' II-B17 )</span>',
+									__('EXIF box', 'wppa') . ( wppa_switch('wppa_show_exif') ? $enabled : $disabled ).' II-B18 )</span>',
+									__('Social media share box', 'wppa') . ( wppa_switch('wppa_share_on') ? $enabled : $disabled ).' II-C1 )</span>'
 									);
 								$i = '0';
 								while ( $i < '12' ) {
@@ -4971,7 +5138,7 @@ global $no_default;
 								}
 							}
 							else {
-								$indexopt = get_option('wppa_slide_order');
+								$indexopt = $wppa_opt['wppa_slide_order'];
 								$indexes  = explode(',', $indexopt);
 								$names    = array(
 									__('StartStop', 'wppa'), 
@@ -4989,17 +5156,17 @@ global $no_default;
 								$enabled  = '<span style="color:green; float:right;">( '.__('Enabled', 'wppa');
 								$disabled = '<span style="color:orange; float:right;">( '.__('Disabled', 'wppa');
 								$descs = array(
-									__('Start/Stop & Slower/Faster navigation bar', 'wppa') . ( $wppa_opt['wppa_show_startstop_navigation'] == 'yes' ? $enabled : $disabled ) . ' II-B1 )</span>',
+									__('Start/Stop & Slower/Faster navigation bar', 'wppa') . ( wppa_switch('wppa_show_startstop_navigation') ? $enabled : $disabled ) . ' II-B1 )</span>',
 									__('The Slide Frame', 'wppa') . '<span style="float:right;">'.__('( Always )', 'wppa').'</span>',
-									__('Photo Name & Description Box', 'wppa') . ( ( $wppa_opt['wppa_show_full_name'] == 'yes' || $wppa_opt['wppa_show_full_desc'] == 'yes' ) ? $enabled : $disabled ) .' II-B5,6 )</span>',
-									__('Custom Box', 'wppa') . ( $wppa_opt['wppa_custom_on'] == 'yes' ? $enabled : $disabled ).' II-B14 )</span>',
-									__('Rating Bar', 'wppa') . ( $wppa_opt['wppa_rating_on'] == 'yes' ? $enabled : $disabled ).' II-B7 )</span>',
-									__('Film Strip with embedded Start/Stop and Goto functionality', 'wppa') . ( $wppa_opt['wppa_filmstrip'] == 'yes' ? $enabled : $disabled ).' II-B3 )</span>',
-									__('Browse Bar with Photo X of Y counter', 'wppa') . ( $wppa_opt['wppa_show_browse_navigation'] == 'yes' ? $enabled : $disabled ).' II-B2 )</span>',
-									__('Comments Box', 'wppa') . ( $wppa_opt['wppa_show_comments'] == 'yes' ? $enabled : $disabled ).' II-B10 )</span>',
-									__('IPTC box', 'wppa') . ( $wppa_opt['wppa_show_iptc'] == 'yes' ? $enabled : $disabled ).' II-B17 )</span>',
-									__('EXIF box', 'wppa') . ( $wppa_opt['wppa_show_exif'] == 'yes' ? $enabled : $disabled ).' II-B18 )</span>',
-									__('Social media share box', 'wppa') . ( $wppa_opt['wppa_share_on'] == 'yes' ? $enabled : $disabled ).' II-C1 )</span>'
+									__('Photo Name & Description Box', 'wppa') . ( ( wppa_switch('wppa_show_full_name') || wppa_switch('wppa_show_full_desc') ) ? $enabled : $disabled ) .' II-B5,6 )</span>',
+									__('Custom Box', 'wppa') . ( wppa_switch('wppa_custom_on') ? $enabled : $disabled ).' II-B14 )</span>',
+									__('Rating Bar', 'wppa') . ( wppa_switch('wppa_rating_on') ? $enabled : $disabled ).' II-B7 )</span>',
+									__('Film Strip with embedded Start/Stop and Goto functionality', 'wppa') . ( wppa_switch('wppa_filmstrip') ? $enabled : $disabled ).' II-B3 )</span>',
+									__('Browse Bar with Photo X of Y counter', 'wppa') . ( wppa_switch('wppa_show_browse_navigation') ? $enabled : $disabled ).' II-B2 )</span>',
+									__('Comments Box', 'wppa') . ( wppa_switch('wppa_show_comments') ? $enabled : $disabled ).' II-B10 )</span>',
+									__('IPTC box', 'wppa') . ( wppa_switch('wppa_show_iptc') ? $enabled : $disabled ).' II-B17 )</span>',
+									__('EXIF box', 'wppa') . ( wppa_switch('wppa_show_exif') ? $enabled : $disabled ).' II-B18 )</span>',
+									__('Social media share box', 'wppa') . ( wppa_switch('wppa_share_on') ? $enabled : $disabled ).' II-C1 )</span>'
 									);
 								$i = '0';
 								while ( $i < '11' ) {
@@ -5065,14 +5232,7 @@ global $no_default;
 							$slug = 'wppa_keep_sync';
 							$html = wppa_checkbox($slug);
 							wppa_setting($slug, '4', $name, $desc, $html, $help);
-/*							
-							$name = __('Remake', 'wppa');
-							$desc = __('Remake the photofiles.', 'wppa');
-							$help = esc_js(__('This action will remake the fullsize images, thumbnail images, and will refresh the iptc and exif data for all photos where the source is found in the corresponding album sub-directory of the source directory.', 'wppa'));
-							$slug = 'wppa_remake';
-							$html = wppa_doit_button('', $slug);
-							wppa_setting(false, '5', $name, $desc, $html, $help);
-*/							
+						
 							$name = __('Remake add', 'wppa');
 							$desc = __('Photos will be added from the source pool', 'wppa');
 							$help = esc_js(__('If checked: If photo files are found in the source directory that do not exist in the corresponding album, they will be added to the album.', 'wppa'));
@@ -5610,6 +5770,11 @@ global $no_default;
 									<td><small><?php _e('The depot directory url.', 'wppa') ?></small></td>
 									<td><?php echo(WPPA_DEPOT_URL) ?></td>
 								</tr>
+								<tr style="color:#333;">
+									<td>WPPA_CONTENT_PATH</td>
+									<td><small><?php _e('The path to wp-content.', 'wppa') ?></small></td>
+									<td><?php echo(WPPA_CONTENT_PATH) ?></td>
+								</tr>
 							</tbody>
 						</table>
 						<p>&nbsp;</p>
@@ -5714,13 +5879,15 @@ global $no_default;
 }
 
 function wppa_input($slug, $width, $minwidth = '', $text = '', $onchange = '') {
+global $wppa_opt;
 
+	$val = isset ( $wppa_opt[$slug] ) ? esc_attr( $wppa_opt[$slug] ) : '';
 	$html = '<input style="float:left; width: '.$width.'; height:20px;';
 	if ($minwidth != '') $html .= ' min-width:'.$minwidth.';';
 	$html .= ' font-size: 11px; margin: 0px; padding: 0px;" type="text" id="'.$slug.'"';
 	if ($onchange != '') $html .= ' onchange="'.$onchange.';wppaAjaxUpdateOptionValue(\''.$slug.'\', this)"';
 	else $html .= ' onchange="wppaAjaxUpdateOptionValue(\''.$slug.'\', this)"';
-	$html .= ' value="'.esc_attr(get_option($slug)).'" />';	// changed stripslashes into esc_attr
+	$html .= ' value="'.$val.'" />';
 	$html .= '<img id="img_'.$slug.'" src="'.wppa_get_imgdir().'star.png" title="'.__('Setting unmodified', 'wppa').'" style="padding:0 4px; float:left; height:16px; width:16px;" />';
 	$html .= '<span style="float:left">'.$text.'</span>';
 	
@@ -5743,12 +5910,13 @@ function wppa_edit($slug, $value, $width = '90%', $minwidth = '', $text = '', $o
 }
 
 function wppa_textarea($slug, $buttonlabel = '') {
+global $wppa_opt;
 
-	if ( get_option('wppa_use_wp_editor') == 'yes' ) {	// New style textarea, use wp_editor
+	if ( wppa_switch('wppa_use_wp_editor') ) {	// New style textarea, use wp_editor
 		$editor_id = str_replace( '_', '', $slug);
 		ob_start();
 			$quicktags_settings = array( 'buttons' => 'strong,em,link,block,ins,ul,ol,li,code,close' );
-			wp_editor( get_option($slug), $editor_id, $settings = array('wpautop' => false, 'media_buttons' => false, 'textarea_rows' => '6', 'textarea_name' => $slug, 'tinymce' => false, 'quicktags' => $quicktags_settings ) );
+			wp_editor( $wppa_opt[$slug], $editor_id, $settings = array('wpautop' => false, 'media_buttons' => false, 'textarea_rows' => '6', 'textarea_name' => $slug, 'tinymce' => false, 'quicktags' => $quicktags_settings ) );
 		$html = ob_get_clean();
 		$blbl = __('Update', 'wppa');
 		if ( $buttonlabel ) $blbl .= ' '.$buttonlabel;
@@ -5757,7 +5925,7 @@ function wppa_textarea($slug, $buttonlabel = '') {
 	}
 	else {
 		$html = '<textarea id="'.$slug.'" style="float:left; width:300px;" onchange="wppaAjaxUpdateOptionValue(\''.$slug.'\', this)" >';
-		$html .= esc_textarea(stripslashes(get_option($slug))); //htmlspecialchars(stripslashes(get_option($slug)));
+		$html .= esc_textarea( stripslashes( $wppa_opt[$slug]));
 		$html .= '</textarea>';
 	
 		$html .= '<img id="img_'.$slug.'" src="'.wppa_get_imgdir().'star.png" title="'.__('Setting unmodified', 'wppa').'" style="padding:0 4px; float:left; height:16px; width:16px;" />';
@@ -5768,7 +5936,7 @@ function wppa_textarea($slug, $buttonlabel = '') {
 function wppa_checkbox($slug, $onchange = '', $class = '') {
 
 	$html = '<input style="float:left; height: 15px; margin: 0px; padding: 0px;" type="checkbox" id="'.$slug.'"'; 
-	if (get_option($slug) == 'yes') $html .= ' checked="checked"';
+	if ( wppa_switch( $slug ) ) $html .= ' checked="checked"';
 	if ($onchange != '') $html .= ' onchange="'.$onchange.';wppaAjaxUpdateOptionCheckBox(\''.$slug.'\', this)"';
 	else $html .= ' onchange="wppaAjaxUpdateOptionCheckBox(\''.$slug.'\', this)"';
 
@@ -5784,7 +5952,7 @@ function wppa_checkbox_warn($slug, $onchange = '', $class = '', $warning) {
 
 	$warning = esc_js(__('Warning!', 'wppa')).'\n\n'.$warning;
 	$html = '<input style="float:left; height: 15px; margin: 0px; padding: 0px;" type="checkbox" id="'.$slug.'"'; 
-	if (get_option($slug) == 'yes') $html .= ' checked="checked"';
+	if ( wppa_switch( $slug ) ) $html .= ' checked="checked"';
 	if ($onchange != '') $html .= ' onchange="alert(\''.$warning.'\'); '.$onchange.';wppaAjaxUpdateOptionCheckBox(\''.$slug.'\', this)"';
 	else $html .= ' onchange="alert(\''.$warning.'\'); wppaAjaxUpdateOptionCheckBox(\''.$slug.'\', this)"';
 
@@ -5801,7 +5969,7 @@ function wppa_checkbox_warn_off($slug, $onchange = '', $class = '', $warning, $i
 	$warning = esc_js(__('Warning!', 'wppa')).'\n\n'.$warning;
 	if ( $is_help) $warning .= '\n\n'.esc_js(__('Please read the help', 'wppa'));
 	$html = '<input style="float:left; height: 15px; margin: 0px; padding: 0px;" type="checkbox" id="'.$slug.'"'; 
-	if (get_option($slug) == 'yes') $html .= ' checked="checked"';
+	if ( wppa_switch( $slug ) ) $html .= ' checked="checked"';
 	if ($onchange != '') $html .= ' onchange="if (!this.checked) alert(\''.$warning.'\'); '.$onchange.';wppaAjaxUpdateOptionCheckBox(\''.$slug.'\', this)"';
 	else $html .= ' onchange="if (!this.checked) alert(\''.$warning.'\'); wppaAjaxUpdateOptionCheckBox(\''.$slug.'\', this)"';
 
@@ -5817,7 +5985,7 @@ function wppa_checkbox_warn_on($slug, $onchange = '', $class = '', $warning) {
 
 	$warning = esc_js(__('Warning!', 'wppa')).'\n\n'.$warning.'\n\n'.esc_js(__('Please read the help', 'wppa'));
 	$html = '<input style="float:left; height: 15px; margin: 0px; padding: 0px;" type="checkbox" id="'.$slug.'"'; 
-	if (get_option($slug) == 'yes') $html .= ' checked="checked"';
+	if ( wppa_switch( $slug ) ) $html .= ' checked="checked"';
 	if ($onchange != '') $html .= ' onchange="if (this.checked) alert(\''.$warning.'\'); '.$onchange.';wppaAjaxUpdateOptionCheckBox(\''.$slug.'\', this)"';
 	else $html .= ' onchange="if (this.checked) alert(\''.$warning.'\'); wppaAjaxUpdateOptionCheckBox(\''.$slug.'\', this)"';
 
@@ -5846,6 +6014,7 @@ function wppa_checkbox_e($slug, $curval, $onchange = '', $class = '', $enabled =
 }
 
 function wppa_select($slug, $options, $values, $onchange = '', $class = '', $first_disable = false, $postaction = '') {
+global $wppa_opt;
 
 	if (!is_array($options)) {
 		$html = __('There are no pages (yet) to link to.', 'wppa');
@@ -5860,7 +6029,7 @@ function wppa_select($slug, $options, $values, $onchange = '', $class = '', $fir
 	if ($class != '') $html .= ' class="'.$class.'"';
 	$html .= '>';
 	
-	$val = get_option($slug);
+	$val = isset ( $wppa_opt[$slug] ) ? $wppa_opt[$slug] : '';
 	$idx = 0;
 	$cnt = count($options);
 	while ($idx < $cnt) {
@@ -5881,9 +6050,9 @@ function wppa_select($slug, $options, $values, $onchange = '', $class = '', $fir
 	return $html;
 }
 
-function wppa_select_e($slug, $curval, $options, $values, $onchange = '', $class = '') {
+function wppa_select_e( $slug, $curval, $options, $values, $onchange = '', $class = '' ) {
 
-	if (!is_array($options)) {
+	if ( ! is_array( $options ) ) {
 		$html = __('There are no pages (yet) to link to.', 'wppa');
 		return $html;
 	}
@@ -5895,7 +6064,7 @@ function wppa_select_e($slug, $curval, $options, $values, $onchange = '', $class
 	if ($class != '') $html .= ' class="'.$class.'"';
 	$html .= '>';
 	
-	$val = $curval; // get_option($slug);
+	$val = $curval;
 	$idx = 0;
 	$cnt = count($options);
 	while ($idx < $cnt) {
@@ -5947,11 +6116,11 @@ global $wppa_opt;
 
 }
 
-function wppa_doit_button( $label = '', $key = '', $sub = '' ) {
+function wppa_doit_button( $label = '', $key = '', $sub = '', $height = '16', $fontsize = '11' ) {
 	if ( $label == '' ) $label = __('Do it!', 'wppa');
 
-	$result = '<input type="submit" class="button-primary" style="float:left; font-size: 11px; height: 16px; margin: 0 4px; padding: 0px;"';
-	$result .= ' name="wppa_settings_submit" value="'.$label.'"';
+	$result = '<input type="submit" class="button-primary" style="float:left; font-size:'.$fontsize.'px; height:'.$height.'px; margin: 0 4px; padding: 0px;"';
+	$result .= ' name="wppa_settings_submit" value="&nbsp;'.$label.'&nbsp;"';
 	$result .= ' onclick="';
 	if ( $key ) $result .= 'document.getElementById(\'wppa-key\').value=\''.$key.'\';';
 	if ( $sub ) $result .= 'document.getElementById(\'wppa-sub\').value=\''.$sub.'\';';

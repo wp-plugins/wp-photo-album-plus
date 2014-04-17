@@ -1,7 +1,7 @@
 /* admin-scripts.js */
 /* Package: wp-photo-album-plus
 /*
-/* Version 5.2.21
+/* Version 5.3.0
 /* Various js routines used in admin pages		
 */
 
@@ -77,6 +77,7 @@ function wppaInitSettings() {
 	wppaCheckCDN();
 	wppaCheckAutoPage();
 	wppaCheckGps();
+	wppaCheckFontPreview();
 	
 	var tab = new Array('O','I','II','III','IV','V','VI','VII','VIII','IX','X','XI','XII');
 	var sub = new Array('A','B','C','D','E','F','G','H','I','J','K');
@@ -153,6 +154,15 @@ function wppaCheckFotomoto() {
 	else {
 		jQuery(".wppa_fotomoto").css('display', 'none');
 	}
+}
+
+function wppaCheckFontPreview() {
+	var font = document.getElementById('wppa_textual_watermark_font').value;
+	var type = document.getElementById('wppa_textual_watermark_type').value;
+	var fsrc = wppaFontDirectory+'wmf'+font+'-'+type+'.png';
+	var tsrc = wppaFontDirectory+'wmf'+type+'-'+font+'.png';
+	jQuery('#wm-font-preview').attr('src', fsrc);
+	jQuery('#wm-type-preview').attr('src', tsrc);
 }
 
 /* Adjust visibility of selection radiobutton if fixed photo is chosen or not */				
@@ -1441,10 +1451,10 @@ function wppaAjaxPopupWindow( slug ) {
 	wnd.document.write('<html>');
 	wnd.document.write('<head>');	
 		// The following is one statement that fixes a bug in opera
-		wnd.document.write(	'<link rel="stylesheet" id="wppa_style-css"  href="'+wppaSiteUrl+'/wp-content/plugins/wp-photo-album-plus/wppa-admin-styles.css?ver='+wppaVersion+'" type="text/css" media="all" />'+
+		wnd.document.write(	'<link rel="stylesheet" id="wppa_style-css"  href="'+wppaWppaUrl+'/wppa-admin-styles.css?ver='+wppaVersion+'" type="text/css" media="all" />'+
 							'<style>body {font-family: sans-serif; font-size: 12px; line-height: 1.4em;}a {color: #21759B;}</style>'+
-							'<script type="text/javascript" src="'+wppaSiteUrl+'/wp-includes/js/jquery/jquery.js?ver='+wppaVersion+'"></script>'+
-							'<script type="text/javascript" src="'+wppaSiteUrl+'/wp-content/plugins/wp-photo-album-plus/wppa-admin-scripts.js?ver='+wppaVersion+'"></script>'+
+							'<script type="text/javascript" src="'+wppaIncludeUrl+'/js/jquery/jquery.js?ver='+wppaVersion+'"></script>'+
+							'<script type="text/javascript" src="'+wppaWppaUrl+'/wppa-admin-scripts.js?ver='+wppaVersion+'"></script>'+
 							'<title>'+name+'</title>'+
 							'<script type="text/javascript">wppaAjaxUrl="'+wppaAjaxUrl+'";</script>');
 	wnd.document.write('</head>');

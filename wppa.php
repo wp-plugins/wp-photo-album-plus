@@ -2,11 +2,14 @@
 /*
 Plugin Name: WP Photo Album Plus
 Description: Easily manage and display your photo albums and slideshows within your WordPress site.
-Version: 5.2.21
+Version: 5.3.0
 Author: J.N. Breetvelt a.k.a OpaJaap
 Author URI: http://wppa.opajaap.nl/
 Plugin URI: http://wordpress.org/extend/plugins/wp-photo-album-plus/
 */
+
+if ( ! defined( 'ABSPATH' ) ) die( "Can't load this file directly" );
+	
 /* See explanation on activation hook in wppa-setup.php */
 register_activation_hook(__FILE__, 'wppa_activate_plugin');
 /* GLOBALS */
@@ -17,11 +20,14 @@ global $wpdb;
 /* when new options are added and when the wppa_setup() routine 
 /* must be called right after update for any other reason.
 */
-global $wppa_revno; 		$wppa_revno = '5221';	
+global $wppa_revno; 		$wppa_revno = '5299';	
 /* This is the api interface version number
 /* It is incremented at any code change.
 */
-global $wppa_api_version; 	$wppa_api_version = '5-2-21-000';
+global $wppa_api_version; 	$wppa_api_version = '5-2-99-001';
+/* start timers */
+global $wppa_starttime; $wppa_starttime = microtime(true);
+global $wppa_loadtime; $wppa_loadtime = - microtime(true);
 
 /* CONSTANTS
 /*
@@ -29,9 +35,6 @@ global $wppa_api_version; 	$wppa_api_version = '5-2-21-000';
 /* PHP_VERSION_ID is available as of PHP 5.2.7, if our 
 /* version is lower than that, then emulate it
 */
-//
-global $wppa_starttime; $wppa_starttime = microtime(true);
-global $wppa_loadtime; $wppa_loadtime = - microtime(true);
 if ( ! defined( 'PHP_VERSION_ID' ) ) {
 	$version = explode( '.', PHP_VERSION );
 	define( 'PHP_VERSION_ID', ( $version[0] * 10000 + $version[1] * 100 + $version[2] ) );
@@ -39,6 +42,7 @@ if ( ! defined( 'PHP_VERSION_ID' ) ) {
 /* To run WPPA+ on a multisite in single site mode, add to wp-config.php: define('WPPA_MULTISITE_GLOBAL', true); */
 if ( ! defined('WPPA_MULTISITE_GLOBAL') ) define ('WPPA_MULTISITE_GLOBAL', false);
 if ( is_multisite() && WPPA_MULTISITE_GLOBAL ) $wppa_prefix = $wpdb->base_prefix; else $wppa_prefix = $wpdb->prefix;
+/* DB Tables */
 define( 'WPPA_ALBUMS',   $wppa_prefix . 'wppa_albums' );
 define( 'WPPA_PHOTOS',   $wppa_prefix . 'wppa_photos' );
 define( 'WPPA_RATING',   $wppa_prefix . 'wppa_rating' );
@@ -46,15 +50,67 @@ define( 'WPPA_COMMENTS', $wppa_prefix . 'wppa_comments' );
 define( 'WPPA_IPTC',	 $wppa_prefix . 'wppa_iptc' );
 define( 'WPPA_EXIF', 	 $wppa_prefix . 'wppa_exif' );
 define( 'WPPA_INDEX', 	 $wppa_prefix . 'wppa_index' );
-																// Standard examples
-define( 'WPPA_FILE', basename( __FILE__ ) );					// wppa.php
-define( 'WPPA_PATH', dirname( __FILE__ ) );						// /.../wp-content/plugins/wp-photo-album-plus
-define( 'WPPA_NAME', basename( dirname( __FILE__ ) ) );			// wp-photo-album-plus
-define( 'WPPA_URL',  site_url() . '/wp-content/plugins/' . WPPA_NAME );			// http://...../wp-photo-album-plus	// plugins_url() does not supply https !!! WP bug
+define( 'WPPA_SESSION',	 $wppa_prefix . 'wppa_session' );
 
-define( 'WPPA_NONCE' , 'wppa-update-check');
+/* Paths and urls */ 																		// Standard examples
+define( 'WPPA_FILE', basename( __FILE__ ) );												// wppa.php
+define( 'WPPA_PATH', dirname( __FILE__ ) );													// /.../wp-content/plugins/wp-photo-album-plus
+define( 'WPPA_NAME', basename( dirname( __FILE__ ) ) );										// wp-photo-album-plus
+define( 'WPPA_URL',  plugins_url() . '/' . WPPA_NAME ); 									// http://.../wp-photo-album-plus
 
-define( 'WPPA_DEBUG', false);	// true: produces success/fale messages during setup and sets debug switch on
+// To fix a problem in Windows local host systems:
+define( 'WPPA_ABSPATH', str_replace( "\\", "/", ABSPATH ) );
+
+// Although i may not use wp constants directly, there is no function that returns the path to wp-content,
+// so, if you changed the location of wp-content, i have to use WP_CONTENT_DIR, because wp-content needs not to be relative to ABSPATH
+// In the normal case i use content_url() with the site_url() part replaced by ABSPATH
+if ( defined( 'WP_CONTENT_DIR' ) ) define( 'WPPA_CONTENT_PATH', WP_CONTENT_DIR );
+else define( 'WPPA_CONTENT_PATH', str_replace(site_url().'/',WPPA_ABSPATH, content_url() ) );	// /.../wp-content
+
+add_action( 'init', 'wppa_init', '7' );
+
+function wppa_init() {
+global $blog_id;
+
+	// Upload ( .../wp-content/uploads ) is always relative to ABSPATH, see http://codex.wordpress.org/Editing_wp-config.php#Moving_wp-content_folder
+	// Assumption: site_url() corresponds with ABSPATH
+	// Our version ( WPPA_UPLOAD ) of the relative part of the path/url to the uploads dir is calculated form wp_upload_dir() by substracting ABSPATH from the uploads basedir
+	$wp_uploaddir = wp_upload_dir();
+	$rel_uploads_path = trim( str_replace( WPPA_ABSPATH, '', str_replace( "\\", "/", $wp_uploaddir['basedir'] ) ), '/' );	// will normally return wp-content/uploads
+	
+	// The depot dir is also relative to ABSPATH but on the same level as uploads		
+	$rel_depot_path = trim( str_replace( WPPA_ABSPATH, '', WPPA_CONTENT_PATH ), '/' );					// will normally return wp-content, but may be empty
+	
+	// For multisite the uploads are in /wp-content/blogs.dir/<blogid>/, so we hope still below ABSPATH
+	$wp_content_multi = trim( str_replace( WPPA_ABSPATH, '', WPPA_CONTENT_PATH ), '/' );
+
+	$debug_multi = false;
+
+	if ( $debug_multi || ( is_multisite() && ! WPPA_MULTISITE_GLOBAL ) ) {
+		define( 'WPPA_UPLOAD', trim( $wp_content_multi.'/blogs.dir/'.$blog_id, '/' ) );					// 'wp-content/blogs.dir/'.$blog_id);
+		define( 'WPPA_UPLOAD_PATH', WPPA_ABSPATH.WPPA_UPLOAD.'/wppa' );
+		define( 'WPPA_UPLOAD_URL', site_url().'/'.WPPA_UPLOAD.'/wppa' );
+		define( 'WPPA_DEPOT', trim( $wp_content_multi.'/blogs.dir/'.$blog_id.'/wppa-depot', '/' ) );	// 'wp-content/blogs.dir/'.$blog_id.'/wppa-depot' );			
+		define( 'WPPA_DEPOT_PATH', WPPA_ABSPATH.WPPA_DEPOT );					
+		define( 'WPPA_DEPOT_URL', site_url().'/'.WPPA_DEPOT );	
+	}
+	else {
+		define( 'WPPA_UPLOAD', $rel_uploads_path ); 													// 'wp-content/uploads');
+		define( 'WPPA_UPLOAD_PATH', WPPA_ABSPATH.WPPA_UPLOAD.'/wppa' );
+		define( 'WPPA_UPLOAD_URL', site_url().'/'.WPPA_UPLOAD.'/wppa' );
+		$user = is_user_logged_in() ? '/'.wppa_get_user() : '';
+		define( 'WPPA_DEPOT', trim( $rel_depot_path.'/wppa-depot'.$user, '/' ) ); 						// 'wp-content/wppa-depot'.$user );
+		define( 'WPPA_DEPOT_PATH', WPPA_ABSPATH.WPPA_DEPOT );
+		define( 'WPPA_DEPOT_URL', site_url().'/'.WPPA_DEPOT );
+	}
+	
+	wppa_mktree( WPPA_UPLOAD_PATH );	// Whatever ( faulty ) path has been calculated, it will be created and not prevent plugin to activate or function
+	wppa_mktree( WPPA_DEPOT_PATH );
+}
+
+define( 'WPPA_NONCE' , 'wppa-update-check' );
+
+define( 'WPPA_DEBUG', false );	// true: produces success/fale messages during setup and sets debug switch on
 
 /* LOAD SIDEBAR WIDGETS */
 require_once 'wppa-potd-widget.php';
@@ -84,12 +140,20 @@ require_once 'wppa-index.php';
 require_once 'wppa-statistics.php';
 require_once 'wppa-wpdb-insert.php';
 require_once 'wppa-users.php';
+require_once 'wppa-watermark.php';
+require_once 'wppa-setup.php';
+require_once 'wppa-session.php';
+require_once 'wppa-source.php';
+require_once 'wppa-items.php';
 
-/* SET UP $wppa[], $wppa_opt[], URL and PATH constants and LANGUAGE */
-add_action('init', 'wppa_initialize_runtime', '100');
+/* SET UP $wppa[], $wppa_opt[], and LANGUAGE */
+add_action( 'init', 'wppa_initialize_runtime', '8' );
 
 /* START SESSION */
-if ( ! session_id() ) @ session_start();
+add_action( 'init', 'wppa_session_start', '9' );
+
+/* END SESSION */
+add_action( 'shutdown', 'wppa_session_end' );
 
 /* DO THE ADMIN/NON ADMIN SPECIFIC STUFF */
 if ( is_admin() ) require_once 'wppa-admin.php';
@@ -130,9 +194,11 @@ function wppa_donate_link($links, $file) {
 } add_filter('plugin_row_meta', 'wppa_donate_link', 10, 2);
 
 /* Load adminbar menu if required */
-add_action('admin_bar_init', 'wppa_admin_bar_init');
+add_action('init', 'wppa_admin_bar_init');
 function wppa_admin_bar_init() {
-	if ( ( is_admin() && get_option('wppa_adminbarmenu_admin') == 'yes' ) || ( ! is_admin() && get_option('wppa_adminbarmenu_frontend') == 'yes' ) ) {
+
+	if ( ( is_admin() && wppa_switch('wppa_adminbarmenu_admin') ) || ( ! is_admin() && wppa_switch('wppa_adminbarmenu_frontend') ) ) {
+
 		if ( current_user_can('wppa_admin') || 
 			 current_user_can('wppa_upload') ||
 			 current_user_can('wppa_import') ||

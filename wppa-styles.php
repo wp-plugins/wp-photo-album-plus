@@ -3,12 +3,11 @@
 /* Package: wp-photo-album-plus
 /*
 /* Various style computation routines
-/* Version 5.2.21
+/* Version 5.3.0
 /*
 */
 
-if ( ! defined( 'ABSPATH' ) )
-    die( "Can't load this file directly" );
+if ( ! defined( 'ABSPATH' ) ) die( "Can't load this file directly" );
 
 // Create dynamic css file
 // This function creates the dynamic css file with styles that depend on the settings.
@@ -233,7 +232,7 @@ global $thumb;
 
 	if (!is_numeric($wppa['fullsize']) || $wppa['fullsize'] < '1') $wppa['fullsize'] = $wppa_opt['wppa_fullsize'];
 
-	$wppa['enlarge'] = $wppa_opt['wppa_enlarge'];
+	$wppa['enlarge'] = wppa_switch('wppa_enlarge');
 
 	wppa_cache_thumb($id);
 
@@ -308,7 +307,7 @@ global $wppa_opt;
 		}
 	}
 	else {
-		if ( $type == 'cover' && $wppa_opt['wppa_coversize_is_height'] && ( $wppa['coverphoto_pos'] == 'top' || $wppa['coverphoto_pos'] == 'bottom' ) ) {
+		if ( $type == 'cover' && wppa_switch('wppa_coversize_is_height') && ( $wppa['coverphoto_pos'] == 'top' || $wppa['coverphoto_pos'] == 'bottom' ) ) {
 			$height = $max_size;
 			$width = round($max_size * $image_attr[0] / $image_attr[1]);
 		}
@@ -333,7 +332,7 @@ global $wppa_opt;
 				$result['style'] .= ' border-width: 0px;';
 			}
 			$result['style'] .= ' width:' . $width . 'px; height:' . $height . 'px;';
-			if ($wppa_opt['wppa_use_cover_opacity'] && !is_feed()) {
+			if (wppa_switch('wppa_use_cover_opacity') && !is_feed()) {
 				$opac = $wppa_opt['wppa_cover_opacity'];
 				$result['style'] .= ' opacity:' . $opac/100 . '; filter:alpha(opacity=' . $opac . ');';
 			}
@@ -385,7 +384,7 @@ global $wppa_opt;
 						$result['margin-bottom'] = $delta;
 					}
 			}
-			if ( $wppa_opt['wppa_use_thumb_opacity'] && !is_feed() ) {
+			if ( wppa_switch('wppa_use_thumb_opacity') && !is_feed() ) {
 				$opac = $wppa_opt['wppa_thumb_opacity'];
 				$result['style'] .= ' opacity:' . $opac/100 . '; filter:alpha(opacity=' . $opac . ');';
 			}

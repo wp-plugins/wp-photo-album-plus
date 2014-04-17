@@ -3,9 +3,11 @@
 * Package: wp-photo-album-plus
 *
 * edit and delete photos
-* version 5.2.19
+* version 5.3.0
 *
 */
+
+if ( ! defined( 'ABSPATH' ) ) die( "Can't load this file directly" );
 
 // Edit photo for owners of the photo(s) only
 function _wppa_edit_photo() {
@@ -140,7 +142,7 @@ global $wppa;
 					  'cenlft' => __('center - left', 'wppa'), 'cencen' => __('center - center', 'wppa'), 'cenrht' => __('center - right', 'wppa'), 
 					  'botlft' => __('bottom - left', 'wppa'), 'botcen' => __('bottom - center', 'wppa'), 'botrht' => __('bottom - right', 'wppa'), );
 		$temp = wppa_get_water_file_and_pos();
-		$wmfile = $temp['file'];
+		$wmfile = $temp['select'];
 		$wmpos = $wms[$temp['pos']];
 		
 		wppa_admin_page_links($page, $pagesize, $count, $link);
@@ -389,7 +391,7 @@ global $wppa;
 										$sp = wppa_get_source_path( $photo['id'] );
 										$ima = getimagesize($sp);
 										echo ' '.__('Source file available.', 'wppa').' ('.$ima['0'].'x'.$ima['1'].')'; ?>
-										<a style="cursor:pointer; font-weight:bold;" onclick="wppaAjaxUpdatePhoto(<?php echo $photo['id'] ?>, 'remake', this)">Remake files</a>
+										<a style="cursor:pointer; font-weight:bold;" onclick="_wppaAjaxUpdatePhoto(<?php echo $photo['id'] ?>, 'remake', this.value)">Remake files</a>
 									<?php } ?>
 								</td>
 							</tr>
@@ -529,15 +531,16 @@ global $wppa;
 								</th>
 								<td>
 									<?php 
-									if ( get_option('wppa_watermark_on') == 'yes' ) { 
-										if ( get_option('wppa_watermark_user') == 'yes' ) {	
+									$user = wppa_get_user();
+									if ( wppa_switch('wppa_watermark_on') ) { 
+										if ( wppa_switch('wppa_watermark_user') || current_user_can('wppa_settings') ) {	
 											echo __('File:','wppa').' ' ?>
-											<select id="wmfsel_<?php echo $photo['id']?>">
+											<select id="wmfsel_<?php echo $photo['id']?>" onchange="wppaAjaxUpdatePhoto(<?php echo $photo['id'] ?>, 'wppa_watermark_file_<?php echo $user ?>', this);" >
 											<?php echo wppa_watermark_file_select() ?>
 											</select>
 											<?php
 											echo '<br />'.__('Pos:', 'wppa').' ' ?>
-											<select id="wmpsel_<?php echo $photo['id']?>">
+											<select id="wmpsel_<?php echo $photo['id']?>" onchange="wppaAjaxUpdatePhoto(<?php echo $photo['id'] ?>, 'wppa_watermark_pos_<?php echo $user ?>', this);" >
 											<?php echo wppa_watermark_pos_select() ?>
 											</select> 
 											<input type="button" class="button-secundary" value="<?php _e('Apply watermark', 'wppa') ?>" onclick="if (confirm('<?php echo esc_js(__('Are you sure? Once applied it can not be removed!', 'wppa')).'\n\n'.esc_js(__('And I do not know if there is already a watermark on this photo', 'wppa') ) ?>')) wppaAjaxApplyWatermark(<?php echo $photo['id'] ?>, document.getElementById('wmfsel_<?php echo $photo['id']?>').value, document.getElementById('wmpsel_<?php echo $photo['id']?>').value)" />

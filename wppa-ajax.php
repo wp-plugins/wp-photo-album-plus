@@ -2,9 +2,12 @@
 /* wppa-ajax.php
 *
 * Functions used in ajax requests
-* version 5.2.21
+* version 5.3.0
 *
 */
+
+if ( ! defined( 'ABSPATH' ) ) die( "Can't load this file directly" );
+
 add_action('wp_ajax_wppa', 'wppa_ajax_callback');
 add_action('wp_ajax_nopriv_wppa', 'wppa_ajax_callback');
 
@@ -341,7 +344,7 @@ global $wppa;
 				if( function_exists('cp_alterPoints') && is_user_logged_in() ) cp_alterPoints(cp_currentUser(), $wppa_opt['wppa_cp_points_rating']);
 			}
 			// Case 3: I will change my previously given vote
-			elseif ( $wppa_opt['wppa_rating_change'] == 'yes' ) {					// Votechanging is allowed
+			elseif ( wppa_switch('wppa_rating_change') ) {					// Votechanging is allowed
 				$iret = $wpdb->query($wpdb->prepare( 'UPDATE `'.WPPA_RATING.'` SET `value` = %s WHERE `photo` = %s AND `user` = %s LIMIT 1', $rating, $photo, $user ) );
 				if ( $iret === false ) {
 					echo '0||103||'.$errtxt;
@@ -349,7 +352,7 @@ global $wppa;
 				}
 			}
 			// Case 4: Add another vote from me
-			elseif ( $wppa_opt['wppa_rating_multi'] == 'yes' ) {					// Rating multi is allowed
+			elseif ( wppa_switch('wppa_rating_multi') ) {					// Rating multi is allowed
 //				$iret = $wpdb->query($wpdb->prepare( 'INSERT INTO `'.WPPA_RATING. '` (`id`, `photo`, `value`, `user`) VALUES (%s, %s, %s, %s)', wppa_nextkey(WPPA_RATING), $photo, $rating, $user ) );
 				$iret = wppa_create_rating_entry( array( 'photo' => $photo, 'value' => $rating, 'user' => $user ) );
 				if ( ! $iret ) {
@@ -442,9 +445,6 @@ global $wppa;
 			// Correct the fact that this is a non-admin operation, if it is
 			if ( is_admin() ) {
 				require_once 'wppa-non-admin.php';
-				foreach(array_keys($wppa_opt) as $s) {
-					if ( $wppa_opt[$s] == 'no' ) $wppa_opt[$s] = false;
-				}
 			}
 			wppa_load_theme();
 			// Register geo shortcode if google-maps-gpx-vieuwer is on board. GPX does it in wp_head(), what is not done in an ajax call
@@ -561,7 +561,7 @@ global $wppa;
 					break;
 				case 'description':
 					$itemname = __('Description', 'wppa');
-					if ( $wppa_opt['wppa_check_balance'] == 'yes' ) {
+					if ( wppa_switch('wppa_check_balance') ) {
 						$value = str_replace(array('<br/>','<br>'), '<br />', $value);
 						if ( balanceTags( $value, true ) != $value ) {
 							echo '||3||'.__('Unbalanced tags in album description!', 'wppa');
@@ -687,7 +687,8 @@ global $wppa;
 			
 			$ext = $wpdb->get_var($wpdb->prepare("SELECT `ext` FROM `".WPPA_PHOTOS."` WHERE `id` = %s", $photo));
 			
-			if ( wppa_add_watermark(wppa_get_photo_path($photo)) ) {
+			wppa_cache_thumb( $photo );
+			if ( wppa_add_watermark( wppa_get_photo_path( $photo ) ) ) {
 				echo '||0||'.__('Watermark applied', 'wppa');
 				exit;
 			}
@@ -707,6 +708,12 @@ global $wppa;
 			if ( ! wp_verify_nonce($nonce, 'wppa_nonce_'.$photo) ) {
 				echo '||0||'.__('You do not have the rights to update photo information', 'wppa');
 				exit;																// Nonce check failed
+			}
+			
+			if ( substr( $item, 0, 20 ) == 'wppa_watermark_file_' || substr( $item, 0, 19 ) == 'wppa_watermark_pos_' ) {
+				wppa_update_option( $item, $value );
+				echo '||0||'.sprintf(__('%s updated to %s.<br/>This applies for all photos currently on this page!', 'wppa'), $item, $value );
+				exit;
 			}
 			
 			switch ( $item ) {
@@ -850,7 +857,7 @@ global $wppa;
 							break;
 						case 'description':
 							$itemname = __('Description', 'wppa');
-							if ( $wppa_opt['wppa_check_balance'] == 'yes' ) {
+							if ( wppa_switch('wppa_check_balance') ) {
 								$value = str_replace(array('<br/>','<br>'), '<br />', $value);
 								if ( balanceTags( $value, true ) != $value ) {
 									echo '||3||'.__('Unbalanced tags in photo description!', 'wppa');
@@ -927,6 +934,9 @@ global $wppa;
 			$alert  = '';			// Init the return string data
 			$wppa['error']  = '0';	//
 			$title  = '';			//
+			
+			// If it is a font family, change all double quotes into single quotes as this destroys much more than you would like
+			if ( strpos( $option, 'wppa_fontfamily_' ) !== false ) $value = str_replace( '"', "'", $value );
 			
 			$option = wppa_decode($option);
 			// Dispatch on option
@@ -1097,6 +1107,9 @@ global $wppa;
 				case 'wppa_watermark_opacity':
 					wppa_ajax_check_range($value, false, '0', '100', __('Watermark opacity', 'wppa'));
 					break;
+				case 'wppa_watermark_opacity_text':
+					wppa_ajax_check_range($value, false, '0', '100', __('Watermark opacity', 'wppa'));
+					break;
 				case 'wppa_ovl_txt_lines':
 					wppa_ajax_check_range($value, 'auto', '0', '24', __('Number of text lines', 'wppa'));
 					break;
@@ -1125,6 +1138,9 @@ global $wppa;
 					break;
 				case 'wppa_jpeg_quality':
 					wppa_ajax_check_range($value, false, '20', '100', __('JPG Image quality', 'wppa'));
+					if ( $wppa_opt['wppa_cdn_service'] == 'cloudinary' && ! $wppa['out'] ) {
+						wppa_delete_derived_from_cloudinary();
+					}
 					break;
 				case 'wppa_imgfact_count':
 					wppa_ajax_check_range($value, false, '2', '24', __('Number of coverphotos', 'wppa'));
@@ -1235,14 +1251,18 @@ global $wppa;
 							}
 						}
 					}
-					wppa_recalculate_ratings();
+					
+				//	wppa_recalculate_ratings();
+					update_option ( 'wppa_rerate_status', 'Required' );
+					$alert .= __('You just changed a setting that requires the recalculation of ratings.', 'wppa');
+					$alert .= ' '.__('Please run the appropriate action in Table VIII.', 'wppa');
+
 					wppa_update_option($option, $value);
 					$wppa['error'] = '0';
-					$alert = '';
 					break;
 					
 				case 'wppa_newphoto_description':
-					if ( $wppa_opt['wppa_check_balance'] == 'yes' && balanceTags( $value, true ) != $value ) {
+					if ( wppa_switch('wppa_check_balance') && balanceTags( $value, true ) != $value ) {
 						$alert = __('Unbalanced tags in photo description!', 'wppa');
 						$wppa['error'] = '1';
 					}
@@ -1301,7 +1321,7 @@ global $wppa;
 				case 'wppa_i_downsize':
 					if ( $value == 'yes' ) { 
 						wppa_update_option('wppa_resize_on_upload', 'yes');
-						if ( get_option('wppa_resize_to') == '0' ) wppa_update_option('wppa_resize_to', '1024x768');
+						if ( $wppa_opt['wppa_resize_to'] == '0' ) wppa_update_option('wppa_resize_to', '1024x768');
 					}
 					if ( $value == 'no' ) {
 						wppa_update_option('wppa_resize_on_upload', 'no');
@@ -1316,13 +1336,8 @@ global $wppa;
 						wppa_update_option('wppa_upload_edit', 'yes');
 						wppa_update_option('wppa_upload_notify', 'yes');
 						wppa_update_option('wppa_grant_an_album', 'yes');
-						$grantparent = get_option('wppa_grant_parent');
+						$grantparent = $wppa_opt['wppa_grant_parent'];
 						if ( ! wppa_album_exists( $grantparent ) ) {
-//							$id = wppa_nextkey(WPPA_ALBUMS);
-//							$iret = $wpdb->query($wpdb->prepare("INSERT INTO `" . WPPA_ALBUMS . 
-//								"` (`id`, `name`, `description`, `a_order`, `a_parent`, `p_order_by`, `main_photo`, `cover_linktype`, `cover_linkpage`, `owner`, `timestamp`, `upload_limit`, `alt_thumbsize`, `default_tags`, `cover_type`, `suba_order_by`) ".
-//								" VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, '', '', '')", 
-//								$id, __('Members', 'wppa'), __('Parent of the member albums', 'wppa'), '0', '-1', '0', '0', 'content', '0', wppa_get_user(), time(), '0/0', '0') );
 							$id = wppa_create_album_entry( array( 'name' => __('Members', 'wppa'), 'description' => __('Parent of the member albums', 'wppa'), 'a_parent' => '-1', 'upload_limit' => '0/0' ) );
 							if ( $id ) {
 								wppa_index_add('album', $id);
@@ -1393,12 +1408,12 @@ global $wppa;
 					break;
 				case 'wppa_i_gpx':
 					if ( $value == 'yes' ) {
-						$custom_content = get_option( 'wppa_custom_content' );
+						$custom_content = $wppa_opt['wppa_custom_content'];
 						if ( strpos( $custom_content, 'w#location' ) === false ) {
 							$custom_content = $custom_content.' w#location';
 							wppa_update_option( 'wppa_custom_content', $custom_content );
 						}
-						if ( $wppa_opt['wppa_custom_on'] == 'no' ) {
+						if ( ! wppa_switch('wppa_custom_on') ) {
 							wppa_update_option( 'wppa_custom_on', 'yes' );
 						}
 						if ( $wppa_opt['wppa_gpx_implementation'] == 'none' ) {
@@ -1408,12 +1423,12 @@ global $wppa;
 					break;
 				case 'wppa_i_fotomoto':
 					if ( $value == 'yes' ) {
-						$custom_content = get_option( 'wppa_custom_content' );
+						$custom_content = $wppa_opt['wppa_custom_content'];
 						if ( strpos( $custom_content, 'w#fotomoto' ) === false ) {
 							$custom_content = 'w#fotomoto '.$custom_content;
 							wppa_update_option( 'wppa_custom_content', $custom_content );
 						}
-						if ( $wppa_opt['wppa_custom_on'] == 'no' ) {
+						if ( ! wppa_switch('wppa_custom_on') ) {
 							wppa_update_option( 'wppa_custom_on', 'yes' );
 						}
 						wppa_update_option( 'wppa_fotomoto_on', 'yes' );
@@ -1462,13 +1477,13 @@ global $wppa;
 				
 				case 'wppa_fotomoto_on':
 					if ( $value == 'yes' ) {
-						$custom_content = get_option( 'wppa_custom_content' );
+						$custom_content = $wppa_opt['wppa_custom_content'];
 						if ( strpos( $custom_content, 'w#fotomoto' ) === false ) {
 							$custom_content = 'w#fotomoto '.$custom_content;
 							wppa_update_option( 'wppa_custom_content', $custom_content );
 							$alert = __('The content of the Custom box has been changed to display the Fotomoto toolbar.', 'wppa').' ';
 						}
-						if ( $wppa_opt['wppa_custom_on'] == 'no' ) {
+						if ( ! wppa_switch('wppa_custom_on') ) {
 							wppa_update_option( 'wppa_custom_on', 'yes' );
 							$alert .= __('The display of the custom box has been enabled', 'wppa');
 						}
@@ -1477,13 +1492,13 @@ global $wppa;
 					
 				case 'wppa_gpx_implementation':
 					if ( $value != 'none' ) {
-						$custom_content = get_option( 'wppa_custom_content' );
+						$custom_content = $wppa_opt['wppa_custom_content'];
 						if ( strpos( $custom_content, 'w#location' ) === false ) {
 							$custom_content = $custom_content.' w#location';
 							wppa_update_option( 'wppa_custom_content', $custom_content );
 							$alert = __('The content of the Custom box has been changed to display maps.', 'wppa').' ';
 						}
-						if ( $wppa_opt['wppa_custom_on'] == 'no' ) {
+						if ( ! wppa_switch('wppa_custom_on') ) {
 							wppa_update_option( 'wppa_custom_on', 'yes' );
 							$alert .= __('The display of the custom box has been enabled', 'wppa');
 						}
@@ -1503,7 +1518,7 @@ global $wppa;
 					break;
 					
 				case 'wppa_errorlog_purge':
-					@ unlink(ABSPATH.'wp-content/wppa-depot/admin/error.log');
+					@ unlink( WPPA_CONTENT_PATH.'/wppa-depot/admin/error.log');
 					break;
 					
 				default:

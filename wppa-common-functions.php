@@ -2,9 +2,11 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 5.2.21
+* version 5.3.0
 *
 */
+
+if ( ! defined( 'ABSPATH' ) ) die( "Can't load this file directly" );
 
 // Initialize globals and option settings
 function wppa_initialize_runtime($force = false) {
@@ -12,20 +14,19 @@ global $wppa;
 global $wppa_opt;
 global $wppa_revno;
 global $wppa_api_version;
-global $blog_id;
 global $wpdb;
 global $wppa_initruntimetime;
-
-//$force = true;	// debug
+global $wppa_defaults;
 
 	$wppa_initruntimetime = - microtime(true);
 
-	if ($force) {
+	if ( $force ) {
 		$wppa = false; 					// destroy existing arrays
 		$wppa_opt = false;
+		delete_option('wppa_cached_options');
 	}
 
-	if (!is_array($wppa)) {
+	if ( ! is_array( $wppa ) ) {
 		$wppa = array (
 			'debug' 					=> false,
 			'revno' 					=> $wppa_revno,				// set in wppa.php
@@ -127,717 +128,26 @@ global $wppa_initruntimetime;
 		);
 	}
 	
-	if ( is_admin() ) {
-		$wppa_opt = get_option('wppa_cached_options_admin', false);
-	}
-	else {
-		$wppa_opt = get_option('wppa_cached_options', false);
-	}
-				
-	if ( ! is_array($wppa_opt) ) {
-		$wppa_opt = array ( 'wppa_revision' 			=> '',
-							'wppa_prevrev'				=> '',
-	
-						// Table 0: Initial setup
-						'wppa_i_responsive'				=> '',
-						'wppa_i_downsize'				=> '',
-						'wppa_i_userupload'				=> '',
-						'wppa_i_rating'					=> '',
-						'wppa_i_comment'				=> '',
-						'wppa_i_share'					=> '',
-						'wppa_i_iptc'					=> '',
-						'wppa_i_exif'					=> '',
-						'wppa_i_gpx'					=> '',
-						'wppa_i_fotomoto'				=> '',
-						'wppa_i_done'					=> '',
-						
-						// Table I: Sizes
-						// A System
-						'wppa_colwidth' 				=> '',	// 1
-						'wppa_resize_on_upload' 		=> '',	// 2
-						'wppa_resize_to'				=> '',	// 3
-						'wppa_min_thumbs' 				=> '',	// 4
-						'wppa_bwidth' 					=> '',	// 5
-						'wppa_bradius' 					=> '',	// 6
-						'wppa_box_spacing'				=> '',	// 7
-						'wppa_pagelinks_max' 			=> '',
-						// B Fullsize
-						'wppa_fullsize' 				=> '',	// 1
-						'wppa_maxheight' 				=> '',	// 2
-						'wppa_enlarge' 					=> '',	// 3
-						'wppa_fullimage_border_width' 	=> '',	// 4
-						'wppa_numbar_max'				=> '',	// 5
-						'wppa_share_size'				=> '',
-						'wppa_mini_treshold'			=> '',
-						'wppa_slideshow_pagesize'		=> '',
-						// C Thumbnails
-						'wppa_thumbsize' 				=> '',	// 1
-						'wppa_thumbsize_alt' 			=> '',	// 1a
-						'wppa_thumb_aspect'				=> '',	// 2
-						'wppa_tf_width' 				=> '',	// 3
-						'wppa_tf_width_alt' 			=> '',	// 3a
-						'wppa_tf_height' 				=> '',	// 4
-						'wppa_tf_height_alt' 			=> '',	// 4a
-						'wppa_tn_margin' 				=> '',	// 5
-						'wppa_thumb_auto' 				=> '',	// 6
-						'wppa_thumb_page_size' 			=> '',	// 7
-						'wppa_popupsize' 				=> '',	// 8
-						'wppa_use_thumbs_if_fit'		=> '',	// 9
-						// D Covers
-						'wppa_max_cover_width'			=> '',	// 1
-						'wppa_text_frame_height'		=> '',	// 2
-						'wppa_smallsize' 				=> '',	// 3
-						'wppa_smallsize_multi'			=> '', 	// 3.1
-						'wppa_coversize_is_height'		=> '',	// 3.9
-						'wppa_album_page_size' 			=> '',	// 4
-						// E Rating & comments
-						'wppa_rating_max'				=> '',	// 1
-						'wppa_rating_prec'				=> '',	// 2
-						'wppa_gravatar_size'			=> '',	// 3
-						'wppa_ratspacing'				=> '',
-						// F Widgets
-						'wppa_topten_count' 			=> '',	// 1
-						'wppa_topten_size' 				=> '',	// 2
-						'wppa_comten_count'			=> '',	// 3
-						'wppa_comten_size'				=> '',	// 4
-						'wppa_featen_count'				=> '',			// Moet nog in settings
-						'wppa_featen_size'				=> '',
-						'wppa_thumbnail_widget_count'	=> '',	// 5
-						'wppa_thumbnail_widget_size'	=> '',	// 6
-						'wppa_lasten_count' 			=> '',	// 1
-						'wppa_lasten_size' 				=> '',	// 2
-						'wppa_album_widget_count'		=> '',
-						'wppa_album_widget_size'		=> '',
-						
-						'wppa_related_count'			=> '',
-
-						// G Overlay
-						'wppa_ovl_txt_lines'			=> '',	// 1
-						'wppa_magnifier'				=> '',	// 2
-						
-						// Table II: Visibility
-						// A Breadcrumb
-						'wppa_show_bread_posts' 			=> '',	// 1a
-						'wppa_show_bread_pages'				=> '', 	// 1b
-						'wppa_bc_on_search'					=> '',	// 2
-						'wppa_bc_on_topten'					=> '',	// 3.0
-						'wppa_bc_on_lasten'					=> '',	// 3.1
-						'wppa_bc_on_comten'					=> '',	// 3.2
-						'wppa_bc_on_featen'					=> '', 	// 3.3
-						'wppa_bc_on_tag'					=> '',	// 3.4
-						'wppa_bc_on_related'				=> '', 	// 3.5
-						'wppa_show_home' 					=> '',	// 4
-						'wppa_show_page' 					=> '',	// 4
-						'wppa_bc_separator' 				=> '',	// 5
-						'wppa_bc_txt' 						=> '',	// 6
-						'wppa_bc_url' 						=> '',	// 7
-						'wppa_pagelink_pos'					=> '', 	// 8
-						'wppa_bc_slide_thumblink'			=> '',	// 9
-						// B Slideshow
-						'wppa_show_startstop_navigation' 	=> '',	// 1
-						'wppa_show_browse_navigation' 		=> '',	// 2
-						'wppa_filmstrip' 					=> '',	// 3
-						'wppa_film_show_glue' 				=> '',	// 4
-						'wppa_show_full_name' 				=> '',	// 5
-						'wppa_show_full_owner'				=> '',	// 5.1
-						'wppa_show_full_desc' 				=> '',	// 6
-						'wppa_hide_when_empty'				=> '',	// 6.1
-						'wppa_rating_on' 					=> '',	// 7
-						'wppa_dislike_mail_every'			=> '',	// 7.1
-						'wppa_dislike_set_pending'			=> '',
-						'wppa_dislike_delete'				=> '',
-						'wppa_dislike_show_count'			=> '',
-						'wppa_rating_display_type'			=> '',	// 8
-						'wppa_show_avg_rating'				=> '',	// 9
-						'wppa_show_comments' 				=> '',	// 10
-						'wppa_comment_gravatar'				=> '',	// 11
-						'wppa_comment_gravatar_url'			=> '',	// 12
-						'wppa_show_bbb'						=> '',	// 13
-						'wppa_show_ubb'						=> '',	// 13
-						'wppa_custom_on' 					=> '',	// 14
-						'wppa_custom_content' 				=> '',	// 15
-						'wppa_show_slideshownumbar'  		=> '',	// 16
-						'wppa_show_iptc'					=> '',	// 17
-						'wppa_show_iptc_open'				=> '',
-						'wppa_show_exif'					=> '',	// 18
-						'wppa_show_exif_open'				=> '',
-						'wppa_copyright_on'					=> '',	// 19
-						'wppa_copyright_notice'				=> '',	// 20
-						'wppa_share_on'						=> '',
-						'wppa_share_hide_when_running' 		=> '',
-						'wppa_share_on_widget'				=> '',
-						'wppa_share_on_thumbs'				=> '',
-						'wppa_share_on_lightbox' 			=> '',
-						'wppa_share_on_mphoto' 				=> '',
-						'wppa_share_qr'						=> '',
-						'wppa_share_facebook'				=> '',
-						'wppa_share_twitter'				=> '',
-						'wppa_share_hyves'					=> '',
-						'wppa_share_google'					=> '',
-						'wppa_share_pinterest'				=> '',
-						'wppa_share_linkedin'				=> '',
-
-						'wppa_facebook_comments'			=> '',
-						'wppa_facebook_like'				=> '',
-						'wppa_facebook_admin_id'			=> '',
-						'wppa_facebook_app_id'				=> '',
-						'wppa_load_facebook_sdk' 			=> '',
-						'wppa_share_single_image'			=> '',
-
-						// C Thumbnails
-						'wppa_thumb_text_name' 				=> '',	// 1
-						'wppa_thumb_text_owner'				=> '',	// 1.1
-						'wppa_thumb_text_desc' 				=> '',	// 2
-						'wppa_thumb_text_rating' 			=> '',	// 3
-						'wppa_popup_text_name' 				=> '',	// 4
-						'wppa_popup_text_desc' 				=> '',	// 5
-						'wppa_popup_text_desc_strip'		=> '',	// 5.1
-						'wppa_popup_text_rating' 			=> '',	// 6
-						'wppa_popup_text_ncomments'			=> '',
-						'wppa_show_rating_count'			=> '',	// 7
-						'wppa_thumb_text_viewcount'			=> '',
-						'wppa_albdesc_on_thumbarea'			=> '',
-						'wppa_albname_on_thumbarea'			=> '',
-
-						// D Covers
-						'wppa_show_cover_text' 				=> '',	// 1
-						'wppa_enable_slideshow' 			=> '',	// 2
-						'wppa_show_slideshowbrowselink' 	=> '',	// 3
-						'wppa_show_viewlink'				=> '',	// 4
-						'wppa_show_treecount'				=> '',
-						'wppa_skip_empty_albums'			=> '',
-						// E Widgets
-						'wppa_show_bbb_widget'				=> '',	// 1
-						'wppa_show_ubb_widget'				=> '',	// 1
-						'wppa_show_albwidget_tooltip'		=> '',
-						// F Overlay
-						'wppa_ovl_close_txt'				=> '',
-						'wppa_ovl_theme'					=> '',
-						'wppa_ovl_slide_name'				=> '',
-						'wppa_ovl_slide_desc'				=> '',
-						'wppa_ovl_thumb_name'				=> '',
-						'wppa_ovl_thumb_desc'				=> '',
-						'wppa_ovl_potd_name'				=> '',
-						'wppa_ovl_potd_desc'				=> '',
-						'wppa_ovl_sphoto_name'				=> '',
-						'wppa_ovl_sphoto_desc'				=> '',
-						'wppa_ovl_mphoto_name'				=> '',
-						'wppa_ovl_mphoto_desc'				=> '',
-						'wppa_ovl_alw_name'					=> '',
-						'wppa_ovl_alw_desc'					=> '',
-						'wppa_ovl_cover_name'				=> '',
-						'wppa_ovl_cover_desc'				=> '',
-						'wppa_show_zoomin'					=> '',
-						'wppa_ovl_show_counter'				=> '',
-
-						// Table III: Backgrounds
-						'wppa_bgcolor_even' 			=> '',
-						'wppa_bcolor_even' 				=> '',
-						'wppa_bgcolor_alt' 				=> '',
-						'wppa_bcolor_alt' 				=> '',
-						'wppa_bgcolor_thumbnail' 		=> '',
-					//	'wppa_bcolor_thumbnail'			=> '',
-						'wppa_bgcolor_nav' 				=> '',
-						'wppa_bcolor_nav' 				=> '',
-						'wppa_bgcolor_namedesc' 		=> '',
-						'wppa_bcolor_namedesc' 			=> '',
-						'wppa_bgcolor_com' 				=> '',
-						'wppa_bcolor_com' 				=> '',
-						'wppa_bgcolor_img'				=> '',
-						'wppa_bcolor_img'				=> '',
-						'wppa_bgcolor_fullimg' 			=> '',
-						'wppa_bcolor_fullimg' 			=> '',
-						'wppa_bgcolor_cus'				=> '',
-						'wppa_bcolor_cus'				=> '',
-						'wppa_bgcolor_numbar'			=> '',
-						'wppa_bcolor_numbar'			=> '',
-						'wppa_bgcolor_numbar_active'	=> '',
-						'wppa_bcolor_numbar_active'	 	=> '',
-						'wppa_bgcolor_iptc'				=> '',
-						'wppa_bcolor_iptc' 				=> '',
-						'wppa_bgcolor_exif'				=> '',
-						'wppa_bcolor_exif' 				=> '',
-						'wppa_bgcolor_share'			=> '',
-						'wppa_bcolor_share' 			=> '',
-						'wppa_bgcolor_upload'			=> '',
-						'wppa_bcolor_upload'			=> '',
-						'wppa_bgcolor_multitag'			=> '',
-						'wppa_bcolor_multitag'			=> '',
-						'wppa_bgcolor_tagcloud'			=> '',
-						'wppa_bcolor_tagcloud'			=> '',
-						'wppa_bgcolor_superview'		=> '',
-						'wppa_bcolor_superview'			=> '',
-						'wppa_bgcolor_search'			=> '',
-						'wppa_bcolor_search'			=> '',
-
-						'wppa_bgcolor_bestof'			=> '',
-						'wppa_bcolor_bestof'			=> '',
-
-						// Table IV: Behaviour
-						// A System
-						'wppa_allow_ajax'				=> '',	// 1
-						'wppa_ajax_non_admin'			=> '',
-						'wppa_use_photo_names_in_urls'	=> '',	// 2
-						'wppa_use_pretty_links'			=> '',
-						'wppa_update_addressline'		=> '',
-						'wppa_render_shortcode_always' 	=> '',
-						'wppa_track_viewcounts'			=> '',
-						'wppa_auto_page'				=> '',
-						'wppa_auto_page_type'			=> '',
-						'wppa_auto_page_links'			=> '',
-						'wppa_defer_javascript' 		=> '',
-						'wppa_inline_css' 				=> '',
-						'wppa_custom_style' 			=> '',
-
-
-						// B Full size and Slideshow
-						'wppa_fullvalign' 				=> '',	// 1
-						'wppa_fullhalign' 				=> '',	// 2
-						'wppa_start_slide' 				=> '',	// 3
-						'wppa_start_slideonly'			=> '',	// 3.1
-						'wppa_animation_type'			=> '',	// 4
-						'wppa_slideshow_timeout'		=> '',	// 5
-						'wppa_animation_speed' 			=> '',	// 6
-						'wppa_slide_pause'				=> '',	// 7
-						'wppa_slide_wrap'				=> '',	// 8
-						'wppa_fulldesc_align'			=> '',	// 9
-						'wppa_clean_pbr'				=> '',	// 10
-						'wppa_run_wppautop_on_desc'		=> '',	// 11
-						'wppa_auto_open_comments'		=> '',
-						'wppa_film_hover_goto'			=> '',
-						'wppa_slide_swipe'				=> '',
-						// C Thumbnail
-						'wppa_list_photos_by' 			=> '',	// 1
-						'wppa_list_photos_desc' 		=> '',	// 2
-						'wppa_thumbtype' 				=> '',	// 3
-						'wppa_thumbphoto_left' 			=> '',	// 4
-						'wppa_valign' 					=> '',	// 5
-						'wppa_use_thumb_opacity' 		=> '',	// 6
-						'wppa_thumb_opacity' 			=> '',	// 7
-						'wppa_use_thumb_popup' 			=> '',	// 8
-						'wppa_align_thumbtext' 			=> '',
-						// D Albums and covers
-						'wppa_list_albums_by' 			=> '',	// 1
-						'wppa_list_albums_desc' 		=> '',	// 2
-						'wppa_coverphoto_pos'			=> '',	// 3
-						'wppa_use_cover_opacity' 		=> '',	// 4
-						'wppa_cover_opacity' 			=> '',	// 5
-						'wppa_cover_type'				=> '',
-						'wppa_imgfact_count'			=> '',
-						// E Rating
-						'wppa_rating_login' 			=> '',	// 1
-						'wppa_rating_change' 			=> '',	// 2
-						'wppa_rating_multi' 			=> '',	// 3
-						'wppa_dislike_value'			=> '',
-//						'wppa_rating_use_ajax'			=> '',	// 4
-						'wppa_next_on_callback'			=> '',	// 5
-						'wppa_star_opacity'				=> '',	// 6
-						'wppa_vote_button_text'			=> '',
-						'wppa_voted_button_text'		=> '',
-						'wppa_vote_thumb'				=> '',
-						'wppa_medal_bronze_when'		=> '',
-						'wppa_medal_silver_when'		=> '',
-						'wppa_medal_gold_when'			=> '',
-						'wppa_medal_color' 				=> '',
-						'wppa_medal_position' 			=> '',
-						
-						// F Comments
-						'wppa_comment_login' 			=> '',	// 1
-						'wppa_comments_desc'			=> '',	// 2
-						'wppa_comment_moderation'		=> '',	// 3
-						'wppa_comment_email_required'	=> '',	// 4
-						'wppa_comment_notify'			=> '',
-						'wppa_comment_notify_added'		=> '',
-						'wppa_comten_alt_display'		=> '',
-						'wppa_comten_alt_thumbsize'		=> '',
-						'wppa_comment_smiley_picker' 	=> '',
-						
-						// G Overlay
-						'wppa_ovl_opacity'				=> '',
-						'wppa_ovl_onclick'				=> '',
-						'wppa_ovl_anim'					=> '',
-						'wppa_ovl_slide' 				=> '',
-						'wppa_ovl_chrome_at_top' 		=> '',
-						'wppa_lightbox_global'			=> '',
-						'wppa_lightbox_global_set' 		=> '',
-
-
-						// Table V: Fonts
-						'wppa_fontfamily_title' 	=> '',
-						'wppa_fontsize_title' 		=> '',
-						'wppa_fontcolor_title' 		=> '',
-						'wppa_fontweight_title'		=> '',
-						'wppa_fontfamily_fulldesc' 	=> '',
-						'wppa_fontsize_fulldesc' 	=> '',
-						'wppa_fontcolor_fulldesc' 	=> '',
-						'wppa_fontweight_fulldesc'	=> '',
-						'wppa_fontfamily_fulltitle' => '',
-						'wppa_fontsize_fulltitle' 	=> '',
-						'wppa_fontcolor_fulltitle' 	=> '',
-						'wppa_fontweight_fulltitle'	=> '',
-						'wppa_fontfamily_nav' 		=> '',
-						'wppa_fontsize_nav' 		=> '',
-						'wppa_fontcolor_nav' 		=> '',
-						'wppa_fontweight_nav'		=> '',
-						'wppa_fontfamily_thumb' 	=> '',
-						'wppa_fontsize_thumb' 		=> '',
-						'wppa_fontcolor_thumb' 		=> '',
-						'wppa_fontweight_thumb'		=> '',
-						'wppa_fontfamily_box' 		=> '',
-						'wppa_fontsize_box' 		=> '',
-						'wppa_fontcolor_box' 		=> '',
-						'wppa_fontweight_box'		=> '',
-						'wppa_fontfamily_numbar' 	=> '',
-						'wppa_fontsize_numbar' 		=> '',
-						'wppa_fontcolor_numbar' 	=> '',
-						'wppa_fontweight_numbar'	=> '',
-						'wppa_fontfamily_numbar_active' 	=> '',
-						'wppa_fontsize_numbar_active' 		=> '',
-						'wppa_fontcolor_numbar_active' 	=> '',
-						'wppa_fontweight_numbar_active'	=> '',
-						
-						'wppa_fontfamily_lightbox'	=> '',
-						'wppa_fontsize_lightbox'	=> '',
-						'wppa_fontcolor_lightbox'	=> '',
-						'wppa_fontweight_lightbox'	=> '',
-						
-						'wppa_fontsize_widget_thumb'	=> '',
-
-						
-						// Table VI: Links
-						'wppa_sphoto_linktype' 				=> '',
-						'wppa_sphoto_linkpage' 				=> '',
-						'wppa_sphoto_blank'					=> '',
-						'wppa_sphoto_overrule'				=> '',
-
-						'wppa_mphoto_linktype' 				=> '',
-						'wppa_mphoto_linkpage' 				=> '',
-						'wppa_mphoto_blank'					=> '',
-						'wppa_mphoto_overrule'				=> '',
-						
-						'wppa_thumb_linktype' 				=> '',
-						'wppa_thumb_linkpage' 				=> '',
-						'wppa_thumb_blank'					=> '',
-						'wppa_thumb_overrule'				=> '',
-						
-						'wppa_topten_widget_linktype' 		=> '',
-						'wppa_topten_widget_linkpage' 		=> '',
-						'wppa_topten_blank'					=> '',
-						'wppa_topten_overrule'				=> '',
-						
-						'wppa_featen_widget_linktype' 		=> '',
-						'wppa_featen_widget_linkpage' 		=> '',
-						'wppa_featen_blank'					=> '',
-						'wppa_featen_overrule'				=> '',
-
-						'wppa_slideonly_widget_linktype' 	=> '',
-						'wppa_slideonly_widget_linkpage' 	=> '',
-						'wppa_sswidget_blank'				=> '',
-						'wppa_sswidget_overrule'			=> '',
-
-						'wppa_widget_linktype' 				=> '',
-						'wppa_widget_linkpage' 				=> '',
-						'wppa_potd_blank'					=> '',
-						'wppa_potdwidget_overrule'			=> '',
-
-						'wppa_coverimg_linktype' 			=> '',
-						'wppa_coverimg_linkpage' 			=> '',
-						'wppa_coverimg_blank'				=> '',
-						'wppa_coverimg_overrule'			=> '',
-
-						'wppa_comment_widget_linktype'		=> '',
-						'wppa_comment_widget_linkpage'		=> '',
-						'wppa_comment_blank'				=> '',
-						'wppa_comment_overrule'				=> '',
-
-						'wppa_slideshow_linktype'			=> '',
-						'wppa_slideshow_linkpage'			=> '',
-						'wppa_slideshow_blank'				=> '',
-						'wppa_slideshow_overrule'			=> '',
-
-						'wppa_thumbnail_widget_linktype'	=> '',
-						'wppa_thumbnail_widget_linkpage'	=> '',
-						'wppa_thumbnail_widget_overrule'	=> '',
-						'wppa_thumbnail_widget_blank'		=> '',
-
-						'wppa_film_linktype'				=> '',
-						
-						'wppa_lasten_widget_linktype' 		=> '',
-						'wppa_lasten_widget_linkpage' 		=> '',
-						'wppa_lasten_blank'					=> '',
-						'wppa_lasten_overrule'				=> '',
-
-						'wppa_art_monkey_link'				=> '',
-						'wppa_art_monkey_popup_link'		=> '',
-						'wppa_artmonkey_use_source'			=> '',
-						'wppa_art_monkey_display' 			=> '',
-						
-						'wppa_album_widget_linktype'		=> '',
-						'wppa_album_widget_linkpage'		=> '',
-						'wppa_album_widget_blank'			=> '',
-
-						'wppa_tagcloud_linktype'			=> '',
-						'wppa_tagcloud_linkpage'			=> '',
-						'wppa_tagcloud_blank'				=> '',
-
-						'wppa_multitag_linktype'			=> '',
-						'wppa_multitag_linkpage'			=> '',
-						'wppa_multitag_blank'				=> '',
-
-						'wppa_super_view_linkpage'			=> '',
-						'wppa_upldr_widget_linkpage' 		=> '',
-						'wppa_bestof_widget_linkpage' 		=> '',
-						'wppa_album_navigator_widget_linkpage' 	=> '',
-						
-						// Table VII: Security
-						// B
-						'wppa_user_upload_login'	=> '',
-						'wppa_owner_only' 			=> '',
-						'wppa_user_upload_on'		=> '',
-						'wppa_upload_moderate'		=> '',
-						'wppa_upload_edit'			=> '',
-						'wppa_upload_notify' 		=> '',
-						'wppa_upload_backend_notify'	=> '',
-						'wppa_upload_one_only' 		=> '',
-						'wppa_memcheck_frontend'	=> '',
-						'wppa_memcheck_admin'		=> '',
-						'wppa_comment_captcha'		=> '',
-						'wppa_spam_maxage'			=> '',
-						'wppa_user_create_on'		=> '',
-						'wppa_user_create_login'	=> '',
-						
-						'wppa_editor_upload_limit_count'		=> '',
-						'wppa_editor_upload_limit_time'			=> '',
-						'wppa_author_upload_limit_count'		=> '',
-						'wppa_author_upload_limit_time'			=> '',
-						'wppa_contributor_upload_limit_count'	=> '',
-						'wppa_contributor_upload_limit_time'	=> '',
-						'wppa_subscriber_upload_limit_count'	=> '',
-						'wppa_subscriber_upload_limit_time'		=> '',
-						'wppa_loggedout_upload_limit_count'		=> '',
-						'wppa_loggedout_upload_limit_time' 		=> '',
-						'wppa_upload_fronend_maxsize' 			=> '',
-						'wppa_void_dups' 						=> '',
-
-
-						
-						// Table VIII: Actions
-						// A Harmless
-						'wppa_setup' 				=> '',
-						'wppa_backup' 				=> '',
-						'wppa_load_skin' 			=> '',
-						'wppa_skinfile' 			=> '',
-						'wppa_regen_thumbs' 				=> '',
-						'wppa_regen_thumbs_skip_one' 	=> '',
-						'wppa_rerate'				=> '',
-						'wppa_cleanup'				=> '',
-						'wppa_recup'				=> '',
-						'wppa_file_system'			=> '',
-						'wppa_blacklist_user' 		=> '',
-						'wppa_un_blacklist_user' 	=> '',
-						'wppa_remake' 				=> '',
-						'wppa_remake_skip_one'		=> '',
-						'wppa_errorlog_purge' 		=> '',
-
-						// B Irreversable
-						'wppa_rating_clear' 		=> '',
-						'wppa_viewcount_clear' 		=> '',
-						'wppa_iptc_clear'			=> '',
-						'wppa_exif_clear'			=> '',
-						'wppa_apply_new_photodesc_all' 	=> '',
-						'wppa_remake_index' 		=> '',
-						'wppa_extend_index'			=> '',
-						'wppa_list_index'			=> '',
-						'wppa_list_index_display_start' => '',
-						'wppa_append_text'			=> '',
-						'wppa_append_to_photodesc' 	=> '',
-						'wppa_remove_text'			=> '',
-						'wppa_remove_from_photodesc'	=> '',
-						'wppa_remove_empty_albums'	=> '',
-
-						// Table IX: Miscellaneous
-						'wppa_check_balance'			=> '',
-						'wppa_arrow_color' 				=> '',
-						'wppa_search_linkpage' 			=> '',
-						'wppa_excl_sep' 				=> '',
-						'wppa_search_tags'				=> '',
-						'wppa_search_cats'				=> '',
-						'wppa_search_comments' 			=> '',
-						'wppa_photos_only'				=> '',	// 3
-						'wppa_indexed_search'			=> '',
-						'wppa_max_search_photos'		=> '',
-						'wppa_max_search_albums'		=> '',
-						'wppa_tags_or_only'				=> '',
-						'wppa_wild_front'				=> '',
-						
-						'wppa_add_shortcode_to_post'	=> '',
-						'wppa_shortcode_to_add'			=> '',
-						
-						'wppa_meta_page'				=> '',	// 9
-						'wppa_meta_all'					=> '',	// 10
-						'wppa_cp_points_comment'		=> '',
-						'wppa_cp_points_rating'			=> '',
-						'wppa_cp_points_upload'			=> '',
-						'wppa_use_scabn'				=> '',
-						'wppa_gpx_implementation' 		=> '',
-						'wppa_map_height' 				=> '',
-						'wppa_map_apikey' 				=> '',
-						'wppa_gpx_shortcode'			=> '',
-
-						'wppa_use_wp_editor'			=> '',	//A 11
-						'wppa_hier_albsel' 				=> '',
-						'wppa_hier_pagesel'				=> '',
-						'wppa_alt_type'					=> '',
-						'wppa_photo_admin_pagesize'		=> '',
-						'wppa_comment_admin_pagesize'	=> '',
-						'wppa_jpeg_quality'				=> '',
-						'wppa_geo_edit' 				=> '',
-						'wppa_auto_continue'			=> '',
-						'wppa_max_execution_time'		=> '',
-						'wppa_adminbarmenu_admin'		=> '',
-						'wppa_adminbarmenu_frontend'	=> '',
-						'wppa_feed_use_thumb'			=> '',
-						'wppa_og_tags_on'				=> '',
-						
-						'wppa_html' 					=> '',
-						'wppa_allow_debug' 				=> '',
-						'wppa_slide_order'				=> '',
-						'wppa_slide_order_split'		=> '',
-						'wppa_swap_namedesc' 			=> '',
-						'wppa_split_namedesc'			=> '',
-						'wppa_max_album_newtime'		=> '',
-						'wppa_max_photo_newtime'		=> '',
-						'wppa_lightbox_name'			=> '',
-						'wppa_filter_priority'			=> '',
-						'wppa_shortcode_priority' 		=> '',
-						'wppa_apply_newphoto_desc'		=> '',
-						'wppa_apply_newphoto_desc_user'	=> '',
-						'wppa_newphoto_description'		=> '',
-						'wppa_upload_limit_count'		=> '',		// 5a
-						'wppa_upload_limit_time'		=> '',		// 5b
-						'wppa_show_album_full'			=> '',
-						'wppa_grant_an_album'			=> '',
-						'wppa_grant_name'				=> '',
-						'wppa_grant_parent'				=> '',
-						'wppa_default_parent' 			=> '',
-						'wppa_max_albums'				=> '',
-						'wppa_alt_is_restricted'		=> '',
-						'wppa_link_is_restricted'		=> '',
-						'wppa_covertype_is_restricted'	=> '',
-						'wppa_porder_restricted'		=> '',
-						
-						
-//						'wppa_strip_file_ext'			=> '',
-						'wppa_newphoto_name_method' 	=> '',
-
-						'wppa_copy_timestamp'			=> '',
-						
-						'wppa_watermark_on'				=> '',
-						'wppa_watermark_user'			=> '',
-						'wppa_watermark_file'			=> '',
-						'wppa_watermark_pos'			=> '',
-						'wppa_watermark_upload'			=> '',
-						'wppa_watermark_opacity'		=> '',
-						'wppa_allow_foreign_shortcodes' => '',
-						'wppa_allow_foreign_shortcodes_thumbs' 	=> '',
-
-						// Photo of the day widget admin
-						'wppa_widgettitle'			=> '',
-						'wppa_widget_linkurl'		=> '',
-						'wppa_widget_linktitle' 	=> '',
-						'wppa_widget_subtitle'		=> '',
-						'wppa_widget_album'			=> '',
-						'wppa_widget_photo'			=> '',
-						'wppa_potd_align' 			=> '',
-						'wppa_widget_method'		=> '',
-						'wppa_widget_period'		=> '',
-						'wppa_widget_width'			=> '',
-						
-						// Topten widget
-						'wppa_toptenwidgettitle'	=> '',
-
-						// Thumbnail widget
-						'wppa_thumbnailwidgettitle'	=> '',
-						
-						// Search widget
-						'wppa_searchwidgettitle'	=> '',
-						
-						// Comment admin
-						'wppa_comadmin_show' 		=> '',
-						'wppa_comadmin_order' 		=> '',
-
-						// QR code settings
-						'wppa_qr_size'				=> '',
-						'wppa_qr_color'				=> '',
-						'wppa_qr_bgcolor'			=> '',
-
-						// H Source file management and import/upload
-						'wppa_keep_source_admin'	=> '',
-						'wppa_keep_source_frontend' => '',
-						'wppa_source_dir'			=> '',
-						'wppa_keep_sync'			=> '',
-						'wppa_remake_add'			=> '',
-						'wppa_save_iptc'			=> '',
-						'wppa_save_exif'			=> '',
-						'wppa_exif_max_array_size'	=> '',
-						'wppa_chgsrc_is_restricted'		=> '',
-						'wppa_newpag_create'			=> '',
-						'wppa_newpag_content'			=> '',
-						'wppa_newpag_type'				=> '',
-						'wppa_newpag_status'			=> '',
-						
-						// J CDN Services
-						'wppa_cdn_service'			=> '',
-						'wppa_cdn_cloud_name'		=> '',
-						'wppa_cdn_api_key'			=> '',
-						'wppa_cdn_api_secret'		=> '',
-						'wppa_cdn_service_update'	=> '',
-						'wppa_delete_all_from_cloudinary' 	=> '',
-						
-						'wppa_fotomoto_on' 			=> '',
-						'wppa_fotomoto_fontsize'	=> '',
-						'wppa_fotomoto_hide_when_running' 	=> '',
-						'wppa_fotomoto_min_width' 	=> ''
-
-
-		);
-		
-		array_walk($wppa_opt, 'wppa_set_options');
-		
-		if ( is_admin() ) {
-			update_option('wppa_cached_options_admin', $wppa_opt);
+	$wppa_opt = get_option('wppa_cached_options', false);
+					
+	if ( ! is_array( $wppa_opt ) ) {
+		wppa_set_defaults();
+		$wppa_opt = $wppa_defaults;
+		foreach ( array_keys( $wppa_opt ) as $option ) {
+			$optval = get_option( $option, 'nil' );
+			if ( $optval !== 'nil' ) {
+				$wppa_opt[$option] = $optval;
+			}
 		}
-		else {
-			update_option('wppa_cached_options', $wppa_opt);
-		}
+		update_option('wppa_cached_options', $wppa_opt);
 	}
 	
-	if (isset($_GET['debug']) && $wppa_opt['wppa_allow_debug']) {
+	if (isset($_GET['debug']) && wppa_switch('wppa_allow_debug')) {
 		$key = $_GET['debug'] ? $_GET['debug'] : E_ALL;
 		$wppa['debug'] = $key;
 	}
 	
 	wppa_load_language();
-	
-	if ( ! defined( 'WPPA_UPLOAD') ) {
-		if ( is_multisite() && ! WPPA_MULTISITE_GLOBAL ) {
-			define( 'WPPA_UPLOAD', 'wp-content/blogs.dir/'.$blog_id);
-			define( 'WPPA_UPLOAD_PATH', ABSPATH.WPPA_UPLOAD.'/wppa');
-			define( 'WPPA_UPLOAD_URL', get_bloginfo('wpurl').'/'.WPPA_UPLOAD.'/wppa');
-			define( 'WPPA_DEPOT', 'wp-content/blogs.dir/'.$blog_id.'/wppa-depot' );			
-			define( 'WPPA_DEPOT_PATH', ABSPATH.WPPA_DEPOT );					
-			define( 'WPPA_DEPOT_URL', get_bloginfo('wpurl').'/'.WPPA_DEPOT );	
-		}
-		else {
-			define( 'WPPA_UPLOAD', 'wp-content/uploads');
-			define( 'WPPA_UPLOAD_PATH', ABSPATH.WPPA_UPLOAD.'/wppa' );
-			define( 'WPPA_UPLOAD_URL', get_bloginfo('wpurl').'/'.WPPA_UPLOAD.'/wppa' );
-			$user = is_user_logged_in() ? '/'.wppa_get_user() : '';
-			define( 'WPPA_DEPOT', 'wp-content/wppa-depot'.$user );
-			define( 'WPPA_DEPOT_PATH', ABSPATH.WPPA_DEPOT );
-			define( 'WPPA_DEPOT_URL', get_bloginfo('wpurl').'/'.WPPA_DEPOT );
-		}
-	}
 	
 	// Delete obsolete spam
 	$spammaxage = $wppa_opt['wppa_spam_maxage'];
@@ -854,7 +164,7 @@ global $wppa_initruntimetime;
 		&& is_user_logged_in() 
 		&& ( current_user_can('wppa_upload') || wppa_switch('wppa_user_upload_on') ) ) {
 			$owner = wppa_get_user('login');
-			$user = wppa_get_user(get_option('wppa_grant_name', 'display'));
+			$user = wppa_get_user( $wppa_opt['wppa_grant_name'] );
 			$albs = $wpdb->get_var($wpdb->prepare( "SELECT COUNT(*) FROM `".WPPA_ALBUMS."` WHERE `owner` = %s", $owner ));
 			if ( ! $albs ) {	// make an album for this user
 //				$id = wppa_nextkey(WPPA_ALBUMS);
@@ -883,29 +193,7 @@ function wppa_get_randseed() {
 	return $randseed;
 }
 
-function wppa_set_options($value, $key) {
-global $wppa_opt;
-
-	if (is_admin()) {	// admin needs the raw data
-		$wppa_opt[$key] = get_option($key);
-	}
-	else {
-		$temp = get_option($key);
-		switch ($temp) {
-			case 'no':
-				$wppa_opt[$key] = false;
-				break;
-			case 'yes':
-				$wppa_opt[$key] = true;
-				break;
-			default:
-				$wppa_opt[$key] = $temp;
-			}	
-	}
-}
-
 function wppa_load_language() {
-//global $wppa_locale;
 global $wppa_lang;
 global $q_config;
 global $wppa;
@@ -952,7 +240,7 @@ global $wppa_opt;
 	echo '<div id="phpinfo" style="width:600px; margin:auto;" >';
 
 		ob_start();
-		if ( $wppa_opt['wppa_allow_debug'] == 'yes' ) phpinfo(-1); else phpinfo(4);
+		if ( wppa_switch('wppa_allow_debug') ) phpinfo(-1); else phpinfo(4);
 		$php = ob_get_clean();
 		$php = preg_replace(	array	(	'@<!DOCTYPE.*?>@siu',
 											'@<html.*?>@siu',
@@ -1175,7 +463,7 @@ function wppa_qtrans($output, $lang = '') {
 
 function wppa_dbg_msg($txt='', $color = 'blue', $force = false, $return = false) {
 global $wppa;
-	if ( $wppa['debug'] || $force || ( is_admin() && WPPA_DEBUG ) ) {
+	if ( $wppa['debug'] || $force || ( is_admin() && WPPA_DEBUG ) || WPPA_DEBUG && $color=='red' ) {
 		$result = '<span style="color:'.$color.';"><small>[WPPA+ dbg msg: '.$txt.']<br /></small></span>';
 		if ( $return ) {
 			return $result;
@@ -1288,7 +576,7 @@ global $wppa_opt;
 	if ( ! $alb ) { // == 'any') {
 	
 		// Administrator has always access OR If all albums are public
-		if (current_user_can('administrator') || get_option('wppa_owner_only', 'no') == 'no') {
+		if ( current_user_can('administrator') || ! wppa_switch('wppa_owner_only') ) {
 			$albs = $wpdb->get_results( "SELECT `id` FROM `".WPPA_ALBUMS."`" );
 			wppa_dbg_q('Q209');
 			if ($albs) return true;
@@ -1324,7 +612,7 @@ global $wppa_opt;
 		if ( current_user_can('administrator') ) return true;
 		
 		// If all albums are public
-		if ( get_option( 'wppa_owner_only', 'no' ) == 'no' ) return true;
+		if ( ! wppa_switch('wppa_owner_only') ) return true;
 		
 		// Find the owner
 		$owner = '';
@@ -1353,15 +641,18 @@ function wppa_make_the_photo_files($file, $image_id, $ext) {
 global $wppa_opt;
 global $wppa;
 global $wpdb;
+global $thumb;
 
 	wppa_dbg_msg('make_the_photo_files called with file='.$file.' image_id='.$image_id.' ext='.$ext);
 
+	wppa_cache_thumb( $image_id );
+	
 	$img_size = getimagesize($file, $info);
 	if ($img_size) {
 		$newimage = wppa_get_photo_path($image_id);
 		wppa_dbg_msg('newimage='.$newimage);
 		
-		if (get_option('wppa_resize_on_upload', 'no') == 'yes') {
+		if ( wppa_switch('wppa_resize_on_upload') ) {
 			require_once('wppa-class-resize.php');
 			// Picture sizes
 			$picx = $img_size[0];
@@ -1406,8 +697,6 @@ global $wpdb;
 			// Create thumbnail...
 			$thumbsize = wppa_get_minisize();
 			wppa_create_thumbnail($newimage, $thumbsize, '' );
-			// and add watermark (optionally) to fullsize image only
-			wppa_add_watermark($newimage);
 		} 
 		else {
 			if (is_admin()) wppa_error_message(__('ERROR: Resized or copied image could not be created.', 'wppa'));
@@ -1470,17 +759,17 @@ global $wppa_opt;
 						'wppa_smallsize'
 						);
 	foreach ( $things as $thing) {
-		$tmp = get_option($thing, 'nil');
-		if ( is_numeric($tmp) && $tmp > $result ) $result = $tmp;
+		$tmp = $wppa_opt[$thing];
+		if ( is_numeric( $tmp ) && $tmp > $result ) $result = $tmp;
 	}
 
-	$temp = get_option('wppa_smallsize', 'nil');
-	if ( $wppa_opt['wppa_coversize_is_height'] ) {
-		$tmp = round($tmp * 4 / 3);		// assume aspectratio 4:3
+	$temp = $wppa_opt['wppa_smallsize'];
+	if ( wppa_switch('wppa_coversize_is_height') ) {
+		$tmp = round( $tmp * 4 / 3 );		// assume aspectratio 4:3
 	}
-	if ( is_numeric($tmp) && $tmp > $result ) $result = $tmp;
+	if ( is_numeric( $tmp ) && $tmp > $result ) $result = $tmp;
 	
-	$result = ceil($result / 25) * 25;
+	$result = ceil( $result / 25 ) * 25;
 	return $result;
 }
 
@@ -1650,6 +939,7 @@ global $wppa_opt;
 
 function wppa_test_for_search() {
 global $wppa;
+global $wppa_opt;
 
 	if ( isset($_REQUEST['wppa-searchstring']) ) {	// wppa+ search
 		$str = $_REQUEST['wppa-searchstring'];
@@ -1679,247 +969,29 @@ global $wppa;
 		$wppa['searchstring'] = $str;
 		if ( $wppa['searchstring'] && $wppa['occur'] == '1' && ! $wppa['in_widget'] ) $wppa['src'] = true;
 		else $wppa['src'] = false;
-		return $str;
+		$result = $str;
 	}
 	else {
-		return $str;
+		$result = $str;
 	}
-}
 
-function wppa_get_water_file_and_pos() {
-global $wppa_opt;
-
-	$result['file'] = $wppa_opt['wppa_watermark_file'];	// default
-	$result['pos'] = $wppa_opt['wppa_watermark_pos'];	// default
-
-	$user = wppa_get_user();
-	
-	if ( get_option('wppa_watermark_user') == 'yes' || current_user_can('wppa_settings') ) {									// user overrule?
-		if ( isset($_POST['wppa-watermark-file'] ) ) {
-			$result['file'] = $_POST['wppa-watermark-file'];
-			update_option('wppa_watermark_file_' . $user, $_POST['wppa-watermark-file']);
+	if ( $wppa['src'] ) {
+		switch ( $wppa_opt['wppa_search_display_type'] ) {
+			case 'slide':
+				$wppa['is_slide'] = '1';
+				break;
+			case 'slideonly':
+				$wppa['is_slide'] = '1';
+				$wppa['is_slideonly'] = '1';
+				break;
+			default:
+				break;
 		}
-		elseif ( get_option('wppa_watermark_file_' . $user, 'nil') != 'nil' ) {
-			$result['file'] = get_option('wppa_watermark_file_' . $user);
-		}
-		if ( isset($_POST['wppa-watermark-pos'] ) ) {
-			$result['pos'] = $_POST['wppa-watermark-pos'];
-			update_option('wppa_watermark_pos_' . $user, $_POST['wppa-watermark-pos']);
-		}
-		elseif ( get_option('wppa_watermark_pos_' . $user, 'nil') != 'nil' ) {
-			$result['pos'] = get_option('wppa_watermark_pos_' . $user);
-		}
-	}
-	return $result;
-}
-
-	
-function wppa_add_watermark($file) {
-global $wppa_opt;
-
-	// Init
-	if ( get_option('wppa_watermark_on') != 'yes' ) return false;	// Watermarks off
-	
-	// Find the watermark file and location
-	$temp = wppa_get_water_file_and_pos();
-	$waterfile = WPPA_UPLOAD_PATH . '/watermarks/' . $temp['file'];
-	$waterpos = $temp['pos'];										// default
-	
-	if ( basename($waterfile) == '--- none ---' ) {
-		return false;	// No watermark this time
-	}
-	// Open the watermark file
-	$watersize = @getimagesize($waterfile);
-	if ( !is_array($watersize) ) return false;	// Not a valid picture file
-	$waterimage = imagecreatefrompng($waterfile);
-	if ( empty( $waterimage ) or ( !$waterimage ) ) {
-		wppa_dbg_msg('Watermark file '.$waterfile.' not found or corrupt');
-		return false;			// No image
-	}
-	imagealphablending($waterimage, false);
-	imagesavealpha($waterimage, true);
-
-		
-	// Open the photo file
-	$photosize = getimagesize($file);
-	if ( !is_array($photosize) ) {
-		return false;	// Not a valid photo
-	}
-	switch ($photosize[2]) {
-		case 1: $tempimage = imagecreatefromgif($file);
-			$photoimage = imagecreatetruecolor($photosize[0], $photosize[1]);
-			imagecopy($photoimage, $tempimage, 0, 0, 0, 0, $photosize[0], $photosize[1]);
-			break;
-		case 2: $photoimage = imagecreatefromjpeg($file);
-			break;
-		case 3: $photoimage = imagecreatefrompng($file);
-			break;
-	}
-	if ( empty( $photoimage ) or ( !$photoimage ) ) return false; 			// No image
-
-	$ps_x = $photosize[0];
-	$ps_y = $photosize[1];
-	$ws_x = $watersize[0];
-	$ws_y = $watersize[1];
-	$src_x = 0;
-	$src_y = 0;
-	if ( $ws_x > $ps_x ) {
-		$src_x = ($ws_x - $ps_x) / 2;
-		$ws_x = $ps_x;
-	}		
-	if ( $ws_y > $ps_y ) {
-		$src_y = ($ws_y - $ps_y) / 2;
-		$ws_y = $ps_y;
-	}
-	
-	$loy = substr( $waterpos, 0, 3);
-	switch($loy) {
-		case 'top': $dest_y = 0;
-			break;
-		case 'cen': $dest_y = ( $ps_y - $ws_y ) / 2;
-			break;
-		case 'bot': $dest_y = $ps_y - $ws_y;
-			break;
-		default: $dest_y = 0; 	// should never get here
-	}
-	$lox = substr( $waterpos, 3);
-	switch($lox) {
-		case 'lft': $dest_x = 0;
-			break;
-		case 'cen': $dest_x = ( $ps_x - $ws_x ) / 2;
-			break;
-		case 'rht': $dest_x = $ps_x - $ws_x;
-			break;
-		default: $dest_x = 0; 	// should never get here
-	}
-
-	wppa_imagecopymerge_alpha( $photoimage , $waterimage , $dest_x, $dest_y, $src_x, $src_y, $ws_x, $ws_y, intval($wppa_opt['wppa_watermark_opacity']) );
-
-	// Save the result
-	switch ($photosize[2]) {
-		case 1: imagegif($photoimage, $file);
-			break;
-		case 2: imagejpeg($photoimage, $file, $wppa_opt['wppa_jpeg_quality']);
-			break;
-		case 3: imagepng($photoimage, $file, 7);
-			break;
-	}
-
-	// Cleanup
-	imagedestroy($photoimage);
-	imagedestroy($waterimage);
-
-	return true;
-}
-
-
-/**
- * PNG ALPHA CHANNEL SUPPORT for imagecopymerge();
- * This is a function like imagecopymerge but it handle alpha channel well!!!
- **/
-
-// A fix to get a function like imagecopymerge WITH ALPHA SUPPORT
-// Main script by aiden dot mail at freemail dot hu
-// Transformed to imagecopymerge_alpha() by rodrigo dot polo at gmail dot com
-function wppa_imagecopymerge_alpha($dst_im, $src_im, $dst_x, $dst_y, $src_x, $src_y, $src_w, $src_h, $pct){
-    if(!isset($pct)){
-        return false;
-    }
-    $pct /= 100;
-    // Get image width and height
-    $w = imagesx( $src_im );
-    $h = imagesy( $src_im );
-    // Turn alpha blending off
-    imagealphablending( $src_im, false );
-    // Find the most opaque pixel in the image (the one with the smallest alpha value)
-    $minalpha = 127;
-    for( $x = 0; $x < $w; $x++ )
-    for( $y = 0; $y < $h; $y++ ){
-        $alpha = ( imagecolorat( $src_im, $x, $y ) >> 24 ) & 0xFF;
-        if( $alpha < $minalpha ){
-            $minalpha = $alpha;
-        }
-    }
-    //loop through image pixels and modify alpha for each
-    for( $x = 0; $x < $w; $x++ ){
-        for( $y = 0; $y < $h; $y++ ){
-            //get current alpha value (represents the TANSPARENCY!)
-            $colorxy = imagecolorat( $src_im, $x, $y );
-            $alpha = ( $colorxy >> 24 ) & 0xFF;
-            //calculate new alpha
-            if( $minalpha !== 127 ){
-                $alpha = 127 + 127 * $pct * ( $alpha - 127 ) / ( 127 - $minalpha );
-            } else {
-                $alpha += 127 * $pct;
-            }
-            //get the color index with new alpha
-            $alphacolorxy = imagecolorallocatealpha( $src_im, ( $colorxy >> 16 ) & 0xFF, ( $colorxy >> 8 ) & 0xFF, $colorxy & 0xFF, $alpha );
-            //set pixel with the new color + opacity
-            if( !imagesetpixel( $src_im, $x, $y, $alphacolorxy ) ){
-                return false;
-            }
-        }
-    }
-    // The image copy
-    imagecopy($dst_im, $src_im, $dst_x, $dst_y, $src_x, $src_y, $src_w, $src_h);
-}
-
-function wppa_watermark_file_select($default = false) {
-global $wppa_opt;
-
-	// Init
-	$result = '';
-	$user = wppa_get_user();
-	
-	// See what's in there
-	$paths = WPPA_UPLOAD_PATH . '/watermarks/*.png';
-	$files = glob($paths);
-	
-	// Find current selection
-	$select = $wppa_opt['wppa_watermark_file'];	// default
-	if ( !$default && ( get_option('wppa_watermark_user') == 'yes' || current_user_can('wppa_settings') ) && get_option('wppa_watermark_file_' . $user, 'nil') !== 'nil' ) {
-		$select = get_option('wppa_watermark_file_' . $user);
-	}
-	
-	// Produce the html
-	$result .= '<option value="--- none ---">'.__('--- none ---', 'wppa').'</option>';
-	if ( $files ) foreach ( $files as $file ) {
-		$sel = $select == basename($file) ? 'selected="selected"' : '';
-		$result .= '<option value="'.basename($file).'" '.$sel.'>'.basename($file).'</option>';
 	}
 	
 	return $result;
 }
 
-function wppa_watermark_pos_select($default = false) {
-global $wppa_opt;
-
-	// Init
-	$user = wppa_get_user();
-	$result = '';
-	$opt = array(	__('top - left', 'wppa'), __('top - center', 'wppa'), __('top - right', 'wppa'), 
-					__('center - left', 'wppa'), __('center - center', 'wppa'), __('center - right', 'wppa'), 
-					__('bottom - left', 'wppa'), __('bottom - center', 'wppa'), __('bottom - right', 'wppa'), );
-	$val = array(	'toplft', 'topcen', 'toprht',
-					'cenlft', 'cencen', 'cenrht',
-					'botlft', 'botcen', 'botrht', );
-	$idx = 0;
-
-	// Find current selection
-	$select = $wppa_opt['wppa_watermark_pos'];	// default
-	if ( !$default && ( get_option('wppa_watermark_user') == 'yes' || current_user_can('wppa_settings') ) && get_option('wppa_watermark_pos_' . $user, 'nil') !== 'nil' ) {
-		$select = get_option('wppa_watermark_pos_' . $user);
-	}
-	
-	// Produce the html
-	while ($idx < 9) {
-		$sel = $select == $val[$idx] ? 'selected="selected"' : '';
-		$result .= '<option value="'.$val[$idx].'" '.$sel.'>'.$opt[$idx].'</option>';
-		$idx++;
-	}
-	
-	return $result;
-}
 
 function wppa_table_exists($xtable) {
 global $wpdb;
@@ -2273,9 +1345,9 @@ global $cache_path;
 	*/
 	
 	if ( $force ) { 	// At a setup or update operation
-		if ( is_dir(ABSPATH.'wp-content/cache/') ) {
+		if ( is_dir(WPPA_CONTENT_PATH.'/cache/') ) {
 			// W3 has no flush all api call, we do it by hand
-			wppa_tree_empty(ABSPATH.'wp-content/cache');
+			wppa_tree_empty(WPPA_CONTENT_PATH.'/cache');
 		}
 	}
 }
@@ -2294,10 +1366,12 @@ function wppa_tree_empty($dir) {
 	}
 }
 
-function wppa_err_alert($msg) {
+function wppa_err_alert($msg, $reload = false) {
 global $wppa;
 
-	$fullmsg = '<script id="wppaer" type="text/javascript" >alert(\''.esc_js($msg).'\');jQuery("#wppaer").html("");</script>';
+	$fullmsg = '<script id="wppaer" type="text/javascript" >alert(\''.esc_js($msg).'\');jQuery("#wppaer").html("");';
+	if ( $reload ) $fullmsg .= 'document.location.reload(true)';
+	$fullmsg .= '</script>';
 //	if ( is_admin() ) 
 	echo $fullmsg;
 //	else $wppa['out'] .= $fullmsg;	
@@ -2368,6 +1442,7 @@ global $wppa_opt;
 }
 function wppa_get_user_upload_limits() {
 global $wp_roles;
+global $wppa_opt;
 
 	$limits = '';
 	if ( is_user_logged_in() ) {
@@ -2382,7 +1457,7 @@ global $wp_roles;
 		}
 	}
 	else {
-		$limits = get_option('wppa_loggedout_upload_limit_count', '0').'/'.get_option('wppa_loggedout_upload_limit_time', '0');
+		$limits = $wppa_opt['wppa_loggedout_upload_limit_count'].'/'.$wppa_opt['wppa_loggedout_upload_limit_time'];
 	}
 	return $limits;
 }
@@ -2419,8 +1494,8 @@ function wppa_check_memory_limit($verbose = true, $x = '0', $y = '0') {
 global $wppa_opt;
 // ini_set('memory_limit', '18M');	// testing
 	if ( ! function_exists('memory_get_usage') ) return '';
-	if ( is_admin() && $wppa_opt['wppa_memcheck_admin'] == 'no' ) return '';
-	if ( ! is_admin() && ! $wppa_opt['wppa_memcheck_frontend'] ) return '';
+	if ( is_admin() && wppa_switch('wppa_memcheck_admin') == 'no' ) return '';
+	if ( ! is_admin() && ! wppa_switch('wppa_memcheck_frontend') ) return '';
 
 	// get memory limit
 	$memory_limit = 0;
@@ -2439,11 +1514,11 @@ global $wppa_opt;
 	$free_memory = $memory_limit - memory_get_usage(true);
 
 	// Calculate number of pixels largest target resized image 
-	if ( get_option('wppa_resize_on_upload') == 'yes' ) {
-		$t = get_option('wppa_resize_to');
+	if ( wppa_switch('wppa_resize_on_upload') ) {
+		$t = $wppa_opt['wppa_resize_to'];
 		if ( $t == '0') {
-			$to['0'] = get_option('wppa_fullsize');
-			$to['1'] = get_option('wppa_maxheight');
+			$to['0'] = $wppa_opt['wppa_fullsize'];
+			$to['1'] = $wppa_opt['wppa_maxheight'];
 		}
 		else {
 			$to = explode('x', $t);
@@ -2806,18 +1881,20 @@ global $wpdb;
 
 function wppa_delete_obsolete_tempfiles() {
 	// To prevent filling up diskspace, divide lifetime by 2 and repeat removing obsolete files until count <= 10
-	$filecount = 100;
+	$filecount = 101;
 	$lifetime = 3600;
-	while ( $filecount > 10 ) {
+	while ( $filecount > 100 ) {
 		$files = glob( WPPA_UPLOAD_PATH.'/temp/*' );
 		$filecount = 0;
 		if ( $files ) {	
 			$timnow = time();
 			$expired = $timnow - $lifetime;
 			foreach ( $files as $file ) {
-				$modified = filemtime($file);
-				if ( $modified < $expired ) unlink($file);
-				else $filecount++;
+				if ( is_file( $file ) ) {
+					$modified = filemtime($file);
+					if ( $modified < $expired ) unlink($file);
+					else $filecount++;
+				}
 			}
 		}
 		$lifetime /= 2;

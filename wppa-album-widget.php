@@ -3,8 +3,10 @@
 * Package: wp-photo-album-plus
 *
 * display thumbnail photos
-* Version 5.2.7
+* Version 5.3.0
 */
+
+if ( ! defined( 'ABSPATH' ) ) die( "Can't load this file directly" );
 
 class AlbumWidget extends WP_Widget {
     /** constructor */
@@ -87,7 +89,7 @@ class AlbumWidget extends WP_Widget {
 					$width      = $imgstyle_a['width'];
 					$height     = $imgstyle_a['height'];
 					$cursor		= $imgstyle_a['cursor'];
-					if ( $wppa_opt['wppa_show_albwidget_tooltip'] ) $title = esc_attr(strip_tags(wppa_get_album_desc($album['id'])));
+					if ( wppa_switch('wppa_show_albwidget_tooltip') ) $title = esc_attr(strip_tags(wppa_get_album_desc($album['id'])));
 					else $title = '';
 					$imgurl 	= wppa_get_thumb_url( $image['id'], '', $width, $height );
 				}

@@ -3,12 +3,13 @@
 * Package: wp-photo-album-plus
 *
 * gp admin functions
-* version 5.2.17
+* version 5.3.0
 *
 * 
 */
 
-
+if ( ! defined( 'ABSPATH' ) ) die( "Can't load this file directly" );
+	
 function wppa_backup_settings() {
 global $wppa_opt;
 global $wppa_bu_err;
@@ -145,7 +146,7 @@ global $wppa_opt;
 						}
 					}
 					else {	// No photo yet
-						if ( $wppa_opt['wppa_remake_add'] ) {
+						if ( wppa_switch('wppa_remake_add') ) {
 							wppa_insert_photo($file, $album['id'], $filename);
 						//	$wpdb->query($wpdb->prepare('UPDATE `'.WPPA_PHOTOS.'` SET `modified` = %s WHERE `id` = %s', time(), $photo['id']));
 							$count++;
@@ -484,11 +485,11 @@ function wppa_walktree($relroot, $source, $allowwppa = false, $subdirsonly = fal
 		echo('<option value="'.$relroot.'"'.$sel.'>'.$display.'</option>');
 	}
 	
-	if ( $handle = opendir(ABSPATH.$relroot) ) {
+	if ( $handle = opendir(WPPA_ABSPATH.$relroot) ) {
 		while (false !== ($file = readdir($handle))) {
 			if ( $file != "." && $file != ".." && ( $file != "wppa" || $allowwppa ) && ( $file != "thumbs" || $allowthumbs ) ) {
 				$newroot = $relroot.'/'.$file;
-				if (is_dir(ABSPATH.$newroot)) {	
+				if (is_dir(WPPA_ABSPATH.$newroot)) {	
 					wppa_walktree($newroot, $source, $allowwppa, false, $allowthumbs);
 				}
 			}
@@ -753,12 +754,11 @@ global $wpdb;
 		$any_error = true;
 	}
 	// Check directories
-	$dn = array( ABSPATH.WPPA_UPLOAD, WPPA_UPLOAD_PATH, WPPA_UPLOAD_PATH.'/thumbs', WPPA_DEPOT_PATH);
+	$dn = array( WPPA_ABSPATH.WPPA_UPLOAD, WPPA_UPLOAD_PATH, WPPA_UPLOAD_PATH.'/thumbs', WPPA_UPLOAD_PATH.'/temp', WPPA_UPLOAD_PATH.'/fonts', WPPA_DEPOT_PATH);
 	$idx = 0;
-	while ($idx < 4) {
+	while ($idx < 6) {
 		if ( ! file_exists($dn[$idx]) ) {	// First try to repair
-			@ mkdir($dn[$idx]);
-			@ chmod($dn[$idx], 0755);
+			@ wppa_mktree($dn[$idx]);
 		}
 		else {
 			@ chmod($dn[$idx], 0755);		// there are always people who destruct things
@@ -821,6 +821,10 @@ global $wpdb;
 
 	$photo = $wpdb->get_row($wpdb->prepare( "SELECT `id`, `name`, `ext`, `album`, `filename` FROM `".WPPA_PHOTOS."` WHERE `id` = %s", $id), ARRAY_A );
 	wppa_make_the_photo_files($file, $id, $photo['ext']);
+	
+	// and add watermark (optionally) to fullsize image only
+	wppa_add_watermark( wppa_get_photo_path( $id ) );
+
 	wppa_save_source($file, $name, $photo['album']);
 	$wpdb->query($wpdb->prepare('UPDATE `'.WPPA_PHOTOS.'` SET `filename` = %s WHERE `id` = %s', $name, $photo['id']));
 	wppa_update_modified($photo['id']);
@@ -840,6 +844,10 @@ global $allphotos;
 		foreach ( $photos as $photo ) {
 //echo 'found:'.count($photos);
 			wppa_make_the_photo_files($file, $photo['id'], $photo['ext']);
+			
+			// and add watermark (optionally) to fullsize image only
+			wppa_add_watermark( wppa_get_photo_path( $photo['id'] ) );
+
 			$album = $wpdb->get_var($wpdb->prepare('SELECT `album` FROM '.WPPA_PHOTOS.' WHERE `id` = %s', $photo['id']));
 //echo ' album='.$album.'<br/>';
 			wppa_save_source($file, basename($file), $album);
@@ -927,7 +935,7 @@ global $wppa;
 			$id = wppa_nextkey(WPPA_PHOTOS);
 		}
 		// Get opt deflt desc if empty
-		if ( $desc == '' && $wppa_opt['wppa_apply_newphoto_desc'] == 'yes' ) {
+		if ( $desc == '' && wppa_switch('wppa_apply_newphoto_desc') ) {
 			$desc = stripslashes($wppa_opt['wppa_newphoto_description']);
 		}
 		// Reset rating
@@ -944,7 +952,7 @@ global $wppa;
 			return false;
 		}
 		// Add photo to db
-		$status = ( $wppa_opt['wppa_upload_moderate'] == 'yes' && !current_user_can('wppa_admin') ) ? 'pending' : 'publish';
+		$status = ( wppa_switch('wppa_upload_moderate') && !current_user_can('wppa_admin') ) ? 'pending' : 'publish';
 //		$linktarget = '_self';
 		$filename = $name;
 
@@ -973,7 +981,9 @@ global $wppa;
 			wppa_set_default_tags( $id );
 			// Index
 			wppa_index_add( 'photo', $id );
-			// Done!
+			// and add watermark (optionally) to fullsize image only
+			wppa_add_watermark( wppa_get_photo_path( $id ) );
+
 			return $id;
 		}
 	}

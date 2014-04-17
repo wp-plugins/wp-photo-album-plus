@@ -2,7 +2,7 @@
 //
 // conatins slideshow, theme, ajax and lightbox code
 //
-// Version 5.2.21
+// Version 5.3.0
 
 // Part 1: Slideshow
 //
@@ -110,6 +110,8 @@ var wppaLightboxSingle = false;
 var wppaMaxCoverWidth = 300;	// For responsive multicolumn covers
 var wppaDownLoad = 'Download';
 var wppaSiteUrl = '';
+var wppaWppaUrl = '';
+var wppaIncludeUrl = '';
 var wppaSlideToFullpopup = false; 
 var wppaComAltSize = 75;
 var wppaBumpViewCount = true;
@@ -159,6 +161,7 @@ var wppaShareHideWhenRunning = false;
 var _wppaHiresUrl = new Array();
 var wppaFotomotoHideWhenRunning = false;
 var wppaFotomotoMinWidth = 400;
+var wppaPhotoView = new Array();
 
 // Check for occurrences that are responsive
 jQuery(document).ready(function(){
@@ -1316,7 +1319,7 @@ function _wppaDoAutocol(mocc) {
 		setTimeout('_wppaDoAutocol('+mocc+')', 100);
 		return;
 	}
-
+	
 	wppaColWidth[mocc] = w;
 	jQuery(".wppa-container-"+mocc).css('width',w);
 
@@ -1613,8 +1616,12 @@ function _wppaLeaveMe(mocc, idx) {
 }
 
 function _bumpViewCount(photo) {
-
+	wppaConsoleLog('B '+photo);
 	if ( ! wppaBumpViewCount ) return;
+	if ( wppaPhotoView[photo] == true ) {
+		wppaConsoleLog('B '+photo+' Already done');
+		return; // Already reported
+	}
 	
 	// Create http object
 	var xmlhttp = wppaGetXmlHttp();	
@@ -1632,7 +1639,9 @@ function _bumpViewCount(photo) {
 	
 	// Do the Ajax action
 	xmlhttp.open('GET',url,true);
-	xmlhttp.send();	
+	xmlhttp.send();
+	wppaPhotoView[photo] = true;	
+	wppaConsoleLog('B '+photo+' set true');
 }
 
 function wppaVoteThumb(mocc, photoid) {
@@ -2301,10 +2310,10 @@ function wppaEditPhoto(mocc, id) {
 	wnd.document.write('<html>');
 		wnd.document.write('<head>');	
 			// The following is one statement that fixes a bug in opera
-			wnd.document.write(	'<link rel="stylesheet" id="wppa_style-css"  href="'+wppaSiteUrl+'/wp-content/plugins/wp-photo-album-plus/wppa-admin-styles.css?ver='+wppaVersion+'" type="text/css" media="all" />'+
+			wnd.document.write(	'<link rel="stylesheet" id="wppa_style-css"  href="'+wppaWppaUrl+'/wppa-admin-styles.css?ver='+wppaVersion+'" type="text/css" media="all" />'+
 								'<style>body {font-family: sans-serif; font-size: 12px; line-height: 1.4em;}a {color: #21759B;}</style>'+
-								'<script type="text/javascript" src="'+wppaSiteUrl+'/wp-includes/js/jquery/jquery.js?ver='+wppaVersion+'"></script>'+
-								'<script type="text/javascript" src="'+wppaSiteUrl+'/wp-content/plugins/wp-photo-album-plus/wppa-admin-scripts.js?ver='+wppaVersion+'"></script>'+
+								'<script type="text/javascript" src="'+wppaIncludeUrl+'/js/jquery/jquery.js?ver='+wppaVersion+'"></script>'+
+								'<script type="text/javascript" src="'+wppaWppaUrl+'/wppa-admin-scripts.js?ver='+wppaVersion+'"></script>'+
 								'<title>'+name+'</title>'+
 								'<script type="text/javascript">wppaAjaxUrl="'+wppaAjaxUrl+'";</script>');
 		wnd.document.write('</head>');
@@ -3106,7 +3115,10 @@ wppaConsoleLog('wppaInitOverlay', 1);
 			temp = anchor.rel.split("[");
 			if (temp[0] == 'wppa') {
 				wppaWppaOverlayActivated = true;	// found one
-				anchor.onclick = function () {return wppaOvlShow(this);} 
+				jQuery(anchor).click(function(event){
+					wppaOvlShow(this);
+					event.preventDefault();
+				}); 
 			}
 		}
 	}

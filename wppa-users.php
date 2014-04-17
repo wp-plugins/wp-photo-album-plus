@@ -3,9 +3,11 @@
 * Package: wp-photo-album-plus
 *
 * Contains user and capabilities related routines
-* Version 5.2.8
+* Version 5.3.0
 *
 */
+
+if ( ! defined( 'ABSPATH' ) ) die( "Can't load this file directly" );
 
 // Get all users
 function wppa_get_users() {
@@ -72,7 +74,7 @@ function wppa_extended_access() {
 global $wppa_opt;
 
 	if ( wppa_user_is( 'administrator' ) ) return true;
-	if ( $wppa_opt['wppa_owner_only'] == 'no' ) return true;
+	if ( ! wppa_switch('wppa_owner_only') ) return true;
 	return false;
 }
 
@@ -98,7 +100,7 @@ global $wppa_opt;
 
 	if ( wppa_user_is( 'administrator' ) ) return true;
 	if ( ! wppa_can_create_album() ) return false;
-	if ( $wppa_opt['wppa_grant_an_album'] == 'yes' && $wppa_opt['wppa_grant_parent'] != '0' ) return false;
+	if ( wppa_switch('wppa_grant_an_album') && $wppa_opt['wppa_grant_parent'] != '0' ) return false;
 	return true;
 }
 

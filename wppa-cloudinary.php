@@ -1,9 +1,11 @@
 <?php
 /* Only loads when php version >= 5.3 
 *
-* Version 5.2.15
+* Version 5.3.0
 *
 */
+
+if ( ! defined( 'ABSPATH' ) ) die( "Can't load this file directly" );
 
 add_action('init', 'wppa_load_cloudinary');
 function wppa_load_cloudinary() {
@@ -40,11 +42,10 @@ function wppa_upload_to_cloudinary( $id ) {
 
 function wppa_get_present_at_cloudinary_a() {
 global $wppa_cloudinary_api;
-
-	if ( ! session_id() ) @ session_start();
+global $wppa_session;
 	
-	if ( isset( $_SESSION['cloudinary_ids'] ) ) return $_SESSION['cloudinary_ids']; 	// Been here
-	$_SESSION['cloudinary_ids'] = array();
+	if ( isset( $wppa_session['cloudinary_ids'] ) ) return $wppa_session['cloudinary_ids']; 	// Been here
+	$wppa_session['cloudinary_ids'] = array();
 	
 	$data = $wppa_cloudinary_api->resources( array( "type" => "upload", 
 													"max_results" => 500));
@@ -52,7 +53,7 @@ global $wppa_cloudinary_api;
 	while ( ! $done ) {
 		$temp = get_object_vars ( $data );
 		foreach ( $temp['resources'] as $res ) {
-			$_SESSION['cloudinary_ids'][$res['public_id']] = true;
+			$wppa_session['cloudinary_ids'][$res['public_id']] = true;
 		}
 		if ( isset( $temp['next_cursor'] ) ) {
 			$data = $wppa_cloudinary_api->resources( array( "type" => "upload", 
@@ -64,12 +65,11 @@ global $wppa_cloudinary_api;
 		}
 	}
 
-	return $_SESSION['cloudinary_ids'];
+	return $wppa_session['cloudinary_ids'];
 }
 
 function wppa_ready_on_cloudinary() {
-	if ( ! session_id() ) @ session_start();
-	if ( isset ( $_SESSION['cloudinary_ids'] ) ) unset( $_SESSION['cloudinary_ids'] );
+	if ( isset ( $wppa_session['cloudinary_ids'] ) ) unset( $wppa_session['cloudinary_ids'] );
 }
 
 function wppa_delete_from_cloudinary( $id ) {
@@ -87,4 +87,10 @@ function wppa_delete_all_from_cloudinary() {
 global $wppa_cloudinary_api;
 
 	$wppa_cloudinary_api->delete_all_resources();
+}
+
+function wppa_delete_derived_from_cloudinary() {
+global $wppa_cloudinary_api;
+
+	$wppa_cloudinary_api->delete_all_resources( array( "keep_original" => TRUE ) );
 }

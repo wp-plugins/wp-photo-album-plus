@@ -3,8 +3,10 @@
 * Package: wp-photo-album-plus
 *
 * display the featured photos
-* Version 5.2.11
+* Version 5.3.0
 */
+
+if ( ! defined( 'ABSPATH' ) ) die( "Can't load this file directly" );
 
 class FeaTenWidget extends WP_Widget {
     /** constructor */
@@ -97,7 +99,7 @@ class FeaTenWidget extends WP_Widget {
 					$widget_content .= "\n\t".'<img id="i-'.$image['id'].'-'.$wppa['master_occur'].'" title="'.$title.'" src="'.$imgurl.'" width="'.$width.'" height="'.$height.'" style="'.$imgstyle.'" '.$imgevents.' alt="'.esc_attr(wppa_qtrans($image['name'])).'">';
 				}
 //			$widget_content .= "\n\t".'<span style="font-size:'.$wppa_opt['wppa_fontsize_widget_thumb'].'px;">'.wppa_get_rating_by_id($image['id']);
-//				if ( $wppa_opt['wppa_show_rating_count'] ) $widget_content .= ' ('.wppa_get_rating_count_by_id($image['id']).')';
+//				if ( wppa_switch('wppa_show_rating_count') ) $widget_content .= ' ('.wppa_get_rating_count_by_id($image['id']).')';
 //			$widget_content .= '</span>'.
 				$widget_content .= "\n".'</div>';
 				

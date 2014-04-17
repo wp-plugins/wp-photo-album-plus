@@ -3,8 +3,10 @@
 * Package: wp-photo-album-plus
 *
 * display the widget
-* Version 5.2.11
+* Version 5.3.0
 */
+
+if ( ! defined( 'ABSPATH' ) ) die( "Can't load this file directly" );
 
 class PhotoOfTheDay extends WP_Widget {
     /** constructor */
@@ -49,6 +51,7 @@ class PhotoOfTheDay extends WP_Widget {
 			$imgurl 	= $usethumb ? wppa_get_thumb_url( $image['id'], '', $w, $h ) : wppa_get_photo_url( $image['id'], '', $w, $h );
 		
 			$name = wppa_qtrans($image['name']);
+			$page = wppa_get_the_landing_page( 'wppa_widget_linkpage', __a('Photo of the day') );
 			$link = wppa_get_imglnk_a('potdwidget', $image['id']);
 			$lightbox = $link['is_lightbox'] ? 'rel="'.$wppa_opt['wppa_lightbox_name'].'"' : '';
 			if ( $link ) {

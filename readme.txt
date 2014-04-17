@@ -2,12 +2,12 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile, cloudinary, fotomoto
-Version: 5.2.21
+Version: 5.3.0
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
 Requires at least: 3.1
-Tested up to: 3.8.1
+Tested up to: 3.8.3
 
 This plugin is designed to easily manage and display your photo albums and slideshows in a single as well as in a network WordPress site.
 
@@ -172,6 +172,38 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 5.3.0 =
+
+= Known problems =
+
+* The shortcode generator button is absent due to changes in wp 3.9
+
+= Bug Fixes =
+
+* You can now repeatedly do Remake Photofiles on an individual photo without the need to reload the page.
+* Empty albums that contain empty albums only will now be seen as empty and will therefor be hidden when Table II-E6 is checked.
+* Fixed lay-out issues for sharetext.
+
+= New Features =
+
+* Text based watermarks, with dynamic text and the ability to upload new truetype fonts. See Table IX-F.
+* Watermark all photos. Table VIII-B9.
+* Search results display type can now be set in Table IX-E12.
+
+= Other Changes =
+
+* The plugin is now believed to support the change of the wp-content directory as described here: http://codex.wordpress.org/Editing_wp-config.php#Moving_wp-content_folder
+* Due to the unreliability of the PHP superglobal $_SESSION ( the values may be unintentedly modified by Firefox, see https://bugzilla.mozilla.org/show_bug.cgi?id=991019 ),
+there is now a different implementation for the survival of session data between pageloads.
+* Cloudinary derived images are now at jpeg quality set in Table IX-A2.
+* Many internal modifications to speed up, simplify and improve maintainability of the plugin.
+
+= 5.2.22 =
+
+= Bug Fixes =
+
+* Changing rating size no longer produces an unexpected error, but signals that recalculation of ratings is required.
 
 = 5.2.21 =
 

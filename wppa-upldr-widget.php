@@ -3,8 +3,10 @@
 * Package: wp-photo-album-plus
 *
 * display a list of users linking to their photos
-* Version 5.1.15
+* Version 5.3.0
 */
+
+if ( ! defined( 'ABSPATH' ) ) die( "Can't load this file directly" );
 
 class UpldrWidget extends WP_Widget {
     /** constructor */

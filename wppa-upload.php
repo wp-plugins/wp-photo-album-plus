@@ -3,9 +3,11 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the upload/import pages and functions
-* Version 5.2.20
+* Version 5.3.0
 *
 */
+
+if ( ! defined( 'ABSPATH' ) ) die( "Can't load this file directly" );
 
 function _wppa_page_upload() {
 global $target;
@@ -18,7 +20,7 @@ global $wppa_revno;
 	$user = wppa_get_user();
 	wppa_sanitize_files();
 
-	if ( $wppa_opt['wppa_watermark_on'] == 'yes' && ( $wppa_opt['wppa_watermark_user'] == 'yes' || current_user_can('wppa_settings') ) ) {
+	if ( wppa_switch('wppa_watermark_on') && ( wppa_switch('wppa_watermark_user') || current_user_can('wppa_settings') ) ) {
 		if ( isset( $_POST['wppa-watermark-file'] ) ) update_option('wppa_watermark_file_'.$user, $_POST['wppa-watermark-file']);
 		if ( isset( $_POST['wppa-watermark-pos'] ) ) update_option('wppa_watermark_pos_'.$user, $_POST['wppa-watermark-pos']);
 	}
@@ -113,7 +115,7 @@ global $wppa_revno;
 								<?php echo wppa_album_select_a(array('path' => wppa_switch('wppa_hier_albsel'),'addpleaseselect' => true, 'checkaccess' => true, 'checkupload' => true));//echo(wppa_album_select('', '', false, false, false, false, false, true)); ?>
 							</select>
 						</p>
-						<?php if ( $wppa_opt['wppa_watermark_on'] == 'yes' && ( $wppa_opt['wppa_watermark_user'] == 'yes' || current_user_can('wppa_settings') ) ) { ?>		
+						<?php if ( wppa_switch('wppa_watermark_on') && ( wppa_switch('wppa_watermark_user') || current_user_can('wppa_settings') ) ) { ?>		
 							<p>		
 								<?php _e('Apply watermark file:', 'wppa') ?>
 								<select name="wppa-watermark-file" id="wppa-watermark-file">
@@ -201,7 +203,7 @@ global $wppa_revno;
 								<?php echo wppa_album_select_a(array('path' => wppa_switch('wppa_hier_albsel'),'addpleaseselect' => true, 'checkaccess' => true, 'checkupload' => true));//echo(wppa_album_select('', '', false, false, false, false, false, true)); ?>
 							</select>
 						</p>
-						<?php if ( $wppa_opt['wppa_watermark_on'] == 'yes' && ( $wppa_opt['wppa_watermark_user'] == 'yes' || current_user_can('wppa_settings') ) ) { ?>		
+						<?php if ( wppa_switch('wppa_watermark_on') && ( wppa_switch('wppa_watermark_user') || current_user_can('wppa_settings') ) ) { ?>		
 							<p>		
 								<?php _e('Apply watermark file:', 'wppa') ?>
 								<select name="wppa-watermark-file" id="wppa-watermark-file">
@@ -248,7 +250,7 @@ global $wppa_revno;
 								<?php echo wppa_album_select_a(array('path' => wppa_switch('wppa_hier_albsel'), 'addpleaseselect' => true, 'checkaccess' => true, 'checkupload' => true));//('', '', false, false, false, false, false, true)); ?>
 							</select>
 						</p>
-						<?php if ( $wppa_opt['wppa_watermark_on'] == 'yes' && ( $wppa_opt['wppa_watermark_user'] == 'yes' || current_user_can('wppa_settings') ) ) { ?>		
+						<?php if ( wppa_switch('wppa_watermark_on') && ( wppa_switch('wppa_watermark_user') || current_user_can('wppa_settings') ) ) { ?>		
 							<p>		
 								<?php _e('Apply watermark file:', 'wppa') ?>
 								<select name="wppa-watermark-file" id="wppa-watermark-file">
@@ -338,7 +340,7 @@ global $wppa;
 	if ($count) wppa_error_message($count.' '.__('illegal files deleted.', 'wppa'));
 
 	// Update watermark settings
-	if ( $wppa_opt['wppa_watermark_on'] == 'yes' && ( $wppa_opt['wppa_watermark_user'] == 'yes' || current_user_can('wppa_settings') ) ) {
+	if ( wppa_switch('wppa_watermark_on') && ( wppa_switch('wppa_watermark_user') || current_user_can('wppa_settings') ) ) {
 		if ( isset( $_POST['wppa-watermark-file'] ) ) update_option('wppa_watermark_file_'.$user, $_POST['wppa-watermark-file']);
 		if ( isset( $_POST['wppa-watermark-pos'] ) ) update_option('wppa_watermark_pos_'.$user, $_POST['wppa-watermark-pos']);
 	}
@@ -424,16 +426,16 @@ if ( $wppa['ajax'] ) {
 		$source_type = get_option('wppa_import_source_type_'.$user, 'local');
 		if ( $source_type == 'local' ) {
 			$source      = get_option('wppa_import_source_'.$user, WPPA_DEPOT);
-			if ( ! $source || ! is_dir(ABSPATH . $source) ) {
+			if ( ! $source || ! is_dir(WPPA_ABSPATH . $source) ) {
 				$source = WPPA_DEPOT;
 				update_option('wppa_import_source_'.$user, WPPA_DEPOT);
 			}
-			$source_path = ABSPATH . $source;
+			$source_path = WPPA_ABSPATH . $source;
 			$source_url  = get_bloginfo('url') . '/' . $source;
 			// See if the current source is the 'home' directory
 			$is_depot 	= ( $source == WPPA_DEPOT );
 			// See if the current souce is a wp upload location or a wppa+ sourcefile location ( if so: no delete checkbox )
-			$is_sub_depot = ( substr($source, 0, strlen(WPPA_DEPOT) ) == WPPA_DEPOT ) && ( substr(ABSPATH.$source, 0, strlen($wppa_opt['wppa_source_dir'])) != $wppa_opt['wppa_source_dir'] );
+			$is_sub_depot = ( substr($source, 0, strlen(WPPA_DEPOT) ) == WPPA_DEPOT ) && ( substr(WPPA_ABSPATH.$source, 0, strlen($wppa_opt['wppa_source_dir'])) != $wppa_opt['wppa_source_dir'] );
 			// See what's in there
 			$files 		= wppa_get_import_files();
 			$zipcount 	= wppa_get_zipcount($files);
@@ -625,7 +627,7 @@ if ( $wppa['ajax'] ) {
 									else _e('photos in the depot.', 'wppa'); 
 								}
 								else _e('possible photos found remote.', 'wppa');						
-								if ( $wppa_opt['wppa_resize_on_upload'] == 'yes' ) { echo(' '); _e('Photos will be downsized during import.', 'wppa'); } ?><br/>
+								if ( wppa_switch('wppa_resize_on_upload') ) { echo(' '); _e('Photos will be downsized during import.', 'wppa'); } ?><br/>
 						</b></p>
 						<p class="hideifupdate" >
 							<?php _e('Default album for import:', 'wppa') ?>
@@ -635,7 +637,7 @@ if ( $wppa['ajax'] ) {
 							</select>
 							<?php _e('Photos that have (<em>name</em>)[<em>album</em>] will be imported by that <em>name</em> in that <em>album</em>.', 'wppa') ?>
 						</p>
-						<?php if ( $wppa_opt['wppa_watermark_on'] == 'yes' && ( $wppa_opt['wppa_watermark_user'] == 'yes' || current_user_can('wppa_settings') ) ) { ?>
+						<?php if ( wppa_switch('wppa_watermark_on') && ( wppa_switch('wppa_watermark_user') || current_user_can('wppa_settings') ) ) { ?>
 							<p>
 								<?php _e('Apply watermark file:', 'wppa') ?>
 								<select name="wppa-watermark-file" id="wppa-watermark-file">
@@ -903,7 +905,7 @@ function wppa_get_import_files() {
 	// Dispatch on source type local/remote
 	elseif ( $source_type == 'local' ) {
 		$source 		= get_option('wppa_import_source_'.$user, WPPA_DEPOT);
-		$source_path 	= ABSPATH . $source;	// Filesystem
+		$source_path 	= WPPA_ABSPATH . $source;	// Filesystem
 		$files 			= glob($source_path . '/*');
 	}
 	else { // remote
@@ -1096,7 +1098,7 @@ global $wppa_opt;
 	$source_type = get_option('wppa_import_source_type_'.$user, 'local');
 	$source = get_option('wppa_import_source_'.$user, WPPA_DEPOT); // removed /$user
 
-	$depot = ABSPATH . $source;	// Filesystem
+	$depot = WPPA_ABSPATH . $source;	// Filesystem
 	$depoturl = get_bloginfo('wpurl').'/'.$source;	// url
 
 	// See what's in there
@@ -1543,7 +1545,7 @@ global $wppa_opt;
 				wppa_flush_treecounts($alb);
 				wppa_index_add('album', $alb);
 				wppa_ok_message(__('Album #', 'wppa') . ' ' . $alb . ' ('.$name.') ' . __('Added.', 'wppa'));
-				if ( $wppa_opt['wppa_newpag_create'] == 'yes' /*isset($_POST['wppa-crepag']) */ && $parent <= '0' ) {
+				if ( wppa_switch('wppa_newpag_create') && $parent <= '0' ) {
 				
 					// Create post object
 					$my_post = array(

@@ -3,17 +3,20 @@
 * Package: wp-photo-album-plus
 *
 * Contains (not yet, but in the future maybe) all the maintenance routines
-* Version 5.2.21
+* Version 5.3.0
 *
 */
 
-
+if ( ! defined( 'ABSPATH' ) ) die( "Can't load this file directly" );
+	
 // Main maintenace module
 // Must return a string like: errormesssage||$slug||status||togo
 function wppa_do_maintenance_proc( $slug ) {
 global $wpdb;
 global $album;
 global $thumb;
+global $wppa_opt;
+global $wppa_session;
 
 	// Check for multiple maintenance procs
 	$all_slugs = array( 'wppa_remake_index_albums', 
@@ -35,7 +38,8 @@ global $thumb;
 						'wppa_rating_clear',
 						'wppa_viewcount_clear',
 						'wppa_iptc_clear',
-						'wppa_exif_clear'
+						'wppa_exif_clear',
+						'wppa_watermark_all'
 					);
 	foreach ( array_keys( $all_slugs ) as $key ) {
 		if ( $all_slugs[$key] != $slug ) {
@@ -57,11 +61,13 @@ global $thumb;
 	$topid 		= '0';
 	$reload 	= '';
 	
+	if ( ! isset( $wppa_session ) ) $wppa_session = array();
+	if ( ! isset( $wppa_session[$slug.'_fixed'] ) )   $wppa_session[$slug.'_fixed'] = '0';
+	if ( ! isset( $wppa_session[$slug.'_deleted'] ) ) $wppa_session[$slug.'_deleted'] = '0';
+	if ( ! isset( $wppa_session[$slug.'_skipped'] ) ) $wppa_session[$slug.'_skipped'] = '0';
+	
 	// Pre-processing needed?
 	if ( $lastid == '0' ) {
-		$_SESSION['wppa_session'][$slug.'_fixed'] = '0';
-		$_SESSION['wppa_session'][$slug.'_deleted'] = '0';
-		$_SESSION['wppa_session'][$slug.'_skipped'] = '0';
 		switch ( $slug ) {
 			case 'wppa_remake_index_albums':
 				$wpdb->query( "UPDATE `".WPPA_INDEX."` SET `albums` = ''" );
@@ -137,6 +143,7 @@ global $thumb;
 		case 'wppa_file_system':
 		case 'wppa_cleanup':
 		case 'wppa_remake':
+		case 'wppa_watermark_all':
 		
 			// Process photos
 			$thumbsize 	= wppa_get_minisize();
@@ -156,7 +163,7 @@ global $thumb;
 						break;
 						
 					case 'wppa_apply_new_photodesc_all':
-						$value = get_option( 'wppa_newphoto_description' );
+						$value = $wppa_opt['wppa_newphoto_description'];
 						$description = trim( $value );
 						if ( $description != $photo['description'] ) {	// Modified photo description
 							$wpdb->query( $wpdb->prepare( "UPDATE `".WPPA_PHOTOS."` SET `description` = %s WHERE `id` = %s", $description, $id ) );
@@ -164,7 +171,7 @@ global $thumb;
 						break;
 						
 					case 'wppa_append_to_photodesc':
-						$value = trim( get_option( 'wppa_append_text' ) );
+						$value = trim( $wppa_opt['wppa_append_text'] );
 						if ( ! $value ) return 'Unexpected error: missing text to append||'.$slug.'||Error||0';
 						$description = rtrim( $photo['description'] . ' '. $value );
 						if ( $description != $photo['description'] ) {	// Modified photo description
@@ -173,7 +180,7 @@ global $thumb;
 						break;
 						
 					case 'wppa_remove_from_photodesc':
-						$value = trim( get_option( 'wppa_remove_text' ) );
+						$value = trim( $wppa_opt['wppa_remove_text'] );
 						if ( ! $value ) return 'Unexpected error: missing text to remove||'.$slug.'||Error||0';
 						$description = rtrim( str_replace( $value, '', $photo['description'] ) );
 						if ( $description != $photo['description'] ) {	// Modified photo description
@@ -200,7 +207,7 @@ global $thumb;
 						$the_value = '0';
 						$the_count = '0';
 						if ( $ratings ) foreach ($ratings as $rating) {
-							if ( $rating['value'] == '-1' ) $the_value += get_option( 'wppa_dislike_value' );
+							if ( $rating['value'] == '-1' ) $the_value += $wppa_opt['wppa_dislike_value'];
 							else $the_value += $rating['value'];
 							$the_count++;
 						}
@@ -214,12 +221,12 @@ global $thumb;
 						
 					case 'wppa_recup':
 						$a_ret = wppa_recuperate( $id );
-						if ( $a_ret['iptcfix'] ) $_SESSION['wppa_session'][$slug.'_fixed']++;
-						if ( $a_ret['exiffix'] ) $_SESSION['wppa_session'][$slug.'_fixed']++;
+						if ( $a_ret['iptcfix'] ) $wppa_session[$slug.'_fixed']++;
+						if ( $a_ret['exiffix'] ) $wppa_session[$slug.'_fixed']++;
 						break;
 						
 					case 'wppa_file_system':
-						$fs = get_option( 'wppa_file_system', 'flat' );
+						$fs = $wppa_opt['wppa_file_system'];
 						if ( $fs == 'to-tree' || $fs == 'to-flat' ) {
 							if ( $fs == 'to-tree' ) {
 								$from = 'flat';
@@ -245,23 +252,38 @@ global $thumb;
 						if ( ! is_file( $imagepath ) ) {
 							$wpdb->query( $wpdb->prepare( "DELETE FROM `".WPPA_PHOTOS."` WHERE `id` = %s", $id ) );
 							if ( is_file( $thumbpath ) ) unlink( $thumbpath );
-							$_SESSION['wppa_session'][$slug.'_deleted']++;
+							$wppa_session[$slug.'_deleted']++;
 						}
 						else {
 							if ( ! is_file( $thumbpath ) ) {
 								wppa_create_thumbnail( $imagepath, $thumbsize );
 								$thumbpath = wppa_get_thumb_path( $id );
-								if ( is_file( $thumbpath ) ) $_SESSION['wppa_session'][$slug.'_fixed']++;
+								if ( is_file( $thumbpath ) ) $wppa_session[$slug.'_fixed']++;
 							}
 						}
 						break;
 						
 					case 'wppa_remake':
 						if ( wppa_remake_files( '', $id ) ) {
-							$_SESSION['wppa_session'][$slug.'_fixed']++;
+							$wppa_session[$slug.'_fixed']++;
 						}
 						else {
-							$_SESSION['wppa_session'][$slug.'_skipped']++;
+							$wppa_session[$slug.'_skipped']++;
+						}
+						break;
+						
+					case 'wppa_watermark_all':
+						$file = wppa_get_photo_path( $id );
+						if ( $file ) {
+							if ( wppa_add_watermark( $file ) ) {
+								$wppa_session[$slug.'_fixed']++;
+							}
+							else {
+								$wppa_session[$slug.'_skipped']++;
+							}
+						}
+						else {
+							$wppa_session[$slug.'_skipped']++;
 						}
 						break;
 		
@@ -314,10 +336,18 @@ global $thumb;
 	else {	// Really done
 	
 		// Report fixed/skipped/deleted
-		if ( ! isset( $_SESSION['wppa_session'] ) ) $_SESSION['wppa_session'] = array();
-		if ( $_SESSION['wppa_session'][$slug.'_fixed'] ) $status .= ' '.$_SESSION['wppa_session'][$slug.'_fixed'].' fixed';
-		if ( $_SESSION['wppa_session'][$slug.'_skipped'] ) $status .= ' '.$_SESSION['wppa_session'][$slug.'_skipped'].' skipped';
-		if ( $_SESSION['wppa_session'][$slug.'_deleted'] ) $status .= ' '.$_SESSION['wppa_session'][$slug.'_deleted'].' deleted';
+		if ( $wppa_session[$slug.'_fixed'] ) {
+			$status .= ' fixed:'.$wppa_session[$slug.'_fixed'];
+			unset ( $wppa_session[$slug.'_fixed'] );
+		}
+		if ( $wppa_session[$slug.'_skipped'] ) {
+			$status .= ' skipped:'.$wppa_session[$slug.'_skipped'];
+			unset ( $wppa_session[$slug.'_skipped'] );
+		}
+		if ( $wppa_session[$slug.'_deleted'] ) {
+			$status .= ' deleted:'.$wppa_session[$slug.'_deleted'];
+			unset ( $wppa_session[$slug.'_deleted'] );
+		}
 		
 		// Re-Init options
 		delete_option( $slug.'_togo', '' );
@@ -349,7 +379,6 @@ global $thumb;
 				break;
 		}
 	}
-
 	return $errtxt.'||'.$slug.'||'.$status.'||'.$togo.'||'.$reload;
 }
 
@@ -404,7 +433,7 @@ global $thumb;
 			break;
 			
 		case 'wppa_list_errorlog':
-			$filename = ABSPATH.'wp-content/wppa-depot/admin/error.log';
+			$filename = WPPA_CONTENT_PATH.'/wppa-depot/admin/error.log';
 			$result .= '
 				<h2>List of WPPA+ error messages <small>( Newest first )</small></h2>
 				<div style="float:left; clear:both; width:100%; height:450px; overflow:auto; word-wrap:none; background-color:#f1f1f1; border:1px solid #ddd;" >';
@@ -543,18 +572,20 @@ global $wppa_opt;
 
 	if ( is_writable( $wppa_opt['wppa_source_dir'] ) ) return; 					// Nothing to do here
 	
-	// The source path should be: ( default ) ABSPATH.WPPA_UPLOAD.'/wppa-source',
-	// Or at least below ABSPATH
-	if ( strpos( $wppa_opt['wppa_source_dir'], ABSPATH ) === false ) {
-		if ( strpos( $wppa_opt['wppa_source_dir'], 'wp-content' ) !== false ) {	// Its below wp-content
-			$temp = explode( 'wp-content', $wppa_opt['wppa_source_dir'] );
-			$temp['0'] = ABSPATH;
-			$wppa_opt['wppa_source_dir'] = implode( 'wp-content', $temp );
+	$wp_content = trim( str_replace( home_url(), '', content_url() ), '/' );
+	
+	// The source path should be: ( default ) WPPA_ABSPATH.WPPA_UPLOAD.'/wppa-source',
+	// Or at least below WPPA_ABSPATH
+	if ( strpos( $wppa_opt['wppa_source_dir'], WPPA_ABSPATH ) === false ) {
+		if ( strpos( $wppa_opt['wppa_source_dir'], $wp_content ) !== false ) {	// Its below wp-content
+			$temp = explode( $wp_content, $wppa_opt['wppa_source_dir'] );
+			$temp['0'] = WPPA_ABSPATH;
+			$wppa_opt['wppa_source_dir'] = implode( $wp_content, $temp );
 			wppa_update_option( 'wppa_source_dir', $wppa_opt['wppa_source_dir'] );
 			wppa_update_message( 'Sourcepath set to '.$wppa_opt['wppa_source_dir'] );
 		}
 		else { // Give up, set to default
-			$wppa_opt['wppa_source_dir'] = ABSPATH.WPPA_UPLOAD.'/wppa-source';
+			$wppa_opt['wppa_source_dir'] = WPPA_ABSPATH.WPPA_UPLOAD.'/wppa-source';
 			wppa_update_option( 'wppa_source_dir', $wppa_opt['wppa_source_dir'] );
 			wppa_update_message( 'Sourcepath set to default.' );
 		}

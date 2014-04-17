@@ -3,12 +3,11 @@
 * Package: wp-photo-album-plus
 *
 * Functions for album covers
-* Version 5.2.21
+* Version 5.3.0
 *
 */
 
-if ( ! defined( 'ABSPATH' ) )
-    die( "Can't load this file directly" );
+if ( ! defined( 'ABSPATH' ) ) die( "Can't load this file directly" );
 
 // Main entry for an album cover
 // decide wich cover type and call the types function
@@ -96,14 +95,14 @@ global $wpdb;
 	
 	// Find the slideshow link and onclick
 	$href_slideshow = wppa_convert_to_pretty(wppa_get_slideshow_url('', $linkpage));
-	if ( $wppa_opt['wppa_allow_ajax'] && ! $linkpage ) {
+	if ( wppa_switch('wppa_allow_ajax') && ! $linkpage ) {
 		$onclick_slideshow = "wppaDoAjaxRender(".$wppa['master_occur'].", '".wppa_get_slideshow_url_ajax($album['id'], $linkpage)."', '".wppa_convert_to_pretty($href_slideshow)."')";
 		$href_slideshow = "#";
 	}
 
 	// Find the content 'View' link 
 	$href_content = wppa_convert_to_pretty(wppa_get_album_url($album['id'], $linkpage));
-	if ( $wppa_opt['wppa_allow_ajax'] && ! $linkpage ) {
+	if ( wppa_switch('wppa_allow_ajax') && ! $linkpage ) {
 		$onclick_content = "wppaDoAjaxRender(".$wppa['master_occur'].", '".wppa_get_album_url_ajax($album['id'], $linkpage)."', '".wppa_convert_to_pretty($href_content)."')";
 		$href_content = "#";
 	}
@@ -155,7 +154,7 @@ global $wpdb;
 	}
 	wppa_step_covercount('cover');
 	
-	$target = $wppa_opt['wppa_allow_ajax'] ? '_self' : $photolink['target'];
+	$target = wppa_switch('wppa_allow_ajax') ? '_self' : $photolink['target'];
 	
 	// Open the album box
 	$wppa['out'] .= wppa_nltab('+').'<div id="album-'.$album['id'].'-'.$wppa['master_occur'].'" class="wppa-album-cover-standard album wppa-box wppa-cover-box wppa-cover-box-'.$mcr.$wppa['master_occur'].' wppa-'.$wppa_alt.'" style="'.$style.'" >';
@@ -188,16 +187,16 @@ global $wpdb;
 			
 
 			// The Album description
-			if ( $wppa_opt['wppa_show_cover_text'] ) {
+			if ( wppa_switch('wppa_show_cover_text') ) {
 				$textheight = $wppa_opt['wppa_text_frame_height'] > '0' ? 'min-height:'.$wppa_opt['wppa_text_frame_height'].'px; ' : '';
 				$wppa['out'] .= wppa_nltab().'<p class="wppa-box-text wppa-black" style="'.$textheight.__wcs('wppa-box-text').__wcs('wppa-black').'">'.wppa_get_album_desc($album['id']).'</p>';
 			}
 			
 			// The 'Slideshow'/'Browse' link
-			if ( $wppa_opt['wppa_show_slideshowbrowselink'] ) {
+			if ( wppa_switch('wppa_show_slideshowbrowselink') ) {
 				$wppa['out'] .= wppa_nltab('+').'<div class="wppa-box-text wppa-black wppa-info wppa-slideshow-browse-link">';
 					if ($photocount > $mincount) { 
-						$label = $wppa_opt['wppa_enable_slideshow'] ?  __a('Slideshow') : __a('Browse photos');
+						$label = wppa_switch('wppa_enable_slideshow') ?  __a('Slideshow') : __a('Browse photos');
 						if ( $href_slideshow == '#' ) {
 							$wppa['out'] .= wppa_nltab().'<a onclick="'.$onclick_slideshow.'" title="'.$label.'" style="'.__wcs('wppa-box-text-nocolor').'" >'.$label.'</a>';
 						}
@@ -315,14 +314,14 @@ else $coverphoto = false;
 
 	// Find the slideshow link and onclick
 	$href_slideshow = wppa_convert_to_pretty(wppa_get_slideshow_url('', $linkpage));
-	if ( $wppa_opt['wppa_allow_ajax'] && ! $linkpage ) {
+	if ( wppa_switch('wppa_allow_ajax') && ! $linkpage ) {
 		$onclick_slideshow = "wppaDoAjaxRender(".$wppa['master_occur'].", '".wppa_get_slideshow_url_ajax($album['id'], $linkpage)."', '".wppa_convert_to_pretty($href_slideshow)."')";
 		$href_slideshow = "#";
 	}
 
 	// Find the content 'View' link 
 	$href_content = wppa_convert_to_pretty(wppa_get_album_url($album['id'], $linkpage));
-	if ( $wppa_opt['wppa_allow_ajax'] && ! $linkpage ) {
+	if ( wppa_switch('wppa_allow_ajax') && ! $linkpage ) {
 		$onclick_content = "wppaDoAjaxRender(".$wppa['master_occur'].", '".wppa_get_album_url_ajax($album['id'], $linkpage)."', '".wppa_convert_to_pretty($href_content)."')";
 		$href_content = "#";
 	}
@@ -349,7 +348,7 @@ else $coverphoto = false;
 	}
 	wppa_step_covercount('cover');
 	
-	$target = $wppa_opt['wppa_allow_ajax'] ? '_self' : $photolink['target'];
+	$target = wppa_switch('wppa_allow_ajax') ? '_self' : $photolink['target'];
 	
 	// Open the album box
 	$wppa['out'] .= wppa_nltab('+').'<div id="album-'.$album['id'].'-'.$wppa['master_occur'].'" class="wppa-album-cover-imagefactory album wppa-box wppa-cover-box wppa-cover-box-'.$mcr.$wppa['master_occur'].' wppa-'.$wppa_alt.'" style="'.$style.'" >';
@@ -383,16 +382,16 @@ else $coverphoto = false;
 			
 
 			// The Album description
-			if ( $wppa_opt['wppa_show_cover_text'] ) {
+			if ( wppa_switch('wppa_show_cover_text') ) {
 				$textheight = $wppa_opt['wppa_text_frame_height'] > '0' ? 'min-height:'.$wppa_opt['wppa_text_frame_height'].'px; ' : '';
 				$wppa['out'] .= wppa_nltab().'<p class="wppa-box-text wppa-black" style="'.$textheight.__wcs('wppa-box-text').__wcs('wppa-black').'">'.wppa_get_album_desc($album['id']).'</p>';
 			}
 			
 			// The 'Slideshow'/'Browse' link
-			if ( $wppa_opt['wppa_show_slideshowbrowselink'] ) {
+			if ( wppa_switch('wppa_show_slideshowbrowselink') ) {
 				$wppa['out'] .= wppa_nltab('+').'<div class="wppa-box-text wppa-black wppa-info wppa-slideshow-browse-link">';
 					if ($photocount > $mincount) { 
-						$label = $wppa_opt['wppa_enable_slideshow'] ?  __a('Slideshow') : __a('Browse photos');
+						$label = wppa_switch('wppa_enable_slideshow') ?  __a('Slideshow') : __a('Browse photos');
 						if ( $href_slideshow == '#' ) {
 							$wppa['out'] .= wppa_nltab().'<a onclick="'.$onclick_slideshow.'" title="'.$label.'" style="'.__wcs('wppa-box-text-nocolor').'" >'.$label.'</a>';
 						}
@@ -469,14 +468,14 @@ global $wpdb;
 	
 	// Find the slideshow link and onclick
 	$href_slideshow = wppa_convert_to_pretty(wppa_get_slideshow_url('', $linkpage));
-	if ( $wppa_opt['wppa_allow_ajax'] && ! $linkpage ) {
+	if ( wppa_switch('wppa_allow_ajax') && ! $linkpage ) {
 		$onclick_slideshow = "wppaDoAjaxRender(".$wppa['master_occur'].", '".wppa_get_slideshow_url_ajax($album['id'], $linkpage)."', '".wppa_convert_to_pretty($href_slideshow)."')";
 		$href_slideshow = "#";
 	}
 
 	// Find the content 'View' link 
 	$href_content = wppa_convert_to_pretty(wppa_get_album_url($album['id'], $linkpage));
-	if ( $wppa_opt['wppa_allow_ajax'] && ! $linkpage ) {
+	if ( wppa_switch('wppa_allow_ajax') && ! $linkpage ) {
 		$onclick_content = "wppaDoAjaxRender(".$wppa['master_occur'].", '".wppa_get_album_url_ajax($album['id'], $linkpage)."', '".wppa_convert_to_pretty($href_content)."')";
 		$href_content = "#";
 	}
@@ -525,7 +524,7 @@ global $wpdb;
 	}
 	wppa_step_covercount('cover');
 	
-	$target = $wppa_opt['wppa_allow_ajax'] ? '_self' : $photolink['target'];
+	$target = wppa_switch('wppa_allow_ajax') ? '_self' : $photolink['target'];
 	
 	// Open the album box
 	$wppa['out'] .= wppa_nltab('+').'<div id="album-'.$album['id'].'-'.$wppa['master_occur'].'" class="wppa-album-cover-longdesc album wppa-box wppa-cover-box wppa-cover-box-'.$mcr.$wppa['master_occur'].' wppa-'.$wppa_alt.'" style="'.$style.'" >';
@@ -559,10 +558,10 @@ global $wpdb;
 
 			
 			// The 'Slideshow'/'Browse' link
-			if ( $wppa_opt['wppa_show_slideshowbrowselink'] ) {
+			if ( wppa_switch('wppa_show_slideshowbrowselink') ) {
 				$wppa['out'] .= wppa_nltab('+').'<div class="wppa-box-text wppa-black wppa-info wppa-slideshow-browse-link">';
 					if ($photocount > $mincount) { 
-						$label = $wppa_opt['wppa_enable_slideshow'] ?  __a('Slideshow') : __a('Browse photos');
+						$label = wppa_switch('wppa_enable_slideshow') ?  __a('Slideshow') : __a('Browse photos');
 						if ( $href_slideshow == '#' ) {
 							$wppa['out'] .= wppa_nltab().'<a onclick="'.$onclick_slideshow.'" title="'.$label.'" style="'.__wcs('wppa-box-text-nocolor').'" >'.$label.'</a>';
 						}
@@ -584,7 +583,7 @@ global $wpdb;
 		}
 
 		// The Album description
-		if ( $wppa_opt['wppa_show_cover_text'] ) {
+		if ( wppa_switch('wppa_show_cover_text') ) {
 			$textheight = $wppa_opt['wppa_text_frame_height'] > '0' ? 'min-height:'.$wppa_opt['wppa_text_frame_height'].'px; ' : '';
 			$wppa['out'] .= wppa_nltab().'<div id="coverdesc_frame_'.$album['id'].'_'.$wppa['master_occur'].'" style="clear:both" ><p class="wppa-box-text wppa-black" style="'.$textheight.__wcs('wppa-box-text').__wcs('wppa-black').'">'.wppa_get_album_desc($album['id']).'</p></div>';
 		}
@@ -825,14 +824,14 @@ global $wppa_opt;
 		switch ( $linktype ) {
 			case 'content':
 				$href_title = wppa_convert_to_pretty(wppa_get_album_url($album['id'], $linkpage));
-				if ( $wppa_opt['wppa_allow_ajax'] ) {
+				if ( wppa_switch('wppa_allow_ajax') ) {
 					$onclick_title = "wppaDoAjaxRender(".$wppa['master_occur'].", '".wppa_get_album_url_ajax($album['id'], $linkpage)."', '".$href_title."')";
 					$href_title = "#";
 				}
 				break;
 			case 'slide':
 				$href_title = wppa_convert_to_pretty(wppa_get_slideshow_url('', $linkpage));
-				if ( $wppa_opt['wppa_allow_ajax'] ) {
+				if ( wppa_switch('wppa_allow_ajax') ) {
 					$onclick_title = "wppaDoAjaxRender(".$wppa['master_occur'].", '".wppa_get_slideshow_url_ajax($album['id'], $linkpage)."', '".$href_title."')";
 					$href_title = "#";
 				}
@@ -851,7 +850,7 @@ global $wppa_opt;
 			else {
 				$href_title = '#';
 			}
-			if ( $wppa_opt['wppa_allow_ajax'] ) {
+			if ( wppa_switch('wppa_allow_ajax') ) {
 				if ( $coverphoto ) {
 					$onclick_title = "wppaDoAjaxRender(".$wppa['master_occur'].", '".wppa_get_image_url_ajax_by_id($coverphoto)."', '".$href_title."')";
 				}
@@ -877,12 +876,12 @@ global $wppa;
 global $wppa_opt;
 global $album;
 
-	if ( $wppa_opt['wppa_show_viewlink'] ) {
+	if ( wppa_switch('wppa_show_viewlink') ) {
 		$wppa['out'] .= wppa_nltab('+').'<div class="wppa-box-text wppa-black wppa-info wppa-viewlink">';
 			if ($has_content) {
 				if ($wppa_opt['wppa_thumbtype'] == 'none') $photocount = '0'; 	// Fake photocount to prevent link to empty page
 				if ($photocount > $mincount || $albumcount) {					// Still has content
-					if ( $wppa_opt['wppa_show_treecount'] ) {
+					if ( wppa_switch('wppa_show_treecount') ) {
 						$treecount = wppa_treecount_a($album['id']);
 					}
 					else $treecount = false;

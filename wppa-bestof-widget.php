@@ -3,8 +3,10 @@
 * Package: wp-photo-album-plus
 *
 * display the best rated photos
-* Version 5.2.14
+* Version 5.3.0
 */
+
+if ( ! defined( 'ABSPATH' ) ) die( "Can't load this file directly" );
 
 class BestOfWidget extends WP_Widget {
     /** constructor */
@@ -200,5 +202,5 @@ class BestOfWidget extends WP_Widget {
 } // class BestOfWidget
 
 // register BestOfWidget widget
-if ( get_option( 'wppa_rating_on', 'yes' ) == 'yes' ) add_action( 'widgets_init', create_function( '', 'return register_widget("BestOfWidget" );' ) );
+add_action( 'widgets_init', create_function( '', 'return register_widget("BestOfWidget" );' ) );
 

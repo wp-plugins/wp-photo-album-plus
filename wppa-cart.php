@@ -3,9 +3,11 @@
 * Package: wp-photo-album-plus
 *
 * Contains the interface to SCABN
-* Version 5.2.8
+* Version 5.3.0
 *
 */
+
+if ( ! defined( 'ABSPATH' ) ) die( "Can't load this file directly" );
 
 // Displays the 'add to cart' button on photo description. 
 // Contains both the visual data and the form submission 
@@ -101,4 +103,4 @@ global $wppa;
 	return $output;
 }
 
-if ( get_option('wppa_use_scabn') == 'yes' ) add_shortcode('cart', 'wppa_add_to_cart');
+if ( get_option('wppa_use_scabn', 'no') == 'yes' ) add_shortcode('cart', 'wppa_add_to_cart');

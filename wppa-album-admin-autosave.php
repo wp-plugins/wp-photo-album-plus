@@ -3,9 +3,11 @@
 * Package: wp-photo-album-plus
 *
 * create, edit and delete albums
-* version 5.2.8
+* version 5.3.0
 *
 */
+
+if ( ! defined( 'ABSPATH' ) ) die( "Can't load this file directly" );
 
 function _wppa_admin() {
 	global $wpdb;
@@ -211,7 +213,7 @@ function _wppa_admin() {
 							</tr>
 
 							<!-- Owner -->
-							<?php // if ( $wppa_opt['wppa_owner_only'] == 'yes' ) { 
+							<?php // if ( wppa_switch('wppa_owner_only') ) { 
 							if ( current_user_can('administrator') ) {
 							?>
 								<tr>
@@ -353,7 +355,7 @@ function _wppa_admin() {
 							</tr>
 							
 							<!-- Alternative thumbnail size? -->
-							<?php if ( $wppa_opt['wppa_alt_is_restricted'] == 'no' || current_user_can('administrator') ) { ?>
+							<?php if ( ! wppa_switch('wppa_alt_is_restricted') || current_user_can('administrator') ) { ?>
 							<tr>
 								<th>
 									<label><?php _e('Use alt thumbsize:', 'wppa'); ?></label>
@@ -373,7 +375,7 @@ function _wppa_admin() {
 							<?php } ?>
 							
 							<!-- Cover type -->
-							<?php if ( $wppa_opt['wppa_covertype_is_restricted'] == 'no' || current_user_can('administrator') ) { ?>
+							<?php if ( ! wppa_switch('wppa_covertype_is_restricted') || current_user_can('administrator') ) { ?>
 							<tr>
 								<th>
 									<label><?php _e('Cover Type:', 'wppa'); ?></label>
@@ -556,7 +558,7 @@ function _wppa_admin() {
 							</tr>
 							
 							<!-- Link page -->
-							<?php if ( $wppa_opt['wppa_link_is_restricted'] == 'no' || current_user_can('administrator') ) { ?>
+							<?php if ( ! wppa_switch('wppa_link_is_restricted') || current_user_can('administrator') ) { ?>
 							<tr>
 								<th>
 									<label><?php _e('Link to:', 'wppa'); ?></label>
@@ -586,7 +588,7 @@ function _wppa_admin() {
 							<?php } ?>
 
 							<!-- Reset Ratings -->
-							<?php if ( $wppa_opt['wppa_rating_on'] == 'yes' ) { ?>
+							<?php if ( wppa_switch('wppa_rating_on') ) { ?>
 								<tr>
 									<th>
 										<a onclick="if (confirm('<?php _e('Are you sure you want to clear the ratings in this album?', 'wppa') ?>')) wppaAjaxUpdateAlbum(<?php echo $edit_id ?>, 'clear_ratings', 0 )" ><?php _e('Reset ratings', 'wppa') ?></a> 

@@ -3,9 +3,11 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 5.2.21
+* Version 5.3.0
 *
 */
+
+if ( ! defined( 'ABSPATH' ) ) die( "Can't load this file directly" );
 
 /* SETUP */
 // It used to be: register_activation_hook(WPPA_FILE, 'wppa_setup');
@@ -140,13 +142,26 @@ global $silent;
 					KEY slug (slug(20))
 					) DEFAULT CHARACTER SET utf8;";
 					
-	require_once ABSPATH . 'wp-admin/includes/upgrade.php';
+	$create_session = "CREATE TABLE " . WPPA_SESSION . " (
+					id bigint(20) NOT NULL,
+					session tinytext NOT NULL,
+					timestamp tinytext NOT NULL,
+					user tinytext NOT NULL,
+					ip tinytext NOT NULL,
+					status tinytext NOT NULL,
+					data text NOT NULL,
+					count bigint(20) NOT NULL default '0',
+					PRIMARY KEY  (id),
+					KEY session (session(20))
+					) DEFAULT CHARACTER SET utf8;";
+					
+	require_once WPPA_ABSPATH . 'wp-admin/includes/upgrade.php';
 	
 	// Create or update db tables
-	$tn = array( WPPA_ALBUMS, WPPA_PHOTOS, WPPA_RATING, WPPA_COMMENTS, WPPA_IPTC, WPPA_EXIF, WPPA_INDEX );
-	$tc = array( $create_albums, $create_photos, $create_rating, $create_comments, $create_iptc, $create_exif, $create_index );
+	$tn = array( WPPA_ALBUMS, WPPA_PHOTOS, WPPA_RATING, WPPA_COMMENTS, WPPA_IPTC, WPPA_EXIF, WPPA_INDEX, WPPA_SESSION );
+	$tc = array( $create_albums, $create_photos, $create_rating, $create_comments, $create_iptc, $create_exif, $create_index, $create_session );
 	$idx = 0;
-	while ($idx < 7) {
+	while ($idx < 8) {
 		$a0 = wppa_table_exists($tn[$idx]);
 		dbDelta($tc[$idx]);
 		$a1 = wppa_table_exists($tn[$idx]);
@@ -280,21 +295,11 @@ global $silent;
 			wppa_copy_setting('wppa_show_bread', 'wppa_show_bread_pages');
 			wppa_remove_setting('wppa_show_bread');
 		}
-//		if ( $old_rev <= '4990' ) {
-//			$wpdb->query('ALTER TABLE `'.WPPA_PHOTOS.'` ADD INDEX ( `album` )');
-//		}
 		if ( $old_rev <= '5000' ) {
 			wppa_remove_setting('wppa_autoclean');
 		}
-//		if ( $old_rev <= '5004' ) {
-//			$wpdb->query('ALTER TABLE `'.WPPA_INDEX.'` ADD INDEX ( `slug`(20) )');
-//		}
 		if ( $old_rev <= '5010' ) {
 			wppa_copy_setting('wppa_apply_newphoto_desc', 'wppa_apply_newphoto_desc_user');
-		}
-		if ( $old_rev <= '5018' ) {
-//			$wpdb->query('ALTER TABLE `'.WPPA_IPTC.'` ADD INDEX ( `photo` )');
-//			$wpdb->query('ALTER TABLE `'.WPPA_EXIF.'` ADD INDEX ( `photo` )');
 		}
 		if ( $old_rev <= '5107' ) {
 			delete_option('wppa_taglist'); 	// Forces recreation
@@ -311,9 +316,7 @@ global $silent;
 				wppa_remove_setting('wppa_list_photos_desc');
 			}
 		}
-//		if ( $old_rev <= '5206' ) {
-//			$wpdb->query( "DELETE FROM `".WPPA_RATING."` WHERE `value` = '0'" );
-//		}
+
 		if ( $old_rev <= '5207' ) {
 			if ( get_option( 'wppa_strip_file_ext', 'nil' ) == 'yes' ) {
 				wppa_update_option( 'wppa_newphoto_name_method', 'noext' );
@@ -321,11 +324,10 @@ global $silent;
 			}
 		}		
 		
-//		wppa_flush_treecounts();
 	}
 	
-	// Set default values for new options
-	wppa_set_defaults();					
+	// Set Defaults
+	wppa_set_defaults();
 	
 	// Check required directories
 	if ( ! wppa_check_dirs() ) $wppa['error'] = true;
@@ -340,20 +342,32 @@ global $silent;
 		}
 	}
 
+	// Copy factory supplied watermark fonts
+	$frompath = WPPA_PATH . '/fonts';
+	$fonts = glob($frompath . '/*');
+	if ( is_array($fonts) ) {
+		foreach ($fonts as $fromfile) {
+			if ( is_file ( $fromfile ) ) {
+				$tofile = WPPA_UPLOAD_PATH . '/fonts/' . basename($fromfile);
+				@ copy($fromfile, $tofile);
+			}
+		}
+	}
+
 	// Check if this update comes with a new wppa-theme.php and/or a new wppa-style.css
 	// If so, produce message
 	$key = '0';
 	if ( $old_rev < '5200' ) {		// theme changed since...
-		$usertheme = ABSPATH.'wp-content/themes/'.get_option('template').'/wppa-theme.php';
+		$usertheme = get_theme_root().'/'.get_option('template').'/wppa-theme.php';
 		if ( is_file( $usertheme ) ) $key += '2';
 	}
 	if ( $old_rev < '5211' ) {		// css changed since...
-		$userstyle = ABSPATH.'wp-content/themes/'.get_option('stylesheet').'/wppa-style.css';
+		$userstyle = get_theme_root().'/'.get_option('stylesheet').'/wppa-style.css';
 		if ( is_file( $userstyle ) ) {
 			$key += '1';
 		}
 		else {
-			$userstyle = ABSPATH.'wp-content/themes/'.get_option('template').'/wppa-style.css';
+			$userstyle = get_theme_root().'/'.get_option('template').'/wppa-style.css';
 			if ( is_file( $userstyle ) ) {
 				$key += '1';
 			}
@@ -414,8 +428,8 @@ function wppa_revalue_setting($oldname, $oldvalue, $newvalue) {
 	if ( get_option($oldname, 'nil') == $oldvalue ) wppa_update_option($oldname, $newvalue);
 }
 
-// Set default option values if the option does not exist.
-// With $force = true, all options will be set to their default value.
+// Set default option values in global $wppa_defaults
+// With $force = true, all non default options will be deleted, so everything is set to the default except: revision, rating_max and filesystem
 function wppa_set_defaults($force = false) {
 global $wppa_defaults;
 
@@ -466,7 +480,7 @@ Hide Camera info
 						
 						// Table I: Sizes
 						// A System
-						'wppa_colwidth' 				=> '640',	// 1
+						'wppa_colwidth' 				=> 'auto',	// 1
 						'wppa_resize_on_upload' 		=> 'no',	// 2
 						'wppa_resize_to'				=> '0',		// 3
 						'wppa_min_thumbs' 				=> '1',		// 4
@@ -713,7 +727,7 @@ Hide Camera info
 						'wppa_slide_wrap'				=> 'yes',
 						'wppa_fulldesc_align'			=> 'center',
 						'wppa_clean_pbr'				=> 'yes',
-						'wppa_run_wppautop_on_desc'		=> 'no',
+						'wppa_run_wpautop_on_desc'		=> 'no',
 						'wppa_auto_open_comments'		=> 'yes',
 						'wppa_film_hover_goto'			=> 'no',
 						'wppa_slide_swipe'				=> 'yes',
@@ -903,6 +917,7 @@ Hide Camera info
 						
 						'wppa_album_navigator_widget_linkpage' 	=> '0', 
 						
+						
 						// Table VII: Security
 						// B
 						'wppa_user_upload_login'	=> 'yes',
@@ -966,6 +981,7 @@ Hide Camera info
 						'wppa_remove_text'			=> '',
 						'wppa_remove_from_photodesc'	=> '',
 						'wppa_remove_empty_albums'	=> '',
+						'wppa_watermark_all' 		=> '',
 
 						// Table IX: Miscellaneous
 						// A System
@@ -1024,7 +1040,7 @@ Hide Camera info
 						
 						'wppa_copy_timestamp'			=> 'no',
 						
-						// C Search
+						// E Search
 						'wppa_search_linkpage' 			=> '0',		// 1
 						'wppa_excl_sep' 				=> 'no',	// 2
 						'wppa_search_tags'				=> 'no',
@@ -1036,15 +1052,22 @@ Hide Camera info
 						'wppa_max_search_albums'		=> '25',
 						'wppa_tags_or_only'				=> 'no',
 						'wppa_wild_front'				=> 'no',
+						'wppa_search_display_type' 		=> 'content',
 						
-						// D Watermark
+						// F Watermark
 						'wppa_watermark_on'				=> 'no',
 						'wppa_watermark_user'			=> 'no',
 						'wppa_watermark_file'			=> 'specimen.png',
 						'wppa_watermark_pos'			=> 'cencen',
+						'wppa_textual_watermark_type'	=> 'tvstyle',
+						'wppa_textual_watermark_text' 	=> "Copyright (c) 2014 w#site \n w#filename (w#owner)",
+						'wppa_textual_watermark_font' 	=> 'system',
+						'wppa_textual_watermark_size'	=> '10',
 						'wppa_watermark_upload'			=> '',
 						'wppa_watermark_opacity'		=> '20',
+						'wppa_watermark_opacity_text' 	=> '80',
 						
+						// G Slide order
 						'wppa_slide_order'				=> '0,1,2,3,4,5,6,7,8,9,10',
 						'wppa_slide_order_split'		=> '0,1,2,3,4,5,6,7,8,9,10,11',
 						'wppa_swap_namedesc' 			=> 'no',
@@ -1100,7 +1123,7 @@ Hide Camera info
 						// H Source file management and import/upload
 						'wppa_keep_source_admin'	=> 'no',
 						'wppa_keep_source_frontend' => 'no',
-						'wppa_source_dir'			=> ABSPATH.WPPA_UPLOAD.'/wppa-source',
+						'wppa_source_dir'			=> WPPA_ABSPATH.WPPA_UPLOAD.'/wppa-source',
 						'wppa_keep_sync'			=> 'yes',
 						'wppa_remake_add'			=> 'yes',
 						'wppa_save_iptc'			=> 'yes',
@@ -1122,10 +1145,7 @@ Hide Camera info
 						
 						);
 
-	array_walk($wppa_defaults, 'wppa_set_default', $force);
-	
-	// Check for upgrade right after conversion from old wppa
-	if ( ! is_numeric(get_option('wppa_fullsize')) ) wppa_update_option('wppa_fullsize', '640');
+	array_walk( $wppa_defaults, 'wppa_set_default', $force );
 	
 	return true;
 }
@@ -1137,10 +1157,12 @@ function wppa_set_default($value, $key, $force) {
 		);
 							
 	if ( $force ) {
-		if ( ! in_array($key, $void_these) ) wppa_update_option($key, $value);
+		// Delete all options except the voids
+		if ( ! in_array( $key, $void_these ) ) delete_option( $key );
 	}
 	else {
-		if ( get_option($key, 'nil') == 'nil' ) wppa_update_option($key, $value);
+		// Delete all options that have the default value, except the voids
+		if ( ! in_array( $key, $void_these ) && get_option( $key, 'nil' ) == $value ) delete_option( $key );
 	}
 }
 
@@ -1149,9 +1171,10 @@ function wppa_check_dirs() {
 
 	if ( ! is_multisite() ) {
 		// check if uploads dir exists
-		$dir = ABSPATH . 'wp-content/uploads';
+		$upload_dir = wp_upload_dir();
+		$dir = $upload_dir['basedir'];
 		if ( ! is_dir($dir) ) {
-			mkdir($dir);
+			wppa_mktree($dir);
 			if ( ! is_dir($dir) ) {
 				wppa_error_message(__('The uploads directory does not exist, please do a regular WP upload first.', 'wppa').'<br/>'.$dir);
 				return false;
@@ -1166,7 +1189,7 @@ function wppa_check_dirs() {
 	// check if wppa dir exists
 	$dir = WPPA_UPLOAD_PATH;
 	if ( ! is_dir($dir) ) {
-		mkdir($dir);
+		wppa_mktree($dir);
 		if ( ! is_dir($dir) ) {
 			wppa_error_message(__('Could not create the wppa directory.', 'wppa').wppa_credirmsg($dir));
 			return false;
@@ -1180,7 +1203,7 @@ function wppa_check_dirs() {
 	// check if thumbs dir exists 
 	$dir = WPPA_UPLOAD_PATH.'/thumbs';
 	if ( ! is_dir($dir) ) {
-		mkdir($dir);
+		wppa_mktree($dir);
 		if ( ! is_dir($dir) ) {
 			wppa_error_message(__('Could not create the wppa thumbs directory.', 'wppa').wppa_credirmsg($dir));
 			return false;
@@ -1194,7 +1217,7 @@ function wppa_check_dirs() {
 	// check if watermarks dir exists 
 	$dir = WPPA_UPLOAD_PATH.'/watermarks';
 	if ( ! is_dir($dir) ) {
-		mkdir($dir);
+		wppa_mktree($dir);
 		if ( ! is_dir($dir) ) {
 			wppa_error_message(__('Could not create the wppa watermarks directory.', 'wppa').wppa_credirmsg($dir));
 			return false;
@@ -1204,13 +1227,27 @@ function wppa_check_dirs() {
 		}
 	}
 	@ chmod($dir, 0755);
+
+	// check if fonts dir exists 
+	$dir = WPPA_UPLOAD_PATH.'/fonts';
+	if ( ! is_dir($dir) ) {
+		wppa_mktree($dir);
+		if ( ! is_dir($dir) ) {
+			wppa_error_message(__('Could not create the wppa fonts directory.', 'wppa').wppa_credirmsg($dir));
+			return false;
+		}
+		else {
+			if ( WPPA_DEBUG ) wppa_ok_message(__('Successfully created wppa fonts directory.', 'wppa').'<br/>'.$dir);
+		}
+	}
+	@ chmod($dir, 0755);
 	
 	// check if depot dir exists
 	if ( ! is_multisite() ) {
 		// check if users depot dir exists
-		$dir = ABSPATH.'wp-content/wppa-depot';
+		$dir = WPPA_CONTENT_PATH.'/wppa-depot';
 		if ( ! is_dir($dir) ) {
-			mkdir($dir);
+			wppa_mktree($dir);
 			if ( ! is_dir($dir) ) {
 				wppa_error_message(__('Unable to create depot directory.', 'wppa').wppa_credirmsg($dir));
 				return false;
@@ -1225,13 +1262,27 @@ function wppa_check_dirs() {
 	// check the user depot directory
 	$dir = WPPA_DEPOT_PATH;
 	if ( ! is_dir($dir) ) {
-		mkdir($dir);
+		wppa_mktree($dir);
 		if ( ! is_dir($dir) ) {
 			wppa_error_message(__('Unable to create user depot directory', 'wppa').wppa_credirmsg($dir));
 			return false;
 		}
 		else {
 			if ( WPPA_DEBUG ) wppa_ok_message(__('Successfully created wppa user depot directory.', 'wppa').'<br/>'.$dir);
+		}
+	}
+	@ chmod($dir, 0755);
+	
+	// check the temp dir
+	$dir = WPPA_UPLOAD_PATH.'/temp/';
+	if ( ! is_dir($dir) ) {
+		wppa_mktree($dir);
+		if ( ! is_dir($dir) ) {
+			wppa_error_message(__('Unable to create temp directory', 'wppa').wppa_credirmsg($dir));
+			return false;
+		}
+		else {
+			if ( WPPA_DEBUG ) wppa_ok_message(__('Successfully created temp directory.', 'wppa').'<br/>'.$dir);
 		}
 	}
 	@ chmod($dir, 0755);

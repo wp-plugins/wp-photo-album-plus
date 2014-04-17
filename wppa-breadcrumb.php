@@ -3,25 +3,25 @@
 * Package: wp-photo-album-plus
 *
 * Functions for breadcrumbs
-* Version 5.2.20
+* Version 5.3.0
 *
 */
 
-if ( ! defined( 'ABSPATH' ) )
-    die( "Can't load this file directly" );
+if ( ! defined( 'ABSPATH' ) ) die( "Can't load this file directly" );
 
 // shows the breadcrumb navigation 
 function wppa_breadcrumb($opt = '') {
 global $wppa;
 global $wppa_opt;
 global $wpdb;
+global $wppa_session;
 
 	// See if they need us 
 	if ( $opt == 'optional' ) {													// Check Table II-A1 a and b
 		$pid = wppa_get_the_page_id();
 		$type = $wpdb->get_var( $wpdb->prepare( "SELECT `post_type` FROM `" . $wpdb->posts . "` WHERE `ID` = %s", $pid ) );
-		if ( $type == 'post' && ! $wppa_opt['wppa_show_bread_posts'] ) return;	// Nothing to do here
-		if ( $type != 'post' && ! $wppa_opt['wppa_show_bread_pages'] ) return;	// Nothing to do here
+		if ( $type == 'post' && ! wppa_switch('wppa_show_bread_posts') ) return;	// Nothing to do here
+		if ( $type != 'post' && ! wppa_switch('wppa_show_bread_pages') ) return;	// Nothing to do here
 	}
 	if ( $wppa['is_single'] ) return;											// A single image slideshow needs no navigation 
 	if ( wppa_page('oneofone') ) return; 										// Never at a single image page
@@ -94,17 +94,17 @@ global $wpdb;
 		
 		// The album and optionall placeholder for photo
 		if ( $wppa['src'] && $wppa['master_occur'] == '1' && ! $wppa['is_related'] ) {	// Search
-			if ( isset( $_SESSION['wppa_session']['search_root'] ) ) $searchroot = $_SESSION['wppa_session']['search_root'];
+			if ( isset( $wppa_session['search_root'] ) ) $searchroot = $wppa_session['search_root'];
 			else $searchroot = '-2';
 			$albtxt = $wppa['is_rootsearch'] ? ' <span style="cursor:pointer;" title="'.esc_attr( sprintf( __a( 'Searchresults from album %s and its subalbums' ), wppa_get_album_name( $searchroot ) ) ).'">*</span> ' : '';
 			if ( $wppa['is_slide'] ) {
 //				$value 	= __a('Searchstring:').'&nbsp;'.stripslashes($wppa['searchstring']);
-				$value  = __a('Searchstring:') . ' ' . ( isset ( $_SESSION['wppa_session']['display_searchstring'] ) ? $_SESSION['wppa_session']['display_searchstring'] : stripslashes( $wppa['searchstring'] ) ) . $albtxt;
+				$value  = __a('Searchstring:') . ' ' . ( isset ( $wppa_session['display_searchstring'] ) ? $wppa_session['display_searchstring'] : stripslashes( $wppa['searchstring'] ) ) . $albtxt;
 				$href 	= wppa_get_permalink().'wppa-cover=0&amp;wppa-occur='.$wppa['occur'].'&amp;wppa-searchstring='.stripslashes($wppa['searchstring']);
 				$title  = __a('View the thumbnails');
 				wppa_bcitem($value, $href, $title, 'b8');
 			}
-			$value  = __a('Searchstring:') . ' ' . ( isset ( $_SESSION['wppa_session']['display_searchstring'] ) ? $_SESSION['wppa_session']['display_searchstring'] : stripslashes( $wppa['searchstring'] ) ) . $albtxt;
+			$value  = __a('Searchstring:') . ' ' . ( isset ( $wppa_session['display_searchstring'] ) ? $wppa_session['display_searchstring'] : stripslashes( $wppa['searchstring'] ) ) . $albtxt;
 			$href 	= '';
 			$title	= '';
 			wppa_bcitem($value, $href, $title, 'b9');
@@ -273,7 +273,7 @@ global $wpdb;
 		
 		// 'Go to thumbnail display' - icon
 		if ( $wppa['is_slide'] ) {
-			if ( $wppa_opt['wppa_bc_slide_thumblink'] ) {
+			if ( wppa_switch('wppa_bc_slide_thumblink') ) {
 				$s = $wppa['src'] ? '&wppa-searchstring='.urlencode($wppa['searchstring']) : '';
 				$onclick = "wppaDoAjaxRender(".$wppa['master_occur'].", '".wppa_get_album_url_ajax($wppa['start_album'], '0')."&wppa-photos-only=1".$s."', '".wppa_convert_to_pretty(wppa_get_album_url($wppa['start_album'], '0').'&wppa-photos-only=1'.$s)."')";
 				$fs = $wppa_opt['wppa_fontsize_nav'];	

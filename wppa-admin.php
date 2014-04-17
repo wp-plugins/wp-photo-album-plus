@@ -3,14 +3,15 @@
 * Package: wp-photo-album-plus
 *
 * Contains the admin menu and startups the admin pages
-* Version 5.2.17
+* Version 5.3.0
 *
 */
 
+if ( ! defined( 'ABSPATH' ) ) die( "Can't load this file directly" );
+
 /* CHECK INSTALLATION */
 // Check setup
-require_once 'wppa-setup.php';
-add_action ( 'admin_init', 'wppa_setup' );	// admin_init
+add_action ( 'init', 'wppa_setup', '8' );	// admin_init
 
 /* ADMIN MENU */
 add_action( 'admin_menu', 'wppa_add_admin' );
@@ -56,7 +57,7 @@ function wppa_add_admin() {
 	add_submenu_page( 'wppa_admin_menu',  __('Album Admin', 'wppa'),			 __('Album Admin', 'wppa').$upl_pending,'wppa_admin',        'wppa_admin_menu',      'wppa_admin' );
     add_submenu_page( 'wppa_admin_menu',  __('Upload Photos', 'wppa'),           __('Upload Photos', 'wppa'),          'wppa_upload',        'wppa_upload_photos',   'wppa_page_upload' );
 	// Uploader without album admin rights, but when the upload_edit switch set, may edit his own photos
-	if ( ! current_user_can('wppa_admin') && get_option('wppa_upload_edit', 'yes') == 'yes' ) {
+	if ( ! current_user_can('wppa_admin') && wppa_switch('wppa_upload_edit') ) {
 		add_submenu_page( 'wppa_admin_menu',  __('Edit Photos', 'wppa'), 		 __('Edit Photos', 'wppa'), 		   'wppa_upload', 		 'wppa_edit_photo', 	 'wppa_edit_photo' );
 	}
 	add_submenu_page( 'wppa_admin_menu',  __('Import Photos', 'wppa'),           __('Import Photos', 'wppa'),          'wppa_import',        'wppa_import_photos',   'wppa_page_import' );
