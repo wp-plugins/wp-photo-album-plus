@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Various funcions
-* Version 5.3.0
+* Version 5.3.1
 *
 */
 
@@ -1434,6 +1434,7 @@ global $thumb;
 	
 	// Og Description
 	$ogdsc = ( wppa_switch('wppa_facebook_comments') && ! $wppa['in_widget'] ) ? strip_shortcodes( wppa_strip_tags( wppa_html( wppa_get_photo_desc( $id ) ), 'all' ) ) : '';
+	$ogdsc = esc_js( $ogdsc );
 
 	// Hires url
 	$hiresurl = esc_js( wppa_get_hires_url( $id ) );

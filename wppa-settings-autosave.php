@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 5.3.0
+* Version 5.3.1
 *
 */
 
@@ -5774,6 +5774,17 @@ global $no_default;
 									<td>WPPA_CONTENT_PATH</td>
 									<td><small><?php _e('The path to wp-content.', 'wppa') ?></small></td>
 									<td><?php echo(WPPA_CONTENT_PATH) ?></td>
+								</tr>
+								<tr style="color:#333;">
+									<td>wp_upload_dir() : ['basedir']</td>
+									<td><small><?php _e('WP Base upload dir.', 'wppa') ?></small></td>
+									<td><?php 	$wp_uploaddir = wp_upload_dir();
+												echo $wp_uploaddir['basedir']; ?></td>
+								</tr>
+								<tr style="color:#333;">
+									<td>WPPA_ABSPATH</td>
+									<td><small><?php _e('ABSPATH windows proof', 'wppa') ?></small></td>
+									<td><?php echo WPPA_ABSPATH ?></td>
 								</tr>
 							</tbody>
 						</table>

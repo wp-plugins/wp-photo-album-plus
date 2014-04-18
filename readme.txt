@@ -173,6 +173,15 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
 
+= 5.3.1 =
+
+= Bug Fixes =
+
+* Windows backward filesystem slashes related problems in paths should be fixed now.
+* The og description transferred to wppa.js is now properly escaped. Fixes broken slideshows.
+* You should see no more [... is no yes/no setting] errors anymore.
+* Fixed a layout issue on comments in slideshows.
+
 = 5.3.0 =
 
 = Known problems =

@@ -2,7 +2,7 @@
 /* wppa-ajax.php
 *
 * Functions used in ajax requests
-* version 5.3.0
+* version 5.3.1
 *
 */
 
@@ -64,9 +64,9 @@ global $wppa;
 			// Correct the fact that this is a non-admin operation, if it is only
 			if ( is_admin() ) {
 				require_once 'wppa-non-admin.php';
-				foreach(array_keys($wppa_opt) as $s) {
-					if ( $wppa_opt[$s] == 'no' ) $wppa_opt[$s] = false;
-				}
+///				foreach(array_keys($wppa_opt) as $s) {
+///					if ( $wppa_opt[$s] == 'no' ) $wppa_opt[$s] = false;
+///				}
 			}
 			
 			$wppa['master_occur'] 	= $_REQUEST['moccur'];

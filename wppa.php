@@ -2,7 +2,7 @@
 /*
 Plugin Name: WP Photo Album Plus
 Description: Easily manage and display your photo albums and slideshows within your WordPress site.
-Version: 5.3.0
+Version: 5.3.1
 Author: J.N. Breetvelt a.k.a OpaJaap
 Author URI: http://wppa.opajaap.nl/
 Plugin URI: http://wordpress.org/extend/plugins/wp-photo-album-plus/
@@ -20,11 +20,11 @@ global $wpdb;
 /* when new options are added and when the wppa_setup() routine 
 /* must be called right after update for any other reason.
 */
-global $wppa_revno; 		$wppa_revno = '5299';	
+global $wppa_revno; 		$wppa_revno = '5301';	
 /* This is the api interface version number
 /* It is incremented at any code change.
 */
-global $wppa_api_version; 	$wppa_api_version = '5-2-99-001';
+global $wppa_api_version; 	$wppa_api_version = '5-3-01-000';
 /* start timers */
 global $wppa_starttime; $wppa_starttime = microtime(true);
 global $wppa_loadtime; $wppa_loadtime = - microtime(true);
@@ -65,7 +65,7 @@ define( 'WPPA_ABSPATH', str_replace( "\\", "/", ABSPATH ) );
 // so, if you changed the location of wp-content, i have to use WP_CONTENT_DIR, because wp-content needs not to be relative to ABSPATH
 // In the normal case i use content_url() with the site_url() part replaced by ABSPATH
 if ( defined( 'WP_CONTENT_DIR' ) ) define( 'WPPA_CONTENT_PATH', WP_CONTENT_DIR );
-else define( 'WPPA_CONTENT_PATH', str_replace(site_url().'/',WPPA_ABSPATH, content_url() ) );	// /.../wp-content
+else define( 'WPPA_CONTENT_PATH', str_replace( str_replace( "\\", "/", site_url() ).'/', WPPA_ABSPATH, str_replace( "\\" , "/", content_url() ) ) );	// /.../wp-content
 
 add_action( 'init', 'wppa_init', '7' );
 

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Various wppa boxes
-* Version 5.3.0
+* Version 5.3.1
 *
 */
 
@@ -992,7 +992,7 @@ global $wppa_first_comment_html;
 				}
 			}
 		$result .= '</a></td></tr></tbody></table>';
-	$result .= '</div>';
+	$result .= '</div><div style="clear:both"></div>';
 
 	return $result;
 }
