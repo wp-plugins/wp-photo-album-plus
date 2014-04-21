@@ -2,7 +2,7 @@
 /* wppa-watermark.php
 *
 * Functions used for the application of watermarks
-* version 5.3.0
+* version 5.3.2
 *
 */
 
@@ -78,6 +78,7 @@ global $wppa_opt;
 				$text = html_entity_decode( $text );
 				$text = str_replace( 'w#site', get_bloginfo('url'), $text );
 				$text = str_replace( 'w#owner', $thumb['owner'], $text );
+				$text = str_replace( 'w#id', $thumb['id'], $text );
 				$text = str_replace( 'w#name', wppa_get_photo_name( $thumb['id'] ), $text );
 				$text = str_replace( 'w#filename', $thumb['filename'], $text );
 				$text = trim( $text );

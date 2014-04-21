@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 5.3.0
+* Version 5.3.2
 *
 */
 
@@ -87,7 +87,7 @@ global $silent;
 					page_id bigint(20) NOT NULL default '0',
 					exifdtm tinytext NOT NULL,
 					PRIMARY KEY  (id),
-					KEY album (album)
+					KEY albumkey (album)
 					) DEFAULT CHARACTER SET utf8;";
 
 	$create_rating = "CREATE TABLE " . WPPA_RATING . " (
@@ -97,7 +97,7 @@ global $silent;
 					value smallint(5) NOT NULL,
 					user text NOT NULL,
 					PRIMARY KEY  (id),
-					KEY photo (photo)
+					KEY photokey (photo)
 					) DEFAULT CHARACTER SET utf8;";
 					
 	$create_comments = "CREATE TABLE " . WPPA_COMMENTS . " (
@@ -110,7 +110,7 @@ global $silent;
 					comment text NOT NULL,
 					status tinytext NOT NULL,
 					PRIMARY KEY  (id),
-					KEY photo (photo)
+					KEY photokey (photo)
 					) DEFAULT CHARACTER SET utf8;";
 					
 	$create_iptc = "CREATE TABLE " . WPPA_IPTC . " (
@@ -120,7 +120,7 @@ global $silent;
 					description text NOT NULL,
 					status tinytext NOT NULL,
 					PRIMARY KEY  (id),
-					KEY photo (photo)
+					KEY photokey (photo)
 					) DEFAULT CHARACTER SET utf8;";
 
 	$create_exif = "CREATE TABLE " . WPPA_EXIF . " (
@@ -130,7 +130,7 @@ global $silent;
 					description text NOT NULL,
 					status tinytext NOT NULL,
 					PRIMARY KEY  (id),
-					KEY photo (photo)
+					KEY photokey (photo)
 					) DEFAULT CHARACTER SET utf8;";
 					
 	$create_index = "CREATE TABLE " . WPPA_INDEX . " (
@@ -139,7 +139,7 @@ global $silent;
 					albums text NOT NULL,
 					photos text NOT NULL,
 					PRIMARY KEY  (id),
-					KEY slug (slug(20))
+					KEY slugkey (slug(20))
 					) DEFAULT CHARACTER SET utf8;";
 					
 	$create_session = "CREATE TABLE " . WPPA_SESSION . " (
@@ -152,7 +152,7 @@ global $silent;
 					data text NOT NULL,
 					count bigint(20) NOT NULL default '0',
 					PRIMARY KEY  (id),
-					KEY session (session(20))
+					KEY sessionkey (session(20))
 					) DEFAULT CHARACTER SET utf8;";
 					
 	require_once WPPA_ABSPATH . 'wp-admin/includes/upgrade.php';

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains (not yet, but in the future maybe) all the maintenance routines
-* Version 5.3.0
+* Version 5.3.2
 *
 */
 
@@ -84,6 +84,15 @@ global $wppa_session;
 				if ( get_option('wppa_file_system') == 'flat' ) update_option( 'wppa_file_system', 'to-tree' );
 				if ( get_option('wppa_file_system') == 'tree' ) update_option( 'wppa_file_system', 'to-flat' );
 				break;
+			case 'wppa_cleanup':
+				$orphan_album = get_option( 'wppa_orphan_album', '0' );
+				$album_exists = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM`".WPPA_ALBUMS."` WHERE `id` = %s", $orphan_album ) );
+				if ( ! $album_exists ) $orphan_album = false;
+				if ( ! $orphan_album ) {
+					$orphan_album = wppa_create_album_entry( array( 'name' => __('Orphan photos', 'wppa'), 'a_parent' => '-1', 'description' => __('This album contains refound lost photos', 'wppa') ) );
+					update_option( 'wppa_orphan_album', $orphan_album );
+				}
+				break;
 		}
 	}
 	
@@ -148,8 +157,18 @@ global $wppa_session;
 			// Process photos
 			$thumbsize 	= wppa_get_minisize();
 			$table 		= WPPA_PHOTOS;
-			$topid 		= $wpdb->get_var( "SELECT `id` FROM `".WPPA_PHOTOS."` ORDER BY `id` DESC LIMIT 1" );
-			$photos 	= $wpdb->get_results( "SELECT * FROM `".WPPA_PHOTOS."` WHERE `id` > ".$lastid." ORDER BY `id` LIMIT ".$chunksize, ARRAY_A );
+			
+			if ( $slug == 'wppa_cleanup' ) {
+				$topid 		= get_option( 'wppa_'.WPPA_PHOTOS.'_lastkey', '1' ) * 10;
+				$photos 	= array();
+				for ( $i = ( $lastid + '1'); $i <= $topid; $i++ ) {
+					$photos[]['id'] = $i;
+				}
+			}
+			else {
+				$topid 		= $wpdb->get_var( "SELECT `id` FROM `".WPPA_PHOTOS."` ORDER BY `id` DESC LIMIT 1" );
+				$photos 	= $wpdb->get_results( "SELECT * FROM `".WPPA_PHOTOS."` WHERE `id` > ".$lastid." ORDER BY `id` LIMIT ".$chunksize, ARRAY_A );
+			}
 			
 			if ( $photos ) foreach ( $photos as $photo ) {
 				$thumb = $photo;	// Make globally known
@@ -247,18 +266,33 @@ global $wppa_session;
 						break;
 						
 					case 'wppa_cleanup':
-						$thumbpath = wppa_get_thumb_path( $id );
-						$imagepath = wppa_get_photo_path( $id );
-						if ( ! is_file( $imagepath ) ) {
-							$wpdb->query( $wpdb->prepare( "DELETE FROM `".WPPA_PHOTOS."` WHERE `id` = %s", $id ) );
-							if ( is_file( $thumbpath ) ) unlink( $thumbpath );
-							$wppa_session[$slug.'_deleted']++;
+						wppa_log('Debug','Processing:'.$id);
+						$photo_files = glob( WPPA_UPLOAD_PATH.'/'.$id.'.*' );
+						// Remove dirs
+						if ( $photo_files ) {
+							foreach( array_keys( $photo_files ) as $key ) {
+								if ( is_dir( $photo_files[$key] ) ) {
+									unset( $photo_files[$key] );
+								}
+							}
 						}
-						else {
-							if ( ! is_file( $thumbpath ) ) {
-								wppa_create_thumbnail( $imagepath, $thumbsize );
-								$thumbpath = wppa_get_thumb_path( $id );
-								if ( is_file( $thumbpath ) ) $wppa_session[$slug.'_fixed']++;
+						// files left? process
+						if ( $photo_files ) foreach( $photo_files as $photo_file ) {
+							$basename 	= basename( $photo_file );
+							$ext 		= substr( $basename, strpos( $basename, '.' ) + '1');
+							if ( ! $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM `".WPPA_PHOTOS."` WHERE `id` = %s", $id ) ) ) { // no db entry for this photo
+								if ( wppa_is_id_free( WPPA_PHOTOS, $id ) ) {
+									if ( wppa_create_photo_entry( array( 'id' => $id, 'album' => $orphan_album, 'ext' => $ext, 'filename' => $basename ) ) ) { 	// Can create entry
+										$wppa_session[$slug.'_fixed']++;	// Bump counter
+										wppa_log( 'Debug', 'Lost photo file '.$photo_file.' recovered' );
+									}
+									else {
+										wppa_log( 'Debug', 'Unable to recover lost photo file '.$photo_file.' Create photo entry failed' );
+									}
+								}
+								else {
+									wppa_log( 'Debug', 'Could not recover lost photo file '.$photo_file.' The id is not free' );
+								}
 							}
 						}
 						break;
@@ -295,6 +329,7 @@ global $wppa_session;
 			}
 			else {	// Nothing to do, Done anyway
 				$lastid = $topid;
+				wppa_log( 'Debug', 'Maintenance proc '.$slug.': Done!');
 			}
 			break;	// End process photos
 			
@@ -326,8 +361,12 @@ global $wppa_session;
 	}
 	
 	// either $albums / $photos has been exhousted ( for this try ) or time is up
-//	$togo 	= $topid - $lastid;
-	$togo 	= $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM `".$table."` WHERE `id` > %s ", $lastid ) );
+	if ( $slug == 'wppa_cleanup' ) {
+		$togo 	= $topid - $lastid;
+	}
+	else {
+		$togo 	= $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM `".$table."` WHERE `id` > %s ", $lastid ) );
+	}
 	$status = $togo ? 'Pending' : 'Ready';
 	if ( $togo ) {
 		update_option( $slug.'_togo', $togo );

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains low-level utility routines
-* Version 5.3.0
+* Version 5.3.2
 *
 */
  
@@ -256,11 +256,11 @@ global $wppa_opt;
 		if ( isset( $wppa_opt[$key] ) ) {
 			if ( $wppa_opt[$key] == 'yes' ) return true;
 			elseif ( $wppa_opt[$key] == 'no' ) return false;
-			else wppa_dbg_msg('Error: $wppa_opt['.$key.'] is not a yes/no setting', 'red', 'force');
+			else wppa_dbg_msg('Error: $wppa_opt['.$key.'] is not a yes/no setting', 'red');
 		}
-		else wppa_dbg_msg('Error: $wppa_opt['.$key.'] is not a setting', 'red', 'force');
+		else wppa_dbg_msg('Error: $wppa_opt['.$key.'] is not a setting', 'red');
 	}
-	else wppa_dbg_msg('Error: $wppa_opt[] is not initialized while testing '.$key, 'red', 'force');
+	else wppa_dbg_msg('Error: $wppa_opt[] is not initialized while testing '.$key, 'red');
 	return false;
 }
 

@@ -2,7 +2,7 @@
 /*
 Plugin Name: WP Photo Album Plus
 Description: Easily manage and display your photo albums and slideshows within your WordPress site.
-Version: 5.3.1
+Version: 5.3.2
 Author: J.N. Breetvelt a.k.a OpaJaap
 Author URI: http://wppa.opajaap.nl/
 Plugin URI: http://wordpress.org/extend/plugins/wp-photo-album-plus/
@@ -20,11 +20,11 @@ global $wpdb;
 /* when new options are added and when the wppa_setup() routine 
 /* must be called right after update for any other reason.
 */
-global $wppa_revno; 		$wppa_revno = '5301';	
+global $wppa_revno; 		$wppa_revno = '5302';	
 /* This is the api interface version number
 /* It is incremented at any code change.
 */
-global $wppa_api_version; 	$wppa_api_version = '5-3-01-000';
+global $wppa_api_version; 	$wppa_api_version = '5-3-02';
 /* start timers */
 global $wppa_starttime; $wppa_starttime = microtime(true);
 global $wppa_loadtime; $wppa_loadtime = - microtime(true);
@@ -41,6 +41,9 @@ if ( ! defined( 'PHP_VERSION_ID' ) ) {
 }
 /* To run WPPA+ on a multisite in single site mode, add to wp-config.php: define('WPPA_MULTISITE_GLOBAL', true); */
 if ( ! defined('WPPA_MULTISITE_GLOBAL') ) define ('WPPA_MULTISITE_GLOBAL', false);
+/* To run WPPA+ in a multisite old style mode, add to wp-config.php: define ('WPPA_MULTISITE_BLOGSDIR', true); */
+if ( ! defined('WPPA_MULTISITE_BLOGSDIR') ) define ('WPPA_MULTISITE_BLOGSDIR', false);
+
 if ( is_multisite() && WPPA_MULTISITE_GLOBAL ) $wppa_prefix = $wpdb->base_prefix; else $wppa_prefix = $wpdb->prefix;
 /* DB Tables */
 define( 'WPPA_ALBUMS',   $wppa_prefix . 'wppa_albums' );
@@ -59,13 +62,22 @@ define( 'WPPA_NAME', basename( dirname( __FILE__ ) ) );										// wp-photo-alb
 define( 'WPPA_URL',  plugins_url() . '/' . WPPA_NAME ); 									// http://.../wp-photo-album-plus
 
 // To fix a problem in Windows local host systems:
-define( 'WPPA_ABSPATH', str_replace( "\\", "/", ABSPATH ) );
+function wppa_trims( $txt ) {
+	return trim( $txt, "\\/" );
+}
+function wppa_flips( $txt ) {
+	return str_replace( "\\", "/", $txt );
+}
+function wppa_trimflips( $txt ) {
+	return wppa_flips( wppa_trims ( $txt ) );
+}
+define( 'WPPA_ABSPATH', wppa_flips( ABSPATH ) );
 
 // Although i may not use wp constants directly, there is no function that returns the path to wp-content,
 // so, if you changed the location of wp-content, i have to use WP_CONTENT_DIR, because wp-content needs not to be relative to ABSPATH
+if ( defined( 'WP_CONTENT_DIR' ) ) define( 'WPPA_CONTENT_PATH', wppa_flips( WP_CONTENT_DIR ) );
 // In the normal case i use content_url() with the site_url() part replaced by ABSPATH
-if ( defined( 'WP_CONTENT_DIR' ) ) define( 'WPPA_CONTENT_PATH', WP_CONTENT_DIR );
-else define( 'WPPA_CONTENT_PATH', str_replace( str_replace( "\\", "/", site_url() ).'/', WPPA_ABSPATH, str_replace( "\\" , "/", content_url() ) ) );	// /.../wp-content
+else define( 'WPPA_CONTENT_PATH', str_replace( wppa_trimflips( site_url() ).'/', WPPA_ABSPATH, wppa_flips( content_url() ) ) );	// /.../wp-content
 
 add_action( 'init', 'wppa_init', '7' );
 
@@ -76,30 +88,45 @@ global $blog_id;
 	// Assumption: site_url() corresponds with ABSPATH
 	// Our version ( WPPA_UPLOAD ) of the relative part of the path/url to the uploads dir is calculated form wp_upload_dir() by substracting ABSPATH from the uploads basedir
 	$wp_uploaddir = wp_upload_dir();
-	$rel_uploads_path = trim( str_replace( WPPA_ABSPATH, '', str_replace( "\\", "/", $wp_uploaddir['basedir'] ) ), '/' );	// will normally return wp-content/uploads
+	// Unfortunately $wp_uploaddir['basedir'] does very often not contain the data promised by the docuentation, so it is unreliable
+//	$rel_uploads_path = trim( str_replace( WPPA_ABSPATH, '', str_replace( "\\", "/", $wp_uploaddir['basedir'] ) ), '/' );	// will normally return wp-content/uploads
+	$rel_uploads_path = defined( 'WPPA_REL_UPLOADS_PATH') ? wppa_trims( WPPA_REL_UPLOADS_PATH ) : 'wp-content/uploads';
 	
-	// The depot dir is also relative to ABSPATH but on the same level as uploads		
-	$rel_depot_path = trim( str_replace( WPPA_ABSPATH, '', WPPA_CONTENT_PATH ), '/' );					// will normally return wp-content, but may be empty
+	// The depot dir is also relative to ABSPATH but on the same level as uploads, but without '/wppa-depot'	
+//	$rel_depot_path = trim( str_replace( WPPA_ABSPATH, '', WPPA_CONTENT_PATH ), '/' );					// will normally return wp-content, but may be empty
+	// If you want to change the name of wp-content, you have also to define WPPA_REL_DEPOT_PATH as being the relative path to the parent of wppa-depot
+	$rel_depot_path = defined( 'WPPA_REL_DEPOT_PATH' ) ? wppa_trims( WPPA_REL_DEPOT_PATH ) : 'wp-content';
 	
 	// For multisite the uploads are in /wp-content/blogs.dir/<blogid>/, so we hope still below ABSPATH
-	$wp_content_multi = trim( str_replace( WPPA_ABSPATH, '', WPPA_CONTENT_PATH ), '/' );
+	$wp_content_multi = wppa_trims( str_replace( WPPA_ABSPATH, '', WPPA_CONTENT_PATH ) );
 
 	$debug_multi = false;
 
 	if ( $debug_multi || ( is_multisite() && ! WPPA_MULTISITE_GLOBAL ) ) {
-		define( 'WPPA_UPLOAD', trim( $wp_content_multi.'/blogs.dir/'.$blog_id, '/' ) );					// 'wp-content/blogs.dir/'.$blog_id);
-		define( 'WPPA_UPLOAD_PATH', WPPA_ABSPATH.WPPA_UPLOAD.'/wppa' );
-		define( 'WPPA_UPLOAD_URL', site_url().'/'.WPPA_UPLOAD.'/wppa' );
-		define( 'WPPA_DEPOT', trim( $wp_content_multi.'/blogs.dir/'.$blog_id.'/wppa-depot', '/' ) );	// 'wp-content/blogs.dir/'.$blog_id.'/wppa-depot' );			
-		define( 'WPPA_DEPOT_PATH', WPPA_ABSPATH.WPPA_DEPOT );					
-		define( 'WPPA_DEPOT_URL', site_url().'/'.WPPA_DEPOT );	
+		if ( WPPA_MULTISITE_BLOGSDIR ) {	// Old multisite
+			define( 'WPPA_UPLOAD', wppa_trims( $wp_content_multi.'/blogs.dir/'.$blog_id ) );					// 'wp-content/blogs.dir/'.$blog_id);
+			define( 'WPPA_UPLOAD_PATH', WPPA_ABSPATH.WPPA_UPLOAD.'/wppa' );
+			define( 'WPPA_UPLOAD_URL', site_url().'/'.WPPA_UPLOAD.'/wppa' );
+			define( 'WPPA_DEPOT', wppa_trims( $wp_content_multi.'/blogs.dir/'.$blog_id.'/wppa-depot' ) );	// 'wp-content/blogs.dir/'.$blog_id.'/wppa-depot' );			
+			define( 'WPPA_DEPOT_PATH', WPPA_ABSPATH.WPPA_DEPOT );					
+			define( 'WPPA_DEPOT_URL', site_url().'/'.WPPA_DEPOT );	
+		}
+		else { 	// New multisite
+			$user = is_user_logged_in() ? '/'.wppa_get_user() : '';
+			define( 'WPPA_UPLOAD', $rel_uploads_path );
+			define( 'WPPA_UPLOAD_PATH', WPPA_ABSPATH.WPPA_UPLOAD.$user.'/wppa' );
+			define( 'WPPA_UPLOAD_URL', site_url().'/'.WPPA_UPLOAD.$user.'/wppa' );
+			define( 'WPPA_DEPOT', wppa_trims( $rel_depot_path.'/wppa-depot'.$user ) );
+			define( 'WPPA_DEPOT_PATH', WPPA_ABSPATH.WPPA_DEPOT );
+			define( 'WPPA_DEPOT_URL', site_url().'/'.WPPA_DEPOT );
+		}
 	}
-	else {
+	else {	// Single site
 		define( 'WPPA_UPLOAD', $rel_uploads_path ); 													// 'wp-content/uploads');
 		define( 'WPPA_UPLOAD_PATH', WPPA_ABSPATH.WPPA_UPLOAD.'/wppa' );
 		define( 'WPPA_UPLOAD_URL', site_url().'/'.WPPA_UPLOAD.'/wppa' );
 		$user = is_user_logged_in() ? '/'.wppa_get_user() : '';
-		define( 'WPPA_DEPOT', trim( $rel_depot_path.'/wppa-depot'.$user, '/' ) ); 						// 'wp-content/wppa-depot'.$user );
+		define( 'WPPA_DEPOT', wppa_trims( $rel_depot_path.'/wppa-depot'.$user ) ); 						// 'wp-content/wppa-depot'.$user );
 		define( 'WPPA_DEPOT_PATH', WPPA_ABSPATH.WPPA_DEPOT );
 		define( 'WPPA_DEPOT_URL', site_url().'/'.WPPA_DEPOT );
 	}

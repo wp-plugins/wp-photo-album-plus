@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Various wppa boxes
-* Version 5.3.1
+* Version 5.3.2
 *
 */
 
@@ -697,11 +697,11 @@ global $wppa_opt;
 // End exp
 			if ( wppa_switch('wppa_upload_one_only') && ! current_user_can('administrator') ) {
 				$wppa['out'] .= '
-			<input type="file" class="wppa-user-file" style="max-width: '.$width.'; margin: 6px 0; float:left; '.__wcs('wppa-box-text').'" id="wppa-user-upload-'.$alb.'-'.$wppa['master_occur'].'" name="wppa-user-upload-'.$alb.'-'.$wppa['master_occur'].'[]" onchange="jQuery(\'#wppa-user-submit-'.$alb.'-'.$wppa['master_occur'].'\').css(\'display\', \'block\')" />';
+			<input type="file" capture="camera" class="wppa-user-file" style="max-width: '.$width.'; margin: 6px 0; float:left; '.__wcs('wppa-box-text').'" id="wppa-user-upload-'.$alb.'-'.$wppa['master_occur'].'" name="wppa-user-upload-'.$alb.'-'.$wppa['master_occur'].'[]" onchange="jQuery(\'#wppa-user-submit-'.$alb.'-'.$wppa['master_occur'].'\').css(\'display\', \'block\')" />';
 			}
 			else {
 				$wppa['out'] .= '
-			<input type="file" multiple="multiple" class="wppa-user-file" style="max-width: '.$width.'; margin: 6px 0; float:left; '.__wcs('wppa-box-text').'" id="wppa-user-upload-'.$alb.'-'.$wppa['master_occur'].'" name="wppa-user-upload-'.$alb.'-'.$wppa['master_occur'].'[]" onchange="jQuery(\'#wppa-user-submit-'.$alb.'-'.$wppa['master_occur'].'\').css(\'display\', \'block\')" />';
+			<input type="file" capture="camera" multiple="multiple" class="wppa-user-file" style="max-width: '.$width.'; margin: 6px 0; float:left; '.__wcs('wppa-box-text').'" id="wppa-user-upload-'.$alb.'-'.$wppa['master_occur'].'" name="wppa-user-upload-'.$alb.'-'.$wppa['master_occur'].'[]" onchange="jQuery(\'#wppa-user-submit-'.$alb.'-'.$wppa['master_occur'].'\').css(\'display\', \'block\')" />';
 			}
 			
 			$onclick = $alb ? '' : ' onclick="if ( document.getElementById(\'wppa-upload-'.$wppa['master_occur'].'\').value == 0 ) {alert(\''.esc_js(__a('Please select an album and try again')).'\');return false;}"';

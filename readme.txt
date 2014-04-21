@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile, cloudinary, fotomoto
-Version: 5.3.0
+Version: 5.3.2
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -172,6 +172,35 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= IMPORTANT =
+If you want to run WPPA on a multisite in single site mode, add to wp-config.php:
+<b>define('WPPA_MULTISITE_GLOBAL', true);</b>
+If you run a multisite installation in 'old' style using blogs.dir, add to wp-config.php:
+<b>define('WPPA_MULTISITE_BLOGSDIR', true);</b>
+If you changed the name of wp-content and/or uploads, besides the additions to wp-config.php prescribed by the codex, also add to wp-config.php:
+<b>define('WPPA_REL_UPLOADS_PATH', 'wp_content/uploads');</b>
+<b>define('WPPA_REL_DEPOT_PATH', 'wp_content');</b>
+and make the changes therein also.
+
+= 5.3.2 =
+
+= Bug Fixes =
+
+* The problem in pathnames on windows servers has been reviewed, tested and is really fixed now.
+* You should no longer get a db erroressage referring an invalid name for an index.
+
+= New Features =
+
+* Added keyword w#id to the possible keywords in textual watermarks.
+* You should now be able to upload photos from smartphone cameras directly.
+
+= Other Changes =
+
+* The upload directory structure for multisite now also supports new style multisite.
+* The wp function wp_upload_dir(); is no longer used to retrieve the active path to the uploads dir. On many installations this function returns bogus data.
+If you changed the names of wp-content and/or the up-loads dir, add the lines to wp-config.php as described above.
+* Table VIII-A6 no longer cleans the database for missing photos, but is now named Lost and found, and will recover db entries for 'lost' photos.
 
 = 5.3.1 =
 

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 5.3.1
+* Version 5.3.2
 *
 */
 
@@ -284,8 +284,10 @@ global $no_default;
 		}
 		
 		// Check for pending actions
-		if ( get_option( 'wppa_remake_index_albums_status' ) 		&& get_option( 'wppa_remake_index_albums_user', 	wppa_get_user() == wppa_get_user() ) ) wppa_warning_message( __( 'Rebuilding the Album index needs completion. See Table VIII', 'wppa' ) );
-		if ( get_option( 'wppa_remake_index_photos_status' ) 		&& get_option( 'wppa_remake_index_photos_user', 	wppa_get_user() == wppa_get_user() ) ) wppa_warning_message( __( 'Rebuilding the Photo index needs completion. See Table VIII', 'wppa' ) );
+		if ( wppa_switch( 'wppa_indexed_search' ) ) {
+			if ( get_option( 'wppa_remake_index_albums_status' ) 	&& get_option( 'wppa_remake_index_albums_user', 	wppa_get_user() == wppa_get_user() ) ) wppa_warning_message( __( 'Rebuilding the Album index needs completion. See Table VIII', 'wppa' ) );
+			if ( get_option( 'wppa_remake_index_photos_status' ) 	&& get_option( 'wppa_remake_index_photos_user', 	wppa_get_user() == wppa_get_user() ) ) wppa_warning_message( __( 'Rebuilding the Photo index needs completion. See Table VIII', 'wppa' ) );
+		}
 		if ( get_option( 'wppa_remove_empty_albums_status'	) 		&& get_option( 'wppa_remove_empty_albums_user', 	wppa_get_user() == wppa_get_user() ) ) wppa_warning_message( __( 'Remove empty albums needs completion. See Table VIII', 'wppa') );
 		if ( get_option( 'wppa_apply_new_photodesc_all_status' ) 	&& get_option( 'wppa_apply_new_photodesc_all_user', wppa_get_user() == wppa_get_user() ) ) wppa_warning_message( __( 'Applying new photo description needs completion. See Table VIII', 'wppa') );
 		if ( get_option( 'wppa_append_to_photodesc_status' ) 		&& get_option( 'wppa_append_to_photodesc_user', 	wppa_get_user() == wppa_get_user() ) ) wppa_warning_message( __( 'Appending to photo description needs completion. See Table VIII', 'wppa' ) );
@@ -4238,9 +4240,9 @@ global $no_default;
 							$html = array($html1, $html2, $html3, $html4);
 							wppa_setting(false, '5', $name, $desc, $html, $help);
 
-							$name = __('Cleanup', 'wppa');
-							$desc = __('Fix WPPA+ system consistency', 'wppa');
-							$help = esc_js(__('This function will remove photo db entries for missing photo files and attempt to create missing thumbnails.', 'wppa'));
+							$name = __('Lost and found', 'wppa');
+							$desc = __('Find "lost" photos.', 'wppa');
+							$help = esc_js(__('This function will attempt to find lost photos.', 'wppa'));
 							$slug2 = 'wppa_cleanup';
 							$html1 = '';
 							$html2 = wppa_maintenance_button( $slug2 );
