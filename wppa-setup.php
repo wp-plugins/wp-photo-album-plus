@@ -1156,7 +1156,7 @@ function wppa_set_default($value, $key, $force) {
 		'wppa_file_system'
 		);
 							
-	if ( $force ) {
+/*	if ( $force ) {
 		// Delete all options except the voids
 		if ( ! in_array( $key, $void_these ) ) delete_option( $key );
 	}
@@ -1164,6 +1164,14 @@ function wppa_set_default($value, $key, $force) {
 		// Delete all options that have the default value, except the voids
 		if ( ! in_array( $key, $void_these ) && get_option( $key, 'nil' ) == $value ) delete_option( $key );
 	}
+*/
+	if ( $force ) {
+		if ( ! in_array($key, $void_these) ) wppa_update_option($key, $value);
+	}
+	else {
+		if ( get_option($key, 'nil') == 'nil' ) wppa_update_option($key, $value);
+	}
+
 }
 
 // Check if the required directories exist, if not, try to create them and optionally report it

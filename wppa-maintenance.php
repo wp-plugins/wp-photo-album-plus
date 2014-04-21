@@ -266,7 +266,6 @@ global $wppa_session;
 						break;
 						
 					case 'wppa_cleanup':
-						wppa_log('Debug','Processing:'.$id);
 						$photo_files = glob( WPPA_UPLOAD_PATH.'/'.$id.'.*' );
 						// Remove dirs
 						if ( $photo_files ) {

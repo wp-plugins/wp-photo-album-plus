@@ -24,7 +24,7 @@ global $wppa_revno; 		$wppa_revno = '5302';
 /* This is the api interface version number
 /* It is incremented at any code change.
 */
-global $wppa_api_version; 	$wppa_api_version = '5-3-02';
+global $wppa_api_version; 	$wppa_api_version = '5-3-02-001';
 /* start timers */
 global $wppa_starttime; $wppa_starttime = microtime(true);
 global $wppa_loadtime; $wppa_loadtime = - microtime(true);
