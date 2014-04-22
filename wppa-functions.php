@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Various funcions
-* Version 5.3.1
+* Version 5.3.3
 *
 */
 
@@ -1723,7 +1723,7 @@ global $wpdb;
 			if ( ! $no_popup && wppa_switch('wppa_use_thumb_popup') ) {
 				if ( $wppa_opt['wppa_thumb_linktype'] != 'lightbox' ) {
 				
-					$name = $wppa_opt['wppa_popup_text_name'] ? wppa_get_photo_name($id) : '';
+					$name = wppa_switch('wppa_popup_text_name') ? wppa_get_photo_name($id) : '';
 					$name = esc_js($name);
 				
 					$desc = wppa_switch('wppa_popup_text_desc') ? wppa_get_photo_desc($id) : '';

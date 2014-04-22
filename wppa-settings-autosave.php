@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 5.3.2
+* Version 5.3.3
 *
 */
 
@@ -1171,7 +1171,7 @@ global $no_default;
 							$html = wppa_checkbox($slug);
 							wppa_setting($slug, '9', $name, $desc, $html, $help);
 							}
-							wppa_setting_subheader( 'B', '1', __( 'Slideshow related visibility settings', 'wppa' ) );
+						wppa_setting_subheader( 'B', '1', __( 'Slideshow related visibility settings', 'wppa' ) );
 							{
 							$name = __('Start/stop', 'wppa');
 							$desc = __('Show the Start/Stop slideshow bar.', 'wppa');
@@ -1351,7 +1351,7 @@ global $no_default;
 							$html = wppa_checkbox($slug); 
 							wppa_setting($slug, '18.1', $name, $desc, $html, $help);
 							}
-							wppa_setting_subheader( 'C', '1', __( 'Social media share box related visibility settings', 'wppa' ) );
+						wppa_setting_subheader( 'C', '1', __( 'Social media share box related visibility settings', 'wppa' ) );
 							{
 							$name = __('Show Share Box', 'wppa');
 							$desc = __('Display the share social media buttons box.', 'wppa');
@@ -1495,7 +1495,7 @@ global $no_default;
 							$html = wppa_checkbox($slug, $onchange);
 							wppa_setting($slug, '99', $name, $desc, $html, $help, $class);
 							}
-							wppa_setting_subheader( 'D', '1', __( 'Thumbnail display related visibility settings', 'wppa' ) );
+						wppa_setting_subheader( 'D', '1', __( 'Thumbnail display related visibility settings', 'wppa' ) );
 							{
 							$name = __('Thumbnail name', 'wppa');
 							$desc = __('Display Thubnail name.', 'wppa');
@@ -1535,7 +1535,7 @@ global $no_default;
 							$slug = 'wppa_thumb_text_viewcount';
 							$html = wppa_checkbox($slug);
 							$class = 'tt_normal';
-							wppa_setting($slug, '8', $name, $desc, $html, $help, $class);
+							wppa_setting($slug, '3.1', $name, $desc, $html, $help, $class);
 
 							$name = __('Popup name', 'wppa');
 							$desc = __('Display Thubnail name on popup.', 'wppa');
@@ -1603,7 +1603,7 @@ global $no_default;
 							$html = wppa_select($slug, $options, $values);
 							wppa_setting($slug, '8.2', $name, $desc, $html, $help);
 							}
-							wppa_setting_subheader( 'E', '1', __( 'Album cover related visibility settings', 'wppa' ) );
+						wppa_setting_subheader( 'E', '1', __( 'Album cover related visibility settings', 'wppa' ) );
 							{
 							$name = __('Covertext', 'wppa');
 							$desc = __('Show the text on the album cover.', 'wppa');
@@ -4300,6 +4300,11 @@ global $no_default;
 							wppa_setting(false, '9', $name, $desc, $html, $help, $class);
 							
 							$fs = get_option('wppa_file_system');
+							if ( ! $fs ) {	// Fix for wp delete_option bug
+								$fs = 'flat';
+								update_option('wppa_file_system', 'flat');
+								$wppa_opt['wppa_file_system'] = 'flat';
+							}
 							if ( $fs == 'flat' || $fs == 'to-tree' ) {
 								$name = __('Convert to tree', 'wppa');
 								$desc = __('Convert filesystem to tree structure.', 'wppa');
@@ -5802,6 +5807,7 @@ global $no_default;
 	</div>
 	
 <?php
+	wppa_initialize_runtime( true );
 }
 
 function wppa_settings_box_header($id, $title) {
@@ -5947,6 +5953,14 @@ global $wppa_opt;
 }
 
 function wppa_checkbox($slug, $onchange = '', $class = '') {
+global $wppa_defaults;
+
+	// Check for wp delete_option bug
+	if ( ! get_option( $slug, 'nil' ) ) { // Switch can only be 'yes' or 'no', not '' caused by a faulty delete_option() that did not remove the option but replaced the value by ''.
+		update_option( $slug, $wppa_defaults[$slug] );	// Missing option takes the default
+		$wppa_opt[$slug] = $wppa_defaults[$slug];		// Also in memory
+		wppa_log('Repair', 'Fixed option '.$slug.' set to '.$wppa_defaults[$slug]);
+	}
 
 	$html = '<input style="float:left; height: 15px; margin: 0px; padding: 0px;" type="checkbox" id="'.$slug.'"'; 
 	if ( wppa_switch( $slug ) ) $html .= ' checked="checked"';
@@ -5962,7 +5976,15 @@ function wppa_checkbox($slug, $onchange = '', $class = '') {
 }
 
 function wppa_checkbox_warn($slug, $onchange = '', $class = '', $warning) {
+global $wppa_defaults;
 
+	// Check for wp delete_option bug
+	if ( ! get_option( $slug, 'nil' ) ) { // Switch can only be 'yes' or 'no', not '' caused by a faulty delete_option() that did not remove the option but replaced the value by ''.
+		update_option( $slug, $wppa_defaults[$slug] );	// Missing option takes the default
+		$wppa_opt[$slug] = $wppa_defaults[$slug];		// Also in memory
+		wppa_log('Repair', 'Fixed option '.$slug.' set to '.$wppa_defaults[$slug]);
+	}
+	
 	$warning = esc_js(__('Warning!', 'wppa')).'\n\n'.$warning;
 	$html = '<input style="float:left; height: 15px; margin: 0px; padding: 0px;" type="checkbox" id="'.$slug.'"'; 
 	if ( wppa_switch( $slug ) ) $html .= ' checked="checked"';
@@ -5978,7 +6000,15 @@ function wppa_checkbox_warn($slug, $onchange = '', $class = '', $warning) {
 }
 
 function wppa_checkbox_warn_off($slug, $onchange = '', $class = '', $warning, $is_help = true) {
+global $wppa_defaults;
 
+	// Check for wp delete_option bug
+	if ( ! get_option( $slug, 'nil' ) ) { // Switch can only be 'yes' or 'no', not '' caused by a faulty delete_option() that did not remove the option but replaced the value by ''.
+		update_option( $slug, $wppa_defaults[$slug] );	// Missing option takes the default
+		$wppa_opt[$slug] = $wppa_defaults[$slug];		// Also in memory
+		wppa_log('Repair', 'Fixed option '.$slug.' set to '.$wppa_defaults[$slug]);
+	}
+	
 	$warning = esc_js(__('Warning!', 'wppa')).'\n\n'.$warning;
 	if ( $is_help) $warning .= '\n\n'.esc_js(__('Please read the help', 'wppa'));
 	$html = '<input style="float:left; height: 15px; margin: 0px; padding: 0px;" type="checkbox" id="'.$slug.'"'; 
@@ -5995,7 +6025,15 @@ function wppa_checkbox_warn_off($slug, $onchange = '', $class = '', $warning, $i
 }
 
 function wppa_checkbox_warn_on($slug, $onchange = '', $class = '', $warning) {
+global $wppa_defaults;
 
+	// Check for wp delete_option bug
+	if ( ! get_option( $slug, 'nil' ) ) { // Switch can only be 'yes' or 'no', not '' caused by a faulty delete_option() that did not remove the option but replaced the value by ''.
+		update_option( $slug, $wppa_defaults[$slug] );	// Missing option takes the default
+		$wppa_opt[$slug] = $wppa_defaults[$slug];		// Also in memory
+		wppa_log('Repair', 'Fixed option '.$slug.' set to '.$wppa_defaults[$slug]);
+	}
+	
 	$warning = esc_js(__('Warning!', 'wppa')).'\n\n'.$warning.'\n\n'.esc_js(__('Please read the help', 'wppa'));
 	$html = '<input style="float:left; height: 15px; margin: 0px; padding: 0px;" type="checkbox" id="'.$slug.'"'; 
 	if ( wppa_switch( $slug ) ) $html .= ' checked="checked"';
@@ -6028,10 +6066,19 @@ function wppa_checkbox_e($slug, $curval, $onchange = '', $class = '', $enabled =
 
 function wppa_select($slug, $options, $values, $onchange = '', $class = '', $first_disable = false, $postaction = '') {
 global $wppa_opt;
+global $wppa_defaults;
 
-	if (!is_array($options)) {
+	if ( ! is_array( $options ) ) {
 		$html = __('There are no pages (yet) to link to.', 'wppa');
 		return $html;
+	}
+	
+	// Check for wp delete_option bug
+	$opt = get_option( $slug, 'nil' );
+	if ( ! $opt && ! in_array( $opt, $values ) && $slug !=  'wppa_blacklist_user' ) { // Value can not be '' caused by a faulty delete_option() that did not remove the option but replaced the value by ''.
+		update_option( $slug, $wppa_defaults[$slug] );	// Missing option takes the default
+		$wppa_opt[$slug] = $wppa_defaults[$slug];		// Also in memory
+		wppa_log('Repair', 'Fixed option '.$slug.' set to '.$wppa_defaults[$slug]);
 	}
 	
 	$html = '<select style="float:left; font-size: 11px; height: 20px; margin: 0px; padding: 0px; max-width:220px;" id="'.$slug.'"';
