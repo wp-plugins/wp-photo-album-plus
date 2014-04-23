@@ -2,12 +2,12 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile, cloudinary, fotomoto
-Version: 5.3.3
+Version: 5.3.4
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
-Requires at least: 3.1
-Tested up to: 3.8.3
+Requires at least: 3.9
+Tested up to: 3.9
 
 This plugin is designed to easily manage and display your photo albums and slideshows in a single as well as in a network WordPress site.
 
@@ -175,13 +175,19 @@ See for additional information: http://wppa.opajaap.nl/?page_id=1459
 
 = IMPORTANT =
 If you want to run WPPA on a multisite in single site mode, add to wp-config.php:
-<b>define('WPPA_MULTISITE_GLOBAL', true);</b>
+*define('WPPA_MULTISITE_GLOBAL', true);*
 If you run a multisite installation in 'old' style using blogs.dir, add to wp-config.php:
-<b>define('WPPA_MULTISITE_BLOGSDIR', true);</b>
+*define('WPPA_MULTISITE_BLOGSDIR', true);*
 If you changed the name of wp-content and/or uploads, besides the additions to wp-config.php prescribed by the codex, also add to wp-config.php:
-<b>define('WPPA_REL_UPLOADS_PATH', 'wp_content/uploads');</b>
-<b>define('WPPA_REL_DEPOT_PATH', 'wp_content');</b>
+*define('WPPA_REL_UPLOADS_PATH', 'wp_content/uploads');*
+*define('WPPA_REL_DEPOT_PATH', 'wp_content');*
 and make the changes therein also.
+
+= 5.3.4 =
+
+= Other Changes =
+
+* WPPA+ is now fullly compatible with WP 3.9. Use 5.3.3 for WP 3.8.x
 
 = 5.3.3 = 
 

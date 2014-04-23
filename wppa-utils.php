@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains low-level utility routines
-* Version 5.3.2
+* Version 5.3.4
 *
 */
  
@@ -1060,9 +1060,24 @@ function wppa_is_int($var) {
 	return ( strval(intval($var)) == strval($var) );
 }
 
-function wppa_log($type, $msg) {
-	@ wppa_mktree(WPPA_CONTENT_PATH.'/wppa-depot/admin'); // Just in case...
-	if ( ! $file = fopen(WPPA_CONTENT_PATH.'/wppa-depot/admin/error.log', 'ab') ) return;	// Unable to open log file
+function wppa_log( $type, $msg ) {
+	@ wppa_mktree( WPPA_CONTENT_PATH.'/wppa-depot/admin' ); // Just in case...
+	$filename = WPPA_CONTENT_PATH.'/wppa-depot/admin/error.log';
+	if ( is_file( $filename ) ) {
+		$filesize = filesize( $filename );
+		if ( $filesize > 102400 ) {	// File > 100kB
+			$file = fopen( $filename, 'rb' );
+			if ( $file ) {
+				$buffer = @ fread( $file, $filesize );
+				$buffer = substr( $buffer, $filesize - 90*1024 );	// Take ending 90 kB
+				fclose( $file );
+				$file = fopen( $filename, 'wb' );
+				@ fwrite( $file, $buffer );
+				@ fclose( $file );
+			}
+		}
+	}
+	if ( ! $file = fopen( $filename, 'ab' ) ) return;	// Unable to open log file
 	@ fwrite($file, $type.': on:'.wppa_local_date(get_option('date_format', "F j, Y,").' '.get_option('time_format', "g:i a"), time()).': '.$msg."\n");
 	@ fclose($file);
 }

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 5.3.3
+* Version 5.3.4
 *
 */
 
@@ -6075,7 +6075,7 @@ global $wppa_defaults;
 	
 	// Check for wp delete_option bug
 	$opt = get_option( $slug, 'nil' );
-	if ( ! $opt && ! in_array( $opt, $values ) && $slug !=  'wppa_blacklist_user' ) { // Value can not be '' caused by a faulty delete_option() that did not remove the option but replaced the value by ''.
+	if ( ! $opt && ! in_array( $opt, $values ) && $slug != 'wppa_blacklist_user' && $slug != 'wppa_un_blacklist_user' ) { // Value can not be '' caused by a faulty delete_option() that did not remove the option but replaced the value by ''.
 		update_option( $slug, $wppa_defaults[$slug] );	// Missing option takes the default
 		$wppa_opt[$slug] = $wppa_defaults[$slug];		// Also in memory
 		wppa_log('Repair', 'Fixed option '.$slug.' set to '.$wppa_defaults[$slug]);

@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 *
-* Version 5.3.0
+* Version 5.3.4
 *
 */
 
@@ -35,7 +35,7 @@ class wppaGallery
 	 
 	function filter_mce_plugin( $plugins ) {
 		// this plugin file will work the magic of our button
-		$plugins['mygallery'] = plugin_dir_url( __FILE__ ) . 'wppa-tinymce.js';
+		$plugins['wppagallery'] = plugin_dir_url( __FILE__ ) . 'wppa-tinymce.js';
 		return $plugins;
 	}
  
@@ -70,19 +70,19 @@ global $wpdb;
 global $wppa_opt;
 
 	$result = 
-	'<div id="mygallery-form">'.
+	'<div id="wppagallery-form">'.
 		'<div style="height:158px; background-color:#eee; overflow:auto; margin-top:10px;" >'.
-			'<div id="mygallery-album-preview" style="text-align:center;font-size:48px; line-height:21px; color:#fff;" class="mygallery-album" ><br /><br /><br />'.
+			'<div id="wppagallery-album-preview" style="text-align:center;font-size:48px; line-height:21px; color:#fff;" class="wppagallery-album" ><br /><br /><br />'.
 			__('Album Preview', 'wppa').'<br /><span style="font-size:12px; color:#777" ><br/>'.__('A maximum of 100 photos can be previewd', 'wppa').'</span></div>'.
-			'<div id="mygallery-photo-preview" style="text-align:center;font-size:48px; line-height:21px; color:#fff; display:none;" class="mygallery-photo" ><br /><br /><br />'.
+			'<div id="wppagallery-photo-preview" style="text-align:center;font-size:48px; line-height:21px; color:#fff; display:none;" class="wppagallery-photo" ><br /><br /><br />'.
 			__('Photo Preview', 'wppa').'</div>'.
 		'</div>'.
-		'<table id="mygallery-table" class="form-table">'.
+		'<table id="wppagallery-table" class="form-table">'.
 		
 			'<tr>'.
-				'<th><label for="mygallery-type">'.__('Type of Gallery display:', 'wppa').'</label></th>'.
+				'<th><label for="wppagallery-type">'.__('Type of Gallery display:', 'wppa').'</label></th>'.
 				'<td>'.
-					'<select id="mygallery-type" name="type" onchange="wppaGalleryTypeChange(this.value)">'.
+					'<select id="wppagallery-type" name="type" onchange="wppaGalleryTypeChange(this.value)">'.
 						'<option value="cover">'.__('The cover of an album', 'wppa').'</option>'.
 						'<option value="album">'.__('The sub-albums and/or thumbnails in an album', 'wppa').'</option>'.
 						'<option value="slide">'.__('A slideshow of the photos in an album', 'wppa').'</option>'.
@@ -100,18 +100,17 @@ global $wppa_opt;
 				'</td>'.
 			'</tr>'.
 			
-			'<tr class="mygallery-help" style="display:none;" >'.
-				'<th><label for="mygallery-album" class="mygallery-help" >'.__('Explanation:', 'wppa').'</label></th>'.
+			'<tr class="wppagallery-help" style="display:none;" >'.
+				'<th><label for="wppagallery-album" class="wppagallery-help" >'.__('Explanation:', 'wppa').'</label></th>'.
 				'<td>'.
-					__('Use this gallerytype to display all the top-level album covers.', 'wppa').'<br/ >'.
-					__('Also, make a page with this type of gallery display to be used as a target for the Search results and for links set in Table VI.', 'wppa').
+					__('Use this gallerytype to display all the top-level album covers.', 'wppa').
 				'</td>'.
 			'</tr>'.
 		
-			'<tr class="mygallery-album" >'.
-				'<th><label for="mygallery-album" class="mygallery-album" >'.__('The Album to be used:', 'wppa').'</label></th>'.
+			'<tr class="wppagallery-album" >'.
+				'<th><label for="wppagallery-album" class="wppagallery-album" >'.__('The Album to be used:', 'wppa').'</label></th>'.
 				'<td>'.
-					'<select id="mygallery-album" name="album" style=width:270px;" class="mygallery-album" onchange="wppaGalleryAlbumChange(this.value); wppaTinyMceAlbumPreview(this.value)">';
+					'<select id="wppagallery-album" name="album" style=width:270px;" class="wppagallery-album" onchange="wppaGalleryAlbumChange(this.value); wppaTinyMceAlbumPreview(this.value)">';
 						$albums = $wpdb->get_results( "SELECT `id`, `name` FROM `".WPPA_ALBUMS."` ORDER BY `timestamp` DESC", ARRAY_A );
 						if ($albums) {
 							if ( wppa_switch('wppa_hier_albsel') ) $albums = wppa_add_paths($albums);
@@ -207,21 +206,21 @@ global $wppa_opt;
 						}
 					$result .=
 					'</select>'.
-					'<input type="text" id="mygallery-alb" name="alb" value="" style="width:50px; display:none; background-color:#ddd;" class="mygallery-extra" title="Enter albumnumber if not systemwide" />'.
-					'<input type="text" id="mygallery-cnt" name="cnt" value="" style="width:50px; display:none; background-color:#ddd;" class="mygallery-extra" title="Enter count if not default" />'.
+					'<input type="text" id="wppagallery-alb" name="alb" value="" style="width:50px; display:none; background-color:#ddd;" class="wppagallery-extra" title="Enter albumnumber if not systemwide" />'.
+					'<input type="text" id="wppagallery-cnt" name="cnt" value="" style="width:50px; display:none; background-color:#ddd;" class="wppagallery-extra" title="Enter count if not default" />'.
 					'<br />'.
-					'<small class="mygallery-album" >'.
+					'<small class="wppagallery-album" >'.
 						__('Specify the album to be used or --- A special selection of photos ---', 'wppa').'<br />'.
-						__('In an upload box, the album is optional. No album will display a selection box', 'wppa').'<br />'.
+						__('In an upload box, the album is optional. When no album is specified: a selection box will be displayed of the albums the user has the right to upload.', 'wppa').'<br />'.
 						__('* Album contains less than the minimun number of photos', 'wppa').
 					'</small>'.
 				'</td>'.
 			'</tr>'.
 			
-			'<tr class="mygallery-photo" style="display:none;" >'.
-				'<th><label for="mygallery-photo" style="display:none;" class="mygallery-photo" >'.__('The Photo to be used:', 'wppa').'</label></th>'.
+			'<tr class="wppagallery-photo" style="display:none;" >'.
+				'<th><label for="wppagallery-photo" style="display:none;" class="wppagallery-photo" >'.__('The Photo to be used:', 'wppa').'</label></th>'.
 				'<td>'.
-					'<select id="mygallery-photo" name="photo" style="display:none;" class="mygallery-photo" onchange="wppaTinyMcePhotoPreview(this.value)" >';
+					'<select id="wppagallery-photo" name="photo" style="display:none;" class="wppagallery-photo" onchange="wppaTinyMcePhotoPreview(this.value)" >';
 						$photos = $wpdb->get_results( "SELECT `id`, `name`, `album`, `ext` FROM `".WPPA_PHOTOS."` ORDER BY `timestamp` DESC LIMIT 100", ARRAY_A );
 						if ($photos) {
 							$result .= '<option value="0" disabled="disabled" selected="selected" >'.__('Please select a photo', 'wppa').'</option>';
@@ -244,17 +243,17 @@ global $wppa_opt;
 					$result .=
 					'</select>'.
 					'<br />'.
-					'<small style="display:none;" class="mygallery-photo" >'.
+					'<small style="display:none;" class="wppagallery-photo" >'.
 						__('Specify the photo to be used', 'wppa').'<br />'.
 						__('You can select from a maximum of 100 most recently added photos', 'wppa').'<br />'.
 					'</small>'.
 				'</td>'.
 			'</tr>'.
 			
-			'<tr class="mygallery-tags" style="display:none;" >'.
-				'<th><label for="mygallery-tags">'.__('The tags the photos should have:', 'wppa').'</label></th>'.
+			'<tr class="wppagallery-tags" style="display:none;" >'.
+				'<th><label for="wppagallery-tags">'.__('The tags the photos should have:', 'wppa').'</label></th>'.
 				'<td>'.
-					'<select id="mygallery-tags" multiple="multiple">'.
+					'<select id="wppagallery-tags" multiple="multiple">'.
 						'<option value="" >'.__('--- please select tag(s) ---', 'wppa').'</option>';
 						$tags = wppa_get_taglist();
 						if ( $tags ) foreach ( array_keys($tags) as $tag ) {
@@ -263,14 +262,14 @@ global $wppa_opt;
 						$result .= 					
 					'</select>'.
 					
-					'<div><input type="checkbox" id="mygallery-andor" />&nbsp;<small>'.__('If you want that the photos have all the selected tags, check this box. Leave it unchecked if the photo must have atleast only one of the selected tags', 'wppa').'</small></div>'.
+					'<div><input type="checkbox" id="wppagallery-andor" />&nbsp;<small>'.__('If you want that the photos have all the selected tags, check this box. Leave it unchecked if the photo must have atleast only one of the selected tags', 'wppa').'</small></div>'.
 				'</td>'.
 			'</tr>'.
 
 			'<tr>'.
-				'<th><label for="mygallery-size">'.__('The size of the display:', 'wppa').'</label></th>'.
+				'<th><label for="wppagallery-size">'.__('The size of the display:', 'wppa').'</label></th>'.
 				'<td>'.
-					'<input type="text" id="mygallery-size" value="" />'.
+					'<input type="text" id="wppagallery-size" value="" />'.
 					'<br />'.
 					'<small>'.
 						__('Specify the horizontal size in pixels or <span style="color:blue" >auto</span>.', 'wppa').' '.
@@ -280,9 +279,9 @@ global $wppa_opt;
 			'</tr>'.
 			
 			'<tr>'.
-				'<th><label for="mygallery-align">'.__('Horizontal alignment:', 'wppa').'</label></th>'.
+				'<th><label for="wppagallery-align">'.__('Horizontal alignment:', 'wppa').'</label></th>'.
 				'<td>'.
-					'<select id="mygallery-align" name="align" >'.
+					'<select id="wppagallery-align" name="align" >'.
 						'<option value="none" >'.__('--- none ---', 'wppa').'</option>'.
 						'<option value="left" >'.__('left', 'wppa').'</option>'.
 						'<option value="center" >'.__('center', 'wppa').'</option>'.
@@ -295,8 +294,8 @@ global $wppa_opt;
 
 		'</table>'.
 		'<p class="submit">'.
-			'<input type="button" id="mygallery-submit" class="button-primary" value="'.__('Insert Gallery', 'wppa').'" name="submit" />&nbsp;'.
-			'<input type="checkbox" id="mygallery-newstyle" />'.'&nbsp;'.__('Create new style shortcode', 'wppa').
+			'<input type="button" id="wppagallery-submit" class="button-primary" value="'.__('Insert Gallery', 'wppa').'" name="submit" />&nbsp;'.
+			'<input type="checkbox" id="wppagallery-newstyle" />'.'&nbsp;'.__('Create new style shortcode', 'wppa').
 		'</p>'.
 	'</div>';
 	return $result;
