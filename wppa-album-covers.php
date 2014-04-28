@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Functions for album covers
-* Version 5.3.0
+* Version 5.3.5
 *
 */
 
@@ -219,8 +219,12 @@ global $wpdb;
 		
 		$wppa['out'] .= wppa_nltab().'<div style="clear:both;"></div>';		
 		
-		wppa_user_create_html($album['id'], wppa_get_cover_width('cover'), 'cover', $multicolumnresponsive);
-		wppa_user_upload_html($album['id'], wppa_get_cover_width('cover'), 'cover', $multicolumnresponsive);
+		wppa_user_create_html($album['id'], wppa_get_cover_width('cover'), 'cover', $multicolumnresponsive );
+		wppa_user_upload_html($album['id'], wppa_get_cover_width('cover'), 'cover', $multicolumnresponsive );
+		wppa_user_albumedit_html($album['id'], wppa_get_cover_width('cover'), 'cover', $multicolumnresponsive );
+		
+		$wppa['out'] .= wppa_nltab().'<div style="clear:both;"></div>';		
+		
 
 /**
 		if ( $album['cats'] ) {
@@ -416,6 +420,10 @@ else $coverphoto = false;
 		
 		wppa_user_create_html($album['id'], wppa_get_cover_width('cover'), 'cover', $multicolumnresponsive);
 		wppa_user_upload_html($album['id'], wppa_get_cover_width('cover'), 'cover', $multicolumnresponsive);
+		wppa_user_albumedit_html($album['id'], wppa_get_cover_width('cover'), 'cover', $multicolumnresponsive );
+		
+		$wppa['out'] .= wppa_nltab().'<div style="clear:both;"></div>';		
+		
 
 	$wppa['out'] .= wppa_nltab('-').'</div><!-- #album-'.$album['id'].'-'.$wppa['master_occur'].' -->';
 	if ($wppa_alt == 'even') $wppa_alt = 'alt'; else $wppa_alt = 'even';
@@ -594,6 +602,10 @@ global $wpdb;
 		
 		wppa_user_create_html($album['id'], wppa_get_cover_width('cover'), 'cover', $multicolumnresponsive);
 		wppa_user_upload_html($album['id'], wppa_get_cover_width('cover'), 'cover', $multicolumnresponsive);
+		wppa_user_albumedit_html($album['id'], wppa_get_cover_width('cover'), 'cover', $multicolumnresponsive );
+		
+		$wppa['out'] .= wppa_nltab().'<div style="clear:both;"></div>';		
+		
 
 	$wppa['out'] .= wppa_nltab('-').'</div><!-- #album-'.$album['id'].'-'.$wppa['master_occur'].' -->';
 	if ($wppa_alt == 'even') $wppa_alt = 'alt'; else $wppa_alt = 'even';

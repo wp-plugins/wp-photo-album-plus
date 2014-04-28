@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile, cloudinary, fotomoto
-Version: 5.3.4
+Version: 5.3.5
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -175,13 +175,31 @@ See for additional information: http://wppa.opajaap.nl/?page_id=1459
 
 = IMPORTANT =
 If you want to run WPPA on a multisite in single site mode, add to wp-config.php:
-*define('WPPA_MULTISITE_GLOBAL', true);*
+**define('WPPA_MULTISITE_GLOBAL', true);**
 If you run a multisite installation in 'old' style using blogs.dir, add to wp-config.php:
-*define('WPPA_MULTISITE_BLOGSDIR', true);*
+**define('WPPA_MULTISITE_BLOGSDIR', true);**
 If you changed the name of wp-content and/or uploads, besides the additions to wp-config.php prescribed by the codex, also add to wp-config.php:
-*define('WPPA_REL_UPLOADS_PATH', 'wp_content/uploads');*
-*define('WPPA_REL_DEPOT_PATH', 'wp_content');*
+**define('WPPA_REL_UPLOADS_PATH', 'wp_content/uploads');**
+**define('WPPA_REL_DEPOT_PATH', 'wp_content');**
 and make the changes therein also.
+
+= 5.3.5 =
+
+= Bug Fixes =
+
+* Approving a pending photo at the frontend will now properly adjust the counts on the Album Admin page.
+
+= New Features =
+
+* You can edit album name and description at the frontend if it is enabled in Table VII-B1.1.
+* You can disable the possibility to rate photos by the uploader himself by unchecking the box in Table IV-E3.1.
+* You can force users to give a comment to validate their rating in Table IV-E3.2.
+
+= Other Changes =
+
+* If a line of text for the textual watermark is too long to fit on the photo, an attempt will be made to break it into two lines. 
+There should be a space character in the right-hand half of the line. This also works on multiline watermark texts and texts that contain keywords.
+* All listing actions are now in Table VIII-C.
 
 = 5.3.4 =
 

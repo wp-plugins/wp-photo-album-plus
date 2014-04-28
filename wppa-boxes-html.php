@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Various wppa boxes
-* Version 5.3.2
+* Version 5.3.5
 *
 */
 
@@ -565,7 +565,13 @@ global $album;
 	$t = $mcr ? 'mcr-' : '';
 	$wppa['out'] .= '
 	<div style="clear:both"></div>
-	<a id="wppa-cr-'.$alb.'-'.$wppa['master_occur'].'" class="wppa-upcr-'.$alb.'-'.$wppa['master_occur'].'" onclick="jQuery(\'.wppa-upcr-'.$alb.'-'.$wppa['master_occur'].'\').css(\'display\',\'none\');jQuery(\'#wppa-create-'.$t.$alb.'-'.$wppa['master_occur'].'\').css(\'display\',\'block\');wppaColWidth['.$wppa['master_occur'].']=0;" class="" style="float:left; cursor:pointer;">
+	<a id="wppa-cr-'.$alb.'-'.$wppa['master_occur'].'" onclick="'.
+									'jQuery(\'#wppa-create-'.$t.$alb.'-'.$wppa['master_occur'].'\').css(\'display\',\'block\');'.	// Open the Create form
+									'jQuery(\'#wppa-cr-'.$alb.'-'.$wppa['master_occur'].'\').css(\'display\',\'none\');'.			// Hide the Create link
+									'jQuery(\'#wppa-up-'.$alb.'-'.$wppa['master_occur'].'\').css(\'display\',\'none\');'.			// Hide the Upload link
+									'jQuery(\'#wppa-ea-'.$alb.'-'.$wppa['master_occur'].'\').css(\'display\',\'none\');'.			// Hide the Edit link
+									'wppaColWidth['.$wppa['master_occur'].']=0;'.													// Trigger autocol
+									'" style="float:left; cursor:pointer;">
 		'.__a('Create Album').'
 	</a>
 	
@@ -602,7 +608,7 @@ global $album;
 }
 
 // Frontend upload html, for use in the upload box, the widget or in the album and thumbnail box
-function wppa_user_upload_html($alb, $width, $where = '', $mcr = false) {
+function wppa_user_upload_html($alb, $width, $where = '', $mcr = false ) {
 global $wppa;
 global $wppa_opt;
 
@@ -673,7 +679,14 @@ global $wppa_opt;
 	$t = $mcr ? 'mcr-' : '';
 	$wppa['out'] .= '
 	<div style="clear:both"></div>
-	<a id="wppa-up-'.$alb.'-'.$wppa['master_occur'].'" class="wppa-upcr-'.$alb.'-'.$wppa['master_occur'].'" onclick="jQuery(\'.wppa-upcr-'.$alb.'-'.$wppa['master_occur'].'\').css(\'display\',\'none\');jQuery(\'#wppa-file-'.$t.$alb.'-'.$wppa['master_occur'].'\').css(\'display\',\'block\');wppaColWidth['.$wppa['master_occur'].']=0;" class="" style="float:left; cursor:pointer;">
+	<a id="wppa-up-'.$alb.'-'.$wppa['master_occur'].'" onclick="'.
+									'jQuery(\'#wppa-file-'.$t.$alb.'-'.$wppa['master_occur'].'\').css(\'display\',\'block\');'.		// Open the Upload form
+									'jQuery(\'#wppa-up-'.$alb.'-'.$wppa['master_occur'].'\').css(\'display\',\'none\');'.			// Hide the Upload link
+									'jQuery(\'#wppa-cr-'.$alb.'-'.$wppa['master_occur'].'\').css(\'display\',\'none\');'.			// Hide the Create link
+									'jQuery(\'#wppa-ea-'.$alb.'-'.$wppa['master_occur'].'\').css(\'display\',\'none\');'.			// Hide the Edit link
+									'wppaColWidth['.$wppa['master_occur'].']=0;'.													// Trigger autocol
+									'" style="float:left; cursor:pointer;">
+
 		'.__a('Upload Photo').'
 	</a>
 	<div id="wppa-file-'.$t.$alb.'-'.$wppa['master_occur'].'" class="wppa-file-'.$t.$wppa['master_occur'].'" style="width:'.$width.'px;text-align:center;display:none" >
@@ -690,11 +703,7 @@ global $wppa_opt;
 				$wppa['out'] .= '
 			<input type="hidden" name="wppa-upload-album" value="'.$alb.'" />';
 			}
-// Exp	
-//$wppa['out'] .= '		
-//<script>jQuery("#wppa-uplform-'.$alb.'-'.$wppa['master_occur'].'").attr("action", document.location.href);</script>';
-			
-// End exp
+
 			if ( wppa_switch('wppa_upload_one_only') && ! current_user_can('administrator') ) {
 				$wppa['out'] .= '
 			<input type="file" capture="camera" class="wppa-user-file" style="max-width: '.$width.'; margin: 6px 0; float:left; '.__wcs('wppa-box-text').'" id="wppa-user-upload-'.$alb.'-'.$wppa['master_occur'].'" name="wppa-user-upload-'.$alb.'-'.$wppa['master_occur'].'[]" onchange="jQuery(\'#wppa-user-submit-'.$alb.'-'.$wppa['master_occur'].'\').css(\'display\', \'block\')" />';
@@ -790,6 +799,49 @@ global $wppa_opt;
 			<textarea class="wppa-user-textarea wppa-box-text wppa-file-'.$t.$wppa['master_occur'].'" style="height:120px; width:'.($width-6).'px; '.__wcs('wppa-box-text').'" name="wppa-user-desc" >'.$desc.'</textarea>
 		</form>
 	</div>';
+}
+
+// Frontend edit album info
+function wppa_user_albumedit_html( $alb, $width, $where = '', $mcr = false ) {
+global $album;
+global $wppa;
+global $wppa_opt;
+
+	if ( ! wppa_switch( 'wppa_user_album_edit_on' ) ) return; 	// Feature not enabled
+	if ( ! $alb ) return;										// No album given
+	if ( ! wppa_have_access( $alb ) ) return;					// No rights
+	
+	wppa_cache_album( $alb );
+	
+	$t = $mcr ? 'mcr-' : '';
+		
+	$result = '
+	<div style="clear:both;"></div>
+	<a id="wppa-ea-'.$alb.'-'.$wppa['master_occur'].'" style="cursor:pointer" onclick="'.
+									'jQuery(\'#wppa-fe-div-'.$alb.'-'.$wppa['master_occur'].'\').css(\'display\',\'block\');'.		// Open the Edit form
+									'jQuery(\'#wppa-ea-'.$alb.'-'.$wppa['master_occur'].'\').css(\'display\',\'none\');'.			// Hide the Edit link
+									'jQuery(\'#wppa-cr-'.$alb.'-'.$wppa['master_occur'].'\').css(\'display\',\'none\');'.			// Hide the Create libk
+									'jQuery(\'#wppa-up-'.$alb.'-'.$wppa['master_occur'].'\').css(\'display\',\'none\');'.			// Hide the upload link
+									'wppaColWidth['.$wppa['master_occur'].']=0;'.													// Trigger autocol
+									'" >'.
+		__a('Edit albuminfo').'
+	</a>
+	<div id="wppa-fe-div-'.$alb.'-'.$wppa['master_occur'].'" style="display:none;" >
+		<form action="'.wppa_get_permalink().'" method="post">
+			<input type="hidden" name="wppa-albumeditnonce" id="album-nonce-'.$wppa['master_occur'].'-'.$alb.'" value="'.wp_create_nonce('wppa_nonce_'.$alb).'" />
+			<input type="hidden" name="wppa-albumeditid" id="wppaalbum-id-'.$wppa['master_occur'].'-'.$alb.'" value="'.$alb.'" />
+			<div class="wppa-box-text wppa-td" style="clear:both; float:left; text-align:left; '.__wcs('wppa-box-text').__wcs('wppa-td').'" >'.
+				__a('Enter album name.').'&nbsp;<span style="font-size:10px;" >'.__a('Don\'t leave this blank!').'</span>
+			</div>
+			<input name="wppa-albumeditname" id="wppaalbum-name-'.$wppa['master_occur'].'-'.$alb.'" class="wppa-box-text wppa-file-'.$t.$wppa['master_occur'].'" value="'.esc_attr($album['name']).'" style="padding:0; width:'.($width-6).'px; '.__wcs('wppa-box-text').'" />
+			<div class="wppa-box-text wppa-td" style="clear:both; float:left; text-align:left; '.__wcs('wppa-box-text').__wcs('wppa-td').'" >'.
+				__a('Album description:').'
+			</div>
+			<textarea name="wppa-albumeditdesc" id="wppaalbum-desc-'.$wppa['master_occur'].'-'.$alb.'" class="wppa-user-textarea wppa-box-text wppa-file-'.$t.$wppa['master_occur'].'" style="height:120px; width:'.($width-6).'px; '.__wcs('wppa-box-text').'" >'.esc_textarea(stripslashes($album['description'])).'</textarea>
+			<input type="submit" name="wppa-albumeditsubmit" class="wppa-user-submit" style="margin: 6px 0; float:right; '.__wcs('wppa-box-text').'" value="'.__a('Update album').'" />
+		</form>
+	</div>';
+	$wppa['out'] .= $result;
 }
 
 // Build the html for the comment box

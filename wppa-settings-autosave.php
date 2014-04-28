@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 5.3.4
+* Version 5.3.5
 *
 */
 
@@ -2262,7 +2262,7 @@ global $no_default;
 							$html = wppa_textarea($slug, $name);
 							wppa_setting($slug, '10', $name, $desc, $html, $help);
 							}
-							wppa_setting_subheader( 'B', '1', __( 'Slideshow related settings', 'wppa' ) );
+						wppa_setting_subheader( 'B', '1', __( 'Slideshow related settings', 'wppa' ) );
 							{
 							$name = __('V align', 'wppa');
 							$desc = __('Vertical alignment of slideshow images.', 'wppa');
@@ -2411,7 +2411,7 @@ global $no_default;
 							$html = wppa_checkbox($slug);
 							wppa_setting($slug, '14', $name, $desc, $html, $help);
 							}
-							wppa_setting_subheader( 'C', '1', __( 'Thumbnail related settings', 'wppa' ) );
+						wppa_setting_subheader( 'C', '1', __( 'Thumbnail related settings', 'wppa' ) );
 							{
 							$name = __('Photo order', 'wppa');
 							$desc = __('Photo ordering sequence method.', 'wppa');
@@ -2516,7 +2516,7 @@ global $no_default;
 							$class = 'tt_normal';
 							wppa_setting($slug, '9', $name, $desc, $html, $help, $class);
 							}
-							wppa_setting_subheader( 'D', '1', __( 'Album and covers related settings', 'wppa' ) );
+						wppa_setting_subheader( 'D', '1', __( 'Album and covers related settings', 'wppa' ) );
 							{
 							$name = __('Album order', 'wppa');
 							$desc = __('Album ordering sequence method.', 'wppa');
@@ -2608,7 +2608,7 @@ global $no_default;
 							$class = 'wppa_imgfact_';
 							wppa_setting($slug, '6.1', $name, $desc, $html, $help, $class);
 							}
-							wppa_setting_subheader( 'E', '1', __( 'Rating related settings', 'wppa' ), 'wppa_rating_' );	
+						wppa_setting_subheader( 'E', '1', __( 'Rating related settings', 'wppa' ), 'wppa_rating_' );	
 							{
 							$name = __('Rating login', 'wppa');
 							$desc = __('Users must login to rate photos.', 'wppa');
@@ -2634,6 +2634,22 @@ global $no_default;
 							$html = wppa_checkbox($slug);
 							$class = 'wppa_rating_';
 							wppa_setting($slug, '3', $name, $desc, $html, $help, $class);
+							
+							$name = __('Rate own photos', 'wppa');
+							$desc = __('It is allowed to rate photos by the uploader himself.', 'wppa');
+							$help = '';
+							$slug = 'wppa_allow_owner_votes';
+							$html = wppa_checkbox($slug);
+							$class = 'wppa_rating_';
+							wppa_setting($slug, '3.1', $name, $desc, $html, $help, $class);
+							
+							$name = __('Rating requires comment', 'wppa');
+							$desc = __('Users must clarify their vote in a comment.', 'wppa');
+							$help = '';
+							$slug = 'wppa_vote_needs_comment';
+							$html = wppa_checkbox($slug);
+							$class = 'wppa_rating_';
+							wppa_setting($slug, '3.2', $name, $desc, $html, $help, $class);
 							
 							$name = __('Dislike value', 'wppa');
 							$desc = __('This value counts dislike rating.', 'wppa');
@@ -3844,6 +3860,15 @@ global $no_default;
 							$html = array( $html1, $html2 );
 							wppa_setting($slug, '1', $name, $desc, $html, $help);
 							
+							$name = __('User edit album', 'wppa');
+							$desc = __('Enable frontent edit album name and description.', 'wppa');
+							$help = '';
+							$slug = 'wppa_user_album_edit_on';
+							$html1 = wppa_checkbox($slug);
+							$html2 = '';
+							$html = array( $html1, $html2 );
+							wppa_setting($slug, '1.1', $name, $desc, $html, $help);
+							
 							$name = __('User create Albums login', 'wppa');
 							$desc = __('Frontend album creation requires the user is logged in.', 'wppa');
 							$help = '';//esc_js(__('If you uncheck this box, make sure you check the item Owners only in the next sub-table.', 'wppa'));
@@ -4159,7 +4184,7 @@ global $no_default;
 							<?php 
 							$wppa_table = 'VIII';
 							
-							wppa_setting_subheader('A', '4', __('Harmless and reverseable actions', 'wppa'));
+						wppa_setting_subheader('A', '4', __('Harmless and reverseable actions', 'wppa'));
 							
 							$name = __('Setup', 'wppa');
 							$desc = __('Re-initialize plugin.', 'wppa');
@@ -4272,7 +4297,7 @@ global $no_default;
 							$html4 = wppa_togo_field( $slug2 );
 							$html = array($html1, $html2, $html3, $html4);
 							$class = 'index_search';
-							wppa_setting(false, '8a', $name, $desc, $html, $help, $class);
+							wppa_setting(false, '8', $name, $desc, $html, $help, $class);
 
 							$name = __('Remake Index Photos', 'wppa');
 							$desc = __('Remakes the index database table for photos.', 'wppa');
@@ -4284,21 +4309,8 @@ global $no_default;
 							$html4 = wppa_togo_field( $slug2 );
 							$html = array($html1, $html2, $html3, $html4);
 							$class = 'index_search';
-							wppa_setting(false, '8b', $name, $desc, $html, $help, $class);
-
-							$name = __('List Index', 'wppa');
-							$desc = __('Show the content if the index table.', 'wppa');
-							$help = '';
-							$slug1 = 'wppa_list_index_display_start';
-							$slug2 = 'wppa_list_index';
-							$html1 = '<small style="float:left;">'.__('Start at text:', 'wppa').'</small>'.wppa_input( $slug1, '150px' );
-							$html2 = wppa_popup_button( $slug2 );
-							$html3 = '';
-							$html4 = '';
-							$class = 'index_search';
-							$html = array($html1, $html2, $html3, $html4);
 							wppa_setting(false, '9', $name, $desc, $html, $help, $class);
-							
+
 							$fs = get_option('wppa_file_system');
 							if ( ! $fs ) {	// Fix for wp delete_option bug
 								$fs = 'flat';
@@ -4334,20 +4346,7 @@ global $no_default;
 							$html = array($html1, $html2, $html3, $html4);
 							wppa_setting(false, '11', $name, $desc, $html, $help);
 							
-							$name = __('List Errorlog', 'wppa');
-							$desc = __('Show the content if wppa+ error log.', 'wppa');
-							$help = '';
-							$slug1 = 'wppa_errorlog_purge';
-							$slug2 = 'wppa_list_errorlog';
-							$html1 = wppa_ajax_button(__('Purge logfile', 'wppa'), $slug1, '0', true );
-							$html2 = wppa_popup_button( $slug2 );
-							$html3 = '';
-							$html4 = '';
-							$html = array($html1, $html2, $html3, $html4);
-							wppa_setting(false, '12', $name, $desc, $html, $help);
-							
-
-							wppa_setting_subheader('B', '4', __('Clearing and other irreverseable actions', 'wppa'));
+						wppa_setting_subheader('B', '4', __('Clearing and other irreverseable actions', 'wppa'));
 							
 							$name = __('Clear ratings', 'wppa');
 							$desc = __('Reset all ratings.', 'wppa');
@@ -4359,18 +4358,6 @@ global $no_default;
 							$html4 = '';
 							$html = array($html1, $html2, $html3, $html4);
 							wppa_setting(false, '1.0', $name, $desc, $html, $help);
-							
-							$name = __('List Ratings', 'wppa');
-							$desc = __('Show the most recent ratings.', 'wppa');
-							$help = '';
-							$slug1 = '';
-							$slug2 = 'wppa_list_rating';
-							$html1 = '';//wppa_ajax_button(__('Purge logfile', 'wppa'), $slug1, '0', true );
-							$html2 = wppa_popup_button( $slug2 );
-							$html3 = '';
-							$html4 = '';
-							$html = array($html1, $html2, $html3, $html4);
-							wppa_setting(false, '1.01', $name, $desc, $html, $help);
 							
 							$name = __('Clear viewcounts', 'wppa');
 							$desc = __('Reset all viewcounts.', 'wppa');
@@ -4478,6 +4465,58 @@ global $no_default;
 							$html = array($html1, $html2, $html3, $html4);
 							wppa_setting(false, '9', $name, $desc, $html, $help);
 
+						wppa_setting_subheader('C', '4', __('Listings', 'wppa'));
+
+							$name = __('List Logfile', 'wppa');
+							$desc = __('Show the content if wppa+ (error) log.', 'wppa');
+							$help = '';
+							$slug1 = 'wppa_errorlog_purge';
+							$slug2 = 'wppa_list_errorlog';
+							$html1 = wppa_ajax_button(__('Purge logfile', 'wppa'), $slug1, '0', true );
+							$html2 = wppa_popup_button( $slug2 );
+							$html3 = '';
+							$html4 = '';
+							$html = array($html1, $html2, $html3, $html4);
+							wppa_setting(false, '1', $name, $desc, $html, $help);
+							
+							$name = __('List Ratings', 'wppa');
+							$desc = __('Show the most recent ratings.', 'wppa');
+							$help = '';
+							$slug1 = '';
+							$slug2 = 'wppa_list_rating';
+							$html1 = '';
+							$html2 = wppa_popup_button( $slug2 );
+							$html3 = '';
+							$html4 = '';
+							$html = array($html1, $html2, $html3, $html4);
+							wppa_setting(false, '2', $name, $desc, $html, $help);
+							
+							$name = __('List Index', 'wppa');
+							$desc = __('Show the content if the index table.', 'wppa');
+							$help = '';
+							$slug1 = 'wppa_list_index_display_start';
+							$slug2 = 'wppa_list_index';
+							$html1 = '<small style="float:left;">'.__('Start at text:', 'wppa').'</small>'.wppa_input( $slug1, '150px' );
+							$html2 = wppa_popup_button( $slug2 );
+							$html3 = '';
+							$html4 = '';
+							$class = 'index_search';
+							$html = array($html1, $html2, $html3, $html4);
+							wppa_setting(false, '3', $name, $desc, $html, $help, $class);
+							
+							$name = __('List active sessions', 'wppa');
+							$desc = __('Show the content of the sessions table.', 'wppa');
+							$help = '';
+							$slug1 = '';
+							$slug2 = 'wppa_list_session';
+							$html1 = '';
+							$html2 = wppa_popup_button( $slug2 );
+							$html3 = '';
+							$html4 = '';
+							$html = array($html1, $html2, $html3, $html4);
+							wppa_setting(false, '4', $name, $desc, $html, $help);
+							
+							
 							?>
 						</tbody>
 						<tfoot style="font-weight: bold;" class="wppa_table_8">

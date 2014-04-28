@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * edit and delete photos
-* version 5.3.0
+* version 5.3.5
 *
 */
 
@@ -240,7 +240,11 @@ global $wppa;
 									}
 									$dislikes = wppa_dislike_get($photo['id']);
 									if ( $dislikes ) {
-										echo ' <span style="color:red" >'.sprintf(__('Disliked by %d visitors', 'wppa'), $dislikes).'</span>';
+										echo ' <span style="color:red" >'.sprintf(__('Disliked by %d visitors', 'wppa'), $dislikes ).'</span>';
+									}
+									$pending = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM `".WPPA_RATING."` WHERE `photo` = %s AND `status` = 'pending'", $photo['id'] ) );
+									if ( $pending ) {
+										echo ' <span style="color:orange" >'.sprintf(__('%d pending votes.', 'wppa'), $pending ).'</span>';
 									}
 									?>
 									

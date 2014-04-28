@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Various funcions
-* Version 5.3.3
+* Version 5.3.5
 *
 */
 
@@ -1276,7 +1276,7 @@ global $thumb;
 	if ( wppa_switch('wppa_rating_on') ) {	// Ajax only
 		
 		// Find my (avg) rating
-		$rats = $wpdb->get_results( $wpdb->prepare( 'SELECT `value` FROM `'.WPPA_RATING.'` WHERE `photo` = %s AND `user` = %s', $id, $user ), ARRAY_A ); 
+		$rats = $wpdb->get_results( $wpdb->prepare( 'SELECT `value` FROM `'.WPPA_RATING.'` WHERE `photo` = %s AND `user` = %s AND `status` = %s', $id, $user, 'publish' ), ARRAY_A ); 
 		wppa_dbg_q('Q33v');
 		if ( $rats ) {
 			$n = 0;
@@ -1298,7 +1298,7 @@ global $thumb;
 		$avgrat .= '|'.wppa_get_rating_count_by_id($id);
 		
 		// Find the dislike count
-		$discount = $wpdb->get_var($wpdb->prepare( "SELECT COUNT(*) FROM `".WPPA_RATING."` WHERE `photo` = %s AND `value` = -1", $id) );
+		$discount = $wpdb->get_var($wpdb->prepare( "SELECT COUNT(*) FROM `".WPPA_RATING."` WHERE `photo` = %s AND `value` = -1 AND `status` = %s", $id, 'publish' ) );
 	}
 	else {	// Rating off
 		$myrat = '0';
@@ -1641,8 +1641,14 @@ global $wppa_done;
 							$sentto[] = $moduser->login_name;
 						}
 					}
+					// Process any pending votes of this user for this photo if rating needs comment, do it anyway, feature may have been on but now off
+	//				if ( wppa_switch( 'wppa_vote_needs_comment' ) ) {
+						$iret = $wpdb->query( $wpdb->prepare( "UPDATE `".WPPA_RATING."` SET `status` = 'publish' WHERE `photo` = %s AND `user` = %s", $id, wppa_get_user() ) );
+						if ( $iret ) wppa_rate_photo( $id );	// Recalc ratings for this photo
+	//				}
+					
 					// Notyfy user
-					if ( wppa_switch('wppa_comment_notify_added') ) echo('<script id="cma" type="text/javascript">alert("'.__a('Comment added').'");jQuery("#cma").html("")</script>');
+					if ( wppa_switch('wppa_comment_notify_added') ) echo('<div class="cma" ><script id="cma" type="text/javascript">alert("'.__a('Comment added').'");jQuery(".cma").html("")</script></div>');
 				}
 			}
 			else {
@@ -3909,7 +3915,8 @@ global $allalbums;
 	return $result;	
 }
 
-// Perform the frontend upload
+// Perform the frontend Create album, Upload photo and Edit album
+// wppa_user_upload_on must be on for any of these functions to be enabled
 function wppa_user_upload() {
 global $wpdb;
 global $wppa;
@@ -3917,90 +3924,116 @@ global $wppa_opt;
 
 	wppa_dbg_msg('Usr_upl entered');
 	
-	if ($wppa['user_uploaded']) return;	// Already done
-	$wppa['user_uploaded'] = true;
-	if ( !wppa_switch('wppa_user_upload_on') ) return;	// Feature not enabled
-	if ( wppa_switch('wppa_user_upload_login') ) {
-		if ( !is_user_logged_in() ) return;					// Must login
-//		if ( !current_user_can('wppa_upload') ) return;		// No upload rights
-	}
-//print_r($_POST);
-//return;
-	if ( wppa_get_post('wppa-album-name') ) {	// Create album
-		$nonce = wppa_get_post('nonce');
-		$ok = wp_verify_nonce($nonce, 'wppa-album-check');
-		if ( ! $ok ) die(__a('<b>ERROR: Illegal attempt to create an album.</b>'));
-		// Check captcha
-		$captkey = $wppa['randseed'];
-		if ( ! wppa_check_captcha($captkey) ) {
-			wppa_err_alert(__a('Wrong captcha, please try again'));
-			return;
-		}
-		$album = wppa_create_album_entry( array( 	'name' => strip_tags( wppa_get_post('wppa-album-name') ), 
-													'description' => strip_tags( wppa_get_post('wppa-album-desc') ),
-													'a_parent' => strval( intval( wppa_get_post('wppa-album-parent') ) ),
-													) );
-		if ( $album ) wppa_err_alert( sprintf( __a('Album #%s created'), $album ) );
-		else wppa_err_alert( __a('Could not create album') );
+	if ( $wppa['user_uploaded'] ) return;					// Already done
+	$wppa['user_uploaded'] = true;							// Mark as done
+	
+	// Upload possible?
+	$may_upload = wppa_switch('wppa_user_upload_on');
+	if ( wppa_switch( 'wppa_user_upload_login' ) ) {
+		if ( ! is_user_logged_in() ) $may_upload = false;					// Must login
 	}
 	
-	if ( wppa_get_post('wppa-upload-album') ) {	// Upload photo
-		$nonce = wppa_get_post('nonce');
-		$ok = wp_verify_nonce($nonce, 'wppa-check');
-		if ( ! $ok ) die(__a('<b>ERROR: Illegal attempt to upload a file.</b>'));
-		
-		$alb = wppa_get_post('wppa-upload-album');
+	// Create album possible?
+	$may_create = wppa_switch('wppa_user_create_on');
+	if ( wppa_switch( 'wppa_user_create_login' ) ) {
+		if ( ! is_user_logged_in() ) $may_create = false;					// Must login
+	}
+	
+	// Edit album possible?
+	$may_edit = wppa_switch('wppa_user_album_edit_on');
+	
+	// Do create
+	if ( $may_create ) {
+		if ( wppa_get_post('wppa-album-name') ) {	// Create album
+			$nonce = wppa_get_post('nonce');
+			$ok = wp_verify_nonce($nonce, 'wppa-album-check');
+			if ( ! $ok ) die(__a('<b>ERROR: Illegal attempt to create an album.</b>'));
+			// Check captcha
+			$captkey = $wppa['randseed'];
+			if ( ! wppa_check_captcha($captkey) ) {
+				wppa_err_alert(__a('Wrong captcha, please try again'));
+				return;
+			}
+			$album = wppa_create_album_entry( array( 	'name' => strip_tags( wppa_get_post('wppa-album-name') ), 
+														'description' => strip_tags( wppa_get_post('wppa-album-desc') ),
+														'a_parent' => strval( intval( wppa_get_post('wppa-album-parent') ) ),
+														) );
+			if ( $album ) wppa_err_alert( sprintf( __a('Album #%s created'), $album ) );
+			else wppa_err_alert( __a('Could not create album') );
+		}
+	}
+	
+	// Do Upload
+	if ( $may_upload ) {
+		if ( wppa_get_post('wppa-upload-album') ) {	// Upload photo
+			$nonce = wppa_get_post('nonce');
+			$ok = wp_verify_nonce($nonce, 'wppa-check');
+			if ( ! $ok ) die(__a('<b>ERROR: Illegal attempt to upload a file.</b>'));
+			
+			$alb = wppa_get_post('wppa-upload-album');
 
-		if (is_array($_FILES)) {
-			$bret = true;
-			$filecount = '1';
-			$done = '0';
-			$fail = '0';
-			foreach ($_FILES as $file) {
-				if ( ! is_array($file['error']) ) {
-					$file['name'] = strip_tags($file['name']);
-					$bret = wppa_do_frontend_file_upload($file, $alb);	// this should no longer happen since the name is incl []
-					if ( $bret ) $done++;
-					else $fail++;
-				}
-				else {
-					$filecount = count($file['error']);
-					for ($i = '0'; $i < $filecount; $i++) {
-						if ( $bret ) {
-							$f['error'] = $file['error'][$i];
-							$f['tmp_name'] = $file['tmp_name'][$i];
-							$f['name'] = strip_tags($file['name'][$i]);
-							$f['type'] = $file['type'][$i];
-							$f['size'] = $file['size'][$i];
-							$bret = wppa_do_frontend_file_upload($f, $alb);
-							if ( $bret ) $done++;
-							else $fail++;
+			if (is_array($_FILES)) {
+				$bret = true;
+				$filecount = '1';
+				$done = '0';
+				$fail = '0';
+				foreach ($_FILES as $file) {
+					if ( ! is_array($file['error']) ) {
+						$file['name'] = strip_tags($file['name']);
+						$bret = wppa_do_frontend_file_upload($file, $alb);	// this should no longer happen since the name is incl []
+						if ( $bret ) $done++;
+						else $fail++;
+					}
+					else {
+						$filecount = count($file['error']);
+						for ($i = '0'; $i < $filecount; $i++) {
+							if ( $bret ) {
+								$f['error'] = $file['error'][$i];
+								$f['tmp_name'] = $file['tmp_name'][$i];
+								$f['name'] = strip_tags($file['name'][$i]);
+								$f['type'] = $file['type'][$i];
+								$f['size'] = $file['size'][$i];
+								$bret = wppa_do_frontend_file_upload($f, $alb);
+								if ( $bret ) $done++;
+								else $fail++;
+							}
 						}
 					}
 				}
-			}
-			$cbpoints = '0';
-			$alert = '';
-			if ( $done ) {
-				//SUCCESSFUL UPLOAD, ADD POINTS
-				if( function_exists('cp_alterPoints') && is_user_logged_in() ) {
-					$cbpoints = $wppa_opt['wppa_cp_points_upload'] * $done;
-					cp_alterPoints(cp_currentUser(), $cbpoints);
+				$cbpoints = '0';
+				$alert = '';
+				if ( $done ) {
+					//SUCCESSFUL UPLOAD, ADD POINTS
+					if( function_exists('cp_alterPoints') && is_user_logged_in() ) {
+						$cbpoints = $wppa_opt['wppa_cp_points_upload'] * $done;
+						cp_alterPoints(cp_currentUser(), $cbpoints);
+					}
+					$alert .= $done == '1' ? __a('Photo successfully uploaded.') : sprintf(__a('%s photos successfully uploaded.'), $done);
+					if ( $cbpoints ) $alert .= '\n'.sprintf(__a('%s points added.'), $cbpoints);
 				}
-				$alert .= $done == '1' ? __a('Photo successfully uploaded.') : sprintf(__a('%s photos successfully uploaded.'), $done);
-				if ( $cbpoints ) $alert .= '\n'.sprintf(__a('%s points added.'), $cbpoints);
-			}
-			if ( $fail ) {
-				if ( ! $done ) {
-					$alert .= __a('Upload failed');
+				if ( $fail ) {
+					if ( ! $done ) {
+						$alert .= __a('Upload failed');
+					}
+					else {
+						$alert .= $fail == '1' ? '\n'.__a('1 Upload failed') : '\n'.sprintf(__a('%s uploads failed.'), $fail);
+					}
 				}
-				else {
-					$alert .= $fail == '1' ? '\n'.__a('1 Upload failed') : '\n'.sprintf(__a('%s uploads failed.'), $fail);
-				}
-			}
-			wppa_err_alert($alert);
-		}		
-	}	
+				wppa_err_alert($alert);
+			}		
+		}
+	}
+
+	// Do Edit
+	if ( $may_edit ) {
+		if ( wppa_get_post( 'wppa-albumeditsubmit' ) ) {
+			$alb 			= wppa_get_post( 'wppa-albumeditid' );
+			$name 			= wppa_get_post( 'wppa-albumeditname' );
+			$description 	= wppa_get_post( 'wppa-albumeditdesc' );
+			if ( ! wp_verify_nonce( wppa_get_post( 'wppa-albumeditnonce' ), 'wppa_nonce_'.$alb ) ) die( 'Security check failure' );
+			wppa_update_album( array( 'id' => $alb, 'name' => $name, 'description' => $description ) );
+		}
+	}
 }
 
 // Subroutine to upload one file in the frontend
@@ -4086,7 +4119,7 @@ global $album;
 	}
 	else {
 		wppa_save_source($file['tmp_name'], $filename, $alb);
-		wppa_update_album_timestamp($alb);
+		wppa_update_album( array( 'id' => $alb, 'timestamp' => time() ) );
 //		wppa_set_last_album($alb);
 		wppa_flush_treecounts($alb);
 	}

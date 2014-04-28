@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the non admin stuff
-* Version 5.3.0
+* Version 5.3.5
 *
 */
 
@@ -548,6 +548,7 @@ global $wppa_init_js_data;
 	wppaFotomoto = '.( wppa_switch('wppa_fotomoto_on') ? 'true' : 'false' ).';
 	wppaArtMonkeyButton = '.( $wppa_opt['wppa_art_monkey_display'] == 'button' ? 'true' : 'false' ).';
 	wppaFotomotoHideHideWhenRunning = '.( wppa_switch('wppa_fotomoto_hide_when_running') ? 'true' : 'false' ).';
+	wppaCommentRequiredAfterVote = '.( wppa_switch('wppa_vote_needs_comment') ? 'true' : 'false' ).';
 	wppaFotomotoMinWidth = '.$wppa_opt['wppa_fotomoto_min_width'].';';
 
 	// Open file

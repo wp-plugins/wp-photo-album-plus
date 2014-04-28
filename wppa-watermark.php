@@ -2,7 +2,7 @@
 /* wppa-watermark.php
 *
 * Functions used for the application of watermarks
-* version 5.3.2
+* version 5.3.5
 *
 */
 
@@ -110,19 +110,6 @@ global $wppa_opt;
 		$line = trim( $line );
 		if ( $line ) $lines[] = $line;
 	}
-	
-	// Find pixel linelengths
-	foreach ( array_keys( $lines ) as $key ) {
-		$lines[$key] = trim( $lines[$key] );
-		if ( $args['font'] == 'system' ) {
-			$lengths[$key] = strlen( $lines[$key] ) * imagefontwidth( $fontsize );
-		}
-		else {
-			$temp = imagettfbbox ( $fontsize , 0.0 , $fontfile , $lines[$key] );
-			$lengths[$key] = $temp[2] - $temp[0];
-		}
-	}
-	$maxlen = wppa_array_max( $lengths );
 
 	// Find image width
 	if ( $args['width'] ) $image_width = $args['width']; else $image_width = '';
@@ -142,28 +129,80 @@ global $wppa_opt;
 		if ( ! $image_height ) $image_height = $temp[1];
 	}
 
-	// Find canvas size
-	$nlines 	= count( $lines );
-	if ( $args['font'] == 'system' ) {
-		$lineheight 	= imagefontheight( $fontsize );
-	}
-	else {
-		$temp = imagettfbbox ( $fontsize , 0.0 , $fontfile , $lines[0] );
-		$lineheight = $temp[3] - $temp[7];
-	}
-	$canvas_width 	= wppa_array_max( $lengths ) + 4 * $padding;
-	$canvas_height 	= ( $lineheight + $linespacing ) * count( $lines ) + 2 * $padding;
+	$width_fits = false;
+	
+	while ( ! $width_fits ) {
+		// Find pixel linelengths
+		foreach ( array_keys( $lines ) as $key ) {
+			$lines[$key] = trim( $lines[$key] );
+			if ( $args['font'] == 'system' ) {
+				$lengths[$key] = strlen( $lines[$key] ) * imagefontwidth( $fontsize );
+			}
+			else {
+				$temp = imagettfbbox ( $fontsize , 0.0 , $fontfile , $lines[$key] );
+				$lengths[$key] = $temp[2] - $temp[0];
+			}
+		}
+		$maxlen = wppa_array_max( $lengths );
 
-	// Does it fit?
-	if ( $canvas_width > $image_width ) {
-		wppa_log( 'Error', 'Trying to apply a waterark that is too wide for the image. Id = '.$thumb['id'] );
-		return false;	// not an image
-	}
-	if ( $canvas_height > $image_height ) {
-		wppa_log( 'Error', 'Trying to apply a waterark that is too high for the image. Id = '.$thumb['id'] );
-		return false;	// not an image
-	}
+		// Find canvas size
+		$nlines 	= count( $lines );
+		if ( $args['font'] == 'system' ) {
+			$lineheight 	= imagefontheight( $fontsize );
+		}
+		else {
+			$temp = imagettfbbox ( $fontsize , 0.0 , $fontfile , $lines[0] );
+			$lineheight = $temp[3] - $temp[7];
+		}
+		$canvas_width 	= wppa_array_max( $lengths ) + 4 * $padding;
+		$canvas_height 	= ( $lineheight + $linespacing ) * count( $lines ) + 2 * $padding;
 
+		// Does it fit?
+		if ( $canvas_width > $image_width ) {
+			// Break the longest line into two sublines. There should be a space in the right half, if not: fail
+			$i = 0;
+			$l = 0;
+			foreach ( array_keys( $lines ) as $key ) {
+				if ( strlen( $lines[$key] ) > $l ) {
+					$i = $key;
+					$l = strlen( $lines[$key] );
+				}
+			}
+			$temp = $lines;
+			$lines = array();
+			$j = 0;
+			while ( $j < $i ) {
+				$lines[$j] = $temp[$j];
+				$j++;
+			}
+			//
+			$j = $i;
+			$llen = strlen( $temp[$i] );
+			$spos = floor( $llen / 2 );
+			while ( $spos < $llen && substr( $temp[$i], $spos, 1 ) != ' ' ) $spos++;
+			if ( $spos == $llen ) {	// Unable to find a space, give up
+				wppa_log( 'Error', 'Trying to apply a watermark that is too wide for the image. Id = '.$thumb['id'] );
+				return false;	// too wide
+			}
+			$lines[$j] = substr( $temp[$i], 0, $spos );
+			$lines[$j+1] = trim( str_replace( $lines[$j], '', $temp[$i] ) );			
+			$i++;
+			//
+			$j = $i + 1;
+			while ( $j <= count($temp) ) {
+				$lines[$j] = $temp[$i];
+				$j++;
+			}
+		}
+		else {
+			$width_fits = true;
+		}
+		if ( $canvas_height > $image_height ) {
+			wppa_log( 'Error', 'Trying to apply a watermark that is too high for the image. Id = '.$thumb['id'] );
+			return false;	// not an image
+		}
+	}
+	
 	// Create canvas
 	$canvas 	= imagecreatetruecolor( $canvas_width, $canvas_height );
 	$bgcolor 	= imagecolorallocatealpha( $canvas,   0,   0,   0, 127 );	// Transparent

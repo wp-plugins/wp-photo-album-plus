@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains low-level utility routines
-* Version 5.3.4
+* Version 5.3.5
 *
 */
  
@@ -450,7 +450,7 @@ function wppa_update_option($option, $value) {
 	$files = glob( WPPA_PATH.'/wppa-init.*.js' );
 	if ( $files ) {
 		foreach ( $files as $file ) {
-			unlink ( $file );
+			@ unlink ( $file );
 		}
 	}
 	@ unlink ( WPPA_PATH.'/wppa-dynamic.css' );
@@ -779,13 +779,6 @@ function wppa_strip_tags($text, $key = '') {
 								$text );
 	}
 	return trim($text);
-}
-
-// Update album timestamp
-function wppa_update_album_timestamp($album) {
-global $wpdb;
-
-	$wpdb->query($wpdb->prepare('UPDATE `'.WPPA_ALBUMS.'` SET `timestamp` = %s WHERE `id` = %s', time(), $album));
 }
 
 // set last album 
@@ -1354,7 +1347,7 @@ global $wppa_opt;
 	
 	if ( $wppa_opt['wppa_medal_bronze_when'] || $wppa_opt['wppa_medal_silver_when'] || $wppa_opt['wppa_medal_gold_when'] ) {
 		$max_score = $wppa_opt['wppa_rating_max'];
-		$max_ratings = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM `".WPPA_RATING."` WHERE `photo` = %s AND `value` = %s", $id, $max_score ) );
+		$max_ratings = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM `".WPPA_RATING."` WHERE `photo` = %s AND `value` = %s AND `status` = %s", $id, $max_score, 'publish' ) );
 		if ( $max_ratings >= $wppa_opt['wppa_medal_gold_when'] ) $status = 'gold';
 		elseif ( $max_ratings >= $wppa_opt['wppa_medal_silver_when'] ) $status = 'silver';
 		elseif ( $max_ratings >= $wppa_opt['wppa_medal_bronze_when'] ) $status = 'bronze';
@@ -1635,4 +1628,23 @@ function wppa_mktree( $path ) {
 	@ mkdir( $path );
 	@ chmod( $path, 0755 );	
 	return ( is_dir( $path ) );
+}
+
+function wppa_rate_photo( $id ) {
+global $wpdb;
+
+	$ratings = $wpdb->get_results( $wpdb->prepare( "SELECT `value` FROM `".WPPA_RATING."` WHERE `photo` = %s AND `status` = %s", $id, 'publish' ), ARRAY_A );
+	$the_value = '0';
+	$the_count = '0';
+	if ( $ratings ) foreach ($ratings as $rating) {
+		if ( $rating['value'] == '-1' ) $the_value += $wppa_opt['wppa_dislike_value'];
+		else $the_value += $rating['value'];
+		$the_count++;
+	}
+	if ( $the_count ) $the_value /= $the_count;
+	if ( $the_value == '10' ) $the_value = '9.9999999';	// mean_rating is a text field. for sort order reasons we make 10 into 9.99999
+	$wpdb->query( $wpdb->prepare( "UPDATE `".WPPA_PHOTOS."` SET `mean_rating` = %s WHERE `id` = %s", $the_value, $id ) );
+	$ratcount = count($ratings);
+	$wpdb->query( $wpdb->prepare( "UPDATE `".WPPA_PHOTOS."` SET `rating_count` = %s WHERE `id` = %s", $ratcount, $id ) );
+	wppa_test_for_medal( $id );
 }

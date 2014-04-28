@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all session routines
-* Version 5.3.0
+* Version 5.3.5
 *
 * Firefox modifies data in the superglobal $_SESSION.
 * See https://bugzilla.mozilla.org/show_bug.cgi?id=991019
@@ -45,14 +45,15 @@ global $wppa_session;
 			wppa_log( 'Error', 'Unable to create session.' );
 			return false;
 		}
-		$wppa_session = '';
+		$wppa_session['page'] = '1';
+		$wppa_session['ajax'] = '0';
 	}
 	else { 	// Update counter
 		$wpdb->query( $wpdb->prepare( "UPDATE `".WPPA_SESSION."` SET `count` = %s WHERE `id` = %s", $session['count'] + '1', $session['id'] ) );
+		$wppa_session = unserialize( $data );
+		$wppa_session['page'] = isset ( $wppa_session['page'] ) ? $wppa_session['page'] + '1' : '1';
 	}
 	
-	$wppa_session = unserialize( $data );
-
 	return true;
 }
 

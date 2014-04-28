@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * create, edit and delete albums
-* version 5.3.0
+* version 5.3.5
 *
 */
 
@@ -201,6 +201,15 @@ function _wppa_admin() {
 									</td>
 								<?php } ?>
 							</tr>
+							
+							<!-- Modified -->
+							<tr>
+								<th>
+									<label><?php _e('Modified:', 'wppa') ?></label>
+								</th>
+								<td>
+									<?php echo wppa_local_date(get_option( 'date_format', "F j, Y,").' '.get_option( 'time_format', "g:i a" ), $albuminfo['timestamp'] ) ?>
+								</td>
 							
 							<!-- Views -->
 							<tr>

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 5.3.2
+* Version 5.3.5
 *
 */
 
@@ -96,6 +96,7 @@ global $silent;
 					photo bigint(20) NOT NULL,
 					value smallint(5) NOT NULL,
 					user text NOT NULL,
+					status tinytext NOT NULL,
 					PRIMARY KEY  (id),
 					KEY photokey (photo)
 					) DEFAULT CHARACTER SET utf8;";
@@ -194,6 +195,7 @@ global $silent;
 	wppa_setup_query($wpdb->prepare( 'UPDATE `'.WPPA_PHOTOS.'` SET `status` = %s WHERE `status` = %s', 'publish', '' ));
 	wppa_setup_query($wpdb->prepare( 'UPDATE `'.WPPA_PHOTOS.'` SET `linktarget` = %s WHERE `linktarget` = %s', '_self', '' ));
 	wppa_setup_query($wpdb->prepare( 'UPDATE `'.WPPA_ALBUMS.'` SET `upload_limit` = %s WHERE `upload_limit` = %s', '0/0', '' ));
+	wppa_setup_query($wpdb->prepare( 'UPDATE `'.WPPA_RATING.'` SET `status` = %s WHERE `status` = %s', 'publish', '' ));
 
 	// Convert any changed and remove obsolete setting options
 	if ( $old_rev > '100' ) {	// On update only
@@ -753,6 +755,8 @@ Hide Camera info
 						'wppa_rating_login' 			=> 'yes',
 						'wppa_rating_change' 			=> 'yes',
 						'wppa_rating_multi' 			=> 'no',
+						'wppa_allow_owner_votes' 		=> 'yes',
+						'wppa_vote_needs_comment' 		=> 'no',
 						'wppa_dislike_value'			=> '-5',
 		//				'wppa_rating_use_ajax'			=> 'no',
 						'wppa_next_on_callback'			=> 'no',
@@ -923,6 +927,7 @@ Hide Camera info
 						'wppa_user_upload_login'	=> 'yes',
 						'wppa_owner_only' 			=> 'no',
 						'wppa_user_upload_on'		=> 'no',
+						'wppa_user_album_edit_on' 	=> 'no',
 						'wppa_upload_moderate'		=> 'no',
 						'wppa_upload_edit'			=> 'no',
 						'wppa_upload_notify' 		=> 'no',

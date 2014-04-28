@@ -288,7 +288,7 @@ global $wpdb;
 	wppa_copy_exif($photoid, $id);
 	wppa_copy_iptc($photoid, $id);
 	// Bubble album timestamp
-	if ( ! wppa_switch('wppa_copy_timestamp') ) wppa_update_album_timestamp($albumto);
+	if ( ! wppa_switch('wppa_copy_timestamp') ) wppa_update_album( array( 'id' => $albumto, 'timestamp' => time() ) );
 	return false;	// No error
 }
 function wppa_copy_exif($fromphoto, $tophoto) {
@@ -951,26 +951,18 @@ global $wppa;
 			wppa_error_message(sprintf(__('Album %s does not exist or is not accessable while trying to add a photo', 'wppa'), $alb));
 			return false;
 		}
-		// Add photo to db
-		$status = ( wppa_switch('wppa_upload_moderate') && !current_user_can('wppa_admin') ) ? 'pending' : 'publish';
-//		$linktarget = '_self';
+		$status = ( wppa_switch( 'wppa_upload_moderate' ) && ! current_user_can( 'wppa_admin' ) ) ? 'pending' : 'publish';
 		$filename = $name;
 
-//		if ( wppa_switch('wppa_strip_file_ext') ) {
-//			$name = preg_replace('/\.[^.]*$/', '', $name);
-//		}
-//		$query = $wpdb->prepare('INSERT INTO `' . WPPA_PHOTOS . '` (`id`, `album`, `ext`, `name`, `p_order`, `description`, `mean_rating`, `linkurl`, `linktitle`, `linktarget`, `timestamp`, `owner`, `status`, `tags`, `alt`, `filename`, `modified`, `location`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, \'0\', \'\' )', 
-//$id, $alb, $ext, $name, $porder, $desc, $mrat, $linkurl, $linktitle, $linktarget, time(), $owner, $status, $album['default_tags'], '', $filename);
-//		if ($wpdb->query($query) === false) {
-
-		$id = wppa_create_photo_entry( array( 'id' => $id, 'album' => $alb, 'ext' => $ext, 'name' => $name, 'p_order' => $porder, 'description' => $desc, 'linkurl' => $linkurl, 'linktitle' => $linktitle,  'owner' => $owner, 'status' => $status, 'filename' => $filename) );
+		// Add photo to db
+		$id = wppa_create_photo_entry( array( 'id' => $id, 'album' => $alb, 'ext' => $ext, 'name' => $name, 'p_order' => $porder, 'description' => $desc, 'linkurl' => $linkurl, 'linktitle' => $linktitle,  'owner' => $owner, 'status' => $status, 'filename' => $filename ) );
 		if ( ! $id ) {
 			wppa_error_message(__('Could not insert photo. query=', 'wppa').$query);
 		}
 		else {	// Save the source
 			wppa_save_source($file, $filename, $alb);
 			wppa_flush_treecounts($alb);
-			wppa_update_album_timestamp($alb);
+			wppa_update_album( array( 'id' => $alb, 'timestamp' => time() ) );
 			wppa_flush_upldr_cache('photoid', $id);
 		}
 		// Make the photo files		

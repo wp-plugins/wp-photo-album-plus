@@ -2,7 +2,7 @@
 /* wppa-ajax.php
 *
 * Functions used in ajax requests
-* version 5.3.1
+* version 5.3.5
 *
 */
 
@@ -15,10 +15,14 @@ function wppa_ajax_callback() {
 global $wpdb;
 global $wppa_opt;
 global $wppa;
+global $thumb;
+global $wppa_session;
 
 	$wppa['ajax']  = true;
 	$wppa['error'] = '0';
 	$wppa['out']   = '';
+	$wppa_session['page']--;
+	$wppa_session['ajax']++;
 
 	// ALTHOUGH IF WE ARE HERE AS FRONT END VISITOR, is_admin() is true. 
 	// So, $wppa_opt switches are 'yes' or 'no' and not true or false.
@@ -102,6 +106,8 @@ global $wppa;
 			if ( isset($_REQUEST['photo-id']) && current_user_can('wppa_moderate') ) {
 				$iret = $wpdb->query($wpdb->prepare("UPDATE `".WPPA_PHOTOS."` SET `status` = 'publish' WHERE `id` = %s", $_REQUEST['photo-id']));
 				wppa_flush_upldr_cache('photoid', $_REQUEST['photo-id']);
+				$alb = $wpdb->get_var( $wpdb->prepare( "SELECT `album` FROM `".WPPA_PHOTOS."` WHERE `id` = %s", $_REQUEST['photo-id'] ) );
+				wppa_flush_treecounts( $alb );
 			}
 			if ( isset($_REQUEST['comment-id']) ) {
 				$iret = $wpdb->query($wpdb->prepare("UPDATE `".WPPA_COMMENTS."` SET `status` = 'approved' WHERE `id` = %s", $_REQUEST['comment-id']));
@@ -270,6 +276,7 @@ global $wppa;
 			
 			// Make errortext
 			$errtxt = __('An error occurred while processing you rating request.', 'wppa');
+			$errtxt .= "\n".__('Maybe you opened the page too long ago to recognize you.', 'wppa');
 			$errtxt .= "\n".__('You may refresh the page and try again.', 'wppa');
 			$wartxt = __('Althoug an error occurred while processing your rating, your vote has been registered.', 'wppa');
 			$wartxt .= "\n".__('However, this may not be reflected in the current pageview', 'wppa');
@@ -300,8 +307,39 @@ global $wppa;
 			$user     = wppa_get_user();
 			$mylast   = $wpdb->get_row($wpdb->prepare( 'SELECT * FROM `'.WPPA_RATING.'` WHERE `photo` = %s AND `user` = %s ORDER BY `id` DESC LIMIT 1', $photo, $user ), ARRAY_A ); 
 			$myavgrat = '0';			// Init
+
+			wppa_cache_thumb( $photo );
 			
-			// When done, we have to echo $occur.'||'.$photo.'||'.$index.'||'.$myavgrat.'||'.$allavgrat.'||'.$discount;
+			// Rate own photo?
+			if ( $thumb['owner'] == $user && ! wppa_switch('wppa_allow_owner_votes') ) {
+				echo '0||900||'.__('Sorry, you can not rate your own photos', 'wppa');
+				exit;
+			}
+			
+			// Already a pending one?
+			$pending = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM `".WPPA_RATING."` WHERE `photo` = %s AND `user` = %s AND `status` = %s", $photo, $user, 'pending' ) );
+			
+			// Has user motivated his vote?
+			$hascommented = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM `".WPPA_COMMENTS."` WHERE `photo` = %s AND `user` = %s", $photo, wppa_get_user('display') ) );
+
+			if ( $pending ) {
+				if ( ! $hascommented ) {
+					echo '0||900||'.__('Please enter a comment.', 'wppa');
+					exit;
+				}
+				else {
+					$wpdb->query( $wpdb->prepare( "UPDATE `".WPPA_RATING."` SET `status` = 'publish' WHERE `photo` = %s AND `user` = %s", $photo, $user ) );
+				}
+			}
+
+			if ( wppa_switch( 'wppa_vote_needs_comment' ) ) {
+				$ratingstatus = $hascommented ? 'publish' : 'pending';
+			}
+			else {
+				$ratingstatus = 'publish';
+			}
+		
+			// When done, we have to echo $occur.'||'.$photo.'||'.$index.'||'.$myavgrat.'||'.$allavgrat.'||'.$discount.||.$hascommented.||.$message;
 			// So we have to do: process rating and find new $myavgrat, $allavgrat and $discount ( $occur, $photo and $index are known )
 			
 			// Case 0: Illegal second vote. Frontend takes care of this, but a hacker could enter an ajaxlink manually
@@ -318,7 +356,7 @@ global $wppa;
 			if ( $rating == '-1' ) {
 				// Add my dislike
 //				$iret = $wpdb->query($wpdb->prepare("INSERT INTO `".WPPA_RATING."` (`id`, `photo`, `value`, `user`) VALUES (%s, %s, %s, %s)", wppa_nextkey(WPPA_RATING), $photo, $rating, $user));
-				$iret = wppa_create_rating_entry( array( 'photo' => $photo, 'value' => $rating, 'user' => $user ) );
+				$iret = wppa_create_rating_entry( array( 'photo' => $photo, 'value' => $rating, 'user' => $user, 'status' => $ratingstatus ) );
 				if ( ! $iret ) {
 					echo '0||101||'.$errtxt;
 					exit;															// Fail on storing vote
@@ -335,7 +373,7 @@ global $wppa;
 			elseif ( ! $mylast ) {
 				// Add my vote
 //				$iret = $wpdb->query($wpdb->prepare('INSERT INTO `'.WPPA_RATING. '` (`id`, `photo`, `value`, `user`) VALUES (%s, %s, %s, %s)', wppa_nextkey(WPPA_RATING), $photo, $rating, $user));
-				$iret = wppa_create_rating_entry( array( 'photo' => $photo, 'value' => $rating, 'user' => $user ) );
+				$iret = wppa_create_rating_entry( array( 'photo' => $photo, 'value' => $rating, 'user' => $user, 'status' => $ratingstatus ) );
 				if ( ! $iret ) {
 					echo '0||102||'.$errtxt;
 					exit;															// Fail on storing vote
@@ -354,7 +392,7 @@ global $wppa;
 			// Case 4: Add another vote from me
 			elseif ( wppa_switch('wppa_rating_multi') ) {					// Rating multi is allowed
 //				$iret = $wpdb->query($wpdb->prepare( 'INSERT INTO `'.WPPA_RATING. '` (`id`, `photo`, `value`, `user`) VALUES (%s, %s, %s, %s)', wppa_nextkey(WPPA_RATING), $photo, $rating, $user ) );
-				$iret = wppa_create_rating_entry( array( 'photo' => $photo, 'value' => $rating, 'user' => $user ) );
+				$iret = wppa_create_rating_entry( array( 'photo' => $photo, 'value' => $rating, 'user' => $user, 'status' => $ratingstatus ) );
 				if ( ! $iret ) {
 					echo '0||104||'.$errtxt;
 					exit;															// Fail on storing vote
@@ -366,29 +404,30 @@ global $wppa;
 			}
 
 			// Compute my avg rating
-			$myrats = $wpdb->get_results($wpdb->prepare( 'SELECT * FROM `'.WPPA_RATING.'`  WHERE `photo` = %s AND `user` = %s', $photo, $user ), ARRAY_A);
-			if ( ! $myrats ) {
-				echo '0||105||'.$wartxt;	// Fail on retrieve
-				exit;
-			}
-			$sum = 0;
-			$cnt = 0;
-			foreach ( $myrats as $rat ) {
-				if ( $rat['value'] == '-1' ) {
-					$sum += $wppa_opt['wppa_dislike_value'];
+			$myrats = $wpdb->get_results($wpdb->prepare( 'SELECT * FROM `'.WPPA_RATING.'`  WHERE `photo` = %s AND `user` = %s AND `status` = %s ', $photo, $user, 'publish' ), ARRAY_A);
+			if ( $myrats ) {
+				$sum = 0;
+				$cnt = 0;
+				foreach ( $myrats as $rat ) {
+					if ( $rat['value'] == '-1' ) {
+						$sum += $wppa_opt['wppa_dislike_value'];
+					}
+					else {
+						$sum += $rat['value'];
+					}
+					$cnt ++;
 				}
-				else {
-					$sum += $rat['value'];
-				}
-				$cnt ++;
+				$myavgrat = $sum/$cnt; 
+				$i = $wppa_opt['wppa_rating_prec'];
+				$j = $i + '1';
+				$myavgrat = sprintf('%'.$j.'.'.$i.'f', $myavgrat);
 			}
-			$myavgrat = $sum/$cnt; 
-			$i = $wppa_opt['wppa_rating_prec'];
-			$j = $i + '1';
-			$myavgrat = sprintf('%'.$j.'.'.$i.'f', $myavgrat);
+			else {
+				$myavgrat = '0';
+			}
 			
 			// Compute new allavgrat
-			$ratings = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM '.WPPA_RATING.' WHERE `photo` = %s', $photo), ARRAY_A);
+			$ratings = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM '.WPPA_RATING.' WHERE `photo` = %s AND `status` = %s', $photo, 'publish' ), ARRAY_A );
 			if ( $ratings ) {
 				$sum = 0;
 				$cnt = 0;
@@ -416,7 +455,7 @@ global $wppa;
 			// Compute rating_count and store in the photo info
 			$ratcount = $wpdb->get_var( $wpdb->prepare( 'SELECT COUNT(*) FROM `'.WPPA_RATING.'`  WHERE `photo` = %s', $photo));
 			if ( $ratcount !== false ) {
-				$iret = $wpdb->query($wpdb->prepare('UPDATE `'.WPPA_PHOTOS. '` SET `rating_count` = %s WHERE `id` = %s', $ratcount, $photo));
+				$iret = $wpdb->query($wpdb->prepare('UPDATE `'.WPPA_PHOTOS. '` SET `rating_count` = %s WHERE `id` = %s', $ratcount, $photo ) );
 				if ( $iret === false ) {
 					echo '0||107||'.$wartxt;
 					exit;																// Fail on save
@@ -427,7 +466,7 @@ global $wppa;
 			$allavgratcombi = $allavgrat.'|'.$ratcount;
 
 			// Compute dsilike count
-			$discount = $wpdb->get_var($wpdb->prepare( "SELECT COUNT(*) FROM `".WPPA_RATING."` WHERE `photo` = %s AND `value` = -1", $photo));
+			$discount = $wpdb->get_var($wpdb->prepare( "SELECT COUNT(*) FROM `".WPPA_RATING."` WHERE `photo` = %s AND `value` = -1 AND `status` = %s", $photo, 'publish' ) );
 			if ( $discount === false ) {
 				echo '0||108||'.$wartxt;
 				exit;																// Fail on save
@@ -438,7 +477,15 @@ global $wppa;
 			
 			// Success!
 			wppa_clear_cache();
-			echo $occur.'||'.$photo.'||'.$index.'||'.$myavgrat.'||'.$allavgratcombi.'||'.$discount;
+			
+			if ( wppa_switch( 'wppa_vote_needs_comment' ) && ! $hascommented ) {
+				$message = __("Please explain your vote in a comment.\nYour vote will be discarded if you don't.\n\nAfter completing your comment,\nyou can refresh the page to see\nyour vote became effective.", 'wppa');
+			}
+			else {
+				$message = '';
+			}
+
+			echo $occur.'||'.$photo.'||'.$index.'||'.$myavgrat.'||'.$allavgratcombi.'||'.$discount.'||'.$hascommented.'||'.$message;
 			break;
 		
 		case 'render':	

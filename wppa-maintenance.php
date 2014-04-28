@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains (not yet, but in the future maybe) all the maintenance routines
-* Version 5.3.2
+* Version 5.3.5
 *
 */
 
@@ -222,6 +222,8 @@ global $wppa_session;
 						break;
 						
 					case 'wppa_rerate':
+						wppa_rate_photo( $id );
+/*
 						$ratings = $wpdb->get_results( $wpdb->prepare( "SELECT `value` FROM `".WPPA_RATING."` WHERE `photo` = %s", $id ), ARRAY_A );
 						$the_value = '0';
 						$the_count = '0';
@@ -236,6 +238,7 @@ global $wppa_session;
 						$ratcount = count($ratings);
 						$wpdb->query( $wpdb->prepare( "UPDATE `".WPPA_PHOTOS."` SET `rating_count` = %s WHERE `id` = %s", $ratcount, $id ) );
 						wppa_test_for_medal( $id );
+*/
 						break;
 						
 					case 'wppa_recup':
@@ -435,7 +438,7 @@ global $thumb;
 			$result .= '
 			<style>td, th { border-right: 1px solid darkgray; } </style>
 			<h2>List of Searcheable words <small>( Max 1000 entries of total '.$total.' )</small></h2>
-			<div style="float:left; clear:both; width:100%; height:450px; overflow:auto; background-color:#f1f1f1; border:1px solid #ddd;" >';
+			<div style="float:left; clear:both; width:100%; overflow:auto; background-color:#f1f1f1; border:1px solid #ddd;" >';
 			if ( $indexes ) {
 				$result .= '
 				<table>
@@ -474,7 +477,7 @@ global $thumb;
 			$filename = WPPA_CONTENT_PATH.'/wppa-depot/admin/error.log';
 			$result .= '
 				<h2>List of WPPA+ error messages <small>( Newest first )</small></h2>
-				<div style="float:left; clear:both; width:100%; height:450px; overflow:auto; word-wrap:none; background-color:#f1f1f1; border:1px solid #ddd;" >';
+				<div style="float:left; clear:both; width:100%; overflow:auto; word-wrap:none; background-color:#f1f1f1; border:1px solid #ddd;" >';
 
 			if ( ! $file = @ fopen( $filename, 'r' ) ) {
 				$result .= __('There are no error log messages', 'wppa');
@@ -502,7 +505,7 @@ global $thumb;
 			$result .= '
 			<style>td, th { border-right: 1px solid darkgray; } </style>
 			<h2>List of recent ratings <small>( Max 1000 entries of total '.$total.' )</small></h2>
-			<div style="float:left; clear:both; width:100%; height:450px; overflow:auto; background-color:#f1f1f1; border:1px solid #ddd;" >';
+			<div style="float:left; clear:both; width:100%; overflow:auto; background-color:#f1f1f1; border:1px solid #ddd;" >';
 			if ( $ratings ) {
 				$result .= '
 				<table>
@@ -511,6 +514,7 @@ global $thumb;
 							<th>Id</th>
 							<th>Timestamp</th>
 							<th>Date/time</th>
+							<th>Status</th>
 							<th>User</th>
 							<th>Value</th>
 							<th>Photo id</th>
@@ -518,17 +522,18 @@ global $thumb;
 							<th># ratings</th>
 							<th>Average</th>
 						</tr>
-						<tr><td colspan="9"><hr /></td></tr>
+						<tr><td colspan="10"><hr /></td></tr>
 					</thead>
 					<tbody>';
 								
 				foreach ( $ratings as $rating ) {
-					wppa_cache_thumb($rating['photo']);
+					wppa_cache_thumb( $rating['photo'] );
 					$result .= '
 						<tr>
 							<td>'.$rating['id'].'</td>
 							<td>'.$rating['timestamp'].'</td>
 							<td>'.( $rating['timestamp'] ? wppa_local_date(get_option('date_format', "F j, Y,").' '.get_option('time_format', "g:i a"), $rating['timestamp']) : 'pre-historic' ).'</td>
+							<td>'.$rating['status'].'</td>
 							<td>'.$rating['user'].'</td>
 							<td>'.$rating['value'].'</td>
 							<td>'.$rating['photo'].'</td>
@@ -547,6 +552,65 @@ global $thumb;
 			}
 			else {
 				$result .= __('There are no ratings', 'wppa');
+			}
+			$result .= '
+				</div><div style="clear:both;"></div>';
+			break;
+			
+		case 'wppa_list_session':
+			$total = $wpdb->get_var( "SELECT COUNT(*) FROM `".WPPA_SESSION."` WHERE `status` = 'valid'" );
+			$sessions = $wpdb->get_results( "SELECT * FROM `".WPPA_SESSION."` WHERE `status` = 'valid' ORDER BY `id` DESC LIMIT 1000", ARRAY_A );
+			$result .= '
+			<style>td, th { border-right: 1px solid darkgray; } </style>
+			<h2>List of active sessions <small>( Max 1000 entries of total '.$total.' )</small></h2>
+			<div style="float:left; clear:both; width:100%; overflow:auto; background-color:#f1f1f1; border:1px solid #ddd;" >';
+			if ( $sessions ) {
+				$result .= '
+				<table>
+					<thead>
+						<tr>
+							<th>Id</th>
+							<th>Session id</th>
+							<th>User</th>
+							<th>Started</th>
+							<th>Count</th>
+							<th>Page</th>
+							<th>Ajax</th>
+							<th>Albums viewed</th>
+							<th>Photos viewed</th>
+							<th>Search string</th>
+							<th>root</th>
+							<th>sub</th>
+							<th>Superview</th>
+						</tr>
+						<tr><td colspan="13"><hr /></td></tr>
+					</thead>
+					<tbody>';
+					foreach( $sessions as $session ) {
+						$data = unserialize( $session['data'] );
+						$result .= '
+							<tr>
+								<td>'.$session['id'].'</td>
+								<td>'.$session['session'].'</td>
+								<td>'.$session['user'].'</td>
+								<td>'.wppa_local_date(get_option('date_format', "F j, Y,").' '.get_option('time_format', "g:i a"), $session['timestamp']).'</td>
+								<td>'.$session['count'].'</td>
+								<td>'.( isset( $data['page'] ) ? $data['page'] : '' ).'</td>
+								<td>'.( isset( $data['ajax'] ) ? $data['ajax'] : '' ).'</td>
+								<td>'.( isset( $data['album'] ) ? wppa_index_array_to_string( array_keys( $data['album'] ) ) : '' ).'</td>
+								<td>'.( isset( $data['photo'] ) ? wppa_index_array_to_string( array_keys( $data['photo'] ) ) : '' ).'</td>
+								<td>'.( isset( $data['use_searchstring'] ) ? $data['use_searchstring'] : '' ).'</td>
+								<td>'.( isset( $data['search_root'] ) ? $data['search_root'].' ' : '' ).( isset( $data['rootbox'] ) ? ( $data['rootbox'] ? 'on' : 'off' ) : '' ).'</td>
+								<td>'.( isset( $data['subbox'] ) ? ( $data['subbox'] ? 'Y' : 'N' ) : '' ).'</td>
+								<td>'.( isset( $data['superalbum'] ) ? $data['superalbum'].' ' : '' ).( isset( $data['superview'] ) ? $data['superview'] : '' ).'</td>
+							</tr>';
+					}
+				$result .= '
+					</tbody>
+				</table>';
+			}
+			else {
+				$result .= __('There are no active sessions', 'wppa');
 			}
 			$result .= '
 				</div><div style="clear:both;"></div>';

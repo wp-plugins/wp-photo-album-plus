@@ -2,7 +2,7 @@
 //
 // conatins slideshow, theme, ajax and lightbox code
 //
-// Version 5.3.0
+// Version 5.3.5
 
 // Part 1: Slideshow
 //
@@ -162,6 +162,7 @@ var _wppaHiresUrl = new Array();
 var wppaFotomotoHideWhenRunning = false;
 var wppaFotomotoMinWidth = 400;
 var wppaPhotoView = new Array();
+var wppaCommentRequiredAfterVote = true;
 
 // Check for occurrences that are responsive
 jQuery(document).ready(function(){
@@ -1700,8 +1701,14 @@ if (value == 0) return;
 // alert(xmlhttp.responseText);
 				var ArrValues = xmlhttp.responseText.split("||");
 				wppaConsoleLog(xmlhttp.responseText);				
-				if (ArrValues[0] == '0') {	// Error
-					alert('Error Code='+ArrValues[1]+'\n\n'+ArrValues[2]);
+				if ( ArrValues[0] == 0 ) {	// Error
+					if ( ArrValues[1] == 900 ) {		// Recoverable error
+						alert( ArrValues[2] );
+						_wppaSetRatingDisplay(mocc);	// Restore display
+					}
+					else {
+						alert('Error Code='+ArrValues[1]+'\n\n'+ArrValues[2]);
+					}
 				}
 				else {	// No error
 					if ( value == -1 ) {	// -1 is the dislike button
@@ -1713,7 +1720,12 @@ if (value == 0) return;
 					_wppaDisc[ArrValues[0]][ArrValues[2]] = ArrValues[5];
 					// Update display
 					_wppaSetRatingDisplay(mocc);
-//					jQuery('#wppa-rate-'+mocc+'-'+value).attr('src', wppaTickImg.src);			// Set icon
+					// If commenting required and not done so far...
+					if ( wppaCommentRequiredAfterVote ) {
+						if ( ArrValues[6] == 0 ) {
+							alert( ArrValues[7] );
+						}
+					}
 
 					if (wppaNextOnCallback) _wppaNextOnCallback(mocc);
 				}
