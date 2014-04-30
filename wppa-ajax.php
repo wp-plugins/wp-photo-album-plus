@@ -1374,6 +1374,16 @@ global $wppa_session;
 						wppa_update_option('wppa_resize_on_upload', 'no');
 					}
 					break;
+				case 'wppa_i_source':
+					if ( $value == 'yes' ) {
+						wppa_update_option('wppa_keep_source_admin', 'yes');
+						wppa_update_option('wppa_keep_source_frontend', 'yes');
+					}
+					if ( $value == 'no' ) {
+						wppa_update_option('wppa_keep_source_admin', 'no');
+						wppa_update_option('wppa_keep_source_frontend', 'no');
+					}
+					break;
 				case 'wppa_i_userupload':
 					if ( $value == 'yes' ) { 
 						wppa_update_option('wppa_user_upload_on', 'yes');
@@ -1585,7 +1595,9 @@ global $wppa_session;
 			}
 			
 			// Did we do something that will require regen?
+			$temp = $wppa;
 			wppa_initialize_runtime( true );	// force reload new values
+			$wppa = $temp;
 			$new_minisize = wppa_get_minisize();
 			if ( $old_minisize != $new_minisize ) {
 				update_option ( 'wppa_regen_thumbs_status', 'Required' );
