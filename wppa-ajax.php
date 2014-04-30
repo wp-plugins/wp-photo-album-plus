@@ -2,7 +2,7 @@
 /* wppa-ajax.php
 *
 * Functions used in ajax requests
-* version 5.3.5
+* version 5.3.5.001
 *
 */
 
@@ -1585,6 +1585,7 @@ global $wppa_session;
 			}
 			
 			// Did we do something that will require regen?
+			wppa_initialize_runtime( true );	// force reload new values
 			$new_minisize = wppa_get_minisize();
 			if ( $old_minisize != $new_minisize ) {
 				update_option ( 'wppa_regen_thumbs_status', 'Required' );
