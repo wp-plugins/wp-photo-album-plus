@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * gp admin functions
-* version 5.3.0
+* version 5.3.6
 *
 * 
 */
@@ -873,7 +873,7 @@ global $wppa;
 			wppa_error_message(sprintf(__('Album %s is full', 'wppa'), wppa_get_album_name($alb)));
 		}
 		else {
-			wppa_err_alert(sprintf(__('Album %s is full', 'wppa'), wppa_get_album_name($alb)));
+			wppa_alert(sprintf(__('Album %s is full', 'wppa'), wppa_get_album_name($alb)));
 		}
 		return false;
 	}

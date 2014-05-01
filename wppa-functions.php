@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Various funcions
-* Version 5.3.5
+* Version 5.3.6
 *
 */
 
@@ -820,7 +820,7 @@ wppa_dbg_msg('Rootsearch albums:'.$c1.' -> '.$c2);
 		// Check maximum
 		if ( is_array( $albums ) && count( $albums) > $wppa_opt['wppa_max_search_albums'] && $wppa_opt['wppa_max_search_albums'] != '0' ) {
 			$alert_text = sprintf( __a('There are %s albums found. Only the first %s will be shown. Please refine your search criteria.' ), count( $albums ), $wppa_opt['wppa_max_search_albums'] );
-			wppa_err_alert( $alert_text );
+			wppa_alert( $alert_text );
 			foreach ( array_keys( $albums ) as $idx ) {
 				if ( $idx >= $wppa_opt['wppa_max_search_albums'] ) unset ( $albums[$idx] );
 			}
@@ -1181,7 +1181,7 @@ wppa_dbg_msg('Rootsearch thumbs:'.$c1.' -> '.$c2);
 		// Check maximum
 		if ( is_array( $thumbs ) && count( $thumbs ) > $wppa_opt['wppa_max_search_photos'] && $wppa_opt['wppa_max_search_photos'] != '0' ) {
 			$alert_text = sprintf( __a( 'There are %s photos found. Only the first %s will be shown. Please refine your search criteria.' ), count( $thumbs ), $wppa_opt['wppa_max_search_photos'] );
-			wppa_err_alert( $alert_text );
+			wppa_alert( $alert_text );
 			foreach ( array_keys( $thumbs ) as $idx ) {
 				if ( $idx >= $wppa_opt['wppa_max_search_photos'] ) unset ( $thumbs[$idx] );
 			}
@@ -1401,6 +1401,8 @@ global $thumb;
 	}
 	
 	// Edit photo link
+	$editlink = '';
+	$dellink = '';
 	if ( ! $wppa['is_filmonly'] ) {
 		if ( ! wppa_is_user_blacklisted() ) {
 			if ( ( wppa_user_is( 'administrator' ) ) || ( wppa_get_user() == wppa_get_photo_owner( $id ) && wppa_switch( 'wppa_upload_edit' ) ) ) {
@@ -1416,10 +1418,6 @@ global $thumb;
 							'.__a('Delete').'
 						</a>
 					</div>';
-			}
-			else {
-				$editlink = '';
-				$dellink = '';
 			}
 		}
 	}
@@ -1648,7 +1646,7 @@ global $wppa_done;
 	//				}
 					
 					// Notyfy user
-					if ( wppa_switch('wppa_comment_notify_added') ) echo('<div class="cma" ><script id="cma" type="text/javascript">alert("'.__a('Comment added').'");jQuery(".cma").html("")</script></div>');
+					if ( wppa_switch('wppa_comment_notify_added') ) wppa_alert( __a('Comment added') );
 				}
 			}
 			else {
@@ -3951,15 +3949,15 @@ global $wppa_opt;
 			// Check captcha
 			$captkey = $wppa['randseed'];
 			if ( ! wppa_check_captcha($captkey) ) {
-				wppa_err_alert(__a('Wrong captcha, please try again'));
+				wppa_alert(__a('Wrong captcha, please try again'));
 				return;
 			}
 			$album = wppa_create_album_entry( array( 	'name' => strip_tags( wppa_get_post('wppa-album-name') ), 
 														'description' => strip_tags( wppa_get_post('wppa-album-desc') ),
 														'a_parent' => strval( intval( wppa_get_post('wppa-album-parent') ) ),
 														) );
-			if ( $album ) wppa_err_alert( sprintf( __a('Album #%s created'), $album ) );
-			else wppa_err_alert( __a('Could not create album') );
+			if ( $album ) wppa_alert( sprintf( __a('Album #%s created'), $album ) );
+			else wppa_alert( __a('Could not create album') );
 		}
 	}
 	
@@ -4019,7 +4017,7 @@ global $wppa_opt;
 						$alert .= $fail == '1' ? '\n'.__a('1 Upload failed') : '\n'.sprintf(__a('%s uploads failed.'), $fail);
 					}
 				}
-				wppa_err_alert($alert);
+				wppa_alert($alert);
 			}		
 		}
 	}
@@ -4045,32 +4043,32 @@ global $album;
 	wppa_cache_album($alb);
 				
 	if ( ! wppa_allow_uploads($alb) || ! wppa_allow_user_uploads() ) {
-		wppa_err_alert(__a('Max uploads reached'));
+		wppa_alert(__a('Max uploads reached'));
 		return false;
 	}
 	if ( $file['error'] != '0' ) {
-		wppa_err_alert(__a('Error during upload'));
+		wppa_alert(__a('Error during upload'));
 		return false;
 	}
 	$imgsize = getimagesize($file['tmp_name']);
 	if ( !is_array($imgsize) ) {
-		wppa_err_alert(__a('Uploaded file is not an image'));
+		wppa_alert(__a('Uploaded file is not an image'));
 		return false;
 	}
 	if ( $imgsize[2] < 1 || $imgsize[2] > 3 ) {
-		wppa_err_alert(sprintf(__a('Only gif, jpg and png image files are supported. Returned filetype = %d.'), $imagesize[2]));
+		wppa_alert(sprintf(__a('Only gif, jpg and png image files are supported. Returned filetype = %d.'), $imagesize[2]));
 		return false;
 	}
 	$ms = $wppa_opt['wppa_upload_fronend_maxsize'];
 	if ( $ms ) {	// Max size configured
 		if ( $imgsize[0] > $ms || $imgsize[0] > $ms ) {
-			wppa_err_alert( sprintf( __a( 'Uploaded file is larger than the allowed maximum of %d x %d pixels.' ), $ms, $ms ) );
+			wppa_alert( sprintf( __a( 'Uploaded file is larger than the allowed maximum of %d x %d pixels.' ), $ms, $ms ) );
 			return false;
 		}
 	}
 	if ( wppa_switch('wppa_void_dups') ) {	// Check for already exists
 		if ( wppa_file_is_in_album( $file['name'], $alb ) ) {
-			wppa_err_alert( sprintf( __a( 'Uploaded file %s already exists in this album.' ), $file['name'] ) );
+			wppa_alert( sprintf( __a( 'Uploaded file %s already exists in this album.' ), $file['name'] ) );
 			return false;
 		}
 	}
@@ -4078,7 +4076,7 @@ global $album;
 	if ( $mayupload === false ) {
 		$maxsize = wppa_check_memory_limit(false);
 		if ( is_array($maxsize) ) {	
-			wppa_err_alert(sprintf(__a('The image is too big. Max photo size: %d x %d (%2.1f MegaPixel)'), $maxsize['maxx'], $maxsize['maxy'], $maxsize['maxp']/(1024*1024) ));
+			wppa_alert(sprintf(__a('The image is too big. Max photo size: %d x %d (%2.1f MegaPixel)'), $maxsize['maxx'], $maxsize['maxy'], $maxsize['maxp']/(1024*1024) ));
 			return false;
 		}
 	}
@@ -4114,7 +4112,7 @@ global $album;
 //	wppa_dbg_q('Q58');
 	
 	if ( ! $id ) {
-		wppa_err_alert(__a('Could not insert photo into db.'));
+		wppa_alert(__a('Could not insert photo into db.'));
 		return false;
 	}
 	else {

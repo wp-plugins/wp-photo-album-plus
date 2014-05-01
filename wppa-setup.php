@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 5.3.5
+* Version 5.3.6
 *
 */
 
@@ -470,6 +470,7 @@ Hide Camera info
 						// Table 0: Initial setup
 						'wppa_i_responsive'				=> '',
 						'wppa_i_downsize'				=> '',
+						'wppa_i_source' 				=> '',
 						'wppa_i_userupload'				=> '',
 						'wppa_i_rating'					=> '',
 						'wppa_i_comment'				=> '',

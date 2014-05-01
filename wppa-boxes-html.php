@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Various wppa boxes
-* Version 5.3.5
+* Version 5.3.6
 *
 */
 
@@ -56,6 +56,7 @@ global $wppa;
 function wppa_get_search_html( $label = '', $sub = false, $root = false ) {
 global $wppa;
 global $wppa_session;
+global $wppa_opt;
 
 	$page 			= wppa_get_the_landing_page('wppa_search_linkpage', __a('Photo search results'));
 	$pagelink 		= wppa_dbg_url(get_page_link($page));
@@ -111,6 +112,7 @@ global $wppa;
 function wppa_get_superview_html( $album_root = '0', $sort = true ) {
 global $wppa;
 global $wppa_session;
+global $wppa_opt;
 
 	$page = wppa_get_the_landing_page('wppa_super_view_linkpage', __a('Super View Photos'));
 	$url = get_permalink($page);

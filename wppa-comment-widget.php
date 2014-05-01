@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the recent commets on photos
-* Version 5.3.0
+* Version 5.3.6
 */
 
 if ( ! defined( 'ABSPATH' ) ) die( "Can't load this file directly" );
@@ -24,8 +24,8 @@ class wppaCommentWidget extends WP_Widget {
 
         extract( $args );
 
-		$page = wppa_get_the_landing_page('wppa_comment_widget_linkpage', __a('Recently commented photos'));
-//		$page = $wppa_opt['wppa_comment_widget_linkpage'];
+		$page = in_array( $wppa_opt['wppa_comment_widget_linktype'], $wppa['links_no_page'] ) ? '' : wppa_get_the_landing_page('wppa_comment_widget_linkpage', __a('Recently commented photos'));
+
 		$max  = $wppa_opt['wppa_comten_count'];
 		$widget_title = apply_filters('widget_title', $instance['title']);
 		

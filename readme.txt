@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile, cloudinary, fotomoto
-Version: 5.3.5
+Version: 5.3.6
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -182,6 +182,17 @@ If you changed the name of wp-content and/or uploads, besides the additions to w
 **define('WPPA_REL_UPLOADS_PATH', 'wp_content/uploads');**
 **define('WPPA_REL_DEPOT_PATH', 'wp_content');**
 and make the changes therein also.
+
+= 5.3.6 =
+
+= Bug Fixes =
+
+* Changing small image sizes stopped reporting that thumbnails should be regenerated when required. Fixed.
+
+= Other Changes =
+
+* Landing pages will now really only be created when the actually are going to be used and no longer when the link type does not ask for a linkpage.
+* The re-creation of wpp-init.[lang].js files and wppa-dynamic.css is now only done when a setting is changed that affects the content of the files.
 
 = 5.3.5 =
 

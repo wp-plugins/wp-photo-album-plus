@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 5.3.5
+* Version 5.3.6
 *
 */
 
@@ -117,7 +117,7 @@ global $no_default;
 						}
 						else {
 							copy($file['tmp_name'], WPPA_UPLOAD_PATH . '/watermarks/' . basename($file['name']));
-							wppa_err_alert(sprintf(__('Upload of %s done', 'wppa'), basename($file['name'])));
+							wppa_alert(sprintf(__('Upload of %s done', 'wppa'), basename($file['name'])));
 						}
 					}
 				}
@@ -138,7 +138,7 @@ global $no_default;
 						}
 						else {
 							copy($file['tmp_name'], WPPA_UPLOAD_PATH . '/fonts/' . basename($file['name']));
-							wppa_err_alert(sprintf(__('Upload of %s done', 'wppa'), basename($file['name'])));
+							wppa_alert(sprintf(__('Upload of %s done', 'wppa'), basename($file['name'])));
 						}
 					}
 				}
@@ -372,6 +372,15 @@ global $no_default;
 							$vals = array('', 'yes', 'no');
 							$html = wppa_select($slug, $opts, $vals);
 							wppa_setting($slug, '2', $name, $desc, $html, $help);
+							
+							$name = __('Do you want to save the original photofiles?', 'wppa');
+							$desc = __('This will require considerable disk space on the server.', 'wppa');
+							$help = esc_js(__('If you answer yes, you will be able to remove watermarks you applied with wppa+ in a later stage, redo downsizing to a larger size afterwards, and supply fullsize images for download.', 'wppa'));
+							$slug = 'wppa_i_source';
+							$opts = array('', 'yes', 'no');
+							$vals = array('', 'yes', 'no');
+							$html = wppa_select($slug, $opts, $vals);
+							wppa_setting($slug, '3', $name, $desc, $html, $help);
 				
 							$name = __('May visitors upload photos?', 'wppa');
 							$desc = __('It is safe to do so, but i will have to do some settings to keep it safe!', 'wppa');
@@ -382,7 +391,7 @@ global $no_default;
 							$opts = array('', 'yes', 'no');
 							$vals = array('', 'yes', 'no');
 							$html = wppa_select($slug, $opts, $vals);
-							wppa_setting($slug, '3', $name, $desc, $html, $help);
+							wppa_setting($slug, '4', $name, $desc, $html, $help);
 
 							$name = __('Do you want the rating system active?', 'wppa');
 							$desc = __('Enable the rating system and show the votes in the slideshow.', 'wppa');
@@ -391,7 +400,7 @@ global $no_default;
 							$opts = array('', 'yes', 'no');
 							$vals = array('', 'yes', 'no');
 							$html = wppa_select($slug, $opts, $vals);
-							wppa_setting($slug, '4', $name, $desc, $html, $help);
+							wppa_setting($slug, '5', $name, $desc, $html, $help);
 
 							$name = __('Do you want the comment system active?', 'wppa');
 							$desc = __('Enable the comment system and show the comments in the slideshow.', 'wppa');
@@ -400,7 +409,7 @@ global $no_default;
 							$opts = array('', 'yes', 'no');
 							$vals = array('', 'yes', 'no');
 							$html = wppa_select($slug, $opts, $vals);
-							wppa_setting($slug, '5', $name, $desc, $html, $help);
+							wppa_setting($slug, '6', $name, $desc, $html, $help);
 							
 							$name = __('Do you want the social media share buttons displayed?', 'wppa');
 							$desc = __('Display the social media buttons in the slideshow', 'wppa');;
@@ -409,7 +418,7 @@ global $no_default;
 							$opts = array('', 'yes', 'no');
 							$vals = array('', 'yes', 'no');
 							$html = wppa_select($slug, $opts, $vals);
-							wppa_setting($slug, '6', $name, $desc, $html, $help);
+							wppa_setting($slug, '7', $name, $desc, $html, $help);
 
 							$name = __('Are you going to use IPTC data?', 'wppa');
 							$desc = __('IPTC data is information you may have added in a photo manipulation program.', 'wppa');
@@ -418,7 +427,7 @@ global $no_default;
 							$opts = array('', 'yes', 'no');
 							$vals = array('', 'yes', 'no');
 							$html = wppa_select($slug, $opts, $vals);
-							wppa_setting($slug, '7', $name, $desc, $html, $help);
+							wppa_setting($slug, '8', $name, $desc, $html, $help);
 
 							$name = __('Are you going to use EXIF data?', 'wppa');
 							$desc = __('EXIF data is information from the camera like model no, focal distance and aperture used.', 'wppa');
@@ -427,7 +436,7 @@ global $no_default;
 							$opts = array('', 'yes', 'no');
 							$vals = array('', 'yes', 'no');
 							$html = wppa_select($slug, $opts, $vals);
-							wppa_setting($slug, '8', $name, $desc, $html, $help);
+							wppa_setting($slug, '9', $name, $desc, $html, $help);
 							
 							$name = __('Are you going to use GPX data?', 'wppa');
 							$desc = __('Some cameras and mobile devices save the geographic location where the photo is taken.', 'wppa');
@@ -436,7 +445,7 @@ global $no_default;
 							$opts = array('', 'yes', 'no');
 							$vals = array('', 'yes', 'no');
 							$html = wppa_select($slug, $opts, $vals);
-							wppa_setting($slug, '9', $name, $desc, $html, $help);
+							wppa_setting($slug, '10', $name, $desc, $html, $help);
 
 							$name = __('Are you going to use Fotomoto?', 'wppa');
 							$desc = __('<a href="http://www.fotomoto.com/" target="_blank" >Fotomoto</a> is an on-line print service.', 'wppa');
@@ -445,7 +454,7 @@ global $no_default;
 							$opts = array('', 'yes', 'no');
 							$vals = array('', 'yes', 'no');
 							$html = wppa_select($slug, $opts, $vals);
-							wppa_setting($slug, '10', $name, $desc, $html, $help);
+							wppa_setting($slug, '11', $name, $desc, $html, $help);
 							
 							$name = __('Done?', 'wppa');
 							$desc = __('If you are ready answering these questions, select <b>yes</b>', 'wppa');
@@ -3474,7 +3483,7 @@ global $no_default;
 							$html1 = wppa_select($slug1, $options_linktype, $values_linktype, $onchange);
 							$class = 'wppa_ftlp';
 							$onchange = '';
-							$html2 = wppa_select($slug2, $options_page_auto, $values_page, $onchange, $class, true);
+							$html2 = wppa_select($slug2, $options_page_auto, $values_page, $onchange, $class);
 							$class = 'wppa_ftlb';
 							$html3 = wppa_checkbox($slug3, '', $class);
 							$html4 = wppa_checkbox($slug4);

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains low-level utility routines
-* Version 5.3.5
+* Version 5.3.6
 *
 */
  
@@ -444,16 +444,155 @@ global $wpdb;
 	return $result;
 }
 
-function wppa_update_option($option, $value) {
+function wppa_update_option( $option, $value ) {
+
+	// Update the option
 	update_option($option, $value);
+	
+	// Delete the cached options
 	delete_option('wppa_cached_options');
-	$files = glob( WPPA_PATH.'/wppa-init.*.js' );
-	if ( $files ) {
-		foreach ( $files as $file ) {
-			@ unlink ( $file );
+	
+	// See if wppa-init.[lang].js needs remake
+	$init_js_critical = array( 	'wppa_slideshow_linktype',
+								'wppa_fullimage_border_width',
+								'wppa_bgcolor_img',
+								'wppa_thumb_linktype',
+								'wppa_animation_type',
+								'wppa_animation_speed',
+								'wppa_bwidth',
+								'wppa_smallsize',
+								'wppa_colwidth',
+								'wppa_slideshow_timeout',
+								'wppa_slide_wrap',
+								'wppa_thumbsize',
+								'wppa_fullsize',
+								'wppa_film_show_glue',
+								'wppa_dislike_show_count',
+								'wppa_mini_treshold',
+								'wppa_rating_change',
+								'wppa_rating_multi',
+								'wppa_hide_when_empty',
+								'wppa_bgcolor_numbar',
+								'wppa_bcolor_numbar',
+								'wppa_bgcolor_numbar_active',
+								'wppa_bcolor_numbar_active',
+								'wppa_fontfamily_numbar',
+								'wppa_fontsize_numbar',
+								'wppa_fontcolor_numbar',
+								'wppa_fontweight_numbar',
+								'wppa_fontfamily_numbar_active',
+								'wppa_fontsize_numbar_active',
+								'wppa_fontcolor_numbar_active',
+								'wppa_fontweight_numbar_active',
+								'wppa_numbar_max',
+								'wppa_ajax_non_admin',
+								'wppa_next_on_callback',
+								'wppa_star_opacity',
+								'wppa_comment_email_required',
+								'wppa_allow_ajax',
+								'wppa_use_photo_names_in_urls',
+								'wppa_thumb_blank',
+								'wppa_rating_max',
+								'wppa_rating_display_type',
+								'wppa_rating_prec',
+								'wppa_enlarge',
+								'wppa_tn_margin',
+								'wppa_thumb_auto',
+								'wppa_magnifier',
+								'wppa_art_monkey_link',
+								'wppa_auto_open_comments',
+								'wppa_update_addressline',
+								'wppa_film_linktype',
+								'wppa_vote_button_text',
+								'wppa_voted_button_text',
+								'wppa_slide_swipe',
+								'wppa_max_cover_width',
+								'wppa_slideshow_linktype',
+								'wppa_slideshow_linktype',
+								'wppa_comten_alt_thumbsize',
+								'wppa_track_viewcounts',
+								'wppa_share_hide_when_running',
+								'wppa_fotomoto_on',
+								'wppa_art_monkey_display',
+								'wppa_fotomoto_hide_when_running',
+								'wppa_vote_needs_comment',
+								'wppa_fotomoto_min_width'
+		);
+	if ( in_array( $option, $init_js_critical ) ) {
+		$files = glob( WPPA_PATH.'/wppa-init.*.js' );
+		if ( $files ) {
+			foreach ( $files as $file ) {
+				@ unlink ( $file );		// Will be auto re-created
+			}
 		}
 	}
-	@ unlink ( WPPA_PATH.'/wppa-dynamic.css' );
+	
+	// See if wppa-dynamic.css needs remake
+	$dynamic_css_critical = array(	'wppa_inline_css',
+									'wppa_custom_style',
+									'wppa_bwidth',
+									'wppa_bradius',
+									'wppa_box_spacing',
+									'wppa_fontcolor_box',
+									'wppa_fontfamily_box',
+									'wppa_fontsize_box',
+									'wppa_fontweight_box',
+									'wppa_fontfamily_thumb',
+									'wppa_fontsize_thumb',
+									'wppa_fontcolor_thumb',
+									'wppa_fontweight_thumb',
+									'wppa_bgcolor_com',
+									'wppa_bcolor_com',
+									'wppa_bgcolor_iptc',
+									'wppa_bcolor_iptc',
+									'wppa_bgcolor_exif',
+									'wppa_bcolor_exif',
+									'wppa_bgcolor_share',
+									'wppa_bcolor_share',
+									'wppa_bgcolor_namedesc',
+									'wppa_bcolor_namedesc',
+									'wppa_bgcolor_nav',
+									'wppa_bcolor_nav',
+									'wppa_fontfamily_nav',
+									'wppa_fontsize_nav',
+									'wppa_fontcolor_nav',
+									'wppa_fontweight_nav',
+									'wppa_bgcolor_even',
+									'wppa_bcolor_even',
+									'wppa_bgcolor_alt',
+									'wppa_bcolor_alt',
+									'wppa_bgcolor_img',
+									'wppa_fontfamily_title',
+									'wppa_fontsize_title',
+									'wppa_fontcolor_title',
+									'wppa_fontweight_title',
+									'wppa_fontfamily_fulldesc',
+									'wppa_fontsize_fulldesc',
+									'wppa_fontcolor_fulldesc',
+									'wppa_fontweight_fulldesc',
+									'wppa_fontfamily_fulltitle',
+									'wppa_fontsize_fulltitle',
+									'wppa_fontcolor_fulltitle',
+									'wppa_fontweight_fulltitle',
+									'wppa_bgcolor_cus',
+									'wppa_bcolor_cus',
+									'wppa_bgcolor_upload',
+									'wppa_bcolor_upload',
+									'wppa_bgcolor_multitag',
+									'wppa_bcolor_multitag',
+									'wppa_bgcolor_bestof',
+									'wppa_bcolor_bestof',
+									'wppa_bgcolor_tagcloud',
+									'wppa_bcolor_tagcloud',
+									'wppa_bgcolor_superview',
+									'wppa_bcolor_superview',
+									'wppa_bgcolor_search',
+									'wppa_bcolor_search',
+									'wppa_arrow_color'
+		);
+	if ( in_array( $option, $dynamic_css_critical ) ) {
+		@ unlink ( WPPA_PATH.'/wppa-dynamic.css' );		// Will be auto re-created
+	}
 }
 
 function wppa_album_exists($id) {
@@ -706,7 +845,7 @@ global $wppa_opt;
 			}
 		}
 		else {
-			wppa_err_alert(sprintf(__('Time out after processing %s items. Please restart this operation', 'wppa_theme'), $count));
+			wppa_alert(sprintf(__('Time out after processing %s items. Please restart this operation', 'wppa_theme'), $count));
 		}
 	}
 	return true;

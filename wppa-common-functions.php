@@ -2,7 +2,7 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 5.3.0
+* version 5.3.6
 *
 */
 
@@ -123,8 +123,8 @@ global $wppa_defaults;
 			'is_superviewbox' 			=> false,
 			'is_searchbox'				=> false,
 			'may_sub'					=> false,
-			'may_root'					=> false
-
+			'may_root'					=> false,
+			'links_no_page' 			=> array( 'none', 'file', 'lightbox', 'fullpopup' )
 		);
 	}
 	
@@ -700,7 +700,7 @@ global $thumb;
 		} 
 		else {
 			if (is_admin()) wppa_error_message(__('ERROR: Resized or copied image could not be created.', 'wppa'));
-			else wppa_err_alert(__('ERROR: Resized or copied image could not be created.', 'wppa_theme'));
+			else wppa_alert(__('ERROR: Resized or copied image could not be created.', 'wppa_theme'));
 			return false;
 		}
 		
@@ -735,7 +735,7 @@ global $thumb;
 	}
 	else {
 		if (is_admin()) wppa_error_message(sprintf(__('ERROR: File %s is not a valid picture file.', 'wppa'), $file));
-		else wppa_err_alert(sprintf(__('ERROR: File %s is not a valid picture file.', 'wppa_theme'), $file));
+		else wppa_alert(sprintf(__('ERROR: File %s is not a valid picture file.', 'wppa_theme'), $file));
 		return false;
 	}
 }
@@ -1366,7 +1366,7 @@ function wppa_tree_empty($dir) {
 	}
 }
 
-function wppa_err_alert($msg, $reload = false) {
+function wppa_alert($msg, $reload = false) {
 global $wppa;
 
 	$fullmsg = '<script id="wppaer" type="text/javascript" >alert(\''.esc_js($msg).'\');jQuery("#wppaer").html("");';

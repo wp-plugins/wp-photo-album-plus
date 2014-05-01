@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display a slideshow in the sidebar
-* Version 5.3.0
+* Version 5.3.6
 */
 
 if ( ! defined( 'ABSPATH' ) ) die( "Can't load this file directly" );
@@ -64,7 +64,7 @@ class SlideshowWidget extends WP_Widget {
 		$numbar		= $instance['numbar'];		
 		$desc 		= $instance['desc'];
 		
-		$page = wppa_get_the_landing_page('wppa_slideonly_widget_linkpage', __a('Widget landing page') );
+		$page = in_array( $wppa_opt['wppa_slideonly_widget_linktype'], $wppa['links_no_page'] ) ? '' : wppa_get_the_landing_page('wppa_slideonly_widget_linkpage', __a('Widget landing page') );
 		
 		if (is_numeric($album)) {
 			echo $before_widget;

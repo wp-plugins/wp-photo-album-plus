@@ -3,7 +3,7 @@
 /* Package: wp-photo-album-plus
 /*
 /* Various style computation routines
-/* Version 5.3.0
+/* Version 5.3.6
 /*
 */
 
@@ -12,6 +12,9 @@ if ( ! defined( 'ABSPATH' ) ) die( "Can't load this file directly" );
 // Create dynamic css file
 // This function creates the dynamic css file with styles that depend on the settings.
 // Any updates to this routine must also be implemented in __wcs()
+/* If you add something that uses an element from $wppa_opt[], */
+/* or a function that uses an element from $wppa_opt[], */
+/* add the optionslug to $dynamic_css_critical[] in wppa_update_option in wppa-utils.php !!!!! */
 function wppa_create_wppa_dynamic_css() {
 global $wppa_opt;
 global $wppa_dynamic_css_data;

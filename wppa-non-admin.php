@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the non admin stuff
-* Version 5.3.5
+* Version 5.3.6
 *
 */
 
@@ -453,6 +453,9 @@ global $wppa_init_js_data;
 	if (typeof(jQuery) == \'undefined\') alert(\'There is a problem with your theme. The jQuery library is not loaded when it is expected (Errloc = wppa_kickoff).\');
 ';	}
 	/* This goes into wppa.js */ 
+	/* If you add something that uses an element from $wppa_opt[], */
+	/* or a function that uses an element from $wppa_opt[], */
+	/* add the optionslug to $init_js_critical[] in wppa_update_option in wppa-utils.php !!!!! */
 	$content .= '
 	wppaVersion = "'.$wppa_api_version.'";
 	wppaBackgroundColorImage = "'.$wppa_opt['wppa_bgcolor_img'].'";

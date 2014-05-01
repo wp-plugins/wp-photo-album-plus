@@ -2,7 +2,7 @@
 /* wppa-ajax.php
 *
 * Functions used in ajax requests
-* version 5.3.5.001
+* version 5.3.6
 *
 */
 
@@ -21,8 +21,10 @@ global $wppa_session;
 	$wppa['ajax']  = true;
 	$wppa['error'] = '0';
 	$wppa['out']   = '';
-	$wppa_session['page']--;
-	$wppa_session['ajax']++;
+	if ( ! isset( $wppa_session['page'] ) ) $wppa_session['page'] = '0';
+	else $wppa_session['page']--;
+	if ( ! isset( $wppa_session['ajax'] ) ) $wppa_session['ajax'] = '1';
+	else $wppa_session['ajax']++;
 
 	// ALTHOUGH IF WE ARE HERE AS FRONT END VISITOR, is_admin() is true. 
 	// So, $wppa_opt switches are 'yes' or 'no' and not true or false.

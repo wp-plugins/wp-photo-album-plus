@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display thumbnail photos
-* Version 5.3.0
+* Version 5.3.6
 */
 
 if ( ! defined( 'ABSPATH' ) ) die( "Can't load this file directly" );
@@ -40,8 +40,8 @@ class AlbumWidget extends WP_Widget {
  
 		$widget_title = apply_filters('widget_title', $instance['title']);
 
-		$page = wppa_get_the_landing_page('wppa_album_widget_linkpage', __a('Photo Albums'));
-//		$page = $wppa_opt['wppa_album_widget_linkpage'];
+		$page = in_array( $wppa_opt['wppa_album_widget_linktype'], $wppa['links_no_page'] ) ? '' : wppa_get_the_landing_page('wppa_album_widget_linkpage', __a('Photo Albums'));
+
 		$max  = $wppa_opt['wppa_album_widget_count'];
 		if ( !$max ) $max = '10';
 		$parent = $instance['parent'];
