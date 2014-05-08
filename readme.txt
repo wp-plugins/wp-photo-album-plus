@@ -190,7 +190,7 @@ and make the changes therein also.
 * When Cloudinary activated, photo views in lightbox were not reported. Fixed.
 * Fixed page title in list sessions mainenance popup window.
 * Lightbox on slide works also on a touchscreen.
-* Improved session sata handling. This will no longer excessively slow down the system.
+* Improved session data handling. This will no longer excessively slow down the system.
 
 = Other Changes =
 
