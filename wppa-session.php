@@ -49,7 +49,7 @@ global $wppa_session;
 				$tries++;
 			}
 		}
-		if ( $tries && $iret ) {
+		if ( $tries > '3' && $iret ) {
 			wppa_log( 'Debug', 'It took '.$tries.' retries to start session '.$iret );
 		}
 		if ( ! $iret ) {
