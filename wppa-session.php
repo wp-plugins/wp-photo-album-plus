@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all session routines
-* Version 5.3.5
+* Version 5.3.7
 *
 * Firefox modifies data in the superglobal $_SESSION.
 * See https://bugzilla.mozilla.org/show_bug.cgi?id=991019
@@ -28,7 +28,7 @@ global $wppa_session;
 
 	// Cleanup first
 	$lifetime = 3600;			// Sessions expire after one hour
-	$savetime = 30 * 24 * 3600;	// Save session data for 30 days
+	$savetime = 3600;	// Save session data for 1 hour // 30 days
 	$expire = time() - $lifetime;
 	$wpdb->query( $wpdb->prepare( "UPDATE `" . WPPA_SESSION . "` SET `status` = 'expired' WHERE `timestamp` < %s", $expire ) );
 	$purge = time() - $savetime;
@@ -40,7 +40,18 @@ global $wppa_session;
 	$data = isset( $session['data'] ) ? $session['data'] : false;
 	
 	if ( $data === false ) {
-		$iret = wppa_create_session_entry( array() );
+		$iret = false;
+		$tries = '0';
+		while ( ! $iret && $tries < '10' ) {
+			$iret = wppa_create_session_entry( array() );
+			if ( ! $iret ) {
+				sleep(1);
+				$tries++;
+			}
+		}
+		if ( $tries && $iret ) {
+			wppa_log( 'Debug', 'It took '.$tries.' retries to start session '.$iret );
+		}
 		if ( ! $iret ) {
 			wppa_log( 'Error', 'Unable to create session.' );
 			return false;

@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile, cloudinary, fotomoto
-Version: 5.3.6
+Version: 5.3.7
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -182,6 +182,20 @@ If you changed the name of wp-content and/or uploads, besides the additions to w
 **define('WPPA_REL_UPLOADS_PATH', 'wp_content/uploads');**
 **define('WPPA_REL_DEPOT_PATH', 'wp_content');**
 and make the changes therein also.
+
+= 5.3.7 =
+
+= Bug Fixes =
+
+* When Cloudinary activated, photo views in lightbox were not reported. Fixed.
+* Fixed page title in list sessions mainenance popup window.
+* Lightbox on slide works also on a touchscreen.
+* Improved session sata handling. This will no longer excessively slow down the system.
+
+= Other Changes =
+
+* Having the capability Album Admin (wppa_admin) is sufficient to have edit access to an album, the role administrator is no longer required. This affects frontend edit album info.
+* If frontend photo edit is enabled in Table VII-D2, there will not only be an edit link in the description area of the slideshow display, but also under the thumbnail display.
 
 = 5.3.6 =
 

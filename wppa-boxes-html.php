@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Various wppa boxes
-* Version 5.3.6
+* Version 5.3.7
 *
 */
 
@@ -29,6 +29,7 @@ global $album;
 		if ( ! $wppa['is_upldr'] ) {
 			wppa_user_create_html($wppa['current_album'], wppa_get_container_width('netto'), 'thumb');
 			wppa_user_upload_html($wppa['current_album'], wppa_get_container_width('netto'), 'thumb');
+//			wppa_user_albumedit_html($wppa['current_album'], wppa_get_container_width('netto'), 'thumb');
 		}
 		$wppa['out'] .= wppa_nltab().'<div class="wppa-clear" style="'.__wis('clear:both;').'" ></div>';		
 
@@ -816,6 +817,20 @@ global $wppa_opt;
 	wppa_cache_album( $alb );
 	
 	$t = $mcr ? 'mcr-' : '';
+	
+	// Create the return url
+	$returnurl = wppa_get_permalink();
+	if ( $where == 'cover' ) {
+		$returnurl .= 'wppa-album='.$alb.'&amp;wppa-cover=0&amp;wppa-occur='.$wppa['occur'];
+	}
+	elseif ( $where == 'thumb' ) {
+		$returnurl .= 'wppa-album='.$alb.'&amp;wppa-cover=0&amp;wppa-occur='.$wppa['occur'];
+	}
+	elseif ( $where == 'widget' || $where == 'uploadbox' ) {
+	}
+	if ( $wppa['page'] ) $returnurl .= '&amp;wppa-page='.$wppa['page'];
+	$returnurl = trim( $returnurl, '?' );
+
 		
 	$result = '
 	<div style="clear:both;"></div>
@@ -829,7 +844,7 @@ global $wppa_opt;
 		__a('Edit albuminfo').'
 	</a>
 	<div id="wppa-fe-div-'.$alb.'-'.$wppa['master_occur'].'" style="display:none;" >
-		<form action="'.wppa_get_permalink().'" method="post">
+		<form action="'.$returnurl.'" method="post">
 			<input type="hidden" name="wppa-albumeditnonce" id="album-nonce-'.$wppa['master_occur'].'-'.$alb.'" value="'.wp_create_nonce('wppa_nonce_'.$alb).'" />
 			<input type="hidden" name="wppa-albumeditid" id="wppaalbum-id-'.$wppa['master_occur'].'-'.$alb.'" value="'.$alb.'" />
 			<div class="wppa-box-text wppa-td" style="clear:both; float:left; text-align:left; '.__wcs('wppa-box-text').__wcs('wppa-td').'" >'.

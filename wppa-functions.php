@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Various funcions
-* Version 5.3.6
+* Version 5.3.7
 *
 */
 
@@ -2641,6 +2641,16 @@ global $wpdb;
 			$wppa['out'] .= wppa_nltab().'<div class="wppa-thumb-text" style="'.__wcs('wppa-thumb-text').'" >';
 				$wppa['out'] .= wppa_get_share_html('thumb');
 			$wppa['out'] .= '</div>';
+		}
+		// Edit link
+		if ( ! wppa_is_user_blacklisted() ) {
+			if ( ( wppa_user_is( 'administrator' ) ) || ( wppa_get_user() == wppa_get_photo_owner( $thumb['id'] ) && wppa_switch( 'wppa_upload_edit' ) ) ) {
+			$wppa['out'] .= wppa_nltab().'<div class="wppa-thumb-text" style="'.__wcs('wppa-thumb-text').'" >
+						<a href="javascript:void();" onclick="wppaEditPhoto('.$wppa['master_occur'].', '.$thumb['id'].'); return false;" >
+							'.__a('Edit').'
+						</a>
+					</div>';
+			}
 		}
 		// Description
 		if (wppa_switch('wppa_thumb_text_desc') || $thumb['status'] == 'pending') {

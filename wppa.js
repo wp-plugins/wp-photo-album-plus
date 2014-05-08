@@ -2,7 +2,7 @@
 //
 // conatins slideshow, theme, ajax and lightbox code
 //
-// Version 5.3.5
+// Version 5.3.7
 
 // Part 1: Slideshow
 //
@@ -2827,8 +2827,12 @@ wppaConsoleLog('lft='+lft+', ptp='+ptp, 1);
 	return false;
 }
 function wppaUrlToId(url) {
-	var temp = url.split('/wppa/');
-	if ( temp.length == 1 ) return 0;	// '/wppa/' not found, not a wppa image, return 0
+	var temp = url.split('/wppa/');		// if '/wppa/' found, a wppa image
+	if ( temp.length == 1 ) {	
+		temp = url.split('/upload/');	// if '/upload/' found, a cloudinary image
+	}
+	if ( temp.length == 1 ) return 0;	// Still nothing, not a wppa image, return 0
+	// Find image id
 	temp = temp[1];
 	temp = temp.split('.');
 	temp = temp[0].replace('/', '');
@@ -3128,6 +3132,10 @@ wppaConsoleLog('wppaInitOverlay', 1);
 			if (temp[0] == 'wppa') {
 				wppaWppaOverlayActivated = true;	// found one
 				jQuery(anchor).click(function(event){
+					wppaOvlShow(this);
+					event.preventDefault();
+				}); 
+				jQuery(anchor).on("touchstart", function(event){
 					wppaOvlShow(this);
 					event.preventDefault();
 				}); 

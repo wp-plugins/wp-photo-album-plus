@@ -1,7 +1,7 @@
 /* admin-scripts.js */
 /* Package: wp-photo-album-plus
 /*
-/* Version 5.3.0
+/* Version 5.3.7
 /* Various js routines used in admin pages		
 */
 
@@ -1438,6 +1438,10 @@ function wppaAjaxPopupWindow( slug ) {
 			break;
 		case 'wppa_list_rating':
 			name = 'Recent ratings';
+			break;
+		case 'wppa_list_session':
+			name = 'Active sessions';
+			break;
 	}
 	var desc = '';
 	var width = 960;

@@ -2,7 +2,7 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 5.3.6
+* version 5.3.7
 *
 */
 
@@ -608,8 +608,8 @@ global $wppa_opt;
 	// See for given album data array or album number
 	else {
 	
-		// Administrator has always access
-		if ( current_user_can('administrator') ) return true;
+		// Album Administrator has always access
+		if ( current_user_can('wppa_admin') ) return true;
 		
 		// If all albums are public
 		if ( ! wppa_switch('wppa_owner_only') ) return true;

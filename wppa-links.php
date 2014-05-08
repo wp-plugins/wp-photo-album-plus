@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Frontend links
-* Version 5.3.0
+* Version 5.3.7
 *
 */
 
@@ -500,8 +500,10 @@ function wppa_moderate_links($type, $id, $comid = '') {
 				$app = __a('App');
 				$mod = __a('Mod');
 				$del = __a('Del');
+//				$result = '
+//				<br class="wppa-approve-'.$id.'" />
 				$result = '
-				<br class="wppa-approve-'.$id.'" />
+				<div style="clear:both;"></div>
 				<a class="wppa-approve-'.$id.'" style="font-weight:bold; color:green; cursor:pointer;" onclick="if ( confirm(\''.__a('Are you sure you want to publish this photo?').'\') ) wppaAjaxApprovePhoto(\''.$id.'\')">
 					'.$app.
 				'</a>
@@ -516,8 +518,10 @@ function wppa_moderate_links($type, $id, $comid = '') {
 				$app = __a('Approve');
 				$mod = __a('Moderate');
 				$del = __a('Delete');
+//				$result = '
+//				<br class="wppa-approve-'.$id.'" />
 				$result = '
-				<br class="wppa-approve-'.$id.'" />
+				<div style="clear:both;"></div>
 				<a class="wppa-approve-'.$id.'" style="font-weight:bold; color:green; cursor:pointer;" onclick="if ( confirm(\''.__a('Are you sure you want to publish this photo?').'\') ) wppaAjaxApprovePhoto(\''.$id.'\')">
 					'.$app.
 				'</a>

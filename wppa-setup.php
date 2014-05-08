@@ -324,6 +324,10 @@ global $silent;
 				wppa_update_option( 'wppa_newphoto_name_method', 'noext' );
 				delete_option( 'wppa_strip_file_ext' );
 			}
+		}
+
+		if ( $old_rev <= '5307' ) {
+			$wpdb->query( "TRUNCATE TABLE `".WPPA_SESSION."`" );
 		}		
 		
 	}
