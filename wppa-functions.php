@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Various funcions
-* Version 5.3.7
+* Version 5.3.8
 *
 */
 
@@ -2645,8 +2645,11 @@ global $wpdb;
 		// Edit link
 		if ( ! wppa_is_user_blacklisted() ) {
 			if ( ( wppa_user_is( 'administrator' ) ) || ( wppa_get_user() == wppa_get_photo_owner( $thumb['id'] ) && wppa_switch( 'wppa_upload_edit' ) ) ) {
-			$wppa['out'] .= wppa_nltab().'<div class="wppa-thumb-text" style="'.__wcs('wppa-thumb-text').'" >
-						<a href="javascript:void();" onclick="wppaEditPhoto('.$wppa['master_occur'].', '.$thumb['id'].'); return false;" >
+				$wppa['out'] .= wppa_nltab().'<div class="wppa-thumb-text" style="'.__wcs('wppa-thumb-text').'" >
+						<a href="javascript:void();" style="color:red;" onclick="'.esc_attr('if ( confirm("'.__a('Are you sure you want to remove this photo?').'") ) wppaAjaxRemovePhoto('.$wppa['master_occur'].', '.$thumb['id'].', false); return false;' ).'">
+							'.__a('Delete').'
+						</a>&nbsp;
+						<a href="javascript:void();" style="color:green;" onclick="wppaEditPhoto('.$wppa['master_occur'].', '.$thumb['id'].'); return false;" >
 							'.__a('Edit').'
 						</a>
 					</div>';

@@ -2,7 +2,7 @@
 //
 // conatins slideshow, theme, ajax and lightbox code
 //
-// Version 5.3.7
+// Version 5.3.8
 
 // Part 1: Slideshow
 //
@@ -3142,7 +3142,7 @@ wppaConsoleLog('wppaInitOverlay', 1);
 			}
 		}
 	}
-	wppaOvlRunning = false;
+//	wppaOvlRunning = false;
 }
 
 var wppaKbAction = function(e) {

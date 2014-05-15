@@ -2,12 +2,12 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile, cloudinary, fotomoto
-Version: 5.3.7
+Version: 5.3.8
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
 Requires at least: 3.9
-Tested up to: 3.9
+Tested up to: 3.9.1
 
 This plugin is designed to easily manage and display your photo albums and slideshows in a single as well as in a network WordPress site.
 
@@ -182,6 +182,17 @@ If you changed the name of wp-content and/or uploads, besides the additions to w
 **define('WPPA_REL_UPLOADS_PATH', 'wp_content/uploads');**
 **define('WPPA_REL_DEPOT_PATH', 'wp_content');**
 and make the changes therein also.
+
+= 5.3.8 =
+
+= Bug Fixes =
+
+* Running slideshow on the lightbox layer stopped when another slideshow was running on the page. Fixed.
+
+= Other Changes =
+
+* The alert boxes ( e.g. "Photo successfully uploaded" ) will be displayed when the page is almost loaded, if Table IV-A8 ( Defer javascript ) is ticked.
+* Besides the Edit link there is now also a Delete link under the thumbnail image, if the user is not blacklisted and is the photo owner or administrator, and Uploader edit is enabled in Table VII-D2.
 
 = 5.3.7 =
 

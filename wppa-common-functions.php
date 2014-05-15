@@ -2,7 +2,7 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 5.3.7
+* version 5.3.8
 *
 */
 
@@ -1366,15 +1366,18 @@ function wppa_tree_empty($dir) {
 	}
 }
 
-function wppa_alert($msg, $reload = false) {
+function wppa_alert( $msg, $reload = false ) {
 global $wppa;
 
-	$fullmsg = '<script id="wppaer" type="text/javascript" >alert(\''.esc_js($msg).'\');jQuery("#wppaer").html("");';
-	if ( $reload ) $fullmsg .= 'document.location.reload(true)';
-	$fullmsg .= '</script>';
-//	if ( is_admin() ) 
-	echo $fullmsg;
-//	else $wppa['out'] .= $fullmsg;	
+	if ( ! $reload ) {
+		wppa_add_js_page_data( '<script type="text/javascript">alert(\''.esc_js($msg).'\');jQuery("#wppaer").html("");</script>' );
+	}
+	else {
+		$fullmsg = '<script id="wppaer" type="text/javascript" >alert(\''.esc_js($msg).'\');jQuery("#wppaer").html("");';
+		if ( $reload ) $fullmsg .= 'document.location.reload(true)';
+		$fullmsg .= '</script>';
+		echo $fullmsg;
+	}
 }
 
 // Return the allowed number to upload in an album. -1 = unlimited
