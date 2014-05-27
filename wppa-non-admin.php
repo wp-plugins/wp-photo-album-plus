@@ -362,8 +362,8 @@ global $wppa;
 /*	wppa_add_js_page_data( wppa_nltab().'wppaSiteUrl = "'.site_url().'";' );	*/
 	wppa_add_js_page_data( wppa_nltab().'wppaWppaUrl = "'.wppa_get_wppa_url().'";' );
 	wppa_add_js_page_data( wppa_nltab().'wppaIncludeUrl = "'.trim( includes_url(), '/' ).'";' );
-	wppa_add_js_page_data( wppa_nltab().'wppaAjaxUrl = "'.( wppa_switch('wppa_ajax_non_admin') ? WPPA_URL.'/wppa-ajax-front.php' : admin_url('admin-ajax.php') ).'"' );
-	wppa_add_js_page_data( wppa_nltab().'wppaUploadUrl = "'.WPPA_UPLOAD_URL.'"' );
+	wppa_add_js_page_data( wppa_nltab().'wppaAjaxUrl = "'.( wppa_switch('wppa_ajax_non_admin') ? WPPA_URL.'/wppa-ajax-front.php' : admin_url('admin-ajax.php') ).'";' );
+	wppa_add_js_page_data( wppa_nltab().'wppaUploadUrl = "'.WPPA_UPLOAD_URL.'";' );
 	wppa_add_js_page_data( wppa_nltab('-').'</script>' );
 	
 	if ( ! wppa_switch( 'wppa_defer_javascript' ) ) {
