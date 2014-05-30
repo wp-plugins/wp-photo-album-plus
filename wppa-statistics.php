@@ -4,7 +4,7 @@
 *
 * Functions for counts etc
 * Common use front and admin
-* Version 5.3.0
+* Version 5.3.9
 *
 */
 
@@ -49,7 +49,7 @@ global $album;
 		$count = $wpdb->get_var($wpdb->prepare( "SELECT COUNT(*) FROM " . WPPA_PHOTOS . " WHERE album = %s", $id ) );
 	}
 	else {
-		$count = $wpdb->get_var($wpdb->prepare( "SELECT COUNT(*) FROM " . WPPA_PHOTOS . " WHERE album = %s AND ( status <> %s OR owner = %s )", $id, 'pending', wppa_get_user() ) );
+		$count = $wpdb->get_var($wpdb->prepare( "SELECT COUNT(*) FROM " . WPPA_PHOTOS . " WHERE `album` = %s AND ( ( `status` <> 'pending' AND `status` <> 'scheduled' ) OR owner = %s )", $id, wppa_get_user() ) );
 	}
 	
 	wppa_dbg_q('Q12v');
@@ -80,7 +80,7 @@ global $wpdb;
 function wppa_get_youngest_photo_id() {
 global $wpdb;
 
-	$result = $wpdb->get_var( "SELECT `id` FROM `" . WPPA_PHOTOS . "` WHERE `status` <> 'pending' ORDER BY `id` DESC LIMIT 1" );
+	$result = $wpdb->get_var( "SELECT `id` FROM `" . WPPA_PHOTOS . "` WHERE `status` <> 'pending' AND `status` <> 'scheduled' ORDER BY `id` DESC LIMIT 1" );
 	wppa_dbg_q('Q15');
 	return $result;
 }

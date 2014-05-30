@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the last uploaded photos
-* Version 5.3.6
+* Version 5.3.9
 */
 
 class LasTenWidget extends WP_Widget {
@@ -48,10 +48,10 @@ class LasTenWidget extends WP_Widget {
 		if ( $album == '-99' ) $album = implode("' OR `album` = '", explode(',', $albumenum));
 
 		if ( $album ) {
-			$thumbs = $wpdb->get_results( "SELECT * FROM `".WPPA_PHOTOS."` WHERE ( `album` = '".$album."' ) AND `status` <> 'pending' ORDER BY `timestamp` DESC LIMIT " . $max, ARRAY_A);
+			$thumbs = $wpdb->get_results( "SELECT * FROM `".WPPA_PHOTOS."` WHERE ( `album` = '".$album."' ) AND ( `status` <> 'pending' AND `status` <> 'scheduled' ) ORDER BY `timestamp` DESC LIMIT " . $max, ARRAY_A);
 		}
 		else {
-			$thumbs = $wpdb->get_results( "SELECT * FROM `".WPPA_PHOTOS."` WHERE `status` <> 'pending' ORDER BY `timestamp` DESC LIMIT " . $max, ARRAY_A);
+			$thumbs = $wpdb->get_results( "SELECT * FROM `".WPPA_PHOTOS."` WHERE `status` <> 'pending' AND `status` <> 'scheduled' ORDER BY `timestamp` DESC LIMIT " . $max, ARRAY_A);
 		}
 		
 		global $widget_content;
@@ -81,7 +81,7 @@ class LasTenWidget extends WP_Widget {
 				if ($no_album) $tit = __a('View the most recent uploaded photos', 'wppa_theme'); else $tit = esc_attr(wppa_qtrans(stripslashes($image['description'])));
 				$link       = wppa_get_imglnk_a('lasten', $image['id'], '', $tit, '', $no_album, $albumenum);
 				$file       = wppa_get_thumb_path($image['id']);
-				$imgstyle_a = wppa_get_imgstyle_a($file, $maxw, 'center', 'ltthumb');
+				$imgstyle_a = wppa_get_imgstyle_a( $image['id'], $file, $maxw, 'center', 'ltthumb');
 				$imgurl 	= wppa_get_thumb_url( $image['id'], '', $imgstyle_a['width'], $imgstyle_a['height'] );
 				$imgevents 	= wppa_get_imgevents('thumb', $image['id'], true);
 				$title 		= $link ? esc_attr(stripslashes($link['title'])) : '';

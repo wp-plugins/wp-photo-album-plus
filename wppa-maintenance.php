@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains (not yet, but in the future maybe) all the maintenance routines
-* Version 5.3.5
+* Version 5.3.9
 *
 */
 
@@ -26,6 +26,7 @@ global $wppa_session;
 						'wppa_append_to_photodesc',
 						'wppa_remove_from_photodesc',
 						'wppa_remove_file_extensions',
+						'wppa_readd_file_extensions',
 						'wppa_regen_thumbs',
 						'wppa_rerate',
 						'wppa_recup',
@@ -39,7 +40,8 @@ global $wppa_session;
 						'wppa_viewcount_clear',
 						'wppa_iptc_clear',
 						'wppa_exif_clear',
-						'wppa_watermark_all'
+						'wppa_watermark_all',
+						'wppa_create_all_autopages'
 					);
 	foreach ( array_keys( $all_slugs ) as $key ) {
 		if ( $all_slugs[$key] != $slug ) {
@@ -146,6 +148,7 @@ global $wppa_session;
 		case 'wppa_append_to_photodesc':
 		case 'wppa_remove_from_photodesc':
 		case 'wppa_remove_file_extensions':
+		case 'wppa_readd_file_extensions':
 		case 'wppa_regen_thumbs':
 		case 'wppa_rerate':
 		case 'wppa_recup':
@@ -153,6 +156,7 @@ global $wppa_session;
 		case 'wppa_cleanup':
 		case 'wppa_remake':
 		case 'wppa_watermark_all':
+		case 'wppa_create_all_autopages':
 		
 			// Process photos
 			$thumbsize 	= wppa_get_minisize();
@@ -208,37 +212,34 @@ global $wppa_session;
 						break;
 						
 					case 'wppa_remove_file_extensions':
-						$name = str_replace( array( '.jpg', '.png', 'gif', '.JPG', '.PNG', '.GIF' ), '', $photo['name'] );
-						if ( $name != $photo['name'] ) {	// Modified photo name
-							$wpdb->query( $wpdb->prepare( "UPDATE `".WPPA_PHOTOS."` SET `name` = %s WHERE `id` = %s", $name, $id ) );
+						if ( ! wppa_is_video( $id ) ) {
+							$name = str_replace( array( '.jpg', '.png', 'gif', '.JPG', '.PNG', '.GIF' ), '', $photo['name'] );
+							if ( $name != $photo['name'] ) {	// Modified photo name
+								$wpdb->query( $wpdb->prepare( "UPDATE `".WPPA_PHOTOS."` SET `name` = %s WHERE `id` = %s", $name, $id ) );
+							}
+						}
+						break;
+						
+					case 'wppa_readd_file_extensions':
+						if ( ! wppa_is_video( $id ) ) {
+							$name = str_replace( array( '.jpg', '.png', 'gif', '.JPG', '.PNG', '.GIF' ), '', $photo['name'] );
+							if ( $name == $photo['name'] ) { 	// Name had no fileextension
+								$wpdb->query( $wpdb->prepare( "UPDATE `".WPPA_PHOTOS."` SET `name` = %s WHERE `id` = %s", $name.'.'.$photo['ext'], $id ) );
+							}
 						}
 						break;
 						
 					case 'wppa_regen_thumbs':
-						$path = wppa_get_photo_path( $id );
-						if ( is_file( $path ) ) {
-							wppa_create_thumbnail( $path, $thumbsize );
+						if ( ! wppa_is_video( $id ) ) {
+							$path = wppa_get_photo_path( $id );
+							if ( is_file( $path ) ) {
+								wppa_create_thumbnail( $path, $thumbsize );
+							}
 						}
 						break;
 						
 					case 'wppa_rerate':
 						wppa_rate_photo( $id );
-/*
-						$ratings = $wpdb->get_results( $wpdb->prepare( "SELECT `value` FROM `".WPPA_RATING."` WHERE `photo` = %s", $id ), ARRAY_A );
-						$the_value = '0';
-						$the_count = '0';
-						if ( $ratings ) foreach ($ratings as $rating) {
-							if ( $rating['value'] == '-1' ) $the_value += $wppa_opt['wppa_dislike_value'];
-							else $the_value += $rating['value'];
-							$the_count++;
-						}
-						if ( $the_count ) $the_value /= $the_count;
-						if ( $the_value == '10' ) $the_value = '9.9999999';	// mean_rating is a text field. for sort order reasons we make 10 into 9.99999
-						$wpdb->query( $wpdb->prepare( "UPDATE `".WPPA_PHOTOS."` SET `mean_rating` = %s WHERE `id` = %s", $the_value, $id ) );
-						$ratcount = count($ratings);
-						$wpdb->query( $wpdb->prepare( "UPDATE `".WPPA_PHOTOS."` SET `rating_count` = %s WHERE `id` = %s", $ratcount, $id ) );
-						wppa_test_for_medal( $id );
-*/
 						break;
 						
 					case 'wppa_recup':
@@ -248,7 +249,7 @@ global $wppa_session;
 						break;
 						
 					case 'wppa_file_system':
-						$fs = $wppa_opt['wppa_file_system'];
+						$fs = get_option('wppa_file_system');
 						if ( $fs == 'to-tree' || $fs == 'to-flat' ) {
 							if ( $fs == 'to-tree' ) {
 								$from = 'flat';
@@ -258,12 +259,22 @@ global $wppa_session;
 								$from = 'tree';
 								$to = 'flat';
 							}
-
-							if ( file_exists( wppa_get_photo_path( $id, $from ) ) ) {
-								@ rename ( wppa_get_photo_path( $id, $from ), wppa_get_photo_path( $id, $to ) );
+							
+							if ( wppa_is_video( $id ) ) {
+								$exts 		= wppa_is_video( $id, true );
+								$pathfrom 	= wppa_get_photo_path( $id, $from );
+								$pathto 	= wppa_get_photo_path( $id, $to );
+								foreach ( $exts as $ext ) {
+									rename ( str_replace( 'xxx', $ext, $pathfrom ), str_replace( 'xxx', $ext, $pathto ) );									
+								}
 							}
-							if ( file_exists( wppa_get_thumb_path( $id, $from ) ) ) {
-								@ rename ( wppa_get_thumb_path( $id, $from ), wppa_get_thumb_path( $id, $to ) );
+							else {
+								if ( file_exists( wppa_get_photo_path( $id, $from ) ) ) {
+									@ rename ( wppa_get_photo_path( $id, $from ), wppa_get_photo_path( $id, $to ) );
+								}
+								if ( file_exists( wppa_get_thumb_path( $id, $from ) ) ) {
+									@ rename ( wppa_get_thumb_path( $id, $from ), wppa_get_thumb_path( $id, $to ) );
+								}
 							}
 						}					
 						break;
@@ -310,7 +321,7 @@ global $wppa_session;
 						
 					case 'wppa_watermark_all':
 						$file = wppa_get_photo_path( $id );
-						if ( $file ) {
+						if ( $file && ! wppa_is_video( $id ) ) {
 							if ( wppa_add_watermark( $file ) ) {
 								$wppa_session[$slug.'_fixed']++;
 							}
@@ -321,6 +332,10 @@ global $wppa_session;
 						else {
 							$wppa_session[$slug.'_skipped']++;
 						}
+						break;
+						
+					case 'wppa_create_all_autopages':
+						wppa_get_the_auto_page( $id );
 						break;
 		
 				}

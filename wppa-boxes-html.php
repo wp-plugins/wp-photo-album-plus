@@ -810,11 +810,12 @@ global $album;
 global $wppa;
 global $wppa_opt;
 
+	wppa_cache_album( $alb );
+
 	if ( ! wppa_switch( 'wppa_user_album_edit_on' ) ) return; 	// Feature not enabled
 	if ( ! $alb ) return;										// No album given
 	if ( ! wppa_have_access( $alb ) ) return;					// No rights
-	
-	wppa_cache_album( $alb );
+	if ( $album['owner'] == '--- public ---' && ! current_user_can( 'wppa_admin' ) ) return;	// Public albums are not publicly editable
 	
 	$t = $mcr ? 'mcr-' : '';
 	

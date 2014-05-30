@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the featured photos
-* Version 5.3.6
+* Version 5.3.9
 */
 
 if ( ! defined( 'ABSPATH' ) ) die( "Can't load this file directly" );
@@ -67,7 +67,7 @@ class FeaTenWidget extends WP_Widget {
 				if ($no_album) $tit = __a('View the featured photos', 'wppa_theme'); else $tit = esc_attr(wppa_qtrans(stripslashes($image['description'])));
 				$link       = wppa_get_imglnk_a('featen', $image['id'], '', $tit, '', $no_album);
 				$file       = wppa_get_thumb_path($image['id']);
-				$imgstyle_a = wppa_get_imgstyle_a($file, $maxw, 'center', 'ttthumb');
+				$imgstyle_a = wppa_get_imgstyle_a( $image['id'], $file, $maxw, 'center', 'ttthumb' );
 				$imgstyle   = $imgstyle_a['style'];
 				$width      = $imgstyle_a['width'];
 				$height     = $imgstyle_a['height'];
@@ -87,7 +87,7 @@ class FeaTenWidget extends WP_Widget {
 					}
 					elseif ( $link['is_lightbox'] ) {
 						$title = wppa_get_lbtitle('thumb', $image['id']);
-						$widget_content .= "\n\t".'<a href="'.$link['url'].'" rel="'.$wppa_opt['wppa_lightbox_name'].'[featen-'.$album.']" title="'.$title.'" target="'.$link['target'].'" >';
+						$widget_content .= "\n\t".'<a href="'.$link['url'].'" data-videohtml="'.esc_attr( wppa_get_video_body( $image['id'] ) ).'" rel="'.$wppa_opt['wppa_lightbox_name'].'[featen-'.$album.']" title="'.$title.'" target="'.$link['target'].'" >';
 							$widget_content .= "\n\t\t".'<img id="i-'.$image['id'].'-'.$wppa['master_occur'].'" title="'.wppa_zoom_in().'" src="'.$imgurl.'" width="'.$width.'" height="'.$height.'" style="'.$imgstyle.$cursor.'" '.$imgevents.' alt="'.esc_attr(wppa_qtrans($image['name'])).'">';
 						$widget_content .= "\n\t".'</a>';
 					}

@@ -3,27 +3,28 @@
 * Package: wp-photo-album-plus
 *
 * Frontend links
-* Version 5.3.7
+* Version 5.3.9
 *
 */
 
 if ( ! defined( 'ABSPATH' ) ) die( "Can't load this file directly" );
 
 // get permalink plus ? or & and possible debug switch
-function wppa_get_permalink($key = '', $plain = false) {
+function wppa_get_permalink( $key = '', $plain = false ) {
 global $wppa;
 global $wppa_opt;
 global $wppa_lang;
 
 	if ( ! $key && is_search() ) $key = $wppa_opt['wppa_search_linkpage'];
 	
-	switch ($key) {
+	switch ( $key ) {
 		case '0':
 		case '':	// normal permalink
-			if ($wppa['in_widget']) {
-				$pl = home_url();
+			if ( $wppa['in_widget'] ) {
+//				$pl = esc_url( ( is_ssl() ? 'https://' : 'http://' ) . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] ); // 
+				$pl = get_permalink(); // home_url();
 				if ( $plain ) return $pl;
-				if (strpos($pl, '?')) $pl .= '&amp;';
+				if ( strpos( $pl, '?' ) ) $pl .= '&amp;';
 				else $pl .= '?';
 				}
 			else {
@@ -492,7 +493,10 @@ global $wppa_opt;
 }
 
 // Moderate links
-function wppa_moderate_links($type, $id, $comid = '') {
+function wppa_moderate_links( $type, $id, $comid = '' ) {
+global $thumb;
+
+	wppa_cache_thumb( $id );
 
 	if ( current_user_can('wppa_moderate') || ( current_user_can('wppa_comments') && $type == 'comment' ) ) {
 		switch ( $type ) {
@@ -500,8 +504,7 @@ function wppa_moderate_links($type, $id, $comid = '') {
 				$app = __a('App');
 				$mod = __a('Mod');
 				$del = __a('Del');
-//				$result = '
-//				<br class="wppa-approve-'.$id.'" />
+
 				$result = '
 				<div style="clear:both;"></div>
 				<a class="wppa-approve-'.$id.'" style="font-weight:bold; color:green; cursor:pointer;" onclick="if ( confirm(\''.__a('Are you sure you want to publish this photo?').'\') ) wppaAjaxApprovePhoto(\''.$id.'\')">
@@ -518,8 +521,7 @@ function wppa_moderate_links($type, $id, $comid = '') {
 				$app = __a('Approve');
 				$mod = __a('Moderate');
 				$del = __a('Delete');
-//				$result = '
-//				<br class="wppa-approve-'.$id.'" />
+
 				$result = '
 				<div style="clear:both;"></div>
 				<a class="wppa-approve-'.$id.'" style="font-weight:bold; color:green; cursor:pointer;" onclick="if ( confirm(\''.__a('Are you sure you want to publish this photo?').'\') ) wppaAjaxApprovePhoto(\''.$id.'\')">
@@ -561,7 +563,12 @@ function wppa_moderate_links($type, $id, $comid = '') {
 		}
 	}
 	else {
-		$result = '<br /><span style="color:red">'.__a('Awaiting moderation').'</span>';
+		if ( $type == 'comment' || $thumb['status'] != 'scheduled' ) {
+			$result = '<div style="clear:both; color:red">'.__a('Awaiting moderation').'</div>';
+		}
+		else {
+			$result = '<div style="clear:both; color:red">'.sprintf( __a( 'Scheduled for %s' ), wppa_format_scheduledtm( $thumb['scheduledtm'] ) ).'</div>';
+		}
 	}
 	return $result;
 }

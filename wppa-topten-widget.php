@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the top rated photos
-* Version 5.3.6
+* Version 5.3.9
 */
 
 class TopTenWidget extends WP_Widget {
@@ -92,10 +92,9 @@ class TopTenWidget extends WP_Widget {
 				$no_album = !$album;
 				if ($no_album) $tit = __a('View the top rated photos', 'wppa_theme'); else $tit = esc_attr(wppa_qtrans(stripslashes($image['description'])));
 				$compressed_albumenum = wppa_compress_enum( $albenum );
-//echo 'Opajaap debug msg='.$compressed_albumenum;
 				$link       = wppa_get_imglnk_a('topten', $image['id'], '', $tit, '', $no_album, $compressed_albumenum );
 				$file       = wppa_get_thumb_path($image['id']);
-				$imgstyle_a = wppa_get_imgstyle_a($file, $maxw, 'center', 'ttthumb');
+				$imgstyle_a = wppa_get_imgstyle_a( $image['id'], $file, $maxw, 'center', 'ttthumb');
 				$imgurl 	= wppa_get_thumb_url($image['id'], '', $imgstyle_a['width'], $imgstyle_a['height']);
 				$imgevents 	= wppa_get_imgevents('thumb', $image['id'], true);
 				$title 		= $link ? esc_attr(stripslashes($link['title'])) : '';

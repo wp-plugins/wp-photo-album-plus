@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * gp admin functions
-* version 5.3.6
+* version 5.3.9
 *
 * 
 */
@@ -265,7 +265,23 @@ global $wpdb;
 	$time = wppa_switch('wppa_copy_timestamp') ? $photo['timestamp'] : time();
 //	$query = $wpdb->prepare('INSERT INTO `' . WPPA_PHOTOS . '` (`id`, `album`, `ext`, `name`, `p_order`, `description`, `mean_rating`, `linkurl`, `linktitle`, `linktarget`, `timestamp`, `owner`, `status`, `tags`, `alt`, `filename`, `modified`, `location`) VALUES (%s, %s, %s, %s, %s, %s, \'\', %s, %s, %s, %s, %s, %s, %s, %s, %s, \'0\', %s)', $id, $album, $ext, $name, $porder, $desc, $linkurl, $linktitle, $linktarget, $time, $owner, $status, '', '', $filename, $location);
 //	if ($wpdb->query($query) === false) return $err;
-	$id = wppa_create_photo_entry( array( 'album' => $album, 'ext' => $ext, 'name' => $name, 'p_order' => $porder, 'description' => $desc, 'linkurl' => $linkurl, 'linktitle' => $linktitle, 'linktarget' => $linktarget, 'timestamp' => $time, 'owner' => $owner, 'status' => $status, 'filename' => $filename, 'location' => $location ) );
+	$id = wppa_create_photo_entry( array( 	'album' => $album, 
+											'ext' => $ext, 
+											'name' => $name, 
+											'p_order' => $porder, 
+											'description' => $desc, 
+											'linkurl' => $linkurl, 
+											'linktitle' => $linktitle, 
+											'linktarget' => $linktarget, 
+											'timestamp' => $time, 
+											'owner' => $owner, 
+											'status' => $status, 
+											'filename' => $filename, 
+											'location' => $location,
+											'videox' => $photo['videox'],
+											'videoy' => $photo['videoy'],
+										) 
+								);
 	if ( ! $id ) return $err;
 	wppa_flush_treecounts($album);
 	wppa_index_add('photo', $id);
@@ -279,14 +295,19 @@ global $wpdb;
 	
 	$err = '5';
 	// Do the filsystem copy
-	if (!copy($oldimage, $newimage)) return $err;
-	$err = '6';
-	if (!copy($oldthumb, $newthumb)) return $err;
-	// Copy source
-	wppa_copy_source($filename, $albumfrom, $albumto);
-	// Copy Exif and iptc
-	wppa_copy_exif($photoid, $id);
-	wppa_copy_iptc($photoid, $id);
+	if ( wppa_is_video( $photo['id'] ) ) {
+		if ( ! wppa_copy_video_files( $photo['id'], $image_id ) ) return $err;
+	}
+	else {
+		if (!copy($oldimage, $newimage)) return $err;
+		$err = '6';
+		if (!copy($oldthumb, $newthumb)) return $err;
+		// Copy source
+		wppa_copy_source($filename, $albumfrom, $albumto);
+		// Copy Exif and iptc
+		wppa_copy_exif($photoid, $id);
+		wppa_copy_iptc($photoid, $id);
+	}
 	// Bubble album timestamp
 	if ( ! wppa_switch('wppa_copy_timestamp') ) wppa_update_album( array( 'id' => $albumto, 'timestamp' => time() ) );
 	return false;	// No error
@@ -507,7 +528,7 @@ function wppa_sanitize_files() {
 
 function __wppa_sanitize_files($root) {
 	// See what's in there
-	$allowed_types = array('zip', 'jpg', 'png', 'gif', 'amf', 'pmf', 'bak', 'log');
+	$allowed_types = array('zip', 'jpg', 'png', 'gif', 'amf', 'pmf', 'bak', 'log' );//, 'mp4', 'ogg', 'ogv', 'webm' );
 
 	$paths = $root.'/*';
 	$files = glob($paths);
@@ -532,114 +553,6 @@ function __wppa_sanitize_files($root) {
 	return $count;
 }
 
-// get select form element listing albums 
-function wppa_album_select(	$exc = '', 
-							$sel = '', 
-							$addnone = FALSE, 
-							$addseparate = FALSE, 
-							$checkancestors = FALSE, 
-							$none_is_all = false, 
-							$none_is_blank = false,
-							$check_upload_allowed = false,
-							$add_multiple = false,
-							$add_numbers = false
-							) {
-
-global $wpdb;
-
-	$albums = $wpdb->get_results( "SELECT * FROM `".WPPA_ALBUMS."` ORDER BY `name`", ARRAY_A);
-	
-    if ($sel == '') {
-        $s = wppa_get_last_album();
-        if ($s != $exc) $sel = $s;
-    }
-    
-    $result = '';
-	
-	if ($add_multiple) {
-		$result .= '<option value="-99">' . __('--- multiple see below ---', 'wppa') . '</option>';
-	}
-
-    if ($addnone) {
-		if ($none_is_blank) $result .= '<option value="0"></option>';
-		elseif ($none_is_all) $result .= '<option value="0">' . __('--- all ---', 'wppa') . '</option>';
-		else $result .= '<option value="0">' . __('--- none ---', 'wppa') . '</option>';
-	}
-    
-	foreach ($albums as $album) if (wppa_have_access($album['id'])) {
-		$disabled = '';
-		$selected = '';
-
-		if ( $check_upload_allowed && ! wppa_allow_uploads($album['id']) ) {
-			$disabled = ' disabled="disabled" ';
-		}
-		elseif ($sel == $album['id']) { 
-            $selected = ' selected="selected" '; 
-        } 
-		
-		if ($album['id'] != $exc && (!$checkancestors || !wppa_is_ancestor($exc, $album['id']))) {
-			$result .= '<option value="' . $album['id'] . '"' . $selected . $disabled . '>';
-			$result .= wppa_qtrans(stripslashes($album['name']));
-			if ( $disabled ) $result .= ' '.__('(full)', 'wppa');
-			if ( $add_numbers ) $result .= ' ('.$album['id'].')';
-			$result .= '</option>';
-		}
-		else {	// excluded or is ancestor
-			$result .= '<option disabled="disabled" value="-3">'.wppa_qtrans(stripslashes($album['name'])).'</option>';
-		}
-	}
-    
-    if ($sel == -1) $selected = ' selected="selected" '; else $selected = '';
-    if ($addseparate) $result .= '<option value="-1"' . $selected . '>' . __('--- separate ---', 'wppa') . '</option>';
-	return $result;
-}
-/*
-function wppa_recalculate_ratings() {
-global $wpdb;
-global $wppa_opt;
-
-	$photos = $wpdb->get_results( "SELECT `id` FROM `" . WPPA_PHOTOS . "`", ARRAY_A);
-	if ($photos) {
-		foreach ($photos as $photo) {
-			$ratings = $wpdb->get_results($wpdb->prepare( 'SELECT value FROM '.WPPA_RATING.' WHERE photo = %s', $photo['id']), 'ARRAY_A');
-			$the_value = '0';
-			$the_count = '0';
-			if ( $ratings ) foreach ($ratings as $rating) {
-				if ( $rating['value'] == '-1' ) $the_value += $wppa_opt['wppa_dislike_value'];
-				else $the_value += $rating['value'];
-				$the_count++;
-			}
-			if ($the_count) $the_value /= $the_count;
-			if ($the_value == '10') $the_value = '9.9999999';	// mean_rating is a text field. for sort order reasons we make 10 into 9.99999
-			$iret = $wpdb->query($wpdb->prepare( 'UPDATE '.WPPA_PHOTOS.' SET mean_rating = %s WHERE id = %s', $the_value, $photo['id'] ) );
-			if ($iret === false) {
-				if ( $wppa['ajax'] ) {
-					$wppa['error'] = true;
-					$wppa['out'] = __('Unable to update mean rating', 'wppa');
-				}
-				else {
-					wppa_error_message(__('Unable to update mean rating', 'wppa'));
-				}
-				return false;
-			}
-			$ratcount = count($ratings);
-			$iret = $wpdb->query($wpdb->prepare( 'UPDATE '.WPPA_PHOTOS.' SET rating_count = %s WHERE id = %s', $ratcount, $photo['id'] ) );
-			wppa_test_for_medal( $photo['id'] );
-		}
-		return true;
-	}
-	else {
-		if ( $wppa['ajax'] ) {
-			$wppa['error'] = true;
-			$wppa['out'] = __('No photos or error reading', 'wppa').WPPA_PHOTOS;
-		}
-		else {
-			wppa_error_message(__('No photos or error reading', 'wppa').WPPA_PHOTOS);
-		}
-		return false;
-	}
-}
-*/
 function wppa_check_database($verbose = false) {
 global $wpdb;
 
@@ -831,7 +744,7 @@ global $wpdb;
 	wppa_dbg_msg('Update single photo: '.$name.' in album '.$photo['album'], 'green');
 }
 
-function wppa_update_photo($file, $xname) {
+function wppa_update_photo_files( $file, $xname ) {
 global $wpdb;
 global $allphotos;
 
@@ -955,9 +868,20 @@ global $wppa;
 		$filename = $name;
 
 		// Add photo to db
-		$id = wppa_create_photo_entry( array( 'id' => $id, 'album' => $alb, 'ext' => $ext, 'name' => $name, 'p_order' => $porder, 'description' => $desc, 'linkurl' => $linkurl, 'linktitle' => $linktitle,  'owner' => $owner, 'status' => $status, 'filename' => $filename ) );
+		$id = wppa_create_photo_entry( array( 	'id' => $id, 
+												'album' => $alb, 
+												'ext' => $ext, 
+												'name' => $name, 
+												'p_order' => $porder, 
+												'description' => $desc, 
+												'linkurl' => $linkurl, 
+												'linktitle' => $linktitle,  
+												'owner' => $owner, 
+												'status' => $status, 
+												'filename' => $filename 
+											) );
 		if ( ! $id ) {
-			wppa_error_message(__('Could not insert photo. query=', 'wppa').$query);
+			wppa_error_message( __('Could not insert photo.', 'wppa') );
 		}
 		else {	// Save the source
 			wppa_save_source($file, $filename, $alb);
@@ -984,3 +908,4 @@ global $wppa;
 		return false;
 	}
 }
+

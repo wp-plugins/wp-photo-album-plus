@@ -2,7 +2,7 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 5.3.8
+* version 5.3.9
 *
 */
 
@@ -267,9 +267,18 @@ global $wppa_opt;
 
 // get the url to the plugins image directory
 function wppa_get_imgdir() {
+
 	$result = WPPA_URL.'/images/';
+	if ( is_ssl() ) $result = str_replace( 'http://', 'https://', $result );
 	return $result;
 }
+
+function wppa_get_wppa_url() {
+
+	$result = WPPA_URL;
+	if ( is_ssl() ) $result = str_replace( 'http://', 'https://', $result );
+	return $result;
+}	
 
 // get album order
 function wppa_get_album_order( $parent = '0' ) {
@@ -608,8 +617,8 @@ global $wppa_opt;
 	// See for given album data array or album number
 	else {
 	
-		// Album Administrator has always access
-		if ( current_user_can('wppa_admin') ) return true;
+		// Administrator has always access
+		if ( current_user_can('administrator') ) return true;	// Do NOT change this into 'wppa_admin', it will enable access to all albums at backend while owners only
 		
 		// If all albums are public
 		if ( ! wppa_switch('wppa_owner_only') ) return true;
@@ -1497,7 +1506,7 @@ function wppa_check_memory_limit($verbose = true, $x = '0', $y = '0') {
 global $wppa_opt;
 // ini_set('memory_limit', '18M');	// testing
 	if ( ! function_exists('memory_get_usage') ) return '';
-	if ( is_admin() && wppa_switch('wppa_memcheck_admin') == 'no' ) return '';
+	if ( is_admin() && ! wppa_switch('wppa_memcheck_admin') ) return '';
 	if ( ! is_admin() && ! wppa_switch('wppa_memcheck_frontend') ) return '';
 
 	// get memory limit
@@ -1536,7 +1545,7 @@ global $wppa_opt;
 	//	$factor = '5.60';	//  5.60 for 17M: 386 x 289 (0.1 MP) thumb only
 	//	$factor = '5.10';	//  5.10 for 104M: 4900 x 3675 (17.2 MP) thumb only
 	$memlimmb = $memory_limit / ( 1024 * 1024 );
-	$factor = '6.00' - '0.58' * ( $memlimmb / 104 );
+	$factor = '6.00' - '0.58' * ( $memlimmb / 104 );	// 6.00 .. 0.58
 
 	// Calculate max size
 	$maxpixels = ( $free_memory / $factor ) - $resizedpixels;
@@ -1630,32 +1639,6 @@ global $wppa;
 			if ($wppa['debug']) if (!isset($wppa['queries'][$id])) $wppa['queries'][$id]=1;else $wppa['queries'][$id]++;
 			break;
 	}
-}
-
-// Exactly like php's date(), but corrected for wp's timezone
-function wppa_local_date($format, $timestamp = false) {
-
-	$current_offset = get_option('gmt_offset');
-	$tzstring = get_option('timezone_string');
-
-	// Remove old Etc mappings.  Fallback to gmt_offset.
-	if ( false !== strpos($tzstring,'Etc/GMT') )
-		$tzstring = '';
-
-	if ( empty($tzstring) ) { // Create a UTC+- zone if no timezone string exists
-		$check_zone_info = false;
-		if ( 0 == $current_offset )
-			$tzstring = 'UTC';
-		elseif ($current_offset < 0)
-			$tzstring = 'UTC' . $current_offset;
-		else
-			$tzstring = 'UTC+' . $current_offset;
-	}
-
-	date_default_timezone_set($tzstring);
-	$result = date_i18n($format, $timestamp);
-	
-	return $result;
 }
 
 // Get gps data from photofile
@@ -1901,5 +1884,25 @@ function wppa_delete_obsolete_tempfiles() {
 			}
 		}
 		$lifetime /= 2;
+	}
+}
+
+function wppa_publish_scheduled() {
+global $wpdb;
+
+	$last_check = get_option( 'wppa_last_schedule_check', '0' );
+	if ( $last_check < ( time() - 300 ) ) {	// Longer than 5 mins ago
+		$to_publish = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM`".WPPA_PHOTOS."` WHERE `status` = 'scheduled' AND `scheduledtm` < %s", wppa_get_default_scheduledtm() ), ARRAY_A );
+		if ( $to_publish ) foreach ( $to_publish as $photo ) {
+			wppa_update_photo( array( 'id' => $photo['id'], 'scheduledtm' => '', 'status' => 'publish', 'timestamp' => time() ) );
+			wppa_update_album( array( 'id' => $photo['album'], 'timestamp' => time() ) );	// For New indicator on album
+			wppa_flush_treecounts( $photo['album'] );
+		}
+		$to_publish = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM`".WPPA_ALBUMS."` WHERE `scheduledtm` <> '' AND `scheduledtm` < %s", wppa_get_default_scheduledtm() ), ARRAY_A );
+		if ( $to_publish ) foreach ( $to_publish as $album ) {
+			wppa_update_album( array( 'id' => $album['id'], 'scheduledtm' => '' ) );
+			wppa_flush_treecounts( $album['id'] );
+		}
+		update_option( 'wppa_last_schedule_check', time() );
 	}
 }

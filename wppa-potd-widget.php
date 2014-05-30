@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the widget
-* Version 5.3.6
+* Version 5.3.9
 */
 
 if ( ! defined( 'ABSPATH' ) ) die( "Can't load this file directly" );
@@ -26,7 +26,6 @@ class PhotoOfTheDay extends WP_Widget {
 
         extract( $args );
 
-//		$widget_title = $instance['title'];
 		$widget_title = apply_filters('widget_title', $instance['title']);
 
 		// get the photo  ($image)
@@ -53,7 +52,7 @@ class PhotoOfTheDay extends WP_Widget {
 			$name = wppa_qtrans($image['name']);
 			$page = in_array( $wppa_opt['wppa_widget_linktype'], $wppa['links_no_page'] ) ? '' : wppa_get_the_landing_page( 'wppa_widget_linkpage', __a('Photo of the day') );
 			$link = wppa_get_imglnk_a('potdwidget', $image['id']);
-			$lightbox = $link['is_lightbox'] ? 'rel="'.$wppa_opt['wppa_lightbox_name'].'"' : '';
+			$lightbox = $link['is_lightbox'] ? 'data-videohtml="'.esc_attr( wppa_get_video_body( $image['id'] ) ).'" rel="'.$wppa_opt['wppa_lightbox_name'].'"' : '';
 			if ( $link ) {
 				if ( $link['is_lightbox'] ) {
 					$cursor = ' cursor:url('.wppa_get_imgdir().$wppa_opt['wppa_magnifier'].'),pointer;';
@@ -83,6 +82,7 @@ class PhotoOfTheDay extends WP_Widget {
 			$widget_content .= __a('Photo not found.', 'wppa_theme');
 		}
 		$widget_content .= "\n".'</div>';
+		
 		// Add subtitle, if any		
 		switch ($wppa_opt['wppa_widget_subtitle'])
 		{

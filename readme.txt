@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile, cloudinary, fotomoto
-Version: 5.3.8
+Version: 5.3.9
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -64,6 +64,7 @@ There are translations in many languages. The frontend and admin sides are separ
 * Dutch translation by OpaJaap himself (<a href="http://www.opajaap.nl">Opa Jaap's Weblog</a>) (both)
 * Slovak translation by Branco Radenovich (<a href="http://webhostinggeeks.com/user-reviews/">WebHostingGeeks.com</a>) (frontend)
 * Polish translation by Maciej Matysiak (both)
+* Ukranian translation by Michael Yunat (<a href="http://getvoip.com/blog">http://getvoip.com</a>) (both)
 
 == Installation ==
 
@@ -182,6 +183,29 @@ If you changed the name of wp-content and/or uploads, besides the additions to w
 **define('WPPA_REL_UPLOADS_PATH', 'wp_content/uploads');**
 **define('WPPA_REL_DEPOT_PATH', 'wp_content');**
 and make the changes therein also.
+
+= 5.3.9 =
+
+= Bug Fixes =
+
+* Maintenance procedure Convert filesystem ( VIII-A10 ) stopped working. Fixed.
+* On ssl pages, the wppa+ internal symbol images had no secure urls. Fixed.
+* The medals and the New indicator on thumbnail images were hidden when the thumbnail frame was some size bigger than the thumbnail size. Fixed.
+* on a multisite where WPPA_MULTISITE_GLOBAL is defined as true, the tag widgets did work for the primary blog only. Fixed.
+* Every user could edit albuminfo of ---public--- albums at the frontend. This is fixed: album admin rights are now required to do so.
+* Treecounts on albumcovers were not always correct. Fixed.
+* When album admin was enabled in Table VII-A, and owners only was set, one had access to all albums at backend album admin. Fixed.
+
+= New Features =
+
+* Schedueling of the publication of photos. See the Album admin and Photo admin pages.
+* Added mintenance procedures: Re-add file-extensions to photonames and: Create all autopages.
+
+= Other Changes =
+
+* You can specify the Top criterium for topten displays created by shortcodes in Table IV-E17.
+* Many code changes in preparation of video support, to be released in version 5.4.0.
+* On the import screen, added a check if an album is selected when the update box is unticked.
 
 = 5.3.8 =
 

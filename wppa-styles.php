@@ -3,7 +3,7 @@
 /* Package: wp-photo-album-plus
 /*
 /* Various style computation routines
-/* Version 5.3.6
+/* Version 5.3.9
 /*
 */
 
@@ -233,36 +233,41 @@ global $wppa;
 global $wppa_opt;
 global $thumb;
 
-	if (!is_numeric($wppa['fullsize']) || $wppa['fullsize'] < '1') $wppa['fullsize'] = $wppa_opt['wppa_fullsize'];
+	if ( ! is_numeric( $wppa['fullsize'] ) || $wppa['fullsize'] < '1' ) $wppa['fullsize'] = $wppa_opt['wppa_fullsize'];
 
 	$wppa['enlarge'] = wppa_switch('wppa_enlarge');
 
-	wppa_cache_thumb($id);
+	wppa_cache_thumb( $id );
 
-	$img_path = wppa_get_photo_path($id);
-	$result = wppa_get_imgstyle_a($img_path, $wppa['fullsize'], 'optional', 'fullsize');
+	$img_path = wppa_get_photo_path( $id );
+	$result = wppa_get_imgstyle_a( $id, $img_path, $wppa['fullsize'], 'optional', 'fullsize' );
 	return $result;
 }
 
-// Image style
-function wppa_get_imgstyle($file, $max_size, $xvalign = '', $type = '') {
-	$result = wppa_get_imgstyle_a($file, $max_size, $xvalign, $type);
-	return $result['style'];
-}
 // Image style array output
-function wppa_get_imgstyle_a($file, $xmax_size, $xvalign = '', $type = '') {
+function wppa_get_imgstyle_a( $id, $file, $xmax_size, $xvalign = '', $type = '') {
 global $wppa;
 global $wppa_opt;
+global $thumb;
 
 	$result = Array( 'style' => '', 'width' => '', 'height' => '', 'cursor' => '', 'margin-top' => '', 'margin-bottom' => '' );	// Init 
 	
-	if ($file == '') return $result;					// no image: no dimensions
-	if ( !is_file($file) ) {
-		wppa_dbg_msg('Please check file '.$file.' it is missing while expected.', 'red');
+	wppa_cache_thumb( $id );
+	
+	if ( ! $id ) return $result;						// no image: no dimensions
+	if ( $file == '' ) return $result;					// no image: no dimensions
+	
+	if ( ! wppa_is_video( $id ) && ! is_file( $file ) ) {
+		wppa_dbg_msg('Please check file '.$file.' it is missing while expected. Id='.$id, 'red');
 		return $result;				// no file: no dimensions (2.3.0)
 	}
 	
-	$image_attr = getimagesize( $file );
+	if ( wppa_is_video( $id ) ) {
+		$image_attr = array( '0' => wppa_get_videox( $id ), '1' => wppa_get_videoy( $id ) );
+	}
+	else {
+		$image_attr = getimagesize( $file );
+	}
 	if ( ! $image_attr || ! isset($image_attr['0']) || ! $image_attr['0'] || ! isset($image_attr['1']) || ! $image_attr['1'] ) {
 		// File is corrupt
 		wppa_dbg_msg('Please check file '.$file.' it is corrupted. If it is a thumbnail image, regenerate them using Table VIII item 7 of the Photo Albums -> Settings admin page.', 'red');

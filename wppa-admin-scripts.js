@@ -1,7 +1,7 @@
 /* admin-scripts.js */
 /* Package: wp-photo-album-plus
 /*
-/* Version 5.3.7
+/* Version 5.3.9
 /* Various js routines used in admin pages		
 */
 
@@ -1090,6 +1090,17 @@ function _wppaAjaxUpdatePhoto(photo, actionslug, value, refresh) {
 	}
 }
 
+function wppaChangeScheduleAlbum(album, elem) {
+	var onoff = jQuery(elem).prop('checked');
+	if ( onoff ) {
+		jQuery('.wppa-datetime-'+album).css('display', 'inline');
+	}
+	else {
+		jQuery('.wppa-datetime-'+album).css('display', 'none');
+		wppaAjaxUpdateAlbum(album, 'scheduledtm', document.getElementById('wppa-dummy') );
+	}
+}
+
 var wppaAjaxAlbumCount = 0;
 var wppaAlbumUpdateMatrix = new Array();
 
@@ -1591,7 +1602,7 @@ function wppaPhotoStatusChange(id) {
 	jQuery('#psdesc-'+id).css({display: 'none'});
 	elm = document.getElementById('status-'+id);
 	
-	if (elm.value=='pending') {
+	if ( elm.value == 'pending' || elm.value == 'scheduled' ) {
 		jQuery('#photoitem-'+id).css({backgroundColor: '#ffebe8', borderColor: '#cc0000'});
 	}
 	if (elm.value=='publish') {
@@ -1619,6 +1630,13 @@ function wppaPhotoStatusChange(id) {
 	}
 	if (elm.value=='bronze') {
 		jQuery('#photoitem-'+id).css({backgroundColor:'#ddddbb', borderColor:'#ccccaa'}); 
+	}
+		
+	if ( elm.value == 'scheduled' ) {
+		jQuery( '.wppa-datetime-'+id ).css('display', ''); //prop( 'disabled', false );
+	}
+	else {
+		jQuery( '.wppa-datetime-'+id ).css('display', 'none'); //prop( 'disabled', true );
 	}
 }
 

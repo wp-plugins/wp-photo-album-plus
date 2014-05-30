@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display thumbnail photos
-* Version 5.3.6
+* Version 5.3.9
 */
 
 if ( ! defined( 'ABSPATH' ) ) die( "Can't load this file directly" );
@@ -84,7 +84,7 @@ class AlbumWidget extends WP_Widget {
 					$link       = wppa_get_imglnk_a('albwidget', $image['id']);
 					$file       = wppa_get_thumb_path($image['id']);
 					$imgevents  = wppa_get_imgevents('thumb', $image['id'], true);
-					$imgstyle_a = wppa_get_imgstyle_a($file, $maxw, 'center', 'albthumb');
+					$imgstyle_a = wppa_get_imgstyle_a( $image['id'], $file, $maxw, 'center', 'albthumb' );
 					$imgstyle   = $imgstyle_a['style'];
 					$width      = $imgstyle_a['width'];
 					$height     = $imgstyle_a['height'];
@@ -122,7 +122,7 @@ class AlbumWidget extends WP_Widget {
 								$title = wppa_get_lbtitle('alw', $thumb['id']);
 								$siz = getimagesize( wppa_get_photo_path( $thumb['id'] ) );
 								$link = wppa_get_photo_url( $thumb['id'], '', $siz['0'], $siz['1'] );
-								$widget_content .= "\n\t".'<a href="'.$link.'" rel="'.$wppa_opt['wppa_lightbox_name'].'[alw-'.$wppa['master_occur'].'-'.$album['id'].']" title="'.$title.'" >';
+								$widget_content .= "\n\t".'<a href="'.$link.'" data-videohtml="'.esc_attr( wppa_get_video_body( $thumb['id'] ) ).'" rel="'.$wppa_opt['wppa_lightbox_name'].'[alw-'.$wppa['master_occur'].'-'.$album['id'].']" title="'.$title.'" >';
 								if ( $thumb['id'] == $image['id'] ) {		// the cover image
 									$widget_content .= "\n\t\t".'<img id="i-'.$image['id'].'-'.$wppa['master_occur'].'" title="'.wppa_zoom_in().'" src="'.$imgurl.'" width="'.$width.'" height="'.$height.'" style="'.$imgstyle.$cursor.'" '.$imgevents.' alt="'.esc_attr(wppa_qtrans($image['name'])).'">';
 								}
@@ -189,7 +189,6 @@ class AlbumWidget extends WP_Widget {
 		<p><label for="<?php echo $this->get_field_id('parent'); ?>"><?php _e('Album selection or Parent album:', 'wppa'); ?></label> 
 			<select class="widefat" id="<?php echo $this->get_field_id('parent'); ?>" name="<?php echo $this->get_field_name('parent'); ?>" >
 
-				<?php //echo wppa_album_select('', $parent, true, '', '', true); ?>
 				<option value="all" <?php if ($parent == 'all') echo 'selected="selected"' ?>><?php _e('--- all albums ---', 'wppa') ?></option>
 				<option value="0"  <?php if ($parent == '0')  echo 'selected="selected"' ?>><?php _e('--- all generic albums ---', 'wppa') ?></option>
 				<option value="-1" <?php if ($parent == '-1') echo 'selected="selected"' ?>><?php _e('--- all separate albums ---', 'wppa') ?></option>

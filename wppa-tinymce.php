@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 *
-* Version 5.3.4
+* Version 5.3.9
 *
 */
 
@@ -53,6 +53,7 @@ global $wppa_api_version;
 	echo('/* <![CDATA[ */'."\n");
 		echo("\t".'wppaImageDirectory = "'.wppa_get_imgdir().'";'."\n");
 		echo("\t".'wppaAjaxUrl = "'.admin_url('admin-ajax.php').'";'."\n");
+		echo("\t".'wppaPhotoDirectory = "'.WPPA_UPLOAD_URL.'/";'."\n");
 		echo("\t".'wppaThumbDirectory = "'.WPPA_UPLOAD_URL.'/thumbs/";'."\n");
 		echo("\t".'wppaTempDirectory = "'.WPPA_UPLOAD_URL.'/temp/";'."\n");
 		echo("\t".'wppaFontDirectory = "'.WPPA_UPLOAD_URL.'/fonts/";'."\n");

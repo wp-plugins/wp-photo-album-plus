@@ -1,9 +1,9 @@
 <?php
-/* wppa-album-widget.php
+/* wppa-album-navigator-widget.php
 * Package: wp-photo-album-plus
 *
 * display thumbnail photos
-* Version 5.2.18
+* Version 5.3.9
 */
 
 class AlbumNavigatorWidget extends WP_Widget {
@@ -89,7 +89,6 @@ class AlbumNavigatorWidget extends WP_Widget {
 		<p><label for="<?php echo $this->get_field_id('parent'); ?>"><?php _e('Album selection or Parent album:', 'wppa'); ?></label> 
 			<select class="widefat" id="<?php echo $this->get_field_id('parent'); ?>" name="<?php echo $this->get_field_name('parent'); ?>" >
 
-				<?php //echo wppa_album_select('', $parent, true, '', '', true); ?>
 				<option value="all" <?php if ($parent == 'all') echo 'selected="selected"' ?>><?php _e('--- all albums ---', 'wppa') ?></option>
 				<option value="0"  <?php if ($parent == '0')  echo 'selected="selected"' ?>><?php _e('--- all generic albums ---', 'wppa') ?></option>
 				<option value="-1" <?php if ($parent == '-1') echo 'selected="selected"' ?>><?php _e('--- all separate albums ---', 'wppa') ?></option>

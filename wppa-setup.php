@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 5.3.6
+* Version 5.3.9
 *
 */
 
@@ -60,6 +60,7 @@ global $silent;
 					suba_order_by tinytext NOT NULL,
 					views bigint(20) NOT NULL default '0',
 					cats tinytext NOT NULL,
+					scheduledtm tinytext NOT NULL,
 					PRIMARY KEY  (id)
 					) DEFAULT CHARACTER SET utf8;";
 					
@@ -86,6 +87,9 @@ global $silent;
 					views bigint(20) NOT NULL default '0',
 					page_id bigint(20) NOT NULL default '0',
 					exifdtm tinytext NOT NULL,
+					videox smallint(5) NOT NULL default '0',
+					videoy smallint(5) NOT NULL default '0',
+					scheduledtm tinytext NOT NULL,
 					PRIMARY KEY  (id),
 					KEY albumkey (album)
 					) DEFAULT CHARACTER SET utf8;";
@@ -328,7 +332,11 @@ global $silent;
 
 		if ( $old_rev <= '5307' ) {
 			$wpdb->query( "TRUNCATE TABLE `".WPPA_SESSION."`" );
-		}		
+		}
+		
+		if ( $old_rev <= '5308' ) {
+			wppa_flush_treecounts();
+		}
 		
 	}
 	
@@ -548,6 +556,10 @@ Hide Camera info
 						// G Overlay
 						'wppa_ovl_txt_lines'			=> 'auto',	// 1
 						'wppa_magnifier'				=> 'magnifier-small.png',	// 2
+						
+						// H Video
+						'wppa_video_width'				=> '640',
+						'wppa_video_height' 			=> '480',
 
 						// Table II: Visibility
 						// A Breadcrumb
@@ -775,6 +787,7 @@ Hide Camera info
 						'wppa_medal_gold_when'			=> '15',
 						'wppa_medal_color' 				=> '2',
 						'wppa_medal_position' 			=> 'botright',
+						'wppa_topten_sortby' 			=> 'mean_rating',
 						
 						// F Comments
 						'wppa_comment_login' 			=> 'no',
@@ -992,6 +1005,8 @@ Hide Camera info
 						'wppa_remove_from_photodesc'	=> '',
 						'wppa_remove_empty_albums'	=> '',
 						'wppa_watermark_all' 		=> '',
+						'wppa_create_all_autopages' => '',
+						'wppa_readd_file_extensions' => '',
 
 						// Table IX: Miscellaneous
 						// A System

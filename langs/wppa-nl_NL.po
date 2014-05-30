@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: wp-photo-album-plus\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-05-30 07:59+0100\n"
-"PO-Revision-Date: 2014-05-30 08:00+0100\n"
+"PO-Revision-Date: 2014-05-30 14:34+0100\n"
 "Last-Translator: J.N. Breetvelt <OpaJaap@OpaJaap.nl>\n"
 "Language-Team: \n"
 "Language: nl_NL\n"
@@ -203,9 +203,8 @@ msgstr ""
 "Album %s bestaat niet of is niet toegankelijk voor het toevoegen van een foto"
 
 #: wppa-admin-functions.php:884
-#, fuzzy
 msgid "Could not insert photo."
-msgstr "Kan de foto niet invoegen. query="
+msgstr "Kan de foto niet invoegen."
 
 #: wppa-admin-functions.php:907
 msgid "ERROR: Unknown file or album."
@@ -352,7 +351,7 @@ msgstr "Er is een fout opgetreden bij het verwerken van uw stem."
 
 #: wppa-ajax.php:281
 msgid "Maybe you opened the page too long ago to recognize you."
-msgstr ""
+msgstr "Misschien heeft u deze pagina te lang geleden geopend."
 
 #: wppa-ajax.php:282
 msgid "You may refresh the page and try again."
@@ -375,14 +374,12 @@ msgid "Photo has been removed."
 msgstr "Foto is verwijderd."
 
 #: wppa-ajax.php:317
-#, fuzzy
 msgid "Sorry, you can not rate your own photos"
-msgstr "voordat u foto's kunt uploaden."
+msgstr "Sorry, u kunt uw eigen foto's niet waarderen"
 
 #: wppa-ajax.php:329
-#, fuzzy
 msgid "Please enter a comment."
-msgstr "Leave a comment"
+msgstr "Voer a.u.b. een reactie in."
 
 #: wppa-ajax.php:354
 msgid "Security check failure."
@@ -397,6 +394,12 @@ msgid ""
 "you can refresh the page to see\n"
 "your vote became effective."
 msgstr ""
+"Verklaar uw waardering a.u.b. in een reactie.\n"
+"Uw stem wordt niet verwerkt als u dat niet doet.\n"
+"\n"
+"Nadat u uw reactie heeft gegeven,\n"
+"kunt u de pagina verversen om te zien\n"
+"dat uw waardering is verwerkt."
 
 #: wppa-ajax.php:518
 msgid "You do not have the rights to delete a photo"
@@ -547,7 +550,7 @@ msgstr "Sub Albums volgorde"
 
 #: wppa-ajax.php:684 wppa-ajax.php:1015
 msgid "Schedule date/time"
-msgstr ""
+msgstr "Gepland voor datum/tijd"
 
 #: wppa-ajax.php:697 wppa-ajax.php:718
 #, php-format
@@ -556,7 +559,7 @@ msgstr "<b>%s</b> van album %s gewijzigd"
 
 #: wppa-ajax.php:705
 msgid "All photos set to scheduled per date"
-msgstr ""
+msgstr "Alle foto's ingesteld voor publicatie op"
 
 #: wppa-ajax.php:727
 #, php-format
@@ -601,7 +604,7 @@ msgstr "U heeft geen rechten om foto informatie te wijzigen"
 #, php-format
 msgid ""
 "%s updated to %s.<br/>This applies for all photos currently on this page!"
-msgstr ""
+msgstr "%s bijgewerkt naar %s.<br/>Dit geldt voor alle fotos op deze pagina!"
 
 #: wppa-ajax.php:803
 msgid "Enter a value > -90 and < 90"
@@ -723,18 +726,16 @@ msgid "HTML Alt"
 msgstr "HTML Alt"
 
 #: wppa-ajax.php:979
-#, fuzzy
 msgid "Video width"
-msgstr "寬:"
+msgstr "Video breedte"
 
 #: wppa-ajax.php:981 wppa-ajax.php:988
 msgid "Please enter an integer value >= 0"
-msgstr ""
+msgstr "Voer a.u.b. een geheel getal in >= 0"
 
 #: wppa-ajax.php:986
-#, fuzzy
 msgid "Video height"
-msgstr "Grootte is Hoogte"
+msgstr "Video hoogte"
 
 #: wppa-ajax.php:1001 wppa-ajax.php:1030
 #, php-format
@@ -915,9 +916,8 @@ msgid "Slideshow pagesize"
 msgstr "Diavoorstelling paginagrootte"
 
 #: wppa-ajax.php:1275 wppa-settings-autosave.php:585
-#, fuzzy
 msgid "Max Pagelinks"
-msgstr "鏈接:"
+msgstr "Max paginalinks"
 
 #: wppa-ajax.php:1282
 msgid "Ratings cleared"
@@ -968,13 +968,14 @@ msgid ""
 "Illegal format. Please enter a 6 digit hexadecimal color value. Example: "
 "#77bbff"
 msgstr ""
+"Ongeldig formaat. Voer a.u.b. een 6 cijferige heximale kleur waarde in. "
+"Voorbeeld: #77bbff"
 
 #: wppa-ajax.php:1377
-#, fuzzy
 msgid "You just changed a setting that requires the recalculation of ratings."
 msgstr ""
 "U heeft zojuist een instelling gewijzigd die het noodzakelijk maakt de "
-"miniatuurafbeeldingen opnieuw aan te maken."
+"waarderingsscores te herberekenen."
 
 #: wppa-ajax.php:1378 wppa-ajax.php:1678
 msgid "Please run the appropriate action in Table VIII."
@@ -1016,21 +1017,22 @@ msgid "User %s does not exist."
 msgstr "Gebruiker %s bestaat."
 
 #: wppa-ajax.php:1614
-#, fuzzy
 msgid ""
 "The content of the Custom box has been changed to display the Fotomoto "
 "toolbar."
-msgstr "De inhoud (html) van de speciale box."
+msgstr ""
+"De inhoud (html) van de speciale box is gewijzigd om de Fotomoto toolbar te "
+"kunnen weergeven."
 
 #: wppa-ajax.php:1618 wppa-ajax.php:1633
-#, fuzzy
 msgid "The display of the custom box has been enabled"
-msgstr "Toon de speciale box in de diavoorstelling"
+msgstr "Het tonen van de speciale box is aan gezet"
 
 #: wppa-ajax.php:1629
-#, fuzzy
 msgid "The content of the Custom box has been changed to display maps."
-msgstr "De inhoud (html) van de speciale box."
+msgstr ""
+"De inhoud (html) van de speciale box is gewijzigd om plattegronden te kunnen "
+"weergeven."
 
 #: wppa-ajax.php:1662
 #, php-format
@@ -1102,24 +1104,20 @@ msgid "Auto Save"
 msgstr "Auto Save"
 
 #: wppa-album-admin-autosave.php:143
-#, fuzzy
 msgid ""
 "All modifications are instantly updated on the server, except for those that "
 "require a button push."
 msgstr ""
-"Alle wijzigingen worden onmiddellijk op de server verwerkt. Het <b style="
-"\"color:#070\" >Opmerking</b> veld houdt u op de hoogte van de bewerkingen "
-"op de achtergrond."
+"Alle wijzigingen worden onmiddellijk op de server verwerkt, met uitzondering "
+"van welke een druk op een knop vereisen."
 
 #: wppa-album-admin-autosave.php:144
-#, fuzzy
 msgid ""
 "The <b style=\"color:#070\" >Remark</b> fields keep you informed on the "
 "actions taken at the background."
 msgstr ""
-"Alle wijzigingen worden onmiddellijk op de server verwerkt. Het <b style="
-"\"color:#070\" >Opmerking</b> veld houdt u op de hoogte van de bewerkingen "
-"op de achtergrond."
+"Het <b style=\"color:#070\" >Opmerking</b> veld houdt u op de hoogte van de "
+"bewerkingen op de achtergrond."
 
 #: wppa-album-admin-autosave.php:148
 msgid "Album number:"
@@ -1174,11 +1172,13 @@ msgid "Album sort order #:"
 msgstr "Album sorteer volgorde #:"
 
 #: wppa-album-admin-autosave.php:260
-#, fuzzy
 msgid ""
 "Album order # has only effect if you set the album sort order method to "
 "<b>Order #</b> in the Photo Albums -> Settings screen.<br />"
-msgstr "Sub album sorteer volgorde:"
+msgstr ""
+"Album volgorde # heeft alleen effect als de album sorteer vologorde methode "
+"op <b>Volgorde nummer</b> is ingesteld in het Foto Albums -> Instellingen "
+"scherm.<br />"
 
 #: wppa-album-admin-autosave.php:263
 msgid ""
@@ -1211,7 +1211,7 @@ msgstr "--- standaard ---"
 #: wppa-settings-autosave.php:2452 wppa-settings-autosave.php:2557
 #: wppa-thumbnail-widget.php:196
 msgid "Order #"
-msgstr "Volgorde nummer:"
+msgstr "Volgorde nummer"
 
 #: wppa-album-admin-autosave.php:297 wppa-album-admin-autosave.php:350
 #: wppa-settings-autosave.php:2454 wppa-settings-autosave.php:2559
@@ -1511,18 +1511,20 @@ msgid "no link at all"
 msgstr "helemaal geen link"
 
 #: wppa-album-admin-autosave.php:563
-#, fuzzy
 msgid ""
 "If you select \"the link page with a clean url\", select an Auto Page of one "
 "of the photos in this album."
-msgstr "de koppeling pagina met een schone url"
+msgstr ""
+"Indien u \"de link pagina met een schone url\" selecteert, selecteer dan een "
+"Auto pagina van één van de foto's in dit album."
 
 #: wppa-album-admin-autosave.php:564
-#, fuzzy
 msgid ""
 "If you select \"the link page with a clean url\", make sure you enter the "
 "correct shortcode on the target page."
-msgstr "de koppeling pagina met een schone url"
+msgstr ""
+"Indien u \"de link pagina met een schone url\" selecteert, zorg er dan voor "
+"dat u de juiste shortcode op de doelpagina plaatst."
 
 #: wppa-album-admin-autosave.php:573 wppa-bestof-widget.php:190
 #: wppa-slideshow-widget.php:217 wppa-widget-admin.php:145
@@ -1549,28 +1551,23 @@ msgstr ""
 
 #: wppa-album-admin-autosave.php:602
 msgid "Schedule:"
-msgstr ""
+msgstr "Publiceren op:"
 
 #: wppa-album-admin-autosave.php:613
-#, fuzzy
 msgid ""
 "If enabled, new photos will have their status set to the dat/time specified "
 "here."
 msgstr ""
-"Indien aangevinkt, zal elke nieuwe foto de standaard beschrijving krijgen "
-"die in het volgende item is opgenomen."
+"Indien aangevinkt, zal elke nieuwe foto de status gepland voor de hier "
+"aangegeven datum/tijd hebben."
 
 #: wppa-album-admin-autosave.php:619
-#, fuzzy
 msgid "Are you sure you want to schedule all photos in this album?"
-msgstr ""
-"Weet u zeker dat u de tags van alle foto's in dit album op de standaard tags "
-"wilt zetten?"
+msgstr "Weet u zeker dat u alle foto's in dit album wilt plannen?"
 
 #: wppa-album-admin-autosave.php:619
-#, fuzzy
 msgid "Schedule all"
-msgstr "Alle verwijderen"
+msgstr "Alle plannen"
 
 #: wppa-album-admin-autosave.php:627
 msgid "Are you sure you want to clear the ratings in this album?"
@@ -1729,13 +1726,12 @@ msgstr "Moeder"
 #: wppa-album-admin-autosave.php:995 wppa-album-admin-autosave.php:1125
 #: wppa-album-admin-autosave.php:1297 wppa-album-admin-autosave.php:1388
 msgid "Albums/Photos/Moderation required/Scheduled"
-msgstr ""
+msgstr "Albums/Foto's/Moderatie vereist/Gepland"
 
 #: wppa-album-admin-autosave.php:996 wppa-album-admin-autosave.php:1126
 #: wppa-album-admin-autosave.php:1298 wppa-album-admin-autosave.php:1389
-#, fuzzy
 msgid "A/P/PM/S"
-msgstr "A/F/FG"
+msgstr "A/F/FG/P"
 
 #: wppa-album-admin-autosave.php:999 wppa-album-admin-autosave.php:1037
 #: wppa-album-admin-autosave.php:1129 wppa-album-admin-autosave.php:1301
@@ -1800,9 +1796,9 @@ msgid "<strong>%d</strong> photos are pending moderation."
 msgstr "<strong>%d</strong> foto's wachten op goedkeuring."
 
 #: wppa-album-admin-autosave.php:1438
-#, fuzzy, php-format
+#, php-format
 msgid "<strong>%d</strong> photos are scheduled for later publishing."
-msgstr "<strong>%d</strong> foto's wachten op goedkeuring."
+msgstr "<strong>%d</strong> foto's gepland voor latere publicatie."
 
 #: wppa-album-admin-autosave.php:1441
 #, php-format
@@ -1996,9 +1992,8 @@ msgid "This year"
 msgstr "Dit jaar"
 
 #: wppa-bestof-widget.php:162
-#, fuzzy
 msgid "Number of max ratings"
-msgstr "Max scores: %s."
+msgstr "Aantal maximale scores"
 
 #: wppa-bestof-widget.php:163 wppa-topten-widget.php:222
 msgid "Mean value"
@@ -2010,19 +2005,16 @@ msgid "Subtitle:"
 msgstr "Ondertitel:"
 
 #: wppa-bestof-widget.php:173
-#, fuzzy
 msgid "No of max ratings:"
-msgstr "Max scores: %s."
+msgstr "Aant. max scores:"
 
 #: wppa-bestof-widget.php:178 wppa-topten-widget.php:236
-#, fuzzy
 msgid "Mean rating:"
-msgstr "無法更新平均評級"
+msgstr "Gem. waardering:"
 
 #: wppa-bestof-widget.php:183 wppa-topten-widget.php:241
-#, fuzzy
 msgid "Rating count:"
-msgstr "顯示沒有導出"
+msgstr "Aantal waarderingen:"
 
 #: wppa-bestof-widget.php:192 wppa-common-functions.php:1830
 #: wppa-items.php:189 wppa-settings-autosave.php:1284
@@ -2038,19 +2030,16 @@ msgid "--- none ---"
 msgstr "--- geen ---"
 
 #: wppa-bestof-widget.php:193
-#, fuzzy
 msgid "The authors album(s)"
-msgstr "Bekijk het album van de auteur"
+msgstr "De albums van de auteur"
 
 #: wppa-bestof-widget.php:194
-#, fuzzy
 msgid "The photos in the authors album(s)"
-msgstr "Bekijk de foto's van de auteur"
+msgstr "De foto's in de auteurs album(s)"
 
 #: wppa-bestof-widget.php:195
-#, fuzzy
 msgid "All the authors photos"
-msgstr "Bekijk alle foto's van de auteur"
+msgstr "Alle foto's van de auteur"
 
 #: wppa-boxes-html.php:142 wppa-settings-autosave.php:3107
 msgid "Thumbnails"
@@ -2063,7 +2052,7 @@ msgstr "Diavoorstelling"
 
 #: wppa-boxes-html.php:146
 msgid "Submit"
-msgstr ""
+msgstr "Verstuur"
 
 #: wppa-boxes-html.php:1311 wppa-boxes-html.php:1315
 msgid "< Previous"
@@ -2423,56 +2412,52 @@ msgid "--- separate ---"
 msgstr "--- afzonderlijk ---"
 
 #: wppa-date-time.php:87 wppa-date-time.php:196
-#, fuzzy
 msgid "Jan"
-msgstr "en"
+msgstr "Jan"
 
 #: wppa-date-time.php:87 wppa-date-time.php:196
 msgid "Feb"
-msgstr ""
+msgstr "Feb"
 
 #: wppa-date-time.php:87 wppa-date-time.php:196
 msgid "Mar"
-msgstr ""
+msgstr "Mar"
 
 #: wppa-date-time.php:87 wppa-date-time.php:196
 msgid "Apr"
-msgstr ""
+msgstr "Apr"
 
 #: wppa-date-time.php:87 wppa-date-time.php:196
 msgid "May"
-msgstr ""
+msgstr "Mei"
 
 #: wppa-date-time.php:87 wppa-date-time.php:196
 msgid "Jun"
-msgstr ""
+msgstr "Jun"
 
 #: wppa-date-time.php:87 wppa-date-time.php:196
 msgid "Jul"
-msgstr ""
+msgstr "Jul"
 
 #: wppa-date-time.php:87 wppa-date-time.php:196
 msgid "Aug"
-msgstr ""
+msgstr "Aug"
 
 #: wppa-date-time.php:87 wppa-date-time.php:196
-#, fuzzy
 msgid "Sep"
-msgstr "Setup"
+msgstr "Sep"
 
 #: wppa-date-time.php:87 wppa-date-time.php:196
 msgid "Oct"
-msgstr ""
+msgstr "Oct"
 
 #: wppa-date-time.php:87 wppa-date-time.php:196
-#, fuzzy
 msgid "Nov"
-msgstr "Navigatie"
+msgstr "Nov"
 
 #: wppa-date-time.php:87 wppa-date-time.php:196
-#, fuzzy
 msgid "Dec"
-msgstr "Beschrijving"
+msgstr "Dec"
 
 #: wppa-export.php:36
 #, php-format
@@ -3169,38 +3154,32 @@ msgid "Error"
 msgstr "Fout"
 
 #: wppa-maintenance.php:94
-#, fuzzy
 msgid "Orphan photos"
 msgstr "Verweesde Foto's"
 
 #: wppa-maintenance.php:94
-#, fuzzy
 msgid "This album contains refound lost photos"
-msgstr "Selecteer het album waar de widget foto's in staan."
+msgstr "Dit album bevat teruggevonden verloren foto's"
 
 #: wppa-maintenance.php:423
 msgid "Required"
 msgstr "Vereist"
 
 #: wppa-maintenance.php:484
-#, fuzzy
 msgid "There are no index items."
-msgstr "Hermaak Index"
+msgstr "Er zijn geen indexen."
 
 #: wppa-maintenance.php:498
-#, fuzzy
 msgid "There are no error log messages"
-msgstr "錯誤"
+msgstr "Er zijn geen logboek berichten"
 
 #: wppa-maintenance.php:569
-#, fuzzy
 msgid "There are no ratings"
-msgstr "清除評級"
+msgstr "Er zijn geen waarderingen"
 
 #: wppa-maintenance.php:628
-#, fuzzy
 msgid "There are no active sessions"
-msgstr "清除評級"
+msgstr "Er zijn geen aktieve sessies"
 
 #: wppa-multitag-widget.php:14 wppa-tagcloud-widget.php:14
 msgid "WPPA+ Photo Tags"
@@ -3287,20 +3266,19 @@ msgid "Preview:"
 msgstr "Voorbeeld:"
 
 #: wppa-photo-admin-autosave.php:165
-#, fuzzy, php-format
+#, php-format
 msgid "Album: %d<br />(%s)"
-msgstr "in album <strong>%s</strong> (%d)."
+msgstr "Album: %d<br />(%s)"
 
 #: wppa-photo-admin-autosave.php:168
 msgid "Video size ( 0 = default )"
-msgstr ""
+msgstr "Video grootte ( 0 = standaard )"
 
 #: wppa-photo-admin-autosave.php:172 wppa-slideshow-widget.php:197
 msgid "Width:"
 msgstr "Breedte:"
 
 #: wppa-photo-admin-autosave.php:178 wppa-photo-admin-autosave.php:189
-#, fuzzy
 msgid "pix"
 msgstr "pixels"
 
@@ -3313,25 +3291,20 @@ msgid "Rotate"
 msgstr "Draai"
 
 #: wppa-photo-admin-autosave.php:196
-#, fuzzy
 msgid "Are you sure you want to rotate this photo left?"
-msgstr "Weet u zeker dat u deze foto wilt draaien?"
+msgstr "Weet u zeker dat u deze foto linksom wilt draaien?"
 
 #: wppa-photo-admin-autosave.php:198
-#, fuzzy
 msgid "Are you sure you want to rotate this photo 180&deg;?"
-msgstr "你確定要旋轉此相片嗎?"
+msgstr "Weet u zeker dat u deze foto 180&deg; wilt draaien?"
 
 #: wppa-photo-admin-autosave.php:200
-#, fuzzy
 msgid "Are you sure you want to rotate this photo right?"
-msgstr "你確定要旋轉此相片嗎?"
+msgstr "Weet u zeker dat u deze foto rechtsom wilt draaien?"
 
 #: wppa-photo-admin-autosave.php:205
-#, fuzzy
 msgid "If it says 'Photo rotated', the photo is rotated."
-msgstr ""
-"Als er staat 'Foto gedraaid', dan is de foto ook gedraaid. %s de pagina."
+msgstr "Als er staat 'Foto gedraaid', dan is de foto ook gedraaid."
 
 #: wppa-photo-admin-autosave.php:208
 msgid "Refresh"
@@ -3344,9 +3317,8 @@ msgstr ""
 "Als er staat 'Foto gedraaid', dan is de foto ook gedraaid. %s de pagina."
 
 #: wppa-photo-admin-autosave.php:223
-#, fuzzy
 msgid "Preview fullsize video"
-msgstr "Bekijk volledige grootte"
+msgstr "Bekijk video op volledige grootte"
 
 #: wppa-photo-admin-autosave.php:232
 msgid "Preview fullsize photo"
@@ -3382,9 +3354,9 @@ msgid "Disliked by %d visitors"
 msgstr "Afgekeurd door %d bezoekers"
 
 #: wppa-photo-admin-autosave.php:293
-#, fuzzy, php-format
+#, php-format
 msgid "%d pending votes."
-msgstr "In wachtrij na"
+msgstr "%d wachtende stemmen."
 
 #: wppa-photo-admin-autosave.php:303
 msgid "Views"
@@ -3427,9 +3399,8 @@ msgid "Delete photo"
 msgstr "Verwijder foto"
 
 #: wppa-photo-admin-autosave.php:356
-#, fuzzy
 msgid "Single image shortode:"
-msgstr "分享單一相片"
+msgstr "Enkele foto shortcode:"
 
 #: wppa-photo-admin-autosave.php:370
 msgid "Autopage Permalink:"
@@ -3472,7 +3443,7 @@ msgstr "Bron bestand beschikbaar."
 
 #: wppa-photo-admin-autosave.php:447
 msgid "Available video formats:"
-msgstr ""
+msgstr "Beschikbare video formaten:"
 
 #: wppa-photo-admin-autosave.php:461
 msgid "Location:"
@@ -3547,7 +3518,7 @@ msgstr "Brons"
 #: wppa-photo-admin-autosave.php:571 wppa-photo-admin-autosave.php:592
 #: wppa-photo-admin-autosave.php:995
 msgid "Scheduled"
-msgstr ""
+msgstr "Gepland"
 
 #: wppa-photo-admin-autosave.php:601
 msgid ""
@@ -3671,11 +3642,12 @@ msgid "Page %d is empty, try <a href=\"%s\" >page %d</a>."
 msgstr "Pagina %d is leeg, probeer <a href=\"%s\">pagina %d</a>."
 
 #: wppa-photo-admin-autosave.php:1137
-#, fuzzy
 msgid ""
 "Setting photo sequence order has only effect if the photo order method is "
 "set to <b>Order#</b>"
-msgstr "Foto volgorde"
+msgstr ""
+"Foto volgorde nummer instellen heeft alleen zin als de foto sorteer methode "
+"is ingesteld op <b>Volgorde #</b>"
 
 #: wppa-photo-admin-autosave.php:1155
 msgid "Id: "
@@ -3739,14 +3711,12 @@ msgstr ""
 "HTML bevatten t.b.v. wijzigen kleur en fontgrootte."
 
 #: wppa-search-widget.php:79
-#, fuzzy
 msgid "Enable rootsearch"
-msgstr "啟用幻燈片。"
+msgstr "Maak beginpunt zoeken mogelijk"
 
 #: wppa-search-widget.php:85
-#, fuzzy
 msgid "Enable subsearch"
-msgstr "啟用幻燈片。"
+msgstr "Maak sub zoeken mogelijk"
 
 #: wppa-settings-autosave.php:87
 msgid "Saved settings restored"
@@ -3789,30 +3759,32 @@ msgid "No file selected or error on upload"
 msgstr "Geen bestand geselecteerd of een fout tijdens uploaden"
 
 #: wppa-settings-autosave.php:141
-#, fuzzy, php-format
+#, php-format
 msgid "Uploaded file %s is not a .ttf file"
-msgstr "Het geüploade bestand %s is niet van het type .png"
+msgstr "Het geüploade bestand %s is geen .ttf bestand"
 
 #: wppa-settings-autosave.php:185 wppa-settings-autosave.php:222
 msgid "Ready uploading to Cloudinary"
 msgstr "Gereed met het uploaden nar Cloudinary"
 
 #: wppa-settings-autosave.php:204
-#, fuzzy, php-format
+#, php-format
 msgid "Unexpected error: Photo %s does not exist!"
-msgstr "De foto bestaat niet meer"
+msgstr "Onverwachte fout: Foto %s bestaat niet!"
 
 #: wppa-settings-autosave.php:238
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "%s invalid ratings removed. Please run Table VIII-A5: Rerate to fix the "
 "averages."
-msgstr "ongeldige items verwijderd:"
+msgstr ""
+"%s ongeldige waarderingen verwijderd. Draai a.u.b. Table VIII-A5: "
+"Herwaardeer om de gemeiddelden te herberekenen."
 
 #: wppa-settings-autosave.php:248
-#, fuzzy, php-format
+#, php-format
 msgid "%s obsolete settings removed."
-msgstr "Foto %s is verwijderd."
+msgstr "%s verouderde instellingen verwijderd."
 
 #: wppa-settings-autosave.php:256
 msgid "WP Photo Album Plus Settings"
@@ -4072,7 +4044,7 @@ msgstr "Weet u zeker dat u deze foto wilt verplaatsen?"
 
 #: wppa-settings-autosave.php:381
 msgid "This will require considerable disk space on the server."
-msgstr ""
+msgstr "Dit zal aanzienlijke schijfruimte vereisen op de server."
 
 #: wppa-settings-autosave.php:382
 msgid ""
@@ -4080,6 +4052,9 @@ msgid ""
 "wppa+ in a later stage, redo downsizing to a larger size afterwards, and "
 "supply fullsize images for download."
 msgstr ""
+"Als u ja antwoordt, zult u in een later stadium watermerken kunnen "
+"verwijderen die met wppa+ zijn aangebracht, achteraf verkleinen naar een "
+"grotere maat, en downloads in oorspronkelijke grootte kunnen aanbieden."
 
 #: wppa-settings-autosave.php:389
 #, fuzzy
@@ -6962,13 +6937,15 @@ msgstr "Miniaturen tussenruimte"
 
 #: wppa-settings-autosave.php:2055
 msgid "Thumbnail padding color if thumbnail aspect is a padded setting."
-msgstr ""
+msgstr "Achtergrondkleur voor miniaturen met een aangevulde aspect instelling."
 
 #: wppa-settings-autosave.php:2056
 msgid ""
 "Enter valid CSS color hexadecimal like #000000 for black or #ffffff for "
 "white for the padded thumbnails."
 msgstr ""
+"Voer een geldige CSS kleur in, hexadecimaal als #000000 voor zwart of "
+"#ffffff voor wit voor de aangevulde miniaturen."
 
 #: wppa-settings-autosave.php:2065
 msgid "Img"
@@ -7337,26 +7314,33 @@ msgid ""
 "<span style=\"color:red;\">Experimental</span> Put javascript near the end "
 "of the page."
 msgstr ""
+"<span style=\"color:red;\">Experimenteel</span> Zet javascript nabij het "
+"einde van de pagina."
 
 #: wppa-settings-autosave.php:2277
 msgid ""
 "If checkd: May fix layout problems and broken slideshows. May speed up or "
 "slow down page appearing."
 msgstr ""
+"Indien aangevinkt: Kan lay-out problemen en gebroken diavoorstellingen "
+"verhelpen. Kan de snelheid van de pagina verhogen of verlagen."
 
 #: wppa-settings-autosave.php:2282
 msgid "Inline styles"
-msgstr ""
+msgstr "Inline stijlen"
 
 #: wppa-settings-autosave.php:2283
 msgid ""
 "<span style=\"color:red;\">Experimental</span> Set style specifications "
 "inline."
 msgstr ""
+"<span style=\"color:red;\">Experimenteel</span> Zet stijl specificaties "
+"inline."
 
 #: wppa-settings-autosave.php:2284
 msgid "If checked: May fix layout problems, but slows down page appearing."
 msgstr ""
+"Indien aangevinkt: Kan lay-out problemen repareren, maar vertraagt de pagina."
 
 #: wppa-settings-autosave.php:2289
 #, fuzzy
@@ -7365,7 +7349,7 @@ msgstr "Inhoud Speciale box"
 
 #: wppa-settings-autosave.php:2290
 msgid "Enter custom style specs here."
-msgstr ""
+msgstr "Voer specifieke stijlen hier in."
 
 #: wppa-settings-autosave.php:2296
 msgid "Slideshow related settings"
@@ -7983,7 +7967,7 @@ msgstr "schreef op foto"
 
 #: wppa-settings-autosave.php:2670
 msgid "It is allowed to rate photos by the uploader himself."
-msgstr ""
+msgstr "Het is toegestaan aan de uploader zijn eigen foto's te waarderen."
 
 #: wppa-settings-autosave.php:2677
 #, fuzzy
@@ -8219,7 +8203,7 @@ msgstr "Bronzen medaille!"
 #: wppa-settings-autosave.php:2798 wppa-settings-autosave.php:2806
 #: wppa-settings-autosave.php:2814
 msgid "Topscores"
-msgstr ""
+msgstr "Top scores"
 
 #: wppa-settings-autosave.php:2802
 #, fuzzy
@@ -8306,6 +8290,8 @@ msgstr "頂 - 右"
 #: wppa-settings-autosave.php:2839
 msgid "The top sort item used for topten results from shortcodes."
 msgstr ""
+"Het TopTien sorteer item dat gebruikt wordt voor de resultaten van "
+"shortcodes."
 
 #: wppa-settings-autosave.php:2842
 #, fuzzy
@@ -8619,6 +8605,8 @@ msgid ""
 "If checked, you can scroll through the images in the lightbox view. Requires "
 "item 5 to be checked."
 msgstr ""
+"Indien aangevinkt, kunt u door de beelden in de lightbox bladeren. Vereist "
+"dat item 5 aangevinkt is."
 
 #: wppa-settings-autosave.php:3020
 msgid "Table V:"
@@ -8844,7 +8832,7 @@ msgstr "de grote foto met een afdruk en download knoppen."
 #: wppa-settings-autosave.php:3273 wppa-settings-autosave.php:3288
 #: wppa-settings-autosave.php:3404
 msgid "a plain page without a querystring."
-msgstr ""
+msgstr "een gewone pagina zonder querystring."
 
 #: wppa-settings-autosave.php:3235 wppa-settings-autosave.php:3253
 #: wppa-settings-autosave.php:3274 wppa-settings-autosave.php:3277
@@ -9725,7 +9713,7 @@ msgstr "Doen!"
 
 #: wppa-settings-autosave.php:4128
 msgid "Prevent the creation of duplicate photos."
-msgstr ""
+msgstr "Voorkom het aanmaken van dubbele foto's."
 
 #: wppa-settings-autosave.php:4129
 msgid ""
@@ -9733,6 +9721,9 @@ msgid ""
 "will be prevented when the desitation album already contains a photo with "
 "the same filename."
 msgstr ""
+"Indien aangevinkt: het uploaden importeren, copieëren of verplaatsen van "
+"fotos naar andere albums zal verhinderd worden wanneer het album van "
+"bestemming reeds een foto met dezelfde bestandsnaam bevat."
 
 #: wppa-settings-autosave.php:4136
 #, fuzzy
@@ -10118,13 +10109,15 @@ msgstr "檔案沒有擴展名"
 
 #: wppa-settings-autosave.php:4484
 msgid "Remove possible file extension from photo name."
-msgstr ""
+msgstr "Verwijder mogelijk aanwezige bestandsextensies van foto namen."
 
 #: wppa-settings-autosave.php:4485
 msgid ""
 "This may be required for old photos, uploaded when the option in Table IX-D3 "
 "was not yet available/selected."
 msgstr ""
+"Dit kan nodig zijn voor oude foto's, die geupload zijn toen de optie in "
+"Tabel IX-D3 nog niet aanwezig of niet geselecteed was."
 
 #: wppa-settings-autosave.php:4494
 #, fuzzy
@@ -10133,7 +10126,7 @@ msgstr "檔案沒有擴展名"
 
 #: wppa-settings-autosave.php:4495
 msgid "Revert the <i>Remove file-ext</i> action."
-msgstr ""
+msgstr "Maak de <i>Verwijder bestandsextensie</i> actie ongedaan."
 
 #: wppa-settings-autosave.php:4505
 #, fuzzy
@@ -10142,11 +10135,11 @@ msgstr "Watermerk"
 
 #: wppa-settings-autosave.php:4506
 msgid "Apply watermark according to current settings to all photos."
-msgstr ""
+msgstr "Bewatermerk alle foto's conform de huidige instellingen."
 
 #: wppa-settings-autosave.php:4507
 msgid "See Table IX_F for the current watermark settings"
-msgstr ""
+msgstr "Zie Tabel IX-F voor de huidige watermerk instellingen"
 
 #: wppa-settings-autosave.php:4516
 #, fuzzy
@@ -10155,7 +10148,7 @@ msgstr "Zet alles op standaardwaarden"
 
 #: wppa-settings-autosave.php:4517
 msgid "Create all the pages to display slides individually."
-msgstr ""
+msgstr "Maak alle pagina's aan om dia's afzonderlijk op weer te geven."
 
 #: wppa-settings-autosave.php:4518
 #, fuzzy
@@ -10167,6 +10160,9 @@ msgid ""
 "Make sure you have a custom menu and the \"Automatically add new top-level "
 "pages to this menu\" box UNticked!!"
 msgstr ""
+"Overtuig u er eerst van dat u zelf een menu heeft aangemaakt en de box "
+"\"Voeg automatisch nieuwe top-level pagina's toe aan dit menu\" NIET is "
+"aangevinkt!!"
 
 #: wppa-settings-autosave.php:4528
 #, fuzzy
@@ -10175,7 +10171,7 @@ msgstr "Toon Index lijst"
 
 #: wppa-settings-autosave.php:4530
 msgid "List Logfile"
-msgstr ""
+msgstr "Toon Logbestand"
 
 #: wppa-settings-autosave.php:4531
 #, fuzzy
@@ -10263,7 +10259,7 @@ msgstr ""
 #: wppa-settings-autosave.php:4624
 #, php-format
 msgid "For use with %%wppa%% scripting."
-msgstr ""
+msgstr "Voor gebruik met %%wppa%% scripting."
 
 #: wppa-settings-autosave.php:4629
 #, fuzzy
@@ -10277,7 +10273,7 @@ msgstr "設置的優先級wppa+內容過濾器。"
 
 #: wppa-settings-autosave.php:4632
 msgid "For use with [wppa][/wppa] shortcodes."
-msgstr ""
+msgstr "Voor gebruik met [wppa][/wppa] shortcodes."
 
 #: wppa-settings-autosave.php:4637
 msgid "JPG image quality"
@@ -10980,6 +10976,8 @@ msgid ""
 "If you select anything different from \"Albums and thumbnails\", \"Photos "
 "only\" is assumed (Table IX-E6)."
 msgstr ""
+"Indien u iets anders dan \"Albums en miniaturen\" selecteert, dan wordt "
+"\"Alleen foto's\" verondersteld te zijn aangevinkt (Tabel IX-E6)."
 
 #: wppa-settings-autosave.php:5056
 #, fuzzy
@@ -11051,6 +11049,8 @@ msgid ""
 "You may also select one of the textual watermark types at the bottom of the "
 "selection list."
 msgstr ""
+"U kunt ook één van de tekstuele watermerk types aan het einde van de lijst "
+"selecteren."
 
 #: wppa-settings-autosave.php:5089
 msgid "position:"
@@ -11094,11 +11094,11 @@ msgstr "Gebruik watermerk:"
 
 #: wppa-settings-autosave.php:5111
 msgid "The way the textual watermarks look like"
-msgstr ""
+msgstr "De manier waarop de tekstuele watermerken er uit zien"
 
 #: wppa-settings-autosave.php:5115
 msgid "TV subtitle style"
-msgstr ""
+msgstr "TV subtitelings stijl"
 
 #: wppa-settings-autosave.php:5115
 #, fuzzy
@@ -11112,7 +11112,7 @@ msgstr "Klik op achtergrond"
 
 #: wppa-settings-autosave.php:5115
 msgid "Reverse TV style (Utopia)"
-msgstr ""
+msgstr "Omgekeerde TV stijl (Utopia)"
 
 #: wppa-settings-autosave.php:5115
 #, fuzzy
@@ -11126,19 +11126,20 @@ msgstr "Klik op achtergrond"
 
 #: wppa-settings-autosave.php:5124
 msgid "Predefined watermark text"
-msgstr ""
+msgstr "Voorgedefinieerde watermerk tekst"
 
 #: wppa-settings-autosave.php:5125
 msgid "The text to use when --- pre-defined --- is selected."
 msgstr ""
+"De te gebruiken tekst wanneer --- voorgedefinieerd --- is geselecteerd."
 
 #: wppa-settings-autosave.php:5126
 msgid "You may use the following keywords:"
-msgstr ""
+msgstr "U kunt de volgende sleutelwoorden gebruiken:"
 
 #: wppa-settings-autosave.php:5127
 msgid "w#site, w#owner, w#name, w#filename"
-msgstr ""
+msgstr "w#site, w#owner, w#name, w#filename"
 
 #: wppa-settings-autosave.php:5133
 #, fuzzy
@@ -11147,7 +11148,7 @@ msgstr "Gebruik watermerk:"
 
 #: wppa-settings-autosave.php:5134
 msgid "The font to use with textusl watermarks."
-msgstr ""
+msgstr "Het te gebruiken lettertype voor tekstuele watermerken."
 
 #: wppa-settings-autosave.php:5135
 #, fuzzy
@@ -11169,16 +11170,20 @@ msgid ""
 "System font can have size 1,2,3,4 or 5, in some stoneage fontsize units. Any "
 "value > 5 will be treated as 5."
 msgstr ""
+"Het systeem font kan de groottes 1,2,3,4 of 5 hebben in onbekende eenheden. "
+"Elke waarde > 5 wordt behandeld als 5."
 
 #: wppa-settings-autosave.php:5166
 msgid ""
 "Truetype fonts can have any positive integer size, if your PHPs GD version "
 "is 1, in pixels, in GD2 in points."
 msgstr ""
+"Truetype fonts kunnen elke gewenste grootte hebben ( geheel getal); als uw "
+"PHP's GD versie 1 is, in pixels, in GD2 in punten."
 
 #: wppa-settings-autosave.php:5167
 msgid "It is unclear howmany pixels a point is..."
-msgstr ""
+msgstr "Het is onduidelijk hoveel pixels een punt is..."
 
 #: wppa-settings-autosave.php:5173
 #, fuzzy
@@ -11195,6 +11200,8 @@ msgid ""
 "Upload truetype fonts (.ttf) only, and test if they work on your server "
 "platform."
 msgstr ""
+"Alleen truetype fonts uploaden (.ttf), en test om te zien of ze op uw server "
+"werken."
 
 #: wppa-settings-autosave.php:5179
 #, fuzzy
@@ -11215,7 +11222,7 @@ msgstr "U kunt hier de intensiteit van de watermerken instellen."
 
 #: wppa-settings-autosave.php:5191
 msgid "A real life preview. To update: refresh the page."
-msgstr ""
+msgstr "Een échte vooruitblik. Om te verversen: ververs de pagina."
 
 #: wppa-settings-autosave.php:5201
 msgid "Slideshow elements sequence order settings"
@@ -12159,7 +12166,7 @@ msgstr "De relatieve upload map."
 
 #: wppa-settings-autosave.php:5893
 msgid "ABSPATH windows proof"
-msgstr ""
+msgstr "ABSPATH windows bestendig"
 
 #: wppa-settings-autosave.php:5905
 #, fuzzy, php-format
@@ -12218,7 +12225,7 @@ msgstr "開始"
 
 #: wppa-settings-autosave.php:6326
 msgid "Locked!"
-msgstr ""
+msgstr "Geblokkeerd!"
 
 #: wppa-settings-autosave.php:6357
 msgid ""
@@ -13285,7 +13292,7 @@ msgstr "Foto %s bestaat al in album nummer %s."
 
 #: wppa-upload.php:1340
 msgid "Duplicate"
-msgstr ""
+msgstr "Dubbele"
 
 #: wppa-upload.php:1359
 #, php-format
@@ -13418,7 +13425,7 @@ msgstr "Tijd op na het verwerken van %s items. Herstart a.u.b. deze bewerking"
 
 #: wppa-video-working.php:83
 msgid "Your browser does not support the video tag."
-msgstr ""
+msgstr "Uw browser ondersteunt de video tag niet."
 
 #: wppa-watermark.php:522
 #, fuzzy

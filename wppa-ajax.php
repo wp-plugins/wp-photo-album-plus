@@ -2,7 +2,7 @@
 /* wppa-ajax.php
 *
 * Functions used in ajax requests
-* version 5.3.6
+* version 5.3.9
 *
 */
 
@@ -675,6 +675,38 @@ global $wppa_session;
 				case 'suba_order_by':
 					$itemname = __('Sub albums sort order', 'wppa');
 					break;
+	
+				case 'year':
+				case 'month':
+				case 'day':
+				case 'hour':
+				case 'min':
+					$itemname = __('Schedule date/time', 'wppa');
+					$scheduledtm = $wpdb->get_var( $wpdb->prepare( "SELECT `scheduledtm` FROM`".WPPA_ALBUMS."` WHERE `id` = %s", $album ) );
+					if ( ! $scheduledtm ) {
+						$scheduledtm = wppa_get_default_scheduledtm();
+					}
+					$temp = explode( ',', $scheduledtm );
+					if ( $item == 'year' ) 	$temp[0] = $value;
+					if ( $item == 'month' ) $temp[1] = $value; 
+					if ( $item == 'day' ) 	$temp[2] = $value;
+					if ( $item == 'hour' ) 	$temp[3] = $value;
+					if ( $item == 'min' ) 	$temp[4] = $value;
+					$scheduledtm = implode( ',', $temp );
+					wppa_update_album( array( 'id' => $album, 'scheduledtm' => $scheduledtm ) );
+					echo '||0||'.sprintf(__('<b>%s</b> of album %s updated', 'wppa'), $itemname, $album);
+					exit;
+					break;
+					
+				case 'setallscheduled':
+					$scheduledtm = $wpdb->get_var( $wpdb->prepare( "SELECT `scheduledtm` FROM `".WPPA_ALBUMS."` WHERE `id` = %s", $album ) );
+					if ( $scheduledtm ) {
+						$iret = $wpdb->query( $wpdb->prepare( "UPDATE `".WPPA_PHOTOS."` SET `status` = 'scheduled', `scheduledtm` = %s WHERE `album` = %s", $scheduledtm, $album ) );
+						echo '||0||'.__('All photos set to scheduled per date', 'wppa').' ('.$iret.') '.wppa_format_scheduledtm( $scheduledtm );
+					}
+					exit;
+					break;
+					
 				default:
 					$itemname = $item;
 			}
@@ -752,7 +784,7 @@ global $wppa_session;
 			$item  = $_REQUEST['item'];
 			$value = $_REQUEST['value'];
 			$value  = wppa_decode($value);
-			
+
 			// Check validity
 			if ( ! wp_verify_nonce($nonce, 'wppa_nonce_'.$photo) ) {
 				echo '||0||'.__('You do not have the rights to update photo information', 'wppa');
@@ -887,9 +919,9 @@ global $wppa_session;
 					break;
 					
 				case 'status':
-				if ( ! current_user_can('wppa_moderate') ) die('Security check failure #78');
-					wppa_flush_treecounts($wpdb->get_var($wpdb->prepare("SELECT `album` FROM `".WPPA_PHOTOS."` WHERE `id` = %s",$value)));
-					wppa_flush_upldr_cache('photoid', $photo);
+				if ( ! current_user_can( 'wppa_moderate' ) ) die('Security check failure #78');
+					wppa_flush_treecounts( $wpdb->get_var( $wpdb->prepare( "SELECT `album` FROM `".WPPA_PHOTOS."` WHERE `id` = %s", $photo ) ) );
+					wppa_flush_upldr_cache( 'photoid', $photo );
 				case 'name':
 				case 'description':
 				case 'p_order':
@@ -899,6 +931,8 @@ global $wppa_session;
 				case 'linktarget':
 				case 'tags':
 				case 'alt':
+				case 'videox':
+				case 'videoy':
 					switch ($item) {
 						case 'name':
 							$value = strip_tags($value);
@@ -941,12 +975,27 @@ global $wppa_session;
 							$itemname = __('HTML Alt', 'wppa');
 							$value = strip_tags(stripslashes($value));
 							break;
+						case 'videox':
+							$itemname = __('Video width', 'wppa');
+							if ( ! wppa_is_int( $value ) || $value < '0' ) {
+								echo '||3||'.__('Please enter an integer value >= 0', 'wppa');
+								exit;
+							}
+							break;
+						case 'videoy':
+							$itemname = __('Video height', 'wppa');
+							if ( ! wppa_is_int( $value ) || $value < '0' ) {
+								echo '||3||'.__('Please enter an integer value >= 0', 'wppa');
+								exit;
+							}
+							break;
 						default:
 							$itemname = $item;
 					}
 					if ( $item == 'name' || $item == 'description' || $item == 'tags' ) wppa_index_quick_remove('photo', $photo);
 					$iret = $wpdb->query($wpdb->prepare('UPDATE '.WPPA_PHOTOS.' SET `'.$item.'` = %s WHERE `id` = %s', $value, $photo));
 					if ( $item == 'name' || $item == 'description' || $item == 'tags' ) wppa_index_add('photo', $photo);
+					if ( $item == 'status' && $value != 'scheduled' ) wppa_update_photo( array( 'id' => $photo, 'scheduledtm' => '' ) );
 					if ($iret !== false ) {
 						wppa_update_modified($photo);
 						echo '||0||'.sprintf(__('<b>%s</b> of photo %s updated', 'wppa'), $itemname, $photo);
@@ -958,6 +1007,28 @@ global $wppa_session;
 					}
 					break;
 
+				case 'year':
+				case 'month':
+				case 'day':
+				case 'hour':
+				case 'min':
+					$itemname = __('Schedule date/time', 'wppa');
+					$scheduledtm = $wpdb->get_var( $wpdb->prepare( "SELECT `scheduledtm` FROM`".WPPA_PHOTOS."` WHERE `id` = %s", $photo ) );
+					if ( ! $scheduledtm ) {
+						$scheduledtm = wppa_get_default_scheduledtm();
+					}
+					$temp = explode( ',', $scheduledtm );
+					if ( $item == 'year' ) 	$temp[0] = $value;
+					if ( $item == 'month' ) $temp[1] = $value; 
+					if ( $item == 'day' ) 	$temp[2] = $value;
+					if ( $item == 'hour' ) 	$temp[3] = $value;
+					if ( $item == 'min' ) 	$temp[4] = $value;
+					$scheduledtm = implode( ',', $temp );
+					wppa_update_photo( array( 'id' => $photo, 'scheduledtm' => $scheduledtm, 'status' => 'scheduled' ) );
+					wppa_flush_treecounts( $wpdb->get_var( $wpdb->prepare( "SELECT `album` FROM `".WPPA_PHOTOS."` WHERE `id` = %s", $photo ) ) );
+					wppa_flush_upldr_cache( 'photoid', $photo );
+					echo '||0||'.sprintf(__('<b>%s</b> of photo %s updated', 'wppa'), $itemname, $photo);
+					break;
 					
 				default:
 					echo '||98||This update action is not implemented yet('.$item.')';

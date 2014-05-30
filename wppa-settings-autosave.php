@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 5.3.6
+* Version 5.3.9
 *
 */
 
@@ -28,6 +28,10 @@ global $no_default;
 	// Initialize
 	wppa_initialize_runtime( true );
 	$options_error = false;
+	
+	// If watermark all is going to be run, make sure the current user has no private overrule settings
+	delete_option( 'wppa_watermark_file_'.wppa_get_user() );
+	delete_option( 'wppa_watermark_pos_'.wppa_get_user() );
 	
 	// Things that wppa-admin-scripts.js needs to know
 	echo('<script type="text/javascript">'."\n");
@@ -1010,6 +1014,24 @@ global $no_default;
 							$html = wppa_select($slug, $options, $values, $onchange);
 							wppa_setting($slug, '2', $name, $desc, $html.'&nbsp;&nbsp;<img id="wppa-cursor" src="'.wppa_get_imgdir().$wppa_opt[$slug].'" />', $help);
 							}
+/*
+							wppa_setting_subheader( 'H', '1', __( 'Video related size settings', 'wppa' ) );
+							{
+							$name = __('Default width', 'wppa');
+							$desc = __('The width of most videos', 'wppa');
+							$help = esc_js('This setting can be overruled for individual videos on the photo admin pages.', 'wppa');
+							$slug = 'wppa_video_width';
+							$html = wppa_input($slug, '40px', '', __('pixels', 'wppa'));
+							wppa_setting($slug, '1', $name, $desc, $html, $help);
+
+							$name = __('Default height', 'wppa');
+							$desc = __('The height of most videos', 'wppa');
+							$help = esc_js('This setting can be overruled for individual videos on the photo admin pages.', 'wppa');
+							$slug = 'wppa_video_height';
+							$html = wppa_input($slug, '40px', '', __('pixels', 'wppa'));
+							wppa_setting($slug, '2', $name, $desc, $html, $help);
+							}
+*/
 							?>
 						</tbody>
 						<tfoot style="font-weight: bold;" class="wppa_table_1">
@@ -2812,9 +2834,18 @@ global $no_default;
 							$html = wppa_select($slug, $opts, $vals);
 							$class = 'wppa_rating_';
 							wppa_setting($slug, '16.5', $name, $desc, $html, $help, $class);
-
+							
+							$name = __('Top criterium', 'wppa');
+							$desc = __('The top sort item used for topten results from shortcodes.', 'wppa');
+							$help = '';
+							$slug = 'wppa_topten_sortby';
+							$opts = array( __('Mean raiting', 'wppa'), __('Rating count', 'wppa'), __('Viewcount', 'wppa') );
+							$vals = array( 'mean_rating', 'rating_count', 'views' );
+							$html = wppa_select($slug, $opts, $vals);
+							$class = '';
+							wppa_setting($slug, '17', $name, $desc, $html, $help);
 							}
-							wppa_setting_subheader( 'F', '1', __( 'Comments related settings', 'wppa' ), 'wppa_comment_' );
+						wppa_setting_subheader( 'F', '1', __( 'Comments related settings', 'wppa' ), 'wppa_comment_' );
 							{
 							$name = __('Commenting login', 'wppa');
 							$desc = __('Users must be logged in to comment on photos.', 'wppa');
@@ -4460,8 +4491,16 @@ global $no_default;
 							$html = array($html1, $html2, $html3, $html4);
 							wppa_setting(false, '8', $name, $desc, $html, $help);
 							
-							wppa_update_option('wppa_watermark_file_' . wppa_get_user(), $wppa_opt['wppa_watermark_file'] );
-							wppa_update_option('wppa_watermark_pos_' . wppa_get_user(), $wppa_opt['wppa_watermark_pos'] );
+							$name = __('Re-add file-ext', 'wppa');
+							$desc = __('Revert the <i>Remove file-ext</i> action.', 'wppa');
+							$help = '';
+							$slug2 = 'wppa_readd_file_extensions';
+							$html1 = '';
+							$html2 = wppa_maintenance_button( $slug2 );
+							$html3 = wppa_status_field( $slug2 );
+							$html4 = wppa_togo_field( $slug2 );
+							$html = array($html1, $html2, $html3, $html4);
+							wppa_setting(false, '8.1', $name, $desc, $html, $help);
 							
 							$name = __('Watermark all', 'wppa');
 							$desc = __('Apply watermark according to current settings to all photos.', 'wppa');
@@ -4473,6 +4512,18 @@ global $no_default;
 							$html4 = wppa_togo_field( $slug2 );
 							$html = array($html1, $html2, $html3, $html4);
 							wppa_setting(false, '9', $name, $desc, $html, $help);
+							
+							$name = __('Create all autopages', 'wppa');
+							$desc = __('Create all the pages to display slides individually.', 'wppa');
+							$help = esc_js(__('See also Table IV-A7.', 'wppa'));
+							$help .= '\n\n'.esc_js(__('Make sure you have a custom menu and the "Automatically add new top-level pages to this menu" box UNticked!!', 'wppa'));
+							$slug2 = 'wppa_create_all_autopages';
+							$html1 = '';
+							$html2 = wppa_maintenance_button( $slug2 );
+							$html3 = wppa_status_field( $slug2 );
+							$html4 = wppa_togo_field( $slug2 );
+							$html = array($html1, $html2, $html3, $html4);
+							wppa_setting(false, '10', $name, $desc, $html, $help);
 
 						wppa_setting_subheader('C', '4', __('Listings', 'wppa'));
 
@@ -4619,8 +4670,9 @@ global $no_default;
 							$slug = 'wppa_feed_use_thumb';
 							$html = wppa_checkbox($slug);
 							wppa_setting($slug, '6', $name, $desc, $html, $help);
+							
 							}
-							wppa_setting_subheader( 'B', '1', __( 'WPPA+ Admin related miscellaneous settings', 'wppa' ) );
+						wppa_setting_subheader( 'B', '1', __( 'WPPA+ Admin related miscellaneous settings', 'wppa' ) );
 							{
 							$name = __('Allow HTML', 'wppa');
 							$desc = __('Allow HTML in album and photo descriptions.', 'wppa');

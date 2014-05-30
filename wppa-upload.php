@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the upload/import pages and functions
-* Version 5.3.0
+* Version 5.3.9
 *
 */
 
@@ -112,7 +112,7 @@ global $wppa_revno;
 						<p>
 							<label for="wppa-album"><?php _e('Album:', 'wppa'); ?> </label>
 							<select name="wppa-album" id="wppa-album-s">
-								<?php echo wppa_album_select_a(array('path' => wppa_switch('wppa_hier_albsel'),'addpleaseselect' => true, 'checkaccess' => true, 'checkupload' => true));//echo(wppa_album_select('', '', false, false, false, false, false, true)); ?>
+								<?php echo wppa_album_select_a(array('path' => wppa_switch('wppa_hier_albsel'),'addpleaseselect' => true, 'checkaccess' => true, 'checkupload' => true)) ?>
 							</select>
 						</p>
 						<?php if ( wppa_switch('wppa_watermark_on') && ( wppa_switch('wppa_watermark_user') || current_user_can('wppa_settings') ) ) { ?>		
@@ -200,7 +200,7 @@ global $wppa_revno;
 						<p>
 							<label for="wppa-album"><?php _e('Album:', 'wppa'); ?> </label>
 							<select name="wppa-album" id="wppa-album-s">
-								<?php echo wppa_album_select_a(array('path' => wppa_switch('wppa_hier_albsel'),'addpleaseselect' => true, 'checkaccess' => true, 'checkupload' => true));//echo(wppa_album_select('', '', false, false, false, false, false, true)); ?>
+								<?php echo wppa_album_select_a( array( 'path' => wppa_switch('wppa_hier_albsel'), 'addpleaseselect' => true, 'checkaccess' => true, 'checkupload' => true ) ) ?>
 							</select>
 						</p>
 						<?php if ( wppa_switch('wppa_watermark_on') && ( wppa_switch('wppa_watermark_user') || current_user_can('wppa_settings') ) ) { ?>		
@@ -344,8 +344,7 @@ global $wppa;
 		if ( isset( $_POST['wppa-watermark-file'] ) ) update_option('wppa_watermark_file_'.$user, $_POST['wppa-watermark-file']);
 		if ( isset( $_POST['wppa-watermark-pos'] ) ) update_option('wppa_watermark_pos_'.$user, $_POST['wppa-watermark-pos']);
 	}
-//print_r($_POST);
-//print_r($_GET);
+
 	// Do the dirty work
 	if (isset($_GET['zip'])) {
 		wppa_extract($_GET['zip'], true);
@@ -380,26 +379,26 @@ global $wppa;
         if (isset($_POST['del-after-p'])) $delp = true; else $delp = false;
 		if (isset($_POST['del-after-a'])) $dela = true; else $dela = false;	
 		if (isset($_POST['del-after-z'])) $delz = true; else $delz = false;
-//		if (isset($_POST['del-after-d'])) $deld = true; else $deld = false;
-		wppa_import_photos($delp, $dela, $delz);
+		if (isset($_POST['del-after-v'])) $delv = true; else $delv = false;
+		wppa_import_photos($delp, $dela, $delz, $delv);
 	} 
 	elseif ( isset($_GET['continue']) ) {
 		if ( wp_verify_nonce( $_GET['nonce'], 'dirimport' ) ) wppa_import_photos();
 	}
 	
-if ( $wppa['ajax'] ) {
-	ob_end_clean();
-	if ( $wppa['ajax_import_files_done'] ) {
-		echo '<span style="color:green" >'.$wppa['ajax_import_files'].' '.__('Done!', 'wppa').'</span>';
+	if ( $wppa['ajax'] ) {
+		ob_end_clean();
+		if ( $wppa['ajax_import_files_done'] ) {
+			echo '<span style="color:green" >'.$wppa['ajax_import_files'].' '.__('Done!', 'wppa').'</span>';
+		}
+		elseif ( $wppa['ajax_import_files_error'] ) {
+			echo '<span style="color:red" >'.$wppa['ajax_import_files'].' '.$wppa['ajax_import_files_error'].'</span>';
+		}
+		else {
+			echo '<span style="color:red" >'.$wppa['ajax_import_files'].' '.__('Failed!', 'wppa').'</span>';
+		}
+		exit;
 	}
-	elseif ( $wppa['ajax_import_files_error'] ) {
-		echo '<span style="color:red" >'.$wppa['ajax_import_files'].' '.$wppa['ajax_import_files_error'].'</span>';
-	}
-	else {
-		echo '<span style="color:red" >'.$wppa['ajax_import_files'].' '.__('Failed!', 'wppa').'</span>';
-	}
-	exit;
-}
 
 	// Sanitize again
 	$count = wppa_sanitize_files();
@@ -441,6 +440,7 @@ if ( $wppa['ajax'] ) {
 			$zipcount 	= wppa_get_zipcount($files);
 			$albumcount = wppa_get_albumcount($files);
 			$photocount = wppa_get_photocount($files);
+			$videocount = wppa_get_video_count($files);
 			$dircount	= $is_depot ? wppa_get_dircount($files) : '0';
 			// echo 'zips:'.$zipcount,' albs:'.$albumcount.' pho:'.$photocount.' dirs:'.$dircount;
 			if ( $ngg_opts ) {
@@ -458,6 +458,7 @@ if ( $wppa['ajax'] ) {
 			$zipcount 		= '0';
 			$albumcount 	= '0';
 			$photocount 	= $files ? count($files) : '0';
+			$videocount 	= '0';
 			$dircount		= '0';
 			$is_ngg 		= false;
 		}
@@ -515,9 +516,9 @@ if ( $wppa['ajax'] ) {
 <?php
 		
 		// check if albums exist or will be made before allowing upload
-		if ( wppa_has_albums() || $albumcount > '0' || $zipcount >'0' || $dircount > '0' ) { 
+		if ( wppa_has_albums() || $albumcount > '0' || $zipcount >'0' || $dircount > '0' || $videocount > '0' ) { 
 	
-			if ( $photocount > '0' || $albumcount > '0' || $zipcount >'0' || $dircount > '0') { ?>
+			if ( $photocount > '0' || $albumcount > '0' || $zipcount >'0' || $dircount > '0' || $videocount > '0' ) { ?>
 			
 				<form action="<?php echo(wppa_dbg_url(get_admin_url().'admin.php?page=wppa_import_photos')) ?>" method="post">
 				<?php wp_nonce_field('$wppa_nonce', WPPA_NONCE); 
@@ -616,7 +617,7 @@ if ( $wppa['ajax'] ) {
 				<?php }
 				
 				// Display the single photos
-				if ($photocount > '0') { ?>
+				if ($photocount > '0' ) { ?>
 					<div style="border:1px solid gray; padding:4px; margin: 3px 0;" >
 						<p><b>
 							<?php _e('There are', 'wppa'); echo(' '.$photocount.' '); 
@@ -632,8 +633,8 @@ if ( $wppa['ajax'] ) {
 						<p class="hideifupdate" >
 							<?php _e('Default album for import:', 'wppa') ?>
 							<select name="wppa-album" id="wppa-album">
-								<option value=""><?php _e('- select an album -', 'wppa') ?></option>
-								<?php echo(wppa_album_select('', '', false, false, false, false, false, true)) ?>
+								<!--<option value=""><?php // _e('- select an album -', 'wppa') ?></option>-->
+								<?php echo wppa_album_select_a( array( 'path' => wppa_switch('wppa_hier_albsel'), 'addpleaseselect' => true, 'checkaccess' => true, 'checkupload' => true ) ); // ( '', '', false, false, false, false, false, true ) ) ?>
 							</select>
 							<?php _e('Photos that have (<em>name</em>)[<em>album</em>] will be imported by that <em>name</em> in that <em>album</em>.', 'wppa') ?>
 						</p>
@@ -711,6 +712,60 @@ if ( $wppa['ajax'] ) {
 						</table>
 					</div>
 				<?php } 
+				// Display the videos
+				if ( $videocount > '0' ) { ?>
+					<div style="border:1px solid gray; padding:4px; margin: 3px 0;" >
+						<p><b>
+							<?php _e('There are', 'wppa'); echo(' '.$videocount.' '); _e('videos in the depot.', 'wppa') ?><br/>
+						</b></p>
+						<p class="hideifupdate" >
+							<?php _e('Album to import to:', 'wppa') ?>
+							<select name="wppa-video-album" id="wppa-video-album">
+								<option value=""><?php _e('- select an album -', 'wppa') ?></option>
+								<?php echo wppa_album_select_a( array( 'path' => wppa_switch('wppa_hier_albsel'), 'addpleaseselect' => true, 'checkaccess' => true, 'checkupload' => true ) ); // ('', '', false, false, false, false, false, true)) ?>
+							</select>
+						</p>
+						<table class="form-table wppa-table widefat" style="margin-bottom:0;" >
+							<thead>
+								<tr>
+									<td>
+										<input type="checkbox" id="all-video" checked="checked" onchange="checkAll('all-video', '.wppa-video')" /><b>&nbsp;&nbsp;<?php _e('Check/uncheck all', 'wppa') ?></b>
+									</td>
+									<?php if ($is_sub_depot) { ?>
+										<td>
+											<input type="checkbox" id="del-after-v" name="del-after-v" checked="checked" /><b>&nbsp;&nbsp;<?php _e('Delete after successful import.', 'wppa'); ?></b>
+										</td>
+									<?php } ?>
+								</tr>
+							</thead>
+						</table>
+						<table class="form-table wppa-table widefat" style="margin-top:0;" >
+							<tr>
+								<?php
+								$ct = 0;
+								$idx = '0';
+								foreach ($files as $file) {
+						
+									$ext = strtolower(substr(strrchr($file, "."), 1));
+									if ( in_array( $ext, array( 'mp4', 'ogg', 'ogv', 'webm' ) ) ) { ?>
+										<td>
+											<input type="checkbox" id="file-<?php echo($idx) ?>" name="file-<?php echo($idx) ?>" class="wppa-video" checked="checked" />&nbsp;&nbsp;<?php echo(basename($file)); ?>
+										</td>
+										<?php if ($ct == 3) {
+											echo('</tr><tr>'); 
+											$ct = 0;
+										}
+										else {
+											$ct++;
+										}
+									}
+									$idx++;
+								} ?>
+							</tr>
+						</table>
+					</div>
+				<?php }
+				
 				// Display the directories to be imported as albums. Do this in the depot only!!
 				if ( $is_depot && $dircount > '0' ) { ?>
 					<div style="border:1px solid gray; padding:4px; margin: 3px 0;" >
@@ -723,10 +778,6 @@ if ( $wppa['ajax'] ) {
 									<td>
 										<input type="checkbox" id="all-dir" checked="checked" onchange="checkAll('all-dir', '.wppa-dir')" /><b>&nbsp;&nbsp;<?php _e('Check/uncheck all', 'wppa') ?></b>
 									</td>
-		<!--							<td>
-										<input type="checkbox" id="wppa-crepag" name="wppa-crepag" checked="checked" ><b>&nbsp;&nbsp;<?php _e('Create WP page for album to be displayed.', 'wppa') ?></b>
-									</td>
-		-->
 								</tr>
 							</thead>
 						</table>				
@@ -734,7 +785,6 @@ if ( $wppa['ajax'] ) {
 							<?php 
 								$ct = 0; 
 								$idx = '0';
-						//		$subdircount = '0';
 								foreach( $files as $dir ) { 
 									if ( basename($dir) == '.' ) {}
 									elseif ( basename($dir) == '..' ) {}
@@ -764,7 +814,17 @@ if ( $wppa['ajax'] ) {
 				?>
 				<p>
 					<script type="text/javascript">
+						function wppaVfyAlbum() {
+							if ( jQuery('#wppa-update').attr('checked') != 'checked' ) {
+								if ( jQuery('#wppa-album').attr('value') == '0' ) {
+									alert('Please select an album first');
+									return false;
+								}
+							}
+							return true;
+						}
 						function wppaCheckInputVars() {
+							if ( ! wppaVfyAlbum() ) return false;
 							var checks = jQuery(':checked');
 							var nChecks = checks.length;
 							var nMax = <?php echo ini_get('max_input_vars') ?>;
@@ -857,7 +917,7 @@ if ( $wppa['ajax'] ) {
 						}
 					</script>
 					<?php if ( $photocount > '0' && ! $albumcount && ! $dircount && ! $zipcount ) { ?>
-					<input id="wppa-start-ajax" type="button" onclick="wppaDoAjaxImport()" class="button-secundary" value="Start Ajax" />
+					<input id="wppa-start-ajax" type="button" onclick="if ( wppaVfyAlbum() ) { wppaDoAjaxImport() }" class="button-secundary" value="Start Ajax" />
 					<input id="wppa-stop-ajax" style="display:none;" type="button" onclick="wppaStopAjaxImport()" class="button-secundary" value="Stop Ajax" />
 					<?php } ?>
 				</p>
@@ -867,9 +927,11 @@ if ( $wppa['ajax'] ) {
 		else {
 			if ( $source_type == 'local' ) {
 				if (PHP_VERSION_ID >= 50207) {
+//					wppa_ok_message(__('There are no archives, albums, photos or videos in directory:', 'wppa').' '.$source_url);
 					wppa_ok_message(__('There are no archives, albums or photos in directory:', 'wppa').' '.$source_url);
 				}
 				else {
+//					wppa_ok_message(__('There are no albums, photos or videos in directory:', 'wppa').' '.$source_url);
 					wppa_ok_message(__('There are no albums or photos in directory:', 'wppa').' '.$source_url);
 				}
 			}
@@ -1085,7 +1147,7 @@ global $target;
 	return $error;
 }
 
-function wppa_import_photos($delp = false, $dela = false, $delz = false) {
+function wppa_import_photos( $delp = false, $dela = false, $delz = false, $delv = false ) {
 global $wpdb;
 global $warning_given;
 global $wppa;
@@ -1182,10 +1244,6 @@ global $wppa_opt;
 					else {
 						$id = basename($album);
 						$id = substr($id, 0, strpos($id, '.'));
-//						if (!wppa_is_id_free('album', $id)) $id = wppa_nextkey(WPPA_ALBUMS);
-//						$query = $wpdb->prepare( "INSERT IN TO `" . WPPA_ALBUMS . "` (`id`, `name`, `description`, `a_order`, `a_parent`, `p_order_by`, `main_photo`, `cover_linktype`, `cover_linkpage`, `owner`, `timestamp`, `default_tags`, `cover_type`, `suba_order_by`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, '', '', '')", $id, stripslashes($name), stripslashes($desc), $aord, $parent, $porder, '0', 'content', '0', $owner, time());
-//						$iret = $wpdb->query($query);
-						
 						$id = wppa_create_album_entry( array (	'id' 			=> $id, 
 																'name' 			=> stripslashes( $name ), 
 																'description' 	=> stripslashes( $desc ),
@@ -1223,16 +1281,13 @@ global $wppa_opt;
 	if ( isset($_POST['cre-album']) ) {	// use album ngg gallery name for ngg conversion
 		$album 	= wppa_get_album_id(strip_tags($_POST['cre-album']));
 		if ( ! $album ) {				// the album does not exist yet, create it
-//			$album 	= wppa_nextkey(WPPA_ALBUMS);
 			$name	= strip_tags($_POST['cre-album']);
 			$desc 	= sprintf(__('This album has been converted from ngg gallery %s', 'wppa'), $name);
 			$uplim	= '0/0';	// Unlimited not to destroy the conversion process!!
-//			$query = $wpdb->prepare("INSERT IN TO `" . WPPA_ALBUMS . "` (`id`, `name`, `description`, `a_order`, `a_parent`, `p_order_by`, `main_photo`, `cover_linktype`, `cover_linkpage`, `owner`, `timestamp`, `upload_limit`, `alt_thumbsize`, `default_tags`, `cover_type`, `suba_order_by`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, '', '', '')", $album, $name, $desc, '0', '0', '0', '0', 'content', '0', wppa_get_user(), time(), $uplim, '0');
 			$album = wppa_create_album_entry( array ( 	'name' 			=> $name,
 														'description' 	=> $desc,
 														'upload_limit' 	=> $uplim
 														) );
-//			$album = $wpdb->query($query);
 			if ( $album === false ) {
 				wppa_error_message(__('Could not create album.', 'wppa').'<br/>Query = '.$query);
 				wp_die('Sorry, cannot continue');
@@ -1248,11 +1303,10 @@ global $wppa_opt;
 	foreach ( array_keys($files) as $file_idx ) {
 		$file = $files[$file_idx];
 		if ( isset($_POST['use-backup']) && is_file($file.'_backup') ) {
-//			echo 'Using '.$file.'_backup in stead of '.$file.'<br />';
 			$file = $file.'_backup';
 		}
 		if ( isset($_POST['file-'.$idx]) || $wppa['ajax'] ) {
-if ( $wppa['ajax'] ) $wppa['ajax_import_files'] = basename($file);	/* */
+			if ( $wppa['ajax'] ) $wppa['ajax_import_files'] = basename($file);	/* */
 			$ext = strtolower(substr(strrchr($file, "."), 1));
 			$ext = str_replace('_backup', '', $ext);
 			if ($ext == 'jpg' || $ext == 'png' || $ext == 'gif') {
@@ -1277,7 +1331,7 @@ if ( $wppa['ajax'] ) $wppa['ajax_import_files'] = basename($file);	/* */
 				}
 				// Update the photo ?
 				if (isset($_POST['wppa-update'])) { 
-					$iret = wppa_update_photo($file, $name);
+					$iret = wppa_update_photo_files( $file, $name );
 					if ( $iret ) {
 						if ( $wppa['ajax'] ) $wppa['ajax_import_files_done'] = true;
 						$pcount++;
@@ -1330,12 +1384,11 @@ if ( $wppa['ajax'] ) $wppa['ajax_import_files'] = basename($file);	/* */
 	
 	// Now the dirs to album imports
 	
-	$idx='0';
-	$dircount = '0';
+	$idx 		= '0';
+	$dircount 	= '0';
 	global $photocount;
 	$photocount = '0';
-	$iret = true;
-//	$files = glob($depot.'/*');
+	$iret 		= true;
 
 	foreach ($files as $file) {
 		if ( basename($file) != '.' &&  basename($file) != '..' && ( isset($_POST['file-'.$idx]) || isset($_GET['continue']) ) ) {
@@ -1351,10 +1404,37 @@ if ( $wppa['ajax'] ) $wppa['ajax_import_files'] = basename($file);	/* */
 		if ( $iret == false ) break;	// Time out
 	}	
 	
+	global $thumb;
+	$videocount = '0';
+	$alb = isset( $_POST['wppa-video-album'] ) ? $_POST['wppa-video-album'] : '0';
+	foreach ( array_keys( $files ) as $idx ) {
+		if ( isset( $_POST['file-'.$idx] ) ) {
+			$file = $files[$idx];
+			$ext = strtolower( substr( strrchr( $file, "." ), 1 ) );
+			if ( in_array( $ext, array( 'mp4', 'ogg', 'ogv', 'webm' ) ) ) {
+				if ( is_numeric( $alb ) && $alb != '0' ) {
+					$filename = wppa_strip_ext( basename( $file ) ).'.xxx';
+					$id = wppa_file_is_in_album( $filename, $alb );
+					if ( ! $id ) {	// Add new entry
+						$id = wppa_create_photo_entry( array( 'album' => $alb, 'filename' => $filename, 'ext' => 'xxx', 'name' => wppa_strip_ext( $filename ) ) );
+						wppa_flush_treecounts( $alb );
+					}					
+					// Add video filetype
+					$newpath = wppa_strip_ext( wppa_get_photo_path( $id ) ).'.'.$ext;
+					copy( $file, $newpath );
+					if ( $delv ) unlink( $file );
+					$videocount++;
+				}
+				else {
+					wppa_error_message( sprintf( __( 'Error inserting video %s, unknown or non existent album.', 'wppa' ), basename( $file ) ) );
+				}				
+			}
+		}
+	}
 	
 	wppa_ok_message(__('Done processing files.', 'wppa'));
 	
-	if ($pcount == '0' && $acount == '0' && $zcount == '0' && $dircount == '0' && $photocount == '0') {
+	if ( $pcount == '0' && $acount == '0' && $zcount == '0' && $dircount == '0' && $photocount == '0' && $videocount == '0' ) {
 		wppa_error_message(__('No files to import.', 'wppa'));
 	}
 	else {
@@ -1373,9 +1453,11 @@ if ( $wppa['ajax'] ) $wppa['ajax_import_files'] = basename($file);	/* */
 			}
 			else $msg .= $pcount.' '.__('single photos imported.', 'wppa').' '; 
 		}
+		if ( $videocount ) {
+			$msg .= $videocount.' '.__('Videos imported.', 'wppa');
+		}
 		wppa_ok_message($msg); 
 		wppa_set_last_album($album);
-//		if ( $wppa['ajax'] ) $wppa['ajax_import_files'] = basename($files['0']);	/* */
 	}
 }
 
@@ -1412,6 +1494,18 @@ function wppa_get_photocount($files) {
 	return $result;
 }
 
+function wppa_get_video_count( $files ) {
+	$result = 0;
+	if ( $files ) {
+		foreach ( $files as $file ) {
+			$ext = strtolower( wppa_get_ext( $file ) );
+			if ( $ext == 'mp4' || $ext == 'ogg' || $ext == 'ogv' || $ext == 'webm') $result++;
+		}
+	}
+	return $result;
+}
+			
+	
 // Find dir is new album candidates
 function wppa_get_dircount($files) {
 	$result = 0;
@@ -1527,12 +1621,8 @@ global $wppa_opt;
 	if ( is_dir($file) ) {
 		$alb = wppa_get_album_id(basename($file));
 		if ( !$alb ) {	// Album must be created
-//			$alb 	= wppa_nextkey(WPPA_ALBUMS);
-//			$id 	= $alb;
 			$name	= basename($file);
 			$uplim	= $wppa_opt['wppa_upload_limit_count'].'/'.$wppa_opt['wppa_upload_limit_time'];
-//			$query = $wpdb->prepare("INSERT IN TO `" . WPPA_ALBUMS . "` (`id`, `name`, `description`, `a_order`, `a_parent`, `p_order_by`, `main_photo`, `cover_linktype`, `cover_linkpage`, `owner`, `timestamp`, `upload_limit`, `alt_thumbsize`, `default_tags`, `cover_type`, `suba_order_by`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, '', '', '')", $id, $name, '', '0', $parent, '0', '0', 'content', '0', wppa_get_user(), time(), $uplim, '0');
-//			$iret = $wpdb->query($query);
 			$alb = wppa_create_album_entry( array ( 'name' 		=> $name,
 													'a_parent' 	=> $parent
 													) );

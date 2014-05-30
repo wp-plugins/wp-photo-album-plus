@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display a list of users linking to their photos
-* Version 5.3.6
+* Version 5.3.9
 */
 
 if ( ! defined( 'ABSPATH' ) ) die( "Can't load this file directly" );
@@ -45,14 +45,14 @@ class UpldrWidget extends WP_Widget {
 				$me = wppa_get_user();
 				if ( $user['user_login'] != $me && isset ( $upldrcache[$user['ID']] ) ) $photo_count = $upldrcache[$user['ID']];
 				else {
-					$photo_count = $wpdb->get_var($wpdb->prepare( "SELECT COUNT(*) FROM `".WPPA_PHOTOS."` WHERE `owner` = %s AND ( `status` <> 'pending' OR `owner` = %s )", $user['user_login'], $me ));
+					$photo_count = $wpdb->get_var($wpdb->prepare( "SELECT COUNT(*) FROM `".WPPA_PHOTOS."` WHERE `owner` = %s AND ( ( `status` <> 'pending' AND `status` <> 'scheduled' ) OR `owner` = %s )", $user['user_login'], $me ));
 					if ( $user['user_login'] != $me ) {
 						$upldrcache[$user['ID']] = $photo_count;
 						$needupdate = true;
 					}
 				}
 				if ( $photo_count ) {
-					$last_dtm = $wpdb->get_var($wpdb->prepare( "SELECT `timestamp` FROM `".WPPA_PHOTOS."` WHERE `owner` = %s AND ( `status` <> 'pending' OR `owner` = %s ) ORDER BY `timestamp` DESC LIMIT 1", $user['user_login'], $me ));
+					$last_dtm = $wpdb->get_var($wpdb->prepare( "SELECT `timestamp` FROM `".WPPA_PHOTOS."` WHERE `owner` = %s AND ( ( `status` <> 'pending' AND `status` <> 'scheduled' ) OR `owner` = %s ) ORDER BY `timestamp` DESC LIMIT 1", $user['user_login'], $me ));
 					$workarr[] = array('login' => $user['user_login'], 'name' => $user['display_name'], 'count' => $photo_count, 'date' => $last_dtm);
 				}
 			}

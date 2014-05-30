@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the non admin stuff
-* Version 5.3.6
+* Version 5.3.9
 *
 */
 
@@ -349,6 +349,31 @@ function wppa_redirect() {
 	}
 }
 
+/* ADD PAGE SPECIFIC ( http or https ) URLS */
+/* These lines are removed from wppa-init.[lang].js */
+add_action( 'wp_head', 'wppa_add_page_specific_urls', '99' );
+
+function wppa_add_page_specific_urls() {
+global $wppa_opt;
+global $wppa;
+
+	wppa_add_js_page_data( wppa_nltab('+').'<script type="text/javascript">' );
+	wppa_add_js_page_data( wppa_nltab().'wppaImageDirectory = "'.wppa_get_imgdir().'";' );
+/*	wppa_add_js_page_data( wppa_nltab().'wppaSiteUrl = "'.site_url().'";' );	*/
+	wppa_add_js_page_data( wppa_nltab().'wppaWppaUrl = "'.wppa_get_wppa_url().'";' );
+	wppa_add_js_page_data( wppa_nltab().'wppaIncludeUrl = "'.trim( includes_url(), '/' ).'";' );
+	wppa_add_js_page_data( wppa_nltab().'wppaAjaxUrl = "'.( wppa_switch('wppa_ajax_non_admin') ? WPPA_URL.'/wppa-ajax-front.php' : admin_url('admin-ajax.php') ).'";' );
+	wppa_add_js_page_data( wppa_nltab().'wppaUploadUrl = "'.WPPA_UPLOAD_URL.'";' );
+	wppa_add_js_page_data( wppa_nltab('-').'</script>' );
+	
+	if ( ! wppa_switch( 'wppa_defer_javascript' ) ) {
+		echo '<!-- WPPA+ BEGIN Page specific urls -->';
+		echo $wppa['out'];
+		echo "\n".'<!-- WPPA+ END Page specific urls -->';
+		$wppa['out'] = '';
+	}
+}
+
 /* ENABLE RENDERING */
 add_action( 'wp_head', 'wppa_kickoff', '100' );
 
@@ -462,7 +487,6 @@ global $wppa_init_js_data;
 	wppaPopupLinkType = "'.$wppa_opt['wppa_thumb_linktype'].'";
 	wppaAnimationType = "'.$wppa_opt['wppa_animation_type'].'";
 	wppaAnimationSpeed = '.$wppa_opt['wppa_animation_speed'].';
-	wppaImageDirectory = "'.wppa_get_imgdir().'";
 	wppaThumbnailAreaDelta = '.wppa_get_thumbnail_area_delta().';
 	wppaTextFrameDelta = '.wppa_get_textframe_delta().';
 	wppaBoxDelta = '.wppa_get_box_delta().';
@@ -510,15 +534,9 @@ global $wppa_init_js_data;
 	wppaFontWeightNumbarActive = "'.$wppa_opt['wppa_fontweight_numbar_active'].'";
 	wppaNumbarMax = "'.$wppa_opt['wppa_numbar_max'].'";
 	wppaLang = "'.$wppa_lang.'";
-	wppaAjaxUrl = "'.( wppa_switch('wppa_ajax_non_admin') ? WPPA_URL.'/wppa-ajax-front.php' : admin_url('admin-ajax.php') ).'";
-	wppaSiteUrl = "'.site_url().'";
-	wppaWppaUrl = "'.WPPA_URL.'";
-	wppaIncludeUrl = "'.trim(includes_url(), '/').'";
 	wppaNextOnCallback = '.( wppa_switch('wppa_next_on_callback') ? 'true' : 'false' ).';
 	wppaRatingUseAjax = true;
 	wppaStarOpacity = '.( $wppa_opt['wppa_star_opacity']/'100' ).';
-	wppaTickImg.src = "'.wppa_get_imgdir().'tick.png";
-	wppaClockImg.src = "'.wppa_get_imgdir().'clock.png";
 	wppaSlideWrap = '.( wppa_switch('wppa_slide_wrap') ? 'true' : 'false' ).';
 	wppaLightBox = "'.$lbkey.'";
 	wppaEmailRequired = '.( wppa_switch('wppa_comment_email_required') ? 'true' : 'false' ).';
@@ -536,7 +554,6 @@ global $wppa_init_js_data;
 	wppaArtMonkyLink = "'.$wppa_opt['wppa_art_monkey_link'].'";
 	wppaAutoOpenComments = '.( wppa_switch('wppa_auto_open_comments') ? 'true' : 'false' ).';
 	wppaUpdateAddressLine = '.( wppa_switch('wppa_update_addressline') ? 'true' : 'false' ).';
-	wppaUploadUrl = "'.WPPA_UPLOAD_URL.'";
 	wppaFilmThumbTitle = "'.( $wppa_opt['wppa_film_linktype'] == 'lightbox' ? wppa_zoom_in() : __a('Double click to start/stop slideshow running') ).'";
 	wppaVoteForMe = "'.__($wppa_opt['wppa_vote_button_text']).'";
 	wppaVotedForMe = "'.__($wppa_opt['wppa_voted_button_text']).'";
