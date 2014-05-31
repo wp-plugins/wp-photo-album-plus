@@ -65,6 +65,7 @@ There are translations in many languages. The frontend and admin sides are separ
 * Slovak translation by Branco Radenovich (<a href="http://webhostinggeeks.com/user-reviews/">WebHostingGeeks.com</a>) (frontend)
 * Polish translation by Maciej Matysiak (both)
 * Ukranian translation by Michael Yunat (<a href="http://getvoip.com/blog">http://getvoip.com</a>) (both)
+* Italian translation by Gianni Diurno (<a href="http://gidibao.net">http://gidibao.net</a> & <a href="http://charmingpress.com">http://charmingpress.com</a>) (both)
 
 == Installation ==
 

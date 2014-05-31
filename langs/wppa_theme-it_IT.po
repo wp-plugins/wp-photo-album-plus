@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: WP Photo Album Plus in italiano\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-05-30 08:04+0100\n"
-"PO-Revision-Date: 2014-05-30 08:04+0100\n"
+"PO-Revision-Date: 2014-05-31 01:02+0100\n"
 "Last-Translator: J.N. Breetvelt <OpaJaap@OpaJaap.nl>\n"
 "Language-Team: Gianni Diurno | gidibao.net & charmingpress.com\n"
 "Language: it_IT\n"
@@ -18,7 +18,7 @@ msgstr ""
 "X-Poedit-KeywordsList: __a\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-SourceCharset: utf-8\n"
-"X-Generator: Poedit 1.6.5\n"
+"X-Generator: Poedit 1.6.4\n"
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPath-1: theme\n"
 
@@ -127,7 +127,7 @@ msgstr "Slideshow"
 #: wppa-album-covers.php:202 wppa-album-covers.php:399
 #: wppa-album-covers.php:572
 msgid "Browse photos"
-msgstr "Naviga foto"
+msgstr "Sfoglia foto"
 
 #: wppa-album-covers.php:837
 msgid "Link to"
@@ -378,17 +378,13 @@ msgstr ""
 "foto navn"
 
 #: wppa-boxes-html.php:788
-#, fuzzy
 msgid ""
 "If you leave this blank, the original filename will be used as photo name."
-msgstr ""
-"Hvis du ikke udfylder dette felt, s&aring; vil filens navn blive brugt som "
-"foto navn"
+msgstr "Se lasci vuoto, il nome del file verrà usato come nome foto."
 
 #: wppa-boxes-html.php:792
-#, fuzzy
 msgid "Enter photo name."
-msgstr "Indtast foto navn"
+msgstr "Immetti nome foto."
 
 #: wppa-boxes-html.php:800
 msgid "Enter/modify photo description"
@@ -981,9 +977,8 @@ msgstr ""
 "la ricerca.ie cercate anche per data."
 
 #: wppa-functions.php:1416 wppa-functions.php:2690
-#, fuzzy
 msgid "Edit"
-msgstr "Rediger!"
+msgstr "Modifica"
 
 #: wppa-functions.php:1421 wppa-functions.php:2686 wppa-links.php:516
 #: wppa-links.php:533
@@ -993,9 +988,8 @@ msgstr "Er du sikker p&aring;, at du vil fjerne dette foto"
 
 #: wppa-functions.php:1422 wppa-functions.php:2687 wppa-links.php:523
 #: wppa-links.php:541
-#, fuzzy
 msgid "Delete"
-msgstr "Slet"
+msgstr "Elimina"
 
 #: wppa-functions.php:1565
 msgid "Comment edited"
@@ -1022,9 +1016,8 @@ msgid "Moderate manage photo"
 msgstr "Se fotos"
 
 #: wppa-functions.php:1584
-#, fuzzy
 msgid "Edit photo"
-msgstr "N&aelig;ste billede"
+msgstr "Modifica foto"
 
 #: wppa-functions.php:1593
 #, fuzzy
@@ -1196,24 +1189,20 @@ msgid "This upload requires moderation"
 msgstr "Denne indsendelse kr&aelig;ver godkendelse"
 
 #: wppa-functions.php:4220 wppa-upload.php:1114
-#, fuzzy
 msgid "Details:"
-msgstr "Detaljer:"
+msgstr "Dettagli:"
 
 #: wppa-functions.php:4221 wppa-upload.php:1115
-#, fuzzy
 msgid "Manage photo"
-msgstr "Se fotos"
+msgstr "Gestisci foto"
 
 #: wppa-functions.php:4361
-#, fuzzy
 msgid "You can upload after"
-msgstr "Du kan indsende efter"
+msgstr "Puoi caricare dopo"
 
 #: wppa-functions.php:4399
-#, fuzzy
 msgid "Zoom in"
-msgstr "Zoom ind"
+msgstr "Zoom avanti"
 
 #: wppa-items.php:90 wppa-utils.php:1543
 msgid "Gold medal award!"
@@ -1228,9 +1217,8 @@ msgid "Bronze medal award!"
 msgstr ""
 
 #: wppa-items.php:128 wppa-items.php:246
-#, fuzzy
 msgid "none"
-msgstr "--- ingen ---"
+msgstr "niente"
 
 #: wppa-items.php:157 wppa-items.php:257
 #, fuzzy
@@ -1246,23 +1234,20 @@ msgid "--- separate ---"
 msgstr "--- separato ---"
 
 #: wppa-items.php:197
-#, fuzzy
 msgid "--- all ---"
-msgstr "--- ingen ---"
+msgstr "--- tutto ---"
 
 #: wppa-items.php:201 wppa-items.php:222
-#, fuzzy
 msgid "--- deleted ---"
-msgstr "--- vises ikke ---"
+msgstr "--- eliminato ---"
 
 #: wppa-items.php:211
 msgid "All Albums"
 msgstr "Tutti album"
 
 #: wppa-lasten-widget.php:34
-#, fuzzy
 msgid "Last Ten Uploaded Photos"
-msgstr "Foto Top Ti"
+msgstr "Ultime dieci foto caricate"
 
 #: wppa-lasten-widget.php:81
 #, fuzzy
@@ -1270,34 +1255,28 @@ msgid "View the most recent uploaded photos"
 msgstr "Se fotos med h&oslash;jeste bed&oslash;mmelse"
 
 #: wppa-links.php:504
-#, fuzzy
 msgid "App"
-msgstr "Anv."
+msgstr "Approva"
 
 #: wppa-links.php:505
-#, fuzzy
 msgid "Mod"
-msgstr "Ret"
+msgstr "Modifica"
 
 #: wppa-links.php:506
-#, fuzzy
 msgid "Del"
-msgstr "Slet"
+msgstr "Elimina"
 
 #: wppa-links.php:510 wppa-links.php:527
-#, fuzzy
 msgid "Are you sure you want to publish this photo?"
-msgstr "Er du sikker p&aring;, at du vil udgive dette foto"
+msgstr "Sei sicuro di voler pubblicare questa foto?"
 
 #: wppa-links.php:521 wppa-links.php:538
-#, fuzzy
 msgid "Approve"
-msgstr "Godkend"
+msgstr "Approva"
 
 #: wppa-links.php:522
-#, fuzzy
 msgid "Moderate"
-msgstr "Vedligehold"
+msgstr "Modera"
 
 #: wppa-links.php:539
 #, fuzzy

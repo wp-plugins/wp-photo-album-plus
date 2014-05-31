@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wp-photo-album-plus\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-05-30 07:59+0100\n"
-"PO-Revision-Date: 2014-05-30 14:34+0100\n"
+"POT-Creation-Date: 2014-05-30 15:02+0100\n"
+"PO-Revision-Date: 2014-05-31 07:22+0100\n"
 "Last-Translator: J.N. Breetvelt <OpaJaap@OpaJaap.nl>\n"
 "Language-Team: \n"
 "Language: nl_NL\n"
@@ -275,7 +275,7 @@ msgstr "Wijzigen is tijdelijk uitgeschakeld voor u"
 msgid "Importing is temporary diabled for you"
 msgstr "Importeren is tijdelijk uitgeschakeld voor u"
 
-#: wppa-admin.php:120 wppa-upload.php:832
+#: wppa-admin.php:120 wppa-upload.php:842
 msgid "Import"
 msgstr "Importeer"
 
@@ -1082,16 +1082,16 @@ msgstr ""
 msgid "New Album"
 msgstr "Nieuw Album"
 
-#: wppa-album-admin-autosave.php:90 wppa-upload.php:1247 wppa-upload.php:1282
-#: wppa-upload.php:1620
+#: wppa-album-admin-autosave.php:90 wppa-upload.php:1257 wppa-upload.php:1292
+#: wppa-upload.php:1630
 msgid "Could not create album."
 msgstr "Kan het album niet aanmaken."
 
-#: wppa-album-admin-autosave.php:98 wppa-upload.php:1253 wppa-upload.php:1627
+#: wppa-album-admin-autosave.php:98 wppa-upload.php:1263 wppa-upload.php:1637
 msgid "Album #"
 msgstr "Album nummer"
 
-#: wppa-album-admin-autosave.php:98 wppa-upload.php:1253 wppa-upload.php:1627
+#: wppa-album-admin-autosave.php:98 wppa-upload.php:1263 wppa-upload.php:1637
 msgid "Added."
 msgstr "Toegevoegd."
 
@@ -2024,7 +2024,7 @@ msgstr "Aantal waarderingen:"
 #: wppa-settings-autosave.php:4795 wppa-settings-autosave.php:4863
 #: wppa-settings-autosave.php:4902 wppa-settings-autosave.php:5496
 #: wppa-settings-autosave.php:5565 wppa-thumbnail-widget.php:195
-#: wppa-tinymce.php:286 wppa-upload.php:1207 wppa-watermark.php:514
+#: wppa-tinymce.php:286 wppa-upload.php:1217 wppa-watermark.php:514
 #: wppa-widget-admin.php:174
 msgid "--- none ---"
 msgstr "--- geen ---"
@@ -2382,7 +2382,7 @@ msgstr ""
 "Ten gevolge van de beperktheid van het servergeheugen kunt u geen "
 "afbeeldingen uploaden die groter zijn dan <strong>%d x %d (%2.1f MP)</strong>"
 
-#: wppa-common-functions.php:1827 wppa-upload.php:636 wppa-upload.php:724
+#: wppa-common-functions.php:1827 wppa-upload.php:724
 msgid "- select an album -"
 msgstr "- selecteer een album -"
 
@@ -2407,7 +2407,7 @@ msgstr "--- een selectie box ---"
 
 #: wppa-common-functions.php:1863 wppa-items.php:193
 #: wppa-settings-autosave.php:4863 wppa-settings-autosave.php:4902
-#: wppa-upload.php:1208
+#: wppa-upload.php:1218
 msgid "--- separate ---"
 msgstr "--- afzonderlijk ---"
 
@@ -3149,7 +3149,7 @@ msgstr "Toon tijd sinds:"
 msgid "You can run only one maintenance procedure at a time"
 msgstr "U kunt niet meerdere onderhoudsprocedures tegelijkertijd uitvoeren"
 
-#: wppa-maintenance.php:49 wppa-upload.php:1135
+#: wppa-maintenance.php:49 wppa-upload.php:1145
 msgid "Error"
 msgstr "Fout"
 
@@ -3819,25 +3819,26 @@ msgid ". </i>This plugin will cause wppa+ to function not properly."
 msgstr ".</i> Deze plugin verstoort de juiste werking van wppa+."
 
 #: wppa-settings-autosave.php:282
-#, fuzzy
 msgid "Please note that plugin <i style=\"font-size:14px;\">"
-msgstr "De-activeer a.u.b. plugin <i style=\"font-size:14px;\">"
+msgstr "Attentie: plugin <i style=\"font-size:14px;\">"
 
 #: wppa-settings-autosave.php:282
-#, fuzzy
 msgid "</i> can cause wppa+ to function not properly if it is misconfigured."
-msgstr ".</i> Deze plugin verstoort de juiste werking van wppa+."
+msgstr ""
+".</i> kan veroorzaken dat wppa+ niet juist functioneert indien het onjuist "
+"is geconfigureerd."
 
 #: wppa-settings-autosave.php:287 wppa-upload.php:91
-#, fuzzy
 msgid ""
 "There is a serious misconfiguration in your servers PHP config. Function "
 "imagecreatefromjpeg() does not exist. You will encounter problems when "
 "uploading photos and not be able to generate thumbnail images. Ask your "
 "hosting provider to add GD support with a minimal version 1.8."
 msgstr ""
-"Kan albums en foto's exporteren, maar kan geen zipfile aanmaken. Uw php "
-"versie ondersteunt geen ZipArchive."
+"Er is een ernstige mis-configuratie in uw servers PHP config. De functie "
+"imagecreatefromjpeg() is niet aanwezig. U zult problemen ondervinden bij het "
+"uploaden van foto's en u zult geen miniaturen kunnen aanmaken. Vraag uw "
+"hosting provider om GD support toe te voegen met minimale versie nummer 1.8."
 
 #: wppa-settings-autosave.php:292
 msgid "Rebuilding the Album index needs completion. See Table VIII"
@@ -3854,10 +3855,10 @@ msgid "Remove empty albums needs completion. See Table VIII"
 msgstr "Het verwijderen van lege albums moet afgemaakt worden. Zie Tabel VIII"
 
 #: wppa-settings-autosave.php:296
-#, fuzzy
 msgid "Applying new photo description needs completion. See Table VIII"
 msgstr ""
-"Het toevoegen aan foto beschrijvingen moet afgemaakt worden. Zie Tabel VIII"
+"Het toepassen van nieuwe foto beschrijvingen moet afgemaakt worden. Zie "
+"Tabel VIII"
 
 #: wppa-settings-autosave.php:297
 msgid "Appending to photo description needs completion. See Table VIII"
@@ -3880,10 +3881,9 @@ msgstr ""
 "Het opnieuw aanmaken van miniaturen moet afgemaakt worden. Zie Tabel VIII"
 
 #: wppa-settings-autosave.php:301
-#, fuzzy
 msgid "Rerating needs completion. See Table VIII"
 msgstr ""
-"Het opnieuw aanmaken van miniaturen moet afgemaakt worden. Zie Tabel VIII"
+"Het herberekenen van waarderingen moet afgemaakt worden. Zie Tabel VIII"
 
 #: wppa-settings-autosave.php:305
 msgid "Show legenda"
@@ -3958,9 +3958,8 @@ msgid "Quick Setup:"
 msgstr "Snelle Setup:"
 
 #: wppa-settings-autosave.php:341
-#, fuzzy
 msgid "This table enables you to quickly do an inital setup."
-msgstr "Doe een snelle eerste setup"
+msgstr "Met deze tabel kunt u een snelle eerste setup uitvoeren."
 
 #: wppa-settings-autosave.php:351 wppa-settings-autosave.php:483
 #: wppa-settings-autosave.php:505 wppa-settings-autosave.php:1042
@@ -3996,9 +3995,8 @@ msgstr ""
 "autersrecht!</span>"
 
 #: wppa-settings-autosave.php:362
-#, fuzzy
 msgid "Is your theme <i>responsive</i>?"
-msgstr "Tabel I:"
+msgstr "Is uw theme <i>responsive</i>?"
 
 #: wppa-settings-autosave.php:363
 #, fuzzy
@@ -4015,11 +4013,8 @@ msgid ""
 msgstr "Breedte:"
 
 #: wppa-settings-autosave.php:371
-#, fuzzy
 msgid "Do you want to downsize photos during upload?"
-msgstr ""
-"Als u dit aanvinkt, zullen de foto's verkleind worden tot de in de het "
-"volgende item aangegeven grootte tijdens het upload/import proces."
+msgstr "Wilt u de foto's tijdens het uploaden verkleinen?"
 
 #: wppa-settings-autosave.php:372
 #, fuzzy
@@ -4057,9 +4052,8 @@ msgstr ""
 "grotere maat, en downloads in oorspronkelijke grootte kunnen aanbieden."
 
 #: wppa-settings-autosave.php:389
-#, fuzzy
 msgid "May visitors upload photos?"
-msgstr "你可以上載最多%s張相片，如果你的瀏覽器支援HTML5的多檔案上載"
+msgstr "Mogen bezoekers foto's uploaden?"
 
 #: wppa-settings-autosave.php:390
 #, fuzzy
@@ -4102,9 +4096,8 @@ msgid "Enable the rating system and show the votes in the slideshow."
 msgstr "Waarderings systeem aan."
 
 #: wppa-settings-autosave.php:402
-#, fuzzy
 msgid "You can configure the details of the rating system later"
-msgstr "詳細:"
+msgstr ""
 
 #: wppa-settings-autosave.php:409
 #, fuzzy
@@ -4117,9 +4110,8 @@ msgid "Enable the comment system and show the comments in the slideshow."
 msgstr "Reacties systeem aan."
 
 #: wppa-settings-autosave.php:411
-#, fuzzy
 msgid "You can configure the details of the comment system later"
-msgstr "詳細:"
+msgstr ""
 
 #: wppa-settings-autosave.php:418
 #, fuzzy
@@ -4127,9 +4119,8 @@ msgid "Do you want the social media share buttons displayed?"
 msgstr "Toon de sociale media knoppen box."
 
 #: wppa-settings-autosave.php:419
-#, fuzzy
 msgid "Display the social media buttons in the slideshow"
-msgstr "網頁上顯示搜尋結果。"
+msgstr ""
 
 #: wppa-settings-autosave.php:420
 #, fuzzy
@@ -4146,10 +4137,9 @@ msgid "Are you going to use IPTC data?"
 msgstr "IPTC gegevens"
 
 #: wppa-settings-autosave.php:428
-#, fuzzy
 msgid ""
 "IPTC data is information you may have added in a photo manipulation program."
-msgstr "你沒有權限更新相片信息"
+msgstr ""
 
 #: wppa-settings-autosave.php:429 wppa-settings-autosave.php:438
 #, fuzzy
@@ -4230,13 +4220,10 @@ msgstr ""
 "instellingen zijn thans te doen in de Foto Albums Instellingen menu pagina."
 
 #: wppa-settings-autosave.php:469
-#, fuzzy
 msgid ""
 "Thank you!. The most important settings are done now. You can refine your "
 "settings, the behaviour and appearance of WPPA+ in the Tables below."
 msgstr ""
-"請再次檢查你最新應用的自定義wppa樣式css檔案。你或許希望增加或修改一些樣式，注"
-"意，現在那些大部分設定都能在管理頁面生效。"
 
 #: wppa-settings-autosave.php:494
 msgid "Table I:"
@@ -4255,9 +4242,8 @@ msgstr ""
 "groottes) die nodig zijn bij het maken en afbeelden van WPPA+ onderdelen."
 
 #: wppa-settings-autosave.php:513
-#, fuzzy
 msgid "WPPA+ global system related size settings"
-msgstr "WPPA+ 系統設定"
+msgstr "WPPA+ systeem gerelateerde grootte instellingen"
 
 #: wppa-settings-autosave.php:515
 msgid "Column Width"
@@ -4384,10 +4370,10 @@ msgstr ""
 "omslagfoto)."
 
 #: wppa-settings-autosave.php:551 wppa-settings-autosave.php:582
-#: wppa-settings-autosave.php:589 wppa-settings-autosave.php:906
-#: wppa-settings-autosave.php:938 wppa-settings-autosave.php:954
-#: wppa-settings-autosave.php:986 wppa-settings-autosave.php:2638
-#: wppa-settings-autosave.php:3964 wppa-settings-autosave.php:4847
+#: wppa-settings-autosave.php:906 wppa-settings-autosave.php:938
+#: wppa-settings-autosave.php:954 wppa-settings-autosave.php:986
+#: wppa-settings-autosave.php:2638 wppa-settings-autosave.php:3964
+#: wppa-settings-autosave.php:4847
 msgid "photos"
 msgstr "foto's"
 
@@ -4460,10 +4446,14 @@ msgstr ""
 "Geef het maximaal weer te geven aantal miniatuur foto's voor de Album widget "
 "op."
 
-#: wppa-settings-autosave.php:592
+#: wppa-settings-autosave.php:589
 #, fuzzy
+msgid "pages"
+msgstr "Pagina's:"
+
+#: wppa-settings-autosave.php:592
 msgid "Slideshow related size settings"
-msgstr "重置評級"
+msgstr "Diavoorstelling gerelateerde grootte instellingen"
 
 #: wppa-settings-autosave.php:594
 msgid "Maximum Width"
@@ -4574,9 +4564,8 @@ msgid "Numbar Max"
 msgstr "Numbar maximum"
 
 #: wppa-settings-autosave.php:630
-#, fuzzy
 msgid "Maximum numbers to display."
-msgstr "相片縮圖下顯示的名稱。"
+msgstr ""
 
 #: wppa-settings-autosave.php:631
 msgid ""
@@ -4630,9 +4619,8 @@ msgid "slides"
 msgstr "dia's"
 
 #: wppa-settings-autosave.php:662
-#, fuzzy
 msgid "Thumbnail photos related size settings"
-msgstr "縮圖 相片相關設定"
+msgstr "Miniaturen gerelateerde grootte instellingen"
 
 #: wppa-settings-autosave.php:664
 msgid "Thumbnail Size"
@@ -4904,9 +4892,8 @@ msgstr ""
 "als volledige grootte --- in tabel I-C2 heeft gekozen"
 
 #: wppa-settings-autosave.php:807
-#, fuzzy
 msgid "Album cover related size settings"
-msgstr "相簿建立"
+msgstr "Album omslagen gerelateerde grootte instellingen"
 
 #: wppa-settings-autosave.php:810
 msgid "Maximum width for a album cover display."
@@ -4965,9 +4952,8 @@ msgstr ""
 "worden aangemaakt. Dit kan geruime tijd duren."
 
 #: wppa-settings-autosave.php:833
-#, fuzzy
 msgid "Coverphoto size multi"
-msgstr "封面相片尺寸"
+msgstr "Omslagfoto grootte multi"
 
 #: wppa-settings-autosave.php:834
 #, fuzzy
@@ -9707,9 +9693,8 @@ msgid "one week"
 msgstr "een week"
 
 #: wppa-settings-autosave.php:4127
-#, fuzzy
 msgid "Avoid duplicates"
-msgstr "Doen!"
+msgstr "Voorkom dubbele"
 
 #: wppa-settings-autosave.php:4128
 msgid "Prevent the creation of duplicate photos."
@@ -9726,9 +9711,8 @@ msgstr ""
 "bestemming reeds een foto met dezelfde bestandsnaam bevat."
 
 #: wppa-settings-autosave.php:4136
-#, fuzzy
 msgid "Blacklist user"
-msgstr "用戶:"
+msgstr "Zet gebruiker op de zwarte lijst"
 
 #: wppa-settings-autosave.php:4137 wppa-settings-autosave.php:4138
 #, fuzzy
@@ -9800,9 +9784,8 @@ msgid "Do it!"
 msgstr "Doen!"
 
 #: wppa-settings-autosave.php:4219 wppa-settings-autosave.php:4590
-#, fuzzy
 msgid "To Go"
-msgstr "按 刪除 繼續，按 取消 返回。"
+msgstr "Te gaan"
 
 #: wppa-settings-autosave.php:4227
 msgid "Harmless and reverseable actions"
@@ -9879,9 +9862,8 @@ msgid "Regenerate all thumbnails."
 msgstr "Alle miniatuurafbeeldingen opnieuw maken."
 
 #: wppa-settings-autosave.php:4289 wppa-settings-autosave.php:4382
-#, fuzzy
 msgid "Skip one"
-msgstr "略過“空”相簿:"
+msgstr "Skip één"
 
 #: wppa-settings-autosave.php:4296
 msgid "Rerate"
@@ -10165,9 +10147,8 @@ msgstr ""
 "aangevinkt!!"
 
 #: wppa-settings-autosave.php:4528
-#, fuzzy
 msgid "Listings"
-msgstr "Toon Index lijst"
+msgstr "Lijsten"
 
 #: wppa-settings-autosave.php:4530
 msgid "List Logfile"
@@ -10206,14 +10187,12 @@ msgstr ""
 "Tabel VIII-A8"
 
 #: wppa-settings-autosave.php:4559
-#, fuzzy
 msgid "Start at text:"
-msgstr "開始"
+msgstr "Beginnen bij tekst:"
 
 #: wppa-settings-autosave.php:4567
-#, fuzzy
 msgid "List active sessions"
-msgstr "Toon Index lijst"
+msgstr "Toon actieve sessies"
 
 #: wppa-settings-autosave.php:4568
 #, fuzzy
@@ -13023,15 +13002,15 @@ msgstr ""
 "later. Dit maakt het mogelijk om gecomprimeerde bestanden met foto's te "
 "uploaden.</small>"
 
-#: wppa-upload.php:317 wppa-upload.php:935
+#: wppa-upload.php:317 wppa-upload.php:945
 msgid "No albums exist. You must"
 msgstr "Er zijn nog geen albums. U moet"
 
-#: wppa-upload.php:317 wppa-upload.php:935
+#: wppa-upload.php:317 wppa-upload.php:945
 msgid "create one"
 msgstr "er een aanmaken"
 
-#: wppa-upload.php:317 wppa-upload.php:935
+#: wppa-upload.php:317 wppa-upload.php:945
 msgid "beofre you can upload your photos."
 msgstr "voordat u foto's kunt uploaden."
 
@@ -13214,66 +13193,66 @@ msgstr "Standaard album voor importeren:"
 msgid "albumdirectories in the depot."
 msgstr "albummappen in het depot."
 
-#: wppa-upload.php:921
+#: wppa-upload.php:931
 msgid "There are no archives, albums or photos in directory:"
 msgstr "Er zijn geen archieven, albums of foto's in de map:"
 
-#: wppa-upload.php:925
+#: wppa-upload.php:935
 msgid "There are no albums or photos in directory:"
 msgstr "Er zijn geen albums of foto's in de map:"
 
-#: wppa-upload.php:929
+#: wppa-upload.php:939
 #, fuzzy
 msgid "There are no photos found or left to process at url:"
 msgstr "Geen gerelateerde foto's gevonden."
 
-#: wppa-upload.php:938
+#: wppa-upload.php:948
 msgid "Trying to continue..."
 msgstr "Probeen door te gaan..."
 
-#: wppa-upload.php:1043
+#: wppa-upload.php:1053
 #, fuzzy, php-format
 msgid "Time out. %s photos uploaded in album nr %s."
 msgstr "Foto's ge-upload naar album nr"
 
-#: wppa-upload.php:1055 wppa-upload.php:1087 wppa-upload.php:1354
+#: wppa-upload.php:1065 wppa-upload.php:1097 wppa-upload.php:1364
 msgid "Error inserting photo"
 msgstr "Fout bij het invoegen van foto"
 
-#: wppa-upload.php:1064 wppa-upload.php:1094
+#: wppa-upload.php:1074 wppa-upload.php:1104
 msgid "Photos Uploaded in album nr"
 msgstr "Foto's ge-upload naar album nr"
 
-#: wppa-upload.php:1134
+#: wppa-upload.php:1144
 msgid "Zipfile"
 msgstr "Zip bestand"
 
-#: wppa-upload.php:1134
+#: wppa-upload.php:1144
 msgid "sucessfully uploaded."
 msgstr "succesvol ge-upload."
 
-#: wppa-upload.php:1135
+#: wppa-upload.php:1145
 msgid "during upload."
 msgstr "tijdens het uploaden."
 
-#: wppa-upload.php:1216
+#: wppa-upload.php:1226
 msgid "Unknown parent album:"
 msgstr "Onbekend moederalbum:"
 
-#: wppa-upload.php:1216
+#: wppa-upload.php:1226
 msgid "--- none --- used."
 msgstr "--- geen --- gebruikt."
 
-#: wppa-upload.php:1275
+#: wppa-upload.php:1285
 #, fuzzy, php-format
 msgid "This album has been converted from ngg gallery %s"
 msgstr "Foto %s is verplaatst naar album %s (%s)"
 
-#: wppa-upload.php:1292
+#: wppa-upload.php:1302
 msgid "Processing files, please wait..."
 msgstr "Bestanden verwerken, even geduld a.u.b...."
 
-#: wppa-upload.php:1292
+#: wppa-upload.php:1302
 msgid ""
 "If the line of dots stops growing or your browser reports Ready, your server "
 "has given up. In that case: try again"
@@ -13281,105 +13260,105 @@ msgstr ""
 "Wanneer de lijn puntjes niet meer langer wordt of de browser gereed is, dan "
 "heeft de server het opgegeven. In dat geval: probeer opnieuw"
 
-#: wppa-upload.php:1292
+#: wppa-upload.php:1302
 msgid "here."
 msgstr "hier."
 
-#: wppa-upload.php:1339
+#: wppa-upload.php:1349
 #, fuzzy, php-format
 msgid "Photo %s already exists in album %s."
 msgstr "Foto %s bestaat al in album nummer %s."
 
-#: wppa-upload.php:1340
+#: wppa-upload.php:1350
 msgid "Duplicate"
 msgstr "Dubbele"
 
-#: wppa-upload.php:1359
+#: wppa-upload.php:1369
 #, php-format
 msgid "Error inserting photo %s, unknown or non existent album."
 msgstr "Fout bij het opnemen van foto %s, onbeked of niet bestaand album."
 
-#: wppa-upload.php:1367
+#: wppa-upload.php:1377
 #, fuzzy, php-format
 msgid "Time out. %s photos imported. Please restart this operation."
 msgstr "Tijd op na het verwerken van %s items. Herstart a.u.b. deze bewerking"
 
-#: wppa-upload.php:1419
+#: wppa-upload.php:1429
 #, fuzzy, php-format
 msgid "Error inserting video %s, unknown or non existent album."
 msgstr "Fout bij het opnemen van foto %s, onbeked of niet bestaand album."
 
-#: wppa-upload.php:1425
+#: wppa-upload.php:1435
 msgid "Done processing files."
 msgstr "Klaar met het verwerken van de bestanden."
 
-#: wppa-upload.php:1428
+#: wppa-upload.php:1438
 msgid "No files to import."
 msgstr "Geen bestanden om te importeren."
 
-#: wppa-upload.php:1432
+#: wppa-upload.php:1442
 msgid "Zipfiles extracted."
 msgstr "Zip bestanden uitgepakt."
 
-#: wppa-upload.php:1433
+#: wppa-upload.php:1443
 msgid "Albums created."
 msgstr "Albums aangemaakt."
 
-#: wppa-upload.php:1434
+#: wppa-upload.php:1444
 #, fuzzy
 msgid "Directory to album imports."
 msgstr "目錄遺失:"
 
-#: wppa-upload.php:1435
+#: wppa-upload.php:1445
 #, fuzzy, php-format
 msgid "With total %s photos."
 msgstr "合計:"
 
-#: wppa-upload.php:1438
+#: wppa-upload.php:1448
 msgid "Photos updated"
 msgstr "Foto's bijgewerkt"
 
-#: wppa-upload.php:1440
+#: wppa-upload.php:1450
 #, fuzzy, php-format
 msgid "to %s locations"
 msgstr "Foto %s van %s"
 
-#: wppa-upload.php:1444
+#: wppa-upload.php:1454
 msgid "single photos imported."
 msgstr "losse foto's geïmporteerd."
 
-#: wppa-upload.php:1447
+#: wppa-upload.php:1457
 #, fuzzy
 msgid "Videos imported."
 msgstr "losse foto's geïmporteerd."
 
-#: wppa-upload.php:1547
+#: wppa-upload.php:1557
 msgid "Error: unexpected fgets() fail in wppa_get_meta_data()."
 msgstr "Fout: onverwachte fgets() fout in wppa_get_meta_data()."
 
-#: wppa-upload.php:1568
+#: wppa-upload.php:1578
 msgid "Class ZipArchive does not exist! Check your php configuration"
 msgstr ""
 "De klasse ZipArchive bestaat niet! Kontroleer a.u.b. uw php configuratie"
 
-#: wppa-upload.php:1587
+#: wppa-upload.php:1597
 #, fuzzy, php-format
 msgid ""
 "File %s is of an unsupported filetype and has been ignored during extraction."
 msgstr "Bestand %s is van een niet ondersteund bestandstype en is verwijderd."
 
-#: wppa-upload.php:1593
+#: wppa-upload.php:1603
 #, fuzzy, php-format
 msgid "Zipfile %s processed. %s files extracted, %s files skipped."
 msgstr ""
 "<b>Mededeling:</b> uw server staat toe om <b>%s</b> bestanden van maximaal "
 "totaal <b>%s</b> bytes in maximaal <b>%s</b> seconden te uploaden."
 
-#: wppa-upload.php:1596
+#: wppa-upload.php:1606
 msgid "Failed to extract"
 msgstr "Uitpakken mislukt van"
 
-#: wppa-upload.php:1641
+#: wppa-upload.php:1651
 #, fuzzy, php-format
 msgid "Page <a href=\"%s\" target=\"_blank\" >%s</a> created."
 msgstr ""
@@ -13387,7 +13366,7 @@ msgstr ""
 "Docs & Demos site</a> bezoeken die ook de <a href=\"http://wppa.opajaap.nl/?"
 "page_id=39\" target=\"_blank\">WPPA+ Tutorial</a> bevat."
 
-#: wppa-upload.php:1645
+#: wppa-upload.php:1655
 msgid "Could not create page."
 msgstr "Kan de pagina niet aanmaken."
 

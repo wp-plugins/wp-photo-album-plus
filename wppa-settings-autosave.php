@@ -586,7 +586,7 @@ global $no_default;
 							$desc = __('The maximum number of pagelinks to be displayed.', 'wppa');
 							$help = '';
 							$slug = 'wppa_pagelinks_max';
-							$html = wppa_input($slug, '40px', '', __('photos', 'wppa'));
+							$html = wppa_input($slug, '40px', '', __('pages', 'wppa'));
 							wppa_setting($slug, '9', $name, $desc, $html, $help);
 							}
 							wppa_setting_subheader( 'B', '1', __( 'Slideshow related size settings', 'wppa' ) );
@@ -2178,7 +2178,7 @@ global $no_default;
 							<?php 
 							$wppa_table = 'IV';
 							
-							wppa_setting_subheader( 'A', '1', __( 'System related settings', 'wppa' ) );
+						wppa_setting_subheader( 'A', '1', __( 'System related settings', 'wppa' ) );
 							{
 							$name = __('Use Ajax', 'wppa');
 							$desc = __('Use Ajax as much as is possible and implemented.', 'wppa');
@@ -2639,7 +2639,7 @@ global $no_default;
 							$class = 'wppa_imgfact_';
 							wppa_setting($slug, '6.1', $name, $desc, $html, $help, $class);
 							}
-						wppa_setting_subheader( 'E', '1', __( 'Rating related settings', 'wppa' ), 'wppa_rating_' );	
+						wppa_setting_subheader( 'E', '1', __( 'Rating related settings', 'wppa' ) );	
 							{
 							$name = __('Rating login', 'wppa');
 							$desc = __('Users must login to rate photos.', 'wppa');
