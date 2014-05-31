@@ -5973,7 +5973,7 @@ global $no_default;
 	}
 	
 	if ( $help ) {
-		$hlp = $name.':\n\n'.$help;
+		$hlp = esc_js($name).':\n\n'.$help;
 		if ( ! $no_default ) {
 			if ( $slugs ) {
 				$hlp .= '\n\n'.__('The default for this setting is:', 'wppa');
