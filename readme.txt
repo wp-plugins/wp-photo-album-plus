@@ -61,6 +61,7 @@ You can find the plugin admin section under Menu Photo Albums on the admin scree
 Translations:
 
 There are translations in many languages. The frontend and admin sides are separately translatable. 
+
 * Dutch translation by OpaJaap himself (<a href="http://www.opajaap.nl">Opa Jaap's Weblog</a>) (both)
 * Slovak translation by Branco Radenovich (<a href="http://webhostinggeeks.com/user-reviews/">WebHostingGeeks.com</a>) (frontend)
 * Polish translation by Maciej Matysiak (both)
