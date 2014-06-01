@@ -208,7 +208,7 @@ function _wppa_admin() {
 									<label><?php _e('Modified:', 'wppa') ?></label>
 								</th>
 								<td>
-									<?php if ( $albuminfo['timestamp'] ) echo wppa_local_date(get_option( 'date_format', "F j, Y,").' '.get_option( 'time_format', "g:i a" ), $albuminfo['timestamp'] ) ?>
+									<?php echo wppa_local_date(get_option( 'date_format', "F j, Y,").' '.get_option( 'time_format', "g:i a" ), $albuminfo['timestamp'] ) ?>
 								</td>
 							
 							<!-- Views -->

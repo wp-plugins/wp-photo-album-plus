@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: wp-photo-album-plus\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-05-30 15:02+0100\n"
-"PO-Revision-Date: 2014-05-31 13:48+0100\n"
+"PO-Revision-Date: 2014-06-01 08:03+0100\n"
 "Last-Translator: J.N. Breetvelt <OpaJaap@OpaJaap.nl>\n"
 "Language-Team: \n"
 "Language: nl_NL\n"
@@ -4414,14 +4414,14 @@ msgid "The default maximum number of related photos to find."
 msgstr "Geef het standaard aantal te vinden gerelateerde foto's op."
 
 #: wppa-settings-autosave.php:580
-#, fuzzy
 msgid ""
 "When using shortcodes like [wppa type=\"album\" album=\"#related,desc,23\"][/"
 "wppa], the maximum number is 23. Omitting the number gives the maximum of "
 "this setting."
 msgstr ""
-"Geef het maximaal weer te geven aantal miniatuur foto's voor de Album widget "
-"op."
+"Bij het gebruik van een shortcode zoals [wppa type=\"album\" album="
+"\"#related,desc,23\"][/wppa], is het maximum 23. Als u het aantal weglaat "
+"geldt deze instelling als het maximum."
 
 #: wppa-settings-autosave.php:586
 msgid "The maximum number of pagelinks to be displayed."
@@ -4590,9 +4590,9 @@ msgid "Special use in responsive themes."
 msgstr "Speciaal gebruik in responsive thema's."
 
 #: wppa-settings-autosave.php:656
-#, fuzzy
 msgid "The maximum number of slides in a certain view. 0 means no pagination"
-msgstr "Een waarde van 0 betekent geen beperking"
+msgstr ""
+"Het maximale aantal dia's in een bepaalde show, 0 betekent geen paginering"
 
 #: wppa-settings-autosave.php:659
 msgid "slides"
@@ -4984,9 +4984,8 @@ msgid "covers"
 msgstr "omslagen"
 
 #: wppa-settings-autosave.php:857
-#, fuzzy
 msgid "Rating and comment related size settings"
-msgstr "評級和留言相關設定"
+msgstr "Waarderingen en reacties gerelateerde grootte instellingen"
 
 #: wppa-settings-autosave.php:859
 msgid "Rating size"

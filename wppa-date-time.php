@@ -85,7 +85,7 @@ global $album;
 	}
 	
 	$opt_months = array( '0' => '', '1' => __('Jan', 'wppa'), '2' => __('Feb', 'wppa'), '3' => __('Mar', 'wppa'), '4' => __('Apr', 'wppa'), '5' => __('May', 'wppa'), '6' => __('Jun', 'wppa'), '7' => __('Jul', 'wppa'), '8' =>__('Aug', 'wppa'), '9' => __('Sep', 'wppa'), '10' => __('Oct', 'wppa'), '11' => __('Nov', 'wppa'), '12' => __('Dec', 'wppa') );
-	$val_months = array( '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12' );
+	$val_months = array( '0' => '', '1' => '01', '2' => '02', '3' => '03', '4' => '04', '5' => '05', '6' => '06', '7' => '07', '8' => '08', '9' => '09', '10' => '10', '11' => '11', '12' =>'12' );
 	$opt_years 	= array( '2014', '2015', '2016', '2017', '2018', '2019', '2020' );
 	$val_years 	= $opt_years;
 	$opt_days 	= array( '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31' );
@@ -161,6 +161,8 @@ global $album;
 // Exactly like php's date(), but corrected for wp's timezone
 function wppa_local_date( $format, $timestamp = false ) {
 
+	if ( ! $timestamp ) $timestamp = time();
+	
 	$current_offset = get_option('gmt_offset');
 	$tzstring = get_option('timezone_string');
 
