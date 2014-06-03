@@ -2,7 +2,7 @@
 //
 // conatins slideshow, theme, ajax and lightbox code
 //
-// Version 5.3.9
+// Version 5.3.10
 
 // Part 1: Slideshow
 //
@@ -12,7 +12,7 @@
 
 // 'External' variables (public)
 var wppaVersion = '0';
-var wppaDebug = true;
+var wppaDebug = false;
 var wppaFullValign = new Array();
 var wppaFullHalign = new Array();
 var wppaFullFrameDelta = new Array();
@@ -2783,7 +2783,7 @@ wppaConsoleLog('lft='+lft+', ptp='+ptp, 1);
 	var html = 	'<div id="wppa-overlay-start-stop" style="position:absolute; left:0px; top:'+(wppaOvlPadTop-1)+'px; visibility:hidden; box-shadow:none; font-family:helvetica; font-weight:bold; font-size:14px; color:'+qtxtcol+'; cursor:pointer; " onclick="wppaOvlStartStop()" ontouchstart="wppaOvlStartStop()" >'+startstop+'</div>'+
 				'<div id="wppa-overlay-qt-txt"  style="position:absolute; right:16px; top:'+(wppaOvlPadTop-1)+'px; visibility:hidden; box-shadow:none; font-family:helvetica; font-weight:bold; font-size:14px; color:'+qtxtcol+'; cursor:pointer; " onclick="wppaOvlHide()" ontouchstart="wppaOvlHide()" >'+wppaOvlCloseTxt+'&nbsp;&nbsp;</div>'+
 				'<img id="wppa-overlay-qt-img"  src="'+wppaImageDirectory+'smallcross-'+wppaOvlTheme+'.gif'+'" style="position:absolute; right:0; top:'+wppaOvlPadTop+'px; visibility:hidden; box-shadow:none; cursor:pointer" onclick="wppaOvlHide()" ontouchstart="wppaOvlHide()" >';
-	if ( typeof(wppaOvlVideoHtml) != 'undefined' && wppaOvlVideoHtml != '' ) {
+	if ( typeof(wppaOvlVideoHtml) != 'undefined' && wppaOvlVideoHtml != '' && wppaOvlVideoHtml != 'undefined' ) {
 //alert(wppaOvlVideoHtml);
 		html += '<video id="wppa-overlay-img"'+
 		' ontouchstart="wppaTouchStart(event, \'wppa-overlay-img\', -1);"  ontouchend="wppaTouchEnd(event);" ontouchmove="wppaTouchMove(event);" ontouchcancel="wppaTouchCancel(event);" '+
@@ -3188,6 +3188,66 @@ function wppaAjaxMakeOrigName(mocc, id) {
 		alert('Comm error encountered');
 		return false;
 	}
+}
+
+function wppaAjaxDownloadAlbum( mocc, id ) {
+	
+	// Show spinner
+	jQuery( '#dwnspin-'+mocc+'-'+id ).css( 'display', '' );
+	
+	// Create the http request object
+	var xmlhttp = wppaGetXmlHttp();
+	var url = wppaAjaxUrl+'?action=wppa&wppa-action=downloadalbum&album-id='+id;
+
+	// Issue request Synchronously!!
+	xmlhttp.open("GET",url,false);
+	xmlhttp.send();
+	
+	// Hide spinner
+	jQuery( '#dwnspin-'+mocc+'-'+id ).css( 'display', 'none' );
+
+	// Alalyze the result
+	var result 	= xmlhttp.responseText.split('||');
+	var url 	= result[0];
+	var erok 	= result[1];
+	var text 	= result[2];
+	
+	if ( result.length == 3 && text != '' ) alert( 'Attention:\n\n'+text );
+
+	if ( xmlhttp.readyState == 4 && xmlhttp.status == 200 ) {	// Normal successfull return
+		if ( erok == 'OK' ) {
+			document.location = url;
+			return true;
+		}
+	}
+	else {	// See if a (partial) zipfile has been created
+		var zipurl = wppaGetAlbumZipUrl( id );
+		if ( zipurl != '' ) {
+			alert('The server could not complete the request. The zipfile may be incomplete');
+			document.location = zipurl;
+		}
+		else {
+			alert('Comm error encountered. readyState = '+xmlhttp.readyState+', status = '+xmlhttp.status);
+		}
+		return false;
+	}
+}
+
+function wppaGetAlbumZipUrl( id ) {
+	// Create the http request object
+	var xmlhttp = wppaGetXmlHttp();
+	var url = wppaAjaxUrl+'?action=wppa&wppa-action=getalbumzipurl&album-id='+id;
+
+	// Issue request Synchronously!!
+	xmlhttp.open("GET",url,false);
+	xmlhttp.send();
+	
+	if ( xmlhttp.readyState == 4 && xmlhttp.status == 200 ) {	// Normal successfull return
+		if ( xmlhttp.responseText != 'ER' && xmlhttp.responseText != '' ) {	// Got a valid url
+			return xmlhttp.responseText;
+		}
+	}
+	return '';
 }
 
 function wppaAjaxComment(mocc, id) {

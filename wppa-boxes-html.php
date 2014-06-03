@@ -1054,7 +1054,7 @@ global $wppa_first_comment_html;
 		$result .= '<table id="wppacommentfooter-'.$wppa['master_occur'].'" class="wppa-comment-form" style="margin:0;">';
 			$result .= '<tbody><tr style="text-align:center; "><td style="text-align:center; cursor:pointer;'.__wcs('wppa-box-text').'" ><a onclick="wppaOpenComments('.$wppa['master_occur'].', -1); return false;">'; // wppaStartStop('.$wppa['master_occur'].', -1); return false;">';
 			if ( $n_comments ) {
-				$result .= sprintf(__a('%d  comments'), $n_comments);
+				$result .= sprintf(__a('%d comments'), $n_comments);
 			}
 			else {
 				if ( $comment_allowed ) {

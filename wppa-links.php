@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Frontend links
-* Version 5.3.9
+* Version 5.3.10
 *
 */
 
@@ -782,4 +782,15 @@ global $wppa_opt;
 			$wppa['out'] .= ('&nbsp;.&nbsp;.&nbsp;.');
 		}
 	$wppa['out'] .= wppa_nltab('-').'</div><!-- #prevnext-a-'.$wppa['master_occur'].' -->';
+}
+
+function wppa_album_download_link( $albumid ) {
+global $wppa;
+global $wppa_opt;
+
+	if ( ! wppa_switch( 'wppa_allow_download_album' ) ) return;	// Not enabled
+	
+	$wppa['out'] .= '<div style="clear:both;" ></div>';
+	$wppa['out'] .= '<a onclick="wppaAjaxDownloadAlbum('.$wppa['master_occur'].', '.$albumid.' );" style="cursor:pointer;" title="'.__a('Download').'">'.__a('Download album').'</a>';
+	$wppa['out'] .= '<img id="dwnspin-'.$wppa['master_occur'].'-'.$albumid.'" src="'.wppa_get_imgdir().'wpspin.gif" style="margin-left:6px; display:none;" />';
 }

@@ -1751,8 +1751,6 @@ global $wpdb;
 
 					$videohtml = wppa_get_video_html( array( 
 															'id'			=> $id,
-															'width'			=> $wppa_opt['wppa_popupsize'],
-															'height' 		=> $wppa_opt['wppa_popupsize'] * $wppa_opt['wppa_video_aspect'],
 															'controls' 		=> false,
 															'tagid' 		=> 'wppa-img-'.$wppa['master_occur']
 													) );

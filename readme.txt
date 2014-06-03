@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile, cloudinary, fotomoto
-Version: 5.3.9
+Version: 5.3.10
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -186,6 +186,22 @@ If you changed the name of wp-content and/or uploads, besides the additions to w
 **define('WPPA_REL_UPLOADS_PATH', 'wp_content/uploads');**
 **define('WPPA_REL_DEPOT_PATH', 'wp_content');**
 and make the changes therein also.
+
+= 5.3.10 =
+
+= Bug Fixes =
+
+* Uploading watermark file caused a fatal error due to non existant function. Fixed.
+* Lightbox global stopped working. Fixed.
+* On large systems ( > 250.000 photos ) deleting a photo sometimes causes a 500 error. Fixed.
+
+= New Features =
+
+* You can enable an album download link on the album cover in Table VI-C2. If VI-C2.1 is ticked, the original source files will be used if they have been saved during upload/import.
+
+= Other Changes =
+
+* Cosmetic changes to the schedule date/time display in album admin
 
 = 5.3.9 =
 

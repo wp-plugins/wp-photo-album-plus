@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the non admin stuff
-* Version 5.3.9
+* Version 5.3.10
 *
 */
 
@@ -201,31 +201,6 @@ global $wppa_opt;
 	}
 }
 	
-function wppa_add_js_page_data( $txt ) {
-global $wppa_js_page_data_file;
-global $wppa;
-	
-	if ( $wppa_js_page_data_file && ! $wppa['ajax'] ) {
-		$handle = fopen( $wppa_js_page_data_file, 'ab' );
-	}
-	else {
-		$handle = false;
-	}
-	
-	if ( $handle ) {
-		$txt = str_replace( '<script type="text/javascript">', '', $txt );
-		$txt = str_replace( '</script>', '', $txt );
-		$txt = str_replace( "\t", '', $txt );
-		$txt = str_replace( "\n", '', $txt );
-		$txt = trim( $txt );
-		if ( $txt ) fwrite( $handle, "\n".$txt );
-		fclose( $handle );
-	}
-	else {
-		$wppa['out'] .= $txt;
-	}
-}
-
 /* LOAD WPPA+ THEME */
 add_action('init', 'wppa_load_theme');
 	

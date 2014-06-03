@@ -2,7 +2,7 @@
 /* wppa-ajax.php
 *
 * Functions used in ajax requests
-* version 5.3.9
+* version 5.3.10
 *
 */
 
@@ -32,25 +32,25 @@ global $wppa_session;
 	// Globally check query args to prevent php injection
 	
 	foreach ( $_REQUEST as $arg ) {
-		if ( strpos($arg, '<?') !== false ) die('Security check failure #91');
-		if ( strpos($arg, '?>') !== false ) die('Security check failure #92');
+		if ( strpos( $arg, '<?' ) !== false ) die( 'Security check failure #91' );
+		if ( strpos( $arg, '?>' ) !== false ) die( 'Security check failure #92' );
 	}
 
-	wppa_vfy_arg('wppa-action', true);
-	wppa_vfy_arg('photo-id');
-	wppa_vfy_arg('comment-id');
-	wppa_vfy_arg('moccur');
+	wppa_vfy_arg( 'wppa-action', true );
+	wppa_vfy_arg( 'photo-id' );
+	wppa_vfy_arg( 'comment-id' );
+	wppa_vfy_arg( 'moccur' );
 	
 	$wppa_action = $_REQUEST['wppa-action'];
 	
-	switch ($wppa_action) {
+	switch ( $wppa_action ) {
 		case 'front-edit':
-			if ( ! isset($_REQUEST['photo-id']) ) die('Missing required argument');
+			if ( ! isset( $_REQUEST['photo-id'] ) ) die( 'Missing required argument' );
 			$photo = $_REQUEST['photo-id'];
 			$ok = false;
 			if ( current_user_can('wppa_admin') ) $ok = true;
-			if ( wppa_get_user() == wppa_get_photo_owner($photo) && current_user_can('wppa_upload') && wppa_switch('wppa_upload_edit') ) $ok = true;
-			if ( ! $ok ) die('You do nat have sufficient rights to do this');
+			if ( wppa_get_user() == wppa_get_photo_owner( $photo ) && current_user_can( 'wppa_upload' ) && wppa_switch( 'wppa_upload_edit' ) ) $ok = true;
+			if ( ! $ok ) die( 'You do nat have sufficient rights to do this' );
 			require_once 'wppa-photo-admin-autosave.php';
 			$wppa['front_edit'] = true;
 			echo '	<div style="padding-bottom:4px;height:24px;" >
@@ -70,9 +70,6 @@ global $wppa_session;
 			// Correct the fact that this is a non-admin operation, if it is only
 			if ( is_admin() ) {
 				require_once 'wppa-non-admin.php';
-///				foreach(array_keys($wppa_opt) as $s) {
-///					if ( $wppa_opt[$s] == 'no' ) $wppa_opt[$s] = false;
-///				}
 			}
 			
 			$wppa['master_occur'] 	= $_REQUEST['moccur'];
@@ -97,11 +94,10 @@ global $wppa_session;
 			break;
 			
 		case 'approve':
-
 			$iret = '0';
 			
 			if ( ! current_user_can('wppa_moderate') && ! current_user_can('wppa_comments') ) {
-				echo __('You do not have the rights to moderate photos this way', 'wppa');
+				echo __( 'You do not have the rights to moderate photos this way', 'wppa' );
 				exit;
 			}
 			
@@ -131,6 +127,7 @@ global $wppa_session;
 				}
 			}
 			exit;
+			
 		case 'remove':
 			if ( isset( $_REQUEST['photo-id'] ) ) {	// Remove photo
 				if ( ( wppa_user_is( 'administrator' ) ) || ( wppa_get_user() == wppa_get_photo_owner( $_REQUEST['photo-id'] ) && wppa_switch( 'wppa_upload_edit' ) ) ) { // Frontend delete?
@@ -149,7 +146,6 @@ global $wppa_session;
 					exit;
 				}
 				wppa_delete_photo($_REQUEST['photo-id']);
-//				wppa_index_remove('photo', $_REQUEST['photo-id']);
 				echo 'OK||'.__('Photo removed', 'wppa');
 				exit;
 			}
@@ -161,6 +157,80 @@ global $wppa_session;
 			}
 			echo __('Unexpected error', 'wppa');
 			exit;
+
+		case 'downloadalbum':
+			// Feature enabled?
+			if ( ! wppa_switch( 'wppa_allow_download_album' ) ) {
+				echo '||ER||'.__('This feature is not enabled on this website', 'wppa');
+				exit;
+			}
+			
+			// Validate args
+			$alb = $_REQUEST['album-id'];
+			$photos = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM `".WPPA_PHOTOS."` WHERE `album` = %s AND ( ( `status` <> 'pending' AND `status` <> 'scheduled' ) OR owner = %s ) ".wppa_get_photo_order( $alb ), $alb, wppa_get_user() ), ARRAY_A );
+			if ( ! $photos ) {
+				echo '||ER||'.__('The album is empty', 'wppa');
+				exit;
+			}
+			
+			// Remove obsolete files
+			wppa_delete_obsolete_tempfiles();
+			
+			// Open zipfile
+			if ( ! class_exists('ZipArchive') ) {
+				echo '||ER||'.__('Unable to create zip archive', 'wppa');
+				exit;
+			}
+			$zipfilename = wppa_get_album_name( $alb );
+			$zipfilename = sanitize_file_name( $zipfilename.'.zip' ); 				// Remove illegal chars
+			$zipfilepath = WPPA_UPLOAD_PATH.'/temp/'.$zipfilename;
+			$wppa_zip = new ZipArchive;
+			$iret = $wppa_zip->open( $zipfilepath, 1 );
+			if ( $iret !== true ) {
+				echo '||ER||'.sprintf( __( 'Unable to create zip archive. code = %s', 'wppa' ), $iret );
+				exit;
+			}
+			
+			// Add photos to zip
+			foreach ( $photos as $p ) {
+				$id = $p['id'];
+				if ( ! wppa_is_video( $id ) ) {
+					$source = ( wppa_switch( 'wppa_download_album_source' ) && is_file( wppa_get_source_path( $id ) ) ) ? wppa_get_source_path( $id ) : wppa_get_photo_path( $id );
+					if ( is_file( $source ) ) {
+						$dest 	= $p['filename'] ? sanitize_file_name( $p['filename'] ) : sanitize_file_name( wppa_strip_ext( $p['name'] ).'.'.$p['ext'] );
+						$iret = $wppa_zip->addFile( $source, $dest );
+						// To prevent too may files open, and to have at least a file when there are too many photos, close and re-open
+						$wppa_zip->close();
+						$wppa_zip->open( $zipfilepath );
+					}
+				}
+			}
+			
+			// Close zip and return
+			$zipcount = $wppa_zip->numFiles;
+			$wppa_zip->close();	
+			
+			// A zip is created
+			$desturl = WPPA_UPLOAD_URL.'/temp/'.$zipfilename;
+			echo $desturl.'||OK||';	
+			if ( $zipcount != count( $photos ) ) echo sprintf( __( 'Only %s out of %s photos could be added to the zipfile', 'wppa' ), $zipcount, count( $photos ) );
+			exit;
+			break;
+			
+		case 'getalbumzipurl':
+			$alb = $_REQUEST['album-id'];
+			$zipfilename = wppa_get_album_name( $alb );
+			$zipfilename = sanitize_file_name( $zipfilename.'.zip' ); 				// Remove illegal chars
+			$zipfilepath = WPPA_UPLOAD_PATH.'/temp/'.$zipfilename;
+			$zipfileurl  = WPPA_UPLOAD_URL.'/temp/'.$zipfilename;
+			if ( is_file( $zipfilepath ) ) {
+				echo $zipfileurl;
+			}
+			else {
+				echo 'ER';
+			}
+			exit;
+			break;			
 			
 		case 'makeorigname':
 			$photo = $_REQUEST['photo-id'];
@@ -172,22 +242,24 @@ global $wppa_session;
 				$type = $wppa_opt['wppa_art_monkey_popup_link'];
 			}
 			else {
-				echo '||7||'.__('Unknown source of request', 'wppa');
+				echo '||7||'.__( 'Unknown source of request', 'wppa' );
 				exit;
 			}
-			$data = $wpdb->get_row($wpdb->prepare("SELECT * FROM `".WPPA_PHOTOS."` WHERE `id` = %s", $photo), ARRAY_A);
-			if ($data) {	// The photo is supposed to exist
+			
+			$data = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM `".WPPA_PHOTOS."` WHERE `id` = %s", $photo ), ARRAY_A );
+			
+			if ( $data ) {	// The photo is supposed to exist
 			
 				// Make the name
 				if ( $data['filename'] ) {
 					$name = $data['filename'];
 				}
 				else {
-					$name = __($data['name']);
+					$name = __( $data['name'] );
 				}
-/**/				$name = sanitize_file_name($name); 				// Remove illegal chars
+				$name = sanitize_file_name($name); 				// Remove illegal chars
 				$name = preg_replace('/\.[^.]*$/', '', $name);	// Remove file extension
-				if ( strlen($name) == '0' ) {
+				if ( strlen( $name ) == '0' ) {
 					echo '||1||'.__('Empty filename', 'wppa');
 					exit;
 				}

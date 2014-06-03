@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all indexing functions
-* version 5.2.21
+* version 5.3.10
 *
 * 
 */
@@ -186,11 +186,19 @@ function wppa_index_array_to_string($array) {
 }
 
 // Remove an item from the index Use this function if you do NOT know the current photo data matches the index info
-function wppa_index_remove($type, $id) {
+function wppa_index_remove( $type, $id ) {
 global $wpdb;
 
 	if ( $type == 'album' ) {
-		$indexes = $wpdb->get_results("SELECT * FROM `".WPPA_INDEX."` WHERE `albums` <> ''", ARRAY_A);
+		$iam_big = ( $wpdb->get_var( "SELECT COUNT(*) FROM `".WPPA_ALBUMS."`" ) > '10000' );
+		if ( $iam_big ) {
+			// This is not strictly correct, the may be 24..28 when searching for 26, this will be missed. However this will not lead to problems during search.
+			$indexes = $wpdb->get_results( "SELECT * FROM `".WPPA_INDEX."` WHERE `albums` LIKE '".$id."'", ARRAY_A );
+		}
+		else {
+			// There are too many results on large systems, resulting in a 500 error, but it is strictly correct
+			$indexes = $wpdb->get_results( "SELECT * FROM `".WPPA_INDEX."` WHERE `albums` <> ''", ARRAY_A );
+		}
 		if ( $indexes ) foreach ( $indexes as $indexline ) {
 			$array = wppa_index_string_to_array($indexline['albums']);
 			foreach ( array_keys($array) as $k ) {
@@ -202,8 +210,16 @@ global $wpdb;
 			}
 		}
 	}
-	elseif ( $type == 'photo') {
-		$indexes = $wpdb->get_results("SELECT * FROM `".WPPA_INDEX."` WHERE `photos` <> ''", ARRAY_A);
+	elseif ( $type == 'photo' ) {
+		$iam_big = ( $wpdb->get_var( "SELECT COUNT(*) FROM `".WPPA_PHOTOS."`" ) > '10000' );
+		if ( $iam_big ) {
+			// This is not strictly correct, the may be 24..28 when searching for 26, this will be missed. However this will not lead to problems during search.
+			$indexes = $wpdb->get_results( "SELECT * FROM `".WPPA_INDEX."` WHERE `photos` LIKE '%".$id."%'", ARRAY_A );
+		}
+		else {
+			$indexes = $wpdb->get_results( "SELECT * FROM `".WPPA_INDEX."` WHERE `photos` <> ''", ARRAY_A );
+			// There are too many results on large systems, resulting in a 500 error, but it is strictly correct
+		}
 		if ( $indexes ) foreach ( $indexes as $indexline ) {
 			$array = wppa_index_string_to_array($indexline['photos']);
 			foreach ( array_keys($array) as $k ) {

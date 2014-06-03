@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 5.3.9
+* Version 5.3.10
 *
 */
 
@@ -3656,7 +3656,7 @@ global $no_default;
 							
 							wppa_setting_subheader('C', '4', __('Other links', 'wppa'));
 
-							$name = __('Art Monkey Link', 'wppa');
+							$name = __('Download Link (aka Art Monkey link)', 'wppa');
 							$desc = __('Makes the photo name a download button.', 'wppa');
 							$help = esc_js(__('Link Photo name in slideshow to file or zip with photoname as filename.', 'wppa'));
 							$slug = 'wppa_art_monkey_link';
@@ -3688,8 +3688,22 @@ global $no_default;
 							$options = array(__('image file', 'wppa'), __('zipped image', 'wppa'));
 							$values = array('file', 'zip');
 							$html = wppa_select($slug, $options, $values);
+							wppa_setting($slug, '1.3', $name, $desc, $html.'</td><td></td><td></td><td>', $help);
+							
+							$name = __('Album download link', 'wppa');
+							$desc = __('Place an album download link on the album covers', 'wppa');					
+							$help = esc_js(__('Creats adownload zipfile containing the photos of the album', 'wppa'));
+							$slug = 'wppa_allow_download_album';
+							$html = wppa_checkbox($slug);
 							wppa_setting($slug, '2', $name, $desc, $html.'</td><td></td><td></td><td>', $help);
 							
+							$name = __('Album download Source', 'wppa');
+							$desc = __('Use Source file for album download link if available.', 'wppa');
+							$help = '';
+							$slug = 'wppa_download_album_source';
+							$html = wppa_checkbox($slug);
+							wppa_setting($slug, '2.1', $name, $desc, $html.'</td><td></td><td></td><td>', $help);
+
 							$name = __('Tagcloud Link', 'wppa');
 							$desc = __('Configure the link from the tags in the tag cloud.', 'wppa');
 							$help = esc_js(__('Link the tag words to ether the thumbnails or the slideshow.', 'wppa'));

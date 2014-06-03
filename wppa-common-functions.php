@@ -2,7 +2,7 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 5.3.9
+* version 5.3.10
 *
 */
 
@@ -1904,5 +1904,35 @@ global $wpdb;
 			wppa_flush_treecounts( $album['id'] );
 		}
 		update_option( 'wppa_last_schedule_check', time() );
+	}
+}
+
+function wppa_add_js_page_data( $txt ) {
+global $wppa_js_page_data_file;
+global $wppa;
+	
+	if ( is_admin() && ! $wppa['ajax'] ) {
+		echo $txt;
+		return;
+	}
+	
+	if ( $wppa_js_page_data_file && ! $wppa['ajax'] ) {
+		$handle = fopen( $wppa_js_page_data_file, 'ab' );
+	}
+	else {
+		$handle = false;
+	}
+
+	if ( $handle ) {
+		$txt = str_replace( '<script type="text/javascript">', '', $txt );
+		$txt = str_replace( '</script>', '', $txt );
+		$txt = str_replace( "\t", '', $txt );
+		$txt = str_replace( "\n", '', $txt );
+		$txt = trim( $txt );
+		if ( $txt ) fwrite( $handle, "\n".$txt );
+		fclose( $handle );
+	}
+	else {
+		$wppa['out'] .= $txt;
 	}
 }
