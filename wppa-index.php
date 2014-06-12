@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all indexing functions
-* version 5.3.10
+* version 5.3.11
 *
 * 
 */
@@ -189,8 +189,10 @@ function wppa_index_array_to_string($array) {
 function wppa_index_remove( $type, $id ) {
 global $wpdb;
 
+	$iam_big = ( $wpdb->get_var( "SELECT COUNT(*) FROM `".WPPA_INDEX."`" ) > '10000' );	// More than 100.000 index entries,
+	if ( $iam_big && $id < '100' ) return;	// Need at least 3 digits to match
+
 	if ( $type == 'album' ) {
-		$iam_big = ( $wpdb->get_var( "SELECT COUNT(*) FROM `".WPPA_ALBUMS."`" ) > '10000' );
 		if ( $iam_big ) {
 			// This is not strictly correct, the may be 24..28 when searching for 26, this will be missed. However this will not lead to problems during search.
 			$indexes = $wpdb->get_results( "SELECT * FROM `".WPPA_INDEX."` WHERE `albums` LIKE '".$id."'", ARRAY_A );
@@ -205,13 +207,12 @@ global $wpdb;
 				if ( $array[$k] == $id ) {
 					unset ( $array[$k] );
 					$string = wppa_index_array_to_string($array);
-					$wpdb->query("UPDATE `".WPPA_INDEX."` SET `albums` = '".$string."' WHERE `id` = ".$indexline['id']);
+					$wpdb->query( "UPDATE `".WPPA_INDEX."` SET `albums` = '".$string."' WHERE `id` = ".$indexline['id'] );
 				}
 			}
 		}
 	}
 	elseif ( $type == 'photo' ) {
-		$iam_big = ( $wpdb->get_var( "SELECT COUNT(*) FROM `".WPPA_PHOTOS."`" ) > '10000' );
 		if ( $iam_big ) {
 			// This is not strictly correct, the may be 24..28 when searching for 26, this will be missed. However this will not lead to problems during search.
 			$indexes = $wpdb->get_results( "SELECT * FROM `".WPPA_INDEX."` WHERE `photos` LIKE '%".$id."%'", ARRAY_A );
@@ -226,13 +227,14 @@ global $wpdb;
 				if ( $array[$k] == $id ) {
 					unset ( $array[$k] );
 					$string = wppa_index_array_to_string($array);
-					$wpdb->query("UPDATE `".WPPA_INDEX."` SET `photos` = '".$string."' WHERE `id` = ".$indexline['id']);
+					$wpdb->query( "UPDATE `".WPPA_INDEX."` SET `photos` = '".$string."' WHERE `id` = ".$indexline['id'] );
 				}
 			}
 		}
 	}
 	else wppa_dbg_msg('Error, unimplemented type in wppa_index_remove().', 'red', 'force');
-	$wpdb->query("DELETE FROM `".WPPA_INDEX."` WHERE `albums` = '' AND `photos` = ''");
+	
+	$wpdb->query( "DELETE FROM `".WPPA_INDEX."` WHERE `albums` = '' AND `photos` = ''" );	// Cleanup empty entries
 }
 
 // Use this function if you know the current photo data matches the index info

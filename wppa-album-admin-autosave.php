@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * create, edit and delete albums
-* version 5.3.9
+* version 5.3.11
 *
 */
 
@@ -235,12 +235,19 @@ function _wppa_admin() {
 										</td>
 									<?php } else { ?>
 										<td>
-											<select onchange="wppaAjaxUpdateAlbum(<?php echo $edit_id ?>, 'owner', this)" ><?php wppa_user_select($albuminfo['owner']); ?></select>
+											<?php 
+												$usercount = wppa_get_user_count();
+												if ( $usercount > $wppa_opt['wppa_max_users'] ) { ?>
+												<input type="text" value="<?php echo $albuminfo['owner'] ?>" onchange="wppaAjaxUpdateAlbum(<?php echo $edit_id ?>, 'owner', this)" />
+											<?php } else { ?>
+												<select onchange="wppaAjaxUpdateAlbum(<?php echo $edit_id ?>, 'owner', this)" ><?php wppa_user_select($albuminfo['owner']); ?></select>
+											<?php } ?>
 										</td>
 										<td>
-											<?php if (!current_user_can('administrator')) { ?>
+											<?php if ( ! current_user_can( 'administrator' ) ) { ?>
 												<span class="description" style="color:orange;" ><?php _e('WARNING If you change the owner, you will no longer be able to modify this album and upload or import photos to it!', 'wppa'); ?></span>
 											<?php } ?>
+											<?php if ( $usercount > '1000' ) echo '<span class="description" >'.__('Enter user login name or <b>--- public ---</b>', 'wppa'),'</span>' ?>
 										</td>
 									<?php } ?>
 								</tr>

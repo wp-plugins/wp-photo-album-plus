@@ -2,7 +2,7 @@
 /* wppa_widgetfunctions.php
 /* Package: wp-photo-album-plus
 /*
-/* Version 5.3.9
+/* Version 5.3.11
 /*
 */
 
@@ -300,16 +300,6 @@ global $widget_content;
 				$widget_content .= "\n\t\t";
 				if ( $display == 'thumbs' ) {
 					if ( $is_video ) {
-		/*
-						$widget_content .= wppa_get_video_html( array( 	'id'		=> $image['id'], 
-																		'width' 	=> $imgstyle_a['width'], 
-																		'height' 	=> $imgstyle_a['height'], 
-																		'controls' 	=> false, 
-																		'margin-top' 	=> $imgstyle_a['margin-top'], 
-																		'margin-bottom' => $imgstyle_a['margin-bottom'] 
-																	)
-																);
-		*/
 						$widget_content .= '<video id="i-'.$image['id'].'-'.$wppa['master_occur'].'" title="'.$title.'" width="'.$imgstyle_a['width'].'" height="'.$imgstyle_a['height'].'" style="'.$imgstyle_a['style'].' cursor:pointer;" '.$imgevents.' alt="'.esc_attr(wppa_qtrans($image['name'])).'" >'.wppa_get_video_body( $image['id'] ).'</video>';
 					}
 					else {
@@ -327,16 +317,6 @@ global $widget_content;
 				$widget_content .= "\n\t\t";
 				if ( $display == 'thumbs' ) {
 					if ( $is_video ) {
-			/*
-						$widget_content .= wppa_get_video_html( array( 	'id'		=> $image['id'], 
-																		'width' 	=> $imgstyle_a['width'], 
-																		'height' 	=> $imgstyle_a['height'], 
-																		'controls' 	=> false, 
-																		'margin-top' 	=> $imgstyle_a['margin-top'], 
-																		'margin-bottom' => $imgstyle_a['margin-bottom'] 
-																	)
-																);
-			*/
 						$widget_content .= '<video id="i-'.$image['id'].'-'.$wppa['master_occur'].'" title="'.wppa_zoom_in().'" width="'.$imgstyle_a['width'].'" height="'.$imgstyle_a['height'].'" style="'.$imgstyle_a['style'].$imgstyle_a['cursor'].'" '.$imgevents.' alt="'.esc_attr(wppa_qtrans($image['name'])).'" >'.wppa_get_video_body( $image['id'] ).'</video>';
 					}
 					else {
@@ -352,15 +332,6 @@ global $widget_content;
 			$widget_content .= "\n\t";
 			if ( $display == 'thumbs' ) {
 				if ( $is_video ) {
-/*						$widget_content .= wppa_get_video_html( array( 	'id'		=> $image['id'], 
-																		'width' 	=> $imgstyle_a['width'], 
-																		'height' 	=> $imgstyle_a['height'], 
-																		'controls' 	=> false, 
-																		'margin-top' 	=> $imgstyle_a['margin-top'], 
-																		'margin-bottom' => $imgstyle_a['margin-bottom'] 
-																	)
-																);*/
-																
 					$widget_content .= '<video id="i-'.$image['id'].'-'.$wppa['master_occur'].'" title="'.$title.'" width="'.$imgstyle_a['width'].'" height="'.$imgstyle_a['height'].'" style="'.$imgstyle_a['style'].' cursor:pointer;" '.$imgevents.' onclick="'.$link['url'].'" alt="'.esc_attr(wppa_qtrans($image['name'])).'" >'.wppa_get_video_body( $image['id'] ).'</video>';
 				}
 				else {
@@ -376,15 +347,7 @@ global $widget_content;
 	else {
 		$widget_content .= "\n\t";
 		if ( $display == 'thumbs' ) {
-			if ( $is_video ) { /*
-				$widget_content .= wppa_get_video_html( array( 	'id'		=> $image['id'], 
-																		'width' 	=> $imgstyle_a['width'], 
-																		'height' 	=> $imgstyle_a['height'], 
-																		'controls' 	=> false, 
-																		'margin-top' 	=> $imgstyle_a['margin-top'], 
-																		'margin-bottom' => $imgstyle_a['margin-bottom'] 
-																	)
-																);*/
+			if ( $is_video ) { 
 				$widget_content .= '<video id="i-'.$image['id'].'-'.$wppa['master_occur'].'" title="'.$title.'" width="'.$imgstyle_a['width'].'" height="'.$imgstyle_a['height'].'" style="'.$imgstyle_a['style'].'" '.$imgevents.' alt="'.esc_attr(wppa_qtrans($image['name'])).'" >'.wppa_get_video_body( $image['id'] ).'</video>';
 			}
 			else {

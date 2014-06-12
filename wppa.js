@@ -2,7 +2,7 @@
 //
 // conatins slideshow, theme, ajax and lightbox code
 //
-// Version 5.3.10
+// Version 5.3.11
 
 // Part 1: Slideshow
 //
@@ -834,7 +834,7 @@ function _wppaNextSlide_5(mocc) {
  
 function wppaMakeNameHtml(mocc) {
 var result;
-	if ( wppaIsMini[mocc] ) {
+	if ( wppaIsMini[mocc] || _wppaIsVideo[mocc][_wppaCurIdx[mocc]] != '' ) {
 		result = _wppaFullNames[mocc][_wppaCurIdx[mocc]];
 	}
 	else switch (wppaArtMonkyLink) {

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the non admin stuff
-* Version 5.3.10
+* Version 5.3.11
 *
 */
 
@@ -95,16 +95,17 @@ global $thumb;
 	// To make sure we are on a page that contains at least %%wppa%% we check for $_GET['wppa-album']. 
 	// This also narrows the selection of featured photos to those that exist in the current album.
 	if ( wppa_get_get( 'album' ) ) {
-		if ( wppa_switch('wppa_meta_page') ) {
+		if ( wppa_switch( 'wppa_meta_page' ) ) {
 			$album = wppa_get_get( 'album' );
-			$photos = $wpdb->get_results($wpdb->prepare( "SELECT `id`, `name` FROM `".WPPA_PHOTOS."` WHERE `album` = %s AND `status` = 'featured'", $album ), ARRAY_A);
+			$photos = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM `".WPPA_PHOTOS."` WHERE `album` = %s AND `status` = 'featured'", $album ), ARRAY_A );
 			if ( $photos ) {
 				echo("\n<!-- WPPA+ BEGIN Featured photos on this page -->");
 				foreach ( $photos as $photo ) {
-					$id = $photo['id'];
-					$name = esc_attr(__($photo['name']));
-					$content = wppa_get_permalink().'wppa-photo='.$photo['id'].'&amp;wppa-occur=1';
-					$content = wppa_convert_to_pretty($content);
+					$thumb = $photo;	// Set to global to reduce queries when getting the name
+					$id 		= $photo['id'];
+					$name 		= esc_attr( wppa_get_photo_name( $id ) );
+					$content 	= wppa_get_permalink().'wppa-photo='.$photo['id'].'&amp;wppa-occur=1';
+					$content 	= wppa_convert_to_pretty($content);
 					echo("\n<meta name=\"".$name."\" content=\"".$content."\" >");
 				}
 				echo("\n<!-- WPPA+ END Featured photos on this page -->\n");
@@ -113,14 +114,15 @@ global $thumb;
 	}
 	
 	// No photo and no album, give the plain photo links of all featured photos
-	elseif ( wppa_switch('wppa_meta_all') ) {
-		$photos = $wpdb->get_results( "SELECT `id`, `name`, `ext` FROM `".WPPA_PHOTOS."` WHERE `status` = 'featured'", ARRAY_A);
+	elseif ( wppa_switch( 'wppa_meta_all' ) ) {
+		$photos = $wpdb->get_results( "SELECT * FROM `".WPPA_PHOTOS."` WHERE `status` = 'featured'", ARRAY_A);
 		if ( $photos ) {
 			echo("\n<!-- WPPA+ BEGIN Featured photos on this site -->");
 			foreach ( $photos as $photo ) {
+				$thumb 		= $photo;	// Set to global to reduce queries when getting the name
 				$id 		= $photo['id'];
-				$name 		= esc_attr(wppa_get_photo_name($id));
-				$content 	= wppa_get_photo_url($id);
+				$name 		= esc_attr( wppa_get_photo_name( $id ) );
+				$content 	= wppa_get_photo_url( $id );
 				echo("\n<meta name=\"".$name."\" content=\"".$content."\" >");
 			}
 			echo("\n<!-- WPPA+ END Featured photos on this site -->\n");

@@ -2,7 +2,7 @@
 /* wppa-watermark.php
 *
 * Functions used for the application of watermarks
-* version 5.3.5
+* version 5.3.11
 *
 */
 
@@ -340,7 +340,7 @@ global $thumb;
 }
 
 	
-function wppa_add_watermark($file) {
+function wppa_add_watermark( $file ) {
 global $wppa_opt;
 
 	// Init
@@ -383,7 +383,7 @@ global $wppa_opt;
 		case 3: $photoimage = imagecreatefrompng($file);
 			break;
 	}
-	if ( empty( $photoimage ) or ( !$photoimage ) ) return false; 			// No image
+	if ( empty( $photoimage ) or ( ! $photoimage ) ) return false; 			// No image
 
 	$ps_x = $photosize[0];
 	$ps_y = $photosize[1];

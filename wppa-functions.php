@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Various funcions
-* Version 5.3.9
+* Version 5.3.11
 *
 */
 
@@ -1620,6 +1620,9 @@ global $wppa_done;
 								elseif ( wppa_switch('wppa_upload_edit') ) $cont['3'] = $cont3a;
 								else $cont['3'] = '';
 								$cont['4'] = __a('You receive this email as uploader of the photo');
+								if ( ! wppa_switch( 'wppa_mail_upl_email' ) ) {
+									$email = 'void';
+								}
 								// Send!
 								wppa_send_mail($to, $subj, $cont, $photo, $email);
 								$sentto[] = $moduser->login_name;
@@ -4038,9 +4041,10 @@ global $wppa_opt;
 				wppa_alert(__a('Wrong captcha, please try again'));
 				return;
 			}
-			$album = wppa_create_album_entry( array( 	'name' => strip_tags( wppa_get_post('wppa-album-name') ), 
-														'description' => strip_tags( wppa_get_post('wppa-album-desc') ),
-														'a_parent' => strval( intval( wppa_get_post('wppa-album-parent') ) ),
+			$album = wppa_create_album_entry( array( 	'name' 			=> strip_tags( wppa_get_post('wppa-album-name') ), 
+														'description' 	=> strip_tags( wppa_get_post('wppa-album-desc') ),
+														'a_parent' 		=> strval( intval( wppa_get_post('wppa-album-parent') ) ),
+														'owner' 		=> wppa_switch( 'wppa_frontend_album_public' ) ? '--- public ---' : wppa_get_user()
 														) );
 			if ( $album ) wppa_alert( sprintf( __a('Album #%s created'), $album ) );
 			else wppa_alert( __a('Could not create album') );
@@ -4204,6 +4208,10 @@ global $album;
 		wppa_index_add('photo', $id);
 		// and add watermark (optionally) to fullsize image only
 		wppa_add_watermark( wppa_get_photo_path( $id ) );
+		// Also to thumbnail?
+		if ( wppa_switch( 'wppa_watermark_thumbs' ) ) {
+			wppa_create_thumbnail( wppa_get_photo_path( $id ), wppa_get_minisize(), '' );	// create new thumb
+		}
 
 		// Mail
 		if ( wppa_switch('wppa_upload_notify') ) {

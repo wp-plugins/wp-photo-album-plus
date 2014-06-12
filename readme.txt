@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile, cloudinary, fotomoto
-Version: 5.3.10
+Version: 5.3.11
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -186,6 +186,22 @@ If you changed the name of wp-content and/or uploads, besides the additions to w
 **define('WPPA_REL_UPLOADS_PATH', 'wp_content/uploads');**
 **define('WPPA_REL_DEPOT_PATH', 'wp_content');**
 and make the changes therein also.
+
+= 5.3.11 =
+
+= Bug Fixes =
+
+* Fixed a problem in Album admin and in Settings for systems with very many registered users.
+
+= New Features =
+
+* New keywords in photo description: w#album, alias of w#albumid, will be replaced by album id; and w#albumname.
+* Table IX-D15: FE Albums public. A switch to force the front-end created albums to be owned by --- public ---.
+* You can hide the display of the commenter's email address in the notify email to the uploader by unticking the box in Table IV-F10.
+
+= Other Changes =
+
+* Dramatically reduced the number of queries for the generation of meta tags
 
 = 5.3.10 =
 

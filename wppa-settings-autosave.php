@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 5.3.10
+* Version 5.3.11
 *
 */
 
@@ -981,7 +981,7 @@ global $no_default;
 							
 							$name = __('FeaTen count', 'wppa');
 							$desc = __('Number of photos in Featured Ten widget.', 'wppa');
-							$help = esc_js(__('Enter the maximum number of rated photos in the FeaTen widget.', 'wppa'));
+							$help = esc_js(__('Enter the maximum number of photos in the FeaTen widget.', 'wppa'));
 							$slug = 'wppa_featen_count';
 							$html = wppa_input($slug, '40px', '', __('photos', 'wppa'));
 							wppa_setting($slug, '11', $name, $desc, $html, $help);
@@ -1014,24 +1014,25 @@ global $no_default;
 							$html = wppa_select($slug, $options, $values, $onchange);
 							wppa_setting($slug, '2', $name, $desc, $html.'&nbsp;&nbsp;<img id="wppa-cursor" src="'.wppa_get_imgdir().$wppa_opt[$slug].'" />', $help);
 							}
-/*
-							wppa_setting_subheader( 'H', '1', __( 'Video related size settings', 'wppa' ) );
-							{
-							$name = __('Default width', 'wppa');
-							$desc = __('The width of most videos', 'wppa');
-							$help = esc_js('This setting can be overruled for individual videos on the photo admin pages.', 'wppa');
-							$slug = 'wppa_video_width';
-							$html = wppa_input($slug, '40px', '', __('pixels', 'wppa'));
-							wppa_setting($slug, '1', $name, $desc, $html, $help);
+							if ( wppa_is_video_enabled() ) {
+								wppa_setting_subheader( 'H', '1', __( 'Video related size settings', 'wppa' ) );
+								{
+								$name = __('Default width', 'wppa');
+								$desc = __('The width of most videos', 'wppa');
+								$help = esc_js('This setting can be overruled for individual videos on the photo admin pages.', 'wppa');
+								$slug = 'wppa_video_width';
+								$html = wppa_input($slug, '40px', '', __('pixels', 'wppa'));
+								wppa_setting($slug, '1', $name, $desc, $html, $help);
 
-							$name = __('Default height', 'wppa');
-							$desc = __('The height of most videos', 'wppa');
-							$help = esc_js('This setting can be overruled for individual videos on the photo admin pages.', 'wppa');
-							$slug = 'wppa_video_height';
-							$html = wppa_input($slug, '40px', '', __('pixels', 'wppa'));
-							wppa_setting($slug, '2', $name, $desc, $html, $help);
+								$name = __('Default height', 'wppa');
+								$desc = __('The height of most videos', 'wppa');
+								$help = esc_js('This setting can be overruled for individual videos on the photo admin pages.', 'wppa');
+								$slug = 'wppa_video_height';
+								$html = wppa_input($slug, '40px', '', __('pixels', 'wppa'));
+								wppa_setting($slug, '2', $name, $desc, $html, $help);
+								}
 							}
-*/
+
 							?>
 						</tbody>
 						<tfoot style="font-weight: bold;" class="wppa_table_1">
@@ -2902,11 +2903,14 @@ global $no_default;
 												'upadmin', 
 												'upowner'
 												);
-							$users = wppa_get_users();
-							if ( count ( $users ) <= 1000 ) foreach ($users as $usr) {
-								$options[] = $usr['display_name'];
-								$values[]  = $usr['ID'];
-							}							
+							$usercount = wppa_get_user_count();
+							if ( $usercount <= $wppa_opt['wppa_max_users'] ) {
+								$users = wppa_get_users();
+								foreach ( $users as $usr ) {
+									$options[] = $usr['display_name'];
+									$values[]  = $usr['ID'];
+								}		
+							}
 							$html = wppa_select($slug, $options, $values);
 							$class = 'wppa_comment_';
 							wppa_setting($slug, '5', $name, $desc, $html, $help, $class);
@@ -2942,6 +2946,15 @@ global $no_default;
 							$html = wppa_checkbox($slug);
 							$class = 'wppa_comment_';
 							wppa_setting($slug, '9', $name, $desc, $html, $help, $class);
+							
+							$name = __('Show email to uploader', 'wppa');
+							$desc = __('Show the commenter\'s email in the notify email to uploader.', 'wppa');
+							$help = '';
+							$slug = 'wppa_mail_upl_email';
+							$html = wppa_checkbox($slug);
+							$class = 'wppa_comment_';
+							wppa_setting($slug, '10', $name, $desc, $html, $help, $class);
+							
 							}
 							wppa_setting_subheader( 'G', '1', __( 'Lightbox related settings. These settings have effect only when Table IX-J3 is set to wppa', 'wppa' ) );
 							{
@@ -3692,7 +3705,7 @@ global $no_default;
 							
 							$name = __('Album download link', 'wppa');
 							$desc = __('Place an album download link on the album covers', 'wppa');					
-							$help = esc_js(__('Creats adownload zipfile containing the photos of the album', 'wppa'));
+							$help = esc_js(__('Creates a download zipfile containing the photos of the album', 'wppa'));
 							$slug = 'wppa_allow_download_album';
 							$html = wppa_checkbox($slug);
 							wppa_setting($slug, '2', $name, $desc, $html.'</td><td></td><td></td><td>', $help);
@@ -4155,7 +4168,7 @@ global $no_default;
 					//		$users = wppa_get_users();	// Already known
 							$blacklist = get_option( 'wppa_black_listed_users', array() );
 							
-							if ( count( $users ) <= 1000 ) {
+							if ( wppa_get_user_count() <= $wppa_opt['wppa_max_users'] ) {
 								$options = array( __('-- select a user to blacklist ---', 'wppa') );
 								$values = array( '0' );
 								foreach ( $users as $usr ) {
@@ -4185,12 +4198,10 @@ global $no_default;
 							$blacklist = get_option( 'wppa_black_listed_users', array() );
 							$options = array( __('-- select a user to unblacklist ---', 'wppa') );
 							$values = array( '0' );
-					//		$users = wppa_get_users();	// Already known
-							foreach ( $users as $usr ) {
-								if ( in_array( $usr['user_login'], $blacklist ) ) {
-									$options[] = $usr['display_name'].' ('.$usr['user_login'].')';
-									$values[]  = $usr['user_login'];
-								}
+							foreach ( $blacklist as $usr ) {
+								$u = get_user_by( 'login', $usr );
+								$options[] = $u->display_name.' ('.$u->user_login.')';
+								$values[]  = $u->user_login;
 							}
 							$onchange = 'alert(\''.__('The page will be reloaded after the action has taken place.', 'wppa').'\');wppaRefreshAfter();';
 							$html1 = wppa_select($slug, $options, $values, $onchange);
@@ -4953,6 +4964,14 @@ global $no_default;
 							$slug = 'wppa_copy_timestamp';
 							$html = wppa_checkbox($slug);
 							wppa_setting($slug, '14', $name, $desc, $html, $help);
+							
+							$name = __('FE Albums public', 'wppa');
+							$desc = __('Frontend created albums are --- public ---', 'wppa');
+							$help = '';
+							$slug = 'wppa_frontend_album_public';
+							$html = wppa_checkbox($slug);
+							wppa_setting($slug, '15', $name, $desc, $html, $help);
+							
 							}
 							wppa_setting_subheader( 'E', '1', __( 'Search Albums and Photos related settings', 'wppa' ) );
 							{
@@ -5211,6 +5230,14 @@ global $no_default;
 							$args = array( 'id' => $id, 'content' => '---predef---', 'pos' => 'cencen', 'url' => true, 'width' => '1000', 'height' => '400', 'transp' => $tr );
 							$html = '<div style="text-align:center; max-width:400px; overflow:hidden; background-image:url('.WPPA_UPLOAD_URL.'/fonts/turkije.jpg);" ><img src="'.wppa_create_textual_watermark_file( $args ).'?ver='.rand(0, 4711).'" /></div><div style="clear:both;"></div>';
 							wppa_setting($slug, '11', $name, $desc, $html, $help, $class);
+							
+							$name = __('Watermark thumbnails', 'wppa');
+							$desc = __('Watermark also the thumbnail image files.', 'wppa');
+							$help = '';
+							$slug = 'wppa_watermark_thumbs';
+							$class = 'wppa_watermark';
+							$html = wppa_checkbox($slug);
+							wppa_setting($slug, '12', $name, $desc, $html, $help, $class);
 							}
 							wppa_setting_subheader( 'G', '1', __( 'Slideshow elements sequence order settings', 'wppa' ) );
 							{

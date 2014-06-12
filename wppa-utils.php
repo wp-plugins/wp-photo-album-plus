@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains low-level utility routines
-* Version 5.3.9
+* Version 5.3.11
 *
 */
  
@@ -691,19 +691,21 @@ function wppa_send_mail($to, $subj, $cont, $photo, $email = '') {
 			$message .= '
 		<p>'.$cont.'</p>';
 		}
-		if ( is_user_logged_in() ) {
-			global $current_user;
-			get_currentuserinfo();
-			$e = $current_user->user_email;
-			$eml = sprintf(__a('The visitors email address is: <a href="mailto:%s">%s</a>'), $e, $e);
-			$message .= '
-		<p>'.$eml.'</p>';
-		}
-		elseif ( $email ) {
-			$e = $email;
-			$eml = sprintf(__a('The visitor says his email address is: <a href="mailto:%s">%s</a>'), $e, $e);
-			$message .= '
-		<p>'.$eml.'</p>';
+		if ( $email != 'void' ) {
+			if ( is_user_logged_in() ) {
+				global $current_user;
+				get_currentuserinfo();
+				$e = $current_user->user_email;
+				$eml = sprintf(__a('The visitors email address is: <a href="mailto:%s">%s</a>'), $e, $e);
+				$message .= '
+			<p>'.$eml.'</p>';
+			}
+			elseif ( $email ) {
+				$e = $email;
+				$eml = sprintf(__a('The visitor says his email address is: <a href="mailto:%s">%s</a>'), $e, $e);
+				$message .= '
+			<p>'.$eml.'</p>';
+			}
 		}
 		$message .= '
 		<p><small>'.sprintf(__a('This message is automaticly generated at %s. It is useless to respond to it.'), '<a href="'.home_url().'" >'.home_url().'</a>').'</small></p>';

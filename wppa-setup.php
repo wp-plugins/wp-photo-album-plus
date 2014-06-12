@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 5.3.10
+* Version 5.3.11
 *
 */
 
@@ -478,6 +478,7 @@ Hide Camera info
 
 	$wppa_defaults = array ( 	'wppa_revision' 		=> '100',
 								'wppa_prevrev'			=> '100',
+								'wppa_max_users' 		=> '1000',
 	
 						// Table 0: Initial setup
 						'wppa_i_responsive'				=> '',
@@ -799,6 +800,7 @@ Hide Camera info
 						'wppa_comten_alt_display'		=> 'no',
 						'wppa_comten_alt_thumbsize'		=> '75',
 						'wppa_comment_smiley_picker'	=> 'no',
+						'wppa_mail_upl_email' 			=> 'yes',
 
 						// G Overlay
 						'wppa_ovl_opacity'				=> '80',
@@ -1067,6 +1069,7 @@ Hide Camera info
 						'wppa_newphoto_name_method' 	=> 'filename',
 						
 						'wppa_copy_timestamp'			=> 'no',
+						'wppa_frontend_album_public' 	=> 'no',
 						
 						// E Search
 						'wppa_search_linkpage' 			=> '0',		// 1
@@ -1094,6 +1097,7 @@ Hide Camera info
 						'wppa_watermark_upload'			=> '',
 						'wppa_watermark_opacity'		=> '20',
 						'wppa_watermark_opacity_text' 	=> '80',
+						'wppa_watermark_thumbs' 		=> 'no',
 						
 						// G Slide order
 						'wppa_slide_order'				=> '0,1,2,3,4,5,6,7,8,9,10',

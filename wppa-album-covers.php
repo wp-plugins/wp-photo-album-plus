@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Functions for album covers
-* Version 5.3.10
+* Version 5.3.11
 *
 */
 
@@ -555,7 +555,7 @@ global $wpdb;
 	if ($wppa_alt == 'even') $wppa_alt = 'alt'; else $wppa_alt = 'even';
 }
 
-
+// A single coverphoto
 function wppa_the_coverphoto( $albumid, $image, $src, $photo_pos, $photolink, $title, $imgattr_a, $events ) {
 global $wppa;
 global $wppa_opt;
@@ -659,14 +659,24 @@ global $wpdb;
 					$link = wppa_get_photo_url( $thumb['id'], '', $siz['0'], $siz['1'] );
 					$wppa['out'] .= "\n\t".'<a href="'.$link.'" data-videohtml="'.esc_attr( wppa_get_video_body( $thumb['id'] ) ).'" rel="'.$wppa_opt['wppa_lightbox_name'].'[alw-'.$wppa['master_occur'].'-'.$albumid.']" title="'.$title.'" >';
 					if ( $thumb['id'] == $image['id'] ) {		// the cover image
-						$wppa['out'] .= "\n\t\t".'<img class="image wppa-img" id="i-'.$image['id'].'-'.$wppa['master_occur'].'" title="'.wppa_zoom_in().'" src="'.$src.'" width="'.$imgwidth.'" height="'.$imgheight.'" style="'.__wcs('wppa-img').$imgattr.$imgattr_a['cursor'].'" '.$events.' alt="'.$title.'">';
+						if ( wppa_is_video( $image['id'] ) ) {
+							$wppa['out'] .= "\n\t\t".'<video class="image wppa-img" id="i-'.$image['id'].'-'.$wppa['master_occur'].'" title="'.wppa_zoom_in().'" width="'.$imgwidth.'" height="'.$imgheight.'" style="'.__wcs('wppa-img').$imgattr.$imgattr_a['cursor'].'" '.$events.' alt="'.$title.'">'.wppa_get_video_body( $image['id'] ).'</video>';
+						}
+						else {
+							$wppa['out'] .= "\n\t\t".'<img class="image wppa-img" id="i-'.$image['id'].'-'.$wppa['master_occur'].'" title="'.wppa_zoom_in().'" src="'.$src.'" width="'.$imgwidth.'" height="'.$imgheight.'" style="'.__wcs('wppa-img').$imgattr.$imgattr_a['cursor'].'" '.$events.' alt="'.$title.'">';
+						}
 					}
 					$wppa['out'] .= "\n\t".'</a>';
 				}
 				else {
 					$href = $photolink['url'] == '#' ? '' : 'href="'.$photolink['url'].'" ';
 					$wppa['out'] .= wppa_nltab('+').'<a '.$href.'target="'.$photolink['target'].'" title="'.$photolink['title'].'" onclick="'.$photolink['onclick'].'" >';
+					if ( wppa_is_video( $image['id'] ) ) {
+						$wppa['out'] .= wppa_nltab().'<video alt="'.$title.'" class="image wppa-img" width="'.$imgwidth.'" height="'.$imgheight.'" style="'.__wcs('wppa-img').$imgattr.'" '.$events.' >'.wppa_get_video_body( $image['id'] ).'</video>';
+					}
+					else {
 						$wppa['out'] .= wppa_nltab().'<img src="'.$src.'" alt="'.$title.'" class="image wppa-img" width="'.$imgwidth.'" height="'.$imgheight.'" style="'.__wcs('wppa-img').$imgattr.'" '.$events.' />';
+					}
 					$wppa['out'] .= wppa_nltab('-').'</a>'; 
 				}
 			} else { 

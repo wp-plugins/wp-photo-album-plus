@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains functions to retrieve album and photo items that need processing
-* Version 5.3.9
+* Version 5.3.11
 *
 * F.ok
 */
@@ -122,7 +122,9 @@ global $wppa_opt;
 	// Other keywords
 	if ( strpos($desc, 'w#') !== false ) {	// Is there any 'w#' ?
 		// Keywords
-		$keywords = array('name', 'filename', 'owner', 'id', 'tags', 'views');
+		$desc = str_replace( 'w#albumname', wppa_get_album_name( $thumb['album'] ), $desc );
+		$desc = str_replace( 'w#albumid', $thumb['album'], $desc );
+		$keywords = array('name', 'filename', 'owner', 'id', 'tags', 'views', 'album');
 		foreach ( $keywords as $keyword ) {
 			$replacement = __( trim( stripslashes( $thumb[$keyword] ) ) );
 			if ( $replacement == '' ) $replacement = '&lsaquo;'.__a( 'none', 'wppa' ).'&rsaquo;';
