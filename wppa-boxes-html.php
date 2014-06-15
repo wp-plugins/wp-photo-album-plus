@@ -579,7 +579,7 @@ global $album;
 	$t = $mcr ? 'mcr-' : '';
 	$wppa['out'] .= '
 	<div style="clear:both"></div>
-	<a id="wppa-cr-'.$alb.'-'.$wppa['master_occur'].'" onclick="'.
+	<a id="wppa-cr-'.$alb.'-'.$wppa['master_occur'].'" class="wppa-create-'.$where.'" onclick="'.
 									'jQuery( \'#wppa-create-'.$t.$alb.'-'.$wppa['master_occur'].'\' ).css( \'display\',\'block\' );'.	// Open the Create form
 									'jQuery( \'#wppa-cr-'.$alb.'-'.$wppa['master_occur'].'\' ).css( \'display\',\'none\' );'.			// Hide the Create link
 									'jQuery( \'#wppa-up-'.$alb.'-'.$wppa['master_occur'].'\' ).css( \'display\',\'none\' );'.			// Hide the Upload link
@@ -692,7 +692,7 @@ global $wppa_opt;
 	$t = $mcr ? 'mcr-' : '';
 	$wppa['out'] .= '
 	<div style="clear:both"></div>
-	<a id="wppa-up-'.$alb.'-'.$wppa['master_occur'].'" onclick="'.
+	<a id="wppa-up-'.$alb.'-'.$wppa['master_occur'].'" class="wppa-upload-'.$where.'" onclick="'.
 									'jQuery( \'#wppa-file-'.$t.$alb.'-'.$wppa['master_occur'].'\' ).css( \'display\',\'block\' );'.		// Open the Upload form
 									'jQuery( \'#wppa-up-'.$alb.'-'.$wppa['master_occur'].'\' ).css( \'display\',\'none\' );'.			// Hide the Upload link
 									'jQuery( \'#wppa-cr-'.$alb.'-'.$wppa['master_occur'].'\' ).css( \'display\',\'none\' );'.			// Hide the Create link
