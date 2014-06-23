@@ -197,8 +197,14 @@ global $wppa_lang;
 global $q_config;
 global $wppa;
 global $wppa_locale;
+global $wppa_admin_langs_root;
 
 	if ( $wppa_locale ) return; // Done already
+	
+	// Admin language files may be in separate plugin
+	if ( ! $wppa_admin_langs_root ) {
+		$wppa_admin_langs_root = WPPA_NAME.'/langs/';
+	}
 	
 	// See if qTranslate present and actve
 	if ( wppa_qtrans_enabled() ) {	
@@ -221,15 +227,16 @@ global $wppa_locale;
 		$wppa_lang = substr( $wppa_locale, 0, 2 );
 	}
 	
-	// Load the language file( s )
+	// Load the language file(s)
 	if ( $wppa_locale ) {
-		$domain = is_admin() ? 'wppa' : 'wppa_theme';
-		load_plugin_textdomain( $domain, false, WPPA_NAME.'/langs/' );
 
-		// Load theme language file also, for Ajax
+		// Load admin domain?
 		if ( is_admin() ) {
-			load_plugin_textdomain( 'wppa_theme', false, WPPA_NAME.'/langs/' );
+			load_plugin_textdomain( 'wppa', false, $wppa_admin_langs_root );
 		}
+		
+		// Load frontend domain always, i.e. also when frontend ajax
+		load_plugin_textdomain( 'wppa_theme', false, WPPA_NAME.'/langs/' );
 	}
 }
 
