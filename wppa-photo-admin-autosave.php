@@ -3,15 +3,14 @@
 * Package: wp-photo-album-plus
 *
 * edit and delete photos
-* version 5.3.11
+* version 5.4.0
 *
 */
 
 if ( ! defined( 'ABSPATH' ) ) die( "Can't load this file directly" );
 
-// Edit photo for owners of the photo( s ) only
+// Edit photo for owners of the photo(s) only
 function _wppa_edit_photo() {
-global $thumb;
 
 	// Check input
 	wppa_vfy_arg( 'photo' );
@@ -19,7 +18,7 @@ global $thumb;
 	// Edit Photo
 	if ( isset( $_GET['photo'] ) ) {
 		$photo = $_GET['photo'];
-		wppa_cache_thumb( $photo );
+		$thumb = wppa_cache_thumb( $photo );
 		if ( $thumb['owner'] == wppa_get_user() ) { ?>
 			<div class="wrap">
 				<h2><?php _e( 'Edit photo', 'wppa' ) ?></h2>

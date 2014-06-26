@@ -1,7 +1,7 @@
 /* admin-scripts.js */
 /* Package: wp-photo-album-plus
 /*
-/* Version 5.3.9
+/* Version 5.4.0
 /* Various js routines used in admin pages		
 */
 
@@ -408,7 +408,7 @@ function wppaCheckCoverType() {
 	var Type = document.getElementById('wppa_cover_type').value;
 	var Pos = document.getElementById('wppa_coverphoto_pos').value;
 	
-	if ( Type == 'imagefactory' ) {
+	if ( Type == 'imagefactory' || Type == 'imagefactory-mcr' ) {
 		jQuery('.wppa_imgfact_').css('display', '');
 /*		if ( Pos == 'left' || Pos == 'right' )
 			alert('To avoid layout problems: please set Cover photo position ( Table IV-D3 ) to \'top\' or \'bottom\'!');

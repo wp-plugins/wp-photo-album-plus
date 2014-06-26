@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 5.3.11
+* Version 5.4.0
 *
 */
 
@@ -180,27 +180,6 @@ global $silent;
 		$idx++;
 	}
 	
-	// Do the things dbdelta does not do.
-	// Character set
-	wppa_setup_query( "ALTER TABLE " . WPPA_ALBUMS . " MODIFY name text CHARACTER SET utf8");
-	wppa_setup_query( "ALTER TABLE " . WPPA_PHOTOS . " MODIFY name text CHARACTER SET utf8");
-	wppa_setup_query( "ALTER TABLE " . WPPA_ALBUMS . " MODIFY description text CHARACTER SET utf8");
-	wppa_setup_query( "ALTER TABLE " . WPPA_PHOTOS . " MODIFY description longtext CHARACTER SET utf8");
-	wppa_setup_query( "ALTER TABLE " . WPPA_PHOTOS . " MODIFY linktitle text CHARACTER SET utf8");
-	wppa_setup_query( "ALTER TABLE " . WPPA_COMMENTS . " MODIFY comment text CHARACTER SET utf8");
-	wppa_setup_query( "ALTER TABLE " . WPPA_IPTC . " MODIFY description text CHARACTER SET utf8");
-	wppa_setup_query( "ALTER TABLE " . WPPA_EXIF . " MODIFY description text CHARACTER SET utf8");
-	// Default values
-	get_currentuserinfo();
-	$user = $current_user->user_login;
-	wppa_setup_query($wpdb->prepare( 'UPDATE `'.WPPA_ALBUMS.'` SET `owner` = %s WHERE `owner` = %s', $user, '' ));
-	wppa_setup_query($wpdb->prepare( 'UPDATE `'.WPPA_ALBUMS.'` SET `cover_linktype` = %s WHERE `cover_linktype` = %s', 'content', '' ));
-	wppa_setup_query($wpdb->prepare( 'UPDATE `'.WPPA_ALBUMS.'` SET `cover_linktype` = %s WHERE `cover_linkpage` = %s', 'none', '-1' ));
-	wppa_setup_query($wpdb->prepare( 'UPDATE `'.WPPA_PHOTOS.'` SET `status` = %s WHERE `status` = %s', 'publish', '' ));
-	wppa_setup_query($wpdb->prepare( 'UPDATE `'.WPPA_PHOTOS.'` SET `linktarget` = %s WHERE `linktarget` = %s', '_self', '' ));
-	wppa_setup_query($wpdb->prepare( 'UPDATE `'.WPPA_ALBUMS.'` SET `upload_limit` = %s WHERE `upload_limit` = %s', '0/0', '' ));
-	wppa_setup_query($wpdb->prepare( 'UPDATE `'.WPPA_RATING.'` SET `status` = %s WHERE `status` = %s', 'publish', '' ));
-
 	// Convert any changed and remove obsolete setting options
 	if ( $old_rev > '100' ) {	// On update only
 		if ( $old_rev <= '402' ) {
@@ -371,7 +350,7 @@ global $silent;
 	// Check if this update comes with a new wppa-theme.php and/or a new wppa-style.css
 	// If so, produce message
 	$key = '0';
-	if ( $old_rev < '5200' ) {		// theme changed since...
+	if ( $old_rev < '5400' ) {		// theme changed since...
 		$usertheme = get_theme_root().'/'.get_option('template').'/wppa-theme.php';
 		if ( is_file( $usertheme ) ) $key += '2';
 	}
@@ -652,6 +631,7 @@ Hide Camera info
 						'wppa_show_slideshowbrowselink' 	=> 'yes',	// 3
 						'wppa_show_viewlink'				=> 'yes',	// 4
 						'wppa_show_treecount'				=> 'no',
+						'wppa_show_cats' 					=> 'no',
 						'wppa_skip_empty_albums'			=> 'yes',
 						// E Widgets
 						'wppa_show_bbb_widget'				=> 'no',	// 1
@@ -734,6 +714,8 @@ Hide Camera info
 						'wppa_defer_javascript' 		=> 'no',
 						'wppa_inline_css' 				=> 'yes',
 						'wppa_custom_style' 			=> '',
+						'wppa_use_custom_style_file' 	=> 'no',
+						'wppa_use_custom_theme_file' 	=> 'no',
 
 						// B Full size and Slideshow
 						'wppa_fullvalign' 				=> 'fit',

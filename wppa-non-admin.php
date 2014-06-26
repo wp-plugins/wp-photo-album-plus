@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the non admin stuff
-* Version 5.3.11
+* Version 5.4.0
 *
 */
 
@@ -26,20 +26,24 @@ add_action('wp_print_styles', 'wppa_add_style');
 function wppa_add_style() {
 global $wppa_api_version;
 
-	// In child theme?
-	$userstyle = get_theme_root() . '/' . get_option('stylesheet') . '/wppa-style.css';
-	if ( is_file($userstyle) ) {
-		wp_register_style('wppa_style', get_theme_root_uri() . '/' . get_option('stylesheet')  . '/wppa-style.css', array(), $wppa_api_version);
-		wp_enqueue_style('wppa_style');
-		return;
-	}
-	
-	// In theme?
-	$userstyle = get_theme_root() . '/' . get_option('template') . '/wppa-style.css';
-	if ( is_file($userstyle) ) {
-		wp_register_style('wppa_style', get_theme_root_uri() . '/' . get_option('template')  . '/wppa-style.css', array(), $wppa_api_version);
-		wp_enqueue_style('wppa_style');
-		return;
+	// Are we allowed to look in theme?
+	if ( wppa_switch( 'wppa_use_custom_style_file' ) ) {
+
+		// In child theme?
+		$userstyle = get_theme_root() . '/' . get_option('stylesheet') . '/wppa-style.css';
+		if ( is_file($userstyle) ) {
+			wp_register_style('wppa_style', get_theme_root_uri() . '/' . get_option('stylesheet')  . '/wppa-style.css', array(), $wppa_api_version);
+			wp_enqueue_style('wppa_style');
+			return;
+		}
+		
+		// In theme?
+		$userstyle = get_theme_root() . '/' . get_option('template') . '/wppa-style.css';
+		if ( is_file($userstyle) ) {
+			wp_register_style('wppa_style', get_theme_root_uri() . '/' . get_option('template')  . '/wppa-style.css', array(), $wppa_api_version);
+			wp_enqueue_style('wppa_style');
+			return;
+		}
 	}
 	
 	// Use standard
@@ -98,10 +102,12 @@ global $thumb;
 		if ( wppa_switch( 'wppa_meta_page' ) ) {
 			$album = wppa_get_get( 'album' );
 			$photos = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM `".WPPA_PHOTOS."` WHERE `album` = %s AND `status` = 'featured'", $album ), ARRAY_A );
+			wppa_dbg_q( 'Q-meta1' );
+			wppa_cache_photo( 'add', $photos );
 			if ( $photos ) {
 				echo("\n<!-- WPPA+ BEGIN Featured photos on this page -->");
 				foreach ( $photos as $photo ) {
-					$thumb = $photo;	// Set to global to reduce queries when getting the name
+//					$thumb = $photo;	// Set to global to reduce queries when getting the name
 					$id 		= $photo['id'];
 					$name 		= esc_attr( wppa_get_photo_name( $id ) );
 					$content 	= wppa_get_permalink().'wppa-photo='.$photo['id'].'&amp;wppa-occur=1';
@@ -116,6 +122,8 @@ global $thumb;
 	// No photo and no album, give the plain photo links of all featured photos
 	elseif ( wppa_switch( 'wppa_meta_all' ) ) {
 		$photos = $wpdb->get_results( "SELECT * FROM `".WPPA_PHOTOS."` WHERE `status` = 'featured'", ARRAY_A);
+		wppa_dbg_q( 'Q-meta2' );
+		wppa_cache_photo( 'add', $photos );
 		if ( $photos ) {
 			echo("\n<!-- WPPA+ BEGIN Featured photos on this site -->");
 			foreach ( $photos as $photo ) {
@@ -207,12 +215,17 @@ global $wppa_opt;
 add_action('init', 'wppa_load_theme');
 	
 function wppa_load_theme() {
-	$usertheme = get_theme_root() . '/' . get_option('template') . '/wppa-theme.php';
-	if ( is_file($usertheme) ) {
-		require_once $usertheme;
-	} else {
-		require_once 'theme/wppa-theme.php';
+
+	// Are we allowed to look in theme?
+	if ( wppa_switch( 'wppa_use_custom_theme_file' ) ) {
+
+		$usertheme = get_theme_root() . '/' . get_option('template') . '/wppa-theme.php';
+		if ( is_file( $usertheme ) ) {
+			require_once $usertheme;
+			return;
+		}
 	}
+	require_once 'theme/wppa-theme.php';
 }
 	
 /* LOAD FOOTER REQD DATA */

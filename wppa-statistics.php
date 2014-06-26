@@ -4,7 +4,7 @@
 *
 * Functions for counts etc
 * Common use front and admin
-* Version 5.3.9
+* Version 5.4.0
 *
 */
 
@@ -39,31 +39,32 @@ function wppa_get_statistics() {
 }
 
 // get number of photos in album 
-function wppa_get_photo_count($xid = '') {
+function wppa_get_photo_count($id) {
 global $wpdb;
-global $album;
     
-    if (is_numeric($xid)) $id = $xid; else $id = $album['id'];
-	
-	if ( current_user_can('wppa_moderate') ) {
-		$count = $wpdb->get_var($wpdb->prepare( "SELECT COUNT(*) FROM " . WPPA_PHOTOS . " WHERE album = %s", $id ) );
+ 	if ( current_user_can('wppa_moderate') ) {
+		$count = $wpdb->get_var($wpdb->prepare( 
+			"SELECT COUNT(*) FROM " . WPPA_PHOTOS . " WHERE album = %s", $id ) );
 	}
 	else {
-		$count = $wpdb->get_var($wpdb->prepare( "SELECT COUNT(*) FROM " . WPPA_PHOTOS . " WHERE `album` = %s AND ( ( `status` <> 'pending' AND `status` <> 'scheduled' ) OR owner = %s )", $id, wppa_get_user() ) );
+		$count = $wpdb->get_var($wpdb->prepare( 
+			"SELECT COUNT(*) FROM " . WPPA_PHOTOS . 
+			" WHERE `album` = %s AND ( ( `status` <> 'pending' AND `status` <> 'scheduled' ) OR owner = %s )", 
+			$id, wppa_get_user() ) );
 	}
 	
-	wppa_dbg_q('Q12v');
+	wppa_dbg_q('Q-gpc');
 	return $count;
 }
 
 // get number of albums in album 
-function wppa_get_album_count($xid = '') {
+function wppa_get_album_count($id) {
 global $wpdb;
-global $album;
-    
-    if (is_numeric($xid)) $id = $xid; else $id = $album['id'];
-    $count = $wpdb->get_var($wpdb->prepare( "SELECT COUNT(*) FROM " . WPPA_ALBUMS . " WHERE a_parent=%s", $id ) );
-	wppa_dbg_q('Q13v');
+
+    $count = $wpdb->get_var($wpdb->prepare( 
+		"SELECT COUNT(*) FROM " . WPPA_ALBUMS . " WHERE a_parent=%s", $id ) );
+		
+	wppa_dbg_q('Q-gac');
     return $count;
 }
 
@@ -72,7 +73,8 @@ function wppa_get_total_album_count() {
 global $wpdb;
 
 	$count = $wpdb->get_var("SELECT COUNT(*) FROM `".WPPA_ALBUMS."`");
-	wppa_dbg_q('Q14');
+	
+	wppa_dbg_q('Q-gtac');
 	return $count;
 }
 
@@ -80,8 +82,11 @@ global $wpdb;
 function wppa_get_youngest_photo_id() {
 global $wpdb;
 
-	$result = $wpdb->get_var( "SELECT `id` FROM `" . WPPA_PHOTOS . "` WHERE `status` <> 'pending' AND `status` <> 'scheduled' ORDER BY `id` DESC LIMIT 1" );
-	wppa_dbg_q('Q15');
+	$result = $wpdb->get_var( 
+		"SELECT `id` FROM `" . WPPA_PHOTOS . 
+		"` WHERE `status` <> 'pending' AND `status` <> 'scheduled' ORDER BY `id` DESC LIMIT 1" );
+		
+	wppa_dbg_q('Q-gypi');
 	return $result;
 }
 

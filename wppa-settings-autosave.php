@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 5.3.11
+* Version 5.4.0
 *
 */
 
@@ -21,7 +21,6 @@ global $wp_roles;
 global $wppa_table;
 global $wppa_subtable;
 global $wppa_revno;
-global $thumb;
 global $no_default;
 			
 
@@ -1674,12 +1673,19 @@ global $no_default;
 							$html = wppa_checkbox($slug);
 							wppa_setting($slug, '5', $name, $desc, $html, $help);
 							
+							$name = __('Show categories', 'wppa');
+							$desc = __('Display the album categories on the covers.', 'wppa');
+							$slug = 'wppa_show_cats';
+							$help = '';
+							$html = wppa_checkbox($slug);
+							wppa_setting($slug, '6', $name, $desc, $html, $help);
+							
 							$name = __('Skip empty albums', 'wppa');
 							$desc = __('Do not show empty albums, except for admin and owner.', 'wppa');
 							$help = '';
 							$slug = 'wppa_skip_empty_albums';
 							$html = wppa_checkbox($slug);
-							wppa_setting($slug, '6', $name, $desc, $html, $help);
+							wppa_setting($slug, '7', $name, $desc, $html, $help);
 							}
 							wppa_setting_subheader( 'F', '1', __( 'Widget related visibility settings', 'wppa' ) );
 							{
@@ -2293,6 +2299,20 @@ global $no_default;
 							$slug = 'wppa_custom_style';
 							$html = wppa_textarea($slug, $name);
 							wppa_setting($slug, '10', $name, $desc, $html, $help);
+							
+							$name = __('Use customized style file', 'wppa');
+							$desc = __('This feature is highly discouraged.', 'wppa');
+							$help = '';
+							$slug = 'wppa_use_custom_style_file';
+							$html = wppa_checkbox($slug);
+							wppa_setting($slug, '11', $name, $desc, $html, $help);
+							
+							$name = __('Use customized theme file', 'wppa');
+							$desc = __('This feature is highly discouraged.', 'wppa');
+							$help = '';
+							$slug = 'wppa_use_custom_theme_file';
+							$html = wppa_checkbox($slug);
+							wppa_setting($slug, '12', $name, $desc, $html, $help);
 							}
 						wppa_setting_subheader( 'B', '1', __( 'Slideshow related settings', 'wppa' ) );
 							{
@@ -6320,7 +6340,7 @@ global $wppa_opt;
 function wppa_doit_button( $label = '', $key = '', $sub = '', $height = '16', $fontsize = '11' ) {
 	if ( $label == '' ) $label = __('Do it!', 'wppa');
 
-	$result = '<input type="submit" class="button-primary" style="float:left; font-size:'.$fontsize.'px; height:'.$height.'px; margin: 0 4px; padding: 0px;"';
+	$result = '<input type="submit" class="button-primary" style="float:left; font-size:'.$fontsize.'px; height:'.$height.'px; margin: 0 4px; padding: 0px; line-height:12px;"';
 	$result .= ' name="wppa_settings_submit" value="&nbsp;'.$label.'&nbsp;"';
 	$result .= ' onclick="';
 	if ( $key ) $result .= 'document.getElementById(\'wppa-key\').value=\''.$key.'\';';

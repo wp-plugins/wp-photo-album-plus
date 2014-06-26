@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the search widget
-* Version 5.2.21
+* Version 5.4.0
 *
 */
 
@@ -22,7 +22,7 @@ class SearchPhotos extends WP_Widget {
 		global $wppa_opt;
 		global $wpdb;
 		
-		$wppa['master_occur']++;
+		$wppa['mocc']++;
 
         extract( $args );
 

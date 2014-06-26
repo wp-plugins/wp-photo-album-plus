@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the best rated photos
-* Version 5.3.6
+* Version 5.4.0
 */
 
 if ( ! defined( 'ABSPATH' ) ) die( "Can't load this file directly" );
@@ -25,7 +25,7 @@ class BestOfWidget extends WP_Widget {
 		global $thumb;
 
         $wppa['in_widget'] = 'bestof';
-		$wppa['master_occur']++;
+		$wppa['mocc']++;
 		
 		extract( $args );
 

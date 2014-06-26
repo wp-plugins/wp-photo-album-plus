@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * ask the album / display you want
-* Version 5.2.21
+* Version 5.4.0
 */
 
 
@@ -33,7 +33,7 @@ class SuperView extends WP_Widget {
 		$album_root 	= $instance['root'];
 		$sort 			= $instance['sort'];
 		
-		$wppa['master_occur']++;
+		$wppa['mocc']++;
 		$wppa['in_widget'] = 'superview';
 
 		$widget_content = wppa_get_superview_html( $album_root, $sort );

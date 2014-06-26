@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * date and time related functions
-* Version 5.3.10
+* Version 5.4.0
 *
 */
 
@@ -69,16 +69,14 @@ function wppa_get_timestamp( $key = false ) {
 }
 
 function wppa_get_date_time_select_html( $type, $id, $selectable = true ) {
-global $thumb;
-global $album;
 
 	$type = strtoupper( substr( $type, 0, 1 ) ).strtolower( substr( $type, 1 ) );
 	
 	if ( $type == 'Photo' ) {
-		wppa_cache_thumb( $id );
+		$thumb = wppa_cache_thumb( $id );
 	}
 	elseif ( $type == 'Album' ) {
-		wppa_cache_album( $id );
+		$album = wppa_cache_album( $id );
 	}
 	else {
 		wppa_error_message('Uniplemented type: '.$type.' in wppa_get_date_time_select_html()');

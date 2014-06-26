@@ -2,7 +2,7 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 5.3.11
+* version 5.4.0
 *
 */
 
@@ -34,7 +34,7 @@ global $wppa_defaults;
 			'fullsize' 					=> '',
 			'enlarge' 					=> false,
 			'occur' 					=> '0',
-			'master_occur' 				=> '0',
+			'mocc' 						=> '0',
 			'widget_occur' 				=> '0',
 			'in_widget' 				=> false,
 			'is_cover' 					=> '0',
@@ -290,14 +290,13 @@ function wppa_get_wppa_url() {
 function wppa_get_album_order( $parent = '0' ) {
 global $wppa;
 global $wppa_opt;
-global $album;
 
 	// Init
     $result = '';
 	
 	// Album given ?
-	if ( $parent ) { 	
-		wppa_cache_album( $parent );
+	if ( $parent > '0' ) { 	
+		$album = wppa_cache_album( $parent );
 		$order = $album['suba_order_by'];
 	}
 	else {
@@ -1385,14 +1384,15 @@ global $wppa;
 }
 
 // Return the allowed number to upload in an album. -1 = unlimited
-function wppa_allow_uploads( $album = '0' ) {
+function wppa_allow_uploads( $alb = '0' ) {
 global $wpdb;
 
-	if ( ! $album ) return '-1';//'0';
-//	if ( $album == 'any' ) return '-1';
+	if ( ! $alb ) return '-1';//'0';
+
+	$album = wppa_cache_album( $alb );
 	
-	$limits = $wpdb->get_var( $wpdb->prepare( "SELECT `upload_limit` FROM `".WPPA_ALBUMS."` WHERE `id` = %s", $album ) );
-	wppa_dbg_q( 'Q225' );
+	$limits = $album['upload_limit']; //$wpdb->get_var( $wpdb->prepare( "SELECT `upload_limit` FROM `".WPPA_ALBUMS."` WHERE `id` = %s", $alb ) );
+
 	$temp = explode( '/', $limits );
 	$limit_max  = isset( $temp[0] ) ? $temp[0] : '0';
 	$limit_time = isset( $temp[1] ) ? $temp[1] : '0';
@@ -1400,13 +1400,13 @@ global $wpdb;
 	if ( ! $limit_max ) return '-1';		// Unlimited max
 	
 	if ( ! $limit_time ) {					// For ever
-		$curcount = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM `".WPPA_PHOTOS."` WHERE `album` = %s", $album ) );
+		$curcount = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM `".WPPA_PHOTOS."` WHERE `album` = %s", $alb ) );
 		wppa_dbg_q( 'Q226' );
 	}
 	else {									// Time criterium in place
 		$timnow = time();
 		$timthen = $timnow - $limit_time;
-		$curcount = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM `".WPPA_PHOTOS."` WHERE `album` = %s AND `timestamp` > %s", $album, $timthen ) );
+		$curcount = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM `".WPPA_PHOTOS."` WHERE `album` = %s AND `timestamp` > %s", $alb, $timthen ) );
 		wppa_dbg_q( 'Q227' );
 	}
 	
@@ -1610,7 +1610,7 @@ global $wppa;
 			$gtot = 0;
 			$keys = array_keys( $wppa['queries'] );
 			sort( $keys );
-			$line = 'Cumulative query statistics: Q=query, G=cache<br />';
+			$line = 'Cumulative query stats: Q=query, G=cache<br />';
 			foreach ( $keys as $k ) {
 				if ( substr( $k,0,1 ) == 'Q' ) {
 					$line .= $k.'=>'.$wppa['queries'][$k].', ';
@@ -1625,7 +1625,8 @@ global $wppa;
 				}
 			}
 			$line .= '<br />';
-			$line .= sprintf( 'Total queries attempted: %d, Cash hits: %d, equals %4.2f', $qtot+$gtot, $gtot, $gtot*100/( $qtot+$gtot ) ).'%';
+			$line .= sprintf( 'Total queries attempted: %d, Cash hits: %d, equals %4.2f%%, misses: %d.', $qtot+$gtot, $gtot, $gtot*100/( $qtot+$gtot ), $qtot );
+			$line .= ' 2nd level cache entries: albums: '.wppa_cache_album( 'count' ).', photos: '.wppa_cache_photo( 'count' ).' NQ='.get_num_queries();
 			wppa_dbg_msg( $line );
 //			ob_start();
 //			print_r( $wppa['queries'] );
@@ -1766,6 +1767,7 @@ global $wpdb;
 	if ( $args['selected'] === '' ) {
         $args['selected'] = wppa_get_last_album();
     }
+
 	// See if selection is valid
 	if ( ( $args['selected'] == $args['exclude'] ) || 
 		 ( $args['checkupload'] && ! wppa_allow_uploads( $args['selected'] ) ) ||
@@ -1773,9 +1775,16 @@ global $wpdb;
 	   ) {
 		$args['selected'] = '0';
 	}
-												
-	$albums = $wpdb->get_results( "SELECT `id`, `name` FROM `".WPPA_ALBUMS."` ".wppa_get_album_order( $args['root'] ), ARRAY_A );	
-	
+
+	$albums = $wpdb->get_results( 
+		"SELECT * FROM `" . WPPA_ALBUMS . "` " . wppa_get_album_order( $args['root'] ), ARRAY_A 
+		);	
+
+	// Add to secondary cache
+	if ( $albums ) {
+		wppa_cache_album( 'add', $albums );
+	}
+
 	if ( $albums ) {
 		// Filter for root
 		if ( $args['root'] ) {
@@ -1839,7 +1848,7 @@ global $wpdb;
 	
 	$selected = $args['selected'] == '0' ? ' selected="selected"' : '';
 	if ( $args['addselbox'] ) $result .= '<option value="0"'.$selected.' >' . __( '--- a selection box ---', 'wppa' ) . '</option>';
-	
+
 	if ( $albums ) foreach ( $albums as $album ) {
 		if ( ( $args['disabled'] == $album['id'] ) || 
 			 ( $args['exclude'] == $album['id'] ) ||
@@ -1857,7 +1866,7 @@ global $wpdb;
 	
 	$selected = $args['selected'] == '-1' ? ' selected="selected"' : '';
 	if ( $args['addseparate'] ) $result .= '<option value="-1"' . $selected . '>' . __( '--- separate ---', 'wppa' ) . '</option>';
-	
+
 	return $result;
 }
 

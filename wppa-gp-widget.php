@@ -6,7 +6,7 @@
 *
 * A text widget that hooks the wppa+ filter
 *
-* Version 5.1.0
+* Version 5.4.0
 */
 
 class WppaGpWidget extends WP_Widget {
@@ -25,7 +25,7 @@ class WppaGpWidget extends WP_Widget {
  		$title = apply_filters('widget_title', $instance['title']);
 
 		$wppa['in_widget'] = 'gp';
-		$wppa['master_occur']++;
+		$wppa['mocc']++;
 				
 		echo $before_widget;
 		if ( !empty( $title ) ) { echo $before_title . $title . $after_title; } 

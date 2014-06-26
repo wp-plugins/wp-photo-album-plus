@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains low-level utility routines
-* Version 5.3.11
+* Version 5.4.0
 *
 */
  
@@ -159,19 +159,19 @@ global $wppa_opt;
 			$geo = str_replace('w#lon', $lon, str_replace('w#lat', $lat, $wppa_opt['wppa_gpx_shortcode']));
 			$geo = str_replace('w#ip', $_SERVER['REMOTE_ADDR'], $geo);
 			$geo = do_shortcode($geo);
-			$wppa['geo'] .= '<div id="geodiv-'.$wppa['master_occur'].'-'.$id.'" style="display:none;">'.$geo.'</div>';
+			$wppa['geo'] .= '<div id="geodiv-'.$wppa['mocc'].'-'.$id.'" style="display:none;">'.$geo.'</div>';
 			break;
 		case 'wppa-plus-embedded':
 			if ( $wppa['geo'] == '' ) { 	// First
 				$wppa['geo'] = '
-<div id="map-canvas-'.$wppa['master_occur'].'" style="height:'.$wppa_opt['wppa_map_height'].'px; width:100%; padding:0; margin:0; font-size: 10px;" ></div>
+<div id="map-canvas-'.$wppa['mocc'].'" style="height:'.$wppa_opt['wppa_map_height'].'px; width:100%; padding:0; margin:0; font-size: 10px;" ></div>
 <script type="text/javascript" >
 	if ( typeof ( _wppaLat ) == "undefined" ) { var _wppaLat = new Array();	var _wppaLon = new Array(); }
-	_wppaLat['.$wppa['master_occur'].'] = new Array(); _wppaLon['.$wppa['master_occur'].'] = new Array();
+	_wppaLat['.$wppa['mocc'].'] = new Array(); _wppaLon['.$wppa['mocc'].'] = new Array();
 </script>';
 			}	// End first
 			$wppa['geo'] .= '
-<script type="text/javascript">_wppaLat['.$wppa['master_occur'].']['.$id.'] = '.$lat.'; _wppaLon['.$wppa['master_occur'].']['.$id.'] = '.$lon.';</script>';
+<script type="text/javascript">_wppaLat['.$wppa['mocc'].']['.$id.'] = '.$lat.'; _wppaLon['.$wppa['mocc'].']['.$id.'] = '.$lon.';</script>';
 			break;	// End native
 	}
 }
@@ -190,12 +190,12 @@ function wppa_is_separate($id) {
 
 // Get the albums parent
 function wppa_get_parentalbumid($id) {
-global $album;
-global $prev_album_id;
+static $prev_album_id;
 
 	if ( ! wppa_is_int($id) || $id < '1' ) return '0';
 
-	if ( ! wppa_cache_album($id) ) {
+	$album = wppa_cache_album($id);
+	if ( $album === false ) {
 		wppa_dbg_msg('Album '.$id.' no longer exists, but is still set as a parent of '.$prev_album_id.'. Please correct this.', 'red');
 		return '-9';	// Album does not exist
 	}
@@ -1492,14 +1492,10 @@ global $thumb;
 
 function wppa_set_default_tags( $id ) {
 global $wpdb;
-global $thumb;
-global $album;
 
-	wppa_cache_thumb( $id );
-	$alb = $thumb['album'];
-	wppa_cache_album( $alb );
-	
-	$tags = wppa_sanitize_tags( str_replace( array( ' ', '\'', '"'), ',', wppa_filter_iptc( wppa_filter_exif( $album['default_tags'], $id ), $id ) ) );
+	$thumb 	= wppa_cache_thumb( $id );
+	$album 	= wppa_cache_album( $thumb['album'] );
+	$tags 	= wppa_sanitize_tags( str_replace( array( ' ', '\'', '"'), ',', wppa_filter_iptc( wppa_filter_exif( $album['default_tags'], $id ), $id ) ) );
 	
 	$wpdb->query( $wpdb->prepare( "UPDATE `".WPPA_PHOTOS."` SET `tags` = %s WHERE `id` = %s", $tags, $id ) );
 }

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display a list of users linking to their photos
-* Version 5.3.9
+* Version 5.4.0
 */
 
 if ( ! defined( 'ABSPATH' ) ) die( "Can't load this file directly" );
@@ -23,7 +23,7 @@ class UpldrWidget extends WP_Widget {
 		global $wppa;
 
         $wppa['in_widget'] = 'upldr';
-		$wppa['master_occur']++;
+		$wppa['mocc']++;
 		extract( $args );
 		
 		$instance 		= wp_parse_args( (array) $instance, array( 
@@ -36,11 +36,11 @@ class UpldrWidget extends WP_Widget {
 		$ignorelist		= explode(',', $instance['ignore']);
 		$upldrcache 	= wppa_get_upldr_cache();
 		$needupdate 	= false;
-		$users 			= $wpdb->get_results( "SELECT * FROM `".$wpdb->prefix.'users'."`", ARRAY_A );
+		$users 			= wppa_get_users(); // $wpdb->get_results( "SELECT * FROM `".$wpdb->prefix.'users'."`", ARRAY_A );
 		$workarr 		= array();
 		
 		// Make the data we need
-		foreach ( $users as $user ) {
+		if ( $users ) foreach ( $users as $user ) {
 			if ( ! in_array($user['user_login'], $ignorelist) ) {
 				$me = wppa_get_user();
 				if ( $user['user_login'] != $me && isset ( $upldrcache[$user['ID']] ) ) $photo_count = $upldrcache[$user['ID']];
@@ -57,6 +57,15 @@ class UpldrWidget extends WP_Widget {
 				}
 			}
 		}
+		else {
+			$widget_content = 
+				__a( 'There are too many registered users in the system for this widget' );
+			echo "\n" . $before_widget;
+			if ( !empty( $widget_title ) ) { echo $before_title . $widget_title . $after_title; }
+			echo $widget_content . $after_widget;
+			return;
+		}
+		
 		if ( $needupdate ) update_option('wppa_upldr_cache', $upldrcache);
 		
 		// Bring me to top

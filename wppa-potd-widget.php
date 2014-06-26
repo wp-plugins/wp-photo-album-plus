@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the widget
-* Version 5.3.9
+* Version 5.4.0
 */
 
 if ( ! defined( 'ABSPATH' ) ) die( "Can't load this file directly" );
@@ -23,6 +23,7 @@ class PhotoOfTheDay extends WP_Widget {
 		global $wppa;
 		
 		$wppa['in_widget'] = 'potd';
+		$wppa['mocc']++;
 
         extract( $args );
 

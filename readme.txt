@@ -2,12 +2,14 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile, cloudinary, fotomoto
-Version: 5.3.11
+Version: 5.4.0
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
 Requires at least: 3.9
 Tested up to: 3.9.1
+License: GPLv2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 This plugin is designed to easily manage and display your photo albums and slideshows in a single as well as in a network WordPress site.
 
@@ -186,6 +188,26 @@ If you changed the name of wp-content and/or uploads, besides the additions to w
 **define('WPPA_REL_UPLOADS_PATH', 'wp_content/uploads');**
 **define('WPPA_REL_DEPOT_PATH', 'wp_content');**
 and make the changes therein also.
+
+= 5.4.0 =
+
+= Bug Fixes =
+
+* All languages in names and descriptions are now indexed when using qTranslate and indexed search is used.
+* The selection of the photo of the day when set to topten will follow the 'top' policy as specified in Table IV-E17.
+* Fixed a bug in using custom css when Table IV-A9 ( Inline styles ) was UNchecked.
+* Directory to album import continued to ask for a target album where it should not. Fixed.
+
+= Other Changes =
+
+* Many changes to reduce server load ( less db queries ) and client load ( improved responsive algorithm ) and to improve stability.
+* Moved admin language files to separate plugin: <a href="http://wordpress.org/plugins/wppa-admin-language-pack/" >Wppa Admin Language Pack</a>
+* The use of a modified wppa-theme.php file is strongly discouraged. 
+The old version of this file is NOT compatible with this release. 
+If you want to use a modified version, you will have to tick Table IV-A12
+* The use of a modified wppa-style.css file is strongly discouraged. 
+You should enter your custom css in Table IV-A10
+If you want to use a modified version, you will have to tick Table IV-A11
 
 = 5.3.11 =
 

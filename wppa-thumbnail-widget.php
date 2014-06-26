@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display thumbnail photos
-* Version 5.3.9
+* Version 5.4.0
 */
 
 class ThumbnailWidget extends WP_Widget {
@@ -22,6 +22,7 @@ class ThumbnailWidget extends WP_Widget {
 		global $wppa;
 
 		$wppa['in_widget'] = 'tn';
+		$wppa['mocc']++;
 		
         extract( $args );
 		

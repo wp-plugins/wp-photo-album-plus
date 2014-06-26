@@ -2,9 +2,9 @@
 /* wppa-ajax.php
 *
 * Functions used in ajax requests
-* version 5.3.11
+* version 5.4.0
 *
-* F.ok
+* 
 */
 
 if ( ! defined( 'ABSPATH' ) ) die( "Can't load this file directly" );
@@ -74,7 +74,7 @@ global $wppa_session;
 				require_once 'wppa-non-admin.php';
 			}
 			
-			$wppa['master_occur'] 	= $_REQUEST['moccur'];
+			$wppa['mocc'] 	= $_REQUEST['moccur'];
 			$wppa['comment_photo'] 	= isset( $_REQUEST['photo-id'] ) ? $_REQUEST['photo-id'] : '0';
 			$wppa['comment_id'] 	= isset( $_REQUEST['comment-edit'] ) ? $_REQUEST['comment-edit'] : '0';
 			

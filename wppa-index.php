@@ -3,15 +3,13 @@
 * Package: wp-photo-album-plus
 *
 * Contains all indexing functions
-* version 5.3.11
+* version 5.4.0
 *
 * 
 */
 
 // Add an item to the index
-function wppa_index_add($type, $id = '') {
-global $album;	
-global $thumb;	
+function wppa_index_add($type, $id) {
 global $wpdb;
 global $acount;
 global $pcount;
@@ -23,14 +21,11 @@ global $wppa;
 	}
 	
 	if ( $type == 'album' ) {
-		// Use cached album?
-		if ( is_numeric($id) ) {
-			$album = '';	// Clear album cache
-			wppa_cache_album($id);
-		}		
+	
+		$album = wppa_cache_album($id);
 		
-		// Find the raw text
-		$words = __( $album['name'] ).' '.wppa_get_album_desc($album['id']);
+		// Find the raw text, all qTranslate languages
+		$words = stripslashes($album['name']).' '.stripslashes($album['description']);
 		if ( wppa_switch( 'wppa_search_cats' ) ) {
 			$words .= ' '.$album['cats'];
 		}
@@ -56,14 +51,10 @@ global $wppa;
 	
 	elseif ( $type == 'photo' ) {
 		
-		// Use cached photo?
-		if ( is_numeric($id) ) {
-			$thumb = '';	// Clear cache
-			wppa_cache_thumb($id);
-		}
+		$thumb = wppa_cache_thumb($id);
 		
 		// Find the rew text
-		$words = __( $thumb['name'] ).' '.$thumb['filename'].' '.wppa_get_photo_desc( $thumb['id'] );
+		$words = stripslashes($thumb['name']).' '.$thumb['filename'].' '.stripslashes($thumb['description']);
 		if ( wppa_switch( 'wppa_search_tags' ) ) $words .= ' '.$thumb['tags'];																					// Tags
 		if ( wppa_switch( 'wppa_search_comments' ) ) {
 			$coms = $wpdb->get_results($wpdb->prepare( "SELECT `comment` FROM `" . WPPA_COMMENTS . "` WHERE `photo` = %s AND `status` = 'approved'", $thumb['id'] ), ARRAY_A );
@@ -239,14 +230,13 @@ global $wpdb;
 
 // Use this function if you know the current photo data matches the index info
 function wppa_index_quick_remove($type, $id) {
-global $thumb;
 global $wpdb;
-global $album;
 
 	if ( $type == 'album' ) {
-		if ( is_numeric($id) ) wppa_cache_album($id);
+	
+		$album = wppa_cache_album($id);
 		
-		$words = __( $album['name'] ).' '.wppa_get_album_desc( $album['id'] ).' '.$album['cats'];
+		$words = stripslashes( $album['name'] ).' '.stripslashes( $album['description'] ).' '.$album['cats'];
 		$words = wppa_index_raw_to_words($words);
 		
 		foreach ( $words as $word ) {
@@ -268,10 +258,11 @@ global $album;
 		
 	}
 	elseif ( $type == 'photo') {
-		if ( is_numeric($id) ) wppa_cache_thumb($id);
+	
+		$thumb = wppa_cache_thumb($id);
 
 		// Find the raw text
-		$words = __( $thumb['name'] ).' '.$thumb['filename'].' '.wppa_get_photo_desc( $thumb['id'] ).' '.$thumb['tags'];
+		$words = stripslashes( $thumb['name'] ).' '.$thumb['filename'].' '.stripslashes( $thumb['description'] ).' '.$thumb['tags'];
 		$coms = $wpdb->get_results($wpdb->prepare( "SELECT `comment` FROM `" . WPPA_COMMENTS . "` WHERE `photo` = %s AND `status` = 'approved'", $thumb['id'] ), ARRAY_A );
 		if ( $coms ) foreach ( $coms as $com ) {
 			$words .= ' '.stripslashes( $com['comment'] );

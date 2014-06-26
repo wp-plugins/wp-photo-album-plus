@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the last uploaded photos
-* Version 5.3.9
+* Version 5.4.0
 */
 
 class LasTenWidget extends WP_Widget {
@@ -21,6 +21,8 @@ class LasTenWidget extends WP_Widget {
 		global $wppa;
 
 		$wppa['in_widget'] = 'lasten';
+		$wppa['mocc']++;
+
         extract( $args );
 		
 		$instance = wp_parse_args( (array) $instance, array(

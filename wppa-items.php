@@ -3,59 +3,148 @@
 * Package: wp-photo-album-plus
 *
 * Contains functions to retrieve album and photo items that need processing
-* Version 5.3.11
+* Version 5.4.0
 *
-* F.ok
+* 
 */
  
 if ( ! defined( 'ABSPATH' ) ) die( "Can't load this file directly" );
 	
 // Bring album into cache
 // Returns album info and puts it also in global $album
-function wppa_cache_album( $id ) {
+function wppa_cache_album( $id, $data = '' ) {
 global $wpdb;
-global $album;
+static $album;
+static $album_cache_2;
 
-	if ( ! wppa_is_int( $id ) || $id < '1' ) {
-		wppa_dbg_msg( 'Invalid arg wppa_cache_album( '.$id.' )', 'red' );
+	// Action?
+	if ( $id == 'invalidate' ) {
+		if ( isset( $album_cache_2[$data] ) ) unset( $album_cache_2[$data] );
+		$album = false;
 		return false;
 	}
-	if ( ! isset( $album['id'] ) || $album['id'] != $id ) {
-		$album = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM `".WPPA_ALBUMS."` WHERE `id` = %s", $id ), ARRAY_A );
-		wppa_dbg_q( 'Q90' );
-		if ( ! $album ) {
-			wppa_dbg_msg( 'Album '.$id.' does not exist', 'red' );
+	if ( $id == 'add' ) {
+		if ( isset( $data['id'] ) ) { 				// Add a single album to 2nd level cache
+			$album_cache_2[$data['id']] = $data;	// Looks valid
+		}
+		else foreach( $data as $album ) {			// Add multiple
+			if ( isset( $album['id'] ) ) {			// Looks valid
+				$album_cache_2[$album['id']] = $album;
+			}
+		}
+		return false;
+	}
+	if ( $id == 'count' ) {
+		if ( is_array( $album_cache_2 ) ) {
+			return count( $album_cache_2 );
+		}
+		else {
 			return false;
 		}
 	}
-	else {
-		wppa_dbg_q( 'G90' );
+	if ( ! wppa_is_int( $id ) || $id < '1' ) {
+		$album = false;
+		wppa_dbg_msg( 'Invalid arg wppa_cache_album('.$id.')', 'red' );
+		return false;
 	}
-	return $album;
+
+	// In first level cache?
+	if ( isset( $album['id'] ) && $album['id'] == $id ) {
+		wppa_dbg_q( 'G-A1' );
+		return $album;
+	}
+
+	// In  second level cache?
+	if ( ! empty( $album_cache_2 ) ) {
+		if ( in_array( $id, array_keys( $album_cache_2 ) ) ) {
+			$album = $album_cache_2[$id];
+			wppa_dbg_q( 'G-A2' );
+			return $album;
+		}
+	}
+
+	// Not in cache, do query
+	$album = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM `".WPPA_ALBUMS."` WHERE `id` = %s", $id ), ARRAY_A );
+	wppa_dbg_q( 'Q-A' );
+	if ( $album ) {
+		// Store in second level cache
+		$album_cache_2[$id] = $album;
+		return $album;
+	}
+	else {
+		wppa_dbg_msg( 'Album '.$id.' does not exist', 'red' );
+		return false;
+	}
 }
 
 // Bring photo into cache
 // Returns photo info and puts it also in global $thumb
-function wppa_cache_thumb( $id ) {
+function wppa_cache_photo( $id, $data = '' ) {
+	return wppa_cache_thumb( $id, $data );
+}
+function wppa_cache_thumb( $id, $data = '' ) {
 global $wpdb;
 global $thumb;
+static $thumb_cache_2;
 
-	if ( ! $id ) {
+	// Action?
+	if ( $id == 'invalidate' ) {
+		if ( isset( $thumb_cache_2[$data] ) ) unset( $thumb_cache_2[$data] );
 		$thumb = false;
 		return false;
 	}
-	if ( ! is_numeric( $id ) || $id < '1' ) {
-		wppa_dbg_msg( 'Invalid arg wppa_cache_thumb( '.$id.' )', 'red' );
+	if ( $id == 'add' ) {
+		if ( isset( $data['id'] ) ) { 				// Add a single thumb to 2nd level cache
+			$thumb_cache_2[$data['id']] = $data;	// Looks valid
+		}
+		else foreach( $data as $thumb ) {			// Add multiple
+			if ( isset( $thumb['id'] ) ) {			// Looks valid
+				$thumb_cache_2[$thumb['id']] = $thumb;
+			}
+		}
 		return false;
 	}
-	if ( ! isset( $thumb['id'] ) || $thumb['id'] != $id ) {
-		$thumb = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM `".WPPA_PHOTOS."` WHERE `id` = %s", $id ), ARRAY_A );
-		wppa_dbg_q( 'Q91' );
+	if ( $id == 'count' ) {
+		if ( is_array( $thumb_cache_2 ) ) {
+			return count( $thumb_cache_2 );
+		}
+		else {
+			return false;
+		}
+	}
+	if ( ! wppa_is_int( $id ) || $id < '1' ) {
+		wppa_dbg_msg( 'Invalid arg wppa_cache_thumb('.$id.')', 'red' );
+		$thumb = false;
+		return false;
+	}
+	
+	// In first level cache?
+	if ( isset( $thumb['id'] ) && $thumb['id'] == $id ) {
+		wppa_dbg_q( 'G-T1' );
+		return $thumb;
+	}
+
+	// In  second level cache?
+	if ( ! empty( $thumb_cache_2 ) ) {
+		if ( in_array( $id, array_keys( $thumb_cache_2 ) ) ) {
+			$thumb = $thumb_cache_2[$id];
+			wppa_dbg_q( 'G-T2' );
+			return $thumb;
+		}
+	}
+	
+	// Not in cache, do query
+	$thumb = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM `".WPPA_PHOTOS."` WHERE `id` = %s", $id ), ARRAY_A );
+	wppa_dbg_q( 'Q-P' );
+	if ( $thumb ) {
+		// Store in second level cache
+		$thumb_cache_2[$id] = $thumb;
+		return $thumb;
 	}
 	else {
-		wppa_dbg_q( 'G91' );
+		wppa_dbg_msg( 'Photo '.$id.' does not exist', 'red' );
+		return false;
 	}
-	return $thumb;
 }
 
 // get the name of a full sized image
@@ -204,7 +293,7 @@ function wppa_get_album_name( $id, $extended = false ) {
 			return $name;
 		}
 		if ( $extended == 'raw' ) {
-			$name = $album['name']; 	// stripslashes( $wpdb->get_var( $wpdb->prepare( "SELECT `name` FROM `".WPPA_ALBUMS."` WHERE `id` = %s", $id ) ) );
+			$name = $album['name'];
 			return $name;
 		}
 	}
@@ -268,4 +357,40 @@ function wppa_get_album_desc( $id ) {
 	$desc = make_clickable( $desc );
 	
 	return $desc;
+}
+
+function wppa_get_album_item( $id, $item ) {
+	
+	$album = wppa_cache_album( $id );
+	
+	if ( $album ) {
+		if ( isset( $album[$item] ) ) {
+			return $album[$item];
+		}
+		else {
+			wppa_dbg_msg( 'Album item '.$item.' does not exist. ( get_album_item )', 'red' );
+		}
+	}
+	else {
+		wppa_dbg_msg( 'Album ' . $id . ' does not exist. ( get_album_item )', 'red' );
+	}
+	return false;
+}
+
+function wppa_get_photo_item( $id, $item ) {
+	
+	$photo = wppa_cache_photo( $id );
+	
+	if ( $photo ) {
+		if ( isset( $photo[$item] ) ) {
+			return $photo[$item];
+		}
+		else {
+			wppa_dbg_msg( 'Photo item '.$item.' does not exist. ( get_photo_item )', 'red' );
+		}
+	}
+	else {
+		wppa_dbg_msg( 'Photo ' . $id . ' does not exist. ( get_photo_item )', 'red' );
+	}
+	return false;
 }

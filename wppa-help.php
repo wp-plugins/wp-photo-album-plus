@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 * admin help page
-* version 5.3.0
+* version 5.4.0
 */ 
 
 function _wppa_page_help() {
@@ -145,7 +145,7 @@ global $wppa_revno;
 		
 		<h3><?php _e('Licence', 'wppa'); ?></h3>
 		<p>
-			<?php _e('WP Photo Album is released under the', 'wppa'); ?> <a href="http://www.gnu.org/copyleft/gpl.html">GNU GPL</a> <?php _e('licence.', 'wppa'); ?>
+			<?php _e('WP Photo Album is released under the', 'wppa'); ?> <a href="http://www.gnu.org/licenses/gpl-2.0.html">GPLv2 or later</a> <?php _e('licence.', 'wppa'); ?>
 		</p>
 		
 	</div>

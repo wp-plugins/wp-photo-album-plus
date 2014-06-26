@@ -2,8 +2,8 @@
 /* wppa-album-widget.php
 * Package: wp-photo-album-plus
 *
-* display thumbnail photos
-* Version 5.3.11
+* display thumbnail albums
+* Version 5.4.0
 */
 
 if ( ! defined( 'ABSPATH' ) ) die( "Can't load this file directly" );
@@ -13,7 +13,10 @@ class AlbumWidget extends WP_Widget {
     /** constructor */
     function AlbumWidget() {
         parent::WP_Widget( false, $name = 'Thumbnail Albums' );	
-		$widget_ops = array( 'classname' => 'wppa_album_widget', 'description' => __( 'WPPA+ Albums', 'wppa' ) );
+		$widget_ops = array( 
+			'classname' 	=> 'wppa_album_widget', 
+			'description' 	=> __( 'WPPA+ Albums', 'wppa' ) 
+			);
 		$this->WP_Widget( 'wppa_album_widget', __( 'Thumbnail Albums', 'wppa' ), $widget_ops );
     }
 
@@ -24,10 +27,9 @@ class AlbumWidget extends WP_Widget {
 		global $wppa_opt;
 		global $wppa;
 		global $thumb;
-		global $album;
 
 		$wppa['in_widget'] = 'alb';
-		$wppa['master_occur'] ++;
+		$wppa['mocc']++;
 	
         extract( $args );
 		
@@ -36,37 +38,50 @@ class AlbumWidget extends WP_Widget {
 													'parent' => 'none',	// Parent album
 													'name' => 'no',		// Display album name?
 													'skip' => 'yes'		// Skip empty albums
-							//						'count' => $wppa_opt['wppa_album_widget_count'],	// to be added
+							//						'count' => $wppa_opt['wppa_album_widget_count'],
 							//						'size' => $wppa_opt['wppa_album_widget_size']
 													 ) );
  
 		$widget_title = apply_filters( 'widget_title', $instance['title'] );
 
-		$page = in_array( $wppa_opt['wppa_album_widget_linktype'], $wppa['links_no_page'] ) ? '' : wppa_get_the_landing_page( 'wppa_album_widget_linkpage', __a( 'Photo Albums' ) );
+		$page = in_array( $wppa_opt['wppa_album_widget_linktype'], $wppa['links_no_page'] ) ? 
+			'' : 
+			wppa_get_the_landing_page( 'wppa_album_widget_linkpage', __a( 'Photo Albums' ) );
 
-		$max  = $wppa_opt['wppa_album_widget_count'];
-		if ( !$max ) $max = '10';
-		$parent = $instance['parent'];
-		$name = $instance['name'];
-		$skip = $instance['skip'];
+		$max  		= $wppa_opt['wppa_album_widget_count'];
+		if ( !$max ) {
+			$max 	= '10';
+		}
+		$parent 	= $instance['parent'];
+		$name 		= $instance['name'];
+		$skip 		= $instance['skip'];
 		
 		if ( is_numeric( $parent ) ) {
-			$albums = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM `".WPPA_ALBUMS."` WHERE `a_parent` = %s ".wppa_get_album_order( $parent ), $parent ), ARRAY_A );
+			$albums = $wpdb->get_results( $wpdb->prepare( 
+				"SELECT * FROM `" . WPPA_ALBUMS . "` WHERE `a_parent` = %s " . 
+				wppa_get_album_order( $parent ), $parent 
+				), ARRAY_A );
 		}
 		else {
 			switch ( $parent ) {
 				case 'all':
-					$albums = $wpdb->get_results( "SELECT * FROM `".WPPA_ALBUMS."` ".wppa_get_album_order(), ARRAY_A );
+					$albums = $wpdb->get_results( 
+						"SELECT * FROM `" . WPPA_ALBUMS . "` " . wppa_get_album_order(), ARRAY_A );
 					break;
 				case 'last':
-					$albums = $wpdb->get_results( "SELECT * FROM `".WPPA_ALBUMS."` ORDER BY `timestamp` DESC", ARRAY_A );
+					$albums = $wpdb->get_results( 
+						"SELECT * FROM `" . WPPA_ALBUMS . "` ORDER BY `timestamp` DESC", ARRAY_A );
 					break;
 				default:
-					wppa_dbg_msg( 'Error, unimplemented album selection: '.$parent.' in Album widget.', 'red', true );
+					wppa_dbg_msg( 
+						'Error, unimplemented album selection: ' . $parent . 
+						' in Album widget.', 'red', true );
 				}
 		}
+		wppa_dbg_q( 'Q-WidAlb1' );
+		wppa_cache_album( 'add', $albums );
 		
-		$widget_content = "\n".'<!-- WPPA+ album Widget start -->';
+		$widget_content = "\n" . '<!-- WPPA+ album Widget start -->';
 		$maxw = $wppa_opt['wppa_album_widget_size'];
 		$maxh = $maxw;
 		$lineheight = $wppa_opt['wppa_fontsize_widget_thumb'] * 1.5;
@@ -79,8 +94,11 @@ class AlbumWidget extends WP_Widget {
 				global $thumb;
 				
 				$imageid 	= wppa_get_coverphoto_id( $album['id'] );
-				$image 		= $wpdb->get_row( $wpdb->prepare( "SELECT * FROM `".WPPA_PHOTOS."` WHERE `id` = %s", $imageid ), ARRAY_A );
-				$imgcount 	= $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM `".WPPA_PHOTOS."` WHERE `album` = %s", $album['id'] ) );
+				$image 		= $imageid ? wppa_cache_photo( $imageid ) : false;
+				$imgcount 	= $wpdb->get_var( $wpdb->prepare( 
+					"SELECT COUNT(*) FROM `" . WPPA_PHOTOS . "` WHERE `album` = %s", $album['id'] 
+					) );
+				wppa_dbg_q( 'Q-WidAlb2' );
 				$thumb 		= $image;
 				// Make the HTML for current picture
 				if ( $image && $imgcount > $wppa_opt['wppa_min_thumbs'] ) {
@@ -92,77 +110,62 @@ class AlbumWidget extends WP_Widget {
 					$width      = $imgstyle_a['width'];
 					$height     = $imgstyle_a['height'];
 					$cursor		= $imgstyle_a['cursor'];
-					if ( wppa_switch( 'wppa_show_albwidget_tooltip' ) ) $title = esc_attr( strip_tags( wppa_get_album_desc( $album['id'] ) ) );
-					else $title = '';
+					if ( wppa_switch( 'wppa_show_albwidget_tooltip' ) ) {
+						$title = esc_attr( strip_tags( wppa_get_album_desc( $album['id'] ) ) );
+					}
+					else {
+						$title = '';
+					}
 					$imgurl 	= wppa_get_thumb_url( $image['id'], '', $width, $height );
 				}
 				else {
 					$link       = '';
 					$file 		= '';
 					$imgevents  = '';
-					$imgstyle   = 'width:'.$maxw.';height:'.$maxh.';';
+					$imgstyle   = 'width:' . $maxw . ';height:' . $maxh . ';';
 					$width      = $maxw;
 					$height     = $maxw; // !!
 					$cursor		= 'default';
-					$title 		= sprintf( __a( 'Upload at least %d photos to this album!', 'wppa_theme' ), $wppa_opt['wppa_min_thumbs'] - $imgcount + 1 );
-					$imgurl		= wppa_get_imgdir().'album32.png';
+					$title 		= sprintf( 
+						__a( 'Upload at least %d photos to this album!', 'wppa_theme' ), 
+						$wppa_opt['wppa_min_thumbs'] - $imgcount + 1 
+						);
+					$imgurl		= wppa_get_imgdir() . 'album32.png';
 				}
 					
 
 				if ( $imgcount > $wppa_opt['wppa_min_thumbs'] || $skip == 'no' ) {
 
-	$widget_content .= "\n".'<div class="wppa-widget" style="width:'.$maxw.'px; height:'.$maxh.'px; margin:4px; display:inline; text-align:center; float:left;">'; 
+					$widget_content .= 
+						"\n" . '<div class="wppa-widget" style="width:' . $maxw . 'px; height:' . 
+						$maxh . 'px; margin:4px; display:inline; text-align:center; float:left;">'; 
 
-	wppa_do_the_widget_thumb( 'album', $image, $album['id'], 'thumbs', $link, $title, $imgurl, $imgstyle_a, $imgevents );
-/*				
-					$widget_content .= "\n".'<div class="wppa-widget" style="width:'.$maxw.'px; height:'.$maxh.'px; margin:4px; display:inline; text-align:center; float:left;">'; 
-				
-					if ( $link ) {
-						if ( $link['is_url'] ) {	// Is a href
-							$widget_content .= "\n\t".'<a href="'.$link['url'].'" title="'.$title.'" target="'.$link['target'].'" >';
-								$widget_content .= "\n\t\t".'<img id="i-'.$image['id'].'-'.$wppa['master_occur'].'" title="'.$title.'" src="'.$imgurl.'" width="'.$width.'" height="'.$height.'" style="'.$imgstyle.' cursor:pointer;" '.$imgevents.' alt="'.esc_attr( wppa_qtrans( $image['name'] ) ).'">';
-							$widget_content .= "\n\t".'</a>';
-						}
-						elseif ( $link['is_lightbox'] ) {
-							$thumbs = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM `".WPPA_PHOTOS."` WHERE `album` = %s ".wppa_get_photo_order( $album['id'] ), $album['id'] ), 'ARRAY_A' );
-							if ( $thumbs ) foreach ( $thumbs as $thumb ) {
-								$title = wppa_get_lbtitle( 'alw', $thumb['id'] );
-								$siz = getimagesize( wppa_get_photo_path( $thumb['id'] ) );
-								$link = wppa_get_photo_url( $thumb['id'], '', $siz['0'], $siz['1'] );
-								$widget_content .= "\n\t".'<a href="'.$link.'" data-videohtml="'.esc_attr( wppa_get_video_body( $thumb['id'] ) ).'" rel="'.$wppa_opt['wppa_lightbox_name'].'[alw-'.$wppa['master_occur'].'-'.$album['id'].']" title="'.$title.'" >';
-								if ( $thumb['id'] == $image['id'] ) {		// the cover image
-									$widget_content .= "\n\t\t".'<img id="i-'.$image['id'].'-'.$wppa['master_occur'].'" title="'.wppa_zoom_in().'" src="'.$imgurl.'" width="'.$width.'" height="'.$height.'" style="'.$imgstyle.$cursor.'" '.$imgevents.' alt="'.esc_attr( wppa_qtrans( $image['name'] ) ).'">';
-								}
-								$widget_content .= "\n\t".'</a>';
-							}
-						}
-						else { // Is an onclick unit
-							$widget_content .= "\n\t".'<img id="i-'.$image['id'].'-'.$wppa['master_occur'].'" title="'.$title.'" src="'.$imgurl.'" width="'.$width.'" height="'.$height.'" style="'.$imgstyle.' cursor:pointer;" '.$imgevents.' onclick="'.$link['url'].'" alt="'.esc_attr( wppa_qtrans( $image['name'] ) ).'">';					
-						}
-					}
-					else {
-						$widget_content .= "\n\t".'<img id="i-'.$image['id'].'-'.$wppa['master_occur'].'" title="'.$title.'" src="'.$imgurl.'" width="'.$width.'" height="'.$height.'" style="'.$imgstyle.'" '.$imgevents.' alt="'.esc_attr( wppa_qtrans( $image['name'] ) ).'">';
-					}
-*/				
+					wppa_do_the_widget_thumb( 
+						'album', $image, $this->get_widget_id(), 'thumbs', $link, $title,
+						$imgurl, $imgstyle_a, $imgevents 
+						);
+					
 					if ( $name == 'yes' ) {
-						$widget_content .= "\n\t".'<div style="font-size:'.$wppa_opt['wppa_fontsize_widget_thumb'].'px; line-height:'.$lineheight.'px;">';
-							$widget_content .= "\n\t".wppa_get_album_name( $album['id'] );
+						$widget_content .= 
+							"\n\t" . '<div style="font-size:' . $wppa_opt['wppa_fontsize_widget_thumb'] . 
+							'px; line-height:' . $lineheight . 'px;">';
+						$widget_content .= "\n\t" . wppa_get_album_name( $album['id'] );
 						$widget_content .= '</div>';
 					}
 					
-			// $widget_content .= "\n\t".'<span style="font-size:'.$wppa_opt['wppa_fontsize_widget_thumb'].'px; min-height:100%;">'.__( stripslashes( $album['name'] ) ).'</span>';
-
-					$widget_content .= "\n".'</div>';
+					$widget_content .= "\n" . '</div>';
 					
 					$count++;
 				}
 			}
 		}			
-		else $widget_content .= 'There are no albums ( yet ).';
+		else {
+			$widget_content .= 'There are no albums (yet).';
+		}
 		
 		$widget_content .= '<div style="clear:both"></div>';
 		
-		$widget_content .= "\n".'<!-- WPPA+ thumbnail Widget end -->';
+		$widget_content .= "\n" . '<!-- WPPA+ thumbnail Widget end -->';
 
 		echo "\n" . $before_widget;
 		if ( !empty( $widget_title ) ) { echo $before_title . $widget_title . $after_title; }
@@ -170,6 +173,12 @@ class AlbumWidget extends WP_Widget {
 		
 		$wppa['in_widget'] = false;
     }
+
+	function get_widget_id() {
+		$widgetid = substr( $this->get_field_name( 'txt' ), strpos( $this->get_field_name( 'txt' ), '[' ) + 1 );
+		$widgetid = substr( $widgetid, 0, strpos( $widgetid, ']' ) );
+		return $widgetid;
+	}
 	
     /** @see WP_Widget::update */
     function update( $new_instance, $old_instance ) {				
@@ -189,29 +198,46 @@ class AlbumWidget extends WP_Widget {
 		//Defaults
 
 		$instance = wp_parse_args( ( array ) $instance, array( 
-															'title' => __( 'Thumbnail Albums', 'wppa' ),
-															'parent' => '0',
-															'name' => 'no',
-															'skip' => 'yes' ) );
+													'title' => __( 'Thumbnail Albums', 'wppa' ),
+													'parent' => '0',
+													'name' => 'no',
+													'skip' => 'yes' ) );
  		$parent = $instance['parent'];
 		$name = $instance['name'];
 		$skip = $instance['skip'];
 		$widget_title = $instance['title'];
 ?>
-		<p><label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:', 'wppa' ); ?></label> <input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo $widget_title; ?>" /></p>
-		<p><label for="<?php echo $this->get_field_id( 'parent' ); ?>"><?php _e( 'Album selection or Parent album:', 'wppa' ); ?></label> 
+		<p>
+			<label for="<?php echo $this->get_field_id( 'title' ); ?>">
+				<?php _e( 'Title:', 'wppa' ); ?>
+			</label> 
+			<input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo $widget_title; ?>" />
+		</p>
+		<p>
+			<label for="<?php echo $this->get_field_id( 'parent' ); ?>">
+				<?php _e( 'Album selection or Parent album:', 'wppa' ); ?>
+			</label> 
 			<select class="widefat" id="<?php echo $this->get_field_id( 'parent' ); ?>" name="<?php echo $this->get_field_name( 'parent' ); ?>" >
-
-				<option value="all" <?php if ( $parent == 'all' ) echo 'selected="selected"' ?>><?php _e( '--- all albums ---', 'wppa' ) ?></option>
-				<option value="0"  <?php if ( $parent == '0' )  echo 'selected="selected"' ?>><?php _e( '--- all generic albums ---', 'wppa' ) ?></option>
-				<option value="-1" <?php if ( $parent == '-1' ) echo 'selected="selected"' ?>><?php _e( '--- all separate albums ---', 'wppa' ) ?></option>
-				<option value="last" <?php if ( $parent == 'last' ) echo 'selected="selected"' ?>><?php _e( '--- most recently added albums ---', 'wppa' ) ?></option>
-				<?php $albs = $wpdb->get_results( "SELECT * FROM `".WPPA_ALBUMS."` ORDER BY `name`", ARRAY_A );
+				<option value="all" <?php if ( $parent == 'all' ) echo 'selected="selected"' ?>>
+					<?php _e( '--- all albums ---', 'wppa' ) ?>
+				</option>
+				<option value="0"  <?php if ( $parent == '0' )  echo 'selected="selected"' ?>>
+					<?php _e( '--- all generic albums ---', 'wppa' ) ?>
+				</option>
+				<option value="-1" <?php if ( $parent == '-1' ) echo 'selected="selected"' ?>>
+					<?php _e( '--- all separate albums ---', 'wppa' ) ?>
+				</option>
+				<option value="last" <?php if ( $parent == 'last' ) echo 'selected="selected"' ?>>
+					<?php _e( '--- most recently added albums ---', 'wppa' ) ?>
+				</option>
+				<?php $albs = $wpdb->get_results( 
+					"SELECT * FROM `" . WPPA_ALBUMS . "` ORDER BY `name`", ARRAY_A 
+					);
 				if ( $albs ) foreach( $albs as $alb ) {
-					echo '<option value="'.$alb['id'].'" '; 
+					echo '<option value="' . $alb['id'] . '" '; 
 					if ( $parent == $alb['id'] ) echo 'selected="selected" '; 
 					if ( !wppa_has_children( $alb['id'] ) ) echo 'disabled="disabled" '; 
-					echo '>'.__( stripslashes( $alb['name'] ) ).'</option>';
+					echo '>' . __( stripslashes( $alb['name'] ) ) . '</option>';
 				} ?>
 
 			</select>
@@ -219,23 +245,33 @@ class AlbumWidget extends WP_Widget {
 		<p>
 			<?php _e( 'Show album names:', 'wppa' ); ?>
 			<select id="<?php echo $this->get_field_id( 'name' ); ?>" name="<?php echo $this->get_field_name( 'name' ); ?>">
-				<option value="no" <?php if ( $name == 'no' ) echo 'selected="selected"' ?>><?php _e( 'no.', 'wppa' ); ?></option>
-				<option value="yes" <?php if ( $name == 'yes' ) echo 'selected="selected"' ?>><?php _e( 'yes.', 'wppa' ); ?></option>
+				<option value="no" <?php if ( $name == 'no' ) echo 'selected="selected"' ?>>
+					<?php _e( 'no.', 'wppa' ); ?>
+				</option>
+				<option value="yes" <?php if ( $name == 'yes' ) echo 'selected="selected"' ?>>
+					<?php _e( 'yes.', 'wppa' ); ?>
+				</option>
 			</select>
 		</p>
 		<p>
 			<?php _e( 'Skip "empty" albums:', 'wppa' ); ?>
 			<select id="<?php echo $this->get_field_id( 'skip' ); ?>" name="<?php echo $this->get_field_name( 'skip' ); ?>">
-				<option value="no" <?php if ( $skip == 'no' ) echo 'selected="selected"' ?>><?php _e( 'no.', 'wppa' ); ?></option>
-				<option value="yes" <?php if ( $skip == 'yes' ) echo 'selected="selected"' ?>><?php _e( 'yes.', 'wppa' ); ?></option>
+				<option value="no" <?php if ( $skip == 'no' ) echo 'selected="selected"' ?>>
+					<?php _e( 'no.', 'wppa' ); ?>
+				</option>
+				<option value="yes" <?php if ( $skip == 'yes' ) echo 'selected="selected"' ?>>
+					<?php _e( 'yes.', 'wppa' ); ?>
+				</option>
 			</select>
 		</p>
 
-		<p><?php _e( 'You can set the sizes in this widget in the <b>Photo Albums -> Settings</b> admin page.', 'wppa' ); ?></p>
+		<p>
+			<?php _e( 'You can set the sizes in this widget in the <b>Photo Albums -> Settings</b> admin page.', 'wppa' ); ?>
+		</p>
 <?php
     }
 
-} // class thumbnailWidget
+} // class AlbumWidget
 
-// register thumbnailWidget widget
+// register AlbumWidget widget
 add_action( 'widgets_init', create_function( '', 'return register_widget( "AlbumWidget" );' ) );

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains (not yet, but in the future maybe) all the maintenance routines
-* Version 5.3.11
+* Version 5.4.0
 *
 */
 
@@ -13,7 +13,6 @@ if ( ! defined( 'ABSPATH' ) ) die( "Can't load this file directly" );
 // Must return a string like: errormesssage||$slug||status||togo
 function wppa_do_maintenance_proc( $slug ) {
 global $wpdb;
-global $album;
 global $thumb;
 global $wppa_opt;
 global $wppa_session;
@@ -109,15 +108,16 @@ global $wppa_session;
 			$table 		= WPPA_ALBUMS;
 			$topid 		= $wpdb->get_var( "SELECT `id` FROM `".WPPA_ALBUMS."` ORDER BY `id` DESC LIMIT 1" );
 			$albums 	= $wpdb->get_results( "SELECT * FROM `".WPPA_ALBUMS."` WHERE `id` > ".$lastid." ORDER BY `id` LIMIT 100", ARRAY_A );
+			wppa_cache_album( 'add', $albums );
 			
-			if ( $albums ) foreach ( $albums as $album ) {
+			if ( $albums ) foreach ( $albums as $album ) { 	
 			
 				$id = $album['id'];
 				
 				switch ( $slug ) {
 				
 					case 'wppa_remake_index_albums':
-						wppa_index_add( 'album' );
+						wppa_index_add( 'album', $id );
 						break;
 						
 					case 'wppa_remove_empty_albums':
@@ -182,7 +182,7 @@ global $wppa_session;
 				switch ( $slug ) {
 				
 					case 'wppa_remake_index_photos':
-						wppa_index_add( 'photo' );
+						wppa_index_add( 'photo', $id );
 						break;
 						
 					case 'wppa_apply_new_photodesc_all':

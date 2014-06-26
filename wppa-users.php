@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains user and capabilities related routines
-* Version 5.3.11
+* Version 5.4.0
 *
 */
 
@@ -14,6 +14,7 @@ function wppa_get_user_count() {
 global $wpdb;
 
 	$usercount = $wpdb->get_var( "SELECT COUNT(*) FROM `".$wpdb->users."`" );
+	wppa_dbg_q( 'Q-usr' );
 	return $usercount;
 }
 
@@ -26,7 +27,10 @@ global $wppa_opt;
 		$users = array();
 	}
 	else {
-		$users = $wpdb->get_results( "SELECT * FROM `".$wpdb->users."` ORDER BY `display_name`", ARRAY_A );
+		$users = $wpdb->get_results( 
+			"SELECT * FROM `".$wpdb->users."` ORDER BY `display_name`", ARRAY_A 
+			);
+		wppa_dbg_q( 'Q-usr' );
 	}
 	return $users;
 }
@@ -77,8 +81,9 @@ function wppa_user_is( $role, $user_id = null ) {
         $user = wp_get_current_user();
 	}
  
-    if ( empty( $user ) )
-	return false;
+    if ( empty( $user ) ) {
+		return false;
+	}
  
     return in_array( $role, ( array ) $user->roles );
 }
@@ -88,8 +93,12 @@ function wppa_user_is( $role, $user_id = null ) {
 function wppa_extended_access() {
 global $wppa_opt;
 
-	if ( wppa_user_is( 'administrator' ) ) return true;
-	if ( ! wppa_switch( 'wppa_owner_only' ) ) return true;
+	if ( wppa_user_is( 'administrator' ) ) {
+		return true;
+	}
+	if ( ! wppa_switch( 'wppa_owner_only' ) ) {
+		return true;
+	}
 	return false;
 }
 
@@ -99,12 +108,24 @@ function wppa_can_create_album() {
 global $wppa_opt;
 global $wpdb;
 
-	if ( wppa_is_user_blacklisted() ) return false;
-	if ( wppa_extended_access() ) return true;
-	if ( $wppa_opt['wppa_max_albums'] == '0' ) return true;	// 0 = unlimited
+	if ( wppa_is_user_blacklisted() ) {
+		return false;
+	}
+	if ( wppa_extended_access() ) {
+		return true;
+	}
+	if ( $wppa_opt['wppa_max_albums'] == '0' ) {
+		return true;	// 0 = unlimited
+	}
 	$user = wppa_get_user();
-	$albs = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM `".WPPA_ALBUMS."` WHERE `owner` = %s", $user ) );
-	if ( $albs < $wppa_opt['wppa_max_albums'] ) return true;
+	$albs = $wpdb->get_var( $wpdb->prepare( 
+		"SELECT COUNT(*) FROM `".WPPA_ALBUMS."` WHERE `owner` = %s", $user 
+		) );
+	wppa_dbg_q( 'Q-cca' );
+	if ( $albs < $wppa_opt['wppa_max_albums'] ) {
+		return true;
+	}
+	
 	return false;
 }
 
@@ -113,9 +134,17 @@ global $wpdb;
 function wppa_can_create_top_album() {
 global $wppa_opt;
 
-	if ( wppa_user_is( 'administrator' ) ) return true;
-	if ( ! wppa_can_create_album() ) return false;
-	if ( wppa_switch( 'wppa_grant_an_album' ) && $wppa_opt['wppa_grant_parent'] != '0' ) return false;
+	if ( wppa_user_is( 'administrator' ) ) {
+		return true;
+	}
+	if ( ! wppa_can_create_album() ) {
+		return false;
+	}
+	if ( wppa_switch( 'wppa_grant_an_album' ) && 
+		'0' != $wppa_opt['wppa_grant_parent'] ) {
+			return false;
+		}
+	
 	return true;
 }
 
@@ -125,14 +154,21 @@ global $wppa_opt;
 function wppa_is_user_blacklisted( $user = null ) {
 global $wpdb;
 
-	if ( ! is_user_logged_in() ) return false;
+	if ( ! is_user_logged_in() ) {
+		return false;
+	}
 	
 	if ( empty( $user ) ) {
 		$user = get_current_user_id();
 	}
+	
 	if ( is_numeric( $user ) ) {
-		$user = $wpdb->get_var( $wpdb->prepare( "SELECT `user_login` FROM `".$wpdb->users."` WHERE `ID` = %d", $user ) );
+		$user = $wpdb->get_var( $wpdb->prepare( 
+			"SELECT `user_login` FROM `".$wpdb->users."` WHERE `ID` = %d", $user 
+		) );
+		wppa_dbg_q( 'Q-iub' );
 	}
+	
 	$blacklist = get_option( 'wppa_black_listed_users', array() );
 
 	return in_array( $user, $blacklist );

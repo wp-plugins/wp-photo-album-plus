@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * gp admin functions
-* version 5.3.11
+* version 5.4.0
 *
 * 
 */
@@ -702,10 +702,9 @@ function wppa_insert_photo( $file = '', $alb = '', $name = '', $desc = '', $pord
 global $wpdb;
 global $warning_given_small;
 global $wppa_opt;
-global $album;
 global $wppa;
 	
-	wppa_cache_album( $alb );
+	$album = wppa_cache_album( $alb );
 	
 	if ( ! wppa_allow_uploads( $alb ) ) {
 		if ( is_admin() && ! $wppa['ajax'] ) {

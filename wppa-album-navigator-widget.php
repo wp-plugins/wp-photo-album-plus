@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display thumbnail photos
-* Version 5.3.9
+* Version 5.4.0
 */
 
 class AlbumNavigatorWidget extends WP_Widget {
@@ -23,7 +23,7 @@ class AlbumNavigatorWidget extends WP_Widget {
 		global $thumb;
 
 		$wppa['in_widget'] = 'albnav';
-		$wppa['master_occur'] ++;
+		$wppa['mocc'] ++;
 	
         extract( $args );
 		
@@ -122,7 +122,6 @@ class AlbumNavigatorWidget extends WP_Widget {
 	function do_album_navigator( $parent, $page, $skip, $propclass ) {
 	global $wppa_opt;
 	global $wpdb;
-	global $album;
 	static $level;
 	static $ca;
 
@@ -140,9 +139,11 @@ class AlbumNavigatorWidget extends WP_Widget {
 		$p = $parent;
 		$result = '';
 		$albums = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM `".WPPA_ALBUMS."` WHERE `a_parent` = %s ".wppa_get_album_order( max( '0', $parent ) ), $parent ), ARRAY_A );
+		wppa_dbg_q( 'Q-WidANav' );
+		wppa_cache_album( 'add', $albums );
 		if ( $albums ) {
 			$result .= '<ul>';
-			foreach ( $albums as $album ) {
+			foreach ( $albums as $album ) {	
 				$a = $album['id'];
 				$treecount = wppa_treecount_a( $a );
 				if ( $treecount['albums'] || $treecount['photos'] > $wppa_opt['wppa_min_thumbs'] || $skip == 'no' ) {

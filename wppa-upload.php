@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the upload/import pages and functions
-* Version 5.3.11
+* Version 5.4.0
 *
 */
 
@@ -839,7 +839,6 @@ global $wppa;
 							return true;
 						}
 						function wppaCheckInputVars() {
-							if ( ! wppaVfyAlbum() ) return false;
 							var checks = jQuery( ':checked' );
 							var nChecks = checks.length;
 							var nMax = <?php echo ini_get( 'max_input_vars' ) ?>;
@@ -848,10 +847,20 @@ global $wppa;
 								alert ( 'There are '+nChecks+' boxes checked or selected, that is more than the maximum allowed number of '+nMax );
 								return false;
 							}
-							else {
-//								alert ( 'There are '+nChecks+' boxes checked or selected, that is less than the maximum allowed number of '+nMax );
-								return true;
+							var dirs = jQuery( '.wppa-dir' );
+							var nDirsChecked = 0;
+							if ( dirs.length > 0 ) {
+								var i = 0;
+								while ( i < dirs.length ) {
+									if ( jQuery( dirs[i] ).attr( 'checked' ) == 'checked' ) {
+										nDirsChecked++;
+									}
+									i++;
+								}
 							}
+							// If no dirs to import checked, there must be an album selected
+							if ( 0 == nDirsChecked && ! wppaVfyAlbum() ) return false;
+							return true;
 						}
 					</script>
 					<input type="submit" onclick="return wppaCheckInputVars()" class="button-primary" id="submit" name="wppa-import-submit" value="<?php _e( 'Import', 'wppa' ); ?>" />
@@ -1441,7 +1450,6 @@ global $wppa_opt;
 		if ( $iret == false ) break;	// Time out
 	}	
 	
-	global $thumb;
 	$videocount = '0';
 	$alb = isset( $_POST['wppa-video-album'] ) ? $_POST['wppa-video-album'] : '0';
 	if ( $wppa['ajax'] && ! $alb ) {
