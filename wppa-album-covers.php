@@ -1108,7 +1108,7 @@ global $wppa_opt;
 						$wppa['out'] .= ' ' . $photocount . ' ' . __a( 'photos' ); 
 					}
 					if ( $treecount ) {
-						if ( $treecount['photos'] != $photocount ) {
+						if ( $treecount['photos'] > $photocount ) {
 							if ( ! $photocount ) $wppa['out'] .= ', ' . __a( 'photos' ); 
 							$wppa['out'] .= ' ( ' . $treecount['photos'] . ' )';
 						}
