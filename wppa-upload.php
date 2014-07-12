@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the upload/import pages and functions
-* Version 5.4.0
+* Version 5.4.1
 *
 */
 
@@ -858,8 +858,19 @@ global $wppa;
 									i++;
 								}
 							}
+							var zips = jQuery( '.wppa-zip' );
+							var nZipsChecked = 0;
+							if ( zips.length > 0 ) {
+								var i = 0;
+								while ( i < zips.length ) {
+									if ( jQuery( zips[i] ).attr( 'checked' ) == 'checked' ) {
+										nZipsChecked++;
+									}
+									i++;
+								}
+							}
 							// If no dirs to import checked, there must be an album selected
-							if ( 0 == nDirsChecked && ! wppaVfyAlbum() ) return false;
+							if ( 0 == nDirsChecked && 0 == nZipsChecked ! wppaVfyAlbum() ) return false;
 							return true;
 						}
 					</script>

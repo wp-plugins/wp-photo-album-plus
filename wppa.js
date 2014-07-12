@@ -2,7 +2,7 @@
 //
 // conatins slideshow, theme, ajax and lightbox code
 //
-// Version 5.4.0
+// Version 5.4.1
 
 // Part 1: Slideshow
 //
@@ -79,7 +79,7 @@ var wppaNextOnCallback = false;
 var wppaRatingUseAjax = false;
 var wppaStarOpacity = 0.2;
 var wppaSlideWrap = true;
-var wppaLightBox = '';
+var wppaLightBox = [];
 var wppaEmailRequired = true;
 var wppaSlideBorderWidth = 0;
 var wppaSlideInitRunning = [];
@@ -104,7 +104,7 @@ var wppaUploadUrl = '';
 var wppaVoteForMe = '';
 var wppaVotedForMe = '';
 var wppaSlideSwipe = true;
-var wppaLightboxSingle = false;
+var wppaLightboxSingle = [];
 var wppaMaxCoverWidth = 300;	// For responsive multicolumn covers
 var wppaDownLoad = 'Download';
 var wppaSiteUrl = '';
@@ -220,7 +220,7 @@ function wppaStoreSlideInfo(
 							commenthtml, 	// The html code for the comment box
 							iptchtml, 
 							exifhtml, 
-							lbtitle, 
+							lbtitle, 		// Lightbox subtext
 							shareurl, 
 							smhtml, 
 							ogdsc, 
@@ -276,7 +276,7 @@ function wppaStoreSlideInfo(
 	if ( linkurl != '' ) {
 		cursor = 'pointer';
 	}
-	else if ( 'wppa' == wppaLightBox ) {
+	else if ( 'wppa' == wppaLightBox[mocc] ) {
 		cursor =  'url( '+wppaImageDirectory+wppaMagnifierCursor+' ),pointer';
 	}
 
@@ -331,7 +331,7 @@ function wppaStoreSlideInfo(
 	_wppaIptcHtml[mocc][id] = iptchtml;
 	_wppaExifHtml[mocc][id] = exifhtml;
 	_wppaUrl[mocc][id] = /* wppaUploadUrl + */ url;		// Image url
-	_wppaLbTitle[mocc][id] = lbtitle;
+	_wppaLbTitle[mocc][id] = wppaRepairScriptTags( lbtitle );
 	_wppaShareUrl[mocc][id] = shareurl;
 	_wppaShareHtml[mocc][id] = wppaRepairScriptTags( smhtml );
 	_wppaHiresUrl[mocc][id] = hiresurl;
@@ -963,36 +963,36 @@ function wppaMakeTheSlideHtml( mocc, bgfg, idx ) {
 		jQuery( "#theslide"+bgfg+"-"+mocc ).html( theHtml );
 	}
 	else {
-		if ( wppaLightBox == '' ) {			// No link and no lightbox
+		if ( wppaLightBox[mocc] == '' ) {			// No link and no lightbox
 			jQuery( "#theslide"+bgfg+"-"+mocc ).html( '<'+imgVideo+' title="'+_wppaNames[mocc][idx]+'" id="theimg'+bgfg+'-'+mocc+'" '+_wppaSlides[mocc][idx] );
 		}
 		else {								// Lightbox
 			var html = '';
 			var i = 0;
-			var set = wppaLightboxSingle ? '' : '[slide-'+mocc+'-'+bgfg+']';
+			var set = wppaLightboxSingle[mocc] ? '' : '[slide-'+mocc+'-'+bgfg+']';
 			// Before current slide	// This does NOT work on lightbox 3 ! 
-			if ( wppaLightBox=='wppa' ) {
+			if ( wppaLightBox[mocc] == 'wppa' ) {
 				while ( i<idx ) {
 					// Make sure fullsize
 					url = wppaMakeFullsizeUrl( _wppaUrl[mocc][i] );
 
-					html += '<a href="'+url+'" data-videohtml="'+encodeURI( _wppaVideoHtml[mocc][i] )+'" title="'+_wppaLbTitle[mocc][i]+'" rel="'+wppaLightBox+set+'"></a>';
+					html += '<a href="'+url+'" data-videohtml="'+encodeURI( _wppaVideoHtml[mocc][i] )+'" title="'+_wppaLbTitle[mocc][i]+'" rel="'+wppaLightBox[mocc]+set+'"></a>';
 					i++;
 				}
 			}
 			// Current slide
 			var url = wppaMakeFullsizeUrl( _wppaUrl[mocc][idx] );
 //alert( _wppaVideoHtml[mocc][idx] );
-			html += '<a href="'+url+'" target="'+_wppaLinkTarget[mocc][idx]+'" data-videohtml="'+encodeURI( _wppaVideoHtml[mocc][idx] )+'" title="'+_wppaLbTitle[mocc][idx]+'" rel="'+wppaLightBox+set+'">'+
+			html += '<a href="'+url+'" target="'+_wppaLinkTarget[mocc][idx]+'" data-videohtml="'+encodeURI( _wppaVideoHtml[mocc][idx] )+'" title="'+_wppaLbTitle[mocc][idx]+'" rel="'+wppaLightBox[mocc]+set+'">'+
 						'<'+imgVideo+' title="'+_wppaLinkTitle[mocc][idx]+'" id="theimg'+bgfg+'-'+mocc+'" '+_wppaSlides[mocc][idx]+
 					'</a>';
 			// After current slide // This does NOT work on lightbox 3 ! 
-			if ( wppaLightBox=='wppa' ) {
+			if ( wppaLightBox[mocc] == 'wppa' ) {
 				i = idx + 1;
 				while ( i<_wppaUrl[mocc].length ) {
 					var url = wppaMakeFullsizeUrl( _wppaUrl[mocc][i] );
 					//_wppaUrl[mocc][i].replace( '/thumbs/', '/' );
-					html += '<a href="'+url+'" data-videohtml="'+encodeURI( _wppaVideoHtml[mocc][i] )+'" title="'+_wppaLbTitle[mocc][i]+'" rel="'+wppaLightBox+set+'"></a>';
+					html += '<a href="'+url+'" data-videohtml="'+encodeURI( _wppaVideoHtml[mocc][i] )+'" title="'+_wppaLbTitle[mocc][i]+'" rel="'+wppaLightBox[mocc]+set+'"></a>';
 					i++;
 				}
 			}
@@ -2815,7 +2815,7 @@ wppaConsoleLog( 'wppaOvlShow', 1 );
 	else {						// Arg is 'this' arg
 		wppaOvlIdx = -1;	// Assume single
 		wppaOvlUrl = arg.href;
-		wppaOvlTitle = arg.title;
+		wppaOvlTitle = wppaRepairScriptTags( arg.title );
 		wppaOvlVideoHtml = decodeURI( jQuery( arg ).attr( 'data-videohtml' ) );
 		var rel = arg.rel;
 		var temp = rel.split( '[' );
@@ -2835,7 +2835,7 @@ wppaConsoleLog( 'wppaOvlShow', 1 );
 					temp = anchor.rel.split( "[" );
 					if ( temp[0] == 'wppa' && temp[1] == setname ) {	// Same set
 						wppaOvlUrls[j] = anchor.href;
-						wppaOvlTitles[j] = anchor.title;
+						wppaOvlTitles[j] = wppaRepairScriptTags( anchor.title );
 						wppaOvlVideoHtmls[j] = decodeURI( jQuery( anchor ).attr( 'data-videohtml' ) );
 						if ( anchor.href == wppaOvlUrl ) wppaOvlIdx = j;	// Current index
 						j++;
@@ -3045,6 +3045,12 @@ wppaConsoleLog( 'wppaOvlShowNext', 1 );
 function wppaOvlSize( speed ) {
 wppaConsoleLog( 'wppaOvlSize', 1 );
 
+	// Are we still visible?
+	if ( jQuery('#wppa-overlay-bg').css('display') == 'none' ) {
+		wppaConsoleLog('Lb quitted');
+		return;
+	}
+	
 	// Wait for text complete
 	if ( ! document.getElementById( 'wppa-overlay-txt' ) ) { setTimeout( 'wppaOvlSize( '+speed+' )', 10 ); return;}
 
@@ -3263,6 +3269,7 @@ wppaConsoleLog( 'wppaOvlResize', 1 );
 	setTimeout( 'wppaOvlSize( 10 )', 50 );		// After resizing, the number of lines may have changed
 	setTimeout( 'wppaOvlSize( 10 )', 100 );
 	setTimeout( 'wppaOvlSize( 10 )', 150 );
+	setTimeout( 'wppaOvlSize( 10 )', 1000 );
 }
 
 function wppaAjaxMakeOrigName( mocc, id ) {
@@ -3460,14 +3467,26 @@ function _wppaUpdateOgMeta( mocc ) {
 //	jQuery( fbc ).attr( "data-href", _wppaShareUrl[mocc][_wppaCurIdx[mocc]] );	// doet het niet
 }
 
+var wppaFbInitBusy = false;
 function wppaFbInit() {
-	if ( typeof( FB ) != 'undefined' ) {
-		FB.init( {status : true, xfbml : true });
+	if ( ! wppaFbInitBusy ) {
+		if ( typeof( FB ) != 'undefined' ) {
+			wppaFbInitBusy = true;				// set busy
+			setTimeout( '_wppaFbInit()', 10 ); 	// do it async over 10 ms
+//			FB.init( {status : true, xfbml : true });
+		}
+		else {
+			wppaConsoleLog( 'Fb wait' );
+			setTimeout( 'wppaFbInit()', 200 );
+		}
 	}
 	else {
-		wppaConsoleLog( 'Fb wait' );
-		setTimeout( 'wppaFbInit()', 200 );
+		wppaConsoleLog( 'Fb Init busy' );
 	}
+}
+function _wppaFbInit() {
+	FB.init( {status : true, xfbml : true } );
+	wppaFbInitBusy = false;
 }
 
 function wppaInsertAtCursor( elm, value ) {

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains low-level wpdb routines that add new records
-* Version 5.3.9
+* Version 5.4.1
 *
 */
 
@@ -323,7 +323,6 @@ global $wpdb;
 // Album
 function wppa_create_album_entry( $args ) {
 global $wpdb;
-global $wppa_opt;
 
 	$args = wp_parse_args( (array) $args, array ( 
 					'id' 				=> '0',
@@ -331,13 +330,13 @@ global $wppa_opt;
 					'description' 		=> '',
 					'a_order' 			=> '0',
 					'main_photo' 		=> '0',
-					'a_parent' 			=> $wppa_opt['wppa_default_parent'],
+					'a_parent' 			=> wppa_opt( 'wppa_default_parent' ),
 					'p_order_by' 		=> '0',
 					'cover_linktype' 	=> 'content',
 					'cover_linkpage' 	=> '0',
 					'owner' 			=> wppa_get_user(),
 					'timestamp' 		=> time(),
-					'upload_limit' 		=> $wppa_opt['wppa_upload_limit_count'].'/'.$wppa_opt['wppa_upload_limit_time'],
+					'upload_limit' 		=> wppa_opt( 'wppa_upload_limit_count' ).'/'.wppa_opt( 'wppa_upload_limit_time' ),
 					'alt_thumbsize' 	=> '0',
 					'default_tags' 		=> '',
 					'cover_type' 		=> '',

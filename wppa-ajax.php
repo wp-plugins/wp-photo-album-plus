@@ -2,9 +2,8 @@
 /* wppa-ajax.php
 *
 * Functions used in ajax requests
-* version 5.4.0
+* version 5.4.1
 *
-* 
 */
 
 if ( ! defined( 'ABSPATH' ) ) die( "Can't load this file directly" );
@@ -16,7 +15,6 @@ function wppa_ajax_callback() {
 global $wpdb;
 global $wppa_opt;
 global $wppa;
-global $thumb;
 global $wppa_session;
 
 	$wppa['ajax']  = true;
@@ -380,11 +378,9 @@ global $wppa_session;
 			$user     = wppa_get_user();
 			$mylast   = $wpdb->get_row( $wpdb->prepare( 'SELECT * FROM `'.WPPA_RATING.'` WHERE `photo` = %s AND `user` = %s ORDER BY `id` DESC LIMIT 1', $photo, $user ), ARRAY_A ); 
 			$myavgrat = '0';			// Init
-
-			wppa_cache_thumb( $photo );
 			
 			// Rate own photo?
-			if ( $thumb['owner'] == $user && ! wppa_switch( 'wppa_allow_owner_votes' ) ) {
+			if ( wppa_get_photo_item( $photo, 'owner' ) == $user && ! wppa_switch( 'wppa_allow_owner_votes' ) ) {
 				echo '0||900||'.__( 'Sorry, you can not rate your own photos', 'wppa' );
 				exit;
 			}
@@ -840,7 +836,7 @@ global $wppa_session;
 			$ext = $wpdb->get_var( $wpdb->prepare( "SELECT `ext` FROM `".WPPA_PHOTOS."` WHERE `id` = %s", $photo ) );
 			
 			wppa_cache_thumb( $photo );
-			if ( wppa_add_watermark( wppa_get_photo_path( $photo ) ) ) {
+			if ( wppa_add_watermark( $photo ) ) {
 				if ( wppa_switch( 'wppa_watermark_thumbs' ) ) {
 					wppa_create_thumbnail( wppa_get_photo_path( $photo ), wppa_get_minisize(), '' );	// create new thumb
 				}
@@ -867,7 +863,7 @@ global $wppa_session;
 			
 			if ( substr( $item, 0, 20 ) == 'wppa_watermark_file_' || substr( $item, 0, 19 ) == 'wppa_watermark_pos_' ) {
 				wppa_update_option( $item, $value );
-				echo '||0||'.sprintf( __( '%s updated to %s.<br/>This applies for all photos currently on this page!', 'wppa' ), $item, $value );
+				echo '||0||'.sprintf( __( '%s updated to %s.', 'wppa' ), $item, $value );
 				exit;
 			}
 			
@@ -1024,6 +1020,12 @@ global $wppa_session;
 							$itemname = __( 'Photo order #', 'wppa' );
 							break;
 						case 'owner':
+							$usr = get_user_by( 'login', $value );
+							if ( ! $usr ) {
+								echo '||4||' . sprintf( __( 'User %s does not exists', 'wppa' ), $value );
+								exit;
+							}
+							$value = $usr->user_login;	// Correct possible case mismatch
 							$itemname = __( 'Owner', 'wppa' );
 							break;
 						case 'linkurl':
@@ -1068,6 +1070,7 @@ global $wppa_session;
 					$iret = $wpdb->query( $wpdb->prepare( 'UPDATE '.WPPA_PHOTOS.' SET `'.$item.'` = %s WHERE `id` = %s', $value, $photo ) );
 					if ( $item == 'name' || $item == 'description' || $item == 'tags' ) wppa_index_add( 'photo', $photo );
 					if ( $item == 'status' && $value != 'scheduled' ) wppa_update_photo( array( 'id' => $photo, 'scheduledtm' => '' ) );
+					if ( $item == 'status' ) wppa_flush_treecounts( wppa_get_photo_item( $photo, 'album' ) );
 					if ( $iret !== false ) {
 						wppa_update_modified( $photo );
 						if ( wppa_is_video( $photo ) ) {
@@ -1262,7 +1265,13 @@ global $wppa_session;
 					wppa_ajax_check_range( $value, false, '150', false, __( 'Max Cover width', 'wppa' ) );
 					break;
 				case 'wppa_text_frame_height':
-					wppa_ajax_check_range( $value, false, '0', false, __( 'Minimal Cover text frame height', 'wppa' ) );
+					wppa_ajax_check_range( $value, false, '0', false, __( 'Minimal description height', 'wppa' ) );
+					break;
+				case 'wppa_cover_minheight':
+					wppa_ajax_check_range( $value, false, '0', false, __( 'Minimal cover height', 'wppa' ) );
+					break;
+				case 'wppa_head_and_text_frame_height':
+					wppa_ajax_check_range( $value, false, '0', false, __( 'Minimal text frame height', 'wppa' ) );
 					break;
 				case 'wppa_bwidth':
 					wppa_ajax_check_range( $value, '', '0', false, __( 'Border width', 'wppa' ) );

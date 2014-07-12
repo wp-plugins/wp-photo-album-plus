@@ -3,16 +3,16 @@
 * Package: wp-photo-album-plus
 *
 * Contains low-level utility routines
-* Version 5.4.0
+* Version 5.4.1
 *
 */
  
 if ( ! defined( 'ABSPATH' ) ) die( "Can't load this file directly" );
 	
-function __a($txt, $dom = 'wppa_theme') {
-	return __($txt, $dom);
+// __a() is a function like __(), but specificly for front-end language support
+function __a( $txt, $dom = 'wppa_theme' ) {
+	return __( $txt, $dom );
 }
-
 
 // get url of thumb
 function wppa_get_thumb_url( $id, $system = 'flat', $x = '0', $y = '0' ) {
@@ -110,44 +110,43 @@ function wppa_bump_photo_rev() {
 }
 
 // get path of a full sized image
-function wppa_get_photo_path($id, $system = 'flat') {
+function wppa_get_photo_path( $id, $system = 'flat' ) {
 global $thumb;
 
-	if ( get_option('wppa_file_system') == 'flat' ) $system = 'flat';	// Have been converted, ignore argument
-	if ( get_option('wppa_file_system') == 'tree' ) $system = 'tree';	// Have been converted, ignore argument
-	if ( ! is_numeric($id) || $id < '1' ) wppa_dbg_msg('Invalid arg wppa_get_photo_path('.$id.')', 'red');
-	wppa_cache_thumb($id);
-	if ( $system == 'tree' ) return WPPA_UPLOAD_PATH.'/'.wppa_expand_id($thumb['id'], true).'.'.$thumb['ext'];
-	else return WPPA_UPLOAD_PATH.'/'.$thumb['id'].'.'.$thumb['ext'];
+	if ( get_option( 'wppa_file_system' ) == 'flat' ) $system = 'flat';	// Have been converted, ignore argument
+	if ( get_option( 'wppa_file_system' ) == 'tree' ) $system = 'tree';	// Have been converted, ignore argument
+	if ( ! is_numeric( $id ) || $id < '1' ) wppa_dbg_msg( 'Invalid arg wppa_get_photo_path(' . $id . ')', 'red' );
+	wppa_cache_thumb( $id );
+	if ( $system == 'tree' ) return WPPA_UPLOAD_PATH . '/' . wppa_expand_id( $thumb['id'], true ) . '.' . $thumb['ext'];
+	else return WPPA_UPLOAD_PATH . '/' . $thumb['id'] . '.' . $thumb['ext'];
 }
 
 // Expand id to subdir chain for new file structure
-function wppa_expand_id($xid, $makepath = false) {
+function wppa_expand_id( $xid, $makepath = false ) {
 	$result = '';
 	$id = $xid;
-	$len = strlen($id);
+	$len = strlen( $id );
 	while ( $len > '2' ) {
-		$result .= substr($id, '0', '2').'/';
-		$id = substr($id, '2');
-		$len = strlen($id);
+		$result .= substr( $id, '0', '2' ) . '/';
+		$id = substr( $id, '2' );
+		$len = strlen( $id );
 		if ( $makepath ) {
-			$path = WPPA_UPLOAD_PATH.'/'.$result;
-			if ( ! is_dir($path) ) wppa_mktree($path);
-			$path = WPPA_UPLOAD_PATH.'/thumbs/'.$result;
-			if ( ! is_dir($path) ) wppa_mktree($path);
+			$path = WPPA_UPLOAD_PATH . '/' . $result;
+			if ( ! is_dir( $path ) ) wppa_mktree( $path );
+			$path = WPPA_UPLOAD_PATH . '/thumbs/' . $result;
+			if ( ! is_dir( $path ) ) wppa_mktree( $path );
 		}
 	}
 	$result .= $id;
 	return $result;
 }
 
-function wppa_do_geo() {
-global $thumb;
+// Makes the html for the geo support for current theum and adds it to $wppa['geo']
+function wppa_do_geo( $id, $location ) {
 global $wppa;
 global $wppa_opt;
 
-	$id 	= $thumb['id'];
-	$temp 	= explode('/', $thumb['location']);
+	$temp 	= explode( '/', $location );
 	$lat 	= $temp['2'];
 	$lon 	= $temp['3'];
 	
@@ -156,36 +155,36 @@ global $wppa_opt;
 	// Switch on implementation type
 	switch ( $type ) {
 		case 'google-maps-gpx-viewer':
-			$geo = str_replace('w#lon', $lon, str_replace('w#lat', $lat, $wppa_opt['wppa_gpx_shortcode']));
-			$geo = str_replace('w#ip', $_SERVER['REMOTE_ADDR'], $geo);
-			$geo = do_shortcode($geo);
-			$wppa['geo'] .= '<div id="geodiv-'.$wppa['mocc'].'-'.$id.'" style="display:none;">'.$geo.'</div>';
+			$geo = str_replace( 'w#lon', $lon, str_replace( 'w#lat', $lat, $wppa_opt['wppa_gpx_shortcode'] ) );
+			$geo = str_replace( 'w#ip', $_SERVER['REMOTE_ADDR'], $geo );
+			$geo = do_shortcode( $geo );
+			$wppa['geo'] .= '<div id="geodiv-' . $wppa['mocc'] . '-' . $id . '" style="display:none;">' . $geo . '</div>';
 			break;
 		case 'wppa-plus-embedded':
 			if ( $wppa['geo'] == '' ) { 	// First
 				$wppa['geo'] = '
-<div id="map-canvas-'.$wppa['mocc'].'" style="height:'.$wppa_opt['wppa_map_height'].'px; width:100%; padding:0; margin:0; font-size: 10px;" ></div>
+<div id="map-canvas-' . $wppa['mocc'].'" style="height:' . $wppa_opt['wppa_map_height'] . 'px; width:100%; padding:0; margin:0; font-size: 10px;" ></div>
 <script type="text/javascript" >
 	if ( typeof ( _wppaLat ) == "undefined" ) { var _wppaLat = new Array();	var _wppaLon = new Array(); }
-	_wppaLat['.$wppa['mocc'].'] = new Array(); _wppaLon['.$wppa['mocc'].'] = new Array();
+	_wppaLat[' . $wppa['mocc'] . '] = new Array(); _wppaLon[' . $wppa['mocc'] . '] = new Array();
 </script>';
 			}	// End first
 			$wppa['geo'] .= '
-<script type="text/javascript">_wppaLat['.$wppa['mocc'].']['.$id.'] = '.$lat.'; _wppaLon['.$wppa['mocc'].']['.$id.'] = '.$lon.';</script>';
+<script type="text/javascript">_wppaLat[' . $wppa['mocc'] . '][' . $id . '] = ' . $lat.'; _wppaLon[' . $wppa['mocc'] . '][' . $id.'] = ' . $lon . ';</script>';
 			break;	// End native
 	}
 }
 
 // See if an album is in a separate tree
-function wppa_is_separate($id) {
+function wppa_is_separate( $id ) {
 
 	if ( $id == '' ) return false;
-	if ( ! wppa_is_int($id) ) return false;
+	if ( ! wppa_is_int( $id ) ) return false;
 	if ( $id == '-1' ) return true;
 	if ( $id < '1' ) return false;
-	$alb = wppa_get_parentalbumid($id);
+	$alb = wppa_get_parentalbumid( $id );
 	
-	return wppa_is_separate($alb);
+	return wppa_is_separate( $alb );
 }
 
 // Get the albums parent
@@ -252,18 +251,36 @@ global $thumb;
 	return $result;
 }
 
-function wppa_switch($key) {
+function wppa_switch( $key ) {
 global $wppa_opt;
+
 	if ( is_array( $wppa_opt ) ) {
 		if ( isset( $wppa_opt[$key] ) ) {
 			if ( $wppa_opt[$key] == 'yes' ) return true;
 			elseif ( $wppa_opt[$key] == 'no' ) return false;
-			else wppa_dbg_msg('Error: $wppa_opt['.$key.'] is not a yes/no setting', 'red');
+			else wppa_log( 'Error', '$wppa_opt['.$key.'] is not a yes/no setting' );
 		}
-		else wppa_dbg_msg('Error: $wppa_opt['.$key.'] is not a setting', 'red');
+		else wppa_dbg_msg( 'Error', '$wppa_opt['.$key.'] is not a setting' );
 	}
-	else wppa_dbg_msg('Error: $wppa_opt[] is not initialized while testing '.$key, 'red');
+	else wppa_dbg_msg( 'Error', '$wppa_opt[] is not initialized while testing '.$key );
+	
 	return false;
+}
+
+function wppa_opt( $key ) {
+global $wppa_opt;
+
+	if ( is_array( $wppa_opt ) ) {
+		if ( isset( $wppa_opt[$key] ) ) {
+			if ( $wppa_opt[$key] == 'yes' || $wppa_opt[$key] == 'no' ) {
+				wppa_log( 'Error', '$wppa_opt['.$key.'] is a yes/no setting, not a value' );
+			}
+		}
+		else wppa_dbg_msg( 'Error', '$wppa_opt['.$key.'] is not a setting' );
+	}
+	else wppa_dbg_msg( 'Error', '$wppa_opt[] is not initialized while testing '.$key );
+	
+	return $wppa_opt[$key];
 }
 
 function wppa_add_paths($albums) {
@@ -523,6 +540,7 @@ function wppa_update_option( $option, $value ) {
 								'wppa_fotomoto_hide_when_running',
 								'wppa_vote_needs_comment',
 								'wppa_fotomoto_min_width'
+
 		);
 	if ( in_array( $option, $init_js_critical ) ) {
 		$files = glob( WPPA_PATH.'/wppa-init.*.js' );
@@ -594,7 +612,9 @@ function wppa_update_option( $option, $value ) {
 									'wppa_bcolor_superview',
 									'wppa_bgcolor_search',
 									'wppa_bcolor_search',
-									'wppa_arrow_color'
+									'wppa_arrow_color',
+									'wppa_cover_minheight',
+									'wppa_head_and_text_frame_height'
 		);
 	if ( in_array( $option, $dynamic_css_critical ) ) {
 		@ unlink ( WPPA_PATH.'/wppa-dynamic.css' );		// Will be auto re-created
@@ -745,7 +765,8 @@ global $wppa_opt;
 	return $result;
 }
 
-function wppa_flush_treecounts($alb = '') {
+// Flush treecounts of album $alb, default: clear all
+function wppa_flush_treecounts( $alb = '' ) {
 global $wppa;
 	
 	if ( $alb ) {
@@ -768,7 +789,54 @@ global $wppa;
 	}
 }
 
-function wppa_treecount_a($alb) {
+// Verify correctness of treecount value
+function wppa_verify_treecounts( $alb, $key, $count ) {
+	
+	$treecounts = wppa_treecount_a( $alb );
+	$need_a = false;
+	$need_p = false;
+	
+	// Number of albums ( $count ) equal to subalbums ( 'selfalbums' ) ?
+	if ( 'albums' == $key ) {
+		if ( $treecounts['selfalbums'] != $count ) {	// Faulty data
+			$need_a = true;
+		}
+	}
+	
+	// Number of photos ( $count ) equal to photos in this album ( 'selfphotos' ( + opts ) )?
+	if ( 'photos' == $key ) {
+		if ( current_user_can( 'wppa_moderate' ) ) {
+			if ( ( $treecounts['selfphotos'] + $treecounts['pendphotos'] + $treecounts['scheduledphotos'] ) != $count ) {	// Faulty data
+				$need_p = true;
+			}
+		}
+		else {
+			if ( $treecounts['selfphotos'] != $count ) {	// Faulty data
+				$need_p = true;
+			}
+		}
+	}
+	
+	// If no sub-albums, total number of photos should be equal to photos in this album ( 'selfphotos' )
+	if ( ! $treecounts['selfalbums'] && $treecounts['photos'] != $treecounts['selfphotos'] ) {
+		$need_p = true;
+	}
+	
+	// Need recalc for reason albums fault?
+	if ( $need_a ) {
+		wppa_flush_treecounts( $alb );
+		wppa_log( 'Fix', 'Treecounts albums for album #'.$alb.' ('.wppa_get_album_name( $alb ).')' );
+	}
+	
+	// Need recalc for reason photos fault?
+	if ( $need_p ) {
+		wppa_flush_treecounts( $albumid );
+		wppa_log( 'Fix', 'Treecounts photos for album #'.$alb.' ('.wppa_get_album_name( $alb ).')' );
+	}
+}
+
+// Get the treecounts for album $alb
+function wppa_treecount_a( $alb ) {
 global $wpdb;
 global $wppa;
 	

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * create, edit and delete albums
-* version 5.3.11
+* version 5.4.1
 *
 */
 
@@ -1608,8 +1608,11 @@ global $wpdb;
 		wppa_flush_treecounts($move);
 	}
 
-	$wpdb->query($wpdb->prepare('DELETE FROM `' . WPPA_ALBUMS . '` WHERE `id` = %s LIMIT 1', $id));
+	// First flush treecounts, otherwise we do not know the parent if any
 	wppa_flush_treecounts($id);
+	
+	// Now delete the album
+	$wpdb->query($wpdb->prepare('DELETE FROM `' . WPPA_ALBUMS . '` WHERE `id` = %s LIMIT 1', $id));
 	wppa_delete_album_source($id);
 	wppa_index_remove('album', $id);
 	

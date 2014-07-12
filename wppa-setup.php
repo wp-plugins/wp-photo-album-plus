@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 5.4.0
+* Version 5.4.1
 *
 */
 
@@ -179,6 +179,9 @@ global $silent;
 		}
 		$idx++;
 	}
+	
+	// Although we do not rely om auto increment, it may help avoiding concurrebcy conflicts
+	$wpdb->query( "ALTER TABLE `".WPPA_SESSION."` MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT" );
 	
 	// Convert any changed and remove obsolete setting options
 	if ( $old_rev > '100' ) {	// On update only
@@ -376,6 +379,16 @@ global $silent;
 	// Check if db is ok
 	if ( ! wppa_check_database() ) $wppa['error'] = true;
 	
+	
+	// Remove dynamic files
+	$files = glob( WPPA_PATH.'/wppa-init.*.js' );
+	if ( $files ) {
+		foreach ( $files as $file ) {
+			@ unlink ( $file );						// Will be auto re-created
+		}
+	}
+	@ unlink ( WPPA_PATH.'/wppa-dynamic.css' );		// Will be auto re-created
+
 	// Done!
 	if ( ! $wppa['error'] ) {
 		$old_rev = round($old_rev); // might be 0.01 off
@@ -483,6 +496,7 @@ Hide Camera info
 						'wppa_bradius' 					=> '6',		// 6
 						'wppa_box_spacing'				=> '8',		// 7
 						'wppa_pagelinks_max' 			=> '7',
+						
 						// B Fullsize
 						'wppa_fullsize' 				=> '640',	// 1
 						'wppa_maxheight' 				=> '480',	// 2
@@ -492,6 +506,7 @@ Hide Camera info
 						'wppa_share_size'				=> '32',
 						'wppa_mini_treshold'			=> '500',
 						'wppa_slideshow_pagesize'		=> '0',
+						
 						// C Thumbnails
 						'wppa_thumbsize' 				=> '100',		// 1
 						'wppa_thumbsize_alt'			=> '130',		// 1a
@@ -505,18 +520,23 @@ Hide Camera info
 						'wppa_thumb_page_size' 			=> '0',			// 7
 						'wppa_popupsize' 				=> '150',		// 8
 						'wppa_use_thumbs_if_fit'		=> 'yes',		// 9
+						
 						// D Covers
-						'wppa_max_cover_width'			=> '1024',	// 1
-						'wppa_text_frame_height'		=> '54',	// 2
-						'wppa_smallsize' 				=> '150',	// 3
-						'wppa_smallsize_multi'			=> '100',	// 3.1
-						'wppa_coversize_is_height'		=> 'no',	// 3.9
-						'wppa_album_page_size' 			=> '0',		// 4
+						'wppa_max_cover_width'				=> '1024',	// 1
+						'wppa_cover_minheight' 				=> '0',		// 2
+						'wppa_head_and_text_frame_height' 	=> '0', 	// 3
+						'wppa_text_frame_height'			=> '54',	// 4
+						'wppa_smallsize' 					=> '150',	// 5
+						'wppa_smallsize_multi'				=> '100',	// 6
+						'wppa_coversize_is_height'			=> 'no',	// 7
+						'wppa_album_page_size' 				=> '0',		// 8
+						
 						// E Rating & comments
 						'wppa_rating_max'				=> '5',		// 1
 						'wppa_rating_prec'				=> '2',		// 2
 						'wppa_gravatar_size'			=> '40',	// 3
 						'wppa_ratspacing'				=> '30',
+						
 						// F Widgets
 						'wppa_topten_count' 			=> '10',	// 1
 						'wppa_topten_size' 				=> '86',	// 2
@@ -530,7 +550,6 @@ Hide Camera info
 						'wppa_lasten_size' 				=> '86',	// 8
 						'wppa_album_widget_count'		=> '10',
 						'wppa_album_widget_size'		=> '86',
-						
 						'wppa_related_count'			=> '10',
 						
 						// G Overlay
@@ -559,6 +578,7 @@ Hide Camera info
 						'wppa_bc_url' 						=> wppa_get_imgdir().'arrow.gif',	// 7
 						'wppa_pagelink_pos'					=> 'bottom',	// 8
 						'wppa_bc_slide_thumblink'			=> 'no',
+						
 						// B Slideshow
 						'wppa_show_startstop_navigation' 	=> 'yes',		// 1
 						'wppa_show_browse_navigation' 		=> 'yes',		// 2
@@ -605,6 +625,7 @@ Hide Camera info
 						
 						'wppa_facebook_comments'			=> 'yes',
 						'wppa_facebook_like'				=> 'yes',
+						'wppa_fb_display' 					=> 'standard',
 						'wppa_facebook_admin_id'			=> '',
 						'wppa_facebook_app_id'				=> '',
 						'wppa_load_facebook_sdk'			=> 'yes',
@@ -902,6 +923,7 @@ Hide Camera info
 						'wppa_art_monkey_popup_link'		=> 'file',
 						'wppa_artmonkey_use_source'			=> 'no',
 						'wppa_art_monkey_display'			=> 'button',
+						'wppa_art_monkey_on_lightbox' 		=> 'no',
 						
 						'wppa_allow_download_album' 		=> 'no',
 						'wppa_download_album_source' 		=> 'yes',
@@ -957,6 +979,10 @@ Hide Camera info
 						'wppa_subscriber_upload_limit_time'		=> '0',
 						'wppa_loggedout_upload_limit_count'		=> '0',
 						'wppa_loggedout_upload_limit_time' 		=> '0',
+
+						'wppa_blacklist_user' 		=> '',
+						'wppa_un_blacklist_user' 	=> '',
+						'wppa_photo_owner_change' 	=> 'no',
 						
 						// Table VIII: Actions
 						// A Harmless
@@ -970,8 +996,6 @@ Hide Camera info
 						'wppa_cleanup'				=> '',
 						'wppa_recup'				=> '',
 						'wppa_file_system'			=> 'flat',
-						'wppa_blacklist_user' 		=> '',
-						'wppa_un_blacklist_user' 	=> '',
 						'wppa_remake' 				=> '',
 						'wppa_remake_skip_one'		=> '',
 						'wppa_errorlog_purge' 		=> '',

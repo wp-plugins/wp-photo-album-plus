@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the tagcloud widget
-* Version 5.4.0
+* Version 5.4.1
 *
 */
 
@@ -19,7 +19,6 @@ class TagcloudPhotos extends WP_Widget {
     function widget($args, $instance) {		
 		global $widget_content;
 		global $wppa;
-		global $wppa_opt;
 		
 		$wppa['in_widget'] = 'tagcloud';
 		$wppa['mocc']++;

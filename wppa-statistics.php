@@ -4,7 +4,7 @@
 *
 * Functions for counts etc
 * Common use front and admin
-* Version 5.4.0
+* Version 5.4.1
 *
 */
 
@@ -39,32 +39,47 @@ function wppa_get_statistics() {
 }
 
 // get number of photos in album 
-function wppa_get_photo_count($id) {
+function wppa_get_photo_count( $id, $use_treecounts = false ) {
 global $wpdb;
     
- 	if ( current_user_can('wppa_moderate') ) {
-		$count = $wpdb->get_var($wpdb->prepare( 
-			"SELECT COUNT(*) FROM " . WPPA_PHOTOS . " WHERE album = %s", $id ) );
+	if ( $use_treecounts ) {
+		$treecounts = wppa_treecount_a( $id );
+		if ( current_user_can('wppa_moderate') ) {
+			$count = $treecounts['selfphotos'] + $treecounts['pendphotos'] + $treecounts['scheduledphotos'];
+		}
+		else {
+			$count = $treecounts['selfphotos'];
+		}
 	}
 	else {
-		$count = $wpdb->get_var($wpdb->prepare( 
-			"SELECT COUNT(*) FROM " . WPPA_PHOTOS . 
-			" WHERE `album` = %s AND ( ( `status` <> 'pending' AND `status` <> 'scheduled' ) OR owner = %s )", 
-			$id, wppa_get_user() ) );
+		if ( current_user_can('wppa_moderate') ) {
+			$count = $wpdb->get_var($wpdb->prepare( 
+				"SELECT COUNT(*) FROM " . WPPA_PHOTOS . " WHERE album = %s", $id ) );
+		}
+		else {
+			$count = $wpdb->get_var($wpdb->prepare( 
+				"SELECT COUNT(*) FROM " . WPPA_PHOTOS . 
+				" WHERE `album` = %s AND ( ( `status` <> 'pending' AND `status` <> 'scheduled' ) OR owner = %s )", 
+				$id, wppa_get_user() ) );
+		}
+		wppa_dbg_q('Q-gpc');
 	}
-	
-	wppa_dbg_q('Q-gpc');
 	return $count;
 }
 
 // get number of albums in album 
-function wppa_get_album_count($id) {
+function wppa_get_album_count( $id, $use_treecounts = false ) {
 global $wpdb;
 
-    $count = $wpdb->get_var($wpdb->prepare( 
-		"SELECT COUNT(*) FROM " . WPPA_ALBUMS . " WHERE a_parent=%s", $id ) );
-		
-	wppa_dbg_q('Q-gac');
+	if ( $use_treecounts ) {
+		$treecounts = wppa_treecount_a( $id );
+		$count = $treecounts['selfalbums'];
+	}
+	else {
+		$count = $wpdb->get_var($wpdb->prepare( 
+			"SELECT COUNT(*) FROM " . WPPA_ALBUMS . " WHERE a_parent=%s", $id ) );
+		wppa_dbg_q('Q-gac');
+	}
     return $count;
 }
 

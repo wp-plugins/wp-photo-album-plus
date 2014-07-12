@@ -3,9 +3,8 @@
 * Package: wp-photo-album-plus
 *
 * gp admin functions
-* version 5.4.0
+* version 5.4.1
 *
-* 
 */
 
 if ( ! defined( 'ABSPATH' ) ) die( "Can't load this file directly" );
@@ -14,6 +13,7 @@ function wppa_backup_settings() {
 global $wppa_opt;
 global $wppa_bu_err;
 global $wppa;
+
 	// Open file
 	$fname = WPPA_DEPOT_PATH.'/settings.bak';
 	if ( $wppa['debug'] ) wppa_dbg_msg( 'Backing up to: '.$fname );
@@ -108,7 +108,6 @@ global $wppa;
 // Remake
 function wppa_remake_files( $alb = '', $pid = '' ) {
 global $wpdb;
-global $wppa_opt;
 
 	// Init
 	$count = '0';
@@ -652,7 +651,7 @@ global $wpdb;
 	wppa_make_the_photo_files( $file, $id, $photo['ext'] );
 	
 	// and add watermark ( optionally ) to fullsize image only
-	wppa_add_watermark( wppa_get_photo_path( $id ) );
+	wppa_add_watermark( $id );
 	// also to thumbnail?
 	if ( wppa_switch( 'wppa_watermark_thumbs' ) ) {
 		wppa_create_thumbnail( wppa_get_photo_path( $id ), wppa_get_minisize(), '' );	// create new thumb
@@ -679,7 +678,7 @@ global $allphotos;
 			wppa_make_the_photo_files( $file, $photo['id'], $photo['ext'] );
 			
 			// and add watermark ( optionally ) to fullsize image only
-			wppa_add_watermark( wppa_get_photo_path( $photo['id'] ) );
+			wppa_add_watermark( $photo['id'] );
 			
 			// also to thumbnail?
 			if ( wppa_switch( 'wppa_watermark_thumbs' ) ) {
@@ -701,7 +700,6 @@ global $allphotos;
 function wppa_insert_photo( $file = '', $alb = '', $name = '', $desc = '', $porder = '0', $id = '0', $linkurl = '', $linktitle = '' ) {
 global $wpdb;
 global $warning_given_small;
-global $wppa_opt;
 global $wppa;
 	
 	$album = wppa_cache_album( $alb );
@@ -774,7 +772,7 @@ global $wppa;
 		}
 		// Get opt deflt desc if empty
 		if ( $desc == '' && wppa_switch( 'wppa_apply_newphoto_desc' ) ) {
-			$desc = stripslashes( $wppa_opt['wppa_newphoto_description'] );
+			$desc = stripslashes( wppa_opt( 'wppa_newphoto_description' ) );
 		}
 		// Reset rating
 		$mrat = '0';
@@ -823,7 +821,7 @@ global $wppa;
 			// Index
 			wppa_index_add( 'photo', $id );
 			// and add watermark ( optionally ) to fullsize image only
-			wppa_add_watermark( wppa_get_photo_path( $id ) );
+			wppa_add_watermark( $id );
 			// also to thumbnail?
 			if ( wppa_switch( 'wppa_watermark_thumbs' ) ) {
 				wppa_create_thumbnail( wppa_get_photo_path( $id ), wppa_get_minisize(), '' );	// create new thumb

@@ -2,10 +2,9 @@
 /* wppa-items.php
 * Package: wp-photo-album-plus
 *
-* Contains functions to retrieve album and photo items that need processing
-* Version 5.4.0
+* Contains functions to retrieve album and photo items
+* Version 5.4.1
 *
-* 
 */
  
 if ( ! defined( 'ABSPATH' ) ) die( "Can't load this file directly" );
@@ -24,7 +23,10 @@ static $album_cache_2;
 		return false;
 	}
 	if ( $id == 'add' ) {
-		if ( isset( $data['id'] ) ) { 				// Add a single album to 2nd level cache
+		if ( ! $data ) {							// Nothing to add
+			return false;
+		}
+		elseif ( isset( $data['id'] ) ) { 			// Add a single album to 2nd level cache
 			$album_cache_2[$data['id']] = $data;	// Looks valid
 		}
 		else foreach( $data as $album ) {			// Add multiple
@@ -66,6 +68,8 @@ static $album_cache_2;
 	// Not in cache, do query
 	$album = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM `".WPPA_ALBUMS."` WHERE `id` = %s", $id ), ARRAY_A );
 	wppa_dbg_q( 'Q-A' );
+	
+	// Found one?
 	if ( $album ) {
 		// Store in second level cache
 		$album_cache_2[$id] = $album;
@@ -94,7 +98,10 @@ static $thumb_cache_2;
 		return false;
 	}
 	if ( $id == 'add' ) {
-		if ( isset( $data['id'] ) ) { 				// Add a single thumb to 2nd level cache
+		if ( ! $data ) {							// Nothing to add
+			return false;
+		}
+		elseif ( isset( $data['id'] ) ) { 			// Add a single thumb to 2nd level cache
 			$thumb_cache_2[$data['id']] = $data;	// Looks valid
 		}
 		else foreach( $data as $thumb ) {			// Add multiple
@@ -136,6 +143,8 @@ static $thumb_cache_2;
 	// Not in cache, do query
 	$thumb = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM `".WPPA_PHOTOS."` WHERE `id` = %s", $id ), ARRAY_A );
 	wppa_dbg_q( 'Q-P' );
+	
+	// Found one?
 	if ( $thumb ) {
 		// Store in second level cache
 		$thumb_cache_2[$id] = $thumb;
@@ -205,7 +214,7 @@ global $wppa_opt;
 
 	// Geo
 	if ( $thumb['location'] && ! $wppa['in_widget'] && strpos( $wppa_opt['wppa_custom_content'], 'w#location' ) !== false && $do_geo == 'do_geo' ) {
-		wppa_do_geo();
+		wppa_do_geo( $id, $thumb['location'] );
 	}
 	
 	// Other keywords
@@ -359,16 +368,17 @@ function wppa_get_album_desc( $id ) {
 	return $desc;
 }
 
+// Get any album field of any alnbum, raw data from the db
 function wppa_get_album_item( $id, $item ) {
 	
 	$album = wppa_cache_album( $id );
 	
 	if ( $album ) {
 		if ( isset( $album[$item] ) ) {
-			return $album[$item];
+			return trim( $album[$item] );
 		}
 		else {
-			wppa_dbg_msg( 'Album item '.$item.' does not exist. ( get_album_item )', 'red' );
+			wppa_dbg_msg( 'Album item ' . $item . ' does not exist. ( get_album_item )', 'red' );
 		}
 	}
 	else {
@@ -377,16 +387,17 @@ function wppa_get_album_item( $id, $item ) {
 	return false;
 }
 
+// Get any photo field of any photo, raw data from the db
 function wppa_get_photo_item( $id, $item ) {
 	
 	$photo = wppa_cache_photo( $id );
 	
 	if ( $photo ) {
 		if ( isset( $photo[$item] ) ) {
-			return $photo[$item];
+			return trim( $photo[$item] );
 		}
 		else {
-			wppa_dbg_msg( 'Photo item '.$item.' does not exist. ( get_photo_item )', 'red' );
+			wppa_dbg_msg( 'Photo item ' . $item . ' does not exist. ( get_photo_item )', 'red' );
 		}
 	}
 	else {

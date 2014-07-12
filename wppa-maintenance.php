@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains (not yet, but in the future maybe) all the maintenance routines
-* Version 5.4.0
+* Version 5.4.1
 *
 */
 
@@ -320,9 +320,8 @@ global $wppa_session;
 						break;
 						
 					case 'wppa_watermark_all':
-						$file = wppa_get_photo_path( $id );
-						if ( $file && ! wppa_is_video( $id ) ) {
-							if ( wppa_add_watermark( $file ) ) {
+						if ( ! wppa_is_video( $id ) ) {
+							if ( wppa_add_watermark( $id ) ) {
 								if ( wppa_switch( 'wppa_watermark_thumbs' ) ) {
 									wppa_create_thumbnail( wppa_get_photo_path( $id ), wppa_get_minisize(), '' );	// create new thumb
 								}

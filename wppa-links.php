@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Frontend links
-* Version 5.4.0
+* Version 5.4.1
 *
 */
 
@@ -862,6 +862,12 @@ global $wpdb;
 			$page = $wppa_opt['wppa_slideonly_widget_linkpage'];
 			if ( $page == '0' ) $page = '-1';
 			if ( wppa_switch( 'wppa_sswidget_blank' ) ) $result['target'] = '_blank';
+			$result['url'] = '';
+			if ( $type == 'lightbox' || $type == 'lightboxsingle' || $type == 'file' ) { 
+				$result['title'] = wppa_zoom_in();
+				$result['target'] = '';
+				return $result;
+			}
 			break;
 		case 'potdwidget':
 			$type = $wppa_opt['wppa_widget_linktype'];

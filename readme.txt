@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile, cloudinary, fotomoto
-Version: 5.4.0
+Version: 5.4.1
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -188,6 +188,33 @@ If you changed the name of wp-content and/or uploads, besides the additions to w
 **define('WPPA_REL_UPLOADS_PATH', 'wp_content/uploads');**
 **define('WPPA_REL_DEPOT_PATH', 'wp_content');**
 and make the changes therein also.
+
+= 5.4.1 =
+
+= Bug Fixes =
+
+* Treecounts were not updated when a sub-album was deleted. Fixed.
+* Fixed a link problem from thumbnails to slideshow when ajax on and selection was #upldr.
+* Upload box did not show up when frontend upload enabled but user had no upload rights and album was public. Fixed.
+* Treecounts are now updated after a bulk change status action.
+* The behaviour of the lightbox on album widget has been restored to the situation before version 5.3.10, i.e. the photos in the album will be shown in a set.
+* On import, when there are only zipfiles to import, you will no longer be asked to specify a target album.
+
+= New Features =
+
+* New shortcode type: type="thumbs" will display the thumbnails only of an album that also contains sub-albums.
+* New shortcode type: type="covers" will display the covers of the sub-albums of the given album. Do not confuse with type"cover"!!
+* You can now set the minimum height of album covers ( Table I-D2 ) and of the text including the header ( Table I-D3 ) 
+to make it easier to size the covers verically equally.
+* Table VII-D10: Photo owner change. If checked, administrators can change the owner of the photo on the Album Admin -> Manage Photos screen.
+* Download link on lightbox displays ( Table VI-C1.4 ).
+* Added lightbox as a selection for the linktype of slideshow widget ( Table VI-A2 ).
+
+= Other Changes =
+
+* Erroneous treecounts will now be fixed automaticly, leaving a note in the wppa+ logfile ( See Table VIII-C1 ).
+* Table I-D has been expanded and renumbered.
+* Facebook share button is now new style; display type of share and like buttons is selectable. See Table II-C17.x
 
 = 5.4.0 =
 

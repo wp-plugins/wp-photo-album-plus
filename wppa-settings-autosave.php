@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 5.4.0
+* Version 5.4.1
 *
 */
 
@@ -813,13 +813,31 @@ global $no_default;
 							$html = wppa_input($slug, '40px', '', __('pixels', 'wppa'));
 							wppa_setting($slug, '1', $name, $desc, $html, $help);
 
-							$name = __('Min Text frame height', 'wppa');
-							$desc = __('The minimal cover text frame height.', 'wppa');
-							$help = esc_js(__('The minimal height of the description field in an album cover display.', 'wppa'));
-							$help .= '\n\n'.esc_js(__('This setting enables you to give the album covers the same height provided that the cover images are equally sized.', 'wppa'));
-							$slug = 'wppa_text_frame_height';
+							$name = __('Min Cover height', 'wppa');
+							$desc = __('Minimal height of an album cover.', 'wppa');
+							$help = esc_js(__('If you use this setting to make the albums the same height and you are not satisfied about the lay-out, try increasing the value in the next setting', 'wppa'));
+							$slug = 'wppa_cover_minheight';
 							$html = wppa_input($slug, '40px', '', __('pixels', 'wppa'));
 							wppa_setting($slug, '2', $name, $desc, $html, $help);
+							
+							$name = __('Min Text frame height', 'wppa');
+							$desc = __('The minimal cover text frame height incl header.', 'wppa');
+							$help = esc_js(__('The height starting with the album title up to and including the view- and the slideshow- links.', 'wppa'));
+							$help .= '\n\n'.esc_js(__('This setting enables you to give the album covers the same height while the title does not need to fit on one line.', 'wppa'));
+							$help .= '\n'.esc_js(__('This is the recommended setting to line-up your covers!', 'wppa'));
+							$slug = 'wppa_head_and_text_frame_height';
+							$html = wppa_input($slug, '40px', '', __('pixels', 'wppa'));
+							wppa_setting($slug, '3', $name, $desc, $html, $help);
+							
+							$name = __('Min Description height', 'wppa');
+							$desc = __('The minimal height of the album description text frame.', 'wppa');
+							$help = esc_js(__('The minimal height of the description field in an album cover display.', 'wppa'));
+							$help .= '\n\n'.esc_js(__('This setting enables you to give the album covers the same height provided that the cover images are equally sized and the titles fit on one line.', 'wppa'));
+							$help .= '\n\n'.esc_js(__('To force the coverphotos have equal heights, tick the box in Table I-D7.', 'wppa'));
+							$help .= '\n'.esc_js(__('You may need this setting if changing the previous setting is not sufficient to line-up the covers.', 'wppa'));
+							$slug = 'wppa_text_frame_height';
+							$html = wppa_input($slug, '40px', '', __('pixels', 'wppa'));
+							wppa_setting($slug, '4', $name, $desc, $html, $help);
 
 							$name = __('Coverphoto size', 'wppa');
 							$desc = __('The size of the coverphoto.', 'wppa');
@@ -827,7 +845,7 @@ global $no_default;
 							$help .= '\n'.esc_js(__('Changing the coverphoto size may result in all thumbnails being regenerated. this may take a while.', 'wppa'));
 							$slug = 'wppa_smallsize';
 							$html = wppa_input($slug, '40px', '', __('pixels', 'wppa'));
-							wppa_setting($slug, '3', $name, $desc, $html, $help);
+							wppa_setting($slug, '5', $name, $desc, $html, $help);
 							
 							$name = __('Coverphoto size multi', 'wppa');
 							$desc = __('The size of coverphotos if more than one.', 'wppa');
@@ -835,7 +853,7 @@ global $no_default;
 							$help .= '\n'.esc_js(__('Changing the coverphoto size may result in all thumbnails being regenerated. this may take a while.', 'wppa'));
 							$slug = 'wppa_smallsize_multi';
 							$html = wppa_input($slug, '40px', '', __('pixels', 'wppa'));
-							wppa_setting($slug, '3.1', $name, $desc, $html, $help);
+							wppa_setting($slug, '6', $name, $desc, $html, $help);
 							
 							$name = __('Size is height', 'wppa');
 							$desc = __('The size of the coverphoto is the height of it.', 'wppa');
@@ -844,14 +862,14 @@ global $no_default;
 							$help .= '\n'.esc_js(__('This makes it easyer to make the covers of equal height.', 'wppa'));
 							$slug = 'wppa_coversize_is_height';
 							$html = wppa_checkbox($slug);
-							wppa_setting($slug, '3.9', $name, $desc, $html, $help);
+							wppa_setting($slug, '7', $name, $desc, $html, $help);
 							
 							$name = __('Page size', 'wppa');
 							$desc = __('Max number of covers per page.', 'wppa');
 							$help = esc_js(__('Enter the maximum number of album covers per page. A value of 0 indicates no pagination.', 'wppa'));
 							$slug = 'wppa_album_page_size';
 							$html = wppa_input($slug, '40px', '', __('covers', 'wppa'));
-							wppa_setting($slug, '4', $name, $desc, $html, $help);
+							wppa_setting($slug, '8', $name, $desc, $html, $help);
 							}
 							wppa_setting_subheader( 'E', '1', __( 'Rating and comment related size settings', 'wppa' ) );
 							{
@@ -1439,14 +1457,6 @@ global $no_default;
 							$html = wppa_checkbox($slug, $onchange);
 							wppa_setting($slug, '11', $name, $desc, $html, $help, $class);
 							
-							$name = __('Show Facebook button', 'wppa');
-							$desc = __('Display the Facebook button in the share box.', 'wppa');
-							$help = '';
-							$slug = 'wppa_share_facebook';
-							$class = 'wppa_share';
-							$html = wppa_checkbox($slug, $onchange);
-							wppa_setting($slug, '12', $name, $desc, $html, $help, $class);
-
 							$name = __('Show Twitter button', 'wppa');
 							$desc = __('Display the Twitter button in the share box.', 'wppa');
 							$help = '';
@@ -1479,21 +1489,39 @@ global $no_default;
 							$html = wppa_checkbox($slug, $onchange);
 							wppa_setting($slug, '16', $name, $desc, $html, $help, $class);
 							
+							$name = __('Show Facebook share button', 'wppa');
+							$desc = __('Display the Facebook button in the share box.', 'wppa');
+							$help = '';
+							$slug = 'wppa_share_facebook';
+							$class = 'wppa_share';
+							$html = wppa_checkbox($slug, $onchange);
+							wppa_setting($slug, '17.1', $name, $desc, $html, $help, $class);
+
 							$name = __('Show Facebook like button', 'wppa');
 							$desc = __('Display the Facebook button in the share box.', 'wppa');
 							$help = '';
 							$slug = 'wppa_facebook_like';
 							$class = 'wppa_share';
 							$html = wppa_checkbox($slug, $onchange);
-							wppa_setting($slug, '17', $name, $desc, $html, $help, $class);
+							wppa_setting($slug, '17.2', $name, $desc, $html, $help, $class);
 						
+							$name = __('Display type', 'wppa');
+							$desc = __('Select the Facebook button display type.', 'wppa');
+							$help = '';
+							$slug = 'wppa_fb_display';
+							$class = 'wppa_share';
+							$opts = array( __('Standard', 'wppa'), __('Button', 'wppa'), __('Button with counter', 'wppa'), __('Box with counter', 'wppa') );
+							$vals = array( 'standard', 'button', 'button_count', 'box_count' );
+							$html = wppa_select($slug, $opts, $vals);
+							wppa_setting($slug, '17.3', $name, $desc, $html, $help, $class);
+							
 							$name = __('Show Facebook comment box', 'wppa');
 							$desc = __('Display the Facebook comment dialog box in the share box.', 'wppa');
 							$help = '';
 							$slug = 'wppa_facebook_comments';
 							$class = 'wppa_share';
 							$html = wppa_checkbox($slug, $onchange);
-							wppa_setting($slug, '18', $name, $desc, $html, $help, $class);
+							wppa_setting($slug, '17.4', $name, $desc, $html, $help, $class);
 							
 							$name = __('Facebook User Id', 'wppa');
 							$desc = __('Enter your facebook user id to be able to moderate comments and sends', 'wppa');
@@ -1501,7 +1529,7 @@ global $no_default;
 							$slug = 'wppa_facebook_admin_id';
 							$class = 'wppa_share';
 							$html = wppa_input($slug, '200px');
-							wppa_setting($slug, '19', $name, $desc, $html, $help, $class);
+							wppa_setting($slug, '17.7', $name, $desc, $html, $help, $class);
 							
 							$name = __('Facebook App Id', 'wppa');
 							$desc = __('Enter your facebook app id to be able to moderate comments and sends', 'wppa');
@@ -1509,7 +1537,7 @@ global $no_default;
 							$slug = 'wppa_facebook_app_id';
 							$class = 'wppa_share';
 							$html = wppa_input($slug, '200px');
-							wppa_setting($slug, '20', $name, $desc, $html, $help, $class);
+							wppa_setting($slug, '17.8', $name, $desc, $html, $help, $class);
 							
 							$name = __('Facebook js SDK', 'wppa');
 							$desc = __('Load Facebook js SDK', 'wppa');
@@ -1517,7 +1545,7 @@ global $no_default;
 							$slug = 'wppa_load_facebook_sdk';
 							$class = 'wppa_share';
 							$html = wppa_checkbox($slug, $onchange);
-							wppa_setting($slug, '21', $name, $desc, $html, $help, $class);
+							wppa_setting($slug, '17.9', $name, $desc, $html, $help, $class);
 
 							$name = __('Share single image', 'wppa');
 							$desc = __('Share a link to a single image, not the slideshow.', 'wppa');
@@ -3285,7 +3313,8 @@ global $no_default;
 								__('the fullsize photo on its own.', 'wppa'), 
 								__('lightbox.', 'wppa')
 							);
-							$values_linktype_album = array('none', 'file', 'album', 'photo', 'single', 'lightbox'); //, 'indiv');
+							$values_linktype_album = array('none', 'file', 'album', 'photo', 'single', 'lightbox');
+							
 							$options_linktype_ss_widget = array(
 								__('no link at all.', 'wppa'), 
 								__('the plain photo (file).', 'wppa'), 
@@ -3293,9 +3322,11 @@ global $no_default;
 								__('the content of the album.', 'wppa'), 
 								__('the full size photo in a slideshow.', 'wppa'), 
 								__('the fullsize photo on its own.', 'wppa'),
-								__('a plain page without a querystring.', 'wppa')
+								__('a plain page without a querystring.', 'wppa'),
+								__('lightbox.', 'wppa')
 							);
-							$values_linktype_ss_widget = array('none', 'file', 'widget', 'album', 'photo', 'single', 'plainpage'); 
+							$values_linktype_ss_widget = array('none', 'file', 'widget', 'album', 'photo', 'single', 'plainpage', 'lightbox');
+							
 							$options_linktype_potd_widget = array(
 								__('no link at all.', 'wppa'), 
 								__('the plain photo (file).', 'wppa'), 
@@ -3307,8 +3338,10 @@ global $no_default;
 								__('lightbox.', 'wppa')
 							); 
 							$values_linktype_potd_widget = array('none', 'file', 'custom', 'album', 'photo', 'single', 'plainpage', 'lightbox');
+							
 							$options_linktype_cover_image = array(__('no link at all.', 'wppa'), __('the plain photo (file).', 'wppa'), __('same as title.', 'wppa'), __('lightbox.', 'wppa'));
 							$values_linktype_cover_image = array('none', 'file', 'same', 'lightbox');
+							
 							$options_linktype_lasten = array(
 								__('no link at all.', 'wppa'), 
 								__('the plain photo (file).', 'wppa'), 
@@ -3722,6 +3755,13 @@ global $no_default;
 							$values = array('file', 'zip');
 							$html = wppa_select($slug, $options, $values);
 							wppa_setting($slug, '1.3', $name, $desc, $html.'</td><td></td><td></td><td>', $help);
+							
+							$name = __('Download link on lightbox', 'wppa');
+							$desc = __('Art monkey link on lightbox photo names.', 'wppa');
+							$help = '';
+							$slug = 'wppa_art_monkey_on_lightbox';
+							$html = wppa_checkbox($slug);
+							wppa_setting($slug, '1.4', $name, $desc, $html.'</td><td></td><td></td><td>', $help);
 							
 							$name = __('Album download link', 'wppa');
 							$desc = __('Place an album download link on the album covers', 'wppa');					
@@ -4228,6 +4268,15 @@ global $no_default;
 							$html2 = '';
 							$html = array( $html1, $html2 );
 							wppa_setting(false, '9', $name, $desc, $html, $help);
+
+							$name = __('Photo owner change', 'wppa');
+							$desc = __('Administrators can change photo owner', 'wppa');
+							$help = '';
+							$slug = 'wppa_photo_owner_change';
+							$html1 = wppa_checkbox( $slug );
+							$html2 = '';
+							$html = array( $html1, $html2 );
+							wppa_setting($slug, '10', $name, $desc, $html, $help);
 
 							?>
 						</tbody>

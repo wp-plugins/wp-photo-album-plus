@@ -2,7 +2,7 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 5.4.0
+* version 5.4.1
 *
 */
 
@@ -124,7 +124,8 @@ global $wppa_defaults;
 			'is_searchbox'				=> false,
 			'may_sub'					=> false,
 			'may_root'					=> false,
-			'links_no_page' 			=> array( 'none', 'file', 'lightbox', 'fullpopup' )
+			'links_no_page' 			=> array( 'none', 'file', 'lightbox', 'lightboxsingle', 'fullpopup' ),
+			'shortcode_content' 		=> ''
 		 );
 	}
 	

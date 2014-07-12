@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains user and capabilities related routines
-* Version 5.4.0
+* Version 5.4.1
 *
 */
 
@@ -21,9 +21,8 @@ global $wpdb;
 // Get all users
 function wppa_get_users() {
 global $wpdb;
-global $wppa_opt;
 
-	if ( wppa_get_user_count() > $wppa_opt['wppa_max_users'] ) {
+	if ( wppa_get_user_count() > wppa_opt( 'wppa_max_users' ) ) {
 		$users = array();
 	}
 	else {
@@ -91,7 +90,6 @@ function wppa_user_is( $role, $user_id = null ) {
 // Test if current user has extended access
 // returns bool
 function wppa_extended_access() {
-global $wppa_opt;
 
 	if ( wppa_user_is( 'administrator' ) ) {
 		return true;
@@ -105,7 +103,6 @@ global $wppa_opt;
 // Test if current user is allowed to craete albums
 // returns bool
 function wppa_can_create_album() {
-global $wppa_opt;
 global $wpdb;
 
 	if ( wppa_is_user_blacklisted() ) {
@@ -114,7 +111,7 @@ global $wpdb;
 	if ( wppa_extended_access() ) {
 		return true;
 	}
-	if ( $wppa_opt['wppa_max_albums'] == '0' ) {
+	if ( wppa_opt( 'wppa_max_albums' ) == '0' ) {
 		return true;	// 0 = unlimited
 	}
 	$user = wppa_get_user();
@@ -122,7 +119,7 @@ global $wpdb;
 		"SELECT COUNT(*) FROM `".WPPA_ALBUMS."` WHERE `owner` = %s", $user 
 		) );
 	wppa_dbg_q( 'Q-cca' );
-	if ( $albs < $wppa_opt['wppa_max_albums'] ) {
+	if ( $albs < wppa_opt( 'wppa_max_albums' ) ) {
 		return true;
 	}
 	
@@ -132,7 +129,6 @@ global $wpdb;
 // Test if current user is allowed to craete top level albums
 // returns bool
 function wppa_can_create_top_album() {
-global $wppa_opt;
 
 	if ( wppa_user_is( 'administrator' ) ) {
 		return true;
@@ -141,7 +137,7 @@ global $wppa_opt;
 		return false;
 	}
 	if ( wppa_switch( 'wppa_grant_an_album' ) && 
-		'0' != $wppa_opt['wppa_grant_parent'] ) {
+		'0' != wppa_opt( 'wppa_grant_parent' ) ) {
 			return false;
 		}
 	
@@ -151,14 +147,28 @@ global $wppa_opt;
 // Test if a user is on the blacklist
 // @1: user id, default current user
 // returns bool
-function wppa_is_user_blacklisted( $user = null ) {
+function wppa_is_user_blacklisted( $user = -1 ) {
 global $wpdb;
+static $result = -1;
 
-	if ( ! is_user_logged_in() ) {
+	$cur = ( -1 == $user );
+	
+	if ( $cur && -1 != $result ) {	// Already found out for current user
+		return $result;
+	}
+	
+	if ( $cur && ! is_user_logged_in() ) {	// An logged out user can not be on the blacklist
+		$result = false;
 		return false;
 	}
 	
-	if ( empty( $user ) ) {
+	$blacklist = get_option( 'wppa_black_listed_users', array() );
+	if ( empty( $blacklist ) ) {	// Anybody on the blacklist?
+		$result = false;
+		return false;
+	}
+	
+	if ( $cur ) {
 		$user = get_current_user_id();
 	}
 	
@@ -168,8 +178,13 @@ global $wpdb;
 		) );
 		wppa_dbg_q( 'Q-iub' );
 	}
+	else {
+		return false;
+	}
 	
-	$blacklist = get_option( 'wppa_black_listed_users', array() );
-
+	if ( $cur ) {
+		$result = in_array( $user, $blacklist );	// Save current users result.
+	}
+	
 	return in_array( $user, $blacklist );
 }

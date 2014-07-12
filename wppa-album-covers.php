@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Functions for album covers
-* Version 5.4.0
+* Version 5.4.1
 *
 */
 
@@ -12,38 +12,44 @@ if ( ! defined( 'ABSPATH' ) ) die( "Can't load this file directly" );
 // Main entry for an album cover
 // decide wich cover type and call the types function
 function wppa_album_cover( $id ) {
-global $wppa_opt;
 global $wppa;
-
-	$album = wppa_cache_album( $id );
 		
-	$type = $album['cover_type'] ? $album['cover_type'] : $wppa_opt['wppa_cover_type'];
-	$wppa['coverphoto_pos'] = $wppa_opt['wppa_coverphoto_pos'];
+	// Find the cover type
+	$cover_type = wppa_get_album_item( $id, 'cover_type' ) ? 
+		wppa_get_album_item( $id, 'cover_type' ) : 		// This album has a cover type specified.
+		wppa_opt( 'wppa_cover_type' );					// Use the default setting
+		
+	// Find the cover photo position
+	$wppa['coverphoto_pos'] = wppa_opt( 'wppa_coverphoto_pos' );
 
-	$flag = true;
+	// Assume multicolumn responsive
+	$is_mcr = true;
 	
-	switch ( $type ) {
+	// Dispatch on covertype
+	switch ( $cover_type ) {
 		case 'default':
-			$flag = false;
+			$is_mcr = false;
 		case 'default-mcr':
-			wppa_album_cover_default( $id, $flag );
+			wppa_album_cover_default( $id, $is_mcr );
 			break;
 		case 'imagefactory':
-			$flag = false;
+			$is_mcr = false;
 		case 'imagefactory-mcr':
 			if ( $wppa['coverphoto_pos'] == 'left' ) $wppa['coverphoto_pos'] = 'top';
 			if ( $wppa['coverphoto_pos'] == 'right' ) $wppa['coverphoto_pos'] = 'bottom';
-			wppa_album_cover_imagefactory( $id, $flag );
+			wppa_album_cover_imagefactory( $id, $is_mcr );
 			break;
 		case 'longdesc':
-			$flag = false;
+			$is_mcr = false;
 		case 'longdesc-mcr':
 			if ( $wppa['coverphoto_pos'] == 'top' ) $wppa['coverphoto_pos'] = 'left';
 			if ( $wppa['coverphoto_pos'] == 'bottom' ) $wppa['coverphoto_pos'] = 'right';
-			wppa_album_cover_longdesc( $id, $flag );
+			wppa_album_cover_longdesc( $id, $is_mcr );
 			break;
 		default:
-			wppa_dbg_msg( 'Unimplemented covertype: ' . $wppa_opt['wppa_cover_type'] );
+			$err = 'Unimplemented covertype: ' . $cover_type;
+			wppa_dbg_msg( $err );
+			wppa_log( $err );
 	}
 }
 
@@ -65,8 +71,8 @@ global $wpdb;
 	$image 		= $wpdb->get_row( $wpdb->prepare( 
 		"SELECT * FROM `" . WPPA_PHOTOS . "` WHERE `id` = %s", $coverphoto 
 		), ARRAY_A );
-	$photocount = wppa_get_photo_count( $albumid );
-	$albumcount = wppa_get_album_count( $albumid );
+	$photocount = wppa_get_photo_count( $albumid, true );
+	$albumcount = wppa_get_album_count( $albumid, true );
 	$mincount 	= wppa_get_mincount();
 	
 	// Init links
@@ -173,7 +179,7 @@ global $wpdb;
 	$wppa['out'] .= wppa_nltab( '+' ) . 
 		'<div id="album-' . $albumid . '-' . $wppa['mocc'] . 
 		'" class="wppa-album-cover-standard album wppa-box wppa-cover-box wppa-cover-box-' . 
-		$mcr . $wppa['mocc'] . ' wppa-' . $wppa_alt . '" style="' . $style . '" >';
+		$mcr . $wppa['mocc'] . ' wppa-' . $wppa_alt . '" style="' . $style . __wcs( 'wppa-cover-box' ) . '" >';
 
 	// First The Cover photo?
 	if ( $photo_pos == 'left' || $photo_pos == 'top' ) {
@@ -185,7 +191,7 @@ global $wpdb;
 	$textframestyle = wppa_get_text_frame_style( $photo_pos, 'cover' );
 	$wppa['out'] .= wppa_nltab( '+' ) . 
 		'<div id="covertext_frame_' . $albumid . '_' . $wppa['mocc'] . 
-		'" class="wppa-text-frame-' . $wppa['mocc'] . ' wppa-text-frame covertext-frame ' . 
+		'" class="wppa-text-frame-' . $wppa['mocc'] . ' wppa-text-frame wppa-cover-text-frame ' . 
 		$class_asym . '" ' . $textframestyle . '>';
 
 	// The Album title
@@ -197,7 +203,7 @@ global $wpdb;
 			'min-height:' . $wppa_opt['wppa_text_frame_height'] . 'px; ' :
 			'';
 		$wppa['out'] .= wppa_nltab() . 
-			'<p class="wppa-box-text wppa-black" style="' . $textheight . 
+			'<p class="wppa-box-text wppa-black wppa-box-text-desc" style="' . $textheight . 
 			__wcs( 'wppa-box-text' ) . __wcs( 'wppa-black' ) . '">' . 
 			wppa_get_album_desc( $albumid ) . '</p>';
 	}
@@ -280,8 +286,8 @@ global $wpdb;
 	if ( ! empty( $coverphotos ) ) $coverphoto = $coverphotos['0'];
 	else $coverphoto = false;
 	
-	$photocount = wppa_get_photo_count( $albumid );
-	$albumcount = wppa_get_album_count( $albumid );
+	$photocount = wppa_get_photo_count( $albumid, true );
+	$albumcount = wppa_get_album_count( $albumid, true );
 	$mincount 	= wppa_get_mincount();
 	$title 		= '';
 	$linkpage 	= '';
@@ -358,7 +364,7 @@ global $wpdb;
 	$wppa['out'] .= wppa_nltab( '+' ) . 
 		'<div id="album-' . $albumid . '-' . $wppa['mocc'] . 
 		'" class="wppa-album-cover-imagefactory album wppa-box wppa-cover-box wppa-cover-box-' . 
-		$mcr . $wppa['mocc'] . ' wppa-' . $wppa_alt . '" style="' . $style . '" >';
+		$mcr . $wppa['mocc'] . ' wppa-' . $wppa_alt . '" style="' . $style . __wcs( 'wppa-cover-box' ) . '" >';
 
 	// First The Cover photo?
 	if ( $photo_pos == 'left' || $photo_pos == 'top' ) {
@@ -367,11 +373,11 @@ global $wpdb;
 	}
 		
 	// Open the Cover text frame
-	$textframestyle = 'style="text-align:center;"';
+	$textframestyle = 'style="text-align:center;'.__wcs( 'wppa-cover-text-frame' ).'"';
 	$wppa['out'] .= wppa_nltab( '+' ) . 
 		'<div id="covertext_frame_' . $albumid . '_' . $wppa['mocc'] . 
 		'" class="wppa-text-frame-' . $wppa['mocc'] . 
-		' wppa-text-frame covertext-frame" ' . $textframestyle . '>';
+		' wppa-text-frame wppa-cover-text-frame" ' . $textframestyle . '>';
 
 	// The Album title
 	wppa_the_album_title( $albumid, $href_title, $onclick_title, $title, $target );
@@ -382,7 +388,7 @@ global $wpdb;
 		'min-height:' . $wppa_opt['wppa_text_frame_height'] . 'px; ' :
 		'';
 		$wppa['out'] .= wppa_nltab() . 
-			'<p class="wppa-box-text wppa-black" style="' . $textheight . 
+			'<p class="wppa-box-text wppa-black wppa-box-text-desc" style="' . $textheight . 
 			__wcs( 'wppa-box-text' ) . __wcs( 'wppa-black' ) . '">' . 
 			wppa_get_album_desc( $albumid ) . '</p>';
 	}
@@ -431,8 +437,8 @@ global $wpdb;
 	$image 		= $wpdb->get_row( $wpdb->prepare( 
 					"SELECT * FROM `" . WPPA_PHOTOS . "` WHERE `id` = %s", $coverphoto 
 					), ARRAY_A );
-	$photocount = wppa_get_photo_count( $albumid );
-	$albumcount = wppa_get_album_count( $albumid );
+	$photocount = wppa_get_photo_count( $albumid, true );
+	$albumcount = wppa_get_album_count( $albumid, true );
 	$mincount 	= wppa_get_mincount();
 	$title 		= '';
 	$linkpage 	= '';
@@ -533,7 +539,7 @@ global $wpdb;
 	$wppa['out'] .= wppa_nltab( '+' ) . 
 		'<div id="album-' . $albumid . '-' . $wppa['mocc'] . 
 		'" class="wppa-album-cover-longdesc album wppa-box wppa-cover-box wppa-cover-box-' . 
-		$mcr . $wppa['mocc'] . ' wppa-' . $wppa_alt . '" style="' . $style . '" >';
+		$mcr . $wppa['mocc'] . ' wppa-' . $wppa_alt . '" style="' . $style . __wcs( 'wppa-cover-box' ) . '" >';
 
 	// First The Cover photo?
 	if ( $photo_pos == 'left' || $photo_pos == 'top' ) {
@@ -546,7 +552,7 @@ global $wpdb;
 	$wppa['out'] .= wppa_nltab( '+' ) . 
 		'<div id="covertext_frame_' . $albumid . '_' . $wppa['mocc'] . 
 		'" class="wppa-text-frame-' . $wppa['mocc'] . 
-		' wppa-text-frame covertext-frame wppa-asym-text-frame-' . 
+		' wppa-text-frame wppa-cover-text-frame wppa-asym-text-frame-' . 
 		$mcr . $wppa['mocc'] . '" ' . $textframestyle . '>';
 
 	// The Album title
@@ -575,7 +581,7 @@ global $wpdb;
 			'';
 		$wppa['out'] .= wppa_nltab() . 
 			'<div id="coverdesc_frame_' . $albumid . '_' . $wppa['mocc'] . 
-			'" style="clear:both" ><p class="wppa-box-text wppa-black" style="' . $textheight . 
+			'" style="clear:both" ><p class="wppa-box-text wppa-black wppa-box-text-desc" style="' . $textheight . 
 			__wcs( 'wppa-box-text' ) . __wcs( 'wppa-black' ) . '">' . 
 			wppa_get_album_desc( $albumid ) . '</p></div>';
 	}
@@ -1081,42 +1087,48 @@ global $wppa_opt;
 						esc_attr( stripslashes( wppa_qtrans( $album['name'] ) ) ) . 
 						'" style="' . __wcs( 'wppa-box-text-nocolor' ) . '" >';
 				}
-				
-				$wppa['out'] .= __a( 'View' );
+
+/**/				
+				$text = __a( 'View' );
 				if ( $albumcount ) { 
 					if ( $albumcount == '1' ) {
-						$wppa['out'] .= ' 1 ' . __a( 'album' ); 
+						$text .= ' 1 ' . __a( 'album' ); 
 					}
 					else {
-						$wppa['out'] .= ' ' . $albumcount . ' ' . __a( 'albums' );
+						$text .= ' ' . $albumcount . ' ' . __a( 'albums' );
 					}
 					if ( $treecount ) {
 						if ( $treecount['albums'] > $albumcount ) {
-							$wppa['out'] .= ' (' . $treecount['albums'] . ')';
+							$text .= ' (' . $treecount['albums'] . ')';
 						}
 					}
 				}
 				if ( $photocount > $mincount && $albumcount ) {
-					$wppa['out'] .= ' ' . __a( 'and' ); 
+					$text .= ' ' . __a( 'and' ); 
 				}
 				if ( $photocount > $mincount || $treecount ) { 
 					if ( $photocount <= $mincount ) $photocount = '0';
 					if ( $photocount == '1' ) {
-						$wppa['out'] .= ' 1 ' . __a( 'photo' );
+						$text .= ' 1 ' . __a( 'photo' );
 					}
 					elseif ( $photocount ) {
-						$wppa['out'] .= ' ' . $photocount . ' ' . __a( 'photos' ); 
+						$text .= ' ' . $photocount . ' ' . __a( 'photos' ); 
 					}
 					if ( $treecount ) {
 						if ( $treecount['photos'] > $photocount ) {
-							if ( ! $photocount ) $wppa['out'] .= ', ' . __a( 'photos' ); 
-							$wppa['out'] .= ' ( ' . $treecount['photos'] . ' )';
+							if ( ! $photocount ) $text .= ', ' . __a( 'photos' ); 
+							$text .= ' (' . $treecount['photos'] . ')';
 						}
 					}
 				} 
+				$wppa['out'] .= str_replace( ' ', '&nbsp;', $text );
+/**/
 				$wppa['out'] .= wppa_nltab( '-' ) . '</a>'; 
 			}
 		} 
+		else {
+			$wppa['out'] .= '&nbsp;';
+		}
 		$wppa['out'] .= wppa_nltab( '-' ) . '</div>';
 	}
 }
@@ -1198,16 +1210,17 @@ global $wppa;
 		return;
 	}
 	
-	$album = wppa_cache_album( $alb );
+	$cats = wppa_get_album_item( $alb, 'cats' );
+	$cats = str_replace( ',', ',&nbsp;', $cats );
 	
-	if ( $album['cats'] ) {
-		if ( strpos( $album['cats'] ,',' ) ) {
-			$wppa['out'] .= 
-				'<span style="float:right;">' . __a('Categories:') . ' <b>' . $album['cats'] . '</b></span>';
+	if ( $cats ) {
+		$wppa['out'] .= '<div id="wppa-cats-' . $alb . '-' . $wppa['mocc'] . '" style="float:right" >';
+		if ( strpos( $cats ,',' ) ) {
+			$wppa['out'] .= __a('Categories:') . '&nbsp;<b>' . $cats . '</b>';
 		}
 		else {
-			$wppa['out'] .= 
-				'<span style="float:right;">' . __a('Category:') . ' <b>' . $album['cats'] . '</b></span>';
+			$wppa['out'] .= __a('Category:') . '&nbsp;<b>' . $cats . '</b>';
 		}
+		$wppa['out'] .= '</div>';
 	}
 }

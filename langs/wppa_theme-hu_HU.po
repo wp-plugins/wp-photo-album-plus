@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wppa_theme_v5.2.3 HU\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-06-26 14:58+0100\n"
-"PO-Revision-Date: 2014-06-26 14:58+0100\n"
+"POT-Creation-Date: 2014-07-09 14:57+0100\n"
+"PO-Revision-Date: 2014-07-09 14:57+0100\n"
 "Last-Translator: J.N. Breetvelt <OpaJaap@OpaJaap.nl>\n"
 "Language-Team: FYGureout <wpfordito@wpforditas.farkasonline.net>\n"
 "Language: hu\n"
@@ -96,66 +96,66 @@ msgstr "<b>HIBA: Szabálytalan próbálkozás az értékelésnél.</b>"
 msgid "Exit & Refresh"
 msgstr ""
 
-#: wppa-album-covers.php:983
+#: wppa-album-covers.php:990
 msgid "Link to"
 msgstr "Hivatkozás"
 
-#: wppa-album-covers.php:1011 wppa-album-covers.php:1073
-#: wppa-album-covers.php:1080
+#: wppa-album-covers.php:1018 wppa-album-covers.php:1080
+#: wppa-album-covers.php:1087
 msgid "View the album"
 msgstr "Album megtekintése"
 
-#: wppa-album-covers.php:1031
+#: wppa-album-covers.php:1038
 msgid "View the cover photo"
 msgstr "Címlapkép megtekintése."
 
-#: wppa-album-covers.php:1032
+#: wppa-album-covers.php:1039
 msgid "View the cover photos"
 msgstr "Címlapképek megtekintése"
 
-#: wppa-album-covers.php:1085
+#: wppa-album-covers.php:1093
 msgid "View"
 msgstr "Megtekintés:"
 
-#: wppa-album-covers.php:1088
+#: wppa-album-covers.php:1096
 msgid "album"
 msgstr "album"
 
-#: wppa-album-covers.php:1091
+#: wppa-album-covers.php:1099
 msgid "albums"
 msgstr "album"
 
-#: wppa-album-covers.php:1100 wppa-boxes-html.php:363 wppa-breadcrumb.php:251
-#: wppa-breadcrumb.php:256 wppa-functions.php:4005 wppa-utils.php:1197
+#: wppa-album-covers.php:1108 wppa-boxes-html.php:363 wppa-breadcrumb.php:251
+#: wppa-breadcrumb.php:256 wppa-functions.php:3986 wppa-utils.php:1265
 msgid "and"
 msgstr "és"
 
-#: wppa-album-covers.php:1105
+#: wppa-album-covers.php:1113
 msgid "photo"
 msgstr "kép"
 
-#: wppa-album-covers.php:1108 wppa-album-covers.php:1112
+#: wppa-album-covers.php:1116 wppa-album-covers.php:1120
 msgid "photos"
 msgstr "kép"
 
-#: wppa-album-covers.php:1151 wppa-utils.php:1546
+#: wppa-album-covers.php:1164 wppa-utils.php:1614
 #, fuzzy
 msgid "New!"
 msgstr "%s új képként feltöltésre került"
 
-#: wppa-album-covers.php:1173 wppa-non-admin.php:486
+#: wppa-album-covers.php:1186 wppa-non-admin.php:481
 msgid "Slideshow"
 msgstr "Vetítés"
 
-#: wppa-album-covers.php:1174
+#: wppa-album-covers.php:1187
 msgid "Browse photos"
 msgstr "Képek tallózása"
 
-#: wppa-album-covers.php:1206
+#: wppa-album-covers.php:1220
 msgid "Categories:"
 msgstr ""
 
-#: wppa-album-covers.php:1210 wppa-breadcrumb.php:263 wppa-breadcrumb.php:268
+#: wppa-album-covers.php:1223 wppa-breadcrumb.php:263 wppa-breadcrumb.php:268
 msgid "Category:"
 msgstr ""
 
@@ -164,7 +164,7 @@ msgstr ""
 msgid "Upload at least %d photos to this album!"
 msgstr "Legalább %d képet töltsünk fel ebbe az albumba."
 
-#: wppa-bestof-widget.php:45
+#: wppa-bestof-widget.php:44
 #, fuzzy
 msgid "Best Of Photos"
 msgstr "kép"
@@ -230,94 +230,85 @@ msgstr "vagy"
 msgid "Find!"
 msgstr "Keresés"
 
-#: wppa-boxes-html.php:363 wppa-utils.php:1197
+#: wppa-boxes-html.php:363 wppa-utils.php:1265
 #, php-format
 msgid "See this image on %s"
 msgstr "Tekintsük meg ezt a képet így: %s"
 
-#: wppa-boxes-html.php:382
-#, php-format
-msgid "Share %s on Facebook"
-msgstr "%s megosztása a Facebookon"
-
-#: wppa-boxes-html.php:386
-msgid "Share on Facebook"
-msgstr "Megosztás a Facebookon"
-
-#: wppa-boxes-html.php:426
+#: wppa-boxes-html.php:412
 #, php-format
 msgid "Tweet %s on Twitter"
 msgstr "%s megosztása a Twitteren"
 
-#: wppa-boxes-html.php:429
+#: wppa-boxes-html.php:415
 msgid "Share on Twitter"
 msgstr "Megosztás a Twitteren"
 
-#: wppa-boxes-html.php:438
+#: wppa-boxes-html.php:424
 #, php-format
 msgid "Share %s on Google+"
 msgstr "%s megosztása a Google+ oldalon"
 
-#: wppa-boxes-html.php:442
+#: wppa-boxes-html.php:428
 msgid "Share on Google+"
 msgstr "Megosztás a Google+ oldalon"
 
-#: wppa-boxes-html.php:453
+#: wppa-boxes-html.php:439
 #, php-format
 msgid "Share %s on Pinterest"
 msgstr "%s megosztása a Pinteresten"
 
-#: wppa-boxes-html.php:458
+#: wppa-boxes-html.php:444
 msgid "Share on Pinterest"
 msgstr "Megosztás a Pinteresten"
 
-#: wppa-boxes-html.php:490
+#: wppa-boxes-html.php:510
 msgid "Comment on Facebook:"
 msgstr "Hozzászólás a Facebookon:"
 
-#: wppa-boxes-html.php:586
+#: wppa-boxes-html.php:614
 #, fuzzy
 msgid "Create Album"
 msgstr "album"
 
-#: wppa-boxes-html.php:596 wppa-boxes-html.php:858
+#: wppa-boxes-html.php:624 wppa-boxes-html.php:888
 #, fuzzy
 msgid "Enter album name."
 msgstr "Kép címének megadása"
 
-#: wppa-boxes-html.php:596 wppa-boxes-html.php:858
+#: wppa-boxes-html.php:624 wppa-boxes-html.php:888
 #, fuzzy
 msgid "Don't leave this blank!"
 msgstr "Amennyiben üresem hagyjuk, az eredeti fájlnév lesz a kép címe."
 
-#: wppa-boxes-html.php:604
+#: wppa-boxes-html.php:632
 #, fuzzy
 msgid "Enter album description"
 msgstr "Kép leírásáanak szerkesztése/módosítása"
 
-#: wppa-boxes-html.php:615
+#: wppa-boxes-html.php:643
 #, fuzzy
 msgid "Create album"
 msgstr "album"
 
-#: wppa-boxes-html.php:639 wppa-boxes-html.php:653 wppa-functions.php:3769
+#: wppa-boxes-html.php:667 wppa-boxes-html.php:681 wppa-functions.php:3750
 msgid "Max uploads reached"
 msgstr "Maximális feltöltés elérés"
 
-#: wppa-boxes-html.php:700
+#: wppa-boxes-html.php:729
 msgid "Upload Photo"
 msgstr "Képfeltöltés"
 
-#: wppa-boxes-html.php:726
+#: wppa-boxes-html.php:755
 msgid "Please select an album and try again"
 msgstr "Ki kell választani egy albumot, majd újr megpróbálni"
 
-#: wppa-boxes-html.php:729
+#: wppa-boxes-html.php:758
 #, fuzzy
 msgid "Upload photo"
 msgstr "Képfeltöltés"
 
-#: wppa-boxes-html.php:735
+#: wppa-boxes-html.php:764
 #, php-format
 msgid ""
 "You may upload up to %s photos at once if your browser supports HTML-5 "
@@ -326,20 +317,20 @@ msgstr ""
 "%s kép egyidejű feltöltésére van lehetőség, amennyiben a böngészőnk "
 "támogatja a HTML-5 többszörös fájlfeltöltést"
 
-#: wppa-boxes-html.php:741
+#: wppa-boxes-html.php:770
 #, php-format
 msgid "Max photo size: %d x %d (%2.1f MegaPixel)"
 msgstr "Maximális méret: %d x %d (%2.1f MegaPixel)"
 
-#: wppa-boxes-html.php:757
+#: wppa-boxes-html.php:786
 msgid "Apply watermark file:"
 msgstr "Vízjel fájl csatolása:"
 
-#: wppa-boxes-html.php:769
+#: wppa-boxes-html.php:798
 msgid "Position:"
 msgstr "Helyzet:"
 
-#: wppa-boxes-html.php:789
+#: wppa-boxes-html.php:818
 #, fuzzy
 msgid ""
 "If you leave this blank, iptc tag 005 (Graphic name) will be used as "
@@ -347,147 +338,147 @@ msgid ""
 "name."
 msgstr "Amennyiben üresem hagyjuk, az eredeti fájlnév lesz a kép címe."
 
-#: wppa-boxes-html.php:792
+#: wppa-boxes-html.php:821
 #, fuzzy
 msgid ""
 "If you leave this blank, iptc tag 120 (Caption) will be used as photoname if "
 "available, else the original filename will be used as photo name."
 msgstr "Amennyiben üresem hagyjuk, az eredeti fájlnév lesz a kép címe."
 
-#: wppa-boxes-html.php:795
+#: wppa-boxes-html.php:824
 msgid ""
 "If you leave this blank, the original filename will be used as photo name."
 msgstr "Amennyiben üresem hagyjuk, az eredeti fájlnév lesz a kép címe."
 
-#: wppa-boxes-html.php:799
+#: wppa-boxes-html.php:828
 msgid "Enter photo name."
 msgstr "Kép címének megadása"
 
-#: wppa-boxes-html.php:807
+#: wppa-boxes-html.php:836
 msgid "Enter/modify photo description"
 msgstr "Kép leírásáanak szerkesztése/módosítása"
 
-#: wppa-boxes-html.php:851
+#: wppa-boxes-html.php:881
 #, fuzzy
 msgid "Edit albuminfo"
 msgstr "Szerkesztés"
 
-#: wppa-boxes-html.php:862
+#: wppa-boxes-html.php:892
 #, fuzzy
 msgid "Album description:"
 msgstr "Kép leírásáanak szerkesztése/módosítása"
 
-#: wppa-boxes-html.php:865
+#: wppa-boxes-html.php:895
 #, fuzzy
 msgid "Update album"
 msgstr "album"
 
-#: wppa-boxes-html.php:913 wppa-functions.php:2732
+#: wppa-boxes-html.php:943 wppa-functions.php:2727
 msgid "wrote:"
 msgstr "szerint:"
 
-#: wppa-boxes-html.php:946 wppa-links.php:543
+#: wppa-boxes-html.php:976 wppa-links.php:543
 msgid "Awaiting moderation"
 msgstr "Várakozás rendszer-moderációra"
 
-#: wppa-boxes-html.php:949
+#: wppa-boxes-html.php:979
 msgid "Marked as spam"
 msgstr "Spam-ként történő megjelölés"
 
-#: wppa-boxes-html.php:968
+#: wppa-boxes-html.php:998
 msgid "Edit!"
 msgstr "Szerkesztés"
 
-#: wppa-boxes-html.php:972
+#: wppa-boxes-html.php:1002
 msgid "Send!"
 msgstr "Küldés"
 
-#: wppa-boxes-html.php:1011
+#: wppa-boxes-html.php:1041
 msgid "Your name:"
 msgstr "Név:"
 
-#: wppa-boxes-html.php:1016
+#: wppa-boxes-html.php:1046
 msgid "Your email:"
 msgstr "Email cím:"
 
-#: wppa-boxes-html.php:1021
+#: wppa-boxes-html.php:1051
 msgid "Your comment:"
 msgstr "Hozzászólás:"
 
-#: wppa-boxes-html.php:1057
+#: wppa-boxes-html.php:1087
 #, php-format
 msgid "You must <a href=\"%s\">login</a> to enter a comment"
 msgstr "<a href=\"%s\">Bejelentkezés</a> szükséges a hozzászólás küldéséhez"
 
-#: wppa-boxes-html.php:1064
+#: wppa-boxes-html.php:1094
 #, fuzzy, php-format
 msgid "%d comments"
 msgstr "%d  hozzászólás"
 
-#: wppa-boxes-html.php:1068
+#: wppa-boxes-html.php:1098
 msgid "Leave a comment"
 msgstr "Minden véleményt örömmel fogadunk!"
 
-#: wppa-boxes-html.php:1135
+#: wppa-boxes-html.php:1165
 msgid "Show IPTC data"
 msgstr "IPTC adat mutatása"
 
-#: wppa-boxes-html.php:1138
+#: wppa-boxes-html.php:1168
 msgid "Hide IPTC data"
 msgstr "IPTC adat elrejtése"
 
-#: wppa-boxes-html.php:1165
+#: wppa-boxes-html.php:1195
 msgid "No IPTC data"
 msgstr "Nincs IPTC adat"
 
-#: wppa-boxes-html.php:1205
+#: wppa-boxes-html.php:1235
 msgid "Show EXIF data"
 msgstr "EXIF adat mutatása"
 
-#: wppa-boxes-html.php:1208
+#: wppa-boxes-html.php:1238
 msgid "Hide EXIF data"
 msgstr "EXIF adat elrejtése"
 
-#: wppa-boxes-html.php:1235
+#: wppa-boxes-html.php:1265
 msgid "No EXIF data"
 msgstr "Nincs EXIF adat"
 
-#: wppa-boxes-html.php:1408 wppa-boxes-html.php:1463
+#: wppa-boxes-html.php:1438 wppa-boxes-html.php:1493
 #, fuzzy
 msgid "See the authors albums"
 msgstr "Tekintsük meg ezt a képet így: %s"
 
-#: wppa-boxes-html.php:1412 wppa-boxes-html.php:1467
+#: wppa-boxes-html.php:1442 wppa-boxes-html.php:1497
 #, fuzzy
 msgid "See the authors photos"
 msgstr "Tekintsük meg ezt a képet így: %s"
 
-#: wppa-boxes-html.php:1416 wppa-boxes-html.php:1471
+#: wppa-boxes-html.php:1446 wppa-boxes-html.php:1501
 #, fuzzy
 msgid "See all the authors photos"
 msgstr "--- összes ---"
 
-#: wppa-boxes-html.php:1435
+#: wppa-boxes-html.php:1465
 #, fuzzy, php-format
 msgid "Photo by: %s"
 msgstr "%s. kép a %s képből"
 
-#: wppa-boxes-html.php:1436 wppa-boxes-html.php:1489
+#: wppa-boxes-html.php:1466 wppa-boxes-html.php:1519
 #, fuzzy, php-format
 msgid "Max ratings: %s."
 msgstr "Maximális feltöltés elérés"
 
-#: wppa-boxes-html.php:1437 wppa-boxes-html.php:1490
+#: wppa-boxes-html.php:1467 wppa-boxes-html.php:1520
 #, fuzzy, php-format
 msgid "Votes: %s."
 msgstr "%s szavazat"
 
-#: wppa-boxes-html.php:1438 wppa-boxes-html.php:1491
+#: wppa-boxes-html.php:1468 wppa-boxes-html.php:1521
 #, php-format
 msgid "Mean value: %4.2f."
 msgstr ""
 
-#: wppa-boxes-html.php:1445
+#: wppa-boxes-html.php:1475
 #, fuzzy, php-format
 msgid "Photo %s not found."
 msgstr "Nincs a keresett kép."
@@ -608,63 +599,63 @@ msgstr "mennyiség:"
 msgid "Photo not found."
 msgstr "Nincs a keresett kép."
 
-#: wppa-common-functions.php:175
+#: wppa-common-functions.php:176
 msgid "Default photo album for"
 msgstr "Alapértelmezett képalbum:"
 
-#: wppa-common-functions.php:547
+#: wppa-common-functions.php:548
 msgid "1 second"
 msgstr "1 mp"
 
-#: wppa-common-functions.php:548 wppa-functions.php:4006
+#: wppa-common-functions.php:549 wppa-functions.php:3987
 msgid "seconds"
 msgstr "mp"
 
-#: wppa-common-functions.php:552
+#: wppa-common-functions.php:553
 msgid "1 minute"
 msgstr "1 perc"
 
-#: wppa-common-functions.php:553 wppa-functions.php:4005
+#: wppa-common-functions.php:554 wppa-functions.php:3986
 msgid "minutes"
 msgstr "perc"
 
-#: wppa-common-functions.php:557
+#: wppa-common-functions.php:558
 msgid "1 hour"
 msgstr "1 óra"
 
-#: wppa-common-functions.php:558 wppa-functions.php:4004
+#: wppa-common-functions.php:559 wppa-functions.php:3985
 msgid "hours"
 msgstr "óra"
 
-#: wppa-common-functions.php:562
+#: wppa-common-functions.php:563
 msgid "1 day"
 msgstr "1 nap"
 
-#: wppa-common-functions.php:563 wppa-functions.php:4003
+#: wppa-common-functions.php:564 wppa-functions.php:3984
 msgid "days"
 msgstr "nap"
 
-#: wppa-common-functions.php:567
+#: wppa-common-functions.php:568
 msgid "1 week"
 msgstr "1 hét"
 
-#: wppa-common-functions.php:568 wppa-functions.php:4002
+#: wppa-common-functions.php:569 wppa-functions.php:3983
 msgid "weeks"
 msgstr "hét"
 
-#: wppa-common-functions.php:572
+#: wppa-common-functions.php:573
 msgid "1 month"
 msgstr "1 hónap"
 
-#: wppa-common-functions.php:573
+#: wppa-common-functions.php:574
 msgid "months"
 msgstr "hónap"
 
-#: wppa-common-functions.php:576
+#: wppa-common-functions.php:577
 msgid "1 year"
 msgstr "1 év"
 
-#: wppa-common-functions.php:577
+#: wppa-common-functions.php:578
 msgid "years"
 msgstr "év"
 
@@ -854,11 +845,11 @@ msgstr ""
 msgid "View the featured photos"
 msgstr "Kiemelt képek"
 
-#: wppa-functions.php:503
+#: wppa-functions.php:502
 msgid "No related photos found."
 msgstr "Nem találtunk hasonló képeket."
 
-#: wppa-functions.php:828
+#: wppa-functions.php:826
 #, php-format
 msgid ""
 "There are %s albums found. Only the first %s will be shown. Please refine "
@@ -867,7 +858,7 @@ msgstr ""
 "%s albumot találtunk, amelyből az első %s fog látszódni. Finomítsuk a "
 "keresési feltételeket."
 
-#: wppa-functions.php:1199
+#: wppa-functions.php:1203
 #, php-format
 msgid ""
 "There are %s photos found. Only the first %s will be shown. Please refine "
@@ -876,162 +867,162 @@ msgstr ""
 "%s képet találtunk, amelyből az első %s fog látszódni. Finomítsuk a keresési "
 "feltételeket."
 
-#: wppa-functions.php:1432 wppa-functions.php:2778
+#: wppa-functions.php:1436 wppa-functions.php:2773
 msgid "Edit"
 msgstr "Szerkesztés"
 
-#: wppa-functions.php:1437 wppa-functions.php:2774 wppa-links.php:492
+#: wppa-functions.php:1441 wppa-functions.php:2769 wppa-links.php:492
 #: wppa-links.php:509
 msgid "Are you sure you want to remove this photo?"
 msgstr "Egészen biztos, hogy a képet szeretnénk eltávolítani?"
 
-#: wppa-functions.php:1438 wppa-functions.php:2775 wppa-links.php:499
+#: wppa-functions.php:1442 wppa-functions.php:2770 wppa-links.php:499
 #: wppa-links.php:517
 msgid "Delete"
 msgstr "Törlés"
 
-#: wppa-functions.php:1581
+#: wppa-functions.php:1584
 msgid "Comment edited"
 msgstr "Szerkesztet hozzászólás"
 
-#: wppa-functions.php:1589
+#: wppa-functions.php:1592
 msgid "Comment on photo:"
 msgstr "Hozzászólás a képen:"
 
-#: wppa-functions.php:1596
+#: wppa-functions.php:1599
 msgid "wrote on photo"
 msgstr "felirat a képen"
 
-#: wppa-functions.php:1598
+#: wppa-functions.php:1601
 msgid "Moderate comment admin"
 msgstr "Moderált hozzászólás adminisztráció"
 
-#: wppa-functions.php:1599 wppa-functions.php:3856 wppa-upload.php:1155
+#: wppa-functions.php:1602 wppa-functions.php:3837 wppa-upload.php:1155
 msgid "Moderate manage photo"
 msgstr "Képek moderálása"
 
-#: wppa-functions.php:1600
+#: wppa-functions.php:1603
 msgid "Edit photo"
 msgstr "Kép szerkesztése"
 
-#: wppa-functions.php:1609
+#: wppa-functions.php:1612
 msgid "You receive this email as you are assigned to moderate"
 msgstr ""
 "Ez az email azért érkezett, mert a feltöltés/hozzászólás rendszer-"
 "moderációra lett jelölve"
 
-#: wppa-functions.php:1621
+#: wppa-functions.php:1624
 msgid "You receive this email as administrator of the site"
 msgstr "Az oldal adminisztrátora ennek a levélnek a címzettje"
 
-#: wppa-functions.php:1638
+#: wppa-functions.php:1641
 msgid "You receive this email as uploader of the photo"
 msgstr "Az email a kép feltöltőjének lett címezve"
 
-#: wppa-functions.php:1658
+#: wppa-functions.php:1661
 msgid "You receive this email as owner of the album"
 msgstr "Az email az album gazdájának lett címezve"
 
-#: wppa-functions.php:1671
+#: wppa-functions.php:1674
 msgid "Comment added"
 msgstr "Hozzászólás hozzáadva"
 
-#: wppa-functions.php:1675
+#: wppa-functions.php:1678
 msgid ""
 "Sorry, you gave a wrong answer.\\n\\nPlease try again to solve the "
 "computation."
 msgstr "Elnézést, nem megfelelő a válasz.\\n\\nIsmételjük meg a számítást."
 
-#: wppa-functions.php:1685
+#: wppa-functions.php:1688
 msgid "Could not process comment.\\nProbably timed out."
 msgstr "Lejárt a műveletre szánt idő.\\nA hozzászólás nem folytatható."
 
-#: wppa-functions.php:1765
+#: wppa-functions.php:1767
 msgid "1 Comment"
 msgstr "1 hozzászólás"
 
-#: wppa-functions.php:1766
+#: wppa-functions.php:1768
 #, php-format
 msgid "%s Comments"
 msgstr "%s hozzászólás"
 
-#: wppa-functions.php:1799 wppa-links.php:1108
+#: wppa-functions.php:1801 wppa-links.php:1108
 msgid "A video can not be printed or downloaded"
 msgstr ""
 
-#: wppa-functions.php:2212
+#: wppa-functions.php:2210
 msgid "<b>ERROR: Illegal attempt to enter a rating.</b>"
 msgstr "<b>HIBA: Szabálytalan próbálkozás az értékelésnél.</b>"
 
-#: wppa-functions.php:2225
+#: wppa-functions.php:2223
 msgid "<b>ERROR: Illegal attempt to enter a comment.</b>"
 msgstr "<b>HIBA: Szabálytalan próbálkozás a hozzászólásnáll.</b>"
 
-#: wppa-functions.php:2624 wppa-topten-widget.php:93
+#: wppa-functions.php:2619 wppa-topten-widget.php:93
 msgid "View the top rated photos"
 msgstr "Legjobbnak értékelt képek"
 
-#: wppa-functions.php:3665
+#: wppa-functions.php:3647
 #, fuzzy
 msgid "<b>ERROR: Illegal attempt to create an album.</b>"
 msgstr "<b>HIBA: Szabálytalan próbálkozás az értékelésnél.</b>"
 
-#: wppa-functions.php:3669
+#: wppa-functions.php:3651
 #, fuzzy
 msgid "Wrong captcha, please try again"
 msgstr "Ki kell választani egy albumot, majd újr megpróbálni"
 
-#: wppa-functions.php:3679
+#: wppa-functions.php:3661
 #, fuzzy, php-format
 msgid "Album #%s created"
 msgstr "%s felhasználó %s feltöltött kép %s albumba"
 
-#: wppa-functions.php:3683
+#: wppa-functions.php:3665
 #, fuzzy
 msgid "Could not create album"
 msgstr "A kép nem illeszthető be az adatbázisba."
 
-#: wppa-functions.php:3693
+#: wppa-functions.php:3675
 msgid "<b>ERROR: Illegal attempt to upload a file.</b>"
 msgstr "<b>HIBA: Szabálytalan próbálkozás a fájlfeltöltésnél.</b>"
 
-#: wppa-functions.php:3733
+#: wppa-functions.php:3715
 msgid "Photo successfully uploaded."
 msgstr "A kép sikeresen feltöltésre került."
 
-#: wppa-functions.php:3733
+#: wppa-functions.php:3715
 #, php-format
 msgid "%s photos successfully uploaded."
 msgstr "%s kép sikeresen feltöltésre került."
 
-#: wppa-functions.php:3734
+#: wppa-functions.php:3716
 #, php-format
 msgid "%s points added."
 msgstr "%s pont hozzáadva"
 
-#: wppa-functions.php:3738
+#: wppa-functions.php:3720
 msgid "Upload failed"
 msgstr "Hiba történt a feltöltés közben."
 
-#: wppa-functions.php:3741
+#: wppa-functions.php:3723
 #, fuzzy
 msgid "1 Upload failed"
 msgstr "Hiba történt a feltöltés közben."
 
-#: wppa-functions.php:3741
+#: wppa-functions.php:3723
 #, fuzzy, php-format
 msgid "%s uploads failed."
 msgstr "Hiba történt a feltöltés közben."
 
-#: wppa-functions.php:3773
+#: wppa-functions.php:3754
 msgid "Error during upload"
 msgstr "Hiba történt a feltöltéskor."
 
-#: wppa-functions.php:3778
+#: wppa-functions.php:3759
 msgid "Uploaded file is not an image"
 msgstr "A feltöltött fájl nem kép."
 
-#: wppa-functions.php:3782
+#: wppa-functions.php:3763
 #, php-format
 msgid ""
 "Only gif, jpg and png image files are supported. Returned filetype = %d."
@@ -1039,93 +1030,98 @@ msgstr ""
 "Csak a gif, jpg és png fájlok feltöltése támogatott. A visszautasított fájl "
 "típusa %d."
 
-#: wppa-functions.php:3788
+#: wppa-functions.php:3769
 #, fuzzy, php-format
 msgid "Uploaded file is larger than the allowed maximum of %d x %d pixels."
 msgstr "Maximális méret: %d x %d (%2.1f MegaPixel)"
 
-#: wppa-functions.php:3794
+#: wppa-functions.php:3775
 #, fuzzy, php-format
 msgid "Uploaded file %s already exists in this album."
 msgstr "%s felhasználó %s feltöltött kép %s albumba"
 
-#: wppa-functions.php:3802
+#: wppa-functions.php:3783
 #, php-format
 msgid "The image is too big. Max photo size: %d x %d (%2.1f MegaPixel)"
 msgstr ""
 "A kép túlságosan nagy méretű. Maximális képméret: %d x %d (%2.1f MegaPixel)"
 
-#: wppa-functions.php:3825
+#: wppa-functions.php:3806
 msgid "Could not insert photo into db."
 msgstr "A kép nem illeszthető be az adatbázisba."
 
-#: wppa-functions.php:3852 wppa-upload.php:1151
+#: wppa-functions.php:3833 wppa-upload.php:1151
 #, php-format
 msgid "New photo uploaded: %s"
 msgstr "%s új képként feltöltésre került"
 
-#: wppa-functions.php:3853 wppa-upload.php:1152
+#: wppa-functions.php:3834 wppa-upload.php:1152
 #, php-format
 msgid "User %s uploaded photo %s into album %s"
 msgstr "%s felhasználó %s feltöltött kép %s albumba"
 
-#: wppa-functions.php:3855 wppa-upload.php:1154
+#: wppa-functions.php:3836 wppa-upload.php:1154
 msgid "This upload requires moderation"
 msgstr "Ez a feltöltés rendszer-moderációra kötelezett"
 
-#: wppa-functions.php:3859 wppa-upload.php:1158
+#: wppa-functions.php:3840 wppa-upload.php:1158
 msgid "Details:"
 msgstr "Leírás:"
 
-#: wppa-functions.php:3860 wppa-upload.php:1159
+#: wppa-functions.php:3841 wppa-upload.php:1159
 msgid "Manage photo"
 msgstr "Képek kezelése"
 
-#: wppa-functions.php:4000
+#: wppa-functions.php:3981
 msgid "You can upload after"
 msgstr "Feltöltési lehetőség még"
 
-#: wppa-functions.php:4038
+#: wppa-functions.php:4010 wppa-functions.php:4013
+#, fuzzy
+msgid "Download:"
+msgstr "Letöltés"
+
+#: wppa-functions.php:4029
 msgid "Zoom in"
 msgstr "Nagyítás"
 
-#: wppa-items.php:179 wppa-utils.php:1541
+#: wppa-items.php:189 wppa-utils.php:1609
 msgid "Gold medal award!"
 msgstr ""
 
-#: wppa-items.php:180 wppa-utils.php:1540
+#: wppa-items.php:190 wppa-utils.php:1608
 msgid "Silver medal award!"
 msgstr ""
 
-#: wppa-items.php:181 wppa-utils.php:1539
+#: wppa-items.php:191 wppa-utils.php:1607
 msgid "Bronze medal award!"
 msgstr ""
 
-#: wppa-items.php:219 wppa-items.php:337
+#: wppa-items.php:229 wppa-items.php:347
 msgid "none"
 msgstr "nincs"
 
-#: wppa-items.php:248 wppa-items.php:348
+#: wppa-items.php:258 wppa-items.php:358
 msgid "unknown"
 msgstr "ismeretlen"
 
-#: wppa-items.php:280
+#: wppa-items.php:290
 msgid "--- none ---"
 msgstr "--- nincs ---"
 
-#: wppa-items.php:284
+#: wppa-items.php:294
 msgid "--- separate ---"
 msgstr "--- elválasztás ---"
 
-#: wppa-items.php:288
+#: wppa-items.php:298
 msgid "--- all ---"
 msgstr "--- összes ---"
 
-#: wppa-items.php:292 wppa-items.php:313
+#: wppa-items.php:302 wppa-items.php:323
 msgid "--- deleted ---"
 msgstr "--- törölve ---"
 
-#: wppa-items.php:302
+#: wppa-items.php:312
 msgid "All Albums"
 msgstr "Összes album"
 
@@ -1191,7 +1187,7 @@ msgstr "Előző &nbsp;oldal"
 msgid "Next&nbsp;page"
 msgstr "Következő &nbsp;oldal"
 
-#: wppa-links.php:770 wppa-non-admin.php:553
+#: wppa-links.php:770 wppa-non-admin.php:548
 msgid "Download"
 msgstr "Letöltés"
 
@@ -1200,97 +1196,97 @@ msgstr "Letöltés"
 msgid "Download album"
 msgstr "Letöltés"
 
-#: wppa-non-admin.php:487 wppa-slideshow.php:225
+#: wppa-non-admin.php:482 wppa-slideshow.php:225
 msgid "Start"
 msgstr "Indít"
 
-#: wppa-non-admin.php:488
+#: wppa-non-admin.php:483
 msgid "Stop"
 msgstr "megállít"
 
-#: wppa-non-admin.php:489 wppa-slideshow.php:224
+#: wppa-non-admin.php:484 wppa-slideshow.php:224
 msgid "Slower"
 msgstr "Lassabban"
 
-#: wppa-non-admin.php:490 wppa-slideshow.php:226
+#: wppa-non-admin.php:485 wppa-slideshow.php:226
 msgid "Faster"
 msgstr "Gyorsabban"
 
-#: wppa-non-admin.php:491
+#: wppa-non-admin.php:486
 msgid "Photo"
 msgstr "Kép"
 
-#: wppa-non-admin.php:492
+#: wppa-non-admin.php:487
 msgid "of"
 msgstr " -"
 
-#: wppa-non-admin.php:493
+#: wppa-non-admin.php:488
 msgid "Previous photo"
 msgstr "Előző kép"
 
-#: wppa-non-admin.php:494
+#: wppa-non-admin.php:489
 msgid "Next photo"
 msgstr "Következő kép"
 
-#: wppa-non-admin.php:495
+#: wppa-non-admin.php:490
 msgid "Prev."
 msgstr "Előző"
 
-#: wppa-non-admin.php:496 wppa-slideshow.php:651
+#: wppa-non-admin.php:491 wppa-slideshow.php:651
 msgid "Next"
 msgstr "Következő"
 
-#: wppa-non-admin.php:497 wppa-slideshow.php:498 wppa-slideshow.php:502
+#: wppa-non-admin.php:492 wppa-slideshow.php:498 wppa-slideshow.php:502
 #: wppa-slideshow.php:544
 msgid "Average&nbsp;rating"
 msgstr "Átlag &nbsp;értékelés"
 
-#: wppa-non-admin.php:498 wppa-slideshow.php:523 wppa-slideshow.php:528
+#: wppa-non-admin.php:493 wppa-slideshow.php:523 wppa-slideshow.php:528
 #: wppa-slideshow.php:533
 msgid "My&nbsp;rating"
 msgstr "Értékelésem"
 
-#: wppa-non-admin.php:499
+#: wppa-non-admin.php:494
 msgid "Avg."
 msgstr "Átlag"
 
-#: wppa-non-admin.php:500
+#: wppa-non-admin.php:495
 msgid "Mine"
 msgstr "Saját"
 
-#: wppa-non-admin.php:501
+#: wppa-non-admin.php:496
 msgid "You marked this image as inappropriate."
 msgstr "Ezt a képet nem megfelelőnek jelöltük."
 
-#: wppa-non-admin.php:503
+#: wppa-non-admin.php:498
 msgid "No dislikes"
 msgstr "Nem ellenszenves"
 
-#: wppa-non-admin.php:504
+#: wppa-non-admin.php:499
 msgid "1 dislike"
 msgstr "1 ellenszenves"
 
-#: wppa-non-admin.php:505
+#: wppa-non-admin.php:500
 msgid "dislikes"
 msgstr "ellenszenves"
 
-#: wppa-non-admin.php:506
+#: wppa-non-admin.php:501
 msgid "including mine"
 msgstr "sajátommal együtt"
 
-#: wppa-non-admin.php:509
+#: wppa-non-admin.php:504
 msgid "Please enter your name"
 msgstr "Kérjük megadni a nevet"
 
-#: wppa-non-admin.php:510
+#: wppa-non-admin.php:505
 msgid "Please enter a valid email address"
 msgstr "Valódi email címet kérünk megadni"
 
-#: wppa-non-admin.php:511
+#: wppa-non-admin.php:506
 msgid "Please enter a comment"
 msgstr "Ide írjuk a hozzászólásunkat"
 
-#: wppa-non-admin.php:547
+#: wppa-non-admin.php:542
 msgid "Double click to start/stop slideshow running"
 msgstr "Kettő kattintásra indul/áll meg a képvetítés"
 
@@ -1455,27 +1451,33 @@ msgstr ""
 msgid "Photos uploaded by"
 msgstr "A képet feltöltötte: "
 
-#: wppa-utils.php:249
+#: wppa-utils.php:248
 #, php-format
 msgid "Rating: %s"
 msgstr "Értékelés: %s"
 
-#: wppa-utils.php:699
+#: wppa-utils.php:719
 #, php-format
 msgid "The visitors email address is: <a href=\"mailto:%s\">%s</a>"
 msgstr "A látogató email címe: <a href=\"mailto:%s\">%s</a>"
 
-#: wppa-utils.php:705
+#: wppa-utils.php:725
 #, php-format
 msgid "The visitor says his email address is: <a href=\"mailto:%s\">%s</a>"
 msgstr "A látogató által megadott email cím: <a href=\"mailto:%s\">%s</a>"
 
-#: wppa-utils.php:711
+#: wppa-utils.php:731
 #, php-format
 msgid ""
 "This message is automaticly generated at %s. It is useless to respond to it."
 msgstr ""
 "%s által létrehozott automatikus üzenet. A megadott cím NEM FOGAD VÁLASZOKAT!"
+
+#~ msgid "Share %s on Facebook"
+#~ msgstr "%s megosztása a Facebookon"
+
+#~ msgid "Share on Facebook"
+#~ msgstr "Megosztás a Facebookon"
 
 #~ msgid "Please select a search results landing page in Table IX-C1"
 #~ msgstr ""

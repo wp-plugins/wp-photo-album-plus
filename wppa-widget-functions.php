@@ -2,14 +2,13 @@
 /* wppa_widgetfunctions.php
 /* Package: wp-photo-album-plus
 /*
-/* Version 5.4.0
+/* Version 5.4.1
 /*
 */
 
 // This function returns an array of photos that meet the current photo of the day selection criteria
 function wppa_get_widgetphotos( $alb, $option = '' ) {
 global $wpdb;
-global $wppa_opt;
 
 	$photos = false;
 	
@@ -77,7 +76,7 @@ global $wppa_opt;
 	elseif ( $alb == 'topten' ) {
 	
 		// Find the 'top' policy
-		switch ( $wppa_opt['wppa_topten_sortby'] ) {
+		switch ( wppa_opt( 'wppa_topten_sortby' ) ) {
 			case 'mean_rating':
 				$sortby = '`mean_rating` DESC, `rating_count` DESC, `views` DESC';
 				break;
@@ -93,7 +92,7 @@ global $wppa_opt;
 				break;
 		}
 
-		$query = "SELECT * FROM `" . WPPA_PHOTOS . "` ORDER BY " . $sortby . " LIMIT " . $wppa_opt['wppa_topten_count'];
+		$query = "SELECT * FROM `" . WPPA_PHOTOS . "` ORDER BY " . $sortby . " LIMIT " . wppa_opt( 'wppa_topten_count' );
 		$photos = $wpdb->get_results( $query, ARRAY_A );
 		wppa_dbg_q( 'Q-WidP6' );
 		wppa_cache_photo( 'add', $photos );
@@ -202,13 +201,12 @@ function wppa_walbum_sanitize( $walbum ) {
 // get the photo of the day
 function wppa_get_potd() {
 global $wpdb;
-global $wppa_opt;
 global $thumb;
 
 	$image = '';
-	switch ( $wppa_opt['wppa_widget_method'] ) {
+	switch ( wppa_opt( 'wppa_widget_method' ) ) {
 		case '1':	// Fixed photo
-			$id = $wppa_opt['wppa_widget_photo'];
+			$id = wppa_opt( 'wppa_widget_photo' );
 			if ( $id != '' ) {
 				$image = $wpdb->get_row( $wpdb->prepare( 
 					"SELECT * FROM `" . WPPA_PHOTOS . "` WHERE `id` = %s LIMIT 0,1", $id 
@@ -218,7 +216,7 @@ global $thumb;
 			}
 			break;
 		case '2':	// Random
-			$album = $wppa_opt['wppa_widget_album'];
+			$album = wppa_opt( 'wppa_widget_album' );
 			if ( $album == 'topten' ) {
 				$images = wppa_get_widgetphotos( $album );
 				if ( count( $images ) > 1 ) {	// Select a random first from the current selection
@@ -232,7 +230,7 @@ global $thumb;
 			}
 			break;
 		case '3':	// Last upload
-			$album = $wppa_opt['wppa_widget_album'];
+			$album = wppa_opt( 'wppa_widget_album' );
 			if ( $album == 'topten' ) {
 				$images = wppa_get_widgetphotos( $album );
 				if ( $images ) {
@@ -252,9 +250,9 @@ global $thumb;
 			}
 			break;
 		case '4':	// Change every
-			$album = $wppa_opt['wppa_widget_album'];
+			$album = wppa_opt( 'wppa_widget_album' );
 			if ( $album != '' ) {
-				$per = $wppa_opt['wppa_widget_period'];
+				$per = wppa_opt( 'wppa_widget_period' );
 				$photos = wppa_get_widgetphotos( $album );
 				if ( $per == '0' ) {
 					if ( $photos ) {
@@ -314,7 +312,6 @@ global $thumb;
 // Do the widget thumb
 function wppa_do_the_widget_thumb( $type, $image, $album, $display, $link, $title, $imgurl, $imgstyle_a, $imgevents ) {
 global $wppa;
-global $wppa_opt;
 global $widget_content;
 
 	// Get the id
@@ -354,7 +351,7 @@ global $widget_content;
 		}
 		elseif ( $link['is_lightbox'] ) {
 			$title = wppa_get_lbtitle( 'thumb', $id );
-			$widget_content .= "\n\t" . '<a href="' . $link['url'] . '" data-videohtml="' . esc_js( $videobody ) . '" rel="' . $wppa_opt['wppa_lightbox_name'] . '[' . $type . '-' . $album . '-' . $wppa['mocc'] . ']" title="' . $title . '" target="' . $link['target'] . '" >';
+			$widget_content .= "\n\t" . '<a href="' . $link['url'] . '" data-videohtml="' . esc_js( $videobody ) . '" rel="' . wppa_opt( 'wppa_lightbox_name' ) . '[' . $type . '-' . $album . '-' . $wppa['mocc'] . ']" title="' . $title . '" target="' . $link['target'] . '" >';
 				$widget_content .= "\n\t\t";
 				if ( $display == 'thumbs' ) {
 					if ( $is_video ) {

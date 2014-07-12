@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Various wppa boxes
-* Version 5.4.0
+* Version 5.4.1
 *
 *
 */
@@ -375,20 +375,6 @@ global $wppa_locale;
 	}
 	else $qr = '';
 	
-	// facebook share button
-	if ( wppa_switch( 'wppa_share_facebook' ) ) { 
-		$summary = $see_on_site . ': ' . $photo_desc;
-		$fb = 	'<div style="float:left; padding:2px;" >';
-		$fb .= 		'<a title="'.sprintf( __a( 'Share %s on Facebook' ), esc_attr( $photo_name ) ).'" ';
-		$fb .= 			'href="http://www.facebook.com/sharer.php?s=100&p[url]='.urlencode( $share_url );
-		$fb .= 				'&p[images][0]='.$share_img.'&p[title]='.urlencode( $photo_name ).'&p[summary]='.urlencode( $summary ).'" ';
-		$fb .= 			'target="_blank" >';
-		$fb .= 				'<img src="'.wppa_get_imgdir().'facebook.png" style="height:'.$s.'px;" alt="'.esc_attr( __a( 'Share on Facebook' ) ).'" />';
-		$fb .= 		'</a>';
-		$fb .= 	'</div>';
-	}
-	else $fb = '';
-	
 	// twitter share button
 	if ( wppa_switch( 'wppa_share_twitter' ) ) {	
 		$tweet = urlencode( $see_on_site ) . ': ';
@@ -479,27 +465,80 @@ global $wppa_locale;
 	}
 	else $li = '';
 	
-	// Facebook comments
-	if ( ( wppa_switch( 'wppa_facebook_comments' ) || wppa_switch( 'wppa_facebook_like' ) ) && ! $wppa['in_widget'] && $key != 'thumb' && $key != 'lightbox' ) {
-		$fbc = '';
-		$width = $wppa['auto_colwidth'] ? '470' : wppa_get_container_width( true );
-		if ( wppa_switch( 'wppa_facebook_like' ) ) {
-			$fbc .= '<div class="fb-like" data-href="'.$share_url.'" data-width="'.$width.'" data-show-faces="false" data-send="true"></div>';
-		}
-		if ( wppa_switch( 'wppa_facebook_comments' ) ) {
-			$fbc .= '<div style="color:blue;">'.__a( 'Comment on Facebook:' ).'</div>';
-			$fbc .= '<div class="fb-comments" data-href="'.$share_url.'" data-width='.$width.'></div>';
-		}
-		if ( $js ) {
-			$fbc .= '[script>wppaFbInit();[/script>';
+	// Facebook
+	$need_fb_init = false;
+	$small = ( 'thumb' == $key );
+	if ( 'lightbox' == $key ) {
+		if ( wppa_switch( 'wppa_facebook_like' ) && wppa_switch( 'wppa_share_facebook' ) ) {
+			$lbs = 'max-width:62px; max-height:96px; overflow:show;';
 		}
 		else {
-			$fbc .= '<script>wppaFbInit();</script>';
+			$lbs = 'max-width:62px; max-height:64px; overflow:show;';
 		}
 	}
-	else $fbc = '';
+	else {
+		$lbs = '';
+	}
+	$fb = '';
+	
+	// Share
+	if ( wppa_switch( 'wppa_share_facebook' ) && ! wppa_switch( 'wppa_facebook_like' ) ) { 
+		if ( $small ) {
+			$fb .= '<div class="fb-share-button" style="float:left;" data-href="'.$share_url.'" data-type="icon" ></div>';
+		}
+		else {
+			$disp = wppa_opt( 'wppa_fb_display' );
+			if ( 'standard' == $disp ) {
+				$disp = 'button';
+			}
+			$fb .= '<div class="fb-share-button" style="float:left; '.$lbs.'" data-width="200" data-href="'.$share_url.'" data-type="' . $disp . '" ></div>';
+		}
+		$need_fb_init = true;
+	}
+	
+	// Like
+	if ( wppa_switch( 'wppa_facebook_like' ) && ! wppa_switch( 'wppa_share_facebook' ) ) {
+		if ( $small ) {
+			$fb .= '<div class="fb-like" style="float:left;" data-href="'.$share_url.'" data-layout="button" ></div>';
+		}
+		else {
+			$fb .= '<div class="fb-like" style="float:left; '.$lbs.'" data-width="200" data-href="'.$share_url.'" data-layout="' . wppa_opt( 'wppa_fb_display' ) . '" ></div>';
+		}
+		$need_fb_init = true;
+	}
 
-	return $qr.$fb.$tw.$go.$pi.$li.$fbc.//.'<small>This box is under construction and may not yet properly work for all icons shown</small>'.
+	// Like and share
+	if ( wppa_switch( 'wppa_facebook_like' ) && wppa_switch( 'wppa_share_facebook' ) ) {
+		if ( $small ) {
+			$fb .= '<div class="fb-like" style="float:left;" data-href="'.$share_url.'" data-layout="button" data-action="like" data-show-faces="false" data-share="true"></div>';
+		}
+		else {
+			$fb .= '<div class="fb-like" style="float:left; '.$lbs.'" data-width="200" data-href="'.$share_url.'" data-layout="' . wppa_opt( 'wppa_fb_display' ) . '" data-action="like" data-show-faces="false" data-share="true"></div>';
+		}
+		$need_fb_init = true;
+	}
+
+	// Comments
+	if ( wppa_switch( 'wppa_facebook_comments' ) && ! $wppa['in_widget'] && $key != 'thumb' && $key != 'lightbox' ) { // && $key != 'lightbox' ) {
+		$width = $wppa['auto_colwidth'] ? '470' : wppa_get_container_width( true );
+		if ( wppa_switch( 'wppa_facebook_comments' ) ) {
+			$fb .= '<div style="color:blue;clear:both">'.__a( 'Comment on Facebook:' ).'</div>';
+			$fb .= '<div class="fb-comments" data-href="'.$share_url.'" data-width='.$width.'></div>';
+			$need_fb_init = true;
+		}
+	}
+	
+	// Need init?
+	if ( $need_fb_init ) {
+		if ( $js && $key != 'thumb' ) {
+			$fb .= '[script>wppaFbInit();[/script>';
+		}
+		else {
+			$fb .= '<script>wppaFbInit();</script>';
+		}
+	}
+
+	return $qr.$tw.$go.$pi.$li.$fb.//.'<small>This box is under construction and may not yet properly work for all icons shown</small>'.
 	'<div style="clear:both"></div>';
 
 }
@@ -508,9 +547,12 @@ global $wppa_locale;
 function wppa_upload_box() {
 global $wppa;
 
+	if ( ! wppa_switch( 'wppa_user_upload_on' ) ) {
+		return;													// Frontend upload not enabled
+	}
+	
 	if ( wppa_switch( 'wppa_user_upload_login' ) ) {
 		if ( ! is_user_logged_in() ) return;					// Must login
-		if ( ! current_user_can( 'wppa_upload' ) ) return;		// No upload rights
 	}
 
 	if ( $wppa['start_album'] ) {
@@ -581,12 +623,13 @@ global $wppa_opt;
 									'jQuery( \'#wppa-cr-'.$alb.'-'.$wppa['mocc'].'\' ).css( \'display\',\'none\' );'.			// Hide the Create link
 									'jQuery( \'#wppa-up-'.$alb.'-'.$wppa['mocc'].'\' ).css( \'display\',\'none\' );'.			// Hide the Upload link
 									'jQuery( \'#wppa-ea-'.$alb.'-'.$wppa['mocc'].'\' ).css( \'display\',\'none\' );'.			// Hide the Edit link
-									'wppaColWidth['.$wppa['mocc'].']=0;'.													// Trigger autocol
+									'jQuery( \'#wppa-cats-' . $alb . '-' . $wppa['mocc'] . '\' ).css( \'display\',\'none\' );'.	// Hide catogory
+									'_wppaDoAutocol( ' . $wppa['mocc'] . ' )'.													// Trigger autocol
 									'" style="float:left; cursor:pointer;">
 		'.__a( 'Create Album' ).'
 	</a>
 	
-	<div id="wppa-create-'.$t.$alb.'-'.$wppa['mocc'].'" class="wppa-file-'.$t.$wppa['mocc'].'" style="width:'.$width.'px;text-align:center;display:none" >
+	<div id="wppa-create-'.$t.$alb.'-'.$wppa['mocc'].'" class="wppa-file-'.$t.$wppa['mocc'].'" style="width:'.$width.'px;text-align:center;display:none;" >
 		<form id="wppa-creform-'.$alb.'-'.$wppa['mocc'].'" action="'.$returnurl.'" method="post" >'.
 		wp_nonce_field( 'wppa-album-check' , 'wppa-nonce', false, false ).'
 		<input type="hidden" name="wppa-album-parent" value="'.$alb.'" />';
@@ -694,7 +737,8 @@ global $wppa_opt;
 									'jQuery( \'#wppa-up-'.$alb.'-'.$wppa['mocc'].'\' ).css( \'display\',\'none\' );'.			// Hide the Upload link
 									'jQuery( \'#wppa-cr-'.$alb.'-'.$wppa['mocc'].'\' ).css( \'display\',\'none\' );'.			// Hide the Create link
 									'jQuery( \'#wppa-ea-'.$alb.'-'.$wppa['mocc'].'\' ).css( \'display\',\'none\' );'.			// Hide the Edit link
-									'wppaColWidth['.$wppa['mocc'].']=0;'.													// Trigger autocol
+									'jQuery( \'#wppa-cats-' . $alb . '-' . $wppa['mocc'] . '\' ).css( \'display\',\'none\' );'.	// Hide catogory
+									'_wppaDoAutocol( ' . $wppa['mocc'] . ' )'.													// Trigger autocol
 									'" style="float:left; cursor:pointer;">
 
 		'.__a( 'Upload Photo' ).'
@@ -846,7 +890,8 @@ global $wppa_opt;
 									'jQuery( \'#wppa-ea-'.$alb.'-'.$wppa['mocc'].'\' ).css( \'display\',\'none\' );'.			// Hide the Edit link
 									'jQuery( \'#wppa-cr-'.$alb.'-'.$wppa['mocc'].'\' ).css( \'display\',\'none\' );'.			// Hide the Create libk
 									'jQuery( \'#wppa-up-'.$alb.'-'.$wppa['mocc'].'\' ).css( \'display\',\'none\' );'.			// Hide the upload link
-									'wppaColWidth['.$wppa['mocc'].']=0;'.													// Trigger autocol
+									'jQuery( \'#wppa-cats-' . $alb . '-' . $wppa['mocc'] . '\' ).css( \'display\',\'none\' );'.	// Hide catogory
+									'_wppaDoAutocol( ' . $wppa['mocc'] . ' )'.													// Trigger autocol
 									'" >'.
 		__a( 'Edit albuminfo' ).'
 	</a>

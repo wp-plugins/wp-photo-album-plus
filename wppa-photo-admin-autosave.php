@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * edit and delete photos
-* version 5.4.0
+* version 5.4.1
 *
 */
 
@@ -140,7 +140,7 @@ global $wppa;
 		$wms = array( 'toplft' => __( 'top - left', 'wppa' ), 'topcen' => __( 'top - center', 'wppa' ), 'toprht' => __( 'top - right', 'wppa' ), 
 					  'cenlft' => __( 'center - left', 'wppa' ), 'cencen' => __( 'center - center', 'wppa' ), 'cenrht' => __( 'center - right', 'wppa' ), 
 					  'botlft' => __( 'bottom - left', 'wppa' ), 'botcen' => __( 'bottom - center', 'wppa' ), 'botrht' => __( 'bottom - right', 'wppa' ), );
-		$temp = wppa_get_water_file_and_pos();
+		$temp = wppa_get_water_file_and_pos( '0' );
 		$wmfile = $temp['select'];
 		$wmpos = $wms[$temp['pos']];
 		
@@ -241,8 +241,21 @@ global $wppa;
 									<label><?php _e( 'Upload:', 'wppa' ); ?></label>
 								</th>
 								<td>
-									<?php $timestamp = $photo['timestamp']; ?>
-									<?php if ( $timestamp ) echo wppa_local_date( get_option( 'date_format', "F j, Y," ).' '.get_option( 'time_format', "g:i a" ), $timestamp ).' '.__( 'local time', 'wppa' ).' '; if ( $photo['owner'] ) echo( __( 'By:', 'wppa' ).$photo['owner'] ) ?>
+									<?php
+									$timestamp = $photo['timestamp'];
+									if ( $timestamp ) {
+										echo wppa_local_date( get_option( 'date_format', "F j, Y," ).' '.get_option( 'time_format', "g:i a" ), $timestamp ).' '.__( 'local time', 'wppa' ).' '; 
+									}
+									if ( $photo['owner'] ) {
+										if ( wppa_switch( 'wppa_photo_owner_change' ) && wppa_user_is( 'administrator' ) ) {
+											echo '</td></tr><tr><th><label>' . __( 'Owned by:', 'wppa' ) . '</label></th><td>';
+											echo '<input type="text" onkeyup="wppaAjaxUpdatePhoto( \''.$photo['id'].'\', \'owner\', this )" onchange="wppaAjaxUpdatePhoto( \''.$photo['id'].'\', \'owner\', this )" value="'.$photo['owner'].'" />';
+										}
+										else {
+											echo __( 'By:', 'wppa' ).' '.$photo['owner'];
+										}
+									}
+									?>
 								</td>
 							</tr>
 							
@@ -790,6 +803,7 @@ function wppa_album_photos_bulk( $album ) {
 							if ( current_user_can( 'wppa_admin' ) || current_user_can( 'wppa_moderate' ) ) {
 								if ( $status == 'publish' || $status == 'pending' || $status == 'featured' ) {
 									$wpdb->query( "UPDATE `".WPPA_PHOTOS."` SET `status` = '".$status."' WHERE `id` = ".$id );
+									wppa_flush_treecounts( $id, wppa_get_photo_item( $id, 'album' ) );
 								}	
 								else wp_die( 'Security check failure 2' );
 							}

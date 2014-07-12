@@ -3,7 +3,8 @@
 * Package: wp-photo-album-plus
 *
 * display the best rated photos
-* Version 5.4.0
+* Version 5.4.1
+*
 */
 
 if ( ! defined( 'ABSPATH' ) ) die( "Can't load this file directly" );
@@ -19,7 +20,6 @@ class BestOfWidget extends WP_Widget {
 	/** @see WP_Widget::widget */
     function widget( $args, $instance ) {		
 		global $wpdb;
-		global $wppa_opt;
 		global $wppa;
 		global $widget_content;
 		global $thumb;
@@ -51,9 +51,9 @@ class BestOfWidget extends WP_Widget {
 		$meanrat		= $instance['meanrat'];
 		$ratcount 		= $instance['ratcount'];
 		$linktype 		= $instance['linktype'];
-		$size 			= $wppa_opt['wppa_widget_width'];
+		$size 			= wppa_opt( 'wppa_widget_width' );
 //		$data 			= wppa_get_the_bestof( $count, $period, $sortby, $display );
-		$lineheight 	= $wppa_opt['wppa_fontsize_widget_thumb'] * 1.5;
+		$lineheight 	= wppa_opt( 'wppa_fontsize_widget_thumb' ) * 1.5;
 
 		$widget_content = "\n".'<!-- WPPA+ BestOf Widget start -->';
 		
@@ -97,7 +97,7 @@ class BestOfWidget extends WP_Widget {
 
     /** @see WP_Widget::form */
     function form($instance) {	
-		global $wppa_opt;
+	
 		//Defaults
 		$instance 		= wp_parse_args( (array) $instance, array( 
 														'title' 	=> __('Best Of Photos', 'wppa'), 

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * get the albums via filter
-* version 5.3.0
+* version 5.4.1
 *
 */
 
@@ -246,7 +246,7 @@ function wppa_atoid_a($var) {
 }
 
 // New shortcodes
-function wppa_shortcodes( $xatts, $content = null ) {
+function wppa_shortcodes( $xatts, $content = '' ) {
 global $wppa;
 global $wppa_postid;
 global $wppa_opt;
@@ -290,6 +290,7 @@ global $wppa_opt;
 	$wppa['tagcols']		= '2';
 	$wppa['is_autopage']	= false;
 
+	$wppa['shortcode_content'] = $content;
 //	$size = '';
 //	$align = '';
 
@@ -306,6 +307,14 @@ global $wppa_opt;
 		case 'album':
 		case 'content':
 			$wppa['start_album'] = $album;
+			break;
+		case 'thumbs':
+			$wppa['start_album'] = $album;
+			$wppa['photos_only'] = true;
+			break;
+		case 'covers':
+			$wppa['start_album'] = $album;
+			$wppa['albums_only'] = true;
 			break;
 		case 'slide':
 			$wppa['start_album'] = $album;

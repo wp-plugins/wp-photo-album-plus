@@ -2,35 +2,38 @@
 /* wppa-watermark.php
 *
 * Functions used for the application of watermarks
-* version 5.3.11
+* version 5.4.1
 *
 */
 
 if ( ! defined( 'ABSPATH' ) ) die( "Can't load this file directly" );
 
 function wppa_create_textual_watermark_file( $args ) {
-global $thumb;
 global $wppa_opt;
 
 	// See what we have
-	$args = wp_parse_args( (array) $args, array( 	'content' 		=> '---preview---', 
+	$args = wp_parse_args( ( array ) $args, array( 	'content' 		=> '---preview---', 
 													'pos' 			=> 'cencen',
 													'id'			=> '',
-													'font' 			=> $wppa_opt['wppa_textual_watermark_font'], 
+													'font' 			=> wppa_opt( 'wppa_textual_watermark_font' ), 
 													'text' 			=> '', 
-													'style' 		=> $wppa_opt['wppa_textual_watermark_type'],
+													'style' 		=> wppa_opt( 'wppa_textual_watermark_type' ),
 													'filebasename' 	=> 'dummy',
 													'url' 			=> false,
 													'width'			=> '',
 													'height' 		=> '',
 													'transp' 		=> '0',
-													) );
+													 ) );
 
 	// We may have been called from wppa_get_water_file_and_pos() just to find the settings
 	// In this case there is no id given.
-	if ( ! $args['id'] && $args['content'] != '---preview---' ) return false;
-	
-	if ( $args['id'] ) wppa_cache_thumb( $args['id'] );
+	$id = $args['id'];
+	if ( ! $id && $args['content'] != '---preview---' ) {
+		return false;
+	}
+	if ( $id && wppa_is_video( $id ) ) {
+		return false;
+	}
 	
 	// Set special values in case of preview
 	if ( $args['content'] == '---preview---' ) {
@@ -41,7 +44,7 @@ global $wppa_opt;
 	}
 	else {
 		$preview = false;
-		$fontsize 		= $wppa_opt['wppa_textual_watermark_size'];
+		$fontsize 		= wppa_opt( 'wppa_textual_watermark_size' );
 		if ( $args['font'] == 'system' ) $fontsize = min( $fontsize, 5 );
 		$padding   		= 12;
 		$linespacing 	= ceil( $fontsize * 2 / 3 );
@@ -58,29 +61,29 @@ global $wppa_opt;
 	if ( ! $args['text'] ) {
 		switch ( $args['content'] ) {
 			case '---preview---':
-				$text = strtoupper(substr($args['font'],0,1)).strtolower(substr($args['font'],1));
+				$text = strtoupper( substr( $args['font'],0,1 ) ).strtolower( substr( $args['font'],1 ) );
 				break;
 			case '---filename---':
-				$text = trim( $thumb['filename'] );
+				$text = wppa_get_photo_item( $id, 'filename' );
 				break;
 			case '---name---':
-				$text = trim( wppa_get_photo_name( $thumb['id'] ) );
+				$text = wppa_get_photo_name( $id );
 				break;
 			case '---description---':
-				$text = trim( strip_tags( wppa_strip_tags( wppa_get_photo_desc( $thumb['id'] ), 'style&script' ) ) );
+				$text = strip_tags( wppa_strip_tags( wppa_get_photo_desc( $id ), 'style&script' ) );
 				break;
 			case '---predef---':
-				$text = $wppa_opt['wppa_textual_watermark_text'];
+				$text = wppa_opt( 'wppa_textual_watermark_text' );
 				if ( $args['font'] != 'system' ) {
-					$text = str_replace( '(c)', '&copy;', $text );
-					$text = str_replace( '(R)', '&reg;', $text );
+					$text = str_replace( '( c )', '&copy;', $text );
+					$text = str_replace( '( R )', '&reg;', $text );
 				}
 				$text = html_entity_decode( $text );
-				$text = str_replace( 'w#site', get_bloginfo('url'), $text );
-				$text = str_replace( 'w#owner', $thumb['owner'], $text );
-				$text = str_replace( 'w#id', $thumb['id'], $text );
-				$text = str_replace( 'w#name', wppa_get_photo_name( $thumb['id'] ), $text );
-				$text = str_replace( 'w#filename', $thumb['filename'], $text );
+				$text = str_replace( 'w#site', get_bloginfo( 'url' ), $text );
+				$text = str_replace( 'w#owner', wppa_get_photo_item( $id, 'owner' ), $text );
+				$text = str_replace( 'w#id', $id, $text );
+				$text = str_replace( 'w#name', wppa_get_photo_name( $id ), $text );
+				$text = str_replace( 'w#filename', wppa_get_photo_item( $id, 'filename' ), $text );
 				$text = trim( $text );
 				break;
 				
@@ -95,7 +98,7 @@ global $wppa_opt;
 
 	// Any text anyway?
 	if ( ! strlen( $text ) ) {
-		wppa_log( 'Error', 'No text for textual watermark. photo='.$thumb['id'] );
+		wppa_log( 'Error', 'No text for textual watermark. photo='.$id );
 		return false;		// No text -> no watermark
 	}
 	
@@ -120,9 +123,9 @@ global $wppa_opt;
 		if ( ! $image_height ) $image_height = 1000;
 	}
 	else {
-		$temp = getimagesize( wppa_get_photo_path( $thumb['id'] ) );
+		$temp = getimagesize( wppa_get_photo_path( $id ) );
 		if ( ! is_array( $temp ) ) {
-			wppa_log( 'Error', 'Trying to apply a waterark on a non image file. Id = '.$thumb['id'] );
+			wppa_log( 'Error', 'Trying to apply a watermark on a non image file. Id = '.$id );
 			return false;	// not an image
 		}
 		if ( ! $image_width ) $image_width = $temp[0];
@@ -181,7 +184,7 @@ global $wppa_opt;
 			$spos = floor( $llen / 2 );
 			while ( $spos < $llen && substr( $temp[$i], $spos, 1 ) != ' ' ) $spos++;
 			if ( $spos == $llen ) {	// Unable to find a space, give up
-				wppa_log( 'Error', 'Trying to apply a watermark that is too wide for the image. Id = '.$thumb['id'] );
+				wppa_log( 'Error', 'Trying to apply a watermark that is too wide for the image. Id = '.$id );
 				return false;	// too wide
 			}
 			$lines[$j] = substr( $temp[$i], 0, $spos );
@@ -189,7 +192,7 @@ global $wppa_opt;
 			$i++;
 			//
 			$j = $i + 1;
-			while ( $j <= count($temp) ) {
+			while ( $j <= count( $temp ) ) {
 				$lines[$j] = $temp[$i];
 				$j++;
 			}
@@ -198,7 +201,7 @@ global $wppa_opt;
 			$width_fits = true;
 		}
 		if ( $canvas_height > $image_height ) {
-			wppa_log( 'Error', 'Trying to apply a watermark that is too high for the image. Id = '.$thumb['id'] );
+			wppa_log( 'Error', 'Trying to apply a watermark that is too high for the image. Id = '.$id );
 			return false;	// not an image
 		}
 	}
@@ -210,7 +213,7 @@ global $wppa_opt;
 	$black 		= imagecolorallocatealpha( $canvas,   0,   0,   0, $args['transp'] );
 
 	imagefill( $canvas, 0, 0, $bgcolor );
-//	imagerectangle( $canvas, 0, 0, $canvas_width-1, $canvas_height-1, $white);	// debug
+//	imagerectangle( $canvas, 0, 0, $canvas_width-1, $canvas_height-1, $white );	// debug
 
 	// Define the text colors
 	switch ( $args['style'] ) {
@@ -283,7 +286,7 @@ global $wppa_opt;
 				break;
 		}
 	}
-	imagesavealpha( $canvas, true);
+	imagesavealpha( $canvas, true );
 	imagepng( $canvas, $filename );
 	imagedestroy( $canvas );
 	if ( $preview || $args['url'] ) {
@@ -302,35 +305,33 @@ function wppa_array_max( $array ) {
 	return $result;
 }
 
-function wppa_get_water_file_and_pos() {
+function wppa_get_water_file_and_pos( $id ) {
 global $wppa_opt;
-global $thumb;
 
-	$result['file'] = $wppa_opt['wppa_watermark_file'];	// default
-	$result['pos'] = $wppa_opt['wppa_watermark_pos'];	// default
+	$result['file'] = wppa_opt( 'wppa_watermark_file' );	// default
+	$result['pos'] = wppa_opt( 'wppa_watermark_pos' );	// default
 
 	$user = wppa_get_user();
 	
-	if ( wppa_switch('wppa_watermark_user') || current_user_can('wppa_settings') ) {									// user overrule?
-		if ( isset($_POST['wppa-watermark-file'] ) ) {
+	if ( wppa_switch( 'wppa_watermark_user' ) || current_user_can( 'wppa_settings' ) ) {									// user overrule?
+		if ( isset( $_POST['wppa-watermark-file'] ) ) {
 			$result['file'] = $_POST['wppa-watermark-file'];
-			update_option('wppa_watermark_file_' . $user, $_POST['wppa-watermark-file']);
+			update_option( 'wppa_watermark_file_' . $user, $_POST['wppa-watermark-file'] );
 		}
-		elseif ( get_option('wppa_watermark_file_' . $user, 'nil') != 'nil' ) {
-			$result['file'] = get_option('wppa_watermark_file_' . $user);
+		elseif ( get_option( 'wppa_watermark_file_' . $user, 'nil' ) != 'nil' ) {
+			$result['file'] = get_option( 'wppa_watermark_file_' . $user );
 		}
-		if ( isset($_POST['wppa-watermark-pos'] ) ) {
+		if ( isset( $_POST['wppa-watermark-pos'] ) ) {
 			$result['pos'] = $_POST['wppa-watermark-pos'];
-			update_option('wppa_watermark_pos_' . $user, $_POST['wppa-watermark-pos']);
+			update_option( 'wppa_watermark_pos_' . $user, $_POST['wppa-watermark-pos'] );
 		}
-		elseif ( get_option('wppa_watermark_pos_' . $user, 'nil') != 'nil' ) {
-			$result['pos'] = get_option('wppa_watermark_pos_' . $user);
+		elseif ( get_option( 'wppa_watermark_pos_' . $user, 'nil' ) != 'nil' ) {
+			$result['pos'] = get_option( 'wppa_watermark_pos_' . $user );
 		}
 	}
 	$result['select'] = $result['file'];
 
 	if ( substr( $result['file'], 0, 3 ) == '---' && $result['file'] != '--- none ---' ) {			// Special identifier, not a file
-		if ( is_array( $thumb ) ) $id = $thumb['id']; else $id = '0';
 		$result['file'] = wppa_create_textual_watermark_file( array( 'content' => $result['file'], 'pos' => $result['pos'], 'id' => $id ) );
 	}
 	else {
@@ -340,47 +341,50 @@ global $thumb;
 }
 
 	
-function wppa_add_watermark( $file ) {
+function wppa_add_watermark( $id ) {
 global $wppa_opt;
 
 	// Init
-	if ( ! wppa_switch('wppa_watermark_on') ) return false;	// Watermarks off
+	if ( ! wppa_switch( 'wppa_watermark_on' ) ) return false;	// Watermarks off
+	if ( wppa_is_video( $id ) ) return false;					// Can not on a video
 	
 	// Find the watermark file and location
-	$temp = wppa_get_water_file_and_pos();
+	$temp = wppa_get_water_file_and_pos( $id );
 	$waterfile = $temp['file'];
 	if ( ! $waterfile ) return false;					// an error has occurred
 	
 	$waterpos = $temp['pos'];										// default
 	
-	if ( basename($waterfile) == '--- none ---' ) {
+	if ( basename( $waterfile ) == '--- none ---' ) {
 		return false;	// No watermark this time
 	}
 	// Open the watermark file
-	$watersize = @getimagesize($waterfile);
-	if ( !is_array($watersize) ) return false;	// Not a valid picture file
-	$waterimage = imagecreatefrompng($waterfile);
+	$watersize = @getimagesize( $waterfile );
+	if ( !is_array( $watersize ) ) return false;	// Not a valid picture file
+	$waterimage = imagecreatefrompng( $waterfile );
 	if ( empty( $waterimage ) or ( !$waterimage ) ) {
-		wppa_dbg_msg('Watermark file '.$waterfile.' not found or corrupt');
+		wppa_dbg_msg( 'Watermark file '.$waterfile.' not found or corrupt' );
 		return false;			// No image
 	}
-	imagealphablending($waterimage, false);
-	imagesavealpha($waterimage, true);
+	imagealphablending( $waterimage, false );
+	imagesavealpha( $waterimage, true );
 
 		
 	// Open the photo file
-	$photosize = getimagesize($file);
-	if ( !is_array($photosize) ) {
+	$file = wppa_get_photo_path( $id );
+	if ( ! is_file( $file ) ) return false;	// File gone
+	$photosize = getimagesize( $file );
+	if ( ! is_array( $photosize ) ) {
 		return false;	// Not a valid photo
 	}
-	switch ($photosize[2]) {
-		case 1: $tempimage = imagecreatefromgif($file);
-			$photoimage = imagecreatetruecolor($photosize[0], $photosize[1]);
-			imagecopy($photoimage, $tempimage, 0, 0, 0, 0, $photosize[0], $photosize[1]);
+	switch ( $photosize[2] ) {
+		case 1: $tempimage = imagecreatefromgif( $file );
+			$photoimage = imagecreatetruecolor( $photosize[0], $photosize[1] );
+			imagecopy( $photoimage, $tempimage, 0, 0, 0, 0, $photosize[0], $photosize[1] );
 			break;
-		case 2: $photoimage = imagecreatefromjpeg($file);
+		case 2: $photoimage = imagecreatefromjpeg( $file );
 			break;
-		case 3: $photoimage = imagecreatefrompng($file);
+		case 3: $photoimage = imagecreatefrompng( $file );
 			break;
 	}
 	if ( empty( $photoimage ) or ( ! $photoimage ) ) return false; 			// No image
@@ -392,16 +396,16 @@ global $wppa_opt;
 	$src_x = 0;
 	$src_y = 0;
 	if ( $ws_x > $ps_x ) {
-		$src_x = ($ws_x - $ps_x) / 2;
+		$src_x = ( $ws_x - $ps_x ) / 2;
 		$ws_x = $ps_x;
 	}		
 	if ( $ws_y > $ps_y ) {
-		$src_y = ($ws_y - $ps_y) / 2;
+		$src_y = ( $ws_y - $ps_y ) / 2;
 		$ws_y = $ps_y;
 	}
 	
-	$loy = substr( $waterpos, 0, 3);
-	switch($loy) {
+	$loy = substr( $waterpos, 0, 3 );
+	switch( $loy ) {
 		case 'top': $dest_y = 0;
 			break;
 		case 'cen': $dest_y = ( $ps_y - $ws_y ) / 2;
@@ -410,8 +414,8 @@ global $wppa_opt;
 			break;
 		default: $dest_y = 0; 	// should never get here
 	}
-	$lox = substr( $waterpos, 3);
-	switch($lox) {
+	$lox = substr( $waterpos, 3 );
+	switch( $lox ) {
 		case 'lft': $dest_x = 0;
 			break;
 		case 'cen': $dest_x = ( $ps_x - $ws_x ) / 2;
@@ -421,22 +425,22 @@ global $wppa_opt;
 		default: $dest_x = 0; 	// should never get here
 	}
 
-	$opacity = strpos( $waterfile, '/temp/' ) === false ? intval( $wppa_opt['wppa_watermark_opacity'] ) : intval( $wppa_opt['wppa_watermark_opacity_text'] );
+	$opacity = strpos( $waterfile, '/temp/' ) === false ? intval( wppa_opt( 'wppa_watermark_opacity' ) ) : intval( wppa_opt( 'wppa_watermark_opacity_text' ) );
 	wppa_imagecopymerge_alpha( $photoimage , $waterimage , $dest_x, $dest_y, $src_x, $src_y, $ws_x, $ws_y, $opacity );
 
 	// Save the result
-	switch ($photosize[2]) {
-		case 1: imagegif($photoimage, $file);
+	switch ( $photosize[2] ) {
+		case 1: imagegif( $photoimage, $file );
 			break;
-		case 2: imagejpeg($photoimage, $file, $wppa_opt['wppa_jpeg_quality']);
+		case 2: imagejpeg( $photoimage, $file, wppa_opt( 'wppa_jpeg_quality' ) );
 			break;
-		case 3: imagepng($photoimage, $file, 7);
+		case 3: imagepng( $photoimage, $file, 7 );
 			break;
 	}
 
 	// Cleanup
-	imagedestroy($photoimage);
-	imagedestroy($waterimage);
+	imagedestroy( $photoimage );
+	imagedestroy( $waterimage );
 
 	return true;
 }
@@ -450,8 +454,8 @@ global $wppa_opt;
 // A fix to get a function like imagecopymerge WITH ALPHA SUPPORT
 // Main script by aiden dot mail at freemail dot hu
 // Transformed to imagecopymerge_alpha() by rodrigo dot polo at gmail dot com
-function wppa_imagecopymerge_alpha($dst_im, $src_im, $dst_x, $dst_y, $src_x, $src_y, $src_w, $src_h, $pct){
-    if(!isset($pct)){
+function wppa_imagecopymerge_alpha( $dst_im, $src_im, $dst_x, $dst_y, $src_x, $src_y, $src_w, $src_h, $pct ){
+    if( !isset( $pct ) ){
         return false;
     }
     $pct /= 100;
@@ -460,7 +464,7 @@ function wppa_imagecopymerge_alpha($dst_im, $src_im, $dst_x, $dst_y, $src_x, $sr
     $h = imagesy( $src_im );
     // Turn alpha blending off
     imagealphablending( $src_im, false );
-    // Find the most opaque pixel in the image (the one with the smallest alpha value)
+    // Find the most opaque pixel in the image ( the one with the smallest alpha value )
     $minalpha = 127;
     for( $x = 0; $x < $w; $x++ )
     for( $y = 0; $y < $h; $y++ ){
@@ -472,7 +476,7 @@ function wppa_imagecopymerge_alpha($dst_im, $src_im, $dst_x, $dst_y, $src_x, $sr
     //loop through image pixels and modify alpha for each
     for( $x = 0; $x < $w; $x++ ){
         for( $y = 0; $y < $h; $y++ ){
-            //get current alpha value (represents the TANSPARENCY!)
+            //get current alpha value ( represents the TANSPARENCY! )
             $colorxy = imagecolorat( $src_im, $x, $y );
             $alpha = ( $colorxy >> 24 ) & 0xFF;
             //calculate new alpha
@@ -490,10 +494,10 @@ function wppa_imagecopymerge_alpha($dst_im, $src_im, $dst_x, $dst_y, $src_x, $sr
         }
     }
     // The image copy
-    imagecopy($dst_im, $src_im, $dst_x, $dst_y, $src_x, $src_y, $src_w, $src_h);
+    imagecopy( $dst_im, $src_im, $dst_x, $dst_y, $src_x, $src_y, $src_w, $src_h );
 }
 
-function wppa_watermark_file_select($default = false) {
+function wppa_watermark_file_select( $default = false ) {
 global $wppa_opt;
 
 	// Init
@@ -502,56 +506,56 @@ global $wppa_opt;
 	
 	// See what's in there
 	$paths = WPPA_UPLOAD_PATH . '/watermarks/*.png';
-	$files = glob($paths);
+	$files = glob( $paths );
 	
 	// Find current selection
-	$select = $wppa_opt['wppa_watermark_file'];	// default
-	if ( ! $default && ( wppa_switch('wppa_watermark_user') || current_user_can('wppa_settings') ) && get_option('wppa_watermark_file_' . $user, 'nil') !== 'nil' ) {
-		$select = get_option('wppa_watermark_file_' . $user);
+	$select = wppa_opt( 'wppa_watermark_file' );	// default
+	if ( ! $default && ( wppa_switch( 'wppa_watermark_user' ) || current_user_can( 'wppa_settings' ) ) && get_option( 'wppa_watermark_file_' . $user, 'nil' ) !== 'nil' ) {
+		$select = get_option( 'wppa_watermark_file_' . $user );
 	}
 	
 	// Produce the html
-	$result .= '<option value="--- none ---">'.__('--- none ---', 'wppa').'</option>';
+	$result .= '<option value="--- none ---">'.__( '--- none ---', 'wppa' ).'</option>';
 	if ( $files ) foreach ( $files as $file ) {
-		$sel = $select == basename($file) ? 'selected="selected"' : '';
-		$result .= '<option value="'.basename($file).'" '.$sel.'>'.basename($file).'</option>';
+		$sel = $select == basename( $file ) ? 'selected="selected"' : '';
+		$result .= '<option value="'.basename( $file ).'" '.$sel.'>'.basename( $file ).'</option>';
 	}
 	
 	// Text based watermarks
 	$sel = $select == '---name---' ? 'selected="selected"' : '';
-	$result .= '<option value="---name---" '.$sel.'>'.__('--- text: name ---', 'wppa').'</option>';
+	$result .= '<option value="---name---" '.$sel.'>'.__( '--- text: name ---', 'wppa' ).'</option>';
 	$sel = $select == '---filename---' ? 'selected="selected"' : '';
-	$result .= '<option value="---filename---" '.$sel.'>'.__('--- text: filename ---', 'wppa').'</option>';
+	$result .= '<option value="---filename---" '.$sel.'>'.__( '--- text: filename ---', 'wppa' ).'</option>';
 	$sel = $select == '---description---' ? 'selected="selected"' : '';
-	$result .= '<option value="---description---" '.$sel.'>'.__('--- text: description ---', 'wppa').'</option>';
+	$result .= '<option value="---description---" '.$sel.'>'.__( '--- text: description ---', 'wppa' ).'</option>';
 	$sel = $select == '---predef---' ? 'selected="selected"' : '';
-	$result .= '<option value="---predef---" '.$sel.'>'.__('--- text: pre-defined ---', 'wppa').'</option>';
+	$result .= '<option value="---predef---" '.$sel.'>'.__( '--- text: pre-defined ---', 'wppa' ).'</option>';
 	
 	return $result;
 }
 
-function wppa_watermark_pos_select($default = false) {
+function wppa_watermark_pos_select( $default = false ) {
 global $wppa_opt;
 
 	// Init
 	$user = wppa_get_user();
 	$result = '';
-	$opt = array(	__('top - left', 'wppa'), __('top - center', 'wppa'), __('top - right', 'wppa'), 
-					__('center - left', 'wppa'), __('center - center', 'wppa'), __('center - right', 'wppa'), 
-					__('bottom - left', 'wppa'), __('bottom - center', 'wppa'), __('bottom - right', 'wppa'), );
-	$val = array(	'toplft', 'topcen', 'toprht',
+	$opt = array( 	__( 'top - left', 'wppa' ), __( 'top - center', 'wppa' ), __( 'top - right', 'wppa' ), 
+					__( 'center - left', 'wppa' ), __( 'center - center', 'wppa' ), __( 'center - right', 'wppa' ), 
+					__( 'bottom - left', 'wppa' ), __( 'bottom - center', 'wppa' ), __( 'bottom - right', 'wppa' ), );
+	$val = array( 	'toplft', 'topcen', 'toprht',
 					'cenlft', 'cencen', 'cenrht',
 					'botlft', 'botcen', 'botrht', );
 	$idx = 0;
 
 	// Find current selection
-	$select = $wppa_opt['wppa_watermark_pos'];	// default
-	if ( ! $default && ( wppa_switch('wppa_watermark_user') || current_user_can('wppa_settings') ) && get_option('wppa_watermark_pos_' . $user, 'nil') !== 'nil' ) {
-		$select = get_option('wppa_watermark_pos_' . $user);
+	$select = wppa_opt( 'wppa_watermark_pos' );	// default
+	if ( ! $default && ( wppa_switch( 'wppa_watermark_user' ) || current_user_can( 'wppa_settings' ) ) && get_option( 'wppa_watermark_pos_' . $user, 'nil' ) !== 'nil' ) {
+		$select = get_option( 'wppa_watermark_pos_' . $user );
 	}
 	
 	// Produce the html
-	while ($idx < 9) {
+	while ( $idx < 9 ) {
 		$sel = $select == $val[$idx] ? 'selected="selected"' : '';
 		$result .= '<option value="'.$val[$idx].'" '.$sel.'>'.$opt[$idx].'</option>';
 		$idx++;
