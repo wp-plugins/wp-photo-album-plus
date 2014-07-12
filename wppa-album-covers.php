@@ -13,6 +13,9 @@ if ( ! defined( 'ABSPATH' ) ) die( "Can't load this file directly" );
 // decide wich cover type and call the types function
 function wppa_album_cover( $id ) {
 global $wppa;
+global $wppa_alt;
+
+	if ( ! $wppa_alt ) $wppa_alt = 'alt';
 		
 	// Find the cover type
 	$cover_type = wppa_get_album_item( $id, 'cover_type' ) ? 

@@ -343,7 +343,7 @@ global $wppa_opt;
 global $wppa_locale;
 
 	$do_it = false;
-	if ( ! $wppa['is_slideonly'] ) {
+	if ( ! $wppa['is_slideonly'] || $key == 'lightbox' ) {
 		if ( wppa_switch( 'wppa_share_on' ) && ! $wppa['in_widget'] ) $do_it = true;
 		if ( wppa_switch( 'wppa_share_on_widget' ) && $wppa['in_widget'] ) $do_it = true;
 		if ( wppa_switch( 'wppa_share_on_lightbox' ) ) $do_it = true;

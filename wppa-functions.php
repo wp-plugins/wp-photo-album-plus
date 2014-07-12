@@ -2471,6 +2471,8 @@ global $thlinkmsggiven;
 	$photo_left = wppa_switch( 'wppa_thumbphoto_left' );
 	$class_asym = 'wppa-asym-text-frame-'.$wppa['mocc'];
 	
+	if ( ! $wppa_alt ) $wppa_alt = 'alt';
+	
 	$style = __wcs( 'wppa-box' ).__wcs( 'wppa-'.$wppa_alt );
 	if ( is_feed() ) $style .= ' padding:7px;';
 	
