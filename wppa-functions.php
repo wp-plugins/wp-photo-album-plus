@@ -913,6 +913,8 @@ global $wppa_session;
 		return;
 	}
 	
+	if ( $wppa['albums_only'] ) return false;
+	
 	if ( is_array( $thumbs ) ) {	// Done already?
 		wppa_dbg_msg( 'cached thumbs used' );
 		return $thumbs;	
