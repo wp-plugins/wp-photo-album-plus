@@ -870,7 +870,7 @@ global $wppa;
 								}
 							}
 							// If no dirs to import checked, there must be an album selected
-							if ( 0 == nDirsChecked && 0 == nZipsChecked ! wppaVfyAlbum() ) return false;
+							if ( 0 == nDirsChecked && 0 == nZipsChecked && ! wppaVfyAlbum() ) return false;
 							return true;
 						}
 					</script>
