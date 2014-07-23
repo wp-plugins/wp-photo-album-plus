@@ -2,7 +2,7 @@
 //
 // conatins slideshow, theme, ajax and lightbox code
 //
-// Version 5.4.1
+// Version 5.4.1.001
 
 // Part 1: Slideshow
 //
@@ -2307,8 +2307,8 @@ function wppaPopUp( mocc, elm, id, name, desc, rating, ncom, videohtml, maxsizex
 	puImg = document.getElementById( 'wppa-img-'+mocc );
 
 	// Compute ending sizes
-	widthImgBig = maxsizex;
-	heightImgBig = maxsizey;
+	widthImgBig = parseInt(maxsizex);
+	heightImgBig = parseInt(maxsizey);
 		
 	wppaConsoleLog( 'widthImgBig='+widthImgBig+', heightImgBig='+heightImgBig );
 
