@@ -340,12 +340,12 @@ static $sep;
 	if ( $href ) {
 		$wppa['out'] .= 
 			'<a href="'.$href.'" class="wppa-nav-text '.$class.'" style="'.
-			__wcs( 'wppa-nav-text' ).'" title="'.$title.'" >'.$value.'</a>';
+			__wcs( 'wppa-nav-text' ).'" title="'.esc_attr($title).'" >'.$value.'</a>';
 	}
 	else {					// No link, its the last item
 		$wppa['out'] .= 
 			'<span id="bc-pname-'.$wppa['mocc'].'" class="wppa-nav-text '.$class.'" style="'.
-			__wcs( 'wppa-nav-text' ).'" title="'.$title.'" >'.$value.'</span>';
+			__wcs( 'wppa-nav-text' ).'" title="'.esc_attr($title).'" >'.$value.'</span>';
 		return;
 	}
 		
