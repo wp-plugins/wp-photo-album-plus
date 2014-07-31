@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Functions for album covers
-* Version 5.4.1
+* Version 5.4.3
 *
 */
 
@@ -262,21 +262,8 @@ global $wpdb;
 	$srcs 		= array();
 	$paths 		= array();
 	$imgattrs_a = array();
-	foreach ( $coverphotos as $coverphoto ) {
-		$images[] 		= $wpdb->get_row( $wpdb->prepare( 
-							"SELECT * FROM `" . WPPA_PHOTOS . "` WHERE `id` = %s", $coverphoto 
-							), ARRAY_A );
-		$path 			= wppa_get_thumb_path( 	$coverphoto	 );
-		$paths[] 		= $path;
-		$cpsize 		= count( $coverphotos ) == '1' ?
-							$wppa_opt['wppa_smallsize'] :
-							$wppa_opt['wppa_smallsize_multi'];
-		$imgattr_a		= wppa_get_imgstyle_a( $coverphoto, $path, $cpsize, '', 'cover' );
-		$imgattrs_a[] 	= $imgattr_a;
-		$srcs[] 		= wppa_get_thumb_url( 
-							$coverphoto, '', $imgattr_a['width'], $imgattr_a['height'] );
-	}
-	
+	$photolinks = array();
+
 	if ( is_feed() ) {
 		$events = '';
 	}
@@ -320,6 +307,24 @@ global $wpdb;
 	$onclick_title 	= $title_attr['onclick'];
 	$title 			= $title_attr['title'];
 
+	// Find the coverphotos details
+	foreach ( $coverphotos as $coverphoto ) {
+		$images[] 		= $wpdb->get_row( $wpdb->prepare( 
+							"SELECT * FROM `" . WPPA_PHOTOS . "` WHERE `id` = %s", $coverphoto 
+							), ARRAY_A );
+		$path 			= wppa_get_thumb_path( 	$coverphoto	 );
+		$paths[] 		= $path;
+		$cpsize 		= count( $coverphotos ) == '1' ?
+							$wppa_opt['wppa_smallsize'] :
+							$wppa_opt['wppa_smallsize_multi'];
+		$imgattr_a		= wppa_get_imgstyle_a( $coverphoto, $path, $cpsize, '', 'cover' );
+		$imgattrs_a[] 	= $imgattr_a;
+		$srcs[] 		= wppa_get_thumb_url( 
+							$coverphoto, '', $imgattr_a['width'], $imgattr_a['height'] );
+		$photolinks[] 	= wppa_get_imglnk_a( 
+							'coverimg', $coverphoto, $href_title, $title, $onclick_title, '', $albumid );
+	}	
+	
 	// Find the slideshow link and onclick
 	$href_slideshow = wppa_convert_to_pretty( wppa_get_slideshow_url( $albumid, $linkpage ) );
 	if ( wppa_switch( 'wppa_allow_ajax' ) && ! $linkpage ) {
@@ -338,13 +343,6 @@ global $wpdb;
 		$href_content = "#";
 	}
 
-	// Find the coverphoto link
-	if ( $coverphoto ) {
-		$photolink = wppa_get_imglnk_a( 
-			'coverimg', $coverphoto, $href_title, $title, $onclick_title, '', $albumid );
-	}
-	else $photolink = false;
-	
 	$style =  __wcs( 'wppa-box' ) . __wcs( 'wppa-' . $wppa_alt );
 	if ( is_feed() ) $style .= ' padding:7px;';
 	
@@ -360,8 +358,9 @@ global $wpdb;
 		$style .= 'clear:both;';
 	}
 	wppa_step_covercount( 'cover' );
-	
-	$target = wppa_switch( 'wppa_allow_ajax' ) ? '_self' : $photolink['target'];
+
+	$pl = isset( $photolinks['0']['target'] ) ? $photolinks['0']['target'] : '_self';
+	$target = wppa_switch( 'wppa_allow_ajax' ) ? '_self' : $pl;
 	
 	// Open the album box
 	$wppa['out'] .= wppa_nltab( '+' ) . 
@@ -372,7 +371,7 @@ global $wpdb;
 	// First The Cover photo?
 	if ( $photo_pos == 'left' || $photo_pos == 'top' ) {
 		wppa_the_coverphotos( 
-			$albumid, $images, $srcs, $photo_pos, $photolink, $title, $imgattrs_a, $events );
+			$albumid, $images, $srcs, $photo_pos, $photolinks, $title, $imgattrs_a, $events );
 	}
 		
 	// Open the Cover text frame
@@ -409,7 +408,7 @@ global $wpdb;
 	// The Cover photo last?
 	if ( $photo_pos == 'right' || $photo_pos == 'bottom' ) {
 		wppa_the_coverphotos( 
-			$albumid, $images, $srcs, $photo_pos, $photolink, $title, $imgattrs_a, $events );
+			$albumid, $images, $srcs, $photo_pos, $photolinks, $title, $imgattrs_a, $events );
 	}
 		
 	// The sublinks
@@ -708,7 +707,7 @@ global $wpdb;
 		
 		// Link is NOT lightbox
 		else { 
-			$href = $photolink['url'] == '#' ? '' : 'href="' . $photolink['url'] . '" ';
+			$href = $photolink['url'] == '#' ? '' : 'href="' . wppa_convert_to_pretty( $photolink['url'] ) . '" ';
 			$wppa['out'] .= wppa_nltab( '+' ) . 
 				'<a ' . $href . 'target="' . $photolink['target'] . '" title="' . $photolink['title'] . 
 				'" onclick="' . $photolink['onclick'] . '" >';
@@ -760,7 +759,7 @@ global $wpdb;
 // Multiple coverphotos
 // Output goes directly to $wppa['out']
 function wppa_the_coverphotos( 
-	$albumid, $images, $srcs, $photo_pos, $photolink, $title, $imgattrs_a, $events ) {
+	$albumid, $images, $srcs, $photo_pos, $photolinks, $title, $imgattrs_a, $events ) {
 	
 global $wppa;
 global $wppa_opt;
@@ -789,6 +788,7 @@ global $wpdb;
 		$imgheight 	= $imgattrs_a[$idx]['height'];
 		$frmwidth  	= $imgwidth + '10';	// + 2 * 1 border + 2 * 4 padding
 		$imgattr_a	= $imgattrs_a[$idx];
+		$photolink 	= $photolinks[$idx];
 
 		if ( $photolink ) {
 			if ( $photolink['is_lightbox'] ) {
@@ -802,7 +802,7 @@ global $wpdb;
 					$siz = getimagesize( wppa_get_photo_path( $thumb['id'] ) );
 				}
 				$link = wppa_get_photo_url( $thumb['id'], '', $siz['0'], $siz['1'] );
-				$wppa['out'] .= "\n\t" . 
+				$wppa['out'] .= 
 					'<a href="' . $link . '" data-videohtml="' . 
 					esc_attr( wppa_get_video_body( $thumb['id'] ) ) . '" rel="' . 
 					$wppa_opt['wppa_lightbox_name'] . '[alw-' . $wppa['mocc'] . '-' . 
@@ -827,25 +827,25 @@ global $wpdb;
 							' alt="' . $title . '">';
 					}
 				}
-				$wppa['out'] .= "\n\t" . '</a>';
+				$wppa['out'] .= '</a> ';
 			}
 			
 			else {	// Link is NOT lightbox
-				$href = $photolink['url'] == '#' ? '' : 'href="' . $photolink['url'] . '" ';
-				$wppa['out'] .= wppa_nltab( '+' ) . '<a ' . $href . 'target="' . $photolink['target'] . 
+				$href = $photolink['url'] == '#' ? '' : 'href="' . wppa_convert_to_pretty( $photolink['url'] ) . '" ';
+				$wppa['out'] .= '<a ' . $href . 'target="' . $photolink['target'] . 
 					'" title="' . $photolink['title'] . '" onclick="' . $photolink['onclick'] . '" >';
 				if ( wppa_is_video( $image['id'] ) ) {
-					$wppa['out'] .= wppa_nltab() . '<video alt="' . $title . 
+					$wppa['out'] .= '<video alt="' . $title . 
 						'" class="image wppa-img" width="' . $imgwidth . '" height="' . $imgheight . 
 						'" style="' . __wcs( 'wppa-img' ) . $imgattr . '" ' . $events . ' >' . 
 						wppa_get_video_body( $image['id'] ) . '</video>';
 				}
 				else {
-					$wppa['out'] .= wppa_nltab() . '<img src="' . $src . '" alt="' . $title . 
+					$wppa['out'] .= '<img src="' . $src . '" alt="' . $title . 
 						'" class="image wppa-img" width="' . $imgwidth . '" height="' . $imgheight . 
 						'" style="' . __wcs( 'wppa-img' ) . $imgattr . '" ' . $events . ' />';
 				}
-				$wppa['out'] .= wppa_nltab( '-' ) . '</a>'; 
+				$wppa['out'] .= '</a> '; 
 			}
 		} 
 		

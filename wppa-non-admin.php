@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the non admin stuff
-* Version 5.4.1
+* Version 5.4.3
 *
 */
 
@@ -330,9 +330,8 @@ function wppa_redirect() {
 	if ( $wppapos && get_option('permalink_structure') && wppa_switch('wppa_use_pretty_links') ) {
 		$newuri = wppa_convert_from_pretty($uri);
 		if ( $newuri == $uri ) return;
-		// Although the searchstring is urlencoded it is damaged by wp_redirect when it contains chars like ë, so in that case we do a header() call
-		if ( strpos($newuri, '&wppa-searchstring=') || strpos($newuri, '&s=') ) header('Location: '.$newuri, true, 302);
-		else wp_redirect($newuri);
+		// Although the url is urlencoded it is damaged by wp_redirect when it contains chars like ë, so we do a header() call
+		header('Location: '.$newuri, true, 302);
 		exit;
 	}
 }
@@ -540,7 +539,8 @@ global $wppa_init_js_data;
 	wppaArtMonkeyButton = '.( wppa_opt( 'wppa_art_monkey_display' ) == 'button' ? 'true' : 'false' ).';
 	wppaFotomotoHideHideWhenRunning = '.( wppa_switch('wppa_fotomoto_hide_when_running') ? 'true' : 'false' ).';
 	wppaCommentRequiredAfterVote = '.( wppa_switch('wppa_vote_needs_comment') ? 'true' : 'false' ).';
-	wppaFotomotoMinWidth = '.wppa_opt( 'wppa_fotomoto_min_width' ).';';
+	wppaFotomotoMinWidth = '.wppa_opt( 'wppa_fotomoto_min_width' ).';
+	wppaShortQargs = '.( wppa_switch('wppa_use_short_qargs') ? 'true' : 'false' ).';';
 
 	// Open file
 	$file = @ fopen ( WPPA_PATH.'/wppa-init.'.$wppa_lang.'.js', 'wb' );

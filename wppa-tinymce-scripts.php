@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 *
-* Version 5.3.9
+* Version 5.4.3
 *
 */
 
@@ -35,7 +35,13 @@ class wppaGallery
 	 
 	function filter_mce_plugin( $plugins ) {
 		// this plugin file will work the magic of our button
-		$plugins['wppagallery'] = plugin_dir_url( __FILE__ ) . 'wppa-tinymce.js';
+		if ( wppa_switch( 'wppa_use_scripts_in_tinymce' ) ) {
+			$file = 'wppa-tinymce-scripts.js';
+		}
+		else {
+			$file = 'wppa-tinymce-shortcodes.js';
+		}
+		$plugins['wppagallery'] = plugin_dir_url( __FILE__ ) . $file;
 		return $plugins;
 	}
  
@@ -89,12 +95,10 @@ global $wppa_opt;
 						'<option value="slide">'.__('A slideshow of the photos in an album', 'wppa').'</option>'.
 						'<option value="slideonly">'.__('A slideshow without supporting boxes', 'wppa').'</option>'.
 						'<option value="slideonlyf">'.__('A slideshow with a filmstrip only', 'wppa').'</option>'.
-						'<option value="filmonly">'.__('A filmstrip only', 'wppa').'</option>'.
 						'<option value="photo">'.__('A single photo', 'wppa').'</option>'.
 						'<option value="mphoto">'.__('A single photo with caption', 'wppa').'</option>'.
 						'<option value="slphoto">'.__('A single photo in the style of a slideshow', 'wppa').'</option>'.
 						'<option value="generic">'.__('A generic albums display', 'wppa').'</option>'.
-						'<option value="upload">'.__('An upload box', 'wppa').'</option>'.
 					'</select>'.
 					'<br />'.
 					'<small>'.__('Specify the type of gallery', 'wppa').'</small>'.
@@ -296,7 +300,6 @@ global $wppa_opt;
 		'</table>'.
 		'<p class="submit">'.
 			'<input type="button" id="wppagallery-submit" class="button-primary" value="'.__('Insert Gallery', 'wppa').'" name="submit" />&nbsp;'.
-			'<input type="checkbox" id="wppagallery-newstyle" />'.'&nbsp;'.__('Create new style shortcode', 'wppa').
 		'</p>'.
 	'</div>';
 	return $result;

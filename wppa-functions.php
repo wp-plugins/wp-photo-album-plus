@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Various funcions
-* Version 5.4.1
+* Version 5.4.3
 *
 */
 
@@ -560,7 +560,7 @@ global $wppa_session;
 	}
 	// Is it the tagcloud box?
 	elseif ( $wppa['is_tagcloudbox'] ) {
-		wppa_tagcloud_box( $wppa['taglist'], '8', '24' );
+		wppa_tagcloud_box( $wppa['taglist'], wppa_opt( 'wppa_tagcloud_min' ), wppa_opt( 'wppa_tagcloud_max' ) );
 	}
 	// Is it an upload box?
 	elseif ( $wppa['is_upload'] ) {
@@ -3498,13 +3498,13 @@ static $wppa_get_get_cache;
 
 	// Post processing needed?
 	if ( $index == 'photo' && ( ! is_numeric( $result ) || ! wppa_photo_exists( $result ) ) ) {
-		$result = wppa_get_photo_id_by_name( $result, wppa_get_get( 'album' ) );
+		$result = wppa_get_photo_id_by_name( $result, wppa_get_album_id_by_name( wppa_get_get( 'album' ) ) );
 		if ( ! $result ) return false;				// Non existing photo, treat as not set
 	}
 	if ( $index == 'album' ) {
-		if ( ! is_numeric( $result ) ) {
+		if ( ! wppa_is_int( $result ) ) {
 			$temp = wppa_get_album_id_by_name( $result );
-			if ( is_numeric( $temp ) && $temp > '0' ) {
+			if ( wppa_is_int( $temp ) && $temp > '0' ) {
 				$result = $temp;
 			}
 			elseif ( ! wppa_series_to_array( $result ) ) {
@@ -3538,102 +3538,71 @@ function wppa_get_photo_id_by_name( $xname, $album = '0' ) {
 global $wpdb;
 global $allphotos;
 
-	if ( is_numeric( $album ) ) {
+	if ( wppa_is_int( $xname ) ) {
+		return $xname; // Already nemeric
+	}
+	
+	$name = wppa_decode_uri_component( $xname );
+	
+	if ( wppa_is_int( $album ) ) {
 		$alb = $album;
-		$albums = array( $album );
 	}
 	else {
 		$albums = wppa_series_to_array( $album );
-		$alb = implode( " OR `album` = ", $albums );
+		if ( is_array( $albums ) ) {
+			$alb = implode( " OR `album` = ", $albums );
+		}
+		else {
+			$alb = wppa_get_album_id_by_name( $album );
+		}
 	}
-	// Do a first guess, assume no quotes and no language
-	$results = $wpdb->get_results( $wpdb->prepare( "SELECT `id` FROM `".WPPA_PHOTOS."` WHERE `name` = %s AND ( `album` = %s )", $xname, $album ), ARRAY_A );
-	$guess = $results ? $results[0]['id'] : false;
-	if ( $guess ) {
-		wppa_dbg_msg( 'wppa_get_photo_id_by_name() first guess succesfull!' );
-		return $guess;
-	}
-	wppa_dbg_msg( 'wppa_get_photo_id_by_name() first guess NOT succesfull!' );
 	
-	$name = wppa_normalize_quotes( stripslashes( $xname ) );
-	// Get all photos
-	if ( ! $allphotos ) {
-		$allphotos = $wpdb->get_results( "SELECT `id`, `name`, `ext`, `album` FROM `" . WPPA_PHOTOS . "`", ARRAY_A );
-		wppa_dbg_q( 'Q56' );
-		// Translate names
-		if ( is_array( $allphotos ) ) {
-			$index = '0';
-			$count = count( $allphotos );
-			// Translate names
-			while ( $index < $count ) {
-				$allphotos[$index]['name'] = wppa_normalize_quotes( stripslashes( wppa_qtrans( $allphotos[$index]['name'] ) ) );
-				$index++;
-			}
-		}
+	if ( $alb ) {
+		$pid = $wpdb->get_var( "SELECT `id` FROM `".WPPA_PHOTOS."` WHERE `name` LIKE '%".$name."%' AND ( `album` = ".$alb." ) LIMIT 1" );
 	}
-	// Search
-	if ( is_array( $allphotos ) ) {
-		$index = '0';
-		$count = count( $allphotos );
-		while ( $index < $count ) {
-			if ( $name == $allphotos[$index]['name'] ) {
-				if ( $album ) {
-					if ( in_array( $allphotos[$index]['album'], $albums ) ) return $allphotos[$index]['id'];	// Found!
-				}
-				else {
-					return $allphotos[$index]['id'];	// Found!
-				}
-			}
-			$index++;
-		}
+	else {
+		$pid = $wpdb->get_var( "SELECT `id` FROM `".WPPA_PHOTOS."` WHERE `name` LIKE '%".$name."%' LIMIT 1" );
 	}
-	// Not found
-	return false;	
+	
+	if ( $pid ) {
+		wppa_dbg_msg( 'Pid '.$pid.' found for '.$name );
+	}
+	else {
+		wppa_dbg_msg( 'No pid found for '.$name );
+	}
+	return $pid;
 }
 
 function wppa_get_album_id_by_name( $xname, $report_dups = false ) {
 global $wpdb;
 global $allalbums;
 
-	$name = wppa_normalize_quotes( stripslashes( $xname ) );
-	// Get all albums
-	if ( ! $allalbums ) {
-		$allalbums = $wpdb->get_results( "SELECT `id`, `name` FROM `" . WPPA_ALBUMS . "`", ARRAY_A );
-		wppa_dbg_q( 'Q57' );
-		// Translate names
-		if ( is_array( $allalbums ) ) {
-			$index = '0';
-			$count = count( $allalbums );
-			// Translate names
-			while ( $index < $count ) {
-				$allalbums[$index]['name'] = wppa_normalize_quotes( stripslashes( wppa_qtrans( $allalbums[$index]['name'] ) ) );
-				$index++;
+	if ( wppa_is_int( $xname ) ) {
+		return $xname;	// Already numeric
+	}
+	
+	$name = wppa_decode_uri_component( $xname );
+	
+	$albs = $wpdb->get_results( "SELECT `id` FROM `".WPPA_ALBUMS."` WHERE `name` LIKE '%".$name."%'", ARRAY_A );
+	
+	if ( $albs ) {
+		if ( count( $albs == 1 ) ) {
+			wppa_dbg_msg( 'Alb '.$albs[0]['id'],' found for '.$xname );
+			return $albs[0]['id'];
+		}
+		else {
+			wppa_dbg_msg( 'Dups found for '.$xname );
+			if ( $report_dups ) {
+				return false;
+			}
+			else {
+				return $albs[0]['id'];
 			}
 		}
 	}
-	// Search
-	$result = false;
-	if ( is_array( $allalbums ) ) {
-		$index = '0';
-		$count = count( $allalbums );
-		while ( $index < $count ) {
-			if ( $name == $allalbums[$index]['name'] ) {	// Found one
-				if ( $report_dups ) {
-					if ( $result ) {	//Dup
-						return '-1';
-					}
-					$result = $allalbums[$index]['id'];	// Found ( first ) !
-				}
-				else {
-					$result = $allalbums[$index]['id'];	// Found!
-					return $result;
-				}
-			}
-			$index++;
-		}
+	else {
+		return false;
 	}
-	// Not found
-	return $result;	
 }
 
 // Perform the frontend Create album, Upload photo and Edit album

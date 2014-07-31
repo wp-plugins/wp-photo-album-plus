@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 5.4.1
+* Version 5.4.3
 *
 */
 
@@ -267,7 +267,14 @@ global $no_default;
 		}
 		
 		// Blacklist
-		$blacklist_plugins = array('wp-fluid-images/plugin.php', 'performance-optimization-order-styles-and-javascript/order-styles-js.php', 'wp-ultra-simple-paypal-shopping-cart/wp_ultra_simple_shopping_cart.php', 'cachify/cachify.php', 'wp-deferred-javascripts/wp-deferred-javascripts.php');
+		$blacklist_plugins = array(
+			'wp-fluid-images/plugin.php', 
+			'performance-optimization-order-styles-and-javascript/order-styles-js.php', 
+			'wp-ultra-simple-paypal-shopping-cart/wp_ultra_simple_shopping_cart.php', 
+			'cachify/cachify.php', 
+			'wp-deferred-javascripts/wp-deferred-javascripts.php',
+			'frndzk-photo-lightbox-gallery/frndzk_photo_gallery.php',
+			);
 		$plugins = get_option('active_plugins');
 		$matches = array_intersect($blacklist_plugins, $plugins);
 		foreach ( $matches as $bad ) {
@@ -275,7 +282,9 @@ global $no_default;
 		}
 		
 		// Graylist
-		$graylist_plugins = array('shortcodes-ultimate/shortcodes-ultimate.php');
+		$graylist_plugins = array(
+			'shortcodes-ultimate/shortcodes-ultimate.php'
+			);
 		$matches = array_intersect($graylist_plugins, $plugins);
 		foreach ( $matches as $bad ) {
 			wppa_warning_message(__('Please note that plugin <i style="font-size:14px;">', 'wppa').substr($bad, 0, strpos($bad, '/')).__('</i> can cause wppa+ to function not properly if it is misconfigured.', 'wppa'));
@@ -1011,6 +1020,20 @@ global $no_default;
 							$slug = 'wppa_featen_size';
 							$html = wppa_input($slug, '40px', '', __('pixels', 'wppa'));
 							wppa_setting($slug, '12', $name, $desc, $html, $help);
+							
+							$name = __('Tagcloud min size', 'wppa');
+							$desc = __('Minimal fontsize in tagclouds', 'wppa');
+							$help = '';
+							$slug = 'wppa_tagcloud_min';
+							$html = wppa_input($slug, '40px', '', __('pixels', 'wppa'));
+							wppa_setting($slug, '13', $name, $desc, $html, $help);
+							
+							$name = __('Tagcloud max size', 'wppa');
+							$desc = __('Maximal fontsize in tagclouds', 'wppa');
+							$help = '';
+							$slug = 'wppa_tagcloud_max';
+							$html = wppa_input($slug, '40px', '', __('pixels', 'wppa'));
+							wppa_setting($slug, '14', $name, $desc, $html, $help);
 							}
 							wppa_setting_subheader( 'G', '1', __( 'Lightbox related size settings. These settings have effect only when Table IX-J3 is set to wppa', 'wppa' ) );
 							{
@@ -2217,7 +2240,7 @@ global $no_default;
 							{
 							$name = __('Use Ajax', 'wppa');
 							$desc = __('Use Ajax as much as is possible and implemented.', 'wppa');
-							$help = '';
+							$help = esc_js(__('If this box is ticked, page content updates from within wppa+ displays will be Ajax based as much as possible.', 'wppa'));
 							$slug = 'wppa_allow_ajax';
 							$onchange = 'wppaCheckAjax()';
 							$html = wppa_checkbox($slug, $onchange);
@@ -2229,18 +2252,31 @@ global $no_default;
 							$help .= '\n\n'.esc_js(__('In rare cases changing page content does not work when this box is checked. Verify the functionality!', 'wppa'));
 							$slug = 'wppa_ajax_non_admin';
 							$html = wppa_checkbox($slug);
-							$class = '';
-							wppa_setting($slug, '1.1', $name, $desc, $html, $help, $class);
+							wppa_setting($slug, '2', $name, $desc, $html, $help);
 							
 							$name = __('Photo names in urls', 'wppa');
-							$desc = __('Display photo names in urls, no numbers.', 'wppa');
-							$help = esc_js(__('While browsing through a slideshow and Use Ajax is checked, and the browser supports history.pushState,', 'wppa'));
-							$help .= ' '.esc_js(__('the photo names will be displayed in the generated urls in the browser address line.', 'wppa'));
-							$help .= '\n\n'.esc_js(__('These urls are valid and can be saved for use later.', 'wppa'));
+							$desc = __('Display photo names in urls.', 'wppa');
+							$help = esc_js(__('Urls to wppa+ displays will contain photonames in stead of numbers.', 'wppa'));
+							$help .= '\n'.esc_js(__('It is your responsability to avoid duplicate names of photos in the same album.', 'wppa'));
 							$slug = 'wppa_use_photo_names_in_urls';
 							$html = wppa_checkbox($slug);
-							$class = 'wppa_allow_ajax_';
-							wppa_setting($slug, '2', $name, $desc, $html, $help, $class);
+							wppa_setting($slug, '3', $name, $desc, $html, $help);
+							
+							$name = __('Album names in urls', 'wppa');
+							$desc = __('Display album names in urls.', 'wppa');
+							$help = esc_js(__('Urls to wppa+ displays will contain albumnames in stead of numbers.', 'wppa'));
+							$help .= '\n'.esc_js(__('It is your responsability to avoid duplicate names of albums in the system.', 'wppa'));
+							$slug = 'wppa_use_album_names_in_urls';
+							$html = wppa_checkbox($slug);
+							wppa_setting($slug, '4', $name, $desc, $html, $help);
+							
+							$name = __('Use short query args', 'wppa');
+							$desc = __('Use &album=... &photo=...', 'wppa');
+							$help = esc_js(__('Urls to wppa+ displays will contain &album=... &photo=... in stead of &wppa-album=... &wppa-photo=...', 'wppa'));
+							$help .= '\n'.esc_js(__('Use this setting only when there are no conflicts with other plugins that may interprete arguments like &album= etc.', 'wppa'));
+							$slug = 'wppa_use_short_qargs';
+							$html = wppa_checkbox($slug);
+							wppa_setting($slug, '5', $name, $desc, $html, $help);
 							
 							$name = __('Enable pretty links', 'wppa');
 							$desc = __('Enable the generation and understanding of pretty links.', 'wppa');
@@ -2251,7 +2287,7 @@ global $no_default;
 							$help .= '\n\n'.esc_js(__('Table IV-A2 (Photo names in urls) must be UNchecked for this setting to work!', 'wppa'));
 							$slug = 'wppa_use_pretty_links';
 							$html = wppa_checkbox($slug);
-							wppa_setting($slug, '3', $name, $desc, $html, $help);
+							wppa_setting($slug, '6', $name, $desc, $html, $help);
 							
 							$name = __('Update addressline', 'wppa');
 							$desc = __('Update the addressline after an ajax action or next slide.', 'wppa');
@@ -2261,7 +2297,7 @@ global $no_default;
 							$warning = esc_js(__('Switching this off will affect the browsers behaviour.', 'wppa'));
 							$slug = 'wppa_update_addressline';
 							$html = wppa_checkbox_warn_off($slug, '', '', $warning);
-							wppa_setting($slug, '4', $name, $desc, $html, $help);
+							wppa_setting($slug, '7', $name, $desc, $html, $help);
 							
 							$name = __('Render shortcode always', 'wppa');
 							$desc = __('This will skip the check on proper initialisation.', 'wppa');
@@ -2269,14 +2305,14 @@ global $no_default;
 							$help .= '\n\n'.esc_js(__('If this check is needed, you can use shortcodes like [wppa ...] only, not scripts like %%wppa%%.', 'wppa'));
 							$slug = 'wppa_render_shortcode_always';
 							$html = wppa_checkbox($slug);
-							wppa_setting($slug, '5', $name, $desc, $html, $help);
+							wppa_setting($slug, '8', $name, $desc, $html, $help);
 							
 							$name = __('Track viewcounts', 'wppa');
 							$desc = __('Register number of views of albums and photos.', 'wppa');
 							$help = '';
 							$slug = 'wppa_track_viewcounts';
 							$html = wppa_checkbox($slug);
-							wppa_setting($slug, '6', $name, $desc, $html, $help);
+							wppa_setting($slug, '9', $name, $desc, $html, $help);
 							
 							$name = __('Auto page', 'wppa');
 							$desc = __('Create a wp page for every fullsize image.', 'wppa');
@@ -2285,7 +2321,7 @@ global $no_default;
 							$onchange = 'wppaCheckAutoPage()';
 							$warn = esc_js(__('Please reload this page after changing!', 'wppa'));
 							$html = wppa_checkbox_warn($slug, $onchange, '', $warn);
-							wppa_setting($slug, '7', $name, $desc, $html, $help);
+							wppa_setting($slug, '10', $name, $desc, $html, $help);
 							
 							$name = __('Auto page display', 'wppa');
 							$desc = __('The type of display on the autopage pages.', 'wppa');
@@ -2295,7 +2331,7 @@ global $no_default;
 							$vals = array('photo', 'mphoto', 'slphoto');
 							$html = wppa_select($slug, $opts, $vals);
 							$class = 'autopage';
-							wppa_setting($slug, '7.1', $name, $desc, $html, $help, $class);
+							wppa_setting($slug, '11', $name, $desc, $html, $help, $class);
 							
 							$name = __('Auto page links', 'wppa');
 							$desc = __('The location for the pagelinks.', 'wppa');
@@ -2305,42 +2341,42 @@ global $no_default;
 							$vals = array('none', 'top', 'bottom', 'both');
 							$html = wppa_select($slug, $opts, $vals);
 							$class = 'autopage';
-							wppa_setting($slug, '7.2', $name, $desc, $html, $help, $class);
+							wppa_setting($slug, '12', $name, $desc, $html, $help, $class);
 							
 							$name = __('Defer javascript', 'wppa');
 							$desc = __('<span style="color:red;">Experimental</span> Put javascript near the end of the page.', 'wppa');
 							$help = esc_js(__('If checkd: May fix layout problems and broken slideshows. May speed up or slow down page appearing.', 'wppa'));
 							$slug = 'wppa_defer_javascript';
 							$html = wppa_checkbox($slug);
-							wppa_setting($slug, '8', $name, $desc, $html, $help);
+							wppa_setting($slug, '13', $name, $desc, $html, $help);
 							
 							$name = __('Inline styles', 'wppa');
 							$desc = __('<span style="color:red;">Experimental</span> Set style specifications inline.', 'wppa');
 							$help = esc_js(__('If checked: May fix layout problems, but slows down page appearing.', 'wppa'));
 							$slug = 'wppa_inline_css';
 							$html = wppa_checkbox($slug);
-							wppa_setting($slug, '9', $name, $desc, $html, $help);
+							wppa_setting($slug, '14', $name, $desc, $html, $help);
 							
 							$name = __('Custom style', 'wppa');
 							$desc = __('Enter custom style specs here.', 'wppa');
 							$help = '';
 							$slug = 'wppa_custom_style';
 							$html = wppa_textarea($slug, $name);
-							wppa_setting($slug, '10', $name, $desc, $html, $help);
+							wppa_setting($slug, '15', $name, $desc, $html, $help);
 							
 							$name = __('Use customized style file', 'wppa');
 							$desc = __('This feature is highly discouraged.', 'wppa');
 							$help = '';
 							$slug = 'wppa_use_custom_style_file';
 							$html = wppa_checkbox($slug);
-							wppa_setting($slug, '11', $name, $desc, $html, $help);
+							wppa_setting($slug, '16', $name, $desc, $html, $help);
 							
 							$name = __('Use customized theme file', 'wppa');
 							$desc = __('This feature is highly discouraged.', 'wppa');
 							$help = '';
 							$slug = 'wppa_use_custom_theme_file';
 							$html = wppa_checkbox($slug);
-							wppa_setting($slug, '12', $name, $desc, $html, $help);
+							wppa_setting($slug, '17', $name, $desc, $html, $help);
 							}
 						wppa_setting_subheader( 'B', '1', __( 'Slideshow related settings', 'wppa' ) );
 							{
@@ -3339,8 +3375,8 @@ global $no_default;
 							); 
 							$values_linktype_potd_widget = array('none', 'file', 'custom', 'album', 'photo', 'single', 'plainpage', 'lightbox');
 							
-							$options_linktype_cover_image = array(__('no link at all.', 'wppa'), __('the plain photo (file).', 'wppa'), __('same as title.', 'wppa'), __('lightbox.', 'wppa'));
-							$values_linktype_cover_image = array('none', 'file', 'same', 'lightbox');
+							$options_linktype_cover_image = array(__('no link at all.', 'wppa'), __('the plain photo (file).', 'wppa'), __('same as title.', 'wppa'), __('lightbox.', 'wppa'), __('a slideshow starting at the photo', 'wppa'));
+							$values_linktype_cover_image = array('none', 'file', 'same', 'lightbox', 'slideshowstartatimage');
 							
 							$options_linktype_lasten = array(
 								__('no link at all.', 'wppa'), 
@@ -4856,6 +4892,14 @@ global $no_default;
 							$slug = 'wppa_shortcode_to_add';
 							$html = wppa_input($slug, '300px');
 							wppa_setting($slug, '12', $name, $desc, $html, $help);
+							
+							$name = __('We use Scripts', 'wppa');
+							$desc = __('Use scripting syntax in shortcode generator.', 'wppa');
+							$help = esc_js(__('This setting defines if the shortcode generator outputs old style script tags or new style shortcodes.', 'wppa'));
+							$slug = 'wppa_use_scripts_in_tinymce';
+							$warn = esc_js('This is strongly discouraged. Using scripts in stead of shortcodes will restrict the functionality of WPPA+. Use only when you have serious conflicts in theme or with other plugins.', 'wppa');
+							$html = wppa_checkbox_warn_on($slug, '', '', $warn);
+							wppa_setting($slug, '13', $name, $desc, $html, $help);
 							}
 							wppa_setting_subheader( 'C', '1', __( 'SEO related settings', 'wppa' ) );
 							{

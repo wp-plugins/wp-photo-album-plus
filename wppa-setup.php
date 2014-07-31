@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 5.4.1
+* Version 5.4.3
 *
 */
 
@@ -551,6 +551,8 @@ Hide Camera info
 						'wppa_album_widget_count'		=> '10',
 						'wppa_album_widget_size'		=> '86',
 						'wppa_related_count'			=> '10',
+						'wppa_tagcloud_min'				=> '8',
+						'wppa_tagcloud_max' 			=> '24',
 						
 						// G Overlay
 						'wppa_ovl_txt_lines'			=> 'auto',	// 1
@@ -725,6 +727,8 @@ Hide Camera info
 						'wppa_allow_ajax'				=> 'no',
 						'wppa_ajax_non_admin'			=> 'no',
 						'wppa_use_photo_names_in_urls'	=> 'no',
+						'wppa_use_album_names_in_urls' 	=> 'no',
+						'wppa_use_short_qargs' 			=> 'no',
 						'wppa_use_pretty_links'			=> 'no',
 						'wppa_update_addressline'		=> 'yes',
 						'wppa_render_shortcode_always'	=> 'no',
@@ -1049,6 +1053,7 @@ Hide Camera info
 						'wppa_og_tags_on'				=> 'yes',
 						'wppa_add_shortcode_to_post'	=> 'no',
 						'wppa_shortcode_to_add'			=> '[wppa type="album" album="#related,desc"][/wppa]',
+						'wppa_use_scripts_in_tinymce' 	=> 'no',
 
 
 						// B New

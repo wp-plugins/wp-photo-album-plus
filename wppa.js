@@ -2,7 +2,7 @@
 //
 // conatins slideshow, theme, ajax and lightbox code
 //
-// Version 5.4.1.001
+// Version 5.4.3
 
 // Part 1: Slideshow
 //
@@ -115,6 +115,7 @@ var wppaComAltSize = 75;
 var wppaBumpViewCount = true;
 var wppaFotomoto = false;
 var wppaArtMonkeyButton = true;
+var wppaShortQargs = false;
 
 // 'Internal' variables ( private )
 var _wppaId = [];
@@ -2084,6 +2085,11 @@ var url;
 	var temp3;
 	var i = 0;
 	var first = true;
+	var pfx;
+	
+	if ( ! wppaShortQargs ) pfx = 'wppa-';
+	else pfx = '';
+
 	if ( temp1[1] ) temp2 = temp1[1].split( "&" );
 
 	var albumSeen = false;
@@ -2092,8 +2098,8 @@ var url;
 		if ( temp2.length > 0 ) {
 			while ( i<temp2.length ) {
 				temp3 = temp2[i].split( "=" );
-				if ( temp3[0] == "wppa-album" ) albumSeen = true;
-				if ( temp3[0] != "wppa-photo" ) {
+				if ( temp3[0] == pfx+'album' ) albumSeen = true;
+				if ( temp3[0] != pfx+'photo' ) {
 					if ( first ) url += "?";
 					else url += "&";
 					first = false;
@@ -2108,15 +2114,29 @@ var url;
 	// Append new &wppa-photo=...
 	if ( first ) url += "?";
 	else url += "&";
-	if ( wppaUsePhotoNamesInUrls ) {
-		url += "wppa-photo="+_wppaNames[mocc][idx];
+	if ( wppaUsePhotoNamesInUrls ) { //&& ! wppaStringContainsForbiddenChars( _wppaNames[mocc][idx] ) ) {
+		url += pfx+'photo='+encodeURIComponent(_wppaNames[mocc][idx]);
 	}
 	else {
-		url += "wppa-photo="+_wppaId[mocc][idx];
+		url += pfx+'photo='+_wppaId[mocc][idx];
 	}
 
 	return url;
 }
+
+function wppaStringContainsForbiddenChars( str ) {
+var forbidden = [ '?', '&', '#', '/', '"', "'" ];
+var i=0;
+
+	while ( i < forbidden.length ) {
+		if ( str.indexOf( forbidden[i] ) != -1 ) {
+			return true;
+		}
+		i++;
+	}
+	return false;
+}
+
 
 // Swipe
 

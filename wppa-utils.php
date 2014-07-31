@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains low-level utility routines
-* Version 5.4.1
+* Version 5.4.3
 *
 */
  
@@ -539,7 +539,8 @@ function wppa_update_option( $option, $value ) {
 								'wppa_art_monkey_display',
 								'wppa_fotomoto_hide_when_running',
 								'wppa_vote_needs_comment',
-								'wppa_fotomoto_min_width'
+								'wppa_fotomoto_min_width',
+								'wppa_use_short_qargs'
 
 		);
 	if ( in_array( $option, $init_js_critical ) ) {
@@ -1207,6 +1208,7 @@ function wppa_sanitize_tags($value, $keepsemi = false) {
 
 // Does the same as wppa_index_string_to_array() but with format validation and error reporting
 function wppa_series_to_array($xtxt) {
+	if ( is_array( $xtxt ) ) return false;
 	$txt = str_replace(' ', '', $xtxt);					// Remove spaces
 	if ( strpos($txt, '.') === false ) return false;	// Not an enum/series, the only legal way to return false
 	if ( strpos($txt, '...') !== false ) {
@@ -1793,7 +1795,10 @@ function wppa_compress_enum( $enum ) {
 }
 
 function wppa_mktree( $path ) {
-	if ( is_dir( $path ) ) return true;
+	if ( is_dir( $path ) ) {
+		@ chmod( $path, 0755 );	
+		return true;
+	}
 	$bret = wppa_mktree( dirname( $path ) );
 	@ mkdir( $path );
 	@ chmod( $path, 0755 );	
@@ -1827,3 +1832,20 @@ function wppa_get_ext( $file ) {
 	return str_replace( wppa_strip_ext( $file ).'.', '', $file );
 }
 
+function wppa_encode_uri_component( $xstr ) {
+	$str = $xstr;
+	$illegal = array( '?', '&', '#', '/', '"', "'", ' ' );
+	foreach ( $illegal as $char ) {
+		$str = str_replace( $char, sprintf( '%%%X', ord($char) ), $str );
+	}
+	return $str;
+}
+
+function wppa_decode_uri_component( $xstr ) {
+	$str = $xstr;
+	$illegal = array( '?', '&', '#', '/', '"', "'", ' ' );
+	foreach ( $illegal as $char ) {
+		$str = str_replace( sprintf( '%%%X', ord($char) ), $char, $str );
+	}
+	return $str;
+}

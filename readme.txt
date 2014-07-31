@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile, cloudinary, fotomoto
-Version: 5.4.2
+Version: 5.4.3
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -188,6 +188,32 @@ If you changed the name of wp-content and/or uploads, besides the additions to w
 **define('WPPA_REL_UPLOADS_PATH', 'wp_content/uploads');**
 **define('WPPA_REL_DEPOT_PATH', 'wp_content');**
 and make the changes therein also.
+
+= 5.4.3 =
+
+= Bug Fixes =
+
+* Fixed a rare problem in the conversion to pretty links, i.e. where the url contained 'wppa-' before the '?'.
+* Thumbnail popups squeezed to small square images in rare cases. Fixed. (5.4.2.001)
+* Fixed improper escaped titles in breadcrumb bar. (5.4.2.002)
+
+= New Features =
+
+* Table I-F13,14: Min and max fontsize for tagclouds.
+* Link from cover image to slideshow starting at cover image, see Table VI-B1: a slideshow starting at the photo.
+* If Table IV-A3 ( Photo names in urls ) is checked, wppa+ will generate urls with the photo names in all places now.
+* Added Table IV-A4 ( Album names in urls ). Works like IV-A2.
+* Added Table IV-A5 ( Use short query args ). Omits the wppa- prefix in query string arguments. 
+Use only when there are no conflicting plugins, like music plugins, that interprete &album= etc.
+Note on using names in urls: Avoid duplicate album names and duplicate photo names within the same album!
+
+= Other Changes =
+
+* Removed the 'Create new style shortcode' checkbox from the TinyMce shortcode generator. It is replaced by the setting in Table IX-B13: We use scripts, with default being off.
+It is highly recommended to use shortcodes only ( no scripts ) as the development of scripted shortcode features is frozen and only maintained for backward compatibility. 
+New features will only be available in new style shortcodes.
+* Shortcode generator for new style shortcodes has been rewritten and is now capable of generating all possible shortcodes.
+* Table IV-A has been renumbered.
 
 = 5.4.2 =
 

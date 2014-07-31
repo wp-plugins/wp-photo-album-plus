@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains the admin menu and startups the admin pages
-* Version 5.3.9
+* Version 5.4.3
 *
 */
 
@@ -157,6 +157,11 @@ function wppa_page_help() {
 
 // General purpose admin functions
 require_once 'wppa-admin-functions.php';
-require_once 'wppa-tinymce.php';
+if ( get_option( 'wppa_use_scripts_in_tinymce' ) == 'yes' ) {
+	require_once 'wppa-tinymce-scripts.php';
+}
+else {
+	require_once 'wppa-tinymce-shortcodes.php';
+}
 require_once 'wppa-maintenance.php';
 

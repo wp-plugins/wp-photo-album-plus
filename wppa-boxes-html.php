@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Various wppa boxes
-* Version 5.4.1
+* Version 5.4.3
 *
 *
 */
@@ -1290,6 +1290,7 @@ global $wppa_opt;
 global $wpdb;
 
 	if ( $wppa['is_upldr'] ) return;
+	if ( strlen( $wppa['start_album'] ) > '0' && ! wppa_is_int( $wppa['start_album'] ) ) return; // Album enumeration
 	
 	$result = '';
 	if ( $wppa_opt['wppa_albname_on_thumbarea'] == $key && $wppa['current_album'] ) {

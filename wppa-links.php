@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Frontend links
-* Version 5.4.1
+* Version 5.4.3
 *
 */
 
@@ -105,8 +105,13 @@ function wppa_get_ajaxlink($key = '') {
 global $wppa;
 global $wppa_lang;
 
-//	$al = admin_url('admin-ajax.php').'?action=wppa&amp;wppa-action=render';
-	$al = WPPA_URL.'/wppa-ajax-front.php?action=wppa&amp;wppa-action=render';
+	if ( wppa_switch( 'wppa_ajax_non_admin' ) ) {
+		$al = WPPA_URL.'/wppa-ajax-front.php?action=wppa&amp;wppa-action=render';
+	}
+	else {
+		$al = admin_url( 'admin-ajax.php' ).'?action=wppa&amp;wppa-action=render';
+	}
+	
 	// See if this call is from an ajax operation or...
 	if ( $wppa['ajax'] ) {
 		if ( isset($_GET['wppa-size']) ) $al .= '&amp;wppa-size='.$_GET['wppa-size'];
@@ -218,13 +223,14 @@ global $wppa;
 }
 
 // get link to slideshow (in loop)
-function wppa_get_slideshow_url($id, $page = '') {
+function wppa_get_slideshow_url($id, $page = '', $pid = '') {
 global $wppa;
 	
 	if ($id) {
 		$occur = $wppa['in_widget'] ? $wppa['widget_occur'] : $wppa['occur'];
 		$w = $wppa['in_widget'] ? 'w' : '';
 		$link = wppa_get_permalink($page).'wppa-album='.$id.'&amp;wppa-slide'.'&amp;wppa-'.$w.'occur='.$occur;	// slide=true changed in slide
+		if ( $pid ) $link .= '&amp;wppa-photo='.$pid;
 		if ( $wppa['is_upldr'] ) $link .= '&amp;wppa-upldr='.$wppa['is_upldr'];
 		// can be extended for other special cases, see wppa_thumb_default() in wppa-functions.php
 	}
@@ -357,16 +363,133 @@ global $wppa_opt;
 }
 
 // Pretty links Encode
-function wppa_convert_to_pretty($xuri) {
+function wppa_convert_to_pretty( $xuri ) {
 global $wppa_opt;
 
-	if ( ! wppa_switch('wppa_use_pretty_links') ) return $xuri;
-	if ( ! get_option('permalink_structure') ) return $xuri;
-	if ( ! isset($_ENV["SCRIPT_URI"]) ) return $xuri;
+	// Make local copy
+	$uri = $xuri;
+	
+	// Any querystring?
+	if ( strpos( $uri, '?' ) === false ) {
+		return $uri;
+	}
+	
+	// Re-order
+	if ( strpos( $uri, '&amp;' ) !== false ) {
+		$amps = true;
+		$uri = str_replace( '&amp;', '&', $uri );
+	}
+	else {
+		$amps = false;
+	}
+	$parts = explode( '?', $uri );
+	$args = explode( '&', $parts[1] );
+	$order = array( 'occur', 'woccur', 
+					'searchstring', 
+					'topten', 'lasten', 'comten', 'featen', 
+					'randseed', 
+					'lang', 
+					'single', 
+					'tag', 
+					'photos-only', 
+					'rel', 
+					'relcount', 
+					'upldr', 
+					'owner', 
+					'rootsearch',
+					'slide', 'cover', 'page',
+					'album', 'photo', 'debug' );
+	$uri = $parts[0] . '?';
+	$first = true;
+	foreach ( $order as $item ) {
+		foreach ( array_keys($args) as $argidx ) {
+			if ( strpos( $args[$argidx], $item ) === 0 || strpos( $args[$argidx], 'wppa-' . $item ) === 0 ) {
+				if ( ! $first ) {
+					$uri .= '&';
+				}
+				$uri .=  $args[$argidx];
+				unset ( $args[$argidx] );
+				$first = false;
+			}
+		}
+	}
+	foreach ( $args as $arg ) {	// append unprocessed items
+		$uri .= '&' . $arg;
+	}
+	if ( $amps ) {
+		$uri = str_replace( '&', '&amp;', $uri );
+	} 
+
+	// First filter for short query args
+	if ( wppa_switch( 'wppa_use_short_qargs' ) ) {
+		$uri = str_replace( '?wppa-', '?', $uri );
+		$uri = str_replace( '&amp;wppa-', '&amp;', $uri );
+		$uri = str_replace( '&wppa-', '&', $uri );
+	}
+
+	// Now filter for album names in urls
+	if ( wppa_switch( 'wppa_use_album_names_in_urls' ) ) {
+		$apos = strpos( $uri, 'album=' );
+		if ( $apos !== false ) {
+			$start = $apos + '6';
+			$end = strpos( $uri, '&', $start );
+		}
+		$before = substr( $uri, 0, $start );
+		if ( $end ) {
+			$albnum = substr( $uri, $start, $end - $start );
+			if ( wppa_is_int( $albnum ) ) {	// Can convert single integer album ids only
+				$after	= substr( $uri, $end );
+				$albnam = stripslashes( wppa_get_album_item( $albnum, 'name' ) );
+				$albnam = wppa_encode_uri_component( $albnam );
+				$uri = $before . $albnam . $after;
+			}
+		}
+		else {
+			$albnum = substr( $uri, $start );
+			if ( wppa_is_int( $albnum ) ) {	// Can convert single integer album ids only
+				$albnam = stripslashes( wppa_get_album_item( $albnum, 'name' ) );
+				$albnam = wppa_encode_uri_component( $albnam );
+				$uri = $before . $albnam;
+			}
+		}
+	}
+	
+	// Now filter for photo names in urls
+	if ( wppa_switch( 'wppa_use_photo_names_in_urls' ) ) {
+		$ppos = strpos( $uri, 'photo=' );
+		if ( $ppos !== false ) {
+			$start = $ppos + '6';
+			$end = strpos( $uri, '&', $start );
+		}
+		$before = substr( $uri, 0, $start );
+		if ( $end ) {
+			$id = substr( $uri, $start, $end - $start );
+			if ( wppa_is_int( $id ) ) {	// Can convert single integer photo ids only
+				$after = substr( $uri, $end );
+				$pname = stripslashes( wppa_get_photo_item( $id, 'name' ) );
+				$pname = wppa_encode_uri_component( $pname );
+				$uri = $before . $pname . $after;
+			}
+		}
+		else {
+			$id = substr( $uri, $start );
+			if ( wppa_is_int( $id ) ) {	// Can convert single integer photo ids only
+				$pname = stripslashes( wppa_get_photo_item( $id, 'name' ) );
+				$pname = wppa_encode_uri_component( $pname );
+				$uri = $before . $pname;
+			}
+		}
+	}
+	
+	// Now the actual conversion to pretty links
+	if ( ! wppa_switch('wppa_use_pretty_links') ) return $uri;
+	if ( ! get_option('permalink_structure') ) return $uri;
+	if ( ! isset($_ENV["SCRIPT_URI"]) ) return $uri;
 
 	// Do some preprocessing
-	$uri = str_replace('&amp;', '&', $xuri);
-	$uri = str_replace('wppa-', '', $uri);
+	$uri = str_replace('&amp;', '&', $uri);
+	$uri = str_replace('?wppa-', '?', $uri);
+	$uri = str_replace('&wppa-', '&', $uri);
 
 	// Test if querystring exists
 	$qpos = stripos($uri, '?');
@@ -815,6 +938,7 @@ global $wpdb;
 	
 	$result['target'] = '_self';
 	$result['title'] = '';
+	$result['onclick'] = '';
 	switch ( $wich ) {
 		case 'sphoto':
 			$type = $wppa_opt['wppa_sphoto_linktype'];
@@ -880,6 +1004,12 @@ global $wpdb;
 			$page = $wppa_opt['wppa_coverimg_linkpage'];
 			if ( $page == '0' ) $page = '-1';
 			if ( wppa_switch( 'wppa_coverimg_blank' ) ) $result['target'] = '_blank';
+			if ( $type == 'slideshowstartatimage' ) {
+				$result['url'] = wppa_get_slideshow_url( $album, $page, $id);
+				$result['is_url'] = true;
+				$result['is_lightbox'] = false;
+				return $result;
+			}
 			break;
 		case 'tnwidget':
 			$type = $wppa_opt['wppa_thumbnail_widget_linktype'];

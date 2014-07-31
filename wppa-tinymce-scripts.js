@@ -1,8 +1,8 @@
-/* wppa-tinymce.js
+/* wppa-tinymce-scripts.js
 * Pachkage: wp-photo-album-plus
 *
 *
-* Version 5.3.9
+* Version 5.4.3
 *
 */
 
@@ -16,9 +16,6 @@ tinymce.PluginManager.add('wppagallery', function(editor, url) {
 			H = jQuery(window).height();
 			H = H - 120;
 			tb_show( 'WPPA+ Shortcode Generator', '#TB_inline?width=' + W + '&height=' + H + '&inlineId=wppagallery-form' );
-
-			var isNew = wppa_getCookie('wppanewstyle') == 'on';
-			if (isNew) document.getElementById('wppagallery-newstyle').checked = 'checked';
 		}
 		
 		editor.addButton('mygallery_button', {
@@ -73,7 +70,6 @@ jQuery(function(){
 					if ( alb == '' ) alb = '0'; else alb = parseInt(alb);
 				var cnt		= table.find('#wppagallery-cnt').val();
 					if ( cnt == '' ) cnt = '0'; else cnt = parseInt(cnt);
-				var newstyle = document.getElementById('wppagallery-newstyle').checked;
 				
 				// Sinitize input
 				if (size == 0) {}								// Ok, use default
@@ -104,14 +100,7 @@ jQuery(function(){
 						return;
 					}
 				}
-				if ( type == 'filmonly' && ! newstyle ) {
-					alert('Sorry, filmonly is as newstyle shortcode available only.\n\nPlease check the new style checkbox and try again.');
-					return;
-				}
-				if ( type == 'upload' && ! newstyle ) {
-					alert('Sorry, the upload box is as newstyle shortcode available only.\n\nPlease check the new style checkbox and try again.');
-					return;
-				}
+
 				if ( album == '#tags' && ! tags ) {	
 					alert('Select at least one tag and try again.');
 					return;
@@ -159,57 +148,8 @@ jQuery(function(){
 				if ( align != 'none' )
 					shortcode += ' %%align='+align+'%%';			
 				
-				// Make the new shortcode
-				var newShortcode = '[wppa type="'+type+'"';
-				
-				if ( type == 'generic' ) {
-				}
-				else if ( type == 'photo' || type == 'mphoto' || type == 'slphoto' )	{			
-					newShortcode += ' photo="'+photo+'"';
-				}
-				else if ( album == '#tags' ) {
-					newShortcode += ' album="#tags,';
-					var sep = andor ? ',' : ';';
-					var last = tags.length - 1;
-					for (var tag in tags) {
-						newShortcode += tags[tag];
-						if ( tag != last ) newShortcode += sep;
-					}
-					newShortcode += '"';
-				}
-				else {
-					var temp = album.split('|');
-					if ( temp[0] == '#topten' || temp[0] == '#lasten' || temp[0] == '#comten' || temp[0] == '#featen' ) {
-						if ( cnt != '0' ) {
-							newShortcode += ' album="'+temp[0]+','+alb+','+cnt+'"';
-						}
-						else if ( alb != '0' ) {
-							newShortcode += ' album="'+temp[0]+','+alb+'"';
-						}
-						else {
-							newShortcode += ' album="'+temp[0]+'"';
-						}
-					}
-					else {
-						if ( album || type != 'upload' ) {
-							newShortcode += ' album="'+album+'"';
-						}
-					}
-				}
-				
-				if ( size != 0 )  newShortcode += ' size="'+size+'"';
-				if ( align != 'none' ) newShortcode += ' align="'+align+'"';
-				newShortcode += '][/wppa]';
-				
-				// inserts the shortcode into the active editor and save the newstyle checkbox
-				if (newstyle) {
-					tinyMCE.activeEditor.execCommand('mceInsertContent', 0, newShortcode);
-					wppa_setCookie('wppanewstyle', 'on', '365');
-				}
-				else {
-					tinyMCE.activeEditor.execCommand('mceInsertContent', 0, shortcode);
-					wppa_setCookie('wppanewstyle', 'off', '365');
-				}
+				// inserts the shortcode into the active editor
+				tinyMCE.activeEditor.execCommand('mceInsertContent', 0, shortcode);
 				
 				// closes Thickbox
 				tb_remove();
