@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 *
-* Version 5.4.3
+* Version 5.4.4
 *
 */
 
@@ -248,6 +248,7 @@ global $wppa_opt;
 						'<option value="#last" >'.__('The most recently modified album', 'wppa').'</option>'.
 						'<option value="#owner" >'.__('Albums owned by a certain user', 'wppa').'</option>'.
 						'<option value="#cat" >'.__('Albums tagged with a certain category', 'wppa').'</option>'.
+						'<option value="#all" >'.__('All albums in the system', 'wppa').'</option>'.
 					'</select>'.
 				'</td>'.
 			'</tr>'.

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 5.4.3
+* Version 5.4.4
 *
 */
 
@@ -327,6 +327,15 @@ global $silent;
 	
 	// Check required directories
 	if ( ! wppa_check_dirs() ) $wppa['error'] = true;
+	
+	// Create .htaccess file
+	$file = fopen( WPPA_UPLOAD_PATH . '/.htaccess', 'wb' );
+	if ( $file ) {
+		fwrite( $file, '<IfModule mod_rewrite.c>' );
+		fwrite( $file, "\n" . 'RewriteEngine Off' );
+		fwrite( $file, "\n" . '</IfModule>' );
+		fclose( $file );
+	}
 		
 	// Copy factory supplied watermarks
 	$frompath = WPPA_PATH . '/watermarks';

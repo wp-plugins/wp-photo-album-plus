@@ -189,6 +189,26 @@ If you changed the name of wp-content and/or uploads, besides the additions to w
 **define('WPPA_REL_DEPOT_PATH', 'wp_content');**
 and make the changes therein also.
 
+= 5.4.4 =
+
+= Bug Fixes =
+
+* Album description is no longer shown on thumbnail displays if the display contains thumbnails of various albums.
+* On some installations accessing wppa+ photo files by their url ended up in a 404 error. Fixed. See Other Changes: .htaccess file.
+* Fixed a problem in the interpretation of querystring arguments where album or photo names contained single or double quotes.
+* Fixed a rights problem in front-end photo edit when upload rights were from Table VII-B only.
+* Fixed a problem in shortcodes with type="covers". Links from displays of such shortcodes never showed photos, only albums.
+* Albums selected with an album enumeration are now sorted accoring to the setting in Table IV-D1
+
+= New Features =
+
+* [wppa type="cover" album="#all"][/wppa] will now also work.
+
+= Other Changes =
+
+* A .htaccess file is now placed in the .../uploads/wppa/ folder to grant normal http access to wppa photo files.
+This is to prevent the effect working down to wppa/ from other plugins .htaccess files rewriting http access in the .../uploads/ folder to an attachment page and/or generating a 404 error.
+
 = 5.4.3 =
 
 = Bug Fixes =

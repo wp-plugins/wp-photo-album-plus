@@ -2,7 +2,7 @@
 /* wppa-ajax.php
 *
 * Functions used in ajax requests
-* version 5.4.1
+* version 5.4.4
 *
 */
 
@@ -49,7 +49,7 @@ global $wppa_session;
 			$photo = $_REQUEST['photo-id'];
 			$ok = false;
 			if ( current_user_can( 'wppa_admin' ) ) $ok = true;
-			if ( wppa_get_user() == wppa_get_photo_owner( $photo ) && current_user_can( 'wppa_upload' ) && wppa_switch( 'wppa_upload_edit' ) ) $ok = true;
+			if ( wppa_get_user() == wppa_get_photo_owner( $photo ) && ( current_user_can( 'wppa_upload' ) || ( is_user_logged_in() && wppa_switch( 'wppa_upload_edit' ) ) ) ) $ok = true;
 			if ( ! $ok ) die( 'You do nat have sufficient rights to do this' );
 			require_once 'wppa-photo-admin-autosave.php';
 			$wppa['front_edit'] = true;

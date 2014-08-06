@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Various funcions
-* Version 5.4.3
+* Version 5.4.4
 *
 */
 
@@ -115,6 +115,7 @@ global $wppa_session;
 		$wppa['is_comten']		= $wppa['comten_count'] != '0';
 		$wppa['featen_count']	= wppa_get_get( 'featen' );
 		$wppa['is_featen']		= $wppa['featen_count'] != '0';
+		$wppa['albums_only'] 	= wppa_get_get( 'albums-only' );
 		$wppa['photos_only'] 	= wppa_get_get( 'photos-only' );
 		$wppa['related_count'] 	= wppa_get_get( 'relcount' );
 		$wppa['is_related'] 	= wppa_get_get( 'rel' );
@@ -837,7 +838,15 @@ global $wppa_session;
 		if ( ! $id ) $id = '0';
 	
 		// Do the query
-		if ( $wppa['last_albums'] ) {	// is_cover = true. For the order sequence, see remark in wppa_albums()
+		if ( $id == '-2' ) {	// All albums
+			if ( $wppa['is_cover'] ) {
+				$q = "SELECT * FROM `".WPPA_ALBUMS."` ".wppa_get_album_order();
+				wppa_dbg_q( 'Q11d' );
+				$albums = $wpdb->get_results( $q, ARRAY_A );
+			}
+			else $albums = false;
+		}
+		elseif ( $wppa['last_albums'] ) {	// is_cover = true. For the order sequence, see remark in wppa_albums()
 			if ( $wppa['last_albums_parent'] ) {
 				$q = $wpdb->prepare( "SELECT * FROM `".WPPA_ALBUMS."` WHERE `a_parent` = %s ORDER BY `timestamp` DESC LIMIT %d", $wppa['last_albums_parent'], $wppa['last_albums'] );
 			}
@@ -863,10 +872,10 @@ global $wppa_session;
 		elseif ( strpos( $id, '.' ) !== false ) {	// Album enum
 			$ids = wppa_series_to_array( $id );
 			if ( $wppa['is_cover'] ) {
-				$q = "SELECT * FROM `".WPPA_ALBUMS."` WHERE `id` = ".implode( " OR `id` = ", $ids );
+				$q = "SELECT * FROM `".WPPA_ALBUMS."` WHERE `id` = ".implode( " OR `id` = ", $ids )." ".wppa_get_album_order();
 			}
 			else {
-				$q = "SELECT * FROM `".WPPA_ALBUMS."` WHERE `a_parent` = ".implode( " OR `a_parent` = ", $ids );
+				$q = "SELECT * FROM `".WPPA_ALBUMS."` WHERE `a_parent` = ".implode( " OR `a_parent` = ", $ids )." ".wppa_get_album_order();
 			}
 			wppa_dbg_q( 'Q11c' );
 			$albums = $wpdb->get_results( $q, ARRAY_A );
@@ -3543,6 +3552,9 @@ global $allphotos;
 	}
 	
 	$name = wppa_decode_uri_component( $xname );
+	$name = str_replace( '\'', '%', $name );	// A trick for single quotes
+	$name = str_replace( '"', '%', $name );		// A trick for double quotes
+	$name = stripslashes( $name );
 	
 	if ( wppa_is_int( $album ) ) {
 		$alb = $album;
@@ -3582,27 +3594,38 @@ global $allalbums;
 	}
 	
 	$name = wppa_decode_uri_component( $xname );
-	
+	$name = str_replace( '\'', '%', $name );	// A trick for single quotes
+	$name = str_replace( '"', '%', $name );		// A trick for double quotes
+	$name = stripslashes( $name );
+
 	$albs = $wpdb->get_results( "SELECT `id` FROM `".WPPA_ALBUMS."` WHERE `name` LIKE '%".$name."%'", ARRAY_A );
 	
 	if ( $albs ) {
 		if ( count( $albs == 1 ) ) {
 			wppa_dbg_msg( 'Alb '.$albs[0]['id'],' found for '.$xname );
-			return $albs[0]['id'];
+			$aid = $albs[0]['id'];
 		}
 		else {
 			wppa_dbg_msg( 'Dups found for '.$xname );
 			if ( $report_dups ) {
-				return false;
+				$aid = false;
 			}
 			else {
-				return $albs[0]['id'];
+				$aid = $albs[0]['id'];
 			}
 		}
 	}
 	else {
-		return false;
+		$aid = false;
 	}
+	
+	if ( $aid ) {
+		wppa_dbg_msg( 'Aid '.$aid.' found for '.$name );
+	}
+	else {
+		wppa_dbg_msg( 'No aid found for '.$name );
+	}
+	return $aid;
 }
 
 // Perform the frontend Create album, Upload photo and Edit album
