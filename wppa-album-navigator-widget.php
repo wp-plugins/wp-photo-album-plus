@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display thumbnail photos
-* Version 5.4.0
+* Version 5.4.5
 */
 
 class AlbumNavigatorWidget extends WP_Widget {
@@ -130,6 +130,7 @@ class AlbumNavigatorWidget extends WP_Widget {
 			if ( isset( $_REQUEST['wppa-album'] ) ) $ca = $_REQUEST['wppa-album'];
 			elseif ( isset( $_REQUEST['album'] ) ) $ca = $_REQUEST['album'];
 			else $ca = '0';
+			$ca = wppa_force_numeric_else( $ca, '0' );
 		}
 		else {
 			$level++;

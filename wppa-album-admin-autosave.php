@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * create, edit and delete albums
-* version 5.4.1
+* version 5.4.5
 *
 */
 
@@ -96,6 +96,7 @@ function _wppa_admin() {
 					wppa_flush_treecounts($edit_id);
 					wppa_index_add('album', $id);
 					wppa_update_message(__('Album #', 'wppa') . ' ' . $edit_id . ' ' . __('Added.', 'wppa'));
+					wppa_create_pl_htaccess();
 				}
 			}
 			else {

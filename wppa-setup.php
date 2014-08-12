@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 5.4.4
+* Version 5.4.5
 *
 */
 
@@ -320,6 +320,10 @@ global $silent;
 			wppa_flush_treecounts();
 		}
 		
+		if ( $old_rev <= '5405' ) {
+			wppa_create_pl_htaccess();
+		}
+		
 	}
 	
 	// Set Defaults
@@ -328,15 +332,9 @@ global $silent;
 	// Check required directories
 	if ( ! wppa_check_dirs() ) $wppa['error'] = true;
 	
-	// Create .htaccess file
-	$file = fopen( WPPA_UPLOAD_PATH . '/.htaccess', 'wb' );
-	if ( $file ) {
-		fwrite( $file, '<IfModule mod_rewrite.c>' );
-		fwrite( $file, "\n" . 'RewriteEngine Off' );
-		fwrite( $file, "\n" . '</IfModule>' );
-		fclose( $file );
-	}
-		
+	// Create .htaccess file in .../wp-content/uploads/wppa
+	wppa_create_wppa_htaccess();
+
 	// Copy factory supplied watermarks
 	$frompath = WPPA_PATH . '/watermarks';
 	$watermarks = glob($frompath . '/*.png');
@@ -498,6 +496,7 @@ Hide Camera info
 						// Table I: Sizes
 						// A System
 						'wppa_colwidth' 				=> 'auto',	// 1
+						'wppa_initial_colwidth' 		=> '640',
 						'wppa_resize_on_upload' 		=> 'no',	// 2
 						'wppa_resize_to'				=> '0',		// 3
 						'wppa_min_thumbs' 				=> '1',		// 4
@@ -1124,6 +1123,23 @@ Hide Camera info
 						'wppa_slide_order_split'		=> '0,1,2,3,4,5,6,7,8,9,10,11',
 						'wppa_swap_namedesc' 			=> 'no',
 						'wppa_split_namedesc'			=> 'no',
+						
+						// H Source file management and import/upload
+						'wppa_keep_source_admin'	=> 'no',
+						'wppa_keep_source_frontend' => 'no',
+						'wppa_source_dir'			=> WPPA_ABSPATH.WPPA_UPLOAD.'/wppa-source',
+						'wppa_keep_sync'			=> 'yes',
+						'wppa_remake_add'			=> 'yes',
+						'wppa_save_iptc'			=> 'yes',
+						'wppa_save_exif'			=> 'yes',
+						'wppa_exif_max_array_size'	=> '10',
+						'wppa_chgsrc_is_restricted'		=> 'no',
+						'wppa_newpag_create'			=> 'no',
+						'wppa_newpag_content'			=> '[wppa type="cover" album="w#album" align="center"][/wppa]',
+						'wppa_newpag_type'				=> 'page',
+						'wppa_newpag_status'			=> 'publish',
+
+						'wppa_pl_dirname' 				=> 'wppa-pl',
 
 						// J Other plugins
 						'wppa_cp_points_comment'		=> '0',
@@ -1132,6 +1148,12 @@ Hide Camera info
 						'wppa_use_scabn'				=> 'no',
 						
 						// K External services
+						'wppa_cdn_service'			=> '',
+						'wppa_cdn_cloud_name'		=> '',
+						'wppa_cdn_api_key'			=> '',
+						'wppa_cdn_api_secret'		=> '',
+						'wppa_cdn_service_update'	=> 'no',
+						'wppa_delete_all_from_cloudinary' 	=> '',
 						'wppa_gpx_implementation' 		=> 'none',
 						'wppa_map_height' 				=> '300',
 						'wppa_map_apikey' 				=> '',
@@ -1170,30 +1192,7 @@ Hide Camera info
 						// QR code settings
 						'wppa_qr_size'				=> '200',
 						'wppa_qr_color'				=> '#000000',
-						'wppa_qr_bgcolor'			=> '#FFFFFF',
-						
-						// H Source file management and import/upload
-						'wppa_keep_source_admin'	=> 'no',
-						'wppa_keep_source_frontend' => 'no',
-						'wppa_source_dir'			=> WPPA_ABSPATH.WPPA_UPLOAD.'/wppa-source',
-						'wppa_keep_sync'			=> 'yes',
-						'wppa_remake_add'			=> 'yes',
-						'wppa_save_iptc'			=> 'yes',
-						'wppa_save_exif'			=> 'yes',
-						'wppa_exif_max_array_size'	=> '10',
-						'wppa_chgsrc_is_restricted'		=> 'no',
-						'wppa_newpag_create'			=> 'no',
-						'wppa_newpag_content'			=> '[wppa type="cover" album="w#album" align="center"][/wppa]',
-						'wppa_newpag_type'				=> 'page',
-						'wppa_newpag_status'			=> 'publish',
-
-						// J CDN Services
-						'wppa_cdn_service'			=> '',
-						'wppa_cdn_cloud_name'		=> '',
-						'wppa_cdn_api_key'			=> '',
-						'wppa_cdn_api_secret'		=> '',
-						'wppa_cdn_service_update'	=> 'no',
-						'wppa_delete_all_from_cloudinary' 	=> ''
+						'wppa_qr_bgcolor'			=> '#FFFFFF'
 						
 						);
 

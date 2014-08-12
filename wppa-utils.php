@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains low-level utility routines
-* Version 5.4.3
+* Version 5.4.5
 *
 */
  
@@ -1460,6 +1460,7 @@ global $thumb;
 // Get url of photo with highest available resolution.
 // Not for display ( need not to download fast ) but for external services like Fotomoto
 function wppa_get_hires_url( $id ) {
+	if ( wppa_is_video( $id ) ) return '';
 	$source_path = wppa_get_source_path( $id );
 	$wp_content = trim( str_replace( site_url(), '', content_url() ), '/' );
 	if ( file_exists( $source_path ) ) {
@@ -1474,16 +1475,30 @@ function wppa_get_hires_url( $id ) {
 	return $hires_url;
 }
 function wppa_get_lores_url( $id ) {
+	if ( wppa_is_video( $id ) ) return '';
 	$lores_url = wppa_get_photo_url( $id );
 	$temp = explode( '?', $lores_url );
 	$lores_url = $temp['0'];
 	return $lores_url;
 }
 function wppa_get_tnres_url( $id ) {
+	if ( wppa_is_video( $id ) ) return '';
 	$tnres_url = wppa_get_thumb_url( $id );
 	$temp = explode( '?', $tnres_url );
 	$tnres_url = $temp['0'];
 	return $tnres_url;
+}
+function wppa_get_source_pl( $id ) {
+	if ( wppa_is_video( $id ) ) return '';
+	$result = '';
+	$source_path = wppa_get_source_path( $id );
+	if ( file_exists( $source_path ) ) {
+		$result = 	content_url() . '/' . 						// http://www.mysite.com/wp-content/
+					wppa_opt( 'wppa_pl_dirname' ) . '/' .		// wppa-pl/
+					sanitize_file_name( wppa_get_album_item( wppa_get_photo_item( $id, 'album' ), 'name' ) ) . '/' .	// My-Album
+					basename( $source_path );					// My-Photo.jpg
+	}
+	return $result;
 }
 
 function wppa_get_source_dir() {
@@ -1846,6 +1861,13 @@ function wppa_decode_uri_component( $xstr ) {
 	$illegal = array( '?', '&', '#', '/', '"', "'", ' ' );
 	foreach ( $illegal as $char ) {
 		$str = str_replace( sprintf( '%%%X', ord($char) ), $char, $str );
+		$str = str_replace( sprintf( '%%%x', ord($char) ), $char, $str );
 	}
 	return $str;
+}
+
+function wppa_force_numeric_else( $value, $default ) {
+	if ( ! $value ) return $value;
+	if ( ! wppa_is_int( $value ) ) return $default;
+	return $value;
 }

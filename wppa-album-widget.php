@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display thumbnail albums
-* Version 5.4.4
+* Version 5.4.5
 */
 
 if ( ! defined( 'ABSPATH' ) ) die( "Can't load this file directly" );
@@ -113,7 +113,23 @@ class AlbumWidget extends WP_Widget {
 					if ($link) {
 						if ( $link['is_url'] ) {	// Is a href
 							$widget_content .= "\n\t".'<a href="'.$link['url'].'" title="'.$title.'" target="'.$link['target'].'" >';
+							if ( wppa_is_video( $image['id'] ) ) {
+								$widget_content .= wppa_get_video_html( array( 	'id' 			=> $image['id'], 
+																				'width' 		=> $width, 
+																				'height' 		=> $height, 
+																				'controls' 		=> false, 
+																				'margin-top' 	=> $imgstyle_a['margin-top'], 
+																				'margin-bottom' => $imgstyle_a['margin-bottom'],
+																				'cursor' 		=> 'pointer',
+																				'events' 		=> $imgevents,
+																				'tagid' 		=> 'i-'.$image['id'].'-'.$wppa['mocc'],
+																				'title' 		=> $title
+																			 )
+																	 );
+							}
+							else {
 								$widget_content .= "\n\t\t".'<img id="i-'.$image['id'].'-'.$wppa['mocc'].'" title="'.$title.'" src="'.$imgurl.'" width="'.$width.'" height="'.$height.'" style="'.$imgstyle.' cursor:pointer;" '.$imgevents.' alt="'.esc_attr(wppa_qtrans($image['name'])).'">';
+							}
 							$widget_content .= "\n\t".'</a>';
 						}
 						elseif ( $link['is_lightbox'] ) {
@@ -130,17 +146,65 @@ class AlbumWidget extends WP_Widget {
 								$link = wppa_get_photo_url( $thumb['id'], '', $siz['0'], $siz['1'] );
 								$widget_content .= "\n\t".'<a href="'.$link.'" data-videohtml="'.esc_attr( wppa_get_video_body( $thumb['id'] ) ).'" rel="'.$wppa_opt['wppa_lightbox_name'].'[alw-'.$wppa['mocc'].'-'.$album['id'].']" title="'.$title.'" >';
 								if ( $thumb['id'] == $image['id'] ) {		// the cover image
-									$widget_content .= "\n\t\t".'<img id="i-'.$image['id'].'-'.$wppa['mocc'].'" title="'.wppa_zoom_in().'" src="'.$imgurl.'" width="'.$width.'" height="'.$height.'" style="'.$imgstyle.$cursor.'" '.$imgevents.' alt="'.esc_attr(wppa_qtrans($image['name'])).'">';
+									if ( wppa_is_video( $image['id'] ) ) {
+										$widget_content .= wppa_get_video_html( array( 	'id' 			=> $image['id'], 
+																						'width' 		=> $width, 
+																						'height' 		=> $height, 
+																						'controls' 		=> false, 
+																						'margin-top' 	=> $imgstyle_a['margin-top'], 
+																						'margin-bottom' => $imgstyle_a['margin-bottom'],
+																						'cursor' 		=> $cursor,
+																						'events' 		=> $imgevents,
+																						'tagid' 		=> 'i-'.$image['id'].'-'.$wppa['mocc'],
+																						'title' 		=> wppa_zoom_in()
+																					 )
+																			 );									
+									}
+									else {
+										$widget_content .= "\n\t\t".'<img id="i-'.$image['id'].'-'.$wppa['mocc'].'" title="'.wppa_zoom_in().'" src="'.$imgurl.'" width="'.$width.'" height="'.$height.'" style="'.$imgstyle.$cursor.'" '.$imgevents.' alt="'.esc_attr(wppa_qtrans($image['name'])).'">';
+									}
 								}
 								$widget_content .= "\n\t".'</a>';
 							}
 						}
 						else { // Is an onclick unit
-							$widget_content .= "\n\t".'<img id="i-'.$image['id'].'-'.$wppa['mocc'].'" title="'.$title.'" src="'.$imgurl.'" width="'.$width.'" height="'.$height.'" style="'.$imgstyle.' cursor:pointer;" '.$imgevents.' onclick="'.$link['url'].'" alt="'.esc_attr(wppa_qtrans($image['name'])).'">';					
+							if ( wppa_is_video( $image['id'] ) ) {
+								$widget_content .= wppa_get_video_html( array( 	'id' 			=> $image['id'], 
+																				'width' 		=> $width, 
+																				'height' 		=> $height, 
+																				'controls' 		=> false, 
+																				'margin-top' 	=> $imgstyle_a['margin-top'], 
+																				'margin-bottom' => $imgstyle_a['margin-bottom'],
+																				'cursor' 		=> 'pointer',
+																				'events' 		=> $imgevents.' onclick="'.$link['url'].'"',
+																				'tagid' 		=> 'i-'.$image['id'].'-'.$wppa['mocc'],
+																				'title' 		=> $title
+																			 )
+																	 );
+							}
+							else {
+								$widget_content .= "\n\t".'<img id="i-'.$image['id'].'-'.$wppa['mocc'].'" title="'.$title.'" src="'.$imgurl.'" width="'.$width.'" height="'.$height.'" style="'.$imgstyle.' cursor:pointer;" '.$imgevents.' onclick="'.$link['url'].'" alt="'.esc_attr(wppa_qtrans($image['name'])).'">';	
+							}
 						}
 					}
 					else {
-						$widget_content .= "\n\t".'<img id="i-'.$image['id'].'-'.$wppa['mocc'].'" title="'.$title.'" src="'.$imgurl.'" width="'.$width.'" height="'.$height.'" style="'.$imgstyle.'" '.$imgevents.' alt="'.esc_attr(wppa_qtrans($image['name'])).'">';
+						if ( wppa_is_video( $image['id'] ) ) {
+							$widget_content .= wppa_get_video_html( array( 	'id' 			=> $image['id'], 
+																			'width' 		=> $width, 
+																			'height' 		=> $height, 
+																			'controls' 		=> false, 
+																			'margin-top' 	=> $imgstyle_a['margin-top'], 
+																			'margin-bottom' => $imgstyle_a['margin-bottom'],
+																			'cursor' 		=> 'pointer',
+																			'events' 		=> $imgevents,
+																			'tagid' 		=> 'i-'.$image['id'].'-'.$wppa['mocc'],
+																			'title' 		=> $title
+																		 )
+																 );
+						}
+						else {
+							$widget_content .= "\n\t".'<img id="i-'.$image['id'].'-'.$wppa['mocc'].'" title="'.$title.'" src="'.$imgurl.'" width="'.$width.'" height="'.$height.'" style="'.$imgstyle.'" '.$imgevents.' alt="'.esc_attr(wppa_qtrans($image['name'])).'">';
+						}
 					}
 				
 					if ($name == 'yes') $widget_content .= "\n\t".'<span style="font-size:'.$wppa_opt['wppa_fontsize_widget_thumb'].'px; min-height:100%;">'.__(stripslashes($album['name'])).'</span>';

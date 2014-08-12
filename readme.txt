@@ -2,12 +2,12 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile, cloudinary, fotomoto
-Version: 5.4.4
+Version: 5.4.5
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
 Requires at least: 3.9
-Tested up to: 3.9.1
+Tested up to: 3.9.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -188,6 +188,28 @@ If you changed the name of wp-content and/or uploads, besides the additions to w
 **define('WPPA_REL_UPLOADS_PATH', 'wp_content/uploads');**
 **define('WPPA_REL_DEPOT_PATH', 'wp_content');**
 and make the changes therein also.
+
+= 5.4.5 =
+
+= Bug Fixes =
+
+* When clicking the link Remake files in front edit photo, the Exit and Refresh button did not come back. Fixed.
+
+= New Features =
+
+* If source files are kept ( Table IX-H1,2 ) and the system is single site or multisite_global, there is an automatic permalink structure to source image files.
+Use the keyword w#pl in photo descriptions; if the source is not available, this keyword displays nothing.
+The permalink has the following structure: `http://www.mysite.com/wp-content/wppa-pl/My-album/My-photo.jpg`.
+My-album stands for the wppa+ album name, My-photo.jpg for the name of the photo.
+You can change the name wppa-pl into any convenient filesystem safe name like 'albums' in Table IX-H14: Permalink root.
+Make sure you choose a unique name inside .../wp-content/ for the permalink root.
+There is no hierarchical album structure, and it is your responsability to have no duplicate album names, and no duplicate photo names inside the same album.
+* The initial column width for responsive themes is now configurable in Table I-A1.1.
+* The lightbox will be repeatedly initialized during page construction to facilitate clicks before document.reay.
+
+= Other Changes =
+
+* Fixed various security issues.
 
 = 5.4.4 =
 

@@ -2,7 +2,7 @@
 /* wppa-ajax.php
 *
 * Functions used in ajax requests
-* version 5.4.4
+* version 5.4.5
 *
 */
 
@@ -781,7 +781,12 @@ global $wppa_session;
 			$query = $wpdb->prepare( 'UPDATE '.WPPA_ALBUMS.' SET `'.$item.'` = %s WHERE `id` = %s', $value, $album );
 			$iret = $wpdb->query( $query );
 			if ( $iret !== false ) {
-				if ( $item == 'name' || $item == 'description' || $item == 'cats' ) wppa_index_update( 'album', $album );
+				if ( $item == 'name' || $item == 'description' || $item == 'cats' ) {
+					wppa_index_update( 'album', $album );
+				}
+				if ( $item == 'name' ) {
+					wppa_create_pl_htaccess();
+				}
 				echo '||0||'.sprintf( __( '<b>%s</b> of album %s updated', 'wppa' ), $itemname, $album );
 				if ( $item == 'upload_limit' ) {
 					echo '||';
@@ -1753,6 +1758,14 @@ global $wppa_session;
 					
 				case 'wppa_errorlog_purge':
 					@ unlink( WPPA_CONTENT_PATH.'/wppa-depot/admin/error.log' );
+					break;
+					
+				case 'wppa_pl_dirname':
+					$value = sanitize_file_name( $value );
+					$value = trim( $value, ' /' );
+					if ( ! wppa_create_pl_htaccess( $value ) ) {
+						$wppa['error'] = '714';
+					}
 					break;
 					
 				default:

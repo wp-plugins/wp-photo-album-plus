@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 5.4.3
+* Version 5.4.5
 *
 */
 
@@ -531,6 +531,14 @@ global $no_default;
 							$html = wppa_input($slug, '40px', '', __('pixels wide', 'wppa'), $onchange);
 							wppa_setting($slug, '1', $name, $desc, $html, $help);
 
+							$name = __('Initial Width', 'wppa');
+							$desc = __('The most often displayed colun width in responsive theme', 'wppa');
+							$help = esc_js(__('Change this value only if your responsive theme shows initially a wrong column width.', 'wppa'));
+							$slug = 'wppa_initial_colwidth';
+							$html = wppa_input($slug, '40px', '', __('pixels wide', 'wppa'));
+							$class = 'wppa_init_resp_width';
+							wppa_setting($slug, '1.1', $name, $desc, $html, $help, $class);
+							
 							$name = __('Resize on Upload', 'wppa');
 							$desc = __('Indicate if the photos should be resized during upload.', 'wppa');
 							$help = esc_js(__('If you check this item, the size of the photos will be reduced to the dimension specified in the next item during the upload/import process.', 'wppa'));
@@ -5557,6 +5565,15 @@ global $no_default;
 							$values = array('publish', 'draft');	// 'draft' | 'publish' | 'pending'| 'future' | 'private'
 							$html = wppa_select($slug, $options, $values);
 							wppa_setting($slug, '13', $name, $desc, $html, $help, $class);
+							
+							if ( ! is_multisite() || WPPA_MULTISITE_GLOBAL ) {
+								$name = __('Permalink root', 'wppa');
+								$desc = __('The name of the root for the photofile ermalink structure.', 'wppa');
+								$help = esc_js(__('Choose a convenient name like "albums" or so; this will be the name of a folder inside .../wp-content/. Make sure you choose a unique name', 'wppa'));
+								$slug = 'wppa_pl_dirname';
+								$html = wppa_input($slug, '150px');
+								wppa_setting($slug, '14', $name, $desc, $html, $help);
+							}
 							}
 							wppa_setting_subheader( 'J', '1', __( 'Other plugins related settings', 'wppa' ) );
 							{

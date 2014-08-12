@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all video routines
-* Version 5.3.11
+* Version 5.4.5
 *
 */
  
@@ -15,6 +15,10 @@ if ( is_file( dirname( __FILE__ ).'/wppa-video-working.php' ) ) {
 else {
 
 	// This is a dummy library. Video support is under development and not released yet.
+	
+	global $wppa_supported_video_extensions;
+	
+	$wppa_supported_video_extensions = array();
 
 	function wppa_is_video_enabled() {
 		return false;
@@ -28,7 +32,7 @@ else {
 		return '';
 	}
 
-	function wppa_get_video_body( $id ) {
+	function wppa_get_video_body( $id, $x = '', $y = '' ) {
 		return '';
 	}
 

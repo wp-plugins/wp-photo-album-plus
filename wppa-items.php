@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains functions to retrieve album and photo items
-* Version 5.4.1
+* Version 5.4.5
 *
 */
  
@@ -231,6 +231,7 @@ global $wppa_opt;
 		$desc = str_replace( 'w#url', wppa_get_lores_url( $id ), $desc );
 		$desc = str_replace( 'w#hrurl', esc_attr( wppa_get_hires_url( $id ) ), $desc );
 		$desc = str_replace( 'w#tnurl', wppa_get_tnres_url( $id ), $desc );
+		$desc = str_replace( 'w#pl', wppa_get_source_pl( $id ), $desc );
 		
 		// Art monkey sizes
 		if ( strpos( $desc, 'w#amx' ) !== false || strpos( $desc, 'w#amy' ) !== false || strpos( $desc, 'w#amfs' ) !== false ) {

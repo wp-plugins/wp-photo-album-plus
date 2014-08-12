@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Functions for album covers
-* Version 5.4.3
+* Version 5.4.5
 *
 */
 
@@ -683,7 +683,7 @@ global $wpdb;
 				if ( $id == $image['id'] ) {		
 					if ( wppa_is_video( $image['id'] ) ) {
 						$wppa['out'] .= "\n\t\t" . 
-							'<video class="image wppa-img" id="i-' . $image['id'] . '-' . 
+							'<video preload="metadata" class="image wppa-img" id="i-' . $image['id'] . '-' . 
 							$wppa['mocc'] . '" title="' . wppa_zoom_in() . 
 							'" width="' . $imgwidth . '" height="' . $imgheight . '" style="' . 
 							__wcs( 'wppa-img' ) . $imgattr . $imgattr_a['cursor'] . '" ' . 
@@ -715,7 +715,7 @@ global $wpdb;
 			// A video?
 			if ( wppa_is_video( $image['id'] ) ) {
 				$wppa['out'] .= wppa_nltab() . 
-					'<video alt="' . $title . '" class="image wppa-img" width="' . $imgwidth . '" height="' . 
+					'<video preload="metadata" alt="' . $title . '" class="image wppa-img" width="' . $imgwidth . '" height="' . 
 					$imgheight . '" style="' . __wcs( 'wppa-img' ) . $imgattr . '" ' . $events . ' >' . 
 					wppa_get_video_body( $image['id'] ) . '</video>';
 			}
@@ -737,7 +737,7 @@ global $wpdb;
 		// A video?
 		if ( wppa_is_video( $image['id'] ) ) {
 			$wppa['out'] .= wppa_nltab() . 
-				'<video alt="' . $title . '" class="image wppa-img" width="' . $imgwidth . '" height="' . 
+				'<video preload="metadata" alt="' . $title . '" class="image wppa-img" width="' . $imgwidth . '" height="' . 
 				$imgheight . '" style="' . __wcs( 'wppa-img' ) . $imgattr . '" ' . $events . ' >' . 
 				wppa_get_video_body( $image['id'] ) . '</video>';
 		}
@@ -812,7 +812,7 @@ global $wpdb;
 				if ( $thumb['id'] == $image['id'] ) {		
 					if ( wppa_is_video( $image['id'] ) ) {
 						$wppa['out'] .= "\n\t\t" . 
-							'<video class="image wppa-img" id="i-' . $image['id'] . '-' . 
+							'<video preload="metadata" class="image wppa-img" id="i-' . $image['id'] . '-' . 
 							$wppa['mocc'] . '" title="' . wppa_zoom_in() . '" width="' . 
 							$imgwidth . '" height="' . $imgheight . '" style="' . __wcs( 'wppa-img' ) . 
 							$imgattr . $imgattr_a['cursor'] . '" ' . $events . ' alt="' . $title . '">' . 
@@ -835,7 +835,7 @@ global $wpdb;
 				$wppa['out'] .= '<a ' . $href . 'target="' . $photolink['target'] . 
 					'" title="' . $photolink['title'] . '" onclick="' . $photolink['onclick'] . '" >';
 				if ( wppa_is_video( $image['id'] ) ) {
-					$wppa['out'] .= '<video alt="' . $title . 
+					$wppa['out'] .= '<video preload="metadata" alt="' . $title . 
 						'" class="image wppa-img" width="' . $imgwidth . '" height="' . $imgheight . 
 						'" style="' . __wcs( 'wppa-img' ) . $imgattr . '" ' . $events . ' >' . 
 						wppa_get_video_body( $image['id'] ) . '</video>';

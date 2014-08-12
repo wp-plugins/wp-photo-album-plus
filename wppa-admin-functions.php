@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * gp admin functions
-* version 5.4.1
+* version 5.4.5
 *
 */
 
@@ -437,12 +437,12 @@ function wppa_sanitize_files() {
 }
 
 function __wppa_sanitize_files( $root ) {
+global $wppa_supported_video_extensions;
+
 	// See what's in there
+	$allowed_types = array( 'zip', 'jpg', 'png', 'gif', 'amf', 'pmf', 'bak', 'log' );
 	if ( wppa_is_video_enabled() ) {
-		$allowed_types = array( 'zip', 'jpg', 'png', 'gif', 'amf', 'pmf', 'bak', 'log', 'mp4', 'ogv', 'webm' );
-	}
-	else {
-		$allowed_types = array( 'zip', 'jpg', 'png', 'gif', 'amf', 'pmf', 'bak', 'log' );
+		$allowed_types = array_merge( $allowed_types, $wppa_supported_video_extensions );
 	}
 
 	$paths = $root.'/*';

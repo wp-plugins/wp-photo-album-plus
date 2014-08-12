@@ -2,7 +2,7 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 5.4.1
+* version 5.4.5
 *
 */
 
@@ -966,7 +966,10 @@ global $wppa_opt;
 		$str = '';
 	}
 	
-	// Sanitze
+	// Sanitize
+	$ignore = array( '"', "'", '\\', '>', '<', ',', ':', ';', '!', '?', '=', '_', '[', ']', '(', ')', '{', '}' );
+	$str = wppa_decode_uri_component( $str );
+	$str = str_replace( $ignore, ' ', $str );
 	$str = strip_tags( $str );						
 	$str = stripslashes( $str );
 	$str = trim( $str );

@@ -2,7 +2,7 @@
 * Pachkage: wp-photo-album-plus
 *
 *
-* Version 5.4.3
+* Version 5.4.5
 *
 */
 
@@ -180,7 +180,7 @@ function wppaGalleryTypeChange(value) {
 function wppaTinyMcePhotoPreview( id ) {
 	if ( id.indexOf('xxx') != -1 ) { // its a video
 		var idv = id.replace('xxx', '');
-		jQuery('#wppagallery-photo-preview').html('<video style="max-width:600px; max-height:150px; margin-top:3px;" controls>'+
+		jQuery('#wppagallery-photo-preview').html('<video preload="metadata" style="max-width:600px; max-height:150px; margin-top:3px;" controls>'+
 													'<source src="'+wppaPhotoDirectory+idv+'mp4" type="video/mp4">'+
 													'<source src="'+wppaPhotoDirectory+idv+'ogg" type="video/ogg">'+
 													'<source src="'+wppaPhotoDirectory+idv+'ogv" type="video/ogg">'+

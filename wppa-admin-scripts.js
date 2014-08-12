@@ -1,7 +1,7 @@
 /* admin-scripts.js */
 /* Package: wp-photo-album-plus
 /*
-/* Version 5.4.1
+/* Version 5.4.5
 /* Various js routines used in admin pages		
 */
 
@@ -229,6 +229,7 @@ function wppaCheckWidgetSubtitle() {
 
 /* Enables or disables the setting of full size horizontal alignment. Only when fullsize is unequal to column width */
 /* also no hor align if vertical align is ---default-- */
+/* Also show/hide initial colwidth for resp themem ( Table I-A1.1 ) */
 function wppaCheckFullHalign() {
 	var fs = document.getElementById('wppa_fullsize').value;
 	var cs = document.getElementById('wppa_colwidth').value;
@@ -238,6 +239,12 @@ function wppaCheckFullHalign() {
 	}
 	else {
 		jQuery('.wppa_ha').css('display', 'none');
+	}
+	if ( cs == 'auto' ) {
+		jQuery('.wppa_init_resp_width').css('display', '');
+	}
+	else {
+		jQuery('.wppa_init_resp_width').css('display', 'none');
 	}
 }
 

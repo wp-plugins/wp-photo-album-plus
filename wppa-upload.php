@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the upload/import pages and functions
-* Version 5.4.1
+* Version 5.4.5
 *
 */
 
@@ -329,6 +329,7 @@ function _wppa_page_import() {
 global $wppa_opt;
 global $wppa_revno;
 global $wppa;
+global $wppa_supported_video_extensions;
 
 	if ( $wppa['ajax'] ) ob_start();	// Suppress output if ajax operation
 	
@@ -762,7 +763,7 @@ global $wppa;
 								$idx = '0';
 								if ( is_array( $files ) ) foreach ( $files as $file ) {
 									$ext = strtolower( substr( strrchr( $file, "." ), 1 ) );
-									if ( in_array( $ext, array( 'mp4', 'ogv', 'webm' ) ) ) { ?>
+									if ( in_array( $ext, $wppa_supported_video_extensions ) ) { ?>
 										<td>
 											<input type="checkbox" id="file-<?php echo( $idx ) ?>" name="file-<?php echo( $idx ) ?>" title="<?php echo $file ?>" class="wppa-video" checked="checked" /><span id="name-file-<?php echo( $idx ) ?>" >&nbsp;&nbsp;<?php echo( basename( $file ) ); ?></span>
 										</td>
@@ -1199,6 +1200,7 @@ global $wpdb;
 global $warning_given;
 global $wppa;
 global $wppa_opt;
+global $wppa_supported_video_extensions;
 
 	$warning_given = false;
 	
@@ -1471,7 +1473,7 @@ global $wppa_opt;
 		if ( isset( $_POST['file-'.$idx] ) || $wppa['ajax'] ) {
 			if ( $wppa['ajax'] ) $wppa['ajax_import_files'] = basename( $file );	/* */
 			$ext = strtolower( substr( strrchr( $file, "." ), 1 ) );
-			if ( in_array( $ext, array( 'mp4', 'ogv', 'webm' ) ) ) {
+			if ( in_array( $ext, $wppa_supported_video_extensions ) ) {
 				if ( is_numeric( $alb ) && $alb != '0' ) {
 					$filename = wppa_strip_ext( basename( $file ) ).'.xxx';
 					$id = wppa_file_is_in_album( $filename, $alb );
@@ -1558,11 +1560,13 @@ function wppa_get_photocount( $files ) {
 }
 
 function wppa_get_video_count( $files ) {
+global $wppa_supported_video_extensions;
+
 	$result = 0;
 	if ( $files ) {
 		foreach ( $files as $file ) {
 			$ext = strtolower( wppa_get_ext( $file ) );
-			if ( $ext == 'mp4' || $ext == 'ogv' || $ext == 'webm' ) $result++;
+			if ( in_array( $ext, $wppa_supported_video_extensions ) ) $result++;
 		}
 	}
 	return $result;

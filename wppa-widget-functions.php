@@ -2,7 +2,7 @@
 /* wppa_widgetfunctions.php
 /* Package: wp-photo-album-plus
 /*
-/* Version 5.4.1
+/* Version 5.4.5
 /*
 */
 
@@ -338,7 +338,18 @@ global $widget_content;
 				$widget_content .= "\n\t\t";
 				if ( $display == 'thumbs' ) {
 					if ( $is_video ) {
-						$widget_content .= '<video id="i-' . $id . '-' . $wppa['mocc'] . '" title="' . $title . '" width="' . $imgstyle_a['width'] . '" height="' . $imgstyle_a['height'] . '" style="' . $imgstyle_a['style'] . ' cursor:pointer;" ' . $imgevents . ' alt="' . esc_attr( $name ) . '" >' . $videobody . '</video>';
+						$widget_content .= wppa_get_video_html( array(
+							'id'			=> $id,
+							'width'			=> $imgstyle_a['width'],
+							'height' 		=> $imgstyle_a['height'],
+							'controls' 		=> false,
+							'margin-top' 	=> $imgstyle_a['margin-top'],
+							'margin-bottom' => $imgstyle_a['margin-bottom'],
+							'tagid' 		=> 'i-' . $id . '-' . $wppa['mocc'],
+							'cursor' 		=> 'cursor:pointer;',
+							'events' 		=> $imgevents,
+							'title' 		=> $title,
+						) );
 					}
 					else {
 						$widget_content .= '<img id="i-' . $id . '-' . $wppa['mocc'] . '" title="' . $title . '" src="' . $imgurl . '" width="' . $imgstyle_a['width'] . '" height="' . $imgstyle_a['height'] . '" style="' . $imgstyle_a['style'] . ' cursor:pointer;" ' . $imgevents . ' alt="' . esc_attr( $name ) . '" />';
@@ -355,7 +366,18 @@ global $widget_content;
 				$widget_content .= "\n\t\t";
 				if ( $display == 'thumbs' ) {
 					if ( $is_video ) {
-						$widget_content .= '<video id="i-' . $id . '-' . $wppa['mocc'] . '" title="' . wppa_zoom_in() . '" width="' . $imgstyle_a['width'] . '" height="' . $imgstyle_a['height'] . '" style="' . $imgstyle_a['style'] . $imgstyle_a['cursor'] . '" ' . $imgevents . ' alt="' . esc_attr( $name ) . '" >' . $videobody . '</video>';
+						$widget_content .= wppa_get_video_html( array(
+							'id'			=> $id,
+							'width'			=> $imgstyle_a['width'],
+							'height' 		=> $imgstyle_a['height'],
+							'controls' 		=> false,
+							'margin-top' 	=> $imgstyle_a['margin-top'],
+							'margin-bottom' => $imgstyle_a['margin-bottom'],
+							'tagid' 		=> 'i-' . $id . '-' . $wppa['mocc'],
+							'cursor' 		=> $imgstyle_a['cursor'],
+							'events' 		=> $imgevents,
+							'title' 		=> wppa_zoom_in(),
+						) );
 					}
 					else {
 						$widget_content .= '<img id="i-' . $id . '-' . $wppa['mocc'] . '" title="' . wppa_zoom_in() . '" src="' . $imgurl . '" width="' . $imgstyle_a['width'] . '" height="' . $imgstyle_a['height'] . '" style="' . $imgstyle_a['style'] . $imgstyle_a['cursor'] . '" ' . $imgevents . ' alt="' . esc_attr( $name ) . '" />';
@@ -370,7 +392,19 @@ global $widget_content;
 			$widget_content .= "\n\t";
 			if ( $display == 'thumbs' ) {
 				if ( $is_video ) {
-					$widget_content .= '<video id="i-' . $id . '-' . $wppa['mocc'] . '" title="' . $title . '" width="' . $imgstyle_a['width'] . '" height="' . $imgstyle_a['height'] . '" style="' . $imgstyle_a['style'] . ' cursor:pointer;" ' . $imgevents . ' onclick="' . $link['url'] . '" alt="' . esc_attr( $name ) . '" >' . $videobody . '</video>';
+					$widget_content .= wppa_get_video_html( array(
+							'id'			=> $id,
+							'width'			=> $imgstyle_a['width'],
+							'height' 		=> $imgstyle_a['height'],
+							'controls' 		=> false,
+							'margin-top' 	=> $imgstyle_a['margin-top'],
+							'margin-bottom' => $imgstyle_a['margin-bottom'],
+							'tagid' 		=> 'i-' . $id . '-' . $wppa['mocc'],
+							'cursor' 		=> 'cursor:pointer;',
+							'events' 		=> $imgevents,
+							'title' 		=> $title,
+							'onclick' 		=> $link['url']
+						) );
 				}
 				else {
 					$widget_content .= '<img id="i-' . $id . '-' . $wppa['mocc'] . '" title="' . $title . '" src="' . $imgurl . '" width="' . $imgstyle_a['width'] . '" height="' . $imgstyle_a['height'] . '" style="' . $imgstyle_a['style'] . ' cursor:pointer;" ' . $imgevents . ' onclick="' . $link['url'] . '" alt="' . esc_attr( $name ) . '" />';
@@ -382,11 +416,22 @@ global $widget_content;
 			}	
 		}
 	}
-	else {
+	else {	// No link
 		$widget_content .= "\n\t";
 		if ( $display == 'thumbs' ) {
 			if ( $is_video ) { 
-				$widget_content .= '<video id="i-' . $id . '-' . $wppa['mocc'] . '" title="' . $title . '" width="' . $imgstyle_a['width'] . '" height="' . $imgstyle_a['height'] . '" style="' . $imgstyle_a['style'] . '" ' . $imgevents . ' alt="' . esc_attr( $name ) . '" >' . $videobody . '</video>';
+				$widget_content .= wppa_get_video_html( array(
+						'id'			=> $id,
+						'width'			=> $imgstyle_a['width'],
+						'height' 		=> $imgstyle_a['height'],
+						'controls' 		=> false,
+						'margin-top' 	=> $imgstyle_a['margin-top'],
+						'margin-bottom' => $imgstyle_a['margin-bottom'],
+						'tagid' 		=> 'i-' . $id . '-' . $wppa['mocc'],
+						'cursor' 		=> 'cursor:pointer;',
+						'events' 		=> $imgevents,
+						'title' 		=> $title
+					) );
 			}
 			else {
 				$widget_content .= '<img id="i-' . $id . '-' . $wppa['mocc'] . '" title="' . $title . '" src="' . $imgurl . '" width="' . $imgstyle_a['width'] . '" height="' . $imgstyle_a['height'] . '" style="' . $imgstyle_a['style'] . '" ' . $imgevents . ' alt="' . esc_attr( $name ) . '" />';

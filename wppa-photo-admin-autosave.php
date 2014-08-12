@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * edit and delete photos
-* version 5.4.1
+* version 5.4.5
 *
 */
 
@@ -453,7 +453,7 @@ global $wppa;
 										$sp = wppa_get_source_path( $photo['id'] );
 										$ima = getimagesize( $sp );
 										echo ' '.__( 'Source file available.', 'wppa' ).' ( '.$ima['0'].'x'.$ima['1'].' )'; ?>
-										<a style="cursor:pointer; font-weight:bold;" onclick="_wppaAjaxUpdatePhoto( <?php echo $photo['id'] ?>, 'remake', this.value )">Remake files</a>
+										<a style="cursor:pointer; font-weight:bold;" onclick="wppaAjaxUpdatePhoto( <?php echo $photo['id'] ?>, 'remake', this )">Remake files</a>
 									<?php } 
 									if ( $is_video ) {
 										echo ' '._e( 'Available video formats:', 'wppa' ).' ';
@@ -981,7 +981,7 @@ function wppa_album_photos_bulk( $album ) {
 							<?php if ( wppa_is_video( $photo['id'] ) ) { ?>
 								<a href="<?php echo str_replace( 'xxx', 'mp4', wppa_get_photo_url( $photo['id'] ) ) ?>" target="_blank" title="Click to see fullsize" >
 									<?php // Animating size changes of a video tag is not a good idea. It will rapidly screw up browser cache and cpu ?>
-									<video style="height:60px;" onmouseover="jQuery( this ).css( 'height', '160' )" onmouseout="jQuery( this ).css( 'height', '60' )" >
+									<video preload="metadata" style="height:60px;" onmouseover="jQuery( this ).css( 'height', '160' )" onmouseout="jQuery( this ).css( 'height', '60' )" >
 										<?php echo wppa_get_video_body( $photo['id'] ) ?>
 									</video>
 								</a>
@@ -1197,7 +1197,7 @@ global $wppa_opt;
 					?>
 					<div id="photoitem-<?php echo $photo['id'] ?>" class="ui-state-default wppa-<?php echo $photo['status'] ?>" style="background-image:none; text-align:center; cursor:move;" >
 					<?php if ( wppa_is_video( $photo['id'] ) ) { ?>
-						<video class="wppa-bulk-thumb" style="max-width:<?php echo $mw ?>px; max-height:<?php echo $mh ?>px; margin-top: <?php echo $mt ?>px;" >
+						<video preload="metadata" class="wppa-bulk-thumb" style="max-width:<?php echo $mw ?>px; max-height:<?php echo $mh ?>px; margin-top: <?php echo $mt ?>px;" >
 						<?php echo wppa_get_video_body( $photo['id'] ) ?>
 						</video>
 					<?php }
