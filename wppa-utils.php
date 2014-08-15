@@ -1189,7 +1189,12 @@ function wppa_sanitize_tags($value, $keepsemi = false) {
 		foreach ( array_keys($temp) as $idx ) {
 			$temp[$idx] = trim( $temp[$idx] );
 			if ( strlen( $temp[$idx] ) > '1' ) {
-				$temp[$idx] = strtoupper(substr($temp[$idx], 0, 1)).strtolower(substr($temp[$idx], 1));
+				$words = explode( ' ', $temp[$idx] );
+				foreach( array_keys($words) as $i ) {
+					$words[$i] = strtoupper(substr($words[$i], 0, 1)).strtolower(substr($words[$i], 1));
+				}
+				$temp[$idx] = implode(' ', $words);
+//				$temp[$idx] = strtoupper(substr($temp[$idx], 0, 1)).strtolower(substr($temp[$idx], 1));
 				if ( $temp[$idx] ) {
 					if ( $first ) {
 						$first = false;
