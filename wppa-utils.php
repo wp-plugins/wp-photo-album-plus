@@ -1167,7 +1167,7 @@ function wppa_sanitize_tags($value, $keepsemi = false) {
 	$value = str_replace('\'', '', $value);			// ...
 	$value = str_replace('\\', '', $value);			// ...
 	$value = stripslashes($value);					// ...
-	$value = str_replace(' ', '', $value);			// Remove spaces
+//	$value = str_replace(' ', '', $value);			// Remove spaces
 	// Find separator
 	$sep = ',';										// Default seperator
 	if ( $keepsemi ) {								// ';' allowed
@@ -1187,6 +1187,7 @@ function wppa_sanitize_tags($value, $keepsemi = false) {
 		$first = true;
 		$previdx = '';
 		foreach ( array_keys($temp) as $idx ) {
+			$temp[$idx] = trim( $temp[$idx] );
 			if ( strlen( $temp[$idx] ) > '1' ) {
 				$temp[$idx] = strtoupper(substr($temp[$idx], 0, 1)).strtolower(substr($temp[$idx], 1));
 				if ( $temp[$idx] ) {
