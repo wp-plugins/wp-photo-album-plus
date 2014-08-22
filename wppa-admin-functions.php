@@ -826,6 +826,8 @@ global $wppa;
 			if ( wppa_switch( 'wppa_watermark_thumbs' ) ) {
 				wppa_create_thumbnail( wppa_get_photo_path( $id ), wppa_get_minisize(), '' );	// create new thumb
 			}
+			// Is it a default coverimage?
+			wppa_check_coverimage( $id );
 
 			return $id;
 		}

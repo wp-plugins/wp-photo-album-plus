@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile, cloudinary, fotomoto
-Version: 5.4.5
+Version: 5.4.6
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -189,6 +189,26 @@ If you changed the name of wp-content and/or uploads, besides the additions to w
 **define('WPPA_REL_DEPOT_PATH', 'wp_content');**
 and make the changes therein also.
 
+= 5.4.6 =
+
+= Bug Fixes =
+
+* Links from thumnails to slideshow did not work for virtual albums when album names in urls was activated because virtual albums have no name. Fixed.
+* The 'back to thumbnails' icon on slideshow breadcrumb now also works for virtual albums and no longer generate 404.
+* Fixed a lay-out issue in Table V.
+
+= New Features =
+
+* Name a file so that it will be the default image loaded for the album Cover Photo. See Table IX-D14: Default coverphoto.
+* Comment notify email to users already commented on the same photo. See Table IV-F5.1: Comment notify previous.
+* Added a maintenance proc to add leading zeros to numeric photo names ( Table VIII-B11 ).
+
+= Other Changes =
+
+* Tags and cats can now contain spaces. ( 5.4.5.001 )
+* Minor cosmetic changes in album admin.
+* The session db table now relies on auto_increment.
+
 = 5.4.5 =
 
 = Bug Fixes =
@@ -205,7 +225,7 @@ You can change the name wppa-pl into any convenient filesystem safe name like 'a
 Make sure you choose a unique name inside .../wp-content/ for the permalink root.
 There is no hierarchical album structure, and it is your responsability to have no duplicate album names, and no duplicate photo names inside the same album.
 * The initial column width for responsive themes is now configurable in Table I-A1.1.
-* The lightbox will be repeatedly initialized during page construction to facilitate clicks before document.reay.
+* The lightbox will be repeatedly initialized during page construction to facilitate clicks before document.ready.
 
 = Other Changes =
 

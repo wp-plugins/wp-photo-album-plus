@@ -1675,6 +1675,26 @@ global $wppa_done;
 							$sentto[] = $moduser->login_name;
 						}
 					}
+					if ( wppa_switch( 'wppa_com_notify_previous' ) ) { 
+						// Mail users already commented on this photo
+						$cmnts 	= $wpdb->get_results( $wpdb->prepare( "SELECT * FROM `".WPPA_COMMENTS."` WHERE `photo` = %d", $photo ), ARRAY_A );
+						if ( $cmnts ) foreach( $cmnts as $cmnt ) {
+							$user = $cmnt['user'];
+							if ( ! in_array( $user, $sentto ) ) {
+								$cmuser = get_user_by( 'login', $user );
+								if ( $cmuser ) {	// Not to an ip
+									$to = $cmuser->user_email;
+									$cont['2'] = '';
+									$cont['3'] = '';
+									$cont['4'] = __a( 'You receive this email because you commented this photo earlier.' );
+									// Send!
+									wppa_send_mail( $to, $subj, $cont, $photo, $email );
+									$sentto[] = $to;
+								}
+							}
+						}
+					}
+					
 					// Process any pending votes of this user for this photo if rating needs comment, do it anyway, feature may have been on but now off
 	//				if ( wppa_switch( 'wppa_vote_needs_comment' ) ) {
 						$iret = $wpdb->query( $wpdb->prepare( "UPDATE `".WPPA_RATING."` SET `status` = 'publish' WHERE `photo` = %s AND `user` = %s", $id, wppa_get_user() ) );
@@ -3044,8 +3064,8 @@ global $thumb;
 																	'width' 		=> $imgattr_a['width'], 
 																	'height' 		=> $imgattr_a['height'], 
 																	'controls' 		=> false, 
-																	'margin-top' 	=> $imgattr_a['margin-top'], 
-																	'margin-bottom' => $imgattr_a['margin-bottom'],
+																	'margin_top' 	=> $imgattr_a['margin-top'], 
+																	'margin_bottom' => $imgattr_a['margin-bottom'],
 																	'cursor' 		=> $imgattr_a['cursor'],
 																	'events' 		=> $events,
 																	'tagid' 		=> 'wppa-'.$tmp.'-'.$idx.'-'.$wppa['mocc']
@@ -3292,7 +3312,8 @@ global $wppa;
 		}
 		if ( wppa_is_video( $wppa['single_photo'] ) ) {
 			$wppa['out'] .= wppa_nltab().wppa_get_video_html( array( 	'id' 			=> $wppa['single_photo'], 
-																		'width' 		=> $width, 
+																		'width' 		=> $width,
+																		'height' 		=> $height,
 																		'controls' 		=> true
 																	 )
 															 );
@@ -3376,7 +3397,8 @@ global $wppa;
 		
 		if ( wppa_is_video( $wppa['single_photo'] ) ) {
 			$wppa['out'] .= wppa_nltab().wppa_get_video_html( array( 	'id' 			=> $wppa['single_photo'], 
-																		'width' 		=> $width, 
+																		'width' 		=> $width,
+																		'height' 		=> $height,
 																		'controls' 		=> true
 																	 )
 															 );
@@ -3408,20 +3430,24 @@ global $wppa;
 }	
 
 // returns aspect ratio ( w/h ), or 1 on error
-function wppa_get_ratio( $id = '' ) {
+function wppa_get_ratio( $id ) {
 global $wpdb;
 
 	if ( ! wppa_is_int( $id ) ) return '1';	// Not 0 to prevent divide by zero
 	
+	if ( wppa_is_video( $id ) ) {
+		return wppa_get_videox( $id ) / wppa_get_videoy( $id );
+	}
+	
 	$photo = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM " . WPPA_PHOTOS . " WHERE id=%s LIMIT 1", $id ), ARRAY_A );
 	wppa_dbg_q( 'Q51' );
-	if ( !$photo ) return '1';
+	if ( ! $photo ) return '1';
 	
 	$file = wppa_get_photo_path( $id );
 	if ( is_file( $file ) ) $image_attr = getimagesize( $file );
 	else return '1';
 	
-	if ( $image_attr[1] != 0 ) return $image_attr[0]/$image_attr[1];	// width/height
+	if ( $image_attr[1] != 0 ) return $image_attr[0] / $image_attr[1];	// width/height
 	return '1';
 }
 
@@ -3846,6 +3872,8 @@ global $wpdb;
 		if ( wppa_switch( 'wppa_watermark_thumbs' ) ) {
 			wppa_create_thumbnail( wppa_get_photo_path( $id ), wppa_get_minisize(), '' );	// create new thumb
 		}
+		// Is it a default coverimage?
+		wppa_check_coverimage( $id );
 
 		// Mail
 		if ( wppa_switch( 'wppa_upload_notify' ) ) {

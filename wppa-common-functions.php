@@ -755,6 +755,18 @@ global $thumb;
 	}
 }
 
+// See if this image is the default cover image
+function wppa_check_coverimage( $id ) {
+	if ( wppa_opt( 'wppa_default_coverimage_name' ) ) { 	// Feature enabled
+		$name = wppa_strip_ext( wppa_get_photo_item( $id, 'filename' ) );
+		$dflt = wppa_strip_ext( wppa_opt( 'wppa_default_coverimage_name' ) );
+		if ( ! strcasecmp( $name, $dflt ) ) {	// Match
+			wppa_update_album( array( 	'id'=> wppa_get_photo_item( $id, 'album' ),
+										'main_photo' => $id ) );
+		}
+	}
+}
+
 // Get the max size, rounded up to a multiple of 25 px, of all the possible small images 
 // in order to create the thumbnail file big enough but not too big.
 function wppa_get_minisize() {

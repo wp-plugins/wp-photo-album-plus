@@ -3007,6 +3007,14 @@ global $no_default;
 							$class = 'wppa_comment_';
 							wppa_setting($slug, '5', $name, $desc, $html, $help, $class);
 							
+							$name = __('Comment notify previous', 'wppa');
+							$desc = __('Notify users who has commented this photo earlier.', 'wppa');
+							$help = '';
+							$slug = 'wppa_com_notify_previous';
+							$html = wppa_checkbox($slug);
+							$class = 'wppa_comment_';
+							wppa_setting($slug, '5.1', $name, $desc, $html, $help, $class);
+							
 							$name = __('Comment ntfy added', 'wppa');
 							$desc = __('Show "Comment added" after successfull adding a comment.', 'wppa');
 							$help = '';
@@ -3130,14 +3138,14 @@ global $no_default;
 					<table class="widefat wppa-table wppa-setting-table">
 						<thead style="font-weight: bold; " class="wppa_table_5">
 							<tr>
-								<td><?php _e('#', 'wppa') ?></td>
-								<td><?php _e('Name', 'wppa') ?></td>
-								<td><?php _e('Description', 'wppa') ?></td>
-								<th scope="col" style="min-width:250px;" ><?php _e('Font family', 'wppa') ?></td>
-								<td><?php _e('Font size', 'wppa') ?></td>
-								<td><?php _e('Font color', 'wppa') ?></td>
-								<td><?php _e('Font weight', 'wppa') ?></td>
-								<td><?php _e('Help', 'wppa') ?></td>
+								<td scope="col" ><?php _e('#', 'wppa') ?></td>
+								<td scope="col" ><?php _e('Name', 'wppa') ?></td>
+								<td scope="col" ><?php _e('Description', 'wppa') ?></td>
+								<td scope="col" ><?php _e('Font family', 'wppa') ?></td>
+								<td scope="col" ><?php _e('Font size', 'wppa') ?></td>
+								<td scope="col" ><?php _e('Font color', 'wppa') ?></td>
+								<td scope="col" ><?php _e('Font weight', 'wppa') ?></td>
+								<td scope="col" ><?php _e('Help', 'wppa') ?></td>
 							</tr>
 						</thead>
 						<tbody class="wppa_table_5">
@@ -3288,14 +3296,14 @@ global $no_default;
 						</tbody>
 						<tfoot style="font-weight: bold;" class="wppa_table_5">
 							<tr>
-								<td><?php _e('#', 'wppa') ?></td>
-								<td><?php _e('Name', 'wppa') ?></td>
-								<td><?php _e('Description', 'wppa') ?></td>
-								<td><?php _e('Font family', 'wppa') ?></td>
-								<td><?php _e('Font size', 'wppa') ?></td>
-								<td><?php _e('Font color', 'wppa') ?></td>
-								<td><?php _e('Font weight', 'wppa') ?></td>
-								<td><?php _e('Help', 'wppa') ?></td>
+								<td scope="col" ><?php _e('#', 'wppa') ?></td>
+								<td scope="col" ><?php _e('Name', 'wppa') ?></td>
+								<td scope="col" ><?php _e('Description', 'wppa') ?></td>
+								<td scope="col" ><?php _e('Font family', 'wppa') ?></td>
+								<td scope="col" ><?php _e('Font size', 'wppa') ?></td>
+								<td scope="col" ><?php _e('Font color', 'wppa') ?></td>
+								<td scope="col" ><?php _e('Font weight', 'wppa') ?></td>
+								<td scope="col" ><?php _e('Help', 'wppa') ?></td>
 							</tr>
 						</tfoot>
 					</table>
@@ -4662,6 +4670,18 @@ global $no_default;
 							$html4 = wppa_togo_field( $slug2 );
 							$html = array($html1, $html2, $html3, $html4);
 							wppa_setting(false, '10', $name, $desc, $html, $help);
+							
+							$name = __('Leading zeroes', 'wppa');
+							$desc = __('If photoname numeric, add leading zeros', 'wppa');
+							$help = esc_js(__('You can extend the name with leading zeros, so alphabetic sort becomes equal to numeric sort order.', 'wppa'));
+							$slug1 = 'wppa_zero_numbers';
+							$slug2 = 'wppa_leading_zeros';
+							$html1 = wppa_input( $slug1, '50px' ).__('Total chars', 'wppa');
+							$html2 = wppa_maintenance_button( $slug2 );
+							$html3 = wppa_status_field( $slug2 );
+							$html4 = wppa_togo_field( $slug2 );
+							$html = array($html1, $html2, $html3, $html4);
+							wppa_setting(false, '11', $name, $desc, $html, $help);
 
 						wppa_setting_subheader('C', '4', __('Listings', 'wppa'));
 
@@ -5079,19 +5099,26 @@ global $no_default;
 							$html = wppa_select($slug, $opts, $vals);
 							wppa_setting($slug, '13', $name, $desc, $html, $help);
 							
+							$name = __('Default coverphoto', 'wppa');
+							$desc = __('Name of photofile to become cover image', 'wppa');
+							$help = esc_js(__('If you name a photofile like this setting before upload, it will become the coverimage automaticly.', 'wppa'));
+							$slug = 'wppa_default_coverimage_name';
+							$html = wppa_input($slug, '150px');
+							wppa_setting($slug, '14', $name, $desc, $html, $help);
+							
 							$name = __('Copy Timestamp', 'wppa');
 							$desc = __('Copy timestamp when copying photo.', 'wppa');
 							$help = esc_js('If checked, the copied photo is not "new"', 'wppa');
 							$slug = 'wppa_copy_timestamp';
 							$html = wppa_checkbox($slug);
-							wppa_setting($slug, '14', $name, $desc, $html, $help);
+							wppa_setting($slug, '15', $name, $desc, $html, $help);
 							
 							$name = __('FE Albums public', 'wppa');
 							$desc = __('Frontend created albums are --- public ---', 'wppa');
 							$help = '';
 							$slug = 'wppa_frontend_album_public';
 							$html = wppa_checkbox($slug);
-							wppa_setting($slug, '15', $name, $desc, $html, $help);
+							wppa_setting($slug, '16', $name, $desc, $html, $help);
 							
 							}
 							wppa_setting_subheader( 'E', '1', __( 'Search Albums and Photos related settings', 'wppa' ) );

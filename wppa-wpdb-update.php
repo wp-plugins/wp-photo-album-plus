@@ -45,6 +45,11 @@ global $wppa_opt;
 			case 'scheduledtm':
 				$doit = true;
 				break;
+			case 'main_photo':
+				if ( wppa_is_int( $itemvalue ) ) {
+					$doit = true;
+				}
+				break;
 				
 			default:
 				wppa_log( 'Error', 'Not implemented in wppa_update_album(): '.$itemname );

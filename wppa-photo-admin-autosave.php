@@ -217,7 +217,7 @@ global $wppa;
 									$is_video 	= wppa_is_video( $photo['id'], true );
 									$big 	= wppa_get_photo_url( $photo['id'] );
 									if ( $is_video ) { 
-										$big = str_replace( 'xxx', $is_video['0'], $big );
+										$big = str_replace( 'xxx', 'mp4', $big );
 										?>
 										<a href="<?php echo $big ?>" target="_blank" title="<?php _e( 'Preview fullsize video', 'wppa' ) ?>" >
 											<?php echo wppa_get_video_html( array( 	'id' 		=> $photo['id'],

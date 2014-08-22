@@ -14,7 +14,7 @@ function wppa_create_session_entry( $args ) {
 global $wpdb;
 
 	$args = wp_parse_args( (array) $args, array (
-					'id' 				=> '0',
+		/*			'id' 				=> '0',	*/ //		session is now auto increment
 					'session' 			=> wppa_get_session_id(),
 					'timestamp' 		=> time(),
 					'user'				=> wppa_get_user(),
@@ -26,7 +26,7 @@ global $wpdb;
 					
 	if ( ! wppa_is_id_free( WPPA_SESSION, $args['id'] ) ) $args['id'] = wppa_nextkey( WPPA_SESSION );
 	
-	$query = $wpdb->prepare("INSERT INTO `" . WPPA_SESSION ."` 	(	`id`,
+	$query = $wpdb->prepare("INSERT INTO `" . WPPA_SESSION ."` 	(	
 																	`session`,
 																	`timestamp`,
 																	`user`,
@@ -35,8 +35,8 @@ global $wpdb;
 																	`data`,
 																	`count`
 																)
-														VALUES ( %s, %s, %s, %s, %s, %s, %s, %s )",
-																$args['id'],
+														VALUES ( %s, %s, %s, %s, %s, %s, %s )",
+															
 																$args['session'],
 																$args['timestamp'],
 																$args['user'],

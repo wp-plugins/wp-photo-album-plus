@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Frontend links
-* Version 5.4.3
+* Version 5.4.6
 *
 */
 
@@ -437,7 +437,7 @@ global $wppa_opt;
 		$before = substr( $uri, 0, $start );
 		if ( $end ) {
 			$albnum = substr( $uri, $start, $end - $start );
-			if ( wppa_is_int( $albnum ) ) {	// Can convert single integer album ids only
+			if ( wppa_is_int( $albnum ) && $albnum > '0' ) {	// Can convert single positive integer album ids only
 				$after	= substr( $uri, $end );
 				$albnam = stripslashes( wppa_get_album_item( $albnum, 'name' ) );
 				$albnam = wppa_encode_uri_component( $albnam );
@@ -446,7 +446,7 @@ global $wppa_opt;
 		}
 		else {
 			$albnum = substr( $uri, $start );
-			if ( wppa_is_int( $albnum ) ) {	// Can convert single integer album ids only
+			if ( wppa_is_int( $albnum ) && $albnum > '0' ) {	// Can convert single positive integer album ids only
 				$albnam = stripslashes( wppa_get_album_item( $albnum, 'name' ) );
 				$albnam = wppa_encode_uri_component( $albnam );
 				$uri = $before . $albnam;

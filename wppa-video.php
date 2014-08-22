@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all video routines
-* Version 5.4.5
+* Version 5.4.6
 *
 */
  
@@ -32,7 +32,7 @@ else {
 		return '';
 	}
 
-	function wppa_get_video_body( $id, $x = '', $y = '' ) {
+	function wppa_get_video_body( $id, $for_lb = false, $x = '', $y = '' ) {
 		return '';
 	}
 

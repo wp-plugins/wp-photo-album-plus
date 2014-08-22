@@ -180,7 +180,7 @@ global $silent;
 		$idx++;
 	}
 	
-	// Although we do not rely om auto increment, it may help avoiding concurrebcy conflicts
+	// Although we do not rely om auto increment, it may help avoiding concurrency conflicts
 	$wpdb->query( "ALTER TABLE `".WPPA_SESSION."` MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT" );
 	
 	// Convert any changed and remove obsolete setting options
@@ -811,6 +811,7 @@ Hide Camera info
 						'wppa_comment_moderation'		=> 'logout',
 						'wppa_comment_email_required'	=> 'yes',
 						'wppa_comment_notify'			=> 'none',
+						'wppa_com_notify_previous' 		=> 'no',
 						'wppa_comment_notify_added'		=> 'yes',
 						'wppa_comten_alt_display'		=> 'no',
 						'wppa_comten_alt_thumbsize'		=> '75',
@@ -1030,6 +1031,8 @@ Hide Camera info
 						'wppa_watermark_all' 		=> '',
 						'wppa_create_all_autopages' => '',
 						'wppa_readd_file_extensions' => '',
+						'wppa_zero_numbers' 		=> '5',
+						'wppa_leading_zeros' 		=> '',
 
 						// Table IX: Miscellaneous
 						// A System
@@ -1086,6 +1089,7 @@ Hide Camera info
 						
 //						'wppa_strip_file_ext'			=> 'no',
 						'wppa_newphoto_name_method' 	=> 'filename',
+						'wppa_default_coverimage_name' 	=> 'Coverphoto',
 						
 						'wppa_copy_timestamp'			=> 'no',
 						'wppa_frontend_album_public' 	=> 'no',

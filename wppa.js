@@ -2,7 +2,7 @@
 //
 // conatins slideshow, theme, ajax and lightbox code
 //
-// Version 5.4.3
+// Version 5.4.6
 
 // Part 1: Slideshow
 //
@@ -300,7 +300,9 @@ function wppaStoreSlideInfo(
 	// Add 'old' width and height only for non-auto
 	if ( ! wppaAutoColumnWidth[mocc] ) _wppaSlides[mocc][id] += 'width="' + width + '" height="' + height + '" ';
 	if ( _wppaIsVideo[mocc][id] ) {
-		_wppaSlides[mocc][id] += 'style="' + size + '; cursor:'+cursor+'; display:none;" controls>'+videohtml+'</video>';
+		var controls;
+		controls = 'wppa' == wppaLightBox[mocc] ? '' : 'controls';
+		_wppaSlides[mocc][id] += 'style="' + size + '; cursor:'+cursor+'; display:none;" '+controls+'>'+videohtml+'</video>';
 	}
 	else {
 		_wppaSlides[mocc][id] += 'style="' + size + '; cursor:'+cursor+'; display:none;">';

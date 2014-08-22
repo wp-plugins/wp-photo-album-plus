@@ -40,7 +40,8 @@ global $wppa_session;
 						'wppa_iptc_clear',
 						'wppa_exif_clear',
 						'wppa_watermark_all',
-						'wppa_create_all_autopages'
+						'wppa_create_all_autopages',
+						'wppa_leading_zeros'
 					);
 	foreach ( array_keys( $all_slugs ) as $key ) {
 		if ( $all_slugs[$key] != $slug ) {
@@ -157,6 +158,7 @@ global $wppa_session;
 		case 'wppa_remake':
 		case 'wppa_watermark_all':
 		case 'wppa_create_all_autopages':
+		case 'wppa_leading_zeros':
 		
 			// Process photos
 			$thumbsize 	= wppa_get_minisize();
@@ -213,7 +215,7 @@ global $wppa_session;
 						
 					case 'wppa_remove_file_extensions':
 						if ( ! wppa_is_video( $id ) ) {
-							$name = str_replace( array( '.jpg', '.png', 'gif', '.JPG', '.PNG', '.GIF' ), '', $photo['name'] );
+							$name = str_replace( array( '.jpg', '.png', '.gif', '.JPG', '.PNG', '.GIF' ), '', $photo['name'] );
 							if ( $name != $photo['name'] ) {	// Modified photo name
 								$wpdb->query( $wpdb->prepare( "UPDATE `".WPPA_PHOTOS."` SET `name` = %s WHERE `id` = %s", $name, $id ) );
 							}
@@ -338,6 +340,17 @@ global $wppa_session;
 						
 					case 'wppa_create_all_autopages':
 						wppa_get_the_auto_page( $id );
+						break;
+						
+					case 'wppa_leading_zeros':
+						$name = $photo['name'];
+						if ( wppa_is_int( $name ) ) {
+							$target_len = wppa_opt( 'wppa_zero_numbers' );
+							while ( strlen( $name ) < $target_len ) $name = '0'.$name;
+						}
+						if ( $name !== $photo['name'] ) {
+							$wpdb->query( $wpdb->prepare( "UPDATE `".WPPA_PHOTOS."` SET `name` = %s WHERE `id` = %s", $name, $id ) );
+						}
 						break;
 		
 				}

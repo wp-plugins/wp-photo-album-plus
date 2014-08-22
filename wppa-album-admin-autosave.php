@@ -580,7 +580,7 @@ function _wppa_admin() {
 								<th>
 									<label><?php _e('Link to:', 'wppa'); ?></label>
 								</th>
-								<td>
+								<td style="max-width:210px;" >
 									<?php $query = 'SELECT `ID`, `post_title` FROM `'.$wpdb->posts.'` WHERE `post_type` = \'page\' AND `post_status` = \'publish\' ORDER BY `post_title` ASC';
 									$pages = $wpdb->get_results($query, ARRAY_A);
 									if (empty($pages)) {
@@ -588,7 +588,7 @@ function _wppa_admin() {
 									} else {
 										$linkpage = $albuminfo['cover_linkpage'];
 										if (!is_numeric($linkpage)) $linkpage = '0'; ?>
-										<select onchange="wppaAjaxUpdateAlbum(<?php echo $edit_id ?>, 'cover_linkpage', this)" >
+										<select onchange="wppaAjaxUpdateAlbum(<?php echo $edit_id ?>, 'cover_linkpage', this)" style="max-width:100%;">
 											<option value="0" <?php if ($linkpage == '0') echo($sel); ?>><?php _e('--- the same page or post ---', 'wppa'); ?></option>
 											<?php foreach ($pages as $page) { ?>
 												<option value="<?php echo($page['ID']); ?>" <?php if ($linkpage == $page['ID']) echo($sel); ?>><?php _e($page['post_title']); ?></option>
@@ -704,6 +704,7 @@ function _wppa_admin() {
 					elseif ( isset($_REQUEST['seq']) ) wppa_album_photos_sequence($edit_id);
 					else wppa_album_photos($edit_id) 
 				?>
+				<br /><a href="#manage-photos"><?php _e('Top of page', 'wppa') ?></a>
 			</div>
 <?php 	} 
 
