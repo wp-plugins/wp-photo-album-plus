@@ -37,9 +37,9 @@ global $wpdb;
 		$pl_dirname = wppa_opt( 'wppa_pl_dirname' );
 	}
 	
-	// If no pl_dirname, feature is disabled. Also prevents the creation of a .htaccess file in wp-content
+	// If no pl_dirname, use default
 	if ( ! $pl_dirname ) {
-		return false;
+		$pl_dirname = 'wppa-pl';
 	}
 	
 	// Create pl root directory
