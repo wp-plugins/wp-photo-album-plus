@@ -32,10 +32,17 @@ global $wpdb;
 	// Where are the photo source files?
 	$source_root = str_replace( ABSPATH, '', wppa_opt( 'wppa_source_dir' ) );
 
-	// Create permalink root
+	// Find permalink root name
 	if ( ! $pl_dirname ) {
 		$pl_dirname = wppa_opt( 'wppa_pl_dirname' );
 	}
+	
+	// If no pl_dirname, feature is disabled. Also prevents the creation of a .htaccess file in wp-content
+	if ( ! $pl_dirname ) {
+		return false;
+	}
+	
+	// Create pl root directory
 	$pl_root = WPPA_CONTENT_PATH . '/' . $pl_dirname;
 	if ( ! wppa_mktree( $pl_root ) ) {
 		wppa_log( 'Error', 'Can not create '.$pl_root );
