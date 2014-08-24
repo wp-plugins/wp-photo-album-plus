@@ -321,7 +321,7 @@ global $silent;
 		}
 		
 		if ( $old_rev <= '5405' ) {
-			wppa_create_pl_htaccess();
+			wppa_create_pl_htaccess( 'wppa-pl' );
 		}
 		
 	}

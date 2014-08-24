@@ -37,9 +37,9 @@ global $wpdb;
 		$pl_dirname = wppa_opt( 'wppa_pl_dirname' );
 	}
 	
-	// If no pl_dirname, use default
+	// If no pl_dirname, feature is disabled
 	if ( ! $pl_dirname ) {
-		$pl_dirname = 'wppa-pl';
+		return false;
 	}
 	
 	// Create pl root directory
