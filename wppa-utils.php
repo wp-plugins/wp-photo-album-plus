@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains low-level utility routines
-* Version 5.4.5
+* Version 5.4.7
 *
 */
  
@@ -1778,13 +1778,22 @@ global $wpdb;
 	return $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `".WPPA_ALBUMS."` WHERE `a_parent` = %s", $alb) );
 }
 
-function wppa_alb_to_enum_children( $alb ) {
-	$result = _wppa_alb_to_enum_children( $alb );
-	if ( strpos( $result, '.' ) !== false ) {
-		$result = explode( '.', $result );
-		sort( $result, SORT_NUMERIC );
-		$result = implode( '.', $result );
+// Get an enumeration of all the (grand)children of some album spec.
+// Album spec may be a number or an enumeration
+function wppa_alb_to_enum_children( $xalb ) {
+	if ( strpos( $xalb, '.' ) !== false ) {
+		$albums = explode( '.', $xalb );
 	}
+	else {
+		$albums = array( $xalb );
+	}
+	$result = '';
+	foreach( $albums as $alb ) {
+		$result .= _wppa_alb_to_enum_children( $alb );
+		$result = trim( $result, '.' ).'.';
+	}
+	$result = trim( $result, '.' );
+	$result = wppa_compress_enum( $result );
 	return $result;
 }
 
@@ -1795,8 +1804,9 @@ global $wpdb;
 	$children = $wpdb->get_results( $wpdb->prepare( "SELECT `id` FROM `".WPPA_ALBUMS."` WHERE `a_parent` = %s", $alb ), ARRAY_A );
 	if ( $children ) foreach ( $children as $child ) {
 		$result .= '.'._wppa_alb_to_enum_children( $child['id'] );
+		$result = trim( $result, '.' );
 	}
-	return $result;
+	return trim( $result, '.' );
 }
 
 function wppa_compress_enum( $enum ) {
@@ -1812,6 +1822,16 @@ function wppa_compress_enum( $enum ) {
 		$result = wppa_index_array_to_string( $result );
 		$result = str_replace( ',', '.', $result );
 	}
+	$result = trim( $result, '.' );
+	return $result;
+}
+
+function wppa_expand_enum( $enum ) {
+	$result = $enum;
+	$result = str_replace( '.', ',', $result );
+	$result = str_replace( ',,', '..', $result );
+	$result = wppa_index_string_to_array( $result );
+	$result = implode( '.', $result );
 	return $result;
 }
 

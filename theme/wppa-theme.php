@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the albums/photos/slideshow in a page or post
-* Version 5.4.0
+* Version 5.4.7
 */
 function wppa_theme() {
 
@@ -68,7 +68,8 @@ global $wppa_show_statistics;						// Can be set to true by a custom page templa
 		// Process the thumbs
 		if ( $thumbs ) {	
 			$counter_thumbs = '0';
-			if ( $wppa_opt['wppa_thumbtype'] == 'ascovers' ) {						// Do the thumbs As covers
+			if ( wppa_opt('wppa_thumbtype') == 'ascovers' || 
+				 wppa_opt('wppa_thumbtype') == 'ascovers-mcr' ) {					// Do the thumbs As covers
 				wppa_thumb_list( 'open' );											// Open Thumblist sub-container
 				foreach ( $thumbs as $tt ) :  global $thumb; $thumb = $tt; 			// Loop the Thumbs
 					$counter_thumbs++;

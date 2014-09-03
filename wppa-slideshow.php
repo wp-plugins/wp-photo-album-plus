@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the slideshow high level functions
-* Version 5.4.0
+* Version 5.4.7
 *
 */
 
@@ -286,7 +286,7 @@ global $wppa_opt;
 	}
 	else {
 		if ( wppa_switch('wppa_show_full_desc') ) $do_it = true;
-		if ( wppa_switch('wppa_show_full_name') ) $do_it = true;
+		if ( wppa_switch('wppa_show_full_name') || wppa_switch('wppa_show_full_owner') ) $do_it = true;
 	}
 	if ($do_it) { 
 		$wppa['out'] .= wppa_nltab('+').'<div id="namedesc-'.$wppa['mocc'].'" class="wppa-box wppa-name-desc" style="'.__wcs('wppa-box').__wcs('wppa-name-desc').'" >';
@@ -312,7 +312,7 @@ global $wppa_opt;
 		if ($wppa['name_on']) $do_it = true;
 	}
 	else {
-		if ( wppa_switch('wppa_show_full_name') ) $do_it = true;
+		if ( wppa_switch('wppa_show_full_name') || wppa_switch('wppa_show_full_owner') ) $do_it = true;
 	}
 	if ($do_it) { 
 		$wppa['out'] .= wppa_nltab('+').'<div id="namebox-'.$wppa['mocc'].'" class="wppa-box wppa-name-desc" style="'.__wcs('wppa-box').__wcs('wppa-name-desc').'" >';
@@ -350,7 +350,7 @@ global $wppa_opt;
 	}
 	else {
 		if ( $opt == 'optional' ) {
-			if ( wppa_switch('wppa_show_full_name') ) $doit = true;
+			if ( wppa_switch('wppa_show_full_name') || wppa_switch('wppa_show_full_owner') ) $doit = true;
 			else $doit = false;
 		}
 		else $doit = true;

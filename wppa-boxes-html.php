@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Various wppa boxes
-* Version 5.4.4
+* Version 5.4.7
 *
 *
 */
@@ -632,7 +632,8 @@ global $wppa_opt;
 	<div id="wppa-create-'.$t.$alb.'-'.$wppa['mocc'].'" class="wppa-file-'.$t.$wppa['mocc'].'" style="width:'.$width.'px;text-align:center;display:none;" >
 		<form id="wppa-creform-'.$alb.'-'.$wppa['mocc'].'" action="'.$returnurl.'" method="post" >'.
 		wp_nonce_field( 'wppa-album-check' , 'wppa-nonce', false, false ).'
-		<input type="hidden" name="wppa-album-parent" value="'.$alb.'" />';
+		<input type="hidden" name="wppa-album-parent" value="'.$alb.'" />
+		<input type="hidden" name="wppa-fe-create" value="yes" />';
 		// Name
 		$wppa['out'] .= '
 			<div class="wppa-box-text wppa-td" style="clear:both; float:left; text-align:left; '.__wcs( 'wppa-box-text' ).__wcs( 'wppa-td' ).'" >'.

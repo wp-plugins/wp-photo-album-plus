@@ -2,7 +2,7 @@
 /* wppa-watermark.php
 *
 * Functions used for the application of watermarks
-* version 5.4.1
+* version 5.4.7
 *
 */
 
@@ -84,6 +84,8 @@ global $wppa_opt;
 				$text = str_replace( 'w#id', $id, $text );
 				$text = str_replace( 'w#name', wppa_get_photo_name( $id ), $text );
 				$text = str_replace( 'w#filename', wppa_get_photo_item( $id, 'filename' ), $text );
+				$text = str_replace( 'w#timestamp', wppa_local_date( get_option( 'date_format', "F j, Y," ).' '.get_option( 'time_format', "g:i a" ), wppa_get_photo_item( $id, 'timestamp' ) ), $text );
+
 				$text = trim( $text );
 				break;
 				

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 5.4.5
+* Version 5.4.7
 *
 */
 
@@ -894,7 +894,7 @@ global $no_default;
 							$desc = __('Select the number of voting stars.', 'wppa');
 							$help = '';
 							$slug = 'wppa_rating_max';
-							$options = array('Standard: 5 stars', 'Extended: 10 stars', 'One button vote');
+							$options = array(__('Standard: 5 stars', 'wppa'), __('Extended: 10 stars', 'wppa'), __('One button vote', 'wppa'));
 							$values = array('5', '10', '1');
 							$html = wppa_select($slug, $options, $values);
 							$class = 'wppa_rating_';
@@ -1293,7 +1293,7 @@ global $no_default;
 							$help = '';
 							$slug = 'wppa_show_full_owner';
 							$html = wppa_checkbox($slug);
-							wppa_setting($slug, '5.1', $name, $desc, $html, $help, $class);
+							wppa_setting($slug, '5.1', $name, $desc, $html, $help);
 							
 							$name = __('Photo desc', 'wppa');
 							$desc = __('Display Photo description.', 'wppa');
@@ -1634,6 +1634,14 @@ global $no_default;
 							$html = wppa_checkbox($slug);
 							$class = 'tt_normal wppa_popup';
 							wppa_setting($slug, '4', $name, $desc, $html, $help, $class);
+
+							$name = __('Popup (owner)', 'wppa');
+							$desc = __('Display owner on popup.', 'wppa');
+							$help = esc_js(__('Display photo owner under thumbnail images on the popup.', 'wppa'));
+							$slug = 'wppa_popup_text_owner';
+							$html = wppa_checkbox($slug);
+							$class = 'tt_normal wppa_popup';
+							wppa_setting($slug, '4.1', $name, $desc, $html, $help, $class);
 							
 							$name = __('Popup desc', 'wppa');
 							$desc = __('Display Thumbnail description on popup.', 'wppa');
@@ -1890,6 +1898,13 @@ global $no_default;
 							$slug = 'wppa_ovl_cover_desc';
 							$html = wppa_checkbox($slug);
 							wppa_setting($slug, '16', $name, $desc, $html, $help);
+							
+							$name = __('Overlay add owner', 'wppa');
+							$desc = __('Add the owner to the photo name on lightbox displays.', 'wppa');
+							$help = esc_js(__('This setting is independant of the show name switches and is a global setting.', 'wppa'));
+							$slug = 'wppa_ovl_add_owner';
+							$html = wppa_checkbox($slug);
+							wppa_setting($slug, '17', $name, $desc, $html, $help);
 
 							$name = __('Overlay show counter', 'wppa');
 							$desc = __('Show the x/y counter below the image.', 'wppa');
@@ -2578,8 +2593,8 @@ global $no_default;
 							$desc = __('The way the thumbnail images are displayed.', 'wppa');
 							$help = esc_js(__('You may select an altenative display method for thumbnails. Note that some of the thumbnail settings do not apply to all available display methods.', 'wppa'));
 							$slug = 'wppa_thumbtype';
-							$options = array(__('--- default ---', 'wppa'), __('like album covers', 'wppa'), __('--- none ---', 'wppa'));
-							$values = array('default', 'ascovers', 'none');
+							$options = array(__('--- default ---', 'wppa'), __('like album covers', 'wppa'), __('like album covers mcr', 'wppa'));
+							$values = array('default', 'ascovers', 'ascovers-mcr');
 							$onchange = 'wppaCheckThumbType()';
 							$html = wppa_select($slug, $options, $values, $onchange);
 							wppa_setting($slug, '3', $name, $desc, $html, $help);
@@ -3094,7 +3109,7 @@ global $no_default;
 						
 							$name = __('Overlay at top in Chrome', 'wppa');
 							$desc = __('Place the overlay (lightbox) image at the top of the page in Chrome browsers.', 'wppa');
-							$help = esc_js(__('This is required for certain mobime devices.', 'wppa'));
+							$help = esc_js(__('This is required for certain mobile devices.', 'wppa'));
 							$slug = 'wppa_ovl_chrome_at_top';
 							$html = wppa_checkbox($slug);
 							wppa_setting($slug, '4', $name, $desc, $html, $help);
@@ -4070,8 +4085,8 @@ global $no_default;
 							
 							$name = __('User upload Photos login', 'wppa');
 							$desc = __('Frontend upload requires the user is logged in.', 'wppa');
-							$help = esc_js(__('If you uncheck this box, make sure you check the item Owners only in the next sub-table.', 'wppa'));
-							$help .= '\n'.esc_js(__('Set the owner to ---public--- of the albums that are allowed to be uploaded to.', 'wppa'));
+							$help = esc_js(__('If you uncheck this box, make sure you check the item Owners only in Table VII-D1.', 'wppa'));
+							$help .= '\n'.esc_js(__('Also: set the owner to ---public--- of the albums that are allowed to be uploaded to.', 'wppa'));
 							$slug = 'wppa_user_upload_login';
 							$html1 = wppa_checkbox($slug);
 							$html2 = '';
@@ -4281,7 +4296,7 @@ global $no_default;
 							$blacklist = get_option( 'wppa_black_listed_users', array() );
 							
 							if ( wppa_get_user_count() <= $wppa_opt['wppa_max_users'] ) {
-								$options = array( __('-- select a user to blacklist ---', 'wppa') );
+								$options = array( __('--- select a user to blacklist ---', 'wppa') );
 								$values = array( '0' );
 								foreach ( $users as $usr ) {
 									if ( ! wppa_user_is( 'administrator', $usr['ID'] ) ) {	// an administrator can not be blacklisted
@@ -4308,7 +4323,7 @@ global $no_default;
 							$help = '';
 							$slug = 'wppa_un_blacklist_user';
 							$blacklist = get_option( 'wppa_black_listed_users', array() );
-							$options = array( __('-- select a user to unblacklist ---', 'wppa') );
+							$options = array( __('--- select a user to unblacklist ---', 'wppa') );
 							$values = array( '0' );
 							foreach ( $blacklist as $usr ) {
 								$u = get_user_by( 'login', $usr );
@@ -5093,7 +5108,7 @@ global $no_default;
 											__('Filename without extension', 'wppa'), 
 											__('IPTC Tag 2#005 (Graphic name)', 'wppa'),
 											__('IPTC Tag 2#120 (Caption)', 'wppa'),
-											__('No name al all', 'wppa')											
+											__('No name at all', 'wppa')											
 										);
 							$vals = array( 'filename', 'noext', '2#005', '2#120', 'none' );
 							$html = wppa_select($slug, $opts, $vals);

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 5.4.5
+* Version 5.4.7
 *
 */
 
@@ -648,6 +648,7 @@ Hide Camera info
 						'wppa_thumb_text_rating' 			=> 'yes',	// 3
 						'wppa_thumb_text_viewcount'			=> 'no',
 						'wppa_popup_text_name' 				=> 'yes',	// 4
+						'wppa_popup_text_owner' 			=> 'no',
 						'wppa_popup_text_desc' 				=> 'yes',	// 5
 						'wppa_popup_text_desc_strip'		=> 'no',	// 5.1
 						'wppa_popup_text_rating' 			=> 'yes',	// 6
@@ -686,6 +687,7 @@ Hide Camera info
 						'wppa_ovl_cover_name'				=> 'yes',
 						'wppa_ovl_cover_desc'				=> 'no',
 						'wppa_ovl_show_counter'				=> 'yes',
+						'wppa_ovl_add_owner' 				=> 'no',
 						'wppa_show_zoomin'					=> 'yes',
 
 						// Table III: Backgrounds

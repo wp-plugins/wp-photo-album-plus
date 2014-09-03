@@ -2,7 +2,7 @@
 /*
 Plugin Name: WP Photo Album Plus
 Description: Easily manage and display your photo albums and slideshows within your WordPress site.
-Version: 5.4.6
+Version: 5.4.7
 Author: J.N. Breetvelt a.k.a. OpaJaap
 Author URI: http://wppa.opajaap.nl/
 Plugin URI: http://wordpress.org/extend/plugins/wp-photo-album-plus/
@@ -21,12 +21,12 @@ global $wpdb;
 /* when new options are added and when the wppa_setup() routine 
 /* must be called right after update for any other reason.
 */
-global $wppa_revno; 		$wppa_revno = '5406';
+global $wppa_revno; 		$wppa_revno = '5407';
 
 /* This is the api interface version number
 /* It is incremented at any code change.
 */
-global $wppa_api_version; 	$wppa_api_version = '5-4-06-001';
+global $wppa_api_version; 	$wppa_api_version = '5-4-07-000';
 
 /* start timers */
 global $wppa_starttime; $wppa_starttime = microtime(true);
@@ -46,13 +46,19 @@ if ( ! defined( 'PHP_VERSION_ID' ) ) {
 /* To run WPPA+ on a multisite in single site mode, 
 /* add to wp-config.php: define('WPPA_MULTISITE_GLOBAL', true); */
 if ( ! defined('WPPA_MULTISITE_GLOBAL') ) {
-	define ('WPPA_MULTISITE_GLOBAL', false);
+	define( 'WPPA_MULTISITE_GLOBAL', false );
 }
 
 /* To run WPPA+ in a multisite old style mode, 
-/* add to wp-config.php: define ('WPPA_MULTISITE_BLOGSDIR', true); */
+/* add to wp-config.php: define('WPPA_MULTISITE_BLOGSDIR', true); */
 if ( ! defined('WPPA_MULTISITE_BLOGSDIR') ) {
-	define ('WPPA_MULTISITE_BLOGSDIR', false);
+	define( 'WPPA_MULTISITE_BLOGSDIR', false );
+}
+
+/* To run WPPA+ in a multisite new style, new implementation mode,
+/* add to wp-config.php: define('WPPA_MULTISITE_INDIVIDUAL', true); */
+if ( ! defined('WPPA_MULTISITE_INDIVIDUAL') ) {
+	define( 'WPPA_MULTISITE_INDIVIDUAL', false );
 }
 
 /* Choose the right db prifix */
@@ -152,7 +158,15 @@ global $blog_id;
 			define( 'WPPA_DEPOT_PATH', WPPA_ABSPATH.WPPA_DEPOT );					
 			define( 'WPPA_DEPOT_URL', site_url() . '/' . WPPA_DEPOT );	
 		}
-		else { 	// New multisite
+		elseif ( WPPA_MULTISITE_INDIVIDUAL ) {	// New multisite new style
+			define( 'WPPA_UPLOAD', $rel_uploads_path . '/sites/'.$blog_id);
+			define( 'WPPA_UPLOAD_PATH', ABSPATH.WPPA_UPLOAD.'/wppa');
+			define( 'WPPA_UPLOAD_URL', get_bloginfo('wpurl').'/'.WPPA_UPLOAD.'/wppa');
+			define( 'WPPA_DEPOT', $rel_uploads_path . '/sites/'.$blog_id.'/wppa-depot' );
+			define( 'WPPA_DEPOT_PATH', ABSPATH.WPPA_DEPOT );
+			define( 'WPPA_DEPOT_URL', get_bloginfo('wpurl').'/'.WPPA_DEPOT );
+		}
+		else { 	// New multisite old style
 			$user = is_user_logged_in() ? '/' . wppa_get_user() : '';
 			define( 'WPPA_UPLOAD', $rel_uploads_path );
 			define( 'WPPA_UPLOAD_PATH', WPPA_ABSPATH . WPPA_UPLOAD . $user . '/wppa' );
@@ -162,7 +176,7 @@ global $blog_id;
 			define( 'WPPA_DEPOT_URL', site_url() . '/' . WPPA_DEPOT );
 		}
 	}
-	else {	// Single site
+	else {	// Single site or multisite global
 		define( 'WPPA_UPLOAD', $rel_uploads_path );
 		define( 'WPPA_UPLOAD_PATH', WPPA_ABSPATH . WPPA_UPLOAD . '/wppa' );
 		define( 'WPPA_UPLOAD_URL', site_url() . '/' . WPPA_UPLOAD . '/wppa' );

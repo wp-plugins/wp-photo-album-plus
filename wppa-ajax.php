@@ -2,7 +2,7 @@
 /* wppa-ajax.php
 *
 * Functions used in ajax requests
-* version 5.4.5
+* version 5.4.7
 *
 */
 
@@ -668,7 +668,11 @@ global $wppa_session;
 					exit;
 					break;
 				case 'name':
-					$value = strip_tags( $value );
+					$value = trim( strip_tags( $value ) );
+					if ( ! sanitize_file_name( $value ) ) {	// Empty album name is not allowed
+						$value = 'Album-#'.$album;
+						echo '||5||' . sprintf( __( 'Album name may not be empty.<br />Reset to <b>%s</b>', 'wppa' ), $value );
+					}
 					$itemname = __( 'Name', 'wppa' );
 					break;
 				case 'description':
@@ -680,6 +684,7 @@ global $wppa_session;
 							exit;
 						}
 					}
+					$value = trim( $value );
 					break;
 				case 'a_order':
 					$itemname = __( 'Album order #', 'wppa' );
@@ -1763,8 +1768,12 @@ global $wppa_session;
 				case 'wppa_pl_dirname':
 					$value = sanitize_file_name( $value );
 					$value = trim( $value, ' /' );
-					if ( ! wppa_create_pl_htaccess( $value ) ) {
+					if ( ! $value ) {
 						$wppa['error'] = '714';
+						$wppa['out'] = __('This value can not be empty', 'wppa');
+					}
+					else {
+						wppa_create_pl_htaccess( $value );
 					}
 					break;
 					

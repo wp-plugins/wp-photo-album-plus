@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains (not yet, but in the future maybe) all the maintenance routines
-* Version 5.4.1
+* Version 5.4.7
 *
 */
 
@@ -702,7 +702,7 @@ global $wpdb;
 function wppa_fix_source_path() {
 global $wppa_opt;
 
-	if ( is_writable( $wppa_opt['wppa_source_dir'] ) ) return; 					// Nothing to do here
+	if ( strpos( $wppa_opt['wppa_source_dir'], ABSPATH ) === 0 ) return; 					// Nothing to do here
 	
 	$wp_content = trim( str_replace( home_url(), '', content_url() ), '/' );
 	

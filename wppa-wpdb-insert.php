@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains low-level wpdb routines that add new records
-* Version 5.4.1
+* Version 5.4.7
 *
 */
 
@@ -291,8 +291,8 @@ global $wpdb;
 																$args['id'],
 																$args['album'],
 																$args['ext'],
-																$args['name'], 
-																$args['description'], 
+																trim( $args['name'] ), 
+																trim( $args['description'] ), 
 																$args['p_order'],
 																$args['mean_rating'],
 																$args['linkurl'],
@@ -370,8 +370,8 @@ global $wpdb;
 																	) 
 														VALUES ( %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s )", 
 																$args['id'], 
-																$args['name'],
-																$args['description'],
+																trim( $args['name'] ),
+																trim( $args['description'] ),
 																$args['a_order'],
 																$args['main_photo'],
 																$args['a_parent'],

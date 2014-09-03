@@ -2,7 +2,7 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 5.4.5
+* version 5.4.7
 *
 */
 
@@ -1351,10 +1351,12 @@ global $cache_path;
 		prune_super_cache( $cache_path . 'supercache/', true );
 		prune_super_cache( $cache_path, true );
 	}
+	
 	// W3 Total cache
 	if ( function_exists( 'w3tc_pgcache_flush' ) ) {
 		w3tc_pgcache_flush();
 	}
+	
 	// SG_CachePress
 	/*
 	if ( class_exists( 'SG_CachePress_Supercacher' ) ) {
@@ -1363,9 +1365,15 @@ global $cache_path;
 	}
 	*/
 	
-	if ( $force ) { 	// At a setup or update operation
+	// Quick cache
+	if ( isset($GLOBALS['quick_cache']) ) {
+		$GLOBALS['quick_cache']->clear_cache();
+	}
+	
+	// At a setup or update operation
+	// Manually remove the content of wp-content/cache/
+	if ( $force ) { 	
 		if ( is_dir( WPPA_CONTENT_PATH.'/cache/' ) ) {
-			// W3 has no flush all api call, we do it by hand
 			wppa_tree_empty( WPPA_CONTENT_PATH.'/cache' );
 		}
 	}
@@ -1845,25 +1853,45 @@ global $wpdb;
 	$result = '';
 	
 	$selected = $args['selected'] == '0' ? ' selected="selected"' : '';
-	if ( $args['addpleaseselect'] ) $result .= '<option value="0" disabled="disabled" '.$selected.' >' . __( '- select an album -', 'wppa' ) . '</option>';
+	if ( $args['addpleaseselect'] ) $result .= 
+		'<option value="0" disabled="disabled" '.$selected.' >' . 
+			( is_admin() ? __( '- select an album -', 'wppa' ) : __a( '- select an album -' ) ) . 
+		'</option>';
 	
 	$selected = $args['selected'] == '0' ? ' selected="selected"' : '';
-	if ( $args['addnone'] ) $result .= '<option value="0"'.$selected.' >' . __( '--- none ---', 'wppa' ) . '</option>';
+	if ( $args['addnone'] ) $result .= 
+		'<option value="0"'.$selected.' >' . 
+			( is_admin() ? __( '--- none ---', 'wppa' ) : __a( '--- none ---' ) ) . 
+		'</option>';
 	
 	$selected = $args['selected'] == '0' ? ' selected="selected"' : '';
-	if ( $args['addall'] ) $result .= '<option value="0"'.$selected.' >' . __( '--- all ---', 'wppa' ) . '</option>';
+	if ( $args['addall'] ) $result .= 
+		'<option value="0"'.$selected.' >' . 
+			( is_admin() ? __( '--- all ---', 'wppa' ) : __a( '--- all ---' ) ) . 
+		'</option>';
 
 	$selected = $args['selected'] == '-2' ? ' selected="selected"' : '';
-	if ( $args['addall'] ) $result .= '<option value="-2"'.$selected.' >' . __( '--- generic ---', 'wppa' ) . '</option>';
+	if ( $args['addall'] ) $result .= 
+		'<option value="-2"'.$selected.' >' . 
+			( is_admin() ? __( '--- generic ---', 'wppa' ) : __a( '--- generic ---' ) ) . 
+		'</option>';
 	
 	$selected = $args['selected'] == '0' ? ' selected="selected"' : '';
-	if ( $args['addblank'] ) $result .= '<option value="0"'.$selected.' ></option>';
+	if ( $args['addblank'] ) $result .= 
+		'<option value="0"'.$selected.' >' .
+		'</option>';
 	
 	$selected = $args['selected'] == '-99' ? ' selected="selected"' : '';
-	if ( $args['addmultiple'] ) $result .= '<option value="-99"'.$selected.' >' . __( '--- multiple see below ---', 'wppa' ) . '</option>';
+	if ( $args['addmultiple'] ) $result .= 
+		'<option value="-99"'.$selected.' >' . 
+			( is_admin() ? __( '--- multiple see below ---', 'wppa' ) : __a( '--- multiple see below ---' ) ) . 
+		'</option>';
 	
 	$selected = $args['selected'] == '0' ? ' selected="selected"' : '';
-	if ( $args['addselbox'] ) $result .= '<option value="0"'.$selected.' >' . __( '--- a selection box ---', 'wppa' ) . '</option>';
+	if ( $args['addselbox'] ) $result .= 
+		'<option value="0"'.$selected.' >' . 
+			( is_admin() ? __( '--- a selection box ---', 'wppa' ) : __a( '--- a selection box ---' ) ) . 
+		'</option>';
 
 	if ( $albums ) foreach ( $albums as $album ) {
 		if ( ( $args['disabled'] == $album['id'] ) || 
@@ -1881,7 +1909,10 @@ global $wpdb;
 	}
 	
 	$selected = $args['selected'] == '-1' ? ' selected="selected"' : '';
-	if ( $args['addseparate'] ) $result .= '<option value="-1"' . $selected . '>' . __( '--- separate ---', 'wppa' ) . '</option>';
+	if ( $args['addseparate'] ) $result .= 
+		'<option value="-1"' . $selected . '>' . 
+			( is_admin() ? __( '--- separate ---', 'wppa' ) : __a( '--- separate ---' ) ) . 
+		'</option>';
 
 	return $result;
 }

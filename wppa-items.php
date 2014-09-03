@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains functions to retrieve album and photo items
-* Version 5.4.5
+* Version 5.4.7
 *
 */
  
@@ -157,7 +157,7 @@ static $thumb_cache_2;
 }
 
 // get the name of a full sized image
-function wppa_get_photo_name( $id, $add_owner = false, $add_medal = false, $esc_js = false ) {
+function wppa_get_photo_name( $id, $add_owner = false, $add_medal = false, $esc_js = false, $show_name = true ) {
 global $wppa_opt;
 
 	// Verify args
@@ -168,13 +168,20 @@ global $wppa_opt;
 	
 	// Get data
 	$thumb = wppa_cache_thumb( $id );
-	$result = __( stripslashes( $thumb['name'] ) );
+	if ( $show_name ) {
+		$result = __( stripslashes( $thumb['name'] ) );
+	}
 	
 	// Add owner?
 	if ( $add_owner ) {
 		$user = get_user_by( 'login', $thumb['owner'] );
 		if ( $user ) {
-			$result .= ' ('.$user->display_name.')';
+			if ( $show_name ) {
+				$result .= ' ('.$user->display_name.')';
+			}
+			else {
+				$result .= ' '.$user->display_name;
+			}
 		}
 	}
 

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the upload/import pages and functions
-* Version 5.4.5
+* Version 5.4.7
 *
 */
 
@@ -375,6 +375,7 @@ global $wppa_supported_video_extensions;
 		if ( isset( $_POST['wppa-source-remote'] ) ) {
 			update_option( 'wppa_import_source_url_'.$user, $_POST['wppa-source-remote'] );
 			update_option( 'wppa_import_source_url_found_'.$user, false );
+			update_option( 'wppa_import_remote_max_'.$user, strval( intval( $_POST['wppa-import-remote-max'] ) ) );
 		}
 	}
 	
@@ -478,6 +479,7 @@ global $wppa_supported_video_extensions;
 			$videocount 	= '0';
 			$dircount		= '0';
 			$is_ngg 		= false;
+			$remote_max 	= get_option( 'wppa_import_remote_max_'.$user, '10' );
 		}
 
 ?>		
@@ -521,6 +523,8 @@ global $wppa_supported_video_extensions;
 			<input type="submit" class="button-secundary" name="wppa-import-set-source-dir" value="<?php _e( 'Set source directory', 'wppa' ); ?>" />
 			<?php } else { ?>
 			<input type="text" style="width:50%" name="wppa-source-remote" value="<?php echo $source ?>" />
+			<?php _e( 'Max:', 'wppa' ) ?>
+			<input type="text" style="width:50px;" name="wppa-import-remote-max" value="<?php echo $remote_max ?>" />
 			<input type="submit" onclick="jQuery( '#rem-rem' ).css( 'display','inline' ); return true;" class="button-secundary" name="wppa-import-set-source-url" value="<?php _e( 'Find remote photos', 'wppa' ); ?>" />
 			<span id="rem-rem" style="display:none;"><?php _e( 'Working, please wait...', 'wppa' ) ?></span>
 			<?php _e( '<br />You can enter either a web page address like <i>http://mysite.com/mypage/</i> or a full url to an image file like <i>http://mysite.com/wp-content/uploads/wppa/4711.jpg</i>', 'wppa' ); ?>
@@ -1018,11 +1022,22 @@ function wppa_get_import_files() {
 		$files 			= glob( $source_path . '/*' );
 	}
 	else { // remote
+		$max_tries 		= get_option( 'wppa_import_remote_max_'.$user, '10' );
 		$setting 		= get_option( 'wppa_import_source_url_'.$user, 'http://' );
 		$pattern		= '/src=".*?"/';
 										
 		if ( is_array( @ getimagesize( $setting ) ) ) {	// image uri
 			$files = array( $setting );
+			$pid = wppa_strip_ext( basename( $setting ) );
+			if ( is_numeric( $pid ) ) {
+				$tries = 1;
+				$before = substr( $setting, 0, strpos( $setting, $pid) );
+				while ( $tries < $max_tries ) {
+					$tries++;
+					$pid++;
+					$files[] = $before.$pid.'.jpg';
+				}
+			}
 		}
 		else {	// page url
 			$files = get_option( 'wppa_import_source_url_found_'.$user, false );
@@ -1053,6 +1068,7 @@ function wppa_get_import_files() {
 						
 						// Copy to $files, skipping dups
 						$val = '';
+						$count = 0;
 						$sfxs = array( 'jpg', 'gif', 'png', 'JPG', 'GIF', 'PNG' );
 						foreach ( array_keys( $matches[0] ) as $idx ) {
 							if ( $matches[0][$idx] != $val ) {
@@ -1066,7 +1082,10 @@ function wppa_get_import_files() {
 								$sfx = substr( $match, -3 );
 								if ( in_array( $sfx, $sfxs ) ) {
 									// Save it
-									$files[] = $match;
+									$count++;
+									if ( $count <= $max_tries ) {
+										$files[] = $match;
+									}
 								}
 							}
 						}

@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile, cloudinary, fotomoto
-Version: 5.4.6
+Version: 5.4.7
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -105,6 +105,23 @@ See Table I-A1 and Table I-B1,2 of the Photo Albums -> Settings admin page.
 
 == Frequently Asked Questions ==
 
+= What do i have to do when converting to multisite? =
+
+* If your WP installation is a new installation and you want to have only one - global - WPPA system, add to wp-config.php:
+**define( 'WPPA_MULTISITE_GLOBAL', true );**
+* If your WP installation is a new installation and you want to have a separate WPPA system for each sub-site, add to wp-config.php:
+**define( 'WPPA_MULTISITE_INDIVIDUAL', true );**
+* If your WP installation is older than 3.5 an you want to have only one - global - WPPA system, ad to wp-config.php:
+**define( 'WPPA_MULTISITE_GLOBAL', true );**
+* If your WP installation is older than 3.5 an you want to have a separate WPPA system for each sub-site, add to wp-config.php:
+**define( 'WPPA_MULTISITE_BLOGSDIR', true );**
+* If you want to convert your multisite WP installation that is prior to 3.5 to a version later than 3.5 and you want to convert an existing WPPA multisite installation
+to the new multisite standards, do the following:
+1. Update WP.
+1. Perform the network migration utility from the network admin which moves all the files from wp-content/blogs.dir/xx to wp-content/uploads/sites/xx
+1. **Add** to wp-config.php: **define( 'WPPA_MULTISITE_INDIVIDUAL', true );**
+1. If it is there, **Remove** from wp-config.php: **define( 'WPPA_MULTISITE_BLOGSDIR', true );**
+	
 = Which other plugins do you recommand to use with WPPA+, and which not? =
 
 * Recommanded plugins: qTranslate, WP Super Cache, Cube Points, Simple Cart & Buy Now, Google-Maps-GPX-Viewer.
@@ -117,10 +134,9 @@ See Table I-A1 and Table I-B1,2 of the Photo Albums -> Settings admin page.
 
 = Are there special requirements for responsive (mobile) themes? =
 
-* Yes! Go to the Photo Albums -> Settings admin page. Enter *auto* in Table I-A1. Lowercase letters, no quotes.
-* Do not use %%size=[any number]%%, unless you want a fixed width display. This setting is inherited to the next %%wppa%%, 
-so use %%size=auto%% in the next %%wppa%% occurrence to go back to automatic.
-* If you use the Slideshow widget, set the width also to *auto*, and the vertical alignment to *fit*.
+* Yes! Go to the Photo Albums -> Settings admin page. Enter **auto** in Table I-A1. Lowercase letters, no quotes.
+* Do not use size="[any number]", use size="0.80" for 80% with etc.
+* If you use the Slideshow widget, set the width also to **auto**, and the vertical alignment to **fit**.
 * You may also need to change the thumbnail sizes for widgets in *Table I-F 2,4,6 and 8*. Set to 75 if you want 3 columns in the theme *Responsive*.
 
 = After update, many things seem to go wrong =
@@ -132,14 +148,6 @@ so use %%size=auto%% in the next %%wppa%% occurrence to go back to automatic.
 * When upload fails after an upgrade, one or more columns may be added to one of the db tables. In rare cases this may have been failed. 
 Unfortunately this is hard to determine. 
 If this happens, make sure (ask your hosting provider) that you have all the rights to modify db tables and run action Table VII-A1 again.
-
-= What do i have to do when converting to multisite? =
-
-* After the standard WP conversion procedure the photos and thumbnails must be moved to a different location on the server.
-You have to copy all files and subdirectories from .../wp-content/uploads/wppa/ to .../wp-content/blogs.dir/1/wppa/
-This places all existing photos to the 'upload' directory that belongs to blog id 1.
-Make sure the files are accessable by visitors (check CHMOD and .htaccess).
-Further, activate the plugin for all other blogs that require it.
 
 = How does the search widget work? =
 
@@ -188,6 +196,39 @@ If you changed the name of wp-content and/or uploads, besides the additions to w
 **define('WPPA_REL_UPLOADS_PATH', 'wp_content/uploads');**
 **define('WPPA_REL_DEPOT_PATH', 'wp_content');**
 and make the changes therein also.
+
+= 5.4.7 =
+
+= Bug Fixes =
+
+* The subtitle 'By:' on the photo of the day widget is now translatable.
+* The selecion option '- select an album -' on the upload widget is now translatable.
+* At setup time an erroneously .htaccess file will no longer be created in wp-content.
+* Setting II-B5.1 was invisible when breadcrumbs were switched off. Fixed.
+
+= New Features =
+
+* Table II-G17 Overlay add owner to photoname. Same functionality as II-B5.1 and II-D1.1 for lightbox, works global for all lightbox name settings.
+* Table II-D4.1 Popup owner. Same functionality as II-B5.1 and II-D1.1 for popups.
+* Cache will now also be cleared for Quick Cache at settings change and uploads. ( Other supported caching plugins: wp-super-cache and w3Total cache. )
+It is still not a guarantee but a reasonable attempt to keep the page content in accordance with the data on the site.
+* In shortcodes, album="#upldr,username" may now also contain a parent album id: album="#upldr,username,parent".
+* A parent album may now also be an enumeration of album ids, both in #upldr as in #owner album specifications. Example: album="#upldr,#me,12.34..37"
+* New Thumbnail type for responsive themes in Table IV-C3: like album covers mcr.
+* Table IX-F7: Predefined watermark text, now also supports w#timestamp.
+
+= Other Changes =
+
+* Album name may not be empty. This has always been a rule. You can no longer clear the album name, or change it into a (series of) dot(s).
+* If your provider moved your installation to a different filesystem location, 
+the sourcepath ( Table IX-H3 ) will now be corrected automaticly on entering the settings page.
+* Table II-B5 and II-B5.1 ( Show photo name and add owner on slideshow ) now work independantly.
+If only the owner is displayed, it will be without parenthesis.
+* Table II-D1 and II-D1.1 ( Show photo name and add owner on thumbnails ) now work independantly.
+If only the owner is displayed, it will be without parenthesis.
+* On the Import screen you can now set a maximum number of photos to be found on remote locations. 
+If the remote location is an imagefile and the filename exclusive extension is numeric, 
+an assumption is made that - at a maximum of the max setting - the successive numbers may also be imagefiles.
 
 = 5.4.6 =
 

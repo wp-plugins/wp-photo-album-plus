@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * gp admin functions
-* version 5.4.5
+* version 5.4.7
 *
 */
 
@@ -754,7 +754,7 @@ global $wppa;
 		}
 		else {
 			wppa_error_message( __( 'ERROR: Unable to retrieve image size of', 'wppa' ).' '.$name.' '.__( 'Are you sure it is a photo?', 'wppa' ) );
-			$wppa['ajax_import_files_error'] = __( 'File corrupt', 'wppa' );
+			$wppa['ajax_import_files_error'] = __( 'No imagesize', 'wppa' );
 			return false;
 		}
 		// Get ext based on mimetype, regardless of ext
