@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the upload/import pages and functions
-* Version 5.4.7
+* Version 5.4.8
 *
 */
 
@@ -574,7 +574,7 @@ global $wppa_supported_video_extensions;
 									$ext = strtolower( substr( strrchr( $file, "." ), 1 ) );
 									if ( $ext == 'zip' ) { ?>
 										<td>
-											<input type="checkbox" id="file-<?php echo( $idx ) ?>" name="file-<?php echo( $idx ) ?>" class="wppa-zip" checked="checked" />&nbsp;&nbsp;<?php echo( basename( $file ) ); ?>
+											<input type="checkbox" id="file-<?php echo( $idx ) ?>" name="file-<?php echo( $idx ) ?>" class="wppa-zip" checked="checked" />&nbsp;&nbsp;<?php echo( sanitize_file_name( basename( $file ) ) ); ?>
 										</td>
 										<?php if ( $ct == 3 ) {
 											echo( '</tr><tr>' ); 
@@ -717,7 +717,7 @@ global $wppa_supported_video_extensions;
 									$meta =	substr( $file, 0, strlen( $file )-3 ).'pmf';
 									if ( $ext == 'jpg' || $ext == 'png' || $ext == 'gif' ) { ?>
 										<td>
-											<input type="checkbox" id="file-<?php echo( $idx ) ?>" name="file-<?php echo( $idx ) ?>" title="<?php echo $file ?>" class= "wppa-pho" <?php if ( $is_sub_depot ) echo( 'checked="checked"' ) ?> /><span id="name-file-<?php echo( $idx ) ?>" >&nbsp;&nbsp;<?php echo( basename( $file ) ); ?>&nbsp;<?php echo( stripslashes( wppa_get_meta_name( $meta, '( ' ) ) ) ?><?php echo( stripslashes( wppa_get_meta_album( $meta, '[' ) ) ) ?></span>
+											<input type="checkbox" id="file-<?php echo( $idx ) ?>" name="file-<?php echo( $idx ) ?>" title="<?php echo $file ?>" class= "wppa-pho" <?php if ( $is_sub_depot ) echo( 'checked="checked"' ) ?> /><span id="name-file-<?php echo( $idx ) ?>" >&nbsp;&nbsp;<?php echo( sanitize_file_name( basename( $file ) ) ); ?>&nbsp;<?php echo( stripslashes( wppa_get_meta_name( $meta, '( ' ) ) ) ?><?php echo( stripslashes( wppa_get_meta_album( $meta, '[' ) ) ) ?></span>
 										</td>
 										<?php if ( $ct == 3 ) {
 											echo( '</tr><tr>' ); 
@@ -769,7 +769,7 @@ global $wppa_supported_video_extensions;
 									$ext = strtolower( substr( strrchr( $file, "." ), 1 ) );
 									if ( in_array( $ext, $wppa_supported_video_extensions ) ) { ?>
 										<td>
-											<input type="checkbox" id="file-<?php echo( $idx ) ?>" name="file-<?php echo( $idx ) ?>" title="<?php echo $file ?>" class="wppa-video" checked="checked" /><span id="name-file-<?php echo( $idx ) ?>" >&nbsp;&nbsp;<?php echo( basename( $file ) ); ?></span>
+											<input type="checkbox" id="file-<?php echo( $idx ) ?>" name="file-<?php echo( $idx ) ?>" title="<?php echo $file ?>" class="wppa-video" checked="checked" /><span id="name-file-<?php echo( $idx ) ?>" >&nbsp;&nbsp;<?php echo( sanitize_file_name( basename( $file ) ) ); ?></span>
 										</td>
 										<?php if ( $ct == 3 ) {
 											echo( '</tr><tr>' ); 
@@ -811,7 +811,7 @@ global $wppa_supported_video_extensions;
 									elseif ( is_dir( $dir ) ) { ?>
 										<tr>
 											<td>
-												<input type="checkbox" id="file-<?php echo( $idx ) ?>" name="file-<?php echo( $idx ) ?>" class= "wppa-dir" checked="checked" />&nbsp;&nbsp;<b><?php echo( basename( $dir ) ) ?></b>
+												<input type="checkbox" id="file-<?php echo( $idx ) ?>" name="file-<?php echo( $idx ) ?>" class= "wppa-dir" checked="checked" />&nbsp;&nbsp;<b><?php echo( sanitize_file_name( basename( $dir ) ) ) ?></b>
 												<?php
 													$subfiles = glob( $dir.'/*' );
 													$subdircount = '0';
@@ -1378,7 +1378,7 @@ global $wppa_supported_video_extensions;
 			$file = $file.'_backup';
 		}
 		if ( isset( $_POST['file-'.$idx] ) || $wppa['ajax'] ) {
-			if ( $wppa['ajax'] ) $wppa['ajax_import_files'] = basename( $file );	/* */
+			if ( $wppa['ajax'] ) $wppa['ajax_import_files'] = sanitize_file_name( basename( $file ) );	/* */
 			$ext = strtolower( substr( strrchr( $file, "." ), 1 ) );
 			$ext = str_replace( '_backup', '', $ext );
 			if ( $ext == 'jpg' || $ext == 'png' || $ext == 'gif' ) {
@@ -1490,7 +1490,7 @@ global $wppa_supported_video_extensions;
 	else foreach ( array_keys( $files ) as $idx ) {
 		$file = $files[$idx];
 		if ( isset( $_POST['file-'.$idx] ) || $wppa['ajax'] ) {
-			if ( $wppa['ajax'] ) $wppa['ajax_import_files'] = basename( $file );	/* */
+			if ( $wppa['ajax'] ) $wppa['ajax_import_files'] = sanitize_file_name( basename( $file ) );	/* */
 			$ext = strtolower( substr( strrchr( $file, "." ), 1 ) );
 			if ( in_array( $ext, $wppa_supported_video_extensions ) ) {
 				if ( is_numeric( $alb ) && $alb != '0' ) {
@@ -1649,7 +1649,7 @@ function wppa_get_meta_data( $file, $item, $opt ) {
 }
 
 
-function wppa_extract( $path, $delz ) {
+function wppa_extract( $xpath, $delz ) {
 // There are two reasons that we do not allow the directory structure from the zipfile to be restored.
 // 1. we may have no create dir access rights.
 // 2. we can not reach the pictures as we only glob the users depot and not lower.
@@ -1659,11 +1659,25 @@ function wppa_extract( $path, $delz ) {
 // dus...
 
 	$err = '0';
-	if ( !class_exists( 'ZipArchive' ) ) {
+	if ( ! class_exists( 'ZipArchive' ) ) {
 		$err = '3';
 		wppa_error_message( __( 'Class ZipArchive does not exist! Check your php configuration', 'wppa' ) );
 	}
 	else {
+	
+		// Start security fix
+		$temp = explode( '/', $xpath );
+		$cnt = count( $temp );
+		$temp[$cnt-1] = sanitize_file_name( $temp[$cnt-1] );
+		$path = implode( '/', $temp );
+		if ( ! file_exists( $path ) ) {
+			wppa_error_message( 'Zipfile '.$path.' does not exist.' );
+			unlink( $xpath );
+			$err = '4';
+			return $err;
+		}
+		// End security fix
+		
 		$ext = strtolower( substr( strrchr( $path, "." ), 1 ) );
 		if ( $ext == 'zip' ) {
 			$zip = new ZipArchive;
@@ -1674,6 +1688,7 @@ function wppa_extract( $path, $delz ) {
 				$skip = '0';
 				for( $i = 0; $i < $zip->numFiles; $i++ ){
 					$stat = $zip->statIndex( $i );
+					$stat['name'] = sanitize_file_name( $stat['name'] );	// Security fix
 					$file_ext = end( explode( '.', $stat['name'] ) );
 					if ( in_array( $file_ext, $supported_file_ext ) ) {
 						$zip->extractTo( WPPA_DEPOT_PATH, $stat['name'] );

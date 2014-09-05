@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains (not yet, but in the future maybe) all the maintenance routines
-* Version 5.4.7
+* Version 5.4.8
 *
 */
 
@@ -519,7 +519,9 @@ global $thumb;
 				$count = count( $messages );
 				$idx = $count - '2';
 				while ( $idx >= '0' ) {
-					$result .= $messages[$idx].'<br />';
+					$msg = $messages[$idx];
+					$msg = htmlspecialchars( strip_tags( $msg ) );	// Security fix
+					$result .= $msg.'<br />';
 					$idx--;
 				}
 			}
