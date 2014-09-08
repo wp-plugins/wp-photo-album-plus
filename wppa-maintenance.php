@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains (not yet, but in the future maybe) all the maintenance routines
-* Version 5.4.8
+* Version 5.4.8.001
 *
 */
 
@@ -346,6 +346,7 @@ global $wppa_session;
 						$name = $photo['name'];
 						if ( wppa_is_int( $name ) ) {
 							$target_len = wppa_opt( 'wppa_zero_numbers' );
+							$name = strval( intval( $name ) );
 							while ( strlen( $name ) < $target_len ) $name = '0'.$name;
 						}
 						if ( $name !== $photo['name'] ) {
