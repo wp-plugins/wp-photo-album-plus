@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains low-level utility routines
-* Version 5.4.7
+* Version 5.4.9
 *
 */
  
@@ -1501,7 +1501,7 @@ function wppa_get_source_pl( $id ) {
 	if ( file_exists( $source_path ) ) {
 		$result = 	content_url() . '/' . 						// http://www.mysite.com/wp-content/
 					wppa_opt( 'wppa_pl_dirname' ) . '/' .		// wppa-pl/
-					sanitize_file_name( wppa_get_album_item( wppa_get_photo_item( $id, 'album' ), 'name' ) ) . '/' .	// My-Album
+					wppa_sanitize_file_name( wppa_get_album_item( wppa_get_photo_item( $id, 'album' ), 'name' ) ) . '/' .	// My-Album
 					basename( $source_path );					// My-Photo.jpg
 	}
 	return $result;
@@ -1542,7 +1542,7 @@ global $blog_id;
 }
 
 
-function wppa_set_default_name( $id ) {
+function wppa_set_default_name( $id, $filename_raw = '' ) {
 global $wpdb;
 global $wppa_opt;
 global $thumb;
@@ -1550,17 +1550,23 @@ global $thumb;
 	if ( ! wppa_is_int( $id ) ) return;
 	wppa_cache_thumb( $id );
 	
+	$method 	= $wppa_opt['wppa_newphoto_name_method'];
 	$name 		= $thumb['filename']; 	// The default default
 	$filename 	= $thumb['filename'];
-	$method 	= $wppa_opt['wppa_newphoto_name_method'];
 	
 	switch ( $method ) {
 		case 'none':
 			$name = '';
 			break;
 		case 'filename':
+			if ( $filename_raw ) {
+				$name = wppa_sanitize_photo_name( $filename_raw );
+			}
 			break;
 		case 'noext':
+			if ( $filename_raw ) {
+				$name = wppa_sanitize_photo_name( $filename_raw );
+			}
 			$name = preg_replace('/\.[^.]*$/', '', $name);
 			break;
 		case '2#005':
@@ -1896,4 +1902,20 @@ function wppa_force_numeric_else( $value, $default ) {
 	if ( ! $value ) return $value;
 	if ( ! wppa_is_int( $value ) ) return $default;
 	return $value;
+}
+
+// Same as wp sanitize_file_name, except that it can be used for a pathname also.
+// If a pathname: only the basename of the path is sanitized.
+function wppa_sanitize_file_name( $file ) {
+	$temp 	= explode( '/', $file );
+	$cnt 	= count( $temp );
+	$temp[$cnt - 1] = sanitize_file_name( $temp[$cnt - 1] );
+	$file 	= implode( '/', $temp );
+	$file 	= trim ( $file );
+	return $file;
+}
+
+// Create a html safe photo name from a filename. May be a pathname
+function wppa_sanitize_photo_name( $file ) {
+	return htmlspecialchars( strip_tags( stripslashes( basename( $file ) ) ) );
 }

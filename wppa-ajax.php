@@ -2,7 +2,7 @@
 /* wppa-ajax.php
 *
 * Functions used in ajax requests
-* version 5.4.7
+* version 5.4.9
 *
 */
 
@@ -182,7 +182,7 @@ global $wppa_session;
 				exit;
 			}
 			$zipfilename = wppa_get_album_name( $alb );
-			$zipfilename = sanitize_file_name( $zipfilename.'.zip' ); 				// Remove illegal chars
+			$zipfilename = wppa_sanitize_file_name( $zipfilename.'.zip' ); 				// Remove illegal chars
 			$zipfilepath = WPPA_UPLOAD_PATH.'/temp/'.$zipfilename;
 			$wppa_zip = new ZipArchive;
 			$iret = $wppa_zip->open( $zipfilepath, 1 );
@@ -197,7 +197,7 @@ global $wppa_session;
 				if ( ! wppa_is_video( $id ) ) {
 					$source = ( wppa_switch( 'wppa_download_album_source' ) && is_file( wppa_get_source_path( $id ) ) ) ? wppa_get_source_path( $id ) : wppa_get_photo_path( $id );
 					if ( is_file( $source ) ) {
-						$dest 	= $p['filename'] ? sanitize_file_name( $p['filename'] ) : sanitize_file_name( wppa_strip_ext( $p['name'] ).'.'.$p['ext'] );
+						$dest 	= $p['filename'] ? wppa_sanitize_file_name( $p['filename'] ) : wppa_sanitize_file_name( wppa_strip_ext( $p['name'] ).'.'.$p['ext'] );
 						$iret = $wppa_zip->addFile( $source, $dest );
 						// To prevent too may files open, and to have at least a file when there are too many photos, close and re-open
 						$wppa_zip->close();
@@ -220,7 +220,7 @@ global $wppa_session;
 		case 'getalbumzipurl':
 			$alb = $_REQUEST['album-id'];
 			$zipfilename = wppa_get_album_name( $alb );
-			$zipfilename = sanitize_file_name( $zipfilename.'.zip' ); 				// Remove illegal chars
+			$zipfilename = wppa_sanitize_file_name( $zipfilename.'.zip' ); 				// Remove illegal chars
 			$zipfilepath = WPPA_UPLOAD_PATH.'/temp/'.$zipfilename;
 			$zipfileurl  = WPPA_UPLOAD_URL.'/temp/'.$zipfilename;
 			if ( is_file( $zipfilepath ) ) {
@@ -257,7 +257,7 @@ global $wppa_session;
 				else {
 					$name = __( $data['name'] );
 				}
-				$name = sanitize_file_name( $name ); 				// Remove illegal chars
+				$name = wppa_sanitize_file_name( $name ); 				// Remove illegal chars
 				$name = preg_replace( '/\.[^.]*$/', '', $name );	// Remove file extension
 				if ( strlen( $name ) == '0' ) {
 					echo '||1||'.__( 'Empty filename', 'wppa' );
@@ -669,7 +669,7 @@ global $wppa_session;
 					break;
 				case 'name':
 					$value = trim( strip_tags( $value ) );
-					if ( ! sanitize_file_name( $value ) ) {	// Empty album name is not allowed
+					if ( ! wppa_sanitize_file_name( $value ) ) {	// Empty album name is not allowed
 						$value = 'Album-#'.$album;
 						echo '||5||' . sprintf( __( 'Album name may not be empty.<br />Reset to <b>%s</b>', 'wppa' ), $value );
 					}
@@ -1766,7 +1766,7 @@ global $wppa_session;
 					break;
 					
 				case 'wppa_pl_dirname':
-					$value = sanitize_file_name( $value );
+					$value = wppa_sanitize_file_name( $value );
 					$value = trim( $value, ' /' );
 					if ( ! $value ) {
 						$wppa['error'] = '714';

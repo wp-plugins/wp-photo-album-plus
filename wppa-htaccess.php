@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Various funcions
-* Version 5.4.5
+* Version 5.4.9
 *
 */
 
@@ -62,7 +62,7 @@ global $wpdb;
 	fwrite( $file, "\n" . 'RewriteBase /' . str_replace( ABSPATH, '', $pl_root ) );
 	$albs = $wpdb->get_results( "SELECT `id`, `name` FROM `".WPPA_ALBUMS."` ORDER BY `id`", ARRAY_A );
 	if ( $albs ) foreach( $albs as $alb ) {
-		$fm = sanitize_file_name( $alb['name'] );
+		$fm = wppa_sanitize_file_name( $alb['name'] );
 		$to = $source_root . '/album-'.$alb['id'];
 		fwrite( $file, "\n" . 'RewriteRule ^'.$fm.'(.*) /'.$to.'$1 [NC]' );
 	}	

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains photo source file management routines
-* Version 5.3.0
+* Version 5.4.9
 *
 */
  
@@ -18,8 +18,8 @@ global $wppa_opt;
 		if ( ! is_dir( $sourcedir ) ) @ wppa_mktree( $sourcedir );
 		$albdir = wppa_get_source_album_dir( $alb ); 
 		if ( ! is_dir( $albdir ) ) @ wppa_mktree( $albdir );	
-		$dest = $albdir.'/'.$name;
-		if ( $file != $dest ) @ copy(  $file, $dest );	// Do not copy to self, and do not bother on failure
+		$dest = $albdir . '/' . wppa_sanitize_file_name( $name );
+		if ( $file != $dest ) @ copy( $file, $dest );	// Do not copy to self, and do not bother on failure
 	}
 }
 

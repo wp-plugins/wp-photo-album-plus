@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Various funcions
-* Version 5.4.7
+* Version 5.4.9
 *
 */
 
@@ -3727,7 +3727,7 @@ global $wppa;
 			if ( wppa_get_post( 'wppa-album-name' ) ) {
 				$albumname = trim( strip_tags( wppa_get_post( 'wppa-album-name' ) ) );
 			}
-			if ( ! sanitize_file_name( $albumname ) ) {
+			if ( ! wppa_sanitize_file_name( $albumname ) ) {
 				$albumname = __a('New Album');
 			}
 			$ok = wp_verify_nonce( $nonce, 'wppa-album-check' );
@@ -3771,7 +3771,6 @@ global $wppa;
 				$fail = '0';
 				foreach ( $_FILES as $file ) {
 					if ( ! is_array( $file['error'] ) ) {
-						$file['name'] = strip_tags( $file['name'] );
 						$bret = wppa_do_frontend_file_upload( $file, $alb );	// this should no longer happen since the name is incl []
 						if ( $bret ) $done++;
 						else $fail++;
@@ -3782,7 +3781,7 @@ global $wppa;
 							if ( $bret ) {
 								$f['error'] = $file['error'][$i];
 								$f['tmp_name'] = $file['tmp_name'][$i];
-								$f['name'] = strip_tags( $file['name'][$i] );
+								$f['name'] = $file['name'][$i];
 								$f['type'] = $file['type'][$i];
 								$f['size'] = $file['size'][$i];
 								$bret = wppa_do_frontend_file_upload( $f, $alb );
@@ -3822,7 +3821,7 @@ global $wppa;
 			$alb 			= wppa_get_post( 'wppa-albumeditid' );
 			$name 			= wppa_get_post( 'wppa-albumeditname' );
 			$name 			= trim( strip_tags( $name ) );
-			if ( ! sanitize_file_name( $name ) ) {	// Empty album name is not allowed
+			if ( ! wppa_sanitize_file_name( $name ) ) {	// Empty album name is not allowed
 				$name = 'Album-#'.$alb;
 			}
 			$description 	= wppa_get_post( 'wppa-albumeditdesc' );
@@ -3864,8 +3863,8 @@ global $wpdb;
 		}
 	}
 	if ( wppa_switch( 'wppa_void_dups' ) ) {	// Check for already exists
-		if ( wppa_file_is_in_album( $file['name'], $alb ) ) {
-			wppa_alert( sprintf( __a( 'Uploaded file %s already exists in this album.' ), $file['name'] ) );
+		if ( wppa_file_is_in_album( wppa_sanitize_file_name( $file['name'] ), $alb ) ) {
+			wppa_alert( sprintf( __a( 'Uploaded file %s already exists in this album.' ), wppa_sanitize_file_name( $file['name'] ) ) );
 			return false;
 		}
 	}
@@ -3883,17 +3882,17 @@ global $wpdb;
 		case 3: $ext = 'png'; break;
 	}
 	if ( wppa_get_post( 'user-name' ) ) {
-		$name = strip_tags( wppa_get_post( 'user-name' ) );
+		$name = wppa_get_post( 'user-name' );
 	}
 	else {
 		$name = $file['name'];
 	}
-	$name = htmlspecialchars( $name );
-	$desc = balanceTags( wppa_get_post( 'user-desc' ), true );
+	$name 		= wppa_sanitize_photo_name( $name );
+	$desc 		= balanceTags( wppa_get_post( 'user-desc' ), true );
 	$linktarget = '_self';
-	$status = ( wppa_switch( 'wppa_upload_moderate' ) && ! current_user_can( 'wppa_admin' ) ) ? 'pending' : 'publish';
-	$filename = $file['name'];
-	$id = wppa_create_photo_entry( array( 'album' => $alb, 'ext' => $ext, 'name' => $name, 'description' => $desc, 'status' => $status, 'filename' => $filename, ) );
+	$status 	= ( wppa_switch( 'wppa_upload_moderate' ) && ! current_user_can( 'wppa_admin' ) ) ? 'pending' : 'publish';
+	$filename 	= wppa_sanitize_file_name( $file['name'] );
+	$id 		= wppa_create_photo_entry( array( 'album' => $alb, 'ext' => $ext, 'name' => $name, 'description' => $desc, 'status' => $status, 'filename' => $filename, ) );
 	
 	if ( ! $id ) {
 		wppa_alert( __a( 'Could not insert photo into db.' ) );
@@ -3907,7 +3906,7 @@ global $wpdb;
 	if ( wppa_make_the_photo_files( $file['tmp_name'], $id, $ext ) ) {
 		// Repair photoname if not standard
 		if ( ! wppa_get_post( 'user-name' ) ) {
-			wppa_set_default_name( $id );
+			wppa_set_default_name( $id, $file['name'] );
 		}
 		// Defaul tags
 		wppa_set_default_tags( $id );

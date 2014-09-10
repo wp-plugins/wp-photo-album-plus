@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the upload/import pages and functions
-* Version 5.4.8
+* Version 5.4.9
 *
 */
 
@@ -574,7 +574,7 @@ global $wppa_supported_video_extensions;
 									$ext = strtolower( substr( strrchr( $file, "." ), 1 ) );
 									if ( $ext == 'zip' ) { ?>
 										<td>
-											<input type="checkbox" id="file-<?php echo( $idx ) ?>" name="file-<?php echo( $idx ) ?>" class="wppa-zip" checked="checked" />&nbsp;&nbsp;<?php echo( sanitize_file_name( basename( $file ) ) ); ?>
+											<input type="checkbox" id="file-<?php echo( $idx ) ?>" name="file-<?php echo( $idx ) ?>" class="wppa-zip" checked="checked" />&nbsp;&nbsp;<?php echo( wppa_sanitize_file_name( basename( $file ) ) ); ?>
 										</td>
 										<?php if ( $ct == 3 ) {
 											echo( '</tr><tr>' ); 
@@ -717,7 +717,7 @@ global $wppa_supported_video_extensions;
 									$meta =	substr( $file, 0, strlen( $file )-3 ).'pmf';
 									if ( $ext == 'jpg' || $ext == 'png' || $ext == 'gif' ) { ?>
 										<td>
-											<input type="checkbox" id="file-<?php echo( $idx ) ?>" name="file-<?php echo( $idx ) ?>" title="<?php echo $file ?>" class= "wppa-pho" <?php if ( $is_sub_depot ) echo( 'checked="checked"' ) ?> /><span id="name-file-<?php echo( $idx ) ?>" >&nbsp;&nbsp;<?php echo( sanitize_file_name( basename( $file ) ) ); ?>&nbsp;<?php echo( stripslashes( wppa_get_meta_name( $meta, '( ' ) ) ) ?><?php echo( stripslashes( wppa_get_meta_album( $meta, '[' ) ) ) ?></span>
+											<input type="checkbox" id="file-<?php echo( $idx ) ?>" name="file-<?php echo( $idx ) ?>" title="<?php echo $file ?>" class= "wppa-pho" <?php if ( $is_sub_depot ) echo( 'checked="checked"' ) ?> /><span id="name-file-<?php echo( $idx ) ?>" >&nbsp;&nbsp;<?php echo( wppa_sanitize_file_name( basename( $file ) ) ); ?>&nbsp;<?php echo( stripslashes( wppa_get_meta_name( $meta, '( ' ) ) ) ?><?php echo( stripslashes( wppa_get_meta_album( $meta, '[' ) ) ) ?></span>
 										</td>
 										<?php if ( $ct == 3 ) {
 											echo( '</tr><tr>' ); 
@@ -769,7 +769,7 @@ global $wppa_supported_video_extensions;
 									$ext = strtolower( substr( strrchr( $file, "." ), 1 ) );
 									if ( in_array( $ext, $wppa_supported_video_extensions ) ) { ?>
 										<td>
-											<input type="checkbox" id="file-<?php echo( $idx ) ?>" name="file-<?php echo( $idx ) ?>" title="<?php echo $file ?>" class="wppa-video" checked="checked" /><span id="name-file-<?php echo( $idx ) ?>" >&nbsp;&nbsp;<?php echo( sanitize_file_name( basename( $file ) ) ); ?></span>
+											<input type="checkbox" id="file-<?php echo( $idx ) ?>" name="file-<?php echo( $idx ) ?>" title="<?php echo $file ?>" class="wppa-video" checked="checked" /><span id="name-file-<?php echo( $idx ) ?>" >&nbsp;&nbsp;<?php echo( wppa_sanitize_file_name( basename( $file ) ) ); ?></span>
 										</td>
 										<?php if ( $ct == 3 ) {
 											echo( '</tr><tr>' ); 
@@ -811,7 +811,7 @@ global $wppa_supported_video_extensions;
 									elseif ( is_dir( $dir ) ) { ?>
 										<tr>
 											<td>
-												<input type="checkbox" id="file-<?php echo( $idx ) ?>" name="file-<?php echo( $idx ) ?>" class= "wppa-dir" checked="checked" />&nbsp;&nbsp;<b><?php echo( sanitize_file_name( basename( $dir ) ) ) ?></b>
+												<input type="checkbox" id="file-<?php echo( $idx ) ?>" name="file-<?php echo( $idx ) ?>" class= "wppa-dir" checked="checked" />&nbsp;&nbsp;<b><?php echo( wppa_sanitize_file_name( basename( $dir ) ) ) ?></b>
 												<?php
 													$subfiles = glob( $dir.'/*' );
 													$subdircount = '0';
@@ -1126,7 +1126,7 @@ function wppa_upload_multiple() {
 						wppa_backend_upload_mail( $id, $_POST['wppa-album'], $file['name'][$i] );
 					}
 					else {
-						wppa_error_message( __( 'Error inserting photo', 'wppa' ) . ' ' . basename( $file['name'][$i] ) . '.' );
+						wppa_error_message( __( 'Error inserting photo', 'wppa' ) . ' ' . wppa_sanitize_file_name( basename( $file['name'][$i] ) ) . '.' );
 						return;
 					}
 				}
@@ -1151,6 +1151,7 @@ function wppa_upload_photos() {
 	$count = '0';
 	foreach ( $_FILES as $file ) {
 		if ( $file['tmp_name'] != '' ) {
+//			$file['name'] = wppa_sanitize_file_name( $file['name'] );
 			$id = wppa_insert_photo( $file['tmp_name'], $_POST['wppa-album'], $file['name'] );
 			if ( $id ) {
 				$uploaded_a_file = true;
@@ -1158,7 +1159,7 @@ function wppa_upload_photos() {
 				wppa_backend_upload_mail( $id, $_POST['wppa-album'], $file['name'] );
 			}
 			else {
-				wppa_error_message( __( 'Error inserting photo', 'wppa' ) . ' ' . basename( $file['name'] ) . '.' );
+				wppa_error_message( __( 'Error inserting photo', 'wppa' ) . ' ' . wppa_sanitize_file_name( basename( $file['name'] ) ) . '.' );
 				return;
 			}
 		}
@@ -1179,7 +1180,7 @@ global $wppa_opt;
 	
 	if ( wppa_switch( 'wppa_upload_backend_notify' ) ) {
 		$to = get_bloginfo( 'admin_email' );
-		$subj = sprintf( __a( 'New photo uploaded: %s' ), $name );
+		$subj = sprintf( __a( 'New photo uploaded: %s' ), wppa_sanitize_file_name( $name ) );
 		$cont['0'] = sprintf( __a( 'User %s uploaded photo %s into album %s' ), $owner, $id, wppa_get_album_name( $alb ) );
 		if ( wppa_switch( 'wppa_upload_moderate' ) && !current_user_can( 'wppa_admin' ) ) {
 			$cont['1'] = __a( 'This upload requires moderation' );
@@ -1198,7 +1199,7 @@ function wppa_upload_zip() {
 global $target;
 
 	$file 	= $_FILES['file_zip'];
-	$name 	= $file['name'];
+	$name 	= wppa_sanitize_file_name( $file['name'] );
 	$type 	= $file['type'];
 	$error 	= $file['error'];
 	$size 	= $file['size'];
@@ -1224,15 +1225,15 @@ global $wppa_supported_video_extensions;
 	$warning_given = false;
 	
 	// Get this users current source directory setting
-	$user = wppa_get_user();
-	$source_type = get_option( 'wppa_import_source_type_'.$user, 'local' );
-	$source = get_option( 'wppa_import_source_'.$user, WPPA_DEPOT ); // removed /$user
+	$user 			= wppa_get_user();
+	$source_type 	= get_option( 'wppa_import_source_type_'.$user, 'local' );
+	$source 		= get_option( 'wppa_import_source_'.$user, WPPA_DEPOT );
 
-	$depot = WPPA_ABSPATH . $source;	// Filesystem
-	$depoturl = get_bloginfo( 'wpurl' ).'/'.$source;	// url
+	$depot 			= WPPA_ABSPATH . $source;	// Filesystem
+	$depoturl 		= get_bloginfo( 'wpurl' ).'/'.$source;	// url
 
 	// See what's in there
-	$files = wppa_get_import_files();//glob( $depot.'/*' );
+	$files = wppa_get_import_files();
 
 	// First extract zips if our php version is ok
 	$idx='0';
@@ -1353,7 +1354,7 @@ global $wppa_supported_video_extensions;
 			$name	= strip_tags( $_POST['cre-album'] );
 			$desc 	= sprintf( __( 'This album has been converted from ngg gallery %s', 'wppa' ), $name );
 			$uplim	= '0/0';	// Unlimited not to destroy the conversion process!!
-			$album = wppa_create_album_entry( array ( 	'name' 			=> $name,
+			$album 	= wppa_create_album_entry( array ( 	'name' 			=> $name,
 														'description' 	=> $desc,
 														'upload_limit' 	=> $uplim
 														 ) );
@@ -1373,12 +1374,14 @@ global $wppa_supported_video_extensions;
 	
 	// Do them all
 	foreach ( array_keys( $files ) as $file_idx ) {
+		$unsanitized_path_name = $files[$file_idx];
 		$file = $files[$file_idx];
 		if ( isset( $_POST['use-backup'] ) && is_file( $file.'_backup' ) ) {
 			$file = $file.'_backup';
 		}
+		$file = wppa_sanitize_file_name( $file );
 		if ( isset( $_POST['file-'.$idx] ) || $wppa['ajax'] ) {
-			if ( $wppa['ajax'] ) $wppa['ajax_import_files'] = sanitize_file_name( basename( $file ) );	/* */
+			if ( $wppa['ajax'] ) $wppa['ajax_import_files'] = basename( $file );	/* */
 			$ext = strtolower( substr( strrchr( $file, "." ), 1 ) );
 			$ext = str_replace( '_backup', '', $ext );
 			if ( $ext == 'jpg' || $ext == 'png' || $ext == 'gif' ) {
@@ -1406,7 +1409,7 @@ global $wppa_supported_video_extensions;
 				
 				// Update the photo ?
 				if ( isset( $_POST['wppa-update'] ) ) { 
-					$iret = wppa_update_photo_files( $file, $name );
+					$iret = wppa_update_photo_files( $unsanitized_path_name, $name );
 					if ( $iret ) {
 						if ( $wppa['ajax'] ) $wppa['ajax_import_files_done'] = true;
 						$pcount++;
@@ -1428,13 +1431,13 @@ global $wppa_supported_video_extensions;
 						else {
 							$id = substr( $id, 0, strpos( $id, '.' ) );
 							if ( !is_numeric( $id ) || !wppa_is_id_free( 'photo', $id ) ) $id = 0;
-							if ( wppa_insert_photo( $file, $alb, stripslashes( $name ), stripslashes( $desc ), $porder, $id, stripslashes( $linkurl ), stripslashes( $linktitle ) ) ) {
+							if ( wppa_insert_photo( $unsanitized_path_name, $alb, stripslashes( $name ), stripslashes( $desc ), $porder, $id, stripslashes( $linkurl ), stripslashes( $linktitle ) ) ) {
 								if ( $wppa['ajax'] ) {
 									$wppa['ajax_import_files_done'] = true;
 								}
 								$pcount++;
 								if ( $delp ) {
-									unlink( $file );
+									unlink( $unsanitized_path_name );
 									if ( is_file( $meta ) ) unlink( $meta );
 								}
 							}
@@ -1490,7 +1493,7 @@ global $wppa_supported_video_extensions;
 	else foreach ( array_keys( $files ) as $idx ) {
 		$file = $files[$idx];
 		if ( isset( $_POST['file-'.$idx] ) || $wppa['ajax'] ) {
-			if ( $wppa['ajax'] ) $wppa['ajax_import_files'] = sanitize_file_name( basename( $file ) );	/* */
+			if ( $wppa['ajax'] ) $wppa['ajax_import_files'] = wppa_sanitize_file_name( basename( $file ) );	/* */
 			$ext = strtolower( substr( strrchr( $file, "." ), 1 ) );
 			if ( in_array( $ext, $wppa_supported_video_extensions ) ) {
 				if ( is_numeric( $alb ) && $alb != '0' ) {
@@ -1666,43 +1669,39 @@ function wppa_extract( $xpath, $delz ) {
 	else {
 	
 		// Start security fix
-		$temp = explode( '/', $xpath );
-		$cnt = count( $temp );
-		$temp[$cnt-1] = sanitize_file_name( $temp[$cnt-1] );
-		$path = implode( '/', $temp );
-		if ( ! file_exists( $path ) ) {
+		$path = wppa_sanitize_file_name( $xpath );
+		if ( ! file_exists( $xpath ) ) {
 			wppa_error_message( 'Zipfile '.$path.' does not exist.' );
-			unlink( $xpath );
+//			unlink( $xpath );
 			$err = '4';
 			return $err;
 		}
 		// End security fix
 		
-		$ext = strtolower( substr( strrchr( $path, "." ), 1 ) );
+		$ext = strtolower( substr( strrchr( $xpath, "." ), 1 ) );
 		if ( $ext == 'zip' ) {
 			$zip = new ZipArchive;
-			if ( $zip->open( $path ) === true ) {
+			if ( $zip->open( $xpath ) === true ) {
 			
 				$supported_file_ext = array( 'jpg', 'png', 'gif', 'JPG', 'PNG', 'GIF', 'amf', 'pmf' );
 				$done = '0';
 				$skip = '0';
 				for( $i = 0; $i < $zip->numFiles; $i++ ){
 					$stat = $zip->statIndex( $i );
-					$stat['name'] = sanitize_file_name( $stat['name'] );	// Security fix
-					$file_ext = end( explode( '.', $stat['name'] ) );
+					$file_ext = @ end( explode( '.', $stat['name'] ) );
 					if ( in_array( $file_ext, $supported_file_ext ) ) {
 						$zip->extractTo( WPPA_DEPOT_PATH, $stat['name'] );
 						$done++;
 					}
 					else {
-						wppa_error_message( sprintf( __( 'File %s is of an unsupported filetype and has been ignored during extraction.', 'wppa' ), $stat['name'] ) );
+						wppa_error_message( sprintf( __( 'File %s is of an unsupported filetype and has been ignored during extraction.', 'wppa' ), wppa_sanitize_file_name( $stat['name'] ) ) );
 						$skip++;
 					}
 				}
 			
 				$zip->close();
 				wppa_ok_message( sprintf( __( 'Zipfile %s processed. %s files extracted, %s files skipped.', 'wppa' ), basename( $path ), $done, $skip ) );
-				if ( $delz ) unlink( $path );
+				if ( $delz ) unlink( $xpath );
 			} else {
 				wppa_error_message( __( 'Failed to extract', 'wppa' ).' '.$path );
 				$err = '1';

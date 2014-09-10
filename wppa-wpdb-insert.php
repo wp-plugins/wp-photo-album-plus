@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains low-level wpdb routines that add new records
-* Version 5.4.8
+* Version 5.4.9
 *
 */
 
@@ -304,7 +304,7 @@ global $wpdb;
 																$args['rating_count'],
 																$args['tags'],
 																$args['alt'],
-																sanitize_file_name( $args['filename'] ),	// Security fix
+																wppa_sanitize_file_name( $args['filename'] ),	// Security fix
 																$args['modified'],
 																$args['location'],
 																$args['views'],

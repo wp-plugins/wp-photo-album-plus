@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile, cloudinary, fotomoto
-Version: 5.4.8
+Version: 5.4.9
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -188,15 +188,15 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
 
-= IMPORTANT =
-If you want to run WPPA on a multisite in single site mode, add to wp-config.php:
-**define('WPPA_MULTISITE_GLOBAL', true);**
-If you run a multisite installation in 'old' style using blogs.dir, add to wp-config.php:
-**define('WPPA_MULTISITE_BLOGSDIR', true);**
-If you changed the name of wp-content and/or uploads, besides the additions to wp-config.php prescribed by the codex, also add to wp-config.php:
-**define('WPPA_REL_UPLOADS_PATH', 'wp_content/uploads');**
-**define('WPPA_REL_DEPOT_PATH', 'wp_content');**
-and make the changes therein also.
+= 5.4.9 =
+
+= Bug Fixes =
+
+* Fixed some consistency issues in photo file names that were a spinoff from the fixes in 5.4.8.
+
+= Other Changes =
+
+* The shortcode generator now also makes it possible to specify the parent albums for w#owner and w#upldr.
 
 = 5.4.8 =
 

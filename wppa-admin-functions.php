@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * gp admin functions
-* version 5.4.7
+* version 5.4.9
 *
 */
 
@@ -454,7 +454,7 @@ global $wppa_supported_video_extensions;
 			$ext = strtolower( substr( strrchr( $file, "." ), 1 ) );
 			if ( !in_array( $ext, $allowed_types ) ) {
 				unlink( $file );
-				wppa_error_message( sprintf( __( 'File %s is of an unsupported filetype and has been removed.', 'wppa' ), basename( $file ) ) );
+				wppa_error_message( sprintf( __( 'File %s is of an unsupported filetype and has been removed.', 'wppa' ), basename( wppa_sanitize_file_name( $file ) ) ) );
 				$count++;
 			}
 		}
@@ -670,7 +670,7 @@ global $allphotos;
 	if ( $xname == '' ) $name = basename( $file );
 	else $name = __( $xname );
 	
-	$photos = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM `".WPPA_PHOTOS."` WHERE `filename` = %s OR ( `filename` = '' AND `name` = %s )", $name, $name ), ARRAY_A );
+	$photos = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM `".WPPA_PHOTOS."` WHERE `filename` = %s OR ( `filename` = '' AND `name` = %s )", wppa_sanitize_file_name( basename( $file ) ), $name ), ARRAY_A );
 	if ( $photos ) {
 		foreach ( $photos as $photo ) {
 		
@@ -689,7 +689,7 @@ global $allphotos;
 			wppa_save_source( $file, basename( $file ), $photo['album'] );
 			
 			// Update filename ( for backward compat )
-			$wpdb->query( $wpdb->prepare( "UPDATE `".WPPA_PHOTOS."` SET `filename` = %s WHERE `id` = %s", $name, $photo['id'] ) );
+			$wpdb->query( $wpdb->prepare( "UPDATE `".WPPA_PHOTOS."` SET `filename` = %s WHERE `id` = %s", wppa_sanitize_file_name( basename( $file ) ), $photo['id'] ) );
 			wppa_dbg_msg( 'Update photo: '.$name.' in album '.$album, 'green' );
 		}
 		return count( $photos );
@@ -718,11 +718,12 @@ global $wppa;
 		// Get the name if not given
 		if ( $name == '' ) $name = basename( $file );
 		// Sanitize name
-		$name = htmlspecialchars( strip_tags( $name ) );
+		$filename 	= wppa_sanitize_file_name( $name );
+		$name 		= wppa_sanitize_photo_name( $name );
 		
 		// If not dups allowed and its already here, quit
 		if ( isset( $_POST['wppa-nodups'] ) || wppa_switch( 'wppa_void_dups' ) ) {
-			$exists = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM `".WPPA_PHOTOS."` WHERE `album` = %s AND ( `filename` = %s OR ( `filename` = '' AND `name` = %s ) )", $alb, $name, $name ) );
+			$exists = wppa_file_is_in_album( $filename, $alb );
 			if ( $exists ) {
 				if ( isset( $_POST['del-after-p'] ) ) {
 					unlink( $file );
@@ -788,7 +789,6 @@ global $wppa;
 			return false;
 		}
 		$status = ( wppa_switch( 'wppa_upload_moderate' ) && ! current_user_can( 'wppa_admin' ) ) ? 'pending' : 'publish';
-		$filename = $name;
 
 		// Add photo to db
 		$id = wppa_create_photo_entry( array( 	'id' => $id, 
@@ -815,7 +815,7 @@ global $wppa;
 		// Make the photo files		
 		if ( wppa_make_the_photo_files( $file, $id, $ext ) ) {
 			// Repair photoname if not supplied and not standard
-			wppa_set_default_name( $id );
+			wppa_set_default_name( $id, $name );
 			// Tags
 			wppa_set_default_tags( $id );
 			// Index

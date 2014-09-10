@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 *
-* Version 5.4.4
+* Version 5.4.9
 *
 */
 
@@ -276,7 +276,7 @@ global $wppa_opt;
 			'<tr id="wppagallery-owner-parent-tr" style="display:none;" >'.
 				'<th><label for="wppagallery-owner-parent">'.__('Parent album:', 'wppa').'</label></th>'.
 				'<td>'.
-					'<select id="wppagallery-owner-parent" style="color:#070;max-width:400px;" name="parentalbum" onchange="wppaGalleryEvaluate()">';
+					'<select id="wppagallery-owner-parent" style="color:#070;max-width:400px;" name="parentalbum" multiple="multiple" onchange="wppaGalleryEvaluate()">';
 						if ( $albums ) {
 						
 							// Please select
