@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the slideshow high level functions
-* Version 5.4.7
+* Version 5.4.10
 *
 */
 
@@ -261,12 +261,12 @@ global $wppa_opt;
 		$wppa['out'] .= wppa_nltab().'<div id="spinner-'.$wppa['mocc'].'" class="spinner" ></div>';
 		if ( ! wppa_page('oneofone') ) {
 			if ( ( wppa_switch('wppa_show_bbb') && ! $wppa['in_widget'] ) || ( wppa_switch('wppa_show_bbb_widget') && $wppa['in_widget'] ) ){	// big browsing buttons enabled
-				$wppa['out'] .= wppa_nltab().'<img id="bbb-'.$wppa['mocc'].'-l" class="bbb-l bbb-'.$wppa['mocc'].'" src="'.wppa_get_imgdir().'bbbl.png" style="background-color: transparent; border:none; z-index:83; position: absolute; float:left;  top: 0px; width: '.($wppa['slideframewidth']*0.5).'px; height: '.$wppa['slideframeheight'].'px; box-shadow: none; cursor:default;" onmouseover="wppaBbb('.$wppa['mocc'].',\'l\',\'show\')" onmouseout="wppaBbb('.$wppa['mocc'].',\'l\',\'hide\')" onclick="wppaBbb('.$wppa['mocc'].',\'l\',\'click\')" />';
-				$wppa['out'] .= wppa_nltab().'<img id="bbb-'.$wppa['mocc'].'-r" class="bbb-r bbb-'.$wppa['mocc'].'" src="'.wppa_get_imgdir().'bbbr.png" style="background-color: transparent; border:none; z-index:83; position: absolute; float:right; top: 0px; width: '.($wppa['slideframewidth']*0.5).'px; height: '.$wppa['slideframeheight'].'px; box-shadow: none; cursor:default;" onmouseover="wppaBbb('.$wppa['mocc'].',\'r\',\'show\')" onmouseout="wppaBbb('.$wppa['mocc'].',\'r\',\'hide\')" onclick="wppaBbb('.$wppa['mocc'].',\'r\',\'click\')" />';
+				$wppa['out'] .= wppa_nltab().'<img id="bbb-'.$wppa['mocc'].'-l" class="bbb-l bbb-'.$wppa['mocc'].'" src="'.wppa_get_imgdir().'bbbl.png" alt="bbbl" style="background-color: transparent; border:none; z-index:83; position: absolute; float:left;  top: 0px; width: '.($wppa['slideframewidth']*0.5).'px; height: '.$wppa['slideframeheight'].'px; box-shadow: none; cursor:default;" onmouseover="wppaBbb('.$wppa['mocc'].',\'l\',\'show\')" onmouseout="wppaBbb('.$wppa['mocc'].',\'l\',\'hide\')" onclick="wppaBbb('.$wppa['mocc'].',\'l\',\'click\')" />';
+				$wppa['out'] .= wppa_nltab().'<img id="bbb-'.$wppa['mocc'].'-r" class="bbb-r bbb-'.$wppa['mocc'].'" src="'.wppa_get_imgdir().'bbbr.png" alt="bbbr" style="background-color: transparent; border:none; z-index:83; position: absolute; float:right; top: 0px; width: '.($wppa['slideframewidth']*0.5).'px; height: '.$wppa['slideframeheight'].'px; box-shadow: none; cursor:default;" onmouseover="wppaBbb('.$wppa['mocc'].',\'r\',\'show\')" onmouseout="wppaBbb('.$wppa['mocc'].',\'r\',\'hide\')" onclick="wppaBbb('.$wppa['mocc'].',\'r\',\'click\')" />';
 			} /***/
 			if ( ( wppa_switch('wppa_show_ubb') && ! $wppa['in_widget'] ) || ( wppa_switch('wppa_show_ubb_widget') && $wppa['in_widget'] ) ) { // Ugly browse buttons
-				$wppa['out'] .= wppa_nltab().'<img id="ubb-'.$wppa['mocc'].'-l" class="ubb-l ubb-'.$wppa['mocc'].'" src="'.wppa_get_imgdir().'ubbl.png" style="background-color: transparent; border:none; z-index:183; position: absolute; top: 100px; left:0; box-shadow: none; cursor:pointer; top:'.($wppa['slideframeheight']/2-10).'px;" onmouseover="wppaUbb('.$wppa['mocc'].',\'l\',\'show\')" onmouseout="wppaUbb('.$wppa['mocc'].',\'l\',\'hide\')" onclick="wppaUbb('.$wppa['mocc'].',\'l\',\'click\')" />';
-				$wppa['out'] .= wppa_nltab().'<img id="ubb-'.$wppa['mocc'].'-r" class="ubb-r ubb-'.$wppa['mocc'].'" src="'.wppa_get_imgdir().'ubbr.png" style="background-color: transparent; border:none; z-index:183; position: absolute; top: 100px; right:0; box-shadow: none; cursor:pointer; top:'.($wppa['slideframeheight']/2-10).'px;" onmouseover="wppaUbb('.$wppa['mocc'].',\'r\',\'show\')" onmouseout="wppaUbb('.$wppa['mocc'].',\'r\',\'hide\')" onclick="wppaUbb('.$wppa['mocc'].',\'r\',\'click\')" />';
+				$wppa['out'] .= wppa_nltab().'<img id="ubb-'.$wppa['mocc'].'-l" class="ubb-l ubb-'.$wppa['mocc'].'" src="'.wppa_get_imgdir().'ubbl.png" alt="ubbl" style="background-color: transparent; border:none; z-index:183; position: absolute; top: 100px; left:0; box-shadow: none; cursor:pointer; top:'.($wppa['slideframeheight']/2-10).'px;" onmouseover="wppaUbb('.$wppa['mocc'].',\'l\',\'show\')" onmouseout="wppaUbb('.$wppa['mocc'].',\'l\',\'hide\')" onclick="wppaUbb('.$wppa['mocc'].',\'l\',\'click\')" />';
+				$wppa['out'] .= wppa_nltab().'<img id="ubb-'.$wppa['mocc'].'-r" class="ubb-r ubb-'.$wppa['mocc'].'" src="'.wppa_get_imgdir().'ubbr.png" alt="ubbr" style="background-color: transparent; border:none; z-index:183; position: absolute; top: 100px; right:0; box-shadow: none; cursor:pointer; top:'.($wppa['slideframeheight']/2-10).'px;" onmouseover="wppaUbb('.$wppa['mocc'].',\'r\',\'show\')" onmouseout="wppaUbb('.$wppa['mocc'].',\'r\',\'hide\')" onclick="wppaUbb('.$wppa['mocc'].',\'r\',\'click\')" />';
 			}
 		}
 		wppa_numberbar();
@@ -504,7 +504,7 @@ global $wppa_opt;
 			}
 		}
 
-		$wppa['out'] .= '<img id="wppa-filler-'.$wppa['mocc'].'" src="'.wppa_get_imgdir().'transp.png" style="width:'.$wppa_opt['wppa_ratspacing'].'px; height:15px; box-shadow:none; padding:0; margin:0; border:none;" />';
+		$wppa['out'] .= '<img id="wppa-filler-'.$wppa['mocc'].'" src="'.wppa_get_imgdir().'transp.png" alt="f" style="width:'.$wppa_opt['wppa_ratspacing'].'px; height:15px; box-shadow:none; padding:0; margin:0; border:none;" />';
 
 		// Display my rating
 		if ( ! wppa_switch('wppa_rating_login') || is_user_logged_in() ) {	// Logged in or do'nt care
@@ -515,7 +515,7 @@ global $wppa_opt;
 			if ( $wppa_opt['wppa_dislike_mail_every'] ) {
 				$evnts = 'onmouseover="jQuery(this).stop().fadeTo(100, 1.0)" onmouseout="jQuery(this).stop().fadeTo(100, wppaStarOpacity)" onclick="if (confirm(\''.__a('Are you sure you want to mark this image as inappropriate?').'\')) wppaRateIt('.$wppa['mocc'].', -1)"';
 				$title = 'title="'.__a('Click this if you do NOT like this image!', 'wppa_theme').'"';
-				$wppa['out'] .= '<img id="wppa-dislike-'.$wppa['mocc'].'" '.$title.' src="'.wppa_get_imgdir().'thumbdown.png" '.$tdstyle.' class="no-shadow" '.$evnts.' />';
+				$wppa['out'] .= '<img id="wppa-dislike-'.$wppa['mocc'].'" '.$title.' src="'.wppa_get_imgdir().'thumbdown.png" alt="d" '.$tdstyle.' class="no-shadow" '.$evnts.' />';
 				if ( wppa_switch('wppa_dislike_show_count') ) $wppa['out'] .= '<span id="wppa-discount-'.$wppa['mocc'].'" style="cursor:default" title="'.__a('Number of people who marked this photo as inapprpriate').'"></span>';
 			}
 
@@ -555,7 +555,7 @@ global $wppa_opt;
 			if ( $wppa_opt['wppa_dislike_mail_every'] ) {
 				$evnts = 'onmouseover="jQuery(this).stop().fadeTo(100, 1.0)" onmouseout="jQuery(this).stop().fadeTo(100, wppaStarOpacity)" onclick="if (confirm(\''.__a('Are you sure you want to mark this image as inappropriate?').'\')) wppaRateIt('.$wppa['mocc'].', -1)"';
 				$title = 'title="'.__a('Click this if you do NOT like this image!', 'wppa_theme').'"';
-				$wppa['out'] .= '<div id="wppa-dislike-imgdiv-'.$wppa['mocc'].'" style="display:inline" ><img id="wppa-dislike-'.$wppa['mocc'].'" '.$title.' src="'.wppa_get_imgdir().'thumbdown.png" '.$tdstyle.' class="no-shadow" '.$evnts.' /> </div>';
+				$wppa['out'] .= '<div id="wppa-dislike-imgdiv-'.$wppa['mocc'].'" style="display:inline" ><img id="wppa-dislike-'.$wppa['mocc'].'" '.$title.' src="'.wppa_get_imgdir().'thumbdown.png" alt="d" '.$tdstyle.' class="no-shadow" '.$evnts.' /> </div>';
 				if ( wppa_switch('wppa_dislike_show_count') ) $wppa['out'] .= '<span id="wppa-discount-'.$wppa['mocc'].'" style="cursor:default" title="'.__a('Number of people who marked this photo as inapprpriate').'"></span>';
 			}
 			// Filler
@@ -659,10 +659,10 @@ global $thumb;
 	$start = $cnt - $preambule;
 	$end = $cnt;
 	$idx = $start;
-	
+	/* #wppa-container-'.$wppa['mocc'].' */
 	$wppa['out'] .= '
-			<style type="text/css" >
-				#wppa-container-'.$wppa['mocc'].' .thumbnail-frame { '.wppa_get_thumb_frame_style(false, 'film').' }
+			<style type="text/css" scoped >
+				 .thumbnail-frame { '.wppa_get_thumb_frame_style(false, 'film').' }
 				.wppa-filmthumb-active { -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; }
 			</style>';
 				

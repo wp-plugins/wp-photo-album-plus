@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the non admin stuff
-* Version 5.4.5
+* Version 5.4.10
 *
 */
 
@@ -95,7 +95,7 @@ global $thumb;
 		}
 	}
 
-	// To make sure we are on a page that contains at least %%wppa%% we check for $_GET['wppa-album']. 
+	// To make sure we are on a page that contains at least %%wppa%% we check for Get var 'wppa-album'. 
 	// This also narrows the selection of featured photos to those that exist in the current album.
 	if ( wppa_get_get( 'album' ) ) {
 		if ( wppa_switch( 'wppa_meta_page' ) ) {
@@ -247,7 +247,7 @@ global $wppa_session;
 		ontouchstart="wppaTouchStart(event, \'wppa-overlay-ic\', -1);"  ontouchend="wppaTouchEnd(event);" 
 		ontouchmove="wppaTouchMove(event);" ontouchcancel="wppaTouchCancel(event);" >
 	</div>
-	<img id="wppa-overlay-sp" style="position:fixed; top:200px; left:200px; z-index:100100; opacity:1; visibility:hidden; box-shadow:none;" src="'.wppa_get_imgdir().'loading.gif" />
+	<img id="wppa-overlay-sp" alt="spinner" style="position:fixed; top:200px; left:200px; z-index:100100; opacity:1; visibility:hidden; box-shadow:none;" src="'.wppa_get_imgdir().'loading.gif" />
 	<script type="text/javascript">jQuery("#wppa-overlay-bg").css({height:screen.height+"px"});
 		wppaOvlTxtHeight = "'.$ovlh.'";
 		wppaOvlCloseTxt = "'.__(wppa_opt( 'wppa_ovl_close_txt' )).'";
@@ -443,7 +443,7 @@ global $wppa_init_js_data;
 /*
 */
 ';
-	if ( ( WPPA_DEBUG || isset( $_GET['wppa-debug'] ) || isset( $_GET['debug'] ) || WP_DEBUG ) && ! wppa_switch( 'wppa_defer_javascript' ) ) {
+	if ( ( WPPA_DEBUG || wppa_get_get( 'debug' ) || WP_DEBUG ) && ! wppa_switch( 'wppa_defer_javascript' ) ) {
 	$content .= '
 	/* Check if wppa.js and jQuery are present */
 	if (typeof(_wppaSlides) == \'undefined\') alert(\'There is a problem with your theme. The file wppa.js is not loaded when it is expected (Errloc = wppa_kickoff).\');
@@ -486,7 +486,7 @@ global $wppa_init_js_data;
 	wppa1Dislike = "'.__a('1 dislike').'";
 	wppaDislikes = "'.__a('dislikes').'";
 	wppaIncludingMine = "'.__a('including mine').'";
-	wppaMiniTreshold = '.wppa_opt( 'wppa_mini_treshold' ).';
+	wppaMiniTreshold = '.( wppa_opt( 'wppa_mini_treshold' ) ? wppa_opt( 'wppa_mini_treshold' ) : '0' ).';
 	wppaRatingOnce = '.( wppa_switch('wppa_rating_change') || wppa_switch('wppa_rating_multi') ? 'false' : 'true' ).';
 	wppaPleaseName = "'.__a('Please enter your name').'";
 	wppaPleaseEmail = "'.__a('Please enter a valid email address').'";

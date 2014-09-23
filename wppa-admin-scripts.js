@@ -1,7 +1,7 @@
 /* admin-scripts.js */
 /* Package: wp-photo-album-plus
 /*
-/* Version 5.4.5
+/* Version 5.4.10
 /* Various js routines used in admin pages		
 */
 
@@ -1711,4 +1711,72 @@ function wppaFeAjaxLog(key) {
 			jQuery('#wppa-fe-count').html(wppaFeCount);
 		}
 	}
+}
+
+function wppaArrayToEnum( arr, sep ) {
+	
+	// Step 1. Sort Ascending Numeric
+	temp = arr.sort(function(a, b){return a-b});
+	
+	// Init	
+	var result = '';
+	var lastitem = -1;
+	var previtemp = -2;
+	var lastitemp = 0;
+	var isrange = false;
+	var i = 0;
+	var item;
+	while ( i < arr.length ) {
+		item = arr[i].valueOf();
+		if ( item != 0 ) {
+			lastitemp = lastitem;
+			lastitemp++;
+			if ( item == lastitemp ) {
+				isrange = true;
+			}
+			else {
+				if ( isrange ) {	// Close range
+					if ( lastitem == previtemp ) {	// Range is x . (x+1)
+						result += sep + lastitem + sep + item;
+					}
+					else {
+						result += sep + sep + lastitem + sep + item;
+					}
+					isrange = false;
+				}
+				else {				// Add single item
+					result += sep + item;
+				}
+			}
+			if ( ! isrange ) {
+				previtemp = item;
+				previtemp++;
+			}
+			lastitem = item;
+		}
+		i++;
+	}
+	if ( isrange ) {	// Don't forget the last if it ends in a range
+		result += '..' + lastitem;
+	}
+	
+	// ltrim .
+	while ( result.substr(0,1) == '.') result = result.substr(1);
+
+	return result;
+}
+
+function wppaGetSelEnumToId( cls, id ) {
+	p = jQuery( '.'+cls );
+	var pararr = [];
+	i = 0;
+	j = 0;
+	while ( i < p.length ) {
+		if ( p[i].selected ) {
+			pararr[j] = p[i].value;
+			j++;
+		}
+		i++;
+	}
+	jQuery( '#'+id ).attr( 'value', wppaArrayToEnum( pararr, '.' ) );
 }

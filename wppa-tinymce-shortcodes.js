@@ -2,7 +2,7 @@
 * Pachkage: wp-photo-album-plus
 *
 *
-* Version 5.4.9
+* Version 5.4.10
 *
 */
 
@@ -504,50 +504,3 @@ function wppaTinyMcePhotoPreview( id ) {
 	}
 }
 
-function wppaArrayToEnum( arr, sep ) {
-	
-	// Step 1. Sort Ascending Numeric
-	temp = arr.sort(function(a, b){return a-b});
-	
-	// Init	
-	var result = '';
-	var lastitem = -1;
-	var previtemp = -2;
-	var lastitemp = 0;
-	var isrange = false;
-	var i = 0;
-	var item;
-	while ( i < arr.length ) {
-		item = arr[i].valueOf();
-		lastitemp = lastitem;
-		lastitemp++;
-		if ( item == lastitemp ) {
-			isrange = true;
-		}
-		else {
-			if ( isrange ) {	// Close range
-				if ( lastitem == previtemp ) {	// Range is x . (x+1)
-					result += sep + lastitem + sep + item;
-				}
-				else {
-					result += sep + sep + lastitem + sep + item;
-				}
-				isrange = false;
-			}
-			else {				// Add single item
-				result += sep + item;
-			}
-		}
-		if ( ! isrange ) {
-			previtemp = item;
-			previtemp++;
-		}
-		lastitem = item;
-		i++;
-	}
-	if ( isrange ) {	// Don't forget the last if it ends in a range
-		result += '..' + lastitem;
-	}
-	result = result.substr(1);
-	return result;
-}

@@ -4,7 +4,7 @@
 *
 * Functions for counts etc
 * Common use front and admin
-* Version 5.4.1
+* Version 5.4.10
 *
 */
 
@@ -105,11 +105,24 @@ global $wpdb;
 	return $result;
 }
 
+// get n youngest photo ids
+function wppa_get_youngest_photo_ids( $n = '3' ) {
+global $wpdb;
+
+	if ( ! wppa_is_int( $n ) ) $n = '3';
+	$result = $wpdb->get_col( 
+		"SELECT `id` FROM `" . WPPA_PHOTOS . 
+		"` WHERE `status` <> 'pending' AND `status` <> 'scheduled' ORDER BY `timestamp` DESC LIMIT ".$n );
+		
+	wppa_dbg_q('Q-gypin');
+	return $result;
+}
+
 // get youngest album id
 function wppa_get_youngest_album_id() {
 global $wpdb;
 	
-	$result = $wpdb->get_var( "SELECT `id` FROM `" . WPPA_ALBUMS . "` ORDER BY `id` DESC LIMIT 1" );
+	$result = $wpdb->get_var( "SELECT `id` FROM `" . WPPA_ALBUMS . "` ORDER BY `timestamp` DESC LIMIT 1" );
 	wppa_dbg_q('Q16');
 	return $result;
 }
@@ -149,46 +162,47 @@ global $wppa_session;
 }
 
 function wppa_get_upldr_cache() {
-	$result = get_option('wppa_upldr_cache', array());
+
+	$result = get_option( 'wppa_upldr_cache', array() );
+	
 	return $result;
 }
 
-function wppa_flush_upldr_cache($key = '', $id = '') {
-//delete_option('wppa_upldr_cache');return;
-global $wpdb;
-//echo $key.';'.$id.'.';
-	$upldrcache 	= get_option('wppa_upldr_cache', array());
-	switch ($key) {
-		case 'photoid':
-			$ow = $wpdb->get_var($wpdb->prepare("SELECT `owner` FROM `".WPPA_PHOTOS."` WHERE `id` = %s", $id));
-			$usr = $wpdb->get_var($wpdb->prepare("SELECT `ID` FROM `".$wpdb->prefix.'users'."` WHERE `user_login` = %s", $ow));
-			if ( $usr ) if ( isset ( $upldrcache[$usr] ) ) {
-				unset ( $upldrcache[$usr] );
-				update_option('wppa_upldr_cache', $upldrcache);
-			}
-			break;
-		case 'userid':
-			$usr = $id;
-			if ( $usr ) if ( isset ( $upldrcache[$usr] ) ) {
-				unset ( $upldrcache[$usr] );
-				update_option('wppa_upldr_cache', $upldrcache);
-			}
-			break;
-		case 'username':
-			$user = get_user_by('login', $id);
-			if ( $user ) {
-				$usr = $user->ID;
-				if ( $usr ) if ( isset ( $upldrcache[$usr] ) ) {
-					unset ( $upldrcache[$usr] );
-					update_option('wppa_upldr_cache', $upldrcache);
+function wppa_flush_upldr_cache( $key = '', $id = '' ) {
+
+	$upldrcache	= wppa_get_upldr_cache();
+	
+	foreach ( array_keys( $upldrcache ) as $widget_id ) {
+	
+		switch ( $key ) {
+		
+			case 'widgetid':
+				if ( $id == $widget_id ) {
+					unset ( $upldrcache[$widget_id] );
 				}
-			}
-			break;
-		case 'all':
-			delete_option('wppa_upldr_cache');
-			break;
-		default:
-			wppa_dbg_msg('Missing key in wppa_flush_upldr_cache()', 'red');
-			break;
+				
+			case 'photoid':
+				$usr = wppa_get_photo_item( $id, 'owner');
+				if ( isset ( $upldrcache[$widget_id][$usr] ) ) {
+					unset ( $upldrcache[$widget_id][$usr] );
+				}
+				break;
+
+			case 'username':
+				$usr = $id;
+				if ( isset ( $upldrcache[$widget_id][$usr] ) ) {
+					unset ( $upldrcache[$widget_id][$usr] );
+				}
+				break;
+				
+			case 'all':
+				$upldrcache = array();
+				break;
+				
+			default:
+				wppa_dbg_msg('Missing key in wppa_flush_upldr_cache()', 'red');
+				break;
+		}
 	}
+	update_option('wppa_upldr_cache', $upldrcache);
 }

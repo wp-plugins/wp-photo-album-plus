@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * gp admin functions
-* version 5.4.9
+* version 5.4.10
 *
 */
 
@@ -255,6 +255,8 @@ global $wpdb;
 	$location	= $photo['location'];
 	$oldimage 	= wppa_get_photo_path( $photo['id'] );
 	$oldthumb 	= wppa_get_thumb_path( $photo['id'] );
+	$tags 		= $photo['tags'];
+	$exifdtm 	= $photo['exifdtm'];
 	
 	$err = '3';
 	// Make new db table entry
@@ -273,6 +275,8 @@ global $wpdb;
 											'status' => $status, 
 											'filename' => $filename, 
 											'location' => $location,
+											'tags' 	=> $tags,
+											'exifdtm' => $exifdtm,
 											'videox' => $photo['videox'],
 											'videoy' => $photo['videoy'],
 										 ) 
@@ -737,6 +741,23 @@ global $wppa;
 				return false;
 			}
 		}
+		
+		// Verify file exists
+		if ( ! file_exists( $file ) ) {
+			if ( ! is_dir( dirname( $file ) ) ) {
+				wppa_error_message( 'Error: Directory '.dirname( $file ).' does not exist.' );
+				return false;
+			}
+			if ( ! is_writable( dirname( $file ) ) ) {
+				wppa_error_message( 'Error: Directory '.dirname( $file ).' is not writable.' );
+				return false;
+			}
+			wppa_error_message( 'Error: File '.$file.' does not exist.' );
+			return false;
+		}
+//		else {
+//			wppa_ok_message( 'Good: File '.$file.' exists.' );
+//		}
 		
 		// Get and verify the size
 		$img_size = getimagesize( $file );

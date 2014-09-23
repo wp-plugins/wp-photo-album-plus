@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display thumbnail albums
-* Version 5.4.5
+* Version 5.4.10
 */
 
 if ( ! defined( 'ABSPATH' ) ) die( "Can't load this file directly" );
@@ -128,7 +128,7 @@ class AlbumWidget extends WP_Widget {
 																	 );
 							}
 							else {
-								$widget_content .= "\n\t\t".'<img id="i-'.$image['id'].'-'.$wppa['mocc'].'" title="'.$title.'" src="'.$imgurl.'" width="'.$width.'" height="'.$height.'" style="'.$imgstyle.' cursor:pointer;" '.$imgevents.' alt="'.esc_attr(wppa_qtrans($image['name'])).'">';
+								$widget_content .= "\n\t\t".'<img id="i-'.$image['id'].'-'.$wppa['mocc'].'" title="'.$title.'" src="'.$imgurl.'" width="'.$width.'" height="'.$height.'" style="'.$imgstyle.' cursor:pointer;" '.$imgevents.' '.wppa_get_imgalt($image['id']).' >';
 							}
 							$widget_content .= "\n\t".'</a>';
 						}
@@ -161,7 +161,7 @@ class AlbumWidget extends WP_Widget {
 																			 );									
 									}
 									else {
-										$widget_content .= "\n\t\t".'<img id="i-'.$image['id'].'-'.$wppa['mocc'].'" title="'.wppa_zoom_in().'" src="'.$imgurl.'" width="'.$width.'" height="'.$height.'" style="'.$imgstyle.$cursor.'" '.$imgevents.' alt="'.esc_attr(wppa_qtrans($image['name'])).'">';
+										$widget_content .= "\n\t\t".'<img id="i-'.$image['id'].'-'.$wppa['mocc'].'" title="'.wppa_zoom_in().'" src="'.$imgurl.'" width="'.$width.'" height="'.$height.'" style="'.$imgstyle.$cursor.'" '.$imgevents.' '.wppa_get_imgalt($image['id']).' >';
 									}
 								}
 								$widget_content .= "\n\t".'</a>';
@@ -183,7 +183,7 @@ class AlbumWidget extends WP_Widget {
 																	 );
 							}
 							else {
-								$widget_content .= "\n\t".'<img id="i-'.$image['id'].'-'.$wppa['mocc'].'" title="'.$title.'" src="'.$imgurl.'" width="'.$width.'" height="'.$height.'" style="'.$imgstyle.' cursor:pointer;" '.$imgevents.' onclick="'.$link['url'].'" alt="'.esc_attr(wppa_qtrans($image['name'])).'">';	
+								$widget_content .= "\n\t".'<img id="i-'.$image['id'].'-'.$wppa['mocc'].'" title="'.$title.'" src="'.$imgurl.'" width="'.$width.'" height="'.$height.'" style="'.$imgstyle.' cursor:pointer;" '.$imgevents.' onclick="'.$link['url'].'" '.wppa_get_imgalt($image['id']).' >';	
 							}
 						}
 					}
@@ -203,7 +203,7 @@ class AlbumWidget extends WP_Widget {
 																 );
 						}
 						else {
-							$widget_content .= "\n\t".'<img id="i-'.$image['id'].'-'.$wppa['mocc'].'" title="'.$title.'" src="'.$imgurl.'" width="'.$width.'" height="'.$height.'" style="'.$imgstyle.'" '.$imgevents.' alt="'.esc_attr(wppa_qtrans($image['name'])).'">';
+							$widget_content .= "\n\t".'<img id="i-'.$image['id'].'-'.$wppa['mocc'].'" title="'.$title.'" src="'.$imgurl.'" width="'.$width.'" height="'.$height.'" style="'.$imgstyle.'" '.$imgevents.' '.wppa_get_imgalt($image['id']).' >';
 						}
 					}
 				

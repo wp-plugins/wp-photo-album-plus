@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Functions for breadcrumbs
-* Version 5.4.6
+* Version 5.4.10
 *
 */
 
@@ -155,7 +155,12 @@ global $wppa_session;
 			if ( $usr ) $user = $usr->display_name; else $user = $wppa['is_upldr'];
 			if ( $wppa['is_slide'] ) {
 				$value 	= sprintf( __a( 'Photos by %s' ), $user );
-				$thumbhref 	= wppa_get_permalink().'wppa-cover=0&amp;wppa-occur='.$wppa['occur'].'&amp;wppa-upldr='.$wppa['is_upldr'];
+				if ( $wppa['start_album'] ) {
+					$thumbhref = wppa_get_permalink().'wppa-cover=0&amp;wppa-occur='.$wppa['occur'].'&amp;wppa-upldr='.$wppa['is_upldr'].'&amp;wppa-album='.$wppa['start_album'];
+				}
+				else {
+					$thumbhref = wppa_get_permalink().'wppa-cover=0&amp;wppa-occur='.$wppa['occur'].'&amp;wppa-upldr='.$wppa['is_upldr'];
+				}
 				$title	= __a( 'View the thumbnails' );
 				wppa_bcitem( $value, $thumbhref, $title, 'b8' );
 			}
@@ -317,6 +322,7 @@ global $wppa_session;
 			if ( wppa_switch( 'wppa_bc_slide_thumblink' ) ) {
 				if ( $virtual ) {
 					if ( $thumbhref ) {
+						$thumbhref = wppa_trim_wppa_( $thumbhref );
 						$fs = $wppa_opt['wppa_fontsize_nav'];	
 						if ( $fs != '' ) $fs += 3; else $fs = '15';	// iconsize = fontsize+3, Default to 15
 						$imgs = 'height: '.$fs.'px; margin:0 0 -3px 0; padding:0; box-shadow:none;';
@@ -327,11 +333,11 @@ global $wppa_session;
 				}
 				else {
 					$s = $wppa['src'] ? '&wppa-searchstring='.urlencode( $wppa['searchstring'] ) : '';
-					$onclick = "wppaDoAjaxRender( ".$wppa['mocc'].", '".wppa_get_album_url_ajax( $wppa['start_album'], '0' )."&wppa-photos-only=1".$s."', '".wppa_convert_to_pretty( wppa_get_album_url( $wppa['start_album'], '0' ).'&wppa-photos-only=1'.$s )."' )";
+					$onclick = "wppaDoAjaxRender( ".$wppa['mocc'].", '".wppa_get_album_url_ajax( $wppa['start_album'], '0' )."&amp;wppa-photos-only=1".$s."', '".wppa_convert_to_pretty( wppa_get_album_url( $wppa['start_album'], '0' ).'&wppa-photos-only=1'.$s )."' )";
 					$fs = $wppa_opt['wppa_fontsize_nav'];	
 					if ( $fs != '' ) $fs += 3; else $fs = '15';	// iconsize = fontsize+3, Default to 15
 					$imgs = 'height: '.$fs.'px; margin:0 0 -3px 0; padding:0; box-shadow:none;';
-					$wppa['out'] .= '<a href="javascript:void()" title="'.__a( 'Thumbnail view', 'wppa' ).'" class="wppa-nav-text" style="'.__wcs( 'wppa-nav-text' ).'float:right; cursor:pointer;" onclick="'.$onclick.'" >'.
+					$wppa['out'] .= '<a title="'.__a( 'Thumbnail view', 'wppa' ).'" class="wppa-nav-text" style="'.__wcs( 'wppa-nav-text' ).'float:right; cursor:pointer;" onclick="'.$onclick.'" >'.
 						'<img src="'.wppa_get_imgdir().'application_view_icons.png" alt="'.__a( 'Thumbs', 'wppa_theme' ).'" style="'.$imgs.'" />'.
 					'</a>';
 				}

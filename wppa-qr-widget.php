@@ -2,8 +2,8 @@
 /* wppa-qr-widget.php
 * Package: wp-photo-album-plus
 *
-* display thumbnail photos
-* Version 4.8.2
+* display qr code
+* Version 5.4.10
 */
 
 
@@ -11,7 +11,7 @@ class wppaQRWidget extends WP_Widget {
     /** constructor */
     function wppaQRWidget() {
         parent::WP_Widget(false, $name = 'QR Widget');	
-		$widget_ops = array('classname' => 'qr_widget', 'description' => __( 'WPPA+ QR Widget', 'xxx') );	//
+		$widget_ops = array('classname' => 'qr_widget', 'description' => __( 'WPPA+ QR Widget', 'wppa' ) );	//
 		$this->WP_Widget('qr_widget', __('QR Widget', 'wppa'), $widget_ops);															//
     }
 
@@ -23,10 +23,10 @@ class wppaQRWidget extends WP_Widget {
 
         extract( $args );
         
- 		$title = apply_filters('widget_title', empty( $instance['title'] ) ? __( 'QR Widget', 'xxx' ) : $instance['title']);
+ 		$title = apply_filters('widget_title', empty( $instance['title'] ) ? __a( 'QR Widget' ) : $instance['title']);
 
 		$widget_content = '
-		<div style="text-align:center;" ><img id="wppa-qr-img" src="" /></div>
+		<div style="text-align:center;" ><img id="wppa-qr-img" src="" alt="'.__a('QR code').'" /></div>
 		<div style="clear:both" ></div>';
 		
 		$widget_content .= '

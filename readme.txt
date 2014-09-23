@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile, cloudinary, fotomoto
-Version: 5.4.9
+Version: 5.4.10
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -187,6 +187,28 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 5.4.10 =
+
+= Bug Fixes =
+
+* Tags and exifdatetime were not copied on copying photo. Fixed.
+* Photonames in urls were not properly converted to their ids when the album spec was an enumeration. Fixed.
+* Changing upload limits for nonstandard roles worked, but the new values were not shown in Table VII-B5. Fixed.
+* All images now have an alt attribute if you configured it in Table IX-C4.
+* If a slideshow shortcode followed a single image shortcode, all images of the slideshow were scaled to fill the entire column. Fixed.
+
+= New Features =
+
+* The **WPPA+ Uploader Photos** widget now also supports the restriction to look inside (multiple) parentalbum trees only.
+* Width and horizontal alignment can now be set on the photo of the day widget admin page.
+* Table IV-A18: You can now optionally create the .htaccess file in the wppa/ folder to grant access to your photofiles.
+Switch it off if you want **All in one wp security plugin** to protect image hotlinking and you experience no other problems.
+
+= Other Changes =
+
+* Enhanced and more stable behaviour of Table IV-A5: Use short query args.
+* Added function wppa_get_youngest_photo_ids( $n = '3' ); that returns an array of n most recently added photo ids.
 
 = 5.4.9 =
 

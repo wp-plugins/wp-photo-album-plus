@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Functions for album covers
-* Version 5.4.5
+* Version 5.4.10
 *
 */
 
@@ -687,7 +687,7 @@ global $wpdb;
 							$wppa['mocc'] . '" title="' . wppa_zoom_in() . 
 							'" width="' . $imgwidth . '" height="' . $imgheight . '" style="' . 
 							__wcs( 'wppa-img' ) . $imgattr . $imgattr_a['cursor'] . '" ' . 
-							$events . ' alt="' . $title . '">' . 
+							$events . ' ' . wppa_get_imgalt( $image['id'] ) . '">' . 
 							wppa_get_video_body( $image['id'] ) . '</video>';
 					}
 					else {
@@ -696,7 +696,7 @@ global $wpdb;
 							$wppa['mocc'] . '" title="' . wppa_zoom_in() . 
 							'" src="' . $src . '" width="' . $imgwidth . '" height="' . $imgheight . '" style="' . 
 							__wcs( 'wppa-img' ) . $imgattr . $imgattr_a['cursor'] . '" ' . 
-							$events . ' alt="' . $title . '" />';
+							$events . ' ' . wppa_get_imgalt( $image['id'] ) . ' />';
 					}
 				}
 				
@@ -715,7 +715,7 @@ global $wpdb;
 			// A video?
 			if ( wppa_is_video( $image['id'] ) ) {
 				$wppa['out'] .= wppa_nltab() . 
-					'<video preload="metadata" alt="' . $title . '" class="image wppa-img" width="' . $imgwidth . '" height="' . 
+					'<video preload="metadata" ' . wppa_get_imgalt( $image['id'] ) . $title . '" class="image wppa-img" width="' . $imgwidth . '" height="' . 
 					$imgheight . '" style="' . __wcs( 'wppa-img' ) . $imgattr . '" ' . $events . ' >' . 
 					wppa_get_video_body( $image['id'] ) . '</video>';
 			}
@@ -723,7 +723,7 @@ global $wpdb;
 			// A photo
 			else {
 				$wppa['out'] .= wppa_nltab() . 
-					'<img src="' . $src . '" alt="' . $title . '" class="image wppa-img" width="' . 
+					'<img src="' . $src . '" ' . wppa_get_imgalt( $image['id'] ) . ' class="image wppa-img" width="' . 
 					$imgwidth . '" height="' . $imgheight . '" style="' . __wcs( 'wppa-img' ) . 
 					$imgattr . '" ' . $events . ' />';
 			}
@@ -737,7 +737,7 @@ global $wpdb;
 		// A video?
 		if ( wppa_is_video( $image['id'] ) ) {
 			$wppa['out'] .= wppa_nltab() . 
-				'<video preload="metadata" alt="' . $title . '" class="image wppa-img" width="' . $imgwidth . '" height="' . 
+				'<video preload="metadata" ' . wppa_get_imgalt( $image['id'] ) . ' class="image wppa-img" width="' . $imgwidth . '" height="' . 
 				$imgheight . '" style="' . __wcs( 'wppa-img' ) . $imgattr . '" ' . $events . ' >' . 
 				wppa_get_video_body( $image['id'] ) . '</video>';
 		}
@@ -745,7 +745,7 @@ global $wpdb;
 		// A photo
 		else {
 			$wppa['out'] .= wppa_nltab() . 
-				'<img src="' . $src . '" alt="' . $title . '" class="image wppa-img" width="' . 
+				'<img src="' . $src . '" ' . wppa_get_imgalt( $image['id'] ) . ' class="image wppa-img" width="' . 
 				$imgwidth . '" height="' . $imgheight . '" style="' . __wcs( 'wppa-img' ) . 
 				$imgattr . '" ' . $events . ' />';
 		}
@@ -815,7 +815,7 @@ global $wpdb;
 							'<video preload="metadata" class="image wppa-img" id="i-' . $image['id'] . '-' . 
 							$wppa['mocc'] . '" title="' . wppa_zoom_in() . '" width="' . 
 							$imgwidth . '" height="' . $imgheight . '" style="' . __wcs( 'wppa-img' ) . 
-							$imgattr . $imgattr_a['cursor'] . '" ' . $events . ' alt="' . $title . '">' . 
+							$imgattr . $imgattr_a['cursor'] . '" ' . $events . ' ' . wppa_get_imgalt( $image['id'] ) . '>' . 
 							wppa_get_video_body( $image['id'] ) . '</video>';
 					}
 					else {
@@ -824,7 +824,7 @@ global $wpdb;
 							$wppa['mocc'] . '" title="' . wppa_zoom_in() . '" src="' . 
 							$src . '" width="' . $imgwidth . '" height="' . $imgheight . '" style="' . 
 							__wcs( 'wppa-img' ) . $imgattr . $imgattr_a['cursor'] . '" ' . $events . 
-							' alt="' . $title . '">';
+							' ' . wppa_get_imgalt( $image['id'] ) . '>';
 					}
 				}
 				$wppa['out'] .= '</a> ';
@@ -835,14 +835,14 @@ global $wpdb;
 				$wppa['out'] .= '<a ' . $href . 'target="' . $photolink['target'] . 
 					'" title="' . $photolink['title'] . '" onclick="' . $photolink['onclick'] . '" >';
 				if ( wppa_is_video( $image['id'] ) ) {
-					$wppa['out'] .= '<video preload="metadata" alt="' . $title . 
-						'" class="image wppa-img" width="' . $imgwidth . '" height="' . $imgheight . 
+					$wppa['out'] .= '<video preload="metadata" ' . wppa_get_imgalt( $image['id'] ) .
+						' class="image wppa-img" width="' . $imgwidth . '" height="' . $imgheight . 
 						'" style="' . __wcs( 'wppa-img' ) . $imgattr . '" ' . $events . ' >' . 
 						wppa_get_video_body( $image['id'] ) . '</video>';
 				}
 				else {
-					$wppa['out'] .= '<img src="' . $src . '" alt="' . $title . 
-						'" class="image wppa-img" width="' . $imgwidth . '" height="' . $imgheight . 
+					$wppa['out'] .= '<img src="' . $src . '" ' . wppa_get_imgalt( $image['id'] ) . 
+						' class="image wppa-img" width="' . $imgwidth . '" height="' . $imgheight . 
 						'" style="' . __wcs( 'wppa-img' ) . $imgattr . '" ' . $events . ' />';
 				}
 				$wppa['out'] .= '</a> '; 
@@ -852,7 +852,7 @@ global $wpdb;
 		// No link
 		else { 
 			$wppa['out'] .= wppa_nltab() . 
-				'<img src="' . $src . '" alt="' . $title . '" class="image wppa-img" width="' . $imgwidth . 
+				'<img src="' . $src . '" ' . wppa_get_imgalt( $image['id'] ) . ' class="image wppa-img" width="' . $imgwidth . 
 				'" height="' . $imgheight . '" style="' . __wcs( 'wppa-img' ) . $imgattr . '" ' . $events . ' />';
 		} 
 	}
@@ -1164,7 +1164,7 @@ global $wppa;
 	if ( wppa_is_album_new( $alb ) ) {
 		$wppa['out'] .= wppa_nltab() . 
 			'<img src="' . WPPA_URL . '/images/new.png" title="' . __a( 'New!' ) . 
-			'" class="wppa-albumnew" style="border:none; margin:0; padding:0; box-shadow:none; " />';
+			'" class="wppa-albumnew" style="border:none; margin:0; padding:0; box-shadow:none; " alt="'.__a('New').'" />';
 	}
 	$wppa['out'] .= wppa_nltab( '-' ) . '</h2>';
 }

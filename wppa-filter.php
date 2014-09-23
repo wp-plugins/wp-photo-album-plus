@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * get the albums via filter
-* version 5.4.1
+* version 5.4.10
 *
 */
 
@@ -271,28 +271,25 @@ global $wppa_opt;
 	}
 
 	// Set internal defaults
-	$wppa['start_album'] = '';
-	$wppa['is_cover'] = '0';
-	$wppa['is_slide'] = '0';
-	$wppa['is_slideonly'] = '0';
-	$wppa['is_filmonly'] = '0';
-	$wppa['single_photo'] = '';
-	$wppa['is_mphoto'] = '0';
-	$wppa['film_on'] = '0';
-	$wppa['is_landing'] = '0';
-	// Undocumented
-	$wppa['start_photo'] = '0';	// Start a slideshow here
-	$wppa['is_single'] = false;	// Is a one image slideshow
-	$wppa['is_upload'] = false;
-	$wppa['is_multitagbox'] = false;
-	$wppa['is_tagcloudbox'] = false;
-	$wppa['taglist'] 		= '';
-	$wppa['tagcols']		= '2';
-	$wppa['is_autopage']	= false;
-
-	$wppa['shortcode_content'] = $content;
-//	$size = '';
-//	$align = '';
+	$wppa['start_album'] 		= '';
+	$wppa['is_cover'] 			= '0';
+	$wppa['is_slide'] 			= '0';
+	$wppa['is_slideonly'] 		= '0';
+	$wppa['is_filmonly'] 		= '0';
+	$wppa['single_photo'] 		= '';
+	$wppa['is_mphoto'] 			= '0';
+	$wppa['film_on'] 			= '0';
+	$wppa['is_landing'] 		= '0';
+	$wppa['start_photo'] 		= '0';			// Start a slideshow here
+	$wppa['is_single'] 			= false;		// Is a one image slideshow
+	$wppa['is_upload'] 			= false;
+	$wppa['is_multitagbox'] 	= false;
+	$wppa['is_tagcloudbox'] 	= false;
+	$wppa['taglist'] 			= '';
+	$wppa['tagcols']			= '2';
+	$wppa['is_autopage']		= false;
+	$wppa['portrait_only'] 		= false;
+	$wppa['shortcode_content'] 	= $content;
 
 	// Find type
 	switch ( $type ) {

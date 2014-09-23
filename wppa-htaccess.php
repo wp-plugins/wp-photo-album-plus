@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Various funcions
-* Version 5.4.9
+* Version 5.4.10
 *
 */
 
@@ -11,12 +11,32 @@ if ( ! defined( 'ABSPATH' ) ) die( "Can't load this file directly" );
 
 // Create .htaccess in the .../uploads/wppa folder to grant normal http access to photo files
 function wppa_create_wppa_htaccess() {
-	$file = fopen( WPPA_UPLOAD_PATH . '/.htaccess', 'wb' );
+
+	$file = WPPA_UPLOAD_PATH . '/.htaccess';
+	wppa_create_wppa_htaccess_( $file );
+
+	$file = WPPA_UPLOAD_PATH . '/thumbs/.htaccess';
+	wppa_create_wppa_htaccess_( $file );
+}
+function wppa_create_wppa_htaccess_( $filename ) {
+
+	$file = fopen( $filename, 'wb' );
+	
 	if ( $file ) {
-		fwrite( $file, '<IfModule mod_rewrite.c>' );
-		fwrite( $file, "\n" . 'RewriteEngine Off' );
-		fwrite( $file, "\n" . '</IfModule>' );
-		fclose( $file );
+	
+		// Make it
+		if ( wppa_switch( 'wppa_cre_uploads_htaccess' ) ) {
+			fwrite( $file, '<IfModule mod_rewrite.c>' );
+			fwrite( $file, "\n" . 'RewriteEngine Off' );
+			fwrite( $file, "\n" . '</IfModule>' );
+			fclose( $file );
+		}
+		
+		// Destroy it
+		else {
+			fclose( $file );
+			unlink( WPPA_UPLOAD_PATH . '/.htaccess' );
+		}
 	}
 }
 

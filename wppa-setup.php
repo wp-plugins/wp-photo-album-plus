@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 5.4.7
+* Version 5.4.10
 *
 */
 
@@ -322,6 +322,11 @@ global $silent;
 		
 		if ( $old_rev <= '5405' ) {
 			wppa_create_pl_htaccess( 'wppa-pl' );
+		}
+		
+		if ( $old_rev <= '5410' ) {
+			wppa_copy_setting( 'wppa_widget_width', 'wppa_potd_widget_width' );
+			wppa_flush_upldr_cache( 'all' );	// New format
 		}
 		
 	}
@@ -751,6 +756,7 @@ Hide Camera info
 						'wppa_custom_style' 			=> '',
 						'wppa_use_custom_style_file' 	=> 'no',
 						'wppa_use_custom_theme_file' 	=> 'no',
+						'wppa_cre_uploads_htaccess' 	=> 'yes',
 
 						// B Full size and Slideshow
 						'wppa_fullvalign' 				=> 'fit',
@@ -1181,6 +1187,7 @@ Hide Camera info
 						'wppa_widget_period'		=> '168',
 						
 						'wppa_widget_width'			=> '200',
+						'wppa_potd_widget_width' 	=> '200',
 						
 						// Topten widget
 						'wppa_toptenwidgettitle'	=> __('Top Ten Photos', 'wppa'),

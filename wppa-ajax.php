@@ -2,7 +2,7 @@
 /* wppa-ajax.php
 *
 * Functions used in ajax requests
-* version 5.4.9
+* version 5.4.10
 *
 */
 
@@ -998,12 +998,11 @@ global $wppa_session;
 					
 				case 'status':
 				if ( ! current_user_can( 'wppa_moderate' ) ) die( 'Security check failure #78' );
-					wppa_flush_treecounts( $wpdb->get_var( $wpdb->prepare( "SELECT `album` FROM `".WPPA_PHOTOS."` WHERE `id` = %s", $photo ) ) );
-					wppa_flush_upldr_cache( 'photoid', $photo );
+					wppa_flush_treecounts( wppa_get_photo_item( $photo, 'album' ) ); // $wpdb->get_var( $wpdb->prepare( "SELECT `album` FROM `".WPPA_PHOTOS."` WHERE `id` = %s", $photo ) ) );
+				case 'owner':
 				case 'name':
 				case 'description':
 				case 'p_order':
-				case 'owner':
 				case 'linkurl':
 				case 'linktitle':
 				case 'linktarget':
@@ -1036,6 +1035,8 @@ global $wppa_session;
 								exit;
 							}
 							$value = $usr->user_login;	// Correct possible case mismatch
+							wppa_flush_upldr_cache( 'photoid', $photo ); 		// Current owner
+							wppa_flush_upldr_cache( 'username', $value );		// New owner
 							$itemname = __( 'Owner', 'wppa' );
 							break;
 						case 'linkurl':
@@ -1053,6 +1054,7 @@ global $wppa_session;
 							$itemname = __( 'Photo Tags', 'wppa' );
 							break;
 						case 'status':
+							wppa_flush_upldr_cache( 'photoid', $photo );
 							$itemname = __( 'Status', 'wppa' );
 							break;
 						case 'alt':
@@ -1792,9 +1794,14 @@ global $wppa_session;
 				if ( ! $title ) $title = sprintf( __( 'Setting %s updated to %s', 'wppa' ), $option, $value );
 			}
 			
-			// Did we do something that will require regen?
+			// Something to do after changing the setting?
 			$temp = $wppa;
 			wppa_initialize_runtime( true );	// force reload new values
+			
+			// .htaccess
+			wppa_create_wppa_htaccess();
+			
+			// Thumbsize
 			$wppa = $temp;
 			$new_minisize = wppa_get_minisize();
 			if ( $old_minisize != $new_minisize ) {

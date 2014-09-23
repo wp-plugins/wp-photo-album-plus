@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Various wppa boxes
-* Version 5.4.7
+* Version 5.4.10
 *
 *
 */
@@ -371,7 +371,7 @@ global $wppa_locale;
 	// qr code
 	if ( wppa_switch( 'wppa_share_qr' ) && $key != 'thumb' ) {	
 		$src = 'http://api.qrserver.com/v1/create-qr-code/?data='.urlencode( $share_url ).'&size=80x80&color='.trim( $wppa_opt['wppa_qr_color'], '#' ).'&bgcolor='.trim( $wppa_opt['wppa_qr_bgcolor'], '#' );
-		$qr = '<div style="float:left; padding:2px;" ><img src="'.$src.'" title="'.esc_attr( $share_url ).'"/></div>';
+		$qr = '<div style="float:left; padding:2px;" ><img src="'.$src.'" title="'.esc_attr( $share_url ).'" alt="'.__a('QR code').'" /></div>';
 	}
 	else $qr = '';
 	
@@ -614,6 +614,8 @@ global $wppa_opt;
 	if ( $wppa['page'] ) $returnurl .= '&amp;wppa-page='.$wppa['page'];
 	$returnurl = trim( $returnurl, '?' );
 	
+	$returnurl = wppa_trim_wppa_( $returnurl );
+	
 	// Make the HTML
 	$t = $mcr ? 'mcr-' : '';
 	$wppa['out'] .= '
@@ -728,6 +730,8 @@ global $wppa_opt;
 	}
 	if ( $wppa['page'] ) $returnurl .= '&amp;wppa-page='.$wppa['page'];
 	$returnurl = trim( $returnurl, '?' );
+
+	$returnurl = wppa_trim_wppa_( $returnurl );
 
 	// Make the HTML
 	$t = $mcr ? 'mcr-' : '';
@@ -973,7 +977,7 @@ global $wppa_first_comment_html;
 									$avt = str_replace( "'", "\"", get_avatar( $usr->ID, $wppa_opt['wppa_gravatar_size'], $default ) );
 								}
 								if ( $avt == '' ) {	// Global avatars off, try myself
-									$avt = '<img class="wppa-box-text wppa-td" src="http://www.gravatar.com/avatar/'.md5( strtolower( trim( $comment['email'] ) ) ).'.jpg?d='.urlencode( $default ).'&s='.$wppa_opt['wppa_gravatar_size'].'" />';
+									$avt = '<img class="wppa-box-text wppa-td" src="http://www.gravatar.com/avatar/'.md5( strtolower( trim( $comment['email'] ) ) ).'.jpg?d='.urlencode( $default ).'&s='.$wppa_opt['wppa_gravatar_size'].'" alt="'.__a('Avatar').'" />';
 								}
 								// Compose the html
 								$result .= '<div class="com_avatar">'.$avt.'</div>';
@@ -1412,7 +1416,7 @@ global $wppa_opt;
 													'height' 		=> '200'
 											 ) );
 											
-	// Make args into eperate vars
+	// Make args into seperate vars
 	extract ( $args );
 	
 	// Validate args
@@ -1468,7 +1472,7 @@ global $wppa_opt;
 						}
 						
 						// The image
-						$result .= '<img style="height:'.$maxh.'px; width:'.$maxw.'px;" src="'.wppa_get_photo_url( $id, '', $maxw, $maxh ).'" />';
+						$result .= '<img style="height:'.$maxh.'px; width:'.$maxw.'px;" src="'.wppa_get_photo_url( $id, '', $maxw, $maxh ).'" '.wppa_get_imgalt( $id ).'/>';
 						
 						// The /link
 						if ( $linktype != 'none' ) {

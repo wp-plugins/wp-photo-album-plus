@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains functions to retrieve album and photo items
-* Version 5.4.7
+* Version 5.4.10
 *
 */
  
@@ -43,6 +43,9 @@ static $album_cache_2;
 		else {
 			return false;
 		}
+	}
+	if ( wppa_is_enum( $id ) && ! wppa_is_int( $id ) ) {
+		return false;	// enums not supporte yet
 	}
 	if ( ! wppa_is_int( $id ) || $id < '1' ) {
 		$album = false;
@@ -160,6 +163,9 @@ static $thumb_cache_2;
 function wppa_get_photo_name( $id, $add_owner = false, $add_medal = false, $esc_js = false, $show_name = true ) {
 global $wppa_opt;
 
+	// Init
+	$result = '';
+	
 	// Verify args
 	if ( ! is_numeric( $id ) || $id < '1' ) {
 		wppa_dbg_msg( 'Invalid arg wppa_get_photo_name( '.$id.' )', 'red' );
@@ -169,7 +175,7 @@ global $wppa_opt;
 	// Get data
 	$thumb = wppa_cache_thumb( $id );
 	if ( $show_name ) {
-		$result = __( stripslashes( $thumb['name'] ) );
+		$result .= __( stripslashes( $thumb['name'] ) );
 	}
 	
 	// Add owner?
@@ -192,9 +198,9 @@ global $wppa_opt;
 	if ( $add_medal ) {
 		$color = $wppa_opt['wppa_medal_color'];
 		$wppa_url = is_ssl() ? str_replace( 'http://', 'https://', WPPA_URL ) : WPPA_URL;	// Probably redundant... but it is not clear in to the codex if plugins_url() returns https 
-		if ( $thumb['status'] == 'gold' ) $result .= '<img src="'.$wppa_url.'/images/medal_gold_'.$color.'.png" title="'.esc_attr(__a('Gold medal award!')).'" style="border:none; margin:0; padding:0; box-shadow:none; height:32px;" />';
-		if ( $thumb['status'] == 'silver' ) $result .= '<img src="'.$wppa_url.'/images/medal_silver_'.$color.'.png" title="'.esc_attr(__a('Silver medal award!')).'" style="border:none; margin:0; padding:0; box-shadow:none; height:32px;" />';
-		if ( $thumb['status'] == 'bronze' ) $result .= '<img src="'.$wppa_url.'/images/medal_bronze_'.$color.'.png" title="'.esc_attr(__a('Bronze medal award!')).'" style="border:none; margin:0; padding:0; box-shadow:none; height:32px;" />';
+		if ( $thumb['status'] == 'gold' ) $result .= '<img src="'.$wppa_url.'/images/medal_gold_'.$color.'.png" title="'.esc_attr(__a('Gold medal award!')).'" alt="'.__a('Gold').'" style="border:none; margin:0; padding:0; box-shadow:none; height:32px;" />';
+		if ( $thumb['status'] == 'silver' ) $result .= '<img src="'.$wppa_url.'/images/medal_silver_'.$color.'.png" title="'.esc_attr(__a('Silver medal award!')).'" alt="'.__a('Silaver').'" style="border:none; margin:0; padding:0; box-shadow:none; height:32px;" />';
+		if ( $thumb['status'] == 'bronze' ) $result .= '<img src="'.$wppa_url.'/images/medal_bronze_'.$color.'.png" title="'.esc_attr(__a('Bronze medal award!')).'" alt="'.__a('Bronze').'" style="border:none; margin:0; padding:0; box-shadow:none; height:32px;" />';
 	}
 	return $result;
 }

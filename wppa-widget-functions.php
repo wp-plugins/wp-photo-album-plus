@@ -2,7 +2,7 @@
 /* wppa_widgetfunctions.php
 /* Package: wp-photo-album-plus
 /*
-/* Version 5.4.5
+/* Version 5.4.10
 /*
 */
 
@@ -352,7 +352,7 @@ global $widget_content;
 						) );
 					}
 					else {
-						$widget_content .= '<img id="i-' . $id . '-' . $wppa['mocc'] . '" title="' . $title . '" src="' . $imgurl . '" width="' . $imgstyle_a['width'] . '" height="' . $imgstyle_a['height'] . '" style="' . $imgstyle_a['style'] . ' cursor:pointer;" ' . $imgevents . ' alt="' . esc_attr( $name ) . '" />';
+						$widget_content .= '<img id="i-' . $id . '-' . $wppa['mocc'] . '" title="' . $title . '" src="' . $imgurl . '" width="' . $imgstyle_a['width'] . '" height="' . $imgstyle_a['height'] . '" style="' . $imgstyle_a['style'] . ' cursor:pointer;" ' . $imgevents . ' ' . wppa_get_imgalt( $id ) . ' />';
 					}
 				}
 				else {
@@ -380,7 +380,7 @@ global $widget_content;
 						) );
 					}
 					else {
-						$widget_content .= '<img id="i-' . $id . '-' . $wppa['mocc'] . '" title="' . wppa_zoom_in() . '" src="' . $imgurl . '" width="' . $imgstyle_a['width'] . '" height="' . $imgstyle_a['height'] . '" style="' . $imgstyle_a['style'] . $imgstyle_a['cursor'] . '" ' . $imgevents . ' alt="' . esc_attr( $name ) . '" />';
+						$widget_content .= '<img id="i-' . $id . '-' . $wppa['mocc'] . '" title="' . wppa_zoom_in() . '" src="' . $imgurl . '" width="' . $imgstyle_a['width'] . '" height="' . $imgstyle_a['height'] . '" style="' . $imgstyle_a['style'] . $imgstyle_a['cursor'] . '" ' . $imgevents . ' ' . wppa_get_imgalt( $id ) . ' />';
 					}
 				}
 				else {
@@ -407,7 +407,7 @@ global $widget_content;
 						) );
 				}
 				else {
-					$widget_content .= '<img id="i-' . $id . '-' . $wppa['mocc'] . '" title="' . $title . '" src="' . $imgurl . '" width="' . $imgstyle_a['width'] . '" height="' . $imgstyle_a['height'] . '" style="' . $imgstyle_a['style'] . ' cursor:pointer;" ' . $imgevents . ' onclick="' . $link['url'] . '" alt="' . esc_attr( $name ) . '" />';
+					$widget_content .= '<img id="i-' . $id . '-' . $wppa['mocc'] . '" title="' . $title . '" src="' . $imgurl . '" width="' . $imgstyle_a['width'] . '" height="' . $imgstyle_a['height'] . '" style="' . $imgstyle_a['style'] . ' cursor:pointer;" ' . $imgevents . ' onclick="' . $link['url'] . '" ' . wppa_get_imgalt( $id ) . ' />';
 				}
 			}
 			else {
@@ -434,7 +434,7 @@ global $widget_content;
 					) );
 			}
 			else {
-				$widget_content .= '<img id="i-' . $id . '-' . $wppa['mocc'] . '" title="' . $title . '" src="' . $imgurl . '" width="' . $imgstyle_a['width'] . '" height="' . $imgstyle_a['height'] . '" style="' . $imgstyle_a['style'] . '" ' . $imgevents . ' alt="' . esc_attr( $name ) . '" />';
+				$widget_content .= '<img id="i-' . $id . '-' . $wppa['mocc'] . '" title="' . $title . '" src="' . $imgurl . '" width="' . $imgstyle_a['width'] . '" height="' . $imgstyle_a['height'] . '" style="' . $imgstyle_a['style'] . '" ' . $imgevents . ' ' . wppa_get_imgalt( $id ) . ' />';
 			}
 		}
 		else {

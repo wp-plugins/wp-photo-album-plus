@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 5.4.7
+* Version 5.4.10
 *
 */
 
@@ -2400,6 +2400,13 @@ global $no_default;
 							$slug = 'wppa_use_custom_theme_file';
 							$html = wppa_checkbox($slug);
 							wppa_setting($slug, '17', $name, $desc, $html, $help);
+							
+							$name = __('Enable photo html access', 'wppa');
+							$desc = __('Creates an .htaccess file in .../uploads/wppa/', 'wppa');
+							$help = esc_js(__('If checked: assures http access to your wppa photo files, despite other .htaccess settings that may protect these files.', 'wppa'));
+							$slug = 'wppa_cre_uploads_htaccess';
+							$html = wppa_checkbox($slug);
+							wppa_setting($slug, '18', $name, $desc, $html, $help);
 							}
 						wppa_setting_subheader( 'B', '1', __( 'Slideshow related settings', 'wppa' ) );
 							{
@@ -6213,7 +6220,7 @@ global $no_default;
 function wppa_input($slug, $width, $minwidth = '', $text = '', $onchange = '') {
 global $wppa_opt;
 
-	$val = isset ( $wppa_opt[$slug] ) ? esc_attr( $wppa_opt[$slug] ) : '';
+	$val = isset ( $wppa_opt[$slug] ) ? esc_attr( $wppa_opt[$slug] ) : get_option( $slug, '' );
 	$html = '<input style="float:left; width: '.$width.'; height:20px;';
 	if ($minwidth != '') $html .= ' min-width:'.$minwidth.';';
 	$html .= ' font-size: 11px; margin: 0px; padding: 0px;" type="text" id="'.$slug.'"';
@@ -6402,7 +6409,7 @@ global $wppa_defaults;
 	if ($class != '') $html .= ' class="'.$class.'"';
 	$html .= '>';
 	
-	$val = isset ( $wppa_opt[$slug] ) ? $wppa_opt[$slug] : '';
+	$val = isset ( $wppa_opt[$slug] ) ? $wppa_opt[$slug] : get_option( $slug, '' );
 	$idx = 0;
 	$cnt = count($options);
 	while ($idx < $cnt) {

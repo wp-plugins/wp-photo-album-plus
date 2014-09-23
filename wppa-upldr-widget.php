@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display a list of users linking to their photos
-* Version 5.4.0
+* Version 5.4.10
 */
 
 if ( ! defined( 'ABSPATH' ) ) die( "Can't load this file directly" );
@@ -27,32 +27,54 @@ class UpldrWidget extends WP_Widget {
 		extract( $args );
 		
 		$instance 		= wp_parse_args( (array) $instance, array( 
-														'title' => '',
-														'sortby' => 'name',
-														'ignore' => 'admin'
+														'title' 	=> '',
+														'sortby' 	=> 'name',
+														'ignore' 	=> 'admin',
+														'parent' 	=> ''
 														) );
  		$widget_title 	= apply_filters('widget_title', $instance['title'] );
 		$page 			= in_array( 'album', $wppa['links_no_page'] ) ? '' : wppa_get_the_landing_page('wppa_upldr_widget_linkpage', __a('User uploaded photos'));
 		$ignorelist		= explode(',', $instance['ignore']);
 		$upldrcache 	= wppa_get_upldr_cache();
 		$needupdate 	= false;
-		$users 			= wppa_get_users(); // $wpdb->get_results( "SELECT * FROM `".$wpdb->prefix.'users'."`", ARRAY_A );
+		$users 			= wppa_get_users();
 		$workarr 		= array();
+		
+		$selalbs 		= str_replace( '.', ',', wppa_expand_enum( wppa_alb_to_enum_children( wppa_expand_enum( $instance['parent'] ) ) ) );
 		
 		// Make the data we need
 		if ( $users ) foreach ( $users as $user ) {
 			if ( ! in_array($user['user_login'], $ignorelist) ) {
 				$me = wppa_get_user();
-				if ( $user['user_login'] != $me && isset ( $upldrcache[$user['ID']] ) ) $photo_count = $upldrcache[$user['ID']];
+				if ( $user['user_login'] != $me && isset ( $upldrcache[$this->get_widget_id()][$user['user_login']]['c'] ) ) $photo_count = $upldrcache[$this->get_widget_id()][$user['user_login']]['c'];
 				else {
-					$photo_count = $wpdb->get_var($wpdb->prepare( "SELECT COUNT(*) FROM `".WPPA_PHOTOS."` WHERE `owner` = %s AND ( ( `status` <> 'pending' AND `status` <> 'scheduled' ) OR `owner` = %s )", $user['user_login'], $me ));
+					if ( $instance['parent'] ) {
+						$query = $wpdb->prepare( "SELECT COUNT(*) FROM `".WPPA_PHOTOS."` WHERE `owner` = %s AND `album` IN (".$selalbs.") AND ( ( `status` <> 'pending' AND `status` <> 'scheduled' ) OR `owner` = %s )", $user['user_login'], $me );//);
+					}
+					else {
+						$query = $wpdb->prepare( "SELECT COUNT(*) FROM `".WPPA_PHOTOS."` WHERE `owner` = %s AND ( ( `status` <> 'pending' AND `status` <> 'scheduled' ) OR `owner` = %s )", $user['user_login'], $me );//);
+					}
+					$photo_count = $wpdb->get_var( $query );
 					if ( $user['user_login'] != $me ) {
-						$upldrcache[$user['ID']] = $photo_count;
+						$upldrcache[$this->get_widget_id()][$user['user_login']]['c'] = $photo_count;
 						$needupdate = true;
 					}
 				}
 				if ( $photo_count ) {
-					$last_dtm = $wpdb->get_var($wpdb->prepare( "SELECT `timestamp` FROM `".WPPA_PHOTOS."` WHERE `owner` = %s AND ( ( `status` <> 'pending' AND `status` <> 'scheduled' ) OR `owner` = %s ) ORDER BY `timestamp` DESC LIMIT 1", $user['user_login'], $me ));
+					if ( $user['user_login'] != $me && isset ( $upldrcache[$this->get_widget_id()][$user['user_login']]['d'] ) ) $last_dtm = $upldrcache[$this->get_widget_id()][$user['user_login']]['d'];
+					else {
+						if ( $instance['parent'] ) {
+							$last_dtm = $wpdb->get_var($wpdb->prepare( "SELECT `timestamp` FROM `".WPPA_PHOTOS."` WHERE `owner` = %s AND `album` IN (".$selalbs.") AND ( ( `status` <> 'pending' AND `status` <> 'scheduled' ) OR `owner` = %s ) ORDER BY `timestamp` DESC LIMIT 1", $user['user_login'], $me ));
+						}
+						else {
+							$last_dtm = $wpdb->get_var($wpdb->prepare( "SELECT `timestamp` FROM `".WPPA_PHOTOS."` WHERE `owner` = %s AND ( ( `status` <> 'pending' AND `status` <> 'scheduled' ) OR `owner` = %s ) ORDER BY `timestamp` DESC LIMIT 1", $user['user_login'], $me ));
+						}
+					}
+					if ( $user['user_login'] != $me ) {
+						$upldrcache[$this->get_widget_id()][$user['user_login']]['d'] = $last_dtm;
+						$needupdate = true;
+					}
+
 					$workarr[] = array('login' => $user['user_login'], 'name' => $user['display_name'], 'count' => $photo_count, 'date' => $last_dtm);
 				}
 			}
@@ -88,17 +110,19 @@ class UpldrWidget extends WP_Widget {
 		// Create widget content
 		$widget_content = "\n".'<!-- WPPA+ Upldr Widget start -->';
 		$widget_content .= '<div class="wppa-upldr" style="max-height:180px; overflow:auto"><table><tbody>';
+		$albs = $instance['parent'] ? wppa_alb_to_enum_children( wppa_expand_enum( $instance['parent'] ) ) : '';
+		$a = $albs ? wppa_trim_wppa_( '&wppa-album='.$albs) : '';
 		if ( $myline ) {
 			$user = $myline;
 			$widget_content .= '<tr class="wppa-user" >
-									<td style="padding: 0 3px;" ><a href="'.wppa_get_upldr_link($user['login']).'" title="'.__a('Photos uploaded by').' '.$user['name'].'" ><b>'.$user['name'].'</b></a></td>
+									<td style="padding: 0 3px;" ><a href="'.wppa_get_upldr_link($user['login']).$a.'" title="'.__a('Photos uploaded by').' '.$user['name'].'" ><b>'.$user['name'].'</b></a></td>
 									<td style="padding: 0 3px;" ><b>'.$user['count'].'</b></td>
 									<td style="padding: 0 3px;" ><b>'.wppa_get_time_since($user['date']).'</b></td>
 								</tr>';
 		}
 		foreach ( $workarr as $user ) {
 			$widget_content .= '<tr class="wppa-user" >
-									<td style="padding: 0 3px;" ><a href="'.wppa_get_upldr_link($user['login']).'" title="'.__a('Photos uploaded by').' '.$user['name'].'" >'.$user['name'].'</a></td>
+									<td style="padding: 0 3px;" ><a href="'.wppa_get_upldr_link($user['login']).$a.'" title="'.__a('Photos uploaded by').' '.$user['name'].'" >'.$user['name'].'</a></td>
 									<td style="padding: 0 3px;" >'.$user['count'].'</td>
 									<td style="padding: 0 3px;" >'.wppa_get_time_since($user['date']).'</td>
 								</tr>';
@@ -119,6 +143,9 @@ class UpldrWidget extends WP_Widget {
 		$instance['title'] 		= strip_tags($new_instance['title']);
 		$instance['sortby'] 	= $new_instance['sortby'];
 		$instance['ignore'] 	= $new_instance['ignore'];
+		$instance['parent'] 	= $new_instance['parent'];
+		
+		wppa_flush_upldr_cache( 'widgetid', $this->get_widget_id() );
 		
         return $instance;
     }
@@ -126,11 +153,14 @@ class UpldrWidget extends WP_Widget {
     /** @see WP_Widget::form */
     function form($instance) {	
 		global $wppa_opt;
+		global $wpdb;
+		
 		//Defaults
 		$instance 		= wp_parse_args( (array) $instance, array( 
-														'title' => __('User Photos', 'wppa'),
-														'sortby' => 'name',
-														'ignore' => 'admin'
+														'title' 	=> __('User Photos', 'wppa'),
+														'sortby' 	=> 'name',
+														'ignore' 	=> 'admin',
+														'parent' 	=> ''
 														) );
  		$widget_title 	= apply_filters('widget_title', $instance['title']);
 
@@ -151,9 +181,48 @@ class UpldrWidget extends WP_Widget {
 			<input class="widefat" id=<?php echo $this->get_field_id('ignore'); ?>" name="<?php echo $this->get_field_name('ignore'); ?>" value="<?php echo $instance['ignore'] ?>" />
 			<small><?php _e('Enter loginnames seperated by commas', 'wppa') ?></small>
 		</p>
+		
+		<p><label for="<?php echo $this->get_field_id('parent'); ?>"><?php _e('Look only in albums (including sub-albums):', 'wppa'); ?></label>
+			<input type="hidden" id="<?php echo $this->get_field_id('parent'); ?>" name="<?php echo $this->get_field_name('parent'); ?>" value="<?php echo $instance['parent'] ?>" />
+			<?php if ( $instance['parent'] ) echo '<br/><small>( '.$instance['parent'].' )</small>' ?>
+			<select class="widefat" multiple="multiple" onchange="wppaGetSelEnumToId( 'parentalbums-<?php echo $this->get_widget_id() ?>', '<?php echo $this->get_field_id('parent') ?>' )" id="<?php echo $this->get_field_id('parent-list'); ?>" name="<?php echo $this->get_field_name('parent-list'); ?>" >
+			<?php
+				// Prepare albuminfo
+				$albums = $wpdb->get_results( "SELECT `id`, `name` FROM `".WPPA_ALBUMS."`", ARRAY_A );
+				if ( wppa_switch( 'wppa_hier_albsel' ) ) {
+					$albums = wppa_add_paths( $albums );
+				}
+				else {
+					foreach ( array_keys( $albums ) as $index ) $albums[$index]['name'] = __( stripslashes( $albums[$index]['name'] ) );
+				}
+				$albums = wppa_array_sort( $albums, 'name' );
+
+				// Please select
+				$sel = $instance['parent'] ? '' : 'selected="selected" ';
+				echo '<option class="parentalbums-'.$this->get_widget_id().'" value="" '.$sel.'>-- '.__('All albums', 'wppa').' --</option>';
+
+				// Find the albums currently selected
+				$selalbs = explode( '.', wppa_expand_enum( $instance['parent'] ) );
+				
+				// All standard albums
+				foreach ( $albums as $album ) {
+					$s = in_array( $album['id'], $selalbs );
+					$sel = $s ? 'selected="selected" ' : '';
+					echo '<option class="parentalbums-'.$this->get_widget_id().'" value="' . $album['id'] . '" '.$sel.'>'.stripslashes( __( $album['name'] ) ) . ' (' . $album['id'] . ')</option>';
+				}
+			?>
+			</select>
+		</p>
 
 <?php
     }
+	
+	function get_widget_id() {
+		$widgetid = substr( $this->get_field_name( 'txt' ), strpos( $this->get_field_name( 'txt' ), '[' ) + 1 );
+		$widgetid = substr( $widgetid, 0, strpos( $widgetid, ']' ) );
+		return $widgetid;
+	}
+
 
 } // class UpldrWidget
 

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains low-level utility routines
-* Version 5.4.9
+* Version 5.4.10
 *
 */
  
@@ -701,7 +701,7 @@ function wppa_send_mail($to, $subj, $cont, $photo, $email = '') {
 	</head>
 	<body>
 		<h3>'.$subj.'</h3>
-		<p><img src="'.wppa_get_thumb_url($photo).'" /></p>';
+		<p><img src="'.wppa_get_thumb_url($photo).'" '.wppa_get_imgalt($photo).'/></p>';
 		if ( is_array($cont) ) {
 			foreach ( $cont as $c ) if ( $c ) {
 				$message .= '
@@ -1284,6 +1284,11 @@ function wppa_is_int($var) {
 	return ( strval(intval($var)) == strval($var) );
 }
 
+// return true if $var only contains digits and points
+function wppa_is_enum( $var ) {
+	return '' === str_replace( array( '0','1','2','3','4','5','6','7','8','9','.' ), '', $var );
+}
+
 function wppa_log( $type, $msg ) {
 	@ wppa_mktree( WPPA_CONTENT_PATH.'/wppa-depot/admin' ); // Just in case...
 	$filename = WPPA_CONTENT_PATH.'/wppa-depot/admin/error.log';
@@ -1314,9 +1319,9 @@ function wppa_get_the_id() {
 global $wppa;
 	$id = '0';
 	if ( $wppa['ajax'] ) {
-		if ( isset($_GET['page_id']) ) $id = $_GET['page_id'];
-		elseif ( isset($_GET['p']) ) $id = $_GET['p'];
-		elseif ( isset($_GET['wppa-fromp']) ) $id = $_GET['wppa-fromp'];
+		if ( wppa_get_get( 'page_id' ) ) $id = wppa_get_get( 'page_id' );
+		elseif ( wppa_get_get( 'p' ) ) $id = wppa_get_get( 'p' );
+		elseif ( wppa_get_get( 'wppa-fromp' ) ) $id = wppa_get_get( 'wppa-fromp' );
 	}
 	else {
 		$id = get_the_ID();
@@ -1633,14 +1638,14 @@ global $wppa_opt;
 	$float 	= strpos( $pos, 'left' ) === false ? 'right' : 'left';
 	
 	// The medal
-	if ( $thumb['status'] == 'bronze' ) $result .= '<div style="clear:both;" ></div><img src="'.WPPA_URL.'/images/medal_bronze_'.$color.'.png" title="'.esc_attr(__a('Bronze medal award!')).'" style="position:relative; top:-'.$top.'px; float:'.$float.'; border:none; margin:0; padding:0; box-shadow:none; height:'.$size.'px;" />';
-	if ( $thumb['status'] == 'silver' ) $result .= '<div style="clear:both;" ></div><img src="'.WPPA_URL.'/images/medal_silver_'.$color.'.png" title="'.esc_attr(__a('Silver medal award!')).'" style="position:relative; top:-'.$top.'px; float:'.$float.'; border:none; margin:0; padding:0; box-shadow:none; height:'.$size.'px;" />';
-	if ( $thumb['status'] == 'gold' ) 	$result .= '<div style="clear:both;" ></div><img src="'.WPPA_URL.'/images/medal_gold_'.$color.'.png" title="'.esc_attr(__a('Gold medal award!')).'" style="position:relative; top:-'.$top.'px; float:'.$float.'; border:none; margin:0; padding:0; box-shadow:none; height:'.$size.'px;" />';
+	if ( $thumb['status'] == 'bronze' ) $result .= '<div style="clear:both;" ></div><img src="'.WPPA_URL.'/images/medal_bronze_'.$color.'.png" title="'.esc_attr(__a('Bronze medal award!')).'" alt="'.__a('Bronze').'" style="position:relative; top:-'.$top.'px; float:'.$float.'; border:none; margin:0; padding:0; box-shadow:none; height:'.$size.'px;" />';
+	if ( $thumb['status'] == 'silver' ) $result .= '<div style="clear:both;" ></div><img src="'.WPPA_URL.'/images/medal_silver_'.$color.'.png" title="'.esc_attr(__a('Silver medal award!')).'" alt="'.__a('Silver').'" style="position:relative; top:-'.$top.'px; float:'.$float.'; border:none; margin:0; padding:0; box-shadow:none; height:'.$size.'px;" />';
+	if ( $thumb['status'] == 'gold' ) 	$result .= '<div style="clear:both;" ></div><img src="'.WPPA_URL.'/images/medal_gold_'.$color.'.png" title="'.esc_attr(__a('Gold medal award!')).'" alt="'.__a('Gold').'" style="position:relative; top:-'.$top.'px; float:'.$float.'; border:none; margin:0; padding:0; box-shadow:none; height:'.$size.'px;" />';
 
 	$size 	= round( $size * 20 / 32 );
 	$top 	= ( strpos( $pos, 'top' )  === false ? $size : $imgheight ) + '6';
 	// The new indicator
-	if ( wppa_is_photo_new( $id ) ) 	$result .= '<div style="clear:both;" ></div><img src="'.WPPA_URL.'/images/new.png" title="'.esc_attr( __a('New!') ).'" class="wppa-thumbnew" style="position:relative; top:-'.$top.'px; float:'.$float.'; border:none; margin:0; padding:0; box-shadow:none; height:'.$size.'px;" />';
+	if ( wppa_is_photo_new( $id ) ) 	$result .= '<div style="clear:both;" ></div><img src="'.WPPA_URL.'/images/new.png" title="'.esc_attr( __a('New!') ).'" alt="'.__a('New').'" class="wppa-thumbnew" style="position:relative; top:-'.$top.'px; float:'.$float.'; border:none; margin:0; padding:0; box-shadow:none; height:'.$size.'px;" />';
 
 	return $result;
 }

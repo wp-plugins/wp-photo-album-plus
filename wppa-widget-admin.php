@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 * admin sidebar widget
-* version 5.2.11
+* version 5.4.10
 *
 */
 
@@ -21,7 +21,7 @@ function _wppa_sidebar_page_options() {
 		check_admin_referer( '$wppa_nonce', WPPA_NONCE );
 		
 		if (isset($_POST['wppa-widgettitle'])) wppa_update_option('wppa_widgettitle', $_POST['wppa-widgettitle']);
-//		if (isset($_POST['wppa-potd-align'])) wppa_update_option('wppa_potd_align', $_POST['wppa-potd-align']);
+		if (isset($_POST['wppa-potd-align'])) wppa_update_option('wppa_potd_align', $_POST['wppa-potd-align']);
 		if (isset($_POST['wppa-widget-albums'])) wppa_update_option('wppa_widget_album', wppa_walbum_sanitize($_POST['wppa-widget-albums']));
 		if (isset($_POST['wppa-widget-photo'])) wppa_update_option('wppa_widget_photo', $_POST['wppa-widget-photo']);
 		if (isset($_POST['wppa-widget-method'])) wppa_update_option('wppa_widget_method', $_POST['wppa-widget-method']);
@@ -31,11 +31,11 @@ function _wppa_sidebar_page_options() {
 		if (isset($_POST['wppa-widget-linkurl'])) wppa_update_option('wppa_widget_linkurl', $_POST['wppa-widget-linkurl']);
 		if (isset($_POST['wppa-widget-linktitle'])) wppa_update_option('wppa_widget_linktitle', $_POST['wppa-widget-linktitle']);
 		if (isset($_POST['wppa-widget-linktype'])) wppa_update_option('wppa_widget_linktype', $_POST['wppa-widget-linktype']);
-//		if (wppa_check_numeric($_POST['wppa-widget-width'], '100', __('Widget Photo Width.'))) {
-//			wppa_update_option('wppa_widget_width', $_POST['wppa-widget-width']);
-//		} else {
-//			$options_error = true;
-//		}
+		if (wppa_check_numeric($_POST['wppa-potd-widget-width'], '100', __('Widget Photo Width.'))) {
+			wppa_update_option('wppa_potd_widget_width', $_POST['wppa-potd-widget-width']);
+		} else {
+			$options_error = true;
+		}
 		if (!$options_error) wppa_update_message(__('Changes Saved. Don\'t forget to activate the widget!', 'wppa')); 
 	} 
 	wppa_initialize_runtime('force');
@@ -62,13 +62,13 @@ function _wppa_sidebar_page_options() {
 							<span class="description"><br/><?php _e('Enter/modify the title for the widget. This is a default and can be overriden at widget activation.', 'wppa'); ?></span>
 						</td>
 					</tr>	
-<?php /*					
+					
 					<tr valign="top">
 						<th scope="row">
 							<label ><?php _e('Widget Photo Width:', 'wppa'); ?></label>
 						</th>
 						<td>
-							<input type="text" name="wppa-widget-width" id="wppa-widget-width" value="<?php echo $wppa_opt['wppa_widget_width'] ?>" style="width: 50px;" />
+							<input type="text" name="wppa-potd-widget-width" id="wppa-potd-widget-width" value="<?php echo $wppa_opt['wppa_potd_widget_width'] ?>" style="width: 50px;" />
 							<?php _e('pixels.', 'wppa'); echo(' '); _e('Horizontal alignment:', 'wppa'); ?>
 							<select name="wppa-potd-align" id="wppa-potd-align">
 								<?php $ali = $wppa_opt['wppa_potd_align'] ?>
@@ -81,7 +81,7 @@ function _wppa_sidebar_page_options() {
 							<span class="description"><br/><?php _e('Enter the desired display width and alignment of the photo in the sidebar.', 'wppa'); ?></span>
 						</td>
 					</tr>
-*/ ?>
+
 					<tr valign="top">
 						<th scope="row">
 							<label ><?php _e('Use album(s):', 'wppa'); ?></label>
