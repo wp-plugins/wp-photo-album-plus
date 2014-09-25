@@ -616,7 +616,7 @@ Hide Camera info
 						'wppa_show_bbb'						=> 'no',		// 13
 						'wppa_show_ubb' 					=> 'no',
 						'wppa_custom_on' 					=> 'no',		// 14
-						'wppa_custom_content' 				=> '<div style="color:red; font-size:24px; font-weight:bold; text-align:center;">Hello world!</div>',	// 15
+						'wppa_custom_content' 				=> '<div style="color:red; font-size:24px; font-weight:bold; text-align:center;">Hello world!</div><div style="text-align:center;" >You can change this text in Table II-B15</div>',	// 15
 						'wppa_show_slideshownumbar'  		=> 'no',		// 16
 						'wppa_show_iptc'					=> 'no',		// 17
 						'wppa_show_iptc_open'				=> 'no',
@@ -756,7 +756,7 @@ Hide Camera info
 						'wppa_custom_style' 			=> '',
 						'wppa_use_custom_style_file' 	=> 'no',
 						'wppa_use_custom_theme_file' 	=> 'no',
-						'wppa_cre_uploads_htaccess' 	=> 'yes',
+						'wppa_cre_uploads_htaccess' 	=> 'no',
 
 						// B Full size and Slideshow
 						'wppa_fullvalign' 				=> 'fit',

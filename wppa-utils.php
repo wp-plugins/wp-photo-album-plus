@@ -468,9 +468,13 @@ global $wpdb;
 }
 
 function wppa_update_option( $option, $value ) {
+global $wppa_opt;
 
 	// Update the option
 	update_option($option, $value);
+	
+	// Update the local cache
+	$wppa_opt[$option] = $value;
 	
 	// Delete the cached options
 	delete_option('wppa_cached_options');
@@ -1503,7 +1507,7 @@ function wppa_get_source_pl( $id ) {
 	if ( wppa_is_video( $id ) ) return '';
 	$result = '';
 	$source_path = wppa_get_source_path( $id );
-	if ( file_exists( $source_path ) ) {
+	if ( is_file( $source_path ) ) {
 		$result = 	content_url() . '/' . 						// http://www.mysite.com/wp-content/
 					wppa_opt( 'wppa_pl_dirname' ) . '/' .		// wppa-pl/
 					wppa_sanitize_file_name( wppa_get_album_item( wppa_get_photo_item( $id, 'album' ), 'name' ) ) . '/' .	// My-Album

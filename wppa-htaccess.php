@@ -35,7 +35,7 @@ function wppa_create_wppa_htaccess_( $filename ) {
 		// Destroy it
 		else {
 			fclose( $file );
-			unlink( WPPA_UPLOAD_PATH . '/.htaccess' );
+			@ unlink( $filename );
 		}
 	}
 }
@@ -80,11 +80,11 @@ global $wpdb;
 	fwrite( $file, "\n" . 'RewriteEngine On' );
 	// RewriteBase /wp-content/wppa-pl
 	fwrite( $file, "\n" . 'RewriteBase /' . str_replace( ABSPATH, '', $pl_root ) );
-	$albs = $wpdb->get_results( "SELECT `id`, `name` FROM `".WPPA_ALBUMS."` ORDER BY `id`", ARRAY_A );
+	$albs = $wpdb->get_results( "SELECT `id`, `name` FROM `".WPPA_ALBUMS."` ORDER BY `name` DESC", ARRAY_A );
 	if ( $albs ) foreach( $albs as $alb ) {
 		$fm = wppa_sanitize_file_name( $alb['name'] );
 		$to = $source_root . '/album-'.$alb['id'];
-		fwrite( $file, "\n" . 'RewriteRule ^'.$fm.'(.*) /'.$to.'$1 [NC]' );
+		fwrite( $file, "\n" . 'RewriteRule ^'.$fm.'/(.*) /'.$to.'/$1 [NC]' );
 	}	
 	fwrite( $file, "\n" . '</IfModule>' );
 	fclose( $file );
