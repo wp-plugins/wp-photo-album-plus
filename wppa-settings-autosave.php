@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 5.4.10
+* Version 5.4.11
 *
 */
 
@@ -1056,11 +1056,12 @@ global $no_default;
 							$desc = __('Select the size of the magnifier cursor.', 'wppa');
 							$help = '';
 							$slug = 'wppa_magnifier';
-							$options = array(__('small','wppa'), __('medium', 'wppa'), __('large', 'wppa'));
-							$values  = array('magnifier-small.png', 'magnifier-medium.png', 'magnifier-large.png');
-							$onchange = 'document.getElementById(\'wppa-cursor\').src=wppaImageDirectory+document.getElementById(\'wppa_magnifier\').value';
+							$options = array(__('small','wppa'), __('medium', 'wppa'), __('large', 'wppa'), __('---none---', 'wppa'));
+							$values  = array('magnifier-small.png', 'magnifier-medium.png', 'magnifier-large.png', '');
+							$onchange = 'jQuery(\'#wppa-cursor\').attr(\'alt\', \'Pointer\');document.getElementById(\'wppa-cursor\').src=wppaImageDirectory+document.getElementById(\'wppa_magnifier\').value';
 							$html = wppa_select($slug, $options, $values, $onchange);
 							wppa_setting($slug, '2', $name, $desc, $html.'&nbsp;&nbsp;<img id="wppa-cursor" src="'.wppa_get_imgdir().$wppa_opt[$slug].'" />', $help);
+							echo '<script>'.$onchange.'</script>';
 							}
 							if ( wppa_is_video_enabled() ) {
 								wppa_setting_subheader( 'H', '1', __( 'Video related size settings', 'wppa' ) );
@@ -1915,7 +1916,7 @@ global $no_default;
 							
 							$name = __('Show Zoom in', 'wppa');
 							$desc = __('Display tooltip "Zoom in" along with the magnifier cursor.', 'wppa');
-							$help = '';
+							$help = esc_js(__('If you select ---none--- in Table I-G2 for magnifier size, the tooltop contains the photo name.', 'wppa') );
 							$slug = 'wppa_show_zoomin';
 							$html = wppa_checkbox($slug);
 							wppa_setting($slug, '91', $name, $desc, $html, $help);
@@ -4704,6 +4705,17 @@ global $no_default;
 							$html4 = wppa_togo_field( $slug2 );
 							$html = array($html1, $html2, $html3, $html4);
 							wppa_setting(false, '11', $name, $desc, $html, $help);
+							
+							$name = __('Add GPX tag', 'wppa');
+							$desc = __('Make sure photos with gpx data have a Gpx tag', 'wppa');
+							$help = '';
+							$slug2 = 'wppa_add_gpx_tag';
+							$html1 = '';
+							$html2 = wppa_maintenance_button( $slug2 );
+							$html3 = wppa_status_field( $slug2 );
+							$html4 = wppa_togo_field( $slug2 );
+							$html = array($html1, $html2, $html3, $html4);
+							wppa_setting(false, '12', $name, $desc, $html, $help);
 
 						wppa_setting_subheader('C', '4', __('Listings', 'wppa'));
 

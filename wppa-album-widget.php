@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display thumbnail albums
-* Version 5.4.10
+* Version 5.4.11
 */
 
 if ( ! defined( 'ABSPATH' ) ) die( "Can't load this file directly" );
@@ -156,12 +156,12 @@ class AlbumWidget extends WP_Widget {
 																						'cursor' 		=> $cursor,
 																						'events' 		=> $imgevents,
 																						'tagid' 		=> 'i-'.$image['id'].'-'.$wppa['mocc'],
-																						'title' 		=> wppa_zoom_in()
+																						'title' 		=> wppa_zoom_in( $image['id'] )
 																					 )
 																			 );									
 									}
 									else {
-										$widget_content .= "\n\t\t".'<img id="i-'.$image['id'].'-'.$wppa['mocc'].'" title="'.wppa_zoom_in().'" src="'.$imgurl.'" width="'.$width.'" height="'.$height.'" style="'.$imgstyle.$cursor.'" '.$imgevents.' '.wppa_get_imgalt($image['id']).' >';
+										$widget_content .= "\n\t\t".'<img id="i-'.$image['id'].'-'.$wppa['mocc'].'" title="'.wppa_zoom_in( $image['id'] ).'" src="'.$imgurl.'" width="'.$width.'" height="'.$height.'" style="'.$imgstyle.$cursor.'" '.$imgevents.' '.wppa_get_imgalt($image['id']).' >';
 									}
 								}
 								$widget_content .= "\n\t".'</a>';

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Various funcions
-* Version 5.4.10
+* Version 5.4.11
 *
 */
 
@@ -2766,10 +2766,10 @@ global $wpdb;
 			// The a img
 			$wppa['out'] .= wppa_nltab( '+' ).'<a href="'.$link['url'].'" target="'.$link['target'].'" data-videohtml="'.esc_attr( wppa_get_video_body( $id ) ).'" rel="'.wppa_opt( 'wppa_lightbox_name' ).'[occ'.$wppa['mocc'].']" title="'.$title.'" class="thumb-img" id="x-'.$id.'-'.$wppa['mocc'].'">';
 			if ( $is_video ) { 
-				$wppa['out'] .= wppa_nltab().'<video preload="metadata" id="i-'.$id.'-'.$wppa['mocc'].'" '.$imgalt.' title="'.wppa_zoom_in().'" width="'.$imgwidth.'" height="'.$imgheight.'" style="'.$imgstyle.$cursor.'" '.$events.' >'.wppa_get_video_body( $id ).'</video>';
+				$wppa['out'] .= wppa_nltab().'<video preload="metadata" id="i-'.$id.'-'.$wppa['mocc'].'" '.$imgalt.' title="'.wppa_zoom_in( $id ).'" width="'.$imgwidth.'" height="'.$imgheight.'" style="'.$imgstyle.$cursor.'" '.$events.' >'.wppa_get_video_body( $id ).'</video>';
 			}
 			else {
-				$wppa['out'] .= wppa_nltab().'<img id="i-'.$id.'-'.$wppa['mocc'].'" src="'.$imgurl.'" '.$imgalt.' title="'.wppa_zoom_in().'" width="'.$imgwidth.'" height="'.$imgheight.'" style="'.$imgstyle.$cursor.'" '.$events.' />';
+				$wppa['out'] .= wppa_nltab().'<img id="i-'.$id.'-'.$wppa['mocc'].'" src="'.$imgurl.'" '.$imgalt.' title="'.wppa_zoom_in( $id ).'" width="'.$imgwidth.'" height="'.$imgheight.'" style="'.$imgstyle.$cursor.'" '.$events.' />';
 			}
 			$wppa['out'] .= wppa_nltab( '-' ).'</a>';
 		}
@@ -3079,10 +3079,10 @@ global $thumb;
 //	$title = $thumbname;
 	
 	if ( wppa_opt( 'wppa_film_linktype' ) == 'lightbox' ) {
-//		$title = esc_attr( wppa_zoom_in() );
+//		$title = esc_attr( wppa_zoom_in( $thumb['id'] ) );
 	}
 	else {
-		$events .= ' onclick="wppaGoto( '.$wppa['mocc'].', '.$idx.' )"';
+		$events .= ' onclick="wppaGotoKeepState( '.$wppa['mocc'].', '.$idx.' )"';
 		$events .= ' ondblclick="wppaStartStop( '.$wppa['mocc'].', -1 )"';
 //		$title = esc_attr( __a( 'Double click to start/stop slideshow running' ) );
 	}
@@ -3352,7 +3352,7 @@ global $wppa;
 		$title = $link ? $link['title'] : esc_attr( stripslashes( wppa_get_photo_name( $wppa['single_photo'] ) ) );
 		if ( $link['is_lightbox'] ) {
 			$style = ' cursor:url( '.wppa_get_imgdir().wppa_opt( 'wppa_magnifier' ).' ),pointer;';
-			$title = wppa_zoom_in();
+			$title = wppa_zoom_in( $wppa['single_photo'] );
 		}
 		else {
 			$style = '';
@@ -3439,7 +3439,7 @@ global $wppa;
 		$title = $link ? esc_attr( $link['title'] ) : esc_attr( stripslashes( wppa_get_photo_name( $wppa['single_photo'] ) ) );
 		if ( $link['is_lightbox'] ) {
 			$style .= ' cursor:url( '.wppa_get_imgdir().wppa_opt( 'wppa_magnifier' ).' ),pointer;';
-			$title = wppa_zoom_in();
+			$title = wppa_zoom_in( $wppa['single_photo'] );
 		}
 		
 		if ( wppa_is_video( $wppa['single_photo'] ) ) {
@@ -4133,8 +4133,18 @@ global $wppa;
 	return $result;
 }
 
-function wppa_zoom_in() {
-	if ( wppa_switch( 'wppa_show_zoomin' ) ) return __a( 'Zoom in' );
+function wppa_zoom_in( $id ) {
+
+	if ( $id === false ) return '';
+	
+	if ( wppa_switch( 'wppa_show_zoomin' ) ) {
+		if ( wppa_opt( 'wppa_magnifier' ) ) {
+			return __a( 'Zoom in' );
+		}
+		else {
+			return esc_attr( stripslashes( wppa_get_photo_name( $id ) ) );
+		}
+	}
 	else return ' ';
 }
 

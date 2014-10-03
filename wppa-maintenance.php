@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains (not yet, but in the future maybe) all the maintenance routines
-* Version 5.4.8.001
+* Version 5.4.11
 *
 */
 
@@ -41,7 +41,8 @@ global $wppa_session;
 						'wppa_exif_clear',
 						'wppa_watermark_all',
 						'wppa_create_all_autopages',
-						'wppa_leading_zeros'
+						'wppa_leading_zeros',
+						'wppa_add_gpx_tag'
 					);
 	foreach ( array_keys( $all_slugs ) as $key ) {
 		if ( $all_slugs[$key] != $slug ) {
@@ -159,6 +160,7 @@ global $wppa_session;
 		case 'wppa_watermark_all':
 		case 'wppa_create_all_autopages':
 		case 'wppa_leading_zeros':
+		case 'wppa_add_gpx_tag':
 		
 			// Process photos
 			$thumbsize 	= wppa_get_minisize();
@@ -351,6 +353,29 @@ global $wppa_session;
 						}
 						if ( $name !== $photo['name'] ) {
 							$wpdb->query( $wpdb->prepare( "UPDATE `".WPPA_PHOTOS."` SET `name` = %s WHERE `id` = %s", $name, $id ) );
+						}
+						break;
+						
+					case 'wppa_add_gpx_tag':
+						$tags 	= $photo['tags'];
+						$temp 	= explode( '/', $photo['location'] );
+						if ( ! isset( $temp['2'] ) ) $temp['2'] = false;
+						if ( ! isset( $temp['3'] ) ) $temp['3'] = false;
+						$lat 	= $temp['2'];
+						$lon 	= $temp['3'];
+						if ( $lat < 0.01 && $lat > -0.01 &&  $lon < 0.01 && $lon > -0.01 ) {
+							$lat = false;
+							$lon = false;
+						}
+						if ( $photo['location'] && strpos( $tags, 'Gpx' ) === false && $lat && $lon ) {	// Add it
+							$tags = wppa_sanitize_tags( $tags . ',Gpx' );
+							wppa_update_photo( array( 'id' => $photo['id'], 'tags' => $tags ) );
+							wppa_clear_taglist();
+						}
+						elseif ( strpos( $tags, 'Gpx' ) !== false && ! $lat && ! $lon ) { 	// Remove it
+							$tags = wppa_sanitize_tags( str_replace( 'Gpx', '', $tags ) );
+							wppa_update_photo( array( 'id' => $photo['id'], 'tags' => $tags ) );
+							wppa_clear_taglist();
 						}
 						break;
 		

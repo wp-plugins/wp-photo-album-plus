@@ -2,7 +2,7 @@
 //
 // conatins slideshow, theme, ajax and lightbox code
 //
-// Version 5.4.6
+// Version 5.4.11
 
 // Part 1: Slideshow
 //
@@ -164,6 +164,8 @@ var wppaPhotoView = [];
 var wppaCommentRequiredAfterVote = true;
 var _wppaIsVideo = [];
 var _wppaVideoHtml = [];
+
+var __wppaOverruleRun = false;
 
 // Init at dom ready
 jQuery( document ).ready(function() {
@@ -492,7 +494,10 @@ function _wppaNextSlide( mocc, mode ) {
 	// Do not animate single image
 	if ( _wppaSlides[mocc].length < 2 && ! _wppaFirst[mocc] ) return; 
 	// Reset request?
-	if ( ! _wppaSSRuns[mocc] && 'reset' == mode ) _wppaSSRuns[mocc] = true;
+	if ( ! _wppaSSRuns[mocc] && 'reset' == mode ) {
+		_wppaSSRuns[mocc] = true;
+		__wppaOverruleRun = false;
+	}
 
 	// No longer busy voting
 	_wppaVIP = false;
@@ -1186,7 +1191,12 @@ function _wppaAdjustFilmstrip( mocc ) {
 						html = html.replace( '<!--', '' );
 						html = html.replace( '-->', '' );
 						document.getElementById( 'film_wppatnf_'+_wppaId[mocc][index]+'_'+mocc ).innerHTML = html;
-						document.getElementById( 'wppa-film-'+index+'-'+mocc ).title = wppaFilmThumbTitle;
+						if ( wppaFilmThumbTitle != '' ) {
+							document.getElementById( 'wppa-film-'+index+'-'+mocc ).title = wppaFilmThumbTitle;
+						}
+						else {
+							document.getElementById( 'wppa-film-'+index+'-'+mocc ).title = _wppaNames[mocc][index];
+						}
 					}
 				}
 			}
@@ -1296,6 +1306,7 @@ function _wppaGotoRunning( mocc, idx ) {
     
 	_wppaToTheSame = ( _wppaNxtIdx[mocc] == idx );
 	_wppaNxtIdx[mocc] = idx;
+__wppaOverruleRun = true;
 	_wppaNextSlide( mocc, "manual" ); // enqueue new transition
     
 	_wppaGotoContinue( mocc );
@@ -1948,7 +1959,7 @@ function wppaOpenComments( mocc ) {
 function _wppaShowMetaData( mocc, key ) {
 	
 	// What to do when the slideshow is NOT running
-	if ( ! _wppaSSRuns[mocc] ) {	
+	if ( ! _wppaSSRuns[mocc] && ! __wppaOverruleRun ) {	
 		if ( key == 'show' ) {			// Show
 			if ( wppaAutoOpenComments ) {
 				// Show existing comments
@@ -3428,7 +3439,7 @@ function wppaAjaxComment( mocc, id ) {
 }
 
 function wppaConsoleLog( arg ) {
-wppaDebug=true;
+//wppaDebug=true;
 	if ( typeof( console ) != 'undefined' && wppaDebug ) {
 		console.log( arg );
 	}

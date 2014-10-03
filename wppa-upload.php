@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the upload/import pages and functions
-* Version 5.4.9
+* Version 5.4.11
 *
 */
 
@@ -467,6 +467,7 @@ global $wppa_supported_video_extensions;
 			else $is_ngg = false;
 		}
 		if ( $source_type == 'remote' ) {
+			$wppa['is_remote'] = true;
 			$source     	= get_option( 'wppa_import_source_url_'.$user, 'http://' );
 			$source_path 	= $source;
 			$source_url 	= $source;
@@ -718,6 +719,20 @@ global $wppa_supported_video_extensions;
 									if ( $ext == 'jpg' || $ext == 'png' || $ext == 'gif' ) { ?>
 										<td>
 											<input type="checkbox" id="file-<?php echo( $idx ) ?>" name="file-<?php echo( $idx ) ?>" title="<?php echo $file ?>" class= "wppa-pho" <?php if ( $is_sub_depot ) echo( 'checked="checked"' ) ?> /><span id="name-file-<?php echo( $idx ) ?>" >&nbsp;&nbsp;<?php echo( wppa_sanitize_file_name( basename( $file ) ) ); ?>&nbsp;<?php echo( stripslashes( wppa_get_meta_name( $meta, '( ' ) ) ) ?><?php echo( stripslashes( wppa_get_meta_album( $meta, '[' ) ) ) ?></span>
+											<?php 
+												if ( $wppa['is_remote'] ) { 
+													if ( strpos( $file, '//res.cloudinary.com/' ) !== false ) {
+														$img_url = dirname( $file ) . '/h_144/' . basename( $file );
+													}
+													else {
+														$img_url = $file; 
+													}
+												}
+												else { 
+													$img_url = str_replace( ABSPATH, home_url().'/', $file );
+												} 
+											?>
+											<img src="<?php echo $img_url ?>" alt="N.A." style="max-height:48px;" onmouseover="jQuery(this).css('max-height', '144px')" onmouseout="jQuery(this).css('max-height', '48px')" />
 										</td>
 										<?php if ( $ct == 3 ) {
 											echo( '</tr><tr>' ); 
@@ -933,7 +948,7 @@ global $wppa_supported_video_extensions;
 										else {
 											elm.checked = '';
 											
-											jQuery( '#name-'+elm.id ).html( oldhtml+'&nbsp;&nbsp;<b>'+xmlhttp.responseText+'</b>' );
+											jQuery( '#name-'+elm.id ).html( '&nbsp;&nbsp;<b>'+xmlhttp.responseText+'</b>' );
 										}
 										if ( wppaImportRuns ) {
 											setTimeout( 'wppaDoAjaxImport()', 100 );
@@ -1227,6 +1242,7 @@ global $wppa_supported_video_extensions;
 	// Get this users current source directory setting
 	$user 			= wppa_get_user();
 	$source_type 	= get_option( 'wppa_import_source_type_'.$user, 'local' );
+	if ( $source_type == 'remote' ) $wppa['is_remote'] = true;
 	$source 		= get_option( 'wppa_import_source_'.$user, WPPA_DEPOT );
 
 	$depot 			= WPPA_ABSPATH . $source;	// Filesystem
@@ -1442,6 +1458,7 @@ global $wppa_supported_video_extensions;
 								}
 							}
 							else {
+								$wppa['ajax_import_files_error'] = __( 'Insert err', 'wppa');
 								wppa_error_message( __( 'Error inserting photo', 'wppa' ) . ' ' . basename( $file ) . '.' );
 							}
 						}

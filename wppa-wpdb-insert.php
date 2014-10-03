@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains low-level wpdb routines that add new records
-* Version 5.4.9
+* Version 5.4.11
 *
 */
 
@@ -24,7 +24,7 @@ global $wpdb;
 					'count' 			=> '1'
 					) );
 					
-	if ( ! wppa_is_id_free( WPPA_SESSION, $args['id'] ) ) $args['id'] = wppa_nextkey( WPPA_SESSION );
+//	if ( ! wppa_is_id_free( WPPA_SESSION, $args['id'] ) ) $args['id'] = wppa_nextkey( WPPA_SESSION );
 	
 	$query = $wpdb->prepare("INSERT INTO `" . WPPA_SESSION ."` 	(	
 																	`session`,

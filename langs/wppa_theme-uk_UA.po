@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wppa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-08-25 15:29+0100\n"
-"PO-Revision-Date: 2014-08-25 15:30+0100\n"
+"POT-Creation-Date: 2014-10-03 10:46+0100\n"
+"PO-Revision-Date: 2014-10-03 10:46+0100\n"
 "Last-Translator: J.N. Breetvelt <OpaJaap@OpaJaap.nl>\n"
 "Language-Team: http://getvoip.com/\n"
 "Language: uk_UA\n"
@@ -18,19 +18,19 @@ msgstr ""
 "X-Poedit-KeywordsList: __a\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-SourceCharset: UTF-8\n"
-"X-Generator: Poedit 1.6.7\n"
+"X-Generator: Poedit 1.6.9\n"
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPath-1: theme\n"
 
-#: theme/wppa-theme.php:108 theme/wppa-theme.php:127
+#: theme/wppa-theme.php:109 theme/wppa-theme.php:128
 msgid "No photos found matching your search criteria."
 msgstr "Фотографії не знайдені відповідні Вашим критеріям пошуку."
 
-#: theme/wppa-theme.php:111
+#: theme/wppa-theme.php:112
 msgid "No albums found matching your search criteria."
 msgstr "Чи не альбоми не знайдено, відповідні Вашим критеріям пошуку."
 
-#: theme/wppa-theme.php:114
+#: theme/wppa-theme.php:115
 msgid "No albums or photos found matching your search criteria."
 msgstr "Ні альбомів або фотографій, відповідних зазначеним умовам пошуку."
 
@@ -62,7 +62,7 @@ msgstr "Експорт Фотографії"
 msgid "Settings"
 msgstr "Налаштування"
 
-#: wppa-adminbar.php:89 wppa-potd-widget.php:54
+#: wppa-adminbar.php:89 wppa-potd-widget.php:55
 msgid "Photo of the day"
 msgstr "Фото дня"
 
@@ -125,8 +125,8 @@ msgstr "альбом"
 msgid "albums"
 msgstr "Фотоальбоми"
 
-#: wppa-album-covers.php:1110 wppa-boxes-html.php:363 wppa-breadcrumb.php:253
-#: wppa-breadcrumb.php:258 wppa-functions.php:4044 wppa-utils.php:1273
+#: wppa-album-covers.php:1110 wppa-boxes-html.php:363 wppa-breadcrumb.php:258
+#: wppa-breadcrumb.php:263 wppa-functions.php:4094 wppa-utils.php:1277
 msgid "and"
 msgstr "і"
 
@@ -138,8 +138,13 @@ msgstr "фото"
 msgid "photos"
 msgstr "фото"
 
-#: wppa-album-covers.php:1166 wppa-utils.php:1637
+#: wppa-album-covers.php:1166 wppa-utils.php:1652
 msgid "New!"
+msgstr "Нове!"
+
+#: wppa-album-covers.php:1167 wppa-utils.php:1652
+#, fuzzy
+msgid "New"
 msgstr "Нове!"
 
 #: wppa-album-covers.php:1188 wppa-non-admin.php:468
@@ -155,7 +160,7 @@ msgstr "Огляд фотографій"
 msgid "Categories:"
 msgstr "Категорія:"
 
-#: wppa-album-covers.php:1225 wppa-breadcrumb.php:265 wppa-breadcrumb.php:270
+#: wppa-album-covers.php:1225 wppa-breadcrumb.php:270 wppa-breadcrumb.php:275
 msgid "Category:"
 msgstr "Категорія:"
 
@@ -220,10 +225,14 @@ msgstr "Або"
 msgid "Find!"
 msgstr "Знайти!"
 
-#: wppa-boxes-html.php:363 wppa-utils.php:1273
+#: wppa-boxes-html.php:363 wppa-utils.php:1277
 #, php-format
 msgid "See this image on %s"
 msgstr "Дивіться цю картинку на %s"
+
+#: wppa-boxes-html.php:374 wppa-qr-widget.php:29
+msgid "QR code"
+msgstr ""
 
 #: wppa-boxes-html.php:412
 #, php-format
@@ -256,43 +265,43 @@ msgstr "Викласти на Pinterest"
 msgid "Comment on Facebook:"
 msgstr "Прокоментувати Facebook:"
 
-#: wppa-boxes-html.php:629
+#: wppa-boxes-html.php:631
 msgid "Create Album"
 msgstr "Створити альбом"
 
-#: wppa-boxes-html.php:640 wppa-boxes-html.php:904
+#: wppa-boxes-html.php:642 wppa-boxes-html.php:908
 msgid "Enter album name."
 msgstr "Введіть назву альбому."
 
-#: wppa-boxes-html.php:640 wppa-boxes-html.php:904
+#: wppa-boxes-html.php:642 wppa-boxes-html.php:908
 msgid "Don't leave this blank!"
 msgstr "Не залишайте це поле порожнім!"
 
-#: wppa-boxes-html.php:648
+#: wppa-boxes-html.php:650
 msgid "Enter album description"
 msgstr "Введіть опис альбом"
 
-#: wppa-boxes-html.php:659
+#: wppa-boxes-html.php:661
 msgid "Create album"
 msgstr "Створити альбом"
 
-#: wppa-boxes-html.php:683 wppa-boxes-html.php:697 wppa-functions.php:3806
+#: wppa-boxes-html.php:685 wppa-boxes-html.php:699 wppa-functions.php:3856
 msgid "Max uploads reached"
 msgstr "Максимальна додавання досягли"
 
-#: wppa-boxes-html.php:745
+#: wppa-boxes-html.php:749
 msgid "Upload Photo"
 msgstr "Завантажити фото"
 
-#: wppa-boxes-html.php:771
+#: wppa-boxes-html.php:775
 msgid "Please select an album and try again"
 msgstr "Будь ласка, виберіть альбом та спробуйте ще раз"
 
-#: wppa-boxes-html.php:774
+#: wppa-boxes-html.php:778
 msgid "Upload photo"
 msgstr "Завантажити фото"
 
-#: wppa-boxes-html.php:780
+#: wppa-boxes-html.php:784
 #, php-format
 msgid ""
 "You may upload up to %s photos at once if your browser supports HTML-5 "
@@ -301,20 +310,20 @@ msgstr ""
 "Ви можете завантажити до %s фотографій одночасно, якщо ваш браузер підтримує "
 "HTML-5 множинну завантаження файлів"
 
-#: wppa-boxes-html.php:786
+#: wppa-boxes-html.php:790
 #, php-format
 msgid "Max photo size: %d x %d (%2.1f MegaPixel)"
 msgstr "Максимальний розмір фото: %d х %d (%2.1f Мегапіксельною)"
 
-#: wppa-boxes-html.php:802
+#: wppa-boxes-html.php:806
 msgid "Apply watermark file:"
 msgstr "Застосувати водяного знака файл:"
 
-#: wppa-boxes-html.php:814
+#: wppa-boxes-html.php:818
 msgid "Position:"
 msgstr "Статус:"
 
-#: wppa-boxes-html.php:834
+#: wppa-boxes-html.php:838
 msgid ""
 "If you leave this blank, iptc tag 005 (Graphic name) will be used as "
 "photoname if available, else the original filename will be used as photo "
@@ -324,7 +333,7 @@ msgstr ""
 "використовуватиметься як photoname якщо такі є, інакше вихідне ім'я файлу "
 "буде використовуватися як фото ім'я."
 
-#: wppa-boxes-html.php:837
+#: wppa-boxes-html.php:841
 msgid ""
 "If you leave this blank, iptc tag 120 (Caption) will be used as photoname if "
 "available, else the original filename will be used as photo name."
@@ -333,136 +342,140 @@ msgstr ""
 "використовуватиметься як photoname якщо доступні, інакше вихідне ім'я файлу "
 "буде використовуватися в якості імені фото."
 
-#: wppa-boxes-html.php:840
+#: wppa-boxes-html.php:844
 msgid ""
 "If you leave this blank, the original filename will be used as photo name."
 msgstr ""
 "Якщо ви залишите це поле порожнім, вихідне ім'я файлу буде використовуватися "
 "в якості імені фотографії."
 
-#: wppa-boxes-html.php:844
+#: wppa-boxes-html.php:848
 msgid "Enter photo name."
 msgstr "Введіть назву фотографії."
 
-#: wppa-boxes-html.php:852
+#: wppa-boxes-html.php:856
 msgid "Enter/modify photo description"
 msgstr "Введення/зміна опис фото"
 
-#: wppa-boxes-html.php:897
+#: wppa-boxes-html.php:901
 msgid "Edit albuminfo"
 msgstr "Редагувати albuminfo"
 
-#: wppa-boxes-html.php:908
+#: wppa-boxes-html.php:912
 msgid "Album description:"
 msgstr "Опис альбому:"
 
-#: wppa-boxes-html.php:911
+#: wppa-boxes-html.php:915
 msgid "Update album"
 msgstr "Оновлення альбом"
 
-#: wppa-boxes-html.php:959 wppa-functions.php:2782
+#: wppa-boxes-html.php:963 wppa-functions.php:2826
 msgid "wrote:"
 msgstr "писав:"
 
-#: wppa-boxes-html.php:992 wppa-links.php:666
+#: wppa-boxes-html.php:980
+msgid "Avatar"
+msgstr ""
+
+#: wppa-boxes-html.php:996 wppa-links.php:678
 msgid "Awaiting moderation"
 msgstr "Чекає модерації"
 
-#: wppa-boxes-html.php:995
+#: wppa-boxes-html.php:999
 msgid "Marked as spam"
 msgstr "Позначені як спам"
 
-#: wppa-boxes-html.php:1014
+#: wppa-boxes-html.php:1018
 msgid "Edit!"
 msgstr "Редагувати!"
 
-#: wppa-boxes-html.php:1018
+#: wppa-boxes-html.php:1022
 msgid "Send!"
 msgstr "Відправити!"
 
-#: wppa-boxes-html.php:1057
+#: wppa-boxes-html.php:1061
 msgid "Your name:"
 msgstr "Ваше ім'я:"
 
-#: wppa-boxes-html.php:1062
+#: wppa-boxes-html.php:1066
 msgid "Your email:"
 msgstr "Вашу адресу електронної пошти:"
 
-#: wppa-boxes-html.php:1067
+#: wppa-boxes-html.php:1071
 msgid "Your comment:"
 msgstr "Ваш коментар:"
 
-#: wppa-boxes-html.php:1103
+#: wppa-boxes-html.php:1107
 #, php-format
 msgid "You must <a href=\"%s\">login</a> to enter a comment"
 msgstr "Ви повинні <a href=\" %s\">увійти в систему</a> для введення коментаря"
 
-#: wppa-boxes-html.php:1110
+#: wppa-boxes-html.php:1114
 #, php-format
 msgid "%d comments"
 msgstr " %d коментарі"
 
-#: wppa-boxes-html.php:1114
+#: wppa-boxes-html.php:1118
 msgid "Leave a comment"
 msgstr "Залишити коментар"
 
-#: wppa-boxes-html.php:1181
+#: wppa-boxes-html.php:1185
 msgid "Show IPTC data"
 msgstr "Дані показують, IPTC"
 
-#: wppa-boxes-html.php:1184
+#: wppa-boxes-html.php:1188
 msgid "Hide IPTC data"
 msgstr "Приховати дані IPTC"
 
-#: wppa-boxes-html.php:1211
+#: wppa-boxes-html.php:1215
 msgid "No IPTC data"
 msgstr "Немає даних IPTC"
 
-#: wppa-boxes-html.php:1251
+#: wppa-boxes-html.php:1255
 msgid "Show EXIF data"
 msgstr "Показати дані EXIF"
 
-#: wppa-boxes-html.php:1254
+#: wppa-boxes-html.php:1258
 msgid "Hide EXIF data"
 msgstr "Приховати EXIF ​​дані"
 
-#: wppa-boxes-html.php:1281
+#: wppa-boxes-html.php:1285
 msgid "No EXIF data"
 msgstr "Ні EXIF ​​даних"
 
-#: wppa-boxes-html.php:1456 wppa-boxes-html.php:1511
+#: wppa-boxes-html.php:1460 wppa-boxes-html.php:1515
 msgid "See the authors albums"
 msgstr "Див Автори альбоми"
 
-#: wppa-boxes-html.php:1460 wppa-boxes-html.php:1515
+#: wppa-boxes-html.php:1464 wppa-boxes-html.php:1519
 msgid "See the authors photos"
 msgstr "Дивіться фотографії авторів"
 
-#: wppa-boxes-html.php:1464 wppa-boxes-html.php:1519
+#: wppa-boxes-html.php:1468 wppa-boxes-html.php:1523
 msgid "See all the authors photos"
 msgstr "Переглянути всі фотографії авторів"
 
-#: wppa-boxes-html.php:1483
+#: wppa-boxes-html.php:1487
 #, php-format
 msgid "Photo by: %s"
 msgstr "Фото: %s"
 
-#: wppa-boxes-html.php:1484 wppa-boxes-html.php:1537
+#: wppa-boxes-html.php:1488 wppa-boxes-html.php:1541
 #, php-format
 msgid "Max ratings: %s."
 msgstr "Максимальна кількість оцінок: %s."
 
-#: wppa-boxes-html.php:1485 wppa-boxes-html.php:1538
+#: wppa-boxes-html.php:1489 wppa-boxes-html.php:1542
 #, php-format
 msgid "Votes: %s."
 msgstr "Голосів: %s."
 
-#: wppa-boxes-html.php:1486 wppa-boxes-html.php:1539
+#: wppa-boxes-html.php:1490 wppa-boxes-html.php:1543
 #, php-format
 msgid "Mean value: %4.2f."
 msgstr "Середнє значення: %4.2f."
 
-#: wppa-boxes-html.php:1493
+#: wppa-boxes-html.php:1497
 #, php-format
 msgid "Photo %s not found."
 msgstr "Фото %s не знайдений."
@@ -488,79 +501,79 @@ msgstr "SearchResults з альбому %s і його subalbums"
 msgid "Searchstring:"
 msgstr "SearchString:"
 
-#: wppa-breadcrumb.php:145 wppa-breadcrumb.php:159 wppa-breadcrumb.php:177
-#: wppa-breadcrumb.php:195 wppa-breadcrumb.php:213 wppa-breadcrumb.php:231
-#: wppa-breadcrumb.php:243 wppa-breadcrumb.php:255 wppa-breadcrumb.php:267
-#: wppa-breadcrumb.php:286
+#: wppa-breadcrumb.php:145 wppa-breadcrumb.php:164 wppa-breadcrumb.php:182
+#: wppa-breadcrumb.php:200 wppa-breadcrumb.php:218 wppa-breadcrumb.php:236
+#: wppa-breadcrumb.php:248 wppa-breadcrumb.php:260 wppa-breadcrumb.php:272
+#: wppa-breadcrumb.php:291
 msgid "View the thumbnails"
 msgstr "Перегляд мініатюр"
 
-#: wppa-breadcrumb.php:157 wppa-breadcrumb.php:162
+#: wppa-breadcrumb.php:157 wppa-breadcrumb.php:167
 #, php-format
 msgid "Photos by %s"
 msgstr "Фотографії %s"
 
-#: wppa-breadcrumb.php:169 wppa-breadcrumb.php:187 wppa-breadcrumb.php:205
-#: wppa-breadcrumb.php:223 wppa-breadcrumb.php:301
+#: wppa-breadcrumb.php:174 wppa-breadcrumb.php:192 wppa-breadcrumb.php:210
+#: wppa-breadcrumb.php:228 wppa-breadcrumb.php:306
 msgid "Various albums"
 msgstr "Різні альбоми"
 
-#: wppa-breadcrumb.php:171 wppa-breadcrumb.php:189 wppa-breadcrumb.php:207
-#: wppa-breadcrumb.php:225 wppa-breadcrumb.php:305
+#: wppa-breadcrumb.php:176 wppa-breadcrumb.php:194 wppa-breadcrumb.php:212
+#: wppa-breadcrumb.php:230 wppa-breadcrumb.php:310
 msgid "Albums:"
 msgstr "Альбоми:"
 
-#: wppa-breadcrumb.php:171 wppa-breadcrumb.php:189 wppa-breadcrumb.php:207
-#: wppa-breadcrumb.php:225 wppa-breadcrumb.php:280 wppa-breadcrumb.php:305
+#: wppa-breadcrumb.php:176 wppa-breadcrumb.php:194 wppa-breadcrumb.php:212
+#: wppa-breadcrumb.php:230 wppa-breadcrumb.php:285 wppa-breadcrumb.php:310
 msgid "Album:"
 msgstr "Альбом:"
 
-#: wppa-breadcrumb.php:175 wppa-breadcrumb.php:180
+#: wppa-breadcrumb.php:180 wppa-breadcrumb.php:185
 msgid "Top rated photos"
 msgstr "Топ Фото"
 
-#: wppa-breadcrumb.php:193 wppa-breadcrumb.php:198
+#: wppa-breadcrumb.php:198 wppa-breadcrumb.php:203
 msgid "Recently uploaded photos"
 msgstr "Нещодавно додані фото"
 
-#: wppa-breadcrumb.php:211 wppa-breadcrumb.php:216 wppa-comment-widget.php:27
+#: wppa-breadcrumb.php:216 wppa-breadcrumb.php:221 wppa-comment-widget.php:27
 msgid "Recently commented photos"
 msgstr "Нещодавно коментовані фото"
 
-#: wppa-breadcrumb.php:229 wppa-breadcrumb.php:234 wppa-featen-widget.php:30
+#: wppa-breadcrumb.php:234 wppa-breadcrumb.php:239 wppa-featen-widget.php:30
 msgid "Featured photos"
 msgstr "Новітні фотографії"
 
-#: wppa-breadcrumb.php:241 wppa-breadcrumb.php:246
+#: wppa-breadcrumb.php:246 wppa-breadcrumb.php:251
 msgid "Related photos"
 msgstr "Подібні фото"
 
-#: wppa-breadcrumb.php:253 wppa-breadcrumb.php:258
+#: wppa-breadcrumb.php:258 wppa-breadcrumb.php:263
 msgid "Tagged photos:"
 msgstr "Міткою фотографій:"
 
-#: wppa-breadcrumb.php:253 wppa-breadcrumb.php:258
+#: wppa-breadcrumb.php:258 wppa-breadcrumb.php:263
 msgid "or"
 msgstr "або"
 
-#: wppa-breadcrumb.php:284 wppa-breadcrumb.php:289
+#: wppa-breadcrumb.php:289 wppa-breadcrumb.php:294
 msgid "Recently updated albums"
 msgstr "Нещодавно оновлені альбоми"
 
-#: wppa-breadcrumb.php:299
+#: wppa-breadcrumb.php:304
 #, php-format
 msgid "Various albums by %s"
 msgstr "Різні альбоми по %s"
 
-#: wppa-breadcrumb.php:323 wppa-breadcrumb.php:334
+#: wppa-breadcrumb.php:329 wppa-breadcrumb.php:340
 msgid "Thumbnail view"
 msgstr "Ескізи"
 
-#: wppa-breadcrumb.php:324 wppa-breadcrumb.php:335
+#: wppa-breadcrumb.php:330 wppa-breadcrumb.php:341
 msgid "Thumbs"
 msgstr "Великі пальці"
 
-#: wppa-breadcrumb.php:438
+#: wppa-breadcrumb.php:444
 msgid "Unpublished"
 msgstr "Неопублікований"
 
@@ -578,99 +591,99 @@ msgid "Qty:"
 msgstr "Кількість:"
 
 #: wppa-comment-widget.php:85 wppa-featen-widget.php:109
-#: wppa-lasten-widget.php:100 wppa-potd-widget.php:83
+#: wppa-lasten-widget.php:100 wppa-potd-widget.php:84
 #: wppa-thumbnail-widget.php:110 wppa-topten-widget.php:147
 msgid "Photo not found."
 msgstr "Фото не знайдені."
 
-#: wppa-common-functions.php:176
+#: wppa-common-functions.php:177
 msgid "Default photo album for"
 msgstr "За замовчуванням фотоальбом для"
 
-#: wppa-common-functions.php:548
+#: wppa-common-functions.php:549
 msgid "1 second"
 msgstr "1 секунда"
 
-#: wppa-common-functions.php:549 wppa-functions.php:4045
+#: wppa-common-functions.php:550 wppa-functions.php:4095
 msgid "seconds"
 msgstr "секунди"
 
-#: wppa-common-functions.php:553
+#: wppa-common-functions.php:554
 msgid "1 minute"
 msgstr "1 хвилина"
 
-#: wppa-common-functions.php:554 wppa-functions.php:4044
+#: wppa-common-functions.php:555 wppa-functions.php:4094
 msgid "minutes"
 msgstr "хвилин"
 
-#: wppa-common-functions.php:558
+#: wppa-common-functions.php:559
 msgid "1 hour"
 msgstr "1:00"
 
-#: wppa-common-functions.php:559 wppa-functions.php:4043
+#: wppa-common-functions.php:560 wppa-functions.php:4093
 msgid "hours"
 msgstr "годин"
 
-#: wppa-common-functions.php:563
+#: wppa-common-functions.php:564
 msgid "1 day"
 msgstr "1 день"
 
-#: wppa-common-functions.php:564 wppa-functions.php:4042
+#: wppa-common-functions.php:565 wppa-functions.php:4092
 msgid "days"
 msgstr "днів"
 
-#: wppa-common-functions.php:568
+#: wppa-common-functions.php:569
 msgid "1 week"
 msgstr "1 тиждень"
 
-#: wppa-common-functions.php:569 wppa-functions.php:4041
+#: wppa-common-functions.php:570 wppa-functions.php:4091
 msgid "weeks"
 msgstr "тижні"
 
-#: wppa-common-functions.php:573
+#: wppa-common-functions.php:574
 msgid "1 month"
 msgstr "1 місяць"
 
-#: wppa-common-functions.php:574
+#: wppa-common-functions.php:575
 msgid "months"
 msgstr "місяців"
 
-#: wppa-common-functions.php:577
+#: wppa-common-functions.php:578
 msgid "1 year"
 msgstr "1 рік"
 
-#: wppa-common-functions.php:578
+#: wppa-common-functions.php:579
 msgid "years"
 msgstr "років"
 
-#: wppa-common-functions.php:1850
+#: wppa-common-functions.php:1859
 #, fuzzy
 msgid "- select an album -"
 msgstr "Будь ласка, виберіть альбом та спробуйте ще раз"
 
-#: wppa-common-functions.php:1856 wppa-items.php:290
+#: wppa-common-functions.php:1865 wppa-items.php:303
 msgid "--- none ---"
 msgstr "НЕ --- не враховувати ---"
 
-#: wppa-common-functions.php:1862 wppa-items.php:298
+#: wppa-common-functions.php:1871 wppa-items.php:311
 msgid "--- all ---"
 msgstr "--- Всі ---"
 
-#: wppa-common-functions.php:1868
+#: wppa-common-functions.php:1877
 #, fuzzy
 msgid "--- generic ---"
 msgstr "НЕ --- не враховувати ---"
 
-#: wppa-common-functions.php:1879
+#: wppa-common-functions.php:1888
 msgid "--- multiple see below ---"
 msgstr ""
 
-#: wppa-common-functions.php:1885
+#: wppa-common-functions.php:1894
 #, fuzzy
 msgid "--- a selection box ---"
 msgstr "--- Вилучений ---"
 
-#: wppa-common-functions.php:1906 wppa-items.php:294
+#: wppa-common-functions.php:1915 wppa-items.php:307
 msgid "--- separate ---"
 msgstr "--- Окремий ---"
 
@@ -858,11 +871,11 @@ msgstr "Авто, згоріло, зменшення ефекту червони
 msgid "View the featured photos"
 msgstr "Перегляд Вибрані фотографії"
 
-#: wppa-functions.php:503
+#: wppa-functions.php:524
 msgid "No related photos found."
 msgstr "Немає відповідних фото не знайдено."
 
-#: wppa-functions.php:827
+#: wppa-functions.php:849
 #, php-format
 msgid ""
 "There are %s albums found. Only the first %s will be shown. Please refine "
@@ -871,7 +884,7 @@ msgstr ""
 "Є %s альбоми знайдено. Тільки перші %s буде показано. Будь ласка, спробуйте "
 "зазначеним критеріям."
 
-#: wppa-functions.php:1214
+#: wppa-functions.php:1250
 #, php-format
 msgid ""
 "There are %s photos found. Only the first %s will be shown. Please refine "
@@ -880,70 +893,70 @@ msgstr ""
 "Є %s Фотографій не знайдено. Тільки перші %s буде показано. Будь ласка, "
 "спробуйте зазначеним критеріям."
 
-#: wppa-functions.php:1447 wppa-functions.php:2828
+#: wppa-functions.php:1483 wppa-functions.php:2874
 msgid "Edit"
 msgstr "Редагувати"
 
-#: wppa-functions.php:1452 wppa-functions.php:2824 wppa-links.php:615
-#: wppa-links.php:632
+#: wppa-functions.php:1488 wppa-functions.php:2870 wppa-links.php:627
+#: wppa-links.php:644
 msgid "Are you sure you want to remove this photo?"
 msgstr "Ви впевнені, що хочете видалити цю фотографію?"
 
-#: wppa-functions.php:1453 wppa-functions.php:2825 wppa-links.php:622
-#: wppa-links.php:640
+#: wppa-functions.php:1489 wppa-functions.php:2871 wppa-links.php:634
+#: wppa-links.php:652
 msgid "Delete"
 msgstr "Видаляти"
 
-#: wppa-functions.php:1595
+#: wppa-functions.php:1631
 msgid "Comment edited"
 msgstr "Коментар відредагований"
 
-#: wppa-functions.php:1603
+#: wppa-functions.php:1639
 msgid "Comment on photo:"
 msgstr "Прокоментувати фото:"
 
-#: wppa-functions.php:1610
+#: wppa-functions.php:1646
 msgid "wrote on photo"
 msgstr "написав на фото"
 
-#: wppa-functions.php:1612
+#: wppa-functions.php:1648
 msgid "Moderate comment admin"
 msgstr "Помірний коментар адмін"
 
-#: wppa-functions.php:1613 wppa-functions.php:3895 wppa-upload.php:1167
+#: wppa-functions.php:1649 wppa-functions.php:3945 wppa-upload.php:1202
 msgid "Moderate manage photo"
 msgstr "Помірний управляти фото"
 
-#: wppa-functions.php:1614
+#: wppa-functions.php:1650
 msgid "Edit photo"
 msgstr "Редагувати фото"
 
-#: wppa-functions.php:1623
+#: wppa-functions.php:1659
 msgid "You receive this email as you are assigned to moderate"
 msgstr "Ви отримали цей лист, як ви призначені до помірної"
 
-#: wppa-functions.php:1635
+#: wppa-functions.php:1671
 msgid "You receive this email as administrator of the site"
 msgstr "Ви отримали цей лист від імені адміністратора сайту"
 
-#: wppa-functions.php:1652
+#: wppa-functions.php:1688
 msgid "You receive this email as uploader of the photo"
 msgstr "Ви отримали цей лист, як користувача на фото"
 
-#: wppa-functions.php:1672
+#: wppa-functions.php:1708
 msgid "You receive this email as owner of the album"
 msgstr "Ви отримали цей лист в якості власника альбому"
 
-#: wppa-functions.php:1689
+#: wppa-functions.php:1725
 #, fuzzy
 msgid "You receive this email because you commented this photo earlier."
 msgstr "Ви отримали цей лист, як ви призначені до помірної"
 
-#: wppa-functions.php:1705
+#: wppa-functions.php:1741
 msgid "Comment added"
 msgstr "Коментар додав"
 
-#: wppa-functions.php:1709
+#: wppa-functions.php:1745
 msgid ""
 "Sorry, you gave a wrong answer.\\n\\nPlease try again to solve the "
 "computation."
@@ -951,97 +964,97 @@ msgstr ""
 "На жаль, ви дали неправильну відповідь. \\n \\nПовторіте спробу вирішити "
 "обчислення."
 
-#: wppa-functions.php:1719
+#: wppa-functions.php:1755
 msgid "Could not process comment.\\nProbably timed out."
 msgstr "Не вдалося обробити коментар. \\nМожливо минув."
 
-#: wppa-functions.php:1798
+#: wppa-functions.php:1834
 msgid "1 Comment"
 msgstr "1 коментар"
 
-#: wppa-functions.php:1799
+#: wppa-functions.php:1835
 #, php-format
 msgid "%s Comments"
 msgstr " %s Коментарі"
 
-#: wppa-functions.php:1832 wppa-links.php:1244
+#: wppa-functions.php:1868 wppa-links.php:1261
 msgid "A video can not be printed or downloaded"
 msgstr ""
 
-#: wppa-functions.php:2241
+#: wppa-functions.php:2277
 msgid "<b>ERROR: Illegal attempt to enter a rating.</b>"
 msgstr "<b>ПОМИЛКА: Незаконна спроба ввести рейтинг.</b>"
 
-#: wppa-functions.php:2254
+#: wppa-functions.php:2290
 msgid "<b>ERROR: Illegal attempt to enter a comment.</b>"
 msgstr "<b>ПОМИЛКА: Незаконна спроба ввести коментар.</b>"
 
-#: wppa-functions.php:2674 wppa-topten-widget.php:93
+#: wppa-functions.php:2716 wppa-topten-widget.php:93
 msgid "View the top rated photos"
 msgstr "Перегляд Топ Фото"
 
-#: wppa-functions.php:3694
+#: wppa-functions.php:3745
 #, fuzzy
 msgid "New Album"
 msgstr "Створити альбом"
 
-#: wppa-functions.php:3697
+#: wppa-functions.php:3748
 msgid "<b>ERROR: Illegal attempt to create an album.</b>"
 msgstr "<b>ПОМИЛКА: Незаконна спроба створити альбом.</b>"
 
-#: wppa-functions.php:3701
+#: wppa-functions.php:3752
 msgid "Wrong captcha, please try again"
 msgstr "Неправильний код, спробуйте ще раз"
 
-#: wppa-functions.php:3711
+#: wppa-functions.php:3762
 #, php-format
 msgid "Album #%s created"
 msgstr "Альбом #%s створений"
 
-#: wppa-functions.php:3716
+#: wppa-functions.php:3767
 msgid "Could not create album"
 msgstr "Не вдалося створити альбом"
 
-#: wppa-functions.php:3726
+#: wppa-functions.php:3777
 msgid "<b>ERROR: Illegal attempt to upload a file.</b>"
 msgstr "<b>ПОМИЛКА: Незаконна спроба завантажити файл.</b>"
 
-#: wppa-functions.php:3766
+#: wppa-functions.php:3816
 msgid "Photo successfully uploaded."
 msgstr "Фото успішно завантажені."
 
-#: wppa-functions.php:3766
+#: wppa-functions.php:3816
 #, php-format
 msgid "%s photos successfully uploaded."
 msgstr " %s фото успішно завантажені."
 
-#: wppa-functions.php:3767
+#: wppa-functions.php:3817
 #, php-format
 msgid "%s points added."
 msgstr " %s точки додав."
 
-#: wppa-functions.php:3771
+#: wppa-functions.php:3821
 msgid "Upload failed"
 msgstr "Додати вдалося"
 
-#: wppa-functions.php:3774
+#: wppa-functions.php:3824
 msgid "1 Upload failed"
 msgstr "1 Завантаження не вдалася"
 
-#: wppa-functions.php:3774
+#: wppa-functions.php:3824
 #, php-format
 msgid "%s uploads failed."
 msgstr " %s додавання не вдалося."
 
-#: wppa-functions.php:3810
+#: wppa-functions.php:3860
 msgid "Error during upload"
 msgstr "Помилка під час завантаження"
 
-#: wppa-functions.php:3815
+#: wppa-functions.php:3865
 msgid "Uploaded file is not an image"
 msgstr "Завантажений файл не є зображенням"
 
-#: wppa-functions.php:3819
+#: wppa-functions.php:3869
 #, php-format
 msgid ""
 "Only gif, jpg and png image files are supported. Returned filetype = %d."
@@ -1049,87 +1062,99 @@ msgstr ""
 "Тільки GIF, JPG і PNG файли зображень підтримуються. Повернувся тип файлу ="
 "%d."
 
-#: wppa-functions.php:3825
+#: wppa-functions.php:3875
 #, php-format
 msgid "Uploaded file is larger than the allowed maximum of %d x %d pixels."
 msgstr "Завантажено файлу більше припустимого максимуму %d х %d пікселів."
 
-#: wppa-functions.php:3831
+#: wppa-functions.php:3881
 #, php-format
 msgid "Uploaded file %s already exists in this album."
 msgstr "Завантажений файл %s вже існує в цьому альбомі."
 
-#: wppa-functions.php:3839
+#: wppa-functions.php:3889
 #, php-format
 msgid "The image is too big. Max photo size: %d x %d (%2.1f MegaPixel)"
 msgstr ""
 "Зображення занадто великий. Максимальний розмір фото: %d x %d (%2.1f "
 "Мегапіксельною)"
 
-#: wppa-functions.php:3862
+#: wppa-functions.php:3912
 msgid "Could not insert photo into db."
 msgstr "Не вдалося вставити фотографію в дБ."
 
-#: wppa-functions.php:3891 wppa-upload.php:1163
+#: wppa-functions.php:3941 wppa-upload.php:1198
 #, php-format
 msgid "New photo uploaded: %s"
 msgstr "Новий фото додано: %s"
 
-#: wppa-functions.php:3892 wppa-upload.php:1164
+#: wppa-functions.php:3942 wppa-upload.php:1199
 #, php-format
 msgid "User %s uploaded photo %s into album %s"
 msgstr "Користувач %s завантажив фото %s в альбомі %s"
 
-#: wppa-functions.php:3894 wppa-upload.php:1166
+#: wppa-functions.php:3944 wppa-upload.php:1201
 msgid "This upload requires moderation"
 msgstr "Це завантаження вимагає помірність"
 
-#: wppa-functions.php:3898 wppa-upload.php:1170
+#: wppa-functions.php:3948 wppa-upload.php:1205
 msgid "Details:"
 msgstr "Подробиці:"
 
-#: wppa-functions.php:3899 wppa-upload.php:1171
+#: wppa-functions.php:3949 wppa-upload.php:1206
 msgid "Manage photo"
 msgstr "Управління фото"
 
-#: wppa-functions.php:4039
+#: wppa-functions.php:4089
 msgid "You can upload after"
 msgstr "Ви можете завантажити після"
 
-#: wppa-functions.php:4068 wppa-functions.php:4071
+#: wppa-functions.php:4118 wppa-functions.php:4121
 #, fuzzy
 msgid "Download:"
 msgstr "Завантажити"
 
-#: wppa-functions.php:4087
+#: wppa-functions.php:4142
 msgid "Zoom in"
 msgstr "Збільшення"
 
-#: wppa-items.php:188 wppa-utils.php:1632
+#: wppa-items.php:201 wppa-utils.php:1647
 msgid "Gold medal award!"
 msgstr "Золота медаль нагорода!"
 
-#: wppa-items.php:189 wppa-utils.php:1631
+#: wppa-items.php:201 wppa-utils.php:1647
+msgid "Gold"
+msgstr ""
+
+#: wppa-items.php:202 wppa-utils.php:1646
 msgid "Silver medal award!"
 msgstr "Срібна медаль нагорода!"
 
-#: wppa-items.php:190 wppa-utils.php:1630
+#: wppa-items.php:202 wppa-utils.php:1646
+msgid "Silver"
+msgstr ""
+
+#: wppa-items.php:203 wppa-utils.php:1645
 msgid "Bronze medal award!"
 msgstr "Бронзова медаль нагорода!"
 
-#: wppa-items.php:228 wppa-items.php:347
+#: wppa-items.php:203 wppa-utils.php:1645
+msgid "Bronze"
+msgstr ""
+
+#: wppa-items.php:241 wppa-items.php:360
 msgid "none"
 msgstr "жоден"
 
-#: wppa-items.php:258 wppa-items.php:358
+#: wppa-items.php:271 wppa-items.php:371
 msgid "unknown"
 msgstr "невідомий"
 
-#: wppa-items.php:302 wppa-items.php:323
+#: wppa-items.php:315 wppa-items.php:336
 msgid "--- deleted ---"
 msgstr "--- Вилучений ---"
 
-#: wppa-items.php:312
+#: wppa-items.php:325
 msgid "All Albums"
 msgstr "Всі альбоми"
 
@@ -1141,64 +1166,64 @@ msgstr "Останні десять завантажуваних фотогра�
 msgid "View the most recent uploaded photos"
 msgstr "Перегляд найбільш свіжі завантажені фотографії"
 
-#: wppa-links.php:603
+#: wppa-links.php:615
 msgid "App"
 msgstr "Додаток"
 
-#: wppa-links.php:604
+#: wppa-links.php:616
 msgid "Mod"
 msgstr "Модуль"
 
-#: wppa-links.php:605
+#: wppa-links.php:617
 msgid "Del"
 msgstr "Дель"
 
-#: wppa-links.php:609 wppa-links.php:626
+#: wppa-links.php:621 wppa-links.php:638
 msgid "Are you sure you want to publish this photo?"
 msgstr "Ви впевнені, що хочете опублікувати цю фотографію?"
 
-#: wppa-links.php:620 wppa-links.php:637
+#: wppa-links.php:632 wppa-links.php:649
 msgid "Approve"
 msgstr "Затвердити"
 
-#: wppa-links.php:621
+#: wppa-links.php:633
 msgid "Moderate"
 msgstr "Помірний"
 
-#: wppa-links.php:638
+#: wppa-links.php:650
 msgid "PhotoAdmin"
 msgstr "PhotoAdmin"
 
-#: wppa-links.php:639
+#: wppa-links.php:651
 msgid "CommentAdmin"
 msgstr "CommentAdmin"
 
-#: wppa-links.php:643
+#: wppa-links.php:655
 msgid "Are you sure you want to publish this comment?"
 msgstr "Ви впевнені, що хочете опублікувати цей коментар?"
 
-#: wppa-links.php:655
+#: wppa-links.php:667
 msgid "Are you sure you want to remove this comment?"
 msgstr "Ви впевнені, що хочете видалити цей коментар?"
 
-#: wppa-links.php:669
+#: wppa-links.php:681
 #, php-format
 msgid "Scheduled for %s"
 msgstr ""
 
-#: wppa-links.php:853 wppa-links.php:854
+#: wppa-links.php:869 wppa-links.php:870
 msgid "Prev.&nbsp;page"
 msgstr "Попередня. сторінка"
 
-#: wppa-links.php:858 wppa-links.php:859
+#: wppa-links.php:874 wppa-links.php:875
 msgid "Next&nbsp;page"
 msgstr "Наступна сторінка"
 
-#: wppa-links.php:893 wppa-non-admin.php:533
+#: wppa-links.php:909 wppa-non-admin.php:533
 msgid "Download"
 msgstr "Завантажити"
 
-#: wppa-links.php:893
+#: wppa-links.php:909
 msgid "Download album"
 msgstr ""
 
@@ -1303,6 +1328,10 @@ msgstr "Фото %s був видалений."
 
 #: wppa-potd-widget.php:106
 msgid "By:"
+msgstr ""
+
+#: wppa-qr-widget.php:26
+msgid "QR Widget"
 msgstr ""
 
 #: wppa-slideshow-widget.php:67
@@ -1445,15 +1474,15 @@ msgstr " %s Голосів"
 msgid "Views: %s times"
 msgstr "Переглядів: %s раз"
 
-#: wppa-upldr-widget.php:35
+#: wppa-upldr-widget.php:36
 msgid "User uploaded photos"
 msgstr "Користувач завантажив фото"
 
-#: wppa-upldr-widget.php:62
+#: wppa-upldr-widget.php:84
 msgid "There are too many registered users in the system for this widget"
 msgstr ""
 
-#: wppa-upldr-widget.php:94 wppa-upldr-widget.php:101
+#: wppa-upldr-widget.php:118 wppa-upldr-widget.php:125
 msgid "Photos uploaded by"
 msgstr "Фотографії, завантажені на"
 
@@ -1462,19 +1491,19 @@ msgstr "Фотографії, завантажені на"
 msgid "Rating: %s"
 msgstr "Рейтинг: %s"
 
-#: wppa-utils.php:720
+#: wppa-utils.php:724
 #, php-format
 msgid "The visitors email address is: <a href=\"mailto:%s\">%s</a>"
 msgstr "Відвідувачі адресу електронної пошти: <a href=\"mailto: %s\"> %s</a>"
 
-#: wppa-utils.php:726
+#: wppa-utils.php:730
 #, php-format
 msgid "The visitor says his email address is: <a href=\"mailto:%s\">%s</a>"
 msgstr ""
 "Відвідувач каже, що його адресу електронної пошти: <a href=\"mailto: %s\"> "
 "%s</a>"
 
-#: wppa-utils.php:732
+#: wppa-utils.php:736
 #, php-format
 msgid ""
 "This message is automaticly generated at %s. It is useless to respond to it."

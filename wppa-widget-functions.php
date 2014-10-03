@@ -2,7 +2,7 @@
 /* wppa_widgetfunctions.php
 /* Package: wp-photo-album-plus
 /*
-/* Version 5.4.10
+/* Version 5.4.11
 /*
 */
 
@@ -376,11 +376,11 @@ global $widget_content;
 							'tagid' 		=> 'i-' . $id . '-' . $wppa['mocc'],
 							'cursor' 		=> $imgstyle_a['cursor'],
 							'events' 		=> $imgevents,
-							'title' 		=> wppa_zoom_in(),
+							'title' 		=> wppa_zoom_in( $id ),
 						) );
 					}
 					else {
-						$widget_content .= '<img id="i-' . $id . '-' . $wppa['mocc'] . '" title="' . wppa_zoom_in() . '" src="' . $imgurl . '" width="' . $imgstyle_a['width'] . '" height="' . $imgstyle_a['height'] . '" style="' . $imgstyle_a['style'] . $imgstyle_a['cursor'] . '" ' . $imgevents . ' ' . wppa_get_imgalt( $id ) . ' />';
+						$widget_content .= '<img id="i-' . $id . '-' . $wppa['mocc'] . '" title="' . wppa_zoom_in( $id ) . '" src="' . $imgurl . '" width="' . $imgstyle_a['width'] . '" height="' . $imgstyle_a['height'] . '" style="' . $imgstyle_a['style'] . $imgstyle_a['cursor'] . '" ' . $imgevents . ' ' . wppa_get_imgalt( $id ) . ' />';
 					}
 				}
 				else {

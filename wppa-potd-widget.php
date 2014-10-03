@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the widget
-* Version 5.4.10
+* Version 5.4.11
 */
 
 if ( ! defined( 'ABSPATH' ) ) die( "Can't load this file directly" );
@@ -58,7 +58,7 @@ class PhotoOfTheDay extends WP_Widget {
 			if ( $link ) {
 				if ( $link['is_lightbox'] ) {
 					$cursor = ' cursor:url('.wppa_get_imgdir().wppa_opt('wppa_magnifier').'),pointer;';
-					$title  = wppa_zoom_in();
+					$title  = wppa_zoom_in( $id );
 					$ltitle = wppa_get_lbtitle('potd', $id);
 				}
 				else {

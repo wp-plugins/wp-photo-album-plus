@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the slideshow high level functions
-* Version 5.4.10
+* Version 5.4.11
 *
 */
 
@@ -651,7 +651,7 @@ global $thumb;
 			$wppa['out'] .= wppa_nltab().'<a class="wppa-next-'.$wppa['mocc'].' wppa-arrow" style="'.__wcs('wppa-arrow').'" id="next-film-arrow-1-'.$wppa['mocc'].'" onclick="wppaNext('.$wppa['mocc'].');" title="'.__a('Next', 'wppa_theme').'" >&rsaquo;</a>';
 			$wppa['out'] .= wppa_nltab().'<a class="wppa-next-'.$wppa['mocc'].' wppa-arrow" style="'.__wcs('wppa-arrow').'" id="next-film-arrow-'.$wppa['mocc'].'" onclick="wppaNextN('.$wppa['mocc'].','.$pagsiz.');" title="'.sprintf(__a('%s forward', 'wppa_theme'), $pagsiz).'" >&raquo;</a>';
 		$wppa['out'] .= wppa_nltab().'</div>';
-		$wppa['out'] .= wppa_nltab().'<div id="filmwindow-'.$wppa['mocc'].'" class="filmwindow" style="'.$IE6.' display: block; height:'.$height.'px; margin: 0 0 0 '.$marg.'px; overflow:hidden;">';
+		$wppa['out'] .= wppa_nltab().'<div id="filmwindow-'.$wppa['mocc'].'" class="filmwindow" style="'.$IE6.' position:absolute; display: block; height:'.$height.'px; margin: 0 0 0 '.$marg.'px; overflow:hidden;">';
 			$wppa['out'] .= wppa_nltab('+').'<div id="wppa-filmstrip-'.$wppa['mocc'].'" style="height:'.$height1.'px; width:'.$width.'px; margin-left: -100px;">';
 	}
 	

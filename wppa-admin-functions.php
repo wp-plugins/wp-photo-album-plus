@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * gp admin functions
-* version 5.4.10
+* version 5.4.11
 *
 */
 
@@ -743,7 +743,7 @@ global $wppa;
 		}
 		
 		// Verify file exists
-		if ( ! file_exists( $file ) ) {
+		if ( ! $wppa['is_remote'] && ! file_exists( $file ) ) {
 			if ( ! is_dir( dirname( $file ) ) ) {
 				wppa_error_message( 'Error: Directory '.dirname( $file ).' does not exist.' );
 				return false;

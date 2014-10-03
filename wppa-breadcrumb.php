@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Functions for breadcrumbs
-* Version 5.4.10
+* Version 5.4.11
 *
 */
 
@@ -244,7 +244,7 @@ global $wppa_session;
 		elseif ( $wppa['is_related'] ) {						// Related photos
 			if ( $wppa['is_slide'] ) {
 				$value 	= __a( 'Related photos' );
-				$href 	= wppa_get_permalink().'wppa-cover=0&amp;wppa-occur='.$wppa['occur'].'&amp;wppa-tags='.$wppa['is_tag'].'&amp;wppa-album='.$wppa['start_album'];
+				$href 	= wppa_get_permalink().'wppa-cover=0&amp;wppa-occur='.$wppa['occur'].'&amp;wppa-tag='.$wppa['is_tag'].'&amp;wppa-album='.$wppa['start_album'];
 				$title	= __a( 'View the thumbnails' );
 				wppa_bcitem( $value, $href, $title, 'b8' );
 			}
@@ -256,7 +256,7 @@ global $wppa_session;
 		elseif ( $wppa['is_tag'] ) {							// Tagged photos
 			if ( $wppa['is_slide'] ) {
 				$value 	= __a( 'Tagged photos:' ).'&nbsp;'.str_replace( ';', ' '.__a( 'or' ).' ', str_replace( ',', ' '.__a( 'and' ).' ', trim( $wppa['is_tag'], ',;' ) ) );
-				$thumbhref 	= wppa_get_permalink().'wppa-cover=0&amp;wppa-occur='.$wppa['occur'].'&amp;wppa-tags='.$wppa['is_tag'].'&amp;wppa-album='.$wppa['start_album'];
+				$thumbhref 	= wppa_get_permalink().'wppa-cover=0&amp;wppa-occur='.$wppa['occur'].'&amp;wppa-tag='.$wppa['is_tag'].'&amp;wppa-album='.$wppa['start_album'];
 				$title	= __a( 'View the thumbnails' );
 				wppa_bcitem( $value, $thumbhref, $title, 'b8' );
 			}
@@ -268,7 +268,7 @@ global $wppa_session;
 		elseif ( $wppa['is_cat'] ) {							// Categorized albums
 			if ( $wppa['is_slide'] ) {
 				$value 	= __a( 'Category:' ).'&nbsp;'.$wppa['is_cat'];//str_replace( ';', ' '.__a( 'or' ).' ', str_replace( ',', ' '.__a( 'and' ).' ', trim( $wppa['is_tag'], ',;' ) ) );
-				$thumbhref 	= wppa_get_permalink().'wppa-cover=0&amp;wppa-occur='.$wppa['occur'].'&amp;wppa-tags='.$wppa['is_tag'].'&amp;wppa-album='.$wppa['start_album'];
+				$thumbhref 	= wppa_get_permalink().'wppa-cover=0&amp;wppa-occur='.$wppa['occur'].'&amp;wppa-cat='.$wppa['is_cat'].'&amp;wppa-album='.$wppa['start_album'];
 				$title	= __a( 'View the thumbnails' );
 				wppa_bcitem( $value, $thumbhref, $title, 'b8' );
 			}

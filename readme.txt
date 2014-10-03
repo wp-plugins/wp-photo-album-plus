@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile, cloudinary, fotomoto
-Version: 5.4.10
+Version: 5.4.11
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -187,6 +187,27 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 5.4.11 =
+
+= Bug Fixes =
+
+* Photo permalinks did not work for photos in albums with name like 'Album name extended' when the album 'Album name' also existed. Fixed.
+* Photo permalinks for photos uploaded in a version before filnames were saved ( long ago ) are no longer erroneously generated.
+* Fixed a layout problem with filmstrip in Chrome when zoomed out.
+* Remote import stopped working. Fixed.
+* Fixed a php notice in debug mode about undefined index.
+* Fixed an erroneous link in breadcrumb while in tags selection.
+
+= New Features =
+
+* You can select ---none--- in Table I-G2: Magnifier cursor size. This sets the cursor to pointer and the tooltip to the photo name.
+* Miniature pictures on the import screen.
+* Added maintenance proc: Add GPX tag. Makes sure all photos with gpx data have at least tag: Gpx.
+
+= Other Changes =
+
+* Click on filmstrip image now also goes to that slide when the show is running.
 
 = 5.4.10 =
 

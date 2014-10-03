@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Functions for album covers
-* Version 5.4.10
+* Version 5.4.11
 *
 */
 
@@ -52,7 +52,7 @@ global $wppa_alt;
 		default:
 			$err = 'Unimplemented covertype: ' . $cover_type;
 			wppa_dbg_msg( $err );
-			wppa_log( $err );
+			wppa_log( 'Err', $err );
 	}
 }
 
@@ -684,7 +684,7 @@ global $wpdb;
 					if ( wppa_is_video( $image['id'] ) ) {
 						$wppa['out'] .= "\n\t\t" . 
 							'<video preload="metadata" class="image wppa-img" id="i-' . $image['id'] . '-' . 
-							$wppa['mocc'] . '" title="' . wppa_zoom_in() . 
+							$wppa['mocc'] . '" title="' . wppa_zoom_in( $image['id'] ) . 
 							'" width="' . $imgwidth . '" height="' . $imgheight . '" style="' . 
 							__wcs( 'wppa-img' ) . $imgattr . $imgattr_a['cursor'] . '" ' . 
 							$events . ' ' . wppa_get_imgalt( $image['id'] ) . '">' . 
@@ -693,7 +693,7 @@ global $wpdb;
 					else {
 						$wppa['out'] .= "\n\t\t" . 
 							'<img class="image wppa-img" id="i-' . $image['id'] . '-' . 
-							$wppa['mocc'] . '" title="' . wppa_zoom_in() . 
+							$wppa['mocc'] . '" title="' . wppa_zoom_in( $image['id'] ) . 
 							'" src="' . $src . '" width="' . $imgwidth . '" height="' . $imgheight . '" style="' . 
 							__wcs( 'wppa-img' ) . $imgattr . $imgattr_a['cursor'] . '" ' . 
 							$events . ' ' . wppa_get_imgalt( $image['id'] ) . ' />';
@@ -813,7 +813,7 @@ global $wpdb;
 					if ( wppa_is_video( $image['id'] ) ) {
 						$wppa['out'] .= "\n\t\t" . 
 							'<video preload="metadata" class="image wppa-img" id="i-' . $image['id'] . '-' . 
-							$wppa['mocc'] . '" title="' . wppa_zoom_in() . '" width="' . 
+							$wppa['mocc'] . '" title="' . wppa_zoom_in( $image['id'] ) . '" width="' . 
 							$imgwidth . '" height="' . $imgheight . '" style="' . __wcs( 'wppa-img' ) . 
 							$imgattr . $imgattr_a['cursor'] . '" ' . $events . ' ' . wppa_get_imgalt( $image['id'] ) . '>' . 
 							wppa_get_video_body( $image['id'] ) . '</video>';
@@ -821,7 +821,7 @@ global $wpdb;
 					else {
 						$wppa['out'] .= "\n\t\t" . 
 							'<img class="image wppa-img" id="i-' . $image['id'] . '-' . 
-							$wppa['mocc'] . '" title="' . wppa_zoom_in() . '" src="' . 
+							$wppa['mocc'] . '" title="' . wppa_zoom_in( $image['id'] ) . '" src="' . 
 							$src . '" width="' . $imgwidth . '" height="' . $imgheight . '" style="' . 
 							__wcs( 'wppa-img' ) . $imgattr . $imgattr_a['cursor'] . '" ' . $events . 
 							' ' . wppa_get_imgalt( $image['id'] ) . '>';

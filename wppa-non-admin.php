@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the non admin stuff
-* Version 5.4.10
+* Version 5.4.11
 *
 */
 
@@ -525,7 +525,7 @@ global $wppa_init_js_data;
 	wppaArtMonkyLink = "'.wppa_opt( 'wppa_art_monkey_link' ).'";
 	wppaAutoOpenComments = '.( wppa_switch('wppa_auto_open_comments') ? 'true' : 'false' ).';
 	wppaUpdateAddressLine = '.( wppa_switch('wppa_update_addressline') ? 'true' : 'false' ).';
-	wppaFilmThumbTitle = "'.( wppa_opt( 'wppa_film_linktype' ) == 'lightbox' ? wppa_zoom_in() : __a('Double click to start/stop slideshow running') ).'";
+	wppaFilmThumbTitle = "'.( wppa_opt( 'wppa_film_linktype' ) == 'lightbox' ? wppa_zoom_in( false ) : __a('Double click to start/stop slideshow running') ).'";
 	wppaVoteForMe = "'.__(wppa_opt( 'wppa_vote_button_text' )).'";
 	wppaVotedForMe = "'.__(wppa_opt( 'wppa_voted_button_text' )).'";
 	wppaSlideSwipe = '.( wppa_switch('wppa_slide_swipe') ? 'true' : 'false' ).';
