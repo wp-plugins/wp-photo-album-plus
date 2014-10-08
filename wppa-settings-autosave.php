@@ -1056,7 +1056,7 @@ global $no_default;
 							$desc = __('Select the size of the magnifier cursor.', 'wppa');
 							$help = '';
 							$slug = 'wppa_magnifier';
-							$options = array(__('small','wppa'), __('medium', 'wppa'), __('large', 'wppa'), __('---none---', 'wppa'));
+							$options = array(__('small','wppa'), __('medium', 'wppa'), __('large', 'wppa'), __('--- none ---', 'wppa'));
 							$values  = array('magnifier-small.png', 'magnifier-medium.png', 'magnifier-large.png', '');
 							$onchange = 'jQuery(\'#wppa-cursor\').attr(\'alt\', \'Pointer\');document.getElementById(\'wppa-cursor\').src=wppaImageDirectory+document.getElementById(\'wppa_magnifier\').value';
 							$html = wppa_select($slug, $options, $values, $onchange);

@@ -66,7 +66,7 @@ class WppaGpWidget extends WP_Widget {
 		<p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:'); ?></label>
 		<input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo esc_attr($title); ?>" /></p>
 		<p><?php _e('Enter the content just like a normal text widget. This widget will interprete [wppa] shortcodes.', 'wppa'); ?></p>
-		<p><?php echo (sprintf(__('Don\'t forget size="%s%"', 'wppa'), $wppa_opt['wppa_widget_width'])) ?></p>
+		<p><?php echo (sprintf(__('Don\'t forget size="%s"', 'wppa'), $wppa_opt['wppa_widget_width'])) ?></p>
 
 		<textarea class="widefat" rows="16" cols="20" id="<?php echo $this->get_field_id('text'); ?>" name="<?php echo $this->get_field_name('text'); ?>"><?php echo $text; ?></textarea>
 
