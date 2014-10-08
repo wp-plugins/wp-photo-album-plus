@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all indexing functions
-* version 5.4.0
+* version 5.4.12
 *
 * 
 */
@@ -118,6 +118,22 @@ function wppa_index_raw_to_words($xtext, $noskips = false) {
 					$fract = trim($fract, " ./-");
 					if ( strlen($fract) > '1' && ! in_array($fract, $skips) ) $result[] = $fract;
 				}
+			}
+		}
+	}
+	
+	// sort
+	sort( $result );
+	
+	// Remove dups
+	$start = 0;
+	foreach ( array_keys( $result ) as $key ) {
+		if ( $key > 0 ) {
+			if ( $result[$key] == $result[$start] ) {
+				unset ( $result[$key] );
+			}
+			else {
+				$start = $key;
 			}
 		}
 	}

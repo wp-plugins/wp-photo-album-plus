@@ -2,7 +2,7 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 5.4.11
+* version 5.4.12
 *
 */
 
@@ -192,6 +192,19 @@ function wppa_get_randseed() {
 	elseif ( isset( $_REQUEST['randseed'] ) ) $randseed = $_REQUEST['randseed'];
 	else $randseed = time() % '4711';
 	return $randseed;
+}
+
+function wppa_load_video() {
+global $wppa_video_support;
+
+	if ( $wppa_video_support && is_file( $wppa_video_support ) ) {
+		// Load working library
+		require_once $wppa_video_support;
+	}
+	else {
+		// Load dummy library
+		require_once 'wppa-video.php';
+	}
 }
 
 function wppa_load_language() {

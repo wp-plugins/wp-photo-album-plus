@@ -102,7 +102,17 @@ class AlbumWidget extends WP_Widget {
 					$height     = $maxw; // !!
 					$cursor		= 'default';
 					$title 		= sprintf(__a('Upload at least %d photos to this album!', 'wppa_theme'), $wppa_opt['wppa_min_thumbs'] - $imgcount + 1);
-					$imgurl		= wppa_get_imgdir().'album32.png';
+					if ( $imageid ) {	// The 'empty album has a cover image
+						$file       = wppa_get_thumb_path($image['id']);
+						$imgstyle_a = wppa_get_imgstyle_a( $image['id'], $file, $maxw, 'center', 'albthumb' );
+						$imgstyle   = $imgstyle_a['style'];
+						$width      = $imgstyle_a['width'];
+						$height     = $imgstyle_a['height'];
+						$imgurl 	= wppa_get_thumb_url( $image['id'], '', $width, $height );
+					}
+					else {
+						$imgurl		= wppa_get_imgdir().'album32.png';
+					}
 				}
 					
 

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains low-level utility routines
-* Version 5.4.10
+* Version 5.4.12
 *
 */
  
@@ -1311,8 +1311,15 @@ function wppa_log( $type, $msg ) {
 		}
 	}
 	if ( ! $file = fopen( $filename, 'ab' ) ) return;	// Unable to open log file
-	@ fwrite($file, $type.': on:'.wppa_local_date(get_option('date_format', "F j, Y,").' '.get_option('time_format', "g:i a"), time()).': '.$msg."\n");
-	@ fclose($file);
+	@ fwrite( $file, $type.': on:'.wppa_local_date(get_option('date_format', "F j, Y,").' '.get_option('time_format', "g:i a"), time()).': '.$msg."\n" );
+	if ( wppa_switch( 'wppa_debug_trace_on' ) ) {
+		ob_start();
+		debug_print_backtrace( DEBUG_BACKTRACE_IGNORE_ARGS );
+		$trace = ob_get_contents();
+		ob_end_clean();
+	}
+	@ fwrite( $file, $trace."\n" );
+	@ fclose( $file );
 }
 
 function wppa_is_landscape($img_attr) {
@@ -1927,4 +1934,110 @@ function wppa_sanitize_file_name( $file ) {
 // Create a html safe photo name from a filename. May be a pathname
 function wppa_sanitize_photo_name( $file ) {
 	return htmlspecialchars( strip_tags( stripslashes( basename( $file ) ) ) );
+}
+
+// Get meta keywords of a photo
+function wppa_get_keywords( $id ) {
+static $wppa_void_keywords;
+
+	if ( ! $id ) return '';
+	
+	if ( empty ( $wppa_void_keywords ) ) {
+		$wppa_void_keywords	= array( 	__a('Not Defined'),
+										__a('Manual'),
+										__a('Program AE'),
+										__a('Aperture-priority AE'),
+										__a('Shutter speed priority AE'),
+										__a('Creative (Slow speed)'),
+										__a('Action (High speed)'),
+										__a('Portrait'),
+										__a('Landscape'),
+										__a('Bulb'),
+										__a('Average'),
+										__a('Center-weighted average'),
+										__a('Spot'),
+										__a('Multi-spot'),
+										__a('Multi-segment'),
+										__a('Partial'),
+										__a('Other'),
+										__a('No Flash'),
+										__a('Fired'),
+										__a('Fired, Return not detected'),
+										__a('Fired, Return detected'),
+										__a('On, Did not fire'),
+										__a('On, Fired'),
+										__a('On, Return not detected'),
+										__a('On, Return detected'),
+										__a('Off, Did not fire'),
+										__a('Off, Did not fire, Return not detected'),
+										__a('Auto, Did not fire'),
+										__a('Auto, Fired'),
+										__a('Auto, Fired, Return not detected'),
+										__a('Auto, Fired, Return detected'),
+										__a('No flash function'),
+										__a('Off, No flash function'),
+										__a('Fired, Red-eye reduction'),
+										__a('Fired, Red-eye reduction, Return not detected'),
+										__a('Fired, Red-eye reduction, Return detected'),
+										__a('On, Red-eye reduction'),
+										__a('Red-eye reduction, Return not detected'),
+										__a('On, Red-eye reduction, Return detected'),
+										__a('Off, Red-eye reduction'),
+										__a('Auto, Did not fire, Red-eye reduction'),
+										__a('Auto, Fired, Red-eye reduction'),
+										__a('Auto, Fired, Red-eye reduction, Return not detected'),
+										__a('Auto, Fired, Red-eye reduction, Return detected'),
+										'album', 'albums', 'content', 'http', 
+										'source', 'wp', 'uploads', 'thumbs', 
+										'wp-content', 'wppa', 'wppa-source',
+										'border', 'important', 'label', 'padding', 
+										'segment', 'shutter', 'style', 'table', 
+										'times', 'value', 'views', 'wppa-label', 
+										'wppa-value', 'weighted', 'wppa-pl',
+										str_replace( '/', '', site_url() )
+									);
+									
+		// make a string
+		$temp = implode( ',', $wppa_void_keywords );
+		
+		// Downcase
+		$temp = strtolower( $temp );
+		
+		// Remove spaces and funny chars
+		$temp = str_replace( array( ' ', '-', '"', "'", '\\', '>', '<', ',', ':', ';', '!', '?', '=', '_', '[', ']', '(', ')', '{', '}' ), ',', $temp );
+		$temp = str_replace( ',,', ',', $temp );
+//wppa_log('dbg', $temp);
+
+		// Make array
+		$wppa_void_keywords = explode( ',', $temp );
+		
+		// Sort array
+		sort( $wppa_void_keywords );
+		
+		// Remove dups
+		$start = 0;
+		foreach ( array_keys( $wppa_void_keywords ) as $key ) {
+			if ( $key > 0 ) {
+				if ( $wppa_void_keywords[$key] == $wppa_void_keywords[$start] ) {
+					unset ( $wppa_void_keywords[$key] );
+				}
+				else {
+					$start = $key;
+				}
+			}
+		}
+	}
+	
+	$text 	= wppa_get_photo_name( $id )  .' ' . wppa_get_photo_desc( $id );
+	$text 	= str_replace( array( '/', '-' ), ' ', $text );
+	$words 	= wppa_index_raw_to_words( $text );
+	foreach ( array_keys( $words ) as $key ) {
+		if ( 	wppa_is_int( $words[$key] ) || 
+				in_array( $words[$key], $wppa_void_keywords ) ||
+				strlen( $words[$key] ) < 5 ) {
+			unset ( $words[$key] );
+		}
+	}
+	$result = implode( ', ', $words );
+	return $result;
 }

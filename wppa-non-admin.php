@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the non admin stuff
-* Version 5.4.11
+* Version 5.4.12
 *
 */
 
@@ -72,23 +72,28 @@ global $thumb;
 	// Share info for sm that uses og
 	$id = wppa_get_get( 'photo' );
 	if ( $id ) {
+		$imgurl = wppa_get_photo_url( $id );
+	}
+	else {
+		$imgurl = '';
+	}
+	if ( $id ) {
 		if ( wppa_switch( 'wppa_og_tags_on' ) ) {
 			wppa_cache_thumb( $id );
 			if ( $thumb ) {
 				$title  = wppa_get_photo_name( $id );
-				$imgurl = wppa_get_photo_url( $id );
-				$desc 	= wppa_get_og_desc( $id );//sprintf(__a('See this image on %s'), str_replace('&amp;', __a('and'), get_bloginfo('name'))).': '.strip_shortcodes( wppa_strip_tags( wppa_html( wppa_get_photo_desc( $thumb['id'] ) ), 'all' ) );
-				$url    = wppa_convert_to_pretty( str_replace( '&amp;', '&', wppa_get_image_page_url_by_id( $thumb['id'], wppa_switch( 'wppa_share_single_image' ) ) ) );
+				$desc 	= wppa_get_og_desc( $id );
+				$url 	= ( is_ssl() ? 'https://' : 'http://' ) . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 				$site   = get_bloginfo('name');
 
 				echo '
 <!-- WPPA+ Share data -->
 <meta property="og:site_name" content="'.esc_attr( $site ).'" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="'.esc_url( $url ).'" /><!-- dynamicly updated -->
-<meta property="og:title" content="'.esc_attr( $title ).'" /><!-- dynamicly updated -->
-<meta property="og:image" content="'.esc_url( $imgurl ).'" /><!-- dynamicly updated -->
-<meta property="og:description" content="'.esc_attr( $desc ).'" /><!-- dynamicly updated -->
+<meta property="og:url" content="'.esc_url( $url ).'" />
+<meta property="og:title" content="'.esc_attr( $title ).'" />
+<meta property="og:image" content="'.esc_url( $imgurl ).'" />
+<meta property="og:description" content="'.esc_attr( $desc ).'" />
 <!-- WPPA+ End Share data -->
 ';
 			}
@@ -106,12 +111,16 @@ global $thumb;
 			if ( $photos ) {
 				echo("\n<!-- WPPA+ BEGIN Featured photos on this page -->");
 				foreach ( $photos as $photo ) {
-//					$thumb = $photo;	// Set to global to reduce queries when getting the name
+					$thumb 		= $photo;	// Set to global to reduce queries when getting the name
 					$id 		= $photo['id'];
-					$name 		= esc_attr( wppa_get_photo_name( $id ) );
-					$content 	= wppa_get_permalink().'wppa-photo='.$photo['id'].'&amp;wppa-occur=1';
-					$content 	= wppa_convert_to_pretty($content);
-					echo("\n<meta name=\"".$name."\" content=\"".$content."\" >");
+//					$name 		= esc_attr( wppa_get_photo_name( $id ) );
+//					$content 	= wppa_get_permalink().'wppa-photo='.$photo['id'].'&amp;wppa-occur=1';
+//					$content 	= wppa_convert_to_pretty($content);
+					$content 	= esc_attr( wppa_get_keywords( $id ) );
+					if ( $content ) {
+						echo'
+<meta name="keywords" content="'.$content.'" >';
+					}
 				}
 				echo("\n<!-- WPPA+ END Featured photos on this page -->\n");
 			}
@@ -128,9 +137,13 @@ global $thumb;
 			foreach ( $photos as $photo ) {
 				$thumb 		= $photo;	// Set to global to reduce queries when getting the name
 				$id 		= $photo['id'];
-				$name 		= esc_attr( wppa_get_photo_name( $id ) );
-				$content 	= wppa_get_photo_url( $id );
-				echo("\n<meta name=\"".$name."\" content=\"".$content."\" >");
+//				$name 		= esc_attr( wppa_get_photo_name( $id ) );
+//				$content 	= wppa_get_photo_url( $id );
+				$content 	= esc_attr( wppa_get_keywords( $id ) );
+				if ( $content ) {
+					echo '
+<meta name="keywords" content="'.$content.'" >';
+				}
 			}
 			echo("\n<!-- WPPA+ END Featured photos on this site -->\n");
 		}
@@ -146,7 +159,12 @@ global $thumb;
 		if ( wppa_opt( 'wppa_facebook_app_id' ) ) {
 			echo ("\n\t<meta property=\"fb:app_id\" content=\"".wppa_opt( 'wppa_facebook_app_id' )."\" />");
 		}
-		echo("\n<!-- WPPA+ END Facebook meta tags -->\n");
+		if ( $imgurl ) {
+			echo '
+<link rel="image_src" href="'.esc_url( $imgurl ).'" />';
+		}
+		echo '
+<!-- WPPA+ END Facebook meta tags -->';
 	}
 }
 
@@ -405,16 +423,22 @@ global $wppa_dynamic_css_data;
 <script type="text/javascript" src="//assets.pinterest.com/js/pinit.js"></script>';
 	}
 
+	if ( isset( $wppa['debug'] ) && $wppa['debug'] ) {
+		error_reporting( $wppa['debug'] );
+		add_action( 'wp_footer', 'wppa_phpinfo' );
+		echo '
+<script type="text/javascript" >
+	wppaDebug = true;
+</script>';
+	}
+	
 	$wppa['rendering_enabled'] = true;
 	echo '
 <!-- Rendering enabled -->
 <!-- /WPPA Kickoff -->
 
 	';
-	if ( isset( $wppa['debug'] ) && $wppa['debug'] ) {
-		error_reporting( $wppa['debug'] );
-		add_action( 'wp_footer', 'wppa_phpinfo' );
-	}
+
 }
 
 /* SKIP JETPACK FOTON ON WPPA+ IMAGES */

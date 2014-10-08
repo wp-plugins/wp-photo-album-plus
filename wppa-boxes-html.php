@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Various wppa boxes
-* Version 5.4.10
+* Version 5.4.12
 *
 *
 */
@@ -351,7 +351,7 @@ global $wppa_locale;
 	if ( ! $do_it ) return '';
 
 	// The share url
-	$share_url = wppa_convert_to_pretty( str_replace( '&amp;', '&', wppa_get_image_page_url_by_id( $id, wppa_switch( 'wppa_share_single_image' ) ) ) );
+	$share_url = str_replace( '&amp;', '&', wppa_get_image_page_url_by_id( $id, wppa_switch( 'wppa_share_single_image' ) ) );
 	
 	// The share title
 	$photo_name = wppa_get_photo_name( $id );

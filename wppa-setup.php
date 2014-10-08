@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 5.4.11
+* Version 5.4.12
 *
 */
 
@@ -757,6 +757,7 @@ Hide Camera info
 						'wppa_use_custom_style_file' 	=> 'no',
 						'wppa_use_custom_theme_file' 	=> 'no',
 						'wppa_cre_uploads_htaccess' 	=> 'no',
+						'wppa_debug_trace_on' 			=> 'no',
 
 						// B Full size and Slideshow
 						'wppa_fullvalign' 				=> 'fit',

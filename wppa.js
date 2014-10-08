@@ -2,7 +2,7 @@
 //
 // conatins slideshow, theme, ajax and lightbox code
 //
-// Version 5.4.11
+// Version 5.4.12
 
 // Part 1: Slideshow
 //
@@ -828,7 +828,8 @@ function _wppaNextSlide_4( mocc ) {
 	_wppaSetRatingDisplay( mocc );
 	
 	// Update og: meta tags
-	_wppaUpdateOgMeta( mocc );
+	// This seems to be useless...
+//	_wppaUpdateOgMeta( mocc );
 	
 	// Wait for almost next slide
 	setTimeout( '_wppaNextSlide_5( '+mocc+' )', _wppaTextDelay ); 
@@ -3439,7 +3440,6 @@ function wppaAjaxComment( mocc, id ) {
 }
 
 function wppaConsoleLog( arg ) {
-//wppaDebug=true;
 	if ( typeof( console ) != 'undefined' && wppaDebug ) {
 		console.log( arg );
 	}

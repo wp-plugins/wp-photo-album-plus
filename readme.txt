@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile, cloudinary, fotomoto
-Version: 5.4.11
+Version: 5.4.12
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -187,6 +187,19 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 5.4.12 =
+
+= Bug Fixes =
+
+* Fixed open graph metatags so that the right image is supplied also if it is in a virtual album.
+* Empty albums with only cover photo(s) will show a coverphoto in the albums widget.
+
+= Other Changes =
+
+* Console logs are now only printed in debug mode ( &debug ).
+* Improved the content of metatags for featured photos.
+* Performance improvement in indexing.
 
 = 5.4.11 =
 
