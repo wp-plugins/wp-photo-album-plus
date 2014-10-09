@@ -75,12 +75,13 @@ class AlbumWidget extends WP_Widget {
 			if ( $count < $max ) {
 				global $thumb;
 				
-				$imageid 	= wppa_get_coverphoto_id($album['id']);
-				$image 		= $wpdb->get_row($wpdb->prepare('SELECT * FROM `'.WPPA_PHOTOS.'` WHERE `id` = %s', $imageid), ARRAY_A);
-				$imgcount 	= $wpdb->get_var($wpdb->prepare('SELECT COUNT(*) FROM '.WPPA_PHOTOS.' WHERE `album` = %s', $album['id']));
-				$thumb 		= $image;
+				$imageid 		= wppa_get_coverphoto_id( $album['id'] );
+				$image 			= $wpdb->get_row( $wpdb->prepare( 'SELECT * FROM `'.WPPA_PHOTOS.'` WHERE `id` = %s', $imageid ), ARRAY_A );
+				$imgcount 		= $wpdb->get_var( $wpdb->prepare( 'SELECT COUNT(*) FROM '.WPPA_PHOTOS.' WHERE `album` = %s', $album['id']  ) );
+				$subalbumcount 	= $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM `".WPPA_ALBUMS."` WHERE `a_parent` = %s", $album['id'] ) );
+				$thumb 			= $image;
 				// Make the HTML for current picture
-				if ( $image && $imgcount > $wppa_opt['wppa_min_thumbs'] ) {
+				if ( $image && ( $imgcount > $wppa_opt['wppa_min_thumbs'] || $subalbumcount ) ) {
 					$link       = wppa_get_imglnk_a('albwidget', $image['id']);
 					$file       = wppa_get_thumb_path($image['id']);
 					$imgevents  = wppa_get_imgevents('thumb', $image['id'], true);
