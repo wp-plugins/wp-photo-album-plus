@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display thumbnail photos
-* Version 5.4.5
+* Version 5.4.14
 */
 
 class AlbumNavigatorWidget extends WP_Widget {
@@ -159,7 +159,7 @@ class AlbumNavigatorWidget extends WP_Widget {
 							<a href="'.wppa_get_permalink( $page ).'&amp;wppa-album='.$a.'&amp;wppa-cover=0&amp;wppa-occur=1">'.wppa_get_album_name( $a ).'</a>
 						</li>';
 					$newpropclass = $propclass . ' p-'.$w.'-'.$p;
-					$result .= $this->do_album_navigator( $a, $page, $skip, $newpropclass );
+					$result .= '<li class="anw-'.$w.'-'.$p.$propclass.'" style="list-style:none;" >' . $this->do_album_navigator( $a, $page, $skip, $newpropclass ) . '</li>';
 				}
 			}
 			$result .= '</ul>';
@@ -174,7 +174,7 @@ class AlbumNavigatorWidget extends WP_Widget {
 			}
 		}
 		$level--;
-		return $result;
+		return str_replace( '<ul></ul>', '', $result );
 	}
 	
 } // class AlbumNavigatorWidget

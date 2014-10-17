@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains low-level utility routines
-* Version 5.4.12
+* Version 5.4.14
 *
 */
  
@@ -47,8 +47,13 @@ global $blog_id;
 	if ( get_option('wppa_file_system') == 'tree' ) $system = 'tree';	// Have been converted, ignore argument
 	if ( ! is_numeric($id) || $id < '1' ) wppa_dbg_msg('Invalid arg wppa_get_thumb_url('.$id.')', 'red');
 	wppa_cache_thumb($id);
-	if ( $system == 'tree' ) return WPPA_UPLOAD_URL.'/thumbs/'.wppa_expand_id($thumb['id']).'.'.$thumb['ext'].'?ver='.get_option('wppa_thumb_version', '1');
-	else return WPPA_UPLOAD_URL.'/thumbs/'.$thumb['id'].'.'.$thumb['ext'].'?ver='.get_option('wppa_thumb_version', '1');
+	if ( $system == 'tree' ) {
+		$url = WPPA_UPLOAD_URL.'/thumbs/'.wppa_expand_id($thumb['id']).'.'.$thumb['ext'].'?ver='.get_option('wppa_thumb_version', '1');
+	}
+	else {
+		$url = WPPA_UPLOAD_URL.'/thumbs/'.$thumb['id'].'.'.$thumb['ext'].'?ver='.get_option('wppa_thumb_version', '1');
+	}
+	return $url;
 }
 
 // Bump thumbnail version number
@@ -544,7 +549,8 @@ global $wppa_opt;
 								'wppa_fotomoto_hide_when_running',
 								'wppa_vote_needs_comment',
 								'wppa_fotomoto_min_width',
-								'wppa_use_short_qargs'
+								'wppa_use_short_qargs',
+								'wppa_lb_hres'
 
 		);
 	if ( in_array( $option, $init_js_critical ) ) {
@@ -742,32 +748,29 @@ function wppa_send_mail($to, $subj, $cont, $photo, $email = '') {
 	if ( ! $iret ) echo 'Mail sending Failed';
 }
 
-function wppa_get_imgalt($id) {
+function wppa_get_imgalt( $id ) {
 global $thumb;
 global $wppa_opt;
 
 	wppa_cache_thumb($id);
 	switch ( $wppa_opt['wppa_alt_type'] ) {
 		case 'fullname':
-			$result = ' alt="'.esc_attr(wppa_get_photo_name($id)).'" ';
+			$result = esc_attr( wppa_get_photo_name( $id ) );
 			break;
 		case 'namenoext':
-			$temp = wppa_get_photo_name($id);
-			$temp = preg_replace('/\.[^.]*$/', '', $temp);	// Remove file extension
-//			$ext = strrchr($temp, '.');
-//			if ( $ext ) {
-//				$temp = strstr($temp, $ext, true);
-//			}
-			$result = ' alt="'.esc_attr($temp).'" ';
+			$temp = wppa_get_photo_name( $id );
+			$temp = preg_replace( '/\.[^.]*$/', '', $temp );	// Remove file extension
+			$result = esc_attr( $temp );
 			break;
 		case 'custom':
-			$result = ' alt="'.esc_attr($thumb['alt']).'" ';
+			$result = esc_attr( $thumb['alt'] );
 			break;
 		default:
-			$result = '';
+			$result = $id;
 			break;
 	}
-	return $result;
+	if ( ! $result ) $result = '0';
+	return ' alt="'.$result.'" ';
 }
 
 // Flush treecounts of album $alb, default: clear all

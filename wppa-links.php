@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Frontend links
-* Version 5.4.11
+* Version 5.4.14
 *
 */
 
@@ -72,7 +72,7 @@ global $wppa_lang;
 			}
 			break;
 		default:	// pagelink
-			$pl = get_page_link($key);
+			$pl = get_permalink($key);
 			if ( $plain ) return $pl;
 			if (strpos($pl, '?')) $pl .= '&amp;';
 			else $pl .= '?';
@@ -493,6 +493,9 @@ global $wppa_opt;
 		}
 	}
 	
+	// Now urlencode for funny chars
+	$uri = str_replace( array( ' ', '[', ']' ), array( '%20', '%5B', '%5D' ), $uri );
+	
 	// Now the actual conversion to pretty links
 	if ( ! wppa_switch('wppa_use_pretty_links') ) return $uri;
 	if ( ! get_option('permalink_structure') ) return $uri;
@@ -753,7 +756,7 @@ global $wppa_opt;
 
 	$url = substr($url, 0, strlen($url) - 5);	// remove last '&amp;'
 	
-	return wppa_trim_wppa_( $url );
+	return str_replace( ' ', '%20', wppa_trim_wppa_( $url ) );
 }
 
 function wppa_page_links($npages = '1', $curpage = '1', $slide = false) {
@@ -907,7 +910,7 @@ global $wppa_opt;
 	
 	$wppa['out'] .= '<div style="clear:both;" ></div>';
 	$wppa['out'] .= '<a onclick="wppaAjaxDownloadAlbum('.$wppa['mocc'].', '.$albumid.' );" style="cursor:pointer;" title="'.__a('Download').'">'.__a('Download album').'</a>';
-	$wppa['out'] .= '<img id="dwnspin-'.$wppa['mocc'].'-'.$albumid.'" src="'.wppa_get_imgdir().'wpspin.gif" style="margin-left:6px; display:none;" />';
+	$wppa['out'] .= '<img id="dwnspin-'.$wppa['mocc'].'-'.$albumid.'" src="'.wppa_get_imgdir().'wpspin.gif" style="margin-left:6px; display:none;" alt="spin" />';
 }
 
 function wppa_get_imglnk_a( $wich, $id, $lnk = '', $tit = '', $onc = '', $noalb = false, $album = '' ) {
@@ -1116,8 +1119,13 @@ global $wpdb;
 				$result['url'] = str_replace( 'xxx', $is_video['0'], $result['url'] );
 			}
 			else {
-				$siz = getimagesize( wppa_get_photo_path( $id ) );
-				$result['url'] = wppa_get_photo_url( $id, '', $siz['0'], $siz['1'] );
+				if ( wppa_switch( 'wppa_lb_hres' ) ) {
+					$result['url'] = wppa_get_hires_url( $id );
+				}
+				else {
+					$siz = getimagesize( wppa_get_photo_path( $id ) );
+					$result['url'] = wppa_get_photo_url( $id, '', $siz['0'], $siz['1'] );
+				}
 			}
 			$result['title'] = $title; 
 			$result['is_url'] = false;

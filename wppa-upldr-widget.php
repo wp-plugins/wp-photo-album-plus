@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display a list of users linking to their photos
-* Version 5.4.10
+* Version 5.4.14
 */
 
 if ( ! defined( 'ABSPATH' ) ) die( "Can't load this file directly" );
@@ -111,7 +111,7 @@ class UpldrWidget extends WP_Widget {
 		$widget_content = "\n".'<!-- WPPA+ Upldr Widget start -->';
 		$widget_content .= '<div class="wppa-upldr" style="max-height:180px; overflow:auto"><table><tbody>';
 		$albs = $instance['parent'] ? wppa_alb_to_enum_children( wppa_expand_enum( $instance['parent'] ) ) : '';
-		$a = $albs ? wppa_trim_wppa_( '&wppa-album='.$albs) : '';
+		$a = $albs ? wppa_trim_wppa_( '&amp;wppa-album='.$albs ) : '';
 		if ( $myline ) {
 			$user = $myline;
 			$widget_content .= '<tr class="wppa-user" >

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the non admin stuff
-* Version 5.4.12
+* Version 5.4.14
 *
 */
 
@@ -63,7 +63,7 @@ global $wppa_api_version;
 }
 
 /* SEO META TAGS AND SM SHARE DATA */
-add_action('wp_head', 'wppa_add_metatags');
+add_action('wp_head', 'wppa_add_metatags', 5);
 
 function wppa_add_metatags() {
 global $wpdb;
@@ -258,15 +258,20 @@ global $wppa_session;
 		$fontsize_lightbox = wppa_opt( 'wppa_fontsize_lightbox' ) ? wppa_opt( 'wppa_fontsize_lightbox' ) : '10';
 		$d = wppa_switch('wppa_ovl_show_counter') ? 1 : 0;
 		$ovlh = wppa_opt( 'wppa_ovl_txt_lines' ) == 'auto' ? 'auto' : ((wppa_opt( 'wppa_ovl_txt_lines' ) + $d) * ($fontsize_lightbox + 2));
+		$txtcol = wppa_opt( 'wppa_ovl_theme' ) == 'black' ? '#a7a7a7' : '#272727';
 		echo '
 <!-- start WPPA+ Footer data -->
-	<div id="wppa-overlay-bg" style="text-align:center; display:none; position:fixed; top:0; left:0; z-index:100090; width:100%; height:2048px; background-color:black;" onclick="wppaOvlOnclick(event)" ></div>
+	<div id="wppa-overlay-bg" style="text-align:center; display:none; position:fixed; top:0; left:0; z-index:100090; width:100%; height:2048px; background-color:'.wppa_opt( 'wppa_ovl_bgcolor' ).';" onclick="wppaOvlOnclick(event)" >
+		<div id="wppa-ovl-legenda-1" onmouseover="jQuery(this).css(\'visibility\',\'visible\');" onmouseout="jQuery(this).css(\'visibility\',\'hidden\');" style="position:absolute; left:0; bottom:0; background-color:'.wppa_opt( 'wppa_ovl_theme' ).';color:'.$txtcol.'; visibility:visible;" >
+			Press f for fullscreen.
+		</div>
+	</div>
 	<div id="wppa-overlay-ic" style="position:fixed; top:0; padding-top:10px; z-index:100095; opacity:1; box-shadow:none;"
 		ontouchstart="wppaTouchStart(event, \'wppa-overlay-ic\', -1);"  ontouchend="wppaTouchEnd(event);" 
 		ontouchmove="wppaTouchMove(event);" ontouchcancel="wppaTouchCancel(event);" >
 	</div>
 	<img id="wppa-overlay-sp" alt="spinner" style="position:fixed; top:200px; left:200px; z-index:100100; opacity:1; visibility:hidden; box-shadow:none;" src="'.wppa_get_imgdir().'loading.gif" />
-	<script type="text/javascript">jQuery("#wppa-overlay-bg").css({height:screen.height+"px"});
+	<script type="text/javascript">jQuery("#wppa-overlay-bg").css({height:window.innerHeight});
 		wppaOvlTxtHeight = "'.$ovlh.'";
 		wppaOvlCloseTxt = "'.__(wppa_opt( 'wppa_ovl_close_txt' )).'";
 		wppaOvlOpacity = '.(wppa_opt( 'wppa_ovl_opacity' )/100).';
@@ -564,7 +569,9 @@ global $wppa_init_js_data;
 	wppaFotomotoHideHideWhenRunning = '.( wppa_switch('wppa_fotomoto_hide_when_running') ? 'true' : 'false' ).';
 	wppaCommentRequiredAfterVote = '.( wppa_switch('wppa_vote_needs_comment') ? 'true' : 'false' ).';
 	wppaFotomotoMinWidth = '.wppa_opt( 'wppa_fotomoto_min_width' ).';
-	wppaShortQargs = '.( wppa_switch('wppa_use_short_qargs') ? 'true' : 'false' ).';';
+	wppaShortQargs = '.( wppa_switch('wppa_use_short_qargs') ? 'true' : 'false' ).';
+	wppaOvlHires = '.( wppa_switch( 'wppa_lb_hres' ) ? 'true' : 'false' ).';
+	';
 
 	// Open file
 	$file = @ fopen ( WPPA_PATH.'/wppa-init.'.$wppa_lang.'.js', 'wb' );

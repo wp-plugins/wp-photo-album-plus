@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 5.4.12
+* Version 5.4.14
 *
 */
 
@@ -677,6 +677,7 @@ Hide Camera info
 						// F Overlay
 						'wppa_ovl_close_txt'				=> 'CLOSE',
 						'wppa_ovl_theme'					=> 'black',
+						'wppa_ovl_bgcolor'					=> 'black',
 						'wppa_ovl_slide_name'				=> 'no',
 						'wppa_ovl_slide_desc'				=> 'yes',
 						'wppa_ovl_thumb_name'				=> 'yes',
@@ -835,6 +836,7 @@ Hide Camera info
 						'wppa_ovl_chrome_at_top'		=> 'yes',
 						'wppa_lightbox_global'			=> 'no',
 						'wppa_lightbox_global_set'		=> 'no',
+						'wppa_lb_hres' 					=> 'no',
 						
 						// Table V: Fonts
 						'wppa_fontfamily_title' 	=> '',

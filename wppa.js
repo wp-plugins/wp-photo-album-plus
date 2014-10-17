@@ -2,7 +2,7 @@
 //
 // conatins slideshow, theme, ajax and lightbox code
 //
-// Version 5.4.12
+// Version 5.4.14
 
 // Part 1: Slideshow
 //
@@ -116,6 +116,7 @@ var wppaBumpViewCount = true;
 var wppaFotomoto = false;
 var wppaArtMonkeyButton = true;
 var wppaShortQargs = false;
+var wppaOvlHires = false;
 
 // 'Internal' variables ( private )
 var _wppaId = [];
@@ -952,6 +953,7 @@ function wppaMakeTheSlideHtml( mocc, bgfg, idx ) {
 
 	var imgVideo = ( _wppaIsVideo[mocc][idx] != '' ) ? 'video' : 'img';
 	var theHtml;
+	var url;
 	
 //	if ( _wppaVideoHtml[mocc][idx] != '' ) {
 //		jQuery( "#theslide"+bgfg+"-"+mocc ).html( _wppaVideoHtml[mocc][idx] );
@@ -983,14 +985,25 @@ function wppaMakeTheSlideHtml( mocc, bgfg, idx ) {
 			if ( wppaLightBox[mocc] == 'wppa' ) {
 				while ( i<idx ) {
 					// Make sure fullsize
-					url = wppaMakeFullsizeUrl( _wppaUrl[mocc][i] );
+					if ( wppaOvlHires && _wppaIsVideo[mocc][i] == '' ) {
+						url = _wppaHiresUrl[mocc][i];
+					}
+					else {
+						url = wppaMakeFullsizeUrl( _wppaUrl[mocc][i] );
+					}
 
 					html += '<a href="'+url+'" data-videohtml="'+encodeURI( _wppaVideoHtml[mocc][i] )+'" title="'+_wppaLbTitle[mocc][i]+'" rel="'+wppaLightBox[mocc]+set+'"></a>';
 					i++;
 				}
 			}
 			// Current slide
-			var url = wppaMakeFullsizeUrl( _wppaUrl[mocc][idx] );
+			if ( wppaOvlHires && _wppaIsVideo[mocc][idx] == '' ) {
+				url = _wppaHiresUrl[mocc][idx];
+			}
+			else {
+				url = wppaMakeFullsizeUrl( _wppaUrl[mocc][idx] );
+			}
+		//	url = wppaMakeFullsizeUrl( _wppaUrl[mocc][idx] );
 //alert( _wppaVideoHtml[mocc][idx] );
 			html += '<a href="'+url+'" target="'+_wppaLinkTarget[mocc][idx]+'" data-videohtml="'+encodeURI( _wppaVideoHtml[mocc][idx] )+'" title="'+_wppaLbTitle[mocc][idx]+'" rel="'+wppaLightBox[mocc]+set+'">'+
 						'<'+imgVideo+' title="'+_wppaLinkTitle[mocc][idx]+'" id="theimg'+bgfg+'-'+mocc+'" '+_wppaSlides[mocc][idx]+
@@ -999,8 +1012,12 @@ function wppaMakeTheSlideHtml( mocc, bgfg, idx ) {
 			if ( wppaLightBox[mocc] == 'wppa' ) {
 				i = idx + 1;
 				while ( i<_wppaUrl[mocc].length ) {
-					var url = wppaMakeFullsizeUrl( _wppaUrl[mocc][i] );
-					//_wppaUrl[mocc][i].replace( '/thumbs/', '/' );
+					if ( wppaOvlHires && _wppaIsVideo[mocc][i] == '' ) {
+						url = _wppaHiresUrl[mocc][i];
+					}
+					else {
+						url = wppaMakeFullsizeUrl( _wppaUrl[mocc][i] );
+					}
 					html += '<a href="'+url+'" data-videohtml="'+encodeURI( _wppaVideoHtml[mocc][i] )+'" title="'+_wppaLbTitle[mocc][i]+'" rel="'+wppaLightBox[mocc]+set+'"></a>';
 					i++;
 				}
@@ -2795,6 +2812,7 @@ var wppaOvlIsSingle;
 var wppaOvlRunning = false;
 var wppaOvlVideoHtmls;
 var wppaOvlVideoHtml;
+var wppaOvlMode = 'normal';
 
 // The next var values become overwritten in wppa-non-admin.php -> wppa_load_footer()
 var wppaOvlCloseTxt = 'CLOSE';
@@ -2813,10 +2831,96 @@ var wppaOvlFontWeight = 'bold';
 var wppaOvlLineHeight = '12';
 var wppaOvlShowCounter = true;
 var wppaOvlIsVideo = false;
+var wppaShowLegenda = '';
 
+// Initial initialization
 jQuery( document ).ready(function( e ) {
 	wppaInitOverlay();
 });
+
+// Window resize handler
+jQuery( window ).resize(function() {
+	jQuery("#wppa-overlay-bg").css({height:window.innerHeight});
+	wppaOvlResize( 10 );
+});
+
+// Keyboard handler
+function wppaOvlKeyboardHandler( e ) {
+
+	var keycode;
+	var escapeKey;
+	
+	if ( e == null ) { // ie
+		keycode = event.keyCode;
+		escapeKey = 27;
+	} else { // mozilla
+		keycode = e.keyCode;
+		escapeKey = 27; //e.DOM_VK_ESCAPE;
+	}
+	
+	var key = String.fromCharCode( keycode ).toLowerCase();
+	
+	switch ( keycode ) {
+		case escapeKey:
+			wppaOvlHide();
+			break;
+		case 37:
+			wppaOvlShowPrev();
+			break;
+		case 39:
+			wppaOvlShowNext();
+			break;
+	}
+	
+	switch ( key ) {
+		case 'x':
+		case 'o':
+		case 'c':
+		case 'q':
+			wppaOvlHide();
+			break;
+		case 'p':	
+			wppaOvlShowPrev();
+			break;
+		case 'n':
+			wppaOvlShowNext();
+			break;
+		case 's':
+			wppaOvlStartStop();
+			break;
+		case 'd':
+			jQuery('#wppa-ovl-legenda-1').css('visibility','hidden');
+			jQuery('#wppa-ovl-legenda-2').css('visibility','hidden');
+			wppaShowLegenda = 'hidden';
+			break;
+		case 'f':
+			var oldMode = wppaOvlMode;
+			wppaOvlStepMode();
+			var elem = document.getElementById('wppa-overlay-ic');
+			if ( oldMode == 'normal' ) {
+				if (elem.requestFullscreen) {
+					elem.requestFullscreen();
+				} else if (elem.mozRequestFullScreen) {
+					elem.mozRequestFullScreen();
+				} else if (elem.webkitRequestFullscreen) {
+					elem.webkitRequestFullscreen();
+				}
+				setTimeout( 'wppaOvlShow( '+wppaOvlIdx+' )', 1000 );
+			}
+			if ( wppaOvlMode == 'normal' ) {
+				if (document.cancelFullScreen) {
+					document.cancelFullScreen();
+				} else if (document.mozCancelFullScreen) {
+					document.mozCancelFullScreen();
+				} else if (document.webkitCancelFullScreen) {
+					document.webkitCancelFullScreen();
+				}
+			}
+			jQuery('#wppa-ovl-legenda-1').html('');
+			break;
+	}
+}
+
 
 function wppaFindWindowSize() {
 wppaConsoleLog( 'wppaFindWindowSize', 1 );
@@ -2828,7 +2932,13 @@ wppaConsoleLog( 'winw='+wppaWindowInnerWidth+', winh='+wppaWindowInnerHeight, 1 
 }
 
 function wppaOvlShow( arg ) {
-wppaConsoleLog( 'wppaOvlShow', 1 );
+wppaConsoleLog( 'wppaOvlShow arg='+arg );
+
+	if ( wppaOvlFirst ) {
+		jQuery( document ).on('keydown', wppaOvlKeyboardHandler	);
+		wppaOvlFirst = false;
+	}
+
 	wppaFindWindowSize();
 	
 	// Prevent Weaver ii from hiding us
@@ -2888,37 +2998,151 @@ wppaConsoleLog( 'wppaOvlShow', 1 );
 	var photoId = wppaUrlToId( wppaOvlUrl );
 	_bumpViewCount( photoId );
 
-	var mw = 250;
+	if ( wppaOvlMode != 'normal' ) {
+		jQuery( '#wppa-overlay-bg' ).fadeTo( 300, wppaOvlOpacity );	// show black background first
+		var html = 
+		'<div id="wppa-ovl-full-bg" style="position:fixed; width:'+wppaWindowInnerWidth+'px; height:'+wppaWindowInnerHeight+'px; left:0px; top:0px; text-align:center;" >'+
+			'<img id="wppa-overlay-img"'+
+				' ontouchstart="wppaTouchStart( event, \'wppa-overlay-img\', -1 );"'+
+				' ontouchend="wppaTouchEnd( event );"'+
+				' ontouchmove="wppaTouchMove( event );"'+
+				' ontouchcancel="wppaTouchCancel( event );"'+
+				' src="'+wppaOvlUrl+'"'+
+				' style="border:none; width:'+wppaWindowInnerWidth+'px; visibility:hidden; box-shadow:none; position:absolute;"'+
+			' />'+
+			' <div style="height: 20px; width: 100%; position:absolute; bottom:0; left:0;" onmouseover="jQuery(\'#wppa-ovl-legenda-2\').css(\'visibility\',\'visible\');" onmouseout="jQuery(\'#wppa-ovl-legenda-2\').css(\'visibility\',\'hidden\');wppaShowLegenda=\'hidden\';" >'+
+				' <div id="wppa-ovl-legenda-2" style="position:absolute; left:0; bottom:0; background-color:'+(wppaOvlTheme == 'black' ? '#272727' : '#a7a7a7')+'; color:'+(wppaOvlTheme == 'black' ? '#a7a7a7' : '#272727')+'; visibility:'+wppaShowLegenda+';" >'+
+					'Mode='+wppaOvlMode+'. Keys: f = next mode; esc,x,o,c,q = exit; p = previous, n = next, s = start/stop, d = dismiss this notice.'+
+				' </div>'+
+			' </div>';
+		' </div>';
 
-	jQuery( '#wppa-overlay-bg' ).fadeTo( 300, wppaOvlOpacity );
-	var lft = ( wppaWindowInnerWidth/2-125 )+'px';
-	var ptp = ( wppaWindowInnerHeight/2-125 )+'px';
-wppaConsoleLog( 'lft='+lft+', ptp='+ptp, 1 );
-	jQuery( '#wppa-overlay-ic' ).css( {left: lft, paddingTop: ptp});
-	var txtcol = wppaOvlTheme == 'black' ? '#a7a7a7' : '#272727';	// Normal font
-	var qtxtcol = wppaOvlTheme == 'black' ? '#a7a7a7' : '#575757';	// Bold font
-	if ( wppaOvlFontColor ) txtcol = wppaOvlFontColor;
-	var startstop = wppaOvlRunning ? wppaStop : wppaStart;
-	var html = 	'<div id="wppa-overlay-start-stop" style="position:absolute; left:0px; top:'+( wppaOvlPadTop-1 )+'px; visibility:hidden; box-shadow:none; font-family:helvetica; font-weight:bold; font-size:14px; color:'+qtxtcol+'; cursor:pointer; " onclick="wppaOvlStartStop()" ontouchstart="wppaOvlStartStop()" >'+startstop+'</div>'+
-				'<div id="wppa-overlay-qt-txt"  style="position:absolute; right:16px; top:'+( wppaOvlPadTop-1 )+'px; visibility:hidden; box-shadow:none; font-family:helvetica; font-weight:bold; font-size:14px; color:'+qtxtcol+'; cursor:pointer; " onclick="wppaOvlHide()" ontouchstart="wppaOvlHide()" >'+wppaOvlCloseTxt+'&nbsp;&nbsp;</div>'+
-				'<img id="wppa-overlay-qt-img"  src="'+wppaImageDirectory+'smallcross-'+wppaOvlTheme+'.gif'+'" style="position:absolute; right:0; top:'+wppaOvlPadTop+'px; visibility:hidden; box-shadow:none; cursor:pointer" onclick="wppaOvlHide()" ontouchstart="wppaOvlHide()" >';
-	if ( typeof( wppaOvlVideoHtml ) != 'undefined' && wppaOvlVideoHtml != '' && wppaOvlVideoHtml != 'undefined' ) {
-//alert( wppaOvlVideoHtml );
-		html += '<video id="wppa-overlay-img"'+
-		' ontouchstart="wppaTouchStart( event, \'wppa-overlay-img\', -1 );"  ontouchend="wppaTouchEnd( event );" ontouchmove="wppaTouchMove( event );" ontouchcancel="wppaTouchCancel( event );" '+
-		' style="border-width:16px; border-style:solid; border-color:'+wppaOvlTheme+'; margin-bottom:-15px; max-width:'+mw+'px; visibility:hidden; box-shadow:none;" controls >'+wppaOvlVideoHtml+'</video>';
-		wppaOvlIsVideo = true;
+		jQuery( '#wppa-overlay-ic' ).html( html );
+		setTimeout( 'wppaOvlShowFull()', 10 );
+		return false;
 	}
-	else {
-		html += '<img id="wppa-overlay-img"'+
-		' ontouchstart="wppaTouchStart( event, \'wppa-overlay-img\', -1 );"  ontouchend="wppaTouchEnd( event );" ontouchmove="wppaTouchMove( event );" ontouchcancel="wppaTouchCancel( event );" '+
-		' src="'+wppaOvlUrl+'" style="border-width:16px; border-style:solid; border-color:'+wppaOvlTheme+'; margin-bottom:-15px; max-width:'+mw+'px; visibility:hidden; box-shadow:none;" />';
-		wppaOvlIsVideo = false;
+
+//	else {
+		var mw = 250;
+
+		jQuery( '#wppa-overlay-bg' ).fadeTo( 300, wppaOvlOpacity );
+		var lft = ( wppaWindowInnerWidth/2-125 )+'px';
+		var ptp = ( wppaWindowInnerHeight/2-125 )+'px';
+
+		jQuery( '#wppa-overlay-ic' ).css( {left: lft, paddingTop: ptp});
+		var txtcol = wppaOvlTheme == 'black' ? '#a7a7a7' : '#272727';	// Normal font
+		var qtxtcol = wppaOvlTheme == 'black' ? '#a7a7a7' : '#575757';	// Bold font
+		if ( wppaOvlFontColor ) txtcol = wppaOvlFontColor;
+		var startstop = wppaOvlRunning ? wppaStop : wppaStart;
+		var html = 	'<div id="wppa-overlay-start-stop" style="position:absolute; left:0px; top:'+( wppaOvlPadTop-1 )+'px; visibility:hidden; box-shadow:none; font-family:helvetica; font-weight:bold; font-size:14px; color:'+qtxtcol+'; cursor:pointer; " onclick="wppaOvlStartStop()" ontouchstart="wppaOvlStartStop()" >'+startstop+'</div>'+
+					'<div id="wppa-overlay-qt-txt"  style="position:absolute; right:16px; top:'+( wppaOvlPadTop-1 )+'px; visibility:hidden; box-shadow:none; font-family:helvetica; font-weight:bold; font-size:14px; color:'+qtxtcol+'; cursor:pointer; " onclick="wppaOvlHide()" ontouchstart="wppaOvlHide()" >'+wppaOvlCloseTxt+'&nbsp;&nbsp;</div>'+
+					'<img id="wppa-overlay-qt-img"  src="'+wppaImageDirectory+'smallcross-'+wppaOvlTheme+'.gif'+'" style="position:absolute; right:0; top:'+wppaOvlPadTop+'px; visibility:hidden; box-shadow:none; cursor:pointer" onclick="wppaOvlHide()" ontouchstart="wppaOvlHide()" >';
+		if ( typeof( wppaOvlVideoHtml ) != 'undefined' && wppaOvlVideoHtml != '' && wppaOvlVideoHtml != 'undefined' ) {
+	//alert( wppaOvlVideoHtml );
+			html += '<video id="wppa-overlay-img"'+
+			' ontouchstart="wppaTouchStart( event, \'wppa-overlay-img\', -1 );"  ontouchend="wppaTouchEnd( event );" ontouchmove="wppaTouchMove( event );" ontouchcancel="wppaTouchCancel( event );" '+
+			' style="border-width:16px; border-style:solid; border-color:'+wppaOvlTheme+'; margin-bottom:-15px; max-width:'+mw+'px; visibility:hidden; box-shadow:none;" controls >'+wppaOvlVideoHtml+'</video>';
+			wppaOvlIsVideo = true;
+		}
+		else {
+			html += '<img id="wppa-overlay-img"'+
+			' ontouchstart="wppaTouchStart( event, \'wppa-overlay-img\', -1 );"  ontouchend="wppaTouchEnd( event );" ontouchmove="wppaTouchMove( event );" ontouchcancel="wppaTouchCancel( event );" '+
+			' src="'+wppaOvlUrl+'" style="border-width:16px; border-style:solid; border-color:'+wppaOvlTheme+'; margin-bottom:-15px; max-width:'+mw+'px; visibility:hidden; box-shadow:none;" />';
+			wppaOvlIsVideo = false;
+		}
+		html += '<div id="wppa-overlay-txt-container" style="padding:10px; background-color:'+wppaOvlTheme+'; color:'+txtcol+'; text-align:center; font-family:'+wppaOvlFontFamily+'; font-size: '+wppaOvlFontSize+'px; font-weight:'+wppaOvlFontWeight+'; line-height:'+wppaOvlLineHeight+'px; visibility:hidden; box-shadow:none;" ><div>';
+		
+		jQuery( '#wppa-overlay-ic' ).html( html );
+		setTimeout( 'wppaOvlShow2()', 10 );
+		return false;
+//	}
+}
+
+function wppaOvlShowFull() {
+wppaConsoleLog('ShowFull '+wppaOvlMode );
+
+	var img = document.getElementById( 'wppa-overlay-img' );
+	
+	if ( ! wppaOvlIsVideo && ( ! img || ! img.complete ) ) {
+		setTimeout( 'wppaOvlShowFull()', 10 );	// Wait for load complete
+		return;
 	}
-	html += '<div id="wppa-overlay-txt-container" style="padding:10px; background-color:'+wppaOvlTheme+'; color:'+txtcol+'; text-align:center; font-family:'+wppaOvlFontFamily+'; font-size: '+wppaOvlFontSize+'px; font-weight:'+wppaOvlFontWeight+'; line-height:'+wppaOvlLineHeight+'px; visibility:hidden; box-shadow:none;" ></div>';
-	jQuery( '#wppa-overlay-ic' ).html( html );
-	setTimeout( 'wppaOvlShow2()', 10 );
-	return false;
+	
+	// Find out if the picture is more portrait than the screen
+	var screenRatio = wppaWindowInnerWidth / wppaWindowInnerHeight;
+	var imageRatio 	= img.naturalWidth / img.naturalHeight; 
+	var margLeft 	= 0;
+	var margTop 	= 0;
+	var imgHeight 	= 0;
+	var imgWidth 	= 0;
+	var scrollTop 	= 0;
+	var scrollLeft 	= 0;
+	var Overflow 	= 'hidden';
+
+	switch ( wppaOvlMode ) {
+		case 'padded':
+			if ( screenRatio > imageRatio ) {	// Picture is more portrait
+				margLeft 	= ( wppaWindowInnerWidth - wppaWindowInnerHeight * imageRatio ) / 2;
+				margTop 	= 0;
+				imgHeight 	= wppaWindowInnerHeight;
+				imgWidth 	= wppaWindowInnerHeight * imageRatio;
+			}
+			else {
+				margLeft 	= 0;
+				margTop 	= ( wppaWindowInnerHeight - wppaWindowInnerWidth / imageRatio ) / 2;
+				imgHeight 	= wppaWindowInnerWidth / imageRatio;
+				imgWidth 	= wppaWindowInnerWidth;
+			}
+			break;
+		case 'stretched':
+			margLeft 	= 0;
+			margTop 	= 0;
+			imgHeight 	= wppaWindowInnerHeight;
+			imgWidth 	= wppaWindowInnerWidth;
+			break;
+		case 'clipped':
+			if ( screenRatio > imageRatio ) {	// Picture is more portrait
+				margLeft 	= 0;
+				margTop 	= ( wppaWindowInnerHeight - wppaWindowInnerWidth / imageRatio ) / 2;
+				imgHeight 	= wppaWindowInnerWidth / imageRatio;
+				imgWidth 	= wppaWindowInnerWidth;
+			}
+			else {
+				margLeft 	= ( wppaWindowInnerWidth - wppaWindowInnerHeight * imageRatio ) / 2;
+				margTop 	= 0;
+				imgHeight 	= wppaWindowInnerHeight;
+				imgWidth 	= wppaWindowInnerHeight * imageRatio;
+			}
+			break;
+		case 'realsize':
+			margLeft 	= ( wppaWindowInnerWidth - img.naturalWidth ) / 2;
+			if ( margLeft < 0 ) {
+				scrollLeft 	= - margLeft;
+				margLeft 	= 0;
+			}
+			margTop 	= ( wppaWindowInnerHeight - img.naturalHeight ) / 2;
+			if ( margTop < 0 ) {
+				scrollTop 	= - margTop;
+				margTop 	= 0;
+			}
+			imgHeight 	= img.naturalHeight;
+			imgWidth 	= img.naturalWidth;
+			Overflow 	= 'auto';
+			break;
+	}
+	margLeft 	= parseInt( margLeft );
+	margTop 	= parseInt( margTop );
+	imgHeight 	= parseInt( imgHeight );
+	imgWidth 	= parseInt( imgWidth );
+
+	jQuery(img).css({height:imgHeight,width:imgWidth,marginLeft:margLeft,marginTop:margTop,left:0,top:0});
+	jQuery(img).css({visibility:'visible'});
+	jQuery( '#wppa-ovl-full-bg' ).css({overflow:Overflow});
+	jQuery( '#wppa-ovl-full-bg' ).scrollTop( scrollTop );
+	jQuery( '#wppa-ovl-full-bg' ).scrollLeft( scrollLeft );
+	jQuery( '#wppa-overlay-sp' ).css({visibility:'hidden'});
+
+	return true;	// Done!
 }
 
 function wppaOvlShow2() {
@@ -2994,44 +3218,23 @@ wppaConsoleLog( 'wppaOvlShow4', 1 );
 	jQuery( '#wppa-overlay-qt-img' ).css( {visibility: 'visible'});
 	if ( ! wppaOvlIsSingle ) jQuery( '#wppa-overlay-start-stop' ).css( {visibility: 'visible'});
 
-	// Almost done, Install eventhandlers
-	if ( wppaOvlFirst ) {
-		// Enable kb input
-		jQuery( document ).keydown(function( e ) {
-			if ( e == null ) { // ie
-				keycode = event.keyCode;
-				escapeKey = 27;
-			} else { // mozilla
-				keycode = e.keyCode;
-				escapeKey = 27; //e.DOM_VK_ESCAPE;
-			}
-			key = String.fromCharCode( keycode ).toLowerCase();
-			if ( ( key == 'x' ) || ( key == 'o' ) || ( key == 'c' ) || ( key == 'q' ) || ( keycode == escapeKey ) ) {
-				wppaOvlHide();
-			} 
-			else if( ( key == 'p' ) || ( keycode == 37 ) ) {	
-				wppaOvlShowPrev();
-			} else if( ( key == 'n' ) || ( keycode == 39 ) ) {	
-				wppaOvlShowNext();
-			}
-		});		
-//		if ( document.onkeydown ) {
-//			wppaOvlKbHandler = document.onkeydown; 
-//		}
-//		document.onkeydown = wppaKbAction; 
 
-		// Window resize handler
-		jQuery( window ).resize(function() {
-			wppaOvlResize( 10 );
-		});
-//		if ( window.onresize ) {
-//			wppaOvlSizeHandler = window.onresize;
-//		}
-//		window.onresize = function () {return wppaOvlResize( 10 );}		
-		wppaOvlFirst = false;
-	}
 	if ( wppaOvlTxtHeight == 'auto' ) wppaOvlResize( 10 );	// Resize to accomodate for var text height
 	return false;
+}
+
+function wppaOvlStepMode() {
+wppaConsoleLog('StepMode from '+wppaOvlMode);
+	var modes = new Array( 'normal', 'padded', 'stretched', 'clipped', 'realsize', 'padded' );
+	var i = 0;
+	while ( i < modes.length ) {
+		if ( wppaOvlMode == modes[i] ) {
+			wppaOvlMode = modes[i+1];
+			wppaOvlShow( wppaOvlIdx );
+			return;
+		}
+		i++;
+	}
 }
 
 function wppaOvlStartStop() {
@@ -3077,13 +3280,20 @@ wppaConsoleLog( 'wppaOvlShowNext', 1 );
 }
 
 function wppaOvlSize( speed ) {
-wppaConsoleLog( 'wppaOvlSize', 1 );
+wppaConsoleLog( 'wppaOvlSize' );
 
 	// Are we still visible?
 	if ( jQuery('#wppa-overlay-bg').css('display') == 'none' ) {
 		wppaConsoleLog('Lb quitted');
 		return;
 	}
+	
+	// Full screen?
+	if ( wppaOvlMode != 'normal' ) {
+		wppaOvlShowFull();
+		return;
+	}
+	
 	
 	// Wait for text complete
 	if ( ! document.getElementById( 'wppa-overlay-txt' ) ) { setTimeout( 'wppaOvlSize( '+speed+' )', 10 ); return;}
@@ -3214,13 +3424,15 @@ wppaConsoleLog( 'wppaOvlHide', 1 );
 	jQuery( '#wppa-overlay-ic' ).css( {paddingTop: 0});
 	// Remove background
 	jQuery( '#wppa-overlay-bg' ).fadeOut( 300 );
-	// Re-instal posssible original kb handler
-	document.onkeydown = wppaOvlKbHandler;
+	// Remove kb handler
+	jQuery( document ).off( 'keydown', wppaOvlKeyboardHandler );//keydown(function( e ) {} );//wppaOvlKbHandler;
 	// Re-instal possible original resize handler
-	window.onresize = wppaOvlSizeHandler;
+//	window.onresize = wppaOvlSizeHandler;
 	// Reset switch
 	wppaOvlFirst = true;
 	wppaOvlRunning = false;
+	wppaOvlMode = 'normal';
+	jQuery( '#wppa-overlay-sp' ).css({visibility:'hidden'});
 }
 
 function wppaOvlOnclick( event ) {
@@ -3242,6 +3454,8 @@ function wppaOvlOnclick( event ) {
 	return true;
 }
 
+
+			
 function wppaInitOverlay() {
 wppaConsoleLog( 'wppaInitOverlay', 1 );
 	var anchors=jQuery( 'a' );
@@ -3266,6 +3480,24 @@ wppaConsoleLog( 'wppaInitOverlay', 1 );
 		}
 	}
 //	wppaOvlRunning = false;
+
+	// Almost done, Install eventhandlers
+	if ( wppaOvlFirst ) {
+		// Enable kb input
+//		jQuery( document ).on('keydown', wppaOvlKeyboardHandler	);		
+//		if ( document.onkeydown ) {
+//			wppaOvlKbHandler = document.onkeydown; 
+//		}
+//		document.onkeydown = wppaKbAction; 
+
+//		if ( window.onresize ) {
+//			wppaOvlSizeHandler = window.onresize;
+//		}
+//		window.onresize = function () {return wppaOvlResize( 10 );}		
+//		wppaOvlFirst = false;
+	}
+	
+	
 }
 /*
 var wppaKbAction = function( e ) {
@@ -3440,6 +3672,7 @@ function wppaAjaxComment( mocc, id ) {
 }
 
 function wppaConsoleLog( arg ) {
+wppaDebug=true;//diagnostic
 	if ( typeof( console ) != 'undefined' && wppaDebug ) {
 		console.log( arg );
 	}

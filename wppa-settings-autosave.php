@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 5.4.11
+* Version 5.4.14
 *
 */
 
@@ -283,7 +283,8 @@ global $no_default;
 		
 		// Graylist
 		$graylist_plugins = array(
-			'shortcodes-ultimate/shortcodes-ultimate.php'
+			'shortcodes-ultimate/shortcodes-ultimate.php',
+			'tablepress/tablepress.php'
 			);
 		$matches = array_intersect($graylist_plugins, $plugins);
 		foreach ( $matches as $bad ) {
@@ -1797,6 +1798,15 @@ global $no_default;
 							$values = array('black', 'white');
 							$html = wppa_select($slug, $options, $values);
 							wppa_setting($slug, '2', $name, $desc, $html, $help);
+
+							$name = __('Overlay background color', 'wppa');
+							$desc = __('The color of the outer background.', 'wppa');
+							$help = '';
+							$slug = 'wppa_ovl_bgcolor';
+							$options = array(__('Black', 'wppa'), __('White', 'wppa'));
+							$values = array('black', 'white');
+							$html = wppa_select($slug, $options, $values);
+							wppa_setting($slug, '2.1', $name, $desc, $html, $help);
 							
 							$name = __('Overlay slide name', 'wppa');
 							$desc = __('Show name if from slide.', 'wppa');
@@ -3135,6 +3145,13 @@ global $no_default;
 							$slug = 'wppa_lightbox_global_set';
 							$html = wppa_checkbox($slug);
 							wppa_setting($slug, '5.1', $name, $desc, $html, $help);
+							
+							$name = __('Use hires files', 'wppa');
+							$desc = __('Use the highest resolution available for lightbox.', 'wppa');
+							$help = esc_js(__('Ticking this box is recommended for lightbox fullscreen modes.', 'wppa'));
+							$slug = 'wppa_lb_hres';
+							$html = wppa_checkbox($slug);
+							wppa_setting($slug, '6', $name, $desc, $html, $help);
 							}
 							?>
 						</tbody>

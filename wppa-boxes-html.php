@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Various wppa boxes
-* Version 5.4.12
+* Version 5.4.14
 *
 *
 */
@@ -176,10 +176,10 @@ global $wppa;
 	if ( $wppa_opt['wppa_tagcloud_linkpage'] ) {
 		$hr = wppa_get_permalink( $page );
 		if ( $wppa_opt['wppa_tagcloud_linktype'] == 'album' ) {
-			$hr .= 'wppa-album=0&wppa-cover=0&wppa-occur=1';
+			$hr .= 'wppa-album=0&amp;wppa-cover=0&amp;wppa-occur=1';
 		}
 		if ( $wppa_opt['wppa_tagcloud_linktype'] == 'slide' ) {
-			$hr .= 'wppa-album=0&wppa-cover=0&wppa-occur=1&slide';
+			$hr .= 'wppa-album=0&amp;wppa-cover=0&amp;wppa-occur=1&amp;slide';
 		}
 	}
 	else {
@@ -196,7 +196,7 @@ global $wppa;
 		$selarr = $seltags ? explode( ',', $seltags ) : array();
 		foreach ( $tags as $tag ) {
 			if ( ! $seltags || in_array( $tag['tag'], $selarr ) ) {
-				$href 		= $hr . '&wppa-tag=' . $tag['tag'];
+				$href 		= $hr . '&amp;wppa-tag=' . str_replace( ' ', '%20', $tag['tag'] );
 				$title 		= sprintf( '%d photos - %s%%', $tag['count'], $tag['fraction'] * '100' );
 				$name 		= $tag['tag'];
 				$size 		= floor( $minsize + $tag['fraction'] * $factor );
@@ -269,8 +269,8 @@ global $wppa;
 	if ( $tags ) foreach ( $tags as $tag ) {
 		if ( ! $seltags || in_array( $tag['tag'], $selarr ) ) {
 			$result .= '
-			if ( document.getElementById( "wppa'.$tag['tag'].'" ).checked ) {
-				url+="'.$tag['tag'].'"+sep;
+			if ( document.getElementById( "wppa-'.str_replace( ' ', '_', $tag['tag']).'" ).checked ) {
+				url+="'.str_replace(' ', '%20', $tag['tag']).'"+sep;
 				any = true;
 			}';
 		}
@@ -295,17 +295,21 @@ global $wppa;
 
 	if ( $tags ) {
 	
-		$result .= '<table class="wppa-multitag-table">';
 		
 		if ( ! $or_only ) {
+			$result .= '<table class="wppa-multitag-table">';
 			$result .= '<tr><td><input class="radio" name="andor-'.$wppa['mocc'].'" value="and" id="andorand-'.$wppa['mocc'].'" type="radio" ';
 			if ( $andor == 'and' ) $result .= 'checked="checked" ';
-			$result .= 'size="30" />&nbsp;'.__a( 'And', 'wppa_theme' ).'</td>';
+			$result .= ' />&nbsp;'.__a( 'And', 'wppa_theme' ).'</td>';
 			$result .= '<td><input class="radio" name="andor-'.$wppa['mocc'].'" value="or" id="andoror-'.$wppa['mocc'].'" type="radio" ';
 			if ( $andor == 'or' ) $result .= 'checked="checked" ';
-			$result .= 'size="30" />&nbsp;'.__a( 'Or', 'wppa_theme' ).'</td>';
+			$result .= ' />&nbsp;'.__a( 'Or', 'wppa_theme' ).'</td>';
 			$result .= '</tr>';
+			$result .= '</table>';
 		}
+
+		$result .= '<table class="wppa-multitag-table">';
+
 		$count = '0';
 		$checked = '';		
 		
@@ -319,7 +323,7 @@ global $wppa;
 				if ( is_array( $querystringtags ) ) {
 					$checked = in_array( $tag['tag'], $querystringtags ) ? 'checked="checked" ' : '';
 				}
-				$result .= '<td style="'.__wis( 'padding-right:4px;' ).'" ><input type="checkbox" id="wppa'.$tag['tag'].'" '.$checked.'/>&nbsp;'.$tag['tag'].'</td>';
+				$result .= '<td style="'.__wis( 'padding-right:4px;' ).'" ><input type="checkbox" id="wppa-'.str_replace( ' ', '_', $tag['tag'] ).'" '.$checked.' />&nbsp;'.str_replace( ' ', '&nbsp;', $tag['tag'] ).'</td>';
 				$count++;
 				if ( $count % $nperline == '0' ) {
 					$result .= '</tr>';
@@ -328,7 +332,13 @@ global $wppa;
 			}
 		}
 		
-		if ( $tropen ) $result .= '</tr>';
+		if ( $tropen ) {
+			while ( $count % $nperline != '0' ) {
+				$result .= '<td></td>';
+				$count++;
+			}
+			$result .= '</tr>';
+		}
 		$result .= '</table>';
 		$result .= '<input type="button" onclick="wppaProcessMultiTagRequest()" value="'.__a( 'Find!' ).'" />';
 	}
@@ -907,7 +917,7 @@ global $wppa_opt;
 			<div class="wppa-box-text wppa-td" style="clear:both; float:left; text-align:left; '.__wcs( 'wppa-box-text' ).__wcs( 'wppa-td' ).'" >'.
 				__a( 'Enter album name.' ).'&nbsp;<span style="font-size:10px;" >'.__a( 'Don\'t leave this blank!' ).'</span>
 			</div>
-			<input name="wppa-albumeditname" id="wppaalbum-name-'.$wppa['mocc'].'-'.$alb.'" class="wppa-box-text wppa-file-'.$t.$wppa['mocc'].'" value="'.esc_attr( $album['name'] ).'" style="padding:0; width:'.( $width-6 ).'px; '.__wcs( 'wppa-box-text' ).'" />
+			<input name="wppa-albumeditname" id="wppaalbum-name-'.$wppa['mocc'].'-'.$alb.'" class="wppa-box-text wppa-file-'.$t.$wppa['mocc'].'" value="'.esc_attr( stripslashes( $album['name'] ) ).'" style="padding:0; width:'.( $width-6 ).'px; '.__wcs( 'wppa-box-text' ).'" />
 			<div class="wppa-box-text wppa-td" style="clear:both; float:left; text-align:left; '.__wcs( 'wppa-box-text' ).__wcs( 'wppa-td' ).'" >'.
 				__a( 'Album description:' ).'
 			</div>
@@ -1456,15 +1466,15 @@ global $wppa_opt;
 						if ( $linktype != 'none' ) {
 							switch ( $linktype ) {
 								case 'owneralbums':
-									$href = wppa_get_permalink( $page ).'wppa-cover=1&wppa-owner='.$thumb['owner'].'&wppa-occur=1';
+									$href = wppa_get_permalink( $page ).'wppa-cover=1&amp;wppa-owner='.$thumb['owner'].'&amp;wppa-occur=1';
 									$title = __a( 'See the authors albums', 'wppa' );
 									break;
 								case 'ownerphotos':
-									$href = wppa_get_permalink( $page ).'wppa-cover=0&wppa-owner='.$thumb['owner'].'&photos-only&wppa-occur=1';
+									$href = wppa_get_permalink( $page ).'wppa-cover=0&amp;wppa-owner='.$thumb['owner'].'&photos-only&amp;wppa-occur=1';
 									$title = __a( 'See the authors photos', 'wppa' );
 									break;
 								case 'upldrphotos':
-									$href = wppa_get_permalink( $page ).'wppa-cover=0&wppa-upldr='.$thumb['owner'].'&wppa-occur=1';
+									$href = wppa_get_permalink( $page ).'wppa-cover=0&amp;wppa-upldr='.$thumb['owner'].'&amp;wppa-occur=1';
 									$title = __a( 'See all the authors photos', 'wppa' );
 									break;
 							}
@@ -1511,15 +1521,15 @@ global $wppa_opt;
 				if ( $linktype != 'none' ) {
 					switch ( $linktype ) {
 						case 'owneralbums':
-							$href = wppa_get_permalink( $page ).'wppa-cover=1&wppa-owner='.$data[$author]['owner'].'&wppa-occur=1';
+							$href = wppa_get_permalink( $page ).'wppa-cover=1&amp;wppa-owner='.$data[$author]['owner'].'&amp;wppa-occur=1';
 							$title = __a( 'See the authors albums', 'wppa' );
 							break;
 						case 'ownerphotos':
-							$href = wppa_get_permalink( $page ).'wppa-cover=0&wppa-owner='.$data[$author]['owner'].'&photos-only&wppa-occur=1';
+							$href = wppa_get_permalink( $page ).'wppa-cover=0&amp;wppa-owner='.$data[$author]['owner'].'&amp;photos-only&amp;wppa-occur=1';
 							$title = __a( 'See the authors photos', 'wppa' );
 							break;
 						case 'upldrphotos':
-							$href = wppa_get_permalink( $page ).'wppa-cover=0&wppa-upldr='.$data[$author]['owner'].'&wppa-occur=1';
+							$href = wppa_get_permalink( $page ).'wppa-cover=0&amp;wppa-upldr='.$data[$author]['owner'].'&amp;wppa-occur=1';
 							$title = __a( 'See all the authors photos', 'wppa' );
 							break;
 					}
