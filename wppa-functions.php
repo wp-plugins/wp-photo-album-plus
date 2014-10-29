@@ -1996,7 +1996,7 @@ global $wppa;
 		$wppa['auto_colwidth'] = true;
 	}
 	$result = '';
-	$gfs = ( is_numeric( $wppa['fullsize'] ) && $wppa['fullsize'] > '0' ) ? $wppa['fullsize'] : $fs;
+	$gfs = ( is_numeric( $wppa['fullsize'] ) && $wppa['fullsize'] > '1' ) ? $wppa['fullsize'] : $fs;
 	
 	$gfh = floor( $gfs * wppa_opt( 'wppa_maxheight' ) / wppa_opt( 'wppa_fullsize' ) );
 	
