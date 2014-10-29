@@ -2,7 +2,7 @@
 /* wppa-watermark.php
 *
 * Functions used for the application of watermarks
-* version 5.4.7
+* version 5.4.15
 *
 */
 
@@ -125,7 +125,8 @@ global $wppa_opt;
 		if ( ! $image_height ) $image_height = 1000;
 	}
 	else {
-		$temp = getimagesize( wppa_get_photo_path( $id ) );
+//		$temp = getimagesize( wppa_get_photo_path( $id ) );
+		$temp = wppa_get_imagexy( $id );
 		if ( ! is_array( $temp ) ) {
 			wppa_log( 'Error', 'Trying to apply a watermark on a non image file. Id = '.$id );
 			return false;	// not an image
@@ -361,7 +362,7 @@ global $wppa_opt;
 		return false;	// No watermark this time
 	}
 	// Open the watermark file
-	$watersize = @getimagesize( $waterfile );
+	$watersize = @ getimagesize( $waterfile );
 	if ( !is_array( $watersize ) ) return false;	// Not a valid picture file
 	$waterimage = imagecreatefrompng( $waterfile );
 	if ( empty( $waterimage ) or ( !$waterimage ) ) {
@@ -375,7 +376,7 @@ global $wppa_opt;
 	// Open the photo file
 	$file = wppa_get_photo_path( $id );
 	if ( ! is_file( $file ) ) return false;	// File gone
-	$photosize = getimagesize( $file );
+	$photosize = wppa_get_imagexy( $id ); // getimagesize( $file );
 	if ( ! is_array( $photosize ) ) {
 		return false;	// Not a valid photo
 	}

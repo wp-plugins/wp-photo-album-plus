@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Functions for album covers
-* Version 5.4.11
+* Version 5.4.15
 *
 */
 
@@ -669,7 +669,8 @@ global $wpdb;
 					$siz['1'] = wppa_get_videoy( $id );
 				}
 				else {
-					$siz = getimagesize( wppa_get_photo_path( $id ) );
+					$siz['0'] = wppa_get_photox( $id );
+					$siz['1'] = wppa_get_photoy( $id );
 				}
 				$link = wppa_get_photo_url( $id, '', $siz['0'], $siz['1'] );
 				
@@ -799,7 +800,8 @@ global $wpdb;
 					$siz['1'] = wppa_get_videoy( $thumb['id'] );
 				}
 				else {
-					$siz = getimagesize( wppa_get_photo_path( $thumb['id'] ) );
+					$siz['0'] = wppa_get_photox( $thumb['id'] );
+					$siz['1'] = wppa_get_photoy( $thumb['id'] );
 				}
 				$link = wppa_get_photo_url( $thumb['id'], '', $siz['0'], $siz['1'] );
 				$wppa['out'] .= 

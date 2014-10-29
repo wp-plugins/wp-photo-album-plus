@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains low-level wpdb routines that update records
-* Version 5.4.11
+* Version 5.4.15
 *
 */
 
@@ -124,6 +124,13 @@ global $thumb;
 				break;
 			case 'tags':
 				$itemvalue = wppa_sanitize_tags( $itemvalue );
+				$doit = true;
+				break;
+			case 'thumbx':
+			case 'thumby':
+			case 'photox':
+			case 'photoy':
+				$itemvalue = intval( $itemvalue );
 				$doit = true;
 				break;
 				

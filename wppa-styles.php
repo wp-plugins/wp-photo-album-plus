@@ -3,7 +3,7 @@
 /* Package: wp-photo-album-plus
 /*
 /* Various style computation routines
-/* Version 5.4.1
+/* Version 5.4.15
 /*
 */
 
@@ -337,12 +337,13 @@ global $wppa;
 		return $result;									// no file: no dimensions ( 2.3.0 )
 	}
 	
-	if ( wppa_is_video( $id ) ) {
-		$image_attr = array( '0' => wppa_get_videox( $id ), '1' => wppa_get_videoy( $id ) );
-	}
-	else {
-		$image_attr = getimagesize( $file );
-	}
+	$image_attr = wppa_get_imagexy( $id );
+//	if ( wppa_is_video( $id ) ) {
+//		$image_attr = array( '0' => wppa_get_videox( $id ), '1' => wppa_get_videoy( $id ) );
+//	}
+//	else {
+//		$image_attr = array( '0' => wppa_get_photox( $id ), '1' => wppa_get_photoy( $id ) );
+//	}
 	if ( 
 			! $image_attr || 
 			! isset( $image_attr['0'] ) || 
@@ -352,7 +353,7 @@ global $wppa;
 			
 		// File is corrupt
 		wppa_dbg_msg( 'Please check file ' . $file . ' it is corrupted. If it is a thumbnail image,' . 
-			' regenerate them using Table VIII item 7 of the Photo Albums -> Settings admin page.', 
+			' regenerate them using Table VIII-A4 of the Photo Albums -> Settings admin page.', 
 			'red' );
 		return $result;
 	}

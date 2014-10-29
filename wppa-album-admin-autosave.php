@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * create, edit and delete albums
-* version 5.4.5
+* version 5.4.15
 *
 */
 
@@ -1043,9 +1043,9 @@ function wppa_admin_albums_flat() {
 							<?php if ( $album['owner'] != '--- public ---' || current_user_can('wppa_admin') ) { ?>
 								<?php $url = wppa_ea_url($album['id']) ?>
 								<td><a href="<?php echo($url) ?>" class="wppaedit"><?php _e('Edit', 'wppa'); ?></a></td>
-								<td><a href="<?php echo($url.'&quick') ?>" class="wppaedit"><?php _e('Quick', 'wppa'); ?></a></td>
-								<td><a href="<?php echo($url.'&bulk') ?>" class="wppaedit"><?php _e('Bulk', 'wppa'); ?></a></td>
-								<td><a href="<?php echo($url.'&seq') ?>" class="wppaedit"><?php _e('Seq', 'wppa'); ?></a></td>
+								<td><a href="<?php echo($url.'&amp;quick') ?>" class="wppaedit"><?php _e('Quick', 'wppa'); ?></a></td>
+								<td><a href="<?php echo($url.'&amp;bulk#manage-photos') ?>" class="wppaedit"><?php _e('Bulk', 'wppa'); ?></a></td>
+								<td><a href="<?php echo($url.'&amp;seq') ?>" class="wppaedit"><?php _e('Seq', 'wppa'); ?></a></td>
 								
 								<?php $url = wppa_ea_url($album['id'], 'del') ?>
 								<td><a href="<?php echo($url) ?>" class="wppadelete"><?php _e('Delete', 'wppa'); ?></a></td>
@@ -1526,9 +1526,9 @@ global $wpdb;
 							<?php if ( $album['owner'] != '--- public ---' || current_user_can('administrator') ) { ?>
 								<?php $url = wppa_ea_url($album['id']) ?>
 								<td><a href="<?php echo($url) ?>" class="wppaedit"><?php _e('Edit', 'wppa'); ?></a></td>
-								<td><a href="<?php echo($url.'&quick') ?>" class="wppaedit"><?php _e('Quick', 'wppa'); ?></a></td>
-								<td><a href="<?php echo($url.'&bulk') ?>" class="wppaedit"><?php _e('Bulk', 'wppa'); ?></a></td>
-								<td><a href="<?php echo($url.'&seq') ?>" class="wppaedit"><?php _e('Seq', 'wppa'); ?></a></td>
+								<td><a href="<?php echo($url.'&amp;quick') ?>" class="wppaedit"><?php _e('Quick', 'wppa'); ?></a></td>
+								<td><a href="<?php echo($url.'&amp;bulk#manage-photos') ?>" class="wppaedit"><?php _e('Bulk', 'wppa'); ?></a></td>
+								<td><a href="<?php echo($url.'&amp;seq') ?>" class="wppaedit"><?php _e('Seq', 'wppa'); ?></a></td>
 								
 								<?php $url = wppa_ea_url($album['id'], 'del') ?>
 								<td><a href="<?php echo($url) ?>" class="wppadelete"><?php _e('Delete', 'wppa'); ?></a></td>

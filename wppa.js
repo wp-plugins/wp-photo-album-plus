@@ -2,7 +2,7 @@
 //
 // conatins slideshow, theme, ajax and lightbox code
 //
-// Version 5.4.14
+// Version 5.4.15
 
 // Part 1: Slideshow
 //
@@ -921,6 +921,8 @@ function _wppaNextSlide_5( mocc ) {
 	if ( ! wppaIsMini[mocc] ) { 							// Not in a widget
 		_bumpViewCount( _wppaId[mocc][_wppaCurIdx[mocc]] );	// Register a view
 	}
+	
+	_wppaDoAutocol(mocc);
 }
  
 function wppaMakeNameHtml( mocc ) {
@@ -1558,8 +1560,8 @@ function _wppaDoAutocol( mocc ) {
 	jQuery( ".wppa-mimg-"+mocc ).css( 'width',w );
 	jQuery( ".wppa-mimg-"+mocc ).css( 'height', '' );
 
-	// Check again after 100 ms	
-//	setTimeout( '_wppaDoAutocol( '+mocc+' )', 100 );
+	// Check again after 1000 ms	
+//	setTimeout( '_wppaDoAutocol( '+mocc+' )', 1000 );
 }
 
 function _wppaCheckRewind( mocc ) {
@@ -1966,12 +1968,19 @@ function _wppaUbb( mocc,where,act ) {
 function wppaOpenComments( mocc ) {
 
 	if ( _wppaSSRuns[mocc] ) _wppaStop( mocc );
-		// Show existing comments
-		jQuery( '#wppa-comtable-wrap-'+mocc ).css( 'display', 'block' );
-		// Show the input form table
-		jQuery( '#wppa-comform-wrap-'+mocc ).css( 'display', 'block' );
-		// Hide the comment footer
-		jQuery( '#wppa-comfooter-wrap-'+mocc ).css( 'display', 'none' );
+	
+	// Show existing comments
+	jQuery( '#wppa-comtable-wrap-'+mocc ).css( 'display', 'block' );
+	
+	// Show the input form table
+	jQuery( '#wppa-comform-wrap-'+mocc ).css( 'display', 'block' );
+	
+	// Hide the comment footer
+	jQuery( '#wppa-comfooter-wrap-'+mocc ).css( 'display', 'none' );
+	
+	// Do autocol to fix a layout problem
+	wppaColWidth[mocc] = 0;	
+	setTimeout( '_wppaDoAutocol( '+mocc+' )', 100 );
 }
 
 function _wppaShowMetaData( mocc, key ) {
@@ -3011,7 +3020,7 @@ wppaConsoleLog( 'wppaOvlShow arg='+arg );
 				' style="border:none; width:'+wppaWindowInnerWidth+'px; visibility:hidden; box-shadow:none; position:absolute;"'+
 			' />'+
 			' <div style="height: 20px; width: 100%; position:absolute; bottom:0; left:0;" onmouseover="jQuery(\'#wppa-ovl-legenda-2\').css(\'visibility\',\'visible\');" onmouseout="jQuery(\'#wppa-ovl-legenda-2\').css(\'visibility\',\'hidden\');wppaShowLegenda=\'hidden\';" >'+
-				' <div id="wppa-ovl-legenda-2" style="position:absolute; left:0; bottom:0; background-color:'+(wppaOvlTheme == 'black' ? '#272727' : '#a7a7a7')+'; color:'+(wppaOvlTheme == 'black' ? '#a7a7a7' : '#272727')+'; visibility:'+wppaShowLegenda+';" >'+
+				' <div id="wppa-ovl-legenda-2" style="position:fixed; left:0; bottom:0; background-color:'+(wppaOvlTheme == 'black' ? '#272727' : '#a7a7a7')+'; color:'+(wppaOvlTheme == 'black' ? '#a7a7a7' : '#272727')+'; visibility:'+wppaShowLegenda+';" >'+
 					'Mode='+wppaOvlMode+'. Keys: f = next mode; esc,x,o,c,q = exit; p = previous, n = next, s = start/stop, d = dismiss this notice.'+
 				' </div>'+
 			' </div>';
@@ -3457,7 +3466,7 @@ function wppaOvlOnclick( event ) {
 
 			
 function wppaInitOverlay() {
-wppaConsoleLog( 'wppaInitOverlay', 1 );
+wppaConsoleLog( 'wppaInitOverlay' );
 	var anchors=jQuery( 'a' );
 	var anchor;
 	var i;
@@ -3657,6 +3666,7 @@ function wppaAjaxComment( mocc, id ) {
 	// Process result
 	if ( xmlhttp.readyState==4 && xmlhttp.status==200 ) {
 		var result = xmlhttp.responseText;
+result = result.replace( /\\/g, '' );
 		jQuery( "#wppa-comments-"+mocc ).html( result );
 		_wppaCommentHtml[mocc][_wppaCurIdx[mocc]] = result;
 		wppaOpenComments( mocc );
@@ -3671,9 +3681,9 @@ function wppaAjaxComment( mocc, id ) {
 
 }
 
-function wppaConsoleLog( arg ) {
-wppaDebug=true;//diagnostic
-	if ( typeof( console ) != 'undefined' && wppaDebug ) {
+function wppaConsoleLog( arg, force = false ) {
+//wppaDebug=true;//diagnostic
+	if ( typeof( console ) != 'undefined' && ( wppaDebug || force ) ) {
 		console.log( arg );
 	}
 }
@@ -3849,4 +3859,36 @@ function wppaUrlToId( url ) {
 	temp = temp.replace( '/', '' );
 	temp = temp.replace( '/', '' );
 	return temp;
+}
+
+function wppaAjaxUploadFront(mocc) {
+
+	// Create the http request object
+	var xmlhttp = wppaGetXmlHttp();
+
+	// Make the Ajax send data
+	var alb   = jQuery('#wppa-upload-'+mocc).attr('value');
+	var file  = jQuery('#wppa-user-upload-'+alb+'-'+mocc).attr('value');
+	var nonce = jQuery('#wppa-nonce').attr('value');
+	var data  = 'action=wppa&wppa-action=do-fe-upload'+
+				'&wppa-nonce='+nonce+
+				'&wppa-upload-album='+alb+
+				'&wppa-user-upload-'+alb+'-'+mocc+'[]=file';
+	
+	// Do the Ajax action
+	xmlhttp.open( 'POST',wppaAjaxUrl, false );	// sync
+	xmlhttp.setRequestHeader( "Content-type","application/x-www-form-urlencoded" );
+	xmlhttp.send( data );
+	
+	// Process result
+	if ( xmlhttp.readyState==4 && xmlhttp.status==200 ) {
+		var result = xmlhttp.responseText;
+alert(result);
+	}
+	else {
+		alert( 'Comm error '+xmlhttp.status+' encountered' );
+		return false;
+	}
+
+	return false;
 }

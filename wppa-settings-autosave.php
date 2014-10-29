@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 5.4.14
+* Version 5.4.15
 *
 */
 
@@ -2418,6 +2418,13 @@ global $no_default;
 							$slug = 'wppa_cre_uploads_htaccess';
 							$html = wppa_checkbox($slug);
 							wppa_setting($slug, '18', $name, $desc, $html, $help);
+							
+							$name = __('Lazy or HTML comp', 'wppa');
+							$desc = __('Tick this box when you use lazy load or html compression.', 'wppa');
+							$help = esc_js(__('If the filmstrip images do not show up and you have a lazy load or html optimizing plugin active: Check this box', 'wppa'));
+							$slug = 'wppa_lazy_or_htmlcomp';
+							$html = wppa_checkbox($slug);
+							wppa_setting($slug, '19', $name, $desc, $html, $help);
 							}
 						wppa_setting_subheader( 'B', '1', __( 'Slideshow related settings', 'wppa' ) );
 							{
@@ -4733,6 +4740,30 @@ global $no_default;
 							$html4 = wppa_togo_field( $slug2 );
 							$html = array($html1, $html2, $html3, $html4);
 							wppa_setting(false, '12', $name, $desc, $html, $help);
+							
+							if ( function_exists( 'ewww_image_optimizer') ) {
+								$name = __('Optimize files', 'wppa');
+								$desc = __('Optimize with EWWW image optimizer', 'wppa');
+								$help = '';
+								$slug2 = 'wppa_optimize_ewww';
+								$html1 = '';
+								$html2 = wppa_maintenance_button( $slug2 );
+								$html3 = wppa_status_field( $slug2 );
+								$html4 = wppa_togo_field( $slug2 );
+								$html = array($html1, $html2, $html3, $html4);
+								wppa_setting(false, '13', $name, $desc, $html, $help);
+							}
+
+							$name = __('Recalc sizes', 'wppa');
+							$desc = __('Recalculate photosizes and save to db.', 'wppa');
+							$help = '';
+							$slug2 = 'wppa_comp_sizes';
+							$html1 = '';
+							$html2 = wppa_maintenance_button( $slug2 );
+							$html3 = wppa_status_field( $slug2 );
+							$html4 = wppa_togo_field( $slug2 );
+							$html = array($html1, $html2, $html3, $html4);
+							wppa_setting(false, '14', $name, $desc, $html, $help);
 
 						wppa_setting_subheader('C', '4', __('Listings', 'wppa'));
 
@@ -5159,7 +5190,7 @@ global $no_default;
 							
 							$name = __('Copy Timestamp', 'wppa');
 							$desc = __('Copy timestamp when copying photo.', 'wppa');
-							$help = esc_js('If checked, the copied photo is not "new"', 'wppa');
+							$help = esc_js(__('If checked, the copied photo is not "new"', 'wppa'));
 							$slug = 'wppa_copy_timestamp';
 							$html = wppa_checkbox($slug);
 							wppa_setting($slug, '15', $name, $desc, $html, $help);
@@ -5170,6 +5201,13 @@ global $no_default;
 							$slug = 'wppa_frontend_album_public';
 							$html = wppa_checkbox($slug);
 							wppa_setting($slug, '16', $name, $desc, $html, $help);
+							
+							$name = __('Optimize files', 'wppa');
+							$desc = __('Optimize image files right after upload/import', 'wppa');
+							$help = esc_js(__('This option requires the plugin EWWW Image Optimizer to be activated', 'wppa'));
+							$slug = 'wppa_optimize_new';
+							$html = wppa_checkbox($slug);
+							wppa_setting($slug, '17', $name, $desc, $html, $help);
 							
 							}
 							wppa_setting_subheader( 'E', '1', __( 'Search Albums and Photos related settings', 'wppa' ) );

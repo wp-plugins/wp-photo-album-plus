@@ -1,7 +1,7 @@
 <?php
 /*
 *
-* WPPA+ version 5.0.0
+* WPPA+ version 5.4.15
 *
 * PHP Image Resize Class
 *
@@ -206,8 +206,7 @@ class wppa_ImageResize {
 
    function saveImage($numQuality = 95){
    
-		global $wppa_opt;
-		$numQuality = $wppa_opt['wppa_jpeg_quality'];
+		$numQuality = wppa_opt( 'wppa_jpeg_quality' );
 		
       switch($this->arrResizedDetails['mime']){
          case "image/jpeg":

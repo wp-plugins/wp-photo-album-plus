@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Various wppa boxes
-* Version 5.4.14
+* Version 5.4.15
 *
 *
 */
@@ -664,7 +664,7 @@ global $wppa_opt;
 			if ( true ) { 	// Captcha
 				$captkey = $wppa['randseed'];
 				$wppa['out'] .= '<div style="float:left; margin: 6px 0;" ><div style="float:left;">'.wppa_make_captcha( $captkey ).'</div><input type="text" id="wppa-captcha-'.$wppa['mocc'].'" name="wppa-captcha" style="margin-left: 6px; width:50px; '.__wcs( 'wppa-box-text' ).__wcs( 'wppa-td' ).'" /></div>';
-				$wppa['out'] .= '<input type="hidden" name="wppa-randseed" value="'.$captkey.'" />';
+//				$wppa['out'] .= '<input type="hidden" name="wppa-randseed" value="'.$captkey.'" />';
 			}
 
 		$wppa['out'] .= '
@@ -742,6 +742,8 @@ global $wppa_opt;
 	$returnurl = trim( $returnurl, '?' );
 
 	$returnurl = wppa_trim_wppa_( $returnurl );
+	
+$onsubmit = ( true ) ? ' onsubmit="wppaAjaxUploadFront('.$wppa['mocc'].');"' : '';
 
 	// Make the HTML
 	$t = $mcr ? 'mcr-' : '';
@@ -770,7 +772,7 @@ global $wppa_opt;
 			}
 			else {
 				$wppa['out'] .= '
-			<input type="hidden" name="wppa-upload-album" value="'.$alb.'" />';
+			<input type="hidden" id="wppa-upload-'.$wppa['mocc'].'" name="wppa-upload-album" value="'.$alb.'" />';
 			}
 
 			if ( wppa_switch( 'wppa_upload_one_only' ) && ! current_user_can( 'administrator' ) ) {
@@ -1444,7 +1446,7 @@ global $wppa_opt;
 			foreach ( array_keys( $data ) as $id ) {
 				$thumb = wppa_cache_thumb( $id );
 				if ( $thumb ) {
-					$imgsize 		= getimagesize( wppa_get_photo_path( $id ) );
+					$imgsize		= array( wppa_get_photox( $id ), wppa_get_photoy( $id ) );
 					if ( $widget ) {
 						$maxw 		= $size;
 						$maxh 		= round ( $maxw * $imgsize['1'] / $imgsize['0'] );

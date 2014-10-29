@@ -2,7 +2,7 @@
 /* wppa-ajax.php
 *
 * Functions used in ajax requests
-* version 5.4.10
+* version 5.4.15
 *
 */
 
@@ -30,10 +30,14 @@ global $wppa_session;
 	// So, always use the function wppa_switch( $slug ) to test on a bool setting
 	
 	// Globally check query args to prevent php injection
-	
+	$wppa_args = array( 'album', 'photo', 'slide', 'cover', 'occur', 'woccur', 'searchstring', 'topten', 
+						'lasten', 'comten', 'featen', 'single', 'photos-only', 'debug', 
+						'relcount', 'upldr', 'owner', 'rootsearch' );
 	foreach ( $_REQUEST as $arg ) {
-		if ( strpos( $arg, '<?' ) !== false ) die( 'Security check failure #91' );
-		if ( strpos( $arg, '?>' ) !== false ) die( 'Security check failure #92' );
+		if ( in_array( str_replace( 'wppa-', '', $arg ), $wppa_args ) ) {
+			if ( strpos( $arg, '<?' ) !== false ) die( 'Security check failure #91' );
+			if ( strpos( $arg, '?>' ) !== false ) die( 'Security check failure #92' );
+		}
 	}
 
 	wppa_vfy_arg( 'wppa-action', true );
@@ -50,7 +54,7 @@ global $wppa_session;
 			$ok = false;
 			if ( current_user_can( 'wppa_admin' ) ) $ok = true;
 			if ( wppa_get_user() == wppa_get_photo_owner( $photo ) && ( current_user_can( 'wppa_upload' ) || ( is_user_logged_in() && wppa_switch( 'wppa_upload_edit' ) ) ) ) $ok = true;
-			if ( ! $ok ) die( 'You do nat have sufficient rights to do this' );
+			if ( ! $ok ) die( 'You do not have sufficient rights to do this' );
 			require_once 'wppa-photo-admin-autosave.php';
 			$wppa['front_edit'] = true;
 			echo '	<div style="padding-bottom:4px;height:24px;" >
@@ -555,6 +559,9 @@ global $wppa_session;
 			break;
 		
 		case 'render':	
+			$tim_1 	= microtime( true );
+			$nq_1 	= get_num_queries();
+			
 			// Correct the fact that this is a non-admin operation, if it is
 			if ( is_admin() ) {
 				require_once 'wppa-non-admin.php';
@@ -571,6 +578,13 @@ global $wppa_session;
 			}
 			// Render
 			echo wppa_albums();
+			
+			$tim_2 	= microtime( true );
+			$nq_2 	= get_num_queries();
+			$mem 	= memory_get_peak_usage( true ) / 1024 / 1024;
+
+			$msg 	= sprintf( 'WPPA Ajax render: db queries: WP:%d, WPPA+: %d in %4.2f seconds, using %4.2f MB memory max', $nq_1, $nq_2 - $nq_1, $tim_2 - $tim_1, $mem );
+			echo '<script type="text/javascript">wppaConsoleLog( \''.$msg.'\', true )</script>';
 			break;
 			
 		case 'delete-photo':
@@ -1840,6 +1854,11 @@ global $wppa_session;
 			exit;
 			break;
 
+		case 'do-fe-upload':
+			wppa_user_upload();
+			exit;
+			break;
+		
 		default:	// Unimplemented $wppa-action
 		die( '-1' );
 	}

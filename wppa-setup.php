@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 5.4.14
+* Version 5.4.15
 *
 */
 
@@ -89,6 +89,10 @@ global $silent;
 					exifdtm tinytext NOT NULL,
 					videox smallint(5) NOT NULL default '0',
 					videoy smallint(5) NOT NULL default '0',
+					thumbx smallint(5) NOT NULL default '0',
+					thumby smallint(5) NOT NULL default '0',
+					photox smallint(5) NOT NULL default '0',
+					photoy smallint(5) NOT NULL default '0',
 					scheduledtm tinytext NOT NULL,
 					PRIMARY KEY  (id),
 					KEY albumkey (album)
@@ -759,6 +763,7 @@ Hide Camera info
 						'wppa_use_custom_theme_file' 	=> 'no',
 						'wppa_cre_uploads_htaccess' 	=> 'no',
 						'wppa_debug_trace_on' 			=> 'no',
+						'wppa_lazy_or_htmlcomp' 		=> 'no',
 
 						// B Full size and Slideshow
 						'wppa_fullvalign' 				=> 'fit',
@@ -1023,6 +1028,7 @@ Hide Camera info
 						'wppa_remake' 				=> '',
 						'wppa_remake_skip_one'		=> '',
 						'wppa_errorlog_purge' 		=> '',
+						'wppa_comp_sizes' 			=> '',
 
 						// B Irreversable
 						'wppa_rating_clear' 		=> 'no',
@@ -1045,6 +1051,7 @@ Hide Camera info
 						'wppa_zero_numbers' 		=> '5',
 						'wppa_leading_zeros' 		=> '',
 						'wppa_add_gpx_tag' 			=> '',
+						'wppa_optimize_ewww' 		=> '',
 
 						// Table IX: Miscellaneous
 						// A System
@@ -1105,6 +1112,7 @@ Hide Camera info
 						
 						'wppa_copy_timestamp'			=> 'no',
 						'wppa_frontend_album_public' 	=> 'no',
+						'wppa_optimize_new' 			=> 'no',
 						
 						// E Search
 						'wppa_search_linkpage' 			=> '0',		// 1

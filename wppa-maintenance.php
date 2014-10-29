@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains (not yet, but in the future maybe) all the maintenance routines
-* Version 5.4.11
+* Version 5.4.15
 *
 */
 
@@ -42,7 +42,9 @@ global $wppa_session;
 						'wppa_watermark_all',
 						'wppa_create_all_autopages',
 						'wppa_leading_zeros',
-						'wppa_add_gpx_tag'
+						'wppa_add_gpx_tag',
+						'wppa_optimize_ewww',
+						'wppa_comp_sizes'
 					);
 	foreach ( array_keys( $all_slugs ) as $key ) {
 		if ( $all_slugs[$key] != $slug ) {
@@ -161,6 +163,8 @@ global $wppa_session;
 		case 'wppa_create_all_autopages':
 		case 'wppa_leading_zeros':
 		case 'wppa_add_gpx_tag':
+		case 'wppa_optimize_ewww':
+		case 'wppa_comp_sizes':
 		
 			// Process photos
 			$thumbsize 	= wppa_get_minisize();
@@ -378,6 +382,39 @@ global $wppa_session;
 							wppa_clear_taglist();
 						}
 						break;
+						
+					case 'wppa_optimize_ewww':
+						$file = wppa_get_photo_path( $photo['id'] );
+						if ( is_file( $file ) ) {
+							ewww_image_optimizer( $file, 4, false, false, false ); 
+						}
+						$file = wppa_get_thumb_path( $photo['id'] );
+						if ( is_file( $file ) ) {
+							ewww_image_optimizer( $file, 4, false, false, false ); 
+						}
+						break;
+						
+					case 'wppa_comp_sizes':
+						$tx = 0; $ty = 0; $px = 0; $py = 0;
+						$file = wppa_get_photo_path( $photo['id'] );
+						if ( is_file( $file ) ) {
+							$temp = getimagesize( $file );
+							if ( is_array( $temp ) ) {
+								$px = $temp[0];
+								$py = $temp[1];
+							}
+						}
+						$file = wppa_get_thumb_path( $photo['id'] );
+						if ( is_file( $file ) ) {
+							$temp = getimagesize( $file );
+							if ( is_array( $temp ) ) {
+								$tx = $temp[0];
+								$ty = $temp[1];
+							}
+						}
+						wppa_update_photo( array( 'id' => $photo['id'], 'thumbx' => $tx, 'thumby' => $ty, 'photox' => $px, 'photoy' => $py ) );
+						break;
+						
 		
 				}
 				// Test for timeout / ready
@@ -630,6 +667,7 @@ global $thumb;
 							<th>Id</th>
 							<th>Session id</th>
 							<th>User</th>
+							<th>Rs</th>
 							<th>Started</th>
 							<th>Count</th>
 							<th>Page</th>
@@ -641,7 +679,7 @@ global $thumb;
 							<th>sub</th>
 							<th>Superview</th>
 						</tr>
-						<tr><td colspan="13"><hr /></td></tr>
+						<tr><td colspan="14"><hr /></td></tr>
 					</thead>
 					<tbody>';
 					foreach( $sessions as $session ) {
@@ -651,14 +689,15 @@ global $thumb;
 								<td>'.$session['id'].'</td>
 								<td>'.$session['session'].'</td>
 								<td>'.$session['user'].'</td>
-								<td>'.wppa_local_date(get_option('date_format', "F j, Y,").' '.get_option('time_format', "g:i a"), $session['timestamp']).'</td>
+								<td>'.$data['randseed'].'</td>
+								<td style="text-wrap:none;" >'.wppa_local_date(get_option('date_format', "F j, Y,").' '.get_option('time_format', "g:i a"), $session['timestamp']).'</td>
 								<td>'.$session['count'].'</td>
 								<td>'.( isset( $data['page'] ) ? $data['page'] : '' ).'</td>
 								<td>'.( isset( $data['ajax'] ) ? $data['ajax'] : '' ).'</td>
 								<td>'.( isset( $data['album'] ) ? wppa_index_array_to_string( array_keys( $data['album'] ) ) : '' ).'</td>
 								<td>'.( isset( $data['photo'] ) ? wppa_index_array_to_string( array_keys( $data['photo'] ) ) : '' ).'</td>
 								<td>'.( isset( $data['use_searchstring'] ) ? $data['use_searchstring'] : '' ).'</td>
-								<td>'.( isset( $data['search_root'] ) ? $data['search_root'].' ' : '' ).( isset( $data['rootbox'] ) ? ( $data['rootbox'] ? 'on' : 'off' ) : '' ).'</td>
+								<td style="text-wrap:unrestricted; max-width:300px;" >'.( isset( $data['search_root'] ) ? $data['search_root'].' ' : '' ).( isset( $data['rootbox'] ) ? ( $data['rootbox'] ? 'on' : 'off' ) : '' ).'</td>
 								<td>'.( isset( $data['subbox'] ) ? ( $data['subbox'] ? 'Y' : 'N' ) : '' ).'</td>
 								<td>'.( isset( $data['superalbum'] ) ? $data['superalbum'].' ' : '' ).( isset( $data['superview'] ) ? $data['superview'] : '' ).'</td>
 							</tr>';

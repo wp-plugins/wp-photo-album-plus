@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the upload/import pages and functions
-* Version 5.4.11
+* Version 5.4.15
 *
 */
 
@@ -679,7 +679,7 @@ global $wppa_supported_video_extensions;
 										<input type="checkbox" id="all-pho" <?php if ( $is_sub_depot ) echo( 'checked="checked"' ) ?> onchange="checkAll( 'all-pho', '.wppa-pho' )" /><b>&nbsp;&nbsp;<?php _e( 'Check/uncheck all', 'wppa' ) ?></b>
 									</td>
 									<td>
-										<input type="checkbox" id="org-pho" <?php if ( $is_sub_depot ) echo( 'checked="checked"' ) ?> onchange="checkOrg( 'org-pho', '.wppa-pho' )" /><b>&nbsp;&nbsp;<?php _e( 'Check/uncheck originals', 'wppa' ) ?></b>
+										<input type="checkbox" id="org-pho" <?php if ( $is_sub_depot ) echo( 'checked="checked"' ) ?> onchange="checkOrg( 'org-pho', '.wppa-pho' )" /><b>&nbsp;&nbsp;<?php _e( 'Originals only', 'wppa' ) ?></b>
 									</td>
 									<?php if ( $is_sub_depot ) { ?>
 										<td>
@@ -705,6 +705,10 @@ global $wppa_supported_video_extensions;
 										<input type="checkbox" id="wppa-nodups" name="wppa-nodups" checked="checked" ><b>&nbsp;&nbsp;<?php _e( 'Do not create duplicates', 'wppa' ) ?></b>
 									<?php } ?>
 									</td>
+									<td>
+										<input type="checkbox" id="wppa-zoom" onclick="wppa_setCookie('zoompreview', this.checked, '365')" ><b>&nbsp;&nbsp;<?php _e( 'Zoom previews', 'wppa' ) ?></b>
+										<script type="text/javascript">if ( wppa_getCookie('zoompreview') == true ) { jQuery('#wppa-zoom').attr('checked', 'checked') }</script>
+									</td>
 								</tr>
 							</thead>
 						</table>				
@@ -717,7 +721,7 @@ global $wppa_supported_video_extensions;
 									$ext = strtolower( substr( strrchr( $file, "." ), 1 ) );
 									$meta =	substr( $file, 0, strlen( $file )-3 ).'pmf';
 									if ( $ext == 'jpg' || $ext == 'png' || $ext == 'gif' ) { ?>
-										<td>
+										<td id="td-file-<?php echo( $idx ) ?>" >
 											<input type="checkbox" id="file-<?php echo( $idx ) ?>" name="file-<?php echo( $idx ) ?>" title="<?php echo $file ?>" class= "wppa-pho" <?php if ( $is_sub_depot ) echo( 'checked="checked"' ) ?> /><span id="name-file-<?php echo( $idx ) ?>" >&nbsp;&nbsp;<?php echo( wppa_sanitize_file_name( basename( $file ) ) ); ?>&nbsp;<?php echo( stripslashes( wppa_get_meta_name( $meta, '( ' ) ) ) ?><?php echo( stripslashes( wppa_get_meta_album( $meta, '[' ) ) ) ?></span>
 											<?php 
 												if ( $wppa['is_remote'] ) { 
@@ -732,7 +736,7 @@ global $wppa_supported_video_extensions;
 													$img_url = str_replace( ABSPATH, home_url().'/', $file );
 												} 
 											?>
-											<img src="<?php echo $img_url ?>" alt="N.A." style="max-height:48px;" onmouseover="jQuery(this).css('max-height', '144px')" onmouseout="jQuery(this).css('max-height', '48px')" />
+											<img src="<?php echo $img_url ?>" alt="N.A." style="max-height:48px;" onmouseover="if (jQuery('#wppa-zoom').attr('checked')) jQuery(this).css('max-height', '144px')" onmouseout="if (jQuery('#wppa-zoom').attr('checked')) jQuery(this).css('max-height', '48px')" />
 										</td>
 										<?php if ( $ct == 3 ) {
 											echo( '</tr><tr>' ); 

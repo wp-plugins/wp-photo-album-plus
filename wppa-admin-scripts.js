@@ -1,7 +1,7 @@
 /* admin-scripts.js */
 /* Package: wp-photo-album-plus
 /*
-/* Version 5.4.10
+/* Version 5.4.15
 /* Various js routines used in admin pages		
 */
 
@@ -852,6 +852,14 @@ function checkOrg(name, clas) {
 				}
 				else {
 					jQuery('#'+checkboxid).prop('checked', '');
+				}
+			}
+			else {	// NOT orig
+				if ( elm.checked ) {
+					jQuery('#td-'+checkboxid).css('visibility', 'hidden');
+				}
+				else {
+					jQuery('#td-'+checkboxid).css('visibility', 'visible');
 				}
 			}
 			idx++;

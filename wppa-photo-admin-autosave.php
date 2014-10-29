@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * edit and delete photos
-* version 5.4.5
+* version 5.4.15
 *
 */
 
@@ -1184,7 +1184,9 @@ global $wppa_opt;
 							$imgs['1'] = wppa_get_videoy( $photo['id'] );
 						}
 						else {
-							$imgs = getimagesize( wppa_get_thumb_path( $photo['id'] ) );
+//							$imgs = getimagesize( wppa_get_thumb_path( $photo['id'] ) );
+							$imgs['0'] = wppa_get_thumbx( $photo['id'] );
+							$imgs['1'] = wppa_get_thumby( $photo['id'] );
 						}
 						$mw = $size - '20';
 						$mh = $mw * '3' / '4';

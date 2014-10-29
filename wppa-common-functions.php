@@ -2,7 +2,7 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 5.4.12
+* version 5.4.15
 *
 */
 
@@ -187,10 +187,19 @@ global $wppa_defaults;
 }
 
 function wppa_get_randseed() {
+global $wppa_session;
 
-	if ( isset( $_REQUEST['wppa-randseed'] ) ) $randseed = $_REQUEST['wppa-randseed'];
-	elseif ( isset( $_REQUEST['randseed'] ) ) $randseed = $_REQUEST['randseed'];
-	else $randseed = time() % '4711';
+//	if ( isset( $_REQUEST['wppa-randseed'] ) ) $randseed = $_REQUEST['wppa-randseed'];
+//	elseif ( isset( $_REQUEST['randseed'] ) ) $randseed = $_REQUEST['randseed'];
+//	else $randseed = time() % '4711';
+	if ( isset( $wppa_session['randseed'] ) ) {
+		$randseed = $wppa_session['randseed'];
+	}
+	else {
+		$randseed = time() % '4711';
+		$wppa_session['randseed'] = $randseed;
+	}
+//echo $randseed;
 	return $randseed;
 }
 
@@ -723,6 +732,10 @@ global $thumb;
 		
 		// File successfully created ?
 		if ( is_file ( $newimage ) ) {	
+		
+			// Optimize file
+			wppa_optimize_image_file( $newimage );
+		
 			// Create thumbnail...
 			$thumbsize = wppa_get_minisize();
 			wppa_create_thumbnail( $newimage, $thumbsize, '' );
@@ -747,6 +760,9 @@ global $thumb;
 		if ( $exdt ) {
 			$wpdb->query( $wpdb->prepare( "UPDATE `".WPPA_PHOTOS."` SET `exifdtm` = %s WHERE `id` = %s", $exdt, $image_id ) );
 		}
+		
+		// Compute and save sizes
+		wppa_get_photox( $image_id, 'force' );
 		
 		// Show progression
 		if ( is_admin() && ! $wppa['ajax'] ) echo( '.' );
@@ -965,7 +981,7 @@ global $wppa_opt;
 			imagegif( $dst, $thumbpath );
 			break;
 		case 2:
-			imagejpeg( $dst, $thumbpath, 100 );
+			imagejpeg( $dst, $thumbpath, wppa_opt( 'wppa_jpeg_quality' ) );
 			break;
 		case 3:
 			imagepng( $dst, $thumbpath, 6 );
@@ -975,6 +991,13 @@ global $wppa_opt;
 	// Cleanup
 	imagedestroy( $src );
 	imagedestroy( $dst );
+	
+	// Optimize
+	wppa_optimize_image_file( $thumbpath );
+
+	// Compute and save sizes
+	wppa_get_thumbx( $image_id, 'force' );
+	
 	return true;
 }
 
@@ -1287,75 +1310,6 @@ global $wppa_inv_exiftags;
 	}
 	else return '';
 }
-
-/*
-// This function attemps to recover iptc and exif data from existing files in the wppa dir.
-function wppa_recuperate_iptc_exif() {
-global $wpdb;
-
-	if ( wppa_switch( 'wppa_save_iptc' ) || wppa_switch( 'wppa_save_exif' ) ) {
-		$iptc_count = '0';
-		$exif_count = '0';
-		$tot_count = '0';
-		$start = get_option( 'wppa_last_recup', '0' );
-		$photos = $wpdb->get_results( "SELECT `id` FROM `".WPPA_PHOTOS."` WHERE `id` > ".$start." ORDER BY `id`", ARRAY_A );
-		if ( $photos ) {
-			wppa_update_message( sprintf( 'Recuperation started at photo id = %s.', $start+'1', 'wppa' ) );
-			foreach ( $photos as $photo ) {
-				$file = wppa_get_photo_path( $photo['id'] );
-				if ( is_file ( $file ) ) {					// Not a dir
-					$attr = getimagesize( $file, $info );
-					if ( is_array( $attr ) ) {				// Is a picturefile
-						if ( $attr[2] == IMAGETYPE_JPEG ) {	// Is a jpg
-							$id = $photo['id'];
-							// Now we have $id, $file and $info
-							if ( wppa_switch( 'wppa_save_iptc' ) ) {	// Save iptc
-								if ( isset( $info["APP13"] ) ) {	// There is IPTC data
-									$is_iptc = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM `".WPPA_IPTC."` WHERE `photo` = %s", $id ) );
-									wppa_dbg_q( 'Q223' );
-									if ( ! $is_iptc ) { 	// No IPTC yet and there is: Recuperate
-										wppa_import_iptc( $id, $info, 'nodelete' );
-										$iptc_count++;
-									}						
-								}
-							}
-							if ( wppa_switch( 'wppa_save_exif' ) ) {	// Save exif
-								$image_type = exif_imagetype( $file );
-								if ( $image_type == IMAGETYPE_JPEG ) {	// EXIF supported by server
-									$is_exif = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM `".WPPA_EXIF."` WHERE `photo`=%s", $id ) );
-									wppa_dbg_q( 'Q224' );
-									if ( ! $is_exif ) { 				// No EXIF yet
-										$exif = @ exif_read_data( $file, 'EXIF' );//@
-										if ( is_array( $exif ) )	{ 		// There is exif data present
-											wppa_import_exif( $id, $file, 'nodelete' );
-											$exif_count++;
-										}
-									}						
-								}	
-							}
-							$tot_count++;							
-						}					
-					}
-					update_option( 'wppa_last_recup', $id );
-				}
-				if ( wppa_is_time_up() ) {
-					wppa_error_message( __( sprintf( 'Time out after processing %s items. %s photos with IPTC data and %s photos with EXIF data.', $tot_count, $iptc_count, $exif_count ), 'wppa' ) );
-//					update_option( 'wppa_last_recup', $id );
-					return false;
-				}
-			}
-		}
-		wppa_ok_message( __( sprintf( 'Done! %s items processed. %s photos with IPTC data and %s photos with EXIF data.', $tot_count, $iptc_count, $exif_count ), 'wppa' ) );
-		update_option( 'wppa_last_recup', '-2' );
-		return true;
-	}
-	else {
-		wppa_error_message( __( 'This is useless. Both saving IPTC and saving EXIF are switched off. See Table IX-H5 and 6', 'wppa' ) );
-		update_option( 'wppa_last_recup', '-2' );
-		return true;
-	}
-}
-*/
 
 function wppa_clear_cache( $force = false ) {
 global $cache_path;

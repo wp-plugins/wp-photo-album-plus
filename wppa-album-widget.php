@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display thumbnail albums
-* Version 5.4.11
+* Version 5.4.15
 */
 
 if ( ! defined( 'ABSPATH' ) ) die( "Can't load this file directly" );
@@ -152,7 +152,9 @@ class AlbumWidget extends WP_Widget {
 									$siz['1'] = wppa_get_videoy( $thumb['id'] );
 								}
 								else {
-									$siz = getimagesize( wppa_get_photo_path( $thumb['id'] ) );
+								//	$siz = getimagesize( wppa_get_photo_path( $thumb['id'] ) );
+									$siz['0'] = wppa_get_photox( $thumb['id'] );
+									$siz['1'] = wppa_get_photoy( $thumb['id'] );
 								}
 								$link = wppa_get_photo_url( $thumb['id'], '', $siz['0'], $siz['1'] );
 								$widget_content .= "\n\t".'<a href="'.$link.'" data-videohtml="'.esc_attr( wppa_get_video_body( $thumb['id'] ) ).'" rel="'.$wppa_opt['wppa_lightbox_name'].'[alw-'.$wppa['mocc'].'-'.$album['id'].']" title="'.$title.'" >';

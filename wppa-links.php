@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Frontend links
-* Version 5.4.14
+* Version 5.4.15
 *
 */
 
@@ -332,9 +332,9 @@ global $wppa_opt;
 				case 'po':
 					$deltauri = 'wppa-photos-only=';
 					break;
-				case 'rs':
-					$deltauri = 'wppa-randseed=';
-					break;
+//				case 'rs':
+//					$deltauri = 'wppa-randseed=';
+//					break;
 				case 'db':
 					$deltauri = 'debug=';
 					break;
@@ -395,7 +395,7 @@ global $wppa_opt;
 	$order = array( 'occur', 'woccur', 
 					'searchstring', 
 					'topten', 'lasten', 'comten', 'featen', 
-					'randseed', 
+//					'randseed', 
 					'lang', 
 					'single', 
 					'tag', 
@@ -516,7 +516,7 @@ global $wppa_opt;
 	
 	// explode querystring
 	$args = explode('&', substr($uri, $qpos+1));
-	$support = array('album', 'photo', 'slide', 'cover', 'occur', 'woccur', 'page', 'searchstring', 'topten', 'lasten', 'comten', 'featen', 'randseed', 'lang', 'single', 'tag', 'photos-only', 'debug', 'rel', 'relcount', 'upldr', 'owner', 'rootsearch' );
+	$support = array('album', 'photo', 'slide', 'cover', 'occur', 'woccur', 'page', 'searchstring', 'topten', 'lasten', 'comten', 'featen', 'lang', 'single', 'tag', 'photos-only', 'debug', 'rel', 'relcount', 'upldr', 'owner', 'rootsearch' );
 	if ( count($args) > 0 ) {
 		foreach ( $args as $arg ) {
 			$t = explode('=', $arg);
@@ -573,9 +573,9 @@ global $wppa_opt;
 					case 'photos-only':
 						$newuri .= 'po';
 						break;
-					case 'randseed':
-						$newuri .= 'rs';
-						break;
+//					case 'randseed':
+//						$newuri .= 'rs';
+//						break;
 					case 'debug':
 						$newuri .= 'db';
 						break;
@@ -837,7 +837,7 @@ global $wppa_opt;
 	if ( $slide ) $extra_url .= '&amp;wppa-slide';
 	
 	// Add the random seed
-	$extra_url .= '&amp;wppa-randseed='.$wppa['randseed'];
+//	$extra_url .= '&amp;wppa-randseed='.$wppa['randseed'];
 	
 	// Almost ready
 	$link_url .= $extra_url;
@@ -1103,7 +1103,7 @@ global $wpdb;
 				$result['url'] = str_replace( 'xxx', $is_video['0'], $result['url'] );
 			}
 			else {
-				$siz = getimagesize( wppa_get_photo_path( $id ) );
+				$siz = array( wppa_get_photox( $id ), wppa_get_photoy( $id ) );
 				$result['url'] = wppa_get_photo_url( $id, '', $siz['0'], $siz['1'] );
 			}
 			$result['title'] = $title; 
@@ -1123,7 +1123,7 @@ global $wpdb;
 					$result['url'] = wppa_get_hires_url( $id );
 				}
 				else {
-					$siz = getimagesize( wppa_get_photo_path( $id ) );
+					$siz = array( wppa_get_photox( $id ), wppa_get_photoy( $id ) );
 					$result['url'] = wppa_get_photo_url( $id, '', $siz['0'], $siz['1'] );
 				}
 			}
@@ -1269,6 +1269,9 @@ global $wpdb;
 				$result['url'] = esc_attr( 'alert( "' . esc_js( __a( 'A video can not be printed or downloaded' ) ) . '" )' );
 			}
 			else {
+				$wid = wppa_get_photox( $id );
+				$hig = wppa_get_photoy( $id );
+				/*
 				$imgsize = getimagesize( wppa_get_photo_path( $id ) );
 				if ( $imgsize ) {
 					$wid = $imgsize['0'];
@@ -1278,6 +1281,7 @@ global $wpdb;
 					$wid = '0';
 					$hig = '0';
 				}
+				*/
 				$url = wppa_get_photo_url( $id, '', $wid, $hig );
 				
 				$result['url'] = esc_attr( 'wppaFullPopUp( ' . $wppa['mocc'] . ', ' . $id . ', "' . $url . '", ' . $wid . ', ' . $hig . ' )' );
@@ -1353,10 +1357,10 @@ global $wpdb;
 	}
 
 	if ( $wich == 'featen' ) {
-		$result['url'] .= '&amp;wppa-featen=' . $wppa_opt['wppa_featen_count'] . '&amp;wppa-randseed=' . $wppa['randseed'];
+		$result['url'] .= '&amp;wppa-featen=' . $wppa_opt['wppa_featen_count'];// . '&amp;wppa-randseed=' . $wppa['randseed'];
 	}
 	elseif ( $wppa['is_featen'] ) {
-		$result['url'] .= '&amp;wppa-featen=' . $wppa['featen_count'] . '&amp;wppa-randseed=' . $wppa['randseed'];
+		$result['url'] .= '&amp;wppa-featen=' . $wppa['featen_count'];// . '&amp;wppa-randseed=' . $wppa['randseed'];
 	}
 	
 	if ( $wppa['is_related'] ) {
@@ -1390,7 +1394,7 @@ global $wpdb;
 function wppa_trim_wppa_( $link ) {
 static $trimmable;
 
-	$trimmable = array('album', 'photo', 'slide', 'cover', 'occur', 'woccur', 'searchstring', 'topten', 'lasten', 'comten', 'featen', 'randseed', 'single', 'photos-only', 'debug', 'relcount', 'upldr', 'owner', 'rootsearch' );
+	$trimmable = array('album', 'photo', 'slide', 'cover', 'occur', 'woccur', 'searchstring', 'topten', 'lasten', 'comten', 'featen', 'single', 'photos-only', 'debug', 'relcount', 'upldr', 'owner', 'rootsearch' );
 
 	$result = $link;
 	

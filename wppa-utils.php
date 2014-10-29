@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains low-level utility routines
-* Version 5.4.14
+* Version 5.4.15
 *
 */
  
@@ -2043,4 +2043,11 @@ static $wppa_void_keywords;
 	}
 	$result = implode( ', ', $words );
 	return $result;
+}
+
+function wppa_optimize_image_file( $file ) {
+	if ( ! wppa_switch( 'wppa_optimize_new' ) ) return;
+	if ( function_exists( 'ewww_image_optimizer' ) ) {
+		ewww_image_optimizer( $file, 4, false, false, false ); 
+	}	
 }

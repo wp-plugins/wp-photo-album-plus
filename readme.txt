@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile, cloudinary, fotomoto
-Version: 5.4.14
+Version: 5.4.15
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -187,6 +187,29 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 5.4.15 =
+
+= Bug Fixes =
+
+* Fixed a layout problem in fullscreen lightbox legenda bar.
+* Fixed a slashed quotes problem in comments.
+
+= New Features =
+
+* Support for plugin EWWW Image Optimizer. Related settings: Table IX-D17 and Table VIII-B13.
+* Support for Lazy Load and HTML optimizing plugins. The filmstrip will show up properly when Table IV-A19 is ticked.
+
+= Other Changes =
+
+* Go back to thumbnails icon in breadcrumb bar is now grayscale, blue on hover.
+* Jpg image quality setting in Table IX-A2 now also applies to thumbnail image files.
+* Random seed no longer in querystring. This enables the use of quickcache for pages with querystrings.
+* Photosizes are now registered in the db to reduce file i/o. It is self learning, but you can run Table VIII-B14 to recalculate all.
+* Improved russian translation.
+* Import screen: you can switch off the zoom on hover of the thumbnails, and the non-originals will be hidden if you tick the Originals only box.
+* Only querystring arguments used in wppa+ are now checked on php injection.
+* Bulk edit goes to photosection directly on opening.
 
 = 5.4.14 =
 
