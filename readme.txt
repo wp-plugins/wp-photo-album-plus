@@ -194,6 +194,7 @@ See for additional information: http://wppa.opajaap.nl/?page_id=1459
 
 * Fixed a layout problem in fullscreen lightbox legenda bar.
 * Fixed a slashed quotes problem in comments.
+* Fixed positionng of ubb's on responsive displays.
 
 = New Features =
 
