@@ -996,7 +996,10 @@ global $wppa_opt;
 	wppa_optimize_image_file( $thumbpath );
 
 	// Compute and save sizes
-	$image_id = wppa_strip_ext( basename( $thumbpath ) );
+	$image_id = str_replace( WPPA_UPLOAD_PATH . '/thumbs/', '', $thumbpath );
+	$image_id = str_replace( '/', '', $image_id ); // if filesystem is tree
+	$image_id = wppa_strip_ext( $image_id );
+
 	wppa_get_thumbx( $image_id, 'force' );
 	
 	return true;
