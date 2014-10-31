@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 5.4.15
+* Version 5.4.17
 *
 */
 
@@ -1781,7 +1781,7 @@ global $no_default;
 							$html = wppa_checkbox($slug);
 							wppa_setting($slug, '2', $name, $desc, $html, $help);
 							}
-							wppa_setting_subheader( 'G', '1', __( 'Lightbox related settings. These settings have effect only when Table IX-A6 is set to wppa', 'wppa' ) );
+							wppa_setting_subheader( 'G', '1', __( 'Lightbox related settings. These settings have effect only when Table IX-J3 is set to wppa', 'wppa' ) );
 							{
 							$name = __('Overlay Close label text', 'wppa');
 							$desc = __('The text label for the cross exit symbol.', 'wppa');

@@ -2,7 +2,7 @@
 /* wppa-ajax.php
 *
 * Functions used in ajax requests
-* version 5.4.15
+* version 5.4.17
 *
 */
 
@@ -584,7 +584,7 @@ global $wppa_session;
 			$mem 	= memory_get_peak_usage( true ) / 1024 / 1024;
 
 			$msg 	= sprintf( 'WPPA Ajax render: db queries: WP:%d, WPPA+: %d in %4.2f seconds, using %4.2f MB memory max', $nq_1, $nq_2 - $nq_1, $tim_2 - $tim_1, $mem );
-			echo '<script type="text/javascript">wppaConsoleLog( \''.$msg.'\', true )</script>';
+			echo '<script type="text/javascript">wppaConsoleLog( \''.$msg.'\', \'force\' )</script>';
 			break;
 			
 		case 'delete-photo':

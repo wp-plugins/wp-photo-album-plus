@@ -3,7 +3,7 @@
 /* Package: wp-photo-album-plus
 /*
 /* Various style computation routines
-/* Version 5.4.15
+/* Version 5.4.17
 /*
 */
 
@@ -337,7 +337,12 @@ global $wppa;
 		return $result;									// no file: no dimensions ( 2.3.0 )
 	}
 	
-	$image_attr = wppa_get_imagexy( $id );
+	if ( strpos( $file, '/wppa/thumbs/' ) ) {
+		$image_attr = wppa_get_imagexy( $id, 'thumb' );
+	}
+	else {
+		$image_attr = wppa_get_imagexy( $id, 'photo' );
+	}
 //	if ( wppa_is_video( $id ) ) {
 //		$image_attr = array( '0' => wppa_get_videox( $id ), '1' => wppa_get_videoy( $id ) );
 //	}

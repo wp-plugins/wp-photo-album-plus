@@ -2,7 +2,7 @@
 /*
 Plugin Name: WP Photo Album Plus
 Description: Easily manage and display your photo albums and slideshows within your WordPress site.
-Version: 5.4.16
+Version: 5.4.17
 Author: J.N. Breetvelt a.k.a. OpaJaap
 Author URI: http://wppa.opajaap.nl/
 Plugin URI: http://wordpress.org/extend/plugins/wp-photo-album-plus/
@@ -21,12 +21,12 @@ global $wpdb;
 /* when new options are added and when the wppa_setup() routine 
 /* must be called right after update for any other reason.
 */
-global $wppa_revno; 		$wppa_revno = '5416';
+global $wppa_revno; 		$wppa_revno = '5417';
 
 /* This is the api interface version number
 /* It is incremented at any code change.
 */
-global $wppa_api_version; 	$wppa_api_version = '5-4-16-000';
+global $wppa_api_version; 	$wppa_api_version = '5-4-17-000';
 
 /* start timers */
 global $wppa_starttime; $wppa_starttime = microtime(true);
@@ -149,7 +149,7 @@ global $blog_id;
 
 	// Define paths and urls
 	if ( $debug_multi || ( is_multisite() && ! WPPA_MULTISITE_GLOBAL ) ) {
-		if ( WPPA_MULTISITE_BLOGSDIR ) {	// Old multisite
+		if ( WPPA_MULTISITE_BLOGSDIR ) {	// Old multisite individual
 			define( 'WPPA_UPLOAD', wppa_trims( $wp_content_multi . '/blogs.dir/' . $blog_id ) );					
 			define( 'WPPA_UPLOAD_PATH', WPPA_ABSPATH.WPPA_UPLOAD . '/wppa' );
 			define( 'WPPA_UPLOAD_URL', site_url() . '/' . WPPA_UPLOAD . '/wppa' );
@@ -158,7 +158,7 @@ global $blog_id;
 			define( 'WPPA_DEPOT_PATH', WPPA_ABSPATH.WPPA_DEPOT );					
 			define( 'WPPA_DEPOT_URL', site_url() . '/' . WPPA_DEPOT );	
 		}
-		elseif ( WPPA_MULTISITE_INDIVIDUAL ) {	// New multisite new style
+		elseif ( WPPA_MULTISITE_INDIVIDUAL ) {	// New multisite individual
 			define( 'WPPA_UPLOAD', $rel_uploads_path . '/sites/'.$blog_id);
 			define( 'WPPA_UPLOAD_PATH', ABSPATH.WPPA_UPLOAD.'/wppa');
 			define( 'WPPA_UPLOAD_URL', get_bloginfo('wpurl').'/'.WPPA_UPLOAD.'/wppa');
@@ -166,7 +166,7 @@ global $blog_id;
 			define( 'WPPA_DEPOT_PATH', ABSPATH.WPPA_DEPOT );
 			define( 'WPPA_DEPOT_URL', get_bloginfo('wpurl').'/'.WPPA_DEPOT );
 		}
-		else { 	// New multisite old style
+		else { 	// Not working default multisite
 			$user = is_user_logged_in() ? '/' . wppa_get_user() : '';
 			define( 'WPPA_UPLOAD', $rel_uploads_path );
 			define( 'WPPA_UPLOAD_PATH', WPPA_ABSPATH . WPPA_UPLOAD . $user . '/wppa' );
@@ -318,3 +318,24 @@ function wppa_admin_bar_init() {
 if ( PHP_VERSION_ID >= 50300 ) require_once 'wppa-cloudinary.php';
 	
 	
+add_action('admin_notices', 'wppa_verify_multisite_config');
+function wppa_verify_multisite_config() {
+global $wppa;
+
+	if ( ! is_admin() ) return;
+	if ( ! is_multisite() ) return;
+	if ( $wppa['ajax'] ) return;
+	
+	if ( WPPA_MULTISITE_GLOBAL ) return;
+	if ( WPPA_MULTISITE_BLOGSDIR ) return;
+	if ( WPPA_MULTISITE_INDIVIDUAL ) return;
+
+	$errtxt = __('</strong><h3>WP Photo ALbum Plus Error message</h3>This is a multi site installation. One of the following 3 lines must be entered in wp-config.php:', 'wppa');
+	$errtxt .= __('<br /><br /><b>define( \'WPPA_MULTISITE_INDIVIDUAL\', true );</b> <small>// Multisite WP 3.5 or later with every site its own albums and photos</small>', 'wppa');
+	$errtxt .= __('<br /><b>define( \'WPPA_MULTISITE_BLOGSDIR\', true );</b> <small>// Multisite prior to WP 3.5 with every site its own albums and photos</small>', 'wppa');
+	$errtxt .= __('<br /><b>define( \'WPPA_MULTISITE_GLOBAL\', true );</b> <small>// Multisite with one common set of albums and photos</small>', 'wppa');
+	$errtxt .= __('<br /><br />For more information see: <a href="https://wordpress.org/plugins/wp-photo-album-plus/faq/">the faq</a>', 'wppa');
+	$errtxt .= __('<br /><br /><em>If you upload photos, they will be placed in the wrong location and will not be visible for visitors!</em><strong>', 'wppa');
+	
+	wppa_error_message( $errtxt );
+}

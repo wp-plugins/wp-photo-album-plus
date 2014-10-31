@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Frontend links
-* Version 5.4.15
+* Version 5.4.17
 *
 */
 
@@ -499,7 +499,7 @@ global $wppa_opt;
 	// Now the actual conversion to pretty links
 	if ( ! wppa_switch('wppa_use_pretty_links') ) return $uri;
 	if ( ! get_option('permalink_structure') ) return $uri;
-	if ( ! isset($_ENV["SCRIPT_URI"]) ) return $uri;
+//	if ( ! isset($_ENV["SCRIPT_URI"]) ) return $uri;
 
 	// Do some preprocessing
 	$uri = str_replace('&amp;', '&', $uri);

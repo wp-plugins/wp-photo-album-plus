@@ -2,7 +2,7 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 5.4.15
+* version 5.4.17
 *
 */
 
@@ -996,6 +996,7 @@ global $wppa_opt;
 	wppa_optimize_image_file( $thumbpath );
 
 	// Compute and save sizes
+	$image_id = wppa_strip_ext( basename( $thumbpath ) );
 	wppa_get_thumbx( $image_id, 'force' );
 	
 	return true;

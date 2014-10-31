@@ -2,7 +2,7 @@
 /* wppa-watermark.php
 *
 * Functions used for the application of watermarks
-* version 5.4.15
+* version 5.4.17
 *
 */
 
@@ -376,7 +376,7 @@ global $wppa_opt;
 	// Open the photo file
 	$file = wppa_get_photo_path( $id );
 	if ( ! is_file( $file ) ) return false;	// File gone
-	$photosize = wppa_get_imagexy( $id ); // getimagesize( $file );
+	$photosize = getimagesize( $file );
 	if ( ! is_array( $photosize ) ) {
 		return false;	// Not a valid photo
 	}
