@@ -499,7 +499,10 @@ global $wppa_opt;
 	// Now the actual conversion to pretty links
 	if ( ! wppa_switch('wppa_use_pretty_links') ) return $uri;
 	if ( ! get_option('permalink_structure') ) return $uri;
-//	if ( ! isset($_ENV["SCRIPT_URI"]) ) return $uri;
+	
+	// Leaving the next line out gives 404 on pretty links under certain circumstances. 
+	// Can not reproduce and also do not understand why, and do not remember why i have put it in.
+	if ( ! isset($_ENV["SCRIPT_URI"]) ) return $uri;
 
 	// Do some preprocessing
 	$uri = str_replace('&amp;', '&', $uri);
