@@ -180,7 +180,9 @@ function wppa_walbum_select( $sel = '' ) {
 }
 
 function wppa_walbum_sanitize( $walbum ) {
+
 	$result = strtolower( $walbum );
+	$result = strip_tags( $result );
 	
 	if ( strstr( $result, 'all-sep' ) ) $result = 'all-sep';
 	elseif ( strstr( $result, 'all' ) ) $result = 'all';
@@ -194,6 +196,13 @@ function wppa_walbum_sanitize( $walbum ) {
 		
 		// remove leading and trailing commas
 		$result = trim( $result, ',' );
+		
+		// Check for illegal chars
+		$temp = str_replace( ',', '', $result );
+		if ( $temp && ! wppa_is_int( $temp ) ) {
+			// $result contains other chars than numbers and comma's
+			$result = 'clr';
+		}
 	}
 	return $result;
 }
