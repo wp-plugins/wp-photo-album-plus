@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile, cloudinary, fotomoto
-Version: 5.4.17
+Version: 5.4.18
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -187,6 +187,28 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 5.4.18 =
+
+= Bug Fixes =
+
+* Security fix.
+* Fixed a problem with random cover images.
+* Fixed a link problem.
+
+= New Features =
+
+* Frontend upload uses ajax with progression bar. Default activated, you can switch it off in Table IV-A1.2.
+* You can switch off the thumbnial preview images on the Import screen in Table IX-B14.
+
+= Other Changes =
+
+* Table IV-A2 is now Table IV-A1.2.
+* Moved Table VIII-B14 to Table VIII-A12, because it it is harmless to run.
+* Browsing through a lightbox set by keystrokes ( n=next, p=previous ) now loops around to the beginning or end. Both in 'normal' and in 'fullscreen' mode.
+* You need no longer tick the box 'Originals only' on the import screen, non originals are neglected always now.
+* You can turn off preview images on the import screen at Table IX-B14.
+* Changed jQuery(..).attr( 'value' ..) to jQuery(..).val(..) in wppa.(min.)js for compatibility with older versions of jQuery.
 
 = 5.4.17 =
 

@@ -413,3 +413,30 @@ float:left !important;
 .FotomotoClear {
 display:none;
 }
+
+/* Ajax front upload */
+.wppa-progress {
+	position:relative; 
+	width:100%; 
+	height: 18px;
+	border: 1px solid; 
+	padding: 1px; border-radius: 3px; 
+	text-align: center;
+}
+.wppa-bar { 
+	background-color: #7f7; 
+	width:0%; 
+	height:18px; 
+	border-radius: 3px; 
+}
+.wppa-percent { 
+	position:relative; 
+	display:inline-block; 
+	top:-20px; 
+	font-size: 12px;
+	line-height: 18px;
+/*	left:48%; */
+}
+.wppa-message {
+	clear: both;
+}

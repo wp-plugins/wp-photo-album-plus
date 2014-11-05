@@ -1,7 +1,7 @@
 /* admin-scripts.js */
 /* Package: wp-photo-album-plus
 /*
-/* Version 5.4.15
+/* Version 5.4.18
 /* Various js routines used in admin pages		
 */
 
@@ -815,6 +815,7 @@ function checkAll(name, clas) {
 	}
 }
 
+/*
 function checkOrg(name, clas) {
 	var elm = document.getElementById(name);
 	if (elm) {
@@ -866,6 +867,7 @@ function checkOrg(name, clas) {
 		}
 	}
 }
+*/
 
 function impUpd(elm, id) {
 	if ( elm.checked ) {

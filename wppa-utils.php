@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains low-level utility routines
-* Version 5.4.15
+* Version 5.4.18
 *
 */
  
@@ -2050,4 +2050,18 @@ function wppa_optimize_image_file( $file ) {
 	if ( function_exists( 'ewww_image_optimizer' ) ) {
 		ewww_image_optimizer( $file, 4, false, false, false ); 
 	}	
+}
+
+function wppa_is_orig ( $path ) {
+	$file = basename( $path );
+	$file = wppa_strip_ext( $file );
+	$temp = explode( '-', $file );
+	if ( ! is_array( $temp ) ) return true;
+	$temp = $temp[ count( $temp ) -1 ];
+	$temp = explode( 'x', $temp );
+	if ( ! is_array( $temp ) ) return true;
+	if ( count( $temp ) != 2 ) return true;
+	if ( ! wppa_is_int( $temp[0] ) ) return true;
+	if ( ! wppa_is_int( $temp[1] ) ) return true;
+	return false;
 }

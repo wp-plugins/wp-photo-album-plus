@@ -2,7 +2,7 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 5.4.17
+* version 5.4.18
 *
 */
 
@@ -63,6 +63,7 @@ global $wppa_defaults;
 			'auto_colwidth' 			=> false,
 			'permalink' 				=> '',
 			'randseed' 					=> wppa_get_randseed(),
+			'page-randseed' 			=> wppa_get_randseed( 'page' ),
 			'rendering_enabled' 		=> false,
 			'tabcount' 					=> '0',
 			'comment_id' 				=> '',
@@ -186,20 +187,36 @@ global $wppa_defaults;
 	$wppa_initruntimetime += microtime( true );
 }
 
-function wppa_get_randseed() {
+function wppa_get_randseed( $type = 'session' ) {
 global $wppa_session;
+static $volatile_randseed;
 
 //	if ( isset( $_REQUEST['wppa-randseed'] ) ) $randseed = $_REQUEST['wppa-randseed'];
 //	elseif ( isset( $_REQUEST['randseed'] ) ) $randseed = $_REQUEST['randseed'];
 //	else $randseed = time() % '4711';
-	if ( isset( $wppa_session['randseed'] ) ) {
-		$randseed = $wppa_session['randseed'];
+
+	// This randseed is for the page only
+	if ( $type == 'page' ) {
+		if ( $volatile_randseed ) {
+			$randseed = $volatile_randseed;
+		}
+		else {
+			$volatile_randseed = time() % 7487;
+			$randseed = $volatile_randseed;
+		}
 	}
+	
+	// This randseed susrvives pageloads up to the duration of the session ( usually 1 hour )
 	else {
-		$randseed = time() % '4711';
-		$wppa_session['randseed'] = $randseed;
+		if ( isset( $wppa_session['randseed'] ) ) {
+			$randseed = $wppa_session['randseed'];
+		}
+		else {
+			$randseed = time() % 4721;
+			$wppa_session['randseed'] = $randseed;
+		}
 	}
-//echo $randseed;
+
 	return $randseed;
 }
 

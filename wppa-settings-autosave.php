@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 5.4.17
+* Version 5.4.18
 *
 */
 
@@ -2278,7 +2278,7 @@ global $no_default;
 							$slug = 'wppa_allow_ajax';
 							$onchange = 'wppaCheckAjax()';
 							$html = wppa_checkbox($slug, $onchange);
-							wppa_setting($slug, '1', $name, $desc, $html, $help);
+							wppa_setting($slug, '1.0', $name, $desc, $html, $help);
 							
 							$name = __('Ajax NON Admin', 'wppa');
 							$desc = __('Frontend ajax use no admin files.', 'wppa');
@@ -2286,7 +2286,14 @@ global $no_default;
 							$help .= '\n\n'.esc_js(__('In rare cases changing page content does not work when this box is checked. Verify the functionality!', 'wppa'));
 							$slug = 'wppa_ajax_non_admin';
 							$html = wppa_checkbox($slug);
-							wppa_setting($slug, '2', $name, $desc, $html, $help);
+							wppa_setting($slug, '1.1', $name, $desc, $html, $help);
+							
+							$name = __('Ajax frontend upload', 'wppa');
+							$desc = __('Use ajax in frontend uploads.', 'wppa');
+							$help = '';
+							$slug = 'wppa_ajax_upload';
+							$html = wppa_checkbox($slug);
+							wppa_setting($slug, '1.2', $name, $desc, $html, $help);
 							
 							$name = __('Photo names in urls', 'wppa');
 							$desc = __('Display photo names in urls.', 'wppa');
@@ -4579,6 +4586,17 @@ global $no_default;
 							$html = array($html1, $html2, $html3, $html4);
 							wppa_setting(false, '11', $name, $desc, $html, $help);
 							
+							$name = __('Recalc sizes', 'wppa');
+							$desc = __('Recalculate photosizes and save to db.', 'wppa');
+							$help = '';
+							$slug2 = 'wppa_comp_sizes';
+							$html1 = '';
+							$html2 = wppa_maintenance_button( $slug2 );
+							$html3 = wppa_status_field( $slug2 );
+							$html4 = wppa_togo_field( $slug2 );
+							$html = array($html1, $html2, $html3, $html4);
+							wppa_setting(false, '12', $name, $desc, $html, $help);
+
 						wppa_setting_subheader('B', '4', __('Clearing and other irreverseable actions', 'wppa'));
 							
 							$name = __('Clear ratings', 'wppa');
@@ -4753,17 +4771,6 @@ global $no_default;
 								$html = array($html1, $html2, $html3, $html4);
 								wppa_setting(false, '13', $name, $desc, $html, $help);
 							}
-
-							$name = __('Recalc sizes', 'wppa');
-							$desc = __('Recalculate photosizes and save to db.', 'wppa');
-							$help = '';
-							$slug2 = 'wppa_comp_sizes';
-							$html1 = '';
-							$html2 = wppa_maintenance_button( $slug2 );
-							$html3 = wppa_status_field( $slug2 );
-							$html4 = wppa_togo_field( $slug2 );
-							$html = array($html1, $html2, $html3, $html4);
-							wppa_setting(false, '14', $name, $desc, $html, $help);
 
 						wppa_setting_subheader('C', '4', __('Listings', 'wppa'));
 
@@ -5010,6 +5017,14 @@ global $no_default;
 							$warn = esc_js('This is strongly discouraged. Using scripts in stead of shortcodes will restrict the functionality of WPPA+. Use only when you have serious conflicts in theme or with other plugins.', 'wppa');
 							$html = wppa_checkbox_warn_on($slug, '', '', $warn);
 							wppa_setting($slug, '13', $name, $desc, $html, $help);
+							
+							$name = __('Import page prieviews', 'wppa');
+							$desc = __('Show thumbnail previews in import admin page.', 'wppa');
+							$help = '';
+							$slug = 'wppa_import_preview';
+							$html = wppa_checkbox($slug);
+							wppa_setting($slug, '14', $name, $desc, $html, $help);
+							
 							}
 							wppa_setting_subheader( 'C', '1', __( 'SEO related settings', 'wppa' ) );
 							{

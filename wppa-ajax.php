@@ -2,7 +2,7 @@
 /* wppa-ajax.php
 *
 * Functions used in ajax requests
-* version 5.4.17
+* version 5.4.18
 *
 */
 
@@ -1856,6 +1856,7 @@ global $wppa_session;
 
 		case 'do-fe-upload':
 			wppa_user_upload();
+			echo $wppa['out'];
 			exit;
 			break;
 		

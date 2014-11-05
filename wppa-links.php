@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Frontend links
-* Version 5.4.17
+* Version 5.4.18
 *
 */
 
@@ -263,7 +263,7 @@ function wppa_convert_from_pretty($uri) {
 global $wppa_opt;
 
 	// Test if we should be here anyway
-	if ( ! isset($_ENV["SCRIPT_URI"]) ) return $uri;
+//	if ( ! isset($_ENV["SCRIPT_URI"]) ) return $uri;
 	$wppapos = stripos($uri, '/wppaspec/');
 	if ( ! $wppapos ) return $uri;	// Is not a pretty link
 	if ( ! get_option('permalink_structure') ) return $uri;
@@ -376,6 +376,9 @@ global $wppa_opt;
 
 	// Make local copy
 	$uri = $xuri;
+	
+	// Only when permalink structure is not default
+	if ( ! get_option('permalink_structure') ) return $uri;
 	
 	// Any querystring?
 	if ( strpos( $uri, '?' ) === false ) {
@@ -502,7 +505,10 @@ global $wppa_opt;
 	
 	// Leaving the next line out gives 404 on pretty links under certain circumstances. 
 	// Can not reproduce and also do not understand why, and do not remember why i have put it in.
-	if ( ! isset($_ENV["SCRIPT_URI"]) ) return $uri;
+	//
+	// nov 5 2014: changed add_action to test on redirection form init to pplugins_loaded. 
+	// also skipped if ( ! isset($_ENV["SCRIPT_URI"]) ) return; in redirect test. See wpp-non-admin.php. Seems to work now
+//	if ( ! isset($_ENV["SCRIPT_URI"]) ) return $uri;
 
 	// Do some preprocessing
 	$uri = str_replace('&amp;', '&', $uri);

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the non admin stuff
-* Version 5.4.17
+* Version 5.4.18
 *
 */
 
@@ -200,10 +200,10 @@ global $wppa_js_page_data_file;
 
 	// wppa.js
 	if ( is_file(WPPA_PATH.'/wppa.min.js') ) {
-		wp_enqueue_script( 'wppa', WPPA_URL.'/wppa.min.js', array('jquery'), $wppa_api_version, $footer );
+		wp_enqueue_script( 'wppa', WPPA_URL.'/wppa.min.js', array( 'jquery', 'jquery-form' ), $wppa_api_version, $footer );
 	}
 	else {
-		wp_enqueue_script( 'wppa', WPPA_URL.'/wppa.js', array('jquery'), $wppa_api_version, $footer );
+		wp_enqueue_script( 'wppa', WPPA_URL.'/wppa.js', array( 'jquery', 'jquery-form' ), $wppa_api_version, $footer );
 	}
 	// google maps
 	if ( wppa_opt( 'wppa_gpx_implementation' ) == 'wppa-plus-embedded' && strpos( wppa_opt( 'wppa_custom_content' ), 'w#location' ) !== false ) {
@@ -346,15 +346,17 @@ function wppa_fbc_setup() {
 }
 
 /* CHECK REDIRECTION */
-add_action( 'init', 'wppa_redirect' );
+add_action( 'plugins_loaded', 'wppa_redirect' );
 
 function wppa_redirect() {
-	if ( ! isset($_ENV["SCRIPT_URI"]) ) return;
-	$uri = $_ENV["SCRIPT_URI"];
+//	if ( ! isset($_ENV["SCRIPT_URI"]) ) return;
+//	$uri = $_ENV["SCRIPT_URI"];
+	$uri = $_SERVER["REQUEST_URI"];
 	$wppapos = stripos($uri, '/wppaspec/');
-	if ( $wppapos && get_option('permalink_structure') && wppa_switch('wppa_use_pretty_links') ) {
+	if ( $wppapos && get_option('permalink_structure') ) { // && wppa_switch('wppa_use_pretty_links') ) {
 		$newuri = wppa_convert_from_pretty($uri);
 		if ( $newuri == $uri ) return;
+//	wppa_log('dbg', 'Uri:'.$uri.' converted to:'.$newuri);
 		// Although the url is urlencoded it is damaged by wp_redirect when it contains chars like ë, so we do a header() call
 		header('Location: '.$newuri, true, 302);
 		exit;

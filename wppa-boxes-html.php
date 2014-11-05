@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Various wppa boxes
-* Version 5.4.15
+* Version 5.4.18
 *
 *
 */
@@ -728,22 +728,29 @@ global $wppa_opt;
 	// In a widget or multi column responsive?
 	$small = ( $wppa['in_widget'] == 'upload' || $mcr );
 
-	// Create the return url
-	$returnurl = wppa_get_permalink();
-	if ( $where == 'cover' ) {
-		$returnurl .= 'wppa-album='.$alb.'&amp;wppa-cover=0&amp;wppa-occur='.$wppa['occur'];
-	}
-	elseif ( $where == 'thumb' ) {
-		$returnurl .= 'wppa-album='.$alb.'&amp;wppa-cover=0&amp;wppa-occur='.$wppa['occur'];
-	}
-	elseif ( $where == 'widget' || $where == 'uploadbox' ) {
-	}
-	if ( $wppa['page'] ) $returnurl .= '&amp;wppa-page='.$wppa['page'];
-	$returnurl = trim( $returnurl, '?' );
-
-	$returnurl = wppa_trim_wppa_( $returnurl );
+	// Ajax upload?
+	$ajax_upload = wppa_switch( 'wppa_ajax_upload' );
 	
-$onsubmit = ( true ) ? ' onsubmit="wppaAjaxUploadFront('.$wppa['mocc'].');"' : '';
+	// Create the return url
+	if ( $ajax_upload ) {
+		$returnurl = wppa_switch('wppa_ajax_non_admin') ? WPPA_URL.'/wppa-ajax-front.php' : admin_url('admin-ajax.php');
+		$returnurl .= '?action=wppa&wppa-action=do-fe-upload';
+	}
+	else {
+		$returnurl = wppa_get_permalink();
+		if ( $where == 'cover' ) {
+			$returnurl .= 'wppa-album='.$alb.'&amp;wppa-cover=0&amp;wppa-occur='.$wppa['occur'];
+		}
+		elseif ( $where == 'thumb' ) {
+			$returnurl .= 'wppa-album='.$alb.'&amp;wppa-cover=0&amp;wppa-occur='.$wppa['occur'];
+		}
+		elseif ( $where == 'widget' || $where == 'uploadbox' ) {
+		}
+		if ( $wppa['page'] ) $returnurl .= '&amp;wppa-page='.$wppa['page'];
+		$returnurl = trim( $returnurl, '?' );
+
+		$returnurl = wppa_trim_wppa_( $returnurl );
+	}
 
 	// Make the HTML
 	$t = $mcr ? 'mcr-' : '';
@@ -789,6 +796,17 @@ $onsubmit = ( true ) ? ' onsubmit="wppaAjaxUploadFront('.$wppa['mocc'].');"' : '
 			$wppa['out'] .= '
 			<input type="submit" id="wppa-user-submit-'.$alb.'-'.$wppa['mocc'].'"'.$onclick.' style="display:none; margin: 6px 0; float:right; '.__wcs( 'wppa-box-text' ).'" class="wppa-user-submit" name="wppa-user-submit-'.$alb.'-'.$wppa['mocc'].'" value="'.__a( 'Upload photo' ).'" />
 			<div style="clear:both"></div>';
+
+			// if ajax: progression bar
+			if ( $ajax_upload ) {
+				$wppa['out'] .= '
+				<div id="progress-'.$alb.'-'.$wppa['mocc'].'" class="wppa-progress" >
+					<div id="bar-'.$alb.'-'.$wppa['mocc'].'" class="wppa-bar" ></div>
+					<div id="percent-'.$alb.'-'.$wppa['mocc'].'" class="wppa-percent" >0%</div >
+				</div>
+			 
+				<div id="message-'.$alb.'-'.$wppa['mocc'].'" class="wppa-message" ></div>';
+			}
 			
 			if ( ! wppa_switch( 'wppa_upload_one_only' ) && ! current_user_can( 'administrator' ) ) {
 				if ( $max ) $wppa['out'] .= '
@@ -870,6 +888,47 @@ $onsubmit = ( true ) ? ' onsubmit="wppaAjaxUploadFront('.$wppa['mocc'].');"' : '
 			<textarea class="wppa-user-textarea wppa-box-text wppa-file-'.$t.$wppa['mocc'].'" style="height:120px; width:'.( $width-6 ).'px; '.__wcs( 'wppa-box-text' ).'" name="wppa-user-desc" >'.$desc.'</textarea>
 		</form>
 	</div>';
+	
+	// Ajax upload script
+	if ( $ajax_upload ) {
+		$wppa['out'] .= '
+		<script>
+			jQuery(document).ready(function() {
+	 
+				var options = {
+					beforeSend: function() {
+						jQuery("#progress-'.$alb.'-'.$wppa['mocc'].'").show();
+						//clear everything
+						jQuery("#bar-'.$alb.'-'.$wppa['mocc'].'").width(\'0%\');
+						jQuery("#message-'.$alb.'-'.$wppa['mocc'].'").html("");
+						jQuery("#percent-'.$alb.'-'.$wppa['mocc'].'").html("");
+					},
+					uploadProgress: function(event, position, total, percentComplete) {
+						jQuery("#bar-'.$alb.'-'.$wppa['mocc'].'").width(percentComplete+\'%\');
+						if ( percentComplete < 95 ) {
+							jQuery("#percent-'.$alb.'-'.$wppa['mocc'].'").html(percentComplete+\'%\');
+						}
+						else {
+							jQuery("#percent-'.$alb.'-'.$wppa['mocc'].'").html(\'Processing...\');
+						}
+					},
+					success: function() {
+						jQuery("#bar-'.$alb.'-'.$wppa['mocc'].'").width(\'100%\');
+						jQuery("#percent-'.$alb.'-'.$wppa['mocc'].'").html(\'Done!\');
+					},
+					complete: function(response) {
+						jQuery("#message-'.$alb.'-'.$wppa['mocc'].'").html( \'<span style="font-size: 10px;" >\'+response.responseText+\'</span>\' );'.
+						( $where == 'thumb' ? 'document.location.reload(true)' : '' ).'
+					},
+					error: function() {
+						jQuery("#message-'.$alb.'-'.$wppa['mocc'].'").html( \'<span style="color: red;" >'.__a( 'ERROR: unable to upload files.' ).'</span>\' );
+					}
+				};
+	 
+				jQuery("#wppa-uplform-'.$alb.'-'.$wppa['mocc'].'").ajaxForm(options);
+			});
+		</script>';
+	}
 }
 
 // Frontend edit album info
