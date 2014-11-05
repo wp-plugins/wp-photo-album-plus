@@ -746,7 +746,7 @@ Hide Camera info
 						// A System
 						'wppa_allow_ajax'				=> 'no',
 						'wppa_ajax_non_admin'			=> 'no',
-						'wppa_ajax_upload'				=> 'no',
+						'wppa_ajax_upload'				=> 'yes',
 						'wppa_use_photo_names_in_urls'	=> 'no',
 						'wppa_use_album_names_in_urls' 	=> 'no',
 						'wppa_use_short_qargs' 			=> 'no',
