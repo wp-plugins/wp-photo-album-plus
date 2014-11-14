@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the slideshow high level functions
-* Version 5.4.11
+* Version 5.4.19
 *
 */
 
@@ -644,12 +644,12 @@ global $thumb;
 
 	$wppa['out'] .= wppa_nltab('+').'<div class="wppa-box wppa-nav" style="text-align:center; '.__wcs('wppa-box').__wcs('wppa-nav').'height:'.$height.'px;">';
 		$wppa['out'] .= wppa_nltab().'<div style="float:left; text-align:left; cursor:pointer; margin-top:'.$topmarg.'px; width: '.$fw.'px; font-size: '.$fs.'px;">';
-			$wppa['out'] .= wppa_nltab().'<a class="wppa-prev-'.$wppa['mocc'].' wppa-arrow" style="'.__wcs('wppa-arrow').'" id="prev-film-arrow-'.$wppa['mocc'].'" onclick="wppaPrevN('.$wppa['mocc'].','.$pagsiz.');" title="'.sprintf(__a('%s back', 'wppa_theme'), $pagsiz).'" >&laquo;</a>';
+			$wppa['out'] .= wppa_nltab().'<a class="wppa-prev-'.$wppa['mocc'].' wppa-arrow" style="'.__wcs('wppa-arrow').'" id="prev-film-arrow-'.$wppa['mocc'].'" onclick="wppaFirst('.$wppa['mocc'].');" title="'.__a('First', 'wppa_theme').'" >&laquo;</a>';
 			$wppa['out'] .= wppa_nltab().'<a class="wppa-prev-'.$wppa['mocc'].' wppa-arrow" style="'.__wcs('wppa-arrow').'" id="prev-film-arrow-1-'.$wppa['mocc'].'" onclick="wppaPrev('.$wppa['mocc'].');" title="'.__a('Previous', 'wppa_theme').'" >&lsaquo;</a>';
 		$wppa['out'] .= wppa_nltab().'</div>';
 		$wppa['out'] .= wppa_nltab().'<div style="float:right; text-align:right; cursor:pointer; margin-top:'.$topmarg.'px; width: '.$fw.'px; font-size: '.$fs.'px;">';
 			$wppa['out'] .= wppa_nltab().'<a class="wppa-next-'.$wppa['mocc'].' wppa-arrow" style="'.__wcs('wppa-arrow').'" id="next-film-arrow-1-'.$wppa['mocc'].'" onclick="wppaNext('.$wppa['mocc'].');" title="'.__a('Next', 'wppa_theme').'" >&rsaquo;</a>';
-			$wppa['out'] .= wppa_nltab().'<a class="wppa-next-'.$wppa['mocc'].' wppa-arrow" style="'.__wcs('wppa-arrow').'" id="next-film-arrow-'.$wppa['mocc'].'" onclick="wppaNextN('.$wppa['mocc'].','.$pagsiz.');" title="'.sprintf(__a('%s forward', 'wppa_theme'), $pagsiz).'" >&raquo;</a>';
+			$wppa['out'] .= wppa_nltab().'<a class="wppa-next-'.$wppa['mocc'].' wppa-arrow" style="'.__wcs('wppa-arrow').'" id="next-film-arrow-'.$wppa['mocc'].'" onclick="wppaLast('.$wppa['mocc'].');" title="'.__a('Last', 'wppa_theme').'" >&raquo;</a>';
 		$wppa['out'] .= wppa_nltab().'</div>';
 		$wppa['out'] .= wppa_nltab().'<div id="filmwindow-'.$wppa['mocc'].'" class="filmwindow" style="'.$IE6.' position:absolute; display: block; height:'.$height.'px; margin: 0 0 0 '.$marg.'px; overflow:hidden;">';
 			$wppa['out'] .= wppa_nltab('+').'<div id="wppa-filmstrip-'.$wppa['mocc'].'" style="height:'.$height1.'px; width:'.$width.'px; margin-left: -100px;">';

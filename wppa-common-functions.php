@@ -2,7 +2,7 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 5.4.18
+* version 5.4.19
 *
 */
 
@@ -692,57 +692,126 @@ global $wppa_opt;
 	return false;
 }
 
-function wppa_make_the_photo_files( $file, $image_id, $ext ) {
+// Make the display and thumbnails from a given source or upload temp image file. 
+// The id and extension must be supplied.
+function wppa_make_the_photo_files( $file, $id, $ext ) {
 global $wppa_opt;
 global $wppa;
 global $wpdb;
 global $thumb;
 
-	wppa_dbg_msg( 'make_the_photo_files called with file='.$file.' image_id='.$image_id.' ext='.$ext );
-
-	wppa_cache_thumb( $image_id );
+	wppa_cache_thumb( $id );
 	
-	$img_size = getimagesize( $file, $info );
-	if ( $img_size ) {
-		$newimage = wppa_get_photo_path( $image_id );
-		wppa_dbg_msg( 'newimage='.$newimage );
+	$src_size = getimagesize( $file, $info );
+	
+	// If the given file is an image file, process it
+	if ( $src_size ) {
+	
+		// Find output path photo file
+		$newimage = wppa_get_photo_path( $id );
 		
+		// If Resize on upload is checked
 		if ( wppa_switch( 'wppa_resize_on_upload' ) ) {
-			require_once( 'wppa-class-resize.php' );
+
 			// Picture sizes
-			$picx = $img_size[0];
-			$picy = $img_size[1];
-			// Reference suzes
+			$src_width 	= $src_size[0];
+			$src_height = $src_size[1];
+			
+			// Max sizes
 			if ( $wppa_opt['wppa_resize_to'] == '0' ) {	// from fullsize
-				$refx = $wppa_opt['wppa_fullsize'];
-				$refy = $wppa_opt['wppa_maxheight'];
+				$max_width 	= $wppa_opt['wppa_fullsize'];
+				$max_height = $wppa_opt['wppa_maxheight'];
 			}
 			else {										// from selection
 				$screen = explode( 'x', $wppa_opt['wppa_resize_to'] );
-				$refx = $screen[0];
-				$refy = $screen[1];
+				$max_width 	= $screen[0];
+				$max_height = $screen[1];
 			}
-			// Too landscape?
-			if ( $picx/$picy > $refx/$refy ) {					// focus on width
-				$dir = 'W';
-				$siz = $refx;
-				$s = $img_size[0];
+			
+			// Is source more landscape or more portrait than max window
+			if ( $src_width/$src_height > $max_width/$max_height ) {	// focus on width
+				$focus = 'W';
+				$need_downsize = ( $src_width > $max_width );
 			}
-			else {												// focus on height
-				$dir = 'H';
-				$siz = $refy;
-				$s = $img_size[1];
+			else {														// focus on height
+				$focus = 'H';
+				$need_downsize = ( $src_height > $max_height );
 			}
 
-			if ( $s > $siz ) {	
-				$objResize = new wppa_ImageResize( $file, $newimage, $dir, $siz );
-				$objResize->destroyImage( $objResize->resOriginalImage );
-				$objResize->destroyImage( $objResize->resResizedImage );
+			// Downsize required ?
+			if ( $need_downsize ) { 	
+			
+				// Find mime type
+				$mime = $src_size[2];
+				
+				// Create the source image
+				switch ( $mime ) {	// mime type
+					case 1: // gif
+						$temp = @ imagecreatefromgif( $file );
+						if ( $temp ) {
+							$src = imagecreatetruecolor( $src_width, $src_height );
+							imagecopy( $src, $temp, 0, 0, 0, 0, $src_width, $src_height );
+							imagedestroy( $temp );
+						}
+						else $src = false;
+						break;
+					case 2:	// jpeg
+						if ( ! function_exists( 'imagecreatefromjpeg' ) ) wppa_log( 'Error', 'Function imagecreatefromjpeg does not exist.' );
+						$src = @ imagecreatefromjpeg( $file );
+						break;
+					case 3:	// png
+						$src = @ imagecreatefrompng( $file );
+						break;
+				}
+				
+				if ( ! $src ) {
+					wppa_log( 'Error', 'Image file '.$file.' is corrupt while downsizing photo' );
+					return false;
+				}
+				
+				// Create the ( empty ) destination image
+				if ( $focus == 'W') {
+					$dst_width 	= $max_width;
+					$dst_height = round( $max_width * $src_height / $src_width );
+				} 
+				else {
+					$dst_height = $max_height;
+					$dst_width = round( $max_height * $src_width / $src_height );
+				}
+				$dst = imagecreatetruecolor( $dst_width, $dst_height );
+				
+				// If Png, save transparancy
+				if ( $mime == 3 ) {	
+					imagealphablending( $dst, false );
+					imagesavealpha( $dst, true );
+				}
+				
+				// Do the copy
+				imagecopyresampled( $dst, $src, 0, 0, 0, 0, $dst_width, $dst_height, $src_width, $src_height );
+				
+				// Remove source image
+				imagedestroy( $src );
+
+				// Save the photo
+				switch ( $mime ) {	// mime type
+					case 1:
+						imagegif( $dst, $newimage );
+						break;
+					case 2:
+						imagejpeg( $dst, $newimage, wppa_opt( 'wppa_jpeg_quality' ) );
+						break;
+					case 3:
+						imagepng( $dst, $newimage, 6 );
+						break;
+				}
+				
+				// Remove destination image
+				imagedestroy( $dst );
 			}
-			else {
+			else {	// No downsize needed, picture is small enough
 				copy( $file, $newimage );
 			}
-		}
+		}	// No resize on upload checked
 		else {
 			copy( $file, $newimage );
 		}
@@ -754,8 +823,7 @@ global $thumb;
 			wppa_optimize_image_file( $newimage );
 		
 			// Create thumbnail...
-			$thumbsize = wppa_get_minisize();
-			wppa_create_thumbnail( $newimage, $thumbsize, '' );
+			wppa_create_thumbnail( $id );
 		} 
 		else {
 			if ( is_admin() ) wppa_error_message( __( 'ERROR: Resized or copied image could not be created.', 'wppa' ) );
@@ -764,22 +832,22 @@ global $thumb;
 		}
 		
 		// Process the iptc data
-		wppa_import_iptc( $image_id, $info );
+		wppa_import_iptc( $id, $info );
 		
 		// Process the exif data
-		wppa_import_exif( $image_id, $file );
+		wppa_import_exif( $id, $file );
 		
 		// GPS
-		wppa_get_coordinates( $file, $image_id );
+		wppa_get_coordinates( $file, $id );
 
 		// Set ( update ) exif date-time if available
 		$exdt = wppa_get_exif_datetime( $file );
 		if ( $exdt ) {
-			$wpdb->query( $wpdb->prepare( "UPDATE `".WPPA_PHOTOS."` SET `exifdtm` = %s WHERE `id` = %s", $exdt, $image_id ) );
+			wppa_update_photo( array( 'id' => $id, 'exifdtm' => $exdt ) );
 		}
 		
 		// Compute and save sizes
-		wppa_get_photox( $image_id, 'force' );
+		wppa_get_photox( $id, 'force' );
 		
 		// Show progression
 		if ( is_admin() && ! $wppa['ajax'] ) echo( '.' );
@@ -787,7 +855,7 @@ global $thumb;
 		// Update CDN
 		switch ( wppa_cdn() ) {
 			case 'cloudinary':
-				wppa_upload_to_cloudinary( $image_id );
+				wppa_upload_to_cloudinary( $id );
 				break;
 		}
 		
@@ -847,27 +915,43 @@ global $wppa_opt;
 	return $result;
 }
 
-// Create thubnail from a given fullsize image path and max size
-function wppa_create_thumbnail( $file, $max_side, $effect = '' ) {
+// Create thubnail 
+function wppa_create_thumbnail( $id ) {
 global $wppa_opt;
 	
-	// See if we are called with the right args
+	// Find file to make thumbnail from
+	if ( ! wppa_switch( 'wppa_watermark_thumbs' ) && is_file( wppa_get_source_path( $id ) ) ) {
+		$file = wppa_get_source_path( $id );	// Use sourcefile
+	}
+	else {
+		$file = wppa_get_photo_path( $id );		// Use photofile
+	}
+	
+	// Max side
+	$max_side = wppa_get_minisize();
+	
+	// Check file
 	if ( ! file_exists( $file ) ) return false;		// No file, fail
 	$img_attr = getimagesize( $file );
 	if ( ! $img_attr ) return false;				// Not an image, fail
 	
 	// Retrieve aspect
 	$asp_attr = explode( ':', $wppa_opt['wppa_thumb_aspect'] );
+	
 	// Get output path
-	$thumbpath = str_replace( WPPA_UPLOAD_PATH, WPPA_UPLOAD_PATH.'/thumbs', $file );
+	$thumbpath = wppa_get_thumb_path( $id );
+	
 	// Source size
 	$src_size_w = $img_attr[0];
 	$src_size_h = $img_attr[1];
+	
 	// Mime type and thumb type
 	$mime = $img_attr[2]; 
 	$type = $asp_attr[2];
+	
 	// Source native aspect
 	$src_asp = $src_size_h / $src_size_w;
+	
 	// Required aspect
 	if ( $type == 'none' ) {
 		$dst_asp = $src_asp;
@@ -911,13 +995,12 @@ global $wppa_opt;
 	}
 	
 	// Create the ( empty ) destination image
-	//echo 'dst_asp='.$dst_asp.' src_asp='.$src_asp;
-	//echo ' size_w='.$dst_size_w.' size_h='.$dst_size_h;
 	$dst = imagecreatetruecolor( $dst_size_w, $dst_size_h );
 	if ( $mime == 3 ) {	// Png, save transparancy
 		imagealphablending( $dst, false );
 		imagesavealpha( $dst, true );
 	}
+	
 	// Fill with the required color
 	$c = strtolower( $wppa_opt['wppa_bgcolor_thumbnail'] );
 	if ( $c != '#000000' ) {
@@ -989,7 +1072,6 @@ global $wppa_opt;
 	}
 	
 	// Do the copy
-	//echo ' dst_x='.$dst_x.' dst_y='.$dst_y.' src_x='.$src_x.' src_y='.$src_y.' dst_w='.$dst_w.' dst_h='.$dst_h.' src_w='.$src_w.' src_h='.$src_h.'<br />';
 	imagecopyresampled( $dst, $src, $dst_x, $dst_y, $src_x, $src_y, $dst_w, $dst_h, $src_w, $src_h );
 	
 	// Save the thumb
@@ -1013,11 +1095,7 @@ global $wppa_opt;
 	wppa_optimize_image_file( $thumbpath );
 
 	// Compute and save sizes
-	$image_id = str_replace( WPPA_UPLOAD_PATH . '/thumbs/', '', $thumbpath );
-	$image_id = str_replace( '/', '', $image_id ); // if filesystem is tree
-	$image_id = wppa_strip_ext( $image_id );
-
-	wppa_get_thumbx( $image_id, 'force' );
+	wppa_get_thumbx( $id, 'force' );	// forces recalc x and y
 	
 	return true;
 }

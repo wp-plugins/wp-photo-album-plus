@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains low-level utility routines
-* Version 5.4.18
+* Version 5.4.19
 *
 */
  
@@ -1361,17 +1361,33 @@ global $wpdb;
 		else {
 			$source = wppa_get_photo_path($photo);
 		}
-		$imgattr = @ getimagesize($source);
-		if ( is_array($imgattr) ) {
-			$fs = filesize($source);
-			if ( $fs > 1024*1024 ) $fs = sprintf('%4.2f Mb', $fs/(1024*1024));
-			else $fs = sprintf('%4.2f Kb', $fs/1024);
-			$result = array('x' => $imgattr['0'], 'y' => $imgattr['1'], 's' => $fs);
+		$imgattr = @ getimagesize( $source );
+		if ( is_array( $imgattr ) ) {
+			$fs = wppa_get_filesize( $source );
+			$result = array( 'x' => $imgattr['0'], 'y' => $imgattr['1'], 's' => $fs );
 			return $result;
 		}
 	}
 	return false;
 }
+
+function wppa_get_filesize( $file ) {
+
+	if ( is_file( $file ) ) {
+		$fs = filesize( $file );
+		
+		if ( $fs > 1024*1024 ) {
+			$fs = sprintf('%4.2f Mb', $fs/(1024*1024));
+		}
+		else {
+			$fs = sprintf('%4.2f Kb', $fs/1024);
+		}
+		return $fs;
+	}
+	
+	return false;
+}
+
 
 function wppa_get_the_landing_page($slug, $title) {
 global $wppa_opt;
@@ -1611,9 +1627,13 @@ global $wpdb;
 
 	$thumb 	= wppa_cache_thumb( $id );
 	$album 	= wppa_cache_album( $thumb['album'] );
-	$tags 	= wppa_sanitize_tags( str_replace( array( ' ', '\'', '"'), ',', wppa_filter_iptc( wppa_filter_exif( $album['default_tags'], $id ), $id ) ) );
+	$tags 	= wppa_sanitize_tags( str_replace( array( '\'', '"'), ',', wppa_filter_iptc( wppa_filter_exif( $album['default_tags'], $id ), $id ) ) );
 	
-	$wpdb->query( $wpdb->prepare( "UPDATE `".WPPA_PHOTOS."` SET `tags` = %s WHERE `id` = %s", $tags, $id ) );
+//	$wpdb->query( $wpdb->prepare( "UPDATE `".WPPA_PHOTOS."` SET `tags` = %s WHERE `id` = %s", $tags, $id ) );
+
+	wppa_update_photo( array( 'id' => $id, 'tags' => $tags ) );
+	
+	wppa_cache_thumb( 'invalidate', $id );
 }
 
 function wppa_test_for_medal( $id ) {
@@ -2063,5 +2083,26 @@ function wppa_is_orig ( $path ) {
 	if ( count( $temp ) != 2 ) return true;
 	if ( ! wppa_is_int( $temp[0] ) ) return true;
 	if ( ! wppa_is_int( $temp[1] ) ) return true;
+	return false;
+}
+
+function wppa_browser_can_html5() {
+
+	$is_opera 	= strpos( $_SERVER["HTTP_USER_AGENT"], 'OPR' );
+	$is_ie 		= strpos( $_SERVER["HTTP_USER_AGENT"], 'Trident' );
+	$is_safari 	= strpos( $_SERVER["HTTP_USER_AGENT"], 'Safari' );
+	$is_firefox = strpos( $_SERVER["HTTP_USER_AGENT"], 'Firefox' );
+
+	if ( $is_opera ) 	return true;
+	if ( $is_safari ) 	return true;
+	if ( $is_firefox ) 	return true;
+	
+	if ( $is_ie ) {
+		$tri_pos = strpos( $_SERVER["HTTP_USER_AGENT"], 'Trident/' );
+		$tri_ver = substr( $_SERVER["HTTP_USER_AGENT"], $tri_pos+8, 3 );
+		if ( $tripos >= 6.0 ) return true; // IE 10 or later
+// echo $tri_ver;
+	}
+
 	return false;
 }

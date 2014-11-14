@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * gp admin functions
-* version 5.4.11
+* version 5.4.19
 *
 */
 
@@ -397,13 +397,13 @@ global $wpdb;
 	
 	// Destroy the source
 	imagedestroy( $source );
+	
 	// Destroy the result
 	imagedestroy( $rotate );
 
 	// Recreate the thumbnail
 	$err = '30';
-	$thumbsize = wppa_get_minisize();
-	$bret = wppa_create_thumbnail( $file, $thumbsize, '' );
+	$bret = wppa_create_thumbnail( $id );
 	if ( ! $bret ) return $err;
 	
 	// Return success
@@ -656,14 +656,21 @@ global $wpdb;
 	
 	// and add watermark ( optionally ) to fullsize image only
 	wppa_add_watermark( $id );
-	// also to thumbnail?
-	if ( wppa_switch( 'wppa_watermark_thumbs' ) ) {
-		wppa_create_thumbnail( wppa_get_photo_path( $id ), wppa_get_minisize(), '' );	// create new thumb
-	}
+	
+	// create new thumbnail
+	wppa_create_thumbnail( $id );
 
+	// Save source
 	wppa_save_source( $file, $name, $photo['album'] );
-	$wpdb->query( $wpdb->prepare( 'UPDATE `'.WPPA_PHOTOS.'` SET `filename` = %s WHERE `id` = %s', $name, $photo['id'] ) );
-	wppa_update_modified( $photo['id'] );
+	
+	// Update filename if not present. this is for backward compatibility when there were no filenames saved yet
+//	$wpdb->query( $wpdb->prepare( 'UPDATE `'.WPPA_PHOTOS.'` SET `filename` = %s WHERE `id` = %s', $name, $photo['id'] ) );
+	if ( ! wppa_get_photo_item( $id, 'filename' ) ) {
+		wppa_update_photo( array( 'id' => $id, 'filename' => $name ) );
+	}
+	
+	// Update modified timestamp
+	wppa_update_modified( $id );
 	wppa_dbg_msg( 'Update single photo: '.$name.' in album '.$photo['album'], 'green' );
 }
 
@@ -684,11 +691,9 @@ global $allphotos;
 			// and add watermark ( optionally ) to fullsize image only
 			wppa_add_watermark( $photo['id'] );
 			
-			// also to thumbnail?
-			if ( wppa_switch( 'wppa_watermark_thumbs' ) ) {
-				wppa_create_thumbnail( wppa_get_photo_path( $photo['id'] ), wppa_get_minisize(), '' );	// create new thumb
-			}
-
+			// create new thumbnail
+			wppa_create_thumbnail( $photo['id'] );	
+			
 			// Save the new source
 			wppa_save_source( $file, basename( $file ), $photo['album'] );
 			
@@ -833,19 +838,25 @@ global $wppa;
 			wppa_update_album( array( 'id' => $alb, 'timestamp' => time() ) );
 			wppa_flush_upldr_cache( 'photoid', $id );
 		}
+		
 		// Make the photo files		
 		if ( wppa_make_the_photo_files( $file, $id, $ext ) ) {
+		
 			// Repair photoname if not supplied and not standard
 			wppa_set_default_name( $id, $name );
+			
 			// Tags
 			wppa_set_default_tags( $id );
+			
 			// Index
 			wppa_index_add( 'photo', $id );
+			
 			// and add watermark ( optionally ) to fullsize image only
 			wppa_add_watermark( $id );
+			
 			// also to thumbnail?
 			if ( wppa_switch( 'wppa_watermark_thumbs' ) ) {
-				wppa_create_thumbnail( wppa_get_photo_path( $id ), wppa_get_minisize(), '' );	// create new thumb
+				wppa_create_thumbnail( $id );
 			}
 			// Is it a default coverimage?
 			wppa_check_coverimage( $id );

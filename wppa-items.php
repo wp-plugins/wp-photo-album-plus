@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains functions to retrieve album and photo items
-* Version 5.4.15
+* Version 5.4.19
 *
 */
  
@@ -106,6 +106,9 @@ static $thumb_cache_2;
 		}
 		elseif ( isset( $data['id'] ) ) { 			// Add a single thumb to 2nd level cache
 			$thumb_cache_2[$data['id']] = $data;	// Looks valid
+		}
+		elseif ( count( $data ) > 10000 ) {
+			return false;							// Too many, may cause out of memory error
 		}
 		else foreach( $data as $thumb ) {			// Add multiple
 			if ( isset( $thumb['id'] ) ) {			// Looks valid

@@ -1,7 +1,7 @@
 /* admin-styles.css 
 *
 * wp-photo-album-plus
-* version 5.3.9
+* version 5.4.19
 */
 #files_list, #files_list2
 {
@@ -138,6 +138,12 @@ ul.wppa_nav
 	font-size: 13px;
 	line-height: 15px;
 }
+.wppa-subtable td {
+	padding: 0 2px;
+	font-size: 13px;
+	line-height: 15px;
+}
+
 /**/
 
 .photoitem, .albumtable, .table_wrapper {

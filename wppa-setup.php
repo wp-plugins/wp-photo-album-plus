@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 5.4.18
+* Version 5.4.19
 *
 */
 
@@ -984,6 +984,7 @@ Hide Camera info
 						'wppa_user_upload_login'	=> 'yes',
 						'wppa_owner_only' 			=> 'no',
 						'wppa_user_upload_on'		=> 'no',
+						'wppa_fe_upload_tags' 		=> 'no',
 						'wppa_user_album_edit_on' 	=> 'no',
 						'wppa_upload_moderate'		=> 'no',
 						'wppa_upload_edit'			=> 'no',
@@ -1053,6 +1054,10 @@ Hide Camera info
 						'wppa_leading_zeros' 		=> '',
 						'wppa_add_gpx_tag' 			=> '',
 						'wppa_optimize_ewww' 		=> '',
+						'wppa_tag_to_edit' 			=> '',
+						'wppa_new_tag_value' 		=> '',
+						'wppa_edit_tag' 			=> '',
+
 
 						// Table IX: Miscellaneous
 						// A System

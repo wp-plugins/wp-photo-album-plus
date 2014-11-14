@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains (not yet, but in the future maybe) all the maintenance routines
-* Version 5.4.15
+* Version 5.4.19
 *
 */
 
@@ -44,7 +44,8 @@ global $wppa_session;
 						'wppa_leading_zeros',
 						'wppa_add_gpx_tag',
 						'wppa_optimize_ewww',
-						'wppa_comp_sizes'
+						'wppa_comp_sizes',
+						'wppa_edit_tag'
 					);
 	foreach ( array_keys( $all_slugs ) as $key ) {
 		if ( $all_slugs[$key] != $slug ) {
@@ -70,6 +71,12 @@ global $wppa_session;
 	if ( ! isset( $wppa_session[$slug.'_fixed'] ) )   $wppa_session[$slug.'_fixed'] = '0';
 	if ( ! isset( $wppa_session[$slug.'_deleted'] ) ) $wppa_session[$slug.'_deleted'] = '0';
 	if ( ! isset( $wppa_session[$slug.'_skipped'] ) ) $wppa_session[$slug.'_skipped'] = '0';
+	
+	if ( $lastid == '0' ) {
+		$wppa_session[$slug.'_fixed'] = '0';
+		$wppa_session[$slug.'_deleted'] = '0';
+		$wppa_session[$slug.'_skipped'] = '0';
+	}
 	
 	// Pre-processing needed?
 	if ( $lastid == '0' ) {
@@ -98,6 +105,7 @@ global $wppa_session;
 					update_option( 'wppa_orphan_album', $orphan_album );
 				}
 				break;
+				
 		}
 	}
 	
@@ -165,9 +173,9 @@ global $wppa_session;
 		case 'wppa_add_gpx_tag':
 		case 'wppa_optimize_ewww':
 		case 'wppa_comp_sizes':
+		case 'wppa_edit_tag':
 		
 			// Process photos
-			$thumbsize 	= wppa_get_minisize();
 			$table 		= WPPA_PHOTOS;
 			
 			if ( $slug == 'wppa_cleanup' ) {
@@ -181,6 +189,12 @@ global $wppa_session;
 				$topid 		= $wpdb->get_var( "SELECT `id` FROM `".WPPA_PHOTOS."` ORDER BY `id` DESC LIMIT 1" );
 				$photos 	= $wpdb->get_results( "SELECT * FROM `".WPPA_PHOTOS."` WHERE `id` > ".$lastid." ORDER BY `id` LIMIT ".$chunksize, ARRAY_A );
 			}
+			
+			if ( $slug == 'wppa_edit_tag' ) {
+				$edit_tag 	= get_option( 'wppa_tag_to_edit' );
+				$new_tag 	= get_option( 'wppa_new_tag_value' );
+			}
+
 			
 			if ( $photos ) foreach ( $photos as $photo ) {
 				$thumb = $photo;	// Make globally known
@@ -239,10 +253,7 @@ global $wppa_session;
 						
 					case 'wppa_regen_thumbs':
 						if ( ! wppa_is_video( $id ) ) {
-							$path = wppa_get_photo_path( $id );
-							if ( is_file( $path ) ) {
-								wppa_create_thumbnail( $path, $thumbsize );
-							}
+							wppa_create_thumbnail( $id );
 						}
 						break;
 						
@@ -330,9 +341,7 @@ global $wppa_session;
 					case 'wppa_watermark_all':
 						if ( ! wppa_is_video( $id ) ) {
 							if ( wppa_add_watermark( $id ) ) {
-								if ( wppa_switch( 'wppa_watermark_thumbs' ) ) {
-									wppa_create_thumbnail( wppa_get_photo_path( $id ), wppa_get_minisize(), '' );	// create new thumb
-								}
+								wppa_create_thumbnail( $id );	// create new thumb
 								$wppa_session[$slug.'_fixed']++;
 							}
 							else {
@@ -415,6 +424,22 @@ global $wppa_session;
 						wppa_update_photo( array( 'id' => $photo['id'], 'thumbx' => $tx, 'thumby' => $ty, 'photox' => $px, 'photoy' => $py ) );
 						break;
 						
+					case 'wppa_edit_tag':
+						$phototags = explode( ',', wppa_get_photo_item( $photo['id'], 'tags' ) );
+						if ( in_array( $edit_tag, $phototags ) ) {
+							foreach( array_keys( $phototags ) as $key ) {
+								if ( $phototags[$key] == $edit_tag ) {
+									$phototags[$key] = $new_tag;
+								}
+							}
+							$tags = wppa_sanitize_tags( implode( ',', $phototags ) );
+							wppa_update_photo( array( 'id' => $photo['id'], 'tags' => $tags ) );
+							$wppa_session[$slug.'_fixed']++;
+						}
+						else {
+							$wppa_session[$slug.'_skipped']++;
+						}
+						break;
 		
 				}
 				// Test for timeout / ready
@@ -510,6 +535,10 @@ global $wppa_session;
 			case 'wppa_remake':
 				wppa_bump_photo_rev();
 				wppa_bump_thumb_rev();
+				break;
+			case 'wppa_edit_tag':
+				wppa_clear_taglist();
+				$reload = 'reload';
 				break;
 		}
 	}

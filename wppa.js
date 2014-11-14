@@ -2,7 +2,7 @@
 //
 // conatins slideshow, theme, ajax and lightbox code
 //
-// Version 5.4.18
+// Version 5.4.19
 
 // Part 1: Slideshow
 //
@@ -408,6 +408,13 @@ function wppaPrevN( mocc, n ) {
 	}
 }
 
+function wppaFirst( mocc ) {
+	_wppaDidGoto[mocc] = true;
+	if ( ! _wppaSSRuns[mocc] ) {
+		_wppaGoto( mocc, 0 );
+	}
+}
+
 function wppaNext( mocc ) {
 	_wppaDidGoto[mocc] = true;
 	if ( ! _wppaSSRuns[mocc] ) {
@@ -419,6 +426,13 @@ function wppaNextN( mocc, n ) {
 	_wppaDidGoto[mocc] = true;
 	if ( ! _wppaSSRuns[mocc] ) {
 		_wppaNextN( mocc, n );
+	}
+}
+
+function wppaLast( mocc ) {
+	_wppaDidGoto[mocc] = true;
+	if ( ! _wppaSSRuns[mocc] ) {
+		_wppaGoto( mocc, _wppaSlides[mocc].length - 1 );
 	}
 }
 

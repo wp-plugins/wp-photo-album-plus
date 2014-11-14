@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Various funcions
-* Version 5.4.15
+* Version 5.4.19
 *
 */
 
@@ -3944,20 +3944,47 @@ global $wpdb;
 		wppa_flush_treecounts( $alb );
 	}
 	if ( wppa_make_the_photo_files( $file['tmp_name'], $id, $ext ) ) {
+	
 		// Repair photoname if not standard
 		if ( ! wppa_get_post( 'user-name' ) ) {
 			wppa_set_default_name( $id, $file['name'] );
 		}
-		// Defaul tags
+		
+		// Default tags
 		wppa_set_default_tags( $id );
+		
+		// Custom tags
+		$tags = wppa_get_photo_item( $id, 'tags' );
+		$oldt = $tags;
+		if ( isset( $_POST['wppa-user-tags'] ) ) {	// Existing tags
+			$tags .= ','.implode( ',', $_POST['wppa-user-tags'] );
+		}
+		if ( isset( $_POST['wppa-new-tags'] ) ) {	// New tags
+			$newt = $_POST['wppa-new-tags'];
+			$tags .= ','.$newt;
+		}
+		else {
+			$newt = '';
+		}
+		$tags = wppa_sanitize_tags( str_replace( array( '\'', '"' ), ',', wppa_filter_iptc( wppa_filter_exif( $tags, $id ), $id ) ) );
+		if ( $tags != $oldt ) {					// Added tag(s)
+			wppa_update_photo( array( 'id' => $id, 'tags' => $tags ) );
+			if ( $newt ) {
+				wppa_clear_taglist();			// Forces recreation
+			}
+		}
+		
 		// Index
 		wppa_index_add( 'photo', $id );
+		
 		// and add watermark ( optionally ) to fullsize image only
 		wppa_add_watermark( $id );
+		
 		// Also to thumbnail?
 		if ( wppa_switch( 'wppa_watermark_thumbs' ) ) {
-			wppa_create_thumbnail( wppa_get_photo_path( $id ), wppa_get_minisize(), '' );	// create new thumb
+			wppa_create_thumbnail( $id );	// create new thumb
 		}
+		
 		// Is it a default coverimage?
 		wppa_check_coverimage( $id );
 

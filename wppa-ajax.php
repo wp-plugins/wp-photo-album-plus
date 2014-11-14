@@ -2,7 +2,7 @@
 /* wppa-ajax.php
 *
 * Functions used in ajax requests
-* version 5.4.18
+* version 5.4.19
 *
 */
 
@@ -645,7 +645,7 @@ global $wppa_session;
 					$photos = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM `'.WPPA_PHOTOS.'` WHERE `album` = %s', $album ), ARRAY_A );
 					$deftag = $wpdb->get_var( $wpdb->prepare( 'SELECT `default_tags` FROM `'.WPPA_ALBUMS.'` WHERE `id` = %s', $album ) );
 					if ( is_array( $photos ) ) foreach ( $photos as $photo ) {
-						$tags = wppa_sanitize_tags( str_replace( array( ' ', '\'', '"' ), ',', wppa_filter_iptc( wppa_filter_exif( $deftag, $photo['id'] ), $photo['id'] ) ) );
+						$tags = wppa_sanitize_tags( str_replace( array( '\'', '"' ), ',', wppa_filter_iptc( wppa_filter_exif( $deftag, $photo['id'] ), $photo['id'] ) ) );
 						$iret = $wpdb->query( $wpdb->prepare( 'UPDATE `'.WPPA_PHOTOS.'` SET `tags` = %s WHERE `id` = %s', $tags, $photo['id'] ) );
 						wppa_index_update( 'photo', $photo['id'] );
 					}
@@ -665,7 +665,7 @@ global $wppa_session;
 					$photos = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM `'.WPPA_PHOTOS.'` WHERE `album` = %s', $album ), ARRAY_A );
 					$deftag = $wpdb->get_var( $wpdb->prepare( 'SELECT `default_tags` FROM `'.WPPA_ALBUMS.'` WHERE `id` = %s', $album ) );
 					if ( is_array( $photos ) ) foreach ( $photos as $photo ) {
-						$tags = wppa_sanitize_tags( str_replace( array( ' ', '\'', '"' ), ',', wppa_filter_iptc( wppa_filter_exif( $photo['tags'].','.$deftag, $photo['id'] ), $photo['id'] ) ) );
+						$tags = wppa_sanitize_tags( str_replace( array( '\'', '"' ), ',', wppa_filter_iptc( wppa_filter_exif( $photo['tags'].','.$deftag, $photo['id'] ), $photo['id'] ) ) );
 						$iret = $wpdb->query( $wpdb->prepare( 'UPDATE `'.WPPA_PHOTOS.'` SET `tags` = %s WHERE `id` = %s', $tags, $photo['id'] ) );
 						wppa_index_update( 'photo', $photo['id'] );
 					}
@@ -862,7 +862,7 @@ global $wppa_session;
 			wppa_cache_thumb( $photo );
 			if ( wppa_add_watermark( $photo ) ) {
 				if ( wppa_switch( 'wppa_watermark_thumbs' ) ) {
-					wppa_create_thumbnail( wppa_get_photo_path( $photo ), wppa_get_minisize(), '' );	// create new thumb
+					wppa_create_thumbnail( $photo );	// create new thumb
 				}
 				echo '||0||'.__( 'Watermark applied', 'wppa' );
 				exit;
@@ -932,6 +932,15 @@ global $wppa_session;
 					}
 					else {
 						echo '||2||'.__( 'Could not remake files', 'wppa' );
+					}
+					exit;
+					break;
+				case 'remakethumb':
+					if ( wppa_create_thumbnail( $photo ) ) {
+						echo '||0||'.__( 'Thumbnail remade', 'wppa' );
+					}
+					else {
+						echo '||0||'.__( 'Could not remake thumbnail', 'wppa' );
 					}
 					exit;
 					break;
@@ -1793,6 +1802,11 @@ global $wppa_session;
 					}
 					break;
 					
+				case 'wppa_new_tag_value':
+					$value = wppa_sanitize_tags( $value );
+					break;
+
+					
 				default:
 			
 					$wppa['error'] = '0';
@@ -1855,6 +1869,9 @@ global $wppa_session;
 			break;
 
 		case 'do-fe-upload':
+			if ( is_admin() ) {
+				require_once 'wppa-non-admin.php';
+			}
 			wppa_user_upload();
 			echo $wppa['out'];
 			exit;

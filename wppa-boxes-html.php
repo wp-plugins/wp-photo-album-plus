@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Various wppa boxes
-* Version 5.4.18
+* Version 5.4.19
 *
 *
 */
@@ -729,7 +729,7 @@ global $wppa_opt;
 	$small = ( $wppa['in_widget'] == 'upload' || $mcr );
 
 	// Ajax upload?
-	$ajax_upload = wppa_switch( 'wppa_ajax_upload' );
+	$ajax_upload = wppa_switch( 'wppa_ajax_upload' ) && wppa_browser_can_html5();
 	
 	// Create the return url
 	if ( $ajax_upload ) {
@@ -784,11 +784,11 @@ global $wppa_opt;
 
 			if ( wppa_switch( 'wppa_upload_one_only' ) && ! current_user_can( 'administrator' ) ) {
 				$wppa['out'] .= '
-			<input type="file" capture="camera" class="wppa-user-file" style="max-width: '.$width.'; margin: 6px 0; float:left; '.__wcs( 'wppa-box-text' ).'" id="wppa-user-upload-'.$alb.'-'.$wppa['mocc'].'" name="wppa-user-upload-'.$alb.'-'.$wppa['mocc'].'[]" onchange="jQuery( \'#wppa-user-submit-'.$alb.'-'.$wppa['mocc'].'\' ).css( \'display\', \'block\' )" />';
+			<input type="file" capture="camera" class="wppa-user-file" style="width: auto; max-width: '.$width.'; margin: 6px 0; float:left; '.__wcs( 'wppa-box-text' ).'" id="wppa-user-upload-'.$alb.'-'.$wppa['mocc'].'" name="wppa-user-upload-'.$alb.'-'.$wppa['mocc'].'[]" onchange="jQuery( \'#wppa-user-submit-'.$alb.'-'.$wppa['mocc'].'\' ).css( \'display\', \'block\' )" />';
 			}
 			else {
 				$wppa['out'] .= '
-			<input type="file" capture="camera" multiple="multiple" class="wppa-user-file" style="max-width: '.$width.'; margin: 6px 0; float:left; '.__wcs( 'wppa-box-text' ).'" id="wppa-user-upload-'.$alb.'-'.$wppa['mocc'].'" name="wppa-user-upload-'.$alb.'-'.$wppa['mocc'].'[]" onchange="jQuery( \'#wppa-user-submit-'.$alb.'-'.$wppa['mocc'].'\' ).css( \'display\', \'block\' )" />';
+			<input type="file" capture="camera" multiple="multiple" class="wppa-user-file" style="width: auto; max-width: '.$width.'; margin: 6px 0; float:left; '.__wcs( 'wppa-box-text' ).'" id="wppa-user-upload-'.$alb.'-'.$wppa['mocc'].'" name="wppa-user-upload-'.$alb.'-'.$wppa['mocc'].'[]" onchange="jQuery( \'#wppa-user-submit-'.$alb.'-'.$wppa['mocc'].'\' ).css( \'display\', \'block\' )" />';
 			}
 			
 			$onclick = $alb ? '' : ' onclick="if ( document.getElementById( \'wppa-upload-'.$wppa['mocc'].'\' ).value == 0 ) {alert( \''.esc_js( __a( 'Please select an album and try again' ) ).'\' );return false;}"';
@@ -800,7 +800,7 @@ global $wppa_opt;
 			// if ajax: progression bar
 			if ( $ajax_upload ) {
 				$wppa['out'] .= '
-				<div id="progress-'.$alb.'-'.$wppa['mocc'].'" class="wppa-progress" >
+				<div id="progress-'.$alb.'-'.$wppa['mocc'].'" class="wppa-progress" style="border-color:'.wppa_opt( 'wppa_bcolor_upload' ).'" >
 					<div id="bar-'.$alb.'-'.$wppa['mocc'].'" class="wppa-bar" ></div>
 					<div id="percent-'.$alb.'-'.$wppa['mocc'].'" class="wppa-percent" >0%</div >
 				</div>
@@ -885,7 +885,28 @@ global $wppa_opt;
 			<div class="wppa-box-text wppa-td" style="clear:both; float:left; text-align:left; '.__wcs( 'wppa-box-text' ).__wcs( 'wppa-td' ).'" >'.
 				__a( 'Enter/modify photo description' ).'
 			</div>
-			<textarea class="wppa-user-textarea wppa-box-text wppa-file-'.$t.$wppa['mocc'].'" style="height:120px; width:'.( $width-6 ).'px; '.__wcs( 'wppa-box-text' ).'" name="wppa-user-desc" >'.$desc.'</textarea>
+			<textarea class="wppa-user-textarea wppa-box-text wppa-file-'.$t.$wppa['mocc'].'" style="height:120px; width:'.( $width-6 ).'px; '.__wcs( 'wppa-box-text' ).'" name="wppa-user-desc" >'.$desc.'</textarea>';
+			
+		// Tags
+		if ( wppa_switch( 'wppa_fe_upload_tags' ) ) {
+			$wppa['out'] .= '
+				<div class="wppa-box-text wppa-td" style="clear:both; float:left; text-align:left; '.__wcs( 'wppa-box-text' ).__wcs( 'wppa-td' ).'" >'.
+					'<div style="float:left; margin-right:4px;" ><small>'.__a( 'Select tags:', 'wppa' ).'</small></div>'.
+					'<select style="float:left; margin-right: 4px;" name="wppa-user-tags[]" multiple >';
+						$tags = wppa_get_taglist();
+					//	$wppa['out'] .= '<option value="" >'.__a('- select tag(s) -', 'wppa').'</option>';
+						foreach ( $tags as $tag ) {
+							$wppa['out'] .= '<option value="'.$tag['tag'].'">'.$tag['tag'].'</option>';
+						}
+						$wppa['out'] .= '
+					</select>
+					<div style="float:left; margin-right:4px;" ><small>'.__a( 'and/or enter new tags:', 'wppa' ).'</small></div>
+					<input type="text" class="wppa-box-text " style="padding:0; width:150px; '.__wcs( 'wppa-box-text' ).'" name="wppa-new-tags" />
+				</div>';
+		}
+		
+		// Done
+		$wppa['out'] .= '
 		</form>
 	</div>';
 	

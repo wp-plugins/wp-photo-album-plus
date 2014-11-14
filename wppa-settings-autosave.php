@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 5.4.18
+* Version 5.4.19
 *
 */
 
@@ -24,6 +24,11 @@ global $wppa_revno;
 global $no_default;
 			
 
+	// Test area
+
+	
+	// End test area
+	
 	// Initialize
 	wppa_initialize_runtime( true );
 	$options_error = false;
@@ -4120,7 +4125,7 @@ global $no_default;
 							$html1 = wppa_checkbox($slug, $onchange);
 							$html2 = '';
 							$html = array( $html1, $html2 );
-							wppa_setting($slug, '3', $name, $desc, $html, $help);
+							wppa_setting($slug, '3.1', $name, $desc, $html, $help);
 							
 							$name = __('User upload Photos login', 'wppa');
 							$desc = __('Frontend upload requires the user is logged in.', 'wppa');
@@ -4130,7 +4135,16 @@ global $no_default;
 							$html1 = wppa_checkbox($slug);
 							$html2 = '';
 							$html = array( $html1, $html2 );
-							wppa_setting($slug, '4', $name, $desc, $html, $help);
+							wppa_setting($slug, '3.2', $name, $desc, $html, $help);
+							
+							$name = __('User upload tags', 'wppa');
+							$desc = __('Frontend upload can add tags.', 'wppa');
+							$help = '';
+							$slug = 'wppa_fe_upload_tags';
+							$html1 = wppa_checkbox($slug);
+							$html2 = '';
+							$html = array( $html1, $html2 );
+							wppa_setting($slug, '3.3', $name, $desc, $html, $help);
 							
 							// User upload limits
 							$options = array( 	__('for ever', 'wppa'), 
@@ -4771,11 +4785,34 @@ global $no_default;
 								$html = array($html1, $html2, $html3, $html4);
 								wppa_setting(false, '13', $name, $desc, $html, $help);
 							}
+							
+							$name = __('Edit tag', 'wppa');
+							$desc = __('Globally change a tagname.', 'wppa');
+							$help = '';
+							$slug1 = 'wppa_tag_to_edit';
+							$slug2 = 'wppa_new_tag_value';
+							$slug3 = 'wppa_edit_tag';
+							$tags = wppa_get_taglist();
+							$opts = array(__('-select a tag-', 'wppa'));
+							$vals = array( '' );
+							foreach( array_keys($tags) as $tag) {
+								$opts[] = $tag;
+								$vals[] = $tag;
+							}
+							$html1 = '<div><small style="float:left;margin-right:5px;" >'.__('Tag:', 'wppa').'</small>'.wppa_select( $slug1, $opts, $vals ).'</div>';
+							$html2 = '<div style="clear:both" ><small style="float:left;margin-right:5px;" >'.__('Change to:', 'wppa').'</small>'.wppa_edit( $slug2, get_option( $slug2 ), '100px' ).'</div>';
+							$html3 = wppa_maintenance_button( $slug3 );
+							$html4 = wppa_status_field( $slug3 );
+							$html5 = wppa_togo_field( $slug3 );
+							$html = array( $html1 . '<br />' . $html2, $html3, $html4, $html5 );
+							wppa_setting( false, '13', $name, $desc, $html, $help );
+							
+							
 
 						wppa_setting_subheader('C', '4', __('Listings', 'wppa'));
 
 							$name = __('List Logfile', 'wppa');
-							$desc = __('Show the content if wppa+ (error) log.', 'wppa');
+							$desc = __('Show the content of wppa+ (error) log.', 'wppa');
 							$help = '';
 							$slug1 = 'wppa_errorlog_purge';
 							$slug2 = 'wppa_list_errorlog';

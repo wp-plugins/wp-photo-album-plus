@@ -117,6 +117,7 @@ global $thumb;
 				$doit = true;
 				break;
 			case 'scheduledtm':
+			case 'exifdtm':
 				$doit = true;
 				break;
 			case 'status':
@@ -141,7 +142,7 @@ global $thumb;
 		
 		if ( $doit ) {
 			if ( $wpdb->query( $wpdb->prepare( "UPDATE `".WPPA_PHOTOS."` SET `".$itemname."` = %s WHERE `id` = %s LIMIT 1", $itemvalue, $id ) ) ) {
-				$thumb[$itemname] = $itemvalue; // Update cache
+				wppa_cache_photo( 'invalidate', $id );
 			}
 		}
 	}

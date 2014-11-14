@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * edit and delete photos
-* version 5.4.15
+* version 5.4.19
 *
 */
 
@@ -163,34 +163,7 @@ global $wppa;
 									<br />
 									<?php echo sprintf( __( 'Album: %d<br />(%s)', 'wppa' ), $photo['album'], wppa_get_album_name( $photo['album'] ) ) ?>
 									<br /><br />
-									<?php if ( $is_video ) { ?>
-										<?php _e( 'Video size ( 0 = default )', 'wppa' ) ?>
-										<table>
-											<tr>
-												<td>
-													<?php _e( 'Width:', 'wppa' ) ?>
-												</td>
-												<td>
-													<input style="width:50px;" onkeyup="wppaAjaxUpdatePhoto( <?php echo $photo['id'] ?>, 'videox', this ); " onchange="wppaAjaxUpdatePhoto( <?php echo $photo['id'] ?>, 'videox', this ); " value="<?php echo $photo['videox'] ?>" />
-												</td>
-												<td>
-													<?php _e( 'pix', 'wppa' ) ?>
-												</td>
-											</tr>
-											<tr>
-												<td>
-													<?php _e( 'Height:', 'wppa' ) ?>
-												</td>
-												<td>
-													<input style="width:50px; float:right;" onkeyup="wppaAjaxUpdatePhoto( <?php echo $photo['id'] ?>, 'videoy', this ); " onchange="wppaAjaxUpdatePhoto( <?php echo $photo['id'] ?>, 'videoy', this ); " value="<?php echo $photo['videoy'] ?>" />
-												</td>
-												<td>
-													<?php _e( 'pix', 'wppa' ) ?>
-												</td>
-											</tr>
-										</table>
-									<?php }
-									else { ?>
+									<?php if ( ! $is_video ) { ?>
 										<?php _e( 'Rotate', 'wppa' ) ?>
 										<a onclick="if ( confirm( '<?php _e( 'Are you sure you want to rotate this photo left?', 'wppa' ) ?>' ) ) wppaAjaxUpdatePhoto( <?php echo $photo['id'] ?>, 'rotleft', 0, <?php echo ( $wppa['front_edit'] ? 'false' : 'true' ) ?> ); " ><?php _e( 'left', 'wppa' ); ?></a>
 										
@@ -449,19 +422,136 @@ global $wppa;
 								</th>
 								<td>
 									<?php echo $photo['filename'] ?>
-									<?php if ( current_user_can( 'administrator' ) && is_file( wppa_get_source_path( $photo['id'] ) ) ) {
-										$sp = wppa_get_source_path( $photo['id'] );
-										$ima = getimagesize( $sp );
-										echo ' '.__( 'Source file available.', 'wppa' ).' ( '.$ima['0'].'x'.$ima['1'].' )'; ?>
-										<a style="cursor:pointer; font-weight:bold;" onclick="wppaAjaxUpdatePhoto( <?php echo $photo['id'] ?>, 'remake', this )">Remake files</a>
-									<?php } 
-									if ( $is_video ) {
-										echo ' '._e( 'Available video formats:', 'wppa' ).' ';
-										foreach ( $is_video as $fmt ) {
-											echo $fmt.' ';
-										}
-									}
+								</td>
+							</tr>
+							<?php } ?>
+							
+							<!--- Video sizes -->
+							<?php if ( $is_video ) { ?>
+							<tr>
+								<th>
+									<label><?php _e( 'Video size:', 'wppa' ) ?>
+								</th>
+								<td>
+									<table class="wppa-subtable" >
+										<tr>
+											<td>
+												<?php _e( 'Width:', 'wppa' ) ?>
+											</td>
+											<td>
+												<input style="width:50px;margin:0 4px;" onkeyup="wppaAjaxUpdatePhoto( <?php echo $photo['id'] ?>, 'videox', this ); " onchange="wppaAjaxUpdatePhoto( <?php echo $photo['id'] ?>, 'videox', this ); " value="<?php echo $photo['videox'] ?>" /><?php echo sprintf( __( 'pix, (0=default:%s)', 'wppa' ), wppa_opt( 'wppa_video_width' ) ) ?>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<?php _e( 'Height:', 'wppa' ) ?>
+											</td>
+											<td>
+												<input style="width:50px;margin:0 4px;" onkeyup="wppaAjaxUpdatePhoto( <?php echo $photo['id'] ?>, 'videoy', this ); " onchange="wppaAjaxUpdatePhoto( <?php echo $photo['id'] ?>, 'videoy', this ); " value="<?php echo $photo['videoy'] ?>" /><?php echo sprintf( __( 'pix, (0=default:%s)', 'wppa' ), wppa_opt( 'wppa_video_height' ) ) ?>
+											</td>
+										</tr>
+									</table>
+								</td>
+							</tr>
+							<tr>
+								<th>
+									<label><?php _e( 'Formats:', 'wppa' ) ?>
+								</th>
+								<td>
+									<table class="wppa-subtable" >
+										<?php
+											foreach ( $is_video as $fmt ) {
+												echo '<tr><td>'.$fmt.'</td><td>'.__( 'Filesize:', 'wppa' ).'</td><td>'.wppa_get_filesize( str_replace( 'xxx', $fmt, wppa_get_photo_path( $photo['id'] ) ) ).'</td></tr>';
+											}
 									?>
+									</table>
+								</td>
+							</tr>
+							<?php } else { ?>
+							<!-- Filesizes -->
+							<tr>
+								<th>
+									<label><?php _e( 'Photo sizes:', 'wppa') ?></label>
+								</th>
+								<td>
+									<table class="wppa-subtable" >
+										<tr>
+											<td>
+												<?php _e( 'Source file:', 'wppa' ) ?>
+											</td>
+												<?php $sp = wppa_get_source_path( $photo['id'] );
+													if ( is_file( $sp ) ) {
+														$ima 	= getimagesize( $sp );
+												?>
+											<td>
+												<?php echo $ima['0'].' x '.$ima['1'].' px.' ?>
+											</td>
+											<td>
+												<?php echo wppa_get_filesize( $sp ) ?>
+											</td>
+											<td>
+												<a style="cursor:pointer; font-weight:bold;" title="<?php _e( 'Remake display file and thumbnail file', 'wppa' ) ?>" onclick="wppaAjaxUpdatePhoto( <?php echo $photo['id'] ?>, 'remake', this )"><?php _e( 'Remake files', 'wppa' ) ?></a>
+											</td>
+												<?php } else { ?>
+											<td>
+												<span style="color:orange;"><?php _e('Unavailable', 'wppa') ?></span>
+											</td>
+											<td>
+											</td>
+											<td>
+											</td>
+												<?php } ?>
+										</tr>
+										<tr>
+											<td>
+												<?php _e( 'Display file:', 'wppa') ?>
+											</td>
+												<?php $dp = wppa_get_photo_path( $photo['id'] );
+													if ( is_file( $dp ) ) {
+												?>
+											<td>
+												<?php echo wppa_get_photox( $photo['id'] ).' x '.wppa_get_photoy( $photo['id'] ).' px.' ?>
+											</td>
+											<td>
+												<?php echo wppa_get_filesize( $dp ) ?>
+											</td>
+											<td>
+											</td>
+												<?php } else { ?>
+											<td>
+												<span style="color:red;"><?php _e('Unavailable', 'wppa') ?></span>
+											</td>
+											<td>
+											</td>
+											<td>
+											</td>
+												<?php } ?>
+										</tr>
+										<tr>
+											<td>
+												<?php _e( 'Thumbnail file:', 'wppa') ?>
+											</td>
+												<?php $tp = wppa_get_thumb_path( $photo['id'] );
+													if ( is_file( $tp ) ) {
+												?>
+											<td>
+												<?php echo wppa_get_thumbx( $photo['id'] ).' x '.wppa_get_thumby( $photo['id'] ).' px.' ?>
+											</td>
+											<td>
+												<?php echo wppa_get_filesize( $tp ) ?>
+											</td>
+												<?php } else { ?>
+											<td>
+												<span style="color:red;"><?php _e('Unavailable', 'wppa') ?></span>
+											</td>
+											<td>
+											</td>
+												<?php } ?>
+											<td>
+												<a style="cursor:pointer; font-weight:bold;" title="<?php _e( 'Remake thumbnail file', 'wppa' ) ?>" onclick="wppaAjaxUpdatePhoto( <?php echo $photo['id'] ?>, 'remakethumb', this )"><?php _e( 'Remake', 'wppa' ) ?></a>
+											</td>
+										</tr>
+									</table>
 								</td>
 							</tr>
 							<?php } ?>

@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile, cloudinary, fotomoto
-Version: 5.4.18
+Version: 5.4.19
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -187,6 +187,24 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 5.4.19 =
+
+= Bug Fixes =
+
+* Photo tags may contain spaces, Now also in the application/addition of default tags in album admin.
+* On certain installations and frontend upload using ajax, a fatal error undefined function wppa_user_upload() occurred. Fixed.
+
+= New Features =
+
+* Maintenance proc Table VIII-B13: Edit tag.
+* Frontend upload can add tags if enabled in Table VII-B3.3.
+
+= Other Changes =
+
+* More info about files on the edit photo information screen.
+* Lifted an internal limitation so albums can now contain over 20.000 photos.
+* Filmstrip double arrows go to first or last slide instead of filmstrip length back and forth.
 
 = 5.4.18 =
 
