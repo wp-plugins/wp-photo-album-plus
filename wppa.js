@@ -2,7 +2,7 @@
 //
 // conatins slideshow, theme, ajax and lightbox code
 //
-// Version 5.4.19
+// Version 5.4.20
 
 // Part 1: Slideshow
 //
@@ -466,6 +466,7 @@ function wppaGotoFilmNoMove( mocc, idx ) {
 
 function wppaGotoKeepState( mocc, idx ) {
 	// Goto the requested slide and preserve running state
+	if ( _wppaNxtIdx[mocc] == idx ) return; // Already there
 	_wppaDidGoto[mocc] = true;
 	_wppaGotoKeepState( mocc, idx );
 }
@@ -893,13 +894,20 @@ function _wppaNextSlide_5( mocc ) {
 	_wppaShowMetaData( mocc, 'show' ); 
 	
 	// Almost done, finalize
-	if ( _wppaTP[mocc] != -2 ) {		// A Toggle pending?
-		var index = _wppaTP[mocc];		// Remember the pending startstop request argument
-		_wppaTP[mocc] = -2;				// Reset the pending toggle
-		wppaStartStop( mocc, index );		// Do as if the toggle request happens now
+	if ( _wppaTP[mocc] != -2 ) {								// A Toggle pending?
+		var index = _wppaTP[mocc];								// Remember the pending startstop request argument
+		_wppaTP[mocc] = -2;										// Reset the pending toggle
+		_wppaDidGoto[mocc] = false;								// Is worked out now
+		_wppaIsBusy[mocc] = false;								// No longer busy
+		if ( ! wppaIsMini[mocc] ) { 							// Not in a widget
+			_bumpViewCount( _wppaId[mocc][_wppaCurIdx[mocc]] );	// Register a view
+		}
+		_wppaDoAutocol(mocc);	
+		wppaStartStop( mocc, index );							// Do as if the toggle request happens now
+		return;
 	}
-	else {								// No toggle pending
-		wppaUpdateLightboxes(); 		// Refresh lightbox
+	else {														// No toggle pending
+		wppaUpdateLightboxes(); 								// Refresh lightbox
 		
 		// Update url and title if ( ( this is non-mini ) AND 
 		// ( this is the only running non-mini OR there are no running non-minis ) )
@@ -1218,19 +1226,17 @@ function _wppaAdjustFilmstrip( mocc ) {
 		var to = _wppaCurIdx[mocc] + 10; if ( to > _wppaSlides[mocc].length ) to = _wppaSlides[mocc].length;
 		var index = from;
 		while ( index <= to ) {
-			if ( typeof ( _wppaId[mocc][index] ) != 'undefined' ) {
-				if ( typeof ( document.getElementById( 'film_wppatnf_'+_wppaId[mocc][index]+'_'+mocc ) ) != 'undefined' ) {
-					var html = document.getElementById( 'film_wppatnf_'+_wppaId[mocc][index]+'_'+mocc ).innerHTML;
-					if ( html.search( '<!--' ) != -1 ) {
-						html = html.replace( '<!--', '' );
-						html = html.replace( '-->', '' );
-						document.getElementById( 'film_wppatnf_'+_wppaId[mocc][index]+'_'+mocc ).innerHTML = html;
-						if ( wppaFilmThumbTitle != '' ) {
-							document.getElementById( 'wppa-film-'+index+'-'+mocc ).title = wppaFilmThumbTitle;
-						}
-						else {
-							document.getElementById( 'wppa-film-'+index+'-'+mocc ).title = _wppaNames[mocc][index];
-						}
+			var html = jQuery( '#film_wppatnf_'+_wppaId[mocc][index]+'_'+mocc ).html();
+			if ( html ) {
+				if ( html.search( '<!--' ) != -1 ) {
+					html = html.replace( '<!--', '' );
+					html = html.replace( '-->', '' );
+					jQuery( '#film_wppatnf_'+_wppaId[mocc][index]+'_'+mocc ).html( html );
+					if ( wppaFilmThumbTitle != '' ) {
+						jQuery( '#wppa-film-'+index+'-'+mocc ).attr( 'title', wppaFilmThumbTitle );
+					}
+					else {
+						jQuery( '#wppa-film-'+index+'-'+mocc ).attr( 'title', _wppaNames[mocc][index] );
 					}
 				}
 			}

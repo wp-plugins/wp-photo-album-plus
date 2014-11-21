@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile, cloudinary, fotomoto
-Version: 5.4.19
+Version: 5.4.20
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -187,6 +187,26 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 5.4.20 =
+
+= Bug Fixes =
+
+* Fixed a divide by zero error on the bulk edit screen when a thumbnail was missing.
+* The comten widget and shortcode no longer show duplicate photos, the recently commented photos will show all their comments in descending timestamp order.
+* Using cloudinary on ssl pages now correctly produces https image links.
+* Double clicking on the filmstrip incidently did hang up the slideshow. Fixed.
+
+= New Features =
+
+* Support for plugin CM Tooltip Glossary. 
+Enable to act on album and photo descriptions in Table IX-J8. 
+If you have this plugin active, you have to tick the box in Table IV-A13: Defer javascript, 
+even if you do not want to let this plugin act on album and photo descriptions!
+
+= Other Changes =
+
+* Improved algorithm to decide when the random photo order has to be remebered onto the naxt page and when not.
 
 = 5.4.19 =
 

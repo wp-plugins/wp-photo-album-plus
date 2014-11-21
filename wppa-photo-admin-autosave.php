@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * edit and delete photos
-* version 5.4.19
+* version 5.4.20
 *
 */
 
@@ -742,7 +742,7 @@ global $wppa;
 								</tr>
 							<?php } ?>
 							<!-- Remark -->
-							<tr style="vertical-align: middle; position: absolute; bottom: 8px;" >
+							<tr style="vertical-align: middle;" >
 								<th >
 									<label style="color:#070"><?php _e( 'Remark:', 'wppa' ) ?></label>
 								</th>
@@ -1277,6 +1277,10 @@ global $wppa_opt;
 //							$imgs = getimagesize( wppa_get_thumb_path( $photo['id'] ) );
 							$imgs['0'] = wppa_get_thumbx( $photo['id'] );
 							$imgs['1'] = wppa_get_thumby( $photo['id'] );
+						}
+						if ( ! $imgs['0'] ) {	// missing thuimbnail, prevent dividion by zero
+							$imgs['0'] = 200;
+							$imgs['1'] = 150;
 						}
 						$mw = $size - '20';
 						$mh = $mw * '3' / '4';

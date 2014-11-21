@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains functions to retrieve album and photo items
-* Version 5.4.19
+* Version 5.4.20
 *
 */
  
@@ -286,6 +286,15 @@ global $wppa_opt;
 	$desc = wppa_filter_exif( $desc, $id );	// Render EXIF tags
 	$desc = make_clickable( $desc );		// Auto make a tags for links
 
+	// CMTooltipGlossary on board?
+	if ( wppa_switch( 'wppa_use_CMTooltipGlossary' ) && class_exists( 'CMTooltipGlossaryFrontend' ) ) {
+		global $wppa_cmt;
+		if ( empty( $wppa_cmt ) ) {
+			$wppa_cmt = new CMTooltipGlossaryFrontend;
+		}
+		$desc = $wppa_cmt->cmtt_glossary_parse( $desc, true );
+	}
+
 	return $desc;
 }
 
@@ -381,6 +390,15 @@ function wppa_get_album_desc( $id ) {
 	
 	// Convert links and mailto:
 	$desc = make_clickable( $desc );
+
+	// CMTooltipGlossary on board?
+	if ( wppa_switch( 'wppa_use_CMTooltipGlossary' ) && class_exists( 'CMTooltipGlossaryFrontend' ) ) {
+		global $wppa_cmt;
+		if ( empty( $wppa_cmt ) ) {
+			$wppa_cmt = new CMTooltipGlossaryFrontend;
+		}
+		$desc = $wppa_cmt->cmtt_glossary_parse( $desc, true );
+	}
 	
 	return $desc;
 }

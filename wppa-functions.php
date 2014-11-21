@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Various funcions
-* Version 5.4.19
+* Version 5.4.20
 *
 */
 
@@ -1017,8 +1017,8 @@ global $wppa_session;
 	elseif ( $wppa['is_featen'] ) {
 		$max = $wppa['featen_count'];
 		$alb = $fullalb;
-		if ( $alb ) $thumbs = $wpdb->get_results( "SELECT * FROM `".WPPA_PHOTOS."` WHERE `status` = 'featured' AND ( `album` = ".$alb." ) ORDER BY RAND( ".$wppa['randseed']." ) DESC LIMIT ".$max, ARRAY_A );
-		else $thumbs = $wpdb->get_results( "SELECT * FROM `".WPPA_PHOTOS."` WHERE `status` = 'featured' ORDER BY RAND( ".$wppa['randseed']." ) DESC LIMIT ".$max, ARRAY_A );
+		if ( $alb ) $thumbs = $wpdb->get_results( "SELECT * FROM `".WPPA_PHOTOS."` WHERE `status` = 'featured' AND ( `album` = ".$alb." ) ORDER BY RAND( ".wppa_get_randseed()." ) DESC LIMIT ".$max, ARRAY_A );
+		else $thumbs = $wpdb->get_results( "SELECT * FROM `".WPPA_PHOTOS."` WHERE `status` = 'featured' ORDER BY RAND( ".wppa_get_randseed()." ) DESC LIMIT ".$max, ARRAY_A );
 		wppa_dbg_q( 'Q-FT' );
 	}	
 	// Lasten?
@@ -1038,33 +1038,14 @@ global $wppa_session;
 	}
 	// Comten?
 	elseif ( $wppa['is_comten'] ) {
-		$comments = $wpdb->get_results( "SELECT * FROM `".WPPA_COMMENTS."` WHERE `status` = 'approved' ORDER BY `timestamp` DESC", ARRAY_A );
-		wppa_dbg_q( 'Q23' );
-		$max = $wppa['comten_count'];
-		$alb = $fullalb;
+		$alb_ids = $wppa['start_album'];
+		if ( strpos( $alb_ids, '.' ) !== false ) {
+			$alb_ids = wppa_series_to_array( $alb_ids );
+		}
+		$photo_ids = wppa_get_comten_ids( $wppa['comten_count'], (array) $alb_ids );
 		$thumbs = array();
-		$indexes = array();
-		$count = '0';
-		$com_alt = $wppa['is_comten'] && wppa_switch( 'wppa_comten_alt_display' ) && ! $wppa['in_widget'];
-		if ( $comments ) foreach ( $comments as $comment ) {
-			if ( $com_alt && $count < $max ) {	// Duplicates allowed
-				$thumb = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM `".WPPA_PHOTOS."` WHERE `id` = %s", $comment['photo'] ), ARRAY_A );
-				wppa_dbg_q( 'Q-CT1' );
-				$thumb['com_id'] = $comment['id'];
-				$thumbs[] = $thumb;
-				$count++;
-			}
-			else {
-				if ( ! in_array( $comment['photo'], $indexes ) && $count < $max ) { 	// Not a duplicate
-					$thumb = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM `".WPPA_PHOTOS."` WHERE `id` = %s", $comment['photo'] ), ARRAY_A );
-					wppa_dbg_q( 'Q-CT2' );
-					if ( !$alb || $alb == $thumb['album'] || ( is_array( $alb ) && in_array( $thumb['album'], $alb ) ) ) {
-						$thumbs[] = $thumb;
-						$indexes[] = $comment['photo'];	// remember for check on duplicate
-						$count++;
-					}
-				}
-			}
+		if ( is_array( $photo_ids ) ) foreach( $photo_ids as $id ) {
+			$thumbs[] = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM `".WPPA_PHOTOS."` WHERE `id` = %s", $id ), ARRAY_A );
 		}
 	}
 	// Tagcloud or multitag? Tags do not look at album
@@ -2829,12 +2810,14 @@ global $wpdb;
 	// Comten alt display?
 	if ( $com_alt ) {
 		$wppa['out'] .= '<div class="wppa-com-alt wppa-com-alt-'.$wppa['mocc'].'" style="height:'.$imgheight.'px; overflow:auto; margin: 0 20px 8px 10px; border:1px solid '.wppa_opt( 'wppa_bcolor_alt' ).';" >';
-			$limit = '1'; // wppa_opt( 'wppa_comten_alt_limit' ) ? wppa_opt( 'wppa_comten_alt_limit' ) : '1000';
-			$comments = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM `".WPPA_COMMENTS."` WHERE `id` = %s LIMIT 1", $thumb['com_id'] ), ARRAY_A );
+//			$limit = '1'; // wppa_opt( 'wppa_comten_alt_limit' ) ? wppa_opt( 'wppa_comten_alt_limit' ) : '1000';
+			$comments = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM `".WPPA_COMMENTS."` WHERE `photo` = %s AND `status` = 'approved' ORDER BY `timestamp` DESC", $id ), ARRAY_A );
+			$first = true;
 			if ( $comments ) foreach ( $comments as $com ) {
-				$wppa['out'] .= '<h6 style="font-size:10px;line-height:12px;font-weight:bold;padding:0 0 0 6px;margin:0;float:left;">'.$com['user'].' '.__a( 'wrote:' ).
-								' '.wppa_get_time_since( $com['timestamp'] ).'</h6><br />'.
-								'<p style="font-size:10px;line-height:12px;padding:0 0 0 6px;text-align:left;margin:0;">'.html_entity_decode( convert_smilies( stripslashes( $com['comment'] ) ) ).'</p>';
+				$wppa['out'] .= '<h6 style="font-size:10px;line-height:12px;font-weight:bold;padding:'.( $first ? '0' : '6px' ).' 0 0 6px;margin:0;float:left;">'.$com['user'].' '.__a( 'wrote' ).
+								' '.wppa_get_time_since( $com['timestamp'] ).':</h6>'.
+								'<p style="font-size:10px;line-height:12px;padding:0 0 0 6px;text-align:left;margin:0; clear:left;">'.html_entity_decode( convert_smilies( stripslashes( $com['comment'] ) ) ).'</p>';
+								$first = false;
 			}
 		$wppa['out'] .= '</div>';
 	}
@@ -3578,69 +3561,6 @@ global $wpdb;
 	return false;
 }
 
-// Retrieve a get-vareiable, sanitized and post-processed
-// Return '1' if set without value, return false when value is 'nil'
-function wppa_get_get( $index ) {
-static $wppa_get_get_cache;
-
-	// Found this already?
-	if ( isset( $wppa_get_get_cache[$index] ) ) return $wppa_get_get_cache[$index];
-	
-	// See if set
-	if ( isset( $_GET['wppa-'.$index] ) ) {			// New syntax first
-		$result = $_GET['wppa-'.$index];
-	}
-	elseif ( isset( $_GET[$index] ) ) {				// Old syntax
-		$result = $_GET[$index];
-	}
-	else return false;								// Not set
-	
-	if ( $result == 'nil' ) return false;			// Nil simulates not set
-
-	if ( ! strlen( $result ) ) $result = '1';		// Set but no value
-	
-	// Sanitize
-	$result = strip_tags( $result );
-	if ( strpos( $result, '<?' ) !== false ) die( 'Security check failure #191' );
-	if ( strpos( $result, '?>' ) !== false ) die( 'Security check failure #192' );
-
-	// Post processing needed?
-	if ( $index == 'photo' && ( ! is_numeric( $result ) || ! wppa_photo_exists( $result ) ) ) {
-		$result = wppa_get_photo_id_by_name( $result, wppa_get_album_id_by_name( wppa_get_get( 'album' ) ) );
-		if ( ! $result ) return false;				// Non existing photo, treat as not set
-	}
-	if ( $index == 'album' ) {
-		if ( ! wppa_is_int( $result ) ) {
-			$temp = wppa_get_album_id_by_name( $result );
-			if ( wppa_is_int( $temp ) && $temp > '0' ) {
-				$result = $temp;
-			}
-			elseif ( ! wppa_series_to_array( $result ) ) {
-				$result = false;
-			}
-		}
-	}
-	
-	// Save in cache
-	$wppa_get_get_cache[$index] = $result;
-	return $result;
-}
-
-function wppa_get_post( $index, $default = false ) {
-	if ( isset( $_POST['wppa-'.$index] ) ) {		// New syntax first
-		$result = $_POST['wppa-'.$index];
-		if ( strpos( $result, '<?' ) !== false ) die( 'Security check failure #291' );
-		if ( strpos( $result, '?>' ) !== false ) die( 'Security check failure #292' );
-		return $result;
-	}
-	if ( isset( $_POST[$index] ) ) {				// Old syntax
-		$result = $_POST[$index];
-		if ( strpos( $result, '<?' ) !== false ) die( 'Security check failure #391' );
-		if ( strpos( $result, '?>' ) !== false ) die( 'Security check failure #392' );
-		return $result;
-	}
-	return $default;
-}
 
 function wppa_get_photo_id_by_name( $xname, $album = '0' ) {
 global $wpdb;
@@ -3769,7 +3689,7 @@ global $wppa;
 			$ok = wp_verify_nonce( $nonce, 'wppa-album-check' );
 			if ( ! $ok ) die( __a( '<b>ERROR: Illegal attempt to create an album.</b>' ) );
 			// Check captcha
-			$captkey = $wppa['randseed'];
+			$captkey = wppa_get_randseed( 'session' );
 			if ( ! wppa_check_captcha( $captkey ) ) {
 				wppa_alert( __a( 'Wrong captcha, please try again' ) );
 				return;

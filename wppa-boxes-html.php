@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Various wppa boxes
-* Version 5.4.19
+* Version 5.4.20
 *
 *
 */
@@ -662,9 +662,8 @@ global $wppa_opt;
 			<textarea class="wppa-user-textarea wppa-box-text wppa-file-'.$t.$wppa['mocc'].'" style="height:120px; width:'.( $width-6 ).'px; '.__wcs( 'wppa-box-text' ).'" name="wppa-album-desc" >'.$desc.'</textarea>';
 
 			if ( true ) { 	// Captcha
-				$captkey = $wppa['randseed'];
+				$captkey = wppa_get_randseed( 'session' );
 				$wppa['out'] .= '<div style="float:left; margin: 6px 0;" ><div style="float:left;">'.wppa_make_captcha( $captkey ).'</div><input type="text" id="wppa-captcha-'.$wppa['mocc'].'" name="wppa-captcha" style="margin-left: 6px; width:50px; '.__wcs( 'wppa-box-text' ).__wcs( 'wppa-td' ).'" /></div>';
-//				$wppa['out'] .= '<input type="hidden" name="wppa-randseed" value="'.$captkey.'" />';
 			}
 
 		$wppa['out'] .= '

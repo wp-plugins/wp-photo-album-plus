@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all session routines
-* Version 5.3.7
+* Version 5.4.20
 *
 * Firefox modifies data in the superglobal $_SESSION.
 * See https://bugzilla.mozilla.org/show_bug.cgi?id=991019
@@ -17,7 +17,8 @@ if ( ! defined( 'ABSPATH' ) ) die( "Can't load this file directly" );
 	
 // Generate a unique session id
 function wppa_get_session_id() {
-	$id = md5( $_SERVER['REMOTE_ADDR'] . wppa_get_user() . $_SERVER["HTTP_USER_AGENT"] );
+global $wppa_api_version; 
+	$id = md5( $_SERVER['REMOTE_ADDR'] . wppa_get_user() . $_SERVER["HTTP_USER_AGENT"] . $wppa_api_version );
 	return $id;
 }
 
@@ -25,6 +26,8 @@ function wppa_get_session_id() {
 function wppa_session_start() {
 global $wpdb;
 global $wppa_session;
+
+	if ( is_array( $wppa_session ) ) return true; 	// To prevent dup opens
 
 	// Cleanup first
 	$lifetime = 3600;			// Sessions expire after one hour
@@ -58,6 +61,7 @@ global $wppa_session;
 		}
 		$wppa_session['page'] = '1';
 		$wppa_session['ajax'] = '0';
+		$wppa_session['id'] = $wpdb->get_var( $wpdb->prepare( "SELECT `id` FROM `".WPPA_SESSION."` WHERE `session` = %s LIMIT 1", wppa_get_session_id() ) ); 
 	}
 	else { 	// Update counter
 		$wpdb->query( $wpdb->prepare( "UPDATE `".WPPA_SESSION."` SET `count` = %s WHERE `id` = %s", $session['count'] + '1', $session['id'] ) );

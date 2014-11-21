@@ -2,7 +2,7 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 5.4.19
+* version 5.4.20
 *
 */
 
@@ -62,8 +62,6 @@ global $wppa_defaults;
 			'out' 						=> '',
 			'auto_colwidth' 			=> false,
 			'permalink' 				=> '',
-			'randseed' 					=> wppa_get_randseed(),
-			'page-randseed' 			=> wppa_get_randseed( 'page' ),
 			'rendering_enabled' 		=> false,
 			'tabcount' 					=> '0',
 			'comment_id' 				=> '',
@@ -187,13 +185,10 @@ global $wppa_defaults;
 	$wppa_initruntimetime += microtime( true );
 }
 
-function wppa_get_randseed( $type = 'session' ) {
+function wppa_get_randseed( $type = '' ) {
 global $wppa_session;
 static $volatile_randseed;
-
-//	if ( isset( $_REQUEST['wppa-randseed'] ) ) $randseed = $_REQUEST['wppa-randseed'];
-//	elseif ( isset( $_REQUEST['randseed'] ) ) $randseed = $_REQUEST['randseed'];
-//	else $randseed = time() % '4711';
+static $randseed_modified;
 
 	// This randseed is for the page only
 	if ( $type == 'page' ) {
@@ -206,17 +201,36 @@ static $volatile_randseed;
 		}
 	}
 	
-	// This randseed susrvives pageloads up to the duration of the session ( usually 1 hour )
+	// This randseed survives pageloads up to the duration of the session ( usually 1 hour )
+	elseif ( $type == 'session' ) {
+		$randseed = $wppa_session['id']; //session_randseed'];
+	}
+	
+	// If the album spec in the querystring differs from the previous, or there is no album arg in the querystring,
+	// the random seed is renewed to improve the random behaviour for non-critical operation
 	else {
+		if ( isset( $wppa_session['randseed'] ) && ! $randseed_modified ) {
+			$old_album = isset( $wppa_session['albumspec'] ) ? $wppa_session['albumspec'] : false;
+			$new_album = wppa_get_get( 'album' );
+			if ( ! $new_album || ( $old_album != $new_album ) ) {
+				unset( $wppa_session['randseed'] );	// Forget randseed
+			}
+		}
+		
 		if ( isset( $wppa_session['randseed'] ) ) {
 			$randseed = $wppa_session['randseed'];
 		}
 		else {
 			$randseed = time() % 4721;
 			$wppa_session['randseed'] = $randseed;
+			
+			// Save old album for later
+			$wppa_session['albumspec'] = wppa_get_get( 'album' );
+			
+			$randseed_modified = true;
 		}
 	}
-
+	
 	return $randseed;
 }
 
@@ -363,7 +377,7 @@ global $wppa_opt;
 			$result = 'ORDER BY name DESC';
 			break;  
 		case '3':
-			$result = 'ORDER BY RAND( '.$wppa['randseed'].' )';
+			$result = 'ORDER BY RAND( '.wppa_get_randseed().' )';
 			break;
 		case '5':
 			$result = 'ORDER BY timestamp';
@@ -411,11 +425,11 @@ global $wppa_opt;
         break;
     case '3':
 		if ( $no_random ) $result = 'ORDER BY name';
-        else $result = 'ORDER BY RAND( '.$wppa['randseed'].' )';
+        else $result = 'ORDER BY RAND( '.wppa_get_randseed().' )';
         break;
     case '-3':
 		if ( $no_random ) $result = 'ORDER BY name DESC';
-        else $result = 'ORDER BY RAND( '.$wppa['randseed'].' ) DESC';
+        else $result = 'ORDER BY RAND( '.wppa_get_randseed().' ) DESC';
         break;
 	case '4':
 		$result = 'ORDER BY mean_rating';

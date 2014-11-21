@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains low-level utility routines
-* Version 5.4.19
+* Version 5.4.20
 *
 */
  
@@ -35,7 +35,8 @@ global $blog_id;
 					$q 			= $wppa_opt['wppa_jpeg_quality'];
 					$sizespec 	= ( $x && $y ) ? 'w_'.$x.',h_'.$y.',c_'.$t.',q_'.$q.'/' : '';
 					$prefix 	= ( is_multisite() && ! WPPA_MULTISITE_GLOBAL ) ? $blog_id.'-' : '';
-					$url = 'http://res.cloudinary.com/'.get_option('wppa_cdn_cloud_name').'/image/upload/'.$sizespec.$prefix.$thumb['id'].'.'.$thumb['ext'];
+					$s = is_ssl() ? 's' : '';
+					$url = 'http'.$s.'://res.cloudinary.com/'.get_option('wppa_cdn_cloud_name').'/image/upload/'.$sizespec.$prefix.$thumb['id'].'.'.$thumb['ext'];
 					return $url;
 					break;
 					
@@ -94,7 +95,8 @@ global $blog_id;
 				$t 			= wppa_switch('wppa_enlarge') ? 'fit' : 'limit';
 				$q 			= $wppa_opt['wppa_jpeg_quality'];
 				$sizespec 	= ( $x && $y ) ? 'w_'.$x.',h_'.$y.',c_'.$t.',q_'.$q.'/' : '';
-				$url = 'http://res.cloudinary.com/'.get_option('wppa_cdn_cloud_name').'/image/upload/'.$sizespec.$prefix.$thumb['id'].'.'.$thumb['ext'];
+				$s = is_ssl() ? 's' : '';
+				$url = 'http'.$s.'://res.cloudinary.com/'.get_option('wppa_cdn_cloud_name').'/image/upload/'.$sizespec.$prefix.$thumb['id'].'.'.$thumb['ext'];
 				return $url;
 				break;
 				
@@ -2105,4 +2107,93 @@ function wppa_browser_can_html5() {
 	}
 
 	return false;
+}
+
+function wppa_get_comten_ids( $max_count = 0, $albums = array() ) {
+global $wpdb;
+
+	if ( ! $max_count ) {
+		$max_count = wppa_opt( 'wppa_comten_count' );
+	}
+	
+	$photo_ids = $wpdb->get_results( "SELECT `photo` FROM `".WPPA_COMMENTS."` WHERE `status` = 'approved' ORDER BY `timestamp` DESC LIMIT " . 100 * $max_count, ARRAY_A );
+	$result = array();
+	
+	if ( is_array( $photo_ids ) ) {
+		foreach( $photo_ids as $ph ) {
+			if ( empty( $albums ) || in_array( wppa_get_photo_item( $ph['photo'], 'album' ), $albums ) || ( count( $albums ) == 1 && $albums[0] == '0' ) ) {
+				if ( count( $result ) < $max_count ) {
+					if ( ! in_array( $ph['photo'], $result ) ) {
+						$result[] = $ph['photo'];
+					}
+				}
+			}
+		}
+	}
+	
+	return $result;
+}
+
+// Retrieve a get-vareiable, sanitized and post-processed
+// Return '1' if set without value, return false when value is 'nil'
+function wppa_get_get( $index ) {
+static $wppa_get_get_cache;
+
+	// Found this already?
+	if ( isset( $wppa_get_get_cache[$index] ) ) return $wppa_get_get_cache[$index];
+	
+	// See if set
+	if ( isset( $_GET['wppa-'.$index] ) ) {			// New syntax first
+		$result = $_GET['wppa-'.$index];
+	}
+	elseif ( isset( $_GET[$index] ) ) {				// Old syntax
+		$result = $_GET[$index];
+	}
+	else return false;								// Not set
+	
+	if ( $result == 'nil' ) return false;			// Nil simulates not set
+
+	if ( ! strlen( $result ) ) $result = '1';		// Set but no value
+	
+	// Sanitize
+	$result = strip_tags( $result );
+	if ( strpos( $result, '<?' ) !== false ) die( 'Security check failure #191' );
+	if ( strpos( $result, '?>' ) !== false ) die( 'Security check failure #192' );
+
+	// Post processing needed?
+	if ( $index == 'photo' && ( ! is_numeric( $result ) || ! wppa_photo_exists( $result ) ) ) {
+		$result = wppa_get_photo_id_by_name( $result, wppa_get_album_id_by_name( wppa_get_get( 'album' ) ) );
+		if ( ! $result ) return false;				// Non existing photo, treat as not set
+	}
+	if ( $index == 'album' ) {
+		if ( ! wppa_is_int( $result ) ) {
+			$temp = wppa_get_album_id_by_name( $result );
+			if ( wppa_is_int( $temp ) && $temp > '0' ) {
+				$result = $temp;
+			}
+			elseif ( ! wppa_series_to_array( $result ) ) {
+				$result = false;
+			}
+		}
+	}
+	
+	// Save in cache
+	$wppa_get_get_cache[$index] = $result;
+	return $result;
+}
+
+function wppa_get_post( $index, $default = false ) {
+	if ( isset( $_POST['wppa-'.$index] ) ) {		// New syntax first
+		$result = $_POST['wppa-'.$index];
+		if ( strpos( $result, '<?' ) !== false ) die( 'Security check failure #291' );
+		if ( strpos( $result, '?>' ) !== false ) die( 'Security check failure #292' );
+		return $result;
+	}
+	if ( isset( $_POST[$index] ) ) {				// Old syntax
+		$result = $_POST[$index];
+		if ( strpos( $result, '<?' ) !== false ) die( 'Security check failure #391' );
+		if ( strpos( $result, '?>' ) !== false ) die( 'Security check failure #392' );
+		return $result;
+	}
+	return $default;
 }

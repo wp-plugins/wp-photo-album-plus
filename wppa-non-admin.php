@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the non admin stuff
-* Version 5.4.18
+* Version 5.4.20
 *
 */
 
@@ -349,14 +349,13 @@ function wppa_fbc_setup() {
 add_action( 'plugins_loaded', 'wppa_redirect' );
 
 function wppa_redirect() {
-//	if ( ! isset($_ENV["SCRIPT_URI"]) ) return;
-//	$uri = $_ENV["SCRIPT_URI"];
+
 	$uri = $_SERVER["REQUEST_URI"];
 	$wppapos = stripos($uri, '/wppaspec/');
-	if ( $wppapos && get_option('permalink_structure') ) { // && wppa_switch('wppa_use_pretty_links') ) {
+	
+	if ( $wppapos && get_option('permalink_structure') ) {
 		$newuri = wppa_convert_from_pretty($uri);
 		if ( $newuri == $uri ) return;
-//	wppa_log('dbg', 'Uri:'.$uri.' converted to:'.$newuri);
 		// Although the url is urlencoded it is damaged by wp_redirect when it contains chars like ë, so we do a header() call
 		header('Location: '.$newuri, true, 302);
 		exit;

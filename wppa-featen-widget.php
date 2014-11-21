@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the featured photos
-* Version 5.4.11
+* Version 5.4.20
 */
 
 if ( ! defined( 'ABSPATH' ) ) die( "Can't load this file directly" );
@@ -40,10 +40,10 @@ class FeaTenWidget extends WP_Widget {
 		}
 		
 		if ( $album ) {
-			$thumbs = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM `".WPPA_PHOTOS."` WHERE `status`= 'featured' AND `album` = %s ORDER BY RAND(".$wppa['randseed'].") DESC LIMIT " . $max, $album ), ARRAY_A );
+			$thumbs = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM `".WPPA_PHOTOS."` WHERE `status`= 'featured' AND `album` = %s ORDER BY RAND(".wppa_get_randseed().") DESC LIMIT " . $max, $album ), ARRAY_A );
 		}
 		else {
-			$thumbs = $wpdb->get_results( "SELECT * FROM `".WPPA_PHOTOS."` WHERE `status` = 'featured' ORDER BY RAND(".$wppa['randseed'].") DESC LIMIT " . $max, ARRAY_A );
+			$thumbs = $wpdb->get_results( "SELECT * FROM `".WPPA_PHOTOS."` WHERE `status` = 'featured' ORDER BY RAND(".wppa_get_randseed().") DESC LIMIT " . $max, ARRAY_A );
 		}
 		$widget_content = "\n".'<!-- WPPA+ FeaTen Widget start -->';
 		$maxw = $wppa_opt['wppa_featen_size'];

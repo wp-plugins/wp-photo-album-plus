@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 5.4.19
+* Version 5.4.20
 *
 */
 
@@ -1177,6 +1177,7 @@ Hide Camera info
 						'wppa_cp_points_rating'			=> '0',
 						'wppa_cp_points_upload'			=> '0',
 						'wppa_use_scabn'				=> 'no',
+						'wppa_use_CMTooltipGlossary' 	=> 'no',
 						
 						// K External services
 						'wppa_cdn_service'			=> '',

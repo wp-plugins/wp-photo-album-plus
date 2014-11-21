@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 5.4.19
+* Version 5.4.20
 *
 */
 
@@ -5804,6 +5804,14 @@ global $no_default;
 							$slug = 'wppa_use_scabn';
 							$html = wppa_checkbox($slug);
 							wppa_setting($slug, '7', $name, $desc, $html, $help);
+							
+							$name = __('Use CM Tooltip Glossary', 'wppa');
+							$desc = __('Use plugin CM Tooltip Glossary on photo and album descriptions.', 'wppa');
+							$help = esc_js(__('You MUST set Table IV-A13: Defer javascript, also if you do not want this plugin to act on album and photo descriptions!', 'wppa'));
+							$slug = 'wppa_use_CMTooltipGlossary';
+							$html = wppa_checkbox($slug);
+							wppa_setting($slug, '8', $name, $desc, $html, $help);
+							
 							}
 							wppa_setting_subheader( 'K', '1', __('External services related setting and actions.', 'wppa'));
 							{

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Functions for album covers
-* Version 5.4.18
+* Version 5.4.20
 *
 */
 
@@ -902,12 +902,12 @@ global $wppa;
 	if ( '0' == $id ) {
 		if ( current_user_can( 'wppa_moderate' ) ) {
 			$temp = $wpdb->get_results( $wpdb->prepare( 
-				"SELECT * FROM `" . WPPA_PHOTOS . "` WHERE `album` = %s ORDER BY RAND( " . $wppa['page-randseed'] . " ) LIMIT %d", 
+				"SELECT * FROM `" . WPPA_PHOTOS . "` WHERE `album` = %s ORDER BY RAND( " . wppa_get_randseed( 'page' ) . " ) LIMIT %d", 
 				$alb, $count ), ARRAY_A );
 		}
 		else {
 			$temp = $wpdb->get_results( $wpdb->prepare( 
-				"SELECT * FROM `" . WPPA_PHOTOS . "` WHERE `album` = %s AND ( ( `status` <> 'pending' AND `status` <> 'scheduled' ) OR `owner` = %s ) ORDER BY RAND( " . $wppa['page-randseed'] . " ) LIMIT %d", 
+				"SELECT * FROM `" . WPPA_PHOTOS . "` WHERE `album` = %s AND ( ( `status` <> 'pending' AND `status` <> 'scheduled' ) OR `owner` = %s ) ORDER BY RAND( " . wppa_get_randseed( 'page' ) . " ) LIMIT %d", 
 				$alb, wppa_get_user(), $count ), ARRAY_A );
 		}
 	}
@@ -932,7 +932,7 @@ global $wppa;
 	if ( '-1' == $id ) {		
 		$temp = $wpdb->get_results( $wpdb->prepare( 
 			"SELECT * FROM `" . WPPA_PHOTOS . 
-			"` WHERE `album` = %s AND `status` = 'featured' ORDER BY RAND( " . $wppa['page-randseed'] . " ) LIMIT %d", 
+			"` WHERE `album` = %s AND `status` = 'featured' ORDER BY RAND( " . wppa_get_randseed( 'page' ) . " ) LIMIT %d", 
 			$alb, $count ), ARRAY_A );
 	}
 

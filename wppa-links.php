@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Frontend links
-* Version 5.4.18
+* Version 5.4.20
 *
 */
 
@@ -332,9 +332,6 @@ global $wppa_opt;
 				case 'po':
 					$deltauri = 'wppa-photos-only=';
 					break;
-//				case 'rs':
-//					$deltauri = 'wppa-randseed=';
-//					break;
 				case 'db':
 					$deltauri = 'debug=';
 					break;
@@ -353,6 +350,9 @@ global $wppa_opt;
 				case 'rt':
 					$deltauri = 'wppa-rootsearch=';
 					break;
+					
+				default:
+					$deltauri = '';
 			}
 			
 //			if ( wppa_switch( 'wppa_use_short_qargs' ) ) {
@@ -361,8 +361,13 @@ global $wppa_opt;
 //				}
 				
 //			}
-			$newuri .= $deltauri;
-			$newuri .= substr($arg, 2);
+			if ( $deltauri ) {
+				$newuri .= $deltauri;
+				$newuri .= substr($arg, 2);
+			}
+			else {
+				$newuri = rtrim( $newuri, '&' );
+			}
 		}
 	}
 
@@ -397,8 +402,7 @@ global $wppa_opt;
 	$args = explode( '&', $parts[1] );
 	$order = array( 'occur', 'woccur', 
 					'searchstring', 
-					'topten', 'lasten', 'comten', 'featen', 
-//					'randseed', 
+					'topten', 'lasten', 'comten', 'featen',
 					'lang', 
 					'single', 
 					'tag', 
@@ -582,9 +586,6 @@ global $wppa_opt;
 					case 'photos-only':
 						$newuri .= 'po';
 						break;
-//					case 'randseed':
-//						$newuri .= 'rs';
-//						break;
 					case 'debug':
 						$newuri .= 'db';
 						break;
@@ -844,9 +845,6 @@ global $wppa_opt;
 	
 	// Slideshow?
 	if ( $slide ) $extra_url .= '&amp;wppa-slide';
-	
-	// Add the random seed
-//	$extra_url .= '&amp;wppa-randseed='.$wppa['randseed'];
 	
 	// Almost ready
 	$link_url .= $extra_url;
@@ -1366,10 +1364,10 @@ global $wpdb;
 	}
 
 	if ( $wich == 'featen' ) {
-		$result['url'] .= '&amp;wppa-featen=' . $wppa_opt['wppa_featen_count'];// . '&amp;wppa-randseed=' . $wppa['randseed'];
+		$result['url'] .= '&amp;wppa-featen=' . $wppa_opt['wppa_featen_count'];
 	}
 	elseif ( $wppa['is_featen'] ) {
-		$result['url'] .= '&amp;wppa-featen=' . $wppa['featen_count'];// . '&amp;wppa-randseed=' . $wppa['randseed'];
+		$result['url'] .= '&amp;wppa-featen=' . $wppa['featen_count'];
 	}
 	
 	if ( $wppa['is_related'] ) {
