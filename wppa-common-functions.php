@@ -1121,6 +1121,9 @@ global $wppa_opt;
 	if ( isset( $_REQUEST['wppa-searchstring'] ) ) {	// wppa+ search
 		$str = $_REQUEST['wppa-searchstring'];
 	}
+	elseif ( isset( $_REQUEST['searchstring'] ) ) {	// wppa+ search
+		$str = $_REQUEST['searchstring'];
+	}
 	elseif ( isset( $_REQUEST['s'] ) ) {				// wp search
 		$str = $_REQUEST['s'];
 	}
