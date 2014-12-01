@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wppa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-20 15:32+0100\n"
-"PO-Revision-Date: 2014-11-20 15:32+0100\n"
+"POT-Creation-Date: 2014-12-01 14:45+0100\n"
+"PO-Revision-Date: 2014-12-01 14:45+0100\n"
 "Last-Translator: J.N. Breetvelt <OpaJaap@OpaJaap.nl>\n"
 "Language-Team: OpaJaap <OpaJaap@OpaJaap.nl>\n"
 "Language: sk_SK\n"
@@ -104,6 +104,11 @@ msgstr ""
 msgid "Exit & Refresh"
 msgstr "Ukončit a obnovit"
 
+#: wppa-ajax.php:437 wppa-ajax.php:453
+#, fuzzy
+msgid "Photo rated"
+msgstr "Foto dňa"
+
 #: wppa-album-covers.php:994
 msgid "Link to"
 msgstr "Odkaz na"
@@ -134,7 +139,7 @@ msgid "albums"
 msgstr "albumy"
 
 #: wppa-album-covers.php:1112 wppa-boxes-html.php:373 wppa-breadcrumb.php:258
-#: wppa-breadcrumb.php:263 wppa-functions.php:4069 wppa-utils.php:1282
+#: wppa-breadcrumb.php:263 wppa-functions.php:4071 wppa-utils.php:1282
 msgid "and"
 msgstr "a"
 
@@ -156,7 +161,7 @@ msgstr "Nová fotka nahrána: %s"
 msgid "New"
 msgstr "Nová fotka nahrána: %s"
 
-#: wppa-album-covers.php:1190 wppa-non-admin.php:500
+#: wppa-album-covers.php:1190 wppa-non-admin.php:502
 msgid "Slideshow"
 msgstr "Slideshow"
 
@@ -314,7 +319,7 @@ msgstr "Zadat/upravit popis fotky"
 msgid "Create album"
 msgstr "Album:"
 
-#: wppa-boxes-html.php:694 wppa-boxes-html.php:708 wppa-functions.php:3802
+#: wppa-boxes-html.php:694 wppa-boxes-html.php:708 wppa-functions.php:3804
 msgid "Max uploads reached"
 msgstr "Max uploads dosiahol"
 
@@ -634,7 +639,7 @@ msgstr "Stránka s náhledy"
 msgid "Thumbs"
 msgstr "Náhledy"
 
-#: wppa-breadcrumb.php:453
+#: wppa-breadcrumb.php:456
 #, fuzzy
 msgid "Unpublished"
 msgstr "Nepublikováno"
@@ -654,7 +659,7 @@ msgstr "Cena za kus: %s"
 msgid "Qty:"
 msgstr "Počet:"
 
-#: wppa-comment-widget.php:58 wppa-functions.php:2817
+#: wppa-comment-widget.php:58 wppa-functions.php:2816
 #, fuzzy
 msgid "wrote"
 msgstr "Napísal:"
@@ -674,7 +679,7 @@ msgstr "Přednastavené fotoalbum pro"
 msgid "1 second"
 msgstr "1 sekundu"
 
-#: wppa-common-functions.php:603 wppa-functions.php:4070
+#: wppa-common-functions.php:603 wppa-functions.php:4072
 msgid "seconds"
 msgstr "sekúnd"
 
@@ -682,7 +687,7 @@ msgstr "sekúnd"
 msgid "1 minute"
 msgstr "1 minúta"
 
-#: wppa-common-functions.php:608 wppa-functions.php:4069
+#: wppa-common-functions.php:608 wppa-functions.php:4071
 msgid "minutes"
 msgstr "minút"
 
@@ -690,7 +695,7 @@ msgstr "minút"
 msgid "1 hour"
 msgstr "1 hodina"
 
-#: wppa-common-functions.php:613 wppa-functions.php:4068
+#: wppa-common-functions.php:613 wppa-functions.php:4070
 msgid "hours"
 msgstr "hodín"
 
@@ -698,7 +703,7 @@ msgstr "hodín"
 msgid "1 day"
 msgstr "1 deň"
 
-#: wppa-common-functions.php:618 wppa-functions.php:4067
+#: wppa-common-functions.php:618 wppa-functions.php:4069
 msgid "days"
 msgstr "dní"
 
@@ -706,7 +711,7 @@ msgstr "dní"
 msgid "1 week"
 msgstr "1 týždeň"
 
-#: wppa-common-functions.php:623 wppa-functions.php:4066
+#: wppa-common-functions.php:623 wppa-functions.php:4068
 msgid "weeks"
 msgstr "týždňov"
 
@@ -726,34 +731,34 @@ msgstr "1 rok"
 msgid "years"
 msgstr "rokov"
 
-#: wppa-common-functions.php:1939
+#: wppa-common-functions.php:1942
 #, fuzzy
 msgid "- select an album -"
 msgstr "Vyberte prosím album a opakujte akci"
 
-#: wppa-common-functions.php:1945 wppa-items.php:315
+#: wppa-common-functions.php:1948 wppa-items.php:320
 msgid "--- none ---"
 msgstr "---nikto---"
 
-#: wppa-common-functions.php:1951 wppa-items.php:323
+#: wppa-common-functions.php:1954 wppa-items.php:328
 msgid "--- all ---"
 msgstr "---všetky---"
 
-#: wppa-common-functions.php:1957
+#: wppa-common-functions.php:1960
 #, fuzzy
 msgid "--- generic ---"
 msgstr "---nikto---"
 
-#: wppa-common-functions.php:1968
+#: wppa-common-functions.php:1971
 msgid "--- multiple see below ---"
 msgstr ""
 
-#: wppa-common-functions.php:1974
+#: wppa-common-functions.php:1977
 #, fuzzy
 msgid "--- a selection box ---"
 msgstr "---vypúšťa---"
 
-#: wppa-common-functions.php:1995 wppa-items.php:319
+#: wppa-common-functions.php:1998 wppa-items.php:324
 msgid "--- separate ---"
 msgstr "---samostatné---"
 
@@ -965,18 +970,18 @@ msgstr ""
 "Bylo nalezeno %s fotek. Je zobrazeno pouze prvních %s. Zpřesněte prosím "
 "vyhledávací podmínku."
 
-#: wppa-functions.php:1470 wppa-functions.php:2866
+#: wppa-functions.php:1470 wppa-functions.php:2865
 #, fuzzy
 msgid "Edit"
 msgstr "Upravit!"
 
-#: wppa-functions.php:1475 wppa-functions.php:2862 wppa-links.php:640
+#: wppa-functions.php:1475 wppa-functions.php:2861 wppa-links.php:640
 #: wppa-links.php:657
 #, fuzzy
 msgid "Are you sure you want to remove this photo?"
 msgstr "Opravdu chcete smazat tuto fotku?"
 
-#: wppa-functions.php:1476 wppa-functions.php:2863 wppa-links.php:647
+#: wppa-functions.php:1476 wppa-functions.php:2862 wppa-links.php:647
 #: wppa-links.php:665
 #, fuzzy
 msgid "Delete"
@@ -986,259 +991,269 @@ msgstr "Smazat"
 msgid "Comment edited"
 msgstr "Komentár upravovať"
 
-#: wppa-functions.php:1627
+#: wppa-functions.php:1623
+#, fuzzy
+msgid "Photo comment"
+msgstr "Váš komentár:"
+
+#: wppa-functions.php:1626
 msgid "Comment on photo:"
 msgstr "Komentovať fotografie:"
 
-#: wppa-functions.php:1634
+#: wppa-functions.php:1633
 msgid "wrote on photo"
 msgstr "napísal na fotografiu"
 
-#: wppa-functions.php:1636
+#: wppa-functions.php:1635
 msgid "Moderate comment admin"
 msgstr "Mierny komentár admin"
 
-#: wppa-functions.php:1637 wppa-functions.php:3918 wppa-upload.php:1217
+#: wppa-functions.php:1636 wppa-functions.php:3920 wppa-upload.php:1217
 msgid "Moderate manage photo"
 msgstr "Stredne spravovať fotografie"
 
-#: wppa-functions.php:1638
+#: wppa-functions.php:1637
 #, fuzzy
 msgid "Edit photo"
 msgstr "Upravit fotku"
 
-#: wppa-functions.php:1647
+#: wppa-functions.php:1646
 msgid "You receive this email as you are assigned to moderate"
 msgstr "Dostanete tento e-mail, ako sú priradené až stredne"
 
-#: wppa-functions.php:1659
+#: wppa-functions.php:1658
 msgid "You receive this email as administrator of the site"
 msgstr "Dostanete tento e-mail ako správca webu"
 
-#: wppa-functions.php:1676
+#: wppa-functions.php:1675
 #, fuzzy
 msgid "You receive this email as uploader of the photo"
 msgstr "Dostanete tento e-mail jako autor nahrání fotek"
 
-#: wppa-functions.php:1696
+#: wppa-functions.php:1695
 msgid "You receive this email as owner of the album"
 msgstr "Dostanete tento e-mail ako vlastník albumu"
 
-#: wppa-functions.php:1713
+#: wppa-functions.php:1712
 #, fuzzy
 msgid "You receive this email because you commented this photo earlier."
 msgstr "Dostanete tento e-mail, ako sú priradené až stredne"
 
-#: wppa-functions.php:1729
+#: wppa-functions.php:1728
 msgid "Comment added"
 msgstr "Príkaz sa pridal"
 
-#: wppa-functions.php:1733
+#: wppa-functions.php:1732
 msgid ""
 "Sorry, you gave a wrong answer.\\n\\nPlease try again to solve the "
 "computation."
 msgstr "Sorry, dal si zle answer.\\n\\nPlease skúsiť znovu riešiť výpočet."
 
-#: wppa-functions.php:1743
+#: wppa-functions.php:1742
 msgid "Could not process comment.\\nProbably timed out."
 msgstr "Nemohol spracovať comment.\\nProbably vypršal."
 
-#: wppa-functions.php:1822
+#: wppa-functions.php:1821
 msgid "1 Comment"
 msgstr "1 Komentár"
 
-#: wppa-functions.php:1823
+#: wppa-functions.php:1822
 #, php-format
 msgid "%s Comments"
 msgstr "%s komentáre"
 
-#: wppa-functions.php:1859 wppa-links.php:1276
+#: wppa-functions.php:1858 wppa-links.php:1276
 msgid "A video can not be printed or downloaded"
 msgstr ""
 
-#: wppa-functions.php:2267
+#: wppa-functions.php:2266
 msgid "<b>ERROR: Illegal attempt to enter a rating.</b>"
 msgstr "<b>Chyba: Neplatný pokus o zadanie rating.</b>"
 
-#: wppa-functions.php:2280
+#: wppa-functions.php:2279
 msgid "<b>ERROR: Illegal attempt to enter a comment.</b>"
 msgstr "<b>Chyba: Neplatný pokus o zadať poznámku.</b>"
 
-#: wppa-functions.php:2706 wppa-topten-widget.php:93
+#: wppa-functions.php:2705 wppa-topten-widget.php:93
 msgid "View the top rated photos"
 msgstr "Zobraziť najlepšie hodnotené fotografie"
 
-#: wppa-functions.php:3687
+#: wppa-functions.php:3686
 #, fuzzy
 msgid "New Album"
 msgstr "Album:"
 
-#: wppa-functions.php:3690
+#: wppa-functions.php:3689
 #, fuzzy
 msgid "<b>ERROR: Illegal attempt to create an album.</b>"
 msgstr "<b>Chyba: Neplatný pokus o zadání hodnocení.</b>"
 
-#: wppa-functions.php:3694
+#: wppa-functions.php:3693
 #, fuzzy
 msgid "Wrong captcha, please try again"
 msgstr "Vyberte prosím album a opakujte akci"
 
-#: wppa-functions.php:3704
+#: wppa-functions.php:3706
 #, fuzzy, php-format
 msgid "Album #%s created"
 msgstr "Uživatel %s nahrál fotku %s do alba %s"
 
-#: wppa-functions.php:3709
+#: wppa-functions.php:3711
 #, fuzzy
 msgid "Could not create album"
 msgstr "Nelze vložit do databáze."
 
-#: wppa-functions.php:3720
+#: wppa-functions.php:3722
 msgid "<b>ERROR: Illegal attempt to upload a file.</b>"
 msgstr "<b>Chyba: Neplatný pokus o odovzdanie súboru.</b>"
 
 #: wppa-functions.php:3762
 #, fuzzy
+msgid "Photo upload"
+msgstr "Fotky nahrány "
+
+#: wppa-functions.php:3764
+#, fuzzy
 msgid "Photo successfully uploaded."
 msgstr "Fotka úspěšně nahrána."
 
-#: wppa-functions.php:3762
+#: wppa-functions.php:3764
 #, fuzzy, php-format
 msgid "%s photos successfully uploaded."
 msgstr "%s fotek úspěšně nahráno."
 
-#: wppa-functions.php:3763
+#: wppa-functions.php:3765
 #, fuzzy, php-format
 msgid "%s points added."
 msgstr "Body (%s) byly přidány."
 
-#: wppa-functions.php:3767
+#: wppa-functions.php:3769
 #, fuzzy
 msgid "Upload failed"
 msgstr "Nahrávání selhalo"
 
-#: wppa-functions.php:3770
+#: wppa-functions.php:3772
 #, fuzzy
 msgid "1 Upload failed"
 msgstr "Nahrávání selhalo"
 
-#: wppa-functions.php:3770
+#: wppa-functions.php:3772
 #, fuzzy, php-format
 msgid "%s uploads failed."
 msgstr "Nahrávání selhalo"
 
-#: wppa-functions.php:3806
+#: wppa-functions.php:3808
 msgid "Error during upload"
 msgstr "Chyba počas upload"
 
-#: wppa-functions.php:3811
+#: wppa-functions.php:3813
 msgid "Uploaded file is not an image"
 msgstr "Nahraný súbor nie je obraz"
 
-#: wppa-functions.php:3815
+#: wppa-functions.php:3817
 #, php-format
 msgid ""
 "Only gif, jpg and png image files are supported. Returned filetype = %d."
 msgstr "Len gif, jpg a png obrázkov sú podporované. Vrátil filetype = % d."
 
-#: wppa-functions.php:3821
+#: wppa-functions.php:3823
 #, fuzzy, php-format
 msgid "Uploaded file is larger than the allowed maximum of %d x %d pixels."
 msgstr "Max veľkosť fotografií: %d %d (%2.1f MegaPixel)"
 
-#: wppa-functions.php:3827
+#: wppa-functions.php:3829
 #, fuzzy, php-format
 msgid "Uploaded file %s already exists in this album."
 msgstr "Uživatel %s nahrál fotku %s do alba %s"
 
-#: wppa-functions.php:3835
+#: wppa-functions.php:3837
 #, php-format
 msgid "The image is too big. Max photo size: %d x %d (%2.1f MegaPixel)"
 msgstr ""
 "Obrázok je príliš veľký. Max veľkosť fotografií: %d %d (%2.1f MegaPixel)"
 
-#: wppa-functions.php:3858
+#: wppa-functions.php:3860
 #, fuzzy
 msgid "Could not insert photo into db."
 msgstr "Nelze vložit do databáze."
 
-#: wppa-functions.php:3914 wppa-upload.php:1213
+#: wppa-functions.php:3916 wppa-upload.php:1213
 #, fuzzy, php-format
 msgid "New photo uploaded: %s"
 msgstr "Nová fotka nahrána: %s"
 
-#: wppa-functions.php:3915 wppa-upload.php:1214
+#: wppa-functions.php:3917 wppa-upload.php:1214
 #, fuzzy, php-format
 msgid "User %s uploaded photo %s into album %s"
 msgstr "Uživatel %s nahrál fotku %s do alba %s"
 
-#: wppa-functions.php:3917 wppa-upload.php:1216
+#: wppa-functions.php:3919 wppa-upload.php:1216
 #, fuzzy
 msgid "This upload requires moderation"
 msgstr "Toto nahrání vyžaduje úpravu"
 
-#: wppa-functions.php:3921 wppa-upload.php:1220
+#: wppa-functions.php:3923 wppa-upload.php:1220
 #, fuzzy
 msgid "Details:"
 msgstr "Detaily:"
 
-#: wppa-functions.php:3922 wppa-upload.php:1221
+#: wppa-functions.php:3924 wppa-upload.php:1221
 #, fuzzy
 msgid "Manage photo"
 msgstr "Spravovat fotky"
 
-#: wppa-functions.php:4064
+#: wppa-functions.php:4066
 msgid "You can upload after"
 msgstr "Môžete nahrať po"
 
-#: wppa-functions.php:4093 wppa-functions.php:4096
+#: wppa-functions.php:4095 wppa-functions.php:4098
 #, fuzzy
 msgid "Download:"
 msgstr "Stáhnout"
 
-#: wppa-functions.php:4117
+#: wppa-functions.php:4119
 msgid "Zoom in"
 msgstr "Priblížiť"
 
-#: wppa-items.php:204 wppa-utils.php:1679
+#: wppa-items.php:215 wppa-utils.php:1679
 msgid "Gold medal award!"
 msgstr ""
 
-#: wppa-items.php:204 wppa-utils.php:1679
+#: wppa-items.php:215 wppa-utils.php:1679
 msgid "Gold"
 msgstr ""
 
-#: wppa-items.php:205 wppa-utils.php:1678
+#: wppa-items.php:216 wppa-utils.php:1678
 msgid "Silver medal award!"
 msgstr ""
 
-#: wppa-items.php:205 wppa-utils.php:1678
+#: wppa-items.php:216 wppa-utils.php:1678
 msgid "Silver"
 msgstr ""
 
-#: wppa-items.php:206 wppa-utils.php:1677
+#: wppa-items.php:217 wppa-utils.php:1677
 msgid "Bronze medal award!"
 msgstr ""
 
-#: wppa-items.php:206 wppa-utils.php:1677
+#: wppa-items.php:217 wppa-utils.php:1677
 msgid "Bronze"
 msgstr ""
 
-#: wppa-items.php:244 wppa-items.php:372
+#: wppa-items.php:255 wppa-items.php:377
 #, fuzzy
 msgid "none"
 msgstr "žádný/á"
 
-#: wppa-items.php:274 wppa-items.php:383
+#: wppa-items.php:285 wppa-items.php:388
 #, fuzzy
 msgid "unknown"
 msgstr "neznámý/á"
 
-#: wppa-items.php:327 wppa-items.php:348
+#: wppa-items.php:332 wppa-items.php:353
 msgid "--- deleted ---"
 msgstr "---vypúšťa---"
 
-#: wppa-items.php:337
+#: wppa-items.php:342
 msgid "All Albums"
 msgstr "Všetky albumy"
 
@@ -1314,7 +1329,7 @@ msgstr "Prev. stránku"
 msgid "Next&nbsp;page"
 msgstr "Ďalšia strana"
 
-#: wppa-links.php:919 wppa-non-admin.php:565
+#: wppa-links.php:919 wppa-non-admin.php:567
 #, fuzzy
 msgid "Download"
 msgstr "Stáhnout"
@@ -1334,105 +1349,105 @@ msgstr ""
 msgid "Keys: f = next mode; esc,x,o,c,q = exit; d = dismiss this notice."
 msgstr ""
 
-#: wppa-non-admin.php:501 wppa-slideshow.php:225
+#: wppa-non-admin.php:503 wppa-slideshow.php:225
 msgid "Start"
 msgstr "Štart"
 
-#: wppa-non-admin.php:502
+#: wppa-non-admin.php:504
 msgid "Stop"
 msgstr "zastaviť"
 
-#: wppa-non-admin.php:503 wppa-slideshow.php:224
+#: wppa-non-admin.php:505 wppa-slideshow.php:224
 msgid "Slower"
 msgstr "Pomalší"
 
-#: wppa-non-admin.php:504 wppa-slideshow.php:226
+#: wppa-non-admin.php:506 wppa-slideshow.php:226
 msgid "Faster"
 msgstr "Rýchlejšie"
 
-#: wppa-non-admin.php:505
+#: wppa-non-admin.php:507
 msgid "Photo"
 msgstr "Foto"
 
-#: wppa-non-admin.php:506
+#: wppa-non-admin.php:508
 msgid "of"
 msgstr "z"
 
-#: wppa-non-admin.php:507
+#: wppa-non-admin.php:509
 msgid "Previous photo"
 msgstr "Predchádzajúcu fotografiu"
 
-#: wppa-non-admin.php:508
+#: wppa-non-admin.php:510
 msgid "Next photo"
 msgstr "Ďalšie fotografie"
 
-#: wppa-non-admin.php:509
+#: wppa-non-admin.php:511
 msgid "Prev."
 msgstr "Predošlé."
 
-#: wppa-non-admin.php:510 wppa-slideshow.php:651
+#: wppa-non-admin.php:512 wppa-slideshow.php:651
 msgid "Next"
 msgstr "Ďalší"
 
-#: wppa-non-admin.php:511 wppa-slideshow.php:498 wppa-slideshow.php:502
+#: wppa-non-admin.php:513 wppa-slideshow.php:498 wppa-slideshow.php:502
 #: wppa-slideshow.php:544
 msgid "Average&nbsp;rating"
 msgstr "Priemerné hodnotenie"
 
-#: wppa-non-admin.php:512 wppa-slideshow.php:523 wppa-slideshow.php:528
+#: wppa-non-admin.php:514 wppa-slideshow.php:523 wppa-slideshow.php:528
 #: wppa-slideshow.php:533
 msgid "My&nbsp;rating"
 msgstr "Moje hodnotenie"
 
-#: wppa-non-admin.php:513
+#: wppa-non-admin.php:515
 msgid "Avg."
 msgstr "Priem."
 
-#: wppa-non-admin.php:514
+#: wppa-non-admin.php:516
 msgid "Mine"
 msgstr "Baňa"
 
-#: wppa-non-admin.php:515
+#: wppa-non-admin.php:517
 msgid "You marked this image as inappropriate."
 msgstr "Ste označili tento obrázok ako nevhodné."
 
-#: wppa-non-admin.php:517
+#: wppa-non-admin.php:519
 #, fuzzy
 msgid "No dislikes"
 msgstr "Žádné hodnocení NELÍBÍ"
 
-#: wppa-non-admin.php:518
+#: wppa-non-admin.php:520
 #, fuzzy
 msgid "1 dislike"
 msgstr "1 hodnocení NELÍBÍ"
 
-#: wppa-non-admin.php:519
+#: wppa-non-admin.php:521
 #, fuzzy
 msgid "dislikes"
 msgstr "Žádné hodnocení NELÍBÍ"
 
-#: wppa-non-admin.php:520
+#: wppa-non-admin.php:522
 #, fuzzy
 msgid "including mine"
 msgstr "včetně mého"
 
-#: wppa-non-admin.php:523
+#: wppa-non-admin.php:525
 msgid "Please enter your name"
 msgstr "Zadajte vaše meno"
 
-#: wppa-non-admin.php:524
+#: wppa-non-admin.php:526
 msgid "Please enter a valid email address"
 msgstr "Zadajte platnú e-mailovú adresu"
 
-#: wppa-non-admin.php:525
+#: wppa-non-admin.php:527
 msgid "Please enter a comment"
 msgstr "Zadajte komentár"
 
-#: wppa-non-admin.php:560
+#: wppa-non-admin.php:562
 msgid "Double click to start/stop slideshow running"
 msgstr "Dvakrát kliknite na štart/stop prezentácia spustená"
 
-#: wppa-photo-admin-autosave.php:132
+#: wppa-photo-admin-autosave.php:141
 #, fuzzy, php-format
 msgid "Photo %s has been removed."
 msgstr "Fotka %s byla odebrána."
