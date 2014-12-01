@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Functions for breadcrumbs
-* Version 5.4.15
+* Version 5.4.21
 *
 */
 
@@ -363,6 +363,9 @@ function wppa_bcitem( $value = '', $href = '', $title = '', $class = '' ) {
 global $wppa;
 global $wppa_opt;
 static $sep;
+	
+	// Convert url to pretty
+	$href = wppa_convert_to_pretty( $href );
 	
 	// Has content?
 	if ( ! $value ) return;	// No content

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 5.4.20
+* Version 5.4.21
 *
 */
 
@@ -699,6 +699,8 @@ Hide Camera info
 						'wppa_ovl_show_counter'				=> 'yes',
 						'wppa_ovl_add_owner' 				=> 'no',
 						'wppa_show_zoomin'					=> 'yes',
+						
+						'wppa_owner_on_new_line' 			=> 'no',
 
 						// Table III: Backgrounds
 						'wppa_bgcolor_even' 			=> '#eeeeee',
@@ -981,24 +983,25 @@ Hide Camera info
 						
 						// Table VII: Security
 						// B
-						'wppa_user_upload_login'	=> 'yes',
-						'wppa_owner_only' 			=> 'no',
-						'wppa_user_upload_on'		=> 'no',
-						'wppa_fe_upload_tags' 		=> 'no',
-						'wppa_user_album_edit_on' 	=> 'no',
-						'wppa_upload_moderate'		=> 'no',
-						'wppa_upload_edit'			=> 'no',
-						'wppa_upload_notify' 		=> 'no',
+						'wppa_user_upload_login'		=> 'yes',
+						'wppa_owner_only' 				=> 'no',
+						'wppa_user_upload_on'			=> 'no',
+						'wppa_fe_upload_tags' 			=> 'no',
+						'wppa_user_album_edit_on' 		=> 'no',
+						'wppa_upload_moderate'			=> 'no',
+						'wppa_upload_edit'				=> 'no',
+						'wppa_owner_moderate_comment' 	=> 'no',
+						'wppa_upload_notify' 			=> 'no',
 						'wppa_upload_backend_notify'	=> 'no',
-						'wppa_upload_one_only'		=> 'no',
-						'wppa_memcheck_frontend'	=> 'yes',
-						'wppa_memcheck_admin'		=> 'yes',
-						'wppa_comment_captcha'		=> 'no',
-						'wppa_spam_maxage'			=> 'none',
-						'wppa_user_create_on'		=> 'no',
-						'wppa_user_create_login'	=> 'yes',
+						'wppa_upload_one_only'			=> 'no',
+						'wppa_memcheck_frontend'		=> 'yes',
+						'wppa_memcheck_admin'			=> 'yes',
+						'wppa_comment_captcha'			=> 'no',
+						'wppa_spam_maxage'				=> 'none',
+						'wppa_user_create_on'			=> 'no',
+						'wppa_user_create_login'		=> 'yes',
 						'wppa_upload_fronend_maxsize' 	=> '0',
-						'wppa_void_dups' 			=> 'no',
+						'wppa_void_dups' 				=> 'no',
 						
 						'wppa_editor_upload_limit_count'		=> '0',
 						'wppa_editor_upload_limit_time'			=> '0',
@@ -1106,6 +1109,7 @@ Hide Camera info
 						'wppa_grant_name'			=> 'display',
 						'wppa_grant_parent'			=> '0',
 						'wppa_default_parent' 		=> '0',
+						'wppa_default_parent_always' 	=> 'no',
 						
 						'wppa_max_albums'				=> '0',
 						'wppa_alt_is_restricted'		=> 'no',

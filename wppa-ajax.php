@@ -2,7 +2,7 @@
 /* wppa-ajax.php
 *
 * Functions used in ajax requests
-* version 5.4.19
+* version 5.4.21
 *
 */
 
@@ -434,7 +434,7 @@ global $wppa_session;
 					exit;															// Fail on storing vote
 				}
 				// Add points
-				if( function_exists( 'cp_alterPoints' ) && is_user_logged_in() ) cp_alterPoints( cp_currentUser(), $wppa_opt['wppa_cp_points_rating'] );
+				wppa_add_credit_points( wppa_opt( 'wppa_cp_points_rating' ), __a( 'Photo rated' ), $photo, $rating );
 				wppa_dislike_check( $photo );	// Check for email to be sent every .. dislikes
 				if ( ! is_file( wppa_get_thumb_path( $photo ) ) ) {	// Photo is removed
 					 echo $occur.'||'.$photo.'||'.$index.'||-1||-1|0||'.$wppa_opt['wppa_dislike_delete'];
@@ -450,7 +450,7 @@ global $wppa_session;
 					exit;															// Fail on storing vote
 				}
 				// Add points
-				if( function_exists( 'cp_alterPoints' ) && is_user_logged_in() ) cp_alterPoints( cp_currentUser(), $wppa_opt['wppa_cp_points_rating'] );
+				wppa_add_credit_points( wppa_opt( 'wppa_cp_points_rating' ), __a( 'Photo rated' ), $photo, $rating );
 			}
 			// Case 3: I will change my previously given vote
 			elseif ( wppa_switch( 'wppa_rating_change' ) ) {					// Votechanging is allowed
@@ -1101,9 +1101,9 @@ global $wppa_session;
 						default:
 							$itemname = $item;
 					}
-					if ( $item == 'name' || $item == 'description' || $item == 'tags' ) wppa_index_quick_remove( 'photo', $photo );
+	//				if ( $item == 'name' || $item == 'description' || $item == 'tags' ) wppa_index_quick_remove( 'photo', $photo );
 					$iret = $wpdb->query( $wpdb->prepare( 'UPDATE '.WPPA_PHOTOS.' SET `'.$item.'` = %s WHERE `id` = %s', $value, $photo ) );
-					if ( $item == 'name' || $item == 'description' || $item == 'tags' ) wppa_index_add( 'photo', $photo );
+					if ( $item == 'name' || $item == 'description' || $item == 'tags' )  wppa_index_update( 'photo', $photo );
 					if ( $item == 'status' && $value != 'scheduled' ) wppa_update_photo( array( 'id' => $photo, 'scheduledtm' => '' ) );
 					if ( $item == 'status' ) wppa_flush_treecounts( wppa_get_photo_item( $photo, 'album' ) );
 					if ( $iret !== false ) {

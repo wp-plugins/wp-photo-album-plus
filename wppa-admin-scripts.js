@@ -1,7 +1,7 @@
 /* admin-scripts.js */
 /* Package: wp-photo-album-plus
 /*
-/* Version 5.4.18
+/* Version 5.4.21
 /* Various js routines used in admin pages		
 */
 
@@ -1789,4 +1789,15 @@ function wppaGetSelEnumToId( cls, id ) {
 		i++;
 	}
 	jQuery( '#'+id ).attr( 'value', wppaArrayToEnum( pararr, '.' ) );
+}
+
+function wppaEditSearch( url, id ) {
+	
+	var ss = jQuery( '#'+id ).val();
+	if ( ss.length == 0 ) {
+		alert('Please enter searchstring');
+	}
+	else {
+		document.location.href = url + '&wppa-searchstring=' + ss;
+	}
 }

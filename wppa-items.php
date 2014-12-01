@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains functions to retrieve album and photo items
-* Version 5.4.20
+* Version 5.4.21
 *
 */
  
@@ -186,7 +186,18 @@ global $wppa_opt;
 		$user = get_user_by( 'login', $thumb['owner'] );
 		if ( $user ) {
 			if ( $show_name ) {
-				$result .= ' ('.$user->display_name.')';
+				if ( wppa_switch( 'wppa_owner_on_new_line' ) ) {
+					if ( ! $esc_js ) {
+						$result .= '<br />';
+					}
+					else {
+						$result .= ' [br /]';
+					}
+				}
+				else {
+					$result .= ' ';
+				}
+				$result .= '('.$user->display_name.')';
 			}
 			else {
 				$result .= ' '.$user->display_name;
@@ -213,7 +224,7 @@ function wppa_get_photo_desc( $id, $do_shortcodes = false, $do_geo = false ) {
 global $wppa;
 global $wppa_opt;
 
-	// Verufy args
+	// Verify args
 	if ( ! is_numeric( $id ) || $id < '1' ) {
 		wppa_dbg_msg( 'Invalid arg wppa_get_photo_desc( '.$id.' )', 'red' );
 		return '';
@@ -287,14 +298,8 @@ global $wppa_opt;
 	$desc = make_clickable( $desc );		// Auto make a tags for links
 
 	// CMTooltipGlossary on board?
-	if ( wppa_switch( 'wppa_use_CMTooltipGlossary' ) && class_exists( 'CMTooltipGlossaryFrontend' ) ) {
-		global $wppa_cmt;
-		if ( empty( $wppa_cmt ) ) {
-			$wppa_cmt = new CMTooltipGlossaryFrontend;
-		}
-		$desc = $wppa_cmt->cmtt_glossary_parse( $desc, true );
-	}
-
+	$desc = wppa_filter_glossary( $desc );
+	
 	return $desc;
 }
 
@@ -392,13 +397,7 @@ function wppa_get_album_desc( $id ) {
 	$desc = make_clickable( $desc );
 
 	// CMTooltipGlossary on board?
-	if ( wppa_switch( 'wppa_use_CMTooltipGlossary' ) && class_exists( 'CMTooltipGlossaryFrontend' ) ) {
-		global $wppa_cmt;
-		if ( empty( $wppa_cmt ) ) {
-			$wppa_cmt = new CMTooltipGlossaryFrontend;
-		}
-		$desc = $wppa_cmt->cmtt_glossary_parse( $desc, true );
-	}
+	$desc = wppa_filter_glossary( $desc );
 	
 	return $desc;
 }

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * create, edit and delete albums
-* version 5.4.15
+* version 5.4.21
 *
 */
 
@@ -59,10 +59,40 @@ function _wppa_admin() {
 		if ($_REQUEST['tab'] == 'edit'){
 			if ( isset($_REQUEST['edit_id']) ) {
 				$ei = $_REQUEST['edit_id'];
-				if ( $ei != 'new' && ! is_numeric($ei) ) {
+				if ( $ei != 'new' && $ei != 'search' && ! is_numeric($ei) ) {
 					wp_die('Security check failure 1');
 				}
 			}
+			
+			if ($_REQUEST['edit_id'] == 'search') {
+
+	?>
+<a name="manage-photos" id="manage-photos" ></a>		
+				<h2><?php _e('Manage Photos', 'wppa'); 
+					if ( isset($_REQUEST['bulk']) ) echo ' - <small><i>'.__('Copy / move / delete / edit name / edit description / change status', 'wppa').'</i></small>';
+					elseif ( isset($_REQUEST['quick']) ) echo ' - <small><i>'.__('Edit photo information except copy and move', 'wppa').'</i></small>';
+					else echo ' - <small><i>'.__('Edit photo information', 'wppa').'</i></small>';
+				?></h2>
+
+<a href="<?php echo $url ?>"><?php _e('Back to album table', 'wppa') ?></a><br /><br />
+
+				<?php 
+					if ( isset($_REQUEST['bulk']) ) wppa_album_photos_bulk($ei);
+					else wppa_album_photos($ei);
+				?>
+				<br /><a href="#manage-photos"><?php _e('Top of page', 'wppa') ?></a>
+				<?php $url = get_admin_url().'admin.php?page=wppa_admin_menu';
+					if ( isset ( $_REQUEST['wppa-searchstring'] ) ) {
+						$url .= '&wppa-searchstring='.wppa_sanitize_searchstring( $_REQUEST['wppa-searchstring'] );
+					}
+					$url .= '#wppa-edit-search-tag';
+				?>
+				<br /><a href="<?php echo $url ?>"><?php _e('Back to album table', 'wppa') ?></a>
+<?php
+				return;
+			}
+			
+			
 			if ($_REQUEST['edit_id'] == 'new') {
 				if ( ! wppa_can_create_album() ) wp_die('No rights to create an album');
 				$id = wppa_nextkey(WPPA_ALBUMS);
@@ -1063,6 +1093,8 @@ function wppa_admin_albums_flat() {
 					}
 					$idx++;
 				}
+				
+				wppa_search_edit();
 			
 ?>	
 			</tbody>
@@ -1319,10 +1351,14 @@ function wppa_admin_albums_collapsable() {
 			<?php wppa_do_albumlist('0', '0', $albums, $seq); ?>
 			<?php if ( $wpdb->get_var( "SELECT COUNT(*) FROM `".WPPA_ALBUMS."` WHERE `a_parent` = '-1'" ) > 0 ) { ?>
 				<tr>
-					<td colspan="12" ><em><?php _e('The following albums are ---separate--- and do not show up in the generic album display', 'wppa'); ?></em></td>
+					<td colspan="19" ><em><?php _e('The following albums are ---separate--- and do not show up in the generic album display', 'wppa'); ?></em></td>
 				</tr>
 				<?php wppa_do_albumlist('-1', '0', $albums, $seq); ?>
-			<?php } ?>
+			<?php 
+			
+			wppa_search_edit( true );
+
+			} ?>
 			</tbody>
 			<tfoot>
 			<tr>
@@ -1432,6 +1468,61 @@ function wppa_admin_albums_collapsable() {
 	<p><?php _e('No albums yet.', 'wppa'); ?></p>
 <?php
 	}
+}
+
+function wppa_search_edit( $collapsable = false ) {
+
+	$doit = false;
+	if ( wppa_user_is( 'administrator' ) ) $doit = true;
+	if ( wppa_switch( 'wppa_upload_edit' ) ) $doit = true;
+	
+	if ( ! $doit ) return;
+?>
+	<tr>
+		<td colspan="<?php echo ( $collapsable ? 19 : 13 )?>" >
+			<em><?php _e('Search for photos to edit', 'wppa'); ?></em>
+			<small><?php _e('Enter search words seperated by commas. Photos will meet all search words by their names, descriptions, translated keywords and/or tags.', 'wppa') ?></small>
+		</td>
+	</tr>
+	<tr class="alternate" >
+		<?php if ( $collapsable ) echo '<td></td>' ?>
+		<td>
+			<?php _e('Any','wppa') ?>
+		</td>
+		<?php if ( $collapsable ) echo '<td></td><td></td><td></td><td></td><td></td>' ?>
+		<td>
+			<?php _e('Search for', 'wppa') ?>
+		</td>
+		<td colspan="4" >
+			<?php if ( wppa_switch( 'wppa_indexed_search' ) ) { ?>
+				<?php $value = isset( $_REQUEST['wppa-searchstring'] ) ? wppa_sanitize_searchstring( $_REQUEST['wppa-searchstring'] ) : '' ?>
+				<a id="wppa-edit-search-tag" />
+				<input type="text" id="wppa-edit-search" name="wppa-edit-search" style="width:100%; padding:2px; color:black; background-color:#ccffcc;" value="<?php echo $value ?>" />
+			<?php } else { ?>
+				<small style="color:red;" ><?php _e('To use this feature, enable indexed search in Table IX-E7', 'wppa') ?></small>
+			<?php } ?>
+				
+		</td>
+		<?php if ( wppa_user_is( 'administrator' ) ) echo '<td></td>' ?>
+		<td>
+			<a class="wppaedit" onclick="wppaEditSearch('<?php echo wppa_ea_url('search') ?>', 'wppa-edit-search' )" >
+				<b><?php _e('Edit', 'wppa') ?></b>
+			</a>
+		</td>
+		<td>
+			<a class="wppaedit" onclick="wppaEditSearch('<?php echo wppa_ea_url('search').'&amp;quick' ?>', 'wppa-edit-search' )" >
+				<b><?php _e('Quick', 'wppa') ?></b>
+			</a>
+		</td>
+		<td>
+			<a class="wppaedit" onclick="wppaEditSearch('<?php echo wppa_ea_url('search').'&amp;bulk' ?>', 'wppa-edit-search' )" >
+				<b><?php _e('Bulk', 'wppa') ?></b>
+			</a>
+		</td>
+		<td></td><td></td><td></td>
+	</tr>
+
+<?php
 }
 
 function wppa_album_admin_footer() {

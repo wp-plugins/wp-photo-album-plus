@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wppa_theme-zh_CN\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-20 15:32+0100\n"
-"PO-Revision-Date: 2014-11-20 15:32+0100\n"
+"POT-Creation-Date: 2014-12-01 14:43+0100\n"
+"PO-Revision-Date: 2014-12-01 14:43+0100\n"
 "Last-Translator: J.N. Breetvelt <OpaJaap@OpaJaap.nl>\n"
 "Language-Team: delthink <delthink@gmail.com>\n"
 "Language: zh_CN\n"
@@ -114,6 +114,11 @@ msgstr ""
 msgid "Exit & Refresh"
 msgstr ""
 
+#: wppa-ajax.php:437 wppa-ajax.php:453
+#, fuzzy
+msgid "Photo rated"
+msgstr "每日精选照片"
+
 #: wppa-album-covers.php:994
 msgid "Link to"
 msgstr "链接到"
@@ -144,7 +149,7 @@ msgid "albums"
 msgstr "相簿"
 
 #: wppa-album-covers.php:1112 wppa-boxes-html.php:373 wppa-breadcrumb.php:258
-#: wppa-breadcrumb.php:263 wppa-functions.php:4069 wppa-utils.php:1282
+#: wppa-breadcrumb.php:263 wppa-functions.php:4071 wppa-utils.php:1282
 msgid "and"
 msgstr "和"
 
@@ -166,7 +171,7 @@ msgstr "最大的时间显示为新的专辑！"
 msgid "New"
 msgstr "最大的时间显示为新的专辑！"
 
-#: wppa-album-covers.php:1190 wppa-non-admin.php:500
+#: wppa-album-covers.php:1190 wppa-non-admin.php:502
 msgid "Slideshow"
 msgstr "幻灯片"
 
@@ -322,7 +327,7 @@ msgstr "进入/修改为这张专辑的描述。"
 msgid "Create album"
 msgstr "无法创建相册。"
 
-#: wppa-boxes-html.php:694 wppa-boxes-html.php:708 wppa-functions.php:3802
+#: wppa-boxes-html.php:694 wppa-boxes-html.php:708 wppa-functions.php:3804
 #, fuzzy
 msgid "Max uploads reached"
 msgstr "最大高度。"
@@ -654,7 +659,7 @@ msgstr "查看"
 msgid "Thumbs"
 msgstr "无法创建wppa首个目录。"
 
-#: wppa-breadcrumb.php:453
+#: wppa-breadcrumb.php:456
 msgid "Unpublished"
 msgstr ""
 
@@ -672,7 +677,7 @@ msgstr "访问者可以浏览相册中的照片。"
 msgid "Qty:"
 msgstr ""
 
-#: wppa-comment-widget.php:58 wppa-functions.php:2817
+#: wppa-comment-widget.php:58 wppa-functions.php:2816
 msgid "wrote"
 msgstr ""
 
@@ -691,7 +696,7 @@ msgstr "默认导入专辑："
 msgid "1 second"
 msgstr "1秒"
 
-#: wppa-common-functions.php:603 wppa-functions.php:4070
+#: wppa-common-functions.php:603 wppa-functions.php:4072
 msgid "seconds"
 msgstr "秒"
 
@@ -699,7 +704,7 @@ msgstr "秒"
 msgid "1 minute"
 msgstr "1分钟"
 
-#: wppa-common-functions.php:608 wppa-functions.php:4069
+#: wppa-common-functions.php:608 wppa-functions.php:4071
 msgid "minutes"
 msgstr "分钟"
 
@@ -707,7 +712,7 @@ msgstr "分钟"
 msgid "1 hour"
 msgstr "1小时"
 
-#: wppa-common-functions.php:613 wppa-functions.php:4068
+#: wppa-common-functions.php:613 wppa-functions.php:4070
 msgid "hours"
 msgstr "小时"
 
@@ -715,7 +720,7 @@ msgstr "小时"
 msgid "1 day"
 msgstr "1天"
 
-#: wppa-common-functions.php:618 wppa-functions.php:4067
+#: wppa-common-functions.php:618 wppa-functions.php:4069
 msgid "days"
 msgstr "天"
 
@@ -723,7 +728,7 @@ msgstr "天"
 msgid "1 week"
 msgstr "1星期"
 
-#: wppa-common-functions.php:623 wppa-functions.php:4066
+#: wppa-common-functions.php:623 wppa-functions.php:4068
 msgid "weeks"
 msgstr "星期"
 
@@ -743,35 +748,35 @@ msgstr "一年"
 msgid "years"
 msgstr "年"
 
-#: wppa-common-functions.php:1939
+#: wppa-common-functions.php:1942
 #, fuzzy
 msgid "- select an album -"
 msgstr "请选择一个相册的照片复制到第一。"
 
-#: wppa-common-functions.php:1945 wppa-items.php:315
+#: wppa-common-functions.php:1948 wppa-items.php:320
 msgid "--- none ---"
 msgstr "---无---"
 
-#: wppa-common-functions.php:1951 wppa-items.php:323
+#: wppa-common-functions.php:1954 wppa-items.php:328
 #, fuzzy
 msgid "--- all ---"
 msgstr "所有"
 
-#: wppa-common-functions.php:1957
+#: wppa-common-functions.php:1960
 #, fuzzy
 msgid "--- generic ---"
 msgstr "---无---"
 
-#: wppa-common-functions.php:1968
+#: wppa-common-functions.php:1971
 msgid "--- multiple see below ---"
 msgstr ""
 
-#: wppa-common-functions.php:1974
+#: wppa-common-functions.php:1977
 #, fuzzy
 msgid "--- a selection box ---"
 msgstr "相册删除。"
 
-#: wppa-common-functions.php:1995 wppa-items.php:319
+#: wppa-common-functions.php:1998 wppa-items.php:324
 msgid "--- separate ---"
 msgstr "---独立---"
 
@@ -1003,18 +1008,18 @@ msgid ""
 "your search criteria."
 msgstr "没有找到符合搜索条件的相册或照片。"
 
-#: wppa-functions.php:1470 wppa-functions.php:2866
+#: wppa-functions.php:1470 wppa-functions.php:2865
 #, fuzzy
 msgid "Edit"
 msgstr "编辑"
 
-#: wppa-functions.php:1475 wppa-functions.php:2862 wppa-links.php:640
+#: wppa-functions.php:1475 wppa-functions.php:2861 wppa-links.php:640
 #: wppa-links.php:657
 #, fuzzy
 msgid "Are you sure you want to remove this photo?"
 msgstr "您确定要旋转此照片吗？"
 
-#: wppa-functions.php:1476 wppa-functions.php:2863 wppa-links.php:647
+#: wppa-functions.php:1476 wppa-functions.php:2862 wppa-links.php:647
 #: wppa-links.php:665
 #, fuzzy
 msgid "Delete"
@@ -1024,129 +1029,134 @@ msgstr "删除"
 msgid "Comment edited"
 msgstr "编辑评论"
 
-#: wppa-functions.php:1627
+#: wppa-functions.php:1623
+#, fuzzy
+msgid "Photo comment"
+msgstr "您的评论："
+
+#: wppa-functions.php:1626
 #, fuzzy
 msgid "Comment on photo:"
 msgstr "评论:"
 
-#: wppa-functions.php:1634
+#: wppa-functions.php:1633
 #, fuzzy
 msgid "wrote on photo"
 msgstr "相片"
 
-#: wppa-functions.php:1636
+#: wppa-functions.php:1635
 #, fuzzy
 msgid "Moderate comment admin"
 msgstr "评论:"
 
-#: wppa-functions.php:1637 wppa-functions.php:3918 wppa-upload.php:1217
+#: wppa-functions.php:1636 wppa-functions.php:3920 wppa-upload.php:1217
 #, fuzzy
 msgid "Moderate manage photo"
 msgstr "相册：创建和管理相册。"
 
-#: wppa-functions.php:1638
+#: wppa-functions.php:1637
 #, fuzzy
 msgid "Edit photo"
 msgstr "编辑"
 
-#: wppa-functions.php:1647
+#: wppa-functions.php:1646
 #, fuzzy
 msgid "You receive this email as you are assigned to moderate"
 msgstr "Email:"
 
-#: wppa-functions.php:1659
+#: wppa-functions.php:1658
 #, fuzzy
 msgid "You receive this email as administrator of the site"
 msgstr "Email:"
 
-#: wppa-functions.php:1676
+#: wppa-functions.php:1675
 #, fuzzy
 msgid "You receive this email as uploader of the photo"
 msgstr "Email:"
 
-#: wppa-functions.php:1696
+#: wppa-functions.php:1695
 #, fuzzy
 msgid "You receive this email as owner of the album"
 msgstr "警告：如果您更改所有者，您将不再能够修改这张专辑和上传或导入照片了！"
 
-#: wppa-functions.php:1713
+#: wppa-functions.php:1712
 #, fuzzy
 msgid "You receive this email because you commented this photo earlier."
 msgstr "Email:"
 
-#: wppa-functions.php:1729
+#: wppa-functions.php:1728
 msgid "Comment added"
 msgstr "添加评论"
 
-#: wppa-functions.php:1733
+#: wppa-functions.php:1732
 #, fuzzy
 msgid ""
 "Sorry, you gave a wrong answer.\\n\\nPlease try again to solve the "
 "computation."
 msgstr "你确定要删除此相册？"
 
-#: wppa-functions.php:1743
+#: wppa-functions.php:1742
 #, fuzzy
 msgid "Could not process comment.\\nProbably timed out."
 msgstr "评论:"
 
-#: wppa-functions.php:1822
+#: wppa-functions.php:1821
 #, fuzzy
 msgid "1 Comment"
 msgstr "评论:"
 
-#: wppa-functions.php:1823
+#: wppa-functions.php:1822
 #, fuzzy, php-format
 msgid "%s Comments"
 msgstr "评论"
 
-#: wppa-functions.php:1859 wppa-links.php:1276
+#: wppa-functions.php:1858 wppa-links.php:1276
 msgid "A video can not be printed or downloaded"
 msgstr ""
 
-#: wppa-functions.php:2267
+#: wppa-functions.php:2266
 #, fuzzy
 msgid "<b>ERROR: Illegal attempt to enter a rating.</b>"
 msgstr "照片将被导出到：<b>%s</b>."
 
-#: wppa-functions.php:2280
+#: wppa-functions.php:2279
 #, fuzzy
 msgid "<b>ERROR: Illegal attempt to enter a comment.</b>"
 msgstr ""
 "<h3>评论系统没有被激活.</h3><p>要激活：<b>相册</b>检查表二第18项 - >设置选项,"
 "后<b>保存更改</b>"
 
-#: wppa-functions.php:2706 wppa-topten-widget.php:93
+#: wppa-functions.php:2705 wppa-topten-widget.php:93
 #, fuzzy
 msgid "View the top rated photos"
 msgstr "评分最高的照片"
 
-#: wppa-functions.php:3687
+#: wppa-functions.php:3686
 #, fuzzy
 msgid "New Album"
 msgstr "无法创建相册。"
 
-#: wppa-functions.php:3690
+#: wppa-functions.php:3689
 #, fuzzy
 msgid "<b>ERROR: Illegal attempt to create an album.</b>"
 msgstr "这将导致对相册的<b>内容</b>显示为19"
 
-#: wppa-functions.php:3694
+#: wppa-functions.php:3693
 #, fuzzy
 msgid "Wrong captcha, please try again"
 msgstr "处理文件，请稍候..."
 
-#: wppa-functions.php:3704
+#: wppa-functions.php:3706
 #, fuzzy, php-format
 msgid "Album #%s created"
 msgstr "上传照片：上传照片到相册您创建的。"
 
-#: wppa-functions.php:3709
+#: wppa-functions.php:3711
 #, fuzzy
 msgid "Could not create album"
 msgstr "无法创建相册。"
 
-#: wppa-functions.php:3720
+#: wppa-functions.php:3722
 #, fuzzy
 msgid "<b>ERROR: Illegal attempt to upload a file.</b>"
 msgstr ""
@@ -1155,148 +1165,153 @@ msgstr ""
 
 #: wppa-functions.php:3762
 #, fuzzy
+msgid "Photo upload"
+msgstr "上传相册中的照片星期"
+
+#: wppa-functions.php:3764
+#, fuzzy
 msgid "Photo successfully uploaded."
 msgstr "成功上传。"
 
-#: wppa-functions.php:3762
+#: wppa-functions.php:3764
 #, fuzzy, php-format
 msgid "%s photos successfully uploaded."
 msgstr "上传相册中的照片星期"
 
-#: wppa-functions.php:3763
+#: wppa-functions.php:3765
 #, fuzzy, php-format
 msgid "%s points added."
 msgstr "新增"
 
-#: wppa-functions.php:3767
+#: wppa-functions.php:3769
 #, fuzzy
 msgid "Upload failed"
 msgstr "失败<br/>"
 
-#: wppa-functions.php:3770
+#: wppa-functions.php:3772
 #, fuzzy
 msgid "1 Upload failed"
 msgstr "失败<br/>"
 
-#: wppa-functions.php:3770
+#: wppa-functions.php:3772
 #, fuzzy, php-format
 msgid "%s uploads failed."
 msgstr "失败<br/>"
 
-#: wppa-functions.php:3806
+#: wppa-functions.php:3808
 #, fuzzy
 msgid "Error during upload"
 msgstr "在上传中。。。"
 
-#: wppa-functions.php:3811
+#: wppa-functions.php:3813
 #, fuzzy
 msgid "Uploaded file is not an image"
 msgstr "成功上传。"
 
-#: wppa-functions.php:3815
+#: wppa-functions.php:3817
 #, fuzzy, php-format
 msgid ""
 "Only gif, jpg and png image files are supported. Returned filetype = %d."
 msgstr "注意,圆角只是现代浏览器所支持。"
 
-#: wppa-functions.php:3821
+#: wppa-functions.php:3823
 #, fuzzy, php-format
 msgid "Uploaded file is larger than the allowed maximum of %d x %d pixels."
 msgstr "%d的评论"
 
-#: wppa-functions.php:3827
+#: wppa-functions.php:3829
 #, fuzzy, php-format
 msgid "Uploaded file %s already exists in this album."
 msgstr "成功导入后删除，如果这张专辑已经退出。"
 
-#: wppa-functions.php:3835
+#: wppa-functions.php:3837
 #, fuzzy, php-format
 msgid "The image is too big. Max photo size: %d x %d (%2.1f MegaPixel)"
 msgstr "%d的评论"
 
-#: wppa-functions.php:3858
+#: wppa-functions.php:3860
 #, fuzzy
 msgid "Could not insert photo into db."
 msgstr "无法插入照片。查询="
 
-#: wppa-functions.php:3914 wppa-upload.php:1213
+#: wppa-functions.php:3916 wppa-upload.php:1213
 #, fuzzy, php-format
 msgid "New photo uploaded: %s"
 msgstr "新的照片显示在最前！"
 
-#: wppa-functions.php:3915 wppa-upload.php:1214
+#: wppa-functions.php:3917 wppa-upload.php:1214
 #, fuzzy, php-format
 msgid "User %s uploaded photo %s into album %s"
 msgstr "使用相册(s):"
 
-#: wppa-functions.php:3917 wppa-upload.php:1216
+#: wppa-functions.php:3919 wppa-upload.php:1216
 #, fuzzy
 msgid "This upload requires moderation"
 msgstr "上传 "
 
-#: wppa-functions.php:3921 wppa-upload.php:1220
+#: wppa-functions.php:3923 wppa-upload.php:1220
 msgid "Details:"
 msgstr ""
 
-#: wppa-functions.php:3922 wppa-upload.php:1221
+#: wppa-functions.php:3924 wppa-upload.php:1221
 #, fuzzy
 msgid "Manage photo"
 msgstr "相册：创建和管理相册。"
 
-#: wppa-functions.php:4064
+#: wppa-functions.php:4066
 #, fuzzy
 msgid "You can upload after"
 msgstr "此你也可以上传你的照片。"
 
-#: wppa-functions.php:4093 wppa-functions.php:4096
+#: wppa-functions.php:4095 wppa-functions.php:4098
 #, fuzzy
 msgid "Download:"
 msgstr "此设置的一个副作用是，右击图像，不再允许访问者下载图像。"
 
-#: wppa-functions.php:4117
+#: wppa-functions.php:4119
 msgid "Zoom in"
 msgstr ""
 
-#: wppa-items.php:204 wppa-utils.php:1679
+#: wppa-items.php:215 wppa-utils.php:1679
 msgid "Gold medal award!"
 msgstr ""
 
-#: wppa-items.php:204 wppa-utils.php:1679
+#: wppa-items.php:215 wppa-utils.php:1679
 msgid "Gold"
 msgstr ""
 
-#: wppa-items.php:205 wppa-utils.php:1678
+#: wppa-items.php:216 wppa-utils.php:1678
 msgid "Silver medal award!"
 msgstr ""
 
-#: wppa-items.php:205 wppa-utils.php:1678
+#: wppa-items.php:216 wppa-utils.php:1678
 msgid "Silver"
 msgstr ""
 
-#: wppa-items.php:206 wppa-utils.php:1677
+#: wppa-items.php:217 wppa-utils.php:1677
 msgid "Bronze medal award!"
 msgstr ""
 
-#: wppa-items.php:206 wppa-utils.php:1677
+#: wppa-items.php:217 wppa-utils.php:1677
 msgid "Bronze"
 msgstr ""
 
-#: wppa-items.php:244 wppa-items.php:372
+#: wppa-items.php:255 wppa-items.php:377
 #, fuzzy
 msgid "none"
 msgstr "---无---"
 
-#: wppa-items.php:274 wppa-items.php:383
+#: wppa-items.php:285 wppa-items.php:388
 #, fuzzy
 msgid "unknown"
 msgstr "未知"
 
-#: wppa-items.php:327 wppa-items.php:348
+#: wppa-items.php:332 wppa-items.php:353
 #, fuzzy
 msgid "--- deleted ---"
 msgstr "相册删除。"
 
-#: wppa-items.php:337
+#: wppa-items.php:342
 #, fuzzy
 msgid "All Albums"
 msgstr "- 所有相册-"
@@ -1370,7 +1385,7 @@ msgstr "上一页"
 msgid "Next&nbsp;page"
 msgstr "下一页"
 
-#: wppa-links.php:919 wppa-non-admin.php:565
+#: wppa-links.php:919 wppa-non-admin.php:567
 #, fuzzy
 msgid "Download"
 msgstr "此设置的一个副作用是，右击图像，不再允许访问者下载图像。"
@@ -1390,110 +1405,110 @@ msgstr ""
 msgid "Keys: f = next mode; esc,x,o,c,q = exit; d = dismiss this notice."
 msgstr ""
 
-#: wppa-non-admin.php:501 wppa-slideshow.php:225
+#: wppa-non-admin.php:503 wppa-slideshow.php:225
 msgid "Start"
 msgstr "开始"
 
-#: wppa-non-admin.php:502
+#: wppa-non-admin.php:504
 msgid "Stop"
 msgstr "停止"
 
-#: wppa-non-admin.php:503 wppa-slideshow.php:224
+#: wppa-non-admin.php:505 wppa-slideshow.php:224
 msgid "Slower"
 msgstr "较慢"
 
-#: wppa-non-admin.php:504 wppa-slideshow.php:226
+#: wppa-non-admin.php:506 wppa-slideshow.php:226
 msgid "Faster"
 msgstr "较快"
 
-#: wppa-non-admin.php:505
+#: wppa-non-admin.php:507
 msgid "Photo"
 msgstr "相片"
 
-#: wppa-non-admin.php:506
+#: wppa-non-admin.php:508
 msgid "of"
 msgstr "于"
 
-#: wppa-non-admin.php:507
+#: wppa-non-admin.php:509
 #, fuzzy
 msgid "Previous photo"
 msgstr ""
 "如果你改变由%%size=命令的显示宽度的此值变动比例，以配合这个纵横比以前的设置和"
 "定义。"
 
-#: wppa-non-admin.php:508
+#: wppa-non-admin.php:510
 #, fuzzy
 msgid "Next photo"
 msgstr "下一页"
 
-#: wppa-non-admin.php:509
+#: wppa-non-admin.php:511
 msgid "Prev."
 msgstr "上一页。"
 
-#: wppa-non-admin.php:510 wppa-slideshow.php:651
+#: wppa-non-admin.php:512 wppa-slideshow.php:651
 msgid "Next"
 msgstr "下一页"
 
-#: wppa-non-admin.php:511 wppa-slideshow.php:498 wppa-slideshow.php:502
+#: wppa-non-admin.php:513 wppa-slideshow.php:498 wppa-slideshow.php:502
 #: wppa-slideshow.php:544
 msgid "Average&nbsp;rating"
 msgstr "平均评级"
 
-#: wppa-non-admin.php:512 wppa-slideshow.php:523 wppa-slideshow.php:528
+#: wppa-non-admin.php:514 wppa-slideshow.php:523 wppa-slideshow.php:528
 #: wppa-slideshow.php:533
 msgid "My&nbsp;rating"
 msgstr "我的评分"
 
-#: wppa-non-admin.php:513
+#: wppa-non-admin.php:515
 msgid "Avg."
 msgstr ""
 
-#: wppa-non-admin.php:514
+#: wppa-non-admin.php:516
 msgid "Mine"
 msgstr ""
 
-#: wppa-non-admin.php:515
+#: wppa-non-admin.php:517
 #, fuzzy
 msgid "You marked this image as inappropriate."
 msgstr "如果你设置的导航字体大小，图像将被自动缩放"
 
-#: wppa-non-admin.php:517
+#: wppa-non-admin.php:519
 msgid "No dislikes"
 msgstr ""
 
-#: wppa-non-admin.php:518
+#: wppa-non-admin.php:520
 #, fuzzy
 msgid "1 dislike"
 msgstr "1年"
 
-#: wppa-non-admin.php:519
+#: wppa-non-admin.php:521
 msgid "dislikes"
 msgstr ""
 
-#: wppa-non-admin.php:520
+#: wppa-non-admin.php:522
 #, fuzzy
 msgid "including mine"
 msgstr ""
 "从相册中导出的照片<span style=\"font-size:12px;\">（包括相册信息）</span>"
 
-#: wppa-non-admin.php:523
+#: wppa-non-admin.php:525
 msgid "Please enter your name"
 msgstr "请输入您的姓名"
 
-#: wppa-non-admin.php:524
+#: wppa-non-admin.php:526
 msgid "Please enter a valid email address"
 msgstr "请输入一个有效的的电子邮件地址"
 
-#: wppa-non-admin.php:525
+#: wppa-non-admin.php:527
 #, fuzzy
 msgid "Please enter a comment"
 msgstr "请输入您的姓名"
 
-#: wppa-non-admin.php:560
+#: wppa-non-admin.php:562
 msgid "Double click to start/stop slideshow running"
 msgstr "双击启动/停止幻灯片运行"
 
-#: wppa-photo-admin-autosave.php:132
+#: wppa-photo-admin-autosave.php:141
 #, fuzzy, php-format
 msgid "Photo %s has been removed."
 msgstr "文件%s是一个不受支持的文件类型，并已被删除。"

@@ -1620,9 +1620,8 @@ global $wppa_done;
 				}
 				else {
 					// SUCCESSFUL COMMENT, ADD POINTS
-					if( function_exists( 'cp_alterPoints' ) && is_user_logged_in() ) {
-						cp_alterPoints( cp_currentUser(), wppa_opt( 'wppa_cp_points_comment' ) );
-					}
+					wppa_add_credit_points( wppa_opt( 'wppa_cp_points_comment' ), __a( 'Photo comment' ), $id );
+
 					// SEND EMAILS
 					$subj = __a( 'Comment on photo:' ).' '.wppa_get_photo_name( $id );
 					$usr  = $user;
@@ -3695,6 +3694,9 @@ global $wppa;
 				return;
 			}
 			$parent = strval( intval( wppa_get_post( 'wppa-album-parent' ) ) );
+			if ( ! wppa_user_is( 'administrator' ) && wppa_switch( 'wppa_default_parent_always' ) ) {
+				$parent = wppa_opt( 'wppa_default_parent' );
+			}
 			$album = wppa_create_album_entry( array( 	'name' 			=> $albumname, 
 														'description' 	=> strip_tags( wppa_get_post( 'wppa-album-desc' ) ),
 														'a_parent' 		=> $parent,
@@ -3751,16 +3753,16 @@ global $wppa;
 						}
 					}
 				}
-				$cbpoints = '0';
+				$points = '0';
 				$alert = '';
 				if ( $done ) {
+				
 					//SUCCESSFUL UPLOAD, ADD POINTS
-					if ( function_exists( 'cp_alterPoints' ) && is_user_logged_in() ) {
-						$cbpoints = wppa_opt( 'wppa_cp_points_upload' ) * $done;
-						cp_alterPoints( cp_currentUser(), $cbpoints );
-					}
+					$points = wppa_opt( 'wppa_cp_points_upload' ) * $done;
+					$bret = wppa_add_credit_points( $points, __a( 'Photo upload' ) );
+					
 					$alert .= $done == '1' ? __a( 'Photo successfully uploaded.' ) : sprintf( __a( '%s photos successfully uploaded.' ), $done );
-					if ( $cbpoints ) $alert .= ' '.sprintf( __a( '%s points added.' ), $cbpoints );
+					if ( $bret ) $alert .= ' '.sprintf( __a( '%s points added.' ), $points );
 				}
 				if ( $fail ) {
 					if ( ! $done ) {
@@ -4123,3 +4125,29 @@ function wppa_zoom_in( $id ) {
 	else return ' ';
 }
 
+function wppa_add_credit_points( $amount, $reason = '', $id = '', $value = '' ) {
+global $user_ID;
+
+	// Initialize
+	if ( ! $user_ID ) {
+		get_currentuserinfo();
+	}
+	$bret = false;
+	
+	// Must be logged in
+	if ( ! is_user_logged_in() ) return $bret;
+	
+	// Cube points
+	if ( function_exists( 'cp_alterPoints' )  ) {
+		cp_alterPoints( cp_currentUser(), $amount );
+		$bret = true;
+	}
+	
+	// myCred
+	if ( function_exists( 'mycred_add' ) ) {
+		$entry = $reason . ( $id ? ', '.__('Photo id =', 'wppa').' '.$id : '' ) . ( $value ? ', '.__('Value =', 'wppa').' '.$value : '' );
+		$bret = mycred_add( str_replace( ' ', '_', $reason ), $user_ID, $amount, $entry, '', '', '' ); // $ref_id, $data, $type );
+	}
+	
+	return $bret;
+}

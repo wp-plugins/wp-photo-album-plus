@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 5.4.20
+* Version 5.4.21
 *
 */
 
@@ -1967,6 +1967,13 @@ global $no_default;
 							$slug = 'wppa_arrow_color';
 							$html = wppa_input($slug, '70px', '', '');
 							wppa_setting($slug, '4', $name, $desc, $html, $help);
+							
+							$name = __('Owner on new line', 'wppa');
+							$desc = __('Place the (owner) text on a new line.', 'wppa');
+							$help = '';
+							$slug = 'wppa_owner_on_new_line';
+							$html = wppa_checkbox($slug);
+							wppa_setting($slug, '5', $name, $desc, $html, $help, $class);
 							}
 							?>
 						</tbody>
@@ -4289,7 +4296,16 @@ global $no_default;
 							$html1 = wppa_checkbox($slug);
 							$html2 = '';
 							$html = array( $html1, $html2 );
-							wppa_setting($slug, '2', $name, $desc, $html, $help);
+							wppa_setting($slug, '2.1', $name, $desc, $html, $help);
+
+							$name = __('Uploader Moderate Comment', 'wppa');
+							$desc = __('The owner of the photo can moderate the photos comments.', 'wppa');
+							$help = esc_js(__('This setting requires "Uploader edit" to be enabled also.', 'wppa'));
+							$slug = 'wppa_owner_moderate_comment';
+							$html1 = wppa_checkbox($slug);
+							$html2 = '';
+							$html = array( $html1, $html2 );
+							wppa_setting($slug, '2.2', $name, $desc, $html, $help);
 							
 							$name = __('Upload memory check frontend', 'wppa');
 							$desc = __('Disable uploading photos that are too large.', 'wppa');
@@ -5170,7 +5186,14 @@ global $no_default;
 								}
 							}
 							$html = wppa_select($slug, $opts, $vals);
-							wppa_setting($slug, '7', $name, $desc, $html, $help);
+							wppa_setting($slug, '7.1', $name, $desc, $html, $help);
+
+							$name = __('Default parent always', 'wppa');
+							$desc = __('The parent album of new albums is always the default, except for administrators.', 'wppa');
+							$help = '';
+							$slug = 'wppa_default_parent_always';
+							$html = wppa_select($slug, $opts, $vals);
+							wppa_setting($slug, '7.2', $name, $desc, $html, $help);
 
 							$name = __('Show album full', 'wppa');
 							$desc = __('Show the Upload limit reached message if appropriate.', 'wppa');
@@ -5771,23 +5794,23 @@ global $no_default;
 							$html = wppa_input($slug, '100px');
 							wppa_setting($slug, '3', $name, $desc, $html, $help, $class);
 							
-							$name = __('Cube Points Comment', 'wppa');
+							$name = __('myCRED / Cube Points: Comment', 'wppa');
 							$desc = __('Number of points for a comment', 'wppa');
-							$help = esc_js(__('This setting requires the plugin Cube Points', 'wppa'));
+							$help = esc_js(__('This setting requires the plugin myCRED or Cube Points', 'wppa'));
 							$slug = 'wppa_cp_points_comment';
 							$html = wppa_input($slug, '50px', '', __('points per comment', 'wppa'));
 							wppa_setting($slug, '4', $name, $desc, $html, $help);
 
-							$name = __('Cube Points Rating', 'wppa');
+							$name = __('myCRED / Cube Points: Rating', 'wppa');
 							$desc = __('Number of points for a rating vote', 'wppa');
-							$help = esc_js(__('This setting requires the plugin Cube Points', 'wppa'));
+							$help = esc_js(__('This setting requires the plugin myCRED or Cube Points', 'wppa'));
 							$slug = 'wppa_cp_points_rating';
 							$html = wppa_input($slug, '50px', '', __('points per vote', 'wppa'));
 							wppa_setting($slug, '5', $name, $desc, $html, $help);
 							
-							$name = __('Cube Points Upload', 'wppa');
+							$name = __('myCRED / Cube Points: Upload', 'wppa');
 							$desc = __('Number of points for a successfull frontend upload', 'wppa');
-							$help = esc_js(__('This setting requires the plugin Cube Points', 'wppa'));
+							$help = esc_js(__('This setting requires the plugin myCRED or Cube Points', 'wppa'));
 							$slug = 'wppa_cp_points_upload';
 							$html = wppa_input($slug, '50px', '', __('points per upload', 'wppa'));
 							wppa_setting($slug, '6', $name, $desc, $html, $help);

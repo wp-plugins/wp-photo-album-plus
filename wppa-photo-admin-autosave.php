@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * edit and delete photos
-* version 5.4.20
+* version 5.4.21
 *
 */
 
@@ -73,10 +73,17 @@ global $wppa;
 	$limit 		= ( $pagesize < '1' ) ? '' : ' LIMIT '.$skip.','.$pagesize;
 	
 	if ( $album ) {
-		$counts = wppa_treecount_a( $album );
-		$count = $counts['selfphotos'] + $counts['pendphotos']; //$wpdb->get_var( $wpdb->prepare( 'SELECT COUNT(*) FROM `'.WPPA_PHOTOS.'` WHERE `album` = %s', $album ) );
-		$photos = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM `'.WPPA_PHOTOS.'` WHERE `album` = %s '.wppa_get_photo_order( $album, 'norandom' ).$limit, $album ), ARRAY_A );
-		$link = wppa_dbg_url( get_admin_url().'admin.php?page=wppa_admin_menu&tab=edit&edit_id='.$album );
+		if ( $album == 'search' ) {
+			$count 	= wppa_get_edit_search_photos( '', 'count_only' );
+			$photos = wppa_get_edit_search_photos( $limit );
+			$link 	= wppa_dbg_url( get_admin_url().'admin.php?page=wppa_admin_menu&tab=edit&edit_id='.$album.'&wppa-searchstring='.wppa_sanitize_searchstring($_REQUEST['wppa-searchstring']) );
+		}
+		else {
+			$counts = wppa_treecount_a( $album );
+			$count = $counts['selfphotos'] + $counts['pendphotos']; //$wpdb->get_var( $wpdb->prepare( 'SELECT COUNT(*) FROM `'.WPPA_PHOTOS.'` WHERE `album` = %s', $album ) );
+			$photos = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM `'.WPPA_PHOTOS.'` WHERE `album` = %s '.wppa_get_photo_order( $album, 'norandom' ).$limit, $album ), ARRAY_A );
+			$link = wppa_dbg_url( get_admin_url().'admin.php?page=wppa_admin_menu&tab=edit&edit_id='.$album );
+		}
 	}
 	elseif ( $photo && ! $moderate ) {
 		$count = '1';
@@ -122,9 +129,11 @@ global $wppa;
 			else return;
 		}
 	}
-	else wppa_dbg_msg( 'Missing required argument in wppa_album_photos()', 'red', 'force' );
+	else wppa_dbg_msg( 'Missing required argument in wppa_album_photos() 1', 'red', 'force' );
 	
 	if ( $link && isset( $_REQUEST['quick'] ) ) $link .= '&quick';
+
+	wppa_show_search_statistics();
 	
 	if ( empty( $photos ) ) { 
 		if ( $photo ) {
@@ -133,16 +142,21 @@ global $wppa;
 					</div>';
 		}
 		else {
-			echo '<p>'.__( 'No photos yet in this album.', 'wppa' ).'</p>';
+			if ( isset( $_REQUEST['wppa-searchstring'] ) ) {
+				echo '<h3>'.__( 'No photos matching your search criteria.', 'wppa' ).'</h3>';
+			}
+			else {
+				echo '<h3>'.__( 'No photos yet in this album.', 'wppa' ).'</h3>';
+			}
 		}
 	} 
 	else { 
-		$wms = array( 'toplft' => __( 'top - left', 'wppa' ), 'topcen' => __( 'top - center', 'wppa' ), 'toprht' => __( 'top - right', 'wppa' ), 
-					  'cenlft' => __( 'center - left', 'wppa' ), 'cencen' => __( 'center - center', 'wppa' ), 'cenrht' => __( 'center - right', 'wppa' ), 
-					  'botlft' => __( 'bottom - left', 'wppa' ), 'botcen' => __( 'bottom - center', 'wppa' ), 'botrht' => __( 'bottom - right', 'wppa' ), );
-		$temp = wppa_get_water_file_and_pos( '0' );
+		$wms 	= array( 'toplft' => __( 'top - left', 'wppa' ), 'topcen' => __( 'top - center', 'wppa' ), 'toprht' => __( 'top - right', 'wppa' ), 
+						 'cenlft' => __( 'center - left', 'wppa' ), 'cencen' => __( 'center - center', 'wppa' ), 'cenrht' => __( 'center - right', 'wppa' ), 
+						 'botlft' => __( 'bottom - left', 'wppa' ), 'botcen' => __( 'bottom - center', 'wppa' ), 'botrht' => __( 'bottom - right', 'wppa' ), );
+		$temp 	= wppa_get_water_file_and_pos( '0' );
 		$wmfile = $temp['select'];
-		$wmpos = $wms[$temp['pos']];
+		$wmpos 	= $wms[$temp['pos']];
 		
 		wppa_admin_page_links( $page, $pagesize, $count, $link );
 		
@@ -788,7 +802,7 @@ global $wppa;
 								<td style="padding:0 4px;" >'.$comment['id'].'</td>
 								<td style="padding:0 4px;" >'.$comment['user'].'</td>
 								<td style="padding:0 4px;" >'.wppa_get_time_since( $comment['timestamp'] ).'</td>';
-								if ( current_user_can( 'wppa_comments' ) || current_user_can( 'wppa_moderate' ) ) {
+								if ( current_user_can( 'wppa_comments' ) || current_user_can( 'wppa_moderate' ) || ( wppa_get_user() == $photo['owner'] && wppa_switch( 'wppa_owner_moderate_comment' ) ) ) {
 									$p = ( $comment['status'] == 'pending' ) ? 'selected="selected" ' : '';
 									$a = ( $comment['status'] == 'approved' ) ? 'selected="selected" ' : '';
 									$s = ( $comment['status'] == 'spam' ) ? 'selected="selected" ' : '';
@@ -943,11 +957,19 @@ function wppa_album_photos_bulk( $album ) {
 	$limit 		= ( $pagesize < '1' ) ? '' : ' LIMIT '.$skip.','.$pagesize;
 	
 	if ( $album ) {
-		$counts = wppa_treecount_a( $album );
-		$count = $counts['selfphotos'] + $counts['pendphotos']; //$wpdb->get_var( $wpdb->prepare( 'SELECT COUNT(*) FROM `'.WPPA_PHOTOS.'` WHERE `album` = %s', $album ) );
-		$photos = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM `'.WPPA_PHOTOS.'` WHERE `album` = %s '.wppa_get_photo_order( $album, 'norandom' ).$limit, $album ), ARRAY_A );
-		$link = wppa_dbg_url( get_admin_url().'admin.php?page=wppa_admin_menu&tab=edit&edit_id='.$album.'&bulk' );
-	
+		if ( $album == 'search' ) {
+			$count 	= wppa_get_edit_search_photos( '', 'count_only' );
+			$photos = wppa_get_edit_search_photos( $limit );
+			$link 	= wppa_dbg_url( get_admin_url().'admin.php?page=wppa_admin_menu&tab=edit&edit_id='.$album.'&wppa-searchstring='.wppa_sanitize_searchstring($_REQUEST['wppa-searchstring']).'&bulk' );
+			wppa_show_search_statistics();
+		}
+		else {
+			$counts = wppa_treecount_a( $album );
+			$count = $counts['selfphotos'] + $counts['pendphotos']; //$wpdb->get_var( $wpdb->prepare( 'SELECT COUNT(*) FROM `'.WPPA_PHOTOS.'` WHERE `album` = %s', $album ) );
+			$photos = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM `'.WPPA_PHOTOS.'` WHERE `album` = %s '.wppa_get_photo_order( $album, 'norandom' ).$limit, $album ), ARRAY_A );
+			$link = wppa_dbg_url( get_admin_url().'admin.php?page=wppa_admin_menu&tab=edit&edit_id='.$album.'&bulk' );
+		}
+		
 		if ( $photos ) {
 			wppa_admin_page_links( $page, $pagesize, $count, $link, '#manage-photos' );
 			?>
@@ -1149,7 +1171,12 @@ function wppa_album_photos_bulk( $album ) {
 		}
 		else {
 			if ( $page == '1' ) {
-				echo '<h3>'.__( 'The album is empty.', 'wppa' ).'</h3>';
+				if ( isset( $_REQUEST['wppa-searchstring'] ) ) {
+					echo '<h3>'.__( 'No photos matching your search criteria.', 'wppa' ).'</h3>';
+				}
+				else {
+					echo '<h3>'.__( 'No photos yet in this album.', 'wppa' ).'</h3>';
+				}
 			}
 			else {
 				$page_1 = $page - '1';
@@ -1158,7 +1185,7 @@ function wppa_album_photos_bulk( $album ) {
 		}
 	}
 	else {
-		wppa_dbg_msg( 'Missing required argument in wppa_album_photos()', 'red', 'force' );
+		wppa_dbg_msg( 'Missing required argument in wppa_album_photos() 2', 'red', 'force' );
 	}
 }
 
@@ -1320,6 +1347,163 @@ global $wppa_opt;
 		}
 	}
 	else {
-		wppa_dbg_msg( 'Missing required argument in wppa_album_photos()', 'red', 'force' );
+		wppa_dbg_msg( 'Missing required argument in wppa_album_photos() 3', 'red', 'force' );
+	}
+}
+
+function wppa_get_edit_search_photos( $limit = '', $count_only = false ) {
+global $wpdb;
+global $wppa_search_stats;
+
+	$doit = false;
+	if ( wppa_user_is( 'administrator' ) ) $doit = true;
+	if ( wppa_switch( 'wppa_upload_edit' ) ) $doit = true;
+	if ( ! $doit ) {	// Should never get here. Only when url is manipulted manually.
+		die('Security check failure #309');
+	}
+	
+	$words = explode( ',', wppa_sanitize_searchstring( $_REQUEST['wppa-searchstring'] ) );
+	
+	$wppa_search_stats = array();
+
+	$first = true;	
+	foreach( $words as $word ) {
+	
+		// Find lines in index db table
+		if ( wppa_switch( 'wppa_wild_front' ) ) {
+			$pidxs = $wpdb->get_results( "SELECT `slug`, `photos` FROM `".WPPA_INDEX."` WHERE `slug` LIKE '%".$word."%'", ARRAY_A );
+		}
+		else {
+			$pidxs = $wpdb->get_results( "SELECT `slug`, `photos` FROM `".WPPA_INDEX."` WHERE `slug` LIKE '".$word."%'", ARRAY_A );
+		}
+		
+		$photos = '';
+
+		foreach ( $pidxs as $pi ) {
+			$photos .= $pi['photos'].',';
+		}
+		
+		if ( $first ) {
+			$photo_array 	= wppa_index_array_remove_dups( wppa_index_string_to_array( trim( $photos, ',' ) ) );
+			$count 			= empty( $photo_array ) ? '0' : count( $photo_array );
+			$list 			= implode( ',', $photo_array );
+			
+			if ( wppa_user_is( 'administrator' ) ) {
+				$real_count = $wpdb->get_var( "SELECT COUNT(*) FROM `".WPPA_PHOTOS."` WHERE `id` IN (".$list.") " );
+				if ( $count != $real_count ) {
+					update_option( 'wppa_remake_index_photos_status', __('Required', 'wppa') );
+// 					echo 'realcount mismatch:1';
+//					echo ' count='.$count.', realcount='.$real_count.'<br/>';
+				}
+			}
+			else { // Not admin, can edit own photos only
+				$real_count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM `".WPPA_PHOTOS."` WHERE `id` IN (".$list.") AND `owner` = %s", wppa_get_user() ) );
+			}
+
+			$wppa_search_stats[] 	= array( 'word' => $word, 'count' => $real_count );
+			$first = false;
+		}
+		else {
+			$temp_array 	= wppa_index_array_remove_dups( wppa_index_string_to_array( trim( $photos, ',' ) ) );
+			$count 			= empty( $temp_array ) ? '0' : count( $temp_array );
+			$list 			= implode( ',', $temp_array );
+			
+			if ( wppa_user_is( 'administrator' ) ) {
+				$real_count = $wpdb->get_var( "SELECT COUNT(*) FROM `".WPPA_PHOTOS."` WHERE `id` IN (".$list.") " );
+				if ( $count != $real_count ) {
+					update_option( 'wppa_remake_index_photos_status', __('Required', 'wppa') );
+//					echo 'realcount mismatch:2';
+//					echo ' count='.$count.', realcount='.$real_count.'<br/>';
+				}
+			}
+			else { // Not admin, can edit own photos only
+				$real_count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM `".WPPA_PHOTOS."` WHERE `id` IN (".$list.") AND `owner` = %s", wppa_get_user() ) );
+			}
+			
+			$wppa_search_stats[] 	= array( 'word' => $word, 'count' => $real_count );
+			$photo_array 			= array_intersect( $photo_array, $temp_array );
+		}
+	}
+
+	if ( ! empty( $photo_array ) ) {
+	
+		$list = implode( ',', $photo_array );
+
+		if ( wppa_user_is( 'administrator' ) ) {
+			$totcount = $wpdb->get_var( "SELECT COUNT(*) FROM `".WPPA_PHOTOS."` WHERE `id` IN (".$list.") " );
+		}
+		else { // Not admin, can edit own photos only
+			$totcount = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM `".WPPA_PHOTOS."` WHERE `id` IN (".$list.") AND `owner` = %s" , wppa_get_user() ) );
+		}
+
+		$wppa_search_stats[] = array( 'word' => __( 'Combined', 'wppa'), 'count' => $totcount );
+		
+		if ( wppa_user_is( 'administrator' ) ) {
+			$photos = $wpdb->get_results( "SELECT * FROM `".WPPA_PHOTOS."` WHERE `id` IN (".$list.") " . wppa_get_photo_order( '0', 'norandom' ).$limit, ARRAY_A );
+		}
+		else { // Not admin, can edit own photos only
+			$photos = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM `".WPPA_PHOTOS."` WHERE `id` IN (".$list.") AND `owner` = %s" . wppa_get_photo_order( '0', 'norandom' ).$limit, wppa_get_user() ), ARRAY_A );
+		}
+	}
+	else {
+		$photos = false;
+	}
+
+	
+	if ( $count_only ) {
+		if ( is_array( $photos ) ) {
+			return count( $photos );
+		}
+		else {
+			return '0';
+		}
+	}
+	else {
+		return $photos;
+	}
+}
+
+function wppa_show_search_statistics() {
+global $wppa_search_stats;
+
+	if ( isset( $_REQUEST['wppa-searchstring'] ) ) {
+		echo '
+		<table>
+			<thead>
+				<tr>
+					<td><b>' . 
+						__('Word', 'wppa') . '
+					</b></td>
+					<td><b>' .
+						__('Count', 'wppa') . '
+					</b></td>
+				</tr>
+				<tr>
+					<td><hr /></td>
+					<td><hr /></td>
+				</tr>
+			</thead> 
+			<tbody>';
+			$count = empty( $wppa_search_stats ) ? '0' : count( $wppa_search_stats );
+			$c = '0';
+			$s = '';
+			foreach( $wppa_search_stats as $search_item ) {
+				$c++;
+				if ( $c == $count ) {
+					echo '<tr><td><hr /></td><td><hr /></td></tr>';
+					$s = 'style="font-weight:bold;"';
+				}
+				echo '
+				<tr>
+					<td '.$s.'>' .
+						$search_item['word'] . '
+					</td>
+					<td '.$s.'>' .
+						$search_item['count'] . '
+					</td>
+				</tr>';
+			}
+		echo '
+		</table>';
 	}
 }

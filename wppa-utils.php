@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains low-level utility routines
-* Version 5.4.20
+* Version 5.4.21
 *
 */
  
@@ -2196,4 +2196,52 @@ function wppa_get_post( $index, $default = false ) {
 		return $result;
 	}
 	return $default;
+}
+
+function wppa_sanitize_searchstring( $str ) {
+
+	$result = $str;
+	$result = strip_tags( $result );
+	$result = stripslashes( $result );
+	$result = str_replace( array( "'", '"', ':', ), '', $result );
+	$temp 	= explode( ',', $result );
+	foreach ( array_keys( $temp ) as $key ) {
+		$temp[$key] = trim( $temp[$key] );
+	}
+	$result = implode( ',', $temp );
+	
+	return $result;
+}
+
+// Filter for Plugin CM Tooltip Glossary
+function wppa_filter_glossary( $desc ) {
+static $wppa_cmt;
+
+	// Do we need this?
+	if ( wppa_switch( 'wppa_use_CMTooltipGlossary' ) && class_exists( 'CMTooltipGlossaryFrontend' ) ) {
+	
+		// Class initialized?
+		if ( empty( $wppa_cmt ) ) {
+			$wppa_cmt = new CMTooltipGlossaryFrontend;
+		}
+		
+		// Do we already start with a <p> ?
+		$start_p = ( strpos( $desc, '<p' ) === 0 );
+		
+		// remove newlines, glossary converts them to <br />
+		$desc = str_replace( array( "\n", "\r", "\t" ), '', $desc );
+		$desc = $wppa_cmt->cmtt_glossary_parse( $desc, true );
+
+		// Remove <p> and </p> that CMTG added around
+		if ( ! $start_p ) {
+			if ( substr( $desc, 0, 3 ) == '<p>' ) {
+				$desc = substr( $desc, 3 );
+			}
+			if ( substr( $desc, -4 ) == '</p>' ) {
+				$desc = substr( $desc, 0, strlen( $desc ) - 4 );
+			}
+		}
+	}
+	
+	return $desc;
 }

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the non admin stuff
-* Version 5.4.20
+* Version 5.4.21
 *
 */
 
@@ -350,6 +350,8 @@ add_action( 'plugins_loaded', 'wppa_redirect' );
 
 function wppa_redirect() {
 
+	if ( ! isset( $_SERVER["REQUEST_URI"] ) ) return;
+	
 	$uri = $_SERVER["REQUEST_URI"];
 	$wppapos = stripos($uri, '/wppaspec/');
 	

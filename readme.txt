@@ -1,8 +1,8 @@
 === WP Photo Album Plus ===
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
-Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile, cloudinary, fotomoto
-Version: 5.4.20
+Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile, cloudinary, fotomoto, CMTooltipGlossary
+Version: 5.4.21
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -187,6 +187,31 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 5.4.21 =
+
+= Bug Fixes =
+
+* The links for the plugin CM Tooltip Glossary now also show the tooltips in dynamic content like photo descriptions in the slideshows.
+* Fixed a lay-out issue in descriptions caused by CM Tooltip Glossary.
+* The pagination of search results now also works when short query args is ticked in Table IV-A5. ( fixed 5.4.20.001 )
+* Fixed a conflict with bbPress.
+* Search index was not always properly updated when the photo tags were changed. Fixed.
+
+= New Features =
+
+* On the Album Admin page, a virtual album has been added with a search edit box. 
+Enter (a) search token(s) and edit the photo(s) that match the search criteria. Search tokens must be seperated by commas: ','.
+This works for administrators always, non-admins need the switch in Table VII-D2: Uploader edit, and can edit their own photos only.
+This feature requires indexed search, if not activated already, Tick Table IX-E7 and run Table VIII-A8 and A9.
+* Table II-H5: Owner on new line. Places the (owner) addition to the photo name on a new line.
+* Setting in Table VII-D2.2: Uploader Moderate Comment. If checked the uploader can moderate the comments on his photos. Requires Tavle VII-D2.1: Uploader Edit.
+* Table IX-D7.2: Default parent always. For non-administrators: creating an album at the frontend will always set the parent to the default parent.
+* Implemented compatibility with plugin myCred. See Table IX-J4,5,6.
+
+= Other Changes =
+
+* Links in the breadcrumb are now also converted to pretty links if pretty links are enabled.
 
 = 5.4.20 =
 

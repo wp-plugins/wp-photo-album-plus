@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all indexing functions
-* version 5.4.12
+* version 5.4.21
 *
 * 
 */
@@ -162,6 +162,21 @@ function wppa_index_string_to_array($string) {
 		}
 	}
 	return $result;
+}
+
+// Remove duplicates from array
+function wppa_index_array_remove_dups( $array ) {
+	$temp = $array;
+	sort( $temp, SORT_NUMERIC );
+	$array = array();
+	$oldval = false;
+	foreach ( array_keys( $temp ) as $key ) {
+		if ( $temp[$key] != $oldval ) {
+			$array[] = $temp[$key];
+			$oldval	 = $temp[$key];
+		}
+	}
+	return $array;
 }
 
 // Compress array ranges and convert to string

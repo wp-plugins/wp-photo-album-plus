@@ -2,7 +2,7 @@
 //
 // conatins slideshow, theme, ajax and lightbox code
 //
-// Version 5.4.20
+// Version 5.4.21
 
 // Part 1: Slideshow
 //
@@ -938,6 +938,9 @@ function _wppaNextSlide_5( mocc ) {
 		}	
 	}
 	
+	// If glossery tooltip on board...
+	jQuery(document).trigger( 'glossaryTooltipReady' );
+	
 	_wppaDidGoto[mocc] = false;								// Is worked out now
 	_wppaIsBusy[mocc] = false;								// No longer busy
 	if ( ! wppaIsMini[mocc] ) { 							// Not in a widget
@@ -970,7 +973,7 @@ var result;
 		result = _wppaFullNames[mocc][_wppaCurIdx[mocc]];
 		break;
 	}
-	return result;
+	return wppaRepairBrTags( result );
 }
 
 function wppaMakeTheSlideHtml( mocc, bgfg, idx ) {
@@ -2698,6 +2701,16 @@ function wppaDoAjaxRender( mocc, ajaxurl, newurl ) {
 		
 		// Remove spinner
 		jQuery( '#wppa-ajax-spin-'+mocc ).css( 'display', 'none' );
+		
+		// Report if scripts
+		var scriptPos = xmlhttp.responseText.indexOf( '<script' );
+		var scriptPosLast = xmlhttp.responseText.lastIndexOf( '<script' );
+		if ( scriptPos == -1 ) {
+			wppaConsoleLog( 'Ajax render did NOT contain a script tag', 'force' );
+		}
+		else {
+			wppaConsoleLog( 'Ajax render did contain a script tag at position '+scriptPos+' last at '+scriptPosLast, 'force' );
+		}
 
 	}
 	else {	// Ajax NOT possible
@@ -3729,6 +3742,11 @@ function wppaRepairScriptTags( text ) {
 		newtext += temp[idx];
 	}
 	return newtext;
+}
+
+function wppaRepairBrTags( text ) {
+	text = text.replace( '[br /]', '<br />' );
+	return text;
 }
 
 function wppaTrimAlt( text ) {
