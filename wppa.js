@@ -2,7 +2,7 @@
 //
 // conatins slideshow, theme, ajax and lightbox code
 //
-// Version 5.4.21
+// Version 5.4.21.001
 
 // Part 1: Slideshow
 //
@@ -951,7 +951,8 @@ function _wppaNextSlide_5( mocc ) {
 }
  
 function wppaMakeNameHtml( mocc ) {
-var result;
+var result = '';
+	
 	if ( wppaIsMini[mocc] || _wppaIsVideo[mocc][_wppaCurIdx[mocc]] != '' ) {
 		result = _wppaFullNames[mocc][_wppaCurIdx[mocc]];
 	}
@@ -964,6 +965,9 @@ var result;
 				result = '<input type="button" title="Download" style="cursor:pointer; margin-bottom:0px; max-width:'+( wppaGetContainerWidth( mocc )-24 )+'px;" class="wppa-download-button" onclick="wppaAjaxMakeOrigName( '+mocc+', '+_wppaId[mocc][_wppaCurIdx[mocc]]+' );" value="'+wppaDownLoad+': '+label[0]+'" />';
 				if ( label[1] ) result += '<img'+label[1];
 			}
+			else {
+				result = '';
+			}
 		}
 		else {
 			result = '<a title="Download" style="cursor:pointer;" onclick="wppaAjaxMakeOrigName( '+mocc+', '+_wppaId[mocc][_wppaCurIdx[mocc]]+' );" >'+wppaDownLoad+': '+_wppaFullNames[mocc][_wppaCurIdx[mocc]]+'</a>';
@@ -972,6 +976,8 @@ var result;
 	case 'none':
 		result = _wppaFullNames[mocc][_wppaCurIdx[mocc]];
 		break;
+	default:
+		result = '';
 	}
 	return wppaRepairBrTags( result );
 }
