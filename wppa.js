@@ -2,7 +2,7 @@
 //
 // conatins slideshow, theme, ajax and lightbox code
 //
-// Version 5.4.21.001
+// Version 5.4.21.002
 
 // Part 1: Slideshow
 //
@@ -3751,6 +3751,7 @@ function wppaRepairScriptTags( text ) {
 }
 
 function wppaRepairBrTags( text ) {
+	if ( typeof(text) == 'undefined' ) text = '';
 	text = text.replace( '[br /]', '<br />' );
 	return text;
 }
