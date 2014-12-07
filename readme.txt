@@ -1,8 +1,8 @@
 === WP Photo Album Plus ===
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
-Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile, cloudinary, fotomoto, CMTooltipGlossary
-Version: 5.4.21
+Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, myCRED, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile, cloudinary, fotomoto, CMTooltipGlossary
+Version: 5.4.22
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -187,6 +187,21 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 5.4.22 =
+
+= Bug Fixes =
+
+* Fixed a problem of non visible slideshows on some installations ( 5.4.21.002 ).
+* Fixed a problem in rating when Ajax NON admin was not checked.
+* Fixed a link syntax error in frontend upload.
+* Fixed a slideshow layout problem on some themes with some browsers.
+* Fixed a popup image positioning issue.
+* Add gpx tags maintenance proc now also updates search index db table.
+* The Back to album table link at the top of the Manage (searched) photos now also works; not the bottom one only.
+* The search photos album entry in the album table now also shows up on the collapsable table when there are no ---separate--- albums.
+* Fixed a problem with responsive single photos ( type="photo" and type="mphoto" ).
+* Source saving now works as expected according to settings Table IX-H1 and 2.
 
 = 5.4.21 =
 

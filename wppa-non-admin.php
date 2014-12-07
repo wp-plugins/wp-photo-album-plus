@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the non admin stuff
-* Version 5.4.21
+* Version 5.4.22
 *
 */
 
@@ -164,7 +164,8 @@ global $thumb;
 <link rel="image_src" href="'.esc_url( $imgurl ).'" />';
 		}
 		echo '
-<!-- WPPA+ END Facebook meta tags -->';
+<!-- WPPA+ END Facebook meta tags -->
+';
 	}
 }
 

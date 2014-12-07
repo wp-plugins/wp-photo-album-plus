@@ -2,7 +2,7 @@
 //
 // conatins slideshow, theme, ajax and lightbox code
 //
-// Version 5.4.21.002
+// Version 5.4.22
 
 // Part 1: Slideshow
 //
@@ -952,6 +952,8 @@ function _wppaNextSlide_5( mocc ) {
  
 function wppaMakeNameHtml( mocc ) {
 var result = '';
+
+	if ( _wppaCurIdx[mocc] < 0 ) return '';
 	
 	if ( wppaIsMini[mocc] || _wppaIsVideo[mocc][_wppaCurIdx[mocc]] != '' ) {
 		result = _wppaFullNames[mocc][_wppaCurIdx[mocc]];
@@ -1863,7 +1865,6 @@ if ( value == 0 ) return;
 		// Setup process the result
 		xmlhttp.onreadystatechange=function() {
 			if ( xmlhttp.readyState==4 && xmlhttp.status==200 ) {
-// alert( xmlhttp.responseText );
 				var ArrValues = xmlhttp.responseText.split( "||" );
 				wppaConsoleLog( xmlhttp.responseText );				
 				if ( ArrValues[0] == 0 ) {	// Error
@@ -2405,7 +2406,7 @@ function wppaPopUp( mocc, elm, id, name, desc, rating, ncom, videohtml, maxsizex
 	if ( puImg ) jQuery( ".wppa_pu_info" ).css( 'width', ( ( widthImgBig > heightImgBig ? widthImgBig : heightImgBig ) - 8 )+'px' );	
 	// Compute starting coords
 	leftDivSmall = parseInt( elm.offsetLeft ) - 7 - 5 - 1; // thumbnail_area:padding, wppa-img:padding, wppa-border; jQuery().css( "padding" ) does not work for padding in css file, only when litaral in the tag
-	topDivSmall = parseInt( elm.offsetTop ) - 7 - 5 - 1;		
+	topDivSmall = parseInt( elm.offsetTop ) - 7 - 1;
 		topDivSmall -= vOffset;
 	// Compute starting sizes
 	widthImgSmall = parseInt( elm.clientWidth );
@@ -3730,16 +3731,25 @@ function wppaConsoleLog( arg, force ) {
 }
 
 function wppaRepairScriptTags( text ) {
-	var temp = text.split( '[script' );
+var temp;
+var newtext;
+
+	// Just to be sure we do not run into undefined error
+	if ( typeof( text ) == 'undefined' ) return '';
+	
+	temp = text.split( '[script' );
 	if ( temp.length == 1 ) return text;
-	var newtext = temp[0];
+	
+	newtext = temp[0];
 	var idx = 0;
 	while ( temp.length > idx ) {
 		newtext += '<script';
 		idx++;
 		newtext += temp[idx];
 	}
+	
 	temp = newtext.split( '[/script' );
+	
 	newtext = temp[0];
 	idx = 0;
 	while ( temp.length > idx ) {
@@ -3747,22 +3757,31 @@ function wppaRepairScriptTags( text ) {
 		idx++;
 		newtext += temp[idx];
 	}
+	
 	return newtext;
 }
 
 function wppaRepairBrTags( text ) {
-	if ( typeof(text) == 'undefined' ) text = '';
-	text = text.replace( '[br /]', '<br />' );
-	return text;
+var newtext;
+
+	// Just to be sure we do not run into undefined error
+	if ( typeof(text) == 'undefined' ) return '';
+	
+	newtext = text.replace( '[br /]', '<br />' );
+	return newtext;
 }
 
 function wppaTrimAlt( text ) {
-var result;
+var newtext;
+
+	// Just to be sure we do not run into undefined error
+	if ( typeof(text) == 'undefined' ) return '';
+	
 	if ( text.length > 13 ) {
-		result = text.substr( 0,10 ) + '...';
+		newtext = text.substr( 0,10 ) + '...';
 	}
-	else result = text;
-	return result;
+	else newtext = text;
+	return newtext;
 }
 
 function _wppaUpdateOgMeta( mocc ) {

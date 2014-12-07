@@ -8,7 +8,7 @@
 /*
 /* You may always look into a newer version of this file to see what new classes and id's come with an upgrade
 /*
-/* This is version 5.2.21
+/* This is version 5.4.22
 */
 
 .wppa-container, .wppa-cover-box, .wppa-thumb-area {
@@ -172,6 +172,7 @@
 	position: relative;
 	width: 100%;
 	padding: 0 !important;
+	clear: both;
 }
 
 .wideentry .slide-frame {
@@ -428,6 +429,7 @@ display:none;
 	width:0%; 
 	height:18px; 
 	border-radius: 3px; 
+	margin: 0;
 }
 .wppa-percent { 
 	position:relative; 
@@ -435,6 +437,7 @@ display:none;
 	top:-20px; 
 	font-size: 12px;
 	line-height: 18px;
+	margin: 0;
 /*	left:48%; */
 }
 .wppa-message {

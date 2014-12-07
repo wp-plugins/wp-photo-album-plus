@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all indexing functions
-* version 5.4.21
+* version 5.4.22
 *
 * 
 */
@@ -259,7 +259,7 @@ global $wpdb;
 	$wpdb->query( "DELETE FROM `".WPPA_INDEX."` WHERE `albums` = '' AND `photos` = ''" );	// Cleanup empty entries
 }
 
-// Use this function if you know the current photo data matches the index info
+// Use this function if you know the current photo data matches the index info. Mostly fails...
 function wppa_index_quick_remove($type, $id) {
 global $wpdb;
 

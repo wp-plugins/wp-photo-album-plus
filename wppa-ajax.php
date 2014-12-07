@@ -2,7 +2,7 @@
 /* wppa-ajax.php
 *
 * Functions used in ajax requests
-* version 5.4.21
+* version 5.4.22
 *
 */
 
@@ -82,9 +82,9 @@ global $wppa_session;
 			
 			$comment_allowed = ( ! wppa_switch( 'wppa_comment_login' ) || is_user_logged_in() );
 			if ( wppa_switch( 'wppa_show_comments' ) && $comment_allowed ) {
-				if ( wppa_switch( 'wppa_search_comments' ) ) wppa_index_quick_remove( 'photo', $_REQUEST['photo-id'] );
+//				if ( wppa_switch( 'wppa_search_comments' ) ) wppa_index_remove( 'photo', $_REQUEST['photo-id'] );
 				wppa_do_comment( $_REQUEST['photo-id'] );		// Process the comment
-				if ( wppa_switch( 'wppa_search_comments' ) ) wppa_index_add( 'photo', $_REQUEST['photo-id'] );
+				if ( wppa_switch( 'wppa_search_comments' ) ) wppa_index_update( 'photo', $_REQUEST['photo-id'] );
 			}
 			$wppa['no_esc'] = true;
 			echo wppa_comment_html( $_REQUEST['photo-id'], $comment_allowed );	// Retrieve the new commentbox content
@@ -834,9 +834,9 @@ global $wppa_session;
 				exit;																// Nonce check failed
 			}
 
-			if ( wppa_switch( 'wppa_search_comments' ) ) wppa_index_quick_remove( 'photo', $photo );
+//			if ( wppa_switch( 'wppa_search_comments' ) ) wppa_index_remove( 'photo', $photo );
 			$iret = $wpdb->query( $wpdb->prepare( 'UPDATE `'.WPPA_COMMENTS.'` SET `status` = %s WHERE `id` = %s', $comstat, $comid ) );
-			if ( wppa_switch( 'wppa_search_comments' ) ) wppa_index_add( 'photo', $photo );
+			if ( wppa_switch( 'wppa_search_comments' ) ) wppa_index_update( 'photo', $photo );
 			
 			if ( $iret !== false ) {
 				echo '||0||'.sprintf( __( 'Status of comment #%s updated', 'wppa' ), $comid );

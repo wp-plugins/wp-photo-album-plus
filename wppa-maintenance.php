@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains (not yet, but in the future maybe) all the maintenance routines
-* Version 5.4.19
+* Version 5.4.22
 *
 */
 
@@ -383,11 +383,13 @@ global $wppa_session;
 						if ( $photo['location'] && strpos( $tags, 'Gpx' ) === false && $lat && $lon ) {	// Add it
 							$tags = wppa_sanitize_tags( $tags . ',Gpx' );
 							wppa_update_photo( array( 'id' => $photo['id'], 'tags' => $tags ) );
+							wppa_index_update( 'photo', $photo['id'] );
 							wppa_clear_taglist();
 						}
 						elseif ( strpos( $tags, 'Gpx' ) !== false && ! $lat && ! $lon ) { 	// Remove it
 							$tags = wppa_sanitize_tags( str_replace( 'Gpx', '', $tags ) );
 							wppa_update_photo( array( 'id' => $photo['id'], 'tags' => $tags ) );
+							wppa_index_update( 'photo', $photo['id'] );
 							wppa_clear_taglist();
 						}
 						break;

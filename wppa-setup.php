@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 5.4.21
+* Version 5.4.22
 *
 */
 
@@ -333,6 +333,15 @@ global $silent;
 			wppa_flush_upldr_cache( 'all' );	// New format
 		}
 		
+		if ( $old_rev == '5421' || $old_rev == '5420.99' ) { 							// The rev where the bug was
+			if ( $wppa_revno >= '5422' ) {												// The rev where we fix it
+				if ( get_option( 'wppa_rating_on', 'no' ) == 'yes' ) { 					// Only if rating used
+					if ( get_option( 'wppa_ajax_non_admin', 'yes' ) == 'no' ) { 		// Only if backend ajax
+						update_option( 'wppa_rerate_status', __('Required', 'wppa') ); 	// Make sure they see the message
+					}
+				}
+			}
+		}
 	}
 	
 	// Set Defaults

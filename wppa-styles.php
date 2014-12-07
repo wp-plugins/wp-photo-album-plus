@@ -3,7 +3,7 @@
 /* Package: wp-photo-album-plus
 /*
 /* Various style computation routines
-/* Version 5.4.17
+/* Version 5.4.22
 /*
 */
 
@@ -305,7 +305,7 @@ function wppa_get_fullimgstyle( $id ) {
 function wppa_get_fullimgstyle_a( $id ) {
 global $wppa;
 
-	if ( ! is_numeric( $wppa['fullsize'] ) || $wppa['fullsize'] < '1' ) {
+	if ( ! is_numeric( $wppa['fullsize'] ) || $wppa['fullsize'] <= '1' ) {
 		$wppa['fullsize'] = wppa_opt( 'wppa_fullsize' );
 	}
 

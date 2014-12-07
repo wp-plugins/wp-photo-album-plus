@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * create, edit and delete albums
-* version 5.4.21
+* version 5.4.22
 *
 */
 
@@ -66,7 +66,12 @@ function _wppa_admin() {
 			
 			if ($_REQUEST['edit_id'] == 'search') {
 
-	?>
+				$back_url = get_admin_url().'admin.php?page=wppa_admin_menu';
+					if ( isset ( $_REQUEST['wppa-searchstring'] ) ) {
+						$back_url .= '&wppa-searchstring='.wppa_sanitize_searchstring( $_REQUEST['wppa-searchstring'] );
+					}
+					$back_url .= '#wppa-edit-search-tag';
+?>
 <a name="manage-photos" id="manage-photos" ></a>		
 				<h2><?php _e('Manage Photos', 'wppa'); 
 					if ( isset($_REQUEST['bulk']) ) echo ' - <small><i>'.__('Copy / move / delete / edit name / edit description / change status', 'wppa').'</i></small>';
@@ -74,20 +79,14 @@ function _wppa_admin() {
 					else echo ' - <small><i>'.__('Edit photo information', 'wppa').'</i></small>';
 				?></h2>
 
-<a href="<?php echo $url ?>"><?php _e('Back to album table', 'wppa') ?></a><br /><br />
+<a href="<?php echo $back_url ?>"><?php _e('Back to album table', 'wppa') ?></a><br /><br />
 
 				<?php 
 					if ( isset($_REQUEST['bulk']) ) wppa_album_photos_bulk($ei);
 					else wppa_album_photos($ei);
 				?>
 				<br /><a href="#manage-photos"><?php _e('Top of page', 'wppa') ?></a>
-				<?php $url = get_admin_url().'admin.php?page=wppa_admin_menu';
-					if ( isset ( $_REQUEST['wppa-searchstring'] ) ) {
-						$url .= '&wppa-searchstring='.wppa_sanitize_searchstring( $_REQUEST['wppa-searchstring'] );
-					}
-					$url .= '#wppa-edit-search-tag';
-				?>
-				<br /><a href="<?php echo $url ?>"><?php _e('Back to album table', 'wppa') ?></a>
+				<br /><a href="<?php echo $back_url ?>"><?php _e('Back to album table', 'wppa') ?></a>
 <?php
 				return;
 			}
@@ -1354,11 +1353,11 @@ function wppa_admin_albums_collapsable() {
 					<td colspan="19" ><em><?php _e('The following albums are ---separate--- and do not show up in the generic album display', 'wppa'); ?></em></td>
 				</tr>
 				<?php wppa_do_albumlist('-1', '0', $albums, $seq); ?>
-			<?php 
+			<?php }
 			
 			wppa_search_edit( true );
 
-			} ?>
+			?>
 			</tbody>
 			<tfoot>
 			<tr>

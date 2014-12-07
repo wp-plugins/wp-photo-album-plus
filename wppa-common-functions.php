@@ -2,7 +2,7 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 5.4.20
+* version 5.4.22
 *
 */
 
@@ -2071,4 +2071,31 @@ global $wppa;
 	else {
 		$wppa['out'] .= $txt;
 	}
+}
+
+function wppa_add_credit_points( $amount, $reason = '', $id = '', $value = '' ) {
+global $user_ID;
+
+	// Initialize
+	if ( ! $user_ID ) {
+		get_currentuserinfo();
+	}
+	$bret = false;
+	
+	// Must be logged in
+	if ( ! is_user_logged_in() ) return $bret;
+	
+	// Cube points
+	if ( function_exists( 'cp_alterPoints' )  ) {
+		cp_alterPoints( cp_currentUser(), $amount );
+		$bret = true;
+	}
+	
+	// myCred
+	if ( function_exists( 'mycred_add' ) ) {
+		$entry = $reason . ( $id ? ', '.__('Photo id =', 'wppa').' '.$id : '' ) . ( $value ? ', '.__('Value =', 'wppa').' '.$value : '' );
+		$bret = mycred_add( str_replace( ' ', '_', $reason ), $user_ID, $amount, $entry, '', '', '' ); // $ref_id, $data, $type );
+	}
+	
+	return $bret;
 }

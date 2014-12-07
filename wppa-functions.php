@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Various funcions
-* Version 5.4.20
+* Version 5.4.22
 *
 */
 
@@ -2092,7 +2092,6 @@ global $wppaerrmsgxxx;
 
 function wppa_get_container_width( $netto = false ) {
 global $wppa;
-
 	if ( is_numeric( $wppa['fullsize'] ) && $wppa['fullsize'] > '0' ) {
 		$result = $wppa['fullsize'];
 	}
@@ -2204,6 +2203,7 @@ global $wppa_loadtime;
 global $wppa_initruntimetime;
 static $wppa_numqueries;
 static $auto;
+global $blog_id;
 
 	if ( is_feed() ) return;		// Need no container in RSS feeds
 	
@@ -2213,7 +2213,7 @@ static $auto;
 		// Open the container
 		$wppa['out'] .= wppa_nltab( 'init' );
 		if ( ! $wppa['ajax'] ) {
-			$wppa['out'] .= '<!-- Start WPPA+ generated code -->';
+			$wppa['out'] .= '<!-- Start WPPA+ generated code'.( is_multisite() ? ', Multi site, id='.$blog_id : ', Single site' ).' -->';
 			if ( $wppa['shortcode_content'] ) {
 				$wppa['out'] .= '<!-- ' . $wppa['shortcode_content'] . ' -->';
 			}
@@ -2295,11 +2295,11 @@ static $auto;
 			$contw = wppa_get_container_width();
 			if ( $wppa['auto_colwidth'] ) $auto = true;
 			elseif ( wppa_opt( 'wppa_colwidth' ) == 'auto' ) $auto = true;
-			elseif ( $contw > 0 && $contw < 1.0 ) $auto = true;
+			elseif ( $contw > 0 && $contw <= 1.0 ) $auto = true;
 			
 			if ( $auto ) {
 				wppa_add_js_page_data( wppa_nltab().'wppaAutoColumnWidth['.$wppa['mocc'].'] = true;' );
-				if ( $contw > 0 && $contw < 1.0 ) {
+				if ( $contw > 0 && $contw <= 1.0 ) {
 					wppa_add_js_page_data( wppa_nltab().'wppaAutoColumnFrac['.$wppa['mocc'].'] = '.$contw.';' );
 				}
 				else {
@@ -3309,24 +3309,43 @@ global $wppa;
 	
 	if ( ! $wppa['in_widget'] ) wppa_bump_viewcount( 'photo', $wppa['single_photo'] );
 
-	$autocol = $wppa['auto_colwidth'] || ( $width > 0 && $width < 1.0 );
+	$autocol = $wppa['auto_colwidth'] || ( $width > 0 && $width <= 1.0 );
+	
+	// The initial width is $width if not autocol, else it should default to initial column width when auto
+	// or initial column width * fraction
 	if ( $autocol ) {
-		$wppa['out'] .= wppa_nltab().'<script type="text/javascript">';
-			$wppa['out'] .= wppa_nltab( '+' ).'/* <![CDATA[ */';
-				$wppa['out'] .= wppa_nltab().'wppaAutoColumnWidth['.$wppa['mocc'].'] = true;';
-				$wppa['out'] .= wppa_nltab().'wppaColWidth['.$wppa['mocc'].'] = 0;';
-				if ( $width > 1.0 ) $wppa['out'] .= wppa_nltab().'wppaAutoColumnFrac['.$wppa['mocc'].'] = 1;';
-				else $wppa['out'] .= wppa_nltab().'wppaAutoColumnFrac['.$wppa['mocc'].'] = '.$width.';';
-				$wppa['out'] .= wppa_nltab().'wppaTopMoc = '.$wppa['mocc'].';';
-			$wppa['out'] .= wppa_nltab( '-' ).'/* ]]> */';
-		$wppa['out'] .= wppa_nltab().'</script>';
+		if ( $width == 'auto' ) {
+			$contwidth = wppa_opt( 'wppa_initial_colwidth' );
+		}
+		else {
+			$contwidth = wppa_opt( 'wppa_initial_colwidth' ) * $width;
+		}
+	}
+	else {
+		$contwidth = $width;
 	}
 
-	$captwidth = $width + '10';
+	// Open the pseudo container
+	$captwidth = $contwidth + '10';
 	$wppa['out'] .= '<div id="wppa-container-'.$wppa['mocc'].'" class="wppa-mphoto-'.$wppa['mocc'].' wp-caption';
 		if ( $wppa['align'] != '' ) $wppa['out'] .= ' align'.$wppa['align'];
 	$wppa['out'] .='" style="width: '.$captwidth.'px">';
 
+		// The script for responsive
+		wppa_add_js_page_data( wppa_nltab().'<script type="text/javascript">' );
+		if ( $autocol ) {
+			wppa_add_js_page_data( wppa_nltab().'wppaAutoColumnWidth['.$wppa['mocc'].'] = true;' );
+			if ( $width > 0 && $width <= 1.0 ) {
+				wppa_add_js_page_data( wppa_nltab().'wppaAutoColumnFrac['.$wppa['mocc'].'] = '.$width.';' );
+			}
+			else {
+				wppa_add_js_page_data( wppa_nltab().'wppaAutoColumnFrac['.$wppa['mocc'].'] = 1.0;' );
+			}
+			wppa_add_js_page_data( wppa_nltab().'wppaColWidth['.$wppa['mocc'].'] = 0;' );
+		}
+		wppa_add_js_page_data( wppa_nltab().'wppaTopMoc = '.$wppa['mocc'].';' );
+		wppa_add_js_page_data( wppa_nltab().'</script>' );
+		
 		// The link
 		$link = wppa_get_imglnk_a( 'mphoto', $wppa['single_photo'] );
 		if ( $link ) {
@@ -3388,24 +3407,42 @@ global $wppa;
 
 	if ( ! $wppa['in_widget'] ) wppa_bump_viewcount( 'photo', $wppa['single_photo'] );
 
-	$autocol = $wppa['auto_colwidth'] || ( $width > 0 && $width < 1.0 );
+	$autocol = $wppa['auto_colwidth'] || ( $width > 0 && $width <= 1.0 );
+
+	// The initial width is $width if not autocol, else it should default to initial column width when auto
+	// or initial column width * fraction
 	if ( $autocol ) {
-		$wppa['out'] .= wppa_nltab().'<script type="text/javascript">';
-			$wppa['out'] .= wppa_nltab( '+' ).'/* <![CDATA[ */';
-				$wppa['out'] .= wppa_nltab().'wppaAutoColumnWidth['.$wppa['mocc'].'] = true;';
-				$wppa['out'] .= wppa_nltab().'wppaColWidth['.$wppa['mocc'].'] = 0;';
-				if ( $width > 1.0 ) $wppa['out'] .= wppa_nltab().'wppaAutoColumnFrac['.$wppa['mocc'].'] = 1;';
-				else $wppa['out'] .= wppa_nltab().'wppaAutoColumnFrac['.$wppa['mocc'].'] = '.$width.';';
-				$wppa['out'] .= wppa_nltab().'wppaTopMoc = '.$wppa['mocc'].';';
-			$wppa['out'] .= wppa_nltab( '-' ).'/* ]]> */';
-		$wppa['out'] .= wppa_nltab().'</script>';
+		if ( $width == 'auto' ) {
+			$contwidth = wppa_opt( 'wppa_initial_colwidth' );
+		}
+		else {
+			$contwidth = wppa_opt( 'wppa_initial_colwidth' ) * $width;
+		}
 	}
-	
-	// The pseudo container
+	else {
+		$contwidth = $width;
+	}
+
+	// Open the pseudo container
 	$wppa['out'] .= '<div id="wppa-container-'.$wppa['mocc'].'" class="';
 		if ( $wppa['align'] != '' ) $wppa['out'] .= ' align'.$wppa['align'];
 		$wppa['out'] .= ' wppa-sphoto-'.$wppa['mocc'];
-	$wppa['out'] .='" style="width: '.$width.'px">';
+	$wppa['out'] .='" style="width: '.$contwidth.'px">';
+
+		// The script for responsive
+		wppa_add_js_page_data( wppa_nltab().'<script type="text/javascript">' );
+		if ( $autocol ) {
+			wppa_add_js_page_data( wppa_nltab().'wppaAutoColumnWidth['.$wppa['mocc'].'] = true;' );
+			if ( $width > 0 && $width <= 1.0 ) {
+				wppa_add_js_page_data( wppa_nltab().'wppaAutoColumnFrac['.$wppa['mocc'].'] = '.$width.';' );
+			}
+			else {
+				wppa_add_js_page_data( wppa_nltab().'wppaAutoColumnFrac['.$wppa['mocc'].'] = 1.0;' );
+			}
+			wppa_add_js_page_data( wppa_nltab().'wppaColWidth['.$wppa['mocc'].'] = 0;' );
+		}
+		wppa_add_js_page_data( wppa_nltab().'wppaTopMoc = '.$wppa['mocc'].';' );
+		wppa_add_js_page_data( wppa_nltab().'</script>' );
 
 		// The link
 		$link = wppa_get_imglnk_a( 'sphoto', $wppa['single_photo'] );
@@ -3998,7 +4035,7 @@ function wppa_use_thumb_file( $id, $width = '0', $height = '0' ) {
 global $wpdb;
 
 	if ( ! wppa_switch( 'wppa_use_thumbs_if_fit' ) ) return false;
-	if ( $width < 1.0 && $height < 1.0 ) return false;	// should give at least one dimension and not when fractional
+	if ( $width <= 1.0 && $height <= 1.0 ) return false;	// should give at least one dimension and not when fractional
 
 	$file = wppa_get_thumb_path( $id );
 	if ( file_exists( $file ) ) {
@@ -4125,29 +4162,3 @@ function wppa_zoom_in( $id ) {
 	else return ' ';
 }
 
-function wppa_add_credit_points( $amount, $reason = '', $id = '', $value = '' ) {
-global $user_ID;
-
-	// Initialize
-	if ( ! $user_ID ) {
-		get_currentuserinfo();
-	}
-	$bret = false;
-	
-	// Must be logged in
-	if ( ! is_user_logged_in() ) return $bret;
-	
-	// Cube points
-	if ( function_exists( 'cp_alterPoints' )  ) {
-		cp_alterPoints( cp_currentUser(), $amount );
-		$bret = true;
-	}
-	
-	// myCred
-	if ( function_exists( 'mycred_add' ) ) {
-		$entry = $reason . ( $id ? ', '.__('Photo id =', 'wppa').' '.$id : '' ) . ( $value ? ', '.__('Value =', 'wppa').' '.$value : '' );
-		$bret = mycred_add( str_replace( ' ', '_', $reason ), $user_ID, $amount, $entry, '', '', '' ); // $ref_id, $data, $type );
-	}
-	
-	return $bret;
-}

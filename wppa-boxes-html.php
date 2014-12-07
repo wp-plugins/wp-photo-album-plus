@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Various wppa boxes
-* Version 5.4.20
+* Version 5.4.22
 *
 *
 */
@@ -733,7 +733,7 @@ global $wppa_opt;
 	// Create the return url
 	if ( $ajax_upload ) {
 		$returnurl = wppa_switch('wppa_ajax_non_admin') ? WPPA_URL.'/wppa-ajax-front.php' : admin_url('admin-ajax.php');
-		$returnurl .= '?action=wppa&wppa-action=do-fe-upload';
+		$returnurl .= '?action=wppa&amp;wppa-action=do-fe-upload';
 	}
 	else {
 		$returnurl = wppa_get_permalink();

@@ -2,7 +2,7 @@
 /*
 Plugin Name: WP Photo Album Plus
 Description: Easily manage and display your photo albums and slideshows within your WordPress site.
-Version: 5.4.21
+Version: 5.4.22
 Author: J.N. Breetvelt a.k.a. OpaJaap
 Author URI: http://wppa.opajaap.nl/
 Plugin URI: http://wordpress.org/extend/plugins/wp-photo-album-plus/
@@ -21,12 +21,12 @@ global $wpdb;
 /* when new options are added and when the wppa_setup() routine 
 /* must be called right after update for any other reason.
 */
-global $wppa_revno; 		$wppa_revno = '5421';
+global $wppa_revno; 		$wppa_revno = '5422';
 
 /* This is the api interface version number
 /* It is incremented at any code change.
 */
-global $wppa_api_version; 	$wppa_api_version = '5-4-21-002';
+global $wppa_api_version; 	$wppa_api_version = '5-4-22-000';
 
 /* start timers */
 global $wppa_starttime; $wppa_starttime = microtime(true);
@@ -317,7 +317,7 @@ function wppa_admin_bar_init() {
 /* Load cloudinary if configured and php version >= 5.3 */
 if ( PHP_VERSION_ID >= 50300 ) require_once 'wppa-cloudinary.php';
 	
-	
+/* Check multisite config */
 add_action('admin_notices', 'wppa_verify_multisite_config');
 function wppa_verify_multisite_config() {
 global $wppa;
@@ -340,13 +340,20 @@ global $wppa;
 	wppa_error_message( $errtxt );
 }
 
-if ( get_option( 'wppa_remake_index_photos_status', '' ) == __('Required', 'wppa') ) {
-	add_action('admin_notices', 'wppa_index_message');
+/* Check for pending maintenance procs */
+if ( get_option( 'wppa_remake_index_photos_status', '' ) == __('Required', 'wppa') ||
+	 get_option( 'wppa_rerate_status', '' ) == __('Required', 'wppa') ) {
+		add_action('admin_notices', 'wppa_maintenance_messages');
 } 
-function wppa_index_message() {
-	if ( wppa_switch( 'wppa_indexed_search' ) ) {
-		if ( current_user_can( 'wppa_settings' ) ) {
-			wppa_error_message( __('</strong>The photo index table needs to be rebuilt. Please run <b>Photo Albums -> Settings</b> admin page <b>Table VIII-A9</b><strong>') );
-		}
+function wppa_maintenance_messages() {
+	if ( ! current_user_can( 'wppa_settings' ) ) {
+		return;
+	}
+	
+	if ( wppa_switch( 'wppa_indexed_search' ) && get_option( 'wppa_remake_index_photos_status' ) ) {
+		wppa_error_message( __('</strong>The photo index table needs to be rebuilt. Please run <b>Photo Albums -> Settings</b> admin page <b>Table VIII-A9</b><strong>', 'wppa' ) );
+	}
+	if ( wppa_switch( 'wppa_rating_on' ) && get_option( 'wppa_rerate_status' ) ) {
+		wppa_error_message( __('</strong>The avarage ratings need to be recalculated. Please run <b>Photo Albums -> Settings</b> admin page <b>Table VIII-A5</b><strong>', 'wppa' ) );
 	}
 }
