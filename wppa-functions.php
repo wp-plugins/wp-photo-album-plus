@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Various funcions
-* Version 5.4.22
+* Version 5.4.23
 *
 */
 
@@ -24,26 +24,17 @@ global $wppa_session;
 	wppa_dbg_msg( 'Entering wppa_albums' );
 	wppa_dbg_msg( 'Lang='.$wppa_lang.', Locale='.$wppa_locale.', Ajax='.$wppa['ajax'] );
 	wppa_dbg_msg( '$wppa_session = '.serialize( $wppa_session ) );
-//	if ( $wppa['debug'] && '1' == $wppa['mocc'] ) {
-//		echo '<script type="text/javascript">wppaDebug = true;</script>';
-//		echo '<small>[WPPA+ dbg msg: $wppa_session = ';
-//		print_r( $wppa_session );
-//		echo ']<br /></small>';
-//	}
 	
 	// List content filters
 	// Data struct:	$wp_filter[$tag][$priority][$idx] = array( 'function' => $function_to_add, 'accepted_args' => $accepted_args );
-	if ( $wppa['debug'] && '1' == $wppa['mocc'] ) {
+	if ( $wppa['debug'] && $wppa['mocc'] == '0' ) {
 		global $wp_filter;
 		
 		wppa_dbg_msg( 'Start content filters', 'green' );
 		foreach ( array_keys( $wp_filter['the_content'] ) as $key ) {
 			foreach ( array_keys( $wp_filter['the_content'][$key] ) as $key2 ) {
-				$func = $wp_filter['the_content'][$key][$key2]['function'];
-				if ( is_array( $func ) ) {
-					$func = serialize( $func );
-				}
-				wppa_dbg_msg( 'Pri:'.$key.', func: '.$wp_filter['the_content'][$key][$key2]['function'].', args: '.$wp_filter['the_content'][$key][$key2]['accepted_args'] );
+				$func = is_array( $wp_filter['the_content'][$key][$key2]['function'] ) ? serialize( $wp_filter['the_content'][$key][$key2]['function'] ) : $wp_filter['the_content'][$key][$key2]['function'];
+				wppa_dbg_msg( 'Pri:'.$key.', func: '.$func.', args: '.$wp_filter['the_content'][$key][$key2]['accepted_args'] );
 			}
 		}
 		wppa_dbg_msg( 'End content filters', 'green' );
@@ -1392,8 +1383,15 @@ static $user;
 	}
 	
 	// Find image url
-	$usethumb = wppa_use_thumb_file( $id, $style_a['width'], $style_a['height'] );
-	$photourl = $usethumb ? wppa_get_thumb_url( $id, '', $style_a['width'], $style_a['height'] ) : wppa_get_photo_url( $id, '', $style_a['width'], $style_a['height'] );
+	if ( wppa_switch( 'wppa_fotomoto_on' ) ) {
+		$photourl = wppa_get_hires_url( $id );
+	}
+	elseif ( wppa_use_thumb_file( $id, $style_a['width'], $style_a['height'] ) ) {
+		$photourl = wppa_get_thumb_url( $id, '', $style_a['width'], $style_a['height'] );
+	}
+	else {
+		$photourl = wppa_get_photo_url( $id, '', $style_a['width'], $style_a['height'] );
+	}
 
 	// Find iptc data
 	$iptc = ( wppa_switch( 'wppa_show_iptc' ) && ! $wppa['is_slideonly'] && ! $wppa['is_filmonly'] ) ? wppa_iptc_html( $id ) : '';
@@ -2084,7 +2082,11 @@ global $wppaerrmsgxxx;
 	
 	// Alt comment?
 	if ( $com_alt ) {
-		$result['style'] = 'width: '.wppa_get_container_width().'px; margin-left: 4px; margin-top: 2px; margin-bottom: 2px;';
+		$w = wppa_get_container_width();
+		if ( $w <= 1.0 ) {
+			$w = $w * wppa_opt( 'wppa_initial_colwidth' );
+		}
+		$result['style'] = 'width: '.$w.'px; margin-left: 4px; margin-top: 2px; margin-bottom: 2px;';
 	}
 
 	return $result;

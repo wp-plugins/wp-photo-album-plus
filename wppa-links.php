@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Frontend links
-* Version 5.4.20
+* Version 5.4.23
 *
 */
 
@@ -1052,6 +1052,14 @@ global $wpdb;
 				$result['target'] = '';
 				return $result;
 			}
+			if ( $type == 'thumbs' ) {
+				$result['url'] = wppa_get_ss_to_tn_link($page);
+				$result['title'] = __a('Vieuw thumbnails');
+				$result['is_url'] = true;
+				$result['is_lightbox'] = false;
+				if ( wppa_switch( 'wppa_slideshow_blank' ) ) $result['target'] = '_blank';
+				return $result;
+			}
 			if ( $type == 'none' ) return;
 			// Continue for 'single' 
 			break;
@@ -1412,4 +1420,63 @@ static $trimmable;
 	}
 	
 	return $result;
+}
+
+// Get the link from slideshow to thumbnail view
+function wppa_get_ss_to_tn_link( $page = '0' ) {
+global $wppa;
+	
+	// Search ?
+	if ( $wppa['src'] && $wppa['mocc'] == '1' && ! $wppa['is_related'] ) {
+		$thumbhref = wppa_get_permalink( $page ).'wppa-cover=0&amp;wppa-occur='.$wppa['occur'].'&amp;wppa-searchstring='.stripslashes( $wppa['searchstring'] );
+	}
+	// Uploader ?
+	elseif ( $wppa['is_upldr'] ) {
+		if ( $wppa['start_album'] ) {
+			$thumbhref = wppa_get_permalink( $page ).'wppa-cover=0&amp;wppa-occur='.$wppa['occur'].'&amp;wppa-upldr='.$wppa['is_upldr'].'&amp;wppa-album='.$wppa['start_album'];
+		}
+		else {
+			$thumbhref = wppa_get_permalink( $page ).'wppa-cover=0&amp;wppa-occur='.$wppa['occur'].'&amp;wppa-upldr='.$wppa['is_upldr'];
+		}
+	}
+	// Topten ?
+	elseif ( $wppa['is_topten'] ) {	
+		$thumbhref = wppa_get_permalink( $page ).'wppa-cover=0&amp;wppa-occur='.$wppa['occur'].'&amp;wppa-topten='.$wppa['topten_count'].'&amp;wppa-album='.$wppa['start_album'];
+	}
+	// Lasten ?
+	elseif ( $wppa['is_lasten'] ) {
+		$thumbhref = wppa_get_permalink( $page ).'wppa-cover=0&amp;wppa-occur='.$wppa['occur'].'&amp;wppa-lasten='.$wppa['lasten_count'].'&amp;wppa-album='.$wppa['start_album'];
+	}
+	// Comten ?
+	elseif ( $wppa['is_comten'] ) {
+		$thumbhref = wppa_get_permalink( $page ).'wppa-cover=0&amp;wppa-occur='.$wppa['occur'].'&amp;wppa-comten='.$wppa['comten_count'].'&amp;wppa-album='.$wppa['start_album'];
+	}
+	// Featen ?
+	elseif ( $wppa['is_featen'] ) {
+		$thumbhref = wppa_get_permalink( $page ).'wppa-cover=0&amp;wppa-occur='.$wppa['occur'].'&amp;wppa-featen='.$wppa['featen_count'].'&amp;wppa-album='.$wppa['start_album'];
+	}
+	// Related ?
+//	elseif ( $wppa['is_related'] ) {
+//		$thumbhref = '';
+//	}
+	// Tag ?
+	elseif ( $wppa['is_tag'] ) {
+		$thumbhref = wppa_get_permalink( $page ).'wppa-cover=0&amp;wppa-occur='.$wppa['occur'].'&amp;wppa-tag='.$wppa['is_tag'].'&amp;wppa-album='.$wppa['start_album'];
+	}
+	// Cat ?
+	elseif ( $wppa['is_cat'] ) {
+		$thumbhref = wppa_get_permalink( $page ).'wppa-cover=0&amp;wppa-occur='.$wppa['occur'].'&amp;wppa-cat='.$wppa['is_cat'].'&amp;wppa-album='.$wppa['start_album'];
+	}
+	// Last ?
+//	elseif ( $wppa['last_albums'] ) {
+//		$thumbhref = wppa_get_permalink( $page ).'wppa-cover=0&amp;wppa-occur='.$wppa['occur'].'&amp;wppa-album='.$wppa['start_album'];
+//	}
+	// Default ?
+	else {
+		$thumbhref = wppa_get_permalink( $page ).'wppa-cover=0&amp;wppa-occur='.$wppa['occur'].'&amp;wppa-album='.$wppa['start_album'];
+	}
+	
+	$thumbhref = wppa_convert_to_pretty( wppa_trim_wppa_( $thumbhref ) );
+
+	return $thumbhref;
 }

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Functions for breadcrumbs
-* Version 5.4.21
+* Version 5.4.23
 *
 */
 
@@ -328,10 +328,10 @@ global $wppa_session;
 						$imgs = 'height: '.$fs.'px; margin:0 0 -3px 0; padding:0; box-shadow:none;';
 						$wppa['out'] .= '<a href="'.$thumbhref.'" title="'.__a( 'Thumbnail view', 'wppa' ).
 										'" class="wppa-nav-text" style="'.__wcs( 'wppa-nav-text' ).'float:right; cursor:pointer;" '.
-										'onmouseover="jQuery(\'#wppa-tnv\').css(\'display\', \'none\'); jQuery(\'#wppa-tnvh\').css(\'display\', \'\')" '.
-										'onmouseout="jQuery(\'#wppa-tnv\').css(\'display\', \'\'); jQuery(\'#wppa-tnvh\').css(\'display\', \'none\')" >'.
-										'<img id="wppa-tnv" src="'.wppa_get_imgdir().'application_view_icons.png" alt="'.__a( 'Thumbs', 'wppa_theme' ).'" style="'.$imgs.'" />'.
-										'<img id="wppa-tnvh" src="'.wppa_get_imgdir().'application_view_icons_hover.png" alt="'.__a( 'Thumbs', 'wppa_theme' ).'" style="display:none;'.$imgs.'" />'.
+										'onmouseover="jQuery(\'#wppa-tnv-'.$wppa['mocc'].'\').css(\'display\', \'none\'); jQuery(\'#wppa-tnvh-'.$wppa['mocc'].'\').css(\'display\', \'\')" '.
+										'onmouseout="jQuery(\'#wppa-tnv-'.$wppa['mocc'].'\').css(\'display\', \'\'); jQuery(\'#wppa-tnvh-'.$wppa['mocc'].'\').css(\'display\', \'none\')" >'.
+										'<img id="wppa-tnv-'.$wppa['mocc'].'" class="wppa-tnv" src="'.wppa_get_imgdir().'application_view_icons.png" alt="'.__a( 'Thumbs', 'wppa_theme' ).'" style="'.$imgs.'" />'.
+										'<img id="wppa-tnvh-'.$wppa['mocc'].'" class="wppa-tnv" src="'.wppa_get_imgdir().'application_view_icons_hover.png" alt="'.__a( 'Thumbs', 'wppa_theme' ).'" style="display:none;'.$imgs.'" />'.
 						'</a>';
 					}
 				}
@@ -344,10 +344,10 @@ global $wppa_session;
 					$wppa['out'] .= '<a title="'.__a( 'Thumbnail view', 'wppa' ).
 									'" class="wppa-nav-text" style="'.__wcs( 'wppa-nav-text' ).'float:right; cursor:pointer;" '.
 									'onclick="'.$onclick.'" '.
-									'onmouseover="jQuery(\'#wppa-tnv\').css(\'display\', \'none\'); jQuery(\'#wppa-tnvh\').css(\'display\', \'\')" '.
-									'onmouseout="jQuery(\'#wppa-tnv\').css(\'display\', \'\'); jQuery(\'#wppa-tnvh\').css(\'display\', \'none\')" >'.
-										'<img id="wppa-tnv" src="'.wppa_get_imgdir().'application_view_icons.png" alt="'.__a( 'Thumbs', 'wppa_theme' ).'" style="'.$imgs.'" />'.
-										'<img id="wppa-tnvh" src="'.wppa_get_imgdir().'application_view_icons_hover.png" alt="'.__a( 'Thumbs', 'wppa_theme' ).'" style="display:none;'.$imgs.'" />'.
+									'onmouseover="jQuery(\'#wppa-tnv-'.$wppa['mocc'].'\').css(\'display\', \'none\'); jQuery(\'#wppa-tnvh-'.$wppa['mocc'].'\').css(\'display\', \'\')" '.
+									'onmouseout="jQuery(\'#wppa-tnv-'.$wppa['mocc'].'\').css(\'display\', \'\'); jQuery(\'#wppa-tnvh-'.$wppa['mocc'].'\').css(\'display\', \'none\')" >'.
+										'<img id="wppa-tnv-'.$wppa['mocc'].'" class="wppa-tnv" src="'.wppa_get_imgdir().'application_view_icons.png" alt="'.__a( 'Thumbs', 'wppa_theme' ).'" style="'.$imgs.'" />'.
+										'<img id="wppa-tnvh-'.$wppa['mocc'].'" class="wppa-tnv" src="'.wppa_get_imgdir().'application_view_icons_hover.png" alt="'.__a( 'Thumbs', 'wppa_theme' ).'" style="display:none;'.$imgs.'" />'.
 									'</a>';
 				}
 			}

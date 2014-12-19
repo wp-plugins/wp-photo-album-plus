@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Various wppa boxes
-* Version 5.4.22
+* Version 5.4.23
 *
 *
 */
@@ -1386,6 +1386,9 @@ global $wppa_opt;
 global $wpdb;
 
 	if ( $wppa['is_upldr'] ) return;
+	if ( $wppa['is_comten'] ) return;
+	if ( $wppa['is_lasten'] ) return;
+	if ( $wppa['is_featen'] ) return;
 	if ( strlen( $wppa['start_album'] ) > '0' && ! wppa_is_int( $wppa['start_album'] ) ) return; // Album enumeration
 	
 	$result = '';
@@ -1408,6 +1411,9 @@ global $wppa_opt;
 global $wpdb;
 
 	if ( $wppa['is_upldr'] ) return;
+	if ( $wppa['is_comten'] ) return;
+	if ( $wppa['is_lasten'] ) return;
+	if ( $wppa['is_featen'] ) return;
 	if ( strlen( $wppa['start_album'] ) > '0' && ! wppa_is_int( $wppa['start_album'] ) ) return; // Album enumeration
 	
 	$result = '';

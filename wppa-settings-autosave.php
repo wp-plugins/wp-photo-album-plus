@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 5.4.21
+* Version 5.4.23
 *
 */
 
@@ -3815,10 +3815,8 @@ global $no_default;
 							$slug4 = 'wppa_slideshow_overrule';
 							$slug = array($slug1, $slug2, $slug3, $slug4);
 							$onchange = 'wppaCheckSlidePhotoLink();';
-							$opts = array(__('no link at all.', 'wppa'), __('the plain photo (file).', 'wppa'), __('the fullsize photo on its own.', 'wppa'), __('lightbox.', 'wppa'), __('lightbox single photos.', 'wppa'), __('the fs photo with download and print buttons.', 'wppa'));
-							$vals = array('none', 'file', 'single', 'lightbox', 'lightboxsingle', 'fullpopup'); 
-//							$opts = array(__('no link at all.', 'wppa'), __('the plain photo (file).', 'wppa'), __('lightbox.', 'wppa'));
-//							$vals = array('none', 'file', 'lightbox'); 
+							$opts = array(__('no link at all.', 'wppa'), __('the plain photo (file).', 'wppa'), __('the fullsize photo on its own.', 'wppa'), __('lightbox.', 'wppa'), __('lightbox single photos.', 'wppa'), __('the fs photo with download and print buttons.', 'wppa'), __('the thumbnails.', 'wppa'));
+							$vals = array('none', 'file', 'single', 'lightbox', 'lightboxsingle', 'fullpopup', 'thumbs'); 
 							$onchange = 'wppaCheckSlidePhotoLink()';
 							$html1 = wppa_select($slug1, $opts, $vals, $onchange);
 							$class = 'wppa_sslp';
