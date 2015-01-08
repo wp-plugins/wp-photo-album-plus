@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 5.4.22
+* Version 5.4.24
 *
 */
 
@@ -522,6 +522,8 @@ Hide Camera info
 						'wppa_bradius' 					=> '6',		// 6
 						'wppa_box_spacing'				=> '8',		// 7
 						'wppa_pagelinks_max' 			=> '7',
+						'wppa_max_filename_length' 		=> '0',
+						'wppa_max_photoname_length' 	=> '0',
 						
 						// B Fullsize
 						'wppa_fullsize' 				=> '640',	// 1

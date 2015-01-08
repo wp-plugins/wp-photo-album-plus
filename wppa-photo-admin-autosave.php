@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * edit and delete photos
-* version 5.4.21
+* version 5.4.24
 *
 */
 
@@ -1356,7 +1356,8 @@ global $wpdb;
 global $wppa_search_stats;
 
 	$doit = false;
-	if ( wppa_user_is( 'administrator' ) ) $doit = true;
+//	if ( wppa_user_is( 'administrator' ) ) $doit = true;
+	if ( current_user_can( 'wppa_admin' ) && current_user_can( 'wppa_moderate' ) ) $doit = true;
 	if ( wppa_switch( 'wppa_upload_edit' ) ) $doit = true;
 	if ( ! $doit ) {	// Should never get here. Only when url is manipulted manually.
 		die('Security check failure #309');
@@ -1388,7 +1389,8 @@ global $wppa_search_stats;
 			$count 			= empty( $photo_array ) ? '0' : count( $photo_array );
 			$list 			= implode( ',', $photo_array );
 			
-			if ( wppa_user_is( 'administrator' ) ) {
+//			if ( wppa_user_is( 'administrator' ) ) {
+			if ( current_user_can( 'wppa_admin' ) && current_user_can( 'wppa_moderate' ) ) {
 				$real_count = $wpdb->get_var( "SELECT COUNT(*) FROM `".WPPA_PHOTOS."` WHERE `id` IN (".$list.") " );
 				if ( $count != $real_count ) {
 					update_option( 'wppa_remake_index_photos_status', __('Required', 'wppa') );
@@ -1408,7 +1410,8 @@ global $wppa_search_stats;
 			$count 			= empty( $temp_array ) ? '0' : count( $temp_array );
 			$list 			= implode( ',', $temp_array );
 			
-			if ( wppa_user_is( 'administrator' ) ) {
+//			if ( wppa_user_is( 'administrator' ) ) {
+			if ( current_user_can( 'wppa_admin' ) && current_user_can( 'wppa_moderate' ) ) {
 				$real_count = $wpdb->get_var( "SELECT COUNT(*) FROM `".WPPA_PHOTOS."` WHERE `id` IN (".$list.") " );
 				if ( $count != $real_count ) {
 					update_option( 'wppa_remake_index_photos_status', __('Required', 'wppa') );
@@ -1429,7 +1432,8 @@ global $wppa_search_stats;
 	
 		$list = implode( ',', $photo_array );
 
-		if ( wppa_user_is( 'administrator' ) ) {
+//		if ( wppa_user_is( 'administrator' ) ) {
+		if ( current_user_can( 'wppa_admin' ) && current_user_can( 'wppa_moderate' ) ) {
 			$totcount = $wpdb->get_var( "SELECT COUNT(*) FROM `".WPPA_PHOTOS."` WHERE `id` IN (".$list.") " );
 		}
 		else { // Not admin, can edit own photos only
@@ -1438,7 +1442,8 @@ global $wppa_search_stats;
 
 		$wppa_search_stats[] = array( 'word' => __( 'Combined', 'wppa'), 'count' => $totcount );
 		
-		if ( wppa_user_is( 'administrator' ) ) {
+//		if ( wppa_user_is( 'administrator' ) ) {
+		if ( current_user_can( 'wppa_admin' ) && current_user_can( 'wppa_moderate' ) ) {
 			$photos = $wpdb->get_results( "SELECT * FROM `".WPPA_PHOTOS."` WHERE `id` IN (".$list.") " . wppa_get_photo_order( '0', 'norandom' ).$limit, ARRAY_A );
 		}
 		else { // Not admin, can edit own photos only

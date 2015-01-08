@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, myCRED, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile, cloudinary, fotomoto, CMTooltipGlossary
-Version: 5.4.23
+Version: 5.4.24
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -187,6 +187,23 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 5.4.24 =
+
+= Bug Fixes =
+
+* The existance of a photo was not always properly detected when avoid duplicates was selected in Table VII-D7. Fixed.
+
+= New Features =
+
+* The length of a photo file name can be limited in Table I-A10.1.
+* The length of a photo name can be limited in Table I-A10.2.
+
+= Other Changes =
+
+* Top search for edit photos at the backend, it is no longer required to be administrator. 
+Album admin access combined with moderate access is sufficient to search all photos ( Table VII-A ).
+Album admin access combined with Uploader edit ( Table VII-D2.1 ) enables the search for own photos only.
 
 = 5.4.23 =
 

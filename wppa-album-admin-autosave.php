@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * create, edit and delete albums
-* version 5.4.22
+* version 5.4.24
 *
 */
 
@@ -1472,7 +1472,8 @@ function wppa_admin_albums_collapsable() {
 function wppa_search_edit( $collapsable = false ) {
 
 	$doit = false;
-	if ( wppa_user_is( 'administrator' ) ) $doit = true;
+//	if ( wppa_user_is( 'administrator' ) ) $doit = true;
+	if ( current_user_can( 'wppa_admin' ) && current_user_can( 'wppa_moderate' ) ) $doit = true;
 	if ( wppa_switch( 'wppa_upload_edit' ) ) $doit = true;
 	
 	if ( ! $doit ) return;
@@ -1502,7 +1503,7 @@ function wppa_search_edit( $collapsable = false ) {
 			<?php } ?>
 				
 		</td>
-		<?php if ( wppa_user_is( 'administrator' ) ) echo '<td></td>' ?>
+		<?php if ( current_user_can( 'wppa_admin' ) && current_user_can( 'wppa_moderate' ) ) echo '<td></td>' ?>
 		<td>
 			<a class="wppaedit" onclick="wppaEditSearch('<?php echo wppa_ea_url('search') ?>', 'wppa-edit-search' )" >
 				<b><?php _e('Edit', 'wppa') ?></b>

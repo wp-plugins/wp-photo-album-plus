@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 5.4.23
+* Version 5.4.24
 *
 */
 
@@ -610,6 +610,20 @@ global $no_default;
 							$slug = 'wppa_pagelinks_max';
 							$html = wppa_input($slug, '40px', '', __('pages', 'wppa'));
 							wppa_setting($slug, '9', $name, $desc, $html, $help);
+							
+							$name = __('Max file name length', 'wppa');
+							$desc = __('The max length of a photo file name excluding the extension.', 'wppa');
+							$help = esc_js(__('A setting of 0 means: unlimited.', 'wppa'));
+							$slug = 'wppa_max_filename_length';
+							$html = wppa_input($slug, '40px', '', __('chars', 'wppa'));
+							wppa_setting($slug, '10.1', $name, $desc, $html, $help);							
+
+							$name = __('Max photo name length', 'wppa');
+							$desc = __('The max length of a photo name.', 'wppa');
+							$help = esc_js(__('A setting of 0 means: unlimited.', 'wppa'));
+							$slug = 'wppa_max_photoname_length';
+							$html = wppa_input($slug, '40px', '', __('chars', 'wppa'));
+							wppa_setting($slug, '10.2', $name, $desc, $html, $help);							
 							}
 							wppa_setting_subheader( 'B', '1', __( 'Slideshow related size settings', 'wppa' ) );
 							{

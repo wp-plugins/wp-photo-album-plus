@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains low-level utility routines
-* Version 5.4.21
+* Version 5.4.24
 *
 */
  
@@ -1815,7 +1815,7 @@ function wppa_file_is_in_album( $filename, $alb ) {
 global $wpdb;
 
 	if ( ! $filename ) return false;	// Copy/move very old photo, before filnametracking
-	$photo_id = $wpdb->get_var ( $wpdb->prepare ( "SELECT `id` FROM `".WPPA_PHOTOS."` WHERE `filename` = %s AND `album` = %s LIMIT 1", $filename, $alb ) );
+	$photo_id = $wpdb->get_var ( $wpdb->prepare ( "SELECT `id` FROM `".WPPA_PHOTOS."` WHERE ( `filename` = %s OR `filename` = %s ) AND `album` = %s LIMIT 1", wppa_sanitize_file_name( $filename ), $filename, $alb ) );
 	return $photo_id;			
 }
 
@@ -1951,6 +1951,15 @@ function wppa_sanitize_file_name( $file ) {
 	$temp 	= explode( '/', $file );
 	$cnt 	= count( $temp );
 	$temp[$cnt - 1] = sanitize_file_name( $temp[$cnt - 1] );
+	$maxlen = wppa_opt( 'wppa_max_filename_length' );
+	if ( $maxlen ) {
+		$name = wppa_strip_ext( $temp[$cnt - 1] );
+		$ext = str_replace( $name.'.', '', $temp[$cnt - 1] );
+		if ( strlen( $name ) > $maxlen ) {
+			$name = substr( $name, 0, $maxlen );
+			$temp[$cnt - 1] = $name.'.'.$ext;
+		}
+	}
 	$file 	= implode( '/', $temp );
 	$file 	= trim ( $file );
 	return $file;
@@ -1958,7 +1967,15 @@ function wppa_sanitize_file_name( $file ) {
 
 // Create a html safe photo name from a filename. May be a pathname
 function wppa_sanitize_photo_name( $file ) {
-	return htmlspecialchars( strip_tags( stripslashes( basename( $file ) ) ) );
+	$result = htmlspecialchars( strip_tags( stripslashes( basename( $file ) ) ) );
+	$maxlen = wppa_opt( 'wppa_max_photoname_length' );
+	if ( $maxlen && strlen( $result ) > $maxlen ) {
+		$result = wppa_strip_ext( $result ); // First remove any possible file-extension
+		if ( strlen( $result ) > $maxlen ) {
+			$result = substr( $result, 0, $maxlen );	// Truncate
+		}
+	}
+	return $result;
 }
 
 // Get meta keywords of a photo

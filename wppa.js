@@ -2,7 +2,7 @@
 //
 // conatins slideshow, theme, ajax and lightbox code
 //
-// Version 5.4.22
+var wppaJsVersion = '5.4.24';
 
 // Part 1: Slideshow
 //
@@ -3927,3 +3927,4 @@ function wppaUrlToId( url ) {
 	return temp;
 }
 
+wppaConsoleLog( 'wppa.js version '+wppaJsVersion+' loaded.', 'force' );

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Various funcions
-* Version 5.4.23
+* Version 5.4.24
 *
 */
 
@@ -3473,12 +3473,22 @@ global $wppa;
 		}
 		
 		if ( wppa_is_video( $wppa['single_photo'] ) ) {
-			$wppa['out'] .= wppa_nltab().wppa_get_video_html( array( 	'id' 			=> $wppa['single_photo'], 
-																		'width' 		=> $width,
-																		'height' 		=> $height,
-																		'controls' 		=> true
+			if ( $autocol ) {
+				$wppa['out'] .= wppa_nltab().wppa_get_video_html( array( 	'id' 			=> $wppa['single_photo'], 
+																			'controls' 		=> true,
+																			'style' 		=> $style
 																	 )
 															 );
+			}
+			else {
+				$wppa['out'] .= wppa_nltab().wppa_get_video_html( array( 	'id' 			=> $wppa['single_photo'], 
+																			'width' 		=> $width,
+																			'height' 		=> $height,
+																			'controls' 		=> true,
+																			'style' 		=> $style
+																	 )
+															 );
+			}
 		}
 		else {
 			$wppa['out'] .= wppa_nltab().'<img src="'.$src.'" ' . wppa_get_imgalt( $wppa['single_photo'] ) . ' '.
