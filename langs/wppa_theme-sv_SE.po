@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wppa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-01-08 09:45+0100\n"
-"PO-Revision-Date: 2015-01-08 09:45+0100\n"
+"POT-Creation-Date: 2015-01-08 14:06+0100\n"
+"PO-Revision-Date: 2015-01-08 14:06+0100\n"
 "Last-Translator: J.N. Breetvelt <OpaJaap@OpaJaap.nl>\n"
 "Language-Team: OpaJaap <OpaJaap@OpaJaap.nl>\n"
 "Language: sv_SE\n"
@@ -1244,7 +1244,6 @@ msgid "Download album"
 msgstr "Ladda ner album"
 
 #: wppa-links.php:1057
-#, fuzzy
 msgid "Vieuw thumbnails"
 msgstr "Visa miniatyrbilder"
 
