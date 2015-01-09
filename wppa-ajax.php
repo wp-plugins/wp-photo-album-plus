@@ -1020,7 +1020,7 @@ global $wppa_session;
 					break;
 					
 				case 'status':
-				if ( ! current_user_can( 'wppa_moderate' ) ) die( 'Security check failure #78' );
+				if ( ! current_user_can( 'wppa_moderate' ) && ! current_user_can( 'wppa_admin' ) ) die( 'Security check failure #78' );
 					wppa_flush_treecounts( wppa_get_photo_item( $photo, 'album' ) ); // $wpdb->get_var( $wpdb->prepare( "SELECT `album` FROM `".WPPA_PHOTOS."` WHERE `id` = %s", $photo ) ) );
 				case 'owner':
 				case 'name':
