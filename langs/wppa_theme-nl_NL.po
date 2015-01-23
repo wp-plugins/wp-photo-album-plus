@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wp-photo-album-plus\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-01-08 14:07+0100\n"
-"PO-Revision-Date: 2015-01-08 14:07+0100\n"
+"POT-Creation-Date: 2015-01-15 15:43+0100\n"
+"PO-Revision-Date: 2015-01-15 15:43+0100\n"
 "Last-Translator: J.N. Breetvelt <OpaJaap@OpaJaap.nl>\n"
 "Language-Team: \n"
 "Language: nl_NL\n"
@@ -96,69 +96,69 @@ msgstr "Afsluiten"
 msgid "Photo rated"
 msgstr "Foto gewaardeerd"
 
-#: wppa-album-covers.php:994
+#: wppa-album-covers.php:996
 msgid "Link to"
 msgstr "Link naar"
 
-#: wppa-album-covers.php:1022 wppa-album-covers.php:1084
-#: wppa-album-covers.php:1091
+#: wppa-album-covers.php:1026 wppa-album-covers.php:1088
+#: wppa-album-covers.php:1095
 msgid "View the album"
 msgstr "Bekijk het album"
 
-#: wppa-album-covers.php:1042
+#: wppa-album-covers.php:1046
 msgid "View the cover photo"
 msgstr "Bekijk de omslagfoto"
 
-#: wppa-album-covers.php:1043
+#: wppa-album-covers.php:1047
 msgid "View the cover photos"
 msgstr "Bekijk de omslagfoto's"
 
-#: wppa-album-covers.php:1097
+#: wppa-album-covers.php:1101
 msgid "View"
 msgstr "Bekijk"
 
-#: wppa-album-covers.php:1100
+#: wppa-album-covers.php:1104
 msgid "album"
 msgstr "album"
 
-#: wppa-album-covers.php:1103
+#: wppa-album-covers.php:1107
 msgid "albums"
 msgstr "albums"
 
-#: wppa-album-covers.php:1112 wppa-boxes-html.php:373 wppa-breadcrumb.php:258
+#: wppa-album-covers.php:1116 wppa-boxes-html.php:373 wppa-breadcrumb.php:258
 #: wppa-breadcrumb.php:263 wppa-functions.php:4120 wppa-utils.php:1282
 msgid "and"
 msgstr "en"
 
-#: wppa-album-covers.php:1117
+#: wppa-album-covers.php:1121
 msgid "photo"
 msgstr "foto"
 
-#: wppa-album-covers.php:1120 wppa-album-covers.php:1124
+#: wppa-album-covers.php:1124 wppa-album-covers.php:1128
 msgid "photos"
 msgstr "foto's"
 
-#: wppa-album-covers.php:1168 wppa-utils.php:1684
+#: wppa-album-covers.php:1172 wppa-utils.php:1684
 msgid "New!"
 msgstr "Nieuw!"
 
-#: wppa-album-covers.php:1169 wppa-utils.php:1684
+#: wppa-album-covers.php:1173 wppa-utils.php:1684
 msgid "New"
 msgstr "Nieuw"
 
-#: wppa-album-covers.php:1190 wppa-non-admin.php:503
+#: wppa-album-covers.php:1194 wppa-non-admin.php:503
 msgid "Slideshow"
 msgstr "Diavoorstelling"
 
-#: wppa-album-covers.php:1191
+#: wppa-album-covers.php:1195
 msgid "Browse photos"
 msgstr "Foto's bladeren"
 
-#: wppa-album-covers.php:1224
+#: wppa-album-covers.php:1228
 msgid "Categories:"
 msgstr "Categorieën:"
 
-#: wppa-album-covers.php:1227 wppa-breadcrumb.php:270 wppa-breadcrumb.php:275
+#: wppa-album-covers.php:1231 wppa-breadcrumb.php:270 wppa-breadcrumb.php:275
 msgid "Category:"
 msgstr "Categorie:"
 
@@ -386,7 +386,7 @@ msgstr "schreef:"
 msgid "Avatar"
 msgstr "Avatar"
 
-#: wppa-boxes-html.php:1087 wppa-links.php:691
+#: wppa-boxes-html.php:1087 wppa-links.php:710
 msgid "Awaiting moderation"
 msgstr "Wacht op goedkeuring"
 
@@ -908,13 +908,13 @@ msgstr ""
 msgid "Edit"
 msgstr "Bewerk"
 
-#: wppa-functions.php:1473 wppa-functions.php:2863 wppa-links.php:640
-#: wppa-links.php:657
+#: wppa-functions.php:1473 wppa-functions.php:2863 wppa-links.php:659
+#: wppa-links.php:676
 msgid "Are you sure you want to remove this photo?"
 msgstr "Weet u zeker dat u deze afbeelding wilt verwijderen?"
 
-#: wppa-functions.php:1474 wppa-functions.php:2864 wppa-links.php:647
-#: wppa-links.php:665
+#: wppa-functions.php:1474 wppa-functions.php:2864 wppa-links.php:666
+#: wppa-links.php:684
 msgid "Delete"
 msgstr "Verwijder"
 
@@ -991,7 +991,7 @@ msgstr "1 Reactie"
 msgid "%s Comments"
 msgstr "%s Reacties"
 
-#: wppa-functions.php:1856 wppa-links.php:1284
+#: wppa-functions.php:1856 wppa-links.php:1305
 msgid "A video can not be printed or downloaded"
 msgstr "Een video kan niet afgedrukt of gedownload worden"
 
@@ -1184,69 +1184,69 @@ msgstr "Laatste tien geuploade foto's"
 msgid "View the most recent uploaded photos"
 msgstr "Bekijk de meest recent geuploade foto's"
 
-#: wppa-links.php:628
+#: wppa-links.php:647
 msgid "App"
 msgstr "Goedk"
 
-#: wppa-links.php:629
+#: wppa-links.php:648
 msgid "Mod"
 msgstr "Mod"
 
-#: wppa-links.php:630
+#: wppa-links.php:649
 msgid "Del"
 msgstr "Verw"
 
-#: wppa-links.php:634 wppa-links.php:651
+#: wppa-links.php:653 wppa-links.php:670
 msgid "Are you sure you want to publish this photo?"
 msgstr "Weet u zeker dat u deze afbeelding wilt publiceren?"
 
-#: wppa-links.php:645 wppa-links.php:662
+#: wppa-links.php:664 wppa-links.php:681
 msgid "Approve"
 msgstr "Goedkeuren"
 
-#: wppa-links.php:646
+#: wppa-links.php:665
 msgid "Moderate"
 msgstr "Modereren"
 
-#: wppa-links.php:663
+#: wppa-links.php:682
 msgid "PhotoAdmin"
 msgstr "FotoAdmin"
 
-#: wppa-links.php:664
+#: wppa-links.php:683
 msgid "CommentAdmin"
 msgstr "ReactiesAdmin"
 
-#: wppa-links.php:668
+#: wppa-links.php:687
 msgid "Are you sure you want to publish this comment?"
 msgstr "Weet u zeker dat u deze reactie wilt publiceren?"
 
-#: wppa-links.php:680
+#: wppa-links.php:699
 msgid "Are you sure you want to remove this comment?"
 msgstr "Weet u zeker dat u deze reactie wilt verwijderen?"
 
-#: wppa-links.php:694
+#: wppa-links.php:713
 #, php-format
 msgid "Scheduled for %s"
 msgstr "Gepland voor %s"
 
-#: wppa-links.php:879 wppa-links.php:880
+#: wppa-links.php:900 wppa-links.php:901
 msgid "Prev.&nbsp;page"
 msgstr "Vorige&nbsp;pagina"
 
-#: wppa-links.php:884 wppa-links.php:885
+#: wppa-links.php:905 wppa-links.php:906
 msgid "Next&nbsp;page"
 msgstr "Volgende&nbsp;pagina"
 
-#: wppa-links.php:919 wppa-non-admin.php:568
+#: wppa-links.php:940 wppa-non-admin.php:568
 msgid "Download"
 msgstr "Download"
 
-#: wppa-links.php:919
+#: wppa-links.php:940
 msgid "Download album"
 msgstr "Download album"
 
-#: wppa-links.php:1057
-msgid "Vieuw thumbnails"
+#: wppa-links.php:1078
+msgid "View thumbnails"
 msgstr "Bekijk de miniaturen"
 
 #: wppa-non-admin.php:291
@@ -1262,7 +1262,7 @@ msgid "Keys: f = next mode; esc,x,o,c,q = exit; d = dismiss this notice."
 msgstr ""
 "Toetsen: f = volgende modus; esc,x,o,c,q = verlaat; d = verberg deze regel."
 
-#: wppa-non-admin.php:504 wppa-slideshow.php:225
+#: wppa-non-admin.php:504 wppa-slideshow.php:232
 msgid "Start"
 msgstr "Start"
 
@@ -1270,11 +1270,11 @@ msgstr "Start"
 msgid "Stop"
 msgstr "Stop"
 
-#: wppa-non-admin.php:506 wppa-slideshow.php:224
+#: wppa-non-admin.php:506 wppa-slideshow.php:231
 msgid "Slower"
 msgstr "Trager"
 
-#: wppa-non-admin.php:507 wppa-slideshow.php:226
+#: wppa-non-admin.php:507 wppa-slideshow.php:233
 msgid "Faster"
 msgstr "Sneller"
 
@@ -1298,17 +1298,17 @@ msgstr "Volgende foto"
 msgid "Prev."
 msgstr "Vorige"
 
-#: wppa-non-admin.php:513 wppa-slideshow.php:651
+#: wppa-non-admin.php:513 wppa-slideshow.php:658
 msgid "Next"
 msgstr "Volgende"
 
-#: wppa-non-admin.php:514 wppa-slideshow.php:498 wppa-slideshow.php:502
-#: wppa-slideshow.php:544
+#: wppa-non-admin.php:514 wppa-slideshow.php:505 wppa-slideshow.php:509
+#: wppa-slideshow.php:551
 msgid "Average&nbsp;rating"
 msgstr "Gem.&nbsp;waardering"
 
-#: wppa-non-admin.php:515 wppa-slideshow.php:523 wppa-slideshow.php:528
-#: wppa-slideshow.php:533
+#: wppa-non-admin.php:515 wppa-slideshow.php:530 wppa-slideshow.php:535
+#: wppa-slideshow.php:540
 msgid "My&nbsp;rating"
 msgstr "Mijn&nbsp;waardering"
 
@@ -1377,101 +1377,101 @@ msgstr "Widget landing pagina"
 msgid "No album defined yet."
 msgstr "Er is nog geen album ingesteld."
 
-#: wppa-slideshow.php:242
+#: wppa-slideshow.php:249
 msgid "Paused"
 msgstr "Gepauzeerd"
 
-#: wppa-slideshow.php:247
+#: wppa-slideshow.php:254
 msgid ""
 "To see the full size images, you need to enable javascript in your browser."
 msgstr ""
 "Om foto's op volledige grootte te zien, dient u javascript te activeren in "
 "uw browser."
 
-#: wppa-slideshow.php:435
+#: wppa-slideshow.php:442
 msgid "- - - Voting enabled - - -"
 msgstr "- - - Stemmen geactiveerd - - -"
 
-#: wppa-slideshow.php:447
+#: wppa-slideshow.php:454
 #, php-format
 msgid "Number of votes: <span id=\"wppa-vote-count-%s\" >%s</span>&nbsp;"
 msgstr "Aantal stemmen: <span id=\"wppa-vote-count-%s\" >%s</span>&nbsp;"
 
-#: wppa-slideshow.php:452 wppa-slideshow.php:536 wppa-slideshow.php:569
+#: wppa-slideshow.php:459 wppa-slideshow.php:543 wppa-slideshow.php:576
 #, php-format
 msgid "You must <a href=\"%s\">login</a> to vote"
 msgstr "U moet <a href=\"%s\">ingelogd</a> zijn om te stemmen"
 
-#: wppa-slideshow.php:468
+#: wppa-slideshow.php:475
 msgid "- - - Rating enabled - - -"
 msgstr "- - - Waarderingssysteem geactiveerd - - -"
 
-#: wppa-slideshow.php:485
+#: wppa-slideshow.php:492
 msgid "very low"
 msgstr "zeer laag"
 
-#: wppa-slideshow.php:486
+#: wppa-slideshow.php:493
 msgid "low"
 msgstr "laag"
 
-#: wppa-slideshow.php:487
+#: wppa-slideshow.php:494
 msgid "average"
 msgstr "gemiddeld"
 
-#: wppa-slideshow.php:488
+#: wppa-slideshow.php:495
 msgid "high"
 msgstr "hoog"
 
-#: wppa-slideshow.php:489
+#: wppa-slideshow.php:496
 msgid "very high"
 msgstr "zeer hoog"
 
-#: wppa-slideshow.php:516 wppa-slideshow.php:556
+#: wppa-slideshow.php:523 wppa-slideshow.php:563
 msgid "Are you sure you want to mark this image as inappropriate?"
 msgstr "Weet u zeker dat u deze afbeelding als ongepast wilt aanmerken?"
 
-#: wppa-slideshow.php:517 wppa-slideshow.php:557
+#: wppa-slideshow.php:524 wppa-slideshow.php:564
 msgid "Click this if you do NOT like this image!"
 msgstr "Vink dit aan indien u deze afbeelding ongepast vindt!"
 
-#: wppa-slideshow.php:519 wppa-slideshow.php:559
+#: wppa-slideshow.php:526 wppa-slideshow.php:566
 msgid "Number of people who marked this photo as inapprpriate"
 msgstr "Het aantal mensen dat deze foto als ongepast heeft aangemerkt"
 
-#: wppa-slideshow.php:565
+#: wppa-slideshow.php:572
 msgid "My rating:"
 msgstr "Mijn waardering:"
 
-#: wppa-slideshow.php:647
+#: wppa-slideshow.php:654
 msgid "First"
 msgstr "Eerste"
 
-#: wppa-slideshow.php:648
+#: wppa-slideshow.php:655
 msgid "Previous"
 msgstr "Vorige"
 
-#: wppa-slideshow.php:652
+#: wppa-slideshow.php:659
 msgid "Last"
 msgstr "Laatste"
 
-#: wppa-slideshow.php:768
+#: wppa-slideshow.php:775
 #, php-format
 msgid "Photo %s of %s"
 msgstr "Foto %s van %s"
 
-#: wppa-slideshow.php:799
+#: wppa-slideshow.php:806
 msgid "Click to start/stop"
 msgstr "Klik om te starten/stoppen"
 
-#: wppa-slideshow.php:811
+#: wppa-slideshow.php:818
 msgid "- - - Comments box activated - - -"
 msgstr "- - - Reactiesysteem geactiveerd - - -"
 
-#: wppa-slideshow.php:832
+#: wppa-slideshow.php:839
 msgid "- - - IPTC box activated - - -"
 msgstr "- - - IPTC box geactiveerd - - -"
 
-#: wppa-slideshow.php:852
+#: wppa-slideshow.php:859
 msgid "- - - EXIF box activated - - -"
 msgstr "- - - EXIF box geactiveerd - - -"
 

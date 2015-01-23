@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * create, edit and delete albums
-* version 5.4.24
+* version 5.4.25
 *
 */
 
@@ -590,6 +590,8 @@ function _wppa_admin() {
 									<?php /* if ( $albuminfo['cover_linkpage'] == '-1' ) $linktype = 'none'; /* for backward compatibility */ ?>
 									<select onchange="wppaAjaxUpdateAlbum(<?php echo $edit_id ?>, 'cover_linktype', this)" >
 										<option value="content" <?php if ( $linktype == 'content' ) echo ($sel) ?>><?php _e('the sub-albums and thumbnails', 'wppa') ?></option>
+										<option value="albums" <?php if ( $linktype == 'albums' ) echo $sel ?>><?php _e('the sub-albums', 'wppa') ?></option>
+										<option value="thumbs" <?php if ( $linktype == 'thumbs' ) echo $sel ?>><?php _e('the thumbnails', 'wppa') ?></option>
 										<option value="slide" <?php if ( $linktype == 'slide' ) echo ($sel) ?>><?php _e('the album photos as slideshow', 'wppa') ?></option>
 										<option value="page" <?php if ( $linktype == 'page' ) echo ($sel) ?>><?php _e('the link page with a clean url', 'wppa') ?></option>
 										<option value="none" <?php if ( $linktype == 'none' ) echo($sel) ?>><?php _e('no link at all', 'wppa') ?></option>

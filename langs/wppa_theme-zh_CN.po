@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wppa_theme-zh_CN\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-01-08 14:05+0100\n"
-"PO-Revision-Date: 2015-01-08 14:05+0100\n"
+"POT-Creation-Date: 2015-01-15 15:41+0100\n"
+"PO-Revision-Date: 2015-01-15 15:41+0100\n"
 "Last-Translator: J.N. Breetvelt <OpaJaap@OpaJaap.nl>\n"
 "Language-Team: delthink <delthink@gmail.com>\n"
 "Language: zh_CN\n"
@@ -119,71 +119,71 @@ msgstr ""
 msgid "Photo rated"
 msgstr "每日精选照片"
 
-#: wppa-album-covers.php:994
+#: wppa-album-covers.php:996
 msgid "Link to"
 msgstr "链接到"
 
-#: wppa-album-covers.php:1022 wppa-album-covers.php:1084
-#: wppa-album-covers.php:1091
+#: wppa-album-covers.php:1026 wppa-album-covers.php:1088
+#: wppa-album-covers.php:1095
 msgid "View the album"
 msgstr "查看相册"
 
-#: wppa-album-covers.php:1042
+#: wppa-album-covers.php:1046
 msgid "View the cover photo"
 msgstr "查看封面照片"
 
-#: wppa-album-covers.php:1043
+#: wppa-album-covers.php:1047
 msgid "View the cover photos"
 msgstr "查看相册封面"
 
-#: wppa-album-covers.php:1097
+#: wppa-album-covers.php:1101
 msgid "View"
 msgstr "查看"
 
-#: wppa-album-covers.php:1100
+#: wppa-album-covers.php:1104
 msgid "album"
 msgstr "相册"
 
-#: wppa-album-covers.php:1103
+#: wppa-album-covers.php:1107
 msgid "albums"
 msgstr "相簿"
 
-#: wppa-album-covers.php:1112 wppa-boxes-html.php:373 wppa-breadcrumb.php:258
+#: wppa-album-covers.php:1116 wppa-boxes-html.php:373 wppa-breadcrumb.php:258
 #: wppa-breadcrumb.php:263 wppa-functions.php:4120 wppa-utils.php:1282
 msgid "and"
 msgstr "和"
 
-#: wppa-album-covers.php:1117
+#: wppa-album-covers.php:1121
 msgid "photo"
 msgstr "相片"
 
-#: wppa-album-covers.php:1120 wppa-album-covers.php:1124
+#: wppa-album-covers.php:1124 wppa-album-covers.php:1128
 msgid "photos"
 msgstr "照片"
 
-#: wppa-album-covers.php:1168 wppa-utils.php:1684
+#: wppa-album-covers.php:1172 wppa-utils.php:1684
 #, fuzzy
 msgid "New!"
 msgstr "最大的时间显示为新的专辑！"
 
-#: wppa-album-covers.php:1169 wppa-utils.php:1684
+#: wppa-album-covers.php:1173 wppa-utils.php:1684
 #, fuzzy
 msgid "New"
 msgstr "最大的时间显示为新的专辑！"
 
-#: wppa-album-covers.php:1190 wppa-non-admin.php:503
+#: wppa-album-covers.php:1194 wppa-non-admin.php:503
 msgid "Slideshow"
 msgstr "幻灯片"
 
-#: wppa-album-covers.php:1191
+#: wppa-album-covers.php:1195
 msgid "Browse photos"
 msgstr "浏览照片"
 
-#: wppa-album-covers.php:1224
+#: wppa-album-covers.php:1228
 msgid "Categories:"
 msgstr ""
 
-#: wppa-album-covers.php:1227 wppa-breadcrumb.php:270 wppa-breadcrumb.php:275
+#: wppa-album-covers.php:1231 wppa-breadcrumb.php:270 wppa-breadcrumb.php:275
 msgid "Category:"
 msgstr ""
 
@@ -438,7 +438,7 @@ msgstr ""
 msgid "Avatar"
 msgstr ""
 
-#: wppa-boxes-html.php:1087 wppa-links.php:691
+#: wppa-boxes-html.php:1087 wppa-links.php:710
 msgid "Awaiting moderation"
 msgstr ""
 
@@ -1013,14 +1013,14 @@ msgstr "没有找到符合搜索条件的相册或照片。"
 msgid "Edit"
 msgstr "编辑"
 
-#: wppa-functions.php:1473 wppa-functions.php:2863 wppa-links.php:640
-#: wppa-links.php:657
+#: wppa-functions.php:1473 wppa-functions.php:2863 wppa-links.php:659
+#: wppa-links.php:676
 #, fuzzy
 msgid "Are you sure you want to remove this photo?"
 msgstr "您确定要旋转此照片吗？"
 
-#: wppa-functions.php:1474 wppa-functions.php:2864 wppa-links.php:647
-#: wppa-links.php:665
+#: wppa-functions.php:1474 wppa-functions.php:2864 wppa-links.php:666
+#: wppa-links.php:684
 #, fuzzy
 msgid "Delete"
 msgstr "删除"
@@ -1110,7 +1110,7 @@ msgstr "评论:"
 msgid "%s Comments"
 msgstr "评论"
 
-#: wppa-functions.php:1856 wppa-links.php:1284
+#: wppa-functions.php:1856 wppa-links.php:1305
 msgid "A video can not be printed or downloaded"
 msgstr ""
 
@@ -1326,78 +1326,78 @@ msgstr "十大照片 "
 msgid "View the most recent uploaded photos"
 msgstr "查看相册封面"
 
-#: wppa-links.php:628
+#: wppa-links.php:647
 msgid "App"
 msgstr ""
 
-#: wppa-links.php:629
+#: wppa-links.php:648
 msgid "Mod"
 msgstr ""
 
-#: wppa-links.php:630
+#: wppa-links.php:649
 msgid "Del"
 msgstr ""
 
-#: wppa-links.php:634 wppa-links.php:651
+#: wppa-links.php:653 wppa-links.php:670
 #, fuzzy
 msgid "Are you sure you want to publish this photo?"
 msgstr "您确定要旋转此照片吗？"
 
-#: wppa-links.php:645 wppa-links.php:662
+#: wppa-links.php:664 wppa-links.php:681
 #, fuzzy
 msgid "Approve"
 msgstr "批准所有未决"
 
-#: wppa-links.php:646
+#: wppa-links.php:665
 msgid "Moderate"
 msgstr ""
 
-#: wppa-links.php:663
+#: wppa-links.php:682
 #, fuzzy
 msgid "PhotoAdmin"
 msgstr "相片"
 
-#: wppa-links.php:664
+#: wppa-links.php:683
 #, fuzzy
 msgid "CommentAdmin"
 msgstr "%d的评论"
 
-#: wppa-links.php:668
+#: wppa-links.php:687
 #, fuzzy
 msgid "Are you sure you want to publish this comment?"
 msgstr "您确定要旋转此照片吗？"
 
-#: wppa-links.php:680
+#: wppa-links.php:699
 #, fuzzy
 msgid "Are you sure you want to remove this comment?"
 msgstr "您确定要旋转此照片吗？"
 
-#: wppa-links.php:694
+#: wppa-links.php:713
 #, php-format
 msgid "Scheduled for %s"
 msgstr ""
 
-#: wppa-links.php:879 wppa-links.php:880
+#: wppa-links.php:900 wppa-links.php:901
 msgid "Prev.&nbsp;page"
 msgstr "上一页"
 
-#: wppa-links.php:884 wppa-links.php:885
+#: wppa-links.php:905 wppa-links.php:906
 msgid "Next&nbsp;page"
 msgstr "下一页"
 
-#: wppa-links.php:919 wppa-non-admin.php:568
+#: wppa-links.php:940 wppa-non-admin.php:568
 #, fuzzy
 msgid "Download"
 msgstr "此设置的一个副作用是，右击图像，不再允许访问者下载图像。"
 
-#: wppa-links.php:919
+#: wppa-links.php:940
 #, fuzzy
 msgid "Download album"
 msgstr "此设置的一个副作用是，右击图像，不再允许访问者下载图像。"
 
-#: wppa-links.php:1057
+#: wppa-links.php:1078
 #, fuzzy
-msgid "Vieuw thumbnails"
+msgid "View thumbnails"
 msgstr "查看"
 
 #: wppa-non-admin.php:291
@@ -1410,7 +1410,7 @@ msgstr ""
 msgid "Keys: f = next mode; esc,x,o,c,q = exit; d = dismiss this notice."
 msgstr ""
 
-#: wppa-non-admin.php:504 wppa-slideshow.php:225
+#: wppa-non-admin.php:504 wppa-slideshow.php:232
 msgid "Start"
 msgstr "开始"
 
@@ -1418,11 +1418,11 @@ msgstr "开始"
 msgid "Stop"
 msgstr "停止"
 
-#: wppa-non-admin.php:506 wppa-slideshow.php:224
+#: wppa-non-admin.php:506 wppa-slideshow.php:231
 msgid "Slower"
 msgstr "较慢"
 
-#: wppa-non-admin.php:507 wppa-slideshow.php:226
+#: wppa-non-admin.php:507 wppa-slideshow.php:233
 msgid "Faster"
 msgstr "较快"
 
@@ -1450,17 +1450,17 @@ msgstr "下一页"
 msgid "Prev."
 msgstr "上一页。"
 
-#: wppa-non-admin.php:513 wppa-slideshow.php:651
+#: wppa-non-admin.php:513 wppa-slideshow.php:658
 msgid "Next"
 msgstr "下一页"
 
-#: wppa-non-admin.php:514 wppa-slideshow.php:498 wppa-slideshow.php:502
-#: wppa-slideshow.php:544
+#: wppa-non-admin.php:514 wppa-slideshow.php:505 wppa-slideshow.php:509
+#: wppa-slideshow.php:551
 msgid "Average&nbsp;rating"
 msgstr "平均评级"
 
-#: wppa-non-admin.php:515 wppa-slideshow.php:523 wppa-slideshow.php:528
-#: wppa-slideshow.php:533
+#: wppa-non-admin.php:515 wppa-slideshow.php:530 wppa-slideshow.php:535
+#: wppa-slideshow.php:540
 msgid "My&nbsp;rating"
 msgstr "我的评分"
 
@@ -1535,112 +1535,112 @@ msgstr "管理页面上定义的部件。"
 msgid "No album defined yet."
 msgstr "相册还没有确定。"
 
-#: wppa-slideshow.php:242
+#: wppa-slideshow.php:249
 msgid "Paused"
 msgstr ""
 
-#: wppa-slideshow.php:247
+#: wppa-slideshow.php:254
 msgid ""
 "To see the full size images, you need to enable javascript in your browser."
 msgstr "要看到完整大小的图像，您必须启用浏览器的JavaScript。"
 
-#: wppa-slideshow.php:435
+#: wppa-slideshow.php:442
 #, fuzzy
 msgid "- - - Voting enabled - - -"
 msgstr "- -- 评分功能 -- -"
 
-#: wppa-slideshow.php:447
+#: wppa-slideshow.php:454
 #, fuzzy, php-format
 msgid "Number of votes: <span id=\"wppa-vote-count-%s\" >%s</span>&nbsp;"
 msgstr ""
 "从相册中导出的照片<span style=\"font-size:12px;\">（包括相册信息）</span>"
 
-#: wppa-slideshow.php:452 wppa-slideshow.php:536 wppa-slideshow.php:569
+#: wppa-slideshow.php:459 wppa-slideshow.php:543 wppa-slideshow.php:576
 #, fuzzy, php-format
 msgid "You must <a href=\"%s\">login</a> to vote"
 msgstr ""
 "如果用户想投票的照片（等级1 ..5星级）的，必须首先登录。该avarage评级将始终显"
 "示只要评级系统启用。"
 
-#: wppa-slideshow.php:468
+#: wppa-slideshow.php:475
 msgid "- - - Rating enabled - - -"
 msgstr "- -- 评分功能 -- -"
 
-#: wppa-slideshow.php:485
+#: wppa-slideshow.php:492
 msgid "very low"
 msgstr "极低"
 
-#: wppa-slideshow.php:486
+#: wppa-slideshow.php:493
 msgid "low"
 msgstr "低"
 
-#: wppa-slideshow.php:487
+#: wppa-slideshow.php:494
 msgid "average"
 msgstr "平均"
 
-#: wppa-slideshow.php:488
+#: wppa-slideshow.php:495
 msgid "high"
 msgstr "高"
 
-#: wppa-slideshow.php:489
+#: wppa-slideshow.php:496
 msgid "very high"
 msgstr "非常高"
 
-#: wppa-slideshow.php:516 wppa-slideshow.php:556
+#: wppa-slideshow.php:523 wppa-slideshow.php:563
 #, fuzzy
 msgid "Are you sure you want to mark this image as inappropriate?"
 msgstr "你确定要删除此相册？"
 
-#: wppa-slideshow.php:517 wppa-slideshow.php:557
+#: wppa-slideshow.php:524 wppa-slideshow.php:564
 #, fuzzy
 msgid "Click this if you do NOT like this image!"
 msgstr "您想要如何处理目前相册中的照片？"
 
-#: wppa-slideshow.php:519 wppa-slideshow.php:559
+#: wppa-slideshow.php:526 wppa-slideshow.php:566
 #, fuzzy
 msgid "Number of people who marked this photo as inapprpriate"
 msgstr "相册序号"
 
-#: wppa-slideshow.php:565
+#: wppa-slideshow.php:572
 #, fuzzy
 msgid "My rating:"
 msgstr "评分："
 
-#: wppa-slideshow.php:647
+#: wppa-slideshow.php:654
 msgid "First"
 msgstr ""
 
-#: wppa-slideshow.php:648
+#: wppa-slideshow.php:655
 #, fuzzy
 msgid "Previous"
 msgstr ""
 "如果你改变由%%size=命令的显示宽度的此值变动比例，以配合这个纵横比以前的设置和"
 "定义。"
 
-#: wppa-slideshow.php:652
+#: wppa-slideshow.php:659
 msgid "Last"
 msgstr ""
 
-#: wppa-slideshow.php:768
+#: wppa-slideshow.php:775
 #, fuzzy, php-format
 msgid "Photo %s of %s"
 msgstr "评分：%s"
 
-#: wppa-slideshow.php:799
+#: wppa-slideshow.php:806
 msgid "Click to start/stop"
 msgstr "单击开始/停止"
 
-#: wppa-slideshow.php:811
+#: wppa-slideshow.php:818
 #, fuzzy
 msgid "- - - Comments box activated - - -"
 msgstr "根据全尺寸图像显示的评论框，让用户输入他们的意见对个人照片。"
 
-#: wppa-slideshow.php:832
+#: wppa-slideshow.php:839
 #, fuzzy
 msgid "- - - IPTC box activated - - -"
 msgstr "自定义Box"
 
-#: wppa-slideshow.php:852
+#: wppa-slideshow.php:859
 #, fuzzy
 msgid "- - - EXIF box activated - - -"
 msgstr "自定义Box"

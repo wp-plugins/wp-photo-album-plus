@@ -2,8 +2,8 @@
 /* wppa-album-navigator-widget.php
 * Package: wp-photo-album-plus
 *
-* display thumbnail photos
-* Version 5.4.14
+* display album names linking to content
+* Version 5.4.25
 */
 
 class AlbumNavigatorWidget extends WP_Widget {
@@ -136,6 +136,8 @@ class AlbumNavigatorWidget extends WP_Widget {
 			$level++;
 		}
 		
+		$slide = wppa_opt( 'wppa_album_navigator_widget_linktype' ) == 'slide' ? '&amp;wppa-slide=1' : '';
+		
 		$w = $this->get_widget_id();
 		$p = $parent;
 		$result = '';
@@ -156,7 +158,7 @@ class AlbumNavigatorWidget extends WP_Widget {
 						else $result .= '
 							<div style="width:12px;float:left;" >&nbsp;'.( $a == $ca ? '&raquo;' : '').'</div>';
 						$result .= '
-							<a href="'.wppa_get_permalink( $page ).'&amp;wppa-album='.$a.'&amp;wppa-cover=0&amp;wppa-occur=1">'.wppa_get_album_name( $a ).'</a>
+							<a href="'.wppa_get_permalink( $page ).'&amp;wppa-album='.$a.'&amp;wppa-cover=0&amp;wppa-occur=1'.$slide.'">'.wppa_get_album_name( $a ).'</a>
 						</li>';
 					$newpropclass = $propclass . ' p-'.$w.'-'.$p;
 					$result .= '<li class="anw-'.$w.'-'.$p.$propclass.'" style="list-style:none;" >' . $this->do_album_navigator( $a, $page, $skip, $newpropclass ) . '</li>';

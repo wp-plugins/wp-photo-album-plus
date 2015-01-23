@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wppa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-01-08 14:07+0100\n"
-"PO-Revision-Date: 2015-01-08 14:07+0100\n"
+"POT-Creation-Date: 2015-01-15 15:42+0100\n"
+"PO-Revision-Date: 2015-01-15 15:42+0100\n"
 "Last-Translator: J.N. Breetvelt <OpaJaap@OpaJaap.nl>\n"
 "Language-Team: OpaJaap <OpaJaap@OpaJaap.nl>\n"
 "Language: ru_RU\n"
@@ -103,69 +103,69 @@ msgstr ""
 msgid "Photo rated"
 msgstr "Фото дня"
 
-#: wppa-album-covers.php:994
+#: wppa-album-covers.php:996
 msgid "Link to"
 msgstr "Ссылка на"
 
-#: wppa-album-covers.php:1022 wppa-album-covers.php:1084
-#: wppa-album-covers.php:1091
+#: wppa-album-covers.php:1026 wppa-album-covers.php:1088
+#: wppa-album-covers.php:1095
 msgid "View the album"
 msgstr "Смотреть альбом"
 
-#: wppa-album-covers.php:1042
+#: wppa-album-covers.php:1046
 msgid "View the cover photo"
 msgstr "Смотреть обложку"
 
-#: wppa-album-covers.php:1043
+#: wppa-album-covers.php:1047
 msgid "View the cover photos"
 msgstr "Смотреть фотографии обложки"
 
-#: wppa-album-covers.php:1097
+#: wppa-album-covers.php:1101
 msgid "View"
 msgstr "Смотреть"
 
-#: wppa-album-covers.php:1100
+#: wppa-album-covers.php:1104
 msgid "album"
 msgstr "альбом"
 
-#: wppa-album-covers.php:1103
+#: wppa-album-covers.php:1107
 msgid "albums"
 msgstr "альбомов"
 
-#: wppa-album-covers.php:1112 wppa-boxes-html.php:373 wppa-breadcrumb.php:258
+#: wppa-album-covers.php:1116 wppa-boxes-html.php:373 wppa-breadcrumb.php:258
 #: wppa-breadcrumb.php:263 wppa-functions.php:4120 wppa-utils.php:1282
 msgid "and"
 msgstr "и"
 
-#: wppa-album-covers.php:1117
+#: wppa-album-covers.php:1121
 msgid "photo"
 msgstr "фото"
 
-#: wppa-album-covers.php:1120 wppa-album-covers.php:1124
+#: wppa-album-covers.php:1124 wppa-album-covers.php:1128
 msgid "photos"
 msgstr "фото"
 
-#: wppa-album-covers.php:1168 wppa-utils.php:1684
+#: wppa-album-covers.php:1172 wppa-utils.php:1684
 msgid "New!"
 msgstr ""
 
-#: wppa-album-covers.php:1169 wppa-utils.php:1684
+#: wppa-album-covers.php:1173 wppa-utils.php:1684
 msgid "New"
 msgstr ""
 
-#: wppa-album-covers.php:1190 wppa-non-admin.php:503
+#: wppa-album-covers.php:1194 wppa-non-admin.php:503
 msgid "Slideshow"
 msgstr "Слайдшоу"
 
-#: wppa-album-covers.php:1191
+#: wppa-album-covers.php:1195
 msgid "Browse photos"
 msgstr "Просмотреть фото"
 
-#: wppa-album-covers.php:1224
+#: wppa-album-covers.php:1228
 msgid "Categories:"
 msgstr ""
 
-#: wppa-album-covers.php:1227 wppa-breadcrumb.php:270 wppa-breadcrumb.php:275
+#: wppa-album-covers.php:1231 wppa-breadcrumb.php:270 wppa-breadcrumb.php:275
 msgid "Category:"
 msgstr ""
 
@@ -395,7 +395,7 @@ msgstr "писал:"
 msgid "Avatar"
 msgstr ""
 
-#: wppa-boxes-html.php:1087 wppa-links.php:691
+#: wppa-boxes-html.php:1087 wppa-links.php:710
 msgid "Awaiting moderation"
 msgstr "Ожидает одобрения"
 
@@ -935,13 +935,13 @@ msgstr "Не найдено ни альбомов, ни фотографий п�
 msgid "Edit"
 msgstr "Редактировать"
 
-#: wppa-functions.php:1473 wppa-functions.php:2863 wppa-links.php:640
-#: wppa-links.php:657
+#: wppa-functions.php:1473 wppa-functions.php:2863 wppa-links.php:659
+#: wppa-links.php:676
 msgid "Are you sure you want to remove this photo?"
 msgstr "Вы уверены, что хотите удалить это фото?"
 
-#: wppa-functions.php:1474 wppa-functions.php:2864 wppa-links.php:647
-#: wppa-links.php:665
+#: wppa-functions.php:1474 wppa-functions.php:2864 wppa-links.php:666
+#: wppa-links.php:684
 msgid "Delete"
 msgstr ""
 
@@ -1027,7 +1027,7 @@ msgstr "1 комментарий"
 msgid "%s Comments"
 msgstr "%s комментариев"
 
-#: wppa-functions.php:1856 wppa-links.php:1284
+#: wppa-functions.php:1856 wppa-links.php:1305
 msgid "A video can not be printed or downloaded"
 msgstr ""
 
@@ -1232,74 +1232,74 @@ msgstr "Лучшая десятка фотографий"
 msgid "View the most recent uploaded photos"
 msgstr "Смотреть фотографии обложки"
 
-#: wppa-links.php:628
+#: wppa-links.php:647
 msgid "App"
 msgstr ""
 
-#: wppa-links.php:629
+#: wppa-links.php:648
 msgid "Mod"
 msgstr ""
 
-#: wppa-links.php:630
+#: wppa-links.php:649
 msgid "Del"
 msgstr ""
 
-#: wppa-links.php:634 wppa-links.php:651
+#: wppa-links.php:653 wppa-links.php:670
 msgid "Are you sure you want to publish this photo?"
 msgstr "Вы уверены, что хотите опубликовать это фото?"
 
-#: wppa-links.php:645 wppa-links.php:662
+#: wppa-links.php:664 wppa-links.php:681
 msgid "Approve"
 msgstr ""
 
-#: wppa-links.php:646
+#: wppa-links.php:665
 msgid "Moderate"
 msgstr ""
 
-#: wppa-links.php:663
+#: wppa-links.php:682
 #, fuzzy
 msgid "PhotoAdmin"
 msgstr "Фото"
 
-#: wppa-links.php:664
+#: wppa-links.php:683
 #, fuzzy
 msgid "CommentAdmin"
 msgstr "Комментарии"
 
-#: wppa-links.php:668
+#: wppa-links.php:687
 #, fuzzy
 msgid "Are you sure you want to publish this comment?"
 msgstr "Вы должны <a href=\"%s\">войти</a>, чтобы оставить комментарий"
 
-#: wppa-links.php:680
+#: wppa-links.php:699
 #, fuzzy
 msgid "Are you sure you want to remove this comment?"
 msgstr "Вы должны <a href=\"%s\">войти</a>, чтобы оставить комментарий"
 
-#: wppa-links.php:694
+#: wppa-links.php:713
 #, php-format
 msgid "Scheduled for %s"
 msgstr ""
 
-#: wppa-links.php:879 wppa-links.php:880
+#: wppa-links.php:900 wppa-links.php:901
 msgid "Prev.&nbsp;page"
 msgstr "Предыдущая страница"
 
-#: wppa-links.php:884 wppa-links.php:885
+#: wppa-links.php:905 wppa-links.php:906
 msgid "Next&nbsp;page"
 msgstr "Следующая страница"
 
-#: wppa-links.php:919 wppa-non-admin.php:568
+#: wppa-links.php:940 wppa-non-admin.php:568
 msgid "Download"
 msgstr "Загрузить"
 
-#: wppa-links.php:919
+#: wppa-links.php:940
 msgid "Download album"
 msgstr "Загрузить альбом"
 
-#: wppa-links.php:1057
+#: wppa-links.php:1078
 #, fuzzy
-msgid "Vieuw thumbnails"
+msgid "View thumbnails"
 msgstr "Просмотреть миниатюры"
 
 #: wppa-non-admin.php:291
@@ -1312,7 +1312,7 @@ msgstr ""
 msgid "Keys: f = next mode; esc,x,o,c,q = exit; d = dismiss this notice."
 msgstr ""
 
-#: wppa-non-admin.php:504 wppa-slideshow.php:225
+#: wppa-non-admin.php:504 wppa-slideshow.php:232
 msgid "Start"
 msgstr "Начать"
 
@@ -1320,11 +1320,11 @@ msgstr "Начать"
 msgid "Stop"
 msgstr "Остановить"
 
-#: wppa-non-admin.php:506 wppa-slideshow.php:224
+#: wppa-non-admin.php:506 wppa-slideshow.php:231
 msgid "Slower"
 msgstr "Медленнее"
 
-#: wppa-non-admin.php:507 wppa-slideshow.php:226
+#: wppa-non-admin.php:507 wppa-slideshow.php:233
 msgid "Faster"
 msgstr "Быстрее"
 
@@ -1348,17 +1348,17 @@ msgstr "Следующее фото"
 msgid "Prev."
 msgstr "Пред."
 
-#: wppa-non-admin.php:513 wppa-slideshow.php:651
+#: wppa-non-admin.php:513 wppa-slideshow.php:658
 msgid "Next"
 msgstr "След."
 
-#: wppa-non-admin.php:514 wppa-slideshow.php:498 wppa-slideshow.php:502
-#: wppa-slideshow.php:544
+#: wppa-non-admin.php:514 wppa-slideshow.php:505 wppa-slideshow.php:509
+#: wppa-slideshow.php:551
 msgid "Average&nbsp;rating"
 msgstr "Средний&nbsp;рейтинг"
 
-#: wppa-non-admin.php:515 wppa-slideshow.php:523 wppa-slideshow.php:528
-#: wppa-slideshow.php:533
+#: wppa-non-admin.php:515 wppa-slideshow.php:530 wppa-slideshow.php:535
+#: wppa-slideshow.php:540
 msgid "My&nbsp;rating"
 msgstr "Мой &nbsp; рейтинг"
 
@@ -1430,102 +1430,102 @@ msgstr "Следующая страница"
 msgid "No album defined yet."
 msgstr "Альбом еще не определен."
 
-#: wppa-slideshow.php:242
+#: wppa-slideshow.php:249
 msgid "Paused"
 msgstr "Пауза"
 
-#: wppa-slideshow.php:247
+#: wppa-slideshow.php:254
 msgid ""
 "To see the full size images, you need to enable javascript in your browser."
 msgstr "Чтобы смотреть большие фото, нужно включить javascript в браузере!"
 
-#: wppa-slideshow.php:435
+#: wppa-slideshow.php:442
 #, fuzzy
 msgid "- - - Voting enabled - - -"
 msgstr "- - - Оценки включены - - -"
 
-#: wppa-slideshow.php:447
+#: wppa-slideshow.php:454
 #, fuzzy, php-format
 msgid "Number of votes: <span id=\"wppa-vote-count-%s\" >%s</span>&nbsp;"
 msgstr "Нужно <a href=\"%s\">войти</a>, чтобы голосовать"
 
-#: wppa-slideshow.php:452 wppa-slideshow.php:536 wppa-slideshow.php:569
+#: wppa-slideshow.php:459 wppa-slideshow.php:543 wppa-slideshow.php:576
 #, php-format
 msgid "You must <a href=\"%s\">login</a> to vote"
 msgstr "Нужно <a href=\"%s\">войти</a>, чтобы голосовать"
 
-#: wppa-slideshow.php:468
+#: wppa-slideshow.php:475
 msgid "- - - Rating enabled - - -"
 msgstr "- - - Оценки включены - - -"
 
-#: wppa-slideshow.php:485
+#: wppa-slideshow.php:492
 msgid "very low"
 msgstr "очень низкий"
 
-#: wppa-slideshow.php:486
+#: wppa-slideshow.php:493
 msgid "low"
 msgstr "низкий"
 
-#: wppa-slideshow.php:487
+#: wppa-slideshow.php:494
 msgid "average"
 msgstr "средний"
 
-#: wppa-slideshow.php:488
+#: wppa-slideshow.php:495
 msgid "high"
 msgstr "высокий"
 
-#: wppa-slideshow.php:489
+#: wppa-slideshow.php:496
 msgid "very high"
 msgstr "очень высокий"
 
-#: wppa-slideshow.php:516 wppa-slideshow.php:556
+#: wppa-slideshow.php:523 wppa-slideshow.php:563
 #, fuzzy
 msgid "Are you sure you want to mark this image as inappropriate?"
 msgstr "Вы должны <a href=\"%s\">войти</a>, чтобы оставить комментарий"
 
-#: wppa-slideshow.php:517 wppa-slideshow.php:557
+#: wppa-slideshow.php:524 wppa-slideshow.php:564
 msgid "Click this if you do NOT like this image!"
 msgstr "Кликните здесь, если вам НЕ нравится это изображение!"
 
-#: wppa-slideshow.php:519 wppa-slideshow.php:559
+#: wppa-slideshow.php:526 wppa-slideshow.php:566
 #, fuzzy
 msgid "Number of people who marked this photo as inapprpriate"
 msgstr "Помечено как спам"
 
-#: wppa-slideshow.php:565
+#: wppa-slideshow.php:572
 msgid "My rating:"
 msgstr "Моя оценка:"
 
-#: wppa-slideshow.php:647
+#: wppa-slideshow.php:654
 msgid "First"
 msgstr ""
 
-#: wppa-slideshow.php:648
+#: wppa-slideshow.php:655
 msgid "Previous"
 msgstr "Предыдущее"
 
-#: wppa-slideshow.php:652
+#: wppa-slideshow.php:659
 msgid "Last"
 msgstr ""
 
-#: wppa-slideshow.php:768
+#: wppa-slideshow.php:775
 #, php-format
 msgid "Photo %s of %s"
 msgstr "Фото %s из %s"
 
-#: wppa-slideshow.php:799
+#: wppa-slideshow.php:806
 msgid "Click to start/stop"
 msgstr "Пуск/стоп"
 
-#: wppa-slideshow.php:811
+#: wppa-slideshow.php:818
 msgid "- - - Comments box activated - - -"
 msgstr "- - - Комментарии видны - - -"
 
-#: wppa-slideshow.php:832
+#: wppa-slideshow.php:839
 msgid "- - - IPTC box activated - - -"
 msgstr "- - - показ IPTC включен - - -"
 
-#: wppa-slideshow.php:852
+#: wppa-slideshow.php:859
 msgid "- - - EXIF box activated - - -"
 msgstr "- - - показ EXIF включен - - -"
 

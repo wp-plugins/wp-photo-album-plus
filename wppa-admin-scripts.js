@@ -1,7 +1,7 @@
 /* admin-scripts.js */
 /* Package: wp-photo-album-plus
 /*
-/* Version 5.4.21
+/* Version 5.4.25
 /* Various js routines used in admin pages		
 */
 
@@ -100,6 +100,63 @@ function wppaInitSettings() {
 	}
 }
 
+// Quick sel on settings page will be released at version 5.5.0
+function wppaQuickSel() {
+	var tab = new Array('O','I','II','III','IV','V','VI','VII','VIII','IX','X','XI','XII');
+	var sub = new Array('A','B','C','D','E','F','G','H','I','J','K');
+	var tag;
+	var _cls;
+	
+	// Open Tables and subtables
+	for (table=1; table<13; table++) {
+		if ( table < 10 ) {
+			wppaShowTable(table);	// was Show Refreshes cookie, so it 'never' forgets
+		}
+		else {
+			wppaHideTable(table);	// Refreshes cookie, so it 'never' forgets
+		}
+		wppa_tablecookieoff(table);
+		for (subtab=0; subtab<11; subtab++) {
+			cookie = wppa_getCookie('table_'+tab[table-1]+'-'+sub[subtab]);
+			if (cookie == 'on') {
+				wppaToggleSubTable(tab[table-1],sub[subtab]);
+			}
+			var selection = jQuery('.wppa-'+tab[table-1]+'-'+sub[subtab]);
+			if ( selection.length > 0 ) {
+				selection.removeClass('wppa-none');
+				// For compatibility we fake all subtables are closed, because we close almost everything later on
+				wppaSubTabOn[tab[table-1]+'-'+sub[subtab]] = false;//true;
+				wppa_tablecookieoff(tab[table-1]+'-'+sub[subtab]);
+			}
+		}
+//		wppaToggleSubTable(tab[table-1],'Z');
+//		wppaToggleSubTable('VII','A');
+	}
+	
+//	jQuery( '.subtableheader' ).css('display')=='none');
+	
+	// Find tags
+	tag1 = jQuery("#wppa-quick-selbox-1").val();
+	tag2 = jQuery("#wppa-quick-selbox-2").val();
+	
+	// Both empty? close all (sub)tables
+	if ( tag1 == '-' && tag2 == '-' ) {
+		jQuery( '._wppatag-' ).addClass( 'wppa-none' );
+		for ( table = 1; table < 13; table++ ) {
+			wppaHideTable( table );
+		}
+	}
+	// Hide not wanted items
+	else {
+		if ( tag1 != '-' ) {
+			jQuery( '._wppatag-'+tag1 ).addClass('wppa-none');
+		}
+		if ( tag2 != '-' ) {
+			jQuery( '._wppatag-'+tag2 ).addClass('wppa-none');
+		}
+	}
+}
+
 function wppaToggleTable(table) {
 	if (jQuery('#wppa_table_'+table).css('display')=='none') {
 		jQuery('#wppa_table_'+table).css('display', 'inline');
@@ -125,6 +182,7 @@ function wppaToggleSubTable(table,subtable) {
 		wppaSubTabOn[table+'-'+subtable] = true;
 		wppa_tablecookieon(table+'-'+subtable);
 	}
+//alert("table+'-'+subtable = "+table+'-'+subtable+" wppaSubTabOn[table+'-'+subtable] = "+wppaSubTabOn[table+'-'+subtable]);
 }
 
 function wppaHideTable(table) {

@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wppa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-01-08 14:06+0100\n"
-"PO-Revision-Date: 2015-01-08 14:06+0100\n"
+"POT-Creation-Date: 2015-01-15 15:42+0100\n"
+"PO-Revision-Date: 2015-01-15 15:42+0100\n"
 "Last-Translator: J.N. Breetvelt <OpaJaap@OpaJaap.nl>\n"
 "Language-Team: OpaJaap <OpaJaap@OpaJaap.nl>\n"
 "Language: sv_SE\n"
@@ -102,69 +102,69 @@ msgstr "Avsluta & uppdatera"
 msgid "Photo rated"
 msgstr "Bilden betygsatt"
 
-#: wppa-album-covers.php:994
+#: wppa-album-covers.php:996
 msgid "Link to"
 msgstr "Länk till"
 
-#: wppa-album-covers.php:1022 wppa-album-covers.php:1084
-#: wppa-album-covers.php:1091
+#: wppa-album-covers.php:1026 wppa-album-covers.php:1088
+#: wppa-album-covers.php:1095
 msgid "View the album"
 msgstr "Visa albumet"
 
-#: wppa-album-covers.php:1042
+#: wppa-album-covers.php:1046
 msgid "View the cover photo"
 msgstr "Visa omslagsbilden"
 
-#: wppa-album-covers.php:1043
+#: wppa-album-covers.php:1047
 msgid "View the cover photos"
 msgstr "Visa omslagsbilderna"
 
-#: wppa-album-covers.php:1097
+#: wppa-album-covers.php:1101
 msgid "View"
 msgstr "Visa"
 
-#: wppa-album-covers.php:1100
+#: wppa-album-covers.php:1104
 msgid "album"
 msgstr "album"
 
-#: wppa-album-covers.php:1103
+#: wppa-album-covers.php:1107
 msgid "albums"
 msgstr "album"
 
-#: wppa-album-covers.php:1112 wppa-boxes-html.php:373 wppa-breadcrumb.php:258
+#: wppa-album-covers.php:1116 wppa-boxes-html.php:373 wppa-breadcrumb.php:258
 #: wppa-breadcrumb.php:263 wppa-functions.php:4120 wppa-utils.php:1282
 msgid "and"
 msgstr "och"
 
-#: wppa-album-covers.php:1117
+#: wppa-album-covers.php:1121
 msgid "photo"
 msgstr "foto"
 
-#: wppa-album-covers.php:1120 wppa-album-covers.php:1124
+#: wppa-album-covers.php:1124 wppa-album-covers.php:1128
 msgid "photos"
 msgstr "foton"
 
-#: wppa-album-covers.php:1168 wppa-utils.php:1684
+#: wppa-album-covers.php:1172 wppa-utils.php:1684
 msgid "New!"
 msgstr "Ny!"
 
-#: wppa-album-covers.php:1169 wppa-utils.php:1684
+#: wppa-album-covers.php:1173 wppa-utils.php:1684
 msgid "New"
 msgstr "Ny"
 
-#: wppa-album-covers.php:1190 wppa-non-admin.php:503
+#: wppa-album-covers.php:1194 wppa-non-admin.php:503
 msgid "Slideshow"
 msgstr "Starta Bildspel"
 
-#: wppa-album-covers.php:1191
+#: wppa-album-covers.php:1195
 msgid "Browse photos"
 msgstr "Scrolla foton"
 
-#: wppa-album-covers.php:1224
+#: wppa-album-covers.php:1228
 msgid "Categories:"
 msgstr "Kategorier:"
 
-#: wppa-album-covers.php:1227 wppa-breadcrumb.php:270 wppa-breadcrumb.php:275
+#: wppa-album-covers.php:1231 wppa-breadcrumb.php:270 wppa-breadcrumb.php:275
 msgid "Category:"
 msgstr "Kategori:"
 
@@ -392,7 +392,7 @@ msgstr "skrev:"
 msgid "Avatar"
 msgstr "Avatar"
 
-#: wppa-boxes-html.php:1087 wppa-links.php:691
+#: wppa-boxes-html.php:1087 wppa-links.php:710
 msgid "Awaiting moderation"
 msgstr "Avvaktar moderering"
 
@@ -914,13 +914,13 @@ msgstr ""
 msgid "Edit"
 msgstr "Redigera"
 
-#: wppa-functions.php:1473 wppa-functions.php:2863 wppa-links.php:640
-#: wppa-links.php:657
+#: wppa-functions.php:1473 wppa-functions.php:2863 wppa-links.php:659
+#: wppa-links.php:676
 msgid "Are you sure you want to remove this photo?"
 msgstr "Är du säker på att du vill ta bort den här bilden?"
 
-#: wppa-functions.php:1474 wppa-functions.php:2864 wppa-links.php:647
-#: wppa-links.php:665
+#: wppa-functions.php:1474 wppa-functions.php:2864 wppa-links.php:666
+#: wppa-links.php:684
 msgid "Delete"
 msgstr "Radera"
 
@@ -995,7 +995,7 @@ msgstr "1 kommentar"
 msgid "%s Comments"
 msgstr "%s Kommentarer"
 
-#: wppa-functions.php:1856 wppa-links.php:1284
+#: wppa-functions.php:1856 wppa-links.php:1305
 msgid "A video can not be printed or downloaded"
 msgstr "En video kan inte skrivas ut eller laddas ner"
 
@@ -1182,69 +1182,70 @@ msgstr "Senaste tio uppladdade bilderna"
 msgid "View the most recent uploaded photos"
 msgstr "Visa de mest nyligen uppladdade bilderna"
 
-#: wppa-links.php:628
+#: wppa-links.php:647
 msgid "App"
 msgstr "App"
 
-#: wppa-links.php:629
+#: wppa-links.php:648
 msgid "Mod"
 msgstr "Mod"
 
-#: wppa-links.php:630
+#: wppa-links.php:649
 msgid "Del"
 msgstr "Del"
 
-#: wppa-links.php:634 wppa-links.php:651
+#: wppa-links.php:653 wppa-links.php:670
 msgid "Are you sure you want to publish this photo?"
 msgstr "Är du säker på att du vill publicera den här bilden?"
 
-#: wppa-links.php:645 wppa-links.php:662
+#: wppa-links.php:664 wppa-links.php:681
 msgid "Approve"
 msgstr "Godkänn"
 
-#: wppa-links.php:646
+#: wppa-links.php:665
 msgid "Moderate"
 msgstr "Moderera"
 
-#: wppa-links.php:663
+#: wppa-links.php:682
 msgid "PhotoAdmin"
 msgstr "FotoAdmin"
 
-#: wppa-links.php:664
+#: wppa-links.php:683
 msgid "CommentAdmin"
 msgstr "KommentarAdmin"
 
-#: wppa-links.php:668
+#: wppa-links.php:687
 msgid "Are you sure you want to publish this comment?"
 msgstr "Är du säker på att du vill publicera den här kommentaren?"
 
-#: wppa-links.php:680
+#: wppa-links.php:699
 msgid "Are you sure you want to remove this comment?"
 msgstr "Är du säker på att du vill ta bort den här kommentaren?"
 
-#: wppa-links.php:694
+#: wppa-links.php:713
 #, php-format
 msgid "Scheduled for %s"
 msgstr "Schemalagd för %s"
 
-#: wppa-links.php:879 wppa-links.php:880
+#: wppa-links.php:900 wppa-links.php:901
 msgid "Prev.&nbsp;page"
 msgstr "Föreg.&nbsp;sida"
 
-#: wppa-links.php:884 wppa-links.php:885
+#: wppa-links.php:905 wppa-links.php:906
 msgid "Next&nbsp;page"
 msgstr "Nästa&nbsp;sida"
 
-#: wppa-links.php:919 wppa-non-admin.php:568
+#: wppa-links.php:940 wppa-non-admin.php:568
 msgid "Download"
 msgstr "Ladda ner"
 
-#: wppa-links.php:919
+#: wppa-links.php:940
 msgid "Download album"
 msgstr "Ladda ner album"
 
-#: wppa-links.php:1057
-msgid "Vieuw thumbnails"
+#: wppa-links.php:1078
+#, fuzzy
+msgid "View thumbnails"
 msgstr "Visa miniatyrbilder"
 
 #: wppa-non-admin.php:291
@@ -1260,7 +1261,7 @@ msgid "Keys: f = next mode; esc,x,o,c,q = exit; d = dismiss this notice."
 msgstr ""
 "Tangenter: f = nästa läge; esc,x,o,c,q = avsluta; d = avfärda meddelandet."
 
-#: wppa-non-admin.php:504 wppa-slideshow.php:225
+#: wppa-non-admin.php:504 wppa-slideshow.php:232
 msgid "Start"
 msgstr "Starta"
 
@@ -1268,11 +1269,11 @@ msgstr "Starta"
 msgid "Stop"
 msgstr "Avbryt"
 
-#: wppa-non-admin.php:506 wppa-slideshow.php:224
+#: wppa-non-admin.php:506 wppa-slideshow.php:231
 msgid "Slower"
 msgstr "Långsammare"
 
-#: wppa-non-admin.php:507 wppa-slideshow.php:226
+#: wppa-non-admin.php:507 wppa-slideshow.php:233
 msgid "Faster"
 msgstr "Snabbare"
 
@@ -1296,17 +1297,17 @@ msgstr "Nästa foto"
 msgid "Prev."
 msgstr "Föreg."
 
-#: wppa-non-admin.php:513 wppa-slideshow.php:651
+#: wppa-non-admin.php:513 wppa-slideshow.php:658
 msgid "Next"
 msgstr "Nästa"
 
-#: wppa-non-admin.php:514 wppa-slideshow.php:498 wppa-slideshow.php:502
-#: wppa-slideshow.php:544
+#: wppa-non-admin.php:514 wppa-slideshow.php:505 wppa-slideshow.php:509
+#: wppa-slideshow.php:551
 msgid "Average&nbsp;rating"
 msgstr "Medel&nbsp;gradering"
 
-#: wppa-non-admin.php:515 wppa-slideshow.php:523 wppa-slideshow.php:528
-#: wppa-slideshow.php:533
+#: wppa-non-admin.php:515 wppa-slideshow.php:530 wppa-slideshow.php:535
+#: wppa-slideshow.php:540
 msgid "My&nbsp;rating"
 msgstr "Min&nbsp;gradering"
 
@@ -1375,101 +1376,101 @@ msgstr "Widgetens landningssida"
 msgid "No album defined yet."
 msgstr "Inget album är definierat."
 
-#: wppa-slideshow.php:242
+#: wppa-slideshow.php:249
 msgid "Paused"
 msgstr "Pausad"
 
-#: wppa-slideshow.php:247
+#: wppa-slideshow.php:254
 msgid ""
 "To see the full size images, you need to enable javascript in your browser."
 msgstr ""
 "För att se ett foto i full storlek behöver du aktivera Javascript i din "
 "webläsare."
 
-#: wppa-slideshow.php:435
+#: wppa-slideshow.php:442
 msgid "- - - Voting enabled - - -"
 msgstr "- - - Röstning påslagen - - -"
 
-#: wppa-slideshow.php:447
+#: wppa-slideshow.php:454
 #, php-format
 msgid "Number of votes: <span id=\"wppa-vote-count-%s\" >%s</span>&nbsp;"
 msgstr "Antal röster: <span id=\"wppa-vote-count-%s\" >%s</span>&nbsp;"
 
-#: wppa-slideshow.php:452 wppa-slideshow.php:536 wppa-slideshow.php:569
+#: wppa-slideshow.php:459 wppa-slideshow.php:543 wppa-slideshow.php:576
 #, php-format
 msgid "You must <a href=\"%s\">login</a> to vote"
 msgstr "Du måste <a href=\"%s\">logga in</a> för att rösta"
 
-#: wppa-slideshow.php:468
+#: wppa-slideshow.php:475
 msgid "- - - Rating enabled - - -"
 msgstr "- - - Betyg tillgängligt - - -"
 
-#: wppa-slideshow.php:485
+#: wppa-slideshow.php:492
 msgid "very low"
 msgstr "väldigt lågt"
 
-#: wppa-slideshow.php:486
+#: wppa-slideshow.php:493
 msgid "low"
 msgstr "lågt"
 
-#: wppa-slideshow.php:487
+#: wppa-slideshow.php:494
 msgid "average"
 msgstr "medel"
 
-#: wppa-slideshow.php:488
+#: wppa-slideshow.php:495
 msgid "high"
 msgstr "högt"
 
-#: wppa-slideshow.php:489
+#: wppa-slideshow.php:496
 msgid "very high"
 msgstr "väldigt högt"
 
-#: wppa-slideshow.php:516 wppa-slideshow.php:556
+#: wppa-slideshow.php:523 wppa-slideshow.php:563
 msgid "Are you sure you want to mark this image as inappropriate?"
 msgstr "Är du säker att du vill markera den här bilden som opassande?"
 
-#: wppa-slideshow.php:517 wppa-slideshow.php:557
+#: wppa-slideshow.php:524 wppa-slideshow.php:564
 msgid "Click this if you do NOT like this image!"
 msgstr "Klicka detta om du INTE gillar bilden!"
 
-#: wppa-slideshow.php:519 wppa-slideshow.php:559
+#: wppa-slideshow.php:526 wppa-slideshow.php:566
 msgid "Number of people who marked this photo as inapprpriate"
 msgstr "Antal personer som markerat denna bild som opassande"
 
-#: wppa-slideshow.php:565
+#: wppa-slideshow.php:572
 msgid "My rating:"
 msgstr "Mina betygsröster:"
 
-#: wppa-slideshow.php:647
+#: wppa-slideshow.php:654
 msgid "First"
 msgstr "Första"
 
-#: wppa-slideshow.php:648
+#: wppa-slideshow.php:655
 msgid "Previous"
 msgstr "Föregående"
 
-#: wppa-slideshow.php:652
+#: wppa-slideshow.php:659
 msgid "Last"
 msgstr "Sista"
 
-#: wppa-slideshow.php:768
+#: wppa-slideshow.php:775
 #, php-format
 msgid "Photo %s of %s"
 msgstr "Foto %s av %s"
 
-#: wppa-slideshow.php:799
+#: wppa-slideshow.php:806
 msgid "Click to start/stop"
 msgstr "Klicka för att starta/stoppa"
 
-#: wppa-slideshow.php:811
+#: wppa-slideshow.php:818
 msgid "- - - Comments box activated - - -"
 msgstr "- - - Kommentarsbox aktiverad - - -"
 
-#: wppa-slideshow.php:832
+#: wppa-slideshow.php:839
 msgid "- - - IPTC box activated - - -"
 msgstr "- - - IPTC box aktiverad - - -"
 
-#: wppa-slideshow.php:852
+#: wppa-slideshow.php:859
 msgid "- - - EXIF box activated - - -"
 msgstr "- - - EXIF box aktiverad - - -"
 

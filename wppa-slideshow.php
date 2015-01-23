@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the slideshow high level functions
-* Version 5.4.19
+* Version 5.4.25
 *
 */
 
@@ -114,6 +114,13 @@ function wppa_prepare_slideshow_pagination() {
 global $wppa_opt;
 global $wppa;
 global $thumbs;
+global $thumbs_ids;
+
+	// Save thumb ids of full selection
+	$thumbs_ids = array();
+	if ( $thumbs ) foreach ( $thumbs as $t ) {
+		$thumbs_ids[] = $t['id'];
+	}
 
 	// Page size defined?
 	if ( ! $wppa_opt['wppa_slideshow_pagesize'] ) {

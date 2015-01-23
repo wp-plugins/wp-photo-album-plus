@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, myCRED, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile, cloudinary, fotomoto, CMTooltipGlossary
-Version: 5.4.24
+Version: 5.4.25
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -187,6 +187,28 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 5.4.25 =
+
+= Bug Fixes =
+
+* Users with wppa admin rights and no moderate rights received security error #78 on changing photo status. Fixed ( 5.4.24.001 ).
+* Fixed a typo in link title from slide to thumbnail.
+
+= New Features =
+
+* Table VII-C6: Extended status is restricted. If Checked, setting photo status other than Publish or Pending requires administrator rights. 
+If the user has moderate rights he can only set status to Publish or Pending.
+* New album title link types: 'the sub-albums' and 'the thumbnails'. Selectable on the edit album information admin screen.
+Also works on the cover photo if Table VI-B1 is set to 'same as title'.
+The View link is not affected and will still link to the 'content' i.e. sub-albums and thumbnails.
+* Table VI-C8: Album navigator widget link: you can now select thumbnails or slideshow.
+
+= Other Changes =
+
+* Added Brazilian Portugese front-end language files.
+* Table IV-B15. You can now switch the use of Ajax for slideshow pagelinks independantly.
+* When linking back from slide to thumbnail view, you will land on the correct thumbnail page and the actual thumbnail has a blue border to indicate the link source. This does not apply to the 'back to thumbnails' icon in the breadcrumb.
 
 = 5.4.24 =
 

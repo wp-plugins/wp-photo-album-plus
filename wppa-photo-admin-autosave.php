@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * edit and delete photos
-* version 5.4.24
+* version 5.4.25
 *
 */
 
@@ -680,11 +680,12 @@ global $wppa;
 												<select id="status-<?php echo $photo['id'] ?>" onchange="wppaAjaxUpdatePhoto( <?php echo $photo['id'] ?>, 'status', this ); wppaPhotoStatusChange( <?php echo $photo['id'] ?> ); ">
 													<option value="pending" <?php if ( $photo['status']=='pending' ) echo 'selected="selected"'?> ><?php _e( 'Pending', 'wppa' ) ?></option>
 													<option value="publish" <?php if ( $photo['status']=='publish' ) echo 'selected="selected"'?> ><?php _e( 'Publish', 'wppa' ) ?></option>
-													<option value="featured" <?php if ( $photo['status']=='featured' ) echo 'selected="selected"'?> ><?php _e( 'Featured', 'wppa' ) ?></option>
-													<option value="gold" <?php if ( $photo['status'] == 'gold' ) echo 'selected="selected"' ?> ><?php _e( 'Gold', 'wppa' ) ?></option>
-													<option value="silver" <?php if ( $photo['status'] == 'silver' ) echo 'selected="selected"' ?> ><?php _e( 'Silver', 'wppa' ) ?></option>
-													<option value="bronze" <?php if ( $photo['status'] == 'bronze' ) echo 'selected="selected"' ?> ><?php _e( 'Bronze', 'wppa' ) ?></option>
-													<option value="scheduled" <?php if ( $photo['status'] == 'scheduled' ) echo 'selected="selected"' ?> ><?php _e( 'Scheduled', 'wppa' ) ?></option>
+													<?php if ( wppa_switch( 'wppa_ext_status_restricted' ) && ! wppa_user_is( 'administrator' ) ) $dis = ' disabled'; else $dis = ''; ?>
+													<option value="featured" <?php if ( $photo['status']=='featured' ) echo 'selected="selected"'; echo $dis?> ><?php _e( 'Featured', 'wppa' ) ?></option>
+													<option value="gold" <?php if ( $photo['status'] == 'gold' ) echo 'selected="selected"'; echo $dis?> ><?php _e( 'Gold', 'wppa' ) ?></option>
+													<option value="silver" <?php if ( $photo['status'] == 'silver' ) echo 'selected="selected"'; echo $dis?> ><?php _e( 'Silver', 'wppa' ) ?></option>
+													<option value="bronze" <?php if ( $photo['status'] == 'bronze' ) echo 'selected="selected"'; echo $dis?> ><?php _e( 'Bronze', 'wppa' ) ?></option>
+													<option value="scheduled" <?php if ( $photo['status'] == 'scheduled' ) echo 'selected="selected"'; echo $dis?> ><?php _e( 'Scheduled', 'wppa' ) ?></option>
 												</select>
 											</td>
 											<td class="wppa-datetime-<?php echo $photo['id'] ?>" >
@@ -905,7 +906,7 @@ function wppa_album_photos_bulk( $album ) {
 							break;
 						case 'wppa-bulk-status':
 							if ( current_user_can( 'wppa_admin' ) || current_user_can( 'wppa_moderate' ) ) {
-								if ( $status == 'publish' || $status == 'pending' || $status == 'featured' ) {
+								if ( $status == 'publish' || $status == 'pending' || wppa_user_is( 'administrator' ) || ! wppa_switch( 'wppa_ext_status_restricted' ) ) {
 									$wpdb->query( "UPDATE `".WPPA_PHOTOS."` SET `status` = '".$status."' WHERE `id` = ".$id );
 									wppa_flush_treecounts( $id, wppa_get_photo_item( $id, 'album' ) );
 								}	
@@ -1064,7 +1065,12 @@ function wppa_album_photos_bulk( $album ) {
 					<option value="" ><?php _e( '- select a status -', 'wppa' ) ?></option>
 					<option value="pending" ><?php _e( 'Pending', 'wppa' ) ?></option>
 					<option value="publish" ><?php _e( 'Publish', 'wppa' ) ?></option>
-					<option value="featured" ><?php _e( 'Featured', 'wppa' ) ?></option>
+					<?php if ( wppa_switch( 'wppa_ext_status_restricted' ) && ! wppa_user_is( 'administrator' ) ) $dis = ' disabled'; else $dis = ''; ?>
+					<option value="featured"<?php echo $dis?> ><?php _e( 'Featured', 'wppa' ) ?></option>
+					<option value="gold" <?php echo $dis?> ><?php _e( 'Gold', 'wppa' ) ?></option>
+					<option value="silver" <?php echo $dis?> ><?php _e( 'Silver', 'wppa' ) ?></option>
+					<option value="bronze" <?php echo $dis?> ><?php _e( 'Bronze', 'wppa' ) ?></option>
+					<option value="scheduled" <?php echo $dis?> ><?php _e( 'Scheduled', 'wppa' ) ?></option>
 				</select>
 				<input type="submit" onclick="return wppaBulkDoitOnClick()" class="button-primary" value="<?php _e( 'Doit!', 'wppa' ) ?>" />
 				<span style="font-family:sans-serif; font-size:12px; font-style:italic; font-weight:normal;" >
@@ -1125,11 +1131,16 @@ function wppa_album_photos_bulk( $album ) {
 								<textarea class="wppa-bulk-dec" style="height:50px; width:100%" onchange="wppaAjaxUpdatePhoto( <?php echo $photo['id'] ?>, 'description', this )" ><?php echo( stripslashes( $photo['description'] ) ) ?></textarea>
 							</td>
 							<td>
-							<?php if ( ( current_user_can( 'wppa_admin' ) || current_user_can( 'wppa_moderate' ) ) && ( in_array( $photo['status'], array( 'pending', 'publish', 'featured' ) ) ) ) { ?>
+							<?php if ( current_user_can( 'wppa_admin' ) || current_user_can( 'wppa_moderate' ) )  { ?>
 								<select id="status-<?php echo $photo['id'] ?>" onchange="wppaAjaxUpdatePhoto( <?php echo $photo['id'] ?>, 'status', this ); wppaPhotoStatusChange( <?php echo $photo['id'] ?> ); ">
 									<option value="pending" <?php if ( $photo['status']=='pending' ) echo 'selected="selected"'?> ><?php _e( 'Pending', 'wppa' ) ?></option>
 									<option value="publish" <?php if ( $photo['status']=='publish' ) echo 'selected="selected"'?> ><?php _e( 'Publish', 'wppa' ) ?></option>
-									<option value="featured" <?php if ( $photo['status']=='featured' ) echo 'selected="selected"'?> ><?php _e( 'Featured', 'wppa' ) ?></option>
+									<?php if ( wppa_switch( 'wppa_ext_status_restricted' ) && ! wppa_user_is( 'administrator' ) ) $dis = ' disabled'; else $dis = ''; ?>
+									<option value="featured" <?php if ( $photo['status']=='featured' ) echo 'selected="selected"'; echo $dis?> ><?php _e( 'Featured', 'wppa' ) ?></option>
+									<option value="gold" <?php if ( $photo['status'] == 'gold' ) echo 'selected="selected"'; echo $dis?> ><?php _e( 'Gold', 'wppa' ) ?></option>
+									<option value="silver" <?php if ( $photo['status'] == 'silver' ) echo 'selected="selected"'; echo $dis?> ><?php _e( 'Silver', 'wppa' ) ?></option>
+									<option value="bronze" <?php if ( $photo['status'] == 'bronze' ) echo 'selected="selected"'; echo $dis?> ><?php _e( 'Bronze', 'wppa' ) ?></option>
+									<option value="scheduled" <?php if ( $photo['status'] == 'scheduled' ) echo 'selected="selected"'; echo $dis?> ><?php _e( 'Scheduled', 'wppa' ) ?></option>
 								</select>
 							<?php }
 								else { 

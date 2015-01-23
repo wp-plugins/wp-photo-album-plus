@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 5.4.24
+* Version 5.4.25
 *
 */
 
@@ -795,6 +795,7 @@ Hide Camera info
 						'wppa_auto_open_comments'		=> 'yes',
 						'wppa_film_hover_goto'			=> 'no',
 						'wppa_slide_swipe'				=> 'yes',
+						'wppa_slideshow_page_allow_ajax'	=> get_option( 'wppa_allow_ajax', 'no' ),	// new in 5.4.25, for backward compat look at general switch
 						// C Thumbnail
 						'wppa_list_photos_by' 			=> '0',
 						'wppa_list_photos_desc' 		=> 'no',
@@ -989,6 +990,7 @@ Hide Camera info
 						
 						'wppa_bestof_widget_linkpage'		=> '0',
 						
+						'wppa_album_navigator_widget_linktype' 	=> 'thumbs',
 						'wppa_album_navigator_widget_linkpage' 	=> '0', 
 						
 						
@@ -1180,6 +1182,7 @@ Hide Camera info
 						'wppa_save_exif'			=> 'yes',
 						'wppa_exif_max_array_size'	=> '10',
 						'wppa_chgsrc_is_restricted'		=> 'no',
+						'wppa_ext_status_restricted' 	=> 'no',
 						'wppa_newpag_create'			=> 'no',
 						'wppa_newpag_content'			=> '[wppa type="cover" album="w#album" align="center"][/wppa]',
 						'wppa_newpag_type'				=> 'page',

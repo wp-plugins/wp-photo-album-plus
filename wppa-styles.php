@@ -3,7 +3,7 @@
 /* Package: wp-photo-album-plus
 /*
 /* Various style computation routines
-/* Version 5.4.22
+/* Version 5.4.25
 /*
 */
 
@@ -450,7 +450,12 @@ global $wppa;
 		case 'twthumb':		// Thumbnail widget
 		case 'ltthumb':		// Lasten widget
 		case 'albthumb':	// Album widget
-			$result['style'] .= ' border-width: 0px;';
+			if ( $type == 'thumb' && wppa_get_get( 'hilite' ) == $id ) {
+				$result['style'] .= ' border:2px solid blue;box-sizing:border-box;';
+			}
+			else {
+				$result['style'] .= ' border-width: 0px;';
+			}
 			$result['style'] .= ' width:' . $width . 'px; height:' . $height . 'px;';
 			if ( $xvalign == 'optional' ) $valign = wppa_opt( 'wppa_valign' );
 			else $valign = $xvalign;

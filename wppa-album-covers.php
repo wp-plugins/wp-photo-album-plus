@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Functions for album covers
-* Version 5.4.20
+* Version 5.4.25
 *
 */
 
@@ -968,8 +968,10 @@ global $wppa_opt;
 	if ( $linkpage > 0 ) {
 		switch ( $linktype ) {
 			case 'content':
+			case 'thumbs':
+			case 'albums':
 				if ( $has_content ) {
-					$href_title = wppa_get_album_url( $albumid, $linkpage );
+					$href_title = wppa_get_album_url( $albumid, $linkpage, $linktype );
 				}
 				else {
 					$href_title = get_page_link( $album['cover_linkpage'] );
@@ -999,10 +1001,12 @@ global $wppa_opt;
 	elseif ( $has_content ) {
 		switch ( $linktype ) {
 			case 'content':
-				$href_title = wppa_convert_to_pretty( wppa_get_album_url( $albumid, $linkpage ) );
+			case 'thumbs':
+			case 'albums':
+				$href_title = wppa_convert_to_pretty( wppa_get_album_url( $albumid, $linkpage, $linktype ) );
 				if ( wppa_switch( 'wppa_allow_ajax' ) ) {
 					$onclick_title = "wppaDoAjaxRender( " . $wppa['mocc'] . ", '" . 
-						wppa_get_album_url_ajax( $albumid, $linkpage ) . "', '" . $href_title . "' )";
+						wppa_get_album_url_ajax( $albumid, $linkpage, $linktype ) . "', '" . $href_title . "' )";
 					$href_title = "#";
 				}
 				break;
@@ -1010,7 +1014,7 @@ global $wppa_opt;
 				$href_title = wppa_convert_to_pretty( wppa_get_slideshow_url( $albumid, $linkpage ) );
 				if ( wppa_switch( 'wppa_allow_ajax' ) ) {
 					$onclick_title = "wppaDoAjaxRender( " . $wppa['mocc'] . ", '" . 
-						wppa_get_slideshow_url_ajax( $albumid, $linkpage ) . "', '" . $href_title . "' )";
+						wppa_get_slideshow_url_ajax( $albumid, $linkpage, $linktype ) . "', '" . $href_title . "' )";
 					$href_title = "#";
 				}
 				break;
