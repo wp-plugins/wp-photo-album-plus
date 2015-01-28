@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: wppa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-01-28 15:42+0100\n"
-"PO-Revision-Date: 2015-01-28 15:53+0100\n"
+"PO-Revision-Date: 2015-01-28 16:32+0100\n"
 "Last-Translator: J.N. Breetvelt <OpaJaap@OpaJaap.nl>\n"
 "Language-Team: \n"
 "Language: fi\n"
@@ -1492,7 +1492,7 @@ msgstr ""
 
 #: wppa-non-admin.php:504 wppa-slideshow.php:232
 msgid "Start"
-msgstr "Aloitus"
+msgstr "Aloita"
 
 #: wppa-non-admin.php:505
 msgid "Stop"
