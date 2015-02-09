@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the slideshow high level functions
-* Version 5.4.25
+* Version 5.5.0
 *
 */
 
@@ -456,7 +456,12 @@ global $wppa_opt;
 		$wppa['out'] .= '<input id="wppa-vote-button-'.$wppa['mocc'].'" class="wppa-vote-button" style="margin:0;" type="button" onclick="wppaRateIt('.$wppa['mocc'].', 1)" value="'.$wppa_opt['wppa_vote_button_text'].'" />';
 	}
 	else {
-		$wppa['out'] .= sprintf(__a('You must <a href="%s">login</a> to vote', 'wppa_theme'), site_url('wp-login.php', 'login'));
+		if ( wppa_switch( 'wppa_login_links' ) ) {
+			$wppa['out'] .= sprintf(__a( 'You must <a href="%s">login</a> to vote' ), site_url('wp-login.php', 'login'));
+		}
+		else {
+			$wppa['out'] .= __a( 'You must login to vote' );
+		}
 	}
 	
 	// Close the voting box
@@ -540,8 +545,12 @@ global $wppa_opt;
 			if ( wppa_switch('wppa_show_avg_rating') ) $wppa['out'] .= '&nbsp;'.'<span id="wppa-my-rat-'.$wppa['mocc'].'">'.__a('My&nbsp;rating', 'wppa_theme').'</span>';
 		}
 		else {
-			$wppa['out'] .= sprintf(__a('You must <a href="%s">login</a> to vote', 'wppa_theme'), site_url('wp-login.php', 'login'));
-
+			if ( wppa_switch( 'wppa_login_links' ) ) {
+				$wppa['out'] .= sprintf(__a( 'You must <a href="%s">login</a> to vote' ), site_url('wp-login.php', 'login'));
+			}
+			else {
+				$wppa['out'] .= __a( 'You must login to vote' );
+			}
 		}
 	}	
 	// display_type = numeric?
@@ -573,7 +582,12 @@ global $wppa_opt;
 			$wppa['out'] .= '<span id="wppa-numrate-mine-'.$wppa['mocc'].'"></span>';
 		}
 		else {
-			$wppa['out'] .= sprintf(__a('You must <a href="%s">login</a> to vote', 'wppa_theme'), site_url('wp-login.php', 'login'));
+			if ( wppa_switch( 'wppa_login_links' ) ) {
+				$wppa['out'] .= sprintf(__a( 'You must <a href="%s">login</a> to vote' ), site_url('wp-login.php', 'login'));
+			}
+			else {
+				$wppa['out'] .= __a( 'You must login to vote' );
+			}
 		}
 	}	
 	

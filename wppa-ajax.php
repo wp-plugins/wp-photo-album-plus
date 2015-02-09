@@ -2,7 +2,7 @@
 /* wppa-ajax.php
 *
 * Functions used in ajax requests
-* version 5.4.22
+* version 5.5.0
 *
 */
 
@@ -1260,6 +1260,9 @@ global $wppa_session;
 				case 'wppa_colwidth': //	 ??	  fixed   low	high	title
 					wppa_ajax_check_range( $value, 'auto', '100', false, __( 'Column width.', 'wppa' ) );
 					break;
+				case 'wppa_initial_colwidth':
+					wppa_ajax_check_range( $value, false, '100', false, __( 'Initial width.', 'wppa' ) );
+					break;
 				case 'wppa_fullsize':
 					wppa_ajax_check_range( $value, false, '100', false, __( 'Full size.', 'wppa' ) );
 					break;
@@ -1876,6 +1879,49 @@ global $wppa_session;
 			echo $wppa['out'];
 			exit;
 			break;
+			
+		case 'sanitizetags':
+			$tags 		= isset( $_GET['tags'] ) ? $_GET['tags'] : '';
+			$album 		= isset( $_GET['album'] ) ? $_GET['album'] : '0';
+			$deftags 	= $album ? wppa_get_album_item( $album, 'default_tags' ) : '';
+			$tags 		= $deftags ? $tags . ',' . $deftags : $tags;			
+			echo wppa_sanitize_tags( $tags );
+			exit;
+			break;
+			
+		case 'destroyalbum':
+			$album = isset( $_GET['album'] ) ? $_GET['album'] : '0';
+			if ( ! $album ) {
+				_e('Missing album id', 'wppa');
+				exit;
+			}
+			$nonce = isset( $_GET['nonce'] ) ? $_GET['nonce'] : '';
+			if ( ! $nonce || ! wp_verify_nonce( $nonce, 'wppa_nonce_'.$album ) ) {
+				echo 'Security check failure #798';
+				exit;
+			}
+			
+			// May I?
+			$imay = true;
+			if ( ! wppa_switch( 'wppa_user_destroy_on' ) ) $may = false;
+			if ( wppa_switch( 'wppa_user_create_login' ) ) {
+				if ( ! is_user_logged_in() ) $may = false;					// Must login
+			}
+			if ( ! wppa_have_access( $alb ) ) {
+				$may = false;						// No album access
+			}
+			if ( wppa_is_user_blacklisted() ) $may = false;
+			if ( ! $imay ) {
+				_e('You do not have the rights to delete this album', 'wppa');
+				exit;
+			}
+			
+			// I may
+			require_once 'wppa-album-admin-autosave.php';
+			wppa_del_album( $album, '' );
+			exit;
+			break;
+
 		
 		default:	// Unimplemented $wppa-action
 		die( '-1' );

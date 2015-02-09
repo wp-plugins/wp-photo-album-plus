@@ -2,7 +2,7 @@
 * Pachkage: wp-photo-album-plus
 *
 *
-* Version 5.4.10
+* Version 5.5.0
 *
 */
 
@@ -78,6 +78,7 @@ function wppaGalleryEvaluate() {
 	jQuery('#wppagallery-miscel-type-tr').hide();
 	jQuery('#wppagallery-album-type-tr').hide();
 	jQuery('#wppagallery-album-real-tr').hide();
+	jQuery('#wppagallery-album-realopt-tr').hide();
 	jQuery('#wppagallery-album-virt-tr').hide();
 	jQuery('#wppagallery-album-virt-cover-tr').hide();
 	jQuery('#wppagallery-owner-tr').hide();
@@ -257,7 +258,9 @@ function wppaGalleryEvaluate() {
 		switch ( albumType ) {
 			case 'real':
 				jQuery('#wppagallery-album-real-tr').show();
-				t = jQuery('.wppagallery-album');
+				album = wppaGetSelectionEnumByClass('.wppagallery-album-r');
+				/*
+				t = jQuery('.wppagallery-album-r');
 				var albumarr = [];
 				i = 0;
 				j = 0;
@@ -269,6 +272,7 @@ function wppaGalleryEvaluate() {
 					i++;
 				}
 				album = wppaArrayToEnum( albumarr, '.' );
+				*/
 				if ( album != '' ) {
 					jQuery('#wppagallery-album-type').css('color', '#070');
 				}
@@ -292,8 +296,11 @@ function wppaGalleryEvaluate() {
 						case '#lasten':
 						case '#featen':
 						case '#comten':
-							jQuery('#wppagallery-album-parent-tr').show();
-							parent = jQuery('#wppagallery-album-parent-parent').attr('value');
+							jQuery('#wppagallery-album-realopt-tr').show();
+//							parent = jQuery('#wppagallery-album-real').attr('value');
+							// We use parent here for optional album(s), because album is already used for virtual album type
+							parent = wppaGetSelectionEnumByClass('.wppagallery-album-ropt');
+							if ( parent == '' ) parent = '0';
 							jQuery('#wppagallery-photo-count-tr').show();
 							count = jQuery('#wppagallery-photo-count').attr('value');
 							break;
@@ -338,23 +345,8 @@ function wppaGalleryEvaluate() {
 							owner = jQuery('#wppagallery-owner').attr('value');
 							if ( owner != '' ) {
 								jQuery('#wppagallery-owner').css('color', '#070');
-//								if ( album == '#owner' ) {
-									jQuery('#wppagallery-owner-parent-tr').show();
-									p = jQuery('.wppagallery-album');
-									var pararr = [];
-									i = 0;
-									j = 0;
-									while ( i < p.length ) {
-										if ( p[i].selected ) {
-											pararr[j] = p[i].value;
-											j++;
-										}
-										i++;
-									}
-									parent = wppaArrayToEnum( pararr, '.' );
-									
-//									parent = jQuery('#wppagallery-owner-parent').attr('value');
-//								}
+								jQuery('#wppagallery-owner-parent-tr').show();
+								parent = wppaGetSelectionEnumByClass('.wppagallery-album-p');
 							}
 							break;
 						case '#all':
@@ -364,7 +356,11 @@ function wppaGalleryEvaluate() {
 					}
 					if ( ( album != '#cat' || cat != '' ) && 
 						( album != '#owner' || owner != '' ) && 
-						( album != '#upldr' || owner != '' ) ) {
+						( album != '#upldr' || owner != '' ) &&
+						( album != '#topten' || parent != '' ) &&
+						( album != '#lasten' || parent != '' ) &&
+						( album != '#comten' || parent != '' ) &&
+						( album != '#featen' || parent != '' ) ) {
 						jQuery('#wppagallery-album-type').css('color', '#070');
 					}
 				}
@@ -478,6 +474,22 @@ function wppaGalleryEvaluate() {
 					( tags != '' || ! needTag ) &&
 					( cat != '' || ! needCat );
 					
+	// Debug
+	if ( ! shortcodeOk ) {
+		var text = '';
+		if ( album == '' && needAlbum ) text += 'Need album\n';
+		if ( photo == '' && needPhoto ) text += 'Need photo\n';
+		if ( owner == '' && needOwner ) text += 'Need owner';
+		if ( taglist == '' && needTagList ) text += 'Need taglist';
+		if ( galType == '' && needGalType ) text += 'Need galType';
+		if ( slideType == '' && needSlideType ) text += 'Need slideType';
+		if ( searchType == '' && needSearchType ) text += 'Need searchType';
+		if ( miscType == '' && needMiscType ) text += 'Need miscType';
+		if ( tags == '' && needTag ) text += 'Need tags';
+		if ( cat == '' && needCat ) text += 'Need cat';
+//		alert( text );
+	}
+	
 	// Display the right button
 	if ( shortcodeOk ) {
 		jQuery('#wppagallery-submit').show();

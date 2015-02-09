@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 *
-* Version 5.4.9
+* Version 5.5.0
 *
 */
 
@@ -196,29 +196,6 @@ global $wppa_opt;
 				'</td>'.
 			'</tr>'.
 			
-			// Real albums
-			'<tr id="wppagallery-album-real-tr" style="display:none;" >'.
-				'<th><label for="wppagallery-album-real">'.__('The Album(s) to be used:', 'wppa').'</label></th>'.
-				'<td>'.
-					'<select id="wppagallery-album-real" style="max-width:400px;" name="album" multiple="multiple" onchange="wppaGalleryEvaluate()">';
-						if ( $albums ) {
-
-							// Please select
-							$result .= '<option id="wppagallery-album-0" value="0" disabled="disabled" selected="selected" style="color:#700" >-- '.__('Please select one or more albums', 'wppa').' --</option>';
-
-							// All standard albums
-							foreach ( $albums as $album ) {
-								$id = $album['id'];
-								$result .= '<option class="wppagallery-album" value="' . $id . '" >'.stripslashes( __( $album['name'] ) ) . ' (' . $id . ')</option>';
-							}
-						}
-						else {
-							$result .= '<option value="0" >' . __('There are no albums yet', 'wppa') . '</option>';
-						}
-					$result .= '</select>'.
-				'</td>'.
-			'</tr>'.
-			
 			// Virtual albums
 			'<tr id="wppagallery-album-virt-tr" style="display:none;" >'.
 				'<th><label for="wppagallery-album-virt">'.__('The selection to be used:', 'wppa').'</label></th>'.
@@ -253,7 +230,53 @@ global $wppa_opt;
 				'</td>'.
 			'</tr>'.
 			
-			// Owner selction
+			// Real albums
+			'<tr id="wppagallery-album-real-tr" style="display:none;" >'.
+				'<th><label for="wppagallery-album-real">'.__('The Album(s) to be used:', 'wppa').'</label></th>'.
+				'<td>'.
+					'<select id="wppagallery-album-real" style="max-width:400px;" name="album" multiple="multiple" onchange="wppaGalleryEvaluate()">';
+						if ( $albums ) {
+
+							// Please select
+							$result .= '<option id="wppagallery-album-0" value="0" disabled="disabled" selected="selected" style="color:#700" >-- '.__('Please select one or more albums', 'wppa').' --</option>';
+
+							// All standard albums
+							foreach ( $albums as $album ) {
+								$id = $album['id'];
+								$result .= '<option class="wppagallery-album-r" value="' . $id . '" >'.stripslashes( __( $album['name'] ) ) . ' (' . $id . ')</option>';
+							}
+						}
+						else {
+							$result .= '<option value="0" >' . __('There are no albums yet', 'wppa') . '</option>';
+						}
+					$result .= '</select>'.
+				'</td>'.
+			'</tr>'.
+
+			// Real albums optional
+			'<tr id="wppagallery-album-realopt-tr" style="display:none;" >'.
+				'<th><label for="wppagallery-album-realopt">'.__('The Album(s) to be used:', 'wppa').'</label></th>'.
+				'<td>'.
+					'<select id="wppagallery-album-realopt" style="max-width:400px;" name="album" multiple="multiple" onchange="wppaGalleryEvaluate()">';
+						if ( $albums ) {
+
+							// Please select
+							$result .= '<option id="wppagallery-album-0" class="wppagallery-album-ropt" value="0" selected="selected" style="color:#070" >-- '.__('All albums', 'wppa').' --</option>';
+
+							// All standard albums
+							foreach ( $albums as $album ) {
+								$id = $album['id'];
+								$result .= '<option class="wppagallery-album-ropt" style="color:#070" value="' . $id . '" >'.stripslashes( __( $album['name'] ) ) . ' (' . $id . ')</option>';
+							}
+						}
+						else {
+							$result .= '<option value="0" >' . __('There are no albums yet', 'wppa') . '</option>';
+						}
+					$result .= '</select>'.
+				'</td>'.
+			'</tr>'.
+
+			// Owner selection
 			'<tr id="wppagallery-owner-tr" style="display:none" >'.
 				'<th><label for="wppagallery-owner">'.__('The album owner:', 'wppa').'</label></th>'.
 				'<td>'.
@@ -288,7 +311,7 @@ global $wppa_opt;
 							// All standard albums
 							foreach ( $albums as $album ) {
 								$id = $album['id'];
-								$result .= '<option class="wppagallery-album" value="'.$id.'" >'.stripslashes(__($album['name'])).' ('.$id.')</option>';
+								$result .= '<option class="wppagallery-album-p" value="'.$id.'" >'.stripslashes(__($album['name'])).' ('.$id.')</option>';
 							}
 						}
 						else {

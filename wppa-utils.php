@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains low-level utility routines
-* Version 5.4.24
+* Version 5.5.0
 *
 */
  
@@ -290,6 +290,19 @@ global $wppa_opt;
 	return $wppa_opt[$key];
 }
 
+function wppa( $key ) {
+global $wppa;
+
+	if ( is_array( $wppa ) ) {
+		if ( ! isset( $wppa[$key] ) ) {
+			wppa_dbg_msg( 'Error', '$wppa[\''.$key.'\'] is not defined' );
+		}
+	}
+	else wppa_dbg_msg( 'Error', '$wppa[] is not initialized while testing \''.$key.'\'' );
+	
+	return $wppa[$key];	
+}
+
 function wppa_add_paths($albums) {
 	if ( is_array($albums) ) foreach ( array_keys($albums) as $index ) {
 		$tempid = $albums[$index]['id'];
@@ -360,8 +373,8 @@ function wppa_array_sort($array, $on, $order=SORT_ASC) {
 
 function wppa_get_taglist() {
 
-	$result = WPPA_MULTISITE_GLOBAL ? get_site_option( 'wppa_taglist', 'nil' ) : get_option( 'wppa_taglist', 'nil' );
-	if ( $result == 'nil' ) {
+	$result = WPPA_MULTISITE_GLOBAL ? get_site_option( 'wppa_taglist', 'nil' ) : get_option( 'wppa_taglist', false );
+	if ( ! $result ) {
 		$result = wppa_create_taglist();
 	}
 	else {
@@ -413,13 +426,16 @@ global $wpdb;
 		}
 	}
 	$bret = WPPA_MULTISITE_GLOBAL ? update_site_option( 'wppa_taglist', $tosave ) : update_option( 'wppa_taglist', $tosave );
+	if ( ! $bret ) {
+		wppa_log( 'Err', 'Unable to save taglist' );
+	}
 	return $result;
 }
 
 function wppa_get_catlist() {
 
-	$result = WPPA_MULTISITE_GLOBAL ? get_site_option( 'wppa_catlist', 'nil' ) : get_option( 'wppa_catlist', 'nil' );
-	if ( $result == 'nil' ) {
+	$result = WPPA_MULTISITE_GLOBAL ? get_site_option( 'wppa_catlist', 'nil' ) : get_option( 'wppa_catlist', false );
+	if ( ! $result ) {
 		$result = wppa_create_catlist();
 	}
 	else {
@@ -471,6 +487,9 @@ global $wpdb;
 		}
 	}
 	$bret = WPPA_MULTISITE_GLOBAL ? update_site_option( 'wppa_catlist', $tosave ) : update_option( 'wppa_catlist', $tosave );
+	if ( ! $bret ) {
+		wppa_log( 'Err', 'Unable to save catlist' );
+	}
 	return $result;
 }
 
@@ -1170,13 +1189,14 @@ function wppa_sanitize_cats($value) {
 	return wppa_sanitize_tags($value);
 }
 function wppa_sanitize_tags($value, $keepsemi = false) {
+
 	// Sanitize
 	$value = strip_tags($value);					// Security
 	$value = str_replace('"', '', $value);			// Remove funny chars
 	$value = str_replace('\'', '', $value);			// ...
 	$value = str_replace('\\', '', $value);			// ...
 	$value = stripslashes($value);					// ...
-//	$value = str_replace(' ', '', $value);			// Remove spaces
+
 	// Find separator
 	$sep = ',';										// Default seperator
 	if ( $keepsemi ) {								// ';' allowed
@@ -1189,32 +1209,54 @@ function wppa_sanitize_tags($value, $keepsemi = false) {
 		$value = str_replace(';', ',', $value);		// Convert all seps to default separator ','
 	}
 	
-	$temp = explode($sep, $value);
+	$temp = explode( $sep, $value );
 	if ( is_array($temp) ) {
-		asort($temp);								// Sort
-		$value = '';
-		$first = true;
-		$previdx = '';
-		foreach ( array_keys($temp) as $idx ) {
+	
+		// Trim
+		foreach ( array_keys( $temp ) as $idx ) {
 			$temp[$idx] = trim( $temp[$idx] );
+		}
+		
+		// Capitalize single words within tags
+		foreach ( array_keys($temp) as $idx ) {
 			if ( strlen( $temp[$idx] ) > '1' ) {
 				$words = explode( ' ', $temp[$idx] );
 				foreach( array_keys($words) as $i ) {
 					$words[$i] = strtoupper(substr($words[$i], 0, 1)).strtolower(substr($words[$i], 1));
 				}
 				$temp[$idx] = implode(' ', $words);
-//				$temp[$idx] = strtoupper(substr($temp[$idx], 0, 1)).strtolower(substr($temp[$idx], 1));
+			}
+		}
+		
+		// Capitalize exif tags
+		foreach ( array_keys( $temp ) as $idx ) {
+			if ( substr( $temp[$idx], 0, 2 ) == 'E#' ) {
+				$temp[$idx] = strtoupper( $temp[$idx] );
+			}
+		}
+		
+		// Sort
+		asort($temp);
+
+		// Remove dups and recombine
+		$value = '';
+		$first = true;
+		$previdx = '';
+		foreach ( array_keys($temp) as $idx ) {
+			if ( strlen( $temp[$idx] ) > '1' ) {
+
+				// Remove duplicates
 				if ( $temp[$idx] ) {
 					if ( $first ) {
 						$first = false;
 						$value .= $temp[$idx];
 						$previdx = $idx;
 					}
-					elseif ( $temp[$idx] !=  $temp[$previdx] ) {	// Skip duplicates
+					elseif ( $temp[$idx] !=  $temp[$previdx] ) {	
 						$value .= $sep.$temp[$idx];
 						$previdx = $idx;
 					}
-				}		
+				}
 			}
 		}
 	}
@@ -1280,6 +1322,7 @@ global $thumb;
 	wppa_cache_thumb( $id );
 	
 	$result = sprintf(__a('See this image on %s'), str_replace('&amp;', __a('and'), get_bloginfo('name'))).': '.strip_shortcodes( wppa_strip_tags( wppa_html( wppa_get_photo_desc( $id ) ), 'all' ) );
+	$result = apply_filters( 'wppa_get_og_desc', $result );
 
 	return $result;
 }
@@ -1538,7 +1581,7 @@ function wppa_get_source_pl( $id ) {
 	if ( is_file( $source_path ) ) {
 		$result = 	content_url() . '/' . 						// http://www.mysite.com/wp-content/
 					wppa_opt( 'wppa_pl_dirname' ) . '/' .		// wppa-pl/
-					wppa_sanitize_file_name( wppa_get_album_item( wppa_get_photo_item( $id, 'album' ), 'name' ) ) . '/' .	// My-Album
+					wppa_sanitize_file_name( wppa_get_album_item( wppa_get_photo_item( $id, 'album' ), 'name' ), false ) . '/' .	// My-Album
 					basename( $source_path );					// My-Photo.jpg
 	}
 	return $result;
@@ -1630,12 +1673,12 @@ global $wpdb;
 	$thumb 	= wppa_cache_thumb( $id );
 	$album 	= wppa_cache_album( $thumb['album'] );
 	$tags 	= wppa_sanitize_tags( str_replace( array( '\'', '"'), ',', wppa_filter_iptc( wppa_filter_exif( $album['default_tags'], $id ), $id ) ) );
-	
-//	$wpdb->query( $wpdb->prepare( "UPDATE `".WPPA_PHOTOS."` SET `tags` = %s WHERE `id` = %s", $tags, $id ) );
 
-	wppa_update_photo( array( 'id' => $id, 'tags' => $tags ) );
-	
-	wppa_cache_thumb( 'invalidate', $id );
+	if ( $tags ) {
+		wppa_update_photo( array( 'id' => $id, 'tags' => $tags ) );
+		wppa_clear_taglist();
+		wppa_cache_thumb( 'invalidate', $id );
+	}
 }
 
 function wppa_test_for_medal( $id ) {
@@ -1947,17 +1990,24 @@ function wppa_force_numeric_else( $value, $default ) {
 
 // Same as wp sanitize_file_name, except that it can be used for a pathname also.
 // If a pathname: only the basename of the path is sanitized.
-function wppa_sanitize_file_name( $file ) {
+function wppa_sanitize_file_name( $file, $check_length = true ) {
 	$temp 	= explode( '/', $file );
 	$cnt 	= count( $temp );
 	$temp[$cnt - 1] = sanitize_file_name( $temp[$cnt - 1] );
 	$maxlen = wppa_opt( 'wppa_max_filename_length' );
-	if ( $maxlen ) {
-		$name = wppa_strip_ext( $temp[$cnt - 1] );
-		$ext = str_replace( $name.'.', '', $temp[$cnt - 1] );
-		if ( strlen( $name ) > $maxlen ) {
-			$name = substr( $name, 0, $maxlen );
-			$temp[$cnt - 1] = $name.'.'.$ext;
+	if ( $maxlen && $check_length ) {
+		if ( strpos( $temp[$cnt - 1], '.' ) !== false ) {
+			$name = wppa_strip_ext( $temp[$cnt - 1] );
+			$ext = str_replace( $name.'.', '', $temp[$cnt - 1] );
+			if ( strlen( $name ) > $maxlen ) {
+				$name = substr( $name, 0, $maxlen );
+				$temp[$cnt - 1] = $name.'.'.$ext;
+			}
+		}
+		else {
+			if ( strlen( $temp[$cnt - 1] ) > $maxlen ) {
+				$temp[$cnt - 1] = substr( $temp[$cnt - 1], 0, $maxlen );
+			}
 		}
 	}
 	$file 	= implode( '/', $temp );

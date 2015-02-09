@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains (not yet, but in the future maybe) all the maintenance routines
-* Version 5.4.22
+* Version 5.5.0
 *
 */
 
@@ -521,6 +521,7 @@ global $wppa_session;
 			case 'wppa_remake_index_albums':
 			case 'wppa_remake_index_photos':
 				$wpdb->query( "DELETE FROM `".WPPA_INDEX."` WHERE `albums` = '' AND `photos` = ''" );	// Remove empty entries
+				delete_option( 'wppa_index_need_remake' );
 				break;
 			case 'wppa_apply_new_photodesc_all':
 			case 'wppa_append_to_photodesc':

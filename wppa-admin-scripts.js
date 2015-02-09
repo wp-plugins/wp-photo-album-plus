@@ -1,7 +1,7 @@
 /* admin-scripts.js */
 /* Package: wp-photo-album-plus
 /*
-/* Version 5.4.25
+/* Version 5.5.0
 /* Various js routines used in admin pages		
 */
 
@@ -73,7 +73,7 @@ function wppaInitSettings() {
 //	wppaCheckKeepSource();
 	wppaCheckCoverType();
 	wppaCheckNewpag();
-	wppaCheckIndexSearch();
+//	wppaCheckIndexSearch();
 	wppaCheckCDN();
 	wppaCheckAutoPage();
 	wppaCheckGps();
@@ -103,20 +103,20 @@ function wppaInitSettings() {
 // Quick sel on settings page will be released at version 5.5.0
 function wppaQuickSel() {
 	var tab = new Array('O','I','II','III','IV','V','VI','VII','VIII','IX','X','XI','XII');
-	var sub = new Array('A','B','C','D','E','F','G','H','I','J','K');
+	var sub = new Array('A','B','C','D','E','F','G','H','I','J','K','Z');
 	var tag;
 	var _cls;
 	
 	// Open Tables and subtables
-	for (table=1; table<13; table++) {
-		if ( table < 10 ) {
+	for ( table = 1; table < 13; table++ ) {
+		if ( table < 13 ) {
 			wppaShowTable(table);	// was Show Refreshes cookie, so it 'never' forgets
 		}
 		else {
 			wppaHideTable(table);	// Refreshes cookie, so it 'never' forgets
 		}
 		wppa_tablecookieoff(table);
-		for (subtab=0; subtab<11; subtab++) {
+		for (subtab=0; subtab<12; subtab++) {
 			cookie = wppa_getCookie('table_'+tab[table-1]+'-'+sub[subtab]);
 			if (cookie == 'on') {
 				wppaToggleSubTable(tab[table-1],sub[subtab]);
@@ -129,7 +129,8 @@ function wppaQuickSel() {
 				wppa_tablecookieoff(tab[table-1]+'-'+sub[subtab]);
 			}
 		}
-//		wppaToggleSubTable(tab[table-1],'Z');
+//		wppaToggleSubTable('X','Z');
+//		wppaToggleSubTable('XI','Z');
 //		wppaToggleSubTable('VII','A');
 	}
 	
@@ -808,15 +809,16 @@ function wppaCheckSplitNamedesc() {
 	}
 }
 
+/*
 function wppaCheckIndexSearch() {
-	if (document.getElementById('wppa_indexed_search').checked) {
+//	if (document.getElementById('wppa_indexed_search').checked) {
 		jQuery('.index_search').css('display', '');
-	}
-	else {
-		jQuery('.index_search').css('display', 'none');
-	}
+//	}
+//	else {
+//		jQuery('.index_search').css('display', 'none');
+//	}
 }
-
+*/
 function wppa_tablecookieon(i) {
 	wppa_setCookie('table_'+i, 'on', '365');
 }
@@ -1847,6 +1849,28 @@ function wppaGetSelEnumToId( cls, id ) {
 		i++;
 	}
 	jQuery( '#'+id ).attr( 'value', wppaArrayToEnum( pararr, '.' ) );
+}
+
+function wppaGetSelectionEnumByClass( clas ) {
+var p;
+var parr = [];
+var i = 0;
+var j = 0;
+var result = '';
+
+	p = jQuery( clas );
+	i = 0;
+	j = 0;
+	while ( i < p.length ) {
+		if ( p[i].selected ) {
+			parr[j] = p[i].value;
+			j++;
+		}
+		i++;
+	}
+	result = wppaArrayToEnum( parr, '.' );
+	
+	return result;
 }
 
 function wppaEditSearch( url, id ) {

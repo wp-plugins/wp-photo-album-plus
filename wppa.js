@@ -2,7 +2,7 @@
 //
 // conatins slideshow, theme, ajax and lightbox code
 //
-var wppaJsVersion = '5.4.24';
+var wppaJsVersion = '5.5.0';
 
 // Part 1: Slideshow
 //
@@ -384,10 +384,10 @@ function wppaBbb( mocc, where, act ) {
 }
 
 function wppaUbb( mocc, where, act ) {
-	if ( ! _wppaSSRuns[mocc] ) {
+//	if ( ! _wppaSSRuns[mocc] ) {
 		// Ugli Browsing Buttons only work when stopped
 		_wppaUbb( mocc, where, act );
-	}
+//	}
 }
 
 function wppaRateIt( mocc, value ) {
@@ -989,6 +989,8 @@ function wppaMakeTheSlideHtml( mocc, bgfg, idx ) {
 	var imgVideo = ( _wppaIsVideo[mocc][idx] != '' ) ? 'video' : 'img';
 	var theHtml;
 	var url;
+	var theTitle = 'title';
+	if ( wppaLightBox[mocc] == 'wppa') theTitle = 'data-lbtitle';
 	
 //	if ( _wppaVideoHtml[mocc][idx] != '' ) {
 //		jQuery( "#theslide"+bgfg+"-"+mocc ).html( _wppaVideoHtml[mocc][idx] );
@@ -1027,7 +1029,7 @@ function wppaMakeTheSlideHtml( mocc, bgfg, idx ) {
 						url = wppaMakeFullsizeUrl( _wppaUrl[mocc][i] );
 					}
 
-					html += '<a href="'+url+'" data-videohtml="'+encodeURI( _wppaVideoHtml[mocc][i] )+'" title="'+_wppaLbTitle[mocc][i]+'" rel="'+wppaLightBox[mocc]+set+'"></a>';
+					html += '<a href="'+url+'" data-videohtml="'+encodeURI( _wppaVideoHtml[mocc][i] )+'" '+theTitle+'="'+_wppaLbTitle[mocc][i]+'" rel="'+wppaLightBox[mocc]+set+'"></a>';
 					i++;
 				}
 			}
@@ -1040,7 +1042,7 @@ function wppaMakeTheSlideHtml( mocc, bgfg, idx ) {
 			}
 		//	url = wppaMakeFullsizeUrl( _wppaUrl[mocc][idx] );
 //alert( _wppaVideoHtml[mocc][idx] );
-			html += '<a href="'+url+'" target="'+_wppaLinkTarget[mocc][idx]+'" data-videohtml="'+encodeURI( _wppaVideoHtml[mocc][idx] )+'" title="'+_wppaLbTitle[mocc][idx]+'" rel="'+wppaLightBox[mocc]+set+'">'+
+			html += '<a href="'+url+'" target="'+_wppaLinkTarget[mocc][idx]+'" data-videohtml="'+encodeURI( _wppaVideoHtml[mocc][idx] )+'" '+theTitle+'="'+_wppaLbTitle[mocc][idx]+'" rel="'+wppaLightBox[mocc]+set+'">'+
 						'<'+imgVideo+' title="'+_wppaLinkTitle[mocc][idx]+'" id="theimg'+bgfg+'-'+mocc+'" '+_wppaSlides[mocc][idx]+
 					'</a>';
 			// After current slide // This does NOT work on lightbox 3 ! 
@@ -1053,7 +1055,7 @@ function wppaMakeTheSlideHtml( mocc, bgfg, idx ) {
 					else {
 						url = wppaMakeFullsizeUrl( _wppaUrl[mocc][i] );
 					}
-					html += '<a href="'+url+'" data-videohtml="'+encodeURI( _wppaVideoHtml[mocc][i] )+'" title="'+_wppaLbTitle[mocc][i]+'" rel="'+wppaLightBox[mocc]+set+'"></a>';
+					html += '<a href="'+url+'" data-videohtml="'+encodeURI( _wppaVideoHtml[mocc][i] )+'" '+theTitle+'="'+_wppaLbTitle[mocc][i]+'" rel="'+wppaLightBox[mocc]+set+'"></a>';
 					i++;
 				}
 			}
@@ -1968,7 +1970,7 @@ function _wppaBbb( mocc,where,act ) {
 
 function _wppaUbb( mocc,where,act ) {
 	
-	if ( _wppaSSRuns[mocc] ) return;
+//	if ( _wppaSSRuns[mocc] ) return;
 	
 	var elm = '#ubb-'+mocc+'-'+where;
 
@@ -1987,8 +1989,26 @@ function _wppaUbb( mocc,where,act ) {
 			jQuery( '.ubb-'+mocc ).fadeTo( 200, 0.2 );
 			break;
 		case 'click':
-			if ( where == 'l' ) wppaPrev( mocc );
-			if ( where == 'r' ) wppaNext( mocc );
+			var idx;
+			if ( where == 'l' ) {	// wppaPrev( mocc );
+				idx = _wppaCurIdx[mocc] - 1;
+				if ( idx < 0 ) {
+					if ( ! wppaSlideWrap ) {
+						return;
+					}
+					idx = _wppaSlides[mocc].length - 1;
+				}
+			}
+			if ( where == 'r' ) {	// wppaNext( mocc );
+				idx = _wppaCurIdx[mocc] + 1;
+				if ( idx == _wppaSlides[mocc].length ) {
+					if ( ! wppaSlideWrap ) {
+						return;
+					}
+					idx = 0;
+				}
+			}
+			wppaGotoKeepState( mocc , idx );
 			break;
 		default:
 			alert( 'Unimplemented instruction: '+act+' on: '+elm );
@@ -2320,6 +2340,28 @@ function wppaProcessingRoutine() {
 		}		
 	}
 	else {	// swipe on slideshow
+	
+		if ( swipeDirection == 'right' ) {	// wppaPrev( mocc );
+			idx = _wppaCurIdx[mocc] - 1;
+			if ( idx < 0 ) {
+				if ( ! wppaSlideWrap ) {
+					return;
+				}
+				idx = _wppaSlides[mocc].length - 1;
+			}
+			wppaGotoKeepState( mocc , idx );
+		}
+		if ( swipeDirection == 'left' ) {	// wppaNext( mocc );
+			idx = _wppaCurIdx[mocc] + 1;
+			if ( idx == _wppaSlides[mocc].length ) {
+				if ( ! wppaSlideWrap ) {
+					return;
+				}
+				idx = 0;
+			}
+			wppaGotoKeepState( mocc , idx );
+		}
+/*
 		if ( swipeDirection == 'left' ) {
 			wppaNext( wppaMocc );
 			wppaMocc = 0;
@@ -2327,7 +2369,8 @@ function wppaProcessingRoutine() {
 		else if ( swipeDirection == 'right' ) {
 			wppaPrev( wppaMocc );
 			wppaMocc = 0;
-		} 
+		}
+*/		
 		else if ( swipeDirection == 'up' ) {
 		} 
 		else if ( swipeDirection == 'down' ) {
@@ -3008,7 +3051,12 @@ wppaConsoleLog( 'wppaOvlShow arg='+arg );
 	else {						// Arg is 'this' arg
 		wppaOvlIdx = -1;	// Assume single
 		wppaOvlUrl = arg.href;
-		wppaOvlTitle = wppaRepairScriptTags( arg.title );
+		if ( jQuery( arg ).attr( 'data-lbtitle' ) != '' ) {
+			wppaOvlTitle = wppaRepairScriptTags( jQuery( arg ).attr( 'data-lbtitle' ) );
+		}
+		else {
+			wppaOvlTitle = wppaRepairScriptTags( arg.title );
+		}
 		wppaOvlVideoHtml = decodeURI( jQuery( arg ).attr( 'data-videohtml' ) );
 		var rel = arg.rel;
 		var temp = rel.split( '[' );
@@ -3028,7 +3076,12 @@ wppaConsoleLog( 'wppaOvlShow arg='+arg );
 					temp = anchor.rel.split( "[" );
 					if ( temp[0] == 'wppa' && temp[1] == setname ) {	// Same set
 						wppaOvlUrls[j] = anchor.href;
-						wppaOvlTitles[j] = wppaRepairScriptTags( anchor.title );
+						if ( jQuery( anchor ).attr( 'data-lbtitle' ) ) {
+							wppaOvlTitles[j] = wppaRepairScriptTags( jQuery( anchor ).attr( 'data-lbtitle' ) );
+						}
+						else {
+							wppaOvlTitles[j] = wppaRepairScriptTags( anchor.title );
+						}
 						wppaOvlVideoHtmls[j] = decodeURI( jQuery( anchor ).attr( 'data-videohtml' ) );
 						if ( anchor.href == wppaOvlUrl ) wppaOvlIdx = j;	// Current index
 						j++;
@@ -3925,6 +3978,81 @@ function wppaUrlToId( url ) {
 	temp = temp.replace( '/', '' );
 	temp = temp.replace( '/', '' );
 	return temp;
+}
+
+function wppaPrevTags( tagsSel, tagsEdit, tagsAlbum, tagsPrev ) {
+	var sel 		= jQuery( '.'+tagsSel );
+	var selArr 		= [];
+	var editTag		= '';
+	var album 		= jQuery( '#'+tagsAlbum ).val();
+	var i 			= 0;
+	var j 			= 0;
+	var result 		= '';
+
+	// Get the selected tags
+	while ( i < sel.length ) {
+		if ( sel[i].selected ) {
+			selArr[j] = sel[i].value;
+			j++;
+		}
+		i++;
+	}
+	
+	// Add edit field if not empty
+	editTag = jQuery( '#'+tagsEdit ).val();
+	if ( editTag != '' ) {
+		selArr[j] = editTag;
+	}
+	
+	// Prelim result
+	result = selArr.join();
+	
+	// Sanitize if edit field is not empty or album known
+	if ( editTag != '' || tagsAlbum != '' ) {
+		jQuery( '#'+tagsPrev ).html( 'Working...' );
+		result = wppaAjaxSanitizeTags( result, album );
+	}
+	
+	// Update preview text
+	jQuery( '#'+tagsPrev ).html( result );
+}
+
+function wppaAjaxSanitizeTags( tags, album ) {
+
+	// Create the http request object
+	var xmlhttp = wppaGetXmlHttp();
+	var url = wppaAjaxUrl+'?action=wppa&wppa-action=sanitizetags&tags='+tags+'&album='+album;
+
+	// Issue request Synchronously! ! 
+	xmlhttp.open( "GET",url,false );
+	xmlhttp.send();
+
+	// Return the result
+	return xmlhttp.responseText;
+}
+
+function wppaAjaxDestroyAlbum( album, nonce ) {
+
+	// Are you sure?
+	if ( confirm('Are you sure you want to delete this album?') ) {
+		
+		// Create the http request object
+		var xmlhttp = wppaGetXmlHttp();
+		var url = wppaAjaxUrl+'?action=wppa&wppa-action=destroyalbum&album='+album+'&nonce='+nonce;
+
+		// Issue request Synchronously! ! 
+		xmlhttp.open( "GET",url,false );
+		xmlhttp.send();
+
+		// Process result
+		if ( xmlhttp.responseText != '' ) {
+			alert( xmlhttp.responseText );
+		}
+		
+		// Reload page
+		document.location.reload( true );
+	}
+	return false;
 }
 
 wppaConsoleLog( 'wppa.js version '+wppaJsVersion+' loaded.', 'force' );

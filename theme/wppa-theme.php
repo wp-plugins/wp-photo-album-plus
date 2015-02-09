@@ -3,11 +3,11 @@
 * Package: wp-photo-album-plus
 *
 * display the albums/photos/slideshow in a page or post
-* Version 5.4.7
+* Version 5.5.0
 */
 function wppa_theme() {
 
-global $wppa_version; $wppa_version = '5-4-00';		// The version number of this file
+global $wppa_version; $wppa_version = '5-5-00';		// The version number of this file
 global $wppa;
 global $wppa_opt;
 global $wppa_show_statistics;						// Can be set to true by a custom page template
@@ -42,28 +42,31 @@ global $wppa_show_statistics;						// Can be set to true by a custom page templa
 		// Get total number of pages
 		if ( ! wppa_is_pagination() ) $totpag = '1';								// If both pagination is off, there is only one page
 		else $totpag = $n_album_pages + $n_thumb_pages;	
-
+//echo 'apag='.$n_album_pages.', tpag='.$n_thumb_pages.', totpag='.$totpag;
 		// Make pagelinkbar if requested on top
 		if ( $wppa_opt['wppa_pagelink_pos'] == 'top' || $wppa_opt['wppa_pagelink_pos'] == 'both' ) {
 			wppa_page_links( $totpag, $curpage );
 		}
 		
 		// Process the albums
-		if ( $albums ) {	
-			$counter_albums = '0';
-			wppa_album_list( 'open' );												// Open Albums sub-container
-				foreach ( $albums as $album ) { 									// Loop the albums
-					$counter_albums++;
-					if ( wppa_onpage( 'albums', $counter_albums, $curpage ) ) {
-						wppa_album_cover( $album['id'] );							// Show the cover
-						$didsome = true;
-					} // End if on page
-				}
-			wppa_album_list( 'close' );												// Close Albums sub-container
-		}	// If albums
- 
+		if ( ! wppa_switch( 'wppa_thumbs_first' ) ) {
+			if ( $albums ) {	
+				$counter_albums = '0';
+				wppa_album_list( 'open' );												// Open Albums sub-container
+					foreach ( $albums as $album ) { 									// Loop the albums
+						$counter_albums++;
+						if ( wppa_onpage( 'albums', $counter_albums, $curpage ) ) {
+							wppa_album_cover( $album['id'] );							// Show the cover
+							$didsome = true;
+						} // End if on page
+					}
+				wppa_album_list( 'close' );												// Close Albums sub-container
+			}	// If albums
+		}
+		
 		if ( $didsome && wppa_is_pagination() ) $thumbs = false;					// Pag on and didsome: force a pagebreak by faking no thumbs
 		if ( count( $thumbs ) <= wppa_get_mincount() ) $thumbs = false;				// Less than treshold value
+		if ( wppa_switch( 'wppa_thumbs_first' ) && $curpage > $n_thumb_pages ) $thumbs = false; 	// If thumbs done, do not display an empty thumbarea
 		
 		// Process the thumbs
 		if ( $thumbs ) {	
@@ -71,9 +74,10 @@ global $wppa_show_statistics;						// Can be set to true by a custom page templa
 			if ( wppa_opt('wppa_thumbtype') == 'ascovers' || 
 				 wppa_opt('wppa_thumbtype') == 'ascovers-mcr' ) {					// Do the thumbs As covers
 				wppa_thumb_list( 'open' );											// Open Thumblist sub-container
+				$relpage = wppa_switch( 'wppa_thumbs_first' ) ? $curpage : $curpage - $n_album_pages;
 				foreach ( $thumbs as $tt ) :  global $thumb; $thumb = $tt; 			// Loop the Thumbs
 					$counter_thumbs++;
-					if ( wppa_onpage( 'thumbs', $counter_thumbs, $curpage - $n_album_pages ) ) {
+					if ( wppa_onpage( 'thumbs', $counter_thumbs, $relpage ) ) {
 						$didsome = true;
 						wppa_thumb_ascover( $thumb['id'] );							// Show Thumb as cover
 					} // End if on page
@@ -85,9 +89,10 @@ global $wppa_show_statistics;						// Can be set to true by a custom page templa
 				wppa_popup();														// Prepare Popup box
 				wppa_album_name( 'top' );											// Optionally display album name
 				wppa_album_desc( 'top' );											// Optionally display album description
+				$relpage = wppa_switch( 'wppa_thumbs_first' ) ? $curpage : $curpage - $n_album_pages;
 				foreach ( $thumbs as $tt ) :  global $thumb; $thumb = $tt; 			// Loop the Thumbs
 					$counter_thumbs++;
-					if ( wppa_onpage( 'thumbs', $counter_thumbs, $curpage - $n_album_pages ) ) {
+					if ( wppa_onpage( 'thumbs', $counter_thumbs, $relpage ) ) {
 						$didsome = true;
 						wppa_thumb_default( $thumb['id'] );							// Show Thumb as default
 					}	// End if on page
@@ -97,7 +102,26 @@ global $wppa_show_statistics;						// Can be set to true by a custom page templa
 				wppa_thumb_area( 'close' );											// Close Thumbarea sub-container
 			}	// As default
 		}	// If thumbs
-	
+
+		if ( $didsome && wppa_is_pagination() ) $albums = false;					// Pag on and didsome: force a pagebreak by faking no albums
+		if ( ! wppa_is_pagination() ) $n_thumb_pages = '0';							// Still on page one
+
+		// Process the albums
+		if ( wppa_switch( 'wppa_thumbs_first' ) ) {
+			if ( $albums ) {	
+				$counter_albums = '0';
+				wppa_album_list( 'open' );												// Open Albums sub-container
+					foreach ( $albums as $album ) { 									// Loop the albums
+						$counter_albums++;
+						if ( wppa_onpage( 'albums', $counter_albums, $curpage - $n_thumb_pages ) ) {
+							wppa_album_cover( $album['id'] );							// Show the cover
+							$didsome = true;
+						} // End if on page
+					}
+				wppa_album_list( 'close' );												// Close Albums sub-container
+			}	// If albums
+		}
+		
 		// Make pagelinkbar if requested on bottom
 		if ( $wppa_opt['wppa_pagelink_pos'] == 'bottom' || $wppa_opt['wppa_pagelink_pos'] == 'both' ) {
 			wppa_page_links( $totpag, $curpage );

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains functions to retrieve album and photo items
-* Version 5.4.21
+* Version 5.5.0
 *
 */
  
@@ -216,6 +216,16 @@ global $wppa_opt;
 		if ( $thumb['status'] == 'silver' ) $result .= '<img src="'.$wppa_url.'/images/medal_silver_'.$color.'.png" title="'.esc_attr(__a('Silver medal award!')).'" alt="'.__a('Silver').'" style="border:none; margin:0; padding:0; box-shadow:none; height:32px;" />';
 		if ( $thumb['status'] == 'bronze' ) $result .= '<img src="'.$wppa_url.'/images/medal_bronze_'.$color.'.png" title="'.esc_attr(__a('Bronze medal award!')).'" alt="'.__a('Bronze').'" style="border:none; margin:0; padding:0; box-shadow:none; height:32px;" />';
 	}
+	
+	// To prevent recursive rendering of scripts or shortcodes:
+	$name = str_replace( array( '%%wppa%%', '[wppa', '[/wppa]' ), array( '%-wppa-%', '{wppa', '{/wppa}' ), $name );
+	if ( wppa_switch( 'wppa_allow_foreign_shortcodes_general' ) ) {
+		$desc = do_shortcode( $name );
+	}
+	else {
+		$desc = strip_shortcodes( $name );
+	}
+
 	return $result;
 }
 
@@ -354,6 +364,15 @@ function wppa_get_album_name( $id, $extended = false ) {
 		else $name = __( stripslashes( $album['name'] ) );
     }
 
+	// To prevent recursive rendering of scripts or shortcodes:
+	$name = str_replace( array( '%%wppa%%', '[wppa', '[/wppa]' ), array( '%-wppa-%', '{wppa', '{/wppa}' ), $name );
+	if ( wppa_switch( 'wppa_allow_foreign_shortcodes_general' ) ) {
+		$desc = do_shortcode( $name );
+	}
+	else {
+		$desc = strip_shortcodes( $name );
+	}
+
 	return $name;
 }
 
@@ -392,6 +411,12 @@ function wppa_get_album_desc( $id ) {
 	
 	// To prevent recursive rendering of scripts or shortcodes:
 	$desc = str_replace( array( '%%wppa%%', '[wppa', '[/wppa]' ), array( '%-wppa-%', '{wppa', '{/wppa}' ), $desc );
+	if ( wppa_switch( 'wppa_allow_foreign_shortcodes_general' ) ) {
+		$desc = do_shortcode( $desc );
+	}
+	else {
+		$desc = strip_shortcodes( $desc );
+	}
 	
 	// Convert links and mailto:
 	$desc = make_clickable( $desc );

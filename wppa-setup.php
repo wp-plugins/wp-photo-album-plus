@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 5.4.25
+* Version 5.5.0
 *
 */
 
@@ -324,10 +324,6 @@ global $silent;
 			wppa_flush_treecounts();
 		}
 		
-		if ( $old_rev <= '5405' ) {
-			wppa_create_pl_htaccess( 'wppa-pl' );
-		}
-		
 		if ( $old_rev <= '5410' ) {
 			wppa_copy_setting( 'wppa_widget_width', 'wppa_potd_widget_width' );
 			wppa_flush_upldr_cache( 'all' );	// New format
@@ -342,6 +338,11 @@ global $silent;
 				}
 			}
 		}
+		
+		if ( $old_rev <= '5500' ) {
+			wppa_create_pl_htaccess( get_option( 'wppa_pl_dirname', 'wppa-pl' ) );		// Remake due to fix in wppa_sanitize_file_name()
+		}
+
 	}
 	
 	// Set Defaults
@@ -515,7 +516,7 @@ Hide Camera info
 						// A System
 						'wppa_colwidth' 				=> 'auto',	// 1
 						'wppa_initial_colwidth' 		=> '640',
-						'wppa_resize_on_upload' 		=> 'no',	// 2
+						'wppa_resize_on_upload' 		=> 'yes',	// 2
 						'wppa_resize_to'				=> '0',		// 3
 						'wppa_min_thumbs' 				=> '1',		// 4
 						'wppa_bwidth' 					=> '1',		// 5
@@ -626,7 +627,7 @@ Hide Camera info
 						'wppa_rating_display_type'			=> 'graphic',	// 8
 						'wppa_show_avg_rating'				=> 'yes',		// 9
 						'wppa_show_comments' 				=> 'yes',		// 10
-						'wppa_comment_gravatar'				=> 'none',		// 11
+						'wppa_comment_gravatar'				=> 'monsterid',		// 11
 						'wppa_comment_gravatar_url'			=> 'http://',	// 12
 						'wppa_show_bbb'						=> 'no',		// 13
 						'wppa_show_ubb' 					=> 'no',
@@ -640,7 +641,7 @@ Hide Camera info
 						'wppa_copyright_on'					=> 'yes',		// 19
 						'wppa_copyright_notice'				=> __('<span style="color:red" >Warning: Do not upload copyrighted material!</span>', 'wppa'),	// 20
 						'wppa_share_on'						=> 'no',
-						'wppa_share_hide_when_running'		=> 'no',
+						'wppa_share_hide_when_running'		=> 'yes',
 						'wppa_share_on_widget'				=> 'no',
 						'wppa_share_on_thumbs'				=> 'no',
 						'wppa_share_on_lightbox' 			=> 'no',
@@ -648,7 +649,6 @@ Hide Camera info
 						'wppa_share_qr'						=> 'no',
 						'wppa_share_facebook'				=> 'yes',
 						'wppa_share_twitter'				=> 'yes',
-						'wppa_share_hyves'					=> 'yes',
 						'wppa_share_google'					=> 'yes',
 						'wppa_share_pinterest'				=> 'yes',
 						'wppa_share_linkedin'				=> 'yes',
@@ -690,7 +690,7 @@ Hide Camera info
 						'wppa_show_ubb_widget'				=> 'no',	// 1
 						'wppa_show_albwidget_tooltip'		=> 'yes',
 						// F Overlay
-						'wppa_ovl_close_txt'				=> 'CLOSE',
+						'wppa_ovl_close_txt'				=> 'Close',
 						'wppa_ovl_theme'					=> 'black',
 						'wppa_ovl_bgcolor'					=> 'black',
 						'wppa_ovl_slide_name'				=> 'no',
@@ -757,13 +757,13 @@ Hide Camera info
 
 						// Table IV: Behaviour
 						// A System
-						'wppa_allow_ajax'				=> 'no',
-						'wppa_ajax_non_admin'			=> 'no',
+						'wppa_allow_ajax'				=> 'yes',
+						'wppa_ajax_non_admin'			=> 'yes',
 						'wppa_ajax_upload'				=> 'yes',
 						'wppa_use_photo_names_in_urls'	=> 'no',
 						'wppa_use_album_names_in_urls' 	=> 'no',
-						'wppa_use_short_qargs' 			=> 'no',
-						'wppa_use_pretty_links'			=> 'no',
+						'wppa_use_short_qargs' 			=> 'yes',
+						'wppa_use_pretty_links'			=> 'yes',
 						'wppa_update_addressline'		=> 'yes',
 						'wppa_render_shortcode_always'	=> 'no',
 						'wppa_track_viewcounts'			=> 'yes',
@@ -778,9 +778,12 @@ Hide Camera info
 						'wppa_cre_uploads_htaccess' 	=> 'no',
 						'wppa_debug_trace_on' 			=> 'no',
 						'wppa_lazy_or_htmlcomp' 		=> 'no',
+						
+						'wppa_thumbs_first' 			=> 'no',
+						'wppa_login_links' 				=> 'yes',
 
 						// B Full size and Slideshow
-						'wppa_fullvalign' 				=> 'fit',
+						'wppa_fullvalign' 				=> 'center',
 						'wppa_fullhalign' 				=> 'center',
 						'wppa_start_slide' 				=> 'run',
 						'wppa_start_slideonly'			=> 'yes',
@@ -794,11 +797,10 @@ Hide Camera info
 						'wppa_run_wpautop_on_desc'		=> 'no',
 						'wppa_auto_open_comments'		=> 'yes',
 						'wppa_film_hover_goto'			=> 'no',
-						'wppa_slide_swipe'				=> 'yes',
-						'wppa_slideshow_page_allow_ajax'	=> get_option( 'wppa_allow_ajax', 'no' ),	// new in 5.4.25, for backward compat look at general switch
+						'wppa_slide_swipe'				=> 'no',
+						'wppa_slideshow_page_allow_ajax'	=> 'yes',
 						// C Thumbnail
 						'wppa_list_photos_by' 			=> '0',
-						'wppa_list_photos_desc' 		=> 'no',
 						'wppa_thumbtype' 				=> 'default',
 						'wppa_thumbphoto_left' 			=> 'no',
 						'wppa_valign' 					=> 'center',
@@ -808,7 +810,6 @@ Hide Camera info
 						'wppa_align_thumbtext' 			=> 'no',
 						// D Albums and covers
 						'wppa_list_albums_by' 			=> '0',
-						'wppa_list_albums_desc' 		=> 'no',
 						'wppa_coverphoto_pos'			=> 'right',
 						'wppa_use_cover_opacity' 		=> 'yes',
 						'wppa_cover_opacity' 			=> '85',
@@ -821,12 +822,10 @@ Hide Camera info
 						'wppa_allow_owner_votes' 		=> 'yes',
 						'wppa_vote_needs_comment' 		=> 'no',
 						'wppa_dislike_value'			=> '-5',
-		//				'wppa_rating_use_ajax'			=> 'no',
 						'wppa_next_on_callback'			=> 'no',
 						'wppa_star_opacity'				=> '20',
-						
-						'wppa_vote_button_text'			=> 'Vote for me!',
-						'wppa_voted_button_text'		=> 'Voted for me',
+						'wppa_vote_button_text'			=> __a('Vote for me!'),
+						'wppa_voted_button_text'		=> __a('Voted for me'),
 						'wppa_vote_thumb'				=> 'no',
 						'wppa_medal_bronze_when'		=> '5',
 						'wppa_medal_silver_when'		=> '10',
@@ -891,14 +890,11 @@ Hide Camera info
 						'wppa_fontsize_numbar_active' 		=> '',
 						'wppa_fontcolor_numbar_active' 	=> '#777777',
 						'wppa_fontweight_numbar_active'	=> 'bold',
-
 						'wppa_fontfamily_lightbox'	=> '',
 						'wppa_fontsize_lightbox'	=> '10',
 						'wppa_fontcolor_lightbox'	=> '',
 						'wppa_fontweight_lightbox'	=> 'bold',
-						
 						'wppa_fontsize_widget_thumb'	=> '9',
-
 						
 						// Table VI: Links
 						'wppa_sphoto_linktype' 				=> 'photo',
@@ -1013,6 +1009,7 @@ Hide Camera info
 						'wppa_spam_maxage'				=> 'none',
 						'wppa_user_create_on'			=> 'no',
 						'wppa_user_create_login'		=> 'yes',
+						'wppa_user_destroy_on' 			=> 'no',
 						'wppa_upload_fronend_maxsize' 	=> '0',
 						'wppa_void_dups' 				=> 'no',
 						
@@ -1083,14 +1080,15 @@ Hide Camera info
 						
 						'wppa_filter_priority'			=> '1001',		// 5
 						'wppa_shortcode_priority' 		=> '11',
-						'wppa_lightbox_name'			=> 'wppa',		// 6
-						'wppa_allow_foreign_shortcodes' => 'no',		// 7
+						'wppa_lightbox_name'					=> 'wppa',		// 6
+						'wppa_allow_foreign_shortcodes_general' => 'no',
+						'wppa_allow_foreign_shortcodes' 		=> 'no',		// 7
 						'wppa_allow_foreign_shortcodes_thumbs' 	=> 'no',
 						'wppa_arrow_color' 				=> 'black',
 						'wppa_meta_page'				=> 'yes',		// 9
 						'wppa_meta_all'					=> 'yes',		// 10
 						'wppa_use_wp_editor'			=> 'no',
-						'wppa_hier_albsel' 				=> 'no',
+						'wppa_hier_albsel' 				=> 'yes',
 						'wppa_hier_pagesel'				=> 'no',
 						'wppa_alt_type'					=> 'fullname',
 						'wppa_photo_admin_pagesize'		=> '20',
@@ -1118,10 +1116,10 @@ Hide Camera info
 						'wppa_upload_limit_count'		=> '0',		// 5a
 						'wppa_upload_limit_time'		=> '0',		// 5b
 						'wppa_show_album_full'			=> 'yes',
-						'wppa_grant_an_album'		=> 'no',
-						'wppa_grant_name'			=> 'display',
-						'wppa_grant_parent'			=> '0',
-						'wppa_default_parent' 		=> '0',
+						'wppa_grant_an_album'			=> 'no',
+						'wppa_grant_name'				=> 'display',
+						'wppa_grant_parent'				=> '0',
+						'wppa_default_parent' 			=> '0',
 						'wppa_default_parent_always' 	=> 'no',
 						
 						'wppa_max_albums'				=> '0',
@@ -1135,6 +1133,7 @@ Hide Camera info
 						'wppa_default_coverimage_name' 	=> 'Coverphoto',
 						
 						'wppa_copy_timestamp'			=> 'no',
+						'wppa_copy_owner' 				=> 'no',
 						'wppa_frontend_album_public' 	=> 'no',
 						'wppa_optimize_new' 			=> 'no',
 						
@@ -1145,7 +1144,7 @@ Hide Camera info
 						'wppa_search_cats'				=> 'no',
 						'wppa_search_comments' 			=> 'no',
 						'wppa_photos_only'				=> 'no',	// 3
-						'wppa_indexed_search'			=> 'no',
+//						'wppa_indexed_search'			=> 'no',
 						'wppa_max_search_photos'		=> '250',
 						'wppa_max_search_albums'		=> '25',
 						'wppa_tags_or_only'				=> 'no',
@@ -1173,21 +1172,20 @@ Hide Camera info
 						'wppa_split_namedesc'			=> 'no',
 						
 						// H Source file management and import/upload
-						'wppa_keep_source_admin'	=> 'no',
-						'wppa_keep_source_frontend' => 'no',
-						'wppa_source_dir'			=> WPPA_ABSPATH.WPPA_UPLOAD.'/wppa-source',
-						'wppa_keep_sync'			=> 'yes',
-						'wppa_remake_add'			=> 'yes',
-						'wppa_save_iptc'			=> 'yes',
-						'wppa_save_exif'			=> 'yes',
-						'wppa_exif_max_array_size'	=> '10',
+						'wppa_keep_source_admin'		=> 'yes',
+						'wppa_keep_source_frontend' 	=> 'yes',
+						'wppa_source_dir'				=> WPPA_ABSPATH.WPPA_UPLOAD.'/wppa-source',
+						'wppa_keep_sync'				=> 'yes',
+						'wppa_remake_add'				=> 'yes',
+						'wppa_save_iptc'				=> 'yes',
+						'wppa_save_exif'				=> 'yes',
+						'wppa_exif_max_array_size'		=> '10',
 						'wppa_chgsrc_is_restricted'		=> 'no',
 						'wppa_ext_status_restricted' 	=> 'no',
 						'wppa_newpag_create'			=> 'no',
 						'wppa_newpag_content'			=> '[wppa type="cover" album="w#album" align="center"][/wppa]',
 						'wppa_newpag_type'				=> 'page',
 						'wppa_newpag_status'			=> 'publish',
-
 						'wppa_pl_dirname' 				=> 'wppa-pl',
 
 						// J Other plugins
@@ -1198,20 +1196,20 @@ Hide Camera info
 						'wppa_use_CMTooltipGlossary' 	=> 'no',
 						
 						// K External services
-						'wppa_cdn_service'			=> '',
-						'wppa_cdn_cloud_name'		=> '',
-						'wppa_cdn_api_key'			=> '',
-						'wppa_cdn_api_secret'		=> '',
-						'wppa_cdn_service_update'	=> 'no',
+						'wppa_cdn_service'					=> '',
+						'wppa_cdn_cloud_name'				=> '',
+						'wppa_cdn_api_key'					=> '',
+						'wppa_cdn_api_secret'				=> '',
+						'wppa_cdn_service_update'			=> 'no',
 						'wppa_delete_all_from_cloudinary' 	=> '',
-						'wppa_gpx_implementation' 		=> 'none',
-						'wppa_map_height' 				=> '300',
-						'wppa_map_apikey' 				=> '',
-						'wppa_gpx_shortcode'			=> '[map style="width: auto; height:300px; margin:0; " marker="yes" lat="w#lat" lon="w#lon"]',
-						'wppa_fotomoto_on'				=> 'no',
-						'wppa_fotomoto_fontsize'		=> '',
+						'wppa_gpx_implementation' 			=> 'none',
+						'wppa_map_height' 					=> '300',
+						'wppa_map_apikey' 					=> '',
+						'wppa_gpx_shortcode'				=> '[map style="width: auto; height:300px; margin:0; " marker="yes" lat="w#lat" lon="w#lon"]',
+						'wppa_fotomoto_on'					=> 'no',
+						'wppa_fotomoto_fontsize'			=> '',
 						'wppa_fotomoto_hide_when_running'	=> 'no',
-						'wppa_fotomoto_min_width' 		=> '400',
+						'wppa_fotomoto_min_width' 			=> '400',
 
 						// Photo of the day widget
 						'wppa_widgettitle'			=> __('Photo of the day', 'wppa'),
@@ -1223,7 +1221,6 @@ Hide Camera info
 						'wppa_potd_align' 			=> 'center',
 						'wppa_widget_method'		=> '1',
 						'wppa_widget_period'		=> '168',
-						
 						'wppa_widget_width'			=> '200',
 						'wppa_potd_widget_width' 	=> '200',
 						
@@ -1258,15 +1255,6 @@ function wppa_set_default($value, $key, $force) {
 		'wppa_file_system'
 		);
 							
-/*	if ( $force ) {
-		// Delete all options except the voids
-		if ( ! in_array( $key, $void_these ) ) delete_option( $key );
-	}
-	else {
-		// Delete all options that have the default value, except the voids
-		if ( ! in_array( $key, $void_these ) && get_option( $key, 'nil' ) == $value ) delete_option( $key );
-	}
-*/
 	if ( $force ) {
 		if ( ! in_array($key, $void_these) ) wppa_update_option($key, $value);
 	}

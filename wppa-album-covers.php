@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Functions for album covers
-* Version 5.4.25
+* Version 5.5.0
 *
 */
 
@@ -1176,6 +1176,7 @@ global $wppa;
 }
 
 function wppa_albumcover_sublinks( $id, $width, $rsp ) {
+	wppa_user_destroy_html( $id, $width, 'cover', $rsp );
 	wppa_user_create_html( $id, $width, 'cover', $rsp );
 	wppa_user_upload_html( $id, $width, 'cover', $rsp );
 	wppa_user_albumedit_html( $id, $width, 'cover', $rsp );

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Various wppa boxes
-* Version 5.4.23
+* Version 5.5.0
 *
 *
 */
@@ -530,7 +530,7 @@ global $wppa_locale;
 
 	// Comments
 	if ( wppa_switch( 'wppa_facebook_comments' ) && ! $wppa['in_widget'] && $key != 'thumb' && $key != 'lightbox' ) { // && $key != 'lightbox' ) {
-		$width = $wppa['auto_colwidth'] ? '470' : wppa_get_container_width( true );
+		$width = $wppa['auto_colwidth'] ? '100%' : wppa_get_container_width( true );
 		if ( wppa_switch( 'wppa_facebook_comments' ) ) {
 			$fb .= '<div style="color:blue;clear:both">'.__a( 'Comment on Facebook:' ).'</div>';
 			$fb .= '<div class="fb-comments" data-href="'.$share_url.'" data-width='.$width.'></div>';
@@ -578,6 +578,28 @@ global $wppa;
 		wppa_user_upload_html( $wppa['start_album'], wppa_get_container_width( 'netto' ), 'uploadbox' );
 	$wppa['out'] .= wppa_nltab( '-' ).'<div style="clear:both;"></div></div>';
 	wppa_container( 'close' );
+}
+
+// Frontend delete album, for use in the album box
+function wppa_user_destroy_html( $alb, $width, $where, $rsp ) {
+global $wppa;
+
+	// May I?
+	if ( ! wppa_switch( 'wppa_user_destroy_on' ) ) return;
+	if ( wppa_switch( 'wppa_user_create_login' ) ) {
+		if ( ! is_user_logged_in() ) return;					// Must login
+	}
+	if ( ! wppa_have_access( $alb ) ) {
+		return;						// No album access
+	}
+	if ( wppa_is_user_blacklisted() ) return;
+
+	// Make the html
+	$wppa['out'] .= '
+	<div style="clear:both">
+		<a style="float:left; cursor:pointer;" onclick="jQuery(this).html(\''.__a('Working...').'\');wppaAjaxDestroyAlbum('.$alb.',\''.wp_create_nonce( 'wppa_nonce_'.$alb ).'\');jQuery(this).html(\''.__a('Delete album').'\');" >'.__a('Delete album').'</a>
+	</div>';
+
 }
 
 // Frontend create album, for use in the upload box, the widget or in the album and thumbnail box
@@ -676,6 +698,11 @@ global $wppa_opt;
 function wppa_user_upload_html( $alb, $width, $where = '', $mcr = false ) {
 global $wppa;
 global $wppa_opt;
+static $seqno;
+
+	// Using seqno to distinguish from different places within one occurrence because the album no is not known when there is a selection box.
+	if ( $seqno ) $seqno++;
+	else $seqno = '1';
 
 	// May I?
 	if ( ! wppa_switch( 'wppa_user_upload_on' ) ) return;			// Feature not enabled
@@ -771,14 +798,14 @@ global $wppa_opt;
 			'.wp_nonce_field( 'wppa-check' , 'wppa-nonce', false, false );		
 			if ( ! $alb ) {	// No album given: select one
 				$wppa['out'] .= '
-			<select id="wppa-upload-'.$wppa['mocc'].'" name="wppa-upload-album" style="float:left; max-width: '.$width.'px; ">
+			<select id="wppa-upload-album-'.$wppa['mocc'].'-'.$seqno.'" name="wppa-upload-album" style="float:left; max-width: '.$width.'px;" onchange="jQuery( \'#wppa-sel-'.$alb.'-'.$wppa['mocc'].'\' ).trigger( \'onchange\' )" >
 				'.wppa_album_select_a( array ( 'addpleaseselect' => true, 'checkaccess' => true, 'checkupload' => true, 'path' => wppa_switch( 'wppa_hier_albsel' ) ) ).'
 			</select>
 			<br />';
 			}
 			else {
 				$wppa['out'] .= '
-			<input type="hidden" id="wppa-upload-'.$wppa['mocc'].'" name="wppa-upload-album" value="'.$alb.'" />';
+			<input type="hidden" id="wppa-upload-album-'.$wppa['mocc'].'-'.$seqno.'" name="wppa-upload-album" value="'.$alb.'" />';
 			}
 
 			if ( wppa_switch( 'wppa_upload_one_only' ) && ! current_user_can( 'administrator' ) ) {
@@ -888,20 +915,23 @@ global $wppa_opt;
 			
 		// Tags
 		if ( wppa_switch( 'wppa_fe_upload_tags' ) ) {
+			$onc = 'wppaPrevTags(\'wppa-sel-'.$alb.'-'.$wppa['mocc'].'\', \'wppa-inp-'.$alb.'-'.$wppa['mocc'].'\', \'wppa-upload-album-'.$wppa['mocc'].'-'.$seqno.'\', \'wppa-prev-'.$alb.'-'.$wppa['mocc'].'\')';
 			$wppa['out'] .= '
 				<div class="wppa-box-text wppa-td" style="clear:both; float:left; text-align:left; '.__wcs( 'wppa-box-text' ).__wcs( 'wppa-td' ).'" >'.
 					'<div style="float:left; margin-right:4px;" ><small>'.__a( 'Select tags:', 'wppa' ).'</small></div>'.
-					'<select style="float:left; margin-right: 4px;" name="wppa-user-tags[]" multiple >';
+					'<select id="wppa-sel-'.$alb.'-'.$wppa['mocc'].'" style="float:left; margin-right: 4px;" name="wppa-user-tags[]" multiple onchange="'.$onc.'" >';
 						$tags = wppa_get_taglist();
-					//	$wppa['out'] .= '<option value="" >'.__a('- select tag(s) -', 'wppa').'</option>';
+						$wppa['out'] .= '<option value="" ></option>';
 						foreach ( $tags as $tag ) {
-							$wppa['out'] .= '<option value="'.$tag['tag'].'">'.$tag['tag'].'</option>';
+							$wppa['out'] .= '<option class="wppa-sel-'.$alb.'-'.$wppa['mocc'].'" value="'.$tag['tag'].'">'.$tag['tag'].'</option>';
 						}
 						$wppa['out'] .= '
 					</select>
 					<div style="float:left; margin-right:4px;" ><small>'.__a( 'and/or enter new tags:', 'wppa' ).'</small></div>
-					<input type="text" class="wppa-box-text " style="padding:0; width:150px; '.__wcs( 'wppa-box-text' ).'" name="wppa-new-tags" />
-				</div>';
+					<input id="wppa-inp-'.$alb.'-'.$wppa['mocc'].'" type="text" class="wppa-box-text " style="padding:0; width:150px; '.__wcs( 'wppa-box-text' ).'" name="wppa-new-tags" onchange="'.$onc.'" />
+					<div style="margin:0; clear:both;" >'.__('Preview tags:', 'wppa').' <small id="wppa-prev-'.$alb.'-'.$wppa['mocc'].'"></small></div>
+				</div>
+				<script type="text/javascript" >jQuery( document ).ready(function() { jQuery( \'#wppa-sel-'.$alb.'-'.$wppa['mocc'].'\' ).trigger( \'onchange\' ) } );</script>';				
 		}
 		
 		// Done
@@ -1195,7 +1225,12 @@ global $wppa_first_comment_html;
 		$result .= '</div>';
 	}
 	else {
-		$result .= sprintf( __a( 'You must <a href="%s">login</a> to enter a comment' ), site_url( 'wp-login.php', 'login' ) );
+		if ( wppa_switch( 'wppa_login_links' ) ) {
+			$result .= sprintf( __a( 'You must <a href="%s">login</a> to enter a comment' ), site_url( 'wp-login.php', 'login' ) );
+		}
+		else {
+			$result .= __a( 'You must login to enter a comment' );
+		}
 	}
 	
 	$result .= '<div id="wppa-comfooter-wrap-'.$wppa['mocc'].'" style="display:block;" >';
@@ -1230,10 +1265,15 @@ global $wpsmiliestrans;
 	
 	// Make the html
 	$result = '';
-	foreach ( array_keys( $wppa_smilies ) as $key ) {
-		$onclick = esc_attr( 'wppaInsertAtCursor( document.getElementById( "'.$elm_id.'" ), " '.$wppa_smilies[$key].' " )' );
-		$title = substr( substr( $key, 5 ), 0, -4 );
-		$result .= '<img src="'.esc_attr( includes_url( 'images/smilies/' ).$key ).'" onclick="'.$onclick.'" title="'.$title.'" style="display:inline;" /> ';
+	if ( is_array( $wppa_smilies ) ) {
+		foreach ( array_keys( $wppa_smilies ) as $key ) {
+			$onclick = esc_attr( 'wppaInsertAtCursor( document.getElementById( "'.$elm_id.'" ), " '.$wppa_smilies[$key].' " )' );
+			$title = substr( substr( $key, 5 ), 0, -4 );
+			$result .= '<img src="'.esc_attr( includes_url( 'images/smilies/' ).$key ).'" onclick="'.$onclick.'" title="'.$title.'" style="display:inline;" /> ';
+		}
+	}
+	else {
+		$result .= __a('Smilies are not available');
 	}
 	
 	return $result;

@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, myCRED, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile, cloudinary, fotomoto, CMTooltipGlossary
-Version: 5.4.25
+Version: 5.5.0
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -187,6 +187,34 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 5.5.0 =
+
+= Bug Fixes =
+
+* Lightbox on thumbnails ( VI-B2 ) now also works on thumbnail type 'like album covers' ( IV-C3 ).
+* Default parent always ( IX-D7.2 ) is now a checkbox as it should be, and indicates that frontend created albums should have the album in IX-D7.1 as parent.
+* Lightbox on slideshows. If the photo is smaller than the frame, the hoover text ( title ) no longer shows the lightbox subtext html. This only works for the embedded lightbox.
+* Default tags seemed not to work at front-end upload. Fixed.
+* The shortcodegenerator asked for parent albums for several virtual albums where this is not implemented. It now asks for an optional multiple selection of albums to be used.
+* The ubb's now also work on running slideshows.
+* Swipe now also works on running slideshows.
+
+= New Features =
+
+* Quick select settings. All settings have one or more tags. Select up to 2 tags to open all settings that have at least those tags. See the Photo ALbums -> Settings admin page.
+* Delete album at frontend. Table VII-B1.2
+* Added Table IX-D15.1: Copy owner. Copies the owner on copy photo.
+* Foreign shortcodes in album desc, album name and photo name are now possible if Table IX-J0 is checked.
+* Table IV-A20. Thumbs first. Display the thumbnails before the sub-albums.
+* Table IV-A21. Login links. 'You must login to...' links to wp login page.
+
+= Other Changes =
+
+* The frontend upload dialog now has a tags preview line. The user can see exactly what tags will be added to the photo after upload.
+* Classic search has been discontinued. Search operations use the index db table. After update to this version you may be asked to rebuild the index tables.
+* Changed a lot of default setting values. This only affects new installs.
+* Improved layout of FB Comments box in responsive themes ( I-A1 = auto ).
 
 = 5.4.25 =
 

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * gp admin functions
-* version 5.4.19
+* version 5.5.0
 *
 */
 
@@ -260,7 +260,7 @@ global $wpdb;
 	
 	$err = '3';
 	// Make new db table entry
-	$owner = wppa_get_user();
+	$owner = wppa_switch( 'wppa_copy_owner' ) ? $photo['owner'] : wppa_get_user();
 	$time = wppa_switch( 'wppa_copy_timestamp' ) ? $photo['timestamp'] : time();
 	$id = wppa_create_photo_entry( array( 	'album' => $album, 
 											'ext' => $ext, 

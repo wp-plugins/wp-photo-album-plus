@@ -3,7 +3,7 @@
 /* Package: wp-photo-album-plus
 /*
 /* Various style computation routines
-/* Version 5.4.25
+/* Version 5.5.0
 /*
 */
 
@@ -406,7 +406,7 @@ global $wppa;
 	else {
 		if ( $type == 'cover' && 
 			wppa_switch( 'wppa_coversize_is_height' ) && 
-			( $wppa['coverphoto_pos'] == 'top' || $wppa['coverphoto_pos'] == 'bottom' ) 
+			( wppa_opt('wppa_coverphoto_pos') == 'top' || wppa_opt('wppa_coverphoto_pos') == 'bottom' ) 
 			 ) {
 				$height = $max_size;
 				$width = round( $max_size * $image_attr[0] / $image_attr[1] );
