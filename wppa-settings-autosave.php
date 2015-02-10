@@ -5547,7 +5547,7 @@ global $wppa_tags;
 							$tags = wppa_get_taglist();
 							$opts = array(__('-select a tag-', 'wppa'));
 							$vals = array( '' );
-							foreach( array_keys($tags) as $tag) {
+							if ( $tags ) foreach( array_keys( $tags ) as $tag ) {
 								$opts[] = $tag;
 								$vals[] = $tag;
 							}

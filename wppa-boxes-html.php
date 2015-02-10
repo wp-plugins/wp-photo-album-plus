@@ -922,7 +922,7 @@ static $seqno;
 					'<select id="wppa-sel-'.$alb.'-'.$wppa['mocc'].'" style="float:left; margin-right: 4px;" name="wppa-user-tags[]" multiple onchange="'.$onc.'" >';
 						$tags = wppa_get_taglist();
 						$wppa['out'] .= '<option value="" ></option>';
-						foreach ( $tags as $tag ) {
+						if ( $tags ) foreach ( $tags as $tag ) {
 							$wppa['out'] .= '<option class="wppa-sel-'.$alb.'-'.$wppa['mocc'].'" value="'.$tag['tag'].'">'.$tag['tag'].'</option>';
 						}
 						$wppa['out'] .= '
