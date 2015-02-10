@@ -1466,10 +1466,10 @@ function wppaMaintenanceProc(slug, intern) {
 				}
 				
 				// Check for recoverable error
-				if ( resparr[0] != '' ) {
-					alert('An error occurred:\n'+resparr[0]);
-					error = true;
-				}
+//				if ( resparr[0] != '' ) {
+//					alert('An error occurred:\n'+resparr[0]);
+//					error = true;
+//				}
 				
 				// Update status and togo
 				jQuery("#"+slug+"_status").html(resparr[2]);
