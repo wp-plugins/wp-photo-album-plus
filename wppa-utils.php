@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains low-level utility routines
-* Version 5.5.0
+* Version 5.5.1
 *
 */
  
@@ -1717,9 +1717,9 @@ global $wppa_opt;
 	$float 	= strpos( $pos, 'left' ) === false ? 'right' : 'left';
 	
 	// The medal
-	if ( $thumb['status'] == 'bronze' ) $result .= '<div style="clear:both;" ></div><img src="'.WPPA_URL.'/images/medal_bronze_'.$color.'.png" title="'.esc_attr(__a('Bronze medal award!')).'" alt="'.__a('Bronze').'" style="position:relative; top:-'.$top.'px; float:'.$float.'; border:none; margin:0; padding:0; box-shadow:none; height:'.$size.'px;" />';
-	if ( $thumb['status'] == 'silver' ) $result .= '<div style="clear:both;" ></div><img src="'.WPPA_URL.'/images/medal_silver_'.$color.'.png" title="'.esc_attr(__a('Silver medal award!')).'" alt="'.__a('Silver').'" style="position:relative; top:-'.$top.'px; float:'.$float.'; border:none; margin:0; padding:0; box-shadow:none; height:'.$size.'px;" />';
-	if ( $thumb['status'] == 'gold' ) 	$result .= '<div style="clear:both;" ></div><img src="'.WPPA_URL.'/images/medal_gold_'.$color.'.png" title="'.esc_attr(__a('Gold medal award!')).'" alt="'.__a('Gold').'" style="position:relative; top:-'.$top.'px; float:'.$float.'; border:none; margin:0; padding:0; box-shadow:none; height:'.$size.'px;" />';
+	if ( $thumb['status'] == 'bronze' ) $result .= '<div style="clear:both;" ></div><img src="'.WPPA_URL.'/images/medal_bronze_'.$color.'.png" title="'.esc_attr(__a('Bronze medal')).'" alt="'.__a('Bronze').'" style="position:relative; top:-'.$top.'px; float:'.$float.'; border:none; margin:0; padding:0; box-shadow:none; height:'.$size.'px;" />';
+	if ( $thumb['status'] == 'silver' ) $result .= '<div style="clear:both;" ></div><img src="'.WPPA_URL.'/images/medal_silver_'.$color.'.png" title="'.esc_attr(__a('Silver medal')).'" alt="'.__a('Silver').'" style="position:relative; top:-'.$top.'px; float:'.$float.'; border:none; margin:0; padding:0; box-shadow:none; height:'.$size.'px;" />';
+	if ( $thumb['status'] == 'gold' ) 	$result .= '<div style="clear:both;" ></div><img src="'.WPPA_URL.'/images/medal_gold_'.$color.'.png" title="'.esc_attr(__a('Gold medal')).'" alt="'.__a('Gold').'" style="position:relative; top:-'.$top.'px; float:'.$float.'; border:none; margin:0; padding:0; box-shadow:none; height:'.$size.'px;" />';
 
 	$size 	= round( $size * 20 / 32 );
 	$top 	= ( strpos( $pos, 'top' )  === false ? $size : $imgheight ) + '6';

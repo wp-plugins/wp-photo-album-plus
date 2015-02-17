@@ -2,7 +2,7 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 5.4.22
+* version 5.5.1
 *
 */
 
@@ -1271,7 +1271,7 @@ global $wppa_opt;
 //					wppa_dbg_q( 'Q216' );
 //					$iret 	= $wpdb->query( $query );
 					$iret = wppa_create_iptc_entry( array( 'photo' => $photo, 'tag' => $tag, 'description' => $desc, 'status' => $status ) );
-					if ( ! $iret ) wppa_dbg_msg( 'Error: '.$query );
+					if ( ! $iret ) wppa_log( 'Warning', 'Could not add IPTC tag '.$tag.' for photo '.$photo );
 				}
 				// Now add poto specific data item
 //				$key 	= wppa_nextkey( WPPA_IPTC );
@@ -1283,7 +1283,7 @@ global $wppa_opt;
 //				wppa_dbg_q( 'Q217' );
 //				$iret 	= $wpdb->query( $query );
 				$iret = wppa_create_iptc_entry( array( 'photo' => $photo, 'tag' => $tag, 'description' => $desc, 'status' => $status ) );
-				if ( ! $iret ) wppa_dbg_msg( 'Error: '.$query );
+				if ( ! $iret ) wppa_log( 'Warning', 'Could not add IPTC tag '.$tag.' for photo '.$photo );
 			}
 		}
 	}
@@ -1371,7 +1371,7 @@ global $wppa;
 			$desc 	= $s.':';
 			$status = 'display';
 			$iret = wppa_create_exif_entry( array( 'photo' => $photo, 'tag' => $tag, 'description' => $desc, 'status' => $status ) );
-			if ( ! $iret ) wppa_dbg_msg( 'Error: '.$query, false, 'red' );
+			if ( ! $iret ) wppa_log( 'Warning', 'Could not add EXIF tag '.$tag.' for photo '.$photo );
 		}
 		
 		// Now add poto specific data item
@@ -1388,7 +1388,7 @@ global $wppa;
 				$desc 	= $exif[$s][$i];
 				$status = 'default';
 				$iret = wppa_create_exif_entry( array( 'photo' => $photo, 'tag' => $tag, 'description' => $desc, 'status' => $status ) );
-				if ( ! $iret ) wppa_dbg_msg( 'Error: '.$query, false, 'red' );
+				if ( ! $iret ) wppa_log( 'Warning', 'Could not add EXIF tag '.$tag.' for photo '.$photo );
 			
 			}
 		}
@@ -1398,7 +1398,7 @@ global $wppa;
 			$desc 	= $exif[$s];
 			$status = 'default';
 			$iret = wppa_create_exif_entry( array( 'photo' => $photo, 'tag' => $tag, 'description' => $desc, 'status' => $status ) );
-			if ( ! $iret ) wppa_dbg_msg( 'Error: '.$query, false, 'red' );
+			if ( ! $iret ) wppa_log( 'Warning', 'Could not add EXIF tag '.$tag.' for photo '.$photo );
 		}
 	}
 }

@@ -8,7 +8,7 @@
 /*
 /* You may always look into a newer version of this file to see what new classes and id's come with an upgrade
 /*
-/* This is version 5.4.22
+/* This is version 5.5.1
 */
 
 .wppa-container, .wppa-cover-box, .wppa-thumb-area {
@@ -153,7 +153,6 @@
 	font-size: 10px;
 	line-height: 12px;
 	text-align: center;
-/*	z-index: 1000; */
 }
 
 /* Full size photo */

@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wppa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-02-09 14:33+0100\n"
-"PO-Revision-Date: 2015-02-09 14:33+0100\n"
+"POT-Creation-Date: 2015-02-16 14:40+0100\n"
+"PO-Revision-Date: 2015-02-16 14:40+0100\n"
 "Last-Translator: J.N. Breetvelt <OpaJaap@OpaJaap.nl>\n"
 "Language-Team: OpaJaap <OpaJaap@OpaJaap.nl>\n"
 "Language: sk_SK\n"
@@ -18,7 +18,7 @@ msgstr ""
 "X-Poedit-KeywordsList: __a\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-SourceCharset: utf-8\n"
-"X-Generator: Poedit 1.6.10\n"
+"X-Generator: Poedit 1.7.4\n"
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPath-1: theme\n"
 
@@ -131,7 +131,7 @@ msgid "albums"
 msgstr "albumy"
 
 #: wppa-album-covers.php:1116 wppa-boxes-html.php:373 wppa-breadcrumb.php:258
-#: wppa-breadcrumb.php:263 wppa-functions.php:4130 wppa-utils.php:1324
+#: wppa-breadcrumb.php:263 wppa-functions.php:4136 wppa-utils.php:1324
 msgid "and"
 msgstr "a"
 
@@ -309,7 +309,7 @@ msgstr "Zadat/upravit popis fotky"
 msgid "Create album"
 msgstr "Album:"
 
-#: wppa-boxes-html.php:721 wppa-boxes-html.php:735 wppa-functions.php:3863
+#: wppa-boxes-html.php:721 wppa-boxes-html.php:735 wppa-functions.php:3869
 msgid "Max uploads reached"
 msgstr "Max uploads dosiahol"
 
@@ -385,6 +385,10 @@ msgstr ""
 
 #: wppa-boxes-html.php:930
 msgid "and/or enter new tags:"
+msgstr ""
+
+#: wppa-boxes-html.php:932
+msgid "Preview tags:"
 msgstr ""
 
 #: wppa-boxes-html.php:974
@@ -660,7 +664,7 @@ msgstr "Přednastavené fotoalbum pro"
 msgid "1 second"
 msgstr "1 sekundu"
 
-#: wppa-common-functions.php:603 wppa-functions.php:4131
+#: wppa-common-functions.php:603 wppa-functions.php:4137
 msgid "seconds"
 msgstr "sekund"
 
@@ -668,7 +672,7 @@ msgstr "sekund"
 msgid "1 minute"
 msgstr "1 minuta"
 
-#: wppa-common-functions.php:608 wppa-functions.php:4130
+#: wppa-common-functions.php:608 wppa-functions.php:4136
 msgid "minutes"
 msgstr "minut"
 
@@ -676,7 +680,7 @@ msgstr "minut"
 msgid "1 hour"
 msgstr "1 hodina"
 
-#: wppa-common-functions.php:613 wppa-functions.php:4129
+#: wppa-common-functions.php:613 wppa-functions.php:4135
 msgid "hours"
 msgstr "hodin"
 
@@ -684,7 +688,7 @@ msgstr "hodin"
 msgid "1 day"
 msgstr "1 den"
 
-#: wppa-common-functions.php:618 wppa-functions.php:4128
+#: wppa-common-functions.php:618 wppa-functions.php:4134
 msgid "days"
 msgstr "dní"
 
@@ -692,7 +696,7 @@ msgstr "dní"
 msgid "1 week"
 msgstr "1 týden"
 
-#: wppa-common-functions.php:623 wppa-functions.php:4127
+#: wppa-common-functions.php:623 wppa-functions.php:4133
 msgid "weeks"
 msgstr "týdnů"
 
@@ -984,7 +988,7 @@ msgstr "napsáno k fotce"
 msgid "Moderate comment admin"
 msgstr "Administrace moderování komentářů"
 
-#: wppa-functions.php:1635 wppa-functions.php:3979 wppa-upload.php:1217
+#: wppa-functions.php:1635 wppa-functions.php:3985 wppa-upload.php:1217
 msgid "Moderate manage photo"
 msgstr "Správa úprav fotek"
 
@@ -1053,138 +1057,138 @@ msgstr "<b>Chyba: Neplatný pokus o zapsání komentáře.</b>"
 msgid "View the top rated photos"
 msgstr "Zobrazit najlépe hodnocené fotky"
 
-#: wppa-functions.php:3745
+#: wppa-functions.php:3751
 #, fuzzy
 msgid "New Album"
 msgstr "Album:"
 
-#: wppa-functions.php:3748
+#: wppa-functions.php:3754
 #, fuzzy
 msgid "<b>ERROR: Illegal attempt to create an album.</b>"
 msgstr "<b>Chyba: Neplatný pokus o zadání hodnocení.</b>"
 
-#: wppa-functions.php:3752
+#: wppa-functions.php:3758
 #, fuzzy
 msgid "Wrong captcha, please try again"
 msgstr "Vyberte prosím album a opakujte akci"
 
-#: wppa-functions.php:3765
+#: wppa-functions.php:3771
 #, fuzzy, php-format
 msgid "Album #%s created"
 msgstr "Uživatel %s nahrál fotku %s do alba %s"
 
-#: wppa-functions.php:3770
+#: wppa-functions.php:3776
 #, fuzzy
 msgid "Could not create album"
 msgstr "Nelze vložit do databáze."
 
-#: wppa-functions.php:3781
+#: wppa-functions.php:3787
 msgid "<b>ERROR: Illegal attempt to upload a file.</b>"
 msgstr "<b>Chyba: Neplatný pokus o nahrání souboru.</b>"
 
-#: wppa-functions.php:3821
+#: wppa-functions.php:3827
 #, fuzzy
 msgid "Photo upload"
 msgstr "Fotky nahrány "
 
-#: wppa-functions.php:3823
+#: wppa-functions.php:3829
 msgid "Photo successfully uploaded."
 msgstr "Fotka úspěšně nahrána."
 
-#: wppa-functions.php:3823
+#: wppa-functions.php:3829
 #, php-format
 msgid "%s photos successfully uploaded."
 msgstr "%s fotek úspěšně nahráno."
 
-#: wppa-functions.php:3824
+#: wppa-functions.php:3830
 #, php-format
 msgid "%s points added."
 msgstr "Body (%s) byly přidány."
 
-#: wppa-functions.php:3828
+#: wppa-functions.php:3834
 msgid "Upload failed"
 msgstr "Nahrávání selhalo"
 
-#: wppa-functions.php:3831
+#: wppa-functions.php:3837
 #, fuzzy
 msgid "1 Upload failed"
 msgstr "Nahrávání selhalo"
 
-#: wppa-functions.php:3831
+#: wppa-functions.php:3837
 #, fuzzy, php-format
 msgid "%s uploads failed."
 msgstr "Nahrávání selhalo"
 
-#: wppa-functions.php:3867
+#: wppa-functions.php:3873
 msgid "Error during upload"
 msgstr "Chyba počas upload"
 
-#: wppa-functions.php:3872
+#: wppa-functions.php:3878
 msgid "Uploaded file is not an image"
 msgstr "Nahraný súbor nie je obraz"
 
-#: wppa-functions.php:3876
+#: wppa-functions.php:3882
 #, php-format
 msgid ""
 "Only gif, jpg and png image files are supported. Returned filetype = %d."
 msgstr "Podporovány poute formáty gif, jpg a png. Zjištěný typ = % d."
 
-#: wppa-functions.php:3882
+#: wppa-functions.php:3888
 #, fuzzy, php-format
 msgid "Uploaded file is larger than the allowed maximum of %d x %d pixels."
 msgstr "Max. velikost fotek: %d %d (%2.1f megapixelů)"
 
-#: wppa-functions.php:3888
+#: wppa-functions.php:3894
 #, fuzzy, php-format
 msgid "Uploaded file %s already exists in this album."
 msgstr "Uživatel %s nahrál fotku %s do alba %s"
 
-#: wppa-functions.php:3896
+#: wppa-functions.php:3902
 #, php-format
 msgid "The image is too big. Max photo size: %d x %d (%2.1f MegaPixel)"
 msgstr "Obrázek je příliš velký. Max. velikost fotky: %d %d (%2.1f megapixelu)"
 
-#: wppa-functions.php:3919
+#: wppa-functions.php:3925
 msgid "Could not insert photo into db."
 msgstr "Nelze vložit do databáze."
 
-#: wppa-functions.php:3975 wppa-upload.php:1213
+#: wppa-functions.php:3981 wppa-upload.php:1213
 #, php-format
 msgid "New photo uploaded: %s"
 msgstr "Nová fotka nahrána: %s"
 
-#: wppa-functions.php:3976 wppa-upload.php:1214
+#: wppa-functions.php:3982 wppa-upload.php:1214
 #, php-format
 msgid "User %s uploaded photo %s into album %s"
 msgstr "Uživatel %s nahrál fotku %s do alba %s"
 
-#: wppa-functions.php:3978 wppa-upload.php:1216
+#: wppa-functions.php:3984 wppa-upload.php:1216
 msgid "This upload requires moderation"
 msgstr "Toto nahrání vyžaduje úpravu"
 
-#: wppa-functions.php:3982 wppa-upload.php:1220
+#: wppa-functions.php:3988 wppa-upload.php:1220
 msgid "Details:"
 msgstr "Detaily:"
 
-#: wppa-functions.php:3983 wppa-upload.php:1221
+#: wppa-functions.php:3989 wppa-upload.php:1221
 msgid "Manage photo"
 msgstr "Spravovat fotky"
 
-#: wppa-functions.php:4125
+#: wppa-functions.php:4131
 msgid "You can upload after"
 msgstr "Můžete nahrát po"
 
-#: wppa-functions.php:4154 wppa-functions.php:4157
+#: wppa-functions.php:4160 wppa-functions.php:4163
 #, fuzzy
 msgid "Download:"
 msgstr "Stáhnout"
 
-#: wppa-functions.php:4178
+#: wppa-functions.php:4184
 msgid "Zoom in"
 msgstr "Přiblížit"
 
 #: wppa-items.php:215 wppa-utils.php:1722
-msgid "Gold medal award!"
+msgid "Gold medal"
 msgstr ""
 
 #: wppa-items.php:215 wppa-utils.php:1722
@@ -1192,7 +1196,7 @@ msgid "Gold"
 msgstr ""
 
 #: wppa-items.php:216 wppa-utils.php:1721
-msgid "Silver medal award!"
+msgid "Silver medal"
 msgstr ""
 
 #: wppa-items.php:216 wppa-utils.php:1721
@@ -1200,7 +1204,7 @@ msgid "Silver"
 msgstr ""
 
 #: wppa-items.php:217 wppa-utils.php:1720
-msgid "Bronze medal award!"
+msgid "Bronze medal"
 msgstr ""
 
 #: wppa-items.php:217 wppa-utils.php:1720

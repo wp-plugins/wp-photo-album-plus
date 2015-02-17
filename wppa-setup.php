@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 5.5.0
+* Version 5.5.1
 *
 */
 
@@ -953,6 +953,8 @@ Hide Camera info
 						'wppa_thumbnail_widget_blank'		=> 'no',
 
 						'wppa_film_linktype'				=> 'slideshow',
+						'wppa_film_blank' 					=> 'no',
+						'wppa_film_overrule' 				=> 'no',
 						
 						'wppa_lasten_widget_linktype' 		=> 'photo',
 						'wppa_lasten_widget_linkpage' 		=> '0',

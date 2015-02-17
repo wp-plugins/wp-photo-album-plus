@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: wppa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-02-16 14:39+0100\n"
-"PO-Revision-Date: 2015-02-16 14:39+0100\n"
+"PO-Revision-Date: 2015-02-17 10:20+0100\n"
 "Last-Translator: J.N. Breetvelt <OpaJaap@OpaJaap.nl>\n"
 "Language-Team: OpaJaap <OpaJaap@OpaJaap.nl>\n"
 "Language: tr_TR\n"
@@ -23,14 +23,12 @@ msgstr ""
 "X-Poedit-SearchPath-1: theme\n"
 
 #: theme/wppa-theme.php:133 theme/wppa-theme.php:152
-#, fuzzy
 msgid "No photos found matching your search criteria."
-msgstr "Arama kriterlerine uyan albüm veya fotoğraf bulunamadı."
+msgstr "Resim Arama kriterlerinize uyan bulundu."
 
 #: theme/wppa-theme.php:136
-#, fuzzy
 msgid "No albums found matching your search criteria."
-msgstr "Arama kriterlerine uyan albüm veya fotoğraf bulunamadı."
+msgstr "Hiçbir albümleri Arama kriterlerinize uyan bulundu."
 
 #: theme/wppa-theme.php:139
 msgid "No albums or photos found matching your search criteria."
@@ -45,18 +43,16 @@ msgid "Upload Photos"
 msgstr "Fotoğraf Yükle"
 
 #: wppa-adminbar.php:53
-#, fuzzy
 msgid "Edit Photos"
-msgstr "Düzenle!"
+msgstr "Düzenleme Fotoğrafları"
 
 #: wppa-adminbar.php:61
 msgid "Import Photos"
 msgstr "Fotoğrafları İçe Aktar"
 
 #: wppa-adminbar.php:68
-#, fuzzy
 msgid "Moderate Photos"
-msgstr "fotoğraf var."
+msgstr "Orta Resimleri"
 
 #: wppa-adminbar.php:75
 msgid "Export Photos"
@@ -88,21 +84,21 @@ msgid "Photo Albums"
 msgstr "Fotoğraf Albümleri"
 
 #: wppa-ajax.php:63
-#, fuzzy
 msgid ""
 "All modifications are instantly updated on the server. The <b style=\"color:"
 "#070\" >Remark</b> field keeps you informed on the actions taken at the "
 "background."
-msgstr "<b>HATA: Geçersiz puanlama girişimi.</b>"
+msgstr ""
+"Tüm değişiklikler anında sunucu üzerinde güncellenir. <b style=\"color:"
+"#070\" >Açıklama</b> alanı arka alınan eylemler sizi bilgilendirir."
 
 #: wppa-ajax.php:66
 msgid "Exit & Refresh"
 msgstr "Çık & Yenile"
 
 #: wppa-ajax.php:437 wppa-ajax.php:453
-#, fuzzy
 msgid "Photo rated"
-msgstr "Günün Fotoğrafı"
+msgstr "Fotoğraf puan"
 
 #: wppa-album-covers.php:996
 msgid "Link to"
@@ -171,69 +167,57 @@ msgid "Category:"
 msgstr "Kategori:"
 
 #: wppa-album-widget.php:105
-#, fuzzy, php-format
+#, php-format
 msgid "Upload at least %d photos to this album!"
-msgstr "Fotoğraf Yükle"
+msgstr "Bu albümün en az %d fotoğraf yükle!"
 
 #: wppa-bestof-widget.php:45
-#, fuzzy
 msgid "Best Of Photos"
-msgstr "fotoğraf var."
+msgstr "Fotoğraflar Best Of"
 
 #: wppa-boxes-html.php:61
-#, fuzzy
 msgid "Photo search results"
-msgstr "Arama kriterlerine uyan albüm veya fotoğraf bulunamadı."
+msgstr "Fotoğraf arama sonuçları"
 
 #: wppa-boxes-html.php:82
-#, fuzzy
 msgid "Search"
-msgstr "Arama kriterlerine uyan albüm veya fotoğraf bulunamadı."
+msgstr "Arama"
 
 #: wppa-boxes-html.php:88
-#, fuzzy
 msgid "Search in current section"
-msgstr "Arama kriterlerine uyan albüm veya fotoğraf bulunamadı."
+msgstr "Geçerli bölümde ara"
 
 #: wppa-boxes-html.php:91
-#, fuzzy
 msgid "Search in current results"
-msgstr "Arama kriterlerine uyan albüm veya fotoğraf bulunamadı."
+msgstr "Mevcut sonuçlar ara"
 
 #: wppa-boxes-html.php:119
-#, fuzzy
 msgid "Super View Photos"
-msgstr "Kapak fotoğraflarını görüntüle"
+msgstr "Süper Fotoğrafları"
 
 #: wppa-boxes-html.php:173
-#, fuzzy
 msgid "Tagged photos"
-msgstr "fotoğraf var."
+msgstr "Takip edilen fotoğraflar"
 
 #: wppa-boxes-html.php:186
-#, fuzzy
 msgid "Please select a tagcloud landing page in Table VI-C3b"
-msgstr "Lütfen isminizi girin"
+msgstr "Tablo VI-C3b bir TagCloud açılış sayfası seçiniz"
 
 #: wppa-boxes-html.php:230
-#, fuzzy
 msgid "Multi Tagged photos"
-msgstr "fotoğraf var."
+msgstr "Çok Etiketli fotoğrafları"
 
 #: wppa-boxes-html.php:243
-#, fuzzy
 msgid "Please select a multitag landing page in Table VI-C4b"
-msgstr "Lütfen isminizi girin"
+msgstr "Tablo VI-C4b bir Multitag açılış sayfası seçiniz"
 
 #: wppa-boxes-html.php:281
-#, fuzzy
 msgid "Please check the tag(s) that the photos must have"
-msgstr "Yorum yapmak için <a href=\"%s\">giriş</a> yapmanız gerekiyor"
+msgstr "Fotoğraf olması gerektiğini tag (s) kontrol edin"
 
 #: wppa-boxes-html.php:303
-#, fuzzy
 msgid "And"
-msgstr "ve"
+msgstr "Ve"
 
 #: wppa-boxes-html.php:306
 msgid "Or"
@@ -244,13 +228,13 @@ msgid "Find!"
 msgstr "Bul!"
 
 #: wppa-boxes-html.php:373 wppa-utils.php:1324
-#, fuzzy, php-format
+#, php-format
 msgid "See this image on %s"
-msgstr "%s / %s"
+msgstr "%s bu resme bakın"
 
 #: wppa-boxes-html.php:384 wppa-qr-widget.php:29
 msgid "QR code"
-msgstr ""
+msgstr "QR Code"
 
 #: wppa-boxes-html.php:422
 #, fuzzy, php-format
@@ -259,7 +243,7 @@ msgstr "%s / %s"
 
 #: wppa-boxes-html.php:425
 msgid "Share on Twitter"
-msgstr ""
+msgstr "Twitter paylaş"
 
 #: wppa-boxes-html.php:434
 #, fuzzy, php-format
@@ -268,7 +252,7 @@ msgstr "%s / %s"
 
 #: wppa-boxes-html.php:438
 msgid "Share on Google+"
-msgstr ""
+msgstr "Google Paylaş"
 
 #: wppa-boxes-html.php:449
 #, fuzzy, php-format
@@ -277,7 +261,7 @@ msgstr "%s / %s"
 
 #: wppa-boxes-html.php:454
 msgid "Share on Pinterest"
-msgstr ""
+msgstr "Pinterest paylaş"
 
 #: wppa-boxes-html.php:535
 #, fuzzy
@@ -286,7 +270,7 @@ msgstr "Yorumunuz:"
 
 #: wppa-boxes-html.php:600
 msgid "Working..."
-msgstr ""
+msgstr "Çalışan:"
 
 #: wppa-boxes-html.php:600
 #, fuzzy
@@ -391,15 +375,15 @@ msgstr "Fotoğraf tanımı gir veya düzenle"
 
 #: wppa-boxes-html.php:921
 msgid "Select tags:"
-msgstr ""
+msgstr "Etiketler seçin:"
 
 #: wppa-boxes-html.php:930
 msgid "and/or enter new tags:"
-msgstr ""
+msgstr "ve/veya yeni Etiketler girin:"
 
 #: wppa-boxes-html.php:932
 msgid "Preview tags:"
-msgstr ""
+msgstr "Önizleme Etiketler:"
 
 #: wppa-boxes-html.php:974
 #, fuzzy
@@ -427,7 +411,7 @@ msgstr "dedi ki:"
 
 #: wppa-boxes-html.php:1101
 msgid "Avatar"
-msgstr ""
+msgstr "Avatar"
 
 #: wppa-boxes-html.php:1117 wppa-links.php:717
 msgid "Awaiting moderation"
@@ -478,7 +462,7 @@ msgstr "Yorum yapın"
 
 #: wppa-boxes-html.php:1276
 msgid "Smilies are not available"
-msgstr ""
+msgstr "Smilies kullanılabilir değil"
 
 #: wppa-boxes-html.php:1316
 msgid "Show IPTC data"
@@ -541,7 +525,7 @@ msgstr "%s / %s"
 #: wppa-boxes-html.php:1627 wppa-boxes-html.php:1680
 #, php-format
 msgid "Mean value: %4.2f."
-msgstr ""
+msgstr "Değer anlamı: %4.2f."
 
 #: wppa-boxes-html.php:1634
 #, fuzzy, php-format
@@ -554,7 +538,7 @@ msgstr "Anasayfa"
 
 #: wppa-breadcrumb.php:120
 msgid "Post:"
-msgstr ""
+msgstr "İçerik"
 
 #: wppa-breadcrumb.php:120
 #, fuzzy
@@ -632,7 +616,7 @@ msgstr "fotoğraf var."
 
 #: wppa-breadcrumb.php:258 wppa-breadcrumb.php:263
 msgid "or"
-msgstr ""
+msgstr "veya"
 
 #: wppa-breadcrumb.php:289 wppa-breadcrumb.php:294
 #, fuzzy
@@ -652,15 +636,15 @@ msgstr "Toplam"
 #: wppa-breadcrumb.php:333 wppa-breadcrumb.php:334 wppa-breadcrumb.php:349
 #: wppa-breadcrumb.php:350
 msgid "Thumbs"
-msgstr ""
+msgstr "Başparmak"
 
 #: wppa-breadcrumb.php:456
 msgid "Unpublished"
-msgstr ""
+msgstr "Yayınlanmamış"
 
 #: wppa-cart.php:25
 msgid "Buy now"
-msgstr ""
+msgstr "Şimdi satın al"
 
 #: wppa-cart.php:89
 #, fuzzy, php-format
@@ -669,7 +653,7 @@ msgstr "%s / %s"
 
 #: wppa-cart.php:93
 msgid "Qty:"
-msgstr ""
+msgstr "Miktar:"
 
 #: wppa-comment-widget.php:58 wppa-functions.php:2828
 #, fuzzy
@@ -765,7 +749,7 @@ msgstr "--- boş ---"
 
 #: wppa-common-functions.php:1971
 msgid "--- multiple see below ---"
-msgstr ""
+msgstr "--- Birden fazla aşağıya bakınız ---"
 
 #: wppa-common-functions.php:1977
 #, fuzzy
@@ -778,7 +762,7 @@ msgstr "--- ayrı ---"
 
 #: wppa-exif-iptc-common.php:58 wppa-exif-iptc-common.php:118
 msgid "n.a."
-msgstr ""
+msgstr "mevcut değil"
 
 #: wppa-exif-iptc-common.php:196 wppa-utils.php:2038
 #, fuzzy
@@ -787,23 +771,23 @@ msgstr "Henüz bir albüm tanımlanmadı."
 
 #: wppa-exif-iptc-common.php:197 wppa-utils.php:2039
 msgid "Manual"
-msgstr ""
+msgstr "Manuel"
 
 #: wppa-exif-iptc-common.php:198 wppa-utils.php:2040
 msgid "Program AE"
-msgstr ""
+msgstr "Programı"
 
 #: wppa-exif-iptc-common.php:199 wppa-utils.php:2041
 msgid "Aperture-priority AE"
-msgstr ""
+msgstr "Diyafram öncelikli AE"
 
 #: wppa-exif-iptc-common.php:200 wppa-utils.php:2042
 msgid "Shutter speed priority AE"
-msgstr ""
+msgstr "Çekim hızı önceliği AE"
 
 #: wppa-exif-iptc-common.php:201 wppa-utils.php:2043
 msgid "Creative (Slow speed)"
-msgstr ""
+msgstr "Yaratıcı (Yavaş hız)"
 
 #: wppa-exif-iptc-common.php:202 wppa-utils.php:2044
 #, fuzzy
@@ -812,15 +796,15 @@ msgstr "yüksek"
 
 #: wppa-exif-iptc-common.php:203 wppa-utils.php:2045
 msgid "Portrait"
-msgstr ""
+msgstr "Portre"
 
 #: wppa-exif-iptc-common.php:204 wppa-utils.php:2046
 msgid "Landscape"
-msgstr ""
+msgstr "Manzara"
 
 #: wppa-exif-iptc-common.php:205 wppa-utils.php:2047
 msgid "Bulb"
-msgstr ""
+msgstr "Ampul"
 
 #: wppa-exif-iptc-common.php:227 wppa-utils.php:2048
 #, fuzzy
@@ -834,27 +818,27 @@ msgstr "ortalama"
 
 #: wppa-exif-iptc-common.php:229 wppa-utils.php:2050
 msgid "Spot"
-msgstr ""
+msgstr "Aynı nokta"
 
 #: wppa-exif-iptc-common.php:230 wppa-utils.php:2051
 msgid "Multi-spot"
-msgstr ""
+msgstr "Çok nokta"
 
 #: wppa-exif-iptc-common.php:231 wppa-utils.php:2052
 msgid "Multi-segment"
-msgstr ""
+msgstr "Çoklu-parça"
 
 #: wppa-exif-iptc-common.php:232 wppa-utils.php:2053
 msgid "Partial"
-msgstr ""
+msgstr "Bölümsel"
 
 #: wppa-exif-iptc-common.php:233 wppa-utils.php:2054
 msgid "Other"
-msgstr ""
+msgstr "Diğer"
 
 #: wppa-exif-iptc-common.php:269 wppa-utils.php:2055
 msgid "No Flash"
-msgstr ""
+msgstr "Hayır Flaş"
 
 #: wppa-exif-iptc-common.php:271 wppa-utils.php:2056
 msgid "Fired"
@@ -862,103 +846,103 @@ msgstr ""
 
 #: wppa-exif-iptc-common.php:273 wppa-utils.php:2057
 msgid "Fired, Return not detected"
-msgstr ""
+msgstr "Flaþ ateþlenmiþ, otomatik tavýr, ýþýða dönüþ saptanamadý"
 
 #: wppa-exif-iptc-common.php:275 wppa-utils.php:2058
 msgid "Fired, Return detected"
-msgstr ""
+msgstr "Flaþ ateþlenmiþ, otomatik tavýr, ýþýða dönüþ saptandý"
 
 #: wppa-exif-iptc-common.php:277 wppa-utils.php:2059
 msgid "On, Did not fire"
-msgstr ""
+msgstr "Açık, patlamadı mı"
 
 #: wppa-exif-iptc-common.php:279 wppa-utils.php:2060
 msgid "On, Fired"
-msgstr ""
+msgstr "Yakıtlı, üzerinde"
 
 #: wppa-exif-iptc-common.php:281 wppa-utils.php:2061
 msgid "On, Return not detected"
-msgstr ""
+msgstr "Elektronik flaþ ýþýða dönüþ saptanamadý"
 
 #: wppa-exif-iptc-common.php:283 wppa-utils.php:2062
 msgid "On, Return detected"
-msgstr ""
+msgstr "Elektronik flaþ ýþýða dönüþ saptandý."
 
 #: wppa-exif-iptc-common.php:285 wppa-utils.php:2063
 msgid "Off, Did not fire"
-msgstr ""
+msgstr "Flaþ ateþlenmedi, otomatik tavýr"
 
 #: wppa-exif-iptc-common.php:287 wppa-utils.php:2064
 msgid "Off, Did not fire, Return not detected"
-msgstr ""
+msgstr "Flaþ ateþlenmiþ, otomatik tavýr, ýþýða dönüþ saptanamadý"
 
 #: wppa-exif-iptc-common.php:289 wppa-utils.php:2065
 msgid "Auto, Did not fire"
-msgstr ""
+msgstr "Otomatik, ateş etmedi"
 
 #: wppa-exif-iptc-common.php:291 wppa-utils.php:2066
 msgid "Auto, Fired"
-msgstr ""
+msgstr "Otomatik, Yakıtlı"
 
 #: wppa-exif-iptc-common.php:293 wppa-utils.php:2067
 msgid "Auto, Fired, Return not detected"
-msgstr ""
+msgstr "Otomatik, Yakıtlı, algılanmıyor İade"
 
 #: wppa-exif-iptc-common.php:295 wppa-utils.php:2068
 msgid "Auto, Fired, Return detected"
-msgstr ""
+msgstr "Otomatik, Yakıtlı, tespit İade"
 
 #: wppa-exif-iptc-common.php:297 wppa-utils.php:2069
 msgid "No flash function"
-msgstr ""
+msgstr "Flaþ iþlevi yok"
 
 #: wppa-exif-iptc-common.php:299 wppa-utils.php:2070
 msgid "Off, No flash function"
-msgstr ""
+msgstr "Flaþ iþlevi yok"
 
 #: wppa-exif-iptc-common.php:301 wppa-utils.php:2071
 msgid "Fired, Red-eye reduction"
-msgstr ""
+msgstr "Flaþ ateþlenmiþ, kýrmýzý-göz azaltma tavrý"
 
 #: wppa-exif-iptc-common.php:303 wppa-utils.php:2072
 msgid "Fired, Red-eye reduction, Return not detected"
-msgstr ""
+msgstr "Flaþ ateþlenmiþ, kýrmýzý-göz azaltma tavrý, ýþýða dönüþ saptanamadý"
 
 #: wppa-exif-iptc-common.php:305 wppa-utils.php:2073
 msgid "Fired, Red-eye reduction, Return detected"
-msgstr ""
+msgstr "Flaþ ateþlenmiþ, kýrmýzý-göz azaltma tavrý, ýþýða dönüþ saptandý"
 
 #: wppa-exif-iptc-common.php:307 wppa-utils.php:2074
 msgid "On, Red-eye reduction"
-msgstr ""
+msgstr "Flaþ ateþlenmiþ, kýrmýzý-göz azaltma tavrý"
 
 #: wppa-exif-iptc-common.php:309 wppa-utils.php:2075
 msgid "Red-eye reduction, Return not detected"
-msgstr ""
+msgstr "Flaþ ateþlenmiþ, kýrmýzý-göz azaltma tavrý, ýþýða dönüþ saptanamadý"
 
 #: wppa-exif-iptc-common.php:311 wppa-utils.php:2076
 msgid "On, Red-eye reduction, Return detected"
-msgstr ""
+msgstr "Flaþ ateþlenmiþ, kýrmýzý-göz azaltma tavrý, ýþýða dönüþ saptandý"
 
 #: wppa-exif-iptc-common.php:313 wppa-utils.php:2077
 msgid "Off, Red-eye reduction"
-msgstr ""
+msgstr "Flaþ ateþlenmiþ, kýrmýzý-göz azaltma tavrý"
 
 #: wppa-exif-iptc-common.php:315 wppa-utils.php:2078
 msgid "Auto, Did not fire, Red-eye reduction"
-msgstr ""
+msgstr "Flaþ ateþlenmiþ, otomatik tavýr, kýrmýzý-göz azaltma tavrý"
 
 #: wppa-exif-iptc-common.php:317 wppa-utils.php:2079
 msgid "Auto, Fired, Red-eye reduction"
-msgstr ""
+msgstr "Flaþ ateþlenmiþ, kýrmýzý-göz azaltma tavrý"
 
 #: wppa-exif-iptc-common.php:319 wppa-utils.php:2080
 msgid "Auto, Fired, Red-eye reduction, Return not detected"
-msgstr ""
+msgstr "Flaþ ateþlenmiþ, kýrmýzý-göz azaltma tavrý, ýþýða dönüþ saptanamadý"
 
 #: wppa-exif-iptc-common.php:321 wppa-utils.php:2081
 msgid "Auto, Fired, Red-eye reduction, Return detected"
-msgstr ""
+msgstr "Flaþ ateþlenmiþ, kýrmýzý-göz azaltma tavrý, ýþýða dönüþ saptandý"
 
 #: wppa-featen-widget.php:67
 #, fuzzy
@@ -998,7 +982,7 @@ msgstr "Yüklemenize şu kadar kaldı:"
 #: wppa-functions.php:1475 wppa-functions.php:2874 wppa-links.php:673
 #: wppa-links.php:691
 msgid "Delete"
-msgstr ""
+msgstr "Sil"
 
 #: wppa-functions.php:1618
 msgid "Comment edited"
@@ -1086,7 +1070,7 @@ msgstr "Yorumlar"
 
 #: wppa-functions.php:1857 wppa-links.php:1332
 msgid "A video can not be printed or downloaded"
-msgstr ""
+msgstr "Bir video basılı veya indirilen olamaz"
 
 #: wppa-functions.php:2269
 msgid "<b>ERROR: Illegal attempt to enter a rating.</b>"
@@ -1216,7 +1200,7 @@ msgstr "Yönetici onayı bekliyor"
 
 #: wppa-functions.php:3988 wppa-upload.php:1220
 msgid "Details:"
-msgstr ""
+msgstr "Ayrıntılar:"
 
 #: wppa-functions.php:3989 wppa-upload.php:1221
 #, fuzzy
@@ -1229,7 +1213,7 @@ msgstr "Yüklemenize şu kadar kaldı:"
 
 #: wppa-functions.php:4160 wppa-functions.php:4163
 msgid "Download:"
-msgstr ""
+msgstr "İndirme:"
 
 #: wppa-functions.php:4184
 msgid "Zoom in"
@@ -1237,27 +1221,27 @@ msgstr "Yaklaştır"
 
 #: wppa-items.php:215 wppa-utils.php:1722
 msgid "Gold medal"
-msgstr ""
+msgstr "Altın madalya"
 
 #: wppa-items.php:215 wppa-utils.php:1722
 msgid "Gold"
-msgstr ""
+msgstr "Altın"
 
 #: wppa-items.php:216 wppa-utils.php:1721
 msgid "Silver medal"
-msgstr ""
+msgstr "Gümüş madalya"
 
 #: wppa-items.php:216 wppa-utils.php:1721
 msgid "Silver"
-msgstr ""
+msgstr "Gümüş"
 
 #: wppa-items.php:217 wppa-utils.php:1720
 msgid "Bronze medal"
-msgstr ""
+msgstr "Bronz madalya"
 
 #: wppa-items.php:217 wppa-utils.php:1720
 msgid "Bronze"
-msgstr ""
+msgstr "Bronz"
 
 #: wppa-items.php:265 wppa-items.php:396
 #, fuzzy
@@ -1266,7 +1250,7 @@ msgstr "--- boş ---"
 
 #: wppa-items.php:295 wppa-items.php:407
 msgid "unknown"
-msgstr ""
+msgstr "bilinmeyen"
 
 #: wppa-items.php:342 wppa-items.php:363
 #, fuzzy
@@ -1289,15 +1273,15 @@ msgstr "En son yüklenen fotoğrafları görüntüle"
 
 #: wppa-links.php:654
 msgid "App"
-msgstr ""
+msgstr "Onayla"
 
 #: wppa-links.php:655
 msgid "Mod"
-msgstr ""
+msgstr "Modere Et"
 
 #: wppa-links.php:656
 msgid "Del"
-msgstr ""
+msgstr "Sil"
 
 #: wppa-links.php:660 wppa-links.php:677
 #, fuzzy
@@ -1306,11 +1290,11 @@ msgstr "Yüklemenize şu kadar kaldı:"
 
 #: wppa-links.php:671 wppa-links.php:688
 msgid "Approve"
-msgstr ""
+msgstr "Onayla"
 
 #: wppa-links.php:672
 msgid "Moderate"
-msgstr ""
+msgstr "Modere Et"
 
 #: wppa-links.php:689
 #, fuzzy
@@ -1335,7 +1319,7 @@ msgstr "Yorum yapmak için <a href=\"%s\">giriş</a> yapmanız gerekiyor"
 #: wppa-links.php:720
 #, php-format
 msgid "Scheduled for %s"
-msgstr ""
+msgstr "%s Tarifeli"
 
 #: wppa-links.php:924 wppa-links.php:925
 msgid "Prev.&nbsp;page"
@@ -1347,11 +1331,11 @@ msgstr "Sonraki&nbsp;sayfa"
 
 #: wppa-links.php:967 wppa-non-admin.php:568
 msgid "Download"
-msgstr ""
+msgstr "Karşıdan Yükle"
 
 #: wppa-links.php:967
 msgid "Download album"
-msgstr ""
+msgstr "İndir Albüm"
 
 #: wppa-links.php:1105
 #, fuzzy
@@ -1363,10 +1347,13 @@ msgid ""
 "Keys: f = next mode; esc,x,o,c,q = exit; p = previous, n = next, s = start/"
 "stop, d = dismiss this notice."
 msgstr ""
+"Tuşlar: f = sonraki modu; esc x, o, c, q = çıkış; p = önceki, n = sonraki, s "
+"= start / stop, d = bu uyarıyı göz ardı."
 
 #: wppa-non-admin.php:292
 msgid "Keys: f = next mode; esc,x,o,c,q = exit; d = dismiss this notice."
 msgstr ""
+"Tuşlar: f = sonraki modu; esc x, o, c, q = çıkış; d = Bu haber görevden."
 
 #: wppa-non-admin.php:504 wppa-slideshow.php:232
 msgid "Start"
@@ -1420,11 +1407,11 @@ msgstr "Benim&nbsp;puanlamam"
 
 #: wppa-non-admin.php:516
 msgid "Avg."
-msgstr ""
+msgstr "Ort."
 
 #: wppa-non-admin.php:517
 msgid "Mine"
-msgstr ""
+msgstr "Mayın"
 
 #: wppa-non-admin.php:518
 #, fuzzy
@@ -1433,7 +1420,7 @@ msgstr "Spam olarak işaretlendi"
 
 #: wppa-non-admin.php:520
 msgid "No dislikes"
-msgstr ""
+msgstr "Hiçbir sevmediği"
 
 #: wppa-non-admin.php:521
 #, fuzzy
@@ -1442,11 +1429,11 @@ msgstr "1 saniye"
 
 #: wppa-non-admin.php:522
 msgid "dislikes"
-msgstr ""
+msgstr "sevmediği"
 
 #: wppa-non-admin.php:523
 msgid "including mine"
-msgstr ""
+msgstr "dahil mayın"
 
 #: wppa-non-admin.php:526
 msgid "Please enter your name"
@@ -1471,19 +1458,19 @@ msgstr "%s / %s"
 
 #: wppa-potd-widget.php:106
 msgid "By:"
-msgstr ""
+msgstr "İmzalayan:"
 
 #: wppa-qr-widget.php:26
 msgid "QR Widget"
-msgstr ""
+msgstr "QR Widget"
 
 #: wppa-setup.php:827
 msgid "Vote for me!"
-msgstr ""
+msgstr "Benim için oy verin!"
 
 #: wppa-setup.php:828
 msgid "Voted for me"
-msgstr ""
+msgstr "Benim için"
 
 #: wppa-slideshow-widget.php:67
 #, fuzzy
@@ -1571,7 +1558,7 @@ msgstr "Ortalama&nbsp;puan"
 
 #: wppa-slideshow.php:668
 msgid "First"
-msgstr ""
+msgstr "Adınız"
 
 #: wppa-slideshow.php:669
 msgid "Previous"
@@ -1579,7 +1566,7 @@ msgstr "Önceki"
 
 #: wppa-slideshow.php:673
 msgid "Last"
-msgstr ""
+msgstr "Son"
 
 #: wppa-slideshow.php:789
 #, php-format
@@ -1643,7 +1630,7 @@ msgstr "En son yüklenen fotoğraflar"
 
 #: wppa-upldr-widget.php:84
 msgid "There are too many registered users in the system for this widget"
-msgstr ""
+msgstr "Sistemde çok kayıtlı kullanıcılar bu widget için vardır"
 
 #: wppa-upldr-widget.php:118 wppa-upldr-widget.php:125
 #, fuzzy
@@ -1670,43 +1657,3 @@ msgstr "Yorum yapmak için <a href=\"%s\">giriş</a> yapmanız gerekiyor"
 msgid ""
 "This message is automaticly generated at %s. It is useless to respond to it."
 msgstr "%s / %s"
-
-#~ msgid "%s back"
-#~ msgstr "%s geri"
-
-#~ msgid "%s forward"
-#~ msgstr "%s ileri"
-
-#, fuzzy
-#~ msgid "Share %s on Facebook"
-#~ msgstr "%s / %s"
-
-#, fuzzy
-#~ msgid "Share on Facebook"
-#~ msgstr "Yorum eklendi"
-
-#, fuzzy
-#~ msgid "Please select a search results landing page in Table IX-C1"
-#~ msgstr "Lütfen isminizi girin"
-
-#, fuzzy
-#~ msgid "Please select a super view widget landing page in Table VI-C"
-#~ msgstr "Toplam"
-
-#, fuzzy
-#~ msgid "No tags defined yet"
-#~ msgstr "Henüz bir albüm tanımlanmadı."
-
-#, fuzzy
-#~ msgid "Upload"
-#~ msgstr "Fotoğraf Yükle"
-
-#, fuzzy
-#~ msgid "All albums"
-#~ msgstr "Fotoğraf Albümleri"
-
-#~ msgid "<b>ERROR: Attempt to enter an invalid rating.</b>"
-#~ msgstr "<b>HATA: Geçersiz puanlama girişimi.</b>"
-
-#~ msgid "Upload Photo(s)"
-#~ msgstr "Fotoğraf Yükle"

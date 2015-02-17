@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Various wppa boxes
-* Version 5.5.0
+* Version 5.5.1
 *
 *
 */
@@ -929,7 +929,7 @@ static $seqno;
 					</select>
 					<div style="float:left; margin-right:4px;" ><small>'.__a( 'and/or enter new tags:', 'wppa' ).'</small></div>
 					<input id="wppa-inp-'.$alb.'-'.$wppa['mocc'].'" type="text" class="wppa-box-text " style="padding:0; width:150px; '.__wcs( 'wppa-box-text' ).'" name="wppa-new-tags" onchange="'.$onc.'" />
-					<div style="margin:0; clear:both;" >'.__('Preview tags:', 'wppa').' <small id="wppa-prev-'.$alb.'-'.$wppa['mocc'].'"></small></div>
+					<div style="margin:0; clear:both;" >'.__a('Preview tags:', 'wppa').' <small id="wppa-prev-'.$alb.'-'.$wppa['mocc'].'"></small></div>
 				</div>
 				<script type="text/javascript" >jQuery( document ).ready(function() { jQuery( \'#wppa-sel-'.$alb.'-'.$wppa['mocc'].'\' ).trigger( \'onchange\' ) } );</script>';				
 		}

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 5.5.0
+* Version 5.5.1
 *
 */
 
@@ -3058,7 +3058,7 @@ global $wppa_tags;
 							wppa_setting($slug, '14', $name, $desc, $html, $help, $clas, $tags);
 							
 							$name = __('Slide page Ajax', 'wppa');
-							$desc = __('Pgelinks slideshow use Ajax', 'wppa');
+							$desc = __('Pagelinks slideshow use Ajax', 'wppa');
 							$help = __('On some systems you need to disable ajax here.', 'wppa');
 							$slug = 'wppa_slideshow_page_allow_ajax';
 							$html = wppa_checkbox($slug);
@@ -4402,18 +4402,24 @@ global $wppa_tags;
 							$html = array($html1, $html2, $html3, $html4);
 							$clas = '';
 							$tags = 'link,slide';
-							wppa_setting($slug, '5a,,c,d', $name, $desc, $html, $help, $clas, $tags);
+							wppa_setting($slug, '5a,b,c,d', $name, $desc, $html, $help, $clas, $tags);
 
 							$name = __('Film linktype', 'wppa');
 							$desc = __('Direct access goto image in:', 'wppa');
 							$help = esc_js(__('Select the action to be taken when the user clicks on a filmstrip image.', 'wppa'));
-							$slug = 'wppa_film_linktype';
+							$slug1 = 'wppa_film_linktype';
+							$slug3 = 'wppa_film_blank';
+							$slug4 = 'wppa_film_overrule';
 							$options = array(__('slideshow window', 'wppa'), __('lightbox overlay', 'wppa'));
 							$values = array('slideshow', 'lightbox');
-							$html = wppa_select($slug, $options, $values);
+							$html1 = wppa_select($slug1, $opts, $vals);
+							$html2 = '';
+							$html3 = wppa_checkbox($slug3);
+							$html4 = wppa_checkbox($slug4);
+							$html = array($html1, $html2, $html3, $html4);
 							$clas = '';
 							$tags = 'link,slide';
-							wppa_setting($slug, '6', $name, $desc, $html.'</td><td></td><td></td><td>', $help, $clas, $tags);
+							wppa_setting($slug, '6a,,c,d', $name, $desc, $html, $help, $clas, $tags);
 							
 							wppa_setting_subheader('C', '4', __('Other links', 'wppa'));
 
@@ -7409,7 +7415,7 @@ global $wppa_opt;
 	return $html;
 }
 
-function wppa_checkbox($slug, $onchange = '', $clas = '') {
+function wppa_checkbox($slug, $onchange = '', $class = '') {
 global $wppa_defaults;
 
 	// Check for wp delete_option bug
@@ -7432,7 +7438,7 @@ global $wppa_defaults;
 	return $html;
 }
 
-function wppa_checkbox_warn($slug, $onchange = '', $clas = '', $warning) {
+function wppa_checkbox_warn($slug, $onchange = '', $class = '', $warning) {
 global $wppa_defaults;
 
 	// Check for wp delete_option bug
@@ -7456,7 +7462,7 @@ global $wppa_defaults;
 	return $html;
 }
 
-function wppa_checkbox_warn_off($slug, $onchange = '', $clas = '', $warning, $is_help = true) {
+function wppa_checkbox_warn_off($slug, $onchange = '', $class = '', $warning, $is_help = true) {
 global $wppa_defaults;
 
 	// Check for wp delete_option bug
@@ -7481,7 +7487,7 @@ global $wppa_defaults;
 	return $html;
 }
 
-function wppa_checkbox_warn_on($slug, $onchange = '', $clas = '', $warning) {
+function wppa_checkbox_warn_on($slug, $onchange = '', $class = '', $warning) {
 global $wppa_defaults;
 
 	// Check for wp delete_option bug
@@ -7505,7 +7511,7 @@ global $wppa_defaults;
 	return $html;
 }
 
-function wppa_checkbox_e($slug, $curval, $onchange = '', $clas = '', $enabled = true) {
+function wppa_checkbox_e($slug, $curval, $onchange = '', $class = '', $enabled = true) {
 
 	$html = '<input style="float:left; height: 15px; margin: 0px; padding: 0px;" type="checkbox" id="'.$slug.'"'; 
 	if ($curval) $html .= ' checked="checked"';
@@ -7521,7 +7527,7 @@ function wppa_checkbox_e($slug, $curval, $onchange = '', $clas = '', $enabled = 
 	return $html;
 }
 
-function wppa_select($slug, $options, $values, $onchange = '', $clas = '', $first_disable = false, $postaction = '') {
+function wppa_select($slug, $options, $values, $onchange = '', $class = '', $first_disable = false, $postaction = '') {
 global $wppa_opt;
 global $wppa_defaults;
 
@@ -7567,7 +7573,7 @@ global $wppa_defaults;
 	return $html;
 }
 
-function wppa_select_e( $slug, $curval, $options, $values, $onchange = '', $clas = '' ) {
+function wppa_select_e( $slug, $curval, $options, $values, $onchange = '', $class = '' ) {
 
 	if ( ! is_array( $options ) ) {
 		$html = __('There are no pages (yet) to link to.', 'wppa');

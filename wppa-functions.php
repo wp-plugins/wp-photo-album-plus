@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Various funcions
-* Version 5.5.0
+* Version 5.5.1
 *
 */
 
@@ -3071,7 +3071,10 @@ global $thumb;
 	$url 		= wppa_get_thumb_url( $thumb['id'], '', $imgwidth, $imgheight ); 
 	$furl 		= str_replace( '/thumbs', '', $url );
 	$events 	= wppa_get_imgevents( 'film', $thumb['id'], 'nopopup', $idx ); 
-	$thumbname 	= wppa_get_photo_name( $thumb['id'] ); //esc_attr( wppa_qtrans( $thumb['name'] ) );
+	$thumbname 	= wppa_get_photo_name( $thumb['id'] );
+	$target 	= wppa_switch( 'wppa_film_blank' ) || ( $thumb['linktarget'] == '_blank' ) ? 'target="_blank" ' : '';
+	$psotitle 	= $thumb['linktitle'] ? 'title="'.esc_attr($thumb['linktitle']).'" ' : '';
+	$psourl 	= wppa_switch( 'wppa_film_overrule' ) && $thumb['linkurl'] ? 'href="'.$thumb['linkurl'].'" '.$target.$psotitle : '';
 	
 //	$alt = wppa_qtrans( $thumb['name'] );
 //	$alt = preg_replace( '/\.[^.]*$/', '', $alt );	// Remove file extension
@@ -3103,7 +3106,10 @@ global $thumb;
 		$wppa['out'] .= '
 				<div id="'.$tmp.'_wppatnf_'.$thumb['id'].'_'.$wppa['mocc'].'" class="thumbnail-frame" '.$style.' >';
 		
-		if ( wppa_opt( 'wppa_film_linktype' ) == 'lightbox' && $tmp == 'film' ) {
+		if ( $psourl ) {	// True only when pso activated and data present
+			$wppa['out'] .= '<a '.$psourl.'>';	// $psourl contains url, target and title
+		}
+		elseif ( wppa_opt( 'wppa_film_linktype' ) == 'lightbox' && $tmp == 'film' ) {
 			$wppa['out'] .= '<a href="'.$furl.'" data-videohtml="'.esc_attr( wppa_get_video_body( $thumb['id'] ) ).'" rel="'.wppa_opt( 'wppa_lightbox_name' ).'[occ'.$wppa['mocc'].']" title="'.wppa_get_lbtitle( 'slide', $thumb['id'] ).'" >';
 		}
 		
@@ -3123,7 +3129,7 @@ global $thumb;
 														 );
 				}
 				else {
-					$wppa['out'] .= '<img id="wppa-'.$tmp.'-'.$idx.'-'.$wppa['mocc'].'" class="wppa-'.$tmp.'-'.$wppa['mocc'].'" src="'.$url.'" ' . $imgalt . ' style="'.$imgstyle.$cursor.'" '.$events.' />';
+					$wppa['out'] .= '<img id="wppa-'.$tmp.'-'.$idx.'-'.$wppa['mocc'].'" class="wppa-'.$tmp.'-'.$wppa['mocc'].'" src="'.$url.'" ' . $imgalt . ' style="'.$imgstyle.$cursor.'" '.$events.' data-title="'.( $psourl ? esc_attr($thumb['linktitle']) : '').'" />';
 				}
 			if ( $tmp == 'film' && ! $com_alt && ! wppa_cdn() && ! wppa_switch( 'wppa_lazy_or_htmlcomp' ) ) $wppa['out'].='-->';
 			

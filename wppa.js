@@ -2,7 +2,7 @@
 //
 // conatins slideshow, theme, ajax and lightbox code
 //
-var wppaJsVersion = '5.5.0';
+var wppaJsVersion = '5.5.1';
 
 // Part 1: Slideshow
 //
@@ -1245,7 +1245,10 @@ function _wppaAdjustFilmstrip( mocc ) {
 					html = html.replace( '<!--', '' );
 					html = html.replace( '-->', '' );
 					jQuery( '#film_wppatnf_'+_wppaId[mocc][index]+'_'+mocc ).html( html );
-					if ( wppaFilmThumbTitle != '' ) {
+					if ( jQuery( '#wppa-film-'+index+'-'+mocc ).attr( 'data-title' ) != '' ) {
+						jQuery( '#wppa-film-'+index+'-'+mocc ).attr( 'title', jQuery( '#wppa-film-'+index+'-'+mocc ).attr( 'data-title' ) );
+					}
+					else if ( wppaFilmThumbTitle != '' ) {
 						jQuery( '#wppa-film-'+index+'-'+mocc ).attr( 'title', wppaFilmThumbTitle );
 					}
 					else {
@@ -3051,7 +3054,7 @@ wppaConsoleLog( 'wppaOvlShow arg='+arg );
 	else {						// Arg is 'this' arg
 		wppaOvlIdx = -1;	// Assume single
 		wppaOvlUrl = arg.href;
-		if ( jQuery( arg ).attr( 'data-lbtitle' ) != '' ) {
+		if ( jQuery( arg ).attr( 'data-lbtitle' ) ) {
 			wppaOvlTitle = wppaRepairScriptTags( jQuery( arg ).attr( 'data-lbtitle' ) );
 		}
 		else {

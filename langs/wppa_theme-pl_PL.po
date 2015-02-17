@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wppa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-02-09 13:50+0100\n"
-"PO-Revision-Date: 2015-02-09 13:50+0100\n"
+"POT-Creation-Date: 2015-02-13 13:33+0100\n"
+"PO-Revision-Date: 2015-02-16 14:33+0100\n"
 "Last-Translator: J.N. Breetvelt <OpaJaap@OpaJaap.nl>\n"
 "Language-Team: OpaJaap <OpaJaap@OpaJaap.nl>\n"
 "Language: pl_PL\n"
@@ -18,7 +18,7 @@ msgstr ""
 "X-Poedit-KeywordsList: __a\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-SourceCharset: utf-8\n"
-"X-Generator: Poedit 1.6.10\n"
+"X-Generator: Poedit 1.7.4\n"
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPath-1: theme\n"
 
@@ -136,7 +136,7 @@ msgid "albums"
 msgstr "albumy"
 
 #: wppa-album-covers.php:1116 wppa-boxes-html.php:373 wppa-breadcrumb.php:258
-#: wppa-breadcrumb.php:263 wppa-functions.php:4130 wppa-utils.php:1324
+#: wppa-breadcrumb.php:263 wppa-functions.php:4136 wppa-utils.php:1324
 msgid "and"
 msgstr "i"
 
@@ -325,7 +325,7 @@ msgstr "Wprowadź / zmień opis tego albumu."
 msgid "Create album"
 msgstr "Nie udało się utworzyć albumu."
 
-#: wppa-boxes-html.php:721 wppa-boxes-html.php:735 wppa-functions.php:3863
+#: wppa-boxes-html.php:721 wppa-boxes-html.php:735 wppa-functions.php:3869
 msgid "Max uploads reached"
 msgstr "Limit przesłanych zdjęć osiągnięty"
 
@@ -407,6 +407,10 @@ msgstr ""
 
 #: wppa-boxes-html.php:930
 msgid "and/or enter new tags:"
+msgstr ""
+
+#: wppa-boxes-html.php:932
+msgid "Preview tags:"
 msgstr ""
 
 #: wppa-boxes-html.php:974
@@ -698,7 +702,7 @@ msgstr "Domyślny album zdjęć dla"
 msgid "1 second"
 msgstr "1 sekunda"
 
-#: wppa-common-functions.php:603 wppa-functions.php:4131
+#: wppa-common-functions.php:603 wppa-functions.php:4137
 msgid "seconds"
 msgstr "sekund"
 
@@ -706,7 +710,7 @@ msgstr "sekund"
 msgid "1 minute"
 msgstr "1 minuta"
 
-#: wppa-common-functions.php:608 wppa-functions.php:4130
+#: wppa-common-functions.php:608 wppa-functions.php:4136
 msgid "minutes"
 msgstr "minut"
 
@@ -714,7 +718,7 @@ msgstr "minut"
 msgid "1 hour"
 msgstr "1 godzina"
 
-#: wppa-common-functions.php:613 wppa-functions.php:4129
+#: wppa-common-functions.php:613 wppa-functions.php:4135
 msgid "hours"
 msgstr "godzin"
 
@@ -722,7 +726,7 @@ msgstr "godzin"
 msgid "1 day"
 msgstr "1 dzień"
 
-#: wppa-common-functions.php:618 wppa-functions.php:4128
+#: wppa-common-functions.php:618 wppa-functions.php:4134
 msgid "days"
 msgstr "dni"
 
@@ -730,7 +734,7 @@ msgstr "dni"
 msgid "1 week"
 msgstr "1 tydzień"
 
-#: wppa-common-functions.php:623 wppa-functions.php:4127
+#: wppa-common-functions.php:623 wppa-functions.php:4133
 msgid "weeks"
 msgstr "tygodni"
 
@@ -1068,7 +1072,7 @@ msgstr "napisał pod zdjęciem:"
 msgid "Moderate comment admin"
 msgstr "Moderuj/edytuj komentarze do zdjęć"
 
-#: wppa-functions.php:1635 wppa-functions.php:3979 wppa-upload.php:1217
+#: wppa-functions.php:1635 wppa-functions.php:3985 wppa-upload.php:1217
 msgid "Moderate manage photo"
 msgstr "Edytuj zdjęcie i/lub zatwierdź jego komentarze"
 
@@ -1142,137 +1146,137 @@ msgstr "<b>BŁĄD: Niedozwolona próba wejścia w komentarz.</b>"
 msgid "View the top rated photos"
 msgstr "Zobacz najwyżej ocenione zdjęcia"
 
-#: wppa-functions.php:3745
+#: wppa-functions.php:3751
 #, fuzzy
 msgid "New Album"
 msgstr "Nie udało się utworzyć albumu."
 
-#: wppa-functions.php:3748
+#: wppa-functions.php:3754
 #, fuzzy
 msgid "<b>ERROR: Illegal attempt to create an album.</b>"
 msgstr "<b>BŁĄD: Nielegalna próba wprowadzenia oceny.</b>"
 
-#: wppa-functions.php:3752
+#: wppa-functions.php:3758
 #, fuzzy
 msgid "Wrong captcha, please try again"
 msgstr ""
 "Niestety, podałeś błędną odpowiedź.\\n\\nSpróbuj ponownie i podaj "
 "rozwiązanie."
 
-#: wppa-functions.php:3765
+#: wppa-functions.php:3771
 #, fuzzy, php-format
 msgid "Album #%s created"
 msgstr "- Ostatnio utworzony album -"
 
-#: wppa-functions.php:3770
+#: wppa-functions.php:3776
 #, fuzzy
 msgid "Could not create album"
 msgstr "Nie udało się utworzyć albumu."
 
-#: wppa-functions.php:3781
+#: wppa-functions.php:3787
 msgid "<b>ERROR: Illegal attempt to upload a file.</b>"
 msgstr "<b>BŁĄD: Niedozwolona próba przesłania pliku.</b>"
 
-#: wppa-functions.php:3821
+#: wppa-functions.php:3827
 #, fuzzy
 msgid "Photo upload"
 msgstr "Zdjęcia przesłane do albumu nr"
 
-#: wppa-functions.php:3823
+#: wppa-functions.php:3829
 msgid "Photo successfully uploaded."
 msgstr "Zdjęcie zostało przesłane!"
 
-#: wppa-functions.php:3823
+#: wppa-functions.php:3829
 #, php-format
 msgid "%s photos successfully uploaded."
 msgstr "%s zdjęć zostało przesłanych!"
 
-#: wppa-functions.php:3824
+#: wppa-functions.php:3830
 #, php-format
 msgid "%s points added."
 msgstr "Dodano %s punktów."
 
-#: wppa-functions.php:3828
+#: wppa-functions.php:3834
 msgid "Upload failed"
 msgstr "Przesyłanie zdjęcia nie powiodło się"
 
-#: wppa-functions.php:3831
+#: wppa-functions.php:3837
 #, fuzzy
 msgid "1 Upload failed"
 msgstr "Przesyłanie zdjęcia nie powiodło się"
 
-#: wppa-functions.php:3831
+#: wppa-functions.php:3837
 #, fuzzy, php-format
 msgid "%s uploads failed."
 msgstr "Nie udało się ustawić %s na %s"
 
-#: wppa-functions.php:3867
+#: wppa-functions.php:3873
 msgid "Error during upload"
 msgstr "Błąd podczas przesyłania"
 
-#: wppa-functions.php:3872
+#: wppa-functions.php:3878
 msgid "Uploaded file is not an image"
 msgstr "Przesłany plik nie jest zdjęciem"
 
-#: wppa-functions.php:3876
+#: wppa-functions.php:3882
 #, php-format
 msgid ""
 "Only gif, jpg and png image files are supported. Returned filetype = %d."
 msgstr "Można przesyłać tylko pliki jpg, gif i png. Typ pliku = %d."
 
-#: wppa-functions.php:3882
+#: wppa-functions.php:3888
 #, fuzzy, php-format
 msgid "Uploaded file is larger than the allowed maximum of %d x %d pixels."
 msgstr ""
 "Bazując na podstawie limitu pamięci serwera, nie powinieneś przesyłać zdjęć "
 "większych niż <strong>%d x %d (%2.1f megapikseli)</strong>"
 
-#: wppa-functions.php:3888
+#: wppa-functions.php:3894
 #, fuzzy, php-format
 msgid "Uploaded file %s already exists in this album."
 msgstr "Przesłany plik %s nir jest plikiem .png"
 
-#: wppa-functions.php:3896
+#: wppa-functions.php:3902
 #, php-format
 msgid "The image is too big. Max photo size: %d x %d (%2.1f MegaPixel)"
 msgstr "Zdjęcie jest za duże. Maksymalny rozmiar: %d x %d (%2.1f megapikseli)"
 
-#: wppa-functions.php:3919
+#: wppa-functions.php:3925
 msgid "Could not insert photo into db."
 msgstr "Nie udało się wstawić zdjęcia do bazy danych."
 
-#: wppa-functions.php:3975 wppa-upload.php:1213
+#: wppa-functions.php:3981 wppa-upload.php:1213
 #, php-format
 msgid "New photo uploaded: %s"
 msgstr "Przesłano nowe zdjęcie: %s"
 
-#: wppa-functions.php:3976 wppa-upload.php:1214
+#: wppa-functions.php:3982 wppa-upload.php:1214
 #, php-format
 msgid "User %s uploaded photo %s into album %s"
 msgstr "Użytkownik %s przesłał zdjęcie %s do albumu %s"
 
-#: wppa-functions.php:3978 wppa-upload.php:1216
+#: wppa-functions.php:3984 wppa-upload.php:1216
 msgid "This upload requires moderation"
 msgstr "To przesłane zdjęcie wymaga akceptacji moderatora"
 
-#: wppa-functions.php:3982 wppa-upload.php:1220
+#: wppa-functions.php:3988 wppa-upload.php:1220
 msgid "Details:"
 msgstr "Szczegóły:"
 
-#: wppa-functions.php:3983 wppa-upload.php:1221
+#: wppa-functions.php:3989 wppa-upload.php:1221
 msgid "Manage photo"
 msgstr "Edytuj zdjęcie i/lub zatwierdź jego komentarze"
 
-#: wppa-functions.php:4125
+#: wppa-functions.php:4131
 msgid "You can upload after"
 msgstr "Możesz przesłać potem"
 
-#: wppa-functions.php:4154 wppa-functions.php:4157
+#: wppa-functions.php:4160 wppa-functions.php:4163
 #, fuzzy
 msgid "Download:"
 msgstr "Link pobierania popup"
 
-#: wppa-functions.php:4178
+#: wppa-functions.php:4184
 msgid "Zoom in"
 msgstr "Powiększ"
 
@@ -1718,45 +1722,3 @@ msgid ""
 msgstr ""
 "Ta wiadomość została wygenerowana automatycznie przez %s. Nie odpowiadaj na "
 "nią."
-
-#~ msgid "%s back"
-#~ msgstr "%s do tyłu"
-
-#~ msgid "%s forward"
-#~ msgstr "%s naprzód"
-
-#~ msgid "Share %s on Facebook"
-#~ msgstr "Udostępnij %s na Facebooku"
-
-#, fuzzy
-#~ msgid "Share on Facebook"
-#~ msgstr "Udostępnij %s na Facebooku"
-
-#, fuzzy
-#~ msgid "Please select a search results landing page in Table IX-C1"
-#~ msgstr "Wyświetl wyniki wyszukiwania na stronie."
-
-#, fuzzy
-#~ msgid "Please select a super view widget landing page in Table VI-C"
-#~ msgstr "--- Wybierz stronę ---"
-
-#, fuzzy
-#~ msgid "No tags defined yet"
-#~ msgstr "Nie ma jeszcze tagów"
-
-#, fuzzy
-#~ msgid "Upload"
-#~ msgstr "Prześlij nowe zdjęcia"
-
-#, fuzzy
-#~ msgid "Share on Hyves"
-#~ msgstr "Udostępnij %s na Pinterest"
-
-#~ msgid "All albums"
-#~ msgstr "Wszystkie albumy"
-
-#~ msgid "<b>ERROR: Attempt to enter an invalid rating.</b>"
-#~ msgstr "<b>BŁĄD: Próba wprowadzenia nieprawidłowej oceny.</b>"
-
-#~ msgid "Upload Photo(s)"
-#~ msgstr "Wyślij zdjęcia"

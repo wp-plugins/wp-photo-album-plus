@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Photo Album Plus in italiano\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-02-09 14:33+0100\n"
-"PO-Revision-Date: 2015-02-09 14:33+0100\n"
+"POT-Creation-Date: 2015-02-13 14:14+0100\n"
+"PO-Revision-Date: 2015-02-13 14:14+0100\n"
 "Last-Translator: J.N. Breetvelt <OpaJaap@OpaJaap.nl>\n"
 "Language-Team: Gianni Diurno | gidibao.net & charmingpress.com\n"
 "Language: it_IT\n"
@@ -18,7 +18,7 @@ msgstr ""
 "X-Poedit-KeywordsList: __a\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-SourceCharset: utf-8\n"
-"X-Generator: Poedit 1.6.10\n"
+"X-Generator: Poedit 1.7.4\n"
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPath-1: theme\n"
 
@@ -138,7 +138,7 @@ msgid "albums"
 msgstr "album"
 
 #: wppa-album-covers.php:1116 wppa-boxes-html.php:373 wppa-breadcrumb.php:258
-#: wppa-breadcrumb.php:263 wppa-functions.php:4130 wppa-utils.php:1324
+#: wppa-breadcrumb.php:263 wppa-functions.php:4136 wppa-utils.php:1324
 msgid "and"
 msgstr "og"
 
@@ -325,7 +325,7 @@ msgstr "Inserisci / modifica la descrizione per questo album."
 msgid "Create album"
 msgstr "Impossibile creare album. "
 
-#: wppa-boxes-html.php:721 wppa-boxes-html.php:735 wppa-functions.php:3863
+#: wppa-boxes-html.php:721 wppa-boxes-html.php:735 wppa-functions.php:3869
 msgid "Max uploads reached"
 msgstr "Maks. antal indsendinger er opn&aring;et"
 
@@ -407,6 +407,10 @@ msgstr ""
 
 #: wppa-boxes-html.php:930
 msgid "and/or enter new tags:"
+msgstr ""
+
+#: wppa-boxes-html.php:932
+msgid "Preview tags:"
 msgstr ""
 
 #: wppa-boxes-html.php:974
@@ -700,7 +704,7 @@ msgstr "Standard foto album for"
 msgid "1 second"
 msgstr "1 sekund"
 
-#: wppa-common-functions.php:603 wppa-functions.php:4131
+#: wppa-common-functions.php:603 wppa-functions.php:4137
 msgid "seconds"
 msgstr "sekunder"
 
@@ -708,7 +712,7 @@ msgstr "sekunder"
 msgid "1 minute"
 msgstr "1 minut"
 
-#: wppa-common-functions.php:608 wppa-functions.php:4130
+#: wppa-common-functions.php:608 wppa-functions.php:4136
 msgid "minutes"
 msgstr "minutter"
 
@@ -716,7 +720,7 @@ msgstr "minutter"
 msgid "1 hour"
 msgstr "1 time"
 
-#: wppa-common-functions.php:613 wppa-functions.php:4129
+#: wppa-common-functions.php:613 wppa-functions.php:4135
 msgid "hours"
 msgstr "timer"
 
@@ -724,7 +728,7 @@ msgstr "timer"
 msgid "1 day"
 msgstr "1 dag"
 
-#: wppa-common-functions.php:618 wppa-functions.php:4128
+#: wppa-common-functions.php:618 wppa-functions.php:4134
 msgid "days"
 msgstr "dage"
 
@@ -732,7 +736,7 @@ msgstr "dage"
 msgid "1 week"
 msgstr "1 uge"
 
-#: wppa-common-functions.php:623 wppa-functions.php:4127
+#: wppa-common-functions.php:623 wppa-functions.php:4133
 msgid "weeks"
 msgstr "uger"
 
@@ -1031,7 +1035,7 @@ msgstr "Se fotos"
 msgid "Moderate comment admin"
 msgstr "Godkend kommentar administration"
 
-#: wppa-functions.php:1635 wppa-functions.php:3979 wppa-upload.php:1217
+#: wppa-functions.php:1635 wppa-functions.php:3985 wppa-upload.php:1217
 msgid "Moderate manage photo"
 msgstr "Se fotos"
 
@@ -1103,140 +1107,140 @@ msgstr "<b>FEJL: Ugyldigt fors&oslash;g p&aring; at give en kommentar.</b>"
 msgid "View the top rated photos"
 msgstr "Se fotos med h&oslash;jeste bed&oslash;mmelse"
 
-#: wppa-functions.php:3745
+#: wppa-functions.php:3751
 #, fuzzy
 msgid "New Album"
 msgstr "Impossibile creare album. "
 
-#: wppa-functions.php:3748
+#: wppa-functions.php:3754
 #, fuzzy
 msgid "<b>ERROR: Illegal attempt to create an album.</b>"
 msgstr ""
 "<b>FEJL: Ugyldigt fors&oslash;g p&aring; at give en bed&oslash;mmelse.</b>"
 
-#: wppa-functions.php:3752
+#: wppa-functions.php:3758
 #, fuzzy
 msgid "Wrong captcha, please try again"
 msgstr ""
 "Beklager, du gav et forkert svar.\\n\\nPr&oslash;v venligst igen, at "
 "l&oslash;se beregningen."
 
-#: wppa-functions.php:3765
+#: wppa-functions.php:3771
 #, fuzzy, php-format
 msgid "Album #%s created"
 msgstr "Carica foto: per caricare le foto in un album che hai creato."
 
-#: wppa-functions.php:3770
+#: wppa-functions.php:3776
 #, fuzzy
 msgid "Could not create album"
 msgstr "Impossibile creare album. "
 
-#: wppa-functions.php:3781
+#: wppa-functions.php:3787
 msgid "<b>ERROR: Illegal attempt to upload a file.</b>"
 msgstr "<b>FEJL: Ugyldigt fors&oslash;g p&aring; at uploade en fil.</b>"
 
-#: wppa-functions.php:3821
+#: wppa-functions.php:3827
 #, fuzzy
 msgid "Photo upload"
 msgstr "Foto caricate nell'album numero"
 
-#: wppa-functions.php:3823
+#: wppa-functions.php:3829
 msgid "Photo successfully uploaded."
 msgstr "Indsendelse af foto var en success."
 
-#: wppa-functions.php:3823
+#: wppa-functions.php:3829
 #, php-format
 msgid "%s photos successfully uploaded."
 msgstr "Indsendelse af %s fotos var en success."
 
-#: wppa-functions.php:3824
+#: wppa-functions.php:3830
 #, php-format
 msgid "%s points added."
 msgstr "%s kommentarer tilf&oslash;jet"
 
-#: wppa-functions.php:3828
+#: wppa-functions.php:3834
 msgid "Upload failed"
 msgstr "Indl&aelig;sning fejlede"
 
-#: wppa-functions.php:3831
+#: wppa-functions.php:3837
 #, fuzzy
 msgid "1 Upload failed"
 msgstr "Indl&aelig;sning fejlede"
 
-#: wppa-functions.php:3831
+#: wppa-functions.php:3837
 #, fuzzy, php-format
 msgid "%s uploads failed."
 msgstr "Impossibile impostare %s a %s"
 
-#: wppa-functions.php:3867
+#: wppa-functions.php:3873
 msgid "Error during upload"
 msgstr "Fejl under upload"
 
-#: wppa-functions.php:3872
+#: wppa-functions.php:3878
 msgid "Uploaded file is not an image"
 msgstr "Uploaded fil er ikke et billede"
 
-#: wppa-functions.php:3876
+#: wppa-functions.php:3882
 #, php-format
 msgid ""
 "Only gif, jpg and png image files are supported. Returned filetype = %d."
 msgstr ""
 "Kun gif, jpg og png filer underst&oslash;ttes. Den forkerte filtype er %d."
 
-#: wppa-functions.php:3882
+#: wppa-functions.php:3888
 #, fuzzy, php-format
 msgid "Uploaded file is larger than the allowed maximum of %d x %d pixels."
 msgstr "Maks. foto st&oslash;rrelse: %d x %d (%2.1f MegaPixel)"
 
-#: wppa-functions.php:3888
+#: wppa-functions.php:3894
 #, fuzzy, php-format
 msgid "Uploaded file %s already exists in this album."
 msgstr "Il file %s che hai caricato non è un file .png"
 
-#: wppa-functions.php:3896
+#: wppa-functions.php:3902
 #, php-format
 msgid "The image is too big. Max photo size: %d x %d (%2.1f MegaPixel)"
 msgstr ""
 "Billedet er for stort. Maks. foto st&oslash;rrelse: %d x %d (%2.1f MegaPixel)"
 
-#: wppa-functions.php:3919
+#: wppa-functions.php:3925
 msgid "Could not insert photo into db."
 msgstr "Kunne ikke inds&aelig;tte foto i databasen."
 
-#: wppa-functions.php:3975 wppa-upload.php:1213
+#: wppa-functions.php:3981 wppa-upload.php:1213
 #, php-format
 msgid "New photo uploaded: %s"
 msgstr "Nyt foto indsendt: %s"
 
-#: wppa-functions.php:3976 wppa-upload.php:1214
+#: wppa-functions.php:3982 wppa-upload.php:1214
 #, php-format
 msgid "User %s uploaded photo %s into album %s"
 msgstr "Bruger %s indsendte foto %s ind i album %s"
 
-#: wppa-functions.php:3978 wppa-upload.php:1216
+#: wppa-functions.php:3984 wppa-upload.php:1216
 msgid "This upload requires moderation"
 msgstr "Denne indsendelse kr&aelig;ver godkendelse"
 
-#: wppa-functions.php:3982 wppa-upload.php:1220
+#: wppa-functions.php:3988 wppa-upload.php:1220
 msgid "Details:"
 msgstr "Detaljer:"
 
-#: wppa-functions.php:3983 wppa-upload.php:1221
+#: wppa-functions.php:3989 wppa-upload.php:1221
 msgid "Manage photo"
 msgstr "Se fotos"
 
-#: wppa-functions.php:4125
+#: wppa-functions.php:4131
 msgid "You can upload after"
 msgstr "Du kan indsende efter"
 
-#: wppa-functions.php:4154 wppa-functions.php:4157
+#: wppa-functions.php:4160 wppa-functions.php:4163
 #, fuzzy
 msgid "Download:"
 msgstr ""
 "Questa impostazione farà sì che cliccando sulla immagine con il tasto destro "
 "non permetterà all'utente di scaricare l'immagine."
 
-#: wppa-functions.php:4178
+#: wppa-functions.php:4184
 msgid "Zoom in"
 msgstr "Zoom ind"
 

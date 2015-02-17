@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wppa_theme_v5.2.3 HU\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-02-09 14:32+0100\n"
-"PO-Revision-Date: 2015-02-09 14:32+0100\n"
+"POT-Creation-Date: 2015-02-13 13:59+0100\n"
+"PO-Revision-Date: 2015-02-13 14:00+0100\n"
 "Last-Translator: J.N. Breetvelt <OpaJaap@OpaJaap.nl>\n"
 "Language-Team: FYGureout <wpfordito@wpforditas.farkasonline.net>\n"
 "Language: hu\n"
@@ -18,7 +18,7 @@ msgstr ""
 "X-Poedit-KeywordsList: __a\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-SourceCharset: UTF-8\n"
-"X-Generator: Poedit 1.6.10\n"
+"X-Generator: Poedit 1.7.4\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPath-1: theme\n"
@@ -131,7 +131,7 @@ msgid "albums"
 msgstr "album"
 
 #: wppa-album-covers.php:1116 wppa-boxes-html.php:373 wppa-breadcrumb.php:258
-#: wppa-breadcrumb.php:263 wppa-functions.php:4130 wppa-utils.php:1324
+#: wppa-breadcrumb.php:263 wppa-functions.php:4136 wppa-utils.php:1324
 msgid "and"
 msgstr "és"
 
@@ -314,7 +314,7 @@ msgstr "Kép leírásáanak szerkesztése/módosítása"
 msgid "Create album"
 msgstr "album"
 
-#: wppa-boxes-html.php:721 wppa-boxes-html.php:735 wppa-functions.php:3863
+#: wppa-boxes-html.php:721 wppa-boxes-html.php:735 wppa-functions.php:3869
 msgid "Max uploads reached"
 msgstr "Maximális feltöltés elérés"
 
@@ -387,6 +387,10 @@ msgstr ""
 
 #: wppa-boxes-html.php:930
 msgid "and/or enter new tags:"
+msgstr ""
+
+#: wppa-boxes-html.php:932
+msgid "Preview tags:"
 msgstr ""
 
 #: wppa-boxes-html.php:974
@@ -662,7 +666,7 @@ msgstr "Alapértelmezett képalbum:"
 msgid "1 second"
 msgstr "1 mp"
 
-#: wppa-common-functions.php:603 wppa-functions.php:4131
+#: wppa-common-functions.php:603 wppa-functions.php:4137
 msgid "seconds"
 msgstr "mp"
 
@@ -670,7 +674,7 @@ msgstr "mp"
 msgid "1 minute"
 msgstr "1 perc"
 
-#: wppa-common-functions.php:608 wppa-functions.php:4130
+#: wppa-common-functions.php:608 wppa-functions.php:4136
 msgid "minutes"
 msgstr "perc"
 
@@ -678,7 +682,7 @@ msgstr "perc"
 msgid "1 hour"
 msgstr "1 óra"
 
-#: wppa-common-functions.php:613 wppa-functions.php:4129
+#: wppa-common-functions.php:613 wppa-functions.php:4135
 msgid "hours"
 msgstr "óra"
 
@@ -686,7 +690,7 @@ msgstr "óra"
 msgid "1 day"
 msgstr "1 nap"
 
-#: wppa-common-functions.php:618 wppa-functions.php:4128
+#: wppa-common-functions.php:618 wppa-functions.php:4134
 msgid "days"
 msgstr "nap"
 
@@ -694,7 +698,7 @@ msgstr "nap"
 msgid "1 week"
 msgstr "1 hét"
 
-#: wppa-common-functions.php:623 wppa-functions.php:4127
+#: wppa-common-functions.php:623 wppa-functions.php:4133
 msgid "weeks"
 msgstr "hét"
 
@@ -988,7 +992,7 @@ msgstr "felirat a képen"
 msgid "Moderate comment admin"
 msgstr "Moderált hozzászólás adminisztráció"
 
-#: wppa-functions.php:1635 wppa-functions.php:3979 wppa-upload.php:1217
+#: wppa-functions.php:1635 wppa-functions.php:3985 wppa-upload.php:1217
 msgid "Moderate manage photo"
 msgstr "Képek moderálása"
 
@@ -1060,77 +1064,77 @@ msgstr "<b>HIBA: Szabálytalan próbálkozás a hozzászólásnáll.</b>"
 msgid "View the top rated photos"
 msgstr "Legjobbnak értékelt képek"
 
-#: wppa-functions.php:3745
+#: wppa-functions.php:3751
 #, fuzzy
 msgid "New Album"
 msgstr "album"
 
-#: wppa-functions.php:3748
+#: wppa-functions.php:3754
 #, fuzzy
 msgid "<b>ERROR: Illegal attempt to create an album.</b>"
 msgstr "<b>HIBA: Szabálytalan próbálkozás az értékelésnél.</b>"
 
-#: wppa-functions.php:3752
+#: wppa-functions.php:3758
 #, fuzzy
 msgid "Wrong captcha, please try again"
 msgstr "Ki kell választani egy albumot, majd újr megpróbálni"
 
-#: wppa-functions.php:3765
+#: wppa-functions.php:3771
 #, fuzzy, php-format
 msgid "Album #%s created"
 msgstr "%s felhasználó %s feltöltött kép %s albumba"
 
-#: wppa-functions.php:3770
+#: wppa-functions.php:3776
 #, fuzzy
 msgid "Could not create album"
 msgstr "A kép nem illeszthető be az adatbázisba."
 
-#: wppa-functions.php:3781
+#: wppa-functions.php:3787
 msgid "<b>ERROR: Illegal attempt to upload a file.</b>"
 msgstr "<b>HIBA: Szabálytalan próbálkozás a fájlfeltöltésnél.</b>"
 
-#: wppa-functions.php:3821
+#: wppa-functions.php:3827
 #, fuzzy
 msgid "Photo upload"
 msgstr "A képet feltöltötte: "
 
-#: wppa-functions.php:3823
+#: wppa-functions.php:3829
 msgid "Photo successfully uploaded."
 msgstr "A kép sikeresen feltöltésre került."
 
-#: wppa-functions.php:3823
+#: wppa-functions.php:3829
 #, php-format
 msgid "%s photos successfully uploaded."
 msgstr "%s kép sikeresen feltöltésre került."
 
-#: wppa-functions.php:3824
+#: wppa-functions.php:3830
 #, php-format
 msgid "%s points added."
 msgstr "%s pont hozzáadva"
 
-#: wppa-functions.php:3828
+#: wppa-functions.php:3834
 msgid "Upload failed"
 msgstr "Hiba történt a feltöltés közben."
 
-#: wppa-functions.php:3831
+#: wppa-functions.php:3837
 #, fuzzy
 msgid "1 Upload failed"
 msgstr "Hiba történt a feltöltés közben."
 
-#: wppa-functions.php:3831
+#: wppa-functions.php:3837
 #, fuzzy, php-format
 msgid "%s uploads failed."
 msgstr "Hiba történt a feltöltés közben."
 
-#: wppa-functions.php:3867
+#: wppa-functions.php:3873
 msgid "Error during upload"
 msgstr "Hiba történt a feltöltéskor."
 
-#: wppa-functions.php:3872
+#: wppa-functions.php:3878
 msgid "Uploaded file is not an image"
 msgstr "A feltöltött fájl nem kép."
 
-#: wppa-functions.php:3876
+#: wppa-functions.php:3882
 #, php-format
 msgid ""
 "Only gif, jpg and png image files are supported. Returned filetype = %d."
@@ -1138,58 +1142,58 @@ msgstr ""
 "Csak a gif, jpg és png fájlok feltöltése támogatott. A visszautasított fájl "
 "típusa %d."
 
-#: wppa-functions.php:3882
+#: wppa-functions.php:3888
 #, fuzzy, php-format
 msgid "Uploaded file is larger than the allowed maximum of %d x %d pixels."
 msgstr "Maximális méret: %d x %d (%2.1f MegaPixel)"
 
-#: wppa-functions.php:3888
+#: wppa-functions.php:3894
 #, fuzzy, php-format
 msgid "Uploaded file %s already exists in this album."
 msgstr "%s felhasználó %s feltöltött kép %s albumba"
 
-#: wppa-functions.php:3896
+#: wppa-functions.php:3902
 #, php-format
 msgid "The image is too big. Max photo size: %d x %d (%2.1f MegaPixel)"
 msgstr ""
 "A kép túlságosan nagy méretű. Maximális képméret: %d x %d (%2.1f MegaPixel)"
 
-#: wppa-functions.php:3919
+#: wppa-functions.php:3925
 msgid "Could not insert photo into db."
 msgstr "A kép nem illeszthető be az adatbázisba."
 
-#: wppa-functions.php:3975 wppa-upload.php:1213
+#: wppa-functions.php:3981 wppa-upload.php:1213
 #, php-format
 msgid "New photo uploaded: %s"
 msgstr "%s új képként feltöltésre került"
 
-#: wppa-functions.php:3976 wppa-upload.php:1214
+#: wppa-functions.php:3982 wppa-upload.php:1214
 #, php-format
 msgid "User %s uploaded photo %s into album %s"
 msgstr "%s felhasználó %s feltöltött kép %s albumba"
 
-#: wppa-functions.php:3978 wppa-upload.php:1216
+#: wppa-functions.php:3984 wppa-upload.php:1216
 msgid "This upload requires moderation"
 msgstr "Ez a feltöltés rendszer-moderációra kötelezett"
 
-#: wppa-functions.php:3982 wppa-upload.php:1220
+#: wppa-functions.php:3988 wppa-upload.php:1220
 msgid "Details:"
 msgstr "Leírás:"
 
-#: wppa-functions.php:3983 wppa-upload.php:1221
+#: wppa-functions.php:3989 wppa-upload.php:1221
 msgid "Manage photo"
 msgstr "Képek kezelése"
 
-#: wppa-functions.php:4125
+#: wppa-functions.php:4131
 msgid "You can upload after"
 msgstr "Feltöltési lehetőség még"
 
-#: wppa-functions.php:4154 wppa-functions.php:4157
+#: wppa-functions.php:4160 wppa-functions.php:4163
 #, fuzzy
 msgid "Download:"
 msgstr "Letöltés"
 
-#: wppa-functions.php:4178
+#: wppa-functions.php:4184
 msgid "Zoom in"
 msgstr "Nagyítás"
 

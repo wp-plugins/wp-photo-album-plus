@@ -1,7 +1,7 @@
 /* admin-scripts.js */
 /* Package: wp-photo-album-plus
 /*
-/* Version 5.5.0
+/* Version 5.5.1
 /* Various js routines used in admin pages		
 */
 
@@ -1466,10 +1466,10 @@ function wppaMaintenanceProc(slug, intern) {
 				}
 				
 				// Check for recoverable error
-//				if ( resparr[0] != '' ) {
-//					alert('An error occurred:\n'+resparr[0]);
-//					error = true;
-//				}
+				if ( resparr[0].length > 10 ) {	// Was: resparr[0] != ''
+					alert('An error occurred:\n'+resparr[0]);
+					error = true;
+				}
 				
 				// Update status and togo
 				jQuery("#"+slug+"_status").html(resparr[2]);
