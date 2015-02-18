@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains low-level utility routines
-* Version 5.5.1
+* Version 5.5.1.002
 *
 */
  
@@ -1549,7 +1549,7 @@ function wppa_get_hires_url( $id ) {
 	if ( wppa_is_video( $id ) ) return '';
 	$source_path = wppa_get_source_path( $id );
 	$wp_content = trim( str_replace( site_url(), '', content_url() ), '/' );
-	if ( file_exists( $source_path ) ) {
+	if ( is_file( $source_path ) ) {
 		$temp = explode( $wp_content, $source_path );		
 		$hires_url = site_url().'/'.$wp_content.$temp['1'];
 	}
