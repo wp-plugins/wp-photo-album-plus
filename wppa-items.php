@@ -218,12 +218,12 @@ global $wppa_opt;
 	}
 	
 	// To prevent recursive rendering of scripts or shortcodes:
-	$name = str_replace( array( '%%wppa%%', '[wppa', '[/wppa]' ), array( '%-wppa-%', '{wppa', '{/wppa}' ), $name );
+	$result = str_replace( array( '%%wppa%%', '[wppa', '[/wppa]' ), array( '%-wppa-%', '{wppa', '{/wppa}' ), $result );
 	if ( wppa_switch( 'wppa_allow_foreign_shortcodes_general' ) ) {
-		$desc = do_shortcode( $name );
+		$result = do_shortcode( $result );
 	}
 	else {
-		$desc = strip_shortcodes( $name );
+		$result = strip_shortcodes( $result );
 	}
 
 	return $result;
@@ -367,10 +367,10 @@ function wppa_get_album_name( $id, $extended = false ) {
 	// To prevent recursive rendering of scripts or shortcodes:
 	$name = str_replace( array( '%%wppa%%', '[wppa', '[/wppa]' ), array( '%-wppa-%', '{wppa', '{/wppa}' ), $name );
 	if ( wppa_switch( 'wppa_allow_foreign_shortcodes_general' ) ) {
-		$desc = do_shortcode( $name );
+		$name = do_shortcode( $name );
 	}
 	else {
-		$desc = strip_shortcodes( $name );
+		$name = strip_shortcodes( $name );
 	}
 
 	return $name;
@@ -427,7 +427,7 @@ function wppa_get_album_desc( $id ) {
 	return $desc;
 }
 
-// Get any album field of any alnbum, raw data from the db
+// Get any album field of any album, raw data from the db
 function wppa_get_album_item( $id, $item ) {
 	
 	$album = wppa_cache_album( $id );
