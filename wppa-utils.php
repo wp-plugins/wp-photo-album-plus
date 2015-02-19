@@ -378,7 +378,7 @@ function wppa_get_taglist() {
 		$result = wppa_create_taglist();
 	}
 	else {
-		foreach ( array_keys($result) as $tag ) {
+		if ( is_array($result) ) foreach ( array_keys($result) as $tag ) {
 			$result[$tag]['ids'] = wppa_index_string_to_array($result[$tag]['ids']);
 		}
 	}
