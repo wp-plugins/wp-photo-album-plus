@@ -78,11 +78,11 @@ global $wppa_opt;
 	$albums = $wpdb->get_results( "SELECT `id`, `name` FROM `".WPPA_ALBUMS."` ORDER BY `timestamp` DESC", ARRAY_A );
 	if ( wppa_switch( 'wppa_hier_albsel' ) ) {
 		$albums = wppa_add_paths( $albums );
+		$albums = wppa_array_sort( $albums, 'name' );
 	}
-	else {
-		foreach ( array_keys( $albums ) as $index ) $albums[$index]['name'] = __( stripslashes( $albums[$index]['name'] ) );
-	}
-	$albums = wppa_array_sort( $albums, 'name' );
+//	else {
+//		foreach ( array_keys( $albums ) as $index ) $albums[$index]['name'] = __( stripslashes( $albums[$index]['name'] ) );
+//	}
 	
 	// Prepare photoinfo
 	$photos = $wpdb->get_results( "SELECT `id`, `name`, `album`, `ext` FROM `".WPPA_PHOTOS."` ORDER BY `timestamp` DESC LIMIT 100", ARRAY_A );
