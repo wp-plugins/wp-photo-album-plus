@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, myCRED, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile, cloudinary, fotomoto, CMTooltipGlossary
-Version: 5.5.1
+Version: 5.5.2
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -187,6 +187,27 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 5.5.2 =
+
+= Bug Fixes =
+
+* Fixed undefined vars in settings page 5.5.1.001.
+* Fixed a bug in wppa_get_hires_url() 5.5.1.002.
+* Fixed a missing /a on filmthumbnail links with pso.
+* IPTC and EXIF keywords in photo descriptions are now translated and added to the photo index. You may need to rebuild the photo index in Table VIII-A9.
+
+= New Features =
+
+* Emails sent by the commenting system now contain a Reply link to the original page/photo where the comment was issued.
+* Two versions of Masonry style thumbnail layout added. See Table IV-C3.
+
+= Other Changes =
+
+* In the shortcode generator: If Table IX-B4: 'Album sel hierarchic' is ticked, the album sequence in the selection box is alphabetic to the names of the albums.
+If the box is UNticked, the album sequence is by descemding timestamp ( i.e. latest created/modified/uploaded album at the top ).
+* Photo Download link will now also work on mobile devices.
+* If Load Facebook sdk is selected in Table II-C17.9, it will only be loaded IF at least one of the settings Table II-C1,3,4,5,6 is ticked AND at least one of the settings Table II-C17.1, 17.2, 17.4 is ticked.
 
 = 5.5.1 =
 

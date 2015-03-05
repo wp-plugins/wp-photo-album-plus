@@ -1,7 +1,7 @@
 /* admin-scripts.js */
 /* Package: wp-photo-album-plus
 /*
-/* Version 5.5.1
+/* Version 5.5.2
 /* Various js routines used in admin pages		
 */
 
@@ -336,15 +336,16 @@ function wppaCheckThumbType() {
 		jQuery('.tt_always').css('display', '');
 		wppaCheckUseThumbOpacity();
 	}
-	if (ttype == 'ascovers') {
+	if (ttype == 'ascovers'||ttype == 'ascovers-mcr') {
 		jQuery('.tt_normal').css('display', 'none');
 		jQuery('.tt_ascovers').css('display', '');
 		jQuery('.tt_always').css('display', '');
 	}
-	if (ttype == 'none') {
+	if (ttype == 'masonry') {
 		jQuery('.tt_normal').css('display', 'none');
 		jQuery('.tt_ascovers').css('display', 'none');
-		jQuery('.tt_always').css('display', 'none');
+		jQuery('.tt_always').css('display', '');
+		jQuery('.tt_masonry').css('display', '');
 	}
 }
 

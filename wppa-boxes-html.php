@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Various wppa boxes
-* Version 5.5.1
+* Version 5.5.2
 *
 *
 */
@@ -1173,6 +1173,7 @@ global $wppa_first_comment_html;
 				if ( $album ) $result .= '<input type="hidden" name="wppa-album" value="'.$album.'" />';
 				if ( $cover ) $result .= '<input type="hidden" name="wppa-cover" value="'.$cover.'" />';
 				if ( $slide ) $result .= '<input type="hidden" name="wppa-slide" value="'.$slide.'" />';
+				$result .= '<input type="hidden" name="wppa-returnurl" id="wppa-returnurl-'.wppa( 'mocc' ).'" value="'.$returnurl.'" />';
 				if ( $is_current ) $result .= '<input type="hidden" id="wppa-comment-edit-'.$wppa['mocc'].'" name="wppa-comment-edit" value="'.$wppa['comment_id'].'" />';
 				$result .= '<input type="hidden" name="wppa-occur" value="'.$wppa['occur'].'" />';
 
@@ -1391,9 +1392,10 @@ global $wppaexiflabels;
 		$result .= '<div style="clear:both;" ></div><table class="wppa-exif-table-'.$wppa['mocc'].' wppa-detail" style="'.$d2.' border:0 none; margin:0;" ><tbody>';
 		$oldtag = '';
 		foreach ( $exifdata as $exifline ) {
+		$exifline['description'] = trim( $exifline['description'], "\x00..\x1F " );
 			if ( $exifline['status'] == 'hide' ) continue;														// Photo status is hide
 			if ( $exifline['status'] == 'default' && $wppaexifdefaults[$exifline['tag']] == 'hide' ) continue;	// P s is default and default is hide
-			if ( $exifline['status'] == 'default' && $wppaexifdefaults[$exifline['tag']] == 'option' && ! trim( $exifline['description'], "\x00..\x1F " ) ) continue; // P s is default and default is optional and field is empty
+			if ( $exifline['status'] == 'default' && $wppaexifdefaults[$exifline['tag']] == 'option' && ! $exifline['description'] ) continue; // P s is default and default is optional and field is empty
 
 			$count++;
 			$newtag = $exifline['tag'];
@@ -1588,6 +1590,8 @@ global $wppa_opt;
 					if ( $widget ) $clear = 'clear:both; '; else $clear = '';
 					$result .= "\n".'<div class="wppa-widget" style="'.$clear.'width:'.$maxw.'px; height:'.$totalh.'px; margin:4px; display:inline; text-align:center; float:left;">'; 
 				
+						// The medal if at the top
+						$result .= wppa_get_medal_html_a( array( 'id' => $id, 'size' => 'M', 'where' => 'top' ) );
 
 						// The link if any
 						if ( $linktype != 'none' ) {
@@ -1616,8 +1620,8 @@ global $wppa_opt;
 							$result .= '</a>';
 						}
 						
-						// The medal
-						$result .= wppa_get_medal_html( $id, $maxh );
+						// The medal if near the bottom
+						$result .= wppa_get_medal_html_a( array( 'id' => $id, 'size' => 'M', 'where' => 'bot' ) );
 
 						// The subtitles
 						$result .= "\n\t".'<div style="font-size:'.$fontsize.'px; line-height:'.$lineheight.'px; position:absolute; width:'.$maxw.'px; ">';

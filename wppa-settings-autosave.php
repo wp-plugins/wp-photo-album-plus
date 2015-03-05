@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 5.5.1
+* Version 5.5.2
 *
 */
 
@@ -315,6 +315,15 @@ global $wppa_tags;
 		if ( get_option( 'wppa_regen_thumbs_status' ) 				&& get_option( 'wppa_regen_thumbs_user', 			wppa_get_user() == wppa_get_user() ) ) wppa_warning_message( __( 'Regenerating the Thumbnails needs completion. See Table VIII', 'wppa' ) );
 		if ( get_option( 'wppa_rerate_status' ) 					&& get_option( 'wppa_rerate_user', 					wppa_get_user() == wppa_get_user() ) ) wppa_warning_message( __( 'Rerating needs completion. See Table VIII', 'wppa' ) );
 
+		// Check for inconsistencies
+		if ( ( wppa_opt( 'wppa_thumbtype' ) == 'default' ) && ( 
+			wppa_opt( 'wppa_tf_width' ) < wppa_opt( 'wppa_thumbsize' ) ||
+			wppa_opt( 'wppa_tf_width_alt') < wppa_opt( 'wppa_thumbsize_alt' ) ||
+			wppa_opt( 'wppa_tf_height' ) < wppa_opt( 'wppa_thumbsize' ) ||
+			wppa_opt( 'wppa_tf_height_alt') < wppa_opt( 'wppa_thumbsize_alt' ) ) ) {
+				wppa_warning_message( __( 'A thumbframe width or height should not be smaller than a thumbnail size. Please correct the corresponding setting(s) in Table I-C', 'wppa' ) );
+			}
+
 ?>
 		<!--<br /><a href="javascript:window.print();"><?php //_e('Print settings', 'wppa') ?></a><br />-->
 		<a style="cursor:pointer;" id="wppa-legon" onclick="jQuery('#wppa-legenda').css('display', ''); jQuery('#wppa-legon').css('display', 'none'); return false;" ><?php _e('Show legenda', 'wppa') ?></a> 
@@ -363,7 +372,7 @@ global $wppa_tags;
 							);
 		if ( wppa_is_video_enabled() ) $wppa_tags['video'] = __('Video', 'wppa');
 		asort( $wppa_tags );
-		
+
 ?>
 		<p>
 			<?php _e('Click on the banner of a (sub)table to open/close it, or', 'wppa') ?>
@@ -789,7 +798,7 @@ global $wppa_tags;
 							$help .= '\n'.esc_js(__('Changing the thumbnail size may result in all thumbnails being regenerated. this may take a while.', 'wppa'));
 							$slug = 'wppa_thumbsize';
 							$html = wppa_input($slug, '40px', '', __('pixels', 'wppa'));
-							$clas = 'tt_normal';
+							$clas = 'tt_normal tt_masonry';
 							$tags = 'size,thumb';
 							wppa_setting($slug, '1', $name, $desc, $html, $help, $clas, $tags);
 
@@ -799,7 +808,7 @@ global $wppa_tags;
 							$help .= '\n'.esc_js(__('Changing the thumbnail size may result in all thumbnails being regenerated. this may take a while.', 'wppa'));
 							$slug = 'wppa_thumbsize_alt';
 							$html = wppa_input($slug, '40px', '', __('pixels', 'wppa'));
-							$clas = 'tt_normal';
+							$clas = 'tt_normal tt_masonry';
 							$tags = 'size,thumb';
 							wppa_setting($slug, '1a', $name, $desc, $html, $help, $clas, $tags);
 
@@ -838,7 +847,7 @@ global $wppa_tags;
 								'1:2:padd'
 								);
 							$html = wppa_select($slug, $options, $values);
-							$clas = 'tt_normal';
+							$clas = 'tt_normal tt_masonry';
 							$tags = 'size,thumb,layout';
 							wppa_setting($slug, '2', $name, $desc, $html, $help, $clas, $tags);
 							
@@ -893,7 +902,7 @@ global $wppa_tags;
 							$help .= '\n'.esc_js(__('These sizes should be large enough for a thumbnail image and - optionally - the text under it.', 'wppa'));
 							$slug = 'wppa_tn_margin';
 							$html = wppa_input($slug, '40px', '', __('pixels', 'wppa'));
-							$clas = 'tt_normal';
+							$clas = 'tt_normal tt_masonry';
 							$tags = 'size,thumb,layout';
 							wppa_setting($slug, '5', $name, $desc, $html, $help, $clas, $tags);
 							
@@ -924,7 +933,7 @@ global $wppa_tags;
 							$help .= '\n\n'.esc_js(__('Although this setting has only visual effect if "Thumb popup" (Table IV-C8) is checked,', 'wppa'));
 							$help .= ' '.esc_js(__('the value must be right as it is the physical size of the thumbnail and coverphoto images.', 'wppa'));
 							$slug = 'wppa_popupsize';
-							$clas = 'tt_normal';
+							$clas = 'tt_normal tt_masonry';
 							$tags = 'size,thumb';
 							$html = wppa_input($slug, '40px', '', __('pixels', 'wppa'));
 							wppa_setting($slug, '8', $name, $desc, $html, $help, $clas, $tags);
@@ -1297,7 +1306,7 @@ global $wppa_tags;
 							<?php 
 							$wppa_table = 'II';
 							
-							wppa_setting_subheader( 'A', '1', __( 'Breadcrumb related visibility settings', 'wppa' ) );
+						wppa_setting_subheader( 'A', '1', __( 'Breadcrumb related visibility settings', 'wppa' ) );
 							{
 							$name = __('Breadcrumb on posts', 'wppa');
 							$desc = __('Show breadcrumb navigation bars.', 'wppa');
@@ -1904,7 +1913,7 @@ global $wppa_tags;
 							$help = esc_js(__('Display photo name under thumbnail images on the popup.', 'wppa'));
 							$slug = 'wppa_popup_text_name';
 							$html = wppa_checkbox($slug);
-							$clas = 'tt_normal wppa_popup';
+							$clas = 'tt_normal tt_masonry wppa_popup';
 							$tags = 'thumb,layout,meta';
 							wppa_setting($slug, '4', $name, $desc, $html, $help, $clas, $tags);
 
@@ -1913,7 +1922,7 @@ global $wppa_tags;
 							$help = esc_js(__('Display photo owner under thumbnail images on the popup.', 'wppa'));
 							$slug = 'wppa_popup_text_owner';
 							$html = wppa_checkbox($slug);
-							$clas = 'tt_normal wppa_popup';
+							$clas = 'tt_normal tt_masonry wppa_popup';
 							$tags = 'thumb,meta,layout';
 							wppa_setting($slug, '4.1', $name, $desc, $html, $help, $clas, $tags);
 							
@@ -1922,7 +1931,7 @@ global $wppa_tags;
 							$help = esc_js(__('Display description of the photo under thumbnail images on the popup.', 'wppa'));
 							$slug = 'wppa_popup_text_desc';
 							$html = wppa_checkbox($slug);
-							$clas = 'tt_normal wppa_popup';
+							$clas = 'tt_normal tt_masonry wppa_popup';
 							$tags = 'thumb,meta,layout';
 							wppa_setting($slug, '5', $name, $desc, $html, $help, $clas, $tags);
 							
@@ -1931,7 +1940,7 @@ global $wppa_tags;
 							$help = esc_js(__('Use this option to prevent the display of links that cannot be activated.', 'wppa'));
 							$slug = 'wppa_popup_text_desc_strip';
 							$html = wppa_checkbox($slug);
-							$clas = 'tt_normal wppa_popup';
+							$clas = 'tt_normal tt_masonry wppa_popup';
 							$tags = 'thumb,meta,layout';
 							wppa_setting($slug, '5.1', $name, $desc, $html, $help, $clas, $tags);
 							
@@ -1940,7 +1949,7 @@ global $wppa_tags;
 							$help = esc_js(__('Display the rating of the photo under the thumbnail image on the popup.', 'wppa'));
 							$slug = 'wppa_popup_text_rating';
 							$html = '<span class="wppa_rating">'.wppa_checkbox($slug).'</span>';
-							$clas = 'wppa_rating_ tt_normal wppa_popup';
+							$clas = 'wppa_rating_ tt_normal tt_masonry wppa_popup';
 							$tags = 'thumb,rating,layout';
 							wppa_setting($slug, '6', $name, $desc, $html, $help, $clas, $tags);
 							
@@ -1949,7 +1958,7 @@ global $wppa_tags;
 							$help = esc_js(__('Display the number of comments of the photo under the thumbnail image on the popup.', 'wppa'));
 							$slug = 'wppa_popup_text_ncomments';
 							$html = wppa_checkbox($slug);
-							$clas = 'tt_normal wppa_popup';
+							$clas = 'tt_normal tt_masonry wppa_popup';
 							$tags = 'thumb,comment,layout';
 							wppa_setting($slug, '6.1', $name, $desc, $html, $help, $clas, $tags);
 							
@@ -1958,7 +1967,7 @@ global $wppa_tags;
 							$help = esc_js(__('If checked, the number of votes is displayed along with average rating displays on thumbnail and popup displays.', 'wppa'));
 							$slug = 'wppa_show_rating_count';
 							$html = wppa_checkbox($slug);
-							$clas = 'wppa_rating_ tt_normal';
+							$clas = 'wppa_rating_ tt_normal tt_masonry';
 							$tags = 'thumb,rating,layout';
 							wppa_setting($slug, '7', $name, $desc, $html, $help, $clas, $tags);
 
@@ -3111,8 +3120,8 @@ global $wppa_tags;
 							$desc = __('The way the thumbnail images are displayed.', 'wppa');
 							$help = esc_js(__('You may select an altenative display method for thumbnails. Note that some of the thumbnail settings do not apply to all available display methods.', 'wppa'));
 							$slug = 'wppa_thumbtype';
-							$options = array(__('--- default ---', 'wppa'), __('like album covers', 'wppa'), __('like album covers mcr', 'wppa'));
-							$values = array('default', 'ascovers', 'ascovers-mcr');
+							$options = array(__('--- default ---', 'wppa'), __('like album covers', 'wppa'), __('like album covers mcr', 'wppa'), __('masonry style columns', 'wppa'),  __('masonry style rows', 'wppa'));
+							$values = array('default', 'ascovers', 'ascovers-mcr', 'masonry-v', 'masonry-h' );
 							$onchange = 'wppaCheckThumbType()';
 							$html = wppa_select($slug, $options, $values, $onchange);
 							$clas = '';
@@ -3148,7 +3157,7 @@ global $wppa_tags;
 							$slug = 'wppa_use_thumb_opacity';
 							$onchange = 'wppaCheckUseThumbOpacity()';
 							$html = wppa_checkbox($slug, $onchange);
-							$clas = 'tt_normal';
+							$clas = 'tt_normal tt_masonry';
 							$tags = 'thumb';
 							wppa_setting($slug, '6', $name, $desc, $html, $help, $clas, $tags);
 							
@@ -3157,7 +3166,7 @@ global $wppa_tags;
 							$help = esc_js(__('Enter percentage of opacity. 100% is opaque, 0% is transparant', 'wppa'));
 							$slug = 'wppa_thumb_opacity';
 							$html = '<span class="thumb_opacity_html">'.wppa_input($slug, '50px', '', __('%', 'wppa')).'</span>';
-							$clas = 'tt_normal';
+							$clas = 'tt_normal tt_masonry';
 							$tags = 'thumb';
 							wppa_setting($slug, '7', $name, $desc, $html, $help, $clas, $tags);
 
@@ -3167,7 +3176,7 @@ global $wppa_tags;
 							$slug = 'wppa_use_thumb_popup';
 							$onchange = 'wppaCheckPopup()';
 							$html = wppa_checkbox($slug, $onchange) . wppa_htmlerr('popup-lightbox');
-							$clas = 'tt_normal';
+							$clas = 'tt_normal tt_masonry';
 							$tags = 'thumb';
 							wppa_setting($slug, '8', $name, $desc, $html, $help, $clas, $tags);
 							
@@ -3238,7 +3247,7 @@ global $wppa_tags;
 							$help = esc_js(__('Enter percentage of opacity. 100% is opaque, 0% is transparant', 'wppa'));
 							$slug = 'wppa_cover_opacity';
 							$html = '<span class="cover_opacity_html">'.wppa_input($slug, '50px', '', __('%', 'wppa')).'</span>';
-							$clas = 'tt_normal';
+							$clas = '';
 							$tags = 'cover,thumb';
 							wppa_setting($slug, '5', $name, $desc, $html, $help, $clas, $tags);
 							

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the widget
-* Version 5.4.22
+* Version 5.5.2
 */
 
 if ( ! defined( 'ABSPATH' ) ) die( "Can't load this file directly" );
@@ -70,14 +70,22 @@ class PhotoOfTheDay extends WP_Widget {
 				$cursor = ' cursor:default;';
 				$title = esc_attr(stripslashes(__($image['name'])));
 			}
+
+			// The medal if on top
+			$widget_content .= wppa_get_medal_html_a( array( 'id' => $id, 'size' => 'M', 'where' => 'top' ) );
 			
+			// The link, if any
 			if ($link) $widget_content .= "\n\t".'<a href = "'.$link['url'].'" target="'.$link['target'].'" '.$lightbox.' title="'.$ltitle.'">';
 			
+				// The image
 				$widget_content .= "\n\t\t".'<img src="'.$imgurl.'" style="width: '.wppa_opt('wppa_potd_widget_width').'px;'.$cursor.'" '.wppa_get_imgalt( $id ).' title="'.$title.'"/>';
 
+			// Close the link
 			if ($link) $widget_content .= "\n\t".'</a>';
 			
-			$widget_content .= wppa_get_medal_html( $id, $h );
+			// The medal if at the bottom
+			$widget_content .= wppa_get_medal_html_a( array( 'id' => $id, 'size' => 'M', 'where' => 'bot' ) );
+
 		} 
 		else {	// No image
 			$widget_content .= __a('Photo not found.', 'wppa_theme');

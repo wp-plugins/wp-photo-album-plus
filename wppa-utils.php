@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains low-level utility routines
-* Version 5.5.1.002
+* Version 5.5.2
 *
 */
  
@@ -281,27 +281,57 @@ global $wppa_opt;
 		if ( isset( $wppa_opt[$key] ) ) {
 			if ( $wppa_opt[$key] == 'yes' || $wppa_opt[$key] == 'no' ) {
 				wppa_log( 'Error', '$wppa_opt['.$key.'] is a yes/no setting, not a value' );
+				return false;
 			}
 		}
-		else wppa_dbg_msg( 'Error', '$wppa_opt['.$key.'] is not a setting' );
+		else {
+			wppa_log( 'Error', '$wppa_opt['.$key.'] is not a setting' );
+			return false;
+		}
 	}
-	else wppa_dbg_msg( 'Error', '$wppa_opt[] is not initialized while testing '.$key );
+	else {
+		wppa_log( 'Error', '$wppa_opt[] is not initialized while testing '.$key );
+		return false;
+	}
 	
 	return $wppa_opt[$key];
 }
 
-function wppa( $key ) {
+// Getter / setter of runtime parameter
+function wppa( $key, $newval = 'nil' ) {
 global $wppa;
 
+	// Array defined?
 	if ( is_array( $wppa ) ) {
-		if ( ! isset( $wppa[$key] ) ) {
+	
+		// Valid key?
+		if ( isset( $wppa[$key] ) ) {
+		
+			// Get old value
+			$oldval = $wppa[$key];
+			
+			// New value supplied?
+			if ( $newval != 'nil' ) {
+				$wppa[$key] = $newval;
+			}
+		}
+		
+		// Invalid key
+		else {
 			wppa_dbg_msg( 'Error', '$wppa[\''.$key.'\'] is not defined' );
+			return false;
 		}
 	}
-	else wppa_dbg_msg( 'Error', '$wppa[] is not initialized while testing \''.$key.'\'' );
 	
-	return $wppa[$key];	
+	// Array not defined
+	else {
+		wppa_dbg_msg( 'Error', '$wppa[] is not initialized while testing \''.$key.'\'' );
+		return false;
+	}
+	
+	return $oldval;	
 }
+
 
 function wppa_add_paths($albums) {
 	if ( is_array($albums) ) foreach ( array_keys($albums) as $index ) {
@@ -1701,32 +1731,6 @@ global $wppa_opt;
 		$thumb['status'] = $status;	// Update cache
 		$wpdb->query( $wpdb->prepare( "UPDATE `".WPPA_PHOTOS."` SET `status` = %s WHERE `id` = %s", $status, $id ) );
 	}
-}
-
-function wppa_get_medal_html( $id, $imgheight ) {
-global $thumb;
-global $wppa_opt;
-
-	$result = '';
-	$color 	= $wppa_opt['wppa_medal_color'];
-	$pos 	= $wppa_opt['wppa_medal_position'];
-	$size 	= '16';
-	if ( $imgheight > '75' ) 	$size = '24';
-	if ( $imgheight > '150' ) 	$size = '32';
-	$top 	= ( strpos( $pos, 'top' )  === false ? $size : $imgheight ) + '6';
-	$float 	= strpos( $pos, 'left' ) === false ? 'right' : 'left';
-	
-	// The medal
-	if ( $thumb['status'] == 'bronze' ) $result .= '<div style="clear:both;" ></div><img src="'.WPPA_URL.'/images/medal_bronze_'.$color.'.png" title="'.esc_attr(__a('Bronze medal')).'" alt="'.__a('Bronze').'" style="position:relative; top:-'.$top.'px; float:'.$float.'; border:none; margin:0; padding:0; box-shadow:none; height:'.$size.'px;" />';
-	if ( $thumb['status'] == 'silver' ) $result .= '<div style="clear:both;" ></div><img src="'.WPPA_URL.'/images/medal_silver_'.$color.'.png" title="'.esc_attr(__a('Silver medal')).'" alt="'.__a('Silver').'" style="position:relative; top:-'.$top.'px; float:'.$float.'; border:none; margin:0; padding:0; box-shadow:none; height:'.$size.'px;" />';
-	if ( $thumb['status'] == 'gold' ) 	$result .= '<div style="clear:both;" ></div><img src="'.WPPA_URL.'/images/medal_gold_'.$color.'.png" title="'.esc_attr(__a('Gold medal')).'" alt="'.__a('Gold').'" style="position:relative; top:-'.$top.'px; float:'.$float.'; border:none; margin:0; padding:0; box-shadow:none; height:'.$size.'px;" />';
-
-	$size 	= round( $size * 20 / 32 );
-	$top 	= ( strpos( $pos, 'top' )  === false ? $size : $imgheight ) + '6';
-	// The new indicator
-	if ( wppa_is_photo_new( $id ) ) 	$result .= '<div style="clear:both;" ></div><img src="'.WPPA_URL.'/images/new.png" title="'.esc_attr( __a('New!') ).'" alt="'.__a('New').'" class="wppa-thumbnew" style="position:relative; top:-'.$top.'px; float:'.$float.'; border:none; margin:0; padding:0; box-shadow:none; height:'.$size.'px;" />';
-
-	return $result;
 }
 
 function wppa_get_the_bestof( $count, $period, $sortby, $what ) {

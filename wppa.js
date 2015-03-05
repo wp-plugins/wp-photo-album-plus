@@ -2,7 +2,7 @@
 //
 // conatins slideshow, theme, ajax and lightbox code
 //
-var wppaJsVersion = '5.5.1';
+var wppaJsVersion = '5.5.2';
 
 // Part 1: Slideshow
 //
@@ -117,6 +117,7 @@ var wppaFotomoto = false;
 var wppaArtMonkeyButton = true;
 var wppaShortQargs = false;
 var wppaOvlHires = false;
+var wppaMasonryCols = [];
 
 // 'Internal' variables ( private )
 var _wppaId = [];
@@ -964,7 +965,7 @@ var result = '';
 		if ( wppaArtMonkeyButton ) {
 			if ( _wppaFullNames[mocc][_wppaCurIdx[mocc]] ) {
 				var label = _wppaFullNames[mocc][_wppaCurIdx[mocc]].split( '<img' );
-				result = '<input type="button" title="Download" style="cursor:pointer; margin-bottom:0px; max-width:'+( wppaGetContainerWidth( mocc )-24 )+'px;" class="wppa-download-button" onclick="wppaAjaxMakeOrigName( '+mocc+', '+_wppaId[mocc][_wppaCurIdx[mocc]]+' );" value="'+wppaDownLoad+': '+label[0]+'" />';
+				result = '<input type="button" title="Download" style="cursor:pointer; margin-bottom:0px; max-width:'+( wppaGetContainerWidth( mocc )-24 )+'px;" class="wppa-download-button" onclick="wppaAjaxMakeOrigName( '+mocc+', '+_wppaId[mocc][_wppaCurIdx[mocc]]+' );" ontouchstart="wppaAjaxMakeOrigName( '+mocc+', '+_wppaId[mocc][_wppaCurIdx[mocc]]+' );" value="'+wppaDownLoad+': '+label[0]+'" />';
 				if ( label[1] ) result += '<img'+label[1];
 			}
 			else {
@@ -972,7 +973,7 @@ var result = '';
 			}
 		}
 		else {
-			result = '<a title="Download" style="cursor:pointer;" onclick="wppaAjaxMakeOrigName( '+mocc+', '+_wppaId[mocc][_wppaCurIdx[mocc]]+' );" >'+wppaDownLoad+': '+_wppaFullNames[mocc][_wppaCurIdx[mocc]]+'</a>';
+			result = '<a title="Download" style="cursor:pointer;" onclick="wppaAjaxMakeOrigName( '+mocc+', '+_wppaId[mocc][_wppaCurIdx[mocc]]+' );" ontouchstart="wppaAjaxMakeOrigName( '+mocc+', '+_wppaId[mocc][_wppaCurIdx[mocc]]+' );">'+wppaDownLoad+': '+_wppaFullNames[mocc][_wppaCurIdx[mocc]]+'</a>';
 		}
 		break;
 	case 'none':
@@ -1534,7 +1535,7 @@ function _wppaDoAutocol( mocc ) {
 	// Thumbnail area
 	jQuery( ".wppa-thumb-area-"+mocc ).css( 'width',w - wppaThumbnailAreaDelta );
 	
-	// Thumbframes
+	// Thumbframes default
 	if ( wppaThumbSpaceAuto ) {
 		var tfw = parseInt( jQuery( ".thumbnail-frame-"+mocc ).css( 'width' ) );
 		if ( tfw ) {
@@ -1547,7 +1548,20 @@ function _wppaDoAutocol( mocc ) {
 			jQuery( ".thumbnail-frame-"+mocc ).css( {marginLeft:newspc});
 		}
 	}
+	
+	// Comalt thumbmails
 	jQuery( ".wppa-com-alt-"+mocc ).css( 'width', w - wppaThumbnailAreaDelta - wppaComAltSize - 20 );
+	
+	// Masonry thumbnails horizontal
+	var row = 1;
+	var rowHeightPix;
+	var rowHeightPerc = jQuery( '#wppa-mas-h-'+row+'-'+mocc ).attr( 'data-height-perc' );
+	while ( rowHeightPerc ) {
+		rowHeightPix = rowHeightPerc * ( w - wppaThumbnailAreaDelta ) / 100;
+		jQuery( '#wppa-mas-h-'+row+'-'+mocc ).css( 'height', rowHeightPix );
+		row++;
+		rowHeightPerc = jQuery( '#wppa-mas-h-'+row+'-'+mocc ).attr( 'data-height-perc' );
+	}
 
 	// User upload
 	jQuery( ".wppa-file-"+mocc ).css( 'width',w - 16 ); 
@@ -3753,8 +3767,12 @@ function wppaAjaxComment( mocc, id ) {
 		+'&wppa-captcha='+jQuery( "#wppa-captcha-"+mocc ).val( )
 		+'&wppa-nonce='+jQuery( "#wppa-nonce-"+mocc ).val( )
 		+'&moccur='+mocc;
-		if ( typeof ( jQuery( "#wppa-comemail-"+mocc ).val( ) ) != 'undefined' ) data += '&comemail='+jQuery( "#wppa-comemail-"+mocc ).val( );
-		if ( typeof ( jQuery( "#wppa-comment-edit-"+mocc ).val( ) ) != 'undefined' ) data += '&comment-edit='+jQuery( "#wppa-comment-edit-"+mocc ).val( );
+		if ( typeof ( jQuery( "#wppa-comemail-"+mocc ).val() ) != 'undefined' ) data += '&comemail='+jQuery( "#wppa-comemail-"+mocc ).val( );
+		if ( typeof ( jQuery( "#wppa-comment-edit-"+mocc ).val() ) != 'undefined' ) data += '&comment-edit='+jQuery( "#wppa-comment-edit-"+mocc ).val( );
+		if ( typeof ( jQuery( "#wppa-returnurl-"+mocc ).val() ) != 'undefined' ) {
+			data += '&returnurl='+encodeURIComponent(jQuery( "#wppa-returnurl-"+mocc ).val());
+			wppaConsoleLog(encodeURIComponent(jQuery( "#wppa-returnurl-"+mocc ).val()), 'force');
+		}
 				
 	// Do the Ajax action
 	xmlhttp.open( 'POST',wppaAjaxUrl,false );	// Synchronously ! ! 

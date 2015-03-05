@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all indexing functions
-* version 5.5.0
+* version 5.5.2
 *
 * 
 */
@@ -54,8 +54,12 @@ global $wppa;
 		
 		$thumb = wppa_cache_thumb($id);
 		
-		// Find the rew text
-		$words = stripslashes($thumb['name']).' '.$thumb['filename'].' '.stripslashes($thumb['description']);
+		// Find the raw text
+		$desc 	= stripslashes($thumb['description']);
+		$desc 	= wppa_filter_iptc( $desc, $thumb['id'] );	// Render IPTC tags
+		$desc 	= wppa_filter_exif( $desc, $thumb['id'] );	// Render EXIF tags
+		$words 	= stripslashes($thumb['name']).' '.$thumb['filename'].' '.$desc;
+
 		if ( wppa_switch( 'wppa_search_tags' ) ) $words .= ' '.$thumb['tags'];																					// Tags
 		if ( wppa_switch( 'wppa_search_comments' ) ) {
 			$coms = $wpdb->get_results($wpdb->prepare( "SELECT `comment` FROM `" . WPPA_COMMENTS . "` WHERE `photo` = %s AND `status` = 'approved'", $thumb['id'] ), ARRAY_A );

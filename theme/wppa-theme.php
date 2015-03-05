@@ -3,11 +3,11 @@
 * Package: wp-photo-album-plus
 *
 * display the albums/photos/slideshow in a page or post
-* Version 5.5.0
+* Version 5.5.2
 */
 function wppa_theme() {
 
-global $wppa_version; $wppa_version = '5-5-00';		// The version number of this file
+global $wppa_version; $wppa_version = '5-5-02';		// The version number of this file
 global $wppa;
 global $wppa_opt;
 global $wppa_show_statistics;						// Can be set to true by a custom page template
@@ -42,7 +42,7 @@ global $wppa_show_statistics;						// Can be set to true by a custom page templa
 		// Get total number of pages
 		if ( ! wppa_is_pagination() ) $totpag = '1';								// If both pagination is off, there is only one page
 		else $totpag = $n_album_pages + $n_thumb_pages;	
-//echo 'apag='.$n_album_pages.', tpag='.$n_thumb_pages.', totpag='.$totpag;
+
 		// Make pagelinkbar if requested on top
 		if ( $wppa_opt['wppa_pagelink_pos'] == 'top' || $wppa_opt['wppa_pagelink_pos'] == 'both' ) {
 			wppa_page_links( $totpag, $curpage );
@@ -70,7 +70,11 @@ global $wppa_show_statistics;						// Can be set to true by a custom page templa
 		
 		// Process the thumbs
 		if ( $thumbs ) {	
+		
+			// Init
 			$counter_thumbs = '0';
+			
+			// As covers
 			if ( wppa_opt('wppa_thumbtype') == 'ascovers' || 
 				 wppa_opt('wppa_thumbtype') == 'ascovers-mcr' ) {					// Do the thumbs As covers
 				wppa_thumb_list( 'open' );											// Open Thumblist sub-container
@@ -84,23 +88,188 @@ global $wppa_show_statistics;						// Can be set to true by a custom page templa
 				endforeach; 
 				wppa_thumb_list( 'close' );											// Close Thumblist sub-container
 			}	// As covers
-			else {																	// Do the thumbs As default
+
+			// Masonry vertical
+			elseif ( wppa_opt('wppa_thumbtype') == 'masonry-v' ) {					// Masonry
+			
+				// The header
 				wppa_thumb_area( 'open' );											// Open Thumbarea sub-container
 				wppa_popup();														// Prepare Popup box
 				wppa_album_name( 'top' );											// Optionally display album name
 				wppa_album_desc( 'top' );											// Optionally display album description
+				
+				// Init
+				$relpage 	= wppa_switch( 'wppa_thumbs_first' ) ? $curpage : $curpage - $n_album_pages;
+				$cont_width = wppa_get_container_width();
+				$count_cols = ceil( $cont_width / wppa_opt( 'wppa_thumbsize' ) );
+				$correction = wppa_opt( 'wppa_tn_margin' ) * ( $cont_width / $count_cols ) / 100;
+				
+				// Init the table
+				$wppa['out'] .= '<table class="wppa-masonry" style="margin-top:3px;" ><tbody class="wppa-masonry"  ><tr class="wppa-masonry"  >';
+				
+				// Init the columns
+				$col_headers 	= array();
+				$col_contents 	= array();
+				$col_heights 	= array();
+				$col_widths 	= array();
+				
+				for ( $col = 0; $col < $count_cols; $col++ ) {
+					$col_headers[$col] 	= '';
+					$col_contents[$col] = '';
+					$col_heights[$col] 	= 0;
+					$col_widths[$col] 	= 100;
+				}
+
+				// Process the thumbnails
+				$col = '0';
+				foreach ( $thumbs as $tt ) { 	
+					$id = $tt['id'];
+					$counter_thumbs++;
+					if ( wppa_onpage( 'thumbs', $counter_thumbs, $relpage ) ) {
+						$col_contents[$col] .= wppa_get_thumb_masonry( $id );
+						$col_heights[$col] 	+= ( $correction + wppa_get_thumby( $id ) ) / ( $correction + wppa_get_thumbx( $id ) ) * $col_widths[$col];
+						$col += '1';
+						if ( $col == $count_cols ) {
+							$col = '0';
+						}
+						$didsome = true;
+					}
+				}
+				
+				// Find longest column
+				$long = 0;
+				for ( $col = 0; $col < $count_cols; $col++ ) {
+					if ( $col_heights[$col] > $long ) $long = $col_heights[$col];
+				}
+				
+				// Adjust column widths to resize lengths to equal lengths
+				for ( $col = 0; $col < $count_cols; $col++ ) {
+					if ( $col_heights[$col] ) {
+						$col_widths[$col] = $long / $col_heights[$col] * $col_widths[$col];
+					}
+				}
+				
+				// Adjust column widths to total 100
+				$wide = 0;
+				for ( $col = 0; $col < $count_cols; $col++ ) {
+					$wide += $col_widths[$col];
+				}
+				for ( $col = 0; $col < $count_cols; $col++ ) {
+					$col_widths[$col] = $col_widths[$col] * 100 / $wide;
+				}				
+				
+				// Make column headers
+				for ( $col = 0; $col < $count_cols; $col++ ) {
+					$col_headers[$col] = '<td style="width: '.$col_widths[$col].'%; vertical-align:top;" class="wppa-masonry" >';
+				}
+				
+				// Add the columns to the output stream
+				for ( $col = 0; $col < $count_cols; $col++ ) {
+					wppa_out( $col_headers[$col] );
+					wppa_out( $col_contents[$col] );
+					wppa_out( '</td>' );
+				}
+				
+				// Close the table
+				wppa_out( '</tr></tbody></table>' );
+
+				// The footer
+				wppa_album_name( 'bottom' );										// Optionally display album name
+				wppa_album_desc( 'bottom' );										// Optionally display album description
+				wppa_thumb_area( 'close' );											// Close Thumbarea sub-container
+			}	// Masonry-v
+			
+			// Masonry horizontal
+			elseif ( wppa_opt('wppa_thumbtype') == 'masonry-h' ) {					// Masonry
+			
+				// The header
+				wppa_thumb_area( 'open' );											// Open Thumbarea sub-container
+				wppa_popup();														// Prepare Popup box
+				wppa_album_name( 'top' );											// Optionally display album name
+				wppa_album_desc( 'top' );											// Optionally display album description
+				
+				// Init
+				$relpage 	= wppa_switch( 'wppa_thumbs_first' ) ? $curpage : $curpage - $n_album_pages;
+				$cont_width = wppa_get_container_width( 'netto' );
+				$correction = wppa_opt( 'wppa_tn_margin' );
+
+				// Init the table
+				wppa_out( '<table class="wppa-masonry" style="margin-top:3px;" ><tbody class="wppa-masonry" >' );
+				
+				// Process the thumbnails
+				$row_content 		= '';
+				$row_width 			= 0;
+				$target_row_height 	= wppa_opt( 'wppa_thumbsize' ) * 0.75;
+				$rw_count 			= 0;
+				$tr_count 			= '1';
+				$done_count 		= 0;
+				$last 				= false;
+				foreach ( $thumbs as $tt ) { 
+					$id = $tt['id'];
+					$counter_thumbs++;
+					if ( wppa_onpage( 'thumbs', $counter_thumbs, $relpage ) ) {
+						$row_content 	.= wppa_get_thumb_masonry( $tt['id'] );
+						$rw_count 		+= 1;
+						$row_width 		+= ( wppa_get_thumbx( $id ) ) / ( wppa_get_thumby( $id ) ) * ( $target_row_height - $correction );
+						$didsome 		= true;
+					}
+					$done_count 	+= 1;
+					$last 			= $done_count == count( $thumbs );
+					if ( $row_width > $cont_width || $last ) {
+						$tot_marg 		= $rw_count * $correction;
+						$row_height 	= $row_width ? ( ( $target_row_height - $correction ) * ( $cont_width - '1' - $tot_marg ) / ( $row_width ) + $correction )  : '0';
+						if ( $row_height > wppa_get_thumby( $id ) && $rw_count == 1 ) $row_height = wppa_get_thumby( $id );
+						$row_height_p 	= $row_height / $cont_width * 100;
+						wppa_out( '<tr class="wppa-masonry" ><td id="wppa-mas-h-'.$tr_count.'-'.wppa( 'mocc' ).'" style="height:'.$row_height.'px;" class="wppa-masonry" data-height-perc="'.$row_height_p.'" >'); //<div style="height:'.$row_height.'px;" >' );
+						wppa_out( $row_content );
+						wppa_out( '</td></tr>' );
+						$row_content 	= '';
+						$row_width 		= 0;
+						$row_height 	= wppa_opt( 'wppa_thumbsize' );
+						$rw_count 		= 0;
+						$tr_count 		+= '1';
+					}
+				}
+				wppa_out( '</tbody></table>' );
+
+				// The footer
+				wppa_album_name( 'bottom' );										// Optionally display album name
+				wppa_album_desc( 'bottom' );										// Optionally display album description
+				wppa_thumb_area( 'close' );											// Close Thumbarea sub-container
+				
+			}	// Masonry-h
+			
+			// Default
+			elseif ( wppa_opt('wppa_thumbtype') == 'default' ) {					// Do the thumbs As default
+			
+				// The header
+				wppa_thumb_area( 'open' );											// Open Thumbarea sub-container
+				wppa_popup();														// Prepare Popup box
+				wppa_album_name( 'top' );											// Optionally display album name
+				wppa_album_desc( 'top' );											// Optionally display album description
+				
+				// Init
 				$relpage = wppa_switch( 'wppa_thumbs_first' ) ? $curpage : $curpage - $n_album_pages;
-				foreach ( $thumbs as $tt ) :  global $thumb; $thumb = $tt; 			// Loop the Thumbs
+				
+				// Process the thumbnails
+				foreach ( $thumbs as $tt ) {
 					$counter_thumbs++;
 					if ( wppa_onpage( 'thumbs', $counter_thumbs, $relpage ) ) {
 						$didsome = true;
-						wppa_thumb_default( $thumb['id'] );							// Show Thumb as default
+						wppa_thumb_default( $tt['id'] );							// Show Thumb as default
 					}	// End if on page
-				endforeach; 
+				}
+				
+				// The footer
 				wppa_album_name( 'bottom' );										// Optionally display album name
 				wppa_album_desc( 'bottom' );										// Optionally display album description
 				wppa_thumb_area( 'close' );											// Close Thumbarea sub-container
 			}	// As default
+			
+			// Unimplemented thumbnail type
+			else {
+				$wppa['out'] .= 'Unimplemented thumbnail type';
+			}
 		}	// If thumbs
 
 		if ( $didsome && wppa_is_pagination() ) $albums = false;					// Pag on and didsome: force a pagebreak by faking no albums

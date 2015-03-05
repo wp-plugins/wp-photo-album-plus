@@ -2,7 +2,7 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 5.5.1
+* version 5.5.2
 *
 */
 
@@ -324,6 +324,26 @@ global $wppa_opt;
 		echo $php;	
 		
 	echo '</div>';
+}
+
+function wppa_errorlog() {
+	$filename = WPPA_CONTENT_PATH.'/wppa-depot/admin/error.log';
+	$file = @ fopen( $filename, 'r' );
+	if ( ! $file ) return;	// No logfile
+	wppa_dbg_msg( 'Start errorlog' );
+		$size 		= filesize( $filename );
+		$data 		= fread( $file, $size );
+		$messages 	= explode( "\n", $data );
+		$count 		= count( $messages );
+		$idx 		= $count - '2';
+		while ( $idx >= '0' ) {
+			$msg 	= $messages[$idx];
+			$msg 	= htmlspecialchars( strip_tags( $msg ) );	// Security fix
+			echo $msg.'<br />';
+			$idx--;
+		}
+	wppa_dbg_msg( 'dbg', 'End errorlog' );
+	fclose( $file );
 }
 
 // get the url to the plugins image directory
@@ -1016,13 +1036,19 @@ global $wppa_opt;
 	}
 	
 	// Fill with the required color
-	$c = strtolower( $wppa_opt['wppa_bgcolor_thumbnail'] );
+	$c = trim( strtolower( $wppa_opt['wppa_bgcolor_thumbnail'] ) );
 	if ( $c != '#000000' ) {
-		$r = substr( $c, 1, 2 );
-		$g = substr( $c, 3, 2 );
-		$b = substr( $c, 5, 2 );
-		$color = imagecolorallocate( $dst, '0x'.$r, '0x'.$g, '0x'.$b );
-		imagefilledrectangle( $dst, 0, 0, $dst_size_w, $dst_size_h, $color );
+		$r = hexdec( substr( $c, 1, 2 ) );
+		$g = hexdec( substr( $c, 3, 2 ) );
+		$b = hexdec( substr( $c, 5, 2 ) );
+		$color = imagecolorallocate( $dst, $r, $g, $b );
+		if ( $color === false ) {
+			wppa_log( 'Err', 'Unable to set background color to: '.$r.', '.$g.', '.$b.' in wppa_create_thumbnail' );
+		}
+		else {
+//			wppa_log( 'dbg', 'Able to set background color to: '.$r.', '.$g.', '.$b.' in wppa_create_thumbnail' );
+			imagefilledrectangle( $dst, 0, 0, $dst_size_w, $dst_size_h, $color );
+		}
 	}
 	
 	// Switch on what we have to do
@@ -1235,16 +1261,24 @@ global $wppa_opt;
 	}
 	
 	foreach ( array_keys( $iptc ) as $s ) {
+
+		// Check for valid item
+		if ( $s == '2#000' ) continue; 	// Skip this one
+		
 		if ( is_array( $iptc[$s] ) ) {
 			$c = count ( $iptc[$s] );
 			for ( $i=0; $i <$c; $i++ ) {
+			
 				// Process item
 				wppa_dbg_msg( 'IPTC '.$s.' = '.$iptc[$s][$i] );
+				
 				// Check labels first
 				if ( ! in_array( $s, $labels ) ) {
-					$labels[] = $s;	// Add to labels
+				
+					// Add to labels
+					$labels[] = $s;	
+					
 					// Add to db
-//					$key 	= wppa_nextkey( WPPA_IPTC );
 					$photo 	= '0';
 					$tag 	= $s;
 					$desc 	= $s.':';
@@ -1266,22 +1300,16 @@ global $wppa_opt;
 						if ( $s == '2#120' ) $desc = 'Caption:';
 					$status = 'display';
 						if ( $s == '1#090' ) $status = 'hide';
-						if ( $s == '2#000' ) $status = 'hide';
-//					$query 	= $wpdb->prepare( "INSERT INTO `".WPPA_IPTC."` ( `id`, `photo`, `tag`, `description`, `status` ) VALUES ( %s, %s, %s, %s, %s )", $key, $photo, $tag, $desc, $status ); 
-//					wppa_dbg_q( 'Q216' );
-//					$iret 	= $wpdb->query( $query );
+					//	if ( $s == '2#000' ) $status = 'hide';
 					$iret = wppa_create_iptc_entry( array( 'photo' => $photo, 'tag' => $tag, 'description' => $desc, 'status' => $status ) );
 					if ( ! $iret ) wppa_log( 'Warning', 'Could not add IPTC tag '.$tag.' for photo '.$photo );
 				}
+				
 				// Now add poto specific data item
-//				$key 	= wppa_nextkey( WPPA_IPTC );
 				$photo 	= $id;
 				$tag 	= $s;
 				$desc 	= $iptc[$s][$i];
 				$status = 'default';
-//				$query  = $wpdb->prepare( "INSERT INTO `".WPPA_IPTC."` ( `id`, `photo`, `tag`, `description`, `status` ) VALUES ( %s, %s, %s, %s, %s )", $key, $photo, $tag, $desc, $status ); 
-//				wppa_dbg_q( 'Q217' );
-//				$iret 	= $wpdb->query( $query );
 				$iret = wppa_create_iptc_entry( array( 'photo' => $photo, 'tag' => $tag, 'description' => $desc, 'status' => $status ) );
 				if ( ! $iret ) wppa_log( 'Warning', 'Could not add IPTC tag '.$tag.' for photo '.$photo );
 			}
@@ -1347,7 +1375,7 @@ global $wppa;
 	
 	foreach ( array_keys( $exif ) as $s ) {
 		// Process item
-		wppa_dbg_msg( 'EXIF '.$s.' = '.$exif[$s] );
+		wppa_dbg_msg( 'EXIF '.$s.' = '.serialize($exif[$s]) );
 		
 		// Check labels first
 		$tag = '';
@@ -1358,6 +1386,7 @@ global $wppa;
 			}
 		}
 		if ( $tag == '' ) $tag = wppa_exif_tag( $s );
+		if ( $tag == 'E#EA1C' ) $tag = ''; // EA1C is explixitly undefined and will fail to register
 		if ( $tag == '' ) continue;
 		
 		if ( ! in_array( $tag, $labels ) ) {
@@ -2014,7 +2043,7 @@ function wppa_delete_obsolete_tempfiles() {
 			foreach ( $files as $file ) {
 				if ( is_file( $file ) ) {
 					$modified = filemtime( $file );
-					if ( $modified < $expired ) unlink( $file );
+					if ( $modified < $expired ) @ unlink( $file );
 					else $filecount++;
 				}
 			}

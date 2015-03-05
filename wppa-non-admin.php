@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the non admin stuff
-* Version 5.4.22
+* Version 5.5.2
 *
 */
 
@@ -19,6 +19,7 @@ require_once 'wppa-links.php';
 require_once 'wppa-boxes-html.php';
 require_once 'wppa-styles.php';
 require_once 'wppa-cart.php';
+require_once 'wppa-thumbnails.php';
 	
 /* LOAD STYLESHEET */
 add_action('wp_print_styles', 'wppa_add_style');
@@ -328,7 +329,16 @@ global $wppa_session;
 add_action('wp_footer', 'wppa_fbc_setup', 100);
 
 function wppa_fbc_setup() {
-	if ( wppa_switch( 'wppa_load_facebook_sdk' ) ) {
+	if ( wppa_switch( 'wppa_load_facebook_sdk' ) &&  			// Facebook sdk requested
+		( 	wppa_switch( 'wppa_share_on' ) || 
+			wppa_switch( 'wppa_share_on_widget' ) || 
+			wppa_switch( 'wppa_share_on_thumbs' ) ||
+			wppa_switch( 'wppa_share_on_lightbox' ) ||
+			wppa_switch( 'wppa_share_on_mphoto' ) ) &&
+		(	wppa_switch( 'wppa_share_facebook' ) ||
+			wppa_switch( 'wppa_facebook_like' ) ||
+			wppa_switch( 'wppa_facebook_comments' ) )			// But is it used by wppa?
+	) {
 		$wppa_lang = get_locale();
 		if ( ! $wppa_lang ) $wppa_lang = 'en_US';
 		?>
@@ -437,6 +447,7 @@ global $wppa_dynamic_css_data;
 	if ( isset( $wppa['debug'] ) && $wppa['debug'] ) {
 		error_reporting( $wppa['debug'] );
 		add_action( 'wp_footer', 'wppa_phpinfo' );
+		add_action( 'wp_footer', 'wppa_errorlog' );
 		echo '
 <script type="text/javascript" >
 	wppaDebug = true;

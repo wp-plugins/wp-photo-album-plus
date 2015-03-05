@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Photo Album Plus in italiano\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-03-02 15:35+0100\n"
-"PO-Revision-Date: 2015-03-02 15:35+0100\n"
+"POT-Creation-Date: 2015-03-05 15:25+0100\n"
+"PO-Revision-Date: 2015-03-05 15:25+0100\n"
 "Last-Translator: J.N. Breetvelt <OpaJaap@OpaJaap.nl>\n"
 "Language-Team: Gianni Diurno | gidibao.net & charmingpress.com\n"
 "Language: it_IT\n"
@@ -22,17 +22,17 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPath-1: theme\n"
 
-#: theme/wppa-theme.php:236 theme/wppa-theme.php:255
+#: theme/wppa-theme.php:302 theme/wppa-theme.php:321
 msgid "No photos found matching your search criteria."
 msgstr ""
 "Ingen album eller fotos fundet der svarer til dine s&oslash;ge kriterier."
 
-#: theme/wppa-theme.php:239
+#: theme/wppa-theme.php:305
 #, fuzzy
 msgid "No albums found matching your search criteria."
 msgstr "Nessun album o foto corrispondente ai criteri di ricerca."
 
-#: theme/wppa-theme.php:242
+#: theme/wppa-theme.php:308
 msgid "No albums or photos found matching your search criteria."
 msgstr ""
 "Ingen album eller fotos fundet der svarer til dine s&oslash;ge kriterier."
@@ -155,7 +155,7 @@ msgstr "fotos"
 msgid "New!"
 msgstr "Nuovo!"
 
-#: wppa-album-covers.php:1173 wppa-thumbnails.php:998
+#: wppa-album-covers.php:1173 wppa-thumbnails.php:1000
 #, fuzzy
 msgid "New"
 msgstr "Nuovo!"
@@ -1244,7 +1244,7 @@ msgstr ""
 msgid "Zoom in"
 msgstr "Zoom ind"
 
-#: wppa-items.php:215 wppa-thumbnails.php:970
+#: wppa-items.php:215 wppa-thumbnails.php:973
 msgid "Gold medal"
 msgstr ""
 
@@ -1252,7 +1252,7 @@ msgstr ""
 msgid "Gold"
 msgstr ""
 
-#: wppa-items.php:216 wppa-thumbnails.php:971
+#: wppa-items.php:216 wppa-thumbnails.php:974
 msgid "Silver medal"
 msgstr ""
 
@@ -1260,7 +1260,7 @@ msgstr ""
 msgid "Silver"
 msgstr ""
 
-#: wppa-items.php:217 wppa-thumbnails.php:972
+#: wppa-items.php:217 wppa-thumbnails.php:975
 msgid "Bronze medal"
 msgstr ""
 
@@ -1629,9 +1629,14 @@ msgstr ", et underalbum til"
 msgid "Thumbnail photos"
 msgstr "Miniatura"
 
-#: wppa-thumbnails.php:122 wppa-thumbnails.php:539 wppa-topten-widget.php:93
+#: wppa-thumbnails.php:122 wppa-thumbnails.php:542 wppa-topten-widget.php:93
 msgid "View the top rated photos"
 msgstr "Se fotos med h&oslash;jeste bed&oslash;mmelse"
+
+#: wppa-thumbnails.php:301
+#, fuzzy
+msgid "Views:"
+msgstr "Se"
 
 #: wppa-topten-widget.php:39
 msgid "Top Ten Photos"

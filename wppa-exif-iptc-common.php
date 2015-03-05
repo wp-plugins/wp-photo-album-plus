@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * exif and iptc common functions
-* version 5.3.0
+* version 5.5.2
 *
 * 
 */

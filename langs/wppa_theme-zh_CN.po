@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wppa_theme-zh_CN\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-03-01 14:54+0100\n"
-"PO-Revision-Date: 2015-03-01 14:54+0100\n"
+"POT-Creation-Date: 2015-03-05 15:18+0100\n"
+"PO-Revision-Date: 2015-03-05 15:18+0100\n"
 "Last-Translator: J.N. Breetvelt <OpaJaap@OpaJaap.nl>\n"
 "Language-Team: delthink <delthink@gmail.com>\n"
 "Language: zh_CN\n"
@@ -22,15 +22,15 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPath-1: theme\n"
 
-#: theme/wppa-theme.php:236 theme/wppa-theme.php:255
+#: theme/wppa-theme.php:302 theme/wppa-theme.php:321
 msgid "No photos found matching your search criteria."
 msgstr "没有照片找到符合搜索条件。"
 
-#: theme/wppa-theme.php:239
+#: theme/wppa-theme.php:305
 msgid "No albums found matching your search criteria."
 msgstr "没有相册找到符合搜索条件。"
 
-#: theme/wppa-theme.php:242
+#: theme/wppa-theme.php:308
 msgid "No albums or photos found matching your search criteria."
 msgstr "没有找到符合搜索条件的相册或照片。"
 
@@ -130,7 +130,7 @@ msgid "albums"
 msgstr "相簿"
 
 #: wppa-album-covers.php:1116 wppa-boxes-html.php:373 wppa-breadcrumb.php:258
-#: wppa-breadcrumb.php:263 wppa-functions.php:3655 wppa-utils.php:1354
+#: wppa-breadcrumb.php:263 wppa-functions.php:3657 wppa-utils.php:1354
 msgid "and"
 msgstr "和"
 
@@ -146,7 +146,7 @@ msgstr "照片"
 msgid "New!"
 msgstr "新!"
 
-#: wppa-album-covers.php:1173 wppa-thumbnails.php:998
+#: wppa-album-covers.php:1173 wppa-thumbnails.php:1000
 msgid "New"
 msgstr "新建"
 
@@ -295,7 +295,7 @@ msgstr "进入专辑介绍"
 msgid "Create album"
 msgstr "创建专辑"
 
-#: wppa-boxes-html.php:721 wppa-boxes-html.php:735 wppa-functions.php:3388
+#: wppa-boxes-html.php:721 wppa-boxes-html.php:735 wppa-functions.php:3390
 msgid "Max uploads reached"
 msgstr "最大上传达到"
 
@@ -637,7 +637,7 @@ msgstr "默认照片专辑"
 msgid "1 second"
 msgstr "1秒"
 
-#: wppa-common-functions.php:623 wppa-functions.php:3656
+#: wppa-common-functions.php:623 wppa-functions.php:3658
 msgid "seconds"
 msgstr "秒"
 
@@ -645,7 +645,7 @@ msgstr "秒"
 msgid "1 minute"
 msgstr "1分钟"
 
-#: wppa-common-functions.php:628 wppa-functions.php:3655
+#: wppa-common-functions.php:628 wppa-functions.php:3657
 msgid "minutes"
 msgstr "分钟"
 
@@ -653,7 +653,7 @@ msgstr "分钟"
 msgid "1 hour"
 msgstr "1小时"
 
-#: wppa-common-functions.php:633 wppa-functions.php:3654
+#: wppa-common-functions.php:633 wppa-functions.php:3656
 msgid "hours"
 msgstr "小时"
 
@@ -661,7 +661,7 @@ msgstr "小时"
 msgid "1 day"
 msgstr "1天"
 
-#: wppa-common-functions.php:638 wppa-functions.php:3653
+#: wppa-common-functions.php:638 wppa-functions.php:3655
 msgid "days"
 msgstr "天"
 
@@ -669,7 +669,7 @@ msgstr "天"
 msgid "1 week"
 msgstr "1星期"
 
-#: wppa-common-functions.php:643 wppa-functions.php:3652
+#: wppa-common-functions.php:643 wppa-functions.php:3654
 msgid "weeks"
 msgstr "星期"
 
@@ -933,63 +933,63 @@ msgstr "你确定要移除这个项目？"
 msgid "Delete"
 msgstr "删除"
 
-#: wppa-functions.php:1618
+#: wppa-functions.php:1620
 msgid "Comment edited"
 msgstr "编辑评论"
 
-#: wppa-functions.php:1622
+#: wppa-functions.php:1624
 msgid "Photo comment"
 msgstr "照片评论"
 
-#: wppa-functions.php:1626
+#: wppa-functions.php:1628
 msgid "Comment on photo:"
 msgstr "评论照片："
 
-#: wppa-functions.php:1637
+#: wppa-functions.php:1639
 msgid "wrote on photo"
 msgstr "写在照片上"
 
-#: wppa-functions.php:1639
+#: wppa-functions.php:1641
 msgid "Reply"
 msgstr "回复"
 
-#: wppa-functions.php:1640
+#: wppa-functions.php:1642
 msgid "Moderate comment admin"
 msgstr "中度评论管理"
 
-#: wppa-functions.php:1641 wppa-functions.php:3504 wppa-upload.php:1217
+#: wppa-functions.php:1643 wppa-functions.php:3506 wppa-upload.php:1217
 msgid "Moderate manage photo"
 msgstr "适度管理照片"
 
-#: wppa-functions.php:1642
+#: wppa-functions.php:1644
 msgid "Edit photo"
 msgstr "编辑照片"
 
-#: wppa-functions.php:1652
+#: wppa-functions.php:1654
 msgid "You receive this email as you are assigned to moderate"
 msgstr "你收到这封电子邮件，你被分配到适度"
 
-#: wppa-functions.php:1664
+#: wppa-functions.php:1666
 msgid "You receive this email as administrator of the site"
 msgstr "你收到这封电子邮件作为网站管理员"
 
-#: wppa-functions.php:1681
+#: wppa-functions.php:1683
 msgid "You receive this email as uploader of the photo"
 msgstr "您收到此邮件的照片上传"
 
-#: wppa-functions.php:1701
+#: wppa-functions.php:1703
 msgid "You receive this email as owner of the album"
 msgstr "你收到这封电子邮件作为专辑的主人"
 
-#: wppa-functions.php:1718
+#: wppa-functions.php:1720
 msgid "You receive this email because you commented this photo earlier."
 msgstr "你收到这封电子邮件，因为你这张照片早些时候评论。"
 
-#: wppa-functions.php:1743
+#: wppa-functions.php:1745
 msgid "Comment added"
 msgstr "添加评论"
 
-#: wppa-functions.php:1747
+#: wppa-functions.php:1749
 msgid ""
 "Sorry, you gave a wrong answer.\\n\\nPlease try again to solve the "
 "computation."
@@ -998,157 +998,157 @@ msgstr ""
 "\n"
 " 请再次尝试解决计算。"
 
-#: wppa-functions.php:1757
+#: wppa-functions.php:1759
 msgid "Could not process comment.\\nProbably timed out."
 msgstr ""
 "无法处理意见。\n"
 " Probably超时。"
 
-#: wppa-functions.php:1836
+#: wppa-functions.php:1838
 msgid "1 Comment"
 msgstr "1條評論"
 
-#: wppa-functions.php:1837
+#: wppa-functions.php:1839
 #, php-format
 msgid "%s Comments"
 msgstr "%s 的评论"
 
-#: wppa-functions.php:1873 wppa-links.php:1332
+#: wppa-functions.php:1875 wppa-links.php:1332
 msgid "A video can not be printed or downloaded"
 msgstr "视频不能打印或下载"
 
-#: wppa-functions.php:2285
+#: wppa-functions.php:2287
 msgid "<b>ERROR: Illegal attempt to enter a rating.</b>"
 msgstr "<b>错误：试图非法进入评级。</b>"
 
-#: wppa-functions.php:2298
+#: wppa-functions.php:2300
 msgid "<b>ERROR: Illegal attempt to enter a comment.</b>"
 msgstr "<b>错误：试图非法进入评论。</b>"
 
-#: wppa-functions.php:3270
+#: wppa-functions.php:3272
 msgid "New Album"
 msgstr "添加新相册"
 
-#: wppa-functions.php:3273
+#: wppa-functions.php:3275
 msgid "<b>ERROR: Illegal attempt to create an album.</b>"
 msgstr "<b>错误：非法尝试创建一个相册。</b>"
 
-#: wppa-functions.php:3277
+#: wppa-functions.php:3279
 msgid "Wrong captcha, please try again"
 msgstr "验证码错误，请重试"
 
-#: wppa-functions.php:3290
+#: wppa-functions.php:3292
 #, php-format
 msgid "Album #%s created"
 msgstr "專輯＃%s 創建"
 
-#: wppa-functions.php:3295
+#: wppa-functions.php:3297
 msgid "Could not create album"
 msgstr "无法创建相册"
 
-#: wppa-functions.php:3306
+#: wppa-functions.php:3308
 msgid "<b>ERROR: Illegal attempt to upload a file.</b>"
 msgstr "<b>错误：试图非法上传的文件。</b>"
 
-#: wppa-functions.php:3346
+#: wppa-functions.php:3348
 msgid "Photo upload"
 msgstr "上传照片"
 
-#: wppa-functions.php:3348
+#: wppa-functions.php:3350
 msgid "Photo successfully uploaded."
 msgstr "照片上传成功。"
 
-#: wppa-functions.php:3348
+#: wppa-functions.php:3350
 #, php-format
 msgid "%s photos successfully uploaded."
 msgstr "%s 的照片上传成功。"
 
-#: wppa-functions.php:3349
+#: wppa-functions.php:3351
 #, php-format
 msgid "%s points added."
 msgstr "添加 %s 指向。"
 
-#: wppa-functions.php:3353
+#: wppa-functions.php:3355
 msgid "Upload failed"
 msgstr "上传失败"
 
-#: wppa-functions.php:3356
+#: wppa-functions.php:3358
 msgid "1 Upload failed"
 msgstr "上传失败"
 
-#: wppa-functions.php:3356
+#: wppa-functions.php:3358
 #, php-format
 msgid "%s uploads failed."
 msgstr "%s 的上傳失敗。"
 
-#: wppa-functions.php:3392
+#: wppa-functions.php:3394
 msgid "Error during upload"
 msgstr "上传时出错"
 
-#: wppa-functions.php:3397
+#: wppa-functions.php:3399
 msgid "Uploaded file is not an image"
 msgstr "上传的文件不是图片"
 
-#: wppa-functions.php:3401
+#: wppa-functions.php:3403
 #, php-format
 msgid ""
 "Only gif, jpg and png image files are supported. Returned filetype = %d."
 msgstr "只有GIF，JPG和PNG图像文件的支持。返回文件类型= %d 个。"
 
-#: wppa-functions.php:3407
+#: wppa-functions.php:3409
 #, php-format
 msgid "Uploaded file is larger than the allowed maximum of %d x %d pixels."
 msgstr "上載的文件大於允許最大值的 %d x %d 像素。"
 
-#: wppa-functions.php:3413
+#: wppa-functions.php:3415
 #, php-format
 msgid "Uploaded file %s already exists in this album."
 msgstr "上傳的文件 %s 已經存在在這張專輯中。"
 
-#: wppa-functions.php:3421
+#: wppa-functions.php:3423
 #, php-format
 msgid "The image is too big. Max photo size: %d x %d (%2.1f MegaPixel)"
 msgstr "该图片太大。最大照片尺寸：%d x %d（%2.1f 万像素）"
 
-#: wppa-functions.php:3444
+#: wppa-functions.php:3446
 msgid "Could not insert photo into db."
 msgstr "无法将照片变成分贝。"
 
-#: wppa-functions.php:3500 wppa-upload.php:1213
+#: wppa-functions.php:3502 wppa-upload.php:1213
 #, php-format
 msgid "New photo uploaded: %s"
 msgstr "新的照片上传：%s 的"
 
-#: wppa-functions.php:3501 wppa-upload.php:1214
+#: wppa-functions.php:3503 wppa-upload.php:1214
 #, php-format
 msgid "User %s uploaded photo %s into album %s"
 msgstr "%s 用户上传的照片 %s 转换的专辑 %s"
 
-#: wppa-functions.php:3503 wppa-upload.php:1216
+#: wppa-functions.php:3505 wppa-upload.php:1216
 msgid "This upload requires moderation"
 msgstr "这上传需要节制"
 
-#: wppa-functions.php:3507 wppa-upload.php:1220
+#: wppa-functions.php:3509 wppa-upload.php:1220
 msgid "Details:"
 msgstr "详细信息 ："
 
-#: wppa-functions.php:3508 wppa-upload.php:1221
+#: wppa-functions.php:3510 wppa-upload.php:1221
 msgid "Manage photo"
 msgstr "管理照片"
 
-#: wppa-functions.php:3650
+#: wppa-functions.php:3652
 msgid "You can upload after"
 msgstr "您可以上传后，"
 
-#: wppa-functions.php:3679 wppa-functions.php:3682
+#: wppa-functions.php:3681 wppa-functions.php:3684
 msgid "Download:"
 msgstr "下載:"
 
-#: wppa-functions.php:3703
+#: wppa-functions.php:3705
 msgid "Zoom in"
 msgstr "放大"
 
-#: wppa-items.php:215 wppa-thumbnails.php:970
+#: wppa-items.php:215 wppa-thumbnails.php:973
 msgid "Gold medal"
 msgstr "金牌"
 
@@ -1156,7 +1156,7 @@ msgstr "金牌"
 msgid "Gold"
 msgstr "金色"
 
-#: wppa-items.php:216 wppa-thumbnails.php:971
+#: wppa-items.php:216 wppa-thumbnails.php:974
 msgid "Silver medal"
 msgstr "银牌"
 
@@ -1164,7 +1164,7 @@ msgstr "银牌"
 msgid "Silver"
 msgstr "银色"
 
-#: wppa-items.php:217 wppa-thumbnails.php:972
+#: wppa-items.php:217 wppa-thumbnails.php:975
 msgid "Bronze medal"
 msgstr "铜牌"
 
@@ -1512,9 +1512,13 @@ msgstr "，子专辑"
 msgid "Thumbnail photos"
 msgstr "缩略图"
 
-#: wppa-thumbnails.php:122 wppa-thumbnails.php:539 wppa-topten-widget.php:93
+#: wppa-thumbnails.php:122 wppa-thumbnails.php:542 wppa-topten-widget.php:93
 msgid "View the top rated photos"
 msgstr "看最精彩的照片"
+
+#: wppa-thumbnails.php:301
+msgid "Views:"
+msgstr "浏览次数:"
 
 #: wppa-topten-widget.php:39
 msgid "Top Ten Photos"
