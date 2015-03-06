@@ -101,7 +101,7 @@ global $wppa_show_statistics;						// Can be set to true by a custom page templa
 				// Init
 				$relpage 	= wppa_switch( 'wppa_thumbs_first' ) ? $curpage : $curpage - $n_album_pages;
 				$cont_width = wppa_get_container_width();
-				$count_cols = ceil( $cont_width / wppa_opt( 'wppa_thumbsize' ) );
+				$count_cols = ceil( $cont_width / ( wppa_opt( 'wppa_thumbsize' ) + wppa_opt( 'wppa_tn_margin' ) ) );
 				$correction = wppa_opt( 'wppa_tn_margin' ) * ( $cont_width / $count_cols ) / 100;
 				
 				// Init the table
@@ -199,7 +199,7 @@ global $wppa_show_statistics;						// Can be set to true by a custom page templa
 				// Process the thumbnails
 				$row_content 		= '';
 				$row_width 			= 0;
-				$target_row_height 	= wppa_opt( 'wppa_thumbsize' ) * 0.75;
+				$target_row_height 	= wppa_opt( 'wppa_thumbsize' ) * 0.75 + $correction;
 				$rw_count 			= 0;
 				$tr_count 			= '1';
 				$done_count 		= 0;
