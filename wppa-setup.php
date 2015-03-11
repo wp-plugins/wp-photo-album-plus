@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 5.5.1
+* Version 5.5.3
 *
 */
 
@@ -638,8 +638,6 @@ Hide Camera info
 						'wppa_show_iptc_open'				=> 'no',
 						'wppa_show_exif'					=> 'no',		// 18
 						'wppa_show_exif_open'				=> 'no',
-						'wppa_copyright_on'					=> 'yes',		// 19
-						'wppa_copyright_notice'				=> __('<span style="color:red" >Warning: Do not upload copyrighted material!</span>', 'wppa'),	// 20
 						'wppa_share_on'						=> 'no',
 						'wppa_share_hide_when_running'		=> 'yes',
 						'wppa_share_on_widget'				=> 'no',
@@ -712,6 +710,34 @@ Hide Camera info
 						'wppa_show_zoomin'					=> 'yes',
 						
 						'wppa_owner_on_new_line' 			=> 'no',
+						
+						// H Frontend upload
+						'wppa_user_upload_on'			=> 'no',
+						'wppa_user_upload_login'		=> 'yes',
+						'wppa_ajax_upload'				=> 'yes',
+						'wppa_copyright_on'				=> 'yes',		// 19
+						'wppa_copyright_notice'			=> __('<span style="color:red" >Warning: Do not upload copyrighted material!</span>', 'wppa'),	// 20
+						'wppa_watermark_user'			=> 'no',
+						'wppa_name_user' 				=> 'yes',
+						'wppa_apply_newphoto_desc_user'	=> 'no',
+						'wppa_desc_user' 				=> 'yes',
+						'wppa_fe_upload_tags' 			=> 'no',
+						'wppa_up_tagselbox_on_1' 		=> 'yes',		// 18
+						'wppa_up_tagselbox_multi_1' 	=> 'yes',
+						'wppa_up_tagselbox_title_1' 	=> __( 'Select tags:', 'wppa' ),
+						'wppa_up_tagselbox_content_1' 	=> '',
+						'wppa_up_tagselbox_on_2' 		=> 'no',
+						'wppa_up_tagselbox_multi_2' 	=> 'yes',
+						'wppa_up_tagselbox_title_2' 	=> __( 'Select tags:', 'wppa' ),
+						'wppa_up_tagselbox_content_2' 	=> '',
+						'wppa_up_tagselbox_on_3' 		=> 'no',
+						'wppa_up_tagselbox_multi_3' 	=> 'yes',
+						'wppa_up_tagselbox_title_3' 	=> __( 'Select tags:', 'wppa' ),
+						'wppa_up_tagselbox_content_3' 	=> '',
+						'wppa_up_tag_input_on' 			=> 'yes',
+						'wppa_up_tag_input_title' 		=> __( 'Enter new tags:', 'wppa' ),
+						'wppa_up_tag_preview' 			=> 'yes',
+
 
 						// Table III: Backgrounds
 						'wppa_bgcolor_even' 			=> '#eeeeee',
@@ -759,7 +785,6 @@ Hide Camera info
 						// A System
 						'wppa_allow_ajax'				=> 'yes',
 						'wppa_ajax_non_admin'			=> 'yes',
-						'wppa_ajax_upload'				=> 'yes',
 						'wppa_use_photo_names_in_urls'	=> 'no',
 						'wppa_use_album_names_in_urls' 	=> 'no',
 						'wppa_use_short_qargs' 			=> 'yes',
@@ -994,10 +1019,7 @@ Hide Camera info
 						
 						// Table VII: Security
 						// B
-						'wppa_user_upload_login'		=> 'yes',
 						'wppa_owner_only' 				=> 'no',
-						'wppa_user_upload_on'			=> 'no',
-						'wppa_fe_upload_tags' 			=> 'no',
 						'wppa_user_album_edit_on' 		=> 'no',
 						'wppa_upload_moderate'			=> 'no',
 						'wppa_upload_edit'				=> 'no',
@@ -1102,6 +1124,9 @@ Hide Camera info
 						'wppa_adminbarmenu_admin'		=> 'yes',
 						'wppa_adminbarmenu_frontend'	=> 'yes',
 						'wppa_feed_use_thumb'			=> 'no',
+						'wppa_enable_shortcode_wppa_set' => 'no',
+						'wppa_wppa_set_shortcodes' 		=> 'wppa_thumbtype,wppa_tn_margin',
+						
 						'wppa_og_tags_on'				=> 'yes',
 						'wppa_add_shortcode_to_post'	=> 'no',
 						'wppa_shortcode_to_add'			=> '[wppa type="album" album="#related,desc"][/wppa]',
@@ -1113,7 +1138,6 @@ Hide Camera info
 						'wppa_max_album_newtime'		=> '0',		// 1
 						'wppa_max_photo_newtime'		=> '0',		// 2
 						'wppa_apply_newphoto_desc'		=> 'no',	// 3
-						'wppa_apply_newphoto_desc_user'	=> 'no',
 						'wppa_newphoto_description'		=> $npd,	// 4
 						'wppa_upload_limit_count'		=> '0',		// 5a
 						'wppa_upload_limit_time'		=> '0',		// 5b
@@ -1138,7 +1162,7 @@ Hide Camera info
 						'wppa_copy_owner' 				=> 'no',
 						'wppa_frontend_album_public' 	=> 'no',
 						'wppa_optimize_new' 			=> 'no',
-						
+												
 						// E Search
 						'wppa_search_linkpage' 			=> '0',		// 1
 						'wppa_excl_sep' 				=> 'no',	// 2
@@ -1155,7 +1179,6 @@ Hide Camera info
 						
 						// F Watermark
 						'wppa_watermark_on'				=> 'no',
-						'wppa_watermark_user'			=> 'no',
 						'wppa_watermark_file'			=> 'specimen.png',
 						'wppa_watermark_pos'			=> 'cencen',
 						'wppa_textual_watermark_type'	=> 'tvstyle',

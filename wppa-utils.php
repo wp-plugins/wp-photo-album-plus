@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains low-level utility routines
-* Version 5.5.2
+* Version 5.5.3
 *
 */
  
@@ -258,8 +258,15 @@ global $thumb;
 	return $result;
 }
 
-function wppa_switch( $key ) {
+function wppa_switch( $xkey ) {
 global $wppa_opt;
+
+	if ( substr( $xkey, 0, 5 ) == 'wppa_' ) {
+		$key = $xkey;
+	}
+	else {
+		$key = 'wppa_' . $xkey;
+	}
 
 	if ( is_array( $wppa_opt ) ) {
 		if ( isset( $wppa_opt[$key] ) ) {
@@ -267,16 +274,23 @@ global $wppa_opt;
 			elseif ( $wppa_opt[$key] == 'no' ) return false;
 			else wppa_log( 'Error', '$wppa_opt['.$key.'] is not a yes/no setting' );
 		}
-		else wppa_dbg_msg( 'Error', '$wppa_opt['.$key.'] is not a setting' );
+		else wppa_log( 'Error', '$wppa_opt['.$key.'] is not a setting' );
 	}
-	else wppa_dbg_msg( 'Error', '$wppa_opt[] is not initialized while testing '.$key );
+	else wppa_log( 'Error', '$wppa_opt[] is not initialized while testing '.$key );
 	
 	return false;
 }
 
-function wppa_opt( $key ) {
+function wppa_opt( $xkey ) {
 global $wppa_opt;
 
+	if ( substr( $xkey, 0, 5 ) == 'wppa_' ) {
+		$key = $xkey;
+	}
+	else {
+		$key = 'wppa_' . $xkey;
+	}
+	
 	if ( is_array( $wppa_opt ) ) {
 		if ( isset( $wppa_opt[$key] ) ) {
 			if ( $wppa_opt[$key] == 'yes' || $wppa_opt[$key] == 'no' ) {
@@ -318,14 +332,14 @@ global $wppa;
 		
 		// Invalid key
 		else {
-			wppa_dbg_msg( 'Error', '$wppa[\''.$key.'\'] is not defined' );
+			wppa_log( 'Error', '$wppa[\''.$key.'\'] is not defined' );
 			return false;
 		}
 	}
 	
 	// Array not defined
 	else {
-		wppa_dbg_msg( 'Error', '$wppa[] is not initialized while testing \''.$key.'\'' );
+		wppa_log( 'Error', '$wppa[] is not initialized while testing \''.$key.'\'' );
 		return false;
 	}
 	

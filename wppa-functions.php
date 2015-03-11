@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Various funcions
-* Version 5.5.2
+* Version 5.5.3
 *
 */
 
@@ -3464,8 +3464,10 @@ global $wpdb;
 		// Custom tags
 		$tags = wppa_get_photo_item( $id, 'tags' );
 		$oldt = $tags;
-		if ( isset( $_POST['wppa-user-tags'] ) ) {	// Existing tags
-			$tags .= ','.implode( ',', $_POST['wppa-user-tags'] );
+		for ( $i = '1'; $i < '4'; $i++ ) {
+			if ( isset( $_POST['wppa-user-tags-'.$i] ) ) {	// Existing tags
+				$tags .= ','.implode( ',', $_POST['wppa-user-tags-'.$i] );
+			}
 		}
 		if ( isset( $_POST['wppa-new-tags'] ) ) {	// New tags
 			$newt = $_POST['wppa-new-tags'];

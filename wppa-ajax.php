@@ -2,7 +2,7 @@
 /* wppa-ajax.php
 *
 * Functions used in ajax requests
-* version 5.5.0
+* version 5.5.3
 *
 */
 
@@ -1809,6 +1809,15 @@ global $wppa_session;
 					$value = wppa_sanitize_tags( $value );
 					break;
 
+				case 'wppa_up_tagselbox_content_1':
+				case 'wppa_up_tagselbox_content_2':
+				case 'wppa_up_tagselbox_content_3':
+					$value = wppa_sanitize_tags( $value );
+					break;
+					
+				case 'wppa_wppa_set_shortcodes':
+					$value = str_replace( ' ', '', $value );
+					break;
 					
 				default:
 			

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the albums/photos/slideshow in a page or post
-* Version 5.5.2
+* Version 5.5.3
 */
 function wppa_theme() {
 
@@ -217,7 +217,7 @@ global $wppa_show_statistics;						// Can be set to true by a custom page templa
 					$last 			= $done_count == count( $thumbs );
 					if ( $row_width > $cont_width || $last ) {
 						$tot_marg 		= $rw_count * $correction;
-						$row_height 	= $row_width ? ( ( $target_row_height - $correction ) * ( $cont_width - '1' - $tot_marg ) / ( $row_width ) + $correction )  : '0';
+						$row_height 	= $row_width ? ( ( $target_row_height - $correction ) * ( $cont_width - '3' - $tot_marg ) / ( $row_width ) + $correction )  : '0';
 						if ( $row_height > wppa_get_thumby( $id ) && $rw_count == 1 ) $row_height = wppa_get_thumby( $id );
 						$row_height_p 	= $row_height / $cont_width * 100;
 						wppa_out( '<tr class="wppa-masonry" ><td id="wppa-mas-h-'.$tr_count.'-'.wppa( 'mocc' ).'" style="height:'.$row_height.'px;" class="wppa-masonry" data-height-perc="'.$row_height_p.'" >'); //<div style="height:'.$row_height.'px;" >' );

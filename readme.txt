@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, myCRED, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile, cloudinary, fotomoto, CMTooltipGlossary
-Version: 5.5.2
+Version: 5.5.3
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -187,6 +187,18 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 5.5.3 =
+
+= Bug Fixes =
+
+* Fixed a potantial spurious lay-out issue on masonry rows thumbnail style.
+
+= New Features =
+
+* Max 3 tag selection box on frontend upload. The frontend upload dialog is now fully configurable. See Table II-H.
+* A new shortcode to temporary change a setting on the page. Use shortcode [wppa_set name="a_legal_setting_slug" value="the_new_value"][/wppa_set].
+See Table IX-A7 and 8.
 
 = 5.5.2 =
 

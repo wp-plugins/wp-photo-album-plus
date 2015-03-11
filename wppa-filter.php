@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * get the albums via filter
-* version 5.4.10
+* version 5.5.3
 *
 */
 
@@ -425,6 +425,51 @@ global $wppa_opt;
 }
 
 add_shortcode( 'wppa', 'wppa_shortcodes' );
+
+function wppa_set_shortcodes( $xatts, $content = '' ) {
+global $wppa;
+global $wppa_opt;
+
+	$atts = $xatts;
+	
+	extract( shortcode_atts( array(
+		'name' 		=> '',
+		'value' 	=> ''
+	), $atts ) );
+	
+	$allowed = explode( ',', wppa_opt( 'wppa_wppa_set_shortcodes' ) );
+	
+	// Valid item?
+	if ( $name && ! in_array( $name, $allowed ) ) {
+		wppa_dbg_msg( $name . ' is not a runtime settable configuration entity.', 'red', 'force' );
+	}
+	// Reset?
+	elseif ( ! $name ) {
+		$wppa_opt = get_option( 'wppa_cached_options', false );
+		wppa_reset_occurrance();
+	}
+	// Option?
+	elseif ( substr( $name, 0, 5 ) == 'wppa_' ) {
+		if ( isset( $wppa_opt[$name] ) ) {
+			$wppa_opt[$name] = $value;
+		}
+		else {
+			wppa_dbg_msg( $name . ' is not an option value.', 'red', 'force' );
+		}
+	}
+	else {
+		if ( isset( $wppa[$name] ) ) {
+			$wppa[$name] = $value;
+		}
+		else {
+			wppa_dbg_msg( $name . ' is not a runtime value.', 'red', 'force' );
+		}
+	}
+}
+
+if ( get_option( 'wppa_enable_shortcode_wppa_set', 'no' ) == 'yes' ) {
+	add_shortcode( 'wppa_set', 'wppa_set_shortcodes' );
+}
 
 // Add filter for the use of our lightbox implementation for non wppa+ images
 add_filter( 'the_content', 'wppa_lightbox_global' );

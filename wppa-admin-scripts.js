@@ -205,6 +205,16 @@ function wppaRefreshAfter() {
 	_wppaRefreshAfter = true;
 }
 
+function wppaFollow( id, clas ) {
+
+	if ( jQuery('#'+id).attr('checked') ) {
+		jQuery('.'+clas).css('display', '');
+	}
+	else {
+		jQuery('.'+clas).css('display', 'none');
+	}
+}
+
 function wppaCheckFotomoto() {
 	var on = document.getElementById("wppa_fotomoto_on").checked;
 	if ( on ) {
@@ -792,10 +802,10 @@ function wppaCheckGravatar() {
 
 function wppaCheckUserUpload() {
 	if (document.getElementById('wppa_user_upload_on').checked) {
-		jQuery('.wppa_copyr').css('display', '');
+		jQuery('.wppa_feup').css('display', '');
 	}
 	else {
-		jQuery('.wppa_copyr').css('display', 'none');
+		jQuery('.wppa_feup').css('display', 'none');
 	}
 }
 
