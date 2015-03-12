@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the last uploaded photos
-* Version 5.4.0
+* Version 5.5.4
 */
 
 class LasTenWidget extends WP_Widget {
@@ -49,12 +49,26 @@ class LasTenWidget extends WP_Widget {
 
 		if ( $album == '-99' ) $album = implode("' OR `album` = '", explode(',', $albumenum));
 
-		if ( $album ) {
-			$thumbs = $wpdb->get_results( "SELECT * FROM `".WPPA_PHOTOS."` WHERE ( `album` = '".$album."' ) AND ( `status` <> 'pending' AND `status` <> 'scheduled' ) ORDER BY `timestamp` DESC LIMIT " . $max, ARRAY_A);
+		// If you want only 'New' photos in the selection, the period must be <> 0;
+		if ( wppa_switch ( 'wppa_lasten_limit_new' ) && wppa_opt( 'wppa_max_photo_newtime' ) ) {
+			$newtime = " `timestamp` >= ".( time() - wppa_opt( 'wppa_max_photo_newtime' ) );
+			if ( $album ) {
+				$q = "SELECT * FROM `".WPPA_PHOTOS."` WHERE (".$newtime.") AND ( `album` = '".$album."' ) AND ( `status` <> 'pending' AND `status` <> 'scheduled' ) ORDER BY `timestamp` DESC LIMIT " . $max;
+			}
+			else {
+				$q = "SELECT * FROM `".WPPA_PHOTOS."` WHERE (".$newtime.") AND `status` <> 'pending' AND `status` <> 'scheduled' ORDER BY `timestamp` DESC LIMIT " . $max;
+			}
 		}
 		else {
-			$thumbs = $wpdb->get_results( "SELECT * FROM `".WPPA_PHOTOS."` WHERE `status` <> 'pending' AND `status` <> 'scheduled' ORDER BY `timestamp` DESC LIMIT " . $max, ARRAY_A);
+			if ( $album ) {
+				$q = "SELECT * FROM `".WPPA_PHOTOS."` WHERE ( `album` = '".$album."' ) AND ( `status` <> 'pending' AND `status` <> 'scheduled' ) ORDER BY `timestamp` DESC LIMIT " . $max;
+			}
+			else {
+				$q = "SELECT * FROM `".WPPA_PHOTOS."` WHERE `status` <> 'pending' AND `status` <> 'scheduled' ORDER BY `timestamp` DESC LIMIT " . $max;
+			}
 		}
+		// echo $q;
+		$thumbs = $wpdb->get_results( $q, ARRAY_A );
 		
 		global $widget_content;
 		$widget_content = "\n".'<!-- WPPA+ LasTen Widget start -->';

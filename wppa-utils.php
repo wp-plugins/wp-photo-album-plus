@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains low-level utility routines
-* Version 5.5.3
+* Version 5.5.4
 *
 */
  
@@ -1404,13 +1404,15 @@ function wppa_log( $type, $msg ) {
 	}
 	if ( ! $file = fopen( $filename, 'ab' ) ) return;	// Unable to open log file
 	@ fwrite( $file, $type.': on:'.wppa_local_date(get_option('date_format', "F j, Y,").' '.get_option('time_format', "g:i a"), time()).': '.$msg."\n" );
-	if ( wppa_switch( 'wppa_debug_trace_on' ) ) {
+	// To prevent recursive error reporting, do not use wppa_switch!!!
+	//if ( wppa_switch( 'wppa_debug_trace_on' ) ) {
+	if ( get_option( 'wppa_debug_trace_on' ) == 'yes' ) {
 		ob_start();
 		debug_print_backtrace( DEBUG_BACKTRACE_IGNORE_ARGS );
 		$trace = ob_get_contents();
 		ob_end_clean();
+		@ fwrite( $file, $trace."\n" );
 	}
-	@ fwrite( $file, $trace."\n" );
 	@ fclose( $file );
 }
 

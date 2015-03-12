@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 5.5.3
+* Version 5.5.4
 *
 */
 
@@ -1147,7 +1147,7 @@ global $wppa_tags;
 							
 							$name = __('LasTen count', 'wppa');
 							$desc = __('Number of photos in Last Ten widget.', 'wppa');
-							$help = esc_js(__('Enter the maximum number of rated photos in the LasTen widget.', 'wppa'));
+							$help = esc_js(__('Enter the maximum number of photos in the LasTen widget.', 'wppa'));
 							$slug = 'wppa_lasten_count';
 							$html = wppa_input($slug, '40px', '', __('photos', 'wppa'));
 							$clas = '';
@@ -6096,8 +6096,38 @@ global $wppa_tags;
 							$desc = __('Maximum time an album is indicated as New!', 'wppa');
 							$help = '';
 							$slug = 'wppa_max_album_newtime';
-							$options = array( __('--- off ---', 'wppa'), __('One hour', 'wppa'), __('One day', 'wppa'), __('One week', 'wppa'), __('One month', 'wppa') );
-							$values = array( 0, 60*60, 60*60*24, 60*60*24*7, 60*60*24*30);
+							$options = array( 	__('--- off ---', 'wppa'), 
+												__('One hour', 'wppa'), 
+												__('One day', 'wppa'), 
+												__('Two days', 'wppa'),
+												__('Three days', 'wppa'),
+												__('Four days', 'wppa'),
+												__('Five days', 'wppa'),
+												__('Six days', 'wppa'),
+												__('One week', 'wppa'), 
+												__('Eight days', 'wppa'),
+												__('Nine days', 'wppa'),
+												__('Ten days', 'wppa'),
+												__('Two weeks', 'wppa'),
+												__('Three weeks', 'wppa'),
+												__('Four weeks', 'wppa'),
+												__('One month', 'wppa') );
+							$values = array( 	0, 
+												60*60, 
+												60*60*24, 
+												60*60*24*2,
+												60*60*24*3,
+												60*60*24*4,
+												60*60*24*5,
+												60*60*24*6,
+												60*60*24*7, 
+												60*60*24*8, 
+												60*60*24*9, 
+												60*60*24*10, 
+												60*60*24*7*2,
+												60*60*24*7*3,
+												60*60*24*7*4,
+												60*60*24*30);
 							$html = wppa_select($slug, $options, $values);
 							$clas = '';
 							$tags = 'system,album';
@@ -6107,12 +6137,51 @@ global $wppa_tags;
 							$desc = __('Maximum time a photo is indicated as New!', 'wppa');
 							$help = '';
 							$slug = 'wppa_max_photo_newtime';
-							$options = array( __('--- off ---', 'wppa'), __('One hour', 'wppa'), __('One day', 'wppa'), __('One week', 'wppa'), __('One month', 'wppa') );
-							$values = array( 0, 60*60, 60*60*24, 60*60*24*7, 60*60*24*30);
+							$options = array( 	__('--- off ---', 'wppa'), 
+												__('One hour', 'wppa'), 
+												__('One day', 'wppa'), 
+												__('Two days', 'wppa'),
+												__('Three days', 'wppa'),
+												__('Four days', 'wppa'),
+												__('Five days', 'wppa'),
+												__('Six days', 'wppa'),
+												__('One week', 'wppa'), 
+												__('Eight days', 'wppa'),
+												__('Nine days', 'wppa'),
+												__('Ten days', 'wppa'),
+												__('Two weeks', 'wppa'),
+												__('Three weeks', 'wppa'),
+												__('Four weeks', 'wppa'),
+												__('One month', 'wppa') );
+							$values = array( 	0, 
+												60*60, 
+												60*60*24, 
+												60*60*24*2,
+												60*60*24*3,
+												60*60*24*4,
+												60*60*24*5,
+												60*60*24*6,
+												60*60*24*7, 
+												60*60*24*8, 
+												60*60*24*9, 
+												60*60*24*10, 
+												60*60*24*7*2,
+												60*60*24*7*3,
+												60*60*24*7*4,
+												60*60*24*30);
 							$html = wppa_select($slug, $options, $values);
 							$clas = '';
 							$tags = 'system';
 							wppa_setting($slug, '2', $name, $desc, $html, $help, $clas, $tags);
+							
+							$name = __('Limit LasTen New', 'wppa');
+							$desc = __('Limits the LasTen photos to those that are \'New\'.', 'wppa');
+							$help = esc_js(__('If you tick this box and configured the new photo time, you can even limit the number by the setting in Table I-F7, or set that number to an unlikely high value.'));
+							$slug = 'wppa_lasten_limit_new';
+							$html = wppa_checkbox($slug);
+							$clas = '';
+							$tags = 'system';
+							wppa_setting($slug, '2.1', $name, $desc, $html, $help, $clas, $tags);
 							
 							$name = __('Apply Newphoto desc', 'wppa');
 							$desc = __('Give each new photo a standard description.', 'wppa');

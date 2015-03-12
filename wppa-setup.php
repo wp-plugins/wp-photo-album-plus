@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 5.5.3
+* Version 5.5.4
 *
 */
 
@@ -1137,6 +1137,7 @@ Hide Camera info
 						// B New
 						'wppa_max_album_newtime'		=> '0',		// 1
 						'wppa_max_photo_newtime'		=> '0',		// 2
+						'wppa_lasten_limit_new' 		=> 'no',
 						'wppa_apply_newphoto_desc'		=> 'no',	// 3
 						'wppa_newphoto_description'		=> $npd,	// 4
 						'wppa_upload_limit_count'		=> '0',		// 5a

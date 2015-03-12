@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, myCRED, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile, cloudinary, fotomoto, CMTooltipGlossary
-Version: 5.5.3
+Version: 5.5.4
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -187,6 +187,20 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 5.5.4 =
+
+= Bug Fixes =
+
+* Fixed a potantial recursive error log resulting in a blank page when pretty links activated.
+
+= New Features =
+
+* Table IX-D2.1: Limit LasTen New. Limits the LasTen found images to those that are 'New'. Both in widget and in shortcode using album="#lasten".
+
+= Other Changes =
+
+* Icreased the choices in Table IX-D1 and 2.
 
 = 5.5.3 =
 

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Frontend links
-* Version 5.4.25
+* Version 5.5.4
 *
 */
 
@@ -1461,7 +1461,9 @@ static $trimmable;
 
 	$result = $link;
 	
-	if ( wppa_switch( 'wppa_use_short_qargs' ) ) {
+	// In wppa_redirect() is $wppa_opt not yet initialized, do not use wppa_switch() to avoid error
+	// if ( wppa_switch( 'wppa_use_short_qargs' ) ) {
+	if ( get_option( 'wppa_use_short_qargs' ) == 'yes' ) {
 		foreach ( $trimmable as $item ) {
 			$result = str_replace( 'wppa-'.$item, $item, $result );
 		}

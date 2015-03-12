@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Various funcions
-* Version 5.5.3
+* Version 5.5.4
 *
 */
 
@@ -1016,14 +1016,31 @@ global $wppa_session;
 	elseif ( $wppa['is_lasten'] ) {
 		$max = $wppa['lasten_count'];
 		$alb = $fullalb;
-		if ( current_user_can( 'wppa_moderate' ) ) {
-			if ( $alb ) $q =  "SELECT * FROM `".WPPA_PHOTOS."` WHERE `album` = ".$alb." ORDER BY `timestamp` DESC LIMIT ".$max;
-			else $q = "SELECT * FROM `".WPPA_PHOTOS."` ORDER BY `timestamp` DESC LIMIT ".$max;
+		
+		// If you want only 'New' photos in the selection, the period must be <> 0;
+		if ( wppa_switch ( 'wppa_lasten_limit_new' ) && wppa_opt( 'wppa_max_photo_newtime' ) ) {
+			$newtime = " `timestamp` >= ".( time() - wppa_opt( 'wppa_max_photo_newtime' ) );
+			if ( current_user_can( 'wppa_moderate' ) ) {
+				if ( $alb ) $q =  "SELECT * FROM `".WPPA_PHOTOS."` WHERE ( `album` = ".$alb." ) AND (".$newtime.") ORDER BY `timestamp` DESC LIMIT ".$max;
+				else $q = "SELECT * FROM `".WPPA_PHOTOS."` WHERE ".$newtime." ORDER BY `timestamp` DESC LIMIT ".$max;
+			}
+			else {
+				if ( $alb ) $q = "SELECT * FROM `".WPPA_PHOTOS."` WHERE ( `album` = ".$alb." ) AND ( `status` <> 'pending' ) AND ( `status` <> 'scheduled' ) AND ( ".$newtime." ) ORDER BY `timestamp` DESC LIMIT " . $max;
+				else $q = "SELECT * FROM `".WPPA_PHOTOS."` WHERE ( `status` <> 'pending' ) AND ( `status` <> 'scheduled' ) AND (".$newtime.") ORDER BY `timestamp` DESC LIMIT ".$max;
+			}
 		}
+		// No 'New' limitation
 		else {
-			if ( $alb ) $q = "SELECT * FROM `".WPPA_PHOTOS."` WHERE ( `album` = ".$alb." ) AND ( `status` <> 'pending' ) AND ( `status` <> 'scheduled' ) ORDER BY `timestamp` DESC LIMIT " . $max;
-			else $q = "SELECT * FROM `".WPPA_PHOTOS."` WHERE `status` <> 'pending' AND `status` <> 'scheduled' ORDER BY `timestamp` DESC LIMIT ".$max;
+			if ( current_user_can( 'wppa_moderate' ) ) {
+				if ( $alb ) $q =  "SELECT * FROM `".WPPA_PHOTOS."` WHERE `album` = ".$alb." ORDER BY `timestamp` DESC LIMIT ".$max;
+				else $q = "SELECT * FROM `".WPPA_PHOTOS."` ORDER BY `timestamp` DESC LIMIT ".$max;
+			}
+			else {
+				if ( $alb ) $q = "SELECT * FROM `".WPPA_PHOTOS."` WHERE ( `album` = ".$alb." ) AND ( `status` <> 'pending' ) AND ( `status` <> 'scheduled' ) ORDER BY `timestamp` DESC LIMIT " . $max;
+				else $q = "SELECT * FROM `".WPPA_PHOTOS."` WHERE `status` <> 'pending' AND `status` <> 'scheduled' ORDER BY `timestamp` DESC LIMIT ".$max;
+			}
 		}
+		// echo $q;
 		$thumbs = $wpdb->get_results( $q, ARRAY_A );
 		wppa_dbg_q( 'Q-LT' );
 	}
