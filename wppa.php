@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) die( "Can't load this file directly" );
 
 // Debugging
 if ( defined( 'WP_DEBUG' ) && WP_DEBUG && get_option( 'wppa_allow_debug', 'no' ) == 'yes' ) {
-	error_reporting( E_ALL );
+//	error_reporting( E_ALL );
 }
 	
 /* See explanation on activation hook in wppa-setup.php */
