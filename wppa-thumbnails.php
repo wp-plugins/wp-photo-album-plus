@@ -5,7 +5,7 @@
 * Various funcions to display a thumbnail image
 * Contains all possible frontend thumbnail types
 *
-* Version 5.5.3
+* Version 5.5.4.001
 *
 */
 
@@ -482,15 +482,23 @@ global $wpdb;
 	$imgattr_a 			= wppa_get_imgstyle_a( $id, $imgsrc, wppa_opt( 'thumbsize'.$alt ), 'optional', 'thumb' ); 
 	if ( wppa_opt( 'thumbtype' ) == 'masonry-v' ) { 	// Verical style
 		$imgwidth  		= wppa_opt( 'thumbsize' );
-		$imgheight 		= round( wppa_get_thumby( $id ) * $imgwidth / wppa_get_thumbx( $id ) );
-//		$imgstyle  		= 'width:'.$imgwidth.'px; margin:0; padding:'.floor( wppa_opt( 'tn_margin' ) / 2 ).'px; position:relative;'; 
+//		if ( wppa_is_video( $id ) ) {
+//			$imgheight 	= round( wppa_get_videoy( $id ) * $imgwidth / wppa_get_videox( $id ) );
+//		}
+//		else {
+		$imgheight 		= $imgwidth * wppa_get_thumbratioyx( $id ); // round( wppa_get_thumby( $id ) * $imgwidth / wppa_get_thumbx( $id ) );
+//		}
 		$imgstyle  		= 'width:100%; margin:0; position:relative; box-sizing:border-box;'; 
 		$frame_h 		= '';
 	}
 	else { 					// Hrizontal style
 		$imgheight 		= wppa_opt( 'thumbsize' );
-		$imgwidth 		= ceil( wppa_get_thumbx( $id ) * $imgheight / wppa_get_thumby( $id ) );
-//		$imgstyle  		= 'height:'.$imgheight.'px; margin:0; position:relative; box-sizing:border-box;'; 
+//		if ( wppa_is_video( $id ) ) {
+//			$imgwidth 	= round( wppa_get_videox( $id ) * $imgheight / wppa_get_videoy( $id ) );
+//		}
+//		else {
+		$imgwidth 		= $imgheight * wppa_get_thumbratioxy( $id ); // round( wppa_get_thumbx( $id ) * $imgheight / wppa_get_thumby( $id ) );
+//		}
 		$imgstyle  		= 'height:100%; margin:0; position:relative; box-sizing:border-box;'; 
 		$frame_h 		= 'height:100%; ';
 	}

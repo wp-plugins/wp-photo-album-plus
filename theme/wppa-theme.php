@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the albums/photos/slideshow in a page or post
-* Version 5.5.3
+* Version 5.5.4.001
 */
 function wppa_theme() {
 
@@ -210,7 +210,7 @@ global $wppa_show_statistics;						// Can be set to true by a custom page templa
 					if ( wppa_onpage( 'thumbs', $counter_thumbs, $relpage ) ) {
 						$row_content 	.= wppa_get_thumb_masonry( $tt['id'] );
 						$rw_count 		+= 1;
-						$row_width 		+= ( wppa_get_thumbx( $id ) ) / ( wppa_get_thumby( $id ) ) * ( $target_row_height - $correction );
+						$row_width 		+= wppa_get_thumbratioxy( $id ) * ( $target_row_height - $correction );
 						$didsome 		= true;
 					}
 					$done_count 	+= 1;

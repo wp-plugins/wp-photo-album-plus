@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * edit and delete photos
-* version 5.4.25
+* version 5.5.4.001
 *
 */
 
@@ -155,8 +155,8 @@ global $wppa;
 						 'cenlft' => __( 'center - left', 'wppa' ), 'cencen' => __( 'center - center', 'wppa' ), 'cenrht' => __( 'center - right', 'wppa' ), 
 						 'botlft' => __( 'bottom - left', 'wppa' ), 'botcen' => __( 'bottom - center', 'wppa' ), 'botrht' => __( 'bottom - right', 'wppa' ), );
 		$temp 	= wppa_get_water_file_and_pos( '0' );
-		$wmfile = $temp['select'];
-		$wmpos 	= $wms[$temp['pos']];
+		$wmfile = isset( $temp['select'] ) ? $temp['select'] : '';
+		$wmpos 	= isset( $temp['pos'] ) && isset ( $wms[$temp['pos']] ) ? $wms[$temp['pos']] : '';
 		
 		wppa_admin_page_links( $page, $pagesize, $count, $link );
 		

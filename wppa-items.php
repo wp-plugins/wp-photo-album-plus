@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains functions to retrieve album and photo items
-* Version 5.5.1.001
+* Version 5.5.4.001
 *
 */
  
@@ -469,16 +469,60 @@ function wppa_get_photo_item( $id, $item ) {
 // $id: int photo id
 // $force: bool force recalculation, both x and y
 function wppa_get_thumbx( $id, $force = false ) {
-	return wppa_get_thumbphotoxy( $id, 'thumbx', $force );
+	if ( wppa_is_video( $id ) ) {
+		$x = wppa_get_videox( $id );
+		$y = wppa_get_videoy( $id );
+		if ( $x > $y ) { 	// Landscape
+			$result = wppa_opt( 'thumbsize' );
+		}
+		else {
+			$result = wppa_opt( 'thumbsize' ) * $x / $y;
+		}
+	}
+	else {
+		$result = wppa_get_thumbphotoxy( $id, 'thumbx', $force );
+	}
+	return $result;
 }
 function wppa_get_thumby( $id, $force = false ) {
-	return wppa_get_thumbphotoxy( $id, 'thumby', $force );
+	if ( wppa_is_video( $id ) ) {
+		$x = wppa_get_videox( $id );
+		$y = wppa_get_videoy( $id );
+		if ( $x > $y ) { 	// Landscape
+			$result = wppa_opt( 'thumbsize' ) * $y / $x;
+		}
+		else {
+			$result = wppa_opt( 'thumbsize' );
+		}
+	}
+	else {
+		$result = wppa_get_thumbphotoxy( $id, 'thumby', $force );
+	}
+	return $result;
 }
 function wppa_get_photox( $id, $force = false ) {
 	return wppa_get_thumbphotoxy( $id, 'photox', $force );
 }
 function wppa_get_photoy( $id, $force = false ) {
 	return wppa_get_thumbphotoxy( $id, 'photoy', $force );
+}
+function wppa_get_thumbratioxy( $id ) {
+	if ( wppa_is_video( $id ) ) {
+		$result = wppa_get_videox( $id ) / wppa_get_videoy( $id );
+	}
+	else {
+		$result = wppa_get_thumbx( $id ) / wppa_get_thumby( $id );
+	}
+	return $result;
+}
+function wppa_get_thumbratioyx( $id ) {
+	if ( wppa_is_video( $id ) ) {
+		$result = wppa_get_videoy( $id ) / wppa_get_videox( $id );
+	}
+	else {
+		$result = wppa_get_thumby( $id ) / wppa_get_thumbx( $id );
+	}
+	return $result;
 }
 function wppa_get_thumbphotoxy( $id, $key, $force = false ) {
 

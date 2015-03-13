@@ -2,7 +2,7 @@
 //
 // conatins slideshow, theme, ajax and lightbox code
 //
-var wppaJsVersion = '5.5.2';
+var wppaJsVersion = '5.5.4.001';
 
 // Part 1: Slideshow
 //
@@ -3520,13 +3520,7 @@ wppaConsoleLog( 'wppaOvlSize' );
 function wppaOvlSize2() {
 wppaConsoleLog( 'wppaOvlSize2' );
 	
-	var cw;
-	if ( ! wppaOvlIsVideo ) {
-		cw = document.getElementById( 'wppa-overlay-img' ).clientWidth;
-	}
-	else {
-		cw = 640;
-	}
+	var cw = document.getElementById( 'wppa-overlay-img' ).clientWidth;
 	var txtwidth;
 	if ( wppaOvlRunning ) txtwidth = cw + 12;
 	else txtwidth = cw - 80;
