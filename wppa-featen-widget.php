@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the featured photos
-* Version 5.4.20
+* Version 5.5.4.003
 */
 
 if ( ! defined( 'ABSPATH' ) ) die( "Can't load this file directly" );
@@ -62,6 +62,7 @@ class FeaTenWidget extends WP_Widget {
 
 			// Make the HTML for current picture
 			$widget_content .= "\n".'<div class="wppa-widget" style="width:'.$maxw.'px; height:'.$maxh.'px; margin:4px; display:inline; text-align:center; float:left;">'; 
+			
 			if ($image) {
 				$no_album = !$album;
 				if ($no_album) $tit = __a('View the featured photos', 'wppa_theme'); else $tit = esc_attr(wppa_qtrans(stripslashes($image['description'])));
@@ -79,35 +80,18 @@ class FeaTenWidget extends WP_Widget {
 				if ($link) $title = esc_attr(stripslashes($link['title']));
 				else $title = '';
 				
-				if ($link) {
-					if ( $link['is_url'] ) {	// Is a href
-						$widget_content .= "\n\t".'<a href="'.$link['url'].'" title="'.$title.'" target="'.$link['target'].'" >';
-							$widget_content .= "\n\t\t".'<img id="i-'.$image['id'].'-'.$wppa['mocc'].'" title="'.$title.'" src="'.$imgurl.'" width="'.$width.'" height="'.$height.'" style="'.$imgstyle.' cursor:pointer;" '.$imgevents.' '.wppa_get_imgalt( $image['id'] ).' />';
-						$widget_content .= "\n\t".'</a>';
-					}
-					elseif ( $link['is_lightbox'] ) {
-						$title = wppa_get_lbtitle('thumb', $image['id']);
-						$widget_content .= "\n\t".'<a href="'.$link['url'].'" data-videohtml="'.esc_attr( wppa_get_video_body( $image['id'] ) ).'" rel="'.$wppa_opt['wppa_lightbox_name'].'[featen-'.$album.']" title="'.$title.'" target="'.$link['target'].'" >';
-							$widget_content .= "\n\t\t".'<img id="i-'.$image['id'].'-'.$wppa['mocc'].'" title="'.wppa_zoom_in( $image['id'] ).'" src="'.$imgurl.'" width="'.$width.'" height="'.$height.'" style="'.$imgstyle.$cursor.'" '.$imgevents.' '.wppa_get_imgalt( $image['id'] ).' />';
-						$widget_content .= "\n\t".'</a>';
-					}
-					else { // Is an onclick unit
-						$widget_content .= "\n\t".'<img id="i-'.$image['id'].'-'.$wppa['mocc'].'" title="'.$title.'" src="'.$imgurl.'" width="'.$width.'" height="'.$height.'" style="'.$imgstyle.' cursor:pointer;" '.$imgevents.' onclick="'.$link['url'].'" '.wppa_get_imgalt( $image['id'] ).' />';					
-					}
-				}
-				else {
-					$widget_content .= "\n\t".'<img id="i-'.$image['id'].'-'.$wppa['mocc'].'" title="'.$title.'" src="'.$imgurl.'" width="'.$width.'" height="'.$height.'" style="'.$imgstyle.'" '.$imgevents.' '.wppa_get_imgalt( $image['id'] ).' />';
-				}
-//			$widget_content .= "\n\t".'<span style="font-size:'.$wppa_opt['wppa_fontsize_widget_thumb'].'px;">'.wppa_get_rating_by_id($image['id']);
-//				if ( wppa_switch('wppa_show_rating_count') ) $widget_content .= ' ('.wppa_get_rating_count_by_id($image['id']).')';
-//			$widget_content .= '</span>'.
-				$widget_content .= "\n".'</div>';
-				
-				
+				$album = '0';
+				$display = 'thumbs';
+
+				$widget_content .= wppa_get_the_widget_thumb('featen', $image, $album, $display, $link, $title, $imgurl, $imgstyle_a, $imgevents);
+	
 			}
 			else {	// No image
 				$widget_content .= __a('Photo not found.', 'wppa_theme');
 			}
+			
+			$widget_content .= "\n".'</div>';
+			
 			$count++;
 			if ( $count == $wppa_opt['wppa_featen_count'] ) break;
 			

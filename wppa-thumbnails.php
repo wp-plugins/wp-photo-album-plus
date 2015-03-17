@@ -5,7 +5,7 @@
 * Various funcions to display a thumbnail image
 * Contains all possible frontend thumbnail types
 *
-* Version 5.5.4.001
+* Version 5.5.4.002
 *
 */
 
@@ -168,7 +168,7 @@ global $wpdb;
 		elseif ( $link['is_lightbox'] ) {	// link is lightbox
 			$title 		= wppa_get_lbtitle( 'thumb', $id );
 			// The a img
-			$result .= '<a href="'.$link['url'].'" target="'.$link['target'].'" data-videohtml="'.esc_attr( wppa_get_video_body( $id ) ).'" rel="'.wppa_opt( 'lightbox_name' ).'[occ'.wppa( 'mocc' ).']" title="'.$title.'" class="thumb-img" id="x-'.$id.'-'.wppa( 'mocc' ).'">';
+			$result .= '<a href="'.$link['url'].'" target="'.$link['target'].'" data-videohtml="'.esc_attr( wppa_get_video_body( $id ) ).'" data-videonatwidth="'.wppa_get_videox( $id ).'" data-videonatheight="'.wppa_get_videoy( $id ).'" rel="'.wppa_opt( 'lightbox_name' ).'[occ'.wppa( 'mocc' ).']" title="'.$title.'" class="thumb-img" id="x-'.$id.'-'.wppa( 'mocc' ).'">';
 			if ( $is_video ) { 
 				$result .= '<video preload="metadata" id="i-'.$id.'-'.wppa( 'mocc' ).'" '.$imgalt.' title="'.wppa_zoom_in( $id ).'" width="'.$imgwidth.'" height="'.$imgheight.'" style="'.$imgstyle.$cursor.'" '.$events.' >'.wppa_get_video_body( $id ).'</video>';
 			}
@@ -602,7 +602,7 @@ global $wpdb;
 		elseif ( $link['is_lightbox'] ) {	// link is lightbox
 			$title 		= wppa_get_lbtitle( 'thumb', $id );
 			// The a img
-			$result .= '<a href="'.$link['url'].'" target="'.$link['target'].'" data-videohtml="'.esc_attr( wppa_get_video_body( $id ) ).'" rel="'.wppa_opt( 'lightbox_name' ).'[occ'.wppa( 'mocc' ).']" title="'.$title.'" class="thumb-img" id="x-'.$id.'-'.wppa( 'mocc' ).'">';
+			$result .= '<a href="'.$link['url'].'" target="'.$link['target'].'" data-videohtml="'.esc_attr( wppa_get_video_body( $id ) ).'" data-videonatwidth="'.wppa_get_videox( $id ).'" data-videonatheight="'.wppa_get_videoy( $id ).'" rel="'.wppa_opt( 'lightbox_name' ).'[occ'.wppa( 'mocc' ).']" title="'.$title.'" class="thumb-img" id="x-'.$id.'-'.wppa( 'mocc' ).'">';
 			if ( $is_video ) { 
 				$result .= '<video preload="metadata" id="i-'.$id.'-'.wppa( 'mocc' ).'" '.$imgalt.' title="'.wppa_zoom_in( $id ).'" style="'.$imgstyle.$cursor.'" '.$events.' >'.wppa_get_video_body( $id ).'</video>';
 			}
@@ -725,7 +725,7 @@ function wppa_get_the_widget_thumb( $type, $image, $album, $display, $link, $tit
 		}
 		elseif ( $link['is_lightbox'] ) {
 			$title = wppa_get_lbtitle( 'thumb', $id );
-			$result .= "\n\t" . '<a href="' . $link['url'] . '" data-videohtml="' . esc_js( $videobody ) . '" rel="' . wppa_opt( 'lightbox_name' ) . '[' . $type . '-' . $album . '-' . wppa( 'mocc' ) . ']" title="' . $title . '" target="' . $link['target'] . '" >';
+			$result .= "\n\t" . '<a href="' . $link['url'] . '" data-videohtml="' . esc_attr( $videobody ) . '" data-videonatwidth="'.wppa_get_videox( $id ).'" data-videonatheight="'.wppa_get_videoy( $id ).'" rel="' . wppa_opt( 'lightbox_name' ) . '[' . $type . '-' . $album . '-' . wppa( 'mocc' ) . ']" title="' . $title . '" target="' . $link['target'] . '" >';
 				$result .= "\n\t\t";
 				if ( $display == 'thumbs' ) {
 					if ( $is_video ) {
@@ -871,7 +871,7 @@ global $thumb;
 			$result .= '<a '.$psourl.'>';	// $psourl contains url, target and title
 		}
 		elseif ( wppa_opt( 'film_linktype' ) == 'lightbox' && $tmp == 'film' ) {
-			$result .= '<a href="'.$furl.'" data-videohtml="'.esc_attr( wppa_get_video_body( $thumb['id'] ) ).'" rel="'.wppa_opt( 'lightbox_name' ).'[occ'.wppa( 'mocc' ).']" title="'.wppa_get_lbtitle( 'slide', $thumb['id'] ).'" >';
+			$result .= '<a href="'.$furl.'" data-videohtml="'.esc_attr( wppa_get_video_body( $thumb['id'] ) ).'" data-videonatwidth="'.wppa_get_videox( $thumb['id'] ).'" data-videonatheight="'.wppa_get_videoy( $thumb['id'] ).'" rel="'.wppa_opt( 'lightbox_name' ).'[occ'.wppa( 'mocc' ).']" title="'.wppa_get_lbtitle( 'slide', $thumb['id'] ).'" >';
 		}
 		
 			if ( $tmp == 'pre' && wppa_opt( 'film_linktype' ) == 'lightbox' ) $cursor = 'cursor:default;';

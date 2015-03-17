@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Frontend links
-* Version 5.5.4
+* Version 5.5.4.003
 *
 */
 
@@ -1163,7 +1163,8 @@ global $wpdb;
 			if ( $is_video ) {
 				$siz = array( wppa_get_videox( $id ), wppa_get_videoy( $id ) );
 				$result['url'] = wppa_get_photo_url( $id, '', $siz['0'], $siz['1'] );
-				$result['url'] = str_replace( 'xxx', $is_video['0'], $result['url'] );
+				reset( $is_video );
+				$result['url'] = str_replace( 'xxx', current( $is_video ), $result['url'] );
 			}
 			else {
 				$siz = array( wppa_get_photox( $id ), wppa_get_photoy( $id ) );
@@ -1179,7 +1180,7 @@ global $wpdb;
 			if ( $is_video ) {
 				$siz = array( wppa_get_videox( $id ), wppa_get_videoy( $id ) );
 				$result['url'] = wppa_get_photo_url( $id, '', $siz['0'], $siz['1'] );
-				$result['url'] = str_replace( 'xxx', $is_video['0'], $result['url'] );
+				//$result['url'] = str_replace( 'xxx', $is_video['0'], $result['url'] );
 			}
 			else {
 				if ( wppa_switch( 'wppa_lb_hres' ) ) {

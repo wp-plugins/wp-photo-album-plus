@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the recent commets on photos
-* Version 5.4.20
+* Version 5.5.4.003
 */
 
 if ( ! defined( 'ABSPATH' ) ) die( "Can't load this file directly" );
@@ -60,26 +60,13 @@ class wppaCommentWidget extends WP_Widget {
 				}
 				$title = esc_attr( strip_tags( trim ( $title ) ) );
 				
-				if ($link) {
-					if ( $link['is_url'] ) {	// Is a href
-						$widget_content .= "\n\t".'<a href="'.$link['url'].'" target="'.$link['target'].'" title="'.$title.'">';
-							$widget_content .= "\n\t\t".'<img id="i-'.$id.'-'.$wppa['mocc'].'-'.$comment['id'].'" title="'.$title.'" src="'.$imgurl.'" width="'.$width.'" height="'.$height.'" style="'.$imgstyle.' cursor:pointer;" '.$imgevents.' '.wppa_get_imgalt( $id ).' />';
-						$widget_content .= "\n\t".'</a>';
-					}
-					elseif ( $link['is_lightbox'] ) {
-						$title = wppa_get_lbtitle('thumb', $id);
-						$widget_content .= "\n\t".'<a href="'.$link['url'].'" data-videohtml="'.esc_attr( wppa_get_video_body( $id ) ).'" rel="'.$wppa_opt['wppa_lightbox_name'].'[comment]" title="'.$title.'">';
-							$widget_content .= "\n\t\t".'<img id="i-'.$id.'-'.$wppa['mocc'].'-'.$comment['id'].'" title="'.wppa_zoom_in( $id ).'" src="'.$imgurl.'" width="'.$width.'" height="'.$height.'" style="'.$imgstyle.$cursor.'" '.$imgevents.' '.wppa_get_imgalt( $id ).' />';
-						$widget_content .= "\n\t".'</a>';
-					}
-					else { // Is an onclick unit
-						$widget_content .= "\n\t".'<img id="i-'.$id.'-'.$wppa['mocc'].'-'.$comment['id'].'" title="'.$title.'" src="'.$imgurl.'" width="'.$width.'" height="'.$height.'" style="'.$imgstyle.' cursor:pointer;" '.$imgevents.' onclick="'.$link['url'].'" '.wppa_get_imgalt( $id ).' />';					
-					}
-				}
-				else {
-					$widget_content .= "\n\t".'<img id="i-'.$id.'-'.$wppa['mocc'].'-'.$comment['id'].'" title="'.$title.'" src="'.$imgurl.'" width="'.$width.'" height="'.$height.'" style="float:right; '.$imgstyle.'" '.$imgevents.' '.wppa_get_imgalt( $id ).' />';
-				}
+				$album = '0';
+				$display = 'thumbs';
+
+				$widget_content .= wppa_get_the_widget_thumb('comten', $image, $album, $display, $link, $title, $imgurl, $imgstyle_a, $imgevents);
+
 			}
+
 			else {
 				$widget_content .= __a('Photo not found.', 'wppa_theme');
 			}

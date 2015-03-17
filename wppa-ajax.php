@@ -375,7 +375,7 @@ global $wppa_session;
 			}
 			
 			// Get other data
-			if ( ! file_exists( wppa_get_thumb_path( $photo ) ) ) {
+			if ( ! wppa_is_video( $photo ) && ! file_exists( wppa_get_thumb_path( $photo ) ) ) {
 				echo '0||999||'.__( 'Photo has been removed.', 'wppa' );
 				exit;
 			}

@@ -264,7 +264,7 @@ global $wppa_session;
 		echo '
 <!-- start WPPA+ Footer data -->
 	<div id="wppa-overlay-bg" style="text-align:center; display:none; position:fixed; top:0; left:0; z-index:100090; width:100%; height:2048px; background-color:'.wppa_opt( 'wppa_ovl_bgcolor' ).';" onclick="wppaOvlOnclick(event)" >
-		<div id="wppa-ovl-legenda-1" onmouseover="jQuery(this).css(\'visibility\',\'visible\');" onmouseout="jQuery(this).css(\'visibility\',\'hidden\');" style="position:absolute; left:0; bottom:0; background-color:'.wppa_opt( 'wppa_ovl_theme' ).';color:'.$txtcol.'; visibility:visible;" >
+		<div id="wppa-ovl-legenda-1" onmouseover="jQuery(this).css(\'visibility\',\'visible\');" onmouseout="jQuery(this).css(\'visibility\',\'hidden\');" style="position:absolute; left:0; top:0; background-color:'.wppa_opt( 'wppa_ovl_theme' ).';color:'.$txtcol.'; visibility:visible;" >
 			Press f for fullscreen.
 		</div>
 	</div>

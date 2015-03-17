@@ -9,7 +9,6 @@ function wppa_theme() {
 
 global $wppa_version; $wppa_version = '5-5-02';		// The version number of this file
 global $wppa;
-global $wppa_opt;
 global $wppa_show_statistics;						// Can be set to true by a custom page template
 
 	$curpage = wppa_get_curpage();					// Get the page # we are on when pagination is on, or 1
@@ -33,7 +32,7 @@ global $wppa_show_statistics;						// Can be set to true by a custom page templa
 		$albums = wppa_get_albums();												// Get the albums
 		$n_album_pages = wppa_get_npages( 'albums', $albums );						// Get the number of album pages
 		
-		if ( $wppa_opt['wppa_thumbtype'] != 'none' ) {
+		if ( wppa_opt( 'thumbtype' ) != 'none' ) {
 			$thumbs = wppa_get_thumbs();											// Get the Thumbs
 		} else $thumbs = false;
 		$n_thumb_pages = wppa_get_npages( 'thumbs', $thumbs );						// Get the number of thumb pages
@@ -44,7 +43,7 @@ global $wppa_show_statistics;						// Can be set to true by a custom page templa
 		else $totpag = $n_album_pages + $n_thumb_pages;	
 
 		// Make pagelinkbar if requested on top
-		if ( $wppa_opt['wppa_pagelink_pos'] == 'top' || $wppa_opt['wppa_pagelink_pos'] == 'both' ) {
+		if ( wppa_opt( 'pagelink_pos' ) == 'top' || wppa_opt( 'pagelink_pos' ) == 'both' ) {
 			wppa_page_links( $totpag, $curpage );
 		}
 		
@@ -105,7 +104,7 @@ global $wppa_show_statistics;						// Can be set to true by a custom page templa
 				$correction = wppa_opt( 'wppa_tn_margin' ) * ( $cont_width / $count_cols ) / 100;
 				
 				// Init the table
-				$wppa['out'] .= '<table class="wppa-masonry" style="margin-top:3px;" ><tbody class="wppa-masonry"  ><tr class="wppa-masonry"  >';
+				wppa_out( '<table class="wppa-masonry" style="margin-top:3px;" ><tbody class="wppa-masonry" ><tr class="wppa-masonry" >' );
 				
 				// Init the columns
 				$col_headers 	= array();
@@ -268,7 +267,7 @@ global $wppa_show_statistics;						// Can be set to true by a custom page templa
 			
 			// Unimplemented thumbnail type
 			else {
-				$wppa['out'] .= 'Unimplemented thumbnail type';
+				wppa_out( 'Unimplemented thumbnail type' );
 			}
 		}	// If thumbs
 
@@ -292,20 +291,20 @@ global $wppa_show_statistics;						// Can be set to true by a custom page templa
 		}
 		
 		// Make pagelinkbar if requested on bottom
-		if ( $wppa_opt['wppa_pagelink_pos'] == 'bottom' || $wppa_opt['wppa_pagelink_pos'] == 'both' ) {
+		if ( wppa_opt( 'pagelink_pos' ) == 'bottom' || wppa_opt( 'pagelink_pos' ) == 'both' ) {
 			wppa_page_links( $totpag, $curpage );
 		}
 		
 		// Empty results?
 		if ( ! $didsome ) {
-			if ( $wppa['photos_only'] ) {
-				$wppa['out'] .= wppa_errorbox( __a( 'No photos found matching your search criteria.', 'wppa_theme' ) );
+			if ( wppa( 'photos_only' ) ) {
+				wppa_out( wppa_errorbox( __a( 'No photos found matching your search criteria.', 'wppa_theme' ) ) );
 			}
-			elseif ( $wppa['albums_only'] ) {
-				$wppa['out'] .= wppa_errorbox( __a( 'No albums found matching your search criteria.', 'wppa_theme' ) );
+			elseif ( wppa( 'albums_only' ) ) {
+				wppa_out( wppa_errorbox( __a( 'No albums found matching your search criteria.', 'wppa_theme' ) ) );
 			}
 			else {
-				$wppa['out'] .= wppa_errorbox( __a( 'No albums or photos found matching your search criteria.', 'wppa_theme' ) );
+				wppa_out( wppa_errorbox( __a( 'No albums or photos found matching your search criteria.', 'wppa_theme' ) ) );
 			}
 		}
 	} // wppa_page( 'albums' )
@@ -318,7 +317,7 @@ global $wppa_show_statistics;						// Can be set to true by a custom page templa
 			wppa_run_slidecontainer( 'slideshow' );									// Fill in the photo array and display it.
 		}
 		else {
-			$wppa['out'] .= wppa_errorbox( __a( 'No photos found matching your search criteria.', 'wppa_theme' ) );
+			wppa_out( wppa_errorbox( __a( 'No photos found matching your search criteria.', 'wppa_theme' ) ) );
 		}
 	} // wppa_page( 'slide' )
 	

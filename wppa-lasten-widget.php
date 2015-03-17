@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the last uploaded photos
-* Version 5.5.4
+* Version 5.5.4.003
 */
 
 class LasTenWidget extends WP_Widget {
@@ -70,7 +70,6 @@ class LasTenWidget extends WP_Widget {
 		// echo $q;
 		$thumbs = $wpdb->get_results( $q, ARRAY_A );
 		
-		global $widget_content;
 		$widget_content = "\n".'<!-- WPPA+ LasTen Widget start -->';
 		$maxw = $wppa_opt['wppa_lasten_size'];
 		$maxh = $maxw;
@@ -102,7 +101,7 @@ class LasTenWidget extends WP_Widget {
 				$imgevents 	= wppa_get_imgevents('thumb', $image['id'], true);
 				$title 		= $link ? esc_attr(stripslashes($link['title'])) : '';
 
-				wppa_do_the_widget_thumb('lasten', $image, $album, $display, $link, $title, $imgurl, $imgstyle_a, $imgevents);
+				$widget_content .= wppa_get_the_widget_thumb('lasten', $image, $album, $display, $link, $title, $imgurl, $imgstyle_a, $imgevents);
 				
 				$widget_content .= "\n\t".'<div style="font-size:'.$wppa_opt['wppa_fontsize_widget_thumb'].'px; line-height:'.$lineheight.'px;">';
 				if ( $timesince == 'yes' ) {

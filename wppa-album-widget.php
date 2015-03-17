@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display thumbnail albums
-* Version 5.4.15
+* Version 5.5.4.002
 */
 
 if ( ! defined( 'ABSPATH' ) ) die( "Can't load this file directly" );
@@ -157,7 +157,7 @@ class AlbumWidget extends WP_Widget {
 									$siz['1'] = wppa_get_photoy( $thumb['id'] );
 								}
 								$link = wppa_get_photo_url( $thumb['id'], '', $siz['0'], $siz['1'] );
-								$widget_content .= "\n\t".'<a href="'.$link.'" data-videohtml="'.esc_attr( wppa_get_video_body( $thumb['id'] ) ).'" rel="'.$wppa_opt['wppa_lightbox_name'].'[alw-'.$wppa['mocc'].'-'.$album['id'].']" title="'.$title.'" >';
+								$widget_content .= "\n\t".'<a href="'.$link.'" data-videohtml="'.esc_attr( wppa_get_video_body( $thumb['id'] ) ).'" data-videonatwidth="'.wppa_get_videox( $thumb['id'] ).'" data-videonatheight="'.wppa_get_videoy( $thumb['id'] ).'" rel="'.$wppa_opt['wppa_lightbox_name'].'[alw-'.$wppa['mocc'].'-'.$album['id'].']" title="'.$title.'" >';
 								if ( $thumb['id'] == $image['id'] ) {		// the cover image
 									if ( wppa_is_video( $image['id'] ) ) {
 										$widget_content .= wppa_get_video_html( array( 	'id' 			=> $image['id'], 

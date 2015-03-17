@@ -26,7 +26,6 @@ global $wppa_tags;
 			
 
 	// Test area
-
 	
 	// End test area
 	

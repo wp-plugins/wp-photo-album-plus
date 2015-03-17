@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Functions for album covers
-* Version 5.5.0
+* Version 5.5.4.002
 *
 */
 
@@ -677,6 +677,7 @@ global $wpdb;
 				// Open the anchor tag for lightbox
 				$wppa['out'] .= "\n\t" . 
 					'<a href="' . $link . '" data-videohtml="' . esc_attr( wppa_get_video_body( $id ) ) . 
+					' data-videonatwidth="'.wppa_get_videox( $id ).'" data-videonatheight="'.wppa_get_videoy( $id ).'" ' .
 					'" rel="' . $wppa_opt['wppa_lightbox_name'] . 
 					'[alw-' . $wppa['mocc'] . '-' . $albumid . ']" title="' . $title . '" >';
 				
@@ -806,7 +807,7 @@ global $wpdb;
 				$link = wppa_get_photo_url( $thumb['id'], '', $siz['0'], $siz['1'] );
 				$wppa['out'] .= 
 					'<a href="' . $link . '" data-videohtml="' . 
-					esc_attr( wppa_get_video_body( $thumb['id'] ) ) . '" rel="' . 
+					esc_attr( wppa_get_video_body( $thumb['id'] ) ) . '" data-videonatwidth="'.wppa_get_videox( $thumb['id'] ).'" data-videonatheight="'.wppa_get_videoy( $thumb['id'] ).'" rel="' . 
 					$wppa_opt['wppa_lightbox_name'] . '[alw-' . $wppa['mocc'] . '-' . 
 					$albumid . ']" title="' . $title . '" >';
 					

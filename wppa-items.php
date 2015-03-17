@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains functions to retrieve album and photo items
-* Version 5.5.4.001
+* Version 5.5.4.002
 *
 */
  
@@ -164,7 +164,6 @@ static $thumb_cache_2;
 
 // get the name of a full sized image
 function wppa_get_photo_name( $id, $add_owner = false, $add_medal = false, $esc_js = false, $show_name = true ) {
-global $wppa_opt;
 
 	// Init
 	$result = '';
@@ -210,7 +209,7 @@ global $wppa_opt;
 	
 	// Medal?
 	if ( $add_medal ) {
-		$color = $wppa_opt['wppa_medal_color'];
+		$color = wppa_opt( 'medal_color' );
 		$wppa_url = is_ssl() ? str_replace( 'http://', 'https://', WPPA_URL ) : WPPA_URL;	// Probably redundant... but it is not clear in to the codex if plugins_url() returns https 
 		if ( $thumb['status'] == 'gold' ) $result .= '<img src="'.$wppa_url.'/images/medal_gold_'.$color.'.png" title="'.esc_attr(__a('Gold medal')).'" alt="'.__a('Gold').'" style="border:none; margin:0; padding:0; box-shadow:none; height:32px;" />';
 		if ( $thumb['status'] == 'silver' ) $result .= '<img src="'.$wppa_url.'/images/medal_silver_'.$color.'.png" title="'.esc_attr(__a('Silver medal')).'" alt="'.__a('Silver').'" style="border:none; margin:0; padding:0; box-shadow:none; height:32px;" />';
@@ -231,8 +230,6 @@ global $wppa_opt;
 
 // get the description of an image
 function wppa_get_photo_desc( $id, $do_shortcodes = false, $do_geo = false ) {
-global $wppa;
-global $wppa_opt;
 
 	// Verify args
 	if ( ! is_numeric( $id ) || $id < '1' ) {
@@ -250,7 +247,7 @@ global $wppa_opt;
 	$desc = str_replace( array( '%%wppa%%', '[wppa', '[/wppa]' ), array( '%-wppa-%', '{wppa', '{/wppa}' ), $desc );
 
 	// Geo
-	if ( $thumb['location'] && ! $wppa['in_widget'] && strpos( $wppa_opt['wppa_custom_content'], 'w#location' ) !== false && $do_geo == 'do_geo' ) {
+	if ( $thumb['location'] && ! wppa( 'in_widget' ) && strpos( wppa_opt( 'custom_content' ), 'w#location' ) !== false && $do_geo == 'do_geo' ) {
 		wppa_do_geo( $id, $thumb['location'] );
 	}
 	
