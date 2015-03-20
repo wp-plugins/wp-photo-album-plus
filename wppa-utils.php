@@ -21,7 +21,7 @@ global $wppa_opt;
 global $blog_id;
 
 	// If a video
-	if ( wppa_is_video( $id ) ) return wppa_get_photo_url( $id, $system, $x, $y );
+//	if ( wppa_is_video( $id ) ) return wppa_get_photo_url( $id, $system, $x, $y );
 	
 	// If in the cloud...
 	if ( wppa_cdn() && ! wppa_is_video( $id ) ) {	

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Various funcions
-* Version 5.5.4.002
+* Version 5.5.5
 *
 */
 
@@ -3496,13 +3496,15 @@ global $wpdb;
 		$tags = wppa_sanitize_tags( str_replace( array( '\'', '"' ), ',', wppa_filter_iptc( wppa_filter_exif( $tags, $id ), $id ) ) );
 		if ( $tags != $oldt ) {					// Added tag(s)
 			wppa_update_photo( array( 'id' => $id, 'tags' => $tags ) );
-			if ( $newt ) {
-				wppa_clear_taglist();			// Forces recreation
-			}
 		}
 		
 		// Index
 		wppa_index_add( 'photo', $id );
+		
+		// Tags
+		if ( $tags ) {
+			wppa_clear_taglist();			// Forces recreation
+		}
 		
 		// and add watermark ( optionally ) to fullsize image only
 		wppa_add_watermark( $id );

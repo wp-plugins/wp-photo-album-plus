@@ -2,7 +2,7 @@
 //
 // conatins slideshow, theme, ajax and lightbox code
 //
-var wppaJsVersion = '5.5.4.004';
+var wppaJsVersion = '5.5.5';
 
 // Part 1: Slideshow
 //
@@ -2993,12 +2993,12 @@ function wppaOvlKeyboardHandler( e ) {
 	}
 	
 	switch ( key ) {
-		case 'x':
-		case 'o':
-		case 'c':
-		case 'q':
-			wppaOvlHide();
-			break;
+//		case 'x':
+//		case 'o':
+//		case 'c':
+//		case 'q':
+//			wppaOvlHide();
+//			break;
 		case 'p':	
 			wppaOvlShowPrev();
 			break;

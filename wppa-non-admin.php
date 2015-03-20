@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the non admin stuff
-* Version 5.5.2
+* Version 5.5.5
 *
 */
 
@@ -265,7 +265,7 @@ global $wppa_session;
 <!-- start WPPA+ Footer data -->
 	<div id="wppa-overlay-bg" style="text-align:center; display:none; position:fixed; top:0; left:0; z-index:100090; width:100%; height:2048px; background-color:'.wppa_opt( 'wppa_ovl_bgcolor' ).';" onclick="wppaOvlOnclick(event)" >
 		<div id="wppa-ovl-legenda-1" onmouseover="jQuery(this).css(\'visibility\',\'visible\');" onmouseout="jQuery(this).css(\'visibility\',\'hidden\');" style="position:absolute; left:0; top:0; background-color:'.wppa_opt( 'wppa_ovl_theme' ).';color:'.$txtcol.'; visibility:visible;" >
-			Press f for fullscreen.
+			'.__a( 'Press f for fullscreen.' ).'
 		</div>
 	</div>
 	<div id="wppa-overlay-ic" style="position:fixed; top:0; padding-top:10px; z-index:100095; opacity:1; box-shadow:none;"
@@ -289,8 +289,8 @@ global $wppa_session;
 		'.( wppa_opt( 'wppa_fontcolor_lightbox' ) ? 'wppaOvlFontColor = "'.wppa_opt( 'wppa_fontcolor_lightbox' ).'"' : '').'
 		'.( wppa_opt( 'wppa_fontweight_lightbox' ) ? 'wppaOvlFontWeight = "'.wppa_opt( 'wppa_fontweight_lightbox' ).'"' : '').'
 		'.( wppa_opt( 'wppa_fontsize_lightbox' ) ? 'wppaOvlLineHeight = "'.(wppa_opt( 'wppa_fontsize_lightbox' ) + '2').'"' : '').'
-		wppaOvlFullLegenda = "'.__a('Keys: f = next mode; esc,x,o,c,q = exit; p = previous, n = next, s = start/stop, d = dismiss this notice.').'";
-		wppaOvlFullLegendaSingle = "'.__a('Keys: f = next mode; esc,x,o,c,q = exit; d = dismiss this notice.').'";
+		wppaOvlFullLegenda = "'.__a('Keys: f = next mode; escape = exit; p = previous, n = next, s = start/stop, d = dismiss this notice.').'";
+		wppaOvlFullLegendaSingle = "'.__a('Keys: f = next mode; escape = exit; d = dismiss this notice.').'";
 	</script>
 	';
 	wp_nonce_field('wppa-check' , 'wppa-nonce', false, true);	// Nonce field for Ajax bump view counter from lightbox

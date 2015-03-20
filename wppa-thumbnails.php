@@ -146,7 +146,22 @@ global $wpdb;
 				$onclick = "wppaDoAjaxRender( ".wppa( 'mocc' ).", '".wppa_get_slideshow_url_ajax( wppa( 'start_album' ), '0' ).'&amp;wppa-photo='.$id."', '".wppa_convert_to_pretty( wppa_get_slideshow_url( wppa( 'start_album' ), '0' )."&amp;wppa-photo=".$id )."' )";
 				$result .= '<a style="position:static;" class="thumb-img" id="x-'.$id.'-'.wppa( 'mocc' ).'">';
 				if ( $is_video ) { 
-					$result .= '<video preload="metadata" onclick="'.$onclick.'" id="i-'.$id.'-'.wppa( 'mocc' ).'" '.$imgalt.' title="'.$title.'" width="'.$imgwidth.'" height="'.$imgheight.'" style="'.$imgstyle.' cursor:pointer;" '.$events.' >'.wppa_get_video_body( $id ).'</video>';
+				
+	$result .= wppa_get_video_html( array(
+					'id' 		=> $id,
+					'controls'	=> false,
+					'onclick' 	=> $onclick,
+					'tagid' 	=> 'i-'.$id.'-'.wppa( 'mocc' ),
+					'width' 	=> $imgwidth,
+					'height' 	=> $imgheight,
+					'events' 	=> $events,
+					'onclick' 	=> $onclick,
+					'style' 	=> $imgstyle,
+					'preload' 	=> 'metadata'
+					));
+				
+				
+//					$result .= '<video preload="metadata" onclick="'.$onclick.'" id="i-'.$id.'-'.wppa( 'mocc' ).'" '.$imgalt.' title="'.$title.'" width="'.$imgwidth.'" height="'.$imgheight.'" style="'.$imgstyle.' cursor:pointer;" '.$events.' >'.wppa_get_video_body( $id ).'</video>';
 				}
 				else {
 					$result .= '<img onclick="'.$onclick.'" id="i-'.$id.'-'.wppa( 'mocc' ).'" src="'.$imgurl.'" '.$imgalt.' title="'.$title.'" width="'.$imgwidth.'" height="'.$imgheight.'" style="'.$imgstyle.' cursor:pointer;" '.$events.' />';
