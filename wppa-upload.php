@@ -1800,7 +1800,7 @@ global $wppa_opt;
 				}
 				else {
 					$bret = wppa_insert_photo( $photofile, $alb, basename( $photofile ) );
-					if ( ! $bret ) return false;	// Time out
+//					if ( ! $bret ) return false;	// Time out
 					unlink( $photofile );
 					$photocount++;
 				}
