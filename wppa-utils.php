@@ -417,8 +417,8 @@ function wppa_array_sort($array, $on, $order=SORT_ASC) {
 
 function wppa_get_taglist() {
 
-	$result = WPPA_MULTISITE_GLOBAL ? get_site_option( 'wppa_taglist', 'nil' ) : get_option( 'wppa_taglist', false );
-	if ( ! $result ) {
+	$result = WPPA_MULTISITE_GLOBAL ? get_site_option( 'wppa_taglist', 'nil' ) : get_option( 'wppa_taglist', 'nil' );
+	if ( $result == 'nil' ) {
 		$result = wppa_create_taglist();
 	}
 	else {
@@ -431,8 +431,11 @@ function wppa_get_taglist() {
 
 function wppa_clear_taglist() {
 
-	$bret = WPPA_MULTISITE_GLOBAL ? delete_site_option( 'wppa_taglist' ) : delete_option( 'wppa_taglist' );
-	return $bret;
+	$result = WPPA_MULTISITE_GLOBAL ? update_site_option( 'wppa_taglist', 'nil' ) : update_option( 'wppa_taglist', 'nil' );
+	$result = WPPA_MULTISITE_GLOBAL ? get_site_option( 'wppa_taglist', 'nil' ) : get_option( 'wppa_taglist', 'nil' );
+	if ( $result != 'nil' ) {
+		wppa_log( 'Warning', 'Could not clear taglist' ) ;
+	}
 }
 
 function wppa_create_taglist() {
@@ -478,8 +481,8 @@ global $wpdb;
 
 function wppa_get_catlist() {
 
-	$result = WPPA_MULTISITE_GLOBAL ? get_site_option( 'wppa_catlist', 'nil' ) : get_option( 'wppa_catlist', false );
-	if ( ! $result ) {
+	$result = WPPA_MULTISITE_GLOBAL ? get_site_option( 'wppa_catlist', 'nil' ) : get_option( 'wppa_catlist', 'nil' );
+	if ( $result == 'nil' ) {
 		$result = wppa_create_catlist();
 	}
 	else {
@@ -492,8 +495,11 @@ function wppa_get_catlist() {
 
 function wppa_clear_catlist() {
 
-	$bret = WPPA_MULTISITE_GLOBAL ? delete_site_option( 'wppa_catlist' ) : delete_option( 'wppa_catlist' );
-	return $bret;	
+	$result = WPPA_MULTISITE_GLOBAL ? update_site_option( 'wppa_catlist', 'nil' ) : update_option( 'wppa_catlist', 'nil' );
+	$result = WPPA_MULTISITE_GLOBAL ? get_site_option( 'wppa_catlist', 'nil' ) : get_option( 'wppa_catlist', 'nil' );
+	if ( $result != 'nil' ) {
+		wppa_log( 'Warning', 'Could not clear catlist' ) ;
+	}
 }
 
 function wppa_create_catlist() {
@@ -1403,7 +1409,8 @@ function wppa_log( $type, $msg ) {
 		}
 	}
 	if ( ! $file = fopen( $filename, 'ab' ) ) return;	// Unable to open log file
-	@ fwrite( $file, $type.': on:'.wppa_local_date(get_option('date_format', "F j, Y,").' '.get_option('time_format', "g:i a"), time()).': '.$msg."\n" );
+	
+	@ fwrite( $file, $type.': on:'.wppa_local_date(get_option('date_format', "F j, Y,").' '.get_option('time_format', "g:i a"), time()).': '.wppa_get_user().' '.$msg."\n" );
 	// To prevent recursive error reporting, do not use wppa_switch!!!
 	//if ( wppa_switch( 'wppa_debug_trace_on' ) ) {
 	if ( get_option( 'wppa_debug_trace_on' ) == 'yes' ) {

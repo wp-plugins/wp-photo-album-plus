@@ -109,6 +109,7 @@ global $wppa_session;
 				$iret = $wpdb->query( $wpdb->prepare( "UPDATE `".WPPA_PHOTOS."` SET `status` = 'publish' WHERE `id` = %s", $_REQUEST['photo-id'] ) );
 				wppa_flush_upldr_cache( 'photoid', $_REQUEST['photo-id'] );
 				$alb = $wpdb->get_var( $wpdb->prepare( "SELECT `album` FROM `".WPPA_PHOTOS."` WHERE `id` = %s", $_REQUEST['photo-id'] ) );
+				wppa_clear_taglist();
 				wppa_flush_treecounts( $alb );
 			}
 			if ( isset( $_REQUEST['comment-id'] ) ) {
@@ -1077,6 +1078,7 @@ global $wppa_session;
 							$itemname = __( 'Photo Tags', 'wppa' );
 							break;
 						case 'status':
+							wppa_clear_taglist();
 							wppa_flush_upldr_cache( 'photoid', $photo );
 							$itemname = __( 'Status', 'wppa' );
 							break;
