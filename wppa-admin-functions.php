@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * gp admin functions
-* version 5.5.0
+* version 5.5.6
 *
 */
 
@@ -699,7 +699,7 @@ global $allphotos;
 			
 			// Update filename ( for backward compat )
 			$wpdb->query( $wpdb->prepare( "UPDATE `".WPPA_PHOTOS."` SET `filename` = %s WHERE `id` = %s", wppa_sanitize_file_name( basename( $file ) ), $photo['id'] ) );
-			wppa_dbg_msg( 'Update photo: '.$name.' in album '.$album, 'green' );
+			wppa_dbg_msg( 'Update photo: '.$name, 'green' );
 		}
 		return count( $photos );
 	}
