@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all video routines
-* Version 5.4.12
+* Version 5.5.6
 *
 */
  
@@ -45,4 +45,8 @@ function wppa_get_videox( $id ) {
 
 function wppa_get_videoy( $id ) {
 	return '0';
+}
+
+function wppa_fix_poster_ext( $file ) {
+	return $file;
 }
