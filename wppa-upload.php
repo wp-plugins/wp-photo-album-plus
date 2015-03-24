@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the upload/import pages and functions
-* Version 5.4.18
+* Version 5.5.6
 *
 */
 
@@ -1118,7 +1118,7 @@ function wppa_get_import_files() {
 	}
 	
 	// Remove non originals
-	foreach ( array_keys( $files ) as $key ) {
+	if ( is_array( $files ) ) foreach ( array_keys( $files ) as $key ) {
 		if ( ! wppa_is_orig( $files[$key] ) ) {
 			unset ( $files[$key] );
 		}
@@ -1438,8 +1438,28 @@ global $wppa_supported_video_extensions;
 					$linktitle = '';
 				}
 				
+				// If there is a video with the same name, this is the poster.
+				$is_poster = wppa_file_is_in_album( wppa_strip_ext( basename( $file ) ) . '.xxx', $alb );
+				if ( $is_poster ) {
+					$bret = wppa_make_the_photo_files( $file, $is_poster, strtolower( wppa_get_ext( basename( $file ) ) ) );
+					if ( $bret ) { 	// Success
+						if ( $wppa['ajax'] ) $wppa['ajax_import_files_done'] = true;
+						wppa_save_source( $file, wppa_strip_ext( basename( $file ) ) . '.jpg', $alb );
+						$pcount++;
+						$totpcount += $bret;
+						if ( $delp ) {
+							unlink( $file );
+						}
+					}
+					else { 			// Failed
+						if ( ! $wppa['ajax'] ) {
+							wppa_error_message('Failed to add poster for video '.$is_poster);
+						}
+					}
+				}
+				
 				// Update the photo ?
-				if ( isset( $_POST['wppa-update'] ) ) { 
+				elseif ( isset( $_POST['wppa-update'] ) || $is_poster ) { 
 					$iret = wppa_update_photo_files( $unsanitized_path_name, $name );
 					if ( $iret ) {
 						if ( $wppa['ajax'] ) $wppa['ajax_import_files_done'] = true;
@@ -1456,7 +1476,7 @@ global $wppa_supported_video_extensions;
 					if ( is_numeric( $alb ) && $alb != '0' ) {
 						$id = basename( $file );
 						if ( wppa_switch( 'wppa_void_dups' ) && wppa_file_is_in_album( $id, $alb ) ) {
-							wppa_error_message( sprintf( __( 'Photo %s already exists in album %s.', 'wppa' ), $id, $alb ) );
+							wppa_error_message( sprintf( __( 'Photo %s already exists in album %s. (1)', 'wppa' ), $id, $alb ) );
 							$wppa['ajax_import_files_error'] = __( 'Duplicate', 'wppa' );
 						}
 						else {
@@ -1517,6 +1537,7 @@ global $wppa_supported_video_extensions;
 		if ( $iret == false ) break;	// Time out
 	}	
 	
+	// Now the video files
 	$videocount = '0';
 	$alb = isset( $_POST['wppa-video-album'] ) ? $_POST['wppa-video-album'] : '0';
 	if ( $wppa['ajax'] && ! $alb ) {
@@ -1529,12 +1550,40 @@ global $wppa_supported_video_extensions;
 			$ext = strtolower( substr( strrchr( $file, "." ), 1 ) );
 			if ( in_array( $ext, $wppa_supported_video_extensions ) ) {
 				if ( is_numeric( $alb ) && $alb != '0' ) {
+				
+					// Do we have this filename with ext xxx in this album?
 					$filename = wppa_strip_ext( basename( $file ) ).'.xxx';
 					$id = wppa_file_is_in_album( $filename, $alb );
-					if ( ! $id ) {	// Add new entry
+					
+					// Or maybe the poster is already there
+					if ( ! $id ) {
+						$id = wppa_file_is_in_album( str_replace( 'xxx', 'jpg', $filename ), $alb );
+					}
+					if ( ! $id ) {
+						$id = wppa_file_is_in_album( str_replace( 'xxx', 'JPG', $filename ), $alb );
+					}
+					
+					// This filename already exists: is the poster. Make sure all the extensions are lowercase and fix the filename in the photo info
+					if ( $id ) {
+						$fname = wppa_get_photo_item( $id, 'filename' );
+						$fname = wppa_strip_ext( $fname ) . '.xxx';
+						
+						// Fix filename and ext in photo info
+						wppa_update_photo( array( 'id' => $id, 'filename' => $fname, 'ext' => 'xxx' ) );
+						
+						// Fix source file if required
+						$source_path = wppa_strip_ext( wppa_get_source_album_dir( $alb ).'/'.$fname );
+						if ( is_file( $source_path . '.JPG' ) ) {
+							rename( $source_path . '.JPG', $source_path . '.jpg' );
+						}
+					}
+					
+					// Add new entry
+					if ( ! $id ) {	
 						$id = wppa_create_photo_entry( array( 'album' => $alb, 'filename' => $filename, 'ext' => 'xxx', 'name' => wppa_strip_ext( $filename ) ) );
 						wppa_flush_treecounts( $alb );
-					}					
+					}
+					
 					// Add video filetype
 					$newpath = wppa_strip_ext( wppa_get_photo_path( $id ) ).'.'.$ext;
 					copy( $file, $newpath );
@@ -1542,6 +1591,11 @@ global $wppa_supported_video_extensions;
 					if ( $wppa['ajax'] ) {
 						$wppa['ajax_import_files_done'] = true;
 					}
+					
+					// Make sure ext is set to xxx after adding video to an existing poster
+					wppa_update_photo( array( 'id' => $id, 'ext' => 'xxx' ) );
+					
+					// Book keeping
 					$videocount++;
 				}
 				else {
@@ -1795,7 +1849,7 @@ global $wppa_opt;
 		if ( $photofiles ) foreach ( $photofiles as $photofile ) {
 			if ( ! is_dir( $photofile ) ) {
 				if ( wppa_albumphoto_exists( $alb, basename( $photofile ) ) ) {
-					wppa_error_message( 'Photo '.basename( $photofile ).' already exists in album '.$alb.'. Removed.' );
+					wppa_error_message( 'Photo '.basename( $photofile ).' already exists in album '.$alb.'. Removed. (2)' );
 					unlink( $photofile );
 				}
 				else {

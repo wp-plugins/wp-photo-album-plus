@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * edit and delete photos
-* version 5.5.4.001
+* version 5.5.6
 *
 */
 
@@ -210,8 +210,9 @@ global $wppa;
 											<?php echo wppa_get_video_html( array( 	'id' 		=> $photo['id'],
 																					'width' 	=> '160', 
 																					'height' 	=> '160' * wppa_get_videoy( $photo['id'] ) / wppa_get_videox( $photo['id'] ),
-																					'controls' 	=> false )
-																			 ) ?>
+																					'controls' 	=> false,
+																					'use_thumb' => true
+																				) ) ?>
 										</a><?php 
 									}
 									else { ?>
@@ -477,15 +478,29 @@ global $wppa;
 											foreach ( $is_video as $fmt ) {
 												echo '<tr><td>'.$fmt.'</td><td>'.__( 'Filesize:', 'wppa' ).'</td><td>'.wppa_get_filesize( str_replace( 'xxx', $fmt, wppa_get_photo_path( $photo['id'] ) ) ).'</td></tr>';
 											}
+							/*				
+											if ( file_exists( str_replace( 'xxx', 'jpg', wppa_get_photo_path( $photo['id'] ) ) ) ) {
+												echo '<tr><td>'.__('Poster available', 'wppa').'</td><td></td><td></td></tr>';
+											}
+											else {
+												echo '<tr><td>'.__('Poster NOT available', 'wppa').'</td><td></td><td></td></tr>';
+											}
+											if ( file_exists( str_replace( 'xxx', 'jpg', wppa_get_thumb_path( $photo['id'] ) ) ) ) {
+												echo '<tr><td>'.__('Thumbnail available', 'wppa').'</td><td></td><td></td></tr>';
+											}
+											else {
+												echo '<tr><td>'.__('Thumbnail NOT available', 'wppa').'</td><td></td><td></td></tr>';
+											}
+							*/
 									?>
 									</table>
 								</td>
 							</tr>
-							<?php } else { ?>
+							<?php }  { ?>
 							<!-- Filesizes -->
 							<tr>
 								<th>
-									<label><?php _e( 'Photo sizes:', 'wppa') ?></label>
+									<label><?php $is_video ? _e( 'Poster sizes:', 'wppa') : _e( 'Photo sizes:', 'wppa') ?></label>
 								</th>
 								<td>
 									<table class="wppa-subtable" >
@@ -494,9 +509,9 @@ global $wppa;
 												<?php _e( 'Source file:', 'wppa' ) ?>
 											</td>
 												<?php $sp = wppa_get_source_path( $photo['id'] );
-													if ( is_file( $sp ) ) {
-														$ima 	= getimagesize( $sp );
-												?>
+										if ( is_file( $sp ) ) {
+											$ima 	= getimagesize( $sp ); ?>
+											
 											<td>
 												<?php echo $ima['0'].' x '.$ima['1'].' px.' ?>
 											</td>
@@ -506,7 +521,8 @@ global $wppa;
 											<td>
 												<a style="cursor:pointer; font-weight:bold;" title="<?php _e( 'Remake display file and thumbnail file', 'wppa' ) ?>" onclick="wppaAjaxUpdatePhoto( <?php echo $photo['id'] ?>, 'remake', this )"><?php _e( 'Remake files', 'wppa' ) ?></a>
 											</td>
-												<?php } else { ?>
+								<?php 	} 
+										else { ?>
 											<td>
 												<span style="color:orange;"><?php _e('Unavailable', 'wppa') ?></span>
 											</td>
@@ -514,13 +530,13 @@ global $wppa;
 											</td>
 											<td>
 											</td>
-												<?php } ?>
+								<?php 	} ?>
 										</tr>
 										<tr>
 											<td>
 												<?php _e( 'Display file:', 'wppa') ?>
 											</td>
-												<?php $dp = wppa_get_photo_path( $photo['id'] );
+												<?php $dp = str_replace( '.xxx', '.jpg', wppa_get_photo_path( $photo['id'] ) );
 													if ( is_file( $dp ) ) {
 												?>
 											<td>
@@ -545,7 +561,7 @@ global $wppa;
 											<td>
 												<?php _e( 'Thumbnail file:', 'wppa') ?>
 											</td>
-												<?php $tp = wppa_get_thumb_path( $photo['id'] );
+												<?php $tp = str_replace( '.xxx', '.jpg', wppa_get_thumb_path( $photo['id'] ) );
 													if ( is_file( $tp ) ) {
 												?>
 											<td>
@@ -721,7 +737,8 @@ global $wppa;
 							</tr>
 					
 							<!-- Watermark -->
-							<?php if ( ! $is_video ) { ?>
+							<?php 
+							if ( ! $is_video || is_file( wppa_fix_poster_ext( wppa_get_photo_path( $photo['id'] ) ) ) ) { ?>
 								<tr style="vertical-align:middle;" >
 									<th  >
 										<label><?php _e( 'Watermark:', 'wppa' ) ?></label>
@@ -1089,6 +1106,7 @@ function wppa_album_photos_bulk( $album ) {
 					</thead>
 					<tbody>
 						<?php foreach ( $photos as $photo ) { ?>
+						<?php $id = $photo['id']; ?>
 						<tr id="photoitem-<?php echo $photo['id'] ?>" >
 							<td>
 								<input type="hidden" id="photo-nonce-<?php echo $photo['id'] ?>" value="<?php echo wp_create_nonce( 'wppa_nonce_'.$photo['id'] );  ?>" />
@@ -1099,9 +1117,30 @@ function wppa_album_photos_bulk( $album ) {
 							<?php if ( wppa_is_video( $photo['id'] ) ) { ?>
 								<a href="<?php echo str_replace( 'xxx', 'mp4', wppa_get_photo_url( $photo['id'] ) ) ?>" target="_blank" title="Click to see fullsize" >
 									<?php // Animating size changes of a video tag is not a good idea. It will rapidly screw up browser cache and cpu ?>
-									<video preload="metadata" style="height:60px;" onmouseover="jQuery( this ).css( 'height', '160' )" onmouseout="jQuery( this ).css( 'height', '60' )" >
-										<?php echo wppa_get_video_body( $photo['id'] ) ?>
-									</video>
+									<?php echo wppa_get_video_html( array(
+													'id'			=> $id,
+												//	'width'			=> $imgwidth,
+													'height' 		=> '60',
+													'controls' 		=> false,
+												//	'margin_top' 	=> '0',
+												//	'margin_bottom' => '0',
+													'tagid' 		=> 'pa-id-'.$id,
+												//	'cursor' 		=> 'cursor:pointer;',
+													'events' 		=> ' onmouseover="jQuery( this ).css( \'height\', \'160\' )" onmouseout="jQuery( this ).css( \'height\', \'60\' )"',
+												//	'title' 		=> $title,
+													'preload' 		=> 'metadata',
+												//	'onclick' 		=> $onclick,
+												//	'lb' 			=> false,
+												//	'class' 		=> '',
+												//	'style' 		=> $imgstyle,
+													'use_thumb' 	=> true
+													));
+									
+									
+									?>
+					<!--				<video preload="metadata" style="height:60px;" onmouseover="jQuery( this ).css( 'height', '160' )" onmouseout="jQuery( this ).css( 'height', '60' )" >
+										<?php // echo wppa_get_video_body( $photo['id'] ) ?>
+									</video>	-->
 								</a>
 							<?php }
 							else { ?>
@@ -1316,7 +1355,7 @@ global $wppa_opt;
 							$imgs['0'] = wppa_get_thumbx( $photo['id'] );
 							$imgs['1'] = wppa_get_thumby( $photo['id'] );
 						}
-						if ( ! $imgs['0'] ) {	// missing thuimbnail, prevent dividion by zero
+						if ( ! $imgs['0'] ) {	// missing thuimbnail, prevent division by zero
 							$imgs['0'] = 200;
 							$imgs['1'] = 150;
 						}
@@ -1331,9 +1370,31 @@ global $wppa_opt;
 					?>
 					<div id="photoitem-<?php echo $photo['id'] ?>" class="ui-state-default wppa-<?php echo $photo['status'] ?>" style="background-image:none; text-align:center; cursor:move;" >
 					<?php if ( wppa_is_video( $photo['id'] ) ) { ?>
-						<video preload="metadata" class="wppa-bulk-thumb" style="max-width:<?php echo $mw ?>px; max-height:<?php echo $mh ?>px; margin-top: <?php echo $mt ?>px;" >
-						<?php echo wppa_get_video_body( $photo['id'] ) ?>
+					<?php $id = $photo['id'] ?>
+					<?php $imgstyle = 'max-width:'.$mw.'px; max-height:'.$mh.'px; margin-top:'.$mt.'px;' ?>
+					<?php echo wppa_get_video_html( array(
+													'id'			=> $id,
+												//	'width'			=> $imgwidth,
+												//	'height' 		=> '60',
+													'controls' 		=> false,
+												//	'margin_top' 	=> '0',
+												//	'margin_bottom' => '0',
+													'tagid' 		=> 'pa-id-'.$id,
+												//	'cursor' 		=> 'cursor:pointer;',
+												//	'events' 		=> ' onmouseover="jQuery( this ).css( \'height\', \'160\' )" onmouseout="jQuery( this ).css( \'height\', \'60\' )"',
+												//	'title' 		=> $title,
+													'preload' 		=> 'metadata',
+												//	'onclick' 		=> $onclick,
+												//	'lb' 			=> false,
+													'class' 		=> 'wppa-bulk-thumb',
+													'style' 		=> $imgstyle,
+													'use_thumb' 	=> true
+													));
+						?>
+	<!--					<video preload="metadata" class="wppa-bulk-thumb" style="max-width:<?php echo $mw ?>px; max-height:<?php echo $mh ?>px; margin-top: <?php echo $mt ?>px;" >
+						 // echo //wppa_get_video_body( $photo['id'] ) ?>
 						</video>
+	-->
 					<?php }
 					else { ?>
 						<img class="wppa-bulk-thumb" src="<?php echo wppa_get_thumb_url( $photo['id'] ) ?>" style="max-width:<?php echo $mw ?>px; max-height:<?php echo $mh ?>px; margin-top: <?php echo $mt ?>px;" />

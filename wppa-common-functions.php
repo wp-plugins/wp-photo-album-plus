@@ -2,7 +2,7 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 5.5.2
+* version 5.5.6
 *
 */
 
@@ -743,6 +743,9 @@ global $thumb;
 	
 		// Find output path photo file
 		$newimage = wppa_get_photo_path( $id );
+		if ( $ext ) {
+			$newimage = wppa_strip_ext( $newimage ) . '.' . strtolower( $ext );
+		}
 		
 		// If Resize on upload is checked
 		if ( wppa_switch( 'wppa_resize_on_upload' ) ) {
@@ -954,13 +957,15 @@ function wppa_create_thumbnail( $id ) {
 global $wppa_opt;
 	
 	// Find file to make thumbnail from
-	if ( ! wppa_switch( 'wppa_watermark_thumbs' ) && is_file( wppa_get_source_path( $id ) ) ) {
-		$file = wppa_get_source_path( $id );	// Use sourcefile
+	$source_path = wppa_fix_poster_ext( wppa_get_source_path( $id ) );
+
+	if ( ! wppa_switch( 'wppa_watermark_thumbs' ) && is_file( $source_path ) ) {
+		$file = $source_path;										// Use sourcefile
 	}
 	else {
-		$file = wppa_get_photo_path( $id );		// Use photofile
+		$file = wppa_fix_poster_ext( wppa_get_photo_path( $id ) );	// Use photofile
 	}
-	
+
 	// Max side
 	$max_side = wppa_get_minisize();
 	
@@ -974,6 +979,9 @@ global $wppa_opt;
 	
 	// Get output path
 	$thumbpath = wppa_get_thumb_path( $id );
+	if ( wppa_get_ext( $thumbpath ) == 'xxx' ) { // Video poster
+		$thumbpath = wppa_strip_ext( $thumbpath ) . '.jpg';
+	}
 	
 	// Source size
 	$src_size_w = $img_attr[0];

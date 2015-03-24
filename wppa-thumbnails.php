@@ -5,7 +5,7 @@
 * Various funcions to display a thumbnail image
 * Contains all possible frontend thumbnail types
 *
-* Version 5.5.4.002
+* Version 5.5.6
 *
 */
 
@@ -146,22 +146,23 @@ global $wpdb;
 				$onclick = "wppaDoAjaxRender( ".wppa( 'mocc' ).", '".wppa_get_slideshow_url_ajax( wppa( 'start_album' ), '0' ).'&amp;wppa-photo='.$id."', '".wppa_convert_to_pretty( wppa_get_slideshow_url( wppa( 'start_album' ), '0' )."&amp;wppa-photo=".$id )."' )";
 				$result .= '<a style="position:static;" class="thumb-img" id="x-'.$id.'-'.wppa( 'mocc' ).'">';
 				if ( $is_video ) { 
-				
-	$result .= wppa_get_video_html( array(
-					'id' 		=> $id,
-					'controls'	=> false,
-					'onclick' 	=> $onclick,
-					'tagid' 	=> 'i-'.$id.'-'.wppa( 'mocc' ),
-					'width' 	=> $imgwidth,
-					'height' 	=> $imgheight,
-					'events' 	=> $events,
-					'onclick' 	=> $onclick,
-					'style' 	=> $imgstyle,
-					'preload' 	=> 'metadata'
-					));
-				
-				
-//					$result .= '<video preload="metadata" onclick="'.$onclick.'" id="i-'.$id.'-'.wppa( 'mocc' ).'" '.$imgalt.' title="'.$title.'" width="'.$imgwidth.'" height="'.$imgheight.'" style="'.$imgstyle.' cursor:pointer;" '.$events.' >'.wppa_get_video_body( $id ).'</video>';
+					$result .= wppa_get_video_html( array(
+							'id'			=> $id,
+							'width'			=> $imgwidth,
+							'height' 		=> $imgheight,
+							'controls' 		=> false,
+							'margin_top' 	=> '0',
+							'margin_bottom' => '0',
+							'tagid' 		=> 'i-'.$id.'-'.wppa( 'mocc' ),
+							'cursor' 		=> 'cursor:pointer;',
+							'events' 		=> $events,
+							'title' 		=> $title,
+							'preload' 		=> 'metadata',
+							'onclick' 		=> $onclick,
+							'lb' 			=> false,
+							'class' 		=> '',
+							'style' 		=> $imgstyle
+							));		
 				}
 				else {
 					$result .= '<img onclick="'.$onclick.'" id="i-'.$id.'-'.wppa( 'mocc' ).'" src="'.$imgurl.'" '.$imgalt.' title="'.$title.'" width="'.$imgwidth.'" height="'.$imgheight.'" style="'.$imgstyle.' cursor:pointer;" '.$events.' />';
@@ -172,7 +173,23 @@ global $wpdb;
 				// The a img non ajax
 				$result .= '<a style="position:static;" href="'.$link['url'].'" target="'.$link['target'].'" class="thumb-img" id="x-'.$id.'-'.wppa( 'mocc' ).'">';
 				if ( $is_video ) { 
-					$result .= '<video preload="metadata" id="i-'.$id.'-'.wppa( 'mocc' ).'" '.$imgalt.' title="'.$title.'" width="'.$imgwidth.'" height="'.$imgheight.'" style="'.$imgstyle.' cursor:pointer;" '.$events.' >'.wppa_get_video_body( $id ).'</video>';
+					$result .= wppa_get_video_html( array(
+							'id'			=> $id,
+							'width'			=> $imgwidth,
+							'height' 		=> $imgheight,
+							'controls' 		=> false,
+							'margin_top' 	=> '0',
+							'margin_bottom' => '0',
+							'tagid' 		=> 'i-'.$id.'-'.wppa( 'mocc' ),
+							'cursor' 		=> 'cursor:pointer;',
+							'events' 		=> $events,
+							'title' 		=> $title,
+							'preload' 		=> 'metadata',
+							'onclick' 		=> '',
+							'lb' 			=> false,
+							'class' 		=> '',
+							'style' 		=> $imgstyle
+							));
 				}
 				else {
 					$result .= '<img id="i-'.$id.'-'.wppa( 'mocc' ).'" src="'.$imgurl.'" '.$imgalt.' title="'.$title.'" width="'.$imgwidth.'" height="'.$imgheight.'" style="'.$imgstyle.' cursor:pointer;" '.$events.' />';
@@ -185,7 +202,23 @@ global $wpdb;
 			// The a img
 			$result .= '<a href="'.$link['url'].'" target="'.$link['target'].'" data-videohtml="'.esc_attr( wppa_get_video_body( $id ) ).'" data-videonatwidth="'.wppa_get_videox( $id ).'" data-videonatheight="'.wppa_get_videoy( $id ).'" rel="'.wppa_opt( 'lightbox_name' ).'[occ'.wppa( 'mocc' ).']" title="'.$title.'" class="thumb-img" id="x-'.$id.'-'.wppa( 'mocc' ).'">';
 			if ( $is_video ) { 
-				$result .= '<video preload="metadata" id="i-'.$id.'-'.wppa( 'mocc' ).'" '.$imgalt.' title="'.wppa_zoom_in( $id ).'" width="'.$imgwidth.'" height="'.$imgheight.'" style="'.$imgstyle.$cursor.'" '.$events.' >'.wppa_get_video_body( $id ).'</video>';
+				$result .= wppa_get_video_html( array(
+						'id'			=> $id,
+						'width'			=> $imgwidth,
+						'height' 		=> $imgheight,
+						'controls' 		=> false,
+						'margin_top' 	=> '0',
+						'margin_bottom' => '0',
+						'tagid' 		=> 'i-'.$id.'-'.wppa( 'mocc' ),
+						'cursor' 		=> $cursor,
+						'events' 		=> $events,
+						'title' 		=> wppa_zoom_in( $id ),
+						'preload' 		=> 'metadata',
+						'onclick' 		=> '',
+						'lb' 			=> false,
+						'class' 		=> '',
+						'style' 		=> $imgstyle
+						));
 			}
 			else {
 				$result .= '<img id="i-'.$id.'-'.wppa( 'mocc' ).'" src="'.$imgurl.'" '.$imgalt.' title="'.wppa_zoom_in( $id ).'" width="'.$imgwidth.'" height="'.$imgheight.'" style="'.$imgstyle.$cursor.'" '.$events.' />';
@@ -196,7 +229,24 @@ global $wpdb;
 			// The div img
 			$result .= '<div onclick="'.$link['url'].'" class="thumb-img" id="x-'.$id.'-'.wppa( 'mocc' ).'">';
 			if ( $is_video ) { 
-				$result .= '<video preload="metadata" id="i-'.$id.'-'.wppa( 'mocc' ).'" '.$imgalt.' title="'.$title.'" width="'.$imgwidth.'" height="'.$imgheight.'" style="'.$imgstyle.' cursor:pointer;" '.$events.' >'.wppa_get_video_body( $id ).'</video>';
+//				$result .= '<video preload="metadata" id="i-'.$id.'-'.wppa( 'mocc' ).'" '.$imgalt.' title="'.$title.'" width="'.$imgwidth.'" height="'.$imgheight.'" style="'.$imgstyle.' cursor:pointer;" '.$events.' >'.wppa_get_video_body( $id ).'</video>';
+				$result .= wppa_get_video_html( array(
+						'id'			=> $id,
+						'width'			=> $imgwidth,
+						'height' 		=> $imgheight,
+						'controls' 		=> false,
+						'margin_top' 	=> '0',
+						'margin_bottom' => '0',
+						'tagid' 		=> 'i-'.$id.'-'.wppa( 'mocc' ),
+						'cursor' 		=> 'cursor:pointer;',
+						'events' 		=> $events,
+						'title' 		=> $title,
+						'preload' 		=> 'metadata',
+						'onclick' 		=> '',
+						'lb' 			=> false,
+						'class' 		=> '',
+						'style' 		=> $imgstyle
+						));
 			}
 			else {
 				$result .= wppa_nltab().'<img id="i-'.$id.'-'.wppa( 'mocc' ).'" src="'.$imgurl.'" '.$imgalt.' title="'.$title.'" width="'.$imgwidth.'" height="'.$imgheight.'" style="'.$imgstyle.' cursor:pointer;" '.$events.' />';
@@ -213,7 +263,24 @@ global $wpdb;
 		if ( wppa_switch( 'use_thumb_popup' ) ) {
 			$result .= '<div id="x-'.$id.'-'.wppa( 'mocc' ).'">';
 				if ( $is_video ) { 
-					$result .= '<video preload="metadata" '.$imgalt.' title="'.$title.'" width="'.$imgwidth.'" height="'.$imgheight.'" style="'.$imgstyle.'" '.$events.' >'.wppa_get_video_body( $id ).'</video>';
+//					$result .= '<video preload="metadata" '.$imgalt.' title="'.$title.'" width="'.$imgwidth.'" height="'.$imgheight.'" style="'.$imgstyle.'" '.$events.' >'.wppa_get_video_body( $id ).'</video>';
+					$result .= wppa_get_video_html( array(
+							'id'			=> $id,
+							'width'			=> $imgwidth,
+							'height' 		=> $imgheight,
+							'controls' 		=> false,
+							'margin_top' 	=> '0',
+							'margin_bottom' => '0',
+							'tagid' 		=> 'i-'.$id.'-'.wppa( 'mocc' ),
+							'cursor' 		=> '',
+							'events' 		=> $events,
+							'title' 		=> $title,
+							'preload' 		=> 'metadata',
+							'onclick' 		=> '',
+							'lb' 			=> false,
+							'class' 		=> '',
+							'style' 		=> $imgstyle
+							));
 				}
 				else {
 					$result .= '<img src="'.$imgurl.'" '.$imgalt.' title="'.$title.'" width="'.$imgwidth.'" height="'.$imgheight.'" style="'.$imgstyle.'" '.$events.' />';
@@ -222,7 +289,24 @@ global $wpdb;
 		}
 		else {
 			if ( $is_video ) {
-				$result .= '<video preload="metadata" '.$imgalt.' title="'.$title.'" width="'.$imgwidth.'" height="'.$imgheight.'" style="'.$imgstyle.'" '.$events.' >'.wppa_get_video_body( $id ).'</video>';
+//				$result .= '<video preload="metadata" '.$imgalt.' title="'.$title.'" width="'.$imgwidth.'" height="'.$imgheight.'" style="'.$imgstyle.'" '.$events.' >'.wppa_get_video_body( $id ).'</video>';
+				$result .= wppa_get_video_html( array(
+						'id'			=> $id,
+						'width'			=> $imgwidth,
+						'height' 		=> $imgheight,
+						'controls' 		=> false,
+						'margin_top' 	=> '0',
+						'margin_bottom' => '0',
+						'tagid' 		=> 'i-'.$id.'-'.wppa( 'mocc' ),
+						'cursor' 		=> '',
+						'events' 		=> $events,
+						'title' 		=> $title,
+						'preload' 		=> 'metadata',
+						'onclick' 		=> '',
+						'lb' 			=> false,
+						'class' 		=> '',
+						'style' 		=> $imgstyle
+						));
 			}
 			else {
 				$result .= '<img src="'.$imgurl.'" '.$imgalt.' title="'.$title.'" width="'.$imgwidth.'" height="'.$imgheight.'" style="'.$imgstyle.'" '.$events.' />';
@@ -595,7 +679,25 @@ global $wpdb;
 				$onclick = "wppaDoAjaxRender( ".wppa( 'mocc' ).", '".wppa_get_slideshow_url_ajax( wppa( 'start_album' ), '0' ).'&amp;wppa-photo='.$id."', '".wppa_convert_to_pretty( wppa_get_slideshow_url( wppa( 'start_album' ), '0' )."&amp;wppa-photo=".$id )."' )";
 				$result .= '<a style="position:static;" class="thumb-img" id="x-'.$id.'-'.wppa( 'mocc' ).'">';
 				if ( $is_video ) { 
-					$result .= '<video preload="metadata" onclick="'.$onclick.'" id="i-'.$id.'-'.wppa( 'mocc' ).'" '.$imgalt.' title="'.$title.'" style="'.$imgstyle.' cursor:pointer;" '.$events.' >'.wppa_get_video_body( $id ).'</video>';
+//					$result .= '<video preload="metadata" onclick="'.$onclick.'" id="i-'.$id.'-'.wppa( 'mocc' ).'" '.$imgalt.' title="'.$title.'" style="'.$imgstyle.' cursor:pointer;" '.$events.' >'.wppa_get_video_body( $id ).'</video>';
+					$result .= wppa_get_video_html( array(
+							'id'			=> $id,
+					//		'width'			=> $imgwidth,
+					//		'height' 		=> $imgheight,
+							'controls' 		=> false,
+							'margin_top' 	=> '0',
+							'margin_bottom' => '0',
+							'tagid' 		=> 'i-'.$id.'-'.wppa( 'mocc' ),
+							'cursor' 		=> 'cursor:pointer;',
+							'events' 		=> $events,
+							'title' 		=> $title,
+							'preload' 		=> 'metadata',
+							'onclick' 		=> $onclick,
+							'lb' 			=> false,
+							'class' 		=> '',
+							'style' 		=> $imgstyle,
+							'use_thumb' 	=> true
+							));
 				}
 				else {
 					$result .= '<img  onclick="'.$onclick.'" id="i-'.$id.'-'.wppa( 'mocc' ).'" src="'.$imgurl.'" '.$imgalt.' title="'.$title.'" style="'.$imgstyle.' cursor:pointer;" '.$events.' />';
@@ -606,7 +708,25 @@ global $wpdb;
 				// The a img non ajax
 				$result .= '<a style="position:static;" href="'.$link['url'].'" target="'.$link['target'].'" class="thumb-img" id="x-'.$id.'-'.wppa( 'mocc' ).'">';
 				if ( $is_video ) { 
-					$result .= '<video preload="metadata" id="i-'.$id.'-'.wppa( 'mocc' ).'" '.$imgalt.' title="'.$title.'" width="'.$imgwidth.'" height="'.$imgheight.'" style="'.$imgstyle.' cursor:pointer;" '.$events.' >'.wppa_get_video_body( $id ).'</video>';
+//					$result .= '<video preload="metadata" id="i-'.$id.'-'.wppa( 'mocc' ).'" '.$imgalt.' title="'.$title.'" width="'.$imgwidth.'" height="'.$imgheight.'" style="'.$imgstyle.' cursor:pointer;" '.$events.' >'.wppa_get_video_body( $id ).'</video>';
+					$result .= wppa_get_video_html( array(
+							'id'			=> $id,
+					//		'width'			=> $imgwidth,
+					//		'height' 		=> $imgheight,
+							'controls' 		=> false,
+							'margin_top' 	=> '0',
+							'margin_bottom' => '0',
+							'tagid' 		=> 'i-'.$id.'-'.wppa( 'mocc' ),
+							'cursor' 		=> 'cursor:pointer;',
+							'events' 		=> $events,
+							'title' 		=> $title,
+							'preload' 		=> 'metadata',
+							'onclick' 		=> '',
+							'lb' 			=> false,
+							'class' 		=> '',
+							'style' 		=> $imgstyle,
+							'use_thumb' 	=> true
+							));
 				}
 				else {
 					$result .= '<img  id="i-'.$id.'-'.wppa( 'mocc' ).'" src="'.$imgurl.'" '.$imgalt.' title="'.$title.'" style="'.$imgstyle.' cursor:pointer;" '.$events.' />';
@@ -619,7 +739,25 @@ global $wpdb;
 			// The a img
 			$result .= '<a href="'.$link['url'].'" target="'.$link['target'].'" data-videohtml="'.esc_attr( wppa_get_video_body( $id ) ).'" data-videonatwidth="'.wppa_get_videox( $id ).'" data-videonatheight="'.wppa_get_videoy( $id ).'" rel="'.wppa_opt( 'lightbox_name' ).'[occ'.wppa( 'mocc' ).']" title="'.$title.'" class="thumb-img" id="x-'.$id.'-'.wppa( 'mocc' ).'">';
 			if ( $is_video ) { 
-				$result .= '<video preload="metadata" id="i-'.$id.'-'.wppa( 'mocc' ).'" '.$imgalt.' title="'.wppa_zoom_in( $id ).'" style="'.$imgstyle.$cursor.'" '.$events.' >'.wppa_get_video_body( $id ).'</video>';
+//				$result .= '<video preload="metadata" id="i-'.$id.'-'.wppa( 'mocc' ).'" '.$imgalt.' title="'.wppa_zoom_in( $id ).'" style="'.$imgstyle.$cursor.'" '.$events.' >'.wppa_get_video_body( $id ).'</video>';
+				$result .= wppa_get_video_html( array(
+						'id'			=> $id,
+				//		'width'			=> $imgwidth,
+				//		'height' 		=> $imgheight,
+						'controls' 		=> false,
+						'margin_top' 	=> '0',
+						'margin_bottom' => '0',
+						'tagid' 		=> 'i-'.$id.'-'.wppa( 'mocc' ),
+						'cursor' 		=> $cursor,
+						'events' 		=> $events,
+						'title' 		=> wppa_zoom_in( $id ),
+						'preload' 		=> 'metadata',
+						'onclick' 		=> '',
+						'lb' 			=> false,
+						'class' 		=> '',
+						'style' 		=> $imgstyle,
+						'use_thumb' 	=> true
+						));
 			}
 			else {
 				$result .= '<img id="i-'.$id.'-'.wppa( 'mocc' ).'" src="'.$imgurl.'" '.$imgalt.' title="'.wppa_zoom_in( $id ).'" style="'.$imgstyle.$cursor.'" '.$events.' />';
@@ -630,7 +768,25 @@ global $wpdb;
 			// The div img
 			$result .= '<div onclick="'.$link['url'].'" class="thumb-img" id="x-'.$id.'-'.wppa( 'mocc' ).'">';
 			if ( $is_video ) { 
-				$result .= '<video preload="metadata" id="i-'.$id.'-'.wppa( 'mocc' ).'" '.$imgalt.' title="'.$title.'" style="'.$imgstyle.' cursor:pointer;" '.$events.' >'.wppa_get_video_body( $id ).'</video>';
+//				$result .= '<video preload="metadata" id="i-'.$id.'-'.wppa( 'mocc' ).'" '.$imgalt.' title="'.$title.'" style="'.$imgstyle.' cursor:pointer;" '.$events.' >'.wppa_get_video_body( $id ).'</video>';
+				$result .= wppa_get_video_html( array(
+						'id'			=> $id,
+				//		'width'			=> $imgwidth,
+				//		'height' 		=> $imgheight,
+						'controls' 		=> false,
+						'margin_top' 	=> '0',
+						'margin_bottom' => '0',
+						'tagid' 		=> 'i-'.$id.'-'.wppa( 'mocc' ),
+						'cursor' 		=> 'cursor:pointer;',
+						'events' 		=> $events,
+						'title' 		=> $title,
+						'preload' 		=> 'metadata',
+						'onclick' 		=> '',
+						'lb' 			=> false,
+						'class' 		=> '',
+						'style' 		=> $imgstyle,
+						'use_thumb' 	=> true
+						));
 			}
 			else {
 				$result .= '<img id="i-'.$id.'-'.wppa( 'mocc' ).'" src="'.$imgurl.'" '.$imgalt.' title="'.$title.'" style="'.$imgstyle.' cursor:pointer;" '.$events.' />';
@@ -647,7 +803,25 @@ global $wpdb;
 		if ( wppa_switch( 'use_thumb_popup' ) ) {
 			$result .= '<div id="x-'.$id.'-'.wppa( 'mocc' ).'">';
 				if ( $is_video ) { 
-					$result .= '<video preload="metadata" '.$imgalt.' title="'.$title.'" width="'.$imgwidth.'" height="'.$imgheight.'" style="'.$imgstyle.'" '.$events.' >'.wppa_get_video_body( $id ).'</video>';
+//					$result .= '<video preload="metadata" '.$imgalt.' title="'.$title.'" width="'.$imgwidth.'" height="'.$imgheight.'" style="'.$imgstyle.'" '.$events.' >'.wppa_get_video_body( $id ).'</video>';
+					$result .= wppa_get_video_html( array(
+							'id'			=> $id,
+					//		'width'			=> $imgwidth,
+					//		'height' 		=> $imgheight,
+							'controls' 		=> false,
+							'margin_top' 	=> '0',
+							'margin_bottom' => '0',
+							'tagid' 		=> 'i-'.$id.'-'.wppa( 'mocc' ),
+							'cursor' 		=> '',
+							'events' 		=> $events,
+							'title' 		=> $title,
+							'preload' 		=> 'metadata',
+							'onclick' 		=> '',
+							'lb' 			=> false,
+							'class' 		=> '',
+							'style' 		=> $imgstyle,
+							'use_thumb' 	=> true
+							));
 				}
 				else {
 					$result .= '<img src="'.$imgurl.'" '.$imgalt.' title="'.$title.'" width="'.$imgwidth.'" height="'.$imgheight.'" style="'.$imgstyle.'" '.$events.' />';
@@ -656,7 +830,25 @@ global $wpdb;
 		}
 		else {
 			if ( $is_video ) {
-				$result .= '<video preload="metadata" '.$imgalt.' title="'.$title.'" width="'.$imgwidth.'" height="'.$imgheight.'" style="'.$imgstyle.'" '.$events.' >'.wppa_get_video_body( $id ).'</video>';
+//				$result .= '<video preload="metadata" '.$imgalt.' title="'.$title.'" width="'.$imgwidth.'" height="'.$imgheight.'" style="'.$imgstyle.'" '.$events.' >'.wppa_get_video_body( $id ).'</video>';
+				$result .= wppa_get_video_html( array(
+						'id'			=> $id,
+				//		'width'			=> $imgwidth,
+				//		'height' 		=> $imgheight,
+						'controls' 		=> false,
+						'margin_top' 	=> '0',
+						'margin_bottom' => '0',
+						'tagid' 		=> 'i-'.$id.'-'.wppa( 'mocc' ),
+						'cursor' 		=> '',
+						'events' 		=> $events,
+						'title' 		=> $title,
+						'preload' 		=> 'metadata',
+						'onclick' 		=> '',
+						'lb' 			=> false,
+						'class' 		=> '',
+						'style' 		=> $imgstyle,
+						'use_thumb' 	=> true
+						));			
 			}
 			else {
 				$result .= '<img src="'.$imgurl.'" '.$imgalt.' title="'.$title.'" width="'.$imgwidth.'" height="'.$imgheight.'" style="'.$imgstyle.'" '.$events.' />';

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains functions to retrieve album and photo items
-* Version 5.5.4.002
+* Version 5.5.6
 *
 */
  
@@ -534,6 +534,11 @@ function wppa_get_thumbphotoxy( $id, $key, $force = false ) {
 	else {
 		$file = wppa_get_photo_path( $id );
 	}
+	
+	if ( wppa_get_ext( $file ) == 'xxx' ) {
+		$file = wppa_fix_poster_ext( $file );
+	}
+	
 	if ( ! is_file( $file ) && ! $force ) {
 		return '0';	// File not found
 	}

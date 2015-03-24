@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains low-level wpdb routines that update records
-* Version 5.4.15
+* Version 5.5.6
 *
 */
 
@@ -131,10 +131,19 @@ global $thumb;
 			case 'thumby':
 			case 'photox':
 			case 'photoy':
+			case 'videox':
+			case 'videoy':
 				$itemvalue = intval( $itemvalue );
 				$doit = true;
 				break;
-				
+			case 'ext':
+				$doit = true;
+				break;
+			case 'filename':
+				$itemvalue = wppa_sanitize_file_name( $itemvalue );
+				$doit = true;
+				break;
+
 			default:
 				wppa_log( 'Error', 'Not implemented in wppa_update_photo(): '.$itemname );
 				return false;

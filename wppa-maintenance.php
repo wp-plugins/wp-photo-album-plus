@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains (not yet, but in the future maybe) all the maintenance routines
-* Version 5.5.0
+* Version 5.5.6
 *
 */
 
@@ -252,7 +252,7 @@ global $wppa_session;
 						break;
 						
 					case 'wppa_regen_thumbs':
-						if ( ! wppa_is_video( $id ) ) {
+						if ( ! wppa_is_video( $id ) || file_exists( str_replace( 'xxx', 'jpg', wppa_get_photo_path( $id ) ) ) ) {
 							wppa_create_thumbnail( $id );
 						}
 						break;

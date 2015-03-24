@@ -2924,12 +2924,24 @@ global $wppa;
 			$style = '';
 		}
 		if ( wppa_is_video( $wppa['single_photo'] ) ) {
-			$wppa['out'] .= wppa_nltab().wppa_get_video_html( array( 	'id' 			=> $wppa['single_photo'], 
-																		'width' 		=> $width,
-																		'height' 		=> $height,
-																		'controls' 		=> true
+			if ( $autocol ) {
+				$wppa['out'] .= wppa_nltab().wppa_get_video_html( array( 	'id' 			=> $wppa['single_photo'], 
+																			'controls' 		=> ! $link['is_lightbox'],
+																			'style' 		=> $style,
+																			'class' 		=> 'size-medium wppa-mphoto wppa-mimg-'.$wppa['mocc']
 																	 )
 															 );
+			}
+			else {
+				$wppa['out'] .= wppa_nltab().wppa_get_video_html( array( 	'id' 			=> $wppa['single_photo'], 
+																			'width' 		=> $width,
+																			'height' 		=> $height,
+																			'controls' 		=> ! $link['is_lightbox'],
+																			'style' 		=> $style,
+																			'class' 		=> 'size-medium wppa-mphoto wppa-mimg-'.$wppa['mocc']
+																	 )
+															 );
+			}
 		}
 		else {
 			$wppa['out'] .= wppa_nltab().'<img src="'.$src.'" '.wppa_get_imgalt($wppa['single_photo']).' style="'.$style.'" class="size-medium wppa-mphoto wppa-mimg-'.$wppa['mocc'].'" title="'.$title.'" width="'.$width.'" height="'.$height.'" />';
@@ -3029,8 +3041,9 @@ global $wppa;
 		if ( wppa_is_video( $wppa['single_photo'] ) ) {
 			if ( $autocol ) {
 				$wppa['out'] .= wppa_nltab().wppa_get_video_html( array( 	'id' 			=> $wppa['single_photo'], 
-																			'controls' 		=> true,
-																			'style' 		=> $style
+																			'controls' 		=> ! $link['is_lightbox'],
+																			'style' 		=> $style,
+																			'class' 		=> 'size-medium wppa-sphoto wppa-simg-'.$wppa['mocc']
 																	 )
 															 );
 			}
@@ -3038,8 +3051,9 @@ global $wppa;
 				$wppa['out'] .= wppa_nltab().wppa_get_video_html( array( 	'id' 			=> $wppa['single_photo'], 
 																			'width' 		=> $width,
 																			'height' 		=> $height,
-																			'controls' 		=> true,
-																			'style' 		=> $style
+																			'controls' 		=> ! $link['is_lightbox'],
+																			'style' 		=> $style,
+																			'class' 		=> 'size-medium wppa-sphoto wppa-simg-'.$wppa['mocc']
 																	 )
 															 );
 			}

@@ -652,7 +652,8 @@ function wppa_update_single_photo( $file, $id, $name ) {
 global $wpdb;
 
 	$photo = $wpdb->get_row( $wpdb->prepare( "SELECT `id`, `name`, `ext`, `album`, `filename` FROM `".WPPA_PHOTOS."` WHERE `id` = %s", $id ), ARRAY_A );
-	wppa_make_the_photo_files( $file, $id, $photo['ext'] );
+	$ext = wppa_is_video( $id ) ? 'jpg' : $photo['ext'];
+	wppa_make_the_photo_files( $file, $id, $ext );
 	
 	// and add watermark ( optionally ) to fullsize image only
 	wppa_add_watermark( $id );
@@ -664,7 +665,6 @@ global $wpdb;
 	wppa_save_source( $file, $name, $photo['album'] );
 	
 	// Update filename if not present. this is for backward compatibility when there were no filenames saved yet
-//	$wpdb->query( $wpdb->prepare( 'UPDATE `'.WPPA_PHOTOS.'` SET `filename` = %s WHERE `id` = %s', $name, $photo['id'] ) );
 	if ( ! wppa_get_photo_item( $id, 'filename' ) ) {
 		wppa_update_photo( array( 'id' => $id, 'filename' => $name ) );
 	}
@@ -686,7 +686,8 @@ global $allphotos;
 		foreach ( $photos as $photo ) {
 		
 			// Remake the files
-			wppa_make_the_photo_files( $file, $photo['id'], $photo['ext'] );
+			$ext = wppa_is_video( $id ) ? 'jpg' : $photo['ext'];
+			wppa_make_the_photo_files( $file, $photo['id'], $ext );
 			
 			// and add watermark ( optionally ) to fullsize image only
 			wppa_add_watermark( $photo['id'] );

@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, myCRED, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile, cloudinary, fotomoto, CMTooltipGlossary
-Version: 5.5.5
+Version: 5.5.6
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -188,6 +188,14 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
 
+= 5.5.6 =
+
+= Bug Fixes =
+
+* Tags system is updated when a photo status changes ( e.g. from pending to publish ).
+* Fixed a bug in lightbox on cover images.
+* The import dir to album stopped at the first duplicate found. Fixed.
+ 
 = 5.5.5 =
 
 = Bug Fixes =

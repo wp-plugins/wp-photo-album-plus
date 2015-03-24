@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Functions for album covers
-* Version 5.5.4.002
+* Version 5.5.6
 *
 */
 
@@ -676,10 +676,14 @@ global $wpdb;
 				
 				// Open the anchor tag for lightbox
 				$wppa['out'] .= "\n\t" . 
-					'<a href="' . $link . '" data-videohtml="' . esc_attr( wppa_get_video_body( $id ) ) . 
-					' data-videonatwidth="'.wppa_get_videox( $id ).'" data-videonatheight="'.wppa_get_videoy( $id ).'" ' .
-					'" rel="' . $wppa_opt['wppa_lightbox_name'] . 
-					'[alw-' . $wppa['mocc'] . '-' . $albumid . ']" title="' . $title . '" >';
+					'<a' .
+					' href="' . $link . '"' .
+					' data-videohtml="' . esc_attr( wppa_get_video_body( $id ) ) . '"' .
+					' data-videonatwidth="'.wppa_get_videox( $id ).'"' .
+					' data-videonatheight="'.wppa_get_videoy( $id ).'"' .
+					' rel="' . $wppa_opt['wppa_lightbox_name'] . '[alw-' . $wppa['mocc'] . '-' . $albumid . ']"' .
+					' title="' . $title . '"' .
+					' >';
 				
 				// the cover image
 				if ( $id == $image['id'] ) {		
@@ -689,7 +693,7 @@ global $wpdb;
 							$wppa['mocc'] . '" title="' . wppa_zoom_in( $image['id'] ) . 
 							'" width="' . $imgwidth . '" height="' . $imgheight . '" style="' . 
 							__wcs( 'wppa-img' ) . $imgattr . $imgattr_a['cursor'] . '" ' . 
-							$events . ' ' . wppa_get_imgalt( $image['id'] ) . '">' . 
+							$events . ' >' . 
 							wppa_get_video_body( $image['id'] ) . '</video>';
 					}
 					else {
@@ -717,7 +721,7 @@ global $wpdb;
 			// A video?
 			if ( wppa_is_video( $image['id'] ) ) {
 				$wppa['out'] .= wppa_nltab() . 
-					'<video preload="metadata" ' . wppa_get_imgalt( $image['id'] ) . $title . '" class="image wppa-img" width="' . $imgwidth . '" height="' . 
+					'<video preload="metadata" ' . $title . '" class="image wppa-img" width="' . $imgwidth . '" height="' . 
 					$imgheight . '" style="' . __wcs( 'wppa-img' ) . $imgattr . '" ' . $events . ' >' . 
 					wppa_get_video_body( $image['id'] ) . '</video>';
 			}

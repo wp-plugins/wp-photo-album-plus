@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains low-level utility routines
-* Version 5.5.4
+* Version 5.5.6
 *
 */
  
@@ -1592,6 +1592,9 @@ global $thumb;
 		$blog = '';
 	}
 	$source_path = $wppa_opt['wppa_source_dir'].$blog.'/album-'.$thumb['album'].'/'.$thumb['filename'];
+	if ( wppa_is_video( $id ) ) {
+		$source_path = wppa_strip_ext( $source_path ) . '.jpg';
+	}
 	
 	return $source_path;
 }
