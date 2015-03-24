@@ -32,7 +32,7 @@ global $wppa_opt;
 		return false;
 	}
 	if ( $id && wppa_is_video( $id ) ) {
-		return false;
+//		return false;
 	}
 	
 	// Set special values in case of preview
@@ -349,8 +349,8 @@ global $wppa_opt;
 
 	// Init
 	if ( ! wppa_switch( 'wppa_watermark_on' ) ) return false;	// Watermarks off
-	if ( wppa_is_video( $id ) ) return false;					// Can not on a video
-	
+//	if ( wppa_is_video( $id ) ) return false;					// Can not on a video
+
 	// Find the watermark file and location
 	$temp = wppa_get_water_file_and_pos( $id );
 	$waterfile = $temp['file'];
@@ -375,6 +375,9 @@ global $wppa_opt;
 		
 	// Open the photo file
 	$file = wppa_get_photo_path( $id );
+	if ( wppa_is_video( $id ) ) {
+		$file = wppa_fix_poster_ext( $file );
+	}
 	if ( ! is_file( $file ) ) return false;	// File gone
 	$photosize = getimagesize( $file );
 	if ( ! is_array( $photosize ) ) {
