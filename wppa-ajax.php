@@ -2,7 +2,7 @@
 /* wppa-ajax.php
 *
 * Functions used in ajax requests
-* version 5.5.3
+* version 5.5.6
 *
 */
 
@@ -857,8 +857,6 @@ global $wppa_session;
 				echo '||1||'.__( 'You do not have the rights to change photos', 'wppa' );
 				exit;																// Nonce check failed
 			}
-			
-			$ext = $wpdb->get_var( $wpdb->prepare( "SELECT `ext` FROM `".WPPA_PHOTOS."` WHERE `id` = %s", $photo ) );
 			
 			wppa_cache_thumb( $photo );
 			if ( wppa_add_watermark( $photo ) ) {
