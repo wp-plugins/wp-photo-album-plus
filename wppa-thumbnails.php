@@ -478,7 +478,7 @@ global $thlinkmsggiven;
 	$result .= "\n".'<div id="thumb-'.$id.'-'.wppa( 'mocc' ).'" class="thumb wppa-box wppa-cover-box wppa-cover-box-'.$mcr.wppa( 'mocc' ).' wppa-'.$wppa_alt.'" style="'.$style.'" >';
 
 		if ( $photo_left ) {
-			wppa_the_thumbascoverphoto( $id, $src, $photo_left, $link, $imgattr_a, $events );
+			$result .= wppa_the_thumbascoverphoto( $id, $src, $photo_left, $link, $imgattr_a, $events );
 		}
 		
 		$textframestyle = wppa_get_text_frame_style( $photo_left, 'thumb' );
@@ -497,7 +497,7 @@ global $thlinkmsggiven;
 		$result .= '</div>';
 		
 		if ( !$photo_left ) {
-			wppa_the_thumbascoverphoto( $id, $src, $photo_left, $link, $imgattr_a, $events );
+			$result .= wppa_the_thumbascoverphoto( $id, $src, $photo_left, $link, $imgattr_a, $events );
 		}
 		
 	$result .= '</div><!-- thumb-'.$id.'-'.wppa( 'mocc' ).' -->';
@@ -540,7 +540,7 @@ function wppa_the_thumbascoverphoto( $id, $src, $photo_left, $link, $imgattr_a, 
 		$result .= '</div>';
 	}
 	
-	wppa_out( $result );
+	return $result;
 }
 
 // Display the masonry thumbnail image
