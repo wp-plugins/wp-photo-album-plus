@@ -1,0 +1,1641 @@
+# Translation of the WordPress plugin   by .
+# Copyright (C) 2010
+# This file is distributed under the same license as the  package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2010.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: wppa\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-03-05 15:21+0100\n"
+"PO-Revision-Date: 2015-03-05 15:21+0100\n"
+"Last-Translator: J.N. Breetvelt <OpaJaap@OpaJaap.nl>\n"
+"Language-Team: OpaJaap <OpaJaap@OpaJaap.nl>\n"
+"Language: ru_RU\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-KeywordsList: __a\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Generator: Poedit 1.7.4\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPath-1: theme\n"
+
+#: theme/wppa-theme.php:302 theme/wppa-theme.php:321
+msgid "No photos found matching your search criteria."
+msgstr "Не найдено фотографий по вашему запросу."
+
+#: theme/wppa-theme.php:305
+msgid "No albums found matching your search criteria."
+msgstr "Не найдено альбомов по вашему запросу."
+
+#: theme/wppa-theme.php:308
+msgid "No albums or photos found matching your search criteria."
+msgstr "Не найдено ни альбомов, ни фотографий по Вашему запросу."
+
+#: wppa-adminbar.php:40
+msgid "Album Admin"
+msgstr "Правка альбомов"
+
+#: wppa-adminbar.php:47
+msgid "Upload Photos"
+msgstr "Загрузить фото"
+
+#: wppa-adminbar.php:53
+msgid "Edit Photos"
+msgstr "Редактировать фото"
+
+#: wppa-adminbar.php:61
+msgid "Import Photos"
+msgstr "Импорт фото"
+
+#: wppa-adminbar.php:68
+#, fuzzy
+msgid "Moderate Photos"
+msgstr "фото"
+
+#: wppa-adminbar.php:75
+msgid "Export Photos"
+msgstr "Экспорт фото"
+
+#: wppa-adminbar.php:82
+msgid "Settings"
+msgstr "Настройки"
+
+#: wppa-adminbar.php:89 wppa-potd-widget.php:54
+msgid "Photo of the day"
+msgstr "Фото дня"
+
+#: wppa-adminbar.php:96
+msgid "Comments"
+msgstr "Комментарии"
+
+#: wppa-adminbar.php:103
+msgid "Help & Info"
+msgstr "Помощь и инфо"
+
+#: wppa-adminbar.php:110
+msgid "Docs & Demos"
+msgstr "Документация и демо"
+
+#: wppa-adminbar.php:118 wppa-album-navigator-widget.php:38
+#: wppa-album-widget.php:43
+msgid "Photo Albums"
+msgstr "Фотоальбомы"
+
+#: wppa-ajax.php:63
+msgid ""
+"All modifications are instantly updated on the server. The <b style=\"color:"
+"#070\" >Remark</b> field keeps you informed on the actions taken at the "
+"background."
+msgstr ""
+"Все изменения мгновенно производятся на сервере. <b style=\"color:"
+"#070\">Примечания</b> оповестят вас о действиях, происходящих в фоновом "
+"режиме."
+
+#: wppa-ajax.php:66
+msgid "Exit & Refresh"
+msgstr "Выход & Обновить"
+
+#: wppa-ajax.php:437 wppa-ajax.php:453
+#, fuzzy
+msgid "Photo rated"
+msgstr "Фото дня"
+
+#: wppa-album-covers.php:996
+msgid "Link to"
+msgstr "Ссылка на"
+
+#: wppa-album-covers.php:1026 wppa-album-covers.php:1088
+#: wppa-album-covers.php:1095
+msgid "View the album"
+msgstr "Смотреть альбом"
+
+#: wppa-album-covers.php:1046
+msgid "View the cover photo"
+msgstr "Смотреть обложку"
+
+#: wppa-album-covers.php:1047
+msgid "View the cover photos"
+msgstr "Смотреть фотографии обложки"
+
+#: wppa-album-covers.php:1101
+msgid "View"
+msgstr "Смотреть"
+
+#: wppa-album-covers.php:1104
+msgid "album"
+msgstr "альбом"
+
+#: wppa-album-covers.php:1107
+msgid "albums"
+msgstr "альбомов"
+
+#: wppa-album-covers.php:1116 wppa-boxes-html.php:373 wppa-breadcrumb.php:258
+#: wppa-breadcrumb.php:263 wppa-functions.php:3657 wppa-utils.php:1354
+msgid "and"
+msgstr "и"
+
+#: wppa-album-covers.php:1121
+msgid "photo"
+msgstr "фото"
+
+#: wppa-album-covers.php:1124 wppa-album-covers.php:1128
+msgid "photos"
+msgstr "фото"
+
+#: wppa-album-covers.php:1172
+msgid "New!"
+msgstr "Новое!"
+
+#: wppa-album-covers.php:1173 wppa-thumbnails.php:1000
+msgid "New"
+msgstr "Новый"
+
+#: wppa-album-covers.php:1195 wppa-non-admin.php:514
+msgid "Slideshow"
+msgstr "Слайдшоу"
+
+#: wppa-album-covers.php:1196
+msgid "Browse photos"
+msgstr "Просмотреть фото"
+
+#: wppa-album-covers.php:1229
+msgid "Categories:"
+msgstr "Категория:"
+
+#: wppa-album-covers.php:1232 wppa-breadcrumb.php:270 wppa-breadcrumb.php:275
+msgid "Category:"
+msgstr "Категория:"
+
+#: wppa-album-widget.php:105
+#, php-format
+msgid "Upload at least %d photos to this album!"
+msgstr "Загрузите %d или больше фотографий в этот альбом!"
+
+#: wppa-bestof-widget.php:45
+msgid "Best Of Photos"
+msgstr "Лучшие фото"
+
+#: wppa-boxes-html.php:61
+msgid "Photo search results"
+msgstr "Результат поиска фото"
+
+#: wppa-boxes-html.php:82
+msgid "Search"
+msgstr "Поиск"
+
+#: wppa-boxes-html.php:88
+msgid "Search in current section"
+msgstr "Поиск в текущем разделе"
+
+#: wppa-boxes-html.php:91
+msgid "Search in current results"
+msgstr "Поиск среди текущих результатов"
+
+#: wppa-boxes-html.php:119
+#, fuzzy
+msgid "Super View Photos"
+msgstr "Смотреть фотографии обложки"
+
+#: wppa-boxes-html.php:173
+msgid "Tagged photos"
+msgstr "Фото с метками"
+
+#: wppa-boxes-html.php:186
+#, fuzzy
+msgid "Please select a tagcloud landing page in Table VI-C3b"
+msgstr "Введите свое имя"
+
+#: wppa-boxes-html.php:230
+#, fuzzy
+msgid "Multi Tagged photos"
+msgstr "фото"
+
+#: wppa-boxes-html.php:243
+#, fuzzy
+msgid "Please select a multitag landing page in Table VI-C4b"
+msgstr "Введите свое имя"
+
+#: wppa-boxes-html.php:281
+msgid "Please check the tag(s) that the photos must have"
+msgstr "Проверьте тэги, которые должны быть у фото"
+
+#: wppa-boxes-html.php:303
+msgid "And"
+msgstr "И"
+
+#: wppa-boxes-html.php:306
+msgid "Or"
+msgstr "ИЛИ"
+
+#: wppa-boxes-html.php:343
+msgid "Find!"
+msgstr "Найти"
+
+#: wppa-boxes-html.php:373 wppa-utils.php:1354
+#, fuzzy, php-format
+msgid "See this image on %s"
+msgstr "Фото %s из %s"
+
+#: wppa-boxes-html.php:384 wppa-qr-widget.php:29
+msgid "QR code"
+msgstr "QR-код"
+
+#: wppa-boxes-html.php:422
+#, fuzzy, php-format
+msgid "Tweet %s on Twitter"
+msgstr "Фото %s из %s"
+
+#: wppa-boxes-html.php:425
+msgid "Share on Twitter"
+msgstr "Поделиться при помощи Twitter"
+
+#: wppa-boxes-html.php:434
+#, fuzzy, php-format
+msgid "Share %s on Google+"
+msgstr "Фото %s из %s"
+
+#: wppa-boxes-html.php:438
+msgid "Share on Google+"
+msgstr "Разместить на Google+"
+
+#: wppa-boxes-html.php:449
+#, fuzzy, php-format
+msgid "Share %s on Pinterest"
+msgstr "Фото %s из %s"
+
+#: wppa-boxes-html.php:454
+msgid "Share on Pinterest"
+msgstr "Разместить на Pinterest"
+
+#: wppa-boxes-html.php:535
+#, fuzzy
+msgid "Comment on Facebook:"
+msgstr "Ваш комментарий:"
+
+#: wppa-boxes-html.php:600
+msgid "Working..."
+msgstr "Выполняется..."
+
+#: wppa-boxes-html.php:600
+#, fuzzy
+msgid "Delete album"
+msgstr "Создать альбом"
+
+#: wppa-boxes-html.php:663
+msgid "Create Album"
+msgstr "Создать альбом"
+
+#: wppa-boxes-html.php:674 wppa-boxes-html.php:1029
+msgid "Enter album name."
+msgstr "Введите название альбома."
+
+#: wppa-boxes-html.php:674 wppa-boxes-html.php:1029
+msgid "Don't leave this blank!"
+msgstr "Не оставляйте это поле пустым!"
+
+#: wppa-boxes-html.php:682
+msgid "Enter album description"
+msgstr "Введите описание альбома"
+
+#: wppa-boxes-html.php:692
+msgid "Create album"
+msgstr "Создать альбом"
+
+#: wppa-boxes-html.php:721 wppa-boxes-html.php:735 wppa-functions.php:3390
+msgid "Max uploads reached"
+msgstr "Макс Загрузка достигла"
+
+#: wppa-boxes-html.php:794
+msgid "Upload Photo"
+msgstr "Загрузить фото"
+
+#: wppa-boxes-html.php:820
+msgid "Please select an album and try again"
+msgstr "Пожалуйста, выберите альбом и попробуйте еще раз"
+
+#: wppa-boxes-html.php:823
+msgid "Upload photo"
+msgstr "Загрузить фото"
+
+#: wppa-boxes-html.php:840
+#, php-format
+msgid ""
+"You may upload up to %s photos at once if your browser supports HTML-5 "
+"multiple file upload"
+msgstr ""
+"Вы можете загрузить за один раз до %s фотографий, если Ваш браузер "
+"поддерживает множественную загрузку файлов HTML-5"
+
+#: wppa-boxes-html.php:846
+#, fuzzy, php-format
+msgid "Max photo size: %d x %d (%2.1f MegaPixel)"
+msgstr "%d  комментарии"
+
+#: wppa-boxes-html.php:862
+msgid "Apply watermark file:"
+msgstr "Приложить файл с \"водяным знаком\":"
+
+#: wppa-boxes-html.php:874
+msgid "Position:"
+msgstr "Положение:"
+
+#: wppa-boxes-html.php:894
+#, fuzzy
+msgid ""
+"If you leave this blank, iptc tag 005 (Graphic name) will be used as "
+"photoname if available, else the original filename will be used as photo "
+"name."
+msgstr "Ваше имя:"
+
+#: wppa-boxes-html.php:897
+#, fuzzy
+msgid ""
+"If you leave this blank, iptc tag 120 (Caption) will be used as photoname if "
+"available, else the original filename will be used as photo name."
+msgstr "Оставить комментарий"
+
+#: wppa-boxes-html.php:900
+#, fuzzy
+msgid ""
+"If you leave this blank, the original filename will be used as photo name."
+msgstr "Оставить комментарий"
+
+#: wppa-boxes-html.php:904
+msgid "Enter photo name."
+msgstr "Введите название фото"
+
+#: wppa-boxes-html.php:912
+msgid "Enter/modify photo description"
+msgstr "Ввести/изменить описание фото"
+
+#: wppa-boxes-html.php:921
+msgid "Select tags:"
+msgstr "Выберите Теги:"
+
+#: wppa-boxes-html.php:930
+msgid "and/or enter new tags:"
+msgstr ""
+
+#: wppa-boxes-html.php:932
+msgid "Preview tags:"
+msgstr ""
+
+#: wppa-boxes-html.php:974
+#, fuzzy
+msgid "ERROR: unable to upload files."
+msgstr "<b>ОШИБКА: Сбой при попытке загрузить файл.</b>"
+
+#: wppa-boxes-html.php:1022
+msgid "Edit albuminfo"
+msgstr "Редактировать информацию об альбоме"
+
+#: wppa-boxes-html.php:1033
+msgid "Album description:"
+msgstr "Описание альбома:"
+
+#: wppa-boxes-html.php:1036
+msgid "Update album"
+msgstr "Обновить альбом"
+
+#: wppa-boxes-html.php:1084
+msgid "wrote:"
+msgstr "писал:"
+
+#: wppa-boxes-html.php:1101
+msgid "Avatar"
+msgstr ""
+
+#: wppa-boxes-html.php:1117 wppa-links.php:717
+msgid "Awaiting moderation"
+msgstr "Ожидает одобрения"
+
+#: wppa-boxes-html.php:1120
+msgid "Marked as spam"
+msgstr "Помечено как спам"
+
+#: wppa-boxes-html.php:1139
+msgid "Edit!"
+msgstr "Редактировать"
+
+#: wppa-boxes-html.php:1143
+msgid "Send!"
+msgstr "Отправить!"
+
+#: wppa-boxes-html.php:1183
+msgid "Your name:"
+msgstr "Ваше имя:"
+
+#: wppa-boxes-html.php:1188
+msgid "Your email:"
+msgstr "Ваш email:"
+
+#: wppa-boxes-html.php:1193
+msgid "Your comment:"
+msgstr "Ваш комментарий:"
+
+#: wppa-boxes-html.php:1230
+#, php-format
+msgid "You must <a href=\"%s\">login</a> to enter a comment"
+msgstr "Вы должны <a href=\"%s\">войти</a>, чтобы оставить комментарий"
+
+#: wppa-boxes-html.php:1233
+#, fuzzy
+msgid "You must login to enter a comment"
+msgstr "Вы должны <a href=\"%s\">войти</a>, чтобы оставить комментарий"
+
+#: wppa-boxes-html.php:1241
+#, fuzzy, php-format
+msgid "%d comments"
+msgstr "%d  комментарии"
+
+#: wppa-boxes-html.php:1245
+msgid "Leave a comment"
+msgstr "Оставить комментарий"
+
+#: wppa-boxes-html.php:1277
+msgid "Smilies are not available"
+msgstr ""
+
+#: wppa-boxes-html.php:1317
+msgid "Show IPTC data"
+msgstr "Показать IPTC"
+
+#: wppa-boxes-html.php:1320
+msgid "Hide IPTC data"
+msgstr "Скрыть IPTC"
+
+#: wppa-boxes-html.php:1347
+msgid "No IPTC data"
+msgstr "IPTC отсутствует"
+
+#: wppa-boxes-html.php:1387
+msgid "Show EXIF data"
+msgstr "Показать EXIF"
+
+#: wppa-boxes-html.php:1390
+msgid "Hide EXIF data"
+msgstr "Скрыть EXIF"
+
+#: wppa-boxes-html.php:1418
+msgid "No EXIF data"
+msgstr "EXIF отсутствует"
+
+#: wppa-boxes-html.php:1601 wppa-boxes-html.php:1656
+msgid "See the authors albums"
+msgstr "Посмотреть альбомы автора"
+
+#: wppa-boxes-html.php:1605 wppa-boxes-html.php:1660
+msgid "See the authors photos"
+msgstr "Посмотреть фотографии автора"
+
+#: wppa-boxes-html.php:1609 wppa-boxes-html.php:1664
+#, fuzzy
+msgid "See all the authors photos"
+msgstr "Чтобы смотреть большие фото, нужно включить javascript в браузере!"
+
+#: wppa-boxes-html.php:1628
+#, fuzzy, php-format
+msgid "Photo by: %s"
+msgstr "Фото %s из %s"
+
+#: wppa-boxes-html.php:1629 wppa-boxes-html.php:1682
+#, fuzzy, php-format
+msgid "Max ratings: %s."
+msgstr "Фото %s из %s"
+
+#: wppa-boxes-html.php:1630 wppa-boxes-html.php:1683
+#, fuzzy, php-format
+msgid "Votes: %s."
+msgstr "Фото %s из %s"
+
+#: wppa-boxes-html.php:1631 wppa-boxes-html.php:1684
+#, php-format
+msgid "Mean value: %4.2f."
+msgstr ""
+
+#: wppa-boxes-html.php:1638
+#, php-format
+msgid "Photo %s not found."
+msgstr "Фото %s не найдено."
+
+#: wppa-breadcrumb.php:99
+msgid "Home"
+msgstr "В начало"
+
+#: wppa-breadcrumb.php:120
+msgid "Post:"
+msgstr ""
+
+#: wppa-breadcrumb.php:120
+#, fuzzy
+msgid "Page:"
+msgstr "Следующая страница"
+
+#: wppa-breadcrumb.php:139
+#, php-format
+msgid "Searchresults from album %s and its subalbums"
+msgstr "Результаты поиска в альбоме %s и вложенных в него альбомах"
+
+#: wppa-breadcrumb.php:143 wppa-breadcrumb.php:148
+msgid "Searchstring:"
+msgstr "Строка поиска:"
+
+#: wppa-breadcrumb.php:145 wppa-breadcrumb.php:164 wppa-breadcrumb.php:182
+#: wppa-breadcrumb.php:200 wppa-breadcrumb.php:218 wppa-breadcrumb.php:236
+#: wppa-breadcrumb.php:248 wppa-breadcrumb.php:260 wppa-breadcrumb.php:272
+#: wppa-breadcrumb.php:291
+msgid "View the thumbnails"
+msgstr "Просмотреть миниатюры"
+
+#: wppa-breadcrumb.php:157 wppa-breadcrumb.php:167
+#, fuzzy, php-format
+msgid "Photos by %s"
+msgstr ""
+"Вы можете загрузить за один раз до %s фотографий, если Ваш браузер "
+"поддерживает множественную загрузку файлов HTML-5"
+
+#: wppa-breadcrumb.php:174 wppa-breadcrumb.php:192 wppa-breadcrumb.php:210
+#: wppa-breadcrumb.php:228 wppa-breadcrumb.php:306
+#, fuzzy
+msgid "Various albums"
+msgstr "альбомов"
+
+#: wppa-breadcrumb.php:176 wppa-breadcrumb.php:194 wppa-breadcrumb.php:212
+#: wppa-breadcrumb.php:230 wppa-breadcrumb.php:310
+msgid "Albums:"
+msgstr "Альбомы:"
+
+#: wppa-breadcrumb.php:176 wppa-breadcrumb.php:194 wppa-breadcrumb.php:212
+#: wppa-breadcrumb.php:230 wppa-breadcrumb.php:285 wppa-breadcrumb.php:310
+msgid "Album:"
+msgstr "Альбом:"
+
+#: wppa-breadcrumb.php:180 wppa-breadcrumb.php:185
+msgid "Top rated photos"
+msgstr "Лучшие фото"
+
+#: wppa-breadcrumb.php:198 wppa-breadcrumb.php:203
+msgid "Recently uploaded photos"
+msgstr "Недавно добавленные фото"
+
+#: wppa-breadcrumb.php:216 wppa-breadcrumb.php:221 wppa-comment-widget.php:27
+msgid "Recently commented photos"
+msgstr "Недавно комментировали"
+
+#: wppa-breadcrumb.php:234 wppa-breadcrumb.php:239 wppa-featen-widget.php:30
+#, fuzzy
+msgid "Featured photos"
+msgstr "фото"
+
+#: wppa-breadcrumb.php:246 wppa-breadcrumb.php:251
+#, fuzzy
+msgid "Related photos"
+msgstr "фото"
+
+#: wppa-breadcrumb.php:258 wppa-breadcrumb.php:263
+#, fuzzy
+msgid "Tagged photos:"
+msgstr "фото"
+
+#: wppa-breadcrumb.php:258 wppa-breadcrumb.php:263
+msgid "or"
+msgstr ""
+
+#: wppa-breadcrumb.php:289 wppa-breadcrumb.php:294
+msgid "Recently updated albums"
+msgstr "Недавно обновленные альбомы"
+
+#: wppa-breadcrumb.php:304
+#, fuzzy, php-format
+msgid "Various albums by %s"
+msgstr "альбомов"
+
+#: wppa-breadcrumb.php:329 wppa-breadcrumb.php:344
+#, fuzzy
+msgid "Thumbnail view"
+msgstr "Смотреть"
+
+#: wppa-breadcrumb.php:333 wppa-breadcrumb.php:334 wppa-breadcrumb.php:349
+#: wppa-breadcrumb.php:350
+msgid "Thumbs"
+msgstr ""
+
+#: wppa-breadcrumb.php:456
+msgid "Unpublished"
+msgstr ""
+
+#: wppa-cart.php:25
+msgid "Buy now"
+msgstr ""
+
+#: wppa-cart.php:89
+#, fuzzy, php-format
+msgid "Unit Price: %s each"
+msgstr "Фото %s из %s"
+
+#: wppa-cart.php:93
+msgid "Qty:"
+msgstr ""
+
+#: wppa-comment-widget.php:58 wppa-thumbnails.php:230
+#, fuzzy
+msgid "wrote"
+msgstr "писал:"
+
+#: wppa-comment-widget.php:84 wppa-featen-widget.php:109
+#: wppa-lasten-widget.php:100 wppa-potd-widget.php:91
+#: wppa-thumbnail-widget.php:110 wppa-topten-widget.php:147
+msgid "Photo not found."
+msgstr "Фото не найдено."
+
+#: wppa-common-functions.php:176
+#, fuzzy
+msgid "Default photo album for"
+msgstr "фотоальбомов. Последним добавлен"
+
+#: wppa-common-functions.php:622
+msgid "1 second"
+msgstr "1 секунда"
+
+#: wppa-common-functions.php:623 wppa-functions.php:3658
+msgid "seconds"
+msgstr "секунд"
+
+#: wppa-common-functions.php:627
+msgid "1 minute"
+msgstr "1 минута"
+
+#: wppa-common-functions.php:628 wppa-functions.php:3657
+msgid "minutes"
+msgstr "минут"
+
+#: wppa-common-functions.php:632
+msgid "1 hour"
+msgstr "1 час"
+
+#: wppa-common-functions.php:633 wppa-functions.php:3656
+msgid "hours"
+msgstr "часов"
+
+#: wppa-common-functions.php:637
+msgid "1 day"
+msgstr "1 день"
+
+#: wppa-common-functions.php:638 wppa-functions.php:3655
+msgid "days"
+msgstr "дней"
+
+#: wppa-common-functions.php:642
+msgid "1 week"
+msgstr "1 неделя"
+
+#: wppa-common-functions.php:643 wppa-functions.php:3654
+msgid "weeks"
+msgstr "недель"
+
+#: wppa-common-functions.php:647
+msgid "1 month"
+msgstr "1 месяц"
+
+#: wppa-common-functions.php:648
+msgid "months"
+msgstr "месяцев"
+
+#: wppa-common-functions.php:651
+msgid "1 year"
+msgstr "1 год"
+
+#: wppa-common-functions.php:652
+msgid "years"
+msgstr "лет"
+
+#: wppa-common-functions.php:1971
+#, fuzzy
+msgid "- select an album -"
+msgstr "Ответ неверный.\\n\\nПопробуйте еще раз."
+
+#: wppa-common-functions.php:1977 wppa-items.php:330
+msgid "--- none ---"
+msgstr "--- пусто ---"
+
+#: wppa-common-functions.php:1983 wppa-items.php:338
+#, fuzzy
+msgid "--- all ---"
+msgstr "--- пусто ---"
+
+#: wppa-common-functions.php:1989
+#, fuzzy
+msgid "--- generic ---"
+msgstr "--- пусто ---"
+
+#: wppa-common-functions.php:2000
+msgid "--- multiple see below ---"
+msgstr ""
+
+#: wppa-common-functions.php:2006
+#, fuzzy
+msgid "--- a selection box ---"
+msgstr "--- разделитель ---"
+
+#: wppa-common-functions.php:2027 wppa-items.php:334
+msgid "--- separate ---"
+msgstr "--- разделитель ---"
+
+#: wppa-exif-iptc-common.php:58 wppa-exif-iptc-common.php:118
+msgid "n.a."
+msgstr ""
+
+#: wppa-exif-iptc-common.php:196 wppa-utils.php:2042
+#, fuzzy
+msgid "Not Defined"
+msgstr "Альбом еще не определен."
+
+#: wppa-exif-iptc-common.php:197 wppa-utils.php:2043
+msgid "Manual"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:198 wppa-utils.php:2044
+msgid "Program AE"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:199 wppa-utils.php:2045
+msgid "Aperture-priority AE"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:200 wppa-utils.php:2046
+msgid "Shutter speed priority AE"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:201 wppa-utils.php:2047
+msgid "Creative (Slow speed)"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:202 wppa-utils.php:2048
+#, fuzzy
+msgid "Action (High speed)"
+msgstr "высокий"
+
+#: wppa-exif-iptc-common.php:203 wppa-utils.php:2049
+msgid "Portrait"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:204 wppa-utils.php:2050
+msgid "Landscape"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:205 wppa-utils.php:2051
+msgid "Bulb"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:227 wppa-utils.php:2052
+#, fuzzy
+msgid "Average"
+msgstr "средний"
+
+#: wppa-exif-iptc-common.php:228 wppa-utils.php:2053
+#, fuzzy
+msgid "Center-weighted average"
+msgstr "средний"
+
+#: wppa-exif-iptc-common.php:229 wppa-utils.php:2054
+msgid "Spot"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:230 wppa-utils.php:2055
+msgid "Multi-spot"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:231 wppa-utils.php:2056
+msgid "Multi-segment"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:232 wppa-utils.php:2057
+msgid "Partial"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:233 wppa-utils.php:2058
+msgid "Other"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:269 wppa-utils.php:2059
+msgid "No Flash"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:271 wppa-utils.php:2060
+msgid "Fired"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:273 wppa-utils.php:2061
+msgid "Fired, Return not detected"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:275 wppa-utils.php:2062
+msgid "Fired, Return detected"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:277 wppa-utils.php:2063
+msgid "On, Did not fire"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:279 wppa-utils.php:2064
+msgid "On, Fired"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:281 wppa-utils.php:2065
+msgid "On, Return not detected"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:283 wppa-utils.php:2066
+msgid "On, Return detected"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:285 wppa-utils.php:2067
+msgid "Off, Did not fire"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:287 wppa-utils.php:2068
+msgid "Off, Did not fire, Return not detected"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:289 wppa-utils.php:2069
+msgid "Auto, Did not fire"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:291 wppa-utils.php:2070
+msgid "Auto, Fired"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:293 wppa-utils.php:2071
+msgid "Auto, Fired, Return not detected"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:295 wppa-utils.php:2072
+msgid "Auto, Fired, Return detected"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:297 wppa-utils.php:2073
+msgid "No flash function"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:299 wppa-utils.php:2074
+msgid "Off, No flash function"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:301 wppa-utils.php:2075
+msgid "Fired, Red-eye reduction"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:303 wppa-utils.php:2076
+msgid "Fired, Red-eye reduction, Return not detected"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:305 wppa-utils.php:2077
+msgid "Fired, Red-eye reduction, Return detected"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:307 wppa-utils.php:2078
+msgid "On, Red-eye reduction"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:309 wppa-utils.php:2079
+msgid "Red-eye reduction, Return not detected"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:311 wppa-utils.php:2080
+msgid "On, Red-eye reduction, Return detected"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:313 wppa-utils.php:2081
+msgid "Off, Red-eye reduction"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:315 wppa-utils.php:2082
+msgid "Auto, Did not fire, Red-eye reduction"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:317 wppa-utils.php:2083
+msgid "Auto, Fired, Red-eye reduction"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:319 wppa-utils.php:2084
+msgid "Auto, Fired, Red-eye reduction, Return not detected"
+msgstr ""
+
+#: wppa-exif-iptc-common.php:321 wppa-utils.php:2085
+msgid "Auto, Fired, Red-eye reduction, Return detected"
+msgstr ""
+
+#: wppa-featen-widget.php:67
+#, fuzzy
+msgid "View the featured photos"
+msgstr "Смотреть фотографии обложки"
+
+#: wppa-functions.php:520
+#, fuzzy
+msgid "No related photos found."
+msgstr "Не найдено ни альбомов, ни фотографий по Вашему запросу."
+
+#: wppa-functions.php:845
+#, fuzzy, php-format
+msgid ""
+"There are %s albums found. Only the first %s will be shown. Please refine "
+"your search criteria."
+msgstr "Не найдено ни альбомов, ни фотографий по Вашему запросу."
+
+#: wppa-functions.php:1228
+#, fuzzy, php-format
+msgid ""
+"There are %s photos found. Only the first %s will be shown. Please refine "
+"your search criteria."
+msgstr "Не найдено ни альбомов, ни фотографий по Вашему запросу."
+
+#: wppa-functions.php:1469 wppa-thumbnails.php:279
+#, fuzzy
+msgid "Edit"
+msgstr "Редактировать"
+
+#: wppa-functions.php:1474 wppa-links.php:666 wppa-links.php:683
+#: wppa-thumbnails.php:275
+msgid "Are you sure you want to remove this photo?"
+msgstr "Вы уверены, что хотите удалить это фото?"
+
+#: wppa-functions.php:1475 wppa-links.php:673 wppa-links.php:691
+#: wppa-thumbnails.php:276
+msgid "Delete"
+msgstr ""
+
+#: wppa-functions.php:1620
+msgid "Comment edited"
+msgstr "Комментарий отредактирован"
+
+#: wppa-functions.php:1624
+#, fuzzy
+msgid "Photo comment"
+msgstr "Ваш комментарий:"
+
+#: wppa-functions.php:1628
+#, fuzzy
+msgid "Comment on photo:"
+msgstr "Ваш комментарий:"
+
+#: wppa-functions.php:1639
+#, fuzzy
+msgid "wrote on photo"
+msgstr "писал:"
+
+#: wppa-functions.php:1641
+msgid "Reply"
+msgstr ""
+
+#: wppa-functions.php:1642
+#, fuzzy
+msgid "Moderate comment admin"
+msgstr "Правка альбомов"
+
+#: wppa-functions.php:1643 wppa-functions.php:3506 wppa-upload.php:1217
+#, fuzzy
+msgid "Moderate manage photo"
+msgstr "фото"
+
+#: wppa-functions.php:1644
+#, fuzzy
+msgid "Edit photo"
+msgstr "Редактировать"
+
+#: wppa-functions.php:1654
+#, fuzzy
+msgid "You receive this email as you are assigned to moderate"
+msgstr "Ваш email:"
+
+#: wppa-functions.php:1666
+#, fuzzy
+msgid "You receive this email as administrator of the site"
+msgstr "Ваш email:"
+
+#: wppa-functions.php:1683
+#, fuzzy
+msgid "You receive this email as uploader of the photo"
+msgstr "Ваш email:"
+
+#: wppa-functions.php:1703
+#, fuzzy
+msgid "You receive this email as owner of the album"
+msgstr "Ваш email:"
+
+#: wppa-functions.php:1720
+#, fuzzy
+msgid "You receive this email because you commented this photo earlier."
+msgstr "Ваш email:"
+
+#: wppa-functions.php:1745
+msgid "Comment added"
+msgstr "Комментарий добавлен"
+
+#: wppa-functions.php:1749
+msgid ""
+"Sorry, you gave a wrong answer.\\n\\nPlease try again to solve the "
+"computation."
+msgstr "Ответ неверный.\\n\\nПопробуйте еще раз."
+
+#: wppa-functions.php:1759
+msgid "Could not process comment.\\nProbably timed out."
+msgstr "Невозможно обработать комментарий.\\nВозможно, время вышло."
+
+#: wppa-functions.php:1838
+msgid "1 Comment"
+msgstr "1 комментарий"
+
+#: wppa-functions.php:1839
+#, php-format
+msgid "%s Comments"
+msgstr "%s комментариев"
+
+#: wppa-functions.php:1875 wppa-links.php:1332
+msgid "A video can not be printed or downloaded"
+msgstr ""
+
+#: wppa-functions.php:2287
+msgid "<b>ERROR: Illegal attempt to enter a rating.</b>"
+msgstr "<b>ОШИБКА: Сбой при вводе оценки.</b>"
+
+#: wppa-functions.php:2300
+msgid "<b>ERROR: Illegal attempt to enter a comment.</b>"
+msgstr "<b>ОШИБКА: Сбой при вводе комментария.</b>"
+
+#: wppa-functions.php:3272
+msgid "New Album"
+msgstr "Новый альбом"
+
+#: wppa-functions.php:3275
+#, fuzzy
+msgid "<b>ERROR: Illegal attempt to create an album.</b>"
+msgstr "<b>ОШИБКА: Сбой при вводе оценки.</b>"
+
+#: wppa-functions.php:3279
+msgid "Wrong captcha, please try again"
+msgstr "Ответ неверный. Попробуйте еще раз."
+
+#: wppa-functions.php:3292
+#, php-format
+msgid "Album #%s created"
+msgstr "Альбом #%s создан"
+
+#: wppa-functions.php:3297
+msgid "Could not create album"
+msgstr "Не удаётся создать альбом"
+
+#: wppa-functions.php:3308
+msgid "<b>ERROR: Illegal attempt to upload a file.</b>"
+msgstr "<b>ОШИБКА: Сбой при попытке загрузить файл.</b>"
+
+#: wppa-functions.php:3348
+#, fuzzy
+msgid "Photo upload"
+msgstr "Фотографии загрузил(/а)"
+
+#: wppa-functions.php:3350
+msgid "Photo successfully uploaded."
+msgstr "Фото успешно загружено."
+
+#: wppa-functions.php:3350
+#, php-format
+msgid "%s photos successfully uploaded."
+msgstr "%s фотографий успешно загружено."
+
+#: wppa-functions.php:3351
+#, fuzzy, php-format
+msgid "%s points added."
+msgstr "Комментарий добавлен"
+
+#: wppa-functions.php:3355
+msgid "Upload failed"
+msgstr "Загрузка не удалась"
+
+#: wppa-functions.php:3358
+#, fuzzy
+msgid "1 Upload failed"
+msgstr "1 секунда"
+
+#: wppa-functions.php:3358
+#, fuzzy, php-format
+msgid "%s uploads failed."
+msgstr "Фото %s из %s"
+
+#: wppa-functions.php:3394
+msgid "Error during upload"
+msgstr "Сбой при загрузке"
+
+#: wppa-functions.php:3399
+msgid "Uploaded file is not an image"
+msgstr "Загруженный файл не является изображением"
+
+#: wppa-functions.php:3403
+#, php-format
+msgid ""
+"Only gif, jpg and png image files are supported. Returned filetype = %d."
+msgstr ""
+"Поддерживаются только файлы форматов gif, jpg и png. Тип файла распознан "
+"как: %d."
+
+#: wppa-functions.php:3409
+#, php-format
+msgid "Uploaded file is larger than the allowed maximum of %d x %d pixels."
+msgstr "Загружаемый файл больше разрешенного максимального размера %d x %d px."
+
+#: wppa-functions.php:3415
+#, php-format
+msgid "Uploaded file %s already exists in this album."
+msgstr "Загружаемый файл %s уже существует в этом альбоме."
+
+#: wppa-functions.php:3423
+#, php-format
+msgid "The image is too big. Max photo size: %d x %d (%2.1f MegaPixel)"
+msgstr ""
+"Это изображение слишком большое. Максимальный размер фото: %d x %d (%2.1f "
+"MegaPixel)"
+
+#: wppa-functions.php:3446
+#, fuzzy
+msgid "Could not insert photo into db."
+msgstr "Невозможно обработать комментарий.\\nВозможно, время вышло."
+
+#: wppa-functions.php:3502 wppa-upload.php:1213
+#, php-format
+msgid "New photo uploaded: %s"
+msgstr "Новое фото загружено: %s"
+
+#: wppa-functions.php:3503 wppa-upload.php:1214
+#, fuzzy, php-format
+msgid "User %s uploaded photo %s into album %s"
+msgstr "Фото %s из %s"
+
+#: wppa-functions.php:3505 wppa-upload.php:1216
+#, fuzzy
+msgid "This upload requires moderation"
+msgstr "Ожидает одобрения"
+
+#: wppa-functions.php:3509 wppa-upload.php:1220
+msgid "Details:"
+msgstr ""
+
+#: wppa-functions.php:3510 wppa-upload.php:1221
+#, fuzzy
+msgid "Manage photo"
+msgstr "фото"
+
+#: wppa-functions.php:3652
+#, fuzzy
+msgid "You can upload after"
+msgstr ""
+"Вы можете загрузить за один раз до %s фотографий, если Ваш браузер "
+"поддерживает множественную загрузку файлов HTML-5"
+
+#: wppa-functions.php:3681 wppa-functions.php:3684
+msgid "Download:"
+msgstr ""
+
+#: wppa-functions.php:3705
+msgid "Zoom in"
+msgstr ""
+
+#: wppa-items.php:215 wppa-thumbnails.php:973
+msgid "Gold medal"
+msgstr ""
+
+#: wppa-items.php:215
+msgid "Gold"
+msgstr ""
+
+#: wppa-items.php:216 wppa-thumbnails.php:974
+msgid "Silver medal"
+msgstr ""
+
+#: wppa-items.php:216
+msgid "Silver"
+msgstr ""
+
+#: wppa-items.php:217 wppa-thumbnails.php:975
+msgid "Bronze medal"
+msgstr ""
+
+#: wppa-items.php:217
+msgid "Bronze"
+msgstr ""
+
+#: wppa-items.php:265 wppa-items.php:396
+#, fuzzy
+msgid "none"
+msgstr "--- пусто ---"
+
+#: wppa-items.php:295 wppa-items.php:407
+msgid "unknown"
+msgstr ""
+
+#: wppa-items.php:342 wppa-items.php:363
+#, fuzzy
+msgid "--- deleted ---"
+msgstr "--- разделитель ---"
+
+#: wppa-items.php:352
+#, fuzzy
+msgid "All Albums"
+msgstr "альбомов"
+
+#: wppa-lasten-widget.php:36
+#, fuzzy
+msgid "Last Ten Uploaded Photos"
+msgstr "Лучшая десятка фотографий"
+
+#: wppa-lasten-widget.php:83
+#, fuzzy
+msgid "View the most recent uploaded photos"
+msgstr "Смотреть фотографии обложки"
+
+#: wppa-links.php:654
+msgid "App"
+msgstr ""
+
+#: wppa-links.php:655
+msgid "Mod"
+msgstr ""
+
+#: wppa-links.php:656
+msgid "Del"
+msgstr ""
+
+#: wppa-links.php:660 wppa-links.php:677
+msgid "Are you sure you want to publish this photo?"
+msgstr "Вы уверены, что хотите опубликовать это фото?"
+
+#: wppa-links.php:671 wppa-links.php:688
+msgid "Approve"
+msgstr ""
+
+#: wppa-links.php:672
+msgid "Moderate"
+msgstr ""
+
+#: wppa-links.php:689
+#, fuzzy
+msgid "PhotoAdmin"
+msgstr "Фото"
+
+#: wppa-links.php:690
+#, fuzzy
+msgid "CommentAdmin"
+msgstr "Комментарии"
+
+#: wppa-links.php:694
+#, fuzzy
+msgid "Are you sure you want to publish this comment?"
+msgstr "Вы должны <a href=\"%s\">войти</a>, чтобы оставить комментарий"
+
+#: wppa-links.php:706
+#, fuzzy
+msgid "Are you sure you want to remove this comment?"
+msgstr "Вы должны <a href=\"%s\">войти</a>, чтобы оставить комментарий"
+
+#: wppa-links.php:720
+#, php-format
+msgid "Scheduled for %s"
+msgstr ""
+
+#: wppa-links.php:924 wppa-links.php:925
+msgid "Prev.&nbsp;page"
+msgstr "Предыдущая страница"
+
+#: wppa-links.php:929 wppa-links.php:930
+msgid "Next&nbsp;page"
+msgstr "Следующая страница"
+
+#: wppa-links.php:967 wppa-non-admin.php:579
+msgid "Download"
+msgstr "Загрузить"
+
+#: wppa-links.php:967
+msgid "Download album"
+msgstr "Загрузить альбом"
+
+#: wppa-links.php:1105
+#, fuzzy
+msgid "View thumbnails"
+msgstr "Просмотреть миниатюры"
+
+#: wppa-non-admin.php:292
+msgid ""
+"Keys: f = next mode; esc,x,o,c,q = exit; p = previous, n = next, s = start/"
+"stop, d = dismiss this notice."
+msgstr ""
+
+#: wppa-non-admin.php:293
+msgid "Keys: f = next mode; esc,x,o,c,q = exit; d = dismiss this notice."
+msgstr ""
+
+#: wppa-non-admin.php:515 wppa-slideshow.php:232
+msgid "Start"
+msgstr "Начать"
+
+#: wppa-non-admin.php:516
+msgid "Stop"
+msgstr "Остановить"
+
+#: wppa-non-admin.php:517 wppa-slideshow.php:231
+msgid "Slower"
+msgstr "Медленнее"
+
+#: wppa-non-admin.php:518 wppa-slideshow.php:233
+msgid "Faster"
+msgstr "Быстрее"
+
+#: wppa-non-admin.php:519
+msgid "Photo"
+msgstr "Фото"
+
+#: wppa-non-admin.php:520
+msgid "of"
+msgstr "из"
+
+#: wppa-non-admin.php:521
+msgid "Previous photo"
+msgstr "Предыдущее фото"
+
+#: wppa-non-admin.php:522
+msgid "Next photo"
+msgstr "Следующее фото"
+
+#: wppa-non-admin.php:523
+msgid "Prev."
+msgstr "Пред."
+
+#: wppa-non-admin.php:524 wppa-slideshow.php:672
+msgid "Next"
+msgstr "След."
+
+#: wppa-non-admin.php:525 wppa-slideshow.php:510 wppa-slideshow.php:514
+#: wppa-slideshow.php:560
+msgid "Average&nbsp;rating"
+msgstr "Средний&nbsp;рейтинг"
+
+#: wppa-non-admin.php:526 wppa-slideshow.php:535 wppa-slideshow.php:540
+#: wppa-slideshow.php:545
+msgid "My&nbsp;rating"
+msgstr "Мой &nbsp; рейтинг"
+
+#: wppa-non-admin.php:527
+msgid "Avg."
+msgstr ""
+
+#: wppa-non-admin.php:528
+msgid "Mine"
+msgstr ""
+
+#: wppa-non-admin.php:529
+#, fuzzy
+msgid "You marked this image as inappropriate."
+msgstr "Помечено как спам"
+
+#: wppa-non-admin.php:531
+msgid "No dislikes"
+msgstr ""
+
+#: wppa-non-admin.php:532
+#, fuzzy
+msgid "1 dislike"
+msgstr "1 секунда"
+
+#: wppa-non-admin.php:533
+msgid "dislikes"
+msgstr ""
+
+#: wppa-non-admin.php:534
+msgid "including mine"
+msgstr ""
+
+#: wppa-non-admin.php:537
+msgid "Please enter your name"
+msgstr "Введите свое имя"
+
+#: wppa-non-admin.php:538
+msgid "Please enter a valid email address"
+msgstr "Введите свой email"
+
+#: wppa-non-admin.php:539
+msgid "Please enter a comment"
+msgstr "Прокомментируйте"
+
+#: wppa-non-admin.php:574
+msgid "Double click to start/stop slideshow running"
+msgstr "Двойной щелчок запускает или останавливает слайдшоу"
+
+#: wppa-photo-admin-autosave.php:141
+#, fuzzy, php-format
+msgid "Photo %s has been removed."
+msgstr "Фото %s из %s"
+
+#: wppa-potd-widget.php:114
+msgid "By:"
+msgstr ""
+
+#: wppa-qr-widget.php:26
+msgid "QR Widget"
+msgstr ""
+
+#: wppa-setup.php:827
+msgid "Vote for me!"
+msgstr ""
+
+#: wppa-setup.php:828
+msgid "Voted for me"
+msgstr ""
+
+#: wppa-slideshow-widget.php:67
+#, fuzzy
+msgid "Widget landing page"
+msgstr "Следующая страница"
+
+#: wppa-slideshow-widget.php:120
+msgid "No album defined yet."
+msgstr "Альбом еще не определен."
+
+#: wppa-slideshow.php:249
+msgid "Paused"
+msgstr "Пауза"
+
+#: wppa-slideshow.php:254
+msgid ""
+"To see the full size images, you need to enable javascript in your browser."
+msgstr "Чтобы смотреть большие фото, нужно включить javascript в браузере!"
+
+#: wppa-slideshow.php:442
+#, fuzzy
+msgid "- - - Voting enabled - - -"
+msgstr "- - - Оценки включены - - -"
+
+#: wppa-slideshow.php:454
+#, fuzzy, php-format
+msgid "Number of votes: <span id=\"wppa-vote-count-%s\" >%s</span>&nbsp;"
+msgstr "Нужно <a href=\"%s\">войти</a>, чтобы голосовать"
+
+#: wppa-slideshow.php:460 wppa-slideshow.php:549 wppa-slideshow.php:586
+#, php-format
+msgid "You must <a href=\"%s\">login</a> to vote"
+msgstr "Нужно <a href=\"%s\">войти</a>, чтобы голосовать"
+
+#: wppa-slideshow.php:463 wppa-slideshow.php:552 wppa-slideshow.php:589
+#, fuzzy
+msgid "You must login to vote"
+msgstr "Нужно <a href=\"%s\">войти</a>, чтобы голосовать"
+
+#: wppa-slideshow.php:480
+msgid "- - - Rating enabled - - -"
+msgstr "- - - Оценки включены - - -"
+
+#: wppa-slideshow.php:497
+msgid "very low"
+msgstr "очень низкий"
+
+#: wppa-slideshow.php:498
+msgid "low"
+msgstr "низкий"
+
+#: wppa-slideshow.php:499
+msgid "average"
+msgstr "средний"
+
+#: wppa-slideshow.php:500
+msgid "high"
+msgstr "высокий"
+
+#: wppa-slideshow.php:501
+msgid "very high"
+msgstr "очень высокий"
+
+#: wppa-slideshow.php:528 wppa-slideshow.php:572
+#, fuzzy
+msgid "Are you sure you want to mark this image as inappropriate?"
+msgstr "Вы должны <a href=\"%s\">войти</a>, чтобы оставить комментарий"
+
+#: wppa-slideshow.php:529 wppa-slideshow.php:573
+msgid "Click this if you do NOT like this image!"
+msgstr "Кликните здесь, если вам НЕ нравится это изображение!"
+
+#: wppa-slideshow.php:531 wppa-slideshow.php:575
+#, fuzzy
+msgid "Number of people who marked this photo as inapprpriate"
+msgstr "Помечено как спам"
+
+#: wppa-slideshow.php:581
+msgid "My rating:"
+msgstr "Моя оценка:"
+
+#: wppa-slideshow.php:668
+msgid "First"
+msgstr ""
+
+#: wppa-slideshow.php:669
+msgid "Previous"
+msgstr "Предыдущее"
+
+#: wppa-slideshow.php:673
+msgid "Last"
+msgstr ""
+
+#: wppa-slideshow.php:789
+#, php-format
+msgid "Photo %s of %s"
+msgstr "Фото %s из %s"
+
+#: wppa-slideshow.php:820
+msgid "Click to start/stop"
+msgstr "Пуск/стоп"
+
+#: wppa-slideshow.php:832
+msgid "- - - Comments box activated - - -"
+msgstr "- - - Комментарии видны - - -"
+
+#: wppa-slideshow.php:853
+msgid "- - - IPTC box activated - - -"
+msgstr "- - - показ IPTC включен - - -"
+
+#: wppa-slideshow.php:873
+msgid "- - - EXIF box activated - - -"
+msgstr "- - - показ EXIF включен - - -"
+
+#: wppa-statistics.php:28
+msgid "There are"
+msgstr "Здесь"
+
+#: wppa-statistics.php:28
+msgid "photo albums. The last album added is"
+msgstr "фотоальбомов. Последним добавлен"
+
+#: wppa-statistics.php:32
+msgid ", a subalbum of"
+msgstr ", субальбом от"
+
+#: wppa-thumbnail-widget.php:43
+msgid "Thumbnail photos"
+msgstr "Превью фотографий"
+
+#: wppa-thumbnails.php:122 wppa-thumbnails.php:542 wppa-topten-widget.php:93
+msgid "View the top rated photos"
+msgstr "Смотреть самые лучшие фото"
+
+#: wppa-thumbnails.php:301
+#, fuzzy
+msgid "Views:"
+msgstr "Смотреть"
+
+#: wppa-topten-widget.php:39
+msgid "Top Ten Photos"
+msgstr "Лучшая десятка фотографий"
+
+#: wppa-topten-widget.php:110 wppa-topten-widget.php:114
+#: wppa-topten-widget.php:121
+#, php-format
+msgid "%s Votes"
+msgstr "%s Голосов"
+
+#: wppa-topten-widget.php:111 wppa-topten-widget.php:116
+#: wppa-topten-widget.php:119
+#, php-format
+msgid "Views: %s times"
+msgstr "Просмотров: %s "
+
+#: wppa-upldr-widget.php:36
+#, fuzzy
+msgid "User uploaded photos"
+msgstr "Загруженный файл не является изображением"
+
+#: wppa-upldr-widget.php:84
+msgid "There are too many registered users in the system for this widget"
+msgstr ""
+
+#: wppa-upldr-widget.php:118 wppa-upldr-widget.php:125
+msgid "Photos uploaded by"
+msgstr "Фотографии загрузил(/а)"
+
+#: wppa-utils.php:255
+#, php-format
+msgid "Rating: %s"
+msgstr "Рейтинг: %s"
+
+#: wppa-utils.php:781
+#, fuzzy, php-format
+msgid "The visitors email address is: <a href=\"mailto:%s\">%s</a>"
+msgstr "Вы должны <a href=\"%s\">войти</a>, чтобы оставить комментарий"
+
+#: wppa-utils.php:787
+#, fuzzy, php-format
+msgid "The visitor says his email address is: <a href=\"mailto:%s\">%s</a>"
+msgstr "Вы должны <a href=\"%s\">войти</a>, чтобы оставить комментарий"
+
+#: wppa-utils.php:793
+#, php-format
+msgid ""
+"This message is automaticly generated at %s. It is useless to respond to it."
+msgstr ""
+"Это сообщение автоматически сгенерировано %s. Бесполезно на него отвечать."
