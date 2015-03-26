@@ -2342,3 +2342,11 @@ static $wppa_cmt;
 	
 	return $desc;
 }
+
+// Convert file extension to lowercase
+function wppa_down_ext( $file ) {
+	if ( strpos( $file, '.' ) === false ) return $file;	// no . found
+	$dotpos = strrpos( $file, '.' );
+	$file = substr( $file, 0, $dotpos ) . strtolower( substr( $file, $dotpos ) );
+	return $file;
+}

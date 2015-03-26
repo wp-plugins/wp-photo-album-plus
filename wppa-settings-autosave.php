@@ -26,7 +26,8 @@ global $wppa_tags;
 			
 
 	// Test area
-	
+//	$file = ABSPATH.'Pietje/DIR/Foto.JPG';
+//	echo $file.'<br />'.wppa_down_ext($file);
 	// End test area
 	
 	// Initialize

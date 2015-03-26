@@ -16,7 +16,7 @@ function wppa_init_video() {
 global $wppa_supported_video_extensions;
 
 	if ( wppa_is_video_enabled() ) {
-		$wppa_supported_video_extensions = array( 'mp4', 'ogv', 'ogg', 'webm' );
+		$wppa_supported_video_extensions = array( 'mp4', 'ogv', 'ogg', 'webm', 'MP4' );
 	}
 	else {
 		$wppa_supported_video_extensions = array();
