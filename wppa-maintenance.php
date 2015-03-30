@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains (not yet, but in the future maybe) all the maintenance routines
-* Version 5.5.6
+* Version 5.5.7
 *
 */
 
@@ -18,39 +18,41 @@ global $wppa_opt;
 global $wppa_session;
 
 	// Check for multiple maintenance procs
-	$all_slugs = array( 'wppa_remake_index_albums', 
-						'wppa_remove_empty_albums', 
-						'wppa_remake_index_photos',
-						'wppa_apply_new_photodesc_all',
-						'wppa_append_to_photodesc',
-						'wppa_remove_from_photodesc',
-						'wppa_remove_file_extensions',
-						'wppa_readd_file_extensions',
-						'wppa_regen_thumbs',
-						'wppa_rerate',
-						'wppa_recup',
-						'wppa_file_system',
-						'wppa_cleanup',
-						'wppa_remake',
-						'wppa_list_index',
-						'wppa_blacklist_user',
-						'wppa_un_blacklist_user',
-						'wppa_rating_clear',
-						'wppa_viewcount_clear',
-						'wppa_iptc_clear',
-						'wppa_exif_clear',
-						'wppa_watermark_all',
-						'wppa_create_all_autopages',
-						'wppa_leading_zeros',
-						'wppa_add_gpx_tag',
-						'wppa_optimize_ewww',
-						'wppa_comp_sizes',
-						'wppa_edit_tag'
-					);
-	foreach ( array_keys( $all_slugs ) as $key ) {
-		if ( $all_slugs[$key] != $slug ) {
-			if ( get_option( $all_slugs[$key].'_togo', '0') ) { 	// Process running
-				return __('You can run only one maintenance procedure at a time', 'wppa').'||'.$slug.'||'.__('Error', 'wppa').'||'.''.'||'.'';
+	if ( ! wppa_switch( 'wppa_maint_ignore_concurrency_error' ) ) {
+		$all_slugs = array( 'wppa_remake_index_albums', 
+							'wppa_remove_empty_albums', 
+							'wppa_remake_index_photos',
+							'wppa_apply_new_photodesc_all',
+							'wppa_append_to_photodesc',
+							'wppa_remove_from_photodesc',
+							'wppa_remove_file_extensions',
+							'wppa_readd_file_extensions',
+							'wppa_regen_thumbs',
+							'wppa_rerate',
+							'wppa_recup',
+							'wppa_file_system',
+							'wppa_cleanup',
+							'wppa_remake',
+							'wppa_list_index',
+							'wppa_blacklist_user',
+							'wppa_un_blacklist_user',
+							'wppa_rating_clear',
+							'wppa_viewcount_clear',
+							'wppa_iptc_clear',
+							'wppa_exif_clear',
+							'wppa_watermark_all',
+							'wppa_create_all_autopages',
+							'wppa_leading_zeros',
+							'wppa_add_gpx_tag',
+							'wppa_optimize_ewww',
+							'wppa_comp_sizes',
+							'wppa_edit_tag'
+						);
+		foreach ( array_keys( $all_slugs ) as $key ) {
+			if ( $all_slugs[$key] != $slug ) {
+				if ( get_option( $all_slugs[$key].'_togo', '0') ) { 	// Process running
+					return __('You can run only one maintenance procedure at a time', 'wppa').'||'.$slug.'||'.__('Error', 'wppa').'||'.''.'||'.'';
+				}
 			}
 		}
 	}	

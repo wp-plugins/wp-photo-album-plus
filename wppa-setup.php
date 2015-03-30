@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 5.5.4
+* Version 5.5.7
 *
 */
 
@@ -881,6 +881,7 @@ Hide Camera info
 						'wppa_lightbox_global'			=> 'no',
 						'wppa_lightbox_global_set'		=> 'no',
 						'wppa_lb_hres' 					=> 'no',
+						'wppa_ovl_video_start' 			=> 'yes',
 						
 						// Table V: Fonts
 						'wppa_fontfamily_title' 	=> '',
@@ -1094,6 +1095,8 @@ Hide Camera info
 						'wppa_tag_to_edit' 			=> '',
 						'wppa_new_tag_value' 		=> '',
 						'wppa_edit_tag' 			=> '',
+						
+						'wppa_maint_ignore_concurrency_error' 	=> 'no',
 
 
 						// Table IX: Miscellaneous

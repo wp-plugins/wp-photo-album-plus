@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the non admin stuff
-* Version 5.5.5
+* Version 5.5.7
 *
 */
 
@@ -291,6 +291,7 @@ global $wppa_session;
 		'.( wppa_opt( 'wppa_fontsize_lightbox' ) ? 'wppaOvlLineHeight = "'.(wppa_opt( 'wppa_fontsize_lightbox' ) + '2').'"' : '').'
 		wppaOvlFullLegenda = "'.__a('Keys: f = next mode; escape = exit; p = previous, n = next, s = start/stop, d = dismiss this notice.').'";
 		wppaOvlFullLegendaSingle = "'.__a('Keys: f = next mode; escape = exit; d = dismiss this notice.').'";
+		wppaOvlVideoStart = '.( wppa_switch( 'wppa_ovl_video_start' ) ? 'true' : 'false' ).';
 	</script>
 	';
 	wp_nonce_field('wppa-check' , 'wppa-nonce', false, true);	// Nonce field for Ajax bump view counter from lightbox

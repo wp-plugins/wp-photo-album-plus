@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 5.5.4
+* Version 5.5.7
 *
 */
 
@@ -3900,6 +3900,17 @@ global $wppa_tags;
 							$clas = '';
 							$tags = 'lightbox';
 							wppa_setting($slug, '6', $name, $desc, $html, $help, $clas, $tags);
+							
+							if ( wppa_is_video_enabled() ) {
+								$name = __('Video autostart', 'wppa');
+								$desc = __('Videos on lightbox start automaticly.', 'wppa');
+								$help = '';
+								$slug = 'wppa_ovl_video_start';
+								$html = wppa_checkbox($slug);
+								$clas = '';
+								$tags = 'lightbox';
+								wppa_setting($slug, '7', $name, $desc, $html, $help, $clas, $tags);
+							}
 							}
 							?>
 						</tbody>
@@ -5300,6 +5311,19 @@ global $wppa_tags;
 							$wppa_table = 'VIII';
 							
 						wppa_setting_subheader('A', '4', __('Harmless and reverseable actions', 'wppa'));
+							
+							$name = __('Ignore concurrency', 'wppa');
+							$desc = __('Ignore the prevention of concurrent actions.', 'wppa');
+							$help = esc_js(__('This setting is meant to recover from deadlock situations only. Use with care!', 'wppa'));
+							$slug = 'wppa_maint_ignore_concurrency_error';
+							$html1 = wppa_checkbox( $slug );
+							$html2 = '';
+							$html3 = '';
+							$html4 = '';
+							$html = array($html1, $html2, $html3, $html4);
+							$clas = '';
+							$tags = 'system';
+							wppa_setting(false, '0', $name, $desc, $html, $help, $clas, $tags);
 							
 							$name = __('Setup', 'wppa');
 							$desc = __('Re-initialize plugin.', 'wppa');

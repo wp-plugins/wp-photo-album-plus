@@ -2,7 +2,7 @@
 //
 // conatins slideshow, theme, ajax and lightbox code
 //
-var wppaJsVersion = '5.5.5';
+var wppaJsVersion = '5.5.7';
 
 // Part 1: Slideshow
 //
@@ -2952,6 +2952,7 @@ var wppaOvlIsVideo = false;
 var wppaShowLegenda = '';
 var wppaOvlFsPhotoId = 0;
 var wppaPhotoId = 0;
+var wppaOvlVideoStart = false;
 
 // Initial initialization
 jQuery( document ).ready(function( e ) {
@@ -3153,11 +3154,12 @@ wppaConsoleLog( 'wppaOvlShow arg='+arg );
 		if ( wppaIsVideo ) {
 			html = 
 			'<div id="wppa-ovl-full-bg" style="position:fixed; width:'+wppaWindowInnerWidth+'px; height:'+wppaWindowInnerHeight+'px; left:0px; top:0px; text-align:center;" >'+
-				'<video id="wppa-overlay-img" controls preload="metadata"'+
-					' ontouchstart="wppaTouchStart( event, \'wppa-overlay-img\', -1 );"'+
-					' ontouchend="wppaTouchEnd( event );"'+
-					' ontouchmove="wppaTouchMove( event );"'+
-					' ontouchcancel="wppaTouchCancel( event );"'+
+				'<video id="wppa-overlay-img" controls preload="metadata"' +
+					( wppaOvlVideoStart ? ' autoplay' : '' ) +
+					' ontouchstart="wppaTouchStart( event, \'wppa-overlay-img\', -1 );"' +
+					' ontouchend="wppaTouchEnd( event );"' +
+					' ontouchmove="wppaTouchMove( event );"' +
+					' ontouchcancel="wppaTouchCancel( event );"' +
 					' style="border:none; width:'+wppaWindowInnerWidth+'px; box-shadow:none; position:absolute;" >'+
 						wppaOvlVideoHtml+
 				'</video>'+
@@ -3224,7 +3226,8 @@ wppaConsoleLog( 'wppaOvlShow arg='+arg );
 					'<div id="wppa-overlay-qt-txt"  style="position:absolute; right:16px; top:'+( wppaOvlPadTop-1 )+'px; visibility:hidden; box-shadow:none; font-family:helvetica; font-weight:bold; font-size:14px; color:'+qtxtcol+'; cursor:pointer; " onclick="wppaOvlHide()" ontouchstart="wppaOvlHide()" >'+wppaOvlCloseTxt+'&nbsp;&nbsp;</div>'+
 					'<img id="wppa-overlay-qt-img"  src="'+wppaImageDirectory+'smallcross-'+wppaOvlTheme+'.gif'+'" style="position:absolute; right:0; top:'+wppaOvlPadTop+'px; visibility:hidden; box-shadow:none; cursor:pointer" onclick="wppaOvlHide()" ontouchstart="wppaOvlHide()" >';
 		if ( wppaIsVideo ) {
-			html += '<video id="wppa-overlay-img" preload="metadata"'+
+			html += '<video id="wppa-overlay-img" preload="metadata"' +
+			( wppaOvlVideoStart ? ' autoplay' : '' ) +
 			' ontouchstart="wppaTouchStart( event, \'wppa-overlay-img\', -1 );"  ontouchend="wppaTouchEnd( event );" ontouchmove="wppaTouchMove( event );" ontouchcancel="wppaTouchCancel( event );" '+
 			' style="border-width:16px; border-style:solid; border-color:'+wppaOvlTheme+'; margin-bottom:-15px; max-width:'+mw+'px; visibility:hidden; box-shadow:none;" controls >'+wppaOvlVideoHtml+'</video>';
 			wppaOvlIsVideo = true;
