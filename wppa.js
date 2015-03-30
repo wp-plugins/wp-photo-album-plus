@@ -1024,6 +1024,7 @@ function wppaMakeTheSlideHtml( mocc, bgfg, idx ) {
 			var html = '';
 			var i = 0;
 			var set = wppaLightboxSingle[mocc] ? '' : '[slide-'+mocc+'-'+bgfg+']';
+			
 			// Before current slide	// This does NOT work on lightbox 3 ! 
 			if ( wppaLightBox[mocc] == 'wppa' ) {
 				while ( i<idx ) {
@@ -1039,18 +1040,20 @@ function wppaMakeTheSlideHtml( mocc, bgfg, idx ) {
 					i++;
 				}
 			}
+			
 			// Current slide
 			if ( wppaOvlHires && _wppaIsVideo[mocc][idx] == '' ) {
 				url = _wppaHiresUrl[mocc][idx];
 			}
 			else {
 				url = wppaMakeFullsizeUrl( _wppaUrl[mocc][idx] );
+//alert( 'Sorry, opajaap is testing '+_wppaUrl[mocc][idx] );
 			}
-		//	url = wppaMakeFullsizeUrl( _wppaUrl[mocc][idx] );
-//alert( _wppaVideoHtml[mocc][idx] );
+
 			html += '<a href="'+url+'" target="'+_wppaLinkTarget[mocc][idx]+'" data-videonatwidth="'+_wppaVideoNatWidth[mocc][idx]+'" data-videonatheight="'+_wppaVideoNatHeight[mocc][idx]+'" data-videohtml="'+encodeURI( _wppaVideoHtml[mocc][idx] )+'" '+theTitle+'="'+_wppaLbTitle[mocc][idx]+'" rel="'+wppaLightBox[mocc]+set+'">'+
 						'<'+imgVideo+' title="'+_wppaLinkTitle[mocc][idx]+'" id="theimg'+bgfg+'-'+mocc+'" '+_wppaSlides[mocc][idx]+
 					'</a>';
+					
 			// After current slide // This does NOT work on lightbox 3 ! 
 			if ( wppaLightBox[mocc] == 'wppa' ) {
 				i = idx + 1;
@@ -1071,17 +1074,28 @@ function wppaMakeTheSlideHtml( mocc, bgfg, idx ) {
 }
 
 function wppaMakeFullsizeUrl( url ) {
+var temp;
+var temp2;
 
 	url = url.replace( '/thumbs/', '/' );	// Not a thumb
 	// Remove sizespec for Cloudinary
-	var temp = url.split( '//' );
-	var temp2 = temp[1].split( '/' );
-	url = temp[0]+'/';
+	temp = url.split( '//' );
+	if ( temp[1] ) {
+		temp2 = temp[1].split( '/' );
+		url = temp[0]+'//';
+	}
+	else {
+		temp2 = temp[0].split( '/' );
+		url = '';
+	}
 	var j = 0;
 	while ( j < temp2.length ) {
 		var chunk = temp2[j];
 		var w = chunk.split( '_' );
-		if ( w[0] != 'w' ) url += '/'+chunk;
+		if ( w[0] != 'w' ) {
+			if ( j != 0 ) url += '/';
+			url += chunk;
+		}
 		j++;
 	}
 	return url;
@@ -3139,6 +3153,7 @@ wppaConsoleLog( 'wppaOvlShow arg='+arg );
 	}
 
 	wppaPhotoId = wppaUrlToId( wppaOvlUrl );
+//alert(wppaOvlUrl+':'+wppaPhotoId);
 	_bumpViewCount( wppaPhotoId );
 	
 	var wppaIsVideo = typeof( wppaOvlVideoHtml ) != 'undefined' && wppaOvlVideoHtml != '' && wppaOvlVideoHtml != 'undefined';

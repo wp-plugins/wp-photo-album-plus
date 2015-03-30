@@ -1602,7 +1602,15 @@ global $thumb;
 // Get url of photo with highest available resolution.
 // Not for display ( need not to download fast ) but for external services like Fotomoto
 function wppa_get_hires_url( $id ) {
-	if ( wppa_is_video( $id ) ) return '';
+
+	// video? return the poster url
+	if ( wppa_is_video( $id ) ) {
+		$url = wppa_get_photo_url( $id );
+		$url = wppa_fix_poster_ext( $url );
+		return $url;
+	}
+	
+	// Try the source url
 	$source_path = wppa_get_source_path( $id );
 	$wp_content = trim( str_replace( site_url(), '', content_url() ), '/' );
 	if ( is_file( $source_path ) ) {

@@ -210,7 +210,12 @@ global $wpdb;
 			__wcs( 'wppa-box-text' ) . __wcs( 'wppa-black' ) . '">' . 
 			wppa_get_album_desc( $albumid ) . '</p>';
 	}
-			
+
+	// Close the Cover text frame
+	if ( $photo_pos == 'left' ) {
+		$wppa['out'] .= wppa_nltab( '-' ) . '</div><!-- covertext_frame --><div style="clear:both;"></div>';
+	}
+	
 	// The 'Slideshow'/'Browse' link
 	wppa_the_slideshow_browse_link( $photocount, $href_slideshow, $onclick_slideshow, $target );
 
@@ -220,7 +225,9 @@ global $wpdb;
 		$href_content, $target, $onclick_content );
 
 	// Close the Cover text frame
-	$wppa['out'] .= wppa_nltab( '-' ) . '</div><!-- covertext_frame -->';
+	if ( $photo_pos != 'left' ) {
+		$wppa['out'] .= wppa_nltab( '-' ) . '</div><!-- covertext_frame -->';
+	}
 		
 	// The Cover photo last?
 	if ( $photo_pos == 'right' || $photo_pos == 'bottom' ) {

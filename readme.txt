@@ -195,6 +195,13 @@ See for additional information: http://wppa.opajaap.nl/?page_id=1459
 
 * The support of videos. You can mix photos and videos throughout the system including lightbox.
 
+= 5.5.7 =
+
+= Other Changes =
+
+* Layout change in default album covers. All links are now below the body text when the photo is at the left hand side.
+* In case of deadlock situations in maintenance procs, you can now now ignore the concurrency error in Table VIII-A0.
+
 = 5.5.6 =
 
 = Bug Fixes =

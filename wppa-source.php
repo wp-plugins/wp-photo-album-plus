@@ -33,14 +33,20 @@ global $wppa_opt;
 			$doit = false; 	
 	}
 	
-	if ( $doit ) { // ( wppa_switch('wppa_keep_source_admin') && is_admin() ) || ( wppa_switch('wppa_keep_source_frontend') && ! is_admin() ) ) {
+	if ( $doit ) { 
 		if ( ! is_dir( $wppa_opt['wppa_source_dir'] ) ) @ wppa_mktree( $wppa_opt['wppa_source_dir'] );
 		$sourcedir = wppa_get_source_dir();
 		if ( ! is_dir( $sourcedir ) ) @ wppa_mktree( $sourcedir );
 		$albdir = wppa_get_source_album_dir( $alb ); 
-		if ( ! is_dir( $albdir ) ) @ wppa_mktree( $albdir );	
+		if ( ! is_dir( $albdir ) ) @ wppa_mktree( $albdir );
+		if ( ! is_dir( $albdir ) ) {
+			wppa_log( 'Err', 'Could not create source directory ' . $albdir );
+		}
 		$dest = $albdir . '/' . wppa_sanitize_file_name( $name );
 		if ( $file != $dest ) @ copy( $file, $dest );	// Do not copy to self, and do not bother on failure
+		if ( ! is_file( $dest ) ) {
+			wppa_log( 'Err', 'Could not save ' . $dest );
+		}
 	}
 }
 

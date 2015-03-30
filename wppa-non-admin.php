@@ -74,6 +74,9 @@ global $thumb;
 	$id = wppa_get_get( 'photo' );
 	if ( $id ) {
 		$imgurl = wppa_get_photo_url( $id );
+		if ( wppa_is_video( $id ) ) {
+			$imgurl = wppa_fix_poster_ext( $imgurl );
+		}
 	}
 	else {
 		$imgurl = '';

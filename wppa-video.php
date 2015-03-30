@@ -261,6 +261,12 @@ global $wppa_opt;
 }
 
 function wppa_fix_poster_ext( $file ) {
+
+	return str_replace( '.xxx', '.jpg', $file );
+	/*
+	$temp = explode( '?', $file );
+	$file = $temp['0'];
+	
 	$ext = wppa_get_ext( $file );
 	if ( $ext == 'xxx' ) {
 		$result = wppa_strip_ext( $file ) . '.jpg';
@@ -268,5 +274,9 @@ function wppa_fix_poster_ext( $file ) {
 	else {
 		$result = $file;
 	}
+	if ( isset( $temp['1'] ) ) {
+		$result .= '?' . $temp['1'];
+	}
 	return $result;
+	*/
 }
