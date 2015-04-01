@@ -1384,47 +1384,49 @@ global $wpdb;
 			break;
 	}
 	
-	if ( wppa( 'src' ) && ! wppa( 'is_related' ) && ! wppa( 'in_widget' ) ) { 
-		$result['url'] .= '&amp;wppa-searchstring=' . urlencode( wppa( 'searchstring' ) );
-	}
+	if ( $type != 'thumbalbum' ) {
+		if ( wppa( 'src' ) && ! wppa( 'is_related' ) && ! wppa( 'in_widget' ) ) { 
+			$result['url'] .= '&amp;wppa-searchstring=' . urlencode( wppa( 'searchstring' ) );
+		}
 
-	if ( $wich == 'topten' ) {
-		$result['url'] .= '&amp;wppa-topten=' . wppa_opt( 'wppa_topten_count' );
-	}
-	elseif ( wppa( 'is_topten' ) ) {
-		$result['url'] .= '&amp;wppa-topten=' . wppa( 'topten_count' );
-	}
-	
-	if ( $wich == 'lasten' ) {
-		$result['url'] .= '&amp;wppa-lasten=' . wppa_opt( 'wppa_lasten_count' );
-	}
-	elseif ( wppa( 'is_lasten' ) ) {
-		$result['url'] .= '&amp;wppa-lasten=' . wppa( 'lasten_count' );
-	}
+		if ( $wich == 'topten' ) {
+			$result['url'] .= '&amp;wppa-topten=' . wppa_opt( 'wppa_topten_count' );
+		}
+		elseif ( wppa( 'is_topten' ) ) {
+			$result['url'] .= '&amp;wppa-topten=' . wppa( 'topten_count' );
+		}
+		
+		if ( $wich == 'lasten' ) {
+			$result['url'] .= '&amp;wppa-lasten=' . wppa_opt( 'wppa_lasten_count' );
+		}
+		elseif ( wppa( 'is_lasten' ) ) {
+			$result['url'] .= '&amp;wppa-lasten=' . wppa( 'lasten_count' );
+		}
 
-	if ( $wich == 'comten' ) {
-		$result['url'] .= '&amp;wppa-comten=' . wppa_opt( 'wppa_comten_count' );
-	}
-	elseif ( wppa( 'is_comten' ) ) {
-		$result['url'] .= '&amp;wppa-comten=' . wppa( 'comten_count' );
-	}
+		if ( $wich == 'comten' ) {
+			$result['url'] .= '&amp;wppa-comten=' . wppa_opt( 'wppa_comten_count' );
+		}
+		elseif ( wppa( 'is_comten' ) ) {
+			$result['url'] .= '&amp;wppa-comten=' . wppa( 'comten_count' );
+		}
 
-	if ( $wich == 'featen' ) {
-		$result['url'] .= '&amp;wppa-featen=' . wppa_opt( 'wppa_featen_count' );
-	}
-	elseif ( wppa( 'is_featen' ) ) {
-		$result['url'] .= '&amp;wppa-featen=' . wppa( 'featen_count' );
-	}
-	
-	if ( wppa( 'is_related' ) ) {
-		$result['url'] .= '&amp;wppa-rel=' . wppa( 'is_related' ) . '&amp;wppa-relcount=' . wppa( 'related_count' );
-	}
-	elseif ( wppa( 'is_tag' ) ) {
-		$result['url']  .= '&amp;wppa-tag=' . wppa( 'is_tag' );
-	}
-	
-	if ( wppa( 'is_upldr' ) ) {
-		$result['url'] .= '&amp;wppa-upldr=' . wppa( 'is_upldr' );
+		if ( $wich == 'featen' ) {
+			$result['url'] .= '&amp;wppa-featen=' . wppa_opt( 'wppa_featen_count' );
+		}
+		elseif ( wppa( 'is_featen' ) ) {
+			$result['url'] .= '&amp;wppa-featen=' . wppa( 'featen_count' );
+		}
+		
+		if ( wppa( 'is_related' ) ) {
+			$result['url'] .= '&amp;wppa-rel=' . wppa( 'is_related' ) . '&amp;wppa-relcount=' . wppa( 'related_count' );
+		}
+		elseif ( wppa( 'is_tag' ) ) {
+			$result['url']  .= '&amp;wppa-tag=' . wppa( 'is_tag' );
+		}
+		
+		if ( wppa( 'is_upldr' ) ) {
+			$result['url'] .= '&amp;wppa-upldr=' . wppa( 'is_upldr' );
+		}
 	}
 	
 	if ( $page != '0' ) {	// on a different page

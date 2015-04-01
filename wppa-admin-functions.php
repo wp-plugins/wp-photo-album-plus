@@ -686,7 +686,7 @@ global $allphotos;
 		foreach ( $photos as $photo ) {
 		
 			// Remake the files
-			$ext = wppa_is_video( $id ) ? 'jpg' : $photo['ext'];
+			$ext = wppa_is_video( $photo['id'] ) ? 'jpg' : $photo['ext'];
 			wppa_make_the_photo_files( $file, $photo['id'], $ext );
 			
 			// and add watermark ( optionally ) to fullsize image only

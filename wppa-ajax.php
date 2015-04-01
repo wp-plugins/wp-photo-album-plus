@@ -2,7 +2,7 @@
 /* wppa-ajax.php
 *
 * Functions used in ajax requests
-* version 5.5.6
+* version 6.0.0
 *
 */
 
@@ -1703,6 +1703,15 @@ global $wppa_session;
 							wppa_update_option( 'wppa_custom_on', 'yes' );
 						}
 						wppa_update_option( 'wppa_fotomoto_on', 'yes' );
+					}
+					break;
+					
+				case 'wppa_i_video':
+					if ( $value == 'yes' ) {
+						wppa_update_option( 'wppa_enable_video', 'yes' );
+					}
+					else {
+						wppa_update_option( 'wppa_enable_video', 'no' );
 					}
 					break;
 					

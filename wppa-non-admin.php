@@ -3,8 +3,8 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the non admin stuff
-* Version 5.5.7
-*
+* Version 6.0.0
+* 
 */
 
 if ( ! defined( 'ABSPATH' ) ) die( "Can't load this file directly" );
@@ -74,6 +74,9 @@ global $thumb;
 	$id = wppa_get_get( 'photo' );
 	if ( $id ) {
 		$imgurl = wppa_get_photo_url( $id );
+		if ( wppa_is_video( $id ) ) {
+			$imgurl = wppa_fix_poster_ext( $imgurl );
+		}
 	}
 	else {
 		$imgurl = '';

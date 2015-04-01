@@ -3,8 +3,8 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 5.5.7
-*
+* Version 6.0.0
+* 
 */
 
 if ( ! defined( 'ABSPATH' ) ) die( "Can't load this file directly" );
@@ -510,6 +510,7 @@ Hide Camera info
 						'wppa_i_exif'					=> '',
 						'wppa_i_gpx'					=> '',
 						'wppa_i_fotomoto'				=> '',
+						'wppa_i_video' 					=> '',
 						'wppa_i_done'					=> '',
 						
 						// Table I: Sizes
@@ -806,6 +807,7 @@ Hide Camera info
 						
 						'wppa_thumbs_first' 			=> 'no',
 						'wppa_login_links' 				=> 'yes',
+						'wppa_enable_video' 			=> 'yes',
 
 						// B Full size and Slideshow
 						'wppa_fullvalign' 				=> 'center',

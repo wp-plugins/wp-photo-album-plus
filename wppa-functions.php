@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Various funcions
-* Version 5.5.5
+* Version 6.0.0
 *
 */
 
@@ -3705,7 +3705,7 @@ global $wppa;
 
 	wppa_cache_thumb( $id );
 
-	$do_download 	= wppa_switch( 'wppa_art_monkey_on_lightbox' );
+	$do_download 	= wppa_is_video( $id ) ? false : wppa_switch( 'wppa_art_monkey_on_lightbox' );
 	$do_name 		= wppa_switch( 'wppa_ovl_'.$type.'_name' ) || wppa_switch( 'wppa_ovl_add_owner' );
 	$do_desc 		= wppa_switch( 'wppa_ovl_'.$type.'_desc' );
 	$do_sm 			= wppa_switch( 'wppa_share_on_lightbox' );

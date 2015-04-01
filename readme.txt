@@ -1,8 +1,8 @@
 === WP Photo Album Plus ===
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
-Tags: photo, album, photoalbum, gallery, slideshow, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, myCRED, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile, cloudinary, fotomoto, CMTooltipGlossary
-Version: 5.5.7
+Tags: photo, album, photoalbum, gallery, slideshow, video, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, myCRED, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile, cloudinary, fotomoto, CMTooltipGlossary
+Version: 6.0.0
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -11,13 +11,14 @@ Tested up to: 4.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-This plugin is designed to easily manage and display your photo albums and slideshows in a single as well as in a network WordPress site.
+This plugin is designed to easily manage and display your photos, photo albums, slideshows and videos in a single as well as in a network WordPress site.
 
 == Description ==
 
 This plugin is designed to easily manage and display your photo albums and slideshows within your WordPress site. 
 
 * You can create various albums that contain photos as well as sub albums at the same time.
+* You can mix photos and videos throughout the system.
 * There is no limitation to the number of albums and photos.
 * There is no limitation to the nesting depth of sub-albums.
 * You have full control over the display sizes of the photos.
@@ -187,6 +188,17 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 6.0.0 =
+
+= New Features =
+
+* The support of videos. You can mix photos and videos throughout the system including lightbox.
+See the <a href="http://wppa.opajaap.nl/video-support/">documentation.</a>
+
+= Other Changes =
+
+* Added link types to various virtual album widgets.
 
 = 5.5.7 =
 

@@ -5,8 +5,8 @@
 * Various funcions to display a thumbnail image
 * Contains all possible frontend thumbnail types
 *
-* Version 5.5.6
-*
+* Version 6.0.0
+* 
 */
 
 // Display the standard thumbnail image
@@ -526,16 +526,79 @@ function wppa_the_thumbascoverphoto( $id, $src, $photo_left, $link, $imgattr_a, 
 			$href = wppa_get_hires_url( $id );
 			$cursor = ' cursor:url( ' .wppa_get_imgdir() . wppa_opt( 'magnifier' ) . ' ),pointer;';
 			$result .= '<a href="'.$href.'" rel="'.wppa_opt( 'lightbox_name' ).'[occ'.wppa( 'mocc' ).']" title="'.$title.'">';
-				$result .= '<img src="'.$src.'" ' . wppa_get_imgalt( $id ) . ' class="image wppa-img" width="'.$imgwidth.'" height="'.$imgheight.'" style="'.__wcs( 'wppa-img' ).$imgattr.$cursor.'" '.$events.' />';
+				if ( wppa_is_video( $id ) ) {
+					$result .= wppa_get_video_html( array (
+								'id'			=> $id,
+								'width'			=> $imgwidth,
+								'height' 		=> $imgheight,
+								'controls' 		=> false,
+						//		'margin_top' 	=> '0',
+						//		'margin_bottom' => '0',
+								'tagid' 		=> 'i-'.$id.'-'.wppa( 'mocc' ),
+						//		'cursor' 		=> '',
+								'events' 		=> $events,
+								'title' 		=> $title,
+								'preload' 		=> 'metadata',
+						//		'onclick' 		=> '',
+								'lb' 			=> false,
+								'class' 		=> 'image wppa-img',
+								'style' 		=> __wcs( 'wppa-img' ).$imgattr.$cursor		//$imgstyle
+							) );
+				}
+				else {
+					$result .= '<img src="'.$src.'" ' . wppa_get_imgalt( $id ) . ' class="image wppa-img" width="'.$imgwidth.'" height="'.$imgheight.'" style="'.__wcs( 'wppa-img' ).$imgattr.$cursor.'" '.$events.' />';
+				}
 			$result .= '</a>';
 		}
 		elseif ( $link['is_url'] ) {
 			$result .= '<a href="'.$href.'" title="'.$title.'">';
-				$result .= '<img src="'.$src.'" ' . wppa_get_imgalt( $id ) . ' class="image wppa-img" width="'.$imgwidth.'" height="'.$imgheight.'" style="'.__wcs( 'wppa-img' ).$imgattr.'" '.$events.' />';
+				if ( wppa_is_video( $id ) ) {
+					$result .= wppa_get_video_html( array (
+								'id'			=> $id,
+								'width'			=> $imgwidth,
+								'height' 		=> $imgheight,
+								'controls' 		=> false,
+						//		'margin_top' 	=> '0',
+						//		'margin_bottom' => '0',
+								'tagid' 		=> 'i-'.$id.'-'.wppa( 'mocc' ),
+						//		'cursor' 		=> '',
+								'events' 		=> $events,
+								'title' 		=> $title,
+								'preload' 		=> 'metadata',
+						//		'onclick' 		=> '',
+								'lb' 			=> false,
+								'class' 		=> 'image wppa-img',
+								'style' 		=> __wcs( 'wppa-img' ).$imgattr		//$imgstyle
+							) );
+				}
+				else {
+					$result .= '<img src="'.$src.'" ' . wppa_get_imgalt( $id ) . ' class="image wppa-img" width="'.$imgwidth.'" height="'.$imgheight.'" style="'.__wcs( 'wppa-img' ).$imgattr.'" '.$events.' />';
+				}
 			$result .= '</a>';
 		}
 		else {
-			$result .= '<img src="'.$src.'" ' . wppa_get_imgalt( $id ) . ' class="image wppa-img" width="'.$imgwidth.'" height="'.$imgheight.'" style="'.__wcs( 'wppa-img' ).$imgattr.'" '.$events.' onclick="'.$href.'" />';
+			if ( wppa_is_video( $id ) ) {
+					$result .= wppa_get_video_html( array (
+								'id'			=> $id,
+								'width'			=> $imgwidth,
+								'height' 		=> $imgheight,
+								'controls' 		=> false,
+						//		'margin_top' 	=> '0',
+						//		'margin_bottom' => '0',
+								'tagid' 		=> 'i-'.$id.'-'.wppa( 'mocc' ),
+						//		'cursor' 		=> '',
+								'events' 		=> $events,
+								'title' 		=> $title,
+								'preload' 		=> 'metadata',
+								'onclick' 		=> $href,
+								'lb' 			=> false,
+								'class' 		=> 'image wppa-img',
+								'style' 		=> __wcs( 'wppa-img' ).$imgattr		//$imgstyle
+							) );
+			}
+			else {
+				$result .= '<img src="'.$src.'" ' . wppa_get_imgalt( $id ) . ' class="image wppa-img" width="'.$imgwidth.'" height="'.$imgheight.'" style="'.__wcs( 'wppa-img' ).$imgattr.'" '.$events.' onclick="'.$href.'" />';
+			}
 		}
 		$result .= '</div>';
 	}

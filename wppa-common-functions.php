@@ -2,8 +2,8 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 5.5.6
-*
+* version 6.0.0
+* 
 */
 
 if ( ! defined( 'ABSPATH' ) ) die( "Can't load this file directly" );
@@ -232,19 +232,6 @@ static $randseed_modified;
 	}
 	
 	return $randseed;
-}
-
-function wppa_load_video() {
-global $wppa_video_support;
-
-	if ( $wppa_video_support && is_file( $wppa_video_support ) ) {
-		// Load working library
-		require_once $wppa_video_support;
-	}
-	else {
-		// Load dummy library
-		require_once 'wppa-video.php';
-	}
 }
 
 function wppa_load_language() {

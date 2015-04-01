@@ -3,8 +3,8 @@
 * Package: wp-photo-album-plus
 *
 * edit and delete photos
-* version 5.5.6
-*
+* version 6.0.0
+* 
 */
 
 if ( ! defined( 'ABSPATH' ) ) die( "Can't load this file directly" );
@@ -204,7 +204,8 @@ global $wppa;
 									$is_video 	= wppa_is_video( $photo['id'], true );
 									$big 	= wppa_get_photo_url( $photo['id'] );
 									if ( $is_video ) { 
-										$big = str_replace( 'xxx', 'mp4', $big );
+										reset( $is_video );
+										$big = str_replace( 'xxx', current( $is_video ), $big );
 										?>
 										<a href="<?php echo $big ?>" target="_blank" title="<?php _e( 'Preview fullsize video', 'wppa' ) ?>" >
 											<?php echo wppa_get_video_html( array( 	'id' 		=> $photo['id'],
@@ -478,20 +479,6 @@ global $wppa;
 											foreach ( $is_video as $fmt ) {
 												echo '<tr><td>'.$fmt.'</td><td>'.__( 'Filesize:', 'wppa' ).'</td><td>'.wppa_get_filesize( str_replace( 'xxx', $fmt, wppa_get_photo_path( $photo['id'] ) ) ).'</td></tr>';
 											}
-							/*				
-											if ( file_exists( str_replace( 'xxx', 'jpg', wppa_get_photo_path( $photo['id'] ) ) ) ) {
-												echo '<tr><td>'.__('Poster available', 'wppa').'</td><td></td><td></td></tr>';
-											}
-											else {
-												echo '<tr><td>'.__('Poster NOT available', 'wppa').'</td><td></td><td></td></tr>';
-											}
-											if ( file_exists( str_replace( 'xxx', 'jpg', wppa_get_thumb_path( $photo['id'] ) ) ) ) {
-												echo '<tr><td>'.__('Thumbnail available', 'wppa').'</td><td></td><td></td></tr>';
-											}
-											else {
-												echo '<tr><td>'.__('Thumbnail NOT available', 'wppa').'</td><td></td><td></td></tr>';
-											}
-							*/
 									?>
 									</table>
 								</td>
@@ -500,7 +487,7 @@ global $wppa;
 							<!-- Filesizes -->
 							<tr>
 								<th>
-									<label><?php $is_video ? _e( 'Poster sizes:', 'wppa') : _e( 'Photo sizes:', 'wppa') ?></label>
+									<label><?php $is_video ? _e( 'Poster:', 'wppa') : _e( 'Photo sizes:', 'wppa') ?></label>
 								</th>
 								<td>
 									<table class="wppa-subtable" >
@@ -540,7 +527,7 @@ global $wppa;
 													if ( is_file( $dp ) ) {
 												?>
 											<td>
-												<?php echo wppa_get_photox( $photo['id'] ).' x '.wppa_get_photoy( $photo['id'] ).' px.' ?>
+												<?php echo floor( wppa_get_photox( $photo['id'] ) ) . ' x ' . floor( wppa_get_photoy( $photo['id'] ) ).' px.' ?>
 											</td>
 											<td>
 												<?php echo wppa_get_filesize( $dp ) ?>
@@ -565,7 +552,7 @@ global $wppa;
 													if ( is_file( $tp ) ) {
 												?>
 											<td>
-												<?php echo wppa_get_thumbx( $photo['id'] ).' x '.wppa_get_thumby( $photo['id'] ).' px.' ?>
+												<?php echo floor( wppa_get_thumbx( $photo['id'] ) ) . ' x ' . floor( wppa_get_thumby( $photo['id'] ) ) . ' px.' ?>
 											</td>
 											<td>
 												<?php echo wppa_get_filesize( $tp ) ?>
