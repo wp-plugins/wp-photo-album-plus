@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: wp-photo-album-plus\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-03-31 16:55+0100\n"
-"PO-Revision-Date: 2015-03-31 16:55+0100\n"
+"PO-Revision-Date: 2015-04-01 14:19+0100\n"
 "Last-Translator: J.N. Breetvelt <OpaJaap@OpaJaap.nl>\n"
 "Language-Team: <>\n"
 "Language: zh_TW\n"
@@ -1245,21 +1245,18 @@ msgstr "查看縮略圖"
 
 #: wppa-non-admin.php:271
 msgid "Press f for fullscreen."
-msgstr ""
+msgstr "按F全屏。"
 
 #: wppa-non-admin.php:295
-#, fuzzy
 msgid ""
 "Keys: f = next mode; escape = exit; p = previous, n = next, s = start/stop, "
 "d = dismiss this notice."
 msgstr ""
-"鍵：F =下一模式; esc鍵，X，O，C，Q =退出; P =前，N =下一個，S =啟動/停止，D ="
-"關閉此通知。"
+"鍵：F =下一模式;逃生=退出; P =前，N =下一個，S =啟動/停止，D =關閉此通知。"
 
 #: wppa-non-admin.php:296
-#, fuzzy
 msgid "Keys: f = next mode; escape = exit; d = dismiss this notice."
-msgstr "鍵：F =下一模式; esc鍵，X，O，C，Q =退出; D =關閉此通知。"
+msgstr "鍵：F =下一模式;逃生=退出; D =關閉此通知。"
 
 #: wppa-non-admin.php:519 wppa-slideshow.php:232
 msgid "Start"
@@ -1561,7 +1558,7 @@ msgstr "這信息在%s產生，你並不需要作出回應。"
 msgid ""
 "There is no filetype available for your browser, or your browser does not "
 "support html5 video"
-msgstr ""
+msgstr "有您的瀏覽器沒有可用的文件類型，或者你的瀏覽器不支持HTML5視頻"
 
 #~ msgid "Select tags:"
 #~ msgstr "選擇標籤："
