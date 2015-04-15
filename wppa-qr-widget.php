@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display qr code
-* Version 5.4.10
+* Version 6.1.0
 */
 
 
@@ -21,7 +21,12 @@ class wppaQRWidget extends WP_Widget {
 		global $widget_content;
 		global $wppa_opt;
 
-        extract( $args );
+ 		require_once(dirname(__FILE__) . '/wppa-links.php');
+		require_once(dirname(__FILE__) . '/wppa-styles.php');
+		require_once(dirname(__FILE__) . '/wppa-functions.php');
+		require_once(dirname(__FILE__) . '/wppa-thumbnails.php');
+
+		extract( $args );
         
  		$title = apply_filters('widget_title', empty( $instance['title'] ) ? __a( 'QR Widget' ) : $instance['title']);
 

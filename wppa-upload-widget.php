@@ -6,7 +6,7 @@
 *
 * A wppa widget to upload photos
 *
-* Version 5.4.0
+* Version 6.1.0
 */
 
 class WppaUploadWidget extends WP_Widget {
@@ -21,6 +21,11 @@ class WppaUploadWidget extends WP_Widget {
 	function widget( $args, $instance ) {
 		global $wppa; 
 		global $wppa_opt;
+
+		require_once(dirname(__FILE__) . '/wppa-links.php');
+		require_once(dirname(__FILE__) . '/wppa-styles.php');
+		require_once(dirname(__FILE__) . '/wppa-functions.php');
+		require_once(dirname(__FILE__) . '/wppa-thumbnails.php');
 
 		extract($args);
 		$instance = wp_parse_args( (array) $instance, 

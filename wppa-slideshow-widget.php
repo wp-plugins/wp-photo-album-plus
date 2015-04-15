@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display a slideshow in the sidebar
-* Version 5.3.6
+* Version 6.1.0
 */
 
 if ( ! defined( 'ABSPATH' ) ) die( "Can't load this file directly" );
@@ -25,6 +25,11 @@ class SlideshowWidget extends WP_Widget {
 		global $wpdb;
 		global $wppa; 
 		global $wppa_opt;
+
+		require_once(dirname(__FILE__) . '/wppa-links.php');
+		require_once(dirname(__FILE__) . '/wppa-styles.php');
+		require_once(dirname(__FILE__) . '/wppa-functions.php');
+		require_once(dirname(__FILE__) . '/wppa-thumbnails.php');
 
         extract( $args );
 

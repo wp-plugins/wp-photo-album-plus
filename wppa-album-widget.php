@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display thumbnail albums
-* Version 5.5.4.002
+* Version 6.1.0
 */
 
 if ( ! defined( 'ABSPATH' ) ) die( "Can't load this file directly" );
@@ -18,11 +18,14 @@ class AlbumWidget extends WP_Widget {
 
 	/** @see WP_Widget::widget */
     function widget( $args, $instance ) {		
-	//	global $widget_content;
 		global $wpdb;
-		global $wppa_opt;
 		global $wppa;
 		global $thumb;
+
+		require_once(dirname(__FILE__) . '/wppa-links.php');
+		require_once(dirname(__FILE__) . '/wppa-styles.php');
+		require_once(dirname(__FILE__) . '/wppa-functions.php');
+		require_once(dirname(__FILE__) . '/wppa-thumbnails.php');
 
 		$wppa['in_widget'] = 'alb';
 		$wppa['mocc']++;
@@ -30,23 +33,23 @@ class AlbumWidget extends WP_Widget {
         extract( $args );
 		
 		$instance = wp_parse_args( (array) $instance, array( 
-													'title' => '',		// Widget title
-													'parent' => 'none',	// Parent album
-													'name' => 'no',		// Display album name?
-													'skip' => 'yes'		// Skip empty albums
-							//						'count' => $wppa_opt['wppa_album_widget_count'],	// to be added
-							//						'size' => $wppa_opt['wppa_album_widget_size']
+													'title' 	=> '',		// Widget title
+													'parent' 	=> 'none',	// Parent album
+													'name' 		=> 'no',		// Display album name?
+													'skip' 		=> 'yes'		// Skip empty albums
+							//						'count' 	=> wppa_opt( 'wppa_album_widget_count' ),	// to be added
+							//						'size' 		=> wppa_opt( 'wppa_album_widget_size' )
 													) );
  
 		$widget_title = apply_filters('widget_title', $instance['title']);
 
-		$page = in_array( $wppa_opt['wppa_album_widget_linktype'], $wppa['links_no_page'] ) ? '' : wppa_get_the_landing_page('wppa_album_widget_linkpage', __a('Photo Albums'));
+		$page = in_array( wppa_opt( 'wppa_album_widget_linktype' ), $wppa['links_no_page'] ) ? '' : wppa_get_the_landing_page('wppa_album_widget_linkpage', __a('Photo Albums'));
 
-		$max  = $wppa_opt['wppa_album_widget_count'];
-		if ( !$max ) $max = '10';
+		$max  	= wppa_opt( 'wppa_album_widget_count' );
+		if ( ! $max ) $max = '10';
 		$parent = $instance['parent'];
-		$name = $instance['name'];
-		$skip = $instance['skip'];
+		$name 	= $instance['name'];
+		$skip 	= $instance['skip'];
 		
 		if ( is_numeric($parent) ) {
 			$albums = $wpdb->get_results($wpdb->prepare( 'SELECT * FROM `'.WPPA_ALBUMS.'` WHERE `a_parent` = %s '.wppa_get_album_order($parent), $parent ), ARRAY_A );
@@ -65,7 +68,7 @@ class AlbumWidget extends WP_Widget {
 		}
 		
 		$widget_content = "\n".'<!-- WPPA+ album Widget start -->';
-		$maxw = $wppa_opt['wppa_album_widget_size'];
+		$maxw = wppa_opt( 'wppa_album_widget_size' );
 		$maxh = $maxw;
 		if ( $name == 'yes' ) $maxh += 18;
 		
@@ -81,7 +84,7 @@ class AlbumWidget extends WP_Widget {
 				$subalbumcount 	= $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM `".WPPA_ALBUMS."` WHERE `a_parent` = %s", $album['id'] ) );
 				$thumb 			= $image;
 				// Make the HTML for current picture
-				if ( $image && ( $imgcount > $wppa_opt['wppa_min_thumbs'] || $subalbumcount ) ) {
+				if ( $image && ( $imgcount > wppa_opt( 'wppa_min_thumbs' ) || $subalbumcount ) ) {
 					$link       = wppa_get_imglnk_a('albwidget', $image['id']);
 					$file       = wppa_get_thumb_path($image['id']);
 					$imgevents  = wppa_get_imgevents('thumb', $image['id'], true);
@@ -102,7 +105,7 @@ class AlbumWidget extends WP_Widget {
 					$width      = $maxw;
 					$height     = $maxw; // !!
 					$cursor		= 'default';
-					$title 		= sprintf(__a('Upload at least %d photos to this album!', 'wppa_theme'), $wppa_opt['wppa_min_thumbs'] - $imgcount + 1);
+					$title 		= sprintf(__a('Upload at least %d photos to this album!', 'wppa_theme'), wppa_opt( 'wppa_min_thumbs' ) - $imgcount + 1);
 					if ( $imageid ) {	// The 'empty album has a cover image
 						$file       = wppa_get_thumb_path($image['id']);
 						$imgstyle_a = wppa_get_imgstyle_a( $image['id'], $file, $maxw, 'center', 'albthumb' );
@@ -117,7 +120,7 @@ class AlbumWidget extends WP_Widget {
 				}
 					
 
-				if ( $imgcount > $wppa_opt['wppa_min_thumbs'] || $skip == 'no' ) {
+				if ( $imgcount > wppa_opt( 'wppa_min_thumbs' ) || $skip == 'no' ) {
 			
 					$widget_content .= "\n".'<div class="wppa-widget" style="width:'.$maxw.'px; height:'.$maxh.'px; margin:4px; display:inline; text-align:center; float:left;">'; 
 				
@@ -157,7 +160,14 @@ class AlbumWidget extends WP_Widget {
 									$siz['1'] = wppa_get_photoy( $thumb['id'] );
 								}
 								$link = wppa_get_photo_url( $thumb['id'], '', $siz['0'], $siz['1'] );
-								$widget_content .= "\n\t".'<a href="'.$link.'" data-videohtml="'.esc_attr( wppa_get_video_body( $thumb['id'] ) ).'" data-videonatwidth="'.wppa_get_videox( $thumb['id'] ).'" data-videonatheight="'.wppa_get_videoy( $thumb['id'] ).'" rel="'.$wppa_opt['wppa_lightbox_name'].'[alw-'.$wppa['mocc'].'-'.$album['id'].']" title="'.$title.'" >';
+								$widget_content .= "\n\t" .
+										'<a href="'.$link.'"' .
+										' data-videohtml="' . esc_attr( wppa_get_video_body( $thumb['id'] ) ) . '"' .
+										' data-audiohtml="' . esc_attr( wppa_get_audio_body( $thumb['id'] ) ) . '"' .
+										' data-videonatwidth="'.wppa_get_videox( $thumb['id'] ).'"' .
+										' data-videonatheight="'.wppa_get_videoy( $thumb['id'] ).'"' .
+										' rel="'.wppa_opt( 'wppa_lightbox_name' ).'[alw-'.$wppa['mocc'].'-'.$album['id'].']"' .
+										' title="'.$title.'" >';
 								if ( $thumb['id'] == $image['id'] ) {		// the cover image
 									if ( wppa_is_video( $image['id'] ) ) {
 										$widget_content .= wppa_get_video_html( array( 	'id' 			=> $image['id'], 
@@ -220,7 +230,7 @@ class AlbumWidget extends WP_Widget {
 						}
 					}
 				
-					if ($name == 'yes') $widget_content .= "\n\t".'<span style="font-size:'.$wppa_opt['wppa_fontsize_widget_thumb'].'px; min-height:100%;">'.__(stripslashes($album['name'])).'</span>';
+					if ($name == 'yes') $widget_content .= "\n\t".'<span style="font-size:'.wppa_opt( 'wppa_fontsize_widget_thumb' ).'px; min-height:100%;">'.__(stripslashes($album['name'])).'</span>';
 
 					$widget_content .= "\n".'</div>';
 					
@@ -255,9 +265,8 @@ class AlbumWidget extends WP_Widget {
     /** @see WP_Widget::form */
     function form($instance) {
 		global $wpdb;
-		global $wppa_opt;
-		//Defaults
 
+		//Defaults
 		$instance = wp_parse_args( (array) $instance, array( 
 															'title' => __('Thumbnail Albums', 'wppa'),
 															'parent' => '0',

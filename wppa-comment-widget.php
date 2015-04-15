@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the recent commets on photos
-* Version 5.5.4.003
+* Version 6.1.0
 */
 
 if ( ! defined( 'ABSPATH' ) ) die( "Can't load this file directly" );
@@ -19,17 +19,21 @@ class wppaCommentWidget extends WP_Widget {
 	/** @see WP_Widget::widget */
     function widget($args, $instance) {		
 		global $wpdb;
-		global $wppa_opt;
 		global $wppa;
+
+		require_once(dirname(__FILE__) . '/wppa-links.php');
+		require_once(dirname(__FILE__) . '/wppa-styles.php');
+		require_once(dirname(__FILE__) . '/wppa-functions.php');
+		require_once(dirname(__FILE__) . '/wppa-thumbnails.php');
 
         extract( $args );
 
-		$page 			= in_array( $wppa_opt['wppa_comment_widget_linktype'], $wppa['links_no_page'] ) ? '' : wppa_get_the_landing_page('wppa_comment_widget_linkpage', __a('Recently commented photos'));
-		$max  			= $wppa_opt['wppa_comten_count'];
+		$page 			= in_array( wppa_opt( 'wppa_comment_widget_linktype' ), $wppa['links_no_page'] ) ? '' : wppa_get_the_landing_page('wppa_comment_widget_linkpage', __a('Recently commented photos'));
+		$max  			= wppa_opt( 'wppa_comten_count' );
 		$widget_title 	= apply_filters('widget_title', $instance['title']);
 		$photo_ids 		= wppa_get_comten_ids( $max );
 		$widget_content = "\n".'<!-- WPPA+ Comment Widget start -->';
-		$maxw 			= $wppa_opt['wppa_comten_size'];
+		$maxw 			= wppa_opt( 'wppa_comten_size' );
 		$maxh 			= $maxw + 18;
 
 		if ( $photo_ids ) foreach( $photo_ids as $id ) {
@@ -70,7 +74,7 @@ class wppaCommentWidget extends WP_Widget {
 			else {
 				$widget_content .= __a('Photo not found.', 'wppa_theme');
 			}
-			$widget_content .= "\n\t".'<span style="font-size:'.$wppa_opt['wppa_fontsize_widget_thumb'].'px; cursor:pointer;" title="'.esc_attr($comment['comment']).'" >'.$comment['user'].'</span>';
+			$widget_content .= "\n\t".'<span style="font-size:'.wppa_opt( 'wppa_fontsize_widget_thumb' ).'px; cursor:pointer;" title="'.esc_attr($comment['comment']).'" >'.$comment['user'].'</span>';
 			$widget_content .= "\n".'</div>';
 			
 		}	

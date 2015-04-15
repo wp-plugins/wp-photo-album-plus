@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the widget
-* Version 5.5.4.002
+* Version 6.1.0
 */
 
 if ( ! defined( 'ABSPATH' ) ) die( "Can't load this file directly" );
@@ -23,6 +23,11 @@ class PhotoOfTheDay extends WP_Widget {
 		
 		$wppa['in_widget'] = 'potd';
 		$wppa['mocc']++;
+
+		require_once(dirname(__FILE__) . '/wppa-links.php');
+		require_once(dirname(__FILE__) . '/wppa-styles.php');
+		require_once(dirname(__FILE__) . '/wppa-functions.php');
+		require_once(dirname(__FILE__) . '/wppa-thumbnails.php');
 
         extract( $args );
 
@@ -53,7 +58,11 @@ class PhotoOfTheDay extends WP_Widget {
 			$name 		= wppa_get_photo_name( $id );
 			$page 		= in_array( wppa_opt( 'wppa_widget_linktype' ), $wppa['links_no_page'] ) ? '' : wppa_get_the_landing_page( 'wppa_widget_linkpage', __a('Photo of the day') );
 			$link 		= wppa_get_imglnk_a( 'potdwidget' , $id );
-			$lightbox 	= $link['is_lightbox'] ? 'data-videohtml="' . esc_attr( wppa_get_video_body( $id ) ) . '" data-videonatwidth="'.wppa_get_videox( $id ).'" data-videonatheight="'.wppa_get_videoy( $id ).'" rel="' . wppa_opt( 'wppa_lightbox_name' ) . '"' : '';
+			$lightbox 	= $link['is_lightbox'] ? ' data-videohtml="' . esc_attr( wppa_get_video_body( $id ) ) . '"'.
+												' data-audiohtml="' . esc_attr( wppa_get_audio_body( $id ) ) . '"'.
+												' data-videonatwidth="'.wppa_get_videox( $id ).'"' .
+												' data-videonatheight="'.wppa_get_videoy( $id ).'"' .
+												' rel="' . wppa_opt( 'wppa_lightbox_name' ) . '"' : '';
 			if ( $link ) {
 				if ( $link['is_lightbox'] ) {
 					$cursor = ' cursor:url('.wppa_get_imgdir().wppa_opt('wppa_magnifier').'),pointer;';

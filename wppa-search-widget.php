@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the search widget
-* Version 5.4.0
+* Version 6.1.0
 *
 */
 
@@ -19,9 +19,13 @@ class SearchPhotos extends WP_Widget {
     function widget($args, $instance) {		
 		global $widget_content;
 		global $wppa;
-		global $wppa_opt;
 		global $wpdb;
 		
+		require_once(dirname(__FILE__) . '/wppa-links.php');
+		require_once(dirname(__FILE__) . '/wppa-styles.php');
+		require_once(dirname(__FILE__) . '/wppa-functions.php');
+		require_once(dirname(__FILE__) . '/wppa-thumbnails.php');
+
 		$wppa['mocc']++;
 
         extract( $args );

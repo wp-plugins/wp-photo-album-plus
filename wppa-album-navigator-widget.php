@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display album names linking to content
-* Version 5.4.25
+* Version 6.1.0
 */
 
 class AlbumNavigatorWidget extends WP_Widget {
@@ -18,9 +18,13 @@ class AlbumNavigatorWidget extends WP_Widget {
     function widget($args, $instance) {		
 	//	global $widget_content;
 		global $wpdb;
-		global $wppa_opt;
 		global $wppa;
 		global $thumb;
+
+		require_once(dirname(__FILE__) . '/wppa-links.php');
+		require_once(dirname(__FILE__) . '/wppa-styles.php');
+		require_once(dirname(__FILE__) . '/wppa-functions.php');
+		require_once(dirname(__FILE__) . '/wppa-thumbnails.php');
 
 		$wppa['in_widget'] = 'albnav';
 		$wppa['mocc'] ++;
@@ -74,7 +78,7 @@ class AlbumNavigatorWidget extends WP_Widget {
     /** @see WP_Widget::form */
     function form($instance) {
 		global $wpdb;
-		global $wppa_opt;
+
 		//Defaults
 
 		$instance = wp_parse_args( (array) $instance, array( 
@@ -120,7 +124,6 @@ class AlbumNavigatorWidget extends WP_Widget {
 	}
 
 	function do_album_navigator( $parent, $page, $skip, $propclass ) {
-	global $wppa_opt;
 	global $wpdb;
 	static $level;
 	static $ca;
@@ -149,7 +152,7 @@ class AlbumNavigatorWidget extends WP_Widget {
 			foreach ( $albums as $album ) {	
 				$a = $album['id'];
 				$treecount = wppa_treecount_a( $a );
-				if ( $treecount['albums'] || $treecount['photos'] > $wppa_opt['wppa_min_thumbs'] || $skip == 'no' ) {
+				if ( $treecount['albums'] || $treecount['photos'] > wppa_opt( 'wppa_min_thumbs' ) || $skip == 'no' ) {
 					$result .= '
 						<li class="anw-'.$w.'-'.$p.$propclass.'" style="list-style:none; display:'.( $level == '1' ? '' : 'none' ).';">';
 						if ( wppa_has_children($a) ) $result .= '

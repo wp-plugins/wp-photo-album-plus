@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the featured photos
-* Version 5.5.4.003
+* Version 6.1.0
 */
 
 if ( ! defined( 'ABSPATH' ) ) die( "Can't load this file directly" );
@@ -22,7 +22,12 @@ class FeaTenWidget extends WP_Widget {
 		global $wppa_opt;
 		global $wppa;
 
-        extract( $args );
+ 		require_once(dirname(__FILE__) . '/wppa-links.php');
+		require_once(dirname(__FILE__) . '/wppa-styles.php');
+		require_once(dirname(__FILE__) . '/wppa-functions.php');
+		require_once(dirname(__FILE__) . '/wppa-thumbnails.php');
+
+		extract( $args );
 		
 		$instance = wp_parse_args( (array) $instance, array( 'title' => '', 'album' => '' ) );
 

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the multitag widget
-* Version 5.4.1
+* Version 6.1.0
 *
 */
 
@@ -22,6 +22,11 @@ class MultitagPhotos extends WP_Widget {
 
 		$wppa['in_widget'] = 'multitag';
 		$wppa['mocc']++;
+
+		require_once(dirname(__FILE__) . '/wppa-links.php');
+		require_once(dirname(__FILE__) . '/wppa-styles.php');
+		require_once(dirname(__FILE__) . '/wppa-functions.php');
+		require_once(dirname(__FILE__) . '/wppa-thumbnails.php');
 
         extract( $args );
 

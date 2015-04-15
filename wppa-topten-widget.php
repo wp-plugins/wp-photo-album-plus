@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the top rated photos
-* Version 5.5.4.003
+* Version 6.1.0
 */
 
 class TopTenWidget extends WP_Widget {
@@ -19,6 +19,11 @@ class TopTenWidget extends WP_Widget {
 		global $wpdb;
 		global $wppa_opt;
 		global $wppa;
+
+		require_once(dirname(__FILE__) . '/wppa-links.php');
+		require_once(dirname(__FILE__) . '/wppa-styles.php');
+		require_once(dirname(__FILE__) . '/wppa-functions.php');
+		require_once(dirname(__FILE__) . '/wppa-thumbnails.php');
 
         $wppa['in_widget'] = 'topten';
 		$wppa['mocc']++;
@@ -58,11 +63,14 @@ class TopTenWidget extends WP_Widget {
 		$albenum 		= '';
 		
 		if ( $album ) {
+			if ( $album == '-2' ) $album = '0';
 			if ( $includesubs ) {
 				$albenum = wppa_alb_to_enum_children( $album );
+				$albenum = wppa_expand_enum( $albenum );
 				$album = str_replace( '.', ',', $albenum );
 			}
-			$thumbs = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM `".WPPA_PHOTOS."` WHERE `album` IN (".$album.") ORDER BY " . $sortby . " LIMIT " . $max, $album ), ARRAY_A );
+			$thumbs = $wpdb->get_results( "SELECT * FROM `".WPPA_PHOTOS."` WHERE `album` IN (".$album.") ORDER BY " . $sortby . " LIMIT " . $max, ARRAY_A );
+//wppa_log('dbg', "SELECT * FROM `".WPPA_PHOTOS."` WHERE `album` IN (".$album.") ORDER BY " . $sortby . " LIMIT " . $max);
 		}
 		else {
 			$thumbs = $wpdb->get_results( "SELECT * FROM `".WPPA_PHOTOS."` ORDER BY " . $sortby . " LIMIT " . $max, ARRAY_A );

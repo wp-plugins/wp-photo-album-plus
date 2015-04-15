@@ -6,7 +6,7 @@
 *
 * A text widget that hooks the wppa+ filter
 *
-* Version 5.4.10
+* Version 6.1.0
 */
 
 class WppaGpWidget extends WP_Widget {
@@ -20,6 +20,11 @@ class WppaGpWidget extends WP_Widget {
 
 	function widget( $args, $instance ) {
 		global $wppa; 
+
+		require_once(dirname(__FILE__) . '/wppa-links.php');
+		require_once(dirname(__FILE__) . '/wppa-styles.php');
+		require_once(dirname(__FILE__) . '/wppa-functions.php');
+		require_once(dirname(__FILE__) . '/wppa-thumbnails.php');
 
 		extract($args);
  		$title = apply_filters('widget_title', $instance['title']);
@@ -58,7 +63,7 @@ class WppaGpWidget extends WP_Widget {
 	}
 
 	function form( $instance ) {
-		global $wppa_opt;
+
 		$instance = wp_parse_args( (array) $instance, array( 'title' => __('WPPA+ Text', 'wppa'), 'text' => '' ) );
 		$title = $instance['title'];
 		$text = format_to_edit($instance['text']);
@@ -66,7 +71,7 @@ class WppaGpWidget extends WP_Widget {
 		<p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:'); ?></label>
 		<input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo esc_attr($title); ?>" /></p>
 		<p><?php _e('Enter the content just like a normal text widget. This widget will interprete [wppa] shortcodes.', 'wppa'); ?></p>
-		<p><?php echo (sprintf(__('Don\'t forget size="%s"', 'wppa'), $wppa_opt['wppa_widget_width'])) ?></p>
+		<p><?php echo sprintf( __( 'Don\'t forget size="%s"', 'wppa' ), wppa_opt( 'wppa_widget_width' ) ) ?></p>
 
 		<textarea class="widefat" rows="16" cols="20" id="<?php echo $this->get_field_id('text'); ?>" name="<?php echo $this->get_field_name('text'); ?>"><?php echo $text; ?></textarea>
 
