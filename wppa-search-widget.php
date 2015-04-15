@@ -25,6 +25,8 @@ class SearchPhotos extends WP_Widget {
 		require_once(dirname(__FILE__) . '/wppa-styles.php');
 		require_once(dirname(__FILE__) . '/wppa-functions.php');
 		require_once(dirname(__FILE__) . '/wppa-thumbnails.php');
+		require_once(dirname(__FILE__) . '/wppa-boxes-html.php');
+		require_once(dirname(__FILE__) . '/wppa-slideshow.php');
 
 		$wppa['mocc']++;
 
