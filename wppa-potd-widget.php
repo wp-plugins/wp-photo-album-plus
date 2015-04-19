@@ -161,3 +161,8 @@ require_once ('wppa-widget-functions.php');
 
 // register PhotoOfTheDay widget
 add_action('widgets_init', create_function('', 'return register_widget("PhotoOfTheDay");'));
+
+// Temp fix for 6.0.0
+function wppa_get_audio_body() {
+return '';
+}
