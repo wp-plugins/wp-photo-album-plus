@@ -26,12 +26,12 @@ global $wpdb;
 /* when new options are added and when the wppa_setup() routine 
 /* must be called right after update for any other reason.
 */
-global $wppa_revno; 		$wppa_revno = '6100';
+global $wppa_revno; 		$wppa_revno = '6110';
 
 /* This is the api interface version number
 /* It is incremented at any code change.
 */
-global $wppa_api_version; 	$wppa_api_version = '6-1-0-000';
+global $wppa_api_version; 	$wppa_api_version = '6-1-1-000';
 
 /* start timers */
 global $wppa_starttime; $wppa_starttime = microtime(true);
