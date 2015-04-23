@@ -3,11 +3,11 @@
 * Package: wp-photo-album-plus
 *
 * display the albums/photos/slideshow in a page or post
-* Version 5.5.4.001
+* Version 6.1.0
 */
 function wppa_theme() {
 
-global $wppa_version; $wppa_version = '5-5-02';		// The version number of this file
+global $wppa_version; $wppa_version = '6-1-0-000';		// The version number of this file
 global $wppa;
 global $wppa_show_statistics;						// Can be set to true by a custom page template
 
@@ -203,6 +203,7 @@ global $wppa_show_statistics;						// Can be set to true by a custom page templa
 				$tr_count 			= '1';
 				$done_count 		= 0;
 				$last 				= false;
+				$max_row_height 	= $target_row_height * 0.8; 	// Init keep track for last
 				foreach ( $thumbs as $tt ) { 
 					$id = $tt['id'];
 					$counter_thumbs++;
@@ -217,7 +218,12 @@ global $wppa_show_statistics;						// Can be set to true by a custom page templa
 					if ( $row_width > $cont_width || $last ) {
 						$tot_marg 		= $rw_count * $correction;
 						$row_height 	= $row_width ? ( ( $target_row_height - $correction ) * ( $cont_width - '3' - $tot_marg ) / ( $row_width ) + $correction )  : '0';
-						if ( $row_height > wppa_get_thumby( $id ) && $rw_count == 1 ) $row_height = wppa_get_thumby( $id );
+						if ( ! $last ) {
+							$max_row_height = max( $max_row_height, $row_height );
+						}
+						if ( $last && $row_height > wppa_get_thumby( $id ) ) {
+							$row_height = $max_row_height;
+						}
 						$row_height_p 	= $row_height / $cont_width * 100;
 						wppa_out( '<tr class="wppa-masonry" ><td id="wppa-mas-h-'.$tr_count.'-'.wppa( 'mocc' ).'" style="height:'.$row_height.'px;" class="wppa-masonry" data-height-perc="'.$row_height_p.'" >'); //<div style="height:'.$row_height.'px;" >' );
 						wppa_out( $row_content );

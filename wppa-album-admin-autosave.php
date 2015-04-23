@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * create, edit and delete albums
-* version 5.5.0
+* version 6.1.0
 *
 */
 
@@ -107,6 +107,10 @@ function _wppa_admin() {
 				}
 				else {
 					$parent = wppa_opt( 'wppa_default_parent' );
+					if ( ! $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM `" . WPPA_ALBUMS . "` WHERE `id` = %s", $parent ) ) ) { // Deafault parent vanished
+						wppa_update_option( 'wppa_default_parent', '0' );
+						$parent = '0';
+					}
 					$name = __('New Album', 'wppa');
 					if ( ! wppa_can_create_top_album() ) wp_die('No rights to create a top-level album');
 				}				

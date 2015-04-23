@@ -2,7 +2,7 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 6.0.0
+* version 6.1.0
 * 
 */
 
@@ -151,7 +151,7 @@ global $wppa_defaults;
 	wppa_load_language();
 	
 	// Delete obsolete spam
-	$spammaxage = $wppa_opt['wppa_spam_maxage'];
+	$spammaxage = wppa_opt( 'wppa_spam_maxage' );
 	if ( $spammaxage != 'none' ) {
 		$time = time();
 		$obsolete = $time - $spammaxage;
@@ -165,7 +165,7 @@ global $wppa_defaults;
 		&& is_user_logged_in() 
 		&& ( current_user_can( 'wppa_upload' ) || wppa_switch( 'wppa_user_upload_on' ) ) ) {
 			$owner = wppa_get_user( 'login' );
-			$user = wppa_get_user( $wppa_opt['wppa_grant_name'] );
+			$user = wppa_get_user( wppa_opt( 'wppa_grant_name' ) );
 			$albs = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM `".WPPA_ALBUMS."` WHERE `owner` = %s", $owner ) );
 			if ( ! $albs ) {	// make an album for this user
 				$name = $user;
@@ -175,7 +175,7 @@ global $wppa_defaults;
 				else {
 					$desc = __a( 'Default photo album for' ).' '.$user;
 				}
-				$parent = $wppa_opt['wppa_grant_parent'];
+				$parent = wppa_opt( 'wppa_grant_parent' );
 				$id = wppa_create_album_entry( array ( 'name' => $name, 'description' => $desc, 'a_parent' => $parent ) );
 				wppa_flush_treecounts( $parent );
 				wppa_index_add( 'album', $id );
@@ -283,7 +283,6 @@ global $wppa_admin_langs_root;
 }
 
 function wppa_phpinfo( $key = -1 ) {
-global $wppa_opt;
 
 	echo '<div id="phpinfo" style="width:600px; margin:auto;" >';
 
@@ -351,7 +350,6 @@ function wppa_get_wppa_url() {
 // get album order
 function wppa_get_album_order( $parent = '0' ) {
 global $wppa;
-global $wppa_opt;
 
 	// Init
     $result = '';
@@ -364,7 +362,7 @@ global $wppa_opt;
 	else {
 		$order = '0';
 	}
-	if ( ! $order ) $order = $wppa_opt['wppa_list_albums_by'];
+	if ( ! $order ) $order = wppa_opt( 'wppa_list_albums_by' );
 
 	switch ( $order ) {
 		case '':
@@ -403,14 +401,13 @@ global $wppa_opt;
 function wppa_get_photo_order( $id = '0', $no_random = false ) {
 global $wpdb;
 global $wppa;
-global $wppa_opt;
     
 	if ( $id == '0' ) $order = '0';
 	else {
 		$order = $wpdb->get_var( $wpdb->prepare( "SELECT `p_order_by` FROM `" . WPPA_ALBUMS . "` WHERE `id` = %s", $id ) );
 		wppa_dbg_q( 'Q201' );
 	}
-    if ( ! $order ) $order = $wppa_opt['wppa_list_photos_by'];
+    if ( ! $order ) $order = wppa_opt( 'wppa_list_photos_by' );
 	
     switch ( $order )
     {
@@ -506,9 +503,9 @@ global $wpdb;
 
 // Check if an image is more landscape than the width/height ratio set in Table I item 2 and 3
 function wppa_is_wider( $x, $y, $refx = '', $refy = '' ) {
-global $wppa_opt;
+
 	if ( $refx == '' ) {
-		$ratioref = $wppa_opt['wppa_fullsize'] / $wppa_opt['wppa_maxheight'];
+		$ratioref = wppa_opt( 'wppa_fullsize' ) / wppa_opt( 'wppa_maxheight' );
 	}
 	else {
 		$ratioref = $refx/$refy;
@@ -644,7 +641,6 @@ function wppa_get_time_since( $oldtime ) {
 function wppa_have_access( $alb ) {
 global $wpdb;
 global $current_user;
-global $wppa_opt;
 
 //	if ( !$alb ) $alb = 'any'; //return false;
 	
@@ -716,7 +712,6 @@ global $wppa_opt;
 // Make the display and thumbnails from a given source or upload temp image file. 
 // The id and extension must be supplied.
 function wppa_make_the_photo_files( $file, $id, $ext ) {
-global $wppa_opt;
 global $wppa;
 global $wpdb;
 global $thumb;
@@ -742,12 +737,12 @@ global $thumb;
 			$src_height = $src_size[1];
 			
 			// Max sizes
-			if ( $wppa_opt['wppa_resize_to'] == '0' ) {	// from fullsize
-				$max_width 	= $wppa_opt['wppa_fullsize'];
-				$max_height = $wppa_opt['wppa_maxheight'];
+			if ( wppa_opt( 'wppa_resize_to' ) == '0' ) {	// from fullsize
+				$max_width 	= wppa_opt( 'wppa_fullsize' );
+				$max_height = wppa_opt( 'wppa_maxheight' );
 			}
 			else {										// from selection
-				$screen = explode( 'x', $wppa_opt['wppa_resize_to'] );
+				$screen = explode( 'x', wppa_opt( 'wppa_resize_to' ) );
 				$max_width 	= $screen[0];
 				$max_height = $screen[1];
 			}
@@ -909,7 +904,6 @@ function wppa_check_coverimage( $id ) {
 // Get the max size, rounded up to a multiple of 25 px, of all the possible small images 
 // in order to create the thumbnail file big enough but not too big.
 function wppa_get_minisize() {
-global $wppa_opt;
 
 	$result = '100';
 
@@ -925,11 +919,11 @@ global $wppa_opt;
 						'wppa_smallsize'
 						 );
 	foreach ( $things as $thing ) {
-		$tmp = $wppa_opt[$thing];
+		$tmp = wppa_opt( $thing );
 		if ( is_numeric( $tmp ) && $tmp > $result ) $result = $tmp;
 	}
 
-	$temp = $wppa_opt['wppa_smallsize'];
+	$temp = wppa_opt( 'wppa_smallsize' );
 	if ( wppa_switch( 'wppa_coversize_is_height' ) ) {
 		$tmp = round( $tmp * 4 / 3 );		// assume aspectratio 4:3
 	}
@@ -941,16 +935,15 @@ global $wppa_opt;
 
 // Create thubnail 
 function wppa_create_thumbnail( $id ) {
-global $wppa_opt;
 	
 	// Find file to make thumbnail from
-	$source_path = wppa_fix_poster_ext( wppa_get_source_path( $id ) );
+	$source_path = wppa_fix_poster_ext( wppa_get_source_path( $id ), $id );
 
 	if ( ! wppa_switch( 'wppa_watermark_thumbs' ) && is_file( $source_path ) ) {
 		$file = $source_path;										// Use sourcefile
 	}
 	else {
-		$file = wppa_fix_poster_ext( wppa_get_photo_path( $id ) );	// Use photofile
+		$file = wppa_fix_poster_ext( wppa_get_photo_path( $id ), $id );	// Use photofile
 	}
 
 	// Max side
@@ -962,7 +955,7 @@ global $wppa_opt;
 	if ( ! $img_attr ) return false;				// Not an image, fail
 	
 	// Retrieve aspect
-	$asp_attr = explode( ':', $wppa_opt['wppa_thumb_aspect'] );
+	$asp_attr = explode( ':', wppa_opt( 'wppa_thumb_aspect' ) );
 	
 	// Get output path
 	$thumbpath = wppa_get_thumb_path( $id );
@@ -1031,7 +1024,7 @@ global $wppa_opt;
 	}
 	
 	// Fill with the required color
-	$c = trim( strtolower( $wppa_opt['wppa_bgcolor_thumbnail'] ) );
+	$c = trim( strtolower( wppa_opt( 'wppa_bgcolor_thumbnail' ) ) );
 	if ( $c != '#000000' ) {
 		$r = hexdec( substr( $c, 1, 2 ) );
 		$g = hexdec( substr( $c, 3, 2 ) );
@@ -1110,15 +1103,16 @@ global $wppa_opt;
 	imagecopyresampled( $dst, $src, $dst_x, $dst_y, $src_x, $src_y, $dst_w, $dst_h, $src_w, $src_h );
 	
 	// Save the thumb
+	$thumbpath = wppa_strip_ext( $thumbpath );
 	switch ( $mime ) {	// mime type
 		case 1:
-			imagegif( $dst, $thumbpath );
+			imagegif( $dst, $thumbpath . '.gif' );
 			break;
 		case 2:
-			imagejpeg( $dst, $thumbpath, wppa_opt( 'wppa_jpeg_quality' ) );
+			imagejpeg( $dst, $thumbpath . '.jpg', wppa_opt( 'wppa_jpeg_quality' ) );
 			break;
 		case 3:
-			imagepng( $dst, $thumbpath, 6 );
+			imagepng( $dst, $thumbpath . '.png', 6 );
 			break;
 	}
 	
@@ -1137,7 +1131,6 @@ global $wppa_opt;
 
 function wppa_test_for_search() {
 global $wppa;
-global $wppa_opt;
 
 	if ( isset( $_REQUEST['wppa-searchstring'] ) ) {	// wppa+ search
 		$str = $_REQUEST['wppa-searchstring'];
@@ -1180,7 +1173,7 @@ global $wppa_opt;
 	}
 
 	if ( $wppa['src'] ) {
-		switch ( $wppa_opt['wppa_search_display_type'] ) {
+		switch ( wppa_opt( 'wppa_search_display_type' ) ) {
 			case 'slide':
 				$wppa['is_slide'] = '1';
 				break;
@@ -1218,12 +1211,11 @@ global $wpdb;
 function wppa_import_iptc( $id, $info, $nodelete = false ) {
 global $wpdb;
 static $labels;
-global $wppa_opt;
 
 	$doit = false;
 	// Do we need this?
 	if ( wppa_switch( 'wppa_save_iptc' ) ) $doit = true;
-	if ( substr( $wppa_opt['wppa_newphoto_name_method'], 0, 2 ) == '2#' ) $doit = true;
+	if ( substr( wppa_opt( 'wppa_newphoto_name_method' ), 0, 2 ) == '2#' ) $doit = true;
 	if ( ! $doit ) return;
 	
 	wppa_dbg_msg( 'wppa_import_iptc called for id='.$id );
@@ -1330,7 +1322,6 @@ function wppa_import_exif( $id, $file, $nodelete = false ) {
 global $wpdb;
 static $labels;
 static $names;
-global $wppa_opt;
 global $wppa;
 
 	// Do we need this?
@@ -1395,14 +1386,14 @@ global $wppa;
 			$desc 	= $s.':';
 			$status = 'display';
 			$iret = wppa_create_exif_entry( array( 'photo' => $photo, 'tag' => $tag, 'description' => $desc, 'status' => $status ) );
-			if ( ! $iret ) wppa_log( 'Warning', 'Could not add EXIF tag '.$tag.' for photo '.$photo );
+			if ( ! $iret ) wppa_log( 'Warning 1', 'Could not add EXIF tag '.$tag.' for photo '.$photo );
 		}
 		
 		// Now add poto specific data item
 		// If its an array...
 		if ( is_array( $exif[$s] ) ) { // continue;
 			$c = count ( $exif[$s] );
-			$max = $wppa_opt['wppa_exif_max_array_size'];
+			$max = wppa_opt( 'wppa_exif_max_array_size' );
 			if ( $max != '0' && $c > $max ) {
 				wppa_dbg_msg( 'Exif tag '.$tag. ': array truncated form '.$c.' to '.$max.' elements for photo nr '.$id.'.', 'red' );
 				$c = $max;
@@ -1412,7 +1403,7 @@ global $wppa;
 				$desc 	= $exif[$s][$i];
 				$status = 'default';
 				$iret = wppa_create_exif_entry( array( 'photo' => $photo, 'tag' => $tag, 'description' => $desc, 'status' => $status ) );
-				if ( ! $iret ) wppa_log( 'Warning', 'Could not add EXIF tag '.$tag.' for photo '.$photo );
+				if ( ! $iret ) wppa_log( 'Warning 2', 'Could not add EXIF tag '.$tag.' for photo '.$photo );
 			
 			}
 		}
@@ -1422,7 +1413,7 @@ global $wppa;
 			$desc 	= $exif[$s];
 			$status = 'default';
 			$iret = wppa_create_exif_entry( array( 'photo' => $photo, 'tag' => $tag, 'description' => $desc, 'status' => $status ) );
-			if ( ! $iret ) wppa_log( 'Warning', 'Could not add EXIF tag '.$tag.' for photo '.$photo );
+			if ( ! $iret ) {} /* wppa_log( 'Warning 3', 'Could not add EXIF tag '.$tag.' for photo '.$photo.', desc = '.$desc ); */ // Is junk, dont care
 		}
 	}
 }
@@ -1551,7 +1542,6 @@ global $wpdb;
 // Return the allowed number of uploads for a certain user. -1 = unlimited
 function wppa_allow_user_uploads() {
 global $wpdb;
-global $wppa_opt;
 
 	// Get the limits
 	$limits = wppa_get_user_upload_limits();
@@ -1581,7 +1571,6 @@ global $wppa_opt;
 }
 function wppa_get_user_upload_limits() {
 global $wp_roles;
-global $wppa_opt;
 
 	$limits = '';
 	if ( is_user_logged_in() ) {
@@ -1596,7 +1585,7 @@ global $wppa_opt;
 		}
 	}
 	else {
-		$limits = $wppa_opt['wppa_loggedout_upload_limit_count'].'/'.$wppa_opt['wppa_loggedout_upload_limit_time'];
+		$limits = wppa_opt( 'wppa_loggedout_upload_limit_count' ).'/'.wppa_opt( 'wppa_loggedout_upload_limit_time' );
 	}
 	return $limits;
 }
@@ -1630,7 +1619,7 @@ function wppa_alfa_id( $id = '0' ) {
 //
 //
 function wppa_check_memory_limit( $verbose = true, $x = '0', $y = '0' ) {
-global $wppa_opt;
+
 // ini_set( 'memory_limit', '18M' );	// testing
 	if ( ! function_exists( 'memory_get_usage' ) ) return '';
 	if ( is_admin() && ! wppa_switch( 'wppa_memcheck_admin' ) ) return '';
@@ -1654,10 +1643,10 @@ global $wppa_opt;
 
 	// Calculate number of pixels largest target resized image 
 	if ( wppa_switch( 'wppa_resize_on_upload' ) ) {
-		$t = $wppa_opt['wppa_resize_to'];
+		$t = wppa_opt( 'wppa_resize_to' );
 		if ( $t == '0' ) {
-			$to['0'] = $wppa_opt['wppa_fullsize'];
-			$to['1'] = $wppa_opt['wppa_maxheight'];
+			$to['0'] = wppa_opt( 'wppa_fullsize' );
+			$to['1'] = wppa_opt( 'wppa_maxheight' );
 		}
 		else {
 			$to = explode( 'x', $t );

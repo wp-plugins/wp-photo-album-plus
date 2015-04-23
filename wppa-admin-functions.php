@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * gp admin functions
-* version 5.5.6
+* version 6.1.0
 *
 */
 
@@ -163,7 +163,8 @@ global $wpdb;
 		if ( $photo ) {
 			$file = wppa_get_source_path( $photo['id'] ); 
 			if ( is_file( $file ) ) {
-				wppa_update_single_photo( $file, $pid, $photo['filename'] );
+				$name = $photo['filename'];
+				wppa_update_single_photo( $file, $pid, $name );
 			}
 			else return false;
 		}
@@ -253,8 +254,8 @@ global $wpdb;
 	$status 	= $photo['status'];
 	$filename 	= $photo['filename'];
 	$location	= $photo['location'];
-	$oldimage 	= wppa_get_photo_path( $photo['id'] );
-	$oldthumb 	= wppa_get_thumb_path( $photo['id'] );
+	$oldimage 	= wppa_fix_poster_ext( wppa_get_photo_path( $photo['id'] ), $photo['id'] );
+	$oldthumb 	= wppa_fix_poster_ext( wppa_get_thumb_path( $photo['id'] ), $photo['id'] );
 	$tags 		= $photo['tags'];
 	$exifdtm 	= $photo['exifdtm'];
 	
@@ -287,26 +288,37 @@ global $wpdb;
 
 	$err = '4';
 	// Find copied photo details
+	if ( ! $id ) return $err;
 	$image_id = $id;			
-	$newimage = wppa_get_photo_path( $image_id );
-	$newthumb = wppa_get_thumb_path( $image_id );
-	if ( ! $image_id ) return $err;
+	$newimage = wppa_strip_ext( wppa_get_photo_path( $image_id ) ) . '.' . wppa_get_ext( $oldimage );
+	$newthumb = wppa_strip_ext( wppa_get_thumb_path( $image_id ) ) . '.' . wppa_get_ext( $oldthumb );
 	
 	$err = '5';
-	// Do the filsystem copy
+	// Do the filesystem copy
 	if ( wppa_is_video( $photo['id'] ) ) {
 		if ( ! wppa_copy_video_files( $photo['id'], $image_id ) ) return $err;
 	}
-	else {
-		if ( !copy( $oldimage, $newimage ) ) return $err;
-		$err = '6';
-		if ( !copy( $oldthumb, $newthumb ) ) return $err;
-		// Copy source
-		wppa_copy_source( $filename, $albumfrom, $albumto );
-		// Copy Exif and iptc
-		wppa_copy_exif( $photoid, $id );
-		wppa_copy_iptc( $photoid, $id );
+	elseif ( wppa_has_audio( $photo['id'] ) ) {
+		if ( ! wppa_copy_audio_files( $photo['id'], $image_id ) ) return $err;
 	}
+
+	$err = '6';
+	// Copy photo or poster
+	if ( ! copy( $oldimage, $newimage ) ) return $err;
+	
+	$err = '7';
+	// Copy thumbnail
+	if ( ! copy( $oldthumb, $newthumb ) ) return $err;
+	
+	$err = '8';
+	// Copy source
+	wppa_copy_source( $filename, $albumfrom, $albumto );
+	
+	$err = '9';
+	// Copy Exif and iptc
+	wppa_copy_exif( $photoid, $id );
+	wppa_copy_iptc( $photoid, $id );
+
 	// Bubble album timestamp
 	if ( ! wppa_switch( 'wppa_copy_timestamp' ) ) wppa_update_album( array( 'id' => $albumto, 'timestamp' => time() ) );
 	return false;	// No error
@@ -442,11 +454,15 @@ function wppa_sanitize_files() {
 
 function __wppa_sanitize_files( $root ) {
 global $wppa_supported_video_extensions;
+global $wppa_supported_audio_extensions;
 
 	// See what's in there
-	$allowed_types = array( 'zip', 'jpg', 'png', 'gif', 'amf', 'pmf', 'bak', 'log' );
-	if ( wppa_is_video_enabled() ) {
+	$allowed_types = array( 'zip', 'jpg', 'jpeg', 'png', 'gif', 'amf', 'pmf', 'bak', 'log' );
+	if ( is_array( $wppa_supported_video_extensions ) ) {
 		$allowed_types = array_merge( $allowed_types, $wppa_supported_video_extensions );
+	}
+	if ( is_array( $wppa_supported_audio_extensions ) ) {
+		$allowed_types = array_merge( $allowed_types, $wppa_supported_audio_extensions );
 	}
 
 	$paths = $root.'/*';
@@ -652,7 +668,16 @@ function wppa_update_single_photo( $file, $id, $name ) {
 global $wpdb;
 
 	$photo = $wpdb->get_row( $wpdb->prepare( "SELECT `id`, `name`, `ext`, `album`, `filename` FROM `".WPPA_PHOTOS."` WHERE `id` = %s", $id ), ARRAY_A );
-	$ext = wppa_is_video( $id ) ? 'jpg' : $photo['ext'];
+	
+	// Find extension
+	$ext = $photo['ext'];
+	
+	if ( $ext == 'xxx' ) {
+		$ext = strtolower( wppa_get_ext( $file ) ); 	// Copy from source
+		if ( $ext == 'jpeg' ) $ext = 'jpg';
+	}
+	
+	// Make the files
 	wppa_make_the_photo_files( $file, $id, $ext );
 	
 	// and add watermark ( optionally ) to fullsize image only
@@ -681,26 +706,42 @@ global $allphotos;
 	if ( $xname == '' ) $name = basename( $file );
 	else $name = __( $xname );
 	
-	$photos = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM `".WPPA_PHOTOS."` WHERE `filename` = %s OR ( `filename` = '' AND `name` = %s )", wppa_sanitize_file_name( basename( $file ) ), $name ), ARRAY_A );
+	// Find photo entries that apply to the supplied filename
+	$photos = $wpdb->get_results( $wpdb->prepare( 
+			"SELECT * FROM `".WPPA_PHOTOS."` WHERE ".
+			"`filename` = %s OR ".
+			"( `filename` = '' AND `name` = %s ) OR ".
+			"( `filename` = %s )", 
+			wppa_sanitize_file_name( basename( $file ) ),								// Usual
+			$name,																		// Old; pre saving filenames
+			wppa_strip_ext( wppa_sanitize_file_name( basename( $file ) ) ) . '.xxx'		// Media poster file
+		), ARRAY_A );
+	
+	// If photo entries found, process them all
 	if ( $photos ) {
 		foreach ( $photos as $photo ) {
 		
+			// Find photo details
+			$id 	= $photo['id'];
+			$ext 	= wppa_is_video( $id ) ? 'jpg' : $photo['ext'];
+			$alb 	= $photo['album'];
+		
 			// Remake the files
-			$ext = wppa_is_video( $photo['id'] ) ? 'jpg' : $photo['ext'];
-			wppa_make_the_photo_files( $file, $photo['id'], $ext );
+			wppa_make_the_photo_files( $file, $id, $ext );
 			
 			// and add watermark ( optionally ) to fullsize image only
-			wppa_add_watermark( $photo['id'] );
+			wppa_add_watermark( $id );
 			
 			// create new thumbnail
-			wppa_create_thumbnail( $photo['id'] );	
+			wppa_create_thumbnail( $id );	
 			
 			// Save the new source
-			wppa_save_source( $file, basename( $file ), $photo['album'] );
+			wppa_save_source( $file, basename( $file ), $alb );
 			
-			// Update filename ( for backward compat )
-			$wpdb->query( $wpdb->prepare( "UPDATE `".WPPA_PHOTOS."` SET `filename` = %s WHERE `id` = %s", wppa_sanitize_file_name( basename( $file ) ), $photo['id'] ) );
-			wppa_dbg_msg( 'Update photo: '.$name, 'green' );
+			// Update filename if still empty ( Old )
+			if ( ! $photo['filename'] ) {
+				$wpdb->query( $wpdb->prepare( "UPDATE `".WPPA_PHOTOS."` SET `filename` = %s WHERE `id` = %s", wppa_sanitize_file_name( basename( $file ) ), $id ) );
+			}
 		}
 		return count( $photos );
 	}

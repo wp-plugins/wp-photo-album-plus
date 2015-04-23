@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 6.0.0
+* Version 6.1.0
 * 
 */
 
@@ -376,6 +376,15 @@ global $silent;
 		}
 	}
 
+	// Copy audiostub.jpg, the default audiostub
+	$fromfile = WPPA_PATH . '/images/audiostub.jpg';
+	$tofile = WPPA_UPLOAD_PATH . '/audiostub';
+	if ( ! is_file( $tofile . '.jpg' ) && ! is_file( $tofile . '.gif' ) && ! is_file( $tofile . '.png' ) ) {
+		@ copy( $fromfile, $tofile . '.jpg' );
+		wppa_update_option( 'wppa_audiostub', 'audiostub.jpg' );
+	}
+	
+	
 	// Check if this update comes with a new wppa-theme.php and/or a new wppa-style.css
 	// If so, produce message
 	$key = '0';
@@ -666,6 +675,8 @@ Hide Camera info
 						'wppa_thumb_text_desc' 				=> 'yes',	// 2
 						'wppa_thumb_text_rating' 			=> 'yes',	// 3
 						'wppa_thumb_text_viewcount'			=> 'no',
+						'wppa_thumb_video' 					=> 'no',
+						'wppa_thumb_audio' 					=> 'yes',
 						'wppa_popup_text_name' 				=> 'yes',	// 4
 						'wppa_popup_text_owner' 			=> 'no',
 						'wppa_popup_text_desc' 				=> 'yes',	// 5
@@ -808,12 +819,15 @@ Hide Camera info
 						'wppa_thumbs_first' 			=> 'no',
 						'wppa_login_links' 				=> 'yes',
 						'wppa_enable_video' 			=> 'yes',
+						'wppa_enable_audio' 			=> 'yes',
 
 						// B Full size and Slideshow
 						'wppa_fullvalign' 				=> 'center',
 						'wppa_fullhalign' 				=> 'center',
 						'wppa_start_slide' 				=> 'run',
 						'wppa_start_slideonly'			=> 'yes',
+						'wppa_start_slide_video' 		=> 'no',
+						'wppa_start_slide_audio' 		=> 'no',
 						'wppa_animation_type'			=> 'fadeover',
 						'wppa_slideshow_timeout'		=> '2500',
 						'wppa_animation_speed' 			=> '800',
@@ -884,6 +898,7 @@ Hide Camera info
 						'wppa_lightbox_global_set'		=> 'no',
 						'wppa_lb_hres' 					=> 'no',
 						'wppa_ovl_video_start' 			=> 'yes',
+						'wppa_ovl_audio_start' 			=> 'yes',
 						
 						// Table V: Fonts
 						'wppa_fontfamily_title' 	=> '',
@@ -1137,6 +1152,8 @@ Hide Camera info
 						'wppa_shortcode_to_add'			=> '[wppa type="album" album="#related,desc"][/wppa]',
 						'wppa_use_scripts_in_tinymce' 	=> 'no',
 						'wppa_import_preview' 			=> 'yes',
+						'wppa_audiostub_upload' 		=> '',
+						'wppa_audiostub' 				=> '',
 
 
 						// B New

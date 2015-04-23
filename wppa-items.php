@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains functions to retrieve album and photo items
-* Version 5.5.6
+* Version 6.1.0
 *
 */
  
@@ -479,6 +479,9 @@ function wppa_get_thumbx( $id, $force = false ) {
 	else {
 		$result = wppa_get_thumbphotoxy( $id, 'thumbx', $force );
 	}
+	if ( ! $result && wppa_has_audio( $id ) ) {
+		$result = wppa_opt( 'thumbsize' );
+	}
 	return $result;
 }
 function wppa_get_thumby( $id, $force = false ) {
@@ -494,6 +497,11 @@ function wppa_get_thumby( $id, $force = false ) {
 	}
 	else {
 		$result = wppa_get_thumbphotoxy( $id, 'thumby', $force );
+	}
+	if ( ! $result && wppa_has_audio( $id ) ) {
+		$result = wppa_opt( 'thumbsize' );// * 1080 / 1920;
+		$siz = getimagesize( WPPA_UPLOAD_PATH . '/' . wppa_opt( 'audiostub' ) );
+		$result *= $siz['1'] / $siz['0'];
 	}
 	return $result;
 }
@@ -536,7 +544,9 @@ function wppa_get_thumbphotoxy( $id, $key, $force = false ) {
 	}
 	
 	if ( wppa_get_ext( $file ) == 'xxx' ) {
-		$file = wppa_fix_poster_ext( $file );
+//		if ( $key == 'photox' || $key == 'photoy' ) {
+			$file = wppa_fix_poster_ext( $file, $id );
+//		}
 	}
 	
 	if ( ! is_file( $file ) && ! $force ) {

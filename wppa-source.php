@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains photo source file management routines
-* Version 5.5.7
+* Version 6.1.0
 *
 */
  
@@ -52,36 +52,71 @@ global $wppa_opt;
 
 function wppa_delete_source( $name, $alb ) {
 global $wppa_opt;
+
 	if ( wppa_switch('wppa_keep_sync') ) {
 		$path = wppa_get_source_album_dir( $alb ).'/'.$name;
-		@ unlink( $path );										// Ignore error
+		$path = wppa_strip_ext( $path );
+		$all_paths = glob( $path . '.*' );
+	
+		// Delete all possible file-extensions
+		foreach( $all_paths as $p ) if ( is_file( $p ) ) {
+			@ unlink( $p );								// Ignore error
+		}
+		
+		// Remove album if empty
 		@ rmdir( wppa_get_source_album_dir( $alb ) );	// Ignore error
 	}
 }
 
 function wppa_move_source( $name, $from, $to ) {
 global $wppa_opt;
+global $wppa_supported_photo_extensions;
+
+	// Source files can have uppercase extensions.
+	$temp = array();
+	foreach( $wppa_supported_photo_extensions as $ext ) {
+		$temp[] = strtoupper( $ext );
+	}
+	$supext = array_merge( $wppa_supported_photo_extensions, $temp );
+
 	if ( wppa_switch('wppa_keep_sync') ) {
-		$frompath 	= wppa_get_source_album_dir( $from ).'/'.$name;
-		if ( ! is_file( $frompath ) ) return;
+		$frompath 	= wppa_get_source_album_dir( $from ).'/'.wppa_strip_ext($name);
 		$todir 		= wppa_get_source_album_dir( $to );
-		$topath 	= wppa_get_source_album_dir( $to ).'/'.$name;
+		$topath 	= wppa_get_source_album_dir( $to ).'/'.wppa_strip_ext($name);
 		if ( ! is_dir( $todir ) ) @ wppa_mktree( $todir );
-		@ rename( $frompath, $topath );		// will fail if target already exists
-		@ unlink( $frompath );				// therefor attempt delete
-		@ rmdir( wppa_get_source_album_dir( $from ) );	// remove dir when empty Ignore error
+		
+		foreach( $supext as $ext ) {
+			if ( is_file( $frompath.'.'.$ext ) ) {
+				@ rename( $frompath.'.'.$ext, $topath.'.'.$ext );	// will fail if target already exists
+				@ unlink( $frompath.'.'.$ext );						// therefor attempt delete
+				@ rmdir( wppa_get_source_album_dir( $from ) );		// remove dir when empty Ignore error
+			}
+		}
 	}
 }
 
 function wppa_copy_source( $name, $from, $to ) {
 global $wppa_opt;
+global $wppa_supported_photo_extensions;
+
+	// Source files can have uppercase extensions.
+	$temp = array();
+	foreach( $wppa_supported_photo_extensions as $ext ) {
+		$temp[] = strtoupper( $ext );
+	}
+	$supext = array_merge( $wppa_supported_photo_extensions, $temp );
+
 	if ( wppa_switch('wppa_keep_sync') ) {
-		$frompath 	= wppa_get_source_album_dir( $from ).'/'.$name;
-		if ( ! is_file( $frompath ) ) return;
+		$frompath 	= wppa_get_source_album_dir( $from ).'/'.wppa_strip_ext($name);
 		$todir 		= wppa_get_source_album_dir( $to );
-		$topath 	= wppa_get_source_album_dir( $to ).'/'.$name;
+		$topath 	= wppa_get_source_album_dir( $to ).'/'.wppa_strip_ext($name);
 		if ( ! is_dir( $todir ) ) @ wppa_mktree( $todir );
-		@ copy($frompath, $topath); // !
+		
+		foreach( $supext as $ext ) {
+			if ( is_file( $frompath.'.'.$ext ) ) {
+				@ copy( $frompath.'.'.$ext, $topath.'.'.$ext ); // !
+			}
+		}
 	}
 }
 

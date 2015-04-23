@@ -3,7 +3,7 @@
 /* Package: wp-photo-album-plus
 /*
 /* Various style computation routines
-/* Version 5.5.0
+/* Version 6.1.0
 /*
 */
 
@@ -332,6 +332,9 @@ global $wppa;
 	if ( ! $id ) return $result;						// no image: no dimensions
 	if ( $file == '' ) return $result;					// no image: no dimensions
 	
+	if ( wppa_has_audio( $id ) ) {
+		$file = wppa_fix_poster_ext( $file, $id );
+	}
 	if ( ! wppa_is_video( $id ) && ! is_file( $file ) ) {
 		wppa_dbg_msg( 'Please check file ' . $file . ' it is missing while expected. Id=' . $id, 'red' );
 		return $result;									// no file: no dimensions ( 2.3.0 )

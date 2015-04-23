@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the upload/import pages and functions
-* Version 5.5.6
+* Version 6.1.0
 *
 */
 
@@ -12,7 +12,6 @@ if ( ! defined( 'ABSPATH' ) ) die( "Can't load this file directly" );
 // upload images admin page
 function _wppa_page_upload() {
 global $target;
-global $wppa_opt;
 global $wppa_revno;
 
     // sanitize system
@@ -326,10 +325,12 @@ global $wppa_revno;
 
 // import images admin page
 function _wppa_page_import() {
-global $wppa_opt;
 global $wppa_revno;
 global $wppa;
+global $wpdb;
+global $wppa_supported_photo_extensions;
 global $wppa_supported_video_extensions;
+global $wppa_supported_audio_extensions;
 
 	if ( $wppa['ajax'] ) ob_start();	// Suppress output if ajax operation
 	
@@ -348,6 +349,34 @@ global $wppa_supported_video_extensions;
 	if ( wppa_switch( 'wppa_watermark_on' ) && ( wppa_switch( 'wppa_watermark_user' ) || current_user_can( 'wppa_settings' ) ) ) {
 		if ( isset( $_POST['wppa-watermark-file'] ) ) update_option( 'wppa_watermark_file_'.$user, $_POST['wppa-watermark-file'] );
 		if ( isset( $_POST['wppa-watermark-pos'] ) ) update_option( 'wppa_watermark_pos_'.$user, $_POST['wppa-watermark-pos'] );
+	}
+	
+	// Update last used albums
+	if ( isset( $_POST['wppa-photo-album'] ) ) {
+		update_option( 'wppa-photo-album-import-'.wppa_get_user(), $_POST['wppa-photo-album'] );	// nog in form verwerken
+	}
+	if ( isset( $_POST['wppa-video-album'] ) ) {
+		update_option( 'wppa-video-album-import-'.wppa_get_user(), $_POST['wppa-video-album'] );
+	}
+	if ( isset( $_POST['wppa-audio-album'] ) ) {
+		update_option( 'wppa-audio-album-import-'.wppa_get_user(), $_POST['wppa-audio-album'] );
+	}
+	
+	// Verify last albums still exist
+	$alb = get_option( 'wppa-photo-album-import-'.wppa_get_user(), '0' );
+	if ( $alb ) {
+		$exists = $wpdb->get_var( "SELECT COUNT(*) FROM `" . WPPA_ALBUMS ."`  WHERE `id` = ".$alb );
+		if ( ! $exists ) update_option( 'wppa-photo-album-import-'.wppa_get_user(), '0' );
+	}
+	$alb = get_option( 'wppa-video-album-import-'.wppa_get_user(), '0' );
+	if ( $alb ) {
+		$exists = $wpdb->get_var( "SELECT COUNT(*) FROM `" . WPPA_ALBUMS ."`  WHERE `id` = ".$alb );
+		if ( ! $exists ) update_option( 'wppa-video-album-import-'.wppa_get_user(), '0' );
+	}
+	$alb = get_option( 'wppa-audio-album-import-'.wppa_get_user(), '0' );
+	if ( $alb ) {
+		$exists = $wpdb->get_var( "SELECT COUNT(*) FROM `" . WPPA_ALBUMS ."`  WHERE `id` = ".$alb );
+		if ( ! $exists ) update_option( 'wppa-audio-album-import-'.wppa_get_user(), '0' );
 	}
 
 	// Extract zip
@@ -394,8 +423,9 @@ global $wppa_supported_video_extensions;
 		if ( isset( $_POST['del-after-a'] ) ) $dela = true; else $dela = false;	
 		if ( isset( $_POST['del-after-z'] ) ) $delz = true; else $delz = false;
 		if ( isset( $_POST['del-after-v'] ) ) $delv = true; else $delv = false;
+		if ( isset( $_POST['del-after-a'] ) ) $dela = true; else $dela = false;
 
-		wppa_import_photos( $delp, $dela, $delz, $delv );
+		wppa_import_photos( $delp, $dela, $delz, $delv, $dela );
 	} 
 	
 	// Continue dirimport after timeout
@@ -452,13 +482,14 @@ global $wppa_supported_video_extensions;
 			// See if the current source is the 'home' directory
 			$is_depot 	= ( $source == WPPA_DEPOT );
 			// See if the current souce is a wp upload location or a wppa+ sourcefile location ( if so: no delete checkbox )
-			$is_sub_depot = ( substr( $source, 0, strlen( WPPA_DEPOT ) ) == WPPA_DEPOT ) && ( substr( WPPA_ABSPATH.$source, 0, strlen( $wppa_opt['wppa_source_dir'] ) ) != $wppa_opt['wppa_source_dir'] );
+			$is_sub_depot = ( substr( $source, 0, strlen( WPPA_DEPOT ) ) == WPPA_DEPOT ) && ( substr( WPPA_ABSPATH.$source, 0, strlen( wppa_opt( 'wppa_source_dir' ) ) ) != wppa_opt( 'wppa_source_dir' ) );
 			// See what's in there
 			$files 		= wppa_get_import_files();
 			$zipcount 	= wppa_get_zipcount( $files );
 			$albumcount = wppa_get_albumcount( $files );
 			$photocount = wppa_get_photocount( $files );
 			$videocount = wppa_get_video_count( $files );
+			$audiocount = wppa_get_audio_count( $files );
 			$dircount	= $is_depot ? wppa_get_dircount( $files ) : '0';
 			// echo 'zips:'.$zipcount,' albs:'.$albumcount.' pho:'.$photocount.' dirs:'.$dircount;
 			if ( $ngg_opts ) {
@@ -478,6 +509,7 @@ global $wppa_supported_video_extensions;
 			$albumcount 	= '0';
 			$photocount 	= $files ? count( $files ) : '0';
 			$videocount 	= '0';
+			$audiocount 	= '0';
 			$dircount		= '0';
 			$is_ngg 		= false;
 			$remote_max 	= get_option( 'wppa_import_remote_max_'.$user, '10' );
@@ -485,7 +517,7 @@ global $wppa_supported_video_extensions;
 
 ?>		
 	<form action="<?php echo( wppa_dbg_url( get_admin_url().'admin.php?page=wppa_import_photos' ) ) ?>" method="post">
-		<?php if ( current_user_can( 'administrator' ) || $wppa_opt['wppa_chgsrc_is_restricted'] == 'no' ) { ?>
+		<?php if ( current_user_can( 'administrator' ) || ! wppa_switch( 'wppa_chgsrc_is_restricted' ) ) { ?>
 
 		<div style="border:1px solid gray; padding:4px; margin: 3px 0;" >
 			<?php 
@@ -538,9 +570,9 @@ global $wppa_supported_video_extensions;
 <?php
 		
 		// check if albums exist or will be made before allowing upload
-		if ( wppa_has_albums() || $albumcount > '0' || $zipcount >'0' || $dircount > '0' || $videocount > '0' ) { 
+		if ( wppa_has_albums() || $albumcount > '0' || $zipcount >'0' || $dircount > '0' || $videocount > '0' || $audiocount > '0' ) { 
 	
-			if ( $photocount > '0' || $albumcount > '0' || $zipcount >'0' || $dircount > '0' || $videocount > '0' ) { ?>
+			if ( $photocount > '0' || $albumcount > '0' || $zipcount >'0' || $dircount > '0' || $videocount > '0' || $audiocount > '0' ) { ?>
 			
 				<form action="<?php echo( wppa_dbg_url( get_admin_url().'admin.php?page=wppa_import_photos' ) ) ?>" method="post">
 				<?php wp_nonce_field( '$wppa_nonce', WPPA_NONCE ); 
@@ -606,7 +638,7 @@ global $wppa_supported_video_extensions;
 									</td>
 									<?php if ( $is_sub_depot ) { ?>
 										<td>
-											<input type="checkbox" id="del-after-a" name="del-after-a" checked="checked" /><b>&nbsp;&nbsp;<?php _e( 'Delete after successful import, or if the album already exits.', 'wppa' ); ?></b>
+											<input type="checkbox" id="del-after-a" name="del-after-a" checked="checked" /><b>&nbsp;&nbsp;<?php _e( 'Remove from depot after successful import, or if the album already exits.', 'wppa' ); ?></b>
 										</td>
 									<?php } ?>
 								</tr>
@@ -654,9 +686,13 @@ global $wppa_supported_video_extensions;
 						</b></p>
 						<p class="hideifupdate" >
 							<?php _e( 'Default album for import:', 'wppa' ) ?>
-							<select name="wppa-album" id="wppa-album">
-								<!--<option value=""><?php // _e( '- select an album -', 'wppa' ) ?></option>-->
-								<?php echo wppa_album_select_a( array( 'path' => wppa_switch( 'wppa_hier_albsel' ), 'addpleaseselect' => true, 'checkaccess' => true, 'checkupload' => true ) ); // ( '', '', false, false, false, false, false, true ) ) ?>
+							<select name="wppa-photo-album" id="wppa-photo-album">
+								<?php echo wppa_album_select_a( array( 	'path' 				=> wppa_switch( 'wppa_hier_albsel' ),
+																		'selected' 			=> get_option( 'wppa-photo-album-import-'.wppa_get_user(), '0' ),
+																		'addpleaseselect' 	=> true, 
+																		'checkaccess' 		=> true, 
+																		'checkupload' 		=> true 
+																	) ) ?>
 							</select>
 							<?php _e( 'Photos that have (<em>name</em>)[<em>album</em>] will be imported by that <em>name</em> in that <em>album</em>.', 'wppa' ) ?>
 						</p>
@@ -680,7 +716,7 @@ global $wppa_supported_video_extensions;
 									</td>
 									<?php if ( $is_sub_depot ) { ?>
 										<td>
-											<input type="checkbox" id="del-after-p" name="del-after-p" checked="checked" /><b>&nbsp;&nbsp;<?php _e( 'Delete after successful import.', 'wppa' ); ?></b>
+											<input type="checkbox" id="del-after-p" name="del-after-p" checked="checked" /><b>&nbsp;&nbsp;<?php _e( 'Remove from depot after successful import.', 'wppa' ); ?></b>
 										</td>
 									<?php } ?>
 									<?php if ( $is_ngg ) { ?>
@@ -719,8 +755,8 @@ global $wppa_supported_video_extensions;
 								$idx = '0';
 								if ( is_array( $files ) ) foreach ( $files as $file ) {
 									$ext = strtolower( substr( strrchr( $file, "." ), 1 ) );
-									$meta =	substr( $file, 0, strlen( $file )-3 ).'pmf';
-									if ( $ext == 'jpg' || $ext == 'png' || $ext == 'gif' ) { ?>
+									$meta =	wppa_strip_ext( $file ).'pmf';
+									if ( in_array( $ext, $wppa_supported_photo_extensions ) ) { ?>
 										<td id="td-file-<?php echo( $idx ) ?>" >
 											<input type="checkbox" id="file-<?php echo( $idx ) ?>" name="file-<?php echo( $idx ) ?>" title="<?php echo $file ?>" class= "wppa-pho" <?php if ( $is_sub_depot ) echo( 'checked="checked"' ) ?> /><span id="name-file-<?php echo( $idx ) ?>" >&nbsp;&nbsp;<?php echo( wppa_sanitize_file_name( basename( $file ) ) ); ?>&nbsp;<?php echo( stripslashes( wppa_get_meta_name( $meta, '( ' ) ) ) ?><?php echo( stripslashes( wppa_get_meta_album( $meta, '[' ) ) ) ?></span>
 											<?php 
@@ -755,7 +791,7 @@ global $wppa_supported_video_extensions;
 					</div>
 				<?php } 
 				// Display the videos
-				if ( $videocount > '0' ) { ?>
+				if ( $videocount > '0' && wppa_switch( 'enable_video' ) ) { ?>
 					<div style="border:1px solid gray; padding:4px; margin: 3px 0;" >
 						<p><b>
 							<?php _e( 'There are', 'wppa' ); echo( ' '.$videocount.' ' ); _e( 'videos in the depot.', 'wppa' ) ?><br/>
@@ -763,8 +799,12 @@ global $wppa_supported_video_extensions;
 						<p class="hideifupdate" >
 							<?php _e( 'Album to import to:', 'wppa' ) ?>
 							<select name="wppa-video-album" id="wppa-video-album">
-								<option value=""><?php _e( '- select an album -', 'wppa' ) ?></option>
-								<?php echo wppa_album_select_a( array( 'path' => wppa_switch( 'wppa_hier_albsel' ), 'addpleaseselect' => true, 'checkaccess' => true, 'checkupload' => true ) ); // ( '', '', false, false, false, false, false, true ) ) ?>
+								<?php echo wppa_album_select_a( array( 	'path' 				=> wppa_switch( 'wppa_hier_albsel' ), 
+																		'selected' 			=> get_option( 'wppa-video-album-import-'.wppa_get_user(), '0' ),
+																		'addpleaseselect'	=> true, 
+																		'checkaccess' 		=> true, 
+																		'checkupload' 		=> true 
+																	) ) ?>
 							</select>
 						</p>
 						<table class="form-table wppa-table widefat" style="margin-bottom:0;" >
@@ -775,7 +815,7 @@ global $wppa_supported_video_extensions;
 									</td>
 									<?php if ( $is_sub_depot ) { ?>
 										<td>
-											<input type="checkbox" id="del-after-v" name="del-after-v" checked="checked" /><b>&nbsp;&nbsp;<?php _e( 'Delete after successful import.', 'wppa' ); ?></b>
+											<input type="checkbox" id="del-after-v" name="del-after-v" checked="checked" /><b>&nbsp;&nbsp;<?php _e( 'Remove from depot after successful import.', 'wppa' ); ?></b>
 										</td>
 									<?php } ?>
 								</tr>
@@ -791,6 +831,63 @@ global $wppa_supported_video_extensions;
 									if ( in_array( $ext, $wppa_supported_video_extensions ) ) { ?>
 										<td>
 											<input type="checkbox" id="file-<?php echo( $idx ) ?>" name="file-<?php echo( $idx ) ?>" title="<?php echo $file ?>" class="wppa-video" checked="checked" /><span id="name-file-<?php echo( $idx ) ?>" >&nbsp;&nbsp;<?php echo( wppa_sanitize_file_name( basename( $file ) ) ); ?></span>
+										</td>
+										<?php if ( $ct == 3 ) {
+											echo( '</tr><tr>' ); 
+											$ct = 0;
+										}
+										else {
+											$ct++;
+										}
+									}
+									$idx++;
+								} ?>
+							</tr>
+						</table>
+					</div>
+				<?php }
+
+				// Display the audios
+				if ( $audiocount > '0' && wppa_switch( 'enable_audio' ) ) { ?>
+					<div style="border:1px solid gray; padding:4px; margin: 3px 0;" >
+						<p><b>
+							<?php _e( 'There are', 'wppa' ); echo( ' '.$audiocount.' ' ); _e( 'audios in the depot.', 'wppa' ) ?><br/>
+						</b></p>
+						<p class="hideifupdate" >
+							<?php _e( 'Album to import to:', 'wppa' ) ?>
+							<select name="wppa-audio-album" id="wppa-audio-album">
+								<?php echo wppa_album_select_a( array( 	'path' 				=> wppa_switch( 'wppa_hier_albsel' ),
+																		'selected' 			=> get_option( 'wppa-audio-album-import-'.wppa_get_user(), '0' ),
+																		'addpleaseselect' 	=> true, 
+																		'checkaccess' 		=> true, 
+																		'checkupload' 		=> true 
+																	) ) ?>
+							</select>
+						</p>
+						<table class="form-table wppa-table widefat" style="margin-bottom:0;" >
+							<thead>
+								<tr>
+									<td>
+										<input type="checkbox" id="all-audio" checked="checked" onchange="checkAll( 'all-audio', '.wppa-audio' )" /><b>&nbsp;&nbsp;<?php _e( 'Check/uncheck all', 'wppa' ) ?></b>
+									</td>
+									<?php if ( $is_sub_depot ) { ?>
+										<td>
+											<input type="checkbox" id="del-after-a" name="del-after-a" checked="checked" /><b>&nbsp;&nbsp;<?php _e( 'Remove from depot after successful import.', 'wppa' ); ?></b>
+										</td>
+									<?php } ?>
+								</tr>
+							</thead>
+						</table>
+						<table class="form-table wppa-table widefat" style="margin-top:0;" >
+							<tr>
+								<?php
+								$ct = 0;
+								$idx = '0';
+								if ( is_array( $files ) ) foreach ( $files as $file ) {
+									$ext = strtolower( substr( strrchr( $file, "." ), 1 ) );
+									if ( in_array( $ext, $wppa_supported_audio_extensions ) ) { ?>
+										<td>
+											<input type="checkbox" id="file-<?php echo( $idx ) ?>" name="file-<?php echo( $idx ) ?>" title="<?php echo $file ?>" class="wppa-audio" checked="checked" /><span id="name-file-<?php echo( $idx ) ?>" >&nbsp;&nbsp;<?php echo( wppa_sanitize_file_name( basename( $file ) ) ); ?></span>
 										</td>
 										<?php if ( $ct == 3 ) {
 											echo( '</tr><tr>' ); 
@@ -857,7 +954,7 @@ global $wppa_supported_video_extensions;
 					<script type="text/javascript">
 						function wppaVfyAlbum() {
 							if ( jQuery( '#wppa-update' ).attr( 'checked' ) != 'checked' ) {
-								if ( ! parseInt( jQuery( '#wppa-album' ).attr( 'value' ) ) && ! parseInt( jQuery( '#wppa-video-album' ).attr( 'value' ) ) ) {
+								if ( ! parseInt( jQuery( '#wppa-photo-album' ).attr( 'value' ) ) && ! parseInt( jQuery( '#wppa-video-album' ).attr( 'value' ) ) && ! parseInt( jQuery( '#wppa-audio-album' ).attr( 'value' ) ) ) {
 									alert( 'Please select an album first' );
 									return false;
 								}
@@ -907,8 +1004,9 @@ global $wppa_supported_video_extensions;
 							wppaImportRuns = true;
 							var data = '';
 							data += 'wppa-update-check='+jQuery( '#wppa-update-check' ).attr( 'value' );
-							data += '&wppa-album='+jQuery( '#wppa-album' ).attr( 'value' );
+							data += '&wppa-photo-album='+jQuery( '#wppa-photo-album' ).attr( 'value' );
 							data += '&wppa-video-album='+jQuery( '#wppa-video-album' ).attr( 'value' );
+							data += '&wppa-audio-album='+jQuery( '#wppa-audio-album' ).attr( 'value' );
 							data += '&wppa-watermark-file='+jQuery( '#wppa-watermark-file' ).attr( 'value' );
 							data += '&wppa-watermark-pos='+jQuery( '#wppa-watermark-pos' ).attr( 'value' );
 							if ( jQuery( '#cre-album' ).attr( 'checked' ) ) data += '&cre-album='+jQuery( '#cre-album' ).attr( 'value' );
@@ -979,7 +1077,7 @@ global $wppa_supported_video_extensions;
 							jQuery( '#wppa-stop-ajax' ).css( 'display', 'none' );
 						}
 					</script>
-					<?php if ( ( $photocount || $videocount ) && ! $albumcount && ! $dircount && ! $zipcount ) { ?>
+					<?php if ( ( $photocount || $videocount || $audiocount ) && ! $albumcount && ! $dircount && ! $zipcount ) { ?>
 					<input id="wppa-start-ajax" type="button" onclick="if ( wppaVfyAlbum() ) { wppaDoAjaxImport() }" class="button-secundary" value="Start Ajax" />
 					<input id="wppa-stop-ajax" style="display:none;" type="button" onclick="wppaStopAjaxImport()" class="button-secundary" value="Stop Ajax" />
 					<?php } ?>
@@ -989,27 +1087,45 @@ global $wppa_supported_video_extensions;
 		<?php }
 		else {
 			if ( $source_type == 'local' ) {
-				if ( PHP_VERSION_ID >= 50207 ) {
-					if ( wppa_is_video_enabled() ) {
-						wppa_ok_message( __( 'There are no archives, albums, photos or videos in directory:', 'wppa' ).' '.$source_url );
-					}
-					else {
-						wppa_ok_message( __( 'There are no archives, albums or photos in directory:', 'wppa' ).' '.$source_url );
-					}
-				}
-				else {
-					if ( wppa_is_video_enabled() ) {
-						wppa_ok_message( __( 'There are no albums, photos or videos in directory:', 'wppa' ).' '.$source_url );
-					}
-					else {
-						wppa_ok_message( __( 'There are no albums or photos in directory:', 'wppa' ).' '.$source_url );
-					}
-				}
+				wppa_ok_message( __( 'There are no importable files found in directory:', 'wppa' ).' '.$source_url );
 			}
 			else {
 				wppa_ok_message( __( 'There are no photos found or left to process at url:', 'wppa' ).' '.$source_url );
 			}
 		}
+		echo '<br /><b>';
+		_e( 'You can import the following file types:', 'wppa');
+		echo '</b><br />';
+		if ( PHP_VERSION_ID >= 50207 ) {
+			echo '<br />';
+			_e( 'Compressed file types: .zip', 'wppa' );
+		}
+		if ( true ) {
+			echo '<br />';
+			_e( 'Photo file types:', 'wppa' );
+			foreach ( $wppa_supported_photo_extensions as $ext ) {
+				echo ' .'.$ext;
+			}
+		}
+		if ( wppa_switch( 'enable_video' ) ) {
+			echo '<br />';
+			_e( 'Video file types:', 'wppa' );
+			foreach ( $wppa_supported_video_extensions as $ext ) {
+				echo ' .'.$ext;
+			}
+		}
+		if ( wppa_switch( 'enable_audio' ) ) {
+			echo '<br />';
+			_e( 'Audio file types:', 'wppa' );
+			foreach ( $wppa_supported_audio_extensions as $ext ) {
+				echo ' .'.$ext;
+			}
+		}
+		echo '<br />';
+		_e( 'WPPA+ file types: .amf .pmf', 'wppa' );
+		echo '<br /><br />';
+		_e( 'Your depot directory is:', 'wppa' );
+		echo '<b> .../' . WPPA_DEPOT . '/</b>';
 	}
 	else { ?>
 		<?php $url = wppa_dbg_url( get_admin_url().'admin.php?page=wppa_admin_menu' ); ?>
@@ -1090,7 +1206,7 @@ function wppa_get_import_files() {
 						// Copy to $files, skipping dups
 						$val = '';
 						$count = 0;
-						$sfxs = array( 'jpg', 'gif', 'png', 'JPG', 'GIF', 'PNG' );
+						$sfxs = array( 'jpg', 'jpeg', 'gif', 'png', 'JPG', 'JPEG', 'GIF', 'PNG' );
 						foreach ( array_keys( $matches[0] ) as $idx ) {
 							if ( $matches[0][$idx] != $val ) {
 								$val = $matches[0][$idx];
@@ -1100,7 +1216,7 @@ function wppa_get_import_files() {
 								$match 		= trim( $match, '"' );
 								if ( strpos( $match, '?' ) ) $match = substr( $match, 0, strpos( $match, '?' ) );
 								$match 		= str_replace( '/uploads/wppa/thumbs/', '/uploads/wppa/', $match );
-								$sfx = substr( $match, -3 );
+								$sfx = wppa_get_ext( $match );
 								if ( in_array( $sfx, $sfxs ) ) {
 									// Save it
 									$count++;
@@ -1203,7 +1319,6 @@ function wppa_upload_photos() {
 
 // Send emails after backend upload
 function wppa_backend_upload_mail( $id, $alb, $name ) {
-global $wppa_opt;
 		
 	$owner = wppa_get_user();
 	if ( $owner == 'admin' ) return;	// Admin does not send mails to himself
@@ -1245,12 +1360,13 @@ global $target;
 }
 
 // Do the import photos
-function wppa_import_photos( $delp = false, $dela = false, $delz = false, $delv = false ) {
+function wppa_import_photos( $delp = false, $dela = false, $delz = false, $delv = false, $dela = false ) {
 global $wpdb;
 global $warning_given;
 global $wppa;
-global $wppa_opt;
+global $wppa_supported_photo_extensions;
 global $wppa_supported_video_extensions;
+global $wppa_supported_audio_extensions;
 
 	$warning_given = false;
 	
@@ -1395,8 +1511,8 @@ global $wppa_supported_video_extensions;
 			}
 		}
 	}
-	elseif ( isset( $_POST['wppa-album'] ) ) {
-		$album = $_POST['wppa-album']; 
+	elseif ( isset( $_POST['wppa-photo-album'] ) ) {
+		$album = $_POST['wppa-photo-album']; 
 	}
 	else $album = '0';
 	
@@ -1415,7 +1531,7 @@ global $wppa_supported_video_extensions;
 			if ( $wppa['ajax'] ) $wppa['ajax_import_files'] = basename( $file );	/* */
 			$ext = strtolower( substr( strrchr( $file, "." ), 1 ) );
 			$ext = str_replace( '_backup', '', $ext );
-			if ( $ext == 'jpg' || $ext == 'png' || $ext == 'gif' ) {
+			if ( in_array( $ext, $wppa_supported_photo_extensions ) ) {
 			
 				// See if a metafile exists
 				$meta = substr( $file, 0, strlen( $file ) - 3 ).'pmf';
@@ -1438,13 +1554,33 @@ global $wppa_supported_video_extensions;
 					$linktitle = '';
 				}
 				
-				// If there is a video with the same name, this is the poster.
+				// If there is a video or audio with the same name, this is the poster.
 				$is_poster = wppa_file_is_in_album( wppa_strip_ext( basename( $file ) ) . '.xxx', $alb );
 				if ( $is_poster ) {
+				
+					// Delete possible poster sourcefile
+					wppa_delete_source( basename( $file ), $alb );
+					
+					// Remove possible existing posters, the file-extension may be different as before
+					$old_photo = wppa_strip_ext( wppa_get_photo_path( $is_poster ) );
+					$old_thumb = wppa_strip_ext( wppa_get_thumb_path( $is_poster ) );
+					foreach ( $wppa_supported_photo_extensions as $pext ) {
+						@ unlink( $old_photo . '.' . $pext );
+						@ unlink( $old_thumb . '.' . $pext );
+					}
+					
+					// Clear sizes on db
+					wppa_update_photo( array( 	'thumbx' => '0',
+												'thumby' => '0',
+												'photox' => '0',
+												'photoy' => '0'
+										));
+					
+					// Make new files
 					$bret = wppa_make_the_photo_files( $file, $is_poster, strtolower( wppa_get_ext( basename( $file ) ) ) );
 					if ( $bret ) { 	// Success
 						if ( $wppa['ajax'] ) $wppa['ajax_import_files_done'] = true;
-						wppa_save_source( $file, wppa_strip_ext( basename( $file ) ) . '.jpg', $alb );
+						wppa_save_source( $file, basename( $file ), $alb );
 						$pcount++;
 						$totpcount += $bret;
 						if ( $delp ) {
@@ -1453,13 +1589,13 @@ global $wppa_supported_video_extensions;
 					}
 					else { 			// Failed
 						if ( ! $wppa['ajax'] ) {
-							wppa_error_message('Failed to add poster for video '.$is_poster);
+							wppa_error_message('Failed to add poster for item '.$is_poster);
 						}
 					}
 				}
 				
 				// Update the photo ?
-				elseif ( isset( $_POST['wppa-update'] ) || $is_poster ) { 
+				elseif ( isset( $_POST['wppa-update'] ) ) { 
 					$iret = wppa_update_photo_files( $unsanitized_path_name, $name );
 					if ( $iret ) {
 						if ( $wppa['ajax'] ) $wppa['ajax_import_files_done'] = true;
@@ -1556,26 +1692,19 @@ global $wppa_supported_video_extensions;
 					$id = wppa_file_is_in_album( $filename, $alb );
 					
 					// Or maybe the poster is already there
-					if ( ! $id ) {
-						$id = wppa_file_is_in_album( str_replace( 'xxx', 'jpg', $filename ), $alb );
-					}
-					if ( ! $id ) {
-						$id = wppa_file_is_in_album( str_replace( 'xxx', 'JPG', $filename ), $alb );
+					foreach ( $wppa_supported_photo_extensions as $pext ) {
+						if ( ! $id ) {
+							$id = wppa_file_is_in_album( str_replace( 'xxx', $pext, $filename ), $alb );
+						}
 					}
 					
-					// This filename already exists: is the poster. Make sure all the extensions are lowercase and fix the filename in the photo info
+					// This filename already exists: is the poster. Fix the filename in the photo info
 					if ( $id ) {
 						$fname = wppa_get_photo_item( $id, 'filename' );
 						$fname = wppa_strip_ext( $fname ) . '.xxx';
 						
 						// Fix filename and ext in photo info
 						wppa_update_photo( array( 'id' => $id, 'filename' => $fname, 'ext' => 'xxx' ) );
-						
-						// Fix source file if required
-						$source_path = wppa_strip_ext( wppa_get_source_album_dir( $alb ).'/'.$fname );
-						if ( is_file( $source_path . '.JPG' ) ) {
-							rename( $source_path . '.JPG', $source_path . '.jpg' );
-						}
 					}
 					
 					// Add new entry
@@ -1604,10 +1733,71 @@ global $wppa_supported_video_extensions;
 			}
 		}
 	}
+
+	// Now the audo files
+	$audiocount = '0';
+	$alb = isset( $_POST['wppa-audio-album'] ) ? $_POST['wppa-audio-album'] : '0';
+	if ( $wppa['ajax'] && ! $alb ) {
+		$wppa['ajax_import_files_error'] = __( 'Unknown album', 'wppa' );
+	}
+	else foreach ( array_keys( $files ) as $idx ) {
+		$file = $files[$idx];
+		if ( isset( $_POST['file-'.$idx] ) || $wppa['ajax'] ) {
+			if ( $wppa['ajax'] ) $wppa['ajax_import_files'] = wppa_sanitize_file_name( basename( $file ) );	/* */
+			$ext = strtolower( substr( strrchr( $file, "." ), 1 ) );
+			if ( in_array( $ext, $wppa_supported_audio_extensions ) ) {
+				if ( is_numeric( $alb ) && $alb != '0' ) {
+				
+					// Do we have this filename with ext xxx in this album?
+					$filename = wppa_strip_ext( basename( $file ) ).'.xxx';
+					$id = wppa_file_is_in_album( $filename, $alb );
+					
+					// Or maybe the poster is already there
+					foreach ( $wppa_supported_photo_extensions as $pext ) {
+						if ( ! $id ) {
+							$id = wppa_file_is_in_album( str_replace( 'xxx', $pext, $filename ), $alb );
+						}
+					}
+					
+					// This filename already exists: is the poster. Fix the filename in the photo info
+					if ( $id ) {
+						$fname = wppa_get_photo_item( $id, 'filename' );
+						$fname = wppa_strip_ext( $fname ) . '.xxx';
+						
+						// Fix filename and ext in photo info
+						wppa_update_photo( array( 'id' => $id, 'filename' => $fname, 'ext' => 'xxx' ) );
+					}
+					
+					// Add new entry
+					if ( ! $id ) {	
+						$id = wppa_create_photo_entry( array( 'album' => $alb, 'filename' => $filename, 'ext' => 'xxx', 'name' => wppa_strip_ext( $filename ) ) );
+						wppa_flush_treecounts( $alb );
+					}
+					
+					// Add audio filetype
+					$newpath = wppa_strip_ext( wppa_get_photo_path( $id ) ).'.'.$ext;
+					copy( $file, $newpath );
+					if ( $dela ) unlink( $file );
+					if ( $wppa['ajax'] ) {
+						$wppa['ajax_import_files_done'] = true;
+					}
+					
+					// Make sure ext is set to xxx after adding audio to an existing poster
+					wppa_update_photo( array( 'id' => $id, 'ext' => 'xxx' ) );
+					
+					// Book keeping
+					$audiocount++;
+				}
+				else {
+					wppa_error_message( sprintf( __( 'Error inserting audio %s, unknown or non existent album.', 'wppa' ), basename( $file ) ) );
+				}				
+			}
+		}
+	}
 	
 	wppa_ok_message( __( 'Done processing files.', 'wppa' ) );
 	
-	if ( $pcount == '0' && $acount == '0' && $zcount == '0' && $dircount == '0' && $photocount == '0' && $videocount == '0' ) {
+	if ( $pcount == '0' && $acount == '0' && $zcount == '0' && $dircount == '0' && $photocount == '0' && $videocount == '0' && $audiocount == '0' ) {
 		wppa_error_message( __( 'No files to import.', 'wppa' ) );
 	}
 	else {
@@ -1628,6 +1818,9 @@ global $wppa_supported_video_extensions;
 		}
 		if ( $videocount ) {
 			$msg .= $videocount.' '.__( 'Videos imported.', 'wppa' );
+		}
+		if ( $audiocount ) {
+			$msg .= $audiocount.' '.__( 'Audios imported.', 'wppa' );
 		}
 		wppa_ok_message( $msg ); 
 		wppa_set_last_album( $album );
@@ -1657,11 +1850,13 @@ function wppa_get_albumcount( $files ) {
 }
 
 function wppa_get_photocount( $files ) {
+global $wppa_supported_photo_extensions;
+
 	$result = 0;
 	if ( $files ) {
 		foreach ( $files as $file ) {
-			$ext = strtolower( substr( strrchr( $file, "." ), 1 ) );
-			if ( $ext == 'jpg' || $ext == 'png' || $ext == 'gif' ) $result++;
+			$ext = strtolower( wppa_get_ext( $file ) );
+			if ( in_array( $ext, $wppa_supported_photo_extensions ) ) $result++;
 		}
 	}
 	return $result;
@@ -1675,6 +1870,19 @@ global $wppa_supported_video_extensions;
 		foreach ( $files as $file ) {
 			$ext = strtolower( wppa_get_ext( $file ) );
 			if ( in_array( $ext, $wppa_supported_video_extensions ) ) $result++;
+		}
+	}
+	return $result;
+}
+
+function wppa_get_audio_count( $files ) {
+global $wppa_supported_audio_extensions;
+
+	$result = 0;
+	if ( $files ) {
+		foreach ( $files as $file ) {
+			$ext = strtolower( wppa_get_ext( $file ) );
+			if ( in_array( $ext, $wppa_supported_audio_extensions ) ) $result++;
 		}
 	}
 	return $result;
@@ -1764,7 +1972,7 @@ function wppa_extract( $xpath, $delz ) {
 		}
 		// End security fix
 		
-		$ext = strtolower( substr( strrchr( $xpath, "." ), 1 ) );
+		$ext = strtolower( wppa_get_ext( $xpath ) );
 		if ( $ext == 'zip' ) {
 			$zip = new ZipArchive;
 			if ( $zip->open( $xpath ) === true ) {
@@ -1801,14 +2009,13 @@ function wppa_extract( $xpath, $delz ) {
 function wppa_import_dir_to_album( $file, $parent ) {
 global $photocount;
 global $wpdb;
-global $wppa_opt;
 	
 	// see if album exists
 	if ( is_dir( $file ) ) {
 		$alb = wppa_get_album_id( basename( $file ) );
 		if ( !$alb ) {	// Album must be created
 			$name	= basename( $file );
-			$uplim	= $wppa_opt['wppa_upload_limit_count'].'/'.$wppa_opt['wppa_upload_limit_time'];
+			$uplim	= wppa_opt( 'wppa_upload_limit_count' ). '/' . wppa_opt( 'wppa_upload_limit_time' );
 			$alb = wppa_create_album_entry( array ( 'name' 		=> $name,
 													'a_parent' 	=> $parent
 													 ) );
@@ -1826,9 +2033,9 @@ global $wppa_opt;
 					// Create post object
 					$my_post = array( 
 					  'post_title'    => $name,
-					  'post_content'  => str_replace( 'w#album', $alb, $wppa_opt['wppa_newpag_content'] ),
-					  'post_status'   => $wppa_opt['wppa_newpag_status'],
-					  'post_type'	  => $wppa_opt['wppa_newpag_type']
+					  'post_content'  => str_replace( 'w#album', $alb, wppa_opt( 'wppa_newpag_content' ) ),
+					  'post_status'   => wppa_opt( 'wppa_newpag_status' ),
+					  'post_type'	  => wppa_opt( 'wppa_newpag_type' )
 					 );
 
 					// Insert the post into the database

@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 *
-* Version 5.5.2
+* Version 6.1.0
 *
 */
 
@@ -72,7 +72,6 @@ global $wppa_api_version;
 
 function wppa_make_tinymce_dialog() {
 global $wpdb;
-global $wppa_opt;
 
 	// Prepare albuminfo
 	$albums = $wpdb->get_results( "SELECT `id`, `name` FROM `".WPPA_ALBUMS."` ORDER BY `timestamp` DESC", ARRAY_A );
@@ -386,10 +385,10 @@ global $wppa_opt;
 								$name = stripslashes(__($photo['name']));
 								if ( strlen($name) > '50') $name = substr($name, '0', '50').'...';
 								if ( get_option( 'wppa_file_system' ) == 'flat' ) {
-									$result .= '<option value="'.$photo['id'].'.'.$photo['ext'].'" >'.$name.' ('.wppa_get_album_name($photo['album']).')'.'</option>';
+									$result .= '<option value="'.wppa_fix_poster_ext($photo['id'].'.'.$photo['ext'], $photo['id']).'" >'.$name.' ('.wppa_get_album_name($photo['album']).')'.'</option>';
 								}
 								else {
-									$result .= '<option value="'.wppa_expand_id($photo['id']).'.'.$photo['ext'].'" >'.$name.' ('.wppa_get_album_name($photo['album']).')'.'</option>';
+									$result .= '<option value="'.wppa_fix_poster_ext(wppa_expand_id($photo['id']).'.'.$photo['ext'], $photo['id']).'" >'.$name.' ('.wppa_get_album_name($photo['album']).')'.'</option>';
 								}
 							}
 							$result .=  '<option value="#last" >-- '.__('The most recently uploaded photo', 'wppa').' --</option>'.

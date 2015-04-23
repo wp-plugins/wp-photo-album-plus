@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Functions for breadcrumbs
-* Version 5.4.23
+* Version 6.1.0
 *
 */
 
@@ -12,7 +12,6 @@ if ( ! defined( 'ABSPATH' ) ) die( "Can't load this file directly" );
 // shows the breadcrumb navigation 
 function wppa_breadcrumb( $opt = '' ) {
 global $wppa;
-global $wppa_opt;
 global $wpdb;
 global $wppa_session;
 
@@ -79,7 +78,7 @@ global $wppa_session;
 	$slide = ( wppa_get_album_title_linktype( $alb ) == 'slide' ) ? '&amp;wppa-slide' : '';
 
 	// See if we link to covers or to contents
-	$to_cover = $wppa_opt['wppa_thumbtype'] == 'none' ? '1' : '0';
+	$to_cover = wppa_opt( 'wppa_thumbtype' ) == 'none' ? '1' : '0';
 	
 	// Photo number?
 	$photo = $wppa['start_photo'];
@@ -323,7 +322,7 @@ global $wppa_session;
 				if ( $virtual ) {
 					if ( $thumbhref ) {
 						$thumbhref = wppa_trim_wppa_( $thumbhref );
-						$fs = $wppa_opt['wppa_fontsize_nav'];	
+						$fs = wppa_opt( 'wppa_fontsize_nav' );	
 						if ( $fs != '' ) $fs += 3; else $fs = '15';	// iconsize = fontsize+3, Default to 15
 						$imgs = 'height: '.$fs.'px; margin:0 0 -3px 0; padding:0; box-shadow:none;';
 						$wppa['out'] .= '<a href="'.$thumbhref.'" title="'.__a( 'Thumbnail view', 'wppa' ).
@@ -338,7 +337,7 @@ global $wppa_session;
 				else {
 					$s = $wppa['src'] ? '&wppa-searchstring='.urlencode( $wppa['searchstring'] ) : '';
 					$onclick = "wppaDoAjaxRender( ".$wppa['mocc'].", '".wppa_get_album_url_ajax( $wppa['start_album'], '0' )."&amp;wppa-photos-only=1".$s."', '".wppa_convert_to_pretty( wppa_get_album_url( $wppa['start_album'], '0' ).'&wppa-photos-only=1'.$s )."' )";
-					$fs = $wppa_opt['wppa_fontsize_nav'];	
+					$fs = wppa_opt( 'wppa_fontsize_nav' );	
 					if ( $fs != '' ) $fs += 3; else $fs = '15';	// iconsize = fontsize+3, Default to 15
 					$imgs = 'height: '.$fs.'px; margin:0 0 -3px 0; padding:0; box-shadow:none;';
 					$wppa['out'] .= '<a title="'.__a( 'Thumbnail view', 'wppa' ).
@@ -361,7 +360,6 @@ global $wppa_session;
 // If it's a link, it's not the last item
 function wppa_bcitem( $value = '', $href = '', $title = '', $class = '' ) {
 global $wppa;
-global $wppa_opt;
 static $sep;
 	
 	// Convert url to pretty
@@ -383,16 +381,16 @@ static $sep;
 		
 	// Add seperator
 	if ( ! $sep ) {		// Compute the seperator 
-		$temp = $wppa_opt['wppa_bc_separator'];
+		$temp = wppa_opt( 'wppa_bc_separator' );
 		switch ( $temp ) {
 			case 'url':
-				$size = $wppa_opt['wppa_fontsize_nav'];
+				$size = wppa_opt( 'wppa_fontsize_nav' );
 				if ( $size == '' ) $size = '12';
 				$style = 'height:'.$size.'px;';
-				$sep = ' <img src="'.$wppa_opt['wppa_bc_url'].'" class="no-shadow" style="'.$style.'" /> ';
+				$sep = ' <img src="'.wppa_opt( 'wppa_bc_url' ).'" class="no-shadow" style="'.$style.'" /> ';
 				break;
 			case 'txt':
-				$sep = ' '.html_entity_decode( stripslashes( $wppa_opt['wppa_bc_txt'] ), ENT_QUOTES ).' ';
+				$sep = ' '.html_entity_decode( stripslashes( wppa_opt( 'wppa_bc_txt' ) ), ENT_QUOTES ).' ';
 				break;
 			default:
 				$sep = ' &' . $temp . '; ';

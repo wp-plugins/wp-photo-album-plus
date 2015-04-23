@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * edit and delete photos
-* version 6.0.0
+* version 6.1.0
 * 
 */
 
@@ -60,14 +60,12 @@ function _wppa_moderate_photos() {
 // The photo edit list. Also used in wppa-album-admin-autosave.php
 function wppa_album_photos( $album = '', $photo = '', $owner = '', $moderate = false ) {
 global $wpdb;
-global $q_config;
-global $wppa_opt;
 global $wppa;
 	
 	// Check input
 	wppa_vfy_arg( 'wppa-page' );
 
-	$pagesize 	= $wppa_opt['wppa_photo_admin_pagesize'];
+	$pagesize 	= wppa_opt( 'wppa_photo_admin_pagesize' );
 	$page 		= isset ( $_GET['wppa-page'] ) ? $_GET['wppa-page'] : '1';
 	$skip 		= ( $page - '1' ) * $pagesize;
 	$limit 		= ( $pagesize < '1' ) ? '' : ' LIMIT '.$skip.','.$pagesize;
@@ -161,7 +159,9 @@ global $wppa;
 		wppa_admin_page_links( $page, $pagesize, $count, $link );
 		
 		foreach ( $photos as $photo ) { 
-			$is_video = wppa_is_video( $photo['id'], true );
+			$is_multi = wppa_is_multi( $photo['id'] );
+			$is_video = wppa_is_video( $photo['id'] );
+			$has_audio = wppa_has_audio( $photo['id'] );
 			?>
 			<a id="photo_<?php echo $photo['id'] ?>" name="photo_<?php echo $photo['id'] ?>"></a>
 			<div class="widefat wppa-table-wrap" id="photoitem-<?php echo $photo['id'] ?>" style="width:99%; position: relative;" >
@@ -200,9 +200,8 @@ global $wppa;
 								</th>
 								<td>
 									<?php 
-									$src 	= wppa_get_thumb_url( $photo['id'] );
-									$is_video 	= wppa_is_video( $photo['id'], true );
-									$big 	= wppa_get_photo_url( $photo['id'] );
+									$src = wppa_get_thumb_url( $photo['id'] );
+									$big = wppa_get_photo_url( $photo['id'] );
 									if ( $is_video ) { 
 										reset( $is_video );
 										$big = str_replace( 'xxx', current( $is_video ), $big );
@@ -216,10 +215,30 @@ global $wppa;
 																				) ) ?>
 										</a><?php 
 									}
-									else { ?>
+									else { 
+										if ( $has_audio ) {
+											$big = wppa_fix_poster_ext( $big, $photo['id'] );
+											$src = wppa_fix_poster_ext( $src, $photo['id'] );
+										}
+										?>
 										<a href="<?php echo $big ?>" target="_blank" title="<?php _e( 'Preview fullsize photo', 'wppa' ) ?>" >
-											<img src="<?php echo( $src ) ?>" alt="<?php echo( $photo['name'] ) ?>" style="max-width: 160px;" />
+											<img src="<?php echo( $src ) ?>" alt="<?php echo( $photo['name'] ) ?>" style="max-width: 160px; vertical-align:middle;" />
 										</a><?php 
+										if ( $has_audio ) {
+											$audio = wppa_get_audio_html( array( 	'id' 		=> $photo['id'],
+																					'width' 	=> '160',
+																					'controls' 	=> true
+																				) );
+											?>
+											<br />
+											<?php	
+											if ( $audio ) {
+												echo $audio;
+											}
+											else {
+												echo '<span style="color:red;">' . __( 'Audio disabled', 'wppa' ) . '</span>';
+											}
+										}
 									} ?>
 								</td>	
 							</tr>
@@ -358,7 +377,7 @@ global $wppa;
 									</label>
 								</th>
 								<td >
-									<?php echo esc_js( '[wppa type="photo" photo="'.$photo['id'].'" size="'.$wppa_opt['wppa_fullsize'].'"][/wppa]' ) ?>
+									<?php echo esc_js( '[wppa type="photo" photo="'.$photo['id'].'" size="'.wppa_opt( 'wppa_fullsize' ).'"][/wppa]' ) ?>
 								</td>
 							</tr>
 							<?php } ?>
@@ -410,7 +429,7 @@ global $wppa;
 							<?php } ?>
 							<!-- Alt custom field -->
 							<?php
-							if ( $wppa_opt['wppa_alt_type'] == 'custom' ) { ?>
+							if ( wppa_opt( 'wppa_alt_type' ) == 'custom' ) { ?>
 							<tr  >
 								<th  >
 									<label><?php _e( 'HTML Alt attribute:', 'wppa' ) ?></label>
@@ -477,17 +496,43 @@ global $wppa;
 									<table class="wppa-subtable" >
 										<?php
 											foreach ( $is_video as $fmt ) {
-												echo '<tr><td>'.$fmt.'</td><td>'.__( 'Filesize:', 'wppa' ).'</td><td>'.wppa_get_filesize( str_replace( 'xxx', $fmt, wppa_get_photo_path( $photo['id'] ) ) ).'</td></tr>';
+												echo 	'<tr>' .
+															'<td>' . $fmt . '</td>' .
+															'<td>' . __( 'Filesize:', 'wppa' ) . '</td>' .
+															'<td>' . wppa_get_filesize( str_replace( 'xxx', $fmt, wppa_get_photo_path( $photo['id'] ) ) ) . '</td>' .
+														'</tr>';
 											}
 									?>
 									</table>
 								</td>
 							</tr>
-							<?php }  { ?>
+							<?php } ?>
+							
+							<!-- Audio -->
+							<?php if ( $has_audio ) { ?>
+							<tr>
+								<th>
+									<label><?php _e( 'Formats:', 'wppa' ) ?>
+								</th>
+								<td>
+									<table class="wppa-subtable" >
+										<?php
+											foreach ( $has_audio as $fmt ) {
+												echo 	'<tr>' .
+															'<td>' . $fmt . '</td>' .
+															'<td>' . __( 'Filesize:', 'wppa' ) . '</td>' .
+															'<td>' . wppa_get_filesize( str_replace( 'xxx', $fmt, wppa_get_photo_path( $photo['id'] ) ) ) . '</td>' .
+														'</tr>';
+											}
+									?>
+									</table>
+								</td>
+							</tr>
+							<?php } ?>
 							<!-- Filesizes -->
 							<tr>
 								<th>
-									<label><?php $is_video ? _e( 'Poster:', 'wppa') : _e( 'Photo sizes:', 'wppa') ?></label>
+									<label><?php ( $is_video || $has_audio ) ? _e( 'Poster:', 'wppa') : _e( 'Photo sizes:', 'wppa') ?></label>
 								</th>
 								<td>
 									<table class="wppa-subtable" >
@@ -523,7 +568,7 @@ global $wppa;
 											<td>
 												<?php _e( 'Display file:', 'wppa') ?>
 											</td>
-												<?php $dp = str_replace( '.xxx', '.jpg', wppa_get_photo_path( $photo['id'] ) );
+												<?php $dp = wppa_fix_poster_ext( wppa_get_photo_path( $photo['id'] ), $photo['id'] );
 													if ( is_file( $dp ) ) {
 												?>
 											<td>
@@ -548,7 +593,7 @@ global $wppa;
 											<td>
 												<?php _e( 'Thumbnail file:', 'wppa') ?>
 											</td>
-												<?php $tp = str_replace( '.xxx', '.jpg', wppa_get_thumb_path( $photo['id'] ) );
+												<?php $tp = wppa_fix_poster_ext( wppa_get_thumb_path( $photo['id'] ), $photo['id'] );
 													if ( is_file( $tp ) ) {
 												?>
 											<td>
@@ -571,7 +616,7 @@ global $wppa;
 									</table>
 								</td>
 							</tr>
-							<?php } ?>
+							<?php  ?>
 							
 							<!-- Location -->
 							<?php if ( $photo['location'] || wppa_switch( 'wppa_geo_edit' ) ) { ?>
@@ -725,7 +770,7 @@ global $wppa;
 					
 							<!-- Watermark -->
 							<?php 
-							if ( ! $is_video || is_file( wppa_fix_poster_ext( wppa_get_photo_path( $photo['id'] ) ) ) ) { ?>
+							if ( ! $is_video || is_file( wppa_fix_poster_ext( wppa_get_photo_path( $photo['id'] ), $photo['id'] ) ) ) { ?>
 								<tr style="vertical-align:middle;" >
 									<th  >
 										<label><?php _e( 'Watermark:', 'wppa' ) ?></label>
@@ -849,8 +894,6 @@ global $wppa;
 
 function wppa_album_photos_bulk( $album ) {
 	global $wpdb;
-	global $q_config;
-	global $wppa_opt;
 	
 	// Check input
 	wppa_vfy_arg( 'wppa-page' );
@@ -956,7 +999,7 @@ function wppa_album_photos_bulk( $album ) {
 		}
 	}
 
-	$pagesize 	= $wppa_opt['wppa_photo_admin_pagesize'];
+	$pagesize 	= wppa_opt( 'wppa_photo_admin_pagesize' );
 	$page 		= isset ( $_GET['wppa-page'] ) ? $_GET['wppa-page'] : '1';
 	$skip 		= ( $page - '1' ) * $pagesize;
 	$limit 		= ( $pagesize < '1' ) ? '' : ' LIMIT '.$skip.','.$pagesize;
@@ -1131,8 +1174,8 @@ function wppa_album_photos_bulk( $album ) {
 								</a>
 							<?php }
 							else { ?>
-								<a href="<?php echo wppa_get_photo_url( $photo['id'] ) ?>" target="_blank" title="Click to see fullsize" >
-									<img class="wppa-bulk-thumb" src="<?php echo wppa_get_thumb_url( $photo['id'] ) ?>" style="height:60px;" onmouseover="jQuery( this ).stop().animate( {height:this.naturalHeight}, 100 )" onmouseout="jQuery( this ).stop().animate( {height:60}, 100 )" />
+								<a href="<?php echo wppa_fix_poster_ext( wppa_get_photo_url( $photo['id'] ), $photo['id'] ) ?>" target="_blank" title="Click to see fullsize" >
+									<img class="wppa-bulk-thumb" src="<?php echo wppa_fix_poster_ext( wppa_get_thumb_url( $photo['id'] ), $photo['id'] ) ?>" style="height:60px;" onmouseover="jQuery( this ).stop().animate( {height:120}, 100 )" onmouseout="jQuery( this ).stop().animate( {height:60}, 100 )" />
 								</a>
 							<?php } ?>
 							</td>
@@ -1228,8 +1271,6 @@ function wppa_album_photos_bulk( $album ) {
 
 function wppa_album_photos_sequence( $album ) {
 global $wpdb;
-global $q_config;
-global $wppa_opt;
 
 	if ( $album ) {
 		$photoorder 	= wppa_get_photo_order( $album, 'norandom' );
@@ -1384,11 +1425,13 @@ global $wppa_opt;
 	-->
 					<?php }
 					else { ?>
-						<img class="wppa-bulk-thumb" src="<?php echo wppa_get_thumb_url( $photo['id'] ) ?>" style="max-width:<?php echo $mw ?>px; max-height:<?php echo $mh ?>px; margin-top: <?php echo $mt ?>px;" />
+						<img class="wppa-bulk-thumb" src="<?php echo wppa_fix_poster_ext( wppa_get_thumb_url( $photo['id'] ), $photo['id'] ) ?>" style="max-width:<?php echo $mw ?>px; max-height:<?php echo $mh ?>px; margin-top: <?php echo $mt ?>px;" />
 					<?php } ?>
 						<div style="font-size:9px; position:absolute; bottom:24px; text-align:center; width:<?php echo $size ?>px;" ><?php echo wppa_get_photo_name( $photo['id'] ) ?></div>
 						<div style="text-align: center; width: <?php echo $size ?>px; position:absolute; bottom:8px;" >
 							<span style="margin-left:15px;float:left"><?php echo __( 'Id: ', 'wppa' ).$photo['id']?></span>
+							<?php if ( wppa_is_video( $photo['id'] ) )_e('Video', 'wppa'); ?>
+							<?php if ( wppa_has_audio( $photo['id'] ) ) _e('Audio', 'wppa'); ?>
 							<span style="float:right; margin-right:15px;"><?php echo __( 'Ord: ', 'wppa' ).'<span id="wppa-seqno-'.$photo['id'].'" >'.$photo['p_order'] ?></span>
 						</div>
 						<input type="hidden" id="photo-nonce-<?php echo $photo['id'] ?>" value="<?php echo wp_create_nonce( 'wppa_nonce_'.$photo['id'] );  ?>" />

@@ -3,48 +3,36 @@
 * Package: wp-photo-album-plus
 *
 * Contains all video routines
-* Version 6.0.0
+* Version 6.1.0
 *
 */
  
 if ( ! defined( 'ABSPATH' ) ) die( "Can't load this file directly" );
 
-// Video files support. 
-add_action( 'init', 'wppa_init_video' );
-
-function wppa_init_video() {
+// Video files support. Define supported filetypes.
 global $wppa_supported_video_extensions;
-
-	if ( wppa_is_video_enabled() ) {
-		$wppa_supported_video_extensions = array( 'mp4', 'ogv', 'webm' );
-	}
-	else {
-		$wppa_supported_video_extensions = array();
-	}
-}
-
-function wppa_is_video_enabled() {
-	return wppa_switch( 'wppa_enable_video' );
-}
+	$wppa_supported_video_extensions = array( 'mp4', 'ogv', 'webm' );
 
 // See if a photo is a video
-// Returns array with all available file extensions if flag is set, or false if not a video
-function wppa_is_video( $id, $ret_ext = false ) {
+// Returns array with all available file extensions or false if not a video
+function wppa_is_video( $id ) {
 global $wppa_supported_video_extensions;
 
 	if ( ! $id ) return false;					// No id
 	
 	$ext = wppa_get_photo_item( $id, 'ext' );	
 	if ( $ext != 'xxx' ) return false;	// This is not a video
-	if ( ! $ret_ext ) return true;		// Need not more to know
 	
 	$result = array();
 	$path = wppa_get_photo_path( $id );
-	$raw_path = substr( $path, 0, strlen( $path ) - 4 );
+	$raw_path = wppa_strip_ext( $path );
 	foreach ( $wppa_supported_video_extensions as $ext ) {
 		if ( is_file( $raw_path.'.'.$ext ) ) {
 			$result[$ext] = $ext;
 		}
+	}
+	if ( empty( $result ) ) {
+		return false;	// Its multimedia but not video
 	}
 	
 	return $result;
@@ -80,7 +68,7 @@ global $wppa;
 	// Not a video? no go
 	if ( ! wppa_is_video( $id ) ) return '';
 	
-	extract( wp_parse_args( (array) wppa_is_video( $id, true ), array (
+	extract( wp_parse_args( (array) wppa_is_video( $id ), array (
 					'mp4' 	=> false,
 					'ogv' 	=> false,
 					'webm' 	=> false
@@ -99,10 +87,10 @@ global $wppa;
 	$play 	= $autoplay ? ' autoplay' : '';
 	
 	// See if there is a poster image
-	$poster_photo_path = wppa_fix_poster_ext( wppa_get_photo_path( $id ) );
-	$poster_thumb_path = wppa_fix_poster_ext( wppa_get_thumb_path( $id ) );
-	$poster_photo = is_file ( $poster_photo_path ) ? ' poster="' . wppa_fix_poster_ext( wppa_get_photo_url( $id ) ) . '"' : '';
-	$poster_thumb = is_file ( $poster_thumb_path ) ? ' poster="' . wppa_fix_poster_ext( wppa_get_thumb_url( $id ) ) . '"' : '';
+	$poster_photo_path = wppa_fix_poster_ext( wppa_get_photo_path( $id ), $id );
+	$poster_thumb_path = wppa_fix_poster_ext( wppa_get_thumb_path( $id ), $id );
+	$poster_photo = is_file ( $poster_photo_path ) ? ' poster="' . wppa_fix_poster_ext( wppa_get_photo_url( $id ), $id ) . '"' : '';
+	$poster_thumb = is_file ( $poster_thumb_path ) ? ' poster="' . wppa_fix_poster_ext( wppa_get_thumb_url( $id ), $id ) . '"' : '';
 	$poster = '';	// Init to none
 	
 	// Thumbnail?
@@ -146,7 +134,6 @@ function wppa_get_video_body( $id, $for_lb = false, $w = '0', $h = '0' ) {
 	// See what file types are present
 	extract( wp_parse_args( $is_video, array( 	'mp4' => false,
 												'ogv' => false,
-												'ogg' => false, 
 												'webm' => false
 											) 
 							) 
@@ -204,98 +191,63 @@ function wppa_get_video_body( $id, $for_lb = false, $w = '0', $h = '0' ) {
 	return $result;
 }
 
-
-// Delete a video. First all filetypes, then the db entries
-function wppa_delete_video( $id ) {
-global $wppa_supported_video_extensions;
-global $wpdb;
-
-	if ( ! wppa_is_video( $id ) ) return;
-	
-	$path = wppa_get_photo_path( $id );
-	$raw_path = wppa_strip_ext( $path ); // substr( $path, 0, strlen( $path ) - 4 );
-	foreach ( $wppa_supported_video_extensions as $ext ) {
-		$file = $raw_path.'.'.$ext;
-		if ( is_file( $file ) ) unlink( $file );
-	}
-	$poster = $raw_path.'.jpg';
-	if ( is_file( $poster ) ) {
-		unlink( $poster );
-	}
-	$poster_thumb = wppa_fix_poster_ext( wppa_get_thumb_path( $id ) ); // str_replace( 'xxx', 'jpg', wppa_get_thumb_path( $id ) );
-	if ( is_file( $poster_thumb ) ) {
-		unlink( $poster_thumb );
-	}
-	$wpdb->query( $wpdb->prepare( "DELETE FROM `".WPPA_PHOTOS."` WHERE `id` = %s", $id ) );
-}
-
 // Copy the files only
 function wppa_copy_video_files( $fromid, $toid ) {
 global $wppa_supported_video_extensions;
 
+	// Is it a video?
 	if ( ! wppa_is_video( $fromid ) ) return false;
 
+	// Get paths
 	$from_path 		= wppa_get_photo_path( $fromid );
-	$raw_from_path 	= substr( $from_path, 0, strlen( $from_path ) - 4 );
+	$raw_from_path 	= wppa_strip_ext( $from_path );
 	$to_path 		= wppa_get_photo_path( $toid );
-	$raw_to_path 	= substr( $to_path, 0, strlen( $to_path ) - 4 );
+	$raw_to_path 	= wppa_strip_ext( $to_path );
+	
+	// Copy the media files
 	foreach ( $wppa_supported_video_extensions as $ext ) {
-		$file = $raw_from_path.'.'.$ext;
+		$file = $raw_from_path . '.' . $ext;
 		if ( is_file( $file ) ) {
-			if ( ! copy( $file, $raw_to_path.'.'.$ext ) ) return false;
+			if ( ! copy( $file, $raw_to_path . '.' . $ext ) ) return false;
 		}		
 	}
-	$poster = $raw_from_path.'.jpg';
+	
+/*
+	// Copy the poster file
+	$poster = wppa_fix_poster_ext( $from_path, $fromid );
 	if ( is_file( $poster ) ) {
-		if ( ! copy( $poster,  $raw_to_path.'.jpg' ) ) return false;
+		if ( ! copy( $poster,  $raw_to_path . '.' . wppa_get_ext( $from_path ) ) ) return false;
 	}
-	$poster_thumb = str_replace( 'xxx', 'jpg', wppa_get_thumb_path( $fromid ) );
-	$poster_thumb_to = str_replace( 'xxx', 'jpg', wppa_get_thumb_path( $toid ) );
+	
+	// Copy the poster thumb
+	$poster_thumb 		= wppa_fix_poster_ext( wppa_get_thumb_path( $fromid ) );
+	$poster_thumb_to 	= wppa_strip_ext( wppa_get_thumb_path( $toid ) ) . '.' . wppa_get_ext( $poster_thumb );
 	if ( is_file( $poster_thumb ) ) {
 		if ( ! copy( $poster_thumb, $poster_thumb_to ) ) return false;
 	}
+	
+*/
+	// Done!
 	return true;
 }
 
 function wppa_get_videox( $id ) {
 global $thumb;
-global $wppa_opt;
 
 	if ( ! wppa_is_video( $id ) ) return '0';
 	
 	wppa_cache_thumb( $id );
 	if ( $thumb['videox'] ) return $thumb['videox'];
-	return $wppa_opt['wppa_video_width'];
+	return wppa_opt( 'wppa_video_width' );
 }
 
 function wppa_get_videoy( $id ) {
 global $thumb;
-global $wppa_opt;
 
 	if ( ! wppa_is_video( $id ) ) return '0';
 	
 	wppa_cache_thumb( $id );
 	if ( $thumb['videoy'] ) return $thumb['videoy'];
-	return $wppa_opt['wppa_video_height'];
+	return wppa_opt( 'wppa_video_height' );
 }
 
-function wppa_fix_poster_ext( $file ) {
-
-	return str_replace( '.xxx', '.jpg', $file );
-	/*
-	$temp = explode( '?', $file );
-	$file = $temp['0'];
-	
-	$ext = wppa_get_ext( $file );
-	if ( $ext == 'xxx' ) {
-		$result = wppa_strip_ext( $file ) . '.jpg';
-	}
-	else {
-		$result = $file;
-	}
-	if ( isset( $temp['1'] ) ) {
-		$result .= '?' . $temp['1'];
-	}
-	return $result;
-	*/
-}

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all comments
-* Version 5.3.0
+* Version 6.1.0
 *
 */
 
@@ -12,7 +12,6 @@ if ( ! defined( 'ABSPATH' ) ) die( "Can't load this file directly" );
 function _wppa_comment_admin() {
 global $wpdb;
 global $wppa;
-global $wppa_opt;
 
 	$continue = true;
 	
@@ -202,7 +201,7 @@ global $wppa_opt;
 						<td><h3 style="margin:0; color:red;"><?php _e('Spam:', 'wppa') ?></h3></td>
 						<td><h3 style="margin:0;"><?php $count = $wpdb->get_var( "SELECT COUNT(*) FROM `".WPPA_COMMENTS."` WHERE `status` = 'spam'" ); echo $count ?></h3></td>
 					</tr>
-					<?php if ( $wppa_opt['wppa_spam_maxage'] != 'none' ) { ?>
+					<?php if ( wppa_opt( 'wppa_spam_maxage' ) != 'none' ) { ?>
 					<tr>
 						<td><h3 style="margin:0; color:red;"><?php _e('Auto deleted spam:', 'wppa') ?></h3></td>
 						<td><h3 style="margin:0;"><?php echo get_option('wppa_spam_auto_delcount', '0') ?></h3></td>
@@ -239,7 +238,7 @@ global $wppa_opt;
 						</select>
 						<?php _e('You can see the photo and all its comments on the selected page by clicking on the thumbnail image', 'wppa'); ?>
 					</p>
-					<?php $comment_show = $wppa_opt['wppa_comadmin_show'] ?>
+					<?php $comment_show = wppa_opt( 'wppa_comadmin_show' ) ?>
 					<p>
 						<?php _e('Display status:', 'wppa') ?>
 						<select name="wppa_comadmin_show">
@@ -248,7 +247,7 @@ global $wppa_opt;
 							<option value="approved" <?php if ($comment_show == 'approved') echo('selected="selected"') ?>><?php _e('approved', 'wppa') ?></option>
 							<option value="spam" <?php if ($comment_show == 'spam') echo('selected="selected"') ?>><?php _e('spam', 'wppa') ?></option>
 						</select>
-						<?php $comment_order = $wppa_opt['wppa_comadmin_order'] ?>
+						<?php $comment_order = wppa_opt( 'wppa_comadmin_order' ) ?>
 						<?php _e('Display order:', 'wppa') ?>
 						<select name="wppa_comadmin_order">
 							<option value="timestamp" <?php if ($comment_order == 'timestamp') echo('selected="selected"') ?>><?php _e('timestamp', 'wppa') ?></option>
@@ -277,7 +276,7 @@ global $wppa_opt;
 				$limit = '';
 			}
 			else {
-				$pagsize = $wppa_opt['wppa_comment_admin_pagesize']; 
+				$pagsize = wppa_opt( 'wppa_comment_admin_pagesize' ); 
 				$where = ( $comment_show == 'all' ) ? '' : " WHERE `status` = '".$comment_show."'";
 				$order = " ORDER BY `".$comment_order."`";
 				if ( $comment_order == 'timestamp' ) $order .= " DESC";

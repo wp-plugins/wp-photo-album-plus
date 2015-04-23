@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the non admin stuff
-* Version 6.0.0
+* Version 6.1.0
 * 
 */
 
@@ -75,7 +75,7 @@ global $thumb;
 	if ( $id ) {
 		$imgurl = wppa_get_photo_url( $id );
 		if ( wppa_is_video( $id ) ) {
-			$imgurl = wppa_fix_poster_ext( $imgurl );
+			$imgurl = wppa_fix_poster_ext( $imgurl, $id );
 		}
 	}
 	else {
@@ -255,11 +255,10 @@ add_action('wp_footer', 'wppa_load_footer');
 
 function wppa_load_footer() {
 global $wppa;
-global $wppa_opt;
 global $wpdb;
 global $wppa_session;
 
-	if (wppa_opt( 'wppa_lightbox_name' ) == 'wppa') {
+	if ( wppa_opt( 'wppa_lightbox_name' ) == 'wppa' ) {
 		$fontsize_lightbox = wppa_opt( 'wppa_fontsize_lightbox' ) ? wppa_opt( 'wppa_fontsize_lightbox' ) : '10';
 		$d = wppa_switch('wppa_ovl_show_counter') ? 1 : 0;
 		$ovlh = wppa_opt( 'wppa_ovl_txt_lines' ) == 'auto' ? 'auto' : ((wppa_opt( 'wppa_ovl_txt_lines' ) + $d) * ($fontsize_lightbox + 2));
@@ -294,7 +293,8 @@ global $wppa_session;
 		'.( wppa_opt( 'wppa_fontsize_lightbox' ) ? 'wppaOvlLineHeight = "'.(wppa_opt( 'wppa_fontsize_lightbox' ) + '2').'"' : '').'
 		wppaOvlFullLegenda = "'.__a('Keys: f = next mode; escape = exit; p = previous, n = next, s = start/stop, d = dismiss this notice.').'";
 		wppaOvlFullLegendaSingle = "'.__a('Keys: f = next mode; escape = exit; d = dismiss this notice.').'";
-		wppaOvlVideoStart = '.( wppa_switch( 'wppa_ovl_video_start' ) ? 'true' : 'false' ).';
+		wppaOvlVideoStart = '.( wppa_switch( 'ovl_video_start' ) ? 'true' : 'false' ).';
+		wppaOvlAudioStart = '.( wppa_switch( 'ovl_audio_start' ) ? 'true' : 'false' ).';
 	</script>
 	';
 	wp_nonce_field('wppa-check' , 'wppa-nonce', false, true);	// Nonce field for Ajax bump view counter from lightbox
@@ -592,6 +592,9 @@ global $wppa_init_js_data;
 	wppaFotomotoMinWidth = '.wppa_opt( 'wppa_fotomoto_min_width' ).';
 	wppaShortQargs = '.( wppa_switch('wppa_use_short_qargs') ? 'true' : 'false' ).';
 	wppaOvlHires = '.( wppa_switch( 'wppa_lb_hres' ) ? 'true' : 'false' ).';
+	wppaSlideVideoStart = '.( wppa_switch( 'start_slide_video' ) ? 'true' : 'false' ).';
+	wppaSlideAudioStart = '.( wppa_switch( 'start_slide_audio' ) ? 'true' : 'false' ).';
+	wppaAudioHeight = '.wppa_get_audio_control_height().'; 
 	';
 
 	// Open file

@@ -2,14 +2,13 @@
 /* wppa-watermark.php
 *
 * Functions used for the application of watermarks
-* version 5.4.17
+* version 6.1.0
 *
 */
 
 if ( ! defined( 'ABSPATH' ) ) die( "Can't load this file directly" );
 
 function wppa_create_textual_watermark_file( $args ) {
-global $wppa_opt;
 
 	// See what we have
 	$args = wp_parse_args( ( array ) $args, array( 	'content' 		=> '---preview---', 
@@ -309,7 +308,6 @@ function wppa_array_max( $array ) {
 }
 
 function wppa_get_water_file_and_pos( $id ) {
-global $wppa_opt;
 
 	$result['file'] = wppa_opt( 'wppa_watermark_file' );	// default
 	$result['pos'] = wppa_opt( 'wppa_watermark_pos' );	// default
@@ -345,7 +343,6 @@ global $wppa_opt;
 
 	
 function wppa_add_watermark( $id ) {
-global $wppa_opt;
 
 	// Init
 	if ( ! wppa_switch( 'wppa_watermark_on' ) ) return false;	// Watermarks off
@@ -376,7 +373,7 @@ global $wppa_opt;
 	// Open the photo file
 	$file = wppa_get_photo_path( $id );
 	if ( wppa_is_video( $id ) ) {
-		$file = wppa_fix_poster_ext( $file );
+		$file = wppa_fix_poster_ext( $file, $id );
 	}
 	if ( ! is_file( $file ) ) return false;	// File gone
 	$photosize = getimagesize( $file );
@@ -504,7 +501,6 @@ function wppa_imagecopymerge_alpha( $dst_im, $src_im, $dst_x, $dst_y, $src_x, $s
 }
 
 function wppa_watermark_file_select( $default = false ) {
-global $wppa_opt;
 
 	// Init
 	$result = '';
@@ -541,7 +537,6 @@ global $wppa_opt;
 }
 
 function wppa_watermark_pos_select( $default = false ) {
-global $wppa_opt;
 
 	// Init
 	$user = wppa_get_user();

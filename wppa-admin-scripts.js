@@ -1,7 +1,7 @@
 /* admin-scripts.js */
 /* Package: wp-photo-album-plus
 /*
-/* Version 5.5.2
+/* Version 6.1.0
 /* Various js routines used in admin pages		
 */
 
@@ -78,6 +78,7 @@ function wppaInitSettings() {
 	wppaCheckAutoPage();
 	wppaCheckGps();
 	wppaCheckFontPreview();
+	wppaCheckCheck( 'wppa_enable_video', 'wppa-video' );
 	
 	var tab = new Array('O','I','II','III','IV','V','VI','VII','VIII','IX','X','XI','XII');
 	var sub = new Array('A','B','C','D','E','F','G','H','I','J','K');
@@ -213,6 +214,37 @@ function wppaFollow( id, clas ) {
 	else {
 		jQuery('.'+clas).css('display', 'none');
 	}
+}
+
+function wppaCheckCheck( slug, clas ) {
+	var on = document.getElementById( slug ).checked;
+	if ( on ) {
+		jQuery( '.'+clas ).css( 'display', '' );
+	}
+	else {
+		jQuery( '.'+clas ).css( 'display', 'none' );
+	}
+}
+
+// Check for concurrent lightbox and video. 
+// This is not possible because the controls can not be reached.
+function wppaCheckSlideVideoControls() {
+
+	var link = document.getElementById( 'wppa_slideshow_linktype' ).value;
+	if ( link == 'none' ) {
+		return;
+	}
+	
+//	var on = document.getElementById( 'wppa_start_slide_video' ).checked;
+//	if ( ! on ) { 
+//		return;
+//	}
+	
+	alert('Warning! '+
+			"\n"+
+			'You can not have video controls on a videoslide when there is a link on the slide.'+
+			"\n"+
+			'The videoslide will not show controls and will also not autoplay');
 }
 
 function wppaCheckFotomoto() {

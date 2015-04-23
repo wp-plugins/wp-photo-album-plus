@@ -8,7 +8,7 @@
 /*
 /* You may always look into a newer version of this file to see what new classes and id's come with an upgrade
 /*
-/* This is version 5.5.3
+/* This is version 6.1.0
 */
 
 .wppa-container, .wppa-cover-box, .wppa-thumb-area {
@@ -178,6 +178,10 @@
 	width: 100%;
 	padding: 0 !important;
 	clear: both;
+}
+
+.slide-frame img, .slide-frame video {
+	box-sizing: content-box;
 }
 
 .wideentry .slide-frame {
@@ -364,8 +368,8 @@ border: 0;
 #phpinfo img {float: right; border: 0px;}
 #phpinfo hr {width: 600px; background-color: #cccccc; border: 0px; height: 1px; color: #000000;}
 
-/* Fix for weaver II	*/
-#wppa-overlay-ic img {
+/* Fix for weaver II and theme 2013	*/
+#wppa-overlay-ic img, #wppa-overlay-ic video {
     -webkit-box-sizing: content-box;
     -moz-box-sizing: content-box;
     box-sizing: content-box;

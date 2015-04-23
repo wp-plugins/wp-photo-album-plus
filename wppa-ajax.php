@@ -2,7 +2,7 @@
 /* wppa-ajax.php
 *
 * Functions used in ajax requests
-* version 6.0.0
+* version 6.1.0
 *
 */
 
@@ -13,7 +13,6 @@ add_action( 'wp_ajax_nopriv_wppa', 'wppa_ajax_callback' );
 
 function wppa_ajax_callback() {
 global $wpdb;
-global $wppa_opt;
 global $wppa;
 global $wppa_session;
 
@@ -241,10 +240,10 @@ global $wppa_session;
 			$photo = $_REQUEST['photo-id'];
 			$from = $_REQUEST['from'];
 			if ( $from == 'fsname' ) {
-				$type = $wppa_opt['wppa_art_monkey_link'];
+				$type = wppa_opt( 'wppa_art_monkey_link' );
 			}
 			elseif ( $from == 'popup' ) {
-				$type = $wppa_opt['wppa_art_monkey_popup_link'];
+				$type = wppa_opt( 'wppa_art_monkey_popup_link' );
 			}
 			else {
 				echo '||7||'.__( 'Unknown source of request', 'wppa' );
@@ -281,6 +280,12 @@ global $wppa_session;
 				else {
 					$source = wppa_get_photo_path( $photo );
 				}
+				$source = wppa_fix_poster_ext( $source, $photo );
+				
+				// Fix the extension for mm items.
+				if ( $data['ext'] == 'xxx' ) {
+					$data['ext'] = wppa_get_ext( $source );
+				}
 				$dest 		= WPPA_UPLOAD_PATH.'/temp/'.$name.'.'.$data['ext'];
 				$zipfile 	= WPPA_UPLOAD_PATH.'/temp/'.$name.'.zip';
 				$tempdir 	= WPPA_UPLOAD_PATH.'/temp';
@@ -307,7 +312,7 @@ global $wppa_session;
 					$wppa_zip = new ZipArchive;
 					$wppa_zip->open( $zipfile, 1 );
 					$wppa_zip->addFile( $source, basename( $dest ) );
-					$wppa_zip->close();						
+					$wppa_zip->close();								
 				}
 				else {
 					echo '||6||'.__( 'Unknown type', 'wppa' );
@@ -362,15 +367,15 @@ global $wppa_session;
 				echo '0||100||'.$errtxt;
 				exit;																// Nonce check failed
 			}
-			if ( $wppa_opt['wppa_rating_max'] == '1' && $rating != '1' ) {
+			if ( wppa_opt( 'wppa_rating_max' ) == '1' && $rating != '1' ) {
 				echo '0||106||'.$errtxt.':'.$rating;
 				exit;																// Value out of range
 			}
-			elseif ( $wppa_opt['wppa_rating_max'] == '5' && ! in_array( $rating, array( '-1', '1', '2', '3', '4', '5' ) ) ) {
+			elseif ( wppa_opt( 'wppa_rating_max' ) == '5' && ! in_array( $rating, array( '-1', '1', '2', '3', '4', '5' ) ) ) {
 				echo '0||106||'.$errtxt.':'.$rating;
 				exit;																// Value out of range
 			}
-			elseif ( $wppa_opt['wppa_rating_max'] == '10' && ! in_array( $rating, array( '-1', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10' ) ) ) {
+			elseif ( wppa_opt( 'wppa_rating_max' ) == '10' && ! in_array( $rating, array( '-1', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10' ) ) ) {
 				echo '0||106||'.$errtxt.':'.$rating;
 				exit;																// Value out of range
 			}
@@ -438,7 +443,7 @@ global $wppa_session;
 				wppa_add_credit_points( wppa_opt( 'wppa_cp_points_rating' ), __a( 'Photo rated' ), $photo, $rating );
 				wppa_dislike_check( $photo );	// Check for email to be sent every .. dislikes
 				if ( ! is_file( wppa_get_thumb_path( $photo ) ) ) {	// Photo is removed
-					 echo $occur.'||'.$photo.'||'.$index.'||-1||-1|0||'.$wppa_opt['wppa_dislike_delete'];
+					 echo $occur.'||'.$photo.'||'.$index.'||-1||-1|0||'.wppa_opt( 'wppa_dislike_delete' );
 					 exit;
 				}
 			}
@@ -481,7 +486,7 @@ global $wppa_session;
 				$cnt = 0;
 				foreach ( $myrats as $rat ) {
 					if ( $rat['value'] == '-1' ) {
-						$sum += $wppa_opt['wppa_dislike_value'];
+						$sum += wppa_opt( 'wppa_dislike_value' );
 					}
 					else {
 						$sum += $rat['value'];
@@ -489,7 +494,7 @@ global $wppa_session;
 					$cnt ++;
 				}
 				$myavgrat = $sum/$cnt; 
-				$i = $wppa_opt['wppa_rating_prec'];
+				$i = wppa_opt( 'wppa_rating_prec' );
 				$j = $i + '1';
 				$myavgrat = sprintf( '%'.$j.'.'.$i.'f', $myavgrat );
 			}
@@ -504,7 +509,7 @@ global $wppa_session;
 				$cnt = 0;
 				foreach ( $ratings as $rat ) {
 					if ( $rat['value'] == '-1' ) {
-						$sum += $wppa_opt['wppa_dislike_value'];
+						$sum += wppa_opt( 'wppa_dislike_value' );
 					}
 					else {
 						$sum += $rat['value'];
@@ -1321,10 +1326,10 @@ global $wppa_session;
 					wppa_ajax_check_range( $value, '', '-20', '100', __( 'Box spacing', 'wppa' ) );
 					break;
 				case 'wppa_popupsize':				
-					$floor = $wppa_opt['wppa_thumbsize'];
-					$temp  = $wppa_opt['wppa_smallsize'];
+					$floor = wppa_opt( 'wppa_thumbsize' );
+					$temp  = wppa_opt( 'wppa_smallsize' );
 					if ( $temp > $floor ) $floor = $temp;
-					wppa_ajax_check_range( $value, false, $floor, $wppa_opt['wppa_fullsize'], __( 'Popup size', 'wppa' ) );
+					wppa_ajax_check_range( $value, false, $floor, wppa_opt( 'wppa_fullsize' ), __( 'Popup size', 'wppa' ) );
 					break;
 				case 'wppa_fullimage_border_width':
 					wppa_ajax_check_range( $value, '', '0', false, __( 'Fullsize border width', 'wppa' ) );
@@ -1387,7 +1392,7 @@ global $wppa_session;
 					break;
 				case 'wppa_jpeg_quality':
 					wppa_ajax_check_range( $value, false, '20', '100', __( 'JPG Image quality', 'wppa' ) );
-					if ( $wppa_opt['wppa_cdn_service'] == 'cloudinary' && ! $wppa['out'] ) {
+					if ( wppa_opt( 'wppa_cdn_service' ) == 'cloudinary' && ! $wppa['out'] ) {
 						wppa_delete_derived_from_cloudinary();
 					}
 					break;
@@ -1484,7 +1489,7 @@ global $wppa_session;
 					break;
 
 				case 'wppa_rating_max':
-					if ( $value == '5' && $wppa_opt['wppa_rating_max'] == '10' ) {
+					if ( $value == '5' && wppa_opt( 'wppa_rating_max' ) == '10' ) {
 						$rats = $wpdb->get_results( 'SELECT `id`, `value` FROM `'.WPPA_RATING.'`', ARRAY_A );
 						if ( $rats ) {
 							foreach ( $rats as $rat ) {
@@ -1492,7 +1497,7 @@ global $wppa_session;
 							}
 						}
 					}
-					if ( $value == '10' && $wppa_opt['wppa_rating_max'] == '5' ) {
+					if ( $value == '10' && wppa_opt( 'wppa_rating_max' ) == '5' ) {
 						$rats = $wpdb->get_results( 'SELECT `id`, `value` FROM `'.WPPA_RATING.'`', ARRAY_A );
 						if ( $rats ) {
 							foreach ( $rats as $rat ) {
@@ -1523,7 +1528,7 @@ global $wppa_session;
 					break;
 				
 				case 'wppa_keep_source':
-					$dir = $wppa_opt['wppa_source_dir'];
+					$dir = wppa_opt( 'wppa_source_dir' );
 					if ( ! is_dir( $dir ) ) @ mkdir( $dir );
 					if ( ! is_dir( $dir ) || ! is_writable( $dir ) ) {
 						$wppa['error'] = '1';
@@ -1532,7 +1537,7 @@ global $wppa_session;
 					break;
 					
 				case 'wppa_source_dir':
-					$olddir = $wppa_opt['wppa_source_dir'];
+					$olddir = wppa_opt( 'wppa_source_dir' );
 					$value = rtrim( $value, '/' );
 					if ( strpos( $value.'/', WPPA_UPLOAD_PATH.'/' ) !== false ) {
 						$wppa['error'] = '1';
@@ -1573,7 +1578,7 @@ global $wppa_session;
 				case 'wppa_i_downsize':
 					if ( $value == 'yes' ) { 
 						wppa_update_option( 'wppa_resize_on_upload', 'yes' );
-						if ( $wppa_opt['wppa_resize_to'] == '0' ) wppa_update_option( 'wppa_resize_to', '1024x768' );
+						if ( wppa_opt( 'wppa_resize_to' ) == '0' ) wppa_update_option( 'wppa_resize_to', '1024x768' );
 					}
 					if ( $value == 'no' ) {
 						wppa_update_option( 'wppa_resize_on_upload', 'no' );
@@ -1600,7 +1605,7 @@ global $wppa_session;
 						wppa_update_option( 'wppa_upload_edit', 'yes' );
 						wppa_update_option( 'wppa_upload_notify', 'yes' );
 						wppa_update_option( 'wppa_grant_an_album', 'yes' );
-						$grantparent = $wppa_opt['wppa_grant_parent'];
+						$grantparent = wppa_opt( 'wppa_grant_parent' );
 						if ( ! wppa_album_exists( $grantparent ) ) {
 							$id = wppa_create_album_entry( array( 'name' => __( 'Members', 'wppa' ), 'description' => __( 'Parent of the member albums', 'wppa' ), 'a_parent' => '-1', 'upload_limit' => '0/0' ) );
 							if ( $id ) {
@@ -1678,7 +1683,7 @@ global $wppa_session;
 					
 				case 'wppa_i_gpx':
 					if ( $value == 'yes' ) {
-						$custom_content = $wppa_opt['wppa_custom_content'];
+						$custom_content = wppa_opt( 'wppa_custom_content' );
 						if ( strpos( $custom_content, 'w#location' ) === false ) {
 							$custom_content = $custom_content.' w#location';
 							wppa_update_option( 'wppa_custom_content', $custom_content );
@@ -1686,7 +1691,7 @@ global $wppa_session;
 						if ( ! wppa_switch( 'wppa_custom_on' ) ) {
 							wppa_update_option( 'wppa_custom_on', 'yes' );
 						}
-						if ( $wppa_opt['wppa_gpx_implementation'] == 'none' ) {
+						if ( wppa_opt( 'wppa_gpx_implementation' ) == 'none' ) {
 							wppa_update_option( 'wppa_gpx_implementation', 'wppa-plus-embedded' );
 						}
 					}
@@ -1694,7 +1699,7 @@ global $wppa_session;
 					
 				case 'wppa_i_fotomoto':
 					if ( $value == 'yes' ) {
-						$custom_content = $wppa_opt['wppa_custom_content'];
+						$custom_content = wppa_opt( 'wppa_custom_content' );
 						if ( strpos( $custom_content, 'w#fotomoto' ) === false ) {
 							$custom_content = 'w#fotomoto '.$custom_content;
 							wppa_update_option( 'wppa_custom_content', $custom_content );
@@ -1712,6 +1717,15 @@ global $wppa_session;
 					}
 					else {
 						wppa_update_option( 'wppa_enable_video', 'no' );
+					}
+					break;
+					
+				case 'wppa_i_audio':
+					if ( $value == 'yes' ) {
+						wppa_update_option( 'wppa_enable_audio', 'yes' );
+					}
+					else {
+						wppa_update_option( 'wppa_enable_audio', 'no' );
 					}
 					break;
 					
@@ -1758,7 +1772,7 @@ global $wppa_session;
 				
 				case 'wppa_fotomoto_on':
 					if ( $value == 'yes' ) {
-						$custom_content = $wppa_opt['wppa_custom_content'];
+						$custom_content = wppa_opt( 'wppa_custom_content' );
 						if ( strpos( $custom_content, 'w#fotomoto' ) === false ) {
 							$custom_content = 'w#fotomoto '.$custom_content;
 							wppa_update_option( 'wppa_custom_content', $custom_content );
@@ -1773,7 +1787,7 @@ global $wppa_session;
 					
 				case 'wppa_gpx_implementation':
 					if ( $value != 'none' ) {
-						$custom_content = $wppa_opt['wppa_custom_content'];
+						$custom_content = wppa_opt( 'wppa_custom_content' );
 						if ( strpos( $custom_content, 'w#location' ) === false ) {
 							$custom_content = $custom_content.' w#location';
 							wppa_update_option( 'wppa_custom_content', $custom_content );
@@ -1826,6 +1840,10 @@ global $wppa_session;
 					
 				case 'wppa_wppa_set_shortcodes':
 					$value = str_replace( ' ', '', $value );
+					break;
+					
+				case 'wppa_enable_video':
+					// if off: set all statusses of videos to pending
 					break;
 					
 				default:

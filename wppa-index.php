@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all indexing functions
-* version 5.5.2
+* version 6.1.0
 *
 * 
 */
@@ -332,11 +332,10 @@ function wppa_index_update($type, $id) {
 
 // The words in the new photo description should be left out
 function wppa_index_compute_skips() {
-global $wppa_opt;
 
 	$user_skips = '';
-	$words = wppa_index_raw_to_words($wppa_opt['wppa_newphoto_description'].' '.$user_skips, 'noskips');
-	sort($words);
+	$words = wppa_index_raw_to_words( wppa_opt( 'wppa_newphoto_description' ) . ' ' . $user_skips, 'noskips' );
+	sort( $words );
 
 	$result = array();
 	$last = '';

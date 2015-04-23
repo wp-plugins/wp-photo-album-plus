@@ -56,7 +56,7 @@ class PhotoOfTheDay extends WP_Widget {
 			$ratio 		= wppa_get_photoy( $id ) / wppa_get_photox( $id );
 			$h 			= round( $w * $ratio );
 			$usethumb	= wppa_use_thumb_file( $id, wppa_opt( 'wppa_widget_width' ), '0' );
-			$imgurl 	= $usethumb ? wppa_get_thumb_url( $id, '', $w, $h ) : wppa_get_photo_url( $id, '', $w, $h );
+			$imgurl 	= wppa_fix_poster_ext( $usethumb ? wppa_get_thumb_url( $id, '', $w, $h ) : wppa_get_photo_url( $id, '', $w, $h ), $id );
 			$name 		= wppa_get_photo_name( $id );
 			$page 		= in_array( wppa_opt( 'wppa_widget_linktype' ), $wppa['links_no_page'] ) ? '' : wppa_get_the_landing_page( 'wppa_widget_linkpage', __a('Photo of the day') );
 			$link 		= wppa_get_imglnk_a( 'potdwidget' , $id );
@@ -89,13 +89,30 @@ class PhotoOfTheDay extends WP_Widget {
 			if ($link) $widget_content .= "\n\t".'<a href = "'.$link['url'].'" target="'.$link['target'].'" '.$lightbox.' title="'.$ltitle.'">';
 			
 				// The image
-				$widget_content .= "\n\t\t".'<img src="'.$imgurl.'" style="width: '.wppa_opt('wppa_potd_widget_width').'px;'.$cursor.'" '.wppa_get_imgalt( $id ).' title="'.$title.'"/>';
+				if ( wppa_is_video( $id ) ) {
+					$widget_content .= "\n\t\t".wppa_get_video_html( array ( 	'id' 		=> $id,
+																				'width' 	=> wppa_opt('wppa_potd_widget_width'),
+																				'title' 	=> $title,
+																				'controls' 	=> ( wppa_opt( 'widget_linktype' ) == 'none' )
+																	));
+				}
+				else {
+					$widget_content .= "\n\t\t".'<img src="'.$imgurl.'" style="width: '.wppa_opt('wppa_potd_widget_width').'px;'.$cursor.'" '.wppa_get_imgalt( $id ).' title="'.$title.'"/>';
+				}
 
 			// Close the link
 			if ($link) $widget_content .= "\n\t".'</a>';
 			
 			// The medal if at the bottom
 			$widget_content .= wppa_get_medal_html_a( array( 'id' => $id, 'size' => 'M', 'where' => 'bot' ) );
+			
+			// Audio
+			if ( wppa_has_audio( $id ) ) {
+				$widget_content .= wppa_get_audio_html( array ( 	'id' 		=> $id,
+																	'width' 	=> wppa_opt('wppa_potd_widget_width'),
+																	'controls' 	=> true
+													));
+			}
 
 		} 
 		else {	// No image
@@ -163,6 +180,6 @@ require_once ('wppa-widget-functions.php');
 add_action('widgets_init', create_function('', 'return register_widget("PhotoOfTheDay");'));
 
 // Temp fix for 6.0.0
-function wppa_get_audio_body() {
-return '';
-}
+//function wppa_get_audio_body() {
+//return '';
+//}

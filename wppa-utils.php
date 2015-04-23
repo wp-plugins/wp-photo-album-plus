@@ -3,12 +3,15 @@
 * Package: wp-photo-album-plus
 *
 * Contains low-level utility routines
-* Version 6.0.0
+* Version 6.1.0
 * 
 */
  
 if ( ! defined( 'ABSPATH' ) ) die( "Can't load this file directly" );
 	
+global $wppa_supported_photo_extensions;
+$wppa_supported_photo_extensions = array( 'jpg', 'jpeg', 'png', 'gif' );
+
 // __a() is a function like __(), but specificly for front-end language support
 function __a( $txt, $dom = 'wppa_theme' ) {
 	return __( $txt, $dom );
@@ -621,7 +624,10 @@ global $wppa_opt;
 								'wppa_vote_needs_comment',
 								'wppa_fotomoto_min_width',
 								'wppa_use_short_qargs',
-								'wppa_lb_hres'
+								'wppa_lb_hres',
+								'wppa_start_slide_video',
+								'wppa_start_slide_audio'
+
 
 		);
 	if ( in_array( $option, $init_js_critical ) ) {
@@ -1181,31 +1187,45 @@ global $wppa_opt;
 
 // Delete a photo and all its attrs by id
 function wppa_delete_photo( $photo ) {
+global $wppa_supported_audio_extensions;
+global $wppa_supported_video_extensions;
 global $wpdb;
 
 	$photoinfo = $wpdb->get_row($wpdb->prepare('SELECT * FROM `'.WPPA_PHOTOS.'` WHERE `id` = %s', $photo), ARRAY_A);
-	// Get file extension
-	$ext = $photoinfo['ext']; 
+	
 	// Get album
 	$album = $photoinfo['album'];
+	
 	// Get filename
 	$filename = $photoinfo['filename'];
-	// delete video
-	if ( wppa_is_video( $photo ) ) {
-		wppa_delete_video( $photo );
+	
+	// Delete multimedia files
+	if ( wppa_is_multi( $photo ) ) {
+		$mmfile = wppa_strip_ext( wppa_get_photo_path( $photo ) );
+		$allsup = array_merge( $wppa_supported_audio_extensions, $wppa_supported_video_extensions );
+		foreach( $allsup as $mmext ) {
+			if ( is_file( $mmfile.'.'.$mmext ) ) {
+				@ unlink( $mmfile.'.'.$mmext );
+			}
+		}
 	}
-	else {
-		// Delete fullsize image
-		$file = wppa_get_photo_path( $photo );
-		if ( file_exists($file) && ! is_dir($file) ) unlink($file);
-		// Delete thumbnail image
-		$file = wppa_get_thumb_path($photo);
-		if ( file_exists($file) && ! is_dir($file) ) unlink($file);
-		// Delete sourcefile
-		wppa_delete_source($filename, $album);
-	}
+	
+	// Delete fullsize image
+	$file = wppa_get_photo_path( $photo );
+	$file = wppa_fix_poster_ext( $file, $photo );
+	if ( is_file( $file ) ) unlink( $file );
+	
+	// Delete thumbnail image
+	$file = wppa_get_thumb_path( $photo );
+	$file = wppa_fix_poster_ext( $file, $photo );
+	if ( is_file( $file ) ) unlink( $file );
+	
+	// Delete sourcefile
+	wppa_delete_source($filename, $album);
+	
 	// Delete index
 	wppa_index_remove('photo', $photo);
+	
 	// Delete db entries
 	$wpdb->query($wpdb->prepare('DELETE FROM `'.WPPA_PHOTOS.'` WHERE `id` = %s LIMIT 1', $photo));
 	$wpdb->query($wpdb->prepare('DELETE FROM `'.WPPA_RATING.'` WHERE `photo` = %s', $photo));
@@ -1214,6 +1234,7 @@ global $wpdb;
 	$wpdb->query($wpdb->prepare('DELETE FROM `'.WPPA_EXIF.'` WHERE `photo` = %s', $photo));
 	wppa_flush_treecounts($album);
 	wppa_flush_upldr_cache('photoid', $photo);
+	
 	// Delete from cloud
 	switch ( wppa_cdn() ) {
 		case 'cloudinary':
@@ -1490,10 +1511,10 @@ function wppa_get_filesize( $file ) {
 function wppa_get_the_landing_page($slug, $title) {
 global $wppa_opt;
 
-	$page = $wppa_opt[$slug];
-	if ( ! $page || ! wppa_page_exists($page) ) {
-	$page = wppa_create_page($title);
-		wppa_update_option($slug, $page);
+	$page = wppa_opt( $slug );
+	if ( ! $page || ! wppa_page_exists( $page ) ) {
+	$page = wppa_create_page( $title );
+		wppa_update_option( $slug, $page );
 		$wppa_opt[$slug] = $page;
 	}
 	return $page;
@@ -1580,11 +1601,18 @@ function wppa_get_source_path( $id ) {
 global $wppa_opt;
 global $blog_id;
 global $thumb;
+global $wppa_supported_photo_extensions;
+
+	// Source files can have uppercase extensions.
+	$temp = array();
+	foreach( $wppa_supported_photo_extensions as $ext ) {
+		$temp[] = strtoupper( $ext );
+	}
+	$supext = array_merge( $wppa_supported_photo_extensions, $temp );
 
 	wppa_cache_thumb( $id );
 	
 	$multi = is_multisite();
-//	$multi = true;	// debug
 	if ( $multi && ! WPPA_MULTISITE_GLOBAL ) {
 		$blog = '/blog-'.$blog_id;
 	}
@@ -1592,8 +1620,14 @@ global $thumb;
 		$blog = '';
 	}
 	$source_path = $wppa_opt['wppa_source_dir'].$blog.'/album-'.$thumb['album'].'/'.$thumb['filename'];
-	if ( wppa_is_video( $id ) ) {
-		$source_path = wppa_strip_ext( $source_path ) . '.jpg';
+	if ( wppa_is_multi( $id ) ) {
+		$path = wppa_strip_ext( $source_path );
+		foreach ( $supext as $ext ) {
+			$source = $path . '.' . $ext;
+			if ( is_file( $source ) ) {
+				return $source;
+			}
+		}
 	}
 	
 	return $source_path;
@@ -1604,9 +1638,11 @@ global $thumb;
 function wppa_get_hires_url( $id ) {
 
 	// video? return the poster url
-	if ( wppa_is_video( $id ) ) {
+	if ( wppa_is_video( $id ) || wppa_has_audio( $id ) ) {
 		$url = wppa_get_photo_url( $id );
-		$url = wppa_fix_poster_ext( $url );
+		$url = wppa_fix_poster_ext( $url, $id );
+		$temp = explode( '?', $url );
+		$url = $temp['0'];
 		return $url;
 	}
 	
@@ -1625,23 +1661,20 @@ function wppa_get_hires_url( $id ) {
 	return $hires_url;
 }
 function wppa_get_lores_url( $id ) {
-	if ( wppa_is_video( $id ) ) return '';
-	$lores_url = wppa_get_photo_url( $id );
+	$lores_url = wppa_fix_poster_ext( wppa_get_photo_url( $id ), $id );
 	$temp = explode( '?', $lores_url );
 	$lores_url = $temp['0'];
 	return $lores_url;
 }
 function wppa_get_tnres_url( $id ) {
-	if ( wppa_is_video( $id ) ) return '';
-	$tnres_url = wppa_get_thumb_url( $id );
+	$tnres_url = wppa_fix_poster_ext( wppa_get_thumb_url( $id ), $id );
 	$temp = explode( '?', $tnres_url );
 	$tnres_url = $temp['0'];
 	return $tnres_url;
 }
 function wppa_get_source_pl( $id ) {
-	if ( wppa_is_video( $id ) ) return '';
 	$result = '';
-	$source_path = wppa_get_source_path( $id );
+	$source_path = wppa_fix_poster_ext( wppa_get_source_path( $id ), $id );
 	if ( is_file( $source_path ) ) {
 		$result = 	content_url() . '/' . 						// http://www.mysite.com/wp-content/
 					wppa_opt( 'wppa_pl_dirname' ) . '/' .		// wppa-pl/
@@ -2358,3 +2391,60 @@ function wppa_down_ext( $file ) {
 	$file = substr( $file, 0, $dotpos ) . strtolower( substr( $file, $dotpos ) );
 	return $file;
 }
+
+// See of a photo db entry is a multimedia entry
+function wppa_is_multi( $id ) {
+
+	if ( ! $id ) return false;			// No id
+	
+	$ext = wppa_get_photo_item( $id, 'ext' );	
+	return ( $ext == 'xxx' );
+}
+
+function wppa_fix_poster_ext( $fileorurl, $id ) {
+
+	$poster_ext = wppa_get_poster_ext( $id );
+	
+	// If found, replace extension to ext of existing file
+	if ( $poster_ext ) {
+		return str_replace( '.xxx', '.'.$poster_ext, $fileorurl );
+	}
+	
+	// Not found. If audio, return audiostub file or url
+	if ( wppa_has_audio( $id ) ) {
+	
+		$audiostub = wppa_opt( 'wppa_audiostub' );
+		
+		// Url ?
+		if ( strpos( $fileorurl, 'http://' ) !== false || strpos( $fileorurl, 'https://' ) !== false ) {
+			return WPPA_UPLOAD_URL . '/'. $audiostub;
+		}
+		
+		// File
+		else {
+			return WPPA_UPLOAD_PATH . '/' . $audiostub;
+		}
+	}
+	
+	// Not found. Is Video, return as jpg
+	return str_replace( '.xxx', '.jpg', $fileorurl );
+}
+
+function wppa_get_poster_ext( $id ) {
+global $wppa_supported_photo_extensions;
+
+	// Init
+	$path 		= wppa_get_photo_path( $id );
+	$raw_path 	= wppa_strip_ext( $path );
+	
+	// Find existing photofiles
+	foreach ( $wppa_supported_photo_extensions as $ext ) {
+		if ( is_file( $raw_path.'.'.$ext ) ) {
+			return $ext;	// Found !
+		}
+	}
+	
+	// Not found.
+	return false;
+}
+

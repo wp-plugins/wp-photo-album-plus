@@ -2,16 +2,16 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, video, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, myCRED, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile, cloudinary, fotomoto, CMTooltipGlossary
-Version: 6.0.0
+Version: 6.1.0
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
 Requires at least: 3.9
-Tested up to: 4.1
+Tested up to: 4.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-This plugin is designed to easily manage and display your photos, photo albums, slideshows and videos in a single as well as in a network WordPress site.
+This plugin is designed to easily manage and display your photos, photo albums, slideshows and videos in a single as well as in a network WP site.
 
 == Description ==
 
@@ -188,6 +188,25 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 6.1.0 =
+
+= Bug Fixes =
+
+* Poster image files could no be import-updated. Fixed.
+* The photo of the day widget could not handle videos. Fixed.
+
+= New Features =
+
+* Audio support. Supported filetypes: .mp3, .wav and .ogg.
+* Added filetype .jpeg for photos.
+
+= Other Changes =
+
+* Table II-D ( Visibility: Thumbnails ) has been renumbered.
+* When a video plays, a running slideshow will be suspended until the video finishes. Same for videos on running lightbox slideshows.
+* Fixed a lay-out issue on horizontal masonry thumbnails.
+* The thumbnail subtext is now displayed as title ( hover text ) on masonry style thumbnails.
 
 = 6.0.0 =
 

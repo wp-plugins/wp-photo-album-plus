@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Frontend links
-* Version 5.5.5
+* Version 6.1.0
 *
 */
 
@@ -1183,6 +1183,7 @@ global $wpdb;
 			$result['title'] = $title; 
 			$result['is_url'] = false;
 			$result['is_lightbox'] = true;
+			$result['url'] = wppa_fix_poster_ext( $result['url'], $id );
 			return $result;
 		case 'widget':		// Defined at widget activation
 			$result['url'] = wppa( 'in_widget_linkurl' );
@@ -1335,7 +1336,7 @@ global $wpdb;
 					$hig = '0';
 				}
 				*/
-				$url = wppa_get_photo_url( $id, '', $wid, $hig );
+				$url = wppa_fix_poster_ext( wppa_get_photo_url( $id, '', $wid, $hig ), $id );
 				
 				$result['url'] = esc_attr( 'wppaFullPopUp( ' . wppa( 'mocc' ) . ', ' . $id . ', "' . $url . '", ' . $wid . ', ' . $hig . ' )' );
 			}

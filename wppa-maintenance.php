@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains (not yet, but in the future maybe) all the maintenance routines
-* Version 5.5.7
+* Version 6.1.0
 *
 */
 
@@ -16,6 +16,8 @@ global $wpdb;
 global $thumb;
 global $wppa_opt;
 global $wppa_session;
+global $wppa_supported_video_extensions;
+global $wppa_supported_audio_extensions;
 
 	// Check for multiple maintenance procs
 	if ( ! wppa_switch( 'wppa_maint_ignore_concurrency_error' ) ) {
@@ -197,6 +199,18 @@ global $wppa_session;
 				$new_tag 	= get_option( 'wppa_new_tag_value' );
 			}
 
+			if ( ! $photos && $slug == 'wppa_file_system' ) {
+				$fs = get_option( 'wppa_file_system' );
+				if ( $fs == 'to-tree' ) {
+					$to = 'tree';
+				}
+				elseif ( $fs == 'to-flat' ) {
+					$to = 'flat';
+				}
+				else {
+					$to = $fs;
+				}
+			}
 			
 			if ( $photos ) foreach ( $photos as $photo ) {
 				$thumb = $photo;	// Make globally known
@@ -281,23 +295,31 @@ global $wppa_session;
 								$to = 'flat';
 							}
 							
-							if ( wppa_is_video( $id ) ) {
-								$exts 		= wppa_is_video( $id, true );
+							// Media files
+							if ( wppa_is_multi( $id ) ) {	// Can NOT use wppa_has_audio() or wppa_is_video(), they use wppa_get_photo_path() without fs switch!!
+								$exts 		= array_merge( $wppa_supported_video_extensions, $wppa_supported_audio_extensions );
 								$pathfrom 	= wppa_get_photo_path( $id, $from );
 								$pathto 	= wppa_get_photo_path( $id, $to );
+							//	wppa_log( 'dbg', 'Trying: '.$pathfrom );
 								foreach ( $exts as $ext ) {
-									rename ( str_replace( 'xxx', $ext, $pathfrom ), str_replace( 'xxx', $ext, $pathto ) );									
+									if ( is_file( str_replace( '.xxx', '.'.$ext, $pathfrom ) ) ) {
+									//	wppa_log( 'dbg',  str_replace( '.xxx', '.'.$ext, $pathfrom ).' -> '.str_replace( '.xxx', '.'.$ext, $pathto ));
+										@ rename ( str_replace( '.xxx', '.'.$ext, $pathfrom ), str_replace( '.xxx', '.'.$ext, $pathto ) );
+									}									
 								}
 							}
-							else {
-								if ( file_exists( wppa_get_photo_path( $id, $from ) ) ) {
-									@ rename ( wppa_get_photo_path( $id, $from ), wppa_get_photo_path( $id, $to ) );
-								}
-								if ( file_exists( wppa_get_thumb_path( $id, $from ) ) ) {
-									@ rename ( wppa_get_thumb_path( $id, $from ), wppa_get_thumb_path( $id, $to ) );
-								}
+
+							// Poster / photo
+							if ( file_exists( wppa_fix_poster_ext( wppa_get_photo_path( $id, $from ), $id ) ) ) {
+								@ rename ( wppa_fix_poster_ext( wppa_get_photo_path( $id, $from ), $id ), wppa_fix_poster_ext( wppa_get_photo_path( $id, $to ), $id ) );
 							}
-						}					
+							
+							// Thumbnail
+							if ( file_exists( wppa_fix_poster_ext( wppa_get_thumb_path( $id, $from ), $id ) ) ) {
+								@ rename ( wppa_fix_poster_ext( wppa_get_thumb_path( $id, $from ), $id ), wppa_fix_poster_ext( wppa_get_thumb_path( $id, $to ), $id ) );
+							}
+							
+						}
 						break;
 						
 					case 'wppa_cleanup':

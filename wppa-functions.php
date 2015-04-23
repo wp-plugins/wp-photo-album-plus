@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Various funcions
-* Version 6.0.0
+* Version 6.1.0
 *
 */
 
@@ -103,26 +103,26 @@ global $wppa_session;
 		$wppa['start_photo'] 	= $wppa['is_slide'] ? wppa_get_get( 'photo' ) : '0';	// Start a slideshow here
 		wppa_dbg_msg( 'Start_phto='.$wppa['start_photo'] );
 		$wppa['is_single'] 		= wppa_get_get( 'single' );					// Is a one image slideshow	
-		$wppa['topten_count'] 	= wppa_force_numeric_else( wppa_get_get( 'topten' ), wppa_opt( 'wppa_topten_count' ) );
+		$wppa['topten_count'] 	= wppa_force_numeric_else( wppa_get_get( 'topten' ), wppa_opt( 'topten_count' ) );
 		$wppa['is_topten'] 		= $wppa['topten_count'] != '0';
-		$wppa['lasten_count'] 	= wppa_force_numeric_else( wppa_get_get( 'lasten' ), wppa_opt( 'wppa_lasten_count' ) );
+		$wppa['lasten_count'] 	= wppa_force_numeric_else( wppa_get_get( 'lasten' ), wppa_opt( 'lasten_count' ) );
 		$wppa['is_lasten'] 		= $wppa['lasten_count'] != '0';
-		$wppa['comten_count'] 	= wppa_force_numeric_else( wppa_get_get( 'comten' ), wppa_opt( 'wppa_comten_count' ) );
+		$wppa['comten_count'] 	= wppa_force_numeric_else( wppa_get_get( 'comten' ), wppa_opt( 'comten_count' ) );
 		$wppa['is_comten']		= $wppa['comten_count'] != '0';
-		$wppa['featen_count']	= wppa_force_numeric_else( wppa_get_get( 'featen' ), wppa_opt( 'wppa_featen_count' ) );
+		$wppa['featen_count']	= wppa_force_numeric_else( wppa_get_get( 'featen' ), wppa_opt( 'featen_count' ) );
 		$wppa['is_featen']		= $wppa['featen_count'] != '0';
 		$wppa['albums_only'] 	= wppa_get_get( 'albums-only' );
 		$wppa['photos_only'] 	= wppa_get_get( 'photos-only' );
-		$wppa['related_count'] 	= wppa_force_numeric_else( wppa_get_get( 'relcount' ), wppa_opt( 'wppa_related_count' ) );
+		$wppa['related_count'] 	= wppa_force_numeric_else( wppa_get_get( 'relcount' ), wppa_opt( 'related_count' ) );
 		$wppa['is_related'] 	= wppa_get_get( 'rel' );
 		if ( $wppa['is_related'] == 'tags' ) {
 			$wppa['is_tag'] = wppa_get_related_data();
-			if ( $wppa['related_count'] == '0' ) $wppa['related_count'] = wppa_opt( 'wppa_related_count' );
+			if ( $wppa['related_count'] == '0' ) $wppa['related_count'] = wppa_opt( 'related_count' );
 		}
 		else $wppa['is_tag']	= trim( trim( strip_tags( wppa_get_get( 'tag' ) ), ',' ), ';' );
 		if ( $wppa['is_related'] == 'desc' ) {
 			$wppa['src'] = true;
-			if ( $wppa['related_count'] == '0' ) $wppa['related_count'] = wppa_opt( 'wppa_related_count' );
+			if ( $wppa['related_count'] == '0' ) $wppa['related_count'] = wppa_opt( 'related_count' );
 			$wppa['searchstring'] = str_replace( ';', ',', wppa_get_related_data() );
 			$wppa['photos_only'] = true;
 		}
@@ -197,7 +197,7 @@ global $wppa_session;
 				wppa_reset_occurrance();
 				return '';	// Give up
 			}
-			$type = wppa_opt( 'wppa_auto_page_type' );
+			$type = wppa_opt( 'auto_page_type' );
 			switch ( $type ) {
 				case 'photo':
 					break;
@@ -266,7 +266,7 @@ global $wppa_session;
 				case '#topten':
 					$temp = explode( ',',$wppa['start_album'] );
 					$id = isset( $temp[1] ) ? $temp[1] : '0';
-					$wppa['topten_count'] = isset( $temp[2] ) ? $temp[2] : wppa_opt( 'wppa_topten_count' );
+					$wppa['topten_count'] = isset( $temp[2] ) ? $temp[2] : wppa_opt( 'topten_count' );
 					$wppa['is_topten'] = true;
 					if ( $wppa['is_cover'] ) {
 						wppa_dbg_msg( 'A topten album has no cover. '.$wppa['start_album'], 'red', 'force' );
@@ -277,7 +277,7 @@ global $wppa_session;
 				case '#lasten':
 					$temp = explode( ',',$wppa['start_album'] );
 					$id = isset( $temp[1] ) ? $temp[1] : '0';
-					$wppa['lasten_count'] = isset( $temp[2] ) ? $temp[2] : wppa_opt( 'wppa_lasten_count' );
+					$wppa['lasten_count'] = isset( $temp[2] ) ? $temp[2] : wppa_opt( 'lasten_count' );
 					$wppa['is_lasten'] = true;
 					if ( $wppa['is_cover'] ) {
 						wppa_dbg_msg( 'A lasten album has no cover. '.$wppa['start_album'], 'red', 'force' );
@@ -288,7 +288,7 @@ global $wppa_session;
 				case '#comten':
 					$temp = explode( ',',$wppa['start_album'] );
 					$id = isset( $temp[1] ) ? $temp[1] : '0';
-					$wppa['comten_count'] = isset( $temp[2] ) ? $temp[2] : wppa_opt( 'wppa_comten_count' );
+					$wppa['comten_count'] = isset( $temp[2] ) ? $temp[2] : wppa_opt( 'comten_count' );
 					$wppa['is_comten'] = true;
 					if ( $wppa['is_cover'] ) {
 						wppa_dbg_msg( 'A comten album has no cover. '.$wppa['start_album'], 'red', 'force' );
@@ -299,7 +299,7 @@ global $wppa_session;
 				case '#featen':
 					$temp = explode( ',',$wppa['start_album'] );
 					$id = isset( $temp[1] ) ? $temp[1] : '0';
-					$wppa['featen_count'] = isset( $temp[2] ) ? $temp[2] : wppa_opt( 'wppa_featen_count' );
+					$wppa['featen_count'] = isset( $temp[2] ) ? $temp[2] : wppa_opt( 'featen_count' );
 					$wppa['is_featen'] = true;
 					if ( $wppa['is_cover'] ) {
 						wppa_dbg_msg( 'A featen album has no cover. '.$wppa['start_album'], 'red', 'force' );
@@ -310,7 +310,7 @@ global $wppa_session;
 				case '#related':
 					$temp = explode( ',',$wppa['start_album'] );
 					$type = isset( $temp[1] ) ? $temp[1] : 'tags';	// tags is default type
-					$wppa['related_count'] = isset( $temp[2] ) ? $temp[2] : wppa_opt( 'wppa_related_count' );
+					$wppa['related_count'] = isset( $temp[2] ) ? $temp[2] : wppa_opt( 'related_count' );
 					$wppa['is_related'] = $type;
 					
 					$data = wppa_get_related_data();
@@ -578,7 +578,7 @@ global $wppa_session;
 	}
 	// Is it the tagcloud box?
 	elseif ( $wppa['is_tagcloudbox'] ) {
-		wppa_tagcloud_box( $wppa['taglist'], wppa_opt( 'wppa_tagcloud_min' ), wppa_opt( 'wppa_tagcloud_max' ) );
+		wppa_tagcloud_box( $wppa['taglist'], wppa_opt( 'tagcloud_min' ), wppa_opt( 'tagcloud_max' ) );
 	}
 	// Is it an upload box?
 	elseif ( $wppa['is_upload'] ) {
@@ -605,7 +605,7 @@ global $wppa_session;
 		}
 		else $wppa['out'] = '<span style="color:red">ERROR: Missing function wppa_theme(), check the installation of WPPA+. Remove customized wppa_theme.php</span>';
 		global $wppa_version; 
-		$expected_version = '5-5-02';
+		$expected_version = '6-1-0-000';
 		if ( $wppa_version != $expected_version ) {
 			wppa_dbg_msg( 'WARNING: customized wppa-theme.php is out of rev. Expected version: '.$expected_version.' found: '.$wppa_version, 'red' );	
 		}
@@ -751,12 +751,12 @@ global $wppa_session;
 	if ( $wppa['is_tag'] ) 		return false;
 	if ( $wppa['photos_only'] ) return false;
 	
-	if ( $wppa['src'] && wppa_switch( 'wppa_photos_only' ) ) 	return false;
+	if ( $wppa['src'] && wppa_switch( 'photos_only' ) ) 	return false;
 	if ( $wppa['is_owner'] && ! $wppa['start_album'] ) 		return false; 	// No owner album( s )
 	
 	if ( $wppa['src'] ) {	// Searching
 
-//		if ( wppa_switch( 'wppa_indexed_search' ) ) { 
+//		if ( wppa_switch( 'indexed_search' ) ) { 
 			$final_array = array();
 			$chunks = explode( ',', stripslashes( strtolower( $wppa['searchstring'] ) ) );
 			// all chunks
@@ -768,7 +768,7 @@ global $wppa_session;
 					$word = trim( $word );
 					if ( strlen( $word ) > 1 ) {
 						if ( strlen( $word ) > 10 ) $word = substr( $word, 0, 10 );
-						if ( wppa_switch( 'wppa_wild_front' ) ) {
+						if ( wppa_switch( 'wild_front' ) ) {
 							$aidxs = $wpdb->get_results( "SELECT `slug`, `albums` FROM `".WPPA_INDEX."` WHERE `slug` LIKE '%".$word."%'", ARRAY_A );
 						}
 						else {
@@ -804,7 +804,7 @@ global $wppa_session;
 			wppa_dbg_q( 'Q10' );
 			
 			// Exclusive separate albums?
-			if ( wppa_switch( 'wppa_excl_sep' ) ) {
+			if ( wppa_switch( 'excl_sep' ) ) {
 				foreach ( array_keys( $albums ) as $idx ) {
 					if ( wppa_is_separate( $albums[$idx]['id'] ) ) unset ( $albums[$idx] );
 				}
@@ -815,9 +815,9 @@ global $wppa_session;
 			wppa_dbg_q( 'Q10' );
 			$albums = '';
 			$idx = '0';
-			foreach ( $albs as $album ) if ( ! wppa_switch( 'wppa_excl_sep' ) || $album['a_parent'] != '-1' ) {
+			foreach ( $albs as $album ) if ( ! wppa_switch( 'excl_sep' ) || $album['a_parent'] != '-1' ) {
 				$haystack = __( $album['name'] ).' '.__( $album['description'] );
-				if ( wppa_switch( 'wppa_search_cats' ) ) {
+				if ( wppa_switch( 'search_cats' ) ) {
 					$haystack .= ' '.str_replace( ',', ' ', $album['cats'] );
 				}
 				if ( wppa_deep_stristr( strtolower( $haystack ), $wppa['searchstring'] ) ) {
@@ -841,11 +841,11 @@ global $wppa_session;
 		}
 
 		// Check maximum
-		if ( is_array( $albums ) && count( $albums ) > wppa_opt( 'wppa_max_search_albums' ) && wppa_opt( 'wppa_max_search_albums' ) != '0' ) {
-			$alert_text = sprintf( __a( 'There are %s albums found. Only the first %s will be shown. Please refine your search criteria.' ), count( $albums ), wppa_opt( 'wppa_max_search_albums' ) );
+		if ( is_array( $albums ) && count( $albums ) > wppa_opt( 'max_search_albums' ) && wppa_opt( 'max_search_albums' ) != '0' ) {
+			$alert_text = sprintf( __a( 'There are %s albums found. Only the first %s will be shown. Please refine your search criteria.' ), count( $albums ), wppa_opt( 'max_search_albums' ) );
 			wppa_alert( $alert_text );
 			foreach ( array_keys( $albums ) as $idx ) {
-				if ( $idx >= wppa_opt( 'wppa_max_search_albums' ) ) unset ( $albums[$idx] );
+				if ( $idx >= wppa_opt( 'max_search_albums' ) ) unset ( $albums[$idx] );
 			}
 		}
 		
@@ -902,7 +902,7 @@ global $wppa_session;
 	}
 
 	// Check for empty albums
-	if ( wppa_switch( 'wppa_skip_empty_albums' ) ) {
+	if ( wppa_switch( 'skip_empty_albums' ) ) {
 		$user = wppa_get_user();
 		if ( is_array( $albums ) ) foreach ( array_keys( $albums ) as $albumkey ) {
 			$albumid 	= $albums[$albumkey]['id'];
@@ -981,7 +981,7 @@ global $wppa_session;
 	elseif ( $wppa['is_topten'] ) {
 		$max = $wppa['topten_count'];
 		$alb = $fullalb;
-		switch ( wppa_opt( 'wppa_topten_sortby' ) ) {
+		switch ( wppa_opt( 'topten_sortby' ) ) {
 			case 'mean_rating':
 				$sortby = '`mean_rating` DESC, `rating_count` DESC, `views` DESC';
 				break;
@@ -1018,8 +1018,8 @@ global $wppa_session;
 		$alb = $fullalb;
 		
 		// If you want only 'New' photos in the selection, the period must be <> 0;
-		if ( wppa_switch ( 'wppa_lasten_limit_new' ) && wppa_opt( 'wppa_max_photo_newtime' ) ) {
-			$newtime = " `timestamp` >= ".( time() - wppa_opt( 'wppa_max_photo_newtime' ) );
+		if ( wppa_switch ( 'wppa_lasten_limit_new' ) && wppa_opt( 'max_photo_newtime' ) ) {
+			$newtime = " `timestamp` >= ".( time() - wppa_opt( 'max_photo_newtime' ) );
 			if ( current_user_can( 'wppa_moderate' ) ) {
 				if ( $alb ) $q =  "SELECT * FROM `".WPPA_PHOTOS."` WHERE ( `album` = ".$alb." ) AND (".$newtime.") ORDER BY `timestamp` DESC LIMIT ".$max;
 				else $q = "SELECT * FROM `".WPPA_PHOTOS."` WHERE ".$newtime." ORDER BY `timestamp` DESC LIMIT ".$max;
@@ -1102,7 +1102,7 @@ global $wppa_session;
 		if ( isset ( $wppa_session['use_searchstring'] ) && ! empty ( $wppa_session['use_searchstring'] ) ) $searchstring = $wppa_session['use_searchstring'];
 
 		// Indexed search??
-//		if ( wppa_switch( 'wppa_indexed_search' ) ) { 
+//		if ( wppa_switch( 'indexed_search' ) ) { 
 			$final_array = array();
 			$chunks = explode( ',', stripslashes( strtolower( $searchstring ) ) );
 			// all chunks
@@ -1114,7 +1114,7 @@ global $wppa_session;
 					$word = trim( $word );
 					if ( strlen( $word ) > 1 ) {
 						if ( strlen( $word ) > 20 ) $word = substr( $word, 0, 20 );
-						if ( wppa_switch( 'wppa_wild_front' ) ) {
+						if ( wppa_switch( 'wild_front' ) ) {
 							$pidxs = $wpdb->get_results( "SELECT `slug`, `photos` FROM `".WPPA_INDEX."` WHERE `slug` LIKE '%".$word."%'", ARRAY_A );
 						}
 						else {
@@ -1144,7 +1144,7 @@ global $wppa_session;
 			$selection = " `id` = '0' ";
 			$count = '0';
 			foreach ( array_keys( $final_array ) as $p ) {
-				if ( wppa_opt( 'wppa_max_search_photos' ) ) {
+				if ( wppa_opt( 'max_search_photos' ) ) {
 					$selection .= "OR `id` = '".$final_array[$p]."' ";
 					$count++;
 				}
@@ -1160,7 +1160,7 @@ global $wppa_session;
 			wppa_dbg_q( 'Q-SR' );
 			
 			// Check on seperate albums?
-			if ( wppa_switch( 'wppa_excl_sep' ) ) {
+			if ( wppa_switch( 'excl_sep' ) ) {
 				$broken = false;
 				foreach ( array_keys( $thumbs ) as $idx ) {
 					$alb = $thumbs[$idx]['album'];
@@ -1193,12 +1193,12 @@ global $wppa_session;
 			
 			$thumbs = array();
 			foreach ( $tmbs as $thumb ) {
-				if ( ! wppa_switch( 'wppa_excl_sep' ) || ! wppa_is_separate( $thumb['album'] ) ) {	// Not exclude sepreate or not seperate
+				if ( ! wppa_switch( 'excl_sep' ) || ! wppa_is_separate( $thumb['album'] ) ) {	// Not exclude sepreate or not seperate
 					$haystack = __( $thumb['name'] ).' '.wppa_filter_exif( wppa_filter_iptc( __( stripslashes( $thumb['description'] ) ),$thumb['id'] ),$thumb['id'] );
-					if ( wppa_switch( 'wppa_search_tags' ) ) {
+					if ( wppa_switch( 'search_tags' ) ) {
 						$haystack .= ' '.str_replace( ',', ' ', $thumb['tags'] );
 					}
-					if ( wppa_switch( 'wppa_search_comments' ) ) {
+					if ( wppa_switch( 'search_comments' ) ) {
 						$comms = $wpdb->get_results( $wpdb->prepare( " SELECT * FROM `".WPPA_COMMENTS."` WHERE `photo` = %s", $thumb['id'] ), ARRAY_A );
 						wppa_dbg_q( 'Q-CM' );
 						if ( $comms ) foreach ( $comms as $comm ) {
@@ -1241,11 +1241,11 @@ global $wppa_session;
 		}
 		
 		// Check maximum
-		if ( is_array( $thumbs ) && count( $thumbs ) > wppa_opt( 'wppa_max_search_photos' ) && wppa_opt( 'wppa_max_search_photos' ) != '0' ) {
-			$alert_text = sprintf( __a( 'There are %s photos found. Only the first %s will be shown. Please refine your search criteria.' ), count( $thumbs ), wppa_opt( 'wppa_max_search_photos' ) );
+		if ( is_array( $thumbs ) && count( $thumbs ) > wppa_opt( 'max_search_photos' ) && wppa_opt( 'max_search_photos' ) != '0' ) {
+			$alert_text = sprintf( __a( 'There are %s photos found. Only the first %s will be shown. Please refine your search criteria.' ), count( $thumbs ), wppa_opt( 'max_search_photos' ) );
 			wppa_alert( $alert_text );
 			foreach ( array_keys( $thumbs ) as $idx ) {
-				if ( $idx >= wppa_opt( 'wppa_max_search_photos' ) ) unset ( $thumbs[$idx] );
+				if ( $idx >= wppa_opt( 'max_search_photos' ) ) unset ( $thumbs[$idx] );
 			}
 		}
 		
@@ -1328,13 +1328,13 @@ static $user;
 	
 	// Process a comment if given for this photo
 	$comment_request = ( wppa_get_post( 'commentbtn' ) && ( $id == $photo ) );
-	$comment_allowed = ( !wppa_switch( 'wppa_comment_login' ) || is_user_logged_in() );
-	if ( wppa_switch( 'wppa_show_comments' ) && $comment_request && $comment_allowed ) {
+	$comment_allowed = ( !wppa_switch( 'comment_login' ) || is_user_logged_in() );
+	if ( wppa_switch( 'show_comments' ) && $comment_request && $comment_allowed ) {
 		wppa_do_comment( $id );
 	}
 
 	// Find rating
-	if ( wppa_switch( 'wppa_rating_on' ) && ! $wppa['is_slideonly'] && ! $wppa['is_filmonly'] ) {
+	if ( wppa_switch( 'rating_on' ) && ! $wppa['is_slideonly'] && ! $wppa['is_filmonly'] ) {
 		
 		// Find my ( avg ) rating
 		$rats = $wpdb->get_results( $wpdb->prepare( 'SELECT `value` FROM `'.WPPA_RATING.'` WHERE `photo` = %s AND `user` = %s AND `status` = %s', $id, $user, 'publish' ), ARRAY_A ); 
@@ -1347,7 +1347,7 @@ static $user;
 				$n++;
 			}
 			$myrat = $accu / $n;
-			$i = wppa_opt( 'wppa_rating_prec' );
+			$i = wppa_opt( 'rating_prec' );
 			$j = $i + '1';
 			$myrat = sprintf( '%'.$j.'.'.$i.'f', $myrat );
 		}
@@ -1368,10 +1368,10 @@ static $user;
 	}
 	
 	// Find comments
-	$comment = ( wppa_switch( 'wppa_show_comments' ) && ! $wppa['is_filmonly'] && ! $wppa['is_slideonly'] ) ? wppa_comment_html( $id, $comment_allowed ) : '';
+	$comment = ( wppa_switch( 'show_comments' ) && ! $wppa['is_filmonly'] && ! $wppa['is_slideonly'] ) ? wppa_comment_html( $id, $comment_allowed ) : '';
 	
 	// Get the callback url.
-	if ( wppa_switch( 'wppa_rating_on' ) ) {
+	if ( wppa_switch( 'rating_on' ) ) {
 		$url = wppa_get_slide_callback_url( $callbackid );
 		$url = str_replace( '&amp;', '&', $url );	// js use
 	}
@@ -1401,7 +1401,7 @@ static $user;
 	}
 	
 	// Find image url
-	if ( wppa_switch( 'wppa_fotomoto_on' ) ) {
+	if ( wppa_switch( 'fotomoto_on' ) ) {
 		$photourl = wppa_get_hires_url( $id );
 	}
 	elseif ( wppa_use_thumb_file( $id, $style_a['width'], $style_a['height'] ) ) {
@@ -1410,17 +1410,21 @@ static $user;
 	else {
 		$photourl = wppa_get_photo_url( $id, '', $style_a['width'], $style_a['height'] );
 	}
+	
+	if ( wppa_has_audio( $id ) ) {
+		$photourl = wppa_fix_poster_ext( $photourl, $id );
+	}
 
 	// Find iptc data
-	$iptc = ( wppa_switch( 'wppa_show_iptc' ) && ! $wppa['is_slideonly'] && ! $wppa['is_filmonly'] ) ? wppa_iptc_html( $id ) : '';
+	$iptc = ( wppa_switch( 'show_iptc' ) && ! $wppa['is_slideonly'] && ! $wppa['is_filmonly'] ) ? wppa_iptc_html( $id ) : '';
 	
 	// Find EXIF data
-	$exif = ( wppa_switch( 'wppa_show_exif' ) && ! $wppa['is_slideonly'] && ! $wppa['is_filmonly'] ) ? wppa_exif_html( $id ) : '';
+	$exif = ( wppa_switch( 'show_exif' ) && ! $wppa['is_slideonly'] && ! $wppa['is_filmonly'] ) ? wppa_exif_html( $id ) : '';
 	
 	// Lightbox subtitle
 	$doit = false;
-	if ( wppa_opt( 'wppa_slideshow_linktype' ) == 'lightbox' || wppa_opt( 'wppa_slideshow_linktype' ) == 'lightboxsingle' ) $doit = true;	// For fullsize
-	if ( wppa_switch( 'wppa_filmstrip' ) && wppa_opt( 'wppa_film_linktype' ) == 'lightbox' ) {	// For filmstrip?
+	if ( wppa_opt( 'slideshow_linktype' ) == 'lightbox' || wppa_opt( 'slideshow_linktype' ) == 'lightboxsingle' ) $doit = true;	// For fullsize
+	if ( wppa_switch( 'filmstrip' ) && wppa_opt( 'film_linktype' ) == 'lightbox' ) {	// For filmstrip?
 		if ( ! $wppa['is_slideonly'] ) $doit = true;		// Film below fullsize
 		if ( $wppa['film_on'] ) $doit = true;				// Film explicitly on ( slideonlyf )		
 	}
@@ -1437,7 +1441,7 @@ static $user;
 	else {
 		$name = esc_js( wppa_get_photo_name( $id ) );
 		if ( ! $name ) $name = '&nbsp;';
-		$fullname = wppa_get_photo_name( $id, wppa_switch( 'wppa_show_full_owner' ), true, true, wppa_switch('wppa_show_full_name') );
+		$fullname = wppa_get_photo_name( $id, wppa_switch( 'show_full_owner' ), true, true, wppa_switch('wppa_show_full_name') );
 		if ( ! $fullname ) $fullname = '&nbsp;';
 	}
 	
@@ -1452,11 +1456,27 @@ static $user;
 	}
 	
 	// Make photo desc, filtered
+	$desc = '';
 	if ( ( ! $wppa['is_slideonly'] || $wppa['desc_on'] ) && ! $wppa['is_filmonly'] ) {
-		$desc = wppa_get_photo_desc( $id, wppa_switch( 'wppa_allow_foreign_shortcodes' ), 'do_geo' );	// Foreign shortcodes is handled here
+
+/*	
+		if ( wppa_opt( 'slideshow_linktype' ) != 'lightbox'  && 
+			 wppa_opt( 'slideshow_linktype' ) != 'lightboxsingle'  && 
+			 wppa_has_audio( $id ) ) {
+			 
+			$desc .= wppa_get_audio_html( array ( 
+												'id' 	=> $id,
+												'style' => 'width:'.( wppa_get_container_width() - wppa_get_box_delta() - 6 ).'px;float:left;',
+												'tagid' => 'audio-slide-'.$wppa['mocc']
+												)
+										);
+		}
+*/
+		
+		$desc .= wppa_get_photo_desc( $id, wppa_switch( 'allow_foreign_shortcodes' ), 'do_geo' );	// Foreign shortcodes is handled here
 		
 		// Run wpautop on description?
-		if ( wppa_switch( 'wppa_run_wpautop_on_desc' ) ) {
+		if ( wppa_switch( 'run_wpautop_on_desc' ) ) {
 			$desc = wpautop( $desc );	
 		}
 
@@ -1464,14 +1484,11 @@ static $user;
 		$desc = wppa_html( esc_js( stripslashes( $desc ) ) );
 
 		// Remove extra space created by other filters like wpautop
-		if ( wppa_switch( 'wppa_allow_foreign_shortcodes' ) && wppa_switch( 'wppa_clean_pbr' ) ) {
+		if ( wppa_switch( 'allow_foreign_shortcodes' ) && wppa_switch( 'clean_pbr' ) ) {
 			$desc = str_replace( array( "<p>", "</p>", "<br>", "<br/>", "<br />" ), " ", $desc );
 		}
 
 		if ( ! $desc ) $desc = '&nbsp;';
-	}
-	else {
-		$desc = '';
 	}
 	
 	// Edit photo link
@@ -1479,7 +1496,7 @@ static $user;
 	$dellink = '';
 	if ( ! $wppa['is_filmonly'] && ! $wppa['is_slideonly'] ) {
 		if ( ! wppa_is_user_blacklisted() ) {
-			if ( ( wppa_user_is( 'administrator' ) ) || ( wppa_get_user() == wppa_get_photo_owner( $id ) && wppa_switch( 'wppa_upload_edit' ) ) ) {
+			if ( ( wppa_user_is( 'administrator' ) ) || ( wppa_get_user() == wppa_get_photo_owner( $id ) && wppa_switch( 'upload_edit' ) ) ) {
 				$editlink = '
 					<div style="float:right; margin-right:6px;" >
 						<a href="javascript:void();" style="color:green;" onclick="_wppaStop( '.$wppa['mocc'].' );wppaEditPhoto( '.$wppa['mocc'].', '.$thumb['id'].' ); return false;" >
@@ -1505,7 +1522,7 @@ static $user;
 	$sharehtml = ( $wppa['is_filmonly'] || $wppa['is_slideonly'] ) ? '' : wppa_get_share_html( $id );
 	
 	// Og Description
-	$ogdsc = ( wppa_switch( 'wppa_facebook_comments' ) && ! $wppa['in_widget'] ) ? strip_shortcodes( wppa_strip_tags( wppa_html( wppa_get_photo_desc( $id ) ), 'all' ) ) : '';
+	$ogdsc = ( wppa_switch( 'facebook_comments' ) && ! $wppa['in_widget'] ) ? strip_shortcodes( wppa_strip_tags( wppa_html( wppa_get_photo_desc( $id ) ), 'all' ) ) : '';
 	$ogdsc = esc_js( $ogdsc );
 
 	// Hires url
@@ -1513,6 +1530,9 @@ static $user;
 	
 	// Video html
 	$videohtml = wppa_get_video_body( $id );
+	
+	// Audio html
+	$audiohtml = wppa_get_audio_body( $id );
 
 	// Produce final result
     $result = "'".$wppa['mocc']."','";
@@ -1543,7 +1563,8 @@ static $user;
 //	if ( $wppa['debug'] ) $result .= '/* ogdesc: */';
 	$result .= $ogdsc."','";
 	$result .= $hiresurl."','";
-	$result .= $videohtml."'";
+	$result .= $videohtml."','";
+	$result .= $audiohtml."'";
 	
 	// This is an ingenious line of code that is going to prevent us from very much trouble. 
 	// Created by OpaJaap on Jan 15 2012, 14:36 local time. Thanx.
@@ -1570,7 +1591,7 @@ global $wppa_done;
 	if ( ! $user ) die( 'Illegal attempt to enter a comment 1' );
 	$email = wppa_get_post( 'comemail' );
 	if ( ! $email ) {
-		if ( wppa_switch( 'wppa_comment_email_required' ) ) die( 'Illegal attempt to enter a comment 2' );
+		if ( wppa_switch( 'comment_email_required' ) ) die( 'Illegal attempt to enter a comment 2' );
 		else $email = wppa_get_user();	// If email not present and not required, use his IP
 	}
 	
@@ -1582,7 +1603,7 @@ global $wppa_done;
 	$save_comment = str_replace( "\n", '<br />', $comment );	// Resque newline chars
 	$save_comment = stripslashes( $save_comment );
 	
-	$policy = wppa_opt( 'wppa_comment_moderation' );
+	$policy = wppa_opt( 'comment_moderation' );
 	switch ( $policy ) {
 		case 'all':
 			$status = 'pending';
@@ -1601,7 +1622,7 @@ global $wppa_done;
 	if ( ! wppa_is_int( $cedit ) ) wp_die( 'Security check falure 14' );
 
 	// Check captcha
-	if ( wppa_switch( 'wppa_comment_captcha' ) ) {
+	if ( wppa_switch( 'comment_captcha' ) ) {
 		$captkey = $id;
 		if ( $cedit ) $captkey = $wpdb->get_var( $wpdb->prepare( 'SELECT `timestamp` FROM `'.WPPA_COMMENTS.'` WHERE `id` = %s', $cedit ) ); 
 		wppa_dbg_q( 'Q43' );
@@ -1634,11 +1655,11 @@ global $wppa_done;
 		if ( $iret !== false ) {
 			if ( $status != 'spam' ) {
 				if ( $cedit ) {
-					if ( wppa_switch( 'wppa_comment_notify_added' ) ) echo( '<script id="cme" type="text/javascript">alert( "'.__a( 'Comment edited' ).'" );jQuery( "#cme" ).html( "" );</script>' );
+					if ( wppa_switch( 'comment_notify_added' ) ) echo( '<script id="cme" type="text/javascript">alert( "'.__a( 'Comment edited' ).'" );jQuery( "#cme" ).html( "" );</script>' );
 				}
 				else {
 					// SUCCESSFUL COMMENT, ADD POINTS
-					wppa_add_credit_points( wppa_opt( 'wppa_cp_points_comment' ), __a( 'Photo comment' ), $id );
+					wppa_add_credit_points( wppa_opt( 'cp_points_comment' ), __a( 'Photo comment' ), $id );
 
 					// SEND EMAILS
 					// Initialize
@@ -1661,10 +1682,10 @@ global $wppa_done;
 					$cont3a	   = '<a href="'.get_admin_url().'admin.php?page=wppa_edit_photo&photo='.$id.'" >'.__a( 'Edit photo' ).'</a>';
 					
 					// Process various types of emails
-					if ( is_numeric( wppa_opt( 'wppa_comment_notify' ) ) ) {
+					if ( is_numeric( wppa_opt( 'comment_notify' ) ) ) {
 					
 						// Mail specific user
-						$moduser 	= get_userdata( wppa_opt( 'wppa_comment_notify' ) );
+						$moduser 	= get_userdata( wppa_opt( 'comment_notify' ) );
 						$to      	= $moduser->user_email;
 						if ( user_can( $moduser, 'wppa_comments' ) ) $cont['3'] = $cont2; else $cont['3'] = '';
 						if ( user_can( $moduser, 'wppa_admin' ) ) 	 $cont['4'] = $cont3; else $cont['4'] = '';
@@ -1673,7 +1694,7 @@ global $wppa_done;
 						wppa_send_mail( $to, $subj, $cont, $photo, $email, $returnurl );
 						$sentto[] = $moduser->login_name;
 					}
-					if ( wppa_opt( 'wppa_comment_notify' ) == 'admin' || wppa_opt( 'wppa_comment_notify' ) == 'both' || wppa_opt( 'wppa_comment_notify' ) == 'upadmin' ) {
+					if ( wppa_opt( 'comment_notify' ) == 'admin' || wppa_opt( 'comment_notify' ) == 'both' || wppa_opt( 'comment_notify' ) == 'upadmin' ) {
 						// Mail admin
 						$moduser   = get_user_by( 'id', '1' );
 						if ( ! in_array( $moduser->login_name, $sentto ) ) {	// Already sent him?
@@ -1686,7 +1707,7 @@ global $wppa_done;
 							$sentto[] = $moduser->login_name;
 						}
 					}
-					if ( wppa_opt( 'wppa_comment_notify' ) == 'upload' || wppa_opt( 'wppa_comment_notify' ) == 'upadmin' || wppa_opt( 'wppa_comment_notify' ) == 'upowner' ) {
+					if ( wppa_opt( 'comment_notify' ) == 'upload' || wppa_opt( 'comment_notify' ) == 'upadmin' || wppa_opt( 'comment_notify' ) == 'upowner' ) {
 						// Mail uploader
 						$uploader = $wpdb->get_var( $wpdb->prepare( "SELECT `owner` FROM `".WPPA_PHOTOS."` WHERE `id` = %d", $id ) );
 						$moduser = get_user_by( 'login', $uploader );
@@ -1695,10 +1716,10 @@ global $wppa_done;
 								$to = $moduser->user_email;
 								$cont['3'] = user_can( $moduser, 'wppa_comments' ) ? $cont2 : '';
 								if ( user_can( $moduser, 'wppa_admin' ) ) $cont['4'] = $cont3;
-								elseif ( wppa_switch( 'wppa_upload_edit' ) ) $cont['4'] = $cont3a;
+								elseif ( wppa_switch( 'upload_edit' ) ) $cont['4'] = $cont3a;
 								else $cont['4'] = '';
 								$cont['5'] = __a( 'You receive this email as uploader of the photo' );
-								if ( ! wppa_switch( 'wppa_mail_upl_email' ) ) {
+								if ( ! wppa_switch( 'mail_upl_email' ) ) {
 									$email = 'void';
 								}
 								// Send!
@@ -1707,7 +1728,7 @@ global $wppa_done;
 							}
 						}
 					}
-					if ( wppa_opt( 'wppa_comment_notify' ) == 'owner' || wppa_opt( 'wppa_comment_notify' ) == 'both' || wppa_opt( 'wppa_comment_notify' ) == 'upowner' ) {
+					if ( wppa_opt( 'comment_notify' ) == 'owner' || wppa_opt( 'comment_notify' ) == 'both' || wppa_opt( 'comment_notify' ) == 'upowner' ) {
 						// Mail album owner
 						$alb     = $wpdb->get_var( $wpdb->prepare( "SELECT `album` FROM `".WPPA_PHOTOS."` WHERE `id` = %d", $id ) );
 						$owner   = $wpdb->get_var( $wpdb->prepare( "SELECT `owner` FROM `".WPPA_ALBUMS."` WHERE `id` = %d", $alb ) );
@@ -1723,7 +1744,7 @@ global $wppa_done;
 							$sentto[] = $moduser->login_name;
 						}
 					}
-					if ( wppa_switch( 'wppa_com_notify_previous' ) ) { 
+					if ( wppa_switch( 'com_notify_previous' ) ) { 
 						// Mail users already commented on this photo
 						$cmnts 	= $wpdb->get_results( $wpdb->prepare( "SELECT * FROM `".WPPA_COMMENTS."` WHERE `photo` = %d", $photo ), ARRAY_A );
 						if ( $cmnts ) foreach( $cmnts as $cmnt ) {
@@ -1753,13 +1774,13 @@ global $wppa_done;
 */	
 
 					// Process any pending votes of this user for this photo if rating needs comment, do it anyway, feature may have been on but now off
-	//				if ( wppa_switch( 'wppa_vote_needs_comment' ) ) {
+	//				if ( wppa_switch( 'vote_needs_comment' ) ) {
 						$iret = $wpdb->query( $wpdb->prepare( "UPDATE `".WPPA_RATING."` SET `status` = 'publish' WHERE `photo` = %s AND `user` = %s", $id, wppa_get_user() ) );
 						if ( $iret ) wppa_rate_photo( $id );	// Recalc ratings for this photo
 	//				}
 					
 					// Notyfy user
-					if ( wppa_switch( 'wppa_comment_notify_added' ) ) wppa_alert( __a( 'Comment added' ) );
+					if ( wppa_switch( 'comment_notify_added' ) ) wppa_alert( __a( 'Comment added' ) );
 				}
 			}
 			else {
@@ -1822,34 +1843,34 @@ global $wpdb;
 	$result = '';
 	$perc = '';
 	if ( $type == 'thumb' || $type=='film' ) {
-		if ( wppa_switch( 'wppa_use_thumb_opacity' ) || wppa_switch( 'wppa_use_thumb_popup' ) ) {
+		if ( wppa_switch( 'use_thumb_opacity' ) || wppa_switch( 'use_thumb_popup' ) ) {
 			
-			if ( wppa_switch( 'wppa_use_thumb_opacity' ) ) {
-				$perc = wppa_opt( 'wppa_thumb_opacity' );
+			if ( wppa_switch( 'use_thumb_opacity' ) ) {
+				$perc = wppa_opt( 'thumb_opacity' );
 				$result = ' onmouseout="jQuery( this ).fadeTo( 400, ' . $perc/100 . ' )" onmouseover="jQuery( this ).fadeTo( 400, 1.0 );';
 			} else {
 				$result = ' onmouseover="';
 			}
 
-			if ( $type == 'film' && wppa_switch( 'wppa_film_hover_goto' ) ) {
+			if ( $type == 'film' && wppa_switch( 'film_hover_goto' ) ) {
 				$result .= 'wppaGotoFilmNoMove( '.$wppa['mocc'].', '.$idx.' );';
 			}
 
-			if ( ! $no_popup && wppa_switch( 'wppa_use_thumb_popup' ) ) {
-				if ( wppa_opt( 'wppa_thumb_linktype' ) != 'lightbox' ) {
+			if ( ! $no_popup && wppa_switch( 'use_thumb_popup' ) ) {
+				if ( wppa_opt( 'thumb_linktype' ) != 'lightbox' ) {
 				
-					$name = ( wppa_switch( 'wppa_popup_text_name' ) || wppa_switch( 'wppa_popup_text_owner' ) ) ? wppa_get_photo_name( $id, wppa_switch( 'wppa_popup_text_owner' ), false, false, wppa_switch( 'wppa_popup_text_name' ) ) : '';
+					$name = ( wppa_switch( 'popup_text_name' ) || wppa_switch( 'popup_text_owner' ) ) ? wppa_get_photo_name( $id, wppa_switch( 'popup_text_owner' ), false, false, wppa_switch( 'popup_text_name' ) ) : '';
 					$name = esc_js( $name );
 				
-					$desc = wppa_switch( 'wppa_popup_text_desc' ) ? wppa_get_photo_desc( $id ) : '';
-					if ( wppa_switch( 'wppa_popup_text_desc_strip' ) ) $desc = wppa_strip_tags( $desc );
+					$desc = wppa_switch( 'popup_text_desc' ) ? wppa_get_photo_desc( $id ) : '';
+					if ( wppa_switch( 'popup_text_desc_strip' ) ) $desc = wppa_strip_tags( $desc );
 					$desc = esc_js( $desc );
 
-					$rating = wppa_switch( 'wppa_popup_text_rating' ) ? wppa_get_rating_by_id( $id ) : '';
-					if ( $rating && wppa_switch( 'wppa_show_rating_count' ) ) $rating .= ' ( '.wppa_get_rating_count_by_id( $id ).' )';
+					$rating = wppa_switch( 'popup_text_rating' ) ? wppa_get_rating_by_id( $id ) : '';
+					if ( $rating && wppa_switch( 'show_rating_count' ) ) $rating .= ' ( '.wppa_get_rating_count_by_id( $id ).' )';
 					$rating = esc_js( $rating );
 					
-					if ( wppa_switch( 'wppa_popup_text_ncomments' ) ) $ncom = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM `".WPPA_COMMENTS."` WHERE `photo` = %s AND `status` = 'approved'", $id ) );
+					if ( wppa_switch( 'popup_text_ncomments' ) ) $ncom = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM `".WPPA_COMMENTS."` WHERE `photo` = %s AND `status` = 'approved'", $id ) );
 					else $ncom = '0';
 					if ( $ncom ) {
 						if ( $ncom == '1' ) $ncom = __a( '1 Comment' ); 
@@ -1872,11 +1893,11 @@ global $wpdb;
 					*/
 					
 					if ( $x > $y ) {
-						$w = wppa_opt( 'wppa_popupsize' );
+						$w = wppa_opt( 'popupsize' );
 						$h = round( $w * $y / $x );
 					}
 					else {
-						$h = wppa_opt( 'wppa_popupsize' );
+						$h = wppa_opt( 'popupsize' );
 						$w = round( $h * $x / $y );
 					}
 					
@@ -1888,7 +1909,7 @@ global $wpdb;
 												'width' 		=> $w,
 												'height' 		=> $h
 											 );
-						if ( wppa_opt( 'wppa_thumb_linktype' ) == 'fullpopup' ) {
+						if ( wppa_opt( 'thumb_linktype' ) == 'fullpopup' ) {
 							$video_args['events'] = 'onclick="alert( \''.esc_attr( __a( 'A video can not be printed or downloaded' ) ).'\' );"';
 						}
 						$videohtml = wppa_get_video_html( $video_args );
@@ -1926,8 +1947,8 @@ global $wpdb;
 		}
 	}
 	elseif ( $type == 'cover' ) {
-		if ( wppa_switch( 'wppa_use_cover_opacity' ) ) {
-			$perc = wppa_opt( 'wppa_cover_opacity' );
+		if ( wppa_switch( 'use_cover_opacity' ) ) {
+			$perc = wppa_opt( 'cover_opacity' );
 			$result = ' onmouseover="jQuery( this ).fadeTo( 400, 1.0 )" onmouseout="jQuery( this ).fadeTo( 400, ' . $perc/100 . ' )" ';
 		}
 	}		
@@ -1950,8 +1971,8 @@ global $wppa;
 
 function wppa_get_pagesize( $type = '' ) {
 
-	if ( $type == 'albums' ) return wppa_opt( 'wppa_album_page_size' );
-	if ( $type == 'thumbs' ) return wppa_opt( 'wppa_thumb_page_size' );
+	if ( $type == 'albums' ) return wppa_opt( 'album_page_size' );
+	if ( $type == 'thumbs' ) return wppa_opt( 'thumb_page_size' );
 	return '0';
 }
 
@@ -2003,8 +2024,8 @@ function wppa_and_stristr( $string, $branch ) {
 function wppa_get_slide_frame_style() {
 global $wppa;
 	
-	$fs = wppa_opt( 'wppa_fullsize' );
-	$cs = wppa_opt( 'wppa_colwidth' );
+	$fs = wppa_opt( 'fullsize' );
+	$cs = wppa_opt( 'colwidth' );
 	if ( $cs == 'auto' ) {
 		$cs = $fs;
 		$wppa['auto_colwidth'] = true;
@@ -2012,7 +2033,7 @@ global $wppa;
 	$result = '';
 	$gfs = ( is_numeric( $wppa['fullsize'] ) && $wppa['fullsize'] > '1' ) ? $wppa['fullsize'] : $fs;
 	
-	$gfh = floor( $gfs * wppa_opt( 'wppa_maxheight' ) / wppa_opt( 'wppa_fullsize' ) );
+	$gfh = floor( $gfs * wppa_opt( 'maxheight' ) / wppa_opt( 'fullsize' ) );
 	
 	if ( $wppa['in_widget'] == 'ss' && $wppa['in_widget_frame_height'] > '0' ) $gfh = $wppa['in_widget_frame_height'];
 	
@@ -2034,7 +2055,7 @@ $wppa['slideframeheight'] = $gfh;
 		elseif ( $wppa['ss_widget_valign'] != '' && $wppa['ss_widget_valign'] != 'fit' ) {
 			$result .= ' height: ' . $gfh . 'px;'; 
 		}
-		elseif ( wppa_opt( 'wppa_fullvalign' ) == 'default' ) {
+		elseif ( wppa_opt( 'fullvalign' ) == 'default' ) {
 			$result .= 'min-height: ' . $gfh . 'px;'; 
 		}
 		else {
@@ -2043,7 +2064,7 @@ $wppa['slideframeheight'] = $gfh;
 		$result .= 'width: ' . $gfs . 'px;';
 	}
 	
-	$hor = wppa_opt( 'wppa_fullhalign' );
+	$hor = wppa_opt( 'fullhalign' );
 	if ( $gfs == $fs ) {
 		if ( $fs != $cs ) {
 			switch ( $hor ) {
@@ -2060,8 +2081,8 @@ $wppa['slideframeheight'] = $gfh;
 		}
 	}
 	// Margin bottom
-	if ( wppa_opt( 'wppa_box_spacing' ) ) {
-		$result .= 'margin-bottom: ' . wppa_opt( 'wppa_box_spacing' ) . 'px;';
+	if ( wppa_opt( 'box_spacing' ) ) {
+		$result .= 'margin-bottom: ' . wppa_opt( 'box_spacing' ) . 'px;';
 	}
 
 	return $result;
@@ -2082,21 +2103,21 @@ global $wppaerrmsgxxx;
 	$result = array( 'style'=> '', 'width' => '', 'height' => '' );
 	
 	// Comten alt display?
-	$com_alt = $wppa['is_comten'] && wppa_switch( 'wppa_comten_alt_display' ) && ! $wppa['in_widget'] && ! $film;
+	$com_alt = $wppa['is_comten'] && wppa_switch( 'comten_alt_display' ) && ! $wppa['in_widget'] && ! $film;
 
 	$alt = ! $film && is_array( $album ) && $album['alt_thumbsize'] == 'yes' ? '_alt' : '';
 
-	$tfw = wppa_opt( 'wppa_tf_width'.$alt );
-	$tfh = wppa_opt( 'wppa_tf_height'.$alt );
-	if ( $film == 'film' ) $tfh = wppa_opt( 'wppa_thumbsize'.$alt );
-	$mgl = wppa_opt( 'wppa_tn_margin' );
+	$tfw = wppa_opt( 'tf_width'.$alt );
+	$tfh = wppa_opt( 'tf_height'.$alt );
+	if ( $film == 'film' ) $tfh = wppa_opt( 'thumbsize'.$alt );
+	$mgl = wppa_opt( 'tn_margin' );
 	if ( $film == 'film' && $wppa['in_widget'] ) {
 		$tfw /= 2;
 		$tfh /= 2;
 		$mgl /= 2;
 	}
 	$mgl2 = floor( $mgl / '2' );
-	if ( $film == '' && wppa_switch( 'wppa_thumb_auto' ) ) {
+	if ( $film == '' && wppa_switch( 'thumb_auto' ) ) {
 		$area = wppa_get_box_width() + $tfw;	// Area for n+1 thumbs
 		$n_1 = floor( $area / ( $tfw + $mgl ) );
 		if ( $n_1 == '0' ) {
@@ -2108,7 +2129,7 @@ global $wppaerrmsgxxx;
 	}
 	if ( is_numeric( $tfw ) && is_numeric( $tfh ) ) {
 		$result['style'] = 'width: '.$tfw.'px; height: '.$tfh.'px; margin-left: '.$mgl.'px; margin-top: '.$mgl2.'px; margin-bottom: '.$mgl2.'px;';
-		if ( $glue && wppa_switch( 'wppa_film_show_glue' ) && wppa_switch( 'wppa_slide_wrap' ) ) {
+		if ( $glue && wppa_switch( 'film_show_glue' ) && wppa_switch( 'slide_wrap' ) ) {
 			$result['style'] .= 'padding-right:'.$mgl.'px; border-right: 2px dotted gray;';
 		}
 		$result['width'] = $tfw;
@@ -2120,7 +2141,7 @@ global $wppaerrmsgxxx;
 	if ( $com_alt ) {
 		$w = wppa_get_container_width();
 		if ( $w <= 1.0 ) {
-			$w = $w * wppa_opt( 'wppa_initial_colwidth' );
+			$w = $w * wppa_opt( 'initial_colwidth' );
 		}
 		$result['style'] = 'width: '.$w.'px; margin-left: 4px; margin-top: 2px; margin-bottom: 2px;';
 	}
@@ -2134,15 +2155,15 @@ global $wppa;
 		$result = $wppa['fullsize'];
 	}
 	else {
-		$result = wppa_opt( 'wppa_colwidth' );
+		$result = wppa_opt( 'colwidth' );
 		if ( $result == 'auto' ) {
-			$result = wppa_opt( 'wppa_initial_colwidth' ); //'640';
+			$result = wppa_opt( 'initial_colwidth' ); //'640';
 			$wppa['auto_colwidth'] = true;
 		}
 	}
 	if ( $netto ) {
 	$result -= 12; // 2*padding
-	$result -= 2 * wppa_opt( 'wppa_bwidth' );
+	$result -= 2 * wppa_opt( 'bwidth' );
 	}
 	return $result;
 }
@@ -2155,8 +2176,8 @@ function wppa_get_thumbnail_area_width() {
 
 function wppa_get_thumbnail_area_delta() {
 
-//	$result = 7 + 2 * wppa_opt( 'wppa_bwidth' );	// 7 = .thumbnail_area padding-left
-		$result = 12 + 2 * wppa_opt( 'wppa_bwidth' );	// experimental
+//	$result = 7 + 2 * wppa_opt( 'bwidth' );	// 7 = .thumbnail_area padding-left
+		$result = 12 + 2 * wppa_opt( 'bwidth' );	// experimental
 	return $result;
 }
 
@@ -2168,7 +2189,7 @@ global $wppa;
 	// See if there is space for a margin
 	$marg = false;
 	if ( is_numeric( $wppa['fullsize'] ) ) {
-		$cw = wppa_opt( 'wppa_colwidth' );
+		$cw = wppa_opt( 'colwidth' );
 		if ( is_numeric( $cw ) ) {
 			if ( $cw > ( $wppa['fullsize'] + 10 ) ) {
 				$marg = '10px;';
@@ -2255,11 +2276,11 @@ global $blog_id;
 			if ( $wppa['shortcode_content'] ) {
 				$wppa['out'] .= '<!-- ' . $wppa['shortcode_content'] . ' -->';
 			}
-			$wppa['out'] .= wppa_nltab( '+' ).'<div id="wppa-container-'.$wppa['mocc'].'" style="'.wppa_get_container_style().'" class="wppa-container wppa-container-'.$wppa['mocc'].' wppa-rev-'.$wppa['revno'].' wppa-prevrev-'.wppa_opt( 'wppa_prevrev' ).' wppa-theme-'.$wppa_version.' wppa-api-'.$wppa['api_version'].'" >';
+			$wppa['out'] .= wppa_nltab( '+' ).'<div id="wppa-container-'.$wppa['mocc'].'" style="'.wppa_get_container_style().'" class="wppa-container wppa-container-'.$wppa['mocc'].' wppa-rev-'.$wppa['revno'].' wppa-prevrev-'.wppa_opt( 'prevrev' ).' wppa-theme-'.$wppa_version.' wppa-api-'.$wppa['api_version'].'" >';
 		}
 
 		// Spinner for Ajax
-		if ( wppa_switch( 'wppa_allow_ajax' ) ) {
+		if ( wppa_switch( 'allow_ajax' ) ) {
 			if ( ! $wppa['in_widget'] ) {
 				$wppa['out'] .= wppa_nltab( '+' ).'<div class="wppa-container-'.$wppa['mocc'].'" style="text-align:center; width:'.wppa_get_container_width().'px;" ><img id="wppa-ajax-spin-'.$wppa['mocc'].'" src="'.wppa_get_imgdir().'loader.gif" alt="spinner" style="box-shadow:none; z-index:1010; position:absolute; margin-top: 200px; margin-left:-32px; display:none;"></div>';
 			}
@@ -2277,7 +2298,7 @@ global $blog_id;
 		}
 		
 		/* Check if wppa.js and jQuery are present */
-		if ( ! $wppa_err_displayed && ( WPPA_DEBUG || wppa_get_get( 'debug' ) || WP_DEBUG ) && ! wppa_switch( 'wppa_defer_javascript' ) ) {
+		if ( ! $wppa_err_displayed && ( WPPA_DEBUG || wppa_get_get( 'debug' ) || WP_DEBUG ) && ! wppa_switch( 'defer_javascript' ) ) {
 			$wppa['out'] .= '<script type="text/javascript">/* <![CDATA[ */';
 				$wppa['out'] .= "if ( typeof( _wppaSlides ) == 'undefined' ) alert( 'There is a problem with your theme. The file wppa.js is not loaded when it is expected ( Errloc = wppa_container ).' );";
 				$wppa['out'] .= "if ( typeof( jQuery ) == 'undefined' ) alert( 'There is a problem with your theme. The jQuery library is not loaded when it is expected ( Errloc = wppa_container ).' );";
@@ -2286,7 +2307,7 @@ global $blog_id;
 		} 
 		
 		/* Check if init is properly done */
-		if ( ! wppa_opt( 'wppa_fullsize' ) ) {
+		if ( ! wppa_opt( 'fullsize' ) ) {
 			$wppa['out'] .= '<script type="text/javascript">/* <![CDATA[ */';
 				$wppa['out'] .= "alert( 'The initialisation of wppa+ is not complete yet. You will probably see division by zero errors. Please run Photo Albums -> Settings admin page Table VIII-A1. ( Errloc = wppa_container ).' );";
 			$wppa['out'] .= "/* ]]> */</script>";
@@ -2326,13 +2347,13 @@ global $blog_id;
 		// Javascript occurrence dependant stuff
 		wppa_add_js_page_data( wppa_nltab().'<script type="text/javascript">' );
 			// $wppa['auto_colwidth'] is set by the filter or by wppa_albums in case called directly
-			// wppa_opt( 'wppa_colwidth' ) is the option setting
+			// wppa_opt( 'colwidth' ) is the option setting
 			// script or call has precedence over option setting
 			// so: if set by script or call: auto, else if set by option: auto
 			$auto = false;
 			$contw = wppa_get_container_width();
 			if ( $wppa['auto_colwidth'] ) $auto = true;
-			elseif ( wppa_opt( 'wppa_colwidth' ) == 'auto' ) $auto = true;
+			elseif ( wppa_opt( 'colwidth' ) == 'auto' ) $auto = true;
 			elseif ( $contw > 0 && $contw <= 1.0 ) $auto = true;
 			
 			if ( $auto ) {
@@ -2350,8 +2371,8 @@ global $blog_id;
 				wppa_add_js_page_data( wppa_nltab().'wppaColWidth['.$wppa['mocc'].'] = '.wppa_get_container_width().';' );
 			}
 			wppa_add_js_page_data( wppa_nltab().'wppaTopMoc = '.$wppa['mocc'].';' );
-			if ( wppa_opt( 'wppa_thumbtype' ) == 'masonry-v' ) {
-				wppa_add_js_page_data( wppa_nltab().'wppaMasonryCols['.$wppa['mocc'].'] = '.ceil( wppa_get_container_width() / wppa_opt( 'wppa_thumbsize' ) ).';' );
+			if ( wppa_opt( 'thumbtype' ) == 'masonry-v' ) {
+				wppa_add_js_page_data( wppa_nltab().'wppaMasonryCols['.$wppa['mocc'].'] = '.ceil( wppa_get_container_width() / wppa_opt( 'thumbsize' ) ).';' );
 			} else {
 				wppa_add_js_page_data( wppa_nltab().'wppaMasonryCols['.$wppa['mocc'].'] = 0;' );
 			}
@@ -2362,32 +2383,32 @@ global $blog_id;
 				$fls = $wppa['in_widget_frame_width'];
 			}
 			else {
-				$asp = wppa_opt( 'wppa_maxheight' ) / wppa_opt( 'wppa_fullsize' );
-				$fls = wppa_opt( 'wppa_fullsize' );
+				$asp = wppa_opt( 'maxheight' ) / wppa_opt( 'fullsize' );
+				$fls = wppa_opt( 'fullsize' );
 			}
 			wppa_add_js_page_data( wppa_nltab().'wppaAspectRatio['.$wppa['mocc'].'] = '.$asp.';' );
 			wppa_add_js_page_data( wppa_nltab().'wppaFullSize['.$wppa['mocc'].'] = '.$fls.';' );
 
 			// last minute change: fullvalign with border needs a height correction in slideframe
-			if ( wppa_opt( 'wppa_fullimage_border_width' ) != '' && ! $wppa['in_widget'] ) {
-				$delta = ( 1 + wppa_opt( 'wppa_fullimage_border_width' ) ) * 2;
+			if ( wppa_opt( 'fullimage_border_width' ) != '' && ! $wppa['in_widget'] ) {
+				$delta = ( 1 + wppa_opt( 'fullimage_border_width' ) ) * 2;
 			} else $delta = 0;
 			wppa_add_js_page_data( wppa_nltab().'wppaFullFrameDelta['.$wppa['mocc'].'] = '.$delta.';' );
 
 			// last minute change: script %%size != default colwidth
-			$temp = wppa_get_container_width() - ( 2*6 + 2*36 + 2*wppa_opt( 'wppa_bwidth' ) );
-			if ( $wppa['in_widget'] ) $temp = wppa_get_container_width() - ( 2*6 + 2*18 + 2*wppa_opt( 'wppa_bwidth' ) );
+			$temp = wppa_get_container_width() - ( 2*6 + 2*36 + 2*wppa_opt( 'bwidth' ) );
+			if ( $wppa['in_widget'] ) $temp = wppa_get_container_width() - ( 2*6 + 2*18 + 2*wppa_opt( 'bwidth' ) );
 			wppa_add_js_page_data( wppa_nltab().'wppaFilmStripLength['.$wppa['mocc'].'] = '.$temp.';' );
 
 			// last minute change: filmstrip sizes and related stuff. In widget: half size.		
-			$temp = wppa_opt( 'wppa_tf_width' ) + wppa_opt( 'wppa_tn_margin' );
+			$temp = wppa_opt( 'tf_width' ) + wppa_opt( 'tn_margin' );
 			if ( $wppa['in_widget'] ) $temp /= 2;
 			wppa_add_js_page_data( wppa_nltab().'wppaThumbnailPitch['.$wppa['mocc'].'] = '.$temp.';' );
-			$temp = wppa_opt( 'wppa_tn_margin' ) / 2;
+			$temp = wppa_opt( 'tn_margin' ) / 2;
 			if ( $wppa['in_widget'] ) $temp /= 2;
 			wppa_add_js_page_data( wppa_nltab().'wppaFilmStripMargin['.$wppa['mocc'].'] = '.$temp.';' );
-			$temp = 2*6 + 2*42 + 2*wppa_opt( 'wppa_bwidth' );
-			if ( $wppa['in_widget'] ) $temp = 2*6 + 2*21 + 2*wppa_opt( 'wppa_bwidth' );
+			$temp = 2*6 + 2*42 + 2*wppa_opt( 'bwidth' );
+			if ( $wppa['in_widget'] ) $temp = 2*6 + 2*21 + 2*wppa_opt( 'bwidth' );
 			wppa_add_js_page_data( wppa_nltab().'wppaFilmStripAreaDelta['.$wppa['mocc'].'] = '.$temp.';' );
 			if ( $wppa['in_widget'] ) {
 				wppa_add_js_page_data( wppa_nltab().'wppaIsMini['.$wppa['mocc'].'] = true;' );
@@ -2397,8 +2418,8 @@ global $blog_id;
 			}
 			
 			$target = false;
-			if ( $wppa['in_widget'] == 'ss' && wppa_switch( 'wppa_sswidget_blank' ) ) $target = true;
-			if ( !$wppa['in_widget'] && wppa_switch( 'wppa_slideshow_blank' ) ) $target = true;
+			if ( $wppa['in_widget'] == 'ss' && wppa_switch( 'sswidget_blank' ) ) $target = true;
+			if ( !$wppa['in_widget'] && wppa_switch( 'slideshow_blank' ) ) $target = true;
 			if ( $target ) {
 				wppa_add_js_page_data( wppa_nltab().'wppaSlideBlank['.$wppa['mocc'].'] = true;' );
 			}
@@ -2411,21 +2432,21 @@ global $blog_id;
 			// If this occur is a slideshow, determine if its link is to lightbox. This may differ between normal slideshow or ss widget
 			$is_slphoto = $wppa['is_slide'] && $wppa['start_photo'] && $wppa['is_single'];
 			if ( 'ss' == $wppa['in_widget'] || wppa_page( 'slide' ) || $is_slphoto ) {
-				$ss_linktype = ( 'ss' == $wppa['in_widget'] ) ? wppa_opt( 'wppa_slideonly_widget_linktype' ) : wppa_opt( 'wppa_slideshow_linktype' );
+				$ss_linktype = ( 'ss' == $wppa['in_widget'] ) ? wppa_opt( 'slideonly_widget_linktype' ) : wppa_opt( 'slideshow_linktype' );
 				switch ( $ss_linktype ) {
 					case 'file':
 						$lbkey = 'file'; // gives anchor tag with rel="file"
 						break;
 					case 'lightbox':
 					case 'lightboxsingle':
-						$lbkey = wppa_opt( 'wppa_lightbox_name' ); // gives anchor tag with rel="lightbox" or the like
+						$lbkey = wppa_opt( 'lightbox_name' ); // gives anchor tag with rel="lightbox" or the like
 						break;
 					default:
 						$lbkey = ''; // results in omitting the anchor tag
 						break;
 				}
 				wppa_add_js_page_data( wppa_nltab().'wppaLightBox['.$wppa['mocc'].'] = "'.$lbkey.'";wppaConsoleLog("mocc:'.$wppa['mocc'].' lbkey:"+wppaLightBox['.$wppa['mocc'].'] );' );
-				wppa_add_js_page_data( wppa_nltab().'wppaLightboxSingle['.$wppa['mocc'].'] = '.( wppa_opt( 'wppa_slideshow_linktype' ) == 'lightboxsingle' ? 'true': 'false' ).';' );
+				wppa_add_js_page_data( wppa_nltab().'wppaLightboxSingle['.$wppa['mocc'].'] = '.( wppa_opt( 'slideshow_linktype' ) == 'lightboxsingle' ? 'true': 'false' ).';' );
 			}
 		wppa_add_js_page_data( wppa_nltab().'</script>' );
 		
@@ -2518,7 +2539,7 @@ global $wppa;
 		if ( $wppa['is_cover'] == '1' ) {		// Cover has no thumbs: 0 pages
 			$result = '0';
 		} 
-		elseif ( $arraycount <= wppa_opt( 'wppa_min_thumbs' ) 
+		elseif ( $arraycount <= wppa_opt( 'min_thumbs' ) 
 					&& ! $wppa['src'] 
 					&& ! $wppa['is_tag'] 
 					&& ! $wppa['is_related']
@@ -2547,7 +2568,7 @@ global $wppa;
 	if ( $wppa['is_tag'] ) return '0';
 	if ( $wppa['is_upldr'] ) return '0';
 
-	return wppa_opt( 'wppa_min_thumbs' );
+	return wppa_opt( 'min_thumbs' );
 }
 
 function wppa_popup() {
@@ -2579,7 +2600,7 @@ global $thumb;
 	elseif ( $type == 'slideshow' ) {
 	
 		// Find slideshow start method
-		switch ( wppa_opt( 'wppa_start_slide' ) ) {
+		switch ( wppa_opt( 'start_slide' ) ) {
 			case 'run':
 				$startindex = -1;
 				break;
@@ -2612,7 +2633,7 @@ global $thumb;
 			wppa_add_js_page_data( wppa_nltab( '+' ).'<script type="text/javascript">' );
 				
 				foreach ( $thumbs as $thumb ) {
-					if ( wppa_switch( 'wppa_next_on_callback' ) ) {
+					if ( wppa_switch( 'next_on_callback' ) ) {
 					//	$wppa['out'] .=
 						wppa_add_js_page_data( wppa_nltab().'wppaStoreSlideInfo( ' . wppa_get_slide_info( $index, $thumb['id'], $thumb['next_id'] ) . ' );' );
 					}
@@ -2633,7 +2654,7 @@ global $thumb;
 		
 			// How to start if slideonly
 			if ( $wppa['is_slideonly'] ) {
-				if ( wppa_switch( 'wppa_start_slideonly' ) ) $startindex = -1;	// There are no navigations, so start running, overrule everything
+				if ( wppa_switch( 'start_slideonly' ) ) $startindex = -1;	// There are no navigations, so start running, overrule everything
 				else $startindex = 0;
 			}
 			
@@ -2643,11 +2664,11 @@ global $thumb;
 				wppa_add_js_page_data( wppa_nltab().'wppaFullValign['.$wppa['mocc'].'] = "'.$ali.'";' );
 			}
 			else {
-				wppa_add_js_page_data( wppa_nltab().'wppaFullValign['.$wppa['mocc'].'] = "'.wppa_opt( 'wppa_fullvalign' ).'";' );
+				wppa_add_js_page_data( wppa_nltab().'wppaFullValign['.$wppa['mocc'].'] = "'.wppa_opt( 'fullvalign' ).'";' );
 			}
 			
 			// Horizontal align
-			wppa_add_js_page_data( wppa_nltab().'wppaFullHalign['.$wppa['mocc'].'] = "'.wppa_opt( 'wppa_fullhalign' ).'";' );
+			wppa_add_js_page_data( wppa_nltab().'wppaFullHalign['.$wppa['mocc'].'] = "'.wppa_opt( 'fullhalign' ).'";' );
 			
 			// Portrait only ?
 			if ( $wppa['portrait_only'] ) {
@@ -2656,7 +2677,7 @@ global $thumb;
 			
 			// Start command with appropriate $startindex: -2 = at norate, -1 run from first, >=0 still at index
 			// If we use lightbox on slideshow, wait for documen.ready, if we do not use lightbox, go immediately.
-			if ( wppa_opt( 'wppa_slideshow_linktype' ) == 'lightbox' || wppa_opt( 'wppa_slideshow_linktype' ) == 'lightboxsingle' || wppa_opt( 'wppa_film_linktype' ) == 'lightbox' ) {
+			if ( wppa_opt( 'slideshow_linktype' ) == 'lightbox' || wppa_opt( 'slideshow_linktype' ) == 'lightboxsingle' || wppa_opt( 'film_linktype' ) == 'lightbox' ) {
 				wppa_add_js_page_data( wppa_nltab().'jQuery( document ).ready( function() { wppaStartStop( '.$wppa['mocc'].', '.$startindex.' ); } );' );
 			}
 			else {
@@ -2681,9 +2702,9 @@ global $wppa;
 
 function wppa_get_preambule() {
 
-	if ( ! wppa_switch( 'wppa_slide_wrap' ) ) return '0';
-	$result = is_numeric( wppa_opt( 'wppa_colwidth' ) ) ? wppa_opt( 'wppa_colwidth' ) : wppa_opt( 'wppa_fullsize' );
-	$result = ceil( ceil( $result / wppa_opt( 'wppa_thumbsize' ) ) / 2 );
+	if ( ! wppa_switch( 'slide_wrap' ) ) return '0';
+	$result = is_numeric( wppa_opt( 'colwidth' ) ) ? wppa_opt( 'colwidth' ) : wppa_opt( 'fullsize' );
+	$result = ceil( ceil( $result / wppa_opt( 'thumbsize' ) ) / 2 );
 	return $result;
 }
 
@@ -2712,7 +2733,7 @@ function wppa_get_cover_width( $type ) {
 	
 	$result = floor( ( $conwidth - ( 8 * ( $cols - 1 ) ) ) / $cols );
 
-	$result -= ( 2 * ( 6 + wppa_opt( 'wppa_bwidth' ) ) );	// 2 * ( padding + border )
+	$result -= ( 2 * ( 6 + wppa_opt( 'bwidth' ) ) );	// 2 * ( padding + border )
 	return $result;
 }
 
@@ -2727,7 +2748,7 @@ global $wppa;
 			$width = wppa_get_cover_width( $type );
 			$width -= 13;	// margin
 			$width -= 2; 	// border
-			$width -= wppa_opt( 'wppa_smallsize' );
+			$width -= wppa_opt( 'smallsize' );
 			
 			if ( $photo_left ) {
 				$result = 'style="width:'.$width.'px; float:right;"';
@@ -2743,13 +2764,13 @@ global $wppa;
 				case 'left':
 					$width -= 13;	// margin
 					$width -= 2; 	// border
-					$width -= wppa_opt( 'wppa_smallsize' );
+					$width -= wppa_opt( 'smallsize' );
 					$result = 'style="width:'.$width.'px; float:right;'.__wcs( 'wppa-cover-text-frame' ).'"';
 					break;
 				case 'right':
 					$width -= 13;	// margin
 					$width -= 2; 	// border
-					$width -= wppa_opt( 'wppa_smallsize' );
+					$width -= wppa_opt( 'smallsize' );
 					$result = 'style="width:'.$width.'px; float:left;'.__wcs( 'wppa-cover-text-frame' ).'"';
 					break;
 				case 'top':
@@ -2771,8 +2792,8 @@ global $wppa;
 
 function wppa_get_textframe_delta() {
 
-	$delta = wppa_opt( 'wppa_smallsize' );
-	$delta += ( 2 * ( 7 + wppa_opt( 'wppa_bwidth' ) + 4 ) + 5 + 2 );	// 2 * ( padding + border + photopadding ) + margin
+	$delta = wppa_opt( 'smallsize' );
+	$delta += ( 2 * ( 7 + wppa_opt( 'bwidth' ) + 4 ) + 5 + 2 );	// 2 * ( padding + border + photopadding ) + margin
 	return $delta;
 }
 
@@ -2798,7 +2819,7 @@ global $wppa;
 
 	$conwidth = wppa_get_container_width();
 	
-	$cols = ceil( $conwidth / wppa_opt( 'wppa_max_cover_width' ) );
+	$cols = ceil( $conwidth / wppa_opt( 'max_cover_width' ) );
 	
 	// Exceptions
 	if ( $wppa['auto_colwidth'] ) $cols = '1';
@@ -2811,7 +2832,7 @@ function wppa_get_box_width() {
 
 	$result = wppa_get_container_width();
 	$result -= 12;	// 2 * padding
-	$result -= 2 * wppa_opt( 'wppa_bwidth' );
+	$result -= 2 * wppa_opt( 'bwidth' );
 	return $result;
 }
 
@@ -2858,12 +2879,16 @@ global $wppa;
 function wppa_mphoto() {
 global $wppa;
 
+	$id 		= $wppa['single_photo'];
 	$width 		= wppa_get_container_width();
-	$height 	= floor( $width / wppa_get_ratio( $wppa['single_photo'] ) );
-	$usethumb	= wppa_use_thumb_file( $wppa['single_photo'], $width, $height );
-	$src 		= $usethumb ? wppa_get_thumb_url( $wppa['single_photo'], '', $width, $height ) : wppa_get_photo_url( $wppa['single_photo'], '', $width, $height );
+	$height 	= floor( $width / wppa_get_ratio( $id ) );
+	$usethumb	= wppa_use_thumb_file( $id, $width, $height );
+	$src 		= $usethumb ? wppa_get_thumb_url( $id, '', $width, $height ) : wppa_get_photo_url( $id, '', $width, $height );
+	if ( wppa_has_audio( $id ) ) {
+		$src = wppa_fix_poster_ext( $src, $id );
+	}
 	
-	if ( ! $wppa['in_widget'] ) wppa_bump_viewcount( 'photo', $wppa['single_photo'] );
+	if ( ! $wppa['in_widget'] ) wppa_bump_viewcount( 'photo', $id );
 
 	$autocol = $wppa['auto_colwidth'] || ( $width > 0 && $width <= 1.0 );
 	
@@ -2871,10 +2896,10 @@ global $wppa;
 	// or initial column width * fraction
 	if ( $autocol ) {
 		if ( $width == 'auto' ) {
-			$contwidth = wppa_opt( 'wppa_initial_colwidth' );
+			$contwidth = wppa_opt( 'initial_colwidth' );
 		}
 		else {
-			$contwidth = wppa_opt( 'wppa_initial_colwidth' ) * $width;
+			$contwidth = wppa_opt( 'initial_colwidth' ) * $width;
 		}
 	}
 	else {
@@ -2885,7 +2910,7 @@ global $wppa;
 	$captwidth = $contwidth + '10';
 	$wppa['out'] .= '<div id="wppa-container-'.$wppa['mocc'].'" class="wppa-mphoto-'.$wppa['mocc'].' wp-caption';
 		if ( $wppa['align'] != '' ) $wppa['out'] .= ' align'.$wppa['align'];
-	$wppa['out'] .='" style="width: '.$captwidth.'px">';
+	$wppa['out'] .='" style="width: '.$captwidth.'px; position:relative;">';
 
 		// The script for responsive
 		wppa_add_js_page_data( wppa_nltab().'<script type="text/javascript">' );
@@ -2903,29 +2928,40 @@ global $wppa;
 		wppa_add_js_page_data( wppa_nltab().'</script>' );
 		
 		// The link
-		$link = wppa_get_imglnk_a( 'mphoto', $wppa['single_photo'] );
+		$link = wppa_get_imglnk_a( 'mphoto', $id );
 		if ( $link ) {
 			if ( $link['is_lightbox'] ) {
-				$lbtitle = wppa_get_lbtitle( 'mphoto', $wppa['single_photo'] );
-				$wppa['out'] .= wppa_nltab( '+' ).'<a href="'.$link['url'].'" title="'.$lbtitle.'" data-videohtml="'.esc_attr( wppa_get_video_body( $wppa['single_photo'] ) ).'" data-videonatwidth="'.wppa_get_videox( $wppa['single_photo'] ).'" data-videonatheight="'.wppa_get_videoy( $wppa['single_photo'] ).'" rel="'.wppa_opt( 'wppa_lightbox_name' ).'[single]" target="'.$link['target'].'" class="thumb-img" id="a-'.$wppa['single_photo'].'-'.$wppa['mocc'].'">';
+				$lbtitle = wppa_get_lbtitle( 'mphoto', $id );
+				$wppa['out'] .= "\n".'<a href="'.$link['url'].'"' .
+									' title="'.$lbtitle.'"' .
+									' data-videohtml="'.esc_attr( wppa_get_video_body( $id ) ).'"' .
+									' data-audiohtml="'.esc_attr( wppa_get_audio_body( $id ) ).'"' .
+									' data-videonatwidth="'.wppa_get_videox( $id ).'"' .
+									' data-videonatheight="'.wppa_get_videoy( $id ).'"' .
+									' rel="'.wppa_opt( 'lightbox_name' ).'[single]"' .
+									' target="'.$link['target'].'"' .
+									' class="thumb-img"' .
+									' id="a-'.$id.'-'.$wppa['mocc'].'">';
 			}
 			else {
-				$wppa['out'] .= wppa_nltab( '+' ).'<a href="'.$link['url'].'" title="'.$link['title'].'" target="'.$link['target'].'" class="thumb-img" id="a-'.$wppa['single_photo'].'-'.$wppa['mocc'].'">';
+				$wppa['out'] .= wppa_nltab( '+' ).'<a href="'.$link['url'].'" title="'.$link['title'].'" target="'.$link['target'].'" class="thumb-img" id="a-'.$id.'-'.$wppa['mocc'].'">';
 			}
 		}
 		
 		// The image
-		$title = $link ? $link['title'] : esc_attr( stripslashes( wppa_get_photo_name( $wppa['single_photo'] ) ) );
+		$title = $link ? $link['title'] : esc_attr( stripslashes( wppa_get_photo_name( $id ) ) );
 		if ( $link['is_lightbox'] ) {
-			$style = ' cursor:url( '.wppa_get_imgdir().wppa_opt( 'wppa_magnifier' ).' ),pointer;';
-			$title = wppa_zoom_in( $wppa['single_photo'] );
+			$style = ' cursor:url( '.wppa_get_imgdir().wppa_opt( 'magnifier' ).' ),pointer;';
+			$title = wppa_zoom_in( $id );
 		}
 		else {
 			$style = '';
 		}
-		if ( wppa_is_video( $wppa['single_photo'] ) ) {
+		$style .= 'box-sizing:content-box;';
+		
+		if ( wppa_is_video( $id ) ) {
 			if ( $autocol ) {
-				$wppa['out'] .= wppa_nltab().wppa_get_video_html( array( 	'id' 			=> $wppa['single_photo'], 
+				$wppa['out'] .= wppa_nltab().wppa_get_video_html( array( 	'id' 			=> $id, 
 																			'controls' 		=> ! $link['is_lightbox'],
 																			'style' 		=> $style,
 																			'class' 		=> 'size-medium wppa-mphoto wppa-mimg-'.$wppa['mocc']
@@ -2933,7 +2969,7 @@ global $wppa;
 															 );
 			}
 			else {
-				$wppa['out'] .= wppa_nltab().wppa_get_video_html( array( 	'id' 			=> $wppa['single_photo'], 
+				$wppa['out'] .= wppa_nltab().wppa_get_video_html( array( 	'id' 			=> $id, 
 																			'width' 		=> $width,
 																			'height' 		=> $height,
 																			'controls' 		=> ! $link['is_lightbox'],
@@ -2944,18 +2980,35 @@ global $wppa;
 			}
 		}
 		else {
-			$wppa['out'] .= wppa_nltab().'<img src="'.$src.'" '.wppa_get_imgalt($wppa['single_photo']).' style="'.$style.'" class="size-medium wppa-mphoto wppa-mimg-'.$wppa['mocc'].'" title="'.$title.'" width="'.$width.'" height="'.$height.'" />';
+			$wppa['out'] .= wppa_nltab().'<img src="'.$src.'" '.wppa_get_imgalt($id).' style="'.$style.'" class="size-medium wppa-mphoto wppa-mimg-'.$wppa['mocc'].'" title="'.$title.'" width="'.$width.'" height="'.$height.'" />';
 		}
 		if ( $link ) {
 			$wppa['out'] .= wppa_nltab( '-' ).'</a>';
 		}
+
+		// Add audio?				mphoto
+		if ( wppa_has_audio( $id ) ) {
+			$wppa['out'] .= '<div style="position:relative;z-index:11;" >';
+//			$is_safari 	= strpos( $_SERVER["HTTP_USER_AGENT"], 'Safari' );
+//			$cont_h 	= $is_safari ? 16 : 28;
+//			$audiotop 	= - $cont_h;
+
+			$wppa['out'] .= wppa_get_audio_html( array(	
+														'id' 		=> $id,
+														'cursor' 	=> 'cursor:pointer;',
+														'style' 	=> $style.'position:relative;padding-top:0;padding-bottom:0;background-color:transparent;border:none;margin:0;width:98%;',//padding:0;margin:0;width:100%;',//padding-top:0;padding-bottom:0;margin-top:0;margin-bottom:0;width:98.5%;',
+														'class' 	=> 'size-medium wp-caption wppa-mphoto_ wppa-mimg-'.$wppa['mocc']
+														)
+												);
+			$wppa['out'] .= '</div>';
+		}
 		
 		// The subtitle
-		$wppa['out'] .= '<p class="wp-caption-text">'.wppa_get_photo_desc( $wppa['single_photo'] ).'</p>';
+		$wppa['out'] .= '<p class="wp-caption-text">'.wppa_get_photo_desc( $id ).'</p>';
 		
 		// The share buttons
-		if ( wppa_switch( 'wppa_share_on_mphoto' ) ) {
-			$wppa['out'] .= wppa_get_share_html( $wppa['single_photo'], 'mphoto', false );
+		if ( wppa_switch( 'share_on_mphoto' ) ) {
+			$wppa['out'] .= wppa_get_share_html( $id, 'mphoto', false );
 		}
 
 		// Add diagnostic <p> if debug is 1
@@ -2968,12 +3021,18 @@ global $wppa;
 function wppa_sphoto() {
 global $wppa;
 
+	$id 		= $wppa['single_photo'];
 	$width 		= wppa_get_container_width();
-	$height 	= floor( $width / wppa_get_ratio( $wppa['single_photo'] ) );
-	$usethumb	= wppa_use_thumb_file( $wppa['single_photo'], $width, $height );
-	$src 		= $usethumb ? wppa_get_thumb_url( $wppa['single_photo'], '', $width, $height ) : wppa_get_photo_url( $wppa['single_photo'], '', $width, $height );
+	$height 	= floor( $width / wppa_get_ratio( $id ) );
+	$usethumb	= wppa_use_thumb_file( $id, $width, $height );
+	$src 		= $usethumb ? wppa_get_thumb_url( $id, '', $width, $height ) : wppa_get_photo_url( $id, '', $width, $height );
+	if ( wppa_has_audio( $id ) ) {
+		$src = wppa_fix_poster_ext( $src, $id );
+	}
+	
 
-	if ( ! $wppa['in_widget'] ) wppa_bump_viewcount( 'photo', $wppa['single_photo'] );
+
+	if ( ! $wppa['in_widget'] ) wppa_bump_viewcount( 'photo', $id );
 
 	$autocol = $wppa['auto_colwidth'] || ( $width > 0 && $width <= 1.0 );
 
@@ -2981,10 +3040,10 @@ global $wppa;
 	// or initial column width * fraction
 	if ( $autocol ) {
 		if ( $width == 'auto' ) {
-			$contwidth = wppa_opt( 'wppa_initial_colwidth' );
+			$contwidth = wppa_opt( 'initial_colwidth' );
 		}
 		else {
-			$contwidth = wppa_opt( 'wppa_initial_colwidth' ) * $width;
+			$contwidth = wppa_opt( 'initial_colwidth' ) * $width;
 		}
 	}
 	else {
@@ -2995,7 +3054,7 @@ global $wppa;
 	$wppa['out'] .= '<div id="wppa-container-'.$wppa['mocc'].'" class="';
 		if ( $wppa['align'] != '' ) $wppa['out'] .= ' align'.$wppa['align'];
 		$wppa['out'] .= ' wppa-sphoto-'.$wppa['mocc'];
-	$wppa['out'] .='" style="width: '.$contwidth.'px">';
+	$wppa['out'] .='" style="width: '.$contwidth.'px; position:relative;">';
 
 		// The script for responsive
 		wppa_add_js_page_data( wppa_nltab().'<script type="text/javascript">' );
@@ -3012,35 +3071,68 @@ global $wppa;
 		wppa_add_js_page_data( wppa_nltab().'wppaTopMoc = '.$wppa['mocc'].';' );
 		wppa_add_js_page_data( wppa_nltab().'</script>' );
 
+		$wppa['portrait_only'] = true;
+		$fis 	= wppa_get_fullimgstyle_a( $id );
+		$width	= $fis['width'];
+		$height	= $fis['height'];
+		$style	= $fis['style'];
+		$style  .= 'box-sizing:content-box;vertical-align:middle;';
+
+/*		// Add audio?			sphoto
+		if ( wppa_has_audio( $id ) ) {
+			$wppa['out'] .= '<div style="position:relative;z-index:11;" >';
+			$is_safari 	= strpos( $_SERVER["HTTP_USER_AGENT"], 'Safari' );
+			$cont_h 	= $is_safari ? 16 : 28;
+			$audiotop 	= $height - $cont_h;
+			$wppa['out'] .= wppa_get_audio_html( array(	
+														'id' 		=> $id,
+														'width' 	=> $width,
+														'cursor' 	=> 'cursor:pointer;',
+														'style' 	=> $style.'position:absolute;top:'.$audiotop.'px;left:0;height:'.$cont_h.'px;',//padding-top:0;padding-bottom:0;margin-top:0;margin-bottom:0;width:98.5%;',
+														'class' 	=> 'size-medium wppa-sphoto wppa-simg-'.$wppa['mocc']
+/*														'id' 		=> $id,
+														'cursor' 	=> 'cursor:pointer;',
+														'style' 	=> $style.'height:auto;',
+														'class' 	=> 'size-medium wppa-sphoto wppa-simg-'.$wppa['mocc']
+*
+														)
+												);
+			$wppa['out'] .= '</div>';
+		}
+*/
 		// The link
-		$link = wppa_get_imglnk_a( 'sphoto', $wppa['single_photo'] );
+		$link = wppa_get_imglnk_a( 'sphoto', $id );
 		if ( $link ) {
 			if ( $link['is_lightbox'] ) {
-				$lbtitle = wppa_get_lbtitle( 'sphoto', $wppa['single_photo'] );
-				$wppa['out'] .= wppa_nltab( '+' ).'<a href="'.$link['url'].'" title="'.$lbtitle.'" data-videohtml="'.esc_attr( wppa_get_video_body( $wppa['single_photo'] ) ).'" data-videonatwidth="'.wppa_get_videox( $wppa['single_photo'] ).'" data-videonatheight="'.wppa_get_videoy( $wppa['single_photo'] ).'" rel="'.wppa_opt( 'wppa_lightbox_name' ).'[single]" target="'.$link['target'].'" class="thumb-img" id="a-'.$wppa['single_photo'].'-'.$wppa['mocc'].'" >';
+				$lbtitle = wppa_get_lbtitle( 'sphoto', $id );
+				$wppa['out'] .= "\n".'<a href="'.$link['url'].'"' .
+									' title="'.$lbtitle.'"' .
+									' data-videohtml="'.esc_attr( wppa_get_video_body( $id ) ).'"' .
+									' data-audiohtml="'.esc_attr( wppa_get_audio_body( $id ) ).'"' .
+									' data-videonatwidth="'.wppa_get_videox( $id ).'"' .
+									' data-videonatheight="'.wppa_get_videoy( $id ).'"' .
+									' rel="'.wppa_opt( 'lightbox_name' ).'[single]"' .
+									' target="'.$link['target'].'"' .
+									' class="thumb-img"' .
+									' id="a-'.$id.'-'.$wppa['mocc'].'" >';
 			}
 			else {
-				$wppa['out'] .= wppa_nltab( '+' ).'<a href="'.$link['url'].'" title="'.$link['title'].'" target="'.$link['target'].'" class="thumb-img" id="a-'.$wppa['single_photo'].'-'.$wppa['mocc'].'" >';
+				$wppa['out'] .= wppa_nltab( '+' ).'<a href="'.$link['url'].'" title="'.$link['title'].'" target="'.$link['target'].'" class="thumb-img" id="a-'.$id.'-'.$wppa['mocc'].'" >';
 			}
 		}
 		
 		// The image
-		$wppa['portrait_only'] = true;
-		$fis 	= wppa_get_fullimgstyle_a( $wppa['single_photo'] );
-		$width	= $fis['width'];
-		$height	= $fis['height'];
-		$style	= $fis['style'];
 	//	$cursor = $fis['cursor'];
 		
-		$title = $link ? esc_attr( $link['title'] ) : esc_attr( stripslashes( wppa_get_photo_name( $wppa['single_photo'] ) ) );
+		$title = $link ? esc_attr( $link['title'] ) : esc_attr( stripslashes( wppa_get_photo_name( $id ) ) );
 		if ( $link['is_lightbox'] ) {
-			$style .= ' cursor:url( '.wppa_get_imgdir().wppa_opt( 'wppa_magnifier' ).' ),pointer;';
-			$title = wppa_zoom_in( $wppa['single_photo'] );
+			$style .= ' cursor:url( '.wppa_get_imgdir().wppa_opt( 'magnifier' ).' ),pointer;';
+			$title = wppa_zoom_in( $id );
 		}
 		
-		if ( wppa_is_video( $wppa['single_photo'] ) ) {
+		if ( wppa_is_video( $id ) ) {
 			if ( $autocol ) {
-				$wppa['out'] .= wppa_nltab().wppa_get_video_html( array( 	'id' 			=> $wppa['single_photo'], 
+				$wppa['out'] .= wppa_nltab().wppa_get_video_html( array( 	'id' 			=> $id, 
 																			'controls' 		=> ! $link['is_lightbox'],
 																			'style' 		=> $style,
 																			'class' 		=> 'size-medium wppa-sphoto wppa-simg-'.$wppa['mocc']
@@ -3048,7 +3140,8 @@ global $wppa;
 															 );
 			}
 			else {
-				$wppa['out'] .= wppa_nltab().wppa_get_video_html( array( 	'id' 			=> $wppa['single_photo'], 
+				$wppa['out'] .= wppa_nltab().wppa_get_video_html( array( 	
+																			'id' 			=> $id, 
 																			'width' 		=> $width,
 																			'height' 		=> $height,
 																			'controls' 		=> ! $link['is_lightbox'],
@@ -3059,9 +3152,9 @@ global $wppa;
 			}
 		}
 		else {
-			$wppa['out'] .= wppa_nltab().'<img src="'.$src.'" ' . wppa_get_imgalt( $wppa['single_photo'] ) . ' '.
+			$wppa['out'] .= wppa_nltab().'<img src="'.$src.'" ' . wppa_get_imgalt( $id ) . ' '.
 											'class="size-medium wppa-sphoto wppa-simg-'.$wppa['mocc'].'" '.
-											wppa_get_imgalt( $wppa['single_photo'] ).
+											wppa_get_imgalt( $id ).
 											'title="'.$title.'" ';
 											if ( $autocol ) {
 			$wppa['out'] .=						'style="'.$style.'" ';
@@ -3076,6 +3169,29 @@ global $wppa;
 		// The link
 		if ( $link ) {
 			$wppa['out'] .= wppa_nltab( '-' ).'</a>';
+		}
+		
+		// Add audio?			sphoto
+		if ( wppa_has_audio( $id ) ) {
+			$wppa['out'] .= '<div style="position:relative;z-index:11;" >';
+//			$is_safari 	= strpos( $_SERVER["HTTP_USER_AGENT"], 'Safari' );
+//			$cont_h 	= $is_safari ? 16 : 28;
+//			$audiotop 	= - $cont_h;
+			$margl = ( wppa_opt( 'wppa_fullimage_border_width' ) === '' ) ? 0 : wppa_opt( 'wppa_fullimage_border_width' ) + 1;
+			$margb = $margl;//wppa_opt( 'wppa_fullimage_border_width' ) * 2;
+			$wppa['out'] .= wppa_get_audio_html( array(	
+														'id' 		=> $id,
+														'cursor' 	=> 'cursor:pointer;',
+														'style' 	=> $style.'position:absolute;left:'.$margl.'px;bottom:'.$margb.'px;padding:0;margin:0;border:none;height:'.wppa_get_audio_control_height().'px;border-radius:0;',//top:'.$audiotop.'px;left:0;border:none;',//padding-top:0;padding-bottom:0;margin-top:0;margin-bottom:0;width:98.5%;',
+														'class' 	=> 'size-medium wppa-sphoto wppa-simg-'.$wppa['mocc']
+/*														'id' 		=> $id,
+														'cursor' 	=> 'cursor:pointer;',
+														'style' 	=> $style.'height:auto;',
+														'class' 	=> 'size-medium wppa-sphoto wppa-simg-'.$wppa['mocc']
+*/
+														)
+												);
+			$wppa['out'] .= '</div>';
 		}
 	
 		// Add diagnostic <p> if debug is 1
@@ -3151,7 +3267,7 @@ global $thumb;
 
 	$birthtime = $thumb['timestamp'];
 	$timnow = time();
-	$isnew = ( ( $timnow - $birthtime ) < wppa_opt( 'wppa_max_photo_newtime' ) );
+	$isnew = ( ( $timnow - $birthtime ) < wppa_opt( 'max_photo_newtime' ) );
 
 	return $isnew;
 }
@@ -3162,7 +3278,7 @@ global $wpdb;
 	$album = wppa_cache_album( $id );
 	$birthtime = $album['timestamp'];
 	$timnow = time();
-	$isnew = ( ( $timnow - $birthtime ) < wppa_opt( 'wppa_max_album_newtime' ) );
+	$isnew = ( ( $timnow - $birthtime ) < wppa_opt( 'max_album_newtime' ) );
 	
 	if ( $isnew ) return true;
 	
@@ -3278,19 +3394,19 @@ global $wppa;
 	$wppa['user_uploaded'] = true;							// Mark as done
 	
 	// Upload possible?
-	$may_upload = wppa_switch( 'wppa_user_upload_on' );
-	if ( wppa_switch( 'wppa_user_upload_login' ) ) {
+	$may_upload = wppa_switch( 'user_upload_on' );
+	if ( wppa_switch( 'user_upload_login' ) ) {
 		if ( ! is_user_logged_in() ) $may_upload = false;					// Must login
 	}
 	
 	// Create album possible?
-	$may_create = wppa_switch( 'wppa_user_create_on' );
-	if ( wppa_switch( 'wppa_user_create_login' ) ) {
+	$may_create = wppa_switch( 'user_create_on' );
+	if ( wppa_switch( 'user_create_login' ) ) {
 		if ( ! is_user_logged_in() ) $may_create = false;					// Must login
 	}
 	
 	// Edit album possible?
-	$may_edit = wppa_switch( 'wppa_user_album_edit_on' );
+	$may_edit = wppa_switch( 'user_album_edit_on' );
 	
 	// Do create
 	if ( $may_create ) {
@@ -3311,13 +3427,13 @@ global $wppa;
 				return;
 			}
 			$parent = strval( intval( wppa_get_post( 'wppa-album-parent' ) ) );
-			if ( ! wppa_user_is( 'administrator' ) && wppa_switch( 'wppa_default_parent_always' ) ) {
-				$parent = wppa_opt( 'wppa_default_parent' );
+			if ( ! wppa_user_is( 'administrator' ) && wppa_switch( 'default_parent_always' ) ) {
+				$parent = wppa_opt( 'default_parent' );
 			}
 			$album = wppa_create_album_entry( array( 	'name' 			=> $albumname, 
 														'description' 	=> strip_tags( wppa_get_post( 'wppa-album-desc' ) ),
 														'a_parent' 		=> $parent,
-														'owner' 		=> wppa_switch( 'wppa_frontend_album_public' ) ? '--- public ---' : wppa_get_user()
+														'owner' 		=> wppa_switch( 'frontend_album_public' ) ? '--- public ---' : wppa_get_user()
 														 ) );
 			if ( $album ) {
 				wppa_alert( sprintf( __a( 'Album #%s created' ), $album ) );
@@ -3375,7 +3491,7 @@ global $wppa;
 				if ( $done ) {
 				
 					//SUCCESSFUL UPLOAD, ADD POINTS
-					$points = wppa_opt( 'wppa_cp_points_upload' ) * $done;
+					$points = wppa_opt( 'cp_points_upload' ) * $done;
 					$bret = wppa_add_credit_points( $points, __a( 'Photo upload' ) );
 					
 					$alert .= $done == '1' ? __a( 'Photo successfully uploaded.' ) : sprintf( __a( '%s photos successfully uploaded.' ), $done );
@@ -3434,14 +3550,14 @@ global $wpdb;
 		wppa_alert( sprintf( __a( 'Only gif, jpg and png image files are supported. Returned filetype = %d.' ), $imagesize[2] ) );
 		return false;
 	}
-	$ms = wppa_opt( 'wppa_upload_fronend_maxsize' );
+	$ms = wppa_opt( 'upload_fronend_maxsize' );
 	if ( $ms ) {	// Max size configured
 		if ( $imgsize[0] > $ms || $imgsize[0] > $ms ) {
 			wppa_alert( sprintf( __a( 'Uploaded file is larger than the allowed maximum of %d x %d pixels.' ), $ms, $ms ) );
 			return false;
 		}
 	}
-	if ( wppa_switch( 'wppa_void_dups' ) ) {	// Check for already exists
+	if ( wppa_switch( 'void_dups' ) ) {	// Check for already exists
 		if ( wppa_file_is_in_album( wppa_sanitize_file_name( $file['name'] ), $alb ) ) {
 			wppa_alert( sprintf( __a( 'Uploaded file %s already exists in this album.' ), wppa_sanitize_file_name( $file['name'] ) ) );
 			return false;
@@ -3469,7 +3585,7 @@ global $wpdb;
 	$name 		= wppa_sanitize_photo_name( $name );
 	$desc 		= balanceTags( wppa_get_post( 'user-desc' ), true );
 	$linktarget = '_self';
-	$status 	= ( wppa_switch( 'wppa_upload_moderate' ) && ! current_user_can( 'wppa_admin' ) ) ? 'pending' : 'publish';
+	$status 	= ( wppa_switch( 'upload_moderate' ) && ! current_user_can( 'wppa_admin' ) ) ? 'pending' : 'publish';
 	$filename 	= wppa_sanitize_file_name( $file['name'] );
 	$id 		= wppa_create_photo_entry( array( 'album' => $alb, 'ext' => $ext, 'name' => $name, 'description' => $desc, 'status' => $status, 'filename' => $filename, ) );
 	
@@ -3524,7 +3640,7 @@ global $wpdb;
 		wppa_add_watermark( $id );
 		
 		// Also to thumbnail?
-		if ( wppa_switch( 'wppa_watermark_thumbs' ) ) {
+		if ( wppa_switch( 'watermark_thumbs' ) ) {
 			wppa_create_thumbnail( $id );	// create new thumb
 		}
 		
@@ -3532,11 +3648,11 @@ global $wpdb;
 		wppa_check_coverimage( $id );
 
 		// Mail
-		if ( wppa_switch( 'wppa_upload_notify' ) ) {
+		if ( wppa_switch( 'upload_notify' ) ) {
 			$to = get_bloginfo( 'admin_email' );
 			$subj = sprintf( __a( 'New photo uploaded: %s' ), $name );
 			$cont['0'] = sprintf( __a( 'User %s uploaded photo %s into album %s' ), wppa_get_user(), $id, wppa_get_album_name( $alb ) );
-			if ( wppa_switch( 'wppa_upload_moderate' ) && !current_user_can( 'wppa_admin' ) ) {
+			if ( wppa_switch( 'upload_moderate' ) && !current_user_can( 'wppa_admin' ) ) {
 				$cont['1'] = __a( 'This upload requires moderation' );
 				$cont['2'] = '<a href="'.get_admin_url().'admin.php?page=wppa_admin_menu&tab=pmod&photo='.$id.'" >'.__a( 'Moderate manage photo' ).'</a>';
 			}
@@ -3618,7 +3734,7 @@ global $wppa;
 function wppa_use_thumb_file( $id, $width = '0', $height = '0' ) {
 global $wpdb;
 
-	if ( ! wppa_switch( 'wppa_use_thumbs_if_fit' ) ) return false;
+	if ( ! wppa_switch( 'use_thumbs_if_fit' ) ) return false;
 	if ( $width <= 1.0 && $height <= 1.0 ) return false;	// should give at least one dimension and not when fractional
 
 	$file = wppa_get_thumb_path( $id );
@@ -3705,22 +3821,22 @@ global $wppa;
 
 	wppa_cache_thumb( $id );
 
-	$do_download 	= wppa_is_video( $id ) ? false : wppa_switch( 'wppa_art_monkey_on_lightbox' );
-	$do_name 		= wppa_switch( 'wppa_ovl_'.$type.'_name' ) || wppa_switch( 'wppa_ovl_add_owner' );
-	$do_desc 		= wppa_switch( 'wppa_ovl_'.$type.'_desc' );
-	$do_sm 			= wppa_switch( 'wppa_share_on_lightbox' );
+	$do_download 	= wppa_is_video( $id ) ? false : wppa_switch( 'art_monkey_on_lightbox' );
+	$do_name 		= wppa_switch( 'ovl_'.$type.'_name' ) || wppa_switch( 'ovl_add_owner' );
+	$do_desc 		= wppa_switch( 'ovl_'.$type.'_desc' );
+	$do_sm 			= wppa_switch( 'share_on_lightbox' );
 
 	$result = '';
 	if ( $do_download ) {
-		if ( wppa_opt( 'wppa_art_monkey_display' ) == 'button' ) {
-			$result .= '<input type="button" title="Download" style="cursor:pointer; margin-bottom:0px; max-width:500px;" class="wppa-download-button" onclick="wppaAjaxMakeOrigName( '.$wppa['mocc'].', '.$id.' );" value="'.__a('Download:').' '.wppa_get_photo_name( $id, wppa_switch( 'wppa_ovl_add_owner' ), false, false, wppa_switch( 'wppa_ovl_'.$type.'_name' ) ).'" />';
+		if ( wppa_opt( 'art_monkey_display' ) == 'button' ) {
+			$result .= '<input type="button" title="Download" style="cursor:pointer; margin-bottom:0px; max-width:500px;" class="wppa-download-button" onclick="wppaAjaxMakeOrigName( '.$wppa['mocc'].', '.$id.' );" value="'.__a('Download:').' '.wppa_get_photo_name( $id, wppa_switch( 'ovl_add_owner' ), false, false, wppa_switch( 'ovl_'.$type.'_name' ) ).'" />';
 		}
 		else {
-			$result .= '<a title="Download" style="cursor:pointer;" onclick="wppaAjaxMakeOrigName( '.$wppa['mocc'].', '.$id.' );" >'.__a('Download:').' '.wppa_get_photo_name( $id, wppa_switch( 'wppa_ovl_add_owner' ), false, false, wppa_switch( 'wppa_ovl_'.$type.'_name' ) ).'</a>';
+			$result .= '<a title="Download" style="cursor:pointer;" onclick="wppaAjaxMakeOrigName( '.$wppa['mocc'].', '.$id.' );" >'.__a('Download:').' '.wppa_get_photo_name( $id, wppa_switch( 'ovl_add_owner' ), false, false, wppa_switch( 'ovl_'.$type.'_name' ) ).'</a>';
 		}
 	}
 	else {
-		if ( $do_name ) $result .= wppa_get_photo_name( $id, wppa_switch( 'wppa_ovl_add_owner' ), false, false, wppa_switch( 'wppa_ovl_'.$type.'_name' ) ); 
+		if ( $do_name ) $result .= wppa_get_photo_name( $id, wppa_switch( 'ovl_add_owner' ), false, false, wppa_switch( 'ovl_'.$type.'_name' ) ); 
 	}
 	if ( $do_name && $do_desc ) $result .= '<br />';
 	if ( $do_desc ) $result .= wppa_get_photo_desc( $thumb['id'] );
@@ -3735,8 +3851,8 @@ function wppa_zoom_in( $id ) {
 
 	if ( $id === false ) return '';
 	
-	if ( wppa_switch( 'wppa_show_zoomin' ) ) {
-		if ( wppa_opt( 'wppa_magnifier' ) ) {
+	if ( wppa_switch( 'show_zoomin' ) ) {
+		if ( wppa_opt( 'magnifier' ) ) {
 			return __a( 'Zoom in' );
 		}
 		else {

@@ -3,13 +3,12 @@
 * Pachkage: wp-photo-album-plus
 *
 * admin sidebar widget
-* version 5.4.10
+* version 6.1.0
 *
 */
 
 function _wppa_sidebar_page_options() {
-	global $wpdb;
-	global $wppa_opt;
+global $wpdb;
 	
 	$options_error = false;
 	
@@ -58,7 +57,7 @@ function _wppa_sidebar_page_options() {
 							<label ><?php _e('Widget Title:', 'wppa'); ?></label>
 						</th>
 						<td>
-							<input type="text" name="wppa-widgettitle" id="wppa-widgettitle" value="<?php echo $wppa_opt['wppa_widgettitle'] ?>" />
+							<input type="text" name="wppa-widgettitle" id="wppa-widgettitle" value="<?php echo wppa_opt( 'widgettitle' ) ?>" />
 							<span class="description"><br/><?php _e('Enter/modify the title for the widget. This is a default and can be overriden at widget activation.', 'wppa'); ?></span>
 						</td>
 					</tr>	
@@ -68,10 +67,10 @@ function _wppa_sidebar_page_options() {
 							<label ><?php _e('Widget Photo Width:', 'wppa'); ?></label>
 						</th>
 						<td>
-							<input type="text" name="wppa-potd-widget-width" id="wppa-potd-widget-width" value="<?php echo $wppa_opt['wppa_potd_widget_width'] ?>" style="width: 50px;" />
+							<input type="text" name="wppa-potd-widget-width" id="wppa-potd-widget-width" value="<?php echo wppa_opt( 'potd_widget_width' ) ?>" style="width: 50px;" />
 							<?php _e('pixels.', 'wppa'); echo(' '); _e('Horizontal alignment:', 'wppa'); ?>
 							<select name="wppa-potd-align" id="wppa-potd-align">
-								<?php $ali = $wppa_opt['wppa_potd_align'] ?>
+								<?php $ali = wppa_opt( 'potd_align' ) ?>
 								<?php $sel = 'selected="selected"'; ?>
 								<option value="none" <?php if ($ali == 'none') echo($sel) ?>><?php _e('--- none ---', 'wppa') ?></option>
 								<option value="left" <?php if ($ali == 'left') echo($sel) ?>><?php _e('left', 'wppa') ?></option>
@@ -100,9 +99,9 @@ function _wppa_sidebar_page_options() {
 							}
 							/* ]]> */
 							</script>
-							<?php _e('Select:', 'wppa'); ?><select name="wppa-widget-album" id="wppa-wa" onchange="wppaCheckWa()" ><?php echo wppa_walbum_select($wppa_opt['wppa_widget_album']) ?></select>
+							<?php _e('Select:', 'wppa'); ?><select name="wppa-widget-album" id="wppa-wa" onchange="wppaCheckWa()" ><?php echo wppa_walbum_select( wppa_opt( 'widget_album' ) ) ?></select>
 							<img id="wppa-spin" src="<?php echo(wppa_get_imgdir()); ?>wpspin.gif" style="visibility:hidden;"/>
-							<?php _e('Or Edit:', 'wppa'); ?><input type="text" name="wppa-widget-albums" id="wppa-was" value="<?php echo $wppa_opt['wppa_widget_album'] ?>" />
+							<?php _e('Or Edit:', 'wppa'); ?><input type="text" name="wppa-widget-albums" id="wppa-was" value="<?php echo wppa_opt( 'widget_album' ) ?>" />
 							<input class="button-primary" name="wppa-upd" id="wppa-upd" value="<?php _e('Update thumbnails', 'wppa'); ?>" onclick="wppaCheckWa()" />
 							<span class="description"><br/>
 								<?php _e('Select or edit the album(s) you want to use the photos of for the widget.', 'wppa'); ?>
@@ -116,15 +115,15 @@ function _wppa_sidebar_page_options() {
 							<label ><?php _e('Display method:', 'wppa'); ?></label>
 						</th>
 						<td>
-							<?php $sel = 'selected="selected"'; ?>
-							<?php $method = $wppa_opt['wppa_widget_method']; ?>
+							<?php $sel 		= 'selected="selected"'; ?>
+							<?php $method 	= wppa_opt( 'widget_method' ); ?>
 							<select name="wppa-widget-method" id="wppa-wm" onchange="wppaCheckWidgetMethod()" >
 								<option value="1" <?php if ($method == '1') echo($sel); ?>><?php _e('Fixed photo', 'wppa'); ?></option> 
 								<option value="2" <?php if ($method == '2') echo($sel); ?>><?php _e('Random', 'wppa'); ?></option>
 								<option value="3" <?php if ($method == '3') echo($sel); ?>><?php _e('Last upload', 'wppa'); ?></option>
 								<option value="4" <?php if ($method == '4') echo($sel); ?>><?php _e('Change every', 'wppa'); ?></option>
 							</select>
-							<?php $period = $wppa_opt['wppa_widget_period']; ?>
+							<?php $period = wppa_opt( 'widget_period' ); ?>
 							<select name="wppa-widget-period" id="wppa-wp" >
 								<option value="0" <?php if ($period == '0') echo($sel); ?>><?php _e('pageview.', 'wppa'); ?></option>
 								<option value="1" <?php if ($period == '1') echo($sel); ?>><?php _e('hour.', 'wppa'); ?></option>
@@ -138,7 +137,7 @@ function _wppa_sidebar_page_options() {
 						</td>
 					</tr>
 <?php
-					$linktype = $wppa_opt['wppa_widget_linktype'];
+					$linktype = wppa_opt( 'widget_linktype' );
 					if ($linktype != 'custom') { ?>
 						<tr>
 							<th scope="row">
@@ -156,9 +155,9 @@ function _wppa_sidebar_page_options() {
 							</th>
 							<td>
 								<?php _e('Title:', 'wppa') ?>
-								<input type="text" name="wppa-widget-linktitle" id="wppa-widget-linktitle" value="<?php echo $wppa_opt['wppa_widget_linktitle'] ?>"style="width:20%" />
+								<input type="text" name="wppa-widget-linktitle" id="wppa-widget-linktitle" value="<?php echo wppa_opt( 'widget_linktitle' ) ?>"style="width:20%" />
 								<?php _e('Url:', 'wppa') ?>
-								<input type="text"  name="wppa-widget-linkurl" id="wppa-widget-linkurl" value="<?php echo $wppa_opt['wppa_widget_linkurl'] ?>" style="width:50%" />
+								<input type="text"  name="wppa-widget-linkurl" id="wppa-widget-linkurl" value="<?php echo wppa_opt( 'widget_linkurl' ) ?>" style="width:50%" />
 								<span class="description"><br/><?php _e('Enter the title and the url. Do\'nt forget the HTTP://', 'wppa') ?></span>
 							</td>
 						</tr>
@@ -169,7 +168,7 @@ function _wppa_sidebar_page_options() {
 							<label ><?php _e('Subtitle:', 'wppa'); ?></label>
 						</th>
 						<td>
-							<?php $subtit = $wppa_opt['wppa_widget_subtitle']; ?>
+							<?php $subtit = wppa_opt( 'widget_subtitle' ) ?>
 							<select name="wppa-widget-subtitle" id="wppa-st" onchange="wppaCheckWidgetSubtitle()" >
 								<option value="none" <?php if ($subtit == 'none') echo($sel); ?>><?php _e('--- none ---', 'wppa'); ?></option>
 								<option value="name" <?php if ($subtit == 'name') echo($sel); ?>><?php _e('Photo Name', 'wppa'); ?></option>
@@ -184,27 +183,64 @@ function _wppa_sidebar_page_options() {
 			<p>
 				<input type="submit" class="button-primary" name="wppa-set-submit" value="<?php _e('Save Changes', 'wppa'); ?>" />
 			</p>
-			<?php $alb = $wppa_opt['wppa_widget_album'];
-			$photos = wppa_get_widgetphotos($alb);
-			if (empty($photos)) { ?>
-				<p><?php _e('No photos yet in this album.', 'wppa'); ?></p>
-			<?php } 
+			<?php 
+			$alb 	= wppa_opt( 'widget_album' );
+			$photos = wppa_get_widgetphotos( $alb );
+			if ( empty( $photos ) ) {
+				echo '<p>' . __('No photos yet in this album.', 'wppa') . '</p>';
+			} 
 			else {
-				$id = $wppa_opt['wppa_widget_photo'];
-				$wi = wppa_get_minisize() + 24;
-				$hi = $wi + 48;
-				foreach ($photos as $photo) { ?>
-					<div class="photoselect" style="width: <?php echo $wppa_opt['wppa_widget_width'] ?>px; height: <?php echo($hi); ?>px; overflow:hidden; " >
-						<img src="<?php echo wppa_get_thumb_url($photo['id']) ?>" style="width: <?php echo $wppa_opt['wppa_widget_width'] ?>px;" alt="<?php echo($photo['name']); ?>"></img>
-						<input type="radio" name="wppa-widget-photo" id="wppa-widget-photo<?php echo($photo['id']); ?>" value="<?php echo($photo['id']) ?>" <?php if ($photo['id'] == $id) echo('checked="checked"'); ?>/>
+				$curid 	= wppa_opt( 'widget_photo' );
+				$wi 	= wppa_get_minisize() + 24;
+				$hi 	= $wi + 48;
+				
+				// Process photos
+				foreach ( $photos as $photo ) { 
+					$id = $photo['id'];
+					
+					// Open container div
+					echo '<div' .
+								' class="photoselect"' .
+								' style="' .
+									'width:' . wppa_opt( 'widget_width' ) . 'px;' .
+									'height:' . $hi . 'px;' .
+									'overflow:hidden;' .
+								'" >';
+								
+					// The image if a video
+					if ( wppa_is_video( $id ) ) {
+						echo wppa_get_video_html( array( 	'id' 		=> $id,
+															'style' 	=> 'width:' . wppa_opt( 'widget_width' ) . 'px;'
+												));
+					}
+					
+					// The image if a photo
+					else {
+						echo '<img' .
+								' src=" '. wppa_fix_poster_ext( wppa_get_thumb_url( $id ), $id ) . '"' .
+								' style="' .
+									'width:' . wppa_opt( 'widget_width' ) . 'px;' .
+									'"' . 
+								' alt="' . $photo['name'] .'" />';
+								
+						// Audio ?
+						if ( wppa_has_audio( $id ) ) {
+							echo wppa_get_audio_html( array( 	'id' 		=> 	$id,
+																'style' 	=> 	'width:' . wppa_opt( 'widget_width' ) . 'px;' . 
+																				'position:relative;' .
+																				'bottom:' . ( wppa_get_audio_control_height() + 4 ) .'px;'																					
+													));
+						}
+					} ?>
+						<input type="radio" name="wppa-widget-photo" id="wppa-widget-photo<?php echo $id ?>" value="<?php echo $id ?>" <?php if ( $id == $curid ) echo 'checked="checked"'; ?>/>
 						<div class="clear"></div>
 						<h4 style="position: absolute; top:<?php echo( $wi - 12 ); ?>px; font-size:11px; overflow:hidden;"><?php echo wppa_qtrans(stripslashes($photo['name'])) ?></h4>
 						<h6 style="position: absolute; top:<?php echo( $wi + 6); ?>px; font-size:9px; line-height:10px;"><?php echo(wppa_qtrans(stripslashes($photo['description']))); ?></h6>
 						<h5 style="position: absolute; top:<?php echo( $wi + 24); ?>px; font-size:9px; line-height:10px;"><?php echo '(#'.$photo['p_order'].')' ?></h5>
-					</div>
-				<?php } ?>
-				<div class="clear"></div>
-			<?php } ?>
+						</div><?php 
+				}
+				echo '<div class="clear"></div>';
+			} ?>
 			<script type="text/javascript">wppaCheckWidgetMethod();</script>
 			<script type="text/javascript">wppaCheckWidgetSubtitle();</script>
 			<br />

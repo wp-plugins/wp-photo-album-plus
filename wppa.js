@@ -2,7 +2,7 @@
 //
 // conatins slideshow, theme, ajax and lightbox code
 // 
-var wppaJsVersion = '6.0.0';
+var wppaJsVersion = '6.1.0';
 
 // Part 1: Slideshow
 //
@@ -118,6 +118,11 @@ var wppaArtMonkeyButton = true;
 var wppaShortQargs = false;
 var wppaOvlHires = false;
 var wppaMasonryCols = [];
+var wppaVideoPlaying = [];
+var wppaAudioPlaying = [];
+var wppaSlideVideoStart = false;
+var wppaSlideAudioStart = false;
+var wppaAudioHeight = 28;
 
 // 'Internal' variables ( private )
 var _wppaId = [];
@@ -166,10 +171,14 @@ var wppaPhotoView = [];
 var wppaCommentRequiredAfterVote = true;
 var _wppaIsVideo = [];
 var _wppaVideoHtml = [];
+var _wppaAudioHtml = [];
 var _wppaVideoNatWidth = [];
 var	_wppaVideoNatHeight = [];
+//var _wppaWidth = [];
 
 var __wppaOverruleRun = false;
+
+//var wppaFirstAudio = true;
 
 // Init at dom ready
 jQuery( document ).ready(function() {
@@ -232,7 +241,8 @@ function wppaStoreSlideInfo(
 							smhtml, 
 							ogdsc, 
 							hiresurl, 		// The url to the hi res ( source ) image file
-							videohtml 		// The html for the video, or ''
+							videohtml, 		// The html for the video, or ''
+							audiohtml
 							) {
 
 	var cursor;
@@ -276,8 +286,12 @@ function wppaStoreSlideInfo(
 		_wppaHiresUrl[mocc] = [];
 		_wppaIsVideo[mocc] = [];
 		_wppaVideoHtml[mocc] = [];
+		_wppaAudioHtml[mocc] = [];
 		_wppaVideoNatWidth[mocc] = [];
 		_wppaVideoNatHeight[mocc] = [];
+		wppaVideoPlaying[mocc] = false;
+		wppaAudioPlaying[mocc] = false;
+//		_wppaWidth[mocc] = [];
 	}
 	
 	// Cursor
@@ -295,6 +309,9 @@ function wppaStoreSlideInfo(
 	// Fill _wppaSlides[mocc][id]
 	if ( _wppaIsVideo[mocc][id] ) {
 		_wppaSlides[mocc][id] = ' alt="' + wppaTrimAlt( name ) + '" class="theimg theimg-'+mocc+' big" ';
+		if ( wppaSlideVideoStart && wppaLightBox[mocc] == '' ) {
+			_wppaSlides[mocc][id] += ' autoplay ';
+		}
 	}
 	else {
 		_wppaSlides[mocc][id] = ' src="' + url + '" alt="' + wppaTrimAlt( name ) + '" class="theimg theimg-'+mocc+' big" ';
@@ -313,7 +330,21 @@ function wppaStoreSlideInfo(
 		_wppaSlides[mocc][id] += 'style="' + size + '; cursor:'+cursor+'; display:none;" '+controls+'>'+videohtml+'</video>';
 	}
 	else {
-		_wppaSlides[mocc][id] += 'style="' + size + '; cursor:'+cursor+'; display:none;">';
+		_wppaSlides[mocc][id] += 'style="' + size + '; cursor:'+cursor+'; display:none; vertical-align:middle;">';
+/*
+		if ( audiohtml != '' && 'wppa' != wppaLightBox[mocc] ) {
+			_wppaSlides[mocc][id] += '<audio' +
+											' controls' +
+											( wppaSlideAudioStart ? ' autoplay' : '' ) +
+											' class="wppa-audio-'+mocc+'"' +
+											' onplay="wppaAudioPlaying['+mocc+'] = true;"' +
+											' onpause="wppaAudioPlaying['+mocc+'] = false"' +
+											' style="position:relative; top:-'+( wppaAudioHeight + wppaSlideBorderWidth )+'px; z-index:10; width:100%; padding: 0 '+wppaSlideBorderWidth+'px;"' +
+											' >' +
+												audiohtml +
+											'</audio>';
+		}
+*/
 	}
 	
     _wppaFullNames[mocc][id] = fullname;
@@ -347,6 +378,7 @@ function wppaStoreSlideInfo(
 	_wppaShareHtml[mocc][id] = wppaRepairScriptTags( smhtml );
 	_wppaHiresUrl[mocc][id] = hiresurl;
 	_wppaVideoHtml[mocc][id] = videohtml;
+	_wppaAudioHtml[mocc][id] = audiohtml;
 	_wppaVideoNatWidth[mocc][id] = width;
 	_wppaVideoNatHeight[mocc][id] = height;
 }
@@ -372,6 +404,7 @@ function wppaStartStop( mocc, index ) {
 		_wppaTP[mocc] = index;		
 	}
 	else {
+//		wppaFirstAudio = true;
 		if ( _wppaSSRuns[mocc] ) {		
 			// Stop it
 			_wppaStop( mocc );
@@ -502,8 +535,17 @@ function _wppaNextSlide( mocc, mode ) {
 	var fg = _wppaFg[mocc];
 	var bg = 1 - fg;
 
+	// If a video is playing, delay a running slideshow
+	if ( ( wppaVideoPlaying[mocc] || wppaAudioPlaying[mocc] ) && _wppaSSRuns[mocc] ) {
+		setTimeout( '_wppaNextSlide( '+mocc+', \''+mode+'\' )', 500 ); 	// Retry after 500 ms
+		return;
+	}
+	
 	// Stop any playing video
 	wppaStopVideo( mocc );
+	
+	// Stop any playing audio
+	wppaStopAudio();
 	
 	// Paused??
 	if ( 'auto' == mode ) {
@@ -957,8 +999,22 @@ function _wppaNextSlide_5( mocc ) {
 	}
 	
 	_wppaDoAutocol(mocc);
+	
+	wppaStopAudio();
+	
+	if ( wppaSlideAudioStart ) {
+		var elms = jQuery( '.wppa-audio-'+_wppaId[mocc][_wppaCurIdx[mocc]]+'-'+mocc );
+		if ( elms.length > 0 ) {
+			var audio = elms[elms.length-1];
+			if ( audio ) {
+				if ( ! wppaAudioPlaying[mocc] ) {
+					audio.play();
+				}
+			}
+		}
+	}
 }
- 
+
 function wppaMakeNameHtml( mocc ) {
 var result = '';
 
@@ -993,6 +1049,8 @@ var result = '';
 	return wppaRepairBrTags( result );
 }
 
+// var wppaFirstSlideAudio = false;
+
 function wppaMakeTheSlideHtml( mocc, bgfg, idx ) {
 
 	var imgVideo = ( _wppaIsVideo[mocc][idx] != '' ) ? 'video' : 'img';
@@ -1000,6 +1058,7 @@ function wppaMakeTheSlideHtml( mocc, bgfg, idx ) {
 	var url;
 	var theTitle = 'title';
 	if ( wppaLightBox[mocc] == 'wppa') theTitle = 'data-lbtitle';
+	var mmEvents = wppaLightBox[mocc] == '' ? ' onpause="wppaVideoPlaying['+mocc+'] = false;" onplay="wppaVideoPlaying['+mocc+'] = true;"' : '';
 	
 //	if ( _wppaVideoHtml[mocc][idx] != '' ) {
 //		jQuery( "#theslide"+bgfg+"-"+mocc ).html( _wppaVideoHtml[mocc][idx] );
@@ -1008,20 +1067,21 @@ function wppaMakeTheSlideHtml( mocc, bgfg, idx ) {
 
 	if ( _wppaLinkUrl[mocc][idx] != '' ) {	// Link explicitly given
 		if ( wppaSlideToFullpopup ) {
-			theHtml = 	'<a onclick="'+_wppaLinkUrl[mocc][idx]+'" target="'+_wppaLinkTarget[mocc][idx]+'" title="'+_wppaLinkTitle[mocc][idx]+'">'+
-							'<'+imgVideo+' title="'+_wppaLinkTitle[mocc][idx]+'" id="theimg'+bgfg+'-'+mocc+'" '+_wppaSlides[mocc][idx]+
+			theHtml = 	'<a onclick="wppaStopAudio();'+_wppaLinkUrl[mocc][idx]+'" target="'+_wppaLinkTarget[mocc][idx]+'" title="'+_wppaLinkTitle[mocc][idx]+'">'+
+							'<'+imgVideo+mmEvents+' title="'+_wppaLinkTitle[mocc][idx]+'" id="theimg'+bgfg+'-'+mocc+'" '+_wppaSlides[mocc][idx]+
 						'</a>';
 		}
 		else {
-			theHtml = 	'<a href="'+_wppaLinkUrl[mocc][idx]+'" target="'+_wppaLinkTarget[mocc][idx]+'" title="'+_wppaLinkTitle[mocc][idx]+'">'+
-							'<'+imgVideo+' title="'+_wppaLinkTitle[mocc][idx]+'" id="theimg'+bgfg+'-'+mocc+'" '+_wppaSlides[mocc][idx]+
+			theHtml = 	'<a onclick="wppaStopAudio();" href="'+_wppaLinkUrl[mocc][idx]+'" target="'+_wppaLinkTarget[mocc][idx]+'" title="'+_wppaLinkTitle[mocc][idx]+'">'+
+							'<'+imgVideo+mmEvents+' title="'+_wppaLinkTitle[mocc][idx]+'" id="theimg'+bgfg+'-'+mocc+'" '+_wppaSlides[mocc][idx]+
 						'</a>';
 		}
-		jQuery( "#theslide"+bgfg+"-"+mocc ).html( theHtml );
+//		jQuery( "#theslide"+bgfg+"-"+mocc ).html( theHtml );
 	}
 	else {
 		if ( wppaLightBox[mocc] == '' ) {			// No link and no lightbox
-			jQuery( "#theslide"+bgfg+"-"+mocc ).html( '<'+imgVideo+' title="'+_wppaNames[mocc][idx]+'" id="theimg'+bgfg+'-'+mocc+'" '+_wppaSlides[mocc][idx] );
+//			jQuery( "#theslide"+bgfg+"-"+mocc ).html( '<'+imgVideo+mmEvents+' title="'+_wppaNames[mocc][idx]+'" id="theimg'+bgfg+'-'+mocc+'" '+_wppaSlides[mocc][idx] );
+			theHtml = '<'+imgVideo+mmEvents+' title="'+_wppaNames[mocc][idx]+'" id="theimg'+bgfg+'-'+mocc+'" '+_wppaSlides[mocc][idx];
 		}
 		else {								// Lightbox
 			var html = '';
@@ -1039,7 +1099,13 @@ function wppaMakeTheSlideHtml( mocc, bgfg, idx ) {
 						url = wppaMakeFullsizeUrl( _wppaUrl[mocc][i] );
 					}
 
-					html += '<a href="'+url+'" data-videonatwidth="'+_wppaVideoNatWidth[mocc][i]+'" data-videonatheight="'+_wppaVideoNatHeight[mocc][i]+'" data-videohtml="'+encodeURI( _wppaVideoHtml[mocc][i] )+'" '+theTitle+'="'+_wppaLbTitle[mocc][i]+'" rel="'+wppaLightBox[mocc]+set+'"></a>';
+					html += '<a href="'+url+'"' +
+							' data-videonatwidth="'+_wppaVideoNatWidth[mocc][i]+'"' +
+							' data-videonatheight="'+_wppaVideoNatHeight[mocc][i]+'"' +
+							' data-videohtml="'+encodeURI( _wppaVideoHtml[mocc][i] )+'"' +
+							' data-audiohtml="'+encodeURI( _wppaAudioHtml[mocc][i] )+'"' +
+							' '+theTitle+'="'+_wppaLbTitle[mocc][i]+'"' +
+							' rel="'+wppaLightBox[mocc]+set+'"></a>';
 					i++;
 				}
 			}
@@ -1053,8 +1119,16 @@ function wppaMakeTheSlideHtml( mocc, bgfg, idx ) {
 //alert( 'Sorry, opajaap is testing '+_wppaUrl[mocc][idx] );
 			}
 
-			html += '<a href="'+url+'" target="'+_wppaLinkTarget[mocc][idx]+'" data-videonatwidth="'+_wppaVideoNatWidth[mocc][idx]+'" data-videonatheight="'+_wppaVideoNatHeight[mocc][idx]+'" data-videohtml="'+encodeURI( _wppaVideoHtml[mocc][idx] )+'" '+theTitle+'="'+_wppaLbTitle[mocc][idx]+'" rel="'+wppaLightBox[mocc]+set+'">'+
-						'<'+imgVideo+' title="'+_wppaLinkTitle[mocc][idx]+'" id="theimg'+bgfg+'-'+mocc+'" '+_wppaSlides[mocc][idx]+
+			html += '<a href="'+url+'"' +
+					' onclick="wppaStopAudio();"' +
+					' target="'+_wppaLinkTarget[mocc][idx]+'"' +
+					' data-videonatwidth="'+_wppaVideoNatWidth[mocc][idx]+'"' +
+					' data-videonatheight="'+_wppaVideoNatHeight[mocc][idx]+'"' +
+					' data-videohtml="'+encodeURI( _wppaVideoHtml[mocc][idx] )+'"' +
+					' data-audiohtml="'+encodeURI( _wppaAudioHtml[mocc][idx] )+'"' +
+					' '+theTitle+'="'+_wppaLbTitle[mocc][idx]+'"' +
+					' rel="'+wppaLightBox[mocc]+set+'">'+
+						'<'+imgVideo+mmEvents+' title="'+_wppaLinkTitle[mocc][idx]+'" id="theimg'+bgfg+'-'+mocc+'" '+_wppaSlides[mocc][idx]+
 					'</a>';
 					
 			// After current slide // This does NOT work on lightbox 3 ! 
@@ -1067,13 +1141,51 @@ function wppaMakeTheSlideHtml( mocc, bgfg, idx ) {
 					else {
 						url = wppaMakeFullsizeUrl( _wppaUrl[mocc][i] );
 					}
-					html += '<a href="'+url+'" data-videonatwidth="'+_wppaVideoNatWidth[mocc][i]+'" data-videonatheight="'+_wppaVideoNatHeight[mocc][i]+'" data-videohtml="'+encodeURI( _wppaVideoHtml[mocc][i] )+'" '+theTitle+'="'+_wppaLbTitle[mocc][i]+'" rel="'+wppaLightBox[mocc]+set+'"></a>';
+					html += '<a href="'+url+'"' +
+							' data-videonatwidth="'+_wppaVideoNatWidth[mocc][i]+'"' +
+							' data-videonatheight="'+_wppaVideoNatHeight[mocc][i]+'"' +
+							' data-videohtml="'+encodeURI( _wppaVideoHtml[mocc][i] )+'"' +
+							' data-audiohtml="'+encodeURI( _wppaAudioHtml[mocc][i] )+'"' +
+							' '+theTitle+'="'+_wppaLbTitle[mocc][i]+'"' +
+							' rel="'+wppaLightBox[mocc]+set+'"></a>';
 					i++;
 				}
 			}
-			jQuery( "#theslide"+bgfg+"-"+mocc ).html( html );
+			theHtml = html;	// nieuw
+//			jQuery( "#theslide"+bgfg+"-"+mocc ).html( html );
 		}
 	}
+	
+	if ( _wppaAudioHtml[mocc][idx] != '' ) {
+//		if ( idx == 0 ) wppaFirstSlideAudio = true;
+		theHtml += 	'<audio' +
+						' controls' +
+						' id="wppa-audio-'+_wppaId[mocc][idx]+'-'+mocc+'"' +
+			//			( wppaSlideAudioStart ? ' autoplay' : '' ) +
+						' class="wppa-audio-'+mocc+' wppa-audio-'+_wppaId[mocc][idx]+'-'+mocc+'"' +
+						' onplay="wppaAudioPlaying['+mocc+'] = true;"' +
+						' onpause="wppaAudioPlaying['+mocc+'] = false"' +
+						' style="' +
+							'position:relative;' +
+							'top:-'+( wppaAudioHeight + wppaSlideBorderWidth )+'px;' +
+							'z-index:10;' +
+							'width:'+_wppaVideoNatWidth[mocc][idx]+'px;' +
+							'left:'+( wppaMax( 0, ( wppaGetContainerWidth( mocc ) - _wppaVideoNatWidth[mocc][idx] ) / 2 ) )+'px;' +
+							'padding:0 '+wppaSlideBorderWidth+'px;' +
+							'box-sizing:border-box;' +
+							'"' +
+						' >' +
+							_wppaAudioHtml[mocc][idx] +
+					'</audio>';
+	}
+	
+	jQuery( "#theslide"+bgfg+"-"+mocc ).html( theHtml );	// nieuw
+	
+}
+
+function wppaMax( i, j ) {
+	if ( i>j ) return i;
+	return j;
 }
 
 function wppaMakeFullsizeUrl( url ) {
@@ -1112,6 +1224,8 @@ function wppaFormatSlide( mocc ) {
 	var frameid  = 'slide_frame-'+mocc;
 	var contw    = wppaColWidth[mocc];
 	var elm      = document.getElementById( imgid );
+	var audios 	 = jQuery( '.wppa-audio-'+mocc );
+	
 	if ( ! elm ) return;	// No slide present
 	if ( typeof( contw ) == 'undefined' || contw == 0 ) {
 		contw = wppaGetContainerWidth( mocc ); 
@@ -1226,6 +1340,13 @@ function wppaFormatSlide( mocc ) {
 			// Do not let ver 4 browser shortcomings workarounds spoil the max dimensions
 //			jQuery( '#'+imgid ).css( 'max-height', imgh+'px' );
 //			jQuery( '#'+imgid ).css( 'max-width', imgw+'px' );
+		}
+		
+		// Size audio
+		if ( audios.length > 0 ) {
+			var i = 0;
+			jQuery( audios[i] ).css( { width:imgw, left:( contw - imgw ) / 2 } );
+			i++;
 		}
 	}
 	
@@ -1593,6 +1714,9 @@ function _wppaDoAutocol( mocc ) {
 	
 	// Slide
 	wppaFormatSlide( mocc );
+	
+	// Audio on slide
+	jQuery( "#audio-slide-"+mocc ).css( 'width', w - wppaBoxDelta - 6 );
 	
 	// Comments
 	jQuery( ".wppa-comment-textarea-"+mocc ).css( 'width',w * 0.7 );
@@ -2943,11 +3067,15 @@ var wppaOvlIsSingle;
 var wppaOvlRunning = false;
 var wppaOvlVideoHtmls;
 var wppaOvlVideoHtml;
+var wppaOvlAudioHtmls;
+var wppaOvlAudioHtml;
 var wppaOvlVideoNaturalWidths;
 var wppaOvlVideoNaturalWidth;	
 var wppaOvlVideoNaturalHeights;
 var wppaOvlVideoNaturalHeight;
 var wppaOvlMode = 'normal';
+var wppaOvlVideoPlaying = false;
+var wppaOvlAudioPlaying = false;
 
 // The next var values become overwritten in wppa-non-admin.php -> wppa_load_footer()
 var wppaOvlCloseTxt = 'CLOSE';
@@ -2970,6 +3098,7 @@ var wppaShowLegenda = '';
 var wppaOvlFsPhotoId = 0;
 var wppaPhotoId = 0;
 var wppaOvlVideoStart = false;
+var wppaOvlAudioStart = false;
 
 // Initial initialization
 jQuery( document ).ready(function( e ) {
@@ -3000,6 +3129,7 @@ function wppaOvlKeyboardHandler( e ) {
 	
 	switch ( keycode ) {
 		case escapeKey:
+			wppaStopVideo( mocc );
 			wppaOvlHide();
 			break;
 		case 37:
@@ -3073,7 +3203,17 @@ function wppaOvlShow( arg ) {
 wppaConsoleLog( 'wppaOvlShow arg='+arg );
 
 	if ( wppaOvlFirst ) {
+	
+		// Install keyboard handler
 		jQuery( document ).on('keydown', wppaOvlKeyboardHandler	);
+		
+		// Stop all slideshows
+		var occ = 0;
+		while ( occ < wppaTopMoc ) {
+			occ++;
+			wppaStopShow( occ );
+		}
+		
 		wppaOvlFirst = false;
 	}
 
@@ -3092,6 +3232,7 @@ wppaConsoleLog( 'wppaOvlShow arg='+arg );
 			wppaOvlTitle 				= wppaOvlTitles[arg];
 			wppaOvlIdx 					= arg;
 			wppaOvlVideoHtml 			= wppaOvlVideoHtmls[arg];
+			wppaOvlAudioHtml 			= wppaOvlAudioHtmls[arg];
 			wppaOvlVideoNaturalWidth 	= wppaOvlVideoNaturalWidths[arg];
 			wppaOvlVideoNaturalHeight 	= wppaOvlVideoNaturalHeights[arg];
 //wppaConsoleLog( 'nw='+wppaOvlVideoNaturalWidth+', nh='+wppaOvlVideoNaturalHeight, 'force');
@@ -3107,6 +3248,7 @@ wppaConsoleLog( 'wppaOvlShow arg='+arg );
 			wppaOvlTitle = wppaRepairScriptTags( arg.title );
 		}
 		wppaOvlVideoHtml 			= decodeURI( jQuery( arg ).attr( 'data-videohtml' ) );
+		wppaOvlAudioHtml 			= decodeURI( jQuery( arg ).attr( 'data-audiohtml' ) );
 		wppaOvlVideoNaturalWidth 	= jQuery( arg ).attr( 'data-videonatwidth' );
 		wppaOvlVideoNaturalHeight 	= jQuery( arg ).attr( 'data-videonatheight' );
 		var rel = arg.rel;
@@ -3115,6 +3257,7 @@ wppaConsoleLog( 'wppaOvlShow arg='+arg );
 			wppaOvlUrls 				= [];
 			wppaOvlTitles 				= [];
 			wppaOvlVideoHtmls 			= [];
+			wppaOvlAudioHtmls 			= [];
 			wppaOvlVideoNaturalWidths 	= [];	
 			wppaOvlVideoNaturalHeights 	= [];			
 			var setname 				= temp[1];
@@ -3137,6 +3280,7 @@ wppaConsoleLog( 'wppaOvlShow arg='+arg );
 							wppaOvlTitles[j] = wppaRepairScriptTags( anchor.title );
 						}
 						wppaOvlVideoHtmls[j] 			= decodeURI( jQuery( anchor ).attr( 'data-videohtml' ) );
+						wppaOvlAudioHtmls[j] 			= decodeURI( jQuery( anchor ).attr( 'data-audiohtml' ) );
 						wppaOvlVideoNaturalWidths[j] 	= jQuery( anchor ).attr( 'data-videonatwidth' );	
 						wppaOvlVideoNaturalHeights[j] 	= jQuery( anchor ).attr( 'data-videonatheight' );
 						if ( anchor.href == wppaOvlUrl ) wppaOvlIdx = j;	// Current index
@@ -3160,6 +3304,7 @@ wppaConsoleLog( 'wppaOvlShow arg='+arg );
 	_bumpViewCount( wppaPhotoId );
 	
 	var wppaIsVideo = typeof( wppaOvlVideoHtml ) != 'undefined' && wppaOvlVideoHtml != '' && wppaOvlVideoHtml != 'undefined';
+	var wppaHasAudio = wppaOvlAudioHtml != '';
 
 	// Fullsize?
 	if ( wppaOvlMode != 'normal' ) {
@@ -3168,7 +3313,7 @@ wppaConsoleLog( 'wppaOvlShow arg='+arg );
 		// Init background
 		jQuery( '#wppa-overlay-bg' ).fadeTo( 300, wppaOvlOpacity );	// show black background first
 		
-		// Video?
+		// Fullsize Video
 		if ( wppaIsVideo ) {
 			html = 
 			'<div id="wppa-ovl-full-bg" style="position:fixed; width:'+wppaWindowInnerWidth+'px; height:'+wppaWindowInnerHeight+'px; left:0px; top:0px; text-align:center;" >'+
@@ -3178,6 +3323,8 @@ wppaConsoleLog( 'wppaOvlShow arg='+arg );
 					' ontouchend="wppaTouchEnd( event );"' +
 					' ontouchmove="wppaTouchMove( event );"' +
 					' ontouchcancel="wppaTouchCancel( event );"' +
+					' onpause="wppaOvlVideoPlaying = false;"' +
+					' onplay="wppaOvlVideoPlaying = true;"' +
 					' style="border:none; width:'+wppaWindowInnerWidth+'px; box-shadow:none; position:absolute;" >'+
 						wppaOvlVideoHtml+
 				'</video>'+
@@ -3188,7 +3335,7 @@ wppaConsoleLog( 'wppaOvlShow arg='+arg );
 				'</div>';
 			'</div>';
 		}
-		// Photo
+		// Fullsize Photo
 		else {
 			html = 
 			'<div id="wppa-ovl-full-bg" style="position:fixed; width:'+wppaWindowInnerWidth+'px; height:'+wppaWindowInnerHeight+'px; left:0px; top:0px; text-align:center;" >'+
@@ -3199,7 +3346,28 @@ wppaConsoleLog( 'wppaOvlShow arg='+arg );
 					' ontouchcancel="wppaTouchCancel( event );"'+
 					' src="'+wppaOvlUrl+'"'+
 					' style="border:none; width:'+wppaWindowInnerWidth+'px; visibility:hidden; box-shadow:none; position:absolute;"'+
-				' />'+
+				' />';
+				if ( wppaHasAudio ) {
+				html += '<audio' + 
+							' id="wppa-overlay-audio"' +
+							' class="wppa-overlay-audio"' +
+							' preload="metadata"' +
+							( ( wppaOvlAudioStart && ! wppaOvlAudioPlaying ) ? ' autoplay' : '' ) +
+							' onpause="wppaOvlAudioPlaying = false;"' +
+							' onplay="wppaOvlAudioPlaying = true;"' +
+							' style="' +
+								'width:100%;' +
+								'position:absolute;' +
+								'left:0px;' +
+								'bottom:0px;' +
+								'padding:0;' +
+								'"' +
+							' controls' +
+							' >' +
+							wppaOvlAudioHtml +
+						'</audio>';
+				}
+				html +=
 				'<div style="height: 20px; width: 100%; position:absolute; top:0; left:0;" onmouseover="jQuery(\'#wppa-ovl-legenda-2\').css(\'visibility\',\'visible\');" onmouseout="jQuery(\'#wppa-ovl-legenda-2\').css(\'visibility\',\'hidden\');wppaShowLegenda=\'hidden\';" >'+
 					'<div id="wppa-ovl-legenda-2" style="position:fixed; left:0; top:0; background-color:'+(wppaOvlTheme == 'black' ? '#272727' : '#a7a7a7')+'; color:'+(wppaOvlTheme == 'black' ? '#a7a7a7' : '#272727')+'; visibility:'+wppaShowLegenda+';" >'+
 						'Mode='+wppaOvlMode+'. '+( wppaOvlIsSingle ? wppaOvlFullLegendaSingle : wppaOvlFullLegenda )+
@@ -3209,16 +3377,17 @@ wppaConsoleLog( 'wppaOvlShow arg='+arg );
 		}
 
 		// Replacing the html stops a running video,
-		// so we only replace html on a new id, or a photo
-		if ( ! wppaIsVideo || wppaOvlFsPhotoId != wppaPhotoId || wppaPhotoId == 0 ) {
-			wppaStopVideo( mocc );
+		// so we only replace html on a new id, or a photo without audio
+		if ( ( ! wppaIsVideo && ! wppaHasAudio ) || wppaOvlFsPhotoId != wppaPhotoId || wppaPhotoId == 0 ) {
+			wppaStopVideo( 0 );
+			wppaStopAudio();
 			jQuery( '#wppa-overlay-ic' ).html( html );
-//wppaConsoleLog('Html set', 'force');
+//alert('Html set');
 		}
 
 		wppaOvlIsVideo = wppaIsVideo;
 		setTimeout( 'wppaOvlShowFull()', 10 );
-		if ( wppaIsVideo ) {
+		if ( wppaIsVideo || wppaHasAudio ) {
 			setTimeout( 'wppaOvlUpdateFsId()', 2000 );
 		}
 		else {
@@ -3226,13 +3395,13 @@ wppaConsoleLog( 'wppaOvlShow arg='+arg );
 		}
 		return false;
 	}
-
+	// NOT fullsize
 	else {
 		wppaOvlFsPhotoId = 0; // Reset ovl fullscreen photo id
 		wppaPhotoId = 0;
 		var mw = 250;
 		
-		wppaStopVideo( mocc );
+		wppaStopVideo( 0 );
 
 		jQuery( '#wppa-overlay-bg' ).fadeTo( 300, wppaOvlOpacity );
 		var lft = ( wppaWindowInnerWidth/2-125 )+'px';
@@ -3246,20 +3415,85 @@ wppaConsoleLog( 'wppaOvlShow arg='+arg );
 		var html = 	'<div id="wppa-overlay-start-stop" style="position:absolute; left:0px; top:'+( wppaOvlPadTop-1 )+'px; visibility:hidden; box-shadow:none; font-family:helvetica; font-weight:bold; font-size:14px; color:'+qtxtcol+'; cursor:pointer; " onclick="wppaOvlStartStop()" ontouchstart="wppaOvlStartStop()" >'+startstop+'</div>'+
 					'<div id="wppa-overlay-qt-txt"  style="position:absolute; right:16px; top:'+( wppaOvlPadTop-1 )+'px; visibility:hidden; box-shadow:none; font-family:helvetica; font-weight:bold; font-size:14px; color:'+qtxtcol+'; cursor:pointer; " onclick="wppaOvlHide()" ontouchstart="wppaOvlHide()" >'+wppaOvlCloseTxt+'&nbsp;&nbsp;</div>'+
 					'<img id="wppa-overlay-qt-img"  src="'+wppaImageDirectory+'smallcross-'+wppaOvlTheme+'.gif'+'" style="position:absolute; right:0; top:'+wppaOvlPadTop+'px; visibility:hidden; box-shadow:none; cursor:pointer" onclick="wppaOvlHide()" ontouchstart="wppaOvlHide()" >';
+					
+		// Not Fullsize Video
 		if ( wppaIsVideo ) {
-			html += '<video id="wppa-overlay-img" preload="metadata"' +
-			( wppaOvlVideoStart ? ' autoplay' : '' ) +
-			' ontouchstart="wppaTouchStart( event, \'wppa-overlay-img\', -1 );"  ontouchend="wppaTouchEnd( event );" ontouchmove="wppaTouchMove( event );" ontouchcancel="wppaTouchCancel( event );" '+
-			' style="border-width:16px; border-style:solid; border-color:'+wppaOvlTheme+'; margin-bottom:-15px; max-width:'+mw+'px; visibility:hidden; box-shadow:none;" controls >'+wppaOvlVideoHtml+'</video>';
+		
+			html += '<video' +
+					' id="wppa-overlay-img"' +
+					' preload="metadata"' +
+					( wppaOvlVideoStart ? ' autoplay' : '' ) +
+					' onpause="wppaOvlVideoPlaying = false;"' +
+					' onplay="wppaOvlVideoPlaying = true;"' +
+					' ontouchstart="wppaTouchStart( event, \'wppa-overlay-img\', -1 );"' +
+					' ontouchend="wppaTouchEnd( event );"' +
+					' ontouchmove="wppaTouchMove( event );"' +
+					' ontouchcancel="wppaTouchCancel( event );" ' +
+					' style="' +
+						'border-width:16px;' +
+						'border-style:solid;' +
+						'border-color:'+wppaOvlTheme+';' +
+						'margin-bottom:-15px;' +
+						'max-width:'+mw+'px;' +
+						'visibility:hidden;' +
+						'box-shadow:none;"' +
+					' controls' +
+					' >'+wppaOvlVideoHtml+'</video>';
+					
 			wppaOvlIsVideo = true;
 		}
+		
+		// Not fullsize photo
 		else {
-			html += '<img id="wppa-overlay-img"'+
-			' ontouchstart="wppaTouchStart( event, \'wppa-overlay-img\', -1 );"  ontouchend="wppaTouchEnd( event );" ontouchmove="wppaTouchMove( event );" ontouchcancel="wppaTouchCancel( event );" '+
-			' src="'+wppaOvlUrl+'" style="border-width:16px; border-style:solid; border-color:'+wppaOvlTheme+'; margin-bottom:-15px; max-width:'+mw+'px; visibility:hidden; box-shadow:none;" />';
+		
+			html += '<img' +
+						' id="wppa-overlay-img"'+
+						' ontouchstart="wppaTouchStart( event, \'wppa-overlay-img\', -1 );"' +
+						' ontouchend="wppaTouchEnd( event );"' +
+						' ontouchmove="wppaTouchMove( event );"' +
+						' ontouchcancel="wppaTouchCancel( event );"' +
+						' src="'+wppaOvlUrl+'"' +
+						' style="' +
+							'border-width:16px;' +
+							'border-style:solid;' +
+							'border-color:'+wppaOvlTheme+';' +
+							'margin-bottom:-15px;' +
+							'max-width:'+mw+'px;' +
+							'visibility:hidden;' +
+							'box-shadow:none;"' +
+					' />';
+			
+			// Audio on not fullsize
+			if ( wppaHasAudio ) { //wppaOvlAudioHtml != '' ) {
+				html += '<audio' + 
+							' id="wppa-overlay-audio"' +
+							' class="wppa-overlay-audio"' +
+							' preload="metadata"' +
+					//		( ( wppaOvlAudioStart && ! wppaOvlAudioPlaying ) ? ' autoplay' : '' ) +
+							' onpause="wppaOvlAudioPlaying = false;"' +
+							' onplay="wppaOvlAudioPlaying = true;"' +
+							' style="' +
+								'width:100%;' +
+								'position:relative;' +
+								'top:-'+( wppaAudioHeight + 16 )+'px;' +
+								'padding:16px;' +
+								'background-color:transparent;' +
+								'box-sizing:border-box;' +
+								'"' +
+							' controls' +
+							' >' +
+							wppaOvlAudioHtml +
+						'</audio>';
+			}
 			wppaOvlIsVideo = false;
+//			wppaOvlAudioPlaying = true;
 		}
-		html += '<div id="wppa-overlay-txt-container" style="padding:10px; background-color:'+wppaOvlTheme+'; color:'+txtcol+'; text-align:center; font-family:'+wppaOvlFontFamily+'; font-size: '+wppaOvlFontSize+'px; font-weight:'+wppaOvlFontWeight+'; line-height:'+wppaOvlLineHeight+'px; visibility:hidden; box-shadow:none;" ><div>';
+		html += '<div id="wppa-overlay-txt-container"' +
+					' style="' +
+						'position:relative;' +
+						( wppaHasAudio ? 'top:-'+( wppaAudioHeight + 32 )+'px;' : '' ) +
+						'padding:10px;' +
+						'background-color:'+wppaOvlTheme+'; color:'+txtcol+'; text-align:center; font-family:'+wppaOvlFontFamily+'; font-size: '+wppaOvlFontSize+'px; font-weight:'+wppaOvlFontWeight+'; line-height:'+wppaOvlLineHeight+'px; visibility:hidden; box-shadow:none;" ><div>';
 
 		jQuery( '#wppa-overlay-ic' ).html( html );
 		setTimeout( 'wppaOvlShow2()', 10 );
@@ -3291,6 +3525,38 @@ function wppaStopVideo( mocc ) {
 			}
 		}
 	}
+}
+
+function wppaStopAudio() {
+
+	var items = jQuery( 'audio' );
+	
+	if ( items.length > 0 ) {
+		var i = 0;
+		while ( i < items.length ) {
+			items[i].pause();
+			i++;
+		}
+	}
+}
+
+function wppaOvlStartAudio() {
+
+	// Due to a bug in jQuery, must do myself:
+	var elm = document.getElementById( 'wppa-overlay-audio' );
+	if ( elm ) {
+		if ( typeof( elm.play ) == 'function' ) {
+			elm.play();
+			wppaConsoleLog('Audio play '+'wppa-overlay-audio', 'force');
+		}
+	}
+	
+//	document.getElementById( 'wppa-overlay-audio' ).play();
+//	if ( typeof( jQuery( '#wppa-overlay-audio' ).play ) == 'function' ) {
+//		jQuery( '#wppa-overlay-audio' ).play();
+//		alert( 'Start attempted');
+//	}
+//	else alert( 'Start failed');
 }
 
 // Show fullscreen lightbox image
@@ -3501,8 +3767,15 @@ function wppaOvlStartStop() {
 }
 function wppaOvlRun() {
 wppaConsoleLog( 'wppaOvlRun, running='+wppaOvlRunning );
-	var next;
+
 	if ( ! wppaOvlRunning ) return;
+	
+	if ( wppaOvlVideoPlaying || wppaOvlAudioPlaying ) {
+		setTimeout( 'wppaOvlRun()', 500 ); 
+		return;
+	}
+
+	var next;
 	if ( wppaOvlIdx >= ( wppaOvlUrls.length-1 ) ) next = 0;
 	else next = wppaOvlIdx + 1;
 	
@@ -3678,16 +3951,21 @@ wppaConsoleLog( 'wppaOvlSize2' );
 
 function wppaOvlHide() {
 wppaConsoleLog( 'wppaOvlHide' );
+
+	// Stop audio
+	wppaStopAudio();
+	
 	// Clear image container
 	jQuery( '#wppa-overlay-ic' ).html( '' );
 	jQuery( '#wppa-overlay-ic' ).css( {paddingTop: 0});
+	
 	// Remove background
 	jQuery( '#wppa-overlay-bg' ).fadeOut( 300 );
+	
 	// Remove kb handler
-	jQuery( document ).off( 'keydown', wppaOvlKeyboardHandler );//keydown(function( e ) {} );//wppaOvlKbHandler;
-	// Re-instal possible original resize handler
-//	window.onresize = wppaOvlSizeHandler;
-	// Reset switch
+	jQuery( document ).off( 'keydown', wppaOvlKeyboardHandler );
+	
+	// Reset switches
 	wppaOvlFirst = true;
 	wppaOvlRunning = false;
 	wppaOvlMode = 'normal';
@@ -3798,6 +4076,10 @@ wppaConsoleLog( 'wppaOvlResize' );
 	setTimeout( 'wppaOvlSize( 10 )', 100 );
 	setTimeout( 'wppaOvlSize( 10 )', 150 );
 	setTimeout( 'wppaOvlSize( 10 )', 1000 );
+	
+	if ( wppaOvlAudioStart && ! wppaOvlAudioPlaying ) {
+		setTimeout( 'wppaOvlStartAudio()', 1010 );
+	}
 }
 
 function wppaAjaxMakeOrigName( mocc, id ) {
