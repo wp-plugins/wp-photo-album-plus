@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Various wppa boxes
-* Version 6.1.0
+* Version 6.1.2
 *
 *
 */
@@ -1281,6 +1281,7 @@ global $wppa_first_comment_html;
 	return $result;
 }
 
+// The smiley picker for the comment box
 function wppa_get_smiley_picker_html( $elm_id ) {
 static $wppa_smilies;
 global $wpsmiliestrans;
@@ -1298,9 +1299,11 @@ global $wpsmiliestrans;
 	$result = '';
 	if ( is_array( $wppa_smilies ) ) {
 		foreach ( array_keys( $wppa_smilies ) as $key ) {
-			$onclick = esc_attr( 'wppaInsertAtCursor( document.getElementById( "'.$elm_id.'" ), " '.$wppa_smilies[$key].' " )' );
-			$title = substr( substr( $key, 5 ), 0, -4 );
-			$result .= '<img src="'.esc_attr( includes_url( 'images/smilies/' ).$key ).'" onclick="'.$onclick.'" title="'.$title.'" style="display:inline;" /> ';
+			$onclick 	= esc_attr( 'wppaInsertAtCursor( document.getElementById( "' . $elm_id . '" ), " ' . $wppa_smilies[$key] . ' " )' );
+			$title 		= trim( $wppa_smilies[$key], ':' );
+			$result 	.= 	'<a onclick="'.$onclick.'" title="'.$title.'" >' . 
+								convert_smilies( $wppa_smilies[$key] ) . 
+							'</a>';
 		}
 	}
 	else {
@@ -1499,6 +1502,7 @@ global $wpdb;
 	$wppa['out'] .= $result;
 }
 
+// The auto age links
 function wppa_auto_page_links( $where ) {
 global $wppa;
 global $wpdb;
@@ -1563,6 +1567,7 @@ global $wppa;
 	wppa_container ( 'close' );
 }
 
+// The Bestof html
 function wppa_bestof_html( $args, $widget = true ) {
 
 	// Copletify args
@@ -1639,7 +1644,7 @@ function wppa_bestof_html( $args, $widget = true ) {
 						}
 						
 						// The image
-						$result .= '<img style="height:'.$maxh.'px; width:'.$maxw.'px;" src="'.wppa_get_photo_url( $id, '', $maxw, $maxh ).'" '.wppa_get_imgalt( $id ).'/>';
+						$result .= '<img style="height:'.$maxh.'px; width:'.$maxw.'px;" src="'.wppa_fix_poster_ext( wppa_get_photo_url( $id, '', $maxw, $maxh ), $id ).'" '.wppa_get_imgalt( $id ).'/>';
 						
 						// The /link
 						if ( $linktype != 'none' ) {
