@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, video, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, myCRED, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile, cloudinary, fotomoto, CMTooltipGlossary
-Version: 6.1.2
+Version: 6.1.3
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -188,6 +188,22 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 6.1.3 =
+
+= Bug Fixes =
+
+* The message: 'Comment added' stopped to be displayed even if Table IV-F6 was ticked. Fixed.
+* Smilies in photo descriptions are now displayed.
+* Improved randomness of random selected photos in multiple albums.
+* Fixed consistency in random sequence between first and successive pages in paginated displays.
+* Improved algorithm to decide when to display the front-end upload and creat album link.
+* Fixed an inconsistency in rights on the album admin table.
+* Security fix.
+
+= New Features =
+
+* The ability to limit the number of albums for a user based on user role. Table VII-B5a.x
 
 = 6.1.2 =
 

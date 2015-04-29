@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains functions to retrieve album and photo items
-* Version 6.1.0
+* Version 6.1.3
 *
 */
  
@@ -303,6 +303,7 @@ function wppa_get_photo_desc( $id, $do_shortcodes = false, $do_geo = false ) {
 	$desc = wppa_filter_iptc( $desc, $id );	// Render IPTC tags
 	$desc = wppa_filter_exif( $desc, $id );	// Render EXIF tags
 	$desc = make_clickable( $desc );		// Auto make a tags for links
+	$desc = convert_smilies( $desc );		// Make smilies visible
 
 	// CMTooltipGlossary on board?
 	$desc = wppa_filter_glossary( $desc );

@@ -2,7 +2,7 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 6.1.0
+* version 6.1.3
 * 
 */
 
@@ -26,6 +26,10 @@ global $wppa_defaults;
 		delete_option( 'wppa_cached_options' );
 	}
 
+	if ( is_array( $wppa ) && ! $force ) {
+		return; 	// Done already
+	}
+	
 	if ( ! is_array( $wppa ) ) {
 		$wppa = array ( 
 			'debug' 					=> false,
@@ -212,7 +216,7 @@ static $randseed_modified;
 		if ( isset( $wppa_session['randseed'] ) && ! $randseed_modified ) {
 			$old_album = isset( $wppa_session['albumspec'] ) ? $wppa_session['albumspec'] : false;
 			$new_album = wppa_get_get( 'album' );
-			if ( ! $new_album || ( $old_album != $new_album ) ) {
+			if ( $new_album === false || ( $old_album && ( $old_album != $new_album ) ) ) {
 				unset( $wppa_session['randseed'] );	// Forget randseed
 			}
 		}
@@ -1875,6 +1879,7 @@ global $wpdb;
 											'addselbox'			=> false,
 											'disableancestors' 	=> false,
 											'checkaccess' 		=> false,
+											'checkowner' 		=> false,
 											'checkupload' 		=> false,
 											'addmultiple' 		=> false,
 											'addnumbers' 		=> false,
@@ -1997,9 +2002,20 @@ global $wpdb;
 			 ( $args['disableancestors'] && wppa_is_ancestor( $args['exclude'], $album['id'] ) )
 			 ) $disabled = ' disabled="disabled"'; else $disabled = '';
 		if ( $args['selected'] == $album['id'] && ! $disabled ) $selected = ' selected="selected"'; else $selected = '';
-		if ( ( ! $args['checkaccess'] || wppa_have_access( $album['id'] ) ) ||
-			 ( $selected && $args['addselected'] )	
-			 ) {
+		
+		$ok = true; // Assume this will be in the list
+		if ( $args['checkaccess'] && ! wppa_have_access( $album['id'] ) ) {
+			$ok = false;
+		}
+		if ( $args['checkowner'] && $album['owner'] != wppa_get_user() && $album['owner']  != '--- public ---' ) {
+			if ( ! wppa_user_is( 'administrator' ) && wppa_switch( 'owner_only' ) ) {
+				$ok = false;
+			}
+		}
+		if ( $selected && ! $args['addselected'] ) {
+			$ok = false;
+		}
+		if ( $ok ) {
 			if ( $args['addnumbers'] ) $number = ' ( '.$album['id'].' )'; else $number = '';
 			$result .= '<option value="' . $album['id'] . '" ' . $selected . $disabled . '>' . $album['name'] . $number . '</option>';
 		}

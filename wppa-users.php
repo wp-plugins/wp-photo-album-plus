@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains user and capabilities related routines
-* Version 5.4.1
+* Version 6.1.3
 *
 */
 
@@ -104,25 +104,73 @@ function wppa_extended_access() {
 // returns bool
 function wppa_can_create_album() {
 global $wpdb;
+global $wp_roles;
 
-	if ( wppa_is_user_blacklisted() ) {
-		return false;
+	// Test for logged out users
+	if ( ! is_user_logged_in() ) {
+	
+		// Login required ?
+		if ( wppa_switch( 'user_create_login' ) ) {		
+			return false;
+		}
+		
+		// Login not required and logged out
+		else {
+			$rmax = get_option( 'wppa_loggedout_album_limit_count', '0' );
+
+			// If logged out max set, check if limit reached
+			if ( $rmax ) {
+				$albs = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM `".WPPA_ALBUMS."` WHERE `owner` = %s", wppa_get_user() ) );
+				if ( $albs >= $rmax ) {
+					return false;	// Limit reached
+				}
+				else {
+					return true; 	// Limit not yet reached
+				}
+			}
+			
+			// No logged out limit set
+			else {
+				return true;
+			}
+		}
 	}
-	if ( wppa_extended_access() ) {
-		return true;
-	}
-	if ( wppa_opt( 'wppa_max_albums' ) == '0' ) {
-		return true;	// 0 = unlimited
-	}
-	$user = wppa_get_user();
-	$albs = $wpdb->get_var( $wpdb->prepare( 
-		"SELECT COUNT(*) FROM `".WPPA_ALBUMS."` WHERE `owner` = %s", $user 
-		) );
-	wppa_dbg_q( 'Q-cca' );
-	if ( $albs < wppa_opt( 'wppa_max_albums' ) ) {
+	
+	// Admin can do everything
+	if ( wppa_user_is( 'administrator' ) ) {
 		return true;
 	}
 	
+	// A blacklisted user can not create albums
+	if ( wppa_is_user_blacklisted() ) {
+		return false;
+	}
+	
+	// Check for global max albums per user setting
+	$albs = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM `".WPPA_ALBUMS."` WHERE `owner` = %s", wppa_get_user() ) );
+	$gmax = wppa_opt( 'wppa_max_albums' );
+	if ( $gmax && $albs >= $gmax ) {
+		return false;
+	}
+	
+	// Check for role dependant max albums per user setting
+	$user 	= wp_get_current_user();
+	$roles 	= $wp_roles->roles;
+	foreach ( array_keys( $roles ) as $role ) {
+		
+		// Find firste role the user has
+		if ( wppa_user_is( $role ) ) {
+			$rmax = get_option( 'wppa_'.$role.'_album_limit_count', '0' );
+			if ( ! $rmax || $albs < $rmax ) {
+				return true;
+			}
+			else {
+				return false;
+			}
+		}
+	}
+	
+	// If a user has no role, deny creation
 	return false;
 }
 

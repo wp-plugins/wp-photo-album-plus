@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the widget
-* Version 6.1.0
+* Version 6.1.3
 */
 
 if ( ! defined( 'ABSPATH' ) ) die( "Can't load this file directly" );
@@ -30,6 +30,7 @@ class PhotoOfTheDay extends WP_Widget {
 		require_once(dirname(__FILE__) . '/wppa-thumbnails.php');
 		require_once(dirname(__FILE__) . '/wppa-boxes-html.php');
 		require_once(dirname(__FILE__) . '/wppa-slideshow.php');
+		wppa_initialize_runtime();
 
         extract( $args );
 

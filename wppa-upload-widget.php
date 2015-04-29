@@ -6,7 +6,7 @@
 *
 * A wppa widget to upload photos
 *
-* Version 6.1.0
+* Version 6.1.3
 */
 
 class WppaUploadWidget extends WP_Widget {
@@ -21,6 +21,7 @@ class WppaUploadWidget extends WP_Widget {
 	function widget( $args, $instance ) {
 		global $wppa; 
 		global $wppa_opt;
+		global $wpdb;
 
 		require_once(dirname(__FILE__) . '/wppa-links.php');
 		require_once(dirname(__FILE__) . '/wppa-styles.php');
@@ -28,6 +29,7 @@ class WppaUploadWidget extends WP_Widget {
 		require_once(dirname(__FILE__) . '/wppa-thumbnails.php');
 		require_once(dirname(__FILE__) . '/wppa-boxes-html.php');
 		require_once(dirname(__FILE__) . '/wppa-slideshow.php');
+		wppa_initialize_runtime();
 
 		extract($args);
 		$instance = wp_parse_args( (array) $instance, 
@@ -36,14 +38,20 @@ class WppaUploadWidget extends WP_Widget {
 										));
  		$title = apply_filters('widget_title', $instance['title']);
 		$album = $instance['album'];
-
+		
+		if ( ! $wpdb->get_var( "SELECT COUNT(*) FROM `".WPPA_ALBUMS."` WHERE `id` = ".$album ) ) {
+			$album = '0';	// Album vanished
+		}
+		
 		wppa_user_upload();	// Do the upload if required
 		
 		$wppa['in_widget'] = 'upload';
 				
 		$wppa['mocc']++;
 		$wppa['out'] = '';
+
 		if ( wppa_switch('wppa_user_upload_login') && ! is_user_logged_in() ) return;	// Not logged in while login req'd for upload, no create also
+
 		wppa_user_create_html( $album, $wppa_opt['wppa_widget_width'], 'widget' );
 		wppa_user_upload_html( $album, $wppa_opt['wppa_widget_width'], 'widget' );
 		if ( ! $wppa['out'] ) return;	// No possibility to upload or create, skip the widget

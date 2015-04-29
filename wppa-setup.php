@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 6.1.0
+* Version 6.1.3
 * 
 */
 
@@ -35,7 +35,7 @@ global $silent;
 	
 	$old_rev = get_option('wppa_revision', '100');
 
-	if ( $old_rev >= $wppa_revno && ! $force ) return; // Nothing to do here
+	if ( $old_rev == $wppa_revno && ! $force ) return; // Nothing to do here
 	
 	wppa_clear_cache(true);	// Clear cache
 	

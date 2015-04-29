@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains low-level utility routines
-* Version 6.1.0
+* Version 6.1.3
 * 
 */
  
@@ -27,7 +27,7 @@ global $blog_id;
 //	if ( wppa_is_video( $id ) ) return wppa_get_photo_url( $id, $system, $x, $y );
 	
 	// If in the cloud...
-	if ( wppa_cdn() && ! wppa_is_video( $id ) ) {	
+	if ( wppa_cdn() && ! wppa_is_multi( $id ) ) {	
 		if ( $x && $y ) {		// Only when size is given !! To prevent download of the fullsize image
 			switch ( wppa_cdn() ) {
 				case 'cloudinary':
@@ -89,7 +89,7 @@ global $blog_id;
 	if ( is_feed() && wppa_switch('wppa_feed_use_thumb') ) return wppa_get_thumb_url($id, $system);
 	
 	// If in the cloud...
-	if ( wppa_cdn() && ! wppa_is_video( $id ) ) { 
+	if ( wppa_cdn() && ! wppa_is_multi( $id ) ) { 
 		switch ( wppa_cdn() ) {
 			case 'cloudinary':
 				$x = round($x);
@@ -292,6 +292,10 @@ global $wppa_opt;
 	}
 	else {
 		$key = 'wppa_' . $xkey;
+	}
+	
+	if ( empty( $wppa_opt ) ) {
+		wppa_initialize_runtime();
 	}
 	
 	if ( is_array( $wppa_opt ) ) {

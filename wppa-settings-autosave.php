@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 6.1.0
+* Version 6.1.3
 *
 */
 
@@ -5338,7 +5338,7 @@ global $wppa_tags;
 							
 							$roles = $wp_roles->roles;
 							$roles['loggedout'] = '';
-							unset ($roles['administrator']);
+							unset ( $roles['administrator'] );
 							foreach (array_keys($roles) as $role) {
 								if ( get_option('wppa_'.$role.'_upload_limit_count', 'nil') == 'nil') update_option('wppa_'.$role.'_upload_limit_count', '0');
 								if ( get_option('wppa_'.$role.'_upload_limit_time', 'nil') == 'nil') update_option('wppa_'.$role.'_upload_limit_time', '0');
@@ -5356,6 +5356,22 @@ global $wppa_tags;
 								$clas = ''; 
 								$tags = 'access,upload';
 								wppa_setting(false, '5.'.$role, $name, $desc, $html, $help, $clas, $tags);
+							}
+							
+							foreach (array_keys($roles) as $role) {
+								if ( get_option('wppa_'.$role.'_album_limit_count', 'nil') == 'nil') update_option('wppa_'.$role.'_album_limit_count', '0');
+								$name = sprintf(__('Album limit %s', 'wppa'), $role);
+								$desc = sprintf(__('Limit number of albums for the user role %s.', 'wppa'), $role);
+								$help = esc_js(__('This limitation only applies to frontend create albums when the same userrole does not have the Album admin checkbox checked in Table VII-A.', 'wppa'));
+								$help .= '\n'.esc_js(__('A value of 0 means: no limit.', 'wppa'));
+								$slug1 = 'wppa_'.$role.'_album_limit_count';
+								$html1 = wppa_input($slug1, '50px', '', __('albums', 'wppa'));
+								$slug2 = '';
+								$html2 = '';
+								$html = array( $html1, $html2 );
+								$clas = ''; 
+								$tags = 'access,album';
+								wppa_setting(false, '5a.'.$role, $name, $desc, $html, $help, $clas, $tags);
 							}
 							
 							$name = __('Upload one only', 'wppa');

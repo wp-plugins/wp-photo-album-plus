@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Various wppa boxes
-* Version 6.1.2
+* Version 6.1.3
 *
 *
 */
@@ -602,19 +602,25 @@ function wppa_user_create_html( $alb, $width, $where = '', $mcr = false ) {
 global $wppa;
 
 	if ( $alb < '0' ) $alb = '0';
-	
+
 	// May I?
 	if ( ! wppa_switch( 'user_create_on' ) ) return;			// Feature not enabled
+
+/*	
 	if ( wppa_switch( 'user_create_login' ) ) {
 		if ( ! is_user_logged_in() ) return;					// Must login
 	}
-	if ( ! wppa_have_access( $alb ) ) {
+*/
+
+	if ( $alb && ! wppa_have_access( $alb ) ) {
 		return;						// No album access
 	}
-	if ( is_user_logged_in() ) {
+
+//	if ( is_user_logged_in() ) {
 		if ( ! $alb && ! wppa_can_create_top_album() ) return;	// Current logged in user can not create a toplevel album
 		if ( $alb && ! wppa_can_create_album() ) return;		// Current logged in user can not create a sub-album
-	}
+//	}
+
 	if ( ! wppa_user_is( 'administrator' ) && wppa_switch( 'owner_only' ) ) {
 		if ( $alb ) {
 			$album = wppa_cache_album( $alb );
@@ -622,7 +628,7 @@ global $wppa;
 		}
 	}
 
-	if ( wppa_is_user_blacklisted() ) return;
+//	if ( wppa_is_user_blacklisted() ) return;
 
 	// In a widget or multi column responsive?
 	$small = ( $wppa['in_widget'] == 'upload' || $mcr );
@@ -702,9 +708,9 @@ static $seqno;
 	if ( wppa_switch( 'user_upload_login' ) ) {
 		if ( ! is_user_logged_in() ) return;					// Must login
 	}
-	if ( ! wppa_have_access( $alb ) ) {
-		return;						// No album access
-	}
+//	if ( ! wppa_have_access( $alb ) ) {
+//		return;						// No album access
+//	}
 
 	// Find max files for the user
 	$allow_me = wppa_allow_user_uploads();
@@ -792,7 +798,7 @@ static $seqno;
 			if ( ! $alb ) {	// No album given: select one
 				$wppa['out'] .= '
 			<select id="wppa-upload-album-'.$wppa['mocc'].'-'.$seqno.'" name="wppa-upload-album" style="float:left; max-width: '.$width.'px;" onchange="jQuery( \'#wppa-sel-'.$alb.'-'.$wppa['mocc'].'\' ).trigger( \'onchange\' )" >
-				'.wppa_album_select_a( array ( 'addpleaseselect' => true, 'checkaccess' => true, 'checkupload' => true, 'path' => wppa_switch( 'hier_albsel' ) ) ).'
+				'.wppa_album_select_a( array ( 'addpleaseselect' => true, 'checkowner' => true, 'checkupload' => true, 'path' => wppa_switch( 'hier_albsel' ) ) ).'
 			</select>
 			<br />';
 			}
@@ -1199,7 +1205,7 @@ global $wppa_first_comment_html;
 	if ( $comment_allowed ) {
 		$result .= '<div id="wppa-comform-wrap-'.$wppa['mocc'].'" style="display:none;" >';
 			$result .= '<form id="wppa-commentform-'.$wppa['mocc'].'" class="wppa-comment-form" action="'.$returnurl.'" method="post" style="" onsubmit="return wppaValidateComment( '.$wppa['mocc'].' )">';
-				$result .= wp_nonce_field( 'wppa-check' , 'wppa-nonce-'.$wppa['mocc'], false, false );
+				$result .= wp_nonce_field( 'wppa-nonce-'.wppa('mocc') , 'wppa-nonce-'.wppa('mocc'), false, false );
 				if ( $album ) $result .= '<input type="hidden" name="wppa-album" value="'.$album.'" />';
 				if ( $cover ) $result .= '<input type="hidden" name="wppa-cover" value="'.$cover.'" />';
 				if ( $slide ) $result .= '<input type="hidden" name="wppa-slide" value="'.$slide.'" />';

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * ask the album / display you want
-* Version 6.1.0
+* Version 6.1.3
 */
 
 
@@ -28,6 +28,7 @@ class SuperView extends WP_Widget {
 		require_once(dirname(__FILE__) . '/wppa-thumbnails.php');
 		require_once(dirname(__FILE__) . '/wppa-boxes-html.php');
 		require_once(dirname(__FILE__) . '/wppa-slideshow.php');
+		wppa_initialize_runtime();
 
         extract( $args );
 		$instance = wp_parse_args( (array) $instance, array( 

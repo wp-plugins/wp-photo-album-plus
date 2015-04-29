@@ -2,7 +2,7 @@
 /* wppa-ajax.php
 *
 * Functions used in ajax requests
-* version 6.1.0
+* version 6.1.3
 *
 */
 
@@ -70,6 +70,14 @@ global $wppa_session;
 			break;
 			
 		case 'do-comment':
+			// Security check
+			$mocc 	= $_REQUEST['moccur'];
+			$nonce 	= $_REQUEST['wppa-nonce'];
+			if ( ! wp_verify_nonce( $nonce, 'wppa-nonce-'.$mocc ) ) {
+				_e( 'Security check failure', 'wppa' );
+				exit;
+			}
+
 			// Correct the fact that this is a non-admin operation, if it is only
 			if ( is_admin() ) {
 				require_once 'wppa-non-admin.php';

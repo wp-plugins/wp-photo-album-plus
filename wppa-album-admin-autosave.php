@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * create, edit and delete albums
-* version 6.1.0
+* version 6.1.3
 *
 */
 
@@ -308,7 +308,7 @@ function _wppa_admin() {
 								</th>
 								<td style="max-width:210px;">
 									<?php if ( wppa_extended_access() ) { ?>
-										<select id="wppa-parsel" style="max-width:100%;" onchange="wppaAjaxUpdateAlbum(<?php echo $edit_id ?>, 'a_parent', this)" ><?php echo wppa_album_select_a(array('checkaccess' => true, 'exclude' => $albuminfo['id'], 'selected' => $albuminfo['a_parent'], 'addnone' => true, 'addseparate' => true, 'disableancestors' => true, 'path' => wppa_switch('wppa_hier_albsel'))) ?></select>
+										<select id="wppa-parsel" style="max-width:100%;" onchange="wppaAjaxUpdateAlbum(<?php echo $edit_id ?>, 'a_parent', this)" ><?php echo wppa_album_select_a(array('checkaccess' => true, 'exclude' => $albuminfo['id'], 'selected' => $albuminfo['a_parent'], 'addselected' => true, 'addnone' => true, 'addseparate' => true, 'disableancestors' => true, 'path' => wppa_switch('wppa_hier_albsel'))) ?></select>
 									<?php } else { ?>
 										<select id="wppa-parsel" style="max-width:100%;" onchange="wppaAjaxUpdateAlbum(<?php echo $edit_id ?>, 'a_parent', this)" ><?php echo wppa_album_select_a(array('checkaccess' => true, 'exclude' => $albuminfo['id'], 'selected' => $albuminfo['a_parent'], 'addselected' => true, 'disableancestors' => true, 'path' => wppa_switch('wppa_hier_albsel'))) ?></select>
 									<?php } ?>
@@ -1071,7 +1071,7 @@ function wppa_admin_albums_flat() {
 							<?php $nm = $counts['pendphotos']; ?>
 							<?php $ns = $counts['scheduledphotos']; ?>
 							<td><?php echo $na.'/'.$np.'/'.$nm.'/'.$ns; ?></td>
-							<?php if ( $album['owner'] != '--- public ---' || current_user_can('wppa_admin') ) { ?>
+							<?php if ( $album['owner'] != '--- public ---' || wppa_user_is('administrator') ) { ?>
 								<?php $url = wppa_ea_url($album['id']) ?>
 								<td><a href="<?php echo($url) ?>" class="wppaedit"><?php _e('Edit', 'wppa'); ?></a></td>
 								<td><a href="<?php echo($url.'&amp;quick') ?>" class="wppaedit"><?php _e('Quick', 'wppa'); ?></a></td>
@@ -1616,7 +1616,7 @@ global $wpdb;
 							<?php $nm = $counts['pendphotos']; ?>
 							<?php $ns = $counts['scheduledphotos']; ?>
 							<td><?php echo $na.'/'.$np.'/'.$nm.'/'.$ns; ?></td>
-							<?php if ( $album['owner'] != '--- public ---' || current_user_can('administrator') ) { ?>
+							<?php if ( $album['owner'] != '--- public ---' || wppa_user_is('administrator') ) { ?>
 								<?php $url = wppa_ea_url($album['id']) ?>
 								<td><a href="<?php echo($url) ?>" class="wppaedit"><?php _e('Edit', 'wppa'); ?></a></td>
 								<td><a href="<?php echo($url.'&amp;quick') ?>" class="wppaedit"><?php _e('Quick', 'wppa'); ?></a></td>

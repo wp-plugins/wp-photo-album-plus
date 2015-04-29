@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Various funcions
-* Version 6.1.0
+* Version 6.1.3
 *
 */
 
@@ -896,6 +896,7 @@ global $wppa_session;
 				$q = "SELECT * FROM `".WPPA_ALBUMS."` WHERE `a_parent` = ".implode( " OR `a_parent` = ", $ids )." ".wppa_get_album_order();
 			}
 			wppa_dbg_q( 'Q11c' );
+			wppa_dbg_msg( $q, 'red' );
 			$albums = $wpdb->get_results( $q, ARRAY_A );
 		}
 		else $albums = false;
@@ -1258,35 +1259,51 @@ global $wppa_session;
 		
 		// On which album( s )?
 		if ( strpos( $wppa['start_album'], '.' ) !== false ) $allalb = wppa_series_to_array( $wppa['start_album'] );
-		else $allalb = array( $wppa['start_album'] );
+		else $allalb = false;
 
-		// Do each album
-		foreach ( $allalb as $id ) {	
-			if ( is_numeric( $id ) ) {
-				$wppa['current_album'] = $id;
-				if ( $id == -2 ) {	// album == -2 is now: all albums
-					if ( current_user_can( 'wppa_moderate' ) ) {
-						$q = "SELECT * FROM `".WPPA_PHOTOS."` ".wppa_get_photo_order( '0' );
-					}
-					else {
-						$q = $wpdb->prepare( "SELECT * FROM `".WPPA_PHOTOS."` WHERE ( ( `status` <> 'pending' AND `status` <> 'scheduled' ) OR `owner` = %s ) ".wppa_get_photo_order( '0' ), wppa_get_user() );
-					}
-					$partthumbs = $wpdb->get_results( $q, ARRAY_A ); 
-					wppa_dbg_q( 'Q-PH1' );
-				}
-				else {
-					if ( current_user_can( 'wppa_moderate' ) ) {
-						$q = $wpdb->prepare( "SELECT * FROM ".WPPA_PHOTOS." WHERE album = %s ".wppa_get_photo_order( $id ), $id );
-					}
-					else {
-						$q = $wpdb->prepare( "SELECT * FROM `".WPPA_PHOTOS."` WHERE `album` = %s AND ( ( `status` <> 'pending' AND `status` <> 'scheduled' ) OR owner = %s ) ".wppa_get_photo_order( $id ), $id, wppa_get_user() );
-					}
-					$partthumbs = $wpdb->get_results( $q, ARRAY_A ); 
-					wppa_verify_treecounts( $id, 'photos', count( $partthumbs ) );
-					wppa_dbg_q( 'Q-PH2' );
-				}
-				if ( is_array( $partthumbs ) ) $thumbs = array_merge( $thumbs, $partthumbs );
+		wppa_dbg_msg( 'Startalbum = '.$wppa['start_album'], 'red');
+		/* Nieuwe versie */
+		
+		// All albums ?
+		if ( $wppa['start_album'] == -2 ) {
+			if ( current_user_can( 'wppa_moderate' ) ) {
+				$q = "SELECT * FROM `".WPPA_PHOTOS."` ".wppa_get_photo_order( '0' );
 			}
+			else {
+				$q = $wpdb->prepare( "SELECT * FROM `".WPPA_PHOTOS."` WHERE ( ( `status` <> 'pending' AND `status` <> 'scheduled' ) OR `owner` = %s ) ".wppa_get_photo_order( '0' ), wppa_get_user() );
+			}
+			wppa_dbg_msg( 'Q-PH1 '.$q, 'red' );
+			wppa_dbg_q( 'Q-PH1' );
+			$thumbs = $wpdb->get_results( $q, ARRAY_A ); 
+		}
+		// Single album ?
+		elseif ( wppa_is_int( $wppa['start_album'] ) ) {
+			if ( current_user_can( 'wppa_moderate' ) ) {
+				$q = "SELECT * FROM `".WPPA_PHOTOS."` WHERE `album` = ".$wppa['start_album']." ".wppa_get_photo_order( '0' );
+			}
+			else {
+				$q = $wpdb->prepare( "SELECT * FROM `".WPPA_PHOTOS."` WHERE ( ( `status` <> 'pending' AND `status` <> 'scheduled' ) OR `owner` = %s ) AND `album` = ".$wppa['start_album']." ".wppa_get_photo_order( '0' ), wppa_get_user() );
+			}
+			wppa_dbg_msg( 'Q-PH2 '.$q, 'red' );
+			wppa_dbg_q( 'Q-PH2' );
+			$thumbs = $wpdb->get_results( $q, ARRAY_A ); 
+		}
+		// Album enumeration?
+		elseif ( is_array( $allalb ) ) {
+			$wherealbum = ' `album` IN (' . implode( ',', $allalb ) . ') ';
+			if ( current_user_can( 'wppa_moderate' ) ) {
+				$q = "SELECT * FROM `".WPPA_PHOTOS."` WHERE " . $wherealbum . " " . wppa_get_photo_order( '0' );
+			}
+			else {
+				$q = $wpdb->prepare( "SELECT * FROM `".WPPA_PHOTOS."` WHERE ( ( `status` <> 'pending' AND `status` <> 'scheduled' ) OR `owner` = %s ) AND " . $wherealbum . " " . wppa_get_photo_order( '0' ), wppa_get_user() );
+			}
+			wppa_dbg_msg( 'Q-PH3 '.$q, 'red' );
+			wppa_dbg_q( 'Q-PH3' );
+			$thumbs = $wpdb->get_results( $q, ARRAY_A ); 
+		}
+		// Unimplemented start_album
+		else {
+			$thumbs = array();
 		}
 	}
 	
@@ -1587,9 +1604,9 @@ global $wppa_done;
 	$photo = isset( $_REQUEST['photo'] ) ? strval( intval( $_REQUEST['photo'] ) ) : '0';	//wppa_get_get( 'photo' );
 	if ( ! $photo ) $photo = isset( $_REQUEST['photo-id'] ) ? strval( intval( $_REQUEST['photo-id'] ) ) : '0';	//wppa_get_get( 'photo' );
 	if ( ! $photo ) die( 'Photo id missing while processing a comment' );
-	$user = wppa_get_post( 'comname' );
+	$user = strip_tags( wppa_get_post( 'comname' ) );
 	if ( ! $user ) die( 'Illegal attempt to enter a comment 1' );
-	$email = wppa_get_post( 'comemail' );
+	$email = strip_tags( wppa_get_post( 'comemail' ) );
 	if ( ! $email ) {
 		if ( wppa_switch( 'comment_email_required' ) ) die( 'Illegal attempt to enter a comment 2' );
 		else $email = wppa_get_user();	// If email not present and not required, use his IP
@@ -1780,7 +1797,8 @@ global $wppa_done;
 	//				}
 					
 					// Notyfy user
-					if ( wppa_switch( 'comment_notify_added' ) ) wppa_alert( __a( 'Comment added' ) );
+//					if ( wppa_switch( 'comment_notify_added' ) ) wppa_alert( __a( 'Comment added' ) );	// This doesnt work
+					if ( wppa_switch( 'comment_notify_added' ) ) echo( '<script id="cme" type="text/javascript">alert( "'.__a( 'Comment added' ).'" );jQuery( "#cme" ).html( "" );</script>' );
 				}
 			}
 			else {
