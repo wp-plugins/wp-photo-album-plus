@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the upload/import pages and functions
-* Version 6.1.0
+* Version 6.1.4
 *
 */
 
@@ -115,7 +115,7 @@ global $wppa_revno;
 						<p>
 							<label for="wppa-album"><?php _e( 'Album:', 'wppa' ); ?> </label>
 							<select name="wppa-album" id="wppa-album-s">
-								<?php echo wppa_album_select_a( array( 'path' => wppa_switch( 'wppa_hier_albsel' ),'addpleaseselect' => true, 'checkaccess' => true, 'checkupload' => true ) ) ?>
+								<?php echo wppa_album_select_a( array( 'path' => wppa_switch( 'wppa_hier_albsel' ),'addpleaseselect' => true, 'checkowner' => true, 'checkupload' => true ) ) ?>
 							</select>
 						</p>
 						<?php if ( wppa_switch( 'wppa_watermark_on' ) && ( wppa_switch( 'wppa_watermark_user' ) || current_user_can( 'wppa_settings' ) ) ) { ?>		
@@ -203,7 +203,7 @@ global $wppa_revno;
 						<p>
 							<label for="wppa-album"><?php _e( 'Album:', 'wppa' ); ?> </label>
 							<select name="wppa-album" id="wppa-album-s">
-								<?php echo wppa_album_select_a( array( 'path' => wppa_switch( 'wppa_hier_albsel' ), 'addpleaseselect' => true, 'checkaccess' => true, 'checkupload' => true ) ) ?>
+								<?php echo wppa_album_select_a( array( 'path' => wppa_switch( 'wppa_hier_albsel' ), 'addpleaseselect' => true, 'checkowner' => true, 'checkupload' => true ) ) ?>
 							</select>
 						</p>
 						<?php if ( wppa_switch( 'wppa_watermark_on' ) && ( wppa_switch( 'wppa_watermark_user' ) || current_user_can( 'wppa_settings' ) ) ) { ?>		
@@ -250,7 +250,7 @@ global $wppa_revno;
 						<p>
 							<label for="wppa-album"><?php _e( 'Album:', 'wppa' ); ?> </label>
 							<select name="wppa-album" id="wppa-album-m">
-								<?php echo wppa_album_select_a( array( 'path' => wppa_switch( 'wppa_hier_albsel' ), 'addpleaseselect' => true, 'checkaccess' => true, 'checkupload' => true ) );//( '', '', false, false, false, false, false, true ) ); ?>
+								<?php echo wppa_album_select_a( array( 'path' => wppa_switch( 'wppa_hier_albsel' ), 'addpleaseselect' => true, 'checkowner' => true, 'checkupload' => true ) );//( '', '', false, false, false, false, false, true ) ); ?>
 							</select>
 						</p>
 						<?php if ( wppa_switch( 'wppa_watermark_on' ) && ( wppa_switch( 'wppa_watermark_user' ) || current_user_can( 'wppa_settings' ) ) ) { ?>		
@@ -690,7 +690,7 @@ global $wppa_supported_audio_extensions;
 								<?php echo wppa_album_select_a( array( 	'path' 				=> wppa_switch( 'wppa_hier_albsel' ),
 																		'selected' 			=> get_option( 'wppa-photo-album-import-'.wppa_get_user(), '0' ),
 																		'addpleaseselect' 	=> true, 
-																		'checkaccess' 		=> true, 
+																		'checkowner' 		=> true, 
 																		'checkupload' 		=> true 
 																	) ) ?>
 							</select>
@@ -802,7 +802,7 @@ global $wppa_supported_audio_extensions;
 								<?php echo wppa_album_select_a( array( 	'path' 				=> wppa_switch( 'wppa_hier_albsel' ), 
 																		'selected' 			=> get_option( 'wppa-video-album-import-'.wppa_get_user(), '0' ),
 																		'addpleaseselect'	=> true, 
-																		'checkaccess' 		=> true, 
+																		'checkowner' 		=> true, 
 																		'checkupload' 		=> true 
 																	) ) ?>
 							</select>
@@ -859,7 +859,7 @@ global $wppa_supported_audio_extensions;
 								<?php echo wppa_album_select_a( array( 	'path' 				=> wppa_switch( 'wppa_hier_albsel' ),
 																		'selected' 			=> get_option( 'wppa-audio-album-import-'.wppa_get_user(), '0' ),
 																		'addpleaseselect' 	=> true, 
-																		'checkaccess' 		=> true, 
+																		'checkowner' 		=> true, 
 																		'checkupload' 		=> true 
 																	) ) ?>
 							</select>

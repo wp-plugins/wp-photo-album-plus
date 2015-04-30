@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Various funcions
-* Version 6.1.3
+* Version 6.1.4
 *
 */
 
@@ -1604,9 +1604,10 @@ global $wppa_done;
 	$photo = isset( $_REQUEST['photo'] ) ? strval( intval( $_REQUEST['photo'] ) ) : '0';	//wppa_get_get( 'photo' );
 	if ( ! $photo ) $photo = isset( $_REQUEST['photo-id'] ) ? strval( intval( $_REQUEST['photo-id'] ) ) : '0';	//wppa_get_get( 'photo' );
 	if ( ! $photo ) die( 'Photo id missing while processing a comment' );
-	$user = strip_tags( wppa_get_post( 'comname' ) );
+	$user = sanitize_user( wppa_get_post( 'comname' ) );
 	if ( ! $user ) die( 'Illegal attempt to enter a comment 1' );
-	$email = strip_tags( wppa_get_post( 'comemail' ) );
+	$email = sanitize_email( wppa_get_post( 'comemail' ) );
+
 	if ( ! $email ) {
 		if ( wppa_switch( 'comment_email_required' ) ) die( 'Illegal attempt to enter a comment 2' );
 		else $email = wppa_get_user();	// If email not present and not required, use his IP

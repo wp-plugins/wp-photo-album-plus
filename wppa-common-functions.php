@@ -2,7 +2,7 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 6.1.3
+* version 6.1.4
 * 
 */
 
@@ -2007,9 +2007,11 @@ global $wpdb;
 		if ( $args['checkaccess'] && ! wppa_have_access( $album['id'] ) ) {
 			$ok = false;
 		}
-		if ( $args['checkowner'] && $album['owner'] != wppa_get_user() && $album['owner']  != '--- public ---' ) {
-			if ( ! wppa_user_is( 'administrator' ) && wppa_switch( 'owner_only' ) ) {
-				$ok = false;
+		if ( $args['checkowner'] && wppa_switch( 'upload_owner_only' ) ) { 							// Need to check
+			if ( $album['owner'] != wppa_get_user() && $album['owner']  != '--- public ---' ) { 	// Not 'mine'
+				if ( ! wppa_user_is( 'administrator' ) ) {											// No admin
+					$ok = false;
+				}
 			}
 		}
 		if ( $selected && ! $args['addselected'] ) {

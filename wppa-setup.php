@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 6.1.3
+* Version 6.1.4
 * 
 */
 
@@ -341,6 +341,10 @@ global $silent;
 		
 		if ( $old_rev <= '5500' ) {
 			wppa_create_pl_htaccess( get_option( 'wppa_pl_dirname', 'wppa-pl' ) );		// Remake due to fix in wppa_sanitize_file_name()
+		}
+		
+		if ( $old_rev <= '6103' ) {
+			wppa_copy_setting( 'wppa_owner_only', 'wppa_upload_owner_only' );
 		}
 
 	}
@@ -1038,6 +1042,7 @@ Hide Camera info
 						// Table VII: Security
 						// B
 						'wppa_owner_only' 				=> 'no',
+						'wppa_upload_owner_only' 		=> 'no',
 						'wppa_user_album_edit_on' 		=> 'no',
 						'wppa_upload_moderate'			=> 'no',
 						'wppa_upload_edit'				=> 'no',

@@ -2,7 +2,7 @@
 /* wppa-ajax.php
 *
 * Functions used in ajax requests
-* version 6.1.3
+* version 6.1.4
 *
 */
 
@@ -43,6 +43,8 @@ global $wppa_session;
 	wppa_vfy_arg( 'photo-id' );
 	wppa_vfy_arg( 'comment-id' );
 	wppa_vfy_arg( 'moccur' );
+	wppa_vfy_arg( 'comemail', true );
+	wppa_vfy_arg( 'comname', true );
 	
 	$wppa_action = $_REQUEST['wppa-action'];
 	

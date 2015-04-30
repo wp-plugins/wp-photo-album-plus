@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 6.1.3
+* Version 6.1.4
 *
 */
 
@@ -5502,16 +5502,26 @@ global $wppa_tags;
 							wppa_setting_subheader('D', '2', __('Miscellaneous limiting settings', 'wppa'));
 							
 							$name = __('Owners only', 'wppa');
-							$desc = __('Limit album access to the album owners only.', 'wppa');
-							$help = esc_js(__('If checked, users who can edit albums and/or upload/import photos can do that with their own albums and --- public --- albums only.', 'wppa')); 
-							$help .= '\n'.esc_js(__('Users can give their albums to another user. Administrators can change ownership and access all albums always.', 'wppa'));
+							$desc = __('Limit edit album access to the album owners only.', 'wppa');
+							$help = esc_js(__('If checked, non-admin users can edit their own albums only.', 'wppa')); 
 							$slug = 'wppa_owner_only';
 							$html1 = wppa_checkbox($slug);
 							$html2 = '';
 							$html = array( $html1, $html2 );
 							$clas = ''; 
 							$tags = 'access,system';
-							wppa_setting($slug, '1', $name, $desc, $html, $help, $clas, $tags);
+							wppa_setting($slug, '1.1', $name, $desc, $html, $help, $clas, $tags);
+
+							$name = __('Upload Owners only', 'wppa');
+							$desc = __('Limit uploads to the album owners only.', 'wppa');
+							$help = esc_js(__('If checked, users can upload to their own own albums and --- public --- only.', 'wppa')); 
+							$slug = 'wppa_upload_owner_only';
+							$html1 = wppa_checkbox($slug);
+							$html2 = '';
+							$html = array( $html1, $html2 );
+							$clas = ''; 
+							$tags = 'access,system,upload';
+							wppa_setting($slug, '1.2', $name, $desc, $html, $help, $clas, $tags);
 							
 							$name = __('Uploader Edit', 'wppa');
 							$desc = __('Allow the uploader to edit the photo info', 'wppa');

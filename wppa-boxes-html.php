@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Various wppa boxes
-* Version 6.1.3
+* Version 6.1.4
 *
 *
 */
@@ -703,14 +703,21 @@ static $seqno;
 	if ( $seqno ) $seqno++;
 	else $seqno = '1';
 
-	// May I?
-	if ( ! wppa_switch( 'user_upload_on' ) ) return;			// Feature not enabled
+	// Feature enabled?
+	if ( ! wppa_switch( 'user_upload_on' ) ) return;
+	
+	// Login required?
 	if ( wppa_switch( 'user_upload_login' ) ) {
-		if ( ! is_user_logged_in() ) return;					// Must login
+		if ( ! is_user_logged_in() ) return;
 	}
-//	if ( ! wppa_have_access( $alb ) ) {
-//		return;						// No album access
-//	}
+	
+	// I should have access to this album ( $alb > 0 ).
+	if ( $alb > '0' ) {
+		$album_owner = wppa_get_album_item( $alb, 'owner' );
+		if ( $album_owner != wppa_get_user() && $album_owner != '--- public ---' && ! wppa_have_access( $alb ) ) {
+			return;
+		}
+	}
 
 	// Find max files for the user
 	$allow_me = wppa_allow_user_uploads();
