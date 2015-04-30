@@ -1279,10 +1279,10 @@ global $wppa_session;
 		// Single album ?
 		elseif ( wppa_is_int( $wppa['start_album'] ) ) {
 			if ( current_user_can( 'wppa_moderate' ) ) {
-				$q = "SELECT * FROM `".WPPA_PHOTOS."` WHERE `album` = ".$wppa['start_album']." ".wppa_get_photo_order( '0' );
+				$q = "SELECT * FROM `".WPPA_PHOTOS."` WHERE `album` = ".$wppa['start_album']." ".wppa_get_photo_order( $wppa['start_album'] );
 			}
 			else {
-				$q = $wpdb->prepare( "SELECT * FROM `".WPPA_PHOTOS."` WHERE ( ( `status` <> 'pending' AND `status` <> 'scheduled' ) OR `owner` = %s ) AND `album` = ".$wppa['start_album']." ".wppa_get_photo_order( '0' ), wppa_get_user() );
+				$q = $wpdb->prepare( "SELECT * FROM `".WPPA_PHOTOS."` WHERE ( ( `status` <> 'pending' AND `status` <> 'scheduled' ) OR `owner` = %s ) AND `album` = ".$wppa['start_album']." ".wppa_get_photo_order( $wppa['start_album'] ), wppa_get_user() );
 			}
 			wppa_dbg_msg( 'Q-PH2 '.$q, 'red' );
 			wppa_dbg_q( 'Q-PH2' );
