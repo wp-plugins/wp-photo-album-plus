@@ -2,7 +2,7 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 6.1.4
+* version 6.1.5
 * 
 */
 
@@ -2014,8 +2014,8 @@ global $wpdb;
 				}
 			}
 		}
-		if ( $selected && ! $args['addselected'] ) {
-			$ok = false;
+		if ( $selected && $args['addselected'] ) {
+			$ok = true;
 		}
 		if ( $ok ) {
 			if ( $args['addnumbers'] ) $number = ' ( '.$album['id'].' )'; else $number = '';

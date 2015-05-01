@@ -5,7 +5,7 @@
 * Various funcions to display a thumbnail image
 * Contains all possible frontend thumbnail types
 *
-* Version 6.1.0
+* Version 6.1.4
 * 
 */
 
@@ -33,6 +33,7 @@ global $wpdb;
 
 	// Get the album info
 	$album = wppa_cache_album( $thumb['album'] );
+	wppa( 'current_album', $album['id'] );
 
 	// Get photo info
 	$is_video 		= wppa_is_video( $id );
