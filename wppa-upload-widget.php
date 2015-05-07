@@ -39,7 +39,7 @@ class WppaUploadWidget extends WP_Widget {
  		$title = apply_filters('widget_title', $instance['title']);
 		$album = $instance['album'];
 		
-		if ( ! $wpdb->get_var( "SELECT COUNT(*) FROM `".WPPA_ALBUMS."` WHERE `id` = ".$album ) ) {
+		if ( ! $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM `".WPPA_ALBUMS."` WHERE `id` = %d", $album ) ) ) {
 			$album = '0';	// Album vanished
 		}
 		
