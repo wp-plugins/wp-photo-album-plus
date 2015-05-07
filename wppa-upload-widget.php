@@ -71,7 +71,7 @@ class WppaUploadWidget extends WP_Widget {
 	function update( $new_instance, $old_instance ) {
 		$instance = $old_instance;
 		$instance['title'] = strip_tags($new_instance['title']);
-		$instance['album'] = $new_instance['album'];
+		$instance['album'] = strval( intval( $new_instance['album'] ) );
 		return $instance;
 	}
 
