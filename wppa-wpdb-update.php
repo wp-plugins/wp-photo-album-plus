@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains low-level wpdb routines that update records
-* Version 6.1.0
+* Version 6.1.6
 *
 */
 
@@ -109,6 +109,7 @@ global $thumb;
 				$doit = true;
 				break;
 			case 'timestamp':
+			case 'modified':
 				if ( ! $itemvalue ) {
 					$itemvalue = time();
 				}
@@ -139,6 +140,9 @@ global $thumb;
 				break;
 			case 'filename':
 				$itemvalue = wppa_sanitize_file_name( $itemvalue );
+				$doit = true;
+				break;
+			case 'custom':
 				$doit = true;
 				break;
 

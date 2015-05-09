@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the non admin stuff
-* Version 6.1.0
+* Version 6.1.6
 * 
 */
 
@@ -203,13 +203,42 @@ global $wppa_js_page_data_file;
 		fclose ( $handle );
 	}
 
-	// wppa.js
+	// WPPA+ Javascript files.
+	// All wppa+ js files come in 2 flavours: the normal version and a minified version.
+	// If the minified version is available, it will be loaded, else the normal version.
+	// If you want to debug js, just delete the minified version; this will cause the normal
+	// - readable - version to be loaded.
+	$js_files = array ( 'wppa', 
+						'wppa-slideshow', 
+						'wppa-ajax-front', 
+						'wppa-lightbox' 
+					);
+	$js_depts = array ( array( 'jquery', 'jquery-form' ), 
+						array( 'jquery', 'wppa' ),
+						array( 'jquery', 'wppa' ),
+						array( 'jquery', 'wppa' )
+					);
+	foreach ( array_keys( $js_files ) as $idx ) {
+		if ( is_file( dirname( __FILE__ ) . '/' . $js_files[$idx] . '.min.js' ) ) {
+			wp_enqueue_script( $js_files[$idx], WPPA_URL . '/' . $js_files[$idx] . '.min.js', $js_depts[$idx], $wppa_api_version, $footer );
+		}
+		else {
+			wp_enqueue_script( $js_files[$idx], WPPA_URL . '/' . $js_files[$idx] . '.js', $js_depts[$idx], $wppa_api_version, $footer );
+		}
+	}
+/*
 	if ( is_file(WPPA_PATH.'/wppa.min.js') ) {
 		wp_enqueue_script( 'wppa', WPPA_URL.'/wppa.min.js', array( 'jquery', 'jquery-form' ), $wppa_api_version, $footer );
 	}
 	else {
 		wp_enqueue_script( 'wppa', WPPA_URL.'/wppa.js', array( 'jquery', 'jquery-form' ), $wppa_api_version, $footer );
 	}
+
+	// wppa-ajax-front.js
+	if ( is_file( dirname( __FILE__ ) . '/wppa-ajax-front.js' ) ) {
+		wp_enqueue_script( 'wppa-ajax-front', WPPA_URL . '/wppa-ajax-front.js', array( 'wppa', 'jquery' ), $wppa_api_version, $footer );
+	}
+*/	
 	// google maps
 	if ( wppa_opt( 'wppa_gpx_implementation' ) == 'wppa-plus-embedded' && strpos( wppa_opt( 'wppa_custom_content' ), 'w#location' ) !== false ) {
 		if ( wppa_opt( 'wppa_map_apikey' ) ) {
@@ -557,7 +586,6 @@ global $wppa_init_js_data;
 	wppaNumbarMax = "'.wppa_opt( 'wppa_numbar_max' ).'";
 	wppaLang = "'.$wppa_lang.'";
 	wppaNextOnCallback = '.( wppa_switch('wppa_next_on_callback') ? 'true' : 'false' ).';
-	wppaRatingUseAjax = true;
 	wppaStarOpacity = '.( wppa_opt( 'wppa_star_opacity' )/'100' ).';
 	wppaSlideWrap = '.( wppa_switch('wppa_slide_wrap') ? 'true' : 'false' ).';
 	wppaEmailRequired = '.( wppa_switch('wppa_comment_email_required') ? 'true' : 'false' ).';
@@ -587,7 +615,7 @@ global $wppa_init_js_data;
 	wppaShareHideWhenRunning = '.( wppa_switch('wppa_share_hide_when_running') ? 'true' : 'false' ).';
 	wppaFotomoto = '.( wppa_switch('wppa_fotomoto_on') ? 'true' : 'false' ).';
 	wppaArtMonkeyButton = '.( wppa_opt( 'wppa_art_monkey_display' ) == 'button' ? 'true' : 'false' ).';
-	wppaFotomotoHideHideWhenRunning = '.( wppa_switch('wppa_fotomoto_hide_when_running') ? 'true' : 'false' ).';
+	wppaFotomotoHideWhenRunning = '.( wppa_switch('wppa_fotomoto_hide_when_running') ? 'true' : 'false' ).';
 	wppaCommentRequiredAfterVote = '.( wppa_switch('wppa_vote_needs_comment') ? 'true' : 'false' ).';
 	wppaFotomotoMinWidth = '.wppa_opt( 'wppa_fotomoto_min_width' ).';
 	wppaShortQargs = '.( wppa_switch('wppa_use_short_qargs') ? 'true' : 'false' ).';

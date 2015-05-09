@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all comments
-* Version 6.1.0
+* Version 6.1.6
 *
 */
 
@@ -51,7 +51,7 @@ global $wppa;
 							<tr style="vertical-align:top" >
 								<th>
 									<?php $photo = $wpdb->get_row($wpdb->prepare( "SELECT * FROM ".WPPA_PHOTOS." WHERE id =  %s", $comment['photo']), "ARRAY_A" ) ?>
-									<?php $url = wppa_get_thumb_url($comment['photo']); ?>
+									<?php $url = wppa_fix_poster_ext(wppa_get_thumb_url($comment['photo']),$comment['photo']); ?>
 									<img src="<?php echo($url) ?>" />
 								</th>
 								<td>
@@ -332,7 +332,7 @@ global $wppa;
 								}								
 								if ($wppa_comadmin_linkpage == '0') { ?>
 									<td style="text-align:center">
-										<img src="<?php echo wppa_get_thumb_url($com['photo']); ?>" style="max-height:64px;max-width:64px;" />
+										<img src="<?php echo wppa_fix_poster_ext(wppa_get_thumb_url($com['photo']),$com['photo']); ?>" style="max-height:64px;max-width:64px;" />
 										<br />
 										<?php echo $albname ?>
 									</td><?php							
@@ -344,7 +344,7 @@ global $wppa;
 									$url .= 'wppa-album='.$alb.'&wppa-photo='.$com['photo'].'&wppa-occur=1'; ?>
 									<td style="text-align:center">
 										<a href="<? echo $url ?>" target="_blank">
-											<img title="<?php _e('Click to see the fullsize photo and all comments', 'wppa') ?>" src="<?php echo wppa_get_thumb_url($com['photo']); ?>" style="max-height:64px;max-width:64px;" />
+											<img title="<?php _e('Click to see the fullsize photo and all comments', 'wppa') ?>" src="<?php echo wppa_fix_poster_ext(wppa_get_thumb_url($com['photo']),$com['photo']); ?>" style="max-height:64px;max-width:64px;" />
 										</a>
 										<br />
 										<?php echo $albname ?>

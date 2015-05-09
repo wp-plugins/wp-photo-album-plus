@@ -79,6 +79,7 @@ function wppaInitSettings() {
 	wppaCheckGps();
 	wppaCheckFontPreview();
 	wppaCheckCheck( 'wppa_enable_video', 'wppa-video' );
+	wppaCheckCheck( 'wppa_custom_fields', 'custfields' );
 	
 	var tab = new Array('O','I','II','III','IV','V','VI','VII','VIII','IX','X','XI','XII');
 	var sub = new Array('A','B','C','D','E','F','G','H','I','J','K');

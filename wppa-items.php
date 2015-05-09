@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains functions to retrieve album and photo items
-* Version 6.1.3
+* Version 6.1.6
 *
 */
  
@@ -290,6 +290,28 @@ function wppa_get_photo_desc( $id, $do_shortcodes = false, $do_geo = false ) {
 			}
 			else {
 				$desc = str_replace( 'w#'.$timestamp, '&lsaquo;'.__a( 'unknown' ).'&rsaquo;', $desc );
+			}
+		}
+		
+		// Custom data fields
+		if ( wppa_switch( 'custom_fields' ) ) {
+			$custom = $thumb['custom'];
+			$custom_data = $custom ? unserialize( $custom ) : array( '', '', '', '', '', '', '', '', '', '' );
+			for ( $i = '0'; $i < '10'; $i++ ) {
+				if ( wppa_opt( 'custom_caption_'.$i ) ) {				// Field defined
+					if ( wppa_switch( 'custom_visible_'.$i ) ) {		// May be displayed
+						$desc = str_replace( 'w#cc'.$i, __( wppa_opt( 'custom_caption_'.$i ) ) . ':', $desc );	// Caption
+						$desc = str_replace( 'w#cd'.$i, __( stripslashes( $custom_data[$i] ) ), $desc );	// Data
+					}
+					else { 												// May not be displayed
+						$desc = str_replace( 'w#cc'.$i, '', $desc ); 	// Remove
+						$desc = str_replace( 'w#cd'.$i, '', $desc ); 	// Remove
+					}
+				}
+				else { 													// Field not defined
+					$desc = str_replace( 'w#cc'.$i, '', $desc ); 		// Remove
+					$desc = str_replace( 'w#cd'.$i, '', $desc ); 		// Remove
+				}
 			}
 		}
 	}

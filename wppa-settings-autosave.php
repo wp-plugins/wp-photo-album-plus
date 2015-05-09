@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 6.1.4
+* Version 6.1.6
 *
 */
 
@@ -2588,6 +2588,30 @@ global $wppa_tags;
 							$clas = '';
 							$tags = 'layout,meta';
 							wppa_setting($slug, '5', $name, $desc, $html, $help, $clas, $tags);
+							
+							$name = __('Custom datafields', 'wppa');
+							$desc = __('Define up to 10 custom data fields for photos.', 'wppa');
+							$help = '';
+							$slug = 'wppa_custom_fields';
+							$onch = 'wppaCheckCheck(\'wppa_custom_fields\', \'custfields\' )';
+							$html = wppa_checkbox($slug, $onch);
+							$clas = '';
+							$tags = 'meta';
+							wppa_setting($slug, '10', $name, $desc, $html, $help, $clas, $tags);
+							
+							for ( $i = '0'; $i < '10'; $i++ ) {
+								$name = sprintf(__('Name and visibility %s', 'wppa'), $i);
+								$desc = sprintf(__('The caption for field %s and visibility at frontend.', 'wppa'), $i);
+								$help = esc_js(sprintf(__('If you check the box, the value of this field is displayable in photo descriptions at the frontend with keyword w#c%s', 'wppa'), $i));
+								$slug1 = 'wppa_custom_caption_'.$i;
+								$html1 = wppa_input($slug1, '300px');
+								$slug2 = 'wppa_custom_visible_'.$i;
+								$html2 = wppa_checkbox($slug2);
+								$clas = 'custfields';
+								$tags = 'meta';
+								wppa_setting(array($slug1,$slug2), '10.'.$i.'a,b', $name, $desc, $html1.$html2, $help, $clas, $tags);
+							}
+
 							}
 							?>
 						</tbody>

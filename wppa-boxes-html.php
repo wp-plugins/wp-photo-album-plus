@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Various wppa boxes
-* Version 6.1.4
+* Version 6.1.6
 *
 *
 */
@@ -823,7 +823,7 @@ static $seqno;
 			<input type="file" capture="camera" multiple="multiple" class="wppa-user-file" style="width: auto; max-width: '.$width.'; margin: 6px 0; float:left; '.__wcs( 'wppa-box-text' ).'" id="wppa-user-upload-'.$alb.'-'.$wppa['mocc'].'" name="wppa-user-upload-'.$alb.'-'.$wppa['mocc'].'[]" onchange="jQuery( \'#wppa-user-submit-'.$alb.'-'.$wppa['mocc'].'\' ).css( \'display\', \'block\' )" />';
 			}
 			
-			$onclick = $alb ? '' : ' onclick="if ( document.getElementById( \'wppa-upload-'.$wppa['mocc'].'\' ).value == 0 ) {alert( \''.esc_js( __a( 'Please select an album and try again' ) ).'\' );return false;}"';
+			$onclick = $alb ? '' : ' onclick="if ( document.getElementById( \'wppa-upload-album-'.$wppa['mocc'].'-'.$seqno.'\' ).value == 0 ) {alert( \''.esc_js( __a( 'Please select an album and try again' ) ).'\' );return false;}"';
 
 			$wppa['out'] .= '
 			<input type="submit" id="wppa-user-submit-'.$alb.'-'.$wppa['mocc'].'"'.$onclick.' style="display:none; margin: 6px 0; float:right; '.__wcs( 'wppa-box-text' ).'" class="wppa-user-submit" name="wppa-user-submit-'.$alb.'-'.$wppa['mocc'].'" value="'.__a( 'Upload photo' ).'" />

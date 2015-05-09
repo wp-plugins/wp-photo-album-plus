@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the last uploaded photos
-* Version 6.1.3
+* Version 6.1.6
 */
 
 class LasTenWidget extends WP_Widget {
@@ -141,7 +141,7 @@ class LasTenWidget extends WP_Widget {
     function update($new_instance, $old_instance) {				
 		$instance = $old_instance;
 		$instance['title'] 			= strip_tags($new_instance['title']);
-		$instance['album'] 			= $new_instance['album'];
+		$instance['album'] 			= strval( intval( $new_instance['album'] ) );
 		$instance['albumenum'] 		= $new_instance['albumenum'];
 		if ( $instance['album'] != '-99' ) $instance['albumenum'] = '';
 		$instance['timesince'] 		= $new_instance['timesince'];

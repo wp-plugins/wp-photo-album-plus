@@ -2,7 +2,7 @@
 /* wppa-ajax.php
 *
 * Functions used in ajax requests
-* version 6.1.4
+* version 6.1.6
 *
 */
 
@@ -198,6 +198,9 @@ global $wppa_session;
 			$zipfilename = wppa_get_album_name( $alb );
 			$zipfilename = wppa_sanitize_file_name( $zipfilename.'.zip' ); 				// Remove illegal chars
 			$zipfilepath = WPPA_UPLOAD_PATH.'/temp/'.$zipfilename;
+			if ( is_file( $zipfilepath ) ) {
+		//		unlink( $zipfilepath );	// Debug
+			}
 			$wppa_zip = new ZipArchive;
 			$iret = $wppa_zip->open( $zipfilepath, 1 );
 			if ( $iret !== true ) {
@@ -208,11 +211,13 @@ global $wppa_session;
 			// Add photos to zip
 			foreach ( $photos as $p ) {
 				$id = $p['id'];
-				if ( ! wppa_is_video( $id ) ) {
+				if ( ! wppa_is_multi( $id ) ) {
 					$source = ( wppa_switch( 'wppa_download_album_source' ) && is_file( wppa_get_source_path( $id ) ) ) ? wppa_get_source_path( $id ) : wppa_get_photo_path( $id );
 					if ( is_file( $source ) ) {
-						$dest 	= $p['filename'] ? wppa_sanitize_file_name( $p['filename'] ) : wppa_sanitize_file_name( wppa_strip_ext( $p['name'] ).'.'.$p['ext'] );
+						$dest = $p['filename'] ? wppa_sanitize_file_name( $p['filename'] ) : wppa_sanitize_file_name( wppa_strip_ext( $p['name'] ).'.'.$p['ext'] );
+						$dest = wppa_fix_poster_ext( $dest, $id );
 						$iret = $wppa_zip->addFile( $source, $dest );
+						
 						// To prevent too may files open, and to have at least a file when there are too many photos, close and re-open
 						$wppa_zip->close();
 						$wppa_zip->open( $zipfilepath );
@@ -391,7 +396,7 @@ global $wppa_session;
 			}
 			
 			// Get other data
-			if ( ! wppa_is_video( $photo ) && ! file_exists( wppa_get_thumb_path( $photo ) ) ) {
+			if ( ! $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM `".WPPA_PHOTOS."` WHERE `id` = %s", $photo ) ) ) {
 				echo '0||999||'.__( 'Photo has been removed.', 'wppa' );
 				exit;
 			}
@@ -1163,6 +1168,30 @@ global $wppa_session;
 					else {
 						echo '||0||'.sprintf( __( '<b>%s</b> of photo %s updated', 'wppa' ), $itemname, $photo );
 					}
+					break;
+				
+				case 'custom_0':
+				case 'custom_1':
+				case 'custom_2':
+				case 'custom_3':
+				case 'custom_4':
+				case 'custom_5':
+				case 'custom_6':
+				case 'custom_7':
+				case 'custom_8':
+				case 'custom_9':
+					$index 		= substr( $item, -1 );
+					$custom 	= wppa_get_photo_item( $photo, 'custom' );
+					if ( $custom ) {
+						$custom_data = unserialize( $custom );
+					}
+					else {
+						$custom_data = array( '', '', '', '', '', '', '', '', '', '' );
+					}
+					$custom_data[$index] = strip_tags( $value );
+					$custom = serialize( $custom_data );
+					wppa_update_photo( array( 'id' => $photo, 'custom' => $custom ) );
+					echo '||0||'.sprintf( __( '<b>Custom field %s</b> of photo %s updated', 'wppa' ), wppa_opt( 'custom_caption_'.$index ), $photo );
 					break;
 					
 				default:

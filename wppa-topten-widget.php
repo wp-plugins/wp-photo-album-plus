@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the top rated photos
-* Version 6.1.3
+* Version 6.1.6
 */
 
 class TopTenWidget extends WP_Widget {
@@ -171,8 +171,8 @@ class TopTenWidget extends WP_Widget {
     /** @see WP_Widget::update */
     function update($new_instance, $old_instance) {				
 		$instance = $old_instance;
-		$instance['title'] 			= strip_tags($new_instance['title']);
-		$instance['album'] 			= $new_instance['album'];
+		$instance['title'] 			= strip_tags( $new_instance['title'] );
+		$instance['album'] 			= strval( intval( $new_instance['album'] ) );
 		$instance['sortby'] 		= $new_instance['sortby'];
 		$instance['display'] 		= $new_instance['display'];
 		$instance['meanrat']		= $new_instance['meanrat'];

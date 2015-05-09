@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains low-level utility routines
-* Version 6.1.3
+* Version 6.1.6
 * 
 */
  
@@ -1529,6 +1529,7 @@ global $thumb;
 global $wpdb;
 
 	if ( ! $photo ) return '0';					// No photo id, no page
+	if ( ! wppa_is_int( $photo ) ) return '0';	// $photo not numeric
 	
 	wppa_cache_thumb( $photo );					// Get photo info
 	
@@ -1541,7 +1542,7 @@ global $wpdb;
 	$page = wppa_create_page( $thumb['name'], '[wppa type="autopage"][/wppa]' );
 	
 	// Store with photo data
-	$wpdb->query( "UPDATE `".WPPA_PHOTOS."` SET `page_id` = ".$page." WHERE `id` = ".$photo );
+	$wpdb->query( $wpdb->prepare( "UPDATE `".WPPA_PHOTOS."` SET `page_id` = ".$page." WHERE `id` = %d", $photo ) );
 	
 	// Update cache
 	$thumb['page_id'] = $page;		
@@ -2258,7 +2259,7 @@ global $wpdb;
 		$max_count = wppa_opt( 'wppa_comten_count' );
 	}
 	
-	$photo_ids = $wpdb->get_results( "SELECT `photo` FROM `".WPPA_COMMENTS."` WHERE `status` = 'approved' ORDER BY `timestamp` DESC LIMIT " . 100 * $max_count, ARRAY_A );
+	$photo_ids = $wpdb->get_results( $wpdb->prepare( "SELECT `photo` FROM `".WPPA_COMMENTS."` WHERE `status` = 'approved' ORDER BY `timestamp` DESC LIMIT %d", 100 * $max_count), ARRAY_A );
 	$result = array();
 	
 	if ( is_array( $photo_ids ) ) {

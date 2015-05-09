@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, video, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, myCRED, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile, cloudinary, fotomoto, CMTooltipGlossary
-Version: 6.1.5
+Version: 6.1.6
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -188,6 +188,23 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 6.1.6 =
+
+= Bug Fixes =
+
+* If no album selected in frontend upload widget/box an alertbox will be displayed.
+* Fotomoto 'hide when running' now works.
+
+= New Features =
+
+* Up to 10 custom datafields for photos can be defined. See Table II-J10(.x).
+See http://wppa.opajaap.nl/using-custom-data-fields/ for an explanation.
+
+= Other Changes =
+
+* wppa.js is now split into 4 files.
+* All front-end ajax actions are now asynchronous using jQuery.ajax().
 
 = 6.1.5 =
 

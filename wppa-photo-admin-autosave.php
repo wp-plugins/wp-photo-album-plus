@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * edit and delete photos
-* version 6.1.0
+* version 6.1.6
 * 
 */
 
@@ -660,8 +660,8 @@ global $wppa;
 							</tr>
 							
 							<!-- Description -->
-							<tr  >
-								<th  >
+							<tr>
+								<th>
 									<label><?php _e( 'Description:', 'wppa' ); ?></label>
 								</th>
 								<?php if ( wppa_switch( 'wppa_use_wp_editor' ) ) { ?>
@@ -684,6 +684,40 @@ global $wppa;
 								<?php } ?>
 							</tr>
 							
+							<!-- Custom -->
+							<?php
+								if ( wppa_switch( 'custom_fields' ) ) {
+									$custom = wppa_get_photo_item( $photo['id'], 'custom' );
+									if ( $custom ) {
+										$custom_data = unserialize( $custom );
+									}
+									else {
+										$custom_data = array( '', '', '', '', '', '', '', '', '', '' );
+									}
+									foreach( array_keys( $custom_data ) as $key ) {
+										if ( wppa_opt( 'custom_caption_'.$key ) ) {
+											?>
+												<tr>
+													<th>
+														<label><?php echo wppa_opt( 'custom_caption_'.$key ) . ':<br /><small>(w#cc'.$key.')</small>' ?></label>
+													</th>
+													<td>
+														<?php echo '<small>(w#cd'.$key.')</small>' ?>
+														<input 	type="text" 
+																style="width:85%; float:right;" 
+																id="pname-<?php echo $photo['id'] ?>" 
+																onkeyup="wppaAjaxUpdatePhoto( <?php echo $photo['id'] ?>, 'custom_<?php echo $key ?>', this );" 
+																onchange="wppaAjaxUpdatePhoto( <?php echo $photo['id'] ?>, 'custom_<?php echo $key ?>', this );" 
+																value="<?php echo esc_attr( stripslashes( $custom_data[$key] ) ) ?>" 
+																/>
+
+													</td>
+												</tr>
+											<?php
+										}
+									}
+								}							
+							?>
 							<!-- Tags -->
 							<tr style="vertical-align:middle;" >
 								<th  >
@@ -952,6 +986,10 @@ function wppa_album_photos_bulk( $album ) {
 							else wppa_error_message( 'Unexpected error #3 in wppa_album_photos_bulk().' );
 							break;
 						case 'wppa-bulk-status':
+							if ( ! in_array( $status, array( 'publish', 'pending', 'featured', 'scheduled', 'gold', 'silver', 'bronze' ) ) ) {
+								wppa_log( 'error', 'Unknown status '.strip_tags( $status ).' found in wppa-photo-admin-autosave.php -> wppa_album_photos_bulk()' );
+								$status = 'publish';
+							}
 							if ( current_user_can( 'wppa_admin' ) || current_user_can( 'wppa_moderate' ) ) {
 								if ( $status == 'publish' || $status == 'pending' || wppa_user_is( 'administrator' ) || ! wppa_switch( 'wppa_ext_status_restricted' ) ) {
 									$wpdb->query( "UPDATE `".WPPA_PHOTOS."` SET `status` = '".$status."' WHERE `id` = ".$id );

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 6.1.4
+* Version 6.1.6
 * 
 */
 
@@ -94,6 +94,7 @@ global $silent;
 					photox smallint(5) NOT NULL default '0',
 					photoy smallint(5) NOT NULL default '0',
 					scheduledtm tinytext NOT NULL,
+					custom longtext NOT NULL,
 					PRIMARY KEY  (id),
 					KEY albumkey (album)
 					) DEFAULT CHARACTER SET utf8;";
@@ -753,6 +754,29 @@ Hide Camera info
 						'wppa_up_tag_input_on' 			=> 'yes',
 						'wppa_up_tag_input_title' 		=> __( 'Enter new tags:', 'wppa' ),
 						'wppa_up_tag_preview' 			=> 'yes',
+						
+						// J Custom datafields
+						'wppa_custom_fields' 			=> 'no',
+						'wppa_custom_caption_0' 		=> '',
+						'wppa_custom_visible_0' 		=> 'no',
+						'wppa_custom_caption_1' 		=> '',
+						'wppa_custom_visible_1' 		=> 'no',
+						'wppa_custom_caption_2' 		=> '',
+						'wppa_custom_visible_2' 		=> 'no',
+						'wppa_custom_caption_3' 		=> '',
+						'wppa_custom_visible_3' 		=> 'no',
+						'wppa_custom_caption_4' 		=> '',
+						'wppa_custom_visible_4' 		=> 'no',
+						'wppa_custom_caption_5' 		=> '',
+						'wppa_custom_visible_5' 		=> 'no',
+						'wppa_custom_caption_6' 		=> '',
+						'wppa_custom_visible_6' 		=> 'no',
+						'wppa_custom_caption_7' 		=> '',
+						'wppa_custom_visible_7' 		=> 'no',
+						'wppa_custom_caption_8' 		=> '',
+						'wppa_custom_visible_8' 		=> 'no',
+						'wppa_custom_caption_9' 		=> '',
+						'wppa_custom_visible_9' 		=> 'no',
 
 
 						// Table III: Backgrounds

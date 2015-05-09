@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the upload/import pages and functions
-* Version 6.1.4
+* Version 6.1.6
 *
 */
 
@@ -363,7 +363,7 @@ global $wppa_supported_audio_extensions;
 	}
 	
 	// Verify last albums still exist
-	$alb = get_option( 'wppa-photo-album-import-'.wppa_get_user(), '0' );
+	$alb = strval( intval( get_option( 'wppa-photo-album-import-'.wppa_get_user(), '0' ) ) );
 	if ( $alb ) {
 		$exists = $wpdb->get_var( "SELECT COUNT(*) FROM `" . WPPA_ALBUMS ."`  WHERE `id` = ".$alb );
 		if ( ! $exists ) update_option( 'wppa-photo-album-import-'.wppa_get_user(), '0' );
