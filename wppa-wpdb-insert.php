@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains low-level wpdb routines that add new records
-* Version 5.4.12
+* Version 6.1.6
 *
 */
 
@@ -251,7 +251,8 @@ global $wpdb;
 					'exifdtm' 			=> '',
 					'videox' 			=> '0',
 					'videoy' 			=> '0',
-					'scheduledtm' 		=> $args['album'] ? $wpdb->get_var( $wpdb->prepare( "SELECT `scheduledtm` FROM `".WPPA_ALBUMS."` WHERE `id` = %s", $args['album'] ) ) : ''
+					'scheduledtm' 		=> $args['album'] ? $wpdb->get_var( $wpdb->prepare( "SELECT `scheduledtm` FROM `".WPPA_ALBUMS."` WHERE `id` = %s", $args['album'] ) ) : '',
+					'custom'			=> ''
 					) );
 
 	if ( $args['scheduledtm'] ) $args['status'] = 'scheduled';
@@ -282,9 +283,10 @@ global $wpdb;
 																	`exifdtm`,
 																	`videox`,
 																	`videoy`,
-																	`scheduledtm`
+																	`scheduledtm`,
+																	`custom`
 																)
-														VALUES ( %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s )",
+														VALUES ( %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s )",
 																$args['id'],
 																$args['album'],
 																$args['ext'],
@@ -309,7 +311,8 @@ global $wpdb;
 																$args['exifdtm'],
 																$args['videox'],
 																$args['videoy'],
-																$args['scheduledtm']
+																$args['scheduledtm'],
+																$args['custom']
 														);
 	$iret = $wpdb->query($query);
 	
