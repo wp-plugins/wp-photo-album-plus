@@ -4,7 +4,7 @@
 *
 * Functions for counts etc
 * Common use front and admin
-* Version 5.4.10
+* Version 6.1.6
 *
 */
 
@@ -39,7 +39,7 @@ function wppa_get_statistics() {
 }
 
 // get number of photos in album 
-function wppa_get_photo_count( $id, $use_treecounts = false ) {
+function wppa_get_photo_count( $id = '0', $use_treecounts = false ) {
 global $wpdb;
     
 	if ( $use_treecounts ) {
@@ -49,6 +49,14 @@ global $wpdb;
 		}
 		else {
 			$count = $treecounts['selfphotos'];
+		}
+	}
+	elseif ( ! $id ) {
+		if ( current_user_can('wppa_moderate') ) {
+			$count = $wpdb->get_var( "SELECT COUNT(*) FROM `".WPPA_PHOTOS."` " );
+		}
+		else {
+			$count = $wpdb->get_var( "SELECT COUNT(*) FROM `".WPPA_PHOTOS,"` WHERE ( ( `status` <> 'pending' AND `status` <> 'scheduled' ) OR owner = %s )", wppa_get_user() );
 		}
 	}
 	else {
