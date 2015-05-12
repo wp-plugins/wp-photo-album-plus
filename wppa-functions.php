@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Various funcions
-* Version 6.1.4
+* Version 6.1.7
 *
 */
 
@@ -3622,6 +3622,17 @@ global $wpdb;
 		// Repair photoname if not standard
 		if ( ! wppa_get_post( 'user-name' ) ) {
 			wppa_set_default_name( $id, $file['name'] );
+		}
+		
+		// Custom data
+		if ( wppa_switch( 'fe_custom_fields' ) ) {
+			$custom_data = array( '', '', '', '', '', '', '', '', '', '' );
+			for ( $i = '0'; $i < '10' ; $i++ ) {		
+				if ( isset( $_POST['wppa-user-custom-'.$i] ) ) {
+					$custom_data[$i] = strip_tags( $_POST['wppa-user-custom-'.$i] );
+				}
+			}
+			wppa_update_photo( array( 'id' => $id, 'custom' => serialize( $custom_data ) ) );
 		}
 		
 		// Default tags

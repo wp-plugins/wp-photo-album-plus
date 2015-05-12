@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 6.1.6
+* Version 6.1.7
 * 
 */
 
@@ -738,6 +738,7 @@ Hide Camera info
 						'wppa_name_user' 				=> 'yes',
 						'wppa_apply_newphoto_desc_user'	=> 'no',
 						'wppa_desc_user' 				=> 'yes',
+						'wppa_fe_custom_fields' 		=> 'no',
 						'wppa_fe_upload_tags' 			=> 'no',
 						'wppa_up_tagselbox_on_1' 		=> 'yes',		// 18
 						'wppa_up_tagselbox_multi_1' 	=> 'yes',

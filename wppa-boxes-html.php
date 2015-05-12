@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Various wppa boxes
-* Version 6.1.6
+* Version 6.1.7
 *
 *
 */
@@ -77,7 +77,7 @@ global $wppa_session;
 				$result .= '<small>'.$wppa_session['display_searchstring'].'<br /></small>';
 			}
 			$result .= '
-			<input type="text" name="wppa-searchstring" id="wppa_s-'.$wppa['mocc'].'" value="'.$value.'" />
+			<input type="text" class="wppa-search-input" style="width:60%;" name="wppa-searchstring" id="wppa_s-'.$wppa['mocc'].'" value="'.$value.'" />
 			<input id="wppa_searchsubmit-'.$wppa['mocc'].'" type="submit" name="wppa-search-submit" value="'.__a( 'Search' ).'" onclick="if ( document.getElementById( \'wppa_s-'.$wppa['mocc'].'\' ).value == \'\' ) return false;" />';
 			
 			$result .= '
@@ -925,6 +925,27 @@ static $seqno;
 		}
 		elseif ( wppa_switch( 'apply_newphoto_desc_user' ) ) {
 			wppa_out( '<input type="hidden" value="'.esc_attr( wppa_opt( 'wppa_newphoto_description' ) ).'" name="wppa-user-desc" />' );
+		}
+		
+		// Custom fields
+		if ( wppa_switch( 'fe_custom_fields' ) ) {
+			for ( $i = '0'; $i < '10' ; $i++ ) {
+				if ( wppa_opt( 'custom_caption_'.$i ) ) {
+				 $wppa['out'] .= '
+					<div' .
+						' class="wppa-box-text wppa-td"' .
+						' style="clear:both; float:left; text-align:left; '.__wcs( 'wppa-box-text' ).__wcs( 'wppa-td' ).'"' .
+						' >'.
+							__( wppa_opt( 'custom_caption_'.$i ) ) . ': ' .
+							( wppa_switch( 'custom_visible_'.$i ) ? '' : '&nbsp;<small><i>(&nbsp;'.__a( 'hidden', 'wppa' ).'&nbsp;)</i></small>' ).'
+					</div>
+					<input' .
+						' type="text"' .
+						' class="wppa-box-text wppa-file-'.$t.$wppa['mocc'].'"' .
+						' style="padding:0; width:'.( $width-6 ).'px; '.__wcs( 'wppa-box-text' ).'"' .
+						' name="wppa-user-custom-'.$i.'" />';
+				}
+			}
 		}
 		
 		// Tags

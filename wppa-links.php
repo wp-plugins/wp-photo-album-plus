@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Frontend links
-* Version 6.1.0
+* Version 6.1.7
 *
 */
 
@@ -905,20 +905,20 @@ function wppa_page_links( $npages = '1', $curpage = '1', $slide = false ) {
 		wppa_out( '<div id="prev-page" style="float:left; text-align:left; '.$vis.'">' );
 			wppa_out( '<span class="wppa-arrow" style="'.__wcs('wppa-arrow').'cursor: default;">&laquo;&nbsp;</span>' );
 			if ( wppa_switch('wppa_allow_ajax') ) {
-				wppa_out( '<a style="cursor:pointer;" id="p-p" onclick="wppaDoAjaxRender('.wppa( 'mocc' ).', \''.$ajax_url.'&amp;wppa-page='.($curpage - 1).'\', \''.wppa_convert_to_pretty($link_url.'&amp;wppa-page='.($curpage - 1)).'\')" >'.__a('Prev.&nbsp;page').'</a>' );
+				wppa_out( '<a style="cursor:pointer;" id="p-p" onclick="wppaDoAjaxRender('.wppa( 'mocc' ).', \''.$ajax_url.'&amp;wppa-page='.($curpage - 1).'\', \''.wppa_convert_to_pretty($link_url.'&amp;wppa-page='.($curpage - 1)).'\')" >'.__a('Previous').'</a>' );
 			}
 			else {
-				wppa_out( wppa_nltab().'<a style="cursor:pointer;" id="p-p" href="'.$link_url.'&amp;wppa-page='.($curpage - 1).'" >'.__a('Prev.&nbsp;page', 'wppa_theme').'</a>' );
+				wppa_out( wppa_nltab().'<a style="cursor:pointer;" id="p-p" href="'.$link_url.'&amp;wppa-page='.($curpage - 1).'" >'.__a('Previous').'</a>' );
 			}
 		wppa_out( '</div><!-- #prev-page -->' );
 		
 		$vis = $curpage == $npages ? 'visibility: hidden;' : '';
 		wppa_out( '<div id="next-page" style="float:right; text-align:right; '.$vis.'">' );
 			if ( wppa_switch('wppa_allow_ajax') ) {
-				wppa_out( '<a style="cursor:pointer;" id="n-p" onclick="wppaDoAjaxRender('.wppa( 'mocc' ).', \''.$ajax_url.'&amp;wppa-page='.($curpage + 1).'\', \''.wppa_convert_to_pretty($link_url.'&amp;wppa-page='.($curpage + 1)).'\')" >'.__a('Next&nbsp;page').'</a>' );
+				wppa_out( '<a style="cursor:pointer;" id="n-p" onclick="wppaDoAjaxRender('.wppa( 'mocc' ).', \''.$ajax_url.'&amp;wppa-page='.($curpage + 1).'\', \''.wppa_convert_to_pretty($link_url.'&amp;wppa-page='.($curpage + 1)).'\')" >'.__a('Next').'</a>' );
 			}
 			else {
-				wppa_out( '<a style="cursor:pointer;" id="n-p" href="'.$link_url.'&amp;wppa-page='.($curpage + 1).'" >'.__a('Next&nbsp;page').'</a>' );
+				wppa_out( '<a style="cursor:pointer;" id="n-p" href="'.$link_url.'&amp;wppa-page='.($curpage + 1).'" >'.__a('Next').'</a>' );
 			}
 			wppa_out( '<span class="wppa-arrow" style="'.__wcs('wppa-arrow').'cursor: default;">&nbsp;&raquo;</span>' );
 		wppa_out( '</div><!-- #next-page -->' );

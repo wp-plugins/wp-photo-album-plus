@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 6.1.6
+* Version 6.1.7
 *
 */
 
@@ -28,7 +28,7 @@ global $wppa_tags;
 	// Test area
 	
 	// End test area
-	
+
 	// Initialize
 	wppa_initialize_runtime( true );
 	$options_error = false;
@@ -2438,6 +2438,15 @@ global $wppa_tags;
 							$tags = 'upload';
 							wppa_setting($slug, '9', $name, $desc, $html, $help, $clas, $tags);
 
+							$name = __('User upload custom', 'wppa');
+							$desc = __('Frontend upload can fill in custom data fields.', 'wppa');
+							$help = esc_js('Custom datafields can be defined in Table II-J10', 'wppa');
+							$slug = 'wppa_fe_custom_fields';
+							$html = wppa_checkbox($slug);
+							$clas = 'wppa_feup custfields';
+							$tags = 'upload';
+							wppa_setting($slug, '10', $name, $desc, $html, $help, $clas, $tags);
+							
 							$name = __('User upload tags', 'wppa');
 							$desc = __('Frontend upload can add tags.', 'wppa');
 							$help = esc_js(__('You can configure the details of tag addition in Table IX-D18.x', 'wppa'));
@@ -2446,7 +2455,7 @@ global $wppa_tags;
 							$html = wppa_checkbox($slug, $onchange);
 							$clas = 'wppa_feup';
 							$tags = 'upload';
-							wppa_setting($slug, '10', $name, $desc, $html, $help, $clas, $tags);
+							wppa_setting($slug, '11', $name, $desc, $html, $help, $clas, $tags);
 
 							$name = __('Tag selection box', 'wppa').' 1';
 							$desc = __('Front-end upload tags selecion box.', 'wppa');
