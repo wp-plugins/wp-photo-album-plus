@@ -1191,6 +1191,7 @@ global $wppa_session;
 					$custom_data[$index] = strip_tags( $value );
 					$custom = serialize( $custom_data );
 					wppa_update_photo( array( 'id' => $photo, 'custom' => $custom ) );
+					wppa_index_update( 'photo', $photo );
 					echo '||0||'.sprintf( __( '<b>Custom field %s</b> of photo %s updated', 'wppa' ), wppa_opt( 'custom_caption_'.$index ), $photo );
 					break;
 					

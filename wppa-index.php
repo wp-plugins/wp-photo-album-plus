@@ -58,6 +58,18 @@ global $wppa;
 		$desc 	= stripslashes($thumb['description']);
 		$desc 	= wppa_filter_iptc( $desc, $thumb['id'] );	// Render IPTC tags
 		$desc 	= wppa_filter_exif( $desc, $thumb['id'] );	// Render EXIF tags
+		$custom = wppa_get_photo_item( $id, 'custom' );
+		if ( $custom ) {
+			$custom_data = unserialize( $custom );
+			for ( $i = 0; $i < 10; $i++ ) {
+				if ( wppa_switch( 'custom_visible_'.$i ) ) {		// May be displayed
+					$desc = str_replace( 'w#cd'.$i, __( stripslashes( $custom_data[$i] ) ), $desc );	// Data
+				}
+				else {
+					$desc = str_replace( 'w#cd'.$i, '', $desc );	// Data
+				}
+			}
+		}
 		$words 	= stripslashes($thumb['name']).' '.$thumb['filename'].' '.$desc;
 
 		if ( wppa_switch( 'wppa_search_tags' ) ) $words .= ' '.$thumb['tags'];																					// Tags
@@ -96,7 +108,11 @@ global $wppa;
 // Convert raw data string to indexable word array
 function wppa_index_raw_to_words($xtext, $noskips = false) {
 
-	$ignore = array( '"', "'", '\\', '>', '<', ',', ':', ';', '!', '?', '=', '_', '[', ']', '(', ')', '{', '}', '..', '...', '....', "\n", "\r", "\t", '.jpg', '.png', '.gif', '&#039', '&amp' );
+	$ignore = array( 	'"', "'", '`', '\\', '>', '<', ',', ':', ';', '!', '?', '=', '_', 
+						'[', ']', '(', ')', '{', '}', '..', '...', '....', "\n", "\r", 
+						"\t", '.jpg', '.png', '.gif', '&#039', '&amp',
+						'w#cc0', 'w#cc1', 'w#cc2', 'w#cc3', 'w#cc4', 'w#cc5', 'w#cc6', 'w#cc7', 'w#cc8', 'w#cc9'
+					);
 	if ( $noskips ) $skips = array();
 	else $skips = get_option('wppa_index_skips', array());
 	
