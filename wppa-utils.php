@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains low-level utility routines
-* Version 6.1.6
+* Version 6.1.8
 * 
 */
  
@@ -315,7 +315,7 @@ global $wppa_opt;
 		return false;
 	}
 	
-	return $wppa_opt[$key];
+	return trim( $wppa_opt[$key] );
 }
 
 // Getter / setter of runtime parameter

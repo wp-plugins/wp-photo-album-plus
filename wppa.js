@@ -2,7 +2,7 @@
 //
 // conatins common vars and functions
 // 
-var wppaJsVersion = '6.1.6';
+var wppaJsVersion = '6.1.8';
 
 // 'External' variables ( public )
 var wppaVersion = '0';
@@ -828,7 +828,7 @@ function wppaPopUp( mocc, elm, id, name, desc, rating, ncom, videohtml, maxsizex
 
 		var target = '';
 		if ( wppaThumbTargetBlank ) target = 'target="_blank"';
-//wppaConsoleLog('vhtml='+videohtml);
+
 		switch ( wppaPopupLinkType ) {
 			case 'none':
 				imghtml = videohtml != '' ? videohtml : '<img id="wppa-img-'+mocc+'" src="'+elm.src+'" title="" style="border-width: 0px;" />';
@@ -866,11 +866,13 @@ function wppaPopUp( mocc, elm, id, name, desc, rating, ncom, videohtml, maxsizex
 	leftDivSmall = parseInt( elm.offsetLeft ) - 7 - 5 - 1; // thumbnail_area:padding, wppa-img:padding, wppa-border; jQuery().css( "padding" ) does not work for padding in css file, only when litaral in the tag
 	topDivSmall = parseInt( elm.offsetTop ) - 7 - 1;
 		topDivSmall -= vOffset;
+		
 	// Compute starting sizes
 	widthImgSmall = parseInt( elm.clientWidth );
 	heightImgSmall = parseInt( elm.clientHeight );
 
 	widthImgBigSpace = widthImgBig > heightImgBig ? widthImgBig : heightImgBig;
+	
 	// Compute ending coords
 	leftDivBig = leftDivSmall - parseInt( ( widthImgBigSpace - widthImgSmall ) / 2 );
 	topDivBig = topDivSmall - parseInt( ( heightImgBig - heightImgSmall ) / 2 );
@@ -878,13 +880,17 @@ function wppaPopUp( mocc, elm, id, name, desc, rating, ncom, videohtml, maxsizex
 	// Margin for portrait images
 	var lrMarg = parseInt( ( widthImgBigSpace - widthImgBig ) / 2 );
 	
+	// To fix a Chrome bug where a theme class effect is: max-width:100% causing the width not being animated:
+	jQuery( '#wppa-img-'+mocc ).css( {"maxWidth":widthImgBig+"px" } );
+	
 	// Setup starting properties
 	jQuery( '#wppa-popup-'+mocc ).css( {"marginLeft":leftDivSmall+"px","marginTop":topDivSmall+"px"});
 	jQuery( '#wppa-img-'+mocc ).css( {"marginLeft":0,"marginRight":0,"width":widthImgSmall+"px","height":heightImgSmall+"px"});
+	
 	// Do the animation
 	jQuery( '#wppa-popup-'+mocc ).stop().animate( {"marginLeft":leftDivBig+"px","marginTop":topDivBig+"px"}, 400 );
 	jQuery( '#wppa-img-'+mocc ).stop().animate( {"marginLeft":lrMarg+"px","marginRight":lrMarg+"px","width":widthImgBig+"px","height":heightImgBig+"px"}, 400 );
-//alert( widthImgBig+', '+heightImgBig );
+
 	// adding ", 'linear', wppaPopReady( occ ) " fails, therefor our own timer to the "show info" module
 	_wppaTimer[mocc] = setTimeout( 'wppaPopReady( '+mocc+' )', 400 );
 }

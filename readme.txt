@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, video, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, myCRED, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile, cloudinary, fotomoto, CMTooltipGlossary
-Version: 6.1.7
+Version: 6.1.8
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -188,6 +188,15 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 6.1.8 =
+
+= Bug Fixes =
+
+* Custom data is now properly indexed ( 6.1.7.001 )
+* Skip empty albums now correctly tests on user role administrator as opposed to capability wppa_admin.
+* Thumbnail popup did not work properly on chrome browser on certain themes. Fixed.
+* Fixed potential problems with setting options that have leading or trailing spaces.
 
 = 6.1.7 =
 

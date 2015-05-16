@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Various funcions
-* Version 6.1.7
+* Version 6.1.8
 *
 */
 
@@ -910,16 +910,13 @@ global $wppa_session;
 			$albumowner = $albums[$albumkey]['owner'];
 			$treecount 	= wppa_treecount_a( $albums[$albumkey]['id'] );
 			$photocount = $treecount['photos'];
-			if ( ! $photocount && ! current_user_can( 'wppa_admin' ) && $user != $albumowner ) unset( $albums[$albumkey] );
+			if ( ! $photocount && ! wppa_user_is( 'administrator' ) && $user != $albumowner ) unset( $albums[$albumkey] );
 		}
 	}
 
 	// Copy data into secondary cache
 	if ( $albums ) {
 		wppa_cache_album( 'add', $albums );
-//		foreach ( $albums as $album ) {
-//			$album_cache_2[$album['id']] = $album;
-//		}
 	}
 
 	$wppa['album_count'] = count( $albums );

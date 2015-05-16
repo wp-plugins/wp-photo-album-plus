@@ -2,7 +2,7 @@
 /* wppa-ajax.php
 *
 * Functions used in ajax requests
-* version 6.1.6
+* version 6.1.8
 *
 */
 
@@ -1216,6 +1216,7 @@ global $wppa_session;
 			$option = $_REQUEST['wppa-option'];			// The option to be processed
 			$value  = isset( $_REQUEST['value'] ) ? wppa_decode( $_REQUEST['value'] ) : '';	// The new value, may also contain & # and +
 			$value  = stripslashes( $value );
+			$value 	= trim( $value ); 					// Remaove surrounding spaces
 			$alert  = '';			// Init the return string data
 			$wppa['error']  = '0';	//
 			$title  = '';			//
