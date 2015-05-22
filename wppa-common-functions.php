@@ -129,7 +129,9 @@ global $wppa_defaults;
 			'may_root'					=> false,
 			'links_no_page' 			=> array( 'none', 'file', 'lightbox', 'lightboxsingle', 'fullpopup' ),
 			'shortcode_content' 		=> '',
-			'is_remote' 				=> false
+			'is_remote' 				=> false,
+			'is_supersearch' 			=> false,
+			'supersearch' 				=> ''
 		 );
 	}
 	
@@ -1150,7 +1152,7 @@ global $wppa;
 	}
 	
 	// Sanitize
-	$ignore = array( '"', "'", '\\', '>', '<', ',', ':', ';', '!', '?', '=', '_', '[', ']', '(', ')', '{', '}' );
+	$ignore = array( '"', "'", '\\', '>', '<', ':', ';', '!', '?', '=', '_', '[', ']', '(', ')', '{', '}' );
 	$str = wppa_decode_uri_component( $str );
 	$str = str_replace( $ignore, ' ', $str );
 	$str = strip_tags( $str );						
