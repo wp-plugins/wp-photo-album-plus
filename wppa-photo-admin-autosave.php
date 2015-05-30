@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * edit and delete photos
-* version 6.1.6
+* version 6.1.9
 * 
 */
 
@@ -1528,6 +1528,9 @@ global $wppa_search_stats;
 			$photo_array 	= wppa_index_array_remove_dups( wppa_index_string_to_array( trim( $photos, ',' ) ) );
 			$count 			= empty( $photo_array ) ? '0' : count( $photo_array );
 			$list 			= implode( ',', $photo_array );
+			if ( ! $list ) {
+				$list = '0';
+			}
 			
 //			if ( wppa_user_is( 'administrator' ) ) {
 			if ( current_user_can( 'wppa_admin' ) && current_user_can( 'wppa_moderate' ) ) {

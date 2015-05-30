@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Functions for breadcrumbs
-* Version 6.1.0
+* Version 6.1.9
 *
 */
 
@@ -113,7 +113,7 @@ global $wppa_session;
 				"` WHERE `post_status` = 'publish' AND `ID` = %s LIMIT 0,1", $pid
 				) ) ) );
 			wppa_dbg_q( 'Q-bc2' );
-			$href	= ( $alb || $virtual || $wppa['src'] || $is_albenum ) ? 
+			$href	= ( $alb || $virtual || $wppa['src'] || $wppa['supersearch'] || $is_albenum ) ? 
 				wppa_get_permalink( $pid, true ) : 
 				'';
 			$title	= $type == 'post' ? __a( 'Post:' ).' '.$value : __a( 'Page:' ).' '.$value;
@@ -126,7 +126,65 @@ global $wppa_session;
 		}
 		
 		// The album and optionall placeholder for photo
-		if ( $wppa['src'] && $wppa['mocc'] == '1' && ! $wppa['is_related'] ) {	// Search
+		
+		// Supersearch ?
+		if ( $wppa['supersearch'] ) {
+			$value  = ' ';// . __a( 'Searching:' );
+			$ss_data = explode( ',', $wppa['supersearch'] );
+			switch ( $ss_data['0'] ) {
+				case 'a':
+					$value .= ' ' . __a('Albums');
+					switch ( $ss_data['1'] ) {
+						case 'c':
+							$value .= ' ' . __a('with category:');
+							break;
+						case 'n':
+							$value .= ' ' . __a('with name:');
+							break;
+						case 't':
+							$value .= ' ' . __a('with words:');
+							break;							
+					}
+					$value .= ' <b>' . str_replace( '.', '</b> ' . __a('and') . ' <b>', $ss_data['3'] ) . '</b>';
+					break;
+				case 'p':
+					$value .= ' ' . __a('Photos');
+					switch ( $ss_data['1'] ) {
+						case 'g':
+							$value .= ' ' . __a('with tag:') . ' <b>' . str_replace( '.', '</b> ' . __a('and') . ' <b>', $ss_data['3'] ) . '</b>';
+							break;
+						case 'n':
+							$value .= ' ' . __a('with name:') . ' <b>' . $ss_data['3'] . '</b>';
+							break;
+						case 't':
+							$value .= ' ' . __a('with words:') . ' <b>' . str_replace( '.', '</b> ' . __a('and') . ' <b>', $ss_data['3'] ) . '</b>';
+							break;		
+						case 'o':
+							$value .= ' ' . __a('of owner:') . ' <b>' . $ss_data['3'] . '</b>';
+							break;
+						case 'i':
+							$label = $wpdb->get_var( $wpdb->prepare( "SELECT `description` FROM `" . WPPA_IPTC . "` WHERE `tag` = %s AND `photo` = '0'", '2#'.$ss_data['2'] ) );
+							$label = trim( $label, ':' );
+							$value .= ' ' . __('with iptc tag:') . ' <b>' . $label . '</b> ' . __('with content:') .' <b>' . $ss_data['3'] . '</b>';
+							break;
+						case 'e':
+							$label = $wpdb->get_var( $wpdb->prepare( "SELECT `description` FROM `" . WPPA_EXIF . "` WHERE `tag` = %s AND `photo` = '0'", 'E#'.$ss_data['2'] ) );
+							$label = trim( $label, ':' );
+							$value .= ' ' . __('with exif tag:') . ' <b>' . $label . '</b> ' . __('with content:') .' <b>' . $ss_data['3'] . '</b>';
+							break;
+					}
+					break;
+			}
+			$href 	= '';
+			$title	= '';
+			wppa_bcitem( $value, $href, $title, 'b9' );
+		}
+		
+		// Search ?
+		elseif ( $wppa['src'] && 
+			// $wppa['mocc'] == '1' && 
+			! $wppa['is_related'] ) {	
+			
 			if ( isset( $wppa_session['search_root'] ) ) {
 				$searchroot = $wppa_session['search_root'];
 			}

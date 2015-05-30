@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, video, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, myCRED, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile, cloudinary, fotomoto, CMTooltipGlossary
-Version: 6.1.8
+Version: 6.1.9
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -188,6 +188,21 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 6.1.9 =
+
+= Bug Fixes =
+
+* Fixed a layout issue of Com alt displays on responsive themes.
+
+= New Features =
+
+* The default album cover linktype that will be set at album creation is now settable in Table IX-D18.
+* New shortcode: type="supersearch". Related settings: Table VI-C9, Table IX-E13.
+
+= Other Changes =
+
+* Split js files in logical units, prevent loading of not used code.
 
 = 6.1.8 =
 

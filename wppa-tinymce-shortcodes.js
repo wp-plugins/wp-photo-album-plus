@@ -2,7 +2,7 @@
 * Pachkage: wp-photo-album-plus
 *
 *
-* Version 5.5.0
+* Version 6.1.9
 *
 */
 
@@ -181,6 +181,11 @@ function wppaGalleryEvaluate() {
 			switch ( type ) {
 				case 'search':
 					jQuery('#wppagallery-search-tr').show();
+//					jQuery('#wppagallery-sub').show();
+//					jQuery('#wppagallery-root').show();
+					break;
+				case 'supersearch':
+//					jQuery('#wppagallery-search-tr').show();
 					break;
 				case 'tagcloud':
 				case 'multitag':

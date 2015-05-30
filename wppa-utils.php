@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains low-level utility routines
-* Version 6.1.8
+* Version 6.1.9
 * 
 */
  
@@ -15,6 +15,11 @@ $wppa_supported_photo_extensions = array( 'jpg', 'jpeg', 'png', 'gif' );
 // __a() is a function like __(), but specificly for front-end language support
 function __a( $txt, $dom = 'wppa_theme' ) {
 	return __( $txt, $dom );
+}
+
+// Get url in wppa dir
+function wppa_url( $arg ) {
+	return WPPA_URL . '/' . $arg;
 }
 
 // get url of thumb
@@ -2352,7 +2357,7 @@ function wppa_sanitize_searchstring( $str ) {
 		$temp[$key] = trim( $temp[$key] );
 	}
 	$result = implode( ',', $temp );
-	
+
 	return $result;
 }
 

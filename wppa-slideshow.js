@@ -1,9 +1,9 @@
 // wppa-slideshow.js
 //
-// Conatins slideshow modules
+// Contains slideshow modules
 // Dependancies: wppa.js and default wp jQuery library
 // 
-var wppaJsSlideshowVersion = '6.1.6';
+var wppaJsSlideshowVersion = '6.1.9';
 
 // This is an entrypoint to load the slide data
 function wppaStoreSlideInfo( 
@@ -801,6 +801,147 @@ function _wppaNextSlide_5( mocc ) {
 		}
 	}
 }
+
+// Format a slide
+function wppaFormatSlide( mocc ) {
+
+	// vars we have
+	var imgid    = 'theimg'+_wppaFg[mocc]+'-'+mocc;
+	var slideid  = 'theslide'+_wppaFg[mocc]+'-'+mocc;
+	var frameid  = 'slide_frame-'+mocc;
+	var contw    = wppaColWidth[mocc];
+	var elm      = document.getElementById( imgid );
+	var audios 	 = jQuery( '.wppa-audio-'+mocc );
+	
+	if ( ! elm ) return;	// No slide present
+	if ( typeof( contw ) == 'undefined' || contw == 0 ) {
+		contw = wppaGetContainerWidth( mocc ); 
+		wppaColWidth[mocc] = contw;
+	}
+	var natwidth  = elm.naturalWidth;
+		if ( typeof( natwidth )=='undefined' ) natwidth = parseInt( elm.style.maxWidth );
+	var natheight = elm.naturalHeight;
+		if ( typeof( natheight )=='undefined' ) natheight = parseInt( elm.style.maxHeight );
+	var aspect    = wppaAspectRatio[mocc];
+	var fullsize  = wppaFullSize[mocc];
+	var delta     = wppaFullFrameDelta[mocc];
+
+	// Switches we have
+	var ponly   = wppaPortraitOnly[mocc];
+	var valign  = wppaFullValign[mocc]; if ( typeof( valign )=='undefined' ) valign = 'none';
+	var halign  = wppaFullHalign[mocc]; if ( typeof( halign )=='undefined' ) halign = 'none';
+	var stretch = wppaStretch;
+	
+	// vars to be calculated:
+	var imgw, imgh;		// image width and height
+	var margl, margt;	// image margins
+	var slidew, slideh;	// slide width and height
+	var framew, frameh;	// frame
+	
+	// Calculate
+	if ( ponly ) {
+		imgw = contw - delta;
+		imgh = parseInt( imgw * natheight / natwidth );
+		margl = 0;
+		margt = 0;
+		slidew = contw;
+		slideh = imgh + delta;
+		framew = contw;
+		frameh = slideh;
+		// Size
+		jQuery( '#'+frameid ).css( {width:framew, height:frameh});
+		jQuery( '#'+slideid ).css( {width:slidew, height:slideh});
+		jQuery( '#'+imgid ).css( {width:imgw, height:imgh});
+	}
+	else {
+		// not 'ponly' so we have a fixed display area. First assume the container is the hor limit
+		framew = contw;
+		// If the fullsize ( Table I-B1 ) is smaller than the container width The frame is scaled down to fit the fullsize
+		if ( fullsize < contw ) {
+			framew = fullsize;				// The fullsize appears to be the hor limit
+		}
+		frameh = parseInt( framew * aspect );	// Always obey the occurences aspect ratio
+		slidew = framew;
+		slideh = frameh;
+		if ( stretch || natwidth >= ( framew-delta ) || natheight >= ( frameh-delta ) ) {	// Image big enough
+			if ( ( ( natheight+delta ) / ( natwidth+delta ) ) > aspect ) {	// vertical limit
+				imgh = frameh - delta;
+				imgw = parseInt( imgh * natwidth / natheight );
+			}
+			else {	// horizontal limit
+				imgw = framew - delta;
+				imgh = parseInt( imgw * natheight / natwidth );
+			}
+		}
+		else {															// Image too small
+			imgw = natwidth;
+			imgh = natheight;
+		}
+
+		// Align vertical
+		if ( valign != 'default' && valign != 'none' ) {
+			switch ( valign ) {
+				case 'top':				
+					margt = 0;
+					break;
+				case 'center':
+					margt = parseInt( ( frameh - ( imgh+delta ) ) / 2 );
+					break;
+				case 'bottom':
+					margt = frameh - ( imgh+delta );
+					break;
+				case 'fit':
+					margt = 0;
+					frameh = imgh + delta;
+					slideh = imgh + delta;
+					break;
+				default:
+				//	alert( 'Unknown v align:'+valign+' occ='+mocc );
+			}
+			jQuery( '#'+imgid ).css( {marginTop:margt, marginBottom:0});
+		}
+
+		// Size ( after v align because 'fit' changes the frameh and slidh )
+		jQuery( '#'+frameid ).css( {width:framew, height:frameh});
+		jQuery( '#'+slideid ).css( {width:slidew, height:slideh});
+		jQuery( '#'+imgid ).css( {width:imgw, height:imgh});
+
+		// Align horizontal
+		if ( valign != 'default' && valign != 'none' && halign != 'none' && halign != 'default' ) {
+			switch ( halign ) {
+				case 'left':
+					margl = 0;
+					break;
+				case 'center':
+					margl = parseInt( ( contw - framew ) / 2 );
+					break;
+				case 'right':
+					margl = contw - framew;
+					break;
+				default:
+				//	alert( 'Unknown h align:'+halign+' occ='+mocc );
+			}
+			if ( margl < 0 ) margl = 0;
+			jQuery( '#'+imgid ).css( {marginLeft:'auto', marginRight:'auto'});
+			jQuery( '#'+frameid ).css( {marginLeft:margl});
+		}
+		
+		// Size audio
+		if ( audios.length > 0 ) {
+			var i = 0;
+			jQuery( audios[i] ).css( { width:imgw, left:( contw - imgw ) / 2 } );
+			i++;
+		}
+	}
+	
+	// Size Big Browse Buttons
+	var bbbwidth = parseInt( framew/3 );
+	var leftmarg = bbbwidth*2;
+	
+	jQuery( '#bbb-'+mocc+'-l' ).css( {height:frameh, width:bbbwidth, left:0});
+	jQuery( '#bbb-'+mocc+'-r' ).css( {height:frameh, width:bbbwidth, left:leftmarg});
+}
+
 
 function wppaMakeNameHtml( mocc ) {
 var result = '';

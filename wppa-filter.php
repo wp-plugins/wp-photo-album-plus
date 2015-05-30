@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * get the albums via filter
-* version 5.5.3
+* version 6.1.9
 *
 */
 
@@ -380,6 +380,9 @@ global $wppa_opt;
 			$wppa['may_sub'] = isset( $xatts['sub'] ) && $xatts['sub'];
 			$wppa['may_root'] = isset( $xatts['root'] ) && $xatts['root'];
 			break;
+		case 'supersearch':
+			$wppa['is_supersearch'] = true;
+			break;
 			
 		default:
 			wppa_dbg_msg ( 'Invalid type: '.$type.' in wppa shortcode.', 'red', 'force' );
@@ -421,6 +424,11 @@ global $wppa_opt;
 	$wppa['start_photo'] = '0';	// Start a slideshow here
 	$wppa['is_single'] = false;	// Is a one image slideshow
 
+	// Relative urls?
+	if ( wppa_switch( 'relative_urls' ) ) {
+		$result = str_replace( site_url(), '', $result );
+	}
+	
 	return $result;
 }
 

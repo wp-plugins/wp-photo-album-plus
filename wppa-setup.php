@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 6.1.7
+* Version 6.1.9
 * 
 */
 
@@ -844,6 +844,7 @@ Hide Camera info
 						'wppa_cre_uploads_htaccess' 	=> 'no',
 						'wppa_debug_trace_on' 			=> 'no',
 						'wppa_lazy_or_htmlcomp' 		=> 'no',
+						'wppa_relative_urls' 			=> 'no',
 						
 						'wppa_thumbs_first' 			=> 'no',
 						'wppa_login_links' 				=> 'yes',
@@ -1060,6 +1061,8 @@ Hide Camera info
 						
 						'wppa_bestof_widget_linkpage'		=> '0',
 						
+						'wppa_supersearch_linkpage' 		=> '0',
+						
 						'wppa_album_navigator_widget_linktype' 	=> 'thumbs',
 						'wppa_album_navigator_widget_linkpage' 	=> '0', 
 						
@@ -1215,6 +1218,7 @@ Hide Camera info
 						'wppa_copy_owner' 				=> 'no',
 						'wppa_frontend_album_public' 	=> 'no',
 						'wppa_optimize_new' 			=> 'no',
+						'wppa_default_album_linktype' 	=> 'content',
 												
 						// E Search
 						'wppa_search_linkpage' 			=> '0',		// 1
@@ -1229,6 +1233,7 @@ Hide Camera info
 						'wppa_tags_or_only'				=> 'no',
 						'wppa_wild_front'				=> 'no',
 						'wppa_search_display_type' 		=> 'content',
+						'wppa_ss_hover' 				=> 'yes',
 						
 						// F Watermark
 						'wppa_watermark_on'				=> 'no',

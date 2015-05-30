@@ -26,7 +26,9 @@ global $wppa_alt;
 		if ( $wppa_alt == 'even' ) $wppa_alt = 'alt'; else $wppa_alt = 'even';
 	}
 	elseif ( $action == 'close' ) {
-		if ( ! $wppa['is_upldr'] ) {
+		if ( 	! $wppa['is_upldr'] &&
+				! $wppa['searchstring'] &&
+				! $wppa['supersearch'] ) {
 			wppa_user_create_html( $wppa['current_album'], wppa_get_container_width( 'netto' ), 'thumb' );
 			wppa_user_upload_html( $wppa['current_album'], wppa_get_container_width( 'netto' ), 'thumb' );
 		}
@@ -92,6 +94,568 @@ global $wppa_session;
 			$result .= '
 		</div>
 	</form>';
+
+	return $result;
+}
+
+// The supersearch box
+function wppa_supersearch_box() {
+global $wppa;
+
+	if ( is_feed() ) return;
+	
+	wppa_container( 'open' );
+	$wppa['out'] .= wppa_nltab( '+' ).'<div id="wppa-search-'.$wppa['mocc'].'" class="wppa-box wppa-search" style="'.__wcs( 'wppa-box' ).__wcs( 'wppa-search' ).'">';
+		$wppa['out'] .= wppa_get_supersearch_html();
+	$wppa['out'] .= wppa_nltab( '-' ).'<div class="wppa-clear" style="'.__wis( 'clear:both;' ).'" ></div></div>';
+	wppa_container( 'close' );
+}
+
+// Get supersearch html
+function wppa_get_supersearch_html() {
+global $wpdb;
+global $wppa_session;
+
+	// Init
+	$page 		= wppa_get_the_landing_page( 'wppa_supersearch_linkpage', __a( 'Photo search results' ) );
+	$pagelink 	= wppa_dbg_url( get_page_link( $page ) );
+	$fontsize 	= wppa( 'in_widget' ) ? 'font-size: 9px;' : '';
+	$albums 	= $wpdb->get_results( "SELECT `id`, `name`, `owner` FROM `" . WPPA_ALBUMS . "` ORDER BY `name`", ARRAY_A );
+	$photonames	= $wpdb->get_results( "SELECT `name` FROM `".WPPA_PHOTOS."` WHERE `status` <> 'pending' AND `status` <> 'scheduled'", ARRAY_A );
+	$ownerlist 	= $wpdb->get_results( "SELECT `owner` FROM `".WPPA_PHOTOS."` WHERE `status` <> 'pending' AND `status` <> 'scheduled' ORDER BY `owner`", ARRAY_A );
+	$catlist 	= wppa_get_catlist();
+	$taglist 	= wppa_get_taglist();
+	$ss_data 	= isset( $wppa_session['supersearch'] ) ? explode( ',', $wppa_session['supersearch'] ) : array( '', '', '', '' );
+	if ( count( $ss_data ) < '4' ) {
+		$ss_data = array( '', '', '', '' );
+	}
+	$ss_cats 	= ( $ss_data['0'] == 'a' && $ss_data['1'] == 'c' ) ? explode( '.', $ss_data['3'] ) : array();
+	$ss_tags 	= ( $ss_data['0'] == 'p' && $ss_data['1'] == 'g' ) ? explode( '.', $ss_data['3'] ) : array();
+	$ss_atxt 	= ( $ss_data['0'] == 'a' && $ss_data['1'] == 't' ) ? explode( '.', $ss_data['3'] ) : array();
+	$ss_ptxt 	= ( $ss_data['0'] == 'p' && $ss_data['1'] == 't' ) ? explode( '.', $ss_data['3'] ) : array();
+	$albumtxt 	= $wpdb->get_results( "SELECT `slug` FROM `".WPPA_INDEX."` WHERE `albums` <> '' ORDER BY `slug`", ARRAY_A );
+	$phototxt 	= $wpdb->get_results( "SELECT `slug` FROM `".WPPA_INDEX."` WHERE `photos` <> '' ORDER BY `slug`", ARRAY_A );
+	$iptclist 	= $wpdb->get_results( "SELECT `tag`, `description` FROM `" . WPPA_IPTC . "` WHERE `photo` = '0' AND `status` <> 'hide' ", ARRAY_A );
+	$exiflist 	= $wpdb->get_results( "SELECT `tag`, `description` FROM `" . WPPA_EXIF . "` WHERE `photo` = '0' AND `status` <> 'hide' ", ARRAY_A );
+
+	// Check for empty albums
+	if ( wppa_switch( 'skip_empty_albums' ) ) {
+		$user = wppa_get_user();
+		if ( is_array( $albums ) ) foreach ( array_keys( $albums ) as $albumkey ) {
+			$albumid 	= $albums[$albumkey]['id'];
+			$albumowner = $albums[$albumkey]['owner'];
+			$treecount 	= wppa_treecount_a( $albums[$albumkey]['id'] );
+			$photocount = $treecount['photos'];
+			if ( ! $photocount && ! wppa_user_is( 'administrator' ) && $user != $albumowner ) unset( $albums[$albumkey] );
+		}
+	}
+	if ( empty( $albums ) ) $albums = array();
+
+	// Remove dup photo owners
+	$last = '';
+	foreach( array_keys( $ownerlist ) as $key ) {
+		if ( $ownerlist[$key]['owner'] == $last ) {
+			unset( $ownerlist[$key] );
+		}
+		else {
+			$last = $ownerlist[$key]['owner'];
+		}
+	}
+	
+	// Remove empty iptc
+	if ( is_array( $iptclist ) ) foreach( array_keys( $iptclist ) as $key ) {
+		$items = $wpdb->get_results( $wpdb->prepare( "SELECT `description` FROM `" . WPPA_IPTC . "` WHERE `photo` <> '0' AND `tag` = %s", $iptclist[$key]['tag'] ), ARRAY_A );
+		$keep = false;
+		if ( is_array( $items ) ) {
+			foreach( $items as $item ) {
+				$txt = sanitize_text_field( $item['description'] );
+				$txt = str_replace( chr(4), '', $txt );
+				if ( $txt ) {
+					$keep = true;
+				}
+				if ( $keep ) break;
+			}
+		}
+		if ( ! $keep ) {
+			unset( $iptclist[$key] );
+		}
+	}
+	
+	// Remove empty exif
+	if ( is_array( $exiflist ) ) foreach( array_keys( $exiflist ) as $key ) {
+		$items = $wpdb->get_results( $wpdb->prepare( "SELECT `description` FROM `" . WPPA_EXIF . "` WHERE `photo` <> '0' AND `tag` = %s", $exiflist[$key]['tag'] ), ARRAY_A );
+		$keep = false;
+		if ( is_array( $items ) ) {
+			foreach( $items as $item ) {
+				$txt = sanitize_text_field( $item['description'] );
+				$txt = str_replace( chr(4), '', $txt );
+				if ( $txt ) {
+					$keep = true;
+				}
+				if ( $keep ) break;
+			}
+		}
+		if ( ! $keep ) {
+			unset( $exiflist[$key] );
+		}
+	}
+	
+	// Find out if hoovering is sufficient to select
+	$selevent = wppa_switch( 'ss_hover' ) ? 'mouseover' : 'click';
+	
+	// Make the html
+	$id = 'wppa_searchform_' . wppa('mocc');
+	$result =
+	'<form' .
+		' id="' . $id . '"' .
+		' action="'.$pagelink.'"' . 
+		' method="post"' .
+		' class="widget_search"' . 
+		' >' .
+		'<input' .
+			' type="hidden"' .
+			' id="wppa-ss-pageurl-'.wppa('mocc').'"' .
+			' name="wppa-ss-pageurl"' .
+			' value="'.$pagelink.'"' .
+			' />';
+		
+		// album or photo
+		$id = 'wppa-ss-pa-'.wppa('mocc');
+		$result .=
+		'<select' .
+			' id="' . $id . '"' .
+			' name="wppa-ss-pa"' .
+			' style="margin:2px;padding:0;vertical-align:top;"' .
+			' size="2"' .
+			' >' .
+				'<option' .
+					' value="a" ' . 
+					( $ss_data['0'] == 'a' ? 'selected="selected" ' : '' ) . 
+					' on'.$selevent.'="wppaOnMouseOverSSO( this, '.wppa('mocc').')"' .
+					' ontouchstart="wppaOnMouseOverSSO( this, '.wppa('mocc').')"' .
+					' >' .
+						__a('Albums') . 
+				'</option>' .
+				'<option' .
+					' value="p" ' . 
+					( $ss_data['0'] == 'p' ? 'selected="selected" ' : '' ) . 
+					' on'.$selevent.'="wppaOnMouseOverSSO( this, '.wppa('mocc').')"' .
+					' ontouchstart="wppaOnMouseOverSSO( this, '.wppa('mocc').')"' .
+					' >' .
+						__a('Photos') .
+				'</option>' .
+		'</select>';
+		
+			// album
+			$id = 'wppa-ss-albumopt-'.wppa('mocc');
+			$result .= '
+			<select'.
+				' id="' . $id . '"' .
+				' name="wppa-ss-albumopt"' .
+				' style="display:none;margin:2px;padding:0;vertical-align:top;"' .
+				' size="' . ( ! empty( $catlist ) ? '3' : '2' ) . '"' .
+				' >';
+					if ( ! empty( $catlist ) ) {
+						$result .=
+						'<option' .
+							' value="c"' .
+							( $ss_data['0'] == 'a' && $ss_data['1'] == 'c' ? 'selected="selected" ' : '' ) . 
+							' on'.$selevent.'="wppaOnMouseOverSSO( this, '.wppa('mocc').')"' .
+							' ontouchstart="wppaOnMouseOverSSO( this, '.wppa('mocc').')"' .
+							' >' .
+								__a('Category') .
+						'</option>';
+					}
+					$result .=
+					'<option' .
+						' value="n"' .
+						( $ss_data['0'] == 'a' && $ss_data['1'] == 'n' ? 'selected="selected" ' : '' ) . 
+						' on'.$selevent.'="wppaOnMouseOverSSO( this, '.wppa('mocc').')"' .
+						' ontouchstart="wppaOnMouseOverSSO( this, '.wppa('mocc').')"' .
+						' >' .
+							__a('Name') .
+					'</option>' .
+					'<option' .
+						' value="t"' .
+						( $ss_data['0'] == 'a' && $ss_data['1'] == 't' ? 'selected="selected" ' : '' ) . 
+						' on'.$selevent.'="wppaOnMouseOverSSO( this, '.wppa('mocc').')"' .
+						' ontouchstart="wppaOnMouseOverSSO( this, '.wppa('mocc').')"' .
+						' >' .
+							__a('Text') .
+					'</option>' .
+			'</select>';
+			
+				// album category
+				if ( ! empty( $catlist ) ) {
+					$id = 'wppa-ss-albumcat-'.wppa('mocc');
+					$result .=
+					'<select'.
+						' id="' . $id . '"' .
+						' name="wppa-ss-albumcat"' .
+						' style="display:none;margin:2px;padding:0;vertical-align:top;"' .
+						' size="' . ( min( count( $catlist ), '6' ) ) . '"' .
+						' multiple' .
+						' title="' . 
+							esc_attr( __a( 'Click to add/remove option.' ) ) . "\n" . 
+							esc_attr( __( 'Items must meet all selected options.' ) ) . 
+							'"' .
+						' >';
+						foreach ( array_keys( $catlist ) as $cat ) {
+							$sel = in_array ( $cat, $ss_cats );
+							$result .= 	
+							'<option' .
+								' value="'.$cat.'"' .
+								' class="' . $id . '"' .
+								' onmouseup="wppaOnClickMultiSSO( \'' . $id . '\', this, '.wppa('mocc').' )"' .
+								' ontouchend="wppaOnClickMultiSSO( \'' . $id . '\', this, '.wppa('mocc').' )"' .
+								' data-sel="' . ( $sel ? 'yes' : 'no' ) . '"' .
+								( $sel ? ' selected="selected"' : '' ) .
+								' >' .
+									$cat .
+							'</option>';
+						}
+					$result .=
+					'</select>';
+				}
+				
+				// album name
+				$id = 'wppa-ss-albumname-'.wppa('mocc');
+				$result .=
+				'<select'.
+					' id="' . $id . '"' .
+					' name="wppa-ss-albumname"' .
+					' style="display:none;margin:2px;padding:0;vertical-align:top;"' .
+					' size="' . ( min( count( $albums ), '6' ) ) . '"' .
+					' >';
+					foreach ( $albums as $album ) {
+						$name = stripslashes( $album['name'] );
+						$sel = ( $ss_data['3'] == $name && $ss_data['0'] == 'a' && $ss_data['1'] == 'n' );
+						$result .= 
+						'<option' .
+							' value="' . esc_attr( $name ) . '"' .
+							' on'.$selevent.'="wppaOnMouseOverSSO( this, '.wppa('mocc').')"' .
+							' ontouchstart="wppaOnMouseOverSSO( this, '.wppa('mocc').')"' .
+							( $sel ? ' selected="selected"' : '' ) .
+							' >' . 
+								__( $name ) . 
+						'</option>';
+					}
+				$result .=
+				'</select>';
+				
+				// album text
+				$id = 'wppa-ss-albumtext-'.wppa('mocc');
+				$result .=
+				'<select'.
+					' id="' . $id . '"' .
+					' name="wppa-ss-albumtext"' .
+					' style="display:none;margin:2px;padding:0;vertical-align:top;"' .
+					' size="' . ( min( count( $albumtxt ), '6' ) ) . '"' .
+					' multiple="multiple"' .
+					' title="' . 
+						esc_attr( __a( 'Click to add/remove option.' ) ) . "\n" . 
+						esc_attr( __( 'Items must meet all selected options.' ) ) . 
+						'"' .
+					' >';
+					foreach ( $albumtxt as $txt ) {
+						$text = $txt['slug'];
+						$sel = in_array ( $text, $ss_atxt );
+						$result .= 
+						'<option' .
+							' value="' . $text . '"' .
+							' class="' . $id . '"' .
+							' onmouseup="wppaOnClickMultiSSO( \'' . $id . '\', this, '.wppa('mocc').' )"' .
+							' ontouchend="wppaOnClickMultiSSO( \'' . $id . '\', this, '.wppa('mocc').' )"' .
+							' data-sel="' . ( $sel ? 'yes' : 'no' ) . '"' .
+							( $sel ? ' selected="selected"' : '' ) .
+							' >' . 
+								$text . 
+						'</option>';
+					}
+				$result .= '
+				</select>';
+				
+			// photo
+			$n = '1' + ( count( $ownerlist ) > '1' ) + ( ! empty( $taglist ) ) + '1' + ( wppa_switch( 'wppa_save_iptc' ) ) + ( wppa_switch( 'wppa_save_exif' ) );
+			$result .=
+			'<select'.
+				' id="wppa-ss-photoopt-'.wppa('mocc').'"' .
+				' name="wppa-ss-photoopt"' .
+				' style="display:none;margin:2px;padding:0;vertical-align:top;"' .
+				' size="' . $n . '"' .
+				' >' .
+					'<option' .
+						' value="n"' .
+						( $ss_data['0'] == 'p' && $ss_data['1'] == 'n' ? 'selected="selected" ' : '' ) . 
+						' on'.$selevent.'="wppaOnMouseOverSSO( this, '.wppa('mocc').')"' .
+						' ontouchstart="wppaOnMouseOverSSO( this, '.wppa('mocc').')"' .
+						' >' .
+							__a('Name') .
+					'</option>';
+					if ( count( $ownerlist ) > '1' ) {
+						$result .=
+						'<option' .
+							' value="o"' .
+							( $ss_data['0'] == 'p' && $ss_data['1'] == 'o' ? 'selected="selected" ' : '' ) . 
+							' on'.$selevent.'="wppaOnMouseOverSSO( this, '.wppa('mocc').')"' .
+							' ontouchstart="wppaOnMouseOverSSO( this, '.wppa('mocc').')"' .
+							' >' .
+								__a('Owner') .
+						'</option>';
+					}
+					if ( ! empty( $taglist ) ) {
+						$result .=
+						'<option' .
+							' value="g"' .
+							( $ss_data['0'] == 'p' && $ss_data['1'] == 'g' ? 'selected="selected" ' : '' ) . 
+							' on'.$selevent.'="wppaOnMouseOverSSO( this, '.wppa('mocc').')"' .
+							' ontouchstart="wppaOnMouseOverSSO( this, '.wppa('mocc').')"' .
+							' >' .
+								__a('Tag') .
+						'</option>';
+					}
+					$result .=
+					'<option' .
+						' value="t"' .
+						( $ss_data['0'] == 'p' && $ss_data['1'] == 't' ? 'selected="selected" ' : '' ) . 
+						' on'.$selevent.'="wppaOnMouseOverSSO( this, '.wppa('mocc').')"' .
+						' ontouchstart="wppaOnMouseOverSSO( this, '.wppa('mocc').')"' .
+						' >' .
+							__a('Text') .
+					'</option>';
+					if ( wppa_switch( 'wppa_save_iptc' ) ) {
+						$result .=
+						'<option' .
+							' value="i"' .
+							( $ss_data['0'] == 'p' && $ss_data['1'] == 'i' ? 'selected="selected" ' : '' ) . 
+							' on'.$selevent.'="wppaOnMouseOverSSO( this, '.wppa('mocc').')"' .
+							' ontouchstart="wppaOnMouseOverSSO( this, '.wppa('mocc').')"' .
+							' >' .
+								__a('Iptc') .
+						'</option>';
+					}
+					if ( wppa_switch( 'wppa_save_exif' ) ) {
+						$result .=
+						'<option' .
+							' value="e"' .
+							( $ss_data['0'] == 'p' && $ss_data['1'] == 'e' ? 'selected="selected" ' : '' ) . 
+							' on'.$selevent.'="wppaOnMouseOverSSO( this, '.wppa('mocc').')"' .
+							' ontouchstart="wppaOnMouseOverSSO( this, '.wppa('mocc').')"' .
+							' >' .
+								__a('Exif') .
+						'</option>';
+					}
+			$result .=
+			'</select>';
+			
+				// photo name
+				$id = 'wppa-ss-photoname-'.wppa('mocc');
+				$result .=
+				'<select'.
+					' id="' . $id . '"' .
+					' name="wppa-ss-photoname"' .
+					' style="display:none;margin:2px;padding:0;vertical-align:top;"' .
+					' size="' . min( count( $photonames ), '6' ) . '"' .
+					' >';
+					foreach ( $photonames as $photo ) {
+						$name = stripslashes( $photo['name'] );
+						$sel = ( $ss_data['3'] == $name && $ss_data['0'] == 'p' && $ss_data['1'] == 'n' );
+						$result .= 
+						'<option' .
+							' value="' . esc_attr( $name ) . '"' .
+							' on'.$selevent.'="wppaOnMouseOverSSO( this, '.wppa('mocc').')"' .
+							' ontouchstart="wppaOnMouseOverSSO( this, '.wppa('mocc').')"' .
+							( $sel ? ' selected="selected"' : '' ) .
+							' >' . 
+								__( $name ) . 
+						'</option>';
+					}
+				$result .= '
+				</select>';
+				
+				// photo owner
+				$id = 'wppa-ss-photoowner-'.wppa('mocc');
+				$result .= '
+				<select'.
+					' id="' . $id . '"' .
+					' name="wppa-ss-photoowner"' .
+					' style="display:none;margin:2px;padding:0;vertical-align:top;"' .
+					' size="' . ( min( count( $ownerlist ), '6' ) ) . '"' .
+					' >';
+					foreach ( $ownerlist as $photo ) {
+						$owner = $photo['owner'];
+						$sel = ( $ss_data['3'] == $owner && $ss_data['0'] == 'p' && $ss_data['1'] == 'o' );
+						$result .= 
+						'<option' .
+							' value="' . $owner . '"' .
+							' on'.$selevent.'="wppaOnMouseOverSSO( this, '.wppa('mocc').')"' .
+							' ontouchstart="wppaOnMouseOverSSO( this, '.wppa('mocc').')"' .
+							( $sel ? ' selected="selected"' : '' ) .
+							' >' .
+								$owner .
+						'</option>';
+					}
+				$result .= '
+				</select>';
+				
+				// photo tag
+				$id = 'wppa-ss-phototag-'.wppa('mocc');
+				$result .= '
+				<select'.
+					' id="' . $id . '"' .
+					' name="wppa-ss-phototag"' .
+					' style="display:none;margin:2px;padding:0;vertical-align:top;"' .
+					' size="' . ( min( count( $taglist ), '6' ) ) . '"' .
+					' multiple' .
+					' title="' . 
+						esc_attr( __a( 'Click to add/remove option.' ) ) . "\n" . 
+						esc_attr( __( 'Items must meet all selected options.' ) ) . 
+						'"' .
+					' >';
+					foreach ( array_keys( $taglist ) as $tag ) {
+						$sel = in_array ( $tag, $ss_tags );
+						$result .= 
+						'<option' .
+							' value="'.$tag.'"' .
+							' class="' . $id . '"' .
+							' onmouseup="wppaOnClickMultiSSO( \'' . $id . '\', this, '.wppa('mocc').' )"' .
+							' ontouchend="wppaOnClickMultiSSO( \'' . $id . '\', this, '.wppa('mocc').' )"' .
+							' data-sel="' . ( $sel ? 'yes' : 'no' ) . '"' .
+							( $sel ? ' selected="selected"' : '' ) .
+							' >' .
+								$tag .
+						'</option>';
+					}
+				$result .=
+				'</select>';
+				
+				// photo text
+				$id = 'wppa-ss-phototext-'.wppa('mocc');
+				$result .= '
+				<select' .
+					' id="' . $id . '"' .
+					' name="wppa-ss-phototext"' .
+					' style="display:none;margin:2px;padding:0;vertical-align:top;"' .
+					' size="' . ( min( count( $phototxt ), '6' ) ) . '"' .
+					' multiple="multiple"' .
+					' title="' . 
+						esc_attr( __a( 'Click to add/remove option.' ) ) . "\n" . 
+						esc_attr( __( 'Items must meet all selected options.' ) ) . 
+						'"' .
+					' >';
+					foreach ( $phototxt as $txt ) {
+						$text 	= $txt['slug'];
+						$sel 	= in_array ( $text, $ss_ptxt );
+						$result .= 
+						'<option' .
+							' value="' . $text . '"' .
+							' class="' . $id . '"' .
+							' onmouseup="wppaOnClickMultiSSO( \'' . $id . '\', this, '.wppa('mocc').' )"' .
+							' ontouchend="wppaOnClickMultiSSO( \'' . $id . '\', this, '.wppa('mocc').' )"' .
+							' data-sel="' . ( $sel ? 'yes' : 'no' ) . '"' .
+							( $sel ? ' selected="selected"' : '' ) .
+							' >' .
+								$text .
+						'</option>';
+					}
+				$result .= 
+				'</select>';
+				
+				// photo iptc
+				$result .= '
+				<select' .
+					' id="wppa-ss-photoiptc-'.wppa('mocc').'"' .
+					' name="wppa-ss-photoiptc"' .
+					' style="display:none;margin:2px;padding:0;vertical-align:top;"' .
+					' size="' . min( count( $iptclist ), '6' ) . '"' .
+					' >';
+					foreach ( $iptclist as $item ) {
+						$tag = $item['tag'];
+						$sel = '2#'.$ss_data['2'] == $tag && $ss_data['0'] = 'p' && $ss_data['1'] == 'i';
+						$result .= 
+						'<option' .
+							' value="' . $tag . '"' .
+							' on'.$selevent.'="wppaOnMouseOverSSO( this, '.wppa('mocc').')"' .
+							' ontouchstart="wppaOnMouseOverSSO( this, '.wppa('mocc').')"' .
+							( $sel ? ' selected="selected"' : '' ) .
+							' >' . 
+								__( $item['description'] ) . 
+						'</option>';
+					}
+				$result .= 
+				'</select>';
+				
+				// Iptc items
+				$result .= '
+				<select' .
+					' id="wppa-ss-iptcopts-'.wppa('mocc').'"' .
+					' name="wppa-ss-iptcopts"' .
+					' style="display:none;margin:2px;padding:0;vertical-align:top;"' .
+					' size="6"' .
+					' onchange="wppaSuperSearchSelect('.wppa('mocc').')"' .
+					' >
+				</select>';
+
+				// photo exif
+				$result .= '
+				<select' .
+					' id="wppa-ss-photoexif-'.wppa('mocc').'"' .
+					' name="wppa-ss-photoexif"' .
+					' style="display:none;margin:2px;padding:0;vertical-align:top;"' .
+					' size="' . min( count( $exiflist ), '6' ) . '"' .
+					' >';
+					foreach ( $exiflist as $item ) {
+						$tag = $item['tag'];
+						$sel = 'E#'.$ss_data['2'] == $tag && $ss_data['0'] = 'p' && $ss_data['1'] == 'e';
+						$result .= 
+						'<option' .
+							' value="' . $tag . '"' .
+							' on'.$selevent.'="wppaOnMouseOverSSO( this, '.wppa('mocc').')"' .
+							' ontouchstart="wppaOnMouseOverSSO( this, '.wppa('mocc').')"' .
+							( $sel ? ' selected="selected"' : '' ) .
+							' >' . 
+								__( $item['description'] ) . 
+						'</option>';
+					}
+				$result .= 
+				'</select>';
+				
+				// Exif items
+				$result .= '
+				<select' .
+					' id="wppa-ss-exifopts-'.wppa('mocc').'"' .
+					' name="wppa-ss-exifopts"' .
+					' style="display:none;margin:2px;padding:0;vertical-align:top;"' .
+					' size="6"' .
+					' onchange="wppaSuperSearchSelect('.wppa('mocc').')"' .
+					' >
+				</select>';
+
+				
+		// The spinner
+		$result .= '
+		<img' .
+			' id="wppa-ss-spinner-'.wppa('mocc').'"' .
+			' src="' . wppa_get_imgdir() . '/wpspin.gif' . '"' .
+			' style="margin:0 4px;display:none;"' .
+			' />';
+		
+		// The button
+		$result .= '
+		<input' .
+			' type="button"' . 
+			' id="wppa-ss-button-' . wppa('mocc') . '"' .
+			' value="' . __a('Submit') . '"' .
+			' style="vertical-align:top;margin:2px;"' .
+			' onclick="wppaSuperSearchSelect(' . wppa('mocc') .' , true)"' .
+			' ontouchstart="wppaSuperSearchSelect(' . wppa('mocc') .' , true)"' .
+			' />';
+			
+	$result .= '
+	</form>
+	<script type="text/javascript" >
+		wppaSuperSearchSelect(' . wppa('mocc') . ');
+	</script>';
 
 	return $result;
 }
@@ -1497,6 +2061,9 @@ global $wpdb;
 	if ( $wppa['is_comten'] ) return;
 	if ( $wppa['is_lasten'] ) return;
 	if ( $wppa['is_featen'] ) return;
+	if ( $wppa['supersearch'] ) return;
+	if ( $wppa['searchstring'] ) return;
+	if ( $wppa['is_tag'] ) return;
 	if ( strlen( $wppa['start_album'] ) > '0' && ! wppa_is_int( $wppa['start_album'] ) ) return; // Album enumeration
 	
 	$result = '';
@@ -1521,6 +2088,9 @@ global $wpdb;
 	if ( $wppa['is_comten'] ) return;
 	if ( $wppa['is_lasten'] ) return;
 	if ( $wppa['is_featen'] ) return;
+	if ( $wppa['supersearch'] ) return;
+	if ( $wppa['searchstring'] ) return;
+	if ( $wppa['is_tag'] ) return;
 	if ( strlen( $wppa['start_album'] ) > '0' && ! wppa_is_int( $wppa['start_album'] ) ) return; // Album enumeration
 	
 	$result = '';

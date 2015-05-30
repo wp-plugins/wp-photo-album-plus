@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 6.1.7
+* Version 6.1.9
 *
 */
 
@@ -3195,6 +3195,15 @@ global $wppa_tags;
 							$tags = 'system,audio';
 							wppa_setting($slug, '23', $name, $desc, $html, $help, $clas, $tags);
 							
+							$name = __('Relative urls', 'wppa');
+							$desc = __('Use relative urls only.', 'wppa');
+							$help = '';
+							$slug = 'wppa_relative_urls';
+							$html = wppa_checkbox($slug);
+							$clas = '';
+							$tags = 'system';
+							wppa_setting($slug, '24', $name, $desc, $html, $help, $clas, $tags);
+							
 							}
 						wppa_setting_subheader( 'B', '1', __( 'Slideshow related settings', 'wppa' ) );
 							{
@@ -5229,6 +5238,29 @@ global $wppa_tags;
 							$tags = 'link';
 							wppa_setting($slug, '8', $name, $desc, $html, $help, $clas, $tags);
 							}
+							{
+							$name = __('Supersearch Landing', 'wppa');
+							$desc = __('Select the landing page for the Supersearch Box', 'wppa');
+							$help = '';
+							$slug1 = '';
+							$slug2 = 'wppa_supersearch_linkpage';
+							wppa_verify_page($slug2);
+							$slug3 = '';
+							$slug4 = '';
+							$slug = array($slug1, $slug2, $slug3, $slug4);
+							$html1 = '';				
+							$clas = '';
+							$html2 = wppa_select($slug2, $options_page_auto, $values_page, $onchange, $clas);
+							$clas = '';
+							$html3 = '';
+							$html4 = '';
+							$html = array($html1, $html2, $html3, $html4);
+							$clas = '';
+							$tags = 'link';
+							wppa_setting($slug, '9', $name, $desc, $html, $help, $clas, $tags);
+							}
+							
+							
 							?>
 						</tbody>
 						<tfoot style="font-weight: bold;" class="wppa_table_6">
@@ -6830,6 +6862,26 @@ global $wppa_tags;
 							$clas = '';
 							$tags = 'system';
 							wppa_setting($slug, '17', $name, $desc, $html, $help, $clas, $tags);
+							
+							$name = __('Default album linktype', 'wppa');
+							$desc = __('The album linktype for new albums', 'wppa');
+							$help = '';
+							$slug = 'wppa_default_album_linktype';
+							$opts = array( 	__('the sub-albums and thumbnails', 'wppa'),
+											__('the sub-albums', 'wppa'),
+											__('the thumbnails', 'wppa'),
+											__('the album photos as slideshow', 'wppa'),
+											__('no link at all', 'wppa')
+										);
+											
+							$vals = array( 	'content', 
+											'albums', 
+											'thumbs', 
+											'slide', 
+											'none' 
+										);
+							$html = wppa_select($slug, $opts, $vals);
+							wppa_setting($slug, '18', $name, $desc, $html, $help, $clas, $tags);
 							}
 						wppa_setting_subheader( 'E', '1', __( 'Search Albums and Photos related settings', 'wppa' ) );
 							{
@@ -6970,6 +7022,16 @@ global $wppa_tags;
 							$clas = '';
 							$tags = 'system,search,layout';
 							wppa_setting($slug, '12', $name, $desc, $html, $help, $clas, $tags);
+							
+							$name = __('Supersearch hover', 'wppa');
+							$desc = __('Hover to select in supersearch.', 'wppa');
+							$help = '';
+							$slug = 'wppa_ss_hover';
+							$html = wppa_checkbox($slug);
+							$clas = '';
+							$tags = 'system,search';
+							wppa_setting($slug, '13', $name, $desc, $html, $help, $clas, $tags);
+							
 							}
 						wppa_setting_subheader( 'F', '1', __( 'Watermark related settings', 'wppa' ) );
 							{

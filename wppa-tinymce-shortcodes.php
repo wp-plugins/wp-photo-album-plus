@@ -3,7 +3,7 @@
 * Pachkage: wp-photo-album-plus
 *
 *
-* Version 6.1.0
+* Version 6.1.9
 *
 */
 
@@ -160,6 +160,7 @@ global $wpdb;
 					'<select id="wppagallery-search-type" name="type" onchange="wppaGalleryEvaluate()">'.
 						'<option value="" selected="selected" disabled="disabled" style="color:#700" >-- '.__('Please select a search type', 'wppa').' --</option>'.
 						'<option value="search" style="color:#070" >'.__('A search box', 'wppa').'</option>'.
+						'<option value="supersearch" style="color:#070" >'.__('A supersearch box', 'wppa').'</option>'.
 						'<option value="tagcloud" style="color:#070" >'.__('A tagcloud box', 'wppa').'</option>'.
 						'<option value="multitag" style="color:#070" >'.__('A multitag box', 'wppa').'</option>'.
 						'<option value="superview" style="color:#070" >'.__('A superview box', 'wppa').'</option>'.

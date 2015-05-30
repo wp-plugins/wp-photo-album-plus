@@ -5,7 +5,7 @@
 * Various funcions to display a thumbnail image
 * Contains all possible frontend thumbnail types
 *
-* Version 6.1.4
+* Version 6.1.9
 * 
 */
 
@@ -179,6 +179,7 @@ global $wpdb;
 				&& ! wppa( 'is_tag' )														// no tag selection
 				&& ! wppa( 'is_upldr' )														// not on uploader deisplay
 				&& ! wppa( 'src' )															// no search
+				&& ! wppa( 'supersearch' )													// no supersearch
 				&& ( wppa_is_int( wppa( 'start_album' ) ) || wppa( 'start_album' ) == '' )	// no set of albums
 				 ) 
 			{ 	// Ajax	possible
@@ -378,7 +379,7 @@ global $wpdb;
 */
 	// Comten alt display?
 	if ( $com_alt ) {
-		$result .= '<div class="wppa-com-alt wppa-com-alt-'.wppa( 'mocc' ).'" style="height:'.$imgheight.'px; overflow:auto; margin: 0 20px 8px 10px; border:1px solid '.wppa_opt( 'bcolor_alt' ).';" >';
+		$result .= '<div class="wppa-com-alt wppa-com-alt-'.wppa( 'mocc' ).'" style="height:'.$imgheight.'px; overflow:auto; margin: 0 0 8px 10px; border:1px solid '.wppa_opt( 'bcolor_alt' ).';" >';
 			$comments = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM `".WPPA_COMMENTS."` WHERE `photo` = %s AND `status` = 'approved' ORDER BY `timestamp` DESC", $id ), ARRAY_A );
 			$first = true;
 			if ( $comments ) foreach ( $comments as $com ) {
@@ -404,11 +405,6 @@ global $wpdb;
 			$result .= '<input id="wppa-vote-button-'.wppa( 'mocc' ).'-'.$id.'" class="wppa-vote-button-thumb" style="margin:0;" type="button" onclick="wppaVoteThumb( '.wppa( 'mocc' ).', '.$id.' )" value="'.$buttext.'" />';
 		}
 
-		// searching, link to album
-		if ( wppa( 'src' ) || ( ( wppa( 'is_comten') || wppa( 'is_topten' ) || wppa( 'is_lasten' ) || wppa( 'is_featen') ) && wppa( 'start_album' ) != $thumb['album'] ) ) {
-			$result .= '<div class="wppa-thumb-text" style="'.__wcs( 'wppa-thumb-text' ).'" >( <a href="'.wppa_get_album_url( $thumb['album'] ).'">'.stripslashes( __( wppa_get_album_name( $thumb['album'] ) ) ).'</a> )</div>';
-		}
-
 		// Name
 		if ( wppa_switch( 'thumb_text_name' ) || wppa_switch( 'thumb_text_owner' ) ) {
 			$result .= '<div class="wppa-thumb-text" style="'.__wcs( 'wppa-thumb-text' ).'" >';
@@ -416,6 +412,11 @@ global $wpdb;
 			$result .= '</div>';
 		}
 		
+		// searching, link to album
+		if ( wppa( 'src' ) || wppa( 'supersearch' ) || ( ( wppa( 'is_comten') || wppa( 'is_topten' ) || wppa( 'is_lasten' ) || wppa( 'is_featen') ) && wppa( 'start_album' ) != $thumb['album'] ) ) {
+			$result .= '<div class="wppa-thumb-text" style="'.__wcs( 'wppa-thumb-text' ).'" ><a href="'.wppa_get_album_url( $thumb['album'] ).'"><span class="wppa-tnpar" >(</span>'.stripslashes( __( wppa_get_album_name( $thumb['album'] ) ) ).'<span class="wppa-tnpar" >)</span></a></div>';
+		}
+
 		// Share
 		if ( wppa_switch( 'share_on_thumbs' ) ) {
 			$result .= '<div class="wppa-thumb-text" style="'.__wcs( 'wppa-thumb-text' ).'" >';

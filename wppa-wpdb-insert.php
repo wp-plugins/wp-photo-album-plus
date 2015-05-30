@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains low-level wpdb routines that add new records
-* Version 6.1.6
+* Version 6.1.9
 *
 */
 
@@ -332,7 +332,7 @@ global $wpdb;
 					'main_photo' 		=> '0',
 					'a_parent' 			=> wppa_opt( 'wppa_default_parent' ),
 					'p_order_by' 		=> '0',
-					'cover_linktype' 	=> 'content',
+					'cover_linktype' 	=> wppa_opt( 'wppa_default_album_linktype' ),
 					'cover_linkpage' 	=> '0',
 					'owner' 			=> wppa_get_user(),
 					'timestamp' 		=> time(),

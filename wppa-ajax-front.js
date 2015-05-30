@@ -1,32 +1,9 @@
 // wppa-ajax-front.js
 //
-// Conatins frontend ajax modules
+// Contains frontend ajax modules
 // Dependancies: wppa.js and default wp jQuery library
 // 
-var wppaJsAjaxVersion = '6.1.6';
-
-
-// Initialize Ajax render partial page content with history update
-jQuery( document ).ready( function( e ) {
-
-	// Are we allowed and capable to ajax?
-	if ( wppaAllowAjax && jQuery.ajax() ) {
-		wppaCanAjaxRender = true;
-	}
-	
-	// Can we do history.pushState ?
-	if ( typeof( history.pushState ) != 'undefined' ) {	
-	
-		// Save entire initial page content ( I do not know which container is going to be modified first )
-		var i=1;
-		while ( i <= wppaMaxOccur ) {
-			wppaStartHtml[i] = jQuery( '#wppa-container-'+i ).html();
-			i++;
-		}
-
-		wppaCanPushState = true;
-	}
-});
+var wppaJsAjaxVersion = '6.1.9';
 
 // The new AJAX rendering routine Async
 function wppaDoAjaxRender( mocc, ajaxurl, newurl ) {

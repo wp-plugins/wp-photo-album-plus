@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Frontend links
-* Version 6.1.7
+* Version 6.1.9
 *
 */
 
@@ -311,6 +311,9 @@ function wppa_convert_from_pretty( $uri ) {
 				case 'ss':
 					$deltauri = 'wppa-searchstring=';
 					break;
+				case 'su':
+					$deltauri = 'wppa-supersearch=';
+					break;
 				case 'tt':
 					$deltauri = 'wppa-topten=';
 					break;
@@ -410,6 +413,7 @@ function wppa_convert_to_pretty( $xuri ) {
 	$args = explode( '&', $parts[1] );
 	$order = array( 'occur', 'woccur', 
 					'searchstring', 
+					'supersearch',
 					'topten', 'lasten', 'comten', 'featen',
 					'lang', 
 					'single', 
@@ -539,7 +543,32 @@ function wppa_convert_to_pretty( $xuri ) {
 	
 	// explode querystring
 	$args = explode('&', substr($uri, $qpos+1));
-	$support = array('album', 'photo', 'slide', 'cover', 'occur', 'woccur', 'page', 'searchstring', 'topten', 'lasten', 'comten', 'featen', 'lang', 'single', 'tag', 'photos-only', 'albums-only', 'debug', 'rel', 'relcount', 'upldr', 'owner', 'rootsearch', 'hilite' );
+	$support = array(	'album', 
+						'photo', 
+						'slide', 
+						'cover', 
+						'occur', 
+						'woccur', 
+						'page', 
+						'searchstring', 
+						'supersearch',
+						'topten', 
+						'lasten', 
+						'comten', 
+						'featen', 
+						'lang', 
+						'single', 
+						'tag', 
+						'photos-only', 
+						'albums-only', 
+						'debug', 
+						'rel', 
+						'relcount', 
+						'upldr', 
+						'owner', 
+						'rootsearch', 
+						'hilite' 
+					);
 	if ( count($args) > 0 ) {
 		foreach ( $args as $arg ) {
 			$t = explode('=', $arg);
@@ -571,6 +600,9 @@ function wppa_convert_to_pretty( $xuri ) {
 						break;
 					case 'searchstring':
 						$newuri .= 'ss';
+						break;
+					case 'supersearch':
+						$newuri .= 'su';
 						break;
 					case 'topten':
 						$newuri .= 'tt';
@@ -859,7 +891,10 @@ function wppa_page_links( $npages = '1', $curpage = '1', $slide = false ) {
 	if ( wppa( 'is_tag' ) && ! wppa( 'is_related' ) ) $extra_url .= '&amp;wppa-tag='.wppa( 'is_tag' );
 	
 	// Search?
-	if ( wppa( 'src' ) && ! wppa( 'is_related' ) ) $extra_url .= '&amp;wppa-searchstring='.urlencode(wppa( 'searchstring' ));
+	if ( wppa( 'src' ) && ! wppa( 'is_related' ) ) $extra_url .= '&amp;wppa-searchstring='.urlencode( wppa( 'searchstring' ) );
+	
+	// Supersearch?
+	if ( wppa( 'supersearch' ) ) $extra_url .= '&amp;wppa-supersearch=' . urlencode( wppa( 'supersearch' ) );
 	
 	// Related
 	if ( wppa( 'is_related' ) ) $extra_url .= '&amp;wppa-rel='.wppa( 'is_related' ).'&amp;wppa-relcount='.wppa( 'related_count' );
@@ -1126,6 +1161,9 @@ global $wpdb;
 	if ( $wich == 'comten' ) $album = '0';
 
 	if ( wppa( 'is_tag' ) ) $album = '0';
+	
+	if ( wppa( 'supersearch' ) ) $album = '0';
+	
 //	if ( wppa( 'is_upldr' ) ) $album = '0';	// probeersel upldr parent
 	
 	if ( $id ) {
@@ -1386,6 +1424,10 @@ global $wpdb;
 	}
 	
 	if ( $type != 'thumbalbum' ) {
+		if ( wppa( 'supersearch' ) ) {
+			$result['url'] .= '&amp;wppa-supersearch=' . urlencode( wppa( 'supersearch' ) );
+		}
+		
 		if ( wppa( 'src' ) && ! wppa( 'is_related' ) && ! wppa( 'in_widget' ) ) { 
 			$result['url'] .= '&amp;wppa-searchstring=' . urlencode( wppa( 'searchstring' ) );
 		}

@@ -3,7 +3,7 @@
 // Conatins lightbox modules
 // Dependancies: wppa.js and default wp jQuery library
 // 
-var wppaLightboxVersion = '6.1.6';
+var wppaLightboxVersion = '6.1.9';
 
 // Initial initialization
 jQuery( document ).ready(function( e ) {
@@ -573,43 +573,6 @@ function wppaOvlShowFull() {
 // Used to determine if a video/audio must restart
 function wppaOvlUpdateFsId() {
 	wppaOvlFsPhotoId = wppaPhotoId;
-}
-
-// Stop video of a given occurrency
-function wppaStopVideo( mocc ) {
-	var id = [];
-	var video; 
-	var i;
-	
-	id[1] = 'wppa-overlay-img';
-	id[2] = 'theimg0-'+mocc;
-	id[3] = 'theimg1-'+mocc;
-	i = 0;
-	
-	while ( i < 3 ) {
-		i++;
-		video = document.getElementById( id[i] );
-		if ( video ) {
-			if ( typeof( video.pause ) == 'function' ) {
-				video.pause();
-				wppaConsoleLog( 'Video '+id[i]+' paused', 'force' );
-			}
-		}
-	}
-}
-
-// Stop all audio
-function wppaStopAudio() {
-
-	var items = jQuery( 'audio' );
-	
-	if ( items.length > 0 ) {
-		var i = 0;
-		while ( i < items.length ) {
-			items[i].pause();
-			i++;
-		}
-	}
 }
 
 // Start audio on the lightbox view

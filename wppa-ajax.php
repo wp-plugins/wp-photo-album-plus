@@ -2,7 +2,7 @@
 /* wppa-ajax.php
 *
 * Functions used in ajax requests
-* version 6.1.8
+* version 6.1.9
 *
 */
 
@@ -45,10 +45,90 @@ global $wppa_session;
 	wppa_vfy_arg( 'moccur' );
 	wppa_vfy_arg( 'comemail', true );
 	wppa_vfy_arg( 'comname', true );
+	wppa_vfy_arg( 'tag', true );
 	
 	$wppa_action = $_REQUEST['wppa-action'];
 	
 	switch ( $wppa_action ) {
+		case 'getssiptclist':
+			$tag 		= '2#' . $_REQUEST['tag'];
+			$mocc 		= $_REQUEST['moccur'];
+			$oldvalue = '';
+			if ( isset( $wppa_session['supersearch'] ) && strpos( $wppa_session['supersearch'], ',' ) !== false ) {
+				$ss_data = explode( ',', $wppa_session['supersearch'] );
+				if ( count( $ss_data ) == '4' ) {
+					if ( $ss_data['0'] == 'p' ) {
+						if ( $ss_data['1'] == 'i' ) {
+							if ( $ss_data['2'] == $_REQUEST['tag'] ) {
+								$oldvalue = $ss_data['3'];
+							}
+						}
+					}
+				}
+			}
+			$iptcdata 	= $wpdb->get_results( $wpdb->prepare( "SELECT * FROM `" . WPPA_IPTC ."` WHERE `photo` > '0' AND `tag` = %s ORDER BY `description`", $tag ), ARRAY_A );
+			$last 		= '';
+			if ( is_array( $iptcdata ) ) foreach( $iptcdata as $item ) {
+				$desc = trim( $item['description'] );
+				if ( $desc != $last ) {
+					$sel = ( $oldvalue && $oldvalue == $desc ) ? 'selected="selected"' : '';
+					if ( $sel ) echo 'selected:'.$oldvalue;
+					$ddesc = strlen( $desc ) > '32' ? substr( $desc, 0, 30 ) . '...' : $desc;
+					$selevent = wppa_switch( 'ss_hover' ) ? 'mouseover' : 'click';
+					echo 	'<option' .
+								' value="' . esc_attr( $desc ) . '"' .
+								' class="wppa-iptclist-' . $mocc . '"' .
+								' ' . $sel .
+								' on'.$selevent.'="wppaOnMouseOverSSO( this, ' . $mocc . ')"' .
+								' ontouchstart="wppaOnMouseOverSSO( this, ' . $mocc . ')"' .
+								' >' . 
+									$ddesc . 
+							'</option>';
+					$last = $desc;
+				}
+			}
+			exit;
+			break;
+			
+		case 'getssexiflist':
+			$tag 		= 'E#' . $_REQUEST['tag'];
+			$mocc 		= $_REQUEST['moccur'];
+			$oldvalue = '';
+			if ( isset( $wppa_session['supersearch'] ) && strpos( $wppa_session['supersearch'], ',' ) !== false ) {
+				$ss_data = explode( ',', $wppa_session['supersearch'] );
+				if ( count( $ss_data ) == '4' ) {
+					if ( $ss_data['0'] == 'p' ) {
+						if ( $ss_data['1'] == 'e' ) {
+							if ( $ss_data['2'] == $_REQUEST['tag'] ) {
+								$oldvalue = $ss_data['3'];
+							}
+						}
+					}
+				}
+			}
+			$exifdata 	= $wpdb->get_results( $wpdb->prepare( "SELECT * FROM `" . WPPA_EXIF ."` WHERE `photo` > '0' AND `tag` = %s ORDER BY `description`", $tag ), ARRAY_A );
+			$last 		= '';
+			if ( is_array( $exifdata ) ) foreach( $exifdata as $item ) {
+				$desc = trim( $item['description'] );
+				if ( $desc != $last ) {
+					$sel = ( $oldvalue && $oldvalue == $desc ) ? 'selected="selected"' : '';
+					$ddesc = strlen( $desc ) > '32' ? substr( $desc, 0, 30 ) . '...' : $desc;
+					$selevent = wppa_switch( 'ss_hover' ) ? 'mouseover' : 'click';
+					echo 	'<option' .
+								' value="' . esc_attr( $desc ) . '"' .
+								' class="wppa-exiflist-' . $mocc . '"' .
+								' ' . $sel .
+								' on'.$selevent.'="wppaOnMouseOverSSO( this, ' . $mocc . ')"' .
+								' ontouchstart="wppaOnMouseOverSSO( this, ' . $mocc . ')"' .
+								' >' . 
+									$ddesc . 
+							'</option>';
+					$last = $desc;
+				}
+			}
+			exit;
+			break;
+			
 		case 'front-edit':
 			if ( ! isset( $_REQUEST['photo-id'] ) ) die( 'Missing required argument' );
 			$photo = $_REQUEST['photo-id'];
