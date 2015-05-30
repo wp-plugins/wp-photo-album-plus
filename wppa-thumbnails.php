@@ -792,6 +792,7 @@ global $wpdb;
 				&& ! wppa( 'is_tag' )													// no tag selection
 				&& ! wppa( 'is_upldr' )													// not on uploader deisplay
 				&& ! wppa( 'src' )														// no search
+				&& ! wppa( 'supersearch' )													// no supersearch
 				&& ( wppa_is_int( wppa( 'start_album' ) ) || wppa( 'start_album' ) == '' )	// no set of albums
 				 ) 
 			{ 	// Ajax	possible
