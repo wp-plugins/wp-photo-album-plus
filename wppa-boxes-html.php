@@ -291,8 +291,8 @@ global $wppa_session;
 						' size="' . ( min( count( $catlist ), '6' ) ) . '"' .
 						' multiple' .
 						' title="' . 
-							esc_attr( __a( 'Click to add/remove option.' ) ) . "\n" . 
-							esc_attr( __( 'Items must meet all selected options.' ) ) . 
+						esc_attr( __a( 'CTRL+Click to add/remove option.' ) ) . "\n" . 
+						esc_attr( __a( 'Items must meet all selected options.' ) ) . 
 							'"' .
 						' >';
 						foreach ( array_keys( $catlist ) as $cat ) {

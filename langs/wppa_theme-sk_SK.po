@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wppa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-04-01 14:21+0100\n"
-"PO-Revision-Date: 2015-04-01 14:22+0100\n"
+"POT-Creation-Date: 2015-06-06 15:43+0100\n"
+"PO-Revision-Date: 2015-06-06 15:44+0100\n"
 "Last-Translator: J.N. Breetvelt <OpaJaap@OpaJaap.nl>\n"
 "Language-Team: OpaJaap <OpaJaap@OpaJaap.nl>\n"
 "Language: sk_SK\n"
@@ -18,20 +18,20 @@ msgstr ""
 "X-Poedit-KeywordsList: __a\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-SourceCharset: utf-8\n"
-"X-Generator: Poedit 1.7.5\n"
+"X-Generator: Poedit 1.8.1\n"
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPath-1: theme\n"
 
-#: theme/wppa-theme.php:301 theme/wppa-theme.php:320
+#: theme/wppa-theme.php:307 theme/wppa-theme.php:326
 msgid "No photos found matching your search criteria."
 msgstr ""
 "Nenájdené žiadne fotografie zodpovedajúce zadaným kritériám vyhľadávania."
 
-#: theme/wppa-theme.php:304
+#: theme/wppa-theme.php:310
 msgid "No albums found matching your search criteria."
 msgstr "Žiadne albumy našiel zodpovedajúce zadaným kritériám vyhľadávania."
 
-#: theme/wppa-theme.php:307
+#: theme/wppa-theme.php:313
 msgid "No albums or photos found matching your search criteria."
 msgstr ""
 "Žiadne albumy alebo fotografie nájsť zodpovedajúce zadaným kritériám "
@@ -65,7 +65,7 @@ msgstr "Exportovať fotografie"
 msgid "Settings"
 msgstr "Nastavenia"
 
-#: wppa-adminbar.php:89 wppa-potd-widget.php:54
+#: wppa-adminbar.php:89 wppa-potd-widget.php:62
 msgid "Photo of the day"
 msgstr "Foto dňa"
 
@@ -81,12 +81,12 @@ msgstr "Pomoc &amp; Info"
 msgid "Docs & Demos"
 msgstr "Docs &amp; dema"
 
-#: wppa-adminbar.php:118 wppa-album-navigator-widget.php:38
-#: wppa-album-widget.php:43
+#: wppa-adminbar.php:118 wppa-album-navigator-widget.php:45
+#: wppa-album-widget.php:49
 msgid "Photo Albums"
 msgstr "Fotoalbumy"
 
-#: wppa-ajax.php:63
+#: wppa-ajax.php:156
 msgid ""
 "All modifications are instantly updated on the server. The <b style=\"color:"
 "#070\" >Remark</b> field keeps you informed on the actions taken at the "
@@ -95,226 +95,285 @@ msgstr ""
 "Všetky zmeny sú okamžite aktualizovať na serveri. Poľa <b style=\"color:"
 "#070\">poznámky</b> vás neustále informuje o opatreniach prijatých na pozadí."
 
-#: wppa-ajax.php:66
+#: wppa-ajax.php:159
 msgid "Exit & Refresh"
 msgstr "Výjazd & obnoviť"
 
-#: wppa-ajax.php:438 wppa-ajax.php:454
+#: wppa-ajax.php:554 wppa-ajax.php:570
 msgid "Photo rated"
 msgstr "Foto hodnotené"
 
-#: wppa-album-covers.php:1008
+#: wppa-album-covers.php:1013
 msgid "Link to"
 msgstr "Odkaz na"
 
-#: wppa-album-covers.php:1038 wppa-album-covers.php:1100
-#: wppa-album-covers.php:1107
+#: wppa-album-covers.php:1043 wppa-album-covers.php:1104
+#: wppa-album-covers.php:1111
 msgid "View the album"
 msgstr "Prezerať album"
 
-#: wppa-album-covers.php:1058
+#: wppa-album-covers.php:1063
 msgid "View the cover photo"
 msgstr "Zobraziť krytom foto"
 
-#: wppa-album-covers.php:1059
+#: wppa-album-covers.php:1064
 msgid "View the cover photos"
 msgstr "Zobraziť fotografie kryt"
 
-#: wppa-album-covers.php:1113
+#: wppa-album-covers.php:1117
 msgid "View"
 msgstr "Zobrazenie"
 
-#: wppa-album-covers.php:1116
+#: wppa-album-covers.php:1120
 msgid "album"
 msgstr "album"
 
-#: wppa-album-covers.php:1119
+#: wppa-album-covers.php:1123
 msgid "albums"
 msgstr "albumy"
 
-#: wppa-album-covers.php:1128 wppa-boxes-html.php:373 wppa-breadcrumb.php:258
-#: wppa-breadcrumb.php:263 wppa-functions.php:3692 wppa-utils.php:1374
+#: wppa-album-covers.php:1132 wppa-boxes-html.php:907 wppa-breadcrumb.php:148
+#: wppa-breadcrumb.php:154 wppa-breadcrumb.php:161 wppa-breadcrumb.php:324
+#: wppa-breadcrumb.php:329 wppa-functions.php:4076 wppa-utils.php:1404
 msgid "and"
 msgstr "a"
 
-#: wppa-album-covers.php:1133
+#: wppa-album-covers.php:1137
 msgid "photo"
 msgstr "Foto"
 
-#: wppa-album-covers.php:1136 wppa-album-covers.php:1140
+#: wppa-album-covers.php:1140 wppa-album-covers.php:1144
 msgid "photos"
 msgstr "fotografie"
 
-#: wppa-album-covers.php:1184
+#: wppa-album-covers.php:1188
 msgid "New!"
 msgstr "Nové!"
 
-#: wppa-album-covers.php:1185 wppa-thumbnails.php:1278
+#: wppa-album-covers.php:1189 wppa-thumbnails.php:1419
 msgid "New"
 msgstr "Nové"
 
-#: wppa-album-covers.php:1207 wppa-non-admin.php:518
+#: wppa-album-covers.php:1211 wppa-non-admin.php:561
 msgid "Slideshow"
 msgstr "Slideshow"
 
-#: wppa-album-covers.php:1208
+#: wppa-album-covers.php:1212
 msgid "Browse photos"
 msgstr "Prezerať fotografie"
 
-#: wppa-album-covers.php:1241
+#: wppa-album-covers.php:1245
 msgid "Categories:"
 msgstr "Kategórie:"
 
-#: wppa-album-covers.php:1244 wppa-breadcrumb.php:270 wppa-breadcrumb.php:275
+#: wppa-album-covers.php:1248 wppa-breadcrumb.php:336 wppa-breadcrumb.php:341
 msgid "Category:"
 msgstr "Kategória:"
 
-#: wppa-album-widget.php:105
+#: wppa-album-widget.php:111
 #, php-format
 msgid "Upload at least %d photos to this album!"
 msgstr "Nahrať aspoň %d fotografiφ na tento album!"
 
-#: wppa-bestof-widget.php:45
+#: wppa-audio.php:176
+msgid ""
+"There is no filetype available for your browser, or your browser does not "
+"support html5 audio"
+msgstr ""
+"Nie je k dispozícii žiadna filetype pre prehliadače, alebo Váš prehliadač "
+"nepodporuje HTML5 audio"
+
+#: wppa-bestof-widget.php:53
 msgid "Best Of Photos"
 msgstr "Najlepšie fotografie"
 
-#: wppa-boxes-html.php:61
+#: wppa-boxes-html.php:62 wppa-boxes-html.php:120
 msgid "Photo search results"
 msgstr "Výsledky hľadania Foto"
 
-#: wppa-boxes-html.php:82
+#: wppa-boxes-html.php:83
 msgid "Search"
 msgstr "Vyhľadávanie"
 
-#: wppa-boxes-html.php:88
+#: wppa-boxes-html.php:89
 msgid "Search in current section"
 msgstr "Hľadať v aktuálnej sekcii"
 
-#: wppa-boxes-html.php:91
+#: wppa-boxes-html.php:92
 msgid "Search in current results"
 msgstr "Hľadať v aktuálne výsledky"
 
-#: wppa-boxes-html.php:119
+#: wppa-boxes-html.php:238 wppa-breadcrumb.php:136
+msgid "Albums"
+msgstr "Albumy"
+
+#: wppa-boxes-html.php:244 wppa-breadcrumb.php:151
+msgid "Photos"
+msgstr "Obrázky"
+
+#: wppa-boxes-html.php:264
+msgid "Category"
+msgstr "Kategória"
+
+#: wppa-boxes-html.php:272 wppa-boxes-html.php:382
+msgid "Name"
+msgstr "Meno"
+
+#: wppa-boxes-html.php:278 wppa-boxes-html.php:407
+msgid "Text"
+msgstr "Text"
+
+#: wppa-boxes-html.php:294 wppa-boxes-html.php:348 wppa-boxes-html.php:490
+#: wppa-boxes-html.php:519
+msgid "CTRL+Click to add/remove option."
+msgstr "CTRL   Kliknite na tlačidlo pridať / odobrať voľby."
+
+#: wppa-boxes-html.php:295 wppa-boxes-html.php:349 wppa-boxes-html.php:491
+#: wppa-boxes-html.php:520
+msgid "Items must meet all selected options."
+msgstr "Položky musia spĺňať všetky vybrané možnosti."
+
+#: wppa-boxes-html.php:390
+msgid "Owner"
+msgstr "Vlastník"
+
+#: wppa-boxes-html.php:399
+msgid "Tag"
+msgstr "Značka"
+
+#: wppa-boxes-html.php:415
+msgid "Iptc"
+msgstr "IPTC"
+
+#: wppa-boxes-html.php:424
+msgid "Exif"
+msgstr "Exif"
+
+#: wppa-boxes-html.php:623
+msgid "Submit"
+msgstr "Odoslať"
+
+#: wppa-boxes-html.php:656
 msgid "Super View Photos"
 msgstr "Super Zobraziť fotografie"
 
-#: wppa-boxes-html.php:173
+#: wppa-boxes-html.php:709
 msgid "Tagged photos"
 msgstr "Tagged fotografie"
 
-#: wppa-boxes-html.php:186
+#: wppa-boxes-html.php:722
 msgid "Please select a tagcloud landing page in Table VI-C3b"
 msgstr "Vyberte prosím tagcloud landing page v tabuľke VI-C3b"
 
-#: wppa-boxes-html.php:230
+#: wppa-boxes-html.php:765
 msgid "Multi Tagged photos"
 msgstr "Multi označených fotografií"
 
-#: wppa-boxes-html.php:243
+#: wppa-boxes-html.php:778
 msgid "Please select a multitag landing page in Table VI-C4b"
 msgstr "Prosím vyberte multitag landing page v tabuľke VI-C4b"
 
-#: wppa-boxes-html.php:281
+#: wppa-boxes-html.php:816
 msgid "Please check the tag(s) that the photos must have"
 msgstr "Skontrolujte Tag (y), ktoré musia mať fotky"
 
-#: wppa-boxes-html.php:303
+#: wppa-boxes-html.php:838
 msgid "And"
 msgstr "And"
 
-#: wppa-boxes-html.php:306
+#: wppa-boxes-html.php:841
 msgid "Or"
 msgstr "Alebo"
 
-#: wppa-boxes-html.php:343
+#: wppa-boxes-html.php:878
 msgid "Find!"
 msgstr "Nájsť!"
 
-#: wppa-boxes-html.php:373 wppa-utils.php:1374
+#: wppa-boxes-html.php:907 wppa-utils.php:1404
 #, php-format
 msgid "See this image on %s"
 msgstr "Pozri tento obrázok na %s"
 
-#: wppa-boxes-html.php:384 wppa-qr-widget.php:29
+#: wppa-boxes-html.php:918 wppa-qr-widget.php:37
 msgid "QR code"
 msgstr "QR kód"
 
-#: wppa-boxes-html.php:422
+#: wppa-boxes-html.php:956
 #, php-format
 msgid "Tweet %s on Twitter"
 msgstr "Tweet %s on Twitter"
 
-#: wppa-boxes-html.php:425
+#: wppa-boxes-html.php:959
 msgid "Share on Twitter"
 msgstr "Zdieľať na Twitter"
 
-#: wppa-boxes-html.php:434
+#: wppa-boxes-html.php:968
 #, php-format
 msgid "Share %s on Google+"
 msgstr "Podiel %s na Google +"
 
-#: wppa-boxes-html.php:438
+#: wppa-boxes-html.php:972
 msgid "Share on Google+"
 msgstr "Zdieľať na Google"
 
-#: wppa-boxes-html.php:449
+#: wppa-boxes-html.php:983
 #, php-format
 msgid "Share %s on Pinterest"
 msgstr "Podiel %s na Pinterest"
 
-#: wppa-boxes-html.php:454
+#: wppa-boxes-html.php:988
 msgid "Share on Pinterest"
 msgstr "Podiel na Pinterest"
 
-#: wppa-boxes-html.php:535
+#: wppa-boxes-html.php:1069
 msgid "Comment on Facebook:"
 msgstr "Komentár na Facebook:"
 
-#: wppa-boxes-html.php:600
+#: wppa-boxes-html.php:1134
 msgid "Working..."
 msgstr "Pracuje:"
 
-#: wppa-boxes-html.php:600
+#: wppa-boxes-html.php:1134
 msgid "Delete album"
 msgstr "Vymazať album"
 
-#: wppa-boxes-html.php:663
+#: wppa-boxes-html.php:1202
 msgid "Create Album"
 msgstr "Vytvorenie albumu"
 
-#: wppa-boxes-html.php:674 wppa-boxes-html.php:1068
+#: wppa-boxes-html.php:1213 wppa-boxes-html.php:1633
 msgid "Enter album name."
 msgstr "Zadajte názov albumu."
 
-#: wppa-boxes-html.php:674 wppa-boxes-html.php:1068
+#: wppa-boxes-html.php:1213 wppa-boxes-html.php:1633
 msgid "Don't leave this blank!"
 msgstr "Nenechávajte to prázdne!"
 
-#: wppa-boxes-html.php:682
+#: wppa-boxes-html.php:1221
 msgid "Enter album description"
 msgstr "Zadajte popis albumu"
 
-#: wppa-boxes-html.php:692
+#: wppa-boxes-html.php:1231
 msgid "Create album"
 msgstr "Vytvorenie albumu"
 
-#: wppa-boxes-html.php:721 wppa-boxes-html.php:735 wppa-functions.php:3421
+#: wppa-boxes-html.php:1266 wppa-boxes-html.php:1280 wppa-functions.php:3794
 msgid "Max uploads reached"
 msgstr "Max uploads dosiahol"
 
-#: wppa-boxes-html.php:794
+#: wppa-boxes-html.php:1339
 msgid "Upload Photo"
 msgstr "Nahrať fotku"
 
-#: wppa-boxes-html.php:820
+#: wppa-boxes-html.php:1365
 msgid "Please select an album and try again"
 msgstr "Vyberte album a skúste to znova"
 
-#: wppa-boxes-html.php:823
+#: wppa-boxes-html.php:1368
 msgid "Upload photo"
 msgstr "Nahrať doklad totožnosti s fotografiou"
 
-#: wppa-boxes-html.php:840
+#: wppa-boxes-html.php:1385
 #, php-format
 msgid ""
 "You may upload up to %s photos at once if your browser supports HTML-5 "
@@ -323,20 +382,20 @@ msgstr ""
 "Môžete nahrať až %s fotografií naraz Ak váš prehliadač podporuje HTML-5 "
 "hromadného nahrání súboru"
 
-#: wppa-boxes-html.php:846
+#: wppa-boxes-html.php:1391
 #, php-format
 msgid "Max photo size: %d x %d (%2.1f MegaPixel)"
 msgstr "Max veľkosť fotografií: %d %d (%2.1f MegaPixel)"
 
-#: wppa-boxes-html.php:863
+#: wppa-boxes-html.php:1408
 msgid "Apply watermark file:"
 msgstr "Použitie súboru vodoznak:"
 
-#: wppa-boxes-html.php:875
+#: wppa-boxes-html.php:1420
 msgid "Position:"
 msgstr "Pozícia:"
 
-#: wppa-boxes-html.php:896
+#: wppa-boxes-html.php:1441
 msgid ""
 "If you leave this blank, iptc tag 005 (Graphic name) will be used as "
 "photoname if available, else the original filename will be used as photo "
@@ -346,7 +405,7 @@ msgstr ""
 "photoname ak je to možné, inak pôvodný názov súboru sa použije ako názov "
 "fotografie."
 
-#: wppa-boxes-html.php:899
+#: wppa-boxes-html.php:1444
 msgid ""
 "If you leave this blank, iptc tag 120 (Caption) will be used as photoname if "
 "available, else the original filename will be used as photo name."
@@ -354,254 +413,278 @@ msgstr ""
 "Ak necháte prázdne, iptc značku 120 (titulok) sa použije ako photoname ak je "
 "to možné, inak pôvodný názov súboru sa použije ako názov fotografie."
 
-#: wppa-boxes-html.php:902
+#: wppa-boxes-html.php:1447
 msgid ""
 "If you leave this blank, the original filename will be used as photo name."
 msgstr ""
 "Ak necháte prázdne, pôvodný názov súboru sa použije ako názov fotografie."
 
-#: wppa-boxes-html.php:906
+#: wppa-boxes-html.php:1451
 msgid "Enter photo name."
 msgstr "Zadajte názov fotografie."
 
-#: wppa-boxes-html.php:916
+#: wppa-boxes-html.php:1461
 msgid "Enter/modify photo description"
 msgstr "Zadajte a upravovať Foto Popis"
 
-#: wppa-boxes-html.php:968
+#: wppa-boxes-html.php:1479
+msgid "hidden"
+msgstr "skrytý"
+
+#: wppa-boxes-html.php:1534
 msgid "Preview tags:"
 msgstr "Ukážka Tagy:"
 
-#: wppa-boxes-html.php:1013
+#: wppa-boxes-html.php:1579
 msgid "ERROR: unable to upload files."
 msgstr "Chyba: nemožno nahrať súbory."
 
-#: wppa-boxes-html.php:1061
+#: wppa-boxes-html.php:1626
 msgid "Edit albuminfo"
 msgstr "Upraviť albuminfo"
 
-#: wppa-boxes-html.php:1072
+#: wppa-boxes-html.php:1637
 msgid "Album description:"
 msgstr "Popis albumu:"
 
-#: wppa-boxes-html.php:1075
+#: wppa-boxes-html.php:1640
 msgid "Update album"
 msgstr "Aktualizácia albumu"
 
-#: wppa-boxes-html.php:1123
+#: wppa-boxes-html.php:1687
 msgid "wrote:"
 msgstr "Napísal:"
 
-#: wppa-boxes-html.php:1140
+#: wppa-boxes-html.php:1704
 msgid "Avatar"
 msgstr "Avatára"
 
-#: wppa-boxes-html.php:1156 wppa-links.php:707
+#: wppa-boxes-html.php:1720 wppa-links.php:739
 msgid "Awaiting moderation"
 msgstr "Čaká moderovanie"
 
-#: wppa-boxes-html.php:1159
+#: wppa-boxes-html.php:1723
 msgid "Marked as spam"
 msgstr "Označený ako spam"
 
-#: wppa-boxes-html.php:1178
+#: wppa-boxes-html.php:1742
 msgid "Edit!"
 msgstr "Upraviť!"
 
-#: wppa-boxes-html.php:1182
+#: wppa-boxes-html.php:1746
 msgid "Send!"
 msgstr "Odoslať!"
 
-#: wppa-boxes-html.php:1222
+#: wppa-boxes-html.php:1786
 msgid "Your name:"
 msgstr "vaše meno:"
 
-#: wppa-boxes-html.php:1227
+#: wppa-boxes-html.php:1791
 msgid "Your email:"
 msgstr "Váš e-mail:"
 
-#: wppa-boxes-html.php:1232
+#: wppa-boxes-html.php:1796
 msgid "Your comment:"
 msgstr "Váš komentár:"
 
-#: wppa-boxes-html.php:1269
+#: wppa-boxes-html.php:1833
 #, php-format
 msgid "You must <a href=\"%s\">login</a> to enter a comment"
 msgstr "Musíte <a href=&quot;\"%s\"&quot;>prihlásenie</a> zadajte komentár"
 
-#: wppa-boxes-html.php:1272
+#: wppa-boxes-html.php:1836
 msgid "You must login to enter a comment"
 msgstr "Musíte prihlásiť sa napísať komentár"
 
-#: wppa-boxes-html.php:1280
+#: wppa-boxes-html.php:1844
 #, php-format
 msgid "%d comments"
 msgstr "Komentáre: %d"
 
-#: wppa-boxes-html.php:1284
+#: wppa-boxes-html.php:1848
 msgid "Leave a comment"
 msgstr "Zanechať komentár"
 
-#: wppa-boxes-html.php:1316
+#: wppa-boxes-html.php:1883
 msgid "Smilies are not available"
 msgstr "Smajlíci nie sú k dispozícii"
 
-#: wppa-boxes-html.php:1356
+#: wppa-boxes-html.php:1923
 msgid "Show IPTC data"
 msgstr "Zobraziť IPTC dáta"
 
-#: wppa-boxes-html.php:1359
+#: wppa-boxes-html.php:1926
 msgid "Hide IPTC data"
 msgstr "Skryť IPTC dáta"
 
-#: wppa-boxes-html.php:1386
+#: wppa-boxes-html.php:1954
 msgid "No IPTC data"
 msgstr "Žiadne IPTC dáta"
 
-#: wppa-boxes-html.php:1426
+#: wppa-boxes-html.php:1994
 msgid "Show EXIF data"
 msgstr "Zobraziť EXIF dáta"
 
-#: wppa-boxes-html.php:1429
+#: wppa-boxes-html.php:1997
 msgid "Hide EXIF data"
 msgstr "Skryť EXIF dáta"
 
-#: wppa-boxes-html.php:1457
+#: wppa-boxes-html.php:2026
 msgid "No EXIF data"
 msgstr "Žiadne EXIF dáta"
 
-#: wppa-boxes-html.php:1640 wppa-boxes-html.php:1695
+#: wppa-boxes-html.php:2213 wppa-boxes-html.php:2268
 msgid "See the authors albums"
 msgstr "Pozri autori albumy"
 
-#: wppa-boxes-html.php:1644 wppa-boxes-html.php:1699
+#: wppa-boxes-html.php:2217 wppa-boxes-html.php:2272
 msgid "See the authors photos"
 msgstr "Pozri autori fotografií"
 
-#: wppa-boxes-html.php:1648 wppa-boxes-html.php:1703
+#: wppa-boxes-html.php:2221 wppa-boxes-html.php:2276
 msgid "See all the authors photos"
 msgstr "Prezrieť všetky fotografie, autori"
 
-#: wppa-boxes-html.php:1667
+#: wppa-boxes-html.php:2240
 #, php-format
 msgid "Photo by: %s"
 msgstr "Autor: %s"
 
-#: wppa-boxes-html.php:1668 wppa-boxes-html.php:1721
+#: wppa-boxes-html.php:2241 wppa-boxes-html.php:2294
 #, php-format
 msgid "Max ratings: %s."
 msgstr "Max Hodnotenie: %s."
 
-#: wppa-boxes-html.php:1669 wppa-boxes-html.php:1722
+#: wppa-boxes-html.php:2242 wppa-boxes-html.php:2295
 #, php-format
 msgid "Votes: %s."
 msgstr "Hlasov: %s."
 
-#: wppa-boxes-html.php:1670 wppa-boxes-html.php:1723
+#: wppa-boxes-html.php:2243 wppa-boxes-html.php:2296
 #, php-format
 msgid "Mean value: %4.2f."
 msgstr "Stredná hodnota: %4.2f."
 
-#: wppa-boxes-html.php:1677
+#: wppa-boxes-html.php:2250
 #, php-format
 msgid "Photo %s not found."
 msgstr "Foto %s nebol nájdený."
 
-#: wppa-breadcrumb.php:99
+#: wppa-breadcrumb.php:98
 msgid "Home"
 msgstr "Domov"
 
-#: wppa-breadcrumb.php:120
+#: wppa-breadcrumb.php:119
 msgid "Post:"
 msgstr "Prechod:"
 
-#: wppa-breadcrumb.php:120
+#: wppa-breadcrumb.php:119
 msgid "Page:"
 msgstr "Strana:"
 
 #: wppa-breadcrumb.php:139
+msgid "with category:"
+msgstr "s kategórií:"
+
+#: wppa-breadcrumb.php:142 wppa-breadcrumb.php:157
+msgid "with name:"
+msgstr "s názvom:"
+
+#: wppa-breadcrumb.php:145 wppa-breadcrumb.php:161
+msgid "with words:"
+msgstr "so slovami:"
+
+#: wppa-breadcrumb.php:154
+msgid "with tag:"
+msgstr "s tag:"
+
+#: wppa-breadcrumb.php:165
+msgid "of owner:"
+msgstr "vlastníka:"
+
+#: wppa-breadcrumb.php:183 wppa-breadcrumb.php:211 wppa-breadcrumb.php:230
+#: wppa-breadcrumb.php:248 wppa-breadcrumb.php:266 wppa-breadcrumb.php:284
+#: wppa-breadcrumb.php:302 wppa-breadcrumb.php:314 wppa-breadcrumb.php:326
+#: wppa-breadcrumb.php:338 wppa-breadcrumb.php:357
+msgid "View the thumbnails"
+msgstr "Zobrazenie miniatúr"
+
+#: wppa-breadcrumb.php:205
 #, php-format
 msgid "Searchresults from album %s and its subalbums"
 msgstr "Searchresults z albumu %s a jeho subalbums"
 
-#: wppa-breadcrumb.php:143 wppa-breadcrumb.php:148
+#: wppa-breadcrumb.php:209 wppa-breadcrumb.php:214
 msgid "Searchstring:"
 msgstr "Searchstring:"
 
-#: wppa-breadcrumb.php:145 wppa-breadcrumb.php:164 wppa-breadcrumb.php:182
-#: wppa-breadcrumb.php:200 wppa-breadcrumb.php:218 wppa-breadcrumb.php:236
-#: wppa-breadcrumb.php:248 wppa-breadcrumb.php:260 wppa-breadcrumb.php:272
-#: wppa-breadcrumb.php:291
-msgid "View the thumbnails"
-msgstr "Zobrazenie miniatúr"
-
-#: wppa-breadcrumb.php:157 wppa-breadcrumb.php:167
+#: wppa-breadcrumb.php:223 wppa-breadcrumb.php:233
 #, php-format
 msgid "Photos by %s"
 msgstr "Fotografie podľa %s"
 
-#: wppa-breadcrumb.php:174 wppa-breadcrumb.php:192 wppa-breadcrumb.php:210
-#: wppa-breadcrumb.php:228 wppa-breadcrumb.php:306
+#: wppa-breadcrumb.php:240 wppa-breadcrumb.php:258 wppa-breadcrumb.php:276
+#: wppa-breadcrumb.php:294 wppa-breadcrumb.php:372
 msgid "Various albums"
 msgstr "Rôzne albumy"
 
-#: wppa-breadcrumb.php:176 wppa-breadcrumb.php:194 wppa-breadcrumb.php:212
-#: wppa-breadcrumb.php:230 wppa-breadcrumb.php:310
+#: wppa-breadcrumb.php:242 wppa-breadcrumb.php:260 wppa-breadcrumb.php:278
+#: wppa-breadcrumb.php:296 wppa-breadcrumb.php:376
 msgid "Albums:"
 msgstr "Albumy:"
 
-#: wppa-breadcrumb.php:176 wppa-breadcrumb.php:194 wppa-breadcrumb.php:212
-#: wppa-breadcrumb.php:230 wppa-breadcrumb.php:285 wppa-breadcrumb.php:310
+#: wppa-breadcrumb.php:242 wppa-breadcrumb.php:260 wppa-breadcrumb.php:278
+#: wppa-breadcrumb.php:296 wppa-breadcrumb.php:351 wppa-breadcrumb.php:376
 msgid "Album:"
 msgstr "Album"
 
-#: wppa-breadcrumb.php:180 wppa-breadcrumb.php:185
+#: wppa-breadcrumb.php:246 wppa-breadcrumb.php:251
 msgid "Top rated photos"
 msgstr "Najlepšie hodnotené fotografie"
 
-#: wppa-breadcrumb.php:198 wppa-breadcrumb.php:203
+#: wppa-breadcrumb.php:264 wppa-breadcrumb.php:269
 msgid "Recently uploaded photos"
 msgstr "Nedávno nahrané fotografie"
 
-#: wppa-breadcrumb.php:216 wppa-breadcrumb.php:221 wppa-comment-widget.php:27
+#: wppa-breadcrumb.php:282 wppa-breadcrumb.php:287 wppa-comment-widget.php:34
 msgid "Recently commented photos"
 msgstr "Nedávno komentované fotografie"
 
-#: wppa-breadcrumb.php:234 wppa-breadcrumb.php:239 wppa-featen-widget.php:30
+#: wppa-breadcrumb.php:300 wppa-breadcrumb.php:305 wppa-featen-widget.php:38
 msgid "Featured photos"
 msgstr "Odporúčané fotky"
 
-#: wppa-breadcrumb.php:246 wppa-breadcrumb.php:251
+#: wppa-breadcrumb.php:312 wppa-breadcrumb.php:317
 msgid "Related photos"
 msgstr "Súvisiace fotografie"
 
-#: wppa-breadcrumb.php:258 wppa-breadcrumb.php:263
+#: wppa-breadcrumb.php:324 wppa-breadcrumb.php:329
 msgid "Tagged photos:"
 msgstr "Označkované fotografie:"
 
-#: wppa-breadcrumb.php:258 wppa-breadcrumb.php:263
+#: wppa-breadcrumb.php:324 wppa-breadcrumb.php:329
 msgid "or"
 msgstr "alebo"
 
-#: wppa-breadcrumb.php:289 wppa-breadcrumb.php:294
+#: wppa-breadcrumb.php:355 wppa-breadcrumb.php:360
 msgid "Recently updated albums"
 msgstr "Nedávno aktualizované Galéria"
 
-#: wppa-breadcrumb.php:304
+#: wppa-breadcrumb.php:370
 #, php-format
 msgid "Various albums by %s"
 msgstr "Rôzne albumy %s"
 
-#: wppa-breadcrumb.php:329 wppa-breadcrumb.php:344
+#: wppa-breadcrumb.php:395 wppa-breadcrumb.php:410
 msgid "Thumbnail view"
 msgstr "Zobrazenie miniatúr"
 
-#: wppa-breadcrumb.php:333 wppa-breadcrumb.php:334 wppa-breadcrumb.php:349
-#: wppa-breadcrumb.php:350
+#: wppa-breadcrumb.php:399 wppa-breadcrumb.php:400 wppa-breadcrumb.php:415
+#: wppa-breadcrumb.php:416
 msgid "Thumbs"
 msgstr "Miniatúry"
 
-#: wppa-breadcrumb.php:456
+#: wppa-breadcrumb.php:521
 msgid "Unpublished"
 msgstr "Nepublikované."
 
@@ -618,101 +701,101 @@ msgstr "Jednotková cena: %s"
 msgid "Qty:"
 msgstr "Množ."
 
-#: wppa-comment-widget.php:58 wppa-thumbnails.php:329
+#: wppa-comment-widget.php:65 wppa-thumbnails.php:386
 msgid "wrote"
 msgstr "napísal"
 
-#: wppa-comment-widget.php:71 wppa-featen-widget.php:90
-#: wppa-lasten-widget.php:113 wppa-potd-widget.php:91
-#: wppa-thumbnail-widget.php:110 wppa-topten-widget.php:146
+#: wppa-comment-widget.php:78 wppa-featen-widget.php:98
+#: wppa-lasten-widget.php:121 wppa-potd-widget.php:120
+#: wppa-thumbnail-widget.php:118 wppa-topten-widget.php:157
 msgid "Photo not found."
 msgstr "Foto nenašiel."
 
-#: wppa-common-functions.php:176
+#: wppa-common-functions.php:182
 msgid "Default photo album for"
 msgstr "Predvolené fotoalbum"
 
-#: wppa-common-functions.php:609
+#: wppa-common-functions.php:612
 msgid "1 second"
 msgstr "1 sekundu"
 
-#: wppa-common-functions.php:610 wppa-functions.php:3693
+#: wppa-common-functions.php:613 wppa-functions.php:4077
 msgid "seconds"
 msgstr "sekúnd"
 
-#: wppa-common-functions.php:614
+#: wppa-common-functions.php:617
 msgid "1 minute"
 msgstr "1 minúta"
 
-#: wppa-common-functions.php:615 wppa-functions.php:3692
+#: wppa-common-functions.php:618 wppa-functions.php:4076
 msgid "minutes"
 msgstr "minút"
 
-#: wppa-common-functions.php:619
+#: wppa-common-functions.php:622
 msgid "1 hour"
 msgstr "1 hodina"
 
-#: wppa-common-functions.php:620 wppa-functions.php:3691
+#: wppa-common-functions.php:623 wppa-functions.php:4075
 msgid "hours"
 msgstr "hodín"
 
-#: wppa-common-functions.php:624
+#: wppa-common-functions.php:627
 msgid "1 day"
 msgstr "1 deň"
 
-#: wppa-common-functions.php:625 wppa-functions.php:3690
+#: wppa-common-functions.php:628 wppa-functions.php:4074
 msgid "days"
 msgstr "dní"
 
-#: wppa-common-functions.php:629
+#: wppa-common-functions.php:632
 msgid "1 week"
 msgstr "1 týždeň"
 
-#: wppa-common-functions.php:630 wppa-functions.php:3689
+#: wppa-common-functions.php:633 wppa-functions.php:4073
 msgid "weeks"
 msgstr "týždňov"
 
-#: wppa-common-functions.php:634
+#: wppa-common-functions.php:637
 msgid "1 month"
 msgstr "1 mesiac"
 
-#: wppa-common-functions.php:635
+#: wppa-common-functions.php:638
 msgid "months"
 msgstr "mesiacov"
 
-#: wppa-common-functions.php:638
+#: wppa-common-functions.php:641
 msgid "1 year"
 msgstr "1 rok"
 
-#: wppa-common-functions.php:639
+#: wppa-common-functions.php:642
 msgid "years"
 msgstr "rokov"
 
-#: wppa-common-functions.php:1966
+#: wppa-common-functions.php:1968
 msgid "- select an album -"
 msgstr "-Vyberte album-"
 
-#: wppa-common-functions.php:1972 wppa-items.php:327
+#: wppa-common-functions.php:1974 wppa-items.php:350
 msgid "--- none ---"
 msgstr "---nikto---"
 
-#: wppa-common-functions.php:1978 wppa-items.php:335
+#: wppa-common-functions.php:1980 wppa-items.php:358
 msgid "--- all ---"
 msgstr "---všetky---"
 
-#: wppa-common-functions.php:1984
+#: wppa-common-functions.php:1986
 msgid "--- generic ---"
 msgstr "---generických---"
 
-#: wppa-common-functions.php:1995
+#: wppa-common-functions.php:1997
 msgid "--- multiple see below ---"
 msgstr "--- Viac pozri nižšie ---"
 
-#: wppa-common-functions.php:2001
+#: wppa-common-functions.php:2003
 msgid "--- a selection box ---"
 msgstr "---okno výberu---"
 
-#: wppa-common-functions.php:2022 wppa-items.php:331
+#: wppa-common-functions.php:2037 wppa-items.php:354
 msgid "--- separate ---"
 msgstr "---samostatné---"
 
@@ -720,191 +803,191 @@ msgstr "---samostatné---"
 msgid "n.a."
 msgstr "n.a."
 
-#: wppa-exif-iptc-common.php:196 wppa-utils.php:2076
+#: wppa-exif-iptc-common.php:196 wppa-utils.php:2119
 msgid "Not Defined"
 msgstr "Nie je definovaná"
 
-#: wppa-exif-iptc-common.php:197 wppa-utils.php:2077
+#: wppa-exif-iptc-common.php:197 wppa-utils.php:2120
 msgid "Manual"
 msgstr "Manuál"
 
-#: wppa-exif-iptc-common.php:198 wppa-utils.php:2078
+#: wppa-exif-iptc-common.php:198 wppa-utils.php:2121
 msgid "Program AE"
 msgstr "Program AE"
 
-#: wppa-exif-iptc-common.php:199 wppa-utils.php:2079
+#: wppa-exif-iptc-common.php:199 wppa-utils.php:2122
 msgid "Aperture-priority AE"
 msgstr "Priorita clony AE"
 
-#: wppa-exif-iptc-common.php:200 wppa-utils.php:2080
+#: wppa-exif-iptc-common.php:200 wppa-utils.php:2123
 msgid "Shutter speed priority AE"
 msgstr "Priorita uzávierky rýchlosti AE"
 
-#: wppa-exif-iptc-common.php:201 wppa-utils.php:2081
+#: wppa-exif-iptc-common.php:201 wppa-utils.php:2124
 msgid "Creative (Slow speed)"
 msgstr "Creative (pomalé rýchlosti)"
 
-#: wppa-exif-iptc-common.php:202 wppa-utils.php:2082
+#: wppa-exif-iptc-common.php:202 wppa-utils.php:2125
 msgid "Action (High speed)"
 msgstr "Akcie (vysoká rýchlosť)"
 
-#: wppa-exif-iptc-common.php:203 wppa-utils.php:2083
+#: wppa-exif-iptc-common.php:203 wppa-utils.php:2126
 msgid "Portrait"
 msgstr "Portrét"
 
-#: wppa-exif-iptc-common.php:204 wppa-utils.php:2084
+#: wppa-exif-iptc-common.php:204 wppa-utils.php:2127
 msgid "Landscape"
 msgstr "Krajiny"
 
-#: wppa-exif-iptc-common.php:205 wppa-utils.php:2085
+#: wppa-exif-iptc-common.php:205 wppa-utils.php:2128
 msgid "Bulb"
 msgstr "Žiarovka"
 
-#: wppa-exif-iptc-common.php:227 wppa-utils.php:2086
+#: wppa-exif-iptc-common.php:227 wppa-utils.php:2129
 msgid "Average"
 msgstr "Priemer"
 
-#: wppa-exif-iptc-common.php:228 wppa-utils.php:2087
+#: wppa-exif-iptc-common.php:228 wppa-utils.php:2130
 msgid "Center-weighted average"
 msgstr "Vyvážený priemer"
 
-#: wppa-exif-iptc-common.php:229 wppa-utils.php:2088
+#: wppa-exif-iptc-common.php:229 wppa-utils.php:2131
 msgid "Spot"
 msgstr "Spot"
 
-#: wppa-exif-iptc-common.php:230 wppa-utils.php:2089
+#: wppa-exif-iptc-common.php:230 wppa-utils.php:2132
 msgid "Multi-spot"
 msgstr "Multi-spot"
 
-#: wppa-exif-iptc-common.php:231 wppa-utils.php:2090
+#: wppa-exif-iptc-common.php:231 wppa-utils.php:2133
 msgid "Multi-segment"
 msgstr "Multi-segmentové"
 
-#: wppa-exif-iptc-common.php:232 wppa-utils.php:2091
+#: wppa-exif-iptc-common.php:232 wppa-utils.php:2134
 msgid "Partial"
 msgstr "Čiastočné"
 
-#: wppa-exif-iptc-common.php:233 wppa-utils.php:2092
+#: wppa-exif-iptc-common.php:233 wppa-utils.php:2135
 msgid "Other"
 msgstr "Ostatné"
 
-#: wppa-exif-iptc-common.php:269 wppa-utils.php:2093
+#: wppa-exif-iptc-common.php:269 wppa-utils.php:2136
 msgid "No Flash"
 msgstr "Bez blesku"
 
-#: wppa-exif-iptc-common.php:271 wppa-utils.php:2094
+#: wppa-exif-iptc-common.php:271 wppa-utils.php:2137
 msgid "Fired"
 msgstr "Vystrelil"
 
-#: wppa-exif-iptc-common.php:273 wppa-utils.php:2095
+#: wppa-exif-iptc-common.php:273 wppa-utils.php:2138
 msgid "Fired, Return not detected"
 msgstr "Vystrelil, nie vrátiť zistených"
 
-#: wppa-exif-iptc-common.php:275 wppa-utils.php:2096
+#: wppa-exif-iptc-common.php:275 wppa-utils.php:2139
 msgid "Fired, Return detected"
 msgstr "Vystrelil, návrat zistené"
 
-#: wppa-exif-iptc-common.php:277 wppa-utils.php:2097
+#: wppa-exif-iptc-common.php:277 wppa-utils.php:2140
 msgid "On, Did not fire"
 msgstr "Ďalej, urobil oheň"
 
-#: wppa-exif-iptc-common.php:279 wppa-utils.php:2098
+#: wppa-exif-iptc-common.php:279 wppa-utils.php:2141
 msgid "On, Fired"
 msgstr "Ďalej, vystrelil"
 
-#: wppa-exif-iptc-common.php:281 wppa-utils.php:2099
+#: wppa-exif-iptc-common.php:281 wppa-utils.php:2142
 msgid "On, Return not detected"
 msgstr "Na, vrátiť, nebola zistená"
 
-#: wppa-exif-iptc-common.php:283 wppa-utils.php:2100
+#: wppa-exif-iptc-common.php:283 wppa-utils.php:2143
 msgid "On, Return detected"
 msgstr "Návrat, zistených"
 
-#: wppa-exif-iptc-common.php:285 wppa-utils.php:2101
+#: wppa-exif-iptc-common.php:285 wppa-utils.php:2144
 msgid "Off, Did not fire"
 msgstr "Po prvé, urobil oheň"
 
-#: wppa-exif-iptc-common.php:287 wppa-utils.php:2102
+#: wppa-exif-iptc-common.php:287 wppa-utils.php:2145
 msgid "Off, Did not fire, Return not detected"
 msgstr "Off, urobil oheň, návrat nebola zistená"
 
-#: wppa-exif-iptc-common.php:289 wppa-utils.php:2103
+#: wppa-exif-iptc-common.php:289 wppa-utils.php:2146
 msgid "Auto, Did not fire"
 msgstr "Auto, nie je oheň"
 
-#: wppa-exif-iptc-common.php:291 wppa-utils.php:2104
+#: wppa-exif-iptc-common.php:291 wppa-utils.php:2147
 msgid "Auto, Fired"
 msgstr "Auto vystrelil"
 
-#: wppa-exif-iptc-common.php:293 wppa-utils.php:2105
+#: wppa-exif-iptc-common.php:293 wppa-utils.php:2148
 msgid "Auto, Fired, Return not detected"
 msgstr "Auto, vystrelil, návrat nebola zistená"
 
-#: wppa-exif-iptc-common.php:295 wppa-utils.php:2106
+#: wppa-exif-iptc-common.php:295 wppa-utils.php:2149
 msgid "Auto, Fired, Return detected"
 msgstr "Auto, vystrelil, návrat zistené"
 
-#: wppa-exif-iptc-common.php:297 wppa-utils.php:2107
+#: wppa-exif-iptc-common.php:297 wppa-utils.php:2150
 msgid "No flash function"
 msgstr "Žiadne flash funkcie"
 
-#: wppa-exif-iptc-common.php:299 wppa-utils.php:2108
+#: wppa-exif-iptc-common.php:299 wppa-utils.php:2151
 msgid "Off, No flash function"
 msgstr "Off, flash nefunkčné"
 
-#: wppa-exif-iptc-common.php:301 wppa-utils.php:2109
+#: wppa-exif-iptc-common.php:301 wppa-utils.php:2152
 msgid "Fired, Red-eye reduction"
 msgstr "Vystrelil, redukcia červených očí"
 
-#: wppa-exif-iptc-common.php:303 wppa-utils.php:2110
+#: wppa-exif-iptc-common.php:303 wppa-utils.php:2153
 msgid "Fired, Red-eye reduction, Return not detected"
 msgstr "Vystrelil, redukcia červených očí, návrat nebola zistená"
 
-#: wppa-exif-iptc-common.php:305 wppa-utils.php:2111
+#: wppa-exif-iptc-common.php:305 wppa-utils.php:2154
 msgid "Fired, Red-eye reduction, Return detected"
 msgstr "Vystrelil, redukcia červených očí, návrat zistené"
 
-#: wppa-exif-iptc-common.php:307 wppa-utils.php:2112
+#: wppa-exif-iptc-common.php:307 wppa-utils.php:2155
 msgid "On, Red-eye reduction"
 msgstr "Na, redukcia červených očí"
 
-#: wppa-exif-iptc-common.php:309 wppa-utils.php:2113
+#: wppa-exif-iptc-common.php:309 wppa-utils.php:2156
 msgid "Red-eye reduction, Return not detected"
 msgstr "Redukcia červených očí, návrat nebola zistená"
 
-#: wppa-exif-iptc-common.php:311 wppa-utils.php:2114
+#: wppa-exif-iptc-common.php:311 wppa-utils.php:2157
 msgid "On, Red-eye reduction, Return detected"
 msgstr "Ďalej, redukcia červených očí, návrat zistené"
 
-#: wppa-exif-iptc-common.php:313 wppa-utils.php:2115
+#: wppa-exif-iptc-common.php:313 wppa-utils.php:2158
 msgid "Off, Red-eye reduction"
 msgstr "Vypnutý, redukcia červených očí"
 
-#: wppa-exif-iptc-common.php:315 wppa-utils.php:2116
+#: wppa-exif-iptc-common.php:315 wppa-utils.php:2159
 msgid "Auto, Did not fire, Red-eye reduction"
 msgstr "Auto, urobil oheň, redukcia červených očí"
 
-#: wppa-exif-iptc-common.php:317 wppa-utils.php:2117
+#: wppa-exif-iptc-common.php:317 wppa-utils.php:2160
 msgid "Auto, Fired, Red-eye reduction"
 msgstr "Auto, hmoždinky, redukcia červených očí"
 
-#: wppa-exif-iptc-common.php:319 wppa-utils.php:2118
+#: wppa-exif-iptc-common.php:319 wppa-utils.php:2161
 msgid "Auto, Fired, Red-eye reduction, Return not detected"
 msgstr "Auto, hmoždinky, redukcia červených očí, návrat nebola zistená"
 
-#: wppa-exif-iptc-common.php:321 wppa-utils.php:2119
+#: wppa-exif-iptc-common.php:321 wppa-utils.php:2162
 msgid "Auto, Fired, Red-eye reduction, Return detected"
 msgstr "Auto, hmoždinky, redukcia červených očí, návrat zistené"
 
-#: wppa-featen-widget.php:68
+#: wppa-featen-widget.php:76
 msgid "View the featured photos"
 msgstr "Pozri Odporúčané fotky"
 
-#: wppa-functions.php:520
+#: wppa-functions.php:531
 msgid "No related photos found."
 msgstr "Nenájdené žiadne súvisiace fotografie."
 
-#: wppa-functions.php:845
+#: wppa-functions.php:910
 #, php-format
 msgid ""
 "There are %s albums found. Only the first %s will be shown. Please refine "
@@ -913,7 +996,7 @@ msgstr ""
 "Neexistujú albumy %s našiel. Zobrazia sa iba prvé %s. Prosím spresnite "
 "kritérium vyhľadávania."
 
-#: wppa-functions.php:1245
+#: wppa-functions.php:1478
 #, php-format
 msgid ""
 "There are %s photos found. Only the first %s will be shown. Please refine "
@@ -922,232 +1005,232 @@ msgstr ""
 "Existujú fotografie %s našiel. Zobrazia sa iba prvé %s. Prosím spresnite "
 "kritérium vyhľadávania."
 
-#: wppa-functions.php:1486 wppa-thumbnails.php:378
+#: wppa-functions.php:1756 wppa-thumbnails.php:435
 msgid "Edit"
 msgstr "Upraviť"
 
-#: wppa-functions.php:1491 wppa-links.php:656 wppa-links.php:673
-#: wppa-thumbnails.php:374
+#: wppa-functions.php:1761 wppa-links.php:688 wppa-links.php:705
+#: wppa-thumbnails.php:431
 msgid "Are you sure you want to remove this photo?"
 msgstr "Naozaj chcete odstrániť túto fotografiu?"
 
-#: wppa-functions.php:1492 wppa-links.php:663 wppa-links.php:681
-#: wppa-thumbnails.php:375
+#: wppa-functions.php:1762 wppa-links.php:695 wppa-links.php:713
+#: wppa-thumbnails.php:432
 msgid "Delete"
 msgstr "Vymazať"
 
-#: wppa-functions.php:1637
+#: wppa-functions.php:1912
 msgid "Comment edited"
 msgstr "Komentár upravovať"
 
-#: wppa-functions.php:1641
+#: wppa-functions.php:1916
 msgid "Photo comment"
 msgstr "Foto komentár"
 
-#: wppa-functions.php:1645
+#: wppa-functions.php:1920
 msgid "Comment on photo:"
 msgstr "Komentovať fotografie:"
 
-#: wppa-functions.php:1656
+#: wppa-functions.php:1931
 msgid "wrote on photo"
 msgstr "napísal na fotografiu"
 
-#: wppa-functions.php:1658
+#: wppa-functions.php:1933
 msgid "Reply"
 msgstr "Odpovedať"
 
-#: wppa-functions.php:1659
+#: wppa-functions.php:1934
 msgid "Moderate comment admin"
 msgstr "Mierny komentár admin"
 
-#: wppa-functions.php:1660 wppa-functions.php:3541 wppa-upload.php:1217
+#: wppa-functions.php:1935 wppa-functions.php:3925 wppa-upload.php:1382
 msgid "Moderate manage photo"
 msgstr "Stredne spravovať fotografie"
 
-#: wppa-functions.php:1661
+#: wppa-functions.php:1936
 msgid "Edit photo"
 msgstr "Upraviť fotografiu"
 
-#: wppa-functions.php:1671
+#: wppa-functions.php:1946
 msgid "You receive this email as you are assigned to moderate"
 msgstr "Dostanete tento e-mail, ako sú priradené až stredne"
 
-#: wppa-functions.php:1683
+#: wppa-functions.php:1958
 msgid "You receive this email as administrator of the site"
 msgstr "Dostanete tento e-mail ako správca webu"
 
-#: wppa-functions.php:1700
+#: wppa-functions.php:1975
 msgid "You receive this email as uploader of the photo"
 msgstr "Budete dostávať e-maily ako pridal fotografie"
 
-#: wppa-functions.php:1720
+#: wppa-functions.php:1995
 msgid "You receive this email as owner of the album"
 msgstr "Dostanete tento e-mail ako vlastník albumu"
 
-#: wppa-functions.php:1737
+#: wppa-functions.php:2012
 msgid "You receive this email because you commented this photo earlier."
 msgstr "Dostanete tento e-mail, pretože ste komentoval túto fotografiu skôr."
 
-#: wppa-functions.php:1762
+#: wppa-functions.php:2038
 msgid "Comment added"
 msgstr "Príkaz sa pridal"
 
-#: wppa-functions.php:1766
+#: wppa-functions.php:2042
 msgid ""
 "Sorry, you gave a wrong answer.\\n\\nPlease try again to solve the "
 "computation."
 msgstr "Sorry, dal si zle answer.\\n\\nPlease skúsiť znovu riešiť výpočet."
 
-#: wppa-functions.php:1776
+#: wppa-functions.php:2052
 msgid "Could not process comment.\\nProbably timed out."
 msgstr "Nemohol spracovať comment.\\nProbably vypršal."
 
-#: wppa-functions.php:1855
+#: wppa-functions.php:2131
 msgid "1 Comment"
 msgstr "1 Komentár"
 
-#: wppa-functions.php:1856
+#: wppa-functions.php:2132
 #, php-format
 msgid "%s Comments"
 msgstr "%s komentáre"
 
-#: wppa-functions.php:1892 wppa-links.php:1322
+#: wppa-functions.php:2168 wppa-links.php:1361
 msgid "A video can not be printed or downloaded"
 msgstr "Video nemožno vytlačiť alebo stiahnuť"
 
-#: wppa-functions.php:2304
+#: wppa-functions.php:2580
 msgid "<b>ERROR: Illegal attempt to enter a rating.</b>"
 msgstr "<b>Chyba: Neplatný pokus o zadanie rating.</b>"
 
-#: wppa-functions.php:2317
+#: wppa-functions.php:2593
 msgid "<b>ERROR: Illegal attempt to enter a comment.</b>"
 msgstr "<b>Chyba: Neplatný pokus o zadať poznámku.</b>"
 
-#: wppa-functions.php:3303
+#: wppa-functions.php:3676
 msgid "New Album"
 msgstr "Nový Album"
 
-#: wppa-functions.php:3306
+#: wppa-functions.php:3679
 msgid "<b>ERROR: Illegal attempt to create an album.</b>"
 msgstr "<b>Chyba: Neplatný pokus vytvoriť album.</b>"
 
-#: wppa-functions.php:3310
+#: wppa-functions.php:3683
 msgid "Wrong captcha, please try again"
 msgstr "Zle captcha, skúste to prosím znova"
 
-#: wppa-functions.php:3323
+#: wppa-functions.php:3696
 #, php-format
 msgid "Album #%s created"
 msgstr "Vytvorený album #%s"
 
-#: wppa-functions.php:3328
+#: wppa-functions.php:3701
 msgid "Could not create album"
 msgstr "Nepodarilo sa vytvoriť album"
 
-#: wppa-functions.php:3339
+#: wppa-functions.php:3712
 msgid "<b>ERROR: Illegal attempt to upload a file.</b>"
 msgstr "<b>Chyba: Neplatný pokus o odovzdanie súboru.</b>"
 
-#: wppa-functions.php:3379
+#: wppa-functions.php:3752
 msgid "Photo upload"
 msgstr "Foto upload"
 
-#: wppa-functions.php:3381
+#: wppa-functions.php:3754
 msgid "Photo successfully uploaded."
 msgstr "Foto úspešne nahraný."
 
-#: wppa-functions.php:3381
+#: wppa-functions.php:3754
 #, php-format
 msgid "%s photos successfully uploaded."
 msgstr "fotografie %s úspešne nahraný."
 
-#: wppa-functions.php:3382
+#: wppa-functions.php:3755
 #, php-format
 msgid "%s points added."
 msgstr "%s body pridané."
 
-#: wppa-functions.php:3386
+#: wppa-functions.php:3759
 msgid "Upload failed"
 msgstr "Odovzdávanie zlyhalo"
 
-#: wppa-functions.php:3389
+#: wppa-functions.php:3762
 msgid "1 Upload failed"
 msgstr "1 odovzdávanie zlyhalo"
 
-#: wppa-functions.php:3389
+#: wppa-functions.php:3762
 #, php-format
 msgid "%s uploads failed."
 msgstr "%s súborov zlyhalo."
 
-#: wppa-functions.php:3425
+#: wppa-functions.php:3798
 msgid "Error during upload"
 msgstr "Chyba počas upload"
 
-#: wppa-functions.php:3430
+#: wppa-functions.php:3803
 msgid "Uploaded file is not an image"
 msgstr "Nahraný súbor nie je obraz"
 
-#: wppa-functions.php:3434
+#: wppa-functions.php:3807
 #, php-format
 msgid ""
 "Only gif, jpg and png image files are supported. Returned filetype = %d."
 msgstr "Len gif, jpg a png obrázkov sú podporované. Vrátil filetype = % d."
 
-#: wppa-functions.php:3440
+#: wppa-functions.php:3813
 #, php-format
 msgid "Uploaded file is larger than the allowed maximum of %d x %d pixels."
 msgstr "Nahraný súbor je väčšia ako povolené maximum %d x %d bodov."
 
-#: wppa-functions.php:3446
+#: wppa-functions.php:3819
 #, php-format
 msgid "Uploaded file %s already exists in this album."
 msgstr "Nahraný súbor %s už existuje v tomto albume."
 
-#: wppa-functions.php:3454
+#: wppa-functions.php:3827
 #, php-format
 msgid "The image is too big. Max photo size: %d x %d (%2.1f MegaPixel)"
 msgstr ""
 "Obrázok je príliš veľký. Max veľkosť fotografií: %d %d (%2.1f MegaPixel)"
 
-#: wppa-functions.php:3477
+#: wppa-functions.php:3850
 msgid "Could not insert photo into db."
 msgstr "Nedá vložiť fotografie do db."
 
-#: wppa-functions.php:3537 wppa-upload.php:1213
+#: wppa-functions.php:3921 wppa-upload.php:1378
 #, php-format
 msgid "New photo uploaded: %s"
 msgstr "Nové fotografie nahral: %s"
 
-#: wppa-functions.php:3538 wppa-upload.php:1214
+#: wppa-functions.php:3922 wppa-upload.php:1379
 #, php-format
 msgid "User %s uploaded photo %s into album %s"
 msgstr "Používateľ %s nahrané fotografie %s do albumu %s"
 
-#: wppa-functions.php:3540 wppa-upload.php:1216
+#: wppa-functions.php:3924 wppa-upload.php:1381
 msgid "This upload requires moderation"
 msgstr "Tento upload vyžaduje umiernenosť"
 
-#: wppa-functions.php:3544 wppa-upload.php:1220
+#: wppa-functions.php:3928 wppa-upload.php:1385
 msgid "Details:"
 msgstr "Detaily:"
 
-#: wppa-functions.php:3545 wppa-upload.php:1221
+#: wppa-functions.php:3929 wppa-upload.php:1386
 msgid "Manage photo"
 msgstr "Správa foto"
 
-#: wppa-functions.php:3687
+#: wppa-functions.php:4071
 msgid "You can upload after"
 msgstr "Môžete nahrať po"
 
-#: wppa-functions.php:3716 wppa-functions.php:3719
+#: wppa-functions.php:4100 wppa-functions.php:4103
 msgid "Download:"
 msgstr "Stiahnuť:"
 
-#: wppa-functions.php:3740
+#: wppa-functions.php:4124
 msgid "Zoom in"
 msgstr "Priblížiť"
 
-#: wppa-items.php:214 wppa-thumbnails.php:1251
+#: wppa-items.php:214 wppa-thumbnails.php:1392
 msgid "Gold medal"
 msgstr "Zlatá medaila"
 
@@ -1155,7 +1238,7 @@ msgstr "Zlatá medaila"
 msgid "Gold"
 msgstr "Zlato"
 
-#: wppa-items.php:215 wppa-thumbnails.php:1252
+#: wppa-items.php:215 wppa-thumbnails.php:1393
 msgid "Silver medal"
 msgstr "Strieborná medaila"
 
@@ -1163,7 +1246,7 @@ msgstr "Strieborná medaila"
 msgid "Silver"
 msgstr "Striebro"
 
-#: wppa-items.php:216 wppa-thumbnails.php:1253
+#: wppa-items.php:216 wppa-thumbnails.php:1394
 msgid "Bronze medal"
 msgstr "Bronzová medaila"
 
@@ -1171,100 +1254,101 @@ msgstr "Bronzová medaila"
 msgid "Bronze"
 msgstr "Bronz"
 
-#: wppa-items.php:262 wppa-items.php:393
+#: wppa-items.php:262 wppa-items.php:416
 msgid "none"
 msgstr "žiadne"
 
-#: wppa-items.php:292 wppa-items.php:404
+#: wppa-items.php:292 wppa-items.php:427
 msgid "unknown"
 msgstr "neznáme"
 
-#: wppa-items.php:339 wppa-items.php:360
+#: wppa-items.php:362 wppa-items.php:383
 msgid "--- deleted ---"
 msgstr "---vypúšťa---"
 
-#: wppa-items.php:349
+#: wppa-items.php:372
 msgid "All Albums"
 msgstr "Všetky albumy"
 
-#: wppa-lasten-widget.php:36
+#: wppa-lasten-widget.php:44
 msgid "Last Ten Uploaded Photos"
 msgstr "Posledných desať nahrané fotografie"
 
-#: wppa-lasten-widget.php:96
+#: wppa-lasten-widget.php:104
 msgid "View the most recent uploaded photos"
 msgstr "Zobraziť posledné nahrané fotografie"
 
-#: wppa-links.php:644
+#: wppa-links.php:676
 msgid "App"
 msgstr "Prijať"
 
-#: wppa-links.php:645
+#: wppa-links.php:677
 msgid "Mod"
 msgstr "Ťažko"
 
-#: wppa-links.php:646
+#: wppa-links.php:678
 msgid "Del"
 msgstr "Vymazať "
 
-#: wppa-links.php:650 wppa-links.php:667
+#: wppa-links.php:682 wppa-links.php:699
 msgid "Are you sure you want to publish this photo?"
 msgstr "Naozaj chcete publikovať túto fotku?"
 
-#: wppa-links.php:661 wppa-links.php:678
+#: wppa-links.php:693 wppa-links.php:710
 msgid "Approve"
 msgstr "Prijať"
 
-#: wppa-links.php:662
+#: wppa-links.php:694
 msgid "Moderate"
 msgstr "Ťažko"
 
-#: wppa-links.php:679
+#: wppa-links.php:711
 msgid "PhotoAdmin"
 msgstr "PhotoAdmin"
 
-#: wppa-links.php:680
+#: wppa-links.php:712
 msgid "CommentAdmin"
 msgstr "CommentAdmin"
 
-#: wppa-links.php:684
+#: wppa-links.php:716
 msgid "Are you sure you want to publish this comment?"
 msgstr "Naozaj chcete publikovať tento komentár?"
 
-#: wppa-links.php:696
+#: wppa-links.php:728
 msgid "Are you sure you want to remove this comment?"
 msgstr "Naozaj chcete odstrániť túto poznámku?"
 
-#: wppa-links.php:710
+#: wppa-links.php:742
 #, php-format
 msgid "Scheduled for %s"
 msgstr "Naplánované na %s"
 
-#: wppa-links.php:908 wppa-links.php:911
-msgid "Prev.&nbsp;page"
-msgstr "Prev. stránku"
+#: wppa-links.php:943 wppa-links.php:946 wppa-slideshow.php:669
+msgid "Previous"
+msgstr "Predchádzajúci"
 
-#: wppa-links.php:918 wppa-links.php:921
-msgid "Next&nbsp;page"
-msgstr "Ďalšia strana"
+#: wppa-links.php:953 wppa-links.php:956 wppa-non-admin.php:571
+#: wppa-slideshow.php:672
+msgid "Next"
+msgstr "Ďalší"
 
-#: wppa-links.php:957 wppa-non-admin.php:583
+#: wppa-links.php:992 wppa-non-admin.php:625
 msgid "Download"
 msgstr "Stiahnúť"
 
-#: wppa-links.php:957
+#: wppa-links.php:992
 msgid "Download album"
 msgstr "Stiahnuť album"
 
-#: wppa-links.php:1094
+#: wppa-links.php:1129
 msgid "View thumbnails"
 msgstr "Zobrazenie miniatúr"
 
-#: wppa-non-admin.php:271
+#: wppa-non-admin.php:312
 msgid "Press f for fullscreen."
 msgstr "Stlačte tlačidlo f pre celú obrazovku."
 
-#: wppa-non-admin.php:295
+#: wppa-non-admin.php:336
 msgid ""
 "Keys: f = next mode; escape = exit; p = previous, n = next, s = start/stop, "
 "d = dismiss this notice."
@@ -1272,130 +1356,126 @@ msgstr ""
 "Keys: f = ďalší režim; uniknúť = exit; p = previous, n = ďalší, s = štart / "
 "stop, d = odmietnuť toto upozornenie."
 
-#: wppa-non-admin.php:296
+#: wppa-non-admin.php:337
 msgid "Keys: f = next mode; escape = exit; d = dismiss this notice."
 msgstr "Keys: f = ďalší režim; uniknúť = exit; d = zamietol tohto upozornenia."
 
-#: wppa-non-admin.php:519 wppa-slideshow.php:232
+#: wppa-non-admin.php:562 wppa-slideshow.php:232
 msgid "Start"
 msgstr "Štart"
 
-#: wppa-non-admin.php:520
+#: wppa-non-admin.php:563
 msgid "Stop"
 msgstr "zastaviť"
 
-#: wppa-non-admin.php:521 wppa-slideshow.php:231
+#: wppa-non-admin.php:564 wppa-slideshow.php:231
 msgid "Slower"
 msgstr "Pomalší"
 
-#: wppa-non-admin.php:522 wppa-slideshow.php:233
+#: wppa-non-admin.php:565 wppa-slideshow.php:233
 msgid "Faster"
 msgstr "Rýchlejšie"
 
-#: wppa-non-admin.php:523
+#: wppa-non-admin.php:566
 msgid "Photo"
 msgstr "Foto"
 
-#: wppa-non-admin.php:524
+#: wppa-non-admin.php:567
 msgid "of"
 msgstr "z"
 
-#: wppa-non-admin.php:525
+#: wppa-non-admin.php:568
 msgid "Previous photo"
 msgstr "Predchádzajúcu fotografiu"
 
-#: wppa-non-admin.php:526
+#: wppa-non-admin.php:569
 msgid "Next photo"
 msgstr "Ďalšie fotografie"
 
-#: wppa-non-admin.php:527
+#: wppa-non-admin.php:570
 msgid "Prev."
 msgstr "Predošlé."
 
-#: wppa-non-admin.php:528 wppa-slideshow.php:672
-msgid "Next"
-msgstr "Ďalší"
-
-#: wppa-non-admin.php:529 wppa-slideshow.php:510 wppa-slideshow.php:514
+#: wppa-non-admin.php:572 wppa-slideshow.php:510 wppa-slideshow.php:514
 #: wppa-slideshow.php:560
 msgid "Average&nbsp;rating"
 msgstr "Priemerné hodnotenie"
 
-#: wppa-non-admin.php:530 wppa-slideshow.php:535 wppa-slideshow.php:540
+#: wppa-non-admin.php:573 wppa-slideshow.php:535 wppa-slideshow.php:540
 #: wppa-slideshow.php:545
 msgid "My&nbsp;rating"
 msgstr "Moje hodnotenie"
 
-#: wppa-non-admin.php:531
+#: wppa-non-admin.php:574
 msgid "Avg."
 msgstr "Priem."
 
-#: wppa-non-admin.php:532
+#: wppa-non-admin.php:575
 msgid "Mine"
 msgstr "Baňa"
 
-#: wppa-non-admin.php:533
+#: wppa-non-admin.php:576
 msgid "You marked this image as inappropriate."
 msgstr "Ste označili tento obrázok ako nevhodné."
 
-#: wppa-non-admin.php:535
+#: wppa-non-admin.php:578
 msgid "No dislikes"
 msgstr "Žiadne odpory"
 
-#: wppa-non-admin.php:536
+#: wppa-non-admin.php:579
 msgid "1 dislike"
 msgstr "1 nepáči"
 
-#: wppa-non-admin.php:537
+#: wppa-non-admin.php:580
 msgid "dislikes"
 msgstr "odpory"
 
-#: wppa-non-admin.php:538
+#: wppa-non-admin.php:581
 msgid "including mine"
 msgstr "vrátane dolu"
 
-#: wppa-non-admin.php:541
+#: wppa-non-admin.php:584
 msgid "Please enter your name"
 msgstr "Zadajte vaše meno"
 
-#: wppa-non-admin.php:542
+#: wppa-non-admin.php:585
 msgid "Please enter a valid email address"
 msgstr "Zadajte platnú e-mailovú adresu"
 
-#: wppa-non-admin.php:543
+#: wppa-non-admin.php:586
 msgid "Please enter a comment"
 msgstr "Zadajte komentár"
 
-#: wppa-non-admin.php:578
+#: wppa-non-admin.php:620
 msgid "Double click to start/stop slideshow running"
 msgstr "Dvakrát kliknite na štart/stop prezentácia spustená"
 
-#: wppa-photo-admin-autosave.php:141
+#: wppa-photo-admin-autosave.php:139
 #, php-format
 msgid "Photo %s has been removed."
 msgstr "Foto %s bola odstránená."
 
-#: wppa-potd-widget.php:114
+#: wppa-potd-widget.php:143
 msgid "By:"
 msgstr "Autor:"
 
-#: wppa-qr-widget.php:26
+#: wppa-qr-widget.php:34
 msgid "QR Widget"
 msgstr "QR Widget"
 
-#: wppa-setup.php:854
+#: wppa-setup.php:898
 msgid "Vote for me!"
 msgstr "Hlasujte pre mňa!"
 
-#: wppa-setup.php:855
+#: wppa-setup.php:899
 msgid "Voted for me"
 msgstr "Hlasoval pre mňa"
 
-#: wppa-slideshow-widget.php:67
+#: wppa-slideshow-widget.php:75
 msgid "Widget landing page"
 msgstr "Widget odkazované stránky"
 
-#: wppa-slideshow-widget.php:120
+#: wppa-slideshow-widget.php:128
 msgid "No album defined yet."
 msgstr "Žiadne album ešte definované."
 
@@ -1472,10 +1552,6 @@ msgstr "Moje hodnotenie"
 msgid "First"
 msgstr "Najprv"
 
-#: wppa-slideshow.php:669
-msgid "Previous"
-msgstr "Predchádzajúci"
-
 #: wppa-slideshow.php:673
 msgid "Last"
 msgstr "Posledný"
@@ -1513,76 +1589,82 @@ msgstr "fotoalbumy. Posledný album pridané je"
 msgid ", a subalbum of"
 msgstr ", subalbum z"
 
-#: wppa-thumbnail-widget.php:43
+#: wppa-thumbnail-widget.php:51
 msgid "Thumbnail photos"
 msgstr "Náhľady fotografií"
 
-#: wppa-thumbnails.php:122 wppa-thumbnails.php:712 wppa-topten-widget.php:92
+#: wppa-thumbnails.php:161 wppa-thumbnails.php:769 wppa-topten-widget.php:103
 msgid "View the top rated photos"
 msgstr "Zobraziť najlepšie hodnotené fotografie"
 
-#: wppa-thumbnails.php:400
+#: wppa-thumbnails.php:457 wppa-thumbnails.php:1046
 msgid "Views:"
 msgstr "Zobrazení:"
 
-#: wppa-topten-widget.php:39
+#: wppa-topten-widget.php:47
 msgid "Top Ten Photos"
 msgstr "Top desať fotografií"
 
-#: wppa-topten-widget.php:109 wppa-topten-widget.php:113
-#: wppa-topten-widget.php:120
+#: wppa-topten-widget.php:120 wppa-topten-widget.php:124
+#: wppa-topten-widget.php:131
 #, php-format
 msgid "%s Votes"
 msgstr "%s hlasov"
 
-#: wppa-topten-widget.php:110 wppa-topten-widget.php:115
-#: wppa-topten-widget.php:118
+#: wppa-topten-widget.php:121 wppa-topten-widget.php:126
+#: wppa-topten-widget.php:129
 #, php-format
 msgid "Views: %s times"
 msgstr "Zobrazenie: %s krát"
 
-#: wppa-upldr-widget.php:36
+#: wppa-upldr-widget.php:44
 msgid "User uploaded photos"
 msgstr "Užívateľ nahrané fotografie"
 
-#: wppa-upldr-widget.php:84
+#: wppa-upldr-widget.php:92
 msgid "There are too many registered users in the system for this widget"
 msgstr ""
 "Existuje príliš veľa registrovaných užívateľov v systéme pre tento widget"
 
-#: wppa-upldr-widget.php:118 wppa-upldr-widget.php:125
+#: wppa-upldr-widget.php:126 wppa-upldr-widget.php:133
 msgid "Photos uploaded by"
 msgstr "Fotografie nahrávajú"
 
-#: wppa-utils.php:255
+#: wppa-utils.php:263
 #, php-format
 msgid "Rating: %s"
 msgstr "Rating: %s"
 
-#: wppa-utils.php:801
+#: wppa-utils.php:816
 #, php-format
 msgid "The visitors email address is: <a href=\"mailto:%s\">%s</a>"
 msgstr "Návštevníci emailová adresa je: <a href=\"mailto:%s\">%s</a>"
 
-#: wppa-utils.php:807
+#: wppa-utils.php:822
 #, php-format
 msgid "The visitor says his email address is: <a href=\"mailto:%s\">%s</a>"
 msgstr "Návštevník hovorí jeho e-mailovú adresu: <a href=\"mailto:%s\">%s</a>"
 
-#: wppa-utils.php:813
+#: wppa-utils.php:828
 #, php-format
 msgid ""
 "This message is automaticly generated at %s. It is useless to respond to it."
 msgstr ""
 "Túto správu je automaticky generovaný v %s. Je zbytočné reagovať na to."
 
-#: wppa-video.php:202
+#: wppa-video.php:189
 msgid ""
 "There is no filetype available for your browser, or your browser does not "
 "support html5 video"
 msgstr ""
 "Nie je k dispozícii žiadna filetype pre váš prehliadač, alebo Váš prehliadač "
 "nepodporuje HTML5 video"
+
+#~ msgid "Prev.&nbsp;page"
+#~ msgstr "Prev. stránku"
+
+#~ msgid "Next&nbsp;page"
+#~ msgstr "Ďalšia strana"
 
 #~ msgid "Select tags:"
 #~ msgstr "Vyberte značky:"
