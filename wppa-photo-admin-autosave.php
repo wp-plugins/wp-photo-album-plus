@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * edit and delete photos
-* version 6.1.9
+* version 6.1.10
 * 
 */
 
@@ -768,6 +768,7 @@ global $wppa;
 													<option value="silver" <?php if ( $photo['status'] == 'silver' ) echo 'selected="selected"'; echo $dis?> ><?php _e( 'Silver', 'wppa' ) ?></option>
 													<option value="bronze" <?php if ( $photo['status'] == 'bronze' ) echo 'selected="selected"'; echo $dis?> ><?php _e( 'Bronze', 'wppa' ) ?></option>
 													<option value="scheduled" <?php if ( $photo['status'] == 'scheduled' ) echo 'selected="selected"'; echo $dis?> ><?php _e( 'Scheduled', 'wppa' ) ?></option>
+													<option value="private" <?php if ( $photo['status'] == 'private' ) echo 'selected="selected"'; echo $dis ?> ><?php _e( 'Private', 'wppa' ) ?></option>
 												</select>
 											</td>
 											<td class="wppa-datetime-<?php echo $photo['id'] ?>" >
@@ -789,6 +790,7 @@ global $wppa;
 													elseif ( $photo['status'] == 'silver' ) _e( 'Silver', 'wppa' );
 													elseif ( $photo['status'] == 'bronze' ) _e( 'Bronze', 'wppa' );
 													elseif ( $photo['status'] == 'scheduled' ) _e( 'Scheduled', 'wppa' );
+													elseif ( $photo['status'] == 'private' ) _e( 'Private', 'wppa' );
 												?>
 											</td>
 											<td class="wppa-datetime-<?php echo $photo['id'] ?>" >
@@ -986,7 +988,7 @@ function wppa_album_photos_bulk( $album ) {
 							else wppa_error_message( 'Unexpected error #3 in wppa_album_photos_bulk().' );
 							break;
 						case 'wppa-bulk-status':
-							if ( ! in_array( $status, array( 'publish', 'pending', 'featured', 'scheduled', 'gold', 'silver', 'bronze' ) ) ) {
+							if ( ! in_array( $status, array( 'publish', 'pending', 'featured', 'scheduled', 'gold', 'silver', 'bronze', 'private' ) ) ) {
 								wppa_log( 'error', 'Unknown status '.strip_tags( $status ).' found in wppa-photo-admin-autosave.php -> wppa_album_photos_bulk()' );
 								$status = 'publish';
 							}
@@ -1156,6 +1158,7 @@ function wppa_album_photos_bulk( $album ) {
 					<option value="silver" <?php echo $dis?> ><?php _e( 'Silver', 'wppa' ) ?></option>
 					<option value="bronze" <?php echo $dis?> ><?php _e( 'Bronze', 'wppa' ) ?></option>
 					<option value="scheduled" <?php echo $dis?> ><?php _e( 'Scheduled', 'wppa' ) ?></option>
+					<option value="private" <?php echo $dis ?> ><?php _e(  'Private', 'wppa' ) ?></option> 
 				</select>
 				<input type="submit" onclick="return wppaBulkDoitOnClick()" class="button-primary" value="<?php _e( 'Doit!', 'wppa' ) ?>" />
 				<span style="font-family:sans-serif; font-size:12px; font-style:italic; font-weight:normal;" >
@@ -1248,6 +1251,7 @@ function wppa_album_photos_bulk( $album ) {
 									<option value="silver" <?php if ( $photo['status'] == 'silver' ) echo 'selected="selected"'; echo $dis?> ><?php _e( 'Silver', 'wppa' ) ?></option>
 									<option value="bronze" <?php if ( $photo['status'] == 'bronze' ) echo 'selected="selected"'; echo $dis?> ><?php _e( 'Bronze', 'wppa' ) ?></option>
 									<option value="scheduled" <?php if ( $photo['status'] == 'scheduled' ) echo 'selected="selected"'; echo $dis?> ><?php _e( 'Scheduled', 'wppa' ) ?></option>
+									<option value="private" <?php if ( $photo['status'] == 'private' ) echo 'selected="selected"'; echo $dis ?> ><?php _e( 'Private', 'wppa' ) ?></option>
 								</select>
 							<?php }
 								else { 
@@ -1258,6 +1262,7 @@ function wppa_album_photos_bulk( $album ) {
 									elseif ( $photo['status'] == 'silver' ) _e( 'Silver', 'wppa' );
 									elseif ( $photo['status'] == 'bronze' ) _e( 'Bronze', 'wppa' );
 									elseif ( $photo['status'] == 'scheduled' ) _e( 'Scheduled', 'wppa' );
+									elseif ( $photo['status'] == 'private' ) _e( 'Private', 'wppa' );
 								} ?>
 							</td>
 							<td id="photostatus-<?php echo $photo['id'] ?>" style="width:25%;" >

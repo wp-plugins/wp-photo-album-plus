@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains low-level utility routines
-* Version 6.1.9
+* Version 6.1.10
 * 
 */
  
@@ -2458,3 +2458,54 @@ global $wppa_supported_photo_extensions;
 	return false;
 }
 
+// Convert a line from a csv file to an array, taking account of embedded commas and double quotes.
+// Sanitizes output so the elements will have no surrounding spaces and / or trailing linefeeds.
+function wppa_explode_csv( $txt ) {
+
+	// Make local copy
+	$temp = $txt;
+	
+	// Replace double double quotes
+	$temp = str_replace( '""', '&ddquote;', $temp );
+	
+	// See if double quotes in the text
+	if ( strpos( $temp, '"' ) ) {
+		$temp = explode( '"', $temp );
+		$i = '1';
+		while ( isset( $temp[$i] ) ) {
+		
+			// Replace embedded comma
+			$temp[$i] = str_replace ( ',', '&comma;', $temp[$i] );
+			$i += '2';
+		}
+		
+		// Convert to string again
+		$temp = implode( '', $temp );
+	}
+	
+	// Make to array
+	$result = explode( ',', $temp );
+	
+	// Repair embedded comma's and double quotes
+	$i = '0';
+	while ( isset( $result[$i] ) ) {
+		$result[$i] = str_replace( '&comma;', ',', $result[$i] );
+		$result[$i] = str_replace( '&ddquote;', '"', $result[$i] );
+		$i++;
+	}
+	
+	// Sanitize array elements
+	foreach( array_keys( $result ) as $key ) {
+		$result[$key] = wppa_sanitize_text( $result[$key] );
+	}
+	
+	// Done!
+	return $result;
+}
+
+// Like wp sanitize_text_field, but also removes chars 0x00..0x07
+function wppa_sanitize_text( $txt ) {
+	$result = sanitize_text_field( $txt );
+	$result = str_replace( array(chr(0), chr(1), chr(2), chr(3),chr(4), chr(5), chr(6), chr(7) ), '', $result );
+	return $result;
+}

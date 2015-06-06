@@ -2,7 +2,7 @@
 Contributors: opajaap
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=OpaJaap@OpaJaap.nl&item_name=WP-Photo-Album-Plus&item_number=Support-Open-Source&currency_code=USD&lc=US
 Tags: photo, album, photoalbum, gallery, slideshow, video, sidebar widget, photowidget, photoblog, widget, qtranslate, cubepoints, myCRED, multisite, network, lightbox, comment, watermark, iptc, exif, responsive, mobile, cloudinary, fotomoto, CMTooltipGlossary
-Version: 6.1.9
+Version: 6.1.10
 Stable tag: trunk
 Author: J.N. Breetvelt
 Author URI: http://www.opajaap.nl/
@@ -188,6 +188,24 @@ Oh, just Google on 'picture resizer' and you will find a bunch of free programs 
 == Changelog ==
 
 See for additional information: http://wppa.opajaap.nl/?page_id=1459
+
+= 6.1.10 =
+
+= Bug Fixes =
+
+* Supersearch now also works in I.E.
+* Fixed breadcrumb for supersearch displays.
+
+= New Features =
+
+* New photo status: private. Private photos are only shown to logged in visitors. This will only work in normal pageviews. A full url to an image file will not be rejected.
+
+= Other Changes =
+
+* Performance improvements in supersearch.
+* Added Table IX-13 and E-14 to reduce select box options.
+* Exif and Iptc systems now clean up garbage automaticly.
+* Removed 'hover to select' and 'click to add/remove' from supersearch selectboxes because i.e. does not support event handlers on option tags.
 
 = 6.1.9 =
 

@@ -4,7 +4,7 @@
 *
 * Functions for counts etc
 * Common use front and admin
-* Version 6.1.6
+* Version 6.1.10
 *
 */
 
@@ -71,6 +71,11 @@ global $wpdb;
 				$id, wppa_get_user() ) );
 		}
 		wppa_dbg_q('Q-gpc');
+	}
+	
+	// Substract private photos if not logged in and album given
+	if ( $id && ! is_user_logged_in() ) {
+		$count -= $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM `".WPPA_PHOTOS."` WHERE `album` = %s AND `status` = 'private' " ), $id );
 	}
 	return $count;
 }

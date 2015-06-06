@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 6.1.9
+* Version 6.1.10
 *
 */
 
@@ -26,7 +26,17 @@ global $wppa_tags;
 			
 
 	// Test area
-	
+	/*
+	$labels = $wpdb->get_results( "SELECT * FROM `".WPPA_EXIF."`  WHERE `photo` = '0'", ARRAY_A );
+	$c = 0;
+	$t = time();
+	foreach( $labels as $label ) {
+		if ( $wpdb->get_var( "SELECT COUNT(*) FROM `".WPPA_EXIF."` WHERE `photo` <> '0' AND `tag` = '".$label['tag']."'" ) == '0' ) {
+			$c++;
+		}
+	}
+	echo 'There are '.$c.' unused exif labels, found in '.(time()-$t).' seconds.<br/>';
+	*/
 	// End test area
 
 	// Initialize
@@ -1917,7 +1927,7 @@ global $wppa_tags;
 						wppa_setting_subheader( 'D', '1', __( 'Thumbnail display related visibility settings', 'wppa' ) );
 							{
 							$name = __('Thumbnail name', 'wppa');
-							$desc = __('Display Thubnail name.', 'wppa');
+							$desc = __('Display Thumbnail name.', 'wppa');
 							$help = esc_js(__('Display photo name under thumbnail images.', 'wppa'));
 							$slug = 'wppa_thumb_text_name';
 							$html = wppa_checkbox($slug);
@@ -1980,7 +1990,7 @@ global $wppa_tags;
 							wppa_setting($slug, '7', $name, $desc, $html, $help, $clas, $tags);
 
 							$name = __('Popup name', 'wppa');
-							$desc = __('Display Thubnail name on popup.', 'wppa');
+							$desc = __('Display Thumbnail name on popup.', 'wppa');
 							$help = esc_js(__('Display photo name under thumbnail images on the popup.', 'wppa'));
 							$slug = 'wppa_popup_text_name';
 							$html = wppa_checkbox($slug);
@@ -7023,15 +7033,23 @@ global $wppa_tags;
 							$tags = 'system,search,layout';
 							wppa_setting($slug, '12', $name, $desc, $html, $help, $clas, $tags);
 							
-							$name = __('Supersearch hover', 'wppa');
-							$desc = __('Hover to select in supersearch.', 'wppa');
-							$help = '';
-							$slug = 'wppa_ss_hover';
-							$html = wppa_checkbox($slug);
+							$name = __('Name max length', 'wppa');
+							$desc = __('Max length of displayed photonames in supersearch selectionlist', 'wppa');
+							$help = esc_js(__('To limit the length of the selectionlist, enter the number of characters to show.', 'wppa'));
+							$slug = 'wppa_ss_name_max';
+							$html = $html = wppa_input($slug, '50px');
 							$clas = '';
 							$tags = 'system,search';
 							wppa_setting($slug, '13', $name, $desc, $html, $help, $clas, $tags);
-							
+
+							$name = __('Text max length', 'wppa');
+							$desc = __('Max length of displayed photo text in supersearch selectionlist', 'wppa');
+							$help = esc_js(__('To limit the length of the selectionlist, enter the number of characters to show.', 'wppa'));
+							$slug = 'wppa_ss_text_max';
+							$html = $html = wppa_input($slug, '50px');
+							$clas = '';
+							$tags = 'system,search';
+							wppa_setting($slug, '14', $name, $desc, $html, $help, $clas, $tags);
 							}
 						wppa_setting_subheader( 'F', '1', __( 'Watermark related settings', 'wppa' ) );
 							{

@@ -2,7 +2,7 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 6.1.5
+* version 6.1.10
 * 
 */
 
@@ -1293,6 +1293,7 @@ static $labels;
 						if ( $s == '2#120' ) $desc = 'Caption:';
 					$status = 'display';
 						if ( $s == '1#090' ) $status = 'hide';
+						if ( $desc == $s.':' ) $status= 'hide';
 					//	if ( $s == '2#000' ) $status = 'hide';
 					$iret = wppa_create_iptc_entry( array( 'photo' => $photo, 'tag' => $tag, 'description' => $desc, 'status' => $status ) );
 					if ( ! $iret ) wppa_log( 'Warning', 'Could not add IPTC tag '.$tag.' for photo '.$photo );
@@ -1308,6 +1309,8 @@ static $labels;
 			}
 		}
 	}
+	
+	wppa_iptc_clean_garbage( $id );
 }
 
 function wppa_get_exif_datetime( $file ) {
@@ -1391,6 +1394,7 @@ global $wppa;
 			$photo 	= '0';
 			$desc 	= $s.':';
 			$status = 'display';
+			if ( substr( $s, 0, 12 ) == 'UndefinedTag' ) $status = 'hide';
 			$iret = wppa_create_exif_entry( array( 'photo' => $photo, 'tag' => $tag, 'description' => $desc, 'status' => $status ) );
 			if ( ! $iret ) wppa_log( 'Warning 1', 'Could not add EXIF tag '.$tag.' for photo '.$photo );
 		}
@@ -1422,6 +1426,8 @@ global $wppa;
 			if ( ! $iret ) {} /* wppa_log( 'Warning 3', 'Could not add EXIF tag '.$tag.' for photo '.$photo.', desc = '.$desc ); */ // Is junk, dont care
 		}
 	}
+	
+	wppa_exif_clean_garbage( $id );
 }
 
 // Inverse of exif_tagname();

@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Functions for breadcrumbs
-* Version 6.1.9
+* Version 6.1.10
 *
 */
 
@@ -60,7 +60,7 @@ global $wppa_session;
 	
 	$virtual = ( 
 		$wppa['is_topten'] || $wppa['is_lasten'] || $wppa['is_comten'] || 
-		$wppa['is_featen'] || $wppa['is_tag'] || $wppa['last_albums'] || $wppa['is_upldr'] 
+		$wppa['is_featen'] || $wppa['is_tag'] || $wppa['last_albums'] || $wppa['is_upldr'] || $wppa['supersearch']
 		 );
 		
 	if ( $wppa['last_albums'] ) {
@@ -157,24 +157,33 @@ global $wppa_session;
 							$value .= ' ' . __a('with name:') . ' <b>' . $ss_data['3'] . '</b>';
 							break;
 						case 't':
+							$ss_data['3'] = str_replace( '...', '***', $ss_data['3'] );
 							$value .= ' ' . __a('with words:') . ' <b>' . str_replace( '.', '</b> ' . __a('and') . ' <b>', $ss_data['3'] ) . '</b>';
+							$value = str_replace( '***', '...', $value );
 							break;		
 						case 'o':
 							$value .= ' ' . __a('of owner:') . ' <b>' . $ss_data['3'] . '</b>';
 							break;
 						case 'i':
-							$label = $wpdb->get_var( $wpdb->prepare( "SELECT `description` FROM `" . WPPA_IPTC . "` WHERE `tag` = %s AND `photo` = '0'", '2#'.$ss_data['2'] ) );
+							$label = $wpdb->get_var( $wpdb->prepare( "SELECT `description` FROM `" . WPPA_IPTC . "` WHERE `tag` = %s AND `photo` = '0'", str_replace( 'H', '#', $ss_data['2'] ) ) );
 							$label = trim( $label, ':' );
 							$value .= ' ' . __('with iptc tag:') . ' <b>' . $label . '</b> ' . __('with content:') .' <b>' . $ss_data['3'] . '</b>';
 							break;
 						case 'e':
-							$label = $wpdb->get_var( $wpdb->prepare( "SELECT `description` FROM `" . WPPA_EXIF . "` WHERE `tag` = %s AND `photo` = '0'", 'E#'.$ss_data['2'] ) );
+							$label = $wpdb->get_var( $wpdb->prepare( "SELECT `description` FROM `" . WPPA_EXIF . "` WHERE `tag` = %s AND `photo` = '0'", str_replace( 'H', '#', $ss_data['2'] ) ) );
 							$label = trim( $label, ':' );
 							$value .= ' ' . __('with exif tag:') . ' <b>' . $label . '</b> ' . __('with content:') .' <b>' . $ss_data['3'] . '</b>';
 							break;
 					}
 					break;
 			}
+
+			if ( $wppa['is_slide'] ) {
+				$thumbhref 	= wppa_get_permalink().'wppa-cover=0&amp;wppa-occur='.$wppa['occur'].'&amp;wppa-supersearch='.stripslashes( $wppa['supersearch'] );
+				$title  = __a( 'View the thumbnails' );
+				wppa_bcitem( $value, $thumbhref, $title, 'b8' );
+			}
+
 			$href 	= '';
 			$title	= '';
 			wppa_bcitem( $value, $href, $title, 'b9' );

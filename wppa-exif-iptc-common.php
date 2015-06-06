@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * exif and iptc common functions
-* version 5.5.2
+* version 6.1.10
 *
 * 
 */
@@ -329,3 +329,54 @@ E#9209		Flash						Must be formatted according to table
 	return $result;
 }
 
+function wppa_iptc_clean_garbage( $photo ) {
+global $wpdb;
+
+	$items = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM `" . WPPA_IPTC ."` WHERE `photo` = %s", $photo ), ARRAY_A );
+	if ( is_array( $items ) ) {
+		foreach( $items as $item ) {
+			$txt = sanitize_text_field( $item['description'] );
+			$txt = str_replace( array(chr(0),chr(1),chr(2),chr(3),chr(4),chr(5),chr(6),chr(7)), '', $txt );
+			
+			// Cleaned text empty?
+			if ( ! $txt ) { 
+			
+				// Garbage text, remove from photo
+				$wpdb->query( $wpdb->prepare( "DELETE FROM `" . WPPA_IPTC . "` WHERE `id` = %s", $item['id'] ) );
+				
+				// Current label still used?
+				$in_use = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM `" . WPPA_IPTC . "` WHERE `photo` <> '0' AND `tag` = %s", $item['tag'] ) );
+				if ( ! $in_use ) {
+					$wpdb->query( $wpdb->prepare( "DELETE FROM `" . WPPA_IPTC . "` WHERE `photo` = '0' AND `tag` = %s", $item['tag'] ) );
+					wppa_log( 'dbg', 'Iptc tag label' . $item['tag'] . ' removed.' );
+				}
+			}
+		}
+	}
+}
+
+function wppa_exif_clean_garbage( $photo ) {
+global $wpdb;
+
+	$items = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM `" . WPPA_EXIF ."` WHERE `photo` = %s", $photo ), ARRAY_A );
+	if ( is_array( $items ) ) {
+		foreach( $items as $item ) {
+			$txt = sanitize_text_field( $item['description'] );
+			$txt = str_replace( array(chr(0),chr(1),chr(2),chr(3),chr(4),chr(5),chr(6),chr(7)), '', $txt );
+			
+			// Cleaned text empty?
+			if ( ! $txt ) { 
+			
+				// Garbage
+				$wpdb->query( $wpdb->prepare( "DELETE FROM `" . WPPA_EXIF . "` WHERE `id` = %s", $item['id'] ) );
+				
+				// Current label still used?
+				$in_use = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM `" . WPPA_EXIF . "` WHERE `photo` <> '0' AND `tag` = %s", $item['tag'] ) );
+				if ( ! $in_use ) {
+					$wpdb->query( $wpdb->prepare( "DELETE FROM `" . WPPA_EXIF . "` WHERE `photo` = '0' AND `tag` = %s", $item['tag'] ) );
+					wppa_log( 'dbg', 'Exif tag label ' . $item['tag'] . ' removed.' );
+				}
+			}
+		}
+	}
+}

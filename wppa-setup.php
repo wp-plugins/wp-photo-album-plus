@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 6.1.9
+* Version 6.1.10
 * 
 */
 
@@ -1233,7 +1233,8 @@ Hide Camera info
 						'wppa_tags_or_only'				=> 'no',
 						'wppa_wild_front'				=> 'no',
 						'wppa_search_display_type' 		=> 'content',
-						'wppa_ss_hover' 				=> 'yes',
+						'wppa_ss_name_max' 				=> '0',
+						'wppa_ss_text_max' 				=> '0',
 						
 						// F Watermark
 						'wppa_watermark_on'				=> 'no',

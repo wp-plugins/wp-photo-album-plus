@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Various funcions
-* Version 6.1.9
+* Version 6.1.10
 *
 */
 
@@ -1010,7 +1010,7 @@ global $wppa_session;
 		return $thumbs;	
 	}
 	
-	$t = -microtime( true );
+	$time = -microtime( true );
 
 	// See if album is an enumeration or range
 	$fullalb = $wppa['start_album'];	// Assume not
@@ -1028,15 +1028,14 @@ global $wppa_session;
 	elseif ( $wppa['is_upldr'] ) {
 		$max = '1000000';
 		$alb = $fullalb;
+		$status = "`status` <> 'pending' AND `status` <> 'scheduled'";
+		if ( ! is_user_logged_in() ) $status .= " AND `status` <> 'private'";
 		if ( $alb ) {
-//			$thumbs = $wpdb->get_results( 
-			$query = $wpdb->prepare( "SELECT * FROM `".WPPA_PHOTOS."` WHERE ( `album` = ".$alb." ) AND `owner` = %s AND ( ( `status` <> 'pending' AND `status` <> 'scheduled' ) OR `owner` = %s ) ORDER BY `timestamp` DESC LIMIT %d", $wppa['is_upldr'], wppa_get_user(), $max );//, ARRAY_A );
+			$query = $wpdb->prepare( "SELECT * FROM `".WPPA_PHOTOS."` WHERE ( `album` = ".$alb." ) AND `owner` = %s AND ( ( ".$status." ) OR `owner` = %s ) ORDER BY `timestamp` DESC LIMIT %d", $wppa['is_upldr'], wppa_get_user(), $max );//, ARRAY_A );
 			}
 		else {
-//			$thumbs = $wpdb->get_results( 
-			$query = $wpdb->prepare( "SELECT * FROM `".WPPA_PHOTOS."` WHERE `owner` = %s AND ( ( `status` <> 'pending' AND `status` <> 'scheduled' ) OR `owner` = %s ) ORDER BY `timestamp` DESC LIMIT %d", $wppa['is_upldr'], wppa_get_user(), $max );//, ARRAY_A );
+			$query = $wpdb->prepare( "SELECT * FROM `".WPPA_PHOTOS."` WHERE `owner` = %s AND ( ( ".$status." ) OR `owner` = %s ) ORDER BY `timestamp` DESC LIMIT %d", $wppa['is_upldr'], wppa_get_user(), $max );//, ARRAY_A );
 		}
-//wppa_log('dbg get_thumbs', $query );
 		$thumbs = $wpdb->get_results( $query, ARRAY_A );
 		wppa_dbg_q( 'Q-UPL' );
 	}
@@ -1059,11 +1058,13 @@ global $wppa_session;
 				$sortby = '';
 				break;
 		}
+		$status = "`status` <> 'pending' AND `status` <> 'scheduled'";
+		if ( ! is_user_logged_in() ) $status .= " AND `status` <> 'private'";
 		if ( $alb ) {
-			$thumbs = $wpdb->get_results( "SELECT * FROM `".WPPA_PHOTOS."` WHERE ( `album` = ".$alb." ) ORDER BY ".$sortby." LIMIT ".$max, ARRAY_A );
+			$thumbs = $wpdb->get_results( "SELECT * FROM `".WPPA_PHOTOS."` WHERE ( `album` = ".$alb." AND ".$status." ) ORDER BY ".$sortby." LIMIT ".$max, ARRAY_A );
 		}
 		else {
-			$thumbs = $wpdb->get_results( "SELECT * FROM `".WPPA_PHOTOS."` ORDER BY ".$sortby." LIMIT ".$max, ARRAY_A );
+			$thumbs = $wpdb->get_results( "SELECT * FROM `".WPPA_PHOTOS."` WHERE ( ".$status." ) ORDER BY ".$sortby." LIMIT ".$max, ARRAY_A );
 		}
 		wppa_dbg_q( 'Q-TT' );
 	}
@@ -1079,7 +1080,9 @@ global $wppa_session;
 	elseif ( $wppa['is_lasten'] ) {
 		$max = $wppa['lasten_count'];
 		$alb = $fullalb;
-		
+		$status = "`status` <> 'pending' AND `status` <> 'scheduled'";
+		if ( ! is_user_logged_in() ) $status .= " AND `status` <> 'private'";
+
 		// If you want only 'New' photos in the selection, the period must be <> 0;
 		if ( wppa_switch ( 'wppa_lasten_limit_new' ) && wppa_opt( 'max_photo_newtime' ) ) {
 			$newtime = " `timestamp` >= ".( time() - wppa_opt( 'max_photo_newtime' ) );
@@ -1088,8 +1091,8 @@ global $wppa_session;
 				else $q = "SELECT * FROM `".WPPA_PHOTOS."` WHERE ".$newtime." ORDER BY `timestamp` DESC LIMIT ".$max;
 			}
 			else {
-				if ( $alb ) $q = "SELECT * FROM `".WPPA_PHOTOS."` WHERE ( `album` = ".$alb." ) AND ( `status` <> 'pending' ) AND ( `status` <> 'scheduled' ) AND ( ".$newtime." ) ORDER BY `timestamp` DESC LIMIT " . $max;
-				else $q = "SELECT * FROM `".WPPA_PHOTOS."` WHERE ( `status` <> 'pending' ) AND ( `status` <> 'scheduled' ) AND (".$newtime.") ORDER BY `timestamp` DESC LIMIT ".$max;
+				if ( $alb ) $q = "SELECT * FROM `".WPPA_PHOTOS."` WHERE ( `album` = ".$alb." ) AND ( ".$status." ) AND ( ".$newtime." ) ORDER BY `timestamp` DESC LIMIT " . $max;
+				else $q = "SELECT * FROM `".WPPA_PHOTOS."` WHERE ( ".$status." ) AND (".$newtime.") ORDER BY `timestamp` DESC LIMIT ".$max;
 			}
 		}
 		// No 'New' limitation
@@ -1099,8 +1102,8 @@ global $wppa_session;
 				else $q = "SELECT * FROM `".WPPA_PHOTOS."` ORDER BY `timestamp` DESC LIMIT ".$max;
 			}
 			else {
-				if ( $alb ) $q = "SELECT * FROM `".WPPA_PHOTOS."` WHERE ( `album` = ".$alb." ) AND ( `status` <> 'pending' ) AND ( `status` <> 'scheduled' ) ORDER BY `timestamp` DESC LIMIT " . $max;
-				else $q = "SELECT * FROM `".WPPA_PHOTOS."` WHERE `status` <> 'pending' AND `status` <> 'scheduled' ORDER BY `timestamp` DESC LIMIT ".$max;
+				if ( $alb ) $q = "SELECT * FROM `".WPPA_PHOTOS."` WHERE ( `album` = ".$alb." ) AND ( ".$status." ) ORDER BY `timestamp` DESC LIMIT " . $max;
+				else $q = "SELECT * FROM `".WPPA_PHOTOS."` WHERE ".$status." ORDER BY `timestamp` DESC LIMIT ".$max;
 			}
 		}
 		// echo $q;
@@ -1114,18 +1117,26 @@ global $wppa_session;
 			$alb_ids = wppa_series_to_array( $alb_ids );
 		}
 		$photo_ids = wppa_get_comten_ids( $wppa['comten_count'], (array) $alb_ids );
+		$status = "`status` <> 'pending' AND `status` <> 'scheduled'";
+		if ( ! is_user_logged_in() ) $status .= " AND `status` <> 'private'";
 		$thumbs = array();
 		if ( is_array( $photo_ids ) ) foreach( $photo_ids as $id ) {
-			$thumbs[] = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM `".WPPA_PHOTOS."` WHERE `id` = %s", $id ), ARRAY_A );
+			$temp = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM `".WPPA_PHOTOS."` WHERE ".$status." AND `id` = %s", $id ), ARRAY_A );
+			if ( $temp ) {
+				$thumbs[] = $temp;
+			}
 		}
 	}
 	// Tagcloud or multitag? Tags do not look at album
 	elseif ( $wppa['is_tag'] ) {
+		$status = "`status` <> 'pending' AND `status` <> 'scheduled'";
+		if ( ! is_user_logged_in() ) $status .= " AND `status` <> 'private'";
+
 		if ( current_user_can( 'wppa_moderate' ) ) {
 			$temp = $wpdb->get_results( "SELECT * FROM `".WPPA_PHOTOS."` WHERE `tags` <> '' ".wppa_get_photo_order( '0' ), ARRAY_A ); 
 		}
 		else {
-			$temp = $wpdb->get_results( "SELECT * FROM `".WPPA_PHOTOS."` WHERE `status` <> 'pending' AND `status` <> 'scheduled' AND `tags` <> '' ".wppa_get_photo_order( '0' ), ARRAY_A ); 
+			$temp = $wpdb->get_results( "SELECT * FROM `".WPPA_PHOTOS."` WHERE ".$status." AND `tags` <> '' ".wppa_get_photo_order( '0' ), ARRAY_A ); 
 		}
 		wppa_dbg_q( 'Q-TG' );
 		$tags = wppa_get_taglist();
@@ -1165,15 +1176,23 @@ global $wppa_session;
 		$ss_data = explode( ',', $wppa['supersearch'] );
 		$data = $ss_data['3'];
 
+		$status = "`status` <> 'pending' AND `status` <> 'scheduled'";
+		if ( ! is_user_logged_in() ) $status .= " AND `status` <> 'private'";
+
 		switch ( $ss_data['1'] ) {
 		
 			// Name
 			case 'n':
+				$is = '=';
+				if ( substr( $data, -3 ) == '...' ) {
+					$data = substr( $data, 0, strlen( $data ) - 3 ) . '%';
+					$is = 'LIKE';
+				}
 				if ( current_user_can( 'wppa_moderate' ) ) {
-					$thumbs = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM `" . WPPA_PHOTOS . "` WHERE `name` = %s " . wppa_get_photo_order( '0' ), $data ), ARRAY_A );
+					$thumbs = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM `" . WPPA_PHOTOS . "` WHERE `name` ".$is." %s " . wppa_get_photo_order( '0' ), $data ), ARRAY_A );
 				}
 				else {
-					$thumbs = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM `" . WPPA_PHOTOS . "` WHERE `name` = %s AND `status` <> 'pending' AND `status` <> 'scheduled'  " . wppa_get_photo_order( '0' ), $data ), ARRAY_A );
+					$thumbs = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM `" . WPPA_PHOTOS . "` WHERE `name` ".$is." %s AND ".$status." " . wppa_get_photo_order( '0' ), $data ), ARRAY_A );
 				}
 				wppa_dbg_q( 'Q-SS' );
 				break;
@@ -1184,7 +1203,7 @@ global $wppa_session;
 					$thumbs = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM `" . WPPA_PHOTOS . "` WHERE `owner` = %s " . wppa_get_photo_order( '0' ), $data ), ARRAY_A );
 				}
 				else {
-					$thumbs = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM `" . WPPA_PHOTOS . "` WHERE `owner` = %s AND `status` <> 'pending' AND `status` <> 'scheduled'  " . wppa_get_photo_order( '0' ), $data ), ARRAY_A );
+					$thumbs = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM `" . WPPA_PHOTOS . "` WHERE `owner` = %s AND ".$status." " . wppa_get_photo_order( '0' ), $data ), ARRAY_A );
 				}
 				wppa_dbg_q( 'Q-SS' );
 				break;
@@ -1205,7 +1224,7 @@ global $wppa_session;
 					$tagids 	= $taglist[$data]['ids'];
 				}
 				if ( count( $tagids ) > '0' ) {
-					$query 		= "SELECT * FROM `" . WPPA_PHOTOS . "` WHERE `id` IN (" . implode( ',',$tagids ) . ")";
+					$query 		= "SELECT * FROM `" . WPPA_PHOTOS . "` WHERE ".$status." AND `id` IN (" . implode( ',',$tagids ) . ")";
 					$thumbs 	= $wpdb->get_results( $query, ARRAY_A );
 					wppa_dbg_q( 'Q-SS' );
 				}
@@ -1213,35 +1232,70 @@ global $wppa_session;
 				
 			// Text
 			case 't':
+				// To distinguish items with ellipses, we temporary replace them with ***
+				$data = str_replace( '...', '***', $data ); 
 				if ( strpos( $data, '.' ) ) {
 					$temp 		= explode( '.', $data );
-					$query 		= $wpdb->prepare( "SELECT * FROM `" . WPPA_INDEX . "` WHERE `slug` = %s", $temp['0'] );
-					$indexes 	= $wpdb->get_row( $query, ARRAY_A );
-					$ids 		= explode( '.', wppa_expand_enum( $indexes['photos'] ) );
+					$is = '=';
+					if ( wppa_opt( 'ss_text_max' ) ) {
+						if ( substr( $temp['0'], -3 ) == '***' ) {
+							$temp['0'] = substr( $temp['0'], 0, strlen( $temp['0'] ) - 3 ) . '%';
+							$is = 'LIKE';
+						}
+					}
+					$query 		= $wpdb->prepare( "SELECT * FROM `" . WPPA_INDEX . "` WHERE `slug` ".$is." %s", $temp['0'] );
+					$indexes 	= $wpdb->get_results( $query, ARRAY_A );
+					$ids 		= array();
+					foreach( $indexes as $item ) {
+						$ids 	= array_merge( $ids, explode( '.', wppa_expand_enum( $item['photos'] ) ) );
+					}
 					$i = '1';
 					while ( $i < count( $temp ) ) {
-						$query 		= $wpdb->prepare( "SELECT * FROM `" . WPPA_INDEX . "` WHERE `slug` = %s", $temp[$i] );
-						$indexes 	= $wpdb->get_row( $query, ARRAY_A );
-						$ids 		= array_intersect( $ids, explode( '.', wppa_expand_enum( $indexes['photos'] ) ) );
+						$is = '=';
+						if ( wppa_opt( 'ss_text_max' ) ) {
+							if ( substr( $temp[$i], -3 ) == '***' ) {
+								$temp[$i] = substr( $temp[$i], 0, strlen( $temp[$i] ) - 3 ) . '%';
+								$is = 'LIKE';
+							}
+						}
+					
+						$query 		= $wpdb->prepare( "SELECT * FROM `" . WPPA_INDEX . "` WHERE `slug` ".$is." %s", $temp[$i] );
+						$indexes 	= $wpdb->get_results( $query, ARRAY_A );
+						$deltaids 	= array();
+						foreach( $indexes as $item ) {
+							$deltaids 	= array_merge( $deltaids, explode( '.', wppa_expand_enum( $item['photos'] ) ) );
+						}
+						
+						$ids 		= array_intersect( $ids, $deltaids );
 						$i++;
 					}
 				}
 				else {
-					$query 		= $wpdb->prepare( "SELECT * FROM `" . WPPA_INDEX . "` WHERE `slug` = %s", $data );
-					$indexes 	= $wpdb->get_row( $query, ARRAY_A );
-					$ids 		= explode( '.', wppa_expand_enum( $indexes['photos'] ) );
+					$is = '=';
+					if ( wppa_opt( 'ss_text_max' ) ) {
+						if ( substr( $data, -3 ) == '***' ) {
+							$data = substr( $data, 0, strlen( $data ) - 3 ) . '%';
+							$is = 'LIKE';
+						}
+					}
+					$query 		= $wpdb->prepare( "SELECT * FROM `" . WPPA_INDEX . "` WHERE `slug` ".$is." %s", $data );
+					$indexes 	= $wpdb->get_results( $query, ARRAY_A );
+					$ids 		= array();
+					foreach( $indexes as $item ) {
+						$ids 	= array_merge( $ids, explode( '.', wppa_expand_enum( $item['photos'] ) ) );
+					}
 				}
 				if ( empty( $ids ) ) {
 					$ids = array( '0' ); 	// Dummy
 				}
-				$query 		= "SELECT * FROM `" . WPPA_PHOTOS . "` WHERE `id` IN (" . implode( ',', $ids ) . ")";
+				$query 		= "SELECT * FROM `" . WPPA_PHOTOS . "` WHERE ".$status." AND `id` IN (" . implode( ',', $ids ) . ")";
 				$thumbs 	= $wpdb->get_results( $query, ARRAY_A );
 				wppa_dbg_q( 'Q_SS' );
 				break;
 
 			// Iptc
 			case 'i':
-				$itag 		= '2#'. $ss_data['2'];
+				$itag 		= str_replace( 'H', '#', $ss_data['2'] );
 				$desc 		= $ss_data['3'];
 				$query 		= $wpdb->prepare( "SELECT * FROM `" . WPPA_IPTC . "` WHERE `tag` = %s AND `description` = %s", $itag, $desc );
 				$iptclines 	= $wpdb->get_results( $query, ARRAY_A );
@@ -1249,14 +1303,14 @@ global $wppa_session;
 				if ( is_array( $iptclines ) ) foreach( $iptclines as $item ) {
 					$ids .= ','.$item['photo'];
 				}
-				$query 		= "SELECT * FROM `" . WPPA_PHOTOS . "` WHERE `id` IN (" . $ids . ")";
+				$query 		= "SELECT * FROM `" . WPPA_PHOTOS . "` WHERE ".$status." AND `id` IN (" . $ids . ")";
 				$thumbs 	= $wpdb->get_results( $query, ARRAY_A );
 				wppa_dbg_q( 'Q_SS' );
 				break;
 				
 			// Exif
 			case 'e':
-				$etag 		= 'E#'. $ss_data['2'];
+				$etag 		= str_replace( 'H', '#', $ss_data['2'] );
 				$desc 		= $ss_data['3'];
 				$query 		= $wpdb->prepare( "SELECT * FROM `" . WPPA_EXIF . "` WHERE `tag` = %s AND `description` = %s", $etag, $desc );
 				$exiflines 	= $wpdb->get_results( $query, ARRAY_A );
@@ -1264,7 +1318,7 @@ global $wppa_session;
 				if ( is_array( $exiflines ) ) foreach( $exiflines as $item ) {
 					$ids .= ','.$item['photo'];
 				}
-				$query 		= "SELECT * FROM `" . WPPA_PHOTOS . "` WHERE `id` IN (" . $ids . ")";
+				$query 		= "SELECT * FROM `" . WPPA_PHOTOS . "` WHERE ".$status." AND `id` IN (" . $ids . ")";
 				$thumbs 	= $wpdb->get_results( $query, ARRAY_A );
 				wppa_dbg_q( 'Q_SS' );
 				break;
@@ -1273,7 +1327,10 @@ global $wppa_session;
 
 	// Search?
 	elseif ( $wppa['src'] ) {	// Searching
-	
+
+		$status = "`status` <> 'pending' AND `status` <> 'scheduled'";
+		if ( ! is_user_logged_in() ) $status .= " AND `status` <> 'private'";
+
 		$searchstring = $wppa['searchstring'];
 		if ( isset ( $wppa_session['use_searchstring'] ) && ! empty ( $wppa_session['use_searchstring'] ) ) $searchstring = $wppa_session['use_searchstring'];
 
@@ -1331,7 +1388,7 @@ global $wppa_session;
 				$thumbs = $wpdb->get_results( "SELECT * FROM `" . WPPA_PHOTOS . "` WHERE " . $selection . wppa_get_photo_order( '0' ), ARRAY_A );
 			}
 			else {
-				$thumbs = $wpdb->get_results( "SELECT * FROM `" . WPPA_PHOTOS . "` WHERE `status` <> 'pending' AND `status` <> 'scheduled' AND ( " . $selection . " ) " . wppa_get_photo_order( '0' ), ARRAY_A );
+				$thumbs = $wpdb->get_results( "SELECT * FROM `" . WPPA_PHOTOS . "` WHERE ".$status." AND ( " . $selection . " ) " . wppa_get_photo_order( '0' ), ARRAY_A );
 			}
 			wppa_dbg_q( 'Q-SR' );
 			
@@ -1432,6 +1489,10 @@ global $wppa_session;
 		// Init $thumbs
 		$thumbs = array();
 		
+		// Status
+		$status = "`status` <> 'pending' AND `status` <> 'scheduled'";
+		if ( ! is_user_logged_in() ) $status .= " AND `status` <> 'private'";
+		
 		// On which album( s )?
 		if ( strpos( $wppa['start_album'], '.' ) !== false ) $allalb = wppa_series_to_array( $wppa['start_album'] );
 		else $allalb = false;
@@ -1445,7 +1506,7 @@ global $wppa_session;
 				$q = "SELECT * FROM `".WPPA_PHOTOS."` ".wppa_get_photo_order( '0' );
 			}
 			else {
-				$q = $wpdb->prepare( "SELECT * FROM `".WPPA_PHOTOS."` WHERE ( ( `status` <> 'pending' AND `status` <> 'scheduled' ) OR `owner` = %s ) ".wppa_get_photo_order( '0' ), wppa_get_user() );
+				$q = $wpdb->prepare( "SELECT * FROM `".WPPA_PHOTOS."` WHERE ( ( ".$status." ) OR `owner` = %s ) ".wppa_get_photo_order( '0' ), wppa_get_user() );
 			}
 			wppa_dbg_msg( 'Q-PH1 '.$q, 'red' );
 			wppa_dbg_q( 'Q-PH1' );
@@ -1457,7 +1518,7 @@ global $wppa_session;
 				$q = "SELECT * FROM `".WPPA_PHOTOS."` WHERE `album` = ".$wppa['start_album']." ".wppa_get_photo_order( $wppa['start_album'] );
 			}
 			else {
-				$q = $wpdb->prepare( "SELECT * FROM `".WPPA_PHOTOS."` WHERE ( ( `status` <> 'pending' AND `status` <> 'scheduled' ) OR `owner` = %s ) AND `album` = ".$wppa['start_album']." ".wppa_get_photo_order( $wppa['start_album'] ), wppa_get_user() );
+				$q = $wpdb->prepare( "SELECT * FROM `".WPPA_PHOTOS."` WHERE ( ( ".$status." ) OR `owner` = %s ) AND `album` = ".$wppa['start_album']." ".wppa_get_photo_order( $wppa['start_album'] ), wppa_get_user() );
 			}
 			wppa_dbg_msg( 'Q-PH2 '.$q, 'red' );
 			wppa_dbg_q( 'Q-PH2' );
@@ -1470,7 +1531,7 @@ global $wppa_session;
 				$q = "SELECT * FROM `".WPPA_PHOTOS."` WHERE " . $wherealbum . " " . wppa_get_photo_order( '0' );
 			}
 			else {
-				$q = $wpdb->prepare( "SELECT * FROM `".WPPA_PHOTOS."` WHERE ( ( `status` <> 'pending' AND `status` <> 'scheduled' ) OR `owner` = %s ) AND " . $wherealbum . " " . wppa_get_photo_order( '0' ), wppa_get_user() );
+				$q = $wpdb->prepare( "SELECT * FROM `".WPPA_PHOTOS."` WHERE ( ( ".$status." ) OR `owner` = %s ) AND " . $wherealbum . " " . wppa_get_photo_order( '0' ), wppa_get_user() );
 			}
 			wppa_dbg_msg( 'Q-PH3 '.$q, 'red' );
 			wppa_dbg_q( 'Q-PH3' );
@@ -1483,7 +1544,7 @@ global $wppa_session;
 	}
 	
 	$wppa['thumb_count'] = empty( $thumbs ) ? '0' : count( $thumbs );
-	$t += microtime( true );
+	$time += microtime( true );
 	wppa_dbg_msg( 'Get thumbs took '.$t.' seconds, found: '.$wppa['thumb_count'].' items.' );
 	wppa_cache_photo( 'add', $thumbs );
 	return $thumbs;

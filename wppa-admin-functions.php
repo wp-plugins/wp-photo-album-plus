@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * gp admin functions
-* version 6.1.0
+* version 6.1.10
 *
 */
 
@@ -457,7 +457,7 @@ global $wppa_supported_video_extensions;
 global $wppa_supported_audio_extensions;
 
 	// See what's in there
-	$allowed_types = array( 'zip', 'jpg', 'jpeg', 'png', 'gif', 'amf', 'pmf', 'bak', 'log' );
+	$allowed_types = array( 'zip', 'jpg', 'jpeg', 'png', 'gif', 'amf', 'pmf', 'bak', 'log', 'csv' );
 	if ( is_array( $wppa_supported_video_extensions ) ) {
 		$allowed_types = array_merge( $allowed_types, $wppa_supported_video_extensions );
 	}

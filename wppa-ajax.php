@@ -2,7 +2,7 @@
 /* wppa-ajax.php
 *
 * Functions used in ajax requests
-* version 6.1.9
+* version 6.1.10
 *
 */
 
@@ -51,7 +51,7 @@ global $wppa_session;
 	
 	switch ( $wppa_action ) {
 		case 'getssiptclist':
-			$tag 		= '2#' . $_REQUEST['tag'];
+			$tag 		= str_replace( 'H', '#', $_REQUEST['tag'] );
 			$mocc 		= $_REQUEST['moccur'];
 			$oldvalue = '';
 			if ( isset( $wppa_session['supersearch'] ) && strpos( $wppa_session['supersearch'], ',' ) !== false ) {
@@ -68,30 +68,36 @@ global $wppa_session;
 			}
 			$iptcdata 	= $wpdb->get_results( $wpdb->prepare( "SELECT * FROM `" . WPPA_IPTC ."` WHERE `photo` > '0' AND `tag` = %s ORDER BY `description`", $tag ), ARRAY_A );
 			$last 		= '';
+			$any 		= false;
 			if ( is_array( $iptcdata ) ) foreach( $iptcdata as $item ) {
-				$desc = trim( $item['description'] );
+				$desc = sanitize_text_field( $item['description'] );
+				$desc = str_replace( array(chr(0),chr(1),chr(2),chr(3),chr(4),chr(5),chr(6),chr(7)), '', $desc );
+
 				if ( $desc != $last ) {
 					$sel = ( $oldvalue && $oldvalue == $desc ) ? 'selected="selected"' : '';
 					if ( $sel ) echo 'selected:'.$oldvalue;
 					$ddesc = strlen( $desc ) > '32' ? substr( $desc, 0, 30 ) . '...' : $desc;
-					$selevent = wppa_switch( 'ss_hover' ) ? 'mouseover' : 'click';
 					echo 	'<option' .
 								' value="' . esc_attr( $desc ) . '"' .
 								' class="wppa-iptclist-' . $mocc . '"' .
 								' ' . $sel .
-								' on'.$selevent.'="wppaOnMouseOverSSO( this, ' . $mocc . ')"' .
-								' ontouchstart="wppaOnMouseOverSSO( this, ' . $mocc . ')"' .
 								' >' . 
 									$ddesc . 
 							'</option>';
 					$last = $desc;
+					$any = true;
 				}
+			}
+			if ( ! $any ) {
+				$query = $wpdb->prepare( "DELETE FROM `" . WPPA_IPTC . "` WHERE `photo` = '0' AND `tag` = %s", $tag );
+				$wpdb->query( $query );
+//				wppa_log( 'dbg', $query );
 			}
 			exit;
 			break;
 			
 		case 'getssexiflist':
-			$tag 		= 'E#' . $_REQUEST['tag'];
+			$tag 		= str_replace( 'H', '#', $_REQUEST['tag'] );
 			$mocc 		= $_REQUEST['moccur'];
 			$oldvalue = '';
 			if ( isset( $wppa_session['supersearch'] ) && strpos( $wppa_session['supersearch'], ',' ) !== false ) {
@@ -108,23 +114,29 @@ global $wppa_session;
 			}
 			$exifdata 	= $wpdb->get_results( $wpdb->prepare( "SELECT * FROM `" . WPPA_EXIF ."` WHERE `photo` > '0' AND `tag` = %s ORDER BY `description`", $tag ), ARRAY_A );
 			$last 		= '';
+			$any 		= false;
 			if ( is_array( $exifdata ) ) foreach( $exifdata as $item ) {
-				$desc = trim( $item['description'] );
+				$desc = sanitize_text_field( $item['description'] );
+				$desc = str_replace( array(chr(0),chr(1),chr(2),chr(3),chr(4),chr(5),chr(6),chr(7)), '', $desc );
+
 				if ( $desc != $last ) {
 					$sel = ( $oldvalue && $oldvalue == $desc ) ? 'selected="selected"' : '';
 					$ddesc = strlen( $desc ) > '32' ? substr( $desc, 0, 30 ) . '...' : $desc;
-					$selevent = wppa_switch( 'ss_hover' ) ? 'mouseover' : 'click';
 					echo 	'<option' .
 								' value="' . esc_attr( $desc ) . '"' .
 								' class="wppa-exiflist-' . $mocc . '"' .
 								' ' . $sel .
-								' on'.$selevent.'="wppaOnMouseOverSSO( this, ' . $mocc . ')"' .
-								' ontouchstart="wppaOnMouseOverSSO( this, ' . $mocc . ')"' .
 								' >' . 
 									$ddesc . 
 							'</option>';
 					$last = $desc;
+					$any = true;
 				}
+			}
+			if ( ! $any ) {
+				$query = $wpdb->prepare( "DELETE FROM `" . WPPA_EXIF . "` WHERE `photo` = '0' AND `tag` = %s", $tag );
+				$wpdb->query( $query );
+//				wppa_log( 'dbg', $query );
 			}
 			exit;
 			break;
@@ -261,7 +273,11 @@ global $wppa_session;
 			
 			// Validate args
 			$alb = $_REQUEST['album-id'];
-			$photos = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM `".WPPA_PHOTOS."` WHERE `album` = %s AND ( ( `status` <> 'pending' AND `status` <> 'scheduled' ) OR owner = %s ) ".wppa_get_photo_order( $alb ), $alb, wppa_get_user() ), ARRAY_A );
+
+			$status = "`status` <> 'pending' AND `status` <> 'scheduled'";
+			if ( ! is_user_logged_in() ) $status .= " AND `status` <> 'private'";
+
+			$photos = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM `".WPPA_PHOTOS."` WHERE `album` = %s AND ( ( ".$status." ) OR owner = %s ) ".wppa_get_photo_order( $alb ), $alb, wppa_get_user() ), ARRAY_A );
 			if ( ! $photos ) {
 				echo '||ER||'.__( 'The album is empty', 'wppa' );
 				exit;

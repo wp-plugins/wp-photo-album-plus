@@ -2,7 +2,7 @@
 //
 // conatins common vars and functions
 // 
-var wppaJsVersion = '6.1.9';
+var wppaJsVersion = '6.1.10';
 
 // Important notice:
 // All external vars that may be given a value in wppa-non-admin.php must be declared here and not in other front-end js files!!
@@ -873,38 +873,6 @@ function wppaUrlToId( url ) {
 	return temp;
 }
 
-// on mouse over super select option handler
-function wppaOnMouseOverSSO( elm, mocc ) {
-	jQuery( elm ).attr( 'selected', 'selected' );
-	wppaSuperSearchSelect( mocc, false );
-}
-
-// on mouse click super select multiple option handler
-function wppaOnClickMultiSSO( clas, elm, mocc ) {
-	
-	// Toggle 'datat-sel' value
-	var oldval = jQuery( elm ).attr( 'data-sel' );
-	if ( oldval == 'yes' ) {
-		jQuery( elm ).attr( 'data-sel', 'no' );
-	}
-	else {
-		jQuery( elm ).attr( 'data-sel', 'yes' );
-	}
-	
-	// Correct 'value' values. This undoes the standard action
-	var set = jQuery( '.' + clas );
-	var i = 0;
-	for ( i = 0; i < set.length; i++ ) {
-		if ( jQuery( set[i] ).attr( 'data-sel' ) == 'yes' ) {
-			jQuery( set[i] ).attr( 'selected', 'selected' );
-		}
-		else {
-			jQuery( set[i] ).removeAttr( 'selected' );
-		}
-	}
-	wppaSuperSearchSelect( mocc, false );
-}
-
 // Opens/closes selection boxes in supersearch html
 function wppaSuperSearchSelect( mocc, go ) {
 
@@ -1032,7 +1000,7 @@ function wppaSuperSearchSelect( mocc, go ) {
 					s3 = jQuery( '#wppa-ss-photoiptc-'+mocc ).val();
 					if ( s3 ) {
 						if ( s3.length > 2 ) {
-							s3 = s3.substr( 2 );	// Remove 2#
+							s3 = s3.replace( '#', 'H' );	// Replace # by H
 						}
 						if ( s3 != '' ) {
 							jQuery( '#wppa-ss-iptcopts-'+mocc ).css('display', '');
@@ -1054,7 +1022,7 @@ function wppaSuperSearchSelect( mocc, go ) {
 					s3 = jQuery( '#wppa-ss-photoexif-'+mocc ).val();
 					if ( s3 ) {
 						if ( s3.length > 2 ) {
-							s3 = s3.substr( 2 );	// Remove E#
+							s3 = s3.replace( '#', 'H' );	// Replace # by H
 						}
 						if ( s3 != '' ) {
 							jQuery( '#wppa-ss-exifopts-'+mocc ).css('display', '');

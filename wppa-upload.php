@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the upload/import pages and functions
-* Version 6.1.6
+* Version 6.1.10
 *
 */
 
@@ -423,9 +423,10 @@ global $wppa_supported_audio_extensions;
 		if ( isset( $_POST['del-after-a'] ) ) $dela = true; else $dela = false;	
 		if ( isset( $_POST['del-after-z'] ) ) $delz = true; else $delz = false;
 		if ( isset( $_POST['del-after-v'] ) ) $delv = true; else $delv = false;
-		if ( isset( $_POST['del-after-a'] ) ) $dela = true; else $dela = false;
+		if ( isset( $_POST['del-after-u'] ) ) $delu = true; else $delu = false;
+		if ( isset( $_POST['del-after-c'] ) ) $delc = true; else $delc = false;
 
-		wppa_import_photos( $delp, $dela, $delz, $delv, $dela );
+		wppa_import_photos( $delp, $dela, $delz, $delv, $delu, $delc );
 	} 
 	
 	// Continue dirimport after timeout
@@ -491,6 +492,7 @@ global $wppa_supported_audio_extensions;
 			$videocount = wppa_get_video_count( $files );
 			$audiocount = wppa_get_audio_count( $files );
 			$dircount	= $is_depot ? wppa_get_dircount( $files ) : '0';
+			$csvcount 	= $is_depot ? wppa_get_csvcount( $files ) : '0';
 			// echo 'zips:'.$zipcount,' albs:'.$albumcount.' pho:'.$photocount.' dirs:'.$dircount;
 			if ( $ngg_opts ) {
 				$is_ngg = strpos( $source, $ngg_opts['gallerypath'] ) !== false;	// this is false for the ngg root !!
@@ -511,6 +513,7 @@ global $wppa_supported_audio_extensions;
 			$videocount 	= '0';
 			$audiocount 	= '0';
 			$dircount		= '0';
+			$csvcount 		= '0';
 			$is_ngg 		= false;
 			$remote_max 	= get_option( 'wppa_import_remote_max_'.$user, '10' );
 		}
@@ -570,9 +573,9 @@ global $wppa_supported_audio_extensions;
 <?php
 		
 		// check if albums exist or will be made before allowing upload
-		if ( wppa_has_albums() || $albumcount > '0' || $zipcount >'0' || $dircount > '0' || $videocount > '0' || $audiocount > '0' ) { 
+		if ( wppa_has_albums() || $albumcount > '0' || $zipcount >'0' || $dircount > '0' || $videocount > '0' || $audiocount > '0' || $csvcount > '0' ) { 
 	
-			if ( $photocount > '0' || $albumcount > '0' || $zipcount >'0' || $dircount > '0' || $videocount > '0' || $audiocount > '0' ) { ?>
+			if ( $photocount > '0' || $albumcount > '0' || $zipcount >'0' || $dircount > '0' || $videocount > '0' || $audiocount > '0' || $csvcount > '0' ) { ?>
 			
 				<form action="<?php echo( wppa_dbg_url( get_admin_url().'admin.php?page=wppa_import_photos' ) ) ?>" method="post">
 				<?php wp_nonce_field( '$wppa_nonce', WPPA_NONCE ); 
@@ -790,6 +793,7 @@ global $wppa_supported_audio_extensions;
 						</table>
 					</div>
 				<?php } 
+				
 				// Display the videos
 				if ( $videocount > '0' && wppa_switch( 'enable_video' ) ) { ?>
 					<div style="border:1px solid gray; padding:4px; margin: 3px 0;" >
@@ -872,7 +876,7 @@ global $wppa_supported_audio_extensions;
 									</td>
 									<?php if ( $is_sub_depot ) { ?>
 										<td>
-											<input type="checkbox" id="del-after-a" name="del-after-a" checked="checked" /><b>&nbsp;&nbsp;<?php _e( 'Remove from depot after successful import.', 'wppa' ); ?></b>
+											<input type="checkbox" id="del-after-u" name="del-after-u" checked="checked" /><b>&nbsp;&nbsp;<?php _e( 'Remove from depot after successful import.', 'wppa' ); ?></b>
 										</td>
 									<?php } ?>
 								</tr>
@@ -948,13 +952,58 @@ global $wppa_supported_audio_extensions;
 					</div>				
 				<?php } ?>
 				<?php
+				
+				// Display the csv files
+				if ( $is_depot && $csvcount > '0' ) { ?>
+					<div style="border:1px solid gray; padding:4px; margin: 3px 0;" >
+						<p><b>
+							<?php _e( 'There are', 'wppa' ); echo( ' '.$csvcount.' ' ); _e( 'csv files in the depot.', 'wppa' ) ?><br/>
+						</b></p>
+						<table class="form-table wppa-table widefat" style="margin-bottom:0;" >
+							<thead>
+								<tr>
+									<td>
+										<input type="checkbox" id="all-csv" checked="checked" onchange="checkAll( 'all-csv', '.wppa-csv' )" /><b>&nbsp;&nbsp;<?php _e( 'Check/uncheck all', 'wppa' ) ?></b>
+									</td>
+									<td>
+										<input type="checkbox" id="del-after-c" name="del-after-c" checked="checked" disabled="disabled" /><b>&nbsp;&nbsp;<?php _e( 'Remove from depot after successful import.', 'wppa' ); ?></b>
+									</td>
+								</tr>
+							</thead>
+						</table>				
+						<table class="form-table wppa-table widefat" style="margin-top:0;" >
+							<?php 
+								$ct = 0; 
+								$idx = '0';
+								foreach( $files as $csv ) { 
+									if ( is_file( $csv ) && strtolower( wppa_get_ext( $csv ) == 'csv' ) ) { ?>
+										<tr>
+											<td>
+												<input type="checkbox" id="file-<?php echo( $idx ) ?>" name="file-<?php echo( $idx ) ?>" class= "wppa-csv" checked="checked" />&nbsp;&nbsp;<b><?php echo wppa_sanitize_file_name( basename( $csv ) ) .  ' (' . sprintf( '%5.1f', filesize( $csv ) / 1024 ) . ' kb)' ?></b>
+											</td>
+										</tr>
+									<?php 
+									}
+									$idx++;
+								} ?>
+						</table>
+					</div>				
+				
+				<?php } ?>
+				<?php
+				
 				// The submit button
 				?>
 				<p>
 					<script type="text/javascript">
 						function wppaVfyAlbum() {
+							var csvs = jQuery( '.wppa-csv' );
 							if ( jQuery( '#wppa-update' ).attr( 'checked' ) != 'checked' ) {
-								if ( ! parseInt( jQuery( '#wppa-photo-album' ).attr( 'value' ) ) && ! parseInt( jQuery( '#wppa-video-album' ).attr( 'value' ) ) && ! parseInt( jQuery( '#wppa-audio-album' ).attr( 'value' ) ) ) {
+								if ( 	! parseInt( jQuery( '#wppa-photo-album' ).attr( 'value' ) ) && 
+										! parseInt( jQuery( '#wppa-video-album' ).attr( 'value' ) ) && 
+										! parseInt( jQuery( '#wppa-audio-album' ).attr( 'value' ) ) &&
+										csvs.length == 0
+									) {
 									alert( 'Please select an album first' );
 									return false;
 								}
@@ -1015,6 +1064,7 @@ global $wppa_supported_audio_extensions;
 							if ( jQuery( '#wppa-nodups' ).attr( 'checked' ) ) data += '&wppa-nodups=on'; //+jQuery( '#wppa-nudups' ).attr( 'value' );
 							if ( jQuery( '#del-after-p' ).attr( 'checked' ) ) data += '&del-after-p=on';
 							if ( jQuery( '#del-after-v' ).attr( 'checked' ) ) data += '&del-after-v=on';
+							if ( jQuery( '#del-after-u' ).attr( 'checked' ) ) data += '&del-after-u=on';
 							data += '&wppa-import-submit=ajax';
 							
 							var files = jQuery( ':checked' );
@@ -1360,7 +1410,7 @@ global $target;
 }
 
 // Do the import photos
-function wppa_import_photos( $delp = false, $dela = false, $delz = false, $delv = false, $dela = false ) {
+function wppa_import_photos( $delp = false, $dela = false, $delz = false, $delv = false, $delu = false, $delc = false ) {
 global $wpdb;
 global $warning_given;
 global $wppa;
@@ -1734,7 +1784,7 @@ global $wppa_supported_audio_extensions;
 		}
 	}
 
-	// Now the audo files
+	// Now the audio files
 	$audiocount = '0';
 	$alb = isset( $_POST['wppa-audio-album'] ) ? $_POST['wppa-audio-album'] : '0';
 	if ( $wppa['ajax'] && ! $alb ) {
@@ -1777,7 +1827,7 @@ global $wppa_supported_audio_extensions;
 					// Add audio filetype
 					$newpath = wppa_strip_ext( wppa_get_photo_path( $id ) ).'.'.$ext;
 					copy( $file, $newpath );
-					if ( $dela ) unlink( $file );
+					if ( $delu ) unlink( $file );
 					if ( $wppa['ajax'] ) {
 						$wppa['ajax_import_files_done'] = true;
 					}
@@ -1795,9 +1845,193 @@ global $wppa_supported_audio_extensions;
 		}
 	}
 	
+	// The csv files. NOT with ajax
+	$csvcount = wppa_get_csvcount( $files );
+	if ( $csvcount ) {
+		$csvcount = '0';
+		if ( ! $wppa['ajax'] ) {
+			if ( is_array( $files ) ) {
+			
+				// Make sure the feature is on
+				if ( ! wppa_switch( 'custom_fields' ) ) {
+					wppa_update_option( 'wppa_custom_fields', 'yes' );
+					echo '<b>' . __( 'Custom datafields enabled', 'wppa' ).'</b><br />';
+				}
+				
+				// Get the captions we already have
+				$cust_labels = array();
+				for ( $i = '0'; $i < '10'; $i++ ) {
+					$cust_labels[$i] = wppa_opt( 'custom_caption_' . $i );
+				}
+/*				
+				// Display the captions we have
+				echo __( 'Captions are:', 'wppa' ) . ' ';
+				for ( $i = 0; $i < '10'; $i++ ) {
+					echo '[' . $i . '] -> ';
+					if ( $cust_labels[$i] ) {
+						echo $cust_labels[$i] . ' ';
+					}
+					else {
+						echo __( '--- not used ---', 'wppa' ) . ' ';
+					}
+				}
+				echo '<br />';
+*/				
+				// Process the files
+				$photos_processed_csv = '0';
+				$photos_skipped_csv = '0';
+				foreach ( array_keys( $files ) as $idx ) {
+					$this_skipped = '0';
+					$file = $files[$idx];
+					if ( isset( $_POST['file-'.$idx] ) || isset( $_GET['continue'] ) ) {
+						$ext = wppa_get_ext( $file );
+						if ( $ext == 'csv' ) {
+							echo '<b>' . __( 'Processing', 'wppa') . ' ' . basename( $file ) . '</b><br />';
+							
+							// Copy the file to a temp file
+							$tempfile = dirname( $file ) . '/temp.csv';
+							copy ( $file, $tempfile );
+							
+							// Open file
+							$handle = fopen( $tempfile, "rt" );
+							if ( ! $handle ) {
+								wppa_error_message( __( 'Can not open file. Can not continue. (1)', 'wppa' ) );
+								return;
+							}
+							$write_handle = fopen( $file, "wt" );
+							if ( ! $handle ) {
+								wppa_error_message( __( 'Can not open file. Can not continue. (2)', 'wppa' ) );
+								return;
+							}
+							
+							// Read header
+							$header = fgets( $handle, 4096 );
+							if ( ! $header ) { 
+								wppa_error_message( __( 'Can not read header. Can not continue.', 'wppa' ) );
+								fclose( $handle );
+								return;
+							}
+							fputs( $write_handle, $header );
+							echo __( 'Read header:', 'wppa' ) . ' ' . $header . '<br />';
+							
+							// Interprete header
+							$captions = wppa_explode_csv( $header );
+							if ( ! is_array( $captions ) || count( $captions ) < '2' ) {
+								wppa_error_message( __( 'Invalid header. Can not continue.', 'wppa' ) );
+								fclose( $handle );
+								return;
+							}
+							foreach ( array_keys( $captions ) as $key ) {
+								if ( $key == '0' ) {
+									if ( ! in_array( strtolower( trim( $captions['0'] ) ), array( 'name', 'photoname', 'filename' ) ) ) {
+										wppa_error_message( __( 'Invalid header. First item must be \'name\', \'photoname\' or \'filename\'', 'wppa' ) );
+										fclose( $handle );
+										return;
+									}
+								}
+								elseif ( ! in_array( $captions[$key], $cust_labels ) ) {
+									if ( ! in_array( '', $cust_labels ) ) {
+										wppa_error_message( __( 'All available custom data fields are in use. There is no space for', 'wppa' ) . ' ' . $captions[$key] );
+										fclose( $handle );
+										return;
+									}
+									
+									// Add a new caption
+									$i = '0';
+									while ( $cust_labels[$i] ) $i++;
+									$cust_labels[$i] = $captions[$key];
+									wppa_update_option( 'wppa_custom_caption_' . $i, $cust_labels[$i] );
+									wppa_update_option( 'wppa_custom_visible_' . $i, 'yes' );
+	//								echo sprintf( __( 'New caption <b>%s</b> added.<br />', 'wppa' ), $cust_labels[$i] );
+								}
+							}
+							
+							// Find the correlation between caption index and custom data index.
+							$pointers = array();
+							for ( $i = '1'; $i < count( $captions ); $i++ ) {
+								for ( $j = '0'; $j < '10'; $j++ ) {
+									if ( $captions[$i] == $cust_labels[$j] ) {
+										$pointers[$j] = $i;
+									}
+								}
+							}
+							
+							// Now process the lines
+							while ( ! feof( $handle ) ) {
+								$dataline = fgets( $handle, 4096 );
+								if ( $dataline ) {
+//									echo __( 'Read data:', 'wppa' ) . ' ' . $dataline . '...';
+									$data_arr = wppa_explode_csv( $dataline );
+									$search = $data_arr[0];
+									switch ( strtolower($captions[0]) ) {
+										case 'photoname':
+											$photos = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM `".WPPA_PHOTOS."` WHERE `name` = %s", $data_arr[0] ), ARRAY_A ); 
+											break;
+										case 'filename':
+											$photos = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM `".WPPA_PHOTOS."` WHERE `filename` = %s", $data_arr[0] ), ARRAY_A ); 
+											break;
+										case 'name':
+											$photos = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM `".WPPA_PHOTOS."` WHERE `name` = %s OR `filename` = %s", $data_arr[0], $data_arr[0] ), ARRAY_A ); 
+											break;
+									}
+									if ( $photos ) {
+										foreach( $photos as $photo ) {
+											$cust_data = $photo['custom'] ? unserialize( $photo['custom'] ) : array( '', '', '', '', '', '', '', '', '', '' );
+											foreach( array_keys( $pointers ) as $p ) {
+												$cust_data[$p] = $data_arr[$pointers[$p]];
+											}									
+											wppa_update_photo( array( 'id' => $photo['id'], 'custom' => serialize( $cust_data ) ) );
+											$photos_processed_csv ++;
+										}
+	//									echo '<span style="color:green;" >' . __('Processed', 'wppa') . ' ' . $data_arr[0] . '</span><br />'; 
+									}
+									
+									// This line could not be processed
+									else {
+	//									echo '<span style="color:red;" >' . __('Could not find', 'wppa') . ' ' . $data_arr[0] . '</span><br />'; 
+										
+										// Write back to original file
+										fputs( $write_handle, $dataline );
+										$photos_skipped_csv++;
+										$this_skipped++;
+									}
+									echo '.';
+								}
+								
+								// Time up?
+								if ( wppa_is_time_up() && wppa_switch( 'wppa_auto_continue' ) ) {
+									$wppa['continue'] = 'continue';
+									
+									// Copy rest of file back to original
+									while ( ! feof( $handle ) ) {
+										$temp = fgets( $handle, 4096 );
+										fputs( $write_handle, $temp );
+									}
+								}
+							}
+							
+							fclose( $handle );
+							fclose( $write_handle );
+							
+							$csvcount++;
+							
+							// Remove tempfile
+							unlink( $tempfile );
+							
+							// Remove orig file
+							if ( ! $this_skipped && ! wppa_is_time_up() ) {
+								unlink( $file );
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	
 	wppa_ok_message( __( 'Done processing files.', 'wppa' ) );
 	
-	if ( $pcount == '0' && $acount == '0' && $zcount == '0' && $dircount == '0' && $photocount == '0' && $videocount == '0' && $audiocount == '0' ) {
+	if ( $pcount == '0' && $acount == '0' && $zcount == '0' && $dircount == '0' && $photocount == '0' && $videocount == '0' && $audiocount == '0' && $csvcount == '0' ) {
 		wppa_error_message( __( 'No files to import.', 'wppa' ) );
 	}
 	else {
@@ -1821,6 +2055,11 @@ global $wppa_supported_audio_extensions;
 		}
 		if ( $audiocount ) {
 			$msg .= $audiocount.' '.__( 'Audios imported.', 'wppa' );
+		}
+		if ( $csvcount ) {
+			$msg .= $csvcount . ' ' . __( 'CSVs imported,', 'wppa' ) . ' ' . 
+					$photos_processed_csv .' '. __( 'photos processed.', 'wppa') . ' ' . 
+					$photos_skipped_csv . ' ' . __('photos skipped.', 'wppa');
 		}
 		wppa_ok_message( $msg ); 
 		wppa_set_last_album( $album );
@@ -1897,6 +2136,19 @@ function wppa_get_dircount( $files ) {
 			if ( basename( $file ) == '.' ) {}
 			elseif ( basename( $file ) == '..' ) {}
 			elseif ( is_dir( $file ) ) $result++;
+		}
+	}
+	return $result;
+}
+
+// Find .csv file count
+function wppa_get_csvcount( $files ) {
+	$result = 0;
+	if ( $files ) {
+		foreach ( $files as $file ) {
+			if ( is_file( $file ) ) {
+				if ( strtolower( wppa_get_ext( $file ) ) == 'csv' ) $result++;
+			}
 		}
 	}
 	return $result;
