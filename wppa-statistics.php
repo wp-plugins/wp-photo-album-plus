@@ -4,7 +4,7 @@
 *
 * Functions for counts etc
 * Common use front and admin
-* Version 6.1.10
+* Version 6.1.11
 *
 */
 

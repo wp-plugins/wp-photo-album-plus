@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the upload/import pages and functions
-* Version 6.1.10
+* Version 6.1.11
 *
 */
 
@@ -1173,6 +1173,10 @@ global $wppa_supported_audio_extensions;
 		}
 		echo '<br />';
 		_e( 'WPPA+ file types: .amf .pmf', 'wppa' );
+		echo '<br />';
+		_e( 'Directories with optional subdirs containig photos', 'wppa' );
+		echo '<br />';
+		_e( 'Custom data files of type .csv', 'wppa' );
 		echo '<br /><br />';
 		_e( 'Your depot directory is:', 'wppa' );
 		echo '<b> .../' . WPPA_DEPOT . '/</b>';
