@@ -75,7 +75,7 @@ global $wpdb;
 	
 	// Substract private photos if not logged in and album given
 	if ( $id && ! is_user_logged_in() ) {
-		$count -= $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM `".WPPA_PHOTOS."` WHERE `album` = %s AND `status` = 'private' " ), $id );
+		$count -= $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM `".WPPA_PHOTOS."` WHERE `album` = %s AND `status` = 'private' ", $id ) );
 	}
 	return $count;
 }
