@@ -1545,7 +1545,7 @@ global $wppa_session;
 	
 	$wppa['thumb_count'] = empty( $thumbs ) ? '0' : count( $thumbs );
 	$time += microtime( true );
-	wppa_dbg_msg( 'Get thumbs took '.$t.' seconds, found: '.$wppa['thumb_count'].' items.' );
+	wppa_dbg_msg( 'Get thumbs took '.$time.' seconds, found: '.$wppa['thumb_count'].' items.' );
 	wppa_cache_photo( 'add', $thumbs );
 	return $thumbs;
 }
