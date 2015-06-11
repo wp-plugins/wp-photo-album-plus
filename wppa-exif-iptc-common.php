@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * exif and iptc common functions
-* version 6.1.10
+* version 6.1.12
 *
 * 
 */
@@ -16,7 +16,8 @@ global $wpdb;
 
 	if ( strpos($desc, '2#') === false ) return $desc;	// No tags in desc: Nothing to do
 	
-	$iptcdata = $wpdb->get_results($wpdb->prepare("SELECT * FROM `".WPPA_IPTC."` WHERE `photo`=%s ORDER BY `id`", $photo), ARRAY_A);
+	$iptclabels = $wpdb->get_results( "SELECT * FROM `" . WPPA_IPTC . "` WHERE `photo` = '0' ORDER BY `id`", ARRAY_A );
+	$iptcdata 	= $wpdb->get_results( $wpdb->prepare( "SELECT * FROM `" . WPPA_IPTC . "` WHERE `photo` = %s ORDER BY `id`", $photo ), ARRAY_A );
 	wppa_dbg_q('Q60');
 	
 	// Init
@@ -26,32 +27,36 @@ global $wpdb;
 	
 	// Process all iptclines of this photo
 	if ( $iptcdata ) {
-		foreach ($iptcdata as $iptcline) {
+		foreach ( $iptcdata as $iptcline ) {
 			$tag = $iptcline['tag'];
-			if ($prevtag == $tag) {			// add a next item for this tag
-				$combined .= ', '.htmlspecialchars(strip_tags($iptcline['description']));
+			if ( $prevtag == $tag ) {			// add a next item for this tag
+				$combined .= ', '.htmlspecialchars( strip_tags( $iptcline['description'] ) );
 			}
 			else { 							// first item of this tag
 				if ( $combined ) { 			// Process if required
-					$pos = strpos($temp, $prevtag);
-					while ( $pos !== false ) {
-						$temp = substr_replace($temp, $combined, $pos, strlen($tag));
-						$pos = strpos($temp, $prevtag);
-					}
+					$temp = str_replace( $prevtag, $combined, $temp );
 				}
-				$combined = htmlspecialchars(strip_tags($iptcline['description']));
+				$combined = htmlspecialchars( strip_tags( $iptcline['description'] ) );
 				$prevtag = $tag;
 			}
 		}
 		
 		// Process last
-		$pos = strpos($temp, $prevtag);
-		while ( $pos !== false ) {
-			$temp = substr_replace($temp, $combined, $pos, strlen($tag));
-			$pos = strpos($temp, $prevtag);
-		}
+		$temp = str_replace( $tag, $combined, $temp );
 	}
 
+	// Process all labels
+	if ( $iptclabels ) {
+		foreach( $iptclabels as $iptclabel ) {
+			$tag = $iptclabel['tag'];
+			
+			// convert 2#XXX to 2#LXXX to indicate the label
+			$t = substr( $tag, 0, 2 ) . 'L' . substr( $tag, 2 );
+			$tag = $t;
+			$temp = str_replace( $tag, __a( $iptclabel['description'] ), $temp );
+		}
+	}
+	
 	// Remove untranslated
 	$pos = strpos($temp, '2#');
 	while ( $pos !== false ) {
@@ -64,21 +69,15 @@ global $wpdb;
 }
 
 // Translate exif tags into  photo dependant data inside a text
-function wppa_filter_exif($desc, $photo) {
+function wppa_filter_exif( $desc, $photo ) {
 global $wpdb;
-global $exifdata, $exifdataphoto;
 
 	if ( strpos($desc, 'E#') === false ) return $desc;	// No tags in desc: Nothing to do
 	
-	if ( $photo != $exifdataphoto ) {
-		$exifdata = $wpdb->get_results($wpdb->prepare("SELECT * FROM `".WPPA_EXIF."` WHERE `photo`=%s ORDER BY `id`", $photo), ARRAY_A);
-		$exifdataphoto = $photo;
-		wppa_dbg_q('Q61v');
-	}
-	else {
-		wppa_dbg_q('G61');
-	}
-	
+	$exiflabels = $wpdb->get_results( "SELECT * FROM `" . WPPA_EXIF . "` WHERE `photo` = '0' ORDER BY `id`", ARRAY_A );
+	$exifdata 	= $wpdb->get_results($wpdb->prepare("SELECT * FROM `".WPPA_EXIF."` WHERE `photo`=%s ORDER BY `id`", $photo), ARRAY_A);
+	wppa_dbg_q('Q61v');
+		
 	// Init
 	$temp = $desc;
 	$prevtag = '';
@@ -86,29 +85,34 @@ global $exifdata, $exifdataphoto;
 	
 	// Process all exiflines of this photo
 	if ( $exifdata ) { 
-		foreach ($exifdata as $exifline) {
+		foreach ( $exifdata as $exifline ) {
 			$tag = $exifline['tag'];
-			if ($prevtag == $tag) {			// add a next item for this tag
-				$combined .= ', '.htmlspecialchars(strip_tags($exifline['description']));
+			if ( $prevtag == $tag ) {			// add a next item for this tag
+				$combined .= ', '.htmlspecialchars( strip_tags( $exifline['description'] ) );
 			}
 			else { 							// first item of this tag
 				if ( $combined ) { 			// Process if required
-					$pos = strpos($temp, $prevtag);
-					while ( $pos !== false ) {
-						$temp = substr_replace($temp, wppa_format_exif($prevtag, $combined), $pos, strlen($tag));
-						$pos = strpos($temp, $prevtag);
-					}
+					$temp = str_replace( $prevtag, $combined, $temp );
 				}
-				$combined = htmlspecialchars(strip_tags($exifline['description']));
+				$combined = htmlspecialchars( strip_tags( $exifline['description'] ) );
 				$prevtag = $tag;
 			}
 		}
 	
 		// Process last
-		$pos = strpos($temp, $prevtag);
-		while ( $pos !== false ) {
-			$temp = substr_replace($temp, wppa_format_exif($prevtag, $combined), $pos, strlen($tag));
-			$pos = strpos($temp, $prevtag);
+		$temp = str_replace( $tag, $combined, $temp );
+	}
+
+	// Process all labels
+	if ( $exiflabels ) {
+		foreach( $exiflabels as $exiflabel ) {
+			$tag = $exiflabel['tag'];
+			
+			// convert E#XXX to E#LXXX to indicate the label
+			$t = substr( $tag, 0, 2 ) . 'L' . substr( $tag, 2 );
+			$tag = $t;
+			
+			$temp = str_replace( $tag, __a( $exiflabel['description'] ), $temp );
 		}
 	}
 

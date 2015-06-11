@@ -5,7 +5,7 @@
 * Various funcions to display a thumbnail image
 * Contains all possible frontend thumbnail types
 *
-* Version 6.1.9
+* Version 6.1.12
 * 
 */
 
@@ -43,6 +43,7 @@ global $wpdb;
 	$framewidth 	= $frameattr_a['width'];
 	$frameheight 	= $frameattr_a['height'];
 	
+	// Get class depending of comment alt display
 	if ( $com_alt ) {
 		$class = 'thumbnail-frame-comalt thumbnail-frame-comalt-'.wppa( 'mocc' ).' thumbnail-frame-photo-'.$id;
 	}
@@ -50,12 +51,18 @@ global $wpdb;
 		$class = 'thumbnail-frame thumbnail-frame-'.wppa( 'mocc' ).' thumbnail-frame-photo-'.$id;
 	}
 
+	// If no image to display, die gracefully
 	$imgsrc = wppa_fix_poster_ext( wppa_get_thumb_path( $id ), $id ); 
 	if ( ! wppa_is_video( $id ) && ! is_file( $imgsrc ) && ! wppa_has_audio( $id ) ) {
-		$result .= '<div class="'.$class.'" style="'.$framestyle.'; color:red;" >Missing thumbnail image #'.$id.'</div>';
+		$result .= '<div' .
+						' class="' . $class . '"' .
+						' style="' . $framestyle . '; color:red;" >' .
+							'Missing thumbnail image #' . $id .
+					'</div>';
 		return $result;
 	}
 
+	// Find image attributes
 	$alt 				= $album['alt_thumbsize'] == 'yes' ? '_alt' : '';
 	$imgattr_a 			= wppa_get_imgstyle_a( $id, $imgsrc, wppa_opt( 'thumbsize'.$alt ), 'optional', 'thumb' ); 
 	$imgstyle  			= $imgattr_a['style'];
@@ -63,11 +70,15 @@ global $wpdb;
 	$imgheight 			= $imgattr_a['height'];
 	$imgmargintop 		= $imgattr_a['margin-top'];
 	$imgmarginbottom  	= $imgattr_a['margin-bottom'];
+	
+	// Special case for comment alt display
 	if ( $com_alt ) {
 		$imgwidth 	= wppa_opt( 'comten_alt_thumbsize' );
 		$imgheight 	= round( $imgwidth * $imgattr_a['height'] / $imgattr_a['width'] );
 		$imgstyle   .= 'float:left; margin:0 20px 8px 0;width:'.$imgwidth.'px; height:'.$imgheight.'px;';
 	}
+	
+	// Cursor depends on link
 	$cursor	   		= $imgattr_a['cursor'];
 
 	// Find the required image sizes
@@ -89,6 +100,7 @@ global $wpdb;
 		$popheight 	= $imgheight;
 	}
 
+	// More image attributes
 	$imgurl    	= wppa_fix_poster_ext( wppa_get_thumb_url( $id, '', $popwidth, $popheight ), $id ); 
 	$events    	= wppa_get_imgevents( 'thumb', $id ); 
 	$imgalt		= wppa_get_imgalt( $id );	// returns something like ' alt="Any text" '
@@ -163,10 +175,11 @@ global $wpdb;
 	}
 	else $link = wppa_get_imglnk_a( 'thumb', $id ); // voor parent uplr
 
-
 	// See if ajax possible
 	if ( $link ) {
-		if ( $link['is_url'] ) {	// is url
+	
+		// Is link an url?
+		if ( $link['is_url'] ) {
 			if ( wppa_switch( 'allow_ajax' ) 
 				&& wppa_opt( 'thumb_linktype' ) == 'photo' 							// linktype must be to slideshow image
 				&& wppa_opt( 'thumb_linkpage' ) == '0'									// same page/post
@@ -183,9 +196,12 @@ global $wpdb;
 				&& ( wppa_is_int( wppa( 'start_album' ) ) || wppa( 'start_album' ) == '' )	// no set of albums
 				 ) 
 			{ 	// Ajax	possible
+			
 				// The a img ajax
 				$onclick = "wppaDoAjaxRender( ".wppa( 'mocc' ).", '".wppa_get_slideshow_url_ajax( wppa( 'start_album' ), '0' ).'&amp;wppa-photo='.$id."', '".wppa_convert_to_pretty( wppa_get_slideshow_url( wppa( 'start_album' ), '0' )."&amp;wppa-photo=".$id )."' )";
 				$result .= '<a style="position:static;" class="thumb-img" id="x-'.$id.'-'.wppa( 'mocc' ).'">';
+				
+				// Video?
 				if ( $is_video ) { 
 
 					$result .= wppa_get_video_html( array(
@@ -206,12 +222,19 @@ global $wpdb;
 							'style' 		=> $imgstyle
 							));		
 				}
+				
+				// No video
 				else {
 					$result .= '<img onclick="'.$onclick.'" id="i-'.$id.'-'.wppa( 'mocc' ).'" src="'.$imgurl.'" '.$imgalt.' title="'.$title.'" width="'.$imgwidth.'" height="'.$imgheight.'" style="'.$imgstyle.' cursor:pointer;" '.$events.' />';
 				}
+				
+				// Close the a img ajax
 				$result .= '</a>';
 			}
-			else { 	// non ajax
+			
+			// non ajax
+			else { 	
+			
 				// The a img non ajax
 				$result .= '<a style="position:static;" href="'.$link['url'].'" target="'.$link['target'].'" class="thumb-img" id="x-'.$id.'-'.wppa( 'mocc' ).'">';
 				if ( $is_video ) { 
@@ -236,11 +259,16 @@ global $wpdb;
 				else {
 					$result .= '<img id="i-'.$id.'-'.wppa( 'mocc' ).'" src="'.$imgurl.'" '.$imgalt.' title="'.$title.'" width="'.$imgwidth.'" height="'.$imgheight.'" style="'.$imgstyle.' cursor:pointer;" '.$events.' />';
 				}
+				
+				// Close the img non ajax
 				$result .= '</a>';
 			}
 		}
-		elseif ( $link['is_lightbox'] ) {	// link is lightbox
+		
+		// Link is not an url. link is lightbox ?
+		elseif ( $link['is_lightbox'] ) {	
 			$title 		= wppa_get_lbtitle( 'thumb', $id );
+			
 			// The a img
 			$result .= '<a href="'.$link['url'].'" target="'.$link['target'] . '"' .
 						' data-videohtml="' . esc_attr( wppa_get_video_body( $id ) ) . '"' .
@@ -272,6 +300,8 @@ global $wpdb;
 			else {
 				$result .= '<img id="i-'.$id.'-'.wppa( 'mocc' ).'" src="'.$imgurl.'" '.$imgalt.' title="'.wppa_zoom_in( $id ).'" width="'.$imgwidth.'" height="'.$imgheight.'" style="'.$imgstyle.$cursor.'" '.$events.' />';
 			}
+			
+			// Close the a img
 			$result .= '</a>';
 		}
 		else {	// is onclick
@@ -699,28 +729,24 @@ global $wpdb;
 
 	$alt 				= $album['alt_thumbsize'] == 'yes' ? '_alt' : '';
 	$imgattr_a 			= wppa_get_imgstyle_a( $id, $imgsrc, wppa_opt( 'thumbsize'.$alt ), 'optional', 'thumb' ); 
-	if ( wppa_opt( 'thumbtype' ) == 'masonry-v' ) { 	// Verical style
+	
+	// Verical style ?
+	if ( wppa_opt( 'thumbtype' ) == 'masonry-v' ) { 	
 		$imgwidth  		= wppa_opt( 'thumbsize' );
-//		if ( wppa_is_video( $id ) ) {
-//			$imgheight 	= round( wppa_get_videoy( $id ) * $imgwidth / wppa_get_videox( $id ) );
-//		}
-//		else {
-		$imgheight 		= $imgwidth * wppa_get_thumbratioyx( $id ); // round( wppa_get_thumby( $id ) * $imgwidth / wppa_get_thumbx( $id ) );
-//		}
-		$imgstyle  		= 'width:100%; margin:0; position:relative; box-sizing:border-box;'; 
+		$imgheight 		= $imgwidth * wppa_get_thumbratioyx( $id );
+		$imgstyle  		= 'width:100%; height:auto; margin:0; position:relative; box-sizing:border-box;'; 
 		$frame_h 		= '';
 	}
-	else { 					// Hrizontal style
+	
+	// Horizontal style ?
+	else { 					
 		$imgheight 		= wppa_opt( 'thumbsize' );
-//		if ( wppa_is_video( $id ) ) {
-//			$imgwidth 	= round( wppa_get_videox( $id ) * $imgheight / wppa_get_videoy( $id ) );
-//		}
-//		else {
-		$imgwidth 		= $imgheight * wppa_get_thumbratioxy( $id ); // round( wppa_get_thumbx( $id ) * $imgheight / wppa_get_thumby( $id ) );
-//		}
-		$imgstyle  		= 'height:100%; margin:0; position:relative; box-sizing:border-box;'; 
+		$imgwidth 		= $imgheight * wppa_get_thumbratioxy( $id );
+		$imgstyle  		= 'height:100%; width:auto; margin:0; position:relative; box-sizing:border-box;'; 
 		$frame_h 		= 'height:100%; ';
 	}
+	
+	// Padding
 	if ( wppa_is_int( wppa_opt( 'tn_margin' ) / 2 ) ) {
 		$imgstyle 		.= ' padding:'.( wppa_opt( 'tn_margin' ) / 2 ).'px;';
 	}
@@ -730,8 +756,10 @@ global $wpdb;
 		$imgstyle 		.= ' padding:'.$p1.'px '.$p2.'px '.$p2.'px '.$p1.'px;';
 	}
 	
+	// Cursor
 	$cursor	   			= $imgattr_a['cursor'];
 
+	// Popup ?
 	if ( wppa_switch( 'use_thumb_popup' ) ) {
 	
 		// Landscape?
@@ -739,12 +767,15 @@ global $wpdb;
 			$popwidth 	= wppa_opt( 'popupsize' );
 			$popheight 	= round( $popwidth * $imgheight / $imgwidth );
 		}
+		
 		// Portrait
 		else { 
 			$popheight 	= wppa_opt( 'popupsize' );
 			$popwidth 	= round( $popheight * $imgwidth / $imgheight );
 		}
 	}
+	
+	// No popup
 	else {
 		$popwidth 	= $imgwidth;
 		$popheight 	= $imgheight;

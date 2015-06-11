@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * gp admin functions
-* version 6.1.10
+* version 6.1.12
 *
 */
 
@@ -413,9 +413,10 @@ global $wpdb;
 	// Destroy the result
 	imagedestroy( $rotate );
 
-	// Recreate the thumbnail
 	$err = '30';
-	$bret = wppa_create_thumbnail( $id );
+	
+	// Recreate the thumbnail, do NOT use source: source can not be rotated
+	$bret = wppa_create_thumbnail( $id, false );
 	if ( ! $bret ) return $err;
 	
 	// Return success

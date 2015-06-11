@@ -3,7 +3,7 @@
 // Conatins lightbox modules
 // Dependancies: wppa.js and default wp jQuery library
 // 
-var wppaLightboxVersion = '6.1.9';
+var wppaLightboxVersion = '6.1.12';
 
 // Initial initialization
 jQuery( document ).ready(function( e ) {
@@ -219,10 +219,14 @@ wppaConsoleLog( 'wppaOvlShow arg='+arg );
 					' style="border:none; width:'+jQuery( window ).width()+'px; box-shadow:none; position:absolute;" >'+
 						wppaOvlVideoHtml+
 				'</video>'+
-				'<div style="height: 20px; width: 100%; position:absolute; top:0; left:0;" onmouseover="jQuery(\'#wppa-ovl-legenda-2\').css(\'visibility\',\'visible\');" onmouseout="jQuery(\'#wppa-ovl-legenda-2\').css(\'visibility\',\'hidden\');wppaShowLegenda=\'hidden\';" >'+
+				'<div style="height: 20px; width: 100%; position:absolute; top:0; left:0;" onmouseover="jQuery(\'#wppa-ovl-legenda-2\').css(\'visibility\',\'visible\');" onmouseout="jQuery(\'#wppa-ovl-legenda-2\').css(\'visibility\',\'hidden\');wppaShowLegenda=\'hidden\';" >';
+				if ( wppaOvlShowLegenda ) {
+					html +=
 					'<div id="wppa-ovl-legenda-2" style="position:fixed; left:0; top:0; background-color:'+(wppaOvlTheme == 'black' ? '#272727' : '#a7a7a7')+'; color:'+(wppaOvlTheme == 'black' ? '#a7a7a7' : '#272727')+'; visibility:'+wppaShowLegenda+';" >'+
-						'Mode='+wppaOvlMode+'. '+( wppaOvlIsSingle ? wppaOvlFullLegendaSingle : wppaOvlFullLegenda )+
-					'</div>'+
+						'Mode='+wppaOvlMode+'. '+( wppaOvlIsSingle ? wppaOvlFullLegendaSingle : wppaOvlFullLegenda ) +
+					'</div>';
+				}
+				html +=
 				'</div>';
 			'</div>';
 		}
@@ -259,10 +263,14 @@ wppaConsoleLog( 'wppaOvlShow arg='+arg );
 						'</audio>';
 				}
 				html +=
-				'<div style="height: 20px; width: 100%; position:absolute; top:0; left:0;" onmouseover="jQuery(\'#wppa-ovl-legenda-2\').css(\'visibility\',\'visible\');" onmouseout="jQuery(\'#wppa-ovl-legenda-2\').css(\'visibility\',\'hidden\');wppaShowLegenda=\'hidden\';" >'+
+				'<div style="height: 20px; width: 100%; position:absolute; top:0; left:0;" onmouseover="jQuery(\'#wppa-ovl-legenda-2\').css(\'visibility\',\'visible\');" onmouseout="jQuery(\'#wppa-ovl-legenda-2\').css(\'visibility\',\'hidden\');wppaShowLegenda=\'hidden\';" >';
+				if ( wppaOvlShowLegenda ) {
+					html +=
 					'<div id="wppa-ovl-legenda-2" style="position:fixed; left:0; top:0; background-color:'+(wppaOvlTheme == 'black' ? '#272727' : '#a7a7a7')+'; color:'+(wppaOvlTheme == 'black' ? '#a7a7a7' : '#272727')+'; visibility:'+wppaShowLegenda+';" >'+
 						'Mode='+wppaOvlMode+'. '+( wppaOvlIsSingle ? wppaOvlFullLegendaSingle : wppaOvlFullLegenda )+
-					'</div>'+
+					'</div>';
+				}
+				html +=
 				'</div>';
 			'</div>';
 		}
@@ -303,9 +311,13 @@ wppaConsoleLog( 'wppaOvlShow arg='+arg );
 		var qtxtcol = wppaOvlTheme == 'black' ? '#a7a7a7' : '#575757';	// Bold font
 		if ( wppaOvlFontColor ) txtcol = wppaOvlFontColor;
 		var startstop = wppaOvlRunning ? wppaStop : wppaStart;
-		var html = 	'<div id="wppa-overlay-start-stop" style="position:absolute; left:0px; top:'+( wppaOvlPadTop-1 )+'px; visibility:hidden; box-shadow:none; font-family:helvetica; font-weight:bold; font-size:14px; color:'+qtxtcol+'; cursor:pointer; " onclick="wppaOvlStartStop()" ontouchstart="wppaOvlStartStop()" >'+startstop+'</div>'+
-					'<div id="wppa-overlay-qt-txt"  style="position:absolute; right:16px; top:'+( wppaOvlPadTop-1 )+'px; visibility:hidden; box-shadow:none; font-family:helvetica; font-weight:bold; font-size:14px; color:'+qtxtcol+'; cursor:pointer; " onclick="wppaOvlHide()" ontouchstart="wppaOvlHide()" >'+wppaOvlCloseTxt+'&nbsp;&nbsp;</div>'+
-					'<img id="wppa-overlay-qt-img"  src="'+wppaImageDirectory+'smallcross-'+wppaOvlTheme+'.gif'+'" style="position:absolute; right:0; top:'+wppaOvlPadTop+'px; visibility:hidden; box-shadow:none; cursor:pointer" onclick="wppaOvlHide()" ontouchstart="wppaOvlHide()" >';
+		var html = '';
+		if ( wppaOvlShowStartStop) {
+			html += '<div id="wppa-overlay-start-stop" style="position:absolute; left:0px; top:'+( wppaOvlPadTop-1 )+'px; visibility:hidden; box-shadow:none; font-family:helvetica; font-weight:bold; font-size:14px; color:'+qtxtcol+'; cursor:pointer; " onclick="wppaOvlStartStop()" ontouchstart="wppaOvlStartStop()" >'+startstop+'</div>';
+		}
+		html += 
+			'<div id="wppa-overlay-qt-txt"  style="position:absolute; right:16px; top:'+( wppaOvlPadTop-1 )+'px; visibility:hidden; box-shadow:none; font-family:helvetica; font-weight:bold; font-size:14px; color:'+qtxtcol+'; cursor:pointer; " onclick="wppaOvlHide()" ontouchstart="wppaOvlHide()" >'+wppaOvlCloseTxt+'&nbsp;&nbsp;</div>'+
+			'<img id="wppa-overlay-qt-img"  src="'+wppaImageDirectory+'smallcross-'+wppaOvlTheme+'.gif'+'" style="position:absolute; right:0; top:'+wppaOvlPadTop+'px; visibility:hidden; box-shadow:none; cursor:pointer" onclick="wppaOvlHide()" ontouchstart="wppaOvlHide()" >';
 					
 		// Not Fullsize Video
 		if ( wppaIsVideo ) {

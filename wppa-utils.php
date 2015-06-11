@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains low-level utility routines
-* Version 6.1.10
+* Version 6.1.12
 * 
 */
  
@@ -635,7 +635,9 @@ global $wppa_opt;
 								'wppa_use_short_qargs',
 								'wppa_lb_hres',
 								'wppa_start_slide_video',
-								'wppa_start_slide_audio'
+								'wppa_start_slide_audio',
+								'wppa_ovl_show_startstop',
+								'wppa_ovl_show_legenda'
 
 
 		);
@@ -1422,6 +1424,14 @@ function wppa_is_enum( $var ) {
 }
 
 function wppa_log( $type, $msg ) {
+
+	// Log debug messages only if WP_DEBUG is defined as true
+	if ( $type == 'dbg' ) {
+		if ( ! defined( 'WP_DEBUG' ) || ! WP_DEBUG ) {
+			return;
+		}
+	}
+	
 	@ wppa_mktree( WPPA_CONTENT_PATH.'/wppa-depot/admin' ); // Just in case...
 	$filename = WPPA_CONTENT_PATH.'/wppa-depot/admin/error.log';
 	if ( is_file( $filename ) ) {

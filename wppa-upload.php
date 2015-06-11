@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the upload/import pages and functions
-* Version 6.1.11
+* Version 6.1.12
 *
 */
 
@@ -1891,6 +1891,7 @@ global $wppa_supported_audio_extensions;
 						$ext = wppa_get_ext( $file );
 						if ( $ext == 'csv' ) {
 							echo '<b>' . __( 'Processing', 'wppa') . ' ' . basename( $file ) . '</b><br />';
+							wppa_log( 'dbg', __( 'Processing', 'wppa') . ' ' . basename( $file ) );
 							
 							// Copy the file to a temp file
 							$tempfile = dirname( $file ) . '/temp.csv';
@@ -1946,7 +1947,7 @@ global $wppa_supported_audio_extensions;
 									$cust_labels[$i] = $captions[$key];
 									wppa_update_option( 'wppa_custom_caption_' . $i, $cust_labels[$i] );
 									wppa_update_option( 'wppa_custom_visible_' . $i, 'yes' );
-	//								echo sprintf( __( 'New caption <b>%s</b> added.<br />', 'wppa' ), $cust_labels[$i] );
+									wppa_log( 'dbg', sprintf( __( 'New caption %s added.', 'wppa' ), $cust_labels[$i] ) );
 								}
 							}
 							
@@ -1964,7 +1965,7 @@ global $wppa_supported_audio_extensions;
 							while ( ! feof( $handle ) ) {
 								$dataline = fgets( $handle, 4096 );
 								if ( $dataline ) {
-//									echo __( 'Read data:', 'wppa' ) . ' ' . $dataline . '...';
+									wppa_log( 'dbg', __( 'Read data:', 'wppa' ) . ' ' . trim( $dataline ) );
 									$data_arr = wppa_explode_csv( $dataline );
 									$search = $data_arr[0];
 									switch ( strtolower($captions[0]) ) {
@@ -1987,12 +1988,12 @@ global $wppa_supported_audio_extensions;
 											wppa_update_photo( array( 'id' => $photo['id'], 'custom' => serialize( $cust_data ) ) );
 											$photos_processed_csv ++;
 										}
-	//									echo '<span style="color:green;" >' . __('Processed', 'wppa') . ' ' . $data_arr[0] . '</span><br />'; 
+										wppa_log( 'dbg', __('Processed', 'wppa') . ' ' . $data_arr[0] );
 									}
 									
 									// This line could not be processed
 									else {
-	//									echo '<span style="color:red;" >' . __('Could not find', 'wppa') . ' ' . $data_arr[0] . '</span><br />'; 
+										wppa_log( 'dbg', __('Could not find', 'wppa') . ' ' . $data_arr[0] );
 										
 										// Write back to original file
 										fputs( $write_handle, $dataline );

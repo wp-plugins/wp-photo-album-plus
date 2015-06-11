@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Frontend links
-* Version 6.1.9
+* Version 6.1.12
 *
 */
 
@@ -190,10 +190,16 @@ global $thumb;
 }
 
 // get link to album by id or in loop
-function wppa_get_album_url( $id, $pag = '', $type = 'content' ) {
+function wppa_get_album_url( $id, $pag = '', $type = 'content', $occur = '0' ) {
 	
-	$occur = wppa( 'in_widget' ) ? wppa( 'widget_occur' ) : wppa( 'occur' );
-	$w = wppa( 'in_widget' ) ? 'w' : '';
+	// Use forced occur ?
+	if ( $occur ) {
+		$w = '';
+	}
+	else {
+		$occur = wppa( 'in_widget' ) ? wppa( 'widget_occur' ) : wppa( 'occur' );
+		$w = wppa( 'in_widget' ) ? 'w' : '';
+	}
 	
 	if ( $id ) {
 		$link = wppa_get_permalink($pag).'wppa-album='.$id.'&amp;wppa-cover=0&amp;wppa-'.$w.'occur='.$occur;

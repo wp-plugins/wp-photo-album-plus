@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * display the top rated photos
-* Version 6.1.6
+* Version 6.1.12
 */
 
 class TopTenWidget extends WP_Widget {
@@ -41,10 +41,13 @@ class TopTenWidget extends WP_Widget {
 														'meanrat' => 'yes',
 														'ratcount' => 'yes',
 														'viewcount' => 'yes',
-														'includesubs' => 'yes'
+														'includesubs' => 'yes',
+														'showowner' => 'no',
+														'showalbum' => 'no'
 														) );
  		$widget_title 	= apply_filters('widget_title', $instance['title'] );
 		$page 			= in_array( $wppa_opt['wppa_topten_widget_linktype'], $wppa['links_no_page'] ) ? '' : wppa_get_the_landing_page('wppa_topten_widget_linkpage', __a('Top Ten Photos'));
+		$albumlinkpage 	= wppa_get_the_landing_page('wppa_topten_widget_album_linkpage', __a('Top Ten Photo album'));
 		$max  			= $wppa_opt['wppa_topten_count'];
 		$album 			= $instance['album'];
 		switch ( $instance['sortby'] ) {
@@ -64,6 +67,8 @@ class TopTenWidget extends WP_Widget {
 		$viewcount 		= $instance['viewcount'] == 'yes';
 		$includesubs 	= $instance['includesubs'] == 'yes';
 		$albenum 		= '';
+		$showowner 		= $instance['showowner'] == 'yes';
+		$showalbum 		= $instance['showalbum'] == 'yes';
 		
 		if ( $album ) {
 			if ( $album == '-2' ) $album = '0';
@@ -87,6 +92,8 @@ class TopTenWidget extends WP_Widget {
 		if ( $meanrat ) 	$maxh += $lineheight;
 		if ( $ratcount ) 	$maxh += $lineheight;
 		if ( $viewcount ) 	$maxh += $lineheight;
+		if ( $showowner ) 	$maxh += $lineheight;
+		if ( $showalbum ) 	$maxh += $lineheight;
 		
 		if ( $thumbs ) foreach ( $thumbs as $image ) {
 			global $thumb;
@@ -113,6 +120,17 @@ class TopTenWidget extends WP_Widget {
 
 				$widget_content .= "\n\t".'<div style="font-size:'.$wppa_opt['wppa_fontsize_widget_thumb'].'px; line-height:'.$lineheight.'px;">';
 
+					// Display (owner) ?
+					if ( $showowner ) {
+						$widget_content .= '<div>(' . $image['owner'] . ')</div>';
+					}
+					
+					// Display (album) ?
+					if ( $showalbum ) {
+						$href = wppa_convert_to_pretty( wppa_get_album_url( $image['album'], $albumlinkpage, 'content', '1' ) );
+						$widget_content .= '<div>(<a href="' . $href . '" >' . wppa_get_album_name( $image['album'] ) . '</a>)</div>';
+					}
+					
 					$rating = wppa_get_rating_by_id( $image['id'] );
 					switch ( $instance['sortby'] ) {
 						case 'mean_rating':
@@ -130,27 +148,7 @@ class TopTenWidget extends WP_Widget {
 							if ( $meanrat  	== 'yes' ) $widget_content .= '<div>'.wppa_get_rating_by_id( $image['id'] ).'</div>';
 							if ( $ratcount 	== 'yes' ) $widget_content .= '<div>'.sprintf( __a( '%s Votes' ), wppa_get_rating_count_by_id( $image['id'] ) ).'</div>';
 							break;
-					}
-					
-/*					
-					if ( $sortby != 'views' ) {	// Rating oriented use of this widget
-						if ( $rating ) {
-							if ( $meanrat == 'yes' ) $widget_content .= wppa_get_rating_by_id($image['id']);
-							if ( $meanrat == 'yes' && $ratcount == 'yes' ) $widget_content .= '<br />';
-							if ( $ratcount == 'yes' ) $widget_content .= sprintf(__a('%s Votes'), wppa_get_rating_count_by_id($image['id']));
-							if ( $meanrat == 'yes' || $ratcount == 'yes' ) $widget_content .= '<br />';
-						}
-						if ( $viewcount == 'yes' && $image['views'] ) $widget_content .= sprintf(__a('Views: %s times', 'wppa_theme'),$image['views']);
-					}
-					else {						// Viewcount oriented use of this widget
-						if ( $viewcount == 'yes' && $image['views'] ) $widget_content .= sprintf(__a('Views: %s times', 'wppa_theme'),$image['views']);
-						if ( $viewcount == 'yes' && $rating ) $widget_content .= '<br />';
-						if ( $rating ) {
-							if ( $meanrat == 'yes' ) $widget_content .= $rating;
-							if ( $ratcount == 'yes' ) $widget_content .= ' ('.wppa_get_rating_count_by_id($image['id']).')';
-						}
-					}
-*/					
+					}				
 				$widget_content .= '</div>';
 			}
 			else {	// No image
@@ -179,6 +177,8 @@ class TopTenWidget extends WP_Widget {
 		$instance['ratcount'] 		= $new_instance['ratcount'];
 		$instance['viewcount'] 		= $new_instance['viewcount'];
 		$instance['includesubs'] 	= $new_instance['includesubs'];
+		$instance['showalbum'] 		= $new_instance['showalbum'];
+		$instance['showowner'] 		= $new_instance['showowner'];
 		
         return $instance;
     }
@@ -195,7 +195,9 @@ class TopTenWidget extends WP_Widget {
 														'meanrat' => 'yes',
 														'ratcount' => 'yes',
 														'viewcount' => 'yes',
-														'includesubs' => 'yes'
+														'includesubs' => 'yes',
+														'showowner' => 'no',
+														'showalbum' => 'no'
 
 														) );
  		$widget_title 	= apply_filters('widget_title', $instance['title']);
@@ -206,6 +208,8 @@ class TopTenWidget extends WP_Widget {
 		$ratcount 		= $instance['ratcount'];
 		$viewcount 		= $instance['viewcount'];
 		$includesubs 	= $instance['includesubs'];
+		$showowner 		= $instance['showowner'];
+		$showalbum 		= $instance['showalbum'];
 
 ?>
 		<p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:', 'wppa'); ?></label> 
@@ -243,6 +247,16 @@ class TopTenWidget extends WP_Widget {
 		</p>
 		
 		<p><label ><?php _e('Subtitle:', 'wppa'); ?></label>
+			<br /><?php _e('Show owner:', 'wppa'); ?>
+			<select id="<?php echo $this->get_field_id('showowner'); ?>" name="<?php echo $this->get_field_name('showowner'); ?>" >
+				<option value="yes" <?php if ( $showowner == 'yes' ) echo 'selected="selected"' ?>><?php _e('yes', 'wppa') ?></option>
+				<option value="no" <?php if ( $showowner == 'no' ) echo 'selected="selected"' ?>><?php _e('no', 'wppa') ?></option>
+			</select>
+			<br /><?php _e('Show album:', 'wppa'); ?>
+			<select id="<?php echo $this->get_field_id('showalbum'); ?>" name="<?php echo $this->get_field_name('showalbum'); ?>" >
+				<option value="yes" <?php if ( $showalbum == 'yes' ) echo 'selected="selected"' ?>><?php _e('yes', 'wppa') ?></option>
+				<option value="no" <?php if ( $showalbum == 'no' ) echo 'selected="selected"' ?>><?php _e('no', 'wppa') ?></option>
+			</select>
 			<br /><?php _e('Mean rating:', 'wppa'); ?>
 			<select id="<?php echo $this->get_field_id('meanrat'); ?>" name="<?php echo $this->get_field_name('meanrat'); ?>" >
 				<option value="yes" <?php if ( $meanrat == 'yes' ) echo 'selected="selected"' ?>><?php _e('yes', 'wppa') ?></option>

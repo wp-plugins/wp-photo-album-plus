@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Various wppa boxes
-* Version 6.1.10
+* Version 6.1.12
 *
 *
 */
@@ -1262,6 +1262,7 @@ static $seqno;
 	$allow_me = wppa_allow_user_uploads();
 	if ( ! $allow_me ) {
 		if ( wppa_switch( 'show_album_full' ) ) {
+			$wppa['out'] .= '<div style="clear:both"></div>';
 			$wppa['out'] .= '<span style="color:red">';
 			$wppa['out'] .= __a( 'Max uploads reached' );
 			$time = wppa_time_to_wait_html( '0', true );	// For the user
@@ -1276,6 +1277,7 @@ static $seqno;
 	$allow_alb = wppa_allow_uploads( $alb );
 	if ( ! $allow_alb ) {
 		if ( wppa_switch( 'show_album_full' ) ) {
+			$wppa['out'] .= '<div style="clear:both"></div>';
 			$wppa['out'] .= '<span style="color:red">';
 			$wppa['out'] .= __a( 'Max uploads reached' );
 			$time = wppa_time_to_wait_html( $alb );		// For the album

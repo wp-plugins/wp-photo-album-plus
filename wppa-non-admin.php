@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the non admin stuff
-* Version 6.1.9
+* Version 6.1.12
 * 
 */
 
@@ -307,10 +307,14 @@ global $wppa_session;
 		$txtcol = wppa_opt( 'wppa_ovl_theme' ) == 'black' ? '#a7a7a7' : '#272727';
 		echo '
 <!-- start WPPA+ Footer data -->
-	<div id="wppa-overlay-bg" style="text-align:center; display:none; position:fixed; top:0; left:0; z-index:100090; width:100%; height:2048px; background-color:'.wppa_opt( 'wppa_ovl_bgcolor' ).';" onclick="wppaOvlOnclick(event)" >
+	<div id="wppa-overlay-bg" style="text-align:center; display:none; position:fixed; top:0; left:0; z-index:100090; width:100%; height:2048px; background-color:'.wppa_opt( 'wppa_ovl_bgcolor' ).';" onclick="wppaOvlOnclick(event)" >';
+	if ( wppa_switch( 'ovl_show_legenda' ) ) {
+		echo '
 		<div id="wppa-ovl-legenda-1" onmouseover="jQuery(this).css(\'visibility\',\'visible\');" onmouseout="jQuery(this).css(\'visibility\',\'hidden\');" style="position:absolute; left:0; top:0; background-color:'.wppa_opt( 'wppa_ovl_theme' ).';color:'.$txtcol.'; visibility:visible;" >
 			'.__a( 'Press f for fullscreen.' ).'
-		</div>
+		</div>';
+	}
+	echo '
 	</div>
 	<div id="wppa-overlay-ic" style="position:fixed; top:0; padding-top:10px; z-index:100095; opacity:1; box-shadow:none;"
 		ontouchstart="wppaTouchStart(event, \'wppa-overlay-ic\', -1);"  ontouchend="wppaTouchEnd(event);" 
@@ -337,6 +341,8 @@ global $wppa_session;
 		wppaOvlFullLegendaSingle = "'.__a('Keys: f = next mode; escape = exit; d = dismiss this notice.').'";
 		wppaOvlVideoStart = '.( wppa_switch( 'ovl_video_start' ) ? 'true' : 'false' ).';
 		wppaOvlAudioStart = '.( wppa_switch( 'ovl_audio_start' ) ? 'true' : 'false' ).';
+		wppaOvlShowLegenda = '.( wppa_switch( 'ovl_show_legenda' ) ? 'true' : 'false' ).';
+		wppaOvlShowStartStop = '.( wppa_switch( 'ovl_show_startstop' ) ? 'true' : 'false' ).';
 	</script>
 	';
 	wp_nonce_field('wppa-check' , 'wppa-nonce', false, true);	// Nonce field for Ajax bump view counter from lightbox

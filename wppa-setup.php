@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Contains all the setup stuff
-* Version 6.1.10
+* Version 6.1.12
 * 
 */
 
@@ -724,6 +724,8 @@ Hide Camera info
 						'wppa_ovl_cover_desc'				=> 'no',
 						'wppa_ovl_show_counter'				=> 'yes',
 						'wppa_ovl_add_owner' 				=> 'no',
+						'wppa_ovl_show_startstop' 			=> 'yes',
+						'wppa_ovl_show_legenda' 			=> 'yes',
 						'wppa_show_zoomin'					=> 'yes',
 						
 						'wppa_owner_on_new_line' 			=> 'no',
@@ -989,6 +991,8 @@ Hide Camera info
 						'wppa_topten_widget_linkpage' 		=> '0',
 						'wppa_topten_blank'					=> 'no',
 						'wppa_topten_overrule'				=> 'no',
+						
+						'wppa_topten_widget_album_linkpage' => '0',
 
 						'wppa_featen_widget_linktype' 		=> 'photo',
 						'wppa_featen_widget_linkpage' 		=> '0',

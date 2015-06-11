@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * manage all options
-* Version 6.1.10
+* Version 6.1.12
 *
 */
 
@@ -2344,6 +2344,24 @@ global $wppa_tags;
 							$tags = 'lightbox,meta,layout';
 							wppa_setting($slug, '17', $name, $desc, $html, $help, $clas, $tags);
 
+							$name = __('Overlay show start/stop', 'wppa');
+							$desc = __('Show Start and Stop for running slideshow on lightbox.', 'wppa');
+							$help = '';
+							$slug = 'wppa_ovl_show_startstop';
+							$html = wppa_checkbox($slug);
+							$clas = '';
+							$tags = 'lightbox,layout';
+							wppa_setting($slug, '18', $name, $desc, $html, $help, $clas, $tags);
+							
+							$name = __('Overlay show legenda', 'wppa');
+							$desc = __('Show "Press f for fullsize" etc. on lightbox.', 'wppa');
+							$help = '';
+							$slug = 'wppa_ovl_show_legenda';
+							$html = wppa_checkbox($slug);
+							$clas = '';
+							$tags = 'lightbox,layout';
+							wppa_setting($slug, '19', $name, $desc, $html, $help, $clas, $tags);
+						
 							$name = __('Overlay show counter', 'wppa');
 							$desc = __('Show the x/y counter below the image.', 'wppa');
 							$help = '';

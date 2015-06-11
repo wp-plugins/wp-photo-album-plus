@@ -3,7 +3,7 @@
 * Package: wp-photo-album-plus
 *
 * Various funcions
-* Version 6.1.10
+* Version 6.1.12
 *
 */
 
@@ -620,7 +620,7 @@ global $wppa_session;
 		}
 		else $wppa['out'] = '<span style="color:red">ERROR: Missing function wppa_theme(), check the installation of WPPA+. Remove customized wppa_theme.php</span>';
 		global $wppa_version; 
-		$expected_version = '6-1-0-000';
+		$expected_version = '6-1-12-000';
 		if ( $wppa_version != $expected_version ) {
 			wppa_dbg_msg( 'WARNING: customized wppa-theme.php is out of rev. Expected version: '.$expected_version.' found: '.$wppa_version, 'red' );	
 		}

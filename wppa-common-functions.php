@@ -2,7 +2,7 @@
 /* wppa-common-functions.php
 *
 * Functions used in admin and in themes
-* version 6.1.10
+* version 6.1.12
 * 
 */
 
@@ -940,13 +940,19 @@ function wppa_get_minisize() {
 }
 
 // Create thubnail 
-function wppa_create_thumbnail( $id ) {
+function wppa_create_thumbnail( $id, $use_source = true ) {
 	
 	// Find file to make thumbnail from
 	$source_path = wppa_fix_poster_ext( wppa_get_source_path( $id ), $id );
 
-	if ( ! wppa_switch( 'wppa_watermark_thumbs' ) && is_file( $source_path ) ) {
-		$file = $source_path;										// Use sourcefile
+	// Use source if requested and available
+	if ( $use_source ) {
+		if ( ! wppa_switch( 'wppa_watermark_thumbs' ) && is_file( $source_path ) ) {
+			$file = $source_path;										// Use sourcefile
+		}
+		else {
+			$file = wppa_fix_poster_ext( wppa_get_photo_path( $id ), $id );	// Use photofile
+		}
 	}
 	else {
 		$file = wppa_fix_poster_ext( wppa_get_photo_path( $id ), $id );	// Use photofile
