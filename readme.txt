@@ -202,11 +202,11 @@ See for additional information: http://wppa.opajaap.nl/?page_id=1459
 * wppa lightbox now uses data-rel="wppa" to meet w3c standards.
 * Table II-G19: Overlay show legenda. Regardless of this setting, it will not show up on mobile devices, 
 but the keyboard handler will be installed to facillitate tablet/laptop converable devices.
-* There is a serious performance problem with the new smilies: emoji. 
+* There was a serious performance problem with the new smilies: emoji. 
 Especially on firefox and using ajax On one of my testsites a slideshow with 15 slides and comments enabled and the smiley picker displayed 
 used to take 4 seconds to load. Now it takes up to a minute; the browser even does not respond for over 50 seconds.
 As a work around for this, i coded my own convert_smilies() function: wppa_convert_smilies(), located in wppa_utils.php, 
-just for the creation of the html for the smileypicker and the smilies in the comments on phtos. 
+just for the creation of the html for the smileypicker and the smilies in the comments on photos. 
 It still uses the emoji images, but by direct coding and not through a character code.
 
 = 6.1.13 =
